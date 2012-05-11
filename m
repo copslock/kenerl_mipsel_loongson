@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 08:33:13 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:34396 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 08:35:28 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:34404 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903557Ab2EKGdH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 08:33:07 +0200
+        with ESMTP id S1903557Ab2EKGfX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 08:35:23 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SSjPR-0001wM-RP; Fri, 11 May 2012 01:33:01 -0500
+        id 1SSjRd-0001wj-18; Fri, 11 May 2012 01:35:17 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     "Steven J. Hill" <sjhill@mips.com>,
-        Leonid Yegoshin <yegoshin@mips.com>
-Subject: [PATCH v2] Revert fixrange_init() limiting to the FIXMAP region.
-Date:   Fri, 11 May 2012 01:32:57 -0500
-Message-Id: <1336717977-1102-1-git-send-email-sjhill@mips.com>
+Cc:     "Steven J. Hill" <sjhill@mips.com>
+Subject: [PATCH] MIPS: Work-around microMIPS GNU assembler bug.
+Date:   Fri, 11 May 2012 01:35:13 -0500
+Message-Id: <1336718113-1243-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10
-X-archive-position: 33253
+X-archive-position: 33254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,60 +25,164 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-This patch refactors 464fd83e841a16f4ea1325b33eb08170ef5cd1f4 and
-correctly calculates the right length while taking into account
-page table alignment by PMD.
+Work-around a microMIPS GNU assembler bug that thinks some
+instructions are data, when they actually are not.
 
-Signed-off-by: Leonid Yegoshin <yegoshin@mips.com>
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/mm/init.c       |    6 +++---
- arch/mips/mm/pgtable-32.c |    2 +-
- arch/mips/mm/pgtable-64.c |    2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ arch/mips/include/asm/futex.h   |    4 ++++
+ arch/mips/include/asm/paccess.h |    2 ++
+ arch/mips/include/asm/uaccess.h |   14 ++++++++++++--
+ arch/mips/kernel/scall32-o32.S  |    4 ++++
+ 4 files changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 1a85ba9..75f2724 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -277,11 +277,11 @@ void __init fixrange_init(unsigned long start, unsigned long end,
- 	k = __pmd_offset(vaddr);
- 	pgd = pgd_base + i;
+diff --git a/arch/mips/include/asm/futex.h b/arch/mips/include/asm/futex.h
+index 6ebf173..007adca 100644
+--- a/arch/mips/include/asm/futex.h
++++ b/arch/mips/include/asm/futex.h
+@@ -31,6 +31,7 @@
+ 		"	beqzl	$1, 1b				\n"	\
+ 		__WEAK_LLSC_MB						\
+ 		"3:						\n"	\
++		"	.insn					\n"	\
+ 		"	.set	pop				\n"	\
+ 		"	.set	mips0				\n"	\
+ 		"	.section .fixup,\"ax\"			\n"	\
+@@ -57,6 +58,7 @@
+ 		"	beqz	$1, 1b				\n"	\
+ 		__WEAK_LLSC_MB						\
+ 		"3:						\n"	\
++		"	.insn					\n"	\
+ 		"	.set	pop				\n"	\
+ 		"	.set	mips0				\n"	\
+ 		"	.section .fixup,\"ax\"			\n"	\
+@@ -156,6 +158,7 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+ 		"	beqzl	$1, 1b					\n"
+ 		__WEAK_LLSC_MB
+ 		"3:							\n"
++		"	.insn						\n"
+ 		"	.set	pop					\n"
+ 		"	.section .fixup,\"ax\"				\n"
+ 		"4:	li	%0, %6					\n"
+@@ -183,6 +186,7 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+ 		"	beqz	$1, 1b					\n"
+ 		__WEAK_LLSC_MB
+ 		"3:							\n"
++		"	.insn						\n"
+ 		"	.set	pop					\n"
+ 		"	.section .fixup,\"ax\"				\n"
+ 		"4:	li	%0, %6					\n"
+diff --git a/arch/mips/include/asm/paccess.h b/arch/mips/include/asm/paccess.h
+index 9ce5a1e..f479742 100644
+--- a/arch/mips/include/asm/paccess.h
++++ b/arch/mips/include/asm/paccess.h
+@@ -56,6 +56,7 @@ struct __large_pstruct { unsigned long buf[100]; };
+ 	"1:\t" insn "\t%1,%2\n\t"					\
+ 	"move\t%0,$0\n"							\
+ 	"2:\n\t"							\
++	".insn\n\t"							\
+ 	".section\t.fixup,\"ax\"\n"					\
+ 	"3:\tli\t%0,%3\n\t"						\
+ 	"move\t%1,$0\n\t"						\
+@@ -94,6 +95,7 @@ extern void __get_dbe_unknown(void);
+ 	"1:\t" insn "\t%1,%2\n\t"					\
+ 	"move\t%0,$0\n"							\
+ 	"2:\n\t"							\
++	".insn\n\t"							\
+ 	".section\t.fixup,\"ax\"\n"					\
+ 	"3:\tli\t%0,%3\n\t"						\
+ 	"j\t2b\n\t"							\
+diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
+index 653a412..9510015 100644
+--- a/arch/mips/include/asm/uaccess.h
++++ b/arch/mips/include/asm/uaccess.h
+@@ -261,6 +261,7 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	" insn "	%1, %3				\n"	\
+ 	"2:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section .fixup,\"ax\"				\n"	\
+ 	"3:	li	%0, %4					\n"	\
+ 	"	j	2b					\n"	\
+@@ -287,7 +288,9 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	lw	%1, (%3)				\n"	\
+ 	"2:	lw	%D1, 4(%3)				\n"	\
+-	"3:	.section	.fixup,\"ax\"			\n"	\
++	"3:							\n"	\
++	"	.insn						\n"	\
++	"	.section	.fixup,\"ax\"			\n"	\
+ 	"4:	li	%0, %4					\n"	\
+ 	"	move	%1, $0					\n"	\
+ 	"	move	%D1, $0					\n"	\
+@@ -355,6 +358,7 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	" insn "	%z2, %3		# __put_user_asm\n"	\
+ 	"2:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
+ 	"3:	li	%0, %4					\n"	\
+ 	"	j	2b					\n"	\
+@@ -373,6 +377,7 @@ do {									\
+ 	"1:	sw	%2, (%3)	# __put_user_asm_ll32	\n"	\
+ 	"2:	sw	%D2, 4(%3)				\n"	\
+ 	"3:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
+ 	"4:	li	%0, %4					\n"	\
+ 	"	j	3b					\n"	\
+@@ -524,6 +529,7 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	" insn "	%1, %3				\n"	\
+ 	"2:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section .fixup,\"ax\"				\n"	\
+ 	"3:	li	%0, %4					\n"	\
+ 	"	j	2b					\n"	\
+@@ -549,7 +555,9 @@ do {									\
+ 	"1:	ulw	%1, (%3)				\n"	\
+ 	"2:	ulw	%D1, 4(%3)				\n"	\
+ 	"	move	%0, $0					\n"	\
+-	"3:	.section	.fixup,\"ax\"			\n"	\
++	"3:							\n"	\
++	"	.insn						\n"	\
++	"	.section	.fixup,\"ax\"			\n"	\
+ 	"4:	li	%0, %4					\n"	\
+ 	"	move	%1, $0					\n"	\
+ 	"	move	%D1, $0					\n"	\
+@@ -616,6 +624,7 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	" insn "	%z2, %3		# __put_user_unaligned_asm\n" \
+ 	"2:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
+ 	"3:	li	%0, %4					\n"	\
+ 	"	j	2b					\n"	\
+@@ -634,6 +643,7 @@ do {									\
+ 	"1:	sw	%2, (%3)	# __put_user_unaligned_asm_ll32	\n" \
+ 	"2:	sw	%D2, 4(%3)				\n"	\
+ 	"3:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
+ 	"4:	li	%0, %4					\n"	\
+ 	"	j	3b					\n"	\
+diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+index bcb6982f..62e7cff 100644
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -143,9 +143,13 @@ stackargs:
+ 	jr	t1
+ 	 addiu	t1, 6f - 5f
  
--	for ( ; (i < PTRS_PER_PGD) && (vaddr < end); pgd++, i++) {
-+	for ( ; (i < PTRS_PER_PGD) && (vaddr != end); pgd++, i++) {
- 		pud = (pud_t *)pgd;
--		for ( ; (j < PTRS_PER_PUD) && (vaddr < end); pud++, j++) {
-+		for ( ; (j < PTRS_PER_PUD) && (vaddr != end); pud++, j++) {
- 			pmd = (pmd_t *)pud;
--			for (; (k < PTRS_PER_PMD) && (vaddr < end); pmd++, k++) {
-+			for (; (k < PTRS_PER_PMD) && (vaddr != end); pmd++, k++) {
- 				if (pmd_none(*pmd)) {
- 					pte = (pte_t *) alloc_bootmem_low_pages(PAGE_SIZE);
- 					set_pmd(pmd, __pmd((unsigned long)pte));
-diff --git a/arch/mips/mm/pgtable-32.c b/arch/mips/mm/pgtable-32.c
-index adc6911..575e401 100644
---- a/arch/mips/mm/pgtable-32.c
-+++ b/arch/mips/mm/pgtable-32.c
-@@ -52,7 +52,7 @@ void __init pagetable_init(void)
- 	 * Fixed mappings:
- 	 */
- 	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
--	fixrange_init(vaddr, vaddr + FIXADDR_SIZE, pgd_base);
-+	fixrange_init(vaddr, 0, pgd_base);
++2:	.insn
+ 	lw	t8, 28(t0)		# argument #8 from usp
++3:	.insn
+ 	lw	t7, 24(t0)		# argument #7 from usp
++4:	.insn
+ 	lw	t6, 20(t0)		# argument #6 from usp
++5:	.insn
+ 	jr	t1
+ 	 sw	t5, 16(sp)		# argument #5 to ksp
  
- #ifdef CONFIG_HIGHMEM
- 	/*
-diff --git a/arch/mips/mm/pgtable-64.c b/arch/mips/mm/pgtable-64.c
-index cda4e30..78eaa4f 100644
---- a/arch/mips/mm/pgtable-64.c
-+++ b/arch/mips/mm/pgtable-64.c
-@@ -76,5 +76,5 @@ void __init pagetable_init(void)
- 	 * Fixed mappings:
- 	 */
- 	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
--	fixrange_init(vaddr, vaddr + FIXADDR_SIZE, pgd_base);
-+	fixrange_init(vaddr, 0, pgd_base);
- }
 -- 
 1.7.10

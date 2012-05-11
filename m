@@ -1,77 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 20:06:53 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:50187 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903699Ab2EKSGt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 20:06:49 +0200
-Received: by lbbgg6 with SMTP id gg6so2600322lbb.36
-        for <linux-mips@linux-mips.org>; Fri, 11 May 2012 11:06:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding
-         :x-gm-message-state;
-        bh=hljop0e7i4tWOwuHeTaFnUpN5nXVViJticniqRo5bNY=;
-        b=FDzdL0zAEbBVLqqEkatCxHl+A4JngWHxsPebTG+YHwmcPeihNqANNEgOWo4DlfOl+t
-         ev1kfn48gtUJtNc6LeSRMSOnCjPdF4R+4i0Rxx0B9+k6SE8EZu+TfFMISEf2IxgGuKQC
-         xSed1mIove4MIEP5FRcBuIDCww8RrPXRNGxLaJoxvlldzp/wRNFraPS6rmbhHmBfIcoC
-         vcPTuQqb5OhiZcY4EnBUawTRQ4ZQl0loa5zGbHZ9Bs0dWHHQ6modWc+8/l0g4Y8uw4ga
-         KKwH8b34JhGI7xzsa9wxNm1bjrczkTkjJJNfRfM5kbAKRAdX2b07rD7uTlG4QLbVTcd2
-         Lw3w==
-Received: by 10.152.105.173 with SMTP id gn13mr9226338lab.20.1336759602915;
-        Fri, 11 May 2012 11:06:42 -0700 (PDT)
-Received: from [192.168.11.174] (mail.dev.rtsoft.ru. [213.79.90.226])
-        by mx.google.com with ESMTPS id gv8sm1254502lab.14.2012.05.11.11.06.40
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 11 May 2012 11:06:41 -0700 (PDT)
-Message-ID: <4FAD54E9.6030102@mvista.com>
-Date:   Fri, 11 May 2012 22:05:29 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 20:13:21 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:4694 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903659Ab2EKSNN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 20:13:13 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4fad57260000>; Fri, 11 May 2012 11:15:02 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 11 May 2012 11:13:11 -0700
+Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 11 May 2012 11:13:11 -0700
+Message-ID: <4FAD56B7.2060004@cavium.com>
+Date:   Fri, 11 May 2012 11:13:11 -0700
+From:   David Daney <david.daney@cavium.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-To:     "Yegoshin, Leonid" <yegoshin@mips.com>
-CC:     "Hill, Steven" <sjhill@mips.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>
-Subject: Re: [PATCH v2] Add MIPS64R2 core support.
-References: <1336717784-853-1-git-send-email-sjhill@mips.com>,<4FAD4B9E.70803@mvista.com> <ajcsenx2bmwqyi5629d3ywgh.1336757525517@email.android.com>,<4FAD4E5C.9040607@mvista.com> <j9ltxtmuep0qhf4mgqhj4du5.1336758301121@email.android.com>
-In-Reply-To: <j9ltxtmuep0qhf4mgqhj4du5.1336758301121@email.android.com>
+To:     "Steven J. Hill" <sjhill@mips.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH v2,04/10] MIPS: Add micro-assembler support for 'ins'
+ and 'ext' instructions.
+References: <1336709766-29082-1-git-send-email-sjhill@mips.com>
+In-Reply-To: <1336709766-29082-1-git-send-email-sjhill@mips.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQnrCBrRiQz+ju2jx7YuafI8HmsMbdpK4OLODlwxM05mh2AGMzsMC36P/9GxO0bE9H+Ds2tp
-X-archive-position: 33267
+X-OriginalArrivalTime: 11 May 2012 18:13:11.0544 (UTC) FILETIME=[B9B41780:01CD2FA1]
+X-archive-position: 33268
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+On 05/10/2012 09:16 PM, Steven J. Hill wrote:
+> From: "Steven J. Hill"<sjhill@mips.com>
+>
+> Add the MIPS32R2 'ins' and 'ext' instructions for use by the
+> kernel's micro-assembler.
+>
+> Signed-off-by: Steven J. Hill<sjhill@mips.com>
+> ---
+>   arch/mips/include/asm/uasm.h |    2 ++
+>   arch/mips/mm/tlbex.c         |   17 +++++++++++++++++
 
-On 05/11/2012 09:45 PM, Yegoshin, Leonid wrote:
+Really I think the tlbex.c patch should be broken out into a separate 
+patch.  It has nothing to do with adding instructions to uasm.
 
-> I don't see any advantage in separation of it.
 
-    I do. And I certainly do see an advantage of bothering to describe your 
-changes, not just throwing in patch with unclear summary, no changelog at all, 
-doing 3 things at once and then hoping for it to be silently accepted.
+>   arch/mips/mm/uasm.c          |   13 +++++++++++++
+>   3 files changed, 32 insertions(+)
+>
+> diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
+> index 504d40a..814bc9f 100644
+> --- a/arch/mips/include/asm/uasm.h
+> +++ b/arch/mips/include/asm/uasm.h
+> @@ -114,6 +114,8 @@ Ip_0(_tlbwi);
+>   Ip_0(_tlbwr);
+>   Ip_u3u1u2(_xor);
+>   Ip_u2u1u3(_xori);
+> +Ip_u2u1msbu3(_ext);
+> +Ip_u2u1msbu3(_ins);
+>   Ip_u2u1msbu3(_dins);
+>   Ip_u2u1msbu3(_dinsm);
+>   Ip_u1(_syscall);
+> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+> index 897b727..7b12f27 100644
+> --- a/arch/mips/mm/tlbex.c
+> +++ b/arch/mips/mm/tlbex.c
+> @@ -921,6 +921,13 @@ build_get_pgde32(u32 **p, unsigned int tmp, unsigned int ptr)
+>   #endif
+>   	uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
+>   	uasm_i_lw(p, ptr, uasm_rel_lo(pgdc), ptr);
+> +#ifdef CONFIG_32BIT
+> +	if (cpu_has_mips32r2) {
+> +		uasm_i_ext(p, tmp, tmp, PGDIR_SHIFT, (32 - PGDIR_SHIFT));
+> +		uasm_i_ins(p, ptr, tmp, PGD_T_LOG2, (32 - PGDIR_SHIFT));
+> +		return;
+> +	}
+> +#endif
+>   	uasm_i_srl(p, tmp, tmp, PGDIR_SHIFT); /* get pgd only bits */
+>   	uasm_i_sll(p, tmp, tmp, PGD_T_LOG2);
+>   	uasm_i_addu(p, ptr, ptr, tmp); /* add in pgd offset */
+> @@ -956,6 +963,16 @@ static void __cpuinit build_adjust_context(u32 **p, unsigned int ctx)
+>
+>   static void __cpuinit build_get_ptep(u32 **p, unsigned int tmp, unsigned int ptr)
+>   {
+> +#ifdef CONFIG_32BIT
+> +	if (cpu_has_mips32r2) {
+> +		/* For MIPS32R2, PTE ptr offset is obtained from BadVAddr */
+> +		UASM_i_MFC0(p, tmp, C0_BADVADDR);
+> +		UASM_i_LW(p, ptr, 0, ptr);
+> +		uasm_i_ext(p, tmp, tmp, PAGE_SHIFT+1, PGDIR_SHIFT-PAGE_SHIFT-1);
+> +		uasm_i_ins(p, ptr, tmp, PTE_T_LOG2+1, PGDIR_SHIFT-PAGE_SHIFT-1);
+> +		return;
+> +	}
+> +#endif
+>   	/*
+>   	 * Bug workaround for the Nevada. It seems as if under certain
+>   	 * circumstances the move from cp0_context might produce a
+> diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+> index 5fa1851..d3d0218 100644
+> --- a/arch/mips/mm/uasm.c
+> +++ b/arch/mips/mm/uasm.c
+> @@ -10,6 +10,7 @@
+>    * Copyright (C) 2004, 2005, 2006, 2008  Thiemo Seufer
+>    * Copyright (C) 2005, 2007  Maciej W. Rozycki
+>    * Copyright (C) 2006  Ralf Baechle (ralf@linux-mips.org)
+> + * Copyright (C) 2011, 2012  MIPS Technologies, Inc.
+>    */
+>
+>   #include<linux/kernel.h>
+> @@ -63,6 +64,7 @@ enum opcode {
+>   	insn_bne, insn_cache, insn_daddu, insn_daddiu, insn_dmfc0,
+>   	insn_dmtc0, insn_dsll, insn_dsll32, insn_dsra, insn_dsrl,
+>   	insn_dsrl32, insn_drotr, insn_drotr32, insn_dsubu, insn_eret,
+> +	insn_ins, insn_ext,
 
-> Sergei Shtylyov<sshtylyov@mvista.com>  wrote:
+Should we re-flow this block?  I think so.  But that could be done at 
+the time of re-alphabetization too.
 
-> Hello.
+[...]
 
-> On 05/11/2012 09:32 PM, Yegoshin, Leonid wrote:
-
->> Not exactly - it adds 64R2 support in Malta, plus small verification that build kernel could run 32bit binaries.
-
->> I don't think it has sense to multiply patches here, there is no sense to have this separated.
-
->> 5KEc is just test-bed.
-
->      Well, rule of thumb is do one thing per patch. You do three. All that
-> without proper description.
-
-PS: Please stop top-posting.
-
-WBR, Sergei
+David Daney

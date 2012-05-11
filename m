@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 05:54:38 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:33857 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 06:16:24 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:33925 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903543Ab2EKDyb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 05:54:31 +0200
+        with ESMTP id S1903543Ab2EKEQS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 06:16:18 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SSgvx-0001eM-Ee; Thu, 10 May 2012 22:54:25 -0500
+        id 1SShH2-0001gQ-36; Thu, 10 May 2012 23:16:12 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH 03/10] MIPS: Add support for the M14Kc core.
-Date:   Thu, 10 May 2012 22:54:20 -0500
-Message-Id: <1336708460-28904-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH v2,04/10] MIPS: Add micro-assembler support for 'ins' and 'ext' instructions.
+Date:   Thu, 10 May 2012 23:16:06 -0500
+Message-Id: <1336709766-29082-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10
-X-archive-position: 33239
+X-archive-position: 33240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -25,138 +25,115 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
+Add the MIPS32R2 'ins' and 'ext' instructions for use by the
+kernel's micro-assembler.
+
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/cpu.h          |    5 +++--
- arch/mips/kernel/cpu-probe.c         |    7 ++++++-
- arch/mips/mm/c-r4k.c                 |    1 +
- arch/mips/mm/tlbex.c                 |    4 +++-
- arch/mips/oprofile/common.c          |    1 +
- arch/mips/oprofile/op_model_mipsxx.c |    4 ++++
- 6 files changed, 18 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/uasm.h |    2 ++
+ arch/mips/mm/tlbex.c         |   17 +++++++++++++++++
+ arch/mips/mm/uasm.c          |   13 +++++++++++++
+ 3 files changed, 32 insertions(+)
 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 9f8feeb..fc937ef 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -95,6 +95,7 @@
- #define PRID_IMP_74K		0x9700
- #define PRID_IMP_1004K		0x9900
- #define PRID_IMP_1074K		0x9a00
-+#define PRID_IMP_M14KC		0x9c00
- 
- /*
-  * These are the PRID's for when 23:16 == PRID_COMP_SIBYTE
-@@ -261,7 +262,7 @@ enum cpu_type_enum {
- 	 */
- 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
- 	CPU_ALCHEMY, CPU_PR4450, CPU_BMIPS32, CPU_BMIPS3300, CPU_BMIPS4350,
--	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC,
-+	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_M14KC,
- 
- 	/*
- 	 * MIPS64 class processors
-@@ -289,7 +290,7 @@ enum cpu_type_enum {
- #define MIPS_CPU_ISA_M64R2	0x00000100
- 
- #define MIPS_CPU_ISA_32BIT (MIPS_CPU_ISA_I | MIPS_CPU_ISA_II | \
--	MIPS_CPU_ISA_M32R1 | MIPS_CPU_ISA_M32R2 )
-+	MIPS_CPU_ISA_M32R1 | MIPS_CPU_ISA_M32R2)
- #define MIPS_CPU_ISA_64BIT (MIPS_CPU_ISA_III | MIPS_CPU_ISA_IV | \
- 	MIPS_CPU_ISA_V | MIPS_CPU_ISA_M64R1 | MIPS_CPU_ISA_M64R2)
- 
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 4b5c7d6..bffb33d 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -4,7 +4,7 @@
-  * Copyright (C) xxxx  the Anonymous
-  * Copyright (C) 1994 - 2006 Ralf Baechle
-  * Copyright (C) 2003, 2004  Maciej W. Rozycki
-- * Copyright (C) 2001, 2004  MIPS Inc.
-+ * Copyright (C) 2001, 2004, 2011, 2012  MIPS Technologies, Inc.
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-@@ -199,6 +199,7 @@ void __init check_wait(void)
- 		cpu_wait = rm7k_wait_irqoff;
- 		break;
- 
-+	case CPU_M14KC:
- 	case CPU_24K:
- 	case CPU_34K:
- 	case CPU_1004K:
-@@ -831,6 +832,10 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
- 		c->cputype = CPU_74K;
- 		__cpu_name[cpu] = "MIPS 74Kc";
- 		break;
-+	case PRID_IMP_M14KC:
-+		c->cputype = CPU_M14KC;
-+		__cpu_name[cpu] = "MIPS M14Kc";
-+		break;
- 	case PRID_IMP_1004K:
- 		c->cputype = CPU_1004K;
- 		__cpu_name[cpu] = "MIPS 1004Kc";
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 07ca54c..52b4dfd 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1069,6 +1069,7 @@ static void __cpuinit probe_pcache(void)
- 			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
- 		}
- 		/* fall through */
-+	case CPU_M14KC:
- 	case CPU_24K:
- 	case CPU_34K:
- 	case CPU_1004K:
+diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
+index 504d40a..814bc9f 100644
+--- a/arch/mips/include/asm/uasm.h
++++ b/arch/mips/include/asm/uasm.h
+@@ -114,6 +114,8 @@ Ip_0(_tlbwi);
+ Ip_0(_tlbwr);
+ Ip_u3u1u2(_xor);
+ Ip_u2u1u3(_xori);
++Ip_u2u1msbu3(_ext);
++Ip_u2u1msbu3(_ins);
+ Ip_u2u1msbu3(_dins);
+ Ip_u2u1msbu3(_dinsm);
+ Ip_u1(_syscall);
 diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 0bc485b..897b727 100644
+index 897b727..7b12f27 100644
 --- a/arch/mips/mm/tlbex.c
 +++ b/arch/mips/mm/tlbex.c
-@@ -8,7 +8,8 @@
+@@ -921,6 +921,13 @@ build_get_pgde32(u32 **p, unsigned int tmp, unsigned int ptr)
+ #endif
+ 	uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
+ 	uasm_i_lw(p, ptr, uasm_rel_lo(pgdc), ptr);
++#ifdef CONFIG_32BIT
++	if (cpu_has_mips32r2) {
++		uasm_i_ext(p, tmp, tmp, PGDIR_SHIFT, (32 - PGDIR_SHIFT));
++		uasm_i_ins(p, ptr, tmp, PGD_T_LOG2, (32 - PGDIR_SHIFT));
++		return;
++	}
++#endif
+ 	uasm_i_srl(p, tmp, tmp, PGDIR_SHIFT); /* get pgd only bits */
+ 	uasm_i_sll(p, tmp, tmp, PGD_T_LOG2);
+ 	uasm_i_addu(p, ptr, ptr, tmp); /* add in pgd offset */
+@@ -956,6 +963,16 @@ static void __cpuinit build_adjust_context(u32 **p, unsigned int ctx)
+ 
+ static void __cpuinit build_get_ptep(u32 **p, unsigned int tmp, unsigned int ptr)
+ {
++#ifdef CONFIG_32BIT
++	if (cpu_has_mips32r2) {
++		/* For MIPS32R2, PTE ptr offset is obtained from BadVAddr */
++		UASM_i_MFC0(p, tmp, C0_BADVADDR);
++		UASM_i_LW(p, ptr, 0, ptr);
++		uasm_i_ext(p, tmp, tmp, PAGE_SHIFT+1, PGDIR_SHIFT-PAGE_SHIFT-1);
++		uasm_i_ins(p, ptr, tmp, PTE_T_LOG2+1, PGDIR_SHIFT-PAGE_SHIFT-1);
++		return;
++	}
++#endif
+ 	/*
+ 	 * Bug workaround for the Nevada. It seems as if under certain
+ 	 * circumstances the move from cp0_context might produce a
+diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+index 5fa1851..d3d0218 100644
+--- a/arch/mips/mm/uasm.c
++++ b/arch/mips/mm/uasm.c
+@@ -10,6 +10,7 @@
   * Copyright (C) 2004, 2005, 2006, 2008  Thiemo Seufer
-  * Copyright (C) 2005, 2007, 2008, 2009  Maciej W. Rozycki
+  * Copyright (C) 2005, 2007  Maciej W. Rozycki
   * Copyright (C) 2006  Ralf Baechle (ralf@linux-mips.org)
-- * Copyright (C) 2008, 2009 Cavium Networks, Inc.
-+ * Copyright (C) 2008, 2009  Cavium Networks, Inc.
-+ * Copyright (C) 2011  MIPS Technologies, Inc.
-  *
-  * ... and the days got worse and worse and now you see
-  * I've gone completly out of my mind.
-@@ -494,6 +495,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
- 	case CPU_R14000:
- 	case CPU_4KC:
- 	case CPU_4KEC:
-+	case CPU_M14KC:
- 	case CPU_SB1:
- 	case CPU_SB1A:
- 	case CPU_4KSC:
-diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
-index d1f2d4c..b6e3782 100644
---- a/arch/mips/oprofile/common.c
-+++ b/arch/mips/oprofile/common.c
-@@ -78,6 +78,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
++ * Copyright (C) 2011, 2012  MIPS Technologies, Inc.
+  */
  
- 	switch (current_cpu_type()) {
- 	case CPU_5KC:
-+	case CPU_M14KC:
- 	case CPU_20KC:
- 	case CPU_24K:
- 	case CPU_25KF:
-diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-index 53bbe55..4c1e21b 100644
---- a/arch/mips/oprofile/op_model_mipsxx.c
-+++ b/arch/mips/oprofile/op_model_mipsxx.c
-@@ -317,6 +317,10 @@ static int __init mipsxx_init(void)
+ #include <linux/kernel.h>
+@@ -63,6 +64,7 @@ enum opcode {
+ 	insn_bne, insn_cache, insn_daddu, insn_daddiu, insn_dmfc0,
+ 	insn_dmtc0, insn_dsll, insn_dsll32, insn_dsra, insn_dsrl,
+ 	insn_dsrl32, insn_drotr, insn_drotr32, insn_dsubu, insn_eret,
++	insn_ins, insn_ext,
+ 	insn_j, insn_jal, insn_jr, insn_ld, insn_ll, insn_lld,
+ 	insn_lui, insn_lw, insn_mfc0, insn_mtc0, insn_or, insn_ori,
+ 	insn_pref, insn_rfe, insn_sc, insn_scd, insn_sd, insn_sll,
+@@ -113,6 +115,8 @@ static struct insn insn_table[] __uasminitdata = {
+ 	{ insn_drotr32, M(spec_op, 1, 0, 0, 0, dsrl32_op), RT | RD | RE },
+ 	{ insn_dsubu, M(spec_op, 0, 0, 0, 0, dsubu_op), RS | RT | RD },
+ 	{ insn_eret,  M(cop0_op, cop_op, 0, 0, 0, eret_op),  0 },
++	{ insn_ins, M(spec3_op, 0, 0, 0, 0, ins_op), RS | RT | RD | RE },
++	{ insn_ext, M(spec3_op, 0, 0, 0, 0, ext_op), RS | RT | RD | RE },
+ 	{ insn_j,  M(j_op, 0, 0, 0, 0, 0),  JIMM },
+ 	{ insn_jal,  M(jal_op, 0, 0, 0, 0, 0),  JIMM },
+ 	{ insn_jr,  M(spec_op, 0, 0, 0, 0, jr_op),  RS },
+@@ -343,6 +347,13 @@ Ip_u2u1msbu3(op)					\
+ }							\
+ UASM_EXPORT_SYMBOL(uasm_i##op);
  
- 	op_model_mipsxx_ops.num_counters = counters;
- 	switch (current_cpu_type()) {
-+	case CPU_M14KC:
-+		op_model_mipsxx_ops.cpu_type = "mips/M14Kc";
-+		break;
++#define I_u2u1mmsbu3(op)				\
++Ip_u2u1msbu3(op)					\
++{							\
++	build_insn(buf, insn##op, b, a, d-1, c);	\
++}							\
++UASM_EXPORT_SYMBOL(uasm_i##op);
 +
- 	case CPU_20KC:
- 		op_model_mipsxx_ops.cpu_type = "mips/20K";
- 		break;
+ #define I_u1u2(op)					\
+ Ip_u1u2(op)						\
+ {							\
+@@ -396,6 +407,8 @@ I_u2u1u3(_drotr)
+ I_u2u1u3(_drotr32)
+ I_u3u1u2(_dsubu)
+ I_0(_eret)
++I_u2u1msbu3(_ins)
++I_u2u1mmsbu3(_ext)
+ I_u1(_j)
+ I_u1(_jal)
+ I_u1(_jr)
 -- 
 1.7.10

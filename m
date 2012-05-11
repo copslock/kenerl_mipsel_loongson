@@ -1,56 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 21:34:29 +0200 (CEST)
-Received: from avon.wwwdotorg.org ([70.85.31.133]:57693 "EHLO
-        avon.wwwdotorg.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903563Ab2EKTeZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 21:34:25 +0200
-Received: from severn.wwwdotorg.org (unknown [192.168.65.5])
-        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by avon.wwwdotorg.org (Postfix) with ESMTPS id 243006412;
-        Fri, 11 May 2012 13:36:09 -0600 (MDT)
-Received: from [10.20.204.51] (searspoint.nvidia.com [216.228.112.21])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by severn.wwwdotorg.org (Postfix) with ESMTPSA id 773B6E461C;
-        Fri, 11 May 2012 13:34:21 -0600 (MDT)
-Message-ID: <4FAD69BC.20204@wwwdotorg.org>
-Date:   Fri, 11 May 2012 13:34:20 -0600
-From:   Stephen Warren <swarren@wwwdotorg.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20120430 Thunderbird/12.0.1
-MIME-Version: 1.0
-To:     John Crispin <blogic@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH V2 04/14] OF: pinctrl: MIPS: lantiq: implement lantiq/xway
- pinctrl support
-References: <1336652846-31871-1-git-send-email-blogic@openwrt.org> <1336652846-31871-2-git-send-email-blogic@openwrt.org>
-In-Reply-To: <1336652846-31871-2-git-send-email-blogic@openwrt.org>
-X-Enigmail-Version: 1.5pre
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.96.5 at avon.wwwdotorg.org
-X-Virus-Status: Clean
-X-archive-position: 33271
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 22:18:57 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:37070 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903563Ab2EKUSv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 22:18:51 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1SSwIV-0003W3-Ox; Fri, 11 May 2012 15:18:43 -0500
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>,
+        Leonid Yegoshin <yegoshin@mips.com>
+Subject: [PATCH v4] Revert fixrange_init() limiting to the FIXMAP region.
+Date:   Fri, 11 May 2012 15:18:38 -0500
+Message-Id: <1336767518-7934-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.10
+X-archive-position: 33272
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: swarren@wwwdotorg.org
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 05/10/2012 06:27 AM, John Crispin wrote:
-> Implement support for pinctrl on lantiq/xway socs. The IO core found on these
-> socs has the registers for pinctrl, pinconf and gpio mixed up in the same
-> register range. As the gpio_chip handling is only a few lines, the driver also
-> implements the gpio functionality. This obseletes the old gpio driver that was
-> located in the arch/ folder.
-> 
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> Cc: devicetree-discuss@lists.ozlabs.org
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Stephen Warren <swarren@wwwdotorg.org>
+From: "Steven J. Hill" <sjhill@mips.com>
 
-I think this is OK, so
-Acked-by: Stephen Warren <swarren@wwwdotorg.org>
+This patch refactors commit 464fd83e841a16f4ea1325b33eb08170ef5cd1f4
+(MIPS: Limit fixrange_init() to the FIXMAP region) and correctly
+calculates the right length while taking into account page table
+alignment by PMD.
+
+Signed-off-by: Leonid Yegoshin <yegoshin@mips.com>
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/mm/init.c       |    6 +++---
+ arch/mips/mm/pgtable-32.c |    8 ++++++--
+ arch/mips/mm/pgtable-64.c |    2 +-
+ 3 files changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 1a85ba9..75f2724 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -277,11 +277,11 @@ void __init fixrange_init(unsigned long start, unsigned long end,
+ 	k = __pmd_offset(vaddr);
+ 	pgd = pgd_base + i;
+ 
+-	for ( ; (i < PTRS_PER_PGD) && (vaddr < end); pgd++, i++) {
++	for ( ; (i < PTRS_PER_PGD) && (vaddr != end); pgd++, i++) {
+ 		pud = (pud_t *)pgd;
+-		for ( ; (j < PTRS_PER_PUD) && (vaddr < end); pud++, j++) {
++		for ( ; (j < PTRS_PER_PUD) && (vaddr != end); pud++, j++) {
+ 			pmd = (pmd_t *)pud;
+-			for (; (k < PTRS_PER_PMD) && (vaddr < end); pmd++, k++) {
++			for (; (k < PTRS_PER_PMD) && (vaddr != end); pmd++, k++) {
+ 				if (pmd_none(*pmd)) {
+ 					pte = (pte_t *) alloc_bootmem_low_pages(PAGE_SIZE);
+ 					set_pmd(pmd, __pmd((unsigned long)pte));
+diff --git a/arch/mips/mm/pgtable-32.c b/arch/mips/mm/pgtable-32.c
+index adc6911..5d27baf 100644
+--- a/arch/mips/mm/pgtable-32.c
++++ b/arch/mips/mm/pgtable-32.c
+@@ -33,6 +33,7 @@ void pgd_init(unsigned long page)
+ void __init pagetable_init(void)
+ {
+ 	unsigned long vaddr;
++	unsigned long vend;
+ 	pgd_t *pgd_base;
+ #ifdef CONFIG_HIGHMEM
+ 	pgd_t *pgd;
+@@ -51,8 +52,11 @@ void __init pagetable_init(void)
+ 	/*
+ 	 * Fixed mappings:
+ 	 */
+-	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
+-	fixrange_init(vaddr, vaddr + FIXADDR_SIZE, pgd_base);
++	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1);
++	/* Calculate real end before alignment. */
++	vend = vaddr + FIXADDR_SIZE;
++	vaddr = vaddr & PMD_MASK;
++	fixrange_init(vaddr, vend, pgd_base);
+ 
+ #ifdef CONFIG_HIGHMEM
+ 	/*
+diff --git a/arch/mips/mm/pgtable-64.c b/arch/mips/mm/pgtable-64.c
+index cda4e30..78eaa4f 100644
+--- a/arch/mips/mm/pgtable-64.c
++++ b/arch/mips/mm/pgtable-64.c
+@@ -76,5 +76,5 @@ void __init pagetable_init(void)
+ 	 * Fixed mappings:
+ 	 */
+ 	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
+-	fixrange_init(vaddr, vaddr + FIXADDR_SIZE, pgd_base);
++	fixrange_init(vaddr, 0, pgd_base);
+ }
+-- 
+1.7.10

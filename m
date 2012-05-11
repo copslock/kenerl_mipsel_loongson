@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 05:53:23 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:33850 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 05:54:38 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:33857 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903543Ab2EKDxO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 05:53:14 +0200
+        with ESMTP id S1903543Ab2EKDyb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 05:54:31 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SSguh-0001e8-Mg; Thu, 10 May 2012 22:53:07 -0500
+        id 1SSgvx-0001eM-Ee; Thu, 10 May 2012 22:54:25 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH] MIPS: Add support for the M14Kc core.
-Date:   Thu, 10 May 2012 22:53:02 -0500
-Message-Id: <1336708382-28855-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH 03/10] MIPS: Add support for the M14Kc core.
+Date:   Thu, 10 May 2012 22:54:20 -0500
+Message-Id: <1336708460-28904-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10
-X-archive-position: 33238
+X-archive-position: 33239
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

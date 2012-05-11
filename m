@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 22:19:44 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:37074 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 22:21:47 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:37082 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903563Ab2EKUTi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 22:19:38 +0200
+        with ESMTP id S1903563Ab2EKUVl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 22:21:41 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SSwJI-0003WH-JZ; Fri, 11 May 2012 15:19:32 -0500
+        id 1SSwLH-0003Wb-2V; Fri, 11 May 2012 15:21:35 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     "Steven J. Hill" <sjhill@mips.com>,
-        Leonid Yegoshin <yegoshin@mips.com>
-Subject: [PATCH v3] Add support for MIPS64R2 on the Malta platform:
-Date:   Fri, 11 May 2012 15:19:27 -0500
-Message-Id: <1336767567-8010-1-git-send-email-sjhill@mips.com>
+Cc:     "Steven J. Hill" <sjhill@mips.com>
+Subject: [PATCH v2,08/10] MIPS: MIPS32R2 optimisations for pipeline stalls and code size.
+Date:   Fri, 11 May 2012 15:21:30 -0500
+Message-Id: <1336767690-8108-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10
-X-archive-position: 33273
+X-archive-position: 33274
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,97 +25,159 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-   * Enable MIPS64R2 support on the Malta platform.
-   * Enable 32-bit binary support by default when MIPS64R2 is used.
-   * Add support of MIPS64R2 test chip 5KEc.
+If the CPU type is selected as MIPS32R2, then we can surround
+some code with #ifdef's to reduce the binary size. Detect when
+to use 'ehb' instruction to avoid pipeline stalls. Utilise the
+'ins' and 'ext' MIPS32R2 instructions to reduce the size of
+exception handlers.
 
-Signed-off-by: Leonid Yegoshin <yegoshin@mips.com>
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/Kconfig            |    7 +++++++
- arch/mips/include/asm/cpu.h  |    2 +-
- arch/mips/kernel/cpu-probe.c |    4 ++++
- arch/mips/kernel/traps.c     |    1 +
- 4 files changed, 13 insertions(+), 1 deletion(-)
+ arch/mips/mm/tlbex.c |   48 +++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 43 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index d0570f4..862a9c3 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -282,6 +282,7 @@ config MIPS_MALTA
- 	select SYS_HAS_CPU_MIPS32_R1
- 	select SYS_HAS_CPU_MIPS32_R2
- 	select SYS_HAS_CPU_MIPS64_R1
-+	select SYS_HAS_CPU_MIPS64_R2
- 	select SYS_HAS_CPU_NEVADA
- 	select SYS_HAS_CPU_RM7000
- 	select SYS_HAS_EARLY_PRINTK
-@@ -2488,6 +2489,7 @@ config TRAD_SIGNALS
- config MIPS32_COMPAT
- 	bool "Kernel support for Linux/MIPS 32-bit binary compatibility"
- 	depends on 64BIT
-+	default y if CPU_SUPPORTS_32BIT_KERNEL && SYS_SUPPORTS_32BIT_KERNEL
- 	help
- 	  Select this option if you want Linux/MIPS 32-bit binary
- 	  compatibility. Since all software available for Linux/MIPS is
-@@ -2507,6 +2509,7 @@ config SYSVIPC_COMPAT
- config MIPS32_O32
- 	bool "Kernel support for o32 binaries"
- 	depends on MIPS32_COMPAT
-+	default y if CPU_SUPPORTS_32BIT_KERNEL && SYS_SUPPORTS_32BIT_KERNEL
- 	help
- 	  Select this option if you want to run o32 binaries.  These are pure
- 	  32-bit binaries as used by the 32-bit Linux/MIPS port.  Most of
-@@ -2525,6 +2528,10 @@ config MIPS32_N32
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 897b727..7b84001 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -74,10 +74,12 @@ static inline int __maybe_unused bcm1250_m3_war(void)
+ 	return BCM1250_M3_WAR;
+ }
  
- 	  If unsure, say N.
++#ifndef CONFIG_CPU_MIPS32_R2
+ static inline int __maybe_unused r10000_llsc_war(void)
+ {
+ 	return R10000_LLSC_WAR;
+ }
++#endif
  
-+comment "64bit kernel, but support of 32bit applications is disabled!"
-+	depends on 64BIT && !MIPS32_O32 && !MIPS32_N32
-+	depends on CPU_SUPPORTS_32BIT_KERNEL && SYS_SUPPORTS_32BIT_KERNEL
+ static int use_bbit_insns(void)
+ {
+@@ -340,6 +342,7 @@ static void __cpuinit build_restore_work_registers(u32 **p)
+  */
+ extern unsigned long pgd_current[];
+ 
++# ifndef CONFIG_CPU_MIPS32_R2
+ /*
+  * The R3000 TLB handler is simple.
+  */
+@@ -379,6 +382,7 @@ static void __cpuinit build_r3000_tlb_refill_handler(void)
+ 
+ 	dump_handler((u32 *)ebase, 32);
+ }
++# endif /* !CONFIG_CPU_MIPS32_R2 */
+ #endif /* CONFIG_MIPS_PGD_C0_CONTEXT */
+ 
+ /*
+@@ -449,8 +453,22 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
+ 	}
+ 
+ 	if (cpu_has_mips_r2) {
+-		if (cpu_has_mips_r2_exec_hazard)
+-			uasm_i_ehb(p);
++		/*
++		 * The architecture spec says an ehb is required here,
++		 * but a number of cores do not have the hazard and
++		 * using an ehb causes an expensive pipeline stall.
++		 */
++		if (cpu_has_mips_r2_exec_hazard) {
++			switch (current_cpu_type()) {
++			case CPU_M14KC:
++			case CPU_74K:
++				break;
 +
- config BINFMT_ELF32
- 	bool
- 	default y if MIPS32_O32 || MIPS32_N32
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 0a619f8..559bd12 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -268,7 +268,7 @@ enum cpu_type_enum {
++			default:
++				uasm_i_ehb(p);
++				break;
++			}
++		}
+ 		tlbw(p);
+ 		return;
+ 	}
+@@ -910,7 +928,7 @@ build_get_pgde32(u32 **p, unsigned int tmp, unsigned int ptr)
+ #else
  	/*
- 	 * MIPS64 class processors
- 	 */
--	CPU_5KC, CPU_20KC, CPU_25KF, CPU_SB1, CPU_SB1A, CPU_LOONGSON2,
-+	CPU_5KC, CPU_5KE, CPU_20KC, CPU_25KF, CPU_SB1, CPU_SB1A, CPU_LOONGSON2,
- 	CPU_CAVIUM_OCTEON, CPU_CAVIUM_OCTEON_PLUS, CPU_CAVIUM_OCTEON2,
- 	CPU_XLR, CPU_XLP,
+ 	 * smp_processor_id() << 3 is stored in CONTEXT.
+-         */
++	 */
+ 	uasm_i_mfc0(p, ptr, C0_CONTEXT);
+ 	UASM_i_LA_mostly(p, tmp, pgdc);
+ 	uasm_i_srl(p, ptr, ptr, 23);
+@@ -921,6 +939,13 @@ build_get_pgde32(u32 **p, unsigned int tmp, unsigned int ptr)
+ #endif
+ 	uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
+ 	uasm_i_lw(p, ptr, uasm_rel_lo(pgdc), ptr);
++
++	if (cpu_has_mips32r2) {
++		uasm_i_ext(p, tmp, tmp, PGDIR_SHIFT, (32 - PGDIR_SHIFT));
++		uasm_i_ins(p, ptr, tmp, PGD_T_LOG2, (32 - PGDIR_SHIFT));
++		return;
++	}
++
+ 	uasm_i_srl(p, tmp, tmp, PGDIR_SHIFT); /* get pgd only bits */
+ 	uasm_i_sll(p, tmp, tmp, PGD_T_LOG2);
+ 	uasm_i_addu(p, ptr, ptr, tmp); /* add in pgd offset */
+@@ -956,6 +981,15 @@ static void __cpuinit build_adjust_context(u32 **p, unsigned int ctx)
  
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index e5f0b27..fe76d60 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -817,6 +817,10 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
- 		c->cputype = CPU_5KC;
- 		__cpu_name[cpu] = "MIPS 5Kc";
- 		break;
-+	case PRID_IMP_5KE:
-+		c->cputype = CPU_5KE;
-+		__cpu_name[cpu] = "MIPS 5KE";
-+		break;
- 	case PRID_IMP_20KC:
- 		c->cputype = CPU_20KC;
- 		__cpu_name[cpu] = "MIPS 20Kc";
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 7bec6f8..a69edbe 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1349,6 +1349,7 @@ static inline void parity_protection_init(void)
+ static void __cpuinit build_get_ptep(u32 **p, unsigned int tmp, unsigned int ptr)
+ {
++	if (cpu_has_mips32r2) {
++		/* For MIPS32R2, PTE ptr offset is obtained from BadVAddr */
++		UASM_i_MFC0(p, tmp, C0_BADVADDR);
++		UASM_i_LW(p, ptr, 0, ptr);
++		uasm_i_ext(p, tmp, tmp, PAGE_SHIFT+1, PGDIR_SHIFT-PAGE_SHIFT-1);
++		uasm_i_ins(p, ptr, tmp, PTE_T_LOG2+1, PGDIR_SHIFT-PAGE_SHIFT-1);
++		return;
++	}
++
+ 	/*
+ 	 * Bug workaround for the Nevada. It seems as if under certain
+ 	 * circumstances the move from cp0_context might produce a
+@@ -1496,9 +1530,11 @@ iPTE_SW(u32 **p, struct uasm_reloc **r, unsigned int pte, unsigned int ptr,
+ # endif
+ 		UASM_i_SC(p, pte, 0, ptr);
+ 
++#ifndef CONFIG_CPU_MIPS32_R2
+ 	if (r10000_llsc_war())
+ 		uasm_il_beqzl(p, r, pte, label_smp_pgtable_change);
+ 	else
++#endif
+ 		uasm_il_beqz(p, r, pte, label_smp_pgtable_change);
+ 
+ # ifdef CONFIG_64BIT_PHYS_ADDR
+@@ -1632,7 +1668,7 @@ build_pte_modifiable(u32 **p, struct uasm_reloc **r,
+ 	}
+ }
+ 
+-#ifndef CONFIG_MIPS_PGD_C0_CONTEXT
++#if !defined(CONFIG_MIPS_PGD_C0_CONTEXT) && !defined(CONFIG_CPU_MIPS32_R2)
+ 
+ 
+ /*
+@@ -1786,7 +1822,7 @@ static void __cpuinit build_r3000_tlb_modify_handler(void)
+ 
+ 	dump_handler(handle_tlbm, ARRAY_SIZE(handle_tlbm));
+ }
+-#endif /* CONFIG_MIPS_PGD_C0_CONTEXT */
++#endif /* !CONFIG_MIPS_PGD_C0_CONTEXT && !CONFIG_CPU_MIPS32_R2 */
+ 
+ /*
+  * R4000 style TLB load/store/modify handlers.
+@@ -2103,6 +2139,7 @@ void __cpuinit build_tlb_refill_handler(void)
+ #endif
+ 
+ 	switch (current_cpu_type()) {
++#ifndef CONFIG_CPU_MIPS32_R2
+ 	case CPU_R2000:
+ 	case CPU_R3000:
+ 	case CPU_R3000A:
+@@ -2132,6 +2169,7 @@ void __cpuinit build_tlb_refill_handler(void)
+ 		panic("No R8000 TLB refill handler yet");
  		break;
  
- 	case CPU_5KC:
-+	case CPU_5KE:
- 		write_c0_ecc(0x80000000);
- 		back_to_back_c0_hazard();
- 		/* Set the PE bit (bit 31) in the c0_errctl register. */
++#endif /* !CONFIG_CPU_MIPS32_R2 */
+ 	default:
+ 		if (!run_once) {
+ 			scratch_reg = allocate_kscratch();
 -- 
 1.7.10

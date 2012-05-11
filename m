@@ -1,91 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 16:13:44 +0200 (CEST)
-Received: from mga03.intel.com ([143.182.124.21]:28505 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903558Ab2EKONk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 11 May 2012 16:13:40 +0200
-Received: from azsmga001.ch.intel.com ([10.2.17.19])
-  by azsmga101.ch.intel.com with ESMTP; 11 May 2012 07:13:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.71,315,1320652800"; 
-   d="asc'?scan'208";a="141889235"
-Received: from linux.jf.intel.com (HELO linux.intel.com) ([10.23.219.25])
-  by azsmga001.ch.intel.com with ESMTP; 11 May 2012 07:13:33 -0700
-Received: from [10.237.72.159] (sauron.fi.intel.com [10.237.72.159])
-        by linux.intel.com (Postfix) with ESMTP id 074396A4007;
-        Fri, 11 May 2012 07:13:31 -0700 (PDT)
-Message-ID: <1336745818.2625.83.camel@sauron.fi.intel.com>
-Subject: Re: [PATCH 12/14] MTD: MIPS: lantiq: implement OF support
-From:   Artem Bityutskiy <dedekind1@gmail.com>
-Reply-To: dedekind1@gmail.com
-To:     John Crispin <blogic@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-mtd@lists.infradead.org
-Date:   Fri, 11 May 2012 17:16:58 +0300
-In-Reply-To: <4FAD1C6D.5080701@openwrt.org>
-References: <1336133919-26525-1-git-send-email-blogic@openwrt.org>
-                 <1336133919-26525-12-git-send-email-blogic@openwrt.org>
-         <1336745193.2625.81.camel@sauron.fi.intel.com>
-         <4FAD1C6D.5080701@openwrt.org>
-Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature";
-        boundary="=-zXnWHEqmyreC7CpAjN4H"
-X-Mailer: Evolution 3.2.3 (3.2.3-3.fc16) 
-Mime-Version: 1.0
-X-archive-position: 33260
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 18:54:14 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:36417 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903561Ab2EKQyH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 18:54:07 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1SSt6O-0003DT-8Q; Fri, 11 May 2012 11:54:00 -0500
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>,
+        Leonid Yegoshin <yegoshin@mips.com>
+Subject: [PATCH v3] Revert fixrange_init() limiting to the FIXMAP region.
+Date:   Fri, 11 May 2012 11:53:51 -0500
+Message-Id: <1336755231-5678-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.10
+X-archive-position: 33261
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dedekind1@gmail.com
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+From: "Steven J. Hill" <sjhill@mips.com>
 
---=-zXnWHEqmyreC7CpAjN4H
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This patch refactors 464fd83e841a16f4ea1325b33eb08170ef5cd1f4 and
+correctly calculates the right length while taking into account
+page table alignment by PMD.
 
-On Fri, 2012-05-11 at 16:04 +0200, John Crispin wrote:
-> The lantiq platform selects USE_OF
->=20
-> config USE_OF
->         bool "Flattened Device Tree support"
->         select OF
->         select OF_EARLY_FLATTREE
->         select IRQ_DOMAIN
->         help
->           Include support for flattened device tree machine descriptions.
+Signed-off-by: Leonid Yegoshin <yegoshin@mips.com>
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/mm/init.c       |    6 +++---
+ arch/mips/mm/pgtable-32.c |    8 ++++++--
+ arch/mips/mm/pgtable-64.c |    2 +-
+ 3 files changed, 10 insertions(+), 6 deletions(-)
 
-OK.
-
-> Do i still need an explicit dependency on OF in this case ?
-
-Not sure, but probably not.
-
---=20
-Best Regards,
-Artem Bityutskiy
-
---=-zXnWHEqmyreC7CpAjN4H
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAABAgAGBQJPrR9aAAoJECmIfjd9wqK0JtAQAMVj4D8Ychz3AVWasMykpFe5
-YWGFxRMT6Sp0QF5ABDnsvf9fG0waXC8kF+HxO9hsM+bp/1kom0FO5QN5ZZ8oxZS1
-Ik8v81GlKiWqQdWXKCODIlfRVwtL0jqs0g2QTCyEXympSnDJM2SAGZjhDbbq4GkM
-36ZxInqFIvmmN8mUtvRvbKv39AHkxljk0+LJriVAPDR1xUnSD0lmbajVqMoKqApm
-gPsmAFc0oWj2b5dwu5VmCpj0VMl2MPGY47ygy9j/xFE4+NTYutnQiauuZ2N+9f3Q
-BiRb3su1dFl/uro8r3glXcNku9Rf5NuzLMrUvkvjEJf1uXTOjmvBdH94jDXlVTpC
-rEKN12HWfPx6/nNEobvWQaaPdTRzzn/8e+TgFq2zNIkqmw7JN9oZa7XFcCXv4Rbx
-3jJa3H6ucWIPuaD4VTzk0oW0FUAQtO4cnHA06KCqVcPvzcpsPxTyZCrmZptKCm8x
-zfwE1iR2OoEZloKBBGiaa9k27RIUsoKnR4cOazyhB/7KotcI0LN616W+9t+Hp+qz
-b8+bPMZu1jAdYAFq24AGEUxrm/F+v81zzRlYW2hEfUVN3bfG58OrswEES9F3cumi
-QEQ5JyRnMhy9J2t+7AXCybQ7Lpd04BG9zHRhjN1xWjOzEBIXC6cJm5UoVb8Ts3Jc
-mnYupoRZ4QgVcQouzoWK
-=VoI7
------END PGP SIGNATURE-----
-
---=-zXnWHEqmyreC7CpAjN4H--
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 1a85ba9..75f2724 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -277,11 +277,11 @@ void __init fixrange_init(unsigned long start, unsigned long end,
+ 	k = __pmd_offset(vaddr);
+ 	pgd = pgd_base + i;
+ 
+-	for ( ; (i < PTRS_PER_PGD) && (vaddr < end); pgd++, i++) {
++	for ( ; (i < PTRS_PER_PGD) && (vaddr != end); pgd++, i++) {
+ 		pud = (pud_t *)pgd;
+-		for ( ; (j < PTRS_PER_PUD) && (vaddr < end); pud++, j++) {
++		for ( ; (j < PTRS_PER_PUD) && (vaddr != end); pud++, j++) {
+ 			pmd = (pmd_t *)pud;
+-			for (; (k < PTRS_PER_PMD) && (vaddr < end); pmd++, k++) {
++			for (; (k < PTRS_PER_PMD) && (vaddr != end); pmd++, k++) {
+ 				if (pmd_none(*pmd)) {
+ 					pte = (pte_t *) alloc_bootmem_low_pages(PAGE_SIZE);
+ 					set_pmd(pmd, __pmd((unsigned long)pte));
+diff --git a/arch/mips/mm/pgtable-32.c b/arch/mips/mm/pgtable-32.c
+index adc6911..5d27baf 100644
+--- a/arch/mips/mm/pgtable-32.c
++++ b/arch/mips/mm/pgtable-32.c
+@@ -33,6 +33,7 @@ void pgd_init(unsigned long page)
+ void __init pagetable_init(void)
+ {
+ 	unsigned long vaddr;
++	unsigned long vend;
+ 	pgd_t *pgd_base;
+ #ifdef CONFIG_HIGHMEM
+ 	pgd_t *pgd;
+@@ -51,8 +52,11 @@ void __init pagetable_init(void)
+ 	/*
+ 	 * Fixed mappings:
+ 	 */
+-	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
+-	fixrange_init(vaddr, vaddr + FIXADDR_SIZE, pgd_base);
++	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1);
++	/* Calculate real end before alignment. */
++	vend = vaddr + FIXADDR_SIZE;
++	vaddr = vaddr & PMD_MASK;
++	fixrange_init(vaddr, vend, pgd_base);
+ 
+ #ifdef CONFIG_HIGHMEM
+ 	/*
+diff --git a/arch/mips/mm/pgtable-64.c b/arch/mips/mm/pgtable-64.c
+index cda4e30..78eaa4f 100644
+--- a/arch/mips/mm/pgtable-64.c
++++ b/arch/mips/mm/pgtable-64.c
+@@ -76,5 +76,5 @@ void __init pagetable_init(void)
+ 	 * Fixed mappings:
+ 	 */
+ 	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
+-	fixrange_init(vaddr, vaddr + FIXADDR_SIZE, pgd_base);
++	fixrange_init(vaddr, 0, pgd_base);
+ }
+-- 
+1.7.10

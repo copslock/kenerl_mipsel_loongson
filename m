@@ -1,52 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 20:23:22 +0200 (CEST)
-Received: from dns0.mips.com ([12.201.5.70]:52773 "EHLO dns0.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903659Ab2EKSXQ convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 20:23:16 +0200
-Received: from exchdb01.mips.com (exchhub01.mips.com [192.168.36.84])
-        by dns0.mips.com (8.13.8/8.13.8) with ESMTP id q4BINAWE018255;
-        Fri, 11 May 2012 11:23:10 -0700
-Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
- exchhub01.mips.com ([::1]) with mapi id 14.01.0270.001; Fri, 11 May 2012
- 11:23:08 -0700
-From:   "Hill, Steven" <sjhill@mips.com>
-To:     Sergei Shtylyov <sshtylyov@mvista.com>,
-        "Yegoshin, Leonid" <yegoshin@mips.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: RE: [PATCH v2] Add MIPS64R2 core support.
-Thread-Topic: [PATCH v2] Add MIPS64R2 core support.
-Thread-Index: AQHNLz96rGOEHILJFUOIh5XX5Dob7ZbFTREAgAABxICAAAGBAIAAAhsAgAAFtID//4yRoA==
-Date:   Fri, 11 May 2012 18:23:07 +0000
-Message-ID: <31E06A9FC96CEC488B43B19E2957C1B80114693470@exchdb03.mips.com>
-References: <1336717784-853-1-git-send-email-sjhill@mips.com>,<4FAD4B9E.70803@mvista.com>
- <ajcsenx2bmwqyi5629d3ywgh.1336757525517@email.android.com>,<4FAD4E5C.9040607@mvista.com>
- <j9ltxtmuep0qhf4mgqhj4du5.1336758301121@email.android.com>,<4FAD54E9.6030102@mvista.com>
-In-Reply-To: <4FAD54E9.6030102@mvista.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.36.79]
-x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-x-ems-stamp: MH7N7RUJ/kEgx0ZVbu5vTg==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 20:37:23 +0200 (CEST)
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:45323 "EHLO
+        mail-lpp01m010-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903659Ab2EKShT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 20:37:19 +0200
+Received: by laap9 with SMTP id p9so2631423laa.36
+        for <linux-mips@linux-mips.org>; Fri, 11 May 2012 11:37:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding
+         :x-gm-message-state;
+        bh=vSmak8Nea6B7mNsl0HqmWJv//XwTXx4JqLdG3XzWG1k=;
+        b=mTZF7p8xalbJ+iISHtJDDooxjidxrA5maVaHRCssd4kLIEi8LapQ9Qy2Oxp8bX6lMC
+         x9opKLCKIjGdX0OaIoJY5AWZJ5y8Ro4tRohEZyM2H75tk6dEBmBDFKKwKLT+Cl1RoMg7
+         W2lrtoMYCh6Jf0NIPiamaAA1H6UjZ8nd8tmqASZiQg/8Wcv4yWkwnMO/7kcnvp25jIYG
+         tr8Qm44HG0lhnBJ0ShBLCTbpBe+ntJexus7xlxLCIjUvwGVHGOxz9dyNhy/4liLqh3jM
+         hitsqfehvgwIrw2CCTMk76FboI9EdMsFd0ENyCbzc5+jiuuwyWs7Uav2mhpxFGwCHDqv
+         DeLQ==
+Received: by 10.112.30.102 with SMTP id r6mr4149511lbh.0.1336761433413;
+        Fri, 11 May 2012 11:37:13 -0700 (PDT)
+Received: from [192.168.11.174] (mail.dev.rtsoft.ru. [213.79.90.226])
+        by mx.google.com with ESMTPS id k3sm12710030lbz.4.2012.05.11.11.37.10
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 11 May 2012 11:37:11 -0700 (PDT)
+Message-ID: <4FAD5C10.7050604@mvista.com>
+Date:   Fri, 11 May 2012 22:36:00 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
 MIME-Version: 1.0
-X-archive-position: 33269
+To:     "Hill, Steven" <sjhill@mips.com>
+CC:     "Yegoshin, Leonid" <yegoshin@mips.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2] Add MIPS64R2 core support.
+References: <1336717784-853-1-git-send-email-sjhill@mips.com>,<4FAD4B9E.70803@mvista.com> <ajcsenx2bmwqyi5629d3ywgh.1336757525517@email.android.com>,<4FAD4E5C.9040607@mvista.com> <j9ltxtmuep0qhf4mgqhj4du5.1336758301121@email.android.com>,<4FAD54E9.6030102@mvista.com> <31E06A9FC96CEC488B43B19E2957C1B80114693470@exchdb03.mips.com>
+In-Reply-To: <31E06A9FC96CEC488B43B19E2957C1B80114693470@exchdb03.mips.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Gm-Message-State: ALoCoQmUF9EgkmYYs+FXFxesEGW0j3sVujKB12x/jEoL8n6zn++nQ+e0CJmwyT8FtNewfKnUGziI
+X-archive-position: 33270
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@mips.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Sergei,
+Hello.
 
-Stop copying Ralf. Copying the mailing list is sufficient.
+On 05/11/2012 10:23 PM, Hill, Steven wrote:
 
-Leonid,
+> Sergei,
 
-Could you please write a couple of sentences describing the 6 lines that you added in 'arch/mips/Kconfig' ? We can then add that with the sentence "Add support for MIPS64R2 on the Malta platform." That will be sufficient and prevents having to split this patch up. Just email it to me internally and I will repost the patch.
+> Stop copying Ralf. Copying the mailing list is sufficient.
 
--Steve
+    I just replied to all, as usual.
+
+> Leonid,
+
+> Could you please write a couple of sentences describing the 6 lines that you added in 'arch/mips/Kconfig' ? We can then add that with the sentence "Add support for MIPS64R2 on the Malta platform." That will be sufficient and prevents having to split this patch up. Just email it to me internally and I will repost the patch.
+
+    Yeah, that would be a good start. Although I'd still insist on splitting it up.
+
+> -Steve
+
+WBR, Sergei

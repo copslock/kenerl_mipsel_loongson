@@ -1,92 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 14:28:33 +0200 (CEST)
-Received: from sam.nabble.com ([216.139.236.26]:51684 "EHLO sam.nabble.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2012 16:03:24 +0200 (CEST)
+Received: from mga03.intel.com ([143.182.124.21]:33898 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903559Ab2EKM21 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2012 14:28:27 +0200
-Received: from telerig.nabble.com ([192.168.236.162])
-        by sam.nabble.com with esmtp (Exim 4.72)
-        (envelope-from <lists@nabble.com>)
-        id 1SSoxN-0005EI-JP
-        for linux-mips@linux-mips.org; Fri, 11 May 2012 05:28:25 -0700
-Message-ID: <33777466.post@talk.nabble.com>
-Date:   Fri, 11 May 2012 05:28:25 -0700 (PDT)
-From:   JoeJ <tttechmail@gmail.com>
-To:     linux-mips@linux-mips.org
-Subject: Re: SMP MIPS and Linux 3.2
-In-Reply-To: <4F42FD60.4090201@windriver.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Nabble-From: tttechmail@gmail.com
-References: <4BEA3FF3CAA35E408EA55C7BE2E61D055C769FECBC@xmail3.se.axis.com> <4F42FD60.4090201@windriver.com>
-X-archive-position: 33257
+        id S1903558Ab2EKODR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 11 May 2012 16:03:17 +0200
+Received: from azsmga001.ch.intel.com ([10.2.17.19])
+  by azsmga101.ch.intel.com with ESMTP; 11 May 2012 07:03:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.71,315,1320652800"; 
+   d="asc'?scan'208";a="141886285"
+Received: from linux.jf.intel.com (HELO linux.intel.com) ([10.23.219.25])
+  by azsmga001.ch.intel.com with ESMTP; 11 May 2012 07:03:07 -0700
+Received: from [10.237.72.159] (sauron.fi.intel.com [10.237.72.159])
+        by linux.intel.com (Postfix) with ESMTP id DDFE36A4007;
+        Fri, 11 May 2012 07:03:06 -0700 (PDT)
+Message-ID: <1336745193.2625.81.camel@sauron.fi.intel.com>
+Subject: Re: [PATCH 12/14] MTD: MIPS: lantiq: implement OF support
+From:   Artem Bityutskiy <dedekind1@gmail.com>
+Reply-To: dedekind1@gmail.com
+To:     John Crispin <blogic@openwrt.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-mtd@lists.infradead.org
+Date:   Fri, 11 May 2012 17:06:33 +0300
+In-Reply-To: <1336133919-26525-12-git-send-email-blogic@openwrt.org>
+References: <1336133919-26525-1-git-send-email-blogic@openwrt.org>
+         <1336133919-26525-12-git-send-email-blogic@openwrt.org>
+Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature";
+        boundary="=-Br6LUzRPYqcySERHclUK"
+X-Mailer: Evolution 3.2.3 (3.2.3-3.fc16) 
+Mime-Version: 1.0
+X-archive-position: 33258
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tttechmail@gmail.com
+X-original-sender: dedekind1@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
 
-Mikael,
+--=-Br6LUzRPYqcySERHclUK
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
- Just wanted to know if you could bring-up 3.2 on mips34k core with SMVP
-support enabled? Do you see any boot-up issues or memory related issues
-here? I am trying to bring-up SMVP on 34k using 2.6.35 kernel and current
-hit on issues during system boot-up (application load). Could you provide me
-the following details w.r.t kernel configuration if possible. 
-1. Is CONFIG_PREEMPT enabled ?
-2. What is page size configured?
-3. Do you have timer interrupts to both vpe0 & vpe1?
-4. Is the kernel downloaded from kernel.org or mips repository. 
-5. If you can share the kernel configuration file you are using, it will be
-helpful. 
+On Fri, 2012-05-04 at 14:18 +0200, John Crispin wrote:
+> Adds bindings for OF and make use of module_platform_driver for lantiq
+> based socs.
+>=20
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+> Cc: linux-mtd@lists.infradead.org
+> ---
+> This patch is part of a series moving the mips/lantiq target to OF and cl=
+kdev
+> support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
 
-Also, any other bugs that you encountered during SMVP bring-up using 3.2
-kernel?
+Looks ok, but could you please send me the entire series anyway, may be
+privately. I want to feed it to aiaiai and check before acking this
+patch. Also, please, make sure you add dependency on OF in Kconfig.
 
-Regards,
-Joe. 
+--=20
+Best Regards,
+Artem Bityutskiy
 
+--=-Br6LUzRPYqcySERHclUK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
 
+iQIcBAABAgAGBQJPrRzpAAoJECmIfjd9wqK0unIP/jY4ohepbSULOEHDADQaGi7Q
+2nypFAYH75c6qsugGGUo7sdWWdmwDuced3N4HvzdX6EjCRcfFaQZMhOR27NYLrxA
+S+Tm3JHVgXBwuIuvsaLiKEiULQqTXBMyjSEdXJf2/fH/SRtv7xtkJzCkUYljk7Aq
+mnvpClwQQG7tsk0rsHRbqNevfgPHj7puA3ppImGSg/IR0TBT/qm+t17h85K78HBY
+/7Zj8HdljeuiBj2e/6YtHSYZu1ba7Bhx60P5IowWyuWBNwPAgXYDbjbZrn2kRw5I
+kDVZTcBF4zLZtim//XE13pPIskVywlsw4ahijEu29bz+zQIF3ReNZzukv3gj4W0Q
+N3+Tdyr8+S7HEe9KmgGmgF2GTPNjHB5BJkqlsA87orH1H9p+OMAVCEgIwxJxORU+
+M3DbQMuEqbsIqi4ffkwZgaE4cCxfpPDMjQjeAVznOu38CXybs3BTiDaj0h+QNHRH
+AKJ6ZwN+fqU+4JtKtrR2w2SEhPe/oUBd1DB0uUHloumPoSv2UCZrR8FgNlNxAuA6
+y7D2nnt47wER3oL8uY5VSL4Kk/J5jD0JDWyGJeqURX6o3ZeyAzHRsmvebR4142wS
+t905w+8y4unGprQCbQJa1dhMALbhVjB0555Ume95RPvHdLislCVrezKB69Fjd1Kq
+XrCDFsD+V+9oEirRioym
+=TFFa
+-----END PGP SIGNATURE-----
 
-Tiejun Chen-2 wrote:
-> 
-> Mikael Starvik wrote:
->> I'm running Linux 3.2 on a MIPS 34K with two VPEs (in MT_SMP
->> configuration). It works fine in UP but with SMP it deadlocks during
->> bootup (both CPUs gets idle). Typically like this:
->> 
->> [��� 0.090000] CPU revision is: 01019550 (MIPS 34Kc)
->> [��� 0.090000] Primary instruction cache 32kB, VIPT, 4-way, linesize 32
->> bytes.
->> [��� 0.090000] Primary data cache 32kB, 4-way, PIPT, no aliases, linesize
->> 32 bytes
->> [��� 0.170000] Brought up 2 CPUs
->> <No more output>
->> 
->> I have tried to enable __ARCH_WANT_INTERRUPTS_ON_CTXSW but that didn't
->> improve anything. Anyone else got this running or have any thoughts about
->> what the problem may be?
->> 
-> 
-> I think using git-bisect is the simplest way to figure out this if you
-> already
-> know one kernel version is fine for mips 34kc.
-> 
-> Or did you try to pass 'nosmp' into the kernel command line? If good maybe
-> you're hitting some locking issues. You can enable those Kconfig options
-> to
-> probe-to-debug these locking problem.
-> 
-> Tiejun
-> 
-> 
-> 
-> 
-
--- 
-View this message in context: http://old.nabble.com/SMP-MIPS-and-Linux-3.2-tp33355620p33777466.html
-Sent from the linux-mips main mailing list archive at Nabble.com.
+--=-Br6LUzRPYqcySERHclUK--

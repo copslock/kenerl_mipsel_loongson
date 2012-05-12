@@ -1,174 +1,286 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 May 2012 00:06:43 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:45752 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 May 2012 02:47:52 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:51777 "EHLO
         mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903700Ab2EKWFk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 12 May 2012 00:05:40 +0200
-Received: by dadm1 with SMTP id m1so4139956dad.36
-        for <linux-mips@linux-mips.org>; Fri, 11 May 2012 15:05:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=ZbeyLsoJIcUwYH3OqnDkbGcu/+yeZ6NrP3Zp9SRI19M=;
-        b=UxygDlXBFFeslrEFyHaxJ7uNG2WaVONSqTi2VK5FZr4MtR3VMUfW/IVUtWguk3+dYF
-         pB8+AQBZ+AVP/aZ7mTP8NCNswSkDrW/D+Wcy/dlIRSkp4aDcWue+d/p1nw4Kuaozjf0s
-         2y2eeANDXVcZb6G7zohiDa6scq5/GqAQwAMGQ9ewoFaoScZIXozwlRh9mjLdKUqBBEfg
-         lcNUEHcSx82tVjB/K8KsPUbEQPTlBWuzb/rA1KZZlcJE3k7IkPAirQnMmrND1nY+GQui
-         AYSkEb94alqNhj7581AG0VmzOj2xQtAAU3o8w5Pe/MBlDjxyXK9pWH7JKhhfALYEG32p
-         kgsg==
-Received: by 10.68.72.70 with SMTP id b6mr36464132pbv.58.1336773934590;
-        Fri, 11 May 2012 15:05:34 -0700 (PDT)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id kb12sm13962126pbb.15.2012.05.11.15.05.32
+        by eddie.linux-mips.org with ESMTP id S1903696Ab2ELArp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 12 May 2012 02:47:45 +0200
+Received: by dadm1 with SMTP id m1so4260398dad.36
+        for <linux-mips@linux-mips.org>; Fri, 11 May 2012 17:47:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=sender:from:subject:to:cc:in-reply-to:references:date:message-id
+         :x-gm-message-state;
+        bh=EMGukB/G7gOd2p+260Tna7IpqRU0D4pywL4CBIqz2MQ=;
+        b=AlpKoyiETtsK2aUQHtcNZhAa4YHfR/PL23SWmIfD77TsdPxXmV/vhHcGATEKyGKNCw
+         xrwd5P+9rQIoekdGRBx1HgS880iuv3dimcBZqkBBmCC4XI1zIKDWfvaV45DUWEwJ+sxA
+         meXhb+NRdCg2HdkMjxBnUJ+z6NtbcoA4UL0sp3bl5F/Q5cnev82AhsYIc0pFsxygXL7d
+         3rPmiMlSSAzf3lmrdaL/uno5W0H73RRi93rjJ9VwztKfqE9F0CHq0iqzeujfPW40qJy1
+         8e/riG6fo0psUq4/eWlr8RttrKLhuRu/NohtwvCiGKK7yWTEH8GrHvAKnJWhlRqv1UuL
+         JkCg==
+Received: by 10.68.224.196 with SMTP id re4mr320327pbc.111.1336783658023;
+        Fri, 11 May 2012 17:47:38 -0700 (PDT)
+Received: from localhost (S0106b0487adb560b.cg.shawcable.net. [68.146.86.184])
+        by mx.google.com with ESMTPS id pd3sm14295249pbc.53.2012.05.11.17.47.36
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 11 May 2012 15:05:33 -0700 (PDT)
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q4BM5V48017922;
-        Fri, 11 May 2012 15:05:31 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q4BM5Vi6017921;
-        Fri, 11 May 2012 15:05:31 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     devicetree-discuss@lists.ozlabs.org,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Rob Herring <rob.herring@calxeda.com>,
-        spi-devel-general@lists.sourceforge.net
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-doc@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Axel Lin <axel.lin@gmail.com>
-Subject: [PATCH 3/3] eeprom/of: Add device tree bindings to at25.
-Date:   Fri, 11 May 2012 15:05:23 -0700
-Message-Id: <1336773923-17866-4-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.2.3
-In-Reply-To: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com>
-References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com>
-X-archive-position: 33283
+        Fri, 11 May 2012 17:47:36 -0700 (PDT)
+Received: by localhost (Postfix, from userid 1000)
+        id F0C653E0791; Fri, 11 May 2012 18:47:35 -0600 (MDT)
+From:   Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH 02/14] OF: MIPS: lantiq: implement OF support
+To:     John Crispin <blogic@openwrt.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, devicetree-discuss@lists.ozlabs.org
+In-Reply-To: <1336133919-26525-2-git-send-email-blogic@openwrt.org>
+References: <1336133919-26525-1-git-send-email-blogic@openwrt.org> <1336133919-26525-2-git-send-email-blogic@openwrt.org>
+Date:   Fri, 11 May 2012 18:47:35 -0600
+Message-Id: <20120512004735.F0C653E0791@localhost>
+X-Gm-Message-State: ALoCoQnFyMmuG5YWTWW3iUfKWy4Cfgt7pAVb5SeNma/caOQ4mXipYFZ2JOLBWfPTYvDYIcgDWKij
+X-archive-position: 33284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: David Daney <david.daney@cavium.com>
+On Fri,  4 May 2012 14:18:27 +0200, John Crispin <blogic@openwrt.org> wrote:
+> Activate USE_OF, add a sample DTS file and convert the core soc code to OF.
+> 
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+> Cc: devicetree-discuss@lists.ozlabs.org
+> ---
+> diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+> index cd56892..413ed53 100644
+> --- a/arch/mips/lantiq/prom.c
+> +++ b/arch/mips/lantiq/prom.c
+> @@ -8,6 +8,7 @@
+>  
+>  #include <linux/export.h>
+>  #include <linux/clk.h>
+> +#include <linux/of_platform.h>
+>  #include <asm/bootinfo.h>
+>  #include <asm/time.h>
+>  
+> @@ -16,13 +17,15 @@
+>  #include "prom.h"
+>  #include "clk.h"
+>  
+> -static struct ltq_soc_info soc_info;
+> +/* access to the ebu needs to be locked between different drivers */
+> +DEFINE_SPINLOCK(ebu_lock);
+> +EXPORT_SYMBOL_GPL(ebu_lock);
+>  
+> -unsigned int ltq_get_cpu_ver(void)
+> -{
+> -	return soc_info.rev;
+> -}
+> -EXPORT_SYMBOL(ltq_get_cpu_ver);
+> +/*
+> + * this struct is filled by the soc specific detection code and holds
+> + * information about the specific soc type, revision and name
+> + */
+> +static struct ltq_soc_info soc_info;
+>  
+>  unsigned int ltq_get_soc_type(void)
+>  {
+> @@ -57,16 +60,28 @@ static void __init prom_init_cmdline(void)
+>  	}
+>  }
+>  
+> -void __init prom_init(void)
+> +void __init plat_mem_setup(void)
+>  {
+> -	struct clk *clk;
+> +	ioport_resource.start = IOPORT_RESOURCE_START;
+> +	ioport_resource.end = IOPORT_RESOURCE_END;
+> +	iomem_resource.start = IOMEM_RESOURCE_START;
+> +	iomem_resource.end = IOMEM_RESOURCE_END;
+> +
+> +	set_io_port_base((unsigned long) KSEG1);
+> +
+> +	/*
+> +	 * Load the builtin devicetree. This causes the chosen node to be
+> +	 * parsed resulting in our memory appearing
+> +	 */
+> +	__dt_setup_arch(&__dtb_start);
+> +}
+>  
+> +void __init prom_init(void)
+> +{
+> +	/* call the soc specific detetcion code and get it to fill soc_info */
+>  	ltq_soc_detect(&soc_info);
+> -	clk_init();
+> -	clk = clk_get(0, "cpu");
+> -	snprintf(soc_info.sys_type, LTQ_SYS_TYPE_LEN - 1, "%s rev1.%d",
+> -		soc_info.name, soc_info.rev);
+> -	clk_put(clk);
+> +	snprintf(soc_info.sys_type, LTQ_SYS_TYPE_LEN - 1, "%s rev %s",
+> +		soc_info.name, soc_info.rev_type);
+>  	soc_info.sys_type[LTQ_SYS_TYPE_LEN - 1] = '\0';
+>  	pr_info("SoC: %s\n", soc_info.sys_type);
+>  	prom_init_cmdline();
+> @@ -76,3 +91,19 @@ void __init prom_init(void)
+>  		panic("failed to register_vsmp_smp_ops()");
+>  #endif
+>  }
+> +
+> +int __init plat_of_setup(void)
+> +{
+> +	static struct of_device_id of_ids[3];
+> +
+> +	if (!of_have_populated_dt())
+> +		panic("device tree not present");
+> +
+> +	strncpy(of_ids[0].compatible, soc_info.compatible,
+> +		sizeof(of_ids[0].compatible));
+> +	strncpy(of_ids[1].compatible, "simple-bus",
+> +		sizeof(of_ids[1].compatible));
 
-We can extract the "pagesize", "size" and "address-width" from the
-device tree so that SPI eeproms can be fully specified in the device
-tree.
+?!?  That's rather weird.  Why not simply a static of_device_id table
+and add all possible compatible values to it which in this case is
+"simple-bus" and whatever values are possible for soc_info.compatible?
 
-Also add a MODULE_DEVICE_TABLE so the drivers can be automatically bound.
+> +	return of_platform_bus_probe(NULL, of_ids, NULL);
 
-Signed-off-by: David Daney <david.daney@cavium.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Axel Lin <axel.lin@gmail.com>
----
- drivers/misc/eeprom/at25.c |   61 +++++++++++++++++++++++++++++++++++++++++---
- 1 files changed, 57 insertions(+), 4 deletions(-)
+of_platform_bus_probe() is deprecated.  Use of_platform_populate()
+instead.  The semantics make more sense on that one.
 
-diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
-index 01ab3c9..609ee72 100644
---- a/drivers/misc/eeprom/at25.c
-+++ b/drivers/misc/eeprom/at25.c
-@@ -16,6 +16,7 @@
- #include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/sched.h>
-+#include <linux/of.h>
- 
- #include <linux/spi/spi.h>
- #include <linux/spi/eeprom.h>
-@@ -293,6 +294,9 @@ static int at25_probe(struct spi_device *spi)
- {
- 	struct at25_data	*at25 = NULL;
- 	const struct spi_eeprom *chip;
-+#ifdef CONFIG_OF
-+	struct spi_eeprom of_chip;
-+#endif
- 	int			err;
- 	int			sr;
- 	int			addrlen;
-@@ -300,9 +304,51 @@ static int at25_probe(struct spi_device *spi)
- 	/* Chip description */
- 	chip = spi->dev.platform_data;
- 	if (!chip) {
--		dev_dbg(&spi->dev, "no chip description\n");
--		err = -ENODEV;
--		goto fail;
-+#ifdef CONFIG_OF
-+		if (spi->dev.of_node) {
-+			u32 val;
-+			memset(&of_chip, 0, sizeof(of_chip));
-+			if (of_property_read_u32(spi->dev.of_node, "pagesize", &val)) {
-+				dev_dbg(&spi->dev, "no \"pagesize\" property\n");
-+				err = -ENODEV;
-+				goto fail;
-+			}
-+			of_chip.page_size = val;
-+			if (of_property_read_u32(spi->dev.of_node, "size", &val)) {
-+				dev_dbg(&spi->dev, "no \"size\" property\n");
-+				err = -ENODEV;
-+				goto fail;
-+			}
-+			of_chip.byte_len = val;
-+			if (of_property_read_u32(spi->dev.of_node, "address-width", &val)) {
-+				dev_dbg(&spi->dev, "no \"address-width\" property\n");
-+				err = -ENODEV;
-+				goto fail;
-+			}
-+			switch (val) {
-+			case 8:
-+				of_chip.flags |= EE_ADDR1;
-+				break;
-+			case 16:
-+				of_chip.flags |= EE_ADDR2;
-+				break;
-+			case 24:
-+				of_chip.flags |= EE_ADDR3;
-+				break;
-+			default:
-+				dev_dbg(&spi->dev, "bad \"address-width\" property: %u\n", val);
-+				err = -EINVAL;
-+				goto fail;
-+			}
-+			strlcpy(of_chip.name, spi->dev.of_node->name, sizeof(of_chip.name));
-+			chip = &of_chip;
-+		} else
-+#endif
-+		{
-+			dev_dbg(&spi->dev, "no chip description\n");
-+			err = -ENODEV;
-+			goto fail;
-+		}
- 	}
- 
- 	/* For now we only support 8/16/24 bit addressing */
-@@ -396,11 +442,19 @@ static int __devexit at25_remove(struct spi_device *spi)
- 
- /*-------------------------------------------------------------------------*/
- 
-+static const struct spi_device_id at25_id[] = {
-+	{"at25", 0},
-+	{"m95256", 0},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, at25_id);
-+
- static struct spi_driver at25_driver = {
- 	.driver = {
- 		.name		= "at25",
- 		.owner		= THIS_MODULE,
- 	},
-+	.id_table	= at25_id,
- 	.probe		= at25_probe,
- 	.remove		= __devexit_p(at25_remove),
- };
-@@ -410,4 +464,3 @@ module_spi_driver(at25_driver);
- MODULE_DESCRIPTION("Driver for most SPI EEPROMs");
- MODULE_AUTHOR("David Brownell");
- MODULE_LICENSE("GPL");
--MODULE_ALIAS("spi:at25");
+g.
+> +}
+> +
+> +arch_initcall(plat_of_setup);
+> diff --git a/arch/mips/lantiq/prom.h b/arch/mips/lantiq/prom.h
+> index f7c2a79..a3fa1a2 100644
+> --- a/arch/mips/lantiq/prom.h
+> +++ b/arch/mips/lantiq/prom.h
+> @@ -26,4 +26,6 @@ struct ltq_soc_info {
+>  extern void ltq_soc_detect(struct ltq_soc_info *i);
+>  extern void ltq_soc_init(void);
+>  
+> +extern struct boot_param_header __dtb_start;
+> +
+>  #endif
+> diff --git a/arch/mips/lantiq/setup.c b/arch/mips/lantiq/setup.c
+> deleted file mode 100644
+> index f1c605a..0000000
+> --- a/arch/mips/lantiq/setup.c
+> +++ /dev/null
+> @@ -1,43 +0,0 @@
+> -/*
+> - *  This program is free software; you can redistribute it and/or modify it
+> - *  under the terms of the GNU General Public License version 2 as published
+> - *  by the Free Software Foundation.
+> - *
+> - * Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+> - */
+> -
+> -#include <linux/kernel.h>
+> -#include <linux/export.h>
+> -#include <linux/io.h>
+> -#include <linux/ioport.h>
+> -#include <asm/bootinfo.h>
+> -
+> -#include <lantiq_soc.h>
+> -
+> -#include "prom.h"
+> -
+> -void __init plat_mem_setup(void)
+> -{
+> -	/* assume 16M as default incase uboot fails to pass proper ramsize */
+> -	unsigned long memsize = 16;
+> -	char **envp = (char **) KSEG1ADDR(fw_arg2);
+> -
+> -	ioport_resource.start = IOPORT_RESOURCE_START;
+> -	ioport_resource.end = IOPORT_RESOURCE_END;
+> -	iomem_resource.start = IOMEM_RESOURCE_START;
+> -	iomem_resource.end = IOMEM_RESOURCE_END;
+> -
+> -	set_io_port_base((unsigned long) KSEG1);
+> -
+> -	while (*envp) {
+> -		char *e = (char *)KSEG1ADDR(*envp);
+> -		if (!strncmp(e, "memsize=", 8)) {
+> -			e += 8;
+> -			if (strict_strtoul(e, 0, &memsize))
+> -				pr_warn("bad memsize specified\n");
+> -		}
+> -		envp++;
+> -	}
+> -	memsize *= 1024 * 1024;
+> -	add_memory_region(0x00000000, memsize, BOOT_MEM_RAM);
+> -}
+> diff --git a/arch/mips/lantiq/xway/ebu.c b/arch/mips/lantiq/xway/ebu.c
+> index 862e3e8..419b47b 100644
+> --- a/arch/mips/lantiq/xway/ebu.c
+> +++ b/arch/mips/lantiq/xway/ebu.c
+> @@ -14,10 +14,6 @@
+>  
+>  #include <lantiq_soc.h>
+>  
+> -/* all access to the ebu must be locked */
+> -DEFINE_SPINLOCK(ebu_lock);
+> -EXPORT_SYMBOL_GPL(ebu_lock);
+> -
+>  static struct resource ltq_ebu_resource = {
+>  	.name	= "ebu",
+>  	.start	= LTQ_EBU_BASE_ADDR,
+> diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
+> index 3327211..22c55f7 100644
+> --- a/arch/mips/lantiq/xway/reset.c
+> +++ b/arch/mips/lantiq/xway/reset.c
+> @@ -37,13 +37,6 @@
+>  #define RCU_BOOT_SEL_SHIFT	26
+>  #define RCU_BOOT_SEL_MASK	0x7
+>  
+> -static struct resource ltq_rcu_resource = {
+> -	.name   = "rcu",
+> -	.start  = LTQ_RCU_BASE_ADDR,
+> -	.end    = LTQ_RCU_BASE_ADDR + LTQ_RCU_SIZE - 1,
+> -	.flags  = IORESOURCE_MEM,
+> -};
+> -
+>  /* remapped base addr of the reset control unit */
+>  static void __iomem *ltq_rcu_membase;
+>  
+> @@ -91,17 +84,21 @@ static void ltq_machine_power_off(void)
+>  
+>  static int __init mips_reboot_setup(void)
+>  {
+> -	/* insert and request the memory region */
+> -	if (insert_resource(&iomem_resource, &ltq_rcu_resource) < 0)
+> -		panic("Failed to insert rcu memory");
+> +	struct resource res;
+> +	struct device_node *np =
+> +		of_find_compatible_node(NULL, NULL, "lantiq,rcu-xway");
+> +
+> +	/* check if all the reset register range is available */
+> +	if (!np)
+> +		panic("Failed to load reset resources from devicetree");
+> +
+> +	if (of_address_to_resource(np, 0, &res))
+> +		panic("Failed to get rcu memory range");
+>  
+> -	if (request_mem_region(ltq_rcu_resource.start,
+> -			resource_size(&ltq_rcu_resource), "rcu") < 0)
+> -		panic("Failed to request rcu memory");
+> +	if (request_mem_region(res.start, resource_size(&res), res.name) < 0)
+> +		pr_err("Failed to request rcu memory");
+>  
+> -	/* remap rcu register range */
+> -	ltq_rcu_membase = ioremap_nocache(ltq_rcu_resource.start,
+> -				resource_size(&ltq_rcu_resource));
+> +	ltq_rcu_membase = ioremap_nocache(res.start, resource_size(&res));
+>  	if (!ltq_rcu_membase)
+>  		panic("Failed to remap core memory");
+>  
+> -- 
+> 1.7.9.1
+> 
+> _______________________________________________
+> devicetree-discuss mailing list
+> devicetree-discuss@lists.ozlabs.org
+> https://lists.ozlabs.org/listinfo/devicetree-discuss
+
 -- 
-1.7.2.3
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.

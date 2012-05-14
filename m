@@ -1,19 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:50:10 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:36685 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:50:32 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:36715 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903703Ab2ENRto (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 May 2012 19:49:44 +0200
+        id S1903706Ab2ENRuY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 May 2012 19:50:24 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
-        linux-mtd@lists.infradead.org
-Subject: [RESEND PATCH V2 13/17] MTD: MIPS: lantiq: implement OF support
-Date:   Mon, 14 May 2012 19:42:39 +0200
-Message-Id: <1337017363-14424-13-git-send-email-blogic@openwrt.org>
+        Thomas Langer <thomas.langer@lantiq.com>,
+        spi-devel-general@lists.sourceforge.net
+Subject: [RESEND PATCH V2 16/17] SPI: MIPS: lantiq: add FALCON spi driver
+Date:   Mon, 14 May 2012 19:42:42 +0200
+Message-Id: <1337017363-14424-16-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
 In-Reply-To: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
 References: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 33303
+X-archive-position: 33304
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -22,149 +23,533 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Adds bindings for OF and make use of module_platform_driver for lantiq
-based socs.
+The external bus unit (EBU) found on the FALCON SoC has spi emulation that is
+designed for serial flash access. This driver has only been tested with m25p80
+type chips. The hardware has no support for other types of spi peripherals.
 
+Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
 Signed-off-by: John Crispin <blogic@openwrt.org>
-Acked-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Cc: linux-mtd@lists.infradead.org
+Cc: spi-devel-general@lists.sourceforge.net
 ---
 This patch is part of a series moving the mips/lantiq target to OF and clkdev
 support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
 
- drivers/mtd/maps/lantiq-flash.c |   69 ++++++++++++++-------------------------
- 1 files changed, 25 insertions(+), 44 deletions(-)
+ drivers/spi/Kconfig      |    9 +
+ drivers/spi/Makefile     |    1 +
+ drivers/spi/spi-falcon.c |  473 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 483 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/spi/spi-falcon.c
 
-diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
-index b5401e3..aefa111 100644
---- a/drivers/mtd/maps/lantiq-flash.c
-+++ b/drivers/mtd/maps/lantiq-flash.c
-@@ -21,7 +21,6 @@
- #include <linux/mtd/physmap.h>
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 00c0240..2afb8db 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -144,6 +144,15 @@ config SPI_EP93XX
+ 	  This enables using the Cirrus EP93xx SPI controller in master
+ 	  mode.
  
- #include <lantiq_soc.h>
--#include <lantiq_platform.h>
- 
- /*
-  * The NOR flash is connected to the same external bus unit (EBU) as PCI.
-@@ -44,8 +43,9 @@ struct ltq_mtd {
- 	struct map_info *map;
- };
- 
--static char ltq_map_name[] = "ltq_nor";
--static const char *ltq_probe_types[] __devinitconst = { "cmdlinepart", NULL };
-+static const char ltq_map_name[] = "ltq_nor";
-+static const char *ltq_probe_types[] __devinitconst = {
-+					"cmdlinepart", "ofpart", NULL };
- 
- static map_word
- ltq_read16(struct map_info *map, unsigned long adr)
-@@ -108,12 +108,11 @@ ltq_copy_to(struct map_info *map, unsigned long to,
- 	spin_unlock_irqrestore(&ebu_lock, flags);
- }
- 
--static int __init
-+static int __devinit
- ltq_mtd_probe(struct platform_device *pdev)
- {
--	struct physmap_flash_data *ltq_mtd_data = dev_get_platdata(&pdev->dev);
-+	struct mtd_part_parser_data ppdata;
- 	struct ltq_mtd *ltq_mtd;
--	struct resource *res;
- 	struct cfi_private *cfi;
- 	int err;
- 
-@@ -122,28 +121,19 @@ ltq_mtd_probe(struct platform_device *pdev)
- 
- 	ltq_mtd->res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!ltq_mtd->res) {
--		dev_err(&pdev->dev, "failed to get memory resource");
-+		dev_err(&pdev->dev, "failed to get memory resource\n");
- 		err = -ENOENT;
- 		goto err_out;
- 	}
- 
--	res = devm_request_mem_region(&pdev->dev, ltq_mtd->res->start,
--		resource_size(ltq_mtd->res), dev_name(&pdev->dev));
--	if (!ltq_mtd->res) {
--		dev_err(&pdev->dev, "failed to request mem resource");
--		err = -EBUSY;
--		goto err_out;
--	}
--
- 	ltq_mtd->map = kzalloc(sizeof(struct map_info), GFP_KERNEL);
--	ltq_mtd->map->phys = res->start;
--	ltq_mtd->map->size = resource_size(res);
--	ltq_mtd->map->virt = devm_ioremap_nocache(&pdev->dev,
--				ltq_mtd->map->phys, ltq_mtd->map->size);
-+	ltq_mtd->map->phys = ltq_mtd->res->start;
-+	ltq_mtd->map->size = resource_size(ltq_mtd->res);
-+	ltq_mtd->map->virt = devm_request_and_ioremap(&pdev->dev, ltq_mtd->res);
- 	if (!ltq_mtd->map->virt) {
--		dev_err(&pdev->dev, "failed to ioremap!\n");
--		err = -ENOMEM;
--		goto err_free;
-+		dev_err(&pdev->dev, "failed to remap mem resource\n");
-+		err = -EBUSY;
-+		goto err_out;
- 	}
- 
- 	ltq_mtd->map->name = ltq_map_name;
-@@ -169,9 +159,9 @@ ltq_mtd_probe(struct platform_device *pdev)
- 	cfi->addr_unlock1 ^= 1;
- 	cfi->addr_unlock2 ^= 1;
- 
--	err = mtd_device_parse_register(ltq_mtd->mtd, ltq_probe_types, NULL,
--					ltq_mtd_data->parts,
--					ltq_mtd_data->nr_parts);
-+	ppdata.of_node = pdev->dev.of_node;
-+	err = mtd_device_parse_register(ltq_mtd->mtd, ltq_probe_types,
-+					&ppdata, NULL, 0);
- 	if (err) {
- 		dev_err(&pdev->dev, "failed to add partitions\n");
- 		goto err_destroy;
-@@ -204,32 +194,23 @@ ltq_mtd_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static const struct of_device_id ltq_mtd_match[] = {
-+	{ .compatible = "lantiq,nor" },
++config SPI_FALCON
++	tristate "Falcon SPI controller support"
++	depends on SOC_FALCON
++	help
++	  The external bus unit (EBU) found on the FALC-ON SoC has SPI
++	  emulation that is designed for serial flash access. This driver
++	  has only been tested with m25p80 type chips. The hardware has no
++	  support for other types of spi peripherals.
++
+ config SPI_GPIO
+ 	tristate "GPIO-based bitbanging SPI Master"
+ 	depends on GENERIC_GPIO
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 9d75d21..b5cbab2 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -26,6 +26,7 @@ obj-$(CONFIG_SPI_DW_MMIO)		+= spi-dw-mmio.o
+ obj-$(CONFIG_SPI_DW_PCI)		+= spi-dw-midpci.o
+ spi-dw-midpci-objs			:= spi-dw-pci.o spi-dw-mid.o
+ obj-$(CONFIG_SPI_EP93XX)		+= spi-ep93xx.o
++obj-$(CONFIG_SPI_FALCON)		+= spi-falcon.o
+ obj-$(CONFIG_SPI_FSL_LIB)		+= spi-fsl-lib.o
+ obj-$(CONFIG_SPI_FSL_ESPI)		+= spi-fsl-espi.o
+ obj-$(CONFIG_SPI_FSL_SPI)		+= spi-fsl-spi.o
+diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
+new file mode 100644
+index 0000000..3be285e
+--- /dev/null
++++ b/drivers/spi/spi-falcon.c
+@@ -0,0 +1,473 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2012 Thomas Langer <thomas.langer@lantiq.com>
++ */
++
++#include <linux/module.h>
++#include <linux/device.h>
++#include <linux/platform_device.h>
++#include <linux/spi/spi.h>
++#include <linux/delay.h>
++#include <linux/workqueue.h>
++#include <linux/of.h>
++#include <linux/of_platform.h>
++
++#include <lantiq_soc.h>
++
++#define DRV_NAME		"sflash-falcon"
++
++#define FALCON_SPI_XFER_BEGIN	(1 << 0)
++#define FALCON_SPI_XFER_END	(1 << 1)
++
++/* Bus Read Configuration Register0 */
++#define BUSRCON0		0x00000010
++/* Bus Write Configuration Register0 */
++#define BUSWCON0		0x00000018
++/* Serial Flash Configuration Register */
++#define SFCON			0x00000080
++/* Serial Flash Time Register */
++#define SFTIME			0x00000084
++/* Serial Flash Status Register */
++#define SFSTAT			0x00000088
++/* Serial Flash Command Register */
++#define SFCMD			0x0000008C
++/* Serial Flash Address Register */
++#define SFADDR			0x00000090
++/* Serial Flash Data Register */
++#define SFDATA			0x00000094
++/* Serial Flash I/O Control Register */
++#define SFIO			0x00000098
++/* EBU Clock Control Register */
++#define EBUCC			0x000000C4
++
++/* Dummy Phase Length */
++#define SFCMD_DUMLEN_OFFSET	16
++#define SFCMD_DUMLEN_MASK	0x000F0000
++/* Chip Select */
++#define SFCMD_CS_OFFSET		24
++#define SFCMD_CS_MASK		0x07000000
++/* field offset */
++#define SFCMD_ALEN_OFFSET	20
++#define SFCMD_ALEN_MASK		0x00700000
++/* SCK Rise-edge Position */
++#define SFTIME_SCKR_POS_OFFSET	8
++#define SFTIME_SCKR_POS_MASK	0x00000F00
++/* SCK Period */
++#define SFTIME_SCK_PER_OFFSET	0
++#define SFTIME_SCK_PER_MASK	0x0000000F
++/* SCK Fall-edge Position */
++#define SFTIME_SCKF_POS_OFFSET	12
++#define SFTIME_SCKF_POS_MASK	0x0000F000
++/* Device Size */
++#define SFCON_DEV_SIZE_A23_0	0x03000000
++#define SFCON_DEV_SIZE_MASK	0x0F000000
++/* Read Data Position */
++#define SFTIME_RD_POS_MASK	0x000F0000
++/* Data Output */
++#define SFIO_UNUSED_WD_MASK	0x0000000F
++/* Command Opcode mask */
++#define SFCMD_OPC_MASK		0x000000FF
++/* dlen bytes of data to write */
++#define SFCMD_DIR_WRITE		0x00000100
++/* Data Length offset */
++#define SFCMD_DLEN_OFFSET	9
++/* Command Error */
++#define SFSTAT_CMD_ERR		0x20000000
++/* Access Command Pending */
++#define SFSTAT_CMD_PEND		0x00400000
++/* Frequency set to 100MHz. */
++#define EBUCC_EBUDIV_SELF100	0x00000001
++/* Serial Flash */
++#define BUSRCON0_AGEN_SERIAL_FLASH	0xF0000000
++/* 8-bit multiplexed */
++#define BUSRCON0_PORTW_8_BIT_MUX	0x00000000
++/* Serial Flash */
++#define BUSWCON0_AGEN_SERIAL_FLASH	0xF0000000
++/* Chip Select after opcode */
++#define SFCMD_KEEP_CS_KEEP_SELECTED	0x00008000
++
++#define CLOCK_100M	100000000
++
++struct falcon_sflash {
++	u32 sfcmd; /* for caching of opcode, direction, ... */
++	struct spi_master *master;
++};
++
++int falcon_sflash_xfer(struct spi_device *spi, struct spi_transfer *t,
++		unsigned long flags)
++{
++	struct device *dev = &spi->dev;
++	struct falcon_sflash *priv = spi_master_get_devdata(spi->master);
++	const u8 *txp = t->tx_buf;
++	u8 *rxp = t->rx_buf;
++	unsigned int bytelen = ((8 * t->len + 7) / 8);
++	unsigned int len, alen, dumlen;
++	u32 val;
++	enum {
++		state_init,
++		state_command_prepare,
++		state_write,
++		state_read,
++		state_disable_cs,
++		state_end
++	} state = state_init;
++
++	do {
++		switch (state) {
++		case state_init: /* detect phase of upper layer sequence */
++		{
++			/* initial write ? */
++			if (flags & FALCON_SPI_XFER_BEGIN) {
++				if (!txp) {
++					dev_err(dev,
++						"BEGIN without tx data!\n");
++					return -ENODATA;
++				}
++				/*
++				 * Prepare the parts of the sfcmd register,
++				 * which should not change during a sequence!
++				 * Only exception are the length fields,
++				 * especially alen and dumlen.
++				 */
++
++				priv->sfcmd = ((spi->chip_select
++						<< SFCMD_CS_OFFSET)
++					       & SFCMD_CS_MASK);
++				priv->sfcmd |= SFCMD_KEEP_CS_KEEP_SELECTED;
++				priv->sfcmd |= *txp;
++				txp++;
++				bytelen--;
++				if (bytelen) {
++					/*
++					 * more data:
++					 * maybe address and/or dummy
++					 */
++					state = state_command_prepare;
++					break;
++				} else {
++					dev_dbg(dev, "write cmd %02X\n",
++						priv->sfcmd & SFCMD_OPC_MASK);
++				}
++			}
++			/* continued write ? */
++			if (txp && bytelen) {
++				state = state_write;
++				break;
++			}
++			/* read data? */
++			if (rxp && bytelen) {
++				state = state_read;
++				break;
++			}
++			/* end of sequence? */
++			if (flags & FALCON_SPI_XFER_END)
++				state = state_disable_cs;
++			else
++				state = state_end;
++			break;
++		}
++		/* collect tx data for address and dummy phase */
++		case state_command_prepare:
++		{
++			/* txp is valid, already checked */
++			val = 0;
++			alen = 0;
++			dumlen = 0;
++			while (bytelen > 0) {
++				if (alen < 3) {
++					val = (val << 8) | (*txp++);
++					alen++;
++				} else if ((dumlen < 15) && (*txp == 0)) {
++					/*
++					 * assume dummy bytes are set to 0
++					 * from upper layer
++					 */
++					dumlen++;
++					txp++;
++				} else
++					break;
++				bytelen--;
++			}
++			priv->sfcmd &= ~(SFCMD_ALEN_MASK | SFCMD_DUMLEN_MASK);
++			priv->sfcmd |= (alen << SFCMD_ALEN_OFFSET) |
++					 (dumlen << SFCMD_DUMLEN_OFFSET);
++			if (alen > 0)
++				ltq_ebu_w32(val, SFADDR);
++
++			dev_dbg(dev, "wr %02X, alen=%d (addr=%06X) dlen=%d\n",
++				priv->sfcmd & SFCMD_OPC_MASK,
++				alen, val, dumlen);
++
++			if (bytelen > 0) {
++				/* continue with write */
++				state = state_write;
++			} else if (flags & FALCON_SPI_XFER_END) {
++				/* end of sequence? */
++				state = state_disable_cs;
++			} else {
++				/*
++				 * go to end and expect another
++				 * call (read or write)
++				 */
++				state = state_end;
++			}
++			break;
++		}
++		case state_write:
++		{
++			/* txp still valid */
++			priv->sfcmd |= SFCMD_DIR_WRITE;
++			len = 0;
++			val = 0;
++			do {
++				if (bytelen--)
++					val |= (*txp++) << (8 * len++);
++				if ((flags & FALCON_SPI_XFER_END)
++				    && (bytelen == 0)) {
++					priv->sfcmd &=
++						~SFCMD_KEEP_CS_KEEP_SELECTED;
++				}
++				if ((len == 4) || (bytelen == 0)) {
++					ltq_ebu_w32(val, SFDATA);
++					ltq_ebu_w32(priv->sfcmd
++						| (len<<SFCMD_DLEN_OFFSET),
++						SFCMD);
++					len = 0;
++					val = 0;
++					priv->sfcmd &= ~(SFCMD_ALEN_MASK
++							 | SFCMD_DUMLEN_MASK);
++				}
++			} while (bytelen);
++			state = state_end;
++			break;
++		}
++		case state_read:
++		{
++			/* read data */
++			priv->sfcmd &= ~SFCMD_DIR_WRITE;
++			do {
++				if ((flags & FALCON_SPI_XFER_END)
++				    && (bytelen <= 4)) {
++					priv->sfcmd &=
++						~SFCMD_KEEP_CS_KEEP_SELECTED;
++				}
++				len = (bytelen > 4) ? 4 : bytelen;
++				bytelen -= len;
++				ltq_ebu_w32(priv->sfcmd
++					|(len<<SFCMD_DLEN_OFFSET), SFCMD);
++				priv->sfcmd &= ~(SFCMD_ALEN_MASK
++						 | SFCMD_DUMLEN_MASK);
++				do {
++					val = ltq_ebu_r32(SFSTAT);
++					if (val & SFSTAT_CMD_ERR) {
++						/* reset error status */
++						dev_err(dev, "SFSTAT: CMD_ERR");
++						dev_err(dev, " (%x)\n", val);
++						ltq_ebu_w32(SFSTAT_CMD_ERR,
++							SFSTAT);
++						return -EBADE;
++					}
++				} while (val & SFSTAT_CMD_PEND);
++				val = ltq_ebu_r32(SFDATA);
++				do {
++					*rxp = (val & 0xFF);
++					rxp++;
++					val >>= 8;
++					len--;
++				} while (len);
++			} while (bytelen);
++			state = state_end;
++			break;
++		}
++		case state_disable_cs:
++		{
++			priv->sfcmd &= ~SFCMD_KEEP_CS_KEEP_SELECTED;
++			ltq_ebu_w32(priv->sfcmd | (0 << SFCMD_DLEN_OFFSET),
++				SFCMD);
++			val = ltq_ebu_r32(SFSTAT);
++			if (val & SFSTAT_CMD_ERR) {
++				/* reset error status */
++				dev_err(dev, "SFSTAT: CMD_ERR (%x)\n", val);
++				ltq_ebu_w32(SFSTAT_CMD_ERR, SFSTAT);
++				return -EBADE;
++			}
++			state = state_end;
++			break;
++		}
++		case state_end:
++			break;
++		}
++	} while (state != state_end);
++
++	return 0;
++}
++
++static int falcon_sflash_setup(struct spi_device *spi)
++{
++	const u32 ebuclk = CLOCK_100M;
++	unsigned int i;
++	unsigned long flags;
++
++	if (spi->chip_select > 0)
++		return -ENODEV;
++
++	spin_lock_irqsave(&ebu_lock, flags);
++
++	if (ebuclk < spi->max_speed_hz) {
++		/* set EBU clock to 100 MHz */
++		ltq_sys1_w32_mask(0, EBUCC_EBUDIV_SELF100, EBUCC);
++		i = 1; /* divider */
++	} else {
++		/* set EBU clock to 50 MHz */
++		ltq_sys1_w32_mask(EBUCC_EBUDIV_SELF100, 0, EBUCC);
++
++		/* search for suitable divider */
++		for (i = 1; i < 7; i++) {
++			if (ebuclk / i <= spi->max_speed_hz)
++				break;
++		}
++	}
++
++	/* setup period of serial clock */
++	ltq_ebu_w32_mask(SFTIME_SCKF_POS_MASK
++		     | SFTIME_SCKR_POS_MASK
++		     | SFTIME_SCK_PER_MASK,
++		     (i << SFTIME_SCKR_POS_OFFSET)
++		     | (i << (SFTIME_SCK_PER_OFFSET + 1)),
++		     SFTIME);
++
++	/*
++	 * set some bits of unused_wd, to not trigger HOLD/WP
++	 * signals on non QUAD flashes
++	 */
++	ltq_ebu_w32((SFIO_UNUSED_WD_MASK & (0x8 | 0x4)), SFIO);
++
++	ltq_ebu_w32(BUSRCON0_AGEN_SERIAL_FLASH | BUSRCON0_PORTW_8_BIT_MUX,
++			BUSRCON0);
++	ltq_ebu_w32(BUSWCON0_AGEN_SERIAL_FLASH, BUSWCON0);
++	/* set address wrap around to maximum for 24-bit addresses */
++	ltq_ebu_w32_mask(SFCON_DEV_SIZE_MASK, SFCON_DEV_SIZE_A23_0, SFCON);
++
++	spin_unlock_irqrestore(&ebu_lock, flags);
++
++	return 0;
++}
++
++static int falcon_sflash_prepare_xfer(struct spi_master *master)
++{
++	return 0;
++}
++
++static int falcon_sflash_unprepare_xfer(struct spi_master *master)
++{
++	return 0;
++}
++
++static int falcon_sflash_xfer_one(struct spi_master *master,
++					struct spi_message *m)
++{
++	struct falcon_sflash *priv = spi_master_get_devdata(master);
++	struct spi_transfer *t;
++	unsigned long spi_flags;
++	unsigned long flags;
++	int ret = 0;
++
++	priv->sfcmd = 0;
++	m->actual_length = 0;
++
++	spi_flags = FALCON_SPI_XFER_BEGIN;
++	list_for_each_entry(t, &m->transfers, transfer_list) {
++		if (list_is_last(&t->transfer_list, &m->transfers))
++			spi_flags |= FALCON_SPI_XFER_END;
++
++		spin_lock_irqsave(&ebu_lock, flags);
++		ret = falcon_sflash_xfer(m->spi, t, spi_flags);
++		spin_unlock_irqrestore(&ebu_lock, flags);
++
++		if (ret)
++			break;
++
++		m->actual_length += t->len;
++
++		WARN_ON(t->delay_usecs || t->cs_change);
++		spi_flags = 0;
++	}
++
++	m->status = ret;
++	m->complete(m->context);
++
++	return 0;
++}
++
++static int __devinit falcon_sflash_probe(struct platform_device *pdev)
++{
++	struct falcon_sflash *priv;
++	const __be32 *prop;
++	struct spi_master *master;
++	int ret, len;
++
++	if (ltq_boot_select() != BS_SPI) {
++		dev_err(&pdev->dev, "invalid bootstrap options\n");
++		return -ENODEV;
++	}
++
++	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
++	if (!master)
++		return -ENOMEM;
++
++	priv = spi_master_get_devdata(master);
++	priv->master = master;
++
++	master->mode_bits = SPI_MODE_3;
++	master->num_chipselect = 1;
++	master->bus_num = -1;
++	master->setup = falcon_sflash_setup;
++	master->prepare_transfer_hardware = falcon_sflash_prepare_xfer;
++	master->transfer_one_message = falcon_sflash_xfer_one;
++	master->unprepare_transfer_hardware = falcon_sflash_unprepare_xfer;
++	master->dev.of_node = pdev->dev.of_node;
++
++	prop = of_get_property(pdev->dev.of_node, "busnum", &len);
++	if (prop && (len == sizeof(*prop)))
++		master->bus_num = be32_to_cpup(prop);
++
++	platform_set_drvdata(pdev, priv);
++
++	ret = spi_register_master(master);
++	if (ret)
++		spi_master_put(master);
++	return ret;
++}
++
++static int __devexit falcon_sflash_remove(struct platform_device *pdev)
++{
++	struct falcon_sflash *priv = platform_get_drvdata(pdev);
++
++	spi_unregister_master(priv->master);
++
++	return 0;
++}
++
++static const struct of_device_id falcon_sflash_match[] = {
++	{ .compatible = "lantiq,sflash-falcon" },
 +	{},
 +};
-+MODULE_DEVICE_TABLE(of, ltq_mtd_match);
++MODULE_DEVICE_TABLE(of, falcon_sflash_match);
 +
- static struct platform_driver ltq_mtd_driver = {
-+	.probe = ltq_mtd_probe,
- 	.remove = __devexit_p(ltq_mtd_remove),
- 	.driver = {
--		.name = "ltq_nor",
-+		.name = "ltq-nor",
- 		.owner = THIS_MODULE,
-+		.of_match_table = ltq_mtd_match,
- 	},
- };
- 
--static int __init
--init_ltq_mtd(void)
--{
--	int ret = platform_driver_probe(&ltq_mtd_driver, ltq_mtd_probe);
--
--	if (ret)
--		pr_err("ltq_nor: error registering platform driver");
--	return ret;
--}
--
--static void __exit
--exit_ltq_mtd(void)
--{
--	platform_driver_unregister(&ltq_mtd_driver);
--}
--
--module_init(init_ltq_mtd);
--module_exit(exit_ltq_mtd);
-+module_platform_driver(ltq_mtd_driver);
- 
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
++static struct platform_driver falcon_sflash_driver = {
++	.probe	= falcon_sflash_probe,
++	.remove	= __devexit_p(falcon_sflash_remove),
++	.driver = {
++		.name	= DRV_NAME,
++		.owner	= THIS_MODULE,
++		.of_match_table = falcon_sflash_match,
++	}
++};
++
++module_platform_driver(falcon_sflash_driver);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Lantiq Falcon SPI/SFLASH controller driver");
 -- 
 1.7.9.1

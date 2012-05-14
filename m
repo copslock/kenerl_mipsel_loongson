@@ -1,18 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:51:00 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:36729 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:51:23 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:36738 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903710Ab2ENRuh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 May 2012 19:50:37 +0200
+        id S1903713Ab2ENRul (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 May 2012 19:50:41 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [RESEND PATCH V2 17/17] MIPS: lantiq: remove orphaned code
-Date:   Mon, 14 May 2012 19:42:43 +0200
-Message-Id: <1337017363-14424-17-git-send-email-blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
+        Thomas Langer <thomas.langer@lantiq.com>
+Subject: [RESEND PATCH V2 15/17] MIPS: lantiq: implement support for FALCON soc
+Date:   Mon, 14 May 2012 19:42:41 +0200
+Message-Id: <1337017363-14424-15-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
 In-Reply-To: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
 References: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 33305
+X-archive-position: 33306
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -21,358 +22,650 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Now that all drivers are converted to OF we are able to remove some remaining
-pieces of orphaned code.
+Adds support for the FALCON SoC. This SoC is from the FTTH/GPON SoC family.
 
+Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/include/asm/mach-lantiq/lantiq.h         |    5 -
- .../mips/include/asm/mach-lantiq/lantiq_platform.h |   53 -----------
- .../mips/include/asm/mach-lantiq/xway/lantiq_irq.h |   46 +----------
- .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |   93 +-------------------
- arch/mips/lantiq/prom.c                            |    6 --
- arch/mips/lantiq/xway/sysctrl.c                    |   25 +----
- 6 files changed, 7 insertions(+), 221 deletions(-)
- delete mode 100644 arch/mips/include/asm/mach-lantiq/lantiq_platform.h
+ .../include/asm/mach-lantiq/falcon/falcon_irq.h    |   23 ++
+ arch/mips/include/asm/mach-lantiq/falcon/irq.h     |   18 ++
+ .../include/asm/mach-lantiq/falcon/lantiq_soc.h    |   67 +++++
+ arch/mips/lantiq/Kconfig                           |    4 +
+ arch/mips/lantiq/Makefile                          |    1 +
+ arch/mips/lantiq/Platform                          |    1 +
+ arch/mips/lantiq/falcon/Makefile                   |    1 +
+ arch/mips/lantiq/falcon/prom.c                     |   87 +++++++
+ arch/mips/lantiq/falcon/reset.c                    |   90 +++++++
+ arch/mips/lantiq/falcon/sysctrl.c                  |  260 ++++++++++++++++++++
+ 10 files changed, 552 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-lantiq/falcon/falcon_irq.h
+ create mode 100644 arch/mips/include/asm/mach-lantiq/falcon/irq.h
+ create mode 100644 arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h
+ create mode 100644 arch/mips/lantiq/falcon/Makefile
+ create mode 100644 arch/mips/lantiq/falcon/prom.c
+ create mode 100644 arch/mips/lantiq/falcon/reset.c
+ create mode 100644 arch/mips/lantiq/falcon/sysctrl.c
 
-diff --git a/arch/mips/include/asm/mach-lantiq/lantiq.h b/arch/mips/include/asm/mach-lantiq/lantiq.h
-index 64fbc3f..5e8a6e9 100644
---- a/arch/mips/include/asm/mach-lantiq/lantiq.h
-+++ b/arch/mips/include/asm/mach-lantiq/lantiq.h
-@@ -27,9 +27,6 @@
- 	ltq_w32_mask(x, y, ltq_ebu_membase + (z))
- extern __iomem void *ltq_ebu_membase;
+diff --git a/arch/mips/include/asm/mach-lantiq/falcon/falcon_irq.h b/arch/mips/include/asm/mach-lantiq/falcon/falcon_irq.h
+new file mode 100644
+index 0000000..318f982
+--- /dev/null
++++ b/arch/mips/include/asm/mach-lantiq/falcon/falcon_irq.h
+@@ -0,0 +1,23 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 Thomas Langer <thomas.langer@lantiq.com>
++ */
++
++#ifndef _FALCON_IRQ__
++#define _FALCON_IRQ__
++
++#define INT_NUM_IRQ0			8
++#define INT_NUM_IM0_IRL0		(INT_NUM_IRQ0 + 0)
++#define INT_NUM_IM1_IRL0		(INT_NUM_IM0_IRL0 + 32)
++#define INT_NUM_IM2_IRL0		(INT_NUM_IM1_IRL0 + 32)
++#define INT_NUM_IM3_IRL0		(INT_NUM_IM2_IRL0 + 32)
++#define INT_NUM_IM4_IRL0		(INT_NUM_IM3_IRL0 + 32)
++#define INT_NUM_EXTRA_START		(INT_NUM_IM4_IRL0 + 32)
++#define INT_NUM_IM_OFFSET		(INT_NUM_IM1_IRL0 - INT_NUM_IM0_IRL0)
++
++#define MIPS_CPU_TIMER_IRQ			7
++
++#endif /* _FALCON_IRQ__ */
+diff --git a/arch/mips/include/asm/mach-lantiq/falcon/irq.h b/arch/mips/include/asm/mach-lantiq/falcon/irq.h
+new file mode 100644
+index 0000000..2caccd9
+--- /dev/null
++++ b/arch/mips/include/asm/mach-lantiq/falcon/irq.h
+@@ -0,0 +1,18 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2011 Thomas Langer <thomas.langer@lantiq.com>
++ */
++
++#ifndef __FALCON_IRQ_H
++#define __FALCON_IRQ_H
++
++#include <falcon_irq.h>
++
++#define NR_IRQS 328
++
++#include_next <irq.h>
++
++#endif
+diff --git a/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h
+new file mode 100644
+index 0000000..b385252
+--- /dev/null
++++ b/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h
+@@ -0,0 +1,67 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#ifndef _LTQ_FALCON_H__
++#define _LTQ_FALCON_H__
++
++#ifdef CONFIG_SOC_FALCON
++
++#include <linux/pinctrl/pinctrl.h>
++#include <lantiq.h>
++
++/* Chip IDs */
++#define SOC_ID_FALCON		0x01B8
++
++/* SoC Types */
++#define SOC_TYPE_FALCON		0x01
++
++/*
++ * during early_printk no ioremap possible at this early stage
++ * lets use KSEG1 instead
++ */
++#define LTQ_ASC0_BASE_ADDR	0x1E100C00
++#define LTQ_EARLY_ASC		KSEG1ADDR(LTQ_ASC0_BASE_ADDR)
++
++/* WDT */
++#define LTQ_RST_CAUSE_WDTRST	0x0002
++
++/* CHIP ID */
++#define LTQ_STATUS_BASE_ADDR	0x1E802000
++
++#define FALCON_CHIPID		((u32 *)(KSEG1 + LTQ_STATUS_BASE_ADDR + 0x0c))
++#define FALCON_CHIPTYPE		((u32 *)(KSEG1 + LTQ_STATUS_BASE_ADDR + 0x38))
++#define FALCON_CHIPCONF		((u32 *)(KSEG1 + LTQ_STATUS_BASE_ADDR + 0x40))
++
++/* SYSCTL - start/stop/restart/configure/... different parts of the Soc */
++#define SYSCTL_SYS1		0
++#define SYSCTL_SYSETH		1
++#define SYSCTL_SYSGPE		2
++
++/* BOOT_SEL - find what boot media we have */
++#define BS_FLASH		0x1
++#define BS_SPI                  0x4
++
++/* global register ranges */
++extern __iomem void *ltq_ebu_membase;
++extern __iomem void *ltq_sys1_membase;
++#define ltq_ebu_w32(x, y)	ltq_w32((x), ltq_ebu_membase + (y))
++#define ltq_ebu_r32(x)		ltq_r32(ltq_ebu_membase + (x))
++
++#define ltq_sys1_w32(x, y)	ltq_w32((x), ltq_sys1_membase + (y))
++#define ltq_sys1_r32(x)		ltq_r32(ltq_sys1_membase + (x))
++#define ltq_sys1_w32_mask(clear, set, reg)   \
++	ltq_sys1_w32((ltq_sys1_r32(reg) & ~(clear)) | (set), reg)
++
++/*
++ * to keep the irq code generic we need to define this to 0 as falcon
++ * has no EIU/EBU
++ */
++#define LTQ_EBU_PCC_ISTAT	0
++
++#endif /* CONFIG_SOC_FALCON */
++#endif /* _LTQ_XWAY_H__ */
+diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
+index 7389098..20bdf40 100644
+--- a/arch/mips/lantiq/Kconfig
++++ b/arch/mips/lantiq/Kconfig
+@@ -16,6 +16,10 @@ config SOC_XWAY
+ 	bool "XWAY"
+ 	select SOC_TYPE_XWAY
+ 	select HW_HAS_PCI
++
++config SOC_FALCON
++	bool "FALCON"
++
+ endchoice
  
--extern unsigned int ltq_get_cpu_ver(void);
--extern unsigned int ltq_get_soc_type(void);
--
- /* spinlock all ebu i/o */
- extern spinlock_t ebu_lock;
+ choice
+diff --git a/arch/mips/lantiq/Makefile b/arch/mips/lantiq/Makefile
+index 16f1c75..d6bdc57 100644
+--- a/arch/mips/lantiq/Makefile
++++ b/arch/mips/lantiq/Makefile
+@@ -11,3 +11,4 @@ obj-y += dts/
+ obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
  
-@@ -54,7 +51,5 @@ extern int ltq_reset_cause(void);
- #define IOPORT_RESOURCE_END	0xffffffff
- #define IOMEM_RESOURCE_START	0x10000000
- #define IOMEM_RESOURCE_END	0xffffffff
--#define LTQ_FLASH_START		0x10000000
--#define LTQ_FLASH_MAX		0x04000000
- 
- #endif
-diff --git a/arch/mips/include/asm/mach-lantiq/lantiq_platform.h b/arch/mips/include/asm/mach-lantiq/lantiq_platform.h
-deleted file mode 100644
-index a305f1d..0000000
---- a/arch/mips/include/asm/mach-lantiq/lantiq_platform.h
-+++ /dev/null
-@@ -1,53 +0,0 @@
--/*
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under the terms of the GNU General Public License version 2 as published
-- *  by the Free Software Foundation.
-- *
-- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-- */
--
--#ifndef _LANTIQ_PLATFORM_H__
--#define _LANTIQ_PLATFORM_H__
--
--#include <linux/mtd/partitions.h>
--#include <linux/socket.h>
--
--/* struct used to pass info to the pci core */
--enum {
--	PCI_CLOCK_INT = 0,
--	PCI_CLOCK_EXT
--};
--
--#define PCI_EXIN0	0x0001
--#define PCI_EXIN1	0x0002
--#define PCI_EXIN2	0x0004
--#define PCI_EXIN3	0x0008
--#define PCI_EXIN4	0x0010
--#define PCI_EXIN5	0x0020
--#define PCI_EXIN_MAX	6
--
--#define PCI_GNT1	0x0040
--#define PCI_GNT2	0x0080
--#define PCI_GNT3	0x0100
--#define PCI_GNT4	0x0200
--
--#define PCI_REQ1	0x0400
--#define PCI_REQ2	0x0800
--#define PCI_REQ3	0x1000
--#define PCI_REQ4	0x2000
--#define PCI_REQ_SHIFT	10
--#define PCI_REQ_MASK	0xf
--
--struct ltq_pci_data {
--	int clock;
--	int gpio;
--	int irq[16];
--};
--
--/* struct used to pass info to network drivers */
--struct ltq_eth_data {
--	struct sockaddr mac;
--	int mii_mode;
--};
--
--#endif
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
-index b4465a8..885a429 100644
---- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
-+++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
-@@ -17,50 +17,6 @@
- #define INT_NUM_IM4_IRL0	(INT_NUM_IRQ0 + 128)
- #define INT_NUM_IM_OFFSET	(INT_NUM_IM1_IRL0 - INT_NUM_IM0_IRL0)
- 
--#define LTQ_ASC_TIR(x)		(INT_NUM_IM3_IRL0 + (x * 8))
--#define LTQ_ASC_RIR(x)		(INT_NUM_IM3_IRL0 + (x * 8) + 1)
--#define LTQ_ASC_EIR(x)		(INT_NUM_IM3_IRL0 + (x * 8) + 2)
--
--#define LTQ_ASC_ASE_TIR		INT_NUM_IM2_IRL0
--#define LTQ_ASC_ASE_RIR		(INT_NUM_IM2_IRL0 + 2)
--#define LTQ_ASC_ASE_EIR		(INT_NUM_IM2_IRL0 + 3)
--
--#define LTQ_SSC_TIR		(INT_NUM_IM0_IRL0 + 15)
--#define LTQ_SSC_RIR		(INT_NUM_IM0_IRL0 + 14)
--#define LTQ_SSC_EIR		(INT_NUM_IM0_IRL0 + 16)
--
--#define LTQ_MEI_DYING_GASP_INT	(INT_NUM_IM1_IRL0 + 21)
--#define LTQ_MEI_INT		(INT_NUM_IM1_IRL0 + 23)
--
--#define LTQ_TIMER6_INT		(INT_NUM_IM1_IRL0 + 23)
--#define LTQ_USB_INT		(INT_NUM_IM1_IRL0 + 22)
--#define LTQ_USB_OC_INT		(INT_NUM_IM4_IRL0 + 23)
--
--#define MIPS_CPU_TIMER_IRQ		7
--
--#define LTQ_DMA_CH0_INT		(INT_NUM_IM2_IRL0)
--#define LTQ_DMA_CH1_INT		(INT_NUM_IM2_IRL0 + 1)
--#define LTQ_DMA_CH2_INT		(INT_NUM_IM2_IRL0 + 2)
--#define LTQ_DMA_CH3_INT		(INT_NUM_IM2_IRL0 + 3)
--#define LTQ_DMA_CH4_INT		(INT_NUM_IM2_IRL0 + 4)
--#define LTQ_DMA_CH5_INT		(INT_NUM_IM2_IRL0 + 5)
--#define LTQ_DMA_CH6_INT		(INT_NUM_IM2_IRL0 + 6)
--#define LTQ_DMA_CH7_INT		(INT_NUM_IM2_IRL0 + 7)
--#define LTQ_DMA_CH8_INT		(INT_NUM_IM2_IRL0 + 8)
--#define LTQ_DMA_CH9_INT		(INT_NUM_IM2_IRL0 + 9)
--#define LTQ_DMA_CH10_INT	(INT_NUM_IM2_IRL0 + 10)
--#define LTQ_DMA_CH11_INT	(INT_NUM_IM2_IRL0 + 11)
--#define LTQ_DMA_CH12_INT	(INT_NUM_IM2_IRL0 + 25)
--#define LTQ_DMA_CH13_INT	(INT_NUM_IM2_IRL0 + 26)
--#define LTQ_DMA_CH14_INT	(INT_NUM_IM2_IRL0 + 27)
--#define LTQ_DMA_CH15_INT	(INT_NUM_IM2_IRL0 + 28)
--#define LTQ_DMA_CH16_INT	(INT_NUM_IM2_IRL0 + 29)
--#define LTQ_DMA_CH17_INT	(INT_NUM_IM2_IRL0 + 30)
--#define LTQ_DMA_CH18_INT	(INT_NUM_IM2_IRL0 + 16)
--#define LTQ_DMA_CH19_INT	(INT_NUM_IM2_IRL0 + 21)
--
--#define LTQ_PPE_MBOX_INT	(INT_NUM_IM2_IRL0 + 24)
--
--#define INT_NUM_IM4_IRL14	(INT_NUM_IM4_IRL0 + 14)
-+#define MIPS_CPU_TIMER_IRQ	7
- 
- #endif
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-index d0d40a4..fb3e65f 100644
---- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-+++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-@@ -44,11 +44,6 @@
- #define SOC_TYPE_VR9_2		0x05 /* v1.2 */
- #define SOC_TYPE_AMAZON_SE	0x06
- 
--/* ASC0/1 - serial port */
--#define LTQ_ASC0_BASE_ADDR	0x1E100400
--#define LTQ_ASC1_BASE_ADDR	0x1E100C00
--#define LTQ_ASC_SIZE		0x400
--
- /* BOOT_SEL - find what boot media we have */
- #define BS_EXT_ROM		0x0
- #define BS_FLASH		0x1
-@@ -68,23 +63,10 @@ extern __iomem void *ltq_cgu_membase;
-  * during early_printk no ioremap is possible
-  * lets use KSEG1 instead
-  */
-+#define LTQ_ASC1_BASE_ADDR	0x1E100C00
- #define LTQ_EARLY_ASC		KSEG1ADDR(LTQ_ASC1_BASE_ADDR)
- 
--/* RCU - reset control unit */
--#define LTQ_RCU_BASE_ADDR	0x1F203000
--#define LTQ_RCU_SIZE		0x1000
--
--/* GPTU - general purpose timer unit */
--#define LTQ_GPTU_BASE_ADDR	0x18000300
--#define LTQ_GPTU_SIZE		0x100
--
- /* EBU - external bus unit */
--#define LTQ_EBU_GPIO_START	0x14000000
--#define LTQ_EBU_GPIO_SIZE	0x1000
--
--#define LTQ_EBU_BASE_ADDR	0x1E105300
--#define LTQ_EBU_SIZE		0x100
--
- #define LTQ_EBU_BUSCON0		0x0060
- #define LTQ_EBU_PCC_CON		0x0090
- #define LTQ_EBU_PCC_IEN		0x00A4
-@@ -93,85 +75,12 @@ extern __iomem void *ltq_cgu_membase;
- #define LTQ_EBU_ADDRSEL1	0x0024
- #define EBU_WRDIS		0x80000000
- 
--/* CGU - clock generation unit */
--#define LTQ_CGU_BASE_ADDR	0x1F103000
--#define LTQ_CGU_SIZE		0x1000
--
--/* ICU - interrupt control unit */
--#define LTQ_ICU_BASE_ADDR	0x1F880200
--#define LTQ_ICU_SIZE		0x100
--
--/* EIU - external interrupt unit */
--#define LTQ_EIU_BASE_ADDR	0x1F101000
--#define LTQ_EIU_SIZE		0x1000
--
--/* PMU - power management unit */
--#define LTQ_PMU_BASE_ADDR	0x1F102000
--#define LTQ_PMU_SIZE		0x1000
--
--#define PMU_DMA			0x0020
--#define PMU_USB			0x8041
--#define PMU_LED			0x0800
--#define PMU_GPT			0x1000
--#define PMU_PPE			0x2000
--#define PMU_FPI			0x4000
--#define PMU_SWITCH		0x10000000
--
--/* ETOP - ethernet */
--#define LTQ_ETOP_BASE_ADDR	0x1E180000
--#define LTQ_ETOP_SIZE		0x40000
--
--/* DMA */
--#define LTQ_DMA_BASE_ADDR	0x1E104100
--#define LTQ_DMA_SIZE		0x800
--
--/* PCI */
--#define PCI_CR_BASE_ADDR	0x1E105400
--#define PCI_CR_SIZE		0x400
--
- /* WDT */
--#define LTQ_WDT_BASE_ADDR	0x1F8803F0
--#define LTQ_WDT_SIZE		0x10
--
- #define LTQ_RST_CAUSE_WDTRST	0x20
- 
--/* STP - serial to parallel conversion unit */
--#define LTQ_STP_BASE_ADDR	0x1E100BB0
--#define LTQ_STP_SIZE		0x40
--
--/* GPIO */
--#define LTQ_GPIO0_BASE_ADDR	0x1E100B10
--#define LTQ_GPIO1_BASE_ADDR	0x1E100B40
--#define LTQ_GPIO2_BASE_ADDR	0x1E100B70
--#define LTQ_GPIO_SIZE		0x30
--
--/* SSC */
--#define LTQ_SSC_BASE_ADDR	0x1e100800
--#define LTQ_SSC_SIZE		0x100
--
--/* MEI - dsl core */
--#define LTQ_MEI_BASE_ADDR	0x1E116000
--
--/* DEU - data encryption unit */
--#define LTQ_DEU_BASE_ADDR	0x1E103100
--
- /* MPS - multi processor unit (voice) */
- #define LTQ_MPS_BASE_ADDR	(KSEG1 + 0x1F107000)
- #define LTQ_MPS_CHIPID		((u32 *)(LTQ_MPS_BASE_ADDR + 0x0344))
- 
--/* request a non-gpio and set the PIO config */
--extern void ltq_pmu_enable(unsigned int module);
--extern void ltq_pmu_disable(unsigned int module);
--
--static inline int ltq_is_ar9(void)
--{
--	return (ltq_get_soc_type() == SOC_TYPE_AR9);
--}
--
--static inline int ltq_is_vr9(void)
--{
--	return (ltq_get_soc_type() == SOC_TYPE_VR9);
--}
--
- #endif /* CONFIG_SOC_TYPE_XWAY */
- #endif /* _LTQ_XWAY_H__ */
-diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-index 413ed53..d185e84 100644
---- a/arch/mips/lantiq/prom.c
-+++ b/arch/mips/lantiq/prom.c
-@@ -27,12 +27,6 @@ EXPORT_SYMBOL_GPL(ebu_lock);
-  */
- static struct ltq_soc_info soc_info;
- 
--unsigned int ltq_get_soc_type(void)
--{
--	return soc_info.type;
--}
--EXPORT_SYMBOL(ltq_get_soc_type);
--
- const char *get_system_type(void)
- {
- 	return soc_info.sys_type;
-diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-index 4d6aac6..546c10a 100644
---- a/arch/mips/lantiq/xway/sysctrl.c
-+++ b/arch/mips/lantiq/xway/sysctrl.c
-@@ -42,6 +42,7 @@
- /* clock gates that we can en/disable */
- #define PMU_USB0_P	BIT(0)
- #define PMU_PCI		BIT(4)
-+#define PMU_DMA		BIT(5)
- #define PMU_USB0	BIT(6)
- #define PMU_ASC0	BIT(7)
- #define PMU_EPHY	BIT(7)	/* ase */
-@@ -49,7 +50,10 @@
- #define PMU_DFE		BIT(9)
- #define PMU_EBU		BIT(10)
- #define PMU_STP		BIT(11)
-+#define PMU_GPT		BIT(12)
-+#define PMU_PPE		BIT(13)
- #define PMU_AHBS	BIT(13) /* vr9 */
-+#define PMU_FPI		BIT(14)
- #define PMU_AHBM	BIT(15)
- #define PMU_ASC1	BIT(17)
- #define PMU_PPE_QSB	BIT(18)
-@@ -60,6 +64,7 @@
- #define PMU_PPE_DPLUS	BIT(24)
- #define PMU_USB1_P	BIT(26)
- #define PMU_USB1	BIT(27)
-+#define PMU_SWITCH	BIT(28)
- #define PMU_PPE_TOP	BIT(29)
- #define PMU_GPHY	BIT(30)
- #define PMU_PCIE_CLK	BIT(31)
-@@ -76,26 +81,6 @@ static void __iomem *pmu_membase;
- void __iomem *ltq_cgu_membase;
- void __iomem *ltq_ebu_membase;
- 
--/* legacy function kept alive to ease clkdev transition */
--void ltq_pmu_enable(unsigned int module)
--{
--	int err = 1000000;
--
--	pmu_w32(pmu_r32(PMU_PWDCR) & ~module, PMU_PWDCR);
--	do {} while (--err && (pmu_r32(PMU_PWDSR) & module));
--
--	if (!err)
--		panic("activating PMU module failed!");
--}
--EXPORT_SYMBOL(ltq_pmu_enable);
--
--/* legacy function kept alive to ease clkdev transition */
--void ltq_pmu_disable(unsigned int module)
--{
--	pmu_w32(pmu_r32(PMU_PWDCR) | module, PMU_PWDCR);
--}
--EXPORT_SYMBOL(ltq_pmu_disable);
--
- /* enable a hw clock */
- static int cgu_enable(struct clk *clk)
- {
+ obj-$(CONFIG_SOC_TYPE_XWAY) += xway/
++obj-$(CONFIG_SOC_FALCON) += falcon/
+diff --git a/arch/mips/lantiq/Platform b/arch/mips/lantiq/Platform
+index f3dff05..b3ec498 100644
+--- a/arch/mips/lantiq/Platform
++++ b/arch/mips/lantiq/Platform
+@@ -6,3 +6,4 @@ platform-$(CONFIG_LANTIQ)	+= lantiq/
+ cflags-$(CONFIG_LANTIQ)		+= -I$(srctree)/arch/mips/include/asm/mach-lantiq
+ load-$(CONFIG_LANTIQ)		= 0xffffffff80002000
+ cflags-$(CONFIG_SOC_TYPE_XWAY)	+= -I$(srctree)/arch/mips/include/asm/mach-lantiq/xway
++cflags-$(CONFIG_SOC_FALCON)	+= -I$(srctree)/arch/mips/include/asm/mach-lantiq/falcon
+diff --git a/arch/mips/lantiq/falcon/Makefile b/arch/mips/lantiq/falcon/Makefile
+new file mode 100644
+index 0000000..ff220f9
+--- /dev/null
++++ b/arch/mips/lantiq/falcon/Makefile
+@@ -0,0 +1 @@
++obj-y := prom.o reset.o sysctrl.o
+diff --git a/arch/mips/lantiq/falcon/prom.c b/arch/mips/lantiq/falcon/prom.c
+new file mode 100644
+index 0000000..c1d278f
+--- /dev/null
++++ b/arch/mips/lantiq/falcon/prom.c
+@@ -0,0 +1,87 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Copyright (C) 2012 Thomas Langer <thomas.langer@lantiq.com>
++ * Copyright (C) 2012 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/kernel.h>
++#include <asm/io.h>
++
++#include <lantiq_soc.h>
++
++#include "../prom.h"
++
++#define SOC_FALCON	"Falcon"
++#define SOC_FALCON_D	"Falcon-D"
++#define SOC_FALCON_V	"Falcon-V"
++#define SOC_FALCON_M	"Falcon-M"
++
++#define COMP_FALCON	"lantiq,falcon"
++
++#define PART_SHIFT	12
++#define PART_MASK	0x0FFFF000
++#define REV_SHIFT	28
++#define REV_MASK	0xF0000000
++#define SREV_SHIFT	22
++#define SREV_MASK	0x03C00000
++#define TYPE_SHIFT	26
++#define TYPE_MASK	0x3C000000
++
++/* reset, nmi and ejtag exception vectors */
++#define BOOT_REG_BASE	(KSEG1 | 0x1F200000)
++#define BOOT_RVEC	(BOOT_REG_BASE | 0x00)
++#define BOOT_NVEC	(BOOT_REG_BASE | 0x04)
++#define BOOT_EVEC	(BOOT_REG_BASE | 0x08)
++
++void __init ltq_soc_nmi_setup(void)
++{
++	extern void (*nmi_handler)(void);
++
++	ltq_w32((unsigned long)&nmi_handler, (void *)BOOT_NVEC);
++}
++
++void __init ltq_soc_ejtag_setup(void)
++{
++	extern void (*ejtag_debug_handler)(void);
++
++	ltq_w32((unsigned long)&ejtag_debug_handler, (void *)BOOT_EVEC);
++}
++
++void __init ltq_soc_detect(struct ltq_soc_info *i)
++{
++	u32 type;
++	i->partnum = (ltq_r32(FALCON_CHIPID) & PART_MASK) >> PART_SHIFT;
++	i->rev = (ltq_r32(FALCON_CHIPID) & REV_MASK) >> REV_SHIFT;
++	i->srev = ((ltq_r32(FALCON_CHIPCONF) & SREV_MASK) >> SREV_SHIFT);
++	i->compatible = COMP_FALCON;
++	i->type = SOC_TYPE_FALCON;
++	sprintf(i->rev_type, "%c%d%d", (i->srev & 0x4) ? ('B') : ('A'),
++		i->rev & 0x7, (i->srev & 0x3) + 1);
++
++	switch (i->partnum) {
++	case SOC_ID_FALCON:
++		type = (ltq_r32(FALCON_CHIPTYPE) & TYPE_MASK) >> TYPE_SHIFT;
++		switch (type) {
++		case 0:
++			i->name = SOC_FALCON_D;
++			break;
++		case 1:
++			i->name = SOC_FALCON_V;
++			break;
++		case 2:
++			i->name = SOC_FALCON_M;
++			break;
++		default:
++			i->name = SOC_FALCON;
++			break;
++		}
++		break;
++
++	default:
++		unreachable();
++		break;
++	}
++}
+diff --git a/arch/mips/lantiq/falcon/reset.c b/arch/mips/lantiq/falcon/reset.c
+new file mode 100644
+index 0000000..5682482
+--- /dev/null
++++ b/arch/mips/lantiq/falcon/reset.c
+@@ -0,0 +1,90 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Copyright (C) 2012 Thomas Langer <thomas.langer@lantiq.com>
++ * Copyright (C) 2012 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/pm.h>
++#include <asm/reboot.h>
++#include <linux/export.h>
++
++#include <lantiq_soc.h>
++
++/* CPU0 Reset Source Register */
++#define SYS1_CPU0RS		0x0040
++/* reset cause mask */
++#define CPU0RS_MASK		0x0003
++/* CPU0 Boot Mode Register */
++#define SYS1_BM			0x00a0
++/* boot mode mask */
++#define BM_MASK			0x0005
++
++/* allow platform code to find out what surce we booted from */
++unsigned char ltq_boot_select(void)
++{
++	return ltq_sys1_r32(SYS1_BM) & BM_MASK;
++}
++
++/* allow the watchdog driver to find out what the boot reason was */
++int ltq_reset_cause(void)
++{
++	return ltq_sys1_r32(SYS1_CPU0RS) & CPU0RS_MASK;
++}
++EXPORT_SYMBOL_GPL(ltq_reset_cause);
++
++#define BOOT_REG_BASE	(KSEG1 | 0x1F200000)
++#define BOOT_PW1_REG	(BOOT_REG_BASE | 0x20)
++#define BOOT_PW2_REG	(BOOT_REG_BASE | 0x24)
++#define BOOT_PW1	0x4C545100
++#define BOOT_PW2	0x0051544C
++
++#define WDT_REG_BASE	(KSEG1 | 0x1F8803F0)
++#define WDT_PW1		0x00BE0000
++#define WDT_PW2		0x00DC0000
++
++static void machine_restart(char *command)
++{
++	local_irq_disable();
++
++	/* reboot magic */
++	ltq_w32(BOOT_PW1, (void *)BOOT_PW1_REG); /* 'LTQ\0' */
++	ltq_w32(BOOT_PW2, (void *)BOOT_PW2_REG); /* '\0QTL' */
++	ltq_w32(0, (void *)BOOT_REG_BASE); /* reset Bootreg RVEC */
++
++	/* watchdog magic */
++	ltq_w32(WDT_PW1, (void *)WDT_REG_BASE);
++	ltq_w32(WDT_PW2 |
++		(0x3 << 26) | /* PWL */
++		(0x2 << 24) | /* CLKDIV */
++		(0x1 << 31) | /* enable */
++		(1), /* reload */
++		(void *)WDT_REG_BASE);
++	unreachable();
++}
++
++static void machine_halt(void)
++{
++	local_irq_disable();
++	unreachable();
++}
++
++static void machine_power_off(void)
++{
++	local_irq_disable();
++	unreachable();
++}
++
++static int __init mips_reboot_setup(void)
++{
++	_machine_restart = machine_restart;
++	_machine_halt = machine_halt;
++	pm_power_off = machine_power_off;
++	return 0;
++}
++
++arch_initcall(mips_reboot_setup);
+diff --git a/arch/mips/lantiq/falcon/sysctrl.c b/arch/mips/lantiq/falcon/sysctrl.c
+new file mode 100644
+index 0000000..ba0123d
+--- /dev/null
++++ b/arch/mips/lantiq/falcon/sysctrl.c
+@@ -0,0 +1,260 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Copyright (C) 2011 Thomas Langer <thomas.langer@lantiq.com>
++ * Copyright (C) 2011 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/ioport.h>
++#include <linux/export.h>
++#include <linux/clkdev.h>
++#include <linux/of_address.h>
++#include <asm/delay.h>
++
++#include <lantiq_soc.h>
++
++#include "../clk.h"
++
++/* infrastructure control register */
++#define SYS1_INFRAC		0x00bc
++/* Configuration fuses for drivers and pll */
++#define STATUS_CONFIG		0x0040
++
++/* GPE frequency selection */
++#define GPPC_OFFSET		24
++#define GPEFREQ_MASK		0x00000C0
++#define GPEFREQ_OFFSET		10
++/* Clock status register */
++#define SYSCTL_CLKS		0x0000
++/* Clock enable register */
++#define SYSCTL_CLKEN		0x0004
++/* Clock clear register */
++#define SYSCTL_CLKCLR		0x0008
++/* Activation Status Register */
++#define SYSCTL_ACTS		0x0020
++/* Activation Register */
++#define SYSCTL_ACT		0x0024
++/* Deactivation Register */
++#define SYSCTL_DEACT		0x0028
++/* reboot Register */
++#define SYSCTL_RBT		0x002c
++/* CPU0 Clock Control Register */
++#define SYS1_CPU0CC		0x0040
++/* HRST_OUT_N Control Register */
++#define SYS1_HRSTOUTC		0x00c0
++/* clock divider bit */
++#define CPU0CC_CPUDIV		0x0001
++
++/* Activation Status Register */
++#define ACTS_ASC1_ACT	0x00000800
++#define ACTS_I2C_ACT	0x00004000
++#define ACTS_P0		0x00010000
++#define ACTS_P1		0x00010000
++#define ACTS_P2		0x00020000
++#define ACTS_P3		0x00020000
++#define ACTS_P4		0x00040000
++#define ACTS_PADCTRL0	0x00100000
++#define ACTS_PADCTRL1	0x00100000
++#define ACTS_PADCTRL2	0x00200000
++#define ACTS_PADCTRL3	0x00200000
++#define ACTS_PADCTRL4	0x00400000
++
++#define sysctl_w32(m, x, y)	ltq_w32((x), sysctl_membase[m] + (y))
++#define sysctl_r32(m, x)	ltq_r32(sysctl_membase[m] + (x))
++#define sysctl_w32_mask(m, clear, set, reg)	\
++		sysctl_w32(m, (sysctl_r32(m, reg) & ~(clear)) | (set), reg)
++
++#define status_w32(x, y)	ltq_w32((x), status_membase + (y))
++#define status_r32(x)		ltq_r32(status_membase + (x))
++
++static void __iomem *sysctl_membase[3], *status_membase;
++void __iomem *ltq_sys1_membase, *ltq_ebu_membase;
++
++void falcon_trigger_hrst(int level)
++{
++	sysctl_w32(SYSCTL_SYS1, level & 1, SYS1_HRSTOUTC);
++}
++
++static inline void sysctl_wait(struct clk *clk,
++		unsigned int test, unsigned int reg)
++{
++	int err = 1000000;
++
++	do {} while (--err && ((sysctl_r32(clk->module, reg)
++					& clk->bits) != test));
++	if (!err)
++		pr_err("module de/activation failed %d %08X %08X %08X\n",
++			clk->module, clk->bits, test,
++			sysctl_r32(clk->module, reg) & clk->bits);
++}
++
++static int sysctl_activate(struct clk *clk)
++{
++	sysctl_w32(clk->module, clk->bits, SYSCTL_CLKEN);
++	sysctl_w32(clk->module, clk->bits, SYSCTL_ACT);
++	sysctl_wait(clk, clk->bits, SYSCTL_ACTS);
++	return 0;
++}
++
++static void sysctl_deactivate(struct clk *clk)
++{
++	sysctl_w32(clk->module, clk->bits, SYSCTL_CLKCLR);
++	sysctl_w32(clk->module, clk->bits, SYSCTL_DEACT);
++	sysctl_wait(clk, 0, SYSCTL_ACTS);
++}
++
++static int sysctl_clken(struct clk *clk)
++{
++	sysctl_w32(clk->module, clk->bits, SYSCTL_CLKEN);
++	sysctl_wait(clk, clk->bits, SYSCTL_CLKS);
++	return 0;
++}
++
++static void sysctl_clkdis(struct clk *clk)
++{
++	sysctl_w32(clk->module, clk->bits, SYSCTL_CLKCLR);
++	sysctl_wait(clk, 0, SYSCTL_CLKS);
++}
++
++static void sysctl_reboot(struct clk *clk)
++{
++	unsigned int act;
++	unsigned int bits;
++
++	act = sysctl_r32(clk->module, SYSCTL_ACT);
++	bits = ~act & clk->bits;
++	if (bits != 0) {
++		sysctl_w32(clk->module, bits, SYSCTL_CLKEN);
++		sysctl_w32(clk->module, bits, SYSCTL_ACT);
++		sysctl_wait(clk, bits, SYSCTL_ACTS);
++	}
++	sysctl_w32(clk->module, act & clk->bits, SYSCTL_RBT);
++	sysctl_wait(clk, clk->bits, SYSCTL_ACTS);
++}
++
++/* enable the ONU core */
++static void falcon_gpe_enable(void)
++{
++	unsigned int freq;
++	unsigned int status;
++
++	/* if if the clock is already enabled */
++	status = sysctl_r32(SYSCTL_SYS1, SYS1_INFRAC);
++	if (status & (1 << (GPPC_OFFSET + 1)))
++		return;
++
++	if (status_r32(STATUS_CONFIG) == 0)
++		freq = 1; /* use 625MHz on unfused chip */
++	else
++		freq = (status_r32(STATUS_CONFIG) &
++			GPEFREQ_MASK) >>
++			GPEFREQ_OFFSET;
++
++	/* apply new frequency */
++	sysctl_w32_mask(SYSCTL_SYS1, 7 << (GPPC_OFFSET + 1),
++		freq << (GPPC_OFFSET + 2) , SYS1_INFRAC);
++	udelay(1);
++
++	/* enable new frequency */
++	sysctl_w32_mask(SYSCTL_SYS1, 0, 1 << (GPPC_OFFSET + 1), SYS1_INFRAC);
++	udelay(1);
++}
++
++static inline void clkdev_add_sys(const char *dev, unsigned int module,
++					unsigned int bits)
++{
++	struct clk *clk = kzalloc(sizeof(struct clk), GFP_KERNEL);
++
++	clk->cl.dev_id = dev;
++	clk->cl.con_id = NULL;
++	clk->cl.clk = clk;
++	clk->module = module;
++	clk->activate = sysctl_activate;
++	clk->deactivate = sysctl_deactivate;
++	clk->enable = sysctl_clken;
++	clk->disable = sysctl_clkdis;
++	clk->reboot = sysctl_reboot;
++	clkdev_add(&clk->cl);
++}
++
++void __init ltq_soc_init(void)
++{
++	struct device_node *np_status =
++		of_find_compatible_node(NULL, NULL, "lantiq,status-falcon");
++	struct device_node *np_ebu =
++		of_find_compatible_node(NULL, NULL, "lantiq,ebu-falcon");
++	struct device_node *np_sys1 =
++		of_find_compatible_node(NULL, NULL, "lantiq,sys1-falcon");
++	struct device_node *np_syseth =
++		of_find_compatible_node(NULL, NULL, "lantiq,syseth-falcon");
++	struct device_node *np_sysgpe =
++		of_find_compatible_node(NULL, NULL, "lantiq,sysgpe-falcon");
++	struct resource res_status, res_ebu, res_sys[3];
++	int i;
++
++	/* check if all the core register ranges are available */
++	if (!np_status || !np_ebu || !np_sys1 || !np_syseth || !np_sysgpe)
++		panic("Failed to load core nodes from devicetree");
++
++	if (of_address_to_resource(np_status, 0, &res_status) ||
++			of_address_to_resource(np_ebu, 0, &res_ebu) ||
++			of_address_to_resource(np_sys1, 0, &res_sys[0]) ||
++			of_address_to_resource(np_syseth, 0, &res_sys[1]) ||
++			of_address_to_resource(np_sysgpe, 0, &res_sys[2]))
++		panic("Failed to get core resources");
++
++	if ((request_mem_region(res_status.start, resource_size(&res_status),
++				res_status.name) < 0) ||
++		(request_mem_region(res_ebu.start, resource_size(&res_ebu),
++				res_ebu.name) < 0) ||
++		(request_mem_region(res_sys[0].start,
++				resource_size(&res_sys[0]),
++				res_sys[0].name) < 0) ||
++		(request_mem_region(res_sys[1].start,
++				resource_size(&res_sys[1]),
++				res_sys[1].name) < 0) ||
++		(request_mem_region(res_sys[2].start,
++				resource_size(&res_sys[2]),
++				res_sys[2].name) < 0))
++		pr_err("Failed to request core reources");
++
++	status_membase = ioremap_nocache(res_status.start,
++					resource_size(&res_status));
++	ltq_ebu_membase = ioremap_nocache(res_ebu.start,
++					resource_size(&res_ebu));
++
++	if (!status_membase || !ltq_ebu_membase)
++		panic("Failed to remap core resources");
++
++	for (i = 0; i < 3; i++) {
++		sysctl_membase[i] = ioremap_nocache(res_sys[i].start,
++						resource_size(&res_sys[i]));
++		if (!sysctl_membase[i])
++			panic("Failed to remap sysctrl resources");
++	}
++	ltq_sys1_membase = sysctl_membase[0];
++
++	falcon_gpe_enable();
++
++	/* get our 3 static rates for cpu, fpi and io clocks */
++	if (ltq_sys1_r32(SYS1_CPU0CC) & CPU0CC_CPUDIV)
++		clkdev_add_static(CLOCK_200M, CLOCK_100M, CLOCK_200M);
++	else
++		clkdev_add_static(CLOCK_400M, CLOCK_100M, CLOCK_200M);
++
++	/* add our clock domains */
++	clkdev_add_sys("1d810000.gpio", SYSCTL_SYSETH, ACTS_P0);
++	clkdev_add_sys("1d810100.gpio", SYSCTL_SYSETH, ACTS_P2);
++	clkdev_add_sys("1e800100.gpio", SYSCTL_SYS1, ACTS_P1);
++	clkdev_add_sys("1e800200.gpio", SYSCTL_SYS1, ACTS_P3);
++	clkdev_add_sys("1e800300.gpio", SYSCTL_SYS1, ACTS_P4);
++	clkdev_add_sys("1db01000.pad", SYSCTL_SYSETH, ACTS_PADCTRL0);
++	clkdev_add_sys("1db02000.pad", SYSCTL_SYSETH, ACTS_PADCTRL2);
++	clkdev_add_sys("1e800400.pad", SYSCTL_SYS1, ACTS_PADCTRL1);
++	clkdev_add_sys("1e800500.pad", SYSCTL_SYS1, ACTS_PADCTRL3);
++	clkdev_add_sys("1e800600.pad", SYSCTL_SYS1, ACTS_PADCTRL4);
++	clkdev_add_sys("1e100C00.serial", SYSCTL_SYS1, ACTS_ASC1_ACT);
++	clkdev_add_sys("1e200000.i2c", SYSCTL_SYS1, ACTS_I2C_ACT);
++}
 -- 
 1.7.9.1

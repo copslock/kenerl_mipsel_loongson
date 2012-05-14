@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:46:40 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:38245 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:47:03 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:38248 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903705Ab2ENRnd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 May 2012 19:43:33 +0200
+        id S1903706Ab2ENRne (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 May 2012 19:43:34 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
         Grant Likely <grant.likely@secretlab.ca>,
         linux-kernel@vger.kernel.org
-Subject: [RESEND PATCH V2 08/17] GPIO: MIPS: lantiq: convert gpio-stp to OF and move it to subsystem
-Date:   Mon, 14 May 2012 19:42:34 +0200
-Message-Id: <1337017363-14424-8-git-send-email-blogic@openwrt.org>
+Subject: [RESEND PATCH V2 09/17] GPIO: MIPS: lantiq: convert gpio-ebu to OF and move it to subsystem
+Date:   Mon, 14 May 2012 19:42:35 +0200
+Message-Id: <1337017363-14424-9-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
 In-Reply-To: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
 References: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 33298
+X-archive-position: 33299
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,12 +26,11 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 Implements OF support and moves the driver from arch/mips/lantiq/xway/ to the
 gpio subsystem.
 
-The Serial To Parallel (STP) is found on MIPS based Lantiq socs. It is a
-peripheral controller used to drive external shift register cascades. At most
-3 groups of 8 bits can be driven. The hardware is able to allow the DSL modem
-to drive the 2 LSBs of the cascade automatically. The driver currently only
-supports output functionality. Patches for the input feature found on newer
-generations of the soc will be provided in a later series.
+By attaching hardware latches to the External Bus Unit (EBU) on Lantiq SoC, it
+is possible to create output only gpios. This driver configures a special
+memory address, which when written to, outputs 16 bit to the latches.
+
+This driver makes use of of_mm_gpio.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Cc: Grant Likely <grant.likely@secretlab.ca>
@@ -41,517 +40,346 @@ This patch is part of a series moving the mips/lantiq target to OF and clkdev
 support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
 
  arch/mips/lantiq/xway/Makefile   |    2 +-
- arch/mips/lantiq/xway/gpio_stp.c |  152 -------------------
- drivers/gpio/Kconfig             |   10 ++
+ arch/mips/lantiq/xway/gpio_ebu.c |  126 ------------------------------
+ drivers/gpio/Kconfig             |    8 ++
  drivers/gpio/Makefile            |    1 +
- drivers/gpio/gpio-stp-xway.c     |  300 ++++++++++++++++++++++++++++++++++++++
- 5 files changed, 312 insertions(+), 153 deletions(-)
- delete mode 100644 arch/mips/lantiq/xway/gpio_stp.c
- create mode 100644 drivers/gpio/gpio-stp-xway.c
+ drivers/gpio/gpio-mm-lantiq.c    |  157 ++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 167 insertions(+), 127 deletions(-)
+ delete mode 100644 arch/mips/lantiq/xway/gpio_ebu.c
+ create mode 100644 drivers/gpio/gpio-mm-lantiq.c
 
 diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
-index edef6c5..d0a0c96 100644
+index d0a0c96..dc3194f 100644
 --- a/arch/mips/lantiq/xway/Makefile
 +++ b/arch/mips/lantiq/xway/Makefile
 @@ -1 +1 @@
--obj-y := prom.o sysctrl.o clk.o reset.o gpio.o gpio_stp.o gpio_ebu.o dma.o
-+obj-y := prom.o sysctrl.o clk.o reset.o gpio.o gpio_ebu.o dma.o
-diff --git a/arch/mips/lantiq/xway/gpio_stp.c b/arch/mips/lantiq/xway/gpio_stp.c
+-obj-y := prom.o sysctrl.o clk.o reset.o gpio.o gpio_ebu.o dma.o
++obj-y := prom.o sysctrl.o clk.o reset.o gpio.o dma.o
+diff --git a/arch/mips/lantiq/xway/gpio_ebu.c b/arch/mips/lantiq/xway/gpio_ebu.c
 deleted file mode 100644
-index d674f1b..0000000
---- a/arch/mips/lantiq/xway/gpio_stp.c
+index b91c7f1..0000000
+--- a/arch/mips/lantiq/xway/gpio_ebu.c
 +++ /dev/null
-@@ -1,152 +0,0 @@
+@@ -1,126 +0,0 @@
 -/*
 - *  This program is free software; you can redistribute it and/or modify it
 - *  under the terms of the GNU General Public License version 2 as published
 - *  by the Free Software Foundation.
 - *
-- *  Copyright (C) 2007 John Crispin <blogic@openwrt.org>
-- *
+- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
 - */
 -
--#include <linux/slab.h>
 -#include <linux/init.h>
 -#include <linux/export.h>
 -#include <linux/types.h>
 -#include <linux/platform_device.h>
 -#include <linux/mutex.h>
--#include <linux/io.h>
 -#include <linux/gpio.h>
+-#include <linux/io.h>
 -
 -#include <lantiq_soc.h>
 -
--#define LTQ_STP_CON0		0x00
--#define LTQ_STP_CON1		0x04
--#define LTQ_STP_CPU0		0x08
--#define LTQ_STP_CPU1		0x0C
--#define LTQ_STP_AR		0x10
+-/*
+- * By attaching hardware latches to the EBU it is possible to create output
+- * only gpios. This driver configures a special memory address, which when
+- * written to outputs 16 bit to the latches.
+- */
 -
--#define LTQ_STP_CON_SWU		(1 << 31)
--#define LTQ_STP_2HZ		0
--#define LTQ_STP_4HZ		(1 << 23)
--#define LTQ_STP_8HZ		(2 << 23)
--#define LTQ_STP_10HZ		(3 << 23)
--#define LTQ_STP_SPEED_MASK	(0xf << 23)
--#define LTQ_STP_UPD_FPI		(1 << 31)
--#define LTQ_STP_UPD_MASK	(3 << 30)
--#define LTQ_STP_ADSL_SRC	(3 << 24)
+-#define LTQ_EBU_BUSCON	0x1e7ff		/* 16 bit access, slowest timing */
+-#define LTQ_EBU_WP	0x80000000	/* write protect bit */
 -
--#define LTQ_STP_GROUP0		(1 << 0)
+-/* we keep a shadow value of the last value written to the ebu */
+-static int ltq_ebu_gpio_shadow = 0x0;
+-static void __iomem *ltq_ebu_gpio_membase;
 -
--#define LTQ_STP_RISING		0
--#define LTQ_STP_FALLING		(1 << 26)
--#define LTQ_STP_EDGE_MASK	(1 << 26)
--
--#define ltq_stp_r32(reg)	__raw_readl(ltq_stp_membase + reg)
--#define ltq_stp_w32(val, reg)	__raw_writel(val, ltq_stp_membase + reg)
--#define ltq_stp_w32_mask(clear, set, reg) \
--		ltq_w32((ltq_r32(ltq_stp_membase + reg) & ~(clear)) | (set), \
--		ltq_stp_membase + (reg))
--
--static int ltq_stp_shadow = 0xffff;
--static void __iomem *ltq_stp_membase;
--
--static void ltq_stp_set(struct gpio_chip *chip, unsigned offset, int value)
+-static void ltq_ebu_apply(void)
 -{
--	if (value)
--		ltq_stp_shadow |= (1 << offset);
--	else
--		ltq_stp_shadow &= ~(1 << offset);
--	ltq_stp_w32(ltq_stp_shadow, LTQ_STP_CPU0);
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&ebu_lock, flags);
+-	ltq_ebu_w32(LTQ_EBU_BUSCON, LTQ_EBU_BUSCON1);
+-	*((__u16 *)ltq_ebu_gpio_membase) = ltq_ebu_gpio_shadow;
+-	ltq_ebu_w32(LTQ_EBU_BUSCON | LTQ_EBU_WP, LTQ_EBU_BUSCON1);
+-	spin_unlock_irqrestore(&ebu_lock, flags);
 -}
 -
--static int ltq_stp_direction_output(struct gpio_chip *chip, unsigned offset,
+-static void ltq_ebu_set(struct gpio_chip *chip, unsigned offset, int value)
+-{
+-	if (value)
+-		ltq_ebu_gpio_shadow |= (1 << offset);
+-	else
+-		ltq_ebu_gpio_shadow &= ~(1 << offset);
+-	ltq_ebu_apply();
+-}
+-
+-static int ltq_ebu_direction_output(struct gpio_chip *chip, unsigned offset,
 -	int value)
 -{
--	ltq_stp_set(chip, offset, value);
+-	ltq_ebu_set(chip, offset, value);
 -
 -	return 0;
 -}
 -
--static struct gpio_chip ltq_stp_chip = {
--	.label = "ltq_stp",
--	.direction_output = ltq_stp_direction_output,
--	.set = ltq_stp_set,
--	.base = 48,
--	.ngpio = 24,
+-static struct gpio_chip ltq_ebu_chip = {
+-	.label = "ltq_ebu",
+-	.direction_output = ltq_ebu_direction_output,
+-	.set = ltq_ebu_set,
+-	.base = 72,
+-	.ngpio = 16,
 -	.can_sleep = 1,
 -	.owner = THIS_MODULE,
 -};
 -
--static int ltq_stp_hw_init(void)
+-static int ltq_ebu_probe(struct platform_device *pdev)
 -{
--	/* sane defaults */
--	ltq_stp_w32(0, LTQ_STP_AR);
--	ltq_stp_w32(0, LTQ_STP_CPU0);
--	ltq_stp_w32(0, LTQ_STP_CPU1);
--	ltq_stp_w32(LTQ_STP_CON_SWU, LTQ_STP_CON0);
--	ltq_stp_w32(0, LTQ_STP_CON1);
--
--	/* rising or falling edge */
--	ltq_stp_w32_mask(LTQ_STP_EDGE_MASK, LTQ_STP_FALLING, LTQ_STP_CON0);
--
--	/* per default stp 15-0 are set */
--	ltq_stp_w32_mask(0, LTQ_STP_GROUP0, LTQ_STP_CON1);
--
--	/* stp are update periodically by the FPI bus */
--	ltq_stp_w32_mask(LTQ_STP_UPD_MASK, LTQ_STP_UPD_FPI, LTQ_STP_CON1);
--
--	/* set stp update speed */
--	ltq_stp_w32_mask(LTQ_STP_SPEED_MASK, LTQ_STP_8HZ, LTQ_STP_CON1);
--
--	/* tell the hardware that pin (led) 0 and 1 are controlled
--	 *  by the dsl arc
--	 */
--	ltq_stp_w32_mask(0, LTQ_STP_ADSL_SRC, LTQ_STP_CON0);
--
--	ltq_pmu_enable(PMU_LED);
--	return 0;
--}
--
--static int __devinit ltq_stp_probe(struct platform_device *pdev)
--{
--	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 -	int ret = 0;
+-	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 -
--	if (!res)
+-	if (!res) {
+-		dev_err(&pdev->dev, "failed to get memory resource\n");
 -		return -ENOENT;
+-	}
+-
 -	res = devm_request_mem_region(&pdev->dev, res->start,
 -		resource_size(res), dev_name(&pdev->dev));
 -	if (!res) {
--		dev_err(&pdev->dev, "failed to request STP memory\n");
+-		dev_err(&pdev->dev, "failed to request memory resource\n");
 -		return -EBUSY;
 -	}
--	ltq_stp_membase = devm_ioremap_nocache(&pdev->dev, res->start,
+-
+-	ltq_ebu_gpio_membase = devm_ioremap_nocache(&pdev->dev, res->start,
 -		resource_size(res));
--	if (!ltq_stp_membase) {
--		dev_err(&pdev->dev, "failed to remap STP memory\n");
+-	if (!ltq_ebu_gpio_membase) {
+-		dev_err(&pdev->dev, "Failed to ioremap mem region\n");
 -		return -ENOMEM;
 -	}
--	ret = gpiochip_add(&ltq_stp_chip);
--	if (!ret)
--		ret = ltq_stp_hw_init();
 -
+-	/* grab the default shadow value passed form the platform code */
+-	ltq_ebu_gpio_shadow = (unsigned int) pdev->dev.platform_data;
+-
+-	/* tell the ebu controller which memory address we will be using */
+-	ltq_ebu_w32(pdev->resource->start | 0x1, LTQ_EBU_ADDRSEL1);
+-
+-	/* write protect the region */
+-	ltq_ebu_w32(LTQ_EBU_BUSCON | LTQ_EBU_WP, LTQ_EBU_BUSCON1);
+-
+-	ret = gpiochip_add(&ltq_ebu_chip);
+-	if (!ret)
+-		ltq_ebu_apply();
 -	return ret;
 -}
 -
--static struct platform_driver ltq_stp_driver = {
--	.probe = ltq_stp_probe,
+-static struct platform_driver ltq_ebu_driver = {
+-	.probe = ltq_ebu_probe,
 -	.driver = {
--		.name = "ltq_stp",
+-		.name = "ltq_ebu",
 -		.owner = THIS_MODULE,
 -	},
 -};
 -
--int __init ltq_stp_init(void)
+-static int __init ltq_ebu_init(void)
 -{
--	int ret = platform_driver_register(&ltq_stp_driver);
+-	int ret = platform_driver_register(&ltq_ebu_driver);
 -
 -	if (ret)
--		pr_info("ltq_stp: error registering platfom driver");
+-		pr_info("ltq_ebu : Error registering platfom driver!");
 -	return ret;
 -}
 -
--postcore_initcall(ltq_stp_init);
+-postcore_initcall(ltq_ebu_init);
 diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index e03653d..4875071 100644
+index 4875071..8fae079 100644
 --- a/drivers/gpio/Kconfig
 +++ b/drivers/gpio/Kconfig
-@@ -306,6 +306,16 @@ config GPIO_STMPE
- 	  This enables support for the GPIOs found on the STMPE I/O
- 	  Expanders.
+@@ -96,6 +96,14 @@ config GPIO_EP93XX
+ 	depends on ARCH_EP93XX
+ 	select GPIO_GENERIC
  
-+config GPIO_STP_XWAY
-+	bool "XWAY STP GPIOs"
-+	depends on SOC_XWAY
++config GPIO_MM_LANTIQ
++	bool "Lantiq Memory mapped GPIOs"
++	depends on LANTIQ && SOC_XWAY
 +	help
-+	  This enables support for the Serial To Parallel (STP) unit found on
-+	  XWAY SoC. The STP allows the SoC to drive a shift registers cascade,
-+	  that can be up to 24 bit. This peripheral is aimed at driving leds.
-+	  Some of the gpios/leds can be auto updated by the soc with dsl and
-+	  phy status.
++	  This enables support for memory mapped GPIOs on the External Bus Unit
++	  (EBU) found on Lantiq SoCs. The gpios are output only as they are
++	  created by attaching a 16bit latch to the bus.
 +
- config GPIO_TC3589X
- 	bool "TC3589X GPIOs"
- 	depends on MFD_TC3589X
+ config GPIO_MPC5200
+ 	def_bool y
+ 	depends on PPC_MPC52xx
 diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 007f54b..6447841 100644
+index 6447841..ed1c96d 100644
 --- a/drivers/gpio/Makefile
 +++ b/drivers/gpio/Makefile
-@@ -49,6 +49,7 @@ obj-$(CONFIG_ARCH_SA1100)	+= gpio-sa1100.o
- obj-$(CONFIG_GPIO_SCH)		+= gpio-sch.o
- obj-$(CONFIG_GPIO_SODAVILLE)	+= gpio-sodaville.o
- obj-$(CONFIG_GPIO_STMPE)	+= gpio-stmpe.o
-+obj-$(CONFIG_GPIO_STP_XWAY)	+= gpio-stp-xway.o
- obj-$(CONFIG_GPIO_SX150X)	+= gpio-sx150x.o
- obj-$(CONFIG_GPIO_TC3589X)	+= gpio-tc3589x.o
- obj-$(CONFIG_ARCH_TEGRA)	+= gpio-tegra.o
-diff --git a/drivers/gpio/gpio-stp-xway.c b/drivers/gpio/gpio-stp-xway.c
+@@ -30,6 +30,7 @@ obj-$(CONFIG_GPIO_MC33880)	+= gpio-mc33880.o
+ obj-$(CONFIG_GPIO_MC9S08DZ60)	+= gpio-mc9s08dz60.o
+ obj-$(CONFIG_GPIO_MCP23S08)	+= gpio-mcp23s08.o
+ obj-$(CONFIG_GPIO_ML_IOH)	+= gpio-ml-ioh.o
++obj-$(CONFIG_GPIO_MM_LANTIQ)	+= gpio-mm-lantiq.o
+ obj-$(CONFIG_GPIO_MPC5200)	+= gpio-mpc5200.o
+ obj-$(CONFIG_GPIO_MPC8XXX)	+= gpio-mpc8xxx.o
+ obj-$(CONFIG_GPIO_MSM_V1)	+= gpio-msm-v1.o
+diff --git a/drivers/gpio/gpio-mm-lantiq.c b/drivers/gpio/gpio-mm-lantiq.c
 new file mode 100644
-index 0000000..9b53adf
+index 0000000..9296801
 --- /dev/null
-+++ b/drivers/gpio/gpio-stp-xway.c
-@@ -0,0 +1,300 @@
++++ b/drivers/gpio/gpio-mm-lantiq.c
+@@ -0,0 +1,157 @@
 +/*
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
 + *
 + *  Copyright (C) 2012 John Crispin <blogic@openwrt.org>
-+ *
 + */
 +
-+#include <linux/slab.h>
 +#include <linux/init.h>
 +#include <linux/module.h>
 +#include <linux/types.h>
-+#include <linux/of_platform.h>
++#include <linux/platform_device.h>
 +#include <linux/mutex.h>
-+#include <linux/io.h>
++#include <linux/of.h>
 +#include <linux/of_gpio.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
++#include <linux/io.h>
++#include <linux/slab.h>
 +
 +#include <lantiq_soc.h>
 +
 +/*
-+ * The Serial To Parallel (STP) is found on MIPS based Lantiq socs. It is a
-+ * peripheral controller used to drive external shift register cascades. At most
-+ * 3 groups of 8 bits can be driven. The hardware is able to allow the DSL modem
-+ * to drive the 2 LSBs of the cascade automatically.
++ * By attaching hardware latches to the EBU it is possible to create output
++ * only gpios. This driver configures a special memory address, which when
++ * written to outputs 16 bit to the latches.
 + */
 +
-+/* control register 0 */
-+#define XWAY_STP_CON0		0x00
-+/* control register 1 */
-+#define XWAY_STP_CON1		0x04
-+/* data register 0 */
-+#define XWAY_STP_CPU0		0x08
-+/* data register 1 */
-+#define XWAY_STP_CPU1		0x0C
-+/* access register */
-+#define XWAY_STP_AR		0x10
++#define LTQ_EBU_BUSCON	0x1e7ff		/* 16 bit access, slowest timing */
++#define LTQ_EBU_WP	0x80000000	/* write protect bit */
 +
-+/* software or hardware update select bit */
-+#define XWAY_STP_CON_SWU	BIT(31)
-+
-+/* automatic update rates */
-+#define XWAY_STP_2HZ		0
-+#define XWAY_STP_4HZ		BIT(23)
-+#define XWAY_STP_8HZ		BIT(24)
-+#define XWAY_STP_10HZ		(BIT(24) | BIT(23))
-+#define XWAY_STP_SPEED_MASK	(0xf << 23)
-+
-+/* clock source for automatic update */
-+#define XWAY_STP_UPD_FPI	BIT(31)
-+#define XWAY_STP_UPD_MASK	(BIT(31) | BIT(30))
-+
-+/* let the adsl core drive the 2 LSBs */
-+#define XWAY_STP_ADSL_SHIFT	24
-+#define XWAY_STP_ADSL_MASK	0x3
-+
-+/* 2 groups of 3 bits can be driven by the phys */
-+#define XWAY_STP_PHY_MASK	0x3
-+#define XWAY_STP_PHY1_SHIFT	27
-+#define XWAY_STP_PHY2_SHIFT	15
-+
-+/* STP has 3 groups of 8 bits */
-+#define XWAY_STP_GROUP0		BIT(0)
-+#define XWAY_STP_GROUP1		BIT(1)
-+#define XWAY_STP_GROUP2		BIT(2)
-+#define XWAY_STP_GROUP_MASK	(0x7)
-+
-+/* Edge configuration bits */
-+#define XWAY_STP_FALLING	BIT(26)
-+#define XWAY_STP_EDGE_MASK	BIT(26)
-+
-+#define xway_stp_r32(m, reg)		__raw_readl(m + reg)
-+#define xway_stp_w32(m, val, reg)	__raw_writel(val, m + reg)
-+#define xway_stp_w32_mask(m, clear, set, reg) \
-+		ltq_w32((ltq_r32(m + reg) & ~(clear)) | (set), \
-+		m + reg)
-+
-+struct xway_stp {
-+	struct gpio_chip gc;
-+	void __iomem *virt;
-+	u32 edge;	/* rising or falling edge triggered shift register */
-+	u16 shadow;	/* shadow the shift registers state */
-+	u8 groups;	/* we can drive 1-3 groups of 8bit each */
-+	u8 dsl;		/* the 2 LSBs can be driven by the dsl core */
-+	u8 phy1;	/* 3 bits can be driven by phy1 */
-+	u8 phy2;	/* 3 bits can be driven by phy2 */
-+	u8 reserved;	/* mask out the hw driven bits in gpio_request */
++struct ltq_mm {
++	struct of_mm_gpio_chip mmchip;
++	u16 shadow;	/* shadow the latches state */
 +};
 +
 +/*
-+ * xway_stp_set - gpio_chip->set - set gpios.
++ * ltq_mm_apply - write the shadow value to the ebu address.
++ * @chip:     Pointer to our private data structure.
++ *
++ * Write the shadow value to the EBU to set the gpios. We need to set the
++ * global EBU lock to make sure that PCI/MTD dont break.
++ */
++static void ltq_mm_apply(struct ltq_mm *chip)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&ebu_lock, flags);
++	ltq_ebu_w32(LTQ_EBU_BUSCON, LTQ_EBU_BUSCON1);
++	*((__u16 *)chip->mmchip.regs) = chip->shadow;
++	ltq_ebu_w32(LTQ_EBU_BUSCON | LTQ_EBU_WP, LTQ_EBU_BUSCON1);
++	spin_unlock_irqrestore(&ebu_lock, flags);
++}
++
++/*
++ * ltq_mm_set - gpio_chip->set - set gpios.
 + * @gc:     Pointer to gpio_chip device structure.
 + * @gpio:   GPIO signal number.
 + * @val:    Value to be written to specified signal.
 + *
-+ * Set the shadow value and call ltq_ebu_apply.
++ * Set the shadow value and call ltq_mm_apply.
 + */
-+static void xway_stp_set(struct gpio_chip *gc, unsigned gpio, int val)
++static void ltq_mm_set(struct gpio_chip *gc, unsigned offset, int value)
 +{
-+	struct xway_stp *chip =
-+		container_of(gc, struct xway_stp, gc);
++	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
++	struct ltq_mm *chip =
++		container_of(mm_gc, struct ltq_mm, mmchip);
 +
-+	if (val)
-+		chip->shadow |= BIT(gpio);
++	if (value)
++		chip->shadow |= (1 << offset);
 +	else
-+		chip->shadow &= ~BIT(gpio);
-+	xway_stp_w32(chip->virt, chip->shadow, XWAY_STP_CPU0);
-+	xway_stp_w32_mask(chip->virt, 0, XWAY_STP_CON_SWU, XWAY_STP_CON0);
++		chip->shadow &= ~(1 << offset);
++	ltq_mm_apply(chip);
 +}
 +
 +/*
-+ * xway_stp_dir_out - gpio_chip->dir_out - set gpio direction.
++ * ltq_mm_dir_out - gpio_chip->dir_out - set gpio direction.
 + * @gc:     Pointer to gpio_chip device structure.
 + * @gpio:   GPIO signal number.
 + * @val:    Value to be written to specified signal.
 + *
-+ * Same as xway_stp_set, always returns 0.
++ * Same as ltq_mm_set, always returns 0.
 + */
-+static int xway_stp_dir_out(struct gpio_chip *gc, unsigned gpio, int val)
++static int ltq_mm_dir_out(struct gpio_chip *gc, unsigned offset, int value)
 +{
-+	xway_stp_set(gc, gpio, val);
++	ltq_mm_set(gc, offset, value);
 +
 +	return 0;
 +}
 +
 +/*
-+ * xway_stp_request - gpio_chip->request
-+ * @gc:     Pointer to gpio_chip device structure.
-+ * @gpio:   GPIO signal number.
-+ *
-+ * We mask out the HW driven pins
++ * ltq_mm_save_regs - Set initial values of GPIO pins
++ * @mm_gc: pointer to memory mapped GPIO chip structure
 + */
-+static int xway_stp_request(struct gpio_chip *gc, unsigned gpio)
++static void ltq_mm_save_regs(struct of_mm_gpio_chip *mm_gc)
 +{
-+	struct xway_stp *chip =
-+		container_of(gc, struct xway_stp, gc);
++	struct ltq_mm *chip =
++		container_of(mm_gc, struct ltq_mm, mmchip);
 +
-+	if ((gpio < 8) && (chip->reserved & BIT(gpio))) {
-+		dev_err(gc->dev, "GPIO %d is driven by hardware\n", gpio);
-+		return -ENODEV;
-+	}
++	/* tell the ebu controller which memory address we will be using */
++	ltq_ebu_w32(CPHYSADDR(chip->mmchip.regs) | 0x1, LTQ_EBU_ADDRSEL1);
 +
-+	return 0;
++	ltq_mm_apply(chip);
 +}
 +
-+/*
-+ * xway_stp_hw_init - Configure the STP unit and enable the clock gate
-+ * @virt: pointer to the remapped register range
-+ */
-+static int xway_stp_hw_init(struct xway_stp *chip)
-+{
-+	/* sane defaults */
-+	xway_stp_w32(chip->virt, 0, XWAY_STP_AR);
-+	xway_stp_w32(chip->virt, 0, XWAY_STP_CPU0);
-+	xway_stp_w32(chip->virt, 0, XWAY_STP_CPU1);
-+	xway_stp_w32(chip->virt, XWAY_STP_CON_SWU, XWAY_STP_CON0);
-+	xway_stp_w32(chip->virt, 0, XWAY_STP_CON1);
-+
-+	/* apply edge trigger settings for the shift register */
-+	xway_stp_w32_mask(chip->virt, XWAY_STP_EDGE_MASK,
-+				chip->edge, XWAY_STP_CON0);
-+
-+	/* apply led group settings */
-+	xway_stp_w32_mask(chip->virt, XWAY_STP_GROUP_MASK,
-+				chip->groups, XWAY_STP_CON1);
-+
-+	/* tell the hardware which pins are controlled by the dsl modem */
-+	xway_stp_w32_mask(chip->virt,
-+			XWAY_STP_ADSL_MASK << XWAY_STP_ADSL_SHIFT,
-+			chip->dsl << XWAY_STP_ADSL_SHIFT,
-+			XWAY_STP_CON0);
-+
-+	/* tell the hardware which pins are controlled by the phys */
-+	xway_stp_w32_mask(chip->virt,
-+			XWAY_STP_PHY_MASK << XWAY_STP_PHY1_SHIFT,
-+			chip->phy1 << XWAY_STP_PHY1_SHIFT,
-+			XWAY_STP_CON0);
-+	xway_stp_w32_mask(chip->virt,
-+			XWAY_STP_PHY_MASK << XWAY_STP_PHY2_SHIFT,
-+			chip->phy2 << XWAY_STP_PHY2_SHIFT,
-+			XWAY_STP_CON1);
-+
-+	/* mask out the hw driven bits in gpio_request */
-+	chip->reserved = (chip->phy2 << 5) | (chip->phy1 << 2) | chip->dsl;
-+
-+	/*
-+	 * if we have pins that are driven by hw, we need to tell the stp what
-+	 * clock to use as a timer.
-+	 */
-+	if (chip->reserved)
-+		xway_stp_w32_mask(chip->virt, XWAY_STP_UPD_MASK,
-+			XWAY_STP_UPD_FPI, XWAY_STP_CON1);
-+
-+	return 0;
-+}
-+
-+static int __devinit xway_stp_probe(struct platform_device *pdev)
++static int ltq_mm_probe(struct platform_device *pdev)
 +{
 +	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	const __be32 *shadow, *groups, *dsl, *phy;
-+	struct xway_stp *chip;
-+	struct clk *clk;
++	struct ltq_mm *chip;
++	const __be32 *shadow;
 +	int ret = 0;
 +
 +	if (!res) {
-+		dev_err(&pdev->dev, "failed to request STP resource\n");
++		dev_err(&pdev->dev, "failed to get memory resource\n");
 +		return -ENOENT;
 +	}
 +
-+	chip = devm_kzalloc(&pdev->dev, sizeof(*chip), GFP_KERNEL);
++	chip = kzalloc(sizeof(*chip), GFP_KERNEL);
 +	if (!chip)
 +		return -ENOMEM;
 +
-+	chip->virt = devm_request_and_ioremap(&pdev->dev, res);
-+	if (!chip->virt) {
-+		dev_err(&pdev->dev, "failed to remap STP memory\n");
-+		return -ENOMEM;
-+	}
-+	chip->gc.dev = &pdev->dev;
-+	chip->gc.label = "stp-xway";
-+	chip->gc.direction_output = xway_stp_dir_out;
-+	chip->gc.set = xway_stp_set;
-+	chip->gc.request = xway_stp_request;
-+	chip->gc.base = -1;
-+	chip->gc.owner = THIS_MODULE;
++	chip->mmchip.gc.ngpio = 16;
++	chip->mmchip.gc.label = "gpio-mm-ltq";
++	chip->mmchip.gc.direction_output = ltq_mm_dir_out;
++	chip->mmchip.gc.set = ltq_mm_set;
++	chip->mmchip.save_regs = ltq_mm_save_regs;
 +
 +	/* store the shadow value if one was passed by the devicetree */
 +	shadow = of_get_property(pdev->dev.of_node, "lantiq,shadow", NULL);
 +	if (shadow)
 +		chip->shadow = *shadow;
 +
-+	/* find out which gpio groups should be enabled */
-+	groups = of_get_property(pdev->dev.of_node, "lantiq,groups", NULL);
-+	if (groups)
-+		chip->groups = *groups & XWAY_STP_GROUP_MASK;
-+	else
-+		chip->groups = XWAY_STP_GROUP0;
-+	chip->gc.ngpio = fls(chip->groups) * 8;
-+
-+	/* find out which gpios are controlled by the dsl core */
-+	dsl = of_get_property(pdev->dev.of_node, "lantiq,dsl", NULL);
-+	if (dsl)
-+		chip->dsl = *dsl & XWAY_STP_ADSL_MASK;
-+
-+	/* find out which gpios are controlled by the phys */
-+	if (of_machine_is_compatible("lantiq,ar9") ||
-+			of_machine_is_compatible("lantiq,gr9") ||
-+			of_machine_is_compatible("lantiq,vr9")) {
-+		phy = of_get_property(pdev->dev.of_node, "lantiq,phy1", NULL);
-+		if (phy)
-+			chip->phy1 = *phy & XWAY_STP_PHY_MASK;
-+		phy = of_get_property(pdev->dev.of_node, "lantiq,phy2", NULL);
-+		if (phy)
-+			chip->phy2 = *phy & XWAY_STP_PHY_MASK;
-+	}
-+
-+	/* check which edge trigger we should use, default to a falling edge */
-+	if (!of_find_property(pdev->dev.of_node, "lantiq,rising", NULL))
-+		chip->edge = XWAY_STP_FALLING;
-+
-+	clk = clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(clk)) {
-+		dev_err(&pdev->dev, "Failed to get clock\n");
-+		return PTR_ERR(clk);
-+	}
-+	clk_enable(clk);
-+
-+	ret = xway_stp_hw_init(chip);
-+	if (!ret)
-+		ret = gpiochip_add(&chip->gc);
-+
-+	if (!ret)
-+		dev_info(&pdev->dev, "Init done\n");
-+
++	ret = of_mm_gpiochip_add(pdev->dev.of_node, &chip->mmchip);
++	if (ret)
++		kfree(chip);
 +	return ret;
 +}
 +
-+static const struct of_device_id xway_stp_match[] = {
-+	{ .compatible = "lantiq,gpio-stp-xway" },
++static const struct of_device_id ltq_mm_match[] = {
++	{ .compatible = "lantiq,gpio-mm" },
 +	{},
 +};
-+MODULE_DEVICE_TABLE(of, xway_stp_match);
++MODULE_DEVICE_TABLE(of, ltq_mm_match);
 +
-+static struct platform_driver xway_stp_driver = {
-+	.probe = xway_stp_probe,
++static struct platform_driver ltq_mm_driver = {
++	.probe = ltq_mm_probe,
 +	.driver = {
-+		.name = "gpio-stp-xway",
++		.name = "gpio-mm-ltq",
 +		.owner = THIS_MODULE,
-+		.of_match_table = xway_stp_match,
++		.of_match_table = ltq_mm_match,
 +	},
 +};
 +
-+int __init xway_stp_init(void)
++static int __init ltq_mm_init(void)
 +{
-+	return platform_driver_register(&xway_stp_driver);
++	return platform_driver_register(&ltq_mm_driver);
 +}
 +
-+subsys_initcall(xway_stp_init);
++subsys_initcall(ltq_mm_init);
 -- 
 1.7.9.1

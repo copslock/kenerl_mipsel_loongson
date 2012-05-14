@@ -1,20 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:47:03 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:38248 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:47:27 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:38253 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903706Ab2ENRne (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1903707Ab2ENRne (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 14 May 2012 19:43:34 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        linux-kernel@vger.kernel.org
-Subject: [RESEND PATCH V2 09/17] GPIO: MIPS: lantiq: convert gpio-ebu to OF and move it to subsystem
-Date:   Mon, 14 May 2012 19:42:35 +0200
-Message-Id: <1337017363-14424-9-git-send-email-blogic@openwrt.org>
+        Alan Cox <alan@linux.intel.com>, linux-serial@vger.kernel.org
+Subject: [RESEND PATCH V2 10/17] SERIAL: MIPS: lantiq: implement OF support
+Date:   Mon, 14 May 2012 19:42:36 +0200
+Message-Id: <1337017363-14424-10-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
 In-Reply-To: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
 References: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 33299
+X-archive-position: 33300
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -23,363 +22,197 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Implements OF support and moves the driver from arch/mips/lantiq/xway/ to the
-gpio subsystem.
+Add devicetree and handling for our new clkdev clocks. The patch is rather
+straightforward. .of_match_table is set and the 3 irqs are now loaded from the
+devicetree.
 
-By attaching hardware latches to the External Bus Unit (EBU) on Lantiq SoC, it
-is possible to create output only gpios. This driver configures a special
-memory address, which when written to, outputs 16 bit to the latches.
-
-This driver makes use of of_mm_gpio.
+This series converts the lantiq target to clkdev amongst other things. The
+driver needs to handle two clocks now. The fpi bus clock used to derive the
+divider and the clock gate needed on some socs to make the secondary port work.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
-Cc: Grant Likely <grant.likely@secretlab.ca>
-Cc: linux-kernel@vger.kernel.org
+Cc: Alan Cox <alan@linux.intel.com>
+Cc: linux-serial@vger.kernel.org
 ---
 This patch is part of a series moving the mips/lantiq target to OF and clkdev
 support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
 
- arch/mips/lantiq/xway/Makefile   |    2 +-
- arch/mips/lantiq/xway/gpio_ebu.c |  126 ------------------------------
- drivers/gpio/Kconfig             |    8 ++
- drivers/gpio/Makefile            |    1 +
- drivers/gpio/gpio-mm-lantiq.c    |  157 ++++++++++++++++++++++++++++++++++++++
- 5 files changed, 167 insertions(+), 127 deletions(-)
- delete mode 100644 arch/mips/lantiq/xway/gpio_ebu.c
- create mode 100644 drivers/gpio/gpio-mm-lantiq.c
+Changes in V2
+* use LTQ_EARLY_ASC to detect the console
 
-diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
-index d0a0c96..dc3194f 100644
---- a/arch/mips/lantiq/xway/Makefile
-+++ b/arch/mips/lantiq/xway/Makefile
-@@ -1 +1 @@
--obj-y := prom.o sysctrl.o clk.o reset.o gpio.o gpio_ebu.o dma.o
-+obj-y := prom.o sysctrl.o clk.o reset.o gpio.o dma.o
-diff --git a/arch/mips/lantiq/xway/gpio_ebu.c b/arch/mips/lantiq/xway/gpio_ebu.c
-deleted file mode 100644
-index b91c7f1..0000000
---- a/arch/mips/lantiq/xway/gpio_ebu.c
-+++ /dev/null
-@@ -1,126 +0,0 @@
--/*
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under the terms of the GNU General Public License version 2 as published
-- *  by the Free Software Foundation.
-- *
-- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-- */
--
--#include <linux/init.h>
--#include <linux/export.h>
--#include <linux/types.h>
+ drivers/tty/serial/lantiq.c |   83 ++++++++++++++++++++++++++----------------
+ 1 files changed, 51 insertions(+), 32 deletions(-)
+
+diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
+index 96c1cac..02da071 100644
+--- a/drivers/tty/serial/lantiq.c
++++ b/drivers/tty/serial/lantiq.c
+@@ -31,16 +31,19 @@
+ #include <linux/tty_flip.h>
+ #include <linux/serial_core.h>
+ #include <linux/serial.h>
 -#include <linux/platform_device.h>
--#include <linux/mutex.h>
--#include <linux/gpio.h>
--#include <linux/io.h>
--
--#include <lantiq_soc.h>
--
--/*
-- * By attaching hardware latches to the EBU it is possible to create output
-- * only gpios. This driver configures a special memory address, which when
-- * written to outputs 16 bit to the latches.
-- */
--
--#define LTQ_EBU_BUSCON	0x1e7ff		/* 16 bit access, slowest timing */
--#define LTQ_EBU_WP	0x80000000	/* write protect bit */
--
--/* we keep a shadow value of the last value written to the ebu */
--static int ltq_ebu_gpio_shadow = 0x0;
--static void __iomem *ltq_ebu_gpio_membase;
--
--static void ltq_ebu_apply(void)
--{
--	unsigned long flags;
--
--	spin_lock_irqsave(&ebu_lock, flags);
--	ltq_ebu_w32(LTQ_EBU_BUSCON, LTQ_EBU_BUSCON1);
--	*((__u16 *)ltq_ebu_gpio_membase) = ltq_ebu_gpio_shadow;
--	ltq_ebu_w32(LTQ_EBU_BUSCON | LTQ_EBU_WP, LTQ_EBU_BUSCON1);
--	spin_unlock_irqrestore(&ebu_lock, flags);
--}
--
--static void ltq_ebu_set(struct gpio_chip *chip, unsigned offset, int value)
--{
--	if (value)
--		ltq_ebu_gpio_shadow |= (1 << offset);
--	else
--		ltq_ebu_gpio_shadow &= ~(1 << offset);
--	ltq_ebu_apply();
--}
--
--static int ltq_ebu_direction_output(struct gpio_chip *chip, unsigned offset,
--	int value)
--{
--	ltq_ebu_set(chip, offset, value);
--
--	return 0;
--}
--
--static struct gpio_chip ltq_ebu_chip = {
--	.label = "ltq_ebu",
--	.direction_output = ltq_ebu_direction_output,
--	.set = ltq_ebu_set,
--	.base = 72,
--	.ngpio = 16,
--	.can_sleep = 1,
--	.owner = THIS_MODULE,
--};
--
--static int ltq_ebu_probe(struct platform_device *pdev)
--{
--	int ret = 0;
--	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--
--	if (!res) {
--		dev_err(&pdev->dev, "failed to get memory resource\n");
--		return -ENOENT;
--	}
--
--	res = devm_request_mem_region(&pdev->dev, res->start,
--		resource_size(res), dev_name(&pdev->dev));
--	if (!res) {
--		dev_err(&pdev->dev, "failed to request memory resource\n");
--		return -EBUSY;
--	}
--
--	ltq_ebu_gpio_membase = devm_ioremap_nocache(&pdev->dev, res->start,
--		resource_size(res));
--	if (!ltq_ebu_gpio_membase) {
--		dev_err(&pdev->dev, "Failed to ioremap mem region\n");
--		return -ENOMEM;
--	}
--
--	/* grab the default shadow value passed form the platform code */
--	ltq_ebu_gpio_shadow = (unsigned int) pdev->dev.platform_data;
--
--	/* tell the ebu controller which memory address we will be using */
--	ltq_ebu_w32(pdev->resource->start | 0x1, LTQ_EBU_ADDRSEL1);
--
--	/* write protect the region */
--	ltq_ebu_w32(LTQ_EBU_BUSCON | LTQ_EBU_WP, LTQ_EBU_BUSCON1);
--
--	ret = gpiochip_add(&ltq_ebu_chip);
--	if (!ret)
--		ltq_ebu_apply();
--	return ret;
--}
--
--static struct platform_driver ltq_ebu_driver = {
--	.probe = ltq_ebu_probe,
--	.driver = {
--		.name = "ltq_ebu",
--		.owner = THIS_MODULE,
--	},
--};
--
--static int __init ltq_ebu_init(void)
--{
--	int ret = platform_driver_register(&ltq_ebu_driver);
--
--	if (ret)
--		pr_info("ltq_ebu : Error registering platfom driver!");
--	return ret;
--}
--
--postcore_initcall(ltq_ebu_init);
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 4875071..8fae079 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -96,6 +96,14 @@ config GPIO_EP93XX
- 	depends on ARCH_EP93XX
- 	select GPIO_GENERIC
++#include <linux/of_platform.h>
++#include <linux/of_address.h>
++#include <linux/of_irq.h>
+ #include <linux/io.h>
+ #include <linux/clk.h>
++#include <linux/gpio.h>
  
-+config GPIO_MM_LANTIQ
-+	bool "Lantiq Memory mapped GPIOs"
-+	depends on LANTIQ && SOC_XWAY
-+	help
-+	  This enables support for memory mapped GPIOs on the External Bus Unit
-+	  (EBU) found on Lantiq SoCs. The gpios are output only as they are
-+	  created by attaching a 16bit latch to the bus.
-+
- config GPIO_MPC5200
- 	def_bool y
- 	depends on PPC_MPC52xx
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 6447841..ed1c96d 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -30,6 +30,7 @@ obj-$(CONFIG_GPIO_MC33880)	+= gpio-mc33880.o
- obj-$(CONFIG_GPIO_MC9S08DZ60)	+= gpio-mc9s08dz60.o
- obj-$(CONFIG_GPIO_MCP23S08)	+= gpio-mcp23s08.o
- obj-$(CONFIG_GPIO_ML_IOH)	+= gpio-ml-ioh.o
-+obj-$(CONFIG_GPIO_MM_LANTIQ)	+= gpio-mm-lantiq.o
- obj-$(CONFIG_GPIO_MPC5200)	+= gpio-mpc5200.o
- obj-$(CONFIG_GPIO_MPC8XXX)	+= gpio-mpc8xxx.o
- obj-$(CONFIG_GPIO_MSM_V1)	+= gpio-msm-v1.o
-diff --git a/drivers/gpio/gpio-mm-lantiq.c b/drivers/gpio/gpio-mm-lantiq.c
-new file mode 100644
-index 0000000..9296801
---- /dev/null
-+++ b/drivers/gpio/gpio-mm-lantiq.c
-@@ -0,0 +1,157 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2012 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/types.h>
-+#include <linux/platform_device.h>
-+#include <linux/mutex.h>
-+#include <linux/of.h>
-+#include <linux/of_gpio.h>
-+#include <linux/io.h>
-+#include <linux/slab.h>
-+
-+#include <lantiq_soc.h>
-+
-+/*
-+ * By attaching hardware latches to the EBU it is possible to create output
-+ * only gpios. This driver configures a special memory address, which when
-+ * written to outputs 16 bit to the latches.
-+ */
-+
-+#define LTQ_EBU_BUSCON	0x1e7ff		/* 16 bit access, slowest timing */
-+#define LTQ_EBU_WP	0x80000000	/* write protect bit */
-+
-+struct ltq_mm {
-+	struct of_mm_gpio_chip mmchip;
-+	u16 shadow;	/* shadow the latches state */
-+};
-+
-+/*
-+ * ltq_mm_apply - write the shadow value to the ebu address.
-+ * @chip:     Pointer to our private data structure.
-+ *
-+ * Write the shadow value to the EBU to set the gpios. We need to set the
-+ * global EBU lock to make sure that PCI/MTD dont break.
-+ */
-+static void ltq_mm_apply(struct ltq_mm *chip)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&ebu_lock, flags);
-+	ltq_ebu_w32(LTQ_EBU_BUSCON, LTQ_EBU_BUSCON1);
-+	*((__u16 *)chip->mmchip.regs) = chip->shadow;
-+	ltq_ebu_w32(LTQ_EBU_BUSCON | LTQ_EBU_WP, LTQ_EBU_BUSCON1);
-+	spin_unlock_irqrestore(&ebu_lock, flags);
-+}
-+
-+/*
-+ * ltq_mm_set - gpio_chip->set - set gpios.
-+ * @gc:     Pointer to gpio_chip device structure.
-+ * @gpio:   GPIO signal number.
-+ * @val:    Value to be written to specified signal.
-+ *
-+ * Set the shadow value and call ltq_mm_apply.
-+ */
-+static void ltq_mm_set(struct gpio_chip *gc, unsigned offset, int value)
-+{
-+	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
-+	struct ltq_mm *chip =
-+		container_of(mm_gc, struct ltq_mm, mmchip);
-+
-+	if (value)
-+		chip->shadow |= (1 << offset);
-+	else
-+		chip->shadow &= ~(1 << offset);
-+	ltq_mm_apply(chip);
-+}
-+
-+/*
-+ * ltq_mm_dir_out - gpio_chip->dir_out - set gpio direction.
-+ * @gc:     Pointer to gpio_chip device structure.
-+ * @gpio:   GPIO signal number.
-+ * @val:    Value to be written to specified signal.
-+ *
-+ * Same as ltq_mm_set, always returns 0.
-+ */
-+static int ltq_mm_dir_out(struct gpio_chip *gc, unsigned offset, int value)
-+{
-+	ltq_mm_set(gc, offset, value);
-+
-+	return 0;
-+}
-+
-+/*
-+ * ltq_mm_save_regs - Set initial values of GPIO pins
-+ * @mm_gc: pointer to memory mapped GPIO chip structure
-+ */
-+static void ltq_mm_save_regs(struct of_mm_gpio_chip *mm_gc)
-+{
-+	struct ltq_mm *chip =
-+		container_of(mm_gc, struct ltq_mm, mmchip);
-+
-+	/* tell the ebu controller which memory address we will be using */
-+	ltq_ebu_w32(CPHYSADDR(chip->mmchip.regs) | 0x1, LTQ_EBU_ADDRSEL1);
-+
-+	ltq_mm_apply(chip);
-+}
-+
-+static int ltq_mm_probe(struct platform_device *pdev)
-+{
-+	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	struct ltq_mm *chip;
-+	const __be32 *shadow;
-+	int ret = 0;
-+
-+	if (!res) {
-+		dev_err(&pdev->dev, "failed to get memory resource\n");
+ #include <lantiq_soc.h>
+ 
+ #define PORT_LTQ_ASC		111
+ #define MAXPORTS		2
+ #define UART_DUMMY_UER_RX	1
+-#define DRVNAME			"ltq_asc"
++#define DRVNAME			"lantiq,asc"
+ #ifdef __BIG_ENDIAN
+ #define LTQ_ASC_TBUF		(0x0020 + 3)
+ #define LTQ_ASC_RBUF		(0x0024 + 3)
+@@ -114,6 +117,9 @@ static DEFINE_SPINLOCK(ltq_asc_lock);
+ 
+ struct ltq_uart_port {
+ 	struct uart_port	port;
++	/* clock used to derive divider */
++	struct clk		*fpiclk;
++	/* clock gating of the ASC core */
+ 	struct clk		*clk;
+ 	unsigned int		tx_irq;
+ 	unsigned int		rx_irq;
+@@ -316,7 +322,9 @@ lqasc_startup(struct uart_port *port)
+ 	struct ltq_uart_port *ltq_port = to_ltq_uart_port(port);
+ 	int retval;
+ 
+-	port->uartclk = clk_get_rate(ltq_port->clk);
++	if (ltq_port->clk)
++		clk_enable(ltq_port->clk);
++	port->uartclk = clk_get_rate(ltq_port->fpiclk);
+ 
+ 	ltq_w32_mask(ASCCLC_DISS | ASCCLC_RMCMASK, (1 << ASCCLC_RMCOFFSET),
+ 		port->membase + LTQ_ASC_CLC);
+@@ -382,6 +390,8 @@ lqasc_shutdown(struct uart_port *port)
+ 		port->membase + LTQ_ASC_RXFCON);
+ 	ltq_w32_mask(ASCTXFCON_TXFEN, ASCTXFCON_TXFFLU,
+ 		port->membase + LTQ_ASC_TXFCON);
++	if (ltq_port->clk)
++		clk_disable(ltq_port->clk);
+ }
+ 
+ static void
+@@ -630,7 +640,7 @@ lqasc_console_setup(struct console *co, char *options)
+ 
+ 	port = &ltq_port->port;
+ 
+-	port->uartclk = clk_get_rate(ltq_port->clk);
++	port->uartclk = clk_get_rate(ltq_port->fpiclk);
+ 
+ 	if (options)
+ 		uart_parse_options(options, &baud, &parity, &bits, &flow);
+@@ -668,37 +678,32 @@ static struct uart_driver lqasc_reg = {
+ static int __init
+ lqasc_probe(struct platform_device *pdev)
+ {
++	struct device_node *node = pdev->dev.of_node;
+ 	struct ltq_uart_port *ltq_port;
+ 	struct uart_port *port;
+-	struct resource *mmres, *irqres;
+-	int tx_irq, rx_irq, err_irq;
+-	struct clk *clk;
++	struct resource *mmres, irqres[3];
++	int line = 0;
+ 	int ret;
+ 
+ 	mmres = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	irqres = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+-	if (!mmres || !irqres)
++	ret = of_irq_to_resource_table(node, irqres, 3);
++	if (!mmres || (ret != 3)) {
++		dev_err(&pdev->dev,
++			"failed to get memory/irq for serial port\n");
+ 		return -ENODEV;
++	}
+ 
+-	if (pdev->id >= MAXPORTS)
+-		return -EBUSY;
++	/* check if this is the console port */
++	if (mmres->start != CPHYSADDR(LTQ_EARLY_ASC))
++		line = 1;
+ 
+-	if (lqasc_port[pdev->id] != NULL)
++	if (lqasc_port[line]) {
++		dev_err(&pdev->dev, "port %d already allocated\n", line);
+ 		return -EBUSY;
+-
+-	clk = clk_get(&pdev->dev, "fpi");
+-	if (IS_ERR(clk)) {
+-		pr_err("failed to get fpi clk\n");
+-		return -ENOENT;
+ 	}
+ 
+-	tx_irq = platform_get_irq_byname(pdev, "tx");
+-	rx_irq = platform_get_irq_byname(pdev, "rx");
+-	err_irq = platform_get_irq_byname(pdev, "err");
+-	if ((tx_irq < 0) | (rx_irq < 0) | (err_irq < 0))
+-		return -ENODEV;
+-
+-	ltq_port = kzalloc(sizeof(struct ltq_uart_port), GFP_KERNEL);
++	ltq_port = devm_kzalloc(&pdev->dev, sizeof(struct ltq_uart_port),
++			GFP_KERNEL);
+ 	if (!ltq_port)
+ 		return -ENOMEM;
+ 
+@@ -709,19 +714,26 @@ lqasc_probe(struct platform_device *pdev)
+ 	port->ops	= &lqasc_pops;
+ 	port->fifosize	= 16;
+ 	port->type	= PORT_LTQ_ASC,
+-	port->line	= pdev->id;
++	port->line	= line;
+ 	port->dev	= &pdev->dev;
+-
+-	port->irq	= tx_irq; /* unused, just to be backward-compatibe */
++	/* unused, just to be backward-compatible */
++	port->irq	= irqres[0].start;
+ 	port->mapbase	= mmres->start;
+ 
+-	ltq_port->clk	= clk;
++	ltq_port->fpiclk = clk_get_fpi();
++	if (IS_ERR(ltq_port->fpiclk)) {
++		pr_err("failed to get fpi clk\n");
 +		return -ENOENT;
 +	}
+ 
+-	ltq_port->tx_irq = tx_irq;
+-	ltq_port->rx_irq = rx_irq;
+-	ltq_port->err_irq = err_irq;
++	/* not all asc ports have clock gates, lets ignore the return code */
++	ltq_port->clk = clk_get(&pdev->dev, NULL);
+ 
+-	lqasc_port[pdev->id] = ltq_port;
++	ltq_port->tx_irq = irqres[0].start;
++	ltq_port->rx_irq = irqres[1].start;
++	ltq_port->err_irq = irqres[2].start;
 +
-+	chip = kzalloc(sizeof(*chip), GFP_KERNEL);
-+	if (!chip)
-+		return -ENOMEM;
-+
-+	chip->mmchip.gc.ngpio = 16;
-+	chip->mmchip.gc.label = "gpio-mm-ltq";
-+	chip->mmchip.gc.direction_output = ltq_mm_dir_out;
-+	chip->mmchip.gc.set = ltq_mm_set;
-+	chip->mmchip.save_regs = ltq_mm_save_regs;
-+
-+	/* store the shadow value if one was passed by the devicetree */
-+	shadow = of_get_property(pdev->dev.of_node, "lantiq,shadow", NULL);
-+	if (shadow)
-+		chip->shadow = *shadow;
-+
-+	ret = of_mm_gpiochip_add(pdev->dev.of_node, &chip->mmchip);
-+	if (ret)
-+		kfree(chip);
-+	return ret;
-+}
-+
-+static const struct of_device_id ltq_mm_match[] = {
-+	{ .compatible = "lantiq,gpio-mm" },
++	lqasc_port[line] = ltq_port;
+ 	platform_set_drvdata(pdev, ltq_port);
+ 
+ 	ret = uart_add_one_port(&lqasc_reg, port);
+@@ -729,10 +741,17 @@ lqasc_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
++static const struct of_device_id ltq_asc_match[] = {
++	{ .compatible = DRVNAME },
 +	{},
 +};
-+MODULE_DEVICE_TABLE(of, ltq_mm_match);
++MODULE_DEVICE_TABLE(of, ltq_asc_match);
 +
-+static struct platform_driver ltq_mm_driver = {
-+	.probe = ltq_mm_probe,
-+	.driver = {
-+		.name = "gpio-mm-ltq",
-+		.owner = THIS_MODULE,
-+		.of_match_table = ltq_mm_match,
-+	},
-+};
-+
-+static int __init ltq_mm_init(void)
-+{
-+	return platform_driver_register(&ltq_mm_driver);
-+}
-+
-+subsys_initcall(ltq_mm_init);
+ static struct platform_driver lqasc_driver = {
+ 	.driver		= {
+ 		.name	= DRVNAME,
+ 		.owner	= THIS_MODULE,
++		.of_match_table = ltq_asc_match,
+ 	},
+ };
+ 
 -- 
 1.7.9.1

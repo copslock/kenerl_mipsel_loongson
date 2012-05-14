@@ -1,232 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:52:11 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:36756 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903703Ab2ENRvH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 May 2012 19:51:07 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-Subject: [RESEND PATCH V2 12/17] NET: MIPS: lantiq: implement OF support inside the etop driver
-Date:   Mon, 14 May 2012 19:42:38 +0200
-Message-Id: <1337017363-14424-12-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.9.1
-In-Reply-To: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
-References: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 33308
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 20:13:54 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:43889 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903706Ab2ENSNv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 May 2012 20:13:51 +0200
+Received: by dadm1 with SMTP id m1so7069033dad.36
+        for <linux-mips@linux-mips.org>; Mon, 14 May 2012 11:13:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=GdQxWKm3HNSg6EKWENzERg7uqLV+bRZ9J5iRQ9ogIVo=;
+        b=eukSPCmWotOEny6efc6/1outLu7GwQGubs9BCTyPa4mERa9wpBGshZ/Emfv6tCiss/
+         d+aHy39MYUsq2apnoquhnkN6dmy00M7eC1tvrFRNMnR/H7VJFLfghoqT+krCurwiKu3L
+         Huz+fKGrVmrwIpW1s02oaSWFO89CK5pKV0ldhZ8vC3ADQr/uUUnCXpvqxKy1oShbRPET
+         i2okxpvisO74G2eAp6TZJ5GKDTmfTHc7Ckm0yr8B++DG+jlLlVHUho3EfiDHHx/xJ+jy
+         WAPL7l/BBb0bXyizlO8g+WcW4AfbpRKBGXedtt9QnSBOtaDfPt/vPXmyMWXeYWwSB5Jl
+         mYpg==
+Received: by 10.68.202.167 with SMTP id kj7mr20309301pbc.9.1337019224902;
+        Mon, 14 May 2012 11:13:44 -0700 (PDT)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id jv6sm15246511pbc.40.2012.05.14.11.13.42
+        (version=SSLv3 cipher=OTHER);
+        Mon, 14 May 2012 11:13:43 -0700 (PDT)
+Message-ID: <4FB14B55.4070604@gmail.com>
+Date:   Mon, 14 May 2012 11:13:41 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+MIME-Version: 1.0
+To:     Shubhrajyoti Datta <omaplinuxkernel@gmail.com>
+CC:     David Daney <ddaney.cavm@gmail.com>,
+        devicetree-discuss@lists.ozlabs.org,
+        Grant Likely <grant.likely@secretlab.ca>,
+        Rob Herring <rob.herring@calxeda.com>,
+        spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 2/2] spi: Add SPI master controller for OCTEON SOCs.
+References: <1336772086-17248-1-git-send-email-ddaney.cavm@gmail.com>   <1336772086-17248-3-git-send-email-ddaney.cavm@gmail.com> <CAM=Q2csSQWbCOCQpubDok1=hmPvHU0MTEUg+-FGhp91=O5L6Hw@mail.gmail.com>
+In-Reply-To: <CAM=Q2csSQWbCOCQpubDok1=hmPvHU0MTEUg+-FGhp91=O5L6Hw@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 33309
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This patch makes it possible to load the driver for the ETOP ethernet on
-Lantiq SoC from a devicetree.
+On 05/13/2012 10:46 PM, Shubhrajyoti Datta wrote:
+> Hi David,
+> A few comments.
+>
+> On Sat, May 12, 2012 at 3:04 AM, David Daney<ddaney.cavm@gmail.com>  wrote:
+[...]
 
-Additionally we convert the driver to using the new clkdev clock in favour of
-the old ltq_pmu_*() api.
+>> +
+>> +#define DRV_VERSION "2.0" /* Version 1 was the out-of-tree driver */
+> This could be given a miss. As it is less meaningful once accepted.
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: netdev@vger.kernel.org
----
-This patch is part of a series moving the mips/lantiq target to OF and clkdev
-support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
 
-Changes in V2
-* rebase on Ralf's next tree
+Well, this leads to the question, what is the purpose of the 
+'MODULE_VERSION()' macro?  If I use that, I need to populate it with a 
+value.
 
- drivers/net/ethernet/lantiq_etop.c |   63 +++++++++++++++++++++++++++++------
- 1 files changed, 52 insertions(+), 11 deletions(-)
+>
+[...]
+>> +static void octeon_spi_wait_ready(struct octeon_spi *p)
+>> +{
+>> +       union cvmx_mpi_sts mpi_sts;
+>> +       unsigned int loops = 0;
+>> +
+>> +       do {
+>> +               if (loops++)
+>> +                       __delay(500);
+> Could we allow  have a non-busy loop here?
+>
 
-diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-index 5dc9cbd..c0443d4 100644
---- a/drivers/net/ethernet/lantiq_etop.c
-+++ b/drivers/net/ethernet/lantiq_etop.c
-@@ -29,19 +29,22 @@
- #include <linux/tcp.h>
- #include <linux/skbuff.h>
- #include <linux/mm.h>
--#include <linux/platform_device.h>
- #include <linux/ethtool.h>
- #include <linux/init.h>
- #include <linux/delay.h>
- #include <linux/io.h>
- #include <linux/dma-mapping.h>
- #include <linux/module.h>
-+#include <linux/of_platform.h>
-+#include <linux/of_net.h>
-+#include <linux/of_address.h>
-+#include <linux/of_irq.h>
-+#include <linux/of_gpio.h>
- 
- #include <asm/checksum.h>
- 
- #include <lantiq_soc.h>
- #include <xway_dma.h>
--#include <lantiq_platform.h>
- 
- #define LTQ_ETOP_MDIO		0x11804
- #define MDIO_REQUEST		0x80000000
-@@ -73,6 +76,7 @@
- #define ETOP_CGEN		0x800
- 
- /* use 2 static channels for TX/RX */
-+#define LTQ_DMA_CH0_INT		INT_NUM_IM2_IRL0
- #define LTQ_ETOP_TX_CHANNEL	1
- #define LTQ_ETOP_RX_CHANNEL	6
- #define IS_TX(x)		(x == LTQ_ETOP_TX_CHANNEL)
-@@ -99,12 +103,17 @@ struct ltq_etop_chan {
- struct ltq_etop_priv {
- 	struct net_device *netdev;
- 	struct platform_device *pdev;
--	struct ltq_eth_data *pldata;
- 	struct resource *res;
- 
- 	struct mii_bus *mii_bus;
- 	struct phy_device *phydev;
- 
-+	struct clk *clk;
-+	const void *mac;
-+	int mii_mode;
-+	int tx_irq;
-+	int rx_irq;
-+
- 	struct ltq_etop_chan ch[MAX_DMA_CHAN];
- 	int tx_free[MAX_DMA_CHAN >> 1];
- 
-@@ -239,7 +248,7 @@ ltq_etop_hw_exit(struct net_device *dev)
- 	struct ltq_etop_priv *priv = netdev_priv(dev);
- 	int i;
- 
--	ltq_pmu_disable(PMU_PPE);
-+	clk_disable(priv->clk);
- 	for (i = 0; i < MAX_DMA_CHAN; i++)
- 		if (IS_TX(i) || IS_RX(i))
- 			ltq_etop_free_channel(dev, &priv->ch[i]);
-@@ -251,9 +260,9 @@ ltq_etop_hw_init(struct net_device *dev)
- 	struct ltq_etop_priv *priv = netdev_priv(dev);
- 	int i;
- 
--	ltq_pmu_enable(PMU_PPE);
-+	clk_enable(priv->clk);
- 
--	switch (priv->pldata->mii_mode) {
-+	switch (priv->mii_mode) {
- 	case PHY_INTERFACE_MODE_RMII:
- 		ltq_etop_w32_mask(ETOP_MII_MASK,
- 			ETOP_MII_REVERSE, LTQ_ETOP_CFG);
-@@ -266,7 +275,7 @@ ltq_etop_hw_init(struct net_device *dev)
- 
- 	default:
- 		netdev_err(dev, "unknown mii mode %d\n",
--			priv->pldata->mii_mode);
-+			priv->mii_mode);
- 		return -ENOTSUPP;
- 	}
- 
-@@ -395,7 +404,7 @@ ltq_etop_mdio_probe(struct net_device *dev)
- 	}
- 
- 	phydev = phy_connect(dev, dev_name(&phydev->dev), &ltq_etop_mdio_link,
--			0, priv->pldata->mii_mode);
-+			0, priv->mii_mode);
- 
- 	if (IS_ERR(phydev)) {
- 		netdev_err(dev, "Could not attach to PHY\n");
-@@ -643,7 +652,7 @@ ltq_etop_init(struct net_device *dev)
- 		goto err_hw;
- 	ltq_etop_change_mtu(dev, 1500);
- 
--	memcpy(&mac, &priv->pldata->mac, sizeof(struct sockaddr));
-+	memcpy(&mac.sa_data, &priv->mac, ETH_ALEN);
- 	if (!is_valid_ether_addr(mac.sa_data)) {
- 		pr_warn("etop: invalid MAC, using random\n");
- 		random_ether_addr(mac.sa_data);
-@@ -707,9 +716,12 @@ static const struct net_device_ops ltq_eth_netdev_ops = {
- static int __init
- ltq_etop_probe(struct platform_device *pdev)
- {
-+	struct device_node *node = pdev->dev.of_node;
- 	struct net_device *dev;
- 	struct ltq_etop_priv *priv;
- 	struct resource *res;
-+	struct clk *clk;
-+	struct resource irqres[2];
- 	int err;
- 	int i;
- 
-@@ -737,6 +749,20 @@ ltq_etop_probe(struct platform_device *pdev)
- 		goto err_out;
- 	}
- 
-+	err = of_irq_to_resource_table(node, irqres, 2);
-+	if (err != 2) {
-+		dev_err(&pdev->dev, "not enough irqs defined\n");
-+		err = -EINVAL;
-+		goto err_out;
-+	}
-+
-+	clk = clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(clk)) {
-+		dev_err(&pdev->dev, "Failed to get clock\n");
-+		err = PTR_ERR(clk);
-+		goto err_out;
-+	}
-+
- 	dev = alloc_etherdev_mq(sizeof(struct ltq_etop_priv), 4);
- 	if (!dev) {
- 		err = -ENOMEM;
-@@ -748,9 +774,15 @@ ltq_etop_probe(struct platform_device *pdev)
- 	priv = netdev_priv(dev);
- 	priv->res = res;
- 	priv->pdev = pdev;
--	priv->pldata = dev_get_platdata(&pdev->dev);
- 	priv->netdev = dev;
- 	spin_lock_init(&priv->lock);
-+	priv->tx_irq = irqres[0].start;
-+	priv->rx_irq = irqres[1].start;
-+	priv->mii_mode = of_get_phy_mode(node);
-+	priv->mac = of_get_mac_address(node);
-+	priv->clk = clk;
-+	if (priv->mii_mode < 0)
-+		priv->mii_mode = PHY_INTERFACE_MODE_MII;
- 
- 	for (i = 0; i < MAX_DMA_CHAN; i++) {
- 		if (IS_TX(i))
-@@ -779,21 +811,30 @@ static int __devexit
- ltq_etop_remove(struct platform_device *pdev)
- {
- 	struct net_device *dev = platform_get_drvdata(pdev);
-+	struct ltq_etop_priv *priv = netdev_priv(dev);
- 
- 	if (dev) {
- 		netif_tx_stop_all_queues(dev);
- 		ltq_etop_hw_exit(dev);
- 		ltq_etop_mdio_cleanup(dev);
-+		clk_put(priv->clk);
- 		unregister_netdev(dev);
- 	}
- 	return 0;
- }
- 
-+static const struct of_device_id ltq_etop_match[] = {
-+	{ .compatible = "lantiq,etop-xway" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, ltq_etop_match);
-+
- static struct platform_driver ltq_mii_driver = {
- 	.remove = __devexit_p(ltq_etop_remove),
- 	.driver = {
--		.name = "ltq_etop",
-+		.name = "etop-xway",
- 		.owner = THIS_MODULE,
-+		.of_match_table = ltq_etop_match,
- 	},
- };
- 
--- 
-1.7.9.1
+We could, but I thought about it and chose not to.
+
+The SPI hardware can queue a maximum of 9 bytes (72 bits) before 
+software has to take action.  That works out to 3.6 uS at a 20MHz clock 
+rate.  Sleeping, scheduling to a different task, taking an interrupt and 
+then switching back to this task will likely not be faster than that.
+
+At lower clock rates, it would make more sense, but it adds complexity 
+to the driver.  We can always revisit this decision if it proves to be a 
+problem.
+
+David Daney

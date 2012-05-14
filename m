@@ -1,20 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:50:32 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:36715 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:51:00 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:36729 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903706Ab2ENRuY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 May 2012 19:50:24 +0200
+        id S1903710Ab2ENRuh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 May 2012 19:50:37 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
-        Thomas Langer <thomas.langer@lantiq.com>,
-        spi-devel-general@lists.sourceforge.net
-Subject: [RESEND PATCH V2 16/17] SPI: MIPS: lantiq: add FALCON spi driver
-Date:   Mon, 14 May 2012 19:42:42 +0200
-Message-Id: <1337017363-14424-16-git-send-email-blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [RESEND PATCH V2 17/17] MIPS: lantiq: remove orphaned code
+Date:   Mon, 14 May 2012 19:42:43 +0200
+Message-Id: <1337017363-14424-17-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
 In-Reply-To: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
 References: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 33304
+X-archive-position: 33305
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -23,533 +21,358 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The external bus unit (EBU) found on the FALCON SoC has spi emulation that is
-designed for serial flash access. This driver has only been tested with m25p80
-type chips. The hardware has no support for other types of spi peripherals.
+Now that all drivers are converted to OF we are able to remove some remaining
+pieces of orphaned code.
 
-Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
 Signed-off-by: John Crispin <blogic@openwrt.org>
-Cc: spi-devel-general@lists.sourceforge.net
 ---
-This patch is part of a series moving the mips/lantiq target to OF and clkdev
-support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
+ arch/mips/include/asm/mach-lantiq/lantiq.h         |    5 -
+ .../mips/include/asm/mach-lantiq/lantiq_platform.h |   53 -----------
+ .../mips/include/asm/mach-lantiq/xway/lantiq_irq.h |   46 +----------
+ .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |   93 +-------------------
+ arch/mips/lantiq/prom.c                            |    6 --
+ arch/mips/lantiq/xway/sysctrl.c                    |   25 +----
+ 6 files changed, 7 insertions(+), 221 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mach-lantiq/lantiq_platform.h
 
- drivers/spi/Kconfig      |    9 +
- drivers/spi/Makefile     |    1 +
- drivers/spi/spi-falcon.c |  473 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 483 insertions(+), 0 deletions(-)
- create mode 100644 drivers/spi/spi-falcon.c
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 00c0240..2afb8db 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -144,6 +144,15 @@ config SPI_EP93XX
- 	  This enables using the Cirrus EP93xx SPI controller in master
- 	  mode.
+diff --git a/arch/mips/include/asm/mach-lantiq/lantiq.h b/arch/mips/include/asm/mach-lantiq/lantiq.h
+index 64fbc3f..5e8a6e9 100644
+--- a/arch/mips/include/asm/mach-lantiq/lantiq.h
++++ b/arch/mips/include/asm/mach-lantiq/lantiq.h
+@@ -27,9 +27,6 @@
+ 	ltq_w32_mask(x, y, ltq_ebu_membase + (z))
+ extern __iomem void *ltq_ebu_membase;
  
-+config SPI_FALCON
-+	tristate "Falcon SPI controller support"
-+	depends on SOC_FALCON
-+	help
-+	  The external bus unit (EBU) found on the FALC-ON SoC has SPI
-+	  emulation that is designed for serial flash access. This driver
-+	  has only been tested with m25p80 type chips. The hardware has no
-+	  support for other types of spi peripherals.
-+
- config SPI_GPIO
- 	tristate "GPIO-based bitbanging SPI Master"
- 	depends on GENERIC_GPIO
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 9d75d21..b5cbab2 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -26,6 +26,7 @@ obj-$(CONFIG_SPI_DW_MMIO)		+= spi-dw-mmio.o
- obj-$(CONFIG_SPI_DW_PCI)		+= spi-dw-midpci.o
- spi-dw-midpci-objs			:= spi-dw-pci.o spi-dw-mid.o
- obj-$(CONFIG_SPI_EP93XX)		+= spi-ep93xx.o
-+obj-$(CONFIG_SPI_FALCON)		+= spi-falcon.o
- obj-$(CONFIG_SPI_FSL_LIB)		+= spi-fsl-lib.o
- obj-$(CONFIG_SPI_FSL_ESPI)		+= spi-fsl-espi.o
- obj-$(CONFIG_SPI_FSL_SPI)		+= spi-fsl-spi.o
-diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
-new file mode 100644
-index 0000000..3be285e
---- /dev/null
-+++ b/drivers/spi/spi-falcon.c
-@@ -0,0 +1,473 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2012 Thomas Langer <thomas.langer@lantiq.com>
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/device.h>
-+#include <linux/platform_device.h>
-+#include <linux/spi/spi.h>
-+#include <linux/delay.h>
-+#include <linux/workqueue.h>
-+#include <linux/of.h>
-+#include <linux/of_platform.h>
-+
-+#include <lantiq_soc.h>
-+
-+#define DRV_NAME		"sflash-falcon"
-+
-+#define FALCON_SPI_XFER_BEGIN	(1 << 0)
-+#define FALCON_SPI_XFER_END	(1 << 1)
-+
-+/* Bus Read Configuration Register0 */
-+#define BUSRCON0		0x00000010
-+/* Bus Write Configuration Register0 */
-+#define BUSWCON0		0x00000018
-+/* Serial Flash Configuration Register */
-+#define SFCON			0x00000080
-+/* Serial Flash Time Register */
-+#define SFTIME			0x00000084
-+/* Serial Flash Status Register */
-+#define SFSTAT			0x00000088
-+/* Serial Flash Command Register */
-+#define SFCMD			0x0000008C
-+/* Serial Flash Address Register */
-+#define SFADDR			0x00000090
-+/* Serial Flash Data Register */
-+#define SFDATA			0x00000094
-+/* Serial Flash I/O Control Register */
-+#define SFIO			0x00000098
-+/* EBU Clock Control Register */
-+#define EBUCC			0x000000C4
-+
-+/* Dummy Phase Length */
-+#define SFCMD_DUMLEN_OFFSET	16
-+#define SFCMD_DUMLEN_MASK	0x000F0000
-+/* Chip Select */
-+#define SFCMD_CS_OFFSET		24
-+#define SFCMD_CS_MASK		0x07000000
-+/* field offset */
-+#define SFCMD_ALEN_OFFSET	20
-+#define SFCMD_ALEN_MASK		0x00700000
-+/* SCK Rise-edge Position */
-+#define SFTIME_SCKR_POS_OFFSET	8
-+#define SFTIME_SCKR_POS_MASK	0x00000F00
-+/* SCK Period */
-+#define SFTIME_SCK_PER_OFFSET	0
-+#define SFTIME_SCK_PER_MASK	0x0000000F
-+/* SCK Fall-edge Position */
-+#define SFTIME_SCKF_POS_OFFSET	12
-+#define SFTIME_SCKF_POS_MASK	0x0000F000
-+/* Device Size */
-+#define SFCON_DEV_SIZE_A23_0	0x03000000
-+#define SFCON_DEV_SIZE_MASK	0x0F000000
-+/* Read Data Position */
-+#define SFTIME_RD_POS_MASK	0x000F0000
-+/* Data Output */
-+#define SFIO_UNUSED_WD_MASK	0x0000000F
-+/* Command Opcode mask */
-+#define SFCMD_OPC_MASK		0x000000FF
-+/* dlen bytes of data to write */
-+#define SFCMD_DIR_WRITE		0x00000100
-+/* Data Length offset */
-+#define SFCMD_DLEN_OFFSET	9
-+/* Command Error */
-+#define SFSTAT_CMD_ERR		0x20000000
-+/* Access Command Pending */
-+#define SFSTAT_CMD_PEND		0x00400000
-+/* Frequency set to 100MHz. */
-+#define EBUCC_EBUDIV_SELF100	0x00000001
-+/* Serial Flash */
-+#define BUSRCON0_AGEN_SERIAL_FLASH	0xF0000000
-+/* 8-bit multiplexed */
-+#define BUSRCON0_PORTW_8_BIT_MUX	0x00000000
-+/* Serial Flash */
-+#define BUSWCON0_AGEN_SERIAL_FLASH	0xF0000000
-+/* Chip Select after opcode */
-+#define SFCMD_KEEP_CS_KEEP_SELECTED	0x00008000
-+
-+#define CLOCK_100M	100000000
-+
-+struct falcon_sflash {
-+	u32 sfcmd; /* for caching of opcode, direction, ... */
-+	struct spi_master *master;
-+};
-+
-+int falcon_sflash_xfer(struct spi_device *spi, struct spi_transfer *t,
-+		unsigned long flags)
-+{
-+	struct device *dev = &spi->dev;
-+	struct falcon_sflash *priv = spi_master_get_devdata(spi->master);
-+	const u8 *txp = t->tx_buf;
-+	u8 *rxp = t->rx_buf;
-+	unsigned int bytelen = ((8 * t->len + 7) / 8);
-+	unsigned int len, alen, dumlen;
-+	u32 val;
-+	enum {
-+		state_init,
-+		state_command_prepare,
-+		state_write,
-+		state_read,
-+		state_disable_cs,
-+		state_end
-+	} state = state_init;
-+
-+	do {
-+		switch (state) {
-+		case state_init: /* detect phase of upper layer sequence */
-+		{
-+			/* initial write ? */
-+			if (flags & FALCON_SPI_XFER_BEGIN) {
-+				if (!txp) {
-+					dev_err(dev,
-+						"BEGIN without tx data!\n");
-+					return -ENODATA;
-+				}
-+				/*
-+				 * Prepare the parts of the sfcmd register,
-+				 * which should not change during a sequence!
-+				 * Only exception are the length fields,
-+				 * especially alen and dumlen.
-+				 */
-+
-+				priv->sfcmd = ((spi->chip_select
-+						<< SFCMD_CS_OFFSET)
-+					       & SFCMD_CS_MASK);
-+				priv->sfcmd |= SFCMD_KEEP_CS_KEEP_SELECTED;
-+				priv->sfcmd |= *txp;
-+				txp++;
-+				bytelen--;
-+				if (bytelen) {
-+					/*
-+					 * more data:
-+					 * maybe address and/or dummy
-+					 */
-+					state = state_command_prepare;
-+					break;
-+				} else {
-+					dev_dbg(dev, "write cmd %02X\n",
-+						priv->sfcmd & SFCMD_OPC_MASK);
-+				}
-+			}
-+			/* continued write ? */
-+			if (txp && bytelen) {
-+				state = state_write;
-+				break;
-+			}
-+			/* read data? */
-+			if (rxp && bytelen) {
-+				state = state_read;
-+				break;
-+			}
-+			/* end of sequence? */
-+			if (flags & FALCON_SPI_XFER_END)
-+				state = state_disable_cs;
-+			else
-+				state = state_end;
-+			break;
-+		}
-+		/* collect tx data for address and dummy phase */
-+		case state_command_prepare:
-+		{
-+			/* txp is valid, already checked */
-+			val = 0;
-+			alen = 0;
-+			dumlen = 0;
-+			while (bytelen > 0) {
-+				if (alen < 3) {
-+					val = (val << 8) | (*txp++);
-+					alen++;
-+				} else if ((dumlen < 15) && (*txp == 0)) {
-+					/*
-+					 * assume dummy bytes are set to 0
-+					 * from upper layer
-+					 */
-+					dumlen++;
-+					txp++;
-+				} else
-+					break;
-+				bytelen--;
-+			}
-+			priv->sfcmd &= ~(SFCMD_ALEN_MASK | SFCMD_DUMLEN_MASK);
-+			priv->sfcmd |= (alen << SFCMD_ALEN_OFFSET) |
-+					 (dumlen << SFCMD_DUMLEN_OFFSET);
-+			if (alen > 0)
-+				ltq_ebu_w32(val, SFADDR);
-+
-+			dev_dbg(dev, "wr %02X, alen=%d (addr=%06X) dlen=%d\n",
-+				priv->sfcmd & SFCMD_OPC_MASK,
-+				alen, val, dumlen);
-+
-+			if (bytelen > 0) {
-+				/* continue with write */
-+				state = state_write;
-+			} else if (flags & FALCON_SPI_XFER_END) {
-+				/* end of sequence? */
-+				state = state_disable_cs;
-+			} else {
-+				/*
-+				 * go to end and expect another
-+				 * call (read or write)
-+				 */
-+				state = state_end;
-+			}
-+			break;
-+		}
-+		case state_write:
-+		{
-+			/* txp still valid */
-+			priv->sfcmd |= SFCMD_DIR_WRITE;
-+			len = 0;
-+			val = 0;
-+			do {
-+				if (bytelen--)
-+					val |= (*txp++) << (8 * len++);
-+				if ((flags & FALCON_SPI_XFER_END)
-+				    && (bytelen == 0)) {
-+					priv->sfcmd &=
-+						~SFCMD_KEEP_CS_KEEP_SELECTED;
-+				}
-+				if ((len == 4) || (bytelen == 0)) {
-+					ltq_ebu_w32(val, SFDATA);
-+					ltq_ebu_w32(priv->sfcmd
-+						| (len<<SFCMD_DLEN_OFFSET),
-+						SFCMD);
-+					len = 0;
-+					val = 0;
-+					priv->sfcmd &= ~(SFCMD_ALEN_MASK
-+							 | SFCMD_DUMLEN_MASK);
-+				}
-+			} while (bytelen);
-+			state = state_end;
-+			break;
-+		}
-+		case state_read:
-+		{
-+			/* read data */
-+			priv->sfcmd &= ~SFCMD_DIR_WRITE;
-+			do {
-+				if ((flags & FALCON_SPI_XFER_END)
-+				    && (bytelen <= 4)) {
-+					priv->sfcmd &=
-+						~SFCMD_KEEP_CS_KEEP_SELECTED;
-+				}
-+				len = (bytelen > 4) ? 4 : bytelen;
-+				bytelen -= len;
-+				ltq_ebu_w32(priv->sfcmd
-+					|(len<<SFCMD_DLEN_OFFSET), SFCMD);
-+				priv->sfcmd &= ~(SFCMD_ALEN_MASK
-+						 | SFCMD_DUMLEN_MASK);
-+				do {
-+					val = ltq_ebu_r32(SFSTAT);
-+					if (val & SFSTAT_CMD_ERR) {
-+						/* reset error status */
-+						dev_err(dev, "SFSTAT: CMD_ERR");
-+						dev_err(dev, " (%x)\n", val);
-+						ltq_ebu_w32(SFSTAT_CMD_ERR,
-+							SFSTAT);
-+						return -EBADE;
-+					}
-+				} while (val & SFSTAT_CMD_PEND);
-+				val = ltq_ebu_r32(SFDATA);
-+				do {
-+					*rxp = (val & 0xFF);
-+					rxp++;
-+					val >>= 8;
-+					len--;
-+				} while (len);
-+			} while (bytelen);
-+			state = state_end;
-+			break;
-+		}
-+		case state_disable_cs:
-+		{
-+			priv->sfcmd &= ~SFCMD_KEEP_CS_KEEP_SELECTED;
-+			ltq_ebu_w32(priv->sfcmd | (0 << SFCMD_DLEN_OFFSET),
-+				SFCMD);
-+			val = ltq_ebu_r32(SFSTAT);
-+			if (val & SFSTAT_CMD_ERR) {
-+				/* reset error status */
-+				dev_err(dev, "SFSTAT: CMD_ERR (%x)\n", val);
-+				ltq_ebu_w32(SFSTAT_CMD_ERR, SFSTAT);
-+				return -EBADE;
-+			}
-+			state = state_end;
-+			break;
-+		}
-+		case state_end:
-+			break;
-+		}
-+	} while (state != state_end);
-+
-+	return 0;
-+}
-+
-+static int falcon_sflash_setup(struct spi_device *spi)
-+{
-+	const u32 ebuclk = CLOCK_100M;
-+	unsigned int i;
-+	unsigned long flags;
-+
-+	if (spi->chip_select > 0)
-+		return -ENODEV;
-+
-+	spin_lock_irqsave(&ebu_lock, flags);
-+
-+	if (ebuclk < spi->max_speed_hz) {
-+		/* set EBU clock to 100 MHz */
-+		ltq_sys1_w32_mask(0, EBUCC_EBUDIV_SELF100, EBUCC);
-+		i = 1; /* divider */
-+	} else {
-+		/* set EBU clock to 50 MHz */
-+		ltq_sys1_w32_mask(EBUCC_EBUDIV_SELF100, 0, EBUCC);
-+
-+		/* search for suitable divider */
-+		for (i = 1; i < 7; i++) {
-+			if (ebuclk / i <= spi->max_speed_hz)
-+				break;
-+		}
-+	}
-+
-+	/* setup period of serial clock */
-+	ltq_ebu_w32_mask(SFTIME_SCKF_POS_MASK
-+		     | SFTIME_SCKR_POS_MASK
-+		     | SFTIME_SCK_PER_MASK,
-+		     (i << SFTIME_SCKR_POS_OFFSET)
-+		     | (i << (SFTIME_SCK_PER_OFFSET + 1)),
-+		     SFTIME);
-+
-+	/*
-+	 * set some bits of unused_wd, to not trigger HOLD/WP
-+	 * signals on non QUAD flashes
-+	 */
-+	ltq_ebu_w32((SFIO_UNUSED_WD_MASK & (0x8 | 0x4)), SFIO);
-+
-+	ltq_ebu_w32(BUSRCON0_AGEN_SERIAL_FLASH | BUSRCON0_PORTW_8_BIT_MUX,
-+			BUSRCON0);
-+	ltq_ebu_w32(BUSWCON0_AGEN_SERIAL_FLASH, BUSWCON0);
-+	/* set address wrap around to maximum for 24-bit addresses */
-+	ltq_ebu_w32_mask(SFCON_DEV_SIZE_MASK, SFCON_DEV_SIZE_A23_0, SFCON);
-+
-+	spin_unlock_irqrestore(&ebu_lock, flags);
-+
-+	return 0;
-+}
-+
-+static int falcon_sflash_prepare_xfer(struct spi_master *master)
-+{
-+	return 0;
-+}
-+
-+static int falcon_sflash_unprepare_xfer(struct spi_master *master)
-+{
-+	return 0;
-+}
-+
-+static int falcon_sflash_xfer_one(struct spi_master *master,
-+					struct spi_message *m)
-+{
-+	struct falcon_sflash *priv = spi_master_get_devdata(master);
-+	struct spi_transfer *t;
-+	unsigned long spi_flags;
-+	unsigned long flags;
-+	int ret = 0;
-+
-+	priv->sfcmd = 0;
-+	m->actual_length = 0;
-+
-+	spi_flags = FALCON_SPI_XFER_BEGIN;
-+	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		if (list_is_last(&t->transfer_list, &m->transfers))
-+			spi_flags |= FALCON_SPI_XFER_END;
-+
-+		spin_lock_irqsave(&ebu_lock, flags);
-+		ret = falcon_sflash_xfer(m->spi, t, spi_flags);
-+		spin_unlock_irqrestore(&ebu_lock, flags);
-+
-+		if (ret)
-+			break;
-+
-+		m->actual_length += t->len;
-+
-+		WARN_ON(t->delay_usecs || t->cs_change);
-+		spi_flags = 0;
-+	}
-+
-+	m->status = ret;
-+	m->complete(m->context);
-+
-+	return 0;
-+}
-+
-+static int __devinit falcon_sflash_probe(struct platform_device *pdev)
-+{
-+	struct falcon_sflash *priv;
-+	const __be32 *prop;
-+	struct spi_master *master;
-+	int ret, len;
-+
-+	if (ltq_boot_select() != BS_SPI) {
-+		dev_err(&pdev->dev, "invalid bootstrap options\n");
-+		return -ENODEV;
-+	}
-+
-+	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
-+	if (!master)
-+		return -ENOMEM;
-+
-+	priv = spi_master_get_devdata(master);
-+	priv->master = master;
-+
-+	master->mode_bits = SPI_MODE_3;
-+	master->num_chipselect = 1;
-+	master->bus_num = -1;
-+	master->setup = falcon_sflash_setup;
-+	master->prepare_transfer_hardware = falcon_sflash_prepare_xfer;
-+	master->transfer_one_message = falcon_sflash_xfer_one;
-+	master->unprepare_transfer_hardware = falcon_sflash_unprepare_xfer;
-+	master->dev.of_node = pdev->dev.of_node;
-+
-+	prop = of_get_property(pdev->dev.of_node, "busnum", &len);
-+	if (prop && (len == sizeof(*prop)))
-+		master->bus_num = be32_to_cpup(prop);
-+
-+	platform_set_drvdata(pdev, priv);
-+
-+	ret = spi_register_master(master);
-+	if (ret)
-+		spi_master_put(master);
-+	return ret;
-+}
-+
-+static int __devexit falcon_sflash_remove(struct platform_device *pdev)
-+{
-+	struct falcon_sflash *priv = platform_get_drvdata(pdev);
-+
-+	spi_unregister_master(priv->master);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id falcon_sflash_match[] = {
-+	{ .compatible = "lantiq,sflash-falcon" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, falcon_sflash_match);
-+
-+static struct platform_driver falcon_sflash_driver = {
-+	.probe	= falcon_sflash_probe,
-+	.remove	= __devexit_p(falcon_sflash_remove),
-+	.driver = {
-+		.name	= DRV_NAME,
-+		.owner	= THIS_MODULE,
-+		.of_match_table = falcon_sflash_match,
-+	}
-+};
-+
-+module_platform_driver(falcon_sflash_driver);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Lantiq Falcon SPI/SFLASH controller driver");
+-extern unsigned int ltq_get_cpu_ver(void);
+-extern unsigned int ltq_get_soc_type(void);
+-
+ /* spinlock all ebu i/o */
+ extern spinlock_t ebu_lock;
+ 
+@@ -54,7 +51,5 @@ extern int ltq_reset_cause(void);
+ #define IOPORT_RESOURCE_END	0xffffffff
+ #define IOMEM_RESOURCE_START	0x10000000
+ #define IOMEM_RESOURCE_END	0xffffffff
+-#define LTQ_FLASH_START		0x10000000
+-#define LTQ_FLASH_MAX		0x04000000
+ 
+ #endif
+diff --git a/arch/mips/include/asm/mach-lantiq/lantiq_platform.h b/arch/mips/include/asm/mach-lantiq/lantiq_platform.h
+deleted file mode 100644
+index a305f1d..0000000
+--- a/arch/mips/include/asm/mach-lantiq/lantiq_platform.h
++++ /dev/null
+@@ -1,53 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+- */
+-
+-#ifndef _LANTIQ_PLATFORM_H__
+-#define _LANTIQ_PLATFORM_H__
+-
+-#include <linux/mtd/partitions.h>
+-#include <linux/socket.h>
+-
+-/* struct used to pass info to the pci core */
+-enum {
+-	PCI_CLOCK_INT = 0,
+-	PCI_CLOCK_EXT
+-};
+-
+-#define PCI_EXIN0	0x0001
+-#define PCI_EXIN1	0x0002
+-#define PCI_EXIN2	0x0004
+-#define PCI_EXIN3	0x0008
+-#define PCI_EXIN4	0x0010
+-#define PCI_EXIN5	0x0020
+-#define PCI_EXIN_MAX	6
+-
+-#define PCI_GNT1	0x0040
+-#define PCI_GNT2	0x0080
+-#define PCI_GNT3	0x0100
+-#define PCI_GNT4	0x0200
+-
+-#define PCI_REQ1	0x0400
+-#define PCI_REQ2	0x0800
+-#define PCI_REQ3	0x1000
+-#define PCI_REQ4	0x2000
+-#define PCI_REQ_SHIFT	10
+-#define PCI_REQ_MASK	0xf
+-
+-struct ltq_pci_data {
+-	int clock;
+-	int gpio;
+-	int irq[16];
+-};
+-
+-/* struct used to pass info to network drivers */
+-struct ltq_eth_data {
+-	struct sockaddr mac;
+-	int mii_mode;
+-};
+-
+-#endif
+diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
+index b4465a8..885a429 100644
+--- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
++++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
+@@ -17,50 +17,6 @@
+ #define INT_NUM_IM4_IRL0	(INT_NUM_IRQ0 + 128)
+ #define INT_NUM_IM_OFFSET	(INT_NUM_IM1_IRL0 - INT_NUM_IM0_IRL0)
+ 
+-#define LTQ_ASC_TIR(x)		(INT_NUM_IM3_IRL0 + (x * 8))
+-#define LTQ_ASC_RIR(x)		(INT_NUM_IM3_IRL0 + (x * 8) + 1)
+-#define LTQ_ASC_EIR(x)		(INT_NUM_IM3_IRL0 + (x * 8) + 2)
+-
+-#define LTQ_ASC_ASE_TIR		INT_NUM_IM2_IRL0
+-#define LTQ_ASC_ASE_RIR		(INT_NUM_IM2_IRL0 + 2)
+-#define LTQ_ASC_ASE_EIR		(INT_NUM_IM2_IRL0 + 3)
+-
+-#define LTQ_SSC_TIR		(INT_NUM_IM0_IRL0 + 15)
+-#define LTQ_SSC_RIR		(INT_NUM_IM0_IRL0 + 14)
+-#define LTQ_SSC_EIR		(INT_NUM_IM0_IRL0 + 16)
+-
+-#define LTQ_MEI_DYING_GASP_INT	(INT_NUM_IM1_IRL0 + 21)
+-#define LTQ_MEI_INT		(INT_NUM_IM1_IRL0 + 23)
+-
+-#define LTQ_TIMER6_INT		(INT_NUM_IM1_IRL0 + 23)
+-#define LTQ_USB_INT		(INT_NUM_IM1_IRL0 + 22)
+-#define LTQ_USB_OC_INT		(INT_NUM_IM4_IRL0 + 23)
+-
+-#define MIPS_CPU_TIMER_IRQ		7
+-
+-#define LTQ_DMA_CH0_INT		(INT_NUM_IM2_IRL0)
+-#define LTQ_DMA_CH1_INT		(INT_NUM_IM2_IRL0 + 1)
+-#define LTQ_DMA_CH2_INT		(INT_NUM_IM2_IRL0 + 2)
+-#define LTQ_DMA_CH3_INT		(INT_NUM_IM2_IRL0 + 3)
+-#define LTQ_DMA_CH4_INT		(INT_NUM_IM2_IRL0 + 4)
+-#define LTQ_DMA_CH5_INT		(INT_NUM_IM2_IRL0 + 5)
+-#define LTQ_DMA_CH6_INT		(INT_NUM_IM2_IRL0 + 6)
+-#define LTQ_DMA_CH7_INT		(INT_NUM_IM2_IRL0 + 7)
+-#define LTQ_DMA_CH8_INT		(INT_NUM_IM2_IRL0 + 8)
+-#define LTQ_DMA_CH9_INT		(INT_NUM_IM2_IRL0 + 9)
+-#define LTQ_DMA_CH10_INT	(INT_NUM_IM2_IRL0 + 10)
+-#define LTQ_DMA_CH11_INT	(INT_NUM_IM2_IRL0 + 11)
+-#define LTQ_DMA_CH12_INT	(INT_NUM_IM2_IRL0 + 25)
+-#define LTQ_DMA_CH13_INT	(INT_NUM_IM2_IRL0 + 26)
+-#define LTQ_DMA_CH14_INT	(INT_NUM_IM2_IRL0 + 27)
+-#define LTQ_DMA_CH15_INT	(INT_NUM_IM2_IRL0 + 28)
+-#define LTQ_DMA_CH16_INT	(INT_NUM_IM2_IRL0 + 29)
+-#define LTQ_DMA_CH17_INT	(INT_NUM_IM2_IRL0 + 30)
+-#define LTQ_DMA_CH18_INT	(INT_NUM_IM2_IRL0 + 16)
+-#define LTQ_DMA_CH19_INT	(INT_NUM_IM2_IRL0 + 21)
+-
+-#define LTQ_PPE_MBOX_INT	(INT_NUM_IM2_IRL0 + 24)
+-
+-#define INT_NUM_IM4_IRL14	(INT_NUM_IM4_IRL0 + 14)
++#define MIPS_CPU_TIMER_IRQ	7
+ 
+ #endif
+diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+index d0d40a4..fb3e65f 100644
+--- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
++++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+@@ -44,11 +44,6 @@
+ #define SOC_TYPE_VR9_2		0x05 /* v1.2 */
+ #define SOC_TYPE_AMAZON_SE	0x06
+ 
+-/* ASC0/1 - serial port */
+-#define LTQ_ASC0_BASE_ADDR	0x1E100400
+-#define LTQ_ASC1_BASE_ADDR	0x1E100C00
+-#define LTQ_ASC_SIZE		0x400
+-
+ /* BOOT_SEL - find what boot media we have */
+ #define BS_EXT_ROM		0x0
+ #define BS_FLASH		0x1
+@@ -68,23 +63,10 @@ extern __iomem void *ltq_cgu_membase;
+  * during early_printk no ioremap is possible
+  * lets use KSEG1 instead
+  */
++#define LTQ_ASC1_BASE_ADDR	0x1E100C00
+ #define LTQ_EARLY_ASC		KSEG1ADDR(LTQ_ASC1_BASE_ADDR)
+ 
+-/* RCU - reset control unit */
+-#define LTQ_RCU_BASE_ADDR	0x1F203000
+-#define LTQ_RCU_SIZE		0x1000
+-
+-/* GPTU - general purpose timer unit */
+-#define LTQ_GPTU_BASE_ADDR	0x18000300
+-#define LTQ_GPTU_SIZE		0x100
+-
+ /* EBU - external bus unit */
+-#define LTQ_EBU_GPIO_START	0x14000000
+-#define LTQ_EBU_GPIO_SIZE	0x1000
+-
+-#define LTQ_EBU_BASE_ADDR	0x1E105300
+-#define LTQ_EBU_SIZE		0x100
+-
+ #define LTQ_EBU_BUSCON0		0x0060
+ #define LTQ_EBU_PCC_CON		0x0090
+ #define LTQ_EBU_PCC_IEN		0x00A4
+@@ -93,85 +75,12 @@ extern __iomem void *ltq_cgu_membase;
+ #define LTQ_EBU_ADDRSEL1	0x0024
+ #define EBU_WRDIS		0x80000000
+ 
+-/* CGU - clock generation unit */
+-#define LTQ_CGU_BASE_ADDR	0x1F103000
+-#define LTQ_CGU_SIZE		0x1000
+-
+-/* ICU - interrupt control unit */
+-#define LTQ_ICU_BASE_ADDR	0x1F880200
+-#define LTQ_ICU_SIZE		0x100
+-
+-/* EIU - external interrupt unit */
+-#define LTQ_EIU_BASE_ADDR	0x1F101000
+-#define LTQ_EIU_SIZE		0x1000
+-
+-/* PMU - power management unit */
+-#define LTQ_PMU_BASE_ADDR	0x1F102000
+-#define LTQ_PMU_SIZE		0x1000
+-
+-#define PMU_DMA			0x0020
+-#define PMU_USB			0x8041
+-#define PMU_LED			0x0800
+-#define PMU_GPT			0x1000
+-#define PMU_PPE			0x2000
+-#define PMU_FPI			0x4000
+-#define PMU_SWITCH		0x10000000
+-
+-/* ETOP - ethernet */
+-#define LTQ_ETOP_BASE_ADDR	0x1E180000
+-#define LTQ_ETOP_SIZE		0x40000
+-
+-/* DMA */
+-#define LTQ_DMA_BASE_ADDR	0x1E104100
+-#define LTQ_DMA_SIZE		0x800
+-
+-/* PCI */
+-#define PCI_CR_BASE_ADDR	0x1E105400
+-#define PCI_CR_SIZE		0x400
+-
+ /* WDT */
+-#define LTQ_WDT_BASE_ADDR	0x1F8803F0
+-#define LTQ_WDT_SIZE		0x10
+-
+ #define LTQ_RST_CAUSE_WDTRST	0x20
+ 
+-/* STP - serial to parallel conversion unit */
+-#define LTQ_STP_BASE_ADDR	0x1E100BB0
+-#define LTQ_STP_SIZE		0x40
+-
+-/* GPIO */
+-#define LTQ_GPIO0_BASE_ADDR	0x1E100B10
+-#define LTQ_GPIO1_BASE_ADDR	0x1E100B40
+-#define LTQ_GPIO2_BASE_ADDR	0x1E100B70
+-#define LTQ_GPIO_SIZE		0x30
+-
+-/* SSC */
+-#define LTQ_SSC_BASE_ADDR	0x1e100800
+-#define LTQ_SSC_SIZE		0x100
+-
+-/* MEI - dsl core */
+-#define LTQ_MEI_BASE_ADDR	0x1E116000
+-
+-/* DEU - data encryption unit */
+-#define LTQ_DEU_BASE_ADDR	0x1E103100
+-
+ /* MPS - multi processor unit (voice) */
+ #define LTQ_MPS_BASE_ADDR	(KSEG1 + 0x1F107000)
+ #define LTQ_MPS_CHIPID		((u32 *)(LTQ_MPS_BASE_ADDR + 0x0344))
+ 
+-/* request a non-gpio and set the PIO config */
+-extern void ltq_pmu_enable(unsigned int module);
+-extern void ltq_pmu_disable(unsigned int module);
+-
+-static inline int ltq_is_ar9(void)
+-{
+-	return (ltq_get_soc_type() == SOC_TYPE_AR9);
+-}
+-
+-static inline int ltq_is_vr9(void)
+-{
+-	return (ltq_get_soc_type() == SOC_TYPE_VR9);
+-}
+-
+ #endif /* CONFIG_SOC_TYPE_XWAY */
+ #endif /* _LTQ_XWAY_H__ */
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+index 413ed53..d185e84 100644
+--- a/arch/mips/lantiq/prom.c
++++ b/arch/mips/lantiq/prom.c
+@@ -27,12 +27,6 @@ EXPORT_SYMBOL_GPL(ebu_lock);
+  */
+ static struct ltq_soc_info soc_info;
+ 
+-unsigned int ltq_get_soc_type(void)
+-{
+-	return soc_info.type;
+-}
+-EXPORT_SYMBOL(ltq_get_soc_type);
+-
+ const char *get_system_type(void)
+ {
+ 	return soc_info.sys_type;
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index 4d6aac6..546c10a 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -42,6 +42,7 @@
+ /* clock gates that we can en/disable */
+ #define PMU_USB0_P	BIT(0)
+ #define PMU_PCI		BIT(4)
++#define PMU_DMA		BIT(5)
+ #define PMU_USB0	BIT(6)
+ #define PMU_ASC0	BIT(7)
+ #define PMU_EPHY	BIT(7)	/* ase */
+@@ -49,7 +50,10 @@
+ #define PMU_DFE		BIT(9)
+ #define PMU_EBU		BIT(10)
+ #define PMU_STP		BIT(11)
++#define PMU_GPT		BIT(12)
++#define PMU_PPE		BIT(13)
+ #define PMU_AHBS	BIT(13) /* vr9 */
++#define PMU_FPI		BIT(14)
+ #define PMU_AHBM	BIT(15)
+ #define PMU_ASC1	BIT(17)
+ #define PMU_PPE_QSB	BIT(18)
+@@ -60,6 +64,7 @@
+ #define PMU_PPE_DPLUS	BIT(24)
+ #define PMU_USB1_P	BIT(26)
+ #define PMU_USB1	BIT(27)
++#define PMU_SWITCH	BIT(28)
+ #define PMU_PPE_TOP	BIT(29)
+ #define PMU_GPHY	BIT(30)
+ #define PMU_PCIE_CLK	BIT(31)
+@@ -76,26 +81,6 @@ static void __iomem *pmu_membase;
+ void __iomem *ltq_cgu_membase;
+ void __iomem *ltq_ebu_membase;
+ 
+-/* legacy function kept alive to ease clkdev transition */
+-void ltq_pmu_enable(unsigned int module)
+-{
+-	int err = 1000000;
+-
+-	pmu_w32(pmu_r32(PMU_PWDCR) & ~module, PMU_PWDCR);
+-	do {} while (--err && (pmu_r32(PMU_PWDSR) & module));
+-
+-	if (!err)
+-		panic("activating PMU module failed!");
+-}
+-EXPORT_SYMBOL(ltq_pmu_enable);
+-
+-/* legacy function kept alive to ease clkdev transition */
+-void ltq_pmu_disable(unsigned int module)
+-{
+-	pmu_w32(pmu_r32(PMU_PWDCR) | module, PMU_PWDCR);
+-}
+-EXPORT_SYMBOL(ltq_pmu_disable);
+-
+ /* enable a hw clock */
+ static int cgu_enable(struct clk *clk)
+ {
 -- 
 1.7.9.1

@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:51:48 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:36744 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:52:11 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:36756 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903706Ab2ENRuu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 May 2012 19:50:50 +0200
+        id S1903703Ab2ENRvH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 May 2012 19:51:07 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
-        linux-mtd@lists.infradead.org
-Subject: [RESEND PATCH V2 14/17] MTD: MIPS: lantiq: verify that the NOR interface is available on falcon soc
-Date:   Mon, 14 May 2012 19:42:40 +0200
-Message-Id: <1337017363-14424-14-git-send-email-blogic@openwrt.org>
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Subject: [RESEND PATCH V2 12/17] NET: MIPS: lantiq: implement OF support inside the etop driver
+Date:   Mon, 14 May 2012 19:42:38 +0200
+Message-Id: <1337017363-14424-12-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
 In-Reply-To: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
 References: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 33307
+X-archive-position: 33308
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -22,42 +22,211 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-When running on a FALC-ON SoC, we need to check the bootstrap options to see
-if NOR is available.
+This patch makes it possible to load the driver for the ETOP ethernet on
+Lantiq SoC from a devicetree.
+
+Additionally we convert the driver to using the new clkdev clock in favour of
+the old ltq_pmu_*() api.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
-Cc: linux-mtd@lists.infradead.org
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: netdev@vger.kernel.org
 ---
 This patch is part of a series moving the mips/lantiq target to OF and clkdev
 support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
 
- drivers/mtd/maps/lantiq-flash.c |    7 +++++++
- 1 files changed, 7 insertions(+), 0 deletions(-)
+Changes in V2
+* rebase on Ralf's next tree
 
-diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
-index aefa111..c03456f 100644
---- a/drivers/mtd/maps/lantiq-flash.c
-+++ b/drivers/mtd/maps/lantiq-flash.c
-@@ -19,6 +19,7 @@
- #include <linux/mtd/cfi.h>
- #include <linux/platform_device.h>
- #include <linux/mtd/physmap.h>
-+#include <linux/of.h>
+ drivers/net/ethernet/lantiq_etop.c |   63 +++++++++++++++++++++++++++++------
+ 1 files changed, 52 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
+index 5dc9cbd..c0443d4 100644
+--- a/drivers/net/ethernet/lantiq_etop.c
++++ b/drivers/net/ethernet/lantiq_etop.c
+@@ -29,19 +29,22 @@
+ #include <linux/tcp.h>
+ #include <linux/skbuff.h>
+ #include <linux/mm.h>
+-#include <linux/platform_device.h>
+ #include <linux/ethtool.h>
+ #include <linux/init.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/module.h>
++#include <linux/of_platform.h>
++#include <linux/of_net.h>
++#include <linux/of_address.h>
++#include <linux/of_irq.h>
++#include <linux/of_gpio.h>
+ 
+ #include <asm/checksum.h>
  
  #include <lantiq_soc.h>
+ #include <xway_dma.h>
+-#include <lantiq_platform.h>
  
-@@ -116,6 +117,12 @@ ltq_mtd_probe(struct platform_device *pdev)
- 	struct cfi_private *cfi;
+ #define LTQ_ETOP_MDIO		0x11804
+ #define MDIO_REQUEST		0x80000000
+@@ -73,6 +76,7 @@
+ #define ETOP_CGEN		0x800
+ 
+ /* use 2 static channels for TX/RX */
++#define LTQ_DMA_CH0_INT		INT_NUM_IM2_IRL0
+ #define LTQ_ETOP_TX_CHANNEL	1
+ #define LTQ_ETOP_RX_CHANNEL	6
+ #define IS_TX(x)		(x == LTQ_ETOP_TX_CHANNEL)
+@@ -99,12 +103,17 @@ struct ltq_etop_chan {
+ struct ltq_etop_priv {
+ 	struct net_device *netdev;
+ 	struct platform_device *pdev;
+-	struct ltq_eth_data *pldata;
+ 	struct resource *res;
+ 
+ 	struct mii_bus *mii_bus;
+ 	struct phy_device *phydev;
+ 
++	struct clk *clk;
++	const void *mac;
++	int mii_mode;
++	int tx_irq;
++	int rx_irq;
++
+ 	struct ltq_etop_chan ch[MAX_DMA_CHAN];
+ 	int tx_free[MAX_DMA_CHAN >> 1];
+ 
+@@ -239,7 +248,7 @@ ltq_etop_hw_exit(struct net_device *dev)
+ 	struct ltq_etop_priv *priv = netdev_priv(dev);
+ 	int i;
+ 
+-	ltq_pmu_disable(PMU_PPE);
++	clk_disable(priv->clk);
+ 	for (i = 0; i < MAX_DMA_CHAN; i++)
+ 		if (IS_TX(i) || IS_RX(i))
+ 			ltq_etop_free_channel(dev, &priv->ch[i]);
+@@ -251,9 +260,9 @@ ltq_etop_hw_init(struct net_device *dev)
+ 	struct ltq_etop_priv *priv = netdev_priv(dev);
+ 	int i;
+ 
+-	ltq_pmu_enable(PMU_PPE);
++	clk_enable(priv->clk);
+ 
+-	switch (priv->pldata->mii_mode) {
++	switch (priv->mii_mode) {
+ 	case PHY_INTERFACE_MODE_RMII:
+ 		ltq_etop_w32_mask(ETOP_MII_MASK,
+ 			ETOP_MII_REVERSE, LTQ_ETOP_CFG);
+@@ -266,7 +275,7 @@ ltq_etop_hw_init(struct net_device *dev)
+ 
+ 	default:
+ 		netdev_err(dev, "unknown mii mode %d\n",
+-			priv->pldata->mii_mode);
++			priv->mii_mode);
+ 		return -ENOTSUPP;
+ 	}
+ 
+@@ -395,7 +404,7 @@ ltq_etop_mdio_probe(struct net_device *dev)
+ 	}
+ 
+ 	phydev = phy_connect(dev, dev_name(&phydev->dev), &ltq_etop_mdio_link,
+-			0, priv->pldata->mii_mode);
++			0, priv->mii_mode);
+ 
+ 	if (IS_ERR(phydev)) {
+ 		netdev_err(dev, "Could not attach to PHY\n");
+@@ -643,7 +652,7 @@ ltq_etop_init(struct net_device *dev)
+ 		goto err_hw;
+ 	ltq_etop_change_mtu(dev, 1500);
+ 
+-	memcpy(&mac, &priv->pldata->mac, sizeof(struct sockaddr));
++	memcpy(&mac.sa_data, &priv->mac, ETH_ALEN);
+ 	if (!is_valid_ether_addr(mac.sa_data)) {
+ 		pr_warn("etop: invalid MAC, using random\n");
+ 		random_ether_addr(mac.sa_data);
+@@ -707,9 +716,12 @@ static const struct net_device_ops ltq_eth_netdev_ops = {
+ static int __init
+ ltq_etop_probe(struct platform_device *pdev)
+ {
++	struct device_node *node = pdev->dev.of_node;
+ 	struct net_device *dev;
+ 	struct ltq_etop_priv *priv;
+ 	struct resource *res;
++	struct clk *clk;
++	struct resource irqres[2];
  	int err;
+ 	int i;
  
-+	if (of_machine_is_compatible("lantiq,falcon") &&
-+			(ltq_boot_select() != BS_FLASH)) {
-+		dev_err(&pdev->dev, "invalid bootstrap options\n");
-+		return -ENODEV;
+@@ -737,6 +749,20 @@ ltq_etop_probe(struct platform_device *pdev)
+ 		goto err_out;
+ 	}
+ 
++	err = of_irq_to_resource_table(node, irqres, 2);
++	if (err != 2) {
++		dev_err(&pdev->dev, "not enough irqs defined\n");
++		err = -EINVAL;
++		goto err_out;
 +	}
 +
- 	ltq_mtd = kzalloc(sizeof(struct ltq_mtd), GFP_KERNEL);
- 	platform_set_drvdata(pdev, ltq_mtd);
++	clk = clk_get(&pdev->dev, NULL);
++	if (IS_ERR(clk)) {
++		dev_err(&pdev->dev, "Failed to get clock\n");
++		err = PTR_ERR(clk);
++		goto err_out;
++	}
++
+ 	dev = alloc_etherdev_mq(sizeof(struct ltq_etop_priv), 4);
+ 	if (!dev) {
+ 		err = -ENOMEM;
+@@ -748,9 +774,15 @@ ltq_etop_probe(struct platform_device *pdev)
+ 	priv = netdev_priv(dev);
+ 	priv->res = res;
+ 	priv->pdev = pdev;
+-	priv->pldata = dev_get_platdata(&pdev->dev);
+ 	priv->netdev = dev;
+ 	spin_lock_init(&priv->lock);
++	priv->tx_irq = irqres[0].start;
++	priv->rx_irq = irqres[1].start;
++	priv->mii_mode = of_get_phy_mode(node);
++	priv->mac = of_get_mac_address(node);
++	priv->clk = clk;
++	if (priv->mii_mode < 0)
++		priv->mii_mode = PHY_INTERFACE_MODE_MII;
+ 
+ 	for (i = 0; i < MAX_DMA_CHAN; i++) {
+ 		if (IS_TX(i))
+@@ -779,21 +811,30 @@ static int __devexit
+ ltq_etop_remove(struct platform_device *pdev)
+ {
+ 	struct net_device *dev = platform_get_drvdata(pdev);
++	struct ltq_etop_priv *priv = netdev_priv(dev);
+ 
+ 	if (dev) {
+ 		netif_tx_stop_all_queues(dev);
+ 		ltq_etop_hw_exit(dev);
+ 		ltq_etop_mdio_cleanup(dev);
++		clk_put(priv->clk);
+ 		unregister_netdev(dev);
+ 	}
+ 	return 0;
+ }
+ 
++static const struct of_device_id ltq_etop_match[] = {
++	{ .compatible = "lantiq,etop-xway" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, ltq_etop_match);
++
+ static struct platform_driver ltq_mii_driver = {
+ 	.remove = __devexit_p(ltq_etop_remove),
+ 	.driver = {
+-		.name = "ltq_etop",
++		.name = "etop-xway",
+ 		.owner = THIS_MODULE,
++		.of_match_table = ltq_etop_match,
+ 	},
+ };
  
 -- 
 1.7.9.1

@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:49:48 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:36682 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 19:50:10 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:36685 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903681Ab2ENRtm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 May 2012 19:49:42 +0200
+        id S1903703Ab2ENRto (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 May 2012 19:49:44 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
-        linux-watchdog@vger.kernel.org
-Subject: [RESEND PATCH V2 11/17] watchdog: MIPS: lantiq: implement OF support and minor fixes
-Date:   Mon, 14 May 2012 19:42:37 +0200
-Message-Id: <1337017363-14424-11-git-send-email-blogic@openwrt.org>
+        linux-mtd@lists.infradead.org
+Subject: [RESEND PATCH V2 13/17] MTD: MIPS: lantiq: implement OF support
+Date:   Mon, 14 May 2012 19:42:39 +0200
+Message-Id: <1337017363-14424-13-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
 In-Reply-To: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
 References: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 33302
+X-archive-position: 33303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -22,174 +22,149 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add support for OF. We also apply the following small fixes
-* reduce boiler plate by using devm_request_and_ioremap
-* sane error path for the clock
-* move LTQ_RST_CAUSE_WDTRST to a soc specific header file
-* add a message to show that the driver loaded
+Adds bindings for OF and make use of module_platform_driver for lantiq
+based socs.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
-Acked-by: Wim Van Sebroeck <wim@iguana.be>
-Cc: linux-watchdog@vger.kernel.org
+Acked-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Cc: linux-mtd@lists.infradead.org
 ---
 This patch is part of a series moving the mips/lantiq target to OF and clkdev
 support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
 
-Changes in V2
-* use io clk instead of fpi to make sure the driver also works on falcon socs
+ drivers/mtd/maps/lantiq-flash.c |   69 ++++++++++++++-------------------------
+ 1 files changed, 25 insertions(+), 44 deletions(-)
 
- arch/mips/include/asm/mach-lantiq/lantiq.h         |    1 -
- .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |    2 +
- drivers/watchdog/lantiq_wdt.c                      |   56 +++++++++-----------
- 3 files changed, 27 insertions(+), 32 deletions(-)
-
-diff --git a/arch/mips/include/asm/mach-lantiq/lantiq.h b/arch/mips/include/asm/mach-lantiq/lantiq.h
-index 6775d24..64fbc3f 100644
---- a/arch/mips/include/asm/mach-lantiq/lantiq.h
-+++ b/arch/mips/include/asm/mach-lantiq/lantiq.h
-@@ -49,7 +49,6 @@ extern struct clk *clk_get_io(void);
- extern unsigned char ltq_boot_select(void);
- /* find out what caused the last cpu reset */
- extern int ltq_reset_cause(void);
--#define LTQ_RST_CAUSE_WDTRST	0x20
+diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
+index b5401e3..aefa111 100644
+--- a/drivers/mtd/maps/lantiq-flash.c
++++ b/drivers/mtd/maps/lantiq-flash.c
+@@ -21,7 +21,6 @@
+ #include <linux/mtd/physmap.h>
  
- #define IOPORT_RESOURCE_START	0x10000000
- #define IOPORT_RESOURCE_END	0xffffffff
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-index b5a2acf..d0d40a4 100644
---- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-+++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-@@ -133,6 +133,8 @@ extern __iomem void *ltq_cgu_membase;
- #define LTQ_WDT_BASE_ADDR	0x1F8803F0
- #define LTQ_WDT_SIZE		0x10
+ #include <lantiq_soc.h>
+-#include <lantiq_platform.h>
  
-+#define LTQ_RST_CAUSE_WDTRST	0x20
-+
- /* STP - serial to parallel conversion unit */
- #define LTQ_STP_BASE_ADDR	0x1E100BB0
- #define LTQ_STP_SIZE		0x40
-diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
-index a9593a3..2e74c3a 100644
---- a/drivers/watchdog/lantiq_wdt.c
-+++ b/drivers/watchdog/lantiq_wdt.c
-@@ -13,14 +13,15 @@
- #include <linux/fs.h>
- #include <linux/miscdevice.h>
- #include <linux/watchdog.h>
--#include <linux/platform_device.h>
-+#include <linux/of_platform.h>
- #include <linux/uaccess.h>
- #include <linux/clk.h>
- #include <linux/io.h>
- 
--#include <lantiq.h>
-+#include <lantiq_soc.h>
- 
--/* Section 3.4 of the datasheet
-+/*
-+ * Section 3.4 of the datasheet
-  * The password sequence protects the WDT control register from unintended
-  * write actions, which might cause malfunction of the WDT.
-  *
-@@ -70,7 +71,8 @@ ltq_wdt_disable(void)
- {
- 	/* write the first password magic */
- 	ltq_w32(LTQ_WDT_PW1, ltq_wdt_membase + LTQ_WDT_CR);
--	/* write the second password magic with no config
-+	/*
-+	 * write the second password magic with no config
- 	 * this turns the watchdog off
- 	 */
- 	ltq_w32(LTQ_WDT_PW2, ltq_wdt_membase + LTQ_WDT_CR);
-@@ -184,7 +186,7 @@ static struct miscdevice ltq_wdt_miscdev = {
- 	.fops	= &ltq_wdt_fops,
+ /*
+  * The NOR flash is connected to the same external bus unit (EBU) as PCI.
+@@ -44,8 +43,9 @@ struct ltq_mtd {
+ 	struct map_info *map;
  };
+ 
+-static char ltq_map_name[] = "ltq_nor";
+-static const char *ltq_probe_types[] __devinitconst = { "cmdlinepart", NULL };
++static const char ltq_map_name[] = "ltq_nor";
++static const char *ltq_probe_types[] __devinitconst = {
++					"cmdlinepart", "ofpart", NULL };
+ 
+ static map_word
+ ltq_read16(struct map_info *map, unsigned long adr)
+@@ -108,12 +108,11 @@ ltq_copy_to(struct map_info *map, unsigned long to,
+ 	spin_unlock_irqrestore(&ebu_lock, flags);
+ }
  
 -static int __init
 +static int __devinit
- ltq_wdt_probe(struct platform_device *pdev)
+ ltq_mtd_probe(struct platform_device *pdev)
  {
- 	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -194,28 +196,27 @@ ltq_wdt_probe(struct platform_device *pdev)
- 		dev_err(&pdev->dev, "cannot obtain I/O memory region");
- 		return -ENOENT;
+-	struct physmap_flash_data *ltq_mtd_data = dev_get_platdata(&pdev->dev);
++	struct mtd_part_parser_data ppdata;
+ 	struct ltq_mtd *ltq_mtd;
+-	struct resource *res;
+ 	struct cfi_private *cfi;
+ 	int err;
+ 
+@@ -122,28 +121,19 @@ ltq_mtd_probe(struct platform_device *pdev)
+ 
+ 	ltq_mtd->res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!ltq_mtd->res) {
+-		dev_err(&pdev->dev, "failed to get memory resource");
++		dev_err(&pdev->dev, "failed to get memory resource\n");
+ 		err = -ENOENT;
+ 		goto err_out;
  	}
--	res = devm_request_mem_region(&pdev->dev, res->start,
--		resource_size(res), dev_name(&pdev->dev));
--	if (!res) {
--		dev_err(&pdev->dev, "cannot request I/O memory region");
--		return -EBUSY;
+ 
+-	res = devm_request_mem_region(&pdev->dev, ltq_mtd->res->start,
+-		resource_size(ltq_mtd->res), dev_name(&pdev->dev));
+-	if (!ltq_mtd->res) {
+-		dev_err(&pdev->dev, "failed to request mem resource");
+-		err = -EBUSY;
+-		goto err_out;
 -	}
--	ltq_wdt_membase = devm_ioremap_nocache(&pdev->dev, res->start,
--		resource_size(res));
-+
-+	ltq_wdt_membase = devm_request_and_ioremap(&pdev->dev, res);
- 	if (!ltq_wdt_membase) {
- 		dev_err(&pdev->dev, "cannot remap I/O memory region\n");
- 		return -ENOMEM;
+-
+ 	ltq_mtd->map = kzalloc(sizeof(struct map_info), GFP_KERNEL);
+-	ltq_mtd->map->phys = res->start;
+-	ltq_mtd->map->size = resource_size(res);
+-	ltq_mtd->map->virt = devm_ioremap_nocache(&pdev->dev,
+-				ltq_mtd->map->phys, ltq_mtd->map->size);
++	ltq_mtd->map->phys = ltq_mtd->res->start;
++	ltq_mtd->map->size = resource_size(ltq_mtd->res);
++	ltq_mtd->map->virt = devm_request_and_ioremap(&pdev->dev, ltq_mtd->res);
+ 	if (!ltq_mtd->map->virt) {
+-		dev_err(&pdev->dev, "failed to ioremap!\n");
+-		err = -ENOMEM;
+-		goto err_free;
++		dev_err(&pdev->dev, "failed to remap mem resource\n");
++		err = -EBUSY;
++		goto err_out;
  	}
  
- 	/* we do not need to enable the clock as it is always running */
--	clk = clk_get(&pdev->dev, "io");
--	WARN_ON(!clk);
-+	clk = clk_get_io();
-+	if (IS_ERR(clk)) {
-+		dev_err(&pdev->dev, "Failed to get clock\n");
-+		return -ENOENT;
-+	}
- 	ltq_io_region_clk_rate = clk_get_rate(clk);
- 	clk_put(clk);
+ 	ltq_mtd->map->name = ltq_map_name;
+@@ -169,9 +159,9 @@ ltq_mtd_probe(struct platform_device *pdev)
+ 	cfi->addr_unlock1 ^= 1;
+ 	cfi->addr_unlock2 ^= 1;
  
-+	/* find out if the watchdog caused the last reboot */
- 	if (ltq_reset_cause() == LTQ_RST_CAUSE_WDTRST)
- 		ltq_wdt_bootstatus = WDIOF_CARDRESET;
- 
-+	dev_info(&pdev->dev, "Init done\n");
- 	return misc_register(&ltq_wdt_miscdev);
- }
- 
-@@ -227,33 +228,26 @@ ltq_wdt_remove(struct platform_device *pdev)
+-	err = mtd_device_parse_register(ltq_mtd->mtd, ltq_probe_types, NULL,
+-					ltq_mtd_data->parts,
+-					ltq_mtd_data->nr_parts);
++	ppdata.of_node = pdev->dev.of_node;
++	err = mtd_device_parse_register(ltq_mtd->mtd, ltq_probe_types,
++					&ppdata, NULL, 0);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "failed to add partitions\n");
+ 		goto err_destroy;
+@@ -204,32 +194,23 @@ ltq_mtd_remove(struct platform_device *pdev)
  	return 0;
  }
  
-+static const struct of_device_id ltq_wdt_match[] = {
-+	{ .compatible = "lantiq,wdt" },
++static const struct of_device_id ltq_mtd_match[] = {
++	{ .compatible = "lantiq,nor" },
 +	{},
 +};
-+MODULE_DEVICE_TABLE(of, ltq_wdt_match);
- 
- static struct platform_driver ltq_wdt_driver = {
-+	.probe = ltq_wdt_probe,
- 	.remove = __devexit_p(ltq_wdt_remove),
++MODULE_DEVICE_TABLE(of, ltq_mtd_match);
++
+ static struct platform_driver ltq_mtd_driver = {
++	.probe = ltq_mtd_probe,
+ 	.remove = __devexit_p(ltq_mtd_remove),
  	.driver = {
--		.name = "ltq_wdt",
-+		.name = "wdt",
+-		.name = "ltq_nor",
++		.name = "ltq-nor",
  		.owner = THIS_MODULE,
-+		.of_match_table = ltq_wdt_match,
++		.of_match_table = ltq_mtd_match,
  	},
  };
  
 -static int __init
--init_ltq_wdt(void)
+-init_ltq_mtd(void)
 -{
--	return platform_driver_probe(&ltq_wdt_driver, ltq_wdt_probe);
+-	int ret = platform_driver_probe(&ltq_mtd_driver, ltq_mtd_probe);
+-
+-	if (ret)
+-		pr_err("ltq_nor: error registering platform driver");
+-	return ret;
 -}
 -
 -static void __exit
--exit_ltq_wdt(void)
+-exit_ltq_mtd(void)
 -{
--	return platform_driver_unregister(&ltq_wdt_driver);
+-	platform_driver_unregister(&ltq_mtd_driver);
 -}
 -
--module_init(init_ltq_wdt);
--module_exit(exit_ltq_wdt);
-+module_platform_driver(ltq_wdt_driver);
+-module_init(init_ltq_mtd);
+-module_exit(exit_ltq_mtd);
++module_platform_driver(ltq_mtd_driver);
  
- module_param(nowayout, bool, 0);
- MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started");
--
- MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
- MODULE_DESCRIPTION("Lantiq SoC Watchdog");
  MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
 -- 
 1.7.9.1

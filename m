@@ -1,63 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2012 23:56:04 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:48394 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 May 2012 00:20:20 +0200 (CEST)
+Received: from nat.scz.novell.com ([213.151.88.252]:51399 "EHLO pobox.suse.cz"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903705Ab2EOV4A (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 15 May 2012 23:56:00 +0200
-Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q4FLtt52007959;
-        Tue, 15 May 2012 23:55:55 +0200
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q4FLtpIx007958;
-        Tue, 15 May 2012 23:55:51 +0200
-Date:   Tue, 15 May 2012 23:55:51 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "John W. Linville" <linville@tuxdriver.com>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>, zajec5@gmail.com,
-        b43-dev@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-wireless@vger.kernel.org, arend@broadcom.com, m@bues.ch
-Subject: Re: [PATCH 0/8] ssb/bcma/bcm47xx: extend boardinfo and sprom
-Message-ID: <20120515215551.GA16397@linux-mips.org>
-References: <1335657853-23925-1-git-send-email-hauke@hauke-m.de>
- <20120515211605.GH24572@tuxdriver.com>
+        id S1903693Ab2EOWUN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 16 May 2012 00:20:13 +0200
+Received: by pobox.suse.cz (Postfix, from userid 10020)
+        id AA750C22A3; Wed, 16 May 2012 00:20:10 +0200 (CEST)
+Date:   Wed, 16 May 2012 00:20:10 +0200
+From:   Michal Marek <mmarek@suse.cz>
+To:     Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc:     Sam Ravnborg <sam@ravnborg.org>, Tony Luck <tony.luck@gmail.com>,
+        linux arch <linux-arch@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        linux-kbuild <linux-kbuild@vger.kernel.org>,
+        Richard Weinberger <richard@nod.at>,
+        "David S. Miller" <davem@davemloft.net>,
+        Arnaud Lacombe <lacombar@gmail.com>,
+        Andi Kleen <andi@firstfloor.org>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 3/4] kbuild: link of vmlinux moved to a script
+Message-ID: <20120515222010.GB9277@pobox.suse.cz>
+References: <20120428205651.GA7426@merkur.ravnborg.org> <20120428205919.GC7442@merkur.ravnborg.org> <4FA460AB.6060309@suse.cz> <20120505082916.GA14006@merkur.ravnborg.org> <CA+8MBbKd9zAouJy5JvUnLwUHMJ65HsYgCTfBgv42nm32EnMPFA@mail.gmail.com> <20120508165118.GA11750@merkur.ravnborg.org> <CAP=VYLobO--uwxv_hiMYBnjD-AU_0fqyQJD6argQygnkHnm5Vg@mail.gmail.com> <20120510122210.GA17550@sepie.suse.cz> <4FABD436.7070402@windriver.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20120515211605.GH24572@tuxdriver.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 33332
+In-Reply-To: <4FABD436.7070402@windriver.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-archive-position: 33333
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mmarek@suse.cz
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, May 15, 2012 at 05:16:05PM -0400, John W. Linville wrote:
-
-> On Sun, Apr 29, 2012 at 02:04:05AM +0200, Hauke Mehrtens wrote:
-> > This patch series fixes the boardinfo for ssb based devices by removing 
-> > board_rev from the struct, this should be fetched from sprom. In 
-> > addition a boardinfo struct was added to bcma.
-> > The pci sprom parsing code was extended for bcma to provide all 
-> > attributes needed by brcmsmac and that code was also copied to ssb.
-> > 
-> > This is based on wireless-testing/master.
-> > 
-> > Hauke Mehrtens (8):
-> >   ssb: remove rev from boardinfo
-> >   MIPS: bcm47xx: refactor fetching board data
-> >   bcma: add boardinfo struct
-> >   MIPS: bcm47xx: read baordrev without prefix from sprom
-> >   ssb/bcma: fill attribute alpha2 from sprom
-> >   ssb: fill board_rev attribute from sprom
-> >   bcma: read out some additional sprom attributes
-> >   bcma/ssb: parse new attributes from sprom
+On Thu, May 10, 2012 at 10:44:06AM -0400, Paul Gortmaker wrote:
+> On 12-05-10 08:22 AM, Michal Marek wrote:
+> > I think it should be as simple as the below patch. But I have no mips
+> > machine to verify myself.
 > 
-> I'd still like to see an ACK from Ralf on the mips stuff?
+> Well I haven't boot tested it on anything either, but it does
+> seem to resolve the double quoting that caused the compile failure.
 
-Sorry, I'm awfully backloged.
+I applied it to kbuild.git#kbuild now.
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
-
-  Ralf
+Michal

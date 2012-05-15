@@ -1,60 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 May 2012 22:07:19 +0200 (CEST)
-Received: from mail-yw0-f49.google.com ([209.85.213.49]:40715 "EHLO
-        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903724Ab2ENUHL convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 May 2012 22:07:11 +0200
-Received: by yhjj52 with SMTP id j52so5472549yhj.36
-        for <linux-mips@linux-mips.org>; Mon, 14 May 2012 13:07:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding:x-gm-message-state;
-        bh=oiTPD9OEJ+d58iQw0QsPsUspcV0XE+ALke/E6Hc6Ly0=;
-        b=fX/2sHIuXdslUFxDaMhXi9CIrT3Ub6yCRXW//HmcBl+/JduupHOKSgZ9TscBZxxqxA
-         T2JhJFlQumh9LRlmFE7fTdoKkURLdv1P18V3MW2tRVEfl72EZ8PreNKoVuHLttxhQSr4
-         6WFymHLghE6Hf8wDlfOodtyEB1QEkYmC/VWM+TeCmq2mNa3IStx3Qt5/XBGgNx5bEo48
-         JqVCSsItpjFuSYndtj7v77wa71KTvvg9/Yh43PkQrBH7DvbuM8L6mYgRePh97wWBEcd3
-         N6ExHOYnp9XNp/X5aalw4NW4MEYaWnu/PEDDoCMDh0ridzw3TvbcigoNskD/j+35Q/iB
-         DrdA==
-MIME-Version: 1.0
-Received: by 10.101.136.12 with SMTP id o12mr2830575ann.53.1337026025154; Mon,
- 14 May 2012 13:07:05 -0700 (PDT)
-Received: by 10.147.137.4 with HTTP; Mon, 14 May 2012 13:07:05 -0700 (PDT)
-In-Reply-To: <1336772086-17248-3-git-send-email-ddaney.cavm@gmail.com>
-References: <1336772086-17248-1-git-send-email-ddaney.cavm@gmail.com>
-        <1336772086-17248-3-git-send-email-ddaney.cavm@gmail.com>
-Date:   Mon, 14 May 2012 22:07:05 +0200
-Message-ID: <CACRpkdaAeMV2yCNNP+e0BKaXEeZon2CKJs-TskVH5CVWXuqyiA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] spi: Add SPI master controller for OCTEON SOCs.
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     devicetree-discuss@lists.ozlabs.org,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Rob Herring <rob.herring@calxeda.com>,
-        spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org,
-        David Daney <david.daney@cavium.com>,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-Gm-Message-State: ALoCoQk2YaMNdw1stQL2qhSsM9KaBUiIjymDxt/x/EQEHHmcmtPg4I36HJ0fCVwcBEaudq1hIHwd
-X-archive-position: 33316
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2012 02:05:05 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:54509 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903663Ab2EOAFB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 May 2012 02:05:01 +0200
+Received: by pbbrq13 with SMTP id rq13so7650899pbb.36
+        for <multiple recipients>; Mon, 14 May 2012 17:04:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=F4mERDNt9Z70z4IifqRA3YK9p9G0lSV6S+LMbsgkXB8=;
+        b=HeFhQyoh82xmCoMUAk+gt5AEjcxiKBukmMowDaZ4UCr5asnyB9dmoKZXhlVBO+Xc3N
+         i9P6TBxNZNcf/62grl8bzc8qxA84t0One2GBkwD1+Q0VaI/DE5Had/hpU4aY58OJqbTg
+         cnP6wEEsw0a71Ew4OajRigcHEh+ZWGB6PlkmGDxIIYwYqNkthfUitGh6Nt2Tz946Mbcs
+         Hq4Tw9yr58fWvXa6nKbc1YUsMEF+oJkWV3L8BHi5Vb8cQte4z2s0EoKdRU608yTuxjfW
+         WJJ43LQXUhBx1vYnwcAxD5gCFJ8W/iZa0SmGu7jH4ONoBaynsLVfO5URR1W8cd9mzK2P
+         asjg==
+Received: by 10.68.233.102 with SMTP id tv6mr27321934pbc.153.1337040294861;
+        Mon, 14 May 2012 17:04:54 -0700 (PDT)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id nh5sm4363962pbc.17.2012.05.14.17.04.53
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 14 May 2012 17:04:53 -0700 (PDT)
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q4F04qcE016061;
+        Mon, 14 May 2012 17:04:52 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q4F04q7g016060;
+        Mon, 14 May 2012 17:04:52 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH v2 2/5] MIPS: Make set_handler() __cpuinit.
+Date:   Mon, 14 May 2012 17:04:47 -0700
+Message-Id: <1337040290-16015-3-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+In-Reply-To: <1337040290-16015-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1337040290-16015-1-git-send-email-ddaney.cavm@gmail.com>
+X-archive-position: 33317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, May 11, 2012 at 11:34 PM, David Daney <ddaney.cavm@gmail.com> wrote:
+From: David Daney <david.daney@cavium.com>
 
-> +       mpi_cfg.u64 = 0;
-> +       mpi_cfg.u64 |= p->cs_enax;
-> +       if (mpi_cfg.u64 != p->last_cfg) {
+Follow-on patched require this.
 
-But now I see why this 64bit is so clever. Forget the comment on 1/2!
-This has a certain elegance to it that I just learned to appreciate.
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/kernel/traps.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-Yours,
-Linus Walleij
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index b931eba..2b5675b 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1680,7 +1680,7 @@ void __cpuinit per_cpu_trap_init(void)
+ }
+ 
+ /* Install CPU exception handler */
+-void __init set_handler(unsigned long offset, void *addr, unsigned long size)
++void __cpuinit set_handler(unsigned long offset, void *addr, unsigned long size)
+ {
+ 	memcpy((void *)(ebase + offset), addr, size);
+ 	local_flush_icache_range(ebase + offset, ebase + offset + size);
+-- 
+1.7.2.3

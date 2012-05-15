@@ -1,149 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2012 02:07:04 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:45536 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903696Ab2EOAFE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 May 2012 02:05:04 +0200
-Received: by dadm1 with SMTP id m1so7456808dad.36
-        for <multiple recipients>; Mon, 14 May 2012 17:04:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=UfGtMuPzl+I01RZgSJcvJzJK/pAUsJL88XreYVLImUg=;
-        b=0R2WLL5dI9z6iwPY663hhfOIrmVbELYSoiFQh6+YRcCGcOmo4xoHVYKyj3vihSrqXU
-         5P88AP6HUx58xhs417sq8X9m4m1M6fu7W3f08xVIf2DQ2kPH55FGWfTAmDHgaSanDpVj
-         0sFrdP7Q7HL4cyBqSj481B+FzeoY8x16HRtsUBi9WJuSkEcr1+h/IMSzFVU+EQE6sXOw
-         h0vdyBPevEJFfebYg3mho6Z2w00L4HMKtEpVZsF0OQp/QwPwSMgnFa6gKAzYA96u2xH8
-         ypVhZKuhYq19DojMXO+WOLD7xyTND92SMRHlvlW8FcGzIjUt+3ufvtdRpC3OJRjtPm6V
-         /OIw==
-Received: by 10.68.234.73 with SMTP id uc9mr4425785pbc.65.1337040297577;
-        Mon, 14 May 2012 17:04:57 -0700 (PDT)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id kb12sm23700053pbb.15.2012.05.14.17.04.53
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 14 May 2012 17:04:55 -0700 (PDT)
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q4F04que016073;
-        Mon, 14 May 2012 17:04:52 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q4F04q4E016072;
-        Mon, 14 May 2012 17:04:52 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH v2 5/5] MIPS: Move cache setup to setup_arch().
-Date:   Mon, 14 May 2012 17:04:50 -0700
-Message-Id: <1337040290-16015-6-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.2.3
-In-Reply-To: <1337040290-16015-1-git-send-email-ddaney.cavm@gmail.com>
-References: <1337040290-16015-1-git-send-email-ddaney.cavm@gmail.com>
-X-archive-position: 33322
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2012 12:47:48 +0200 (CEST)
+Received: from mga02.intel.com ([134.134.136.20]:25920 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903612Ab2EOKrf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 15 May 2012 12:47:35 +0200
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP; 15 May 2012 03:47:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.67,352,1309762800"; 
+   d="asc'?scan'208";a="140806055"
+Received: from linux.jf.intel.com (HELO linux.intel.com) ([10.23.219.25])
+  by orsmga001.jf.intel.com with ESMTP; 15 May 2012 03:47:27 -0700
+Received: from [10.237.72.78] (sauron.fi.intel.com [10.237.72.78])
+        by linux.intel.com (Postfix) with ESMTP id BE9576A4001;
+        Tue, 15 May 2012 03:47:26 -0700 (PDT)
+Message-ID: <1337079056.2528.158.camel@sauron.fi.intel.com>
+Subject: Re: [RESEND PATCH V2 14/17] MTD: MIPS: lantiq: verify that the NOR
+ interface is available on falcon soc
+From:   Artem Bityutskiy <dedekind1@gmail.com>
+Reply-To: dedekind1@gmail.com
+To:     John Crispin <blogic@openwrt.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-mtd@lists.infradead.org
+Date:   Tue, 15 May 2012 13:50:56 +0300
+In-Reply-To: <1337017363-14424-14-git-send-email-blogic@openwrt.org>
+References: <1337017363-14424-1-git-send-email-blogic@openwrt.org>
+         <1337017363-14424-14-git-send-email-blogic@openwrt.org>
+Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature";
+        boundary="=-yIDHwD/xOLPxK6Aa6Kas"
+X-Mailer: Evolution 3.2.3 (3.2.3-3.fc16) 
+Mime-Version: 1.0
+X-archive-position: 33323
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: dedekind1@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: David Daney <david.daney@cavium.com>
 
-commit 97ce2c88f9ad42e3c60a9beb9fca87abf3639faa (jump-label: initialize
-jump-label subsystem much earlier) breaks MIPS.  The jump_label_init()
-call was moved before trap_init() which is where we initialize
-flush_icache_range().
+--=-yIDHwD/xOLPxK6Aa6Kas
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In order to be good citizens, we move cache initialization earlier so
-that we don't jump through a null flush_icache_range function pointer
-when doing the jump label initialization.
+On Mon, 2012-05-14 at 19:42 +0200, John Crispin wrote:
+> When running on a FALC-ON SoC, we need to check the bootstrap options to =
+see
+> if NOR is available.
+>=20
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+> Cc: linux-mtd@lists.infradead.org
 
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- arch/mips/include/asm/setup.h |    3 ++-
- arch/mips/kernel/setup.c      |    2 ++
- arch/mips/kernel/smp.c        |    2 +-
- arch/mips/kernel/traps.c      |    9 +++++----
- 4 files changed, 10 insertions(+), 6 deletions(-)
+Acked-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
 
-diff --git a/arch/mips/include/asm/setup.h b/arch/mips/include/asm/setup.h
-index 6dce6d8..2560b6b 100644
---- a/arch/mips/include/asm/setup.h
-+++ b/arch/mips/include/asm/setup.h
-@@ -14,7 +14,8 @@ extern void *set_vi_handler(int n, vi_handler_t addr);
- 
- extern void *set_except_vector(int n, void *addr);
- extern unsigned long ebase;
--extern void per_cpu_trap_init(void);
-+extern void per_cpu_trap_init(bool);
-+extern void cpu_cache_init(void);
- 
- #endif /* __KERNEL__ */
- 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index c504b21..a53f8ec 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -605,6 +605,8 @@ void __init setup_arch(char **cmdline_p)
- 
- 	resource_init();
- 	plat_smp_setup();
-+
-+	cpu_cache_init();
- }
- 
- unsigned long kernelsp[NR_CPUS];
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index ba9376b..dc019a1 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -106,7 +106,7 @@ asmlinkage __cpuinit void start_secondary(void)
- #endif /* CONFIG_MIPS_MT_SMTC */
- 	cpu_probe();
- 	cpu_report();
--	per_cpu_trap_init();
-+	per_cpu_trap_init(false);
- 	mips_clockevent_init();
- 	mp_ops->init_secondary();
- 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 2b5675b..0ba66c0 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1538,7 +1538,6 @@ void *set_vi_handler(int n, vi_handler_t addr)
- 	return set_vi_srs_handler(n, addr, 0);
- }
- 
--extern void cpu_cache_init(void);
- extern void tlb_init(void);
- extern void flush_tlb_handlers(void);
- 
-@@ -1565,7 +1564,7 @@ static int __init ulri_disable(char *s)
- }
- __setup("noulri", ulri_disable);
- 
--void __cpuinit per_cpu_trap_init(void)
-+void __cpuinit per_cpu_trap_init(bool is_boot_cpu)
- {
- 	unsigned int cpu = smp_processor_id();
- 	unsigned int status_set = ST0_CU0;
-@@ -1664,7 +1663,9 @@ void __cpuinit per_cpu_trap_init(void)
- #ifdef CONFIG_MIPS_MT_SMTC
- 	if (bootTC) {
- #endif /* CONFIG_MIPS_MT_SMTC */
--		cpu_cache_init();
-+		/* Boot CPU's cache setup in setup_arch(). */
-+		if (!is_boot_cpu)
-+			cpu_cache_init();
- 		tlb_init();
- #ifdef CONFIG_MIPS_MT_SMTC
- 	} else if (!secondaryTC) {
-@@ -1741,7 +1742,7 @@ void __init trap_init(void)
- 
- 	if (board_ebase_setup)
- 		board_ebase_setup();
--	per_cpu_trap_init();
-+	per_cpu_trap_init(true);
- 
- 	/*
- 	 * Copy the generic exception handlers to their final destination.
--- 
-1.7.2.3
+--=20
+Best Regards,
+Artem Bityutskiy
+
+--=-yIDHwD/xOLPxK6Aa6Kas
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAABAgAGBQJPsjUQAAoJECmIfjd9wqK09MkP/ROD0uVJvW4K4YbZmJtxuMvj
+z9iJDqNSxDXxVofo6ykPrL3RjedwI0iYnu1A9cN2X3tzSu5DDzO8+xJ3JeENcuMR
+x7prXmzaKViUtX9LtnaKXR/tGcJ9CWL5NqiqBo3ltrjsBWsehwW5RKFNLJV/2LJD
+hes7Mytr6ua/3pwpuLEJMKhuLvH7fXWTa8Hhswoh1sBRT//qh1w1Ch1kviXdcvZL
+2s/pBAdksnwmiQ9Z1I+b9SXEI8xbZ5bcolEeMXZn1tO1QHXf4+Ai3pDseqQm1PGh
+HC6Co8D6cwHLhu7ZpcTaz/OE9rC7UKa5IunNgINeVvMeQskOnhwfUsp22GUt0Dcs
+PeVwJxQcSx1EQWOojrPVQsoeXQP+NARQqswQkeFlzwjzW7VhizjanPi8JVT+evnG
+nHczq6non40kPM6mQbFOSM4s+xk9HxmpWyqbFvk5tSI2LBMrUjCTYJNU/1sra1rJ
+Th5NGz97NhPJcUbvEhmMDMTjw42eEJnA0iGbYTwD0EJItrzWWYolie1YJ/RrAaRu
+H2A9kpUcXPqcQq6xfAERoNcd7YGJda6YqZK6NjX0i82anhiZi6WTGWfb/Xq8z7R0
+X0X/OtRgSCKcwRDObJ4ItaWVTco7MDqjcmNs3lFnfKkIza1QmD7mAC1r7OmSmX3p
+i9T0HcTnIGuCyVzm4AK6
+=8K2j
+-----END PGP SIGNATURE-----
+
+--=-yIDHwD/xOLPxK6Aa6Kas--

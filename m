@@ -1,138 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2012 19:00:36 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:46294 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903678Ab2EORAZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 15 May 2012 19:00:25 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V4 06/17] MIPS: lantiq: convert dma to platform driver
-Date:   Tue, 15 May 2012 19:00:12 +0200
-Message-Id: <1337101212-23710-1-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.9.1
-X-archive-position: 33330
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2012 23:32:59 +0200 (CEST)
+Received: from charlotte.tuxdriver.com ([70.61.120.58]:52896 "EHLO
+        smtp.tuxdriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903681Ab2EOVcw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 May 2012 23:32:52 +0200
+Received: from uucp by smtp.tuxdriver.com with local-rmail (Exim 4.63)
+        (envelope-from <linville@tuxdriver.com>)
+        id 1SUPMM-0002Lb-SJ; Tue, 15 May 2012 17:32:46 -0400
+Received: from linville-8530p.local (linville-8530p.local [127.0.0.1])
+        by linville-8530p.local (8.14.4/8.14.4) with ESMTP id q4FLG63g004864;
+        Tue, 15 May 2012 17:16:07 -0400
+Received: (from linville@localhost)
+        by linville-8530p.local (8.14.4/8.14.4/Submit) id q4FLG5FC004863;
+        Tue, 15 May 2012 17:16:05 -0400
+Date:   Tue, 15 May 2012 17:16:05 -0400
+From:   "John W. Linville" <linville@tuxdriver.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     zajec5@gmail.com, b43-dev@lists.infradead.org,
+        linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
+        arend@broadcom.com, m@bues.ch, ralf@linux-mips.org
+Subject: Re: [PATCH 0/8] ssb/bcma/bcm47xx: extend boardinfo and sprom
+Message-ID: <20120515211605.GH24572@tuxdriver.com>
+References: <1335657853-23925-1-git-send-email-hauke@hauke-m.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1335657853-23925-1-git-send-email-hauke@hauke-m.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 33331
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: linville@tuxdriver.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add code to make the dma driver load as a platform device from the devicetree.
+On Sun, Apr 29, 2012 at 02:04:05AM +0200, Hauke Mehrtens wrote:
+> This patch series fixes the boardinfo for ssb based devices by removing 
+> board_rev from the struct, this should be fetched from sprom. In 
+> addition a boardinfo struct was added to bcma.
+> The pci sprom parsing code was extended for bcma to provide all 
+> attributes needed by brcmsmac and that code was also copied to ssb.
+> 
+> This is based on wireless-testing/master.
+> 
+> Hauke Mehrtens (8):
+>   ssb: remove rev from boardinfo
+>   MIPS: bcm47xx: refactor fetching board data
+>   bcma: add boardinfo struct
+>   MIPS: bcm47xx: read baordrev without prefix from sprom
+>   ssb/bcma: fill attribute alpha2 from sprom
+>   ssb: fill board_rev attribute from sprom
+>   bcma: read out some additional sprom attributes
+>   bcma/ssb: parse new attributes from sprom
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
+I'd still like to see an ACK from Ralf on the mips stuff?
 
----
-Changes in V4
-* drop the typo prone comment
-
-Changes in V3
-* add a missing \n
-
- arch/mips/lantiq/xway/dma.c |   61 +++++++++++++++++++++++++++---------------
- 1 files changed, 39 insertions(+), 22 deletions(-)
-
-diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
-index b210e93..55d2c4f 100644
---- a/arch/mips/lantiq/xway/dma.c
-+++ b/arch/mips/lantiq/xway/dma.c
-@@ -19,7 +19,8 @@
- #include <linux/platform_device.h>
- #include <linux/io.h>
- #include <linux/dma-mapping.h>
--#include <linux/export.h>
-+#include <linux/module.h>
-+#include <linux/clk.h>
- 
- #include <lantiq_soc.h>
- #include <xway_dma.h>
-@@ -55,13 +56,6 @@
- #define ltq_dma_w32_mask(x, y, z)	ltq_w32_mask(x, y, \
- 						ltq_dma_membase + (z))
- 
--static struct resource ltq_dma_resource = {
--	.name	= "dma",
--	.start	= LTQ_DMA_BASE_ADDR,
--	.end	= LTQ_DMA_BASE_ADDR + LTQ_DMA_SIZE - 1,
--	.flags  = IORESOURCE_MEM,
--};
--
- static void __iomem *ltq_dma_membase;
- 
- void
-@@ -215,27 +209,28 @@ ltq_dma_init_port(int p)
- }
- EXPORT_SYMBOL_GPL(ltq_dma_init_port);
- 
--int __init
--ltq_dma_init(void)
-+static int __devinit
-+ltq_dma_init(struct platform_device *pdev)
- {
-+	struct clk *clk;
-+	struct resource *res;
- 	int i;
- 
--	/* insert and request the memory region */
--	if (insert_resource(&iomem_resource, &ltq_dma_resource) < 0)
--		panic("Failed to insert dma memory");
--
--	if (request_mem_region(ltq_dma_resource.start,
--			resource_size(&ltq_dma_resource), "dma") < 0)
--		panic("Failed to request dma memory");
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res)
-+		panic("Failed to get dma resource");
- 
- 	/* remap dma register range */
--	ltq_dma_membase = ioremap_nocache(ltq_dma_resource.start,
--				resource_size(&ltq_dma_resource));
-+	ltq_dma_membase = devm_request_and_ioremap(&pdev->dev, res);
- 	if (!ltq_dma_membase)
--		panic("Failed to remap dma memory");
-+		panic("Failed to remap dma resource");
- 
- 	/* power up and reset the dma engine */
--	ltq_pmu_enable(PMU_DMA);
-+	clk = clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(clk))
-+		panic("Failed to get dma clock");
-+
-+	clk_enable(clk);
- 	ltq_dma_w32_mask(0, DMA_RESET, LTQ_DMA_CTRL);
- 
- 	/* disable all interrupts */
-@@ -248,7 +243,29 @@ ltq_dma_init(void)
- 		ltq_dma_w32(DMA_POLL | DMA_CLK_DIV4, LTQ_DMA_CPOLL);
- 		ltq_dma_w32_mask(DMA_CHAN_ON, 0, LTQ_DMA_CCTRL);
- 	}
-+	dev_info(&pdev->dev, "init done\n");
- 	return 0;
- }
- 
--postcore_initcall(ltq_dma_init);
-+static const struct of_device_id dma_match[] = {
-+	{ .compatible = "lantiq,dma-xway" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, dma_match);
-+
-+static struct platform_driver dma_driver = {
-+	.probe = ltq_dma_init,
-+	.driver = {
-+		.name = "dma-xway",
-+		.owner = THIS_MODULE,
-+		.of_match_table = dma_match,
-+	},
-+};
-+
-+int __init
-+dma_init(void)
-+{
-+	return platform_driver_register(&dma_driver);
-+}
-+
-+postcore_initcall(dma_init);
 -- 
-1.7.9.1
+John W. Linville		Someday the world will need a hero, and you
+linville@tuxdriver.com			might be all we have.  Be ready.

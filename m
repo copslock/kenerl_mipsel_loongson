@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2012 02:06:17 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:58252 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903681Ab2EOAFC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 May 2012 02:05:02 +0200
-Received: by dadm1 with SMTP id m1so7456784dad.36
-        for <multiple recipients>; Mon, 14 May 2012 17:04:55 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2012 02:06:39 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:57980 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903693Ab2EOAFD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 May 2012 02:05:03 +0200
+Received: by pbbrq13 with SMTP id rq13so7650932pbb.36
+        for <multiple recipients>; Mon, 14 May 2012 17:04:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=wZ+r606Caxx+x6PtXzR3EjM5YYCCY5w6nSrlY95OrOI=;
-        b=LhMg2Ezd31v8n2bpbtXYhLM1AB1VRJH+aQG1GN5Qji0tKr4CQR55zk2w452vzy/WGu
-         winSnGlsZ8MLQlDyDWqk45yvIx1ak0NjQy68HAtEq0GpKOk5ABDp5mZc1eXkreELoHr9
-         y3C+cR3PNU8SwCelY8v3Ahv6Gk5tN36Ar9/a2qH5bNA4c8/tJVkQEjJ2Rf4XQmvwDmdA
-         JCsiLJLTEDg75SB3iB+tSGAv5abCPdr4ET7hWkdbOVIvg8tXJMFuvHFKLu6nDty4wXw4
-         ags7ZPtn1sUXItn1iVmZb+M/gE/DekmumM1UXPYnCyuyCNUcGN1H29b3AjPPTNKvdnlv
-         hKmA==
-Received: by 10.68.203.40 with SMTP id kn8mr27247256pbc.162.1337040295665;
-        Mon, 14 May 2012 17:04:55 -0700 (PDT)
+        bh=yQRzfAtsL+nOZj2k3RrxeM8MN3oiRWqCAwE+0OxHxM8=;
+        b=I8S1kv/XOLiDoKNfzm1orlSsnNsjzXBxD5/Dp1eqgNpxS2Q9MGosZQizjGCwOYiivf
+         iOVBm6c3Y/sOZgM3OMh0dBobF+br9g0lIUFt5Qk1lhaH/cvYePU2+sYyFMRTo+FEeiqU
+         SzmrO6THATS3O1WbC1e/oGb/Jv3NcHS2IlUgYV1zaPpdqBh+M4GVKZxmFi4Y8l6QUinC
+         M7sNN6obVtPPT0FUBI/XQGRjBIgBD1qJLZilwWGUzrPjhalse1dOOsS+6VO543XdGtdB
+         WduR+I+UBUTfi/sd+7UlgwFHK7YveNpOWwDww4OTvbBjKIdDqSxeQCOm4yiSBXzJQhsF
+         pUWA==
+Received: by 10.68.226.99 with SMTP id rr3mr27297390pbc.48.1337040296918;
+        Mon, 14 May 2012 17:04:56 -0700 (PDT)
 Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id pu9sm23687524pbc.36.2012.05.14.17.04.53
+        by mx.google.com with ESMTPS id i1sm23678685pbv.49.2012.05.14.17.04.53
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 14 May 2012 17:04:53 -0700 (PDT)
+        Mon, 14 May 2012 17:04:55 -0700 (PDT)
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q4F04qNK016065;
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q4F04q61016069;
         Mon, 14 May 2012 17:04:52 -0700
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q4F04qrm016064;
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q4F04qIt016068;
         Mon, 14 May 2012 17:04:52 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH v2 3/5] MIPS: Octeon: Use board_cache_error_setup for cache error handler setup.
-Date:   Mon, 14 May 2012 17:04:48 -0700
-Message-Id: <1337040290-16015-4-git-send-email-ddaney.cavm@gmail.com>
+Subject: [PATCH v2 4/5] MIPS: Use board_cache_error_setup for r4k cache error handler setup.
+Date:   Mon, 14 May 2012 17:04:49 -0700
+Message-Id: <1337040290-16015-5-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1337040290-16015-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1337040290-16015-1-git-send-email-ddaney.cavm@gmail.com>
-X-archive-position: 33320
+X-archive-position: 33321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,54 +49,53 @@ From: David Daney <david.daney@cavium.com>
 
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/mm/c-octeon.c |   14 ++++++++------
- 1 files changed, 8 insertions(+), 6 deletions(-)
+ arch/mips/mm/c-r4k.c |   14 ++++++++++----
+ 1 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/mm/c-octeon.c b/arch/mips/mm/c-octeon.c
-index 47037ec..44e69e7 100644
---- a/arch/mips/mm/c-octeon.c
-+++ b/arch/mips/mm/c-octeon.c
-@@ -21,6 +21,7 @@
- #include <asm/page.h>
- #include <asm/pgtable.h>
- #include <asm/r4kcache.h>
-+#include <asm/traps.h>
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index bda8eb2..5109be9 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -32,7 +32,7 @@
  #include <asm/mmu_context.h>
  #include <asm/war.h>
+ #include <asm/cacheflush.h> /* for run_uncached() */
+-
++#include <asm/traps.h>
  
-@@ -248,6 +249,11 @@ static void __cpuinit probe_octeon(void)
- 	}
- }
+ /*
+  * Special Variant of smp_call_function for use by cache functions:
+@@ -1385,10 +1385,8 @@ static int __init setcoherentio(char *str)
+ __setup("coherentio", setcoherentio);
+ #endif
  
-+static void  __cpuinit octeon_cache_error_setup(void)
-+{
-+	extern char except_vec2_octeon;
-+	set_handler(0x100, &except_vec2_octeon, 0x80);
-+}
- 
- /**
-  * Setup the Octeon cache flush routines
-@@ -255,12 +261,6 @@ static void __cpuinit probe_octeon(void)
-  */
- void __cpuinit octeon_cache_init(void)
+-void __cpuinit r4k_cache_init(void)
++static void __cpuinit r4k_cache_error_setup(void)
  {
--	extern unsigned long ebase;
--	extern char except_vec2_octeon;
--
--	memcpy((void *)(ebase + 0x100), &except_vec2_octeon, 0x80);
--	octeon_flush_cache_sigtramp(ebase + 0x100);
--
- 	probe_octeon();
- 
- 	shm_align_mask = PAGE_SIZE - 1;
-@@ -280,6 +280,8 @@ void __cpuinit octeon_cache_init(void)
- 
- 	build_clear_page();
- 	build_copy_page();
+-	extern void build_clear_page(void);
+-	extern void build_copy_page(void);
+ 	extern char __weak except_vec2_generic;
+ 	extern char __weak except_vec2_sb1;
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+@@ -1403,6 +1401,13 @@ void __cpuinit r4k_cache_init(void)
+ 		set_uncached_handler(0x100, &except_vec2_generic, 0x80);
+ 		break;
+ 	}
++}
 +
-+	board_cache_error_setup = octeon_cache_error_setup;
- }
++void __cpuinit r4k_cache_init(void)
++{
++	extern void build_clear_page(void);
++	extern void build_copy_page(void);
++	struct cpuinfo_mips *c = &current_cpu_data;
  
- /**
+ 	probe_pcache();
+ 	setup_scache();
+@@ -1465,4 +1470,5 @@ void __cpuinit r4k_cache_init(void)
+ 	local_r4k___flush_cache_all(NULL);
+ #endif
+ 	coherency_setup();
++	board_cache_error_setup = r4k_cache_error_setup;
+ }
 -- 
 1.7.2.3

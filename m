@@ -1,62 +1,138 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2012 13:10:57 +0200 (CEST)
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:53736 "EHLO
-        mail-lpp01m010-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903612Ab2EOLKv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 May 2012 13:10:51 +0200
-Received: by laap9 with SMTP id p9so5063159laa.36
-        for <linux-mips@linux-mips.org>; Tue, 15 May 2012 04:10:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding
-         :x-gm-message-state;
-        bh=7HAbD6zF+LUOSsK/OnXDYYwQm1ON65TbP4fwy2oUkqw=;
-        b=hhqY3FMGvO6foky61Y2lQY87IOwIe9KETTisFT8giGBcMqFAyppQ+z9kBms1LZ8jrz
-         HOxbITrXcrTfrccCTpHNB4sCrfqXFfd/5Uew6C7EyMTUBslL+64mgctgNoLyLK0FkD41
-         jbTdmqz1n/mwCO3s6LDhb6tHnK7MOC3+7wU3X6i+r5CRqADuMe60Ge2a81KPyK70U6dh
-         ZU6FkuuWVcAGBUyHyXRC4/+rifwUGJBFnJeuR17ATaEn6zBG5kZN+GzZG31r5jJrn5ku
-         NcvZKLkPmUh7qrKQL6YX0hfcU57GJp37+aZzD/439WCDyzakeHDPORlQSdwdln/gNfZc
-         SYhQ==
-Received: by 10.112.29.166 with SMTP id l6mr3658764lbh.68.1337080246305;
-        Tue, 15 May 2012 04:10:46 -0700 (PDT)
-Received: from [192.168.2.2] (ppp91-79-80-113.pppoe.mtu-net.ru. [91.79.80.113])
-        by mx.google.com with ESMTPS id gi19sm6326862lab.16.2012.05.15.04.10.42
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 15 May 2012 04:10:44 -0700 (PDT)
-Message-ID: <4FB23997.7030004@mvista.com>
-Date:   Tue, 15 May 2012 15:10:15 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
-MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH v2 2/5] MIPS: Make set_handler() __cpuinit.
-References: <1337040290-16015-1-git-send-email-ddaney.cavm@gmail.com> <1337040290-16015-3-git-send-email-ddaney.cavm@gmail.com>
-In-Reply-To: <1337040290-16015-3-git-send-email-ddaney.cavm@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQkWYk4SAyeNPFJ+8Rd+ai1pZE7ow2/arzXk0KQIICDfog56yp/WfOB4hmIVrXendixQJbfa
-X-archive-position: 33325
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 May 2012 13:38:52 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:47227 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903614Ab2EOLio (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 15 May 2012 13:38:44 +0200
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [PATCH V3 06/17] MIPS: lantiq: convert dma to platform driver
+Date:   Tue, 15 May 2012 13:38:34 +0200
+Message-Id: <1337081914-16388-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.9.1
+X-archive-position: 33326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+Add code to make the dma driver load as a platform device from the devicetree.
 
-On 15-05-2012 4:04, David Daney wrote:
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+Changes in V3
+* add a missing \n
 
-> From: David Daney<david.daney@cavium.com>
+ arch/mips/lantiq/xway/dma.c |   65 ++++++++++++++++++++++++++++--------------
+ 1 files changed, 43 insertions(+), 22 deletions(-)
 
-> Follow-on patched require this.
-
-    s/patched/patches/
-    Maybe Ralf would correct this...
-
-> Signed-off-by: David Daney<david.daney@cavium.com>
-
-WBR, Sergei
+diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
+index b210e93..ddbec1f 100644
+--- a/arch/mips/lantiq/xway/dma.c
++++ b/arch/mips/lantiq/xway/dma.c
+@@ -19,7 +19,8 @@
+ #include <linux/platform_device.h>
+ #include <linux/io.h>
+ #include <linux/dma-mapping.h>
+-#include <linux/export.h>
++#include <linux/module.h>
++#include <linux/clk.h>
+ 
+ #include <lantiq_soc.h>
+ #include <xway_dma.h>
+@@ -55,13 +56,6 @@
+ #define ltq_dma_w32_mask(x, y, z)	ltq_w32_mask(x, y, \
+ 						ltq_dma_membase + (z))
+ 
+-static struct resource ltq_dma_resource = {
+-	.name	= "dma",
+-	.start	= LTQ_DMA_BASE_ADDR,
+-	.end	= LTQ_DMA_BASE_ADDR + LTQ_DMA_SIZE - 1,
+-	.flags  = IORESOURCE_MEM,
+-};
+-
+ static void __iomem *ltq_dma_membase;
+ 
+ void
+@@ -215,27 +209,28 @@ ltq_dma_init_port(int p)
+ }
+ EXPORT_SYMBOL_GPL(ltq_dma_init_port);
+ 
+-int __init
+-ltq_dma_init(void)
++static int __devinit
++ltq_dma_init(struct platform_device *pdev)
+ {
++	struct clk *clk;
++	struct resource *res;
+ 	int i;
+ 
+-	/* insert and request the memory region */
+-	if (insert_resource(&iomem_resource, &ltq_dma_resource) < 0)
+-		panic("Failed to insert dma memory");
+-
+-	if (request_mem_region(ltq_dma_resource.start,
+-			resource_size(&ltq_dma_resource), "dma") < 0)
+-		panic("Failed to request dma memory");
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res)
++		panic("Failed to get dma resource");
+ 
+ 	/* remap dma register range */
+-	ltq_dma_membase = ioremap_nocache(ltq_dma_resource.start,
+-				resource_size(&ltq_dma_resource));
++	ltq_dma_membase = devm_request_and_ioremap(&pdev->dev, res);
+ 	if (!ltq_dma_membase)
+-		panic("Failed to remap dma memory");
++		panic("Failed to remap dma resource");
+ 
+ 	/* power up and reset the dma engine */
+-	ltq_pmu_enable(PMU_DMA);
++	clk = clk_get(&pdev->dev, NULL);
++	if (IS_ERR(clk))
++		panic("Failed to get dma clock");
++
++	clk_enable(clk);
+ 	ltq_dma_w32_mask(0, DMA_RESET, LTQ_DMA_CTRL);
+ 
+ 	/* disable all interrupts */
+@@ -248,7 +243,33 @@ ltq_dma_init(void)
+ 		ltq_dma_w32(DMA_POLL | DMA_CLK_DIV4, LTQ_DMA_CPOLL);
+ 		ltq_dma_w32_mask(DMA_CHAN_ON, 0, LTQ_DMA_CCTRL);
+ 	}
++	dev_info(&pdev->dev, "init done\n");
+ 	return 0;
+ }
+ 
+-postcore_initcall(ltq_dma_init);
++static const struct of_device_id dma_match[] = {
++	{ .compatible = "lantiq,dma-xway" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, dma_match);
++
++static struct platform_driver dma_driver = {
++	.probe = ltq_dma_init,
++	.driver = {
++		.name = "dma-xway",
++		.owner = THIS_MODULE,
++		.of_match_table = dma_match,
++	},
++};
++
++int __init
++dma_init(void)
++{
++	int ret = platform_driver_register(&dma_driver);
++
++	if (ret)
++		pr_info("ltq_dma : Error registering platfom driver\n");
++	return ret;
++}
++
++postcore_initcall(dma_init);
+-- 
+1.7.9.1

@@ -1,40 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2012 20:38:59 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:43520 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2012 22:50:58 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:63400 "EHLO
         mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903643Ab2EQSii (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 May 2012 20:38:38 +0200
-Received: by pbbrq13 with SMTP id rq13so3296089pbb.36
-        for <linux-mips@linux-mips.org>; Thu, 17 May 2012 11:38:32 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1903711Ab2EQUuy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 May 2012 22:50:54 +0200
+Received: by pbbrq13 with SMTP id rq13so3457383pbb.36
+        for <linux-mips@linux-mips.org>; Thu, 17 May 2012 13:50:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=sender:from:subject:to:cc:in-reply-to:references:date:message-id
          :x-gm-message-state;
-        bh=2RjPDRUkrQ2lxu8vWR6+thY92BhlPKbrKpaRsQymws0=;
-        b=ayF1wUDWQOdZmFlDZOG2MKD3/s1qJyKjPpqJJfe1+AiJNm4Zfi3UtmqMXkFVq21quz
-         smoNceRUbDI9vINjyj6/qevNbcTMzOaI9v2nJ+IoibDL6TZ1V7sjC4VjUR6LPVmuG8D+
-         wD+RKYowFkLfNnY+BzLYAlyNvAnGwFq8Qu072SWcwnxpVmgve3xVQ7BxRm+QdV4kZgxV
-         NmeXajWgpPLUHKiyHFCUIj6FjMeSM2vOlZ2IbXHLlkxDjoHxbAV9EeP9xDn1NfZ+0VCW
-         ek15Vojf0c5fKQcDpql59xcO3bFdkPQULRKudhaFb0cVVoKAGLTxPkhNfkZ/QrIFz8xg
-         iAEQ==
-Received: by 10.68.234.35 with SMTP id ub3mr30112319pbc.8.1337279912151;
-        Thu, 17 May 2012 11:38:32 -0700 (PDT)
+        bh=noV6x4oBduj+AA48RlCA/tcQGoZKKO+dKyjNQ21WwJM=;
+        b=DJL9TaprtzjtFsolW0aEsQdAr7hWk8iw4ZwsUiQ7j7xIru3FXfXvRoCS1SsCcB7j2X
+         0aG4UI/dM0rPPQYo6WwH5JuTNzkakj6+82F0HkF7OJN/Ci7u8Pa+p3nb772GAV5gb9OZ
+         SrxdaooCl7XRPX1wixrxECrq+vprOptbAZypSB6QZPg2pxt/Q90OcwDEK/fu5YPbGvwv
+         /erd7o/gyDV/nTED8xK99IjK5XXoXXliBJtD2V0JaMF7P2JRUwPXzb/SCJa2fPCSge0b
+         Gk3WUeFaxVaiRC1axevYaBkv16GC/KouIRpa+txc954E+Rit+Vf+a/LQcMaerdlO+FJf
+         eHqA==
+Received: by 10.68.240.135 with SMTP id wa7mr31178062pbc.7.1337287847255;
+        Thu, 17 May 2012 13:50:47 -0700 (PDT)
 Received: from localhost (S0106d8b37715ee14.cg.shawcable.net. [68.146.14.168])
-        by mx.google.com with ESMTPS id nd6sm9893872pbc.63.2012.05.17.11.38.30
+        by mx.google.com with ESMTPS id x1sm10210780pbp.50.2012.05.17.13.50.44
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 17 May 2012 11:38:31 -0700 (PDT)
+        Thu, 17 May 2012 13:50:45 -0700 (PDT)
 Received: by localhost (Postfix, from userid 1000)
-        id 346E03E0621; Thu, 17 May 2012 12:38:30 -0600 (MDT)
+        id 81B1C3E0621; Thu, 17 May 2012 14:50:44 -0600 (MDT)
 From:   Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH V3 3/3] GPIO: MIPS: lantiq: convert gpio-stp-xway to OF
-To:     John Crispin <blogic@openwrt.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <1337201394-11431-3-git-send-email-blogic@openwrt.org>
-References: <1337201394-11431-1-git-send-email-blogic@openwrt.org> <1337201394-11431-3-git-send-email-blogic@openwrt.org>
-Date:   Thu, 17 May 2012 12:38:30 -0600
-Message-Id: <20120517183830.346E03E0621@localhost>
-X-Gm-Message-State: ALoCoQmR3jaI1R1BlUc3Z+mZj3JzkGJxFvBJCi6scyTyQjQAnifhwwzkaVMs4JVgyBvNlYdwJKS9
-X-archive-position: 33357
+Subject: Re: [PATCH 2/2] gpio/MIPS/OCTEON: Add a driver for OCTEON's on-chip GPIO pins.
+To:     David Daney <ddaney.cavm@gmail.com>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org,
+        Linus Walleij <linus.walleij@stericsson.com>,
+        Rob Herring <rob.herring@calxeda.com>,
+        devicetree-discuss@lists.ozlabs.org
+Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
+In-Reply-To: <1334275820-7791-3-git-send-email-ddaney.cavm@gmail.com>
+References: <1334275820-7791-1-git-send-email-ddaney.cavm@gmail.com> <1334275820-7791-3-git-send-email-ddaney.cavm@gmail.com>
+Date:   Thu, 17 May 2012 14:50:44 -0600
+Message-Id: <20120517205044.81B1C3E0621@localhost>
+X-Gm-Message-State: ALoCoQnU5PtarrWfcFiMTJjWFOW6Ld3XcpkvtseLTdTWHsiHlaXKHz/ZTl1Xox+uq1bPRkJT5YQG
+X-archive-position: 33358
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,437 +46,234 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, 16 May 2012 22:49:54 +0200, John Crispin <blogic@openwrt.org> wrote:
-> Implements OF support and add code to load custom properties from the DT.
+On Thu, 12 Apr 2012 17:10:20 -0700, David Daney <ddaney.cavm@gmail.com> wrote:
+> From: David Daney <david.daney@cavium.com>
 > 
-> The Serial To Parallel (STP) is found on MIPS based Lantiq socs. It is a
-> peripheral controller used to drive external shift register cascades. At most
-> 3 groups of 8 bits can be driven. The hardware is able to allow the DSL modem
-> to drive the 2 LSBs of the cascade automatically. Newer socs are also able to
-> automatically drive some pins via the internal PHYs. The driver currently only
-> supports output functionality. Patches for the input feature found on newer
-> generations of the soc will be provided in a later series.
+> The SOCs in the OCTEON family have 16 (or in some cases 20) on-chip
+> GPIO pins, this driver handles them all.  Configuring the pins as
+> interrupt sources is handled elsewhere (OCTEON's irq handling code).
 > 
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> Cc: Grant Likely <grant.likely@secretlab.ca>
-> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: David Daney <david.daney@cavium.com>
 
-My comments on the other patch apply equally here and should be
-addressed, but you can add my:
+Aside from the bugs already pointed out;
 
 Acked-by: Grant Likely <grant.likely@secretlab.ca>
 
-Oh! And documentation!  You must add documentation for both GPIO
-controllers to Documentation/devicetree/bindings/gpio.  Don't merge
-until the documentation is written and added to the patch.
+Will you merge this series via the MIPS tree, or do I need to pick it
+up?
 
 > ---
-> This patch is part of a series moving the mips/lantiq target to OF and clkdev
-> support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
+>  drivers/gpio/Kconfig       |    8 ++
+>  drivers/gpio/Makefile      |    1 +
+>  drivers/gpio/gpio-octeon.c |  166 ++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 175 insertions(+), 0 deletions(-)
+>  create mode 100644 drivers/gpio/gpio-octeon.c
 > 
->  drivers/gpio/gpio-stp-xway.c |  332 ++++++++++++++++++++++++++++++------------
->  1 files changed, 240 insertions(+), 92 deletions(-)
-> 
-> diff --git a/drivers/gpio/gpio-stp-xway.c b/drivers/gpio/gpio-stp-xway.c
-> index d674f1b..9b53adf 100644
-> --- a/drivers/gpio/gpio-stp-xway.c
-> +++ b/drivers/gpio/gpio-stp-xway.c
-> @@ -3,150 +3,298 @@
->   *  under the terms of the GNU General Public License version 2 as published
->   *  by the Free Software Foundation.
->   *
-> - *  Copyright (C) 2007 John Crispin <blogic@openwrt.org>
-> + *  Copyright (C) 2012 John Crispin <blogic@openwrt.org>
->   *
->   */
+> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+> index edadbda..d9d924c 100644
+> --- a/drivers/gpio/Kconfig
+> +++ b/drivers/gpio/Kconfig
+> @@ -136,6 +136,14 @@ config GPIO_MXS
+>  	select GPIO_GENERIC
+>  	select GENERIC_IRQ_CHIP
 >  
->  #include <linux/slab.h>
->  #include <linux/init.h>
-> -#include <linux/export.h>
-> +#include <linux/module.h>
->  #include <linux/types.h>
-> -#include <linux/platform_device.h>
-> +#include <linux/of_platform.h>
->  #include <linux/mutex.h>
->  #include <linux/io.h>
-> -#include <linux/gpio.h>
-> +#include <linux/of_gpio.h>
-> +#include <linux/clk.h>
-> +#include <linux/err.h>
->  
->  #include <lantiq_soc.h>
->  
-> -#define LTQ_STP_CON0		0x00
-> -#define LTQ_STP_CON1		0x04
-> -#define LTQ_STP_CPU0		0x08
-> -#define LTQ_STP_CPU1		0x0C
-> -#define LTQ_STP_AR		0x10
-> -
-> -#define LTQ_STP_CON_SWU		(1 << 31)
-> -#define LTQ_STP_2HZ		0
-> -#define LTQ_STP_4HZ		(1 << 23)
-> -#define LTQ_STP_8HZ		(2 << 23)
-> -#define LTQ_STP_10HZ		(3 << 23)
-> -#define LTQ_STP_SPEED_MASK	(0xf << 23)
-> -#define LTQ_STP_UPD_FPI		(1 << 31)
-> -#define LTQ_STP_UPD_MASK	(3 << 30)
-> -#define LTQ_STP_ADSL_SRC	(3 << 24)
-> -
-> -#define LTQ_STP_GROUP0		(1 << 0)
-> -
-> -#define LTQ_STP_RISING		0
-> -#define LTQ_STP_FALLING		(1 << 26)
-> -#define LTQ_STP_EDGE_MASK	(1 << 26)
-> -
-> -#define ltq_stp_r32(reg)	__raw_readl(ltq_stp_membase + reg)
-> -#define ltq_stp_w32(val, reg)	__raw_writel(val, ltq_stp_membase + reg)
-> -#define ltq_stp_w32_mask(clear, set, reg) \
-> -		ltq_w32((ltq_r32(ltq_stp_membase + reg) & ~(clear)) | (set), \
-> -		ltq_stp_membase + (reg))
-> -
-> -static int ltq_stp_shadow = 0xffff;
-> -static void __iomem *ltq_stp_membase;
-> -
-> -static void ltq_stp_set(struct gpio_chip *chip, unsigned offset, int value)
+> +config GPIO_OCTEON
+> +	tristate "Cavium OCTEON GPIO"
+> +	depends on GPIOLIB && CPU_CAVIUM_OCTEON
+> +	default y
+> +	help
+> +	  Say yes here to support the on-chip GPIO lines on the OCTEON
+> +	  family of SOCs.
+> +
+>  config GPIO_PL061
+>  	bool "PrimeCell PL061 GPIO support"
+>  	depends on ARM_AMBA
+> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+> index 007f54b..ce0348c 100644
+> --- a/drivers/gpio/Makefile
+> +++ b/drivers/gpio/Makefile
+> @@ -37,6 +37,7 @@ obj-$(CONFIG_GPIO_MSM_V2)	+= gpio-msm-v2.o
+>  obj-$(CONFIG_GPIO_MXC)		+= gpio-mxc.o
+>  obj-$(CONFIG_GPIO_MXS)		+= gpio-mxs.o
+>  obj-$(CONFIG_PLAT_NOMADIK)	+= gpio-nomadik.o
+> +obj-$(CONFIG_GPIO_OCTEON)	+= gpio-octeon.o
+>  obj-$(CONFIG_ARCH_OMAP)		+= gpio-omap.o
+>  obj-$(CONFIG_GPIO_PCA953X)	+= gpio-pca953x.o
+>  obj-$(CONFIG_GPIO_PCF857X)	+= gpio-pcf857x.o
+> diff --git a/drivers/gpio/gpio-octeon.c b/drivers/gpio/gpio-octeon.c
+> new file mode 100644
+> index 0000000..e679b44
+> --- /dev/null
+> +++ b/drivers/gpio/gpio-octeon.c
+> @@ -0,0 +1,166 @@
 > +/*
-> + * The Serial To Parallel (STP) is found on MIPS based Lantiq socs. It is a
-> + * peripheral controller used to drive external shift register cascades. At most
-> + * 3 groups of 8 bits can be driven. The hardware is able to allow the DSL modem
-> + * to drive the 2 LSBs of the cascade automatically.
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + * Copyright (C) 2011,2012 Cavium Inc.
 > + */
 > +
-> +/* control register 0 */
-> +#define XWAY_STP_CON0		0x00
-> +/* control register 1 */
-> +#define XWAY_STP_CON1		0x04
-> +/* data register 0 */
-> +#define XWAY_STP_CPU0		0x08
-> +/* data register 1 */
-> +#define XWAY_STP_CPU1		0x0C
-> +/* access register */
-> +#define XWAY_STP_AR		0x10
+> +#include <linux/platform_device.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/gpio.h>
+> +#include <linux/io.h>
 > +
-> +/* software or hardware update select bit */
-> +#define XWAY_STP_CON_SWU	BIT(31)
+> +#include <asm/octeon/octeon.h>
+> +#include <asm/octeon/cvmx-gpio-defs.h>
 > +
-> +/* automatic update rates */
-> +#define XWAY_STP_2HZ		0
-> +#define XWAY_STP_4HZ		BIT(23)
-> +#define XWAY_STP_8HZ		BIT(24)
-> +#define XWAY_STP_10HZ		(BIT(24) | BIT(23))
-> +#define XWAY_STP_SPEED_MASK	(0xf << 23)
+> +#define DRV_VERSION "1.0"
+> +#define DRV_DESCRIPTION "Cavium Inc. OCTEON GPIO Driver"
 > +
-> +/* clock source for automatic update */
-> +#define XWAY_STP_UPD_FPI	BIT(31)
-> +#define XWAY_STP_UPD_MASK	(BIT(31) | BIT(30))
+> +#define RX_DAT 0x80
+> +#define TX_SET 0x88
+> +#define TX_CLEAR 0x90
+> +/*
+> + * The address offset of the GPIO configuration register for a given
+> + * line.
+> + */
+> +static unsigned int bit_cfg_reg(unsigned int gpio)
+> +{
+> +	if (gpio < 16)
+> +		return 8 * gpio;
+> +	else
+> +		return 8 * (gpio - 16) + 0x100;
+> +}
 > +
-> +/* let the adsl core drive the 2 LSBs */
-> +#define XWAY_STP_ADSL_SHIFT	24
-> +#define XWAY_STP_ADSL_MASK	0x3
-> +
-> +/* 2 groups of 3 bits can be driven by the phys */
-> +#define XWAY_STP_PHY_MASK	0x3
-> +#define XWAY_STP_PHY1_SHIFT	27
-> +#define XWAY_STP_PHY2_SHIFT	15
-> +
-> +/* STP has 3 groups of 8 bits */
-> +#define XWAY_STP_GROUP0		BIT(0)
-> +#define XWAY_STP_GROUP1		BIT(1)
-> +#define XWAY_STP_GROUP2		BIT(2)
-> +#define XWAY_STP_GROUP_MASK	(0x7)
-> +
-> +/* Edge configuration bits */
-> +#define XWAY_STP_FALLING	BIT(26)
-> +#define XWAY_STP_EDGE_MASK	BIT(26)
-> +
-> +#define xway_stp_r32(m, reg)		__raw_readl(m + reg)
-> +#define xway_stp_w32(m, val, reg)	__raw_writel(val, m + reg)
-> +#define xway_stp_w32_mask(m, clear, set, reg) \
-> +		ltq_w32((ltq_r32(m + reg) & ~(clear)) | (set), \
-> +		m + reg)
-> +
-> +struct xway_stp {
-> +	struct gpio_chip gc;
-> +	void __iomem *virt;
-> +	u32 edge;	/* rising or falling edge triggered shift register */
-> +	u16 shadow;	/* shadow the shift registers state */
-> +	u8 groups;	/* we can drive 1-3 groups of 8bit each */
-> +	u8 dsl;		/* the 2 LSBs can be driven by the dsl core */
-> +	u8 phy1;	/* 3 bits can be driven by phy1 */
-> +	u8 phy2;	/* 3 bits can be driven by phy2 */
-> +	u8 reserved;	/* mask out the hw driven bits in gpio_request */
+> +struct octeon_gpio {
+> +	struct gpio_chip chip;
+> +	u64 register_base;
 > +};
 > +
-> +/*
-> + * xway_stp_set - gpio_chip->set - set gpios.
-> + * @gc:     Pointer to gpio_chip device structure.
-> + * @gpio:   GPIO signal number.
-> + * @val:    Value to be written to specified signal.
-> + *
-> + * Set the shadow value and call ltq_ebu_apply.
-> + */
-> +static void xway_stp_set(struct gpio_chip *gc, unsigned gpio, int val)
->  {
-> -	if (value)
-> -		ltq_stp_shadow |= (1 << offset);
-> +	struct xway_stp *chip =
-> +		container_of(gc, struct xway_stp, gc);
-> +
-> +	if (val)
-> +		chip->shadow |= BIT(gpio);
->  	else
-> -		ltq_stp_shadow &= ~(1 << offset);
-> -	ltq_stp_w32(ltq_stp_shadow, LTQ_STP_CPU0);
-> +		chip->shadow &= ~BIT(gpio);
-> +	xway_stp_w32(chip->virt, chip->shadow, XWAY_STP_CPU0);
-> +	xway_stp_w32_mask(chip->virt, 0, XWAY_STP_CON_SWU, XWAY_STP_CON0);
->  }
->  
-> -static int ltq_stp_direction_output(struct gpio_chip *chip, unsigned offset,
-> -	int value)
-> +/*
-> + * xway_stp_dir_out - gpio_chip->dir_out - set gpio direction.
-> + * @gc:     Pointer to gpio_chip device structure.
-> + * @gpio:   GPIO signal number.
-> + * @val:    Value to be written to specified signal.
-> + *
-> + * Same as xway_stp_set, always returns 0.
-> + */
-> +static int xway_stp_dir_out(struct gpio_chip *gc, unsigned gpio, int val)
->  {
-> -	ltq_stp_set(chip, offset, value);
-> +	xway_stp_set(gc, gpio, val);
->  
->  	return 0;
->  }
->  
-> -static struct gpio_chip ltq_stp_chip = {
-> -	.label = "ltq_stp",
-> -	.direction_output = ltq_stp_direction_output,
-> -	.set = ltq_stp_set,
-> -	.base = 48,
-> -	.ngpio = 24,
-> -	.can_sleep = 1,
-> -	.owner = THIS_MODULE,
-> -};
-> +/*
-> + * xway_stp_request - gpio_chip->request
-> + * @gc:     Pointer to gpio_chip device structure.
-> + * @gpio:   GPIO signal number.
-> + *
-> + * We mask out the HW driven pins
-> + */
-> +static int xway_stp_request(struct gpio_chip *gc, unsigned gpio)
+> +static int octeon_gpio_dir_in(struct gpio_chip *chip, unsigned offset)
 > +{
-> +	struct xway_stp *chip =
-> +		container_of(gc, struct xway_stp, gc);
+> +	struct octeon_gpio *gpio = container_of(chip, struct octeon_gpio, chip);
 > +
-> +	if ((gpio < 8) && (chip->reserved & BIT(gpio))) {
-> +		dev_err(gc->dev, "GPIO %d is driven by hardware\n", gpio);
-> +		return -ENODEV;
-> +	}
->  
-> -static int ltq_stp_hw_init(void)
+> +	cvmx_write_csr(gpio->register_base + bit_cfg_reg(offset), 0);
 > +	return 0;
 > +}
 > +
-> +/*
-> + * xway_stp_hw_init - Configure the STP unit and enable the clock gate
-> + * @virt: pointer to the remapped register range
-> + */
-> +static int xway_stp_hw_init(struct xway_stp *chip)
->  {
->  	/* sane defaults */
-> -	ltq_stp_w32(0, LTQ_STP_AR);
-> -	ltq_stp_w32(0, LTQ_STP_CPU0);
-> -	ltq_stp_w32(0, LTQ_STP_CPU1);
-> -	ltq_stp_w32(LTQ_STP_CON_SWU, LTQ_STP_CON0);
-> -	ltq_stp_w32(0, LTQ_STP_CON1);
-> +	xway_stp_w32(chip->virt, 0, XWAY_STP_AR);
-> +	xway_stp_w32(chip->virt, 0, XWAY_STP_CPU0);
-> +	xway_stp_w32(chip->virt, 0, XWAY_STP_CPU1);
-> +	xway_stp_w32(chip->virt, XWAY_STP_CON_SWU, XWAY_STP_CON0);
-> +	xway_stp_w32(chip->virt, 0, XWAY_STP_CON1);
+> +static void octeon_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
+> +{
+> +	struct octeon_gpio *gpio = container_of(chip, struct octeon_gpio, chip);
+> +	u64 mask = 1ull << offset;
+> +	u64 reg = gpio->register_base + (value ? TX_SET : TX_CLEAR);
+> +	cvmx_write_csr(reg, mask);
+> +}
 > +
-> +	/* apply edge trigger settings for the shift register */
-> +	xway_stp_w32_mask(chip->virt, XWAY_STP_EDGE_MASK,
-> +				chip->edge, XWAY_STP_CON0);
->  
-> -	/* rising or falling edge */
-> -	ltq_stp_w32_mask(LTQ_STP_EDGE_MASK, LTQ_STP_FALLING, LTQ_STP_CON0);
-> +	/* apply led group settings */
-> +	xway_stp_w32_mask(chip->virt, XWAY_STP_GROUP_MASK,
-> +				chip->groups, XWAY_STP_CON1);
->  
-> -	/* per default stp 15-0 are set */
-> -	ltq_stp_w32_mask(0, LTQ_STP_GROUP0, LTQ_STP_CON1);
-> +	/* tell the hardware which pins are controlled by the dsl modem */
-> +	xway_stp_w32_mask(chip->virt,
-> +			XWAY_STP_ADSL_MASK << XWAY_STP_ADSL_SHIFT,
-> +			chip->dsl << XWAY_STP_ADSL_SHIFT,
-> +			XWAY_STP_CON0);
->  
-> -	/* stp are update periodically by the FPI bus */
-> -	ltq_stp_w32_mask(LTQ_STP_UPD_MASK, LTQ_STP_UPD_FPI, LTQ_STP_CON1);
-> +	/* tell the hardware which pins are controlled by the phys */
-> +	xway_stp_w32_mask(chip->virt,
-> +			XWAY_STP_PHY_MASK << XWAY_STP_PHY1_SHIFT,
-> +			chip->phy1 << XWAY_STP_PHY1_SHIFT,
-> +			XWAY_STP_CON0);
-> +	xway_stp_w32_mask(chip->virt,
-> +			XWAY_STP_PHY_MASK << XWAY_STP_PHY2_SHIFT,
-> +			chip->phy2 << XWAY_STP_PHY2_SHIFT,
-> +			XWAY_STP_CON1);
->  
-> -	/* set stp update speed */
-> -	ltq_stp_w32_mask(LTQ_STP_SPEED_MASK, LTQ_STP_8HZ, LTQ_STP_CON1);
-> +	/* mask out the hw driven bits in gpio_request */
-> +	chip->reserved = (chip->phy2 << 5) | (chip->phy1 << 2) | chip->dsl;
->  
-> -	/* tell the hardware that pin (led) 0 and 1 are controlled
-> -	 *  by the dsl arc
-> +	/*
-> +	 * if we have pins that are driven by hw, we need to tell the stp what
-> +	 * clock to use as a timer.
->  	 */
-> -	ltq_stp_w32_mask(0, LTQ_STP_ADSL_SRC, LTQ_STP_CON0);
-> +	if (chip->reserved)
-> +		xway_stp_w32_mask(chip->virt, XWAY_STP_UPD_MASK,
-> +			XWAY_STP_UPD_FPI, XWAY_STP_CON1);
->  
-> -	ltq_pmu_enable(PMU_LED);
->  	return 0;
->  }
->  
-> -static int __devinit ltq_stp_probe(struct platform_device *pdev)
-> +static int __devinit xway_stp_probe(struct platform_device *pdev)
->  {
->  	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	const __be32 *shadow, *groups, *dsl, *phy;
-> +	struct xway_stp *chip;
-> +	struct clk *clk;
->  	int ret = 0;
->  
-> -	if (!res)
-> -		return -ENOENT;
-> -	res = devm_request_mem_region(&pdev->dev, res->start,
-> -		resource_size(res), dev_name(&pdev->dev));
->  	if (!res) {
-> -		dev_err(&pdev->dev, "failed to request STP memory\n");
-> -		return -EBUSY;
-> +		dev_err(&pdev->dev, "failed to request STP resource\n");
-> +		return -ENOENT;
->  	}
-> -	ltq_stp_membase = devm_ioremap_nocache(&pdev->dev, res->start,
-> -		resource_size(res));
-> -	if (!ltq_stp_membase) {
+> +static int octeon_gpio_dir_out(struct gpio_chip *chip, unsigned offset,
+> +			       int value)
+> +{
+> +	struct octeon_gpio *gpio = container_of(chip, struct octeon_gpio, chip);
+> +	union cvmx_gpio_bit_cfgx cfgx;
 > +
-> +	chip = devm_kzalloc(&pdev->dev, sizeof(*chip), GFP_KERNEL);
-> +	if (!chip)
+> +
+> +	octeon_gpio_set(chip, offset, value);
+> +
+> +	cfgx.u64 = 0;
+> +	cfgx.s.tx_oe = 1;
+> +
+> +	cvmx_write_csr(gpio->register_base + bit_cfg_reg(offset), cfgx.u64);
+> +	return 0;
+> +}
+> +
+> +static int octeon_gpio_get(struct gpio_chip *chip, unsigned offset)
+> +{
+> +	struct octeon_gpio *gpio = container_of(chip, struct octeon_gpio, chip);
+> +	u64 read_bits = cvmx_read_csr(gpio->register_base + RX_DAT);
+> +
+> +	return ((1ull << offset) & read_bits) != 0;
+> +}
+> +
+> +static int __init octeon_gpio_probe(struct platform_device *pdev)
+> +{
+> +	struct octeon_gpio *gpio;
+> +	struct gpio_chip *chip;
+> +	struct resource *res_mem;
+> +	int err = 0;
+> +
+> +	gpio = devm_kzalloc(&pdev->dev, sizeof(*gpio), GFP_KERNEL);
+> +	if (!gpio)
 > +		return -ENOMEM;
+> +	chip = &gpio->chip;
 > +
-> +	chip->virt = devm_request_and_ioremap(&pdev->dev, res);
-> +	if (!chip->virt) {
->  		dev_err(&pdev->dev, "failed to remap STP memory\n");
->  		return -ENOMEM;
->  	}
-> -	ret = gpiochip_add(&ltq_stp_chip);
-> +	chip->gc.dev = &pdev->dev;
-> +	chip->gc.label = "stp-xway";
-> +	chip->gc.direction_output = xway_stp_dir_out;
-> +	chip->gc.set = xway_stp_set;
-> +	chip->gc.request = xway_stp_request;
-> +	chip->gc.base = -1;
-> +	chip->gc.owner = THIS_MODULE;
+> +	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	if (res_mem == NULL) {
+> +		dev_err(&pdev->dev, "found no memory resource\n");
+> +		err = -ENXIO;
+> +		goto out;
+> +	}
+> +	if (!devm_request_mem_region(&pdev->dev, res_mem->start,
+> +					resource_size(res_mem),
+> +				     res_mem->name)) {
+> +		dev_err(&pdev->dev, "request_mem_region failed\n");
+> +		err = -ENXIO;
+> +		goto out;
+> +	}
+> +	gpio->register_base = (u64)devm_ioremap(&pdev->dev, res_mem->start,
+> +						resource_size(res_mem));
 > +
-> +	/* store the shadow value if one was passed by the devicetree */
-> +	shadow = of_get_property(pdev->dev.of_node, "lantiq,shadow", NULL);
-> +	if (shadow)
-> +		chip->shadow = *shadow;
-
-be32_to_cpu
-
 > +
-> +	/* find out which gpio groups should be enabled */
-> +	groups = of_get_property(pdev->dev.of_node, "lantiq,groups", NULL);
-> +	if (groups)
-> +		chip->groups = *groups & XWAY_STP_GROUP_MASK;
+> +	pdev->dev.platform_data = chip;
+> +	chip->label = "octeon-gpio";
+> +	chip->dev = &pdev->dev;
+> +	chip->owner = THIS_MODULE;
+> +	chip->base = 0;
+> +	chip->can_sleep = 0;
+> +
+> +	if (OCTEON_IS_MODEL(OCTEON_CN66XX) ||
+> +	    OCTEON_IS_MODEL(OCTEON_CN61XX) ||
+> +	    OCTEON_IS_MODEL(OCTEON_CNF71XX))
+> +		chip->ngpio = 20;
 > +	else
-> +		chip->groups = XWAY_STP_GROUP0;
-> +	chip->gc.ngpio = fls(chip->groups) * 8;
+> +		chip->ngpio = 16;
 > +
-> +	/* find out which gpios are controlled by the dsl core */
-> +	dsl = of_get_property(pdev->dev.of_node, "lantiq,dsl", NULL);
-> +	if (dsl)
-> +		chip->dsl = *dsl & XWAY_STP_ADSL_MASK;
+> +	chip->direction_input = octeon_gpio_dir_in;
+> +	chip->get = octeon_gpio_get;
+> +	chip->direction_output = octeon_gpio_dir_out;
+> +	chip->set = octeon_gpio_set;
+> +	err = gpiochip_add(chip);
+> +	if (err)
+> +		goto out;
 > +
-> +	/* find out which gpios are controlled by the phys */
-> +	if (of_machine_is_compatible("lantiq,ar9") ||
-> +			of_machine_is_compatible("lantiq,gr9") ||
-> +			of_machine_is_compatible("lantiq,vr9")) {
-> +		phy = of_get_property(pdev->dev.of_node, "lantiq,phy1", NULL);
-> +		if (phy)
-> +			chip->phy1 = *phy & XWAY_STP_PHY_MASK;
-> +		phy = of_get_property(pdev->dev.of_node, "lantiq,phy2", NULL);
-> +		if (phy)
-> +			chip->phy2 = *phy & XWAY_STP_PHY_MASK;
-> +	}
+> +	dev_info(&pdev->dev, "version: " DRV_VERSION "\n");
+> +out:
+> +	return err;
+> +}
 > +
-> +	/* check which edge trigger we should use, default to a falling edge */
-> +	if (!of_find_property(pdev->dev.of_node, "lantiq,rising", NULL))
-> +		chip->edge = XWAY_STP_FALLING;
+> +static int __exit octeon_gpio_remove(struct platform_device *pdev)
+> +{
+> +	struct gpio_chip *chip = pdev->dev.platform_data;
+> +	return gpiochip_remove(chip);
+> +}
 > +
-> +	clk = clk_get(&pdev->dev, NULL);
-> +	if (IS_ERR(clk)) {
-> +		dev_err(&pdev->dev, "Failed to get clock\n");
-> +		return PTR_ERR(clk);
-> +	}
-> +	clk_enable(clk);
-> +
-> +	ret = xway_stp_hw_init(chip);
->  	if (!ret)
-> -		ret = ltq_stp_hw_init();
-> +		ret = gpiochip_add(&chip->gc);
-> +
-> +	if (!ret)
-> +		dev_info(&pdev->dev, "Init done\n");
->  
->  	return ret;
->  }
->  
-> -static struct platform_driver ltq_stp_driver = {
-> -	.probe = ltq_stp_probe,
-> +static const struct of_device_id xway_stp_match[] = {
-> +	{ .compatible = "lantiq,gpio-stp-xway" },
+> +static struct of_device_id octeon_gpio_match[] = {
+> +	{
+> +		.compatible = "cavium,octeon-3860-gpio",
+> +	},
 > +	{},
 > +};
-> +MODULE_DEVICE_TABLE(of, xway_stp_match);
+> +MODULE_DEVICE_TABLE(of, octeon_mgmt_match);
 > +
-> +static struct platform_driver xway_stp_driver = {
-> +	.probe = xway_stp_probe,
->  	.driver = {
-> -		.name = "ltq_stp",
-> +		.name = "gpio-stp-xway",
->  		.owner = THIS_MODULE,
-> +		.of_match_table = xway_stp_match,
->  	},
->  };
->  
-> -int __init ltq_stp_init(void)
-> +int __init xway_stp_init(void)
->  {
-> -	int ret = platform_driver_register(&ltq_stp_driver);
-> -
-> -	if (ret)
-> -		pr_info("ltq_stp: error registering platfom driver");
-> -	return ret;
-> +	return platform_driver_register(&xway_stp_driver);
->  }
->  
-> -postcore_initcall(ltq_stp_init);
-> +subsys_initcall(xway_stp_init);
+> +static struct platform_driver octeon_gpio_driver = {
+> +	.driver = {
+> +		.name		= "octeon_gpio",
+> +		.owner		= THIS_MODULE,
+> +		.of_match_table = octeon_gpio_match,
+> +	},
+> +	.probe		= octeon_gpio_probe,
+> +	.remove		= __exit_p(octeon_gpio_remove),
+> +};
+> +
+> +module_platform_driver(octeon_gpio_driver);
+> +
+> +MODULE_DESCRIPTION(DRV_DESCRIPTION);
+> +MODULE_AUTHOR("David Daney");
+> +MODULE_LICENSE("GPL");
+> +MODULE_VERSION(DRV_VERSION);
 > -- 
-> 1.7.9.1
+> 1.7.2.3
 > 
 
 -- 

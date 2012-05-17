@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2012 12:13:01 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2012 12:13:26 +0200 (CEST)
 Received: from mail-pz0-f49.google.com ([209.85.210.49]:51296 "EHLO
         mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903643Ab2EQKLp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 May 2012 12:11:45 +0200
+        by eddie.linux-mips.org with ESMTP id S1903706Ab2EQKMA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 May 2012 12:12:00 +0200
 Received: by mail-pz0-f49.google.com with SMTP id m1so2524865dad.36
-        for <multiple recipients>; Thu, 17 May 2012 03:11:44 -0700 (PDT)
+        for <multiple recipients>; Thu, 17 May 2012 03:11:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=BQf4ybewMkzmNx26qm3Yec9qvjYA2RxBqt0xuEXJy/4=;
-        b=WfAzxP5cz9CxCiUJnoR7QrEWaL6oUC9uh+OR4puvhGtFubQpD0iMogOltvOfye/PnC
-         q6AXuYwqIkmEekiwhBMNma5G6uvBnpKPjDfwCr2nxVYJcK1IHoK+BM8puGrC5ftBBlQH
-         13RUpc++RPpzr6UJUfJRyFY/HRC+60s+C2XjY00aQN1QELfppJURw/Eq2bH7E0oQmFBO
-         PCTZfM9mDrVwxMp0tZ2qwhvY64XeCq+AKr6pve/vI1zBDbId5Zpp0aMeIc81ZvKwGoQN
-         r6OsGcHp36M+j3xUw4WmwPdUiBSwRj5E6sb7b+YA5xKZDcRw4935VUY0r9Eq8uJWO0sa
-         drKA==
-Received: by 10.68.197.99 with SMTP id it3mr6362598pbc.148.1337249504739;
-        Thu, 17 May 2012 03:11:44 -0700 (PDT)
+        bh=0IRlgv01dAknhKBKmA6R21toMapphhEqrBvlfTwAgmg=;
+        b=FxQ+4iLaZ0NBIqJC4maFJI5GGb3SOlUtCbOLVVS/vj8BvXrLW1bzDILV/YtrZW6PY1
+         N/WwVYahrenz6uG8vdIO8gdOhoFvoV6e6mss4VozXNme9jdKjYrXOFfDQ+0u46ZuKlmu
+         XQi94So5CyLGSm38LfC4mLTlk4bilKLlCNlYCdFkgtnT1yrlA4SKc6v5GtyQgPVi0ycZ
+         3UGRxtzsVLWj1pCHWXIicfi2JqFgdfwmRtXos76mSptQuGJdtitTGCHJ5wh9ilbfD6or
+         NrYXbpLHxxDL79dT3IUUqec6I7cb8SJKRMvK6PvmZ+EN0G18N/0RPw6lAB0pU/cPtDIt
+         A92Q==
+Received: by 10.68.200.68 with SMTP id jq4mr26644430pbc.42.1337249519168;
+        Thu, 17 May 2012 03:11:59 -0700 (PDT)
 Received: from localhost ([221.223.131.58])
-        by mx.google.com with ESMTPS id nd6sm8640058pbc.63.2012.05.17.03.11.40
+        by mx.google.com with ESMTPS id nw7sm4181546pbb.73.2012.05.17.03.11.55
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 17 May 2012 03:11:43 -0700 (PDT)
+        Thu, 17 May 2012 03:11:58 -0700 (PDT)
 From:   Yong Zhang <yong.zhang0@gmail.com>
 To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 Cc:     ralf@linux-mips.org, david.daney@cavium.com
-Subject: [PATCH 6/8] MIPS: call set_cpu_online() on the uping cpu with irq disabled
-Date:   Thu, 17 May 2012 18:10:08 +0800
-Message-Id: <1337249410-7162-7-git-send-email-yong.zhang0@gmail.com>
+Subject: [PATCH 7/8] MIPS: smp: Warn on too early irq enable
+Date:   Thu, 17 May 2012 18:10:09 +0800
+Message-Id: <1337249410-7162-8-git-send-email-yong.zhang0@gmail.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1337249410-7162-1-git-send-email-yong.zhang0@gmail.com>
 References: <1337249410-7162-1-git-send-email-yong.zhang0@gmail.com>
-X-archive-position: 33347
+X-archive-position: 33348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,35 +41,28 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: Yong Zhang <yong.zhang@windriver.com>
 
-To prevent a problem as commit 5fbd036b && 2baab4e9 try to resolve,
-move set_cpu_online() to the uping CPU and with irq disabled.
+Just to catch a potential issue.
 
 Signed-off-by: Yong Zhang <yong.zhang0@gmail.com>
 ---
- arch/mips/kernel/smp.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/kernel/smp.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
 
 diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index 73a268a..042145f 100644
+index 042145f..0d48598 100644
 --- a/arch/mips/kernel/smp.c
 +++ b/arch/mips/kernel/smp.c
-@@ -122,6 +122,8 @@ asmlinkage __cpuinit void start_secondary(void)
+@@ -130,6 +130,11 @@ asmlinkage __cpuinit void start_secondary(void)
  
- 	notify_cpu_starting(cpu);
+ 	synchronise_count_slave();
  
-+	set_cpu_online(cpu, true);
-+
- 	set_cpu_sibling_map(cpu);
++	/*
++	 * irq will be enabled in ->smp_finish(), enable it too early
++	 * is dangerous.
++	 */
++	WARN_ON_ONCE(!irqs_disabled());
+ 	mp_ops->smp_finish();
  
- 	cpu_set(cpu, cpu_callin_map);
-@@ -249,8 +251,6 @@ int __cpuinit __cpu_up(unsigned int cpu)
- 	while (!cpu_isset(cpu, cpu_callin_map))
- 		udelay(100);
- 
--	set_cpu_online(cpu, true);
--
- 	return 0;
- }
- 
+ 	cpu_idle();
 -- 
 1.7.1

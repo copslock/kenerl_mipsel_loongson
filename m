@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2012 12:11:47 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:50802 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903707Ab2EQKLM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 May 2012 12:11:12 +0200
-Received: by mail-pb0-f49.google.com with SMTP id rq13so2660880pbb.36
-        for <multiple recipients>; Thu, 17 May 2012 03:11:11 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2012 12:12:12 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:51296 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903633Ab2EQKLV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 May 2012 12:11:21 +0200
+Received: by mail-pz0-f49.google.com with SMTP id m1so2524865dad.36
+        for <multiple recipients>; Thu, 17 May 2012 03:11:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=u3t54XALBywwMrcxYP5Mdmn+lW5KBF/X5G4OHWdvo8s=;
-        b=juB+TKgixU8WJ03/hszp4r5PytPcdKVDsanN3dr9aRnxHxrdFrN9CW583UtVoUi+xZ
-         7Wu9uaL8yqIkHRbc8FjfwEO/tkpLAa+87j7CjUWO6zXANXswsAbb2ajnGpQXYV0sbMbN
-         kaCDxvJZg9TbuQEPyts84gx+u5Cusj/Y8fWExno2+z/9lk6m75LvcwamgmbQH9wq41LN
-         7NXNRU4wscUhodH3zCFZxhNVWBPnQ1/G3j8lM7CrMMI/6o2e5NsyW7SFZmxX/HeqdW/p
-         4XRojy6UJAeCBK651dC8cCoZ8tAnIVMg7Zx+wTS6b4de/3QdjYT8seTXYwbipEn15AOy
-         1NPA==
-Received: by 10.68.197.99 with SMTP id it3mr6358949pbc.148.1337249471525;
-        Thu, 17 May 2012 03:11:11 -0700 (PDT)
+        bh=H/QHpfizoWNWtBQZUObs6w8GV4soSBibMU1be/RCDz4=;
+        b=uksrqXGwzKmUzzIP0qeCtKp2ZoBDfB92sDS6nqo3xzCR7hsnx73aIy2NrjgN0Fz9Vy
+         45hdl2OD+nC3rw/zKCtLBwGAlrCaejIjkmzl5McnOtnjQ8B7Ac3rPVGVx9uT3volpfTF
+         /tB4c3FnLGJ+J+dguxpsHZMG9MWcyXAVn8GVj9gef3R2AczCQA2LiImvi0q9zAI1wBTO
+         hg4Wy0Xr8eqZM6URrqiopyUSW1MHCNiP7iku93VZKrOkQ6XbwcOY5Ikvc7CM3hVT/Yze
+         UdGTuQ6Ia7uHRXIbeG7IrvC4XQoS6+YwdXUs+Ivqt8n85P60DztpKna38mJEmqfGvGJf
+         pqmQ==
+Received: by 10.68.217.67 with SMTP id ow3mr25079203pbc.16.1337249481067;
+        Thu, 17 May 2012 03:11:21 -0700 (PDT)
 Received: from localhost ([221.223.131.58])
-        by mx.google.com with ESMTPS id ny10sm8646819pbb.38.2012.05.17.03.11.06
+        by mx.google.com with ESMTPS id ss8sm8645106pbc.43.2012.05.17.03.11.17
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 17 May 2012 03:11:10 -0700 (PDT)
+        Thu, 17 May 2012 03:11:20 -0700 (PDT)
 From:   Yong Zhang <yong.zhang0@gmail.com>
 To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 Cc:     ralf@linux-mips.org, david.daney@cavium.com
-Subject: [PATCH 3/8] MIPS: SMTC: delay irq enable to ->smp_finish()
-Date:   Thu, 17 May 2012 18:10:05 +0800
-Message-Id: <1337249410-7162-4-git-send-email-yong.zhang0@gmail.com>
+Subject: [PATCH 4/8] MIPS: Yosemite: delay irq enable to ->smp_finish()
+Date:   Thu, 17 May 2012 18:10:06 +0800
+Message-Id: <1337249410-7162-5-git-send-email-yong.zhang0@gmail.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1337249410-7162-1-git-send-email-yong.zhang0@gmail.com>
 References: <1337249410-7162-1-git-send-email-yong.zhang0@gmail.com>
-X-archive-position: 33344
+X-archive-position: 33345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,29 +45,25 @@ To prepare for smoothing set_cpu_[active|online]() mess up
 
 Signed-off-by: Yong Zhang <yong.zhang0@gmail.com>
 ---
- arch/mips/kernel/smtc.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
+ arch/mips/pmc-sierra/yosemite/smp.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/arch/mips/kernel/smtc.c b/arch/mips/kernel/smtc.c
-index f5dd38f..af46fdd 100644
---- a/arch/mips/kernel/smtc.c
-+++ b/arch/mips/kernel/smtc.c
-@@ -615,7 +615,6 @@ void __cpuinit smtc_boot_secondary(int cpu, struct task_struct *idle)
- 
- void smtc_init_secondary(void)
+diff --git a/arch/mips/pmc-sierra/yosemite/smp.c b/arch/mips/pmc-sierra/yosemite/smp.c
+index b71fae2..5edab2b 100644
+--- a/arch/mips/pmc-sierra/yosemite/smp.c
++++ b/arch/mips/pmc-sierra/yosemite/smp.c
+@@ -115,11 +115,11 @@ static void yos_send_ipi_mask(const struct cpumask *mask, unsigned int action)
+  */
+ static void __cpuinit yos_init_secondary(void)
  {
--	local_irq_enable();
+-	set_c0_status(ST0_CO | ST0_IE | ST0_IM);
  }
  
- void smtc_smp_finish(void)
-@@ -631,6 +630,8 @@ void smtc_smp_finish(void)
- 	if (cpu > 0 && (cpu_data[cpu].vpe_id != cpu_data[cpu - 1].vpe_id))
- 		write_c0_compare(read_c0_count() + mips_hpt_frequency/HZ);
- 
-+	local_irq_enable();
-+
- 	printk("TC %d going on-line as CPU %d\n",
- 		cpu_data[smp_processor_id()].tc_id, smp_processor_id());
+ static void __cpuinit yos_smp_finish(void)
+ {
++	set_c0_status(ST0_CO | ST0_IM | ST0_IE);
  }
+ 
+ /* Hook for after all CPUs are online */
 -- 
 1.7.1

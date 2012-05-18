@@ -1,76 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 May 2012 03:51:23 +0200 (CEST)
-Received: from mail-yw0-f49.google.com ([209.85.213.49]:60425 "EHLO
-        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903715Ab2ERBvQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 May 2012 03:51:16 +0200
-Received: by yhjj52 with SMTP id j52so2841409yhj.36
-        for <multiple recipients>; Thu, 17 May 2012 18:51:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=REcJyKLVETulPOxwhdFLTE2sw4PCsmxe98zTwwLUwCY=;
-        b=yP2Ftdn/8FHBFpYgl5Y3EG2rN1l40ASNEpV5YjgHCCEFlWODqzc2Rva6oHkIkFNpnd
-         zRSuCzk4GQHILm5a0YjqYJVM26LzWayl/epC4VXpUWso8CeLlu9HuYZX+tABGDPkCBkN
-         y/ieDlhMgd7SG6OEc0J2q66PxZk9VurZwPgbQSK9Vkffze7S2nUKZW4X7GipDDyLCf0t
-         aejhaPiTkG+PiHz/ji589hv7a0T51U2nnypZ1bzWWXFd+FGIzR/nyAgb8UQ9fpf/sGby
-         dVG0QdRxwiHkRfzjTuXzdNYWV29skJRoPpVGiuT14VpYWF4uPiWQPG+6hQARQkiMKJvs
-         gp9g==
-Received: by 10.50.158.161 with SMTP id wv1mr15353191igb.43.1337305869495;
-        Thu, 17 May 2012 18:51:09 -0700 (PDT)
-Received: from [10.2.0.143] ([12.238.42.2])
-        by mx.google.com with ESMTPS id yg9sm19515458igb.15.2012.05.17.18.51.05
-        (version=SSLv3 cipher=OTHER);
-        Thu, 17 May 2012 18:51:08 -0700 (PDT)
-Message-ID: <4FB57862.5000700@gmail.com>
-Date:   Thu, 17 May 2012 17:14:58 -0500
-From:   Rob Herring <robherring2@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20120430 Thunderbird/12.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 May 2012 10:10:58 +0200 (CEST)
+Received: from dns0.mips.com ([12.201.5.70]:56233 "EHLO dns0.mips.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1901167Ab2ERIKy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 May 2012 10:10:54 +0200
+Received: from exchdb01.mips.com (exchhub01.mips.com [192.168.36.84])
+        by dns0.mips.com (8.13.8/8.13.8) with ESMTP id q4I8AjrZ027736;
+        Fri, 18 May 2012 01:10:46 -0700
+Received: from [192.168.225.107] (192.168.225.107) by exchhub01.mips.com
+ (192.168.36.84) with Microsoft SMTP Server id 14.1.270.1; Fri, 18 May 2012
+ 01:10:44 -0700
+Message-ID: <4FB60403.3080700@mips.com>
+Date:   Fri, 18 May 2012 16:10:43 +0800
+From:   Deng-Cheng Zhu <dczhu@mips.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.27) Gecko/20120216 Lightning/1.0b2 Thunderbird/3.1.19
 MIME-Version: 1.0
-To:     John Crispin <blogic@openwrt.org>
-CC:     Grant Likely <grant.likely@secretlab.ca>,
-        linux-mips@linux-mips.org, linux-pci@vger.kernel.org,
-        devicetree-discuss@lists.ozlabs.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH] OF: PCI: const usage needed by MIPS
-References: <1335808019-24502-1-git-send-email-blogic@openwrt.org> <4F9ED1DC.3050007@gmail.com> <4F9FE4F6.5070909@openwrt.org> <CAErSpo4bZ=0=DtbDots_GOGeLNhX6Q4eJrdetaFQMv4iiv5+XA@mail.gmail.com> <4FA32E47.7020406@gmail.com> <4FA3B596.3050106@openwrt.org> <CAErSpo4AQh3cJzULkmP_Dqsf0cSPRP1WqvhuQR3gePXw2rN7rQ@mail.gmail.com> <4FADFB39.6010100@openwrt.org>
-In-Reply-To: <4FADFB39.6010100@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1
+To:     John Crispin <john@phrozen.org>
+CC:     <linux-mips@linux-mips.org>, <kevink@paralogos.com>
+Subject: Re: [PATCH v2 1/2] MIPS: fix/enrich 34K APRP (APSP) functionalities
+References: <1337244680-29968-1-git-send-email-dczhu@mips.com> <1337244680-29968-2-git-send-email-dczhu@mips.com> <4FB4EF81.10005@phrozen.org>
+In-Reply-To: <4FB4EF81.10005@phrozen.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 33361
+X-EMS-Proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
+X-EMS-STAMP: DAk8ppKWbboHVstxt0FKKw==
+X-archive-position: 33362
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robherring2@gmail.com
+X-original-sender: dczhu@mips.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 05/12/2012 12:55 AM, John Crispin wrote:
-> 
->> I compiled alpha, ia64, mips, parisc, powerpc, sh, sparc, and x86 and
->> didn't see any issues related to this patch.  There might still be
->> something,  but I'm willing to help work through them or revert this
->> if it turns out to be a problem.  I'm still assuming that Grant will
->> handle this.
+Thanks for reviewing the code.
+
+
+On 05/17/2012 08:30 PM, John Crispin wrote:
+> Hi,
+>
+>> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+>> index ce30e2f..8205afe 100644
+>> --- a/arch/mips/Kconfig
+>> +++ b/arch/mips/Kconfig
+>> @@ -1925,7 +1925,7 @@ config MIPS_MT_FPAFF
 >>
->> Bjorn
-> Hi Grant,
-> 
-> Is this patch ok with you ? If so would you mind if Ralf takes this via
-> his tree ? (this would avoid merge order problems)
-> 
+>>   config MIPS_VPE_LOADER
+>>   	bool "VPE loader support."
+>> -	depends on SYS_SUPPORTS_MULTITHREADING
+>> +	depends on SYS_SUPPORTS_MULTITHREADING&&  MIPS_MALTA
+>
+> This would lead to the second user of the API having to patch this piece
+> of code to make it work.
+>
+> You could introduce a ARCH_HAS_APRP which any platform can then select ?
 
-This looks fine to me and merging thru Ralf's tree is fine.
+Hmm... This is a good idea. Maybe the name could be SYS_SUPPORTS_APRP?
 
-Acked-by: Rob Herring <rob.herring@calxeda.com>
+> I think it would also make sense to split changes to generic and malta
+> code into separate patches if that is possible.
 
-Rob
+Yes, that's possible. Will do it in the next version.
 
-> Thanks,
-> John
-> _______________________________________________
-> devicetree-discuss mailing list
-> devicetree-discuss@lists.ozlabs.org
-> https://lists.ozlabs.org/listinfo/devicetree-discuss
+
+Regards,
+
+Deng-Cheng

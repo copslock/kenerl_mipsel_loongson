@@ -1,47 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 May 2012 08:08:13 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:48895 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 May 2012 08:14:54 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:43757 "EHLO
         mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903258Ab2ETGIK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 20 May 2012 08:08:10 +0200
-Received: by pbbrq13 with SMTP id rq13so6424168pbb.36
-        for <linux-mips@linux-mips.org>; Sat, 19 May 2012 23:08:04 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1903258Ab2ETGOu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 20 May 2012 08:14:50 +0200
+Received: by pbbrq13 with SMTP id rq13so6427830pbb.36
+        for <linux-mips@linux-mips.org>; Sat, 19 May 2012 23:14:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=sender:from:subject:to:cc:in-reply-to:references:date:message-id
          :x-gm-message-state;
-        bh=/h5uIm4kc5mZVZUNzpnVm9bFN5A9sojgcxUBOtYAbqg=;
-        b=VR2tWA8AzdzDNHfWcz65oS9LcuTWuVb9XAPK1Olf2r89bI3uZVXx4zKeGUaLr8L11a
-         qPqd9vG1Uz/I16bKNaVDRE6mysSVbdpGThU3XnVmj54rQocO6or5Mr+iwc/DN9UPUdPT
-         6S79S3+3p5pDDHkSRTT9mCB8So4XsYsNqqqNmCeMiaGsjpFsi7nESq9avo462isHo1s5
-         Gosga0sT/mPffI5dSc1qJI66j97ARYuCXs/F1DG02yQvoJcjIoSXH7wNng5o/fQkabiz
-         Fz1+3iUuUDJP0GsMW/ydwQ9K4Tq+QJSc+PBuyMS0YMRwrjCuuTbRevadDRIYl5q7BU62
-         BnQQ==
-Received: by 10.68.200.193 with SMTP id ju1mr52235368pbc.90.1337494083721;
-        Sat, 19 May 2012 23:08:03 -0700 (PDT)
+        bh=UksB2gkdRA8RXmIF8v0rmt2ZKgjWqezA3VP7NeobPTs=;
+        b=niN8e/GRZYerC9D2KwrZbUydPiRhs9fv9jCbvMOTKNl+zFHnUz6s18giMOQVjqTQLm
+         JpXBmV41I8ayiKEFJ5NpZPZofbZlFGfhfHBFVeiLbE6Ff0I0Eiaq6pDZNn5+HVY9mwxA
+         gQm0ho7AdbflcqhnqZdQ+DjPl/G22x/6faFPoIw1wjCBgkSJyUonak248CDBCmIEu+KW
+         UejcBVPw6deQEvmObyLPWgopDnHcCZ56ji4G6jbCiBZtDfkbcmX2ZnsL/GY1laf8uyxD
+         eCnqkmj7YirBY8BUfsrnOuvJJZSZWtSPGFLkHVeo8kgydp9KAOgOesHRFQCoay4oWAZ+
+         id5w==
+Received: by 10.68.240.99 with SMTP id vz3mr55388811pbc.60.1337494483495;
+        Sat, 19 May 2012 23:14:43 -0700 (PDT)
 Received: from localhost (S0106d8b37715ee14.cg.shawcable.net. [68.146.14.168])
-        by mx.google.com with ESMTPS id rv8sm13214960pbc.64.2012.05.19.23.08.02
+        by mx.google.com with ESMTPS id po10sm6748993pbb.21.2012.05.19.23.14.42
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Sat, 19 May 2012 23:08:03 -0700 (PDT)
+        Sat, 19 May 2012 23:14:42 -0700 (PDT)
 Received: by localhost (Postfix, from userid 1000)
-        id 03CE73E03B8; Sun, 20 May 2012 00:08:01 -0600 (MDT)
+        id D5C9B3E03B8; Sun, 20 May 2012 00:14:41 -0600 (MDT)
 From:   Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 1/3] of: Add prefix parameter to of_modalias_node().
+Subject: Re: [PATCH 3/3] eeprom/of: Add device tree bindings to at25.
 To:     David Daney <ddaney.cavm@gmail.com>,
         devicetree-discuss@lists.ozlabs.org,
         Rob Herring <rob.herring@calxeda.com>,
         spi-devel-general@lists.sourceforge.net
 Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         linux-doc@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        Liam Girdwood <lrg@ti.com>, Timur Tabi <timur@freescale.com>,
-        Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>,
-        alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20120520055436.13AF03E03B8@localhost>
-References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com> <1336773923-17866-2-git-send-email-ddaney.cavm@gmail.com> <20120520055436.13AF03E03B8@localhost>
-Date:   Sun, 20 May 2012 00:08:01 -0600
-Message-Id: <20120520060802.03CE73E03B8@localhost>
-X-Gm-Message-State: ALoCoQmG2F0AiZzerau5HDxVJSXz4fbAkJAE40tkSTaLyqHjBA+TjJulo5v8OyWeP8pOuT9uL5gD
-X-archive-position: 33382
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Axel Lin <axel.lin@gmail.com>
+In-Reply-To: <1336773923-17866-4-git-send-email-ddaney.cavm@gmail.com>
+References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com> <1336773923-17866-4-git-send-email-ddaney.cavm@gmail.com>
+Date:   Sun, 20 May 2012 00:14:41 -0600
+Message-Id: <20120520061441.D5C9B3E03B8@localhost>
+X-Gm-Message-State: ALoCoQkI2MX6z6qtNZNptcole45n8fvxoxdNfgd38akZ4SkvXYZdyXeatUi32ZrLhPZAxkYmC7f0
+X-archive-position: 33383
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,46 +49,134 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sat, 19 May 2012 23:54:36 -0600, Grant Likely <grant.likely@secretlab.ca> wrote:
-> On Fri, 11 May 2012 15:05:21 -0700, David Daney <ddaney.cavm@gmail.com> wrote:
-> > From: David Daney <david.daney@cavium.com>
-> > 
-> > When generating MODALIASes, it is convenient to add things like "spi:"
-> > or "i2c:" to the front of the strings.  This allows the standard
-> > modprobe to find the right driver when automatically populating bus
-> > children from the device tree structure.
-> > 
-> > Add a prefix parameter, and adjust callers.  For
-> > of_register_spi_devices() use the "spi:" prefix.
-> > 
-> > Signed-off-by: David Daney <david.daney@cavium.com>
+On Fri, 11 May 2012 15:05:23 -0700, David Daney <ddaney.cavm@gmail.com> wrote:
+> From: David Daney <david.daney@cavium.com>
 > 
-> Applied, thanks.  Some notes below...
+> We can extract the "pagesize", "size" and "address-width" from the
+> device tree so that SPI eeproms can be fully specified in the device
+> tree.
+> 
+> Also add a MODULE_DEVICE_TABLE so the drivers can be automatically bound.
+> 
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> Cc: Michael Hennerich <michael.hennerich@analog.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Axel Lin <axel.lin@gmail.com>
+> ---
+>  drivers/misc/eeprom/at25.c |   61 +++++++++++++++++++++++++++++++++++++++++---
 
-Wait... why is this necessary?  The module type prefix isn't stored in
-the modalias value for any other bus type as far as I can see, and
-with this series it appears that the "spi:" prefix may or may not be
-present in the modalias.  That doesn't look right.
-
-Why isn't prefixing spi: at uevent time sufficient?  IIUC, modprobe
-depends on either UEVENT or the modalias attribute to know which
-driver to probe.  It does look like the attribute is missing the spi:
-prefix though.  Does the following change work instead of these two
-patches?
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 3d8f662..da8aac7 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -51,7 +51,7 @@ modalias_show(struct device *dev, struct device_attribute *a, char *buf)
- {
-        const struct spi_device *spi = to_spi_device(dev);
- 
--       return sprintf(buf, "%s\n", spi->modalias);
-+       return sprintf(buf, "%s%s\n", SPI_MODULE_PREFIX, spi->modalias);
- }
-
-So, I've dropped this patch from my tree.  If the change above works
-for you then I'll push it out.
+Documentation on binding?  It needs to be there before merging.
 
 g.
+
+>  1 files changed, 57 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
+> index 01ab3c9..609ee72 100644
+> --- a/drivers/misc/eeprom/at25.c
+> +++ b/drivers/misc/eeprom/at25.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/delay.h>
+>  #include <linux/device.h>
+>  #include <linux/sched.h>
+> +#include <linux/of.h>
+>  
+>  #include <linux/spi/spi.h>
+>  #include <linux/spi/eeprom.h>
+> @@ -293,6 +294,9 @@ static int at25_probe(struct spi_device *spi)
+>  {
+>  	struct at25_data	*at25 = NULL;
+>  	const struct spi_eeprom *chip;
+> +#ifdef CONFIG_OF
+> +	struct spi_eeprom of_chip;
+> +#endif
+>  	int			err;
+>  	int			sr;
+>  	int			addrlen;
+> @@ -300,9 +304,51 @@ static int at25_probe(struct spi_device *spi)
+>  	/* Chip description */
+>  	chip = spi->dev.platform_data;
+>  	if (!chip) {
+> -		dev_dbg(&spi->dev, "no chip description\n");
+> -		err = -ENODEV;
+> -		goto fail;
+> +#ifdef CONFIG_OF
+> +		if (spi->dev.of_node) {
+> +			u32 val;
+> +			memset(&of_chip, 0, sizeof(of_chip));
+> +			if (of_property_read_u32(spi->dev.of_node, "pagesize", &val)) {
+> +				dev_dbg(&spi->dev, "no \"pagesize\" property\n");
+> +				err = -ENODEV;
+> +				goto fail;
+> +			}
+> +			of_chip.page_size = val;
+> +			if (of_property_read_u32(spi->dev.of_node, "size", &val)) {
+> +				dev_dbg(&spi->dev, "no \"size\" property\n");
+> +				err = -ENODEV;
+> +				goto fail;
+> +			}
+> +			of_chip.byte_len = val;
+> +			if (of_property_read_u32(spi->dev.of_node, "address-width", &val)) {
+> +				dev_dbg(&spi->dev, "no \"address-width\" property\n");
+> +				err = -ENODEV;
+> +				goto fail;
+> +			}
+> +			switch (val) {
+> +			case 8:
+> +				of_chip.flags |= EE_ADDR1;
+> +				break;
+> +			case 16:
+> +				of_chip.flags |= EE_ADDR2;
+> +				break;
+> +			case 24:
+> +				of_chip.flags |= EE_ADDR3;
+> +				break;
+> +			default:
+> +				dev_dbg(&spi->dev, "bad \"address-width\" property: %u\n", val);
+> +				err = -EINVAL;
+> +				goto fail;
+> +			}
+> +			strlcpy(of_chip.name, spi->dev.of_node->name, sizeof(of_chip.name));
+> +			chip = &of_chip;
+> +		} else
+> +#endif
+> +		{
+> +			dev_dbg(&spi->dev, "no chip description\n");
+> +			err = -ENODEV;
+> +			goto fail;
+> +		}
+>  	}
+>  
+>  	/* For now we only support 8/16/24 bit addressing */
+> @@ -396,11 +442,19 @@ static int __devexit at25_remove(struct spi_device *spi)
+>  
+>  /*-------------------------------------------------------------------------*/
+>  
+> +static const struct spi_device_id at25_id[] = {
+> +	{"at25", 0},
+> +	{"m95256", 0},
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(spi, at25_id);
+> +
+>  static struct spi_driver at25_driver = {
+>  	.driver = {
+>  		.name		= "at25",
+>  		.owner		= THIS_MODULE,
+>  	},
+> +	.id_table	= at25_id,
+>  	.probe		= at25_probe,
+>  	.remove		= __devexit_p(at25_remove),
+>  };
+> @@ -410,4 +464,3 @@ module_spi_driver(at25_driver);
+>  MODULE_DESCRIPTION("Driver for most SPI EEPROMs");
+>  MODULE_AUTHOR("David Brownell");
+>  MODULE_LICENSE("GPL");
+> -MODULE_ALIAS("spi:at25");
+> -- 
+> 1.7.2.3
+> 
+
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.

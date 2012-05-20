@@ -1,43 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 May 2012 07:47:08 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:40504 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 May 2012 07:54:49 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:54604 "EHLO
         mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903258Ab2ETFrF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 20 May 2012 07:47:05 +0200
-Received: by dadm1 with SMTP id m1so6288515dad.36
-        for <linux-mips@linux-mips.org>; Sat, 19 May 2012 22:46:58 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1903258Ab2ETFyo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 20 May 2012 07:54:44 +0200
+Received: by dadm1 with SMTP id m1so6292659dad.36
+        for <linux-mips@linux-mips.org>; Sat, 19 May 2012 22:54:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=sender:from:subject:to:cc:in-reply-to:references:date:message-id
          :x-gm-message-state;
-        bh=0Gc5joIA9iXxM+EjfStXbsvWNVie2kf+Xrn/cTzX2qY=;
-        b=oUXsMvrjze0oq61roBltzHo3Bb+efS44QOOndcxtKkXT1ZIT3qTfgeWQDfWVxrr1Hj
-         iGuBv5POMRH7419GdP6ZoUR6xAZhC+4N/pe3dSMizgdzJK+jf7hwVU4I/bhbnUyXn+Oz
-         FeJXll0oHbxsQVDlC3WaxBrkx3Lg619rW4ru1l8/MpTgPZFFNx5BxSuN389PnE66Qw3C
-         jZrvtYXGUJzYMIgO9PDkBn5Vdphw+qeqqDWJkz4lrBMx8wavOBVLNZ/vP922zXv3y3He
-         QVD0DVRJ3iuvGZwaxvWI82hMWA9QmkwQOQJad1eNkovPOduzD5lzPrbVg0vI0U9TTngR
-         Qjtw==
-Received: by 10.68.223.138 with SMTP id qu10mr42397822pbc.124.1337492818344;
-        Sat, 19 May 2012 22:46:58 -0700 (PDT)
+        bh=U08B4jc91p6CiEXOny3avi67Ic42u23ML4issa4YRjU=;
+        b=TmmpkGfUIXMAEooxriaWWE9GIUtu1sBjZ3RJVKoJkaQvz49fDwFkTYvE+UpsUis2E3
+         v5689ZXLcAiRwJNFh065Xf2xTXSozQAzdd9ijl4gA4O3xP5lBG+gJV+WMLsgFcArr4tb
+         6IdgzcvfEGlIjS65BQX2li39vX4jKJBPEzvwkWUXjE0m+NDZHSpFDhMzxjGWzanUu5vI
+         ygAK8HOPGGaozvqXZ49ZXcy94WKCwuzlS9JlGUtj70i0q8aS3IFw/3fucCiyJwrVgzad
+         hW0gOQnA/V9ZwDlUMzpFqLDMcqBP53gbJ+V+5NUfe/6HjXg/rF1CvalQ21V8LVTc9Qao
+         8VVQ==
+Received: by 10.68.226.73 with SMTP id rq9mr2251553pbc.145.1337493278265;
+        Sat, 19 May 2012 22:54:38 -0700 (PDT)
 Received: from localhost (S0106d8b37715ee14.cg.shawcable.net. [68.146.14.168])
-        by mx.google.com with ESMTPS id nw10sm16494440pbb.20.2012.05.19.22.46.57
+        by mx.google.com with ESMTPS id h10sm18554289pbh.69.2012.05.19.22.54.36
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Sat, 19 May 2012 22:46:57 -0700 (PDT)
+        Sat, 19 May 2012 22:54:37 -0700 (PDT)
 Received: by localhost (Postfix, from userid 1000)
-        id 091DA3E03B8; Sat, 19 May 2012 23:46:57 -0600 (MDT)
+        id 13AF03E03B8; Sat, 19 May 2012 23:54:36 -0600 (MDT)
 From:   Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 2/2] spi: Add SPI master controller for OCTEON SOCs.
+Subject: Re: [PATCH 1/3] of: Add prefix parameter to of_modalias_node().
 To:     David Daney <ddaney.cavm@gmail.com>,
         devicetree-discuss@lists.ozlabs.org,
         Rob Herring <rob.herring@calxeda.com>,
         spi-devel-general@lists.sourceforge.net
 Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-doc@vger.kernel.org, David Daney <david.daney@cavium.com>
-In-Reply-To: <1336772086-17248-3-git-send-email-ddaney.cavm@gmail.com>
-References: <1336772086-17248-1-git-send-email-ddaney.cavm@gmail.com> <1336772086-17248-3-git-send-email-ddaney.cavm@gmail.com>
-Date:   Sat, 19 May 2012 23:46:56 -0600
-Message-Id: <20120520054657.091DA3E03B8@localhost>
-X-Gm-Message-State: ALoCoQmXwbGCdsbCfae6VB6Js0fYw1mOmtiTTtIGrkTdyUnBzx3a1YjamvRzE/3K2BTnpYM2BcYM
-X-archive-position: 33380
+        linux-doc@vger.kernel.org, David Daney <david.daney@cavium.com>,
+        Liam Girdwood <lrg@ti.com>, Timur Tabi <timur@freescale.com>,
+        Mark Brown <broonie@opensource.wolfsonmicro.com>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>,
+        alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <1336773923-17866-2-git-send-email-ddaney.cavm@gmail.com>
+References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com> <1336773923-17866-2-git-send-email-ddaney.cavm@gmail.com>
+Date:   Sat, 19 May 2012 23:54:36 -0600
+Message-Id: <20120520055436.13AF03E03B8@localhost>
+X-Gm-Message-State: ALoCoQnDpZ+li1cDBttlT5Flbr2EoB/MTnBdEa7LskZhVqvljpFXPn+xGRFWXeKUz2bBrSxFXYQ+
+X-archive-position: 33381
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,146 +50,64 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, 11 May 2012 14:34:46 -0700, David Daney <ddaney.cavm@gmail.com> wrote:
+On Fri, 11 May 2012 15:05:21 -0700, David Daney <ddaney.cavm@gmail.com> wrote:
 > From: David Daney <david.daney@cavium.com>
 > 
-> Add the driver, link it into the kbuild system and provide device tree
-> binding documentation.
+> When generating MODALIASes, it is convenient to add things like "spi:"
+> or "i2c:" to the front of the strings.  This allows the standard
+> modprobe to find the right driver when automatically populating bus
+> children from the device tree structure.
+> 
+> Add a prefix parameter, and adjust callers.  For
+> of_register_spi_devices() use the "spi:" prefix.
 > 
 > Signed-off-by: David Daney <david.daney@cavium.com>
 
-Some comments below, but you can add my a-b:
+Applied, thanks.  Some notes below...
 
-Acked-by: Grant Likely <grant.likely@secretlab.ca>
-
-> +#include <asm/octeon/octeon.h>
-> +#include <asm/octeon/cvmx-mpi-defs.h>
-> +
-> +#define DRV_VERSION "2.0" /* Version 1 was the out-of-tree driver */
-
-As already discussed, drop this line.
-
-> +#define DRV_DESCRIPTION "Cavium, Inc. OCTEON SPI bus driver"
-
-Used exactly once.  Drop this line and move string to the
-MODULE_DESCRIPTION().
-
-> +static int __devinit octeon_spi_probe(struct platform_device *pdev)
-> +{
-> +
-> +	struct resource *res_mem;
-> +	struct spi_master *master;
-> +	struct octeon_spi *p;
-> +	int err = -ENOENT;
-> +
-> +	master = spi_alloc_master(&pdev->dev, sizeof(struct octeon_spi));
-> +	if (!master)
-> +		return -ENOMEM;
-> +	p = spi_master_get_devdata(master);
-> +	platform_set_drvdata(pdev, p);
-> +	p->my_master = master;
-> +
-> +	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +
-> +	if (res_mem == NULL) {
-> +		dev_err(&pdev->dev, "found no memory resource\n");
-> +		err = -ENXIO;
-> +		goto fail;
-> +	}
-> +	if (!devm_request_mem_region(&pdev->dev, res_mem->start,
-> +				     resource_size(res_mem), res_mem->name)) {
-> +		dev_err(&pdev->dev, "request_mem_region failed\n");
-> +		goto fail;
-> +	}
-> +	p->register_base = (u64)devm_ioremap(&pdev->dev, res_mem->start,
-> +					     resource_size(res_mem));
-
-Nasty cast.  p->register_base needs to be an __iomem pointer
-variable.  The fact taht cvmx_read_csr accepts a uint64_t instead of
-an __iomem pointer looks really wrong.  Why is it written that way?
-
-> +
-> +	/* Dynamic bus numbering */
-> +	master->bus_num = -1;
-> +	master->num_chipselect = 4;
-> +	master->mode_bits = SPI_CPHA |
-> +			    SPI_CPOL |
-> +			    SPI_CS_HIGH |
-> +			    SPI_LSB_FIRST |
-> +			    SPI_3WIRE;
-> +
-> +	master->setup = octeon_spi_setup;
-> +	master->cleanup = octeon_spi_cleanup;
-> +	master->prepare_transfer_hardware = octeon_spi_nop_transfer_hardware;
-> +	master->transfer_one_message = octeon_spi_transfer_one_message;
-> +	master->unprepare_transfer_hardware = octeon_spi_nop_transfer_hardware;
-> +
-> +	master->dev.of_node = pdev->dev.of_node;
-> +	err = spi_register_master(master);
-> +	if (err) {
-> +		dev_err(&pdev->dev, "register master failed: %d\n", err);
-> +		goto fail;
-> +	}
-> +
-> +	dev_info(&pdev->dev, "Version " DRV_VERSION "\n");
-> +
-> +	return 0;
-> +fail:
-> +	spi_master_put(master);
-> +	return err;
-> +}
-> +
-> +static int __devexit octeon_spi_remove(struct platform_device *pdev)
-> +{
-> +	struct octeon_spi *p = platform_get_drvdata(pdev);
-> +	struct spi_master *master = p->my_master;
-> +
-> +	spi_unregister_master(master);
-> +
-> +	/* Clear the CSENA* and put everything in a known state. */
-> +	cvmx_write_csr(p->register_base + OCTEON_SPI_CFG, 0);
-> +	spi_master_put(master);
-> +	return 0;
-> +}
-> +
-> +static struct of_device_id octeon_spi_match[] = {
-> +	{
-> +		.compatible = "cavium,octeon-3010-spi",
-> +	},
-> +	{},
-
-Nitpick:
-	{ .compatible = "cavium,octeon-3010-spi", },
-	{},
-
-No need for the extra lines when it is so short.
-
-> +};
-> +MODULE_DEVICE_TABLE(of, octeon_spi_match);
-> +
-> +static struct platform_driver octeon_spi_driver = {
-> +	.driver = {
-> +		.name		= "spi-octeon",
-> +		.owner		= THIS_MODULE,
-> +		.of_match_table = octeon_spi_match,
-> +	},
-> +	.probe		= octeon_spi_probe,
-> +	.remove		= __exit_p(octeon_spi_remove),
-
-__devexit_p
-
-> +};
-> +
-> +module_platform_driver(octeon_spi_driver);
-> +
-> +MODULE_DESCRIPTION(DRV_DESCRIPTION);
-> +MODULE_VERSION(DRV_VERSION);
-> +MODULE_AUTHOR("David Daney");
-> +MODULE_LICENSE("GPL");
-> -- 
-> 1.7.2.3
+> Cc: Liam Girdwood <lrg@ti.com>
+> Cc: Timur Tabi <timur@freescale.com>
+> Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>
+> Cc: Jaroslav Kysela <perex@perex.cz>
+> Cc: Takashi Iwai <tiwai@suse.de>
+> Cc: alsa-devel@alsa-project.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> ---
+>  drivers/of/base.c            |   22 ++++++++++++++++------
+>  drivers/of/of_i2c.c          |    2 +-
+>  drivers/of/of_spi.c          |    2 +-
+>  include/linux/of.h           |    3 ++-
+>  sound/soc/fsl/mpc8610_hpcd.c |    2 +-
+>  sound/soc/fsl/p1022_ds.c     |    2 +-
+>  6 files changed, 22 insertions(+), 11 deletions(-)
 > 
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index 5806449..f05a520 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -575,26 +575,36 @@ EXPORT_SYMBOL(of_find_matching_node);
+>  /**
+>   * of_modalias_node - Lookup appropriate modalias for a device node
+>   * @node:	pointer to a device tree node
+> + * @prefix:	prefix to be added to the compatible property, may be NULL
+>   * @modalias:	Pointer to buffer that modalias value will be copied into
+>   * @len:	Length of modalias value
+>   *
+> - * Based on the value of the compatible property, this routine will attempt
+> - * to choose an appropriate modalias value for a particular device tree node.
+> - * It does this by stripping the manufacturer prefix (as delimited by a ',')
+> - * from the first entry in the compatible list property.
+> + * Based on the value of the compatible property, this routine will
+> + * attempt to choose an appropriate modalias value for a particular
+> + * device tree node.  It does this by stripping the manufacturer
+> + * prefix (as delimited by a ',') from the first entry in the
+> + * compatible list property, and appending it to the prefix.
 
--- 
-Grant Likely, B.Sc, P.Eng.
-Secret Lab Technologies, Ltd.
+Not sure why this text block was reformatted.  I've formatted it back
+to the way it was so the diff shows specifically what has changed in
+the content.
+
+I don't want to discourage cleanups, but I need to be careful that
+cleanups don't obscure important changes when looking at the diff.
+
+g.

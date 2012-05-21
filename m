@@ -1,67 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 May 2012 12:31:42 +0200 (CEST)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:45871 "EHLO
-        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903558Ab2EUKbf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 21 May 2012 12:31:35 +0200
-Received: by bkwj4 with SMTP id j4so4991475bkw.36
-        for <linux-mips@linux-mips.org>; Mon, 21 May 2012 03:31:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding
-         :x-gm-message-state;
-        bh=YLX0a4MXaFzZjrxO5HgmbJsblsiV9zk+Xbjk45trmPc=;
-        b=mCrCPGO3QqaVD3M2Z5hT+CPpilFbpEUG8v/V0gPvtSPQLZZodiIZ8FJO86yguU1NCc
-         KqF6WE2gRgDTCVPuh6SS0wmffeMMSB3Si72KkwMfZOmo0BS1Bjzt0FxP13coO38V/T3Y
-         +F/dqS8jx6v0MFxcA5tDHJh1MBCgOWhG7LBqJh+R9PyAzt+sEqnikadKqswF6G8fVOjn
-         5RKehoWgm5bVXgtXebNe1ruL89WDEspX5PToHVjxiem7mSNLp7FcLOx/9OBrNJQ6LnQZ
-         6lA+Q2CXA545zC7iCaVyvVsdgyOtnOYZQyOQp6FqKiGOmWhGqvhSYFarQgDeh79h9Iim
-         ImBg==
-Received: by 10.204.13.78 with SMTP id b14mr7685526bka.32.1337596288944;
-        Mon, 21 May 2012 03:31:28 -0700 (PDT)
-Received: from [192.168.2.2] (ppp91-79-83-176.pppoe.mtu-net.ru. [91.79.83.176])
-        by mx.google.com with ESMTPS id f11sm26332560bkw.6.2012.05.21.03.31.26
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 21 May 2012 03:31:27 -0700 (PDT)
-Message-ID: <4FBA1961.2050504@mvista.com>
-Date:   Mon, 21 May 2012 14:30:57 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 May 2012 12:49:19 +0200 (CEST)
+Received: from e28smtp07.in.ibm.com ([122.248.162.7]:58040 "EHLO
+        e28smtp07.in.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903565Ab2EUKtO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 21 May 2012 12:49:14 +0200
+Received: from /spool/local
+        by e28smtp07.in.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <srivatsa.bhat@linux.vnet.ibm.com>;
+        Mon, 21 May 2012 16:18:26 +0530
+Received: from d28relay02.in.ibm.com (9.184.220.59)
+        by e28smtp07.in.ibm.com (192.168.1.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Mon, 21 May 2012 16:17:28 +0530
+Received: from d28av03.in.ibm.com (d28av03.in.ibm.com [9.184.220.65])
+        by d28relay02.in.ibm.com (8.13.8/8.13.8/NCO v10.0) with ESMTP id q4LAdqcM40894500;
+        Mon, 21 May 2012 16:09:53 +0530
+Received: from d28av03.in.ibm.com (loopback [127.0.0.1])
+        by d28av03.in.ibm.com (8.14.4/8.13.1/NCO v10.0 AVout) with ESMTP id q4LG979R031794;
+        Tue, 22 May 2012 02:09:07 +1000
+Received: from [9.124.35.113] (srivatsabhat.in.ibm.com [9.124.35.113])
+        by d28av03.in.ibm.com (8.14.4/8.13.1/NCO v10.0 AVin) with ESMTP id q4LG97h1031757;
+        Tue, 22 May 2012 02:09:07 +1000
+Message-ID: <4FBA1B54.3@linux.vnet.ibm.com>
+Date:   Mon, 21 May 2012 16:09:16 +0530
+From:   "Srivatsa S. Bhat" <srivatsa.bhat@linux.vnet.ibm.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20120424 Thunderbird/12.0
 MIME-Version: 1.0
 To:     Yong Zhang <yong.zhang0@gmail.com>
 CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        ralf@linux-mips.org, david.daney@cavium.com
+        ralf@linux-mips.org, sshtylyov@mvista.com, david.daney@cavium.com,
+        sshtylyov@mvista.com,
+        "Srivatsa S. Bhat" <srivatsa.bhat@linux.vnet.ibm.com>
 Subject: Re: [PATCH 6/8] MIPS: call set_cpu_online() on the uping cpu with
  irq disabled
 References: <1337580008-7280-1-git-send-email-yong.zhang0@gmail.com> <1337580008-7280-7-git-send-email-yong.zhang0@gmail.com>
 In-Reply-To: <1337580008-7280-7-git-send-email-yong.zhang0@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQlHLXEGl5uxdVsqatsoz2zSUWsvNJu4Hb92H+hESBxHX8hbWS0sAYhiqAPfwFR5SiW4VwhA
-X-archive-position: 33398
+x-cbid: 12052110-8878-0000-0000-0000028B0263
+X-archive-position: 33399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: srivatsa.bhat@linux.vnet.ibm.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+On 05/21/2012 11:30 AM, Yong Zhang wrote:
 
-On 21-05-2012 10:00, Yong Zhang wrote:
-
-> From: Yong Zhang<yong.zhang@windriver.com>
-
+> From: Yong Zhang <yong.zhang@windriver.com>
+> 
 > To prevent a problem as commit 5fbd036b [sched: Cleanup cpu_active madness]
 > and commit 2baab4e9 [sched: Fix select_fallback_rq() vs cpu_active/cpu_online]
 > try to resolve, move set_cpu_online() to the brought up CPU and with irq
-                                                ^^^^^^^^^^
-    Now the same change in the subject please.
-
 > disabled.
-
+> 
 > Signed-off-by: Yong Zhang <yong.zhang0@gmail.com>
 > Acked-by: David Daney <david.daney@cavium.com>
+> ---
+>  arch/mips/kernel/smp.c |    4 ++--
+>  1 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+> index 73a268a..042145f 100644
+> --- a/arch/mips/kernel/smp.c
+> +++ b/arch/mips/kernel/smp.c
+> @@ -122,6 +122,8 @@ asmlinkage __cpuinit void start_secondary(void)
+> 
+>  	notify_cpu_starting(cpu);
+> 
+> +	set_cpu_online(cpu, true);
+> +
 
-WBR, Sergei
+
+You will also need to use ipi_call_lock/unlock() around this.
+See how x86 does it. (MIPS also selects USE_GENERIC_SMP_HELPERS).
+
+Regards,
+Srivatsa S. Bhat
+
+>  	set_cpu_sibling_map(cpu);
+> 
+>  	cpu_set(cpu, cpu_callin_map);
+> @@ -249,8 +251,6 @@ int __cpuinit __cpu_up(unsigned int cpu)
+>  	while (!cpu_isset(cpu, cpu_callin_map))
+>  		udelay(100);
+> 
+> -	set_cpu_online(cpu, true);
+> -
+>  	return 0;
+>  }
+> 

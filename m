@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 May 2012 08:04:23 +0200 (CEST)
-Received: from mail-wg0-f43.google.com ([74.125.82.43]:60427 "EHLO
-        mail-wg0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903659Ab2EUGCP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 21 May 2012 08:02:15 +0200
-Received: by mail-wg0-f43.google.com with SMTP id dr1so3995385wgb.24
-        for <multiple recipients>; Sun, 20 May 2012 23:02:15 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 May 2012 08:04:47 +0200 (CEST)
+Received: from mail-wi0-f171.google.com ([209.85.212.171]:46148 "EHLO
+        mail-wi0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903689Ab2EUGCd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 21 May 2012 08:02:33 +0200
+Received: by wibhm14 with SMTP id hm14so1745642wib.6
+        for <multiple recipients>; Sun, 20 May 2012 23:02:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=CmDeuBOUT3p8nrzrJm+4uWaeeD6onOicPLscm+V9ZsM=;
-        b=YXpZ7t/jTdzx58rs0eQdNAmbz673fNXuwOkJNoSIeDpUmKbYAMNMUHQn0cUbSUHLEO
-         AYvfXTLrZwRtTE+mu6NTYdxkQWtog2580q3STNaa7GTyJlV0WzUo9t7AYSvweStNt6Cy
-         1o9Kt7wN90pMZvv65pPO+rq3+1Wd/lkWq3D1S8ROBSpVevqBW8QdlnQAlf9FW20aAHA6
-         ksK/IAn7cPDwGTRwA1f3DGSoEP5gK6xYDGJjcN+NBMQvxF23g+YO19kLdW2SLJGyl6Ts
-         f7CDyUFTFdgL8uUbCVLCAgvPiXk7IEaL4OubRYFRgRrsEu0xjiQjJ3mL35yv+k2id2j/
-         i8Tg==
-Received: by 10.180.100.230 with SMTP id fb6mr21493370wib.3.1337580135285;
-        Sun, 20 May 2012 23:02:15 -0700 (PDT)
+        bh=rnP60ACmOHZurI1fWzau4AdEGXYXilIpY1AfUPZOYUI=;
+        b=hWoe1mXDsnPG8lSSGgQfUd8581KvapvtGvvNQDxiI9db1OE+Rf+xWolSV83/YRiRXN
+         jz1/iZjxAy3DvIOqleuFlO02wrOFzf0+I6hrjdkE0ZWI7e/gkO1RdBkYZAvmglWsuXA1
+         5XucvavocBy7v6LdmkTpYFQLsHnAJxPdn8D8xEsj3zCqog/lGeb1nz91SdYh9LVq5C2T
+         i6ZEjrGWd2/e9hoUhM/1rdydKwVopSA1Qi2FVzjK+ZpI+8lfb+cD0dagqS2fVyyJRpQA
+         +o08Dno293kstlnWDuXBVxEwCrmg70OL9kILiH0aYx4Il/9hCIWAabllUnS6BXevB/Bp
+         zO0Q==
+Received: by 10.216.131.24 with SMTP id l24mr12521111wei.76.1337580147760;
+        Sun, 20 May 2012 23:02:27 -0700 (PDT)
 Received: from localhost ([61.148.56.138])
-        by mx.google.com with ESMTPS id g10sm23594119wiw.0.2012.05.20.23.02.09
+        by mx.google.com with ESMTPS id e20sm18887091wiv.7.2012.05.20.23.02.22
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 20 May 2012 23:02:14 -0700 (PDT)
+        Sun, 20 May 2012 23:02:27 -0700 (PDT)
 From:   Yong Zhang <yong.zhang0@gmail.com>
 To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 Cc:     ralf@linux-mips.org, sshtylyov@mvista.com, david.daney@cavium.com
-Subject: [PATCH 7/8] MIPS: smp: Warn on too early irq enable
-Date:   Mon, 21 May 2012 14:00:07 +0800
-Message-Id: <1337580008-7280-8-git-send-email-yong.zhang0@gmail.com>
+Subject: [PATCH 8/8] MIPS: sync-r4k: remove redundant irq operation
+Date:   Mon, 21 May 2012 14:00:08 +0800
+Message-Id: <1337580008-7280-9-git-send-email-yong.zhang0@gmail.com>
 X-Mailer: git-send-email 1.7.5.4
 In-Reply-To: <1337580008-7280-1-git-send-email-yong.zhang0@gmail.com>
 References: <1337580008-7280-1-git-send-email-yong.zhang0@gmail.com>
-X-archive-position: 33396
+X-archive-position: 33397
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,29 +41,42 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: Yong Zhang <yong.zhang@windriver.com>
 
-Just to catch a potential issue.
+Since we have delayed irq enabling to ->smp_finish()
 
 Signed-off-by: Yong Zhang <yong.zhang0@gmail.com>
 Acked-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/kernel/smp.c |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+ arch/mips/kernel/sync-r4k.c |    5 -----
+ 1 files changed, 0 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index 042145f..4fbafa8 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -130,6 +130,11 @@ asmlinkage __cpuinit void start_secondary(void)
+diff --git a/arch/mips/kernel/sync-r4k.c b/arch/mips/kernel/sync-r4k.c
+index 99f913c..842d55e 100644
+--- a/arch/mips/kernel/sync-r4k.c
++++ b/arch/mips/kernel/sync-r4k.c
+@@ -111,7 +111,6 @@ void __cpuinit synchronise_count_master(void)
+ void __cpuinit synchronise_count_slave(void)
+ {
+ 	int i;
+-	unsigned long flags;
+ 	unsigned int initcount;
+ 	int ncpus;
  
- 	synchronise_count_slave();
+@@ -123,8 +122,6 @@ void __cpuinit synchronise_count_slave(void)
+ 	return;
+ #endif
  
-+	/*
-+	 * irq will be enabled in ->smp_finish(), enabling it too early
-+	 * is dangerous.
-+	 */
-+	WARN_ON_ONCE(!irqs_disabled());
- 	mp_ops->smp_finish();
- 
- 	cpu_idle();
+-	local_irq_save(flags);
+-
+ 	/*
+ 	 * Not every cpu is online at the time this gets called,
+ 	 * so we first wait for the master to say everyone is ready
+@@ -154,7 +151,5 @@ void __cpuinit synchronise_count_slave(void)
+ 	}
+ 	/* Arrange for an interrupt in a short while */
+ 	write_c0_compare(read_c0_count() + COUNTON);
+-
+-	local_irq_restore(flags);
+ }
+ #undef NR_LOOPS
 -- 
 1.7.5.4

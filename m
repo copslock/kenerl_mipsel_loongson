@@ -1,69 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 May 2012 20:15:43 +0200 (CEST)
-Received: from h9.dl5rb.org.uk ([81.2.74.9]:41433 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903564Ab2EUSPj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 21 May 2012 20:15:39 +0200
-Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q4LIFbw1013996;
-        Mon, 21 May 2012 19:15:37 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q4LIFa2X013978;
-        Mon, 21 May 2012 19:15:36 +0100
-Date:   Mon, 21 May 2012 19:15:36 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Artem Bityutskiy <dedekind1@gmail.com>
-Cc:     MIPS Mailing List <linux-mips@linux-mips.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>
-Subject: Re: [PATCH 2/2] MIPS: bcm63xx: kbuild: remove -Werror
-Message-ID: <20120521181536.GD15443@linux-mips.org>
-References: <1335534510-12573-1-git-send-email-dedekind1@gmail.com>
- <1335534510-12573-2-git-send-email-dedekind1@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 May 2012 01:17:12 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:34994 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903648Ab2EUXRI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 May 2012 01:17:08 +0200
+Date:   Tue, 22 May 2012 00:17:08 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Deng-Cheng Zhu <dczhu@mips.com>
+cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
+        kevink@paralogos.com
+Subject: Re: [PATCH v2 1/2] MIPS: fix/enrich 34K APRP (APSP)
+ functionalities
+In-Reply-To: <4FB9B52F.908@mips.com>
+Message-ID: <alpine.LFD.2.00.1205212350070.3701@eddie.linux-mips.org>
+References: <1337244680-29968-1-git-send-email-dczhu@mips.com> <1337244680-29968-2-git-send-email-dczhu@mips.com> <4FB4EF81.10005@phrozen.org> <4FB60403.3080700@mips.com> <4FB68FA2.1030404@phrozen.org> <alpine.LFD.2.00.1205202231400.3701@eddie.linux-mips.org>
+ <4FB9B52F.908@mips.com>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1335534510-12573-2-git-send-email-dedekind1@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 33407
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-archive-position: 33408
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Apr 27, 2012 at 04:48:30PM +0300, Artem Bityutskiy wrote:
+On Mon, 21 May 2012, Deng-Cheng Zhu wrote:
 
-> From: Artem Bityutskiy <Artem.Bityutskiy@linux.intel.com>
+> >   What's so Malta-specific in the VPE loader anyway?  It's a CPU feature,
+> > not a board-specific one.
 > 
-> I cannot build bcm963xx with the standard Kbuild W=1 switch:
-> 
-> arch/mips/bcm63xx/boards/board_bcm963xx.c: At top level:
-> arch/mips/bcm63xx/boards/board_bcm963xx.c:647:5: error: no previous prototype for 'bcm63xx_get_fallback_sprom' [-Werror=missing-prototypes]
-> cc1: all warnings being treated as errors
-> 
-> This patch removes the gcc switch to make W=1 work. Mips is the only
-> architecture I know which does not build with W=1 and this upsets my aiaiai
-> scripts. And in general, you never know which warnings newer versions of gcc
-> will start emiting so having -Werror by default is not the best idea.
-> 
-> Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-> ---
->  arch/mips/bcm63xx/boards/Makefile |    2 --
->  1 files changed, 0 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/bcm63xx/boards/Makefile b/arch/mips/bcm63xx/boards/Makefile
-> index 9f64fb4..af07c1a 100644
-> --- a/arch/mips/bcm63xx/boards/Makefile
-> +++ b/arch/mips/bcm63xx/boards/Makefile
-> @@ -1,3 +1 @@
->  obj-$(CONFIG_BOARD_BCM963XX)		+= board_bcm963xx.o
-> -
-> -ccflags-y := -Werror
+> Well, first off, for VPE loader itself, when it comes to CPS we have
+> vpe_run() that derives from amon_cpu_start() in arch/mips/mti-malta/malta-
+> amon.c. There is no implementation of amon_cpu_start() on other platforms.
 
-There's been a whole bunch of other -Werrors below arch/mips some of
-which even were combined with -Wall.  I removed all off them except the
-central -Werror in arch/mips/Kbuild.  I'm pondering a better solution
-for that one now.
+ Hmm, there's nothing platform-specific there, the file is pretty generic, 
+it could be moved to arch/mips/kernel/ or thereabouts.  That applies to 
+<asm/mips-boards/launch.h> too, before you ask (you may want to use 
+alloc_bootmem or suchlike instead of hardcoding the trampoline page, 
+though it's probably pretty safe to assume the end of the exception 
+handler page is available everywhere).
 
-  Ralf
+> Secondly, I suppose VPE loader works uniquely for APRP, and part of APRP
+> (such as IRQ related stuff) depends on platform code. So it makes sense
+> (IMO) to impose the dependency of APRP on the root (VPE loader).
+
+ Hmm, does it really?  It sounds wrong to me, it shouldn't use any 
+hardware interrupts, and software interrupts again are available 
+everywhere, at least on the MT processors now in existence.
+
+ There's nothing platform-specific referred to from arch/mips/kernel/vpe.c 
+AFAICT (and I trust in Beth having got this piece right).  I reckon it 
+used to work with CONFIG_MIPS_SIM too, though I could imagine the 
+configuration got neglected a bit as it is somewhat unusual.
+
+  Maciej

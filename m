@@ -1,34 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 May 2012 08:00:38 +0200 (CEST)
-Received: from mail-wi0-f169.google.com ([209.85.212.169]:37232 "EHLO
-        mail-wi0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903550Ab2EUGA0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 21 May 2012 08:00:26 +0200
-Received: by wibhn14 with SMTP id hn14so2339493wib.0
-        for <multiple recipients>; Sun, 20 May 2012 23:00:20 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 May 2012 08:01:05 +0200 (CEST)
+Received: from mail-we0-f177.google.com ([74.125.82.177]:63089 "EHLO
+        mail-we0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903554Ab2EUGAi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 21 May 2012 08:00:38 +0200
+Received: by werc12 with SMTP id c12so3762952wer.36
+        for <multiple recipients>; Sun, 20 May 2012 23:00:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=SNorlJvzkxMIDeK11vUYJXafsnNsoMRj8j6HUdzEuKM=;
-        b=Bh75Oihh3qwxqG6jXkNMUlDjia0mT+cg37NDMG3uR7jQtKA4wDUMLcMcpaEf957dnI
-         G36a9ycAz1L82j84Ycq0lE6RS76URuhEtb7L6dUit72zidVZY/2eSLlcV6TiUPKlIMPJ
-         IDga2CJR14XENXPzgaIYibJEE7nPXcEuVUWoWnJlI7s3Xt4kGjPPuXlbUFnMIhr/XIrM
-         RjZWJUB9U8GUE1Wg7vBHFrVRl+lqAB1GsNy3kSpBAlYUyqtzhcS1yCx2EN2hcADM1Bgv
-         EvDOT7kO+U2RGdLzTRfA2U//6PUuOxa42umDpFIUo1VfEOWJ+tbqzh/vYlygGmR9pct0
-         Ma/Q==
-Received: by 10.180.105.69 with SMTP id gk5mr21964634wib.3.1337580020797;
-        Sun, 20 May 2012 23:00:20 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=JuiyImB6cSiEdx9VBh8AaOfx9jmv7ena1Qntb1eUkrw=;
+        b=dqEopw+YpQ4ptdFoaHWZlFoPX1jAuzPkYs/TyfDz5MQ/5QKrXPWBEcVOLZ9tX5GVx3
+         Epld42ErJLwFE6sfzv4M4+T/XWlsiya82hxGCPV+JnGI3jSVJ8I/sOu7isByPBWb0TAV
+         OeFtoIDThQPOE8F8dwIuPb1B5ZWUTCf1T0s+clMNa+K7ieSXRRrB5l589CdSQ9cZTSCd
+         rkmdHK8cXf3b9BblcsZOBDA9Ag3Ze1tT3yn9oGNOqaqB78g1HSbx4wqVRcFchpyRN6bI
+         x4WOPlivGIooawI6I/Kh/w2g6TNxT5SbVkhrBTFkIkFmWTlic6irXq6oLllweW3MbGd7
+         i8ww==
+Received: by 10.180.82.195 with SMTP id k3mr21960968wiy.9.1337580033377;
+        Sun, 20 May 2012 23:00:33 -0700 (PDT)
 Received: from localhost ([61.148.56.138])
-        by mx.google.com with ESMTPS id ez4sm23579951wid.3.2012.05.20.23.00.15
+        by mx.google.com with ESMTPS id ez4sm23581476wid.3.2012.05.20.23.00.28
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 20 May 2012 23:00:20 -0700 (PDT)
+        Sun, 20 May 2012 23:00:32 -0700 (PDT)
 From:   Yong Zhang <yong.zhang0@gmail.com>
 To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 Cc:     ralf@linux-mips.org, sshtylyov@mvista.com, david.daney@cavium.com
-Subject: [V1 PATCH 0/8] patchset focus on MIPS SMP woes
-Date:   Mon, 21 May 2012 14:00:00 +0800
-Message-Id: <1337580008-7280-1-git-send-email-yong.zhang0@gmail.com>
+Subject: [PATCH 1/8] MIPS: Octeon: delay enable irq to ->smp_finish()
+Date:   Mon, 21 May 2012 14:00:01 +0800
+Message-Id: <1337580008-7280-2-git-send-email-yong.zhang0@gmail.com>
 X-Mailer: git-send-email 1.7.5.4
-X-archive-position: 33389
+In-Reply-To: <1337580008-7280-1-git-send-email-yong.zhang0@gmail.com>
+References: <1337580008-7280-1-git-send-email-yong.zhang0@gmail.com>
+X-archive-position: 33390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,55 +39,36 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Changes from V0:
-  a) Fix grammar and add summary for commit reference; (Sergei Shtylyov)
-  b) Collect Acks
+From: Yong Zhang <yong.zhang@windriver.com>
 
+To prepare for smoothing set_cpu_[active|online]() mess up
 
-Since commit 5fbd036b [sched: Cleanup cpu_active madness] and
-commit 2baab4e9 [sched: Fix select_fallback_rq() vs cpu_active/cpu_online],
-it's more safe to put notify_cpu_starting() and set_cpu_online() with
-irq disabled, otherwise we will have a typical race condition which
-above two commits try to resolve:
+Signed-off-by: Yong Zhang <yong.zhang0@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Acked-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/cavium-octeon/smp.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-       CPU1                            CPU2
-__cpu_up();
-    mp_ops->boot_secondary();
-                               start_secondary();
-                                 ->init_secondary();
-                                   local_irq_enable();
-                               <IRQ>
-                               do something;
-                                     wake up softirqd;
-                                     try_to_wake_up();
-                                       select_fallback_rq();
-                                       /* select wrong cpu */
-    set_cpu_online();
-
-
-This patchset fix the above issue as well as set_cpu_online is
-called on the caller cpu.
-
-BTW, I'm only running it on Cavium board because of limited source,
-so if anyone is interested to test it on other board, that's great :)
-
-Yong Zhang (8):
-  MIPS: Octeon: delay enable irq to ->smp_finish()
-  MIPS: BMIPS: delay irq enable to ->smp_finish()
-  MIPS: SMTC: delay irq enable to ->smp_finish()
-  MIPS: Yosemite: delay irq enable to ->smp_finish()
-  MIPS: call ->smp_finish() a little late
-  MIPS: call set_cpu_online() on the uping cpu with irq disabled
-  MIPS: smp: Warn on too early irq enable
-  MIPS: sync-r4k: remove redundant irq operation
-
- arch/mips/cavium-octeon/smp.c       |    2 +-
- arch/mips/kernel/smp-bmips.c        |   14 +++++++-------
- arch/mips/kernel/smp.c              |   12 +++++++++---
- arch/mips/kernel/smtc.c             |    3 ++-
- arch/mips/kernel/sync-r4k.c         |    5 -----
- arch/mips/pmc-sierra/yosemite/smp.c |    2 +-
- 6 files changed, 20 insertions(+), 18 deletions(-)
-
+diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+index 97e7ce9..ef9c34a 100644
+--- a/arch/mips/cavium-octeon/smp.c
++++ b/arch/mips/cavium-octeon/smp.c
+@@ -185,7 +185,6 @@ static void __cpuinit octeon_init_secondary(void)
+ 	octeon_init_cvmcount();
+ 
+ 	octeon_irq_setup_secondary();
+-	raw_local_irq_enable();
+ }
+ 
+ /**
+@@ -233,6 +232,7 @@ static void octeon_smp_finish(void)
+ 
+ 	/* to generate the first CPU timer interrupt */
+ 	write_c0_compare(read_c0_count() + mips_hpt_frequency / HZ);
++	local_irq_enable();
+ }
+ 
+ /**
 -- 
 1.7.5.4

@@ -1,58 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 May 2012 05:23:48 +0200 (CEST)
-Received: from dns0.mips.com ([12.201.5.70]:51863 "EHLO dns0.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1901346Ab2EUDXk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 21 May 2012 05:23:40 +0200
-Received: from exchdb01.mips.com (exchhub01.mips.com [192.168.36.84])
-        by dns0.mips.com (8.13.8/8.13.8) with ESMTP id q4L3NWor028263;
-        Sun, 20 May 2012 20:23:32 -0700
-Received: from [192.168.225.107] (192.168.225.107) by exchhub01.mips.com
- (192.168.36.84) with Microsoft SMTP Server id 14.1.270.1; Sun, 20 May 2012
- 20:23:29 -0700
-Message-ID: <4FB9B52F.908@mips.com>
-Date:   Mon, 21 May 2012 11:23:27 +0800
-From:   Deng-Cheng Zhu <dczhu@mips.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.27) Gecko/20120216 Lightning/1.0b2 Thunderbird/3.1.19
-MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     John Crispin <john@phrozen.org>, <linux-mips@linux-mips.org>,
-        <kevink@paralogos.com>
-Subject: Re: [PATCH v2 1/2] MIPS: fix/enrich 34K APRP (APSP) functionalities
-References: <1337244680-29968-1-git-send-email-dczhu@mips.com> <1337244680-29968-2-git-send-email-dczhu@mips.com> <4FB4EF81.10005@phrozen.org> <4FB60403.3080700@mips.com> <4FB68FA2.1030404@phrozen.org> <alpine.LFD.2.00.1205202231400.3701@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.00.1205202231400.3701@eddie.linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EMS-Proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-X-EMS-STAMP: FF07UDKEzgCe/GLrFrLYZg==
-X-archive-position: 33388
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 May 2012 08:00:38 +0200 (CEST)
+Received: from mail-wi0-f169.google.com ([209.85.212.169]:37232 "EHLO
+        mail-wi0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903550Ab2EUGA0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 21 May 2012 08:00:26 +0200
+Received: by wibhn14 with SMTP id hn14so2339493wib.0
+        for <multiple recipients>; Sun, 20 May 2012 23:00:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=SNorlJvzkxMIDeK11vUYJXafsnNsoMRj8j6HUdzEuKM=;
+        b=Bh75Oihh3qwxqG6jXkNMUlDjia0mT+cg37NDMG3uR7jQtKA4wDUMLcMcpaEf957dnI
+         G36a9ycAz1L82j84Ycq0lE6RS76URuhEtb7L6dUit72zidVZY/2eSLlcV6TiUPKlIMPJ
+         IDga2CJR14XENXPzgaIYibJEE7nPXcEuVUWoWnJlI7s3Xt4kGjPPuXlbUFnMIhr/XIrM
+         RjZWJUB9U8GUE1Wg7vBHFrVRl+lqAB1GsNy3kSpBAlYUyqtzhcS1yCx2EN2hcADM1Bgv
+         EvDOT7kO+U2RGdLzTRfA2U//6PUuOxa42umDpFIUo1VfEOWJ+tbqzh/vYlygGmR9pct0
+         Ma/Q==
+Received: by 10.180.105.69 with SMTP id gk5mr21964634wib.3.1337580020797;
+        Sun, 20 May 2012 23:00:20 -0700 (PDT)
+Received: from localhost ([61.148.56.138])
+        by mx.google.com with ESMTPS id ez4sm23579951wid.3.2012.05.20.23.00.15
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sun, 20 May 2012 23:00:20 -0700 (PDT)
+From:   Yong Zhang <yong.zhang0@gmail.com>
+To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Cc:     ralf@linux-mips.org, sshtylyov@mvista.com, david.daney@cavium.com
+Subject: [V1 PATCH 0/8] patchset focus on MIPS SMP woes
+Date:   Mon, 21 May 2012 14:00:00 +0800
+Message-Id: <1337580008-7280-1-git-send-email-yong.zhang0@gmail.com>
+X-Mailer: git-send-email 1.7.5.4
+X-archive-position: 33389
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dczhu@mips.com
+X-original-sender: yong.zhang0@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 05/21/2012 05:32 AM, Maciej W. Rozycki wrote:
-> On Fri, 18 May 2012, John Crispin wrote:
->
->>>> You could introduce a ARCH_HAS_APRP which any platform can then select ?
->>>
->>> Hmm... This is a good idea. Maybe the name could be SYS_SUPPORTS_APRP?
->>
->> You are correct
->
->   What's so Malta-specific in the VPE loader anyway?  It's a CPU feature,
-> not a board-specific one.
-
-Well, first off, for VPE loader itself, when it comes to CPS we have
-vpe_run() that derives from amon_cpu_start() in arch/mips/mti-malta/malta-
-amon.c. There is no implementation of amon_cpu_start() on other platforms.
-Secondly, I suppose VPE loader works uniquely for APRP, and part of APRP
-(such as IRQ related stuff) depends on platform code. So it makes sense
-(IMO) to impose the dependency of APRP on the root (VPE loader).
+Changes from V0:
+  a) Fix grammar and add summary for commit reference; (Sergei Shtylyov)
+  b) Collect Acks
 
 
-Thanks,
+Since commit 5fbd036b [sched: Cleanup cpu_active madness] and
+commit 2baab4e9 [sched: Fix select_fallback_rq() vs cpu_active/cpu_online],
+it's more safe to put notify_cpu_starting() and set_cpu_online() with
+irq disabled, otherwise we will have a typical race condition which
+above two commits try to resolve:
 
-Deng-Cheng
+       CPU1                            CPU2
+__cpu_up();
+    mp_ops->boot_secondary();
+                               start_secondary();
+                                 ->init_secondary();
+                                   local_irq_enable();
+                               <IRQ>
+                               do something;
+                                     wake up softirqd;
+                                     try_to_wake_up();
+                                       select_fallback_rq();
+                                       /* select wrong cpu */
+    set_cpu_online();
+
+
+This patchset fix the above issue as well as set_cpu_online is
+called on the caller cpu.
+
+BTW, I'm only running it on Cavium board because of limited source,
+so if anyone is interested to test it on other board, that's great :)
+
+Yong Zhang (8):
+  MIPS: Octeon: delay enable irq to ->smp_finish()
+  MIPS: BMIPS: delay irq enable to ->smp_finish()
+  MIPS: SMTC: delay irq enable to ->smp_finish()
+  MIPS: Yosemite: delay irq enable to ->smp_finish()
+  MIPS: call ->smp_finish() a little late
+  MIPS: call set_cpu_online() on the uping cpu with irq disabled
+  MIPS: smp: Warn on too early irq enable
+  MIPS: sync-r4k: remove redundant irq operation
+
+ arch/mips/cavium-octeon/smp.c       |    2 +-
+ arch/mips/kernel/smp-bmips.c        |   14 +++++++-------
+ arch/mips/kernel/smp.c              |   12 +++++++++---
+ arch/mips/kernel/smtc.c             |    3 ++-
+ arch/mips/kernel/sync-r4k.c         |    5 -----
+ arch/mips/pmc-sierra/yosemite/smp.c |    2 +-
+ 6 files changed, 20 insertions(+), 18 deletions(-)
+
+-- 
+1.7.5.4

@@ -1,99 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 May 2012 22:10:24 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:32834 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903704Ab2EVUKR convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 22 May 2012 22:10:17 +0200
-Received: by pbbrq13 with SMTP id rq13so10005394pbb.36
-        for <linux-mips@linux-mips.org>; Tue, 22 May 2012 13:10:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date
-         :x-google-sender-auth:message-id:subject:to:cc:content-type
-         :content-transfer-encoding:x-gm-message-state;
-        bh=62sXvjcKt9ZIwtEIS3eJbam+MQ9dKaLDWyNs9iFjVUY=;
-        b=DJqeBDjgeBtnAiEYZ6YOq00Wbb/ezZl9Y4xYyDqLRPl/MUa2iQ/88dEnR+6ZuApxar
-         31HnEGhQqHyCKwPLHAebysACCie4Mw+3pIfRu1okCXLOkDtWztDf2rEeoWX5+WvLm3ng
-         SFTZ6s5Dcmr/U0JFNPhZvdxY9Cz/1g9HKEf50SkF5im3YnpdiTEBst6Vi/R8OcIw/mwe
-         QjIPB4kmwkjMcwDxgelGJjXzrzE/1B0BwHWsrkHrYWJa3CMX7TtmfKq5TMsWIb8k23sw
-         YY3N9DdUTvv81I38+WWog6E3VCWJSibZjhs/IMVe3tzUbcicBm1NSC3H9oMd5pjUvo1F
-         TwNA==
-Received: by 10.68.197.231 with SMTP id ix7mr2024078pbc.103.1337717410948;
- Tue, 22 May 2012 13:10:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 May 2012 00:12:24 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:47956 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903704Ab2EVWMT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 May 2012 00:12:19 +0200
+Date:   Tue, 22 May 2012 23:12:19 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Deng-Cheng Zhu <dczhu@mips.com>
+cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
+        kevink@paralogos.com
+Subject: Re: [PATCH v2 1/2] MIPS: fix/enrich 34K APRP (APSP)
+ functionalities
+In-Reply-To: <4FBB3AD2.1040802@mips.com>
+Message-ID: <alpine.LFD.2.00.1205222251580.3701@eddie.linux-mips.org>
+References: <1337244680-29968-1-git-send-email-dczhu@mips.com> <1337244680-29968-2-git-send-email-dczhu@mips.com> <4FB4EF81.10005@phrozen.org> <4FB60403.3080700@mips.com> <4FB68FA2.1030404@phrozen.org> <alpine.LFD.2.00.1205202231400.3701@eddie.linux-mips.org>
+ <4FB9B52F.908@mips.com> <alpine.LFD.2.00.1205212350070.3701@eddie.linux-mips.org> <4FBB3AD2.1040802@mips.com>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
-Received: by 10.142.238.9 with HTTP; Tue, 22 May 2012 13:09:50 -0700 (PDT)
-In-Reply-To: <4FBBECC2.10503@gmail.com>
-References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com>
- <1336773923-17866-2-git-send-email-ddaney.cavm@gmail.com> <20120520055436.13AF03E03B8@localhost>
- <20120520060802.03CE73E03B8@localhost> <4FBBECC2.10503@gmail.com>
-From:   Grant Likely <grant.likely@secretlab.ca>
-Date:   Tue, 22 May 2012 14:09:50 -0600
-X-Google-Sender-Auth: AeK5M32u5cJp1fo89-ZlN26c9Lc
-Message-ID: <CACxGe6tYQVfPRtXxmYF2OPYcEFu+x4-_uzFta9f3mwu=xUrt=g@mail.gmail.com>
-Subject: Re: [PATCH 1/3] of: Add prefix parameter to of_modalias_node().
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     "devicetree-discuss@lists.ozlabs.org" 
-        <devicetree-discuss@lists.ozlabs.org>,
-        Rob Herring <rob.herring@calxeda.com>,
-        "spi-devel-general@lists.sourceforge.net" 
-        <spi-devel-general@lists.sourceforge.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        Liam Girdwood <lrg@ti.com>,
-        Tabi Timur-B04825 <B04825@freescale.com>,
-        Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-Gm-Message-State: ALoCoQmB3DcmoJq23hPDi2X+H5pmE8w2kJR/tENfLN3TmIqGMu+4aORa8BzQ/oX3eEDRjkRhYWOm
-X-archive-position: 33429
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-archive-position: 33430
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, May 22, 2012 at 1:45 PM, David Daney <ddaney.cavm@gmail.com> wrote:
-> On 05/19/2012 11:08 PM, Grant Likely wrote:
->>
->> On Sat, 19 May 2012 23:54:36 -0600, Grant
->> Likely<grant.likely@secretlab.ca>  wrote:
->>>
->>> On Fri, 11 May 2012 15:05:21 -0700, David Daney<ddaney.cavm@gmail.com>
->>>  wrote:
->>>>
->>>> From: David Daney<david.daney@cavium.com>
->>>>
->>>> When generating MODALIASes, it is convenient to add things like "spi:"
->>>> or "i2c:" to the front of the strings.  This allows the standard
->>>> modprobe to find the right driver when automatically populating bus
->>>> children from the device tree structure.
->>>>
->>>> Add a prefix parameter, and adjust callers.  For
->>>> of_register_spi_devices() use the "spi:" prefix.
->>>>
->>>> Signed-off-by: David Daney<david.daney@cavium.com>
->>>
->>>
->>> Applied, thanks.  Some notes below...
->>
->>
->> Wait... why is this necessary?
->
->
-> Because in of_register_spi_devices() in of_spi.c, you do:
->
->        request_module(spi->modalias);
->
-> The string passed to request_module() must have the "spi:" prefix.
+On Tue, 22 May 2012, Deng-Cheng Zhu wrote:
 
-How about modifying the call to request_module() to include the prefix
-also?  I think that would be a simpler change overall.  Would that
-work?
+> >   Hmm, there's nothing platform-specific there, the file is pretty generic,
+> > it could be moved to arch/mips/kernel/ or thereabouts.  That applies to
+> > <asm/mips-boards/launch.h>  too, before you ask
+> 
+> Yeah, agree with you. I didn't do it simply because I'm not sure :)
 
-g.
+ I can see you've copied the whole contents over to arch/mips/kernel/vpe.c 
+now.  Please don't do that.  This code is modular for a reason.  Either 
+modify original code to suit your needs while preserving functionality or, 
+if infeasible, copy it over to a new module selected based on 
+configuration.  Common parts should be abstracted and extracted to a 
+common dependency, either a shared header or another module, as 
+applicable.
+
+> > (you may want to use alloc_bootmem or suchlike instead of hardcoding the
+> > trampoline page, though it's probably pretty safe to assume the end of
+> > the exception handler page is available everywhere).
+> 
+> I'm not quite clear about this. Do you mean to bypass the arbitrary monitor
+> in vpe_run() (in other words, to directly bring up the vpe in vpe_run())?
+> Why do we need to worry about writing to the cpulaunch data?
+
+ The location of RAM is platform-specific, CKSEG0ADDR mustn't be used to 
+"allocate" kernel memory.  But as I say the exception handlers' page is 
+generally pretty safe, although the addition of the CP0 EBase register to 
+the architecture stopped it being guaranteed at one point.
+
+ Ultimately I think this memory should be properly allocated, but this is 
+preexisting code, so there is no requirement that you fix that on this 
+occasion (or at all), unless you'd really like to.
+
+> >   There's nothing platform-specific referred to from arch/mips/kernel/vpe.c
+> > AFAICT (and I trust in Beth having got this piece right).  I reckon it
+> > used to work with CONFIG_MIPS_SIM too, though I could imagine the
+> > configuration got neglected a bit as it is somewhat unusual.
+> 
+> Oh, When I said IRQ related stuff I meant the interrupt specific changes in
+> rtlx.c (not vpe.c) which correspond to those in malta-int.c. They are
+> there to resolve some issues (Please refer to the code changes and added
+> comments in these 2 files in PATCH #1 and #2.).
+
+ I still can't see anything platform-specific in rtlx.c (also written by 
+Beth, BTW) -- it's all software interrupts that are architectural.  What 
+pieces of code and comments are you specifically referring to?
+
+ Also in some places you do stuff like:
+
+#ifdef CONFIG_MIPS_CMP
+int foo(void)
+{
+[something...]
+}
+#else
+int foo(void)
+{
+[something else...]
+}
+#endif
+
+Please don't.  Again these pieces should be separate modules selected by 
+configuration, e.g. rtlx.c, rtlx-mt.c and rtlx-cmp.c with the former 
+holding the common stuff, and the two latters non-CMP- and CMP-specific 
+pieces, respectively (assuming that they are mutually exclusive and can't 
+be enabled both at a time in a single kernel binary for some reason).
+
+ It may make sense to move this whole stuff to a subdirectory at one 
+point.
+
+  Maciej

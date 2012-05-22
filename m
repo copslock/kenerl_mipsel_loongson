@@ -1,75 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 May 2012 20:50:54 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:42774 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903700Ab2EVSuu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 May 2012 20:50:50 +0200
-Received: from ben by shadbolt.decadent.org.uk with local (Exim 4.72)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1SWuAD-0003Ct-5J; Tue, 22 May 2012 19:50:34 +0100
-Date:   Tue, 22 May 2012 19:50:33 +0100
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     devicetree-discuss@lists.ozlabs.org,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Rob Herring <rob.herring@calxeda.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 May 2012 20:57:43 +0200 (CEST)
+Received: from shards.monkeyblade.net ([198.137.202.13]:34187 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903700Ab2EVS5j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 May 2012 20:57:39 +0200
+Received: from localhost (cpe-66-108-119-99.nyc.res.rr.com [66.108.119.99])
+        (authenticated bits=0)
+        by shards.monkeyblade.net (8.14.4/8.14.4) with ESMTP id q4MIvRfn011622
+        (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NO);
+        Tue, 22 May 2012 11:57:30 -0700
+Date:   Tue, 22 May 2012 14:57:26 -0400 (EDT)
+Message-Id: <20120522.145726.979935187891590882.davem@davemloft.net>
+To:     ddaney.cavm@gmail.com
+Cc:     devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
+        rob.herring@calxeda.com, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Andy Fleming <afleming@freescale.com>,
-        David Daney <david.daney@cavium.com>
-Message-ID: <20120522185032.GR4038@decadent.org.uk>
+        afleming@freescale.com, david.daney@cavium.com
+Subject: Re: [PATCH 0/5] netdev/phy: 10G PHY support.
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1337709592-23347-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1337709592-23347-1-git-send-email-ddaney.cavm@gmail.com>
- <1337709592-23347-6-git-send-email-ddaney.cavm@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1337709592-23347-6-git-send-email-ddaney.cavm@gmail.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-SA-Exim-Connect-IP: <locally generated>
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-Subject: Re: [PATCH 5/5] netdev/phy: Add driver for Cortina cs4321 quad 10G
- PHY.
-X-SA-Exim-Version: 4.2.1 (built Mon, 22 Mar 2010 06:51:10 +0000)
-X-SA-Exim-Scanned: Yes (on shadbolt.decadent.org.uk)
-X-archive-position: 33424
+X-Mailer: Mew version 6.5 on Emacs 24.0.95 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.2.6 (shards.monkeyblade.net [198.137.202.13]); Tue, 22 May 2012 11:57:31 -0700 (PDT)
+X-archive-position: 33425
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, May 22, 2012 at 10:59:52AM -0700, David Daney wrote:
-[...]
-> --- /dev/null
-> +++ b/drivers/net/phy/cs4321-ucode.h
-> @@ -0,0 +1,4378 @@
-> +/*
-> + *    Copyright (C) 2011 by Cortina Systems, Inc.
-> + *
-> + *    This program is free software; you can redistribute it and/or modify
-> + *    it under the terms of the GNU General Public License as published by
-> + *    the Free Software Foundation; either version 2 of the License, or
-> + *    (at your option) any later version.
-> + *
-> + *    This program is distributed in the hope that it will be useful,
-> + *    but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + *    GNU General Public License for more details.
-> + *
-> + */
-[...]
 
-So where's the real source code for it?
+As mentioned the other day in my announement, right now it is
+inappropriate to submit new feature patches.
 
-If you won't (or can't) provide source code for the microcode then it
-should instead be submitted to linux-firmware with a binary
-redistribution licence, and the driver should load it with
-request_firmware().
-
-Ben.
-
--- 
-Ben Hutchings
-We get into the habit of living before acquiring the habit of thinking.
-                                                              - Albert Camus
+You will need to resend these changes when the net-next tree opens
+back up, please monitor the netdev list to learn when that has
+happened.

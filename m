@@ -1,59 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 May 2012 18:54:31 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:59301 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903692Ab2EVQyY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 May 2012 18:54:24 +0200
-Date:   Tue, 22 May 2012 17:54:24 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 May 2012 19:32:51 +0200 (CEST)
+Received: from h9.dl5rb.org.uk ([81.2.74.9]:48068 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903694Ab2EVRcr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 22 May 2012 19:32:47 +0200
+Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q4MHWkc2010312;
+        Tue, 22 May 2012 18:32:46 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q4MHWjWU010311;
+        Tue, 22 May 2012 18:32:45 +0100
+Date:   Tue, 22 May 2012 18:32:45 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
 To:     "Steven J. Hill" <sjhill@mips.com>
-cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 4/9] MIPS: Add microMIPS breakpoints and DSP support.
-In-Reply-To: <1336716486-32643-1-git-send-email-sjhill@mips.com>
-Message-ID: <alpine.LFD.2.00.1205221738260.3701@eddie.linux-mips.org>
-References: <1336716486-32643-1-git-send-email-sjhill@mips.com>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+Cc:     linux-mips@linux-mips.org, Douglas Leung <douglas@mips.com>
+Subject: Re: [PATCH] MIPS: Add support for the MIPS32 4Kc family I/D caches.
+Message-ID: <20120522173245.GB5884@linux-mips.org>
+References: <1337614412-29035-1-git-send-email-sjhill@mips.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-archive-position: 33413
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1337614412-29035-1-git-send-email-sjhill@mips.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 33414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Steven,
+On Mon, May 21, 2012 at 10:33:32AM -0500, Steven J. Hill wrote:
 
-> diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-> index 5542817..2c18317 100644
-> --- a/arch/mips/kernel/proc.c
-> +++ b/arch/mips/kernel/proc.c
-> @@ -64,6 +64,7 @@ static int show_cpuinfo(struct seq_file *m, void *v)
->  				cpu_data[n].watch_reg_masks[i]);
->  		seq_printf(m, "]\n");
->  	}
-> +	seq_printf(m, "microMIPS\t\t: %s\n", cpu_has_mmips ? "yes" : "no");
->  	seq_printf(m, "ASEs implemented\t:%s%s%s%s%s%s\n",
->  		      cpu_has_mips16 ? " mips16" : "",
->  		      cpu_has_mdmx ? " mdmx" : "",
+> Signed-off-by: Steven J. Hill <sjhill@mips.com>
+> ---
+>  arch/mips/mm/c-r4k.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+> index 18546fa..bca1447 100644
+> --- a/arch/mips/mm/c-r4k.c
+> +++ b/arch/mips/mm/c-r4k.c
+> @@ -1000,7 +1000,7 @@ static void __cpuinit probe_pcache(void)
+>  			c->icache.linesz = 2 << lsize;
+>  		else
+>  			c->icache.linesz = lsize;
+> -		c->icache.sets = 64 << ((config1 >> 22) & 7);
+> +		c->icache.sets = 32 << (((config1 >> 22) + 1) & 7);
+>  		c->icache.ways = 1 + ((config1 >> 16) & 7);
+>  
+>  		icache_size = c->icache.sets *
+> @@ -1020,7 +1020,7 @@ static void __cpuinit probe_pcache(void)
+>  			c->dcache.linesz = 2 << lsize;
+>  		else
+>  			c->dcache.linesz= lsize;
+> -		c->dcache.sets = 64 << ((config1 >> 13) & 7);
+> +		c->dcache.sets = 32 << (((config1 >> 13) + 1) & 7);
+>  		c->dcache.ways = 1 + ((config1 >> 7) & 7);
+>  
+>  		dcache_size = c->dcache.sets *
 
- I'm sorry I didn't notice that before, but it got lost in the load of 
-formatting changes.  I think this should really be reported along the 
-other ASEs in the next line.  Please move it down there, the pattern is 
-obvious (and then the MCU ASE may be added too with a simple follow-up 
-change).
+Good catch.  I'm amazed how long we were able to get away with this bug.
+I guess it only covers a rather esotheric cache configuration.
 
- However what I would find useful here and what I think is not reported 
-anywhere else and otherwise tricky (though possible) to track down is 
-whether the kernel itself has been built as a microMIPS or standard MIPS 
-binary.  Perhaps you could reuse your entry above for that purpose -- I 
-suppose no tool has relied on this /proc/cpuinfo entry to make any 
-decisions so far, so it may be the right moment now to get it standardised 
-somehow.
+I wonder what variant of the 4Kc is affected by this?  So far none has
+an I-cache with only 32 lines per way.
 
- I'll try to get back to the rest of the microMIPS review soon, I welcome 
-your submission very warmly, but that's a substantial change and I'm 
-really running out of time, sorry about that.
-
-  Maciej
+  Ralf

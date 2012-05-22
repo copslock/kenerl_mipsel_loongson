@@ -1,81 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 May 2012 09:06:14 +0200 (CEST)
-Received: from dns0.mips.com ([12.201.5.70]:46684 "EHLO dns0.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1901163Ab2EVHGH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 22 May 2012 09:06:07 +0200
-Received: from exchdb01.mips.com (exchhub01.mips.com [192.168.36.84])
-        by dns0.mips.com (8.13.8/8.13.8) with ESMTP id q4M75xPw018584;
-        Tue, 22 May 2012 00:05:59 -0700
-Received: from [192.168.225.107] (192.168.225.107) by exchhub01.mips.com
- (192.168.36.84) with Microsoft SMTP Server id 14.1.270.1; Tue, 22 May 2012
- 00:05:56 -0700
-Message-ID: <4FBB3AD2.1040802@mips.com>
-Date:   Tue, 22 May 2012 15:05:54 +0800
-From:   Deng-Cheng Zhu <dczhu@mips.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.27) Gecko/20120216 Lightning/1.0b2 Thunderbird/3.1.19
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 May 2012 11:40:29 +0200 (CEST)
+Received: from mail-wi0-f177.google.com ([209.85.212.177]:51646 "EHLO
+        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903590Ab2EVJk0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 May 2012 11:40:26 +0200
+Received: by wibhm14 with SMTP id hm14so3001986wib.6
+        for <linux-mips@linux-mips.org>; Tue, 22 May 2012 02:40:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=TBYNpwEIMbWRTjMcQGdmKACOWOqQMz4Ykr8l776IVMg=;
+        b=MjMG+mVnBWk9q+LlBxSHB4IAJ4BlPsR3DRvXOvHuoVBmIzmqJTyozD/I+ruvuHja/G
+         bS+2mMI/KO3wWdxPPnlm/iWMpAOj+J7ICTWL7QSDHpjiJWmCOBnwtx/KLZAIRchJC4UY
+         cWoKQLyRuu/wR3njsFLvJmycQcQ5x8X8f0SRdYbpcUGy2yQ5DK/6MFuAUDVwBa1TYPkV
+         DX2QPT9SCl5l9w1AyGIzyj8OIA01ey5SGqS54W7hCAfpLFrn9/et/6zL2KzXTAKklTeZ
+         8/d50NTFGnNtLcKYPtjqZeP5zCa8hBuiWo+YHr/B1C83kaYjD4In6hpOl/nIJzQ7waRp
+         c63Q==
 MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     John Crispin <john@phrozen.org>, <linux-mips@linux-mips.org>,
-        <kevink@paralogos.com>
-Subject: Re: [PATCH v2 1/2] MIPS: fix/enrich 34K APRP (APSP) functionalities
-References: <1337244680-29968-1-git-send-email-dczhu@mips.com> <1337244680-29968-2-git-send-email-dczhu@mips.com> <4FB4EF81.10005@phrozen.org> <4FB60403.3080700@mips.com> <4FB68FA2.1030404@phrozen.org> <alpine.LFD.2.00.1205202231400.3701@eddie.linux-mips.org> <4FB9B52F.908@mips.com> <alpine.LFD.2.00.1205212350070.3701@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.00.1205212350070.3701@eddie.linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EMS-Proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-X-EMS-STAMP: mt03P+x0tf3+k9ML+aasaw==
-X-archive-position: 33411
+Received: by 10.180.109.229 with SMTP id hv5mr47241273wib.0.1337679620884;
+ Tue, 22 May 2012 02:40:20 -0700 (PDT)
+Received: by 10.216.135.148 with HTTP; Tue, 22 May 2012 02:40:20 -0700 (PDT)
+Date:   Tue, 22 May 2012 17:40:20 +0800
+Message-ID: <CADSewLWvfVsQob-y5Q9mc31JpecHFd6=5dRhKxdH3VvT0HXJZQ@mail.gmail.com>
+Subject: handle_sys question
+From:   Songmao Tian <kingkongmao@gmail.com>
+To:     linux-mips <linux-mips@linux-mips.org>
+Content-Type: multipart/alternative; boundary=e89a8f2354bda048c204c09cce6b
+X-archive-position: 33412
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dczhu@mips.com
+X-original-sender: kingkongmao@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 05/22/2012 07:17 AM, Maciej W. Rozycki wrote:
-> On Mon, 21 May 2012, Deng-Cheng Zhu wrote:
->
->>>    What's so Malta-specific in the VPE loader anyway?  It's a CPU feature,
->>> not a board-specific one.
->>
->> Well, first off, for VPE loader itself, when it comes to CPS we have
->> vpe_run() that derives from amon_cpu_start() in arch/mips/mti-malta/malta-
->> amon.c. There is no implementation of amon_cpu_start() on other platforms.
->
->   Hmm, there's nothing platform-specific there, the file is pretty generic,
-> it could be moved to arch/mips/kernel/ or thereabouts.  That applies to
-> <asm/mips-boards/launch.h>  too, before you ask
+--e89a8f2354bda048c204c09cce6b
+Content-Type: text/plain; charset=ISO-8859-1
 
-Yeah, agree with you. I didn't do it simply because I'm not sure :)
+Hello all:
+   In handle_sys there's a
+50<http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=blob;f=arch/mips/kernel/scall32-o32.S;h=a632bc144efa1b9ca977a582864530e33ee039cb;hb=72c04af9a2d57b7945cf3de8e71461bd80695d50#l50>
+       sw      a3, PT_R26(sp)          # save a3 for syscall
+restarting
 
-> (you may want to use alloc_bootmem or suchlike instead of hardcoding the
-> trampoline page, though it's probably pretty safe to assume the end of
-> the exception handler page is available everywhere).
+I woner why it need to save  a3 in R26(k0) slot in the stack?
 
-I'm not quite clear about this. Do you mean to bypass the arbitrary monitor
-in vpe_run() (in other words, to directly bring up the vpe in vpe_run())?
-Why do we need to worry about writing to the cpulaunch data?
+Thanks,
+songmao
 
->> Secondly, I suppose VPE loader works uniquely for APRP, and part of APRP
->> (such as IRQ related stuff) depends on platform code. So it makes sense
->> (IMO) to impose the dependency of APRP on the root (VPE loader).
->
->   Hmm, does it really?  It sounds wrong to me, it shouldn't use any
-> hardware interrupts, and software interrupts again are available
-> everywhere, at least on the MT processors now in existence.
->
->   There's nothing platform-specific referred to from arch/mips/kernel/vpe.c
-> AFAICT (and I trust in Beth having got this piece right).  I reckon it
-> used to work with CONFIG_MIPS_SIM too, though I could imagine the
-> configuration got neglected a bit as it is somewhat unusual.
+--e89a8f2354bda048c204c09cce6b
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Oh, When I said IRQ related stuff I meant the interrupt specific changes in
-rtlx.c (not vpe.c) which correspond to those in malta-int.c. They are
-there to resolve some issues (Please refer to the code changes and added
-comments in these 2 files in PATCH #1 and #2.).
+Hello all:<br>=A0=A0 In handle_sys there&#39;s a <br><a id=3D"l50" href=3D"=
+http://git.kernel.org/?p=3Dlinux/kernel/git/torvalds/linux-2.6.git;a=3Dblob=
+;f=3Darch/mips/kernel/scall32-o32.S;h=3Da632bc144efa1b9ca977a582864530e33ee=
+039cb;hb=3D72c04af9a2d57b7945cf3de8e71461bd80695d50#l50" class=3D"linenr"> =
+ 50</a> =A0=A0=A0=A0=A0=A0=A0=A0sw=A0=A0=A0=A0=A0=A0a3,=A0PT_R26(sp)=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0#=A0save=A0a3=A0for=A0syscall=A0restarting<br>
+<br>I woner why it need to save=A0 a3 in R26(k0) slot in the stack?<br><br>=
+Thanks,<br>songmao<br>
 
-
-Thanks for your review,
-
-Deng-Cheng
+--e89a8f2354bda048c204c09cce6b--

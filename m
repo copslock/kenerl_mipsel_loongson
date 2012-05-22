@@ -1,58 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 May 2012 01:17:12 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:34994 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903648Ab2EUXRI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 May 2012 01:17:08 +0200
-Date:   Tue, 22 May 2012 00:17:08 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Deng-Cheng Zhu <dczhu@mips.com>
-cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
-        kevink@paralogos.com
-Subject: Re: [PATCH v2 1/2] MIPS: fix/enrich 34K APRP (APSP)
- functionalities
-In-Reply-To: <4FB9B52F.908@mips.com>
-Message-ID: <alpine.LFD.2.00.1205212350070.3701@eddie.linux-mips.org>
-References: <1337244680-29968-1-git-send-email-dczhu@mips.com> <1337244680-29968-2-git-send-email-dczhu@mips.com> <4FB4EF81.10005@phrozen.org> <4FB60403.3080700@mips.com> <4FB68FA2.1030404@phrozen.org> <alpine.LFD.2.00.1205202231400.3701@eddie.linux-mips.org>
- <4FB9B52F.908@mips.com>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 May 2012 07:34:18 +0200 (CEST)
+Received: from mail-qc0-f177.google.com ([209.85.216.177]:38697 "EHLO
+        mail-qc0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1901163Ab2EVFeL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 May 2012 07:34:11 +0200
+Received: by qcsu28 with SMTP id u28so4409712qcs.36
+        for <multiple recipients>; Mon, 21 May 2012 22:34:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=AuZUiukdYPGg1MCzL9t0TH1nm/kHrJfB/Oej4pXiaQ0=;
+        b=cDWEIy+Na5P7YICxFqBeShH4k0A7PpIDl5Z1SuC97F+ScVXuM50ZIZ+KJFTptO9Sdm
+         vYuOmVQv+wPwOUKTCLMAYrhgCzvvoI8xbytVewVF2MMcDMDGt65pMrD5+/IxSx+9oWml
+         M4hBun9DMafcFlhwhjWIZFCgs4ZE1Ds99ViiWNr1i0j6L7xsSa05HqzjEUDBlTuGO823
+         /0YSdPywNMcYUlLtyfUG4pywOQE9HeGeUjfmAYcMxHUhvEsQCqvK5hd0i0URMaxDvn/r
+         IAXlYeGY5nk4L+miC0GiuzSwtcSO1hhflHjnsj3rxQQSzTORiYA5vZftFIvKlZn+rpMo
+         1SHw==
+Received: by 10.224.44.136 with SMTP id a8mr42703849qaf.34.1337664844896;
+        Mon, 21 May 2012 22:34:04 -0700 (PDT)
+Received: from localhost ([61.148.56.138])
+        by mx.google.com with ESMTPS id gb7sm43524625qab.12.2012.05.21.22.34.00
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 21 May 2012 22:34:03 -0700 (PDT)
+Date:   Tue, 22 May 2012 13:33:54 +0800
+From:   Yong Zhang <yong.zhang0@gmail.com>
+To:     Sergei Shtylyov <sshtylyov@mvista.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org, david.daney@cavium.com
+Subject: Re: [PATCH 6/8] MIPS: call set_cpu_online() on the uping cpu with
+ irq disabled
+Message-ID: <20120522053354.GA12098@zhy>
+Reply-To: Yong Zhang <yong.zhang0@gmail.com>
+References: <1337580008-7280-1-git-send-email-yong.zhang0@gmail.com>
+ <1337580008-7280-7-git-send-email-yong.zhang0@gmail.com>
+ <4FBA1961.2050504@mvista.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-archive-position: 33408
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <4FBA1961.2050504@mvista.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 33409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: yong.zhang0@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, 21 May 2012, Deng-Cheng Zhu wrote:
-
-> >   What's so Malta-specific in the VPE loader anyway?  It's a CPU feature,
-> > not a board-specific one.
+On Mon, May 21, 2012 at 02:30:57PM +0400, Sergei Shtylyov wrote:
+> Hello.
 > 
-> Well, first off, for VPE loader itself, when it comes to CPS we have
-> vpe_run() that derives from amon_cpu_start() in arch/mips/mti-malta/malta-
-> amon.c. There is no implementation of amon_cpu_start() on other platforms.
+> On 21-05-2012 10:00, Yong Zhang wrote:
+> 
+> >From: Yong Zhang<yong.zhang@windriver.com>
+> 
+> >To prevent a problem as commit 5fbd036b [sched: Cleanup cpu_active madness]
+> >and commit 2baab4e9 [sched: Fix select_fallback_rq() vs cpu_active/cpu_online]
+> >try to resolve, move set_cpu_online() to the brought up CPU and with irq
+>                                                ^^^^^^^^^^
+>    Now the same change in the subject please.
 
- Hmm, there's nothing platform-specific there, the file is pretty generic, 
-it could be moved to arch/mips/kernel/ or thereabouts.  That applies to 
-<asm/mips-boards/launch.h> too, before you ask (you may want to use 
-alloc_bootmem or suchlike instead of hardcoding the trampoline page, 
-though it's probably pretty safe to assume the end of the exception 
-handler page is available everywhere).
+Ah, yes, forgot that.
 
-> Secondly, I suppose VPE loader works uniquely for APRP, and part of APRP
-> (such as IRQ related stuff) depends on platform code. So it makes sense
-> (IMO) to impose the dependency of APRP on the root (VPE loader).
-
- Hmm, does it really?  It sounds wrong to me, it shouldn't use any 
-hardware interrupts, and software interrupts again are available 
-everywhere, at least on the MT processors now in existence.
-
- There's nothing platform-specific referred to from arch/mips/kernel/vpe.c 
-AFAICT (and I trust in Beth having got this piece right).  I reckon it 
-used to work with CONFIG_MIPS_SIM too, though I could imagine the 
-configuration got neglected a bit as it is somewhat unusual.
-
-  Maciej
+Thanks,
+Yong

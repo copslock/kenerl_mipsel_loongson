@@ -1,125 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 May 2012 01:02:21 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:53836 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903714Ab2EVXCR convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 23 May 2012 01:02:17 +0200
-Received: by pbbrq13 with SMTP id rq13so10182993pbb.36
-        for <linux-mips@linux-mips.org>; Tue, 22 May 2012 16:02:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date
-         :x-google-sender-auth:message-id:subject:to:cc:content-type
-         :content-transfer-encoding:x-gm-message-state;
-        bh=LZ4pyIEkUPi0ji5/UL3hU+XCzFAS9114iJ3KNSYevjk=;
-        b=iSrpPq2N16FUxQdvuuXUEWdvHf04oRYS2jZueE07QtJDBpH3MBaRRmyr4lzA4AET42
-         e53wmfPaC9WHHB7clHyJZO7uAozWqfU1I38fDtB+5Zb9gQTuK/DOtDShzB8BJapeC7HX
-         HyFROfbh/0d3XQbktVEals+tmUhkVjhFCDAP7D4Fo9tAifXrt7pL2swkATekmd+CAeH/
-         7oosXz4uzKdw+d4yxkrGMKs0wEkpV7VKdxseeIj1ZeGwimK3lLHV/RCSen5SIYeXCovn
-         ybRnyehQ0OHFhjw1A4HNoXwwxP7i9RqgCUqpWa0arJezeQL2z2m8UrG5FRj79FCX6va8
-         pNWA==
-Received: by 10.68.233.193 with SMTP id ty1mr3511183pbc.47.1337727731315; Tue,
- 22 May 2012 16:02:11 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.142.238.9 with HTTP; Tue, 22 May 2012 16:01:51 -0700 (PDT)
-In-Reply-To: <4FBC1807.4050402@gmail.com>
-References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com>
- <1336773923-17866-2-git-send-email-ddaney.cavm@gmail.com> <20120520055436.13AF03E03B8@localhost>
- <20120520060802.03CE73E03B8@localhost> <4FBBECC2.10503@gmail.com>
- <CACxGe6tYQVfPRtXxmYF2OPYcEFu+x4-_uzFta9f3mwu=xUrt=g@mail.gmail.com> <4FBC1807.4050402@gmail.com>
-From:   Grant Likely <grant.likely@secretlab.ca>
-Date:   Tue, 22 May 2012 17:01:51 -0600
-X-Google-Sender-Auth: VJ0DlmJCvobI3s5mjMIFbn7aKyk
-Message-ID: <CACxGe6sY++3jreWbQ4jvmmkbeUitMgYYd-oa4x+_49OMyV7O+Q@mail.gmail.com>
-Subject: Re: [PATCH 1/3] of: Add prefix parameter to of_modalias_node().
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     "devicetree-discuss@lists.ozlabs.org" 
-        <devicetree-discuss@lists.ozlabs.org>,
-        Rob Herring <rob.herring@calxeda.com>,
-        "spi-devel-general@lists.sourceforge.net" 
-        <spi-devel-general@lists.sourceforge.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        Liam Girdwood <lrg@ti.com>,
-        Tabi Timur-B04825 <B04825@freescale.com>,
-        Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-Gm-Message-State: ALoCoQkarBhLXs8R4cSXKLGsqwFIx7gKrDOmtmRB1UHSHIUq7dPw1WMY7huunyiSdhNlvPaUfEOI
-X-archive-position: 33432
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 May 2012 06:57:37 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:34764 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903593Ab2EWE5a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 May 2012 06:57:30 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1SX3dR-0007af-OI; Tue, 22 May 2012 23:57:21 -0500
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>
+Subject: [PATCH v2,4/9] MIPS: Add microMIPS breakpoints and DSP support.
+Date:   Tue, 22 May 2012 23:57:16 -0500
+Message-Id: <1337749036-2495-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.10
+X-archive-position: 33433
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Cool, thanks.
+From: "Steven J. Hill" <sjhill@mips.com>
 
-g.
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/include/asm/break.h |   11 +++++++++--
+ arch/mips/include/asm/dsp.h   |    4 ++++
+ arch/mips/kernel/proc.c       |    9 +++++++--
+ 3 files changed, 20 insertions(+), 4 deletions(-)
 
-On Tue, May 22, 2012 at 4:49 PM, David Daney <ddaney.cavm@gmail.com> wrote:
-> On 05/22/2012 01:09 PM, Grant Likely wrote:
->>
->> On Tue, May 22, 2012 at 1:45 PM, David Daney<ddaney.cavm@gmail.com>
->>  wrote:
->>>
->>> On 05/19/2012 11:08 PM, Grant Likely wrote:
->>>>
->>>>
->>>> On Sat, 19 May 2012 23:54:36 -0600, Grant
->>>> Likely<grant.likely@secretlab.ca>    wrote:
->>>>>
->>>>>
->>>>> On Fri, 11 May 2012 15:05:21 -0700, David Daney<ddaney.cavm@gmail.com>
->>>>>  wrote:
->>>>>>
->>>>>>
->>>>>> From: David Daney<david.daney@cavium.com>
->>>>>>
->>>>>> When generating MODALIASes, it is convenient to add things like "spi:"
->>>>>> or "i2c:" to the front of the strings.  This allows the standard
->>>>>> modprobe to find the right driver when automatically populating bus
->>>>>> children from the device tree structure.
->>>>>>
->>>>>> Add a prefix parameter, and adjust callers.  For
->>>>>> of_register_spi_devices() use the "spi:" prefix.
->>>>>>
->>>>>> Signed-off-by: David Daney<david.daney@cavium.com>
->>>>>
->>>>>
->>>>>
->>>>> Applied, thanks.  Some notes below...
->>>>
->>>>
->>>>
->>>> Wait... why is this necessary?
->>>
->>>
->>>
->>> Because in of_register_spi_devices() in of_spi.c, you do:
->>>
->>>        request_module(spi->modalias);
->>>
->>> The string passed to request_module() must have the "spi:" prefix.
->>
->>
->> How about modifying the call to request_module() to include the prefix
->> also?  I think that would be a simpler change overall.  Would that
->> work?
->
->
-> It seems to.  I just sent such a patch in a new thread.
->
-> David Daney
-
-
-
+diff --git a/arch/mips/include/asm/break.h b/arch/mips/include/asm/break.h
+index 9161e68..4e4dc87 100644
+--- a/arch/mips/include/asm/break.h
++++ b/arch/mips/include/asm/break.h
+@@ -3,8 +3,9 @@
+  * License.  See the file "COPYING" in the main directory of this archive
+  * for more details.
+  *
+- * Copyright (C) 1995, 2003 by Ralf Baechle
+  * Copyright (C) 1999 Silicon Graphics, Inc.
++ * Copyright (C) 1995, 2003 by Ralf Baechle
++ * Copyright (C) 2011, 2012 MIPS Technologies, Inc.
+  */
+ #ifndef __ASM_BREAK_H
+ #define __ASM_BREAK_H
+@@ -27,11 +28,17 @@
+ #define BRK_STACKOVERFLOW 9	/* For Ada stackchecking */
+ #define BRK_NORLD	10	/* No rld found - not used by Linux/MIPS */
+ #define _BRK_THREADBP	11	/* For threads, user bp (used by debuggers) */
++
++#ifdef CONFIG_CPU_MICROMIPS
++#define BRK_BUG		12	/* Used by BUG() */
++#define BRK_KDB		13	/* Used in KDB_ENTER() */
++#else
+ #define BRK_BUG		512	/* Used by BUG() */
+ #define BRK_KDB		513	/* Used in KDB_ENTER() */
++#endif
++#define MM_BRK_MEMU	14	/* Used by FPU emulator (microMIPS) */
+ #define BRK_MEMU	514	/* Used by FPU emulator */
+ #define BRK_KPROBE_BP	515	/* Kprobe break */
+ #define BRK_KPROBE_SSTEPBP 516	/* Kprobe single step software implementation */
+-#define BRK_MULOVF	1023	/* Multiply overflow */
+ 
+ #endif /* __ASM_BREAK_H */
+diff --git a/arch/mips/include/asm/dsp.h b/arch/mips/include/asm/dsp.h
+index e9bfc08..3149b30 100644
+--- a/arch/mips/include/asm/dsp.h
++++ b/arch/mips/include/asm/dsp.h
+@@ -16,7 +16,11 @@
+ #include <asm/mipsregs.h>
+ 
+ #define DSP_DEFAULT	0x00000000
++#ifdef CONFIG_CPU_MICROMIPS
++#define DSP_MASK	0x7f
++#else
+ #define DSP_MASK	0x3ff
++#endif
+ 
+ #define __enable_dsp_hazard()						\
+ do {									\
+diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+index 5542817..c5e97d4 100644
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -64,14 +64,19 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+ 				cpu_data[n].watch_reg_masks[i]);
+ 		seq_printf(m, "]\n");
+ 	}
+-	seq_printf(m, "ASEs implemented\t:%s%s%s%s%s%s\n",
++	seq_printf(m, "ASEs implemented\t:%s%s%s%s%s%s%s\n",
+ 		      cpu_has_mips16 ? " mips16" : "",
+ 		      cpu_has_mdmx ? " mdmx" : "",
+ 		      cpu_has_mips3d ? " mips3d" : "",
+ 		      cpu_has_smartmips ? " smartmips" : "",
+ 		      cpu_has_dsp ? " dsp" : "",
+-		      cpu_has_mipsmt ? " mt" : ""
++		      cpu_has_mipsmt ? " mt" : "",
++		      cpu_has_mmips ? " micromips" : ""
+ 		);
++	if (cpu_has_mmips) {
++		seq_printf(m, "micromips kernel\t: %s\n",
++			(read_c0_config3() & MIPS_CONF3_ISA_OE) ? "yes" : "no");
++	}
+ 	seq_printf(m, "shadow register sets\t: %d\n",
+ 		      cpu_data[n].srsets);
+ 	seq_printf(m, "kscratch registers\t: %d\n",
 -- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+1.7.10

@@ -1,55 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2012 17:15:32 +0200 (CEST)
-Received: from mail-gg0-f177.google.com ([209.85.161.177]:61983 "EHLO
-        mail-gg0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903703Ab2EXPP2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 May 2012 17:15:28 +0200
-Received: by ggcs5 with SMTP id s5so8869376ggc.36
-        for <multiple recipients>; Thu, 24 May 2012 08:15:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=r19tiiCVT9ZOr090sa54p1G313HDJ2LiTJvs//sZ8YM=;
-        b=M1bapl4z/heQhFRICl3Qoi4pHnrF8q3z24rHEWI6sOVnnrK4JhzLOvX80gDUem/5HX
-         bcmrOA9TMyh95eXgRbi9plqnmpnxXKuzWH7r2otw2D4lAORMEwjFNuZDK8m6EkOQm7AE
-         vUOsVfN/BAb9If/sJsb/xW8pPXMN01CDmKniZPfi9AQ1QORlrCJMl4riK1RNlKCocYM8
-         jUuPxc/55k5xfUht0o5LNPL+0/p9RwjauSNhYHjqcunnhx4GeTUNEFXQ+G5afHJ1CQ8V
-         IcRkcSkereycXLjJ4ZOQNuKLprqv++QuK167Z7ZdAhHlfZjqtW2OJP75HKJRutkLPAm/
-         YIOw==
-Received: by 10.68.191.230 with SMTP id hb6mr22010509pbc.57.1337872521005;
-        Thu, 24 May 2012 08:15:21 -0700 (PDT)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id wo8sm5773164pbc.9.2012.05.24.08.15.18
-        (version=SSLv3 cipher=OTHER);
-        Thu, 24 May 2012 08:15:19 -0700 (PDT)
-Message-ID: <4FBE5085.2090904@gmail.com>
-Date:   Thu, 24 May 2012 08:15:17 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     Alessandro Rubini <rubini@gnudd.com>
-CC:     linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        Giancarlo Asnaghi <giancarlo.asnaghi@st.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Subject: Re: [PATCH] swiotlb: add "dma_attrs" argument to alloc and free,
- to match dma_map_ops
-References: <20120524114422.GA25950@mail.gnudd.com>
-In-Reply-To: <20120524114422.GA25950@mail.gnudd.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 33445
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2012 17:24:33 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:41693 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903698Ab2EXPY0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 May 2012 17:24:26 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1SXZti-0003Lp-GJ; Thu, 24 May 2012 10:24:18 -0500
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>
+Subject: [PATCH] MIPS: Add support for the M14KEc core.
+Date:   Thu, 24 May 2012 10:24:12 -0500
+Message-Id: <1337873052-6608-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.10
+X-archive-position: 33446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,39 +32,152 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 05/24/2012 04:44 AM, Alessandro Rubini wrote:
-> The alloc and free pointers within "struct dma_map_ops" receive a
-> pointer to dma_attrs that was not present in the generic swiotlb
-> functions.  For this reason, a few files had a local wrapper for the
-> free function that just removes the attrs argument before calling the
-> generic function.
->
-> This patch adds the extra argument to generic functions and removes
-> such wrappers when they are no more needed.  This also fixes a
-> compiler warning for sta2x11-fixup.c, that would have required yet
-> another wrapper.
->
-> Signed-off-by: Alessandro Rubini<rubini@gnudd.com>
-> Acked-by: Giancarlo Asnaghi<giancarlo.asnaghi@st.com>
-> Cc: Tony Luck<tony.luck@intel.com>
-> Cc: Fenghua Yu<fenghua.yu@intel.com>
-> Cc: Ralf Baechle<ralf@linux-mips.org>
-> Cc: Guan Xuetao<gxt@mprc.pku.edu.cn>
-> Cc: Thomas Gleixner<tglx@linutronix.de>
-> Cc: Kyungmin Park<kyungmin.park@samsung.com>
-> Cc: FUJITA Tomonori<fujita.tomonori@lab.ntt.co.jp>
-> Cc: Konrad Rzeszutek Wilk<konrad.wilk@oracle.com>
-> ---
->   arch/ia64/kernel/pci-swiotlb.c       |   11 ++---------
->   arch/mips/cavium-octeon/dma-octeon.c |    4 ++--
->   arch/unicore32/mm/dma-swiotlb.c      |   22 ++--------------------
->   arch/x86/kernel/pci-swiotlb.c        |   11 ++---------
->   arch/x86/pci/sta2x11-fixup.c         |    3 ++-
->   include/linux/swiotlb.h              |    7 ++++---
->   lib/swiotlb.c                        |    5 +++--
->   7 files changed, 17 insertions(+), 46 deletions(-)
->
+From: "Steven J. Hill" <sjhill@mips.com>
 
-This looks sane (although I haven't tested it).  For the OCTEON bits:
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/include/asm/cpu-features.h |    3 +++
+ arch/mips/include/asm/cpu.h          |    4 +++-
+ arch/mips/kernel/cpu-probe.c         |    7 +++++++
+ arch/mips/mm/c-r4k.c                 |    1 +
+ arch/mips/mm/tlbex.c                 |    2 ++
+ arch/mips/oprofile/common.c          |    1 +
+ arch/mips/oprofile/op_model_mipsxx.c |    4 ++++
+ 7 files changed, 21 insertions(+), 1 deletion(-)
 
-Acked-by: David Daney <david.daney@cavium.com>
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index 2daf1c5..98bee29 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -98,6 +98,9 @@
+ #ifndef kernel_uses_smartmips_rixi
+ #define kernel_uses_smartmips_rixi 0
+ #endif
++#ifndef cpu_has_mmips
++#define cpu_has_mmips		(cpu_data[0].options & MIPS_CPU_MICROMIPS)
++#endif
+ #ifndef cpu_has_vtag_icache
+ #define cpu_has_vtag_icache	(cpu_data[0].icache.flags & MIPS_CACHE_VTAG)
+ #endif
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index ad3caba..559bd12 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -96,6 +96,7 @@
+ #define PRID_IMP_1004K		0x9900
+ #define PRID_IMP_1074K		0x9a00
+ #define PRID_IMP_M14KC		0x9c00
++#define PRID_IMP_M14KEC		0x9e00
+ 
+ /*
+  * These are the PRID's for when 23:16 == PRID_COMP_SIBYTE
+@@ -262,7 +263,7 @@ enum cpu_type_enum {
+ 	 */
+ 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
+ 	CPU_ALCHEMY, CPU_PR4450, CPU_BMIPS32, CPU_BMIPS3300, CPU_BMIPS4350,
+-	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_M14KC,
++	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_M14KC, CPU_M14KEC,
+ 
+ 	/*
+ 	 * MIPS64 class processors
+@@ -319,6 +320,7 @@ enum cpu_type_enum {
+ #define MIPS_CPU_VINT		0x00080000 /* CPU supports MIPSR2 vectored interrupts */
+ #define MIPS_CPU_VEIC		0x00100000 /* CPU supports MIPSR2 external interrupt controller mode */
+ #define MIPS_CPU_ULRI		0x00200000 /* CPU has ULRI feature */
++#define MIPS_CPU_MICROMIPS	0x01000000 /* CPU has microMIPS capability */
+ 
+ /*
+  * CPU ASE encodings
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index e92f76d..1382885 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -200,6 +200,7 @@ void __init check_wait(void)
+ 		break;
+ 
+ 	case CPU_M14KC:
++	case CPU_M14KEC:
+ 	case CPU_24K:
+ 	case CPU_34K:
+ 	case CPU_1004K:
+@@ -743,6 +744,8 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
+ 		c->ases |= MIPS_ASE_MIPSMT;
+ 	if (config3 & MIPS_CONF3_ULRI)
+ 		c->options |= MIPS_CPU_ULRI;
++	if (config3 & MIPS_CONF3_ISA)
++		c->options |= MIPS_CPU_MICROMIPS;
+ 
+ 	return config3 & MIPS_CONF_M;
+ }
+@@ -840,6 +843,10 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
+ 		c->cputype = CPU_M14KC;
+ 		__cpu_name[cpu] = "MIPS M14Kc";
+ 		break;
++	case PRID_IMP_M14KEC:
++		c->cputype = CPU_M14KEC;
++		__cpu_name[cpu] = "MIPS M14KEc";
++		break;
+ 	case PRID_IMP_1004K:
+ 		c->cputype = CPU_1004K;
+ 		__cpu_name[cpu] = "MIPS 1004Kc";
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index c357491..bca1447 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1093,6 +1093,7 @@ static void __cpuinit probe_pcache(void)
+ 		}
+ 		/* fall through */
+ 	case CPU_M14KC:
++	case CPU_M14KEC:
+ 	case CPU_24K:
+ 	case CPU_34K:
+ 	case CPU_1004K:
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index de7fe58..7155b59 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -458,6 +458,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
+ 		 */
+ 		switch (current_cpu_type()) {
+ 		case CPU_M14KC:
++		case CPU_M14KEC:
+ 		case CPU_74K:
+ 			break;
+ 
+@@ -510,6 +511,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
+ 	case CPU_4KC:
+ 	case CPU_4KEC:
+ 	case CPU_M14KC:
++	case CPU_M14KEC:
+ 	case CPU_SB1:
+ 	case CPU_SB1A:
+ 	case CPU_4KSC:
+diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
+index b6e3782..ccf629a 100644
+--- a/arch/mips/oprofile/common.c
++++ b/arch/mips/oprofile/common.c
+@@ -79,6 +79,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
+ 	switch (current_cpu_type()) {
+ 	case CPU_5KC:
+ 	case CPU_M14KC:
++	case CPU_M14KEC:
+ 	case CPU_20KC:
+ 	case CPU_24K:
+ 	case CPU_25KF:
+diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
+index 4c1e21b..a86e93e 100644
+--- a/arch/mips/oprofile/op_model_mipsxx.c
++++ b/arch/mips/oprofile/op_model_mipsxx.c
+@@ -321,6 +321,10 @@ static int __init mipsxx_init(void)
+ 		op_model_mipsxx_ops.cpu_type = "mips/M14Kc";
+ 		break;
+ 
++	case CPU_M14KEC:
++		op_model_mipsxx_ops.cpu_type = "mips/M14KEc";
++		break;
++
+ 	case CPU_20KC:
+ 		op_model_mipsxx_ops.cpu_type = "mips/20K";
+ 		break;
+-- 
+1.7.10

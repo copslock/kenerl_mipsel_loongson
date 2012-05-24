@@ -1,58 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 May 2012 18:00:43 +0200 (CEST)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:36473 "EHLO
-        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903605Ab2EWQAf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 May 2012 18:00:35 +0200
-Received: by bkwj4 with SMTP id j4so7929877bkw.36
-        for <linux-mips@linux-mips.org>; Wed, 23 May 2012 09:00:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding
-         :x-gm-message-state;
-        bh=Sr9jsSeW+N5G8JX4uYJp5juwtuyIfhM5QsB2iyRniLs=;
-        b=g9yOGIeNX/oFLgOoqe/sb4w2rImbSJ29AKY06sSi1gJ+qeD0dq7bhJfGj9Y9PDnGwQ
-         7gtaGFoB6Rx8+3VNf2AAl/elG5ryuPqswkJ7pSB1hoVLEAyW5erwXLbp3eTRY/yo8zOa
-         Nff1FSgwe7UP8r5/TIawolUPth9LJHcSif9imBoUNM5bTiyokpKF97/mBbk35NBLSh6D
-         Pgq20x+a398b5kA/KMeuGlPF092Kldko8JfWvkUXgfpD8ns4ooyeQQRWz5vNSUOgUmbs
-         IB9sgsPVNTghQdww2ItTypmoAHdIZjzK3n/7KSSwcA35ajhaRtsshGbYpVmgCb/VxZUH
-         ed1Q==
-Received: by 10.204.149.208 with SMTP id u16mr4030714bkv.81.1337788829222;
-        Wed, 23 May 2012 09:00:29 -0700 (PDT)
-Received: from [192.168.11.174] (mail.dev.rtsoft.ru. [213.79.90.226])
-        by mx.google.com with ESMTPS id e20sm38088981bkw.3.2012.05.23.09.00.27
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 23 May 2012 09:00:28 -0700 (PDT)
-Message-ID: <4FBD0951.1020906@mvista.com>
-Date:   Wed, 23 May 2012 19:59:13 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2012 13:25:12 +0200 (CEST)
+Received: from h9.dl5rb.org.uk ([81.2.74.9]:33404 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903663Ab2EXLZF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 24 May 2012 13:25:05 +0200
+Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q4OBP4vY005795;
+        Thu, 24 May 2012 12:25:04 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q4OBP375005794;
+        Thu, 24 May 2012 12:25:03 +0100
+Date:   Thu, 24 May 2012 12:25:03 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Steven J. Hill" <sjhill@mips.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [v2,4/5] MIPS: Malta PCI changes for PCI 2.1 compatibility and
+ conflicts.
+Message-ID: <20120524112503.GA2337@linux-mips.org>
+References: <1333742869-17373-1-git-send-email-sjhill@mips.com>
 MIME-Version: 1.0
-To:     "Hill, Steven" <sjhill@mips.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2] Fix race condition with FPU thread task flag during
- context switch.
-References: <1336717702-731-1-git-send-email-sjhill@mips.com>,<20120523100003.GA25531@linux-mips.org> <31E06A9FC96CEC488B43B19E2957C1B80114694EB4@exchdb03.mips.com>,<4FBCF9E3.5040702@mvista.com> <31E06A9FC96CEC488B43B19E2957C1B80114694EDD@exchdb03.mips.com>
-In-Reply-To: <31E06A9FC96CEC488B43B19E2957C1B80114694EDD@exchdb03.mips.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQnn4cn/q+bOXSl636t6xqsYvusFjS3JcOifB13W5dDrF/vpZzFSG5W/nq0wPVfVaMCRkZ96
-X-archive-position: 33441
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1333742869-17373-1-git-send-email-sjhill@mips.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 33442
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:linux-mips-request@eddie.linux-mips.org?Subject=unsubscribe>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.list-id.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:linux-mips-request@eddie.linux-mips.org?Subject=subscribe>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+On Fri, Apr 06, 2012 at 03:07:49PM -0500, Steven J. Hill wrote:
 
-On 05/23/2012 06:56 PM, Hill, Steven wrote:
+> diff --git a/arch/mips/mti-malta/malta-pci.c b/arch/mips/mti-malta/malta-pci.c
+> index bf80921..afeb619 100644
+> --- a/arch/mips/mti-malta/malta-pci.c
+> +++ b/arch/mips/mti-malta/malta-pci.c
+> @@ -241,8 +241,9 @@ void __init mips_pcibios_init(void)
+>  		return;
+>  	}
+>  
+> -	if (controller->io_resource->start < 0x00001000UL)	/* FIXME */
+> -		controller->io_resource->start = 0x00001000UL;
+> +	/* Change start address to avoid conflicts with ACPI and SMB devices */
+> +	if (controller->io_resource->start < 0x00002000UL)	/* FIXME */
+> +		controller->io_resource->start = 0x00002000UL;
 
-> How about in the future you stop using reply all?
+I think raising this value to 0x2000 solves the FIXME which is there since
+Maciej's 66d9ad704b25287bfee7e86a5af50b92642b9c72 commit in 2005.  Maciej,
+do you recall you added the FIXME?
 
-    Using reply-to-all on the mailing lists is normal default behavior. I don't 
-quite understand what's your problem with this.
+>  	iomem_resource.end &= 0xfffffffffULL;			/* 64 GB */
+>  	ioport_resource.end = controller->io_resource->end;
+> diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
+> index b7f37d4..b45b343 100644
+> --- a/arch/mips/mti-malta/malta-setup.c
+> +++ b/arch/mips/mti-malta/malta-setup.c
+> @@ -222,3 +222,17 @@ void __init plat_mem_setup(void)
+>  	board_be_init = malta_be_init;
+>  	board_be_handler = malta_be_handler;
+>  }
+> +
+> +/* Enable PCI 2.1 compatibility in PIIX4. */
+> +static void __init quirk_dlcsetup(struct pci_dev *dev)
+> +{
+> +	u8 dlc;
+> +
+> +	/* Enable passive releases and delayed transactions. */
+> +	(void) pci_read_config_byte(dev, 0x82, &dlc);
+> +	dlc |= 7;
+> +	(void) pci_write_config_byte(dev, 0x82, dlc);
+> +}
+> +
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_82371AB_0,
+> +			quirk_dlcsetup);
 
-WBR, Sergei
+See 9ead526ca4e6f3d9c7e6b79bb3fda113bd3b0eeb.  It would appear that your
+patch turned stale about two and a half years before it was posted ;-)
+
+  Ralf

@@ -1,22 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2012 22:48:19 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:42794 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2012 22:48:48 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:42798 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903730Ab2EXUqc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 May 2012 22:46:32 +0200
+        with ESMTP id S1903732Ab2EXUqd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 May 2012 22:46:33 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SXevQ-0003qN-Ij; Thu, 24 May 2012 15:46:24 -0500
+        id 1SXevR-0003qN-Nh; Thu, 24 May 2012 15:46:25 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH 3/9] MIPS: Add support for microMIPS exception handling.
-Date:   Thu, 24 May 2012 15:46:00 -0500
-Message-Id: <1337892366-24210-4-git-send-email-sjhill@mips.com>
+Cc:     "Steven J. Hill" <sjhill@mips.com>,
+        Leonid Yegoshin <yegoshin@mips.com>
+Subject: [PATCH 5/9] MIPS: Support microMIPS/MIPS16e unaligned accesses.
+Date:   Thu, 24 May 2012 15:46:02 -0500
+Message-Id: <1337892366-24210-6-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10
 In-Reply-To: <1337892366-24210-1-git-send-email-sjhill@mips.com>
 References: <1337892366-24210-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33454
+X-archive-position: 33455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,1080 +37,1809 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-All exceptions must be taken in microMIPS mode, never in MIPS32R2
-mode or the kernel falls apart. A few 'nop' instructions are used
-to maintain the correct alignment of microMIPS versions of the
-exception vectors.
+Add logic needed to properly handle unaligned accesses when
+in microMIPS or MIPS16e modes.
 
+Signed-off-by: Leonid Yegoshin <yegoshin@mips.com>
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/stackframe.h |   12 +-
- arch/mips/kernel/cpu-probe.c       |    3 +
- arch/mips/kernel/genex.S           |   82 +++++---
- arch/mips/kernel/scall32-o32.S     |   18 +-
- arch/mips/kernel/smtc-asm.S        |    3 +
- arch/mips/kernel/traps.c           |  375 +++++++++++++++++++++++++-----------
- arch/mips/mm/tlbex.c               |   21 ++
- arch/mips/mti-sead3/sead3-init.c   |   48 +++++
- 8 files changed, 416 insertions(+), 146 deletions(-)
+ arch/mips/kernel/process.c   |  101 +++
+ arch/mips/kernel/unaligned.c | 1496 ++++++++++++++++++++++++++++++++++++------
+ 2 files changed, 1391 insertions(+), 206 deletions(-)
 
-diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-index cb41af5..335ce06 100644
---- a/arch/mips/include/asm/stackframe.h
-+++ b/arch/mips/include/asm/stackframe.h
-@@ -139,7 +139,7 @@
- 1:		move	ra, k0
- 		li	k0, 3
- 		mtc0	k0, $22
--#endif /* CONFIG_CPU_LOONGSON2F */
-+#endif /* CONFIG_CPU_JUMP_WORKAROUNDS */
- #if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
- 		lui	k1, %hi(kernelsp)
- #else
-@@ -189,6 +189,7 @@
- 		LONG_S	$0, PT_R0(sp)
- 		mfc0	v1, CP0_STATUS
- 		LONG_S	$2, PT_R2(sp)
-+		LONG_S	v1, PT_STATUS(sp)
- #ifdef CONFIG_MIPS_MT_SMTC
- 		/*
- 		 * Ideally, these instructions would be shuffled in
-@@ -200,21 +201,20 @@
- 		LONG_S	k0, PT_TCSTATUS(sp)
- #endif /* CONFIG_MIPS_MT_SMTC */
- 		LONG_S	$4, PT_R4(sp)
--		LONG_S	$5, PT_R5(sp)
--		LONG_S	v1, PT_STATUS(sp)
- 		mfc0	v1, CP0_CAUSE
--		LONG_S	$6, PT_R6(sp)
--		LONG_S	$7, PT_R7(sp)
-+		LONG_S	$5, PT_R5(sp)
- 		LONG_S	v1, PT_CAUSE(sp)
-+		LONG_S	$6, PT_R6(sp)
- 		MFC0	v1, CP0_EPC
-+		LONG_S	$7, PT_R7(sp)
- #ifdef CONFIG_64BIT
- 		LONG_S	$8, PT_R8(sp)
- 		LONG_S	$9, PT_R9(sp)
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index e9a5fd7..2f24d70 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -7,6 +7,7 @@
+  * Copyright (C) 2005, 2006 by Ralf Baechle (ralf@linux-mips.org)
+  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
+  * Copyright (C) 2004 Thiemo Seufer
++ * Copyright (C) 2011  MIPS Technologies, Inc.
+  */
+ #include <linux/errno.h>
+ #include <linux/sched.h>
+@@ -262,34 +263,115 @@ struct mips_frame_info {
+ 
+ static inline int is_ra_save_ins(union mips_instruction *ip)
+ {
++#ifdef CONFIG_CPU_MICROMIPS
++	union mips_instruction mmi;
++
++	/*
++	 * swsp ra,offset
++	 * swm16 reglist,offset(sp)
++	 * swm32 reglist,offset(sp)
++	 * sw32 ra,offset(sp)
++	 * jradiussp - NOT SUPPORTED
++	 *
++	 * microMIPS is way more fun...
++	 */
++	if (mm_is16bit(ip->halfword[0])) {
++		mmi.word = (ip->halfword[0] << 16);
++		return ((mmi.mm16_r5_format.opcode == mm_swsp16_op &&
++			 mmi.mm16_r5_format.rt == 31) ||
++			(mmi.mm16_m_format.opcode == mm_pool16c_op &&
++			 mmi.mm16_m_format.func == mm_swm16_op));
++	}
++	else {
++		mmi.halfword[0] = ip->halfword[1];
++		mmi.halfword[1] = ip->halfword[0];
++		return ((mmi.mm_m_format.opcode == mm_pool32b_op &&
++			 mmi.mm_m_format.rd > 9 &&
++			 mmi.mm_m_format.base == 29 &&
++			 mmi.mm_m_format.func == mm_swm32_func) ||
++			(mmi.i_format.opcode == mm_sw32_op &&
++			 mmi.i_format.rs == 29 &&
++			 mmi.i_format.rt == 31));
++	}
++#else
+ 	/* sw / sd $ra, offset($sp) */
+ 	return (ip->i_format.opcode == sw_op || ip->i_format.opcode == sd_op) &&
+ 		ip->i_format.rs == 29 &&
+ 		ip->i_format.rt == 31;
++#endif
+ }
+ 
+ static inline int is_jal_jalr_jr_ins(union mips_instruction *ip)
+ {
++#ifdef CONFIG_CPU_MICROMIPS
++	/*
++	 * jr16,jrc,jalr16,jalr16
++	 * jal
++	 * jalr/jr,jalr.hb/jr.hb,jalrs,jalrs.hb
++	 * jraddiusp - NOT SUPPORTED
++	 *
++	 * microMIPS is kind of more fun...
++	 */
++	union mips_instruction mmi;
++
++	mmi.word = (ip->halfword[0] << 16);
++
++	if ((mmi.mm16_r5_format.opcode == mm_pool16c_op &&
++	    (mmi.mm16_r5_format.rt & mm_jr16_op) == mm_jr16_op) ||
++	    ip->j_format.opcode == mm_jal32_op)
++		return 1;
++	if (ip->r_format.opcode != mm_pool32a_op ||
++			ip->r_format.func != mm_pool32axf_op) 
++		return 0;
++	return (((ip->u_format.uimmediate >> 6) & mm_jalr_op) == mm_jalr_op);
++#else
+ 	if (ip->j_format.opcode == jal_op)
+ 		return 1;
+ 	if (ip->r_format.opcode != spec_op)
+ 		return 0;
+ 	return ip->r_format.func == jalr_op || ip->r_format.func == jr_op;
++#endif
+ }
+ 
+ static inline int is_sp_move_ins(union mips_instruction *ip)
+ {
++#ifdef CONFIG_CPU_MICROMIPS
++	/*
++	 * addiusp -imm
++	 * addius5 sp,-imm
++	 * addiu32 sp,sp,-imm
++	 * jradiussp - NOT SUPPORTED
++	 *
++	 * microMIPS is not more fun...
++	 */
++	if (mm_is16bit(ip->halfword[0])) {
++		union mips_instruction mmi;
++
++		mmi.word = (ip->halfword[0] << 16);
++		return ((mmi.mm16_r3_format.opcode == mm_pool16d_op &&
++			 mmi.mm16_r3_format.simmediate && mm_addiusp_func) ||
++			(mmi.mm16_r5_format.opcode == mm_pool16d_op &&
++			 mmi.mm16_r5_format.rt == 29));
++	}
++	return (ip->mm_i_format.opcode == mm_addiu32_op &&
++		 ip->mm_i_format.rt == 29 && ip->mm_i_format.rs == 29);
++#else
+ 	/* addiu/daddiu sp,sp,-imm */
+ 	if (ip->i_format.rs != 29 || ip->i_format.rt != 29)
+ 		return 0;
+ 	if (ip->i_format.opcode == addiu_op || ip->i_format.opcode == daddiu_op)
+ 		return 1;
++#endif
+ 	return 0;
+ }
+ 
+ static int get_frame_info(struct mips_frame_info *info)
+ {
++#ifdef CONFIG_CPU_MICROMIPS
++	union mips_instruction *ip = (void *) (((char *) info->func) - 1);
++#else
+ 	union mips_instruction *ip = info->func;
++#endif
+ 	unsigned max_insns = info->func_size / sizeof(union mips_instruction);
+ 	unsigned i;
+ 
+@@ -309,7 +391,26 @@ static int get_frame_info(struct mips_frame_info *info)
+ 			break;
+ 		if (!info->frame_size) {
+ 			if (is_sp_move_ins(ip))
++			{
++#ifdef CONFIG_CPU_MICROMIPS
++				if (mm_is16bit(ip->halfword[0]))
++				{
++					unsigned short tmp;
++
++					if (ip->halfword[0] & mm_addiusp_func)
++					{
++						tmp = (((ip->halfword[0] >> 1) & 0x1ff) << 2);
++						info->frame_size = -(signed short)(tmp | ((tmp & 0x100) ? 0xfe00 : 0));
++					} else {
++						tmp = (ip->halfword[0] >> 1);
++						info->frame_size = -(signed short)(tmp & 0xf);
++					}
++					ip = (void *) &ip->halfword[1];
++					ip--;
++				} else
++#endif
+ 				info->frame_size = - ip->i_format.simmediate;
++			}
+ 			continue;
+ 		}
+ 		if (info->pc_offset == -1 && is_ra_save_ins(ip)) {
+diff --git a/arch/mips/kernel/unaligned.c b/arch/mips/kernel/unaligned.c
+index 9c58bdf..6a9927a 100644
+--- a/arch/mips/kernel/unaligned.c
++++ b/arch/mips/kernel/unaligned.c
+@@ -85,6 +85,8 @@
+ #include <asm/cop2.h>
+ #include <asm/inst.h>
+ #include <asm/uaccess.h>
++#include <asm/fpu.h>
++#include <asm/fpu_emulator.h>
+ 
+ #define STR(x)  __STR(x)
+ #define __STR(x)  #x
+@@ -102,12 +104,333 @@ static u32 unaligned_action;
  #endif
-+		LONG_S	v1, PT_EPC(sp)
- 		LONG_S	$25, PT_R25(sp)
- 		LONG_S	$28, PT_R28(sp)
- 		LONG_S	$31, PT_R31(sp)
--		LONG_S	v1, PT_EPC(sp)
- 		ori	$28, sp, _THREAD_MASK
- 		xori	$28, _THREAD_MASK
- #ifdef CONFIG_CPU_CAVIUM_OCTEON
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 1382885..fe76d60 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -746,6 +746,9 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
- 		c->options |= MIPS_CPU_ULRI;
- 	if (config3 & MIPS_CONF3_ISA)
- 		c->options |= MIPS_CPU_MICROMIPS;
-+#ifdef CONFIG_CPU_MICROMIPS
-+	write_c0_config3(read_c0_config3() | MIPS_CONF3_ISA_OE);
-+#endif
+ extern void show_registers(struct pt_regs *regs);
  
- 	return config3 & MIPS_CONF_M;
- }
-diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-index 8882e57..f094c82 100644
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -3,9 +3,9 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-- * Copyright (C) 1994 - 2000, 2001, 2003 Ralf Baechle
-- * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-- * Copyright (C) 2001 MIPS Technologies, Inc.
-+ * Copyright (C) 1994 - 2001, 2003  Ralf Baechle
-+ * Copyright (C) 1999, 2000  Silicon Graphics, Inc.
-+ * Copyright (C) 2001, 2011  MIPS Technologies, Inc.
-  * Copyright (C) 2002, 2007  Maciej W. Rozycki
-  */
- #include <linux/init.h>
-@@ -22,8 +22,10 @@
- #include <asm/page.h>
- #include <asm/thread_info.h>
- 
-+#ifdef CONFIG_MIPS_MT_SMTC
- #define PANIC_PIC(msg)					\
--		.set push;				\
-+		.set	push;				\
-+		.set	nomicromips;			\
- 		.set	reorder;			\
- 		PTR_LA	a0,8f;				\
- 		.set	noat;				\
-@@ -32,17 +34,10 @@
- 9:		b	9b;				\
- 		.set	pop;				\
- 		TEXT(msg)
-+#endif
- 
- 	__INIT
- 
--NESTED(except_vec0_generic, 0, sp)
--	PANIC_PIC("Exception vector 0 called")
--	END(except_vec0_generic)
--
--NESTED(except_vec1_generic, 0, sp)
--	PANIC_PIC("Exception vector 1 called")
--	END(except_vec1_generic)
--
- /*
-  * General exception vector for all other CPUs.
-  *
-@@ -65,6 +60,7 @@ NESTED(except_vec3_generic, 0, sp)
- 	.set	pop
- 	END(except_vec3_generic)
- 
-+#if (cpu_has_vce != 0)
- /*
-  * General exception handler for CPUs with virtual coherency exception.
-  *
-@@ -124,6 +120,7 @@ handle_vcei:
- 	eret
- 	.set	pop
- 	END(except_vec3_r4000)
-+#endif /* (cpu_has_vce == 0) */
- 
- 	__FINIT
- 
-@@ -139,12 +136,19 @@ LEAF(r4k_wait)
- 	 nop
- 	nop
- 	nop
-+#ifdef CONFIG_CPU_MICROMIPS
-+	nop
-+	nop
-+	nop
-+	nop
-+#endif
- 	.set	mips3
- 	wait
- 	/* end of rollback region (the region size must be power of two) */
--	.set	pop
- 1:
- 	jr	ra
-+	nop
-+	.set	pop
- 	END(r4k_wait)
- 
- 	.macro	BUILD_ROLLBACK_PROLOGUE handler
-@@ -202,7 +206,11 @@ NESTED(handle_int, PT_SIZE, sp)
- 	LONG_L	s0, TI_REGS($28)
- 	LONG_S	sp, TI_REGS($28)
- 	PTR_LA	ra, ret_from_irq
--	j	plat_irq_dispatch
-+	PTR_LA  v0, plat_irq_dispatch
-+	jr	v0
-+#ifdef CONFIG_CPU_MICROMIPS
-+	nop
-+#endif
- 	END(handle_int)
- 
- 	__INIT
-@@ -223,11 +231,14 @@ NESTED(except_vec4, 0, sp)
- /*
-  * EJTAG debug exception handler.
-  * The EJTAG debug exception entry point is 0xbfc00480, which
-- * normally is in the boot PROM, so the boot PROM must do a
-+ * normally is in the boot PROM, so the boot PROM must do an
-  * unconditional jump to this vector.
-  */
- NESTED(except_vec_ejtag_debug, 0, sp)
- 	j	ejtag_debug_handler
-+#ifdef CONFIG_CPU_MICROMIPS
-+	 nop
-+#endif
- 	END(except_vec_ejtag_debug)
- 
- 	__FINIT
-@@ -252,9 +263,10 @@ NESTED(except_vec_vi, 0, sp)
- FEXPORT(except_vec_vi_mori)
- 	ori	a0, $0, 0
- #endif /* CONFIG_MIPS_MT_SMTC */
-+	PTR_LA	v1, except_vec_vi_handler
- FEXPORT(except_vec_vi_lui)
- 	lui	v0, 0		/* Patched */
--	j	except_vec_vi_handler
-+	jr	v1
- FEXPORT(except_vec_vi_ori)
- 	 ori	v0, 0		/* Patched */
- 	.set	pop
-@@ -355,6 +367,9 @@ EXPORT(ejtag_debug_buffer)
-  */
- NESTED(except_vec_nmi, 0, sp)
- 	j	nmi_handler
-+#ifdef CONFIG_CPU_MICROMIPS
-+	 nop
-+#endif
- 	END(except_vec_nmi)
- 
- 	__FINIT
-@@ -363,7 +378,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
- 	.set	push
- 	.set	noat
- 	SAVE_ALL
-- 	move	a0, sp
-+	move	a0, sp
- 	jal	nmi_exception_handler
- 	RESTORE_ALL
- 	.set	mips3
-@@ -501,13 +516,36 @@ NESTED(nmi_handler, PT_SIZE, sp)
- 	.set	push
- 	.set	noat
- 	.set	noreorder
--	/* 0x7c03e83b: rdhwr v1,$29 */
-+	/* MIPS32: 0x7c03e83b: rdhwr v1,$29 */
-+	/* uMIPS:  0x007d6b3c: rdhwr v1,$29 -- in MIPS16e it is  */
-+	/*         ADDIUSP $16,0x7d; LI $3,0x3c and never RI. LY22 */
- 	MFC0	k1, CP0_EPC
--	lui	k0, 0x7c03
--	lw	k1, (k1)
--	ori	k0, 0xe83b
--	.set	reorder
-+#if defined(CONFIG_CPU_MICROMIPS) || defined(CONFIG_CPU_MIPS32_R2) || defined(CONFIG_CPU_MIPS64_R2)
-+	and     k0, k1, 1
-+	beqz    k0, 1f
-+	xor     k1, k0
-+	lhu     k0, (k1)
-+	lhu     k1, 2(k1)
-+	ins     k1, k0, 16, 16
-+	lui     k0, 0x007d
-+	b       docheck
-+	ori     k0, 0x6b3c
-+1:
-+	lui     k0, 0x7c03
-+	lw      k1, (k1)
-+	ori     k0, 0xe83b
-+#else
-+	andi    k0, k1, 1
-+	bnez    k0, handle_ri
-+	lui     k0, 0x7c03
-+	lw      k1, (k1)
-+	ori     k0, 0xe83b
-+#endif
-+	.set    reorder
-+docheck:
- 	bne	k0, k1, handle_ri	/* if not ours */
++#ifdef __BIG_ENDIAN
++#define     LoadHW(addr, value, res)  \
++		__asm__ __volatile__ (".set\tnoat\n"        \
++			"1:\tlb\t%0, 0(%2)\n"               \
++			"2:\tlbu\t$1, 1(%2)\n\t"            \
++			"sll\t%0, 0x8\n\t"                  \
++			"or\t%0, $1\n\t"                    \
++			"li\t%1, 0\n"                       \
++			"3:\t.set\tat\n\t"                  \
++			".insn\n\t"                         \
++			".section\t.fixup,\"ax\"\n\t"       \
++			"4:\tli\t%1, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++			: "=&r" (value), "=r" (res)         \
++			: "r" (addr), "i" (-EFAULT));
 +
-+isrdhwr:
- 	/* The insn is rdhwr.  No need to check CAUSE.BD here. */
- 	get_saved_sp	/* k1 := current_thread_info */
- 	.set	noreorder
-diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
-index a632bc1..bcb6982f 100644
---- a/arch/mips/kernel/scall32-o32.S
-+++ b/arch/mips/kernel/scall32-o32.S
-@@ -143,15 +143,25 @@ stackargs:
- 	jr	t1
- 	 addiu	t1, 6f - 5f
- 
--2:	lw	t8, 28(t0)		# argument #8 from usp
--3:	lw	t7, 24(t0)		# argument #7 from usp
--4:	lw	t6, 20(t0)		# argument #6 from usp
--5:	jr	t1
-+	lw	t8, 28(t0)		# argument #8 from usp
-+	lw	t7, 24(t0)		# argument #7 from usp
-+	lw	t6, 20(t0)		# argument #6 from usp
-+	jr	t1
- 	 sw	t5, 16(sp)		# argument #5 to ksp
- 
-+#ifdef CONFIG_CPU_MICROMIPS
-+	## FIXME:
-+	sw	t8, 28(sp)		# argument #8 to ksp
-+	nop
-+	sw	t7, 24(sp)		# argument #7 to ksp
-+	nop
-+	sw	t6, 20(sp)		# argument #6 to ksp
-+	nop
-+#else
- 	sw	t8, 28(sp)		# argument #8 to ksp
- 	sw	t7, 24(sp)		# argument #7 to ksp
- 	sw	t6, 20(sp)		# argument #6 to ksp
++#define     LoadW(addr, value, res)   \
++		__asm__ __volatile__ (                      \
++			"1:\tlwl\t%0, (%2)\n"               \
++			"2:\tlwr\t%0, 3(%2)\n\t"            \
++			"li\t%1, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			".section\t.fixup,\"ax\"\n\t"       \
++			"4:\tli\t%1, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++			: "=&r" (value), "=r" (res)         \
++			: "r" (addr), "i" (-EFAULT));
++
++#define     LoadHWU(addr, value, res) \
++		__asm__ __volatile__ (                      \
++			".set\tnoat\n"                      \
++			"1:\tlbu\t%0, 0(%2)\n"              \
++			"2:\tlbu\t$1, 1(%2)\n\t"            \
++			"sll\t%0, 0x8\n\t"                  \
++			"or\t%0, $1\n\t"                    \
++			"li\t%1, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			".set\tat\n\t"                      \
++			".section\t.fixup,\"ax\"\n\t"       \
++			"4:\tli\t%1, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++			: "=&r" (value), "=r" (res)         \
++			: "r" (addr), "i" (-EFAULT));
++
++#define     LoadWU(addr, value, res)  \
++		__asm__ __volatile__ (                      \
++			"1:\tlwl\t%0, (%2)\n"               \
++			"2:\tlwr\t%0, 3(%2)\n\t"            \
++			"dsll\t%0, %0, 32\n\t"              \
++			"dsrl\t%0, %0, 32\n\t"              \
++			"li\t%1, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			"\t.section\t.fixup,\"ax\"\n\t"     \
++			"4:\tli\t%1, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++			: "=&r" (value), "=r" (res)         \
++			: "r" (addr), "i" (-EFAULT));
++
++#define     LoadDW(addr, value, res)  \
++		__asm__ __volatile__ (                      \
++			"1:\tldl\t%0, (%2)\n"               \
++			"2:\tldr\t%0, 7(%2)\n\t"            \
++			"li\t%1, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			"\t.section\t.fixup,\"ax\"\n\t"     \
++			"4:\tli\t%1, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++			: "=&r" (value), "=r" (res)         \
++			: "r" (addr), "i" (-EFAULT));
++
++#define     StoreHW(addr, value, res) \
++		__asm__ __volatile__ (                      \
++			".set\tnoat\n"                      \
++			"1:\tsb\t%1, 1(%2)\n\t"             \
++			"srl\t$1, %1, 0x8\n"                \
++			"2:\tsb\t$1, 0(%2)\n\t"             \
++			".set\tat\n\t"                      \
++			"li\t%0, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			".section\t.fixup,\"ax\"\n\t"       \
++			"4:\tli\t%0, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++			: "=r" (res)                        \
++			: "r" (value), "r" (addr), "i" (-EFAULT));
++
++#define     StoreW(addr, value, res)  \
++		__asm__ __volatile__ (                      \
++			"1:\tswl\t%1,(%2)\n"                \
++			"2:\tswr\t%1, 3(%2)\n\t"            \
++			"li\t%0, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			".section\t.fixup,\"ax\"\n\t"       \
++			"4:\tli\t%0, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++		: "=r" (res)                                \
++		: "r" (value), "r" (addr), "i" (-EFAULT));
++
++#define     StoreDW(addr, value, res) \
++		__asm__ __volatile__ (                      \
++			"1:\tsdl\t%1,(%2)\n"                \
++			"2:\tsdr\t%1, 7(%2)\n\t"            \
++			"li\t%0, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			".section\t.fixup,\"ax\"\n\t"       \
++			"4:\tli\t%0, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++		: "=r" (res)                                \
++		: "r" (value), "r" (addr), "i" (-EFAULT));
 +#endif
- 6:	j	stack_done		# go back
- 	 nop
- 	.set	pop
-diff --git a/arch/mips/kernel/smtc-asm.S b/arch/mips/kernel/smtc-asm.S
-index 20938a4..8e9ae50 100644
---- a/arch/mips/kernel/smtc-asm.S
-+++ b/arch/mips/kernel/smtc-asm.S
-@@ -49,6 +49,9 @@ CAN WE PROVE THAT WE WON'T DO THIS IF INTS DISABLED??
- 	.text
- 	.align 5
- FEXPORT(__smtc_ipi_vector)
-+#ifdef CONFIG_CPU_MICROMIPS
-+	nop
++
++#ifdef __LITTLE_ENDIAN
++#define     LoadHW(addr, value, res)  \
++		__asm__ __volatile__ (".set\tnoat\n"        \
++			"1:\tlb\t%0, 1(%2)\n"               \
++			"2:\tlbu\t$1, 0(%2)\n\t"            \
++			"sll\t%0, 0x8\n\t"                  \
++			"or\t%0, $1\n\t"                    \
++			"li\t%1, 0\n"                       \
++			"3:\t.set\tat\n\t"                  \
++			".insn\n\t"                         \
++			".section\t.fixup,\"ax\"\n\t"       \
++			"4:\tli\t%1, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++			: "=&r" (value), "=r" (res)         \
++			: "r" (addr), "i" (-EFAULT));
++
++#define     LoadW(addr, value, res)   \
++		__asm__ __volatile__ (                      \
++			"1:\tlwl\t%0, 3(%2)\n"              \
++			"2:\tlwr\t%0, (%2)\n\t"             \
++			"li\t%1, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			".section\t.fixup,\"ax\"\n\t"       \
++			"4:\tli\t%1, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++			: "=&r" (value), "=r" (res)         \
++			: "r" (addr), "i" (-EFAULT));
++
++#define     LoadHWU(addr, value, res) \
++		__asm__ __volatile__ (                      \
++			".set\tnoat\n"                      \
++			"1:\tlbu\t%0, 1(%2)\n"              \
++			"2:\tlbu\t$1, 0(%2)\n\t"            \
++			"sll\t%0, 0x8\n\t"                  \
++			"or\t%0, $1\n\t"                    \
++			"li\t%1, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			".set\tat\n\t"                      \
++			".section\t.fixup,\"ax\"\n\t"       \
++			"4:\tli\t%1, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++			: "=&r" (value), "=r" (res)         \
++			: "r" (addr), "i" (-EFAULT));
++
++#define     LoadWU(addr, value, res)  \
++		__asm__ __volatile__ (                      \
++			"1:\tlwl\t%0, 3(%2)\n"              \
++			"2:\tlwr\t%0, (%2)\n\t"             \
++			"dsll\t%0, %0, 32\n\t"              \
++			"dsrl\t%0, %0, 32\n\t"              \
++			"li\t%1, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			"\t.section\t.fixup,\"ax\"\n\t"     \
++			"4:\tli\t%1, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++			: "=&r" (value), "=r" (res)         \
++			: "r" (addr), "i" (-EFAULT));
++
++#define     LoadDW(addr, value, res)  \
++		__asm__ __volatile__ (                      \
++			"1:\tldl\t%0, 7(%2)\n"              \
++			"2:\tldr\t%0, (%2)\n\t"             \
++			"li\t%1, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			"\t.section\t.fixup,\"ax\"\n\t"     \
++			"4:\tli\t%1, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++			: "=&r" (value), "=r" (res)         \
++			: "r" (addr), "i" (-EFAULT));
++
++#define     StoreHW(addr, value, res) \
++		__asm__ __volatile__ (                      \
++			".set\tnoat\n"                      \
++			"1:\tsb\t%1, 0(%2)\n\t"             \
++			"srl\t$1,%1, 0x8\n"                 \
++			"2:\tsb\t$1, 1(%2)\n\t"             \
++			".set\tat\n\t"                      \
++			"li\t%0, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			".section\t.fixup,\"ax\"\n\t"       \
++			"4:\tli\t%0, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++			: "=r" (res)                        \
++			: "r" (value), "r" (addr), "i" (-EFAULT));
++
++#define     StoreW(addr, value, res)  \
++		__asm__ __volatile__ (                      \
++			"1:\tswl\t%1, 3(%2)\n"              \
++			"2:\tswr\t%1, (%2)\n\t"             \
++			"li\t%0, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			".section\t.fixup,\"ax\"\n\t"       \
++			"4:\tli\t%0, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++		: "=r" (res)                                \
++		: "r" (value), "r" (addr), "i" (-EFAULT));
++
++#define     StoreDW(addr, value, res) \
++		__asm__ __volatile__ (                      \
++			"1:\tsdl\t%1, 7(%2)\n"              \
++			"2:\tsdr\t%1, (%2)\n\t"             \
++			"li\t%0, 0\n"                       \
++			"3:\n\t"                            \
++			".insn\n\t"                         \
++			".section\t.fixup,\"ax\"\n\t"       \
++			"4:\tli\t%0, %3\n\t"                \
++			"j\t3b\n\t"                         \
++			".previous\n\t"                     \
++			".section\t__ex_table,\"a\"\n\t"    \
++			STR(PTR)"\t1b, 4b\n\t"              \
++			STR(PTR)"\t2b, 4b\n\t"              \
++			".previous"                         \
++		: "=r" (res)                                \
++		: "r" (value), "r" (addr), "i" (-EFAULT));
 +#endif
- 	.set	noat
- 	/* Disable thread scheduling to make Status update atomic */
- 	DMT	27					# dmt	k1
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index c0c229b..a69edbe 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -10,6 +10,7 @@
-  * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com
-  * Copyright (C) 2000, 01 MIPS Technologies, Inc.
-  * Copyright (C) 2002, 2003, 2004, 2005, 2007  Maciej W. Rozycki
-+ * Copyright (C) 2011 MIPS Technologies, Inc.
-  */
- #include <linux/bug.h>
- #include <linux/compiler.h>
-@@ -81,10 +82,6 @@ extern asmlinkage void handle_dsp(void);
- extern asmlinkage void handle_mcheck(void);
- extern asmlinkage void handle_reserved(void);
- 
--extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
--				    struct mips_fpu_struct *ctx, int has_fpu,
--				    void *__user *fault_addr);
--
- void (*board_be_init)(void);
- int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
- void (*board_nmi_handler_setup)(void);
-@@ -92,6 +89,7 @@ void (*board_ejtag_handler_setup)(void);
- void (*board_bind_eic_interrupt)(int irq, int regset);
- void (*board_ebase_setup)(void);
- 
-+static void mt_ase_fp_affinity(void);
- 
- static void show_raw_backtrace(unsigned long reg29)
++
+ static void emulate_load_store_insn(struct pt_regs *regs,
+-	void __user *addr, unsigned int __user *pc)
++				    void __user *addr,
++				    unsigned int __user *pc)
  {
-@@ -487,6 +485,12 @@ asmlinkage void do_be(struct pt_regs *regs)
- #define SYNC   0x0000000f
- #define RDHWR  0x0000003b
- 
-+/*  microMIPS definitions   */
-+#define MM_POOL32A_FUNC 0xfc00ffff
-+#define MM_RDHWR        0x00006b3c
-+#define MM_RS           0x001f0000
-+#define MM_RT           0x03e00000
+ 	union mips_instruction insn;
+ 	unsigned long value;
+ 	unsigned int res;
++	unsigned long origpc;
++	unsigned long orig31;
++	void __user *fault_addr = NULL;
 +
- /*
-  * The ll_bit is cleared by r*_switch.S
-  */
-@@ -510,7 +514,7 @@ static inline int simulate_ll(struct pt_regs *regs, unsigned int opcode)
- 	offset >>= 16;
++	origpc = (unsigned long)pc;
++	orig31 = regs->regs[31];
  
- 	vaddr = (unsigned long __user *)
--	        ((unsigned long)(regs->regs[(opcode & BASE) >> 21]) + offset);
-+		((unsigned long)(regs->regs[(opcode & BASE) >> 21]) + offset);
+ 	perf_sw_event(PERF_COUNT_SW_EMULATION_FAULTS, 1, regs, 0);
  
- 	if ((unsigned long)vaddr & 3)
- 		return SIGBUS;
-@@ -550,7 +554,7 @@ static inline int simulate_sc(struct pt_regs *regs, unsigned int opcode)
- 	offset >>= 16;
+@@ -117,22 +440,22 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 	__get_user(insn.word, pc);
  
- 	vaddr = (unsigned long __user *)
--	        ((unsigned long)(regs->regs[(opcode & BASE) >> 21]) + offset);
-+		((unsigned long)(regs->regs[(opcode & BASE) >> 21]) + offset);
- 	reg = (opcode & RT) >> 16;
+ 	switch (insn.i_format.opcode) {
+-	/*
+-	 * These are instructions that a compiler doesn't generate.  We
+-	 * can assume therefore that the code is MIPS-aware and
+-	 * really buggy.  Emulating these instructions would break the
+-	 * semantics anyway.
+-	 */
++		/*
++		 * These are instructions that a compiler doesn't generate.  We
++		 * can assume therefore that the code is MIPS-aware and
++		 * really buggy.  Emulating these instructions would break the
++		 * semantics anyway.
++		 */
+ 	case ll_op:
+ 	case lld_op:
+ 	case sc_op:
+ 	case scd_op:
  
- 	if ((unsigned long)vaddr & 3)
-@@ -601,48 +605,72 @@ static int simulate_llsc(struct pt_regs *regs, unsigned int opcode)
-  * Simulate trapping 'rdhwr' instructions to provide user accessible
-  * registers not implemented in hardware.
-  */
--static int simulate_rdhwr(struct pt_regs *regs, unsigned int opcode)
-+static int simulate_rdhwr(struct pt_regs *regs, int rd, int rt)
- {
- 	struct thread_info *ti = task_thread_info(current);
+-	/*
+-	 * For these instructions the only way to create an address
+-	 * error is an attempted access to kernel/supervisor address
+-	 * space.
+-	 */
++		/*
++		 * For these instructions the only way to create an address
++		 * error is an attempted access to kernel/supervisor address
++		 * space.
++		 */
+ 	case ldl_op:
+ 	case ldr_op:
+ 	case lwl_op:
+@@ -146,36 +469,15 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 	case sb_op:
+ 		goto sigbus;
  
-+	perf_sw_event(PERF_COUNT_SW_EMULATION_FAULTS,
-+			1, regs, 0);
-+	switch (rd) {
-+	case 0:		/* CPU number */
-+		regs->regs[rt] = smp_processor_id();
-+		return 0;
-+	case 1:		/* SYNCI length */
-+		regs->regs[rt] = min(current_cpu_data.dcache.linesz,
-+				     current_cpu_data.icache.linesz);
-+		return 0;
-+	case 2:		/* Read count register */
-+		regs->regs[rt] = read_c0_count();
-+		return 0;
-+	case 3:		/* Count register resolution */
-+		switch (current_cpu_data.cputype) {
-+		case CPU_20KC:
-+		case CPU_25KF:
-+			regs->regs[rt] = 1;
-+			break;
-+		default:
-+			regs->regs[rt] = 2;
-+		}
-+		return 0;
-+	case 29:
-+		regs->regs[rt] = ti->tp_value;
-+		return 0;
-+	default:
-+		return -1;
-+	}
-+}
-+
-+static int simulate_rdhwr_normal(struct pt_regs *regs, unsigned int opcode)
-+{
- 	if ((opcode & OPCODE) == SPEC3 && (opcode & FUNC) == RDHWR) {
- 		int rd = (opcode & RD) >> 11;
- 		int rt = (opcode & RT) >> 16;
--		perf_sw_event(PERF_COUNT_SW_EMULATION_FAULTS,
--				1, regs, 0);
--		switch (rd) {
--		case 0:		/* CPU number */
--			regs->regs[rt] = smp_processor_id();
--			return 0;
--		case 1:		/* SYNCI length */
--			regs->regs[rt] = min(current_cpu_data.dcache.linesz,
--					     current_cpu_data.icache.linesz);
--			return 0;
--		case 2:		/* Read count register */
--			regs->regs[rt] = read_c0_count();
--			return 0;
--		case 3:		/* Count register resolution */
--			switch (current_cpu_data.cputype) {
--			case CPU_20KC:
--			case CPU_25KF:
--				regs->regs[rt] = 1;
--				break;
--			default:
--				regs->regs[rt] = 2;
--			}
--			return 0;
--		case 29:
--			regs->regs[rt] = ti->tp_value;
--			return 0;
--		default:
--			return -1;
--		}
-+
-+		simulate_rdhwr(regs, rd, rt);
-+		return 0;
-+	}
-+
-+	/* Not ours.  */
-+	return -1;
-+}
-+
-+static int simulate_rdhwr_mm(struct pt_regs *regs, unsigned short opcode)
-+{
-+	if ((opcode & MM_POOL32A_FUNC) == MM_RDHWR) {
-+		int rd = (opcode & MM_RS) >> 16;
-+		int rt = (opcode & MM_RT) >> 21;
-+		simulate_rdhwr(regs, rd, rt);
-+		return 0;
- 	}
+-	/*
+-	 * The remaining opcodes are the ones that are really of interest.
+-	 */
++		/*
++		 * The remaining opcodes are the ones that are really of
++		 * interest.
++		 */
+ 	case lh_op:
+ 		if (!access_ok(VERIFY_READ, addr, 2))
+ 			goto sigbus;
  
- 	/* Not ours.  */
- 	return -1;
- }
+-		__asm__ __volatile__ (".set\tnoat\n"
+-#ifdef __BIG_ENDIAN
+-			"1:\tlb\t%0, 0(%2)\n"
+-			"2:\tlbu\t$1, 1(%2)\n\t"
+-#endif
+-#ifdef __LITTLE_ENDIAN
+-			"1:\tlb\t%0, 1(%2)\n"
+-			"2:\tlbu\t$1, 0(%2)\n\t"
+-#endif
+-			"sll\t%0, 0x8\n\t"
+-			"or\t%0, $1\n\t"
+-			"li\t%1, 0\n"
+-			"3:\t.set\tat\n\t"
+-			".section\t.fixup,\"ax\"\n\t"
+-			"4:\tli\t%1, %3\n\t"
+-			"j\t3b\n\t"
+-			".previous\n\t"
+-			".section\t__ex_table,\"a\"\n\t"
+-			STR(PTR)"\t1b, 4b\n\t"
+-			STR(PTR)"\t2b, 4b\n\t"
+-			".previous"
+-			: "=&r" (value), "=r" (res)
+-			: "r" (addr), "i" (-EFAULT));
++		LoadHW(addr, value, res);
+ 		if (res)
+ 			goto fault;
+ 		compute_return_epc(regs);
+@@ -186,26 +488,7 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		if (!access_ok(VERIFY_READ, addr, 4))
+ 			goto sigbus;
  
-+
-+
-+
-+
- static int simulate_sync(struct pt_regs *regs, unsigned int opcode)
- {
- 	if ((opcode & OPCODE) == SPEC0 && (opcode & FUNC) == SYNC) {
-@@ -667,7 +695,7 @@ asmlinkage void do_ov(struct pt_regs *regs)
- 	force_sig_info(SIGFPE, &info, current);
- }
+-		__asm__ __volatile__ (
+-#ifdef __BIG_ENDIAN
+-			"1:\tlwl\t%0, (%2)\n"
+-			"2:\tlwr\t%0, 3(%2)\n\t"
+-#endif
+-#ifdef __LITTLE_ENDIAN
+-			"1:\tlwl\t%0, 3(%2)\n"
+-			"2:\tlwr\t%0, (%2)\n\t"
+-#endif
+-			"li\t%1, 0\n"
+-			"3:\t.section\t.fixup,\"ax\"\n\t"
+-			"4:\tli\t%1, %3\n\t"
+-			"j\t3b\n\t"
+-			".previous\n\t"
+-			".section\t__ex_table,\"a\"\n\t"
+-			STR(PTR)"\t1b, 4b\n\t"
+-			STR(PTR)"\t2b, 4b\n\t"
+-			".previous"
+-			: "=&r" (value), "=r" (res)
+-			: "r" (addr), "i" (-EFAULT));
++		LoadW(addr, value, res);
+ 		if (res)
+ 			goto fault;
+ 		compute_return_epc(regs);
+@@ -216,30 +499,7 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		if (!access_ok(VERIFY_READ, addr, 2))
+ 			goto sigbus;
  
--static int process_fpemu_return(int sig, void __user *fault_addr)
-+int process_fpemu_return(int sig, void __user *fault_addr)
- {
- 	if (sig == SIGSEGV || sig == SIGBUS) {
- 		struct siginfo si = {0};
-@@ -793,6 +821,7 @@ static void do_trap_or_bp(struct pt_regs *regs, unsigned int code,
- 		die_if_kernel("Kernel bug detected", regs);
- 		force_sig(SIGTRAP, current);
+-		__asm__ __volatile__ (
+-			".set\tnoat\n"
+-#ifdef __BIG_ENDIAN
+-			"1:\tlbu\t%0, 0(%2)\n"
+-			"2:\tlbu\t$1, 1(%2)\n\t"
+-#endif
+-#ifdef __LITTLE_ENDIAN
+-			"1:\tlbu\t%0, 1(%2)\n"
+-			"2:\tlbu\t$1, 0(%2)\n\t"
+-#endif
+-			"sll\t%0, 0x8\n\t"
+-			"or\t%0, $1\n\t"
+-			"li\t%1, 0\n"
+-			"3:\t.set\tat\n\t"
+-			".section\t.fixup,\"ax\"\n\t"
+-			"4:\tli\t%1, %3\n\t"
+-			"j\t3b\n\t"
+-			".previous\n\t"
+-			".section\t__ex_table,\"a\"\n\t"
+-			STR(PTR)"\t1b, 4b\n\t"
+-			STR(PTR)"\t2b, 4b\n\t"
+-			".previous"
+-			: "=&r" (value), "=r" (res)
+-			: "r" (addr), "i" (-EFAULT));
++		LoadHWU(addr, value, res);
+ 		if (res)
+ 			goto fault;
+ 		compute_return_epc(regs);
+@@ -258,28 +518,7 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		if (!access_ok(VERIFY_READ, addr, 4))
+ 			goto sigbus;
+ 
+-		__asm__ __volatile__ (
+-#ifdef __BIG_ENDIAN
+-			"1:\tlwl\t%0, (%2)\n"
+-			"2:\tlwr\t%0, 3(%2)\n\t"
+-#endif
+-#ifdef __LITTLE_ENDIAN
+-			"1:\tlwl\t%0, 3(%2)\n"
+-			"2:\tlwr\t%0, (%2)\n\t"
+-#endif
+-			"dsll\t%0, %0, 32\n\t"
+-			"dsrl\t%0, %0, 32\n\t"
+-			"li\t%1, 0\n"
+-			"3:\t.section\t.fixup,\"ax\"\n\t"
+-			"4:\tli\t%1, %3\n\t"
+-			"j\t3b\n\t"
+-			".previous\n\t"
+-			".section\t__ex_table,\"a\"\n\t"
+-			STR(PTR)"\t1b, 4b\n\t"
+-			STR(PTR)"\t2b, 4b\n\t"
+-			".previous"
+-			: "=&r" (value), "=r" (res)
+-			: "r" (addr), "i" (-EFAULT));
++		LoadWU(addr, value, res);
+ 		if (res)
+ 			goto fault;
+ 		compute_return_epc(regs);
+@@ -302,26 +541,7 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		if (!access_ok(VERIFY_READ, addr, 8))
+ 			goto sigbus;
+ 
+-		__asm__ __volatile__ (
+-#ifdef __BIG_ENDIAN
+-			"1:\tldl\t%0, (%2)\n"
+-			"2:\tldr\t%0, 7(%2)\n\t"
+-#endif
+-#ifdef __LITTLE_ENDIAN
+-			"1:\tldl\t%0, 7(%2)\n"
+-			"2:\tldr\t%0, (%2)\n\t"
+-#endif
+-			"li\t%1, 0\n"
+-			"3:\t.section\t.fixup,\"ax\"\n\t"
+-			"4:\tli\t%1, %3\n\t"
+-			"j\t3b\n\t"
+-			".previous\n\t"
+-			".section\t__ex_table,\"a\"\n\t"
+-			STR(PTR)"\t1b, 4b\n\t"
+-			STR(PTR)"\t2b, 4b\n\t"
+-			".previous"
+-			: "=&r" (value), "=r" (res)
+-			: "r" (addr), "i" (-EFAULT));
++		LoadDW(addr, value, res);
+ 		if (res)
+ 			goto fault;
+ 		compute_return_epc(regs);
+@@ -336,68 +556,22 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		if (!access_ok(VERIFY_WRITE, addr, 2))
+ 			goto sigbus;
+ 
++		compute_return_epc(regs);
+ 		value = regs->regs[insn.i_format.rt];
+-		__asm__ __volatile__ (
+-#ifdef __BIG_ENDIAN
+-			".set\tnoat\n"
+-			"1:\tsb\t%1, 1(%2)\n\t"
+-			"srl\t$1, %1, 0x8\n"
+-			"2:\tsb\t$1, 0(%2)\n\t"
+-			".set\tat\n\t"
+-#endif
+-#ifdef __LITTLE_ENDIAN
+-			".set\tnoat\n"
+-			"1:\tsb\t%1, 0(%2)\n\t"
+-			"srl\t$1,%1, 0x8\n"
+-			"2:\tsb\t$1, 1(%2)\n\t"
+-			".set\tat\n\t"
+-#endif
+-			"li\t%0, 0\n"
+-			"3:\n\t"
+-			".section\t.fixup,\"ax\"\n\t"
+-			"4:\tli\t%0, %3\n\t"
+-			"j\t3b\n\t"
+-			".previous\n\t"
+-			".section\t__ex_table,\"a\"\n\t"
+-			STR(PTR)"\t1b, 4b\n\t"
+-			STR(PTR)"\t2b, 4b\n\t"
+-			".previous"
+-			: "=r" (res)
+-			: "r" (value), "r" (addr), "i" (-EFAULT));
++		StoreHW(addr, value, res);
+ 		if (res)
+ 			goto fault;
+-		compute_return_epc(regs);
  		break;
-+	case MM_BRK_MEMU:
- 	case BRK_MEMU:
- 		/*
- 		 * Address errors may be deliberately induced by the FPU
-@@ -818,9 +847,29 @@ static void do_trap_or_bp(struct pt_regs *regs, unsigned int code,
- asmlinkage void do_bp(struct pt_regs *regs)
- {
- 	unsigned int opcode, bcode;
--
--	if (__get_user(opcode, (unsigned int __user *) exception_epc(regs)))
--		goto out_sigsegv;
-+	unsigned long epc;
-+	u16 instr[2];
+ 
+ 	case sw_op:
+ 		if (!access_ok(VERIFY_WRITE, addr, 4))
+ 			goto sigbus;
+ 
++		compute_return_epc(regs);
+ 		value = regs->regs[insn.i_format.rt];
+-		__asm__ __volatile__ (
+-#ifdef __BIG_ENDIAN
+-			"1:\tswl\t%1,(%2)\n"
+-			"2:\tswr\t%1, 3(%2)\n\t"
+-#endif
+-#ifdef __LITTLE_ENDIAN
+-			"1:\tswl\t%1, 3(%2)\n"
+-			"2:\tswr\t%1, (%2)\n\t"
+-#endif
+-			"li\t%0, 0\n"
+-			"3:\n\t"
+-			".section\t.fixup,\"ax\"\n\t"
+-			"4:\tli\t%0, %3\n\t"
+-			"j\t3b\n\t"
+-			".previous\n\t"
+-			".section\t__ex_table,\"a\"\n\t"
+-			STR(PTR)"\t1b, 4b\n\t"
+-			STR(PTR)"\t2b, 4b\n\t"
+-			".previous"
+-		: "=r" (res)
+-		: "r" (value), "r" (addr), "i" (-EFAULT));
++		StoreW(addr, value, res);
+ 		if (res)
+ 			goto fault;
+-		compute_return_epc(regs);
+ 		break;
+ 
+ 	case sd_op:
+@@ -412,31 +586,11 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		if (!access_ok(VERIFY_WRITE, addr, 8))
+ 			goto sigbus;
+ 
++		compute_return_epc(regs);
+ 		value = regs->regs[insn.i_format.rt];
+-		__asm__ __volatile__ (
+-#ifdef __BIG_ENDIAN
+-			"1:\tsdl\t%1,(%2)\n"
+-			"2:\tsdr\t%1, 7(%2)\n\t"
+-#endif
+-#ifdef __LITTLE_ENDIAN
+-			"1:\tsdl\t%1, 7(%2)\n"
+-			"2:\tsdr\t%1, (%2)\n\t"
+-#endif
+-			"li\t%0, 0\n"
+-			"3:\n\t"
+-			".section\t.fixup,\"ax\"\n\t"
+-			"4:\tli\t%0, %3\n\t"
+-			"j\t3b\n\t"
+-			".previous\n\t"
+-			".section\t__ex_table,\"a\"\n\t"
+-			STR(PTR)"\t1b, 4b\n\t"
+-			STR(PTR)"\t2b, 4b\n\t"
+-			".previous"
+-		: "=r" (res)
+-		: "r" (value), "r" (addr), "i" (-EFAULT));
++		StoreDW(addr, value, res);
+ 		if (res)
+ 			goto fault;
+-		compute_return_epc(regs);
+ 		break;
+ #endif /* CONFIG_64BIT */
+ 
+@@ -447,10 +601,21 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 	case ldc1_op:
+ 	case swc1_op:
+ 	case sdc1_op:
+-		/*
+-		 * I herewith declare: this does not happen.  So send SIGBUS.
+-		 */
+-		goto sigbus;
++		die_if_kernel("Unaligned FP access in kernel code", regs);
++		BUG_ON(!used_math());
++		BUG_ON(!is_fpu_owner());
 +
-+	if (regs->cp0_epc & MIPS_ISA_MODE) {
-+		/* calc exception pc */
-+		epc = exception_epc(regs);
-+		if (cpu_has_mmips) {
-+			if ((__get_user(instr[0], (u16 __user *)(epc & ~MIPS_ISA_MODE))) ||
-+			    (__get_user(instr[1], (u16 __user *)((epc+2) & ~MIPS_ISA_MODE))))
-+				goto out_sigsegv;
-+		    opcode = (instr[0] << 16) | instr[1];
-+		} else {
-+		    /* MIPS16e mode */
-+		    if (__get_user(instr[0], (u16 __user *)(epc & ~MIPS_ISA_MODE)))
-+				goto out_sigsegv;
-+		    bcode = (instr[0] >> 6) & 0x3f;
-+		    do_trap_or_bp(regs, bcode, "Break");
-+		    return;
-+		}
-+	} else {
-+		if (__get_user(opcode, (unsigned int __user *) exception_epc(regs)))
-+			goto out_sigsegv;
-+	}
++		lose_fpu(1);	/* save the FPU state for the emulator */
++		res = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 1,
++					       &fault_addr);
++		own_fpu(1);	/* restore FPU state */
++
++		/* If something went wrong, signal */
++		process_fpemu_return(res, fault_addr);
++
++		if (res == 0)
++			break;
++		return;
  
  	/*
- 	 * There is the ancient bug in the MIPS assemblers that the break
-@@ -861,13 +910,22 @@ out_sigsegv:
- asmlinkage void do_tr(struct pt_regs *regs)
- {
- 	unsigned int opcode, tcode = 0;
-+	u16 instr[2];
-+	unsigned long epc = exception_epc(regs);
- 
--	if (__get_user(opcode, (unsigned int __user *) exception_epc(regs)))
--		goto out_sigsegv;
-+	if ((__get_user(instr[0], (u16 __user *)(epc & ~MIPS_ISA_MODE))) ||
-+		(__get_user(instr[1], (u16 __user *)((epc+2) & ~MIPS_ISA_MODE))))
-+			goto out_sigsegv;
-+	opcode = (instr[0] << 16) | instr[1];
- 
- 	/* Immediate versions don't provide a code.  */
--	if (!(opcode & OPCODE))
--		tcode = ((opcode >> 6) & ((1 << 10) - 1));
-+	if (!(opcode & OPCODE)) {
-+		if (is16mode(regs))
-+			/* microMIPS */
-+			tcode = (opcode >> 12) & 0x1f;
-+		else
-+			tcode = ((opcode >> 6) & ((1 << 10) - 1));
-+	}
- 
- 	do_trap_or_bp(regs, tcode, "Trap");
+ 	 * COP2 is available to implementor for application specific use.
+@@ -488,6 +653,883 @@ static void emulate_load_store_insn(struct pt_regs *regs,
  	return;
-@@ -880,8 +938,10 @@ asmlinkage void do_ri(struct pt_regs *regs)
- {
- 	unsigned int __user *epc = (unsigned int __user *)exception_epc(regs);
- 	unsigned long old_epc = regs->cp0_epc;
-+	unsigned long old31 = regs->regs[31];
- 	unsigned int opcode = 0;
- 	int status = -1;
-+	unsigned short mmop[2];
  
- 	if (notify_die(DIE_RI, "RI Fault", regs, 0, regs_to_trapnr(regs), SIGILL)
- 	    == NOTIFY_STOP)
-@@ -892,23 +952,35 @@ asmlinkage void do_ri(struct pt_regs *regs)
- 	if (unlikely(compute_return_epc(regs) < 0))
+ fault:
++	/* roll back jump/branch */
++	regs->cp0_epc = origpc;
++	regs->regs[31] = orig31;
++	/* Did we have an exception handler installed? */
++	if (fixup_exception(regs))
++		return;
++
++	die_if_kernel("Unhandled kernel unaligned access", regs);
++	force_sig(SIGSEGV, current);
++
++	return;
++
++sigbus:
++	die_if_kernel("Unhandled kernel unaligned access", regs);
++	force_sig(SIGBUS, current);
++
++	return;
++
++sigill:
++	die_if_kernel
++	    ("Unhandled kernel unaligned access or invalid instruction", regs);
++	force_sig(SIGILL, current);
++}
++
++/*  recode table from micromips register notation to GPR */
++static int mmreg16to32[] = { 16, 17, 2, 3, 4, 5, 6, 7 };
++
++/*  recode table from micromips STORE register notation to GPR */
++static int mmreg16to32_st[] = { 0, 17, 2, 3, 4, 5, 6, 7 };
++
++void emulate_load_store_microMIPS(struct pt_regs *regs, void __user * addr)
++{
++	unsigned long value;
++	unsigned int res;
++	int i;
++	unsigned int reg = 0, rvar;
++	unsigned long orig31;
++	u16 __user *pc16;
++	u16 halfword;
++	unsigned int word;
++	unsigned long origpc, contpc;
++	union mips_instruction insn;
++	struct decoded_instn mminst;
++	void __user *fault_addr = NULL;
++
++	origpc = regs->cp0_epc;
++	orig31 = regs->regs[31];
++
++	mminst.micro_mips_mode = 1;
++
++	/*
++	 * This load never faults.
++	 */
++	pc16 = (unsigned short __user *)(regs->cp0_epc & ~MIPS_ISA_MODE);
++	__get_user(halfword, pc16);
++	pc16++;
++	contpc = regs->cp0_epc + 2;
++	word = ((unsigned int)halfword << 16);
++	mminst.pc_inc = 2;
++
++	if (!mm_is16bit(halfword)) {
++		__get_user(halfword, pc16);
++		pc16++;
++		contpc = regs->cp0_epc + 4;
++		mminst.pc_inc = 4;
++		word |= halfword;
++	}
++	mminst.insn = word;
++
++	if (get_user(halfword, pc16))
++		goto fault;
++	mminst.next_pc_inc = 2;
++	word = ((unsigned int)halfword << 16);
++
++	if (!mm_is16bit(halfword)) {
++		pc16++;
++		if (get_user(halfword, pc16))
++			goto fault;
++		mminst.next_pc_inc = 4;
++		word |= halfword;
++	}
++	mminst.next_insn = word;
++
++	insn = (union mips_instruction)(mminst.insn);
++	if (mm_isBranchInstr(regs, mminst, &contpc))
++		insn = (union mips_instruction)(mminst.next_insn);
++
++	/*  Parse instruction to find what to do */
++
++	switch (insn.mm_i_format.opcode) {
++
++	case mm_pool32a_op:
++		switch (insn.mm_x_format.func) {
++		case mm_lwxs_op:
++			reg = insn.mm_x_format.rd;
++			goto loadW;
++		}
++
++		goto sigbus;
++
++	case mm_pool32b_op:
++		switch (insn.mm_m_format.func) {
++		case mm_lwp_func:
++			reg = insn.mm_m_format.rd;
++			if (reg == 31)
++				goto sigbus;
++
++			if (!access_ok(VERIFY_READ, addr, 8))
++				goto sigbus;
++
++			LoadW(addr, value, res);
++			if (res)
++				goto fault;
++			regs->regs[reg] = value;
++			addr += 4;
++			LoadW(addr, value, res);
++			if (res)
++				goto fault;
++			regs->regs[reg + 1] = value;
++			goto success;
++
++		case mm_swp_func:
++			reg = insn.mm_m_format.rd;
++			if (reg == 31)
++				goto sigbus;
++
++			if (!access_ok(VERIFY_WRITE, addr, 8))
++				goto sigbus;
++
++			value = regs->regs[reg];
++			StoreW(addr, value, res);
++			if (res)
++				goto fault;
++			addr += 4;
++			value = regs->regs[reg + 1];
++			StoreW(addr, value, res);
++			if (res)
++				goto fault;
++			goto success;
++
++		case mm_ldp_func:
++#ifdef CONFIG_64BIT
++			reg = insn.mm_m_format.rd;
++			if (reg == 31)
++				goto sigbus;
++
++			if (!access_ok(VERIFY_READ, addr, 16))
++				goto sigbus;
++
++			LoadDW(addr, value, res);
++			if (res)
++				goto fault;
++			regs->regs[reg] = value;
++			addr += 8;
++			LoadDW(addr, value, res);
++			if (res)
++				goto fault;
++			regs->regs[reg + 1] = value;
++			goto success;
++#endif /* CONFIG_64BIT */
++
++			goto sigill;
++
++		case mm_sdp_func:
++#ifdef CONFIG_64BIT
++			reg = insn.mm_m_format.rd;
++			if (reg == 31)
++				goto sigbus;
++
++			if (!access_ok(VERIFY_WRITE, addr, 16))
++				goto sigbus;
++
++			value = regs->regs[reg];
++			StoreDW(addr, value, res);
++			if (res)
++				goto fault;
++			addr += 8;
++			value = regs->regs[reg + 1];
++			StoreDW(addr, value, res);
++			if (res)
++				goto fault;
++			goto success;
++#endif /* CONFIG_64BIT */
++
++			goto sigill;
++
++		case mm_lwm32_func:
++			reg = insn.mm_m_format.rd;
++			rvar = reg & 0xf;
++			if ((rvar > 9) || !reg)
++				goto sigill;
++			if (reg & 0x10) {
++				if (!access_ok
++				    (VERIFY_READ, addr, 4 * (rvar + 1)))
++					goto sigbus;
++			} else {
++				if (!access_ok(VERIFY_READ, addr, 4 * rvar))
++					goto sigbus;
++			}
++			if (rvar == 9)
++				rvar = 8;
++			for (i = 16; rvar; rvar--, i++) {
++				LoadW(addr, value, res);
++				if (res)
++					goto fault;
++				addr += 4;
++				regs->regs[i] = value;
++			}
++			if ((reg & 0xf) == 9) {
++				LoadW(addr, value, res);
++				if (res)
++					goto fault;
++				addr += 4;
++				regs->regs[30] = value;
++			}
++			if (reg & 0x10) {
++				LoadW(addr, value, res);
++				if (res)
++					goto fault;
++				regs->regs[31] = value;
++			}
++			goto success;
++
++		case mm_swm32_func:
++			reg = insn.mm_m_format.rd;
++			rvar = reg & 0xf;
++			if ((rvar > 9) || !reg)
++				goto sigill;
++			if (reg & 0x10) {
++				if (!access_ok
++				    (VERIFY_WRITE, addr, 4 * (rvar + 1)))
++					goto sigbus;
++			} else {
++				if (!access_ok(VERIFY_WRITE, addr, 4 * rvar))
++					goto sigbus;
++			}
++			if (rvar == 9)
++				rvar = 8;
++			for (i = 16; rvar; rvar--, i++) {
++				value = regs->regs[i];
++				StoreW(addr, value, res);
++				if (res)
++					goto fault;
++				addr += 4;
++			}
++			if ((reg & 0xf) == 9) {
++				value = regs->regs[30];
++				StoreW(addr, value, res);
++				if (res)
++					goto fault;
++				addr += 4;
++			}
++			if (reg & 0x10) {
++				value = regs->regs[31];
++				StoreW(addr, value, res);
++				if (res)
++					goto fault;
++			}
++			goto success;
++
++		case mm_ldm_func:
++#ifdef CONFIG_64BIT
++			reg = insn.mm_m_format.rd;
++			rvar = reg & 0xf;
++			if ((rvar > 9) || !reg)
++				goto sigill;
++			if (reg & 0x10) {
++				if (!access_ok
++				    (VERIFY_READ, addr, 8 * (rvar + 1)))
++					goto sigbus;
++			} else {
++				if (!access_ok(VERIFY_READ, addr, 8 * rvar))
++					goto sigbus;
++			}
++			if (rvar == 9)
++				rvar = 8;
++
++			for (i = 16; rvar; rvar--, i++) {
++				LoadDW(addr, value, res);
++				if (res)
++					goto fault;
++				addr += 4;
++				regs->regs[i] = value;
++			}
++			if ((reg & 0xf) == 9) {
++				LoadDW(addr, value, res);
++				if (res)
++					goto fault;
++				addr += 8;
++				regs->regs[30] = value;
++			}
++			if (reg & 0x10) {
++				LoadDW(addr, value, res);
++				if (res)
++					goto fault;
++				regs->regs[31] = value;
++			}
++			goto success;
++#endif /* CONFIG_64BIT */
++
++			goto sigill;
++
++		case mm_sdm_func:
++#ifdef CONFIG_64BIT
++			reg = insn.mm_m_format.rd;
++			rvar = reg & 0xf;
++			if ((rvar > 9) || !reg)
++				goto sigill;
++			if (reg & 0x10) {
++				if (!access_ok
++				    (VERIFY_WRITE, addr, 8 * (rvar + 1)))
++					goto sigbus;
++			} else {
++				if (!access_ok(VERIFY_WRITE, addr, 8 * rvar))
++					goto sigbus;
++			}
++			if (rvar == 9)
++				rvar = 8;
++
++			for (i = 16; rvar; rvar--, i++) {
++				value = regs->regs[i];
++				StoreDW(addr, value, res);
++				if (res)
++					goto fault;
++				addr += 8;
++			}
++			if ((reg & 0xf) == 9) {
++				value = regs->regs[30];
++				StoreDW(addr, value, res);
++				if (res)
++					goto fault;
++				addr += 8;
++			}
++			if (reg & 0x10) {
++				value = regs->regs[31];
++				StoreDW(addr, value, res);
++				if (res)
++					goto fault;
++			}
++			goto success;
++#endif /* CONFIG_64BIT */
++
++			goto sigill;
++
++			/*  LWC2, SWC2, LDC2, SDC2 are not serviced */
++		}
++
++		goto sigbus;
++
++	case mm_pool32c_op:
++		switch (insn.mm_m_format.func) {
++		case mm_lwu_func:
++			reg = insn.mm_m_format.rd;
++			goto loadWU;
++		}
++
++		/*  LL,SC,LLD,SCD are not serviced */
++		goto sigbus;
++
++	case mm_pool32f_op:
++		switch (insn.mm_x_format.func) {
++		case mm_lwxc1_func:
++		case mm_swxc1_func:
++		case mm_ldxc1_func:
++		case mm_sdxc1_func:
++			goto fpu_emul;
++		}
++
++		goto sigbus;
++
++	case mm_ldc132_op:
++	case mm_sdc132_op:
++	case mm_lwc132_op:
++	case mm_swc132_op:
++fpu_emul:
++		/* roll back jump/branch */
++		regs->cp0_epc = origpc;
++		regs->regs[31] = orig31;
++
++		die_if_kernel("Unaligned FP access in kernel code", regs);
++		BUG_ON(!used_math());
++		BUG_ON(!is_fpu_owner());
++
++		lose_fpu(1);	/* save the FPU state for the emulator */
++		res = fpu_emulator_cop1Handler(regs, &current->thread.fpu, 1,
++					       &fault_addr);
++		own_fpu(1);	/* restore FPU state */
++
++		/* If something went wrong, signal */
++		process_fpemu_return(res, fault_addr);
++
++		if (res == 0)
++			goto success;
++		return;
++
++	case mm_lh32_op:
++		reg = insn.mm_i_format.rt;
++		goto loadHW;
++
++	case mm_lhu32_op:
++		reg = insn.mm_i_format.rt;
++		goto loadHWU;
++
++	case mm_lw32_op:
++		reg = insn.mm_i_format.rt;
++		goto loadW;
++
++	case mm_sh32_op:
++		reg = insn.mm_i_format.rt;
++		goto storeHW;
++
++	case mm_sw32_op:
++		reg = insn.mm_i_format.rt;
++		goto storeW;
++
++	case mm_ld32_op:
++		reg = insn.mm_i_format.rt;
++		goto loadDW;
++
++	case mm_sd32_op:
++		reg = insn.mm_i_format.rt;
++		goto storeDW;
++
++	case mm_pool16c_op:
++		switch (insn.mm16_m_format.func) {
++		case mm_lwm16_op:
++			reg = insn.mm16_m_format.rlist;
++			rvar = reg + 1;
++			if (!access_ok(VERIFY_READ, addr, 4 * rvar))
++				goto sigbus;
++
++			for (i = 16; rvar; rvar--, i++) {
++				LoadW(addr, value, res);
++				if (res)
++					goto fault;
++				addr += 4;
++				regs->regs[i] = value;
++			}
++			LoadW(addr, value, res);
++			if (res)
++				goto fault;
++			regs->regs[31] = value;
++
++			goto success;
++
++		case mm_swm16_op:
++			reg = insn.mm16_m_format.rlist;
++			rvar = reg + 1;
++			if (!access_ok(VERIFY_WRITE, addr, 4 * rvar))
++				goto sigbus;
++
++			for (i = 16; rvar; rvar--, i++) {
++				value = regs->regs[i];
++				StoreW(addr, value, res);
++				if (res)
++					goto fault;
++				addr += 4;
++			}
++			value = regs->regs[31];
++			StoreW(addr, value, res);
++			if (res)
++				goto fault;
++
++			goto success;
++
++		}
++
++		goto sigbus;
++
++	case mm_lhu16_op:
++		reg = mmreg16to32[insn.mm16_rb_format.rt];
++		goto loadHWU;
++
++	case mm_lw16_op:
++		reg = mmreg16to32[insn.mm16_rb_format.rt];
++		goto loadW;
++
++	case mm_sh16_op:
++		reg = mmreg16to32_st[insn.mm16_rb_format.rt];
++		goto storeHW;
++
++	case mm_sw16_op:
++		reg = mmreg16to32_st[insn.mm16_rb_format.rt];
++		goto storeW;
++
++	case mm_lwsp16_op:
++		reg = insn.mm16_r5_format.rt;
++		goto loadW;
++
++	case mm_swsp16_op:
++		reg = insn.mm16_r5_format.rt;
++		goto storeW;
++
++	case mm_lwgp16_op:
++		reg = mmreg16to32[insn.mm16_r3_format.rt];
++		goto loadW;
++
++	default:
++		goto sigill;
++	}
++
++loadHW:
++	if (!access_ok(VERIFY_READ, addr, 2))
++		goto sigbus;
++
++	LoadHW(addr, value, res);
++	if (res)
++		goto fault;
++	regs->regs[reg] = value;
++	goto success;
++
++loadHWU:
++	if (!access_ok(VERIFY_READ, addr, 2))
++		goto sigbus;
++
++	LoadHWU(addr, value, res);
++	if (res)
++		goto fault;
++	regs->regs[reg] = value;
++	goto success;
++
++loadW:
++	if (!access_ok(VERIFY_READ, addr, 4))
++		goto sigbus;
++
++	LoadW(addr, value, res);
++	if (res)
++		goto fault;
++	regs->regs[reg] = value;
++	goto success;
++
++loadWU:
++#ifdef CONFIG_64BIT
++	/*
++	 * A 32-bit kernel might be running on a 64-bit processor.  But
++	 * if we're on a 32-bit processor and an i-cache incoherency
++	 * or race makes us see a 64-bit instruction here the sdl/sdr
++	 * would blow up, so for now we don't handle unaligned 64-bit
++	 * instructions on 32-bit kernels.
++	 */
++	if (!access_ok(VERIFY_READ, addr, 4))
++		goto sigbus;
++
++	LoadWU(addr, value, res);
++	if (res)
++		goto fault;
++	regs->regs[reg] = value;
++	goto success;
++#endif /* CONFIG_64BIT */
++
++	/* Cannot handle 64-bit instructions in 32-bit kernel */
++	goto sigill;
++
++loadDW:
++#ifdef CONFIG_64BIT
++	/*
++	 * A 32-bit kernel might be running on a 64-bit processor.  But
++	 * if we're on a 32-bit processor and an i-cache incoherency
++	 * or race makes us see a 64-bit instruction here the sdl/sdr
++	 * would blow up, so for now we don't handle unaligned 64-bit
++	 * instructions on 32-bit kernels.
++	 */
++	if (!access_ok(VERIFY_READ, addr, 8))
++		goto sigbus;
++
++	LoadDW(addr, value, res);
++	if (res)
++		goto fault;
++	regs->regs[reg] = value;
++	goto success;
++#endif /* CONFIG_64BIT */
++
++	/* Cannot handle 64-bit instructions in 32-bit kernel */
++	goto sigill;
++
++storeHW:
++	if (!access_ok(VERIFY_WRITE, addr, 2))
++		goto sigbus;
++
++	value = regs->regs[reg];
++	StoreHW(addr, value, res);
++	if (res)
++		goto fault;
++	goto success;
++
++storeW:
++	if (!access_ok(VERIFY_WRITE, addr, 4))
++		goto sigbus;
++
++	value = regs->regs[reg];
++	StoreW(addr, value, res);
++	if (res)
++		goto fault;
++	goto success;
++
++storeDW:
++#ifdef CONFIG_64BIT
++	/*
++	 * A 32-bit kernel might be running on a 64-bit processor.  But
++	 * if we're on a 32-bit processor and an i-cache incoherency
++	 * or race makes us see a 64-bit instruction here the sdl/sdr
++	 * would blow up, so for now we don't handle unaligned 64-bit
++	 * instructions on 32-bit kernels.
++	 */
++	if (!access_ok(VERIFY_WRITE, addr, 8))
++		goto sigbus;
++
++	value = regs->regs[reg];
++	StoreDW(addr, value, res);
++	if (res)
++		goto fault;
++	goto success;
++#endif /* CONFIG_64BIT */
++
++	/* Cannot handle 64-bit instructions in 32-bit kernel */
++	goto sigill;
++
++success:
++	regs->cp0_epc = contpc;	/* advance or branch */
++
++#ifdef CONFIG_DEBUG_FS
++	unaligned_instructions++;
++#endif
++	return;
++
++fault:
++	/* roll back jump/branch */
++	regs->cp0_epc = origpc;
++	regs->regs[31] = orig31;
++	/* Did we have an exception handler installed? */
++	if (fixup_exception(regs))
++		return;
++
++	die_if_kernel("Unhandled kernel unaligned access", regs);
++	force_sig(SIGSEGV, current);
++
++	return;
++
++sigbus:
++	die_if_kernel("Unhandled kernel unaligned access", regs);
++	force_sig(SIGBUS, current);
++
++	return;
++
++sigill:
++	die_if_kernel
++	    ("Unhandled kernel unaligned access or invalid instruction", regs);
++	force_sig(SIGILL, current);
++}
++
++/*  recode table from MIPS16e register notation to GPR */
++int mips16e_reg2gpr[] = { 16, 17, 2, 3, 4, 5, 6, 7 };
++
++static void emulate_load_store_MIPS16e(struct pt_regs *regs, void __user * addr)
++{
++	unsigned long value;
++	unsigned int res;
++	int reg;
++	unsigned long orig31;
++	u16 __user *pc16;
++	unsigned long origpc;
++	union mips16e_instruction mips16inst, oldinst;
++
++	origpc = regs->cp0_epc;
++	orig31 = regs->regs[31];
++	pc16 = (unsigned short __user *)(origpc & ~MIPS_ISA_MODE);
++	/*
++	 * This load never faults.
++	 */
++	__get_user(mips16inst.full, pc16);
++	oldinst = mips16inst;
++
++	/* skip EXTEND instruction */
++	if (mips16inst.ri.opcode == MIPS16e_extend_op) {
++		pc16++;
++		__get_user(mips16inst.full, pc16);
++	} else if (delay_slot(regs)) {
++		/*  skip jump instructions */
++		/*  JAL/JALX are 32 bits but have OPCODE in first short int */
++		if (mips16inst.ri.opcode == MIPS16e_jal_op)
++			pc16++;
++		pc16++;
++		if (get_user(mips16inst.full, pc16))
++			goto sigbus;
++	}
++
++	switch (mips16inst.ri.opcode) {
++	case MIPS16e_i64_op:	/* I64 or RI64 instruction */
++		switch (mips16inst.i64.func) {	/* I64/RI64 func field check */
++		case MIPS16e_ldpc_func:
++		case MIPS16e_ldsp_func:
++			reg = mips16e_reg2gpr[mips16inst.ri64.ry];
++			goto loadDW;
++
++		case MIPS16e_sdsp_func:
++			reg = mips16e_reg2gpr[mips16inst.ri64.ry];
++			goto writeDW;
++
++		case MIPS16e_sdrasp_func:
++			reg = 29;	/* GPRSP */
++			goto writeDW;
++		}
++
++		goto sigbus;
++
++	case MIPS16e_swsp_op:
++	case MIPS16e_lwpc_op:
++	case MIPS16e_lwsp_op:
++		reg = mips16e_reg2gpr[mips16inst.ri.rx];
++		break;
++
++	case MIPS16e_i8_op:
++		if (mips16inst.i8.func != MIPS16e_swrasp_func)
++			goto sigbus;
++		reg = 29;	/* GPRSP */
++		break;
++
++	default:
++		reg = mips16e_reg2gpr[mips16inst.rri.ry];
++		break;
++	}
++
++	switch (mips16inst.ri.opcode) {
++
++	case MIPS16e_lb_op:
++	case MIPS16e_lbu_op:
++	case MIPS16e_sb_op:
++		goto sigbus;
++
++	case MIPS16e_lh_op:
++		if (!access_ok(VERIFY_READ, addr, 2))
++			goto sigbus;
++
++		LoadHW(addr, value, res);
++		if (res)
++			goto fault;
++		MIPS16e_compute_return_epc(regs, &oldinst);
++		regs->regs[reg] = value;
++		break;
++
++	case MIPS16e_lhu_op:
++		if (!access_ok(VERIFY_READ, addr, 2))
++			goto sigbus;
++
++		LoadHWU(addr, value, res);
++		if (res)
++			goto fault;
++		MIPS16e_compute_return_epc(regs, &oldinst);
++		regs->regs[reg] = value;
++		break;
++
++	case MIPS16e_lw_op:
++	case MIPS16e_lwpc_op:
++	case MIPS16e_lwsp_op:
++		if (!access_ok(VERIFY_READ, addr, 4))
++			goto sigbus;
++
++		LoadW(addr, value, res);
++		if (res)
++			goto fault;
++		MIPS16e_compute_return_epc(regs, &oldinst);
++		regs->regs[reg] = value;
++		break;
++
++	case MIPS16e_lwu_op:
++#ifdef CONFIG_64BIT
++		/*
++		 * A 32-bit kernel might be running on a 64-bit processor.  But
++		 * if we're on a 32-bit processor and an i-cache incoherency
++		 * or race makes us see a 64-bit instruction here the sdl/sdr
++		 * would blow up, so for now we don't handle unaligned 64-bit
++		 * instructions on 32-bit kernels.
++		 */
++		if (!access_ok(VERIFY_READ, addr, 4))
++			goto sigbus;
++
++		LoadWU(addr, value, res);
++		if (res)
++			goto fault;
++		MIPS16e_compute_return_epc(regs, &oldinst);
++		regs->regs[reg] = value;
++		break;
++#endif /* CONFIG_64BIT */
++
++		/* Cannot handle 64-bit instructions in 32-bit kernel */
++		goto sigill;
++
++	case MIPS16e_ld_op:
++loadDW:
++#ifdef CONFIG_64BIT
++		/*
++		 * A 32-bit kernel might be running on a 64-bit processor.  But
++		 * if we're on a 32-bit processor and an i-cache incoherency
++		 * or race makes us see a 64-bit instruction here the sdl/sdr
++		 * would blow up, so for now we don't handle unaligned 64-bit
++		 * instructions on 32-bit kernels.
++		 */
++		if (!access_ok(VERIFY_READ, addr, 8))
++			goto sigbus;
++
++		LoadDW(addr, value, res);
++		if (res)
++			goto fault;
++		MIPS16e_compute_return_epc(regs, &oldinst);
++		regs->regs[reg] = value;
++		break;
++#endif /* CONFIG_64BIT */
++
++		/* Cannot handle 64-bit instructions in 32-bit kernel */
++		goto sigill;
++
++	case MIPS16e_sh_op:
++		if (!access_ok(VERIFY_WRITE, addr, 2))
++			goto sigbus;
++
++		MIPS16e_compute_return_epc(regs, &oldinst);
++		value = regs->regs[reg];
++		StoreHW(addr, value, res);
++		if (res)
++			goto fault;
++		break;
++
++	case MIPS16e_sw_op:
++	case MIPS16e_swsp_op:
++	case MIPS16e_i8_op:	/* actually - MIPS16e_swrasp_func */
++		if (!access_ok(VERIFY_WRITE, addr, 4))
++			goto sigbus;
++
++		MIPS16e_compute_return_epc(regs, &oldinst);
++		value = regs->regs[reg];
++		StoreW(addr, value, res);
++		if (res)
++			goto fault;
++		break;
++
++	case MIPS16e_sd_op:
++writeDW:
++#ifdef CONFIG_64BIT
++		/*
++		 * A 32-bit kernel might be running on a 64-bit processor.  But
++		 * if we're on a 32-bit processor and an i-cache incoherency
++		 * or race makes us see a 64-bit instruction here the sdl/sdr
++		 * would blow up, so for now we don't handle unaligned 64-bit
++		 * instructions on 32-bit kernels.
++		 */
++		if (!access_ok(VERIFY_WRITE, addr, 8))
++			goto sigbus;
++
++		MIPS16e_compute_return_epc(regs, &oldinst);
++		value = regs->regs[reg];
++		StoreDW(addr, value, res);
++		if (res)
++			goto fault;
++		break;
++#endif /* CONFIG_64BIT */
++
++		/* Cannot handle 64-bit instructions in 32-bit kernel */
++		goto sigill;
++
++	default:
++		/*
++		 * Pheeee...  We encountered an yet unknown instruction or
++		 * cache coherence problem.  Die sucker, die ...
++		 */
++		goto sigill;
++	}
++
++#ifdef CONFIG_DEBUG_FS
++	unaligned_instructions++;
++#endif
++
++	return;
++
++fault:
++	/* roll back jump/branch */
++	regs->cp0_epc = origpc;
++	regs->regs[31] = orig31;
+ 	/* Did we have an exception handler installed? */
+ 	if (fixup_exception(regs))
  		return;
+@@ -504,7 +1546,8 @@ sigbus:
+ 	return;
  
--	if (unlikely(get_user(opcode, epc) < 0))
--		status = SIGSEGV;
+ sigill:
+-	die_if_kernel("Unhandled kernel unaligned access or invalid instruction", regs);
++	die_if_kernel
++	    ("Unhandled kernel unaligned access or invalid instruction", regs);
+ 	force_sig(SIGILL, current);
+ }
+ 
+@@ -517,23 +1560,64 @@ asmlinkage void do_ade(struct pt_regs *regs)
+ 			1, regs, regs->cp0_badvaddr);
+ 	/*
+ 	 * Did we catch a fault trying to load an instruction?
+-	 * Or are we running in MIPS16 mode?
+ 	 */
+-	if ((regs->cp0_badvaddr == regs->cp0_epc) || (regs->cp0_epc & 0x1))
++	if (regs->cp0_badvaddr == regs->cp0_epc)
+ 		goto sigbus;
+ 
+-	pc = (unsigned int __user *) exception_epc(regs);
+ 	if (user_mode(regs) && !test_thread_flag(TIF_FIXADE))
+ 		goto sigbus;
+ 	if (unaligned_action == UNALIGNED_ACTION_SIGNAL)
+ 		goto sigbus;
+-	else if (unaligned_action == UNALIGNED_ACTION_SHOW)
+-		show_registers(regs);
+ 
+ 	/*
+ 	 * Do branch emulation only if we didn't forward the exception.
+ 	 * This is all so but ugly ...
+ 	 */
++
++	/*
++	 * Are we running in MIPS16e/microMIPS mode?
++	 */
 +	if (is16mode(regs)) {
-+		if (unlikely(get_user(mmop[0], epc) < 0))
-+			status = SIGSEGV;
-+		if (unlikely(get_user(mmop[1], epc) < 0))
-+			status = SIGSEGV;
-+		opcode = (mmop[0] << 16) | mmop[1];
- 
--	if (!cpu_has_llsc && status < 0)
--		status = simulate_llsc(regs, opcode);
-+		if (status < 0)
-+			status = simulate_rdhwr_mm(regs, opcode);
-+	} else {
-+		if (unlikely(get_user(opcode, epc) < 0))
-+			status = SIGSEGV;
- 
--	if (status < 0)
--		status = simulate_rdhwr(regs, opcode);
-+		if (!cpu_has_llsc && status < 0)
-+			status = simulate_llsc(regs, opcode);
- 
--	if (status < 0)
--		status = simulate_sync(regs, opcode);
-+		if (status < 0)
-+			status = simulate_rdhwr_normal(regs, opcode);
++		/*
++		 * Did we catch a fault trying to load an instruction in
++		 * 16bit mode?
++		 */
++		if (regs->cp0_badvaddr == (regs->cp0_epc & ~MIPS_ISA_MODE))
++			goto sigbus;
++		if (unaligned_action == UNALIGNED_ACTION_SHOW)
++			show_registers(regs);
 +
-+		if (status < 0)
-+			status = simulate_sync(regs, opcode);
-+	}
- 
- 	if (status < 0)
- 		status = SIGILL;
- 
- 	if (unlikely(status > 0)) {
--		regs->cp0_epc = old_epc;		/* Undo skip-over.  */
-+		regs->cp0_epc = old_epc;                /* Undo skip-over.  */
-+		regs->regs[31] = old31;
- 		force_sig(status, current);
- 	}
- }
-@@ -978,11 +1050,12 @@ static int default_cu2_call(struct notifier_block *nfb, unsigned long action,
- asmlinkage void do_cpu(struct pt_regs *regs)
- {
- 	unsigned int __user *epc;
--	unsigned long old_epc;
-+	unsigned long old_epc, old31;
- 	unsigned int opcode;
- 	unsigned int cpid;
- 	int status;
- 	unsigned long __maybe_unused flags;
-+	unsigned short mmop[2];
- 
- 	die_if_kernel("do_cpu invoked from kernel context!", regs);
- 
-@@ -992,26 +1065,39 @@ asmlinkage void do_cpu(struct pt_regs *regs)
- 	case 0:
- 		epc = (unsigned int __user *)exception_epc(regs);
- 		old_epc = regs->cp0_epc;
-+		old31 = regs->regs[31];
- 		opcode = 0;
- 		status = -1;
- 
- 		if (unlikely(compute_return_epc(regs) < 0))
- 			return;
- 
--		if (unlikely(get_user(opcode, epc) < 0))
--			status = SIGSEGV;
-+		if (is16mode(regs)) {
-+			if (unlikely(get_user(mmop[0], epc) < 0))
-+				status = SIGSEGV;
-+			if (unlikely(get_user(mmop[1], epc) < 0))
-+				status = SIGSEGV;
-+			opcode = (mmop[0] << 16) | mmop[1];
- 
--		if (!cpu_has_llsc && status < 0)
--			status = simulate_llsc(regs, opcode);
-+			if (status < 0)
-+				status = simulate_rdhwr_mm(regs, opcode);
-+		} else {
-+			if (unlikely(get_user(opcode, epc) < 0))
-+				status = SIGSEGV;
- 
--		if (status < 0)
--			status = simulate_rdhwr(regs, opcode);
-+			if (!cpu_has_llsc && status < 0)
-+				status = simulate_llsc(regs, opcode);
++		if (cpu_has_mips16) {
++			seg = get_fs();
++			if (!user_mode(regs))
++				set_fs(KERNEL_DS);
++			emulate_load_store_MIPS16e(regs,
++						   (void __user *)regs->
++						   cp0_badvaddr);
++			set_fs(seg);
 +
-+			if (status < 0)
-+				status = simulate_rdhwr_normal(regs, opcode);
++			return;
 +		}
- 
- 		if (status < 0)
- 			status = SIGILL;
- 
- 		if (unlikely(status > 0)) {
--			regs->cp0_epc = old_epc;	/* Undo skip-over.  */
-+			regs->cp0_epc = old_epc;        /* Undo skip-over.  */
-+			regs->regs[31] = old31;
- 			force_sig(status, current);
- 		}
- 
-@@ -1324,7 +1410,7 @@ asmlinkage void cache_parity_error(void)
- void ejtag_exception_handler(struct pt_regs *regs)
- {
- 	const int field = 2 * sizeof(unsigned long);
--	unsigned long depc, old_epc;
-+	unsigned long depc, old_epc, old_ra;
- 	unsigned int debug;
- 
- 	printk(KERN_DEBUG "SDBBP EJTAG debug exception - not handled yet, just ignored!\n");
-@@ -1339,10 +1425,12 @@ void ejtag_exception_handler(struct pt_regs *regs)
- 		 * calculation.
- 		 */
- 		old_epc = regs->cp0_epc;
-+		old_ra = regs->regs[31];
- 		regs->cp0_epc = depc;
--		__compute_return_epc(regs);
-+		compute_return_epc(regs);
- 		depc = regs->cp0_epc;
- 		regs->cp0_epc = old_epc;
-+		regs->regs[31] = old_ra;
- 	} else
- 		depc += 4;
- 	write_c0_depc(depc);
-@@ -1378,14 +1466,59 @@ unsigned long ebase;
- unsigned long exception_handlers[32];
- unsigned long vi_handlers[64];
- 
-+/* Install CPU exception handler */
-+void __cpuinit set_handler(unsigned long offset, void *addr, unsigned long size)
-+{
-+#ifdef CONFIG_CPU_MICROMIPS
-+	memcpy((void *)(ebase + offset), ((unsigned char *)addr - 1), size);
-+#else
-+	memcpy((void *)(ebase + offset), addr, size);
-+#endif
-+	local_flush_icache_range(ebase + offset, ebase + offset + size);
-+}
 +
-+static char panic_null_cerr[] __cpuinitdata =
-+	"Trying to set NULL cache error exception handler";
++		if (cpu_has_mmips) {	/* micromips unaligned access */
++			seg = get_fs();
++			if (!user_mode(regs))
++				set_fs(KERNEL_DS);
++			emulate_load_store_microMIPS(regs,
++						     (void __user *)regs->
++						     cp0_badvaddr);
++			set_fs(seg);
 +
-+/*
-+ * Install uncached CPU exception handler.
-+ * This is suitable only for the cache error exception which is the only
-+ * exception handler that is being run uncached.
-+ */
-+void __cpuinit set_uncached_handler(unsigned long offset, void *addr,
-+	unsigned long size)
-+{
-+	unsigned long uncached_ebase = CKSEG1ADDR(ebase);
-+
-+	if (!addr)
-+		panic(panic_null_cerr);
-+
-+	memcpy((void *)(uncached_ebase + offset), addr, size);
-+}
-+
- void __init *set_except_vector(int n, void *addr)
- {
- 	unsigned long handler = (unsigned long) addr;
- 	unsigned long old_handler = exception_handlers[n];
- 
-+#ifdef CONFIG_CPU_MICROMIPS
-+	/*
-+	 * Only the TLB handlers are cache aligned with an even
-+	 * address. All other handlers are on an odd address and
-+	 * require no modification. Otherwise, MIPS32 mode will
-+	 * be entered when handling any TLB exceptions. That
-+	 * would be bad...since we must stay in microMIPS mode.
-+	 */
-+	if (!(handler & 0x1))
-+		handler |= 1;
-+#endif
- 	exception_handlers[n] = handler;
- 	if (n == 0 && cpu_has_divec) {
-+#ifdef CONFIG_CPU_MICROMIPS
-+		unsigned long jump_mask = ~((1 << 27) - 1);
-+#else
- 		unsigned long jump_mask = ~((1 << 28) - 1);
-+#endif
- 		u32 *buf = (u32 *)(ebase + 0x200);
- 		unsigned int k0 = 26;
- 		if ((handler & jump_mask) == ((ebase + 0x200) & jump_mask)) {
-@@ -1412,17 +1545,18 @@ static void *set_vi_srs_handler(int n, vi_handler_t addr, int srs)
- 	unsigned long handler;
- 	unsigned long old_handler = vi_handlers[n];
- 	int srssets = current_cpu_data.srsets;
--	u32 *w;
-+	u16 *h;
- 	unsigned char *b;
- 
- 	BUG_ON(!cpu_has_veic && !cpu_has_vint);
-+	BUG_ON((n < 0) && (n > 9));
- 
- 	if (addr == NULL) {
- 		handler = (unsigned long) do_default_vi;
- 		srs = 0;
- 	} else
- 		handler = (unsigned long) addr;
--	vi_handlers[n] = (unsigned long) addr;
-+	vi_handlers[n] = handler;
- 
- 	b = (unsigned char *)(ebase + 0x200 + n*VECTORSPACING);
- 
-@@ -1435,15 +1569,21 @@ static void *set_vi_srs_handler(int n, vi_handler_t addr, int srs)
- 	} else if (cpu_has_vint) {
- 		/* SRSMap is only defined if shadow sets are implemented */
- 		if (srssets > 1)
--			change_c0_srsmap(0xf << n*4, srs << n*4);
-+		{
-+			if (n < 8)
-+				change_c0_srsmap(0xf << (n * 4),
-+					srs << (n * 4));
-+			else
-+				change_c0_srsmap2(0xf << ((n - 8) * 4),
-+					srs << ((n - 8) * 4));
++			return;
 +		}
- 	}
- 
- 	if (srs == 0) {
- 		/*
- 		 * If no shadow set is selected then use the default handler
--		 * that does normal register saving and a standard interrupt exit
-+		 * that does normal register saving and standard interrupt exit
- 		 */
--
- 		extern char except_vec_vi, except_vec_vi_lui;
- 		extern char except_vec_vi_ori, except_vec_vi_end;
- 		extern char rollback_except_vec_vi;
-@@ -1456,11 +1596,20 @@ static void *set_vi_srs_handler(int n, vi_handler_t addr, int srs)
- 		 * Status.IM bit to be masked before going there.
- 		 */
- 		extern char except_vec_vi_mori;
-+#if defined(CONFIG_CPU_MICROMIPS) || defined(CONFIG_CPU_BIG_ENDIAN)
-+		const int mori_offset = &except_vec_vi_mori - vec_start + 2;
-+#else
- 		const int mori_offset = &except_vec_vi_mori - vec_start;
-+#endif
- #endif /* CONFIG_MIPS_MT_SMTC */
--		const int handler_len = &except_vec_vi_end - vec_start;
-+#if defined(CONFIG_CPU_MICROMIPS) || defined(CONFIG_CPU_BIG_ENDIAN)
-+		const int lui_offset = &except_vec_vi_lui - vec_start + 2;
-+		const int ori_offset = &except_vec_vi_ori - vec_start + 2;
-+#else
- 		const int lui_offset = &except_vec_vi_lui - vec_start;
- 		const int ori_offset = &except_vec_vi_ori - vec_start;
-+#endif
-+		const int handler_len = &except_vec_vi_end - vec_start;
- 
- 		if (handler_len > VECTORSPACING) {
- 			/*
-@@ -1470,30 +1619,44 @@ static void *set_vi_srs_handler(int n, vi_handler_t addr, int srs)
- 			panic("VECTORSPACING too small");
- 		}
- 
--		memcpy(b, vec_start, handler_len);
-+		set_handler(((unsigned long)b - ebase), vec_start,
-+#ifdef CONFIG_CPU_MICROMIPS
-+				(handler_len - 1));
-+#else
-+				handler_len);
-+#endif
- #ifdef CONFIG_MIPS_MT_SMTC
- 		BUG_ON(n > 7);	/* Vector index %d exceeds SMTC maximum. */
- 
--		w = (u32 *)(b + mori_offset);
--		*w = (*w & 0xffff0000) | (0x100 << n);
-+		h = (u16 *)(b + mori_offset);
-+		*h = (0x100 << n);
- #endif /* CONFIG_MIPS_MT_SMTC */
--		w = (u32 *)(b + lui_offset);
--		*w = (*w & 0xffff0000) | (((u32)handler >> 16) & 0xffff);
--		w = (u32 *)(b + ori_offset);
--		*w = (*w & 0xffff0000) | ((u32)handler & 0xffff);
-+		h = (u16 *)(b + lui_offset);
-+		*h = (handler >> 16) & 0xffff;
-+		h = (u16 *)(b + ori_offset);
-+		*h = (handler & 0xffff);
- 		local_flush_icache_range((unsigned long)b,
- 					 (unsigned long)(b+handler_len));
- 	}
- 	else {
- 		/*
--		 * In other cases jump directly to the interrupt handler
--		 *
--		 * It is the handlers responsibility to save registers if required
--		 * (eg hi/lo) and return from the exception using "eret"
-+		 * In other cases jump directly to the interrupt handler. It
-+		 * is the handler's responsibility to save registers if required
-+		 * (eg hi/lo) and return from the exception using "eret".
- 		 */
--		w = (u32 *)b;
--		*w++ = 0x08000000 | (((u32)handler >> 2) & 0x03fffff); /* j handler */
--		*w = 0;
-+		u32 insn;
 +
-+		h = (u16 *)b;
-+		/* j handler */
-+#ifdef CONFIG_CPU_MICROMIPS
-+		insn = 0xd4000000 | (((u32)handler & 0x07ffffff) >> 1);
-+#else
-+		insn = 0x08000000 | (((u32)handler & 0x0fffffff) >> 2);
-+#endif
-+		h[0] = (insn >> 16) & 0xffff;
-+		h[1] = insn & 0xffff;
-+		h[2] = 0;
-+		h[3] = 0;
- 		local_flush_icache_range((unsigned long)b,
- 					 (unsigned long)(b+8));
- 	}
-@@ -1608,7 +1771,11 @@ void __cpuinit per_cpu_trap_init(void)
- 	if (cpu_has_mips_r2) {
- 		cp0_compare_irq_shift = CAUSEB_TI - CAUSEB_IP;
- 		cp0_compare_irq = (read_c0_intctl() >> INTCTLB_IPTI) & 7;
-+		if (!cp0_compare_irq)
-+			cp0_compare_irq = CP0_LEGACY_COMPARE_IRQ;
- 		cp0_perfcount_irq = (read_c0_intctl() >> INTCTLB_IPPCI) & 7;
-+		if (!cp0_perfcount_irq)
-+			cp0_perfcount_irq = CP0_LEGACY_PERFCNT_IRQ;
- 		if (cp0_perfcount_irq == cp0_compare_irq)
- 			cp0_perfcount_irq = -1;
- 	} else {
-@@ -1647,32 +1814,6 @@ void __cpuinit per_cpu_trap_init(void)
- 	TLBMISS_HANDLER_SETUP();
- }
- 
--/* Install CPU exception handler */
--void __init set_handler(unsigned long offset, void *addr, unsigned long size)
--{
--	memcpy((void *)(ebase + offset), addr, size);
--	local_flush_icache_range(ebase + offset, ebase + offset + size);
--}
--
--static char panic_null_cerr[] __cpuinitdata =
--	"Trying to set NULL cache error exception handler";
--
--/*
-- * Install uncached CPU exception handler.
-- * This is suitable only for the cache error exception which is the only
-- * exception handler that is being run uncached.
-- */
--void __cpuinit set_uncached_handler(unsigned long offset, void *addr,
--	unsigned long size)
--{
--	unsigned long uncached_ebase = CKSEG1ADDR(ebase);
--
--	if (!addr)
--		panic(panic_null_cerr);
--
--	memcpy((void *)(uncached_ebase + offset), addr, size);
--}
--
- static int __initdata rdhwr_noopt;
- static int __init set_rdhwr_noopt(char *str)
- {
-@@ -1684,8 +1825,11 @@ __setup("rdhwr_noopt", set_rdhwr_noopt);
- 
- void __init trap_init(void)
- {
--	extern char except_vec3_generic, except_vec3_r4000;
-+	extern char except_vec3_generic;
- 	extern char except_vec4;
-+#if (cpu_has_vce != 0)
-+	extern char except_vec3_r4000;
-+#endif
- 	unsigned long i;
- 	int rollback;
- 
-@@ -1813,13 +1957,16 @@ void __init trap_init(void)
- 
- 	set_except_vector(26, handle_dsp);
- 
-+#if (cpu_has_vce != 0)
- 	if (cpu_has_vce)
- 		/* Special exception: R4[04]00 uses also the divec space. */
--		memcpy((void *)(ebase + 0x180), &except_vec3_r4000, 0x100);
--	else if (cpu_has_4kex)
--		memcpy((void *)(ebase + 0x180), &except_vec3_generic, 0x80);
-+		set_handler(0x180, &except_vec3_r4000, 0x100);
-+	else
-+#endif
-+	if (cpu_has_4kex)
-+		set_handler(0x180, &except_vec3_generic, 0x80);
- 	else
--		memcpy((void *)(ebase + 0x080), &except_vec3_generic, 0x80);
-+		set_handler(0x080, &except_vec3_generic, 0x80);
- 
- 	local_flush_icache_range(ebase, ebase + 0x400);
- 	flush_tlb_handlers();
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 7155b59..3a38ddd 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -2013,6 +2013,13 @@ static void __cpuinit build_r4000_tlb_load_handler(void)
- 
- 	uasm_l_nopage_tlbl(&l, p);
- 	build_restore_work_registers(&p);
-+#ifdef CONFIG_CPU_MICROMIPS
-+	if ((unsigned long)tlb_do_page_fault_0 & 1) {
-+		uasm_i_lui(&p, K0, uasm_rel_hi((long)tlb_do_page_fault_0));
-+		uasm_i_addiu(&p, K0, K0, uasm_rel_lo((long)tlb_do_page_fault_0));
-+		uasm_i_jr(&p, K0);
-+	} else
-+#endif
- 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_0 & 0x0fffffff);
- 	uasm_i_nop(&p);
- 
-@@ -2060,6 +2067,13 @@ static void __cpuinit build_r4000_tlb_store_handler(void)
- 
- 	uasm_l_nopage_tlbs(&l, p);
- 	build_restore_work_registers(&p);
-+#ifdef CONFIG_CPU_MICROMIPS
-+	if ((unsigned long)tlb_do_page_fault_1 & 1) {
-+		uasm_i_lui(&p, K0, uasm_rel_hi((long)tlb_do_page_fault_1));
-+		uasm_i_addiu(&p, K0, K0, uasm_rel_lo((long)tlb_do_page_fault_1));
-+		uasm_i_jr(&p, K0);
-+	} else
-+#endif
- 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_1 & 0x0fffffff);
- 	uasm_i_nop(&p);
- 
-@@ -2108,6 +2122,13 @@ static void __cpuinit build_r4000_tlb_modify_handler(void)
- 
- 	uasm_l_nopage_tlbm(&l, p);
- 	build_restore_work_registers(&p);
-+#ifdef CONFIG_CPU_MICROMIPS
-+	if ((unsigned long)tlb_do_page_fault_1 & 1) {
-+		uasm_i_lui(&p, K0, uasm_rel_hi((long)tlb_do_page_fault_1));
-+		uasm_i_addiu(&p, K0, K0, uasm_rel_lo((long)tlb_do_page_fault_1));
-+		uasm_i_jr(&p, K0);
-+	} else
-+#endif
- 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_1 & 0x0fffffff);
- 	uasm_i_nop(&p);
- 
-diff --git a/arch/mips/mti-sead3/sead3-init.c b/arch/mips/mti-sead3/sead3-init.c
-index 25bdb0a..fcadb89 100644
---- a/arch/mips/mti-sead3/sead3-init.c
-+++ b/arch/mips/mti-sead3/sead3-init.c
-@@ -162,7 +162,41 @@ static void __init mips_nmi_setup(void)
- 	base = cpu_has_veic ?
- 		(void *)(CAC_BASE + 0xa80) :
- 		(void *)(CAC_BASE + 0x380);
-+#ifdef CONFIG_CPU_MICROMIPS
-+	/*
-+	 * Decrement the exception vector address by one for microMIPS.
-+	 */
-+	memcpy(base, (&except_vec_nmi - 1), 0x80);
++		goto sigbus;
++	}
 +
-+	/*
-+	 * This is a hack. We do not know if the boot loader was built with
-+	 * microMIPS instructions or not. If it was not, the NMI exception
-+	 * code at 0x80000a80 will be taken in MIPS32 mode. The hand coded
-+	 * assembly below forces us into microMIPS mode if we are a pure
-+	 * microMIPS kernel. The assembly instructions are:
-+	 *
-+	 *  3C1A8000   lui       k0,0x8000
-+	 *  375A0381   ori       k0,k0,0x381
-+	 *  03400008   jr        k0
-+	 *  00000000   nop
-+	 *
-+	 * The mode switch occurs by jumping to the unaligned exception
-+	 * vector address at 0x80000381 which would have been 0x80000380
-+	 * in MIPS32 mode. The jump to the unaligned address transitions
-+	 * us into microMIPS mode.
-+	 */
-+	if (!cpu_has_veic) {
-+		void *base2 = (void *)(CAC_BASE + 0xa80);
-+		*((unsigned int *)base2) = 0x3c1a8000;
-+		*((unsigned int *)base2 + 1) = 0x375a0381;
-+		*((unsigned int *)base2 + 2) = 0x03400008;
-+		*((unsigned int *)base2 + 3) = 0x00000000;
-+		flush_icache_range((unsigned long)base2,
-+			(unsigned long)base2 + 0x10);
-+	}
-+#else
- 	memcpy(base, &except_vec_nmi, 0x80);
-+#endif
- 	flush_icache_range((unsigned long)base, (unsigned long)base + 0x80);
- }
- 
-@@ -174,7 +208,21 @@ static void __init mips_ejtag_setup(void)
- 	base = cpu_has_veic ?
- 		(void *)(CAC_BASE + 0xa00) :
- 		(void *)(CAC_BASE + 0x300);
-+#ifdef CONFIG_CPU_MICROMIPS
-+	/* Deja vu... */
-+	memcpy(base, (&except_vec_ejtag_debug - 1), 0x80);
-+	if (!cpu_has_veic) {
-+		void *base2 = (void *)(CAC_BASE + 0xa00);
-+		*((unsigned int *)base2) = 0x3c1a8000;
-+		*((unsigned int *)base2 + 1) = 0x375a0301;
-+		*((unsigned int *)base2 + 2) = 0x03400008;
-+		*((unsigned int *)base2 + 3) = 0x00000000;
-+		flush_icache_range((unsigned long)base2,
-+			(unsigned long)base2 + 0x10);
-+	}
-+#else
- 	memcpy(base, &except_vec_ejtag_debug, 0x80);
-+#endif
- 	flush_icache_range((unsigned long)base, (unsigned long)base + 0x80);
- }
- 
++	if (unaligned_action == UNALIGNED_ACTION_SHOW)
++		show_registers(regs);
++	pc = (unsigned int __user *)exception_epc(regs);
++
+ 	seg = get_fs();
+ 	if (!user_mode(regs))
+ 		set_fs(KERNEL_DS);
 -- 
 1.7.10

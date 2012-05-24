@@ -1,25 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2012 14:57:02 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:54367 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903681Ab2EXM4y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 May 2012 14:56:54 +0200
-Date:   Thu, 24 May 2012 13:56:54 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     "Steven J. Hill" <sjhill@mips.com>, linux-mips@linux-mips.org
-Subject: Re: [v2,4/5] MIPS: Malta PCI changes for PCI 2.1 compatibility and
- conflicts.
-In-Reply-To: <20120524112503.GA2337@linux-mips.org>
-Message-ID: <alpine.LFD.2.00.1205241341060.3701@eddie.linux-mips.org>
-References: <1333742869-17373-1-git-send-email-sjhill@mips.com> <20120524112503.GA2337@linux-mips.org>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2012 17:15:32 +0200 (CEST)
+Received: from mail-gg0-f177.google.com ([209.85.161.177]:61983 "EHLO
+        mail-gg0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903703Ab2EXPP2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 May 2012 17:15:28 +0200
+Received: by ggcs5 with SMTP id s5so8869376ggc.36
+        for <multiple recipients>; Thu, 24 May 2012 08:15:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=r19tiiCVT9ZOr090sa54p1G313HDJ2LiTJvs//sZ8YM=;
+        b=M1bapl4z/heQhFRICl3Qoi4pHnrF8q3z24rHEWI6sOVnnrK4JhzLOvX80gDUem/5HX
+         bcmrOA9TMyh95eXgRbi9plqnmpnxXKuzWH7r2otw2D4lAORMEwjFNuZDK8m6EkOQm7AE
+         vUOsVfN/BAb9If/sJsb/xW8pPXMN01CDmKniZPfi9AQ1QORlrCJMl4riK1RNlKCocYM8
+         jUuPxc/55k5xfUht0o5LNPL+0/p9RwjauSNhYHjqcunnhx4GeTUNEFXQ+G5afHJ1CQ8V
+         IcRkcSkereycXLjJ4ZOQNuKLprqv++QuK167Z7ZdAhHlfZjqtW2OJP75HKJRutkLPAm/
+         YIOw==
+Received: by 10.68.191.230 with SMTP id hb6mr22010509pbc.57.1337872521005;
+        Thu, 24 May 2012 08:15:21 -0700 (PDT)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id wo8sm5773164pbc.9.2012.05.24.08.15.18
+        (version=SSLv3 cipher=OTHER);
+        Thu, 24 May 2012 08:15:19 -0700 (PDT)
+Message-ID: <4FBE5085.2090904@gmail.com>
+Date:   Thu, 24 May 2012 08:15:17 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-archive-position: 33444
+To:     Alessandro Rubini <rubini@gnudd.com>
+CC:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        Giancarlo Asnaghi <giancarlo.asnaghi@st.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Subject: Re: [PATCH] swiotlb: add "dma_attrs" argument to alloc and free,
+ to match dma_map_ops
+References: <20120524114422.GA25950@mail.gnudd.com>
+In-Reply-To: <20120524114422.GA25950@mail.gnudd.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 33445
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,48 +63,39 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, 24 May 2012, Ralf Baechle wrote:
+On 05/24/2012 04:44 AM, Alessandro Rubini wrote:
+> The alloc and free pointers within "struct dma_map_ops" receive a
+> pointer to dma_attrs that was not present in the generic swiotlb
+> functions.  For this reason, a few files had a local wrapper for the
+> free function that just removes the attrs argument before calling the
+> generic function.
+>
+> This patch adds the extra argument to generic functions and removes
+> such wrappers when they are no more needed.  This also fixes a
+> compiler warning for sta2x11-fixup.c, that would have required yet
+> another wrapper.
+>
+> Signed-off-by: Alessandro Rubini<rubini@gnudd.com>
+> Acked-by: Giancarlo Asnaghi<giancarlo.asnaghi@st.com>
+> Cc: Tony Luck<tony.luck@intel.com>
+> Cc: Fenghua Yu<fenghua.yu@intel.com>
+> Cc: Ralf Baechle<ralf@linux-mips.org>
+> Cc: Guan Xuetao<gxt@mprc.pku.edu.cn>
+> Cc: Thomas Gleixner<tglx@linutronix.de>
+> Cc: Kyungmin Park<kyungmin.park@samsung.com>
+> Cc: FUJITA Tomonori<fujita.tomonori@lab.ntt.co.jp>
+> Cc: Konrad Rzeszutek Wilk<konrad.wilk@oracle.com>
+> ---
+>   arch/ia64/kernel/pci-swiotlb.c       |   11 ++---------
+>   arch/mips/cavium-octeon/dma-octeon.c |    4 ++--
+>   arch/unicore32/mm/dma-swiotlb.c      |   22 ++--------------------
+>   arch/x86/kernel/pci-swiotlb.c        |   11 ++---------
+>   arch/x86/pci/sta2x11-fixup.c         |    3 ++-
+>   include/linux/swiotlb.h              |    7 ++++---
+>   lib/swiotlb.c                        |    5 +++--
+>   7 files changed, 17 insertions(+), 46 deletions(-)
+>
 
-> > diff --git a/arch/mips/mti-malta/malta-pci.c b/arch/mips/mti-malta/malta-pci.c
-> > index bf80921..afeb619 100644
-> > --- a/arch/mips/mti-malta/malta-pci.c
-> > +++ b/arch/mips/mti-malta/malta-pci.c
-> > @@ -241,8 +241,9 @@ void __init mips_pcibios_init(void)
-> >  		return;
-> >  	}
-> >  
-> > -	if (controller->io_resource->start < 0x00001000UL)	/* FIXME */
-> > -		controller->io_resource->start = 0x00001000UL;
-> > +	/* Change start address to avoid conflicts with ACPI and SMB devices */
-> > +	if (controller->io_resource->start < 0x00002000UL)	/* FIXME */
-> > +		controller->io_resource->start = 0x00002000UL;
-> 
-> I think raising this value to 0x2000 solves the FIXME which is there since
-> Maciej's 66d9ad704b25287bfee7e86a5af50b92642b9c72 commit in 2005.  Maciej,
-> do you recall you added the FIXME?
+This looks sane (although I haven't tested it).  For the OCTEON bits:
 
- Vaguely.  I reckon the bump was required because PIIX4 ACPI/SMB didn't 
-reserve their resources that are not properly set/announced with standard 
-PCI BARs in the PCI configuration space.  Chances therefore were something 
-else would take this range and I reckon this was of course exactly what 
-happened, ruining everything in a weird way.
-
- And I think it was the other way round -- I think bumping it up yet more 
-is the wrong way of "fixing this up" (why is it needed anyway, did the 
-assignment change? -- I don't remember if power-on defaults are used on 
-Malta or if that is YAMON that initialises these).  I am fairly sure if I 
-added that FIXME it was meant as a reminder to fix that properly and not 
-do something as trivial as this.  And a proper fix is IMO either of these:
-
-1. If there is a proper PIIX4 ACPI/SMB driver available then it should 
-   reserve these resources to avoid the conflict.
-
-2. Otherwise a PCI quirk should do that based on the PCI ID of the device 
-   and the resource ranges obtained directly from the device (I reckon 
-   they still use BARs, but in the vendor-specific space, they're not 
-   fixed assignments), pretty much like some PC/AT legacy resources are 
-   reserved (82xx series PIC, PIT, etc).
-
-I don't remember why I didn't do either of these, sorry.
-
-  Maciej
+Acked-by: David Daney <david.daney@cavium.com>

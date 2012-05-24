@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2012 22:46:32 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:42789 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2012 22:46:57 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:42790 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903703Ab2EXUq1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 May 2012 22:46:27 +0200
+        with ESMTP id S1903728Ab2EXUq2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 May 2012 22:46:28 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SXevM-0003qN-Jo; Thu, 24 May 2012 15:46:20 -0500
+        id 1SXevO-0003qN-30; Thu, 24 May 2012 15:46:22 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH 0/9] Add support for pure microMIPS kernel.
-Date:   Thu, 24 May 2012 15:45:57 -0500
-Message-Id: <1337892366-24210-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH 1/9] MIPS: Add microMIPS breakpoints and DSP support.
+Date:   Thu, 24 May 2012 15:45:58 -0500
+Message-Id: <1337892366-24210-2-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10
-X-archive-position: 33450
+In-Reply-To: <1337892366-24210-1-git-send-email-sjhill@mips.com>
+References: <1337892366-24210-1-git-send-email-sjhill@mips.com>
+X-archive-position: 33451
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,53 +36,88 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-This set of patches is to support building a pure microMIPS kernel
-image using only instruction from the microMIPS ISA. The result is
-a kernel binary reduction of more than 20% and an increase in the
-speed of execution due to the smaller and faster instructions.
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/include/asm/break.h |   11 +++++++++--
+ arch/mips/include/asm/dsp.h   |    4 ++++
+ arch/mips/kernel/proc.c       |    9 +++++++--
+ 3 files changed, 20 insertions(+), 4 deletions(-)
 
-Steven J. Hill (9):
-  MIPS: Add microMIPS breakpoints and DSP support.
-  MIPS: Add support for microMIPS instructions.
-  MIPS: Add support for microMIPS exception handling.
-  MIPS: Support microMIPS/MIPS16e handling of delay slots.
-  MIPS: Support microMIPS/MIPS16e unaligned accesses.
-  MIPS: Support microMIPS/MIPS16e floating point.
-  MIPS: Work-around microMIPS GNU assembler bug.
-  MIPS: Fixup ordering of micro assembler instructions.
-  MIPS: Add microMIPS configuration option.
-
- arch/mips/Kconfig                      |   10 +
- arch/mips/Makefile                     |    1 +
- arch/mips/configs/sead3_defconfig      |    5 +-
- arch/mips/configs/sead3micro_defconfig | 1771 ++++++++++++++++++++++++++++++++
- arch/mips/include/asm/branch.h         |   33 +-
- arch/mips/include/asm/break.h          |   11 +-
- arch/mips/include/asm/dsp.h            |    4 +
- arch/mips/include/asm/fpu_emulator.h   |    7 +
- arch/mips/include/asm/futex.h          |    4 +
- arch/mips/include/asm/inst.h           |  882 +++++++++++++++-
- arch/mips/include/asm/mipsregs.h       |  359 +++----
- arch/mips/include/asm/paccess.h        |    2 +
- arch/mips/include/asm/stackframe.h     |   12 +-
- arch/mips/include/asm/uaccess.h        |   14 +-
- arch/mips/include/asm/uasm.h           |  103 +-
- arch/mips/kernel/branch.c              |  183 +++-
- arch/mips/kernel/cpu-probe.c           |    3 +
- arch/mips/kernel/genex.S               |   82 +-
- arch/mips/kernel/proc.c                |    9 +-
- arch/mips/kernel/process.c             |  101 ++
- arch/mips/kernel/scall32-o32.S         |   22 +-
- arch/mips/kernel/smtc-asm.S            |    3 +
- arch/mips/kernel/traps.c               |  375 +++++--
- arch/mips/kernel/unaligned.c           | 1496 +++++++++++++++++++++++----
- arch/mips/math-emu/cp1emu.c            |  766 ++++++++++++--
- arch/mips/math-emu/dsemul.c            |   40 +-
- arch/mips/mm/tlbex.c                   |   21 +
- arch/mips/mm/uasm.c                    |  214 +++-
- arch/mips/mti-sead3/sead3-init.c       |   48 +
- 29 files changed, 5768 insertions(+), 813 deletions(-)
- create mode 100644 arch/mips/configs/sead3micro_defconfig
-
+diff --git a/arch/mips/include/asm/break.h b/arch/mips/include/asm/break.h
+index 9161e68..4e4dc87 100644
+--- a/arch/mips/include/asm/break.h
++++ b/arch/mips/include/asm/break.h
+@@ -3,8 +3,9 @@
+  * License.  See the file "COPYING" in the main directory of this archive
+  * for more details.
+  *
+- * Copyright (C) 1995, 2003 by Ralf Baechle
+  * Copyright (C) 1999 Silicon Graphics, Inc.
++ * Copyright (C) 1995, 2003 by Ralf Baechle
++ * Copyright (C) 2011, 2012 MIPS Technologies, Inc.
+  */
+ #ifndef __ASM_BREAK_H
+ #define __ASM_BREAK_H
+@@ -27,11 +28,17 @@
+ #define BRK_STACKOVERFLOW 9	/* For Ada stackchecking */
+ #define BRK_NORLD	10	/* No rld found - not used by Linux/MIPS */
+ #define _BRK_THREADBP	11	/* For threads, user bp (used by debuggers) */
++
++#ifdef CONFIG_CPU_MICROMIPS
++#define BRK_BUG		12	/* Used by BUG() */
++#define BRK_KDB		13	/* Used in KDB_ENTER() */
++#else
+ #define BRK_BUG		512	/* Used by BUG() */
+ #define BRK_KDB		513	/* Used in KDB_ENTER() */
++#endif
++#define MM_BRK_MEMU	14	/* Used by FPU emulator (microMIPS) */
+ #define BRK_MEMU	514	/* Used by FPU emulator */
+ #define BRK_KPROBE_BP	515	/* Kprobe break */
+ #define BRK_KPROBE_SSTEPBP 516	/* Kprobe single step software implementation */
+-#define BRK_MULOVF	1023	/* Multiply overflow */
+ 
+ #endif /* __ASM_BREAK_H */
+diff --git a/arch/mips/include/asm/dsp.h b/arch/mips/include/asm/dsp.h
+index e9bfc08..3149b30 100644
+--- a/arch/mips/include/asm/dsp.h
++++ b/arch/mips/include/asm/dsp.h
+@@ -16,7 +16,11 @@
+ #include <asm/mipsregs.h>
+ 
+ #define DSP_DEFAULT	0x00000000
++#ifdef CONFIG_CPU_MICROMIPS
++#define DSP_MASK	0x7f
++#else
+ #define DSP_MASK	0x3ff
++#endif
+ 
+ #define __enable_dsp_hazard()						\
+ do {									\
+diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+index 5542817..c5e97d4 100644
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -64,14 +64,19 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+ 				cpu_data[n].watch_reg_masks[i]);
+ 		seq_printf(m, "]\n");
+ 	}
+-	seq_printf(m, "ASEs implemented\t:%s%s%s%s%s%s\n",
++	seq_printf(m, "ASEs implemented\t:%s%s%s%s%s%s%s\n",
+ 		      cpu_has_mips16 ? " mips16" : "",
+ 		      cpu_has_mdmx ? " mdmx" : "",
+ 		      cpu_has_mips3d ? " mips3d" : "",
+ 		      cpu_has_smartmips ? " smartmips" : "",
+ 		      cpu_has_dsp ? " dsp" : "",
+-		      cpu_has_mipsmt ? " mt" : ""
++		      cpu_has_mipsmt ? " mt" : "",
++		      cpu_has_mmips ? " micromips" : ""
+ 		);
++	if (cpu_has_mmips) {
++		seq_printf(m, "micromips kernel\t: %s\n",
++			(read_c0_config3() & MIPS_CONF3_ISA_OE) ? "yes" : "no");
++	}
+ 	seq_printf(m, "shadow register sets\t: %d\n",
+ 		      cpu_data[n].srsets);
+ 	seq_printf(m, "kscratch registers\t: %d\n",
 -- 
 1.7.10

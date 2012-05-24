@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2012 22:38:45 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:42763 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2012 22:46:32 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:42789 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903703Ab2EXUih (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 May 2012 22:38:37 +0200
+        with ESMTP id S1903703Ab2EXUq1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 May 2012 22:46:27 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SXenl-0003pW-EY; Thu, 24 May 2012 15:38:29 -0500
+        id 1SXevM-0003qN-Jo; Thu, 24 May 2012 15:46:20 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH] MIPS: Refactor 'clear_page' and 'copy_page' functions.
-Date:   Thu, 24 May 2012 15:38:24 -0500
-Message-Id: <1337891904-24093-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH 0/9] Add support for pure microMIPS kernel.
+Date:   Thu, 24 May 2012 15:45:57 -0500
+Message-Id: <1337892366-24210-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10
-X-archive-position: 33449
+X-archive-position: 33450
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,222 +34,53 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Remove usage of the '__attribute__((alias("...")))' hack that aliased
-to integer arrays containing micro-assembled instructions. This hack
-breaks when building a microMIPS kernel. It also makes the code much
-easier to understand.
+This set of patches is to support building a pure microMIPS kernel
+image using only instruction from the microMIPS ISA. The result is
+a kernel binary reduction of more than 20% and an increase in the
+speed of execution due to the smaller and faster instructions.
 
-Signed-off-by: Steven J. Hill <sjhill@mips.com>
----
- arch/mips/mm/Makefile     |    4 +--
- arch/mips/mm/page-funcs.S |   49 +++++++++++++++++++++++++++++++++
- arch/mips/mm/page.c       |   67 ++++++++++++---------------------------------
- 3 files changed, 69 insertions(+), 51 deletions(-)
- create mode 100644 arch/mips/mm/page-funcs.S
+Steven J. Hill (9):
+  MIPS: Add microMIPS breakpoints and DSP support.
+  MIPS: Add support for microMIPS instructions.
+  MIPS: Add support for microMIPS exception handling.
+  MIPS: Support microMIPS/MIPS16e handling of delay slots.
+  MIPS: Support microMIPS/MIPS16e unaligned accesses.
+  MIPS: Support microMIPS/MIPS16e floating point.
+  MIPS: Work-around microMIPS GNU assembler bug.
+  MIPS: Fixup ordering of micro assembler instructions.
+  MIPS: Add microMIPS configuration option.
 
-diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
-index 4aa2028..fd6203f 100644
---- a/arch/mips/mm/Makefile
-+++ b/arch/mips/mm/Makefile
-@@ -3,8 +3,8 @@
- #
- 
- obj-y				+= cache.o dma-default.o extable.o fault.o \
--				   gup.o init.o mmap.o page.o tlbex.o \
--				   tlbex-fault.o uasm.o
-+				   gup.o init.o mmap.o page.o page-funcs.o \
-+				   tlbex.o tlbex-fault.o uasm.o
- 
- obj-$(CONFIG_32BIT)		+= ioremap.o pgtable-32.o
- obj-$(CONFIG_64BIT)		+= pgtable-64.o
-diff --git a/arch/mips/mm/page-funcs.S b/arch/mips/mm/page-funcs.S
-new file mode 100644
-index 0000000..901c2bc
---- /dev/null
-+++ b/arch/mips/mm/page-funcs.S
-@@ -0,0 +1,49 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Micro-assembler generated clear_page/copy_page functions.
-+ *
-+ * Copyright (C) 2012  MIPS Technologies, Inc.
-+ */
-+#include <asm/asm.h>
-+#include <asm/regdef.h>
-+
-+/*
-+ * Maximum sizes:
-+ *
-+ * R4000 128 bytes S-cache:		0x058 bytes
-+ * R4600 v1.7:				0x05c bytes
-+ * R4600 v2.0:				0x060 bytes
-+ * With prefetching, 16 word strides	0x120 bytes
-+ */
-+EXPORT(__clear_page_start)
-+#ifdef CONFIG_SIBYTE_DMA_PAGEOPS
-+LEAF(clear_page_cpu)
-+#else
-+LEAF(clear_page)
-+#endif
-+1:	j	1b		/* Dummy, will be replaced. */
-+	.space 288
-+END(clear_page)
-+EXPORT(__clear_page_end)
-+
-+/*
-+ * Maximum sizes:
-+ *
-+ * R4000 128 bytes S-cache:		0x11c bytes
-+ * R4600 v1.7:				0x080 bytes
-+ * R4600 v2.0:				0x07c bytes
-+ * With prefetching, 16 word strides	0x540 bytes
-+ */
-+EXPORT(__copy_page_start)
-+#ifdef CONFIG_SIBYTE_DMA_PAGEOPS
-+LEAF(copy_page_cpu)
-+#else
-+LEAF(copy_page)
-+#endif
-+1:	j	1b		/* Dummy, will be replaced. */
-+	.space 1344
-+END(copy_page)
-+EXPORT(__copy_page_end)
-diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
-index cc0b626..98f530e 100644
---- a/arch/mips/mm/page.c
-+++ b/arch/mips/mm/page.c
-@@ -6,6 +6,7 @@
-  * Copyright (C) 2003, 04, 05 Ralf Baechle (ralf@linux-mips.org)
-  * Copyright (C) 2007  Maciej W. Rozycki
-  * Copyright (C) 2008  Thiemo Seufer
-+ * Copyright (C) 2012  MIPS Technologies, Inc.
-  */
- #include <linux/init.h>
- #include <linux/kernel.h>
-@@ -71,45 +72,6 @@ static struct uasm_reloc __cpuinitdata relocs[5];
- #define cpu_is_r4600_v1_x()	((read_c0_prid() & 0xfffffff0) == 0x00002010)
- #define cpu_is_r4600_v2_x()	((read_c0_prid() & 0xfffffff0) == 0x00002020)
- 
--/*
-- * Maximum sizes:
-- *
-- * R4000 128 bytes S-cache:		0x058 bytes
-- * R4600 v1.7:				0x05c bytes
-- * R4600 v2.0:				0x060 bytes
-- * With prefetching, 16 word strides	0x120 bytes
-- */
--
--static u32 clear_page_array[0x120 / 4];
--
--#ifdef CONFIG_SIBYTE_DMA_PAGEOPS
--void clear_page_cpu(void *page) __attribute__((alias("clear_page_array")));
--#else
--void clear_page(void *page) __attribute__((alias("clear_page_array")));
--#endif
--
--EXPORT_SYMBOL(clear_page);
--
--/*
-- * Maximum sizes:
-- *
-- * R4000 128 bytes S-cache:		0x11c bytes
-- * R4600 v1.7:				0x080 bytes
-- * R4600 v2.0:				0x07c bytes
-- * With prefetching, 16 word strides	0x540 bytes
-- */
--static u32 copy_page_array[0x540 / 4];
--
--#ifdef CONFIG_SIBYTE_DMA_PAGEOPS
--void
--copy_page_cpu(void *to, void *from) __attribute__((alias("copy_page_array")));
--#else
--void copy_page(void *to, void *from) __attribute__((alias("copy_page_array")));
--#endif
--
--EXPORT_SYMBOL(copy_page);
--
--
- static int pref_bias_clear_store __cpuinitdata;
- static int pref_bias_copy_load __cpuinitdata;
- static int pref_bias_copy_store __cpuinitdata;
-@@ -282,10 +244,15 @@ static inline void __cpuinit build_clear_pref(u32 **buf, int off)
- 		}
- }
- 
-+extern u32 __clear_page_start;
-+extern u32 __clear_page_end;
-+extern u32 __copy_page_start;
-+extern u32 __copy_page_end;
-+
- void __cpuinit build_clear_page(void)
- {
- 	int off;
--	u32 *buf = (u32 *)&clear_page_array;
-+	u32 *buf = &__clear_page_start;
- 	struct uasm_label *l = labels;
- 	struct uasm_reloc *r = relocs;
- 	int i;
-@@ -356,17 +323,17 @@ void __cpuinit build_clear_page(void)
- 	uasm_i_jr(&buf, RA);
- 	uasm_i_nop(&buf);
- 
--	BUG_ON(buf > clear_page_array + ARRAY_SIZE(clear_page_array));
-+	BUG_ON(buf > &__clear_page_end);
- 
- 	uasm_resolve_relocs(relocs, labels);
- 
- 	pr_debug("Synthesized clear page handler (%u instructions).\n",
--		 (u32)(buf - clear_page_array));
-+		 (u32)(buf - &__clear_page_start));
- 
- 	pr_debug("\t.set push\n");
- 	pr_debug("\t.set noreorder\n");
--	for (i = 0; i < (buf - clear_page_array); i++)
--		pr_debug("\t.word 0x%08x\n", clear_page_array[i]);
-+	for (i = 0; i < (buf - &__clear_page_start); i++)
-+		pr_debug("\t.word 0x%08x\n", (&__clear_page_start)[i]);
- 	pr_debug("\t.set pop\n");
- }
- 
-@@ -427,7 +394,7 @@ static inline void build_copy_store_pref(u32 **buf, int off)
- void __cpuinit build_copy_page(void)
- {
- 	int off;
--	u32 *buf = (u32 *)&copy_page_array;
-+	u32 *buf = &__copy_page_start;
- 	struct uasm_label *l = labels;
- 	struct uasm_reloc *r = relocs;
- 	int i;
-@@ -595,21 +562,23 @@ void __cpuinit build_copy_page(void)
- 	uasm_i_jr(&buf, RA);
- 	uasm_i_nop(&buf);
- 
--	BUG_ON(buf > copy_page_array + ARRAY_SIZE(copy_page_array));
-+	BUG_ON(buf > &__copy_page_end);
- 
- 	uasm_resolve_relocs(relocs, labels);
- 
- 	pr_debug("Synthesized copy page handler (%u instructions).\n",
--		 (u32)(buf - copy_page_array));
-+		 (u32)(buf - &__copy_page_start));
- 
- 	pr_debug("\t.set push\n");
- 	pr_debug("\t.set noreorder\n");
--	for (i = 0; i < (buf - copy_page_array); i++)
--		pr_debug("\t.word 0x%08x\n", copy_page_array[i]);
-+	for (i = 0; i < (buf - &__copy_page_start); i++)
-+		pr_debug("\t.word 0x%08x\n", (&__copy_page_start)[i]);
- 	pr_debug("\t.set pop\n");
- }
- 
- #ifdef CONFIG_SIBYTE_DMA_PAGEOPS
-+extern void clear_page_cpu(void *page);
-+extern void copy_page_cpu(void *to, void *from);
- 
- /*
-  * Pad descriptors to cacheline, since each is exclusively owned by a
+ arch/mips/Kconfig                      |   10 +
+ arch/mips/Makefile                     |    1 +
+ arch/mips/configs/sead3_defconfig      |    5 +-
+ arch/mips/configs/sead3micro_defconfig | 1771 ++++++++++++++++++++++++++++++++
+ arch/mips/include/asm/branch.h         |   33 +-
+ arch/mips/include/asm/break.h          |   11 +-
+ arch/mips/include/asm/dsp.h            |    4 +
+ arch/mips/include/asm/fpu_emulator.h   |    7 +
+ arch/mips/include/asm/futex.h          |    4 +
+ arch/mips/include/asm/inst.h           |  882 +++++++++++++++-
+ arch/mips/include/asm/mipsregs.h       |  359 +++----
+ arch/mips/include/asm/paccess.h        |    2 +
+ arch/mips/include/asm/stackframe.h     |   12 +-
+ arch/mips/include/asm/uaccess.h        |   14 +-
+ arch/mips/include/asm/uasm.h           |  103 +-
+ arch/mips/kernel/branch.c              |  183 +++-
+ arch/mips/kernel/cpu-probe.c           |    3 +
+ arch/mips/kernel/genex.S               |   82 +-
+ arch/mips/kernel/proc.c                |    9 +-
+ arch/mips/kernel/process.c             |  101 ++
+ arch/mips/kernel/scall32-o32.S         |   22 +-
+ arch/mips/kernel/smtc-asm.S            |    3 +
+ arch/mips/kernel/traps.c               |  375 +++++--
+ arch/mips/kernel/unaligned.c           | 1496 +++++++++++++++++++++++----
+ arch/mips/math-emu/cp1emu.c            |  766 ++++++++++++--
+ arch/mips/math-emu/dsemul.c            |   40 +-
+ arch/mips/mm/tlbex.c                   |   21 +
+ arch/mips/mm/uasm.c                    |  214 +++-
+ arch/mips/mti-sead3/sead3-init.c       |   48 +
+ 29 files changed, 5768 insertions(+), 813 deletions(-)
+ create mode 100644 arch/mips/configs/sead3micro_defconfig
+
 -- 
 1.7.10

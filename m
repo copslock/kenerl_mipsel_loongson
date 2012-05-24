@@ -1,38 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2012 20:54:36 +0200 (CEST)
-Received: from mail2.gnudd.com ([213.203.150.91]:54091 "EHLO mail.gnudd.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903703Ab2EXSy3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 24 May 2012 20:54:29 +0200
-Received: from mail.gnudd.com (localhost [127.0.0.1])
-        by mail.gnudd.com (8.14.3/8.14.3/Debian-9.4) with ESMTP id q4OIrSe5016304;
-        Thu, 24 May 2012 20:53:28 +0200
-Received: (from rubini@localhost)
-        by mail.gnudd.com (8.14.3/8.14.3/Submit) id q4OIrPib016299;
-        Thu, 24 May 2012 20:53:25 +0200
-Date:   Thu, 24 May 2012 20:53:25 +0200
-From:   Alessandro Rubini <rubini@gnudd.com>
-To:     konrad.wilk@oracle.com
-Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        giancarlo.asnaghi@st.com, tony.luck@intel.com,
-        fenghua.yu@intel.com, ralf@linux-mips.org, gxt@mprc.pku.edu.cn,
-        tglx@linutronix.de, kyungmin.park@samsung.com,
-        fujita.tomonori@lab.ntt.co.jp
-Subject: Re: [PATCH] swiotlb: add "dma_attrs" argument to alloc and free,
- to match dma_map_ops
-Message-ID: <20120524185325.GA16292@mail.gnudd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Organization: GnuDD, Device Drivers, Embedded Systems, Courses
-In-Reply-To: <20120524174741.GG24934@phenom.dumpdata.com>
-References: <20120524174741.GG24934@phenom.dumpdata.com>
-  <20120524114422.GA25950@mail.gnudd.com>
-X-archive-position: 33448
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2012 22:38:45 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:42763 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903703Ab2EXUih (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 May 2012 22:38:37 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1SXenl-0003pW-EY; Thu, 24 May 2012 15:38:29 -0500
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>
+Subject: [PATCH] MIPS: Refactor 'clear_page' and 'copy_page' functions.
+Date:   Thu, 24 May 2012 15:38:24 -0500
+Message-Id: <1337891904-24093-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.10
+X-archive-position: 33449
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rubini@gnudd.com
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,41 +32,224 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
->> The alloc and free pointers within "struct dma_map_ops" receive a
->> pointer to dma_attrs that was not present in the generic swiotlb
->> functions.  For this reason, a few files had a local wrapper for the
->> free function that just removes the attrs argument before calling the
->> generic function.
->> 
->> This patch adds the extra argument to generic functions and removes
->> such wrappers when they are no more needed.  This also fixes a
->> compiler warning for sta2x11-fixup.c, that would have required yet
->> another wrapper.
+From: "Steven J. Hill" <sjhill@mips.com>
 
-> So .. what is this based on?
+Remove usage of the '__attribute__((alias("...")))' hack that aliased
+to integer arrays containing micro-assembled instructions. This hack
+breaks when building a microMIPS kernel. It also makes the code much
+easier to understand.
 
-Current linux-next. But it has been like this for a while. I had
-the warning in sta2x11-fixup.c pending for a while, and yesterday
-I raised the issue.
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/mm/Makefile     |    4 +--
+ arch/mips/mm/page-funcs.S |   49 +++++++++++++++++++++++++++++++++
+ arch/mips/mm/page.c       |   67 ++++++++++++---------------------------------
+ 3 files changed, 69 insertions(+), 51 deletions(-)
+ create mode 100644 arch/mips/mm/page-funcs.S
 
-> I see in mainline  alloc_coherent and free_coherent
-> which are obviously changed here.
-
-Do you refer to the swiotlb methods (I confirm they are changed, like
-all their users) or something else? I'm only changing the two methods
-in swiotlb, nothing else is affected.
-
-Actually, I wanted to call them alloc and free, like the field they
-are assigned to, but swiotlb_free is already there, to do something
-else.
+diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
+index 4aa2028..fd6203f 100644
+--- a/arch/mips/mm/Makefile
++++ b/arch/mips/mm/Makefile
+@@ -3,8 +3,8 @@
+ #
  
-> Don't you also need to change these two files:
-> 
->  arch/x86/xen/pci-swiotlb-xen.c
->  drivers/xen/swiotlb-xen.c
-
-No, because xen implements the dma_map_ops with the proper prototypes.
-I grepped for all users, and found these are not related.
-
-Thank your for checking
-/alessandro
+ obj-y				+= cache.o dma-default.o extable.o fault.o \
+-				   gup.o init.o mmap.o page.o tlbex.o \
+-				   tlbex-fault.o uasm.o
++				   gup.o init.o mmap.o page.o page-funcs.o \
++				   tlbex.o tlbex-fault.o uasm.o
+ 
+ obj-$(CONFIG_32BIT)		+= ioremap.o pgtable-32.o
+ obj-$(CONFIG_64BIT)		+= pgtable-64.o
+diff --git a/arch/mips/mm/page-funcs.S b/arch/mips/mm/page-funcs.S
+new file mode 100644
+index 0000000..901c2bc
+--- /dev/null
++++ b/arch/mips/mm/page-funcs.S
+@@ -0,0 +1,49 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Micro-assembler generated clear_page/copy_page functions.
++ *
++ * Copyright (C) 2012  MIPS Technologies, Inc.
++ */
++#include <asm/asm.h>
++#include <asm/regdef.h>
++
++/*
++ * Maximum sizes:
++ *
++ * R4000 128 bytes S-cache:		0x058 bytes
++ * R4600 v1.7:				0x05c bytes
++ * R4600 v2.0:				0x060 bytes
++ * With prefetching, 16 word strides	0x120 bytes
++ */
++EXPORT(__clear_page_start)
++#ifdef CONFIG_SIBYTE_DMA_PAGEOPS
++LEAF(clear_page_cpu)
++#else
++LEAF(clear_page)
++#endif
++1:	j	1b		/* Dummy, will be replaced. */
++	.space 288
++END(clear_page)
++EXPORT(__clear_page_end)
++
++/*
++ * Maximum sizes:
++ *
++ * R4000 128 bytes S-cache:		0x11c bytes
++ * R4600 v1.7:				0x080 bytes
++ * R4600 v2.0:				0x07c bytes
++ * With prefetching, 16 word strides	0x540 bytes
++ */
++EXPORT(__copy_page_start)
++#ifdef CONFIG_SIBYTE_DMA_PAGEOPS
++LEAF(copy_page_cpu)
++#else
++LEAF(copy_page)
++#endif
++1:	j	1b		/* Dummy, will be replaced. */
++	.space 1344
++END(copy_page)
++EXPORT(__copy_page_end)
+diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
+index cc0b626..98f530e 100644
+--- a/arch/mips/mm/page.c
++++ b/arch/mips/mm/page.c
+@@ -6,6 +6,7 @@
+  * Copyright (C) 2003, 04, 05 Ralf Baechle (ralf@linux-mips.org)
+  * Copyright (C) 2007  Maciej W. Rozycki
+  * Copyright (C) 2008  Thiemo Seufer
++ * Copyright (C) 2012  MIPS Technologies, Inc.
+  */
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+@@ -71,45 +72,6 @@ static struct uasm_reloc __cpuinitdata relocs[5];
+ #define cpu_is_r4600_v1_x()	((read_c0_prid() & 0xfffffff0) == 0x00002010)
+ #define cpu_is_r4600_v2_x()	((read_c0_prid() & 0xfffffff0) == 0x00002020)
+ 
+-/*
+- * Maximum sizes:
+- *
+- * R4000 128 bytes S-cache:		0x058 bytes
+- * R4600 v1.7:				0x05c bytes
+- * R4600 v2.0:				0x060 bytes
+- * With prefetching, 16 word strides	0x120 bytes
+- */
+-
+-static u32 clear_page_array[0x120 / 4];
+-
+-#ifdef CONFIG_SIBYTE_DMA_PAGEOPS
+-void clear_page_cpu(void *page) __attribute__((alias("clear_page_array")));
+-#else
+-void clear_page(void *page) __attribute__((alias("clear_page_array")));
+-#endif
+-
+-EXPORT_SYMBOL(clear_page);
+-
+-/*
+- * Maximum sizes:
+- *
+- * R4000 128 bytes S-cache:		0x11c bytes
+- * R4600 v1.7:				0x080 bytes
+- * R4600 v2.0:				0x07c bytes
+- * With prefetching, 16 word strides	0x540 bytes
+- */
+-static u32 copy_page_array[0x540 / 4];
+-
+-#ifdef CONFIG_SIBYTE_DMA_PAGEOPS
+-void
+-copy_page_cpu(void *to, void *from) __attribute__((alias("copy_page_array")));
+-#else
+-void copy_page(void *to, void *from) __attribute__((alias("copy_page_array")));
+-#endif
+-
+-EXPORT_SYMBOL(copy_page);
+-
+-
+ static int pref_bias_clear_store __cpuinitdata;
+ static int pref_bias_copy_load __cpuinitdata;
+ static int pref_bias_copy_store __cpuinitdata;
+@@ -282,10 +244,15 @@ static inline void __cpuinit build_clear_pref(u32 **buf, int off)
+ 		}
+ }
+ 
++extern u32 __clear_page_start;
++extern u32 __clear_page_end;
++extern u32 __copy_page_start;
++extern u32 __copy_page_end;
++
+ void __cpuinit build_clear_page(void)
+ {
+ 	int off;
+-	u32 *buf = (u32 *)&clear_page_array;
++	u32 *buf = &__clear_page_start;
+ 	struct uasm_label *l = labels;
+ 	struct uasm_reloc *r = relocs;
+ 	int i;
+@@ -356,17 +323,17 @@ void __cpuinit build_clear_page(void)
+ 	uasm_i_jr(&buf, RA);
+ 	uasm_i_nop(&buf);
+ 
+-	BUG_ON(buf > clear_page_array + ARRAY_SIZE(clear_page_array));
++	BUG_ON(buf > &__clear_page_end);
+ 
+ 	uasm_resolve_relocs(relocs, labels);
+ 
+ 	pr_debug("Synthesized clear page handler (%u instructions).\n",
+-		 (u32)(buf - clear_page_array));
++		 (u32)(buf - &__clear_page_start));
+ 
+ 	pr_debug("\t.set push\n");
+ 	pr_debug("\t.set noreorder\n");
+-	for (i = 0; i < (buf - clear_page_array); i++)
+-		pr_debug("\t.word 0x%08x\n", clear_page_array[i]);
++	for (i = 0; i < (buf - &__clear_page_start); i++)
++		pr_debug("\t.word 0x%08x\n", (&__clear_page_start)[i]);
+ 	pr_debug("\t.set pop\n");
+ }
+ 
+@@ -427,7 +394,7 @@ static inline void build_copy_store_pref(u32 **buf, int off)
+ void __cpuinit build_copy_page(void)
+ {
+ 	int off;
+-	u32 *buf = (u32 *)&copy_page_array;
++	u32 *buf = &__copy_page_start;
+ 	struct uasm_label *l = labels;
+ 	struct uasm_reloc *r = relocs;
+ 	int i;
+@@ -595,21 +562,23 @@ void __cpuinit build_copy_page(void)
+ 	uasm_i_jr(&buf, RA);
+ 	uasm_i_nop(&buf);
+ 
+-	BUG_ON(buf > copy_page_array + ARRAY_SIZE(copy_page_array));
++	BUG_ON(buf > &__copy_page_end);
+ 
+ 	uasm_resolve_relocs(relocs, labels);
+ 
+ 	pr_debug("Synthesized copy page handler (%u instructions).\n",
+-		 (u32)(buf - copy_page_array));
++		 (u32)(buf - &__copy_page_start));
+ 
+ 	pr_debug("\t.set push\n");
+ 	pr_debug("\t.set noreorder\n");
+-	for (i = 0; i < (buf - copy_page_array); i++)
+-		pr_debug("\t.word 0x%08x\n", copy_page_array[i]);
++	for (i = 0; i < (buf - &__copy_page_start); i++)
++		pr_debug("\t.word 0x%08x\n", (&__copy_page_start)[i]);
+ 	pr_debug("\t.set pop\n");
+ }
+ 
+ #ifdef CONFIG_SIBYTE_DMA_PAGEOPS
++extern void clear_page_cpu(void *page);
++extern void copy_page_cpu(void *to, void *from);
+ 
+ /*
+  * Pad descriptors to cacheline, since each is exclusively owned by a
+-- 
+1.7.10

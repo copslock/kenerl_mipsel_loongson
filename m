@@ -1,44 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 May 2012 01:25:57 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:45460 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903684Ab2EYXZv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 26 May 2012 01:25:51 +0200
-Received: by pbbrq13 with SMTP id rq13so2581112pbb.36
-        for <multiple recipients>; Fri, 25 May 2012 16:25:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=bfRw+VCUOGZn63H/yRpNNSjTCq1YcMenYxu+esjABnk=;
-        b=ZQBizxnZgsFDa2XkbydMBMSov7cSS6le/WR60Vl8ItXNYsxH7uQuz5E+nj/7Dd/C9I
-         OYZuSQjONpf9CEibMjb4VjR6okaNbMxei0JZViD6ModqPZovns9RU7+oPmLWPwIa4lSC
-         QxEVM2BupVOzM1pW077xPGxCLUmQiSAoPHV65BxlD9MsCf2Sl+kK8F5T8fDA0YUKqfFV
-         I/cnGya8wyicCJxUD3B8E6nm5wHl3++MdDdwSUsDC2/s56QNBtpoIsSQ753KuX2tDuwK
-         WXMBt6vQxlM7ZqHscmAxmmYNzehFIVy+rttDx9wpiij4S/O52+rUmuFEPleYBnXN7OrG
-         fCPw==
-Received: by 10.68.131.35 with SMTP id oj3mr1750579pbb.156.1337988344093;
-        Fri, 25 May 2012 16:25:44 -0700 (PDT)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id rv8sm10498072pbc.64.2012.05.25.16.25.42
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 May 2012 15:12:26 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:62226 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903640Ab2EZNMU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 26 May 2012 15:12:20 +0200
+Received: by dadm1 with SMTP id m1so2579720dad.36
+        for <linux-mips@linux-mips.org>; Sat, 26 May 2012 06:12:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=sender:from:subject:to:cc:in-reply-to:references:date:message-id
+         :x-gm-message-state;
+        bh=FtxrxsRnkXxj7LoaIWatvXAWg5F9JvMmHuRPX8MaEHU=;
+        b=M0QkWh6PfNXsf2P4DVdEngRZqFv25xCQu6rZzHb0HsRWESal9TG7aFZU0VvywtoQV9
+         He2MLWCe85Crf+Syn9ulbxrp6m2tJLChUPL276Hunhwq9M/05t3IRA+d7q7VsCIXP9fT
+         /3naOkg9+mFj++9Tyyv/n851dCHLOq1Y4NGt3YxmuxKJWTGdr22rMLWLaq3MjJX7liH/
+         hC+JE9pa2uHW8mqv5RHY384wSJ/obLWNnb4gWcLM5gLUR/SfGOlGg3uhq3ih9/1wxW4Z
+         auiQO2TNFnqUbk6Ejf3fDsgdAa+q4hbL1/oMHh9iDB7ESgIMP+ZS3k1drFitIEdNZjck
+         W8eQ==
+Received: by 10.68.229.65 with SMTP id so1mr7929225pbc.2.1338037929206;
+        Sat, 26 May 2012 06:12:09 -0700 (PDT)
+Received: from localhost ([118.143.64.130])
+        by mx.google.com with ESMTPS id rv9sm9337409pbc.43.2012.05.26.06.12.05
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 25 May 2012 16:25:43 -0700 (PDT)
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q4PNPfXm007725;
-        Fri, 25 May 2012 16:25:41 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q4PNPev7007724;
-        Fri, 25 May 2012 16:25:40 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>, <stable@vger.kernel.org>
-Subject: [PATCH] MIPS: Properly align the .data..init_task section.
-Date:   Fri, 25 May 2012 16:25:34 -0700
-Message-Id: <1337988334-7693-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.2.3
-X-archive-position: 33468
+        Sat, 26 May 2012 06:12:07 -0700 (PDT)
+Received: by localhost (Postfix, from userid 1000)
+        id BD93C3E0BD2; Fri, 25 May 2012 17:38:45 -0600 (MDT)
+From:   Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH V5 16/17] SPI: MIPS: lantiq: add FALCON spi driver
+To:     John Crispin <blogic@openwrt.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, spi-devel-general@lists.sourceforge.net,
+        John Crispin <blogic@openwrt.org>,
+        Thomas Langer <thomas.langer@lantiq.com>
+In-Reply-To: <1337521579-1597-1-git-send-email-blogic@openwrt.org>
+References: <1337521579-1597-1-git-send-email-blogic@openwrt.org>
+Date:   Fri, 25 May 2012 17:38:45 -0600
+Message-Id: <20120525233845.BD93C3E0BD2@localhost>
+X-Gm-Message-State: ALoCoQlMUmv2LBikMTn45R50sA/ra2AjskPBmaT12yns7JpnDh3P5ADKw6KogjkR5KbqOkHE+YXP
+X-archive-position: 33469
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,59 +54,85 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: David Daney <david.daney@cavium.com>
+On Sun, 20 May 2012 15:46:19 +0200, John Crispin <blogic@openwrt.org> wrote:
+> From: Thomas Langer <thomas.langer@lantiq.com>
+> 
+> The external bus unit (EBU) found on the FALCON SoC has spi emulation that is
+> designed for serial flash access. This driver has only been tested with m25p80
+> type chips. The hardware has no support for other types of spi peripherals.
+> 
+> Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+> Cc: spi-devel-general@lists.sourceforge.net
+> ---
+> This patch is part of a series moving the mips/lantiq target to OF and clkdev
+> support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
+> 
+> Changes in V5
+> * drop duplicate busnum assignment
+> 
+> Changes in V4
+> * drop busnum property
+> 
+> Changes in V3
+> * rephrase spi->SPI
+> * fix rate detection
+> * adds support for transfer_one & co
+> * adds of support
+> 
+> Changes in V2
+> * remove several superflous calls to dev_dbg
+> * make use of module_platform_driver
+> * remove falcon_spi_cleanup as it was an empty function
+> * return real error codes instead of -1
+> * fixes operator spacing errors
+> * split arch and driver specific patches
+> * squash some lines to make use of the full 80 available chars
+> * Kconfig is now alphabetic again
+> * replace BUG() with WARN_ON()
+> ---
+>  drivers/spi/Kconfig      |    9 +
+>  drivers/spi/Makefile     |    1 +
+>  drivers/spi/spi-falcon.c |  469 ++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 479 insertions(+), 0 deletions(-)
+>  create mode 100644 drivers/spi/spi-falcon.c
+> 
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 00c0240..62b2b5e 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -144,6 +144,15 @@ config SPI_EP93XX
+>  	  This enables using the Cirrus EP93xx SPI controller in master
+>  	  mode.
+>  
+> +config SPI_FALCON
+> +	tristate "Falcon SPI controller support"
+> +	depends on SOC_FALCON
+> +	help
+> +	  The external bus unit (EBU) found on the FALC-ON SoC has SPI
+> +	  emulation that is designed for serial flash access. This driver
+> +	  has only been tested with m25p80 type chips. The hardware has no
+> +	  support for other types of SPI peripherals.
 
-Improper alignment can lead to unbootable systems and/or random
-crashes.
+What exactly does this mean?  How does it not support any other type
+of SPI peripheral?  SPI is a really simple protocol, so what is it
+about this hardware that prevents it being used with other SPI
+hardware?
 
-Signed-off-by: David Daney <david.daney@cavium.com>
-Cc: <stable@vger.kernel.org>
----
- arch/mips/include/asm/thread_info.h |    4 ++--
- arch/mips/kernel/vmlinux.lds.S      |    3 ++-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+I see a big state machine that appears to interpret the messages and
+pretend to be an SPI slave instead of telling linux about the real
+device.  /me wonders if it should this instead be a block device
+driver?
 
-diff --git a/arch/mips/include/asm/thread_info.h b/arch/mips/include/asm/thread_info.h
-index e2eca7d..ca97e0e 100644
---- a/arch/mips/include/asm/thread_info.h
-+++ b/arch/mips/include/asm/thread_info.h
-@@ -60,6 +60,8 @@ struct thread_info {
- register struct thread_info *__current_thread_info __asm__("$28");
- #define current_thread_info()  __current_thread_info
- 
-+#endif /* !__ASSEMBLY__ */
-+
- /* thread information allocation */
- #if defined(CONFIG_PAGE_SIZE_4KB) && defined(CONFIG_32BIT)
- #define THREAD_SIZE_ORDER (1)
-@@ -85,8 +87,6 @@ register struct thread_info *__current_thread_info __asm__("$28");
- 
- #define STACK_WARN	(THREAD_SIZE / 8)
- 
--#endif /* !__ASSEMBLY__ */
--
- #define PREEMPT_ACTIVE		0x10000000
- 
- /*
-diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index 924da5e..df243a6 100644
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -1,5 +1,6 @@
- #include <asm/asm-offsets.h>
- #include <asm/page.h>
-+#include <asm/thread_info.h>
- #include <asm-generic/vmlinux.lds.h>
- 
- #undef mips
-@@ -72,7 +73,7 @@ SECTIONS
- 	.data : {	/* Data */
- 		. = . + DATAOFFSET;		/* for CONFIG_MAPPED_KERNEL */
- 
--		INIT_TASK_DATA(PAGE_SIZE)
-+		INIT_TASK_DATA(THREAD_SIZE)
- 		NOSAVE_DATA
- 		CACHELINE_ALIGNED_DATA(1 << CONFIG_MIPS_L1_CACHE_SHIFT)
- 		READ_MOSTLY_DATA(1 << CONFIG_MIPS_L1_CACHE_SHIFT)
--- 
-1.7.2.3
+> +static int falcon_sflash_prepare_xfer(struct spi_master *master)
+> +{
+> +	return 0;
+> +}
+> +
+> +static int falcon_sflash_unprepare_xfer(struct spi_master *master)
+> +{
+> +	return 0;
+> +}
+
+Don't use empty hooks.  Just leave them uninitialized.  The core will
+do the right thing.

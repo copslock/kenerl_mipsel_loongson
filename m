@@ -1,46 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 May 2012 15:12:26 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:62226 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903640Ab2EZNMU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 26 May 2012 15:12:20 +0200
-Received: by dadm1 with SMTP id m1so2579720dad.36
-        for <linux-mips@linux-mips.org>; Sat, 26 May 2012 06:12:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=sender:from:subject:to:cc:in-reply-to:references:date:message-id
-         :x-gm-message-state;
-        bh=FtxrxsRnkXxj7LoaIWatvXAWg5F9JvMmHuRPX8MaEHU=;
-        b=M0QkWh6PfNXsf2P4DVdEngRZqFv25xCQu6rZzHb0HsRWESal9TG7aFZU0VvywtoQV9
-         He2MLWCe85Crf+Syn9ulbxrp6m2tJLChUPL276Hunhwq9M/05t3IRA+d7q7VsCIXP9fT
-         /3naOkg9+mFj++9Tyyv/n851dCHLOq1Y4NGt3YxmuxKJWTGdr22rMLWLaq3MjJX7liH/
-         hC+JE9pa2uHW8mqv5RHY384wSJ/obLWNnb4gWcLM5gLUR/SfGOlGg3uhq3ih9/1wxW4Z
-         auiQO2TNFnqUbk6Ejf3fDsgdAa+q4hbL1/oMHh9iDB7ESgIMP+ZS3k1drFitIEdNZjck
-         W8eQ==
-Received: by 10.68.229.65 with SMTP id so1mr7929225pbc.2.1338037929206;
-        Sat, 26 May 2012 06:12:09 -0700 (PDT)
-Received: from localhost ([118.143.64.130])
-        by mx.google.com with ESMTPS id rv9sm9337409pbc.43.2012.05.26.06.12.05
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sat, 26 May 2012 06:12:07 -0700 (PDT)
-Received: by localhost (Postfix, from userid 1000)
-        id BD93C3E0BD2; Fri, 25 May 2012 17:38:45 -0600 (MDT)
-From:   Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH V5 16/17] SPI: MIPS: lantiq: add FALCON spi driver
-To:     John Crispin <blogic@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, spi-devel-general@lists.sourceforge.net,
-        John Crispin <blogic@openwrt.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 May 2012 15:47:46 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:57803 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1901162Ab2EZNrk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 26 May 2012 15:47:40 +0200
+Message-ID: <4FC0DEEC.8050204@openwrt.org>
+Date:   Sat, 26 May 2012 15:47:24 +0200
+From:   John Crispin <blogic@openwrt.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.24) Gecko/20111114 Icedove/3.1.16
+MIME-Version: 1.0
+To:     Grant Likely <grant.likely@secretlab.ca>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        spi-devel-general@lists.sourceforge.net,
         Thomas Langer <thomas.langer@lantiq.com>
-In-Reply-To: <1337521579-1597-1-git-send-email-blogic@openwrt.org>
-References: <1337521579-1597-1-git-send-email-blogic@openwrt.org>
-Date:   Fri, 25 May 2012 17:38:45 -0600
-Message-Id: <20120525233845.BD93C3E0BD2@localhost>
-X-Gm-Message-State: ALoCoQlMUmv2LBikMTn45R50sA/ra2AjskPBmaT12yns7JpnDh3P5ADKw6KogjkR5KbqOkHE+YXP
-X-archive-position: 33469
+Subject: Re: [PATCH V5 16/17] SPI: MIPS: lantiq: add FALCON spi driver
+References: <1337521579-1597-1-git-send-email-blogic@openwrt.org> <20120525233845.BD93C3E0BD2@localhost>
+In-Reply-To: <20120525233845.BD93C3E0BD2@localhost>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 33470
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,85 +35,36 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sun, 20 May 2012 15:46:19 +0200, John Crispin <blogic@openwrt.org> wrote:
-> From: Thomas Langer <thomas.langer@lantiq.com>
-> 
-> The external bus unit (EBU) found on the FALCON SoC has spi emulation that is
-> designed for serial flash access. This driver has only been tested with m25p80
-> type chips. The hardware has no support for other types of spi peripherals.
-> 
-> Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> Cc: spi-devel-general@lists.sourceforge.net
-> ---
-> This patch is part of a series moving the mips/lantiq target to OF and clkdev
-> support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
-> 
-> Changes in V5
-> * drop duplicate busnum assignment
-> 
-> Changes in V4
-> * drop busnum property
-> 
-> Changes in V3
-> * rephrase spi->SPI
-> * fix rate detection
-> * adds support for transfer_one & co
-> * adds of support
-> 
-> Changes in V2
-> * remove several superflous calls to dev_dbg
-> * make use of module_platform_driver
-> * remove falcon_spi_cleanup as it was an empty function
-> * return real error codes instead of -1
-> * fixes operator spacing errors
-> * split arch and driver specific patches
-> * squash some lines to make use of the full 80 available chars
-> * Kconfig is now alphabetic again
-> * replace BUG() with WARN_ON()
-> ---
->  drivers/spi/Kconfig      |    9 +
->  drivers/spi/Makefile     |    1 +
->  drivers/spi/spi-falcon.c |  469 ++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 479 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/spi/spi-falcon.c
-> 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 00c0240..62b2b5e 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -144,6 +144,15 @@ config SPI_EP93XX
->  	  This enables using the Cirrus EP93xx SPI controller in master
->  	  mode.
->  
-> +config SPI_FALCON
-> +	tristate "Falcon SPI controller support"
-> +	depends on SOC_FALCON
-> +	help
-> +	  The external bus unit (EBU) found on the FALC-ON SoC has SPI
-> +	  emulation that is designed for serial flash access. This driver
-> +	  has only been tested with m25p80 type chips. The hardware has no
-> +	  support for other types of SPI peripherals.
 
-What exactly does this mean?  How does it not support any other type
-of SPI peripheral?  SPI is a really simple protocol, so what is it
-about this hardware that prevents it being used with other SPI
-hardware?
+> What exactly does this mean?  How does it not support any other type
+> of SPI peripheral?  SPI is a really simple protocol, so what is it
+> about this hardware that prevents it being used with other SPI
+> hardware?
+>
+> I see a big state machine that appears to interpret the messages and
+> pretend to be an SPI slave instead of telling linux about the real
+> device.  /me wonders if it should this instead be a block device
+> driver?
+>
 
-I see a big state machine that appears to interpret the messages and
-pretend to be an SPI slave instead of telling linux about the real
-device.  /me wonders if it should this instead be a block device
-driver?
+Thomas will need to comment on this part
 
-> +static int falcon_sflash_prepare_xfer(struct spi_master *master)
-> +{
-> +	return 0;
-> +}
-> +
-> +static int falcon_sflash_unprepare_xfer(struct spi_master *master)
-> +{
-> +	return 0;
-> +}
+>> +static int falcon_sflash_prepare_xfer(struct spi_master *master)
+>> +{
+>> +	return 0;
+>> +}
+>> +
+>> +static int falcon_sflash_unprepare_xfer(struct spi_master *master)
+>> +{
+>> +	return 0;
+>> +}
+> Don't use empty hooks.  Just leave them uninitialized.  The core will
+> do the right thing.
+>
 
-Don't use empty hooks.  Just leave them uninitialized.  The core will
-do the right thing.
+I was under the impression that the need for these 2 callbacks was
+removed in 3.5. As this patch flows via MIPS there would be a merge
+order problem making the kernel non bisectable
+
+I am a bit confused. You keep ack'ing this driver and then commenting on
+it a few weeks later.... obsoleting the ACK ...

@@ -1,42 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 May 2012 10:09:24 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:42245 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903551Ab2E3IIx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 May 2012 10:08:53 +0200
-Received: by mail-pb0-f49.google.com with SMTP id rq13so7614914pbb.36
-        for <multiple recipients>; Wed, 30 May 2012 01:08:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:date:from:to:cc:subject:message-id:x-mailer:mime-version
-         :content-type:content-transfer-encoding;
-        bh=2IsjCw25CWWg723CR3JC8Hp93aTY52slx5T6pAgklbs=;
-        b=ubGVenaXxd7ZLC2gVoZUeMiKUAokoksY3az4RmcwZHarN6dXYb7KgA+mUwgTMJ46di
-         t5ls0VhkxVtfoxFKraIOJQQIleg1dfQyHxa+1IWVGRcuIWfSSFXjqhr/xH1uq+LjYy5A
-         xgV1oT39Qf1BTnwNWuvfumA62fu4R+okjEKan1gtkpBso78R1VvqBIIL5jHF6zTFXV5s
-         aZc059zOatB59cwmiGQJ6JiwDMx0vGwhQPC91dyI7FccpaPP88/4NWyYmpOnbvE5LRAf
-         bQE7N/r88SafphJ+QDLxEQOxZlZ5Idqu87Ijfb4BL6uTgiBCFZNHw/IGVhBa8/ZdexHv
-         fNSQ==
-Received: by 10.68.203.35 with SMTP id kn3mr16931517pbc.163.1338365332387;
-        Wed, 30 May 2012 01:08:52 -0700 (PDT)
-Received: from sdk (UQ1-221-171-23-195.tky.mesh.ad.jp. [221.171.23.195])
-        by mx.google.com with ESMTPS id ok6sm16315823pbb.29.2012.05.30.01.08.49
-        (version=SSLv3 cipher=OTHER);
-        Wed, 30 May 2012 01:08:51 -0700 (PDT)
-Date:   Wed, 30 May 2012 17:06:26 +0900
-From:   Yoichi Yuasa <yuasa@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     yuasa@linux-mips.org, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] MIPS: fix duplicate config ARCH_SPARSEMEM_ENABLE
-Message-Id: <20120530170626.fe754584.yuasa@linux-mips.org>
-X-Mailer: Sylpheed 3.1.1 (GTK+ 2.22.0; i386-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-archive-position: 33480
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 May 2012 10:49:00 +0200 (CEST)
+Received: from h9.dl5rb.org.uk ([81.2.74.9]:54571 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903550Ab2E3Isz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 30 May 2012 10:48:55 +0200
+Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q4U8msTE009708;
+        Wed, 30 May 2012 09:48:54 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q4U8mqUG009707;
+        Wed, 30 May 2012 09:48:52 +0100
+Date:   Wed, 30 May 2012 09:48:52 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Steven J. Hill" <sjhill@mips.com>
+Cc:     linux-mips@linux-mips.org, sjhill@realitydiluted.com
+Subject: Re: [PATCH 2/5] MIPS: Clean-up GIC and vectored interrupts.
+Message-ID: <20120530084852.GA9324@linux-mips.org>
+References: <1333735140-15719-1-git-send-email-sjhill@mips.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1333735140-15719-1-git-send-email-sjhill@mips.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 33481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,38 +39,33 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
----
- arch/mips/Kconfig               |    1 +
- arch/mips/cavium-octeon/Kconfig |    4 ----
- 2 files changed, 1 insertions(+), 4 deletions(-)
+On Fri, Apr 06, 2012 at 12:59:00PM -0500, Steven J. Hill wrote:
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 5e0f477..5c13f08 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1432,6 +1432,7 @@ config CPU_CAVIUM_OCTEON
- 	select WEAK_ORDERING
- 	select CPU_SUPPORTS_HIGHMEM
- 	select CPU_SUPPORTS_HUGEPAGES
-+	select ARCH_SPARSEMEM_ENABLE
- 	help
- 	  The Cavium Octeon processor is a highly integrated chip containing
- 	  many ethernet hardware widgets for networking tasks. The processor
-diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kconfig
-index f9e275a..2f4f6d5 100644
---- a/arch/mips/cavium-octeon/Kconfig
-+++ b/arch/mips/cavium-octeon/Kconfig
-@@ -82,10 +82,6 @@ config CAVIUM_OCTEON_LOCK_L2_MEMCPY
- 	help
- 	  Lock the kernel's implementation of memcpy() into L2.
- 
--config ARCH_SPARSEMEM_ENABLE
--	def_bool y
--	select SPARSEMEM_STATIC
--
- config IOMMU_HELPER
- 	bool
- 
--- 
-1.7.0.4
+> From: "Steven J. Hill" <sjhill@mips.com>
+> 
+> This change adds macros for routing of GIC interrupts for EIC and
+> non-EIC hardware modes. Also added Malta GIC macros having to do
+> with performance and timer interrupts.
+> 
+> Signed-off-by: Steven J. Hill <sjhill@mips.com>
+
+> diff --git a/arch/mips/include/asm/irq.h b/arch/mips/include/asm/irq.h
+> index fb698dc..78dbb8a 100644
+> --- a/arch/mips/include/asm/irq.h
+> +++ b/arch/mips/include/asm/irq.h
+> @@ -136,6 +136,7 @@ extern void free_irqno(unsigned int irq);
+>   * IE7.  Since R2 their number has to be read from the c0_intctl register.
+>   */
+>  #define CP0_LEGACY_COMPARE_IRQ 7
+> +#define CP0_LEGACY_PERFCNT_IRQ 7
+>  
+>  extern int cp0_compare_irq;
+>  extern int cp0_compare_irq_shift;
+
+I split of this segment into a separate commit because it appeared to
+be unrelated to the rest of the patch and also made use of the symbol
+in traps.c.
+
+Thanks,
+
+  Ralf

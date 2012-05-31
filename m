@@ -1,32 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2012 10:29:50 +0200 (CEST)
-Received: from h9.dl5rb.org.uk ([81.2.74.9]:58786 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903595Ab2EaI3q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 May 2012 10:29:46 +0200
-Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q4V8TjKv027753;
-        Thu, 31 May 2012 09:29:45 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q4V8Tiu4027752;
-        Thu, 31 May 2012 09:29:44 +0100
-Date:   Thu, 31 May 2012 09:29:44 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Steven J. Hill" <sjhill@mips.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/5] Add explicit support YAMON firmware.
-Message-ID: <20120531082944.GL30086@linux-mips.org>
-References: <1338415855-11401-1-git-send-email-sjhill@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2012 15:58:01 +0200 (CEST)
+Received: from mail-ee0-f49.google.com ([74.125.83.49]:64602 "EHLO
+        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903658Ab2EaN5w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 May 2012 15:57:52 +0200
+Received: by eekd17 with SMTP id d17so510189eek.36
+        for <linux-mips@linux-mips.org>; Thu, 31 May 2012 06:57:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id:user-agent:in-reply-to
+         :references:mime-version:content-transfer-encoding:content-type;
+        bh=IYDk8xho202wbUT2DdKOfwSoKyYSBzqDyzq8vOWzorY=;
+        b=dQU/3aCZndpghk9+ihe3tiaQz5/N3N13Nmz2WnhfWIrLQrE7XSZFzFOahC07dXx0oq
+         n9OjYFqjwvjWBbdVFOjlRVB/Qm7aLQz9RZQEn6q/lDJscdrxmnXiO6JsD6H4TFgTbqRx
+         RhLBdq9ud/qDJshKo74sf5W3T+n7xDPdyRKtU5pZ+xNusA+4VeYd2R2q7T2T76t+Ec80
+         B4N3PZYn5p2P2+oDDnDwjfaPviwE7lWrwRa4xqE3w1+rWO3Oeu8FFzpGCa7DvP5yPtjG
+         Xq+H6xNuVV7cxJClM8GAfdV1Dvt+ei1iXqKqy1kzuEEqpaZTdtXATIiVERPWy0EfQ+Yu
+         PgRQ==
+Received: by 10.14.39.8 with SMTP id c8mr3355064eeb.55.1338472666669;
+        Thu, 31 May 2012 06:57:46 -0700 (PDT)
+Received: from flexo.localnet (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by mx.google.com with ESMTPS id g51sm10777937eea.14.2012.05.31.06.57.42
+        (version=SSLv3 cipher=OTHER);
+        Thu, 31 May 2012 06:57:42 -0700 (PDT)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     Rogier Wolff <R.E.Wolff@bitwizard.nl>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: BCM36xx support.
+Date:   Thu, 31 May 2012 15:55:34 +0200
+Message-ID: <7383662.i0oNtC19fQ@flexo>
+User-Agent: KMail/4.8.2 (Linux/3.2.0-24-generic; KDE/4.8.2; x86_64; ; )
+In-Reply-To: <20120418055139.GA25952@bitwizard.nl>
+References: <20120418055139.GA25952@bitwizard.nl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1338415855-11401-1-git-send-email-sjhill@mips.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 33500
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-archive-position: 33501
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,44 +52,45 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, May 30, 2012 at 05:10:50PM -0500, Steven J. Hill wrote:
+Hi Rogier,
 
-Now for the nitpicking :-)
+First of all, you should have CC'd linux-mips, because that's where BCM63xx 
+development happens.
 
-ar7_defconfig breaks with:
+On Wednesday 18 April 2012 07:51:40 Rogier Wolff wrote:
+> 
+> While working on SPI and I2C support for the BCM2835, I found the
+> BCM63xx SPI driver in the kernel. Turns out that this support
+> was partially merged: 
+> 
+> The support can only be enabled when BCM63xx configuration symbol
+> is defined which menuconfig lists as: 
+> 
+>  Symbol: BCM63XX [=BCM63XX]                                                
+>    Type  : unknown                                                           
+> 
+> I'd say the definition of this is not possible through the normal
+> channels.
+> 
+> And in the driver (drivers/spi/spi-bcm63xx.c) I see: 
+> 
+> #include <bcm63xx_dev_spi.h>
+> 
+> but that file is not in the current git release.
 
-  CC      arch/mips/ar7/memory.o
-/home/ralf/src/linux/upstream-sfr/arch/mips/ar7/memory.c:33:34: fatal error: asm/mips-boards/prom.h: No such file or directory
-compilation terminated.
-make[4]: *** [arch/mips/ar7/memory.o] Error 1
+No, it did not make it for a reason I ignore, probably miscommunication.
 
-db1000_defconfig, db1200_defconfig, db1300_defconfig and db1550_defconfig
-breaks with:
+> 
+> (some more googling has resulted in me finding out that I don't want
+> to know how the 63xx SPI controller works as it's for a MIPS processor
+> while the 2835 is ARM).
 
-  CC      arch/mips/alchemy/common/prom.o
-/home/ralf/src/linux/upstream-sfr/arch/mips/alchemy/common/prom.c: In function ‘prom_get_ethernet_addr’:
-/home/ralf/src/linux/upstream-sfr/arch/mips/alchemy/common/prom.c:73:2: error: implicit declaration of function ‘prom_getenv’ [-Werror=implicit-function-declaration]
-/home/ralf/src/linux/upstream-sfr/arch/mips/alchemy/common/prom.c:73:14: error: assignment makes pointer from integer without a cast [-Werror]
-cc1: all warnings being treated as errors
-make[4]: *** [arch/mips/alchemy/common/prom.o] Error 1
+And so? if the core is the same, just use it on your platform too. If you have 
+a look at the architecture files, you will see that the various BCM63xx SoC 
+have their internal registers shuffled but the SPI core is always software 
+compatible, another set of registers can be added for BCM2835.
 
-
-Test build still running - ENEEDMOREHORSEPOWER ;-)  So far
-bcm63xx_defconfig, capcella_defconfig and cavium-octeon_defconfig build ok.
-
->  arch/mips/include/asm/mipsprom.h                   |    2 -
-
-This is the firmware used by the systems built by MIPS Computer Systems Inc.
-and a few very old SGI pre-ARC(S) systems, also some by Pyramid,
-Siemens-Nixdorf and others.  It has nothing to do with YAMON.
-
->  .../mips/include/asm/pmc-sierra/msp71xx/msp_prom.h |   26 -------
->  arch/mips/pmc-sierra/msp71xx/msp_prom.c            |   76 +-----------------
->  arch/mips/pmc-sierra/msp71xx/msp_setup.c           |    2 +-
-
-And these use PMON 2000.  That you found possibilities to share code
-beyond YAMON's realm is good but infecting non-YAMON platforms with
-YAMON headers isn't.  I suggest to gather code that can kind of code
-in arch/mips/lib or a new directory arch/mips/fw/lib.
-
-  Ralf
+I have no objection making such a driver more generic and not limited to 
+bcm63xx like it is right now.
+--
+Florian

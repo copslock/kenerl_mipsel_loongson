@@ -1,28 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jun 2012 19:30:18 +0200 (CEST)
-Received: from h9.dl5rb.org.uk ([81.2.74.9]:36446 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903608Ab2FARaN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 1 Jun 2012 19:30:13 +0200
-Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q51HUC9P019914
-        for <linux-mips@linux-mips.org>; Fri, 1 Jun 2012 18:30:12 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q51HUBaT019913
-        for linux-mips@linux-mips.org; Fri, 1 Jun 2012 18:30:11 +0100
-Date:   Fri, 1 Jun 2012 18:30:11 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org
-Subject: Submitting patches, patchwork
-Message-ID: <20120601173010.GG7881@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jun 2012 10:25:44 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:62994 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903616Ab2FCIZj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Jun 2012 10:25:39 +0200
+Received: by pbbrq13 with SMTP id rq13so5197462pbb.36
+        for <multiple recipients>; Sun, 03 Jun 2012 01:25:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=J/uBad80stU0KPfYA0lW8I/VP6BYA0dr19dGkNJmjlQ=;
+        b=Ro4Vh/IUY39fjjv896HT4kMCtl9fp5GZsQk7p/nGgjBI9gsM2uxHukLaFBAj0pS+I4
+         dRUi6R/haK3FBWPSuYMFFjWU/MLc68v2/UZ1Q/5HoBbtA+0qBQ+a1TnXME2bud8GAHLT
+         3lhfZBcG9FdP3egT/iBmtKw6Gfno16B9KWpiVj9QirszqAGjULHGK7h0mpoJkN7McqPH
+         avQuhsTHd6FX0vCPFV6A+sFFvCyALbIkq5wQZlN0DMiS4S5j78F75aa6XTdQcqTTayBj
+         uitB1js91N6dNPlCPmTf+XU1uQsvyWVB6x3lgBTdiJFsJv+UJMKfoAinaaj7kOLoW3w+
+         JxqA==
+Received: by 10.68.232.103 with SMTP id tn7mr27131837pbc.86.1338711931773;
+        Sun, 03 Jun 2012 01:25:31 -0700 (PDT)
+Received: from localhost ([221.223.120.44])
+        by mx.google.com with ESMTPS id io2sm8904976pbc.24.2012.06.03.01.25.16
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sun, 03 Jun 2012 01:25:29 -0700 (PDT)
+Date:   Sun, 3 Jun 2012 16:25:07 +0800
+From:   Yong Zhang <yong.zhang0@gmail.com>
+To:     "Srivatsa S. Bhat" <srivatsa.bhat@linux.vnet.ibm.com>
+Cc:     tglx@linutronix.de, peterz@infradead.org,
+        paulmck@linux.vnet.ibm.com, rusty@rustcorp.com.au,
+        mingo@kernel.org, akpm@linux-foundation.org,
+        vatsa@linux.vnet.ibm.com, rjw@sisk.pl, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, nikunj@linux.vnet.ibm.com,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Eric Dumazet <eric.dumazet@gmail.com>,
+        Mike Frysinger <vapier@gentoo.org>,
+        David Howells <dhowells@redhat.com>,
+        Arun Sharma <asharma@fb.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 10/27] mips, smpboot: Use generic SMP booting
+ infrastructure
+Message-ID: <20120603082507.GA16829@zhy>
+Reply-To: Yong Zhang <yong.zhang0@gmail.com>
+References: <20120601090952.31979.24799.stgit@srivatsabhat.in.ibm.com>
+ <20120601091226.31979.62223.stgit@srivatsabhat.in.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 33506
+In-Reply-To: <20120601091226.31979.62223.stgit@srivatsabhat.in.ibm.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 33507
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yong.zhang0@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,44 +64,174 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-As some of you have noticed I've barely merged any patches or answered
-emails in the past few months for personal reasons and I'm just digging
-myself out from the resulting skyhigh mountain of backlog I'm burried
-under.  Many of the patches didn't get the Linus mandated soak time in
-linux-next much will missed the 3.5 merge window.
+On Fri, Jun 01, 2012 at 02:42:32PM +0530, Srivatsa S. Bhat wrote:
+> Convert mips to use the generic framework to boot secondary CPUs.
+> 
+> Notes:
+> 1. The boot processor was setting the secondary cpu in cpu_online_mask!
+> Instead, leave it up to the secondary cpu (... and it will be done by the
+> generic code now).
+> 
+> 2. Make the boot cpu wait for the secondary cpu to be set in cpu_online_mask
+> before returning.
 
-I've worked through some of the backlog earlier this week as usual
-sorting everything into fixes and small bits that can go to Linus as
-after 3.5-rc1 will be released and the bigger, more dangerous bits that
-will need to soak until the merge window for 3.6 opens.  This was harder
-by some folks resubmitting their patches, sometimes even several times
-unchanged from earlier submissions.
+We don't need to wait for both cpu_callin_map (The code above yours)
+any more.
 
-I also still have thousands of unread emails.  If you haven't received an
-answer yet, please don't take it personal.
+> 
+> 3. Don't enable interrupts in cmp_smp_finish() and vsmp_smp_finish().
+> Do it much later, in generic code.
 
-Patch submissions that were sent to linux-mips@linux-mips.org will
-automatically have been sucked up by patchworks.  This is _the_ reason why
-you really want to cc the mailing list on all patch submissions.  Feel
-free to cc to my personal address though.
+Hmmm... the bad thing is that some board enable irq more early than
+->smp_finish(), I have sent patches for that (by moving irq enable
+to smp_finish() and delaying smp_finish()).
+Please check patch#0001~patch#0004 in
+http://marc.info/?l=linux-mips&m=133758022710973&w=2
 
-As long as a patch is still listed in patchwork there is no need to resubmit.
-But if you resubmit, please mark older versions of your patches as
-superseded.
+> 
+> 4. In synchronise_count_slave(), use local_save_flags() instead of
+> local_irq_save() because irqs are still disabled.
 
-All this is reuired is a patchwork account.  If you don't have one already
-creating one at
+We can just remove local_irq_save()/local_irq_restore() like:
+http://marc.info/?l=linux-mips&m=133758046211043&w=2
 
-  http://patchwork.linux-mips.org/
+Thanks,
+Yong
 
-will only take a minute.  A single account can also handle submissions from
-multiple email addresses, for example from your work and a gmail address.
-Having patchwork know which email addresses belong to the same person helps
-when searching for submissions from a single person that is is going to
-make my life a tad easier.
-
-One last request - take care of your password for patchwork.  It seems there
-is no facility for a user to change his own password, so only a patchwork
-sysadmin can replace it when it's lost.
-
-  Ralf
+> 
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Eric Dumazet <eric.dumazet@gmail.com>
+> Cc: Mike Frysinger <vapier@gentoo.org>
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: Arun Sharma <asharma@fb.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Rusty Russell <rusty@rustcorp.com.au>
+> Cc: linux-mips@linux-mips.org
+> Signed-off-by: Srivatsa S. Bhat <srivatsa.bhat@linux.vnet.ibm.com>
+> ---
+> 
+>  arch/mips/kernel/smp-cmp.c  |    8 ++++----
+>  arch/mips/kernel/smp-mt.c   |    2 --
+>  arch/mips/kernel/smp.c      |   23 +++++++++++++++--------
+>  arch/mips/kernel/sync-r4k.c |    3 ++-
+>  4 files changed, 21 insertions(+), 15 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
+> index e7e03ec..7ecd6db 100644
+> --- a/arch/mips/kernel/smp-cmp.c
+> +++ b/arch/mips/kernel/smp-cmp.c
+> @@ -108,7 +108,9 @@ static void cmp_init_secondary(void)
+>  
+>  static void cmp_smp_finish(void)
+>  {
+> -	pr_debug("SMPCMP: CPU%d: %s\n", smp_processor_id(), __func__);
+> +	unsigned int cpu = smp_processor_id();
+> +
+> +	pr_debug("SMPCMP: CPU%d: %s\n", cpu, __func__);
+>  
+>  	/* CDFIXME: remove this? */
+>  	write_c0_compare(read_c0_count() + (8 * mips_hpt_frequency / HZ));
+> @@ -116,10 +118,8 @@ static void cmp_smp_finish(void)
+>  #ifdef CONFIG_MIPS_MT_FPAFF
+>  	/* If we have an FPU, enroll ourselves in the FPU-full mask */
+>  	if (cpu_has_fpu)
+> -		cpu_set(smp_processor_id(), mt_fpu_cpumask);
+> +		cpumask_set_cpu(cpu, &mt_fpu_cpumask);
+>  #endif /* CONFIG_MIPS_MT_FPAFF */
+> -
+> -	local_irq_enable();
+>  }
+>  
+>  static void cmp_cpus_done(void)
+> diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
+> index ff17868..25f7b09 100644
+> --- a/arch/mips/kernel/smp-mt.c
+> +++ b/arch/mips/kernel/smp-mt.c
+> @@ -171,8 +171,6 @@ static void __cpuinit vsmp_smp_finish(void)
+>  	if (cpu_has_fpu)
+>  		cpu_set(smp_processor_id(), mt_fpu_cpumask);
+>  #endif /* CONFIG_MIPS_MT_FPAFF */
+> -
+> -	local_irq_enable();
+>  }
+>  
+>  static void vsmp_cpus_done(void)
+> diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+> index 71a95f5..4453d4d 100644
+> --- a/arch/mips/kernel/smp.c
+> +++ b/arch/mips/kernel/smp.c
+> @@ -33,6 +33,7 @@
+>  #include <linux/cpu.h>
+>  #include <linux/err.h>
+>  #include <linux/ftrace.h>
+> +#include <linux/smpboot.h>
+>  
+>  #include <linux/atomic.h>
+>  #include <asm/cpu.h>
+> @@ -98,8 +99,11 @@ __cpuinit void register_smp_ops(struct plat_smp_ops *ops)
+>   */
+>  asmlinkage __cpuinit void start_secondary(void)
+>  {
+> -	unsigned int cpu;
+> +	smpboot_start_secondary(NULL);
+> +}
+>  
+> +void __cpuinit __cpu_pre_starting(void *unused)
+> +{
+>  #ifdef CONFIG_MIPS_MT_SMTC
+>  	/* Only do cpu_probe for first TC of CPU */
+>  	if ((read_c0_tcbind() & TCBIND_CURTC) == 0)
+> @@ -116,20 +120,22 @@ asmlinkage __cpuinit void start_secondary(void)
+>  	 */
+>  
+>  	calibrate_delay();
+> -	preempt_disable();
+> -	cpu = smp_processor_id();
+> -	cpu_data[cpu].udelay_val = loops_per_jiffy;
+> +	cpu_data[smp_processor_id()].udelay_val = loops_per_jiffy;
+> +}
+>  
+> -	notify_cpu_starting(cpu);
+> +void __cpuinit __cpu_pre_online(void *unused)
+> +{
+> +	unsigned int cpu = smp_processor_id();
+>  
+>  	mp_ops->smp_finish();
+>  	set_cpu_sibling_map(cpu);
+>  
+>  	cpu_set(cpu, cpu_callin_map);
+> +}
+>  
+> +void __cpuinit __cpu_post_online(void *unused)
+> +{
+>  	synchronise_count_slave();
+> -
+> -	cpu_idle();
+>  }
+>  
+>  /*
+> @@ -196,7 +202,8 @@ int __cpuinit __cpu_up(unsigned int cpu, struct task_struct *tidle)
+>  	while (!cpu_isset(cpu, cpu_callin_map))
+>  		udelay(100);
+>  
+> -	set_cpu_online(cpu, true);
+> +	while (!cpu_online(cpu))
+> +		udelay(100);
+>  
+>  	return 0;
+>  }
+> diff --git a/arch/mips/kernel/sync-r4k.c b/arch/mips/kernel/sync-r4k.c
+> index 99f913c..7f43069 100644
+> --- a/arch/mips/kernel/sync-r4k.c
+> +++ b/arch/mips/kernel/sync-r4k.c
+> @@ -46,7 +46,8 @@ void __cpuinit synchronise_count_master(void)
+>  	printk(KERN_INFO "Synchronize counters across %u CPUs: ",
+>  	       num_online_cpus());
+>  
+> -	local_irq_save(flags);
+> +	/* IRQs are already disabled. So just save the flags */
+> +	local_save_flags(flags);
+>  
+>  	/*
+>  	 * Notify the slaves that it's time to start

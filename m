@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2012 23:56:38 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:43584 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2012 23:57:02 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:43588 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903745Ab2FEVwB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2012 23:52:01 +0200
+        with ESMTP id S1903753Ab2FEVwK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2012 23:52:10 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1Sc1Aa-000824-84; Tue, 05 Jun 2012 16:20:04 -0500
+        id 1Sc1Ab-000824-6m; Tue, 05 Jun 2012 16:20:05 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH 31/35] MIPS: RB532: Cleanup files effected by firmware changes.
-Date:   Tue,  5 Jun 2012 16:19:35 -0500
-Message-Id: <1338931179-9611-32-git-send-email-sjhill@mips.com>
+Subject: [PATCH 33/35] MIPS: txx9: Cleanup files effected by firmware changes.
+Date:   Tue,  5 Jun 2012 16:19:37 -0500
+Message-Id: <1338931179-9611-34-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1338931179-9611-1-git-send-email-sjhill@mips.com>
 References: <1338931179-9611-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33541
+X-archive-position: 33542
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,69 +41,59 @@ running the checkpatch script.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/rb532/prom.c |   40 +++++++++++-----------------------------
- 1 file changed, 11 insertions(+), 29 deletions(-)
+ arch/mips/txx9/generic/setup.c |   29 ++++++++++++-----------------
+ 1 file changed, 12 insertions(+), 17 deletions(-)
 
-diff --git a/arch/mips/rb532/prom.c b/arch/mips/rb532/prom.c
-index 54f5399..5bddd0b 100644
---- a/arch/mips/rb532/prom.c
-+++ b/arch/mips/rb532/prom.c
-@@ -1,37 +1,19 @@
+diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+index 8a053d6..00fc82b 100644
+--- a/arch/mips/txx9/generic/setup.c
++++ b/arch/mips/txx9/generic/setup.c
+@@ -1,34 +1,29 @@
  /*
-- *  RouterBoard 500 specific prom routines
+- * Based on linux/arch/mips/txx9/rbtx4938/setup.c,
+- *	    and RBTX49xx patch from CELF patch archive.
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
 + * for more details.
++ *
++ * Based on linux/arch/mips/txx9/rbtx4938/setup.c and RBTX49xx patch
++ * from CELF patch archive.
   *
-- *  Copyright (C) 2003, Peter Sadik <peter.sadik@idt.com>
-- *  Copyright (C) 2005-2006, P.Christeas <p_christ@hol.gr>
-- *  Copyright (C) 2007, Gabor Juhos <juhosg@openwrt.org>
-- *			Felix Fietkau <nbd@openwrt.org>
-- *			Florian Fainelli <florian@openwrt.org>
-- *
-- *  This program is free software; you can redistribute it and/or
-- *  modify it under the terms of the GNU General Public License
-- *  as published by the Free Software Foundation; either version 2
-- *  of the License, or (at your option) any later version.
-- *
-- *  This program is distributed in the hope that it will be useful,
-- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- *  GNU General Public License for more details.
-- *
-- *  You should have received a copy of the GNU General Public License
-- *  along with this program; if not, write to the
-- *  Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-- *  Boston, MA  02110-1301, USA.
-+ * RouterBoard 500 specific prom routines
+  * 2003-2005 (c) MontaVista Software, Inc.
+  * (C) Copyright TOSHIBA CORPORATION 2000-2001, 2004-2007
   *
-+ * Copyright (C) 2003, Peter Sadik <peter.sadik@idt.com>
-+ * Copyright (C) 2005-2006, P.Christeas <p_christ@hol.gr>
-+ * Copyright (C) 2007, Gabor Juhos <juhosg@openwrt.org>
-+ *		       Felix Fietkau <nbd@openwrt.org>
-+ *		       Florian Fainelli <florian@openwrt.org>
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
 + * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
   */
--
 -#include <linux/init.h>
--#include <linux/mm.h>
- #include <linux/module.h>
+-#include <linux/kernel.h>
+-#include <linux/types.h>
+-#include <linux/interrupt.h>
  #include <linux/string.h>
--#include <linux/console.h>
--#include <linux/bootmem.h>
--#include <linux/ioport.h>
--#include <linux/blkdev.h>
- 
+ #include <linux/module.h>
+-#include <linux/clk.h>
+-#include <linux/err.h>
++#include <linux/slab.h>
+ #include <linux/gpio.h>
++#include <linux/leds.h>
+ #include <linux/platform_device.h>
+-#include <linux/serial_core.h>
+ #include <linux/mtd/physmap.h>
+-#include <linux/leds.h>
+-#include <linux/device.h>
+-#include <linux/slab.h>
+-#include <linux/irq.h>
+-#include <asm/time.h>
++#include <linux/serial_core.h>
++
+ #include <asm/reboot.h>
+ #include <asm/r4kcache.h>
+ #include <asm/sections.h>
++#include <asm/time.h>
  #include <asm/fw/fw.h>
- #include <asm/mach-rc32434/ddr.h>
-@@ -129,7 +111,7 @@ void __init prom_init(void)
- 			ddr_reg[0].end - ddr_reg[0].start);
- 
- 	if (!ddr) {
--		printk(KERN_ERR "Unable to remap DDR register\n");
-+		pr_err("Unable to remap DDR register\n");
- 		return;
- 	}
- 
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/pci.h>
 -- 
 1.7.10.3

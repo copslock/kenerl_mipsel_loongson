@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2012 23:56:13 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:43583 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2012 23:56:38 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:43584 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903746Ab2FEVvz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2012 23:51:55 +0200
+        with ESMTP id S1903745Ab2FEVwB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2012 23:52:01 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1Sc1AS-000824-1Y; Tue, 05 Jun 2012 16:19:56 -0500
+        id 1Sc1Aa-000824-84; Tue, 05 Jun 2012 16:20:04 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH 14/35] MIPS: lantiq: Cleanup firmware support for the lantiq platform.
-Date:   Tue,  5 Jun 2012 16:19:18 -0500
-Message-Id: <1338931179-9611-15-git-send-email-sjhill@mips.com>
+Subject: [PATCH 31/35] MIPS: RB532: Cleanup files effected by firmware changes.
+Date:   Tue,  5 Jun 2012 16:19:35 -0500
+Message-Id: <1338931179-9611-32-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1338931179-9611-1-git-send-email-sjhill@mips.com>
 References: <1338931179-9611-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33540
+X-archive-position: 33541
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,59 +36,74 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
+Make headers consistent across the files and make changes based on
+running the checkpatch script.
+
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/lantiq/prom.c |   22 ++--------------------
- 1 file changed, 2 insertions(+), 20 deletions(-)
+ arch/mips/rb532/prom.c |   40 +++++++++++-----------------------------
+ 1 file changed, 11 insertions(+), 29 deletions(-)
 
-diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-index d185e84..aa9da9e 100644
---- a/arch/mips/lantiq/prom.c
-+++ b/arch/mips/lantiq/prom.c
-@@ -9,9 +9,9 @@
- #include <linux/export.h>
- #include <linux/clk.h>
- #include <linux/of_platform.h>
--#include <asm/bootinfo.h>
- #include <asm/time.h>
- 
-+#include <asm/fw/fw.h>
- #include <lantiq.h>
- 
- #include "prom.h"
-@@ -36,24 +36,6 @@ void prom_free_prom_memory(void)
- {
- }
- 
--static void __init prom_init_cmdline(void)
--{
--	int argc = fw_arg0;
--	char **argv = (char **) KSEG1ADDR(fw_arg1);
--	int i;
+diff --git a/arch/mips/rb532/prom.c b/arch/mips/rb532/prom.c
+index 54f5399..5bddd0b 100644
+--- a/arch/mips/rb532/prom.c
++++ b/arch/mips/rb532/prom.c
+@@ -1,37 +1,19 @@
+ /*
+- *  RouterBoard 500 specific prom routines
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
+  *
+- *  Copyright (C) 2003, Peter Sadik <peter.sadik@idt.com>
+- *  Copyright (C) 2005-2006, P.Christeas <p_christ@hol.gr>
+- *  Copyright (C) 2007, Gabor Juhos <juhosg@openwrt.org>
+- *			Felix Fietkau <nbd@openwrt.org>
+- *			Florian Fainelli <florian@openwrt.org>
+- *
+- *  This program is free software; you can redistribute it and/or
+- *  modify it under the terms of the GNU General Public License
+- *  as published by the Free Software Foundation; either version 2
+- *  of the License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *  GNU General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the
+- *  Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+- *  Boston, MA  02110-1301, USA.
++ * RouterBoard 500 specific prom routines
+  *
++ * Copyright (C) 2003, Peter Sadik <peter.sadik@idt.com>
++ * Copyright (C) 2005-2006, P.Christeas <p_christ@hol.gr>
++ * Copyright (C) 2007, Gabor Juhos <juhosg@openwrt.org>
++ *		       Felix Fietkau <nbd@openwrt.org>
++ *		       Florian Fainelli <florian@openwrt.org>
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+  */
 -
--	arcs_cmdline[0] = '\0';
--
--	for (i = 0; i < argc; i++) {
--		char *p = (char *) KSEG1ADDR(argv[i]);
--
--		if (CPHYSADDR(p) && *p) {
--			strlcat(arcs_cmdline, p, sizeof(arcs_cmdline));
--			strlcat(arcs_cmdline, " ", sizeof(arcs_cmdline));
--		}
--	}
--}
--
- void __init plat_mem_setup(void)
- {
- 	ioport_resource.start = IOPORT_RESOURCE_START;
-@@ -78,7 +60,7 @@ void __init prom_init(void)
- 		soc_info.name, soc_info.rev_type);
- 	soc_info.sys_type[LTQ_SYS_TYPE_LEN - 1] = '\0';
- 	pr_info("SoC: %s\n", soc_info.sys_type);
--	prom_init_cmdline();
-+	fw_init_cmdline();
+-#include <linux/init.h>
+-#include <linux/mm.h>
+ #include <linux/module.h>
+ #include <linux/string.h>
+-#include <linux/console.h>
+-#include <linux/bootmem.h>
+-#include <linux/ioport.h>
+-#include <linux/blkdev.h>
  
- #if defined(CONFIG_MIPS_MT_SMP)
- 	if (register_vsmp_smp_ops())
+ #include <asm/fw/fw.h>
+ #include <asm/mach-rc32434/ddr.h>
+@@ -129,7 +111,7 @@ void __init prom_init(void)
+ 			ddr_reg[0].end - ddr_reg[0].start);
+ 
+ 	if (!ddr) {
+-		printk(KERN_ERR "Unable to remap DDR register\n");
++		pr_err("Unable to remap DDR register\n");
+ 		return;
+ 	}
+ 
 -- 
 1.7.10.3

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2012 23:24:07 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:43449 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2012 23:49:36 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:43544 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903737Ab2FEVT7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2012 23:19:59 +0200
+        with ESMTP id S1903720Ab2FEVta (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2012 23:49:30 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1Sc1AP-000824-Kz; Tue, 05 Jun 2012 16:19:53 -0500
+        id 1Sc1Ab-000824-Mu; Tue, 05 Jun 2012 16:20:05 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH 09/35] MIPS: Cobalt: Cleanup files effected by firmware changes.
-Date:   Tue,  5 Jun 2012 16:19:13 -0500
-Message-Id: <1338931179-9611-10-git-send-email-sjhill@mips.com>
+Subject: [PATCH 34/35] MIPS: vr41xx: Cleanup firmware support for vr41xx platforms.
+Date:   Tue,  5 Jun 2012 16:19:38 -0500
+Message-Id: <1338931179-9611-35-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1338931179-9611-1-git-send-email-sjhill@mips.com>
 References: <1338931179-9611-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33523
+X-archive-position: 33524
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,66 +36,43 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Make headers consistent across the files and make changes based on
-running the checkpatch script.
-
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/cobalt/setup.c |   24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ arch/mips/vr41xx/common/init.c |   14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/arch/mips/cobalt/setup.c b/arch/mips/cobalt/setup.c
-index 3fdd449..2565965 100644
---- a/arch/mips/cobalt/setup.c
-+++ b/arch/mips/cobalt/setup.c
-@@ -1,12 +1,13 @@
- /*
-- * Setup pointers to hardware dependent routines.
-- *
-  * This file is subject to the terms and conditions of the GNU General Public
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-+ * Setup pointers to hardware dependent routines.
-+ *
-  * Copyright (C) 1996, 1997, 2004, 05 by Ralf Baechle (ralf@linux-mips.org)
-  * Copyright (C) 2001, 2002, 2003 by Liam Davies (ldavies@agile.tv)
-+ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
-  *
-  */
- #include <linux/init.h>
-@@ -27,14 +28,14 @@ extern void cobalt_machine_halt(void);
- const char *get_system_type(void)
+diff --git a/arch/mips/vr41xx/common/init.c b/arch/mips/vr41xx/common/init.c
+index 2391632..a2fa7f0 100644
+--- a/arch/mips/vr41xx/common/init.c
++++ b/arch/mips/vr41xx/common/init.c
+@@ -22,8 +22,8 @@
+ #include <linux/irq.h>
+ #include <linux/string.h>
+ 
+-#include <asm/bootinfo.h>
+ #include <asm/time.h>
++#include <asm/fw/fw.h>
+ #include <asm/vr41xx/irq.h>
+ #include <asm/vr41xx/vr41xx.h>
+ 
+@@ -59,17 +59,7 @@ void __init plat_mem_setup(void)
+ 
+ void __init prom_init(void)
  {
- 	switch (cobalt_board_id) {
--		case COBALT_BRD_ID_QUBE1:
--			return "Cobalt Qube";
--		case COBALT_BRD_ID_RAQ1:
--			return "Cobalt RaQ";
--		case COBALT_BRD_ID_QUBE2:
--			return "Cobalt Qube2";
--		case COBALT_BRD_ID_RAQ2:
--			return "Cobalt RaQ2";
-+	case COBALT_BRD_ID_QUBE1:
-+		return "Cobalt Qube";
-+	case COBALT_BRD_ID_RAQ1:
-+		return "Cobalt RaQ";
-+	case COBALT_BRD_ID_QUBE2:
-+		return "Cobalt Qube2";
-+	case COBALT_BRD_ID_RAQ2:
-+		return "Cobalt RaQ2";
- 	}
- 	return "MIPS Cobalt";
- }
-@@ -86,7 +87,8 @@ void __init plat_mem_setup(void)
- 
- 	/* These resources have been reserved by VIA SuperI/O chip. */
- 	for (i = 0; i < ARRAY_SIZE(cobalt_reserved_resources); i++)
--		request_resource(&ioport_resource, cobalt_reserved_resources + i);
-+		request_resource(&ioport_resource,
-+				cobalt_reserved_resources + i);
+-	int argc, i;
+-	char **argv;
+-
+-	argc = fw_arg0;
+-	argv = (char **)fw_arg1;
+-
+-	for (i = 1; i < argc; i++) {
+-		strlcat(arcs_cmdline, argv[i], COMMAND_LINE_SIZE);
+-		if (i < (argc - 1))
+-			strlcat(arcs_cmdline, " ", COMMAND_LINE_SIZE);
+-	}
++	fw_init_cmdline();
  }
  
- /*
+ void __init prom_free_prom_memory(void)
 -- 
 1.7.10.3

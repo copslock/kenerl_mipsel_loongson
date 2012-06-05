@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2012 23:53:27 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:43564 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2012 23:53:51 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:43567 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903738Ab2FEVuv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2012 23:50:51 +0200
+        with ESMTP id S1903739Ab2FEVvC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2012 23:51:02 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1Sc1AX-000824-R2; Tue, 05 Jun 2012 16:20:01 -0500
+        id 1Sc1AU-000824-VE; Tue, 05 Jun 2012 16:19:58 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH 26/35] MIPS: PNX83xx, PNX8550: Cleanup firmware support for PNX platforms.
-Date:   Tue,  5 Jun 2012 16:19:30 -0500
-Message-Id: <1338931179-9611-27-git-send-email-sjhill@mips.com>
+Subject: [PATCH 20/35] MIPS: Malta: Cleanup firmware support for the Malta platform.
+Date:   Tue,  5 Jun 2012 16:19:24 -0500
+Message-Id: <1338931179-9611-21-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1338931179-9611-1-git-send-email-sjhill@mips.com>
 References: <1338931179-9611-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33533
+X-archive-position: 33534
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,409 +38,504 @@ From: "Steven J. Hill" <sjhill@mips.com>
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/pnx833x/common/Makefile    |    2 +-
- arch/mips/pnx833x/common/prom.c      |   64 -----------------
- arch/mips/pnx833x/common/setup.c     |    4 ++
- arch/mips/pnx833x/stb22x/board.c     |   25 ++-----
- arch/mips/pnx8550/common/Makefile    |    2 +-
- arch/mips/pnx8550/common/prom.c      |  128 ----------------------------------
- arch/mips/pnx8550/common/setup.c     |    7 +-
- arch/mips/pnx8550/jbs/init.c         |    9 +--
- arch/mips/pnx8550/stb810/prom_init.c |   13 +---
- 9 files changed, 21 insertions(+), 233 deletions(-)
- delete mode 100644 arch/mips/pnx833x/common/prom.c
- delete mode 100644 arch/mips/pnx8550/common/prom.c
+ arch/mips/include/asm/mips-boards/generic.h |    9 +---
+ arch/mips/include/asm/mips-boards/prom.h    |   47 -----------------
+ arch/mips/mti-malta/Makefile                |    2 +-
+ arch/mips/mti-malta/malta-cmdline.c         |   59 ---------------------
+ arch/mips/mti-malta/malta-display.c         |    1 -
+ arch/mips/mti-malta/malta-init.c            |   51 +++---------------
+ arch/mips/mti-malta/malta-memory.c          |   76 ++++++++-------------------
+ arch/mips/mti-malta/malta-setup.c           |    9 ++--
+ arch/mips/mti-malta/malta-time.c            |    1 -
+ 9 files changed, 38 insertions(+), 217 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mips-boards/prom.h
+ delete mode 100644 arch/mips/mti-malta/malta-cmdline.c
 
-diff --git a/arch/mips/pnx833x/common/Makefile b/arch/mips/pnx833x/common/Makefile
-index 1a46dd2..abda463 100644
---- a/arch/mips/pnx833x/common/Makefile
-+++ b/arch/mips/pnx833x/common/Makefile
-@@ -1 +1 @@
--obj-y := interrupts.o platform.o prom.o setup.o reset.o
-+obj-y := interrupts.o platform.o setup.o reset.o
-diff --git a/arch/mips/pnx833x/common/prom.c b/arch/mips/pnx833x/common/prom.c
-deleted file mode 100644
-index 29969f9..0000000
---- a/arch/mips/pnx833x/common/prom.c
-+++ /dev/null
-@@ -1,64 +0,0 @@
--/*
-- *  prom.c:
-- *
-- *  Copyright 2008 NXP Semiconductors
-- *	  Chris Steel <chris.steel@nxp.com>
-- *    Daniel Laird <daniel.j.laird@nxp.com>
-- *
-- *  Based on software written by:
-- *      Nikita Youshchenko <yoush@debian.org>, based on PNX8550 code.
-- *
-- *  This program is free software; you can redistribute it and/or modify
-- *  it under the terms of the GNU General Public License as published by
-- *  the Free Software Foundation; either version 2 of the License, or
-- *  (at your option) any later version.
-- *
-- *  This program is distributed in the hope that it will be useful,
-- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- *  GNU General Public License for more details.
-- *
-- *  You should have received a copy of the GNU General Public License
-- *  along with this program; if not, write to the Free Software
-- *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-- */
--#include <linux/init.h>
--#include <asm/bootinfo.h>
--#include <linux/string.h>
--
--void __init prom_init_cmdline(void)
--{
--	int argc = fw_arg0;
--	char **argv = (char **)fw_arg1;
--	char *c = &(arcs_cmdline[0]);
--	int i;
--
--	for (i = 1; i < argc; i++) {
--		strcpy(c, argv[i]);
--		c += strlen(argv[i]);
--		if (i < argc-1)
--			*c++ = ' ';
--	}
--	*c = 0;
--}
--
--char __init *prom_getenv(char *envname)
--{
--	extern char **prom_envp;
--	char **env = prom_envp;
--	int i;
--
--	i = strlen(envname);
--
--	while (*env) {
--		if (strncmp(envname, *env, i) == 0 && *(*env+i) == '=')
--			return *env + i + 1;
--		env++;
--	}
--
--	return 0;
--}
--
--void __init prom_free_prom_memory(void)
--{
--}
-diff --git a/arch/mips/pnx833x/common/setup.c b/arch/mips/pnx833x/common/setup.c
-index e51fbc4..3ea4926 100644
---- a/arch/mips/pnx833x/common/setup.c
-+++ b/arch/mips/pnx833x/common/setup.c
-@@ -36,6 +36,10 @@ extern void pnx833x_machine_restart(char *);
- extern void pnx833x_machine_halt(void);
- extern void pnx833x_machine_power_off(void);
+diff --git a/arch/mips/include/asm/mips-boards/generic.h b/arch/mips/include/asm/mips-boards/generic.h
+index 6e23ceb..cf20a30 100644
+--- a/arch/mips/include/asm/mips-boards/generic.h
++++ b/arch/mips/include/asm/mips-boards/generic.h
+@@ -30,13 +30,6 @@
+ #define ASCII_DISPLAY_WORD_BASE    0x1f000410
+ #define ASCII_DISPLAY_POS_BASE     0x1f000418
  
-+void __init prom_free_prom_memory(void)
-+{
-+}
-+
- int __init plat_mem_setup(void)
- {
- 	/* fake pci bus to avoid bounce buffers */
-diff --git a/arch/mips/pnx833x/stb22x/board.c b/arch/mips/pnx833x/stb22x/board.c
-index 644eb7c..cdf1a3b 100644
---- a/arch/mips/pnx833x/stb22x/board.c
-+++ b/arch/mips/pnx833x/stb22x/board.c
-@@ -23,8 +23,8 @@
-  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+-
+-/*
+- * Yamon Prom print address.
+- */
+-#define YAMON_PROM_PRINT_ADDR      0x1fc00504
+-
+-
+ /*
+  * Reset register.
   */
- #include <linux/init.h>
--#include <asm/bootinfo.h>
- #include <linux/mm.h>
-+#include <asm/fw/fw.h>
- #include <pnx833x.h>
- #include <gpio.h>
+@@ -93,4 +86,6 @@ extern void mips_pcibios_init(void);
+ #define mips_pcibios_init() do { } while (0)
+ #endif
  
-@@ -38,34 +38,23 @@
- #define PNX8335_DEBUG6 0x4418
- #define PNX8335_DEBUG7 0x441c
- 
--int prom_argc;
--char **prom_argv, **prom_envp;
--
--extern void prom_init_cmdline(void);
--extern char *prom_getenv(char *envname);
--
- const char *get_system_type(void)
- {
- 	return "NXP STB22x";
- }
- 
--static inline unsigned long env_or_default(char *env, unsigned long dfl)
--{
--	char *str = prom_getenv(env);
--	return str ? simple_strtol(str, 0, 0) : dfl;
--}
--
- void __init prom_init(void)
- {
- 	unsigned long memsize;
- 
--	prom_argc = fw_arg0;
--	prom_argv = (char **)fw_arg1;
--	prom_envp = (char **)fw_arg2;
-+	fw_init_cmdline();
- 
--	prom_init_cmdline();
-+	memsize = fw_getenvl("memsize");
-+	if (!memsize) {
-+		pr_warn("memsize not set by firmware, setting to 32MB\n");
-+		memsize = 0x02000000;
-+	}
- 
--	memsize = env_or_default("memsize", 0x02000000);
- 	add_memory_region(0, memsize, BOOT_MEM_RAM);
- }
- 
-diff --git a/arch/mips/pnx8550/common/Makefile b/arch/mips/pnx8550/common/Makefile
-index f8ce695..32f5399 100644
---- a/arch/mips/pnx8550/common/Makefile
-+++ b/arch/mips/pnx8550/common/Makefile
-@@ -22,5 +22,5 @@
- # under Linux.
- #
- 
--obj-y := setup.o prom.o int.o reset.o time.o proc.o platform.o
-+obj-y := setup.o int.o reset.o time.o proc.o platform.o
- obj-$(CONFIG_PCI) += pci.o
-diff --git a/arch/mips/pnx8550/common/prom.c b/arch/mips/pnx8550/common/prom.c
++extern void mips_scroll_message(void);
++
+ #endif  /* __ASM_MIPS_BOARDS_GENERIC_H */
+diff --git a/arch/mips/include/asm/mips-boards/prom.h b/arch/mips/include/asm/mips-boards/prom.h
 deleted file mode 100644
-index 49639e8..0000000
---- a/arch/mips/pnx8550/common/prom.c
+index a9db576..0000000
+--- a/arch/mips/include/asm/mips-boards/prom.h
 +++ /dev/null
-@@ -1,128 +0,0 @@
+@@ -1,47 +0,0 @@
 -/*
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
 - *
-- * Per Hallsmark, per.hallsmark@mvista.com
+- * ########################################################################
 - *
-- * Based on jmr3927/common/prom.c
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
 - *
-- * 2004 (c) MontaVista Software, Inc. This file is licensed under the
-- * terms of the GNU General Public License version 2. This program is
-- * licensed "as is" without any warranty of any kind, whether express
-- * or implied.
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * ########################################################################
+- *
+- * MIPS boards bootprom interface for the Linux kernel.
+- *
 - */
--#include <linux/module.h>
--#include <linux/kernel.h>
+-
+-#ifndef _MIPS_PROM_H
+-#define _MIPS_PROM_H
+-
+-extern char *prom_getcmdline(void);
+-extern char *prom_getenv(char *name);
+-extern void prom_init_cmdline(void);
+-extern void prom_meminit(void);
+-extern void prom_fixup_mem_map(unsigned long start_mem, unsigned long end_mem);
+-extern void mips_display_message(const char *str);
+-extern void mips_display_word(unsigned int num);
+-extern void mips_scroll_message(void);
+-extern int get_ethernet_addr(char *ethernet_addr);
+-
+-/* Memory descriptor management. */
+-#define PROM_MAX_PMEMBLOCKS    32
+-struct prom_pmemblock {
+-        unsigned long base; /* Within KSEG0. */
+-        unsigned int size;  /* In bytes. */
+-        unsigned int type;  /* free or prom memory */
+-};
+-
+-#endif /* !(_MIPS_PROM_H) */
+diff --git a/arch/mips/mti-malta/Makefile b/arch/mips/mti-malta/Makefile
+index 6079ef3..8d64bd4 100644
+--- a/arch/mips/mti-malta/Makefile
++++ b/arch/mips/mti-malta/Makefile
+@@ -5,7 +5,7 @@
+ # Copyright (C) 2008 Wind River Systems, Inc.
+ #   written by Ralf Baechle <ralf@linux-mips.org>
+ #
+-obj-y				:= malta-amon.o malta-cmdline.o \
++obj-y				:= malta-amon.o \
+ 				   malta-display.o malta-init.o malta-int.o \
+ 				   malta-memory.o malta-platform.o \
+ 				   malta-reset.o malta-setup.o malta-time.o
+diff --git a/arch/mips/mti-malta/malta-cmdline.c b/arch/mips/mti-malta/malta-cmdline.c
+deleted file mode 100644
+index 1871c30..0000000
+--- a/arch/mips/mti-malta/malta-cmdline.c
++++ /dev/null
+@@ -1,59 +0,0 @@
+-/*
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- *
+- * This program is free software; you can distribute it and/or modify it
+- * under the terms of the GNU General Public License (Version 2) as
+- * published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope it will be useful, but WITHOUT
+- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- * for more details.
+- *
+- * You should have received a copy of the GNU General Public License along
+- * with this program; if not, write to the Free Software Foundation, Inc.,
+- * 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * Kernel command line creation using the prom monitor (YAMON) argc/argv.
+- */
 -#include <linux/init.h>
 -#include <linux/string.h>
--#include <linux/serial_pnx8xxx.h>
 -
 -#include <asm/bootinfo.h>
--#include <uart.h>
--
--/* #define DEBUG_CMDLINE */
 -
 -extern int prom_argc;
--extern char **prom_argv, **prom_envp;
+-extern int *_prom_argv;
 -
--typedef struct
--{
--    char *name;
--/*    char *val; */
--}t_env_var;
--
+-/*
+- * YAMON (32-bit PROM) pass arguments and environment as 32-bit pointer.
+- * This macro take care of sign extension.
+- */
+-#define prom_argv(index) ((char *)(long)_prom_argv[(index)])
 -
 -char * __init prom_getcmdline(void)
 -{
 -	return &(arcs_cmdline[0]);
 -}
 -
--void __init prom_init_cmdline(void)
--{
--	int i;
 -
--	arcs_cmdline[0] = '\0';
--	for (i = 0; i < prom_argc; i++) {
--		strcat(arcs_cmdline, prom_argv[i]);
--		strcat(arcs_cmdline, " ");
+-void  __init prom_init_cmdline(void)
+-{
+-	char *cp;
+-	int actr;
+-
+-	actr = 1; /* Always ignore argv[0] */
+-
+-	cp = &(arcs_cmdline[0]);
+-	while(actr < prom_argc) {
+-	        strcpy(cp, prom_argv(actr));
+-		cp += strlen(prom_argv(actr));
+-		*cp++ = ' ';
+-		actr++;
+-	}
+-	if (cp != &(arcs_cmdline[0])) {
+-		/* get rid of trailing space */
+-		--cp;
+-		*cp = '\0';
 -	}
 -}
+diff --git a/arch/mips/mti-malta/malta-display.c b/arch/mips/mti-malta/malta-display.c
+index 7c8828f..2a0057c 100644
+--- a/arch/mips/mti-malta/malta-display.c
++++ b/arch/mips/mti-malta/malta-display.c
+@@ -22,7 +22,6 @@
+ #include <linux/timer.h>
+ #include <asm/io.h>
+ #include <asm/mips-boards/generic.h>
+-#include <asm/mips-boards/prom.h>
+ 
+ extern const char display_string[];
+ static unsigned int display_count;
+diff --git a/arch/mips/mti-malta/malta-init.c b/arch/mips/mti-malta/malta-init.c
+index 27a6cdb..9844f31 100644
+--- a/arch/mips/mti-malta/malta-init.c
++++ b/arch/mips/mti-malta/malta-init.c
+@@ -23,31 +23,21 @@
+ #include <linux/string.h>
+ #include <linux/kernel.h>
+ 
+-#include <asm/bootinfo.h>
+ #include <asm/gt64120.h>
+ #include <asm/io.h>
+ #include <asm/cacheflush.h>
+ #include <asm/smp-ops.h>
+ #include <asm/traps.h>
+ 
++#include <asm/fw/fw.h>
+ #include <asm/gcmpregs.h>
+-#include <asm/mips-boards/prom.h>
+ #include <asm/mips-boards/generic.h>
+ #include <asm/mips-boards/bonito64.h>
+ #include <asm/mips-boards/msc01_pci.h>
+ 
+ #include <asm/mips-boards/malta.h>
+ 
+-int prom_argc;
+-int *_prom_argv, *_prom_envp;
 -
+-/*
+- * YAMON (32-bit PROM) pass arguments and environment as 32-bit pointer.
+- * This macro take care of sign extension, if running in 64-bit mode.
+- */
+-#define prom_envp(index) ((char *)(long)_prom_envp[(index)])
+-
+-int init_debug;
++extern void mips_display_message(const char *str);
+ 
+ static int mips_revision_corid;
+ int mips_revision_sconid;
+@@ -62,28 +52,6 @@ unsigned long _pcictrl_gt64120;
+ /* MIPS System controller register base */
+ unsigned long _pcictrl_msc;
+ 
 -char *prom_getenv(char *envname)
 -{
 -	/*
 -	 * Return a pointer to the given environment variable.
--	 * Environment variables are stored in the form of "memsize=64".
+-	 * In 64-bit mode: we're using 64-bit pointers, but all pointers
+-	 * in the PROM structures are only 32-bit, so we need some
+-	 * workarounds, if we are running in 64-bit mode.
 -	 */
--
--	t_env_var *env = (t_env_var *)prom_envp;
--	int i;
+-	int i, index=0;
 -
 -	i = strlen(envname);
 -
--	while(env->name) {
--		if(strncmp(envname, env->name, i) == 0) {
--			return(env->name + strlen(envname) + 1);
+-	while (prom_envp(index)) {
+-		if(strncmp(envname, prom_envp(index), i) == 0) {
+-			return(prom_envp(index+1));
 -		}
--		env++;
+-		index += 2;
 -	}
--	return(NULL);
+-
+-	return NULL;
 -}
 -
--inline unsigned char str2hexnum(unsigned char c)
--{
--	if(c >= '0' && c <= '9')
--		return c - '0';
--	if(c >= 'a' && c <= 'f')
--		return c - 'a' + 10;
--	if(c >= 'A' && c <= 'F')
--		return c - 'A' + 10;
--	return 0; /* foo */
--}
--
--inline void str2eaddr(unsigned char *ea, unsigned char *str)
--{
--	int i;
--
--	for(i = 0; i < 6; i++) {
--		unsigned char num;
--
--		if((*str == '.') || (*str == ':'))
--			str++;
--		num = str2hexnum(*str++) << 4;
--		num |= (str2hexnum(*str++));
--		ea[i] = num;
--	}
--}
--
--int get_ethernet_addr(char *ethernet_addr)
--{
--        char *ethaddr_str;
--
--        ethaddr_str = prom_getenv("ethaddr");
--	if (!ethaddr_str) {
--	        printk("ethaddr not set in boot prom\n");
--		return -1;
--	}
--	str2eaddr(ethernet_addr, ethaddr_str);
--	return 0;
--}
--
--void __init prom_free_prom_memory(void)
--{
--}
--
--extern int pnx8550_console_port;
--
--/* used by early printk */
--void prom_putchar(char c)
--{
--	if (pnx8550_console_port != -1) {
--		/* Wait until FIFO not full */
--		while( ((ip3106_fifo(UART_BASE, pnx8550_console_port) & PNX8XXX_UART_FIFO_TXFIFO) >> 16) >= 16)
--			;
--		/* Send one char */
--		ip3106_fifo(UART_BASE, pnx8550_console_port) = c;
--	}
--}
--
--EXPORT_SYMBOL(get_ethernet_addr);
--EXPORT_SYMBOL(str2eaddr);
-diff --git a/arch/mips/pnx8550/common/setup.c b/arch/mips/pnx8550/common/setup.c
-index fccd6b0..b8ae54c 100644
---- a/arch/mips/pnx8550/common/setup.c
-+++ b/arch/mips/pnx8550/common/setup.c
-@@ -28,10 +28,10 @@
- #include <linux/pm.h>
+ static inline unsigned char str2hexnum(unsigned char c)
+ {
+ 	if (c >= '0' && c <= '9')
+@@ -138,8 +106,8 @@ static void __init console_config(void)
+ 	char parity = '\0', bits = '\0', flow = '\0';
+ 	char *s;
  
- #include <asm/cpu.h>
+-	if ((strstr(prom_getcmdline(), "console=")) == NULL) {
+-		s = prom_getenv("modetty0");
++	if ((strstr(fw_getcmdline(), "console=")) == NULL) {
++		s = fw_getenv("modetty0");
+ 		if (s) {
+ 			while (*s >= '0' && *s <= '9')
+ 				baud = baud*10 + *s++ - '0';
+@@ -159,7 +127,7 @@ static void __init console_config(void)
+ 		if (flow == '\0')
+ 			flow = 'r';
+ 		sprintf(console_string, " console=ttyS0,%d%c%c%c", baud, parity, bits, flow);
+-		strcat(prom_getcmdline(), console_string);
++		strcat(fw_getcmdline(), console_string);
+ 		pr_info("Config serial console:%s\n", console_string);
+ 	}
+ }
+@@ -193,10 +161,6 @@ extern struct plat_smp_ops msmtc_smp_ops;
+ 
+ void __init prom_init(void)
+ {
+-	prom_argc = fw_arg0;
+-	_prom_argv = (int *) fw_arg1;
+-	_prom_envp = (int *) fw_arg2;
+-
+ 	mips_display_message("LINUX");
+ 
+ 	/*
+@@ -353,8 +317,9 @@ void __init prom_init(void)
+ 	board_nmi_handler_setup = mips_nmi_setup;
+ 	board_ejtag_handler_setup = mips_ejtag_setup;
+ 
+-	prom_init_cmdline();
+-	prom_meminit();
++	fw_init_cmdline();
++	fw_meminit();
++
+ #ifdef CONFIG_SERIAL_8250_CONSOLE
+ 	console_config();
+ #endif
+diff --git a/arch/mips/mti-malta/malta-memory.c b/arch/mips/mti-malta/malta-memory.c
+index a96d281..cddcd46 100644
+--- a/arch/mips/mti-malta/malta-memory.c
++++ b/arch/mips/mti-malta/malta-memory.c
+@@ -24,50 +24,31 @@
+ #include <linux/pfn.h>
+ #include <linux/string.h>
+ 
 -#include <asm/bootinfo.h>
- #include <asm/irq.h>
- #include <asm/mipsregs.h>
- #include <asm/reboot.h>
+ #include <asm/page.h>
+ #include <asm/sections.h>
 +#include <asm/fw/fw.h>
- #include <asm/pgtable.h>
- #include <asm/time.h>
  
-@@ -46,7 +46,6 @@ extern void pnx8550_machine_restart(char *);
- extern void pnx8550_machine_halt(void);
- extern struct resource ioport_resource;
- extern struct resource iomem_resource;
--extern char *prom_getcmdline(void);
+-#include <asm/mips-boards/prom.h>
+-
+-/*#define DEBUG*/
+-
+-enum yamon_memtypes {
+-	yamon_dontuse,
+-	yamon_prom,
+-	yamon_free,
+-};
+-static struct prom_pmemblock mdesc[PROM_MAX_PMEMBLOCKS];
+-
+-#ifdef DEBUG
+-static char *mtypes[3] = {
+-	"Dont use memory",
+-	"YAMON PROM memory",
+-	"Free memory",
+-};
+-#endif
++static fw_memblock_t mdesc[FW_MAX_MEMBLOCKS];
  
- struct resource standard_io_resources[] = {
- 	{
-@@ -128,8 +127,8 @@ void __init plat_mem_setup(void)
- 			(PNX8550_GPIO_MODE_PRIMOP << PNX8550_GPIO_MC_17_BIT),
- 			PNX8550_GPIO_MC1);
+ /* determined physical memory size, not overridden by command line args  */
+ unsigned long physical_memsize = 0L;
+ 
+-static struct prom_pmemblock * __init prom_getmdesc(void)
++fw_memblock_t * __init fw_getmdesc(void)
+ {
+-	char *memsize_str;
++	char *memsize_str, *ptr;
+ 	unsigned int memsize;
+-	char *ptr;
+ 	static char cmdline[COMMAND_LINE_SIZE] __initdata;
++	long val;
++	int tmp;
+ 
+ 	/* otherwise look in the environment */
+-	memsize_str = prom_getenv("memsize");
++	memsize_str = fw_getenv("memsize");
+ 	if (!memsize_str) {
+-		printk(KERN_WARNING
+-		       "memsize not set in boot prom, set to default (32Mb)\n");
++		pr_warn("memsize not set in YAMON, set to default (32Mb)\n");
+ 		physical_memsize = 0x02000000;
+ 	} else {
+-#ifdef DEBUG
+-		pr_debug("prom_memsize = %s\n", memsize_str);
+-#endif
+-		physical_memsize = simple_strtol(memsize_str, NULL, 0);
++		tmp = kstrtol(memsize_str, 0, &val);
++		physical_memsize = (unsigned long)val;
+ 	}
+ 
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+@@ -90,11 +71,11 @@ static struct prom_pmemblock * __init prom_getmdesc(void)
+ 
+ 	memset(mdesc, 0, sizeof(mdesc));
+ 
+-	mdesc[0].type = yamon_dontuse;
++	mdesc[0].type = fw_dontuse;
+ 	mdesc[0].base = 0x00000000;
+ 	mdesc[0].size = 0x00001000;
+ 
+-	mdesc[1].type = yamon_prom;
++	mdesc[1].type = fw_code;
+ 	mdesc[1].base = 0x00001000;
+ 	mdesc[1].size = 0x000ef000;
+ 
+@@ -105,55 +86,44 @@ static struct prom_pmemblock * __init prom_getmdesc(void)
+ 	 * This mean that this area can't be used as DMA memory for PCI
+ 	 * devices.
+ 	 */
+-	mdesc[2].type = yamon_dontuse;
++	mdesc[2].type = fw_dontuse;
+ 	mdesc[2].base = 0x000f0000;
+ 	mdesc[2].size = 0x00010000;
+ 
+-	mdesc[3].type = yamon_dontuse;
++	mdesc[3].type = fw_dontuse;
+ 	mdesc[3].base = 0x00100000;
+ 	mdesc[3].size = CPHYSADDR(PFN_ALIGN((unsigned long)&_end)) - mdesc[3].base;
+ 
+-	mdesc[4].type = yamon_free;
++	mdesc[4].type = fw_free;
+ 	mdesc[4].base = CPHYSADDR(PFN_ALIGN(&_end));
+ 	mdesc[4].size = memsize - mdesc[4].base;
+ 
+ 	return &mdesc[0];
+ }
+ 
+-static int __init prom_memtype_classify(unsigned int type)
++static int __init fw_memtype_classify(unsigned int type)
+ {
+ 	switch (type) {
+-	case yamon_free:
++	case fw_free:
+ 		return BOOT_MEM_RAM;
+-	case yamon_prom:
++	case fw_code:
+ 		return BOOT_MEM_ROM_DATA;
+ 	default:
+ 		return BOOT_MEM_RESERVED;
+ 	}
+ }
+ 
+-void __init prom_meminit(void)
++void __init fw_meminit(void)
+ {
+-	struct prom_pmemblock *p;
++	fw_memblock_t *p;
+ 
+-#ifdef DEBUG
+-	pr_debug("YAMON MEMORY DESCRIPTOR dump:\n");
+-	p = prom_getmdesc();
+-	while (p->size) {
+-		int i = 0;
+-		pr_debug("[%d,%p]: base<%08lx> size<%08lx> type<%s>\n",
+-			 i, p, p->base, p->size, mtypes[p->type]);
+-		p++;
+-		i++;
+-	}
+-#endif
+-	p = prom_getmdesc();
++	p = fw_getmdesc();
+ 
+ 	while (p->size) {
+ 		long type;
+ 		unsigned long base, size;
+ 
+-		type = prom_memtype_classify(p->type);
++		type = fw_memtype_classify(p->type);
+ 		base = p->base;
+ 		size = p->size;
+ 
+@@ -172,7 +142,7 @@ void __init prom_free_prom_memory(void)
+ 			continue;
+ 
+ 		addr = boot_mem_map.map[i].addr;
+-		free_init_pages("prom memory",
++		free_init_pages("YAMON memory",
+ 				addr, addr + boot_mem_map.map[i].size);
+ 	}
+ }
+diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
+index 2e28f65..08cdf8f 100644
+--- a/arch/mips/mti-malta/malta-setup.c
++++ b/arch/mips/mti-malta/malta-setup.c
+@@ -25,9 +25,8 @@
+ #include <linux/screen_info.h>
+ #include <linux/time.h>
+ 
+-#include <asm/bootinfo.h>
++#include <asm/fw/fw.h>
+ #include <asm/mips-boards/generic.h>
+-#include <asm/mips-boards/prom.h>
+ #include <asm/mips-boards/malta.h>
+ #include <asm/mips-boards/maltaint.h>
+ #include <asm/dma.h>
+@@ -115,7 +114,7 @@ static void __init pci_clock_check(void)
+ 		33, 20, 25, 30, 12, 16, 37, 10
+ 	};
+ 	int pciclock = pciclocks[jmpr];
+-	char *argptr = prom_getcmdline();
++	char *argptr = fw_getcmdline();
+ 
+ 	if (pciclock != 33 && !strstr(argptr, "idebus=")) {
+ 		printk(KERN_WARNING "WARNING: PCI clock is %dMHz, "
+@@ -153,7 +152,7 @@ static void __init bonito_quirks_setup(void)
+ {
+ 	char *argptr;
  
 -	argptr = prom_getcmdline();
--	if ((argptr = strstr(argptr, "console=ttyS")) != NULL) {
-+	argptr = strstr(fw_getcmdline(), "console=ttyS");
-+	if (argptr != NULL) {
- 		argptr += strlen("console=ttyS");
- 		pnx8550_console_port = *argptr == '0' ? 0 : 1;
++	argptr = fw_getcmdline();
+ 	if (strstr(argptr, "debug")) {
+ 		BONITO_BONGENCFG |= BONITO_BONGENCFG_DEBUGMODE;
+ 		printk(KERN_INFO "Enabled Bonito debug mode\n");
+@@ -165,7 +164,7 @@ static void __init bonito_quirks_setup(void)
+ 		BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
+ 		printk(KERN_INFO "Enabled Bonito CPU coherency\n");
  
-diff --git a/arch/mips/pnx8550/jbs/init.c b/arch/mips/pnx8550/jbs/init.c
-index d59b4a4..e682446 100644
---- a/arch/mips/pnx8550/jbs/init.c
-+++ b/arch/mips/pnx8550/jbs/init.c
-@@ -29,15 +29,10 @@
- #include <linux/sched.h>
- #include <linux/bootmem.h>
- #include <asm/addrspace.h>
--#include <asm/bootinfo.h>
-+#include <asm/fw/fw.h>
- #include <linux/string.h>
- #include <linux/kernel.h>
+-		argptr = prom_getcmdline();
++		argptr = fw_getcmdline();
+ 		if (strstr(argptr, "iobcuncached")) {
+ 			BONITO_PCICACHECTRL &= ~BONITO_PCICACHECTRL_IOBCCOH_EN;
+ 			BONITO_PCIMEMBASECFG = BONITO_PCIMEMBASECFG &
+diff --git a/arch/mips/mti-malta/malta-time.c b/arch/mips/mti-malta/malta-time.c
+index 115f5bc..8a5d589 100644
+--- a/arch/mips/mti-malta/malta-time.c
++++ b/arch/mips/mti-malta/malta-time.c
+@@ -41,7 +41,6 @@
+ #include <asm/msc01_ic.h>
  
--int prom_argc;
--char **prom_argv, **prom_envp;
--extern void  __init prom_init_cmdline(void);
--extern char *prom_getenv(char *envname);
--
- const char *get_system_type(void)
- {
- 	return "NXP PNX8550/JBS";
-@@ -47,6 +42,8 @@ void __init prom_init(void)
- {
- 	unsigned long memsize;
+ #include <asm/mips-boards/generic.h>
+-#include <asm/mips-boards/prom.h>
  
-+	fw_init_cmdline();
-+
- 	//memsize = 0x02800000; /* Trimedia uses memory above */
- 	memsize = 0x08000000; /* Trimedia uses memory above */
- 	add_memory_region(0, memsize, BOOT_MEM_RAM);
-diff --git a/arch/mips/pnx8550/stb810/prom_init.c b/arch/mips/pnx8550/stb810/prom_init.c
-index ca7f4ad..cb1b052 100644
---- a/arch/mips/pnx8550/stb810/prom_init.c
-+++ b/arch/mips/pnx8550/stb810/prom_init.c
-@@ -17,15 +17,10 @@
- #include <linux/sched.h>
- #include <linux/bootmem.h>
- #include <asm/addrspace.h>
--#include <asm/bootinfo.h>
-+#include <asm/fw/fw.h>
- #include <linux/string.h>
- #include <linux/kernel.h>
+ #include <asm/mips-boards/maltaint.h>
  
--int prom_argc;
--char **prom_argv, **prom_envp;
--extern void  __init prom_init_cmdline(void);
--extern char *prom_getenv(char *envname);
--
- const char *get_system_type(void)
- {
- 	return "NXP PNX8950/STB810";
-@@ -35,11 +30,7 @@ void __init prom_init(void)
- {
- 	unsigned long memsize;
- 
--	prom_argc = (int) fw_arg0;
--	prom_argv = (char **) fw_arg1;
--	prom_envp = (char **) fw_arg2;
--
--	prom_init_cmdline();
-+	fw_init_cmdline();
- 
- 	memsize = 0x08000000; /* Trimedia uses memory above */
- 	add_memory_region(0, memsize, BOOT_MEM_RAM);
 -- 
 1.7.10.3

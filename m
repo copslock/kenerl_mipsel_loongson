@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2012 23:54:38 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:43573 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2012 23:55:03 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:43576 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903751Ab2FEVv0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2012 23:51:26 +0200
+        with ESMTP id S1903744Ab2FEVvd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2012 23:51:33 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1Sc1AQ-000824-JN; Tue, 05 Jun 2012 16:19:54 -0500
+        id 1Sc1AT-000824-Ua; Tue, 05 Jun 2012 16:19:57 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH 11/35] MIPS: Emma: Cleanup files effected by firmware changes.
-Date:   Tue,  5 Jun 2012 16:19:15 -0500
-Message-Id: <1338931179-9611-12-git-send-email-sjhill@mips.com>
+Subject: [PATCH 18/35] MIPS: Loongson: Cleanup firmware support for the Loongson platform.
+Date:   Tue,  5 Jun 2012 16:19:22 -0500
+Message-Id: <1338931179-9611-19-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1338931179-9611-1-git-send-email-sjhill@mips.com>
 References: <1338931179-9611-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33536
+X-archive-position: 33537
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,49 +36,175 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Make headers consistent across the files and make changes based on
-running the checkpatch script.
-
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/emma/common/prom.c |   25 ++++++++-----------------
- 1 file changed, 8 insertions(+), 17 deletions(-)
+ arch/mips/include/asm/mach-loongson/loongson.h |    3 +-
+ arch/mips/loongson/common/Makefile             |    2 +-
+ arch/mips/loongson/common/cmdline.c            |   48 ------------------------
+ arch/mips/loongson/common/env.c                |   31 ++++-----------
+ arch/mips/loongson/common/init.c               |    6 ++-
+ 5 files changed, 13 insertions(+), 77 deletions(-)
+ delete mode 100644 arch/mips/loongson/common/cmdline.c
 
-diff --git a/arch/mips/emma/common/prom.c b/arch/mips/emma/common/prom.c
-index 5228584..9a70c4e 100644
---- a/arch/mips/emma/common/prom.c
-+++ b/arch/mips/emma/common/prom.c
-@@ -1,23 +1,14 @@
- /*
-- *  Copyright (C) NEC Electronics Corporation 2004-2006
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  *
-- *  This file is based on the arch/mips/ddb5xxx/common/prom.c
-+ * This is based on the arch/mips/ddb5xxx/common/prom.c file.
-+ * GPR board platform device registration (Au1550)
-  *
-- *	Copyright 2001 MontaVista Software Inc.
+diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
+index 1e29b9d..b19c5b4 100644
+--- a/arch/mips/include/asm/mach-loongson/loongson.h
++++ b/arch/mips/include/asm/mach-loongson/loongson.h
+@@ -28,9 +28,8 @@ extern unsigned long memsize, highmemsize;
+ 
+ /* loongson-specific command line, env and memory initialization */
+ extern void __init prom_init_memory(void);
+-extern void __init prom_init_cmdline(void);
+ extern void __init prom_init_machtype(void);
+-extern void __init prom_init_env(void);
++extern void __init fw_init_env(void);
+ #ifdef CONFIG_LOONGSON_UART_BASE
+ extern unsigned long _loongson_uart_base, loongson_uart_base;
+ extern void prom_init_loongson_uart_base(void);
+diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
+index e526488..5267e33 100644
+--- a/arch/mips/loongson/common/Makefile
++++ b/arch/mips/loongson/common/Makefile
+@@ -2,7 +2,7 @@
+ # Makefile for loongson based machines.
+ #
+ 
+-obj-y += setup.o init.o cmdline.o env.o time.o reset.o irq.o \
++obj-y += setup.o init.o env.o time.o reset.o irq.o \
+     pci.o bonito-irq.o mem.o machtype.o platform.o
+ obj-$(CONFIG_GENERIC_GPIO) += gpio.o
+ 
+diff --git a/arch/mips/loongson/common/cmdline.c b/arch/mips/loongson/common/cmdline.c
+deleted file mode 100644
+index 353e1d2..0000000
+--- a/arch/mips/loongson/common/cmdline.c
++++ /dev/null
+@@ -1,48 +0,0 @@
+-/*
+- * Based on Ocelot Linux port, which is
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
 - *
-- *  This program is free software; you can redistribute it and/or modify
-- *  it under the terms of the GNU General Public License as published by
-- *  the Free Software Foundation; either version 2 of the License, or
-- *  (at your option) any later version.
+- * Copyright 2003 ICT CAS
+- * Author: Michael Guo <guoyi@ict.ac.cn>
 - *
-- *  This program is distributed in the hope that it will be useful,
-- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- *  GNU General Public License for more details.
+- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
+- * Author: Fuxin Zhang, zhangfx@lemote.com
 - *
-- *  You should have received a copy of the GNU General Public License
-- *  along with this program; if not, write to the Free Software
-- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ * Copyright 2001 MontaVista Software Inc.
-+ * Copyright (C) NEC Electronics Corporation 2004-2006
-+ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+- * Copyright (C) 2009 Lemote Inc.
+- * Author: Wu Zhangjin, wuzhangjin@gmail.com
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- */
+-#include <asm/bootinfo.h>
+-
+-#include <loongson.h>
+-
+-void __init prom_init_cmdline(void)
+-{
+-	int prom_argc;
+-	/* pmon passes arguments in 32bit pointers */
+-	int *_prom_argv;
+-	int i;
+-	long l;
+-
+-	/* firmware arguments are initialized in head.S */
+-	prom_argc = fw_arg0;
+-	_prom_argv = (int *)fw_arg1;
+-
+-	/* arg[0] is "g", the rest is boot parameters */
+-	arcs_cmdline[0] = '\0';
+-	for (i = 1; i < prom_argc; i++) {
+-		l = (long)_prom_argv[i];
+-		if (strlen(arcs_cmdline) + strlen(((char *)l) + 1)
+-		    >= sizeof(arcs_cmdline))
+-			break;
+-		strcat(arcs_cmdline, ((char *)l));
+-		strcat(arcs_cmdline, " ");
+-	}
+-
+-	prom_init_machtype();
+-}
+diff --git a/arch/mips/loongson/common/env.c b/arch/mips/loongson/common/env.c
+index d93830a..681690a 100644
+--- a/arch/mips/loongson/common/env.c
++++ b/arch/mips/loongson/common/env.c
+@@ -19,7 +19,7 @@
   */
- #include <linux/init.h>
- #include <linux/mm.h>
+ #include <linux/module.h>
+ 
+-#include <asm/bootinfo.h>
++#include <asm/fw/fw.h>
+ 
+ #include <loongson.h>
+ 
+@@ -27,34 +27,17 @@ unsigned long cpu_clock_freq;
+ EXPORT_SYMBOL(cpu_clock_freq);
+ unsigned long memsize, highmemsize;
+ 
+-#define parse_even_earlier(res, option, p)				\
+-do {									\
+-	unsigned int tmp __maybe_unused;				\
+-									\
+-	if (strncmp(option, (char *)p, strlen(option)) == 0)		\
+-		tmp = strict_strtol((char *)p + strlen(option"="), 10, &res); \
+-} while (0)
+-
+-void __init prom_init_env(void)
++void __init fw_init_env(void)
+ {
+-	/* pmon passes arguments in 32bit pointers */
+-	int *_prom_envp;
++	/* PMON passes arguments in 32bit pointers */
+ 	unsigned long bus_clock;
+ 	unsigned int processor_id;
+-	long l;
+ 
+-	/* firmware arguments are initialized in head.S */
+-	_prom_envp = (int *)fw_arg2;
++	bus_clock = fw_getenvl("busclock");
++	cpu_clock_freq = fw_getenvl("cpuclock");
++	memsize = fw_getenvl("memsize");
++	highmemsize = fw_getenvl("highmemsize");
+ 
+-	l = (long)*_prom_envp;
+-	while (l != 0) {
+-		parse_even_earlier(bus_clock, "busclock", l);
+-		parse_even_earlier(cpu_clock_freq, "cpuclock", l);
+-		parse_even_earlier(memsize, "memsize", l);
+-		parse_even_earlier(highmemsize, "highmemsize", l);
+-		_prom_envp++;
+-		l = (long)*_prom_envp;
+-	}
+ 	if (memsize == 0)
+ 		memsize = 256;
+ 	if (bus_clock == 0)
+diff --git a/arch/mips/loongson/common/init.c b/arch/mips/loongson/common/init.c
+index 19d3415..a40ab27 100644
+--- a/arch/mips/loongson/common/init.c
++++ b/arch/mips/loongson/common/init.c
+@@ -10,6 +10,8 @@
+ 
+ #include <linux/bootmem.h>
+ 
++#include <asm/fw/fw.h>
++
+ #include <loongson.h>
+ 
+ /* Loongson CPU address windows config space base address */
+@@ -26,8 +28,8 @@ void __init prom_init(void)
+ 		ioremap(LOONGSON_ADDRWINCFG_BASE, LOONGSON_ADDRWINCFG_SIZE);
+ #endif
+ 
+-	prom_init_cmdline();
+-	prom_init_env();
++	fw_init_cmdline();
++	fw_init_env();
+ 	prom_init_memory();
+ 
+ 	/*init the uart base address */
 -- 
 1.7.10.3

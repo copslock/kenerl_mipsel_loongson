@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2012 23:50:02 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:43545 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2012 23:50:25 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:43547 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903722Ab2FEVtm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2012 23:49:42 +0200
+        with ESMTP id S1903723Ab2FEVts (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2012 23:49:48 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1Sc1AU-000824-EC; Tue, 05 Jun 2012 16:19:58 -0500
+        id 1Sc1Ac-000824-Om; Tue, 05 Jun 2012 16:20:06 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH 19/35] MIPS: Loongson: Cleanup files effected by firmware changes.
-Date:   Tue,  5 Jun 2012 16:19:23 -0500
-Message-Id: <1338931179-9611-20-git-send-email-sjhill@mips.com>
+Subject: [PATCH 35/35] MIPS: vr41xx: Cleanup files effected by firmware changes.
+Date:   Tue,  5 Jun 2012 16:19:39 -0500
+Message-Id: <1338931179-9611-36-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1338931179-9611-1-git-send-email-sjhill@mips.com>
 References: <1338931179-9611-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33525
+X-archive-position: 33526
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,173 +41,49 @@ running the checkpatch script.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/mach-loongson/loongson.h |   51 ++++++++++++------------
- arch/mips/loongson/common/env.c                |    9 +++--
- arch/mips/loongson/common/init.c               |   10 ++---
- 3 files changed, 36 insertions(+), 34 deletions(-)
+ arch/mips/vr41xx/common/init.c |   27 ++++++---------------------
+ 1 file changed, 6 insertions(+), 21 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
-index b19c5b4..57537e6 100644
---- a/arch/mips/include/asm/mach-loongson/loongson.h
-+++ b/arch/mips/include/asm/mach-loongson/loongson.h
-@@ -1,11 +1,12 @@
+diff --git a/arch/mips/vr41xx/common/init.c b/arch/mips/vr41xx/common/init.c
+index a2fa7f0..783b7f8 100644
+--- a/arch/mips/vr41xx/common/init.c
++++ b/arch/mips/vr41xx/common/init.c
+@@ -1,30 +1,15 @@
  /*
+- *  init.c, Common initialization routines for NEC VR4100 series.
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
 + * for more details.
-+ *
-  * Copyright (C) 2009 Lemote, Inc.
-  * Author: Wu Zhangjin <wuzhangjin@gmail.com>
   *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
+- *  Copyright (C) 2003-2009  Yoichi Yuasa <yuasa@linux-mips.org>
++ * init.c, Common initialization routines for NEC VR4100 series.
+  *
+- *  This program is free software; you can redistribute it and/or modify
+- *  it under the terms of the GNU General Public License as published by
+- *  the Free Software Foundation; either version 2 of the License, or
+- *  (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *  GNU General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ * Copyright (C) 2003-2009  Yoichi Yuasa <yuasa@linux-mips.org>
 + * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
   */
- 
- #ifndef __ASM_MACH_LOONGSON_LOONGSON_H
-@@ -80,13 +81,13 @@ static inline void do_perfcnt_IRQ(void)
- 
- #define LOONGSON_BOOT_BASE	0x1fc00000
- #define LOONGSON_BOOT_SIZE	0x00100000	/* 1M */
--#define LOONGSON_BOOT_TOP 	(LOONGSON_BOOT_BASE+LOONGSON_BOOT_SIZE-1)
--#define LOONGSON_REG_BASE 	0x1fe00000
--#define LOONGSON_REG_SIZE 	0x00100000	/* 256Bytes + 256Bytes + ??? */
-+#define LOONGSON_BOOT_TOP	(LOONGSON_BOOT_BASE+LOONGSON_BOOT_SIZE-1)
-+#define LOONGSON_REG_BASE	0x1fe00000
-+#define LOONGSON_REG_SIZE	0x00100000	/* 256Bytes + 256Bytes + ??? */
- #define LOONGSON_REG_TOP	(LOONGSON_REG_BASE+LOONGSON_REG_SIZE-1)
- 
--#define LOONGSON_LIO1_BASE 	0x1ff00000
--#define LOONGSON_LIO1_SIZE 	0x00100000	/* 1M */
-+#define LOONGSON_LIO1_BASE	0x1ff00000
-+#define LOONGSON_LIO1_SIZE	0x00100000	/* 1M */
- #define LOONGSON_LIO1_TOP	(LOONGSON_LIO1_BASE+LOONGSON_LIO1_SIZE-1)
- 
- #define LOONGSON_PCILO0_BASE	0x10000000
-@@ -113,13 +114,13 @@ static inline void do_perfcnt_IRQ(void)
- #define LOONGSON_PCI_REG(x)	LOONGSON_REG(LOONGSON_PCICONFIGBASE + (x))
- #define LOONGSON_PCIDID		LOONGSON_PCI_REG(0x00)
- #define LOONGSON_PCICMD		LOONGSON_PCI_REG(0x04)
--#define LOONGSON_PCICLASS 	LOONGSON_PCI_REG(0x08)
-+#define LOONGSON_PCICLASS	LOONGSON_PCI_REG(0x08)
- #define LOONGSON_PCILTIMER	LOONGSON_PCI_REG(0x0c)
--#define LOONGSON_PCIBASE0 	LOONGSON_PCI_REG(0x10)
--#define LOONGSON_PCIBASE1 	LOONGSON_PCI_REG(0x14)
--#define LOONGSON_PCIBASE2 	LOONGSON_PCI_REG(0x18)
--#define LOONGSON_PCIBASE3 	LOONGSON_PCI_REG(0x1c)
--#define LOONGSON_PCIBASE4 	LOONGSON_PCI_REG(0x20)
-+#define LOONGSON_PCIBASE0	LOONGSON_PCI_REG(0x10)
-+#define LOONGSON_PCIBASE1	LOONGSON_PCI_REG(0x14)
-+#define LOONGSON_PCIBASE2	LOONGSON_PCI_REG(0x18)
-+#define LOONGSON_PCIBASE3	LOONGSON_PCI_REG(0x1c)
-+#define LOONGSON_PCIBASE4	LOONGSON_PCI_REG(0x20)
- #define LOONGSON_PCIEXPRBASE	LOONGSON_PCI_REG(0x30)
- #define LOONGSON_PCIINT		LOONGSON_PCI_REG(0x3c)
- 
-@@ -130,7 +131,7 @@ static inline void do_perfcnt_IRQ(void)
- #define LOONGSON_PCICMD_MABORT_CLR	0x20000000
- #define LOONGSON_PCICMD_MTABORT_CLR	0x10000000
- #define LOONGSON_PCICMD_TABORT_CLR	0x08000000
--#define LOONGSON_PCICMD_MPERR_CLR 	0x01000000
-+#define LOONGSON_PCICMD_MPERR_CLR	0x01000000
- #define LOONGSON_PCICMD_PERRRESPEN	0x00000040
- #define LOONGSON_PCICMD_ASTEPEN		0x00000080
- #define LOONGSON_PCICMD_SERREN		0x00000100
-@@ -171,25 +172,25 @@ static inline void do_perfcnt_IRQ(void)
- 
- /* GPIO Regs - r/w */
- 
--#define LOONGSON_GPIODATA 		LOONGSON_REG(LOONGSON_REGBASE + 0x1c)
-+#define LOONGSON_GPIODATA		LOONGSON_REG(LOONGSON_REGBASE + 0x1c)
- #define LOONGSON_GPIOIE			LOONGSON_REG(LOONGSON_REGBASE + 0x20)
- 
- /* ICU Configuration Regs - r/w */
- 
- #define LOONGSON_INTEDGE		LOONGSON_REG(LOONGSON_REGBASE + 0x24)
--#define LOONGSON_INTSTEER 		LOONGSON_REG(LOONGSON_REGBASE + 0x28)
-+#define LOONGSON_INTSTEER		LOONGSON_REG(LOONGSON_REGBASE + 0x28)
- #define LOONGSON_INTPOL			LOONGSON_REG(LOONGSON_REGBASE + 0x2c)
- 
- /* ICU Enable Regs - IntEn & IntISR are r/o. */
- 
--#define LOONGSON_INTENSET 		LOONGSON_REG(LOONGSON_REGBASE + 0x30)
--#define LOONGSON_INTENCLR 		LOONGSON_REG(LOONGSON_REGBASE + 0x34)
-+#define LOONGSON_INTENSET		LOONGSON_REG(LOONGSON_REGBASE + 0x30)
-+#define LOONGSON_INTENCLR		LOONGSON_REG(LOONGSON_REGBASE + 0x34)
- #define LOONGSON_INTEN			LOONGSON_REG(LOONGSON_REGBASE + 0x38)
- #define LOONGSON_INTISR			LOONGSON_REG(LOONGSON_REGBASE + 0x3c)
- 
- /* ICU */
- #define LOONGSON_ICU_MBOXES		0x0000000f
--#define LOONGSON_ICU_MBOXES_SHIFT 	0
-+#define LOONGSON_ICU_MBOXES_SHIFT	0
- #define LOONGSON_ICU_DMARDY		0x00000010
- #define LOONGSON_ICU_DMAEMPTY		0x00000020
- #define LOONGSON_ICU_COPYRDY		0x00000040
-@@ -210,10 +211,10 @@ static inline void do_perfcnt_IRQ(void)
- 
- /* PCI prefetch window base & mask */
- 
--#define LOONGSON_MEM_WIN_BASE_L 	LOONGSON_REG(LOONGSON_REGBASE + 0x40)
--#define LOONGSON_MEM_WIN_BASE_H 	LOONGSON_REG(LOONGSON_REGBASE + 0x44)
--#define LOONGSON_MEM_WIN_MASK_L 	LOONGSON_REG(LOONGSON_REGBASE + 0x48)
--#define LOONGSON_MEM_WIN_MASK_H 	LOONGSON_REG(LOONGSON_REGBASE + 0x4c)
-+#define LOONGSON_MEM_WIN_BASE_L		LOONGSON_REG(LOONGSON_REGBASE + 0x40)
-+#define LOONGSON_MEM_WIN_BASE_H		LOONGSON_REG(LOONGSON_REGBASE + 0x44)
-+#define LOONGSON_MEM_WIN_MASK_L		LOONGSON_REG(LOONGSON_REGBASE + 0x48)
-+#define LOONGSON_MEM_WIN_MASK_H		LOONGSON_REG(LOONGSON_REGBASE + 0x4c)
- 
- /* PCI_Hit*_Sel_* */
- 
-diff --git a/arch/mips/loongson/common/env.c b/arch/mips/loongson/common/env.c
-index 681690a..b2cd683 100644
---- a/arch/mips/loongson/common/env.c
-+++ b/arch/mips/loongson/common/env.c
-@@ -1,4 +1,8 @@
- /*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * Based on Ocelot Linux port, which is
-  * Copyright 2001 MontaVista Software Inc.
-  * Author: jsun@mvista.com or jsun@junsun.net
-@@ -12,10 +16,7 @@
-  * Copyright (C) 2009 Lemote Inc.
-  * Author: Wu Zhangjin, wuzhangjin@gmail.com
-  *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-+ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
-  */
- #include <linux/module.h>
- 
-diff --git a/arch/mips/loongson/common/init.c b/arch/mips/loongson/common/init.c
-index a40ab27..818ace6 100644
---- a/arch/mips/loongson/common/init.c
-+++ b/arch/mips/loongson/common/init.c
-@@ -1,13 +1,13 @@
- /*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * Copyright (C) 2009 Lemote Inc.
-  * Author: Wu Zhangjin, wuzhangjin@gmail.com
-  *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-+ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
-  */
+-#include <linux/init.h>
+-#include <linux/ioport.h>
+-#include <linux/irq.h>
+-#include <linux/string.h>
 -
- #include <linux/bootmem.h>
- 
+ #include <asm/time.h>
  #include <asm/fw/fw.h>
+-#include <asm/vr41xx/irq.h>
+ #include <asm/vr41xx/vr41xx.h>
+ 
+ #define IO_MEM_RESOURCE_START	0UL
 -- 
 1.7.10.3

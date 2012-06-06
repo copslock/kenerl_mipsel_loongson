@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2012 13:30:39 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:48857 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903701Ab2FFLaZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jun 2012 13:30:25 +0200
-Received: by lbbgg6 with SMTP id gg6so5595463lbb.36
-        for <linux-mips@linux-mips.org>; Wed, 06 Jun 2012 04:30:18 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2012 13:39:00 +0200 (CEST)
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:44072 "EHLO
+        mail-lpp01m010-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903693Ab2FFLix (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jun 2012 13:38:53 +0200
+Received: by laap9 with SMTP id p9so5431394laa.36
+        for <linux-mips@linux-mips.org>; Wed, 06 Jun 2012 04:38:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=message-id:date:from:user-agent:mime-version:to:cc:subject
          :references:in-reply-to:content-type:content-transfer-encoding
          :x-gm-message-state;
-        bh=hjMUFcH82isCIfSMV0byNX+bLNYsf/wry2UDjS/Je/k=;
-        b=a7Ke3Sc9RMBDbPE8fgqG1xj6jHhbLVDgb2t9W/86sidx0kcQdVoEVUbkK7R0YSPRdl
-         5xsjVUeCBhiqhNZFk0K4WnSoU7L7ARNZ+mMcrVaCDxaN//r6MZJVJMgwK/MyqEBiJzUm
-         4ZEWCfrw48fAjf2Xnz7HDqA0/Dfd152vBPIaqsUl/uEd4hfzDrgM6szeN0AMdm3NRtST
-         eguG8bO9tZhdAeCtCW26iuWXPtgWxCzBVU8YJl8X1ZYhQQ/v08lZNlGFlSuvt+UVGnMj
-         BFpkqZoB0saE0vxS6zkV1X20jS1S/x5sK2HUryH1hY1N/NBI+T0xVuvEy6rfip73BEjo
-         tqXg==
-Received: by 10.112.36.195 with SMTP id s3mr9698482lbj.42.1338982218500;
-        Wed, 06 Jun 2012 04:30:18 -0700 (PDT)
+        bh=echVHvWgnlwZVC3szW0NdIatkZFHnnb6bvVPbWSD050=;
+        b=A8Skxntx00QwhJzY1Zht2emH/JN8Urx1CuHxF08fVj4CA8DF0ybwBx+lN3dLxjKOlM
+         y8QNDobADECMJZw6O/0qB/+xfJHRat/fadCaSaZ5zS0j10THiGFbRqieDQlWp0V8l1oh
+         8AHJWMiKxDnQVf5BhKK03o3AP0qNK+zuA4q08dyOIFCKwY9mGqzhh7k/pRxBJgFnQkwz
+         CgPgFgMkJEYWUfJT6N1YRoDaVHkIcY1YQPD+qGlhp3UstWh9C1oiZYspqIvuBAYGxThK
+         +K3ANHKPi+BXNs/clXIdauy3F7G5CpDZd5hj2N5kEv7Gi2KjnEq9u5iAlWZ76S28L+vi
+         D3JA==
+Received: by 10.112.43.67 with SMTP id u3mr9765833lbl.16.1338982728117;
+        Wed, 06 Jun 2012 04:38:48 -0700 (PDT)
 Received: from [192.168.2.2] (ppp91-79-86-181.pppoe.mtu-net.ru. [91.79.86.181])
-        by mx.google.com with ESMTPS id hm7sm2401053lab.12.2012.06.06.04.30.16
+        by mx.google.com with ESMTPS id hz16sm2441386lab.6.2012.06.06.04.38.45
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 06 Jun 2012 04:30:16 -0700 (PDT)
-Message-ID: <4FCF3F2B.1090908@mvista.com>
-Date:   Wed, 06 Jun 2012 15:29:47 +0400
+        Wed, 06 Jun 2012 04:38:47 -0700 (PDT)
+Message-ID: <4FCF4129.2010308@mvista.com>
+Date:   Wed, 06 Jun 2012 15:38:17 +0400
 From:   Sergei Shtylyov <sshtylyov@mvista.com>
 User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
 MIME-Version: 1.0
 To:     "Steven J. Hill" <sjhill@mips.com>
 CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 11/35] MIPS: Emma: Cleanup files effected by firmware
+Subject: Re: [PATCH 13/35] MIPS: jz4740: Cleanup files effected by firmware
  changes.
-References: <1338931179-9611-1-git-send-email-sjhill@mips.com> <1338931179-9611-12-git-send-email-sjhill@mips.com>
-In-Reply-To: <1338931179-9611-12-git-send-email-sjhill@mips.com>
+References: <1338931179-9611-1-git-send-email-sjhill@mips.com> <1338931179-9611-14-git-send-email-sjhill@mips.com>
+In-Reply-To: <1338931179-9611-14-git-send-email-sjhill@mips.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQlOzZrthcueGV/rh1nU+qxbg7i0n0dS/GHug63LC1izag6/l5+PeKhWiIVFBiUA0C0Dgl/x
-X-archive-position: 33566
+X-Gm-Message-State: ALoCoQlh3uqdiKw/6Cz8+P2ZDXCa6iuXnslJlfXK1XhPZsEj34Qz5mU1cQUv757SWgRNG26OGxSk
+X-archive-position: 33567
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,47 +64,46 @@ On 06-06-2012 1:19, Steven J. Hill wrote:
 > Make headers consistent across the files and make changes based on
 > running the checkpatch script.
 
-    I don't see any checkpatch.pl-related changes.
-
 > Signed-off-by: Steven J. Hill<sjhill@mips.com>
 > ---
->   arch/mips/emma/common/prom.c |   25 ++++++++-----------------
->   1 file changed, 8 insertions(+), 17 deletions(-)
+>   arch/mips/jz4740/prom.c |   25 +++++++++----------------
+>   1 file changed, 9 insertions(+), 16 deletions(-)
 
-> diff --git a/arch/mips/emma/common/prom.c b/arch/mips/emma/common/prom.c
-> index 5228584..9a70c4e 100644
-> --- a/arch/mips/emma/common/prom.c
-> +++ b/arch/mips/emma/common/prom.c
+> diff --git a/arch/mips/jz4740/prom.c b/arch/mips/jz4740/prom.c
+> index c5071ab..ea86605 100644
+> --- a/arch/mips/jz4740/prom.c
+> +++ b/arch/mips/jz4740/prom.c
 > @@ -1,23 +1,14 @@
 >   /*
-> - *  Copyright (C) NEC Electronics Corporation 2004-2006
+> - *  Copyright (C) 2010, Lars-Peter Clausen<lars@metafoo.de>
+> - *  JZ4740 SoC prom code
 > + * This file is subject to the terms and conditions of the GNU General Public
 > + * License.  See the file "COPYING" in the main directory of this archive
 > + * for more details.
->    *
-> - *  This file is based on the arch/mips/ddb5xxx/common/prom.c
-> + * This is based on the arch/mips/ddb5xxx/common/prom.c file.
-> + * GPR board platform device registration (Au1550)
->    *
-> - *	Copyright 2001 MontaVista Software Inc.
+>   *
+> - *  This program is free software; you can redistribute it and/or modify it
+> - *  under  the terms of the GNU General  Public License as published by the
+> - *  Free Software Foundation;  either version 2 of the License, or (at your
+> - *  option) any later version.
 > - *
-> - *  This program is free software; you can redistribute it and/or modify
-> - *  it under the terms of the GNU General Public License as published by
-> - *  the Free Software Foundation; either version 2 of the License, or
-> - *  (at your option) any later version.
-> - *
-> - *  This program is distributed in the hope that it will be useful,
-> - *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-> - *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> - *  GNU General Public License for more details.
-> - *
-> - *  You should have received a copy of the GNU General Public License
-> - *  along with this program; if not, write to the Free Software
-> - *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-> + * Copyright 2001 MontaVista Software Inc.
-> + * Copyright (C) NEC Electronics Corporation 2004-2006
-> + * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+> - *  You should have received a copy of the GNU General Public License along
+> - *  with this program; if not, write to the Free Software Foundation, Inc.,
+> - *  675 Mass Ave, Cambridge, MA 02139, USA.
+> + *  JZ4740 SoC prom code
+>   *
+> + *  Copyright (C) 2010, Lars-Peter Clausen<lars@metafoo.de>
+> + *  Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+>    */
+> -
+>   #include<linux/module.h>
+> -#include<linux/kernel.h>
+> -#include<linux/init.h>
 
-    Reshuffling the header again hardly qualifies for adding a copyright.
+    This header is needed explicitly because '__init' qualifier is used.
+Documentation/SubmitChecklist says:
+
+1: If you use a facility then #include the file that defines/declares
+    that facility.  Don't depend on other header files pulling in ones
+    that you use.
 
 WBR, Sergei

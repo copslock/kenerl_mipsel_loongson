@@ -1,43 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2012 04:36:50 +0200 (CEST)
-Received: from mail-wi0-f171.google.com ([209.85.212.171]:59557 "EHLO
-        mail-wi0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903640Ab2FFCgq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jun 2012 04:36:46 +0200
-Received: by wibhm14 with SMTP id hm14so4028230wib.6
-        for <linux-mips@linux-mips.org>; Tue, 05 Jun 2012 19:36:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
-        bh=4xLRDYfoPJsrC0hp2IIA3x8X9sqxQ584pIXGycviNC8=;
-        b=px1IoiKnAH8umOKj/LY1IC1AT0NgoP7kFMPR7MaCW8VYfkjQA3oETeWcVBfXEswwdg
-         4A2bpvFTBslPe8YnJ5hq/1HVALpTfo30Sli0NloORjOyrK3i2gaLby7dw14i21NXJkjC
-         bGphE+p2OpGhUSy/WcfNi9qYOYcMdj5OOEftSkAOVXcekTyBpfQRmriK81Tm+eM/VcRH
-         FNGJYv7p+XOGyWO+v8HpOjSYHIikUKNHPZETCEjd/FLW8xhMCpOzPyCDIK/blFrvaVNj
-         RyDkDwyF+nt6EQdv8FqAcH/PysdImQXQ9p9DBNiGXQtWCEDpDOuN/bmhKdbgEI1G/rdG
-         AYPg==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2012 07:25:31 +0200 (CEST)
+Received: from tx2outboundsmtppool2.messaging.microsoft.com ([65.55.83.132]:34681
+        "EHLO TX2EHSNDR001.bigfish.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1901761Ab2FFFZY convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 6 Jun 2012 07:25:24 +0200
+Received: from tx2outboundpool.messaging.microsoft.com (10.9.14.236) by
+ TX2EHSNDR001.bigfish.com (10.9.40.50) with Microsoft SMTP Server (TLS) id
+ 14.1.225.23; Wed, 6 Jun 2012 05:24:34 +0000
+Received: from mail185-tx2-R.bigfish.com (10.9.14.244) by
+ TX2EHSOBE005.bigfish.com (10.9.40.25) with Microsoft SMTP Server id
+ 14.1.225.23; Wed, 6 Jun 2012 05:24:34 +0000
+Received: from mail185-tx2 (localhost [127.0.0.1])      by
+ mail185-tx2-R.bigfish.com (Postfix) with ESMTP id 70EEB2601B8; Wed,  6 Jun
+ 2012 05:24:33 +0000 (UTC)
+X-Forefront-Antispam-Report: CIP:204.52.179.108;KIP:(null);UIP:(null);IPV:NLI;H:VM235401.bluevalleyk12.org;RD:vm235401.bluevalleyk12.org;EFVD:NLI
+X-BigFish: VPS47(zzd334imcc19imzz1202hzz8275bhz2fh2a8h668h839hd25hf0aha02m)
+X-FB-OUTBOUND-SPAM: yes
+X-SpamScore: 47
+Received-SPF: pass (mail185-tx2: domain of bluevalleyk12.org designates 204.52.179.108 as permitted sender) client-ip=204.52.179.108; envelope-from=KHarken@bluevalleyk12.org; helo=VM235401.bluevalleyk12.org ;alleyk12.org ;
+Received: from mail185-tx2 (localhost.localdomain [127.0.0.1]) by mail185-tx2
+ (MessageSwitch) id 1338960272415128_11261; Wed,  6 Jun 2012 05:24:32 +0000
+ (UTC)
+Received: from TX2EHSMHS020.bigfish.com (unknown [10.9.14.236]) by
+ mail185-tx2.bigfish.com (Postfix) with ESMTP id D449536005B;   Wed,  6 Jun 2012
+ 05:24:31 +0000 (UTC)
+Received: from VM235401.bluevalleyk12.org (204.52.179.108) by
+ TX2EHSMHS020.bigfish.com (10.9.99.120) with Microsoft SMTP Server (TLS) id
+ 14.1.225.23; Wed, 6 Jun 2012 05:24:31 +0000
+Received: from VM235301.EMP.BV (10.106.97.45) by VM235401.bluevalleyk12.org
+ (172.16.6.108) with Microsoft SMTP Server (TLS) id 8.2.234.1; Wed, 6 Jun 2012
+ 00:25:42 -0500
+Received: from VM235101.EMP.BV ([fe80::e4e7:5029:b4df:caff]) by
+ VM235301.EMP.BV ([fe80::f02a:26fb:6a0f:eb97%11]) with mapi; Wed, 6 Jun 2012
+ 00:25:13 -0500
+From:   "Harken, Karel" <KHarken@bluevalleyk12.org>
+Date:   Wed, 6 Jun 2012 00:25:12 -0500
+Subject: 
+Thread-Index: AQHNQ6S/ueiOHzJ3hkGLH+e6ZfxBbw==
+Message-ID: <E4CE37F1D156DC42AC97FC7F031AA421021F1AF5C87D@VM235101.EMP.BV>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+acceptlanguage: en-US
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
 MIME-Version: 1.0
-Received: by 10.216.205.5 with SMTP id i5mr15340976weo.6.1338950201270; Tue,
- 05 Jun 2012 19:36:41 -0700 (PDT)
-Received: by 10.180.84.136 with HTTP; Tue, 5 Jun 2012 19:36:41 -0700 (PDT)
-In-Reply-To: <31E06A9FC96CEC488B43B19E2957C1B801146957D8@exchdb03.mips.com>
-References: <1338931179-9611-1-git-send-email-sjhill@mips.com>
-        <1338931179-9611-35-git-send-email-sjhill@mips.com>
-        <CACBHAezRk6T6xonHHM+mwBgOQ4qR0+pbZ0ok+kms8zOv3QGmHA@mail.gmail.com>
-        <31E06A9FC96CEC488B43B19E2957C1B801146957D8@exchdb03.mips.com>
-Date:   Wed, 6 Jun 2012 11:36:41 +0900
-X-Google-Sender-Auth: kePwLLzUUcCOAPnQywpN9B0xPTs
-Message-ID: <CACBHAewnV1_YQ=PV66eBWZ3SVjNZzJ3UKnj_oEtJ9FEuO2_yhg@mail.gmail.com>
-Subject: Re: [PATCH 34/35] MIPS: vr41xx: Cleanup firmware support for vr41xx platforms.
-From:   Yuasa Yoichi <yuasa@linux-mips.org>
-To:     "Hill, Steven" <sjhill@mips.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 33557
+To:     Undisclosed recipients:;
+X-FOPE-CRA-Verdict: 204.52.179.108$multicare.org%14251%4%bluevalleyk12.org%False%False%0$ou.edu%0%1%bluevalleyk12.org%False%False%0$pa.press.net%0%1%bluevalleyk12.org%False%False%0$nmsu.edu%0%1%bluevalleyk12.org%False%False%0$memphis.edu%0%1%bluevalleyk12.org%False%False%0$
+Reply-To: <KHarken@bluevalleyk12.org>
+X-OriginatorOrg: bluevalleyk12.org
+X-archive-position: 33558
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@linux-mips.org
+X-original-sender: KHarken@bluevalleyk12.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,16 +68,9 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi,
+My wife Violet and I Allen Large won $11.3 million in a lottery 6-49 in July and we have decided to donate the sum of $500,000.00 USD to you,as part of our charity project to improve the lot of 10 lucky individuals all over the world from our $11.3 million Jackpot Lottery winning fund. Contact us via our personal email for details: a_v.large@hotmail.com<mailto:a_v.large@hotmail.com>
 
-2012/6/6 Hill, Steven <sjhill@mips.com>:
-> Yoichi,
->
-> I did remove it in the next patch 35/35.
->
-
-Please include in the related change.
-
-Thanks,
-
-Yoichi
+---------------
+Blue Valley Schools - Education Beyond Expectations
+---------------
+This e-mail (including any attachments) is confidential and intended solely for the use of the intended recipient.  Any review, reliance, disclosure, copying, dissemination or distribution by others or forwarding without express permission is strictly prohibited.  If you are not the intended recipient, please contact the sender and delete all copies.  Further, the sender accepts no responsibility for any damage caused by any virus, spyware, malware, or other malicious code transmitted by this e-mail.

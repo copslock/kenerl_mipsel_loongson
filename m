@@ -1,32 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2012 14:22:19 +0200 (CEST)
-Received: from smtp-out-134.synserver.de ([212.40.185.134]:1053 "EHLO
-        smtp-out-123.synserver.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1903708Ab2FFMWN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jun 2012 14:22:13 +0200
-Received: (qmail 19790 invoked by uid 0); 6 Jun 2012 12:15:31 -0000
-X-SynServer-TrustedSrc: 1
-X-SynServer-AuthUser: lars@metafoo.de
-X-SynServer-PPID: 18612
-Received: from p5491e52a.dip.t-dialin.net (HELO ?192.168.0.176?) [84.145.229.42]
-  by 217.119.54.77 with AES256-SHA encrypted SMTP; 6 Jun 2012 12:15:31 -0000
-Message-ID: <4FCF4A99.7090501@metafoo.de>
-Date:   Wed, 06 Jun 2012 14:18:33 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.4) Gecko/20120510 Icedove/10.0.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2012 15:04:49 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:36571 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903693Ab2FFNEn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 6 Jun 2012 15:04:43 +0200
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from [192.168.254.129] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id AFB8A23C007C;
+        Wed,  6 Jun 2012 15:04:37 +0200 (CEST)
+Message-ID: <4FCF5565.2040909@openwrt.org>
+Date:   Wed, 06 Jun 2012 15:04:37 +0200
+From:   Gabor Juhos <juhosg@openwrt.org>
 MIME-Version: 1.0
 To:     "Steven J. Hill" <sjhill@mips.com>
 CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 13/35] MIPS: jz4740: Cleanup files effected by firmware
- changes.
-References: <1338931179-9611-1-git-send-email-sjhill@mips.com> <1338931179-9611-14-git-send-email-sjhill@mips.com>
-In-Reply-To: <1338931179-9611-14-git-send-email-sjhill@mips.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 33572
+Subject: Re: [PATCH 06/35] MIPS: ath79: Cleanup firmware support for the ath79
+ platform.
+References: <1338931179-9611-1-git-send-email-sjhill@mips.com> <1338931179-9611-7-git-send-email-sjhill@mips.com>
+In-Reply-To: <1338931179-9611-7-git-send-email-sjhill@mips.com>
+X-Enigmail-Version: 1.4.1
+Content-Type: text/plain; charset=ISO-8859-2
+Content-Transfer-Encoding: 8bit
+X-archive-position: 33573
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,71 +38,64 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 06/05/2012 11:19 PM, Steven J. Hill wrote:
+Hi Steven,
+
+2012.06.05. 23:19 keltezéssel, Steven J. Hill írta:
 > From: "Steven J. Hill" <sjhill@mips.com>
-> 
-> Make headers consistent across the files and make changes based on
-> running the checkpatch script.
-
-Why is the cleanup not in the inital patch?
-
 > 
 > Signed-off-by: Steven J. Hill <sjhill@mips.com>
 > ---
->  arch/mips/jz4740/prom.c |   25 +++++++++----------------
->  1 file changed, 9 insertions(+), 16 deletions(-)
+>  arch/mips/ath79/prom.c |   20 ++++----------------
+>  1 file changed, 4 insertions(+), 16 deletions(-)
 > 
-> diff --git a/arch/mips/jz4740/prom.c b/arch/mips/jz4740/prom.c
-> index c5071ab..ea86605 100644
-> --- a/arch/mips/jz4740/prom.c
-> +++ b/arch/mips/jz4740/prom.c
-> @@ -1,23 +1,14 @@
->  /*
-> - *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
-> - *  JZ4740 SoC prom code
-> + * This file is subject to the terms and conditions of the GNU General Public
-> + * License.  See the file "COPYING" in the main directory of this archive
-> + * for more details.
->   *
-> - *  This program is free software; you can redistribute it and/or modify it
-> - *  under  the terms of the GNU General  Public License as published by the
-> - *  Free Software Foundation;  either version 2 of the License, or (at your
-> - *  option) any later version.
-> - *
-> - *  You should have received a copy of the GNU General Public License along
-> - *  with this program; if not, write to the Free Software Foundation, Inc.,
-> - *  675 Mass Ave, Cambridge, MA 02139, USA.
-> + *  JZ4740 SoC prom code
->   *
-> + *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
-> + *  Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
->   */
-
-Please don't randomly change the license of files.
-
-> -
->  #include <linux/module.h>
-> -#include <linux/kernel.h>
-> -#include <linux/init.h>
-> -#include <linux/string.h>
-> -
-
-Why can't this be in the previous patch which removed the custom fw args parser?
-
->  #include <linux/serial_reg.h>
+> diff --git a/arch/mips/ath79/prom.c b/arch/mips/ath79/prom.c
+> index e9cbd7c..adbe614 100644
+> --- a/arch/mips/ath79/prom.c
+> +++ b/arch/mips/ath79/prom.c
+> @@ -14,7 +14,7 @@
+>  #include <linux/io.h>
+>  #include <linux/string.h>
 >  
->  #include <asm/fw/fw.h>
-> @@ -33,7 +24,9 @@ void __init prom_free_prom_memory(void)
->  {
+> -#include <asm/bootinfo.h>
+> +#include <asm/fw/fw.h>
+>  #include <asm/addrspace.h>
+>  
+>  #include "common.h"
+> @@ -32,23 +32,11 @@ static inline int is_valid_ram_addr(void *addr)
+>  	return 0;
 >  }
 >  
-> -#define UART_REG(_reg) ((void __iomem *)CKSEG1ADDR(JZ4740_UART0_BASE_ADDR + (_reg << 2)))
-> +#define UART_REG(_reg)							\
-> +	((volatile void __iomem *)CKSEG1ADDR(JZ4740_UART0_BASE_ADDR +	\
-> +	(_reg << 2)))
->  
+> -static __init void ath79_prom_init_cmdline(int argc, char **argv)
+> -{
+> -	int i;
+> -
+> -	if (!is_valid_ram_addr(argv))
+> -		return;
+> -
+> -	for (i = 0; i < argc; i++)
+> -		if (is_valid_ram_addr(argv[i])) {
 
-Why did you add volatile here?
+Please don't remove this validation. The Atheros AR7xxx/AR9xxx based boards are
+using various bootloaders. Some of them puts insane values in argv, and this
+validation ensures that the kernel will not crash with them.
 
->  void prom_putchar(char c)
+> -			strlcat(arcs_cmdline, " ", sizeof(arcs_cmdline));
+> -			strlcat(arcs_cmdline, argv[i], sizeof(arcs_cmdline));
+> -		}
+> -}
+> -
+>  void __init prom_init(void)
 >  {
+> -	ath79_prom_init_cmdline(fw_arg0, (char **)fw_arg1);
+> +	if (!is_valid_ram_addr((int *)fw_arg1))
+
+The 'is_valid_ram_addr' function requires a 'void *' argument, so it would be
+more precise to use that instead of 'int *' in the cast.
+
+> +		return;
+> +	fw_init_cmdline();
+>  }
+>  
+>  void __init prom_free_prom_memory(void)
+
+-Gabor

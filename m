@@ -1,41 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2012 08:54:57 +0200 (CEST)
-Received: from mga11.intel.com ([192.55.52.93]:47370 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903693Ab2FFGyw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 6 Jun 2012 08:54:52 +0200
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP; 05 Jun 2012 23:54:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.71,315,1320652800"; 
-   d="scan'208";a="175368209"
-Received: from debian.sh.intel.com ([10.239.13.3])
-  by fmsmga002.fm.intel.com with ESMTP; 05 Jun 2012 23:54:39 -0700
-From:   Alex Shi <alex.shi@intel.com>
-To:     a.p.zijlstra@chello.nl
-Cc:     anton@samba.org, benh@kernel.crashing.org, cmetcalf@tilera.com,
-        dhowells@redhat.com, davem@davemloft.net, fenghua.yu@intel.com,
-        hpa@zytor.com, ink@jurassic.park.msu.ru,
-        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        mattst88@gmail.com, paulus@samba.org, lethal@linux-sh.org,
-        ralf@linux-mips.org, rth@twiddle.net, sparclinux@vger.kernel.org,
-        tony.luck@intel.com, x86@kernel.org, sivanich@sgi.com,
-        greg.pearson@hp.com, kamezawa.hiroyu@jp.fujitsu.com,
-        bob.picco@oracle.com, chris.mason@oracle.com,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        mingo@kernel.org, pjt@google.com, tglx@linutronix.de,
-        seto.hidetoshi@jp.fujitsu.com, ak@linux.intel.com,
-        arjan.van.de.ven@intel.com
-Subject: [RFC PATCH] sched/numa: do load balance between remote nodes
-Date:   Wed,  6 Jun 2012 14:52:51 +0800
-Message-Id: <1338965571-9812-1-git-send-email-alex.shi@intel.com>
-X-Mailer: git-send-email 1.7.5.4
-X-archive-position: 33561
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2012 10:42:39 +0200 (CEST)
+Received: from mail-wg0-f43.google.com ([74.125.82.43]:37421 "EHLO
+        mail-wg0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903643Ab2FFImf convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 6 Jun 2012 10:42:35 +0200
+Received: by wgbdr1 with SMTP id dr1so5461947wgb.24
+        for <multiple recipients>; Wed, 06 Jun 2012 01:42:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=RO2+4VCm8Jy9LlRVXIy1XN4+6oJISVASfEE8jxtx8u4=;
+        b=NHJb8olNtT0G4MGQYu8ppEl7qArfsLSx4uxcCvlfP2oThBB45knpsD7EVckVksdIc9
+         zCdMOXY28RmVf30fi3SFlbj2PByKo3FRtwtaRmthnFhza3wocs0CGAt7W9hrA/1oOHNq
+         pFzvkNb/xkXFWaiPOEnMwLOoaO0+VvLe9KrJ+8LEhTQXy52oiNbYnEdFzmHKjiCRhpMr
+         5T4dnC+urN9AZtnQcUT8ETDAinaCjTU24FNgd+PsIA4IonywbMvhYieHuP5NBvU3OQCq
+         KYAGBVyKuykO2jbi9SXyuq24RoqPOmww6caXuhLDTAfes8x4Yb+1AgmOt/SrbpRgty+k
+         MiXQ==
+MIME-Version: 1.0
+Received: by 10.216.218.138 with SMTP id k10mr16991750wep.222.1338972150164;
+ Wed, 06 Jun 2012 01:42:30 -0700 (PDT)
+Received: by 10.216.152.33 with HTTP; Wed, 6 Jun 2012 01:42:30 -0700 (PDT)
+In-Reply-To: <1338931179-9611-24-git-send-email-sjhill@mips.com>
+References: <1338931179-9611-1-git-send-email-sjhill@mips.com>
+        <1338931179-9611-24-git-send-email-sjhill@mips.com>
+Date:   Wed, 6 Jun 2012 14:12:30 +0530
+Message-ID: <CA+7sy7BO4wWogt9n=WUemjhBytJpv2CjTgAo0Cw+W9g2WkkWeA@mail.gmail.com>
+Subject: Re: [PATCH 23/35] MIPS: Netlogic: Cleanup files effected by firmware changes.
+From:   "Jayachandran C." <c.jayachandran@gmail.com>
+To:     "Steven J. Hill" <sjhill@mips.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 33562
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex.shi@intel.com
+X-original-sender: c.jayachandran@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,37 +50,42 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-commit cb83b629b remove the NODE sched domain and check if the node
-distance in SLIT table is farther than REMOTE_DISTANCE, if so, it will
-lose the load balance chance at exec/fork/wake_affine points.
+On Wed, Jun 6, 2012 at 2:49 AM, Steven J. Hill <sjhill@mips.com> wrote:
+> From: "Steven J. Hill" <sjhill@mips.com>
+>
+> Make headers consistent across the files and make changes based on
+> running the checkpatch script.
+>
+> Signed-off-by: Steven J. Hill <sjhill@mips.com>
+> ---
+>  arch/mips/netlogic/xlr/setup.c |   35 +++++------------------------------
+>  1 file changed, 5 insertions(+), 30 deletions(-)
+>
+> diff --git a/arch/mips/netlogic/xlr/setup.c b/arch/mips/netlogic/xlr/setup.c
+> index 113a402..324c071 100644
+> --- a/arch/mips/netlogic/xlr/setup.c
+> +++ b/arch/mips/netlogic/xlr/setup.c
+> @@ -1,37 +1,12 @@
+>  /*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+>  * Copyright 2003-2011 NetLogic Microsystems, Inc. (NetLogic). All rights
+>  * reserved.
+> - *
+> - * This software is available to you under a choice of one of two
+> - * licenses.  You may choose to be licensed under the terms of the GNU
+> - * General Public License (GPL) Version 2, available from the file
+> - * COPYING in the main directory of this source tree, or the NetLogic
+> - * license below:
+> - *
+[....]
+> - * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+> + * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+>  */
 
-But actually, even the node distance is farther than REMOTE_DISTANCE,
-Modern CPUs also has QPI like connections, that make memory access is
-not too slow between nodes. So above losing on NUMA machine make a
-huge performance regression on benchmark: hackbench, tbench, netperf
-and oltp etc.
+Can you drop this? This patch changes the existing license on the file.
 
-This patch will recover the scheduler behavior to old mode on all my
-Intel platforms: NHM EP/EX, WSM EP, SNB EP/EP4S, and so remove the
-perfromance regressions. (all of them just has 2 kinds distance, 10 21)
-
-Signed-off-by: Alex Shi <alex.shi@intel.com>
----
- kernel/sched/core.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 39eb601..b2ee41a 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -6286,7 +6286,7 @@ static int sched_domains_curr_level;
- 
- static inline int sd_local_flags(int level)
- {
--	if (sched_domains_numa_distance[level] > REMOTE_DISTANCE)
-+	if (sched_domains_numa_distance[level] > RECLAIM_DISTANCE)
- 		return 0;
- 
- 	return SD_BALANCE_EXEC | SD_BALANCE_FORK | SD_WAKE_AFFINE;
--- 
-1.7.5.4
+Thanks,
+JC.

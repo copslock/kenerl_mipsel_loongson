@@ -1,26 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2012 07:39:27 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:53122 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2012 08:54:57 +0200 (CEST)
+Received: from mga11.intel.com ([192.55.52.93]:47370 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1901761Ab2FFFjX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 6 Jun 2012 07:39:23 +0200
-Message-ID: <4FCEECE8.8010901@phrozen.org>
-Date:   Wed, 06 Jun 2012 07:38:48 +0200
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.24) Gecko/20111114 Icedove/3.1.16
-MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 15/35] MIPS: lantiq: Cleanup files effected by firmware
- changes.
-References: <1338931179-9611-1-git-send-email-sjhill@mips.com> <1338931179-9611-16-git-send-email-sjhill@mips.com>
-In-Reply-To: <1338931179-9611-16-git-send-email-sjhill@mips.com>
-X-Enigmail-Version: 1.1.2
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 33559
+        id S1903693Ab2FFGyw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 6 Jun 2012 08:54:52 +0200
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP; 05 Jun 2012 23:54:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.71,315,1320652800"; 
+   d="scan'208";a="175368209"
+Received: from debian.sh.intel.com ([10.239.13.3])
+  by fmsmga002.fm.intel.com with ESMTP; 05 Jun 2012 23:54:39 -0700
+From:   Alex Shi <alex.shi@intel.com>
+To:     a.p.zijlstra@chello.nl
+Cc:     anton@samba.org, benh@kernel.crashing.org, cmetcalf@tilera.com,
+        dhowells@redhat.com, davem@davemloft.net, fenghua.yu@intel.com,
+        hpa@zytor.com, ink@jurassic.park.msu.ru,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        mattst88@gmail.com, paulus@samba.org, lethal@linux-sh.org,
+        ralf@linux-mips.org, rth@twiddle.net, sparclinux@vger.kernel.org,
+        tony.luck@intel.com, x86@kernel.org, sivanich@sgi.com,
+        greg.pearson@hp.com, kamezawa.hiroyu@jp.fujitsu.com,
+        bob.picco@oracle.com, chris.mason@oracle.com,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        mingo@kernel.org, pjt@google.com, tglx@linutronix.de,
+        seto.hidetoshi@jp.fujitsu.com, ak@linux.intel.com,
+        arjan.van.de.ven@intel.com
+Subject: [RFC PATCH] sched/numa: do load balance between remote nodes
+Date:   Wed,  6 Jun 2012 14:52:51 +0800
+Message-Id: <1338965571-9812-1-git-send-email-alex.shi@intel.com>
+X-Mailer: git-send-email 1.7.5.4
+X-archive-position: 33561
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: alex.shi@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -34,57 +49,37 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 05/06/12 23:19, Steven J. Hill wrote:
-> From: "Steven J. Hill" <sjhill@mips.com>
-> 
-> Make headers consistent across the files and make changes based on
-> running the checkpatch script.
+commit cb83b629b remove the NODE sched domain and check if the node
+distance in SLIT table is farther than REMOTE_DISTANCE, if so, it will
+lose the load balance chance at exec/fork/wake_affine points.
 
+But actually, even the node distance is farther than REMOTE_DISTANCE,
+Modern CPUs also has QPI like connections, that make memory access is
+not too slow between nodes. So above losing on NUMA machine make a
+huge performance regression on benchmark: hackbench, tbench, netperf
+and oltp etc.
 
-i dont see any checkpatch related changes
+This patch will recover the scheduler behavior to old mode on all my
+Intel platforms: NHM EP/EX, WSM EP, SNB EP/EP4S, and so remove the
+perfromance regressions. (all of them just has 2 kinds distance, 10 21)
 
+Signed-off-by: Alex Shi <alex.shi@intel.com>
+---
+ kernel/sched/core.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-> 
-> Signed-off-by: Steven J. Hill <sjhill@mips.com>
-> ---
->  arch/mips/lantiq/prom.c |   10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-> index aa9da9e..56470c6 100644
-> --- a/arch/mips/lantiq/prom.c
-> +++ b/arch/mips/lantiq/prom.c
-> @@ -1,15 +1,15 @@
->  /*
-> - *  This program is free software; you can redistribute it and/or modify it
-> - *  under the terms of the GNU General Public License version 2 as published
-> - *  by the Free Software Foundation.
-> + * This file is subject to the terms and conditions of the GNU General Public
-> + * License.  See the file "COPYING" in the main directory of this archive
-> + * for more details.
->   *
-
-The change in License is not related to the Subject / commit message.
-
-Why do you change the license in the first place ? the code was GPLv2
-and after your change it only GPL ?
-
-NAK on this one ...
-
-
->   * Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-> + * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
-
-Does a include fixup justify a Copyright holder change ?
-
-
->   */
-> -
->  #include <linux/export.h>
->  #include <linux/clk.h>
->  #include <linux/of_platform.h>
-> -#include <asm/time.h>
-> +#include <linux/time.h>
->  
->  #include <asm/fw/fw.h>
->  #include <lantiq.h>
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 39eb601..b2ee41a 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6286,7 +6286,7 @@ static int sched_domains_curr_level;
+ 
+ static inline int sd_local_flags(int level)
+ {
+-	if (sched_domains_numa_distance[level] > REMOTE_DISTANCE)
++	if (sched_domains_numa_distance[level] > RECLAIM_DISTANCE)
+ 		return 0;
+ 
+ 	return SD_BALANCE_EXEC | SD_BALANCE_FORK | SD_WAKE_AFFINE;
+-- 
+1.7.5.4

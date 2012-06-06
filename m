@@ -1,56 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2012 12:53:55 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:43316 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903701Ab2FFKxs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jun 2012 12:53:48 +0200
-Received: by lbbgg6 with SMTP id gg6so5571848lbb.36
-        for <linux-mips@linux-mips.org>; Wed, 06 Jun 2012 03:53:42 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2012 13:16:44 +0200 (CEST)
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:55576 "EHLO
+        mail-lpp01m010-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903701Ab2FFLQh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jun 2012 13:16:37 +0200
+Received: by laap9 with SMTP id p9so5416610laa.36
+        for <linux-mips@linux-mips.org>; Wed, 06 Jun 2012 04:16:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=message-id:date:from:user-agent:mime-version:to:cc:subject
          :references:in-reply-to:content-type:content-transfer-encoding
          :x-gm-message-state;
-        bh=JRMtM/xQ9SjDwq/z3PCRH9ufA39d3vEDy7KviIycajs=;
-        b=GWmWDdo0EHDRpCS44NNwZe5zXp186FWReWj7NK3ZAdsTZGZXsVrv8ABW2FOe/acv3c
-         XuJpkAW4+dPPel29+DECNTFOwdT8xRY31LNlslEWiy+vIBjOQroMFH02cU5QuKbcw1eb
-         61mzfmYjDrmmBBeJznEb4am6Cjp5ZZp+VQeacx7TkOoh3WCyMXSYxYhRXgnsfHkm2tI3
-         7rOAAuDnx/he0AERmgx4humS8CL2jMWK9b67HQw27dC54in7813Y+WcjHc6vQQSk/XA+
-         434bb7i+lnOLLfVuqjUzMb5so+S+qtApZTgSLIQXdvvFUIhBsa1hVDkh7qGN6VEpAHY8
-         /MQA==
-Received: by 10.112.25.106 with SMTP id b10mr9656161lbg.36.1338980021871;
-        Wed, 06 Jun 2012 03:53:41 -0700 (PDT)
+        bh=sFmgQBUHXrJpgpC3G8PWO8FDqDIWGA2PHVlbjHauysc=;
+        b=QDF6zGd1HQuLmalFavrQDLXpbA7c6RDX1d7A0fYpZN36K8moxrVghRxABdjgnegU/b
+         lAued9MeByfZ3WeONV9ZCbepYtMphL2siQhEljOUGyIqXhnqjnApuxwzMYJN/mcAW8Cl
+         AY92cTDkwBBLOnwR/zgVngqn6YQs3KnRV1E9oRTIfIq+qc/LRZoP/xl+DBy8qIr4Bum6
+         XApmjMEjDRk5ZVQvKkDI0BQT+Cn1qS6KXdgB4JmJg1gUJ8IZMrmfR8uIrk+H0r4eqNQq
+         /fM9rPMX6ugyGoLHWaXGEEx1MbEI01Oyzjs1zmPLFBOEXjZaZFJTLpXl2fgpIgZT/KMh
+         zE4Q==
+Received: by 10.112.42.66 with SMTP id m2mr9781104lbl.46.1338981392207;
+        Wed, 06 Jun 2012 04:16:32 -0700 (PDT)
 Received: from [192.168.2.2] (ppp91-79-86-181.pppoe.mtu-net.ru. [91.79.86.181])
-        by mx.google.com with ESMTPS id hm7sm2270479lab.12.2012.06.06.03.53.36
+        by mx.google.com with ESMTPS id hg4sm2354681lab.11.2012.06.06.04.16.29
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 06 Jun 2012 03:53:40 -0700 (PDT)
-Message-ID: <4FCF3694.206@mvista.com>
-Date:   Wed, 06 Jun 2012 14:53:08 +0400
+        Wed, 06 Jun 2012 04:16:30 -0700 (PDT)
+Message-ID: <4FCF3BF0.8070405@mvista.com>
+Date:   Wed, 06 Jun 2012 15:16:00 +0400
 From:   Sergei Shtylyov <sshtylyov@mvista.com>
 User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
 MIME-Version: 1.0
-To:     Alex Shi <alex.shi@intel.com>
-CC:     a.p.zijlstra@chello.nl, anton@samba.org, benh@kernel.crashing.org,
-        cmetcalf@tilera.com, dhowells@redhat.com, davem@davemloft.net,
-        fenghua.yu@intel.com, hpa@zytor.com, ink@jurassic.park.msu.ru,
-        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        mattst88@gmail.com, paulus@samba.org, lethal@linux-sh.org,
-        ralf@linux-mips.org, rth@twiddle.net, sparclinux@vger.kernel.org,
-        tony.luck@intel.com, x86@kernel.org, sivanich@sgi.com,
-        greg.pearson@hp.com, kamezawa.hiroyu@jp.fujitsu.com,
-        bob.picco@oracle.com, chris.mason@oracle.com,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        mingo@kernel.org, pjt@google.com, tglx@linutronix.de,
-        seto.hidetoshi@jp.fujitsu.com, ak@linux.intel.com,
-        arjan.van.de.ven@intel.com
-Subject: Re: [RFC PATCH] sched/numa: do load balance between remote nodes
-References: <1338965571-9812-1-git-send-email-alex.shi@intel.com>
-In-Reply-To: <1338965571-9812-1-git-send-email-alex.shi@intel.com>
+To:     "Steven J. Hill" <sjhill@mips.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH 07/35] MIPS: ath79: Cleanup files effected by firmware
+ changes.
+References: <1338931179-9611-1-git-send-email-sjhill@mips.com> <1338931179-9611-8-git-send-email-sjhill@mips.com>
+In-Reply-To: <1338931179-9611-8-git-send-email-sjhill@mips.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQngGdQ8DF+gcqoXhZYntN02t0UbITXR4tQ/dd8f8MOjt7R2UOE8qIm3bTgMvw99RGv9rQna
-X-archive-position: 33564
+X-Gm-Message-State: ALoCoQmy+1Ice67bCCo/veZ6KDN0T1IGAhf8iD69avMjrc0yDdd+JAr49xoY/AS2SSXEw6fledQS
+X-archive-position: 33565
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,29 +57,49 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 Hello.
 
-On 06-06-2012 10:52, Alex Shi wrote:
+On 06-06-2012 1:19, Steven J. Hill wrote:
 
-> commit cb83b629b
+> From: "Steven J. Hill"<sjhill@mips.com>
 
-    Please also specify that commit's summary in parens.
+> Make headers consistent across the files and make changes based on
+> running the checkpatch script.
 
-> remove the NODE sched domain and check if the node
-> distance in SLIT table is farther than REMOTE_DISTANCE, if so, it will
-> lose the load balance chance at exec/fork/wake_affine points.
+> Signed-off-by: Steven J. Hill<sjhill@mips.com>
+> ---
+>   arch/mips/ath79/prom.c |   13 +++++--------
+>   1 file changed, 5 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/mips/ath79/prom.c b/arch/mips/ath79/prom.c
+> index adbe614..9ead18a 100644
+> --- a/arch/mips/ath79/prom.c
+> +++ b/arch/mips/ath79/prom.c
+> @@ -1,18 +1,15 @@
+>   /*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
 
-> But actually, even the node distance is farther than REMOTE_DISTANCE,
-> Modern CPUs also has QPI like connections, that make memory access is
+    Why move/change this text at all?
 
-    "Is" not needed here.
+>    *  Atheros AR71XX/AR724X/AR913X specific prom routines
+>    *
+>    *  Copyright (C) 2008-2010 Gabor Juhos<juhosg@openwrt.org>
+>    *  Copyright (C) 2008 Imre Kaloz<kaloz@openwrt.org>
+> - *
+> - *  This program is free software; you can redistribute it and/or modify it
+> - *  under the terms of the GNU General Public License version 2 as published
+> - *  by the Free Software Foundation.
+> + *  Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+>    */
+> -
+> -#include<linux/kernel.h>
+> -#include<linux/init.h>
+>   #include<linux/io.h>
+> -#include<linux/string.h>
 
-> not too slow between nodes.  So above losing on NUMA machine make a
-> huge performance regression on benchmark: hackbench, tbench, netperf
-> and oltp etc.
-
-> This patch will recover the scheduler behavior to old mode on all my
-> Intel platforms: NHM EP/EX, WSM EP, SNB EP/EP4S, and so remove the
-> perfromance regressions. (all of them just has 2 kinds distance, 10 21)
-
-> Signed-off-by: Alex Shi<alex.shi@intel.com>
+    Removing a few #include's doesn't justify copyrighting the file. You 
+generally need to do some substantial change (some people say about 1/3) to 
+the file to claim the copyright.
 
 WBR, Sergei

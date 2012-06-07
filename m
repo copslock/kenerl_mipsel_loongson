@@ -1,30 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2012 16:46:42 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:51424 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903735Ab2FGOqi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2012 16:46:38 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <sjhill@realitydiluted.com>)
-        id 1Scdyp-0004ia-3U
-        for linux-mips@linux-mips.org; Thu, 07 Jun 2012 09:46:31 -0500
-Message-ID: <4FD0BEBF.4070006@realitydiluted.com>
-Date:   Thu, 07 Jun 2012 09:46:23 -0500
-From:   "Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:11.0) Gecko/20120312 Thunderbird/11.0
-MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 00/35] Cleanup firmware support across multiple platforms.
-References: <1338931179-9611-1-git-send-email-sjhill@mips.com>
-In-Reply-To: <1338931179-9611-1-git-send-email-sjhill@mips.com>
-X-Enigmail-Version: 1.4.1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 33598
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2012 21:52:20 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:64094 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903735Ab2FGTwR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2012 21:52:17 +0200
+Received: by dadm1 with SMTP id m1so1427993dad.36
+        for <multiple recipients>; Thu, 07 Jun 2012 12:52:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=ZzDm0Sk1yC/2I+TBQ93H9xUYlpr/q5jsNUw9B05mNds=;
+        b=ZzOEo33YyWKb5kJItWJypWDFq+iUw1fYZRlyU7ZWNiSMYdZj8glBkfLlOO4b0PcJZb
+         65jk5Su+6f2UBqYQFs65Wm93ZigF5aKL4ybCUNXE2LzdcwSTBGMHeM4qcOga/eaXSAZt
+         M2aODPAeEOMEaN5jsb9xnvH924u0ohkSbAo38U2I476mM0mgDnKX0M36MOvDv2qhmxZS
+         ochn36b6rPfPKvOYcf0PpOdv+LMFpOIji/d0+0065hcS/bSDQKOz8MAkHiNZ7RY5j8Uw
+         OnoZjULPUhVu07ZBq9guqgIuJelVUwKzjAJCRc2RkcKWw+Sj0VvupyLmKdhaMbpr/1UL
+         OO/g==
+Received: by 10.68.201.195 with SMTP id kc3mr12739696pbc.33.1339098730077;
+        Thu, 07 Jun 2012 12:52:10 -0700 (PDT)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id wn3sm5084080pbc.74.2012.06.07.12.52.09
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 07 Jun 2012 12:52:09 -0700 (PDT)
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q57Jq7Jl009825;
+        Thu, 7 Jun 2012 12:52:07 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q57Jq6kH009823;
+        Thu, 7 Jun 2012 12:52:07 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH 1/3] MIPS: OCTEON: Fix build error when configured without PCI_MSI
+Date:   Thu,  7 Jun 2012 12:52:05 -0700
+Message-Id: <1339098725-9792-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+X-archive-position: 33599
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,20 +52,42 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+From: David Daney <david.daney@cavium.com>
 
-Hello.
+The build dies with complaints about missing definition of
+OCTEON_IRQ_RST.  This symbol was removed, so don't use it as part of
+the definition of OCTEON_IRQ_LAST.
 
-Are there any further comments or concerns on these patches before I submit a
-second version with the changes below? Thank you.
+Set OCTEON_IRQ_LAST to 127 so there is space for all the automatically
+allocated (via irq_domain) irqs.
 
-- -Steve
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/include/asm/mach-cavium-octeon/irq.h |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
 
-iEYEARECAAYFAk/Qvr8ACgkQgyK5H2Ic36feogCfZkynMUs49+b6SrkYAum9izHw
-+QYAn1TT55Xmtd4oiG4nXazaT8qqN0oR
-=dv7K
------END PGP SIGNATURE-----
+diff --git a/arch/mips/include/asm/mach-cavium-octeon/irq.h b/arch/mips/include/asm/mach-cavium-octeon/irq.h
+index f9bfb63..4189920 100644
+--- a/arch/mips/include/asm/mach-cavium-octeon/irq.h
++++ b/arch/mips/include/asm/mach-cavium-octeon/irq.h
+@@ -50,6 +50,9 @@ enum octeon_irq {
+ 	OCTEON_IRQ_MII0,
+ 	OCTEON_IRQ_MII1,
+ 	OCTEON_IRQ_BOOTDMA,
++#ifndef CONFIG_PCI_MSI
++	OCTEON_IRQ_LAST = 127
++#endif
+ };
+ 
+ #ifdef CONFIG_PCI_MSI
+@@ -58,8 +61,6 @@ enum octeon_irq {
+ 
+ #define OCTEON_IRQ_MSI_LAST      (OCTEON_IRQ_MSI_BIT0 + 255)
+ #define OCTEON_IRQ_LAST          (OCTEON_IRQ_MSI_LAST + 1)
+-#else
+-#define OCTEON_IRQ_LAST         (OCTEON_IRQ_RST + 1)
+ #endif
+ 
+ #endif
+-- 
+1.7.2.3

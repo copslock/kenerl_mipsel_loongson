@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2012 10:14:19 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2012 10:14:46 +0200 (CEST)
 Received: from mail-pb0-f49.google.com ([209.85.160.49]:38784 "EHLO
         mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903730Ab2FGION (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2012 10:14:13 +0200
-Received: by pbbrq13 with SMTP id rq13so748925pbb.36
-        for <linux-mips@linux-mips.org>; Thu, 07 Jun 2012 01:14:06 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1903733Ab2FGIOc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2012 10:14:32 +0200
+Received: by mail-pb0-f49.google.com with SMTP id rq13so748925pbb.36
+        for <linux-mips@linux-mips.org>; Thu, 07 Jun 2012 01:14:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=subject:from:to:cc:content-type:date:message-id:mime-version
          :x-mailer:content-transfer-encoding:x-gm-message-state;
-        bh=FRysA/vAd4QdbJphNuobgq47WLUGj03hnFNLQ46zo+s=;
-        b=VhlyiY3cbTazXFWSrVa3Kqf3ndSQhlzq5pOusZF4OdZM0SnaHoVvEPu6AjcLrfpHIy
-         mGQJGNslCvkaNSd73eZG9+YVTv3Aq4zwostpkQ/0piPui6SzLbKh+LzrAUCxbRmjhZy8
-         TKV1evTG2yZkO0Tp3fnmnfnAje+qYzgoIHCPV61Ci2TbCAS01B5yZ9xHHBcEfB24rzaR
-         93iAE8ZKK1Po4tpXx2zod8nG0IS2bJMFnuXtiTbPJSqWlZuho/hcj6cffo9fLxzqFnby
-         AiIMwP+G2mJ2cQfiHvYjiVfX41iZijfOY0FFBp8y1+1dpzD+hyXCORGVWT6b0vu2xPS8
-         TpDQ==
-Received: by 10.68.222.133 with SMTP id qm5mr5956862pbc.113.1339056846408;
-        Thu, 07 Jun 2012 01:14:06 -0700 (PDT)
+        bh=tIr06geBlF1SzOK+743RWpKdvH9XUwPWAAkdz7dmQgQ=;
+        b=QbV/x2x3C0vDwDUj+F+qdtijt6FhJVFjXZD3B1a+eK+ZFUoqKATAJjnLu4P0T3p+Pp
+         kJEKFvla/Ib0SkBBzVCjk0GnklV0HVeMZDu1oA5iNfiuckvAAWie5hoF6xq0upM7GXWN
+         1fBXjbjitd6tTMF+oBubZPNf3+GVvD0CgG5Im8aC3RhvbNVTK9DFTQT8eolz2rq5z4+W
+         nwp1NIKgP7UDriTOpH9urNJXpL2kTM2Fw1qh3ejtNJ8gcCR/M7DJzaMNYIkti3HQn+Nj
+         7wMT8gUHfxGZliWSn0ztcXARF5WvdlFn2y3K1h4KFeO3OFfxk+X/7cGsWHKzEYiGE+Jh
+         Q61Q==
+Received: by 10.68.239.164 with SMTP id vt4mr5685875pbc.166.1339056872029;
+        Thu, 07 Jun 2012 01:14:32 -0700 (PDT)
 Received: from [10.0.0.4] ([115.118.107.144])
-        by mx.google.com with ESMTPS id qp3sm3326439pbc.17.2012.06.07.01.14.02
+        by mx.google.com with ESMTPS id wn3sm3300832pbc.74.2012.06.07.01.14.28
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 07 Jun 2012 01:14:05 -0700 (PDT)
-Subject: [PATCH 1/2] Octeon 6xxx: Initial commit porting executive files
- from sdk2.3
+        Thu, 07 Jun 2012 01:14:31 -0700 (PDT)
+Subject: [PATCH 2/2] Octeon 6xxx: Add Power Throttling support for CN6xxx
+ and above
 From:   philby john <pjohn@mvista.com>
 To:     linux-mips@linux-mips.org
-Cc:     david.daney@caviumnetworks.com, ralf@linux-mips.org,
-        prasun.kapoor@caviumnetworks.com
+Cc:     david.daney@caviumnetworks.com, prasun.kapoor@caviumnetworks.com,
+        ralf@linux-mips.org
 Content-Type: text/plain; charset="UTF-8"
-Date:   Thu, 07 Jun 2012 13:45:40 +0530
-Message-ID: <1339056940.15045.9.camel@localhost.localdomain>
+Date:   Thu, 07 Jun 2012 13:46:06 +0530
+Message-ID: <1339056966.15045.10.camel@localhost.localdomain>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.32.3 (2.32.3-1.fc14)
 Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQkBnZ/oBUPv/RP9KnZipWibgSC7Kyo4xaZ0iPQnbbX3Oiplt639QUskE35NMvQy2IudoCRo
-X-archive-position: 33595
+X-Gm-Message-State: ALoCoQkTN1MWWlb6/0RpA6fvpGvgqKhWqG3f76u0lvcW4vrIWRG8TqtRHG/44POj4cB3HOTb24vb
+X-archive-position: 33596
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,442 +53,242 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
->From eb9d86c9ac6d23f36f01e6b8b364c3922e550fff Mon Sep 17 00:00:00 2001
+>From 9d9f2b330ad635dff9aa141cd96bde2907385032 Mon Sep 17 00:00:00 2001
 From: Philby John <pjohn@mvista.com>
-Date: Thu, 7 Jun 2012 11:49:32 +0530
-Subject: [PATCH] Octeon 6xxx: Initial commit porting executive files from sdk2.3
+Date: Thu, 7 Jun 2012 12:09:31 +0530
+Subject: [PATCH] Octeon 6xxx: Add Power Throttling support for CN6xxx and above
 
-Initial commit that sets up the internal functions
-needed for implementing Power Throttling for Octeon
-6xxx and above.
+This patch adds the sysfs primitives for power throttling.
 
-Additional functionality such as setting throttle feedback
-cvmx_init_throttle_feedback(), calculating throttle percentage
-cvmx_power_throttle_get_powlim(), and other bugfixes not present
-in the SDK have been implemented.
+Octeon2 supports dynamic power control which aids to cut down power
+consumption. The code exposes a "percentage" power throttling
+limiter by means of /sys interface for each available cpu. Setting
+this value to 0 will set power consumption to a minimum as it will
+only execute a couple instructions every PERIOD as set in the
+PowThrottle register. If set to 100% for that particular cpu, it
+will consume maximum power.
 
 Signed-off-by: Philby John <pjohn@mvista.com>
 ---
- arch/mips/cavium-octeon/executive/Makefile         |    2 +-
- .../cavium-octeon/executive/cvmx-power-throttle.c  |  287 ++++++++++++++++++++
- arch/mips/include/asm/octeon/cvmx-power-throttle.h |  103 +++++++
- 3 files changed, 391 insertions(+), 1 deletions(-)
- create mode 100644 arch/mips/cavium-octeon/executive/cvmx-power-throttle.c
- create mode 100644 arch/mips/include/asm/octeon/cvmx-power-throttle.h
+ arch/mips/cavium-octeon/Kconfig             |   12 ++
+ arch/mips/cavium-octeon/Makefile            |    1 +
+ arch/mips/cavium-octeon/octeon_pwr_throtl.c |  177 +++++++++++++++++++++++++++
+ 3 files changed, 190 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/cavium-octeon/octeon_pwr_throtl.c
 
-diff --git a/arch/mips/cavium-octeon/executive/Makefile b/arch/mips/cavium-octeon/executive/Makefile
-index b6d6e84..659cd9e 100644
---- a/arch/mips/cavium-octeon/executive/Makefile
-+++ b/arch/mips/cavium-octeon/executive/Makefile
-@@ -14,6 +14,6 @@ obj-y += cvmx-pko.o cvmx-spi.o cvmx-cmd-queue.o \
- 	cvmx-helper-board.o cvmx-helper.o cvmx-helper-xaui.o \
- 	cvmx-helper-rgmii.o cvmx-helper-sgmii.o cvmx-helper-npi.o \
- 	cvmx-helper-loop.o cvmx-helper-spi.o cvmx-helper-util.o \
--	cvmx-interrupt-decodes.o cvmx-interrupt-rsl.o
-+	cvmx-interrupt-decodes.o cvmx-interrupt-rsl.o cvmx-power-throttle.o
+diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kconfig
+index f9e275a..7a7f7e7 100644
+--- a/arch/mips/cavium-octeon/Kconfig
++++ b/arch/mips/cavium-octeon/Kconfig
+@@ -97,5 +97,17 @@ config SWIOTLB
+ 	select IOMMU_HELPER
+ 	select NEED_SG_DMA_LENGTH
  
- obj-y += cvmx-helper-errata.o cvmx-helper-jtag.o
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-power-throttle.c b/arch/mips/cavium-octeon/executive/cvmx-power-throttle.c
++config CAVIUM_POWER_THROTTLING
++	bool "Enable support for power throttling on Octeon 63xx and above"
++	depends on CPU_CAVIUM_OCTEON
++	default n
++	help
++	  On Octeon 6xxx and above dynamic power can be controlled
++	  by setting the PowThrottle registers for each cpu. This could be
++	  beneficial for lower power consumption requirements.
++
++	  If your application makes extensive use of high-energy instructions
++	  (such as Octeon cryptographic accleration) it's better to leave this
++	  option disabled as it may have slight impact on performance.
+ 
+ endif # CPU_CAVIUM_OCTEON
+diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
+index 19eb043..912f9bb 100644
+--- a/arch/mips/cavium-octeon/Makefile
++++ b/arch/mips/cavium-octeon/Makefile
+@@ -15,3 +15,4 @@ obj-y += octeon-memcpy.o
+ obj-y += executive/
+ 
+ obj-$(CONFIG_SMP)                     += smp.o
++obj-$(CONFIG_CAVIUM_POWER_THROTTLING) += octeon_pwr_throtl.o
+diff --git a/arch/mips/cavium-octeon/octeon_pwr_throtl.c b/arch/mips/cavium-octeon/octeon_pwr_throtl.c
 new file mode 100644
-index 0000000..daa7f5a
+index 0000000..6348cc1
 --- /dev/null
-+++ b/arch/mips/cavium-octeon/executive/cvmx-power-throttle.c
-@@ -0,0 +1,287 @@
-+/***********************license start***************
-+ * Copyright (c) 2003-2010  Cavium Inc. (support@cavium.com). All rights
-+ * reserved.
++++ b/arch/mips/cavium-octeon/octeon_pwr_throtl.c
+@@ -0,0 +1,177 @@
++/*
++ * octeon_pwr_throtl.c - interface for controlling power throttling on Octeon
++ * based platforms 6xxx and above.
++ * Octeon2 supports dynamic power control which aids to cut down power
++ * consumption. The code exposes a "percentage" power throttling limiter by
++ * means of /sys interface for each available cpu. Setting this value to 0
++ * will set power consumption to a minimum as it will only execute a couple
++ * instructions every PERIOD as set in the PowThrottle register.
++ * If set to 100% for that particular cpu; will consume maximum power.
 + *
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions are
-+ * met:
-+ *
-+ *   * Redistributions of source code must retain the above copyright
-+ *     notice, this list of conditions and the following disclaimer.
-+ *
-+ *   * Redistributions in binary form must reproduce the above
-+ *     copyright notice, this list of conditions and the following
-+ *     disclaimer in the documentation and/or other materials provided
-+ *     with the distribution.
-+
-+ *   * Neither the name of Cavium Inc. nor the names of
-+ *     its contributors may be used to endorse or promote products
-+ *     derived from this software without specific prior written
-+ *     permission.
-+
-+ * This Software, including technical data, may be subject to U.S. export
-+ * control laws, including the U.S. Export Administration Act and its
-+ * associated regulations, and may be subject to export or import  regulations
-+ * in other countries.
-+
-+ * TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE SOFTWARE IS PROVIDED "AS IS"
-+ * AND WITH ALL FAULTS AND CAVIUM INC. MAKES NO PROMISES, REPRESENTATIONS OR
-+ * WARRANTIES, EITHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE, WITH RESPECT
-+ * TO THE SOFTWARE, INCLUDING ITS CONDITION, ITS CONFORMITY TO ANY
-+ * REPRESENTATION OR DESCRIPTION, OR THE EXISTENCE OF ANY LATENT OR PATENT
-+ * DEFECTS, AND CAVIUM SPECIFICALLY DISCLAIMS ALL IMPLIED (IF ANY)
-+ * WARRANTIES OF TITLE, MERCHANTABILITY, NONINFRINGEMENT, FITNESS FOR A
-+ * PARTICULAR PURPOSE, LACK OF VIRUSES, ACCURACY OR COMPLETENESS, QUIET
-+ * ENJOYMENT QUIET POSSESSION OR CORRESPONDENCE TO DESCRIPTION. THE ENTIRE
-+ * RISK ARISING OUT OF USE OR PERFORMANCE OF THE SOFTWARE LIES WITH YOU.
-+ ***********************license end**************************************/
-+
-+/**
-+ * @file
-+ *
-+ * Interface to power-throttle control, measurement, and debugging
-+ * facilities.
-+ *
++ * Copyright (C) 2012 MontaVista LLC.
++ * Author: Philby John <pjohn@mvista.com>
++ * Credits: This driver is derived from Dmitriy Zavin's (dmitriyz@google.com)
++ * thermal throttle event support code.
 + */
 +
-+#include <asm/octeon/cvmx.h>
-+#include <asm/octeon/cvmx-asm.h>
++#include <linux/interrupt.h>
++#include <linux/notifier.h>
++#include <linux/jiffies.h>
++#include <linux/kernel.h>
++#include <linux/percpu.h>
++#include <linux/types.h>
++#include <linux/init.h>
++#include <linux/smp.h>
++#include <linux/cpu.h>
++#include <linux/mutex.h>
++
++#include <asm/processor.h>
 +#include <asm/octeon/cvmx-power-throttle.h>
-+#include <asm/octeon/octeon.h>
 +
-+#define CVMX_PTH_GET_MASK(len, pos)	\
-+	((((uint64_t)1 << (len)) - 1) << (pos))
++#define define_pwr_throttle_one_rw(_name)				\
++	static DEVICE_ATTR(_name, 0644, power_throt_show_##_name,	\
++			power_throt_store_##_name)			\
 +
-+#define CVMX_PTH_AVAILABLE		\
-+	(cvmx_power_throttle_get_register(0) != (uint64_t)-1)
++#define define_pwr_throttle_show_func(name)				\
++									\
++static ssize_t power_throt_show_##name(					\
++			struct device *dev,				\
++			struct device_attribute *attr,			\
++			char *buf)					\
++{									\
++	unsigned int cpu = dev->id;					\
++	ssize_t ret;							\
++									\
++	preempt_disable();	/* CPU hotplug */			\
++	if (cpu_online(cpu))						\
++		ret = sprintf(buf, "%d\n",				\
++			cvmx_power_throttle_get_powlim(cpu));		\
++	else								\
++		ret = 0;						\
++	preempt_enable();						\
++									\
++	return ret;							\
++}
 +
-+/*
-+ * a field of the POWTHROTTLE register
-+ */
-+static struct cvmx_power_throttle_rfield_t {
-+	char	name[16];	/* the field's name */
-+	int32_t	pos;		/* position of the field's LSb */
-+	int32_t	len;		/* the field's length */
-+	int	present;	/* 1 for present */
-+} cvmx_power_throttle_rfield[] = {
-+	{"MAXPOW",   56,  8, 0},
-+	{"POWER" ,   48,  8, 0},
-+	{"THROTT",   40,  8, 0},
-+	{"Reserved", 28, 12, 0},
-+	{"DISTAG",   27,  1, 0},
-+	{"PERIOD",   24,  3, 0},
-+	{"POWLIM",   16,  8, 0},
-+	{"MAXTHR",    8,  8, 0},
-+	{"MINTHR",    0,  8, 0},
-+	{"HRMPOWADJ", 32,  8, 0},
-+	{"OVRRD",    28,  1, 0}
++#define define_pwr_throttle_store_func(name)				\
++									\
++static ssize_t power_throt_store_##name(				\
++			struct device *dev,				\
++			struct device_attribute *attr,			\
++			const char *buf,				\
++			size_t size)					\
++{									\
++	unsigned int cpu = dev->id;					\
++	unsigned long val;						\
++	int error;							\
++									\
++	error = kstrtoul(buf, 0, &val);					\
++	if (error)							\
++		return error;						\
++									\
++	preempt_disable();						\
++	cvmx_power_throttle(val, cpu);					\
++	preempt_enable();						\
++									\
++	return size;							\
++}
++
++define_pwr_throttle_store_func(percentage);
++define_pwr_throttle_show_func(percentage);
++define_pwr_throttle_one_rw(percentage);
++
++static struct attribute *pwr_throttle_attrs[] = {
++	&dev_attr_percentage.attr,
++	NULL
 +};
 +
-+static uint64_t cvmx_power_throttle_csr_addr(int ppid);
-+
-+static int cvmx_power_throttle_initialized;
-+
-+/*
-+ * @INTERNAL
-+ * Initialize cvmx_power_throttle_rfield[] based on model.
-+ */
-+static void cvmx_power_throttle_init(void)
-+{
-+	/* Turn on the fields for a model */
-+	if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
-+		int i;
-+		struct cvmx_power_throttle_rfield_t *p;
-+
-+		for (i = 0; i < CVMX_PTH_INDEX_MAX; i++)
-+			cvmx_power_throttle_rfield[i].present = 1;
-+
-+		if (OCTEON_IS_MODEL(OCTEON_CN63XX)) {
-+			/*
-+			 * These fields do not come with o63
-+			 */
-+			p =
-+			&cvmx_power_throttle_rfield[CVMX_PTH_INDEX_HRMPOWADJ];
-+			p->present = 0;
-+			p = &cvmx_power_throttle_rfield[CVMX_PTH_INDEX_OVRRD];
-+			p->present = 0;
-+		} else {
-+			/*
-+			 * The reserved field shrinks in models newer than o63
-+			 */
-+			p =
-+			&cvmx_power_throttle_rfield[CVMX_PTH_INDEX_RESERVED];
-+			p->pos = 29;
-+			p->len = 3;
-+		}
-+	}
-+}
-+
-+uint64_t cvmx_power_throttle_get_field(uint64_t r,
-+	enum cvmx_power_throttle_field_index i)
-+{
-+	uint64_t m;
-+	struct cvmx_power_throttle_rfield_t *p;
-+
-+	if (i > CVMX_PTH_INDEX_MAX)
-+		return -EINVAL;
-+
-+	p = &cvmx_power_throttle_rfield[i];
-+	if (!p->present)
-+		return (uint64_t) -1;
-+	m = CVMX_PTH_GET_MASK(p->len, p->pos);
-+
-+	return (r & m) >> p->pos;
-+}
-+
-+/*
-+ * @INTERNAL
-+ * Set the i'th field of power-throttle register r to v.
-+ */
-+static int cvmx_power_throttle_set_field(int i, uint64_t r, uint64_t v)
-+{
-+	if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
-+		uint64_t m;
-+		struct cvmx_power_throttle_rfield_t *p;
-+
-+		if (i > CVMX_PTH_INDEX_MAX)
-+			return -EINVAL;
-+
-+		p = &cvmx_power_throttle_rfield[i];
-+		m = CVMX_PTH_GET_MASK(p->len, p->pos);
-+
-+		return (~m & r) | ((v << p->pos) & m);
-+	}
-+	return 0;
-+}
-+
-+int cvmx_init_throttle_feedback(cpu)
-+{
-+	uint64_t csr_addr, r;
-+
-+	if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
-+		csr_addr = cvmx_power_throttle_csr_addr(cpu);
-+		r = cvmx_read_csr(csr_addr);
-+		r =
-+		cvmx_power_throttle_set_field(CVMX_PTH_INDEX_MINTHR, r, 0x0);
-+		cvmx_write_csr(csr_addr, r);
-+		r = cvmx_read_csr(csr_addr);
-+		r =
-+		cvmx_power_throttle_set_field(CVMX_PTH_INDEX_MAXTHR, r, 0xFF);
-+		cvmx_write_csr(csr_addr, r);
-+		return 0;
-+	}
-+	return -EINVAL;
-+}
-+
-+/**
-+ * @INTERNAL
-+ * Get the POWLIM field as percentage% of the MAXPOW field in r.
-+ */
-+int cvmx_power_throttle_get_powlim(int cpu)
-+{
-+	if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
-+		uint64_t t, csr_addr, r, s;
-+
-+		csr_addr = cvmx_power_throttle_csr_addr(cpu);
-+		r = cvmx_read_csr(csr_addr);
-+
-+		t = cvmx_power_throttle_get_field(r, CVMX_PTH_INDEX_MAXPOW);
-+		if (!OCTEON_IS_MODEL(OCTEON_CN63XX)) {
-+			s = cvmx_power_throttle_get_field(r,
-+				CVMX_PTH_INDEX_HRMPOWADJ);
-+			if (t < s)
-+				return -EINVAL;
-+			t = t - s;
-+		}
-+		s = cvmx_power_throttle_get_field(r, CVMX_PTH_INDEX_POWLIM);
-+		return (s * 100)/t;
-+	}
-+	return 0;
-+}
-+
-+/**
-+ * @INTERNAL
-+ * Set the POWLIM field as percentage% of the MAXPOW field in r.
-+ */
-+static uint64_t cvmx_power_throttle_set_powlim(int ppid,
-+	uint8_t percentage)
-+{
-+	if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
-+		uint64_t t, csr_addr, r;
-+
-+		if (percentage > 101)
-+			return -EINVAL;
-+		csr_addr = cvmx_power_throttle_csr_addr(ppid);
-+		r = cvmx_read_csr(csr_addr);
-+		t = cvmx_power_throttle_get_field(r, CVMX_PTH_INDEX_MAXPOW);
-+		if (!OCTEON_IS_MODEL(OCTEON_CN63XX)) {
-+			uint64_t s;
-+			s = cvmx_power_throttle_get_field(r,
-+				CVMX_PTH_INDEX_HRMPOWADJ);
-+			if (t < s)
-+				return -EINVAL;
-+			t = t - s;
-+		}
-+		if (percentage > 0)
-+			t = percentage * t / 100;
-+		else
-+			t = 0;
-+		r = cvmx_power_throttle_set_field(CVMX_PTH_INDEX_POWLIM, r, t);
-+		cvmx_write_csr(csr_addr, r);
-+		return r;
-+	}
-+	return 0;
-+}
-+
-+/*
-+ * @INTERNAL
-+ * Given ppid, calculate its PowThrottle register's L2C_COP0_MAP CSR
-+ * address. (ppid == PTH_PPID_BCAST is for broadcasting)
-+ */
-+static uint64_t cvmx_power_throttle_csr_addr(int ppid)
-+{
-+	if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
-+		uint64_t csr_addr, reg_num, reg_reg, reg_sel;
-+
-+		if (ppid > CVMX_MAX_CORES)
-+			return -EINVAL;
-+		/*
-+		 * register 11 selection 6
-+		 */
-+		reg_reg = 11;
-+		reg_sel = 6;
-+		reg_num = (ppid << 8) + (reg_reg << 3) + reg_sel;
-+		csr_addr = CVMX_L2C_COP0_MAPX(0) + ((reg_num) << 3);
-+		return csr_addr;
-+	}
-+	return 0;
-+}
-+
-+int cvmx_power_throttle(uint8_t percentage, uint64_t cpu)
-+{
-+	int ret = 0;
-+
-+	if (!CVMX_PTH_AVAILABLE)
-+		return -EINVAL;
-+
-+	if (cvmx_power_throttle_set_powlim(cpu, percentage) == 0)
-+		ret = -EINVAL;
-+
-+	return ret;
-+}
-+
-+uint64_t cvmx_power_throttle_get_register(int ppid)
-+{
-+	uint64_t csr_addr;
-+
-+	if (!cvmx_power_throttle_initialized) {
-+		cvmx_power_throttle_init();
-+		cvmx_power_throttle_initialized = 1;
-+	}
-+	csr_addr = cvmx_power_throttle_csr_addr(ppid);
-+	if (csr_addr == 0)
-+		return -EINVAL;
-+
-+	return cvmx_read_csr(csr_addr);
-+}
-diff --git a/arch/mips/include/asm/octeon/cvmx-power-throttle.h b/arch/mips/include/asm/octeon/cvmx-power-throttle.h
-new file mode 100644
-index 0000000..f0e6bb8
---- /dev/null
-+++ b/arch/mips/include/asm/octeon/cvmx-power-throttle.h
-@@ -0,0 +1,103 @@
-+/***********************license start***************
-+ * Copyright (c) 2003-2010  Cavium Inc. (support@cavium.com). All rights
-+ * reserved.
-+ *
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions are
-+ * met:
-+ *
-+ *   * Redistributions of source code must retain the above copyright
-+ *     notice, this list of conditions and the following disclaimer.
-+ *
-+ *   * Redistributions in binary form must reproduce the above
-+ *     copyright notice, this list of conditions and the following
-+ *     disclaimer in the documentation and/or other materials provided
-+ *     with the distribution.
-+
-+ *   * Neither the name of Cavium Inc. nor the names of
-+ *     its contributors may be used to endorse or promote products
-+ *     derived from this software without specific prior written
-+ *     permission.
-+
-+ * This Software, including technical data, may be subject to U.S. export
-+ * control laws, including the U.S. Export Administration Act and its
-+ * associated regulations, and may be subject to export or import  regulations
-+ * in other countries.
-+
-+ * TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE SOFTWARE IS PROVIDED "AS IS"
-+ * AND WITH ALL FAULTS AND CAVIUM INC. MAKES NO PROMISES, REPRESENTATIONS OR
-+ * WARRANTIES, EITHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE, WITH RESPECT
-+ * TO THE SOFTWARE, INCLUDING ITS CONDITION, ITS CONFORMITY TO ANY
-+ * REPRESENTATION OR DESCRIPTION, OR THE EXISTENCE OF ANY LATENT OR PATENT
-+ * DEFECTS, AND CAVIUM SPECIFICALLY DISCLAIMS ALL IMPLIED (IF ANY)
-+ * WARRANTIES OF TITLE, MERCHANTABILITY, NONINFRINGEMENT, FITNESS FOR A
-+ * PARTICULAR PURPOSE, LACK OF VIRUSES, ACCURACY OR COMPLETENESS, QUIET
-+ * ENJOYMENT QUIET POSSESSION OR CORRESPONDENCE TO DESCRIPTION. THE ENTIRE
-+ * RISK ARISING OUT OF USE OR PERFORMANCE OF THE SOFTWARE LIES WITH YOU.
-+ ***********************license end**************************************/
-+
-+/*
-+ * @file
-+ *
-+ * Interface to power-throttle control, measurement, and debugging
-+ * facilities.
-+ *
-+ */
-+
-+#ifndef __CVMX_POWER_THROTTLE_H__
-+#define __CVMX_POWER_THROTTLE_H__
-+
-+enum cvmx_power_throttle_field_index {
-+	CVMX_PTH_INDEX_MAXPOW,
-+	CVMX_PTH_INDEX_POWER,
-+	CVMX_PTH_INDEX_THROTT,
-+	CVMX_PTH_INDEX_RESERVED,
-+	CVMX_PTH_INDEX_DISTAG,
-+	CVMX_PTH_INDEX_PERIOD,
-+	CVMX_PTH_INDEX_POWLIM,
-+	CVMX_PTH_INDEX_MAXTHR,
-+	CVMX_PTH_INDEX_MINTHR,
-+	CVMX_PTH_INDEX_HRMPOWADJ,
-+	CVMX_PTH_INDEX_OVRRD,
-+	CVMX_PTH_INDEX_MAX
++static struct attribute_group pwr_throttle_attr_group = {
++	.attrs	= pwr_throttle_attrs,
++	.name	= "power_throttle"
 +};
 +
-+extern int cvmx_power_throttle_get_powlim(int cpu);
++#ifdef CONFIG_SYSFS
 +
-+/*
-+ * For maximum POWLIM feedback control freedom, set MINTHR = 0 and MAXTHR = 0xFF
-+ */
-+extern int cvmx_init_throttle_feedback(int cpu);
++/* Mutex protecting device creation against CPU hotplug: */
++static DEFINE_MUTEX(pwr_throttl_cpu_lock);
 +
-+/**
-+ * Throttle power to percentage% of configured maximum (MAXPOW)
-+ * for the cores identified in coremask.
-+ *
-+ * @param percentage	0 to 100
-+ * @param coremask	bit mask where each bit identifies a core.
-+ * @return 0 for success and -1 for error.
-+ */
-+extern int cvmx_power_throttle(uint8_t percentage, uint64_t coremask);
++static __cpuinit int power_throttle_add_dev(struct device *dev)
++{
++	int err;
 +
-+/**
-+ * Get the i'th field of the power throttle register
-+ *
-+ * @param r is the value of the power throttle register
-+ * @param i is the index of the field
-+ *
-+ * @return (uint64_t)-1 on failure.
-+ */
-+extern uint64_t cvmx_power_throttle_get_field(uint64_t r,
-+	enum cvmx_power_throttle_field_index i);
++	err =  sysfs_create_group(&dev->kobj, &pwr_throttle_attr_group);
++	if (err)
++		return err;
++	err = sysfs_add_file_to_group(&dev->kobj,
++					&dev_attr_percentage.attr,
++					pwr_throttle_attr_group.name);
++	return err;
++}
 +
-+/**
-+ * Retrieve the content of the power throttle register of a core
-+ *
-+ * @param ppid is the core id
-+ *
-+ * @return (uint64_t)-1 on failure.
-+ */
-+extern uint64_t cvmx_power_throttle_get_register(int ppid);
++static __cpuinit void power_throttle_remove_dev(struct device *dev)
++{
++	sysfs_remove_group(&dev->kobj, &pwr_throttle_attr_group);
++}
 +
-+#endif /* __CVMX_POWER_THROTTLE_H__ */
++static __cpuinit int
++power_throttle_cpu_callback(struct notifier_block *nfb,
++			      unsigned long action,
++			      void *hcpu)
++{
++	unsigned int cpu = (unsigned long)hcpu;
++	struct device *dev;
++	int err = 0;
++
++	dev = get_cpu_device(cpu);
++
++	switch (action) {
++	case CPU_ONLINE:
++	case CPU_DOWN_FAILED:
++	case CPU_UP_PREPARE:
++	case CPU_UP_PREPARE_FROZEN:
++		mutex_lock(&pwr_throttl_cpu_lock);
++		err = power_throttle_add_dev(dev);
++		mutex_unlock(&pwr_throttl_cpu_lock);
++		WARN_ON(err);
++		break;
++	case CPU_UP_CANCELED:
++	case CPU_UP_CANCELED_FROZEN:
++	case CPU_DEAD:
++	case CPU_DEAD_FROZEN:
++	case CPU_DOWN_PREPARE:
++		mutex_lock(&pwr_throttl_cpu_lock);
++		power_throttle_remove_dev(dev);
++		mutex_unlock(&pwr_throttl_cpu_lock);
++		break;
++	}
++	return err ? NOTIFY_BAD : NOTIFY_OK;
++}
++
++static struct notifier_block power_throttle_cpu_notifier = {
++	.notifier_call = power_throttle_cpu_callback,
++};
++
++static __init int power_throtl_init(void)
++{
++	unsigned int cpu = 0;
++	int err;
++
++	register_hotcpu_notifier(&power_throttle_cpu_notifier);
++
++#ifdef CONFIG_HOTPLUG_CPU
++	mutex_lock(&pwr_throttl_cpu_lock);
++#endif
++	/* connect live CPUs to sysfs */
++	for_each_online_cpu(cpu) {
++		err = power_throttle_add_dev(get_cpu_device(cpu));
++		WARN_ON(err);
++		cvmx_init_throttle_feedback(cpu);
++	}
++#ifdef CONFIG_HOTPLUG_CPU
++	mutex_unlock(&pwr_throttl_cpu_lock);
++#endif
++	return 0;
++}
++device_initcall(power_throtl_init);
++
++#endif
 -- 
 1.6.3.3.338.ge89ce

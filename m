@@ -1,49 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2012 05:41:00 +0200 (CEST)
-Received: from mail-ob0-f177.google.com ([209.85.214.177]:49987 "EHLO
-        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903544Ab2FGDkx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2012 05:40:53 +0200
-Received: by obqv19 with SMTP id v19so310588obq.36
-        for <multiple recipients>; Wed, 06 Jun 2012 20:40:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=fEP+WNGRy32yRZpCUo2CcvyjmFtnMh8pXS/h5u/88ck=;
-        b=yFhcll2E8RFv7vx2UPrIMKuAPG+IxOxKgwTVVI4O04F6jQyMVEJlXwqsNyKfRskTBg
-         Uu9fQq6kMAAg7PfbwObni9p3WyQbL9XzxjILUBLZBqIVNxB1PLmTF7DvP9LeWuZ0+XRa
-         IJ497ZtHY74sj85fobaEvp04/3MuLZF2jw6fEEZJiAq3fmU3NwAIpPXUcA68JB8E9HXk
-         i32J84UD/ax1YZ+tzFLoHix3LRpmR6yumE96VILJ75Ey3WKzLvMkqGzVoaTe1r6zjqT2
-         403g9nKZ0RFhQ491cHtOMgB9NnNa7Yaw3fxa0EO726fg/EP7gNbmfOXT/SXOMSol1JXK
-         AbzA==
-Received: by 10.182.48.100 with SMTP id k4mr530860obn.21.1339040447152;
-        Wed, 06 Jun 2012 20:40:47 -0700 (PDT)
-Received: from [192.168.1.103] (65-36-72-55.dyn.grandenetworks.net. [65.36.72.55])
-        by mx.google.com with ESMTPS id ie2sm1686393obb.17.2012.06.06.20.40.43
-        (version=SSLv3 cipher=OTHER);
-        Wed, 06 Jun 2012 20:40:45 -0700 (PDT)
-Message-ID: <4FD022BA.8090109@gmail.com>
-Date:   Wed, 06 Jun 2012 22:40:42 -0500
-From:   Rob Herring <robherring2@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20120430 Thunderbird/12.0.1
-MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Rob Herring <rob.herring@calxeda.com>,
-        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH v8 1/1] of/lib: Allow scripts/dtc/libfdt to be used from
- kernel code
-References: <1339022972-20036-1-git-send-email-ddaney.cavm@gmail.com>
-In-Reply-To: <1339022972-20036-1-git-send-email-ddaney.cavm@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2012 10:14:19 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:38784 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903730Ab2FGION (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2012 10:14:13 +0200
+Received: by pbbrq13 with SMTP id rq13so748925pbb.36
+        for <linux-mips@linux-mips.org>; Thu, 07 Jun 2012 01:14:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=subject:from:to:cc:content-type:date:message-id:mime-version
+         :x-mailer:content-transfer-encoding:x-gm-message-state;
+        bh=FRysA/vAd4QdbJphNuobgq47WLUGj03hnFNLQ46zo+s=;
+        b=VhlyiY3cbTazXFWSrVa3Kqf3ndSQhlzq5pOusZF4OdZM0SnaHoVvEPu6AjcLrfpHIy
+         mGQJGNslCvkaNSd73eZG9+YVTv3Aq4zwostpkQ/0piPui6SzLbKh+LzrAUCxbRmjhZy8
+         TKV1evTG2yZkO0Tp3fnmnfnAje+qYzgoIHCPV61Ci2TbCAS01B5yZ9xHHBcEfB24rzaR
+         93iAE8ZKK1Po4tpXx2zod8nG0IS2bJMFnuXtiTbPJSqWlZuho/hcj6cffo9fLxzqFnby
+         AiIMwP+G2mJ2cQfiHvYjiVfX41iZijfOY0FFBp8y1+1dpzD+hyXCORGVWT6b0vu2xPS8
+         TpDQ==
+Received: by 10.68.222.133 with SMTP id qm5mr5956862pbc.113.1339056846408;
+        Thu, 07 Jun 2012 01:14:06 -0700 (PDT)
+Received: from [10.0.0.4] ([115.118.107.144])
+        by mx.google.com with ESMTPS id qp3sm3326439pbc.17.2012.06.07.01.14.02
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 07 Jun 2012 01:14:05 -0700 (PDT)
+Subject: [PATCH 1/2] Octeon 6xxx: Initial commit porting executive files
+ from sdk2.3
+From:   philby john <pjohn@mvista.com>
+To:     linux-mips@linux-mips.org
+Cc:     david.daney@caviumnetworks.com, ralf@linux-mips.org,
+        prasun.kapoor@caviumnetworks.com
+Content-Type: text/plain; charset="UTF-8"
+Date:   Thu, 07 Jun 2012 13:45:40 +0530
+Message-ID: <1339056940.15045.9.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.32.3 (2.32.3-1.fc14)
 Content-Transfer-Encoding: 7bit
-X-archive-position: 33594
+X-Gm-Message-State: ALoCoQkBnZ/oBUPv/RP9KnZipWibgSC7Kyo4xaZ0iPQnbbX3Oiplt639QUskE35NMvQy2IudoCRo
+X-archive-position: 33595
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robherring2@gmail.com
+X-original-sender: pjohn@mvista.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,195 +53,442 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 06/06/2012 05:49 PM, David Daney wrote:
-> From: David Daney <david.daney@cavium.com>
-> 
-> libfdt is part of the device tree support in scripts/dtc/libfdt.  For
-> some platforms that use the Device Tree, we want to be able to edit
-> the flattened device tree form.
-> 
-> We don't want to burden kernel builds that do not require it, so we
-> gate compilation of libfdt files with CONFIG_LIBFDT.  So if it is
-> needed, you need to do this in your Kconfig:
-> 
-> 	select LIBFDT
-> 
-> And in the Makefile of the code using libfdt something like:
-> 
-> ccflags-y := -I$(src)/../../../scripts/dtc/libfdt
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
+>From eb9d86c9ac6d23f36f01e6b8b364c3922e550fff Mon Sep 17 00:00:00 2001
+From: Philby John <pjohn@mvista.com>
+Date: Thu, 7 Jun 2012 11:49:32 +0530
+Subject: [PATCH] Octeon 6xxx: Initial commit porting executive files from sdk2.3
 
-Looks like you've addressed all of Grant's prior comments and looks okay
-to me. I'd merge it with the rest of patches thru the MIPS tree.
+Initial commit that sets up the internal functions
+needed for implementing Power Throttling for Octeon
+6xxx and above.
 
-Acked-by: Rob Herring <rob.herring@calxeda.com>
+Additional functionality such as setting throttle feedback
+cvmx_init_throttle_feedback(), calculating throttle percentage
+cvmx_power_throttle_get_powlim(), and other bugfixes not present
+in the SDK have been implemented.
 
+Signed-off-by: Philby John <pjohn@mvista.com>
+---
+ arch/mips/cavium-octeon/executive/Makefile         |    2 +-
+ .../cavium-octeon/executive/cvmx-power-throttle.c  |  287 ++++++++++++++++++++
+ arch/mips/include/asm/octeon/cvmx-power-throttle.h |  103 +++++++
+ 3 files changed, 391 insertions(+), 1 deletions(-)
+ create mode 100644 arch/mips/cavium-octeon/executive/cvmx-power-throttle.c
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-power-throttle.h
 
-> ---
-> This patch has been seen several times before as part of a larger
-> patch set for my OCTEON Device Tree work.  After further refinement to
-> my patches that depend on core Device Tree functionality, this is the
-> only remaining patch to the common 'core' code.
-> 
-> Here is the history:
-> 
-> v8: Rebased lib/Makefile to avoid merge conflict.
-> 
-> v7: No changes other that to split from other, now unneeded, patches.
-> 
-> v6: No changes other than to split these out of the MIPS/OCTEON patch
->     set to allow them to be merged separately if desired.
-> 
-> v5: Build libfdt in the lib directory instead of devices/of, and
->     include all libfdt files.
-> 
->     Changes to of_find_node_by_path() requested by Grant Likely.
-> 
-> v4: No changes to these two patches.
-> 
-> v3: libfdt building moved to devices/of/libfdt.  Cleanup and style
->     improvements as suggested by Grant Likely.
-> 
-> v2: No changes to these two patches.
-> 
-> There are a couple of possibility for merging this.
-> 
-> 1) Via the Device Tree maintainers, thus blocking the follow-ons until
->    it is merged.
-> 
-> 2) Via Ralf's Linux/MIPS tree with the rest of the patches after
->    Device Tree maintainer sign-off.
-> 
->  include/linux/libfdt.h     |    8 ++++++++
->  include/linux/libfdt_env.h |   13 +++++++++++++
->  lib/Kconfig                |    6 ++++++
->  lib/Makefile               |    5 +++++
->  lib/fdt.c                  |    2 ++
->  lib/fdt_ro.c               |    2 ++
->  lib/fdt_rw.c               |    2 ++
->  lib/fdt_strerror.c         |    2 ++
->  lib/fdt_sw.c               |    2 ++
->  lib/fdt_wip.c              |    2 ++
->  10 files changed, 44 insertions(+), 0 deletions(-)
->  create mode 100644 include/linux/libfdt.h
->  create mode 100644 include/linux/libfdt_env.h
->  create mode 100644 lib/fdt.c
->  create mode 100644 lib/fdt_ro.c
->  create mode 100644 lib/fdt_rw.c
->  create mode 100644 lib/fdt_strerror.c
->  create mode 100644 lib/fdt_sw.c
->  create mode 100644 lib/fdt_wip.c
-> 
-> diff --git a/include/linux/libfdt.h b/include/linux/libfdt.h
-> new file mode 100644
-> index 0000000..4c0306c
-> --- /dev/null
-> +++ b/include/linux/libfdt.h
-> @@ -0,0 +1,8 @@
-> +#ifndef _INCLUDE_LIBFDT_H_
-> +#define _INCLUDE_LIBFDT_H_
-> +
-> +#include <linux/libfdt_env.h>
-> +#include "../../scripts/dtc/libfdt/fdt.h"
-> +#include "../../scripts/dtc/libfdt/libfdt.h"
-> +
-> +#endif /* _INCLUDE_LIBFDT_H_ */
-> diff --git a/include/linux/libfdt_env.h b/include/linux/libfdt_env.h
-> new file mode 100644
-> index 0000000..01508c7
-> --- /dev/null
-> +++ b/include/linux/libfdt_env.h
-> @@ -0,0 +1,13 @@
-> +#ifndef _LIBFDT_ENV_H
-> +#define _LIBFDT_ENV_H
-> +
-> +#include <linux/string.h>
-> +
-> +#include <asm/byteorder.h>
-> +
-> +#define fdt32_to_cpu(x) be32_to_cpu(x)
-> +#define cpu_to_fdt32(x) cpu_to_be32(x)
-> +#define fdt64_to_cpu(x) be64_to_cpu(x)
-> +#define cpu_to_fdt64(x) cpu_to_be64(x)
-> +
-> +#endif /* _LIBFDT_ENV_H */
-> diff --git a/lib/Kconfig b/lib/Kconfig
-> index a9e1540..e091300 100644
-> --- a/lib/Kconfig
-> +++ b/lib/Kconfig
-> @@ -395,4 +395,10 @@ config SIGNATURE
->  	  Digital signature verification. Currently only RSA is supported.
->  	  Implementation is done using GnuPG MPI library
->  
-> +#
-> +# libfdt files, only selected if needed.
-> +#
-> +config LIBFDT
-> +	bool
-> +
->  endmenu
-> diff --git a/lib/Makefile b/lib/Makefile
-> index 8c31a0c..2f2be5a 100644
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -130,6 +130,11 @@ obj-$(CONFIG_GENERIC_STRNLEN_USER) += strnlen_user.o
->  
->  obj-$(CONFIG_STMP_DEVICE) += stmp_device.o
->  
-> +libfdt_files = fdt.o fdt_ro.o fdt_wip.o fdt_rw.o fdt_sw.o fdt_strerror.o
-> +$(foreach file, $(libfdt_files), \
-> +	$(eval CFLAGS_$(file) = -I$(src)/../scripts/dtc/libfdt))
-> +lib-$(CONFIG_LIBFDT) += $(libfdt_files)
-> +
->  hostprogs-y	:= gen_crc32table
->  clean-files	:= crc32table.h
->  
-> diff --git a/lib/fdt.c b/lib/fdt.c
-> new file mode 100644
-> index 0000000..97f2006
-> --- /dev/null
-> +++ b/lib/fdt.c
-> @@ -0,0 +1,2 @@
-> +#include <linux/libfdt_env.h>
-> +#include "../scripts/dtc/libfdt/fdt.c"
-> diff --git a/lib/fdt_ro.c b/lib/fdt_ro.c
-> new file mode 100644
-> index 0000000..f73c04e
-> --- /dev/null
-> +++ b/lib/fdt_ro.c
-> @@ -0,0 +1,2 @@
-> +#include <linux/libfdt_env.h>
-> +#include "../scripts/dtc/libfdt/fdt_ro.c"
-> diff --git a/lib/fdt_rw.c b/lib/fdt_rw.c
-> new file mode 100644
-> index 0000000..0c1f0f4
-> --- /dev/null
-> +++ b/lib/fdt_rw.c
-> @@ -0,0 +1,2 @@
-> +#include <linux/libfdt_env.h>
-> +#include "../scripts/dtc/libfdt/fdt_rw.c"
-> diff --git a/lib/fdt_strerror.c b/lib/fdt_strerror.c
-> new file mode 100644
-> index 0000000..8713e3f
-> --- /dev/null
-> +++ b/lib/fdt_strerror.c
-> @@ -0,0 +1,2 @@
-> +#include <linux/libfdt_env.h>
-> +#include "../scripts/dtc/libfdt/fdt_strerror.c"
-> diff --git a/lib/fdt_sw.c b/lib/fdt_sw.c
-> new file mode 100644
-> index 0000000..9ac7e50
-> --- /dev/null
-> +++ b/lib/fdt_sw.c
-> @@ -0,0 +1,2 @@
-> +#include <linux/libfdt_env.h>
-> +#include "../scripts/dtc/libfdt/fdt_sw.c"
-> diff --git a/lib/fdt_wip.c b/lib/fdt_wip.c
-> new file mode 100644
-> index 0000000..45b3fc3
-> --- /dev/null
-> +++ b/lib/fdt_wip.c
-> @@ -0,0 +1,2 @@
-> +#include <linux/libfdt_env.h>
-> +#include "../scripts/dtc/libfdt/fdt_wip.c"
+diff --git a/arch/mips/cavium-octeon/executive/Makefile b/arch/mips/cavium-octeon/executive/Makefile
+index b6d6e84..659cd9e 100644
+--- a/arch/mips/cavium-octeon/executive/Makefile
++++ b/arch/mips/cavium-octeon/executive/Makefile
+@@ -14,6 +14,6 @@ obj-y += cvmx-pko.o cvmx-spi.o cvmx-cmd-queue.o \
+ 	cvmx-helper-board.o cvmx-helper.o cvmx-helper-xaui.o \
+ 	cvmx-helper-rgmii.o cvmx-helper-sgmii.o cvmx-helper-npi.o \
+ 	cvmx-helper-loop.o cvmx-helper-spi.o cvmx-helper-util.o \
+-	cvmx-interrupt-decodes.o cvmx-interrupt-rsl.o
++	cvmx-interrupt-decodes.o cvmx-interrupt-rsl.o cvmx-power-throttle.o
+ 
+ obj-y += cvmx-helper-errata.o cvmx-helper-jtag.o
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-power-throttle.c b/arch/mips/cavium-octeon/executive/cvmx-power-throttle.c
+new file mode 100644
+index 0000000..daa7f5a
+--- /dev/null
++++ b/arch/mips/cavium-octeon/executive/cvmx-power-throttle.c
+@@ -0,0 +1,287 @@
++/***********************license start***************
++ * Copyright (c) 2003-2010  Cavium Inc. (support@cavium.com). All rights
++ * reserved.
++ *
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are
++ * met:
++ *
++ *   * Redistributions of source code must retain the above copyright
++ *     notice, this list of conditions and the following disclaimer.
++ *
++ *   * Redistributions in binary form must reproduce the above
++ *     copyright notice, this list of conditions and the following
++ *     disclaimer in the documentation and/or other materials provided
++ *     with the distribution.
++
++ *   * Neither the name of Cavium Inc. nor the names of
++ *     its contributors may be used to endorse or promote products
++ *     derived from this software without specific prior written
++ *     permission.
++
++ * This Software, including technical data, may be subject to U.S. export
++ * control laws, including the U.S. Export Administration Act and its
++ * associated regulations, and may be subject to export or import  regulations
++ * in other countries.
++
++ * TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE SOFTWARE IS PROVIDED "AS IS"
++ * AND WITH ALL FAULTS AND CAVIUM INC. MAKES NO PROMISES, REPRESENTATIONS OR
++ * WARRANTIES, EITHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE, WITH RESPECT
++ * TO THE SOFTWARE, INCLUDING ITS CONDITION, ITS CONFORMITY TO ANY
++ * REPRESENTATION OR DESCRIPTION, OR THE EXISTENCE OF ANY LATENT OR PATENT
++ * DEFECTS, AND CAVIUM SPECIFICALLY DISCLAIMS ALL IMPLIED (IF ANY)
++ * WARRANTIES OF TITLE, MERCHANTABILITY, NONINFRINGEMENT, FITNESS FOR A
++ * PARTICULAR PURPOSE, LACK OF VIRUSES, ACCURACY OR COMPLETENESS, QUIET
++ * ENJOYMENT QUIET POSSESSION OR CORRESPONDENCE TO DESCRIPTION. THE ENTIRE
++ * RISK ARISING OUT OF USE OR PERFORMANCE OF THE SOFTWARE LIES WITH YOU.
++ ***********************license end**************************************/
++
++/**
++ * @file
++ *
++ * Interface to power-throttle control, measurement, and debugging
++ * facilities.
++ *
++ */
++
++#include <asm/octeon/cvmx.h>
++#include <asm/octeon/cvmx-asm.h>
++#include <asm/octeon/cvmx-power-throttle.h>
++#include <asm/octeon/octeon.h>
++
++#define CVMX_PTH_GET_MASK(len, pos)	\
++	((((uint64_t)1 << (len)) - 1) << (pos))
++
++#define CVMX_PTH_AVAILABLE		\
++	(cvmx_power_throttle_get_register(0) != (uint64_t)-1)
++
++/*
++ * a field of the POWTHROTTLE register
++ */
++static struct cvmx_power_throttle_rfield_t {
++	char	name[16];	/* the field's name */
++	int32_t	pos;		/* position of the field's LSb */
++	int32_t	len;		/* the field's length */
++	int	present;	/* 1 for present */
++} cvmx_power_throttle_rfield[] = {
++	{"MAXPOW",   56,  8, 0},
++	{"POWER" ,   48,  8, 0},
++	{"THROTT",   40,  8, 0},
++	{"Reserved", 28, 12, 0},
++	{"DISTAG",   27,  1, 0},
++	{"PERIOD",   24,  3, 0},
++	{"POWLIM",   16,  8, 0},
++	{"MAXTHR",    8,  8, 0},
++	{"MINTHR",    0,  8, 0},
++	{"HRMPOWADJ", 32,  8, 0},
++	{"OVRRD",    28,  1, 0}
++};
++
++static uint64_t cvmx_power_throttle_csr_addr(int ppid);
++
++static int cvmx_power_throttle_initialized;
++
++/*
++ * @INTERNAL
++ * Initialize cvmx_power_throttle_rfield[] based on model.
++ */
++static void cvmx_power_throttle_init(void)
++{
++	/* Turn on the fields for a model */
++	if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
++		int i;
++		struct cvmx_power_throttle_rfield_t *p;
++
++		for (i = 0; i < CVMX_PTH_INDEX_MAX; i++)
++			cvmx_power_throttle_rfield[i].present = 1;
++
++		if (OCTEON_IS_MODEL(OCTEON_CN63XX)) {
++			/*
++			 * These fields do not come with o63
++			 */
++			p =
++			&cvmx_power_throttle_rfield[CVMX_PTH_INDEX_HRMPOWADJ];
++			p->present = 0;
++			p = &cvmx_power_throttle_rfield[CVMX_PTH_INDEX_OVRRD];
++			p->present = 0;
++		} else {
++			/*
++			 * The reserved field shrinks in models newer than o63
++			 */
++			p =
++			&cvmx_power_throttle_rfield[CVMX_PTH_INDEX_RESERVED];
++			p->pos = 29;
++			p->len = 3;
++		}
++	}
++}
++
++uint64_t cvmx_power_throttle_get_field(uint64_t r,
++	enum cvmx_power_throttle_field_index i)
++{
++	uint64_t m;
++	struct cvmx_power_throttle_rfield_t *p;
++
++	if (i > CVMX_PTH_INDEX_MAX)
++		return -EINVAL;
++
++	p = &cvmx_power_throttle_rfield[i];
++	if (!p->present)
++		return (uint64_t) -1;
++	m = CVMX_PTH_GET_MASK(p->len, p->pos);
++
++	return (r & m) >> p->pos;
++}
++
++/*
++ * @INTERNAL
++ * Set the i'th field of power-throttle register r to v.
++ */
++static int cvmx_power_throttle_set_field(int i, uint64_t r, uint64_t v)
++{
++	if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
++		uint64_t m;
++		struct cvmx_power_throttle_rfield_t *p;
++
++		if (i > CVMX_PTH_INDEX_MAX)
++			return -EINVAL;
++
++		p = &cvmx_power_throttle_rfield[i];
++		m = CVMX_PTH_GET_MASK(p->len, p->pos);
++
++		return (~m & r) | ((v << p->pos) & m);
++	}
++	return 0;
++}
++
++int cvmx_init_throttle_feedback(cpu)
++{
++	uint64_t csr_addr, r;
++
++	if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
++		csr_addr = cvmx_power_throttle_csr_addr(cpu);
++		r = cvmx_read_csr(csr_addr);
++		r =
++		cvmx_power_throttle_set_field(CVMX_PTH_INDEX_MINTHR, r, 0x0);
++		cvmx_write_csr(csr_addr, r);
++		r = cvmx_read_csr(csr_addr);
++		r =
++		cvmx_power_throttle_set_field(CVMX_PTH_INDEX_MAXTHR, r, 0xFF);
++		cvmx_write_csr(csr_addr, r);
++		return 0;
++	}
++	return -EINVAL;
++}
++
++/**
++ * @INTERNAL
++ * Get the POWLIM field as percentage% of the MAXPOW field in r.
++ */
++int cvmx_power_throttle_get_powlim(int cpu)
++{
++	if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
++		uint64_t t, csr_addr, r, s;
++
++		csr_addr = cvmx_power_throttle_csr_addr(cpu);
++		r = cvmx_read_csr(csr_addr);
++
++		t = cvmx_power_throttle_get_field(r, CVMX_PTH_INDEX_MAXPOW);
++		if (!OCTEON_IS_MODEL(OCTEON_CN63XX)) {
++			s = cvmx_power_throttle_get_field(r,
++				CVMX_PTH_INDEX_HRMPOWADJ);
++			if (t < s)
++				return -EINVAL;
++			t = t - s;
++		}
++		s = cvmx_power_throttle_get_field(r, CVMX_PTH_INDEX_POWLIM);
++		return (s * 100)/t;
++	}
++	return 0;
++}
++
++/**
++ * @INTERNAL
++ * Set the POWLIM field as percentage% of the MAXPOW field in r.
++ */
++static uint64_t cvmx_power_throttle_set_powlim(int ppid,
++	uint8_t percentage)
++{
++	if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
++		uint64_t t, csr_addr, r;
++
++		if (percentage > 101)
++			return -EINVAL;
++		csr_addr = cvmx_power_throttle_csr_addr(ppid);
++		r = cvmx_read_csr(csr_addr);
++		t = cvmx_power_throttle_get_field(r, CVMX_PTH_INDEX_MAXPOW);
++		if (!OCTEON_IS_MODEL(OCTEON_CN63XX)) {
++			uint64_t s;
++			s = cvmx_power_throttle_get_field(r,
++				CVMX_PTH_INDEX_HRMPOWADJ);
++			if (t < s)
++				return -EINVAL;
++			t = t - s;
++		}
++		if (percentage > 0)
++			t = percentage * t / 100;
++		else
++			t = 0;
++		r = cvmx_power_throttle_set_field(CVMX_PTH_INDEX_POWLIM, r, t);
++		cvmx_write_csr(csr_addr, r);
++		return r;
++	}
++	return 0;
++}
++
++/*
++ * @INTERNAL
++ * Given ppid, calculate its PowThrottle register's L2C_COP0_MAP CSR
++ * address. (ppid == PTH_PPID_BCAST is for broadcasting)
++ */
++static uint64_t cvmx_power_throttle_csr_addr(int ppid)
++{
++	if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
++		uint64_t csr_addr, reg_num, reg_reg, reg_sel;
++
++		if (ppid > CVMX_MAX_CORES)
++			return -EINVAL;
++		/*
++		 * register 11 selection 6
++		 */
++		reg_reg = 11;
++		reg_sel = 6;
++		reg_num = (ppid << 8) + (reg_reg << 3) + reg_sel;
++		csr_addr = CVMX_L2C_COP0_MAPX(0) + ((reg_num) << 3);
++		return csr_addr;
++	}
++	return 0;
++}
++
++int cvmx_power_throttle(uint8_t percentage, uint64_t cpu)
++{
++	int ret = 0;
++
++	if (!CVMX_PTH_AVAILABLE)
++		return -EINVAL;
++
++	if (cvmx_power_throttle_set_powlim(cpu, percentage) == 0)
++		ret = -EINVAL;
++
++	return ret;
++}
++
++uint64_t cvmx_power_throttle_get_register(int ppid)
++{
++	uint64_t csr_addr;
++
++	if (!cvmx_power_throttle_initialized) {
++		cvmx_power_throttle_init();
++		cvmx_power_throttle_initialized = 1;
++	}
++	csr_addr = cvmx_power_throttle_csr_addr(ppid);
++	if (csr_addr == 0)
++		return -EINVAL;
++
++	return cvmx_read_csr(csr_addr);
++}
+diff --git a/arch/mips/include/asm/octeon/cvmx-power-throttle.h b/arch/mips/include/asm/octeon/cvmx-power-throttle.h
+new file mode 100644
+index 0000000..f0e6bb8
+--- /dev/null
++++ b/arch/mips/include/asm/octeon/cvmx-power-throttle.h
+@@ -0,0 +1,103 @@
++/***********************license start***************
++ * Copyright (c) 2003-2010  Cavium Inc. (support@cavium.com). All rights
++ * reserved.
++ *
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are
++ * met:
++ *
++ *   * Redistributions of source code must retain the above copyright
++ *     notice, this list of conditions and the following disclaimer.
++ *
++ *   * Redistributions in binary form must reproduce the above
++ *     copyright notice, this list of conditions and the following
++ *     disclaimer in the documentation and/or other materials provided
++ *     with the distribution.
++
++ *   * Neither the name of Cavium Inc. nor the names of
++ *     its contributors may be used to endorse or promote products
++ *     derived from this software without specific prior written
++ *     permission.
++
++ * This Software, including technical data, may be subject to U.S. export
++ * control laws, including the U.S. Export Administration Act and its
++ * associated regulations, and may be subject to export or import  regulations
++ * in other countries.
++
++ * TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE SOFTWARE IS PROVIDED "AS IS"
++ * AND WITH ALL FAULTS AND CAVIUM INC. MAKES NO PROMISES, REPRESENTATIONS OR
++ * WARRANTIES, EITHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE, WITH RESPECT
++ * TO THE SOFTWARE, INCLUDING ITS CONDITION, ITS CONFORMITY TO ANY
++ * REPRESENTATION OR DESCRIPTION, OR THE EXISTENCE OF ANY LATENT OR PATENT
++ * DEFECTS, AND CAVIUM SPECIFICALLY DISCLAIMS ALL IMPLIED (IF ANY)
++ * WARRANTIES OF TITLE, MERCHANTABILITY, NONINFRINGEMENT, FITNESS FOR A
++ * PARTICULAR PURPOSE, LACK OF VIRUSES, ACCURACY OR COMPLETENESS, QUIET
++ * ENJOYMENT QUIET POSSESSION OR CORRESPONDENCE TO DESCRIPTION. THE ENTIRE
++ * RISK ARISING OUT OF USE OR PERFORMANCE OF THE SOFTWARE LIES WITH YOU.
++ ***********************license end**************************************/
++
++/*
++ * @file
++ *
++ * Interface to power-throttle control, measurement, and debugging
++ * facilities.
++ *
++ */
++
++#ifndef __CVMX_POWER_THROTTLE_H__
++#define __CVMX_POWER_THROTTLE_H__
++
++enum cvmx_power_throttle_field_index {
++	CVMX_PTH_INDEX_MAXPOW,
++	CVMX_PTH_INDEX_POWER,
++	CVMX_PTH_INDEX_THROTT,
++	CVMX_PTH_INDEX_RESERVED,
++	CVMX_PTH_INDEX_DISTAG,
++	CVMX_PTH_INDEX_PERIOD,
++	CVMX_PTH_INDEX_POWLIM,
++	CVMX_PTH_INDEX_MAXTHR,
++	CVMX_PTH_INDEX_MINTHR,
++	CVMX_PTH_INDEX_HRMPOWADJ,
++	CVMX_PTH_INDEX_OVRRD,
++	CVMX_PTH_INDEX_MAX
++};
++
++extern int cvmx_power_throttle_get_powlim(int cpu);
++
++/*
++ * For maximum POWLIM feedback control freedom, set MINTHR = 0 and MAXTHR = 0xFF
++ */
++extern int cvmx_init_throttle_feedback(int cpu);
++
++/**
++ * Throttle power to percentage% of configured maximum (MAXPOW)
++ * for the cores identified in coremask.
++ *
++ * @param percentage	0 to 100
++ * @param coremask	bit mask where each bit identifies a core.
++ * @return 0 for success and -1 for error.
++ */
++extern int cvmx_power_throttle(uint8_t percentage, uint64_t coremask);
++
++/**
++ * Get the i'th field of the power throttle register
++ *
++ * @param r is the value of the power throttle register
++ * @param i is the index of the field
++ *
++ * @return (uint64_t)-1 on failure.
++ */
++extern uint64_t cvmx_power_throttle_get_field(uint64_t r,
++	enum cvmx_power_throttle_field_index i);
++
++/**
++ * Retrieve the content of the power throttle register of a core
++ *
++ * @param ppid is the core id
++ *
++ * @return (uint64_t)-1 on failure.
++ */
++extern uint64_t cvmx_power_throttle_get_register(int ppid);
++
++#endif /* __CVMX_POWER_THROTTLE_H__ */
+-- 
+1.6.3.3.338.ge89ce

@@ -1,45 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2012 10:14:46 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:38784 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903733Ab2FGIOc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2012 10:14:32 +0200
-Received: by mail-pb0-f49.google.com with SMTP id rq13so748925pbb.36
-        for <linux-mips@linux-mips.org>; Thu, 07 Jun 2012 01:14:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=subject:from:to:cc:content-type:date:message-id:mime-version
-         :x-mailer:content-transfer-encoding:x-gm-message-state;
-        bh=tIr06geBlF1SzOK+743RWpKdvH9XUwPWAAkdz7dmQgQ=;
-        b=QbV/x2x3C0vDwDUj+F+qdtijt6FhJVFjXZD3B1a+eK+ZFUoqKATAJjnLu4P0T3p+Pp
-         kJEKFvla/Ib0SkBBzVCjk0GnklV0HVeMZDu1oA5iNfiuckvAAWie5hoF6xq0upM7GXWN
-         1fBXjbjitd6tTMF+oBubZPNf3+GVvD0CgG5Im8aC3RhvbNVTK9DFTQT8eolz2rq5z4+W
-         nwp1NIKgP7UDriTOpH9urNJXpL2kTM2Fw1qh3ejtNJ8gcCR/M7DJzaMNYIkti3HQn+Nj
-         7wMT8gUHfxGZliWSn0ztcXARF5WvdlFn2y3K1h4KFeO3OFfxk+X/7cGsWHKzEYiGE+Jh
-         Q61Q==
-Received: by 10.68.239.164 with SMTP id vt4mr5685875pbc.166.1339056872029;
-        Thu, 07 Jun 2012 01:14:32 -0700 (PDT)
-Received: from [10.0.0.4] ([115.118.107.144])
-        by mx.google.com with ESMTPS id wn3sm3300832pbc.74.2012.06.07.01.14.28
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 07 Jun 2012 01:14:31 -0700 (PDT)
-Subject: [PATCH 2/2] Octeon 6xxx: Add Power Throttling support for CN6xxx
- and above
-From:   philby john <pjohn@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2012 12:41:19 +0200 (CEST)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:34734 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903735Ab2FGKlO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2012 12:41:14 +0200
+Received: by yhjj52 with SMTP id j52so302313yhj.36
+        for <linux-mips@linux-mips.org>; Thu, 07 Jun 2012 03:41:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=rWD+8FTi1HDtlq6EUGOISh5BVT+HyrBdwjFZ0LRDwVM=;
+        b=igFd6OXETh3aaqflHDyitSy+c9uO7Es0hnaFakriIVEViCMDo8AmTy3MseKp8RKZy/
+         lOoVmeLegCpuZ4qvgEufNc6Z4QZzSHQH3r7SvgFLiQzijIASapv77cx0n0bxtYgqtghT
+         A96OpTKyGL7RJxbWOENz8s4+Ab8jihcdNstEMf33Fsr/hjYwvguu2JYT66/douz8CkUf
+         aj9Wbnq2e44sRv/tuqIZ+lmUYEv3ln0VA1x3ifEV+0C9NHW+QYUmWXs2LCWvyBkeNBqk
+         hd4eY05+ZBh+ZRZQ0T+yZmfQSXeiYaHR3ToND8hCxM7yEZ+0pZegOjTCScEg7c3ChVfU
+         MNsw==
+MIME-Version: 1.0
+Received: by 10.236.173.135 with SMTP id v7mr1525232yhl.19.1339065667772; Thu,
+ 07 Jun 2012 03:41:07 -0700 (PDT)
+Received: by 10.146.205.5 with HTTP; Thu, 7 Jun 2012 03:41:07 -0700 (PDT)
+Date:   Thu, 7 Jun 2012 20:41:07 +1000
+Message-ID: <CANpj82+h1a0qBfaaYpqmuL69JpbB+T_z0pg0iL=5JPBvDE9A2w@mail.gmail.com>
+Subject: Patch for the "ug" bug
+From:   Jean-Yves Avenard <jyavenard@gmail.com>
 To:     linux-mips@linux-mips.org
-Cc:     david.daney@caviumnetworks.com, prasun.kapoor@caviumnetworks.com,
-        ralf@linux-mips.org
-Content-Type: text/plain; charset="UTF-8"
-Date:   Thu, 07 Jun 2012 13:46:06 +0530
-Message-ID: <1339056966.15045.10.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.32.3 (2.32.3-1.fc14)
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQkTN1MWWlb6/0RpA6fvpGvgqKhWqG3f76u0lvcW4vrIWRG8TqtRHG/44POj4cB3HOTb24vb
-X-archive-position: 33596
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 33597
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pjohn@mvista.com
+X-original-sender: jyavenard@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,242 +43,386 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
->From 9d9f2b330ad635dff9aa141cd96bde2907385032 Mon Sep 17 00:00:00 2001
-From: Philby John <pjohn@mvista.com>
-Date: Thu, 7 Jun 2012 12:09:31 +0530
-Subject: [PATCH] Octeon 6xxx: Add Power Throttling support for CN6xxx and above
+Hello
 
-This patch adds the sysfs primitives for power throttling.
+This is my first post here, so hopefully I'm doing it the right way.
 
-Octeon2 supports dynamic power control which aids to cut down power
-consumption. The code exposes a "percentage" power throttling
-limiter by means of /sys interface for each available cpu. Setting
-this value to 0 will set power consumption to a minimum as it will
-only execute a couple instructions every PERIOD as set in the
-PowThrottle register. If set to 100% for that particular cpu, it
-will consume maximum power.
+I recently an Asus RT-N66U router, powered by a Broadcom BCM5300. MIPS
+based obviously.
 
-Signed-off-by: Philby John <pjohn@mvista.com>
+I am an infrequent committer of the Tomato firmware team.
+One issue was reported that caused quite surprising problems. We call
+it the "ug" bug.
+
+In a shell:
+cd /tmp
+echo "#!/bin/sh" >bug
+echo 'echo -n $1.' >>bug
+chmod +x bug
+for i in 0 1 2 3 4 5 6 7 8 9; do bug $i; done
+
+would result in random data being output.
+Typically it would look something like:
+ug.1.ug.3.ug.5.ug.ug.ug.ug.root@RT-N66U:/tmp#
+
+This issue affects a few other firmware (ddwrt) in particular. This
+doesn't affect Asus stock firmware
+
+After a short investigation, I ruled out that the problem was either
+in uclibc or busybox and is something related to an issue in the
+kernel
+
+Looking at the kernel shipped with the Asus, they have made some
+modifications in how pages are initialised...
+
+The following patch, is a port of the required changes that fix the
+memory corruption exposed by the "ug" bug...
+
+Let me know if you would like this patch to be submitted differently.
+Not knowing the submit policy, I put it inline, but due to the
+presence of tabs (ugh!) it may not come out properly.
+
+The patch is for the linux that ships with Tomato obviously, but
+checking the linux git repository, it will apply with minor mod. Let
+me know if you want me to do those mods for you..
+
+Best regards
+Jean-Yves Avenard
+
+
+>From 6e9e332d29f6cb6e5439f728a2b7cb2adf861002 Mon Sep 17 00:00:00 2001
+From: Jean-Yves Avenard <jyavenard@mythtv.org>
+Date: Thu, 7 Jun 2012 20:31:54 +1000
+Subject: [PATCH] Fix "ug" bug
+
+Port page map changes from Asus RT-N66U stock firmware
 ---
- arch/mips/cavium-octeon/Kconfig             |   12 ++
- arch/mips/cavium-octeon/Makefile            |    1 +
- arch/mips/cavium-octeon/octeon_pwr_throtl.c |  177 +++++++++++++++++++++++++++
- 3 files changed, 190 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/cavium-octeon/octeon_pwr_throtl.c
+ .../linux/linux-2.6/arch/mips/kernel/syscall.c     |    2 +
+ .../src-rt/linux/linux-2.6/arch/mips/mm/c-r4k.c    |   31 ++++++++++---
+ .../src-rt/linux/linux-2.6/arch/mips/mm/cache.c    |    9 ++++
+ .../src-rt/linux/linux-2.6/arch/mips/mm/highmem.c  |   48 ++++++++++++++------
+ release/src-rt/linux/linux-2.6/arch/mips/mm/init.c |    5 +-
+ .../linux/linux-2.6/arch/mips/mm/pgtable-32.c      |    2 +-
+ .../linux/linux-2.6/include/asm-mips/fixmap.h      |   11 ++++-
+ .../src-rt/linux/linux-2.6/include/asm-mips/page.h |    8 ++++
+ 8 files changed, 92 insertions(+), 24 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kconfig
-index f9e275a..7a7f7e7 100644
---- a/arch/mips/cavium-octeon/Kconfig
-+++ b/arch/mips/cavium-octeon/Kconfig
-@@ -97,5 +97,17 @@ config SWIOTLB
- 	select IOMMU_HELPER
- 	select NEED_SG_DMA_LENGTH
- 
-+config CAVIUM_POWER_THROTTLING
-+	bool "Enable support for power throttling on Octeon 63xx and above"
-+	depends on CPU_CAVIUM_OCTEON
-+	default n
-+	help
-+	  On Octeon 6xxx and above dynamic power can be controlled
-+	  by setting the PowThrottle registers for each cpu. This could be
-+	  beneficial for lower power consumption requirements.
-+
-+	  If your application makes extensive use of high-energy instructions
-+	  (such as Octeon cryptographic accleration) it's better to leave this
-+	  option disabled as it may have slight impact on performance.
- 
- endif # CPU_CAVIUM_OCTEON
-diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
-index 19eb043..912f9bb 100644
---- a/arch/mips/cavium-octeon/Makefile
-+++ b/arch/mips/cavium-octeon/Makefile
-@@ -15,3 +15,4 @@ obj-y += octeon-memcpy.o
- obj-y += executive/
- 
- obj-$(CONFIG_SMP)                     += smp.o
-+obj-$(CONFIG_CAVIUM_POWER_THROTTLING) += octeon_pwr_throtl.o
-diff --git a/arch/mips/cavium-octeon/octeon_pwr_throtl.c b/arch/mips/cavium-octeon/octeon_pwr_throtl.c
-new file mode 100644
-index 0000000..6348cc1
---- /dev/null
-+++ b/arch/mips/cavium-octeon/octeon_pwr_throtl.c
-@@ -0,0 +1,177 @@
-+/*
-+ * octeon_pwr_throtl.c - interface for controlling power throttling on Octeon
-+ * based platforms 6xxx and above.
-+ * Octeon2 supports dynamic power control which aids to cut down power
-+ * consumption. The code exposes a "percentage" power throttling limiter by
-+ * means of /sys interface for each available cpu. Setting this value to 0
-+ * will set power consumption to a minimum as it will only execute a couple
-+ * instructions every PERIOD as set in the PowThrottle register.
-+ * If set to 100% for that particular cpu; will consume maximum power.
-+ *
-+ * Copyright (C) 2012 MontaVista LLC.
-+ * Author: Philby John <pjohn@mvista.com>
-+ * Credits: This driver is derived from Dmitriy Zavin's (dmitriyz@google.com)
-+ * thermal throttle event support code.
-+ */
-+
-+#include <linux/interrupt.h>
-+#include <linux/notifier.h>
-+#include <linux/jiffies.h>
-+#include <linux/kernel.h>
-+#include <linux/percpu.h>
-+#include <linux/types.h>
-+#include <linux/init.h>
-+#include <linux/smp.h>
-+#include <linux/cpu.h>
-+#include <linux/mutex.h>
-+
-+#include <asm/processor.h>
-+#include <asm/octeon/cvmx-power-throttle.h>
-+
-+#define define_pwr_throttle_one_rw(_name)				\
-+	static DEVICE_ATTR(_name, 0644, power_throt_show_##_name,	\
-+			power_throt_store_##_name)			\
-+
-+#define define_pwr_throttle_show_func(name)				\
-+									\
-+static ssize_t power_throt_show_##name(					\
-+			struct device *dev,				\
-+			struct device_attribute *attr,			\
-+			char *buf)					\
-+{									\
-+	unsigned int cpu = dev->id;					\
-+	ssize_t ret;							\
-+									\
-+	preempt_disable();	/* CPU hotplug */			\
-+	if (cpu_online(cpu))						\
-+		ret = sprintf(buf, "%d\n",				\
-+			cvmx_power_throttle_get_powlim(cpu));		\
-+	else								\
-+		ret = 0;						\
-+	preempt_enable();						\
-+									\
-+	return ret;							\
-+}
-+
-+#define define_pwr_throttle_store_func(name)				\
-+									\
-+static ssize_t power_throt_store_##name(				\
-+			struct device *dev,				\
-+			struct device_attribute *attr,			\
-+			const char *buf,				\
-+			size_t size)					\
-+{									\
-+	unsigned int cpu = dev->id;					\
-+	unsigned long val;						\
-+	int error;							\
-+									\
-+	error = kstrtoul(buf, 0, &val);					\
-+	if (error)							\
-+		return error;						\
-+									\
-+	preempt_disable();						\
-+	cvmx_power_throttle(val, cpu);					\
-+	preempt_enable();						\
-+									\
-+	return size;							\
-+}
-+
-+define_pwr_throttle_store_func(percentage);
-+define_pwr_throttle_show_func(percentage);
-+define_pwr_throttle_one_rw(percentage);
-+
-+static struct attribute *pwr_throttle_attrs[] = {
-+	&dev_attr_percentage.attr,
-+	NULL
-+};
-+
-+static struct attribute_group pwr_throttle_attr_group = {
-+	.attrs	= pwr_throttle_attrs,
-+	.name	= "power_throttle"
-+};
-+
-+#ifdef CONFIG_SYSFS
-+
-+/* Mutex protecting device creation against CPU hotplug: */
-+static DEFINE_MUTEX(pwr_throttl_cpu_lock);
-+
-+static __cpuinit int power_throttle_add_dev(struct device *dev)
+diff --git a/release/src-rt/linux/linux-2.6/arch/mips/kernel/syscall.c
+b/release/src-rt/linux/linux-2.6/arch/mips/kernel/syscall.c
+index a0a3771..54cbf54 100644
+--- a/release/src-rt/linux/linux-2.6/arch/mips/kernel/syscall.c
++++ b/release/src-rt/linux/linux-2.6/arch/mips/kernel/syscall.c
+@@ -56,8 +56,10 @@ out:
+ }
+
+ unsigned long shm_align_mask = PAGE_SIZE - 1;	/* Sane caches */
++unsigned char shm_align_shift = PAGE_SHIFT;	/* Sane caches */
+
+ EXPORT_SYMBOL(shm_align_mask);
++EXPORT_SYMBOL(shm_align_shift);
+
+ #define COLOUR_ALIGN(addr,pgoff)				\
+ 	((((addr) + shm_align_mask) & ~shm_align_mask) +	\
+diff --git a/release/src-rt/linux/linux-2.6/arch/mips/mm/c-r4k.c
+b/release/src-rt/linux/linux-2.6/arch/mips/mm/c-r4k.c
+index 23e8fe3..67a7171 100644
+--- a/release/src-rt/linux/linux-2.6/arch/mips/mm/c-r4k.c
++++ b/release/src-rt/linux/linux-2.6/arch/mips/mm/c-r4k.c
+@@ -994,6 +994,30 @@ static void __cpuinit probe_pcache(void)
+ 	       dcache_size >> 10, way_string[c->dcache.ways], c->dcache.linesz);
+ }
+
++void __init r4k_probe_cache(void)
 +{
-+	int err;
++	unsigned long config1 = read_c0_config1();
++	unsigned int dcache_size, lsize, ways, sets;
 +
-+	err =  sysfs_create_group(&dev->kobj, &pwr_throttle_attr_group);
-+	if (err)
-+		return err;
-+	err = sysfs_add_file_to_group(&dev->kobj,
-+					&dev_attr_percentage.attr,
-+					pwr_throttle_attr_group.name);
-+	return err;
++	if ((lsize = ((config1 >> 10) & 7)))
++		lsize = 2 << lsize;
++
++	sets = 64 << ((config1 >> 13) & 7);
++	ways = 1 + ((config1 >> 7) & 7);
++
++	if (lsize) {
++                shm_align_mask = max_t( unsigned long,
++                                        sets * lsize - 1,
++                                        PAGE_SIZE - 1);
++
++                if (shm_align_mask != (PAGE_SIZE - 1))
++                        shm_align_shift = ffs((shm_align_mask + 1)) - 1;
++        } else
++                shm_align_mask = PAGE_SIZE-1;
++
++		
 +}
 +
-+static __cpuinit void power_throttle_remove_dev(struct device *dev)
+ /*
+  * If you even _breathe_ on this function, look at the gcc output and make sure
+  * it does not pop things on and off the stack for the cache sizing loop that
+@@ -1262,12 +1286,7 @@ void __cpuinit r4k_cache_init(void)
+ 	 * This code supports virtually indexed processors and will be
+ 	 * unnecessarily inefficient on physically indexed processors.
+ 	 */
+-	if (c->dcache.linesz)
+-		shm_align_mask = max_t( unsigned long,
+-					c->dcache.sets * c->dcache.linesz - 1,
+-					PAGE_SIZE - 1);
+-	else
+-		shm_align_mask = PAGE_SIZE-1;
++
+ 	flush_cache_all		= r4k_flush_cache_all;
+ 	__flush_cache_all	= r4k___flush_cache_all;
+ 	flush_cache_mm		= r4k_flush_cache_mm;
+diff --git a/release/src-rt/linux/linux-2.6/arch/mips/mm/cache.c
+b/release/src-rt/linux/linux-2.6/arch/mips/mm/cache.c
+index cc26edb..3acb137 100644
+--- a/release/src-rt/linux/linux-2.6/arch/mips/mm/cache.c
++++ b/release/src-rt/linux/linux-2.6/arch/mips/mm/cache.c
+@@ -148,6 +148,15 @@ void __update_cache(struct vm_area_struct *vma,
+unsigned long address,
+ static char cache_panic[] __cpuinitdata =
+ 	"Yeee, unsupported cache architecture.";
+
++void __init cpu_early_probe_cache(void)
 +{
-+	sysfs_remove_group(&dev->kobj, &pwr_throttle_attr_group);
-+}
++	if (cpu_has_4k_cache) {
++		extern void __weak r4k_probe_cache(void);
 +
-+static __cpuinit int
-+power_throttle_cpu_callback(struct notifier_block *nfb,
-+			      unsigned long action,
-+			      void *hcpu)
-+{
-+	unsigned int cpu = (unsigned long)hcpu;
-+	struct device *dev;
-+	int err = 0;
-+
-+	dev = get_cpu_device(cpu);
-+
-+	switch (action) {
-+	case CPU_ONLINE:
-+	case CPU_DOWN_FAILED:
-+	case CPU_UP_PREPARE:
-+	case CPU_UP_PREPARE_FROZEN:
-+		mutex_lock(&pwr_throttl_cpu_lock);
-+		err = power_throttle_add_dev(dev);
-+		mutex_unlock(&pwr_throttl_cpu_lock);
-+		WARN_ON(err);
-+		break;
-+	case CPU_UP_CANCELED:
-+	case CPU_UP_CANCELED_FROZEN:
-+	case CPU_DEAD:
-+	case CPU_DEAD_FROZEN:
-+	case CPU_DOWN_PREPARE:
-+		mutex_lock(&pwr_throttl_cpu_lock);
-+		power_throttle_remove_dev(dev);
-+		mutex_unlock(&pwr_throttl_cpu_lock);
-+		break;
++		return r4k_probe_cache();
 +	}
-+	return err ? NOTIFY_BAD : NOTIFY_OK;
 +}
 +
-+static struct notifier_block power_throttle_cpu_notifier = {
-+	.notifier_call = power_throttle_cpu_callback,
-+};
+ void __cpuinit cpu_cache_init(void)
+ {
+ 	if (cpu_has_3k_cache) {
+diff --git a/release/src-rt/linux/linux-2.6/arch/mips/mm/highmem.c
+b/release/src-rt/linux/linux-2.6/arch/mips/mm/highmem.c
+index e2e3c6b..2feb5b7 100644
+--- a/release/src-rt/linux/linux-2.6/arch/mips/mm/highmem.c
++++ b/release/src-rt/linux/linux-2.6/arch/mips/mm/highmem.c
+@@ -39,6 +39,7 @@ void __kunmap(struct page *page)
+ struct kmap_map {
+ 	struct page *page;
+ 	void        *vaddr;
++	unsigned long	pfn;
+ };
+
+ struct {
+@@ -61,8 +62,9 @@ kmap_atomic_page_address(struct page *page)
+
+ void *__kmap_atomic(struct page *page, enum km_type type)
+ {
+-	enum fixed_addresses idx;
++	unsigned int idx;
+ 	unsigned long vaddr;
++	unsigned long pfn;
+
+ 	/* even !CONFIG_PREEMPT needs this, for in_atomic in do_page_fault */
+ 	pagefault_disable();
+@@ -70,31 +72,38 @@ void *__kmap_atomic(struct page *page, enum km_type type)
+ 		return page_address(page);
+
+ 	idx = type + KM_TYPE_NR*smp_processor_id();
+-	vaddr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
++	pfn = page_to_pfn(page);
++	vaddr = fix_to_virt_noalias(VALIAS_IDX(FIX_KMAP_BEGIN + idx), pfn);
+ #ifdef CONFIG_DEBUG_HIGHMEM
+-	if (!pte_none(*(kmap_pte-idx)))
++	if (!pte_none(*(kmap_pte-(virt_to_fix(vaddr) - VALIAS_IDX(FIX_KMAP_BEGIN)))))
+ 		BUG();
+ #endif
+-	set_pte(kmap_pte-idx, mk_pte(page, kmap_prot));
++	/* Vaddr could have been adjusted to avoid virt aliasing,
++	 * recalculate the idx from vaddr.
++	 */
++	set_pte(kmap_pte-(virt_to_fix(vaddr) - VALIAS_IDX(FIX_KMAP_BEGIN)), \
++		 mk_pte(page, kmap_prot));
+ 	local_flush_tlb_one((unsigned long)vaddr);
+
+ 	kmap_atomic_maps[smp_processor_id()].map[type].page = page;
+ 	kmap_atomic_maps[smp_processor_id()].map[type].vaddr = (void *)vaddr;
+-
++	kmap_atomic_maps[smp_processor_id()].map[type].pfn = pfn;
++	
+ 	return (void*) vaddr;
+ }
+
+ void __kunmap_atomic(void *kvaddr, enum km_type type)
+ {
+ 	unsigned long vaddr = (unsigned long) kvaddr & PAGE_MASK;
+-	enum fixed_addresses idx = type + KM_TYPE_NR*smp_processor_id();
++	unsigned int idx = type + KM_TYPE_NR*smp_processor_id();
++	unsigned long pfn  = kmap_atomic_maps[smp_processor_id()].map[type].pfn;
+
+ 	if (vaddr < FIXADDR_START) { // FIXME
+ 		pagefault_enable();
+ 		return;
+ 	}
+
+-	if (vaddr != __fix_to_virt(FIX_KMAP_BEGIN+idx))
++	if (vaddr != fix_to_virt_noalias(VALIAS_IDX(FIX_KMAP_BEGIN + idx), pfn))
+ 		BUG();
+
+ 	/*
+@@ -104,7 +113,8 @@ void __kunmap_atomic(void *kvaddr, enum km_type type)
+ 	if ( kmap_atomic_maps[smp_processor_id()].map[type].vaddr ) {
+ 		kmap_atomic_maps[smp_processor_id()].map[type].page = (struct page *)0;
+ 		kmap_atomic_maps[smp_processor_id()].map[type].vaddr = (void *) 0;
+-
++		kmap_atomic_maps[smp_processor_id()].map[type].pfn = 0;
++		
+ 		flush_data_cache_page((unsigned long)vaddr);
+ 	}
+
+@@ -113,7 +123,7 @@ void __kunmap_atomic(void *kvaddr, enum km_type type)
+ 	 * force other mappings to Oops if they'll try to access
+ 	 * this pte without first remap it
+ 	 */
+-	pte_clear(&init_mm, vaddr, kmap_pte-idx);
++	pte_clear(&init_mm, vaddr, kmap_pte-(virt_to_fix(vaddr) -
+VALIAS_IDX(FIX_KMAP_BEGIN)));
+ 	local_flush_tlb_one(vaddr);
+ #endif
+
+@@ -126,14 +136,23 @@ void __kunmap_atomic(void *kvaddr, enum km_type type)
+  */
+ void *kmap_atomic_pfn(unsigned long pfn, enum km_type type)
+ {
+-	enum fixed_addresses idx;
++	unsigned int idx;
+ 	unsigned long vaddr;
+
+ 	pagefault_disable();
+
+ 	idx = type + KM_TYPE_NR*smp_processor_id();
+-	vaddr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
+-	set_pte(kmap_pte-idx, pfn_pte(pfn, kmap_prot));
++	vaddr = fix_to_virt_noalias(VALIAS_IDX(FIX_KMAP_BEGIN + idx), pfn);
++	/* Vaddr could have been adjusted to avoid virt aliasing,
++	 * recalculate the idx from vaddr.
++	 */
++	set_pte(kmap_pte-(virt_to_fix(vaddr) - VALIAS_IDX(FIX_KMAP_BEGIN)), \
++		 pfn_pte(pfn, kmap_prot));
 +
-+static __init int power_throtl_init(void)
++	kmap_atomic_maps[smp_processor_id()].map[type].page = (struct page *)0;
++	kmap_atomic_maps[smp_processor_id()].map[type].vaddr = (void *) vaddr;
++	kmap_atomic_maps[smp_processor_id()].map[type].pfn = pfn;
++	
+ 	flush_tlb_one(vaddr);
+
+ 	return (void*) vaddr;
+@@ -141,14 +160,13 @@ void *kmap_atomic_pfn(unsigned long pfn, enum
+km_type type)
+
+ struct page *__kmap_atomic_to_page(void *ptr)
+ {
+-	unsigned long idx, vaddr = (unsigned long)ptr;
++	unsigned long vaddr = (unsigned long)ptr;
+ 	pte_t *pte;
+
+ 	if (vaddr < FIXADDR_START)
+ 		return virt_to_page(ptr);
+
+-	idx = virt_to_fix(vaddr);
+-	pte = kmap_pte - (idx - FIX_KMAP_BEGIN);
++	pte = kmap_pte - (virt_to_fix(vaddr) - VALIAS_IDX(FIX_KMAP_BEGIN));
+ 	return pte_page(*pte);
+ }
+
+diff --git a/release/src-rt/linux/linux-2.6/arch/mips/mm/init.c
+b/release/src-rt/linux/linux-2.6/arch/mips/mm/init.c
+index 12793c9..528a6ee 100644
+--- a/release/src-rt/linux/linux-2.6/arch/mips/mm/init.c
++++ b/release/src-rt/linux/linux-2.6/arch/mips/mm/init.c
+@@ -62,6 +62,7 @@
+ #endif /* CONFIG_MIPS_MT_SMTC */
+
+ DEFINE_PER_CPU(struct mmu_gather, mmu_gathers);
++extern void cpu_early_probe_cache();
+
+ /*
+  * We have up to 8 empty zeroed pages so we can map one of the right colour
+@@ -286,7 +287,7 @@ static void __init kmap_init(void)
+ 	unsigned long kmap_vstart;
+
+ 	/* cache the first kmap pte */
+-	kmap_vstart = __fix_to_virt(FIX_KMAP_BEGIN);
++	kmap_vstart = __fix_to_virt(VALIAS_IDX(FIX_KMAP_BEGIN));
+ 	kmap_pte = kmap_get_fixmap_pte(kmap_vstart);
+
+ 	kmap_prot = PAGE_KERNEL;
+@@ -362,6 +363,8 @@ void __init paging_init(void)
+ 	unsigned long lastpfn;
+ #endif /* CONFIG_FLATMEM */
+
++	cpu_early_probe_cache();
++	
+ 	pagetable_init();
+
+ #ifdef CONFIG_HIGHMEM
+diff --git a/release/src-rt/linux/linux-2.6/arch/mips/mm/pgtable-32.c
+b/release/src-rt/linux/linux-2.6/arch/mips/mm/pgtable-32.c
+index adc6911..7a89f48 100644
+--- a/release/src-rt/linux/linux-2.6/arch/mips/mm/pgtable-32.c
++++ b/release/src-rt/linux/linux-2.6/arch/mips/mm/pgtable-32.c
+@@ -51,7 +51,7 @@ void __init pagetable_init(void)
+ 	/*
+ 	 * Fixed mappings:
+ 	 */
+-	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
++	vaddr = __fix_to_virt(VALIAS_IDX(__end_of_fixed_addresses - 1)) & PMD_MASK;
+ 	fixrange_init(vaddr, vaddr + FIXADDR_SIZE, pgd_base);
+
+ #ifdef CONFIG_HIGHMEM
+diff --git a/release/src-rt/linux/linux-2.6/include/asm-mips/fixmap.h
+b/release/src-rt/linux/linux-2.6/include/asm-mips/fixmap.h
+index 4c23947..a6761c6 100644
+--- a/release/src-rt/linux/linux-2.6/include/asm-mips/fixmap.h
++++ b/release/src-rt/linux/linux-2.6/include/asm-mips/fixmap.h
+@@ -84,12 +84,21 @@ extern void __set_fixmap (enum fixed_addresses idx,
+ #else
+ #define FIXADDR_TOP	((unsigned long)(long)(int)0xfffe0000)
+ #endif
+-#define FIXADDR_SIZE	(__end_of_fixed_addresses << PAGE_SHIFT)
++#define FIXADDR_SIZE	(__end_of_fixed_addresses << (VALIAS_PAGE_SHIFT))
+ #define FIXADDR_START	(FIXADDR_TOP - FIXADDR_SIZE)
+
+ #define __fix_to_virt(x)	(FIXADDR_TOP - ((x) << PAGE_SHIFT))
+ #define __virt_to_fix(x)	((FIXADDR_TOP - ((x)&PAGE_MASK)) >> PAGE_SHIFT)
+
++static inline unsigned long fix_to_virt_noalias(const unsigned int x,
+unsigned long pfn)
 +{
-+	unsigned int cpu = 0;
-+	int err;
++	unsigned long vaddr = __fix_to_virt(x);
++	unsigned long poffset = (pfn << PAGE_SHIFT) & VALIAS_PAGE_OFFSET_MASK;
++	unsigned long voffset = vaddr & VALIAS_PAGE_OFFSET_MASK;
 +
-+	register_hotcpu_notifier(&power_throttle_cpu_notifier);
-+
-+#ifdef CONFIG_HOTPLUG_CPU
-+	mutex_lock(&pwr_throttl_cpu_lock);
-+#endif
-+	/* connect live CPUs to sysfs */
-+	for_each_online_cpu(cpu) {
-+		err = power_throttle_add_dev(get_cpu_device(cpu));
-+		WARN_ON(err);
-+		cvmx_init_throttle_feedback(cpu);
-+	}
-+#ifdef CONFIG_HOTPLUG_CPU
-+	mutex_unlock(&pwr_throttl_cpu_lock);
-+#endif
-+	return 0;
++	return ((!voffset || (poffset >= voffset)) ? (vaddr |
+poffset):(vaddr | poffset | VALIAS_PAGE_SIZE));
 +}
-+device_initcall(power_throtl_init);
 +
-+#endif
+ extern void __this_fixmap_does_not_exist(void);
+
+ /*
+diff --git a/release/src-rt/linux/linux-2.6/include/asm-mips/page.h
+b/release/src-rt/linux/linux-2.6/include/asm-mips/page.h
+index fa7289f..96f5245 100644
+--- a/release/src-rt/linux/linux-2.6/include/asm-mips/page.h
++++ b/release/src-rt/linux/linux-2.6/include/asm-mips/page.h
+@@ -56,6 +56,14 @@ extern void clear_page(void * page);
+ extern void copy_page(void * to, void * from);
+
+ extern unsigned long shm_align_mask;
++extern unsigned char shm_align_shift;
++
++#define VALIAS_PAGE_OFFSET_MASK	(shm_align_mask)
++#define VALIAS_PAGE_MASK	(~VALIAS_PAGE_OFFSET_MASK)
++#define VALIAS_PAGE_SHIFT	(shm_align_shift)
++#define VALIAS_SHIFT		(VALIAS_PAGE_SHIFT - PAGE_SHIFT)
++#define VALIAS_PAGE_SIZE	(1UL << VALIAS_PAGE_SHIFT)
++#define VALIAS_IDX(x)		((x) << VALIAS_SHIFT)
+
+ static inline unsigned long pages_do_alias(unsigned long addr1,
+ 	unsigned long addr2)
 -- 
-1.6.3.3.338.ge89ce
+1.7.9.5

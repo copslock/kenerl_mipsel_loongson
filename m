@@ -1,44 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2012 22:12:47 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:39925 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903731Ab2FGUMl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2012 22:12:41 +0200
-Received: by dadm1 with SMTP id m1so1454718dad.36
-        for <multiple recipients>; Thu, 07 Jun 2012 13:12:34 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jun 2012 06:16:28 +0200 (CEST)
+Received: from mail-gh0-f177.google.com ([209.85.160.177]:37175 "EHLO
+        mail-gh0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1901334Ab2FKEQW convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 11 Jun 2012 06:16:22 +0200
+Received: by ghbf11 with SMTP id f11so2459116ghb.36
+        for <multiple recipients>; Sun, 10 Jun 2012 21:16:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=sliMkv32SFAlb7TKeak29br71gDmu4OhVvNrzJLfXuE=;
-        b=xb1ZOq1+17z0zraLqmb9MCDeJOfD2OALU4w2VJK6lilJfZ+LkIM7OQQLRdX9Lbhx2E
-         fCREHX5oHUdhZSlA9FgNF1OBhl7LagYbs2g82NP2nCRmjmHn9Cl05qIoL992/N5c444K
-         IKIW5bfdx0szGPIMvk6mhfoM0i56OGPTmGZG8SiCA8OBmXs6AJflzeCh1Efk9avLbv14
-         bJ0mdmI66Q/KWLPRMt7eCCNw1Na4mqbWBIvwhUa/DKRWuOuHSDBHz49feIZvjXeqMcRP
-         Zb718r6I+aRZuNG/mEH4nQeVePJnnklG5M0WiuJ2EhL5av2aSoy/fpM/pkjBBZ21V9oF
-         p4aQ==
-Received: by 10.68.231.71 with SMTP id te7mr11388511pbc.161.1339099954660;
-        Thu, 07 Jun 2012 13:12:34 -0700 (PDT)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id tj4sm5149731pbc.33.2012.06.07.13.12.33
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 07 Jun 2012 13:12:34 -0700 (PDT)
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q57KCWb0018598;
-        Thu, 7 Jun 2012 13:12:32 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q57KCWVG018596;
-        Thu, 7 Jun 2012 13:12:32 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH v2] MIPS: OCTEON: Remove some unused OCTEON_IRQ_* definitions.
-Date:   Thu,  7 Jun 2012 13:12:31 -0700
-Message-Id: <1339099951-18565-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.2.3
-X-archive-position: 33603
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=l3fK+rcW3MGkW1zOH2gQoy74NlStA5xZynYVGjrayOc=;
+        b=mbTwcPTdXYIl6omKRnvKQTpKJHeivw+nq6ff8EvdJSCeZPR6tv/SG93d7rlYHWJbzz
+         4cV5sxrUF6TzwmnE12UtltzE6jG8qK9iYNmmv7A0/8L14TW2EApkku/FUORXlC4b83QY
+         plEB5KsuGmbiL97PQayfb+7Hg8ernIot7q1YOCcAPs81fTcSzuogMPYkM+9EPW1NHjNy
+         4njYZdB2c7GLhV5CP+aK51ZZj0hsBSF+5+w3yahqgkHEM61FncJ6qFjO50zIC910QzDx
+         1YTHx9QuAxZs+639NS4AlP/MsNs1It+OaGdQ1NyzkRLDwK0bRejh+2O8ia3sMjYp3Ykw
+         2AfA==
+MIME-Version: 1.0
+Received: by 10.50.36.227 with SMTP id t3mr5719282igj.13.1339388175438; Sun,
+ 10 Jun 2012 21:16:15 -0700 (PDT)
+Received: by 10.231.219.5 with HTTP; Sun, 10 Jun 2012 21:16:15 -0700 (PDT)
+In-Reply-To: <1337040290-16015-6-git-send-email-ddaney.cavm@gmail.com>
+References: <1337040290-16015-1-git-send-email-ddaney.cavm@gmail.com>
+        <1337040290-16015-6-git-send-email-ddaney.cavm@gmail.com>
+Date:   Sun, 10 Jun 2012 22:16:15 -0600
+Message-ID: <CACoURw4+N8Nk-N81kryXHOg9O_=ntvqv9prOLAZW6KKEYQ9v+A@mail.gmail.com>
+Subject: Re: [PATCH v2 5/5] MIPS: Move cache setup to setup_arch().
+From:   Shane McDonald <mcdonald.shane@gmail.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        David Daney <david.daney@cavium.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 33604
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: mcdonald.shane@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,52 +51,127 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: David Daney <david.daney@cavium.com>
+I've run into a problem in linux-3.5-rc1, and I've tracked it down
+to this patch, MIPS: Move cache setup to setup_arch().,
+commit 6650df3c380e0db558dbfec63ed860402c6afb2a.
 
-These are now unused.  Remove them.
+On Mon, May 14, 2012 at 6:04 PM, David Daney <ddaney.cavm@gmail.com> wrote:
+> From: David Daney <david.daney@cavium.com>
+>
+> commit 97ce2c88f9ad42e3c60a9beb9fca87abf3639faa (jump-label: initialize
+> jump-label subsystem much earlier) breaks MIPS.  The jump_label_init()
+> call was moved before trap_init() which is where we initialize
+> flush_icache_range().
+>
+> In order to be good citizens, we move cache initialization earlier so
+> that we don't jump through a null flush_icache_range function pointer
+> when doing the jump label initialization.
+>
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> ---
+>  arch/mips/include/asm/setup.h |    3 ++-
+>  arch/mips/kernel/setup.c      |    2 ++
+>  arch/mips/kernel/smp.c        |    2 +-
+>  arch/mips/kernel/traps.c      |    9 +++++----
+>  4 files changed, 10 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/setup.h b/arch/mips/include/asm/setup.h
+> index 6dce6d8..2560b6b 100644
+> --- a/arch/mips/include/asm/setup.h
+> +++ b/arch/mips/include/asm/setup.h
+> @@ -14,7 +14,8 @@ extern void *set_vi_handler(int n, vi_handler_t addr);
+>
+>  extern void *set_except_vector(int n, void *addr);
+>  extern unsigned long ebase;
+> -extern void per_cpu_trap_init(void);
+> +extern void per_cpu_trap_init(bool);
+> +extern void cpu_cache_init(void);
+>
+>  #endif /* __KERNEL__ */
+>
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index c504b21..a53f8ec 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -605,6 +605,8 @@ void __init setup_arch(char **cmdline_p)
+>
+>        resource_init();
+>        plat_smp_setup();
+> +
+> +       cpu_cache_init();
+>  }
+>
+>  unsigned long kernelsp[NR_CPUS];
+> diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+> index ba9376b..dc019a1 100644
+> --- a/arch/mips/kernel/smp.c
+> +++ b/arch/mips/kernel/smp.c
+> @@ -106,7 +106,7 @@ asmlinkage __cpuinit void start_secondary(void)
+>  #endif /* CONFIG_MIPS_MT_SMTC */
+>        cpu_probe();
+>        cpu_report();
+> -       per_cpu_trap_init();
+> +       per_cpu_trap_init(false);
+>        mips_clockevent_init();
+>        mp_ops->init_secondary();
+>
+> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+> index 2b5675b..0ba66c0 100644
+> --- a/arch/mips/kernel/traps.c
+> +++ b/arch/mips/kernel/traps.c
+> @@ -1538,7 +1538,6 @@ void *set_vi_handler(int n, vi_handler_t addr)
+>        return set_vi_srs_handler(n, addr, 0);
+>  }
+>
+> -extern void cpu_cache_init(void);
+>  extern void tlb_init(void);
+>  extern void flush_tlb_handlers(void);
+>
+> @@ -1565,7 +1564,7 @@ static int __init ulri_disable(char *s)
+>  }
+>  __setup("noulri", ulri_disable);
+>
+> -void __cpuinit per_cpu_trap_init(void)
+> +void __cpuinit per_cpu_trap_init(bool is_boot_cpu)
+>  {
+>        unsigned int cpu = smp_processor_id();
+>        unsigned int status_set = ST0_CU0;
+> @@ -1664,7 +1663,9 @@ void __cpuinit per_cpu_trap_init(void)
+>  #ifdef CONFIG_MIPS_MT_SMTC
+>        if (bootTC) {
+>  #endif /* CONFIG_MIPS_MT_SMTC */
+> -               cpu_cache_init();
+> +               /* Boot CPU's cache setup in setup_arch(). */
+> +               if (!is_boot_cpu)
+> +                       cpu_cache_init();
+>                tlb_init();
+>  #ifdef CONFIG_MIPS_MT_SMTC
+>        } else if (!secondaryTC) {
+> @@ -1741,7 +1742,7 @@ void __init trap_init(void)
+>
+>        if (board_ebase_setup)
+>                board_ebase_setup();
+> -       per_cpu_trap_init();
+> +       per_cpu_trap_init(true);
+>
+>        /*
+>         * Copy the generic exception handlers to their final destination.
+> --
+> 1.7.2.3
 
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- arch/mips/include/asm/mach-cavium-octeon/irq.h |   10 +---------
- 1 files changed, 1 insertions(+), 9 deletions(-)
+I'm running a single-CPU, PMC-Sierra RM7035C-based system.
 
-diff --git a/arch/mips/include/asm/mach-cavium-octeon/irq.h b/arch/mips/include/asm/mach-cavium-octeon/irq.h
-index 4189920..c22a307 100644
---- a/arch/mips/include/asm/mach-cavium-octeon/irq.h
-+++ b/arch/mips/include/asm/mach-cavium-octeon/irq.h
-@@ -21,14 +21,10 @@ enum octeon_irq {
- 	OCTEON_IRQ_TIMER,
- /* sources in CIU_INTX_EN0 */
- 	OCTEON_IRQ_WORKQ0,
--	OCTEON_IRQ_GPIO0 = OCTEON_IRQ_WORKQ0 + 16,
--	OCTEON_IRQ_WDOG0 = OCTEON_IRQ_GPIO0 + 16,
-+	OCTEON_IRQ_WDOG0 = OCTEON_IRQ_WORKQ0 + 16,
- 	OCTEON_IRQ_WDOG15 = OCTEON_IRQ_WDOG0 + 15,
- 	OCTEON_IRQ_MBOX0 = OCTEON_IRQ_WDOG0 + 16,
- 	OCTEON_IRQ_MBOX1,
--	OCTEON_IRQ_UART0,
--	OCTEON_IRQ_UART1,
--	OCTEON_IRQ_UART2,
- 	OCTEON_IRQ_PCI_INT0,
- 	OCTEON_IRQ_PCI_INT1,
- 	OCTEON_IRQ_PCI_INT2,
-@@ -38,8 +34,6 @@ enum octeon_irq {
- 	OCTEON_IRQ_PCI_MSI2,
- 	OCTEON_IRQ_PCI_MSI3,
- 
--	OCTEON_IRQ_TWSI,
--	OCTEON_IRQ_TWSI2,
- 	OCTEON_IRQ_RML,
- 	OCTEON_IRQ_TIMER0,
- 	OCTEON_IRQ_TIMER1,
-@@ -47,8 +41,6 @@ enum octeon_irq {
- 	OCTEON_IRQ_TIMER3,
- 	OCTEON_IRQ_USB0,
- 	OCTEON_IRQ_USB1,
--	OCTEON_IRQ_MII0,
--	OCTEON_IRQ_MII1,
- 	OCTEON_IRQ_BOOTDMA,
- #ifndef CONFIG_PCI_MSI
- 	OCTEON_IRQ_LAST = 127
--- 
-1.7.2.3
+Before applying this patch, cca_setup() in arch/mips/mm/c-r4k.c
+is called before coherency_setup() (called from rk4_cache_init()).
+After applying the patch, it is called afterwards.  Because
+coherency_setup() relies on cca_setup() properly setting the
+variable cca, it won't use the value of cca supplied on the
+kernel command line.
+
+I haven't verified it, but I suspect the same problem will occur
+with the call to setcoherentio(), also in c-r4k.c.
+
+Unfortunately, I don't have the knowledge to formulate a patch
+to this problem, but I wanted to raise the issue.
+
+Shane McDonald

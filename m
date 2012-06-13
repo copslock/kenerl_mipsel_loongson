@@ -1,48 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jun 2012 13:29:17 +0200 (CEST)
-Received: from mail-gg0-f177.google.com ([209.85.161.177]:60178 "EHLO
-        mail-gg0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903699Ab2FLL3K (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jun 2012 13:29:10 +0200
-Received: by ggcs5 with SMTP id s5so3609335ggc.36
-        for <multiple recipients>; Tue, 12 Jun 2012 04:29:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:organization:user-agent
-         :in-reply-to:references:mime-version:content-transfer-encoding
-         :content-type;
-        bh=tdQZLiE0rP/3IULZbjyXeAn7a+E/0q9n+/p5QQjtT0E=;
-        b=1B59d1VAFWkPViHk6knyTspx6gHMTrDXfc1TTiBN/zbnGhQ7NfuXhubo2WictOejoN
-         1UMDZ3tIA/eIZrirJJrmpEl6PVzTB9QOOQ89xz17X1aMT8Bq/ZLklPhqzodxrtHldqlM
-         sgBG+ZcdNNAl9GskHePKyh+lyDf2fzkwLMB28XHd5DniXWchpq/3AoEncH59wj20ysoX
-         xRUACRqnTwfDG+LCdSwmwpXqSPO6lpiEfRGKQHveY2T9hFAhD1fu0P43Y1yqPYOJMMSb
-         5KfTB9NJ5zxXpAWFwKjNaoBtj9b/493ByzpVFavyaPWTi3VCNajwUGTlgX7n73pQRM1U
-         u59Q==
-Received: by 10.236.193.99 with SMTP id j63mr25906579yhn.45.1339500544809;
-        Tue, 12 Jun 2012 04:29:04 -0700 (PDT)
-Received: from flexo.localnet ([2a01:e34:ec0d:4090:cf5:eedc:2b17:f9d0])
-        by mx.google.com with ESMTPS id n37sm30904284anq.0.2012.06.12.04.29.01
-        (version=SSLv3 cipher=OTHER);
-        Tue, 12 Jun 2012 04:29:03 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jun 2012 15:48:16 +0200 (CEST)
+Received: from h9.dl5rb.org.uk ([81.2.74.9]:44841 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903750Ab2FMNsI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 13 Jun 2012 15:48:08 +0200
+Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q5DDm4WI006829;
+        Wed, 13 Jun 2012 14:48:05 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q5DDm2du006818;
+        Wed, 13 Jun 2012 14:48:02 +0100
+Date:   Wed, 13 Jun 2012 14:48:01 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Jonas Gorski <jonas.gorski@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Maxime Bizon <mbizon@freebox.fr>,
+Cc:     linux-mips@linux-mips.org, Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>
-Subject: Re: [PATCH 0/8] Add basic support for BCM6328
-Date:   Tue, 12 Jun 2012 13:26:44 +0200
-Message-ID: <1525623.di3mH0BcIS@flexo>
-Organization: OpenWrt
-User-Agent: KMail/4.8.3 (Linux/3.2.0-24-generic; KDE/4.8.3; x86_64; ; )
-In-Reply-To: <1339489425-19037-1-git-send-email-jonas.gorski@gmail.com>
+Subject: Re: [PATCH 1/8] MIPS: BCM63XX: move flash registration out of
+ board_bcm963xx.c
+Message-ID: <20120613134801.GA5516@linux-mips.org>
 References: <1339489425-19037-1-git-send-email-jonas.gorski@gmail.com>
+ <1339489425-19037-2-git-send-email-jonas.gorski@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-archive-position: 33621
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1339489425-19037-2-git-send-email-jonas.gorski@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 33622
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,71 +43,50 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Jonas,
+On Tue, Jun 12, 2012 at 10:23:38AM +0200, Jonas Gorski wrote:
 
-On Tuesday 12 June 2012 10:23:37 Jonas Gorski wrote:
-> This patchset adds basic support for BCM6328 and its PCIe port.
-> 
-> The BCM6328 is an ADSL2+ SoC with support for NAND and SPI flash,
-> integrated five port ethernet switch, and one PCIe port.
-> 
-> Patches 1 and 2 add generic flash type detection, as different chips
-> support different flash types, and the BCM6328 does not support
-> parallel CFI flashes.
-> 
-> Patches 3-4 add support for detecting and handling the BCM6328 itself.
-> This allows booting to command line.
-> 
-> Patches 5-7 add support for the PCIe port of the BCM6328 and expose
-> the PCIe port driver for MIPS (I wonder what is so special about it
-> that it isn't included in the standard PCI drivers).
-> 
-> Patch 8 then adds a 6328 reference board definition, so one can actually
-> boot to command line.
+> board_bcm963xx.c is already large enough.
 
-Your patchset looks good to me. Feel free to add my Reviewed-by: Florian 
-Fainelli <florian@openwrt.org> tag to it.
+And the grand cure for that sort of issue is FDT - we by now have built
+big deserts of code just registering platform devices like this..  See
+John Crispin's Lantiq work or David's Cavium code for FDT examples.
 
-Thanks!
+> +int __init bcm63xx_flash_register(void)
+> +{
+> +	u32 val;
+> +
+> +	/* read base address of boot chip select (0) */
+> +	val = bcm_mpi_readl(MPI_CSBASE_REG(0));
+> +	val &= MPI_CSBASE_BASE_MASK;
+> +
+> +	mtd_resources[0].start = val;
+> +	mtd_resources[0].end = 0x1FFFFFFF;
+> +
+> +	return platform_device_register(&mtd_dev);
+> +}
+> diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_flash.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_flash.h
+> new file mode 100644
+> index 0000000..8dcb541
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_flash.h
+> @@ -0,0 +1,6 @@
+> +#ifndef __BCM63XX_FLASH_H
+> +#define __BCM63XX_FLASH_H
+> +
+> +int __init bcm63xx_flash_register(void);
 
-> 
-> Jonas Gorski (8):
->   MIPS: BCM63XX: move flash registration out of board_bcm963xx.c
->   MIPS: BCM63XX: add flash type detection
->   MIPS: BCM63XX: use the Chip ID register for identifying the SoC
->   MIPS: BCM63XX: add basic BCM6328 CPU support
->   MIPS: BCM63XX: Move the PCI initialization into its own function
->   MIPS: BCM63XX: Add PCIe Support for BCM6328
->   MIPS: expose PCIe drivers for MIPS
->   MIPS: BCM63XX: add 96328avng reference board
-> 
->  arch/mips/Kconfig                                  |    2 +
->  arch/mips/bcm63xx/Kconfig                          |    4 +
->  arch/mips/bcm63xx/Makefile                         |    4 +-
->  arch/mips/bcm63xx/boards/board_bcm963xx.c          |  106 ++++++++--------
->  arch/mips/bcm63xx/cpu.c                            |   63 ++++++++--
->  arch/mips/bcm63xx/dev-flash.c                      |  123 ++++++++++++++++++
->  arch/mips/bcm63xx/dev-spi.c                        |    2 +-
->  arch/mips/bcm63xx/irq.c                            |   21 +++
->  arch/mips/bcm63xx/prom.c                           |    4 +-
->  arch/mips/bcm63xx/setup.c                          |   13 ++-
->  arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h   |  120 
-+++++++++++++++++-
->  .../include/asm/mach-bcm63xx/bcm63xx_dev_flash.h   |   12 ++
->  arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h  |    2 +
->  arch/mips/include/asm/mach-bcm63xx/bcm63xx_io.h    |    8 ++
->  arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h  |  117 +++++++++++++++++
->  arch/mips/include/asm/mach-bcm63xx/ioremap.h       |    1 +
->  arch/mips/pci/ops-bcm63xx.c                        |   61 +++++++++
->  arch/mips/pci/pci-bcm63xx.c                        |  133 
-+++++++++++++++++++-
->  arch/mips/pci/pci-bcm63xx.h                        |    5 +
->  19 files changed, 729 insertions(+), 72 deletions(-)
->  create mode 100644 arch/mips/bcm63xx/dev-flash.c
->  create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_flash.h
-> 
-> -- 
-> 1.7.2.5
-> 
--- 
-Florian
+Don't use __init in declarations.  It doesn't make any difference to the
+compiler but it may cause build errors if <linux/init.h> has not been
+included before which this file doesn't.
+
+> +#endif /* __BCM63XX_FLASH_H */
+
+I suggest to make bcm63xx_flash_register an arch_initcall.  It already is
+being called indirectly from an bcm63xx_flash_register() so this would
+allow making the function static, get rid of bcm63xx_dev_flash.h which
+only exists to silence checkpatch warnings and make board_register_devices
+a little cleaner.
+
+  Ralf
+
+PS: Don't forget about FDT :-)  Eventually, not necessarily now.

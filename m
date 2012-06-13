@@ -1,39 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jun 2012 19:08:13 +0200 (CEST)
-Received: from [81.2.74.9] ([81.2.74.9]:50271 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903770Ab2FMRIJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 13 Jun 2012 19:08:09 +0200
-Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q5DH875l029751;
-        Wed, 13 Jun 2012 18:08:07 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q5DH86l4029749;
-        Wed, 13 Jun 2012 18:08:06 +0100
-Date:   Wed, 13 Jun 2012 18:08:06 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Shane McDonald <mcdonald.shane@gmail.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v2 5/5] MIPS: Move cache setup to setup_arch().
-Message-ID: <20120613170806.GC14657@linux-mips.org>
-References: <1337040290-16015-1-git-send-email-ddaney.cavm@gmail.com>
- <1337040290-16015-6-git-send-email-ddaney.cavm@gmail.com>
- <CACoURw4+N8Nk-N81kryXHOg9O_=ntvqv9prOLAZW6KKEYQ9v+A@mail.gmail.com>
- <4FD61B22.3040407@gmail.com>
- <4FD61F35.1080103@gmail.com>
- <CACoURw6oCNKHh7o9N_kE6uryfpu57sQqA-p2fq6hKnsikO5KgA@mail.gmail.com>
- <CACoURw6S+Z9urgYQzqkTZ0WR4kcaxMnSLm=D6m_6pWJnvDtUpA@mail.gmail.com>
- <4FD8BFFE.3040400@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4FD8BFFE.3040400@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 33631
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jun 2012 23:54:01 +0200 (CEST)
+Received: from cpsmtpb-ews03.kpnxchange.com ([213.75.39.6]:1848 "EHLO
+        cpsmtpb-ews03.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903760Ab2FMVx5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jun 2012 23:53:57 +0200
+Received: from cpsps-ews25.kpnxchange.com ([10.94.84.191]) by cpsmtpb-ews03.kpnxchange.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 13 Jun 2012 23:53:52 +0200
+Received: from CPSMTPM-TLF101.kpnxchange.com ([195.121.3.4]) by cpsps-ews25.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Wed, 13 Jun 2012 23:53:51 +0200
+Received: from [192.168.1.102] ([212.123.169.34]) by CPSMTPM-TLF101.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Wed, 13 Jun 2012 23:53:52 +0200
+Message-ID: <1339624431.30984.185.camel@x61.thuisdomein>
+Subject: Re: [PATCH] MIPS: remove three unused headers
+From:   Paul Bolle <pebolle@tiscali.nl>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Date:   Wed, 13 Jun 2012 23:53:51 +0200
+In-Reply-To: <20120613145614.GC5516@linux-mips.org>
+References: <1339491792.30984.110.camel@x61.thuisdomein>
+         <20120613145614.GC5516@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3 (3.2.3-3.fc16) 
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-OriginalArrivalTime: 13 Jun 2012 21:53:52.0207 (UTC) FILETIME=[0562ADF0:01CD49AF]
+X-RcptDomain: linux-mips.org
+X-archive-position: 33632
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: pebolle@tiscali.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,42 +42,33 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, Jun 13, 2012 at 09:29:50AM -0700, David Daney wrote:
-
-> On 06/13/2012 08:44 AM, Shane McDonald wrote:
-> >On Mon, Jun 11, 2012 at 12:32 PM, Shane McDonald
-> ><mcdonald.shane@gmail.com>  wrote:
-> >>There is a line:
-> >>
-> >>__setup("cca=", cca_setup);
-> >>
-> >>that seems to be used to call cca_setup().  I don't know how
-> >>the __setup() works, so I'm a little lost on the solution myself.
-> >>
-> >>Note that, besides the cca_setup(), there is also a routine
-> >>setcoherentio() that is defined the same way as cca_setup().
-> >>I suspect that suffers from the same problem as cca_setup().
-> >
-> >I've been doing a little learning on how the __setup() macro works.
-> >A proposed solution I have is to change from using the __setup()
-> >macro to using early_param() to mark the call to cca_setup().
+On Wed, 2012-06-13 at 15:56 +0100, Ralf Baechle wrote:
+> On Tue, Jun 12, 2012 at 11:03:12AM +0200, Paul Bolle wrote:
 > 
-> This is the exact change I was going to suggest.
+> > No file includes these three headers. It seems they have never been
+> > included since at least v2.6.12-rc2. They can safely be removed.
 > 
-> >Functions marked with __setup() are executed late in the boot
-> >process, whereas those marked with early_param() occur
-> >very early in the process.  I have tried this out,
-> >and it solves my problem, but I'm looking for feedback on
-> >whether this is the correct solution.
-> >
-> >Unless I get any different feedback, I'll send out a patch with
-> >my change later today.
+> >  arch/mips/include/asm/sibyte/sb1250_l2c.h |  131 -------
+> >  arch/mips/include/asm/sibyte/sb1250_ldt.h |  422 ----------------------
+> >  arch/mips/include/asm/sibyte/sb1250_mc.h  |  550 -----------------------------
 > 
-> Assuming that such a patch passes checkpatch.pl and is otherwise
-> clean, you could add:
+> These headers describe the on-chip hardware of the SB1250 SOC.  Some of
+> the drivers to use them are currently stuck midflight on their path to
+> submission.
 
-Sounds fine to me too, as long as the it's still being called early enough.
-The value is being used for all TLB mappings so it should be ready
-latest when the TLB mappings or pagetable entries are computed.
+OK, I see. Thanks.
 
-  Ralf
+>   The remaining ones I'd like to keep around as documentation
+> or for later use.
+
+I'd say that arch/mips/include/ is were one puts code and
+Documentation/mips/ is were one puts documentation. Can't the unused
+header files you want to keep (preferably with, say, a .txt extension)
+be added to Documentation/mips/?
+ 
+>   Ditto for your other BCM1480 related patch....
+
+Thanks,
+
+
+Paul Bolle

@@ -1,24 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jun 2012 16:11:13 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:55034 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903760Ab2FMOLJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 13 Jun 2012 16:11:09 +0200
-Message-ID: <4FD89F51.5020200@openwrt.org>
-Date:   Wed, 13 Jun 2012 16:10:25 +0200
-From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.24) Gecko/20111114 Icedove/3.1.16
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jun 2012 16:56:21 +0200 (CEST)
+Received: from h9.dl5rb.org.uk ([81.2.74.9]:46695 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903760Ab2FMO4R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 13 Jun 2012 16:56:17 +0200
+Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q5DEuG2T014596;
+        Wed, 13 Jun 2012 15:56:16 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q5DEuFT2014595;
+        Wed, 13 Jun 2012 15:56:15 +0100
+Date:   Wed, 13 Jun 2012 15:56:15 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Paul Bolle <pebolle@tiscali.nl>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: remove three unused headers
+Message-ID: <20120613145614.GC5516@linux-mips.org>
+References: <1339491792.30984.110.camel@x61.thuisdomein>
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/8] MIPS: BCM63XX: move flash registration out of board_bcm963xx.c
-References: <1339489425-19037-1-git-send-email-jonas.gorski@gmail.com> <1339489425-19037-2-git-send-email-jonas.gorski@gmail.com> <20120613134801.GA5516@linux-mips.org> <2177534.JpaDVG7JnB@flexo> <20120613135953.GB6839@linux-mips.org>
-In-Reply-To: <20120613135953.GB6839@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 33625
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1339491792.30984.110.camel@x61.thuisdomein>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 33626
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -32,14 +39,20 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 13/06/12 15:59, Ralf Baechle wrote:
->>> > > And the grand cure for that sort of issue is FDT - we by now have built
->>> > > big deserts of code just registering platform devices like this..  See
->>> > > John Crispin's Lantiq work or David's Cavium code for FDT examples.
->> > 
->> > I have some patches to convert bcm63xx to FDT but that is still work in 
->> > progress, and I don't want them to hold support for newer BCM63xx CPUs.
-> Oh absolutely.  I'm just nagging to make it clear to everybody into what
-> direction the world is moving.
->
-FDT FTW :-)
+On Tue, Jun 12, 2012 at 11:03:12AM +0200, Paul Bolle wrote:
+
+> No file includes these three headers. It seems they have never been
+> included since at least v2.6.12-rc2. They can safely be removed.
+
+>  arch/mips/include/asm/sibyte/sb1250_l2c.h |  131 -------
+>  arch/mips/include/asm/sibyte/sb1250_ldt.h |  422 ----------------------
+>  arch/mips/include/asm/sibyte/sb1250_mc.h  |  550 -----------------------------
+
+These headers describe the on-chip hardware of the SB1250 SOC.  Some of
+the drivers to use them are currently stuck midflight on their path to
+submission.  The remaining ones I'd like to keep around as documentation
+or for later use.  Ditto for your other BCM1480 related patch....
+
+Thanks,
+
+  Ralf

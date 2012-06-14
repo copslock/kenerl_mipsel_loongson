@@ -1,34 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jun 2012 23:54:01 +0200 (CEST)
-Received: from cpsmtpb-ews03.kpnxchange.com ([213.75.39.6]:1848 "EHLO
-        cpsmtpb-ews03.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903760Ab2FMVx5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jun 2012 23:53:57 +0200
-Received: from cpsps-ews25.kpnxchange.com ([10.94.84.191]) by cpsmtpb-ews03.kpnxchange.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 13 Jun 2012 23:53:52 +0200
-Received: from CPSMTPM-TLF101.kpnxchange.com ([195.121.3.4]) by cpsps-ews25.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Wed, 13 Jun 2012 23:53:51 +0200
-Received: from [192.168.1.102] ([212.123.169.34]) by CPSMTPM-TLF101.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Wed, 13 Jun 2012 23:53:52 +0200
-Message-ID: <1339624431.30984.185.camel@x61.thuisdomein>
-Subject: Re: [PATCH] MIPS: remove three unused headers
-From:   Paul Bolle <pebolle@tiscali.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jun 2012 05:08:31 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:53096 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1901164Ab2FNDIY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jun 2012 05:08:24 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@realitydiluted.com>)
+        id 1Sf0Px-0001jb-65; Wed, 13 Jun 2012 22:08:17 -0500
+Message-ID: <4FD95599.9070708@realitydiluted.com>
+Date:   Wed, 13 Jun 2012 22:08:09 -0500
+From:   "Steven J. Hill" <sjhill@realitydiluted.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:11.0) Gecko/20120312 Thunderbird/11.0
+MIME-Version: 1.0
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Date:   Wed, 13 Jun 2012 23:53:51 +0200
-In-Reply-To: <20120613145614.GC5516@linux-mips.org>
-References: <1339491792.30984.110.camel@x61.thuisdomein>
-         <20120613145614.GC5516@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3 (3.2.3-3.fc16) 
+CC:     linux-mips@linux-mips.org
+Subject: Re: MIPS: Fixup ordering of micro assembler instructions.
+References: <S1903563Ab2E3UqG/20120530204607Z+6387@eddie.linux-mips.org>
+In-Reply-To: <S1903563Ab2E3UqG/20120530204607Z+6387@eddie.linux-mips.org>
+X-Enigmail-Version: 1.4.1
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0
-X-OriginalArrivalTime: 13 Jun 2012 21:53:52.0207 (UTC) FILETIME=[0562ADF0:01CD49AF]
-X-RcptDomain: linux-mips.org
-X-archive-position: 33632
+X-archive-position: 33633
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pebolle@tiscali.nl
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,33 +38,35 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, 2012-06-13 at 15:56 +0100, Ralf Baechle wrote:
-> On Tue, Jun 12, 2012 at 11:03:12AM +0200, Paul Bolle wrote:
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+On 05/30/2012 03:46 PM, linux-mips@linux-mips.org wrote:
+> Author: Steven J. Hill <sjhill@mips.com> Fri May 11 01:35:47 2012 -0500 
+> Comitter: Ralf Baechle <ralf@linux-mips.org> Wed May 30 21:37:16 2012
+> +0100 Commit: 6e3f8b69731d6dc03afdd47cfdddb0e479a6d2a9 Gitweb: 
+> http://git.linux-mips.org/g/ralf/linux/6e3f8b69731d Branch: master
 > 
-> > No file includes these three headers. It seems they have never been
-> > included since at least v2.6.12-rc2. They can safely be removed.
+> A number of new instructions have been added to the micro assembler
+> causing the list to no longer be in alphabetical order. This patch fixes up
+> the name ordering.
 > 
-> >  arch/mips/include/asm/sibyte/sb1250_l2c.h |  131 -------
-> >  arch/mips/include/asm/sibyte/sb1250_ldt.h |  422 ----------------------
-> >  arch/mips/include/asm/sibyte/sb1250_mc.h  |  550 -----------------------------
+> Signed-off-by: Steven J. Hill <sjhill@mips.com> Cc: 
+> linux-mips@linux-mips.org Patchwork: 
+> https://patchwork.linux-mips.org/patch/3789/ Signed-off-by: Ralf Baechle 
+> <ralf@linux-mips.org>
 > 
-> These headers describe the on-chip hardware of the SB1250 SOC.  Some of
-> the drivers to use them are currently stuck midflight on their path to
-> submission.
+Ralf,
 
-OK, I see. Thanks.
+This patch is fscked. The lines for _bbit0 and _bbit1 are duplicated. Please
+commit a patch to remove the duplicate lines. Thanks.
 
->   The remaining ones I'd like to keep around as documentation
-> or for later use.
+- -Steve
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
 
-I'd say that arch/mips/include/ is were one puts code and
-Documentation/mips/ is were one puts documentation. Can't the unused
-header files you want to keep (preferably with, say, a .txt extension)
-be added to Documentation/mips/?
- 
->   Ditto for your other BCM1480 related patch....
-
-Thanks,
-
-
-Paul Bolle
+iEYEARECAAYFAk/ZVZkACgkQgyK5H2Ic36drewCeKUkFQ27TQFv2H9yC2Qm2PrxG
+y7cAnRWHD8HNU/FD3mKIlkGXEhHor+Xw
+=Oumy
+-----END PGP SIGNATURE-----

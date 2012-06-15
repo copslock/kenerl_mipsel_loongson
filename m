@@ -1,29 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 16:34:20 +0200 (CEST)
-Received: from mail-gg0-f177.google.com ([209.85.161.177]:59024 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 16:37:38 +0200 (CEST)
+Received: from mail-gg0-f177.google.com ([209.85.161.177]:58429 "EHLO
         mail-gg0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1902243Ab2FOOeP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 16:34:15 +0200
-Received: by ggcs5 with SMTP id s5so2556483ggc.36
-        for <multiple recipients>; Fri, 15 Jun 2012 07:34:09 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1903435Ab2FOOhb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 16:37:31 +0200
+Received: by ggcs5 with SMTP id s5so2560604ggc.36
+        for <multiple recipients>; Fri, 15 Jun 2012 07:37:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
-         :content-type:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=sd/6jpH0uDG4Br5cl4Q1HoTVVMJJ6M5ifdE2hbP6e0E=;
-        b=NwlFwwT7/jb+6QAi6TezlV8Cn2mVmEJY+lgyOzw3+dnfB2yow1mvMuwTn8wXYfSlzn
-         yfLpagexYMunGK1YAKIS1ECE/B5mzPc6U/FriWzLzYIlTXK/pOOVbvgN8FmdEHiZk123
-         IfbustG1p2PyVqObtJX8r3gj46Edd4iF7MgabjZXuiOR2P59VT2zO/q0KQ6qMfQkoHJW
-         wg8GYHy9+45dViFnwWT+LZgEg71M9VJvWfVE40GvAsn9xyP0wRqjcUOU6B1z4rByej3B
-         EtmtBT/5wZ/AdSukis6Dpix1N+eF2w6yQiDnYnfi+oVQsX6dDM1ippSNFiRDxDbXbV0Z
-         GPpg==
-Received: by 10.50.170.69 with SMTP id ak5mr2162865igc.47.1339770849369;
-        Fri, 15 Jun 2012 07:34:09 -0700 (PDT)
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=6HFyqvirA94e1OLUoheHDdhLQZ0Fv/Ti2bIlzc8sCZQ=;
+        b=bBYxFUmQuqBPXlZL90Ps2GnokgSuiuPBaI622lkj63+qSMJoiURtoKlLlOfjZlome4
+         QJWFhC/LRk1sAAD9G+2IsZ1c3BpaDz3Hbl1sLj8UjiyVnstcr+HhMAkqPnFd5UZGqdXg
+         hdUbaNqiAtl9TYip4ajHipM2pLq8MjMNoJN63bjSTNutorUZI7huIaP/srFE3pG8lyx5
+         +vnnlV+Dffsfv7GctkE/Zaj4BPMZT/5bjWDl4/e0ED+Jmkpvow1xMovqIKnWmlXf5onq
+         zvF+zghUvCzgdaLrXhBbgcXTXtxJrbvDTEfL4/A6T67aachQBaapFL9waKmrD5bvOgDr
+         fudQ==
+Received: by 10.50.184.165 with SMTP id ev5mr2179999igc.51.1339771045491;
+        Fri, 15 Jun 2012 07:37:25 -0700 (PDT)
 Received: from mars ([159.226.43.42])
-        by mx.google.com with ESMTPS id k4sm2297673igq.16.2012.06.15.07.34.06
+        by mx.google.com with ESMTPS id v17sm2332725igv.7.2012.06.15.07.37.22
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 15 Jun 2012 07:34:08 -0700 (PDT)
-Date:   Fri, 15 Jun 2012 22:34:02 +0800
+        Fri, 15 Jun 2012 07:37:25 -0700 (PDT)
+Date:   Fri, 15 Jun 2012 22:37:18 +0800
 From:   LIU Qi <liuqi82@gmail.com>
 To:     Huacai Chen <chenhuacai@gmail.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
@@ -31,18 +30,18 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH 05/14] MIPS: Loongson 3: Add HT-linked PCI support.
-Message-ID: <20120615143402.GC15800@gmail.com>
+Subject: Re: [PATCH 14/14] MIPS: Loongson: Add a Loongson 3 default config
+ file.
+Message-ID: <20120615143718.GD15800@gmail.com>
 Reply-To: LIU Qi <liuqi82@gmail.com>
 References: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
- <1339747801-28691-6-git-send-email-chenhc@lemote.com>
+ <1339747801-28691-15-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1339747801-28691-6-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1339747801-28691-15-git-send-email-chenhc@lemote.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 33665
+X-archive-position: 33666
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,32 +59,15 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Jun 15, 2012 at 04:09:52PM +0800, Huacai Chen wrote:
- > Loongson family machines use Hyper-Transport bus for inter-core
- > connection and device connection. The PCI bus is a subordinate
- > linked at HT1.
- > 
- > With UEFI-like firmware interface, We don't need PCI irq routing
- > fixup.
- > 
+On Fri, Jun 15, 2012 at 04:10:01PM +0800, Huacai Chen wrote:
  > Signed-off-by: Huacai Chen <chenhc@lemote.com>
  > Signed-off-by: Hongliang Tao <taohl@lemote.com>
  > Signed-off-by: Hua Yan <yanh@lemote.com>
  > ---
- >  arch/mips/Kconfig                              |    9 ++
- >  arch/mips/include/asm/mach-loongson/loongson.h |    7 ++
- >  arch/mips/include/asm/mach-loongson/pci.h      |    5 +
- >  arch/mips/pci/Makefile                         |    1 +
- >  arch/mips/pci/fixup-loongson3.c                |   50 +++++++++++
- >  arch/mips/pci/ops-loongson3.c                  |  104 ++++++++++++++++++++++++
- >  6 files changed, 176 insertions(+), 0 deletions(-)
- >  create mode 100644 arch/mips/pci/fixup-loongson3.c
- >  create mode 100644 arch/mips/pci/ops-loongson3.c
-Fix the following compiling warning please:
+ >  arch/mips/configs/loongson3_defconfig |  704 +++++++++++++++++++++++++++++++++
+ >  1 files changed, 704 insertions(+), 0 deletions(-)
+ >  create mode 100644 arch/mips/configs/loongson3_defconfig
 
-  CC      arch/mips/pci/fixup-loongson3.o
-arch/mips/pci/fixup-loongson3.c: In function ¡®pcibios_map_irq¡¯:
-arch/mips/pci/fixup-loongson3.c:42: warning: passing argument 1 of ¡®print_fixup_info¡¯ discards qualifiers from pointer target type
-arch/mips/pci/fixup-loongson3.c:32: note: expected ¡®struct pci_dev *¡¯ but argument is of type ¡®const struct pci_dev *¡¯
+It is better to generate the defconfig file using `make savedefconfig`.
 
 LIU Qi

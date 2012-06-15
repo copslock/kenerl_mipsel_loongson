@@ -1,51 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 12:05:19 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:35259 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1902755Ab2FOKFM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 12:05:12 +0200
-Received: by lbbgg6 with SMTP id gg6so2870695lbb.36
-        for <linux-mips@linux-mips.org>; Fri, 15 Jun 2012 03:05:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding
-         :x-gm-message-state;
-        bh=YbRW9N7R8PShqBjG6UJUJbeNfy2rJg3lDNRcP0osyzY=;
-        b=UolxORP0+5EwOFPoS20S+nNbzbIYZV+mWVfl4lTDLYuD6pAzEOnMMlyzJWOTnNd193
-         EFqaMxAAm3LacdJzUhP4iXOm76RtqWNlLk4OS133U3ob9zfkTYk7q7vDKDhRrhuEx/OV
-         AfGP1Do7iShJnE7PayFHLoZwKNDAyESTIBGYb0joZDhRo5o7VxnbdKvgo/RcYIa7NEMT
-         qqPStHfZtusDc/Oxsq9H9qG5WhUxIY2npseuirPIJyTqf08Zr3ejpbABNJ2UzoxV+TzB
-         BiHLczQkuN4Jy1oYf+Wuve067qwx6/Ty224GOLERJ/KtMbilCXUL1I/yjInLvP6f+SOz
-         YSHQ==
-Received: by 10.112.30.41 with SMTP id p9mr2422863lbh.26.1339754706588;
-        Fri, 15 Jun 2012 03:05:06 -0700 (PDT)
-Received: from [192.168.2.2] (ppp91-79-93-154.pppoe.mtu-net.ru. [91.79.93.154])
-        by mx.google.com with ESMTPS id j3sm5981722lbh.0.2012.06.15.03.05.03
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 15 Jun 2012 03:05:04 -0700 (PDT)
-Message-ID: <4FDB08AC.8010208@mvista.com>
-Date:   Fri, 15 Jun 2012 14:04:28 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
-MIME-Version: 1.0
-To:     Huacai Chen <chenhuacai@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
-        linux-ide@vger.kernel.org
-Subject: Re: [PATCH 09/14] ata: Use 32bit DMA in AHCI for Loongson 3.
-References: <1339747801-28691-1-git-send-email-chenhc@lemote.com> <1339747801-28691-10-git-send-email-chenhc@lemote.com>
-In-Reply-To: <1339747801-28691-10-git-send-email-chenhc@lemote.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQnFMqwIR7o+YKzi+ZjLqbVlWqk9eDDLSYsgLjIENXrYSUdxmv2+TKJJLCEre2QfvJsgaAXc
-X-archive-position: 33654
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 12:54:20 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:59770 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903418Ab2FOKyQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 12:54:16 +0200
+Received: by pbbrq13 with SMTP id rq13so5371009pbb.36
+        for <multiple recipients>; Fri, 15 Jun 2012 03:54:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=5waUvXzCXiT/ZcZa2raCM7L/pxrSZX6oKxL3jOwSKko=;
+        b=OqXmR9k4h2Ans1iWKd5r9sU/gwVdVkRSDBkrXfjsMhw0NEDXqw73JG3A4s3s417h+K
+         V253W0FnaRVU5Z/lHGGuiCFlWX8bNtFq0Lzv37tNvGt6OowRpg2u3JHD8611tte6cOHS
+         +tAaH33k/Z7bE1EzOd274PD7vtXvl628LkdFMpOpXq/tCMUqqusC/1gKFBvLQ0MMHMap
+         G3KJEDDreEBpLHTN/zCsX1/qHHKMcErCeLC4gP82zGYSYjs6JDmE9f8S9PK9VbQdC7Qm
+         FkgIh6RkKJmF+9Dj4JrtuSe4HZZ7VUZEJqdilpDQH+lut9l2Hculjhy2TYXqE2ZkABzz
+         dGgw==
+Received: by 10.68.213.7 with SMTP id no7mr16598093pbc.3.1339757649680;
+        Fri, 15 Jun 2012 03:54:09 -0700 (PDT)
+Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
+        by mx.google.com with ESMTPS id gj8sm12873641pbc.39.2012.06.15.03.54.01
+        (version=SSLv3 cipher=OTHER);
+        Fri, 15 Jun 2012 03:54:08 -0700 (PDT)
+From:   Kelvin Cheung <keguang.zhang@gmail.com>
+To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org
+Cc:     wuzhangjin@gmail.com, zhzhl555@gmail.com,
+        Kelvin Cheung <keguang.zhang@gmail.com>
+Subject: [PATCH V7 0/4] MIPS: Add support for Loongson1B
+Date:   Fri, 15 Jun 2012 18:53:33 +0800
+Message-Id: <1339757617-2187-1-git-send-email-keguang.zhang@gmail.com>
+X-Mailer: git-send-email 1.7.1
+X-archive-position: 33655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: keguang.zhang@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,31 +48,81 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+These patches add support for Loongson1B.
 
-On 15-06-2012 12:09, Huacai Chen wrote:
+Changelog:
 
-> Signed-off-by: Huacai Chen<chenhc@lemote.com>
-> Signed-off-by: Hongliang Tao<taohl@lemote.com>
-> Signed-off-by: Hua Yan<yanh@lemote.com>
+V7: USB support for Loongson1B has been accepted and available since Linux-3.4.
+    RTC support for Loongson1B has been accepted and available since Linux-3.4.
+    So, remove the two parts from previous patches.
 
-    You  should have CCed the 'linux-ide' mailing list.
+V6: Add USB support for Loongson1B.
 
-> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-> index ebaf67e..3e3cfd8 100644
-> --- a/drivers/ata/ahci.c
-> +++ b/drivers/ata/ahci.c
-> @@ -183,7 +183,12 @@ static const struct ata_port_info ahci_port_info[] = {
->   	},
->   	[board_ahci_sb700] =	/* for SB700 and SB800 */
->   	{
-> +#ifndef CONFIG_CPU_LOONGSON3
->   		AHCI_HFLAGS	(AHCI_HFLAG_IGN_SERR_INTERNAL),
-> +#else
-> +		AHCI_HFLAGS	(AHCI_HFLAG_IGN_SERR_INTERNAL |
-> +						AHCI_HFLAG_32BIT_ONLY),
-> +#endif
+V5: Add IS_ENABLED() macro for platform devices.
 
-    No, this #ifdef'ery won't do. You should add a new board type.
+V4: Split the RTC patch, and merge the arch/mips parts into patch 2/4.
+   Use 'KSEG1ADDR' instead of 'ioremap()' in registers definitions.
 
-MBR, Sergei
+V3: Add RTC support for Loongson1B.
+
+V2: Add Ethernet support for Loongson1B.
+
+V1: Add basic support for Loongson1B.
+---
+
+Kelvin Cheung (4):
+  MIPS: Add CPU support for Loongson1B
+  MIPS: Add board support for Loongson1B
+  MIPS: Add Makefile and Kconfig for Loongson1B
+  MIPS: Add defconfig for Loongson1B
+
+ arch/mips/Kbuild.platforms                       |    1 +
+ arch/mips/Kconfig                                |   31 ++++
+ arch/mips/configs/ls1b_defconfig                 |  108 ++++++++++++++
+ arch/mips/include/asm/cpu.h                      |    3 +-
+ arch/mips/include/asm/mach-loongson1/irq.h       |   73 ++++++++++
+ arch/mips/include/asm/mach-loongson1/loongson1.h |   44 ++++++
+ arch/mips/include/asm/mach-loongson1/platform.h  |   23 +++
+ arch/mips/include/asm/mach-loongson1/prom.h      |   24 +++
+ arch/mips/include/asm/mach-loongson1/regs-clk.h  |   33 +++++
+ arch/mips/include/asm/mach-loongson1/regs-wdt.h  |   22 +++
+ arch/mips/include/asm/mach-loongson1/war.h       |   25 ++++
+ arch/mips/include/asm/module.h                   |    2 +
+ arch/mips/kernel/cpu-probe.c                     |   15 ++
+ arch/mips/kernel/perf_event_mipsxx.c             |    5 +
+ arch/mips/kernel/traps.c                         |    1 +
+ arch/mips/loongson1/Kconfig                      |   21 +++
+ arch/mips/loongson1/Makefile                     |   11 ++
+ arch/mips/loongson1/Platform                     |    7 +
+ arch/mips/loongson1/common/Makefile              |    5 +
+ arch/mips/loongson1/common/clock.c               |  165 ++++++++++++++++++++++
+ arch/mips/loongson1/common/irq.c                 |  147 +++++++++++++++++++
+ arch/mips/loongson1/common/platform.c            |  130 +++++++++++++++++
+ arch/mips/loongson1/common/prom.c                |   87 ++++++++++++
+ arch/mips/loongson1/common/reset.c               |   45 ++++++
+ arch/mips/loongson1/common/setup.c               |   29 ++++
+ arch/mips/loongson1/ls1b/Makefile                |    5 +
+ arch/mips/loongson1/ls1b/board.c                 |   39 +++++
+ arch/mips/oprofile/common.c                      |    1 +
+ arch/mips/oprofile/op_model_mipsxx.c             |    4 +
+ 29 files changed, 1105 insertions(+), 1 deletions(-)
+ create mode 100644 arch/mips/configs/ls1b_defconfig
+ create mode 100644 arch/mips/include/asm/mach-loongson1/irq.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/loongson1.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/platform.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/prom.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/regs-clk.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/regs-wdt.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/war.h
+ create mode 100644 arch/mips/loongson1/Kconfig
+ create mode 100644 arch/mips/loongson1/Makefile
+ create mode 100644 arch/mips/loongson1/Platform
+ create mode 100644 arch/mips/loongson1/common/Makefile
+ create mode 100644 arch/mips/loongson1/common/clock.c
+ create mode 100644 arch/mips/loongson1/common/irq.c
+ create mode 100644 arch/mips/loongson1/common/platform.c
+ create mode 100644 arch/mips/loongson1/common/prom.c
+ create mode 100644 arch/mips/loongson1/common/reset.c
+ create mode 100644 arch/mips/loongson1/common/setup.c
+ create mode 100644 arch/mips/loongson1/ls1b/Makefile
+ create mode 100644 arch/mips/loongson1/ls1b/board.c

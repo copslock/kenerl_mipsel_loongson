@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 12:54:45 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:34340 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903423Ab2FOKyY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 12:54:24 +0200
-Received: by dadm1 with SMTP id m1so3910065dad.36
-        for <multiple recipients>; Fri, 15 Jun 2012 03:54:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 12:55:08 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:59770 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903424Ab2FOKya (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 12:54:30 +0200
+Received: by mail-pb0-f49.google.com with SMTP id rq13so5371009pbb.36
+        for <multiple recipients>; Fri, 15 Jun 2012 03:54:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=nHHJzYOXmGhot7pYuc05BU+70fUTtF/NG+aawFGCjsY=;
-        b=GRinBX5beL9xKoQ7Ao9xkqRJDoIfAadOxiHACmH36Bpj2Y0fLO1LLr6o/WMygF3tZJ
-         sIlpIta8hiDLLhoCKNJYKb+O/zYnJGsi7gZBLjhwd1hU0A0FBinVUYIFgt7+AWhS96/o
-         DDKN5J6KMa2TJKDE743UcUow3pj9LT/215BH+sES+hjDWvbNApYXrZbKm5ElGHkoOk3d
-         B6GRgKupzKLZu60FMWdXL20ohi7xGXxBkqwx9lgIq2GKBOZuvNfv7kWJBSEZnxjt1LtE
-         vJsMhEbU3QhKgS8UCmQK74w7Wa4W/y5db7yrWryVxUj28jXmP4Sf86G4GGNLssB0EEa5
-         xljw==
-Received: by 10.68.227.198 with SMTP id sc6mr18829287pbc.138.1339757657697;
-        Fri, 15 Jun 2012 03:54:17 -0700 (PDT)
+        bh=0svypPdkJUDOLIpHMM/Y93ic0ZEiGnb9z6ddFgkT0CU=;
+        b=Jy9EXONuDD5K4+oxyvMJBk+kKFYf4U3IlzuQ1T46S5MjSimA33AXad57AarQ8Zy0M2
+         SHqNFHteNddyLz9/aIGPEB1oP6DjjiuiGwbLswUamMhTg6VZYOzM72PSuUURm07RmX8A
+         ijTyXnhZLyt3PdSp5jM3wf6/vhlWFAyeCEXeqDA6A691uZjjR2psYOWse3D/SRxzAVxR
+         zdYI5Lo9ccia0HMPY6xL0GGy5LiH+P8myVHjBWanW35Nj3g1bsplaR3G/hDw48q3u9Se
+         XXaxH8mjb40BMZOBjlH5eAjMnUdNhCjwcJj2W3FTEh30NT+wHDc1uYFEYvkuI3KiRkVx
+         0+8Q==
+Received: by 10.68.202.99 with SMTP id kh3mr18016360pbc.157.1339757669029;
+        Fri, 15 Jun 2012 03:54:29 -0700 (PDT)
 Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
-        by mx.google.com with ESMTPS id gj8sm12873641pbc.39.2012.06.15.03.54.10
+        by mx.google.com with ESMTPS id gj8sm12873641pbc.39.2012.06.15.03.54.23
         (version=SSLv3 cipher=OTHER);
-        Fri, 15 Jun 2012 03:54:16 -0700 (PDT)
+        Fri, 15 Jun 2012 03:54:28 -0700 (PDT)
 From:   Kelvin Cheung <keguang.zhang@gmail.com>
 To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         ralf@linux-mips.org
 Cc:     wuzhangjin@gmail.com, zhzhl555@gmail.com,
         Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH V7 1/4] MIPS: Add CPU support for Loongson1B
-Date:   Fri, 15 Jun 2012 18:53:34 +0800
-Message-Id: <1339757617-2187-2-git-send-email-keguang.zhang@gmail.com>
+Subject: [PATCH V7 3/4] MIPS: Add Makefile and Kconfig for Loongson1B
+Date:   Fri, 15 Jun 2012 18:53:36 +0800
+Message-Id: <1339757617-2187-4-git-send-email-keguang.zhang@gmail.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1339757617-2187-1-git-send-email-keguang.zhang@gmail.com>
 References: <1339757617-2187-1-git-send-email-keguang.zhang@gmail.com>
-X-archive-position: 33656
+X-archive-position: 33657
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,151 +50,184 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This patch adds CPU support for Loongson1B.
-
-Loongson 1B is a 32-bit SoC designed by Institute of
-Computing Technology (ICT), Chinese Academy of Sciences (CAS),
-which implements the MIPS32 release 2 instruction set.
+This patch adds Makefile and Kconfig related to Loongson1B.
 
 Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
 ---
- arch/mips/include/asm/cpu.h          |    3 ++-
- arch/mips/include/asm/module.h       |    2 ++
- arch/mips/kernel/cpu-probe.c         |   15 +++++++++++++++
- arch/mips/kernel/perf_event_mipsxx.c |    5 +++++
- arch/mips/kernel/traps.c             |    1 +
- arch/mips/oprofile/common.c          |    1 +
- arch/mips/oprofile/op_model_mipsxx.c |    4 ++++
- 7 files changed, 30 insertions(+), 1 deletions(-)
+ arch/mips/Kbuild.platforms          |    1 +
+ arch/mips/Kconfig                   |   31 +++++++++++++++++++++++++++++++
+ arch/mips/loongson1/Kconfig         |   21 +++++++++++++++++++++
+ arch/mips/loongson1/Makefile        |   11 +++++++++++
+ arch/mips/loongson1/Platform        |    7 +++++++
+ arch/mips/loongson1/common/Makefile |    5 +++++
+ arch/mips/loongson1/ls1b/Makefile   |    5 +++++
+ 7 files changed, 81 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/loongson1/Kconfig
+ create mode 100644 arch/mips/loongson1/Makefile
+ create mode 100644 arch/mips/loongson1/Platform
+ create mode 100644 arch/mips/loongson1/common/Makefile
+ create mode 100644 arch/mips/loongson1/ls1b/Makefile
 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 95e40c1..d9a6b84 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -199,6 +199,7 @@
- #define PRID_REV_34K_V1_0_2	0x0022
- #define PRID_REV_LOONGSON2E	0x0002
- #define PRID_REV_LOONGSON2F	0x0003
-+#define PRID_REV_LOONGSON1B	0x0020
+diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
+index 5ce8029..d64786d 100644
+--- a/arch/mips/Kbuild.platforms
++++ b/arch/mips/Kbuild.platforms
+@@ -14,6 +14,7 @@ platforms += jz4740
+ platforms += lantiq
+ platforms += lasat
+ platforms += loongson
++platforms += loongson1
+ platforms += mipssim
+ platforms += mti-malta
+ platforms += netlogic
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 08dfc79..61e1459 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -265,6 +265,17 @@ config MACH_LOONGSON
+ 	  Chinese Academy of Sciences (CAS) in the People's Republic
+ 	  of China. The chief architect is Professor Weiwu Hu.
  
- /*
-  * Older processors used to encode processor version and revision in two
-@@ -261,7 +262,7 @@ enum cpu_type_enum {
- 	 */
- 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
- 	CPU_ALCHEMY, CPU_PR4450, CPU_BMIPS32, CPU_BMIPS3300, CPU_BMIPS4350,
--	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_M14KC,
-+	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_M14KC, CPU_LOONGSON1,
- 
- 	/*
- 	 * MIPS64 class processors
-diff --git a/arch/mips/include/asm/module.h b/arch/mips/include/asm/module.h
-index 5300080..30db31b 100644
---- a/arch/mips/include/asm/module.h
-+++ b/arch/mips/include/asm/module.h
-@@ -119,6 +119,8 @@ search_module_dbetables(unsigned long addr)
- #define MODULE_PROC_FAMILY "SB1 "
- #elif defined CONFIG_CPU_LOONGSON2
- #define MODULE_PROC_FAMILY "LOONGSON2 "
-+#elif defined CONFIG_CPU_LOONGSON1
-+#define MODULE_PROC_FAMILY "LOONGSON1 "
- #elif defined CONFIG_CPU_CAVIUM_OCTEON
- #define MODULE_PROC_FAMILY "OCTEON "
- #elif defined CONFIG_CPU_XLR
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index f4630e1..0a281c6 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -37,6 +37,8 @@
- void (*cpu_wait)(void);
- EXPORT_SYMBOL(cpu_wait);
- 
-+static void __cpuinit decode_configs(struct cpuinfo_mips *c);
++config MACH_LOONGSON1
++	bool "Loongson1 family of machines"
++	select SYS_SUPPORTS_ZBOOT
++	help
++	  This enables the support of Loongson1 family of machines.
 +
- static void r3081_wait(void)
- {
- 	unsigned long cfg = read_c0_conf();
-@@ -192,6 +194,7 @@ void __init check_wait(void)
- 	case CPU_JZRISC:
- 	case CPU_XLR:
- 	case CPU_XLP:
-+	case CPU_LOONGSON1:
- 		cpu_wait = r4k_wait;
- 		break;
- 
-@@ -638,6 +641,18 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 			     MIPS_CPU_32FPR;
- 		c->tlbsize = 64;
- 		break;
-+	case PRID_IMP_LOONGSON1:
-+		decode_configs(c);
++	  Loongson1 is a family of 32-bit MIPS-compatible SoCs.
++	  developed at Institute of Computing Technology (ICT),
++	  Chinese Academy of Sciences (CAS) in the People's Republic
++	  of China.
 +
-+		c->cputype = CPU_LOONGSON1;
+ config MIPS_MALTA
+ 	bool "MIPS Malta board"
+ 	select ARCH_MAY_HAVE_PC_FDC
+@@ -838,6 +849,7 @@ source "arch/mips/txx9/Kconfig"
+ source "arch/mips/vr41xx/Kconfig"
+ source "arch/mips/cavium-octeon/Kconfig"
+ source "arch/mips/loongson/Kconfig"
++source "arch/mips/loongson1/Kconfig"
+ source "arch/mips/netlogic/Kconfig"
+ 
+ endmenu
+@@ -1219,6 +1231,14 @@ config CPU_LOONGSON2F
+ 	  have a similar programming interface with FPGA northbridge used in
+ 	  Loongson2E.
+ 
++config CPU_LOONGSON1B
++	bool "Loongson 1B"
++	depends on SYS_HAS_CPU_LOONGSON1B
++	select CPU_LOONGSON1
++	help
++	  The Loongson 1B is a 32-bit SoC, which implements the MIPS32
++	  release 2 instruction set.
 +
-+		switch (c->processor_id & PRID_REV_MASK) {
-+		case PRID_REV_LOONGSON1B:
-+			__cpu_name[cpu] = "Loongson 1B";
-+			break;
-+		}
+ config CPU_MIPS32_R1
+ 	bool "MIPS32 Release 1"
+ 	depends on SYS_HAS_CPU_MIPS32_R1
+@@ -1548,6 +1568,14 @@ config CPU_LOONGSON2
+ 	select CPU_SUPPORTS_64BIT_KERNEL
+ 	select CPU_SUPPORTS_HIGHMEM
+ 
++config CPU_LOONGSON1
++	bool
++	select CPU_MIPS32
++	select CPU_MIPSR2
++	select CPU_HAS_PREFETCH
++	select CPU_SUPPORTS_32BIT_KERNEL
++	select CPU_SUPPORTS_HIGHMEM
 +
-+		break;
- 	}
- }
+ config CPU_BMIPS
+ 	bool
+ 	select CPU_MIPS32
+@@ -1566,6 +1594,9 @@ config SYS_HAS_CPU_LOONGSON2F
+ 	select CPU_SUPPORTS_ADDRWINCFG if 64BIT
+ 	select CPU_SUPPORTS_UNCACHED_ACCELERATED
  
-diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
-index eb5e394..2f28d3b 100644
---- a/arch/mips/kernel/perf_event_mipsxx.c
-+++ b/arch/mips/kernel/perf_event_mipsxx.c
-@@ -1559,6 +1559,11 @@ init_hw_perf_events(void)
- 		mipspmu.general_event_map = &mipsxxcore_event_map;
- 		mipspmu.cache_event_map = &mipsxxcore_cache_map;
- 		break;
-+	case CPU_LOONGSON1:
-+		mipspmu.name = "mips/loongson1";
-+		mipspmu.general_event_map = &mipsxxcore_event_map;
-+		mipspmu.cache_event_map = &mipsxxcore_cache_map;
-+		break;
- 	case CPU_CAVIUM_OCTEON:
- 	case CPU_CAVIUM_OCTEON_PLUS:
- 	case CPU_CAVIUM_OCTEON2:
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index c3c2935..9be3df1 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1253,6 +1253,7 @@ static inline void parity_protection_init(void)
- 
- 	case CPU_5KC:
- 	case CPU_5KE:
-+	case CPU_LOONGSON1:
- 		write_c0_ecc(0x80000000);
- 		back_to_back_c0_hazard();
- 		/* Set the PE bit (bit 31) in the c0_errctl register. */
-diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
-index b6e3782..65420c8 100644
---- a/arch/mips/oprofile/common.c
-+++ b/arch/mips/oprofile/common.c
-@@ -90,6 +90,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
- 	case CPU_R10000:
- 	case CPU_R12000:
- 	case CPU_R14000:
-+	case CPU_LOONGSON1:
- 		lmodel = &op_model_mipsxx_ops;
- 		break;
- 
-diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-index 52da646..28ea1a4 100644
---- a/arch/mips/oprofile/op_model_mipsxx.c
-+++ b/arch/mips/oprofile/op_model_mipsxx.c
-@@ -368,6 +368,10 @@ static int __init mipsxx_init(void)
- 		op_model_mipsxx_ops.cpu_type = "mips/sb1";
- 		break;
- 
-+	case CPU_LOONGSON1:
-+		op_model_mipsxx_ops.cpu_type = "mips/loongson1";
-+		break;
++config SYS_HAS_CPU_LOONGSON1B
++	bool
 +
- 	default:
- 		printk(KERN_ERR "Profiling unsupported for this CPU\n");
+ config SYS_HAS_CPU_MIPS32_R1
+ 	bool
  
+diff --git a/arch/mips/loongson1/Kconfig b/arch/mips/loongson1/Kconfig
+new file mode 100644
+index 0000000..237fa21
+--- /dev/null
++++ b/arch/mips/loongson1/Kconfig
+@@ -0,0 +1,21 @@
++if MACH_LOONGSON1
++
++choice
++	prompt "Machine Type"
++
++config LOONGSON1_LS1B
++	bool "Loongson LS1B board"
++	select CEVT_R4K
++	select CSRC_R4K
++	select SYS_HAS_CPU_LOONGSON1B
++	select DMA_NONCOHERENT
++	select BOOT_ELF32
++	select IRQ_CPU
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select SYS_SUPPORTS_HIGHMEM
++	select SYS_HAS_EARLY_PRINTK
++
++endchoice
++
++endif # MACH_LOONGSON1
+diff --git a/arch/mips/loongson1/Makefile b/arch/mips/loongson1/Makefile
+new file mode 100644
+index 0000000..e9123c2
+--- /dev/null
++++ b/arch/mips/loongson1/Makefile
+@@ -0,0 +1,11 @@
++#
++# Common code for all Loongson1 based systems
++#
++
++obj-$(CONFIG_MACH_LOONGSON1) += common/
++
++#
++# Loongson LS1B board
++#
++
++obj-$(CONFIG_LOONGSON1_LS1B)  += ls1b/
+diff --git a/arch/mips/loongson1/Platform b/arch/mips/loongson1/Platform
+new file mode 100644
+index 0000000..92804c6
+--- /dev/null
++++ b/arch/mips/loongson1/Platform
+@@ -0,0 +1,7 @@
++cflags-$(CONFIG_CPU_LOONGSON1)  += \
++	$(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
++	-Wa,-mips32r2 -Wa,--trap
++
++platform-$(CONFIG_MACH_LOONGSON1)	+= loongson1/
++cflags-$(CONFIG_MACH_LOONGSON1)		+= -I$(srctree)/arch/mips/include/asm/mach-loongson1
++load-$(CONFIG_LOONGSON1_LS1B)		+= 0xffffffff80010000
+diff --git a/arch/mips/loongson1/common/Makefile b/arch/mips/loongson1/common/Makefile
+new file mode 100644
+index 0000000..b279770
+--- /dev/null
++++ b/arch/mips/loongson1/common/Makefile
+@@ -0,0 +1,5 @@
++#
++# Makefile for common code of loongson1 based machines.
++#
++
++obj-y	+= clock.o irq.o platform.o prom.o reset.o setup.o
+diff --git a/arch/mips/loongson1/ls1b/Makefile b/arch/mips/loongson1/ls1b/Makefile
+new file mode 100644
+index 0000000..891eac4
+--- /dev/null
++++ b/arch/mips/loongson1/ls1b/Makefile
+@@ -0,0 +1,5 @@
++#
++# Makefile for loongson1B based machines.
++#
++
++obj-y += board.o
 -- 
 1.7.1

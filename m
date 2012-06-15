@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 10:15:01 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 10:15:31 +0200 (CEST)
 Received: from mail-pz0-f49.google.com ([209.85.210.49]:53092 "EHLO
         mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903392Ab2FOINH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 10:13:07 +0200
+        by eddie.linux-mips.org with ESMTP id S1903400Ab2FOINP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 10:13:15 +0200
 Received: by mail-pz0-f49.google.com with SMTP id m1so3729829dad.36
-        for <multiple recipients>; Fri, 15 Jun 2012 01:13:06 -0700 (PDT)
+        for <multiple recipients>; Fri, 15 Jun 2012 01:13:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=RRG3tp1QF/0piBDT+rSfd4xD2BwWMF655GNe9wLSZqo=;
-        b=oegZ2c48NcT4kZZP088fzjbsktbRTwTHRQ8GgUdY7wtGBvhN6x7rcOxObecFtiehtj
-         j1DaQCzWO+3xrvew3mYHvOeSqXK48U10bWig/AOP5F1xOCyxuAaUjjh6caySBCyessvE
-         +qJNmnE6vLqZRUoZf5lD51pA7F6zKoDO95vA+J5uGAfE079vX7BCHe+hEyAGo4JWe4aL
-         Z9PXEwG0oNMXBjj8rJrdDfhVqD7aK7L70qxDXytMHCPTouT3ZSvwKfWKre2J1mHzLhc8
-         QPHiwy2PqWtz4J16/rfqGGzNDoLjhS+QPfbRGHuhDJax4No3whcwO4n6utGzjpWHupkp
-         +5dw==
-Received: by 10.68.225.6 with SMTP id rg6mr17619714pbc.100.1339747986120;
-        Fri, 15 Jun 2012 01:13:06 -0700 (PDT)
+        bh=yPM7rtzExYEGrUy2uxJAjIC9VlctSwsqbU/J/tFmDxA=;
+        b=KtmhbOuRz1EJNCoEDJq3ARWedEcISCG1gj5Cfd0wx+WK4pE11+VeN7vN6akADqW3Qk
+         OJCR4ubo0ljxJn3QZm7EMnzUiSH15aMECDt55G0yKGXqmYHGTzybBywGlyekbOwK2H0M
+         qZJQlKuJdioxtZ3rjaJsO1fehTfIiorvZdnz/A82ffbi8V0zFYW3PxWIV+HqC8Su0+xS
+         e5HyKl6fb83tiZpyL38gn/m61NxWG/i+1fQuv1+ryw/3xJBSM65idiRvh7qHzaTeOrrl
+         U9schJVWw50AnjRK/c4y8kYhEY7GdJTkVMWcLhcwA6ie9vj152B2rCmnL1dmRmmvGu2L
+         xwiA==
+Received: by 10.68.237.166 with SMTP id vd6mr17157287pbc.139.1339747994375;
+        Fri, 15 Jun 2012 01:13:14 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id nh8sm12437247pbc.60.2012.06.15.01.13.00
+        by mx.google.com with ESMTPS id nh8sm12437247pbc.60.2012.06.15.01.13.07
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 15 Jun 2012 01:13:05 -0700 (PDT)
+        Fri, 15 Jun 2012 01:13:13 -0700 (PDT)
 From:   Huacai Chen <chenhuacai@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH 09/14] ata: Use 32bit DMA in AHCI for Loongson 3.
-Date:   Fri, 15 Jun 2012 16:09:56 +0800
-Message-Id: <1339747801-28691-10-git-send-email-chenhc@lemote.com>
+Subject: [PATCH 10/14] drm/radeon: Make radeon card usable for Loongson.
+Date:   Fri, 15 Jun 2012 16:09:57 +0800
+Message-Id: <1339747801-28691-11-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
 References: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
-X-archive-position: 33647
+X-archive-position: 33648
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,29 +51,165 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+1, Use 32bit DMA as a workaround.
+2, Read vga bios offered by system firmware.
+3, Handle io prot correctly for MIPS.
+4, Don't use swiotlb on Loongson machines.
+
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Hongliang Tao <taohl@lemote.com>
 Signed-off-by: Hua Yan <yanh@lemote.com>
 ---
- drivers/ata/ahci.c |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+ drivers/gpu/drm/drm_vm.c               |    2 +-
+ drivers/gpu/drm/radeon/radeon_bios.c   |   32 ++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/radeon/radeon_device.c |    5 +++++
+ drivers/gpu/drm/radeon/radeon_ttm.c    |    6 +++---
+ drivers/gpu/drm/ttm/ttm_bo_util.c      |    2 +-
+ include/drm/drm_sarea.h                |    2 ++
+ 6 files changed, 44 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index ebaf67e..3e3cfd8 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -183,7 +183,12 @@ static const struct ata_port_info ahci_port_info[] = {
- 	},
- 	[board_ahci_sb700] =	/* for SB700 and SB800 */
- 	{
-+#ifndef CONFIG_CPU_LOONGSON3
- 		AHCI_HFLAGS	(AHCI_HFLAG_IGN_SERR_INTERNAL),
-+#else
-+		AHCI_HFLAGS	(AHCI_HFLAG_IGN_SERR_INTERNAL |
-+						AHCI_HFLAG_32BIT_ONLY),
+diff --git a/drivers/gpu/drm/drm_vm.c b/drivers/gpu/drm/drm_vm.c
+index 961ee08..3f06166 100644
+--- a/drivers/gpu/drm/drm_vm.c
++++ b/drivers/gpu/drm/drm_vm.c
+@@ -62,7 +62,7 @@ static pgprot_t drm_io_prot(uint32_t map_type, struct vm_area_struct *vma)
+ 		tmp = pgprot_writecombine(tmp);
+ 	else
+ 		tmp = pgprot_noncached(tmp);
+-#elif defined(__sparc__) || defined(__arm__)
++#elif defined(__sparc__) || defined(__arm__) || defined(__mips__)
+ 	tmp = pgprot_noncached(tmp);
+ #endif
+ 	return tmp;
+diff --git a/drivers/gpu/drm/radeon/radeon_bios.c b/drivers/gpu/drm/radeon/radeon_bios.c
+index 501f488..2630e22 100644
+--- a/drivers/gpu/drm/radeon/radeon_bios.c
++++ b/drivers/gpu/drm/radeon/radeon_bios.c
+@@ -29,6 +29,7 @@
+ #include "radeon_reg.h"
+ #include "radeon.h"
+ #include "atom.h"
++#include <asm/bootinfo.h>
+ 
+ #include <linux/vga_switcheroo.h>
+ #include <linux/slab.h>
+@@ -73,6 +74,32 @@ static bool igp_read_bios_from_vram(struct radeon_device *rdev)
+ 	return true;
+ }
+ 
++#ifdef CONFIG_CPU_LOONGSON3
++extern u64 vgabios_addr;
++static bool loongson3_read_bios(struct radeon_device *rdev)
++{
++	u8 *bios;
++	resource_size_t size = 512 * 1024; /* ??? */
++
++	rdev->bios = NULL;
++
++	bios = (u8 *)vgabios_addr;
++	if (!bios) {
++		return false;
++	}
++
++	if (size == 0 || bios[0] != 0x55 || bios[1] != 0xaa) {
++		return false;
++	}
++	rdev->bios = kmalloc(size, GFP_KERNEL);
++	if (rdev->bios == NULL) {
++		return false;
++	}
++	memcpy(rdev->bios, bios, size);
++	return true;
++}
 +#endif
- 		.flags		= AHCI_FLAG_COMMON,
- 		.pio_mask	= ATA_PIO4,
- 		.udma_mask	= ATA_UDMA6,
++
+ static bool radeon_read_bios(struct radeon_device *rdev)
+ {
+ 	uint8_t __iomem *bios;
+@@ -490,6 +517,11 @@ bool radeon_get_bios(struct radeon_device *rdev)
+ 	if (r == false) {
+ 		r = radeon_read_disabled_bios(rdev);
+ 	}
++#ifdef CONFIG_CPU_LOONGSON3
++	if (r == false) {
++		r = loongson3_read_bios(rdev);
++	}
++#endif
+ 	if (r == false || rdev->bios == NULL) {
+ 		DRM_ERROR("Unable to locate a BIOS ROM\n");
+ 		rdev->bios = NULL;
+diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/radeon/radeon_device.c
+index 066c98b..8aac7ab 100644
+--- a/drivers/gpu/drm/radeon/radeon_device.c
++++ b/drivers/gpu/drm/radeon/radeon_device.c
+@@ -777,6 +777,11 @@ int radeon_device_init(struct radeon_device *rdev,
+ 	    (rdev->family < CHIP_RS400))
+ 		rdev->need_dma32 = true;
+ 
++#ifdef CONFIG_CPU_LOONGSON3
++	/* Workaround: Loongson 3 doesn't support 40-bits DMA */
++	rdev->need_dma32 = true;
++#endif
++
+ 	dma_bits = rdev->need_dma32 ? 32 : 40;
+ 	r = pci_set_dma_mask(rdev->pdev, DMA_BIT_MASK(dma_bits));
+ 	if (r) {
+diff --git a/drivers/gpu/drm/radeon/radeon_ttm.c b/drivers/gpu/drm/radeon/radeon_ttm.c
+index c94a225..f49bdd1 100644
+--- a/drivers/gpu/drm/radeon/radeon_ttm.c
++++ b/drivers/gpu/drm/radeon/radeon_ttm.c
+@@ -630,7 +630,7 @@ static int radeon_ttm_tt_populate(struct ttm_tt *ttm)
+ 	}
+ #endif
+ 
+-#ifdef CONFIG_SWIOTLB
++#if defined(CONFIG_SWIOTLB) && !defined(CONFIG_CPU_LOONGSON3)
+ 	if (swiotlb_nr_tbl()) {
+ 		return ttm_dma_populate(&gtt->ttm, rdev->dev);
+ 	}
+@@ -676,7 +676,7 @@ static void radeon_ttm_tt_unpopulate(struct ttm_tt *ttm)
+ 	}
+ #endif
+ 
+-#ifdef CONFIG_SWIOTLB
++#if defined(CONFIG_SWIOTLB) && !defined(CONFIG_CPU_LOONGSON3)
+ 	if (swiotlb_nr_tbl()) {
+ 		ttm_dma_unpopulate(&gtt->ttm, rdev->dev);
+ 		return;
+@@ -906,7 +906,7 @@ static int radeon_ttm_debugfs_init(struct radeon_device *rdev)
+ 	radeon_mem_types_list[i].show = &ttm_page_alloc_debugfs;
+ 	radeon_mem_types_list[i].driver_features = 0;
+ 	radeon_mem_types_list[i++].data = NULL;
+-#ifdef CONFIG_SWIOTLB
++#if defined(CONFIG_SWIOTLB) && !defined(CONFIG_CPU_LOONGSON3)
+ 	if (swiotlb_nr_tbl()) {
+ 		sprintf(radeon_mem_types_names[i], "ttm_dma_page_pool");
+ 		radeon_mem_types_list[i].name = radeon_mem_types_names[i];
+diff --git a/drivers/gpu/drm/ttm/ttm_bo_util.c b/drivers/gpu/drm/ttm/ttm_bo_util.c
+index f8187ea..0df71ea 100644
+--- a/drivers/gpu/drm/ttm/ttm_bo_util.c
++++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
+@@ -472,7 +472,7 @@ pgprot_t ttm_io_prot(uint32_t caching_flags, pgprot_t tmp)
+ 	else
+ 		tmp = pgprot_noncached(tmp);
+ #endif
+-#if defined(__sparc__)
++#if defined(__sparc__) || defined(__mips__)
+ 	if (!(caching_flags & TTM_PL_FLAG_CACHED))
+ 		tmp = pgprot_noncached(tmp);
+ #endif
+diff --git a/include/drm/drm_sarea.h b/include/drm/drm_sarea.h
+index ee5389d..1d1a858 100644
+--- a/include/drm/drm_sarea.h
++++ b/include/drm/drm_sarea.h
+@@ -37,6 +37,8 @@
+ /* SAREA area needs to be at least a page */
+ #if defined(__alpha__)
+ #define SAREA_MAX                       0x2000U
++#elif defined(__mips__)
++#define SAREA_MAX                       0x4000U
+ #elif defined(__ia64__)
+ #define SAREA_MAX                       0x10000U	/* 64kB */
+ #else
 -- 
 1.7.7.3

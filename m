@@ -1,42 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 12:55:58 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:34340 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903427Ab2FOKyf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 12:54:35 +0200
-Received: by mail-pz0-f49.google.com with SMTP id m1so3910065dad.36
-        for <multiple recipients>; Fri, 15 Jun 2012 03:54:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 13:45:10 +0200 (CEST)
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:51250 "EHLO
+        mail-lpp01m010-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1902267Ab2FOLo7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 13:44:59 +0200
+Received: by laap9 with SMTP id p9so2055232laa.36
+        for <multiple recipients>; Fri, 15 Jun 2012 04:44:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=VRyc+EMykuC/iYPj8LbtPNwZU1VP8fKT82SjOz1wtkg=;
-        b=CJKP+0/lxOGJVoJtyjXDIz1+9lNmQSJmPM2yIuHSjzk+BseYroHXwtOMRedRp32U0A
-         oXSFC5qchXCgAOGh8NQWel9/CyIxjknNYtpCSwSUIaddrWwHT7pNAj3HiMUlXC0qtx1q
-         sTwaGu4dOdePRj5GiGRaKTSFTTJx5TWhbGKFHtA+PnDEgUblk1WICmRM3VB7Zdy5qW0d
-         A7kKyJLIOa9gWn4mB98cYkJOjvAFWog970Tj62uEnlijZh79uhuBRCEqhGZRwIM2tZZx
-         4KBn0qAap3GZqZO01ZBqhH+TFrgkPlmVDRoMmNvp3uk7fJroNGdUARIxZpzHTa1bTCBC
-         aB1g==
-Received: by 10.68.131.10 with SMTP id oi10mr18638062pbb.122.1339757674986;
-        Fri, 15 Jun 2012 03:54:34 -0700 (PDT)
-Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
-        by mx.google.com with ESMTPS id gj8sm12873641pbc.39.2012.06.15.03.54.29
-        (version=SSLv3 cipher=OTHER);
-        Fri, 15 Jun 2012 03:54:34 -0700 (PDT)
-From:   Kelvin Cheung <keguang.zhang@gmail.com>
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        ralf@linux-mips.org
-Cc:     wuzhangjin@gmail.com, zhzhl555@gmail.com,
-        Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH V7 4/4] MIPS: Add defconfig for Loongson1B
-Date:   Fri, 15 Jun 2012 18:53:37 +0800
-Message-Id: <1339757617-2187-5-git-send-email-keguang.zhang@gmail.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1339757617-2187-1-git-send-email-keguang.zhang@gmail.com>
-References: <1339757617-2187-1-git-send-email-keguang.zhang@gmail.com>
-X-archive-position: 33659
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=lsj06Fb4dUBtAd1JxIVUmELuKYGWCY6HdtQBD79Y+e8=;
+        b=PYfaJxtEcWxIrMgAinF4yRhlPcx9qr6SxV+Nen+6SSJyfibAVjWQS+SQVYPqH7RotY
+         A5C/05pztdhXNaSKy5BzFir4yfe7XX2oQw9ZVzIlUX5X12KJkd+t7+K3MRUav2P5hBSF
+         7NZABqWdnmmlZI/nAlg24b7sMtkWqBpwwmF8Qruy9nIxmUve5b+IotoD21WALyrRJ+zP
+         iA160DF7chQnpOJBm+lpqPpc3p5ShDzlnF5XfieBJHVR4YRImGnWv3fM2IEeg5MgYj3t
+         FlECUCJOEexdQ1PvWIw8sS/LlUE4E/IhiTh6+Wky73CYM3nGYxS8xrlE4lUPhNi5+3qP
+         4HPw==
+MIME-Version: 1.0
+Received: by 10.152.148.199 with SMTP id tu7mr5274662lab.43.1339760694200;
+ Fri, 15 Jun 2012 04:44:54 -0700 (PDT)
+Received: by 10.152.5.103 with HTTP; Fri, 15 Jun 2012 04:44:54 -0700 (PDT)
+In-Reply-To: <87aa04x5rz.fsf@lebrac.rtp-net.org>
+References: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
+        <1339747801-28691-8-git-send-email-chenhc@lemote.com>
+        <87aa04x5rz.fsf@lebrac.rtp-net.org>
+Date:   Fri, 15 Jun 2012 19:44:54 +0800
+Message-ID: <CAAhV-H5gEjz1zUoWN2p+fhTgitji-aK-iwrKqaHBFx--qxtigQ@mail.gmail.com>
+Subject: Re: [PATCH 07/14] MIPS: Loongson 3: Add serial port support.
+From:   huacai chen <chenhuacai@gmail.com>
+To:     Arnaud Patard <arnaud.patard@rtp-net.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: base64
+X-archive-position: 33660
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keguang.zhang@gmail.com
+X-original-sender: chenhuacai@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,127 +54,72 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This patch adds defconfig for Loongson1B.
-
-Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
----
- arch/mips/configs/ls1b_defconfig |  108 ++++++++++++++++++++++++++++++++++++++
- 1 files changed, 108 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/configs/ls1b_defconfig
-
-diff --git a/arch/mips/configs/ls1b_defconfig b/arch/mips/configs/ls1b_defconfig
-new file mode 100644
-index 0000000..5c2c3a1
---- /dev/null
-+++ b/arch/mips/configs/ls1b_defconfig
-@@ -0,0 +1,108 @@
-+CONFIG_MACH_LOONGSON1=y
-+CONFIG_PREEMPT=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_EXPERIMENTAL=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_SYSVIPC=y
-+CONFIG_BSD_PROCESS_ACCT=y
-+CONFIG_BSD_PROCESS_ACCT_V3=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=16
-+CONFIG_NAMESPACES=y
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_RD_BZIP2=y
-+CONFIG_RD_LZMA=y
-+CONFIG_EXPERT=y
-+CONFIG_PERF_EVENTS=y
-+# CONFIG_COMPAT_BRK is not set
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+# CONFIG_LBDAF is not set
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_DHCP=y
-+CONFIG_SYN_COOKIES=y
-+# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-+# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-+# CONFIG_INET_XFRM_MODE_BEET is not set
-+# CONFIG_INET_DIAG is not set
-+# CONFIG_IPV6 is not set
-+# CONFIG_WIRELESS is not set
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+# CONFIG_STANDALONE is not set
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_SCSI=m
-+# CONFIG_SCSI_PROC_FS is not set
-+CONFIG_BLK_DEV_SD=m
-+# CONFIG_SCSI_LOWLEVEL is not set
-+CONFIG_NETDEVICES=y
-+# CONFIG_NET_VENDOR_BROADCOM is not set
-+# CONFIG_NET_VENDOR_CHELSIO is not set
-+# CONFIG_NET_VENDOR_INTEL is not set
-+# CONFIG_NET_VENDOR_MARVELL is not set
-+# CONFIG_NET_VENDOR_MICREL is not set
-+# CONFIG_NET_VENDOR_NATSEMI is not set
-+# CONFIG_NET_VENDOR_SEEQ is not set
-+# CONFIG_NET_VENDOR_SMSC is not set
-+CONFIG_STMMAC_ETH=y
-+CONFIG_STMMAC_DA=y
-+# CONFIG_NET_VENDOR_WIZNET is not set
-+# CONFIG_WLAN is not set
-+CONFIG_INPUT_EVDEV=y
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+CONFIG_VT_HW_CONSOLE_BINDING=y
-+CONFIG_LEGACY_PTY_COUNT=8
-+# CONFIG_DEVKMEM is not set
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+# CONFIG_HW_RANDOM is not set
-+# CONFIG_HWMON is not set
-+# CONFIG_VGA_CONSOLE is not set
-+CONFIG_USB_HID=m
-+CONFIG_HID_GENERIC=m
-+CONFIG_USB=y
-+CONFIG_USB_EHCI_HCD=y
-+# CONFIG_USB_EHCI_TT_NEWSCHED is not set
-+CONFIG_USB_STORAGE=m
-+CONFIG_USB_SERIAL=m
-+CONFIG_USB_SERIAL_PL2303=m
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_LOONGSON1=y
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT2_FS_XATTR=y
-+CONFIG_EXT2_FS_POSIX_ACL=y
-+CONFIG_EXT2_FS_SECURITY=y
-+CONFIG_EXT3_FS=y
-+CONFIG_EXT3_FS_POSIX_ACL=y
-+CONFIG_EXT3_FS_SECURITY=y
-+# CONFIG_DNOTIFY is not set
-+CONFIG_VFAT_FS=y
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+# CONFIG_MISC_FILESYSTEMS is not set
-+CONFIG_NFS_FS=y
-+CONFIG_ROOT_NFS=y
-+CONFIG_NLS_CODEPAGE_437=m
-+CONFIG_NLS_ISO8859_1=m
-+# CONFIG_ENABLE_WARN_DEPRECATED is not set
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_MAGIC_SYSRQ=y
-+# CONFIG_SCHED_DEBUG is not set
-+# CONFIG_DEBUG_PREEMPT is not set
-+# CONFIG_FTRACE is not set
-+# CONFIG_EARLY_PRINTK is not set
--- 
-1.7.1
+VGhhbmsgeW91LCBJJ2xsIGZvbGxvdyB5b3VyIHRpcHMuCgpPbiBGcmksIEp1biAxNSwgMjAxMiBh
+dCA1OjUwIFBNLCBBcm5hdWQgUGF0YXJkCjxhcm5hdWQucGF0YXJkQHJ0cC1uZXQub3JnPiB3cm90
+ZToKPiBIdWFjYWkgQ2hlbiA8Y2hlbmh1YWNhaUBnbWFpbC5jb20+IHdyaXRlczoKPgo+PiBTaWdu
+ZWQtb2ZmLWJ5OiBIdWFjYWkgQ2hlbiA8Y2hlbmhjQGxlbW90ZS5jb20+Cj4+IFNpZ25lZC1vZmYt
+Ynk6IEhvbmdsaWFuZyBUYW8gPHRhb2hsQGxlbW90ZS5jb20+Cj4+IFNpZ25lZC1vZmYtYnk6IEh1
+YSBZYW4gPHlhbmhAbGVtb3RlLmNvbT4KPj4gLS0tCj4+IKBhcmNoL21pcHMvaW5jbHVkZS9hc20v
+bWFjaC1sb29uZ3Nvbi9sb29uZ3Nvbi5oIHwgoCCgMyArKwo+PiCgYXJjaC9taXBzL2xvb25nc29u
+L2NvbW1vbi9zZXJpYWwuYyCgIKAgoCCgIKAgoCB8IKAgMjcgKysrKysrKysrKysrKysrKysrKysr
+KysrCj4+IKBhcmNoL21pcHMvbG9vbmdzb24vY29tbW9uL3VhcnRfYmFzZS5jIKAgoCCgIKAgoHwg
+oCCgNSArKysrCj4+IKAzIGZpbGVzIGNoYW5nZWQsIDM1IGluc2VydGlvbnMoKyksIDAgZGVsZXRp
+b25zKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS9hcmNoL21pcHMvaW5jbHVkZS9hc20vbWFjaC1sb29u
+Z3Nvbi9sb29uZ3Nvbi5oIGIvYXJjaC9taXBzL2luY2x1ZGUvYXNtL21hY2gtbG9vbmdzb24vbG9v
+bmdzb24uaAo+PiBpbmRleCBmZTdkOWE2Li4xNmQwOTI0IDEwMDY0NAo+PiAtLS0gYS9hcmNoL21p
+cHMvaW5jbHVkZS9hc20vbWFjaC1sb29uZ3Nvbi9sb29uZ3Nvbi5oCj4+ICsrKyBiL2FyY2gvbWlw
+cy9pbmNsdWRlL2FzbS9tYWNoLWxvb25nc29uL2xvb25nc29uLmgKPj4gQEAgLTEyNSw2ICsxMjUs
+OSBAQCBzdGF0aWMgaW5saW5lIHZvaWQgZG9fcGVyZmNudF9JUlEodm9pZCkKPj4goCNkZWZpbmUg
+TE9PTkdTT05fUENJQ09ORklHQkFTRSCgIKAgoCAweDAwCj4+IKAjZGVmaW5lIExPT05HU09OX1JF
+R0JBU0UgoCCgIDB4MTAwCj4+Cj4+ICsvKiBMb29uZ3Nvbi0zQSBjcHUgdWFydCAqLwo+PiArI2Rl
+ZmluZSBMT09OR1NPTl9VQVJUX0JBU0UgMHgxZmUwMDFlMAo+Cj4gaG0uIGlmIGl0J3MgbG9vbmdz
+b24zIHNwZWNpZmlxdWUsIHdoeSBpcyBpdCBjYWxsZWQgbGlrZSB0aGlzIGFuZCBub3QKPiBMT09O
+R1NPTjNfVUFSVF9CQVNFID8KPiBNb3Jlb3ZlciwgZnJvbSBhIHF1aWNrIGxvb2ssIHdoeSBkb24n
+dCB5b3UgZGVmaW5lIGl0IGxhdGVyIGluIHRoZSBmaWxlCj4gd2l0aCB0aGUgcHJvcGVyIG1hY3Jv
+cywgc2F5Ogo+Cj4gI2RlZmluZSBMT09OR1NPTjNfVUFSVF9CQVNFIKAgoCBMT09OR1NPTl9SRUco
+TE9PTkdTT05fUkVHQkFTRSArIDB4ZTApCj4KPgo+PiArCj4+IKAvKiBQQ0kgQ29uZmlndXJhdGlv
+biBSZWdpc3RlcnMgKi8KPj4KPj4goCNkZWZpbmUgTE9PTkdTT05fUENJX1JFRyh4KSCgTE9PTkdT
+T05fUkVHKExPT05HU09OX1BDSUNPTkZJR0JBU0UgKyAoeCkpCj4+IGRpZmYgLS1naXQgYS9hcmNo
+L21pcHMvbG9vbmdzb24vY29tbW9uL3NlcmlhbC5jIGIvYXJjaC9taXBzL2xvb25nc29uL2NvbW1v
+bi9zZXJpYWwuYwo+PiBpbmRleCA3NTgwODczLi42YmZlOWRkIDEwMDY0NAo+PiAtLS0gYS9hcmNo
+L21pcHMvbG9vbmdzb24vY29tbW9uL3NlcmlhbC5jCj4+ICsrKyBiL2FyY2gvbWlwcy9sb29uZ3Nv
+bi9jb21tb24vc2VyaWFsLmMKPj4gQEAgLTQ3LDYgKzQ3LDMzIEBAIHN0YXRpYyBzdHJ1Y3QgcGxh
+dF9zZXJpYWw4MjUwX3BvcnQgdWFydDgyNTBfZGF0YVtdWzJdID0gewo+PiCgIKAgoCBbTUFDSF9E
+RVhYT05fR0RJVU0yRjEwXSCgIKAgoCCgIHtQT1JUX00oMyksIHt9IH0sCj4+IKAgoCCgIFtNQUNI
+X0xFTU9URV9OQVNdIKAgoCCgIKAgoCCgIKAge1BPUlRfTSgzKSwge30gfSwKPj4goCCgIKAgW01B
+Q0hfTEVNT1RFX0xMMkZdIKAgoCCgIKAgoCCgIKB7UE9SVCgzKSwge30gfSwKPj4gKyCgIKAgW01B
+Q0hfTEVNT1RFX0ExMDA0XSCgIKAgoCCgIKAgoCB7Cj4+ICsgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
+IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCB7Cj4+ICsgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
+IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIC5pcnEgoCCgIKAgoCCgIKA9IE1JUFNfQ1BVX0lSUV9C
+QVNFICsgMiwKPj4gKyCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
+IKAgoCCgIKAgLnVhcnRjbGsgoCCgIKAgoD0gMzMxNzc2MDAsCj4+ICsgoCCgIKAgoCCgIKAgoCCg
+IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIC5pb3R5cGUgoCCgIKAgoCA9IFVQ
+SU9fTUVNLAo+PiArIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAg
+oCCgIKAgoCAuZmxhZ3MgoCCgIKAgoCCgPSBVUEZfQk9PVF9BVVRPQ09ORiB8IFVQRl9TS0lQX1RF
+U1QsCj4+ICsgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCB9LAo+
+PiArIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAge30KPj4gKyCg
+IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCB9LAo+PiArIKAgoCBbTUFDSF9MRU1P
+VEVfQTExMDFdIKAgoCCgIKAgoCCgIHsKPj4gKyCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAg
+oCCgIKAgoCCgIKAgoCCgIHsKPj4gKyCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAg
+oCCgIKAgoCCgIKAgoCCgIKAgLmlycSCgIKAgoCCgIKAgoD0gTUlQU19DUFVfSVJRX0JBU0UgKyAy
+LAo+PiArIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAg
+oCAudWFydGNsayCgIKAgoCCgPSAyNTAwMDAwMCwKPj4gKyCgIKAgoCCgIKAgoCCgIKAgoCCgIKAg
+oCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgLmlvdHlwZSCgIKAgoCCgID0gVVBJT19NRU0s
+Cj4+ICsgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
+IC5mbGFncyCgIKAgoCCgIKA9IFVQRl9CT09UX0FVVE9DT05GIHwgVVBGX1NLSVBfVEVTVCwKPj4g
+KyCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIH0sCj4+ICsgoCCg
+IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCB7fQo+PiArIKAgoCCgIKAg
+oCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIH0sCj4+ICsgoCCgIFtNQUNIX0xFTU9URV9BMTIw
+NV0goCCgIKAgoCCgIKAgewo+PiArIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
+IKAgoCCgIKAgewo+PiArIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
+IKAgoCCgIKAgoCAuaXJxIKAgoCCgIKAgoCCgPSBNSVBTX0NQVV9JUlFfQkFTRSArIDIsCj4+ICsg
+oCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIC51YXJ0
+Y2xrIKAgoCCgIKA9IDI1MDAwMDAwLAo+PiArIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
+IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCAuaW90eXBlIKAgoCCgIKAgPSBVUElPX01FTSwKPj4gKyCg
+IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgLmZsYWdz
+IKAgoCCgIKAgoD0gVVBGX0JPT1RfQVVUT0NPTkYgfCBVUEZfU0tJUF9URVNULAo+PiArIKAgoCCg
+IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgfSwKPj4gKyCgIKAgoCCgIKAg
+oCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIHt9Cj4+ICsgoCCgIKAgoCCgIKAgoCCg
+IKAgoCCgIKAgoCCgIKAgoCCgIKAgfSwKPj4goCCgIKAgW01BQ0hfTE9PTkdTT05fRU5EXSCgIKAg
+oCCgIKAgoCB7fSwKPgo+IFdoYXQgYWJvdXQgbW9kaWZ5aW5nIFBPUlRfTSB0byBtYWtlcyB0aGlu
+Z3MgY2xlYXJlciA/Cj4KPiBBcm5hdWQK

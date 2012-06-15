@@ -1,42 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 13:45:10 +0200 (CEST)
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:51250 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 14:42:59 +0200 (CEST)
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:59052 "EHLO
         mail-lpp01m010-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1902267Ab2FOLo7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 13:44:59 +0200
-Received: by laap9 with SMTP id p9so2055232laa.36
-        for <multiple recipients>; Fri, 15 Jun 2012 04:44:54 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1902245Ab2FOMmx convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 Jun 2012 14:42:53 +0200
+Received: by laap9 with SMTP id p9so2093302laa.36
+        for <multiple recipients>; Fri, 15 Jun 2012 05:42:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        bh=lsj06Fb4dUBtAd1JxIVUmELuKYGWCY6HdtQBD79Y+e8=;
-        b=PYfaJxtEcWxIrMgAinF4yRhlPcx9qr6SxV+Nen+6SSJyfibAVjWQS+SQVYPqH7RotY
-         A5C/05pztdhXNaSKy5BzFir4yfe7XX2oQw9ZVzIlUX5X12KJkd+t7+K3MRUav2P5hBSF
-         7NZABqWdnmmlZI/nAlg24b7sMtkWqBpwwmF8Qruy9nIxmUve5b+IotoD21WALyrRJ+zP
-         iA160DF7chQnpOJBm+lpqPpc3p5ShDzlnF5XfieBJHVR4YRImGnWv3fM2IEeg5MgYj3t
-         FlECUCJOEexdQ1PvWIw8sS/LlUE4E/IhiTh6+Wky73CYM3nGYxS8xrlE4lUPhNi5+3qP
-         4HPw==
+        bh=zgeZ+26g/xilnEqNjv1IEnbexg6NYjMWbgyN5a6+JKo=;
+        b=ex5zOigP3xQB/XVHuj6D6MnEa4fBtirEljsRu0WN40fSIsBLJnNJfCToyeexjoIaiU
+         hdpUlzGgeamGU29sRaDspX4BgW0R4X2oFHIrwdH+4VlcUAI6RAw7oha+ibxcvtZouJ9U
+         QNhmJuwfjW11E0y1sHZ+ELixrdOFTUOoGr97FpsdogJRhciGmJYDP5lFUk3DzN2N9hDI
+         5zEOW+b8ifD7u2DJdiDlJNe190QaHDXhNYQOWiAaq3M0Mfm9rT6kO4u1hALg4l3IUpMt
+         bSIWw9P2r8BMHLzpiJy9lroYzOCzF8vDn7OO+2lZDpt6HIh7rxnnvWp3peolro6VTcG9
+         p9iw==
 MIME-Version: 1.0
-Received: by 10.152.148.199 with SMTP id tu7mr5274662lab.43.1339760694200;
- Fri, 15 Jun 2012 04:44:54 -0700 (PDT)
-Received: by 10.152.5.103 with HTTP; Fri, 15 Jun 2012 04:44:54 -0700 (PDT)
-In-Reply-To: <87aa04x5rz.fsf@lebrac.rtp-net.org>
+Received: by 10.112.46.9 with SMTP id r9mr2506378lbm.81.1339764167764; Fri, 15
+ Jun 2012 05:42:47 -0700 (PDT)
+Received: by 10.152.5.103 with HTTP; Fri, 15 Jun 2012 05:42:47 -0700 (PDT)
+In-Reply-To: <4FDB08AC.8010208@mvista.com>
 References: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
-        <1339747801-28691-8-git-send-email-chenhc@lemote.com>
-        <87aa04x5rz.fsf@lebrac.rtp-net.org>
-Date:   Fri, 15 Jun 2012 19:44:54 +0800
-Message-ID: <CAAhV-H5gEjz1zUoWN2p+fhTgitji-aK-iwrKqaHBFx--qxtigQ@mail.gmail.com>
-Subject: Re: [PATCH 07/14] MIPS: Loongson 3: Add serial port support.
+        <1339747801-28691-10-git-send-email-chenhc@lemote.com>
+        <4FDB08AC.8010208@mvista.com>
+Date:   Fri, 15 Jun 2012 20:42:47 +0800
+Message-ID: <CAAhV-H6AKp+aGUozOxQoLgGYQ+GtHMbKKC4MVkFA570zodjgDA@mail.gmail.com>
+Subject: Re: [PATCH 09/14] ata: Use 32bit DMA in AHCI for Loongson 3.
 From:   huacai chen <chenhuacai@gmail.com>
-To:     Arnaud Patard <arnaud.patard@rtp-net.org>
+To:     Sergei Shtylyov <sshtylyov@mvista.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
+        linux-ide@vger.kernel.org
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: base64
-X-archive-position: 33660
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 33661
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,72 +56,40 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-VGhhbmsgeW91LCBJJ2xsIGZvbGxvdyB5b3VyIHRpcHMuCgpPbiBGcmksIEp1biAxNSwgMjAxMiBh
-dCA1OjUwIFBNLCBBcm5hdWQgUGF0YXJkCjxhcm5hdWQucGF0YXJkQHJ0cC1uZXQub3JnPiB3cm90
-ZToKPiBIdWFjYWkgQ2hlbiA8Y2hlbmh1YWNhaUBnbWFpbC5jb20+IHdyaXRlczoKPgo+PiBTaWdu
-ZWQtb2ZmLWJ5OiBIdWFjYWkgQ2hlbiA8Y2hlbmhjQGxlbW90ZS5jb20+Cj4+IFNpZ25lZC1vZmYt
-Ynk6IEhvbmdsaWFuZyBUYW8gPHRhb2hsQGxlbW90ZS5jb20+Cj4+IFNpZ25lZC1vZmYtYnk6IEh1
-YSBZYW4gPHlhbmhAbGVtb3RlLmNvbT4KPj4gLS0tCj4+IKBhcmNoL21pcHMvaW5jbHVkZS9hc20v
-bWFjaC1sb29uZ3Nvbi9sb29uZ3Nvbi5oIHwgoCCgMyArKwo+PiCgYXJjaC9taXBzL2xvb25nc29u
-L2NvbW1vbi9zZXJpYWwuYyCgIKAgoCCgIKAgoCB8IKAgMjcgKysrKysrKysrKysrKysrKysrKysr
-KysrCj4+IKBhcmNoL21pcHMvbG9vbmdzb24vY29tbW9uL3VhcnRfYmFzZS5jIKAgoCCgIKAgoHwg
-oCCgNSArKysrCj4+IKAzIGZpbGVzIGNoYW5nZWQsIDM1IGluc2VydGlvbnMoKyksIDAgZGVsZXRp
-b25zKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS9hcmNoL21pcHMvaW5jbHVkZS9hc20vbWFjaC1sb29u
-Z3Nvbi9sb29uZ3Nvbi5oIGIvYXJjaC9taXBzL2luY2x1ZGUvYXNtL21hY2gtbG9vbmdzb24vbG9v
-bmdzb24uaAo+PiBpbmRleCBmZTdkOWE2Li4xNmQwOTI0IDEwMDY0NAo+PiAtLS0gYS9hcmNoL21p
-cHMvaW5jbHVkZS9hc20vbWFjaC1sb29uZ3Nvbi9sb29uZ3Nvbi5oCj4+ICsrKyBiL2FyY2gvbWlw
-cy9pbmNsdWRlL2FzbS9tYWNoLWxvb25nc29uL2xvb25nc29uLmgKPj4gQEAgLTEyNSw2ICsxMjUs
-OSBAQCBzdGF0aWMgaW5saW5lIHZvaWQgZG9fcGVyZmNudF9JUlEodm9pZCkKPj4goCNkZWZpbmUg
-TE9PTkdTT05fUENJQ09ORklHQkFTRSCgIKAgoCAweDAwCj4+IKAjZGVmaW5lIExPT05HU09OX1JF
-R0JBU0UgoCCgIDB4MTAwCj4+Cj4+ICsvKiBMb29uZ3Nvbi0zQSBjcHUgdWFydCAqLwo+PiArI2Rl
-ZmluZSBMT09OR1NPTl9VQVJUX0JBU0UgMHgxZmUwMDFlMAo+Cj4gaG0uIGlmIGl0J3MgbG9vbmdz
-b24zIHNwZWNpZmlxdWUsIHdoeSBpcyBpdCBjYWxsZWQgbGlrZSB0aGlzIGFuZCBub3QKPiBMT09O
-R1NPTjNfVUFSVF9CQVNFID8KPiBNb3Jlb3ZlciwgZnJvbSBhIHF1aWNrIGxvb2ssIHdoeSBkb24n
-dCB5b3UgZGVmaW5lIGl0IGxhdGVyIGluIHRoZSBmaWxlCj4gd2l0aCB0aGUgcHJvcGVyIG1hY3Jv
-cywgc2F5Ogo+Cj4gI2RlZmluZSBMT09OR1NPTjNfVUFSVF9CQVNFIKAgoCBMT09OR1NPTl9SRUco
-TE9PTkdTT05fUkVHQkFTRSArIDB4ZTApCj4KPgo+PiArCj4+IKAvKiBQQ0kgQ29uZmlndXJhdGlv
-biBSZWdpc3RlcnMgKi8KPj4KPj4goCNkZWZpbmUgTE9PTkdTT05fUENJX1JFRyh4KSCgTE9PTkdT
-T05fUkVHKExPT05HU09OX1BDSUNPTkZJR0JBU0UgKyAoeCkpCj4+IGRpZmYgLS1naXQgYS9hcmNo
-L21pcHMvbG9vbmdzb24vY29tbW9uL3NlcmlhbC5jIGIvYXJjaC9taXBzL2xvb25nc29uL2NvbW1v
-bi9zZXJpYWwuYwo+PiBpbmRleCA3NTgwODczLi42YmZlOWRkIDEwMDY0NAo+PiAtLS0gYS9hcmNo
-L21pcHMvbG9vbmdzb24vY29tbW9uL3NlcmlhbC5jCj4+ICsrKyBiL2FyY2gvbWlwcy9sb29uZ3Nv
-bi9jb21tb24vc2VyaWFsLmMKPj4gQEAgLTQ3LDYgKzQ3LDMzIEBAIHN0YXRpYyBzdHJ1Y3QgcGxh
-dF9zZXJpYWw4MjUwX3BvcnQgdWFydDgyNTBfZGF0YVtdWzJdID0gewo+PiCgIKAgoCBbTUFDSF9E
-RVhYT05fR0RJVU0yRjEwXSCgIKAgoCCgIHtQT1JUX00oMyksIHt9IH0sCj4+IKAgoCCgIFtNQUNI
-X0xFTU9URV9OQVNdIKAgoCCgIKAgoCCgIKAge1BPUlRfTSgzKSwge30gfSwKPj4goCCgIKAgW01B
-Q0hfTEVNT1RFX0xMMkZdIKAgoCCgIKAgoCCgIKB7UE9SVCgzKSwge30gfSwKPj4gKyCgIKAgW01B
-Q0hfTEVNT1RFX0ExMDA0XSCgIKAgoCCgIKAgoCB7Cj4+ICsgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
-IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCB7Cj4+ICsgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
-IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIC5pcnEgoCCgIKAgoCCgIKA9IE1JUFNfQ1BVX0lSUV9C
-QVNFICsgMiwKPj4gKyCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
-IKAgoCCgIKAgLnVhcnRjbGsgoCCgIKAgoD0gMzMxNzc2MDAsCj4+ICsgoCCgIKAgoCCgIKAgoCCg
-IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIC5pb3R5cGUgoCCgIKAgoCA9IFVQ
-SU9fTUVNLAo+PiArIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAg
-oCCgIKAgoCAuZmxhZ3MgoCCgIKAgoCCgPSBVUEZfQk9PVF9BVVRPQ09ORiB8IFVQRl9TS0lQX1RF
-U1QsCj4+ICsgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCB9LAo+
-PiArIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAge30KPj4gKyCg
-IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCB9LAo+PiArIKAgoCBbTUFDSF9MRU1P
-VEVfQTExMDFdIKAgoCCgIKAgoCCgIHsKPj4gKyCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAg
-oCCgIKAgoCCgIKAgoCCgIHsKPj4gKyCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAg
-oCCgIKAgoCCgIKAgoCCgIKAgLmlycSCgIKAgoCCgIKAgoD0gTUlQU19DUFVfSVJRX0JBU0UgKyAy
-LAo+PiArIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAg
-oCAudWFydGNsayCgIKAgoCCgPSAyNTAwMDAwMCwKPj4gKyCgIKAgoCCgIKAgoCCgIKAgoCCgIKAg
-oCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgLmlvdHlwZSCgIKAgoCCgID0gVVBJT19NRU0s
-Cj4+ICsgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
-IC5mbGFncyCgIKAgoCCgIKA9IFVQRl9CT09UX0FVVE9DT05GIHwgVVBGX1NLSVBfVEVTVCwKPj4g
-KyCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIH0sCj4+ICsgoCCg
-IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCB7fQo+PiArIKAgoCCgIKAg
-oCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIH0sCj4+ICsgoCCgIFtNQUNIX0xFTU9URV9BMTIw
-NV0goCCgIKAgoCCgIKAgewo+PiArIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
-IKAgoCCgIKAgewo+PiArIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
-IKAgoCCgIKAgoCAuaXJxIKAgoCCgIKAgoCCgPSBNSVBTX0NQVV9JUlFfQkFTRSArIDIsCj4+ICsg
-oCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIC51YXJ0
-Y2xrIKAgoCCgIKA9IDI1MDAwMDAwLAo+PiArIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCg
-IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCAuaW90eXBlIKAgoCCgIKAgPSBVUElPX01FTSwKPj4gKyCg
-IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgLmZsYWdz
-IKAgoCCgIKAgoD0gVVBGX0JPT1RfQVVUT0NPTkYgfCBVUEZfU0tJUF9URVNULAo+PiArIKAgoCCg
-IKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgfSwKPj4gKyCgIKAgoCCgIKAg
-oCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIKAgoCCgIHt9Cj4+ICsgoCCgIKAgoCCgIKAgoCCg
-IKAgoCCgIKAgoCCgIKAgoCCgIKAgfSwKPj4goCCgIKAgW01BQ0hfTE9PTkdTT05fRU5EXSCgIKAg
-oCCgIKAgoCB7fSwKPgo+IFdoYXQgYWJvdXQgbW9kaWZ5aW5nIFBPUlRfTSB0byBtYWtlcyB0aGlu
-Z3MgY2xlYXJlciA/Cj4KPiBBcm5hdWQK
+On Fri, Jun 15, 2012 at 6:04 PM, Sergei Shtylyov <sshtylyov@mvista.com> wrote:
+> Hello.
+>
+>
+> On 15-06-2012 12:09, Huacai Chen wrote:
+>
+>> Signed-off-by: Huacai Chen<chenhc@lemote.com>
+>> Signed-off-by: Hongliang Tao<taohl@lemote.com>
+>> Signed-off-by: Hua Yan<yanh@lemote.com>
+>
+>
+>   You  should have CCed the 'linux-ide' mailing list.
+>
+>
+>> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+>> index ebaf67e..3e3cfd8 100644
+>> --- a/drivers/ata/ahci.c
+>> +++ b/drivers/ata/ahci.c
+>> @@ -183,7 +183,12 @@ static const struct ata_port_info ahci_port_info[] =
+>> {
+>>        },
+>>        [board_ahci_sb700] =    /* for SB700 and SB800 */
+>>        {
+>> +#ifndef CONFIG_CPU_LOONGSON3
+>>                AHCI_HFLAGS     (AHCI_HFLAG_IGN_SERR_INTERNAL),
+>> +#else
+>> +               AHCI_HFLAGS     (AHCI_HFLAG_IGN_SERR_INTERNAL |
+>> +                                               AHCI_HFLAG_32BIT_ONLY),
+>> +#endif
+>
+>
+>   No, this #ifdef'ery won't do. You should add a new board type.
+All Loongson-3 based machines use AMD SB700 chipsets, add a new board
+type is better than #ifdef?
+
+>
+> MBR, Sergei

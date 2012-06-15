@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 10:16:53 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:53092 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903394Ab2FOINv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 10:13:51 +0200
-Received: by mail-pz0-f49.google.com with SMTP id m1so3729829dad.36
-        for <multiple recipients>; Fri, 15 Jun 2012 01:13:50 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 10:17:16 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:61586 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903393Ab2FOIOB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 10:14:01 +0200
+Received: by mail-pb0-f49.google.com with SMTP id rq13so5189101pbb.36
+        for <multiple recipients>; Fri, 15 Jun 2012 01:14:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=/LCQ2qc6XVk9kFBLR3whYazGPQW+fKqsvxbyXxmaFo4=;
-        b=WJRCPsp32gm/TAgCn9lxBT09epZzuzGaZrWjV9x6Nx7Wyk4vseQahF9jW+Put5JpJC
-         Mxijl7Aca1MNwYaIRZ4OhtVJUgyS6En1GwksMtLiyIcmXrEq9OD8kRrx7ClVUHWYtKHR
-         TyMjFSIcp1F0AH5wVNuypuGg/g7M4QXCWy9tT/slWp4PTS5G6eU+q8Fv19CdVocpYrwe
-         6NIRBBSHA34RVZLjk25wUZ3T/JdTw+RefvXHzU6sHV9DPW4JoVKNjQk2OBygtgcMJyHB
-         l7NuaB/zt3+aAk7jOIdZjb+/zU0k+oIP6ICXpsgDxC+SG/mbKj93F4PA1aM+kAQNwnZz
-         SZbQ==
-Received: by 10.68.200.102 with SMTP id jr6mr17426185pbc.0.1339748030541;
-        Fri, 15 Jun 2012 01:13:50 -0700 (PDT)
+        bh=EMe+ImEYsUMMXoljvLVoFq5UHoITIl1TQe3IGZXbeOg=;
+        b=Fw+sn5eHBvIooSm20RIockME3UpZE9AeHizapa9gWU+nmhjv4MNil08GZixHqBE4j7
+         TkBEVIH0hHKeEEZc7OyiWdbNTQxZRj1Gd+JU9VdxqcXR0w1iNOr9x2Y2zTKDiY38BJSx
+         9OkBwj2i0dcbjg57t65aVkYUEtTvKu5qLruCNPNvwjQOlqUfjdA7jHMiSfLZhH++RUgy
+         Dp+g8vFOGWlQbV9ozKHTHxs5TNqpCWpw8UViyBGe3aeZ0Z8Y+rbz5/nYdAcG3damKEqa
+         u2FoP27lAmW3LTPF58SMeF2anZ9Rv2rw6zQqau3NJSydUXpvxNb6QKH/dQafeGsNxY2+
+         XDzw==
+Received: by 10.68.217.234 with SMTP id pb10mr17797327pbc.79.1339748040233;
+        Fri, 15 Jun 2012 01:14:00 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id nh8sm12437247pbc.60.2012.06.15.01.13.44
+        by mx.google.com with ESMTPS id nh8sm12437247pbc.60.2012.06.15.01.13.53
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 15 Jun 2012 01:13:49 -0700 (PDT)
+        Fri, 15 Jun 2012 01:13:59 -0700 (PDT)
 From:   Huacai Chen <chenhuacai@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH 13/14] MIPS: Loongson 3: Add CPU Hotplug support.
-Date:   Fri, 15 Jun 2012 16:10:00 +0800
-Message-Id: <1339747801-28691-14-git-send-email-chenhc@lemote.com>
+Subject: [PATCH 14/14] MIPS: Loongson: Add a Loongson 3 default config file.
+Date:   Fri, 15 Jun 2012 16:10:01 +0800
+Message-Id: <1339747801-28691-15-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
 References: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
-X-archive-position: 33651
+X-archive-position: 33652
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,353 +51,723 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Tips of Loongson's CPU Hotplug:
-1, To fully shutdown a core in Loongson 3, the target core should go to
-   CKSEG1 and flush all L2 cache entries at first. Then, another core
-   (usually Core 0) can safely disable the clock of the target core. So
-   play_dead() call loongson3_play_dead() via CKSEG1 (both uncached and
-   unmmaped).
-2, The default clocksource of Loongson is MIPS. Since clock source is a
-   global device, timekeeping need the CP0' Count registers of each core
-   be synchronous. Thus, when a core is up, we use a SMP_ASK_C0COUNT IPI
-   to ask Core-0's Count.
-
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Hongliang Tao <taohl@lemote.com>
 Signed-off-by: Hua Yan <yanh@lemote.com>
 ---
- arch/mips/Kconfig                              |    1 +
- arch/mips/include/asm/mach-loongson/loongson.h |    6 +-
- arch/mips/include/asm/smp.h                    |    1 +
- arch/mips/kernel/process.c                     |    4 +-
- arch/mips/loongson/loongson-3/irq.c            |   10 ++
- arch/mips/loongson/loongson-3/smp.c            |  181 +++++++++++++++++++++++-
- 6 files changed, 194 insertions(+), 9 deletions(-)
+ arch/mips/configs/loongson3_defconfig |  704 +++++++++++++++++++++++++++++++++
+ 1 files changed, 704 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/configs/loongson3_defconfig
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index da2b1e5..72a0bf1 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -256,6 +256,7 @@ config LASAT
- config MACH_LOONGSON
- 	bool "Loongson family of machines"
- 	select SYS_SUPPORTS_ZBOOT
-+	select SYS_SUPPORTS_HOTPLUG_CPU
- 	help
- 	  This enables the support of Loongson family of machines.
- 
-diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
-index 16d0924..fe8995c 100644
---- a/arch/mips/include/asm/mach-loongson/loongson.h
-+++ b/arch/mips/include/asm/mach-loongson/loongson.h
-@@ -249,6 +249,9 @@ static inline void do_perfcnt_IRQ(void)
- #define LOONGSON_PXARB_CFG		LOONGSON_REG(LOONGSON_REGBASE + 0x68)
- #define LOONGSON_PXARB_STATUS		LOONGSON_REG(LOONGSON_REGBASE + 0x6c)
- 
-+/* Chip Config */
-+#define LOONGSON_CHIPCFG0		LOONGSON_REG(LOONGSON_REGBASE + 0x80)
-+
- /* pcimap */
- 
- #define LOONGSON_PCIMAP_PCIMAP_LO0	0x0000003f
-@@ -265,9 +268,6 @@ static inline void do_perfcnt_IRQ(void)
- #include <linux/cpufreq.h>
- extern void loongson2_cpu_wait(void);
- extern struct cpufreq_frequency_table loongson2_clockmod_table[];
--
--/* Chip Config */
--#define LOONGSON_CHIPCFG0		LOONGSON_REG(LOONGSON_REGBASE + 0x80)
- #endif
- 
- /*
-diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
-index d4fb4d8..a6edbbf 100644
---- a/arch/mips/include/asm/smp.h
-+++ b/arch/mips/include/asm/smp.h
-@@ -40,6 +40,7 @@ extern int __cpu_logical_map[NR_CPUS];
- #define SMP_CALL_FUNCTION	0x2
- /* Octeon - Tell another core to flush its icache */
- #define SMP_ICACHE_FLUSH	0x4
-+#define SMP_ASK_C0COUNT		0x8
- 
- extern volatile cpumask_t cpu_callin_map;
- 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index e9a5fd7..69b17a9 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -72,9 +72,7 @@ void __noreturn cpu_idle(void)
- 			}
- 		}
- #ifdef CONFIG_HOTPLUG_CPU
--		if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map) &&
--		    (system_state == SYSTEM_RUNNING ||
--		     system_state == SYSTEM_BOOTING))
-+		if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map))
- 			play_dead();
- #endif
- 		rcu_idle_exit();
-diff --git a/arch/mips/loongson/loongson-3/irq.c b/arch/mips/loongson/loongson-3/irq.c
-index 27aef31..83f84e6 100644
---- a/arch/mips/loongson/loongson-3/irq.c
-+++ b/arch/mips/loongson/loongson-3/irq.c
-@@ -85,3 +85,13 @@ void __init mach_init_irq(void)
- 
- 	set_c0_status(STATUSF_IP2 | STATUSF_IP6);
- }
-+
-+#ifdef CONFIG_HOTPLUG_CPU
-+
-+void fixup_irqs(void)
-+{
-+	irq_cpu_offline();
-+	clear_c0_status(ST0_IM);
-+}
-+
-+#endif
-diff --git a/arch/mips/loongson/loongson-3/smp.c b/arch/mips/loongson/loongson-3/smp.c
-index 8923117..f0da4c3 100644
---- a/arch/mips/loongson/loongson-3/smp.c
-+++ b/arch/mips/loongson/loongson-3/smp.c
-@@ -30,6 +30,9 @@
- 
- #include "smp.h"
- 
-+DEFINE_PER_CPU(int, cpu_state);
-+DEFINE_PER_CPU(uint32_t, core0_c0count);
-+
- /* write a 64bit value to ipi register */
- void loongson3_ipi_write64(uint64_t action, void * addr)
- {
-@@ -167,8 +170,8 @@ static void loongson3_send_ipi_mask(const struct cpumask *mask, unsigned int act
- 
- void loongson3_ipi_interrupt(struct pt_regs *regs)
- {
--	int cpu = smp_processor_id();
--	unsigned int action;
-+	int i, cpu = smp_processor_id();
-+	unsigned int action, c0count;
- 
- 	/* Load the ipi register to figure out what we're supposed to do */
- 	action = loongson3_ipi_read32(ipi_status_regs0[cpu]);
-@@ -183,14 +186,24 @@ void loongson3_ipi_interrupt(struct pt_regs *regs)
- 	if (action & SMP_CALL_FUNCTION) {
- 		smp_call_function_interrupt();
- 	}
-+
-+	if (action & SMP_ASK_C0COUNT) {
-+		BUG_ON(cpu != 0);
-+		c0count = read_c0_count();
-+		for (i=1; i<NR_CPUS; i++)
-+			per_cpu(core0_c0count, i) = c0count;
-+	}
- }
- 
-+#define MAX_LOOPS 1250
- /*
-  * SMP init and finish on secondary CPUs
-  */
- void __cpuinit loongson3_init_secondary(void)
- {
- 	int i;
-+	uint32_t initcount;
-+	unsigned int cpu = smp_processor_id();
- 	unsigned int imask = STATUSF_IP7 | STATUSF_IP6 | STATUSF_IP5 |
- 			     STATUSF_IP4 | STATUSF_IP3 | STATUSF_IP2;
- 
-@@ -200,11 +213,24 @@ void __cpuinit loongson3_init_secondary(void)
- 	for (i = 0; i < NR_CPUS; i++) {
- 		loongson3_ipi_write32(0xffffffff, ipi_en0_regs[i]);
- 	}
-+
-+	per_cpu(cpu_state, cpu) = CPU_ONLINE;
-+
-+	i = 0;
-+	__get_cpu_var(core0_c0count) = 0;
-+	loongson3_send_ipi_single(0, SMP_ASK_C0COUNT);
-+	while (!__get_cpu_var(core0_c0count))
-+		i++;
-+
-+	if (i > MAX_LOOPS)
-+		i = MAX_LOOPS;
-+	initcount = __get_cpu_var(core0_c0count) + i;
-+	write_c0_count(initcount);
-+	write_c0_compare(initcount + mips_hpt_frequency/HZ);
- }
- 
- void __cpuinit loongson3_smp_finish(void)
- {
--	write_c0_compare(read_c0_count() + mips_hpt_frequency/HZ);
- 	local_irq_enable();
- 	loongson3_ipi_write64(0, (void *)(ipi_mailbox_buf[smp_processor_id()]+0x0));
- 	printk(KERN_INFO "CPU#%d finished, CP0_ST=%x\n",
-@@ -233,6 +259,8 @@ void __init loongson3_smp_setup(void)
- 
- void __init loongson3_prepare_cpus(unsigned int max_cpus)
- {
-+	init_cpu_present(cpu_possible_mask);
-+	per_cpu(cpu_state, smp_processor_id()) = CPU_ONLINE;
- }
- 
- /*
-@@ -266,6 +294,149 @@ void __init loongson3_cpus_done(void)
- {
- }
- 
-+#ifdef CONFIG_HOTPLUG_CPU
-+
-+static DEFINE_SPINLOCK(smp_reserve_lock);
-+
-+extern void fixup_irqs(void);
-+
-+static int loongson3_cpu_disable(void)
-+{
-+	extern void (*flush_cache_all)(void);
-+	unsigned int cpu = smp_processor_id();
-+
-+	if (cpu == 0)
-+		return -EBUSY;
-+
-+	spin_lock(&smp_reserve_lock);
-+	set_cpu_online(cpu, false);
-+	cpu_clear(cpu, cpu_callin_map);
-+	local_irq_disable();
-+	fixup_irqs();
-+	local_irq_enable();
-+	flush_cache_all();
-+	local_flush_tlb_all();
-+	spin_unlock(&smp_reserve_lock);
-+
-+	return 0;
-+}
-+
-+
-+static void loongson3_cpu_die(unsigned int cpu)
-+{
-+	while (per_cpu(cpu_state, cpu) != CPU_DEAD)
-+		cpu_relax();
-+
-+	mb();
-+}
-+
-+/* To shutdown a core in Loongson 3, the target core should go to CKSEG1 and
-+ * flush all L2 entries at first. Then, another core (usually Core 0) can
-+ * safely disable the clock of the target core. loongson3_play_dead() is
-+ * called via CKSEG1 (uncached and unmmaped) */
-+void loongson3_play_dead(int *state_addr)
-+{
-+	__asm__ __volatile__(
-+		"      .set push                         \n"
-+		"      .set noreorder                    \n"
-+		"      li $t0, 0x80000000                \n" /* KSEG0 */
-+		"      li $t1, 512                       \n" /* num of L2 entries */
-+		"flush_loop:                             \n" /* flush L2 */
-+		"      cache 0, 0($t0)                   \n" /* ICache */
-+		"      cache 0, 1($t0)                   \n"
-+		"      cache 0, 2($t0)                   \n"
-+		"      cache 0, 3($t0)                   \n"
-+		"      cache 1, 0($t0)                   \n" /* DCache */
-+		"      cache 1, 1($t0)                   \n"
-+		"      cache 1, 2($t0)                   \n"
-+		"      cache 1, 3($t0)                   \n"
-+		"      addiu $t0, $t0, 0x20              \n"
-+		"      bnez  $t1, flush_loop             \n"
-+		"      addiu $t1, $t1, -1                \n"
-+		"      li    $t0, 0x7                    \n" /* *state_addr = CPU_DEAD; */
-+		"      sw    $t0, 0($a0)                 \n"
-+		"      sync                              \n"
-+		"      cache 21, 0($a0)                  \n" /* flush entry of *state_addr */
-+		"      .set pop                          \n");
-+
-+	__asm__ __volatile__(
-+		"      .set push                         \n"
-+		"      .set noreorder                    \n"
-+		"      .set mips64                       \n"
-+		"      mfc0  $t2, $15, 1                 \n"
-+		"      andi  $t2, 0x3ff                  \n"
-+		"      .set mips3                        \n"
-+		"      dli   $t0, 0x900000003ff01000     \n"
-+		"      andi  $t3, $t2, 0x3               \n"
-+		"      sll   $t3, 8                      \n"  /* get cpu id */
-+		"      or    $t0, $t0, $t3               \n"
-+		"      andi  $t1, $t2, 0xc               \n"
-+		"      dsll  $t1, 42                     \n"  /* get node id */
-+		"      or    $t0, $t0, $t1               \n"
-+		"wait_for_init:                          \n"
-+		"      li    $a0, 0x100                  \n"
-+		"idle_loop:                              \n"
-+		"      bnez  $a0, idle_loop              \n"
-+		"      addiu $a0, -1                     \n"
-+		"      lw    $v0, 0x20($t0)              \n"  /* get PC via mailbox */
-+		"      nop                               \n"
-+		"      beqz  $v0, wait_for_init          \n"
-+		"      nop                               \n"
-+		"      ld    $sp, 0x28($t0)              \n"  /* get SP via mailbox */
-+		"      nop                               \n"
-+		"      ld    $gp, 0x30($t0)              \n"  /* get GP via mailbox */
-+		"      nop                               \n"
-+		"      ld    $a1, 0x38($t0)              \n"
-+		"      nop                               \n"
-+		"      jr  $v0                           \n"  /* jump to initial PC */
-+		"      nop                               \n"
-+		"      .set pop                          \n");
-+}
-+
-+void play_dead(void)
-+{
-+	int *state_addr;
-+	unsigned int cpu = smp_processor_id();
-+	void (*play_dead_at_ckseg1)(int *);
-+
-+	idle_task_exit();
-+	play_dead_at_ckseg1 = (void *)CKSEG1ADDR((unsigned long)loongson3_play_dead);
-+	state_addr = &per_cpu(cpu_state, cpu);
-+	mb();
-+	play_dead_at_ckseg1(state_addr);
-+}
-+
-+#define CPU_POST_DEAD_FROZEN	(CPU_POST_DEAD | CPU_TASKS_FROZEN)
-+static int __cpuinit loongson3_cpu_callback(struct notifier_block *nfb,
-+	unsigned long action, void *hcpu)
-+{
-+	unsigned int cpu = (unsigned long)hcpu;
-+
-+	switch (action) {
-+	case CPU_POST_DEAD:
-+	case CPU_POST_DEAD_FROZEN:
-+		printk(KERN_INFO "Disable clock for CPU#%d\n", cpu);
-+		LOONGSON_CHIPCFG0 &= ~(1 << (12 + cpu));
-+		break;
-+	case CPU_UP_PREPARE:
-+	case CPU_UP_PREPARE_FROZEN:
-+		printk(KERN_INFO "Enable clock for CPU#%d\n", cpu);
-+		LOONGSON_CHIPCFG0 |= 1 << (12 + cpu);
-+		break;
-+	}
-+
-+	return NOTIFY_OK;
-+}
-+
-+static int __cpuinit register_loongson3_notifier(void)
-+{
-+	hotcpu_notifier(loongson3_cpu_callback, 0);
-+	return 0;
-+}
-+early_initcall(register_loongson3_notifier);
-+
-+#endif
-+
- struct plat_smp_ops loongson3_smp_ops = {
- 	.send_ipi_single = loongson3_send_ipi_single,
- 	.send_ipi_mask = loongson3_send_ipi_mask,
-@@ -275,4 +446,8 @@ struct plat_smp_ops loongson3_smp_ops = {
- 	.boot_secondary = loongson3_boot_secondary,
- 	.smp_setup = loongson3_smp_setup,
- 	.prepare_cpus = loongson3_prepare_cpus,
-+#ifdef CONFIG_HOTPLUG_CPU
-+	.cpu_disable = loongson3_cpu_disable,
-+	.cpu_die = loongson3_cpu_die,
-+#endif
- };
+diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
+new file mode 100644
+index 0000000..02c0139
+--- /dev/null
++++ b/arch/mips/configs/loongson3_defconfig
+@@ -0,0 +1,704 @@
++CONFIG_MIPS=y
++CONFIG_MACH_LOONGSON=y
++CONFIG_ARCH_SPARSEMEM_ENABLE=y
++CONFIG_IOMMU_HELPER=y
++CONFIG_NEED_SG_DMA_LENGTH=y
++CONFIG_SWIOTLB=y
++CONFIG_LEMOTE_MACH3A=y
++CONFIG_LOONGSON_UART_BASE=y
++CONFIG_LOONGSON_BIGMEM=y
++CONFIG_LOONGSON_MC146818=y
++CONFIG_UEFI_FIRMWARE_INTERFACE=y
++CONFIG_RWSEM_GENERIC_SPINLOCK=y
++CONFIG_GENERIC_HWEIGHT=y
++CONFIG_GENERIC_CALIBRATE_DELAY=y
++CONFIG_GENERIC_CLOCKEVENTS=y
++CONFIG_GENERIC_CMOS_UPDATE=y
++CONFIG_SCHED_OMIT_FRAME_POINTER=y
++CONFIG_CEVT_R4K_LIB=y
++CONFIG_CEVT_R4K=y
++CONFIG_CSRC_R4K_LIB=y
++CONFIG_CSRC_R4K=y
++CONFIG_ARCH_DMA_ADDR_T_64BIT=y
++CONFIG_NEED_DMA_MAP_STATE=y
++CONFIG_SYS_HAS_EARLY_PRINTK=y
++CONFIG_HOTPLUG_CPU=y
++CONFIG_SYS_SUPPORTS_HOTPLUG_CPU=y
++CONFIG_I8259=y
++CONFIG_GENERIC_ISA_DMA=y
++CONFIG_GENERIC_ISA_DMA_SUPPORT_BROKEN=y
++CONFIG_ISA_DMA_API=y
++CONFIG_CPU_LITTLE_ENDIAN=y
++CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
++CONFIG_IRQ_CPU=y
++CONFIG_BOOT_ELF32=y
++CONFIG_MIPS_L1_CACHE_SHIFT=5
++CONFIG_SYS_SUPPORTS_ZBOOT=y
++CONFIG_CPU_LOONGSON3=y
++CONFIG_SYS_HAS_CPU_LOONGSON3=y
++CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
++CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
++CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
++CONFIG_CPU_SUPPORTS_64BIT_KERNEL=y
++CONFIG_64BIT=y
++CONFIG_PAGE_SIZE_16KB=y
++CONFIG_FORCE_MAX_ZONEORDER=11
++CONFIG_BOARD_SCACHE=y
++CONFIG_MIPS_MT_DISABLED=y
++CONFIG_CPU_HAS_WB=y
++CONFIG_CPU_HAS_SYNC=y
++CONFIG_CPU_SUPPORTS_HIGHMEM=y
++CONFIG_SYS_SUPPORTS_HIGHMEM=y
++CONFIG_ARCH_FLATMEM_ENABLE=y
++CONFIG_SELECT_MEMORY_MODEL=y
++CONFIG_SPARSEMEM_MANUAL=y
++CONFIG_SPARSEMEM=y
++CONFIG_HAVE_MEMORY_PRESENT=y
++CONFIG_SPARSEMEM_STATIC=y
++CONFIG_HAVE_MEMBLOCK=y
++CONFIG_HAVE_MEMBLOCK_NODE_MAP=y
++CONFIG_ARCH_DISCARD_MEMBLOCK=y
++CONFIG_PAGEFLAGS_EXTENDED=y
++CONFIG_SPLIT_PTLOCK_CPUS=4
++CONFIG_PHYS_ADDR_T_64BIT=y
++CONFIG_ZONE_DMA_FLAG=0
++CONFIG_VIRT_TO_BUS=y
++CONFIG_KSM=y
++CONFIG_DEFAULT_MMAP_MIN_ADDR=4096
++CONFIG_SMP=y
++CONFIG_SYS_SUPPORTS_SMP=y
++CONFIG_NR_CPUS=4
++CONFIG_TICK_ONESHOT=y
++CONFIG_NO_HZ=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_GENERIC_CLOCKEVENTS_BUILD=y
++CONFIG_HZ_256=y
++CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
++CONFIG_HZ=256
++CONFIG_PREEMPT=y
++CONFIG_PREEMPT_COUNT=y
++CONFIG_KEXEC=y
++CONFIG_SECCOMP=y
++CONFIG_LOCKDEP_SUPPORT=y
++CONFIG_STACKTRACE_SUPPORT=y
++CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
++CONFIG_HAVE_IRQ_WORK=y
++CONFIG_EXPERIMENTAL=y
++CONFIG_INIT_ENV_ARG_LIMIT=32
++CONFIG_CROSS_COMPILE=""
++CONFIG_LOCALVERSION=""
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_HAVE_KERNEL_GZIP=y
++CONFIG_HAVE_KERNEL_BZIP2=y
++CONFIG_HAVE_KERNEL_LZMA=y
++CONFIG_HAVE_KERNEL_LZO=y
++CONFIG_KERNEL_GZIP=y
++CONFIG_DEFAULT_HOSTNAME="(none)"
++CONFIG_SWAP=y
++CONFIG_SYSVIPC=y
++CONFIG_SYSVIPC_SYSCTL=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_POSIX_MQUEUE_SYSCTL=y
++CONFIG_BSD_PROCESS_ACCT=y
++CONFIG_BSD_PROCESS_ACCT_V3=y
++CONFIG_AUDIT=y
++CONFIG_HAVE_GENERIC_HARDIRQS=y
++CONFIG_GENERIC_HARDIRQS=y
++CONFIG_GENERIC_IRQ_PROBE=y
++CONFIG_GENERIC_IRQ_SHOW=y
++CONFIG_IRQ_FORCED_THREADING=y
++CONFIG_TREE_PREEMPT_RCU=y
++CONFIG_PREEMPT_RCU=y
++CONFIG_RCU_FANOUT=64
++CONFIG_LOG_BUF_SHIFT=14
++CONFIG_CGROUPS=y
++CONFIG_CPUSETS=y
++CONFIG_PROC_PID_CPUSET=y
++CONFIG_RESOURCE_COUNTERS=y
++CONFIG_CGROUP_MEM_RES_CTLR=y
++CONFIG_CGROUP_MEM_RES_CTLR_SWAP=y
++CONFIG_CGROUP_MEM_RES_CTLR_SWAP_ENABLED=y
++CONFIG_CGROUP_SCHED=y
++CONFIG_FAIR_GROUP_SCHED=y
++CONFIG_BLK_CGROUP=y
++CONFIG_SCHED_AUTOGROUP=y
++CONFIG_MM_OWNER=y
++CONFIG_SYSFS_DEPRECATED=y
++CONFIG_RELAY=y
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_INITRAMFS_SOURCE=""
++CONFIG_RD_GZIP=y
++CONFIG_CC_OPTIMIZE_FOR_SIZE=y
++CONFIG_SYSCTL=y
++CONFIG_ANON_INODES=y
++CONFIG_EXPERT=y
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_KALLSYMS=y
++CONFIG_HOTPLUG=y
++CONFIG_PRINTK=y
++CONFIG_BUG=y
++CONFIG_BASE_FULL=y
++CONFIG_FUTEX=y
++CONFIG_EPOLL=y
++CONFIG_SIGNALFD=y
++CONFIG_TIMERFD=y
++CONFIG_EVENTFD=y
++CONFIG_SHMEM=y
++CONFIG_AIO=y
++CONFIG_EMBEDDED=y
++CONFIG_HAVE_PERF_EVENTS=y
++CONFIG_PERF_USE_VMALLOC=y
++CONFIG_VM_EVENT_COUNTERS=y
++CONFIG_PCI_QUIRKS=y
++CONFIG_SLUB_DEBUG=y
++CONFIG_COMPAT_BRK=y
++CONFIG_SLUB=y
++CONFIG_HAVE_OPROFILE=y
++CONFIG_HAVE_SYSCALL_WRAPPERS=y
++CONFIG_HAVE_KPROBES=y
++CONFIG_HAVE_KRETPROBES=y
++CONFIG_HAVE_DMA_ATTRS=y
++CONFIG_USE_GENERIC_SMP_HELPERS=y
++CONFIG_HAVE_DMA_API_DEBUG=y
++CONFIG_HAVE_ARCH_JUMP_LABEL=y
++CONFIG_ARCH_WANT_OLD_COMPAT_IPC=y
++CONFIG_HAVE_GENERIC_DMA_COHERENT=y
++CONFIG_SLABINFO=y
++CONFIG_RT_MUTEXES=y
++CONFIG_BASE_SMALL=0
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODULE_FORCE_UNLOAD=y
++CONFIG_STOP_MACHINE=y
++CONFIG_BLOCK=y
++CONFIG_BLK_DEV_BSG=y
++CONFIG_BLK_DEV_BSGLIB=y
++CONFIG_PARTITION_ADVANCED=y
++CONFIG_MSDOS_PARTITION=y
++CONFIG_BLOCK_COMPAT=y
++CONFIG_IOSCHED_NOOP=y
++CONFIG_IOSCHED_DEADLINE=y
++CONFIG_IOSCHED_CFQ=y
++CONFIG_CFQ_GROUP_IOSCHED=y
++CONFIG_DEFAULT_CFQ=y
++CONFIG_DEFAULT_IOSCHED="cfq"
++CONFIG_UNINLINE_SPIN_UNLOCK=y
++CONFIG_MUTEX_SPIN_ON_OWNER=y
++CONFIG_HW_HAS_PCI=y
++CONFIG_PCI=y
++CONFIG_HT_PCI=y
++CONFIG_PCI_DOMAINS=y
++CONFIG_ISA=y
++CONFIG_MMU=y
++CONFIG_ZONE_DMA32=y
++CONFIG_HOTPLUG_PCI=y
++CONFIG_HOTPLUG_PCI_SHPC=m
++CONFIG_BINFMT_ELF=y
++CONFIG_ARCH_BINFMT_ELF_RANDOMIZE_PIE=y
++CONFIG_MIPS32_COMPAT=y
++CONFIG_COMPAT=y
++CONFIG_SYSVIPC_COMPAT=y
++CONFIG_MIPS32_O32=y
++CONFIG_MIPS32_N32=y
++CONFIG_BINFMT_ELF32=y
++CONFIG_ARCH_HIBERNATION_POSSIBLE=y
++CONFIG_ARCH_SUSPEND_POSSIBLE=y
++CONFIG_PM_RUNTIME=y
++CONFIG_PM=y
++CONFIG_NET=y
++CONFIG_COMPAT_NETLINK_MESSAGES=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_ADVANCED_ROUTER=y
++CONFIG_IP_MULTIPLE_TABLES=y
++CONFIG_IP_ROUTE_MULTIPATH=y
++CONFIG_IP_ROUTE_VERBOSE=y
++CONFIG_IP_ROUTE_CLASSID=y
++CONFIG_TCP_CONG_CUBIC=y
++CONFIG_DEFAULT_TCP_CONG="cubic"
++CONFIG_NETFILTER=y
++CONFIG_NETFILTER_ADVANCED=y
++CONFIG_NETFILTER_NETLINK=m
++CONFIG_NETFILTER_NETLINK_QUEUE=m
++CONFIG_NETFILTER_NETLINK_LOG=m
++CONFIG_NETFILTER_XTABLES=m
++CONFIG_NETFILTER_XT_MARK=m
++CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
++CONFIG_NETFILTER_XT_TARGET_HL=m
++CONFIG_NETFILTER_XT_TARGET_MARK=m
++CONFIG_NETFILTER_XT_TARGET_NFQUEUE=m
++CONFIG_NETFILTER_XT_MATCH_COMMENT=m
++CONFIG_NETFILTER_XT_MATCH_DCCP=m
++CONFIG_NETFILTER_XT_MATCH_ECN=m
++CONFIG_NETFILTER_XT_MATCH_ESP=m
++CONFIG_NETFILTER_XT_MATCH_HL=m
++CONFIG_NETFILTER_XT_MATCH_LENGTH=m
++CONFIG_NETFILTER_XT_MATCH_LIMIT=m
++CONFIG_NETFILTER_XT_MATCH_MAC=m
++CONFIG_NETFILTER_XT_MATCH_MARK=m
++CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
++CONFIG_NETFILTER_XT_MATCH_PKTTYPE=m
++CONFIG_NETFILTER_XT_MATCH_QUOTA=m
++CONFIG_NETFILTER_XT_MATCH_REALM=m
++CONFIG_NETFILTER_XT_MATCH_SCTP=m
++CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
++CONFIG_NETFILTER_XT_MATCH_STRING=m
++CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
++CONFIG_IP_NF_QUEUE=m
++CONFIG_IP_NF_IPTABLES=m
++CONFIG_IP_NF_MATCH_AH=m
++CONFIG_IP_NF_MATCH_ECN=m
++CONFIG_IP_NF_MATCH_TTL=m
++CONFIG_IP_NF_FILTER=m
++CONFIG_IP_NF_TARGET_REJECT=m
++CONFIG_IP_NF_TARGET_ULOG=m
++CONFIG_IP_NF_MANGLE=m
++CONFIG_IP_NF_TARGET_ECN=m
++CONFIG_IP_NF_TARGET_TTL=m
++CONFIG_IP_NF_RAW=m
++CONFIG_IP_NF_ARPTABLES=m
++CONFIG_IP_NF_ARPFILTER=m
++CONFIG_IP_NF_ARP_MANGLE=m
++CONFIG_DNS_RESOLVER=y
++CONFIG_RPS=y
++CONFIG_RFS_ACCEL=y
++CONFIG_XPS=y
++CONFIG_BQL=y
++CONFIG_FIB_RULES=y
++CONFIG_WIRELESS=y
++CONFIG_WEXT_CORE=y
++CONFIG_WEXT_PROC=y
++CONFIG_CFG80211=y
++CONFIG_CFG80211_DEFAULT_PS=y
++CONFIG_CFG80211_WEXT=y
++CONFIG_LIB80211=y
++CONFIG_MAC80211=y
++CONFIG_MAC80211_HAS_RC=y
++CONFIG_MAC80211_RC_MINSTREL=y
++CONFIG_MAC80211_RC_MINSTREL_HT=y
++CONFIG_MAC80211_RC_DEFAULT_MINSTREL=y
++CONFIG_MAC80211_RC_DEFAULT="minstrel_ht"
++CONFIG_MAC80211_LEDS=y
++CONFIG_RFKILL=y
++CONFIG_RFKILL_LEDS=y
++CONFIG_RFKILL_INPUT=y
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++CONFIG_STANDALONE=y
++CONFIG_PREVENT_FIRMWARE_BUILD=y
++CONFIG_FW_LOADER=y
++CONFIG_FIRMWARE_IN_KERNEL=y
++CONFIG_EXTRA_FIRMWARE=""
++CONFIG_DMA_SHARED_BUFFER=y
++CONFIG_MTD=y
++CONFIG_BLK_DEV=y
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_LOOP_MIN_COUNT=8
++CONFIG_BLK_DEV_CRYPTOLOOP=y
++CONFIG_BLK_DEV_RAM=y
++CONFIG_BLK_DEV_RAM_COUNT=16
++CONFIG_BLK_DEV_RAM_SIZE=8192
++CONFIG_HAVE_IDE=y
++CONFIG_SCSI_MOD=y
++CONFIG_RAID_ATTRS=m
++CONFIG_SCSI=y
++CONFIG_SCSI_DMA=y
++CONFIG_SCSI_TGT=y
++CONFIG_SCSI_NETLINK=y
++CONFIG_SCSI_PROC_FS=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_SG=y
++CONFIG_CHR_DEV_SCH=m
++CONFIG_SCSI_MULTI_LUN=y
++CONFIG_SCSI_CONSTANTS=y
++CONFIG_SCSI_LOGGING=y
++CONFIG_SCSI_WAIT_SCAN=m
++CONFIG_SCSI_SPI_ATTRS=m
++CONFIG_SCSI_FC_ATTRS=m
++CONFIG_SCSI_ISCSI_ATTRS=m
++CONFIG_SCSI_LOWLEVEL=y
++CONFIG_ATA=y
++CONFIG_ATA_VERBOSE_ERROR=y
++CONFIG_SATA_PMP=y
++CONFIG_SATA_AHCI=y
++CONFIG_MD=y
++CONFIG_BLK_DEV_DM=y
++CONFIG_DM_CRYPT=y
++CONFIG_DM_SNAPSHOT=y
++CONFIG_DM_MIRROR=y
++CONFIG_DM_ZERO=y
++CONFIG_NETDEVICES=y
++CONFIG_NET_CORE=y
++CONFIG_MII=y
++CONFIG_ETHERNET=y
++CONFIG_NET_VENDOR_REALTEK=y
++CONFIG_R8169=y
++CONFIG_WLAN=y
++CONFIG_ATH_COMMON=y
++CONFIG_ATH9K_HW=y
++CONFIG_ATH9K_COMMON=y
++CONFIG_ATH9K_BTCOEX_SUPPORT=y
++CONFIG_ATH9K=y
++CONFIG_ATH9K_PCI=y
++CONFIG_ATH9K_RATE_CONTROL=y
++CONFIG_INPUT=y
++CONFIG_INPUT_POLLDEV=m
++CONFIG_INPUT_SPARSEKMAP=y
++CONFIG_INPUT_MOUSEDEV=y
++CONFIG_INPUT_MOUSEDEV_PSAUX=y
++CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
++CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
++CONFIG_INPUT_EVDEV=y
++CONFIG_INPUT_KEYBOARD=y
++CONFIG_KEYBOARD_ATKBD=y
++CONFIG_KEYBOARD_XTKBD=m
++CONFIG_INPUT_MOUSE=y
++CONFIG_MOUSE_PS2=y
++CONFIG_MOUSE_PS2_ALPS=y
++CONFIG_MOUSE_PS2_LOGIPS2PP=y
++CONFIG_MOUSE_PS2_SYNAPTICS=y
++CONFIG_MOUSE_PS2_TRACKPOINT=y
++CONFIG_MOUSE_PS2_SENTELIC=y
++CONFIG_MOUSE_SERIAL=m
++CONFIG_INPUT_MISC=y
++CONFIG_INPUT_UINPUT=m
++CONFIG_SERIO=y
++CONFIG_SERIO_I8042=y
++CONFIG_SERIO_SERPORT=m
++CONFIG_SERIO_LIBPS2=y
++CONFIG_SERIO_RAW=m
++CONFIG_VT=y
++CONFIG_CONSOLE_TRANSLATIONS=y
++CONFIG_VT_CONSOLE=y
++CONFIG_HW_CONSOLE=y
++CONFIG_UNIX98_PTYS=y
++CONFIG_LEGACY_PTYS=y
++CONFIG_LEGACY_PTY_COUNT=16
++CONFIG_SERIAL_NONSTANDARD=y
++CONFIG_N_HDLC=m
++CONFIG_DEVKMEM=y
++CONFIG_STALDRV=y
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_8250_PCI=y
++CONFIG_SERIAL_8250_NR_UARTS=16
++CONFIG_SERIAL_8250_RUNTIME_UARTS=4
++CONFIG_SERIAL_8250_EXTENDED=y
++CONFIG_SERIAL_8250_MANY_PORTS=y
++CONFIG_SERIAL_8250_SHARE_IRQ=y
++CONFIG_SERIAL_8250_RSA=y
++CONFIG_SERIAL_CORE=y
++CONFIG_SERIAL_CORE_CONSOLE=y
++CONFIG_IPMI_HANDLER=m
++CONFIG_IPMI_DEVICE_INTERFACE=m
++CONFIG_IPMI_SI=m
++CONFIG_IPMI_WATCHDOG=m
++CONFIG_IPMI_POWEROFF=m
++CONFIG_HW_RANDOM=y
++CONFIG_R3964=m
++CONFIG_RAW_DRIVER=m
++CONFIG_MAX_RAW_DEVS=256
++CONFIG_DEVPORT=y
++CONFIG_I2C=y
++CONFIG_I2C_BOARDINFO=y
++CONFIG_I2C_COMPAT=y
++CONFIG_I2C_CHARDEV=y
++CONFIG_I2C_HELPER_AUTO=y
++CONFIG_I2C_ALGOBIT=y
++CONFIG_I2C_PIIX4=y
++CONFIG_SPI=y
++CONFIG_SPI_MASTER=y
++CONFIG_SPI_BITBANG=m
++CONFIG_POWER_SUPPLY=y
++CONFIG_HWMON=y
++CONFIG_HWMON_VID=m
++CONFIG_SENSORS_ADM1021=m
++CONFIG_SENSORS_ADM1025=m
++CONFIG_SENSORS_ADM1026=m
++CONFIG_SENSORS_ADM1031=m
++CONFIG_SENSORS_ADM9240=m
++CONFIG_SENSORS_ATXP1=m
++CONFIG_SENSORS_DS1621=m
++CONFIG_SENSORS_GL518SM=m
++CONFIG_SENSORS_GL520SM=m
++CONFIG_SENSORS_IT87=m
++CONFIG_SENSORS_LM63=m
++CONFIG_SENSORS_LM70=m
++CONFIG_SENSORS_LM75=m
++CONFIG_SENSORS_LM77=m
++CONFIG_SENSORS_LM78=m
++CONFIG_SENSORS_LM80=m
++CONFIG_SENSORS_LM83=m
++CONFIG_SENSORS_LM85=m
++CONFIG_SENSORS_LM87=m
++CONFIG_SENSORS_LM90=m
++CONFIG_SENSORS_LM92=m
++CONFIG_SENSORS_MAX1619=m
++CONFIG_SENSORS_PC87360=m
++CONFIG_SENSORS_SMSC47M1=m
++CONFIG_SENSORS_SMSC47M192=m
++CONFIG_SENSORS_SMSC47B397=m
++CONFIG_SENSORS_W83781D=m
++CONFIG_SENSORS_W83791D=m
++CONFIG_SENSORS_W83792D=m
++CONFIG_SENSORS_W83793=m
++CONFIG_SENSORS_W83L785TS=m
++CONFIG_SENSORS_W83627HF=m
++CONFIG_SENSORS_W83627EHF=m
++CONFIG_SSB_POSSIBLE=y
++CONFIG_BCMA_POSSIBLE=y
++CONFIG_VGA_ARB=y
++CONFIG_VGA_ARB_MAX_GPUS=16
++CONFIG_DRM=y
++CONFIG_DRM_KMS_HELPER=y
++CONFIG_DRM_TTM=y
++CONFIG_DRM_RADEON=y
++CONFIG_DRM_RADEON_KMS=y
++CONFIG_VIDEO_OUTPUT_CONTROL=y
++CONFIG_FB=y
++CONFIG_FB_DDC=y
++CONFIG_FB_CFB_FILLRECT=y
++CONFIG_FB_CFB_COPYAREA=y
++CONFIG_FB_CFB_IMAGEBLIT=y
++CONFIG_FB_BACKLIGHT=y
++CONFIG_FB_MODE_HELPERS=y
++CONFIG_FB_RADEON=y
++CONFIG_FB_RADEON_I2C=y
++CONFIG_FB_RADEON_BACKLIGHT=y
++CONFIG_FB_ATY128=y
++CONFIG_FB_ATY128_BACKLIGHT=y
++CONFIG_FB_ATY=y
++CONFIG_FB_ATY_CT=y
++CONFIG_FB_ATY_GENERIC_LCD=y
++CONFIG_FB_ATY_GX=y
++CONFIG_FB_ATY_BACKLIGHT=y
++CONFIG_BACKLIGHT_LCD_SUPPORT=y
++CONFIG_LCD_CLASS_DEVICE=y
++CONFIG_BACKLIGHT_CLASS_DEVICE=y
++CONFIG_BACKLIGHT_GENERIC=y
++# CONFIG_VGA_CONSOLE is not set
++CONFIG_DUMMY_CONSOLE=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY=y
++CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
++CONFIG_FONT_8x8=y
++CONFIG_FONT_8x16=y
++CONFIG_LOGO=y
++CONFIG_LOGO_LINUX_MONO=y
++CONFIG_LOGO_LINUX_VGA16=y
++CONFIG_LOGO_LINUX_CLUT224=y
++CONFIG_SOUND=y
++CONFIG_SND=y
++CONFIG_SND_TIMER=y
++CONFIG_SND_PCM=y
++CONFIG_SND_HWDEP=y
++CONFIG_SND_SEQUENCER=m
++CONFIG_SND_SEQ_DUMMY=m
++CONFIG_SND_DYNAMIC_MINORS=y
++CONFIG_SND_SUPPORT_OLD_API=y
++CONFIG_SND_VERBOSE_PROCFS=y
++CONFIG_SND_VMASTER=y
++CONFIG_SND_KCTL_JACK=y
++CONFIG_SND_DRIVERS=y
++CONFIG_SND_DUMMY=y
++CONFIG_SND_ALOOP=y
++CONFIG_SND_PCI=y
++CONFIG_SND_HDA_INTEL=y
++CONFIG_SND_HDA_PREALLOC_SIZE=64
++CONFIG_SND_HDA_HWDEP=y
++CONFIG_SND_HDA_RECONFIG=y
++CONFIG_SND_HDA_PATCH_LOADER=y
++CONFIG_SND_HDA_CODEC_REALTEK=y
++CONFIG_SND_HDA_ENABLE_REALTEK_QUIRKS=y
++CONFIG_SND_HDA_CODEC_HDMI=y
++CONFIG_SND_HDA_CODEC_CONEXANT=y
++CONFIG_SND_HDA_GENERIC=y
++CONFIG_SND_MIPS=y
++CONFIG_HID_SUPPORT=y
++CONFIG_HID=y
++CONFIG_USB_HID=y
++CONFIG_HID_A4TECH=m
++CONFIG_USB_ARCH_HAS_OHCI=y
++CONFIG_USB_ARCH_HAS_EHCI=y
++CONFIG_USB_ARCH_HAS_XHCI=y
++CONFIG_USB_SUPPORT=y
++CONFIG_USB_COMMON=y
++CONFIG_USB_ARCH_HAS_HCD=y
++CONFIG_USB=y
++CONFIG_USB_DEVICEFS=y
++CONFIG_USB_MON=y
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_EHCI_ROOT_HUB_TT=y
++CONFIG_USB_EHCI_TT_NEWSCHED=y
++CONFIG_USB_OHCI_HCD=y
++CONFIG_USB_OHCI_LITTLE_ENDIAN=y
++CONFIG_USB_UHCI_HCD=m
++CONFIG_USB_STORAGE=m
++CONFIG_NEW_LEDS=y
++CONFIG_LEDS_CLASS=y
++CONFIG_LEDS_TRIGGERS=y
++CONFIG_RTC_LIB=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_HCTOSYS=y
++CONFIG_RTC_HCTOSYS_DEVICE="rtc0"
++CONFIG_RTC_INTF_SYSFS=y
++CONFIG_RTC_INTF_PROC=y
++CONFIG_RTC_INTF_DEV=y
++CONFIG_RTC_DRV_CMOS=y
++CONFIG_DMADEVICES=y
++CONFIG_IOMMU_SUPPORT=y
++CONFIG_EXT2_FS=y
++CONFIG_EXT2_FS_XATTR=y
++CONFIG_EXT2_FS_POSIX_ACL=y
++CONFIG_EXT2_FS_SECURITY=y
++CONFIG_EXT3_FS=y
++CONFIG_EXT3_DEFAULTS_TO_ORDERED=y
++CONFIG_EXT3_FS_XATTR=y
++CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_XATTR=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
++CONFIG_JBD=y
++CONFIG_JBD2=y
++CONFIG_FS_MBCACHE=y
++CONFIG_FS_POSIX_ACL=y
++CONFIG_EXPORTFS=m
++CONFIG_FILE_LOCKING=y
++CONFIG_FSNOTIFY=y
++CONFIG_DNOTIFY=y
++CONFIG_INOTIFY_USER=y
++CONFIG_QUOTA=y
++CONFIG_QUOTACTL=y
++CONFIG_AUTOFS4_FS=y
++CONFIG_FUSE_FS=m
++CONFIG_ISO9660_FS=m
++CONFIG_JOLIET=y
++CONFIG_PROC_FS=y
++CONFIG_PROC_KCORE=y
++CONFIG_PROC_SYSCTL=y
++CONFIG_PROC_PAGE_MONITOR=y
++CONFIG_SYSFS=y
++CONFIG_TMPFS=y
++CONFIG_MISC_FILESYSTEMS=y
++CONFIG_NETWORK_FILESYSTEMS=y
++CONFIG_NFS_FS=m
++CONFIG_NFS_V3=y
++CONFIG_NFS_V3_ACL=y
++CONFIG_NFS_V4=y
++CONFIG_NFS_USE_KERNEL_DNS=y
++CONFIG_NFSD=m
++CONFIG_NFSD_V2_ACL=y
++CONFIG_NFSD_V3=y
++CONFIG_NFSD_V3_ACL=y
++CONFIG_NFSD_V4=y
++CONFIG_LOCKD=m
++CONFIG_LOCKD_V4=y
++CONFIG_NFS_ACL_SUPPORT=m
++CONFIG_NFS_COMMON=y
++CONFIG_SUNRPC=m
++CONFIG_SUNRPC_GSS=m
++CONFIG_CIFS=m
++CONFIG_NLS=y
++CONFIG_NLS_DEFAULT="iso8859-1"
++CONFIG_NLS_CODEPAGE_437=y
++CONFIG_NLS_CODEPAGE_936=y
++CONFIG_NLS_UTF8=y
++CONFIG_TRACE_IRQFLAGS_SUPPORT=y
++CONFIG_PRINTK_TIME=y
++CONFIG_DEFAULT_MESSAGE_LOGLEVEL=4
++CONFIG_FRAME_WARN=1024
++CONFIG_MAGIC_SYSRQ=y
++CONFIG_DEBUG_SECTION_MISMATCH=y
++CONFIG_DEBUG_KERNEL=y
++CONFIG_SCHED_DEBUG=y
++CONFIG_DEBUG_PREEMPT=y
++CONFIG_RCU_CPU_STALL_TIMEOUT=60
++CONFIG_RCU_CPU_STALL_VERBOSE=y
++CONFIG_HAVE_FUNCTION_TRACER=y
++CONFIG_HAVE_FUNCTION_GRAPH_TRACER=y
++CONFIG_HAVE_FUNCTION_TRACE_MCOUNT_TEST=y
++CONFIG_HAVE_DYNAMIC_FTRACE=y
++CONFIG_HAVE_FTRACE_MCOUNT_RECORD=y
++CONFIG_HAVE_C_RECORDMCOUNT=y
++CONFIG_TRACING_SUPPORT=y
++CONFIG_FTRACE=y
++CONFIG_BRANCH_PROFILE_NONE=y
++CONFIG_HAVE_ARCH_KGDB=y
++CONFIG_EARLY_PRINTK=y
++CONFIG_KEYS=y
++CONFIG_DEFAULT_SECURITY_DAC=y
++CONFIG_DEFAULT_SECURITY=""
++CONFIG_CRYPTO=y
++CONFIG_CRYPTO_ALGAPI=y
++CONFIG_CRYPTO_ALGAPI2=y
++CONFIG_CRYPTO_AEAD=m
++CONFIG_CRYPTO_AEAD2=y
++CONFIG_CRYPTO_BLKCIPHER=y
++CONFIG_CRYPTO_BLKCIPHER2=y
++CONFIG_CRYPTO_HASH=y
++CONFIG_CRYPTO_HASH2=y
++CONFIG_CRYPTO_RNG=m
++CONFIG_CRYPTO_RNG2=y
++CONFIG_CRYPTO_PCOMP2=y
++CONFIG_CRYPTO_MANAGER=y
++CONFIG_CRYPTO_MANAGER2=y
++CONFIG_CRYPTO_MANAGER_DISABLE_TESTS=y
++CONFIG_CRYPTO_WORKQUEUE=y
++CONFIG_CRYPTO_AUTHENC=m
++CONFIG_CRYPTO_CBC=y
++CONFIG_CRYPTO_ECB=m
++CONFIG_CRYPTO_HMAC=y
++CONFIG_CRYPTO_CRC32C=m
++CONFIG_CRYPTO_MD4=m
++CONFIG_CRYPTO_MD5=y
++CONFIG_CRYPTO_MICHAEL_MIC=m
++CONFIG_CRYPTO_SHA1=m
++CONFIG_CRYPTO_SHA256=m
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_TGR192=m
++CONFIG_CRYPTO_WP512=m
++CONFIG_CRYPTO_AES=y
++CONFIG_CRYPTO_ANUBIS=m
++CONFIG_CRYPTO_ARC4=y
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_BLOWFISH_COMMON=m
++CONFIG_CRYPTO_CAST5=m
++CONFIG_CRYPTO_CAST6=m
++CONFIG_CRYPTO_DES=m
++CONFIG_CRYPTO_KHAZAD=m
++CONFIG_CRYPTO_SERPENT=m
++CONFIG_CRYPTO_TEA=m
++CONFIG_CRYPTO_TWOFISH=m
++CONFIG_CRYPTO_TWOFISH_COMMON=m
++CONFIG_CRYPTO_DEFLATE=m
++CONFIG_CRYPTO_ANSI_CPRNG=m
++CONFIG_CRYPTO_HW=y
++CONFIG_BITREVERSE=y
++CONFIG_NO_GENERIC_PCI_IOPORT_MAP=y
++CONFIG_GENERIC_PCI_IOMAP=y
++CONFIG_GENERIC_IO=y
++CONFIG_CRC16=y
++CONFIG_CRC_T10DIF=m
++CONFIG_CRC32=y
++CONFIG_CRC32_SLICEBY8=y
++CONFIG_LIBCRC32C=m
++CONFIG_AUDIT_GENERIC=y
++CONFIG_ZLIB_INFLATE=y
++CONFIG_ZLIB_DEFLATE=m
++CONFIG_DECOMPRESS_GZIP=y
++CONFIG_TEXTSEARCH=y
++CONFIG_TEXTSEARCH_KMP=m
++CONFIG_TEXTSEARCH_BM=m
++CONFIG_TEXTSEARCH_FSM=m
++CONFIG_HAS_IOMEM=y
++CONFIG_HAS_IOPORT=y
++CONFIG_HAS_DMA=y
++CONFIG_CPU_RMAP=y
++CONFIG_DQL=y
++CONFIG_NLATTR=y
++CONFIG_AVERAGE=y
 -- 
 1.7.7.3

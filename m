@@ -1,37 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 18:13:27 +0200 (CEST)
-Received: from h9.dl5rb.org.uk ([81.2.74.9]:40256 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903439Ab2FOQNX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Jun 2012 18:13:23 +0200
-Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q5FGD7p5010857;
-        Fri, 15 Jun 2012 17:13:09 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q5FGD5He010844;
-        Fri, 15 Jun 2012 17:13:05 +0100
-Date:   Fri, 15 Jun 2012 17:13:04 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Huacai Chen <chenhuacai@gmail.com>, linux-mips@linux-mips.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH 01/14] MIPS: Loongson: Add basic Loongson 3 CPU support.
-Message-ID: <20120615161304.GA6390@linux-mips.org>
-References: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
- <1339747801-28691-2-git-send-email-chenhc@lemote.com>
- <4FDB5BE9.1090303@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4FDB5BE9.1090303@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 33668
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2012 01:46:57 +0200 (CEST)
+Received: from mho-01-ewr.mailhop.org ([204.13.248.71]:22578 "EHLO
+        mho-01-ewr.mailhop.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903464Ab2FOXqw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Jun 2012 01:46:52 +0200
+Received: from 10.103.77.188.dynamic.jazztel.es ([188.77.103.10] helo=mail.viric.name)
+        by mho-01-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.72)
+        (envelope-from <viric@mail.viric.name>)
+        id 1SfgE0-000LYj-N5; Fri, 15 Jun 2012 23:46:45 +0000
+Received: by mail.viric.name (Postfix, from userid 1000)
+        id 6938B58FE7C; Sat, 16 Jun 2012 01:46:41 +0200 (CEST)
+X-Mail-Handler: MailHop Outbound by DynDNS
+X-Originating-IP: 188.77.103.10
+X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/mailhop/outbound_abuse.html for abuse reporting information)
+X-MHO-User: U2FsdGVkX1/raSs0tJukk/zE9EeFP+sm
+From:   Lluis Batlle i Rossell <viric@viric.name>
+Date:   Sat, 16 Jun 2012 00:22:53 +0200
+Subject: [PATCH] MIPS: Add emulation for fpureg-mem unaligned access
+To:     linux-mips@linux-mips.org
+Cc:     loongson-dev@googlegroups.com
+Message-Id: <20120615234641.6938B58FE7C@mail.viric.name>
+X-archive-position: 33669
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: viric@viric.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,96 +38,139 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Jun 15, 2012 at 08:59:37AM -0700, David Daney wrote:
+Reusing most of the code from lw,ld,sw,sd emulation,
+I add the emulation for lwc1,ldc1,swc1,sdc1.
 
-> On 06/15/2012 01:09 AM, Huacai Chen wrote:
-> >Loongson-3 is a multi-core MIPS family CPU, it support MIPS64R2
-> >fully. Loongson-3 has the same IMP field (0x6300) as Loongson-2.
-> >
-> >Loongson-3 has a hardware-maintained cache, system software doesn't
-> >need to maintain coherency.
-> >
-> >Loongson-3A is the first revision of Loongson-3, and it is the quad-
-> >core version of Loongson-2G. Loongson-3A has a simplified version named
-> >Loongson-2Gq, the main difference between Loongson-3A/2Gq is 3A has two
-> >HyperTransport controller but 2Gq has only one. HT0 is used for cross-
-> >chip interconnection and HT1 is used to link PCI bus. Therefore, 2Gq
-> >cannot support NUMA but 3A can.
-> >
-> >Exsisting Loongson family CPUs:
-> >Loongson-1: Loongson-1A, Loongson-1B, they are 32-bit MIPS CPUs.
-> >Loongson-2: Loongson-2E, Loongson-2F, Loongson-2G(including Loongson-
-> >             2Gq), they are 64-bit MIPS CPUs.
-> >Loongson-3: Loongson-3A, it is a 64-bit MIPS CPU.
-> >
-> >Signed-off-by: Huacai Chen<chenhc@lemote.com>
-> >Signed-off-by: Hongliang Tao<taohl@lemote.com>
-> >Signed-off-by: Hua Yan<yanh@lemote.com>
-> >---
-> >  arch/mips/Kconfig                            |   13 ++++
-> >  arch/mips/include/asm/addrspace.h            |    6 ++
-> >  arch/mips/include/asm/cpu.h                  |    6 +-
-> >  arch/mips/include/asm/mach-loongson/spaces.h |   15 +++++
-> >  arch/mips/include/asm/module.h               |    2 +
-> >  arch/mips/include/asm/pgtable-bits.h         |    7 ++
-> >  arch/mips/kernel/Makefile                    |    1 +
-> >  arch/mips/kernel/cpu-probe.c                 |   12 +++-
-> >  arch/mips/lib/Makefile                       |    1 +
-> >  arch/mips/loongson/Kconfig                   |    4 +
-> >  arch/mips/loongson/Platform                  |    1 +
-> >  arch/mips/loongson/common/env.c              |    3 +
-> >  arch/mips/loongson/common/setup.c            |    6 +-
-> >  arch/mips/mm/Makefile                        |    1 +
-> >  arch/mips/mm/c-r4k.c                         |   84 ++++++++++++++++++++++++++
-> >  arch/mips/mm/tlb-r4k.c                       |    2 +-
-> >  arch/mips/mm/tlbex.c                         |    1 +
-> >  17 files changed, 156 insertions(+), 9 deletions(-)
-> 
-> This patch is too big.  It should be split up into smaller but
-> related parts.
-> 
-> For example, the parts that add new identifier constants should be
-> first.  Then a separate patch for cpu-probe.c where they are used.
-> 
-> And...
-> 
-> >  create mode 100644 arch/mips/include/asm/mach-loongson/spaces.h
-> >
-> >diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> >index c179461..38e460b 100644
-> >--- a/arch/mips/Kconfig
-> >+++ b/arch/mips/Kconfig
-> >@@ -1544,6 +1544,16 @@ config CPU_LOONGSON2
-> >  	select CPU_SUPPORTS_64BIT_KERNEL
-> >  	select CPU_SUPPORTS_HIGHMEM
-> >
-> >+config CPU_LOONGSON3
-> >+	bool "Loongson 3 CPU"
-> >+	depends on SYS_HAS_CPU_LOONGSON3
-> >+	select CPU_SUPPORTS_32BIT_KERNEL
-> >+	select CPU_SUPPORTS_64BIT_KERNEL
-> >+	select CPU_SUPPORTS_HIGHMEM
-> >+	help
-> >+		The Loongson 3 processor implements the MIPS III instruction set
-> >+		with many extensions.
-> >+
-> 
-> This bit must be the very last patch of the entire set, not the first.
-> 
-> Ask yourself what would happen if someone did a build selecting
-> CPU_LOONGSON3 after this patch were applied?  Would a runnable
-> kernel result?  If the answer is no, then you did it in the wrong
-> order.
+This avoids the direct SIGBUS sent to userspace processes that have
+misaligned memory accesses.
 
-Just to clarify and also because I only recently had the discussion with
-somebody.  What is very important is that a patch series never ever
-break something when it gets only partially applied.  This is because
-all the automated testing and debugging that is being used today.  The
-most common example is git-bisect but lately aiaiai [1] is becoming
-fashionable, too.  So I rather spend some extra time on reviewing a big,
-complex patch now than living with the consequences of improper splitting
-later.  But of course properlz split patches are always preferred :-)
+I've tested the change in Loongson2F, with an own test program, and
+WebKit 1.4.0, as both were killed by sigbus without this patch.
 
-  Ralf
+Signed-off: Lluis Batlle i Rossell <viric@viric.name>
+---
+ arch/mips/kernel/unaligned.c |   43 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 30 insertions(+), 13 deletions(-)
 
-[1] http://lwn.net/Articles/488992/
+diff --git a/arch/mips/kernel/unaligned.c b/arch/mips/kernel/unaligned.c
+index 9c58bdf..4531e6c 100644
+--- a/arch/mips/kernel/unaligned.c
++++ b/arch/mips/kernel/unaligned.c
+@@ -85,6 +85,7 @@
+ #include <asm/cop2.h>
+ #include <asm/inst.h>
+ #include <asm/uaccess.h>
++#include <asm/fpu.h>
+ 
+ #define STR(x)  __STR(x)
+ #define __STR(x)  #x
+@@ -108,6 +109,7 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 	union mips_instruction insn;
+ 	unsigned long value;
+ 	unsigned int res;
++	fpureg_t *fpuregs;
+ 
+ 	perf_sw_event(PERF_COUNT_SW_EMULATION_FAULTS, 1, regs, 0);
+ 
+@@ -183,6 +185,7 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		break;
+ 
+ 	case lw_op:
++	case lwc1_op:
+ 		if (!access_ok(VERIFY_READ, addr, 4))
+ 			goto sigbus;
+ 
+@@ -209,7 +212,12 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		if (res)
+ 			goto fault;
+ 		compute_return_epc(regs);
+-		regs->regs[insn.i_format.rt] = value;
++		if (insn.i_format.opcode == lw_op) {
++			regs->regs[insn.i_format.rt] = value;
++		} else {
++			fpuregs = get_fpu_regs(current);
++			fpuregs[insn.i_format.rt] = value;
++		}
+ 		break;
+ 
+ 	case lhu_op:
+@@ -291,6 +299,7 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		goto sigill;
+ 
+ 	case ld_op:
++	case ldc1_op:
+ #ifdef CONFIG_64BIT
+ 		/*
+ 		 * A 32-bit kernel might be running on a 64-bit processor.  But
+@@ -325,7 +334,12 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		if (res)
+ 			goto fault;
+ 		compute_return_epc(regs);
+-		regs->regs[insn.i_format.rt] = value;
++		if (insn.i_format.opcode == ld_op) {
++			regs->regs[insn.i_format.rt] = value;
++		} else {
++			fpuregs = get_fpu_regs(current);
++			fpuregs[insn.i_format.rt] = value;
++		}
+ 		break;
+ #endif /* CONFIG_64BIT */
+ 
+@@ -370,10 +384,16 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		break;
+ 
+ 	case sw_op:
++	case swc1_op:
+ 		if (!access_ok(VERIFY_WRITE, addr, 4))
+ 			goto sigbus;
+ 
+-		value = regs->regs[insn.i_format.rt];
++		if (insn.i_format.opcode == sw_op) {
++			value = regs->regs[insn.i_format.rt];
++		} else {
++			fpuregs = get_fpu_regs(current);
++			value = fpuregs[insn.i_format.rt];
++		}
+ 		__asm__ __volatile__ (
+ #ifdef __BIG_ENDIAN
+ 			"1:\tswl\t%1,(%2)\n"
+@@ -401,6 +421,7 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		break;
+ 
+ 	case sd_op:
++	case sdc1_op:
+ #ifdef CONFIG_64BIT
+ 		/*
+ 		 * A 32-bit kernel might be running on a 64-bit processor.  But
+@@ -412,7 +433,12 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		if (!access_ok(VERIFY_WRITE, addr, 8))
+ 			goto sigbus;
+ 
+-		value = regs->regs[insn.i_format.rt];
++		if (insn.i_format.opcode == sd_op) {
++			value = regs->regs[insn.i_format.rt];
++		} else {
++			fpuregs = get_fpu_regs(current);
++			value = fpuregs[insn.i_format.rt];
++		}
+ 		__asm__ __volatile__ (
+ #ifdef __BIG_ENDIAN
+ 			"1:\tsdl\t%1,(%2)\n"
+@@ -443,15 +469,6 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 		/* Cannot handle 64-bit instructions in 32-bit kernel */
+ 		goto sigill;
+ 
+-	case lwc1_op:
+-	case ldc1_op:
+-	case swc1_op:
+-	case sdc1_op:
+-		/*
+-		 * I herewith declare: this does not happen.  So send SIGBUS.
+-		 */
+-		goto sigbus;
+-
+ 	/*
+ 	 * COP2 is available to implementor for application specific use.
+ 	 * It's up to applications to register a notifier chain and do
+-- 
+1.7.9.5

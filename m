@@ -1,48 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 14:42:59 +0200 (CEST)
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:59052 "EHLO
-        mail-lpp01m010-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1902245Ab2FOMmx convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Jun 2012 14:42:53 +0200
-Received: by laap9 with SMTP id p9so2093302laa.36
-        for <multiple recipients>; Fri, 15 Jun 2012 05:42:48 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2012 15:10:47 +0200 (CEST)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:58225 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903433Ab2FONKh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2012 15:10:37 +0200
+Received: by yhjj52 with SMTP id j52so2619646yhj.36
+        for <multiple recipients>; Fri, 15 Jun 2012 06:10:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=zgeZ+26g/xilnEqNjv1IEnbexg6NYjMWbgyN5a6+JKo=;
-        b=ex5zOigP3xQB/XVHuj6D6MnEa4fBtirEljsRu0WN40fSIsBLJnNJfCToyeexjoIaiU
-         hdpUlzGgeamGU29sRaDspX4BgW0R4X2oFHIrwdH+4VlcUAI6RAw7oha+ibxcvtZouJ9U
-         QNhmJuwfjW11E0y1sHZ+ELixrdOFTUOoGr97FpsdogJRhciGmJYDP5lFUk3DzN2N9hDI
-         5zEOW+b8ifD7u2DJdiDlJNe190QaHDXhNYQOWiAaq3M0Mfm9rT6kO4u1hALg4l3IUpMt
-         bSIWw9P2r8BMHLzpiJy9lroYzOCzF8vDn7OO+2lZDpt6HIh7rxnnvWp3peolro6VTcG9
-         p9iw==
-MIME-Version: 1.0
-Received: by 10.112.46.9 with SMTP id r9mr2506378lbm.81.1339764167764; Fri, 15
- Jun 2012 05:42:47 -0700 (PDT)
-Received: by 10.152.5.103 with HTTP; Fri, 15 Jun 2012 05:42:47 -0700 (PDT)
-In-Reply-To: <4FDB08AC.8010208@mvista.com>
-References: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
-        <1339747801-28691-10-git-send-email-chenhc@lemote.com>
-        <4FDB08AC.8010208@mvista.com>
-Date:   Fri, 15 Jun 2012 20:42:47 +0800
-Message-ID: <CAAhV-H6AKp+aGUozOxQoLgGYQ+GtHMbKKC4MVkFA570zodjgDA@mail.gmail.com>
-Subject: Re: [PATCH 09/14] ata: Use 32bit DMA in AHCI for Loongson 3.
-From:   huacai chen <chenhuacai@gmail.com>
-To:     Sergei Shtylyov <sshtylyov@mvista.com>
+        h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=r+KWbKZjjpy5RPvmV0UsEN9EKn69bIL3GbUMesO3eyA=;
+        b=sHoL0GENyAZHiy2vHGV5DAGYup56OE84Hx8gqyQBLP8Sy7726M4k2QM+eDPuPyMMR1
+         1Te+bPU1aQa546/dMkAnfwKVzSfs+sxu6U24eyddQtUpW93vvDEBD93xlkJFFaiI/sNn
+         cOFQBFutHL2huNac9ROUEG7YZHBypEaG4JVjZks4gnxTPehYsOEdKmt7s1imzPUWuG14
+         U+s81Dbh5uB+lS+uFZlIeRtGfkOlwRrvPGYiIhhQ5+Km/uqpegoZPWgMpFMCAMhX9WaR
+         YyyCrpGufxkJbeOcfxSzj1QZrzXLYhTsBbI3t4Mgrvxn3Gg4L2ENWymgXswbFz2rgOKC
+         66mQ==
+Received: by 10.50.208.106 with SMTP id md10mr1756873igc.54.1339765830963;
+        Fri, 15 Jun 2012 06:10:30 -0700 (PDT)
+Received: from mars ([159.226.43.42])
+        by mx.google.com with ESMTPS id z3sm1198149igc.7.2012.06.15.06.10.27
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 15 Jun 2012 06:10:30 -0700 (PDT)
+Date:   Fri, 15 Jun 2012 21:10:23 +0800
+From:   LIU Qi <liuqi82@gmail.com>
+To:     Huacai Chen <chenhuacai@gmail.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
-        linux-ide@vger.kernel.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 33661
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Subject: Re: [PATCH 00/14] MIPS: Add Loongson-3 based machines support.
+Message-ID: <20120615131023.GA14191@loongson.cn>
+Reply-To: LIU Qi <liuqi@loongson.cn>
+References: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 33662
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhuacai@gmail.com
+X-original-sender: liuqi82@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,40 +57,35 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Jun 15, 2012 at 6:04 PM, Sergei Shtylyov <sshtylyov@mvista.com> wrote:
-> Hello.
->
->
-> On 15-06-2012 12:09, Huacai Chen wrote:
->
->> Signed-off-by: Huacai Chen<chenhc@lemote.com>
->> Signed-off-by: Hongliang Tao<taohl@lemote.com>
->> Signed-off-by: Hua Yan<yanh@lemote.com>
->
->
->   You  should have CCed the 'linux-ide' mailing list.
->
->
->> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
->> index ebaf67e..3e3cfd8 100644
->> --- a/drivers/ata/ahci.c
->> +++ b/drivers/ata/ahci.c
->> @@ -183,7 +183,12 @@ static const struct ata_port_info ahci_port_info[] =
->> {
->>        },
->>        [board_ahci_sb700] =    /* for SB700 and SB800 */
->>        {
->> +#ifndef CONFIG_CPU_LOONGSON3
->>                AHCI_HFLAGS     (AHCI_HFLAG_IGN_SERR_INTERNAL),
->> +#else
->> +               AHCI_HFLAGS     (AHCI_HFLAG_IGN_SERR_INTERNAL |
->> +                                               AHCI_HFLAG_32BIT_ONLY),
->> +#endif
->
->
->   No, this #ifdef'ery won't do. You should add a new board type.
-All Loongson-3 based machines use AMD SB700 chipsets, add a new board
-type is better than #ifdef?
+On Fri, Jun 15, 2012 at 04:09:47PM +0800, Huacai Chen wrote:
+ > This patchset is for git repository git://git.linux-mips.org/pub/scm/
+ > ralf/linux. Loongson-3 is a multi-core MIPS family CPU, it is MIPS64R2
+ > compatible and has the same IMP field (0x6300) as Loongson-2. These
+ > patches make Linux kernel support Loongson-3 CPU and Loongson-3 based
+ > computers (including Laptop, Mini-ITX, All-In-One PC, etc.)
+ > 
+ > Huacai Chen(14):
+ >  MIPS: Loongson: Add basic Loongson 3 CPU support.
+ >  MIPS: Loongson 3: Add Lemote-3A machtypes definition.
+ >  MIPS: Loongson: Make Loongson 3 to use BCD format for RTC.
+ >  MIPS: Loongson: Add UEFI-like firmware interface support.
+ >  MIPS: Loongson 3: Add HT-linked PCI support.
+ >  MIPS: Loongson 3: Add IRQ init and dispatch support.
+ >  MIPS: Loongson 3: Add serial port support.
+ >  MIPS: Loongson: Add swiotlb to support big memory (>4GB).
+ >  ata: Use 32bit DMA in AHCI for Loongson 3.
+ >  drm/radeon: Make radeon card usable for Loongson.
+ >  ALSA: Make hda sound card usable for Loongson.
+ >  MIPS: Loongson 3: Add Loongson-3 SMP support.
+ >  MIPS: Loongson 3: Add CPU Hotplug support.
+ >  MIPS: Loongson: Add a Loongson 3 default config file.
+ > 
+ > Signed-off-by: Huacai Chen <chenhc@lemote.com>
+ > Signed-off-by: Hongliang Tao <taohl@lemote.com>
+ > Signed-off-by: Hua Yan <yanh@lemote.com>
 
->
-> MBR, Sergei
+The compiled kernel with your patches just doesn't boot. I tested with
+the Loongson3 laptop and mini-itx. Do they need the newer PMON version
+with UEFI-like interface support to boot the system?
+
+LIU Qi

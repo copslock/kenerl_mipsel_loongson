@@ -1,42 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2012 14:46:55 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:49968 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2012 14:49:15 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:59059 "EHLO
         mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903485Ab2FPMqs convert rfc822-to-8bit
+        by eddie.linux-mips.org with ESMTP id S1903479Ab2FPMtI convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 16 Jun 2012 14:46:48 +0200
-Received: by lbbgg6 with SMTP id gg6so3596393lbb.36
-        for <multiple recipients>; Sat, 16 Jun 2012 05:46:43 -0700 (PDT)
+        Sat, 16 Jun 2012 14:49:08 +0200
+Received: by lbbgg6 with SMTP id gg6so3597039lbb.36
+        for <multiple recipients>; Sat, 16 Jun 2012 05:49:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        bh=Js9idjohECUeI1G5/uBjSO4aMML8NmD2C1eOombojUo=;
-        b=N1Lk3ImkwG4/2ix/QSTDXv/rq4IMCQu953sAy0gEM6IiehRsZW2kK1GJ2aXtlP2hhR
-         PEP2rs5cbWKfYA/LcKLyasqcq1I80WE9NkVwBrN2NALT6fuxvxysXZin6uo0Pgb23oXN
-         +l70mNiuTdWMpTOfYOJszswyEHD0V/cQPXm/3VkJqH+0oOmsVqIlDPqwyD9mUQFS3BN6
-         +x3BkIZzwRS+jvcCx2ubDIH4V7mm39nw5WY0jGPdNbcWpWbJiMoUkql7I5oYKNVOEB1d
-         Eiy6XAXD61Qj1hUSbRgHpW+UYanOyTAES7LxZzHuiSd9UFG+Tf+9nfPkRHf1fDznEK9V
-         eHyg==
+        bh=EtxvzoHR9pdPwlCl/4DOTfQ6+Gd9/EIFe6pyCOWYqUI=;
+        b=Lv7wAYpnP0gFG0oBc70RM3OvS7eSbybm73vZ1vwwCSDt1ZxGL+mW+FJgi3P03984Fr
+         //qL+UhkYzPI5e86I5fQSfdoqN1QcmQA+/74NTley8yZSPCbSgNTcUYGafO+xpbZ/ika
+         D4uRiaq/jnZpG3HipYvyo0PTdiCJM/5O15DOBVkyHVHOXz5nvhmtLQzepUwGFY7PMOJV
+         J/IUaQ1fpOYaL/UzGkZsRD5LK/cy/zwuVsnASbbHNK3WG69Cu8pbbQNuS3swJpF03d9G
+         A2G9e5i82jrUCoaqCOhZ3IJq2bVqDIqx0Dw2J3Uo25qz3MEZb/GbmY/4rIlYh2IbhdHt
+         qQlA==
 MIME-Version: 1.0
-Received: by 10.152.148.199 with SMTP id tu7mr8543686lab.43.1339850803035;
- Sat, 16 Jun 2012 05:46:43 -0700 (PDT)
-Received: by 10.152.5.103 with HTTP; Sat, 16 Jun 2012 05:46:42 -0700 (PDT)
-In-Reply-To: <20120615131023.GA14191@loongson.cn>
+Received: by 10.112.41.130 with SMTP id f2mr3853026lbl.5.1339850942701; Sat,
+ 16 Jun 2012 05:49:02 -0700 (PDT)
+Received: by 10.152.5.103 with HTTP; Sat, 16 Jun 2012 05:49:02 -0700 (PDT)
+In-Reply-To: <20120615161304.GA6390@linux-mips.org>
 References: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
-        <20120615131023.GA14191@loongson.cn>
-Date:   Sat, 16 Jun 2012 20:46:42 +0800
-Message-ID: <CAAhV-H5EbonxPVrSC+tb-yusP74dbg8T70O4iNNqp1ts1uDtRQ@mail.gmail.com>
-Subject: Re: [PATCH 00/14] MIPS: Add Loongson-3 based machines support.
+        <1339747801-28691-2-git-send-email-chenhc@lemote.com>
+        <4FDB5BE9.1090303@gmail.com>
+        <20120615161304.GA6390@linux-mips.org>
+Date:   Sat, 16 Jun 2012 20:49:02 +0800
+Message-ID: <CAAhV-H4AAy-k+9XR=SjAdGq9J1qcETuh9iC+bUpY0T_4Bi50=w@mail.gmail.com>
+Subject: Re: [PATCH 01/14] MIPS: Loongson: Add basic Loongson 3 CPU support.
 From:   huacai chen <chenhuacai@gmail.com>
-To:     LIU Qi <liuqi@loongson.cn>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
         Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-X-archive-position: 33674
+X-archive-position: 33675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,39 +56,99 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Yes, the 4th patch is add UEFI-like interface and old interface is not
-supported.
+OK, I'll split patches next week.
 
-On Fri, Jun 15, 2012 at 9:10 PM, LIU Qi <liuqi82@gmail.com> wrote:
-> On Fri, Jun 15, 2012 at 04:09:47PM +0800, Huacai Chen wrote:
->  > This patchset is for git repository git://git.linux-mips.org/pub/scm/
->  > ralf/linux. Loongson-3 is a multi-core MIPS family CPU, it is MIPS64R2
->  > compatible and has the same IMP field (0x6300) as Loongson-2. These
->  > patches make Linux kernel support Loongson-3 CPU and Loongson-3 based
->  > computers (including Laptop, Mini-ITX, All-In-One PC, etc.)
->  >
->  > Huacai Chen(14):
->  >  MIPS: Loongson: Add basic Loongson 3 CPU support.
->  >  MIPS: Loongson 3: Add Lemote-3A machtypes definition.
->  >  MIPS: Loongson: Make Loongson 3 to use BCD format for RTC.
->  >  MIPS: Loongson: Add UEFI-like firmware interface support.
->  >  MIPS: Loongson 3: Add HT-linked PCI support.
->  >  MIPS: Loongson 3: Add IRQ init and dispatch support.
->  >  MIPS: Loongson 3: Add serial port support.
->  >  MIPS: Loongson: Add swiotlb to support big memory (>4GB).
->  >  ata: Use 32bit DMA in AHCI for Loongson 3.
->  >  drm/radeon: Make radeon card usable for Loongson.
->  >  ALSA: Make hda sound card usable for Loongson.
->  >  MIPS: Loongson 3: Add Loongson-3 SMP support.
->  >  MIPS: Loongson 3: Add CPU Hotplug support.
->  >  MIPS: Loongson: Add a Loongson 3 default config file.
->  >
->  > Signed-off-by: Huacai Chen <chenhc@lemote.com>
->  > Signed-off-by: Hongliang Tao <taohl@lemote.com>
->  > Signed-off-by: Hua Yan <yanh@lemote.com>
+On Sat, Jun 16, 2012 at 12:13 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Fri, Jun 15, 2012 at 08:59:37AM -0700, David Daney wrote:
 >
-> The compiled kernel with your patches just doesn't boot. I tested with
-> the Loongson3 laptop and mini-itx. Do they need the newer PMON version
-> with UEFI-like interface support to boot the system?
+>> On 06/15/2012 01:09 AM, Huacai Chen wrote:
+>> >Loongson-3 is a multi-core MIPS family CPU, it support MIPS64R2
+>> >fully. Loongson-3 has the same IMP field (0x6300) as Loongson-2.
+>> >
+>> >Loongson-3 has a hardware-maintained cache, system software doesn't
+>> >need to maintain coherency.
+>> >
+>> >Loongson-3A is the first revision of Loongson-3, and it is the quad-
+>> >core version of Loongson-2G. Loongson-3A has a simplified version named
+>> >Loongson-2Gq, the main difference between Loongson-3A/2Gq is 3A has two
+>> >HyperTransport controller but 2Gq has only one. HT0 is used for cross-
+>> >chip interconnection and HT1 is used to link PCI bus. Therefore, 2Gq
+>> >cannot support NUMA but 3A can.
+>> >
+>> >Exsisting Loongson family CPUs:
+>> >Loongson-1: Loongson-1A, Loongson-1B, they are 32-bit MIPS CPUs.
+>> >Loongson-2: Loongson-2E, Loongson-2F, Loongson-2G(including Loongson-
+>> >             2Gq), they are 64-bit MIPS CPUs.
+>> >Loongson-3: Loongson-3A, it is a 64-bit MIPS CPU.
+>> >
+>> >Signed-off-by: Huacai Chen<chenhc@lemote.com>
+>> >Signed-off-by: Hongliang Tao<taohl@lemote.com>
+>> >Signed-off-by: Hua Yan<yanh@lemote.com>
+>> >---
+>> >  arch/mips/Kconfig                            |   13 ++++
+>> >  arch/mips/include/asm/addrspace.h            |    6 ++
+>> >  arch/mips/include/asm/cpu.h                  |    6 +-
+>> >  arch/mips/include/asm/mach-loongson/spaces.h |   15 +++++
+>> >  arch/mips/include/asm/module.h               |    2 +
+>> >  arch/mips/include/asm/pgtable-bits.h         |    7 ++
+>> >  arch/mips/kernel/Makefile                    |    1 +
+>> >  arch/mips/kernel/cpu-probe.c                 |   12 +++-
+>> >  arch/mips/lib/Makefile                       |    1 +
+>> >  arch/mips/loongson/Kconfig                   |    4 +
+>> >  arch/mips/loongson/Platform                  |    1 +
+>> >  arch/mips/loongson/common/env.c              |    3 +
+>> >  arch/mips/loongson/common/setup.c            |    6 +-
+>> >  arch/mips/mm/Makefile                        |    1 +
+>> >  arch/mips/mm/c-r4k.c                         |   84 ++++++++++++++++++++++++++
+>> >  arch/mips/mm/tlb-r4k.c                       |    2 +-
+>> >  arch/mips/mm/tlbex.c                         |    1 +
+>> >  17 files changed, 156 insertions(+), 9 deletions(-)
+>>
+>> This patch is too big.  It should be split up into smaller but
+>> related parts.
+>>
+>> For example, the parts that add new identifier constants should be
+>> first.  Then a separate patch for cpu-probe.c where they are used.
+>>
+>> And...
+>>
+>> >  create mode 100644 arch/mips/include/asm/mach-loongson/spaces.h
+>> >
+>> >diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+>> >index c179461..38e460b 100644
+>> >--- a/arch/mips/Kconfig
+>> >+++ b/arch/mips/Kconfig
+>> >@@ -1544,6 +1544,16 @@ config CPU_LOONGSON2
+>> >     select CPU_SUPPORTS_64BIT_KERNEL
+>> >     select CPU_SUPPORTS_HIGHMEM
+>> >
+>> >+config CPU_LOONGSON3
+>> >+    bool "Loongson 3 CPU"
+>> >+    depends on SYS_HAS_CPU_LOONGSON3
+>> >+    select CPU_SUPPORTS_32BIT_KERNEL
+>> >+    select CPU_SUPPORTS_64BIT_KERNEL
+>> >+    select CPU_SUPPORTS_HIGHMEM
+>> >+    help
+>> >+            The Loongson 3 processor implements the MIPS III instruction set
+>> >+            with many extensions.
+>> >+
+>>
+>> This bit must be the very last patch of the entire set, not the first.
+>>
+>> Ask yourself what would happen if someone did a build selecting
+>> CPU_LOONGSON3 after this patch were applied?  Would a runnable
+>> kernel result?  If the answer is no, then you did it in the wrong
+>> order.
 >
-> LIU Qi
+> Just to clarify and also because I only recently had the discussion with
+> somebody.  What is very important is that a patch series never ever
+> break something when it gets only partially applied.  This is because
+> all the automated testing and debugging that is being used today.  The
+> most common example is git-bisect but lately aiaiai [1] is becoming
+> fashionable, too.  So I rather spend some extra time on reviewing a big,
+> complex patch now than living with the consequences of improper splitting
+> later.  But of course properlz split patches are always preferred :-)
+>
+>  Ralf
+>
+> [1] http://lwn.net/Articles/488992/

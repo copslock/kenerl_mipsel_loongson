@@ -1,41 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2012 14:40:16 +0200 (CEST)
-Received: from mho-02-ewr.mailhop.org ([204.13.248.72]:51397 "EHLO
-        mho-02-ewr.mailhop.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903494Ab2FPMkK convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2012 14:46:55 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:49968 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903485Ab2FPMqs convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 16 Jun 2012 14:40:10 +0200
-Received: from 10.103.77.188.dynamic.jazztel.es ([188.77.103.10] helo=mail.viric.name)
-        by mho-02-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.72)
-        (envelope-from <viric@viric.name>)
-        id 1SfsIO-0009z7-Eg; Sat, 16 Jun 2012 12:40:04 +0000
-Received: by mail.viric.name (Postfix, from userid 1000)
-        id 4FEB358FD9B; Sat, 16 Jun 2012 14:40:01 +0200 (CEST)
-X-Mail-Handler: MailHop Outbound by DynDNS
-X-Originating-IP: 188.77.103.10
-X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/mailhop/outbound_abuse.html for abuse reporting information)
-X-MHO-User: U2FsdGVkX1+IcudpfI7v9Da9tEpv1FM7
-Date:   Sat, 16 Jun 2012 14:40:01 +0200
-From:   =?iso-8859-1?Q?Llu=EDs?= Batlle i Rossell <viric@viric.name>
-To:     Jonas Gorski <jonas.gorski@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: [loongson-dev] Re: [PATCH] MIPS: Add emulation for fpureg-mem
- unaligned access
-Message-ID: <20120616124001.GQ2039@vicerveza.homeunix.net>
-References: <20120615234641.6938B58FE7C@mail.viric.name>
- <CAOiHx==JS9KfPWxx+pyRNwvq-pWdhbZk+Q-qvRPsVGh90Xso9Q@mail.gmail.com>
- <20120616121513.GP2039@vicerveza.homeunix.net>
+        Sat, 16 Jun 2012 14:46:48 +0200
+Received: by lbbgg6 with SMTP id gg6so3596393lbb.36
+        for <multiple recipients>; Sat, 16 Jun 2012 05:46:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=Js9idjohECUeI1G5/uBjSO4aMML8NmD2C1eOombojUo=;
+        b=N1Lk3ImkwG4/2ix/QSTDXv/rq4IMCQu953sAy0gEM6IiehRsZW2kK1GJ2aXtlP2hhR
+         PEP2rs5cbWKfYA/LcKLyasqcq1I80WE9NkVwBrN2NALT6fuxvxysXZin6uo0Pgb23oXN
+         +l70mNiuTdWMpTOfYOJszswyEHD0V/cQPXm/3VkJqH+0oOmsVqIlDPqwyD9mUQFS3BN6
+         +x3BkIZzwRS+jvcCx2ubDIH4V7mm39nw5WY0jGPdNbcWpWbJiMoUkql7I5oYKNVOEB1d
+         Eiy6XAXD61Qj1hUSbRgHpW+UYanOyTAES7LxZzHuiSd9UFG+Tf+9nfPkRHf1fDznEK9V
+         eHyg==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20120616121513.GP2039@vicerveza.homeunix.net>
-X-Accept-Language: ca, es, eo, ru, en, jbo, tokipona
-User-Agent: Mutt/1.5.20 (2009-06-14)
+Received: by 10.152.148.199 with SMTP id tu7mr8543686lab.43.1339850803035;
+ Sat, 16 Jun 2012 05:46:43 -0700 (PDT)
+Received: by 10.152.5.103 with HTTP; Sat, 16 Jun 2012 05:46:42 -0700 (PDT)
+In-Reply-To: <20120615131023.GA14191@loongson.cn>
+References: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
+        <20120615131023.GA14191@loongson.cn>
+Date:   Sat, 16 Jun 2012 20:46:42 +0800
+Message-ID: <CAAhV-H5EbonxPVrSC+tb-yusP74dbg8T70O4iNNqp1ts1uDtRQ@mail.gmail.com>
+Subject: Re: [PATCH 00/14] MIPS: Add Loongson-3 based machines support.
+From:   huacai chen <chenhuacai@gmail.com>
+To:     LIU Qi <liuqi@loongson.cn>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-X-archive-position: 33673
+X-archive-position: 33674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: viric@viric.name
+X-original-sender: chenhuacai@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,29 +54,39 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello,
+Yes, the 4th patch is add UEFI-like interface and old interface is not
+supported.
 
-On Sat, Jun 16, 2012 at 02:15:13PM +0200, Lluís Batlle i Rossell wrote:
-> On Sat, Jun 16, 2012 at 01:21:27PM +0200, Jonas Gorski wrote:
-> > On 16 June 2012 00:22, Lluis Batlle i Rossell <viric@viric.name> wrote:
-> > > Reusing most of the code from lw,ld,sw,sd emulation,
-> > > I add the emulation for lwc1,ldc1,swc1,sdc1.
-> > 
-> > What about lwxc1, ldxc1, swxc1 and sdxc1? These also require alignment.
-> 
-> Looking at gcc code, I could not find those instructions emmitted. I could write
-> some assembly tests cases though.
-
-I just undesrtood the Loongson2f only does MIPS III, and the *xc1
-instructions are for MIPS IV, which I don't have, so I can't test.
-
-I started to write the handling of cop1x_op, then a switch() of the coprocessor
-operation, then I had to introduce a new instruction format not available in
-inst.h, ... too much new lines I won't be able to test.
-
-I'll repost only with the attention on MIPS II ldc1/sdc1. Btw, mips-iv.pdf says
-in the LDC1 page that it's MIPS II, but Table B-5 mentions it as MIPS III. I
-imagine the table is wrong, because it appears in Table B-25 too.
-
-Regards,
-Lluís.
+On Fri, Jun 15, 2012 at 9:10 PM, LIU Qi <liuqi82@gmail.com> wrote:
+> On Fri, Jun 15, 2012 at 04:09:47PM +0800, Huacai Chen wrote:
+>  > This patchset is for git repository git://git.linux-mips.org/pub/scm/
+>  > ralf/linux. Loongson-3 is a multi-core MIPS family CPU, it is MIPS64R2
+>  > compatible and has the same IMP field (0x6300) as Loongson-2. These
+>  > patches make Linux kernel support Loongson-3 CPU and Loongson-3 based
+>  > computers (including Laptop, Mini-ITX, All-In-One PC, etc.)
+>  >
+>  > Huacai Chen(14):
+>  >  MIPS: Loongson: Add basic Loongson 3 CPU support.
+>  >  MIPS: Loongson 3: Add Lemote-3A machtypes definition.
+>  >  MIPS: Loongson: Make Loongson 3 to use BCD format for RTC.
+>  >  MIPS: Loongson: Add UEFI-like firmware interface support.
+>  >  MIPS: Loongson 3: Add HT-linked PCI support.
+>  >  MIPS: Loongson 3: Add IRQ init and dispatch support.
+>  >  MIPS: Loongson 3: Add serial port support.
+>  >  MIPS: Loongson: Add swiotlb to support big memory (>4GB).
+>  >  ata: Use 32bit DMA in AHCI for Loongson 3.
+>  >  drm/radeon: Make radeon card usable for Loongson.
+>  >  ALSA: Make hda sound card usable for Loongson.
+>  >  MIPS: Loongson 3: Add Loongson-3 SMP support.
+>  >  MIPS: Loongson 3: Add CPU Hotplug support.
+>  >  MIPS: Loongson: Add a Loongson 3 default config file.
+>  >
+>  > Signed-off-by: Huacai Chen <chenhc@lemote.com>
+>  > Signed-off-by: Hongliang Tao <taohl@lemote.com>
+>  > Signed-off-by: Hua Yan <yanh@lemote.com>
+>
+> The compiled kernel with your patches just doesn't boot. I tested with
+> the Loongson3 laptop and mini-itx. Do they need the newer PMON version
+> with UEFI-like interface support to boot the system?
+>
+> LIU Qi

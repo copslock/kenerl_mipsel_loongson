@@ -1,40 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2012 13:22:14 +0200 (CEST)
-Received: from mail-ob0-f177.google.com ([209.85.214.177]:56128 "EHLO
-        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903459Ab2FPLVx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Jun 2012 13:21:53 +0200
-Received: by obqv19 with SMTP id v19so5802927obq.36
-        for <linux-mips@linux-mips.org>; Sat, 16 Jun 2012 04:21:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        bh=z9Th8LycqySzyXJcghl9EVbbIIqzWYvI/fGroaL4d4Y=;
-        b=JnrYvWg4WcBqn49zqskNav3wg/adqW9N2dsztGKYgZs67pPAJADpReQDRbvyYc4Efw
-         psdBZPX0g+3zGuzDev5Gk0L0Ag73AgtbzCQFNuehjCkzwrbU1/I9O/1fFU+GJt3nc3vF
-         PESQaOSx/zZrbLA6Dlab0II7P4ILiebuGRJjeI93yrO7GI3H8+y0cQNdG1amC8z8hMJ+
-         CGKBROdSbfoll8GwE3lSRz0mFIxQ68+6ZNu4pXj8TWxuwqSovSOvOFM7myeFce8c7bei
-         i+o4Elmb5MTw37mASRIEWnv/bALa6uLoPxsLcGlmqq9YW97F1phbbnKs2slUAI/QOtIS
-         xWPg==
-Received: by 10.60.14.68 with SMTP id n4mr7148448oec.24.1339845707618; Sat, 16
- Jun 2012 04:21:47 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.76.98.195 with HTTP; Sat, 16 Jun 2012 04:21:27 -0700 (PDT)
-In-Reply-To: <20120615234641.6938B58FE7C@mail.viric.name>
-References: <20120615234641.6938B58FE7C@mail.viric.name>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Sat, 16 Jun 2012 13:21:27 +0200
-Message-ID: <CAOiHx==JS9KfPWxx+pyRNwvq-pWdhbZk+Q-qvRPsVGh90Xso9Q@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Add emulation for fpureg-mem unaligned access
-To:     Lluis Batlle i Rossell <viric@viric.name>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2012 14:15:27 +0200 (CEST)
+Received: from mho-01-ewr.mailhop.org ([204.13.248.71]:26551 "EHLO
+        mho-01-ewr.mailhop.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903468Ab2FPMPX convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 16 Jun 2012 14:15:23 +0200
+Received: from 10.103.77.188.dynamic.jazztel.es ([188.77.103.10] helo=mail.viric.name)
+        by mho-01-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.72)
+        (envelope-from <viric@viric.name>)
+        id 1SfruO-000HrM-Fn; Sat, 16 Jun 2012 12:15:16 +0000
+Received: by mail.viric.name (Postfix, from userid 1000)
+        id 4A02158FD97; Sat, 16 Jun 2012 14:15:13 +0200 (CEST)
+X-Mail-Handler: MailHop Outbound by DynDNS
+X-Originating-IP: 188.77.103.10
+X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/mailhop/outbound_abuse.html for abuse reporting information)
+X-MHO-User: U2FsdGVkX1/kHaBu5PEgz8USpokx2hOC
+Date:   Sat, 16 Jun 2012 14:15:13 +0200
+From:   =?iso-8859-1?Q?Llu=EDs?= Batlle i Rossell <viric@viric.name>
+To:     Jonas Gorski <jonas.gorski@gmail.com>
 Cc:     linux-mips@linux-mips.org, loongson-dev@googlegroups.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-archive-position: 33671
+Subject: Re: [PATCH] MIPS: Add emulation for fpureg-mem unaligned access
+Message-ID: <20120616121513.GP2039@vicerveza.homeunix.net>
+Mail-Followup-To: Jonas Gorski <jonas.gorski@gmail.com>,
+        linux-mips@linux-mips.org, loongson-dev@googlegroups.com
+References: <20120615234641.6938B58FE7C@mail.viric.name>
+ <CAOiHx==JS9KfPWxx+pyRNwvq-pWdhbZk+Q-qvRPsVGh90Xso9Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <CAOiHx==JS9KfPWxx+pyRNwvq-pWdhbZk+Q-qvRPsVGh90Xso9Q@mail.gmail.com>
+X-Accept-Language: ca, es, eo, ru, en, jbo, tokipona
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 33672
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: viric@viric.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,86 +50,33 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-SGksCgpzb21lIGNvbW1lbnRzIC4uLgoKT24gMTYgSnVuZSAyMDEyIDAwOjIyLCBMbHVpcyBCYXRs
-bGUgaSBSb3NzZWxsIDx2aXJpY0B2aXJpYy5uYW1lPiB3cm90ZToKPiBSZXVzaW5nIG1vc3Qgb2Yg
-dGhlIGNvZGUgZnJvbSBsdyxsZCxzdyxzZCBlbXVsYXRpb24sCj4gSSBhZGQgdGhlIGVtdWxhdGlv
-biBmb3IgbHdjMSxsZGMxLHN3YzEsc2RjMS4KCldoYXQgYWJvdXQgbHd4YzEsIGxkeGMxLCBzd3hj
-MSBhbmQgc2R4YzE/IFRoZXNlIGFsc28gcmVxdWlyZSBhbGlnbm1lbnQuCgo+IFRoaXMgYXZvaWRz
-IHRoZSBkaXJlY3QgU0lHQlVTIHNlbnQgdG8gdXNlcnNwYWNlIHByb2Nlc3NlcyB0aGF0IGhhdmUK
-PiBtaXNhbGlnbmVkIG1lbW9yeSBhY2Nlc3Nlcy4KPgo+IEkndmUgdGVzdGVkIHRoZSBjaGFuZ2Ug
-aW4gTG9vbmdzb24yRiwgd2l0aCBhbiBvd24gdGVzdCBwcm9ncmFtLCBhbmQKPiBXZWJLaXQgMS40
-LjAsIGFzIGJvdGggd2VyZSBraWxsZWQgYnkgc2lnYnVzIHdpdGhvdXQgdGhpcyBwYXRjaC4KPgo+
-IFNpZ25lZC1vZmY6IExsdWlzIEJhdGxsZSBpIFJvc3NlbGwgPHZpcmljQHZpcmljLm5hbWU+Cj4g
-LS0tCj4gwqBhcmNoL21pcHMva2VybmVsL3VuYWxpZ25lZC5jIHwgwqAgNDMgKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tCj4gwqAxIGZpbGUgY2hhbmdlZCwgMzAgaW5z
-ZXJ0aW9ucygrKSwgMTMgZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL2tl
-cm5lbC91bmFsaWduZWQuYyBiL2FyY2gvbWlwcy9rZXJuZWwvdW5hbGlnbmVkLmMKPiBpbmRleCA5
-YzU4YmRmLi40NTMxZTZjIDEwMDY0NAo+IC0tLSBhL2FyY2gvbWlwcy9rZXJuZWwvdW5hbGlnbmVk
-LmMKPiArKysgYi9hcmNoL21pcHMva2VybmVsL3VuYWxpZ25lZC5jCj4gQEAgLTg1LDYgKzg1LDcg
-QEAKPiDCoCNpbmNsdWRlIDxhc20vY29wMi5oPgo+IMKgI2luY2x1ZGUgPGFzbS9pbnN0Lmg+Cj4g
-wqAjaW5jbHVkZSA8YXNtL3VhY2Nlc3MuaD4KPiArI2luY2x1ZGUgPGFzbS9mcHUuaD4KPgo+IMKg
-I2RlZmluZSBTVFIoeCkgwqBfX1NUUih4KQo+IMKgI2RlZmluZSBfX1NUUih4KSDCoCN4Cj4gQEAg
-LTEwOCw2ICsxMDksNyBAQCBzdGF0aWMgdm9pZCBlbXVsYXRlX2xvYWRfc3RvcmVfaW5zbihzdHJ1
-Y3QgcHRfcmVncyAqcmVncywKPiDCoCDCoCDCoCDCoHVuaW9uIG1pcHNfaW5zdHJ1Y3Rpb24gaW5z
-bjsKPiDCoCDCoCDCoCDCoHVuc2lnbmVkIGxvbmcgdmFsdWU7Cj4gwqAgwqAgwqAgwqB1bnNpZ25l
-ZCBpbnQgcmVzOwo+ICsgwqAgwqAgwqAgZnB1cmVnX3QgKmZwdXJlZ3M7Cj4KPiDCoCDCoCDCoCDC
-oHBlcmZfc3dfZXZlbnQoUEVSRl9DT1VOVF9TV19FTVVMQVRJT05fRkFVTFRTLCAxLCByZWdzLCAw
-KTsKPgo+IEBAIC0xODMsNiArMTg1LDcgQEAgc3RhdGljIHZvaWQgZW11bGF0ZV9sb2FkX3N0b3Jl
-X2luc24oc3RydWN0IHB0X3JlZ3MgKnJlZ3MsCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBicmVh
-azsKPgo+IMKgIMKgIMKgIMKgY2FzZSBsd19vcDoKPiArIMKgIMKgIMKgIGNhc2UgbHdjMV9vcDoK
-PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGlmICghYWNjZXNzX29rKFZFUklGWV9SRUFELCBhZGRy
-LCA0KSkKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGdvdG8gc2lnYnVzOwo+
-Cj4gQEAgLTIwOSw3ICsyMTIsMTIgQEAgc3RhdGljIHZvaWQgZW11bGF0ZV9sb2FkX3N0b3JlX2lu
-c24oc3RydWN0IHB0X3JlZ3MgKnJlZ3MsCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBpZiAocmVz
-KQo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgZ290byBmYXVsdDsKPiDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoGNvbXB1dGVfcmV0dXJuX2VwYyhyZWdzKTsKPiAtIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIHJlZ3MtPnJlZ3NbaW5zbi5pX2Zvcm1hdC5ydF0gPSB2YWx1ZTsKPiArIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIGlmIChpbnNuLmlfZm9ybWF0Lm9wY29kZSA9PSBsd19vcCkgewo+
-ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgcmVncy0+cmVnc1tpbnNuLmlfZm9y
-bWF0LnJ0XSA9IHZhbHVlOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgfSBlbHNlIHsKPiArIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGZwdXJlZ3MgPSBnZXRfZnB1X3JlZ3MoY3Vy
-cmVudCk7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBmcHVyZWdzW2luc24u
-aV9mb3JtYXQucnRdID0gdmFsdWU7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB9Cj4gwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqBicmVhazsKPgo+IMKgIMKgIMKgIMKgY2FzZSBsaHVfb3A6Cj4gQEAg
-LTI5MSw2ICsyOTksNyBAQCBzdGF0aWMgdm9pZCBlbXVsYXRlX2xvYWRfc3RvcmVfaW5zbihzdHJ1
-Y3QgcHRfcmVncyAqcmVncywKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGdvdG8gc2lnaWxsOwo+
-Cj4gwqAgwqAgwqAgwqBjYXNlIGxkX29wOgo+ICsgwqAgwqAgwqAgY2FzZSBsZGMxX29wOgo+IMKg
-I2lmZGVmIENPTkZJR182NEJJVAoKRnJvbSB3aGF0IEkgY2FuIHRlbGwsIGxkYzEgaXMgYSB2YWxp
-ZCBNSVBTMzIgaW5zdHJ1Y3Rpb24sIHNvIHRoaXMKc2hvdWxkIHByb2JhYmx5IGJlIHNvbWV0aGlu
-ZyBsaWtlCgogwqAgwqAgwqAgwqBjYXNlIGxkX29wOgojaWZuZGVmIENPTkZJR182NEJJVAogwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqByZXR1cm4gc2lnaWxsOwojZW5kaWYKICDCoCDCoCDCoCBjYXNl
-IGxkYzFfb3A6Ci4uLgoKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoC8qCj4gwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgKiBBIDMyLWJpdCBrZXJuZWwgbWlnaHQgYmUgcnVubmluZyBvbiBhIDY0LWJp
-dCBwcm9jZXNzb3IuIMKgQnV0Cj4gQEAgLTMyNSw3ICszMzQsMTIgQEAgc3RhdGljIHZvaWQgZW11
-bGF0ZV9sb2FkX3N0b3JlX2luc24oc3RydWN0IHB0X3JlZ3MgKnJlZ3MsCj4gwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqBpZiAocmVzKQo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-Z290byBmYXVsdDsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGNvbXB1dGVfcmV0dXJuX2VwYyhy
-ZWdzKTsKPiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHJlZ3MtPnJlZ3NbaW5zbi5pX2Zvcm1hdC5y
-dF0gPSB2YWx1ZTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGlmIChpbnNuLmlfZm9ybWF0Lm9w
-Y29kZSA9PSBsZF9vcCkgewo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgcmVn
-cy0+cmVnc1tpbnNuLmlfZm9ybWF0LnJ0XSA9IHZhbHVlOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgfSBlbHNlIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGZwdXJlZ3Mg
-PSBnZXRfZnB1X3JlZ3MoY3VycmVudCk7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCBmcHVyZWdzW2luc24uaV9mb3JtYXQucnRdID0gdmFsdWU7Cj4gKyDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCB9Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBicmVhazsKPiDCoCNlbmRpZiAvKiBD
-T05GSUdfNjRCSVQgKi8KPgo+IEBAIC0zNzAsMTAgKzM4NCwxNiBAQCBzdGF0aWMgdm9pZCBlbXVs
-YXRlX2xvYWRfc3RvcmVfaW5zbihzdHJ1Y3QgcHRfcmVncyAqcmVncywKPiDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoGJyZWFrOwo+Cj4gwqAgwqAgwqAgwqBjYXNlIHN3X29wOgo+ICsgwqAgwqAgwqAg
-Y2FzZSBzd2MxX29wOgo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgaWYgKCFhY2Nlc3Nfb2soVkVS
-SUZZX1dSSVRFLCBhZGRyLCA0KSkKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oGdvdG8gc2lnYnVzOwo+Cj4gLSDCoCDCoCDCoCDCoCDCoCDCoCDCoCB2YWx1ZSA9IHJlZ3MtPnJl
-Z3NbaW5zbi5pX2Zvcm1hdC5ydF07Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBpZiAoaW5zbi5p
-X2Zvcm1hdC5vcGNvZGUgPT0gc3dfb3ApIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIHZhbHVlID0gcmVncy0+cmVnc1tpbnNuLmlfZm9ybWF0LnJ0XTsKPiArIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIH0gZWxzZSB7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCBmcHVyZWdzID0gZ2V0X2ZwdV9yZWdzKGN1cnJlbnQpOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgdmFsdWUgPSBmcHVyZWdzW2luc24uaV9mb3JtYXQucnRdOwo+ICsgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgfQo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgX19hc21fXyBfX3Zv
-bGF0aWxlX18gKAo+IMKgI2lmZGVmIF9fQklHX0VORElBTgo+IMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIjE6XHRzd2xcdCUxLCglMilcbiIKPiBAQCAtNDAxLDYgKzQyMSw3IEBA
-IHN0YXRpYyB2b2lkIGVtdWxhdGVfbG9hZF9zdG9yZV9pbnNuKHN0cnVjdCBwdF9yZWdzICpyZWdz
-LAo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgYnJlYWs7Cj4KPiDCoCDCoCDCoCDCoGNhc2Ugc2Rf
-b3A6Cj4gKyDCoCDCoCDCoCBjYXNlIHNkYzFfb3A6Cj4gwqAjaWZkZWYgQ09ORklHXzY0QklUCgpT
-YW1lIGhlcmUuCgo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLyoKPiDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCAqIEEgMzItYml0IGtlcm5lbCBtaWdodCBiZSBydW5uaW5nIG9uIGEgNjQtYml0IHBy
-b2Nlc3Nvci4gwqBCdXQKCgpSZWdhcmRzLApKb25hcwo=
+Hello,
+
+thank you for the review.
+
+On Sat, Jun 16, 2012 at 01:21:27PM +0200, Jonas Gorski wrote:
+> On 16 June 2012 00:22, Lluis Batlle i Rossell <viric@viric.name> wrote:
+> > Reusing most of the code from lw,ld,sw,sd emulation,
+> > I add the emulation for lwc1,ldc1,swc1,sdc1.
+> 
+> What about lwxc1, ldxc1, swxc1 and sdxc1? These also require alignment.
+
+Looking at gcc code, I could not find those instructions emmitted. I could write
+some assembly tests cases though.
+
+> >        case ld_op:
+> > +       case ldc1_op:
+> >  #ifdef CONFIG_64BIT
+> 
+> From what I can tell, ldc1 is a valid MIPS32 instruction, so this
+> should probably be something like
+> 
+>         case ld_op:
+> #ifndef CONFIG_64BIT
+>                 return sigill;
+> #endif
+
+I agree! I'll repost with these fixes.
+
+Regards,
+Lluís

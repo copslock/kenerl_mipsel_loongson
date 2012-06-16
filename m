@@ -1,47 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2012 14:52:25 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:39258 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903479Ab2FPMwT convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2012 14:59:00 +0200 (CEST)
+Received: from mho-01-ewr.mailhop.org ([204.13.248.71]:36734 "EHLO
+        mho-01-ewr.mailhop.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903479Ab2FPM65 convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 16 Jun 2012 14:52:19 +0200
-Received: by lbbgg6 with SMTP id gg6so3597875lbb.36
-        for <multiple recipients>; Sat, 16 Jun 2012 05:52:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=a+vznQthRXo4wGO5lvJXIMc8THXgBDGf1nuMU/f6Kig=;
-        b=YTEQIAKtk1SLoTV6WB7VSuXTHftz3WXj2Vi0XVbviw8ZR8wLg++mLAYVZi1CL0h3gL
-         FIzKil5yQHx9jDSu3Mq8rKt7kyDPea0P0iZjaacyISNJgbzFYZdzNM0r55TQa31AWBdl
-         wKH3v+WyuvwC+4jxEynVy9cLmMDLyNN+3wciH1pIuPUt8P02fL1L8B2hnkBgWHMlRVFe
-         BaqO8k/R0kHCcJEpc3YtC+6pF1V6tfFDW46WeC4NOUN7NO841LTYt9Rr/wDOVJbenvjv
-         oDfy9YLjVBov+/AUmYMfg3bnBtLmf6IZWJQSGsEXFSZBetG691qXHSLiMW+WMGTb1qg0
-         0JHA==
+        Sat, 16 Jun 2012 14:58:57 +0200
+Received: from 10.103.77.188.dynamic.jazztel.es ([188.77.103.10] helo=mail.viric.name)
+        by mho-01-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.72)
+        (envelope-from <viric@viric.name>)
+        id 1SfsaY-000ACM-Cb; Sat, 16 Jun 2012 12:58:50 +0000
+Received: by mail.viric.name (Postfix, from userid 1000)
+        id 55DDF58FDA0; Sat, 16 Jun 2012 14:58:47 +0200 (CEST)
+X-Mail-Handler: MailHop Outbound by DynDNS
+X-Originating-IP: 188.77.103.10
+X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/mailhop/outbound_abuse.html for abuse reporting information)
+X-MHO-User: U2FsdGVkX18nS8amA8xTQNj3Xhdd/Hvv
+Date:   Sat, 16 Jun 2012 14:58:47 +0200
+From:   =?iso-8859-1?Q?Llu=EDs?= Batlle i Rossell <viric@viric.name>
+To:     Jonas Gorski <jonas.gorski@gmail.com>, linux-mips@linux-mips.org,
+        loongson-dev@googlegroups.com
+Subject: Re: [PATCH] MIPS: Add emulation for fpureg-mem unaligned access
+Message-ID: <20120616125847.GR2039@vicerveza.homeunix.net>
+Mail-Followup-To: Jonas Gorski <jonas.gorski@gmail.com>,
+        linux-mips@linux-mips.org, loongson-dev@googlegroups.com
+References: <20120615234641.6938B58FE7C@mail.viric.name>
+ <CAOiHx==JS9KfPWxx+pyRNwvq-pWdhbZk+Q-qvRPsVGh90Xso9Q@mail.gmail.com>
+ <20120616121513.GP2039@vicerveza.homeunix.net>
 MIME-Version: 1.0
-Received: by 10.152.105.51 with SMTP id gj19mr8481996lab.38.1339851134313;
- Sat, 16 Jun 2012 05:52:14 -0700 (PDT)
-Received: by 10.152.5.103 with HTTP; Sat, 16 Jun 2012 05:52:14 -0700 (PDT)
-In-Reply-To: <20120615143718.GD15800@gmail.com>
-References: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
-        <1339747801-28691-15-git-send-email-chenhc@lemote.com>
-        <20120615143718.GD15800@gmail.com>
-Date:   Sat, 16 Jun 2012 20:52:14 +0800
-Message-ID: <CAAhV-H7FYUS=Q4VE8SOcA4fMxhLUKGyVTyrTPRETH7gX7RkAwg@mail.gmail.com>
-Subject: Re: [PATCH 14/14] MIPS: Loongson: Add a Loongson 3 default config file.
-From:   huacai chen <chenhuacai@gmail.com>
-To:     LIU Qi <liuqi82@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20120616121513.GP2039@vicerveza.homeunix.net>
+X-Accept-Language: ca, es, eo, ru, en, jbo, tokipona
+User-Agent: Mutt/1.5.20 (2009-06-14)
 Content-Transfer-Encoding: 8BIT
-X-archive-position: 33676
+X-archive-position: 33677
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhuacai@gmail.com
+X-original-sender: viric@viric.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,18 +51,25 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Thank you, I'll do this later.
+Hello again,
 
-On Fri, Jun 15, 2012 at 10:37 PM, LIU Qi <liuqi82@gmail.com> wrote:
-> On Fri, Jun 15, 2012 at 04:10:01PM +0800, Huacai Chen wrote:
->  > Signed-off-by: Huacai Chen <chenhc@lemote.com>
->  > Signed-off-by: Hongliang Tao <taohl@lemote.com>
->  > Signed-off-by: Hua Yan <yanh@lemote.com>
->  > ---
->  >  arch/mips/configs/loongson3_defconfig |  704 +++++++++++++++++++++++++++++++++
->  >  1 files changed, 704 insertions(+), 0 deletions(-)
->  >  create mode 100644 arch/mips/configs/loongson3_defconfig
->
-> It is better to generate the defconfig file using `make savedefconfig`.
->
-> LIU Qi
+On Sat, Jun 16, 2012 at 02:15:13PM +0200, Lluís Batlle i Rossell wrote:
+> > From what I can tell, ldc1 is a valid MIPS32 instruction, so this
+> > should probably be something like
+> > 
+> >         case ld_op:
+> > #ifndef CONFIG_64BIT
+> >                 return sigill;
+> > #endif
+> 
+> I agree! I'll repost with these fixes.
+
+Well, I think I take my words back. Handling the ldc1/sdc1 cases in MIPS32 is
+tricker than I thought first, because I can't use ldl/ldr or sdl/sdr there.
+Given my ability with mips assembly, I leave the patch as is.
+
+In 'patchwork' I had set the patch first to superseeded, but then I set it back
+to New.
+
+Regards,
+Lluís.

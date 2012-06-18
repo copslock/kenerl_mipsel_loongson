@@ -1,41 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2012 00:30:32 +0200 (CEST)
-Received: from mail-out.m-online.net ([212.18.0.9]:37076 "EHLO
-        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1902129Ab2FQWa1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jun 2012 00:30:27 +0200
-Received: from frontend1.mail.m-online.net (unknown [192.168.8.180])
-        by mail-out.m-online.net (Postfix) with ESMTP id 3WFqrT20Khz4LDdr;
-        Mon, 18 Jun 2012 00:30:16 +0200 (CEST)
-Received: from igel.home (ppp-93-104-152-241.dynamic.mnet-online.de [93.104.152.241])
-        by mail.mnet-online.de (Postfix) with ESMTPA id 3WFqrS57K4z4KK6v;
-        Mon, 18 Jun 2012 00:30:16 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 501)
-        id 4D803CA2A5; Mon, 18 Jun 2012 00:30:16 +0200 (CEST)
-From:   Andreas Schwab <schwab@linux-m68k.org>
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-kernel@vger.kernel.org,
-        Linuxppc-dev <linuxppc-dev@ozlabs.org>,
-        Chris Zankel <chris@zankel.net>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: Build regressions/improvements in v3.5-rc3
-References: <1339962373-3224-1-git-send-email-geert@linux-m68k.org>
-        <CAMuHMdVfLjgrtWoPpvbLf12+=ApE6W9dNcweqD-_2Benr-D7NQ@mail.gmail.com>
-        <1339969995.9220.242.camel@pasglop>
-X-Yow:  Did you move a lot of KOREAN STEAK KNIVES this trip, Dingy?
-Date:   Mon, 18 Jun 2012 00:30:16 +0200
-In-Reply-To: <1339969995.9220.242.camel@pasglop> (Benjamin Herrenschmidt's
-        message of "Mon, 18 Jun 2012 07:53:15 +1000")
-Message-ID: <m2vcip4lmv.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.1 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2012 11:04:30 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:59063 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903521Ab2FRJEU convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Jun 2012 11:04:20 +0200
+Received: by lbbgg6 with SMTP id gg6so4327584lbb.36
+        for <multiple recipients>; Mon, 18 Jun 2012 02:04:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=34uWQfTvaCD6bXTBfypjX9BURVS2aeegTaGcGorlqPE=;
+        b=A8abLL5PAx8/X4HaTDk1Pza0aLtxEmMt8S2PtEVY21zjVlEl4/xpnF5/Ac4nFBe6tL
+         2a5SRIFy4bye68/WWa4u+iDX+Y23Bf+7MnMOfME8w8yRjx3NpJQD53yRJxrb9IqJmPyY
+         wVWZDaBgR28YGPA2B+Oz9TQFjdA3jaNIYhDq6yYagZAX1OcclHzvsEK2czzCrBy4SgjC
+         YIosM272kNffPqkaY8O/vEQXSAtISQWw2+NBWbMNKBZ8bjigKkKbMzxHjZj4+L2ASK5I
+         aR2g6iDph8jHMTJHVRFqwj4sqjZtf1gNkcrFRZXnaeq74CFg8CmTk4Lp52q0LAyzjefn
+         VmIA==
 MIME-Version: 1.0
-Content-Type: text/plain
-X-archive-position: 33683
+Received: by 10.152.122.9 with SMTP id lo9mr13741268lab.41.1340010254885; Mon,
+ 18 Jun 2012 02:04:14 -0700 (PDT)
+Received: by 10.152.5.103 with HTTP; Mon, 18 Jun 2012 02:04:14 -0700 (PDT)
+In-Reply-To: <20120617120557.GE31534@liondog.tnic>
+References: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
+        <1339747801-28691-10-git-send-email-chenhc@lemote.com>
+        <4FDB08AC.8010208@mvista.com>
+        <CAAhV-H6AKp+aGUozOxQoLgGYQ+GtHMbKKC4MVkFA570zodjgDA@mail.gmail.com>
+        <20120617120557.GE31534@liondog.tnic>
+Date:   Mon, 18 Jun 2012 17:04:14 +0800
+Message-ID: <CAAhV-H67M5xH+HMyVNopm=TPhei24NfnzNqiPMA+Ucz4Y7V3hg@mail.gmail.com>
+Subject: Re: [PATCH 09/14] ata: Use 32bit DMA in AHCI for Loongson 3.
+From:   huacai chen <chenhuacai@gmail.com>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Sergei Shtylyov <sshtylyov@mvista.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
+        linux-ide@vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 33684
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: schwab@linux-m68k.org
+X-original-sender: chenhuacai@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,18 +59,57 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Benjamin Herrenschmidt <benh@kernel.crashing.org> writes:
+Do you means it is a better idea to modify "enum board_ids" and add a
+new board id such as board_ahci_sb700_loongson, and then add a new
+entry in ahci_port_info[]?
+If so, I think there is a problem: the pci id of our AHCI controller
+is 1002:4390, if I add board_ahci_sb700_loongson, then I should also
+add
+{ PCI_VDEVICE(ATI, 0x4390), board_ahci_sb700_loongson },
+in ahci_pci_tbl[], but ahci_pci_tbl[] already has a line
+{ PCI_VDEVICE(ATI, 0x4390), board_ahci_sb700 },
+Then which entry will match the device?
 
-> On Sun, 2012-06-17 at 21:56 +0200, Geert Uytterhoeven wrote:
->> Truckloads of powerpc "Unrecognized opcode" breakage, and
+On Sun, Jun 17, 2012 at 8:05 PM, Borislav Petkov <bp@alien8.de> wrote:
+> On Fri, Jun 15, 2012 at 08:42:47PM +0800, huacai chen wrote:
+>> On Fri, Jun 15, 2012 at 6:04 PM, Sergei Shtylyov <sshtylyov@mvista.com> wrote:
+>> > Hello.
+>> >
+>> >
+>> > On 15-06-2012 12:09, Huacai Chen wrote:
+>> >
+>> >> Signed-off-by: Huacai Chen<chenhc@lemote.com>
+>> >> Signed-off-by: Hongliang Tao<taohl@lemote.com>
+>> >> Signed-off-by: Hua Yan<yanh@lemote.com>
+>> >
+>> >
+>> >   You  should have CCed the 'linux-ide' mailing list.
+>> >
+>> >
+>> >> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+>> >> index ebaf67e..3e3cfd8 100644
+>> >> --- a/drivers/ata/ahci.c
+>> >> +++ b/drivers/ata/ahci.c
+>> >> @@ -183,7 +183,12 @@ static const struct ata_port_info ahci_port_info[] =
+>> >> {
+>> >>        },
+>> >>        [board_ahci_sb700] =    /* for SB700 and SB800 */
+>> >>        {
+>> >> +#ifndef CONFIG_CPU_LOONGSON3
+>> >>                AHCI_HFLAGS     (AHCI_HFLAG_IGN_SERR_INTERNAL),
+>> >> +#else
+>> >> +               AHCI_HFLAGS     (AHCI_HFLAG_IGN_SERR_INTERNAL |
+>> >> +                                               AHCI_HFLAG_32BIT_ONLY),
+>> >> +#endif
+>> >
+>> >
+>> >   No, this #ifdef'ery won't do. You should add a new board type.
+>> All Loongson-3 based machines use AMD SB700 chipsets, add a new board
+>> type is better than #ifdef?
 >
-> Where ? The boot wrappers again ?
-
-<http://permalink.gmane.org/gmane.linux.kernel/1312778>
-
-Andreas.
-
--- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED5
-"And now for something completely different."
+> SB700/800 chipsets don't need to set a 32-bit only DMA flag; why do you
+> need it when you use the same chipset?
+>
+> --
+> Regards/Gruss,
+>    Boris.

@@ -1,31 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2012 11:28:41 +0200 (CEST)
-Received: from mail.work-microwave.de ([62.245.205.51]:47364 "EHLO
-        work-microwave.de" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S1903468Ab2FRJ2g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jun 2012 11:28:36 +0200
-Received: from rst-pc1.lan.work-microwave.de ([192.168.11.78])
-        (authenticated bits=0)
-        by mail.work-microwave.de  with ESMTP id q5I9SU85031289
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Mon, 18 Jun 2012 10:28:31 +0100
-Received: by rst-pc1.lan.work-microwave.de (Postfix, from userid 1000)
-        id BADEEAE096; Mon, 18 Jun 2012 11:28:30 +0200 (CEST)
-From:   Roland Stigge <stigge@antcom.de>
-To:     ralf@linux-mips.org, blogic@openwrt.org, jkosina@suse.cz,
-        standby24x7@gmail.com, bhelgaas@google.com,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        grant.likely@secretlab.ca, linus.walleij@stericsson.com
-Cc:     Roland Stigge <stigge@antcom.de>
-Subject: [PATCH] mips: pci-lantiq: Fix check for valid gpio
-Date:   Mon, 18 Jun 2012 11:28:26 +0200
-Message-Id: <1340011706-32281-1-git-send-email-stigge@antcom.de>
-X-Mailer: git-send-email 1.7.10
-X-FEAS-SYSTEM-WL: rst@work-microwave.de, 192.168.11.78
-X-archive-position: 33685
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2012 12:10:23 +0200 (CEST)
+Received: from zmc.proxad.net ([212.27.53.206]:57632 "EHLO zmc.proxad.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903468Ab2FRKKQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Jun 2012 12:10:16 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by zmc.proxad.net (Postfix) with ESMTP id B4089978F0B;
+        Mon, 18 Jun 2012 12:10:15 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at localhost
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id HZfafzbvC7yo; Mon, 18 Jun 2012 12:10:15 +0200 (CEST)
+Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
+        by zmc.proxad.net (Postfix) with ESMTPSA id 1075697A30D;
+        Mon, 18 Jun 2012 12:10:15 +0200 (CEST)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, grant.likely@secretlab.ca,
+        spi-devel-general@lists.sourceforge.net, jonas.gorski@gmail.com,
+        Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH v2] MIPS: BCM63XX: fix SPI message control register handling for BCM6338/6348
+Date:   Mon, 18 Jun 2012 12:07:51 +0200
+Message-Id: <1340014071-4841-1-git-send-email-florian@openwrt.org>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1339970153-30802-1-git-send-email-florian@openwrt.org>
+References: <1339970153-30802-1-git-send-email-florian@openwrt.org>
+X-archive-position: 33686
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stigge@antcom.de
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,31 +42,174 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This patch fixes two checks for valid gpio number, formerly (wrongly)
-considering zero as invalid, now using gpio_is_valid().
+BCM6338 and BCM6348 have a message control register width of 8 bits, instead
+of 16-bits like what the SPI driver assumes right now. Also the SPI message
+type shift value of 14 is actually 6 for these SoCs.
+This resulted in transmit FIFO corruption because we were writing 16-bits
+to an 8-bits wide register, thus spanning on the first byte of the transmit
+FIFO, which had already been filed in bcm63xx_spi_fill_txrx_fifo().
 
-Signed-off-by: Roland Stigge <stigge@antcom.de>
+Fix this by passing the message control register width and message type
+shift through platform data back to the SPI driver so that it can use
+it properly.
+
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
- arch/mips/pci/pci-lantiq.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Changes since v2:
+- reject invalid values of msg_ctl_width earlier during driver's probe
 
---- linux-2.6.orig/arch/mips/pci/pci-lantiq.c
-+++ linux-2.6/arch/mips/pci/pci-lantiq.c
-@@ -129,7 +129,7 @@ static int __devinit ltq_pci_startup(str
+
+ arch/mips/bcm63xx/dev-spi.c                        |    4 +++
+ .../include/asm/mach-bcm63xx/bcm63xx_dev_spi.h     |    2 ++
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h  |   13 ++++++--
+ drivers/spi/spi-bcm63xx.c                          |   31 ++++++++++++++++----
+ 4 files changed, 42 insertions(+), 8 deletions(-)
+
+diff --git a/arch/mips/bcm63xx/dev-spi.c b/arch/mips/bcm63xx/dev-spi.c
+index 67fa45b..409f16e 100644
+--- a/arch/mips/bcm63xx/dev-spi.c
++++ b/arch/mips/bcm63xx/dev-spi.c
+@@ -106,11 +106,15 @@ int __init bcm63xx_spi_register(void)
+ 	if (BCMCPU_IS_6338() || BCMCPU_IS_6348()) {
+ 		spi_resources[0].end += BCM_6338_RSET_SPI_SIZE - 1;
+ 		spi_pdata.fifo_size = SPI_6338_MSG_DATA_SIZE;
++		spi_pdata.msg_type_shift = SPI_6338_MSG_TYPE_SHIFT;
++		spi_pdata.msg_ctl_width = SPI_6338_MSG_CTL_WIDTH;
+ 	}
  
- 	/* setup reset gpio used by pci */
- 	reset_gpio = of_get_named_gpio(node, "gpio-reset", 0);
--	if (reset_gpio > 0)
-+	if (gpio_is_valid(reset_gpio))
- 		devm_gpio_request(&pdev->dev, reset_gpio, "pci-reset");
+ 	if (BCMCPU_IS_6358() || BCMCPU_IS_6368()) {
+ 		spi_resources[0].end += BCM_6358_RSET_SPI_SIZE - 1;
+ 		spi_pdata.fifo_size = SPI_6358_MSG_DATA_SIZE;
++		spi_pdata.msg_type_shift = SPI_6358_MSG_TYPE_SHIFT;
++		spi_pdata.msg_ctl_width = SPI_6358_MSG_CTL_WIDTH;
+ 	}
  
- 	/* enable auto-switching between PCI and EBU */
-@@ -192,7 +192,7 @@ static int __devinit ltq_pci_startup(str
- 	ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_PCC_IEN) | 0x10, LTQ_EBU_PCC_IEN);
+ 	bcm63xx_spi_regs_init();
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+index 7d98dbe..c9bae13 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+@@ -9,6 +9,8 @@ int __init bcm63xx_spi_register(void);
  
- 	/* toggle reset pin */
--	if (reset_gpio > 0) {
-+	if (gpio_is_valid(reset_gpio)) {
- 		__gpio_set_value(reset_gpio, 0);
- 		wmb();
- 		mdelay(1);
+ struct bcm63xx_spi_pdata {
+ 	unsigned int	fifo_size;
++	unsigned int	msg_type_shift;
++	unsigned int	msg_ctl_width;
+ 	int		bus_num;
+ 	int		num_chipselect;
+ 	u32		speed_hz;
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+index c21aa34..2bc77b4 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+@@ -987,7 +987,8 @@
+ #define SPI_6338_FILL_BYTE		0x07
+ #define SPI_6338_MSG_TAIL		0x09
+ #define SPI_6338_RX_TAIL		0x0b
+-#define SPI_6338_MSG_CTL		0x40
++#define SPI_6338_MSG_CTL		0x40	/* 8-bits register */
++#define SPI_6338_MSG_CTL_WIDTH		8
+ #define SPI_6338_MSG_DATA		0x41
+ #define SPI_6338_MSG_DATA_SIZE		0x3f
+ #define SPI_6338_RX_DATA		0x80
+@@ -1003,7 +1004,8 @@
+ #define SPI_6348_FILL_BYTE		0x07
+ #define SPI_6348_MSG_TAIL		0x09
+ #define SPI_6348_RX_TAIL		0x0b
+-#define SPI_6348_MSG_CTL		0x40
++#define SPI_6348_MSG_CTL		0x40	/* 8-bits register */
++#define SPI_6348_MSG_CTL_WIDTH		8
+ #define SPI_6348_MSG_DATA		0x41
+ #define SPI_6348_MSG_DATA_SIZE		0x3f
+ #define SPI_6348_RX_DATA		0x80
+@@ -1011,6 +1013,7 @@
+ 
+ /* BCM 6358 SPI core */
+ #define SPI_6358_MSG_CTL		0x00	/* 16-bits register */
++#define SPI_6358_MSG_CTL_WIDTH		16
+ #define SPI_6358_MSG_DATA		0x02
+ #define SPI_6358_MSG_DATA_SIZE		0x21e
+ #define SPI_6358_RX_DATA		0x400
+@@ -1027,6 +1030,7 @@
+ 
+ /* BCM 6358 SPI core */
+ #define SPI_6368_MSG_CTL		0x00	/* 16-bits register */
++#define SPI_6368_MSG_CTL_WIDTH		16
+ #define SPI_6368_MSG_DATA		0x02
+ #define SPI_6368_MSG_DATA_SIZE		0x21e
+ #define SPI_6368_RX_DATA		0x400
+@@ -1048,7 +1052,10 @@
+ #define SPI_HD_W			0x01
+ #define SPI_HD_R			0x02
+ #define SPI_BYTE_CNT_SHIFT		0
+-#define SPI_MSG_TYPE_SHIFT		14
++#define SPI_6338_MSG_TYPE_SHIFT		6
++#define SPI_6348_MSG_TYPE_SHIFT		6
++#define SPI_6358_MSG_TYPE_SHIFT		14
++#define SPI_6368_MSG_TYPE_SHIFT		14
+ 
+ /* Command */
+ #define SPI_CMD_NOOP			0x00
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 7491971..28ab472 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -47,6 +47,8 @@ struct bcm63xx_spi {
+ 	/* Platform data */
+ 	u32			speed_hz;
+ 	unsigned		fifo_size;
++	unsigned int		msg_type_shift;
++	unsigned int		msg_ctl_width;
+ 
+ 	/* Data buffers */
+ 	const unsigned char	*tx_ptr;
+@@ -221,13 +223,20 @@ static unsigned int bcm63xx_txrx_bufs(struct spi_device *spi,
+ 	msg_ctl = (t->len << SPI_BYTE_CNT_SHIFT);
+ 
+ 	if (t->rx_buf && t->tx_buf)
+-		msg_ctl |= (SPI_FD_RW << SPI_MSG_TYPE_SHIFT);
++		msg_ctl |= (SPI_FD_RW << bs->msg_type_shift);
+ 	else if (t->rx_buf)
+-		msg_ctl |= (SPI_HD_R << SPI_MSG_TYPE_SHIFT);
++		msg_ctl |= (SPI_HD_R << bs->msg_type_shift);
+ 	else if (t->tx_buf)
+-		msg_ctl |= (SPI_HD_W << SPI_MSG_TYPE_SHIFT);
+-
+-	bcm_spi_writew(bs, msg_ctl, SPI_MSG_CTL);
++		msg_ctl |= (SPI_HD_W << bs->msg_type_shift);
++
++	switch (bs->msg_ctl_width) {
++	case 8:
++		bcm_spi_writeb(bs, msg_ctl, SPI_MSG_CTL);
++		break;
++	case 16:
++		bcm_spi_writew(bs, msg_ctl, SPI_MSG_CTL);
++		break;
++	}
+ 
+ 	/* Issue the transfer */
+ 	cmd = SPI_CMD_START_IMMEDIATE;
+@@ -406,9 +415,21 @@ static int __devinit bcm63xx_spi_probe(struct platform_device *pdev)
+ 	master->transfer_one_message = bcm63xx_spi_transfer_one;
+ 	master->mode_bits = MODEBITS;
+ 	bs->speed_hz = pdata->speed_hz;
++	bs->msg_type_shift = pdata->msg_type_shift;
++	bs->msg_ctl_width = pdata->msg_ctl_width;
+ 	bs->tx_io = (u8 *)(bs->regs + bcm63xx_spireg(SPI_MSG_DATA));
+ 	bs->rx_io = (const u8 *)(bs->regs + bcm63xx_spireg(SPI_RX_DATA));
+ 
++	switch (bs->msg_ctl_width) {
++	case 8:
++	case 16:
++		break;
++	default:
++		dev_err(dev, "unsupported MSG_CTL width: %d\n",
++			 bs->msg_ctl_width);
++		goto out_clk_disable;
++	}
++
+ 	/* Initialize hardware */
+ 	clk_enable(bs->clk);
+ 	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
+-- 
+1.7.9.5

@@ -1,34 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2012 12:10:23 +0200 (CEST)
-Received: from zmc.proxad.net ([212.27.53.206]:57632 "EHLO zmc.proxad.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2012 12:10:48 +0200 (CEST)
+Received: from mail.skyhub.de ([78.46.96.112]:49489 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903468Ab2FRKKQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 Jun 2012 12:10:16 +0200
+        id S1903517Ab2FRKKd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Jun 2012 12:10:33 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id B4089978F0B;
-        Mon, 18 Jun 2012 12:10:15 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at localhost
-Received: from zmc.proxad.net ([127.0.0.1])
-        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id HZfafzbvC7yo; Mon, 18 Jun 2012 12:10:15 +0200 (CEST)
-Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 1075697A30D;
-        Mon, 18 Jun 2012 12:10:15 +0200 (CEST)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, grant.likely@secretlab.ca,
-        spi-devel-general@lists.sourceforge.net, jonas.gorski@gmail.com,
-        Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH v2] MIPS: BCM63XX: fix SPI message control register handling for BCM6338/6348
-Date:   Mon, 18 Jun 2012 12:07:51 +0200
-Message-Id: <1340014071-4841-1-git-send-email-florian@openwrt.org>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1339970153-30802-1-git-send-email-florian@openwrt.org>
-References: <1339970153-30802-1-git-send-email-florian@openwrt.org>
-X-archive-position: 33686
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTP id 582EE244943;
+        Mon, 18 Jun 2012 12:10:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=alien8.de; s=alien8;
+        t=1340014232; bh=0eoOELngl05vEsY3WrXNhV/lwt2Ix4bVxI/3j5APQPk=;
+        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+         Content-Type:In-Reply-To; b=DmIiAU/fpBE2sGWDL7H1kF5mUTxrQKvFMEWhdB
+        NJDcLfKsukQPulaGNlHcmeuVtEzioV9ADMX+ainM1WYihqE1OaMA82Z8yf++fxN2qJL
+        uyi2gP4kNa1jL8qtTcLSOtLD7qkeoV4faXpm+KM5K5YqiDV8vkLNY6afy3eXlT9fow=
+X-Virus-Scanned: Nedap ESD1 at mail.skyhub.de
+Received: from mail.skyhub.de ([127.0.0.1])
+        by localhost (door.skyhub.de [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id JQiSqVeS9lhH; Mon, 18 Jun 2012 12:10:32 +0200 (CEST)
+Received: from liondog.tnic (p54B7F985.dip.t-dialin.net [84.183.249.133])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 02748244942;
+        Mon, 18 Jun 2012 12:10:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=alien8.de; s=alien8;
+        t=1340014232; bh=0eoOELngl05vEsY3WrXNhV/lwt2Ix4bVxI/3j5APQPk=;
+        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+         Content-Type:In-Reply-To; b=DmIiAU/fpBE2sGWDL7H1kF5mUTxrQKvFMEWhdB
+        NJDcLfKsukQPulaGNlHcmeuVtEzioV9ADMX+ainM1WYihqE1OaMA82Z8yf++fxN2qJL
+        uyi2gP4kNa1jL8qtTcLSOtLD7qkeoV4faXpm+KM5K5YqiDV8vkLNY6afy3eXlT9fow=
+Received: by liondog.tnic (Postfix, from userid 1000)
+        id B13F64B8E87; Mon, 18 Jun 2012 12:10:30 +0200 (CEST)
+Date:   Mon, 18 Jun 2012 12:10:30 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     huacai chen <chenhuacai@gmail.com>
+Cc:     Sergei Shtylyov <sshtylyov@mvista.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
+        linux-ide@vger.kernel.org
+Subject: Re: [PATCH 09/14] ata: Use 32bit DMA in AHCI for Loongson 3.
+Message-ID: <20120618101030.GA24308@liondog.tnic>
+References: <1339747801-28691-1-git-send-email-chenhc@lemote.com>
+ <1339747801-28691-10-git-send-email-chenhc@lemote.com>
+ <4FDB08AC.8010208@mvista.com>
+ <CAAhV-H6AKp+aGUozOxQoLgGYQ+GtHMbKKC4MVkFA570zodjgDA@mail.gmail.com>
+ <20120617120557.GE31534@liondog.tnic>
+ <CAAhV-H67M5xH+HMyVNopm=TPhei24NfnzNqiPMA+Ucz4Y7V3hg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAAhV-H67M5xH+HMyVNopm=TPhei24NfnzNqiPMA+Ucz4Y7V3hg@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 33687
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: bp@alien8.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,174 +70,28 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-BCM6338 and BCM6348 have a message control register width of 8 bits, instead
-of 16-bits like what the SPI driver assumes right now. Also the SPI message
-type shift value of 14 is actually 6 for these SoCs.
-This resulted in transmit FIFO corruption because we were writing 16-bits
-to an 8-bits wide register, thus spanning on the first byte of the transmit
-FIFO, which had already been filed in bcm63xx_spi_fill_txrx_fifo().
+On Mon, Jun 18, 2012 at 05:04:14PM +0800, huacai chen wrote:
+> Do you means it is a better idea to modify "enum board_ids" and add a
+> new board id such as board_ahci_sb700_loongson, and then add a new
+> entry in ahci_port_info[]?
+> If so, I think there is a problem: the pci id of our AHCI controller
+> is 1002:4390, if I add board_ahci_sb700_loongson, then I should also
+> add
+> { PCI_VDEVICE(ATI, 0x4390), board_ahci_sb700_loongson },
+> in ahci_pci_tbl[], but ahci_pci_tbl[] already has a line
+> { PCI_VDEVICE(ATI, 0x4390), board_ahci_sb700 },
+> Then which entry will match the device?
 
-Fix this by passing the message control register width and message type
-shift through platform data back to the SPI driver so that it can use
-it properly.
+Before you do anything, my question is:
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-Changes since v2:
-- reject invalid values of msg_ctl_width earlier during driver's probe
+SB700/800 chipsets don't need to set a 32-bit only DMA flag; why do you
+need it when you use the same chipset?
 
+So why do you need to do 32-bit DMA only when the chipset supports
+64-bit DMA just fine?
 
- arch/mips/bcm63xx/dev-spi.c                        |    4 +++
- .../include/asm/mach-bcm63xx/bcm63xx_dev_spi.h     |    2 ++
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h  |   13 ++++++--
- drivers/spi/spi-bcm63xx.c                          |   31 ++++++++++++++++----
- 4 files changed, 42 insertions(+), 8 deletions(-)
+Thanks.
 
-diff --git a/arch/mips/bcm63xx/dev-spi.c b/arch/mips/bcm63xx/dev-spi.c
-index 67fa45b..409f16e 100644
---- a/arch/mips/bcm63xx/dev-spi.c
-+++ b/arch/mips/bcm63xx/dev-spi.c
-@@ -106,11 +106,15 @@ int __init bcm63xx_spi_register(void)
- 	if (BCMCPU_IS_6338() || BCMCPU_IS_6348()) {
- 		spi_resources[0].end += BCM_6338_RSET_SPI_SIZE - 1;
- 		spi_pdata.fifo_size = SPI_6338_MSG_DATA_SIZE;
-+		spi_pdata.msg_type_shift = SPI_6338_MSG_TYPE_SHIFT;
-+		spi_pdata.msg_ctl_width = SPI_6338_MSG_CTL_WIDTH;
- 	}
- 
- 	if (BCMCPU_IS_6358() || BCMCPU_IS_6368()) {
- 		spi_resources[0].end += BCM_6358_RSET_SPI_SIZE - 1;
- 		spi_pdata.fifo_size = SPI_6358_MSG_DATA_SIZE;
-+		spi_pdata.msg_type_shift = SPI_6358_MSG_TYPE_SHIFT;
-+		spi_pdata.msg_ctl_width = SPI_6358_MSG_CTL_WIDTH;
- 	}
- 
- 	bcm63xx_spi_regs_init();
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
-index 7d98dbe..c9bae13 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
-@@ -9,6 +9,8 @@ int __init bcm63xx_spi_register(void);
- 
- struct bcm63xx_spi_pdata {
- 	unsigned int	fifo_size;
-+	unsigned int	msg_type_shift;
-+	unsigned int	msg_ctl_width;
- 	int		bus_num;
- 	int		num_chipselect;
- 	u32		speed_hz;
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-index c21aa34..2bc77b4 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-@@ -987,7 +987,8 @@
- #define SPI_6338_FILL_BYTE		0x07
- #define SPI_6338_MSG_TAIL		0x09
- #define SPI_6338_RX_TAIL		0x0b
--#define SPI_6338_MSG_CTL		0x40
-+#define SPI_6338_MSG_CTL		0x40	/* 8-bits register */
-+#define SPI_6338_MSG_CTL_WIDTH		8
- #define SPI_6338_MSG_DATA		0x41
- #define SPI_6338_MSG_DATA_SIZE		0x3f
- #define SPI_6338_RX_DATA		0x80
-@@ -1003,7 +1004,8 @@
- #define SPI_6348_FILL_BYTE		0x07
- #define SPI_6348_MSG_TAIL		0x09
- #define SPI_6348_RX_TAIL		0x0b
--#define SPI_6348_MSG_CTL		0x40
-+#define SPI_6348_MSG_CTL		0x40	/* 8-bits register */
-+#define SPI_6348_MSG_CTL_WIDTH		8
- #define SPI_6348_MSG_DATA		0x41
- #define SPI_6348_MSG_DATA_SIZE		0x3f
- #define SPI_6348_RX_DATA		0x80
-@@ -1011,6 +1013,7 @@
- 
- /* BCM 6358 SPI core */
- #define SPI_6358_MSG_CTL		0x00	/* 16-bits register */
-+#define SPI_6358_MSG_CTL_WIDTH		16
- #define SPI_6358_MSG_DATA		0x02
- #define SPI_6358_MSG_DATA_SIZE		0x21e
- #define SPI_6358_RX_DATA		0x400
-@@ -1027,6 +1030,7 @@
- 
- /* BCM 6358 SPI core */
- #define SPI_6368_MSG_CTL		0x00	/* 16-bits register */
-+#define SPI_6368_MSG_CTL_WIDTH		16
- #define SPI_6368_MSG_DATA		0x02
- #define SPI_6368_MSG_DATA_SIZE		0x21e
- #define SPI_6368_RX_DATA		0x400
-@@ -1048,7 +1052,10 @@
- #define SPI_HD_W			0x01
- #define SPI_HD_R			0x02
- #define SPI_BYTE_CNT_SHIFT		0
--#define SPI_MSG_TYPE_SHIFT		14
-+#define SPI_6338_MSG_TYPE_SHIFT		6
-+#define SPI_6348_MSG_TYPE_SHIFT		6
-+#define SPI_6358_MSG_TYPE_SHIFT		14
-+#define SPI_6368_MSG_TYPE_SHIFT		14
- 
- /* Command */
- #define SPI_CMD_NOOP			0x00
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 7491971..28ab472 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -47,6 +47,8 @@ struct bcm63xx_spi {
- 	/* Platform data */
- 	u32			speed_hz;
- 	unsigned		fifo_size;
-+	unsigned int		msg_type_shift;
-+	unsigned int		msg_ctl_width;
- 
- 	/* Data buffers */
- 	const unsigned char	*tx_ptr;
-@@ -221,13 +223,20 @@ static unsigned int bcm63xx_txrx_bufs(struct spi_device *spi,
- 	msg_ctl = (t->len << SPI_BYTE_CNT_SHIFT);
- 
- 	if (t->rx_buf && t->tx_buf)
--		msg_ctl |= (SPI_FD_RW << SPI_MSG_TYPE_SHIFT);
-+		msg_ctl |= (SPI_FD_RW << bs->msg_type_shift);
- 	else if (t->rx_buf)
--		msg_ctl |= (SPI_HD_R << SPI_MSG_TYPE_SHIFT);
-+		msg_ctl |= (SPI_HD_R << bs->msg_type_shift);
- 	else if (t->tx_buf)
--		msg_ctl |= (SPI_HD_W << SPI_MSG_TYPE_SHIFT);
--
--	bcm_spi_writew(bs, msg_ctl, SPI_MSG_CTL);
-+		msg_ctl |= (SPI_HD_W << bs->msg_type_shift);
-+
-+	switch (bs->msg_ctl_width) {
-+	case 8:
-+		bcm_spi_writeb(bs, msg_ctl, SPI_MSG_CTL);
-+		break;
-+	case 16:
-+		bcm_spi_writew(bs, msg_ctl, SPI_MSG_CTL);
-+		break;
-+	}
- 
- 	/* Issue the transfer */
- 	cmd = SPI_CMD_START_IMMEDIATE;
-@@ -406,9 +415,21 @@ static int __devinit bcm63xx_spi_probe(struct platform_device *pdev)
- 	master->transfer_one_message = bcm63xx_spi_transfer_one;
- 	master->mode_bits = MODEBITS;
- 	bs->speed_hz = pdata->speed_hz;
-+	bs->msg_type_shift = pdata->msg_type_shift;
-+	bs->msg_ctl_width = pdata->msg_ctl_width;
- 	bs->tx_io = (u8 *)(bs->regs + bcm63xx_spireg(SPI_MSG_DATA));
- 	bs->rx_io = (const u8 *)(bs->regs + bcm63xx_spireg(SPI_RX_DATA));
- 
-+	switch (bs->msg_ctl_width) {
-+	case 8:
-+	case 16:
-+		break;
-+	default:
-+		dev_err(dev, "unsupported MSG_CTL width: %d\n",
-+			 bs->msg_ctl_width);
-+		goto out_clk_disable;
-+	}
-+
- 	/* Initialize hardware */
- 	clk_enable(bs->clk);
- 	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
 -- 
-1.7.9.5
+Regards/Gruss,
+    Boris.

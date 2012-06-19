@@ -1,51 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2012 11:50:37 +0200 (CEST)
-Received: from mail-ey0-f177.google.com ([209.85.215.177]:39683 "EHLO
-        mail-ey0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903394Ab2FSJua (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2012 11:50:30 +0200
-Received: by eaaf11 with SMTP id f11so1932938eaa.36
-        for <multiple recipients>; Tue, 19 Jun 2012 02:50:24 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2012 12:44:56 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:64466 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903616Ab2FSKot convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Jun 2012 12:44:49 +0200
+Received: by lbbgg6 with SMTP id gg6so5866508lbb.36
+        for <multiple recipients>; Tue, 19 Jun 2012 03:44:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:organization:user-agent
-         :in-reply-to:references:mime-version:content-transfer-encoding
-         :content-type;
-        bh=pxggMkLAVHpsO6Yhtcz/Fhoc1J4Pck3nlXWPkvztsLs=;
-        b=RwLNogjP/o+6QWFkWC1pmyQrDuXP3Tppds1SzMOBd6I6ji+WpQywhLZ5BSwMC4KaK6
-         ztcavzaf/wic7IipHOtH5ZnPtq5o+ReBuF79IrjOIXOy9SctvSxvHLX8yLNuajJBkLAk
-         jqBNpRsxxT/Rww0YbIPLSXKI0fidiObH5IluAdCT7XkjrY7rAiEpk474cmjsWtQ8AkJY
-         QgE+OhEBhTK+AZE0G6Ma/cHyQbJfuHHSAIDSFMQHjBQXjxU8Gspyvk3BYnqTrKTQPOmh
-         msxDFqXO39kncvHoUZ4XydBEelIRTN8TIi82TEXOs1wZOaqURMtItF6s//cY34PWnCep
-         hhkA==
-Received: by 10.14.100.201 with SMTP id z49mr2092169eef.229.1340099424631;
-        Tue, 19 Jun 2012 02:50:24 -0700 (PDT)
-Received: from flexo.localnet (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by mx.google.com with ESMTPS id g46sm73508388eea.14.2012.06.19.02.50.21
-        (version=SSLv3 cipher=OTHER);
-        Tue, 19 Jun 2012 02:50:22 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     linux-mips@linux-mips.org
-Cc:     Huacai Chen <chenhuacai@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=tggjG55otA5w3xC5qx4TfqgSuDag17lsfyt+E18FdRc=;
+        b=c2EcJUmBLqytdOC0Mad32O6tA1FrkFJ2hdrgUWnuPkhJR9EXaP6FOTqtE9ypBQC4yv
+         HmLU54xK6TSCwOulWju4pMHVb01153aNOXseMS+/o4+RaVCNqO1/9ywQBUrWtHI/fy9u
+         W7rX6elVAQlFEKi9eMy8C5uOEX6jiwxvuAK9JunVGc9AGl7Ln0W6Cj15In8tXY2ejuwe
+         EI6bzL8No5P/fmr3aQcu2x7yFmMvOJz9IcljvVx8rerGiAWQaCUibygvR41+kpBdZ8Fq
+         BBgRJPAW0Ix8qfLA2v93p6nzVBo2ixo4m3/uHSUU45GKWN08sGMKFKsKbIFNERS3Fz2B
+         4jvw==
+MIME-Version: 1.0
+Received: by 10.152.122.116 with SMTP id lr20mr17700636lab.42.1340102683321;
+ Tue, 19 Jun 2012 03:44:43 -0700 (PDT)
+Received: by 10.152.5.103 with HTTP; Tue, 19 Jun 2012 03:44:43 -0700 (PDT)
+In-Reply-To: <1686045.33sK9Drd7j@flexo>
+References: <1340088624-25550-1-git-send-email-chenhc@lemote.com>
+        <1340088624-25550-2-git-send-email-chenhc@lemote.com>
+        <1686045.33sK9Drd7j@flexo>
+Date:   Tue, 19 Jun 2012 18:44:43 +0800
+Message-ID: <CAAhV-H52bUnfvKvyJTBwUZep0V3LfQ=1QVi6i=LCSzFNSGRUOQ@mail.gmail.com>
+Subject: Re: [PATCH V2 01/16] MIPS: Loongson: Add basic Loongson-3 definition.
+From:   Huacai Chen <chenhuacai@gmail.com>
+To:     Florian Fainelli <florian@openwrt.org>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH V2 02/16] MIPS: Loongson: Add basic Loongson-3 CPU support.
-Date:   Tue, 19 Jun 2012 11:47:57 +0200
-Message-ID: <2294746.SzucsIzFyJ@flexo>
-Organization: OpenWrt
-User-Agent: KMail/4.8.3 (Linux/3.2.0-24-generic; KDE/4.8.3; x86_64; ; )
-In-Reply-To: <1340088624-25550-3-git-send-email-chenhc@lemote.com>
-References: <1340088624-25550-1-git-send-email-chenhc@lemote.com> <1340088624-25550-3-git-send-email-chenhc@lemote.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-archive-position: 33714
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 33715
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: chenhuacai@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,279 +55,168 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi,
+When designing CPU, Loongson-2 is single-core and Loongson-3 is
+multi-core, but their core is the same. So, there IMP field is also
+the same.
 
-Comments inline, especially about your c-r4k.c changes. You don't seem to have 
-updated arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h for 
-LOONGSON3 is that inentional?
-
-On Tuesday 19 June 2012 14:50:10 Huacai Chen wrote:
-> Basic Loongson-3 CPU support include: CPU probing, TLB and cache
-> initializing, cache flushing method, etc.
-> 
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> Signed-off-by: Hongliang Tao <taohl@lemote.com>
-> Signed-off-by: Hua Yan <yanh@lemote.com>
-> ---
-[snip]
-> diff --git a/arch/mips/loongson/common/setup.c 
-b/arch/mips/loongson/common/setup.c
-> index 27d826b..ebb17ef 100644
-> --- a/arch/mips/loongson/common/setup.c
-> +++ b/arch/mips/loongson/common/setup.c
-> @@ -18,9 +18,6 @@
->  #include <linux/screen_info.h>
->  #endif
->  
-> -void (*__wbflush)(void);
-> -EXPORT_SYMBOL(__wbflush);
-> -
->  static void wbflush_loongson(void)
->  {
->  	asm(".set\tpush\n\t"
-> @@ -32,6 +29,9 @@ static void wbflush_loongson(void)
->  	    ".set mips0\n\t");
->  }
->  
-> +void (*__wbflush)(void) = wbflush_loongson;
-> +EXPORT_SYMBOL(__wbflush);
-> +
-
-Can you explain why you need to move this symbol? It also looks like this 
-could be a separate patch.
-
->  void __init plat_mem_setup(void)
->  {
->  	__wbflush = wbflush_loongson;
-> diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
-> index fd6203f..a79b6d1 100644
-> --- a/arch/mips/mm/Makefile
-> +++ b/arch/mips/mm/Makefile
-> @@ -12,6 +12,7 @@ obj-$(CONFIG_HIGHMEM)		+= highmem.o
->  obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
->  
->  obj-$(CONFIG_CPU_LOONGSON2)	+= c-r4k.o cex-gen.o tlb-r4k.o
-> +obj-$(CONFIG_CPU_LOONGSON3)	+= c-r4k.o cex-gen.o tlb-r4k.o
->  obj-$(CONFIG_CPU_MIPS32)	+= c-r4k.o cex-gen.o tlb-r4k.o
->  obj-$(CONFIG_CPU_MIPS64)	+= c-r4k.o cex-gen.o tlb-r4k.o
->  obj-$(CONFIG_CPU_NEVADA)	+= c-r4k.o cex-gen.o tlb-r4k.o
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index ce0dbee..a1a3482 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -362,6 +362,9 @@ static inline void local_r4k___flush_cache_all(void * 
-args)
->  
->  static void r4k___flush_cache_all(void)
->  {
-> +#if defined(CONFIG_CPU_LOONGSON3)
-> +	return;
-> +#endif
->  	r4k_on_each_cpu(local_r4k___flush_cache_all, NULL);
->  }
-
-This looks wrong, there is already a check for LOONGSON2 in 
-local_r4k___flush_cache_all() and yet you are adding this special case in 
-r4k___flush_cache_all(), so just move it to local_r4k___flush_cache_all() 
-instead.
-
->  
-> @@ -382,11 +385,17 @@ static inline int has_valid_asid(const struct 
-mm_struct *mm)
->  
->  static void r4k__flush_cache_vmap(void)
->  {
-> +#if defined(CONFIG_CPU_LOONGSON3)
-> +	return;
-> +#endif
->  	r4k_blast_dcache();
->  }
->  
->  static void r4k__flush_cache_vunmap(void)
->  {
-> +#if defined(CONFIG_CPU_LOONGSON3)
-> +	return;
-> +#endif
->  	r4k_blast_dcache();
->  }
-
-We might want to introduce a new cpu_has_foo() inline for this, such as 
-cpu_has_blast_dache() or something like that.
-
->  
-> @@ -408,6 +417,9 @@ static void r4k_flush_cache_range(struct vm_area_struct 
-*vma,
->  {
->  	int exec = vma->vm_flags & VM_EXEC;
->  
-> +#if defined(CONFIG_CPU_LOONGSON3)
-> +	return;
-> +#endif
-
-We end up having an unused but set variable here in case of LOONGSOON3, so 
-please mark this variable as __maybe_unused.
-
->  	if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc))
->  		r4k_on_each_cpu(local_r4k_flush_cache_range, vma);
->  }
-> @@ -438,6 +450,9 @@ static inline void local_r4k_flush_cache_mm(void * args)
->  
->  static void r4k_flush_cache_mm(struct mm_struct *mm)
->  {
-> +#if defined(CONFIG_CPU_LOONGSON3)
-> +	return;
-> +#endif
->  	if (!cpu_has_dc_aliases)
->  		return;
-
-This makes me think that maybe your cpu does not have data cache aliases? If 
-such this should be noted as such in cpu-features-override.h and this ifdef 
-can go away.
-
->  
-> @@ -528,6 +543,9 @@ static void r4k_flush_cache_page(struct vm_area_struct 
-*vma,
->  	unsigned long addr, unsigned long pfn)
->  {
->  	struct flush_cache_page_args args;
-> +#if defined(CONFIG_CPU_LOONGSON3)
-> +	return;
-> +#endif
-
-args becomes an unused variable.
-
->  
->  	args.vma = vma;
->  	args.addr = addr;
-> @@ -543,6 +561,9 @@ static inline void local_r4k_flush_data_cache_page(void * 
-addr)
->  
->  static void r4k_flush_data_cache_page(unsigned long addr)
->  {
-> +#if defined(CONFIG_CPU_LOONGSON3)
-> +	return;
-> +#endif
->  	if (in_atomic())
->  		local_r4k_flush_data_cache_page((void *)addr);
->  	else
-> @@ -701,6 +722,9 @@ static void local_r4k_flush_cache_sigtramp(void * arg)
->  
->  static void r4k_flush_cache_sigtramp(unsigned long addr)
->  {
-> +#if defined(CONFIG_CPU_LOONGSON3)
-> +	return;
-> +#endif
->  	r4k_on_each_cpu(local_r4k_flush_cache_sigtramp, (void *) addr);
->  }
->  
-> @@ -952,6 +976,31 @@ static void __cpuinit probe_pcache(void)
->  		c->dcache.waybit = 0;
->  		break;
->  
-> +	case CPU_LOONGSON3:
-> +		config1 = read_c0_config1();
-> +		if ((lsize = ((config1 >> 19) & 7)))
-> +			c->icache.linesz = 2 << lsize;
-> +		else
-> +			c->icache.linesz = lsize;
-> +		c->icache.sets = 64 << ((config1 >> 22) & 7);
-> +		c->icache.ways = 1 + ((config1 >> 16) & 7);
-> +		icache_size = c->icache.sets *
-> +					  c->icache.ways *
-> +					  c->icache.linesz;
-> +		c->icache.waybit = 0;
-> +
-> +		if ((lsize = ((config1 >> 10) & 7)))
-> +			c->dcache.linesz = 2 << lsize;
-> +		else
-> +			c->dcache.linesz = lsize;
-> +		c->dcache.sets = 64 << ((config1 >> 13) & 7);
-> +		c->dcache.ways = 1 + ((config1 >> 7) & 7);
-> +		dcache_size = c->dcache.sets *
-> +					  c->dcache.ways *
-> +					  c->dcache.linesz;
-> +		c->dcache.waybit = 0;
-> +		break;
-> +
->  	default:
->  		if (!(config & MIPS_CONF_M))
->  			panic("Don't know how to probe P-caches on this cpu.");
-> @@ -1170,6 +1219,34 @@ static void __init loongson2_sc_init(void)
->  }
->  #endif
->  
-> +#if defined(CONFIG_CPU_LOONGSON3)
-> +static void __init loongson3_sc_init(void)
-> +{
-> +	struct cpuinfo_mips *c = &current_cpu_data;
-> +	unsigned int config2, lsize;
-> +
-> +	config2 = read_c0_config2();
-> +	if ((lsize = ((config2 >> 4) & 15)))
-> +		c->scache.linesz = 2 << lsize;
-> +	else
-> +		c->scache.linesz = lsize;
-> +	c->scache.sets = 64 << ((config2 >> 8) & 15);
-> +	c->scache.ways = 1 + (config2 & 15);
-> +
-> +	scache_size = c->scache.sets *
-> +				  c->scache.ways *
-> +				  c->scache.linesz;
-> +	/* Loongson-3 has 4 cores, 1MB scache for each. scaches are shared */
-> +	scache_size *= 4;
-> +	c->scache.waybit = 0;
-> +	pr_info("Unified secondary cache %ldkB %s, linesize %d bytes.\n",
-> +	       scache_size >> 10, way_string[c->scache.ways], c->scache.linesz);
-> +	if (scache_size)
-> +		c->options |= MIPS_CPU_INCLUSIVE_CACHES;
-> +	return;
-> +}
-> +#endif
-> +
->  extern int r5k_sc_init(void);
->  extern int rm7k_sc_init(void);
->  extern int mips_sc_init(void);
-> @@ -1224,6 +1301,13 @@ static void __cpuinit setup_scache(void)
->  		loongson2_sc_init();
->  		return;
->  #endif
-> +
-> +#if defined(CONFIG_CPU_LOONGSON3)
-> +	case CPU_LOONGSON3:
-> +		loongson3_sc_init();
-> +		return;
-> +#endif
-> +
->  	case CPU_XLP:
->  		/* don't need to worry about L2, fully coherent */
->  		return;
-> diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-> index d2572cb..11b9c88 100644
-> --- a/arch/mips/mm/tlb-r4k.c
-> +++ b/arch/mips/mm/tlb-r4k.c
-> @@ -50,7 +50,7 @@ extern void build_tlb_refill_handler(void);
->  
->  #endif /* CONFIG_MIPS_MT_SMTC */
->  
-> -#if defined(CONFIG_CPU_LOONGSON2)
-> +#if defined(CONFIG_CPU_LOONGSON2) || defined(CONFIG_CPU_LOONGSON3)
->  /*
->   * LOONGSON2 has a 4 entry itlb which is a subset of dtlb,
->   * unfortrunately, itlb is not totally transparent to software.
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index 03eb0ef..4420250 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -507,6 +507,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, 
-struct uasm_label **l,
->  	case CPU_BMIPS4380:
->  	case CPU_BMIPS5000:
->  	case CPU_LOONGSON2:
-> +	case CPU_LOONGSON3:
->  	case CPU_R5500:
->  		if (m4kc_tlbp_war())
->  			uasm_i_nop(p);
-> -- 
-> 1.7.7.3
-> 
-> 
+On Tue, Jun 19, 2012 at 5:36 PM, Florian Fainelli <florian@openwrt.org> wrote:
+> Hi,
+>
+> On Tuesday 19 June 2012 14:50:09 Huacai Chen wrote:
+>> Loongson-3 is a multi-core MIPS family CPU, it support MIPS64R2
+>> fully. Loongson-3 has the same IMP field (0x6300) as Loongson-2.
+>
+> Then what is the purpose of having a PrID if you don't increment it when you
+> make a new CPU? Especially in this case where there are major architectural
+> changes. Anyway, you seem to have a dedicated revision number which is good
+> enough.
+>
+>>
+>> Loongson-3 has a hardware-maintained cache, system software doesn't
+>> need to maintain coherency.
+>>
+>> Loongson-3A is the first revision of Loongson-3, and it is the quad-
+>> core version of Loongson-2G. Loongson-3A has a simplified version named
+>> Loongson-2Gq, the main difference between Loongson-3A/2Gq is 3A has two
+>> HyperTransport controller but 2Gq has only one. HT0 is used for cross-
+>> chip interconnection and HT1 is used to link PCI bus. Therefore, 2Gq
+>> cannot support NUMA but 3A can.
+>>
+>> Exsisting Loongson family CPUs:
+>> Loongson-1: Loongson-1A, Loongson-1B, they are 32-bit MIPS CPUs.
+>> Loongson-2: Loongson-2E, Loongson-2F, Loongson-2G(including Loongson-
+>>             2Gq), they are 64-bit MIPS CPUs.
+>> Loongson-3: Loongson-3A, it is a 64-bit MIPS CPU.
+>>
+>> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+>> Signed-off-by: Hongliang Tao <taohl@lemote.com>
+>> Signed-off-by: Hua Yan <yanh@lemote.com>
+>> ---
+>>  arch/mips/include/asm/addrspace.h            |    6 ++++++
+>>  arch/mips/include/asm/cpu.h                  |    6 ++++--
+>>  arch/mips/include/asm/mach-loongson/spaces.h |   15 +++++++++++++++
+>>  arch/mips/include/asm/module.h               |    2 ++
+>>  arch/mips/include/asm/pgtable-bits.h         |    7 +++++++
+>>  arch/mips/loongson/Platform                  |    1 +
+>>  6 files changed, 35 insertions(+), 2 deletions(-)
+>>  create mode 100644 arch/mips/include/asm/mach-loongson/spaces.h
+>>
+>> diff --git a/arch/mips/include/asm/addrspace.h
+> b/arch/mips/include/asm/addrspace.h
+>> index 569f80a..cf62bfb 100644
+>> --- a/arch/mips/include/asm/addrspace.h
+>> +++ b/arch/mips/include/asm/addrspace.h
+>> @@ -116,7 +116,13 @@
+>>  #define K_CALG_UNCACHED              2
+>>  #define K_CALG_NONCOHERENT   3
+>>  #define K_CALG_COH_EXCL              4
+>> +
+>> +#ifdef CONFIG_CPU_LOONGSON3
+>> +#define K_CALG_COH_SHAREABLE 3
+>> +#else
+>>  #define K_CALG_COH_SHAREABLE 5
+>> +#endif
+>> +
+>>  #define K_CALG_NOTUSED               6
+>>  #define K_CALG_UNCACHED_ACCEL        7
+>>
+>> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+>> index 95e40c1..3fa996a 100644
+>> --- a/arch/mips/include/asm/cpu.h
+>> +++ b/arch/mips/include/asm/cpu.h
+>> @@ -72,6 +72,7 @@
+>>  #define PRID_IMP_R5432               0x5400
+>>  #define PRID_IMP_R5500               0x5500
+>>  #define PRID_IMP_LOONGSON2   0x6300
+>> +#define PRID_IMP_LOONGSON3   0x6300
+>>
+>>  #define PRID_IMP_UNKNOWN     0xff00
+>>
+>> @@ -199,6 +200,7 @@
+>>  #define PRID_REV_34K_V1_0_2  0x0022
+>>  #define PRID_REV_LOONGSON2E  0x0002
+>>  #define PRID_REV_LOONGSON2F  0x0003
+>> +#define PRID_REV_LOONGSON3A  0x0005
+>>
+>>  /*
+>>   * Older processors used to encode processor version and revision in two
+>> @@ -267,8 +269,8 @@ enum cpu_type_enum {
+>>        * MIPS64 class processors
+>>        */
+>>       CPU_5KC, CPU_5KE, CPU_20KC, CPU_25KF, CPU_SB1, CPU_SB1A, CPU_LOONGSON2,
+>> -     CPU_CAVIUM_OCTEON, CPU_CAVIUM_OCTEON_PLUS, CPU_CAVIUM_OCTEON2,
+>> -     CPU_XLR, CPU_XLP,
+>> +     CPU_LOONGSON3, CPU_CAVIUM_OCTEON, CPU_CAVIUM_OCTEON_PLUS,
+>> +     CPU_CAVIUM_OCTEON2, CPU_XLR, CPU_XLP,
+>>
+>>       CPU_LAST
+>>  };
+>> diff --git a/arch/mips/include/asm/mach-loongson/spaces.h
+> b/arch/mips/include/asm/mach-loongson/spaces.h
+>> new file mode 100644
+>> index 0000000..1e82804
+>> --- /dev/null
+>> +++ b/arch/mips/include/asm/mach-loongson/spaces.h
+>> @@ -0,0 +1,15 @@
+>> +#ifndef __ASM_MACH_LOONGSON_SPACES_H_
+>> +#define __ASM_MACH_LOONGSON_SPACES_H_
+>> +
+>> +#ifndef CAC_BASE
+>> +#if defined(CONFIG_64BIT)
+>> +#if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_CPU_LOONGSON3)
+>> +#define CAC_BASE        _AC(0x9800000000000000, UL)
+>> +#else
+>> +#define CAC_BASE        _AC(0xa800000000000000, UL)
+>> +#endif /* CONFIG_DMA_NONCOHERENT || CONFIG_CPU_LOONGSON3 */
+>> +#endif /* CONFIG_64BIT */
+>> +#endif /* CONFIG_CAC_BASE */
+>> +
+>> +#include <asm/mach-generic/spaces.h>
+>> +#endif
+>> diff --git a/arch/mips/include/asm/module.h b/arch/mips/include/asm/module.h
+>> index 5300080..375964a 100644
+>> --- a/arch/mips/include/asm/module.h
+>> +++ b/arch/mips/include/asm/module.h
+>> @@ -119,6 +119,8 @@ search_module_dbetables(unsigned long addr)
+>>  #define MODULE_PROC_FAMILY "SB1 "
+>>  #elif defined CONFIG_CPU_LOONGSON2
+>>  #define MODULE_PROC_FAMILY "LOONGSON2 "
+>> +#elif defined CONFIG_CPU_LOONGSON3
+>> +#define MODULE_PROC_FAMILY "LOONGSON3 "
+>>  #elif defined CONFIG_CPU_CAVIUM_OCTEON
+>>  #define MODULE_PROC_FAMILY "OCTEON "
+>>  #elif defined CONFIG_CPU_XLR
+>> diff --git a/arch/mips/include/asm/pgtable-bits.h
+> b/arch/mips/include/asm/pgtable-bits.h
+>> index e9fe7e9..1afd39a 100644
+>> --- a/arch/mips/include/asm/pgtable-bits.h
+>> +++ b/arch/mips/include/asm/pgtable-bits.h
+>> @@ -206,6 +206,13 @@ static inline uint64_t pte_to_entrylo(unsigned long
+> pte_val)
+>>  #define _CACHE_UNCACHED                  _CACHE_UC_B
+>>  #define _CACHE_CACHABLE_NONCOHERENT _CACHE_WB
+>>
+>> +#elif defined(CONFIG_CPU_LOONGSON3)
+>> +
+>> +#define _CACHE_UNCACHED             (2<<_CACHE_SHIFT)  /* LOONGSON       */
+>> +#define _CACHE_CACHABLE_NONCOHERENT (3<<_CACHE_SHIFT)  /* LOONGSON       */
+>> +#define _CACHE_CACHABLE_COHERENT    (3<<_CACHE_SHIFT)  /* LOONGSON-3     */
+>> +#define _CACHE_UNCACHED_ACCELERATED (7<<_CACHE_SHIFT)  /* LOONGSON       */
+>> +
+>>  #else
+>>
+>>  #define _CACHE_CACHABLE_NO_WA            (0<<_CACHE_SHIFT)  /* R4600 only      */
+>> diff --git a/arch/mips/loongson/Platform b/arch/mips/loongson/Platform
+>> index 29692e5..6205372 100644
+>> --- a/arch/mips/loongson/Platform
+>> +++ b/arch/mips/loongson/Platform
+>> @@ -30,3 +30,4 @@ platform-$(CONFIG_MACH_LOONGSON) += loongson/
+>>  cflags-$(CONFIG_MACH_LOONGSON) += -I$(srctree)/arch/mips/include/asm/mach-
+> loongson -mno-branch-likely
+>>  load-$(CONFIG_LEMOTE_FULOONG2E) += 0xffffffff80100000
+>>  load-$(CONFIG_LEMOTE_MACH2F) += 0xffffffff80200000
+>> +load-$(CONFIG_CPU_LOONGSON3) += 0xffffffff80200000
+>> --
+>> 1.7.7.3
+>>
+>>

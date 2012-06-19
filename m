@@ -1,49 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2012 09:57:09 +0200 (CEST)
-Received: from darkcity.gna.ch ([195.226.6.51]:55813 "EHLO mail.gna.ch"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903552Ab2FSH5C convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2012 09:57:02 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by darkcity.gna.ch (Postfix) with ESMTP id BBDA714E072;
-        Tue, 19 Jun 2012 10:03:39 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at gna.ch
-Received: from mail.gna.ch ([127.0.0.1])
-        by localhost (darkcity.gna.ch [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id R9GAd-Ae9oUz; Tue, 19 Jun 2012 10:03:29 +0200 (CEST)
-Received: from thor (77-56-77-139.dclient.hispeed.ch [77.56.77.139])
-        (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by darkcity.gna.ch (Postfix) with ESMTPSA id 79CD214E06A;
-        Tue, 19 Jun 2012 10:03:25 +0200 (CEST)
-Received: from daenzer by thor with local (Exim 4.80)
-        (envelope-from <michel@daenzer.net>)
-        id 1SgtIs-0001at-8A; Tue, 19 Jun 2012 09:56:46 +0200
-Message-ID: <1340092605.5442.0.camel@thor.local>
-Subject: Re: [PATCH V2 12/16] drm/radeon: Make radeon card usable for
- Loongson.
-From:   Michel =?ISO-8859-1?Q?D=E4nzer?= <michel@daenzer.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2012 11:09:52 +0200 (CEST)
+Received: from out1-smtp.messagingengine.com ([66.111.4.25]:59623 "EHLO
+        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903596Ab2FSJJr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2012 11:09:47 +0200
+Received: from compute3.internal (compute3.nyi.mail.srv.osa [10.202.2.43])
+        by gateway1.nyi.mail.srv.osa (Postfix) with ESMTP id 2A0DB20F50;
+        Tue, 19 Jun 2012 05:09:43 -0400 (EDT)
+Received: from frontend1.nyi.mail.srv.osa ([10.202.2.160])
+  by compute3.internal (MEProxy); Tue, 19 Jun 2012 05:09:43 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
+        messagingengine.com; h=message-id:date:from:mime-version:to:cc
+        :subject:references:in-reply-to:content-type
+        :content-transfer-encoding; s=smtpout; bh=7D6TUZIjk6VFaBgB2uCyqi
+        W6zsY=; b=R+kcbaEuT81rTReyWFaucy10Zh1bQOHpdtOYcHDV7WHPcM0IDkoD3+
+        YclgzToxBIS21phOKN9K0/pvKjiKyM0Zocofod2SKGbTwT01dvNcY2fTUY0C3AKj
+        wO8TXX8byKlri3FllN6ZIAYiffHAyVuno5KesxVjdd0CjrstladEw=
+X-Sasl-enc: 9AAvXJ/XSUp1nT1g2WiOLIxwVjzb/C3sQ7akAf3xA3pR 1340096982
+Received: from [10.1.2.65] (unknown [94.101.37.4])
+        by mail.messagingengine.com (Postfix) with ESMTPA id DDCD88E01D9;
+        Tue, 19 Jun 2012 05:09:41 -0400 (EDT)
+Message-ID: <4FE041D5.8030002@ladisch.de>
+Date:   Tue, 19 Jun 2012 11:09:41 +0200
+From:   Clemens Ladisch <clemens@ladisch.de>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:13.0) Gecko/20120614 Thunderbird/13.0.1
+MIME-Version: 1.0
 To:     Huacai Chen <chenhuacai@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Zhangjin Wu <wuzhangjin@gmail.com>, Hua Yan <yanh@lemote.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        dri-devel@lists.freedesktop.org, Hongliang Tao <taohl@lemote.com>,
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        alsa-devel@alsa-project.org, Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hua Yan <yanh@lemote.com>, Fuxin Zhang <zhangfx@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>,
         Huacai Chen <chenhc@lemote.com>
-Date:   Tue, 19 Jun 2012 09:56:45 +0200
-In-Reply-To: <1340088624-25550-13-git-send-email-chenhc@lemote.com>
-References: <1340088624-25550-1-git-send-email-chenhc@lemote.com>
-         <1340088624-25550-13-git-send-email-chenhc@lemote.com>
-Face:   iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAAXNSR0IArs4c6QAAADBQTFRFDg4OHh4eLCwsOzs7S0tLWlpaa2treXl5hISEjY2NmJiYqKiotLS0xsbG1dXV/Pz81CO0SQAAArtJREFUOMtd1M9P01AcAHCI/4AtGq/QDfDHRfraEX8eaNeJFw1rO/DCYet7mxc1ZG0x3sStHQkmZpqtHDwAi+tMiFEzbZdwNWEJR48cjPG4g5HhELUbrHvjpYe2n7zvt++977cD/7rjsCry8uNG93Gge9OKUyAAgLB1AlpTZICmAzR15QTEiQAPAKADYLMPfhNnEJR4HvD0tT5YI2KGUcyqihQN7mDwZ3hMN4q2N4ol+gEGTSLWhorrjYXrGPwc0jTDOoKP4xi8G0W6adl2Gz6zGDwag5p5PMON7vZgJuSB976+3U6y2QdeKNet1+uum9/qwVQHvEjtKesY0EIb7CNYe+7DIRXCID/vQ4tksVAY7JFBD7yvqrWTL93xoUmOQsPIddbnuk8v+bBPsigB2KRlFxS4nL/owwEpKBSg2MU3UcDf+nATyyHEQwrHzJZFNpXeuOHDC0qW4sMhEHESFGOUrvgQpWUYFVNQdjQxca8abnSB55CmehdcLSxa1ifoQ4JBpmGYWbhsly3X0fxQ7xmkW3Y5CztLcXI+fAu2oWho3nbV6s5rH35xSC/aBR2tOpVa/Utv25tcTDPL6aT21kG17WrvaFtMBJmFhJCsVF4uu9VG76DWBaRnEiNs7pU659pYlfwtQSRy9GCYlwR7C6/dPQgBw3MsTPNWA4d9SeMDDC9JYdnqq/amdF+diGnVhXFztQ/2lJSWjulOxjRX+uC7EkOqhLRk2ejrqHVBEqCqJLO5cmEXgx8TrBiWVQh1u2DhzQlPsyIveU2YLGorGBxODoR5notlpcUieoLB1/NEmGc4AalGJpLe8WF/8txMWASAkVVViQjzP
- jycPrvgA
-        R1goSzOnkp14YCYHsp7QJHAS5QcXDqG1jBxdSITVgBNkBTFloj88Q/gMkFcuItYiQPUCBGc2xh5drsD/wGZrgsgDOE4ZAAAAABJRU5ErkJggg==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Mailer: Evolution 3.4.2-2.0 
-Mime-Version: 1.0
-X-archive-position: 33708
+Subject: Re: [alsa-devel] [PATCH V2 13/16] ALSA: HDA: Make hda sound card
+ usable for Loongson.
+References: <1340088624-25550-1-git-send-email-chenhc@lemote.com> <1340088624-25550-14-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1340088624-25550-14-git-send-email-chenhc@lemote.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-archive-position: 33709
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: michel@daenzer.net
+X-original-sender: clemens@ladisch.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,34 +54,30 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Die, 2012-06-19 at 14:50 +0800, Huacai Chen wrote: 
+Huacai Chen wrote:
 > 1, Use 32-bit DMA as a workaround (Loongson has a hardware bug that it
 >    doesn't support DMA address above 4GB).
-> 2, Read vga bios offered by system firmware.
-> 3, Handle io prot correctly for MIPS.
-> 4, Don't use swiotlb on Loongson machines (when use swiotlb, GPU reset
->    occurs at resume from suspend).
+> 2, Modify patch_conexant.c to add Lemote specific code.
 
-Sounds like this should be split up into smaller patches.
+Please create separate patches for these two changes.
 
+> +++ b/include/linux/pci_ids.h
+> @@ -2906,3 +2906,5 @@
+>  #define PCI_DEVICE_ID_XEN_PLATFORM	0x0001
+>
+>  #define PCI_VENDOR_ID_OCZ		0x1b85
+> +
+> +#define PCI_VENDOR_ID_LEMOTE		0x1c06
 
-> diff --git a/include/drm/drm_sarea.h b/include/drm/drm_sarea.h
-> index ee5389d..1d1a858 100644
-> --- a/include/drm/drm_sarea.h
-> +++ b/include/drm/drm_sarea.h
-> @@ -37,6 +37,8 @@
->  /* SAREA area needs to be at least a page */
->  #if defined(__alpha__)
->  #define SAREA_MAX                       0x2000U
-> +#elif defined(__mips__)
-> +#define SAREA_MAX                       0x4000U
->  #elif defined(__ia64__)
->  #define SAREA_MAX                       0x10000U	/* 64kB */
->  #else
+AFAICS this symbol is not used in this patch.
 
-Also, this change doesn't seem to be accounted for in the commit log.
+> +#ifdef CONFIG_CPU_LOONGSON3
+> +	/* Workaround: Loongson 3 doesn't support 64-bit DMA */
+> +	gcap &= ~ICH6_GCAP_64OK;
+> +#endif
+
+	/* Workaround: Loongson 3 doesn't actually support 64-bit DMA */
 
 
--- 
-Earthling Michel Dänzer           |                   http://www.amd.com
-Libre software enthusiast         |          Debian, X and DRI developer
+Regards,
+Clemens

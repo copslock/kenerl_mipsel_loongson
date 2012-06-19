@@ -1,37 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2012 08:51:44 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:54432 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903562Ab2FSGvj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2012 08:51:39 +0200
-Received: by pbbrq13 with SMTP id rq13so9836365pbb.36
-        for <multiple recipients>; Mon, 18 Jun 2012 23:51:30 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2012 08:52:37 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:54996 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903561Ab2FSGwZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2012 08:52:25 +0200
+Received: by dadm1 with SMTP id m1so8371271dad.36
+        for <multiple recipients>; Mon, 18 Jun 2012 23:52:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=v1iq90mwioqal0w5LMFTz1jDaJiHLSOWXhfri01EWKg=;
-        b=p4/T14uSK+bQCKUGnerQEQaLpLeTdQRjQDzomANbvx4JK9iZqyPv5YSIF9WGVPt7sK
-         kWpA0asHCDxtAvmLpXAnvOJHfwngKfsqJsBhjE4QYnUvECG2MkPZcU205SKUOLn97rhl
-         BTCIM/yUf3lHKb3biVnF75T6frgJULEIk5VWMAdOUN+hX6PT0RZGmsDRN8UakdItTLbO
-         gpYNTrUgIEqiCnV28/6y+oxn+nShJQmD7CrkL/ZU9rmJr9UCLYSDRIW2XPqGol5xl8nC
-         EaN6NWEOEu1IankpS/70oyWej0nLub/QedY7S8uv+pSHFntk++d1HsZO+ENGDBn/Qs4o
-         tsMg==
-Received: by 10.68.136.68 with SMTP id py4mr19141449pbb.151.1340088689899;
-        Mon, 18 Jun 2012 23:51:29 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=C1QGJlSnNS89ZPz1/JgE3Ez3kGlZ5lbE60Ze1rjxHsI=;
+        b=AmpV5mxXCjDPyB/+P/DW6WIwesp9e9uFKzC9+Xxy0mPtXk6+nWzM66Cc3bJjew10zT
+         AsWlaPgAxXtadpJGjGIRkzAZ8ax5VtOBTQVPqAeVWZkS3NQfHbBOs6egLAWOLb/3M5Kf
+         YolndE//Ay/ZTuJ8UWhkRRHy9Dg1ZWElUFbTP/f8d2L6cb0zNYTrKbLCSNFOYB83W9CR
+         tXqP9i2n0zmGQLs7lherOMhRrLG7tucIuehcQ+CotiWtDPDVPciWScT901rjFjrkTgPu
+         f+Fwfm6wqmMSInSLWa+c/OfOESfrB/tvKCClByT4eFWNIdWVmUhedLa3x5dkdraIHW51
+         FQMw==
+Received: by 10.68.191.106 with SMTP id gx10mr59820240pbc.37.1340088738248;
+        Mon, 18 Jun 2012 23:52:18 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id gk3sm20156319pbc.1.2012.06.18.23.51.23
+        by mx.google.com with ESMTPS id gk3sm20156319pbc.1.2012.06.18.23.52.11
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 18 Jun 2012 23:51:28 -0700 (PDT)
+        Mon, 18 Jun 2012 23:52:17 -0700 (PDT)
 From:   Huacai Chen <chenhuacai@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH V2 00/14] MIPS: Add Loongson-3 based machines support.
-Date:   Tue, 19 Jun 2012 14:50:08 +0800
-Message-Id: <1340088624-25550-1-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V2 01/16] MIPS: Loongson: Add basic Loongson-3 definition.
+Date:   Tue, 19 Jun 2012 14:50:09 +0800
+Message-Id: <1340088624-25550-2-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
-X-archive-position: 33690
+In-Reply-To: <1340088624-25550-1-git-send-email-chenhc@lemote.com>
+References: <1340088624-25550-1-git-send-email-chenhc@lemote.com>
+X-archive-position: 33691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,110 +51,147 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This patchset is for git repository git://git.linux-mips.org/pub/scm/
-ralf/linux. Loongson-3 is a multi-core MIPS family CPU, it is MIPS64R2
-compatible and has the same IMP field (0x6300) as Loongson-2. These
-patches make Linux kernel support Loongson-3 CPU and Loongson-3 based
-computers (including Laptop, Mini-ITX, All-In-One PC, etc.)
+Loongson-3 is a multi-core MIPS family CPU, it support MIPS64R2
+fully. Loongson-3 has the same IMP field (0x6300) as Loongson-2.
 
-V1 -> V2:
-1, Split the first patch to two patches, one is constant definition and
-   the other is CPU probing, cache initializing, etc.
-2, Remove Kconfig options in the first 9 patches and put all of them in
-   the 10th patch.
-3, Use "make savedefconfig" to generate the new default config file.
-4, Rework serial port support to use PORT and PORT_M macros.
-5, Fix some compile warnings.
+Loongson-3 has a hardware-maintained cache, system software doesn't
+need to maintain coherency.
 
-Huacai Chen(16):
- MIPS: Loongson: Add basic Loongson-3 definition.
- MIPS: Loongson: Add basic Loongson-3 CPU support.
- MIPS: Loongson 3: Add Lemote-3A machtypes definition.
- MIPS: Loongson: Make Loongson-3 to use BCD format for RTC.
- MIPS: Loongson: Add UEFI-like firmware interface support.
- MIPS: Loongson 3: Add HT-linked PCI support.
- MIPS: Loongson 3: Add IRQ init and dispatch support.
- MIPS: Loongson 3: Add serial port support.
- MIPS: Loongson: Add swiotlb to support big memory (>4GB).
- MIPS: Loongson: Add Loongson-3 Kconfig options.
- ata: Use 32bit DMA in AHCI for Loongson 3.
- drm/radeon: Make radeon card usable for Loongson.
- ALSA: HDA: Make hda sound card usable for Loongson.
- MIPS: Loongson 3: Add Loongson-3 SMP support.
- MIPS: Loongson 3: Add CPU Hotplug support.
- MIPS: Loongson: Add a Loongson-3 default config file.
+Loongson-3A is the first revision of Loongson-3, and it is the quad-
+core version of Loongson-2G. Loongson-3A has a simplified version named
+Loongson-2Gq, the main difference between Loongson-3A/2Gq is 3A has two
+HyperTransport controller but 2Gq has only one. HT0 is used for cross-
+chip interconnection and HT1 is used to link PCI bus. Therefore, 2Gq
+cannot support NUMA but 3A can.
+
+Exsisting Loongson family CPUs:
+Loongson-1: Loongson-1A, Loongson-1B, they are 32-bit MIPS CPUs.
+Loongson-2: Loongson-2E, Loongson-2F, Loongson-2G(including Loongson-
+            2Gq), they are 64-bit MIPS CPUs.
+Loongson-3: Loongson-3A, it is a 64-bit MIPS CPU.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Hongliang Tao <taohl@lemote.com>
 Signed-off-by: Hua Yan <yanh@lemote.com>
 ---
- arch/mips/Kconfig                                  |   23 +
- arch/mips/configs/loongson3_defconfig              |  279 ++++++++++++
- arch/mips/include/asm/addrspace.h                  |    6 +
- arch/mips/include/asm/bootinfo.h                   |   23 +-
- arch/mips/include/asm/cpu.h                        |    6 +-
- arch/mips/include/asm/mach-loongson/boot_param.h   |  150 +++++++
- .../mips/include/asm/mach-loongson/dma-coherence.h |   25 +-
- arch/mips/include/asm/mach-loongson/irq.h          |   24 +
- arch/mips/include/asm/mach-loongson/loongson.h     |   26 +-
- arch/mips/include/asm/mach-loongson/machine.h      |    6 +
- arch/mips/include/asm/mach-loongson/mc146818rtc.h  |    4 +
- arch/mips/include/asm/mach-loongson/pci.h          |    5 +
- arch/mips/include/asm/mach-loongson/spaces.h       |   15 +
- arch/mips/include/asm/module.h                     |    2 +
- arch/mips/include/asm/pgtable-bits.h               |    7 +
- arch/mips/include/asm/smp.h                        |    1 +
- arch/mips/kernel/Makefile                          |    1 +
- arch/mips/kernel/cpu-probe.c                       |   12 +-
- arch/mips/kernel/process.c                         |    4 +-
- arch/mips/lib/Makefile                             |    1 +
- arch/mips/loongson/Kconfig                         |   52 +++
- arch/mips/loongson/Makefile                        |    6 +
- arch/mips/loongson/Platform                        |    1 +
- arch/mips/loongson/common/Makefile                 |    5 +
- arch/mips/loongson/common/dma-swiotlb.c            |  147 +++++++
- arch/mips/loongson/common/env.c                    |   67 +++-
- arch/mips/loongson/common/init.c                   |   14 +-
- arch/mips/loongson/common/machtype.c               |    5 +-
- arch/mips/loongson/common/mem.c                    |   42 ++
- arch/mips/loongson/common/pci.c                    |    6 +-
- arch/mips/loongson/common/reset.c                  |   14 +
- arch/mips/loongson/common/serial.c                 |   25 +-
- arch/mips/loongson/common/setup.c                  |    6 +-
- arch/mips/loongson/common/uart_base.c              |    8 +-
- arch/mips/loongson/loongson-3/Makefile             |    6 +
- arch/mips/loongson/loongson-3/irq.c                |   97 +++++
- arch/mips/loongson/loongson-3/smp.c                |  453 ++++++++++++++++++++
- arch/mips/loongson/loongson-3/smp.h                |   24 +
- arch/mips/mm/Makefile                              |    1 +
- arch/mips/mm/c-r4k.c                               |   84 ++++
- arch/mips/mm/dma-default.c                         |   13 +-
- arch/mips/mm/tlb-r4k.c                             |    2 +-
- arch/mips/mm/tlbex.c                               |    1 +
- arch/mips/pci/Makefile                             |    1 +
- arch/mips/pci/fixup-loongson3.c                    |   50 +++
- arch/mips/pci/ops-loongson3.c                      |  104 +++++
- drivers/ata/ahci.c                                 |    5 +
- drivers/gpu/drm/drm_vm.c                           |    2 +-
- drivers/gpu/drm/radeon/radeon_bios.c               |   32 ++
- drivers/gpu/drm/radeon/radeon_device.c             |    5 +
- drivers/gpu/drm/radeon/radeon_ttm.c                |    6 +-
- drivers/gpu/drm/ttm/ttm_bo_util.c                  |    2 +-
- include/drm/drm_sarea.h                            |    2 +
- include/linux/pci_ids.h                            |    2 +
- sound/pci/hda/hda_intel.c                          |    5 +
- sound/pci/hda/patch_conexant.c                     |   52 +++-
- 56 files changed, 1898 insertions(+), 69 deletions(-)
- create mode 100644 arch/mips/configs/loongson3_defconfig
- create mode 100644 arch/mips/include/asm/mach-loongson/boot_param.h
- create mode 100644 arch/mips/include/asm/mach-loongson/irq.h
+ arch/mips/include/asm/addrspace.h            |    6 ++++++
+ arch/mips/include/asm/cpu.h                  |    6 ++++--
+ arch/mips/include/asm/mach-loongson/spaces.h |   15 +++++++++++++++
+ arch/mips/include/asm/module.h               |    2 ++
+ arch/mips/include/asm/pgtable-bits.h         |    7 +++++++
+ arch/mips/loongson/Platform                  |    1 +
+ 6 files changed, 35 insertions(+), 2 deletions(-)
  create mode 100644 arch/mips/include/asm/mach-loongson/spaces.h
- create mode 100644 arch/mips/loongson/common/dma-swiotlb.c
- create mode 100644 arch/mips/loongson/loongson-3/Makefile
- create mode 100644 arch/mips/loongson/loongson-3/irq.c
- create mode 100644 arch/mips/loongson/loongson-3/smp.c
- create mode 100644 arch/mips/loongson/loongson-3/smp.h
- create mode 100644 arch/mips/pci/fixup-loongson3.c
- create mode 100644 arch/mips/pci/ops-loongson3.c
+
+diff --git a/arch/mips/include/asm/addrspace.h b/arch/mips/include/asm/addrspace.h
+index 569f80a..cf62bfb 100644
+--- a/arch/mips/include/asm/addrspace.h
++++ b/arch/mips/include/asm/addrspace.h
+@@ -116,7 +116,13 @@
+ #define K_CALG_UNCACHED		2
+ #define K_CALG_NONCOHERENT	3
+ #define K_CALG_COH_EXCL		4
++
++#ifdef CONFIG_CPU_LOONGSON3
++#define K_CALG_COH_SHAREABLE	3
++#else
+ #define K_CALG_COH_SHAREABLE	5
++#endif
++
+ #define K_CALG_NOTUSED		6
+ #define K_CALG_UNCACHED_ACCEL	7
+ 
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 95e40c1..3fa996a 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -72,6 +72,7 @@
+ #define PRID_IMP_R5432		0x5400
+ #define PRID_IMP_R5500		0x5500
+ #define PRID_IMP_LOONGSON2	0x6300
++#define PRID_IMP_LOONGSON3	0x6300
+ 
+ #define PRID_IMP_UNKNOWN	0xff00
+ 
+@@ -199,6 +200,7 @@
+ #define PRID_REV_34K_V1_0_2	0x0022
+ #define PRID_REV_LOONGSON2E	0x0002
+ #define PRID_REV_LOONGSON2F	0x0003
++#define PRID_REV_LOONGSON3A	0x0005
+ 
+ /*
+  * Older processors used to encode processor version and revision in two
+@@ -267,8 +269,8 @@ enum cpu_type_enum {
+ 	 * MIPS64 class processors
+ 	 */
+ 	CPU_5KC, CPU_5KE, CPU_20KC, CPU_25KF, CPU_SB1, CPU_SB1A, CPU_LOONGSON2,
+-	CPU_CAVIUM_OCTEON, CPU_CAVIUM_OCTEON_PLUS, CPU_CAVIUM_OCTEON2,
+-	CPU_XLR, CPU_XLP,
++	CPU_LOONGSON3, CPU_CAVIUM_OCTEON, CPU_CAVIUM_OCTEON_PLUS,
++	CPU_CAVIUM_OCTEON2, CPU_XLR, CPU_XLP,
+ 
+ 	CPU_LAST
+ };
+diff --git a/arch/mips/include/asm/mach-loongson/spaces.h b/arch/mips/include/asm/mach-loongson/spaces.h
+new file mode 100644
+index 0000000..1e82804
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson/spaces.h
+@@ -0,0 +1,15 @@
++#ifndef __ASM_MACH_LOONGSON_SPACES_H_
++#define __ASM_MACH_LOONGSON_SPACES_H_
++
++#ifndef CAC_BASE
++#if defined(CONFIG_64BIT)
++#if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_CPU_LOONGSON3)
++#define CAC_BASE        _AC(0x9800000000000000, UL)
++#else
++#define CAC_BASE        _AC(0xa800000000000000, UL)
++#endif /* CONFIG_DMA_NONCOHERENT || CONFIG_CPU_LOONGSON3 */
++#endif /* CONFIG_64BIT */
++#endif /* CONFIG_CAC_BASE */
++
++#include <asm/mach-generic/spaces.h>
++#endif
+diff --git a/arch/mips/include/asm/module.h b/arch/mips/include/asm/module.h
+index 5300080..375964a 100644
+--- a/arch/mips/include/asm/module.h
++++ b/arch/mips/include/asm/module.h
+@@ -119,6 +119,8 @@ search_module_dbetables(unsigned long addr)
+ #define MODULE_PROC_FAMILY "SB1 "
+ #elif defined CONFIG_CPU_LOONGSON2
+ #define MODULE_PROC_FAMILY "LOONGSON2 "
++#elif defined CONFIG_CPU_LOONGSON3
++#define MODULE_PROC_FAMILY "LOONGSON3 "
+ #elif defined CONFIG_CPU_CAVIUM_OCTEON
+ #define MODULE_PROC_FAMILY "OCTEON "
+ #elif defined CONFIG_CPU_XLR
+diff --git a/arch/mips/include/asm/pgtable-bits.h b/arch/mips/include/asm/pgtable-bits.h
+index e9fe7e9..1afd39a 100644
+--- a/arch/mips/include/asm/pgtable-bits.h
++++ b/arch/mips/include/asm/pgtable-bits.h
+@@ -206,6 +206,13 @@ static inline uint64_t pte_to_entrylo(unsigned long pte_val)
+ #define _CACHE_UNCACHED		    _CACHE_UC_B
+ #define _CACHE_CACHABLE_NONCOHERENT _CACHE_WB
+ 
++#elif defined(CONFIG_CPU_LOONGSON3)
++
++#define _CACHE_UNCACHED             (2<<_CACHE_SHIFT)  /* LOONGSON       */
++#define _CACHE_CACHABLE_NONCOHERENT (3<<_CACHE_SHIFT)  /* LOONGSON       */
++#define _CACHE_CACHABLE_COHERENT    (3<<_CACHE_SHIFT)  /* LOONGSON-3     */
++#define _CACHE_UNCACHED_ACCELERATED (7<<_CACHE_SHIFT)  /* LOONGSON       */
++
+ #else
+ 
+ #define _CACHE_CACHABLE_NO_WA	    (0<<_CACHE_SHIFT)  /* R4600 only      */
+diff --git a/arch/mips/loongson/Platform b/arch/mips/loongson/Platform
+index 29692e5..6205372 100644
+--- a/arch/mips/loongson/Platform
++++ b/arch/mips/loongson/Platform
+@@ -30,3 +30,4 @@ platform-$(CONFIG_MACH_LOONGSON) += loongson/
+ cflags-$(CONFIG_MACH_LOONGSON) += -I$(srctree)/arch/mips/include/asm/mach-loongson -mno-branch-likely
+ load-$(CONFIG_LEMOTE_FULOONG2E) += 0xffffffff80100000
+ load-$(CONFIG_LEMOTE_MACH2F) += 0xffffffff80200000
++load-$(CONFIG_CPU_LOONGSON3) += 0xffffffff80200000
 -- 
 1.7.7.3

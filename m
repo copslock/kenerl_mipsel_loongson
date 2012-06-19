@@ -1,43 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2012 12:47:04 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:40475 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2012 12:47:54 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:50213 "EHLO
         mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903616Ab2FSKq5 convert rfc822-to-8bit
+        by eddie.linux-mips.org with ESMTP id S1903616Ab2FSKrs convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 19 Jun 2012 12:46:57 +0200
-Received: by lbbgg6 with SMTP id gg6so5868859lbb.36
-        for <multiple recipients>; Tue, 19 Jun 2012 03:46:52 -0700 (PDT)
+        Tue, 19 Jun 2012 12:47:48 +0200
+Received: by lbbgg6 with SMTP id gg6so5869860lbb.36
+        for <multiple recipients>; Tue, 19 Jun 2012 03:47:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        bh=x62d37sToMV/blnQxZZ1ofQiX8Mk7K1ZwN2+AGwh2EU=;
-        b=pzRtZSlHJJLXIIPTbMoMKjKCeNAfoP0k4N/JxmFTLC6V8cggG424rF/D0nL15ayOK0
-         ajIRBivxrkcJ1w4p7815qZfwXyhGS4g5FCZHEs9xI+g0yXnMUPOMxHfVEiDCetYtQ3aq
-         Z0vbLUWnWHdWLqJfL2RDj66/tUNdv8mF5Qb/FGSqZf8uobgDRWM5UroUokeJ8QXB8buD
-         iQTSuXc4urKg+XjXbrn6NQvSwwLcaqaywHCrvl6C8k/GMrGHcl4zLCRSVr8gkJJYqX60
-         5K2HLlCcJh9h8LGjnqzlsUusLTli9Gdb/y8ZUgxBmOUIi2b4wKPMYRc6re8iKa/IUU4k
-         SM6A==
+        bh=dmQgMqd9S3h+GkgiKoOk5y/XWh9BZWex9Cs6pgE0nfc=;
+        b=VaGsfgVSxmflnhSHl5fXicnIUUNiZKWe2+PzLo2cc88rvQFRFHIR3WXw/r1XD/Uuc5
+         1NGxofgejELQkIaLeK1rY7rQk9QGG8W4fJj3ORwAG55VHD98Qqj2mdGLs9Dn5rjxPDGj
+         wnBxMnAtY4VtzmMKJDzjIgnRP9pO5kjE5KWoc63UAlI/2GQgiUp4RxDfpRe1+/el+VyL
+         4AciEOmHi+0aLMJm/mgTMDesMbhFZNs+mUdRGJaNZDimlluLt6w5/vafVSuVTNC/wS+x
+         +OrNFB5nGMaqP0AK3KljZtv6wcFHOYj69DtA1FvtW5IdXzJss527UAQCAMQ7OqKOx9I5
+         KuPg==
 MIME-Version: 1.0
-Received: by 10.152.124.141 with SMTP id mi13mr17787273lab.50.1340102811973;
- Tue, 19 Jun 2012 03:46:51 -0700 (PDT)
-Received: by 10.152.5.103 with HTTP; Tue, 19 Jun 2012 03:46:51 -0700 (PDT)
-In-Reply-To: <1340092605.5442.0.camel@thor.local>
+Received: by 10.152.148.199 with SMTP id tu7mr17999882lab.43.1340102862774;
+ Tue, 19 Jun 2012 03:47:42 -0700 (PDT)
+Received: by 10.152.5.103 with HTTP; Tue, 19 Jun 2012 03:47:42 -0700 (PDT)
+In-Reply-To: <s5hd34vlkin.wl%tiwai@suse.de>
 References: <1340088624-25550-1-git-send-email-chenhc@lemote.com>
-        <1340088624-25550-13-git-send-email-chenhc@lemote.com>
-        <1340092605.5442.0.camel@thor.local>
-Date:   Tue, 19 Jun 2012 18:46:51 +0800
-Message-ID: <CAAhV-H61zN42kntGrVWwfXPpi42WgTcBcxj-Ym1=cfPaaXmd9w@mail.gmail.com>
-Subject: Re: [PATCH V2 12/16] drm/radeon: Make radeon card usable for Loongson.
+        <1340088624-25550-14-git-send-email-chenhc@lemote.com>
+        <s5hd34vlkin.wl%tiwai@suse.de>
+Date:   Tue, 19 Jun 2012 18:47:42 +0800
+Message-ID: <CAAhV-H4ALZMW21=6DfGms2wjfuBzKLHrpgV28he8PG77YWbqYA@mail.gmail.com>
+Subject: Re: [alsa-devel] [PATCH V2 13/16] ALSA: HDA: Make hda sound card
+ usable for Loongson.
 From:   Huacai Chen <chenhuacai@gmail.com>
-To:     =?ISO-8859-1?Q?Michel_D=E4nzer?= <michel@daenzer.net>
+To:     Takashi Iwai <tiwai@suse.de>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Zhangjin Wu <wuzhangjin@gmail.com>, Hua Yan <yanh@lemote.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        dri-devel@lists.freedesktop.org, Hongliang Tao <taohl@lemote.com>,
+        alsa-devel@alsa-project.org, Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hua Yan <yanh@lemote.com>, Fuxin Zhang <zhangfx@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>,
         Huacai Chen <chenhc@lemote.com>
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-X-archive-position: 33717
+X-archive-position: 33718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,37 +56,75 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Thanks, I'll follow your suggestions.
+Thanks, I'll improve the patch.
 
-On Tue, Jun 19, 2012 at 3:56 PM, Michel Dänzer <michel@daenzer.net> wrote:
-> On Die, 2012-06-19 at 14:50 +0800, Huacai Chen wrote:
+On Tue, Jun 19, 2012 at 5:26 PM, Takashi Iwai <tiwai@suse.de> wrote:
+> At Tue, 19 Jun 2012 14:50:21 +0800,
+> Huacai Chen wrote:
+>>
+>> Lemote A1004(Laptop) and A1205(All-In-One) use Conexant's hda codec,
+>> this patch make it usable:
 >> 1, Use 32-bit DMA as a workaround (Loongson has a hardware bug that it
 >>    doesn't support DMA address above 4GB).
->> 2, Read vga bios offered by system firmware.
->> 3, Handle io prot correctly for MIPS.
->> 4, Don't use swiotlb on Loongson machines (when use swiotlb, GPU reset
->>    occurs at resume from suspend).
+>> 2, Modify patch_conexant.c to add Lemote specific code.
+>>
+>> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+>> Signed-off-by: Hongliang Tao <taohl@lemote.com>
+>> Signed-off-by: Hua Yan <yanh@lemote.com>
+>> Cc: alsa-devel@alsa-project.org
+>> ---
+>>  include/linux/pci_ids.h        |    2 +
+>>  sound/pci/hda/hda_intel.c      |    5 ++++
+>>  sound/pci/hda/patch_conexant.c |   52 ++++++++++++++++++++++++++++++++++++++-
+>>  3 files changed, 57 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+>> index ab741b0..d8b0a52 100644
+>> --- a/include/linux/pci_ids.h
+>> +++ b/include/linux/pci_ids.h
+>> @@ -2906,3 +2906,5 @@
+>>  #define PCI_DEVICE_ID_XEN_PLATFORM   0x0001
+>>
+>>  #define PCI_VENDOR_ID_OCZ            0x1b85
+>> +
+>> +#define PCI_VENDOR_ID_LEMOTE         0x1c06
 >
-> Sounds like this should be split up into smaller patches.
+> As Clemens already suggested, please split your patch.  The addition
+> of PCI ID, addition of the workaround in HD-audio controller code, and
+> the modification to Conexant codec code are all different things.
 >
 >
->> diff --git a/include/drm/drm_sarea.h b/include/drm/drm_sarea.h
->> index ee5389d..1d1a858 100644
->> --- a/include/drm/drm_sarea.h
->> +++ b/include/drm/drm_sarea.h
->> @@ -37,6 +37,8 @@
->>  /* SAREA area needs to be at least a page */
->>  #if defined(__alpha__)
->>  #define SAREA_MAX                       0x2000U
->> +#elif defined(__mips__)
->> +#define SAREA_MAX                       0x4000U
->>  #elif defined(__ia64__)
->>  #define SAREA_MAX                       0x10000U     /* 64kB */
->>  #else
+>> diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+>> index 2b6392b..2b73ed4 100644
+>> --- a/sound/pci/hda/hda_intel.c
+>> +++ b/sound/pci/hda/hda_intel.c
+>> @@ -3013,6 +3013,11 @@ static int DELAYED_INIT_MARK azx_first_init(struct azx *chip)
+>>               gcap &= ~ICH6_GCAP_64OK;
+>>       }
+>>
+>> +#ifdef CONFIG_CPU_LOONGSON3
+>> +     /* Workaround: Loongson 3 doesn't support 64-bit DMA */
+>> +     gcap &= ~ICH6_GCAP_64OK;
+>> +#endif
 >
-> Also, this change doesn't seem to be accounted for in the commit log.
+> Where is CONFIG_CPU_LOONGSON3 defined at all?
+> This isn't found in the upstream Linus or linux-next tree.
 >
 >
-> --
-> Earthling Michel Dänzer           |                   http://www.amd.com
-> Libre software enthusiast         |          Debian, X and DRI developer
+>> diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+>> index 3acb582..1c8dfb9 100644
+>> --- a/sound/pci/hda/patch_conexant.c
+>> +++ b/sound/pci/hda/patch_conexant.c
+>> @@ -142,6 +142,7 @@ struct conexant_spec {
+>>       unsigned int thinkpad:1;
+>>       unsigned int hp_laptop:1;
+>>       unsigned int asus:1;
+>> +     unsigned int lemote:1;
+>
+> In general, we don't accept such a static quirk any longer unless a
+> special reason is given.  Doesn't the auto-parser work for you?
+>
+>
+> thanks,
+>
+> Takashi

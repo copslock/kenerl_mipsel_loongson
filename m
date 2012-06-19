@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2012 08:55:32 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2012 08:55:56 +0200 (CEST)
 Received: from mail-pz0-f49.google.com ([209.85.210.49]:32870 "EHLO
         mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903561Ab2FSGzI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2012 08:55:08 +0200
-Received: by dadm1 with SMTP id m1so8374371dad.36
-        for <multiple recipients>; Mon, 18 Jun 2012 23:55:01 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1903560Ab2FSGzc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2012 08:55:32 +0200
+Received: by mail-pz0-f49.google.com with SMTP id m1so8374371dad.36
+        for <multiple recipients>; Mon, 18 Jun 2012 23:55:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=VYwpFp44UX3utkgre0m9TQtelFeKx5jHfaD3mGXBcnQ=;
-        b=fqUJ3+vtLQqnpApm7WyVy2v8+DgsF9EnOrV4nyjtgYtX9sKsOm2CWY1o+xlTkpanni
-         tof/NOqK9e32TUovHQPQ2LlhLfJurcUd6SWf37/6ipTev6/7B/rfYwFEttoRByiN0s7f
-         X/Xnf51gYPssJX5ruDVbhyr2WKAQt6OsrpVlPN6WbJa0gwYdr5FCubWT8pSLbTO81zgI
-         OJud18tM8609YnG55RyDWK5KzZBZJYtsRkE0LMHzt1drpIJikcPTXGy1/aN0UCMW6fvN
-         Ui5lwpN547XgiBR6uWQSOMJQ1DGTG79SvvfXnvfpo1K66O0x1vP/qLgLszLn2oPV2U0G
-         1lQg==
-Received: by 10.68.134.201 with SMTP id pm9mr61807367pbb.49.1340088901231;
-        Mon, 18 Jun 2012 23:55:01 -0700 (PDT)
+        bh=k7Q94S1BRLRqiBBrnRKeRpI55eUr+fNjGsa9JvsD3Qw=;
+        b=k3V6UzICl/W4DImKH+XKHtSaZtg7zbTESvtxRG1Y4wwT4PEK4+HmIrA3MFxr9j7DvX
+         U0ix3+encFT2ok1FONk74d0xP7b8JWV6wGzlvAe99K7JXEoGDrRDGPWOVkO7ocOYwKOf
+         ZheZFQS6++R5wcOzwS6BJw1JAL50Ay5cqOpdfPIjRLFVucYr6S13EnXVKqvyxxhsDUCs
+         W9U3BUbUtdSe5RgzLiWxnU12lCGgZicpbg34OChYGgyd0Z6kYlLhAL3sbt80uij4Bkxn
+         gbCwDoDlL6E/9BivulBNRopqwM7MMgYO7vxv3yc+NzDuhaCNWHIOt1UNmfXuzEUpmSh+
+         R86Q==
+Received: by 10.68.219.166 with SMTP id pp6mr60489405pbc.35.1340088931490;
+        Mon, 18 Jun 2012 23:55:31 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id gk3sm20156319pbc.1.2012.06.18.23.54.54
+        by mx.google.com with ESMTPS id gk3sm20156319pbc.1.2012.06.18.23.55.24
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 18 Jun 2012 23:55:00 -0700 (PDT)
+        Mon, 18 Jun 2012 23:55:30 -0700 (PDT)
 From:   Huacai Chen <chenhuacai@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH V2 07/16] MIPS: Loongson 3: Add IRQ init and dispatch support.
-Date:   Tue, 19 Jun 2012 14:50:15 +0800
-Message-Id: <1340088624-25550-8-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V2 08/16] MIPS: Loongson 3: Add serial port support.
+Date:   Tue, 19 Jun 2012 14:50:16 +0800
+Message-Id: <1340088624-25550-9-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1340088624-25550-1-git-send-email-chenhc@lemote.com>
 References: <1340088624-25550-1-git-send-email-chenhc@lemote.com>
-X-archive-position: 33697
+X-archive-position: 33698
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,207 +51,99 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-IRQ routing path of Loongson-3:
-Devices(most) --> I8259 --> HT Controller --> IRQ Routing Table --> CPU
-                                                  ^
-                                                  |
-Device(legacy devices such as UART) --> Bonito ---|
+Loongson family machines has three types of serial port: PCI UART, LPC
+UART and CPU internal UART. Loongson-2E and parts of Loongson-2F based
+machines use PCI UART; most Loongson-2F based machines use LPC UART;
+Loongson-2G/3A has both LPC and CPU UART but usually use CPU UART.
 
-IRQ Routing Table route 32 INTs to CPU's INT0~INT3(IP2~IP5 of CP0), 32
-INTs include 16 HT INTs(mostly), 4 PCI INTs, 1 LPC INT, etc. IP6 is used
-for IPI and IP7 is used for internal MIPS timer. LOONGSON_INT_ROUTER_*
-are IRQ Routing Table registers.
+Port address of UARTs:
+CPU UART: REG_BASE + OFFSET;
+LPC UART: LIO1_BASE + OFFSET;
+PCI UART: PCIIO_BASE + OFFSET.
 
-I8259 IRQs are 1:1 mapped to HT1 INTs. LOONGSON_HT1_* are configuration
-registers of HT1 controller.
+Since LPC UART are linked in "Local Bus", both CPU UART and LPC UART
+are called "CPU provided serial port".
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Hongliang Tao <taohl@lemote.com>
 Signed-off-by: Hua Yan <yanh@lemote.com>
 ---
- arch/mips/include/asm/mach-loongson/irq.h      |   24 +++++++
- arch/mips/include/asm/mach-loongson/loongson.h |    9 +++
- arch/mips/loongson/Makefile                    |    6 ++
- arch/mips/loongson/loongson-3/Makefile         |    4 +
- arch/mips/loongson/loongson-3/irq.c            |   87 ++++++++++++++++++++++++
- 5 files changed, 130 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-loongson/irq.h
- create mode 100644 arch/mips/loongson/loongson-3/Makefile
- create mode 100644 arch/mips/loongson/loongson-3/irq.c
+ arch/mips/loongson/common/serial.c    |   25 ++++++++++++++-----------
+ arch/mips/loongson/common/uart_base.c |    8 +++++++-
+ 2 files changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-loongson/irq.h b/arch/mips/include/asm/mach-loongson/irq.h
-new file mode 100644
-index 0000000..4787cd0
---- /dev/null
-+++ b/arch/mips/include/asm/mach-loongson/irq.h
-@@ -0,0 +1,24 @@
-+#ifndef __ASM_MACH_LOONGSON_IRQ_H_
-+#define __ASM_MACH_LOONGSON_IRQ_H_
-+
-+#include <boot_param.h>
-+
-+/* cpu core interrupt numbers */
-+#define MIPS_CPU_IRQ_BASE 56
-+
-+#ifdef CONFIG_CPU_LOONGSON3
-+
-+#define LOONGSON_UART_IRQ   (MIPS_CPU_IRQ_BASE + 2) /* uart */
-+#define LOONGSON_I8259_IRQ  (MIPS_CPU_IRQ_BASE + 3) /* i8259 */
-+#define LOONGSON_TIMER_IRQ  (MIPS_CPU_IRQ_BASE + 7) /* cpu timer */
-+
-+#define LOONGSON_HT1_CFG_BASE		ht_control_base
-+#define LOONGSON_HT1_INT_VECTOR_BASE	LOONGSON_HT1_CFG_BASE + 0x80
-+#define LOONGSON_HT1_INT_EN_BASE	LOONGSON_HT1_CFG_BASE + 0xa0
-+#define LOONGSON_HT1_INT_VECTOR(n)	LOONGSON3_REG32(LOONGSON_HT1_INT_VECTOR_BASE, 4 * n)
-+#define LOONGSON_HT1_INTN_EN(n)		LOONGSON3_REG32(LOONGSON_HT1_INT_EN_BASE, 4 * n)
-+
-+#endif
-+
-+#include_next <irq.h>
-+#endif /* __ASM_MACH_LOONGSON_IRQ_H_ */
-diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
-index f36f348..fe7d9a6 100644
---- a/arch/mips/include/asm/mach-loongson/loongson.h
-+++ b/arch/mips/include/asm/mach-loongson/loongson.h
-@@ -61,6 +61,12 @@ extern int mach_i8259_irq(void);
- #define LOONGSON_REG(x) \
- 	(*(volatile u32 *)((char *)CKSEG1ADDR(LOONGSON_REG_BASE) + (x)))
+diff --git a/arch/mips/loongson/common/serial.c b/arch/mips/loongson/common/serial.c
+index 7580873..bb18964 100644
+--- a/arch/mips/loongson/common/serial.c
++++ b/arch/mips/loongson/common/serial.c
+@@ -19,19 +19,19 @@
+ #include <loongson.h>
+ #include <machine.h>
  
-+#define LOONGSON3_REG8(base, x) \
-+	(*(volatile u8 *)((char *)TO_UNCAC(base) + (x)))
-+
-+#define LOONGSON3_REG32(base, x) \
-+	(*(volatile u32 *)((char *)TO_UNCAC(base) + (x)))
-+
- #define LOONGSON_IRQ_BASE	32
- #define LOONGSON2_PERFCNT_IRQ	(MIPS_CPU_IRQ_BASE + 6) /* cpu perf counter */
+-#define PORT(int)			\
++#define PORT(int, clk)			\
+ {								\
+ 	.irq		= int,					\
+-	.uartclk	= 1843200,				\
++	.uartclk	= clk,					\
+ 	.iotype		= UPIO_PORT,				\
+ 	.flags		= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST,	\
+ 	.regshift	= 0,					\
+ }
  
-@@ -86,6 +92,9 @@ static inline void do_perfcnt_IRQ(void)
- #define LOONGSON_REG_BASE 	0x1fe00000
- #define LOONGSON_REG_SIZE 	0x00100000	/* 256Bytes + 256Bytes + ??? */
- #define LOONGSON_REG_TOP	(LOONGSON_REG_BASE+LOONGSON_REG_SIZE-1)
-+#define LOONGSON3_REG_BASE	0x3ff00000
-+#define LOONGSON3_REG_SIZE 	0x00100000	/* 256Bytes + 256Bytes + ??? */
-+#define LOONGSON3_REG_TOP	(LOONGSON3_REG_BASE+LOONGSON3_REG_SIZE-1)
+-#define PORT_M(int)				\
++#define PORT_M(int, clk)				\
+ {								\
+ 	.irq		= MIPS_CPU_IRQ_BASE + (int),		\
+-	.uartclk	= 3686400,				\
++	.uartclk	= clk,					\
+ 	.iotype		= UPIO_MEM,				\
+ 	.membase	= (void __iomem *)NULL,			\
+ 	.flags		= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST,	\
+@@ -40,13 +40,16 @@
  
- #define LOONGSON_LIO1_BASE 	0x1ff00000
- #define LOONGSON_LIO1_SIZE 	0x00100000	/* 1M */
-diff --git a/arch/mips/loongson/Makefile b/arch/mips/loongson/Makefile
-index 2b76cb0..b1e4f05 100644
---- a/arch/mips/loongson/Makefile
-+++ b/arch/mips/loongson/Makefile
-@@ -15,3 +15,9 @@ obj-$(CONFIG_LEMOTE_FULOONG2E)  += fuloong-2e/
- #
+ static struct plat_serial8250_port uart8250_data[][2] = {
+ 	[MACH_LOONGSON_UNKNOWN]         {},
+-	[MACH_LEMOTE_FL2E]              {PORT(4), {} },
+-	[MACH_LEMOTE_FL2F]              {PORT(3), {} },
+-	[MACH_LEMOTE_ML2F7]             {PORT_M(3), {} },
+-	[MACH_LEMOTE_YL2F89]            {PORT_M(3), {} },
+-	[MACH_DEXXON_GDIUM2F10]         {PORT_M(3), {} },
+-	[MACH_LEMOTE_NAS]               {PORT_M(3), {} },
+-	[MACH_LEMOTE_LL2F]              {PORT(3), {} },
++	[MACH_LEMOTE_FL2E]              {PORT(4, 1843200), {} },
++	[MACH_LEMOTE_FL2F]              {PORT(3, 1843200), {} },
++	[MACH_LEMOTE_ML2F7]             {PORT_M(3, 3686400), {} },
++	[MACH_LEMOTE_YL2F89]            {PORT_M(3, 3686400), {} },
++	[MACH_DEXXON_GDIUM2F10]         {PORT_M(3, 3686400), {} },
++	[MACH_LEMOTE_NAS]               {PORT_M(3, 3686400), {} },
++	[MACH_LEMOTE_LL2F]              {PORT(3, 1843200), {} },
++	[MACH_LEMOTE_A1004]             {PORT_M(2, 33177600), {} },
++	[MACH_LEMOTE_A1101]             {PORT_M(2, 25000000), {} },
++	[MACH_LEMOTE_A1205]             {PORT_M(2, 25000000), {} },
+ 	[MACH_LOONGSON_END]             {},
+ };
  
- obj-$(CONFIG_LEMOTE_MACH2F)  += lemote-2f/
-+
-+#
-+# All Loongson-3 family machines
-+#
-+
-+obj-$(CONFIG_CPU_LOONGSON3)  += loongson-3/
-diff --git a/arch/mips/loongson/loongson-3/Makefile b/arch/mips/loongson/loongson-3/Makefile
-new file mode 100644
-index 0000000..b9968cd
---- /dev/null
-+++ b/arch/mips/loongson/loongson-3/Makefile
-@@ -0,0 +1,4 @@
-+#
-+# Makefile for Loongson-3 family machines
-+#
-+obj-y			+= irq.o
-diff --git a/arch/mips/loongson/loongson-3/irq.c b/arch/mips/loongson/loongson-3/irq.c
-new file mode 100644
-index 0000000..27aef31
---- /dev/null
-+++ b/arch/mips/loongson/loongson-3/irq.c
-@@ -0,0 +1,87 @@
-+#include <loongson.h>
-+#include <irq.h>
-+#include <linux/interrupt.h>
-+#include <linux/module.h>
-+
-+#include <asm/irq_cpu.h>
-+#include <asm/i8259.h>
-+#include <asm/mipsregs.h>
-+
-+#define LOONGSON_INT_ROUTER_OFFSET	0x1400
-+#define LOONGSON_INT_ROUTER_INTEN	LOONGSON3_REG32(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET + 0x24)
-+#define LOONGSON_INT_ROUTER_INTENSET	LOONGSON3_REG32(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET + 0x28)
-+#define LOONGSON_INT_ROUTER_INTENCLR	LOONGSON3_REG32(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET + 0x2c)
-+#define LOONGSON_INT_ROUTER_ENTRY(n)	LOONGSON3_REG8(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET + n)
-+#define LOONGSON_INT_ROUTER_LPC		LOONGSON_INT_ROUTER_ENTRY(0x0a)
-+#define LOONGSON_INT_ROUTER_HT1(n)	LOONGSON_INT_ROUTER_ENTRY(n + 0x18)
-+
-+#define LOONGSON_INT_CORE0_INT0		0x11 /* route to int 0 of core 0 */
-+#define LOONGSON_INT_CORE0_INT1		0x21 /* route to int 1 of core 0 */
-+
-+extern void loongson3_ipi_interrupt(struct pt_regs *regs);
-+
-+static void ht_irqdispatch(void)
-+{
-+	unsigned int i, irq;
-+	unsigned int ht_irq[] = {1, 3, 4, 5, 6, 7, 8, 12, 14, 15};
-+
-+	irq = LOONGSON_HT1_INT_VECTOR(0);
-+	LOONGSON_HT1_INT_VECTOR(0) = irq;
-+
-+	for (i = 0; i < (sizeof(ht_irq) / sizeof(*ht_irq)); i++) {
-+		if (irq & (0x1 << ht_irq[i]))
-+			do_IRQ(ht_irq[i]);
-+	}
-+}
-+
-+void mach_irq_dispatch(unsigned int pending)
-+{
-+	if (pending & CAUSEF_IP7)
-+		do_IRQ(LOONGSON_TIMER_IRQ);
-+#if defined(CONFIG_SMP)
-+	else if (pending & CAUSEF_IP6)
-+		loongson3_ipi_interrupt(NULL);
-+#endif
-+	else if (pending & CAUSEF_IP3)
-+		ht_irqdispatch();
-+	else if (pending & CAUSEF_IP2)
-+		do_IRQ(LOONGSON_UART_IRQ);
-+	else {
-+		printk(KERN_ERR "%s : spurious interrupt\n", __func__);
-+		spurious_interrupt();
-+	}
-+}
-+
-+static struct irqaction cascade_irqaction = {
-+	.handler = no_action,
-+	.name = "cascade",
-+};
-+
-+void irq_router_init(void)
-+{
-+	int i;
-+
-+	/* route LPC int to cpu core0 int 0 */
-+	LOONGSON_INT_ROUTER_LPC = LOONGSON_INT_CORE0_INT0;
-+	/* route HT1 int0 ~ int7 to cpu core0 INT1*/
-+	for (i = 0; i < 8; i++)
-+		LOONGSON_INT_ROUTER_HT1(i) = LOONGSON_INT_CORE0_INT1;
-+	/* enable HT1 interrupt */
-+	LOONGSON_HT1_INTN_EN(0) = 0xffffffff;
-+	/* enable router interrupt intenset */
-+	LOONGSON_INT_ROUTER_INTENSET = LOONGSON_INT_ROUTER_INTEN | (0xffff << 16) | 0x1 << 10;
-+}
-+
-+void __init mach_init_irq(void)
-+{
-+	clear_c0_status(ST0_IM | ST0_BEV);
-+
-+	irq_router_init();
-+	mips_cpu_irq_init();
-+	init_i8259_irqs();
-+
-+	/* setup i8259 irq */
-+	setup_irq(LOONGSON_I8259_IRQ, &cascade_irqaction);
-+
-+	set_c0_status(STATUSF_IP2 | STATUSF_IP6);
-+}
+diff --git a/arch/mips/loongson/common/uart_base.c b/arch/mips/loongson/common/uart_base.c
+index d69ea54..0d291ce 100644
+--- a/arch/mips/loongson/common/uart_base.c
++++ b/arch/mips/loongson/common/uart_base.c
+@@ -35,9 +35,15 @@ void prom_init_loongson_uart_base(void)
+ 	case MACH_DEXXON_GDIUM2F10:
+ 	case MACH_LEMOTE_NAS:
+ 	default:
+-		/* The CPU provided serial port */
++		/* The CPU provided serial port (LPC) */
+ 		loongson_uart_base = LOONGSON_LIO1_BASE + 0x3f8;
+ 		break;
++	case MACH_LEMOTE_A1004:
++	case MACH_LEMOTE_A1101:
++	case MACH_LEMOTE_A1205:
++		/* The CPU provided serial port (CPU) */
++		loongson_uart_base = LOONGSON_REG_BASE + 0x1e0;
++		break;
+ 	}
+ 
+ 	_loongson_uart_base =
 -- 
 1.7.7.3

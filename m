@@ -1,41 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2012 13:11:42 +0200 (CEST)
-Received: from h9.dl5rb.org.uk ([81.2.74.9]:39174 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903705Ab2FVLLi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 22 Jun 2012 13:11:38 +0200
-Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q5MBBWPP019845;
-        Fri, 22 Jun 2012 12:11:32 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q5MBBWqA019844;
-        Fri, 22 Jun 2012 12:11:32 +0100
-Date:   Fri, 22 Jun 2012 12:11:32 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Huacai Chen <chenhuacai@gmail.com>
-Cc:     Arnaud Patard <arnaud.patard@rtp-net.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
-        dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH V3 11/16] drm/radeon: Make radeon card usable for
- Loongson.
-Message-ID: <20120622111131.GB18249@linux-mips.org>
-References: <1340334073-17804-1-git-send-email-chenhc@lemote.com>
- <1340334073-17804-12-git-send-email-chenhc@lemote.com>
- <87txy3sn20.fsf@lebrac.rtp-net.org>
- <CAAhV-H5q5G87UMn0ixPUVZNcEV1b_qBHJKVKmCJsmzKdEB--4A@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2012 19:54:28 +0200 (CEST)
+Received: from va3ehsobe001.messaging.microsoft.com ([216.32.180.11]:38652
+        "EHLO va3outboundpool.messaging.microsoft.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903701Ab2FVRyV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jun 2012 19:54:21 +0200
+Received: from mail185-va3-R.bigfish.com (10.7.14.249) by
+ VA3EHSOBE004.bigfish.com (10.7.40.24) with Microsoft SMTP Server id
+ 14.1.225.23; Fri, 22 Jun 2012 17:52:44 +0000
+Received: from mail185-va3 (localhost [127.0.0.1])      by
+ mail185-va3-R.bigfish.com (Postfix) with ESMTP id C5D751605AB; Fri, 22 Jun
+ 2012 17:52:43 +0000 (UTC)
+X-Forefront-Antispam-Report: CIP:157.56.234.149;KIP:(null);UIP:(null);IPV:NLI;H:SN2PRD0710HT005.namprd07.prod.outlook.com;RD:none;EFVD:NLI
+X-SpamScore: -5
+X-BigFish: PS-5(zzbb2dI98dI9371I1432I4015Izz1202hzzz2dh2a8h668h839hd25he5bhf0ah)
+Received: from mail185-va3 (localhost.localdomain [127.0.0.1]) by mail185-va3
+ (MessageSwitch) id 1340387562242196_25333; Fri, 22 Jun 2012 17:52:42 +0000
+ (UTC)
+Received: from VA3EHSMHS010.bigfish.com (unknown [10.7.14.250]) by
+ mail185-va3.bigfish.com (Postfix) with ESMTP id 2C63136004C;   Fri, 22 Jun 2012
+ 17:52:42 +0000 (UTC)
+Received: from SN2PRD0710HT005.namprd07.prod.outlook.com (157.56.234.149) by
+ VA3EHSMHS010.bigfish.com (10.7.99.20) with Microsoft SMTP Server (TLS) id
+ 14.1.225.23; Fri, 22 Jun 2012 17:52:39 +0000
+Received: from dd1.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
+ (10.255.118.40) with Microsoft SMTP Server (TLS) id 14.16.164.8; Fri, 22 Jun
+ 2012 17:54:08 +0000
+Message-ID: <4FE4B13E.10709@caviumnetworks.com>
+Date:   Fri, 22 Jun 2012 10:54:06 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAhV-H5q5G87UMn0ixPUVZNcEV1b_qBHJKVKmCJsmzKdEB--4A@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 33781
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Yoichi Yuasa <yuasa@linux-mips.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Paul Mundt <lethal@linux-sh.org>,
+        <linux-kernel@vger.kernel.org>,
+        Linuxppc-dev <linuxppc-dev@ozlabs.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Chris Zankel <chris@zankel.net>
+Subject: Re: [PATCH] MIPS: fix bug.h MIPS build regression
+References: <1339962373-3224-1-git-send-email-geert@linux-m68k.org> <CAMuHMdVfLjgrtWoPpvbLf12+=ApE6W9dNcweqD-_2Benr-D7NQ@mail.gmail.com> <20120620152759.2caceb8c.yuasa@linux-mips.org> <20120620161249.GB29196@linux-mips.org>
+In-Reply-To: <20120620161249.GB29196@linux-mips.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [64.2.3.195]
+X-OriginatorOrg: caviumnetworks.com
+X-archive-position: 33782
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,15 +63,16 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Jun 22, 2012 at 06:55:40PM +0800, Huacai Chen wrote:
+On 06/20/2012 09:12 AM, Ralf Baechle wrote:
+> On Wed, Jun 20, 2012 at 03:27:59PM +0900, Yoichi Yuasa wrote:
+>
+>> Commit: 3777808873b0c49c5cf27e44c948dfb02675d578 breaks all MIPS builds.
+>
+> Thanks, fix applied.
+>
 
-> > btw, would it be a good idea to use uncached accelerated instead ?
-> I have tried uncached accelerated, there will be random points in the
-> monitor, it seems a hw issue...
+Where was it applied?
 
-Have you flushed the pages from memory before switching their cache mode
-to uncached accelerated?  The MIPS architecture defines the result of
-mixing cache modes as UNPREDICTABLE so be careful to flush caches before
-switching cache mode of a page.
+It doesn't show up in linux-next for 20120622, which is where it is needed.
 
-  Ralf
+David Daney

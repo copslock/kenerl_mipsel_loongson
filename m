@@ -1,35 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2012 13:06:42 +0200 (CEST)
-Received: from h9.dl5rb.org.uk ([81.2.74.9]:39152 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2012 13:11:42 +0200 (CEST)
+Received: from h9.dl5rb.org.uk ([81.2.74.9]:39174 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903679Ab2FVLGg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 22 Jun 2012 13:06:36 +0200
+        id S1903705Ab2FVLLi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 22 Jun 2012 13:11:38 +0200
 Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q5MB6MS9019669;
-        Fri, 22 Jun 2012 12:06:22 +0100
+        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q5MBBWPP019845;
+        Fri, 22 Jun 2012 12:11:32 +0100
 Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q5MB6JEH019668;
-        Fri, 22 Jun 2012 12:06:19 +0100
-Date:   Fri, 22 Jun 2012 12:06:19 +0100
+        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q5MBBWqA019844;
+        Fri, 22 Jun 2012 12:11:32 +0100
+Date:   Fri, 22 Jun 2012 12:11:32 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Arnaud Patard <arnaud.patard@rtp-net.org>
-Cc:     Huacai Chen <chenhuacai@gmail.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Fuxin Zhang <zhangfx@lemote.com>,
+To:     Huacai Chen <chenhuacai@gmail.com>
+Cc:     Arnaud Patard <arnaud.patard@rtp-net.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
         dri-devel@lists.freedesktop.org
 Subject: Re: [PATCH V3 11/16] drm/radeon: Make radeon card usable for
  Loongson.
-Message-ID: <20120622110619.GA18249@linux-mips.org>
+Message-ID: <20120622111131.GB18249@linux-mips.org>
 References: <1340334073-17804-1-git-send-email-chenhc@lemote.com>
  <1340334073-17804-12-git-send-email-chenhc@lemote.com>
  <87txy3sn20.fsf@lebrac.rtp-net.org>
+ <CAAhV-H5q5G87UMn0ixPUVZNcEV1b_qBHJKVKmCJsmzKdEB--4A@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87txy3sn20.fsf@lebrac.rtp-net.org>
+In-Reply-To: <CAAhV-H5q5G87UMn0ixPUVZNcEV1b_qBHJKVKmCJsmzKdEB--4A@mail.gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 33780
+X-archive-position: 33781
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,30 +49,15 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Jun 22, 2012 at 11:39:19AM +0200, Arnaud Patard wrote:
+On Fri, Jun 22, 2012 at 06:55:40PM +0800, Huacai Chen wrote:
 
-> > --- a/drivers/gpu/drm/drm_vm.c
-> > +++ b/drivers/gpu/drm/drm_vm.c
-> > @@ -62,7 +62,7 @@ static pgprot_t drm_io_prot(uint32_t map_type, struct vm_area_struct *vma)
-> >  		tmp = pgprot_writecombine(tmp);
-> >  	else
-> >  		tmp = pgprot_noncached(tmp);
-> > -#elif defined(__sparc__) || defined(__arm__)
-> > +#elif defined(__sparc__) || defined(__arm__) || defined(__mips__)
-> >  	tmp = pgprot_noncached(tmp);
-> 
-> btw, would it be a good idea to use uncached accelerated instead ?
+> > btw, would it be a good idea to use uncached accelerated instead ?
+> I have tried uncached accelerated, there will be random points in the
+> monitor, it seems a hw issue...
 
-Not unconditionally.  Only some MIPS cores support uncached accelerated.
-Basically you can only assume that cache modes 2 (uncached) (3 cachable
-non-coherent) are supported.  On a SMP system use of 2 and 3 may be
-unwise (SGI IP27 and IP35 may throw obscure exceptions to indicate their
-dislike of these.) and on multi-processor systems there is mode 5, which
-is cachable coherent.
-
-The necessary logic is too complex to got into drm_io_prot() which already
-is an #ifdef mess anyway so that function should be changed to call some
-sort of architecutre specific hook so that function should be changed to
-call some sort of architecture specific hook...
+Have you flushed the pages from memory before switching their cache mode
+to uncached accelerated?  The MIPS architecture defines the result of
+mixing cache modes as UNPREDICTABLE so be careful to flush caches before
+switching cache mode of a page.
 
   Ralf

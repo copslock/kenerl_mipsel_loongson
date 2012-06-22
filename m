@@ -1,37 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jun 2012 23:58:26 +0200 (CEST)
-Received: from shelob.surriel.com ([74.92.59.67]:39539 "EHLO
-        shelob.surriel.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903472Ab2FUV6P (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Jun 2012 23:58:15 +0200
-Received: from [2002:4a5c:3b41:1:224:e8ff:fe38:995c] (helo=annuminas.surriel.com)
-        by shelob.surriel.com with esmtp (Exim 4.63)
-        (envelope-from <riel@surriel.com>)
-        id 1ShpNX-0006VJ-QW; Thu, 21 Jun 2012 17:57:27 -0400
-Received: from annuminas.surriel.com (localhost.localdomain [127.0.0.1])
-        by annuminas.surriel.com (8.14.5/8.14.5) with ESMTP id q5LLvR2Z028685;
-        Thu, 21 Jun 2012 17:57:27 -0400
-Received: (from riel@localhost)
-        by annuminas.surriel.com (8.14.5/8.14.5/Submit) id q5LLvQVt028684;
-        Thu, 21 Jun 2012 17:57:26 -0400
-From:   Rik van Riel <riel@surriel.com>
-To:     linux-mm@kvack.org
-Cc:     akpm@linux-foundation.org, aarcange@redhat.com,
-        peterz@infradead.org, minchan@gmail.com, kosaki.motohiro@gmail.com,
-        andi@firstfloor.org, hannes@cmpxchg.org, mel@csn.ul.ie,
-        linux-kernel@vger.kernel.org, Rik van Riel <riel@surriel.com>,
-        Ralf Baechle <ralf@linux-mips.org>, sjhill@mips.com,
-        linux-mips@linux-mips.org, Rik van Riel <riel@redhat.com>
-Subject: [PATCH -mm v2 09/11] mm: remove MIPS arch_get_unmapped_area code
-Date:   Thu, 21 Jun 2012 17:57:13 -0400
-Message-Id: <1340315835-28571-10-git-send-email-riel@surriel.com>
-X-Mailer: git-send-email 1.7.7.6
-In-Reply-To: <1340315835-28571-1-git-send-email-riel@surriel.com>
-References: <1340315835-28571-1-git-send-email-riel@surriel.com>
-X-archive-position: 33756
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2012 05:02:07 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:64551 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903464Ab2FVDCC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jun 2012 05:02:02 +0200
+Received: by pbbrq13 with SMTP id rq13so3155885pbb.36
+        for <multiple recipients>; Thu, 21 Jun 2012 20:01:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=e31BDD8IKqZDtMJJHNa7qG09lQ4w1oBE72L5SO34Bw4=;
+        b=ENYhY3Ng2zWsaNgmuwdWRZI5StWcOzqoQ1HEQ3Ow6VTDUb1fva9QsQXeaAWI5kb4vc
+         AKr/LmzzgX9B1sLIXuG1L/96zJY4Ybu+PF2JK5q8lUQXzu/x8ZRJ5DGhibxHMdXsuBb5
+         zxlv5E6+nq5TtH2H7Uu5F+GtPM1pZ4sFD6Bdg5P855XbxNOhBwDSSYDaVzkhEGD/aNNm
+         Z6U3yUBCS8r53xUpW8fOWYwzAiU71iPGaRmAJOB6vUPWYbW7vXNkmd5QWdDVKCRjHcID
+         0jBedN6IBXqJpmqXZvNaUFUXVDperxav0ewU8hn1p6kHHQr2Aspw5IjHzHIMAkIhrSaa
+         SWfA==
+Received: by 10.68.218.103 with SMTP id pf7mr5394834pbc.67.1340334114715;
+        Thu, 21 Jun 2012 20:01:54 -0700 (PDT)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id wk3sm37516519pbc.21.2012.06.21.20.01.48
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 21 Jun 2012 20:01:53 -0700 (PDT)
+From:   Huacai Chen <chenhuacai@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Subject: [PATCH V3 00/16] MIPS: Add Loongson-3 based machines support.
+Date:   Fri, 22 Jun 2012 11:00:57 +0800
+Message-Id: <1340334073-17804-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+X-archive-position: 33757
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: riel@surriel.com
+X-original-sender: chenhuacai@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,232 +50,118 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Remove all the MIPS specific arch_get_unmapped_area(_topdown) and
-page colouring code, now that the generic code should be able to
-handle things.
+This patchset is for git repository git://git.linux-mips.org/pub/scm/
+ralf/linux. Loongson-3 is a multi-core MIPS family CPU, it is MIPS64R2
+compatible and has the same IMP field (0x6300) as Loongson-2. These
+patches make Linux kernel support Loongson-3 CPU and Loongson-3 based
+computers (including Laptop, Mini-ITX, All-In-One PC, etc.)
 
-Untested, because I do not have any MIPS systems.
+V1 -> V2:
+1, Split the first patch to two patches, one is constant definition and
+   the other is CPU probing, cache initializing, etc.
+2, Remove Kconfig options in the first 9 patches and put all of them in
+   the 10th patch.
+3, Use "make savedefconfig" to generate the new default config file.
+4, Rework serial port support to use PORT and PORT_M macros.
+5, Fix some compile warnings.
 
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: sjhill@mips.com
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Rik van Riel <riel@redhat.com>
+V2 -> V3:
+1, Improve cache flushing code (use cpu_has_coherent_cache macro and
+   remove #ifdef clauses).
+2, Improve platform-specific code to correctly set driver's dma_mask/
+   coherent_dma_mask so no longer need workarounds for each driver (
+   SATA, graphics card, sound card, etc.)
+3, Use PCI quirk to provide vgabios and loongson3_read_bios() go away.
+4, Improve CPU hotplug code and split the poweroff failure related code
+   to another patch (this issue affect all MIPS CPU, not only Loongson).
+5, Some other small fixes.
+
+Huacai Chen(16):
+ MIPS: Loongson: Add basic Loongson-3 definition.
+ MIPS: Loongson: Add basic Loongson-3 CPU support.
+ MIPS: Loongson 3: Add Lemote-3A machtypes definition.
+ MIPS: Loongson: Make Loongson-3 to use BCD format for RTC.
+ MIPS: Loongson: Add UEFI-like firmware interface support.
+ MIPS: Loongson 3: Add HT-linked PCI support.
+ MIPS: Loongson 3: Add IRQ init and dispatch support.
+ MIPS: Loongson 3: Add serial port support.
+ MIPS: Loongson: Add swiotlb to support big memory (>4GB).
+ MIPS: Loongson: Add Loongson-3 Kconfig options.
+ drm/radeon: Make radeon card usable for Loongson.
+ ALSA: HDA: Make hda sound card usable for Loongson.
+ MIPS: Loongson 3: Add Loongson-3 SMP support.
+ MIPS: Loongson 3: Add CPU hotplug support.
+ MIPS: Fix poweroff failure when HOTPLUG_CPU configured.
+ MIPS: Loongson: Add a Loongson-3 default config file.
+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Hongliang Tao <taohl@lemote.com>
+Signed-off-by: Hua Yan <yanh@lemote.com>
 ---
- arch/mips/include/asm/pgtable.h |    8 --
- arch/mips/mm/mmap.c             |  175 ---------------------------------------
- 2 files changed, 0 insertions(+), 183 deletions(-)
-
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index f133a4c..5f9c49a 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -410,14 +410,6 @@ int phys_mem_access_prot_allowed(struct file *file, unsigned long pfn,
- #endif
- 
- /*
-- * We provide our own get_unmapped area to cope with the virtual aliasing
-- * constraints placed on us by the cache architecture.
-- */
--#define HAVE_ARCH_UNMAPPED_AREA
--#define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
--#define HAVE_ARCH_ALIGN_ADDR
--
--/*
-  * No page table caches to initialise
-  */
- #define pgtable_cache_init()	do { } while (0)
-diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
-index 3f8af17..ac342bd 100644
---- a/arch/mips/mm/mmap.c
-+++ b/arch/mips/mm/mmap.c
-@@ -15,9 +15,6 @@
- #include <linux/random.h>
- #include <linux/sched.h>
- 
--unsigned long shm_align_mask = PAGE_SIZE - 1;	/* Sane caches */
--EXPORT_SYMBOL(shm_align_mask);
--
- /* gap between mmap and stack */
- #define MIN_GAP (128*1024*1024UL)
- #define MAX_GAP ((TASK_SIZE)/6*5)
-@@ -45,178 +42,6 @@ static unsigned long mmap_base(unsigned long rnd)
- 	return PAGE_ALIGN(TASK_SIZE - gap - rnd);
- }
- 
--static inline unsigned long COLOUR_ALIGN_DOWN(unsigned long addr,
--					      unsigned long pgoff)
--{
--	unsigned long base = addr & ~shm_align_mask;
--	unsigned long off = (pgoff << PAGE_SHIFT) & shm_align_mask;
--
--	if (base + off <= addr)
--		return base + off;
--
--	return base - off;
--}
--
--#define COLOUR_ALIGN(addr, pgoff)				\
--	((((addr) + shm_align_mask) & ~shm_align_mask) +	\
--	 (((pgoff) << PAGE_SHIFT) & shm_align_mask))
--
--static unsigned long arch_get_unmapped_area_common(struct file *filp,
--	unsigned long addr0, unsigned long len, unsigned long pgoff,
--	unsigned long flags, enum mmap_allocation_direction dir)
--{
--	struct mm_struct *mm = current->mm;
--	struct vm_area_struct *vma;
--	unsigned long addr = addr0;
--	int do_color_align;
--
--	if (unlikely(len > TASK_SIZE))
--		return -ENOMEM;
--
--	if (flags & MAP_FIXED) {
--		/* Even MAP_FIXED mappings must reside within TASK_SIZE */
--		if (TASK_SIZE - len < addr)
--			return -EINVAL;
--
--		/*
--		 * We do not accept a shared mapping if it would violate
--		 * cache aliasing constraints.
--		 */
--		if ((flags & MAP_SHARED) &&
--		    ((addr - (pgoff << PAGE_SHIFT)) & shm_align_mask))
--			return -EINVAL;
--		return addr;
--	}
--
--	do_color_align = 0;
--	if (filp || (flags & MAP_SHARED))
--		do_color_align = 1;
--
--	/* requesting a specific address */
--	if (addr) {
--		if (do_color_align)
--			addr = COLOUR_ALIGN(addr, pgoff);
--		else
--			addr = PAGE_ALIGN(addr);
--
--		vma = find_vma(mm, addr);
--		if (TASK_SIZE - len >= addr &&
--		    (!vma || addr + len <= vma->vm_start))
--			return addr;
--	}
--
--	if (dir == ALLOC_UP) {
--		addr = mm->mmap_base;
--		if (do_color_align)
--			addr = COLOUR_ALIGN(addr, pgoff);
--		else
--			addr = PAGE_ALIGN(addr);
--
--		for (vma = find_vma(current->mm, addr); ; vma = vma->vm_next) {
--			/* At this point:  (!vma || addr < vma->vm_end). */
--			if (TASK_SIZE - len < addr)
--				return -ENOMEM;
--			if (!vma || addr + len <= vma->vm_start)
--				return addr;
--			addr = vma->vm_end;
--			if (do_color_align)
--				addr = COLOUR_ALIGN(addr, pgoff);
--		 }
--	 } else {
--		/* check if free_area_cache is useful for us */
--		if (len <= mm->cached_hole_size) {
--			mm->cached_hole_size = 0;
--			mm->free_area_cache = mm->mmap_base;
--		}
--
--		/*
--		 * either no address requested, or the mapping can't fit into
--		 * the requested address hole
--		 */
--		addr = mm->free_area_cache;
--		if (do_color_align) {
--			unsigned long base =
--				COLOUR_ALIGN_DOWN(addr - len, pgoff);
--			addr = base + len;
--		}
--
--		/* make sure it can fit in the remaining address space */
--		if (likely(addr > len)) {
--			vma = find_vma(mm, addr - len);
--			if (!vma || addr <= vma->vm_start) {
--				/* cache the address as a hint for next time */
--				return mm->free_area_cache = addr - len;
--			}
--		}
--
--		if (unlikely(mm->mmap_base < len))
--			goto bottomup;
--
--		addr = mm->mmap_base - len;
--		if (do_color_align)
--			addr = COLOUR_ALIGN_DOWN(addr, pgoff);
--
--		do {
--			/*
--			 * Lookup failure means no vma is above this address,
--			 * else if new region fits below vma->vm_start,
--			 * return with success:
--			 */
--			vma = find_vma(mm, addr);
--			if (likely(!vma || addr + len <= vma->vm_start)) {
--				/* cache the address as a hint for next time */
--				return mm->free_area_cache = addr;
--			}
--
--			/* remember the largest hole we saw so far */
--			if (addr + mm->cached_hole_size < vma->vm_start)
--				mm->cached_hole_size = vma->vm_start - addr;
--
--			/* try just below the current vma->vm_start */
--			addr = vma->vm_start - len;
--			if (do_color_align)
--				addr = COLOUR_ALIGN_DOWN(addr, pgoff);
--		} while (likely(len < vma->vm_start));
--
--bottomup:
--		/*
--		 * A failed mmap() very likely causes application failure,
--		 * so fall back to the bottom-up function here. This scenario
--		 * can happen with large stack limits and large mmap()
--		 * allocations.
--		 */
--		mm->cached_hole_size = ~0UL;
--		mm->free_area_cache = TASK_UNMAPPED_BASE;
--		addr = arch_get_unmapped_area(filp, addr0, len, pgoff, flags);
--		/*
--		 * Restore the topdown base:
--		 */
--		mm->free_area_cache = mm->mmap_base;
--		mm->cached_hole_size = ~0UL;
--
--		return addr;
--	}
--}
--
--unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr0,
--	unsigned long len, unsigned long pgoff, unsigned long flags)
--{
--	return arch_get_unmapped_area_common(filp,
--			addr0, len, pgoff, flags, ALLOC_UP);
--}
--
--/*
-- * There is no need to export this but sched.h declares the function as
-- * extern so making it static here results in an error.
-- */
--unsigned long arch_get_unmapped_area_topdown(struct file *filp,
--	unsigned long addr0, unsigned long len, unsigned long pgoff,
--	unsigned long flags)
--{
--	return arch_get_unmapped_area_common(filp,
--			addr0, len, pgoff, flags, ALLOC_DOWN);
--}
--
- void arch_pick_mmap_layout(struct mm_struct *mm)
- {
- 	unsigned long random_factor = 0UL;
+ arch/mips/Kconfig                                  |   23 +
+ arch/mips/configs/loongson3_defconfig              |  279 ++++++++++++
+ arch/mips/include/asm/addrspace.h                  |    6 +
+ arch/mips/include/asm/bootinfo.h                   |   24 +-
+ arch/mips/include/asm/cpu.h                        |    6 +-
+ arch/mips/include/asm/dma-mapping.h                |    5 +
+ arch/mips/include/asm/mach-loongson/boot_param.h   |  151 +++++++
+ .../mips/include/asm/mach-loongson/dma-coherence.h |   25 +-
+ arch/mips/include/asm/mach-loongson/irq.h          |   24 +
+ arch/mips/include/asm/mach-loongson/loongson.h     |   26 +-
+ arch/mips/include/asm/mach-loongson/machine.h      |    6 +
+ arch/mips/include/asm/mach-loongson/mc146818rtc.h  |    4 +
+ arch/mips/include/asm/mach-loongson/pci.h          |    5 +
+ arch/mips/include/asm/mach-loongson/spaces.h       |   15 +
+ arch/mips/include/asm/module.h                     |    2 +
+ arch/mips/include/asm/pgtable-bits.h               |    7 +
+ arch/mips/include/asm/smp.h                        |    1 +
+ arch/mips/kernel/Makefile                          |    1 +
+ arch/mips/kernel/cpu-probe.c                       |   12 +-
+ arch/mips/kernel/process.c                         |    4 +-
+ arch/mips/lib/Makefile                             |    1 +
+ arch/mips/loongson/Kconfig                         |   52 +++
+ arch/mips/loongson/Makefile                        |    6 +
+ arch/mips/loongson/Platform                        |    1 +
+ arch/mips/loongson/common/Makefile                 |    5 +
+ arch/mips/loongson/common/dma-swiotlb.c            |  159 +++++++
+ arch/mips/loongson/common/env.c                    |   67 +++-
+ arch/mips/loongson/common/init.c                   |   14 +-
+ arch/mips/loongson/common/machtype.c               |   20 +-
+ arch/mips/loongson/common/mem.c                    |   42 ++
+ arch/mips/loongson/common/pci.c                    |    6 +-
+ arch/mips/loongson/common/reset.c                  |   14 +
+ arch/mips/loongson/common/serial.c                 |   26 +-
+ arch/mips/loongson/common/setup.c                  |    8 +-
+ arch/mips/loongson/common/uart_base.c              |    9 +-
+ arch/mips/loongson/loongson-3/Makefile             |    6 +
+ arch/mips/loongson/loongson-3/irq.c                |   97 +++++
+ arch/mips/loongson/loongson-3/smp.c                |  449 ++++++++++++++++++++
+ arch/mips/loongson/loongson-3/smp.h                |   24 +
+ arch/mips/mm/Makefile                              |    1 +
+ arch/mips/mm/c-r4k.c                               |   94 ++++-
+ arch/mips/mm/dma-default.c                         |   13 +-
+ arch/mips/mm/tlb-r4k.c                             |    2 +-
+ arch/mips/mm/tlbex.c                               |    1 +
+ arch/mips/pci/Makefile                             |    1 +
+ arch/mips/pci/fixup-loongson3.c                    |   64 +++
+ arch/mips/pci/ops-loongson3.c                      |  104 +++++
+ drivers/gpu/drm/drm_vm.c                           |    2 +-
+ drivers/gpu/drm/radeon/radeon_ttm.c                |    6 +-
+ drivers/gpu/drm/ttm/ttm_bo_util.c                  |    2 +-
+ include/drm/drm_sarea.h                            |    2 +
+ include/linux/pci_ids.h                            |    2 +
+ sound/pci/hda/patch_conexant.c                     |   52 +++-
+ 53 files changed, 1898 insertions(+), 80 deletions(-)
+ create mode 100644 arch/mips/configs/loongson3_defconfig
+ create mode 100644 arch/mips/include/asm/mach-loongson/boot_param.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/irq.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/spaces.h
+ create mode 100644 arch/mips/loongson/common/dma-swiotlb.c
+ create mode 100644 arch/mips/loongson/loongson-3/Makefile
+ create mode 100644 arch/mips/loongson/loongson-3/irq.c
+ create mode 100644 arch/mips/loongson/loongson-3/smp.c
+ create mode 100644 arch/mips/loongson/loongson-3/smp.h
+ create mode 100644 arch/mips/pci/fixup-loongson3.c
+ create mode 100644 arch/mips/pci/ops-loongson3.c
 -- 
-1.7.7.6
+1.7.7.3

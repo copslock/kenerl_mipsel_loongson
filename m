@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jun 2012 02:24:33 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:53731 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903669Ab2FWAY3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Jun 2012 02:24:29 +0200
-Received: by dadm1 with SMTP id m1so3181016dad.36
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jun 2012 02:24:57 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:53586 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903715Ab2FWAYa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Jun 2012 02:24:30 +0200
+Received: by pbbrq13 with SMTP id rq13so4499338pbb.36
         for <linux-mips@linux-mips.org>; Fri, 22 Jun 2012 17:24:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=+pyhGw/FZYQVMFidsdNs8Qu9QzvJTCVUmYb/4/qTdts=;
-        b=XHhI+SC8PEk/rbCsT43BeCksErK+0JPwyDCmxTPz/ObgVWDA9kx+HCs+F6xJY3gwyp
-         G6yi+kgXd0rGhMiWtFwxrAYXILZbYZ7rncyktehFpq0xTd/7/MfLqNVgUl+CInsfZesD
-         BohmH6X1sVRGW9w1GVxMBfPn4i22eR/SNcTBPD/NVmvGXTLuzGRhjIyCrZV05IaMEJqQ
-         IsDPOXOQVl6ZHJQIHeE5wh5iNGe0uAyli6lLTwuCRwsZZaNv7T2pcYzcPrsDVM29fGcc
-         nLG5DBhPtiGhAB3yPUxFaS8rubNDEB1Nns8JZBgYseMijqQp2KJ9oTkVef+tiU294Ghp
-         DN1g==
-Received: by 10.68.233.132 with SMTP id tw4mr15494668pbc.61.1340411063113;
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=RHvqQy/RH49RjiILcFyOG//jPk+Bo2ykTpXQf47yTTk=;
+        b=st2jxv54gHB2Na8I0EiaodzsSz9p1u7XJWp4Ev7DrGlvoYuwIR4YxcraPTX1d3CxM1
+         lEqPQyomxeEftyLLsKPdeZt1jlmwg+x0mviJeJ6Vaoqn+crB6FCxOZVjgDDxXc5r46YQ
+         wKx+vYtRwIy8E8kJeLAsTSCoUtYlmxa/wtIGuu2IFIi2szNy5UghWddJSwxlUo/U7fW3
+         aLepABNbjrrvJoCV3K2VD7aaQJyHBmUwcT3ufLAw+/ZwJcKCZ1K0ZyqzybKVS6893zW+
+         dhiJIpnu8Y3ORSO5A04aI7Y1kmQyPkoOvt2h/E4+NZysw0eSJuA/vH2XIddOBopXuRaS
+         Zq4w==
+Received: by 10.68.217.166 with SMTP id oz6mr14912505pbc.136.1340411063849;
         Fri, 22 Jun 2012 17:24:23 -0700 (PDT)
 Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id ms1sm604466pbb.63.2012.06.22.17.24.21
+        by mx.google.com with ESMTPS id jw3sm603184pbc.65.2012.06.22.17.24.21
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 22 Jun 2012 17:24:21 -0700 (PDT)
+        Fri, 22 Jun 2012 17:24:22 -0700 (PDT)
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q5N0OKPX019025;
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q5N0OKSJ019033;
         Fri, 22 Jun 2012 17:24:20 -0700
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q5N0OI1e019022;
-        Fri, 22 Jun 2012 17:24:18 -0700
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q5N0OKuO019032;
+        Fri, 22 Jun 2012 17:24:20 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     Grant Likely <grant.likely@secretlab.ca>,
         Rob Herring <rob.herring@calxeda.com>,
@@ -34,11 +34,13 @@ To:     Grant Likely <grant.likely@secretlab.ca>,
         "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         afleming@gmail.com, David Daney <david.daney@cavium.com>
-Subject: [PATCH 0/4] netdev/phy: 10G PHY support.
-Date:   Fri, 22 Jun 2012 17:24:12 -0700
-Message-Id: <1340411056-18988-1-git-send-email-ddaney.cavm@gmail.com>
+Subject: [PATCH 2/4] netdev/phy/of: Handle IEEE802.3 clause 45 Ethernet PHYs in of_mdiobus_register()
+Date:   Fri, 22 Jun 2012 17:24:14 -0700
+Message-Id: <1340411056-18988-3-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.2.3
-X-archive-position: 33783
+In-Reply-To: <1340411056-18988-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1340411056-18988-1-git-send-email-ddaney.cavm@gmail.com>
+X-archive-position: 33784
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,37 +60,76 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: David Daney <david.daney@cavium.com>
 
-The existing PHY driver infrastructure supports IEEE 802.3 Clause 22
-PHYs used with 10/100/1000MB Ethernet.  For 10G Ethernet, many PHYs
-use 802.3 Clause 45.  These patches attempt to add core support for
-this as well as a driver for BCM87XX 10G PHY devices.
+Define two new "compatible" values for Ethernet
+PHYs. "ethernet-phy-ieee802.3-c22" and "ethernet-phy-ieee802.3-c45"
+are used to indicate a PHY uses the corresponding protocol.
 
-This is reworked from patches I send about 9 months ago:
+If a PHY is "compatible" with "ethernet-phy-ieee802.3-c45", we
+indicate this so that get_phy_device() can properly probe the device.
 
-http://marc.info/?l=linux-netdev&m=131844282403852
+If get_phy_device() fails, it was probably due to failing the probe of
+the PHY identifier registers.  Since we have the device tree telling
+us the PHY exists, go ahead and add it anyhow with a phy_id of zero.
+There may be a driver match based on the "compatible" property.
 
-Several of the patches have device tree bindings in them, so the
-device tree people get to enjoy them too.
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ Documentation/devicetree/bindings/net/phy.txt |   12 +++++++++++-
+ drivers/of/of_mdio.c                          |   14 +++++++++++---
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
-David Daney (4):
-  netdev/phy: Handle IEEE802.3 clause 45 Ethernet PHYs
-  netdev/phy/of: Handle IEEE802.3 clause 45 Ethernet PHYs in
-    of_mdiobus_register()
-  netdev/phy/of: Add more methods for binding PHY devices to drivers.
-  netdev/phy: Add driver for Broadcom BCM87XX 10G Ethernet PHYs
-
- .../devicetree/bindings/net/broadcom-bcm87xx.txt   |   29 +++
- Documentation/devicetree/bindings/net/phy.txt      |   12 +-
- drivers/net/phy/Kconfig                            |    5 +
- drivers/net/phy/Makefile                           |    1 +
- drivers/net/phy/bcm87xx.c                          |  239 ++++++++++++++++++++
- drivers/net/phy/mdio_bus.c                         |    7 +
- drivers/net/phy/phy_device.c                       |  110 +++++++++-
- drivers/of/of_mdio.c                               |   14 +-
- include/linux/phy.h                                |   32 +++-
- 9 files changed, 436 insertions(+), 13 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/broadcom-bcm87xx.txt
- create mode 100644 drivers/net/phy/bcm87xx.c
-
+diff --git a/Documentation/devicetree/bindings/net/phy.txt b/Documentation/devicetree/bindings/net/phy.txt
+index bb8c742..7cd18fb 100644
+--- a/Documentation/devicetree/bindings/net/phy.txt
++++ b/Documentation/devicetree/bindings/net/phy.txt
+@@ -14,10 +14,20 @@ Required properties:
+  - linux,phandle :  phandle for this node; likely referenced by an
+    ethernet controller node.
+ 
++Optional Properties:
++
++- compatible: Compatible list, may contain
++  "ethernet-phy-ieee802.3-c22" or "ethernet-phy-ieee802.3-c45" for
++  PHYs that implement IEEE802.3 clause 22 or IEEE802.3 clause 45
++  specifications. If neither of these are specified, the default is to
++  assume clause 22. The compatible list may also contain other
++  elements.
++
+ Example:
+ 
+ ethernet-phy@0 {
+-	linux,phandle = <2452000>
++	compatible = "ethernet-phy-ieee802.3-c22";
++	linux,phandle = <2452000>;
+ 	interrupt-parent = <40000>;
+ 	interrupts = <35 1>;
+ 	reg = <0>;
+diff --git a/drivers/of/of_mdio.c b/drivers/of/of_mdio.c
+index 2574abd..0f08aaf 100644
+--- a/drivers/of/of_mdio.c
++++ b/drivers/of/of_mdio.c
+@@ -79,11 +79,19 @@ int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
+ 				mdio->irq[addr] = PHY_POLL;
+ 		}
+ 
++		if (of_device_is_compatible(child,
++					    "ethernet-phy-ieee802.3-c45"))
++			addr |= MII_ADDR_C45;
++
+ 		phy = get_phy_device(mdio, addr);
+ 		if (!phy || IS_ERR(phy)) {
+-			dev_err(&mdio->dev, "error probing PHY at address %i\n",
+-				addr);
+-			continue;
++			phy = phy_device_create(mdio, addr, 0, NULL);
++			if (!phy || IS_ERR(phy)) {
++				dev_err(&mdio->dev,
++					"error creating PHY at address %i\n",
++					addr);
++				continue;
++			}
+ 		}
+ 
+ 		/* Associate the OF node with the device structure so it
 -- 
 1.7.2.3

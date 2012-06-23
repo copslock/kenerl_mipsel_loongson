@@ -1,30 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jun 2012 07:26:44 +0200 (CEST)
-Received: from [69.28.251.93] ([69.28.251.93]:53322 "EHLO b32.net"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903696Ab2FWFYC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 23 Jun 2012 07:24:02 +0200
-Received: (qmail 25649 invoked from network); 23 Jun 2012 05:23:59 -0000
-Received: from unknown (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
-  by 127.0.0.1 with (DHE-RSA-AES128-SHA encrypted) SMTP; 23 Jun 2012 05:23:59 -0000
-Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Fri, 22 Jun 2012 22:23:59 -0700
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     ralf@linux-mips.org
-Cc:     <ffainelli@freebox.fr>, <mbizon@freebox.fr>,
-        <jonas.gorski@gmail.com>, <linux-mips@linux-mips.org>
-Subject: [PATCH 7/7] MIPS: BCM63XX: Create platform_device for USBD
-Date:   Fri, 22 Jun 2012 22:14:57 -0700
-Message-Id: <e2aacdca2b2e2f5b7ee20563032bf1ee@localhost>
-In-Reply-To: <0f67eabbb0d5c59add27e42a08b94944@localhost>
-References: <0f67eabbb0d5c59add27e42a08b94944@localhost>
-User-Agent: vim 7.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jun 2012 21:30:42 +0200 (CEST)
+Received: from qmta03.westchester.pa.mail.comcast.net ([76.96.62.32]:44418
+        "EHLO qmta03.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903662Ab2FWTah (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Jun 2012 21:30:37 +0200
+Received: from omta13.westchester.pa.mail.comcast.net ([76.96.62.52])
+        by qmta03.westchester.pa.mail.comcast.net with comcast
+        id RuiT1j00C17dt5G53vWXcA; Sat, 23 Jun 2012 19:30:31 +0000
+Received: from [192.168.1.13] ([76.106.69.86])
+        by omta13.westchester.pa.mail.comcast.net with comcast
+        id RvWY1j0011rgsis3ZvWYQF; Sat, 23 Jun 2012 19:30:33 +0000
+Message-ID: <4FE6195F.7030505@gentoo.org>
+Date:   Sat, 23 Jun 2012 15:30:39 -0400
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:13.0) Gecko/20120614 Thunderbird/13.0.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-archive-position: 33796
+To:     linux-mips@linux-mips.org
+Subject: Re: booting linux-3.3 or linux 3.4 on an SGI O2?
+References: <20120605190047.GA6263@alumni-linux.ccs.neu.edu> <4FCE593B.10808@cavium.com>
+In-Reply-To: <4FCE593B.10808@cavium.com>
+X-Enigmail-Version: 1.4.2
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 33797
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,194 +39,77 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
- arch/mips/bcm63xx/Makefile                         |  2 +-
- arch/mips/bcm63xx/boards/board_bcm963xx.c          | 10 +++
- arch/mips/bcm63xx/dev-usb-usbd.c                   | 72 ++++++++++++++++++++++
- .../asm/mach-bcm63xx/bcm63xx_dev_usb_usbd.h        | 17 +++++
- .../mips/include/asm/mach-bcm63xx/board_bcm963xx.h |  5 ++
- 5 files changed, 105 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/bcm63xx/dev-usb-usbd.c
- create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_usbd.h
+On 06/05/2012 3:08 PM, David Daney wrote:
+> On 06/05/2012 12:00 PM, Jim Faulkner wrote:
+>> Hi all, I haven't been able to boot any kernels after linux 3.2 on my
+>> SGI O2.  I've tried linux-3.3.5 and linux-3.4.0, but neither would boot.
+>> Unfortunately I don't have further information such as a kernel panic,
+>> since I don't get any video output after the kernel is loaded.  I've
+>> attached my linux-3.4 .config.  Anybody know what patches I might need
+>> to get the latest kernels booting on this system?
+>>
+> 
+> I have had problems as well.
+> 
+> Someone should configure a serial console and early printk to see if they
+> can see what is happening.
 
-diff --git a/arch/mips/bcm63xx/Makefile b/arch/mips/bcm63xx/Makefile
-index 833af72..9bbb30a 100644
---- a/arch/mips/bcm63xx/Makefile
-+++ b/arch/mips/bcm63xx/Makefile
-@@ -1,6 +1,6 @@
- obj-y		+= clk.o cpu.o cs.o gpio.o irq.o prom.o setup.o timer.o \
- 		   dev-dsp.o dev-enet.o dev-flash.o dev-pcmcia.o dev-rng.o \
--		   dev-spi.o dev-uart.o dev-wdt.o
-+		   dev-spi.o dev-uart.o dev-wdt.o dev-usb-usbd.o
- obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
- 
- obj-y		+= boards/
-diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-index feb0525..ea4ea77 100644
---- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
-+++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-@@ -24,6 +24,7 @@
- #include <bcm63xx_dev_flash.h>
- #include <bcm63xx_dev_pcmcia.h>
- #include <bcm63xx_dev_spi.h>
-+#include <bcm63xx_dev_usb_usbd.h>
- #include <board_bcm963xx.h>
- 
- #define PFX	"board_bcm963xx: "
-@@ -42,6 +43,12 @@ static struct board_info __initdata board_96328avng = {
- 
- 	.has_uart0			= 1,
- 	.has_pci			= 1,
-+	.has_usbd			= 0,
-+
-+	.usbd = {
-+		.use_fullspeed		= 0,
-+		.port_no		= 0,
-+	},
- 
- 	.leds = {
- 		{
-@@ -888,6 +895,9 @@ int __init board_register_devices(void)
- 	    !board_get_mac_address(board.enet1.mac_addr))
- 		bcm63xx_enet_register(1, &board.enet1);
- 
-+	if (board.has_usbd)
-+		bcm63xx_usbd_register(&board.usbd);
-+
- 	if (board.has_dsp)
- 		bcm63xx_dsp_register(&board.dsp);
- 
-diff --git a/arch/mips/bcm63xx/dev-usb-usbd.c b/arch/mips/bcm63xx/dev-usb-usbd.c
-new file mode 100644
-index 0000000..5aeae2b
---- /dev/null
-+++ b/arch/mips/bcm63xx/dev-usb-usbd.c
-@@ -0,0 +1,72 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
-+ * Copyright (C) 2012 Kevin Cernekee <cernekee@gmail.com>
-+ * Copyright (C) 2012 Broadcom Corporation
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/platform_device.h>
-+#include <linux/dma-mapping.h>
-+#include <bcm63xx_cpu.h>
-+#include <bcm63xx_dev_usb_usbd.h>
-+
-+static struct resource usbd_resources[] = {
-+	{
-+		.start		= -1, /* filled at runtime */
-+		.end		= -1, /* filled at runtime */
-+		.flags		= IORESOURCE_MEM,
-+	},
-+	{
-+		.start		= -1, /* filled at runtime */
-+		.end		= -1, /* filled at runtime */
-+		.flags		= IORESOURCE_MEM,
-+	},
-+	{
-+		.start		= -1, /* filled at runtime */
-+		.flags		= IORESOURCE_IRQ,
-+	},
-+	{
-+		.start		= -1, /* filled at runtime */
-+		.end		= -1, /* filled at runtime */
-+		.flags		= IORESOURCE_IRQ,
-+	},
-+};
-+
-+static u64 usbd_dmamask = DMA_BIT_MASK(32);
-+
-+static struct platform_device bcm63xx_usbd_device = {
-+	.name		= "bcm63xx_udc",
-+	.id		= 0,
-+	.num_resources	= ARRAY_SIZE(usbd_resources),
-+	.resource	= usbd_resources,
-+	.dev		= {
-+		.dma_mask		= &usbd_dmamask,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
-+	},
-+};
-+
-+int __init bcm63xx_usbd_register(const struct bcm63xx_usbd_platform_data *pd)
-+{
-+	if (!BCMCPU_IS_6328() && !BCMCPU_IS_6368())
-+		return 0;
-+
-+	usbd_resources[0].start = bcm63xx_regset_address(RSET_USBD);
-+	usbd_resources[0].end = usbd_resources[0].start + RSET_USBD_SIZE - 1;
-+
-+	usbd_resources[1].start = bcm63xx_regset_address(RSET_USBDMA);
-+	usbd_resources[1].end = usbd_resources[1].start + RSET_USBDMA_SIZE - 1;
-+
-+	usbd_resources[2].start = bcm63xx_get_irq_number(IRQ_USBD);
-+
-+	usbd_resources[3].start = bcm63xx_get_irq_number(IRQ_USBDMA_RXDMA0);
-+	usbd_resources[3].end = bcm63xx_get_irq_number(IRQ_USBDMA_TXDMA5);
-+
-+	platform_device_add_data(&bcm63xx_usbd_device, pd, sizeof(*pd));
-+
-+	return platform_device_register(&bcm63xx_usbd_device);
-+}
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_usbd.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_usbd.h
-new file mode 100644
-index 0000000..5d6d698
---- /dev/null
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_usbd.h
-@@ -0,0 +1,17 @@
-+#ifndef BCM63XX_DEV_USB_USBD_H_
-+#define BCM63XX_DEV_USB_USBD_H_
-+
-+/*
-+ * usb device platform data
-+ */
-+struct bcm63xx_usbd_platform_data {
-+	/* board can only support full speed (USB 1.1) */
-+	int use_fullspeed;
-+
-+	/* 0-based port index, for chips with >1 USB PHY */
-+	int port_no;
-+};
-+
-+int bcm63xx_usbd_register(const struct bcm63xx_usbd_platform_data *pd);
-+
-+#endif /* BCM63XX_DEV_USB_USBD_H_ */
-diff --git a/arch/mips/include/asm/mach-bcm63xx/board_bcm963xx.h b/arch/mips/include/asm/mach-bcm63xx/board_bcm963xx.h
-index 474daaa..b0dd4bb 100644
---- a/arch/mips/include/asm/mach-bcm63xx/board_bcm963xx.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/board_bcm963xx.h
-@@ -5,6 +5,7 @@
- #include <linux/gpio.h>
- #include <linux/leds.h>
- #include <bcm63xx_dev_enet.h>
-+#include <bcm63xx_dev_usb_usbd.h>
- #include <bcm63xx_dev_dsp.h>
- 
- /*
-@@ -44,6 +45,7 @@ struct board_info {
- 	unsigned int	has_pccard:1;
- 	unsigned int	has_ohci0:1;
- 	unsigned int	has_ehci0:1;
-+	unsigned int	has_usbd:1;
- 	unsigned int	has_dsp:1;
- 	unsigned int	has_uart0:1;
- 	unsigned int	has_uart1:1;
-@@ -52,6 +54,9 @@ struct board_info {
- 	struct bcm63xx_enet_platform_data enet0;
- 	struct bcm63xx_enet_platform_data enet1;
- 
-+	/* USB config */
-+	struct bcm63xx_usbd_platform_data usbd;
-+
- 	/* DSP config */
- 	struct bcm63xx_dsp_platform_data dsp;
- 
+Early printk on O2 systems probably has the same issues as on IP22/IP28
+where it's overwriting PROM memory somewhere.  The system will hang very
+early in the bootmem allocator if you kludge early printk to work on these
+systems:
+
+System Maintenance Menu
+
+1) Start System
+2) Install System Software
+3) Run Diagnostics
+4) Recover System
+5) Enter Command Monitor
+
+Option? 5
+Command Monitor.  Type "exit" to return to the menu.
+> $ba
+Setting $netaddr to 192.168.1.12 (from server )
+Obtaining  from server
+5305628+400900 entry: 0x80009920
+Initializing cgroup subsys cpu
+Linux version 3.4.4-mipsgit-20120623 (root@helcaraxe) (gcc version 4.6.2
+(Gentoo 4.6.2 p1.3, pie-0.5.0) ) #2 Sat Jun 23 15:20:20 EDT 2012
+ARCH: SGI-IP32
+PROMLIB: ARC firmware Version 1 Revision 10
+CRIME id a rev 1 at 0x0000000014000000
+CRIME MC: bank 0 base 0x0000000000000000 size 128MiB
+CRIME MC: bank 1 base 0x0000000008000000 size 128MiB
+CRIME MC: bank 2 base 0x0000000050000000 size 128MiB
+CRIME MC: bank 3 base 0x0000000058000000 size 128MiB
+bootconsole [early0] enabled
+CPU revision is: 00002733 (RM7000)
+FPU revision is: 00002720
+Checking for the multiply/shift bug... no.
+Checking for the daddiu bug... no.
+Determined physical RAM map:
+ memory: 0000000010000000 @ 0000000000000000 (usable)
+ memory: 0000000010000000 @ 0000000050000000 (usable)
+Zone PFN ranges:
+  Normal   0x00000000 -> 0x00060000
+Movable zone start PFN for each node
+Early memory PFN ranges
+    0: 0x00000000 -> 0x00010000
+    0: 0x00050000 -> 0x00060000
+
+
+I tried chasing this down once, years ago, and it was triggered by a pointer
+to a function in a struct suddenly becoming NULL.  That was back in 2.6.15
+(or .14?), so no idea if the same issue is causing it.  Most likely.
+
 -- 
-1.7.11.1
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28
+
+"The past tempts us, the present confuses us, the future frightens us.  And
+our lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

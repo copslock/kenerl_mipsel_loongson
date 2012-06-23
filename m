@@ -1,55 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2012 19:54:28 +0200 (CEST)
-Received: from va3ehsobe001.messaging.microsoft.com ([216.32.180.11]:38652
-        "EHLO va3outboundpool.messaging.microsoft.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903701Ab2FVRyV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jun 2012 19:54:21 +0200
-Received: from mail185-va3-R.bigfish.com (10.7.14.249) by
- VA3EHSOBE004.bigfish.com (10.7.40.24) with Microsoft SMTP Server id
- 14.1.225.23; Fri, 22 Jun 2012 17:52:44 +0000
-Received: from mail185-va3 (localhost [127.0.0.1])      by
- mail185-va3-R.bigfish.com (Postfix) with ESMTP id C5D751605AB; Fri, 22 Jun
- 2012 17:52:43 +0000 (UTC)
-X-Forefront-Antispam-Report: CIP:157.56.234.149;KIP:(null);UIP:(null);IPV:NLI;H:SN2PRD0710HT005.namprd07.prod.outlook.com;RD:none;EFVD:NLI
-X-SpamScore: -5
-X-BigFish: PS-5(zzbb2dI98dI9371I1432I4015Izz1202hzzz2dh2a8h668h839hd25he5bhf0ah)
-Received: from mail185-va3 (localhost.localdomain [127.0.0.1]) by mail185-va3
- (MessageSwitch) id 1340387562242196_25333; Fri, 22 Jun 2012 17:52:42 +0000
- (UTC)
-Received: from VA3EHSMHS010.bigfish.com (unknown [10.7.14.250]) by
- mail185-va3.bigfish.com (Postfix) with ESMTP id 2C63136004C;   Fri, 22 Jun 2012
- 17:52:42 +0000 (UTC)
-Received: from SN2PRD0710HT005.namprd07.prod.outlook.com (157.56.234.149) by
- VA3EHSMHS010.bigfish.com (10.7.99.20) with Microsoft SMTP Server (TLS) id
- 14.1.225.23; Fri, 22 Jun 2012 17:52:39 +0000
-Received: from dd1.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
- (10.255.118.40) with Microsoft SMTP Server (TLS) id 14.16.164.8; Fri, 22 Jun
- 2012 17:54:08 +0000
-Message-ID: <4FE4B13E.10709@caviumnetworks.com>
-Date:   Fri, 22 Jun 2012 10:54:06 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Yoichi Yuasa <yuasa@linux-mips.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        <linux-kernel@vger.kernel.org>,
-        Linuxppc-dev <linuxppc-dev@ozlabs.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Chris Zankel <chris@zankel.net>
-Subject: Re: [PATCH] MIPS: fix bug.h MIPS build regression
-References: <1339962373-3224-1-git-send-email-geert@linux-m68k.org> <CAMuHMdVfLjgrtWoPpvbLf12+=ApE6W9dNcweqD-_2Benr-D7NQ@mail.gmail.com> <20120620152759.2caceb8c.yuasa@linux-mips.org> <20120620161249.GB29196@linux-mips.org>
-In-Reply-To: <20120620161249.GB29196@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-OriginatorOrg: caviumnetworks.com
-X-archive-position: 33782
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jun 2012 02:24:33 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:53731 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903669Ab2FWAY3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Jun 2012 02:24:29 +0200
+Received: by dadm1 with SMTP id m1so3181016dad.36
+        for <linux-mips@linux-mips.org>; Fri, 22 Jun 2012 17:24:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=+pyhGw/FZYQVMFidsdNs8Qu9QzvJTCVUmYb/4/qTdts=;
+        b=XHhI+SC8PEk/rbCsT43BeCksErK+0JPwyDCmxTPz/ObgVWDA9kx+HCs+F6xJY3gwyp
+         G6yi+kgXd0rGhMiWtFwxrAYXILZbYZ7rncyktehFpq0xTd/7/MfLqNVgUl+CInsfZesD
+         BohmH6X1sVRGW9w1GVxMBfPn4i22eR/SNcTBPD/NVmvGXTLuzGRhjIyCrZV05IaMEJqQ
+         IsDPOXOQVl6ZHJQIHeE5wh5iNGe0uAyli6lLTwuCRwsZZaNv7T2pcYzcPrsDVM29fGcc
+         nLG5DBhPtiGhAB3yPUxFaS8rubNDEB1Nns8JZBgYseMijqQp2KJ9oTkVef+tiU294Ghp
+         DN1g==
+Received: by 10.68.233.132 with SMTP id tw4mr15494668pbc.61.1340411063113;
+        Fri, 22 Jun 2012 17:24:23 -0700 (PDT)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id ms1sm604466pbb.63.2012.06.22.17.24.21
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 22 Jun 2012 17:24:21 -0700 (PDT)
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q5N0OKPX019025;
+        Fri, 22 Jun 2012 17:24:20 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q5N0OI1e019022;
+        Fri, 22 Jun 2012 17:24:18 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     Grant Likely <grant.likely@secretlab.ca>,
+        Rob Herring <rob.herring@calxeda.com>,
+        devicetree-discuss@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        afleming@gmail.com, David Daney <david.daney@cavium.com>
+Subject: [PATCH 0/4] netdev/phy: 10G PHY support.
+Date:   Fri, 22 Jun 2012 17:24:12 -0700
+Message-Id: <1340411056-18988-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+X-archive-position: 33783
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,16 +56,39 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 06/20/2012 09:12 AM, Ralf Baechle wrote:
-> On Wed, Jun 20, 2012 at 03:27:59PM +0900, Yoichi Yuasa wrote:
->
->> Commit: 3777808873b0c49c5cf27e44c948dfb02675d578 breaks all MIPS builds.
->
-> Thanks, fix applied.
->
+From: David Daney <david.daney@cavium.com>
 
-Where was it applied?
+The existing PHY driver infrastructure supports IEEE 802.3 Clause 22
+PHYs used with 10/100/1000MB Ethernet.  For 10G Ethernet, many PHYs
+use 802.3 Clause 45.  These patches attempt to add core support for
+this as well as a driver for BCM87XX 10G PHY devices.
 
-It doesn't show up in linux-next for 20120622, which is where it is needed.
+This is reworked from patches I send about 9 months ago:
 
-David Daney
+http://marc.info/?l=linux-netdev&m=131844282403852
+
+Several of the patches have device tree bindings in them, so the
+device tree people get to enjoy them too.
+
+David Daney (4):
+  netdev/phy: Handle IEEE802.3 clause 45 Ethernet PHYs
+  netdev/phy/of: Handle IEEE802.3 clause 45 Ethernet PHYs in
+    of_mdiobus_register()
+  netdev/phy/of: Add more methods for binding PHY devices to drivers.
+  netdev/phy: Add driver for Broadcom BCM87XX 10G Ethernet PHYs
+
+ .../devicetree/bindings/net/broadcom-bcm87xx.txt   |   29 +++
+ Documentation/devicetree/bindings/net/phy.txt      |   12 +-
+ drivers/net/phy/Kconfig                            |    5 +
+ drivers/net/phy/Makefile                           |    1 +
+ drivers/net/phy/bcm87xx.c                          |  239 ++++++++++++++++++++
+ drivers/net/phy/mdio_bus.c                         |    7 +
+ drivers/net/phy/phy_device.c                       |  110 +++++++++-
+ drivers/of/of_mdio.c                               |   14 +-
+ include/linux/phy.h                                |   32 +++-
+ 9 files changed, 436 insertions(+), 13 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/broadcom-bcm87xx.txt
+ create mode 100644 drivers/net/phy/bcm87xx.c
+
+-- 
+1.7.2.3

@@ -1,46 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2012 21:13:22 +0200 (CEST)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:64446 "EHLO
-        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903737Ab2FYTNP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jun 2012 21:13:15 +0200
-Received: by bkwj4 with SMTP id j4so3892387bkw.36
-        for <linux-mips@linux-mips.org>; Mon, 25 Jun 2012 12:13:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding
-         :x-gm-message-state;
-        bh=pM3uffMhDuf5tv+T58ZPXidr7r7fP2ONi3UHW6DQ4OY=;
-        b=pPmDup5z8ItTd1veYH6UkoW7/lfDw+SwBM7mSCb3HN0Ko0xLgtgmAP4E/ZWJJNW0tL
-         cmDykpk/zt32SWFgubov8S34apOG/6zqV/qax04K69VfPx9y1uo29nKI2IbJYXtl85tR
-         p27A+u+PUlMzWFFgnV2uuZlkPNWkzY3XJBHmYmixIEhnO2vyv26t6SzBShbDop9rNvAH
-         xNwU3KN0AAowXIzdVwXYvergL8Kj5ov46bs1f8M2J1OUv9tijktGHN2pyoMlFslTu73Z
-         G+iV8LAl5e5NYcMNS0wVrijdsk5c9ej5iVdZ/zWMb70vPBboUaVL0aom9IpzzmBTgwNw
-         mUeA==
-Received: by 10.152.111.71 with SMTP id ig7mr13134383lab.28.1340651589418;
-        Mon, 25 Jun 2012 12:13:09 -0700 (PDT)
-Received: from [192.168.11.174] (mail.dev.rtsoft.ru. [213.79.90.226])
-        by mx.google.com with ESMTPS id gt19sm72530794lab.17.2012.06.25.12.13.05
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 25 Jun 2012 12:13:07 -0700 (PDT)
-Message-ID: <4FE8B7EC.7030505@mvista.com>
-Date:   Mon, 25 Jun 2012 23:11:40 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:13.0) Gecko/20120614 Thunderbird/13.0.1
-MIME-Version: 1.0
-To:     "Steven J. Hill" <sjhill@mips.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH v4,1/5] MIPS: Add support for the 1074K core.
-References: <1340636959-14526-1-git-send-email-sjhill@mips.com>
-In-Reply-To: <1340636959-14526-1-git-send-email-sjhill@mips.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 00:34:55 +0200 (CEST)
+Received: from shards.monkeyblade.net ([149.20.54.216]:53757 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903746Ab2FYWer (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 00:34:47 +0200
+Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 6CCC6583B39;
+        Mon, 25 Jun 2012 15:34:41 -0700 (PDT)
+Date:   Mon, 25 Jun 2012 15:34:40 -0700 (PDT)
+Message-Id: <20120625.153440.17010814246237639.davem@davemloft.net>
+To:     ddaney.cavm@gmail.com
+Cc:     grant.likely@secretlab.ca, rob.herring@calxeda.com,
+        devicetree-discuss@lists.ozlabs.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        afleming@gmail.com, david.daney@cavium.com
+Subject: Re: [PATCH 1/4] netdev/phy: Handle IEEE802.3 clause 45 Ethernet
+ PHYs
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1340411056-18988-2-git-send-email-ddaney.cavm@gmail.com>
+References: <1340411056-18988-1-git-send-email-ddaney.cavm@gmail.com>
+        <1340411056-18988-2-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: Mew version 6.5 on Emacs 24.0.97 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQnv1y+01mofi3RuohApjn6zaL14sMZMBYNImX4dE3XBNkNtTQmwvK1BTc3To4FEUxRy5XvN
-X-archive-position: 33802
+X-archive-position: 33803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,40 +41,97 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+From: David Daney <ddaney.cavm@gmail.com>
+Date: Fri, 22 Jun 2012 17:24:13 -0700
 
-On 06/25/2012 07:09 PM, Steven J. Hill wrote:
+> From: David Daney <david.daney@cavium.com>
+> 
+> The IEEE802.3 clause 45 MDIO bus protocol allows for directly
+> addressing PHY registers using a 21 bit address, and is used by many
+> 10G Ethernet PHYS.  Already existing is the ability of MDIO bus
+> drivers to use clause 45, with the MII_ADDR_C45 flag.  Here we add
+> struct phy_c45_device_ids to hold the device identifier registers
+> present in clause 45. struct phy_device gets a couple of new fields:
+> c45_ids to hold the identifiers and is_c45 to signal that it is clause
+> 45.
+> 
+> Normally the MII_ADDR_C45 flag is ORed with the register address to
+> indicate a clause 45 transaction.  Here we also use this flag in the
+> *device* address passed to get_phy_device() to indicate that probing
+> should be done with clause 45 transactions.
+> 
+> EXPORT phy_device_create() so that the follow-on patch to of_mdio.c
+> can use it to create phy devices for PHYs, that have non-standard
+> device identifier registers, based on the device tree bindings.
+> 
+> Signed-off-by: David Daney <david.daney@cavium.com>
 
-> From: "Steven J. Hill" <sjhill@mips.com>
+I see no value in having two ways to say that clause-45 transactions
+should be used.
 
-> Signed-off-by: Steven J. Hill <sjhill@mips.com>
+Either make it a PHY device attribute, or specify it in the address
+in the register accesses, but not both.
 
-    Minor nit on code formatting.
+Also your patch is full of coding style errors, I simply couldn't
+stomache applying this even if I agreed with the substance of the
+changes:
 
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index ce0dbee..b96ebe9 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -1040,10 +1040,27 @@ static void __cpuinit probe_pcache(void)
->   	case CPU_R14000:
->   		break;
->
-> +	case CPU_74K:
+> +	     i < ARRAY_SIZE(c45_ids->device_ids) &&
+> +		     c45_ids->devices_in_package == 0;
+
+c45_ids on the second line should line up with the initial 'i'
+on the first line.
+
+> +		c45_ids->devices_in_package = (phy_reg & 0xffff) << 16;
+> +
+> +
+> +		reg_addr = MII_ADDR_C45 | i << 16 | 5;
+
+There is not reason in the world to have two empty lines there, it
+looks awful.
+
 > +		/*
-> +		 * Early versions of the 74k do not update
-> +		 * the cache tags on a vtag miss/ptag hit
-> +		 * which can occur in the case of KSEG0/KUSEG aliases
-> +		 * In this case it is better to treat the cache as always
-> +		 * having aliases
+> +		 * If mostly Fs, there is no device there,
+> +		 * let's get out of here.
 > +		 */
-> +		if ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(2, 4, 0))
-> +			c->dcache.flags |= MIPS_CACHE_VTAG;
-> +		if ((c->processor_id & 0xff) == PRID_REV_ENCODE_332(2, 4, 0))
-> +			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
-> +		if (((c->processor_id & 0xff00) == PRID_IMP_1074K) &&
-> +		   ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(1, 1, 0))) {
 
-    Wrong indentation here -- the first ( should be shifted at least one space 
-to the right.
+Format comments:
 
-WBR, Sergei
+	/* Like
+	 * this.
+	 */
+
+Not.
+
+	/*
+	 * Like
+	 * this.
+	 */
+
+> +		c45_ids->device_ids[i] = (phy_reg & 0xffff) << 16;
+> +
+> +
+> +		reg_addr = MII_ADDR_C45 | i << 16 | MII_PHYSID2;
+
+Two empty lines.  This is extremely irritating, it looks like you
+had some kind of debugging code here and then were very lazy about
+removing it.
+
+> +/*
+> + * Or MII_ADDR_C45 into regnum for read/write on mii_bus to enable the
+> + * 21 bit IEEE 802.3ae clause 45 addressing mode used by 10GIGE phy
+> + * chips.  Also may be ORed into the device address in
+> + * get_phy_device().
+> + */
+
+Comment formatting.
+
+> +/*
+> + * phy_c45_device_ids: 802.3-c45 Device Identifiers
+> + *
+> + * devices_in_package: Bit vector of devices present.
+> + * device_ids: The device identifer for each present device.
+> + */
+
+If you're going to list the struct members use the correct kerneldoc
+format to do so.

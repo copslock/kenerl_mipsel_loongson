@@ -1,35 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 17:12:07 +0200 (CEST)
-Received: from mail-qc0-f169.google.com ([209.85.216.169]:37974 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 17:14:16 +0200 (CEST)
+Received: from mail-qc0-f169.google.com ([209.85.216.169]:41784 "EHLO
         mail-qc0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903850Ab2FZPL7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 17:11:59 +0200
-Received: by qcsd16 with SMTP id d16so8934qcs.28
-        for <multiple recipients>; Tue, 26 Jun 2012 08:11:53 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1903850Ab2FZPOK convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 26 Jun 2012 17:14:10 +0200
+Received: by qcsd16 with SMTP id d16so11176qcs.28
+        for <multiple recipients>; Tue, 26 Jun 2012 08:14:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=h6MOQLk5o01mRcBFHBb5VJHNGeZRyMftUxMbpMjZNOI=;
-        b=ksKgIDxqG6B0C+ZKp58n+rSoJm2SbRUSqifjX7AQbhlrx7UnYQzu6OiEZk1cKNJxe1
-         XA1bxTmMLgdFKj9tXTznlwD1RiuHO/DmSXBo6dFsedGMYR8Ry0OhvruW9K0bVoalWHAY
-         EBPJtTok98nj+U2rvHJcLbm+peV6PLkQkuOZ00CjfAjSvSpu3k/nVU9f5M8iNGRaMSXq
-         5PfXwBh66XokVEFOdY5KF1Huoz29+DiALCtAx5RtH2wCvkgm9oDqPPTMMww2cEakHGuE
-         UvYFy0NdgYc1Ta9Yfmch/h11AgyrTacChHDx7o3+YbPSyXB46lqvJ4ngI4d4fjkrwvXN
-         qF7A==
-Received: by 10.60.14.68 with SMTP id n4mr16580914oec.24.1340723513275; Tue,
- 26 Jun 2012 08:11:53 -0700 (PDT)
+         :cc:content-type:content-transfer-encoding;
+        bh=/+VpWVTx9Iqrw12sjqLvAyYrM6tTXYM/EA2RtAXd1vI=;
+        b=FMCrjj5LZ8WGir3Y9cXIoROpsJpEAW1hKfBZpnYA4U35VwxKbl7hV6oWEKQkR7BSDF
+         5PpBNYOCw+R7IgdOB6EuWWanga1M1AKfJbXxQeRzt2Ki5yuxqV/vDlVzdI6ucKX5cfOJ
+         ZjJXNgpvIoL5cp1ZvMM6wA/9J8P4viwpzlTES2p2QuXvd4rByFraGLq4/zM05tm8Vitk
+         GdUbYl3U17Qwk00O2NQC2fSKWv0xbkat2+9i+Izwso2WGGcsVmfQf7jOAKXHBIW5qqUX
+         d9+BWwphzI6VFqjNbe0zOeqTUcQPjoYtphlnhLBDlCZkHHeuF7IT1DJBk2e+oKXM0225
+         Ixtw==
+Received: by 10.182.119.6 with SMTP id kq6mr16814521obb.42.1340723644288; Tue,
+ 26 Jun 2012 08:14:04 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.76.98.195 with HTTP; Tue, 26 Jun 2012 08:11:32 -0700 (PDT)
-In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
+Received: by 10.76.98.195 with HTTP; Tue, 26 Jun 2012 08:13:44 -0700 (PDT)
+In-Reply-To: <3c614d8672835e3950bddd7adbcecf05@localhost>
+References: <0f67eabbb0d5c59add27e42a08b94944@localhost> <3c614d8672835e3950bddd7adbcecf05@localhost>
 From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Tue, 26 Jun 2012 17:11:32 +0200
-Message-ID: <CAOiHx=kKxZZzJZkRe+SRjFj0JD7yq4=3CmRFbqc6hW_Dhnbz3g@mail.gmail.com>
-Subject: Re: [PATCH 00/33] Cleanup firmware support across multiple platforms.
-To:     "Steven J. Hill" <sjhill@mips.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Date:   Tue, 26 Jun 2012 17:13:44 +0200
+Message-ID: <CAOiHx==iswg-BahEizXCu6iN4AAqJcTMXHouzKukO8mSm11i9g@mail.gmail.com>
+Subject: Re: [PATCH 2/7] MIPS: BCM63XX: Move DMA descriptor definition into
+ common header file
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     ralf@linux-mips.org, ffainelli@freebox.fr, mbizon@freebox.fr,
+        linux-mips@linux-mips.org
 Content-Type: text/plain; charset=UTF-8
-X-archive-position: 33845
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 33846
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,22 +51,16 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Steven,
+Hi Kevin,
 
-On 26 June 2012 06:41, Steven J. Hill <sjhill@mips.com> wrote:
-> From: "Steven J. Hill" <sjhill@mips.com>
->
-> This is actually the second version of the firmware cleanup.
+On 23 June 2012 07:14, Kevin Cernekee <cernekee@gmail.com> wrote:
+> The "IUDMA" engine used by bcm63xx_enet is also used by other blocks,
+> such as the USB 2.0 device.  Move the definitions into a common file so
+> that they do not need to be duplicated in each driver.
 
-Maybe name it V2 then? Or V3, if you send another one ;-)
+If it's common, maybe then it shouldn't be in bcm63xx_dev_enet.h but
+something like bcm63xx_iudma.h, and the struct also renamed to
+something generic (iudma_desc or so).
 
-> It is two
-> patches less than first after incorporating all the review comments
-> and changes requested. The original patch set is now rejected.
-
-You are changing licenses from GPLv2+ to GPLv2 for many files - "any
-later" gives me hits for 13 of your patches (but I didn't verify them
-all).
-
-Regards
+Regards,
 Jonas

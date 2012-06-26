@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:42:40 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:54946 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:43:08 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:54948 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903427Ab2FZEmI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:42:08 +0200
+        with ESMTP id S1903482Ab2FZEmK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:42:10 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SjNbG-0002zj-6z; Mon, 25 Jun 2012 23:42:02 -0500
+        id 1SjNbI-0002zj-3l; Mon, 25 Jun 2012 23:42:04 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 01/33] MIPS: Add environment variable processing code to firmware library.
-Date:   Mon, 25 Jun 2012 23:41:16 -0500
-Message-Id: <1340685708-14408-2-git-send-email-sjhill@mips.com>
+Subject: [PATCH 02/33] MIPS: Alchemy: Cleanup firmware support for Alchemy platforms.
+Date:   Mon, 25 Jun 2012 23:41:17 -0500
+Message-Id: <1340685708-14408-3-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
 References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33809
+X-archive-position: 33810
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,183 +38,378 @@ From: "Steven J. Hill" <sjhill@mips.com>
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/fw/lib/Makefile     |    2 +
- arch/mips/fw/lib/cmdline.c    |  101 +++++++++++++++++++++++++++++++++++++++++
- arch/mips/include/asm/fw/fw.h |   47 +++++++++++++++++++
- 3 files changed, 150 insertions(+)
- create mode 100644 arch/mips/fw/lib/cmdline.c
- create mode 100644 arch/mips/include/asm/fw/fw.h
+ arch/mips/alchemy/board-gpr.c                  |   22 +++++--------
+ arch/mips/alchemy/board-mtx1.c                 |   22 +++++--------
+ arch/mips/alchemy/board-xxs1500.c              |   21 +++++-------
+ arch/mips/alchemy/common/platform.c            |    3 +-
+ arch/mips/alchemy/common/prom.c                |   42 ++----------------------
+ arch/mips/alchemy/devboards/db1000.c           |    1 -
+ arch/mips/alchemy/devboards/db1300.c           |    1 -
+ arch/mips/alchemy/devboards/db1550.c           |    1 -
+ arch/mips/alchemy/devboards/pb1100.c           |    1 -
+ arch/mips/alchemy/devboards/pb1500.c           |    1 -
+ arch/mips/alchemy/devboards/prom.c             |   19 ++++-------
+ arch/mips/include/asm/mach-au1x00/au1xxx_eth.h |    1 +
+ arch/mips/include/asm/mach-au1x00/prom.h       |   12 -------
+ drivers/net/ethernet/amd/au1000_eth.c          |    1 -
+ 14 files changed, 35 insertions(+), 113 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mach-au1x00/prom.h
 
-diff --git a/arch/mips/fw/lib/Makefile b/arch/mips/fw/lib/Makefile
-index 84befc9..5291505 100644
---- a/arch/mips/fw/lib/Makefile
-+++ b/arch/mips/fw/lib/Makefile
-@@ -2,4 +2,6 @@
- # Makefile for generic prom monitor library routines under Linux.
- #
- 
-+lib-y			+= cmdline.o
+diff --git a/arch/mips/alchemy/board-gpr.c b/arch/mips/alchemy/board-gpr.c
+index ba32590..1139173 100644
+--- a/arch/mips/alchemy/board-gpr.c
++++ b/arch/mips/alchemy/board-gpr.c
+@@ -30,10 +30,10 @@
+ #include <linux/gpio.h>
+ #include <linux/i2c.h>
+ #include <linux/i2c-gpio.h>
+-#include <asm/bootinfo.h>
 +
- lib-$(CONFIG_64BIT)	+= call_o32.o
-diff --git a/arch/mips/fw/lib/cmdline.c b/arch/mips/fw/lib/cmdline.c
-new file mode 100644
-index 0000000..ffd0345
---- /dev/null
-+++ b/arch/mips/fw/lib/cmdline.c
-@@ -0,0 +1,101 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
-+ */
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/string.h>
-+
-+#include <asm/addrspace.h>
+ #include <asm/reboot.h>
 +#include <asm/fw/fw.h>
+ #include <asm/mach-au1x00/au1000.h>
+-#include <prom.h>
+ 
+ const char *get_system_type(void)
+ {
+@@ -42,21 +42,15 @@ const char *get_system_type(void)
+ 
+ void __init prom_init(void)
+ {
+-	unsigned char *memsize_str;
+-	unsigned long memsize;
++	unsigned long physical_memsize;
+ 
+-	prom_argc = fw_arg0;
+-	prom_argv = (char **)fw_arg1;
+-	prom_envp = (char **)fw_arg2;
++	fw_init_cmdline();
+ 
+-	prom_init_cmdline();
++	physical_memsize = fw_getenvl("memsize");
++	if (!physical_memsize)
++		physical_memsize = 0x04000000;
+ 
+-	memsize_str = prom_getenv("memsize");
+-	if (!memsize_str)
+-		memsize = 0x04000000;
+-	else
+-		strict_strtoul(memsize_str, 0, &memsize);
+-	add_memory_region(0, memsize, BOOT_MEM_RAM);
++	add_memory_region(0, physical_memsize, BOOT_MEM_RAM);
+ }
+ 
+ void prom_putchar(unsigned char c)
+diff --git a/arch/mips/alchemy/board-mtx1.c b/arch/mips/alchemy/board-mtx1.c
+index 295f1a9..7d1ea7a 100644
+--- a/arch/mips/alchemy/board-mtx1.c
++++ b/arch/mips/alchemy/board-mtx1.c
+@@ -29,11 +29,11 @@
+ #include <linux/mtd/partitions.h>
+ #include <linux/mtd/physmap.h>
+ #include <mtd/mtd-abi.h>
+-#include <asm/bootinfo.h>
 +
-+int fw_argc;
-+int *_fw_argv;
-+int *_fw_envp;
+ #include <asm/reboot.h>
++#include <asm/fw/fw.h>
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-au1x00/au1xxx_eth.h>
+-#include <prom.h>
+ 
+ const char *get_system_type(void)
+ {
+@@ -42,21 +42,15 @@ const char *get_system_type(void)
+ 
+ void __init prom_init(void)
+ {
+-	unsigned char *memsize_str;
+-	unsigned long memsize;
++	unsigned long physical_memsize;
+ 
+-	prom_argc = fw_arg0;
+-	prom_argv = (char **)fw_arg1;
+-	prom_envp = (char **)fw_arg2;
++	fw_init_cmdline();
+ 
+-	prom_init_cmdline();
++	physical_memsize = fw_getenvl("memsize");
++	if (!physical_memsize)
++		physical_memsize = 0x04000000;
+ 
+-	memsize_str = prom_getenv("memsize");
+-	if (!memsize_str)
+-		memsize = 0x04000000;
+-	else
+-		strict_strtoul(memsize_str, 0, &memsize);
+-	add_memory_region(0, memsize, BOOT_MEM_RAM);
++	add_memory_region(0, physical_memsize, BOOT_MEM_RAM);
+ }
+ 
+ void prom_putchar(unsigned char c)
+diff --git a/arch/mips/alchemy/board-xxs1500.c b/arch/mips/alchemy/board-xxs1500.c
+index bd55136..0469f1c 100644
+--- a/arch/mips/alchemy/board-xxs1500.c
++++ b/arch/mips/alchemy/board-xxs1500.c
+@@ -27,10 +27,10 @@
+ #include <linux/gpio.h>
+ #include <linux/delay.h>
+ #include <linux/pm.h>
+-#include <asm/bootinfo.h>
 +
-+void __init fw_init_cmdline(void)
-+{
-+	int i;
-+
-+	/* Validate command line parameters. */
-+	if ((fw_arg0 >= CKSEG0) || (fw_arg1 < CKSEG0)) {
-+		fw_argc = 0;
-+		_fw_argv = NULL;
-+	} else {
-+		fw_argc = (fw_arg0 & 0x0000ffff);
-+		_fw_argv = (int *)fw_arg1;
-+	}
-+
-+	/* Validate environment pointer. */
-+	if (fw_arg2 < CKSEG0)
-+		_fw_envp = NULL;
-+	else
-+		_fw_envp = (int *)fw_arg2;
-+
-+	for (i = 1; i < fw_argc; i++) {
-+		strlcat(arcs_cmdline, fw_argv(i), COMMAND_LINE_SIZE);
-+		if (i < (fw_argc - 1))
-+			strlcat(arcs_cmdline, " ", COMMAND_LINE_SIZE);
-+	}
-+}
-+
-+char * __init fw_getcmdline(void)
-+{
-+	return &(arcs_cmdline[0]);
-+}
-+
-+char *fw_getenv(char *envname)
-+{
-+	char *result = NULL;
-+
-+	if (_fw_envp != NULL) {
-+		/*
-+		 * Return a pointer to the given environment variable.
-+		 * YAMON uses "name", "value" pairs, while U-Boot uses
-+		 * "name=value".
-+		 */
-+		int i, yamon, index = 0;
-+
-+		yamon = (strchr(fw_envp(index), '=') == NULL);
-+		i = strlen(envname);
-+
-+		while (fw_envp(index)) {
-+			if (strncmp(envname, fw_envp(index), i) == 0) {
-+				if (yamon) {
-+					result = fw_envp(index + 1);
-+					break;
-+				} else if (fw_envp(index)[i] == '=') {
-+					result = (fw_envp(index + 1) + i);
-+					break;
-+				}
-+			}
-+
-+			/* Increment array index. */
-+			if (yamon)
-+				index += 2;
-+			else
-+				index += 1;
-+		}
-+	}
-+
-+	return result;
-+}
-+
-+unsigned long fw_getenvl(char *envname)
-+{
-+	unsigned long envl = 0UL;
-+	char *str;
-+	long val;
-+	int tmp;
-+
-+	str = fw_getenv(envname);
-+	if (str) {
-+		tmp = kstrtol(str, 0, &val);
-+		envl = (unsigned long)val;
-+	}
-+
-+	return envl;
-+}
-diff --git a/arch/mips/include/asm/fw/fw.h b/arch/mips/include/asm/fw/fw.h
-new file mode 100644
-index 0000000..d6c50a7
---- /dev/null
-+++ b/arch/mips/include/asm/fw/fw.h
-@@ -0,0 +1,47 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2012 MIPS Technologies, Inc.
-+ */
-+#ifndef __ASM_FW_H_
-+#define __ASM_FW_H_
-+
-+#include <asm/bootinfo.h>	/* For cleaner code... */
-+
-+enum fw_memtypes {
-+	fw_dontuse,
-+	fw_code,
-+	fw_free,
-+};
-+
-+typedef struct {
-+	unsigned long base;	/* Within KSEG0 */
-+	unsigned int size;	/* bytes */
-+	enum fw_memtypes type;	/* fw_memtypes */
-+} fw_memblock_t;
-+
-+/* Maximum number of memory block descriptors. */
-+#define FW_MAX_MEMBLOCKS	32
-+
-+extern int fw_argc;
-+extern int *_fw_argv;
-+extern int *_fw_envp;
-+
-+/*
-+ * Most firmware like YAMON, PMON, etc. pass arguments and environment
-+ * variables as 32-bit pointers. These take care of sign extension.
-+ */
-+#define fw_argv(index)		((char *)(long)_fw_argv[(index)])
-+#define fw_envp(index)		((char *)(long)_fw_envp[(index)])
-+
-+extern void fw_init_cmdline(void);
-+extern char *fw_getcmdline(void);
-+extern fw_memblock_t *fw_getmdesc(void);
-+extern void fw_meminit(void);
-+extern char *fw_getenv(char *name);
-+extern unsigned long fw_getenvl(char *name);
-+extern void fw_init_early_console(char port);
-+
-+#endif /* __ASM_FW_H_ */
+ #include <asm/reboot.h>
++#include <asm/fw/fw.h>
+ #include <asm/mach-au1x00/au1000.h>
+-#include <prom.h>
+ 
+ const char *get_system_type(void)
+ {
+@@ -39,20 +39,15 @@ const char *get_system_type(void)
+ 
+ void __init prom_init(void)
+ {
+-	unsigned char *memsize_str;
+-	unsigned long memsize;
+-
+-	prom_argc = fw_arg0;
+-	prom_argv = (char **)fw_arg1;
+-	prom_envp = (char **)fw_arg2;
++	unsigned long physical_memsize;
+ 
+-	prom_init_cmdline();
++	fw_init_cmdline();
+ 
+-	memsize_str = prom_getenv("memsize");
+-	if (!memsize_str || strict_strtoul(memsize_str, 0, &memsize))
+-		memsize = 0x04000000;
++	physical_memsize = fw_getenvl("memsize");
++	if (!physical_memsize)
++		physical_memsize = 0x04000000;
+ 
+-	add_memory_region(0, memsize, BOOT_MEM_RAM);
++	add_memory_region(0, physical_memsize, BOOT_MEM_RAM);
+ }
+ 
+ void prom_putchar(unsigned char c)
+diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
+index 95cb911..2c5c014 100644
+--- a/arch/mips/alchemy/common/platform.c
++++ b/arch/mips/alchemy/common/platform.c
+@@ -18,13 +18,12 @@
+ #include <linux/serial_8250.h>
+ #include <linux/slab.h>
+ 
++#include <asm/fw/fw.h>
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-au1x00/au1xxx_dbdma.h>
+ #include <asm/mach-au1x00/au1100_mmc.h>
+ #include <asm/mach-au1x00/au1xxx_eth.h>
+ 
+-#include <prom.h>
+-
+ static void alchemy_8250_pm(struct uart_port *port, unsigned int state,
+ 			    unsigned int old_state)
+ {
+diff --git a/arch/mips/alchemy/common/prom.c b/arch/mips/alchemy/common/prom.c
+index 5340210..a67012d 100644
+--- a/arch/mips/alchemy/common/prom.c
++++ b/arch/mips/alchemy/common/prom.c
+@@ -37,45 +37,7 @@
+ #include <linux/init.h>
+ #include <linux/string.h>
+ 
+-#include <asm/bootinfo.h>
+-
+-int prom_argc;
+-char **prom_argv;
+-char **prom_envp;
+-
+-void __init prom_init_cmdline(void)
+-{
+-	int i;
+-
+-	for (i = 1; i < prom_argc; i++) {
+-		strlcat(arcs_cmdline, prom_argv[i], COMMAND_LINE_SIZE);
+-		if (i < (prom_argc - 1))
+-			strlcat(arcs_cmdline, " ", COMMAND_LINE_SIZE);
+-	}
+-}
+-
+-char *prom_getenv(char *envname)
+-{
+-	/*
+-	 * Return a pointer to the given environment variable.
+-	 * YAMON uses "name", "value" pairs, while U-Boot uses "name=value".
+-	 */
+-
+-	char **env = prom_envp;
+-	int i = strlen(envname);
+-	int yamon = (*env && strchr(*env, '=') == NULL);
+-
+-	while (*env) {
+-		if (yamon) {
+-			if (strcmp(envname, *env++) == 0)
+-				return *env;
+-		} else if (strncmp(envname, *env, i) == 0 && (*env)[i] == '=')
+-			return *env + i + 1;
+-		env++;
+-	}
+-
+-	return NULL;
+-}
++#include <asm/fw/fw.h>
+ 
+ static inline unsigned char str2hexnum(unsigned char c)
+ {
+@@ -109,7 +71,7 @@ int __init prom_get_ethernet_addr(char *ethernet_addr)
+ 	char *ethaddr_str;
+ 
+ 	/* Check the environment variables first */
+-	ethaddr_str = prom_getenv("ethaddr");
++	ethaddr_str = fw_getenv("ethaddr");
+ 	if (!ethaddr_str) {
+ 		/* Check command line */
+ 		ethaddr_str = strstr(arcs_cmdline, "ethaddr=");
+diff --git a/arch/mips/alchemy/devboards/db1000.c b/arch/mips/alchemy/devboards/db1000.c
+index 1b81dbf..53ff8a4 100644
+--- a/arch/mips/alchemy/devboards/db1000.c
++++ b/arch/mips/alchemy/devboards/db1000.c
+@@ -36,7 +36,6 @@
+ #include <asm/mach-au1x00/au1100_mmc.h>
+ #include <asm/mach-db1x00/bcsr.h>
+ #include <asm/reboot.h>
+-#include <prom.h>
+ #include "platform.h"
+ 
+ #define F_SWAPPED (bcsr_read(BCSR_STATUS) & BCSR_STATUS_DB1000_SWAPBOOT)
+diff --git a/arch/mips/alchemy/devboards/db1300.c b/arch/mips/alchemy/devboards/db1300.c
+index c56e024..8073c86 100644
+--- a/arch/mips/alchemy/devboards/db1300.c
++++ b/arch/mips/alchemy/devboards/db1300.c
+@@ -28,7 +28,6 @@
+ #include <asm/mach-au1x00/au1xxx_psc.h>
+ #include <asm/mach-db1x00/db1300.h>
+ #include <asm/mach-db1x00/bcsr.h>
+-#include <asm/mach-au1x00/prom.h>
+ 
+ #include "platform.h"
+ 
+diff --git a/arch/mips/alchemy/devboards/db1550.c b/arch/mips/alchemy/devboards/db1550.c
+index 9eb7906..7d72509 100644
+--- a/arch/mips/alchemy/devboards/db1550.c
++++ b/arch/mips/alchemy/devboards/db1550.c
+@@ -23,7 +23,6 @@
+ #include <asm/mach-au1x00/au1xxx_psc.h>
+ #include <asm/mach-au1x00/au1550_spi.h>
+ #include <asm/mach-db1x00/bcsr.h>
+-#include <prom.h>
+ #include "platform.h"
+ 
+ 
+diff --git a/arch/mips/alchemy/devboards/pb1100.c b/arch/mips/alchemy/devboards/pb1100.c
+index cff50d0..a9d8904 100644
+--- a/arch/mips/alchemy/devboards/pb1100.c
++++ b/arch/mips/alchemy/devboards/pb1100.c
+@@ -26,7 +26,6 @@
+ #include <linux/platform_device.h>
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-db1x00/bcsr.h>
+-#include <prom.h>
+ #include "platform.h"
+ 
+ const char *get_system_type(void)
+diff --git a/arch/mips/alchemy/devboards/pb1500.c b/arch/mips/alchemy/devboards/pb1500.c
+index e7b807b..36e1853 100644
+--- a/arch/mips/alchemy/devboards/pb1500.c
++++ b/arch/mips/alchemy/devboards/pb1500.c
+@@ -26,7 +26,6 @@
+ #include <linux/platform_device.h>
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-db1x00/bcsr.h>
+-#include <prom.h>
+ #include "platform.h"
+ 
+ const char *get_system_type(void)
+diff --git a/arch/mips/alchemy/devboards/prom.c b/arch/mips/alchemy/devboards/prom.c
+index 93a2210..59af1d4 100644
+--- a/arch/mips/alchemy/devboards/prom.c
++++ b/arch/mips/alchemy/devboards/prom.c
+@@ -29,9 +29,8 @@
+ 
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+-#include <asm/bootinfo.h>
++#include <asm/fw/fw.h>
+ #include <asm/mach-au1x00/au1000.h>
+-#include <prom.h>
+ 
+ #if defined(CONFIG_MIPS_DB1000) || \
+     defined(CONFIG_MIPS_PB1100) || \
+@@ -44,19 +43,15 @@
+ 
+ void __init prom_init(void)
+ {
+-	unsigned char *memsize_str;
+-	unsigned long memsize;
++	unsigned long physical_memsize;
+ 
+-	prom_argc = (int)fw_arg0;
+-	prom_argv = (char **)fw_arg1;
+-	prom_envp = (char **)fw_arg2;
++	fw_init_cmdline();
+ 
+-	prom_init_cmdline();
+-	memsize_str = prom_getenv("memsize");
+-	if (!memsize_str || strict_strtoul(memsize_str, 0, &memsize))
+-		memsize = ALCHEMY_BOARD_DEFAULT_MEMSIZE;
++	physical_memsize = fw_getenvl("memsize");
++	if (!physical_memsize)
++		physical_memsize = ALCHEMY_BOARD_DEFAULT_MEMSIZE;
+ 
+-	add_memory_region(0, memsize, BOOT_MEM_RAM);
++	add_memory_region(0, physical_memsize, BOOT_MEM_RAM);
+ }
+ 
+ void prom_putchar(unsigned char c)
+diff --git a/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h b/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
+index 49dc8d9..3f22d5a 100644
+--- a/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
++++ b/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
+@@ -14,5 +14,6 @@ struct au1000_eth_platform_data {
+ 
+ void __init au1xxx_override_eth_cfg(unsigned port,
+ 			struct au1000_eth_platform_data *eth_data);
++int __init prom_get_ethernet_addr(char *ethernet_addr);
+ 
+ #endif /* __AU1X00_ETH_DATA_H */
+diff --git a/arch/mips/include/asm/mach-au1x00/prom.h b/arch/mips/include/asm/mach-au1x00/prom.h
+deleted file mode 100644
+index 4c0e09c..0000000
+--- a/arch/mips/include/asm/mach-au1x00/prom.h
++++ /dev/null
+@@ -1,12 +0,0 @@
+-#ifndef __AU1X00_PROM_H
+-#define __AU1X00_PROM_H
+-
+-extern int prom_argc;
+-extern char **prom_argv;
+-extern char **prom_envp;
+-
+-extern void prom_init_cmdline(void);
+-extern char *prom_getenv(char *envname);
+-extern int prom_get_ethernet_addr(char *ethernet_addr);
+-
+-#endif
+diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
+index 397596b..200ccc2 100644
+--- a/drivers/net/ethernet/amd/au1000_eth.c
++++ b/drivers/net/ethernet/amd/au1000_eth.c
+@@ -67,7 +67,6 @@
+ 
+ #include <au1000.h>
+ #include <au1xxx_eth.h>
+-#include <prom.h>
+ 
+ #include "au1000_eth.h"
+ 
 -- 
 1.7.10.3

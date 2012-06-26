@@ -1,43 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 17:14:16 +0200 (CEST)
-Received: from mail-qc0-f169.google.com ([209.85.216.169]:41784 "EHLO
-        mail-qc0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903850Ab2FZPOK convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 26 Jun 2012 17:14:10 +0200
-Received: by qcsd16 with SMTP id d16so11176qcs.28
-        for <multiple recipients>; Tue, 26 Jun 2012 08:14:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        bh=/+VpWVTx9Iqrw12sjqLvAyYrM6tTXYM/EA2RtAXd1vI=;
-        b=FMCrjj5LZ8WGir3Y9cXIoROpsJpEAW1hKfBZpnYA4U35VwxKbl7hV6oWEKQkR7BSDF
-         5PpBNYOCw+R7IgdOB6EuWWanga1M1AKfJbXxQeRzt2Ki5yuxqV/vDlVzdI6ucKX5cfOJ
-         ZjJXNgpvIoL5cp1ZvMM6wA/9J8P4viwpzlTES2p2QuXvd4rByFraGLq4/zM05tm8Vitk
-         GdUbYl3U17Qwk00O2NQC2fSKWv0xbkat2+9i+Izwso2WGGcsVmfQf7jOAKXHBIW5qqUX
-         d9+BWwphzI6VFqjNbe0zOeqTUcQPjoYtphlnhLBDlCZkHHeuF7IT1DJBk2e+oKXM0225
-         Ixtw==
-Received: by 10.182.119.6 with SMTP id kq6mr16814521obb.42.1340723644288; Tue,
- 26 Jun 2012 08:14:04 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.76.98.195 with HTTP; Tue, 26 Jun 2012 08:13:44 -0700 (PDT)
-In-Reply-To: <3c614d8672835e3950bddd7adbcecf05@localhost>
-References: <0f67eabbb0d5c59add27e42a08b94944@localhost> <3c614d8672835e3950bddd7adbcecf05@localhost>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Tue, 26 Jun 2012 17:13:44 +0200
-Message-ID: <CAOiHx==iswg-BahEizXCu6iN4AAqJcTMXHouzKukO8mSm11i9g@mail.gmail.com>
-Subject: Re: [PATCH 2/7] MIPS: BCM63XX: Move DMA descriptor definition into
- common header file
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     ralf@linux-mips.org, ffainelli@freebox.fr, mbizon@freebox.fr,
-        linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 20:34:38 +0200 (CEST)
+Received: from dns1.mips.com ([12.201.5.69]:57937 "EHLO dns1.mips.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903426Ab2FZSed convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 20:34:33 +0200
+Received: from exchdb01.mips.com (exchhub01.mips.com [192.168.36.84])
+        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id q5QIYPEW031788
+        for <linux-mips@linux-mips.org>; Tue, 26 Jun 2012 11:34:25 -0700
+Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
+ exchhub01.mips.com ([::1]) with mapi id 14.01.0270.001; Tue, 26 Jun 2012
+ 11:34:34 -0700
+From:   "Hill, Steven" <sjhill@mips.com>
+To:     Jonas Gorski <jonas.gorski@gmail.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH 00/33] Cleanup firmware support across multiple
+ platforms.
+Thread-Topic: [PATCH 00/33] Cleanup firmware support across multiple
+ platforms.
+Thread-Index: AQHNU1YNaje9iqMlpUmHl+X0eZPOQ5cNKpwA///Ckbo=
+Date:   Tue, 26 Jun 2012 18:34:34 +0000
+Message-ID: <31E06A9FC96CEC488B43B19E2957C1B8011469833E@exchdb03.mips.com>
+References: <1340685708-14408-1-git-send-email-sjhill@mips.com>,<CAOiHx=kKxZZzJZkRe+SRjFj0JD7yq4=3CmRFbqc6hW_Dhnbz3g@mail.gmail.com>
+In-Reply-To: <CAOiHx=kKxZZzJZkRe+SRjFj0JD7yq4=3CmRFbqc6hW_Dhnbz3g@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.36.79]
+x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
+x-ems-stamp: OjaQkrz8vQkaR5/j7LdEsw==
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 8BIT
-X-archive-position: 33846
+MIME-Version: 1.0
+X-archive-position: 33847
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,16 +49,8 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Kevin,
+Jonas,
 
-On 23 June 2012 07:14, Kevin Cernekee <cernekee@gmail.com> wrote:
-> The "IUDMA" engine used by bcm63xx_enet is also used by other blocks,
-> such as the USB 2.0 device.  Move the definitions into a common file so
-> that they do not need to be duplicated in each driver.
+Did you read the COPYING file of the kernel source tree? I'm pretty sure it states "or later" in the text. Therefore, I believe that my changes to the headers are alright.
 
-If it's common, maybe then it shouldn't be in bcm63xx_dev_enet.h but
-something like bcm63xx_iudma.h, and the struct also renamed to
-something generic (iudma_desc or so).
-
-Regards,
-Jonas
+-Steve

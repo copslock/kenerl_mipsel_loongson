@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:43:08 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:54948 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:43:39 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:54950 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903482Ab2FZEmK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:42:10 +0200
+        with ESMTP id S1903497Ab2FZEmL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:42:11 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SjNbI-0002zj-3l; Mon, 25 Jun 2012 23:42:04 -0500
+        id 1SjNbI-0002zj-Od; Mon, 25 Jun 2012 23:42:04 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 02/33] MIPS: Alchemy: Cleanup firmware support for Alchemy platforms.
-Date:   Mon, 25 Jun 2012 23:41:17 -0500
-Message-Id: <1340685708-14408-3-git-send-email-sjhill@mips.com>
+Subject: [PATCH 03/33] MIPS: Alchemy: Cleanup files effected by firmware changes.
+Date:   Mon, 25 Jun 2012 23:41:18 -0500
+Message-Id: <1340685708-14408-4-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
 References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33810
+X-archive-position: 33811
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,380 +36,360 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
+Make headers consistent across the files and make changes based on
+running the checkpatch script.
+
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/alchemy/board-gpr.c                  |   22 +++++--------
- arch/mips/alchemy/board-mtx1.c                 |   22 +++++--------
- arch/mips/alchemy/board-xxs1500.c              |   21 +++++-------
- arch/mips/alchemy/common/platform.c            |    3 +-
- arch/mips/alchemy/common/prom.c                |   42 ++----------------------
- arch/mips/alchemy/devboards/db1000.c           |    1 -
- arch/mips/alchemy/devboards/db1300.c           |    1 -
- arch/mips/alchemy/devboards/db1550.c           |    1 -
- arch/mips/alchemy/devboards/pb1100.c           |    1 -
- arch/mips/alchemy/devboards/pb1500.c           |    1 -
- arch/mips/alchemy/devboards/prom.c             |   19 ++++-------
- arch/mips/include/asm/mach-au1x00/au1xxx_eth.h |    1 +
- arch/mips/include/asm/mach-au1x00/prom.h       |   12 -------
- drivers/net/ethernet/amd/au1000_eth.c          |    1 -
- 14 files changed, 35 insertions(+), 113 deletions(-)
- delete mode 100644 arch/mips/include/asm/mach-au1x00/prom.h
+ arch/mips/alchemy/board-gpr.c       |   23 ++++++-----------------
+ arch/mips/alchemy/board-mtx1.c      |   23 ++++++-----------------
+ arch/mips/alchemy/board-xxs1500.c   |   23 +++++------------------
+ arch/mips/alchemy/common/platform.c |   27 +++++++++++++--------------
+ arch/mips/alchemy/common/prom.c     |   31 +++++--------------------------
+ arch/mips/alchemy/devboards/prom.c  |   34 ++++++++--------------------------
+ 6 files changed, 43 insertions(+), 118 deletions(-)
 
 diff --git a/arch/mips/alchemy/board-gpr.c b/arch/mips/alchemy/board-gpr.c
-index ba32590..1139173 100644
+index 1139173..51d3598 100644
 --- a/arch/mips/alchemy/board-gpr.c
 +++ b/arch/mips/alchemy/board-gpr.c
-@@ -30,10 +30,10 @@
- #include <linux/gpio.h>
- #include <linux/i2c.h>
- #include <linux/i2c-gpio.h>
--#include <asm/bootinfo.h>
-+
- #include <asm/reboot.h>
-+#include <asm/fw/fw.h>
- #include <asm/mach-au1x00/au1000.h>
--#include <prom.h>
+@@ -1,23 +1,12 @@
+ /*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
+  * GPR board platform device registration (Au1550)
+  *
+  * Copyright (C) 2010 Wolfgang Grandegger <wg@denx.de>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  */
+-
+ #include <linux/delay.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+@@ -65,7 +54,7 @@ static void gpr_reset(char *c)
+ 	alchemy_gpio_direction_output(5, 0);
  
- const char *get_system_type(void)
+ 	/* trigger watchdog to reset board in 200ms */
+-	printk(KERN_EMERG "Triggering watchdog soft reset...\n");
++	pr_emerg("Triggering watchdog soft reset...\n");
+ 	raw_local_irq_disable();
+ 	alchemy_gpio_direction_output(1, 0);
+ 	udelay(1);
+@@ -82,7 +71,7 @@ static void gpr_power_off(void)
+ 
+ void __init board_setup(void)
  {
-@@ -42,21 +42,15 @@ const char *get_system_type(void)
+-	printk(KERN_INFO "Trapeze ITS GPR board\n");
++	pr_info("Trapeze ITS GPR board\n");
  
- void __init prom_init(void)
- {
--	unsigned char *memsize_str;
--	unsigned long memsize;
-+	unsigned long physical_memsize;
- 
--	prom_argc = fw_arg0;
--	prom_argv = (char **)fw_arg1;
--	prom_envp = (char **)fw_arg2;
-+	fw_init_cmdline();
- 
--	prom_init_cmdline();
-+	physical_memsize = fw_getenvl("memsize");
-+	if (!physical_memsize)
-+		physical_memsize = 0x04000000;
- 
--	memsize_str = prom_getenv("memsize");
--	if (!memsize_str)
--		memsize = 0x04000000;
--	else
--		strict_strtoul(memsize_str, 0, &memsize);
--	add_memory_region(0, memsize, BOOT_MEM_RAM);
-+	add_memory_region(0, physical_memsize, BOOT_MEM_RAM);
- }
- 
- void prom_putchar(unsigned char c)
+ 	pm_power_off = gpr_power_off;
+ 	_machine_halt = gpr_power_off;
 diff --git a/arch/mips/alchemy/board-mtx1.c b/arch/mips/alchemy/board-mtx1.c
-index 295f1a9..7d1ea7a 100644
+index 7d1ea7a..c59d098 100644
 --- a/arch/mips/alchemy/board-mtx1.c
 +++ b/arch/mips/alchemy/board-mtx1.c
-@@ -29,11 +29,11 @@
- #include <linux/mtd/partitions.h>
- #include <linux/mtd/physmap.h>
- #include <mtd/mtd-abi.h>
--#include <asm/bootinfo.h>
-+
- #include <asm/reboot.h>
-+#include <asm/fw/fw.h>
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-au1x00/au1xxx_eth.h>
--#include <prom.h>
+@@ -1,23 +1,12 @@
+ /*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
+  * MTX-1 platform devices registration (Au1500)
+  *
+  * Copyright (C) 2007-2009, Florian Fainelli <florian@openwrt.org>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  */
+-
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/kernel.h>
+@@ -98,7 +87,7 @@ void __init board_setup(void)
+ 	_machine_halt = mtx1_power_off;
+ 	_machine_restart = mtx1_reset;
  
- const char *get_system_type(void)
- {
-@@ -42,21 +42,15 @@ const char *get_system_type(void)
- 
- void __init prom_init(void)
- {
--	unsigned char *memsize_str;
--	unsigned long memsize;
-+	unsigned long physical_memsize;
- 
--	prom_argc = fw_arg0;
--	prom_argv = (char **)fw_arg1;
--	prom_envp = (char **)fw_arg2;
-+	fw_init_cmdline();
- 
--	prom_init_cmdline();
-+	physical_memsize = fw_getenvl("memsize");
-+	if (!physical_memsize)
-+		physical_memsize = 0x04000000;
- 
--	memsize_str = prom_getenv("memsize");
--	if (!memsize_str)
--		memsize = 0x04000000;
--	else
--		strict_strtoul(memsize_str, 0, &memsize);
--	add_memory_region(0, memsize, BOOT_MEM_RAM);
-+	add_memory_region(0, physical_memsize, BOOT_MEM_RAM);
+-	printk(KERN_INFO "4G Systems MTX-1 Board\n");
++	pr_info("4G Systems MTX-1 Board\n");
  }
  
- void prom_putchar(unsigned char c)
+ /******************************************************************************/
+@@ -296,7 +285,7 @@ static int __init mtx1_register_devices(void)
+ 	rc = gpio_request(mtx1_gpio_button[0].gpio,
+ 					mtx1_gpio_button[0].desc);
+ 	if (rc < 0) {
+-		printk(KERN_INFO "mtx1: failed to request %d\n",
++		pr_info("mtx1: failed to request %d\n",
+ 					mtx1_gpio_button[0].gpio);
+ 		goto out;
+ 	}
 diff --git a/arch/mips/alchemy/board-xxs1500.c b/arch/mips/alchemy/board-xxs1500.c
-index bd55136..0469f1c 100644
+index 0469f1c..20eafd5 100644
 --- a/arch/mips/alchemy/board-xxs1500.c
 +++ b/arch/mips/alchemy/board-xxs1500.c
-@@ -27,10 +27,10 @@
- #include <linux/gpio.h>
- #include <linux/delay.h>
- #include <linux/pm.h>
--#include <asm/bootinfo.h>
-+
- #include <asm/reboot.h>
-+#include <asm/fw/fw.h>
- #include <asm/mach-au1x00/au1000.h>
--#include <prom.h>
- 
- const char *get_system_type(void)
- {
-@@ -39,20 +39,15 @@ const char *get_system_type(void)
- 
- void __init prom_init(void)
- {
--	unsigned char *memsize_str;
--	unsigned long memsize;
+@@ -1,25 +1,12 @@
+ /*
+- * BRIEF MODULE DESCRIPTION
+- *	MyCable XXS1500 board support
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
+  *
+- * Copyright 2003, 2008 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc. <source@mvista.com>
++ * MyCable XXS1500 board support
+  *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ * Copyright 2003, 2008 MontaVista Software Inc. <source@mvista.com>
+  */
 -
--	prom_argc = fw_arg0;
--	prom_argv = (char **)fw_arg1;
--	prom_envp = (char **)fw_arg2;
-+	unsigned long physical_memsize;
- 
--	prom_init_cmdline();
-+	fw_init_cmdline();
- 
--	memsize_str = prom_getenv("memsize");
--	if (!memsize_str || strict_strtoul(memsize_str, 0, &memsize))
--		memsize = 0x04000000;
-+	physical_memsize = fw_getenvl("memsize");
-+	if (!physical_memsize)
-+		physical_memsize = 0x04000000;
- 
--	add_memory_region(0, memsize, BOOT_MEM_RAM);
-+	add_memory_region(0, physical_memsize, BOOT_MEM_RAM);
- }
- 
- void prom_putchar(unsigned char c)
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
 diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
-index 95cb911..2c5c014 100644
+index 2c5c014..c7400f8 100644
 --- a/arch/mips/alchemy/common/platform.c
 +++ b/arch/mips/alchemy/common/platform.c
-@@ -18,13 +18,12 @@
- #include <linux/serial_8250.h>
- #include <linux/slab.h>
- 
-+#include <asm/fw/fw.h>
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-au1x00/au1xxx_dbdma.h>
- #include <asm/mach-au1x00/au1100_mmc.h>
- #include <asm/mach-au1x00/au1xxx_eth.h>
- 
--#include <prom.h>
+@@ -1,16 +1,15 @@
+ /*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
+  * Platform device support for Au1x00 SoCs.
+  *
+  * Copyright 2004, Matt Porter <mporter@kernel.crashing.org>
+  *
+  * (C) Copyright Embedded Alley Solutions, Inc 2005
+  * Author: Pantelis Antoniou <pantelis@embeddedalley.com>
+- *
+- * This file is licensed under the terms of the GNU General Public
+- * License version 2.  This program is licensed "as is" without any
+- * warranty of any kind, whether express or implied.
+  */
 -
- static void alchemy_8250_pm(struct uart_port *port, unsigned int state,
- 			    unsigned int old_state)
- {
-diff --git a/arch/mips/alchemy/common/prom.c b/arch/mips/alchemy/common/prom.c
-index 5340210..a67012d 100644
---- a/arch/mips/alchemy/common/prom.c
-+++ b/arch/mips/alchemy/common/prom.c
-@@ -37,45 +37,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/etherdevice.h>
  #include <linux/init.h>
- #include <linux/string.h>
+@@ -103,7 +102,7 @@ static void __init alchemy_setup_uarts(int ctype)
  
--#include <asm/bootinfo.h>
--
--int prom_argc;
--char **prom_argv;
--char **prom_envp;
--
--void __init prom_init_cmdline(void)
--{
--	int i;
--
--	for (i = 1; i < prom_argc; i++) {
--		strlcat(arcs_cmdline, prom_argv[i], COMMAND_LINE_SIZE);
--		if (i < (prom_argc - 1))
--			strlcat(arcs_cmdline, " ", COMMAND_LINE_SIZE);
--	}
--}
--
--char *prom_getenv(char *envname)
--{
--	/*
--	 * Return a pointer to the given environment variable.
--	 * YAMON uses "name", "value" pairs, while U-Boot uses "name=value".
--	 */
--
--	char **env = prom_envp;
--	int i = strlen(envname);
--	int yamon = (*env && strchr(*env, '=') == NULL);
--
--	while (*env) {
--		if (yamon) {
--			if (strcmp(envname, *env++) == 0)
--				return *env;
--		} else if (strncmp(envname, *env, i) == 0 && (*env)[i] == '=')
--			return *env + i + 1;
--		env++;
--	}
--
--	return NULL;
--}
-+#include <asm/fw/fw.h>
- 
- static inline unsigned char str2hexnum(unsigned char c)
- {
-@@ -109,7 +71,7 @@ int __init prom_get_ethernet_addr(char *ethernet_addr)
- 	char *ethaddr_str;
- 
- 	/* Check the environment variables first */
--	ethaddr_str = prom_getenv("ethaddr");
-+	ethaddr_str = fw_getenv("ethaddr");
- 	if (!ethaddr_str) {
- 		/* Check command line */
- 		ethaddr_str = strstr(arcs_cmdline, "ethaddr=");
-diff --git a/arch/mips/alchemy/devboards/db1000.c b/arch/mips/alchemy/devboards/db1000.c
-index 1b81dbf..53ff8a4 100644
---- a/arch/mips/alchemy/devboards/db1000.c
-+++ b/arch/mips/alchemy/devboards/db1000.c
-@@ -36,7 +36,6 @@
- #include <asm/mach-au1x00/au1100_mmc.h>
- #include <asm/mach-db1x00/bcsr.h>
- #include <asm/reboot.h>
--#include <prom.h>
- #include "platform.h"
- 
- #define F_SWAPPED (bcsr_read(BCSR_STATUS) & BCSR_STATUS_DB1000_SWAPBOOT)
-diff --git a/arch/mips/alchemy/devboards/db1300.c b/arch/mips/alchemy/devboards/db1300.c
-index c56e024..8073c86 100644
---- a/arch/mips/alchemy/devboards/db1300.c
-+++ b/arch/mips/alchemy/devboards/db1300.c
-@@ -28,7 +28,6 @@
- #include <asm/mach-au1x00/au1xxx_psc.h>
- #include <asm/mach-db1x00/db1300.h>
- #include <asm/mach-db1x00/bcsr.h>
--#include <asm/mach-au1x00/prom.h>
- 
- #include "platform.h"
- 
-diff --git a/arch/mips/alchemy/devboards/db1550.c b/arch/mips/alchemy/devboards/db1550.c
-index 9eb7906..7d72509 100644
---- a/arch/mips/alchemy/devboards/db1550.c
-+++ b/arch/mips/alchemy/devboards/db1550.c
-@@ -23,7 +23,6 @@
- #include <asm/mach-au1x00/au1xxx_psc.h>
- #include <asm/mach-au1x00/au1550_spi.h>
- #include <asm/mach-db1x00/bcsr.h>
--#include <prom.h>
- #include "platform.h"
- 
- 
-diff --git a/arch/mips/alchemy/devboards/pb1100.c b/arch/mips/alchemy/devboards/pb1100.c
-index cff50d0..a9d8904 100644
---- a/arch/mips/alchemy/devboards/pb1100.c
-+++ b/arch/mips/alchemy/devboards/pb1100.c
-@@ -26,7 +26,6 @@
- #include <linux/platform_device.h>
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-db1x00/bcsr.h>
--#include <prom.h>
- #include "platform.h"
- 
- const char *get_system_type(void)
-diff --git a/arch/mips/alchemy/devboards/pb1500.c b/arch/mips/alchemy/devboards/pb1500.c
-index e7b807b..36e1853 100644
---- a/arch/mips/alchemy/devboards/pb1500.c
-+++ b/arch/mips/alchemy/devboards/pb1500.c
-@@ -26,7 +26,6 @@
- #include <linux/platform_device.h>
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-db1x00/bcsr.h>
--#include <prom.h>
- #include "platform.h"
- 
- const char *get_system_type(void)
-diff --git a/arch/mips/alchemy/devboards/prom.c b/arch/mips/alchemy/devboards/prom.c
-index 93a2210..59af1d4 100644
---- a/arch/mips/alchemy/devboards/prom.c
-+++ b/arch/mips/alchemy/devboards/prom.c
-@@ -29,9 +29,8 @@
- 
- #include <linux/init.h>
- #include <linux/kernel.h>
--#include <asm/bootinfo.h>
-+#include <asm/fw/fw.h>
- #include <asm/mach-au1x00/au1000.h>
--#include <prom.h>
- 
- #if defined(CONFIG_MIPS_DB1000) || \
-     defined(CONFIG_MIPS_PB1100) || \
-@@ -44,19 +43,15 @@
- 
- void __init prom_init(void)
- {
--	unsigned char *memsize_str;
--	unsigned long memsize;
-+	unsigned long physical_memsize;
- 
--	prom_argc = (int)fw_arg0;
--	prom_argv = (char **)fw_arg1;
--	prom_envp = (char **)fw_arg2;
-+	fw_init_cmdline();
- 
--	prom_init_cmdline();
--	memsize_str = prom_getenv("memsize");
--	if (!memsize_str || strict_strtoul(memsize_str, 0, &memsize))
--		memsize = ALCHEMY_BOARD_DEFAULT_MEMSIZE;
-+	physical_memsize = fw_getenvl("memsize");
-+	if (!physical_memsize)
-+		physical_memsize = ALCHEMY_BOARD_DEFAULT_MEMSIZE;
- 
--	add_memory_region(0, memsize, BOOT_MEM_RAM);
-+	add_memory_region(0, physical_memsize, BOOT_MEM_RAM);
+ 	ports = kzalloc(s * (c + 1), GFP_KERNEL);
+ 	if (!ports) {
+-		printk(KERN_INFO "Alchemy: no memory for UART data\n");
++		pr_info("Alchemy: no memory for UART data\n");
+ 		return;
+ 	}
+ 	memcpy(ports, au1x00_uart_data[ctype], s * c);
+@@ -113,7 +112,7 @@ static void __init alchemy_setup_uarts(int ctype)
+ 	for (s = 0; s < c; s++)
+ 		ports[s].uartclk = uartclk;
+ 	if (platform_device_register(&au1xx0_uart_device))
+-		printk(KERN_INFO "Alchemy: failed to register UARTs\n");
++		pr_info("Alchemy: failed to register UARTs\n");
  }
  
- void prom_putchar(unsigned char c)
-diff --git a/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h b/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
-index 49dc8d9..3f22d5a 100644
---- a/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
-+++ b/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
-@@ -14,5 +14,6 @@ struct au1000_eth_platform_data {
  
- void __init au1xxx_override_eth_cfg(unsigned port,
- 			struct au1000_eth_platform_data *eth_data);
-+int __init prom_get_ethernet_addr(char *ethernet_addr);
+@@ -173,7 +172,7 @@ static void __init alchemy_setup_usb(int ctype)
+ 	pdev->dev.dma_mask = &alchemy_ohci_dmamask;
  
- #endif /* __AU1X00_ETH_DATA_H */
-diff --git a/arch/mips/include/asm/mach-au1x00/prom.h b/arch/mips/include/asm/mach-au1x00/prom.h
-deleted file mode 100644
-index 4c0e09c..0000000
---- a/arch/mips/include/asm/mach-au1x00/prom.h
-+++ /dev/null
-@@ -1,12 +0,0 @@
--#ifndef __AU1X00_PROM_H
--#define __AU1X00_PROM_H
+ 	if (platform_device_register(pdev))
+-		printk(KERN_INFO "Alchemy USB: cannot add OHCI0\n");
++		pr_info("Alchemy USB: cannot add OHCI0\n");
+ 
+ 
+ 	/* setup EHCI0: Au1200/Au1300 */
+@@ -192,7 +191,7 @@ static void __init alchemy_setup_usb(int ctype)
+ 		pdev->dev.dma_mask = &alchemy_ehci_dmamask;
+ 
+ 		if (platform_device_register(pdev))
+-			printk(KERN_INFO "Alchemy USB: cannot add EHCI0\n");
++			pr_info("Alchemy USB: cannot add EHCI0\n");
+ 	}
+ 
+ 	/* Au1300: OHCI1 */
+@@ -211,7 +210,7 @@ static void __init alchemy_setup_usb(int ctype)
+ 		pdev->dev.dma_mask = &alchemy_ohci_dmamask;
+ 
+ 		if (platform_device_register(pdev))
+-			printk(KERN_INFO "Alchemy USB: cannot add OHCI1\n");
++			pr_info("Alchemy USB: cannot add OHCI1\n");
+ 	}
+ }
+ 
+@@ -335,7 +334,7 @@ static void __init alchemy_setup_macs(int ctype)
+ 
+ 	macres = kmalloc(sizeof(struct resource) * MAC_RES_COUNT, GFP_KERNEL);
+ 	if (!macres) {
+-		printk(KERN_INFO "Alchemy: no memory for MAC0 resources\n");
++		pr_info("Alchemy: no memory for MAC0 resources\n");
+ 		return;
+ 	}
+ 	memcpy(macres, au1xxx_eth0_resources[ctype],
+@@ -348,7 +347,7 @@ static void __init alchemy_setup_macs(int ctype)
+ 
+ 	ret = platform_device_register(&au1xxx_eth0_device);
+ 	if (ret)
+-		printk(KERN_INFO "Alchemy: failed to register MAC0\n");
++		pr_info("Alchemy: failed to register MAC0\n");
+ 
+ 
+ 	/* Handle 2nd MAC */
+@@ -357,7 +356,7 @@ static void __init alchemy_setup_macs(int ctype)
+ 
+ 	macres = kmalloc(sizeof(struct resource) * MAC_RES_COUNT, GFP_KERNEL);
+ 	if (!macres) {
+-		printk(KERN_INFO "Alchemy: no memory for MAC1 resources\n");
++		pr_info("Alchemy: no memory for MAC1 resources\n");
+ 		return;
+ 	}
+ 	memcpy(macres, au1xxx_eth1_resources[ctype],
+@@ -372,7 +371,7 @@ static void __init alchemy_setup_macs(int ctype)
+ 	if (!(au_readl(SYS_PINFUNC) & (u32)SYS_PF_NI2)) {
+ 		ret = platform_device_register(&au1xxx_eth1_device);
+ 		if (ret)
+-			printk(KERN_INFO "Alchemy: failed to register MAC1\n");
++			pr_info("Alchemy: failed to register MAC1\n");
+ 	}
+ }
+ 
+diff --git a/arch/mips/alchemy/common/prom.c b/arch/mips/alchemy/common/prom.c
+index a67012d..6d1df07 100644
+--- a/arch/mips/alchemy/common/prom.c
++++ b/arch/mips/alchemy/common/prom.c
+@@ -1,38 +1,17 @@
+ /*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
+  *
+- * BRIEF MODULE DESCRIPTION
+- *    PROM library initialisation code, supports YAMON and U-Boot.
++ * PROM library initialisation code, supports YAMON and U-Boot. This file
++ * was derived from Carsten Langgaard's arch/mips/mips-boards/xx files.
+  *
+  * Copyright 2000-2001, 2006, 2008 MontaVista Software Inc.
+  * Author: MontaVista Software, Inc. <source@mvista.com>
+  *
+- * This file was derived from Carsten Langgaard's
+- * arch/mips/mips-boards/xx files.
+- *
+  * Carsten Langgaard, carstenl@mips.com
+  * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
 -
--extern int prom_argc;
--extern char **prom_argv;
--extern char **prom_envp;
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/string.h>
+diff --git a/arch/mips/alchemy/devboards/prom.c b/arch/mips/alchemy/devboards/prom.c
+index 59af1d4..f3229d0 100644
+--- a/arch/mips/alchemy/devboards/prom.c
++++ b/arch/mips/alchemy/devboards/prom.c
+@@ -1,40 +1,22 @@
+ /*
+- * Common code used by all Alchemy develboards.
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
+  *
+- * Extracted from files which had this to say:
++ * Common code used by all Alchemy development boards.
++ * GPR board platform device registration (Au1550)
+  *
+  * Copyright 2000, 2008 MontaVista Software Inc.
+  * Author: MontaVista Software, Inc. <source@mvista.com>
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
 -
--extern void prom_init_cmdline(void);
--extern char *prom_getenv(char *envname);
--extern int prom_get_ethernet_addr(char *ethernet_addr);
--
--#endif
-diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
-index 397596b..200ccc2 100644
---- a/drivers/net/ethernet/amd/au1000_eth.c
-+++ b/drivers/net/ethernet/amd/au1000_eth.c
-@@ -67,7 +67,6 @@
+ #include <linux/init.h>
+ #include <linux/kernel.h>
++
+ #include <asm/fw/fw.h>
+ #include <asm/mach-au1x00/au1000.h>
  
- #include <au1000.h>
- #include <au1xxx_eth.h>
--#include <prom.h>
+-#if defined(CONFIG_MIPS_DB1000) || \
+-    defined(CONFIG_MIPS_PB1100) || \
+-    defined(CONFIG_MIPS_PB1500)
++#if defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_PB1100) ||	\
++	defined(CONFIG_MIPS_PB1500)
+ #define ALCHEMY_BOARD_DEFAULT_MEMSIZE	0x04000000
  
- #include "au1000_eth.h"
- 
+ #else	/* Au1550/Au1200-based develboards */
 -- 
 1.7.10.3

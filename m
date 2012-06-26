@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:58:41 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:55034 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:59:06 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:55035 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903791Ab2FZEvr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:51:47 +0200
+        with ESMTP id S1903795Ab2FZEvx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:51:53 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SjNbY-0002zj-SB; Mon, 25 Jun 2012 23:42:20 -0500
+        id 1SjNbP-0002zj-JF; Mon, 25 Jun 2012 23:42:11 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 31/33] MIPS: txx9: Cleanup files effected by firmware changes.
-Date:   Mon, 25 Jun 2012 23:41:46 -0500
-Message-Id: <1340685708-14408-32-git-send-email-sjhill@mips.com>
+Subject: [PATCH 15/33] MIPS: Lasat: Cleanup firmware support for the Lasat platform.
+Date:   Mon, 25 Jun 2012 23:41:30 -0500
+Message-Id: <1340685708-14408-16-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
 References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33839
+X-archive-position: 33840
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,63 +36,46 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Make headers consistent across the files and make changes based on
-running the checkpatch script.
-
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/txx9/generic/setup.c |   28 +++++++++++-----------------
- 1 file changed, 11 insertions(+), 17 deletions(-)
+ arch/mips/lasat/prom.c |   11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index 8a053d6..8867888 100644
---- a/arch/mips/txx9/generic/setup.c
-+++ b/arch/mips/txx9/generic/setup.c
-@@ -1,34 +1,28 @@
- /*
-- * Based on linux/arch/mips/txx9/rbtx4938/setup.c,
-- *	    and RBTX49xx patch from CELF patch archive.
-- *
-- * 2003-2005 (c) MontaVista Software, Inc.
-- * (C) Copyright TOSHIBA CORPORATION 2000-2001, 2004-2007
-- *
-  * This file is subject to the terms and conditions of the GNU General Public
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-+ *
-+ * Based on linux/arch/mips/txx9/rbtx4938/setup.c and RBTX49xx patch
-+ * from CELF patch archive.
-+ *
-+ * 2003-2005 (c) MontaVista Software, Inc.
-+ * (C) Copyright TOSHIBA CORPORATION 2000-2001, 2004-2007
-  */
- #include <linux/init.h>
--#include <linux/kernel.h>
--#include <linux/types.h>
--#include <linux/interrupt.h>
- #include <linux/string.h>
- #include <linux/module.h>
--#include <linux/clk.h>
--#include <linux/err.h>
-+#include <linux/slab.h>
- #include <linux/gpio.h>
-+#include <linux/leds.h>
- #include <linux/platform_device.h>
--#include <linux/serial_core.h>
- #include <linux/mtd/physmap.h>
--#include <linux/leds.h>
--#include <linux/device.h>
--#include <linux/slab.h>
--#include <linux/irq.h>
--#include <asm/time.h>
-+#include <linux/serial_core.h>
-+
- #include <asm/reboot.h>
- #include <asm/r4kcache.h>
- #include <asm/sections.h>
-+#include <asm/time.h>
- #include <asm/fw/fw.h>
- #include <asm/txx9/generic.h>
- #include <asm/txx9/pci.h>
+diff --git a/arch/mips/lasat/prom.c b/arch/mips/lasat/prom.c
+index 20fde19..8bd3994 100644
+--- a/arch/mips/lasat/prom.c
++++ b/arch/mips/lasat/prom.c
+@@ -9,7 +9,7 @@
+ #include <linux/mm.h>
+ #include <linux/bootmem.h>
+ #include <linux/ioport.h>
+-#include <asm/bootinfo.h>
++#include <asm/fw/fw.h>
+ #include <asm/lasat/lasat.h>
+ #include <asm/cpu.h>
+ 
+@@ -81,9 +81,6 @@ static struct at93c_defs at93c_defs[N_MACHTYPES] = {
+ 
+ void __init prom_init(void)
+ {
+-	int argc = fw_arg0;
+-	char **argv = (char **) fw_arg1;
+-
+ 	setup_prom_vectors();
+ 
+ 	if (IS_LASAT_200()) {
+@@ -98,11 +95,7 @@ void __init prom_init(void)
+ 
+ 	lasat_init_board_info();		/* Read info from EEPROM */
+ 
+-	/* Get the command line */
+-	if (argc > 0) {
+-		strncpy(arcs_cmdline, argv[0], COMMAND_LINE_SIZE-1);
+-		arcs_cmdline[COMMAND_LINE_SIZE-1] = '\0';
+-	}
++	fw_init_cmdline();
+ 
+ 	/* Set the I/O base address */
+ 	set_io_port_base(KSEG1);
 -- 
 1.7.10.3

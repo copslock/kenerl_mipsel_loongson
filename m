@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:51:21 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:54994 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:51:47 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:54995 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903761Ab2FZEt4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:49:56 +0200
+        with ESMTP id S1903766Ab2FZEuC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:50:02 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SjNbW-0002zj-HD; Mon, 25 Jun 2012 23:42:18 -0500
+        id 1SjNbO-0002zj-EM; Mon, 25 Jun 2012 23:42:10 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 27/33] MIPS: PowerTV: Cleanup files effected by firmware changes.
-Date:   Mon, 25 Jun 2012 23:41:42 -0500
-Message-Id: <1340685708-14408-28-git-send-email-sjhill@mips.com>
+Subject: [PATCH 13/33] MIPS: lantiq: Cleanup firmware support for the lantiq platform.
+Date:   Mon, 25 Jun 2012 23:41:28 -0500
+Message-Id: <1340685708-14408-14-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
 References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33822
+X-archive-position: 33823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,197 +36,59 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Make headers consistent across the files.
-
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/powertv/asic/asic_int.c |   42 ++++++++-----------------------------
- arch/mips/powertv/init.c          |   27 ++++++++----------------
- arch/mips/powertv/memory.c        |   23 +++++++-------------
- arch/mips/powertv/powertv_setup.c |   22 ++++++-------------
- 4 files changed, 31 insertions(+), 83 deletions(-)
+ arch/mips/lantiq/prom.c |   22 ++--------------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
-diff --git a/arch/mips/powertv/asic/asic_int.c b/arch/mips/powertv/asic/asic_int.c
-index 8728c3b..400ffb2 100644
---- a/arch/mips/powertv/asic/asic_int.c
-+++ b/arch/mips/powertv/asic/asic_int.c
-@@ -1,27 +1,16 @@
- /*
-- * Carsten Langgaard, carstenl@mips.com
-- * Copyright (C) 2000, 2001, 2004 MIPS Technologies, Inc.
-- * Copyright (C) 2001 Ralf Baechle
-- * Portions copyright (C) 2009  Cisco Systems, Inc.
-- *
-- *  This program is free software; you can distribute it and/or modify it
-- *  under the terms of the GNU General Public License (Version 2) as
-- *  published by the Free Software Foundation.
-- *
-- *  This program is distributed in the hope it will be useful, but WITHOUT
-- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-- *  for more details.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  *
-  * Routines for generic manipulation of the interrupts found on the PowerTV
-- * platform.
-+ * platform. The interrupt controller is located in the South Bridge a PIIX4
-+ * device with two internal 82C95 interrupt controllers.
-  *
-- * The interrupt controller is located in the South Bridge a PIIX4 device
-- * with two internal 82C95 interrupt controllers.
-+ * Carsten Langgaard, carstenl@mips.com
-+ * Copyright (C) 2000,2001,2004 MIPS Technologies, Inc.
-+ * Copyright (C) 2001 Ralf Baechle
-+ * Portions copyright (C) 2009  Cisco Systems, Inc.
-  */
- #include <linux/init.h>
- #include <linux/irq.h>
-@@ -68,19 +57,6 @@ static void asic_irqdispatch(void)
- 	do_IRQ(irq);
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+index d185e84..aa9da9e 100644
+--- a/arch/mips/lantiq/prom.c
++++ b/arch/mips/lantiq/prom.c
+@@ -9,9 +9,9 @@
+ #include <linux/export.h>
+ #include <linux/clk.h>
+ #include <linux/of_platform.h>
+-#include <asm/bootinfo.h>
+ #include <asm/time.h>
+ 
++#include <asm/fw/fw.h>
+ #include <lantiq.h>
+ 
+ #include "prom.h"
+@@ -36,24 +36,6 @@ void prom_free_prom_memory(void)
+ {
  }
  
--static inline int clz(unsigned long x)
+-static void __init prom_init_cmdline(void)
 -{
--	__asm__(
--	"	.set	push					\n"
--	"	.set	mips32					\n"
--	"	clz	%0, %1					\n"
--	"	.set	pop					\n"
--	: "=r" (x)
--	: "r" (x));
+-	int argc = fw_arg0;
+-	char **argv = (char **) KSEG1ADDR(fw_arg1);
+-	int i;
 -
--	return x;
+-	arcs_cmdline[0] = '\0';
+-
+-	for (i = 0; i < argc; i++) {
+-		char *p = (char *) KSEG1ADDR(argv[i]);
+-
+-		if (CPHYSADDR(p) && *p) {
+-			strlcat(arcs_cmdline, p, sizeof(arcs_cmdline));
+-			strlcat(arcs_cmdline, " ", sizeof(arcs_cmdline));
+-		}
+-	}
 -}
 -
- /*
-  * Version of ffs that only looks at bits 12..15.
-  */
-diff --git a/arch/mips/powertv/init.c b/arch/mips/powertv/init.c
-index 14cdf19..0f1be8f 100644
---- a/arch/mips/powertv/init.c
-+++ b/arch/mips/powertv/init.c
-@@ -1,24 +1,15 @@
- /*
-- * Copyright (C) 1999, 2000, 2004, 2005  MIPS Technologies, Inc.
-- *	All rights reserved.
-- *	Authors: Carsten Langgaard <carstenl@mips.com>
-- *		 Maciej W. Rozycki <macro@mips.com>
-- * Portions copyright (C) 2009 Cisco Systems, Inc.
-- *
-- *  This program is free software; you can distribute it and/or modify it
-- *  under the terms of the GNU General Public License (Version 2) as
-- *  published by the Free Software Foundation.
-- *
-- *  This program is distributed in the hope it will be useful, but WITHOUT
-- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-- *  for more details.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  *
-  * PROM library initialisation code.
-+ *
-+ * Copyright (C) 1999, 2000, 2004, 2005  MIPS Technologies, Inc.
-+ *     All rights reserved.
-+ *     Authors: Carsten Langgaard <carstenl@mips.com>
-+ *              Maciej W. Rozycki <macro@mips.com>
-+ * Portions copyright (C) 2009 Cisco Systems, Inc.
-  */
- #include <linux/init.h>
- #include <linux/string.h>
-diff --git a/arch/mips/powertv/memory.c b/arch/mips/powertv/memory.c
-index 56f0193..7c70327 100644
---- a/arch/mips/powertv/memory.c
-+++ b/arch/mips/powertv/memory.c
-@@ -1,23 +1,14 @@
- /*
-- * Carsten Langgaard, carstenl@mips.com
-- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
-- * Portions copyright (C) 2009 Cisco Systems, Inc.
-- *
-- *  This program is free software; you can distribute it and/or modify it
-- *  under the terms of the GNU General Public License (Version 2) as
-- *  published by the Free Software Foundation.
-- *
-- *  This program is distributed in the hope it will be useful, but WITHOUT
-- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-- *  for more details.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  *
-  * Apparently originally from arch/mips/malta-memory.c. Modified to work
-  * with the PowerTV bootloader.
-+ *
-+ * Carsten Langgaard, carstenl@mips.com
-+ * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
-+ * Portions copyright (C) 2009 Cisco Systems, Inc.
-  */
- #include <linux/init.h>
- #include <linux/mm.h>
-diff --git a/arch/mips/powertv/powertv_setup.c b/arch/mips/powertv/powertv_setup.c
-index 55a3fc5..ad8b9a0 100644
---- a/arch/mips/powertv/powertv_setup.c
-+++ b/arch/mips/powertv/powertv_setup.c
-@@ -1,20 +1,11 @@
- /*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * Carsten Langgaard, carstenl@mips.com
-  * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
-  * Portions copyright (C) 2009 Cisco Systems, Inc.
-- *
-- *  This program is free software; you can distribute it and/or modify it
-- *  under the terms of the GNU General Public License (Version 2) as
-- *  published by the Free Software Foundation.
-- *
-- *  This program is distributed in the hope it will be useful, but WITHOUT
-- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-- *  for more details.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
-  */
- #include <linux/init.h>
- #include <linux/sched.h>
-@@ -197,8 +188,7 @@ static int panic_handler(struct notifier_block *notifier_block,
- 		my_regs.cp0_status = read_c0_status();
- 	}
+ void __init plat_mem_setup(void)
+ {
+ 	ioport_resource.start = IOPORT_RESOURCE_START;
+@@ -78,7 +60,7 @@ void __init prom_init(void)
+ 		soc_info.name, soc_info.rev_type);
+ 	soc_info.sys_type[LTQ_SYS_TYPE_LEN - 1] = '\0';
+ 	pr_info("SoC: %s\n", soc_info.sys_type);
+-	prom_init_cmdline();
++	fw_init_cmdline();
  
--	pr_crit("I'm feeling a bit sleepy. hmmmmm... perhaps a nap would... "
--		"zzzz... \n");
-+	pr_crit("I'm feeling a bit sleepy. Perhaps a nap would...zzzz...\n");
- 
- 	return NOTIFY_DONE;
- }
-@@ -295,7 +285,7 @@ void platform_random_ether_addr(u8 addr[ETH_ALEN])
- 	const unsigned char mac_addr_locally_managed = (1 << 1);
- 
- 	if (!have_rfmac) {
--		pr_warning("rfmac not available on command line; "
-+		pr_warn("rfmac not available on command line; "
- 			"generating random MAC address\n");
- 		random_ether_addr(addr);
- 	}
+ #if defined(CONFIG_MIPS_MT_SMP)
+ 	if (register_vsmp_smp_ops())
 -- 
 1.7.10.3

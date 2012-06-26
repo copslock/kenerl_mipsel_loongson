@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:44:04 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:54952 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:44:33 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:54954 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903499Ab2FZEmL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:42:11 +0200
+        with ESMTP id S1903664Ab2FZEmM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:42:12 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SjNbJ-0002zj-8q; Mon, 25 Jun 2012 23:42:05 -0500
+        id 1SjNbJ-0002zj-Pb; Mon, 25 Jun 2012 23:42:05 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 04/33] MIPS: AR7: Cleanup firmware support for the AR7 platform.
-Date:   Mon, 25 Jun 2012 23:41:19 -0500
-Message-Id: <1340685708-14408-5-git-send-email-sjhill@mips.com>
+Subject: [PATCH 05/33] MIPS: AR7: Cleanup files effected by firmware changes.
+Date:   Mon, 25 Jun 2012 23:41:20 -0500
+Message-Id: <1340685708-14408-6-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
 References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33812
+X-archive-position: 33813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,187 +36,29 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
+Make headers consistent across the files and make changes based on
+running the checkpatch script.
+
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/ar7/memory.c                |    3 +--
- arch/mips/ar7/platform.c              |   10 ++++-----
- arch/mips/ar7/prom.c                  |   40 ++++++++-------------------------
- arch/mips/ar7/setup.c                 |    4 ++--
- arch/mips/include/asm/mach-ar7/prom.h |   25 ---------------------
- 5 files changed, 17 insertions(+), 65 deletions(-)
- delete mode 100644 arch/mips/include/asm/mach-ar7/prom.h
+ arch/mips/ar7/memory.c   |   18 ++++------------
+ arch/mips/ar7/platform.c |   53 ++++++++++++++++++----------------------------
+ arch/mips/ar7/prom.c     |   19 ++++-------------
+ arch/mips/ar7/setup.c    |   19 +++++------------
+ 4 files changed, 34 insertions(+), 75 deletions(-)
 
 diff --git a/arch/mips/ar7/memory.c b/arch/mips/ar7/memory.c
-index 28abfee..3d7133d 100644
+index 3d7133d..e685cab 100644
 --- a/arch/mips/ar7/memory.c
 +++ b/arch/mips/ar7/memory.c
-@@ -30,7 +30,6 @@
- #include <asm/sections.h>
- 
- #include <asm/mach-ar7/ar7.h>
--#include <asm/mips-boards/prom.h>
- 
- static int __init memsize(void)
- {
-@@ -57,7 +56,7 @@ static int __init memsize(void)
- 	return size;
- }
- 
--void __init prom_meminit(void)
-+void __init fw_meminit(void)
- {
- 	unsigned long pages;
- 
-diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
-index 1a24d31..284b86a 100644
---- a/arch/mips/ar7/platform.c
-+++ b/arch/mips/ar7/platform.c
-@@ -38,9 +38,9 @@
- #include <linux/clk.h>
- 
- #include <asm/addrspace.h>
-+#include <asm/fw/fw.h>
- #include <asm/mach-ar7/ar7.h>
- #include <asm/mach-ar7/gpio.h>
--#include <asm/mach-ar7/prom.h>
- 
- /*****************************************************************************
-  * VLYNQ Bus
-@@ -297,10 +297,10 @@ static void __init cpmac_get_mac(int instance, unsigned char *dev_addr)
- 	char name[5], *mac;
- 
- 	sprintf(name, "mac%c", 'a' + instance);
--	mac = prom_getenv(name);
-+	mac = fw_getenv(name);
- 	if (!mac && instance) {
- 		sprintf(name, "mac%c", 'a');
--		mac = prom_getenv(name);
-+		mac = fw_getenv(name);
- 	}
- 
- 	if (mac) {
-@@ -514,8 +514,8 @@ static void __init detect_leds(void)
- 	ar7_led_data.leds = default_leds;
- 
- 	/* FIXME: the whole thing is unreliable */
--	prid = prom_getenv("ProductID");
--	usb_prod = prom_getenv("usb_prod");
-+	prid = fw_getenv("ProductID");
-+	usb_prod = fw_getenv("usb_prod");
- 
- 	/* If we can't get the product id from PROM, use the default LEDs */
- 	if (!prid)
-diff --git a/arch/mips/ar7/prom.c b/arch/mips/ar7/prom.c
-index a23adc4..9e5699a 100644
---- a/arch/mips/ar7/prom.c
-+++ b/arch/mips/ar7/prom.c
-@@ -24,10 +24,9 @@
- #include <linux/module.h>
- #include <linux/string.h>
- #include <linux/io.h>
--#include <asm/bootinfo.h>
- 
-+#include <asm/fw/fw.h>
- #include <asm/mach-ar7/ar7.h>
--#include <asm/mach-ar7/prom.h>
- 
- #define MAX_ENTRY 80
- 
-@@ -38,29 +37,6 @@ struct env_var {
- 
- static struct env_var adam2_env[MAX_ENTRY];
- 
--char *prom_getenv(const char *name)
--{
--	int i;
--
--	for (i = 0; (i < MAX_ENTRY) && adam2_env[i].name; i++)
--		if (!strcmp(name, adam2_env[i].name))
--			return adam2_env[i].value;
--
--	return NULL;
--}
--EXPORT_SYMBOL(prom_getenv);
--
--static void  __init ar7_init_cmdline(int argc, char *argv[])
--{
--	int i;
--
--	for (i = 1; i < argc; i++) {
--		strlcat(arcs_cmdline, argv[i], COMMAND_LINE_SIZE);
--		if (i < (argc - 1))
--			strlcat(arcs_cmdline, " ", COMMAND_LINE_SIZE);
--	}
--}
--
- struct psbl_rec {
- 	u32	psbl_size;
- 	u32	env_base;
-@@ -199,17 +175,19 @@ static void __init console_config(void)
- {
- #ifdef CONFIG_SERIAL_8250_CONSOLE
- 	char console_string[40];
--	int baud = 0;
-+	long val;
-+	int tmp, baud = 0;
- 	char parity = '\0', bits = '\0', flow = '\0';
--	char *s, *p;
-+	char *s;
- 
- 	if (strstr(arcs_cmdline, "console="))
- 		return;
- 
--	s = prom_getenv("modetty0");
-+	s = fw_getenv("modetty0");
- 	if (s) {
--		baud = simple_strtoul(s, &p, 10);
--		s = p;
-+		tmp = kstrtol(s, 0, &val);
-+		baud = (int)val;
-+		while (*s++ != ',');
- 		if (*s == ',')
- 			s++;
- 		if (*s)
-@@ -243,7 +221,7 @@ static void __init console_config(void)
- 
- void __init prom_init(void)
- {
--	ar7_init_cmdline(fw_arg0, (char **)fw_arg1);
-+	fw_init_cmdline();
- 	ar7_init_env((struct env_var *)fw_arg2);
- 	console_config();
- 
-diff --git a/arch/mips/ar7/setup.c b/arch/mips/ar7/setup.c
-index 9a357ff..ec318bb 100644
---- a/arch/mips/ar7/setup.c
-+++ b/arch/mips/ar7/setup.c
-@@ -21,8 +21,8 @@
- #include <linux/time.h>
- 
- #include <asm/reboot.h>
-+#include <asm/fw/fw.h>
- #include <asm/mach-ar7/ar7.h>
--#include <asm/mach-ar7/prom.h>
- #include <asm/mach-ar7/gpio.h>
- 
- static void ar7_machine_restart(char *command)
-@@ -99,7 +99,7 @@ void __init plat_mem_setup(void)
- 		panic("Can't remap IO base!");
- 	set_io_port_base(io_base);
- 
--	prom_meminit();
-+	fw_meminit();
- 
- 	printk(KERN_INFO "%s, ID: 0x%04x, Revision: 0x%02x\n",
- 			get_system_type(), ar7_chip_id(), ar7_chip_rev());
-diff --git a/arch/mips/include/asm/mach-ar7/prom.h b/arch/mips/include/asm/mach-ar7/prom.h
-deleted file mode 100644
-index 088f61f..0000000
---- a/arch/mips/include/asm/mach-ar7/prom.h
-+++ /dev/null
-@@ -1,25 +0,0 @@
--/*
-- * Copyright (C) 2006, 2007 Florian Fainelli <florian@openwrt.org>
+@@ -1,20 +1,10 @@
+ /*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
+  * Copyright (C) 2007 Felix Fietkau <nbd@openwrt.org>
+  * Copyright (C) 2007 Eugene Konev <ejka@openwrt.org>
 - *
 - * This program is free software; you can redistribute it and/or modify
 - * it under the terms of the GNU General Public License as published by
@@ -231,14 +73,202 @@ index 088f61f..0000000
 - * You should have received a copy of the GNU General Public License
 - * along with this program; if not, write to the Free Software
 - * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-- */
+  */
+ #include <linux/bootmem.h>
+ #include <linux/init.h>
+diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
+index 284b86a..921e42c 100644
+--- a/arch/mips/ar7/platform.c
++++ b/arch/mips/ar7/platform.c
+@@ -1,22 +1,12 @@
+ /*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
+  * Copyright (C) 2006,2007 Felix Fietkau <nbd@openwrt.org>
+  * Copyright (C) 2006,2007 Eugene Konev <ejka@openwrt.org>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+  */
 -
--#ifndef __PROM_H__
--#define __PROM_H__
--
--extern char *prom_getenv(const char *name);
--extern void prom_meminit(void);
--
--#endif /* __PROM_H__ */
+ #include <linux/init.h>
+ #include <linux/types.h>
+ #include <linux/module.h>
+@@ -308,8 +298,7 @@ static void __init cpmac_get_mac(int instance, unsigned char *dev_addr)
+ 					&dev_addr[0], &dev_addr[1],
+ 					&dev_addr[2], &dev_addr[3],
+ 					&dev_addr[4], &dev_addr[5]) != 6) {
+-			pr_warning("cannot parse mac address, "
+-					"using random address\n");
++			pr_warn("cannot parse mac address, using random address\n");
+ 			random_ether_addr(dev_addr);
+ 		}
+ 	} else
+@@ -489,11 +478,11 @@ static struct gpio_led gt701_leds[] = {
+ 		.active_low		= 1,
+ 		.default_trigger	= "default-on",
+ 	},
+-        {
+-                .name                   = "ethernet",
+-                .gpio                   = 10,
+-                .active_low             = 1,
+-        },
++	{
++		.name                   = "ethernet",
++		.gpio                   = 10,
++		.active_low             = 1,
++	},
+ };
+ 
+ static struct gpio_led_platform_data ar7_led_data;
+@@ -662,7 +651,7 @@ static int __init ar7_register_devices(void)
+ 
+ 	res = platform_device_register(&physmap_flash);
+ 	if (res)
+-		pr_warning("unable to register physmap-flash: %d\n", res);
++		pr_warn("unable to register physmap-flash: %d\n", res);
+ 
+ 	if (ar7_is_titan())
+ 		titan_fixup_devices();
+@@ -670,13 +659,13 @@ static int __init ar7_register_devices(void)
+ 	ar7_device_disable(vlynq_low_data.reset_bit);
+ 	res = platform_device_register(&vlynq_low);
+ 	if (res)
+-		pr_warning("unable to register vlynq-low: %d\n", res);
++		pr_warn("unable to register vlynq-low: %d\n", res);
+ 
+ 	if (ar7_has_high_vlynq()) {
+ 		ar7_device_disable(vlynq_high_data.reset_bit);
+ 		res = platform_device_register(&vlynq_high);
+ 		if (res)
+-			pr_warning("unable to register vlynq-high: %d\n", res);
++			pr_warn("unable to register vlynq-high: %d\n", res);
+ 	}
+ 
+ 	if (ar7_has_high_cpmac()) {
+@@ -686,9 +675,9 @@ static int __init ar7_register_devices(void)
+ 
+ 			res = platform_device_register(&cpmac_high);
+ 			if (res)
+-				pr_warning("unable to register cpmac-high: %d\n", res);
++				pr_warn("unable to register cpmac-high: %d\n", res);
+ 		} else
+-			pr_warning("unable to add cpmac-high phy: %d\n", res);
++			pr_warn("unable to add cpmac-high phy: %d\n", res);
+ 	} else
+ 		cpmac_low_data.phy_mask = 0xffffffff;
+ 
+@@ -697,18 +686,18 @@ static int __init ar7_register_devices(void)
+ 		cpmac_get_mac(0, cpmac_low_data.dev_addr);
+ 		res = platform_device_register(&cpmac_low);
+ 		if (res)
+-			pr_warning("unable to register cpmac-low: %d\n", res);
++			pr_warn("unable to register cpmac-low: %d\n", res);
+ 	} else
+-		pr_warning("unable to add cpmac-low phy: %d\n", res);
++		pr_warn("unable to add cpmac-low phy: %d\n", res);
+ 
+ 	detect_leds();
+ 	res = platform_device_register(&ar7_gpio_leds);
+ 	if (res)
+-		pr_warning("unable to register leds: %d\n", res);
++		pr_warn("unable to register leds: %d\n", res);
+ 
+ 	res = platform_device_register(&ar7_udc);
+ 	if (res)
+-		pr_warning("unable to register usb slave: %d\n", res);
++		pr_warn("unable to register usb slave: %d\n", res);
+ 
+ 	/* Register watchdog only if enabled in hardware */
+ 	bootcr = ioremap_nocache(AR7_REGS_DCL, 4);
+@@ -723,7 +712,7 @@ static int __init ar7_register_devices(void)
+ 		ar7_wdt_res.end = ar7_wdt_res.start + 0x20;
+ 		res = platform_device_register(&ar7_wdt);
+ 		if (res)
+-			pr_warning("unable to register watchdog: %d\n", res);
++			pr_warn("unable to register watchdog: %d\n", res);
+ 	}
+ 
+ 	return 0;
+diff --git a/arch/mips/ar7/prom.c b/arch/mips/ar7/prom.c
+index 9e5699a..eb91fc8 100644
+--- a/arch/mips/ar7/prom.c
++++ b/arch/mips/ar7/prom.c
+@@ -1,21 +1,10 @@
+ /*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
+  * Carsten Langgaard, carstenl@mips.com
+  * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * Putting things on the screen/serial line using YAMONs facilities.
+  */
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+diff --git a/arch/mips/ar7/setup.c b/arch/mips/ar7/setup.c
+index ec318bb..0257f53 100644
+--- a/arch/mips/ar7/setup.c
++++ b/arch/mips/ar7/setup.c
+@@ -1,19 +1,10 @@
+ /*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
+  * Carsten Langgaard, carstenl@mips.com
+  * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+  */
+ #include <linux/init.h>
+ #include <linux/ioport.h>
+@@ -101,6 +92,6 @@ void __init plat_mem_setup(void)
+ 
+ 	fw_meminit();
+ 
+-	printk(KERN_INFO "%s, ID: 0x%04x, Revision: 0x%02x\n",
++	pr_info("%s, ID: 0x%04x, Revision: 0x%02x\n",
+ 			get_system_type(), ar7_chip_id(), ar7_chip_rev());
+ }
 -- 
 1.7.10.3

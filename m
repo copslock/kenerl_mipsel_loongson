@@ -1,46 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 16:32:01 +0200 (CEST)
-Received: from mail-ey0-f177.google.com ([209.85.215.177]:60354 "EHLO
-        mail-ey0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903842Ab2FZObx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 16:31:53 +0200
-Received: by eaaf11 with SMTP id f11so1728825eaa.36
-        for <multiple recipients>; Tue, 26 Jun 2012 07:31:48 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 17:12:07 +0200 (CEST)
+Received: from mail-qc0-f169.google.com ([209.85.216.169]:37974 "EHLO
+        mail-qc0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903850Ab2FZPL7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 17:11:59 +0200
+Received: by qcsd16 with SMTP id d16so8934qcs.28
+        for <multiple recipients>; Tue, 26 Jun 2012 08:11:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:organization:user-agent
-         :in-reply-to:references:mime-version:content-transfer-encoding
-         :content-type;
-        bh=TZRAMJQuV2Xhzb7HntpvQgNpdSjjNZEk8/QHyaTdbEc=;
-        b=osLK9O/A8OfFLYko+ZKKtKfWW8qITtRm/kyqpWGurlJ0k7CivGC59gRUSxJd7fpOE3
-         sO9vnHUJiSFWdKOOKIdNa2JQgXAKwqw39MTXUicOpyFYbJDEMQtFb5jv4SfbvMOnfGCy
-         mkki7T/t1sFI3F7yfovrQmaoN2X5pT0T6g8BwX5j4YHxPtY3Wjyzf5Wu9omUt7u+MDrL
-         lJuOmw7SVkMzySP//A6O+iEW56+o2D7Q+iSIH2h7sgm9U8X1SWYOU3H/MfdMVdex2wQW
-         37RS6W7vbD51sfJ0wVjAs81EcBwyLCc5ZxVZmmKTfKsfVAS+LwOKIYfG0omCi7phrSXU
-         QVOA==
-Received: by 10.14.96.73 with SMTP id q49mr3265414eef.76.1340721108032;
-        Tue, 26 Jun 2012 07:31:48 -0700 (PDT)
-Received: from flexo.localnet (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by mx.google.com with ESMTPS id u44sm6008128eeb.7.2012.06.26.07.31.42
-        (version=SSLv3 cipher=OTHER);
-        Tue, 26 Jun 2012 07:31:44 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     linux-mips@linux-mips.org
-Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: Re: [PATCH 05/33] MIPS: AR7: Cleanup files effected by firmware changes.
-Date:   Tue, 26 Jun 2012 16:29:08 +0200
-Message-ID: <2501952.67ymQ30y5z@flexo>
-Organization: OpenWrt
-User-Agent: KMail/4.8.3 (Linux/3.2.0-24-generic; KDE/4.8.3; x86_64; ; )
-In-Reply-To: <1340685708-14408-6-git-send-email-sjhill@mips.com>
-References: <1340685708-14408-1-git-send-email-sjhill@mips.com> <1340685708-14408-6-git-send-email-sjhill@mips.com>
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=h6MOQLk5o01mRcBFHBb5VJHNGeZRyMftUxMbpMjZNOI=;
+        b=ksKgIDxqG6B0C+ZKp58n+rSoJm2SbRUSqifjX7AQbhlrx7UnYQzu6OiEZk1cKNJxe1
+         XA1bxTmMLgdFKj9tXTznlwD1RiuHO/DmSXBo6dFsedGMYR8Ry0OhvruW9K0bVoalWHAY
+         EBPJtTok98nj+U2rvHJcLbm+peV6PLkQkuOZ00CjfAjSvSpu3k/nVU9f5M8iNGRaMSXq
+         5PfXwBh66XokVEFOdY5KF1Huoz29+DiALCtAx5RtH2wCvkgm9oDqPPTMMww2cEakHGuE
+         UvYFy0NdgYc1Ta9Yfmch/h11AgyrTacChHDx7o3+YbPSyXB46lqvJ4ngI4d4fjkrwvXN
+         qF7A==
+Received: by 10.60.14.68 with SMTP id n4mr16580914oec.24.1340723513275; Tue,
+ 26 Jun 2012 08:11:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-archive-position: 33844
+Received: by 10.76.98.195 with HTTP; Tue, 26 Jun 2012 08:11:32 -0700 (PDT)
+In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
+References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+Date:   Tue, 26 Jun 2012 17:11:32 +0200
+Message-ID: <CAOiHx=kKxZZzJZkRe+SRjFj0JD7yq4=3CmRFbqc6hW_Dhnbz3g@mail.gmail.com>
+Subject: Re: [PATCH 00/33] Cleanup firmware support across multiple platforms.
+To:     "Steven J. Hill" <sjhill@mips.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 33845
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,52 +47,22 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Monday 25 June 2012 23:41:20 Steven J. Hill wrote:
-> From: "Steven J. Hill" <sjhill@mips.com>
-> 
-> Make headers consistent across the files and make changes based on
-> running the checkpatch script.
-> 
-> Signed-off-by: Steven J. Hill <sjhill@mips.com>
-> ---
->  arch/mips/ar7/memory.c   |   18 ++++------------
->  arch/mips/ar7/platform.c |   53 
-++++++++++++++++++----------------------------
-[snip]
->   */
->  #include <linux/bootmem.h>
->  #include <linux/init.h>
-> diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
-> index 284b86a..921e42c 100644
-> --- a/arch/mips/ar7/platform.c
-> +++ b/arch/mips/ar7/platform.c
-> @@ -1,22 +1,12 @@
->  /*
-> + * This file is subject to the terms and conditions of the GNU General 
-Public
-> + * License.  See the file "COPYING" in the main directory of this archive
-> + * for more details.
-> + *
->   * Copyright (C) 2006,2007 Felix Fietkau <nbd@openwrt.org>
->   * Copyright (C) 2006,2007 Eugene Konev <ejka@openwrt.org>
-> - *
-> - * This program is free software; you can redistribute it and/or modify
-> - * it under the terms of the GNU General Public License as published by
-> - * the Free Software Foundation; either version 2 of the License, or
-> - * (at your option) any later version.
-> - *
-> - * This program is distributed in the hope that it will be useful,
-> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> - * GNU General Public License for more details.
-> - *
-> - * You should have received a copy of the GNU General Public License
-> - * along with this program; if not, write to the Free Software
-> - * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  
-USA
-> + * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+Hi Steven,
 
-You are adding MTI's Copyright back here, which I assume is a left-over from 
-your first submission.
---
-Florian
+On 26 June 2012 06:41, Steven J. Hill <sjhill@mips.com> wrote:
+> From: "Steven J. Hill" <sjhill@mips.com>
+>
+> This is actually the second version of the firmware cleanup.
+
+Maybe name it V2 then? Or V3, if you send another one ;-)
+
+> It is two
+> patches less than first after incorporating all the review comments
+> and changes requested. The original patch set is now rejected.
+
+You are changing licenses from GPLv2+ to GPLv2 for many files - "any
+later" gives me hits for 13 of your patches (but I didn't verify them
+all).
+
+Regards
+Jonas

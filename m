@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:57:57 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:55030 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:58:19 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:55031 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903776Ab2FZEvf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:51:35 +0200
+        with ESMTP id S1903761Ab2FZEvl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:51:41 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SjNbN-0002zj-9F; Mon, 25 Jun 2012 23:42:09 -0500
+        id 1SjNbN-0002zj-RF; Mon, 25 Jun 2012 23:42:09 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 11/33] MIPS: jz4740: Cleanup firmware support for the JZ4740 platform.
-Date:   Mon, 25 Jun 2012 23:41:26 -0500
-Message-Id: <1340685708-14408-12-git-send-email-sjhill@mips.com>
+Subject: [PATCH 12/33] MIPS: jz4740: Cleanup files effected by firmware changes.
+Date:   Mon, 25 Jun 2012 23:41:27 -0500
+Message-Id: <1340685708-14408-13-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
 References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33837
+X-archive-position: 33838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,50 +36,57 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
+Make headers consistent across the files and make changes based on
+running the checkpatch script.
+
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/jz4740/prom.c |   25 ++-----------------------
- 1 file changed, 2 insertions(+), 23 deletions(-)
+ arch/mips/jz4740/prom.c |   23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
 diff --git a/arch/mips/jz4740/prom.c b/arch/mips/jz4740/prom.c
-index 4a70407..c5071ab 100644
+index c5071ab..076b661 100644
 --- a/arch/mips/jz4740/prom.c
 +++ b/arch/mips/jz4740/prom.c
-@@ -20,33 +20,12 @@
- 
+@@ -1,23 +1,14 @@
+ /*
+- *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
+- *  JZ4740 SoC prom code
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
+  *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under  the terms of the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the License, or (at your
+- *  option) any later version.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
++ * JZ4740 SoC prom code
+  *
++ * Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
+  */
+-
+ #include <linux/module.h>
+-#include <linux/kernel.h>
+ #include <linux/init.h>
+-#include <linux/string.h>
+-
  #include <linux/serial_reg.h>
  
--#include <asm/bootinfo.h>
-+#include <asm/fw/fw.h>
- #include <asm/mach-jz4740/base.h>
- 
--static __init void jz4740_init_cmdline(int argc, char *argv[])
--{
--	unsigned int count = COMMAND_LINE_SIZE - 1;
--	int i;
--	char *dst = &(arcs_cmdline[0]);
--	char *src;
--
--	for (i = 1; i < argc && count; ++i) {
--		src = argv[i];
--		while (*src && count) {
--			*dst++ = *src++;
--			--count;
--		}
--		*dst++ = ' ';
--	}
--	if (i > 1)
--		--dst;
--
--	*dst = 0;
--}
--
- void __init prom_init(void)
+ #include <asm/fw/fw.h>
+@@ -33,7 +24,9 @@ void __init prom_free_prom_memory(void)
  {
--	jz4740_init_cmdline((int)fw_arg0, (char **)fw_arg1);
-+	fw_init_cmdline();
- 	mips_machtype = MACH_INGENIC_JZ4740;
  }
  
+-#define UART_REG(_reg) ((void __iomem *)CKSEG1ADDR(JZ4740_UART0_BASE_ADDR + (_reg << 2)))
++#define UART_REG(_reg)							\
++	((void __iomem *)CKSEG1ADDR(JZ4740_UART0_BASE_ADDR +		\
++	(_reg << 2)))
+ 
+ void prom_putchar(char c)
+ {
 -- 
 1.7.10.3

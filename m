@@ -1,22 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:59:31 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:55038 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 07:11:21 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:55112 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903798Ab2FZEv7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:51:59 +0200
+        with ESMTP id S1903788Ab2FZFLP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 07:11:15 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SjNbT-0002zj-3k; Mon, 25 Jun 2012 23:42:15 -0500
+        id 1SjO3R-00034R-AO; Tue, 26 Jun 2012 00:11:09 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 21/33] MIPS: Netlogic: Cleanup firmware support for the XLR platform.
-Date:   Mon, 25 Jun 2012 23:41:36 -0500
-Message-Id: <1340685708-14408-22-git-send-email-sjhill@mips.com>
+Subject: [PATCH v5,1/5] MIPS: Add support for the 1074K core.
+Date:   Tue, 26 Jun 2012 00:11:03 -0500
+Message-Id: <1340687463-15272-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
-In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33841
+X-archive-position: 33842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,103 +36,92 @@ From: "Steven J. Hill" <sjhill@mips.com>
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/netlogic/xlr/setup.c |   48 +++++++++-------------------------------
- 1 file changed, 10 insertions(+), 38 deletions(-)
+ arch/mips/include/asm/cpu.h      |    1 +
+ arch/mips/include/asm/mipsregs.h |    2 ++
+ arch/mips/kernel/cpu-probe.c     |    4 ++++
+ arch/mips/mm/c-r4k.c             |   20 +++++++++++++++++++-
+ 4 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/netlogic/xlr/setup.c b/arch/mips/netlogic/xlr/setup.c
-index c9d066d..54ca3fc 100644
---- a/arch/mips/netlogic/xlr/setup.c
-+++ b/arch/mips/netlogic/xlr/setup.c
-@@ -31,14 +31,13 @@
-  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  */
--
- #include <linux/kernel.h>
- #include <linux/serial_8250.h>
- #include <linux/pm.h>
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 95e40c1..ad3caba 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -94,6 +94,7 @@
+ #define PRID_IMP_24KE		0x9600
+ #define PRID_IMP_74K		0x9700
+ #define PRID_IMP_1004K		0x9900
++#define PRID_IMP_1074K		0x9a00
+ #define PRID_IMP_M14KC		0x9c00
  
- #include <asm/reboot.h>
- #include <asm/time.h>
--#include <asm/bootinfo.h>
-+#include <asm/fw/fw.h>
+ /*
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 7f87d82..60731ff 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -596,6 +596,8 @@
+ #define MIPS_CONF4_MMUEXTDEF	(_ULCAST_(3) << 14)
+ #define MIPS_CONF4_MMUEXTDEF_MMUSIZEEXT (_ULCAST_(1) << 14)
  
- #include <asm/netlogic/interrupt.h>
- #include <asm/netlogic/psb-bootinfo.h>
-@@ -113,45 +112,21 @@ void __init prom_free_prom_memory(void)
- 	/* Nothing yet */
- }
++#define MIPS_CONF6_SYND		(_ULCAST_(1) << 13)
++
+ #define MIPS_CONF7_WII		(_ULCAST_(1) << 31)
  
--static void __init build_arcs_cmdline(int *argv)
-+static void __init build_arcs_cmdline(void)
- {
--	int i, remain, len;
--	char *arg;
--
--	remain = sizeof(arcs_cmdline) - 1;
--	arcs_cmdline[0] = '\0';
--	for (i = 0; argv[i] != 0; i++) {
--		arg = (char *)(long)argv[i];
--		len = strlen(arg);
--		if (len + 1 > remain)
--			break;
--		strcat(arcs_cmdline, arg);
--		strcat(arcs_cmdline, " ");
--		remain -=  len + 1;
--	}
-+	fw_init_cmdline();
- 
- 	/* Add the default options here */
--	if ((strstr(arcs_cmdline, "console=")) == NULL) {
--		arg = "console=ttyS0,38400 ";
--		len = strlen(arg);
--		if (len > remain)
--			goto fail;
--		strcat(arcs_cmdline, arg);
--		remain -= len;
-+	if ((strstr(fw_getcmdline(), "console=")) == NULL) {
-+		strlcat(fw_getcmdline(), "console=ttyS0,38400 ",
-+			COMMAND_LINE_SIZE);
+ #define MIPS_CONF7_RPS		(_ULCAST_(1) << 2)
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 27404ad..78644e8 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -843,6 +843,10 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
+ 		c->cputype = CPU_1004K;
+ 		__cpu_name[cpu] = "MIPS 1004Kc";
+ 		break;
++	case PRID_IMP_1074K:
++		c->cputype = CPU_74K;
++		__cpu_name[cpu] = "MIPS 1074Kc";
++		break;
  	}
- #ifdef CONFIG_BLK_DEV_INITRD
--	if ((strstr(arcs_cmdline, "rdinit=")) == NULL) {
--		arg = "rdinit=/sbin/init ";
--		len = strlen(arg);
--		if (len > remain)
--			goto fail;
--		strcat(arcs_cmdline, arg);
--		remain -= len;
-+	if ((strstr(fw_getcmdline(), "rdinit=")) == NULL) {
-+		strlcat(fw_getcmdline(), "rdinit=/sbin/init ",
-+			COMMAND_LINE_SIZE);
- 	}
- #endif
--	return;
--fail:
--	panic("Cannot add %s, command line too big!", arg);
- }
  
- static void prom_add_memory(void)
-@@ -178,19 +153,16 @@ static void prom_add_memory(void)
+ 	spram_config();
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index ce0dbee..4b08334 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1040,10 +1040,27 @@ static void __cpuinit probe_pcache(void)
+ 	case CPU_R14000:
+ 		break;
  
- void __init prom_init(void)
- {
--	int *argv, *envp;		/* passed as 32 bit ptrs */
- 	struct psb_info *prom_infop;
- 
- 	/* truncate to 32 bit and sign extend all args */
--	argv = (int *)(long)(int)fw_arg1;
--	envp = (int *)(long)(int)fw_arg2;
- 	prom_infop = (struct psb_info *)(long)(int)fw_arg3;
- 
- 	nlm_prom_info = *prom_infop;
- 	nlm_pic_base = nlm_mmio_base(NETLOGIC_IO_PIC_OFFSET);
- 
- 	nlm_early_serial_setup();
--	build_arcs_cmdline(argv);
-+	build_arcs_cmdline();
- 	nlm_common_ebase = read_c0_ebase() & (~((1 << 12) - 1));
- 	prom_add_memory();
- 
++	case CPU_74K:
++		/*
++		 * Early versions of the 74k do not update
++		 * the cache tags on a vtag miss/ptag hit
++		 * which can occur in the case of KSEG0/KUSEG aliases
++		 * In this case it is better to treat the cache as always
++		 * having aliases
++		 */
++		if ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(2, 4, 0))
++			c->dcache.flags |= MIPS_CACHE_VTAG;
++		if ((c->processor_id & 0xff) == PRID_REV_ENCODE_332(2, 4, 0))
++			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
++		if (((c->processor_id & 0xff00) == PRID_IMP_1074K) &&
++		    ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(1, 1, 0))) {
++			c->dcache.flags |= MIPS_CACHE_VTAG;
++			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
++		}
++		/* fall through */
+ 	case CPU_M14KC:
+ 	case CPU_24K:
+ 	case CPU_34K:
+-	case CPU_74K:
+ 	case CPU_1004K:
+ 		if ((read_c0_config7() & (1 << 16))) {
+ 			/* effectively physically indexed dcache,
+@@ -1051,6 +1068,7 @@ static void __cpuinit probe_pcache(void)
+ 			c->dcache.flags |= MIPS_CACHE_PINDEX;
+ 			break;
+ 		}
++		/* fall through */
+ 	default:
+ 		if (c->dcache.waysize > PAGE_SIZE)
+ 			c->dcache.flags |= MIPS_CACHE_ALIASES;
 -- 
 1.7.10.3

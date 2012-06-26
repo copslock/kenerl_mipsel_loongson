@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:54:46 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:55013 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:55:13 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:55015 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903764Ab2FZEuv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:50:51 +0200
+        with ESMTP id S1903774Ab2FZEu5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:50:57 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SjNbU-0002zj-8G; Mon, 25 Jun 2012 23:42:16 -0500
+        id 1SjNbV-0002zj-CN; Mon, 25 Jun 2012 23:42:17 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 23/33] MIPS: MSP71xx, Yosemite: Cleanup files effected by firmware changes.
-Date:   Mon, 25 Jun 2012 23:41:38 -0500
-Message-Id: <1340685708-14408-24-git-send-email-sjhill@mips.com>
+Subject: [PATCH 25/33] MIPS: PNX83xx, PNX8550: Cleanup files effected by firmware changes.
+Date:   Mon, 25 Jun 2012 23:41:40 -0500
+Message-Id: <1340685708-14408-26-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
 References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33830
+X-archive-position: 33831
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,32 +41,146 @@ running the checkpatch script.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- .../mips/include/asm/pmc-sierra/msp71xx/msp_prom.h |   21 +-----
- arch/mips/pmc-sierra/msp71xx/msp_prom.c            |   77 +++-----------------
- arch/mips/pmc-sierra/msp71xx/msp_serial.c          |   59 +++++----------
- arch/mips/pmc-sierra/msp71xx/msp_setup.c           |   33 +++++----
- arch/mips/pmc-sierra/msp71xx/msp_time.c            |   45 +++---------
- arch/mips/pmc-sierra/msp71xx/msp_usb.c             |   25 +------
- arch/mips/pmc-sierra/yosemite/prom.c               |   13 ++--
- drivers/mtd/maps/pmcmsp-flash.c                    |   48 ++++--------
- 8 files changed, 84 insertions(+), 237 deletions(-)
+ arch/mips/pnx833x/common/setup.c     |   32 ++++++------------
+ arch/mips/pnx833x/stb22x/board.c     |   43 +++++++++----------------
+ arch/mips/pnx8550/common/setup.c     |   59 ++++++++++++++++------------------
+ arch/mips/pnx8550/jbs/init.c         |   36 ++++-----------------
+ arch/mips/pnx8550/stb810/prom_init.c |   23 ++++---------
+ 5 files changed, 66 insertions(+), 127 deletions(-)
 
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h b/arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h
-index b8c34ff..b6fae12 100644
---- a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h
-+++ b/arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h
-@@ -1,25 +1,12 @@
+diff --git a/arch/mips/pnx833x/common/setup.c b/arch/mips/pnx833x/common/setup.c
+index 3ea4926..5b56f23 100644
+--- a/arch/mips/pnx833x/common/setup.c
++++ b/arch/mips/pnx833x/common/setup.c
+@@ -1,33 +1,21 @@
+ /*
+- *  setup.c: Setup PNX833X Soc.
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
+  *
+- *  Copyright 2008 NXP Semiconductors
+- *	  Chris Steel <chris.steel@nxp.com>
+- *    Daniel Laird <daniel.j.laird@nxp.com>
++ * Setup PNX833X SOC. Based on software written by
++ * Nikita Youshchenko <yoush@debian.org> from PNX8550 code.
+  *
+- *  Based on software written by:
+- *      Nikita Youshchenko <yoush@debian.org>, based on PNX8550 code.
+- *
+- *  This program is free software; you can redistribute it and/or modify
+- *  it under the terms of the GNU General Public License as published by
+- *  the Free Software Foundation; either version 2 of the License, or
+- *  (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *  GNU General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ * Copyright 2008 NXP Semiconductors
++ * Authors: Chris Steel <chris.steel@nxp.com>
++ *          Daniel Laird <daniel.j.laird@nxp.com>
+  */
+ #include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <linux/ioport.h>
+ #include <linux/io.h>
+ #include <linux/pci.h>
++
+ #include <asm/reboot.h>
++
+ #include <pnx833x.h>
+ #include <gpio.h>
+ 
+diff --git a/arch/mips/pnx833x/stb22x/board.c b/arch/mips/pnx833x/stb22x/board.c
+index cdf1a3b..e4c6422 100644
+--- a/arch/mips/pnx833x/stb22x/board.c
++++ b/arch/mips/pnx833x/stb22x/board.c
+@@ -1,31 +1,20 @@
+ /*
+- *  board.c: STB225 board support.
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
+  *
+- *  Copyright 2008 NXP Semiconductors
+- *	  Chris Steel <chris.steel@nxp.com>
+- *    Daniel Laird <daniel.j.laird@nxp.com>
++ * STB225 board support based on software written by
++ * Nikita Youshchenko <yoush@debian.org> from PNX8550 code.
+  *
+- *  Based on software written by:
+- *      Nikita Youshchenko <yoush@debian.org>, based on PNX8550 code.
+- *
+- *  This program is free software; you can redistribute it and/or modify
+- *  it under the terms of the GNU General Public License as published by
+- *  the Free Software Foundation; either version 2 of the License, or
+- *  (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *  GNU General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ * Copyright 2008 NXP Semiconductors
++ * Authors: Chris Steel <chris.steel@nxp.com>
++ *	    Daniel Laird <daniel.j.laird@nxp.com>
+  */
+ #include <linux/init.h>
+-#include <linux/mm.h>
++#include <linux/bootmem.h>
++
+ #include <asm/fw/fw.h>
+-#include <pnx833x.h>
++
+ #include <gpio.h>
+ 
+ /* endianess twiddlers */
+@@ -94,9 +83,6 @@ void __init pnx833x_board_setup(void)
+ 	PNX833X_MIU_SEL0_TIMING = 0x50003081;
+ 	PNX833X_MIU_SEL1_TIMING = 0x50003081;
+ 
+-	/* Setup GPIO 00 for use as MIU CS1 (CS0 is not multiplexed, so does not need this) */
+-	pnx833x_gpio_select_function_alt(0);
+-
+ 	/* Setup GPIO 04 to input NAND read/busy signal */
+ 	pnx833x_gpio_select_function_io(4);
+ 	pnx833x_gpio_select_input(4);
+@@ -115,8 +101,11 @@ void __init pnx833x_board_setup(void)
+ 	PNX833X_MIU_SEL1 = 1;
+ 	PNX833X_MIU_SEL0_TIMING = 0x6A08D082;
+ 	PNX833X_MIU_SEL1_TIMING = 0x6A08D082;
++#endif
+ 
+-	/* Setup GPIO 00 for use as MIU CS1 (CS0 is not multiplexed, so does not need this) */
++	/*
++	 * Setup GPIO 00 for use as MIU CS1 (CS0 is not multiplexed,
++	 * so does not need this)
++	 */
+ 	pnx833x_gpio_select_function_alt(0);
+-#endif
+ }
+diff --git a/arch/mips/pnx8550/common/setup.c b/arch/mips/pnx8550/common/setup.c
+index b8ae54c..bbb1799 100644
+--- a/arch/mips/pnx8550/common/setup.c
++++ b/arch/mips/pnx8550/common/setup.c
+@@ -1,45 +1,22 @@
  /*
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
 + * for more details.
-+ *
-  * MIPS boards bootprom interface for the Linux kernel.
   *
-  * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
-  * Author: Carsten Langgaard, carstenl@mips.com
-- *
-- * ########################################################################
+- * 2.6 port, Embedded Alley Solutions, Inc
++ * Setup based on Per Hallsmark, per.hallsmark@mvista.com
+  *
+- *  Based on Per Hallsmark, per.hallsmark@mvista.com
 - *
 - *  This program is free software; you can distribute it and/or modify it
 - *  under the terms of the GNU General Public License (Version 2) as
@@ -80,136 +194,85 @@ index b8c34ff..b6fae12 100644
 - *  You should have received a copy of the GNU General Public License along
 - *  with this program; if not, write to the Free Software Foundation, Inc.,
 - *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
-- *
-- * ########################################################################
++ * Copyright 2005 Embedded Alley Solutions, Inc <source@embeddedalley.com>
   */
- 
- #ifndef _ASM_MSP_PROM_H
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_prom.c b/arch/mips/pmc-sierra/msp71xx/msp_prom.c
-index 885256f..b798e9d5 100644
---- a/arch/mips/pmc-sierra/msp71xx/msp_prom.c
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_prom.c
-@@ -1,39 +1,15 @@
- /*
-- * BRIEF MODULE DESCRIPTION
-- *    PROM library initialisation code, assuming a version of
-- *    pmon is the boot code.
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * PROM library initialisation code, assuming a version of PMON is
-+ * the boot code.
-  *
-  * Copyright 2000,2001 MontaVista Software Inc.
-  * Author: MontaVista Software, Inc.
-- *         	ppopov@mvista.com or source@mvista.com
-- *
-- * This file was derived from Carsten Langgaard's
-- * arch/mips/mips-boards/xx files.
-- *
-- * Carsten Langgaard, carstenl@mips.com
-- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ * 	   Pete Popov <ppopov@mvista.com> or <source@mvista.com>
-  */
--
- #include <linux/module.h>
- #include <linux/kernel.h>
  #include <linux/init.h>
-@@ -58,11 +34,9 @@ fw_memblock_t mdesc[7];
+-#include <linux/sched.h>
+ #include <linux/ioport.h>
+-#include <linux/irq.h>
+-#include <linux/mm.h>
+-#include <linux/delay.h>
+-#include <linux/interrupt.h>
+ #include <linux/serial_pnx8xxx.h>
+-#include <linux/pm.h>
  
- /* default feature sets */
- static char msp_default_features[] =
--#if defined(CONFIG_PMC_MSP4200_EVAL) \
-- || defined(CONFIG_PMC_MSP4200_GW)
-+#if defined(CONFIG_PMC_MSP4200_EVAL) || defined(CONFIG_PMC_MSP4200_GW)
- 	"ERER";
--#elif defined(CONFIG_PMC_MSP7120_EVAL) \
-- || defined(CONFIG_PMC_MSP7120_GW)
-+#elif defined(CONFIG_PMC_MSP7120_EVAL) || defined(CONFIG_PMC_MSP7120_GW)
- 	"EMEMSP";
- #elif defined(CONFIG_PMC_MSP7120_FPGA)
- 	"EMEM";
-@@ -132,35 +106,6 @@ const char *get_system_type(void)
- #endif
- }
+-#include <asm/cpu.h>
+-#include <asm/irq.h>
+-#include <asm/mipsregs.h>
+ #include <asm/reboot.h>
+ #include <asm/fw/fw.h>
+-#include <asm/pgtable.h>
+-#include <asm/time.h>
  
--int get_ethernet_addr(char *ethaddr_name, char *ethernet_addr)
--{
--	char *ethaddr_str;
--
--	ethaddr_str = fw_getenv(ethaddr_name);
--	if (!ethaddr_str) {
--		printk(KERN_WARNING "%s not set in boot prom\n", ethaddr_name);
--		return -1;
--	}
--
--	if (str2eaddr(ethernet_addr, ethaddr_str) == -1) {
--		printk(KERN_WARNING "%s badly formatted-<%s>\n",
--			ethaddr_name, ethaddr_str);
--		return -1;
--	}
--
--	if (init_debug > 1) {
--		int i;
--		printk(KERN_DEBUG "get_ethernet_addr: for %s ", ethaddr_name);
--		for (i = 0; i < 5; i++)
--			printk(KERN_DEBUG "%02x:",
--				(unsigned char)*(ethernet_addr+i));
--		printk(KERN_DEBUG "%02x\n", *(ethernet_addr+i));
--	}
--
--	return 0;
--}
--EXPORT_SYMBOL(get_ethernet_addr);
--
- static char *get_features(void)
+ #include <glb.h>
+-#include <int.h>
+ #include <pci.h>
+ #include <uart.h>
+-#include <nand.h>
+ 
+ extern void __init board_setup(void);
+ extern void pnx8550_machine_restart(char *);
+@@ -89,16 +66,34 @@ unsigned long get_system_mem_size(void)
+ 
+ int pnx8550_console_port = -1;
+ 
++/* used by early printk */
++void prom_putchar(char c)
++{
++	if (pnx8550_console_port != -1) {
++		/* Wait until FIFO not full */
++		while (((ip3106_fifo(UART_BASE, pnx8550_console_port) &
++			PNX8XXX_UART_FIFO_TXFIFO) >> 16) >= 16)
++			;
++
++		/* Send one char */
++		ip3106_fifo(UART_BASE, pnx8550_console_port) = c;
++	}
++}
++
++void __init prom_free_prom_memory(void)
++{
++}
++
+ void __init plat_mem_setup(void)
  {
- 	char *feature = fw_getenv(FEATURES);
-@@ -400,8 +345,8 @@ fw_memblock_t *__init fw_getmdesc(void)
- 	str = fw_getenv(heaptop_env);
- 	if (!str) {
- 		heaptop = CPHYSADDR((u32)&_text);
--		ppfinit("heaptop not set in boot prom, "
--			"set to default 0x%08x\n", heaptop);
-+		ppfinit("heaptop not set in boot prom, set to default 0x%08x\n",
-+			heaptop);
- 	} else {
- 		tmp = kstrtol(str, 16, &val);
- 		heaptop = (unsigned int)val;
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_serial.c b/arch/mips/pmc-sierra/msp71xx/msp_serial.c
-index 7080bce..75af01f 100644
---- a/arch/mips/pmc-sierra/msp71xx/msp_serial.c
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_serial.c
+ 	int i;
+-	char* argptr;
++	char *argptr;
+ 
+ 	board_setup();  /* board specific setup */
+ 
+-        _machine_restart = pnx8550_machine_restart;
+-        _machine_halt = pnx8550_machine_halt;
+-        pm_power_off = pnx8550_machine_halt;
++	_machine_restart = pnx8550_machine_restart;
++	_machine_halt = pnx8550_machine_halt;
++	pm_power_off = pnx8550_machine_halt;
+ 
+ 	/* Clear the Global 2 Register, PCI Inta Output Enable Registers
+ 	   Bit 1:Enable DAC Powerdown
+diff --git a/arch/mips/pnx8550/jbs/init.c b/arch/mips/pnx8550/jbs/init.c
+index e682446..15f071d 100644
+--- a/arch/mips/pnx8550/jbs/init.c
++++ b/arch/mips/pnx8550/jbs/init.c
 @@ -1,37 +1,14 @@
  /*
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
 + * for more details.
-+ *
-  * The setup file for serial related hardware on PMC-Sierra MSP processors.
   *
-  * Copyright 2005 PMC-Sierra, Inc.
+- *  Copyright 2005 Embedded Alley Solutions, Inc
+- *  source@embeddedalley.com
 - *
 - *  This program is free software; you can redistribute  it and/or modify it
 - *  under  the terms of  the GNU General  Public License as published by the
@@ -230,429 +293,73 @@ index 7080bce..75af01f 100644
 - *  You should have received a copy of the  GNU General Public License along
 - *  with this program; if not, write  to the Free Software Foundation, Inc.,
 - *  675 Mass Ave, Cambridge, MA 02139, USA.
-  */
--
--#include <linux/serial.h>
--#include <linux/serial_core.h>
--#include <linux/serial_reg.h>
- #include <linux/slab.h>
--
--#include <asm/io.h>
--#include <asm/processor.h>
--#include <asm/serial.h>
-+#include <linux/serial_reg.h>
- #include <linux/serial_8250.h>
- 
- #include <asm/fw/fw.h>
-@@ -127,25 +104,25 @@ void __init msp_serial_setup(void)
- 
- 	/* Initialize the second serial port, if one exists */
- 	switch (mips_machtype) {
--		case MACH_MSP4200_EVAL:
--		case MACH_MSP4200_GW:
--		case MACH_MSP4200_FPGA:
--		case MACH_MSP7120_EVAL:
--		case MACH_MSP7120_GW:
--		case MACH_MSP7120_FPGA:
--			/* Enable UART1 on MSP4200 and MSP7120 */
--			*GPIO_CFG2_REG = 0x00002299;
--			break;
--
--		default:
--			return; /* No second serial port, good-bye. */
-+	case MACH_MSP4200_EVAL:
-+	case MACH_MSP4200_GW:
-+	case MACH_MSP4200_FPGA:
-+	case MACH_MSP7120_EVAL:
-+	case MACH_MSP7120_GW:
-+	case MACH_MSP7120_FPGA:
-+		/* Enable UART1 on MSP4200 and MSP7120 */
-+		*GPIO_CFG2_REG = 0x00002299;
-+		break;
-+
-+	default:
-+		return; /* No second serial port, good-bye. */
- 	}
- 
- 	up.mapbase      = MSP_UART1_BASE;
- 	up.membase      = ioremap_nocache(up.mapbase, MSP_UART_REG_LEN);
- 	up.irq          = MSP_INT_UART1;
- 	up.line         = 1;
--	up.private_data		= (void*)UART1_STATUS_REG;
-+	up.private_data		= (void *)UART1_STATUS_REG;
- 	if (early_serial_setup(&up)) {
- 		kfree(up.private_data);
- 		pr_err("Early serial init of port 1 failed\n");
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_setup.c b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
-index 6fa0d76..0e03048 100644
---- a/arch/mips/pmc-sierra/msp71xx/msp_setup.c
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
-@@ -1,15 +1,13 @@
- /*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * The generic setup file for PMC-Sierra MSP processors
-  *
-  * Copyright 2005-2007 PMC-Sierra, Inc,
-  * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-  */
--
- #include <asm/cacheflush.h>
- #include <asm/r4kcache.h>
- #include <asm/reboot.h>
-@@ -28,9 +26,8 @@
- extern void msp_serial_setup(void);
- extern void pmctwiled_setup(void);
- 
--#if defined(CONFIG_PMC_MSP7120_EVAL) || \
--    defined(CONFIG_PMC_MSP7120_GW) || \
--    defined(CONFIG_PMC_MSP7120_FPGA)
-+#if defined(CONFIG_PMC_MSP7120_EVAL) || defined(CONFIG_PMC_MSP7120_GW) || \
-+	defined(CONFIG_PMC_MSP7120_FPGA)
- /*
-  * Performs the reset for MSP7120-based boards
-  */
-@@ -77,7 +74,8 @@ void msp7120_reset(void)
- 	 */
- 
- 	/* Wait a bit for the DDRC to settle */
--	for (i = 0; i < 100000000; i++);
-+	for (i = 0; i < 100000000; i++)
-+		;
- 
- #if defined(CONFIG_PMC_MSP7120_GW)
- 	/*
-@@ -107,11 +105,10 @@ void msp7120_reset(void)
- 
- void msp_restart(char *command)
- {
--	printk(KERN_WARNING "Now rebooting .......\n");
-+	pr_warn("Now rebooting .......\n");
- 
--#if defined(CONFIG_PMC_MSP7120_EVAL) || \
--    defined(CONFIG_PMC_MSP7120_GW) || \
--    defined(CONFIG_PMC_MSP7120_FPGA)
-+#if defined(CONFIG_PMC_MSP7120_EVAL) || defined(CONFIG_PMC_MSP7120_GW) || \
-+	defined(CONFIG_PMC_MSP7120_FPGA)
- 	msp7120_reset();
- #else
- 	/* No chip-specific reset code, just jump to the ROM reset vector */
-@@ -120,13 +117,17 @@ void msp_restart(char *command)
- 	flush_cache_all();
- 	write_c0_wired(0);
- 
--	__asm__ __volatile__("jr\t%0"::"r"(0xbfc00000));
-+	__asm__ __volatile__ (
-+		"	jr	%0				\n"
-+		:
-+		: "r" (0xbfc00000)
-+	);
- #endif
- }
- 
- void msp_halt(void)
- {
--	printk(KERN_WARNING "\n** You can safely turn off the power\n");
-+	pr_warn("\n** You can safely turn off the power\n");
- 	while (1)
- 		/* If possible call official function to get CPU WARs */
- 		if (cpu_wait)
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_time.c b/arch/mips/pmc-sierra/msp71xx/msp_time.c
-index d76cbdb..b9b8160 100644
---- a/arch/mips/pmc-sierra/msp71xx/msp_time.c
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_time.c
-@@ -1,33 +1,14 @@
- /*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * Setting up the clock on MSP SOCs.  No RTC typically.
-  *
-  * Carsten Langgaard, carstenl@mips.com
-  * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
-- *
-- * ########################################################################
-- *
-- *  This program is free software; you can distribute it and/or modify it
-- *  under the terms of the GNU General Public License (Version 2) as
-- *  published by the Free Software Foundation.
-- *
-- *  This program is distributed in the hope it will be useful, but WITHOUT
-- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-- *  for more details.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
-- *
-- * ########################################################################
++ * Copyright 2005 Embedded Alley Solutions, Inc <source@embeddedalley.com>
   */
 -
  #include <linux/init.h>
--#include <linux/kernel_stat.h>
+-#include <linux/mm.h>
 -#include <linux/sched.h>
--#include <linux/spinlock.h>
--#include <linux/module.h>
--#include <linux/ptrace.h>
- 
- #include <asm/cevt-r4k.h>
- #include <asm/mipsregs.h>
-@@ -35,7 +16,6 @@
+ #include <linux/bootmem.h>
+-#include <asm/addrspace.h>
++
  #include <asm/fw/fw.h>
+-#include <linux/string.h>
+-#include <linux/kernel.h>
  
- #include <msp_int.h>
--#include <msp_regs.h>
- 
- #define get_current_vpe()   \
- 	((read_c0_tcbind() >> TCBIND_CURVPE_SHIFT) & TCBIND_CURVPE)
-@@ -49,33 +29,30 @@ void __init plat_time_init(void)
- 
- 	cpu_rate = fw_getenvl("clkfreqhz");
- 	if (cpu_rate == 0)
--		printk(KERN_ERR "Clock rate in Hz parse error: %s\n", s);
-+		pr_err("Clock rate in Hz parse error\n");
- 
- 	if (cpu_rate == 0) {
- 		cpu_rate = 1000 * fw_getenvl("clkfreq");
- 		if (cpu_rate == 0)
--			printk(KERN_ERR "Clock rate in MHz parse error: %s\n", s);
--		}
-+			pr_err("Clock rate in MHz parse error\n");
- 	}
- 
- 	if (cpu_rate == 0) {
--#if defined(CONFIG_PMC_MSP7120_EVAL) \
-- || defined(CONFIG_PMC_MSP7120_GW)
-+#if defined(CONFIG_PMC_MSP7120_EVAL) || defined(CONFIG_PMC_MSP7120_GW)
- 		cpu_rate = 400000000;
- #elif defined(CONFIG_PMC_MSP7120_FPGA)
- 		cpu_rate = 25000000;
- #else
- 		cpu_rate = 150000000;
- #endif
--		printk(KERN_ERR
--			"Failed to determine CPU clock rate, "
--			"assuming %ld hz ...\n", cpu_rate);
-+		pr_err("Failed to determine CPU clock rate, assuming %ld Hz\n",
-+			cpu_rate);
- 	}
- 
--	printk(KERN_WARNING "Clock rate set to %ld\n", cpu_rate);
-+	pr_warn("Clock rate set to %ld\n", cpu_rate);
- 
- 	/* timer frequency is 1/2 clock rate */
--	mips_hpt_frequency = cpu_rate/2;
-+	mips_hpt_frequency = (cpu_rate / 2);
- }
- 
- unsigned int __cpuinit get_c0_compare_int(void)
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_usb.c b/arch/mips/pmc-sierra/msp71xx/msp_usb.c
-index ee4ed9b..999253e 100644
---- a/arch/mips/pmc-sierra/msp71xx/msp_usb.c
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_usb.c
-@@ -1,27 +1,11 @@
- /*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * The setup file for USB related hardware on PMC-Sierra MSP processors.
-  *
-  * Copyright 2006 PMC-Sierra, Inc.
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-  */
- #if defined(CONFIG_USB_EHCI_HCD) || defined(CONFIG_USB_GADGET)
- 
-@@ -29,7 +13,6 @@
- #include <linux/ioport.h>
- #include <linux/platform_device.h>
- 
--#include <asm/mipsregs.h>
- #include <asm/fw/fw.h>
- 
- #include <msp_regs.h>
-diff --git a/arch/mips/pmc-sierra/yosemite/prom.c b/arch/mips/pmc-sierra/yosemite/prom.c
-index b4ce648..7215bd2 100644
---- a/arch/mips/pmc-sierra/yosemite/prom.c
-+++ b/arch/mips/pmc-sierra/yosemite/prom.c
-@@ -1,8 +1,7 @@
- /*
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  *
-  * Copyright (C) 2003, 2004 PMC-Sierra Inc.
-  * Author: Manish Lachwani (lachwani@pmc-sierra.com)
-@@ -14,8 +13,8 @@
- #include <linux/delay.h>
- #include <linux/pm.h>
- #include <linux/smp.h>
-+#include <linux/io.h>
- 
--#include <asm/io.h>
- #include <asm/pgtable.h>
- #include <asm/processor.h>
- #include <asm/reboot.h>
-@@ -52,7 +51,7 @@ static void prom_cpu0_exit(void *arg)
- 	mdelay(100 + (1000 / 16));
- 
- 	/* if the watchdog fails for some reason, let people know */
--	printk(KERN_NOTICE "Watchdog reset failed\n");
-+	pr_notice("Watchdog reset failed\n");
- }
- 
- /*
-@@ -73,7 +72,7 @@ static void prom_exit(void)
-  */
- static void prom_halt(void)
+ const char *get_system_type(void)
  {
--	printk(KERN_NOTICE "\n** You can safely turn off the power\n");
-+	pr_notice("\n** You can safely turn off the power\n");
- 	while (1)
- 		__asm__(".set\tmips3\n\t" "wait\n\t" ".set\tmips0");
+@@ -44,7 +21,6 @@ void __init prom_init(void)
+ 
+ 	fw_init_cmdline();
+ 
+-	//memsize = 0x02800000; /* Trimedia uses memory above */
+-	memsize = 0x08000000; /* Trimedia uses memory above */
++	memsize = 0x08000000;	/* Trimedia uses memory above */
+ 	add_memory_region(0, memsize, BOOT_MEM_RAM);
  }
-diff --git a/drivers/mtd/maps/pmcmsp-flash.c b/drivers/mtd/maps/pmcmsp-flash.c
-index c19d9e4..8e6286a 100644
---- a/drivers/mtd/maps/pmcmsp-flash.c
-+++ b/drivers/mtd/maps/pmcmsp-flash.c
-@@ -1,42 +1,24 @@
+diff --git a/arch/mips/pnx8550/stb810/prom_init.c b/arch/mips/pnx8550/stb810/prom_init.c
+index cb1b052..3beefc2 100644
+--- a/arch/mips/pnx8550/stb810/prom_init.c
++++ b/arch/mips/pnx8550/stb810/prom_init.c
+@@ -1,25 +1,16 @@
  /*
-- * Mapping of a custom board with both AMD CFI and JEDEC flash in partitions.
-- * Config with both CFI and JEDEC device support.
+- *  STB810 specific prom routines
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
 + * for more details.
   *
-- * Basically physmap.c with the addition of partitions and
-- * an array of mapping info to accommodate more than one flash type per board.
-+ * Mapping of a custom board with both AMD CFI and JEDEC flash in partitions.
-+ * Config with both CFI and JEDEC device support. Basically physmap.c with
-+ * the addition of partitions and an array of mapping info to accommodate more
-+ * than one flash type per board.
+- *  Author: MontaVista Software, Inc.
+- *          source@mvista.com
++ * STB810 specific prom routines.
   *
-  * Copyright 2005-2007 PMC-Sierra, Inc.
+- *  Copyright 2005 MontaVista Software Inc.
 - *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License as published by the
+- *  Free Software Foundation; either version 2 of the License, or (at your
 - *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
++ * Copyright 2005 MontaVista Software Inc. <source@mvista.com>
   */
 -
- #include <linux/slab.h>
- #include <linux/module.h>
- #include <linux/types.h>
- #include <linux/kernel.h>
-+#include <linux/io.h>
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/map.h>
- #include <linux/mtd/partitions.h>
- 
--#include <asm/io.h>
+ #include <linux/init.h>
+-#include <linux/mm.h>
+-#include <linux/sched.h>
+ #include <linux/bootmem.h>
+-#include <asm/addrspace.h>
++
  #include <asm/fw/fw.h>
+-#include <linux/string.h>
+-#include <linux/kernel.h>
  
- #include <msp_prom.h>
-@@ -48,8 +30,6 @@ static struct mtd_partition **msp_parts;
- static struct map_info *msp_maps;
- static int fcnt;
- 
--#define DEBUG_MARKER printk(KERN_NOTICE "%s[%d]\n", __func__, __LINE__)
--
- static int __init init_msp_flash(void)
+ const char *get_system_type(void)
  {
- 	int i, j, ret = -ENOMEM;
-@@ -63,7 +43,7 @@ static int __init init_msp_flash(void)
- 	/* If ELB is disabled by "ful-mux" mode, we can't get at flash */
- 	if ((*DEV_ID_REG & DEV_ID_SINGLE_PC) &&
- 	    (*ELB_1PC_EN_REG & SINGLE_PCCARD)) {
--		printk(KERN_NOTICE "Single PC Card mode: no flash access\n");
-+		pr_notice("Single PC Card mode: no flash access\n");
- 		return -ENXIO;
- 	}
+@@ -32,6 +23,6 @@ void __init prom_init(void)
  
-@@ -74,7 +54,7 @@ static int __init init_msp_flash(void)
- 	if (fcnt < 1)
- 		return -ENXIO;
+ 	fw_init_cmdline();
  
--	printk(KERN_NOTICE "Found %d PMC flash devices\n", fcnt);
-+	pr_notice("Found %d PMC flash devices\n", fcnt);
- 
- 	msp_flash = kmalloc(fcnt * sizeof(struct map_info *), GFP_KERNEL);
- 	if (!msp_flash)
-@@ -97,8 +77,7 @@ static int __init init_msp_flash(void)
- 			part_name[7] = '0' + pcnt + 1;
- 
- 		if (pcnt == 0) {
--			printk(KERN_NOTICE "Skipping flash device %d "
--				"(no partitions defined)\n", i);
-+			pr_notice("Skipping flash device %d (no partitions defined)\n", i);
- 			continue;
- 		}
- 
-@@ -118,8 +97,7 @@ static int __init init_msp_flash(void)
- 		}
- 		addr = CPHYSADDR(addr);
- 
--		printk(KERN_NOTICE
--			"MSP flash device \"%s\": 0x%08x at 0x%08x\n",
-+		pr_notice("MSP flash device \"%s\": 0x%08x at 0x%08x\n",
- 			flash_name, size, addr);
- 		/* This must matchs the actual size of the flash chip */
- 		msp_maps[i].size = size;
-@@ -176,7 +154,7 @@ static int __init init_msp_flash(void)
- 			msp_flash[i]->owner = THIS_MODULE;
- 			mtd_device_register(msp_flash[i], msp_parts[i], pcnt);
- 		} else {
--			printk(KERN_ERR "map probe failed for flash\n");
-+			pr_err("map probe failed for flash\n");
- 			ret = -ENXIO;
- 			kfree(msp_maps[i].name);
- 			iounmap(msp_maps[i].virt);
+-	memsize = 0x08000000; /* Trimedia uses memory above */
++	memsize = 0x08000000;	/* Trimedia uses memory above */
+ 	add_memory_region(0, memsize, BOOT_MEM_RAM);
+ }
 -- 
 1.7.10.3

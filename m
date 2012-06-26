@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:45:45 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:54960 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:46:06 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:54961 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903760Ab2FZEmN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:42:13 +0200
+        with ESMTP id S1903761Ab2FZEmO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:42:14 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SjNbL-0002zj-Hn; Mon, 25 Jun 2012 23:42:07 -0500
+        id 1SjNbM-0002zj-4z; Mon, 25 Jun 2012 23:42:08 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 08/33] MIPS: Cobalt: Cleanup files effected by firmware changes.
-Date:   Mon, 25 Jun 2012 23:41:23 -0500
-Message-Id: <1340685708-14408-9-git-send-email-sjhill@mips.com>
+Subject: [PATCH 09/33] MIPS: Emma: Cleanup firmware support for the Emma platform.
+Date:   Mon, 25 Jun 2012 23:41:24 -0500
+Message-Id: <1340685708-14408-10-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
 References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33816
+X-archive-position: 33817
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,66 +36,47 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Make headers consistent across the files and make changes based on
-running the checkpatch script.
-
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/cobalt/setup.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ arch/mips/emma/common/prom.c |   19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
-diff --git a/arch/mips/cobalt/setup.c b/arch/mips/cobalt/setup.c
-index 3fdd449..d7ecf18 100644
---- a/arch/mips/cobalt/setup.c
-+++ b/arch/mips/cobalt/setup.c
-@@ -1,13 +1,12 @@
- /*
-- * Setup pointers to hardware dependent routines.
-- *
-  * This file is subject to the terms and conditions of the GNU General Public
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-+ * Setup pointers to hardware dependent routines.
-+ *
-  * Copyright (C) 1996, 1997, 2004, 05 by Ralf Baechle (ralf@linux-mips.org)
-  * Copyright (C) 2001, 2002, 2003 by Liam Davies (ldavies@agile.tv)
-- *
-  */
- #include <linux/init.h>
- #include <linux/interrupt.h>
-@@ -27,14 +26,14 @@ extern void cobalt_machine_halt(void);
+diff --git a/arch/mips/emma/common/prom.c b/arch/mips/emma/common/prom.c
+index cae4225..5228584 100644
+--- a/arch/mips/emma/common/prom.c
++++ b/arch/mips/emma/common/prom.c
+@@ -25,7 +25,7 @@
+ #include <linux/bootmem.h>
+ 
+ #include <asm/addrspace.h>
+-#include <asm/bootinfo.h>
++#include <asm/fw/fw.h>
+ #include <asm/emma/emma2rh.h>
+ 
  const char *get_system_type(void)
+@@ -40,22 +40,7 @@ const char *get_system_type(void)
+ /* [jsun@junsun.net] PMON passes arguments in C main() style */
+ void __init prom_init(void)
  {
- 	switch (cobalt_board_id) {
--		case COBALT_BRD_ID_QUBE1:
--			return "Cobalt Qube";
--		case COBALT_BRD_ID_RAQ1:
--			return "Cobalt RaQ";
--		case COBALT_BRD_ID_QUBE2:
--			return "Cobalt Qube2";
--		case COBALT_BRD_ID_RAQ2:
--			return "Cobalt RaQ2";
-+	case COBALT_BRD_ID_QUBE1:
-+		return "Cobalt Qube";
-+	case COBALT_BRD_ID_RAQ1:
-+		return "Cobalt RaQ";
-+	case COBALT_BRD_ID_QUBE2:
-+		return "Cobalt Qube2";
-+	case COBALT_BRD_ID_RAQ2:
-+		return "Cobalt RaQ2";
- 	}
- 	return "MIPS Cobalt";
- }
-@@ -86,7 +85,8 @@ void __init plat_mem_setup(void)
+-	int argc = fw_arg0;
+-	char **arg = (char **)fw_arg1;
+-	int i;
+-
+-	/* if user passes kernel args, ignore the default one */
+-	if (argc > 1)
+-		arcs_cmdline[0] = '\0';
+-
+-	/* arg[0] is "g", the rest is boot parameters */
+-	for (i = 1; i < argc; i++) {
+-		if (strlen(arcs_cmdline) + strlen(arg[i]) + 1
+-		    >= sizeof(arcs_cmdline))
+-			break;
+-		strcat(arcs_cmdline, arg[i]);
+-		strcat(arcs_cmdline, " ");
+-	}
++	fw_init_cmdline();
  
- 	/* These resources have been reserved by VIA SuperI/O chip. */
- 	for (i = 0; i < ARRAY_SIZE(cobalt_reserved_resources); i++)
--		request_resource(&ioport_resource, cobalt_reserved_resources + i);
-+		request_resource(&ioport_resource,
-+				cobalt_reserved_resources + i);
- }
- 
- /*
+ #ifdef CONFIG_NEC_MARKEINS
+ 	add_memory_region(0, EMMA2RH_RAM_SIZE, BOOT_MEM_RAM);
 -- 
 1.7.10.3

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:50:05 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:54988 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:50:31 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:54990 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903762Ab2FZEth (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:49:37 +0200
+        with ESMTP id S1903764Ab2FZEtn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:49:43 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SjNbV-0002zj-V8; Mon, 25 Jun 2012 23:42:17 -0500
+        id 1SjNbT-0002zj-Lo; Mon, 25 Jun 2012 23:42:15 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 26/33] MIPS: PowerTV: Cleanup firmware support for PowerTV platform.
-Date:   Mon, 25 Jun 2012 23:41:41 -0500
-Message-Id: <1340685708-14408-27-git-send-email-sjhill@mips.com>
+Subject: [PATCH 22/33] MIPS: MSP71xx, Yosemite: Cleanup firmware support for PMC platforms.
+Date:   Mon, 25 Jun 2012 23:41:37 -0500
+Message-Id: <1340685708-14408-23-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
 References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33819
+X-archive-position: 33820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,168 +38,603 @@ From: "Steven J. Hill" <sjhill@mips.com>
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/powertv/asic/asic_int.c |    1 -
- arch/mips/powertv/init.c          |   54 +++----------------------------------
- arch/mips/powertv/memory.c        |   13 +++------
- arch/mips/powertv/powertv_setup.c |    2 --
- 4 files changed, 7 insertions(+), 63 deletions(-)
+ .../mips/include/asm/pmc-sierra/msp71xx/msp_prom.h |   25 ----
+ arch/mips/pmc-sierra/msp71xx/msp_prom.c            |  130 +++++++-------------
+ arch/mips/pmc-sierra/msp71xx/msp_serial.c          |    9 +-
+ arch/mips/pmc-sierra/msp71xx/msp_setup.c           |   10 +-
+ arch/mips/pmc-sierra/msp71xx/msp_time.c            |   26 ++--
+ arch/mips/pmc-sierra/msp71xx/msp_usb.c             |   17 +--
+ arch/mips/pmc-sierra/yosemite/prom.c               |   32 +----
+ drivers/mtd/maps/pmcmsp-flash.c                    |    9 +-
+ 8 files changed, 73 insertions(+), 185 deletions(-)
 
-diff --git a/arch/mips/powertv/asic/asic_int.c b/arch/mips/powertv/asic/asic_int.c
-index 99d82e1..8728c3b 100644
---- a/arch/mips/powertv/asic/asic_int.c
-+++ b/arch/mips/powertv/asic/asic_int.c
-@@ -35,7 +35,6 @@
- #include <linux/io.h>
- #include <asm/irq_regs.h>
- #include <asm/setup.h>
--#include <asm/mips-boards/generic.h>
+diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h b/arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h
+index 786d82d..b8c34ff 100644
+--- a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h
++++ b/arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h
+@@ -118,13 +118,9 @@
+ #define ZSP_DUET		'D'	/* one DUET zsp engine */
+ #define ZSP_TRIAD		'T'	/* two TRIAD zsp engines */
  
- #include <asm/mach-powertv/asic_regs.h>
+-extern char *prom_getenv(char *name);
+-extern void prom_init_cmdline(void);
+-extern void prom_meminit(void);
+ extern void prom_fixup_mem_map(unsigned long start_mem,
+ 			       unsigned long end_mem);
  
-diff --git a/arch/mips/powertv/init.c b/arch/mips/powertv/init.c
-index 1cf5abb..14cdf19 100644
---- a/arch/mips/powertv/init.c
-+++ b/arch/mips/powertv/init.c
-@@ -23,52 +23,15 @@
- #include <linux/init.h>
- #include <linux/string.h>
- #include <linux/kernel.h>
+-extern int get_ethernet_addr(char *ethaddr_name, char *ethernet_addr);
+ extern unsigned long get_deviceid(void);
+ extern char identify_enet(unsigned long interface_num);
+ extern char identify_enetTxD(unsigned long interface_num);
+@@ -147,25 +143,4 @@ extern unsigned long identify_revision(void);
+ 		printk(_f, ## x); \
+ 	} while (0)
+ 
+-/* Memory descriptor management. */
+-#define PROM_MAX_PMEMBLOCKS    7	/* 6 used */
 -
+-enum yamon_memtypes {
+-	yamon_dontuse,
+-	yamon_prom,
+-	yamon_free,
+-};
+-
+-struct prom_pmemblock {
+-	unsigned long base; /* Within KSEG0. */
+-	unsigned int size;  /* In bytes. */
+-	unsigned int type;  /* free or prom memory */
+-};
+-
+-extern int prom_argc;
+-extern char **prom_argv;
+-extern char **prom_envp;
+-extern int *prom_vec;
+-extern struct prom_pmemblock *prom_getmdesc(void);
+-
+ #endif /* !_ASM_MSP_PROM_H */
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_prom.c b/arch/mips/pmc-sierra/msp71xx/msp_prom.c
+index db00deb..885256f 100644
+--- a/arch/mips/pmc-sierra/msp71xx/msp_prom.c
++++ b/arch/mips/pmc-sierra/msp71xx/msp_prom.c
+@@ -43,23 +43,18 @@
+ #include <linux/slab.h>
+ 
+ #include <asm/addrspace.h>
 -#include <asm/bootinfo.h>
- #include <linux/io.h>
-+
- #include <asm/cacheflush.h>
- #include <asm/traps.h>
--
--#include <asm/mips-boards/prom.h>
--#include <asm/mips-boards/generic.h>
+ #include <asm-generic/sections.h>
+ #include <asm/page.h>
 +#include <asm/fw/fw.h>
- #include <asm/mach-powertv/asic.h>
  
--static int *_prom_envp;
- unsigned long _prom_memsize;
+ #include <msp_prom.h>
+ #include <msp_regs.h>
  
--/*
-- * YAMON (32-bit PROM) pass arguments and environment as 32-bit pointer.
-- * This macro take care of sign extension, if running in 64-bit mode.
-- */
--#define prom_envp(index) ((char *)(long)_prom_envp[(index)])
+-/* global PROM environment variables and pointers */
+-int prom_argc;
+-char **prom_argv, **prom_envp;
+-int *prom_vec;
 -
--char *prom_getenv(char *envname)
+-/* debug flag */
+-int init_debug = 1;
++/* Global PROM vector */
++int *fw_vec;
+ 
+ /* memory blocks */
+-struct prom_pmemblock mdesc[PROM_MAX_PMEMBLOCKS];
++fw_memblock_t mdesc[7];
+ 
+ /* default feature sets */
+ static char msp_default_features[] =
+@@ -141,7 +136,7 @@ int get_ethernet_addr(char *ethaddr_name, char *ethernet_addr)
+ {
+ 	char *ethaddr_str;
+ 
+-	ethaddr_str = prom_getenv(ethaddr_name);
++	ethaddr_str = fw_getenv(ethaddr_name);
+ 	if (!ethaddr_str) {
+ 		printk(KERN_WARNING "%s not set in boot prom\n", ethaddr_name);
+ 		return -1;
+@@ -168,7 +163,7 @@ EXPORT_SYMBOL(get_ethernet_addr);
+ 
+ static char *get_features(void)
+ {
+-	char *feature = prom_getenv(FEATURES);
++	char *feature = fw_getenv(FEATURES);
+ 
+ 	if (feature == NULL) {
+ 		/* default features based on MACHINE_TYPE */
+@@ -193,7 +188,7 @@ static char test_feature(char c)
+ 
+ unsigned long get_deviceid(void)
+ {
+-	char *deviceid = prom_getenv(DEVICEID);
++	char *deviceid = fw_getenv(DEVICEID);
+ 
+ 	if (deviceid == NULL)
+ 		return *DEV_ID_REG;
+@@ -281,72 +276,30 @@ unsigned long identify_revision(void)
+ }
+ EXPORT_SYMBOL(identify_revision);
+ 
+-/* PROM environment functions */
+-char *prom_getenv(char *env_name)
 -{
--	char *result = NULL;
+-	/*
+-	 * Return a pointer to the given environment variable.  prom_envp
+-	 * points to a null terminated array of pointers to variables.
+-	 * Environment variables are stored in the form of "memsize=64"
+-	 */
 -
--	if (_prom_envp != NULL) {
--		/*
--		 * Return a pointer to the given environment variable.
--		 * In 64-bit mode: we're using 64-bit pointers, but all pointers
--		 * in the PROM structures are only 32-bit, so we need some
--		 * workarounds, if we are running in 64-bit mode.
--		 */
--		int i, index = 0;
+-	char **var = prom_envp;
+-	int i = strlen(env_name);
 -
--		i = strlen(envname);
--
--		while (prom_envp(index)) {
--			if (strncmp(envname, prom_envp(index), i) == 0) {
--				result = prom_envp(index + 1);
--				break;
--			}
--			index += 2;
+-	while (*var) {
+-		if (strncmp(env_name, *var, i) == 0) {
+-			return (*var + strlen(env_name) + 1);
 -		}
+-		var++;
 -	}
 -
--	return result;
+-	return NULL;
 -}
 -
- /* TODO: Verify on linux-mips mailing list that the following two  */
- /* functions are correct                                           */
- /* TODO: Copy NMI and EJTAG exception vectors to memory from the   */
-@@ -105,24 +68,15 @@ static void __init mips_ejtag_setup(void)
- 
- void __init prom_init(void)
- {
--	int prom_argc;
--	char *prom_argv;
+-/* PROM commandline functions */
+-void  __init prom_init_cmdline(void)
+-{
+-	char *cp;
+-	int actr;
 -
--	prom_argc = fw_arg0;
--	prom_argv = (char *) fw_arg1;
--	_prom_envp = (int *) fw_arg2;
- 	_prom_memsize = (unsigned long) fw_arg3;
- 
- 	board_nmi_handler_setup = mips_nmi_setup;
- 	board_ejtag_handler_setup = mips_ejtag_setup;
- 
--	if (prom_argc == 1) {
--		strlcat(arcs_cmdline, " ", COMMAND_LINE_SIZE);
--		strlcat(arcs_cmdline, prom_argv, COMMAND_LINE_SIZE);
+-	actr = 1; /* Always ignore argv[0] */
+-
+-	cp = &(arcs_cmdline[0]);
+-	while (actr < prom_argc) {
+-		strcpy(cp, prom_argv[actr]);
+-		cp += strlen(prom_argv[actr]);
+-		*cp++ = ' ';
+-		actr++;
 -	}
-+	fw_init_cmdline();
- 
- 	configure_platform();
--	prom_meminit();
-+	fw_meminit();
- 
- #ifndef CONFIG_BOOTLOADER_DRIVER
- 	pr_info("\nBootloader driver isn't loaded...\n");
-diff --git a/arch/mips/powertv/memory.c b/arch/mips/powertv/memory.c
-index fb3d296..56f0193 100644
---- a/arch/mips/powertv/memory.c
-+++ b/arch/mips/powertv/memory.c
-@@ -28,8 +28,8 @@
- #include <asm/bootinfo.h>
- #include <asm/page.h>
- #include <asm/sections.h>
-+#include <asm/fw/fw.h>
- 
--#include <asm/mips-boards/prom.h>
- #include <asm/mach-powertv/asic.h>
- #include <asm/mach-powertv/ioremap.h>
- 
-@@ -163,7 +163,6 @@ static phys_addr_t get_memsize(void)
+-	if (cp != &(arcs_cmdline[0])) /* get rid of trailing space */
+-		--cp;
+-	*cp = '\0';
+-}
+-
+ /* memory allocation functions */
+-static int __init prom_memtype_classify(unsigned int type)
++static int __init fw_memtype_classify(unsigned int type)
  {
- 	static char cmdline[COMMAND_LINE_SIZE] __initdata;
- 	phys_addr_t memsize = 0;
--	char *memsize_str;
- 	char *ptr;
- 
- 	/* Check the command line first for a memsize directive */
-@@ -176,13 +175,7 @@ static phys_addr_t get_memsize(void)
- 		memsize = memparse(ptr + 8, &ptr);
- 	} else {
- 		/* otherwise look in the environment */
--		memsize_str = prom_getenv("memsize");
--
--		if (memsize_str != NULL) {
--			pr_info("prom memsize = %s\n", memsize_str);
--			memsize = simple_strtol(memsize_str, NULL, 0);
--		}
--
-+		memsize = (phys_addr_t) fw_getenvl("memsize");
- 		if (memsize == 0) {
- 			if (_prom_memsize != 0) {
- 				memsize = _prom_memsize;
-@@ -332,7 +325,7 @@ static __init void register_address_space(phys_addr_t memsize)
+ 	switch (type) {
+-	case yamon_free:
++	case fw_free:
+ 		return BOOT_MEM_RAM;
+-	case yamon_prom:
++	case fw_code:
+ 		return BOOT_MEM_ROM_DATA;
+ 	default:
+ 		return BOOT_MEM_RESERVED;
  	}
  }
  
 -void __init prom_meminit(void)
 +void __init fw_meminit(void)
  {
- 	ptv_memsize = get_memsize();
- 	register_address_space(ptv_memsize);
-diff --git a/arch/mips/powertv/powertv_setup.c b/arch/mips/powertv/powertv_setup.c
-index 3933c37..55a3fc5 100644
---- a/arch/mips/powertv/powertv_setup.c
-+++ b/arch/mips/powertv/powertv_setup.c
-@@ -30,8 +30,6 @@
+-	struct prom_pmemblock *p;
++	fw_memblock_t *p;
  
- #include <asm/bootinfo.h>
- #include <asm/irq.h>
--#include <asm/mips-boards/generic.h>
--#include <asm/mips-boards/prom.h>
- #include <asm/dma.h>
- #include <asm/asm.h>
- #include <asm/traps.h>
+-	p = prom_getmdesc();
++	p = fw_getmdesc();
+ 
+ 	while (p->size) {
+ 		long type;
+ 		unsigned long base, size;
+ 
+-		type = prom_memtype_classify(p->type);
++		type = fw_memtype_classify(p->type);
+ 		base = p->base;
+ 		size = p->size;
+ 
+@@ -369,43 +322,43 @@ void __init prom_free_prom_memory(void)
+ 	 * preserve environment variables and command line from pmon/bbload
+ 	 * first preserve the command line
+ 	 */
+-	for (argc = 0; argc < prom_argc; argc++) {
+-		len += sizeof(char *);			/* length of pointer */
+-		len += strlen(prom_argv[argc]) + 1;	/* length of string */
++	for (argc = 0; argc < fw_argc; argc++) {
++		len += sizeof(int *);			/* length of pointer */
++		len += strlen(fw_argv(argc)) + 1;	/* length of string */
+ 	}
+ 	len += sizeof(char *);		/* plus length of null pointer */
+ 
+ 	argv = kmalloc(len, GFP_KERNEL);
+-	ptr = (char *) &argv[prom_argc + 1];	/* strings follow array */
++	ptr = (char *) &argv[fw_argc + 1];	/* strings follow array */
+ 
+-	for (argc = 0; argc < prom_argc; argc++) {
++	for (argc = 0; argc < fw_argc; argc++) {
+ 		argv[argc] = ptr;
+-		strcpy(ptr, prom_argv[argc]);
+-		ptr += strlen(prom_argv[argc]) + 1;
++		strcpy(ptr, fw_argv(argc));
++		ptr += strlen(fw_argv(argc)) + 1;
+ 	}
+-	argv[prom_argc] = NULL;		/* end array with null pointer */
+-	prom_argv = argv;
++	argv[fw_argc] = NULL;		/* end array with null pointer */
++	_fw_argv = (int *)argv;
+ 
+ 	/* next preserve the environment variables */
+ 	len = 0;
+ 	i = 0;
+-	for (envp = prom_envp; *envp != NULL; envp++) {
++	while (fw_envp(i) != NULL) {
++		len += sizeof(int *);		/* length of pointer */
++		len += strlen(fw_envp(i)) + 1;	/* length of string */
+ 		i++;		/* count number of environment variables */
+-		len += sizeof(char *);		/* length of pointer */
+-		len += strlen(*envp) + 1;	/* length of string */
+ 	}
+ 	len += sizeof(char *);		/* plus length of null pointer */
+ 
+ 	envp = kmalloc(len, GFP_KERNEL);
+-	ptr = (char *) &envp[i+1];
++	ptr = (char *) &envp[i + 1];
+ 
+ 	for (argc = 0; argc < i; argc++) {
+ 		envp[argc] = ptr;
+-		strcpy(ptr, prom_envp[argc]);
+-		ptr += strlen(prom_envp[argc]) + 1;
++		strcpy(ptr, fw_envp(argc));
++		ptr += strlen(fw_envp(argc)) + 1;
+ 	}
+ 	envp[i] = NULL;			/* end array with null pointer */
+-	prom_envp = envp;
++	_fw_envp = (int *)envp;
+ 
+ 	for (i = 0; i < boot_mem_map.nr_map; i++) {
+ 		if (boot_mem_map.map[i].type != BOOT_MEM_ROM_DATA)
+@@ -417,22 +370,23 @@ void __init prom_free_prom_memory(void)
+ 	}
+ }
+ 
+-struct prom_pmemblock *__init prom_getmdesc(void)
++fw_memblock_t *__init fw_getmdesc(void)
+ {
+ 	static char	memsz_env[] __initdata = "memsize";
+ 	static char	heaptop_env[] __initdata = "heaptop";
+ 	char		*str;
+ 	unsigned int	memsize;
+ 	unsigned int	heaptop;
+-	int i;
++	int i, tmp;
++	long val;
+ 
+-	str = prom_getenv(memsz_env);
++	str = fw_getenv(memsz_env);
+ 	if (!str) {
+-		ppfinit("memsize not set in boot prom, "
+-			"set to default (32Mb)\n");
++		ppfinit("memsize not set in firmware, set to default (32Mb)\n");
+ 		memsize = 0x02000000;
+ 	} else {
+-		memsize = simple_strtol(str, NULL, 0);
++		tmp = kstrtol(str, 0, &val);
++		memsize = (unsigned int)val;
+ 
+ 		if (memsize == 0) {
+ 			/* if memsize is a bad size, use reasonable default */
+@@ -443,16 +397,18 @@ struct prom_pmemblock *__init prom_getmdesc(void)
+ 		memsize = CPHYSADDR(memsize);
+ 	}
+ 
+-	str = prom_getenv(heaptop_env);
++	str = fw_getenv(heaptop_env);
+ 	if (!str) {
+ 		heaptop = CPHYSADDR((u32)&_text);
+ 		ppfinit("heaptop not set in boot prom, "
+ 			"set to default 0x%08x\n", heaptop);
+ 	} else {
+-		heaptop = simple_strtol(str, NULL, 16);
++		tmp = kstrtol(str, 16, &val);
++		heaptop = (unsigned int)val;
+ 		if (heaptop == 0) {
+ 			/* heaptop conversion bad, might have 0xValue */
+-			heaptop = simple_strtol(str, NULL, 0);
++			tmp = kstrtol(str, 0, &val);
++			heaptop = (unsigned int)val;
+ 
+ 			if (heaptop == 0) {
+ 				/* heaptop still bad, use reasonable default */
+@@ -495,7 +451,7 @@ struct prom_pmemblock *__init prom_getmdesc(void)
+ 
+ 	/* Remainder of RAM -- under memsize */
+ 	i++;			/* 5 */
+-	mdesc[i].type = yamon_free;
++	mdesc[i].type = fw_free;
+ 	mdesc[i].base = mdesc[i-1].base + mdesc[i-1].size;
+ 	mdesc[i].size = memsize - mdesc[i].base;
+ 
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_serial.c b/arch/mips/pmc-sierra/msp71xx/msp_serial.c
+index a1c7c7d..7080bce 100644
+--- a/arch/mips/pmc-sierra/msp71xx/msp_serial.c
++++ b/arch/mips/pmc-sierra/msp71xx/msp_serial.c
+@@ -29,12 +29,13 @@
+ #include <linux/serial_reg.h>
+ #include <linux/slab.h>
+ 
+-#include <asm/bootinfo.h>
+ #include <asm/io.h>
+ #include <asm/processor.h>
+ #include <asm/serial.h>
+ #include <linux/serial_8250.h>
+ 
++#include <asm/fw/fw.h>
++
+ #include <msp_prom.h>
+ #include <msp_int.h>
+ #include <msp_regs.h>
+@@ -90,16 +91,14 @@ static int msp_serial_handle_irq(struct uart_port *p)
+ 
+ void __init msp_serial_setup(void)
+ {
+-	char    *s;
+-	char    *endp;
+ 	struct uart_port up;
+ 	unsigned int uartclk;
+ 
+ 	memset(&up, 0, sizeof(up));
+ 
+ 	/* Check if clock was specified in environment */
+-	s = prom_getenv("uartfreqhz");
+-	if(!(s && *s && (uartclk = simple_strtoul(s, &endp, 10)) && *endp == 0))
++	uartclk = (unsigned int) fw_getenvl("uartfreqhz");
++	if (uartclk == 0)
+ 		uartclk = MSP_BASE_BAUD;
+ 	ppfinit("UART clock set to %d\n", uartclk);
+ 
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_setup.c b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+index 7a834b2..6fa0d76 100644
+--- a/arch/mips/pmc-sierra/msp71xx/msp_setup.c
++++ b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+@@ -10,12 +10,12 @@
+  * option) any later version.
+  */
+ 
+-#include <asm/bootinfo.h>
+ #include <asm/cacheflush.h>
+ #include <asm/r4kcache.h>
+ #include <asm/reboot.h>
+ #include <asm/smp-ops.h>
+ #include <asm/time.h>
++#include <asm/fw/fw.h>
+ 
+ #include <msp_prom.h>
+ #include <msp_regs.h>
+@@ -154,10 +154,6 @@ void __init prom_init(void)
+ 	unsigned long family;
+ 	unsigned long revision;
+ 
+-	prom_argc = fw_arg0;
+-	prom_argv = (char **)fw_arg1;
+-	prom_envp = (char **)fw_arg2;
+-
+ 	/*
+ 	 * Someday we can use this with PMON2000 to get a
+ 	 * platform call prom routines for output etc. without
+@@ -213,9 +209,9 @@ void __init prom_init(void)
+ 		break;
+ 	}
+ 
+-	prom_init_cmdline();
++	fw_init_cmdline();
+ 
+-	prom_meminit();
++	fw_meminit();
+ 
+ 	/*
+ 	 * Sub-system setup follows.
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_time.c b/arch/mips/pmc-sierra/msp71xx/msp_time.c
+index 8b42f30..d76cbdb 100644
+--- a/arch/mips/pmc-sierra/msp71xx/msp_time.c
++++ b/arch/mips/pmc-sierra/msp71xx/msp_time.c
+@@ -32,8 +32,8 @@
+ #include <asm/cevt-r4k.h>
+ #include <asm/mipsregs.h>
+ #include <asm/time.h>
++#include <asm/fw/fw.h>
+ 
+-#include <msp_prom.h>
+ #include <msp_int.h>
+ #include <msp_regs.h>
+ 
+@@ -45,26 +45,16 @@ static int tim_installed;
+ 
+ void __init plat_time_init(void)
+ {
+-	char    *endp, *s;
+-	unsigned long cpu_rate = 0;
++	unsigned long cpu_rate;
+ 
+-	if (cpu_rate == 0) {
+-		s = prom_getenv("clkfreqhz");
+-		cpu_rate = simple_strtoul(s, &endp, 10);
+-		if (endp != NULL && *endp != 0) {
+-			printk(KERN_ERR
+-				"Clock rate in Hz parse error: %s\n", s);
+-			cpu_rate = 0;
+-		}
+-	}
++	cpu_rate = fw_getenvl("clkfreqhz");
++	if (cpu_rate == 0)
++		printk(KERN_ERR "Clock rate in Hz parse error: %s\n", s);
+ 
+ 	if (cpu_rate == 0) {
+-		s = prom_getenv("clkfreq");
+-		cpu_rate = 1000 * simple_strtoul(s, &endp, 10);
+-		if (endp != NULL && *endp != 0) {
+-			printk(KERN_ERR
+-				"Clock rate in MHz parse error: %s\n", s);
+-			cpu_rate = 0;
++		cpu_rate = 1000 * fw_getenvl("clkfreq");
++		if (cpu_rate == 0)
++			printk(KERN_ERR "Clock rate in MHz parse error: %s\n", s);
+ 		}
+ 	}
+ 
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_usb.c b/arch/mips/pmc-sierra/msp71xx/msp_usb.c
+index 9a1aef8..ee4ed9b 100644
+--- a/arch/mips/pmc-sierra/msp71xx/msp_usb.c
++++ b/arch/mips/pmc-sierra/msp71xx/msp_usb.c
+@@ -30,6 +30,7 @@
+ #include <linux/platform_device.h>
+ 
+ #include <asm/mipsregs.h>
++#include <asm/fw/fw.h>
+ 
+ #include <msp_regs.h>
+ #include <msp_int.h>
+@@ -201,26 +202,20 @@ static struct mspusb_device msp_usbdev1_device = {
+ 
+ static int __init msp_usb_setup(void)
+ {
+-	char		*strp;
+-	char		envstr[32];
+ 	struct platform_device *msp_devs[NUM_USB_DEVS];
++	char *strp;
+ 	unsigned int val;
+ 
+-	/* construct environment name usbmode */
+-	/* set usbmode <host/device> as pmon environment var */
++	/* set default host mode */
++	val = 1;
++
+ 	/*
+ 	 * Could this perhaps be integrated into the "features" env var?
+ 	 * Use the features key "U", and follow with "H" for host-mode,
+ 	 * "D" for device-mode.  If it works for Ethernet, why not USB...
+ 	 *  -- hammtrev, 2007/03/22
+ 	 */
+-	snprintf((char *)&envstr[0], sizeof(envstr), "usbmode");
+-
+-	/* set default host mode */
+-	val = 1;
+-
+-	/* get environment string */
+-	strp = prom_getenv((char *)&envstr[0]);
++	strp = fw_getenv("usbmode");
+ 	if (strp) {
+ 		/* compare string */
+ 		if (!strcmp(strp, "device"))
+diff --git a/arch/mips/pmc-sierra/yosemite/prom.c b/arch/mips/pmc-sierra/yosemite/prom.c
+index 6a2754c..b4ce648 100644
+--- a/arch/mips/pmc-sierra/yosemite/prom.c
++++ b/arch/mips/pmc-sierra/yosemite/prom.c
+@@ -20,7 +20,7 @@
+ #include <asm/processor.h>
+ #include <asm/reboot.h>
+ #include <asm/smp-ops.h>
+-#include <asm/bootinfo.h>
++#include <asm/fw/fw.h>
+ #include <asm/pmon.h>
+ 
+ #ifdef CONFIG_SMP
+@@ -85,11 +85,7 @@ extern struct plat_smp_ops yos_smp_ops;
+  */
+ void __init prom_init(void)
+ {
+-	int argc = fw_arg0;
+-	char **arg = (char **) fw_arg1;
+-	char **env = (char **) fw_arg2;
+ 	struct callvectors *cv = (struct callvectors *) fw_arg3;
+-	int i = 0;
+ 
+ 	/* Callbacks for halt, restart */
+ 	_machine_restart = (void (*)(char *)) prom_exit;
+@@ -97,36 +93,16 @@ void __init prom_init(void)
+ 	pm_power_off = prom_halt;
+ 
+ 	debug_vectors = cv;
+-	arcs_cmdline[0] = '\0';
+ 
+-	/* Get the boot parameters */
+-	for (i = 1; i < argc; i++) {
+-		if (strlen(arcs_cmdline) + strlen(arg[i]) + 1 >=
+-		    sizeof(arcs_cmdline))
+-			break;
+-
+-		strcat(arcs_cmdline, arg[i]);
+-		strcat(arcs_cmdline, " ");
+-	}
++	fw_init_cmdline();
+ 
+ #ifdef CONFIG_SERIAL_8250_CONSOLE
+ 	if ((strstr(arcs_cmdline, "console=ttyS")) == NULL)
+ 		strcat(arcs_cmdline, "console=ttyS0,115200");
+ #endif
+ 
+-	while (*env) {
+-		if (strncmp("ocd_base", *env, strlen("ocd_base")) == 0)
+-			yosemite_base =
+-			    simple_strtol(*env + strlen("ocd_base="), NULL,
+-					  16);
+-
+-		if (strncmp("cpuclock", *env, strlen("cpuclock")) == 0)
+-			cpu_clock_freq =
+-			    simple_strtol(*env + strlen("cpuclock="), NULL,
+-					  10);
+-
+-		env++;
+-	}
++	yosemite_base = fw_getenvl("ocd_base");
++	cpu_clock_freq = fw_getenvl("cpuclock");
+ 
+ 	prom_grab_secondary();
+ 
+diff --git a/drivers/mtd/maps/pmcmsp-flash.c b/drivers/mtd/maps/pmcmsp-flash.c
+index 744ca5c..c19d9e4 100644
+--- a/drivers/mtd/maps/pmcmsp-flash.c
++++ b/drivers/mtd/maps/pmcmsp-flash.c
+@@ -37,6 +37,7 @@
+ #include <linux/mtd/partitions.h>
+ 
+ #include <asm/io.h>
++#include <asm/fw/fw.h>
+ 
+ #include <msp_prom.h>
+ #include <msp_regs.h>
+@@ -67,7 +68,7 @@ static int __init init_msp_flash(void)
+ 	}
+ 
+ 	/* examine the prom environment for flash devices */
+-	for (fcnt = 0; (env = prom_getenv(flash_name)); fcnt++)
++	for (fcnt = 0; (env = fw_getenv(flash_name)); fcnt++)
+ 		flash_name[5] = '0' + fcnt + 1;
+ 
+ 	if (fcnt < 1)
+@@ -92,7 +93,7 @@ static int __init init_msp_flash(void)
+ 		/* examine the prom environment for flash partititions */
+ 		part_name[5] = '0' + i;
+ 		part_name[7] = '0';
+-		for (pcnt = 0; (env = prom_getenv(part_name)); pcnt++)
++		for (pcnt = 0; (env = fw_getenv(part_name)); pcnt++)
+ 			part_name[7] = '0' + pcnt + 1;
+ 
+ 		if (pcnt == 0) {
+@@ -108,7 +109,7 @@ static int __init init_msp_flash(void)
+ 
+ 		/* now initialize the devices proper */
+ 		flash_name[5] = '0' + i;
+-		env = prom_getenv(flash_name);
++		env = fw_getenv(flash_name);
+ 
+ 		if (sscanf(env, "%x:%x", &addr, &size) < 2) {
+ 			ret = -ENXIO;
+@@ -152,7 +153,7 @@ static int __init init_msp_flash(void)
+ 			part_name[5] = '0' + i;
+ 			part_name[7] = '0' + j;
+ 
+-			env = prom_getenv(part_name);
++			env = fw_getenv(part_name);
+ 
+ 			if (sscanf(env, "%x:%x:%n", &offset, &size,
+ 						&coff) < 2) {
 -- 
 1.7.10.3

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:56:56 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:55025 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:57:34 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:55028 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903787Ab2FZEvW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:51:22 +0200
+        with ESMTP id S1903788Ab2FZEv3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:51:29 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SjNbQ-0002zj-5M; Mon, 25 Jun 2012 23:42:12 -0500
+        id 1SjNbX-0002zj-3z; Mon, 25 Jun 2012 23:42:19 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 16/33] MIPS: Lasat: Cleanup files effected by firmware changes.
-Date:   Mon, 25 Jun 2012 23:41:31 -0500
-Message-Id: <1340685708-14408-17-git-send-email-sjhill@mips.com>
+Subject: [PATCH 28/33] MIPS: RB532: Cleanup firmware support for RB532 platform.
+Date:   Mon, 25 Jun 2012 23:41:43 -0500
+Message-Id: <1340685708-14408-29-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
 References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33835
+X-archive-position: 33836
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,46 +36,87 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Make changes based on running the checkpatch script.
-
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/lasat/prom.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/mips/rb532/prom.c |   29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/arch/mips/lasat/prom.c b/arch/mips/lasat/prom.c
-index 8bd3994..a2dbb04 100644
---- a/arch/mips/lasat/prom.c
-+++ b/arch/mips/lasat/prom.c
-@@ -9,12 +9,13 @@
- #include <linux/mm.h>
- #include <linux/bootmem.h>
+diff --git a/arch/mips/rb532/prom.c b/arch/mips/rb532/prom.c
+index d7c26d0..54f5399 100644
+--- a/arch/mips/rb532/prom.c
++++ b/arch/mips/rb532/prom.c
+@@ -33,7 +33,7 @@
  #include <linux/ioport.h>
-+#include <linux/cpu.h>
-+
- #include <asm/fw/fw.h>
- #include <asm/lasat/lasat.h>
--#include <asm/cpu.h>
-+#include <asm/lasat/eeprom.h>
+ #include <linux/blkdev.h>
  
- #include "at93c.h"
--#include <asm/lasat/eeprom.h>
- #include "prom.h"
+-#include <asm/bootinfo.h>
++#include <asm/fw/fw.h>
+ #include <asm/mach-rc32434/ddr.h>
+ #include <asm/mach-rc32434/prom.h>
  
- #define RESET_VECTOR	0xbfc00000
-@@ -84,11 +85,11 @@ void __init prom_init(void)
- 	setup_prom_vectors();
+@@ -62,41 +62,40 @@ static inline int match_tag(char *arg, const char *tag)
+ static inline unsigned long tag2ul(char *arg, const char *tag)
+ {
+ 	char *num;
++	long val;
++	int tmp;
  
- 	if (IS_LASAT_200()) {
--		printk(KERN_INFO "LASAT 200 board\n");
-+		pr_info("LASAT 200 board\n");
- 		lasat_ndelay_divider = LASAT_200_DIVIDER;
- 		at93c = &at93c_defs[1];
- 	} else {
--		printk(KERN_INFO "LASAT 100 board\n");
-+		pr_info("LASAT 100 board\n");
- 		lasat_ndelay_divider = LASAT_100_DIVIDER;
- 		at93c = &at93c_defs[0];
+ 	num = arg + strlen(tag);
+-	return simple_strtoul(num, 0, 10);
++	tmp = kstrtol(num, 0, &val);
++	return (unsigned long)val;
+ }
+ 
+ void __init prom_setup_cmdline(void)
+ {
+ 	static char cmd_line[COMMAND_LINE_SIZE] __initdata;
+ 	char *cp, *board;
+-	int prom_argc;
+-	char **prom_argv, **prom_envp;
+ 	int i;
+ 
+-	prom_argc = fw_arg0;
+-	prom_argv = (char **) fw_arg1;
+-	prom_envp = (char **) fw_arg2;
++	fw_init_cmdline();
+ 
+ 	cp = cmd_line;
+ 		/* Note: it is common that parameters start
+ 		 * at argv[1] and not argv[0],
+ 		 * however, our elf loader starts at [0] */
+-	for (i = 0; i < prom_argc; i++) {
+-		if (match_tag(prom_argv[i], FREQ_TAG)) {
+-			idt_cpu_freq = tag2ul(prom_argv[i], FREQ_TAG);
++	for (i = 0; i < fw_argc; i++) {
++		if (match_tag(fw_argv(i), FREQ_TAG)) {
++			idt_cpu_freq = tag2ul(fw_argv(i), FREQ_TAG);
+ 			continue;
+ 		}
+ #ifdef IGNORE_CMDLINE_MEM
+ 		/* parses out the "mem=xx" arg */
+-		if (match_tag(prom_argv[i], MEM_TAG))
++		if (match_tag(fw_argv(i), MEM_TAG))
+ 			continue;
+ #endif
+ 		if (i > 0)
+ 			*(cp++) = ' ';
+-		if (match_tag(prom_argv[i], BOARD_TAG)) {
+-			board = prom_argv[i] + strlen(BOARD_TAG);
++		if (match_tag(fw_argv(i), BOARD_TAG)) {
++			board = fw_argv(i) + strlen(BOARD_TAG);
+ 
+ 			if (match_tag(board, BOARD_RB532A))
+ 				mips_machtype = MACH_MIKROTIK_RB532A;
+@@ -104,8 +103,8 @@ void __init prom_setup_cmdline(void)
+ 				mips_machtype = MACH_MIKROTIK_RB532;
+ 		}
+ 
+-		strcpy(cp, prom_argv[i]);
+-		cp += strlen(prom_argv[i]);
++		strcpy(cp, fw_argv(i));
++		cp += strlen(fw_argv(i));
  	}
+ 	*(cp++) = ' ';
+ 
 -- 
 1.7.10.3

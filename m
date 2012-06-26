@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:50:57 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:54992 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2012 06:51:21 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:54994 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903765Ab2FZEtt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:49:49 +0200
+        with ESMTP id S1903761Ab2FZEt4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2012 06:49:56 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SjNbR-0002zj-AS; Mon, 25 Jun 2012 23:42:13 -0500
+        id 1SjNbW-0002zj-HD; Mon, 25 Jun 2012 23:42:18 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 18/33] MIPS: Loongson: Cleanup files effected by firmware changes.
-Date:   Mon, 25 Jun 2012 23:41:33 -0500
-Message-Id: <1340685708-14408-19-git-send-email-sjhill@mips.com>
+Subject: [PATCH 27/33] MIPS: PowerTV: Cleanup files effected by firmware changes.
+Date:   Mon, 25 Jun 2012 23:41:42 -0500
+Message-Id: <1340685708-14408-28-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.10.3
 In-Reply-To: <1340685708-14408-1-git-send-email-sjhill@mips.com>
 References: <1340685708-14408-1-git-send-email-sjhill@mips.com>
-X-archive-position: 33821
+X-archive-position: 33822
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,176 +36,197 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Make headers consistent across the files and make changes based on
-running the checkpatch script.
+Make headers consistent across the files.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/mach-loongson/loongson.h |   51 ++++++++++++------------
- arch/mips/loongson/common/env.c                |    9 ++---
- arch/mips/loongson/common/init.c               |   10 ++---
- 3 files changed, 33 insertions(+), 37 deletions(-)
+ arch/mips/powertv/asic/asic_int.c |   42 ++++++++-----------------------------
+ arch/mips/powertv/init.c          |   27 ++++++++----------------
+ arch/mips/powertv/memory.c        |   23 +++++++-------------
+ arch/mips/powertv/powertv_setup.c |   22 ++++++-------------
+ 4 files changed, 31 insertions(+), 83 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
-index b19c5b4..332abd0 100644
---- a/arch/mips/include/asm/mach-loongson/loongson.h
-+++ b/arch/mips/include/asm/mach-loongson/loongson.h
-@@ -1,11 +1,10 @@
+diff --git a/arch/mips/powertv/asic/asic_int.c b/arch/mips/powertv/asic/asic_int.c
+index 8728c3b..400ffb2 100644
+--- a/arch/mips/powertv/asic/asic_int.c
++++ b/arch/mips/powertv/asic/asic_int.c
+@@ -1,27 +1,16 @@
  /*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * Copyright (C) 2009 Lemote, Inc.
-  * Author: Wu Zhangjin <wuzhangjin@gmail.com>
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 2000, 2001, 2004 MIPS Technologies, Inc.
+- * Copyright (C) 2001 Ralf Baechle
+- * Portions copyright (C) 2009  Cisco Systems, Inc.
 - *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-  */
- 
- #ifndef __ASM_MACH_LOONGSON_LOONGSON_H
-@@ -80,13 +79,13 @@ static inline void do_perfcnt_IRQ(void)
- 
- #define LOONGSON_BOOT_BASE	0x1fc00000
- #define LOONGSON_BOOT_SIZE	0x00100000	/* 1M */
--#define LOONGSON_BOOT_TOP 	(LOONGSON_BOOT_BASE+LOONGSON_BOOT_SIZE-1)
--#define LOONGSON_REG_BASE 	0x1fe00000
--#define LOONGSON_REG_SIZE 	0x00100000	/* 256Bytes + 256Bytes + ??? */
-+#define LOONGSON_BOOT_TOP	(LOONGSON_BOOT_BASE+LOONGSON_BOOT_SIZE-1)
-+#define LOONGSON_REG_BASE	0x1fe00000
-+#define LOONGSON_REG_SIZE	0x00100000	/* 256Bytes + 256Bytes + ??? */
- #define LOONGSON_REG_TOP	(LOONGSON_REG_BASE+LOONGSON_REG_SIZE-1)
- 
--#define LOONGSON_LIO1_BASE 	0x1ff00000
--#define LOONGSON_LIO1_SIZE 	0x00100000	/* 1M */
-+#define LOONGSON_LIO1_BASE	0x1ff00000
-+#define LOONGSON_LIO1_SIZE	0x00100000	/* 1M */
- #define LOONGSON_LIO1_TOP	(LOONGSON_LIO1_BASE+LOONGSON_LIO1_SIZE-1)
- 
- #define LOONGSON_PCILO0_BASE	0x10000000
-@@ -113,13 +112,13 @@ static inline void do_perfcnt_IRQ(void)
- #define LOONGSON_PCI_REG(x)	LOONGSON_REG(LOONGSON_PCICONFIGBASE + (x))
- #define LOONGSON_PCIDID		LOONGSON_PCI_REG(0x00)
- #define LOONGSON_PCICMD		LOONGSON_PCI_REG(0x04)
--#define LOONGSON_PCICLASS 	LOONGSON_PCI_REG(0x08)
-+#define LOONGSON_PCICLASS	LOONGSON_PCI_REG(0x08)
- #define LOONGSON_PCILTIMER	LOONGSON_PCI_REG(0x0c)
--#define LOONGSON_PCIBASE0 	LOONGSON_PCI_REG(0x10)
--#define LOONGSON_PCIBASE1 	LOONGSON_PCI_REG(0x14)
--#define LOONGSON_PCIBASE2 	LOONGSON_PCI_REG(0x18)
--#define LOONGSON_PCIBASE3 	LOONGSON_PCI_REG(0x1c)
--#define LOONGSON_PCIBASE4 	LOONGSON_PCI_REG(0x20)
-+#define LOONGSON_PCIBASE0	LOONGSON_PCI_REG(0x10)
-+#define LOONGSON_PCIBASE1	LOONGSON_PCI_REG(0x14)
-+#define LOONGSON_PCIBASE2	LOONGSON_PCI_REG(0x18)
-+#define LOONGSON_PCIBASE3	LOONGSON_PCI_REG(0x1c)
-+#define LOONGSON_PCIBASE4	LOONGSON_PCI_REG(0x20)
- #define LOONGSON_PCIEXPRBASE	LOONGSON_PCI_REG(0x30)
- #define LOONGSON_PCIINT		LOONGSON_PCI_REG(0x3c)
- 
-@@ -130,7 +129,7 @@ static inline void do_perfcnt_IRQ(void)
- #define LOONGSON_PCICMD_MABORT_CLR	0x20000000
- #define LOONGSON_PCICMD_MTABORT_CLR	0x10000000
- #define LOONGSON_PCICMD_TABORT_CLR	0x08000000
--#define LOONGSON_PCICMD_MPERR_CLR 	0x01000000
-+#define LOONGSON_PCICMD_MPERR_CLR	0x01000000
- #define LOONGSON_PCICMD_PERRRESPEN	0x00000040
- #define LOONGSON_PCICMD_ASTEPEN		0x00000080
- #define LOONGSON_PCICMD_SERREN		0x00000100
-@@ -171,25 +170,25 @@ static inline void do_perfcnt_IRQ(void)
- 
- /* GPIO Regs - r/w */
- 
--#define LOONGSON_GPIODATA 		LOONGSON_REG(LOONGSON_REGBASE + 0x1c)
-+#define LOONGSON_GPIODATA		LOONGSON_REG(LOONGSON_REGBASE + 0x1c)
- #define LOONGSON_GPIOIE			LOONGSON_REG(LOONGSON_REGBASE + 0x20)
- 
- /* ICU Configuration Regs - r/w */
- 
- #define LOONGSON_INTEDGE		LOONGSON_REG(LOONGSON_REGBASE + 0x24)
--#define LOONGSON_INTSTEER 		LOONGSON_REG(LOONGSON_REGBASE + 0x28)
-+#define LOONGSON_INTSTEER		LOONGSON_REG(LOONGSON_REGBASE + 0x28)
- #define LOONGSON_INTPOL			LOONGSON_REG(LOONGSON_REGBASE + 0x2c)
- 
- /* ICU Enable Regs - IntEn & IntISR are r/o. */
- 
--#define LOONGSON_INTENSET 		LOONGSON_REG(LOONGSON_REGBASE + 0x30)
--#define LOONGSON_INTENCLR 		LOONGSON_REG(LOONGSON_REGBASE + 0x34)
-+#define LOONGSON_INTENSET		LOONGSON_REG(LOONGSON_REGBASE + 0x30)
-+#define LOONGSON_INTENCLR		LOONGSON_REG(LOONGSON_REGBASE + 0x34)
- #define LOONGSON_INTEN			LOONGSON_REG(LOONGSON_REGBASE + 0x38)
- #define LOONGSON_INTISR			LOONGSON_REG(LOONGSON_REGBASE + 0x3c)
- 
- /* ICU */
- #define LOONGSON_ICU_MBOXES		0x0000000f
--#define LOONGSON_ICU_MBOXES_SHIFT 	0
-+#define LOONGSON_ICU_MBOXES_SHIFT	0
- #define LOONGSON_ICU_DMARDY		0x00000010
- #define LOONGSON_ICU_DMAEMPTY		0x00000020
- #define LOONGSON_ICU_COPYRDY		0x00000040
-@@ -210,10 +209,10 @@ static inline void do_perfcnt_IRQ(void)
- 
- /* PCI prefetch window base & mask */
- 
--#define LOONGSON_MEM_WIN_BASE_L 	LOONGSON_REG(LOONGSON_REGBASE + 0x40)
--#define LOONGSON_MEM_WIN_BASE_H 	LOONGSON_REG(LOONGSON_REGBASE + 0x44)
--#define LOONGSON_MEM_WIN_MASK_L 	LOONGSON_REG(LOONGSON_REGBASE + 0x48)
--#define LOONGSON_MEM_WIN_MASK_H 	LOONGSON_REG(LOONGSON_REGBASE + 0x4c)
-+#define LOONGSON_MEM_WIN_BASE_L		LOONGSON_REG(LOONGSON_REGBASE + 0x40)
-+#define LOONGSON_MEM_WIN_BASE_H		LOONGSON_REG(LOONGSON_REGBASE + 0x44)
-+#define LOONGSON_MEM_WIN_MASK_L		LOONGSON_REG(LOONGSON_REGBASE + 0x48)
-+#define LOONGSON_MEM_WIN_MASK_H		LOONGSON_REG(LOONGSON_REGBASE + 0x4c)
- 
- /* PCI_Hit*_Sel_* */
- 
-diff --git a/arch/mips/loongson/common/env.c b/arch/mips/loongson/common/env.c
-index 681690a..8b6ccf8 100644
---- a/arch/mips/loongson/common/env.c
-+++ b/arch/mips/loongson/common/env.c
-@@ -1,4 +1,8 @@
- /*
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
 + * for more details.
-+ *
-  * Based on Ocelot Linux port, which is
-  * Copyright 2001 MontaVista Software Inc.
-  * Author: jsun@mvista.com or jsun@junsun.net
-@@ -11,11 +15,6 @@
   *
-  * Copyright (C) 2009 Lemote Inc.
-  * Author: Wu Zhangjin, wuzhangjin@gmail.com
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
+  * Routines for generic manipulation of the interrupts found on the PowerTV
+- * platform.
++ * platform. The interrupt controller is located in the South Bridge a PIIX4
++ * device with two internal 82C95 interrupt controllers.
+  *
+- * The interrupt controller is located in the South Bridge a PIIX4 device
+- * with two internal 82C95 interrupt controllers.
++ * Carsten Langgaard, carstenl@mips.com
++ * Copyright (C) 2000,2001,2004 MIPS Technologies, Inc.
++ * Copyright (C) 2001 Ralf Baechle
++ * Portions copyright (C) 2009  Cisco Systems, Inc.
   */
- #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/irq.h>
+@@ -68,19 +57,6 @@ static void asic_irqdispatch(void)
+ 	do_IRQ(irq);
+ }
  
-diff --git a/arch/mips/loongson/common/init.c b/arch/mips/loongson/common/init.c
-index a40ab27..ebfb1c3 100644
---- a/arch/mips/loongson/common/init.c
-+++ b/arch/mips/loongson/common/init.c
-@@ -1,13 +1,11 @@
+-static inline int clz(unsigned long x)
+-{
+-	__asm__(
+-	"	.set	push					\n"
+-	"	.set	mips32					\n"
+-	"	clz	%0, %1					\n"
+-	"	.set	pop					\n"
+-	: "=r" (x)
+-	: "r" (x));
+-
+-	return x;
+-}
+-
+ /*
+  * Version of ffs that only looks at bits 12..15.
+  */
+diff --git a/arch/mips/powertv/init.c b/arch/mips/powertv/init.c
+index 14cdf19..0f1be8f 100644
+--- a/arch/mips/powertv/init.c
++++ b/arch/mips/powertv/init.c
+@@ -1,24 +1,15 @@
+ /*
+- * Copyright (C) 1999, 2000, 2004, 2005  MIPS Technologies, Inc.
+- *	All rights reserved.
+- *	Authors: Carsten Langgaard <carstenl@mips.com>
+- *		 Maciej W. Rozycki <macro@mips.com>
+- * Portions copyright (C) 2009 Cisco Systems, Inc.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
+  *
+  * PROM library initialisation code.
++ *
++ * Copyright (C) 1999, 2000, 2004, 2005  MIPS Technologies, Inc.
++ *     All rights reserved.
++ *     Authors: Carsten Langgaard <carstenl@mips.com>
++ *              Maciej W. Rozycki <macro@mips.com>
++ * Portions copyright (C) 2009 Cisco Systems, Inc.
+  */
+ #include <linux/init.h>
+ #include <linux/string.h>
+diff --git a/arch/mips/powertv/memory.c b/arch/mips/powertv/memory.c
+index 56f0193..7c70327 100644
+--- a/arch/mips/powertv/memory.c
++++ b/arch/mips/powertv/memory.c
+@@ -1,23 +1,14 @@
+ /*
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- * Portions copyright (C) 2009 Cisco Systems, Inc.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
+  *
+  * Apparently originally from arch/mips/malta-memory.c. Modified to work
+  * with the PowerTV bootloader.
++ *
++ * Carsten Langgaard, carstenl@mips.com
++ * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
++ * Portions copyright (C) 2009 Cisco Systems, Inc.
+  */
+ #include <linux/init.h>
+ #include <linux/mm.h>
+diff --git a/arch/mips/powertv/powertv_setup.c b/arch/mips/powertv/powertv_setup.c
+index 55a3fc5..ad8b9a0 100644
+--- a/arch/mips/powertv/powertv_setup.c
++++ b/arch/mips/powertv/powertv_setup.c
+@@ -1,20 +1,11 @@
  /*
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
 + * for more details.
 + *
-  * Copyright (C) 2009 Lemote Inc.
-  * Author: Wu Zhangjin, wuzhangjin@gmail.com
+  * Carsten Langgaard, carstenl@mips.com
+  * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
+  * Portions copyright (C) 2009 Cisco Systems, Inc.
 - *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
   */
--
- #include <linux/bootmem.h>
+ #include <linux/init.h>
+ #include <linux/sched.h>
+@@ -197,8 +188,7 @@ static int panic_handler(struct notifier_block *notifier_block,
+ 		my_regs.cp0_status = read_c0_status();
+ 	}
  
- #include <asm/fw/fw.h>
+-	pr_crit("I'm feeling a bit sleepy. hmmmmm... perhaps a nap would... "
+-		"zzzz... \n");
++	pr_crit("I'm feeling a bit sleepy. Perhaps a nap would...zzzz...\n");
+ 
+ 	return NOTIFY_DONE;
+ }
+@@ -295,7 +285,7 @@ void platform_random_ether_addr(u8 addr[ETH_ALEN])
+ 	const unsigned char mac_addr_locally_managed = (1 << 1);
+ 
+ 	if (!have_rfmac) {
+-		pr_warning("rfmac not available on command line; "
++		pr_warn("rfmac not available on command line; "
+ 			"generating random MAC address\n");
+ 		random_ether_addr(addr);
+ 	}
 -- 
 1.7.10.3

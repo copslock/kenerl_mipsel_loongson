@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jun 2012 20:02:49 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:44075 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jun 2012 20:35:42 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:44193 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903773Ab2F2SCl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Jun 2012 20:02:41 +0200
+        with ESMTP id S1903552Ab2F2Sfg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Jun 2012 20:35:36 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SkfWb-0002UH-Kg; Fri, 29 Jun 2012 13:02:33 -0500
+        id 1Skg2T-0002XK-KQ; Fri, 29 Jun 2012 13:35:29 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH] MIPS: Turn on PCI 2.1 compatability for Malta's PIIX4 controller.
-Date:   Fri, 29 Jun 2012 13:02:27 -0500
-Message-Id: <1340992947-3445-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH v4,04/10] Add the MIPS32R2 'ins' and 'ext' instructions for use by the kernel's micro-assembler.
+Date:   Fri, 29 Jun 2012 13:35:24 -0500
+Message-Id: <1340994924-3922-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.11.1
-X-archive-position: 33867
+X-archive-position: 33868
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,30 +36,69 @@ From: "Steven J. Hill" <sjhill@mips.com>
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/mti-malta/malta-setup.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/mips/include/asm/uasm.h |  2 ++
+ arch/mips/mm/uasm.c          | 15 +++++++++++++--
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
-index 2e28f65..f3532bf 100644
---- a/arch/mips/mti-malta/malta-setup.c
-+++ b/arch/mips/mti-malta/malta-setup.c
-@@ -222,3 +222,17 @@ void __init plat_mem_setup(void)
- 	board_be_init = malta_be_init;
- 	board_be_handler = malta_be_handler;
- }
+diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
+index 53db9d7..5c7fc47 100644
+--- a/arch/mips/include/asm/uasm.h
++++ b/arch/mips/include/asm/uasm.h
+@@ -92,6 +92,8 @@ Ip_u2u1u3(_dsrl);
+ Ip_u2u1u3(_dsrl32);
+ Ip_u3u1u2(_dsubu);
+ Ip_0(_eret);
++Ip_u2u1msbu3(_ext);
++Ip_u2u1msbu3(_ins);
+ Ip_u1(_j);
+ Ip_u1(_jal);
+ Ip_u1(_jr);
+diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+index 5fa1851..663b6b1 100644
+--- a/arch/mips/mm/uasm.c
++++ b/arch/mips/mm/uasm.c
+@@ -63,8 +63,8 @@ enum opcode {
+ 	insn_bne, insn_cache, insn_daddu, insn_daddiu, insn_dmfc0,
+ 	insn_dmtc0, insn_dsll, insn_dsll32, insn_dsra, insn_dsrl,
+ 	insn_dsrl32, insn_drotr, insn_drotr32, insn_dsubu, insn_eret,
+-	insn_j, insn_jal, insn_jr, insn_ld, insn_ll, insn_lld,
+-	insn_lui, insn_lw, insn_mfc0, insn_mtc0, insn_or, insn_ori,
++	insn_ext, insn_ins, insn_j, insn_jal, insn_jr, insn_ld, insn_ll,
++	insn_lld, insn_lui, insn_lw, insn_mfc0, insn_mtc0, insn_or, insn_ori,
+ 	insn_pref, insn_rfe, insn_sc, insn_scd, insn_sd, insn_sll,
+ 	insn_sra, insn_srl, insn_rotr, insn_subu, insn_sw, insn_tlbp,
+ 	insn_tlbr, insn_tlbwi, insn_tlbwr, insn_xor, insn_xori,
+@@ -113,6 +113,8 @@ static struct insn insn_table[] __uasminitdata = {
+ 	{ insn_drotr32, M(spec_op, 1, 0, 0, 0, dsrl32_op), RT | RD | RE },
+ 	{ insn_dsubu, M(spec_op, 0, 0, 0, 0, dsubu_op), RS | RT | RD },
+ 	{ insn_eret,  M(cop0_op, cop_op, 0, 0, 0, eret_op),  0 },
++	{ insn_ext, M(spec3_op, 0, 0, 0, 0, ext_op), RS | RT | RD | RE },
++	{ insn_ins, M(spec3_op, 0, 0, 0, 0, ins_op), RS | RT | RD | RE },
+ 	{ insn_j,  M(j_op, 0, 0, 0, 0, 0),  JIMM },
+ 	{ insn_jal,  M(jal_op, 0, 0, 0, 0, 0),  JIMM },
+ 	{ insn_jr,  M(spec_op, 0, 0, 0, 0, jr_op),  RS },
+@@ -343,6 +345,13 @@ Ip_u2u1msbu3(op)					\
+ }							\
+ UASM_EXPORT_SYMBOL(uasm_i##op);
+ 
++#define I_u2u1mmsbu3(op) 				\
++Ip_u2u1msbu3(op)					\
++{							\
++	build_insn(buf, insn##op, b, a, d-1, c);	\
++}							\
++UASM_EXPORT_SYMBOL(uasm_i##op);
 +
-+/* Enable PCI 2.1 compatibility in PIIX4. */
-+static void __init quirk_dlcsetup(struct pci_dev *dev)
-+{
-+	u8 dlc;
-+
-+	/* Enable passive releases and delayed transactions. */
-+	(void) pci_read_config_byte(dev, 0x82, &dlc);
-+	dlc |= 7;
-+	(void) pci_write_config_byte(dev, 0x82, dlc);
-+}
-+
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_82371AB_0,
-+			quirk_dlcsetup);
+ #define I_u1u2(op)					\
+ Ip_u1u2(op)						\
+ {							\
+@@ -396,6 +405,8 @@ I_u2u1u3(_drotr)
+ I_u2u1u3(_drotr32)
+ I_u3u1u2(_dsubu)
+ I_0(_eret)
++I_u2u1mmsbu3(_ext)
++I_u2u1msbu3(_ins)
+ I_u1(_j)
+ I_u1(_jal)
+ I_u1(_jr)
 -- 
 1.7.11.1

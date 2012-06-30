@@ -1,30 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2012 16:25:50 +0200 (CEST)
-Received: from cust-95-128-94-82.breedbanddelft.nl ([95.128.94.82]:56397 "EHLO
-        bitwizard.nl" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S1903689Ab2EaOZq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 May 2012 16:25:46 +0200
-Received: by abra2 (Postfix, from userid 1000)
-        id BA306DFDFB; Thu, 31 May 2012 16:25:40 +0200 (CEST)
-Date:   Thu, 31 May 2012 16:25:40 +0200
-From:   Rogier Wolff <R.E.Wolff@BitWizard.nl>
-To:     Florian Fainelli <florian@openwrt.org>
-Cc:     Rogier Wolff <R.E.Wolff@bitwizard.nl>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: BCM36xx support.
-Message-ID: <20120531142540.GA4785@bitwizard.nl>
-References: <20120418055139.GA25952@bitwizard.nl>
- <7383662.i0oNtC19fQ@flexo>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Jun 2012 22:07:05 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:47267 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903540Ab2F3UG5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Jun 2012 22:06:57 +0200
+Received: by lbbgg6 with SMTP id gg6so6147372lbb.36
+        for <linux-mips@linux-mips.org>; Sat, 30 Jun 2012 13:06:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding
+         :x-gm-message-state;
+        bh=OWV4hlFooLXfnovwkdvsgH8QFVwSr8XAEhy93ctP7Vc=;
+        b=Oe/7lgr8aarp0KF8CEOcZGzWEXSLF/y1K1A1d2VMX6QK5oSzaXSgKWlhEmVpZfIEgK
+         QnqIsudKlldEW2ijaS3ZMuepOc+79VtwrGxK71Xr1NVfp+tDTuYmraYTbQepR6A/iiME
+         jpEV2ad3bSphGIRFws4J+UXDts3IYSzxAUxaVYW36Q1bZqS8YP7Fyri1Ob4b9aQzd5gM
+         C6NSqCjWXGfM0lepNSNisk/w08RYQ+Bqzdmzw3w/3i1ZdEOOha9dxE/2fpCDxiLhIDBq
+         wS88GRIEcOxY4kTVfLZBfEP69U69oaa8Nnp9tYP1dvnjKSXOLgSf/aAQV2BT9a0CD7yo
+         5prA==
+Received: by 10.112.36.195 with SMTP id s3mr3411816lbj.42.1341086811095;
+        Sat, 30 Jun 2012 13:06:51 -0700 (PDT)
+Received: from [192.168.2.2] (ppp91-79-87-54.pppoe.mtu-net.ru. [91.79.87.54])
+        by mx.google.com with ESMTPS id fy10sm13036560lab.0.2012.06.30.13.06.49
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sat, 30 Jun 2012 13:06:50 -0700 (PDT)
+Message-ID: <4FEF5C29.50107@mvista.com>
+Date:   Sun, 01 Jul 2012 00:06:01 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7383662.i0oNtC19fQ@flexo>
-Organization: BitWizard.nl
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-archive-position: 33502
+To:     "Steven J. Hill" <sjhill@mips.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH v4,04/10] Add the MIPS32R2 'ins' and 'ext' instructions
+ for use by the kernel's micro-assembler.
+References: <1340994924-3922-1-git-send-email-sjhill@mips.com>
+In-Reply-To: <1340994924-3922-1-git-send-email-sjhill@mips.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Gm-Message-State: ALoCoQknMtsYlrZA8SIQluJT/UcsYvFIYxj1Y6lJ/SDlA2rIpnFK3McCuz2JQ+3cJOiZgP2Tms3g
+X-archive-position: 33872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: R.E.Wolff@BitWizard.nl
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,80 +55,41 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+Hello.
 
-Hi Florian, 
+On 29-06-2012 22:35, Steven J. Hill wrote:
 
-On Thu, May 31, 2012 at 03:55:34PM +0200, Florian Fainelli wrote:
-> First of all, you should have CC'd linux-mips, because that's where
-> BCM63xx development happens.
+> From: "Steven J. Hill"<sjhill@mips.com>
 
-As I'm not familiar with mips-development, I didn't know that. 
+> Signed-off-by: Steven J. Hill<sjhill@mips.com>
+[...]
 
-> On Wednesday 18 April 2012 07:51:40 Rogier Wolff wrote:
-> > 
-> > While working on SPI and I2C support for the BCM2835, I found the
-> > BCM63xx SPI driver in the kernel. Turns out that this support
-> > was partially merged: 
-> > 
-> > The support can only be enabled when BCM63xx configuration symbol
-> > is defined which menuconfig lists as: 
-> > 
-> >  Symbol: BCM63XX [=BCM63XX]                                                
-> >    Type  : unknown                                                           
-> > 
-> > I'd say the definition of this is not possible through the normal
-> > channels.
-> > 
-> > And in the driver (drivers/spi/spi-bcm63xx.c) I see: 
-> > 
-> > #include <bcm63xx_dev_spi.h>
-> > 
-> > but that file is not in the current git release.
-> 
-> No, it did not make it for a reason I ignore, probably miscommunication.
-> 
-> > 
-> > (some more googling has resulted in me finding out that I don't want
-> > to know how the 63xx SPI controller works as it's for a MIPS processor
-> > while the 2835 is ARM).
+> diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+> index 5fa1851..663b6b1 100644
+> --- a/arch/mips/mm/uasm.c
+> +++ b/arch/mips/mm/uasm.c
+[...]
+> @@ -343,6 +345,13 @@ Ip_u2u1msbu3(op)					\
+>   }							\
+>   UASM_EXPORT_SYMBOL(uasm_i##op);
+>
+> +#define I_u2u1mmsbu3(op) 				\
+> +Ip_u2u1msbu3(op)					\
+> +{							\
+> +	build_insn(buf, insn##op, b, a, d-1, c);	\
+> +}							\
+> +UASM_EXPORT_SYMBOL(uasm_i##op);
+> +
+>   #define I_u1u2(op)					\
+>   Ip_u1u2(op)						\
+>   {							\
+> @@ -396,6 +405,8 @@ I_u2u1u3(_drotr)
+>   I_u2u1u3(_drotr32)
+>   I_u3u1u2(_dsubu)
+>   I_0(_eret)
+> +I_u2u1mmsbu3(_ext)
+> +I_u2u1msbu3(_ins)
 
-> And so? if the core is the same, just use it on your platform
-> too. If you have a look at the architecture files, you will see that
-> the various BCM63xx SoC have their internal registers shuffled but
-> the SPI core is always software compatible, another set of registers
-> can be added for BCM2835.
+    Not I_u2u1mmsbu3()?
 
-I expect the core to be very different because they are for different
-processors. But of course if they are the same, a single driver would
-be better. 
-
-However, with the header file missing, I can't find if the register
-offsets are the same. That would be a hint that the module is the the
-same. 
-
-Reading the driver I see lots "readb" and "writeb" calls. These
-presumably read/write a byte. The '2835 module doesn't have any
-byte-registers. All registers are 32bits. I consider this a further
-hint that the modules are not the same. 
-
-I've read some of the code, and for instance, there seems to be a
-limited-width register (3 or 4 bits) that specify the clock rate on
-the bcm63xx. On the bcm2835 the clock is set by good chunk (15 bits
-IIRC) of a 32-bit register which specifies the clock divisor. The core
-clock runs at 250MHz, so I can specify clock rates at with 1:250
-accuracy around 1MHz. (i.e. 1000000 Hz is possible as well as 1004000)
-I consider this a further hint that the modules are not the same. 
-
-So with three of those hints I'll take the hint that they are not the
-same, and concentrate on building a new driver for the bcm2835 (and
-2708?)
-
-	Roger. 
-
-
--- 
-** R.E.Wolff@BitWizard.nl ** http://www.BitWizard.nl/ ** +31-15-2600998 **
-**    Delftechpark 26 2628 XH  Delft, The Netherlands. KVK: 27239233    **
-*-- BitWizard writes Linux device drivers for any device you may have! --*
-The plan was simple, like my brother-in-law Phil. But unlike
-Phil, this plan just might work.
+WBR, Sergei

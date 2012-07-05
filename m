@@ -1,43 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2012 15:03:00 +0200 (CEST)
-Received: from mail-qc0-f177.google.com ([209.85.216.177]:65235 "EHLO
-        mail-qc0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903749Ab2GENCy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Jul 2012 15:02:54 +0200
-Received: by qcsu28 with SMTP id u28so4892310qcs.36
-        for <linux-mips@linux-mips.org>; Thu, 05 Jul 2012 06:02:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:x-gm-message-state;
-        bh=/qYkC7e4rYfHVxaB+eaVms3QGaOzRsDJgknvOpVz1oQ=;
-        b=lbrKOASYnFw4a8tLYt/RFG6v/FNqTWwIdc0cyhe3cYZJHuW/aXDJCXd9vAJ/u3gWxF
-         BfLcUaCOJpHv52l2yUaanMMTHDFkMwWb5iMeAFHcNE9/btRSximlRSIgTSB8vZLm1eMu
-         vPLigeGuVN5estU+sjEnh1C3QSX0FZ/0CDw7lGMhhv6xIWYx1m9DZ0K9nFOj/A43meWp
-         h5+d+Wb7XW+sd8DHxW5jzix69nQEGjnXpB051i8XR2fraa77gQTiG4gq3vabVHwmqOw1
-         u2d57ckAyUUlcKJMho4prDlCovy9Pp4EoH3dI7vE0+CHZXxoP0GQOqvb0KJFSnIrJ/zA
-         NZZA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2012 18:02:40 +0200 (CEST)
+Received: from shark4.inbox.lv ([89.111.3.84]:40911 "EHLO shark4.inbox.lv"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903735Ab2GEQCg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Jul 2012 18:02:36 +0200
+Received: from mail.inbox.lv (pop [10.0.1.110])
+        by shark4-plain.inbox.lv (Postfix) with ESMTP id B19DC25353
+        for <linux-mips@linux-mips.org>; Thu,  5 Jul 2012 19:02:29 +0300 (EEST)
+Received: from inbox.lv (unknown [77.125.137.216])
+        (Authenticated sender: codeblue@inbox.lv)
+        by mail.inbox.lv (Postfix) with ESMTPSA id 71D902A92A
+        for <linux-mips@linux-mips.org>; Thu,  5 Jul 2012 19:02:26 +0300 (EEST)
+Date:   Thu, 5 Jul 2012 16:02:22 +0000
+From:   Code Blue <codeblue@inbox.lv>
+To:     linux-mips@linux-mips.org
+Subject: Please recommend distro for Lemote Fuloong
+Message-ID: <20120705160222.GJ25225@inbox.lv>
 MIME-Version: 1.0
-Received: by 10.229.115.12 with SMTP id g12mr12847685qcq.58.1341493368305;
- Thu, 05 Jul 2012 06:02:48 -0700 (PDT)
-Received: by 10.229.234.81 with HTTP; Thu, 5 Jul 2012 06:02:48 -0700 (PDT)
-In-Reply-To: <1340011706-32281-1-git-send-email-stigge@antcom.de>
-References: <1340011706-32281-1-git-send-email-stigge@antcom.de>
-Date:   Thu, 5 Jul 2012 15:02:48 +0200
-Message-ID: <CACRpkdbrfrJzri7DOhzWf1n8UGGByw74ALsPQV1npgZNRtF08A@mail.gmail.com>
-Subject: Re: [PATCH] mips: pci-lantiq: Fix check for valid gpio
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Roland Stigge <stigge@antcom.de>
-Cc:     ralf@linux-mips.org, blogic@openwrt.org, jkosina@suse.cz,
-        standby24x7@gmail.com, bhelgaas@google.com,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        grant.likely@secretlab.ca, linus.walleij@stericsson.com
-Content-Type: text/plain; charset=ISO-8859-1
-X-Gm-Message-State: ALoCoQkYSOUb6Zsliupfl21hw9R+wN/s0kRhV8zobhMc3Q6IZcgTyr22RltbsIbcZxIg56xqrsAa
-X-archive-position: 33876
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Virus-Scanned: OK
+X-archive-position: 33877
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: codeblue@inbox.lv
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,14 +38,21 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, Jun 18, 2012 at 11:28 AM, Roland Stigge <stigge@antcom.de> wrote:
+Hi,
 
-> This patch fixes two checks for valid gpio number, formerly (wrongly)
-> considering zero as invalid, now using gpio_is_valid().
->
-> Signed-off-by: Roland Stigge <stigge@antcom.de>
+I just received a Lemote Fuloong Mini and I installed OpenBSD on it. I would
+like to dual boot Linux but I am having a hard time finding the right distro.
 
-Applied.
+I know Lemote and MIPS people are doing a lot of work and submitting patches
+to the Linux kernel and binutils and I am sure many other areas. Can anyone
+please recommend a Linux distro that will come with (or can install) a
+recent kernel so I can take advantage of all this hard work people are
+doing? Of course I will need a tarball or USB installer since the Fuloong
+doesn't have an optical drive. Thank you.
 
-Thanks,
-Linus Walleij
+-- 
+                       _
+ASCII ribbon campaign ( ) Please follow up to the mailing list
+ against HTML e-mail   X       
+   and proprietary    / \          Mutt.org
+     attachments            Code Blue or Go Home!

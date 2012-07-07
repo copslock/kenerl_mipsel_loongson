@@ -1,42 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Jul 2012 11:31:29 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:49439 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Jul 2012 12:46:14 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:64115 "EHLO
         mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903520Ab2GGJaZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Jul 2012 11:30:25 +0200
-Received: by pbbrq13 with SMTP id rq13so17888931pbb.36
-        for <multiple recipients>; Sat, 07 Jul 2012 02:30:18 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1903536Ab2GGKqL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Jul 2012 12:46:11 +0200
+Received: by pbbrq13 with SMTP id rq13so17992104pbb.36
+        for <linux-mips@linux-mips.org>; Sat, 07 Jul 2012 03:46:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=80p4AWDn8gStwztO1Y57NIC1eU+Sr9lhkR8jhE+KrPc=;
-        b=SpVkOcdtZdSWJAU7AiCEDvFYaPC7OguZTosqYLMjPh6I3ppMtAl+6r64HgdZLjGh1U
-         nrvrj+hWO3PKMuRV22QEM9AajkRQN75QU8Y6TBqWrU8J7jGspVSdRKIkk6cUPmw9xhzi
-         P5BGqoILm9q0j5+Abg5+/Zh6mUp7IOLzwvn+4fGy2l9V5gq4XgvDcy+5FSeN7GjfxhFo
-         pzMmDTluHjmI4xkJs7woY+PIXsUjE2kkFwo0a7XDluGfrYsCHcN99VVAATY4s9aY+6ZC
-         cW8rJh2I2Hb8yuWxXQm6WyslmV5GvssPYwVB6Y1czCFxJ/uN5es8LCW4ccRMdHeJlySh
-         Tn8w==
-Received: by 10.66.81.3 with SMTP id v3mr32961092pax.62.1341653418642;
-        Sat, 07 Jul 2012 02:30:18 -0700 (PDT)
-Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
-        by mx.google.com with ESMTPS id vz9sm23595458pbc.12.2012.07.07.02.30.14
-        (version=SSLv3 cipher=OTHER);
-        Sat, 07 Jul 2012 02:30:17 -0700 (PDT)
-From:   Kelvin Cheung <keguang.zhang@gmail.com>
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        ralf@linux-mips.org
-Cc:     wuzhangjin@gmail.com, zhzhl555@gmail.com,
-        Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH V7 3/4] MIPS: Add Makefile and Kconfig for Loongson1B
-Date:   Sat,  7 Jul 2012 17:29:59 +0800
-Message-Id: <1341653400-24860-2-git-send-email-keguang.zhang@gmail.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1341653400-24860-1-git-send-email-keguang.zhang@gmail.com>
-References: <1341653400-24860-1-git-send-email-keguang.zhang@gmail.com>
-X-archive-position: 33881
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=oJJzLxk/hth57NsKmfLEIdZ8/cQGoSR5jz7JIRkPZ3U=;
+        b=Mi66/lqepcnEk7WZDBN9cCPrl5JnVrE/kVfZ2zO4MxrAZTn0tTyuC2ysuMhAV7lV84
+         JwwJ9chWQJOaYRy4uWU6+TYbNfKxD/NEtfHGV2WqbGh0jhK5mIDkkWHftb3zykCNwxY2
+         SwZTN7Z6/Atwh/+CAsbUhRlV6hVauXOeLUzWO+UUUtgf6gW7MFL9Vifuyz+yTTqj/oeo
+         WXgpwEs6O/k/p+sjYNuCJOz8GMjq/rz/KOqLpi5VWtD2uHNd237EbDPnD7kX3G6caYI1
+         edaeJpVJ6Q3fpvkwoJe/vGHpB8ofojg0GyQ5d5TbEjonoB3FWSxi7iZcjfLa/eaXuDVG
+         3rEQ==
+MIME-Version: 1.0
+Received: by 10.68.221.74 with SMTP id qc10mr43793629pbc.31.1341657964685;
+ Sat, 07 Jul 2012 03:46:04 -0700 (PDT)
+Received: by 10.68.240.41 with HTTP; Sat, 7 Jul 2012 03:46:04 -0700 (PDT)
+Date:   Sat, 7 Jul 2012 18:46:04 +0800
+Message-ID: <CANudz+soE9jkRERLbMLJYnYR5GXpkkt2owhQSDxXSMCVY7uF2Q@mail.gmail.com>
+Subject: some question about struct ktermios
+From:   loody <miloody@gmail.com>
+To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Kernel Newbies <kernelnewbies@nl.linux.org>,
+        kernelnewbies@kernelnewbies.org
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 33882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keguang.zhang@gmail.com
+X-original-sender: miloody@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,188 +45,11 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This patch adds Makefile and Kconfig related to Loongson1B.
+Dear all
+"struct ktermios" is the struct used for terminal.
+Why the header file is put at arch/mips/include/asm/termbits.h
+Doesn't it should located at kernel/include?
 
-Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
 
----
-V7(updated):
-	Change the load address of kernel to 0xffffffff80100000.
----
- arch/mips/Kbuild.platforms          |    1 +
- arch/mips/Kconfig                   |   31 +++++++++++++++++++++++++++++++
- arch/mips/loongson1/Kconfig         |   21 +++++++++++++++++++++
- arch/mips/loongson1/Makefile        |   11 +++++++++++
- arch/mips/loongson1/Platform        |    7 +++++++
- arch/mips/loongson1/common/Makefile |    5 +++++
- arch/mips/loongson1/ls1b/Makefile   |    5 +++++
- 7 files changed, 81 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/loongson1/Kconfig
- create mode 100644 arch/mips/loongson1/Makefile
- create mode 100644 arch/mips/loongson1/Platform
- create mode 100644 arch/mips/loongson1/common/Makefile
- create mode 100644 arch/mips/loongson1/ls1b/Makefile
-
-diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
-index 5ce8029..d64786d 100644
---- a/arch/mips/Kbuild.platforms
-+++ b/arch/mips/Kbuild.platforms
-@@ -14,6 +14,7 @@ platforms += jz4740
- platforms += lantiq
- platforms += lasat
- platforms += loongson
-+platforms += loongson1
- platforms += mipssim
- platforms += mti-malta
- platforms += netlogic
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 08dfc79..61e1459 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -265,6 +265,17 @@ config MACH_LOONGSON
- 	  Chinese Academy of Sciences (CAS) in the People's Republic
- 	  of China. The chief architect is Professor Weiwu Hu.
- 
-+config MACH_LOONGSON1
-+	bool "Loongson1 family of machines"
-+	select SYS_SUPPORTS_ZBOOT
-+	help
-+	  This enables the support of Loongson1 family of machines.
-+
-+	  Loongson1 is a family of 32-bit MIPS-compatible SoCs.
-+	  developed at Institute of Computing Technology (ICT),
-+	  Chinese Academy of Sciences (CAS) in the People's Republic
-+	  of China.
-+
- config MIPS_MALTA
- 	bool "MIPS Malta board"
- 	select ARCH_MAY_HAVE_PC_FDC
-@@ -838,6 +849,7 @@ source "arch/mips/txx9/Kconfig"
- source "arch/mips/vr41xx/Kconfig"
- source "arch/mips/cavium-octeon/Kconfig"
- source "arch/mips/loongson/Kconfig"
-+source "arch/mips/loongson1/Kconfig"
- source "arch/mips/netlogic/Kconfig"
- 
- endmenu
-@@ -1219,6 +1231,14 @@ config CPU_LOONGSON2F
- 	  have a similar programming interface with FPGA northbridge used in
- 	  Loongson2E.
- 
-+config CPU_LOONGSON1B
-+	bool "Loongson 1B"
-+	depends on SYS_HAS_CPU_LOONGSON1B
-+	select CPU_LOONGSON1
-+	help
-+	  The Loongson 1B is a 32-bit SoC, which implements the MIPS32
-+	  release 2 instruction set.
-+
- config CPU_MIPS32_R1
- 	bool "MIPS32 Release 1"
- 	depends on SYS_HAS_CPU_MIPS32_R1
-@@ -1548,6 +1568,14 @@ config CPU_LOONGSON2
- 	select CPU_SUPPORTS_64BIT_KERNEL
- 	select CPU_SUPPORTS_HIGHMEM
- 
-+config CPU_LOONGSON1
-+	bool
-+	select CPU_MIPS32
-+	select CPU_MIPSR2
-+	select CPU_HAS_PREFETCH
-+	select CPU_SUPPORTS_32BIT_KERNEL
-+	select CPU_SUPPORTS_HIGHMEM
-+
- config CPU_BMIPS
- 	bool
- 	select CPU_MIPS32
-@@ -1566,6 +1594,9 @@ config SYS_HAS_CPU_LOONGSON2F
- 	select CPU_SUPPORTS_ADDRWINCFG if 64BIT
- 	select CPU_SUPPORTS_UNCACHED_ACCELERATED
- 
-+config SYS_HAS_CPU_LOONGSON1B
-+	bool
-+
- config SYS_HAS_CPU_MIPS32_R1
- 	bool
- 
-diff --git a/arch/mips/loongson1/Kconfig b/arch/mips/loongson1/Kconfig
-new file mode 100644
-index 0000000..237fa21
---- /dev/null
-+++ b/arch/mips/loongson1/Kconfig
-@@ -0,0 +1,21 @@
-+if MACH_LOONGSON1
-+
-+choice
-+	prompt "Machine Type"
-+
-+config LOONGSON1_LS1B
-+	bool "Loongson LS1B board"
-+	select CEVT_R4K
-+	select CSRC_R4K
-+	select SYS_HAS_CPU_LOONGSON1B
-+	select DMA_NONCOHERENT
-+	select BOOT_ELF32
-+	select IRQ_CPU
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_HIGHMEM
-+	select SYS_HAS_EARLY_PRINTK
-+
-+endchoice
-+
-+endif # MACH_LOONGSON1
-diff --git a/arch/mips/loongson1/Makefile b/arch/mips/loongson1/Makefile
-new file mode 100644
-index 0000000..e9123c2
---- /dev/null
-+++ b/arch/mips/loongson1/Makefile
-@@ -0,0 +1,11 @@
-+#
-+# Common code for all Loongson1 based systems
-+#
-+
-+obj-$(CONFIG_MACH_LOONGSON1) += common/
-+
-+#
-+# Loongson LS1B board
-+#
-+
-+obj-$(CONFIG_LOONGSON1_LS1B)  += ls1b/
-diff --git a/arch/mips/loongson1/Platform b/arch/mips/loongson1/Platform
-new file mode 100644
-index 0000000..99bdefe
---- /dev/null
-+++ b/arch/mips/loongson1/Platform
-@@ -0,0 +1,7 @@
-+cflags-$(CONFIG_CPU_LOONGSON1)  += \
-+	$(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
-+	-Wa,-mips32r2 -Wa,--trap
-+
-+platform-$(CONFIG_MACH_LOONGSON1)	+= loongson1/
-+cflags-$(CONFIG_MACH_LOONGSON1)		+= -I$(srctree)/arch/mips/include/asm/mach-loongson1
-+load-$(CONFIG_LOONGSON1_LS1B)		+= 0xffffffff80100000
-diff --git a/arch/mips/loongson1/common/Makefile b/arch/mips/loongson1/common/Makefile
-new file mode 100644
-index 0000000..b279770
---- /dev/null
-+++ b/arch/mips/loongson1/common/Makefile
-@@ -0,0 +1,5 @@
-+#
-+# Makefile for common code of loongson1 based machines.
-+#
-+
-+obj-y	+= clock.o irq.o platform.o prom.o reset.o setup.o
-diff --git a/arch/mips/loongson1/ls1b/Makefile b/arch/mips/loongson1/ls1b/Makefile
-new file mode 100644
-index 0000000..891eac4
---- /dev/null
-+++ b/arch/mips/loongson1/ls1b/Makefile
-@@ -0,0 +1,5 @@
-+#
-+# Makefile for loongson1B based machines.
-+#
-+
-+obj-y += board.o
 -- 
-1.7.1
+Regards

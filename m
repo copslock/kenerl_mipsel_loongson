@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Jul 2012 11:30:57 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:49663 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Jul 2012 11:31:29 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:49439 "EHLO
         mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903393Ab2GGJaY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Jul 2012 11:30:24 +0200
-Received: by mail-pb0-f49.google.com with SMTP id rq13so17888788pbb.36
-        for <multiple recipients>; Sat, 07 Jul 2012 02:30:23 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1903520Ab2GGJaZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Jul 2012 11:30:25 +0200
+Received: by pbbrq13 with SMTP id rq13so17888931pbb.36
+        for <multiple recipients>; Sat, 07 Jul 2012 02:30:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=E/+6Npb6c1lMdENGLTk3c2o9fCzoE8HiXHGWv6gfPsY=;
-        b=B940LPf5ufJ2ycMpY19lYguMHAkDBf+/3Oz2yAMZ3Pbvuxc2NXtomHFBZKLok/8OGd
-         xNy3w9KJdyCc132UB4pq37mCByd1z5sTVhwh4emuQtZEf9RR0PDqjJYC8hMYt26c+JaG
-         zI0s+vnxVIkX2slRGcMtkyc7ufqwOAsmCYTbZsS+db10GnaBKnJcwiDz2fDutFr2gwyA
-         qU9o3zF4d1WEPtBubgCHC3UFuqQdZLg1pZmYHd85cGA9/GOICiut97v4Oo2OBUWmF4a4
-         k8DuoLuqfVuTEG4XpL1l5MkE8sZjIZODwlQVr7DSHm/9PxjiBtFlkT3Q25KgU9B8e9O2
-         F7PQ==
-Received: by 10.68.201.195 with SMTP id kc3mr44363805pbc.33.1341653423481;
-        Sat, 07 Jul 2012 02:30:23 -0700 (PDT)
+        bh=80p4AWDn8gStwztO1Y57NIC1eU+Sr9lhkR8jhE+KrPc=;
+        b=SpVkOcdtZdSWJAU7AiCEDvFYaPC7OguZTosqYLMjPh6I3ppMtAl+6r64HgdZLjGh1U
+         nrvrj+hWO3PKMuRV22QEM9AajkRQN75QU8Y6TBqWrU8J7jGspVSdRKIkk6cUPmw9xhzi
+         P5BGqoILm9q0j5+Abg5+/Zh6mUp7IOLzwvn+4fGy2l9V5gq4XgvDcy+5FSeN7GjfxhFo
+         pzMmDTluHjmI4xkJs7woY+PIXsUjE2kkFwo0a7XDluGfrYsCHcN99VVAATY4s9aY+6ZC
+         cW8rJh2I2Hb8yuWxXQm6WyslmV5GvssPYwVB6Y1czCFxJ/uN5es8LCW4ccRMdHeJlySh
+         Tn8w==
+Received: by 10.66.81.3 with SMTP id v3mr32961092pax.62.1341653418642;
+        Sat, 07 Jul 2012 02:30:18 -0700 (PDT)
 Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
-        by mx.google.com with ESMTPS id vz9sm23595458pbc.12.2012.07.07.02.30.19
+        by mx.google.com with ESMTPS id vz9sm23595458pbc.12.2012.07.07.02.30.14
         (version=SSLv3 cipher=OTHER);
-        Sat, 07 Jul 2012 02:30:22 -0700 (PDT)
+        Sat, 07 Jul 2012 02:30:17 -0700 (PDT)
 From:   Kelvin Cheung <keguang.zhang@gmail.com>
 To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         ralf@linux-mips.org
 Cc:     wuzhangjin@gmail.com, zhzhl555@gmail.com,
         Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH V7 4/4] MIPS: Add defconfig for Loongson1B
-Date:   Sat,  7 Jul 2012 17:30:00 +0800
-Message-Id: <1341653400-24860-3-git-send-email-keguang.zhang@gmail.com>
+Subject: [PATCH V7 3/4] MIPS: Add Makefile and Kconfig for Loongson1B
+Date:   Sat,  7 Jul 2012 17:29:59 +0800
+Message-Id: <1341653400-24860-2-git-send-email-keguang.zhang@gmail.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1341653400-24860-1-git-send-email-keguang.zhang@gmail.com>
 References: <1341653400-24860-1-git-send-email-keguang.zhang@gmail.com>
-X-archive-position: 33880
+X-archive-position: 33881
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,133 +50,188 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This patch adds defconfig for Loongson1B.
+This patch adds Makefile and Kconfig related to Loongson1B.
 
 Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
 
 ---
 V7(updated):
-	Add CONFIG_USB_ANNOUNCE_NEW_DEVICES in default
-	configuration.
+	Change the load address of kernel to 0xffffffff80100000.
 ---
- arch/mips/configs/ls1b_defconfig |  109 ++++++++++++++++++++++++++++++++++++++
- 1 files changed, 109 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/configs/ls1b_defconfig
+ arch/mips/Kbuild.platforms          |    1 +
+ arch/mips/Kconfig                   |   31 +++++++++++++++++++++++++++++++
+ arch/mips/loongson1/Kconfig         |   21 +++++++++++++++++++++
+ arch/mips/loongson1/Makefile        |   11 +++++++++++
+ arch/mips/loongson1/Platform        |    7 +++++++
+ arch/mips/loongson1/common/Makefile |    5 +++++
+ arch/mips/loongson1/ls1b/Makefile   |    5 +++++
+ 7 files changed, 81 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/loongson1/Kconfig
+ create mode 100644 arch/mips/loongson1/Makefile
+ create mode 100644 arch/mips/loongson1/Platform
+ create mode 100644 arch/mips/loongson1/common/Makefile
+ create mode 100644 arch/mips/loongson1/ls1b/Makefile
 
-diff --git a/arch/mips/configs/ls1b_defconfig b/arch/mips/configs/ls1b_defconfig
+diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
+index 5ce8029..d64786d 100644
+--- a/arch/mips/Kbuild.platforms
++++ b/arch/mips/Kbuild.platforms
+@@ -14,6 +14,7 @@ platforms += jz4740
+ platforms += lantiq
+ platforms += lasat
+ platforms += loongson
++platforms += loongson1
+ platforms += mipssim
+ platforms += mti-malta
+ platforms += netlogic
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 08dfc79..61e1459 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -265,6 +265,17 @@ config MACH_LOONGSON
+ 	  Chinese Academy of Sciences (CAS) in the People's Republic
+ 	  of China. The chief architect is Professor Weiwu Hu.
+ 
++config MACH_LOONGSON1
++	bool "Loongson1 family of machines"
++	select SYS_SUPPORTS_ZBOOT
++	help
++	  This enables the support of Loongson1 family of machines.
++
++	  Loongson1 is a family of 32-bit MIPS-compatible SoCs.
++	  developed at Institute of Computing Technology (ICT),
++	  Chinese Academy of Sciences (CAS) in the People's Republic
++	  of China.
++
+ config MIPS_MALTA
+ 	bool "MIPS Malta board"
+ 	select ARCH_MAY_HAVE_PC_FDC
+@@ -838,6 +849,7 @@ source "arch/mips/txx9/Kconfig"
+ source "arch/mips/vr41xx/Kconfig"
+ source "arch/mips/cavium-octeon/Kconfig"
+ source "arch/mips/loongson/Kconfig"
++source "arch/mips/loongson1/Kconfig"
+ source "arch/mips/netlogic/Kconfig"
+ 
+ endmenu
+@@ -1219,6 +1231,14 @@ config CPU_LOONGSON2F
+ 	  have a similar programming interface with FPGA northbridge used in
+ 	  Loongson2E.
+ 
++config CPU_LOONGSON1B
++	bool "Loongson 1B"
++	depends on SYS_HAS_CPU_LOONGSON1B
++	select CPU_LOONGSON1
++	help
++	  The Loongson 1B is a 32-bit SoC, which implements the MIPS32
++	  release 2 instruction set.
++
+ config CPU_MIPS32_R1
+ 	bool "MIPS32 Release 1"
+ 	depends on SYS_HAS_CPU_MIPS32_R1
+@@ -1548,6 +1568,14 @@ config CPU_LOONGSON2
+ 	select CPU_SUPPORTS_64BIT_KERNEL
+ 	select CPU_SUPPORTS_HIGHMEM
+ 
++config CPU_LOONGSON1
++	bool
++	select CPU_MIPS32
++	select CPU_MIPSR2
++	select CPU_HAS_PREFETCH
++	select CPU_SUPPORTS_32BIT_KERNEL
++	select CPU_SUPPORTS_HIGHMEM
++
+ config CPU_BMIPS
+ 	bool
+ 	select CPU_MIPS32
+@@ -1566,6 +1594,9 @@ config SYS_HAS_CPU_LOONGSON2F
+ 	select CPU_SUPPORTS_ADDRWINCFG if 64BIT
+ 	select CPU_SUPPORTS_UNCACHED_ACCELERATED
+ 
++config SYS_HAS_CPU_LOONGSON1B
++	bool
++
+ config SYS_HAS_CPU_MIPS32_R1
+ 	bool
+ 
+diff --git a/arch/mips/loongson1/Kconfig b/arch/mips/loongson1/Kconfig
 new file mode 100644
-index 0000000..80cff8b
+index 0000000..237fa21
 --- /dev/null
-+++ b/arch/mips/configs/ls1b_defconfig
-@@ -0,0 +1,109 @@
-+CONFIG_MACH_LOONGSON1=y
-+CONFIG_PREEMPT=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_EXPERIMENTAL=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_SYSVIPC=y
-+CONFIG_BSD_PROCESS_ACCT=y
-+CONFIG_BSD_PROCESS_ACCT_V3=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=16
-+CONFIG_NAMESPACES=y
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_RD_BZIP2=y
-+CONFIG_RD_LZMA=y
-+CONFIG_EXPERT=y
-+CONFIG_PERF_EVENTS=y
-+# CONFIG_COMPAT_BRK is not set
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+# CONFIG_LBDAF is not set
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_DHCP=y
-+CONFIG_SYN_COOKIES=y
-+# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-+# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-+# CONFIG_INET_XFRM_MODE_BEET is not set
-+# CONFIG_INET_DIAG is not set
-+# CONFIG_IPV6 is not set
-+# CONFIG_WIRELESS is not set
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+# CONFIG_STANDALONE is not set
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_SCSI=m
-+# CONFIG_SCSI_PROC_FS is not set
-+CONFIG_BLK_DEV_SD=m
-+# CONFIG_SCSI_LOWLEVEL is not set
-+CONFIG_NETDEVICES=y
-+# CONFIG_NET_VENDOR_BROADCOM is not set
-+# CONFIG_NET_VENDOR_CHELSIO is not set
-+# CONFIG_NET_VENDOR_INTEL is not set
-+# CONFIG_NET_VENDOR_MARVELL is not set
-+# CONFIG_NET_VENDOR_MICREL is not set
-+# CONFIG_NET_VENDOR_NATSEMI is not set
-+# CONFIG_NET_VENDOR_SEEQ is not set
-+# CONFIG_NET_VENDOR_SMSC is not set
-+CONFIG_STMMAC_ETH=y
-+CONFIG_STMMAC_DA=y
-+# CONFIG_NET_VENDOR_WIZNET is not set
-+# CONFIG_WLAN is not set
-+CONFIG_INPUT_EVDEV=y
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+CONFIG_VT_HW_CONSOLE_BINDING=y
-+CONFIG_LEGACY_PTY_COUNT=8
-+# CONFIG_DEVKMEM is not set
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+# CONFIG_HW_RANDOM is not set
-+# CONFIG_HWMON is not set
-+# CONFIG_VGA_CONSOLE is not set
-+CONFIG_USB_HID=m
-+CONFIG_HID_GENERIC=m
-+CONFIG_USB=y
-+CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
-+CONFIG_USB_EHCI_HCD=y
-+# CONFIG_USB_EHCI_TT_NEWSCHED is not set
-+CONFIG_USB_STORAGE=m
-+CONFIG_USB_SERIAL=m
-+CONFIG_USB_SERIAL_PL2303=m
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_LOONGSON1=y
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT2_FS_XATTR=y
-+CONFIG_EXT2_FS_POSIX_ACL=y
-+CONFIG_EXT2_FS_SECURITY=y
-+CONFIG_EXT3_FS=y
-+CONFIG_EXT3_FS_POSIX_ACL=y
-+CONFIG_EXT3_FS_SECURITY=y
-+# CONFIG_DNOTIFY is not set
-+CONFIG_VFAT_FS=y
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+# CONFIG_MISC_FILESYSTEMS is not set
-+CONFIG_NFS_FS=y
-+CONFIG_ROOT_NFS=y
-+CONFIG_NLS_CODEPAGE_437=m
-+CONFIG_NLS_ISO8859_1=m
-+# CONFIG_ENABLE_WARN_DEPRECATED is not set
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_MAGIC_SYSRQ=y
-+# CONFIG_SCHED_DEBUG is not set
-+# CONFIG_DEBUG_PREEMPT is not set
-+# CONFIG_FTRACE is not set
-+# CONFIG_EARLY_PRINTK is not set
++++ b/arch/mips/loongson1/Kconfig
+@@ -0,0 +1,21 @@
++if MACH_LOONGSON1
++
++choice
++	prompt "Machine Type"
++
++config LOONGSON1_LS1B
++	bool "Loongson LS1B board"
++	select CEVT_R4K
++	select CSRC_R4K
++	select SYS_HAS_CPU_LOONGSON1B
++	select DMA_NONCOHERENT
++	select BOOT_ELF32
++	select IRQ_CPU
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select SYS_SUPPORTS_HIGHMEM
++	select SYS_HAS_EARLY_PRINTK
++
++endchoice
++
++endif # MACH_LOONGSON1
+diff --git a/arch/mips/loongson1/Makefile b/arch/mips/loongson1/Makefile
+new file mode 100644
+index 0000000..e9123c2
+--- /dev/null
++++ b/arch/mips/loongson1/Makefile
+@@ -0,0 +1,11 @@
++#
++# Common code for all Loongson1 based systems
++#
++
++obj-$(CONFIG_MACH_LOONGSON1) += common/
++
++#
++# Loongson LS1B board
++#
++
++obj-$(CONFIG_LOONGSON1_LS1B)  += ls1b/
+diff --git a/arch/mips/loongson1/Platform b/arch/mips/loongson1/Platform
+new file mode 100644
+index 0000000..99bdefe
+--- /dev/null
++++ b/arch/mips/loongson1/Platform
+@@ -0,0 +1,7 @@
++cflags-$(CONFIG_CPU_LOONGSON1)  += \
++	$(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
++	-Wa,-mips32r2 -Wa,--trap
++
++platform-$(CONFIG_MACH_LOONGSON1)	+= loongson1/
++cflags-$(CONFIG_MACH_LOONGSON1)		+= -I$(srctree)/arch/mips/include/asm/mach-loongson1
++load-$(CONFIG_LOONGSON1_LS1B)		+= 0xffffffff80100000
+diff --git a/arch/mips/loongson1/common/Makefile b/arch/mips/loongson1/common/Makefile
+new file mode 100644
+index 0000000..b279770
+--- /dev/null
++++ b/arch/mips/loongson1/common/Makefile
+@@ -0,0 +1,5 @@
++#
++# Makefile for common code of loongson1 based machines.
++#
++
++obj-y	+= clock.o irq.o platform.o prom.o reset.o setup.o
+diff --git a/arch/mips/loongson1/ls1b/Makefile b/arch/mips/loongson1/ls1b/Makefile
+new file mode 100644
+index 0000000..891eac4
+--- /dev/null
++++ b/arch/mips/loongson1/ls1b/Makefile
+@@ -0,0 +1,5 @@
++#
++# Makefile for loongson1B based machines.
++#
++
++obj-y += board.o
 -- 
 1.7.1

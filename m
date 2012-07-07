@@ -1,37 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Jul 2012 12:46:14 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:64115 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903536Ab2GGKqL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Jul 2012 12:46:11 +0200
-Received: by pbbrq13 with SMTP id rq13so17992104pbb.36
-        for <linux-mips@linux-mips.org>; Sat, 07 Jul 2012 03:46:04 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Jul 2012 12:54:26 +0200 (CEST)
+Received: from mail-wg0-f43.google.com ([74.125.82.43]:65136 "EHLO
+        mail-wg0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903536Ab2GGKyX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Jul 2012 12:54:23 +0200
+Received: by wgbdr1 with SMTP id dr1so9194157wgb.24
+        for <linux-mips@linux-mips.org>; Sat, 07 Jul 2012 03:54:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        bh=oJJzLxk/hth57NsKmfLEIdZ8/cQGoSR5jz7JIRkPZ3U=;
-        b=Mi66/lqepcnEk7WZDBN9cCPrl5JnVrE/kVfZ2zO4MxrAZTn0tTyuC2ysuMhAV7lV84
-         JwwJ9chWQJOaYRy4uWU6+TYbNfKxD/NEtfHGV2WqbGh0jhK5mIDkkWHftb3zykCNwxY2
-         SwZTN7Z6/Atwh/+CAsbUhRlV6hVauXOeLUzWO+UUUtgf6gW7MFL9Vifuyz+yTTqj/oeo
-         WXgpwEs6O/k/p+sjYNuCJOz8GMjq/rz/KOqLpi5VWtD2uHNd237EbDPnD7kX3G6caYI1
-         edaeJpVJ6Q3fpvkwoJe/vGHpB8ofojg0GyQ5d5TbEjonoB3FWSxi7iZcjfLa/eaXuDVG
-         3rEQ==
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=6uraLCkiggtfykfJXki+ig7UJeR8qNIKKAeguw6iaUw=;
+        b=dA9Wt44Gd0fEqrzICG+Rlfm0f4NylLaqrv39hJNEzxYPIwX1TZBIqDmGEetOfz+kxP
+         lRcx36HJlJiLHUOgsKwMdU6qWIAZCKRbqxKVxbR1NUq69xpYYY4Dvk2B9KnVYobYUQzx
+         WYdJ1qIsnMOmSWLZkg5dIGS8iSVAxPjq7CWhPzhr0jEbYMDWu4WBGDb4QKpjPKZy0mSo
+         KK3ZqguhzqaJL7f5wydRIryAYObl3h1bFjyHIQ1jg1uMu69L2s/FAex1DBzdWge0U0Mg
+         g0E8aXejqzYA3Ano1PEaf3Lei/2JqieoL0COmCmCVWDd5+VYLTmR8hsmjyYJhXdAaV9b
+         ReoQ==
 MIME-Version: 1.0
-Received: by 10.68.221.74 with SMTP id qc10mr43793629pbc.31.1341657964685;
- Sat, 07 Jul 2012 03:46:04 -0700 (PDT)
-Received: by 10.68.240.41 with HTTP; Sat, 7 Jul 2012 03:46:04 -0700 (PDT)
-Date:   Sat, 7 Jul 2012 18:46:04 +0800
-Message-ID: <CANudz+soE9jkRERLbMLJYnYR5GXpkkt2owhQSDxXSMCVY7uF2Q@mail.gmail.com>
-Subject: some question about struct ktermios
-From:   loody <miloody@gmail.com>
-To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+Received: by 10.180.20.239 with SMTP id q15mr14661517wie.13.1341658458076;
+ Sat, 07 Jul 2012 03:54:18 -0700 (PDT)
+Received: by 10.194.59.106 with HTTP; Sat, 7 Jul 2012 03:54:18 -0700 (PDT)
+In-Reply-To: <CANudz+soE9jkRERLbMLJYnYR5GXpkkt2owhQSDxXSMCVY7uF2Q@mail.gmail.com>
+References: <CANudz+soE9jkRERLbMLJYnYR5GXpkkt2owhQSDxXSMCVY7uF2Q@mail.gmail.com>
+Date:   Sat, 7 Jul 2012 12:54:18 +0200
+X-Google-Sender-Auth: b9vIbuaWiO44RtCaQPsvbL0SbkM
+Message-ID: <CAC157GDYoX7zSthHzBNNHU+0tKnXVK4mpNSh4KWULKMQToy3fA@mail.gmail.com>
+Subject: Re: some question about struct ktermios
+From:   Philipp Ittershagen <p.ittershagen@googlemail.com>
+To:     loody <miloody@gmail.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         Kernel Newbies <kernelnewbies@nl.linux.org>,
         kernelnewbies@kernelnewbies.org
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 33882
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 33883
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: miloody@gmail.com
+X-original-sender: p.ittershagen@googlemail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,11 +50,19 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Dear all
-"struct ktermios" is the struct used for terminal.
-Why the header file is put at arch/mips/include/asm/termbits.h
-Doesn't it should located at kernel/include?
+On Sat, Jul 7, 2012 at 12:46 PM, loody <miloody@gmail.com> wrote:
+> Dear all
+> "struct ktermios" is the struct used for terminal.
+> Why the header file is put at arch/mips/include/asm/termbits.h
+> Doesn't it should located at kernel/include?
 
 
--- 
-Regards
+That is the architecture-specific definition. The generic definition
+can be found at
+
+include/asm-generic/termbits.h
+
+
+Greetings,
+
+  Philipp

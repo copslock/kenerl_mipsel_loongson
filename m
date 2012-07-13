@@ -1,33 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 18:25:00 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:1446 "EHLO mms1.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 18:25:24 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:2901 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903684Ab2GMQY1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1903698Ab2GMQY1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Fri, 13 Jul 2012 18:24:27 +0200
-Received: from [10.9.200.133] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Fri, 13 Jul 2012 09:23:25 -0700
-X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
+Received: from [10.9.200.131] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Fri, 13 Jul 2012 09:23:15 -0700
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Fri, 13 Jul 2012 09:23:28 -0700
+ IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
+ Server id 8.2.247.2; Fri, 13 Jul 2012 09:24:13 -0700
 Received: from hqcas02.netlogicmicro.com (unknown [10.65.50.15]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 636B29F9F5; Fri, 13
- Jul 2012 09:24:08 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id F04599F9FA; Fri, 13
+ Jul 2012 09:24:12 -0700 (PDT)
 Received: from jayachandranc.netlogicmicro.com (10.7.0.77) by
  hqcas02.netlogicmicro.com (10.65.50.15) with Microsoft SMTP Server id
- 14.1.339.1; Fri, 13 Jul 2012 09:24:07 -0700
+ 14.1.339.1; Fri, 13 Jul 2012 09:24:12 -0700
 From:   "Jayachandran C" <jayachandranc@netlogicmicro.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 cc:     "Jayachandran C" <jayachandranc@netlogicmicro.com>
-Subject: [PATCH 00/12] Netlogic XLR/XLP updates.
-Date:   Fri, 13 Jul 2012 21:53:13 +0530
-Message-ID: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
+Subject: [PATCH 02/12] MIPS: Netlogic: Fix low-level flush on core
+ wakeup
+Date:   Fri, 13 Jul 2012 21:53:15 +0530
+Message-ID: <1342196605-4260-3-git-send-email-jayachandranc@netlogicmicro.com>
 X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
+References: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
 MIME-Version: 1.0
 X-Originating-IP: [10.7.0.77]
-X-WSS-ID: 7C1E94F73MK9921326-01-01
+X-WSS-ID: 7C1E94F93NK5403908-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 33910
+X-archive-position: 33911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,59 +48,28 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Fixes and updates for the Netlogic XLP code, this should apply cleanly
-on top of the current linux-next tree.
+The L1D cache flush needs to be done for more iterations to ensure
+that the cache is clean before waking up threads.
 
-Patch 1 (Netlogic: Fix indentation of smpboot.S) and patch 3
-(Netlogic: merge of.c into setup.c) are fixups to the merge
-fallout in linux-next.
+This change is experimental, but should not have any negative impact.
 
-Regards,
-JC.
+Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
+---
+ arch/mips/netlogic/common/smpboot.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Ganesan Ramalingam (1):
-  MIPS: Netlogic: DTS file for XLP boards
-
-Jayachandran C (9):
-  MIPS: Netlogic: Fix indentation of smpboot.S
-  MIPS: Netlogic: Fix low-level flush on core wakeup
-  MIPS: Netlogic: merge of.c into setup.c
-  MIPS: Netlogic: remove cpu_has_dc_aliases define for XLP
-  MIPS: PCI: Fix for byte swap for Netlogic XLP
-  MIPS: Netlogic: early console fix
-  MIPS: Netlogic: Move serial ports to device tree
-  MIPS: Netlogic: Add support for built in DTB
-  MIPS: Netlogic: XLP defconfig update
-
-Madhusudan Bhat (1):
-  MIPS: oprofile: Support for XLR/XLS processors
-
-Zi Shen Lim (1):
-  MIPS: perf: Add XLP support for hardware perf.
-
- arch/mips/Kconfig                                  |    3 +-
- arch/mips/configs/nlm_xlp_defconfig                |  133 +++++++++++++-------
- .../asm/mach-netlogic/cpu-feature-overrides.h      |    1 -
- arch/mips/kernel/perf_event_mipsxx.c               |  124 ++++++++++++++++++
- arch/mips/netlogic/Kconfig                         |   15 +++
- arch/mips/netlogic/Makefile                        |    1 +
- arch/mips/netlogic/common/earlycons.c              |    2 +-
- arch/mips/netlogic/common/smpboot.S                |   22 ++--
- arch/mips/netlogic/dts/Makefile                    |    4 +
- arch/mips/netlogic/dts/xlp_evp.dts                 |  124 ++++++++++++++++++
- arch/mips/netlogic/xlp/Makefile                    |    3 +-
- arch/mips/netlogic/xlp/of.c                        |   34 -----
- arch/mips/netlogic/xlp/platform.c                  |  108 ----------------
- arch/mips/netlogic/xlp/setup.c                     |   32 ++++-
- arch/mips/oprofile/Makefile                        |    1 +
- arch/mips/oprofile/common.c                        |    1 +
- arch/mips/oprofile/op_model_mipsxx.c               |   28 +++++
- arch/mips/pci/pci-xlp.c                            |    5 +-
- 18 files changed, 437 insertions(+), 204 deletions(-)
- create mode 100644 arch/mips/netlogic/dts/Makefile
- create mode 100644 arch/mips/netlogic/dts/xlp_evp.dts
- delete mode 100644 arch/mips/netlogic/xlp/of.c
- delete mode 100644 arch/mips/netlogic/xlp/platform.c
-
+diff --git a/arch/mips/netlogic/common/smpboot.S b/arch/mips/netlogic/common/smpboot.S
+index 7badf38..8c13cd9 100644
+--- a/arch/mips/netlogic/common/smpboot.S
++++ b/arch/mips/netlogic/common/smpboot.S
+@@ -84,7 +84,7 @@
+ 	li	t0, LSU_DEBUG_DATA0
+ 	li	t1, LSU_DEBUG_ADDR
+ 	li	t2, 0		/* index */
+-	li 	t3, 0x200	/* loop count, 512 sets */
++	li 	t3, 0x1000	/* loop count */
+ 1:
+ 	sll	v0, t2, 5
+ 	mtcr	zero, t0
 -- 
 1.7.9.5

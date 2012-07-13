@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 18:27:24 +0200 (CEST)
-Received: from mms3.broadcom.com ([216.31.210.19]:2342 "EHLO mms3.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 18:27:49 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:2901 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903726Ab2GMQYk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 13 Jul 2012 18:24:40 +0200
-Received: from [10.9.200.133] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Fri, 13 Jul 2012 09:23:09 -0700
-X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
+        id S1903731Ab2GMQYm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 13 Jul 2012 18:24:42 +0200
+Received: from [10.9.200.131] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Fri, 13 Jul 2012 09:23:37 -0700
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Fri, 13 Jul 2012 09:23:45 -0700
+ IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
+ Server id 8.2.247.2; Fri, 13 Jul 2012 09:24:34 -0700
 Received: from hqcas02.netlogicmicro.com (unknown [10.65.50.15]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id C39849F9F6; Fri, 13
- Jul 2012 09:24:24 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id DCB999F9F5; Fri, 13
+ Jul 2012 09:24:34 -0700 (PDT)
 Received: from jayachandranc.netlogicmicro.com (10.7.0.77) by
  hqcas02.netlogicmicro.com (10.65.50.15) with Microsoft SMTP Server id
- 14.1.339.1; Fri, 13 Jul 2012 09:24:24 -0700
+ 14.1.339.1; Fri, 13 Jul 2012 09:24:34 -0700
 From:   "Jayachandran C" <jayachandranc@netlogicmicro.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-cc:     "Ganesan Ramalingam" <ganesanr@broadcom.com>,
+cc:     "Zi Shen Lim" <zlim@netlogicmicro.com>,
         "Jayachandran C" <jayachandranc@netlogicmicro.com>
-Subject: [PATCH 07/12] MIPS: Netlogic: DTS file for XLP boards
-Date:   Fri, 13 Jul 2012 21:53:20 +0530
-Message-ID: <1342196605-4260-8-git-send-email-jayachandranc@netlogicmicro.com>
+Subject: [PATCH 11/12] MIPS: perf: Add XLP support for hardware perf.
+Date:   Fri, 13 Jul 2012 21:53:24 +0530
+Message-ID: <1342196605-4260-12-git-send-email-jayachandranc@netlogicmicro.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
 References: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
 MIME-Version: 1.0
 X-Originating-IP: [10.7.0.77]
-X-WSS-ID: 7C1E94E74989490133-01-01
+X-WSS-ID: 7C1E94033NK5404014-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 33916
+X-archive-position: 33917
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,126 +48,183 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Ganesan Ramalingam <ganesanr@broadcom.com>
+From: Zi Shen Lim <zlim@netlogicmicro.com>
 
-Add a basic DTS file netlogic/dts/nlm_xlp.dts which contains
-memory, i2c devices, NOR flash and command line arguments.
-
-Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
+Signed-off-by: Zi Shen Lim <zlim@netlogicmicro.com>
 Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
 ---
- arch/mips/netlogic/dts/xlp_evp.dts |  103 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 103 insertions(+)
- create mode 100644 arch/mips/netlogic/dts/xlp_evp.dts
+ arch/mips/Kconfig                    |    2 +-
+ arch/mips/kernel/perf_event_mipsxx.c |  124 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 125 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/netlogic/dts/xlp_evp.dts b/arch/mips/netlogic/dts/xlp_evp.dts
-new file mode 100644
-index 0000000..86a29ca
---- /dev/null
-+++ b/arch/mips/netlogic/dts/xlp_evp.dts
-@@ -0,0 +1,103 @@
-+/*
-+ * XLP8XX Device Tree Source for EVP boards
-+ */
-+
-+/dts-v1/;
-+/ {
-+	model = "netlogic,XLP-EVP";
-+	compatible = "netlogic,xlp";
-+	#address-cells = <2>;
-+	#size-cells = <2>;
-+
-+	memory {
-+		device_type = "memory";
-+		reg =  <0 0x00100000 0 0x0FF00000	// 255M at 1M
-+			0 0x20000000 0 0xa0000000	// 2560M at 512M
-+			0 0xe0000000 1 0x00000000>;
-+	};
-+
-+	soc {
-+		#address-cells = <2>;
-+		#size-cells = <1>;
-+		compatible = "simple-bus";
-+		ranges = <0 0  0 0x18000000  0x04000000   // PCIe CFG
-+			  1 0  0 0x16000000  0x01000000>; // GBU chipselects
-+		i2c0: ocores@32000 {
-+			compatible = "opencores,i2c-ocores";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0 0x32100 0xa00>;
-+			reg-shift = <2>;
-+			reg-io-width = <4>;
-+			clock-frequency = <32000000>;
-+			interrupt-parent = <&pic>;
-+			interrupts = <30>;
-+		};
-+		i2c1: ocores@33000 {
-+			compatible = "opencores,i2c-ocores";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0 0x33100 0xa00>;
-+			reg-shift = <2>;
-+			reg-io-width = <4>;
-+			clock-frequency = <32000000>;
-+			interrupt-parent = <&pic>;
-+			interrupts = <31>;
-+
-+			rtc@68 {
-+				compatible = "dallas,ds1374";
-+				reg = <0x68>;
-+			};
-+
-+			dtt@4c {
-+				compatible = "national,lm90";
-+				reg = <0x4c>;
-+			};
-+		};
-+		pic: pic@4000 {
-+			interrupt-controller;
-+			#address-cells = <0>;
-+			#interrupt-cells = <1>;
-+			reg = <0 0x4000 0x200>;
-+		};
-+
-+		nor_flash@1,0 {
-+			compatible = "cfi-flash";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			bank-width = <2>;
-+			reg = <1 0 0x1000000>;
-+
-+			partition@0 {
-+				label = "x-loader";
-+				reg = <0x0 0x100000>; /* 1M */
-+				read-only;
-+			};
-+
-+			partition@100000 {
-+				label = "u-boot";
-+				reg = <0x100000 0x100000>; /* 1M */
-+			};
-+
-+			partition@200000 {
-+				label = "kernel";
-+				reg = <0x200000 0x500000>; /* 5M */
-+			};
-+
-+			partition@700000 {
-+				label = "rootfs";
-+				reg = <0x700000 0x800000>; /* 8M */
-+			};
-+
-+			partition@f00000 {
-+				label = "env";
-+				reg = <0xf00000 0x100000>; /* 1M */
-+				read-only;
-+			};
-+		};
-+	};
-+
-+	chosen {
-+		bootargs = "console=ttyS0,115200 rdinit=/sbin/init";
-+	};
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index d80ed42..3c7714a 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2164,7 +2164,7 @@ config NODES_SHIFT
+ 
+ config HW_PERF_EVENTS
+ 	bool "Enable hardware performance counter support for perf events"
+-	depends on PERF_EVENTS && !MIPS_MT_SMTC && OPROFILE=n && (CPU_MIPS32 || CPU_MIPS64 || CPU_R10000 || CPU_SB1 || CPU_CAVIUM_OCTEON)
++	depends on PERF_EVENTS && !MIPS_MT_SMTC && OPROFILE=n && (CPU_MIPS32 || CPU_MIPS64 || CPU_R10000 || CPU_SB1 || CPU_CAVIUM_OCTEON || CPU_XLP)
+ 	default y
+ 	help
+ 	  Enable hardware performance counter support for perf events. If
+diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
+index 2f28d3b..15cbbc3 100644
+--- a/arch/mips/kernel/perf_event_mipsxx.c
++++ b/arch/mips/kernel/perf_event_mipsxx.c
+@@ -829,6 +829,16 @@ static const struct mips_perf_event octeon_event_map[PERF_COUNT_HW_MAX] = {
+ 	[PERF_COUNT_HW_BUS_CYCLES] = { 0x25, CNTR_ALL },
+ };
+ 
++static const struct mips_perf_event xlp_event_map[PERF_COUNT_HW_MAX] = {
++	[PERF_COUNT_HW_CPU_CYCLES] = { 0x01, CNTR_ALL },
++	[PERF_COUNT_HW_INSTRUCTIONS] = { 0x18, CNTR_ALL }, /* PAPI_TOT_INS */
++	[PERF_COUNT_HW_CACHE_REFERENCES] = { 0x04, CNTR_ALL }, /* PAPI_L1_ICA */
++	[PERF_COUNT_HW_CACHE_MISSES] = { 0x07, CNTR_ALL }, /* PAPI_L1_ICM */
++	[PERF_COUNT_HW_BRANCH_INSTRUCTIONS] = { 0x1b, CNTR_ALL }, /* PAPI_BR_CN */
++	[PERF_COUNT_HW_BRANCH_MISSES] = { 0x1c, CNTR_ALL }, /* PAPI_BR_MSP */
++	[PERF_COUNT_HW_BUS_CYCLES] = { UNSUPPORTED_PERF_EVENT_ID },
 +};
++
+ /* 24K/34K/1004K cores can share the same cache event map. */
+ static const struct mips_perf_event mipsxxcore_cache_map
+ 				[PERF_COUNT_HW_CACHE_MAX]
+@@ -1158,6 +1168,100 @@ static const struct mips_perf_event octeon_cache_map
+ },
+ };
+ 
++static const struct mips_perf_event xlp_cache_map
++				[PERF_COUNT_HW_CACHE_MAX]
++				[PERF_COUNT_HW_CACHE_OP_MAX]
++				[PERF_COUNT_HW_CACHE_RESULT_MAX] = {
++[C(L1D)] = {
++	[C(OP_READ)] = {
++		[C(RESULT_ACCESS)]	= { 0x31, CNTR_ALL }, /* PAPI_L1_DCR */
++		[C(RESULT_MISS)]	= { 0x30, CNTR_ALL }, /* PAPI_L1_LDM */
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_ACCESS)]	= { 0x2f, CNTR_ALL }, /* PAPI_L1_DCW */
++		[C(RESULT_MISS)]	= { 0x2e, CNTR_ALL }, /* PAPI_L1_STM */
++	},
++	[C(OP_PREFETCH)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++},
++[C(L1I)] = {
++	[C(OP_READ)] = {
++		[C(RESULT_ACCESS)]	= { 0x04, CNTR_ALL }, /* PAPI_L1_ICA */
++		[C(RESULT_MISS)]	= { 0x07, CNTR_ALL }, /* PAPI_L1_ICM */
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++	[C(OP_PREFETCH)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++},
++[C(LL)] = {
++	[C(OP_READ)] = {
++		[C(RESULT_ACCESS)]	= { 0x35, CNTR_ALL }, /* PAPI_L2_DCR */
++		[C(RESULT_MISS)]	= { 0x37, CNTR_ALL }, /* PAPI_L2_LDM */
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_ACCESS)]	= { 0x34, CNTR_ALL }, /* PAPI_L2_DCA */
++		[C(RESULT_MISS)]	= { 0x36, CNTR_ALL }, /* PAPI_L2_DCM */
++	},
++	[C(OP_PREFETCH)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++},
++[C(DTLB)] = {
++	/*
++	 * Only general DTLB misses are counted use the same event for
++	 * read and write.
++	 */
++	[C(OP_READ)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { 0x2d, CNTR_ALL }, /* PAPI_TLB_DM */
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { 0x2d, CNTR_ALL }, /* PAPI_TLB_DM */
++	},
++	[C(OP_PREFETCH)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++},
++[C(ITLB)] = {
++	[C(OP_READ)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { 0x08, CNTR_ALL }, /* PAPI_TLB_IM */
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { 0x08, CNTR_ALL }, /* PAPI_TLB_IM */
++	},
++	[C(OP_PREFETCH)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++},
++[C(BPU)] = {
++	[C(OP_READ)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { 0x25, CNTR_ALL },
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++	[C(OP_PREFETCH)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++},
++};
++
+ #ifdef CONFIG_MIPS_MT_SMP
+ static void check_and_calc_range(struct perf_event *event,
+ 				 const struct mips_perf_event *pev)
+@@ -1499,6 +1603,20 @@ static const struct mips_perf_event *octeon_pmu_map_raw_event(u64 config)
+ 	return &raw_event;
+ }
+ 
++static const struct mips_perf_event *xlp_pmu_map_raw_event(u64 config)
++{
++	unsigned int raw_id = config & 0xff;
++
++	/* Only 1-63 are defined */
++	if ((raw_id < 0x01) || (raw_id > 0x3f))
++		return ERR_PTR(-EOPNOTSUPP);
++
++	raw_event.cntr_mask = CNTR_ALL;
++	raw_event.event_id = raw_id;
++
++	return &raw_event;
++}
++
+ static int __init
+ init_hw_perf_events(void)
+ {
+@@ -1572,6 +1690,12 @@ init_hw_perf_events(void)
+ 		mipspmu.cache_event_map = &octeon_cache_map;
+ 		mipspmu.map_raw_event = octeon_pmu_map_raw_event;
+ 		break;
++	case CPU_XLP:
++		mipspmu.name = "xlp";
++		mipspmu.general_event_map = &xlp_event_map;
++		mipspmu.cache_event_map = &xlp_cache_map;
++		mipspmu.map_raw_event = xlp_pmu_map_raw_event;
++		break;
+ 	default:
+ 		pr_cont("Either hardware does not support performance "
+ 			"counters, or not yet implemented.\n");
 -- 
 1.7.9.5

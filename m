@@ -1,30 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 07:33:46 +0200 (CEST)
-Received: from perches-mx.perches.com ([206.117.179.246]:46696 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 07:35:19 +0200 (CEST)
+Received: from perches-mx.perches.com ([206.117.179.246]:44841 "EHLO
         labridge.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S1902104Ab2GMFdm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2012 07:33:42 +0200
+        with ESMTP id S1902233Ab2GMFfN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2012 07:35:13 +0200
 Received: from [96.240.34.65] (account joe@perches.com HELO joe-laptop.perches.com)
   by labridge.com (CommuniGate Pro SMTP 5.0.14)
-  with ESMTPA id 19369765; Thu, 12 Jul 2012 22:33:38 -0700
+  with ESMTPA id 19369785; Thu, 12 Jul 2012 22:35:11 -0700
 From:   Joe Perches <joe@perches.com>
-To:     David Miller <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, wimax@linuxwimax.org,
-        linux-wireless@vger.kernel.org, users@rt2x00.serialmonkey.com,
-        linux-s390@vger.kernel.org
+To:     David Miller <davem@davemloft.net>, linux-kernel@vger.kernel.org
 Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Mike Frysinger <vapier@gentoo.org>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <a-jacquiot@ti.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
         uclinux-dist-devel@blackfin.uclinux.org,
-        linux-kernel@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
-        linux-mips@linux-mips.org,
+        linux-c6x-dev@linux-c6x.org, linux-mips@linux-mips.org,
         user-mode-linux-devel@lists.sourceforge.net,
-        user-mode-linux-user@lists.sourceforge.net,
-        e1000-devel@lists.sourceforge.net
-Subject: [PATCH net-next 0/8] etherdevice: Rename random_ether_addr to eth_random_addr
-Date:   Thu, 12 Jul 2012 22:33:04 -0700
-Message-Id: <cover.1342157022.git.joe@perches.com>
+        user-mode-linux-user@lists.sourceforge.net
+Subject: [PATCH net-next 8/8] arch: Use eth_random_addr
+Date:   Thu, 12 Jul 2012 22:33:12 -0700
+Message-Id: <14a91278564bb5a263c561a7f1bd10ea6386d90a.1342157022.git.joe@perches.com>
 X-Mailer: git-send-email 1.7.8.111.gad25c.dirty
 In-Reply-To: <1341968967.13724.23.camel@joe2Laptop>
 References: <1341968967.13724.23.camel@joe2Laptop>
-X-archive-position: 33898
+In-Reply-To: <cover.1342157022.git.joe@perches.com>
+References: <cover.1342157022.git.joe@perches.com>
+X-archive-position: 33899
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,61 +45,104 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-net-next commit ad7eee98be ("etherdevice: introduce eth_broadcast_addr")
-added a new style API.  Rename random_ether_addr to eth_random_addr to
-create some API symmetry.
+Convert the existing uses of random_ether_addr to
+the new eth_random_addr.
 
-Joe Perches (8):
-  etherdevice: Rename random_ether_addr to eth_random_addr
-  ethernet: Use eth_random_addr
-  net: usb: Use eth_random_addr
-  wireless: Use eth_random_addr
-  drivers/net: Use eth_random_addr
-  s390: Use eth_random_addr
-  usb: Use eth_random_addr
-  arch: Use eth_random_addr
+Signed-off-by: Joe Perches <joe@perches.com>
+---
+ arch/blackfin/mach-bf537/boards/stamp.c |    2 +-
+ arch/c6x/kernel/soc.c                   |    2 +-
+ arch/mips/ar7/platform.c                |    4 ++--
+ arch/mips/powertv/powertv_setup.c       |    6 +++---
+ arch/um/drivers/net_kern.c              |    2 +-
+ 5 files changed, 8 insertions(+), 8 deletions(-)
 
- arch/blackfin/mach-bf537/boards/stamp.c           |    2 +-
- arch/c6x/kernel/soc.c                             |    2 +-
- arch/mips/ar7/platform.c                          |    4 ++--
- arch/mips/powertv/powertv_setup.c                 |    6 +++---
- arch/um/drivers/net_kern.c                        |    2 +-
- drivers/net/ethernet/atheros/atl1c/atl1c_hw.c     |    2 +-
- drivers/net/ethernet/atheros/atlx/atl1.c          |    2 +-
- drivers/net/ethernet/atheros/atlx/atl2.c          |    2 +-
- drivers/net/ethernet/ethoc.c                      |    2 +-
- drivers/net/ethernet/intel/igb/igb_main.c         |    4 ++--
- drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c    |    2 +-
- drivers/net/ethernet/lantiq_etop.c                |    2 +-
- drivers/net/ethernet/micrel/ks8851.c              |    2 +-
- drivers/net/ethernet/micrel/ks8851_mll.c          |    2 +-
- drivers/net/ethernet/smsc/smsc911x.c              |    2 +-
- drivers/net/ethernet/ti/cpsw.c                    |    2 +-
- drivers/net/ethernet/tile/tilegx.c                |    2 +-
- drivers/net/ethernet/wiznet/w5100.c               |    2 +-
- drivers/net/ethernet/wiznet/w5300.c               |    2 +-
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c |    2 +-
- drivers/net/tun.c                                 |    2 +-
- drivers/net/usb/smsc75xx.c                        |    2 +-
- drivers/net/usb/smsc95xx.c                        |    2 +-
- drivers/net/usb/usbnet.c                          |    2 +-
- drivers/net/wimax/i2400m/driver.c                 |    2 +-
- drivers/net/wireless/adm8211.c                    |    2 +-
- drivers/net/wireless/p54/eeprom.c                 |    2 +-
- drivers/net/wireless/rt2x00/rt2400pci.c           |    2 +-
- drivers/net/wireless/rt2x00/rt2500pci.c           |    2 +-
- drivers/net/wireless/rt2x00/rt2500usb.c           |    2 +-
- drivers/net/wireless/rt2x00/rt2800lib.c           |    2 +-
- drivers/net/wireless/rt2x00/rt61pci.c             |    2 +-
- drivers/net/wireless/rt2x00/rt73usb.c             |    2 +-
- drivers/net/wireless/rtl818x/rtl8180/dev.c        |    2 +-
- drivers/net/wireless/rtl818x/rtl8187/dev.c        |    2 +-
- drivers/s390/net/qeth_l2_main.c                   |    2 +-
- drivers/s390/net/qeth_l3_main.c                   |    2 +-
- drivers/usb/atm/xusbatm.c                         |    4 ++--
- drivers/usb/gadget/u_ether.c                      |    2 +-
- include/linux/etherdevice.h                       |   14 ++++++++------
- 40 files changed, 52 insertions(+), 50 deletions(-)
-
+diff --git a/arch/blackfin/mach-bf537/boards/stamp.c b/arch/blackfin/mach-bf537/boards/stamp.c
+index c9d9473..5ed654a 100644
+--- a/arch/blackfin/mach-bf537/boards/stamp.c
++++ b/arch/blackfin/mach-bf537/boards/stamp.c
+@@ -873,7 +873,7 @@ static struct adf702x_platform_data adf7021_platform_data = {
+ };
+ static inline void adf702x_mac_init(void)
+ {
+-	random_ether_addr(adf7021_platform_data.mac_addr);
++	eth_random_addr(adf7021_platform_data.mac_addr);
+ }
+ #else
+ static inline void adf702x_mac_init(void) {}
+diff --git a/arch/c6x/kernel/soc.c b/arch/c6x/kernel/soc.c
+index 0748c94..3ac7408 100644
+--- a/arch/c6x/kernel/soc.c
++++ b/arch/c6x/kernel/soc.c
+@@ -80,7 +80,7 @@ int soc_mac_addr(unsigned int index, u8 *addr)
+ 		if (have_fuse_mac)
+ 			memcpy(addr, c6x_fuse_mac, 6);
+ 		else
+-			random_ether_addr(addr);
++			eth_random_addr(addr);
+ 	}
+ 
+ 	/* adjust for specific EMAC device */
+diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
+index 1a24d31..1bbc24b 100644
+--- a/arch/mips/ar7/platform.c
++++ b/arch/mips/ar7/platform.c
+@@ -310,10 +310,10 @@ static void __init cpmac_get_mac(int instance, unsigned char *dev_addr)
+ 					&dev_addr[4], &dev_addr[5]) != 6) {
+ 			pr_warning("cannot parse mac address, "
+ 					"using random address\n");
+-			random_ether_addr(dev_addr);
++			eth_random_addr(dev_addr);
+ 		}
+ 	} else
+-		random_ether_addr(dev_addr);
++		eth_random_addr(dev_addr);
+ }
+ 
+ /*****************************************************************************
+diff --git a/arch/mips/powertv/powertv_setup.c b/arch/mips/powertv/powertv_setup.c
+index 3933c37..820b848 100644
+--- a/arch/mips/powertv/powertv_setup.c
++++ b/arch/mips/powertv/powertv_setup.c
+@@ -254,7 +254,7 @@ early_param("rfmac", rfmac_param);
+  * Generates an Ethernet MAC address that is highly likely to be unique for
+  * this particular system on a network with other systems of the same type.
+  *
+- * The problem we are solving is that, when random_ether_addr() is used to
++ * The problem we are solving is that, when eth_random_addr() is used to
+  * generate MAC addresses at startup, there isn't much entropy for the random
+  * number generator to use and the addresses it produces are fairly likely to
+  * be the same as those of other identical systems on the same local network.
+@@ -269,7 +269,7 @@ early_param("rfmac", rfmac_param);
+  * Still, this does give us something to work with.
+  *
+  * The approach we take is:
+- * 1.	If we can't get the RF MAC Address, just call random_ether_addr.
++ * 1.	If we can't get the RF MAC Address, just call eth_random_addr.
+  * 2.	Use the 24-bit NIC-specific bits of the RF MAC address as the last 24
+  *	bits of the new address. This is very likely to be unique, except for
+  *	the current box.
+@@ -299,7 +299,7 @@ void platform_random_ether_addr(u8 addr[ETH_ALEN])
+ 	if (!have_rfmac) {
+ 		pr_warning("rfmac not available on command line; "
+ 			"generating random MAC address\n");
+-		random_ether_addr(addr);
++		eth_random_addr(addr);
+ 	}
+ 
+ 	else {
+diff --git a/arch/um/drivers/net_kern.c b/arch/um/drivers/net_kern.c
+index 0d60c56..458d324 100644
+--- a/arch/um/drivers/net_kern.c
++++ b/arch/um/drivers/net_kern.c
+@@ -339,7 +339,7 @@ static int setup_etheraddr(char *str, unsigned char *addr, char *name)
+ random:
+ 	printk(KERN_INFO
+ 	       "Choosing a random ethernet address for device %s\n", name);
+-	random_ether_addr(addr);
++	eth_random_addr(addr);
+ 	return 1;
+ }
+ 
 -- 
 1.7.8.111.gad25c.dirty

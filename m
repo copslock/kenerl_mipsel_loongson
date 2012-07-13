@@ -1,33 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 12:54:22 +0200 (CEST)
-Received: from shark3.inbox.lv ([89.111.3.83]:32990 "EHLO shark3.inbox.lv"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 18:24:34 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:2885 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1902755Ab2GMKyS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 13 Jul 2012 12:54:18 +0200
-Received: from mail.inbox.lv (pop [10.0.1.110])
-        by shark3-plain.inbox.lv (Postfix) with ESMTP id 13B87EEFD
-        for <linux-mips@linux-mips.org>; Fri, 13 Jul 2012 13:54:13 +0300 (EEST)
-Received: from inbox.lv (unknown [77.125.145.41])
-        (Authenticated sender: codeblue@inbox.lv)
-        by mail.inbox.lv (Postfix) with ESMTPSA id 4045D18546
-        for <linux-mips@linux-mips.org>; Fri, 13 Jul 2012 13:54:10 +0300 (EEST)
-Date:   Fri, 13 Jul 2012 10:54:06 +0000
-From:   John Long <codeblue@inbox.lv>
-To:     linux-mips@linux-mips.org
-Subject: Re: Please recommend distro for Lemote Fuloong
-Message-ID: <20120713105406.GA30449@inbox.lv>
-References: <20120705160222.GJ25225@inbox.lv>
- <CAEdQ38EOyU0WFKosbYmZ5Sa88KByRYeX_PyzzOPbvH+h33Ypdw@mail.gmail.com>
+        id S1903498Ab2GMQY0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 13 Jul 2012 18:24:26 +0200
+Received: from [10.9.200.131] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Fri, 13 Jul 2012 09:23:13 -0700
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+Received: from mail-irva-13.broadcom.com (10.11.16.103) by
+ IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
+ Server id 8.2.247.2; Fri, 13 Jul 2012 09:24:10 -0700
+Received: from hqcas02.netlogicmicro.com (unknown [10.65.50.15]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id B25879F9F5; Fri, 13
+ Jul 2012 09:24:10 -0700 (PDT)
+Received: from jayachandranc.netlogicmicro.com (10.7.0.77) by
+ hqcas02.netlogicmicro.com (10.65.50.15) with Microsoft SMTP Server id
+ 14.1.339.1; Fri, 13 Jul 2012 09:24:10 -0700
+From:   "Jayachandran C" <jayachandranc@netlogicmicro.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+cc:     "Jayachandran C" <jayachandranc@netlogicmicro.com>
+Subject: [PATCH 01/12] MIPS: Netlogic: Fix indentation of smpboot.S
+Date:   Fri, 13 Jul 2012 21:53:14 +0530
+Message-ID: <1342196605-4260-2-git-send-email-jayachandranc@netlogicmicro.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
+References: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEdQ38EOyU0WFKosbYmZ5Sa88KByRYeX_PyzzOPbvH+h33Ypdw@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Virus-Scanned: OK
-X-archive-position: 33907
+X-Originating-IP: [10.7.0.77]
+X-WSS-ID: 7C1E94FB3NK5403875-01-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-archive-position: 33909
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: codeblue@inbox.lv
+X-original-sender: jayachandranc@netlogicmicro.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,28 +47,67 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Jul 12, 2012 at 04:52:41PM -0700, Matt Turner wrote:
-> On Thu, Jul 5, 2012 at 9:02 AM, Code Blue <codeblue@inbox.lv> wrote:
-> > Hi,
-> >
-> > I just received a Lemote Fuloong Mini and I installed OpenBSD on it. I would
-> > like to dual boot Linux but I am having a hard time finding the right distro.
-> >
-> > I know Lemote and MIPS people are doing a lot of work and submitting patches
-> > to the Linux kernel and binutils and I am sure many other areas. Can anyone
-> > please recommend a Linux distro that will come with (or can install) a
-> > recent kernel so I can take advantage of all this hard work people are
-> > doing? Of course I will need a tarball or USB installer since the Fuloong
-> > doesn't have an optical drive. Thank you.
-> 
-> Gentoo.
-> 
-> Join the #gentoo-mips IRC channel and ping 'blueness' since he's built
-> some very nice install stages and netboot images.
-> 
-> Also, we provide multilib installations with o32, n32, and n64 base
-> libraries (n32 is default).
+Fix whitespace issue introduced in the last merge, and while there
+use tabs consistently in assembly after opcode. No change in logic.
 
-Thanks a lot for the info. For now I have repartitioned the drive and used
-all of it for OpenBSD. I hope to get another identical box in the next few
-months and then I will look into Gentoo.
+Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
+---
+ arch/mips/netlogic/common/smpboot.S |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/arch/mips/netlogic/common/smpboot.S b/arch/mips/netlogic/common/smpboot.S
+index a58f498..7badf38 100644
+--- a/arch/mips/netlogic/common/smpboot.S
++++ b/arch/mips/netlogic/common/smpboot.S
+@@ -67,7 +67,7 @@
+ 	li	t2, ~0xe	/* S1RCM */
+ 	and	t1, t1, t2
+ #endif
+-	mtcr    t1, t0
++	mtcr	t1, t0
+ 
+ #ifdef XLP_AX_WORKAROUND
+ 	li	t0, SCHED_DEFEATURE
+@@ -82,7 +82,7 @@
+  */
+ .macro	xlp_flush_l1_dcache
+ 	li	t0, LSU_DEBUG_DATA0
+-	li      t1, LSU_DEBUG_ADDR
++	li	t1, LSU_DEBUG_ADDR
+ 	li	t2, 0		/* index */
+ 	li 	t3, 0x200	/* loop count, 512 sets */
+ 1:
+@@ -95,13 +95,13 @@
+ 	andi	v1, 0x1		/* wait for write_active == 0 */
+ 	bnez	v1, 2b
+ 	nop
+-	mtcr    zero, t0
++	mtcr	zero, t0
+ 	ori	v1, v0, 0x7	/* way1 | write_enable | write_active */
+-	mtcr    v1, t1
++	mtcr	v1, t1
+ 3:
+-	mfcr    v1, t1
+-	andi    v1, 0x1		/* wait for write_active == 0 */
+-	bnez    v1, 3b
++	mfcr	v1, t1
++	andi	v1, 0x1		/* wait for write_active == 0 */
++	bnez	v1, 3b
+ 	nop
+ 	addi	t2, 1
+ 	bne	t3, t2, 1b
+@@ -193,9 +193,9 @@ EXPORT(nlm_boot_siblings)
+ 	bnez	v1, 2f
+ 	nop
+ 
+-        li	t0, MMU_SETUP
+-        li	t1, 0
+-        mtcr	t1, t0
++	li	t0, MMU_SETUP
++	li	t1, 0
++	mtcr	t1, t0
+ 	_ehb
+ 
+ 2:	beqz	v0, 4f		/* boot cpu (cpuid == 0)? */
+-- 
+1.7.9.5

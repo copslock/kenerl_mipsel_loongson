@@ -1,35 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 18:24:34 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:2885 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 18:25:00 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:1446 "EHLO mms1.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903498Ab2GMQY0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 13 Jul 2012 18:24:26 +0200
-Received: from [10.9.200.131] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Fri, 13 Jul 2012 09:23:13 -0700
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+        id S1903684Ab2GMQY1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 13 Jul 2012 18:24:27 +0200
+Received: from [10.9.200.133] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Fri, 13 Jul 2012 09:23:25 -0700
+X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
- Server id 8.2.247.2; Fri, 13 Jul 2012 09:24:10 -0700
+ IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
+ Server id 8.2.247.2; Fri, 13 Jul 2012 09:23:28 -0700
 Received: from hqcas02.netlogicmicro.com (unknown [10.65.50.15]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id B25879F9F5; Fri, 13
- Jul 2012 09:24:10 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 636B29F9F5; Fri, 13
+ Jul 2012 09:24:08 -0700 (PDT)
 Received: from jayachandranc.netlogicmicro.com (10.7.0.77) by
  hqcas02.netlogicmicro.com (10.65.50.15) with Microsoft SMTP Server id
- 14.1.339.1; Fri, 13 Jul 2012 09:24:10 -0700
+ 14.1.339.1; Fri, 13 Jul 2012 09:24:07 -0700
 From:   "Jayachandran C" <jayachandranc@netlogicmicro.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 cc:     "Jayachandran C" <jayachandranc@netlogicmicro.com>
-Subject: [PATCH 01/12] MIPS: Netlogic: Fix indentation of smpboot.S
-Date:   Fri, 13 Jul 2012 21:53:14 +0530
-Message-ID: <1342196605-4260-2-git-send-email-jayachandranc@netlogicmicro.com>
+Subject: [PATCH 00/12] Netlogic XLR/XLP updates.
+Date:   Fri, 13 Jul 2012 21:53:13 +0530
+Message-ID: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
-References: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
 MIME-Version: 1.0
 X-Originating-IP: [10.7.0.77]
-X-WSS-ID: 7C1E94FB3NK5403875-01-01
+X-WSS-ID: 7C1E94F73MK9921326-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 33909
+X-archive-position: 33910
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,67 +45,59 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Fix whitespace issue introduced in the last merge, and while there
-use tabs consistently in assembly after opcode. No change in logic.
+Fixes and updates for the Netlogic XLP code, this should apply cleanly
+on top of the current linux-next tree.
 
-Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
----
- arch/mips/netlogic/common/smpboot.S |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+Patch 1 (Netlogic: Fix indentation of smpboot.S) and patch 3
+(Netlogic: merge of.c into setup.c) are fixups to the merge
+fallout in linux-next.
 
-diff --git a/arch/mips/netlogic/common/smpboot.S b/arch/mips/netlogic/common/smpboot.S
-index a58f498..7badf38 100644
---- a/arch/mips/netlogic/common/smpboot.S
-+++ b/arch/mips/netlogic/common/smpboot.S
-@@ -67,7 +67,7 @@
- 	li	t2, ~0xe	/* S1RCM */
- 	and	t1, t1, t2
- #endif
--	mtcr    t1, t0
-+	mtcr	t1, t0
- 
- #ifdef XLP_AX_WORKAROUND
- 	li	t0, SCHED_DEFEATURE
-@@ -82,7 +82,7 @@
-  */
- .macro	xlp_flush_l1_dcache
- 	li	t0, LSU_DEBUG_DATA0
--	li      t1, LSU_DEBUG_ADDR
-+	li	t1, LSU_DEBUG_ADDR
- 	li	t2, 0		/* index */
- 	li 	t3, 0x200	/* loop count, 512 sets */
- 1:
-@@ -95,13 +95,13 @@
- 	andi	v1, 0x1		/* wait for write_active == 0 */
- 	bnez	v1, 2b
- 	nop
--	mtcr    zero, t0
-+	mtcr	zero, t0
- 	ori	v1, v0, 0x7	/* way1 | write_enable | write_active */
--	mtcr    v1, t1
-+	mtcr	v1, t1
- 3:
--	mfcr    v1, t1
--	andi    v1, 0x1		/* wait for write_active == 0 */
--	bnez    v1, 3b
-+	mfcr	v1, t1
-+	andi	v1, 0x1		/* wait for write_active == 0 */
-+	bnez	v1, 3b
- 	nop
- 	addi	t2, 1
- 	bne	t3, t2, 1b
-@@ -193,9 +193,9 @@ EXPORT(nlm_boot_siblings)
- 	bnez	v1, 2f
- 	nop
- 
--        li	t0, MMU_SETUP
--        li	t1, 0
--        mtcr	t1, t0
-+	li	t0, MMU_SETUP
-+	li	t1, 0
-+	mtcr	t1, t0
- 	_ehb
- 
- 2:	beqz	v0, 4f		/* boot cpu (cpuid == 0)? */
+Regards,
+JC.
+
+Ganesan Ramalingam (1):
+  MIPS: Netlogic: DTS file for XLP boards
+
+Jayachandran C (9):
+  MIPS: Netlogic: Fix indentation of smpboot.S
+  MIPS: Netlogic: Fix low-level flush on core wakeup
+  MIPS: Netlogic: merge of.c into setup.c
+  MIPS: Netlogic: remove cpu_has_dc_aliases define for XLP
+  MIPS: PCI: Fix for byte swap for Netlogic XLP
+  MIPS: Netlogic: early console fix
+  MIPS: Netlogic: Move serial ports to device tree
+  MIPS: Netlogic: Add support for built in DTB
+  MIPS: Netlogic: XLP defconfig update
+
+Madhusudan Bhat (1):
+  MIPS: oprofile: Support for XLR/XLS processors
+
+Zi Shen Lim (1):
+  MIPS: perf: Add XLP support for hardware perf.
+
+ arch/mips/Kconfig                                  |    3 +-
+ arch/mips/configs/nlm_xlp_defconfig                |  133 +++++++++++++-------
+ .../asm/mach-netlogic/cpu-feature-overrides.h      |    1 -
+ arch/mips/kernel/perf_event_mipsxx.c               |  124 ++++++++++++++++++
+ arch/mips/netlogic/Kconfig                         |   15 +++
+ arch/mips/netlogic/Makefile                        |    1 +
+ arch/mips/netlogic/common/earlycons.c              |    2 +-
+ arch/mips/netlogic/common/smpboot.S                |   22 ++--
+ arch/mips/netlogic/dts/Makefile                    |    4 +
+ arch/mips/netlogic/dts/xlp_evp.dts                 |  124 ++++++++++++++++++
+ arch/mips/netlogic/xlp/Makefile                    |    3 +-
+ arch/mips/netlogic/xlp/of.c                        |   34 -----
+ arch/mips/netlogic/xlp/platform.c                  |  108 ----------------
+ arch/mips/netlogic/xlp/setup.c                     |   32 ++++-
+ arch/mips/oprofile/Makefile                        |    1 +
+ arch/mips/oprofile/common.c                        |    1 +
+ arch/mips/oprofile/op_model_mipsxx.c               |   28 +++++
+ arch/mips/pci/pci-xlp.c                            |    5 +-
+ 18 files changed, 437 insertions(+), 204 deletions(-)
+ create mode 100644 arch/mips/netlogic/dts/Makefile
+ create mode 100644 arch/mips/netlogic/dts/xlp_evp.dts
+ delete mode 100644 arch/mips/netlogic/xlp/of.c
+ delete mode 100644 arch/mips/netlogic/xlp/platform.c
+
 -- 
 1.7.9.5

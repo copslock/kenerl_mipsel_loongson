@@ -1,39 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 01:53:13 +0200 (CEST)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:56941 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903849Ab2GLXxI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2012 01:53:08 +0200
-Received: by yenr9 with SMTP id r9so3305178yen.36
-        for <linux-mips@linux-mips.org>; Thu, 12 Jul 2012 16:53:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=PNrp57piZKjv1LuTOp16EqSw/5JGtlptl7VLa13/3hA=;
-        b=kyY99pAK/NXZoeADpNnnMmDt73DjzSSU619CMBO7bt782CI3xarAFZM3OJ1Ekb2bzt
-         EB+g1cgpDwUOfCe8RsrAdSZ+kGEBWSBwxM7+rxk/5JNuPeVxJdahx+/wQ0tjPquNHmhk
-         8gq2agddtfMz4fzQeuBIakDdmM/BbSHPqcLNsztiHmyUuibXYxaOEA0FgSjWdGKJhr5Y
-         uh6zTD6wrPi+LInYfZQ0vzO4lAkCFNcBZI0quLHCXkl8jAIFA5DVZTCOYWY0DsETx44U
-         uwmVWgn1xp+9hs2S6nOWwoLhmvApQnSJHmJkmiwMUgzAUbYh7BrpJ8PB+nyVIGh6ayqD
-         LGmw==
-Received: by 10.66.79.8 with SMTP id f8mr274629pax.81.1342137182002; Thu, 12
- Jul 2012 16:53:02 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.68.138.233 with HTTP; Thu, 12 Jul 2012 16:52:41 -0700 (PDT)
-In-Reply-To: <20120705160222.GJ25225@inbox.lv>
-References: <20120705160222.GJ25225@inbox.lv>
-From:   Matt Turner <mattst88@gmail.com>
-Date:   Thu, 12 Jul 2012 16:52:41 -0700
-Message-ID: <CAEdQ38EOyU0WFKosbYmZ5Sa88KByRYeX_PyzzOPbvH+h33Ypdw@mail.gmail.com>
-Subject: Re: Please recommend distro for Lemote Fuloong
-To:     Code Blue <codeblue@inbox.lv>
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 33897
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 07:33:46 +0200 (CEST)
+Received: from perches-mx.perches.com ([206.117.179.246]:46696 "EHLO
+        labridge.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S1902104Ab2GMFdm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2012 07:33:42 +0200
+Received: from [96.240.34.65] (account joe@perches.com HELO joe-laptop.perches.com)
+  by labridge.com (CommuniGate Pro SMTP 5.0.14)
+  with ESMTPA id 19369765; Thu, 12 Jul 2012 22:33:38 -0700
+From:   Joe Perches <joe@perches.com>
+To:     David Miller <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org, wimax@linuxwimax.org,
+        linux-wireless@vger.kernel.org, users@rt2x00.serialmonkey.com,
+        linux-s390@vger.kernel.org
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        linux-kernel@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+        linux-mips@linux-mips.org,
+        user-mode-linux-devel@lists.sourceforge.net,
+        user-mode-linux-user@lists.sourceforge.net,
+        e1000-devel@lists.sourceforge.net
+Subject: [PATCH net-next 0/8] etherdevice: Rename random_ether_addr to eth_random_addr
+Date:   Thu, 12 Jul 2012 22:33:04 -0700
+Message-Id: <cover.1342157022.git.joe@perches.com>
+X-Mailer: git-send-email 1.7.8.111.gad25c.dirty
+In-Reply-To: <1341968967.13724.23.camel@joe2Laptop>
+References: <1341968967.13724.23.camel@joe2Laptop>
+X-archive-position: 33898
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mattst88@gmail.com
+X-original-sender: joe@perches.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,31 +42,61 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Jul 5, 2012 at 9:02 AM, Code Blue <codeblue@inbox.lv> wrote:
-> Hi,
->
-> I just received a Lemote Fuloong Mini and I installed OpenBSD on it. I would
-> like to dual boot Linux but I am having a hard time finding the right distro.
->
-> I know Lemote and MIPS people are doing a lot of work and submitting patches
-> to the Linux kernel and binutils and I am sure many other areas. Can anyone
-> please recommend a Linux distro that will come with (or can install) a
-> recent kernel so I can take advantage of all this hard work people are
-> doing? Of course I will need a tarball or USB installer since the Fuloong
-> doesn't have an optical drive. Thank you.
->
-> --
->                        _
-> ASCII ribbon campaign ( ) Please follow up to the mailing list
->  against HTML e-mail   X
->    and proprietary    / \          Mutt.org
->      attachments            Code Blue or Go Home!
->
+net-next commit ad7eee98be ("etherdevice: introduce eth_broadcast_addr")
+added a new style API.  Rename random_ether_addr to eth_random_addr to
+create some API symmetry.
 
-Gentoo.
+Joe Perches (8):
+  etherdevice: Rename random_ether_addr to eth_random_addr
+  ethernet: Use eth_random_addr
+  net: usb: Use eth_random_addr
+  wireless: Use eth_random_addr
+  drivers/net: Use eth_random_addr
+  s390: Use eth_random_addr
+  usb: Use eth_random_addr
+  arch: Use eth_random_addr
 
-Join the #gentoo-mips IRC channel and ping 'blueness' since he's built
-some very nice install stages and netboot images.
+ arch/blackfin/mach-bf537/boards/stamp.c           |    2 +-
+ arch/c6x/kernel/soc.c                             |    2 +-
+ arch/mips/ar7/platform.c                          |    4 ++--
+ arch/mips/powertv/powertv_setup.c                 |    6 +++---
+ arch/um/drivers/net_kern.c                        |    2 +-
+ drivers/net/ethernet/atheros/atl1c/atl1c_hw.c     |    2 +-
+ drivers/net/ethernet/atheros/atlx/atl1.c          |    2 +-
+ drivers/net/ethernet/atheros/atlx/atl2.c          |    2 +-
+ drivers/net/ethernet/ethoc.c                      |    2 +-
+ drivers/net/ethernet/intel/igb/igb_main.c         |    4 ++--
+ drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c    |    2 +-
+ drivers/net/ethernet/lantiq_etop.c                |    2 +-
+ drivers/net/ethernet/micrel/ks8851.c              |    2 +-
+ drivers/net/ethernet/micrel/ks8851_mll.c          |    2 +-
+ drivers/net/ethernet/smsc/smsc911x.c              |    2 +-
+ drivers/net/ethernet/ti/cpsw.c                    |    2 +-
+ drivers/net/ethernet/tile/tilegx.c                |    2 +-
+ drivers/net/ethernet/wiznet/w5100.c               |    2 +-
+ drivers/net/ethernet/wiznet/w5300.c               |    2 +-
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c |    2 +-
+ drivers/net/tun.c                                 |    2 +-
+ drivers/net/usb/smsc75xx.c                        |    2 +-
+ drivers/net/usb/smsc95xx.c                        |    2 +-
+ drivers/net/usb/usbnet.c                          |    2 +-
+ drivers/net/wimax/i2400m/driver.c                 |    2 +-
+ drivers/net/wireless/adm8211.c                    |    2 +-
+ drivers/net/wireless/p54/eeprom.c                 |    2 +-
+ drivers/net/wireless/rt2x00/rt2400pci.c           |    2 +-
+ drivers/net/wireless/rt2x00/rt2500pci.c           |    2 +-
+ drivers/net/wireless/rt2x00/rt2500usb.c           |    2 +-
+ drivers/net/wireless/rt2x00/rt2800lib.c           |    2 +-
+ drivers/net/wireless/rt2x00/rt61pci.c             |    2 +-
+ drivers/net/wireless/rt2x00/rt73usb.c             |    2 +-
+ drivers/net/wireless/rtl818x/rtl8180/dev.c        |    2 +-
+ drivers/net/wireless/rtl818x/rtl8187/dev.c        |    2 +-
+ drivers/s390/net/qeth_l2_main.c                   |    2 +-
+ drivers/s390/net/qeth_l3_main.c                   |    2 +-
+ drivers/usb/atm/xusbatm.c                         |    4 ++--
+ drivers/usb/gadget/u_ether.c                      |    2 +-
+ include/linux/etherdevice.h                       |   14 ++++++++------
+ 40 files changed, 52 insertions(+), 50 deletions(-)
 
-Also, we provide multilib installations with o32, n32, and n64 base
-libraries (n32 is default).
+-- 
+1.7.8.111.gad25c.dirty

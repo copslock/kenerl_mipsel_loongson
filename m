@@ -1,40 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 10:30:56 +0200 (CEST)
-Received: from service88.mimecast.com ([195.130.217.12]:35334 "EHLO
-        service88.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903258Ab2GMIat convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 13 Jul 2012 10:30:49 +0200
-Received: from emea-cam-gw1.Emea.Arm.com (fw-tnat.cambridge.arm.com
- [217.140.96.21]) (Using TLS) by service88.mimecast.com; Fri, 13 Jul 2012
- 09:30:47 +0100
-Received: from [10.1.215.139] (10.1.2.13) by emea-cam-gw1.Emea.Arm.com
- (10.1.248.203) with Microsoft SMTP Server id 8.2.254.0; Fri, 13 Jul 2012
- 09:31:49 +0100
-Message-ID: <4FFFDCB2.3030700@arm.com>
-Date:   Fri, 13 Jul 2012 09:30:42 +0100
-From:   viresh kumar <viresh.kumar2@arm.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:13.0) Gecko/20120615 Thunderbird/13.0.1
-MIME-Version: 1.0
-To:     Jonas Gorski <jonas.gorski@gmail.com>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Viresh Kumar <viresh.kumar@st.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 10:31:40 +0200 (CEST)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:57814 "EHLO
+        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903258Ab2GMIbg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2012 10:31:36 +0200
+Received: by bkcji2 with SMTP id ji2so2818019bkc.36
+        for <multiple recipients>; Fri, 13 Jul 2012 01:31:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=T+E/ZyUwcH5fCod53kOijkGcdS51XYTrG5TnRKoTBJg=;
+        b=WrnpEKNcaRfFoSpGvsM4Az/fp/C2EfXuUgzqzPX08rgnVPPrUU7KdKAcSrj9eJKGMw
+         gzUnDdlNphSHSpWcyIq6t11LRTXPtVAmd5ShSP21jEhwOXU4ZCzrZp0bNMlyCJmqQFfJ
+         CK0fYFQqRWTXRSV4K7gxR6TikJR5jnvn97WXesAQgkWwCEhEsbG5lOQhlm1ya6WjSco9
+         VyB5hFNP4a73USSxgbBxCOEseUwqsddDl/LaEA9GZwA50s3NQwY2di61pHmiunpnDImT
+         aORjkprotMjF5R6MlZF/vt1keSbvFj2NlWNVFQQd+vFzXCNwE/yrckXkenMb6eRGx/BX
+         mXeg==
+Received: by 10.204.155.69 with SMTP id r5mr150002bkw.49.1342168290653;
+        Fri, 13 Jul 2012 01:31:30 -0700 (PDT)
+Received: from shaker64.lan (dslb-088-073-145-009.pools.arcor-ip.net. [88.73.145.9])
+        by mx.google.com with ESMTPS id gq2sm4211293bkc.13.2012.07.13.01.31.28
+        (version=SSLv3 cipher=OTHER);
+        Fri, 13 Jul 2012 01:31:29 -0700 (PDT)
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <florian@openwrt.org>,
-        Maxime Bizon <mbizon@freebox.fr>
-Subject: Re: [PATCH] MIPS: BCM63XX: select HAVE_CLK
-References: <1342166315-17765-1-git-send-email-jonas.gorski@gmail.com>
-In-Reply-To: <1342166315-17765-1-git-send-email-jonas.gorski@gmail.com>
-X-MC-Unique: 112071309304701002
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 33901
+        Maxime Bizon <mbizon@freebox.fr>,
+        Kevin Cernekee <cernekee@gmail.com>
+Subject: [PATCH] MIPS: BCM63XX: remove bogus ENETSW_TXDMA interrupts from BCM6328
+Date:   Fri, 13 Jul 2012 10:30:46 +0200
+Message-Id: <1342168246-18012-1-git-send-email-jonas.gorski@gmail.com>
+X-Mailer: git-send-email 1.7.2.5
+X-archive-position: 33902
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: viresh.kumar2@arm.com
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,49 +49,39 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 13/07/12 08:58, Jonas Gorski wrote:
-> BCM63XX implements the clk interface, but does not advertise it.
->
-> Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-> ---
->
-> This fixes a build failure in linux-next caused by
-> 5afae362dc79cb8b6b3965422d13d118c63d4ee4 ("clk: Add non CONFIG_HAVE_CLK
-> routines"):
->
->   CC      arch/mips/bcm63xx/clk.o
-> arch/mips/bcm63xx/clk.c:285:5: error: redefinition of 'clk_enable'
-> include/linux/clk.h:294:19: note: previous definition of 'clk_enable' was here
->
-> and so on (I think you have already seen one of these).
->
-> @Andrew: This patch should apply cleanly to any tree, so maybe you
-> could add it to your patch series in front of the mentioned
-> patch, to keep bisectability for bcm63xx.
->
-> @Ralf: I hope it is okay for you that this goes through a different
-> tree.
->
->  arch/mips/Kconfig |    1 +
->  1 files changed, 1 insertions(+), 0 deletions(-)
->
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 09ab87e..80d9199 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -122,6 +122,7 @@ config BCM63XX
->       select SYS_HAS_EARLY_PRINTK
->       select SWAP_IO_SPACE
->       select ARCH_REQUIRE_GPIOLIB
-> +     select HAVE_CLK
->       help
->        Support for BCM63XX based boards
+These were erroneously copied from BCM6368. BCM6328 does not expose the
+ENETSW_TXDMA interrupts, and BCM_6328_HIGH_IRQ_BASE + 7 is actually used
+for the second UART.
 
-Reviewed-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+---
 
---
-Viresh
+Ralf, since there are no users for these (non) interrupts yet, I'll 
+leave it at your discretion if you want to keep it as a separate patch
+or merge it into 02a0111daed3103368123596b9960d10986c0f7a
+("MIPS: BCM63XX: Add basic BCM6328 support").
 
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
 
-
--- IMPORTANT NOTICE: The contents of this email and any attachments are confidential and may also be privileged. If you are not the intended recipient, please notify the sender immediately and do not disclose the contents to any other person, use it for any purpose, or store or copy the information in any medium.  Thank you.
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
+index e104ddb..9cc1b9f 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
+@@ -615,10 +615,10 @@ enum bcm63xx_irq {
+ #define BCM_6328_ENETSW_RXDMA1_IRQ	(BCM_6328_HIGH_IRQ_BASE + 1)
+ #define BCM_6328_ENETSW_RXDMA2_IRQ	(BCM_6328_HIGH_IRQ_BASE + 2)
+ #define BCM_6328_ENETSW_RXDMA3_IRQ	(BCM_6328_HIGH_IRQ_BASE + 3)
+-#define BCM_6328_ENETSW_TXDMA0_IRQ	(BCM_6328_HIGH_IRQ_BASE + 4)
+-#define BCM_6328_ENETSW_TXDMA1_IRQ	(BCM_6328_HIGH_IRQ_BASE + 5)
+-#define BCM_6328_ENETSW_TXDMA2_IRQ	(BCM_6328_HIGH_IRQ_BASE + 6)
+-#define BCM_6328_ENETSW_TXDMA3_IRQ	(BCM_6328_HIGH_IRQ_BASE + 7)
++#define BCM_6328_ENETSW_TXDMA0_IRQ	0
++#define BCM_6328_ENETSW_TXDMA1_IRQ	0
++#define BCM_6328_ENETSW_TXDMA2_IRQ	0
++#define BCM_6328_ENETSW_TXDMA3_IRQ	0
+ #define BCM_6328_XTM_IRQ		(BCM_6328_HIGH_IRQ_BASE + 31)
+ #define BCM_6328_XTM_DMA0_IRQ		(BCM_6328_HIGH_IRQ_BASE + 11)
+ 
+-- 
+1.7.2.5

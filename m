@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 18:29:05 +0200 (CEST)
-Received: from mms3.broadcom.com ([216.31.210.19]:2300 "EHLO mms3.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 18:29:35 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:2298 "EHLO mms3.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903724Ab2GMQYn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 13 Jul 2012 18:24:43 +0200
-Received: from [10.9.200.131] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Fri, 13 Jul 2012 09:23:04 -0700
+        id S1903732Ab2GMQYp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 13 Jul 2012 18:24:45 +0200
+Received: from [10.9.200.133] by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Fri, 13 Jul 2012 09:23:22 -0700
 X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
- Server id 8.2.247.2; Fri, 13 Jul 2012 09:24:19 -0700
+ IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
+ Server id 8.2.247.2; Fri, 13 Jul 2012 09:23:57 -0700
 Received: from hqcas02.netlogicmicro.com (unknown [10.65.50.15]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id E1C819F9F5; Fri, 13
- Jul 2012 09:24:19 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 4A57E9F9F6; Fri, 13
+ Jul 2012 09:24:37 -0700 (PDT)
 Received: from jayachandranc.netlogicmicro.com (10.7.0.77) by
  hqcas02.netlogicmicro.com (10.65.50.15) with Microsoft SMTP Server id
- 14.1.339.1; Fri, 13 Jul 2012 09:24:19 -0700
+ 14.1.339.1; Fri, 13 Jul 2012 09:24:36 -0700
 From:   "Jayachandran C" <jayachandranc@netlogicmicro.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 cc:     "Jayachandran C" <jayachandranc@netlogicmicro.com>
-Subject: [PATCH 05/12] MIPS: PCI: Fix for byte swap for Netlogic XLP
-Date:   Fri, 13 Jul 2012 21:53:18 +0530
-Message-ID: <1342196605-4260-6-git-send-email-jayachandranc@netlogicmicro.com>
+Subject: [PATCH 12/12] MIPS: Netlogic: XLP defconfig update
+Date:   Fri, 13 Jul 2012 21:53:25 +0530
+Message-ID: <1342196605-4260-13-git-send-email-jayachandranc@netlogicmicro.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
 References: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
 MIME-Version: 1.0
 X-Originating-IP: [10.7.0.77]
-X-WSS-ID: 7C1E94E24989490114-01-01
+X-WSS-ID: 7C1E94F04989490206-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 33920
+X-archive-position: 33921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,39 +47,295 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The last 12 bits of the PCIe hardware swap size and limit registers
-are significant, while the same bits of the bridge PCIe registers
-are 0.
-
-So, to program limits correctly, we need to set the last 12 bits of
-the value read from the bridge limit registers to 1 before writing
-to the PCIe limit registers.
+Enable more devices and options for XLP default configuration:
+- Serial ports from FDT
+- NOR Flash support and partitions from FDT
+- PCI and PCI bus support and devices - SATA, e1000e, sky2
+- I2C ocores controller and devices - ds1374, lm90
+- Misc options such as RTC, partition formats etc.
 
 Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
 ---
- arch/mips/pci/pci-xlp.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/mips/configs/nlm_xlp_defconfig |  133 ++++++++++++++++++++++++-----------
+ 1 file changed, 90 insertions(+), 43 deletions(-)
 
-diff --git a/arch/mips/pci/pci-xlp.c b/arch/mips/pci/pci-xlp.c
-index 3e177e9..140557a 100644
---- a/arch/mips/pci/pci-xlp.c
-+++ b/arch/mips/pci/pci-xlp.c
-@@ -213,13 +213,14 @@ static int xlp_enable_pci_bswap(void)
- 		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_MEM_BASE, reg);
- 
- 		reg = nlm_read_bridge_reg(sysbase, BRIDGE_PCIEMEM_LIMIT0 + i);
--		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_MEM_LIM, reg);
-+		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_MEM_LIM,
-+			reg | 0xfff);
- 
- 		reg = nlm_read_bridge_reg(sysbase, BRIDGE_PCIEIO_BASE0 + i);
- 		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_IO_BASE, reg);
- 
- 		reg = nlm_read_bridge_reg(sysbase, BRIDGE_PCIEIO_LIMIT0 + i);
--		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_IO_LIM, reg);
-+		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_IO_LIM, reg | 0xfff);
- 	}
- 	return 0;
- }
+diff --git a/arch/mips/configs/nlm_xlp_defconfig b/arch/mips/configs/nlm_xlp_defconfig
+index 28c6b27..43b67a7 100644
+--- a/arch/mips/configs/nlm_xlp_defconfig
++++ b/arch/mips/configs/nlm_xlp_defconfig
+@@ -1,14 +1,12 @@
+ CONFIG_NLM_XLP_BOARD=y
+ CONFIG_64BIT=y
++CONFIG_PAGE_SIZE_16KB=y
++# CONFIG_HW_PERF_EVENTS is not set
+ CONFIG_KSM=y
+ CONFIG_DEFAULT_MMAP_MIN_ADDR=65536
+ CONFIG_SMP=y
+-CONFIG_NO_HZ=y
+-CONFIG_HIGH_RES_TIMERS=y
+ # CONFIG_SECCOMP is not set
+-CONFIG_USE_OF=y
+ CONFIG_EXPERIMENTAL=y
+-CONFIG_CROSS_COMPILE=""
+ # CONFIG_LOCALVERSION_AUTO is not set
+ CONFIG_SYSVIPC=y
+ CONFIG_POSIX_MQUEUE=y
+@@ -19,13 +17,13 @@ CONFIG_TASK_DELAY_ACCT=y
+ CONFIG_TASK_XACCT=y
+ CONFIG_TASK_IO_ACCOUNTING=y
+ CONFIG_AUDIT=y
++CONFIG_NO_HZ=y
++CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_CGROUPS=y
+ CONFIG_NAMESPACES=y
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_INITRAMFS_SOURCE=""
+ CONFIG_RD_BZIP2=y
+ CONFIG_RD_LZMA=y
+-CONFIG_INITRAMFS_COMPRESSION_LZMA=y
+ CONFIG_KALLSYMS_ALL=y
+ CONFIG_EMBEDDED=y
+ # CONFIG_COMPAT_BRK is not set
+@@ -35,6 +33,29 @@ CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODVERSIONS=y
+ CONFIG_MODULE_SRCVERSION_ALL=y
+ CONFIG_BLK_DEV_INTEGRITY=y
++CONFIG_PARTITION_ADVANCED=y
++CONFIG_ACORN_PARTITION=y
++CONFIG_ACORN_PARTITION_ICS=y
++CONFIG_ACORN_PARTITION_RISCIX=y
++CONFIG_OSF_PARTITION=y
++CONFIG_AMIGA_PARTITION=y
++CONFIG_ATARI_PARTITION=y
++CONFIG_MAC_PARTITION=y
++CONFIG_BSD_DISKLABEL=y
++CONFIG_MINIX_SUBPARTITION=y
++CONFIG_SOLARIS_X86_PARTITION=y
++CONFIG_UNIXWARE_DISKLABEL=y
++CONFIG_LDM_PARTITION=y
++CONFIG_SGI_PARTITION=y
++CONFIG_ULTRIX_PARTITION=y
++CONFIG_SUN_PARTITION=y
++CONFIG_KARMA_PARTITION=y
++CONFIG_EFI_PARTITION=y
++CONFIG_SYSV68_PARTITION=y
++CONFIG_PCI=y
++CONFIG_PCI_DEBUG=y
++CONFIG_PCI_REALLOC_ENABLE_AUTO=y
++CONFIG_PCI_STUB=y
+ # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
+ CONFIG_BINFMT_MISC=y
+ CONFIG_MIPS32_COMPAT=y
+@@ -170,7 +191,6 @@ CONFIG_IP_NF_MATCH_ECN=m
+ CONFIG_IP_NF_MATCH_TTL=m
+ CONFIG_IP_NF_FILTER=m
+ CONFIG_IP_NF_TARGET_REJECT=m
+-CONFIG_IP_NF_TARGET_LOG=m
+ CONFIG_IP_NF_TARGET_ULOG=m
+ CONFIG_NF_NAT=m
+ CONFIG_IP_NF_TARGET_MASQUERADE=m
+@@ -186,7 +206,6 @@ CONFIG_IP_NF_ARPTABLES=m
+ CONFIG_IP_NF_ARPFILTER=m
+ CONFIG_IP_NF_ARP_MANGLE=m
+ CONFIG_NF_CONNTRACK_IPV6=m
+-CONFIG_IP6_NF_QUEUE=m
+ CONFIG_IP6_NF_IPTABLES=m
+ CONFIG_IP6_NF_MATCH_AH=m
+ CONFIG_IP6_NF_MATCH_EUI64=m
+@@ -197,7 +216,6 @@ CONFIG_IP6_NF_MATCH_IPV6HEADER=m
+ CONFIG_IP6_NF_MATCH_MH=m
+ CONFIG_IP6_NF_MATCH_RT=m
+ CONFIG_IP6_NF_TARGET_HL=m
+-CONFIG_IP6_NF_TARGET_LOG=m
+ CONFIG_IP6_NF_FILTER=m
+ CONFIG_IP6_NF_TARGET_REJECT=m
+ CONFIG_IP6_NF_MANGLE=m
+@@ -248,9 +266,6 @@ CONFIG_IPDDP_ENCAP=y
+ CONFIG_IPDDP_DECAP=y
+ CONFIG_X25=m
+ CONFIG_LAPB=m
+-CONFIG_ECONET=m
+-CONFIG_ECONET_AUNUDP=y
+-CONFIG_ECONET_NATIVE=y
+ CONFIG_WAN_ROUTER=m
+ CONFIG_PHONET=m
+ CONFIG_IEEE802154=m
+@@ -297,11 +312,21 @@ CONFIG_NET_ACT_SIMP=m
+ CONFIG_NET_ACT_SKBEDIT=m
+ CONFIG_DCB=y
+ CONFIG_NET_PKTGEN=m
+-# CONFIG_WIRELESS is not set
+ CONFIG_DEVTMPFS=y
+ CONFIG_DEVTMPFS_MOUNT=y
+ # CONFIG_STANDALONE is not set
+ CONFIG_CONNECTOR=y
++CONFIG_MTD=y
++CONFIG_MTD_CMDLINE_PARTS=y
++CONFIG_MTD_CHAR=y
++CONFIG_MTD_BLOCK=y
++CONFIG_MTD_CFI=y
++CONFIG_MTD_CFI_ADV_OPTIONS=y
++CONFIG_MTD_CFI_LE_BYTE_SWAP=y
++CONFIG_MTD_CFI_GEOMETRY=y
++CONFIG_MTD_CFI_INTELEXT=y
++CONFIG_MTD_PHYSMAP=y
++CONFIG_MTD_PHYSMAP_OF=y
+ CONFIG_BLK_DEV_LOOP=y
+ CONFIG_BLK_DEV_CRYPTOLOOP=m
+ CONFIG_BLK_DEV_NBD=m
+@@ -310,7 +335,6 @@ CONFIG_BLK_DEV_RAM=y
+ CONFIG_BLK_DEV_RAM_SIZE=65536
+ CONFIG_CDROM_PKTCDVD=y
+ CONFIG_RAID_ATTRS=m
+-CONFIG_SCSI=y
+ CONFIG_SCSI_TGT=m
+ CONFIG_BLK_DEV_SD=y
+ CONFIG_CHR_DEV_ST=m
+@@ -337,6 +361,48 @@ CONFIG_SCSI_DH_EMC=m
+ CONFIG_SCSI_DH_ALUA=m
+ CONFIG_SCSI_OSD_INITIATOR=m
+ CONFIG_SCSI_OSD_ULD=m
++CONFIG_ATA=y
++CONFIG_SATA_AHCI=y
++CONFIG_SATA_SIL24=y
++# CONFIG_ATA_SFF is not set
++CONFIG_NETDEVICES=y
++# CONFIG_NET_VENDOR_3COM is not set
++# CONFIG_NET_VENDOR_ADAPTEC is not set
++# CONFIG_NET_VENDOR_ALTEON is not set
++# CONFIG_NET_VENDOR_AMD is not set
++# CONFIG_NET_VENDOR_ATHEROS is not set
++# CONFIG_NET_VENDOR_BROADCOM is not set
++# CONFIG_NET_VENDOR_BROCADE is not set
++# CONFIG_NET_VENDOR_CHELSIO is not set
++# CONFIG_NET_VENDOR_DEC is not set
++# CONFIG_NET_VENDOR_DLINK is not set
++# CONFIG_NET_VENDOR_EMULEX is not set
++# CONFIG_NET_VENDOR_EXAR is not set
++# CONFIG_NET_VENDOR_HP is not set
++CONFIG_E1000E=y
++# CONFIG_NET_VENDOR_I825XX is not set
++CONFIG_SKY2=y
++# CONFIG_NET_VENDOR_MELLANOX is not set
++# CONFIG_NET_VENDOR_MICREL is not set
++# CONFIG_NET_VENDOR_MYRI is not set
++# CONFIG_NET_VENDOR_NATSEMI is not set
++# CONFIG_NET_VENDOR_NVIDIA is not set
++# CONFIG_NET_VENDOR_OKI is not set
++# CONFIG_NET_PACKET_ENGINE is not set
++# CONFIG_NET_VENDOR_QLOGIC is not set
++# CONFIG_NET_VENDOR_REALTEK is not set
++# CONFIG_NET_VENDOR_RDC is not set
++# CONFIG_NET_VENDOR_SEEQ is not set
++# CONFIG_NET_VENDOR_SILAN is not set
++# CONFIG_NET_VENDOR_SIS is not set
++# CONFIG_NET_VENDOR_SMSC is not set
++# CONFIG_NET_VENDOR_STMICRO is not set
++# CONFIG_NET_VENDOR_SUN is not set
++# CONFIG_NET_VENDOR_TEHUTI is not set
++# CONFIG_NET_VENDOR_TI is not set
++# CONFIG_NET_VENDOR_TOSHIBA is not set
++# CONFIG_NET_VENDOR_VIA is not set
++# CONFIG_NET_VENDOR_WIZNET is not set
+ # CONFIG_INPUT_MOUSEDEV is not set
+ CONFIG_INPUT_EVDEV=y
+ CONFIG_INPUT_EVBUG=m
+@@ -360,16 +426,23 @@ CONFIG_SERIAL_8250_EXTENDED=y
+ CONFIG_SERIAL_8250_MANY_PORTS=y
+ CONFIG_SERIAL_8250_SHARE_IRQ=y
+ CONFIG_SERIAL_8250_RSA=y
++CONFIG_SERIAL_OF_PLATFORM=y
+ CONFIG_HW_RANDOM=y
+ CONFIG_HW_RANDOM_TIMERIOMEM=m
+ CONFIG_RAW_DRIVER=m
+-# CONFIG_HWMON is not set
++CONFIG_I2C=y
++CONFIG_I2C_CHARDEV=y
++CONFIG_I2C_OCORES=y
++CONFIG_SENSORS_LM90=y
++CONFIG_THERMAL=y
+ # CONFIG_VGA_CONSOLE is not set
+-# CONFIG_HID_SUPPORT is not set
+ # CONFIG_USB_SUPPORT is not set
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_DS1374=y
+ CONFIG_UIO=y
+ CONFIG_UIO_PDRV=m
+ CONFIG_UIO_PDRV_GENIRQ=m
++# CONFIG_IOMMU_SUPPORT is not set
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+@@ -381,15 +454,10 @@ CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS_POSIX_ACL=y
+ CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_GFS2_FS=m
+-CONFIG_GFS2_FS_LOCKING_DLM=y
+-CONFIG_OCFS2_FS=m
+ CONFIG_BTRFS_FS=m
+ CONFIG_BTRFS_FS_POSIX_ACL=y
+ CONFIG_NILFS2_FS=m
+ CONFIG_QUOTA_NETLINK_INTERFACE=y
+-# CONFIG_PRINT_QUOTA_WARNING is not set
+-CONFIG_QFMT_V1=m
+-CONFIG_QFMT_V2=m
+ CONFIG_AUTOFS4_FS=m
+ CONFIG_FUSE_FS=y
+ CONFIG_CUSE=m
+@@ -415,6 +483,7 @@ CONFIG_HFSPLUS_FS=m
+ CONFIG_BEFS_FS=m
+ CONFIG_BFS_FS=m
+ CONFIG_EFS_FS=m
++CONFIG_JFFS2_FS=y
+ CONFIG_CRAMFS=m
+ CONFIG_SQUASHFS=m
+ CONFIG_VXFS_FS=m
+@@ -427,7 +496,6 @@ CONFIG_SYSV_FS=m
+ CONFIG_UFS_FS=m
+ CONFIG_EXOFS_FS=m
+ CONFIG_NFS_FS=m
+-CONFIG_NFS_V3=y
+ CONFIG_NFS_V3_ACL=y
+ CONFIG_NFS_V4=y
+ CONFIG_NFS_FSCACHE=y
+@@ -450,25 +518,6 @@ CONFIG_NCPFS_NLS=y
+ CONFIG_NCPFS_EXTRAS=y
+ CONFIG_CODA_FS=m
+ CONFIG_AFS_FS=m
+-CONFIG_PARTITION_ADVANCED=y
+-CONFIG_ACORN_PARTITION=y
+-CONFIG_ACORN_PARTITION_ICS=y
+-CONFIG_ACORN_PARTITION_RISCIX=y
+-CONFIG_OSF_PARTITION=y
+-CONFIG_AMIGA_PARTITION=y
+-CONFIG_ATARI_PARTITION=y
+-CONFIG_MAC_PARTITION=y
+-CONFIG_BSD_DISKLABEL=y
+-CONFIG_MINIX_SUBPARTITION=y
+-CONFIG_SOLARIS_X86_PARTITION=y
+-CONFIG_UNIXWARE_DISKLABEL=y
+-CONFIG_LDM_PARTITION=y
+-CONFIG_SGI_PARTITION=y
+-CONFIG_ULTRIX_PARTITION=y
+-CONFIG_SUN_PARTITION=y
+-CONFIG_KARMA_PARTITION=y
+-CONFIG_EFI_PARTITION=y
+-CONFIG_SYSV68_PARTITION=y
+ CONFIG_NLS=y
+ CONFIG_NLS_DEFAULT="cp437"
+ CONFIG_NLS_CODEPAGE_437=m
+@@ -518,12 +567,10 @@ CONFIG_SCHEDSTATS=y
+ CONFIG_TIMER_STATS=y
+ CONFIG_DEBUG_INFO=y
+ CONFIG_DEBUG_MEMORY_INIT=y
+-CONFIG_SYSCTL_SYSCALL_CHECK=y
+ CONFIG_SCHED_TRACER=y
+ CONFIG_BLK_DEV_IO_TRACE=y
+ CONFIG_KGDB=y
+ CONFIG_SECURITY=y
+-CONFIG_SECURITY_NETWORK=y
+ CONFIG_LSM_MMAP_MIN_ADDR=0
+ CONFIG_SECURITY_SELINUX=y
+ CONFIG_SECURITY_SELINUX_BOOTPARAM=y
 -- 
 1.7.9.5

@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 10:48:19 +0200 (CEST)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:63991 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2012 10:48:43 +0200 (CEST)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:50181 "EHLO
         mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903481Ab2GMIrb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2012 10:47:31 +0200
-Received: by bkcji2 with SMTP id ji2so2825838bkc.36
-        for <multiple recipients>; Fri, 13 Jul 2012 01:47:26 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1903610Ab2GMIrd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2012 10:47:33 +0200
+Received: by bkcji2 with SMTP id ji2so2825853bkc.36
+        for <multiple recipients>; Fri, 13 Jul 2012 01:47:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=XRP8s9bp9IpjPfAmln11Q2TXKl+uJAi2FqSiCyCltPE=;
-        b=hQhyHuUfORxg/CGSH2Bxl1FMffaF9blZjldTGbcxPtV8IGaTmgU8ydTOPeqq7ccl2T
-         t+MzAZbRqwIioA20Lxb7X1mB1aHDoBpbvCUBJg4DcujRVQRB9thUUN0FRGSOfacf8PmY
-         FromeYhcqpEuZ5L3ASlW+5cqtyGbBU0cI5s1z2O3P9oqWh7d+Z7VGltnGU7lDyZ8Redt
-         rQ2K3r69DK/3rKpg3XUSk2VixvPiCh42wluzj/Ypd+I0JLPdBMvaDIXz9FhZuujFge4M
-         BNSEc0wHa/lpsXSMBzVzn3Zt2tQRtJdQ2vx4i2B9frxLbKuR+ukAZNe0vR5vTvureDcc
-         tjQg==
-Received: by 10.204.154.74 with SMTP id n10mr181638bkw.60.1342169246362;
-        Fri, 13 Jul 2012 01:47:26 -0700 (PDT)
+        bh=7fIoExIxF/X7rOHeZHnEdPF7vheRp9RUMIDq1RTSBCE=;
+        b=y7jmscREAE0x05/QSKOoRJnmDIRL4FA8lco3i6LZygxW2OEDkoZWb/UeAtkPpo/Izh
+         aUXzYl59H9TJ2qHi1UxI3Pjo/mGbUoDuEo7UAxTeHCVly6GfmEPTZCc3zHDEaBz8V9zv
+         HJXcqSoY8kmQhGvmxGFV3bVS0OKN5LdU6pMZ05H4RrBImsqEvzd228M2HrBV5WfoT346
+         cEbf4ShCokoGYoRfSin0Bw+t8hYOF7kaczeIjylfUoY94hy8enGnvZA+gL7OaljAxy/q
+         GlSXSQ4YTeZT2Ym5XBRP45MyeNaqHlm+2GYmslrD/mJ5znbH3r+06uFweSySaU6OTPX/
+         wqWA==
+Received: by 10.204.152.152 with SMTP id g24mr146323bkw.104.1342169247988;
+        Fri, 13 Jul 2012 01:47:27 -0700 (PDT)
 Received: from shaker64.lan (dslb-088-073-145-009.pools.arcor-ip.net. [88.73.145.9])
-        by mx.google.com with ESMTPS id hg13sm4243506bkc.7.2012.07.13.01.47.24
+        by mx.google.com with ESMTPS id hg13sm4243506bkc.7.2012.07.13.01.47.26
         (version=SSLv3 cipher=OTHER);
-        Fri, 13 Jul 2012 01:47:25 -0700 (PDT)
+        Fri, 13 Jul 2012 01:47:27 -0700 (PDT)
 From:   Jonas Gorski <jonas.gorski@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <florian@openwrt.org>,
         Maxime Bizon <mbizon@freebox.fr>,
         Kevin Cernekee <cernekee@gmail.com>
-Subject: [PATCH 2/3] MIPS: BCM63XX: don't write to the chipid register on reboot
-Date:   Fri, 13 Jul 2012 10:46:04 +0200
-Message-Id: <1342169165-18382-3-git-send-email-jonas.gorski@gmail.com>
+Subject: [PATCH 3/3] MIPS: BCM63XX: use a switch for external irq config
+Date:   Fri, 13 Jul 2012 10:46:05 +0200
+Message-Id: <1342169165-18382-4-git-send-email-jonas.gorski@gmail.com>
 X-Mailer: git-send-email 1.7.2.5
 In-Reply-To: <1342169165-18382-1-git-send-email-jonas.gorski@gmail.com>
 References: <1342169165-18382-1-git-send-email-jonas.gorski@gmail.com>
-X-archive-position: 33905
+X-archive-position: 33906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,27 +53,54 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: Maxime Bizon <mbizon@freebox.fr>
 
-While harmless, it is bad style to do so.
+Makes the code a bit more readable and easier to add support for
+new chips.
 
 Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
 Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 ---
- arch/mips/bcm63xx/setup.c |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+ arch/mips/bcm63xx/irq.c |   14 +++++++++++---
+ 1 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/bcm63xx/setup.c b/arch/mips/bcm63xx/setup.c
-index bd83836..314231b 100644
---- a/arch/mips/bcm63xx/setup.c
-+++ b/arch/mips/bcm63xx/setup.c
-@@ -86,6 +86,9 @@ void bcm63xx_machine_reboot(void)
+diff --git a/arch/mips/bcm63xx/irq.c b/arch/mips/bcm63xx/irq.c
+index d40169f..da24c2b 100644
+--- a/arch/mips/bcm63xx/irq.c
++++ b/arch/mips/bcm63xx/irq.c
+@@ -438,7 +438,8 @@ static int bcm63xx_external_irq_set_type(struct irq_data *d,
+ 	reg = bcm_perf_readl(regaddr);
+ 	irq %= 4;
+ 
+-	if (BCMCPU_IS_6348()) {
++	switch (bcm63xx_get_cpu_id()) {
++	case BCM6348_CPU_ID:
+ 		if (levelsense)
+ 			reg |= EXTIRQ_CFG_LEVELSENSE_6348(irq);
+ 		else
+@@ -451,9 +452,13 @@ static int bcm63xx_external_irq_set_type(struct irq_data *d,
+ 			reg |= EXTIRQ_CFG_BOTHEDGE_6348(irq);
+ 		else
+ 			reg &= ~EXTIRQ_CFG_BOTHEDGE_6348(irq);
+-	}
++		break;
+ 
+-	if (BCMCPU_IS_6338() || BCMCPU_IS_6358() || BCMCPU_IS_6368()) {
++	case BCM6328_CPU_ID:
++	case BCM6338_CPU_ID:
++	case BCM6345_CPU_ID:
++	case BCM6358_CPU_ID:
++	case BCM6368_CPU_ID:
+ 		if (levelsense)
+ 			reg |= EXTIRQ_CFG_LEVELSENSE(irq);
+ 		else
+@@ -466,6 +471,9 @@ static int bcm63xx_external_irq_set_type(struct irq_data *d,
+ 			reg |= EXTIRQ_CFG_BOTHEDGE(irq);
+ 		else
+ 			reg &= ~EXTIRQ_CFG_BOTHEDGE(irq);
++		break;
++	default:
++		BUG();
  	}
  
- 	for (i = 0; i < 2; i++) {
-+		if (!perf_regs[i])
-+			break;
-+
- 		reg = bcm_perf_readl(perf_regs[i]);
- 		if (BCMCPU_IS_6348()) {
- 			reg &= ~EXTIRQ_CFG_MASK_ALL_6348;
+ 	bcm_perf_writel(reg, regaddr);
 -- 
 1.7.2.5

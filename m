@@ -1,42 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Jul 2012 23:51:51 +0200 (CEST)
-Received: from smtp.gentoo.org ([140.211.166.183]:43199 "EHLO smtp.gentoo.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jul 2012 12:03:25 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:4610 "EHLO mms1.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903414Ab2GOVvm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 15 Jul 2012 23:51:42 +0200
-Received: from vapier.localnet (localhost [127.0.0.1])
-        by smtp.gentoo.org (Postfix) with ESMTP id DF5001B4026;
-        Sun, 15 Jul 2012 21:51:32 +0000 (UTC)
-From:   Mike Frysinger <vapier@gentoo.org>
-Organization: wh0rd.org
-To:     Joe Perches <joe@perches.com>
-Subject: Re: [PATCH net-next 8/8] arch: Use eth_random_addr
-Date:   Sun, 15 Jul 2012 17:51:29 -0400
-User-Agent: KMail/1.13.7 (Linux/3.4.4; KDE/4.6.5; x86_64; ; )
-Cc:     David Miller <davem@davemloft.net>, linux-kernel@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <a-jacquiot@ti.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        uclinux-dist-devel@blackfin.uclinux.org,
-        linux-c6x-dev@linux-c6x.org, linux-mips@linux-mips.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        user-mode-linux-user@lists.sourceforge.net
-References: <1341968967.13724.23.camel@joe2Laptop> <14a91278564bb5a263c561a7f1bd10ea6386d90a.1342157022.git.joe@perches.com>
-In-Reply-To: <14a91278564bb5a263c561a7f1bd10ea6386d90a.1342157022.git.joe@perches.com>
+        id S1903526Ab2GPKDQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 16 Jul 2012 12:03:16 +0200
+Received: from [10.9.200.131] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Mon, 16 Jul 2012 03:02:11 -0700
+X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
+Received: from mail-irva-13.broadcom.com (10.11.16.103) by
+ IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
+ Server id 8.2.247.2; Mon, 16 Jul 2012 03:02:55 -0700
+Received: from hqcas01.netlogicmicro.com (unknown [10.65.50.14]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id E4C6A9FA01; Mon, 16
+ Jul 2012 03:02:52 -0700 (PDT)
+Received: from jc-virtual-machine.netlogicmicro.com (10.7.2.153) by
+ hqcas01.netlogicmicro.com (10.65.50.14) with Microsoft SMTP Server id
+ 14.1.339.1; Mon, 16 Jul 2012 03:02:52 -0700
+From:   "Jayachandran C" <jayachandranc@netlogicmicro.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+cc:     "Florian Fainelli" <florian@openwrt.org>,
+        "Jayachandran C" <jayachandranc@netlogicmicro.com>
+Subject: [PATCH UPDATED 06/12] MIPS: Netlogic: early console fix
+Date:   Mon, 16 Jul 2012 15:33:37 +0530
+Message-ID: <1342433017-24485-1-git-send-email-jayachandranc@netlogicmicro.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <2602396.OWAlsVeLic@flexo>
+References: <2602396.OWAlsVeLic@flexo>
 MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart2984557.iEo3zAiUsd";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
+X-Originating-IP: [10.7.2.153]
+X-WSS-ID: 7C1D39293MK10332603-01-01
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Message-Id: <201207151751.32715.vapier@gentoo.org>
-X-archive-position: 33929
+X-archive-position: 33930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vapier@gentoo.org
+X-original-sender: jayachandranc@netlogicmicro.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,42 +48,29 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
---nextPart2984557.iEo3zAiUsd
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+In prom_putchar(), wait for just the TX empty bit to clear in the
+UART LSR.
 
-On Friday 13 July 2012 01:33:12 Joe Perches wrote:
-> Convert the existing uses of random_ether_addr to
-> the new eth_random_addr.
->=20
-> Signed-off-by: Joe Perches <joe@perches.com>
-> ---
->  arch/blackfin/mach-bf537/boards/stamp.c |    2 +-
+Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
+---
+[Updated to use UART_LSR_THRE instead of 0x20, as suggested by 
+ Florian Fainelli <florian@openwrt.org>]
 
-Acked-by: Mike Frysinger <vapier@gentoo.org>
-=2Dmike
+ arch/mips/netlogic/common/earlycons.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---nextPart2984557.iEo3zAiUsd
-Content-Type: application/pgp-signature; name=signature.asc 
-Content-Description: This is a digitally signed message part.
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.17 (GNU/Linux)
-
-iQIcBAABAgAGBQJQAztkAAoJEEFjO5/oN/WBdAEP/2504DMXVeLawf3QYL83Ybgk
-JdSLiVaZvOSvNibDqyWKFczikUDAKeJBBSUYdHht10Jo6By/EHzslxnK+y22yoE9
-bN0Y9bI+7WpOjischyUg7iZzDEOx+sKWK0TooVv15wu68flAy8AY6PnpxKA2+//e
-x28CnNgrc0DbKqTg2FnDtzgZzkOpp1zX/Zdku+oJLBxo6VEBmgVZb8D5Aydoc5fD
-se81hN0yVigA85WfYDt1MaQhf6dc4rauPCEby1NGaB5EAdqy2p1wRsCLCGoIOZsV
-PIEQUfAiNWICF1kkO1QBhmotPTGSWPHo5Iw+DWuud0h7JK5/KQWtYwLcBmSGYlJ3
-fRqzQaI9tmqcXW6sWXT1qPA2pHVGninJ9sJKehdy6dmK7nZqE5KV3B26ntRxUqFB
-tnSKUVaMPFJOlaBCEOi/eKZHEBeLHatev/qYqj7rF3dURWkhmTqDPJy59rgs+sHv
-/YitzpASRvl7M0mKm2RpNtO6/fYK5AO3yr7mfnZ4psXpKutEiMPkEZ13m4Fbp4mW
-tbh65jfkrOHuY02IvTXwqb9Cpl4dzYYEBCBCgD6p6mmXGcT0moBgCiDHF5vKbJMc
-+8eKfqsXOz+P3jf1cGGkoSgVZtWKkfm7TX4gfB3+xBXhVQe8k+ljAcNbGuC5M5Mj
-VoGCFnUMFIONUUj71+wZ
-=85OH
------END PGP SIGNATURE-----
-
---nextPart2984557.iEo3zAiUsd--
+diff --git a/arch/mips/netlogic/common/earlycons.c b/arch/mips/netlogic/common/earlycons.c
+index f193f7b..53b200a5 100644
+--- a/arch/mips/netlogic/common/earlycons.c
++++ b/arch/mips/netlogic/common/earlycons.c
+@@ -54,7 +54,7 @@ void prom_putchar(char c)
+ #elif defined(CONFIG_CPU_XLR)
+ 	uartbase = nlm_mmio_base(NETLOGIC_IO_UART_0_OFFSET);
+ #endif
+-	while (nlm_read_reg(uartbase, UART_LSR) == 0)
++	while ((nlm_read_reg(uartbase, UART_LSR) & UART_LSR_THRE) == 0)
+ 		;
+ 	nlm_write_reg(uartbase, UART_TX, c);
+ }
+-- 
+1.7.9.5

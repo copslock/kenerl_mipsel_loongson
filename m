@@ -1,38 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2012 07:39:59 +0200 (CEST)
-Received: from shards.monkeyblade.net ([149.20.54.216]:43723 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903419Ab2GQFjx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2012 07:39:53 +0200
-Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 2268B583610;
-        Mon, 16 Jul 2012 22:39:50 -0700 (PDT)
-Date:   Mon, 16 Jul 2012 22:39:47 -0700 (PDT)
-Message-Id: <20120716.223947.963699777040428903.davem@davemloft.net>
-To:     joe@perches.com
-Cc:     netdev@vger.kernel.org, linux-usb@vger.kernel.org,
-        wimax@linuxwimax.org, linux-wireless@vger.kernel.org,
-        users@rt2x00.serialmonkey.com, linux-s390@vger.kernel.org,
-        johannes@sipsolutions.net, uclinux-dist-devel@blackfin.uclinux.org,
-        linux-kernel@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
-        linux-mips@linux-mips.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        user-mode-linux-user@lists.sourceforge.net,
-        e1000-devel@lists.sourceforge.net
-Subject: Re: [PATCH net-next 0/8] etherdevice: Rename random_ether_addr to
- eth_random_addr
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <cover.1342157022.git.joe@perches.com>
-References: <1341968967.13724.23.camel@joe2Laptop>
-        <cover.1342157022.git.joe@perches.com>
-X-Mailer: Mew version 6.5 on Emacs 24.0.97 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-archive-position: 33938
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jul 2012 10:36:00 +0200 (CEST)
+Received: from mail-gg0-f177.google.com ([209.85.161.177]:60423 "EHLO
+        mail-gg0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903472Ab2GRIfx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jul 2012 10:35:53 +0200
+Received: by ggcs5 with SMTP id s5so1400315ggc.36
+        for <multiple recipients>; Wed, 18 Jul 2012 01:35:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=na1NQxt2XM3cbFALyGTwx0Fe8cwqocyn6p7xm1O1XRI=;
+        b=YEU7FF1QoCDwcxDXySSxOtkEsxGNdiolObCSyMBkwDsMUP00Fs0iDaRlVD3/0pU+u6
+         QZaS5EieMlW5n1AKKH0/WrpfemQM813Vny+IIiF+bWf18TL+0tysO0sQcrXYdb3WZKYB
+         WehB5hoKZhZxriOBjIIFSSUivSF5WiQwTnoY+VXo2/gU6X6fv9EFirjpy6Y7kjQKy6Hc
+         1WzCsAsZDT2gIPr3Iw0wyKlII1ci1QaMVAK8iHwkgqB3A3L0vryItt+hbGtPqf1NBjQw
+         36OMf73naawoIZSm1be1yxP9aCTTMmeXE1kBWuz0LXwTjynMCWbJdt3RlGWYc4lYc0Rn
+         VhOA==
+MIME-Version: 1.0
+Received: by 10.50.135.1 with SMTP id po1mr1108998igb.67.1342600546627; Wed,
+ 18 Jul 2012 01:35:46 -0700 (PDT)
+Received: by 10.231.135.1 with HTTP; Wed, 18 Jul 2012 01:35:46 -0700 (PDT)
+In-Reply-To: <CAMuHMdXSGgH+M_2+xuzY2t_sGZto24=atv3Kaj+R-dWAUPzW7w@mail.gmail.com>
+References: <1339962373-3224-1-git-send-email-geert@linux-m68k.org>
+        <CAMuHMdVfLjgrtWoPpvbLf12+=ApE6W9dNcweqD-_2Benr-D7NQ@mail.gmail.com>
+        <20120620152759.2caceb8c.yuasa@linux-mips.org>
+        <20120620161249.GB29196@linux-mips.org>
+        <4FE4B13E.10709@caviumnetworks.com>
+        <CAMuHMdXSGgH+M_2+xuzY2t_sGZto24=atv3Kaj+R-dWAUPzW7w@mail.gmail.com>
+Date:   Wed, 18 Jul 2012 10:35:46 +0200
+X-Google-Sender-Auth: Lzm0-Z199Mg_WHoF2uOaDRblHeE
+Message-ID: <CAMuHMdWW=sAff-iw0EiHaejr34Z4u_X7w3nHf6Tfo-c2f=Qijg@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: fix bug.h MIPS build regression
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     David Daney <ddaney@caviumnetworks.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Yoichi Yuasa <yuasa@linux-mips.org>,
+        Paul Mundt <lethal@linux-sh.org>, linux-kernel@vger.kernel.org,
+        Linuxppc-dev <linuxppc-dev@ozlabs.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Chris Zankel <chris@zankel.net>
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 33939
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,11 +60,36 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Joe Perches <joe@perches.com>
-Date: Thu, 12 Jul 2012 22:33:04 -0700
+On Mon, Jul 16, 2012 at 9:27 PM, Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> On Fri, Jun 22, 2012 at 7:54 PM, David Daney <ddaney@caviumnetworks.com> wrote:
+>> On 06/20/2012 09:12 AM, Ralf Baechle wrote:
+>>>
+>>> On Wed, Jun 20, 2012 at 03:27:59PM +0900, Yoichi Yuasa wrote:
+>>>
+>>>> Commit: 3777808873b0c49c5cf27e44c948dfb02675d578 breaks all MIPS builds.
+>>>
+>>>
+>>> Thanks, fix applied.
+>>>
+>>
+>> Where was it applied?
+>>
+>> It doesn't show up in linux-next for 20120622, which is where it is needed.
+>
+> It's also desperately needed in mainline for 3.5.
+>
+> Ralf?
 
-> net-next commit ad7eee98be ("etherdevice: introduce eth_broadcast_addr")
-> added a new style API.  Rename random_ether_addr to eth_random_addr to
-> create some API symmetry.
+Andrew? This prevents any green MIPS builds.
 
-Series applied, thanks Joe.
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

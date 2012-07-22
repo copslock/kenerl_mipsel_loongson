@@ -1,47 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2012 23:06:54 +0200 (CEST)
-Received: from mail-gh0-f177.google.com ([209.85.160.177]:55179 "EHLO
-        mail-gh0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903748Ab2GTVGu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jul 2012 23:06:50 +0200
-Received: by ghbf11 with SMTP id f11so4743526ghb.36
-        for <linux-mips@linux-mips.org>; Fri, 20 Jul 2012 14:06:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
-        bh=6w1VWgyiw+m9RsZKkVDy62tHKRq0zeow6FE9nzKpKAg=;
-        b=eX5hZnlJjzxETvNN0+WXAwsfH/tVXNYz/mNrurIAKWCP0NLJFhQPx3C7xgihiMQP+M
-         e6kANOPPVNhOptkDYLF36htZW8du3o38HxP2vJ4AKxdek5Is5Eqyo9f8/mx6JRmtyoFP
-         dJHm2O1jvAAQNd1eQYW9HkNQ8gd8N1xXsrYsdmznbgT7vQOsKMhpppBWua6mIfvOew3t
-         dKJcQQAhzs+4qvSSyVea66TfikZlWqDnCuYiThItJswPs+4yqg+cpYblxXwrm49TnmlQ
-         YryC/wITTUM8kJl720vaWIiDSMhG5w9VdZS+vVPGa9GGOQ+XMjodV1tGYBkWwnIKh+b0
-         2kzg==
-MIME-Version: 1.0
-Received: by 10.50.94.133 with SMTP id dc5mr9352614igb.16.1342818404325; Fri,
- 20 Jul 2012 14:06:44 -0700 (PDT)
-Received: by 10.231.135.1 with HTTP; Fri, 20 Jul 2012 14:06:44 -0700 (PDT)
-In-Reply-To: <20120720215516.03abd164@pyramind.ukuu.org.uk>
-References: <20120713141345.f71b7c01f720d616d74721dd@canb.auug.org.au>
-        <20120713121053.0637219f@pyramind.ukuu.org.uk>
-        <CAMuHMdWRM0y07r1nL-9fXB3nLKXMgftqhiruEeuEe4QYDA2o9Q@mail.gmail.com>
-        <20120720215516.03abd164@pyramind.ukuu.org.uk>
-Date:   Fri, 20 Jul 2012 23:06:44 +0200
-X-Google-Sender-Auth: jTxq8avEmrgzCrGCx1FUtEagvy4
-Message-ID: <CAMuHMdXt2zptOB=F4suLYjoAp0k9fWPQMLdt-67pN53rD5yqaw@mail.gmail.com>
-Subject: Re: linux-next: build failure after merge of the tty tree
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc:     David Daney <david.daney@cavium.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Greg KH <greg@kroah.com>, linux-next@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 33948
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2012 08:56:35 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:55366 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1902755Ab2GVG41 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 22 Jul 2012 08:56:27 +0200
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [PATCH 1/5] MIPS: lantiq: fix interface clock and PCI control register offset
+Date:   Sun, 22 Jul 2012 08:55:57 +0200
+Message-Id: <1342940161-1421-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.9.1
+X-archive-position: 33949
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,31 +28,142 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Alan,
+The XRX200 based SoC have a different register offset for the interface clock
+and PCI control registers. This patch detects the SoC and sets the register
+offset at runtime. This make PCI work on the VR9 SoC.
 
-On Fri, Jul 20, 2012 at 10:55 PM, Alan Cox <alan@lxorguk.ukuu.org.uk> wrote:
->> Today's build failed because there's a new user in the MIPS tree:
->> arch/mips/cavium-octeon/serial.c
->>
->> http://kisskb.ellerman.id.au/kisskb/buildresult/6739341/
->
-> The version in the tree I have registers a platform device rather than
-> calling into 8250 directly. That appears to be rather better mannered
-> than whatever you are building.
->
-> If someone has moved from the platform device could they kindly explain
-> *why* ?
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+ arch/mips/lantiq/xway/sysctrl.c |   49 ++++++++++++++++++++++----------------
+ 1 files changed, 28 insertions(+), 21 deletions(-)
 
-commit 7c507e6fe36d8e8f67a06d1f81ddde4d8ecf739f ("MIPS: Octeon: Use
-device tree to register serial ports.") in linux-next.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index 83780f7..befbb76 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -20,10 +20,12 @@
+ 
+ /* clock control register */
+ #define CGU_IFCCR	0x0018
++#define CGU_IFCCR_VR9	0x0024
+ /* system clock register */
+ #define CGU_SYS		0x0010
+ /* pci control register */
+ #define CGU_PCICR	0x0034
++#define CGU_PCICR_VR9	0x0038
+ /* ephy configuration register */
+ #define CGU_EPHY	0x10
+ /* power control register */
+@@ -80,6 +82,9 @@ static void __iomem *pmu_membase;
+ void __iomem *ltq_cgu_membase;
+ void __iomem *ltq_ebu_membase;
+ 
++static u32 ifccr = CGU_IFCCR;
++static u32 pcicr = CGU_PCICR;
++
+ /* legacy function kept alive to ease clkdev transition */
+ void ltq_pmu_enable(unsigned int module)
+ {
+@@ -103,14 +108,14 @@ EXPORT_SYMBOL(ltq_pmu_disable);
+ /* enable a hw clock */
+ static int cgu_enable(struct clk *clk)
+ {
+-	ltq_cgu_w32(ltq_cgu_r32(CGU_IFCCR) | clk->bits, CGU_IFCCR);
++	ltq_cgu_w32(ltq_cgu_r32(ifccr) | clk->bits, ifccr);
+ 	return 0;
+ }
+ 
+ /* disable a hw clock */
+ static void cgu_disable(struct clk *clk)
+ {
+-	ltq_cgu_w32(ltq_cgu_r32(CGU_IFCCR) & ~clk->bits, CGU_IFCCR);
++	ltq_cgu_w32(ltq_cgu_r32(ifccr) & ~clk->bits, ifccr);
+ }
+ 
+ /* enable a clock gate */
+@@ -138,22 +143,22 @@ static void pmu_disable(struct clk *clk)
+ /* the pci enable helper */
+ static int pci_enable(struct clk *clk)
+ {
+-	unsigned int ifccr = ltq_cgu_r32(CGU_IFCCR);
++	unsigned int val = ltq_cgu_r32(ifccr);
+ 	/* set bus clock speed */
+ 	if (of_machine_is_compatible("lantiq,ar9")) {
+-		ifccr &= ~0x1f00000;
++		val &= ~0x1f00000;
+ 		if (clk->rate == CLOCK_33M)
+-			ifccr |= 0xe00000;
++			val |= 0xe00000;
+ 		else
+-			ifccr |= 0x700000; /* 62.5M */
++			val |= 0x700000; /* 62.5M */
+ 	} else {
+-		ifccr &= ~0xf00000;
++		val &= ~0xf00000;
+ 		if (clk->rate == CLOCK_33M)
+-			ifccr |= 0x800000;
++			val |= 0x800000;
+ 		else
+-			ifccr |= 0x400000; /* 62.5M */
++			val |= 0x400000; /* 62.5M */
+ 	}
+-	ltq_cgu_w32(ifccr, CGU_IFCCR);
++	ltq_cgu_w32(val, ifccr);
+ 	pmu_enable(clk);
+ 	return 0;
+ }
+@@ -161,18 +166,16 @@ static int pci_enable(struct clk *clk)
+ /* enable the external clock as a source */
+ static int pci_ext_enable(struct clk *clk)
+ {
+-	ltq_cgu_w32(ltq_cgu_r32(CGU_IFCCR) & ~(1 << 16),
+-		CGU_IFCCR);
+-	ltq_cgu_w32((1 << 30), CGU_PCICR);
++	ltq_cgu_w32(ltq_cgu_r32(ifccr) & ~(1 << 16), ifccr);
++	ltq_cgu_w32((1 << 30), pcicr);
+ 	return 0;
+ }
+ 
+ /* disable the external clock as a source */
+ static void pci_ext_disable(struct clk *clk)
+ {
+-	ltq_cgu_w32(ltq_cgu_r32(CGU_IFCCR) | (1 << 16),
+-		CGU_IFCCR);
+-	ltq_cgu_w32((1 << 31) | (1 << 30), CGU_PCICR);
++	ltq_cgu_w32(ltq_cgu_r32(ifccr) | (1 << 16), ifccr);
++	ltq_cgu_w32((1 << 31) | (1 << 30), pcicr);
+ }
+ 
+ /* enable a clockout source */
+@@ -184,11 +187,11 @@ static int clkout_enable(struct clk *clk)
+ 	for (i = 0; i < 4; i++) {
+ 		if (clk->rates[i] == clk->rate) {
+ 			int shift = 14 - (2 * clk->module);
+-			unsigned int ifccr = ltq_cgu_r32(CGU_IFCCR);
++			unsigned int val = ltq_cgu_r32(ifccr);
+ 
+-			ifccr &= ~(3 << shift);
+-			ifccr |= i << shift;
+-			ltq_cgu_w32(ifccr, CGU_IFCCR);
++			val &= ~(3 << shift);
++			val |= i << shift;
++			ltq_cgu_w32(val, ifccr);
+ 			return 0;
+ 		}
+ 	}
+@@ -336,8 +339,12 @@ void __init ltq_soc_init(void)
+ 	clkdev_add_clkout();
+ 
+ 	/* add the soc dependent clocks */
+-	if (!of_machine_is_compatible("lantiq,vr9"))
++	if (of_machine_is_compatible("lantiq,vr9")) {
++		ifccr = CGU_IFCCR_VR9;
++		pcicr = CGU_PCICR_VR9;
++	} else {
+ 		clkdev_add_pmu("1e180000.etop", NULL, 0, PMU_PPE);
++	}
+ 
+ 	if (!of_machine_is_compatible("lantiq,ase")) {
+ 		clkdev_add_pmu("1e100c00.serial", NULL, 0, PMU_ASC1);
+-- 
+1.7.9.1

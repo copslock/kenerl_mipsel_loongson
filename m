@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2012 08:57:33 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:55370 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2012 08:58:04 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:55372 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903413Ab2GVG42 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 22 Jul 2012 08:56:28 +0200
+        id S1903417Ab2GVG43 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 22 Jul 2012 08:56:29 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH 3/5] MIPS: lantiq: make use of new PCI clock helper
-Date:   Sun, 22 Jul 2012 08:55:59 +0200
-Message-Id: <1342940161-1421-3-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 4/5] MIPS: lantiq: adds device_tree_init function
+Date:   Sun, 22 Jul 2012 08:56:00 +0200
+Message-Id: <1342940161-1421-4-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
 In-Reply-To: <1342940161-1421-1-git-send-email-blogic@openwrt.org>
 References: <1342940161-1421-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 33951
+X-archive-position: 33952
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,38 +30,60 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Make use of the new helper function that allows us to set the PCI clock delay
-inside the PCI driver.
+Add a lantiq specific version of device_tree_init. The generic MIPS version
+was removed by.
+
+commit 594e966bc412d64eec9282d28ce511bdd62fea39
+Author: David Daney <david.daney@cavium.com>
+Date:   Thu Jul 5 18:12:38 2012 +0200
+
+MIPS: Prune some target specific code out of prom.c
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/pci/pci-lantiq.c |    7 ++++++-
- 1 files changed, 6 insertions(+), 1 deletions(-)
+ arch/mips/lantiq/prom.c |   22 ++++++++++++++++++++++
+ 1 files changed, 22 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/pci/pci-lantiq.c b/arch/mips/pci/pci-lantiq.c
-index 075d87a..dae4349 100644
---- a/arch/mips/pci/pci-lantiq.c
-+++ b/arch/mips/pci/pci-lantiq.c
-@@ -98,7 +98,7 @@ static inline u32 ltq_calc_bar11mask(void)
- static int __devinit ltq_pci_startup(struct platform_device *pdev)
- {
- 	struct device_node *node = pdev->dev.of_node;
--	const __be32 *req_mask, *bus_clk;
-+	const __be32 *req_mask, *bus_clk, *delay;
- 	u32 temp_buffer;
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+index 05a3364..e537099 100644
+--- a/arch/mips/lantiq/prom.c
++++ b/arch/mips/lantiq/prom.c
+@@ -8,7 +8,10 @@
  
- 	/* get our clocks */
-@@ -127,6 +127,11 @@ static int __devinit ltq_pci_startup(struct platform_device *pdev)
- 	else
- 		clk_disable(clk_external);
- 
-+	/* pci ckl delay is a 6 bit value */
-+	delay = of_get_property(node, "lantiq,delay", NULL);
-+	if (delay)
-+		ltq_pci_set_delay(*delay);
+ #include <linux/export.h>
+ #include <linux/clk.h>
++#include <linux/bootmem.h>
+ #include <linux/of_platform.h>
++#include <linux/of_fdt.h>
 +
- 	/* setup reset gpio used by pci */
- 	reset_gpio = of_get_named_gpio(node, "gpio-reset", 0);
- 	if (gpio_is_valid(reset_gpio))
+ #include <asm/bootinfo.h>
+ #include <asm/time.h>
+ 
+@@ -74,6 +77,25 @@ void __init plat_mem_setup(void)
+ 	__dt_setup_arch(bph);
+ }
+ 
++void __init device_tree_init(void)
++{
++	unsigned long base, size;
++
++	if (!initial_boot_params)
++		return;
++
++	base = virt_to_phys((void *)initial_boot_params);
++	size = be32_to_cpu(initial_boot_params->totalsize);
++
++	/* Before we do anything, lets reserve the dt blob */
++	reserve_bootmem(base, size, BOOTMEM_DEFAULT);
++
++	unflatten_device_tree();
++
++	/* free the space reserved for the dt blob */
++	free_bootmem(base, size);
++}
++
+ void __init prom_init(void)
+ {
+ 	/* call the soc specific detetcion code and get it to fill soc_info */
 -- 
 1.7.9.1

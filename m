@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2012 23:40:54 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:49866 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2012 23:41:18 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:49870 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903752Ab2GXVkF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2012 23:40:05 +0200
+        with ESMTP id S1903754Ab2GXVkL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2012 23:40:11 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1Stmpj-0003xr-Cj; Tue, 24 Jul 2012 16:39:59 -0500
+        id 1Stmpp-0003y0-A4; Tue, 24 Jul 2012 16:40:05 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH] MIPS: Add detection of DSP ASE Revision 2.
-Date:   Tue, 24 Jul 2012 16:39:54 -0500
-Message-Id: <1343165994-1648-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH v2,1/9] MIPS: Add microMIPS breakpoints and DSP support.
+Date:   Tue, 24 Jul 2012 16:40:00 -0500
+Message-Id: <1343166000-1682-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.11.1
-X-archive-position: 33973
+X-archive-position: 33974
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,107 +31,467 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
-X-Status: A
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/cpu-features.h | 4 ++++
- arch/mips/include/asm/cpu.h          | 1 +
- arch/mips/include/asm/mipsregs.h     | 1 +
- arch/mips/kernel/cpu-probe.c         | 6 ++++--
- arch/mips/kernel/proc.c              | 3 ++-
- 5 files changed, 12 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/break.h    |   7 +
+ arch/mips/include/asm/dsp.h      |   4 +
+ arch/mips/include/asm/mipsregs.h | 333 ++++++++++++++++-----------------------
+ 3 files changed, 143 insertions(+), 201 deletions(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 98bee29..bba9398 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -180,6 +180,10 @@
- #define cpu_has_dsp		(cpu_data[0].ases & MIPS_ASE_DSP)
- #endif
- 
-+#ifndef cpu_has_dsp2
-+#define cpu_has_dsp2		(cpu_data[0].ases & MIPS_ASE_DSP2P)
-+#endif
+diff --git a/arch/mips/include/asm/break.h b/arch/mips/include/asm/break.h
+index 9161e68..63fe206 100644
+--- a/arch/mips/include/asm/break.h
++++ b/arch/mips/include/asm/break.h
+@@ -27,8 +27,15 @@
+ #define BRK_STACKOVERFLOW 9	/* For Ada stackchecking */
+ #define BRK_NORLD	10	/* No rld found - not used by Linux/MIPS */
+ #define _BRK_THREADBP	11	/* For threads, user bp (used by debuggers) */
 +
- #ifndef cpu_has_mipsmt
- #define cpu_has_mipsmt		(cpu_data[0].ases & MIPS_ASE_MIPSMT)
- #endif
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 559bd12..5fb8aa4 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -331,6 +331,7 @@ enum cpu_type_enum {
- #define MIPS_ASE_SMARTMIPS	0x00000008 /* SmartMIPS */
- #define MIPS_ASE_DSP		0x00000010 /* Signal Processing ASE */
- #define MIPS_ASE_MIPSMT		0x00000020 /* CPU supports MIPS MT */
-+#define MIPS_ASE_DSP2P		0x00000040 /* Signal Processing ASE Rev 2 */
++#ifdef CONFIG_CPU_MICROMIPS
++#define BRK_BUG		12	/* Used by BUG() */
++#define BRK_KDB		13	/* Used in KDB_ENTER() */
++#else
+ #define BRK_BUG		512	/* Used by BUG() */
+ #define BRK_KDB		513	/* Used in KDB_ENTER() */
++#endif
++#define MM_BRK_MEMU	14	/* Used by FPU emulator (microMIPS) */
+ #define BRK_MEMU	514	/* Used by FPU emulator */
+ #define BRK_KPROBE_BP	515	/* Kprobe break */
+ #define BRK_KPROBE_SSTEPBP 516	/* Kprobe single step software implementation */
+diff --git a/arch/mips/include/asm/dsp.h b/arch/mips/include/asm/dsp.h
+index e9bfc08..3149b30 100644
+--- a/arch/mips/include/asm/dsp.h
++++ b/arch/mips/include/asm/dsp.h
+@@ -16,7 +16,11 @@
+ #include <asm/mipsregs.h>
  
+ #define DSP_DEFAULT	0x00000000
++#ifdef CONFIG_CPU_MICROMIPS
++#define DSP_MASK	0x7f
++#else
+ #define DSP_MASK	0x3ff
++#endif
  
- #endif /* _ASM_CPU_H */
+ #define __enable_dsp_hazard()						\
+ do {									\
 diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 7695edb..cdb9c87 100644
+index ba3d53d..1b8db8d 100644
 --- a/arch/mips/include/asm/mipsregs.h
 +++ b/arch/mips/include/asm/mipsregs.h
-@@ -590,6 +590,7 @@
- #define MIPS_CONF3_VEIC		(_ULCAST_(1) <<  6)
- #define MIPS_CONF3_LPA		(_ULCAST_(1) <<  7)
- #define MIPS_CONF3_DSP		(_ULCAST_(1) << 10)
-+#define MIPS_CONF3_DSP2P	(_ULCAST_(1) << 11)
- #define MIPS_CONF3_ULRI		(_ULCAST_(1) << 13)
- #define MIPS_CONF3_ISA		(_ULCAST_(3) << 14)
- #define MIPS_CONF3_ISA_OE	(_ULCAST_(1) << 16)
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 4842870..8fd9f9f 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -142,7 +142,7 @@ int __cpuinitdata mips_dsp_disabled;
+@@ -1148,48 +1148,31 @@ do {									\
+ /*
+  * Macros to access the floating point coprocessor control registers
+  */
+-#define read_32bit_cp1_register(source)                         \
+-({ int __res;                                                   \
+-	__asm__ __volatile__(                                   \
+-	".set\tpush\n\t"					\
+-	".set\treorder\n\t"					\
+-	/* gas fails to assemble cfc1 for some archs (octeon).*/ \
+-	".set\tmips1\n\t"					\
+-        "cfc1\t%0,"STR(source)"\n\t"                            \
+-	".set\tpop"						\
+-        : "=r" (__res));                                        \
+-        __res;})
+-
+-#define rddsp(mask)							\
++#define read_32bit_cp1_register(source)					\
+ ({									\
+-	unsigned int __res;						\
++	int __res;							\
+ 									\
+ 	__asm__ __volatile__(						\
+-	"	.set	push				\n"		\
+-	"	.set	noat				\n"		\
+-	"	# rddsp $1, %x1				\n"		\
+-	"	.word	0x7c000cb8 | (%x1 << 16)	\n"		\
+-	"	move	%0, $1				\n"		\
+-	"	.set	pop				\n"		\
+-	: "=r" (__res)							\
+-	: "i" (mask));							\
+-	__res;								\
+-})
+-
+-#define wrdsp(val, mask)						\
+-do {									\
+-	__asm__ __volatile__(						\
+ 	"	.set	push					\n"	\
+-	"	.set	noat					\n"	\
+-	"	move	$1, %0					\n"	\
+-	"	# wrdsp $1, %x1					\n"	\
+-	"	.word	0x7c2004f8 | (%x1 << 11)		\n"	\
++	"	.set	reorder					\n"	\
++	"	# gas fails to assemble cfc1 for some archs,	\n"	\
++	"	# like Octeon.					\n"	\
++	"	.set	mips1					\n"	\
++	"	cfc1	%0,"STR(source)"			\n"	\
+ 	"	.set	pop					\n"	\
+-        :								\
+-	: "r" (val), "i" (mask));					\
+-} while (0)
++	: "=r" (__res));						\
++	__res;								\
++})
  
- static int __init dsp_disable(char *s)
- {
--	cpu_data[0].ases &= ~MIPS_ASE_DSP;
-+	cpu_data[0].ases &= ~(MIPS_ASE_DSP | MIPS_ASE_DSP2P);
- 	mips_dsp_disabled = 1;
++/*
++ * Macros to access the DSP ASE registers
++ */
+ #if 0	/* Need DSP ASE capable assembler ... */
++#define rddsp(mask)							\
++({ long dspctl; __asm__("rddsp %0, %x1" : "=r" (dspctl) : "i" (mask)); dspctl;})
++
++#define wrdsp(val, mask) (__asm__("wrdsp %0, %x1" : "r" (val) : "i" (mask)))
++
+ #define mflo0() ({ long mflo0; __asm__("mflo %0, $ac0" : "=r" (mflo0)); mflo0;})
+ #define mflo1() ({ long mflo1; __asm__("mflo %0, $ac1" : "=r" (mflo1)); mflo1;})
+ #define mflo2() ({ long mflo2; __asm__("mflo %0, $ac2" : "=r" (mflo2)); mflo2;})
+@@ -1212,230 +1195,178 @@ do {									\
  
- 	return 1;
-@@ -735,6 +735,8 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
- 		c->ases |= MIPS_ASE_SMARTMIPS;
- 	if (config3 & MIPS_CONF3_DSP)
- 		c->ases |= MIPS_ASE_DSP;
-+	if (config3 & MIPS_CONF3_DSP2P)
-+		c->ases |= MIPS_ASE_DSP2P;
- 	if (config3 & MIPS_CONF3_VINT)
- 		c->options |= MIPS_CPU_VINT;
- 	if (config3 & MIPS_CONF3_VEIC)
-@@ -1172,7 +1174,7 @@ __cpuinit void cpu_probe(void)
- 		c->options &= ~MIPS_CPU_FPU;
+ #else
  
- 	if (mips_dsp_disabled)
--		c->ases &= ~MIPS_ASE_DSP;
-+		c->ases &= ~(MIPS_ASE_DSP | MIPS_ASE_DSP2P);
+-#define mfhi0()								\
+-({									\
+-	unsigned long __treg;						\
+-									\
+-	__asm__ __volatile__(						\
+-	"	.set	push			\n"			\
+-	"	.set	noat			\n"			\
+-	"	# mfhi	%0, $ac0		\n"			\
+-	"	.word	0x00000810		\n"			\
+-	"	move	%0, $1			\n"			\
+-	"	.set	pop			\n"			\
+-	: "=r" (__treg));						\
+-	__treg;								\
+-})
+-
+-#define mfhi1()								\
+-({									\
+-	unsigned long __treg;						\
+-									\
+-	__asm__ __volatile__(						\
+-	"	.set	push			\n"			\
+-	"	.set	noat			\n"			\
+-	"	# mfhi	%0, $ac1		\n"			\
+-	"	.word	0x00200810		\n"			\
+-	"	move	%0, $1			\n"			\
+-	"	.set	pop			\n"			\
+-	: "=r" (__treg));						\
+-	__treg;								\
+-})
+-
+-#define mfhi2()								\
+-({									\
+-	unsigned long __treg;						\
+-									\
+-	__asm__ __volatile__(						\
+-	"	.set	push			\n"			\
+-	"	.set	noat			\n"			\
+-	"	# mfhi	%0, $ac2		\n"			\
+-	"	.word	0x00400810		\n"			\
+-	"	move	%0, $1			\n"			\
+-	"	.set	pop			\n"			\
+-	: "=r" (__treg));						\
+-	__treg;								\
+-})
+-
+-#define mfhi3()								\
+-({									\
+-	unsigned long __treg;						\
+-									\
+-	__asm__ __volatile__(						\
+-	"	.set	push			\n"			\
+-	"	.set	noat			\n"			\
+-	"	# mfhi	%0, $ac3		\n"			\
+-	"	.word	0x00600810		\n"			\
+-	"	move	%0, $1			\n"			\
+-	"	.set	pop			\n"			\
+-	: "=r" (__treg));						\
+-	__treg;								\
+-})
+-
+-#define mflo0()								\
+-({									\
+-	unsigned long __treg;						\
+-									\
+-	__asm__ __volatile__(						\
+-	"	.set	push			\n"			\
+-	"	.set	noat			\n"			\
+-	"	# mflo	%0, $ac0		\n"			\
+-	"	.word	0x00000812		\n"			\
+-	"	move	%0, $1			\n"			\
+-	"	.set	pop			\n"			\
+-	: "=r" (__treg));						\
+-	__treg;								\
+-})
+-
+-#define mflo1()								\
+-({									\
+-	unsigned long __treg;						\
+-									\
+-	__asm__ __volatile__(						\
+-	"	.set	push			\n"			\
+-	"	.set	noat			\n"			\
+-	"	# mflo	%0, $ac1		\n"			\
+-	"	.word	0x00200812		\n"			\
+-	"	move	%0, $1			\n"			\
+-	"	.set	pop			\n"			\
+-	: "=r" (__treg));						\
+-	__treg;								\
+-})
+-
+-#define mflo2()								\
+-({									\
+-	unsigned long __treg;						\
+-									\
+-	__asm__ __volatile__(						\
+-	"	.set	push			\n"			\
+-	"	.set	noat			\n"			\
+-	"	# mflo	%0, $ac2		\n"			\
+-	"	.word	0x00400812		\n"			\
+-	"	move	%0, $1			\n"			\
+-	"	.set	pop			\n"			\
+-	: "=r" (__treg));						\
+-	__treg;								\
+-})
+-
+-#define mflo3()								\
++#ifdef CONFIG_CPU_MICROMIPS
++#define rddsp(mask)							\
+ ({									\
+-	unsigned long __treg;						\
++	unsigned int __res;						\
+ 									\
+ 	__asm__ __volatile__(						\
+-	"	.set	push			\n"			\
+-	"	.set	noat			\n"			\
+-	"	# mflo	%0, $ac3		\n"			\
+-	"	.word	0x00600812		\n"			\
+-	"	move	%0, $1			\n"			\
+-	"	.set	pop			\n"			\
+-	: "=r" (__treg));						\
+-	__treg;								\
+-})
+-
+-#define mthi0(x)							\
+-do {									\
+-	__asm__ __volatile__(						\
+ 	"	.set	push					\n"	\
+ 	"	.set	noat					\n"	\
+-	"	move	$1, %0					\n"	\
+-	"	# mthi	$1, $ac0				\n"	\
+-	"	.word	0x00200011				\n"	\
++	"	# rddsp $1, %x1					\n"	\
++	"	.hword	((0x0020067c | (%x1 << 14)) >> 16)	\n"	\
++	"	.hword	((0x0020067c | (%x1 << 14)) & 0xffff)	\n"	\
++	"	move	%0, $1					\n"	\
+ 	"	.set	pop					\n"	\
+-	:								\
+-	: "r" (x));							\
+-} while (0)
++	: "=r" (__res)							\
++	: "i" (mask));							\
++	__res;								\
++})
  
- 	if (c->options & MIPS_CPU_FPU) {
- 		c->fpu_id = cpu_get_fpu_id();
-diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-index c5e97d4..bb5e6dd 100644
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -64,12 +64,13 @@ static int show_cpuinfo(struct seq_file *m, void *v)
- 				cpu_data[n].watch_reg_masks[i]);
- 		seq_printf(m, "]\n");
- 	}
--	seq_printf(m, "ASEs implemented\t:%s%s%s%s%s%s%s\n",
-+	seq_printf(m, "ASEs implemented\t:%s%s%s%s%s%s%s%s\n",
- 		      cpu_has_mips16 ? " mips16" : "",
- 		      cpu_has_mdmx ? " mdmx" : "",
- 		      cpu_has_mips3d ? " mips3d" : "",
- 		      cpu_has_smartmips ? " smartmips" : "",
- 		      cpu_has_dsp ? " dsp" : "",
-+		      cpu_has_dsp2 ? " dsp2" : "",
- 		      cpu_has_mipsmt ? " mt" : "",
- 		      cpu_has_mmips ? " micromips" : ""
- 		);
+-#define mthi1(x)							\
++#define wrdsp(val, mask)						\
+ do {									\
+ 	__asm__ __volatile__(						\
+ 	"	.set	push					\n"	\
+ 	"	.set	noat					\n"	\
+ 	"	move	$1, %0					\n"	\
+-	"	# mthi	$1, $ac1				\n"	\
+-	"	.word	0x00200811				\n"	\
++	"	# wrdsp $1, %x1					\n"	\
++	"	.hword	((0x0020167c | (%x1 << 14)) >> 16)	\n"	\
++	"	.hword	((0x0020167c | (%x1 << 14)) & 0xffff)	\n"	\
+ 	"	.set	pop					\n"	\
+ 	:								\
+-	: "r" (x));							\
++	: "r" (val), "i" (mask));					\
+ } while (0)
+ 
+-#define mthi2(x)							\
+-do {									\
++#define _umips_dsp_mfxxx(ins)						\
++({									\
++	unsigned long __treg;						\
++									\
+ 	__asm__ __volatile__(						\
+ 	"	.set	push					\n"	\
+ 	"	.set	noat					\n"	\
+-	"	move	$1, %0					\n"	\
+-	"	# mthi	$1, $ac2				\n"	\
+-	"	.word	0x00201011				\n"	\
++	"	.hword	0x0001					\n"	\
++	"	.hword	%x1					\n"	\
++	"	move	%0, $1					\n"	\
+ 	"	.set	pop					\n"	\
+-	:								\
+-	: "r" (x));							\
+-} while (0)
++	: "=r" (__treg)							\
++	: "i" (ins));							\
++	__treg;								\
++})
+ 
+-#define mthi3(x)							\
++#define _umips_dsp_mtxxx(val, ins)					\
+ do {									\
+ 	__asm__ __volatile__(						\
+ 	"	.set	push					\n"	\
+ 	"	.set	noat					\n"	\
+ 	"	move	$1, %0					\n"	\
+-	"	# mthi	$1, $ac3				\n"	\
+-	"	.word	0x00201811				\n"	\
++	"	.hword	0x0001					\n"	\
++	"	.hword	%x1					\n"	\
+ 	"	.set	pop					\n"	\
+ 	:								\
+-	: "r" (x));							\
++	: "r" (val), "i" (ins));					\
+ } while (0)
+ 
+-#define mtlo0(x)							\
+-do {									\
++#define _umips_dsp_mflo(reg) _umips_dsp_mfxxx((reg << 14) | 0x107c)
++#define _umips_dsp_mfhi(reg) _umips_dsp_mfxxx((reg << 14) | 0x007c)
++
++#define _umips_dsp_mtlo(val, reg) _umips_dsp_mtxxx(val, ((reg << 14) | 0x307c))
++#define _umips_dsp_mthi(val, reg) _umips_dsp_mtxxx(val, ((reg << 14) | 0x207c))
++
++#define mflo0() _umips_dsp_mflo(0)
++#define mflo1() _umips_dsp_mflo(1)
++#define mflo2() _umips_dsp_mflo(2)
++#define mflo3() _umips_dsp_mflo(3)
++
++#define mfhi0() _umips_dsp_mfhi(0)
++#define mfhi1() _umips_dsp_mfhi(1)
++#define mfhi2() _umips_dsp_mfhi(2)
++#define mfhi3() _umips_dsp_mfhi(3)
++
++#define mtlo0(x) _umips_dsp_mtlo(x, 0)
++#define mtlo1(x) _umips_dsp_mtlo(x, 1)
++#define mtlo2(x) _umips_dsp_mtlo(x, 2)
++#define mtlo3(x) _umips_dsp_mtlo(x, 3)
++
++#define mthi0(x) _umips_dsp_mthi(x, 0)
++#define mthi1(x) _umips_dsp_mthi(x, 1)
++#define mthi2(x) _umips_dsp_mthi(x, 2)
++#define mthi3(x) _umips_dsp_mthi(x, 3)
++
++#else  /* !CONFIG_CPU_MICROMIPS */
++
++#define rddsp(mask)							\
++({									\
++	unsigned int __res;						\
++									\
+ 	__asm__ __volatile__(						\
+ 	"	.set	push					\n"	\
+ 	"	.set	noat					\n"	\
+-	"	move	$1, %0					\n"	\
+-	"	# mtlo	$1, $ac0				\n"	\
+-	"	.word	0x00200013				\n"	\
++	"	# rddsp $1, %x1					\n"	\
++	"	.word	0x7c000cb8 | (%x1 << 16)		\n"	\
++	"	move	%0, $1					\n"	\
+ 	"	.set	pop					\n"	\
+-	:								\
+-	: "r" (x));							\
+-} while (0)
++	: "=r" (__res)							\
++	: "i" (mask));							\
++	__res;								\
++})
+ 
+-#define mtlo1(x)							\
++#define wrdsp(val, mask)						\
+ do {									\
+ 	__asm__ __volatile__(						\
+ 	"	.set	push					\n"	\
+ 	"	.set	noat					\n"	\
+ 	"	move	$1, %0					\n"	\
+-	"	# mtlo	$1, $ac1				\n"	\
+-	"	.word	0x00200813				\n"	\
++	"	# wrdsp $1, %x1					\n"	\
++	"	.word	0x7c2004f8 | (%x1 << 11)		\n"	\
+ 	"	.set	pop					\n"	\
+ 	:								\
+-	: "r" (x));							\
++	: "r" (val), "i" (mask));					\
+ } while (0)
+ 
+-#define mtlo2(x)							\
+-do {									\
++#define _dsp_mfxxx(ins)							\
++({									\
++	unsigned long __treg;						\
++									\
+ 	__asm__ __volatile__(						\
+ 	"	.set	push					\n"	\
+ 	"	.set	noat					\n"	\
+-	"	move	$1, %0					\n"	\
+-	"	# mtlo	$1, $ac2				\n"	\
+-	"	.word	0x00201013				\n"	\
++	"	.word	(0x00000810 | %1)			\n"	\
++	"	move	%0, $1					\n"	\
+ 	"	.set	pop					\n"	\
+-	:								\
+-	: "r" (x));							\
+-} while (0)
++	: "=r" (__treg)							\
++	: "i" (ins));							\
++	__treg;								\
++})
+ 
+-#define mtlo3(x)							\
++#define _dsp_mtxxx(val, ins)						\
+ do {									\
+ 	__asm__ __volatile__(						\
+ 	"	.set	push					\n"	\
+ 	"	.set	noat					\n"	\
+ 	"	move	$1, %0					\n"	\
+-	"	# mtlo	$1, $ac3				\n"	\
+-	"	.word	0x00201813				\n"	\
++	"	.word	(0x00200011 | %1)			\n"	\
+ 	"	.set	pop					\n"	\
+ 	:								\
+-	: "r" (x));							\
++	: "r" (val), "i" (ins));					\
+ } while (0)
+ 
++#define _dsp_mflo(reg) _dsp_mfxxx((reg << 21) | 0x0002)
++#define _dsp_mfhi(reg) _dsp_mfxxx((reg << 21) | 0x0000)
++
++#define _dsp_mtlo(val, reg) _dsp_mtxxx(val, ((reg << 11) | 0x0002))
++#define _dsp_mthi(val, reg) _dsp_mtxxx(val, ((reg << 11) | 0x0000))
++
++#define mflo0() _dsp_mflo(0)
++#define mflo1() _dsp_mflo(1)
++#define mflo2() _dsp_mflo(2)
++#define mflo3() _dsp_mflo(3)
++
++#define mfhi0() _dsp_mfhi(0)
++#define mfhi1() _dsp_mfhi(1)
++#define mfhi2() _dsp_mfhi(2)
++#define mfhi3() _dsp_mfhi(3)
++
++#define mtlo0(x) _dsp_mtlo(x, 0)
++#define mtlo1(x) _dsp_mtlo(x, 1)
++#define mtlo2(x) _dsp_mtlo(x, 2)
++#define mtlo3(x) _dsp_mtlo(x, 3)
++
++#define mthi0(x) _dsp_mthi(x, 0)
++#define mthi1(x) _dsp_mthi(x, 1)
++#define mthi2(x) _dsp_mthi(x, 2)
++#define mthi3(x) _dsp_mthi(x, 3)
++
++#endif /* CONFIG_CPU_MICROMIPS */
+ #endif
+ 
+ /*
 -- 
 1.7.11.1

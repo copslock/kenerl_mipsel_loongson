@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2012 23:40:01 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:49861 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2012 23:40:32 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:49864 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903509Ab2GXVjy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2012 23:39:54 +0200
+        with ESMTP id S1903514Ab2GXVkB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2012 23:40:01 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1StmpW-0003xh-KC; Tue, 24 Jul 2012 16:39:46 -0500
+        id 1Stmpd-0003xm-57; Tue, 24 Jul 2012 16:39:53 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
-Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH v6,04/10] Add the MIPS32R2 'ins' and 'ext' instructions for use by the kernel's micro-assembler.
-Date:   Tue, 24 Jul 2012 16:39:41 -0500
-Message-Id: <1343165981-1570-1-git-send-email-sjhill@mips.com>
+Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org,
+        Douglas Leung <douglas@mips.com>,
+        Chris Dearman <chris@mips.com>
+Subject: [PATCH v5,01/10] MIPS: Add core files for MIPS SEAD-3 development platform.
+Date:   Tue, 24 Jul 2012 16:39:48 -0500
+Message-Id: <1343165988-1604-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.11.1
-X-archive-position: 33971
+X-archive-position: 33972
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,80 +36,2747 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
+More information about the SEAD-3 platform can be found at
+<http://www.mips.com/products/development-kits/mips-sead-3/>
+on MTI's site. Currently, the M14K family of cores is what
+the SEAD-3 is utilised with.
+
+Signed-off-by: Douglas Leung <douglas@mips.com>
+Signed-off-by: Chris Dearman <chris@mips.com>
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/uasm.h |  4 ++--
- arch/mips/mm/uasm.c          | 15 +++++++++++++--
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ .../include/asm/mach-sead3/cpu-feature-overrides.h |  72 ++++
+ arch/mips/include/asm/mach-sead3/irq.h             |   9 +
+ .../include/asm/mach-sead3/kernel-entry-init.h     |  52 +++
+ arch/mips/include/asm/mach-sead3/war.h             |  25 ++
+ arch/mips/include/asm/mips-boards/sead3int.h       |  67 ++++
+ arch/mips/mti-sead3/Makefile                       |  19 +
+ arch/mips/mti-sead3/Platform                       |   7 +
+ arch/mips/mti-sead3/leds-sead3.c                   | 128 ++++++
+ arch/mips/mti-sead3/sead3-cmdline.c                |  46 +++
+ arch/mips/mti-sead3/sead3-console.c                |  46 +++
+ arch/mips/mti-sead3/sead3-display.c                |  78 ++++
+ arch/mips/mti-sead3/sead3-ehci.c                   |  47 +++
+ arch/mips/mti-sead3/sead3-i2c-dev.c                |  33 ++
+ arch/mips/mti-sead3/sead3-i2c-drv.c                | 405 +++++++++++++++++++
+ arch/mips/mti-sead3/sead3-i2c.c                    |  37 ++
+ arch/mips/mti-sead3/sead3-init.c                   | 169 ++++++++
+ arch/mips/mti-sead3/sead3-int.c                    |  86 ++++
+ arch/mips/mti-sead3/sead3-lcd.c                    |  43 ++
+ arch/mips/mti-sead3/sead3-leds.c                   |  83 ++++
+ arch/mips/mti-sead3/sead3-memory.c                 | 138 +++++++
+ arch/mips/mti-sead3/sead3-mtd.c                    |  54 +++
+ arch/mips/mti-sead3/sead3-net.c                    |  51 +++
+ arch/mips/mti-sead3/sead3-pic32-bus.c              | 103 +++++
+ arch/mips/mti-sead3/sead3-pic32-i2c-drv.c          | 435 +++++++++++++++++++++
+ arch/mips/mti-sead3/sead3-platform.c               |  45 +++
+ arch/mips/mti-sead3/sead3-reset.c                  |  39 ++
+ arch/mips/mti-sead3/sead3-serial.c                 |  45 +++
+ arch/mips/mti-sead3/sead3-setup.c                  |  20 +
+ arch/mips/mti-sead3/sead3-time.c                   | 117 ++++++
+ 29 files changed, 2499 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-sead3/irq.h
+ create mode 100644 arch/mips/include/asm/mach-sead3/kernel-entry-init.h
+ create mode 100644 arch/mips/include/asm/mach-sead3/war.h
+ create mode 100644 arch/mips/include/asm/mips-boards/sead3int.h
+ create mode 100644 arch/mips/mti-sead3/Makefile
+ create mode 100644 arch/mips/mti-sead3/Platform
+ create mode 100644 arch/mips/mti-sead3/leds-sead3.c
+ create mode 100644 arch/mips/mti-sead3/sead3-cmdline.c
+ create mode 100644 arch/mips/mti-sead3/sead3-console.c
+ create mode 100644 arch/mips/mti-sead3/sead3-display.c
+ create mode 100644 arch/mips/mti-sead3/sead3-ehci.c
+ create mode 100644 arch/mips/mti-sead3/sead3-i2c-dev.c
+ create mode 100644 arch/mips/mti-sead3/sead3-i2c-drv.c
+ create mode 100644 arch/mips/mti-sead3/sead3-i2c.c
+ create mode 100644 arch/mips/mti-sead3/sead3-init.c
+ create mode 100644 arch/mips/mti-sead3/sead3-int.c
+ create mode 100644 arch/mips/mti-sead3/sead3-lcd.c
+ create mode 100644 arch/mips/mti-sead3/sead3-leds.c
+ create mode 100644 arch/mips/mti-sead3/sead3-memory.c
+ create mode 100644 arch/mips/mti-sead3/sead3-mtd.c
+ create mode 100644 arch/mips/mti-sead3/sead3-net.c
+ create mode 100644 arch/mips/mti-sead3/sead3-pic32-bus.c
+ create mode 100644 arch/mips/mti-sead3/sead3-pic32-i2c-drv.c
+ create mode 100644 arch/mips/mti-sead3/sead3-platform.c
+ create mode 100644 arch/mips/mti-sead3/sead3-reset.c
+ create mode 100644 arch/mips/mti-sead3/sead3-serial.c
+ create mode 100644 arch/mips/mti-sead3/sead3-setup.c
+ create mode 100644 arch/mips/mti-sead3/sead3-time.c
 
-diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
-index 53db9d7..7e0bf17 100644
---- a/arch/mips/include/asm/uasm.h
-+++ b/arch/mips/include/asm/uasm.h
-@@ -66,8 +66,6 @@ Ip_u3u1u2(_addu);
- Ip_u3u1u2(_and);
- Ip_u2u1u3(_andi);
- Ip_u1u2s3(_bbit0);
--Ip_u1u2s3(_bbit0);
--Ip_u1u2s3(_bbit1);
- Ip_u1u2s3(_bbit1);
- Ip_u1u2s3(_beq);
- Ip_u1u2s3(_beql);
-@@ -92,6 +90,8 @@ Ip_u2u1u3(_dsrl);
- Ip_u2u1u3(_dsrl32);
- Ip_u3u1u2(_dsubu);
- Ip_0(_eret);
-+Ip_u2u1msbu3(_ext);
-+Ip_u2u1msbu3(_ins);
- Ip_u1(_j);
- Ip_u1(_jal);
- Ip_u1(_jr);
-diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
-index 5fa1851..f6ba16e 100644
---- a/arch/mips/mm/uasm.c
-+++ b/arch/mips/mm/uasm.c
-@@ -63,8 +63,8 @@ enum opcode {
- 	insn_bne, insn_cache, insn_daddu, insn_daddiu, insn_dmfc0,
- 	insn_dmtc0, insn_dsll, insn_dsll32, insn_dsra, insn_dsrl,
- 	insn_dsrl32, insn_drotr, insn_drotr32, insn_dsubu, insn_eret,
--	insn_j, insn_jal, insn_jr, insn_ld, insn_ll, insn_lld,
--	insn_lui, insn_lw, insn_mfc0, insn_mtc0, insn_or, insn_ori,
-+	insn_ext, insn_ins, insn_j, insn_jal, insn_jr, insn_ld, insn_ll,
-+	insn_lld, insn_lui, insn_lw, insn_mfc0, insn_mtc0, insn_or, insn_ori,
- 	insn_pref, insn_rfe, insn_sc, insn_scd, insn_sd, insn_sll,
- 	insn_sra, insn_srl, insn_rotr, insn_subu, insn_sw, insn_tlbp,
- 	insn_tlbr, insn_tlbwi, insn_tlbwr, insn_xor, insn_xori,
-@@ -113,6 +113,8 @@ static struct insn insn_table[] __uasminitdata = {
- 	{ insn_drotr32, M(spec_op, 1, 0, 0, 0, dsrl32_op), RT | RD | RE },
- 	{ insn_dsubu, M(spec_op, 0, 0, 0, 0, dsubu_op), RS | RT | RD },
- 	{ insn_eret,  M(cop0_op, cop_op, 0, 0, 0, eret_op),  0 },
-+	{ insn_ext, M(spec3_op, 0, 0, 0, 0, ext_op), RS | RT | RD | RE },
-+	{ insn_ins, M(spec3_op, 0, 0, 0, 0, ins_op), RS | RT | RD | RE },
- 	{ insn_j,  M(j_op, 0, 0, 0, 0, 0),  JIMM },
- 	{ insn_jal,  M(jal_op, 0, 0, 0, 0, 0),  JIMM },
- 	{ insn_jr,  M(spec_op, 0, 0, 0, 0, jr_op),  RS },
-@@ -343,6 +345,13 @@ Ip_u2u1msbu3(op)					\
- }							\
- UASM_EXPORT_SYMBOL(uasm_i##op);
- 
-+#define I_u2u1msbdu3(op) 				\
-+Ip_u2u1msbu3(op)					\
-+{							\
-+	build_insn(buf, insn##op, b, a, d-1, c);	\
-+}							\
-+UASM_EXPORT_SYMBOL(uasm_i##op);
+diff --git a/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h b/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
+new file mode 100644
+index 0000000..7f3e3f9
+--- /dev/null
++++ b/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
+@@ -0,0 +1,72 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2003, 2004 Chris Dearman
++ * Copyright (C) 2005 Ralf Baechle (ralf@linux-mips.org)
++ */
++#ifndef __ASM_MACH_MIPS_CPU_FEATURE_OVERRIDES_H
++#define __ASM_MACH_MIPS_CPU_FEATURE_OVERRIDES_H
 +
- #define I_u1u2(op)					\
- Ip_u1u2(op)						\
- {							\
-@@ -396,6 +405,8 @@ I_u2u1u3(_drotr)
- I_u2u1u3(_drotr32)
- I_u3u1u2(_dsubu)
- I_0(_eret)
-+I_u2u1msbdu3(_ext)
-+I_u2u1msbu3(_ins)
- I_u1(_j)
- I_u1(_jal)
- I_u1(_jr)
++
++/*
++ * CPU feature overrides for MIPS boards
++ */
++#ifdef CONFIG_CPU_MIPS32
++#define cpu_has_tlb		1
++#define cpu_has_4kex		1
++#define cpu_has_4k_cache	1
++/* #define cpu_has_fpu		? */
++/* #define cpu_has_32fpr	? */
++#define cpu_has_counter		1
++/* #define cpu_has_watch	? */
++#define cpu_has_divec		1
++#define cpu_has_vce		0
++/* #define cpu_has_cache_cdex_p	? */
++/* #define cpu_has_cache_cdex_s	? */
++/* #define cpu_has_prefetch	? */
++#define cpu_has_mcheck		1
++/* #define cpu_has_ejtag	? */
++#ifdef CONFIG_CPU_HAS_LLSC
++#define cpu_has_llsc		1
++#else
++#define cpu_has_llsc		0
++#endif
++/* #define cpu_has_vtag_icache	? */
++/* #define cpu_has_dc_aliases	? */
++/* #define cpu_has_ic_fills_f_dc ? */
++#define cpu_has_nofpuex		0
++/* #define cpu_has_64bits	? */
++/* #define cpu_has_64bit_zero_reg ? */
++/* #define cpu_has_inclusive_pcaches ? */
++#define cpu_icache_snoops_remote_store 1
++#endif
++
++#ifdef CONFIG_CPU_MIPS64
++#define cpu_has_tlb		1
++#define cpu_has_4kex		1
++#define cpu_has_4k_cache	1
++/* #define cpu_has_fpu		? */
++/* #define cpu_has_32fpr	? */
++#define cpu_has_counter		1
++/* #define cpu_has_watch	? */
++#define cpu_has_divec		1
++#define cpu_has_vce		0
++/* #define cpu_has_cache_cdex_p	? */
++/* #define cpu_has_cache_cdex_s	? */
++/* #define cpu_has_prefetch	? */
++#define cpu_has_mcheck		1
++/* #define cpu_has_ejtag	? */
++#define cpu_has_llsc		1
++/* #define cpu_has_vtag_icache	? */
++/* #define cpu_has_dc_aliases	? */
++/* #define cpu_has_ic_fills_f_dc ? */
++#define cpu_has_nofpuex		0
++/* #define cpu_has_64bits	? */
++/* #define cpu_has_64bit_zero_reg ? */
++/* #define cpu_has_inclusive_pcaches ? */
++#define cpu_icache_snoops_remote_store 1
++#endif
++
++#endif /* __ASM_MACH_MIPS_CPU_FEATURE_OVERRIDES_H */
+diff --git a/arch/mips/include/asm/mach-sead3/irq.h b/arch/mips/include/asm/mach-sead3/irq.h
+new file mode 100644
+index 0000000..652ea4c
+--- /dev/null
++++ b/arch/mips/include/asm/mach-sead3/irq.h
+@@ -0,0 +1,9 @@
++#ifndef __ASM_MACH_MIPS_IRQ_H
++#define __ASM_MACH_MIPS_IRQ_H
++
++#define NR_IRQS	256
++
++
++#include_next <irq.h>
++
++#endif /* __ASM_MACH_MIPS_IRQ_H */
+diff --git a/arch/mips/include/asm/mach-sead3/kernel-entry-init.h b/arch/mips/include/asm/mach-sead3/kernel-entry-init.h
+new file mode 100644
+index 0000000..3dfbd8e
+--- /dev/null
++++ b/arch/mips/include/asm/mach-sead3/kernel-entry-init.h
+@@ -0,0 +1,52 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Chris Dearman (chris@mips.com)
++ * Copyright (C) 2007 Mips Technologies, Inc.
++ */
++#ifndef __ASM_MACH_MIPS_KERNEL_ENTRY_INIT_H
++#define __ASM_MACH_MIPS_KERNEL_ENTRY_INIT_H
++
++	.macro	kernel_entry_setup
++#ifdef CONFIG_MIPS_MT_SMTC
++	mfc0	t0, CP0_CONFIG
++	bgez	t0, 9f
++	mfc0	t0, CP0_CONFIG, 1
++	bgez	t0, 9f
++	mfc0	t0, CP0_CONFIG, 2
++	bgez	t0, 9f
++	mfc0	t0, CP0_CONFIG, 3
++	and	t0, 1<<2
++	bnez	t0, 0f
++9 :
++	/* Assume we came from YAMON... */
++	PTR_LA	v0, 0x9fc00534	/* YAMON print */
++	lw	v0, (v0)
++	move	a0, zero
++	PTR_LA	a1, nonmt_processor
++	jal	v0
++
++	PTR_LA	v0, 0x9fc00520	/* YAMON exit */
++	lw	v0, (v0)
++	li	a0, 1
++	jal	v0
++
++1 :	b	1b
++
++	__INITDATA
++nonmt_processor :
++	.asciz	"SMTC kernel requires the MT ASE to run\n"
++	__FINIT
++0 :
++#endif
++	.endm
++
++/*
++ * Do SMP slave processor setup necessary before we can safely execute C code.
++ */
++	.macro	smp_slave_setup
++	.endm
++
++#endif /* __ASM_MACH_MIPS_KERNEL_ENTRY_INIT_H */
+diff --git a/arch/mips/include/asm/mach-sead3/war.h b/arch/mips/include/asm/mach-sead3/war.h
+new file mode 100644
+index 0000000..7c6931d
+--- /dev/null
++++ b/arch/mips/include/asm/mach-sead3/war.h
+@@ -0,0 +1,25 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2002, 2004, 2007 by Ralf Baechle <ralf@linux-mips.org>
++ */
++#ifndef __ASM_MIPS_MACH_MIPS_WAR_H
++#define __ASM_MIPS_MACH_MIPS_WAR_H
++
++#define R4600_V1_INDEX_ICACHEOP_WAR	0
++#define R4600_V1_HIT_CACHEOP_WAR	0
++#define R4600_V2_HIT_CACHEOP_WAR	0
++#define R5432_CP0_INTERRUPT_WAR		0
++#define BCM1250_M3_WAR			0
++#define SIBYTE_1956_WAR			0
++#define MIPS4K_ICACHE_REFILL_WAR	1
++#define MIPS_CACHE_SYNC_WAR		1
++#define TX49XX_ICACHE_INDEX_INV_WAR	0
++#define RM9000_CDEX_SMP_WAR		0
++#define ICACHE_REFILLS_WORKAROUND_WAR	1
++#define R10000_LLSC_WAR			0
++#define MIPS34K_MISSED_ITLB_WAR		0
++
++#endif /* __ASM_MIPS_MACH_MIPS_WAR_H */
+diff --git a/arch/mips/include/asm/mips-boards/sead3int.h b/arch/mips/include/asm/mips-boards/sead3int.h
+new file mode 100644
+index 0000000..2563b82
+--- /dev/null
++++ b/arch/mips/include/asm/mips-boards/sead3int.h
+@@ -0,0 +1,67 @@
++/*
++ * Douglas Leung, douglas@mips.com
++ * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
++ *
++ * ########################################################################
++ *
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License (Version 2) as
++ *  published by the Free Software Foundation.
++ *
++ *  This program is distributed in the hope it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ *  for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ *
++ * ########################################################################
++ *
++ * Defines for the SEAD3 interrupt controller.
++ *
++ */
++#ifndef _MIPS_SEAD3INT_H
++#define _MIPS_SEAD3INT_H
++
++/*
++ * SEAD3 GIC's address space definitions
++ */
++#define GIC_BASE_ADDR                   0x1b1c0000
++#define GIC_ADDRSPACE_SZ                (128 * 1024)
++
++/* GIC's Nomenclature for Core Interrupt Pins on the SEAD3 */
++#define GIC_CPU_INT0		0 /* Core Interrupt 2 	*/
++#define GIC_CPU_INT1		1 /* .			*/
++#define GIC_CPU_INT2		2 /* .			*/
++#define GIC_CPU_INT3		3 /* .			*/
++#define GIC_CPU_INT4		4 /* .			*/
++#define GIC_CPU_INT5		5 /* Core Interrupt 7   */
++
++/* SEAD3 GIC local interrupts */
++#define GIC_INT_TMR             (GIC_CPU_INT5)
++#define GIC_INT_PERFCTR         (GIC_CPU_INT5)
++
++/* SEAD3 GIC constants */
++/* Add 2 to convert non-eic hw int # to eic vector # */
++#define GIC_CPU_TO_VEC_OFFSET   (2)
++
++/* GIC constants */
++/* If we map an intr to pin X, GIC will actually generate vector X+1 */
++#define GIC_PIN_TO_VEC_OFFSET   (1)
++
++#define GIC_EXT_INTR(x)		x
++
++/* Dummy data */
++#define X			0xdead
++
++/* External Interrupts used for IPI */
++/* Currently linux don't know about GIC => GIC base must be same as what Linux is using */
++#define MIPS_GIC_IRQ_BASE       (MIPS_CPU_IRQ_BASE + 0)
++
++#ifndef __ASSEMBLY__
++extern void sead3int_init(void);
++#endif
++
++#endif /* !(_MIPS_SEAD3INT_H) */
+diff --git a/arch/mips/mti-sead3/Makefile b/arch/mips/mti-sead3/Makefile
+new file mode 100644
+index 0000000..626afea
+--- /dev/null
++++ b/arch/mips/mti-sead3/Makefile
+@@ -0,0 +1,19 @@
++#
++# Carsten Langgaard, carstenl@mips.com
++# Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
++#
++# Copyright (C) 2008 Wind River Systems, Inc.
++#   written by Ralf Baechle <ralf@linux-mips.org>
++#
++obj-y				:= sead3-lcd.o sead3-cmdline.o \
++				   sead3-display.o sead3-init.o sead3-int.o \
++				   sead3-mtd.o sead3-net.o \
++				   sead3-memory.o sead3-platform.o \
++				   sead3-reset.o sead3-setup.o sead3-time.o
++
++obj-y				+= sead3-i2c-dev.o sead3-i2c.o \
++				   sead3-pic32-i2c-drv.o sead3-pic32-bus.o \
++				   leds-sead3.o sead3-leds.o
++
++obj-$(CONFIG_EARLY_PRINTK)	+= sead3-console.o
++obj-$(CONFIG_USB_EHCI_HCD)	+= sead3-ehci.o
+diff --git a/arch/mips/mti-sead3/Platform b/arch/mips/mti-sead3/Platform
+new file mode 100644
+index 0000000..3870924
+--- /dev/null
++++ b/arch/mips/mti-sead3/Platform
+@@ -0,0 +1,7 @@
++#
++# MIPS SEAD-3 board
++#
++platform-$(CONFIG_MIPS_SEAD3)	+= mti-sead3/
++cflags-$(CONFIG_MIPS_SEAD3)	+= -I$(srctree)/arch/mips/include/asm/mach-sead3
++load-$(CONFIG_MIPS_SEAD3)	+= 0xffffffff80100000
++all-$(CONFIG_MIPS_SEAD3)	:= $(COMPRESSION_FNAME).srec
+diff --git a/arch/mips/mti-sead3/leds-sead3.c b/arch/mips/mti-sead3/leds-sead3.c
+new file mode 100644
+index 0000000..a95ac59
+--- /dev/null
++++ b/arch/mips/mti-sead3/leds-sead3.c
+@@ -0,0 +1,128 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/platform_device.h>
++#include <linux/leds.h>
++#include <linux/err.h>
++#include <linux/io.h>
++
++#define DRVNAME "sead3-led"
++
++static struct platform_device *pdev;
++
++static void sead3_pled_set(struct led_classdev *led_cdev,
++		enum led_brightness value)
++{
++	pr_debug("sead3_pled_set\n");
++	writel(value, (void __iomem *)0xBF000210);	/* FIXME */
++}
++
++static void sead3_fled_set(struct led_classdev *led_cdev,
++		enum led_brightness value)
++{
++	pr_debug("sead3_fled_set\n");
++	writel(value, (void __iomem *)0xBF000218);	/* FIXME */
++}
++
++static struct led_classdev sead3_pled = {
++	.name		= "sead3::pled",
++	.brightness_set	= sead3_pled_set,
++};
++
++static struct led_classdev sead3_fled = {
++	.name		= "sead3::fled",
++	.brightness_set	= sead3_fled_set,
++};
++
++#ifdef CONFIG_PM
++static int sead3_led_suspend(struct platform_device *dev,
++		pm_message_t state)
++{
++	led_classdev_suspend(&sead3_pled);
++	led_classdev_suspend(&sead3_fled);
++	return 0;
++}
++
++static int sead3_led_resume(struct platform_device *dev)
++{
++	led_classdev_resume(&sead3_pled);
++	led_classdev_resume(&sead3_fled);
++	return 0;
++}
++#else
++#define sead3_led_suspend NULL
++#define sead3_led_resume NULL
++#endif
++
++static int sead3_led_probe(struct platform_device *pdev)
++{
++	int ret;
++
++	ret = led_classdev_register(&pdev->dev, &sead3_pled);
++	if (ret < 0)
++		return ret;
++
++	ret = led_classdev_register(&pdev->dev, &sead3_fled);
++	if (ret < 0)
++		led_classdev_unregister(&sead3_pled);
++
++	return ret;
++}
++
++static int sead3_led_remove(struct platform_device *pdev)
++{
++	led_classdev_unregister(&sead3_pled);
++	led_classdev_unregister(&sead3_fled);
++	return 0;
++}
++
++static struct platform_driver sead3_led_driver = {
++	.probe		= sead3_led_probe,
++	.remove		= sead3_led_remove,
++	.suspend	= sead3_led_suspend,
++	.resume		= sead3_led_resume,
++	.driver		= {
++		.name		= DRVNAME,
++		.owner		= THIS_MODULE,
++	},
++};
++
++static int __init sead3_led_init(void)
++{
++	int ret;
++
++	ret = platform_driver_register(&sead3_led_driver);
++	if (ret < 0)
++		goto out;
++
++	pdev = platform_device_register_simple(DRVNAME, -1, NULL, 0);
++	if (IS_ERR(pdev)) {
++		ret = PTR_ERR(pdev);
++		platform_driver_unregister(&sead3_led_driver);
++		goto out;
++	}
++
++out:
++	return ret;
++}
++
++static void __exit sead3_led_exit(void)
++{
++	platform_device_unregister(pdev);
++	platform_driver_unregister(&sead3_led_driver);
++}
++
++module_init(sead3_led_init);
++module_exit(sead3_led_exit);
++
++MODULE_AUTHOR("Kristian Kielhofner <kris@krisk.org>");
++MODULE_DESCRIPTION("SEAD3 LED driver");
++MODULE_LICENSE("GPL");
++
+diff --git a/arch/mips/mti-sead3/sead3-cmdline.c b/arch/mips/mti-sead3/sead3-cmdline.c
+new file mode 100644
+index 0000000..a2e6cec
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-cmdline.c
+@@ -0,0 +1,46 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/init.h>
++#include <linux/string.h>
++
++#include <asm/bootinfo.h>
++
++extern int prom_argc;
++extern int *_prom_argv;
++
++/*
++ * YAMON (32-bit PROM) pass arguments and environment as 32-bit pointer.
++ * This macro take care of sign extension.
++ */
++#define prom_argv(index) ((char *)(long)_prom_argv[(index)])
++
++char * __init prom_getcmdline(void)
++{
++	return &(arcs_cmdline[0]);
++}
++
++void  __init prom_init_cmdline(void)
++{
++	char *cp;
++	int actr;
++
++	actr = 1; /* Always ignore argv[0] */
++
++	cp = &(arcs_cmdline[0]);
++	while (actr < prom_argc) {
++		strcpy(cp, prom_argv(actr));
++		cp += strlen(prom_argv(actr));
++		*cp++ = ' ';
++		actr++;
++	}
++	if (cp != &(arcs_cmdline[0])) {
++		/* get rid of trailing space */
++		--cp;
++		*cp = '\0';
++	}
++}
+diff --git a/arch/mips/mti-sead3/sead3-console.c b/arch/mips/mti-sead3/sead3-console.c
+new file mode 100644
+index 0000000..b367391
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-console.c
+@@ -0,0 +1,46 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/init.h>
++#include <linux/console.h>
++#include <linux/serial_reg.h>
++#include <linux/io.h>
++
++#define SEAD_UART1_REGS_BASE    0xbf000800   /* ttyS1 = DB9 port */
++#define SEAD_UART0_REGS_BASE    0xbf000900   /* ttyS0 = USB port   */
++#define PORT(base_addr, offset) ((unsigned int __iomem *)(base_addr+(offset)*4))
++
++static char console_port = 1;
++
++static inline unsigned int serial_in(int offset, unsigned int base_addr)
++{
++	return __raw_readl(PORT(base_addr, offset)) & 0xff;
++}
++
++static inline void serial_out(int offset, int value, unsigned int base_addr)
++{
++	__raw_writel(value, PORT(base_addr, offset));
++}
++
++void __init prom_init_early_console(char port)
++{
++	console_port = port;
++}
++
++int prom_putchar(char c)
++{
++	unsigned int base_addr;
++
++	base_addr = console_port ? SEAD_UART1_REGS_BASE : SEAD_UART0_REGS_BASE;
++
++	while ((serial_in(UART_LSR, base_addr) & UART_LSR_THRE) == 0)
++		;
++
++	serial_out(UART_TX, c, base_addr);
++
++	return 1;
++}
+diff --git a/arch/mips/mti-sead3/sead3-display.c b/arch/mips/mti-sead3/sead3-display.c
+new file mode 100644
+index 0000000..8308c7f
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-display.c
+@@ -0,0 +1,78 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/timer.h>
++#include <linux/io.h>
++#include <asm/mips-boards/generic.h>
++#include <asm/mips-boards/prom.h>
++
++static unsigned int display_count;
++static unsigned int max_display_count;
++
++#define LCD_DISPLAY_POS_BASE		0x1f000400
++#define DISPLAY_LCDINSTRUCTION		(0*2)
++#define DISPLAY_LCDDATA			(1*2)
++#define DISPLAY_CPLDSTATUS		(2*2)
++#define DISPLAY_CPLDDATA		(3*2)
++#define LCD_SETDDRAM			0x80
++#define LCD_IR_BF			0x80
++
++const char display_string[] = "               LINUX ON SEAD3               ";
++
++static void scroll_display_message(unsigned long data);
++static DEFINE_TIMER(mips_scroll_timer, scroll_display_message, HZ, 0);
++
++static void lcd_wait(unsigned int __iomem *display)
++{
++	/* Wait for CPLD state machine to become idle. */
++	do { } while (__raw_readl(display + DISPLAY_CPLDSTATUS) & 1);
++
++	do {
++		__raw_readl(display + DISPLAY_LCDINSTRUCTION);
++
++		/* Wait for CPLD state machine to become idle. */
++		do { } while (__raw_readl(display + DISPLAY_CPLDSTATUS) & 1);
++	} while (__raw_readl(display + DISPLAY_CPLDDATA) & LCD_IR_BF);
++}
++
++void mips_display_message(const char *str)
++{
++	static unsigned int __iomem *display;
++	char ch;
++	int i;
++
++	if (unlikely(display == NULL))
++		display = ioremap_nocache(LCD_DISPLAY_POS_BASE,
++			(8 * sizeof(int)));
++
++	for (i = 0; i < 16; i++) {
++		if (*str)
++			ch = *str++;
++		else
++			ch = ' ';
++		lcd_wait(display);
++		__raw_writel((LCD_SETDDRAM | i),
++			(display + DISPLAY_LCDINSTRUCTION));
++		lcd_wait(display);
++		__raw_writel(ch, display + DISPLAY_LCDDATA);
++	}
++}
++
++static void scroll_display_message(unsigned long data)
++{
++	mips_display_message(&display_string[display_count++]);
++	if (display_count == max_display_count)
++		display_count = 0;
++	mod_timer(&mips_scroll_timer, jiffies + HZ);
++}
++
++void mips_scroll_message(void)
++{
++	del_timer_sync(&mips_scroll_timer);
++	max_display_count = strlen(display_string) + 1 - 16;
++	mod_timer(&mips_scroll_timer, jiffies + 1);
++}
+diff --git a/arch/mips/mti-sead3/sead3-ehci.c b/arch/mips/mti-sead3/sead3-ehci.c
+new file mode 100644
+index 0000000..772fc05
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-ehci.c
+@@ -0,0 +1,47 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/module.h>
++#include <linux/irq.h>
++#include <linux/dma-mapping.h>
++#include <linux/platform_device.h>
++
++struct resource ehci_resources[] = {
++	{
++		.start			= 0x1b200000,
++		.end			= 0x1b200fff,
++		.flags			= IORESOURCE_MEM
++	},
++	{
++		.start			= MIPS_CPU_IRQ_BASE + 2,
++		.flags			= IORESOURCE_IRQ
++	}
++};
++
++u64 sead3_usbdev_dma_mask = DMA_BIT_MASK(32);
++
++static struct platform_device ehci_device = {
++	.name		= "sead3-ehci",
++	.id		= 0,
++	.dev		= {
++		.dma_mask		= &sead3_usbdev_dma_mask,
++		.coherent_dma_mask	= DMA_BIT_MASK(32)
++	},
++	.num_resources	= ARRAY_SIZE(ehci_resources),
++	.resource	= ehci_resources
++};
++
++static int __init ehci_init(void)
++{
++	return platform_device_register(&ehci_device);
++}
++
++module_init(ehci_init);
++
++MODULE_AUTHOR("Chris Dearman <chris@mips.com>");
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("EHCI probe driver for SEAD3");
+diff --git a/arch/mips/mti-sead3/sead3-i2c-dev.c b/arch/mips/mti-sead3/sead3-i2c-dev.c
+new file mode 100644
+index 0000000..eca0b53
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-i2c-dev.c
+@@ -0,0 +1,33 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/init.h>
++#include <linux/i2c.h>
++
++static struct i2c_board_info __initdata sead3_i2c_devices[] = {
++	{
++		I2C_BOARD_INFO("adt7476", 0x2c),
++		.irq = 0,
++	},
++	{
++		I2C_BOARD_INFO("m41t80", 0x68),
++		.irq = 0,
++	},
++};
++
++static int __init sead3_i2c_init(void)
++{
++	int err;
++
++	err = i2c_register_board_info(0, sead3_i2c_devices,
++					ARRAY_SIZE(sead3_i2c_devices));
++	if (err < 0)
++		pr_err("sead3-i2c-dev: cannot register board I2C devices\n");
++	return err;
++}
++
++arch_initcall(sead3_i2c_init);
+diff --git a/arch/mips/mti-sead3/sead3-i2c-drv.c b/arch/mips/mti-sead3/sead3-i2c-drv.c
+new file mode 100644
+index 0000000..0375ee6
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-i2c-drv.c
+@@ -0,0 +1,405 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/slab.h>
++#include <linux/delay.h>
++#include <linux/i2c.h>
++#include <linux/platform_device.h>
++
++#define PIC32_I2CxCON		0x0000
++#define  PIC32_I2CCON_ON	(1<<15)
++#define  PIC32_I2CCON_ACKDT	(1<<5)
++#define  PIC32_I2CCON_ACKEN	(1<<4)
++#define  PIC32_I2CCON_RCEN	(1<<3)
++#define  PIC32_I2CCON_PEN	(1<<2)
++#define  PIC32_I2CCON_RSEN	(1<<1)
++#define  PIC32_I2CCON_SEN	(1<<0)
++#define PIC32_I2CxCONCLR	0x0004
++#define PIC32_I2CxCONSET	0x0008
++#define PIC32_I2CxSTAT		0x0010
++#define PIC32_I2CxSTATCLR	0x0014
++#define  PIC32_I2CSTAT_ACKSTAT	(1<<15)
++#define  PIC32_I2CSTAT_TRSTAT	(1<<14)
++#define  PIC32_I2CSTAT_BCL	(1<<10)
++#define  PIC32_I2CSTAT_IWCOL	(1<<7)
++#define  PIC32_I2CSTAT_I2COV	(1<<6)
++#define PIC32_I2CxBRG		0x0040
++#define PIC32_I2CxTRN		0x0050
++#define PIC32_I2CxRCV		0x0060
++
++static DEFINE_SPINLOCK(pic32_bus_lock);
++
++static void __iomem *bus_xfer   = (void __iomem *)0xbf000600;
++static void __iomem *bus_status = (void __iomem *)0xbf000060;
++
++#define DELAY()	udelay(100)
++
++static inline unsigned int ioready(void)
++{
++	return readl(bus_status) & 1;
++}
++
++static inline void wait_ioready(void)
++{
++	do { } while (!ioready());
++}
++
++static inline void wait_ioclear(void)
++{
++	do { } while (ioready());
++}
++
++static inline void check_ioclear(void)
++{
++	if (ioready()) {
++		do {
++			(void) readl(bus_xfer);
++			DELAY();
++		} while (ioready());
++	}
++}
++
++static u32 pic32_bus_readl(u32 reg)
++{
++	unsigned long flags;
++	u32 status, val;
++
++	spin_lock_irqsave(&pic32_bus_lock, flags);
++
++	check_ioclear();
++	writel((0x01 << 24) | (reg & 0x00ffffff), bus_xfer);
++	DELAY();
++	wait_ioready();
++	status = readl(bus_xfer);
++	DELAY();
++	val = readl(bus_xfer);
++	wait_ioclear();
++
++	spin_unlock_irqrestore(&pic32_bus_lock, flags);
++
++	return val;
++}
++
++static void pic32_bus_writel(u32 val, u32 reg)
++{
++	unsigned long flags;
++	u32 status;
++
++	spin_lock_irqsave(&pic32_bus_lock, flags);
++
++	check_ioclear();
++	writel((0x10 << 24) | (reg & 0x00ffffff), bus_xfer);
++	DELAY();
++	writel(val, bus_xfer);
++	DELAY();
++	wait_ioready();
++	status = readl(bus_xfer);
++	wait_ioclear();
++
++	spin_unlock_irqrestore(&pic32_bus_lock, flags);
++}
++
++struct pic32_i2c_platform_data {
++	u32	base;
++	struct i2c_adapter adap;
++	u32	xfer_timeout;
++	u32	ack_timeout;
++	u32	ctl_timeout;
++};
++
++static inline void pic32_i2c_start(struct pic32_i2c_platform_data *adap)
++{
++	pic32_bus_writel(PIC32_I2CCON_SEN, adap->base + PIC32_I2CxCONSET);
++}
++
++static inline void pic32_i2c_stop(struct pic32_i2c_platform_data *adap)
++{
++	pic32_bus_writel(PIC32_I2CCON_PEN, adap->base + PIC32_I2CxCONSET);
++}
++
++static inline void pic32_i2c_ack(struct pic32_i2c_platform_data *adap)
++{
++	pic32_bus_writel(PIC32_I2CCON_ACKDT, adap->base + PIC32_I2CxCONCLR);
++	pic32_bus_writel(PIC32_I2CCON_ACKEN, adap->base + PIC32_I2CxCONSET);
++}
++
++static inline void pic32_i2c_nack(struct pic32_i2c_platform_data *adap)
++{
++	pic32_bus_writel(PIC32_I2CCON_ACKDT, adap->base + PIC32_I2CxCONSET);
++	pic32_bus_writel(PIC32_I2CCON_ACKEN, adap->base + PIC32_I2CxCONSET);
++}
++
++static inline int pic32_i2c_idle(struct pic32_i2c_platform_data *adap)
++{
++	int i;
++
++	for (i = 0; i < adap->ctl_timeout; i++) {
++		if (((pic32_bus_readl(adap->base + PIC32_I2CxCON) &
++		      (PIC32_I2CCON_ACKEN | PIC32_I2CCON_RCEN |
++		       PIC32_I2CCON_PEN | PIC32_I2CCON_RSEN |
++		       PIC32_I2CCON_SEN)) == 0) &&
++		    ((pic32_bus_readl(adap->base + PIC32_I2CxSTAT) &
++		      (PIC32_I2CSTAT_TRSTAT)) == 0))
++			return 0;
++		udelay(1);
++	}
++	return -ETIMEDOUT;
++}
++
++static inline u32 pic32_i2c_master_write(struct pic32_i2c_platform_data *adap,
++		u32 byte)
++{
++	pic32_bus_writel(byte, adap->base + PIC32_I2CxTRN);
++	return pic32_bus_readl(adap->base + PIC32_I2CxSTAT) &
++			PIC32_I2CSTAT_IWCOL;
++}
++
++static inline u32 pic32_i2c_master_read(struct pic32_i2c_platform_data *adap)
++{
++	pic32_bus_writel(PIC32_I2CCON_RCEN, adap->base + PIC32_I2CxCONSET);
++	while (pic32_bus_readl(adap->base + PIC32_I2CxCON) & PIC32_I2CCON_RCEN)
++		;
++	pic32_bus_writel(PIC32_I2CSTAT_I2COV, adap->base + PIC32_I2CxSTATCLR);
++	return pic32_bus_readl(adap->base + PIC32_I2CxRCV);
++}
++
++static int pic32_i2c_address(struct pic32_i2c_platform_data *adap,
++		unsigned int addr, int rd)
++{
++	pic32_i2c_idle(adap);
++	pic32_i2c_start(adap);
++	pic32_i2c_idle(adap);
++
++	addr <<= 1;
++	if (rd)
++		addr |= 1;
++
++	if (pic32_i2c_master_write(adap, addr))
++		return -EIO;
++	pic32_i2c_idle(adap);
++	if (pic32_bus_readl(adap->base + PIC32_I2CxSTAT) &
++			PIC32_I2CSTAT_ACKSTAT)
++		return -EIO;
++	return 0;
++}
++
++static int sead3_i2c_read(struct pic32_i2c_platform_data *adap,
++		unsigned char *buf, unsigned int len)
++{
++	u32 data;
++	int i;
++
++	i = 0;
++	while (i < len) {
++		data = pic32_i2c_master_read(adap);
++		buf[i++] = data;
++		if (i < len)
++			pic32_i2c_ack(adap);
++		else
++			pic32_i2c_nack(adap);
++	}
++
++	pic32_i2c_stop(adap);
++	pic32_i2c_idle(adap);
++	return 0;
++}
++
++static int sead3_i2c_write(struct pic32_i2c_platform_data *adap,
++		unsigned char *buf, unsigned int len)
++{
++	int i;
++	u32 data;
++
++	i = 0;
++	while (i < len) {
++		data = buf[i];
++		if (pic32_i2c_master_write(adap, data))
++			return -EIO;
++		pic32_i2c_idle(adap);
++		if (pic32_bus_readl(adap->base + PIC32_I2CxSTAT) &
++					PIC32_I2CSTAT_ACKSTAT)
++			return -EIO;
++		i++;
++	}
++
++	pic32_i2c_stop(adap);
++	pic32_i2c_idle(adap);
++	return 0;
++}
++
++static int sead3_pic32_platform_xfer(struct i2c_adapter *i2c_adap,
++		struct i2c_msg *msgs, int num)
++{
++	struct pic32_i2c_platform_data *adap = i2c_adap->algo_data;
++	struct i2c_msg *p;
++	int i, err = 0;
++
++	for (i = 0; i < num; i++) {
++#define __BUFSIZE 80
++		int ii;
++		static char buf[__BUFSIZE];
++		char *b = buf;
++
++		p = &msgs[i];
++		b += sprintf(buf, " [%d bytes]", p->len);
++		if ((p->flags & I2C_M_RD) == 0) {
++			for (ii = 0; ii < p->len; ii++) {
++				if (b < &buf[__BUFSIZE-4]) {
++					b += sprintf(b, " %02x", p->buf[ii]);
++				} else {
++					strcat(b, "...");
++					break;
++				}
++			}
++		}
++	}
++
++	for (i = 0; !err && i < num; i++) {
++		p = &msgs[i];
++		err = pic32_i2c_address(adap, p->addr, p->flags & I2C_M_RD);
++		if (err || !p->len)
++			continue;
++		if (p->flags & I2C_M_RD)
++			err = sead3_i2c_read(adap, p->buf, p->len);
++		else
++			err = sead3_i2c_write(adap, p->buf, p->len);
++	}
++
++	/* Return the number of messages processed, or the error code. */
++	if (err == 0)
++		err = num;
++
++	return err;
++}
++
++static u32 sead3_pic32_platform_func(struct i2c_adapter *adap)
++{
++	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL;
++}
++
++static const struct i2c_algorithm sead3_platform_algo = {
++	.master_xfer	= sead3_pic32_platform_xfer,
++	.functionality	= sead3_pic32_platform_func,
++};
++
++static void sead3_i2c_platform_setup(struct pic32_i2c_platform_data *priv)
++{
++	pic32_bus_writel(500, priv->base + PIC32_I2CxBRG);
++	pic32_bus_writel(PIC32_I2CCON_ON, priv->base + PIC32_I2CxCONCLR);
++	pic32_bus_writel(PIC32_I2CCON_ON, priv->base + PIC32_I2CxCONSET);
++	pic32_bus_writel(PIC32_I2CSTAT_BCL | PIC32_I2CSTAT_IWCOL,
++		priv->base + PIC32_I2CxSTATCLR);
++}
++
++static int __devinit sead3_i2c_platform_probe(struct platform_device *pdev)
++{
++	struct pic32_i2c_platform_data *priv;
++	struct resource *r;
++	int ret;
++
++	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!r) {
++		ret = -ENODEV;
++		goto out;
++	}
++
++	priv = kzalloc(sizeof(struct pic32_i2c_platform_data), GFP_KERNEL);
++	if (!priv) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	priv->base = r->start;
++	if (!priv->base) {
++		ret = -EBUSY;
++		goto out_mem;
++	}
++
++	priv->xfer_timeout = 200;
++	priv->ack_timeout = 200;
++	priv->ctl_timeout = 200;
++
++	priv->adap.nr = pdev->id;
++	priv->adap.algo = &sead3_platform_algo;
++	priv->adap.algo_data = priv;
++	priv->adap.dev.parent = &pdev->dev;
++	strlcpy(priv->adap.name, "SEAD3 PIC32", sizeof(priv->adap.name));
++
++	sead3_i2c_platform_setup(priv);
++
++	ret = i2c_add_numbered_adapter(&priv->adap);
++	if (ret == 0) {
++		platform_set_drvdata(pdev, priv);
++		return 0;
++	}
++
++out_mem:
++	kfree(priv);
++out:
++	return ret;
++}
++
++static int __devexit sead3_i2c_platform_remove(struct platform_device *pdev)
++{
++	struct pic32_i2c_platform_data *priv = platform_get_drvdata(pdev);
++
++	platform_set_drvdata(pdev, NULL);
++	i2c_del_adapter(&priv->adap);
++	kfree(priv);
++	return 0;
++}
++
++#ifdef CONFIG_PM
++static int sead3_i2c_platform_suspend(struct platform_device *pdev,
++		pm_message_t state)
++{
++	dev_dbg(&pdev->dev, "i2c_platform_disable\n");
++	return 0;
++}
++
++static int sead3_i2c_platform_resume(struct platform_device *pdev)
++{
++	struct pic32_i2c_platform_data *priv = platform_get_drvdata(pdev);
++
++	dev_dbg(&pdev->dev, "sead3_i2c_platform_setup\n");
++	sead3_i2c_platform_setup(priv);
++
++	return 0;
++}
++#else
++#define sead3_i2c_platform_suspend	NULL
++#define sead3_i2c_platform_resume	NULL
++#endif
++
++static struct platform_driver sead3_i2c_platform_driver = {
++	.driver = {
++		.name	= "sead3-i2c",
++		.owner	= THIS_MODULE,
++	},
++	.probe		= sead3_i2c_platform_probe,
++	.remove		= __devexit_p(sead3_i2c_platform_remove),
++	.suspend	= sead3_i2c_platform_suspend,
++	.resume		= sead3_i2c_platform_resume,
++};
++
++static int __init sead3_i2c_platform_init(void)
++{
++	return platform_driver_register(&sead3_i2c_platform_driver);
++}
++module_init(sead3_i2c_platform_init);
++
++static void __exit sead3_i2c_platform_exit(void)
++{
++	platform_driver_unregister(&sead3_i2c_platform_driver);
++}
++module_exit(sead3_i2c_platform_exit);
++
++MODULE_AUTHOR("Chris Dearman, MIPS Technologies INC.");
++MODULE_DESCRIPTION("SEAD3 PIC32 I2C driver");
++MODULE_LICENSE("GPL");
+diff --git a/arch/mips/mti-sead3/sead3-i2c.c b/arch/mips/mti-sead3/sead3-i2c.c
+new file mode 100644
+index 0000000..f70d5fc
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-i2c.c
+@@ -0,0 +1,37 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/platform_device.h>
++#include <irq.h>
++
++struct resource sead3_i2c_resources[] = {
++	{
++		.start	= 0x805200,
++		.end	= 0x8053ff,
++		.flags	= IORESOURCE_MEM,
++	},
++};
++
++static struct platform_device sead3_i2c_device = {
++	.name		= "sead3-i2c",
++	.id		= 0,
++	.num_resources	= ARRAY_SIZE(sead3_i2c_resources),
++	.resource	= sead3_i2c_resources,
++};
++
++static int __init sead3_i2c_init(void)
++{
++	return platform_device_register(&sead3_i2c_device);
++}
++
++module_init(sead3_i2c_init);
++
++MODULE_AUTHOR("Chris Dearman <chris@mips.com>");
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("I2C probe driver for SEAD3");
+diff --git a/arch/mips/mti-sead3/sead3-init.c b/arch/mips/mti-sead3/sead3-init.c
+new file mode 100644
+index 0000000..215b710
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-init.c
+@@ -0,0 +1,169 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/init.h>
++#include <linux/io.h>
++
++#include <asm/bootinfo.h>
++#include <asm/cacheflush.h>
++#include <asm/traps.h>
++#include <asm/mips-boards/generic.h>
++#include <asm/mips-boards/prom.h>
++
++extern void prom_init_early_console(char port);
++
++extern char except_vec_nmi;
++extern char except_vec_ejtag_debug;
++
++int prom_argc;
++int *_prom_argv, *_prom_envp;
++
++#define prom_envp(index) ((char *)(long)_prom_envp[(index)])
++
++char *prom_getenv(char *envname)
++{
++	/*
++	 * Return a pointer to the given environment variable.
++	 * In 64-bit mode: we're using 64-bit pointers, but all pointers
++	 * in the PROM structures are only 32-bit, so we need some
++	 * workarounds, if we are running in 64-bit mode.
++	 */
++	int i, index = 0;
++
++	i = strlen(envname);
++
++	while (prom_envp(index)) {
++		if (strncmp(envname, prom_envp(index), i) == 0)
++			return prom_envp(index+1);
++		index += 2;
++	}
++
++	return NULL;
++}
++
++static inline unsigned char str2hexnum(unsigned char c)
++{
++	if (c >= '0' && c <= '9')
++		return c - '0';
++	if (c >= 'a' && c <= 'f')
++		return c - 'a' + 10;
++	return 0; /* foo */
++}
++
++static inline void str2eaddr(unsigned char *ea, unsigned char *str)
++{
++	int i;
++
++	for (i = 0; i < 6; i++) {
++		unsigned char num;
++
++		if ((*str == '.') || (*str == ':'))
++			str++;
++		num = str2hexnum(*str++) << 4;
++		num |= (str2hexnum(*str++));
++		ea[i] = num;
++	}
++}
++
++int get_ethernet_addr(char *ethernet_addr)
++{
++	char *ethaddr_str;
++
++	ethaddr_str = prom_getenv("ethaddr");
++	if (!ethaddr_str) {
++		pr_warn("ethaddr not set in boot prom\n");
++		return -1;
++	}
++	str2eaddr(ethernet_addr, ethaddr_str);
++
++	return 0;
++}
++
++#ifdef CONFIG_SERIAL_8250_CONSOLE
++static void __init console_config(void)
++{
++	char console_string[40];
++	int baud = 0;
++	char parity = '\0', bits = '\0', flow = '\0';
++	char *s;
++
++	if ((strstr(prom_getcmdline(), "console=")) == NULL) {
++		s = prom_getenv("modetty0");
++		if (s) {
++			while (*s >= '0' && *s <= '9')
++				baud = baud*10 + *s++ - '0';
++			if (*s == ',')
++				s++;
++			if (*s)
++				parity = *s++;
++			if (*s == ',')
++				s++;
++			if (*s)
++				bits = *s++;
++			if (*s == ',')
++				s++;
++			if (*s == 'h')
++				flow = 'r';
++		}
++		if (baud == 0)
++			baud = 38400;
++		if (parity != 'n' && parity != 'o' && parity != 'e')
++			parity = 'n';
++		if (bits != '7' && bits != '8')
++			bits = '8';
++		if (flow == '\0')
++			flow = 'r';
++		sprintf(console_string, " console=ttyS0,%d%c%c%c", baud,
++			parity, bits, flow);
++		strcat(prom_getcmdline(), console_string);
++	}
++}
++#endif
++
++static void __init mips_nmi_setup(void)
++{
++	void *base;
++
++	base = cpu_has_veic ?
++		(void *)(CAC_BASE + 0xa80) :
++		(void *)(CAC_BASE + 0x380);
++	memcpy(base, &except_vec_nmi, 0x80);
++	flush_icache_range((unsigned long)base, (unsigned long)base + 0x80);
++}
++
++static void __init mips_ejtag_setup(void)
++{
++	void *base;
++
++	base = cpu_has_veic ?
++		(void *)(CAC_BASE + 0xa00) :
++		(void *)(CAC_BASE + 0x300);
++	memcpy(base, &except_vec_ejtag_debug, 0x80);
++	flush_icache_range((unsigned long)base, (unsigned long)base + 0x80);
++}
++
++void __init prom_init(void)
++{
++	prom_argc = fw_arg0;
++	_prom_argv = (int *) fw_arg1;
++	_prom_envp = (int *) fw_arg2;
++
++	board_nmi_handler_setup = mips_nmi_setup;
++	board_ejtag_handler_setup = mips_ejtag_setup;
++
++	prom_init_cmdline();
++	prom_meminit();
++#ifdef CONFIG_EARLY_PRINTK
++	if ((strstr(prom_getcmdline(), "console=ttyS0")) != NULL)
++		prom_init_early_console(0);
++	else if ((strstr(prom_getcmdline(), "console=ttyS1")) != NULL)
++		prom_init_early_console(1);
++#endif
++#ifdef CONFIG_SERIAL_8250_CONSOLE
++	console_config();
++#endif
++}
+diff --git a/arch/mips/mti-sead3/sead3-int.c b/arch/mips/mti-sead3/sead3-int.c
+new file mode 100644
+index 0000000..345cac6
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-int.c
+@@ -0,0 +1,86 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/init.h>
++#include <linux/irq.h>
++#include <linux/io.h>
++
++#include <asm/setup.h>
++#include <asm/irq_cpu.h>
++#include <asm/gic.h>
++#include <asm/mips-boards/sead3int.h>
++
++#define SEAD_CONFIG_GIC_PRESENT_SHF	1
++#define SEAD_CONFIG_GIC_PRESENT_MSK	(1 << SEAD_CONFIG_GIC_PRESENT_SHF)
++#define SEAD_CONFIG_BASE		0x1b100110
++#define SEAD_CONFIG_SIZE		4
++
++int gic_present;
++static unsigned long sead3_config_reg;
++
++/*
++ * This table defines the setup for each external GIC interrupt. It is
++ * indexed by interrupt number.
++ */
++#define GIC_CPU_NMI GIC_MAP_TO_NMI_MSK
++static struct gic_intr_map gic_intr_map[GIC_NUM_INTRS] = {
++	{ 0, GIC_CPU_INT4, GIC_POL_POS, GIC_TRIG_LEVEL, GIC_FLAG_TRANSPARENT },
++	{ 0, GIC_CPU_INT3, GIC_POL_POS, GIC_TRIG_LEVEL, GIC_FLAG_TRANSPARENT },
++	{ 0, GIC_CPU_INT2, GIC_POL_POS, GIC_TRIG_LEVEL, GIC_FLAG_TRANSPARENT },
++	{ 0, GIC_CPU_INT2, GIC_POL_POS, GIC_TRIG_LEVEL, GIC_FLAG_TRANSPARENT },
++	{ 0, GIC_CPU_INT1, GIC_POL_POS, GIC_TRIG_LEVEL, GIC_FLAG_TRANSPARENT },
++	{ 0, GIC_CPU_INT0, GIC_POL_POS, GIC_TRIG_LEVEL, GIC_FLAG_TRANSPARENT },
++	{ 0, GIC_CPU_INT0, GIC_POL_POS, GIC_TRIG_LEVEL, GIC_FLAG_TRANSPARENT },
++	{ 0, GIC_CPU_INT0, GIC_POL_POS, GIC_TRIG_LEVEL, GIC_FLAG_TRANSPARENT },
++	{ 0, GIC_CPU_INT0, GIC_POL_POS, GIC_TRIG_LEVEL, GIC_FLAG_TRANSPARENT },
++	{ X, X,            X,           X,              0 },
++	{ X, X,            X,           X,              0 },
++	{ X, X,            X,           X,              0 },
++	{ X, X,            X,           X,              0 },
++	{ X, X,            X,           X,              0 },
++	{ X, X,            X,           X,              0 },
++	{ X, X,            X,           X,              0 },
++};
++
++asmlinkage void plat_irq_dispatch(void)
++{
++	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
++	int irq;
++
++	irq = (fls(pending) - CAUSEB_IP - 1);
++	if (irq >= 0)
++		do_IRQ(MIPS_CPU_IRQ_BASE + irq);
++	else
++		spurious_interrupt();
++}
++
++void __init arch_init_irq(void)
++{
++	int i;
++
++	if (!cpu_has_veic) {
++		mips_cpu_irq_init();
++
++		if (cpu_has_vint) {
++			/* install generic handler */
++			for (i = 0; i < 8; i++)
++				set_vi_handler(i, plat_irq_dispatch);
++		}
++	}
++
++	sead3_config_reg = (unsigned long)ioremap_nocache(SEAD_CONFIG_BASE,
++		SEAD_CONFIG_SIZE);
++	gic_present = (REG32(sead3_config_reg) & SEAD_CONFIG_GIC_PRESENT_MSK) >>
++		SEAD_CONFIG_GIC_PRESENT_SHF;
++	pr_info("GIC: %spresent\n", (gic_present) ? "" : "not ");
++	pr_info("EIC: %s\n",
++		(current_cpu_data.options & MIPS_CPU_VEIC) ?  "on" : "off");
++
++	if (gic_present)
++		gic_init(GIC_BASE_ADDR, GIC_ADDRSPACE_SZ, gic_intr_map,
++			ARRAY_SIZE(gic_intr_map), MIPS_GIC_IRQ_BASE);
++}
+diff --git a/arch/mips/mti-sead3/sead3-lcd.c b/arch/mips/mti-sead3/sead3-lcd.c
+new file mode 100644
+index 0000000..10b10ed2
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-lcd.c
+@@ -0,0 +1,43 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/init.h>
++#include <linux/platform_device.h>
++
++static struct resource __initdata sead3_lcd_resource = {
++		.start	= 0x1f000400,
++		.end	= 0x1f00041f,
++		.flags	= IORESOURCE_MEM,
++};
++
++static __init int sead3_lcd_add(void)
++{
++	struct platform_device *pdev;
++	int retval;
++
++	/* SEAD-3 and Cobalt platforms use same display type. */
++	pdev = platform_device_alloc("cobalt-lcd", -1);
++	if (!pdev)
++		return -ENOMEM;
++
++	retval = platform_device_add_resources(pdev, &sead3_lcd_resource, 1);
++	if (retval)
++		goto err_free_device;
++
++	retval = platform_device_add(pdev);
++	if (retval)
++		goto err_free_device;
++
++	return 0;
++
++err_free_device:
++	platform_device_put(pdev);
++
++	return retval;
++}
++
++device_initcall(sead3_lcd_add);
+diff --git a/arch/mips/mti-sead3/sead3-leds.c b/arch/mips/mti-sead3/sead3-leds.c
+new file mode 100644
+index 0000000..20102a6
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-leds.c
+@@ -0,0 +1,83 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/module.h>
++#include <linux/leds.h>
++#include <linux/platform_device.h>
++
++#define LEDFLAGS(bits, shift)		\
++	((bits << 8) | (shift << 8))
++
++#define LEDBITS(id, shift, bits)	\
++	.name = id #shift,		\
++	.flags = LEDFLAGS(bits, shift)
++
++struct led_info led_data_info[] = {
++	{ LEDBITS("bit", 0, 1) },
++	{ LEDBITS("bit", 1, 1) },
++	{ LEDBITS("bit", 2, 1) },
++	{ LEDBITS("bit", 3, 1) },
++	{ LEDBITS("bit", 4, 1) },
++	{ LEDBITS("bit", 5, 1) },
++	{ LEDBITS("bit", 6, 1) },
++	{ LEDBITS("bit", 7, 1) },
++	{ LEDBITS("all", 0, 8) },
++};
++
++static struct led_platform_data led_data = {
++	.num_leds	= ARRAY_SIZE(led_data_info),
++	.leds		= led_data_info
++};
++
++static struct resource pled_resources[] = {
++	{
++		.start	= 0x1f000210,
++		.end	= 0x1f000217,
++		.flags	= IORESOURCE_MEM
++	}
++};
++
++static struct platform_device pled_device = {
++	.name			= "sead3::pled",
++	.id			= 0,
++	.dev			= {
++		.platform_data	= &led_data,
++	},
++	.num_resources		= ARRAY_SIZE(pled_resources),
++	.resource		= pled_resources
++};
++
++
++static struct resource fled_resources[] = {
++	{
++		.start			= 0x1f000218,
++		.end			= 0x1f00021f,
++		.flags			= IORESOURCE_MEM
++	}
++};
++
++static struct platform_device fled_device = {
++	.name			= "sead3::fled",
++	.id			= 0,
++	.dev			= {
++		.platform_data	= &led_data,
++	},
++	.num_resources		= ARRAY_SIZE(fled_resources),
++	.resource		= fled_resources
++};
++
++static int __init led_init(void)
++{
++	platform_device_register(&pled_device);
++	return platform_device_register(&fled_device);
++}
++
++module_init(led_init);
++
++MODULE_AUTHOR("Chris Dearman <chris@mips.com>");
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("LED probe driver for SEAD-3");
+diff --git a/arch/mips/mti-sead3/sead3-memory.c b/arch/mips/mti-sead3/sead3-memory.c
+new file mode 100644
+index 0000000..da92441
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-memory.c
+@@ -0,0 +1,138 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/bootmem.h>
++
++#include <asm/bootinfo.h>
++#include <asm/sections.h>
++#include <asm/mips-boards/prom.h>
++
++enum yamon_memtypes {
++	yamon_dontuse,
++	yamon_prom,
++	yamon_free,
++};
++
++static struct prom_pmemblock mdesc[PROM_MAX_PMEMBLOCKS];
++
++/* determined physical memory size, not overridden by command line args  */
++unsigned long physical_memsize = 0L;
++
++struct prom_pmemblock * __init prom_getmdesc(void)
++{
++	char *memsize_str, *ptr;
++	unsigned int memsize;
++	static char cmdline[COMMAND_LINE_SIZE] __initdata;
++	long val;
++	int tmp;
++
++	/* otherwise look in the environment */
++	memsize_str = prom_getenv("memsize");
++	if (!memsize_str) {
++		pr_warn("memsize not set in boot prom, set to default 32Mb\n");
++		physical_memsize = 0x02000000;
++	} else {
++		tmp = kstrtol(memsize_str, 0, &val);
++		physical_memsize = (unsigned long)val;
++	}
++
++#ifdef CONFIG_CPU_BIG_ENDIAN
++	/* SOC-it swaps, or perhaps doesn't swap, when DMA'ing the last
++	   word of physical memory */
++	physical_memsize -= PAGE_SIZE;
++#endif
++
++	/* Check the command line for a memsize directive that overrides
++	   the physical/default amount */
++	strcpy(cmdline, arcs_cmdline);
++	ptr = strstr(cmdline, "memsize=");
++	if (ptr && (ptr != cmdline) && (*(ptr - 1) != ' '))
++		ptr = strstr(ptr, " memsize=");
++
++	if (ptr)
++		memsize = memparse(ptr + 8, &ptr);
++	else
++		memsize = physical_memsize;
++
++	memset(mdesc, 0, sizeof(mdesc));
++
++	mdesc[0].type = yamon_dontuse;
++	mdesc[0].base = 0x00000000;
++	mdesc[0].size = 0x00001000;
++
++	mdesc[1].type = yamon_prom;
++	mdesc[1].base = 0x00001000;
++	mdesc[1].size = 0x000ef000;
++
++	/*
++	 * The area 0x000f0000-0x000fffff is allocated for BIOS memory by the
++	 * south bridge and PCI access always forwarded to the ISA Bus and
++	 * BIOSCS# is always generated.
++	 * This mean that this area can't be used as DMA memory for PCI
++	 * devices.
++	 */
++	mdesc[2].type = yamon_dontuse;
++	mdesc[2].base = 0x000f0000;
++	mdesc[2].size = 0x00010000;
++
++	mdesc[3].type = yamon_dontuse;
++	mdesc[3].base = 0x00100000;
++	mdesc[3].size = CPHYSADDR(PFN_ALIGN((unsigned long)&_end)) -
++		mdesc[3].base;
++
++	mdesc[4].type = yamon_free;
++	mdesc[4].base = CPHYSADDR(PFN_ALIGN(&_end));
++	mdesc[4].size = memsize - mdesc[4].base;
++
++	return &mdesc[0];
++}
++
++static int __init prom_memtype_classify(unsigned int type)
++{
++	switch (type) {
++	case yamon_free:
++		return BOOT_MEM_RAM;
++	case yamon_prom:
++		return BOOT_MEM_ROM_DATA;
++	default:
++		return BOOT_MEM_RESERVED;
++	}
++}
++
++void __init prom_meminit(void)
++{
++	struct prom_pmemblock *p;
++
++	p = prom_getmdesc();
++
++	while (p->size) {
++		long type;
++		unsigned long base, size;
++
++		type = prom_memtype_classify(p->type);
++		base = p->base;
++		size = p->size;
++
++		add_memory_region(base, size, type);
++		p++;
++	}
++}
++
++void __init prom_free_prom_memory(void)
++{
++	unsigned long addr;
++	int i;
++
++	for (i = 0; i < boot_mem_map.nr_map; i++) {
++		if (boot_mem_map.map[i].type != BOOT_MEM_ROM_DATA)
++			continue;
++
++		addr = boot_mem_map.map[i].addr;
++		free_init_pages("prom memory",
++				addr, addr + boot_mem_map.map[i].size);
++	}
++}
+diff --git a/arch/mips/mti-sead3/sead3-mtd.c b/arch/mips/mti-sead3/sead3-mtd.c
+new file mode 100644
+index 0000000..ffa35f5
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-mtd.c
+@@ -0,0 +1,54 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/init.h>
++#include <linux/platform_device.h>
++#include <linux/mtd/physmap.h>
++
++static struct mtd_partition sead3_mtd_partitions[] = {
++	{
++		.name =		"User FS",
++		.offset =	0x00000000,
++		.size =		0x01fc0000,
++	}, {
++		.name =		"Board Config",
++		.offset =	0x01fc0000,
++		.size =		0x00040000,
++		.mask_flags =	MTD_WRITEABLE
++	},
++};
++
++static struct physmap_flash_data sead3_flash_data = {
++	.width		= 4,
++	.nr_parts	= ARRAY_SIZE(sead3_mtd_partitions),
++	.parts		= sead3_mtd_partitions
++};
++
++static struct resource sead3_flash_resource = {
++	.start		= 0x1c000000,
++	.end		= 0x1dffffff,
++	.flags		= IORESOURCE_MEM
++};
++
++static struct platform_device sead3_flash = {
++	.name		= "physmap-flash",
++	.id		= 0,
++	.dev		= {
++		.platform_data	= &sead3_flash_data,
++	},
++	.num_resources	= 1,
++	.resource	= &sead3_flash_resource,
++};
++
++static int __init sead3_mtd_init(void)
++{
++	platform_device_register(&sead3_flash);
++
++	return 0;
++}
++
++module_init(sead3_mtd_init)
+diff --git a/arch/mips/mti-sead3/sead3-net.c b/arch/mips/mti-sead3/sead3-net.c
+new file mode 100644
+index 0000000..04d704d
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-net.c
+@@ -0,0 +1,51 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/module.h>
++#include <linux/irq.h>
++#include <linux/platform_device.h>
++#include <linux/smsc911x.h>
++
++static struct smsc911x_platform_config sead3_smsc911x_data = {
++	.irq_polarity = SMSC911X_IRQ_POLARITY_ACTIVE_LOW,
++	.irq_type = SMSC911X_IRQ_TYPE_PUSH_PULL,
++	.flags	= SMSC911X_USE_32BIT | SMSC911X_SAVE_MAC_ADDRESS,
++	.phy_interface = PHY_INTERFACE_MODE_MII,
++};
++
++struct resource sead3_net_resourcess[] = {
++	{
++		.start                  = 0x1f010000,
++		.end                    = 0x1f01ffff,
++		.flags			= IORESOURCE_MEM
++	},
++	{
++		.start			= MIPS_CPU_IRQ_BASE + 6,
++		.flags			= IORESOURCE_IRQ
++	}
++};
++
++static struct platform_device sead3_net_device = {
++	.name			= "smsc911x",
++	.id			= 0,
++	.dev			= {
++		.platform_data	= &sead3_smsc911x_data,
++	},
++	.num_resources		= ARRAY_SIZE(sead3_net_resourcess),
++	.resource		= sead3_net_resourcess
++};
++
++static int __init sead3_net_init(void)
++{
++	return platform_device_register(&sead3_net_device);
++}
++
++module_init(sead3_net_init);
++
++MODULE_AUTHOR("Chris Dearman <chris@mips.com>");
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Network probe driver for SEAD-3");
+diff --git a/arch/mips/mti-sead3/sead3-pic32-bus.c b/arch/mips/mti-sead3/sead3-pic32-bus.c
+new file mode 100644
+index 0000000..9f0d89b
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-pic32-bus.c
+@@ -0,0 +1,103 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/delay.h>
++#include <linux/kernel.h>
++#include <linux/spinlock.h>
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/errno.h>
++
++#define PIC32_NULL	0x00
++#define PIC32_RD	0x01
++#define PIC32_SYSRD	0x02
++#define PIC32_WR	0x10
++#define PIC32_SYSWR	0x20
++#define PIC32_IRQ_CLR   0x40
++#define PIC32_STATUS	0x80
++
++#define DELAY()	udelay(100)	/* FIXME: needed? */
++
++/* spinlock to ensure atomic access to PIC32 */
++static DEFINE_SPINLOCK(pic32_bus_lock);
++
++/* FIXME: io_remap these */
++static void __iomem *bus_xfer   = (void __iomem *)0xbf000600;
++static void __iomem *bus_status = (void __iomem *)0xbf000060;
++
++static inline unsigned int ioready(void)
++{
++	return readl(bus_status) & 1;
++}
++
++static inline void wait_ioready(void)
++{
++	do { } while (!ioready());
++}
++
++static inline void wait_ioclear(void)
++{
++	do { } while (ioready());
++}
++
++static inline void check_ioclear(void)
++{
++	if (ioready()) {
++		pr_debug("ioclear: initially busy\n");
++		do {
++			(void) readl(bus_xfer);
++			DELAY();
++		} while (ioready());
++		pr_debug("ioclear: cleared busy\n");
++	}
++}
++
++u32 pic32_bus_readl(u32 reg)
++{
++	unsigned long flags;
++	u32 status, val;
++
++	spin_lock_irqsave(&pic32_bus_lock, flags);
++
++	check_ioclear();
++
++	writel((PIC32_RD << 24) | (reg & 0x00ffffff), bus_xfer);
++	DELAY();
++	wait_ioready();
++	status = readl(bus_xfer);
++	DELAY();
++	val = readl(bus_xfer);
++	wait_ioclear();
++
++	pr_debug("pic32_bus_readl: *%x -> %x (status=%x)\n", reg, val, status);
++
++	spin_unlock_irqrestore(&pic32_bus_lock, flags);
++
++	return val;
++}
++
++void pic32_bus_writel(u32 val, u32 reg)
++{
++	unsigned long flags;
++	u32 status;
++
++	spin_lock_irqsave(&pic32_bus_lock, flags);
++
++	check_ioclear();
++
++	writel((PIC32_WR << 24) | (reg & 0x00ffffff), bus_xfer);
++	DELAY();
++	writel(val, bus_xfer);
++	DELAY();
++	wait_ioready();
++	status = readl(bus_xfer);
++	wait_ioclear();
++
++	pr_debug("pic32_bus_writel: *%x <- %x (status=%x)\n", reg, val, status);
++
++	spin_unlock_irqrestore(&pic32_bus_lock, flags);
++}
+diff --git a/arch/mips/mti-sead3/sead3-pic32-i2c-drv.c b/arch/mips/mti-sead3/sead3-pic32-i2c-drv.c
+new file mode 100644
+index 0000000..46509b0
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-pic32-i2c-drv.c
+@@ -0,0 +1,435 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/delay.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/spinlock.h>
++#include <linux/platform_device.h>
++#include <linux/init.h>
++#include <linux/errno.h>
++#include <linux/i2c.h>
++#include <linux/slab.h>
++
++#define PIC32_I2CxCON		0x0000
++#define PIC32_I2CxCONCLR	0x0004
++#define PIC32_I2CxCONSET	0x0008
++#define PIC32_I2CxCONINV	0x000C
++#define  I2CCON_ON		(1<<15)
++#define  I2CCON_FRZ		(1<<14)
++#define  I2CCON_SIDL		(1<<13)
++#define  I2CCON_SCLREL		(1<<12)
++#define  I2CCON_STRICT		(1<<11)
++#define  I2CCON_A10M		(1<<10)
++#define  I2CCON_DISSLW		(1<<9)
++#define  I2CCON_SMEN		(1<<8)
++#define  I2CCON_GCEN		(1<<7)
++#define  I2CCON_STREN		(1<<6)
++#define  I2CCON_ACKDT		(1<<5)
++#define  I2CCON_ACKEN		(1<<4)
++#define  I2CCON_RCEN		(1<<3)
++#define  I2CCON_PEN		(1<<2)
++#define  I2CCON_RSEN		(1<<1)
++#define  I2CCON_SEN		(1<<0)
++
++#define PIC32_I2CxSTAT		0x0010
++#define PIC32_I2CxSTATCLR	0x0014
++#define PIC32_I2CxSTATSET	0x0018
++#define PIC32_I2CxSTATINV	0x001C
++#define  I2CSTAT_ACKSTAT	(1<<15)
++#define  I2CSTAT_TRSTAT		(1<<14)
++#define  I2CSTAT_BCL		(1<<10)
++#define  I2CSTAT_GCSTAT		(1<<9)
++#define  I2CSTAT_ADD10		(1<<8)
++#define  I2CSTAT_IWCOL		(1<<7)
++#define  I2CSTAT_I2COV		(1<<6)
++#define  I2CSTAT_DA		(1<<5)
++#define  I2CSTAT_P		(1<<4)
++#define  I2CSTAT_S		(1<<3)
++#define  I2CSTAT_RW		(1<<2)
++#define  I2CSTAT_RBF		(1<<1)
++#define  I2CSTAT_TBF		(1<<0)
++
++#define PIC32_I2CxADD		0x0020
++#define PIC32_I2CxADDCLR	0x0024
++#define PIC32_I2CxADDSET	0x0028
++#define PIC32_I2CxADDINV	0x002C
++#define PIC32_I2CxMSK		0x0030
++#define PIC32_I2CxMSKCLR	0x0034
++#define PIC32_I2CxMSKSET	0x0038
++#define PIC32_I2CxMSKINV	0x003C
++#define PIC32_I2CxBRG		0x0040
++#define PIC32_I2CxBRGCLR	0x0044
++#define PIC32_I2CxBRGSET	0x0048
++#define PIC32_I2CxBRGINV	0x004C
++#define PIC32_I2CxTRN		0x0050
++#define PIC32_I2CxTRNCLR	0x0054
++#define PIC32_I2CxTRNSET	0x0058
++#define PIC32_I2CxTRNINV	0x005C
++#define PIC32_I2CxRCV		0x0060
++
++struct i2c_platform_data {
++	u32	base;
++	struct i2c_adapter adap;
++	u32	xfer_timeout;
++	u32	ack_timeout;
++	u32	ctl_timeout;
++};
++
++extern u32 pic32_bus_readl(u32 reg);
++extern void pic32_bus_writel(u32 val, u32 reg);
++
++static inline void
++StartI2C(struct i2c_platform_data *adap)
++{
++	pr_debug("StartI2C\n");
++	pic32_bus_writel(I2CCON_SEN, adap->base + PIC32_I2CxCONSET);
++}
++
++static inline void
++StopI2C(struct i2c_platform_data *adap)
++{
++	pr_debug("StopI2C\n");
++	pic32_bus_writel(I2CCON_PEN, adap->base + PIC32_I2CxCONSET);
++}
++
++static inline void
++AckI2C(struct i2c_platform_data *adap)
++{
++	pr_debug("AckI2C\n");
++	pic32_bus_writel(I2CCON_ACKDT, adap->base + PIC32_I2CxCONCLR);
++	pic32_bus_writel(I2CCON_ACKEN, adap->base + PIC32_I2CxCONSET);
++}
++
++static inline void
++NotAckI2C(struct i2c_platform_data *adap)
++{
++	pr_debug("NakI2C\n");
++	pic32_bus_writel(I2CCON_ACKDT, adap->base + PIC32_I2CxCONSET);
++	pic32_bus_writel(I2CCON_ACKEN, adap->base + PIC32_I2CxCONSET);
++}
++
++static inline int
++IdleI2C(struct i2c_platform_data *adap)
++{
++	int i;
++
++	pr_debug("IdleI2C\n");
++	for (i = 0; i < adap->ctl_timeout; i++) {
++		if (((pic32_bus_readl(adap->base + PIC32_I2CxCON) &
++		     (I2CCON_ACKEN | I2CCON_RCEN | I2CCON_PEN | I2CCON_RSEN |
++		      I2CCON_SEN)) == 0) &&
++		    ((pic32_bus_readl(adap->base + PIC32_I2CxSTAT) &
++		     (I2CSTAT_TRSTAT)) == 0))
++			return 0;
++		udelay(1);
++	}
++	return -ETIMEDOUT;
++}
++
++static inline u32
++MasterWriteI2C(struct i2c_platform_data *adap, u32 byte)
++{
++	pr_debug("MasterWriteI2C\n");
++
++	pic32_bus_writel(byte, adap->base + PIC32_I2CxTRN);
++
++	return pic32_bus_readl(adap->base + PIC32_I2CxSTAT) & I2CSTAT_IWCOL;
++}
++
++static inline u32
++MasterReadI2C(struct i2c_platform_data *adap)
++{
++	pr_debug("MasterReadI2C\n");
++
++	pic32_bus_writel(I2CCON_RCEN, adap->base + PIC32_I2CxCONSET);
++
++	while (pic32_bus_readl(adap->base + PIC32_I2CxCON) & I2CCON_RCEN)
++		;
++
++	pic32_bus_writel(I2CSTAT_I2COV, adap->base + PIC32_I2CxSTATCLR);
++
++	return pic32_bus_readl(adap->base + PIC32_I2CxRCV);
++}
++
++static int
++do_address(struct i2c_platform_data *adap, unsigned int addr, int rd)
++{
++	pr_debug("doaddress\n");
++
++	IdleI2C(adap);
++	StartI2C(adap);
++	IdleI2C(adap);
++
++	addr <<= 1;
++	if (rd)
++		addr |= 1;
++
++	if (MasterWriteI2C(adap, addr))
++		return -EIO;
++	IdleI2C(adap);
++	if (pic32_bus_readl(adap->base + PIC32_I2CxSTAT) & I2CSTAT_ACKSTAT)
++		return -EIO;
++	return 0;
++}
++
++static int
++i2c_read(struct i2c_platform_data *adap, unsigned char *buf,
++		    unsigned int len)
++{
++	int	i;
++	u32	data;
++
++	pr_debug("i2c_read\n");
++
++	i = 0;
++	while (i < len) {
++		data = MasterReadI2C(adap);
++		buf[i++] = data;
++		if (i < len)
++			AckI2C(adap);
++		else
++			NotAckI2C(adap);
++	}
++
++	StopI2C(adap);
++	IdleI2C(adap);
++	return 0;
++}
++
++static int
++i2c_write(struct i2c_platform_data *adap, unsigned char *buf,
++		     unsigned int len)
++{
++	int	i;
++	u32	data;
++
++	pr_debug("i2c_write\n");
++
++	i = 0;
++	while (i < len) {
++		data = buf[i];
++		if (MasterWriteI2C(adap, data))
++			return -EIO;
++		IdleI2C(adap);
++		if (pic32_bus_readl(adap->base + PIC32_I2CxSTAT) &
++		    I2CSTAT_ACKSTAT)
++			return -EIO;
++		i++;
++	}
++
++	StopI2C(adap);
++	IdleI2C(adap);
++	return 0;
++}
++
++static int
++platform_xfer(struct i2c_adapter *i2c_adap, struct i2c_msg *msgs, int num)
++{
++	struct i2c_platform_data *adap = i2c_adap->algo_data;
++	struct i2c_msg *p;
++	int i, err = 0;
++
++	pr_debug("platform_xfer\n");
++	for (i = 0; i < num; i++) {
++#define __BUFSIZE 80
++		int ii;
++		static char buf[__BUFSIZE];
++		char *b = buf;
++
++		p = &msgs[i];
++		b += sprintf(buf, " [%d bytes]", p->len);
++		if ((p->flags & I2C_M_RD) == 0) {
++			for (ii = 0; ii < p->len; ii++) {
++				if (b < &buf[__BUFSIZE-4]) {
++					b += sprintf(b, " %02x", p->buf[ii]);
++				} else {
++					strcat(b, "...");
++					break;
++				}
++			}
++		}
++		pr_debug("xfer%d: DevAddr: %04x Op:%s Data:%s\n", i, p->addr,
++			 (p->flags & I2C_M_RD) ? "Rd" : "Wr", buf);
++	}
++
++
++	for (i = 0; !err && i < num; i++) {
++		p = &msgs[i];
++		err = do_address(adap, p->addr, p->flags & I2C_M_RD);
++		if (err || !p->len)
++			continue;
++		if (p->flags & I2C_M_RD)
++			err = i2c_read(adap, p->buf, p->len);
++		else
++			err = i2c_write(adap, p->buf, p->len);
++	}
++
++	/* Return the number of messages processed, or the error code. */
++	if (err == 0)
++		err = num;
++
++	return err;
++}
++
++static u32
++platform_func(struct i2c_adapter *adap)
++{
++	pr_debug("platform_algo\n");
++	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL;
++}
++
++static const struct i2c_algorithm platform_algo = {
++	.master_xfer	= platform_xfer,
++	.functionality	= platform_func,
++};
++
++static void i2c_platform_setup(struct i2c_platform_data *priv)
++{
++	pr_debug("i2c_platform_setup\n");
++
++	pic32_bus_writel(500, priv->base + PIC32_I2CxBRG);
++	pic32_bus_writel(I2CCON_ON, priv->base + PIC32_I2CxCONCLR);
++	pic32_bus_writel(I2CCON_ON, priv->base + PIC32_I2CxCONSET);
++	pic32_bus_writel((I2CSTAT_BCL | I2CSTAT_IWCOL),
++		(priv->base + PIC32_I2CxSTATCLR));
++}
++
++static void i2c_platform_disable(struct i2c_platform_data *priv)
++{
++	pr_debug("i2c_platform_disable\n");
++}
++
++static int __devinit
++i2c_platform_probe(struct platform_device *pdev)
++{
++	struct i2c_platform_data *priv;
++	struct resource *r;
++	int ret;
++
++	pr_debug("i2c_platform_probe\n");
++	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!r) {
++		ret = -ENODEV;
++		goto out;
++	}
++
++	priv = kzalloc(sizeof(struct i2c_platform_data), GFP_KERNEL);
++	if (!priv) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	/* FIXME: need to allocate resource in PIC32 space */
++#if 0
++	priv->base = bus_request_region(r->start, resource_size(r),
++					  pdev->name);
++#else
++	priv->base = r->start;
++#endif
++	if (!priv->base) {
++		ret = -EBUSY;
++		goto out_mem;
++	}
++
++	priv->xfer_timeout = 200;
++	priv->ack_timeout = 200;
++	priv->ctl_timeout = 200;
++
++	priv->adap.nr = pdev->id;
++	priv->adap.algo = &platform_algo;
++	priv->adap.algo_data = priv;
++	priv->adap.dev.parent = &pdev->dev;
++	strlcpy(priv->adap.name, "PIC32 I2C", sizeof(priv->adap.name));
++
++	i2c_platform_setup(priv);
++
++	ret = i2c_add_numbered_adapter(&priv->adap);
++	if (ret == 0) {
++		platform_set_drvdata(pdev, priv);
++		return 0;
++	}
++
++	i2c_platform_disable(priv);
++
++out_mem:
++	kfree(priv);
++out:
++	return ret;
++}
++
++static int __devexit
++i2c_platform_remove(struct platform_device *pdev)
++{
++	struct i2c_platform_data *priv = platform_get_drvdata(pdev);
++
++	pr_debug("i2c_platform_remove\n");
++	platform_set_drvdata(pdev, NULL);
++	i2c_del_adapter(&priv->adap);
++	i2c_platform_disable(priv);
++	kfree(priv);
++	return 0;
++}
++
++#ifdef CONFIG_PM
++static int
++i2c_platform_suspend(struct platform_device *pdev, pm_message_t state)
++{
++	struct i2c_platform_data *priv = platform_get_drvdata(pdev);
++
++	dev_dbg(&pdev->dev, "i2c_platform_disable\n");
++	i2c_platform_disable(priv);
++
++	return 0;
++}
++
++static int
++i2c_platform_resume(struct platform_device *pdev)
++{
++	struct i2c_platform_data *priv = platform_get_drvdata(pdev);
++
++	dev_dbg(&pdev->dev, "i2c_platform_setup\n");
++	i2c_platform_setup(priv);
++
++	return 0;
++}
++#else
++#define i2c_platform_suspend	NULL
++#define i2c_platform_resume	NULL
++#endif
++
++static struct platform_driver i2c_platform_driver = {
++	.driver = {
++		.name	= "i2c_pic32",
++		.owner	= THIS_MODULE,
++	},
++	.probe		= i2c_platform_probe,
++	.remove		= __devexit_p(i2c_platform_remove),
++	.suspend	= i2c_platform_suspend,
++	.resume		= i2c_platform_resume,
++};
++
++static int __init
++i2c_platform_init(void)
++{
++	pr_debug("i2c_platform_init\n");
++	return platform_driver_register(&i2c_platform_driver);
++}
++
++static void __exit
++i2c_platform_exit(void)
++{
++	pr_debug("i2c_platform_exit\n");
++	platform_driver_unregister(&i2c_platform_driver);
++}
++
++MODULE_AUTHOR("Chris Dearman, MIPS Technologies INC.");
++MODULE_DESCRIPTION("PIC32 I2C driver");
++MODULE_LICENSE("GPL");
++
++module_init(i2c_platform_init);
++module_exit(i2c_platform_exit);
+diff --git a/arch/mips/mti-sead3/sead3-platform.c b/arch/mips/mti-sead3/sead3-platform.c
+new file mode 100644
+index 0000000..6c3b33d
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-platform.c
+@@ -0,0 +1,45 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/serial_8250.h>
++
++#define UART(base, int)							\
++{									\
++	.mapbase	= base,						\
++	.irq		= int,						\
++	.uartclk	= 14745600,					\
++	.iotype		= UPIO_MEM32,					\
++	.flags		= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST | UPF_IOREMAP, \
++	.regshift	= 2,						\
++}
++
++static struct plat_serial8250_port uart8250_data[] = {
++	UART(0x1f000900, MIPS_CPU_IRQ_BASE + 4),   /* ttyS0 = USB   */
++	UART(0x1f000800, MIPS_CPU_IRQ_BASE + 4),   /* ttyS1 = RS232 */
++	{ },
++};
++
++static struct platform_device uart8250_device = {
++	.name			= "serial8250",
++	.id			= PLAT8250_DEV_PLATFORM2,
++	.dev			= {
++		.platform_data	= uart8250_data,
++	},
++};
++
++static int __init uart8250_init(void)
++{
++	return platform_device_register(&uart8250_device);
++}
++
++module_init(uart8250_init);
++
++MODULE_AUTHOR("Chris Dearman <chris@mips.com>");
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("8250 UART probe driver for SEAD3");
+diff --git a/arch/mips/mti-sead3/sead3-reset.c b/arch/mips/mti-sead3/sead3-reset.c
+new file mode 100644
+index 0000000..20475c5
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-reset.c
+@@ -0,0 +1,39 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/io.h>
++#include <linux/pm.h>
++
++#include <asm/reboot.h>
++#include <asm/mips-boards/generic.h>
++
++static void mips_machine_restart(char *command)
++{
++	unsigned int __iomem *softres_reg =
++		ioremap(SOFTRES_REG, sizeof(unsigned int));
++
++	__raw_writel(GORESET, softres_reg);
++}
++
++static void mips_machine_halt(void)
++{
++	unsigned int __iomem *softres_reg =
++		ioremap(SOFTRES_REG, sizeof(unsigned int));
++
++	__raw_writel(GORESET, softres_reg);
++}
++
++static int __init mips_reboot_setup(void)
++{
++	_machine_restart = mips_machine_restart;
++	_machine_halt = mips_machine_halt;
++	pm_power_off = mips_machine_halt;
++
++	return 0;
++}
++
++arch_initcall(mips_reboot_setup);
+diff --git a/arch/mips/mti-sead3/sead3-serial.c b/arch/mips/mti-sead3/sead3-serial.c
+new file mode 100644
+index 0000000..bc52705
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-serial.c
+@@ -0,0 +1,45 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/serial_8250.h>
++
++#define UART(base, int)							\
++{									\
++	.mapbase	= base,						\
++	.irq		= int,						\
++	.uartclk	= 14745600,					\
++	.iotype		= UPIO_MEM32,					\
++	.flags		= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST | UPF_IOREMAP, \
++	.regshift	= 2,						\
++}
++
++static struct plat_serial8250_port uart8250_data[] = {
++	UART(0x1f000900, MIPS_CPU_IRQ_BASE + 4),   /* ttyS0 = USB   */
++	UART(0x1f000800, MIPS_CPU_IRQ_BASE + 4),   /* ttyS1 = RS232 */
++	{ },
++};
++
++static struct platform_device uart8250_device = {
++	.name			= "serial8250",
++	.id			= PLAT8250_DEV_PLATFORM,
++	.dev			= {
++		.platform_data	= uart8250_data,
++	},
++};
++
++static int __init uart8250_init(void)
++{
++	return platform_device_register(&uart8250_device);
++}
++
++module_init(uart8250_init);
++
++MODULE_AUTHOR("Chris Dearman <chris@mips.com>");
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("8250 UART probe driver for the SEAD-3 platform");
+diff --git a/arch/mips/mti-sead3/sead3-setup.c b/arch/mips/mti-sead3/sead3-setup.c
+new file mode 100644
+index 0000000..8ad46ad
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-setup.c
+@@ -0,0 +1,20 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/init.h>
++
++int coherentio;		/* 0 => no DMA cache coherency (may be set by user) */
++int hw_coherentio;	/* 0 => no HW DMA cache coherency (reflects real HW) */
++
++const char *get_system_type(void)
++{
++	return "MIPS SEAD3";
++}
++
++void __init plat_mem_setup(void)
++{
++}
+diff --git a/arch/mips/mti-sead3/sead3-time.c b/arch/mips/mti-sead3/sead3-time.c
+new file mode 100644
+index 0000000..048e781
+--- /dev/null
++++ b/arch/mips/mti-sead3/sead3-time.c
+@@ -0,0 +1,117 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/init.h>
++
++#include <asm/setup.h>
++#include <asm/time.h>
++#include <asm/irq.h>
++#include <asm/mips-boards/generic.h>
++#include <asm/mips-boards/prom.h>
++
++unsigned long cpu_khz;
++
++static int mips_cpu_timer_irq;
++static int mips_cpu_perf_irq;
++
++static void mips_timer_dispatch(void)
++{
++	do_IRQ(mips_cpu_timer_irq);
++}
++
++static void mips_perf_dispatch(void)
++{
++	do_IRQ(mips_cpu_perf_irq);
++}
++
++static void __iomem *status_reg = (void __iomem *)0xbf000410;
++
++/*
++ * Estimate CPU frequency.  Sets mips_hpt_frequency as a side-effect.
++ */
++static unsigned int __init estimate_cpu_frequency(void)
++{
++	unsigned int prid = read_c0_prid() & 0xffff00;
++	unsigned int tick = 0;
++	unsigned int freq;
++	unsigned int orig;
++	unsigned long flags;
++
++	local_irq_save(flags);
++
++	orig = readl(status_reg) & 0x2;               /* get original sample */
++	/* wait for transition */
++	while ((readl(status_reg) & 0x2) == orig)
++		;
++	orig = orig ^ 0x2;                            /* flip the bit */
++
++	write_c0_count(0);
++
++	/* wait 1 second (the sampling clock transitions every 10ms) */
++	while (tick < 100) {
++		/* wait for transition */
++		while ((readl(status_reg) & 0x2) == orig)
++			;
++		orig = orig ^ 0x2;                            /* flip the bit */
++		tick++;
++	}
++
++	freq = read_c0_count();
++
++	local_irq_restore(flags);
++
++	mips_hpt_frequency = freq;
++
++	/* Adjust for processor */
++	if ((prid != (PRID_COMP_MIPS | PRID_IMP_20KC)) &&
++		(prid != (PRID_COMP_MIPS | PRID_IMP_25KF)))
++		freq *= 2;
++
++	freq += 5000;        /* rounding */
++	freq -= freq%10000;
++
++	return freq ;
++}
++
++void read_persistent_clock(struct timespec *ts)
++{
++	ts->tv_sec = 0;
++	ts->tv_nsec = 0;
++}
++
++static void __init plat_perf_setup(void)
++{
++	if (cp0_perfcount_irq >= 0) {
++		if (cpu_has_vint)
++			set_vi_handler(cp0_perfcount_irq, mips_perf_dispatch);
++		mips_cpu_perf_irq = MIPS_CPU_IRQ_BASE + cp0_perfcount_irq;
++	}
++}
++
++unsigned int __cpuinit get_c0_compare_int(void)
++{
++	if (cpu_has_vint)
++		set_vi_handler(cp0_compare_irq, mips_timer_dispatch);
++	mips_cpu_timer_irq = MIPS_CPU_IRQ_BASE + cp0_compare_irq;
++	return mips_cpu_timer_irq;
++}
++
++void __init plat_time_init(void)
++{
++	unsigned int est_freq;
++
++	est_freq = estimate_cpu_frequency();
++
++	pr_debug("CPU frequency %d.%02d MHz\n", (est_freq / 1000000),
++		(est_freq % 1000000) * 100 / 1000000);
++
++	cpu_khz = est_freq / 1000;
++
++	mips_scroll_message();
++
++	plat_perf_setup();
++}
 -- 
 1.7.11.1

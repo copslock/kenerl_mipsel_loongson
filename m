@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2012 16:58:48 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:53044 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2012 16:59:40 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:53199 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903482Ab2GXO6o (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 24 Jul 2012 16:58:44 +0200
+        id S1903773Ab2GXO7g (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 24 Jul 2012 16:59:36 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q6OEwhCG010259;
-        Tue, 24 Jul 2012 16:58:43 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q6OExZTD010278;
+        Tue, 24 Jul 2012 16:59:35 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q6OEwgsq010258;
-        Tue, 24 Jul 2012 16:58:42 +0200
-Date:   Tue, 24 Jul 2012 16:58:42 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q6OExYc8010277;
+        Tue, 24 Jul 2012 16:59:34 +0200
+Date:   Tue, 24 Jul 2012 16:59:34 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Jayachandran C <jayachandranc@netlogicmicro.com>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 05/12] MIPS: PCI: Fix for byte swap for Netlogic XLP
-Message-ID: <20120724145842.GA9721@linux-mips.org>
+Subject: Re: [PATCH 02/12] MIPS: Netlogic: Fix low-level flush on core wakeup
+Message-ID: <20120724145934.GB9721@linux-mips.org>
 References: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
- <1342196605-4260-6-git-send-email-jayachandranc@netlogicmicro.com>
+ <1342196605-4260-3-git-send-email-jayachandranc@netlogicmicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1342196605-4260-6-git-send-email-jayachandranc@netlogicmicro.com>
+In-Reply-To: <1342196605-4260-3-git-send-email-jayachandranc@netlogicmicro.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 33961
+X-archive-position: 33962
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,7 +40,6 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-
-Folded into https://patchwork.linux-mips.org/patch/3760/.  Thanks,
+Folded into https://patchwork.linux-mips.org/patch/3755/.  Thanks,
 
   Ralf

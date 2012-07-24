@@ -1,42 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2012 17:37:12 +0200 (CEST)
-Received: from mail-yw0-f49.google.com ([209.85.213.49]:40048 "EHLO
-        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903773Ab2GXPhE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2012 17:37:04 +0200
-Received: by yhjj52 with SMTP id j52so7242636yhj.36
-        for <multiple recipients>; Tue, 24 Jul 2012 08:36:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=oszyrvpLbtyymrJWYojdfquT31F6+AbqEd7llvr2IH0=;
-        b=cDemOVWpfeZZmLO64TkIW2PLbSQi9+M+o2540HrVjS6LT9+9ah8UYH6uem78+3Ha59
-         Lw09mxEbvcgZxmJ29T4tIPzlwIWVDY2axeeLI6f1m6GAuRxfeOcYkcEctZVNInJV0lUg
-         ttB8vfouuVm6c8ntTV9cwRxv9PZtaO1mBiHz1p5Q8yxyxGyjL/X9z9e1DNuvHPJeJ6FJ
-         4JUQdzuMA5/WDe7lolDYMxwmEAJSr4KucJy9DsMbcGVkMICDnuRTXo7VPB6ZR1zohxzh
-         wDshotxAUIozPZdbyTHuEzLENcTMRx5qNGcsm6U9S2Jzy9B+q1+bjZDa3QkEYmm2unnv
-         h/BA==
-Received: by 10.101.176.15 with SMTP id d15mr1875574anp.65.1343144218290; Tue,
- 24 Jul 2012 08:36:58 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2012 21:22:00 +0200 (CEST)
+Received: from nm39-vm3.bullet.mail.ne1.yahoo.com ([98.138.229.163]:45971 "HELO
+        nm39-vm3.bullet.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with SMTP id S1903514Ab2GXR3B convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 24 Jul 2012 19:29:01 +0200
+Received: from [98.138.90.53] by nm39.bullet.mail.ne1.yahoo.com with NNFMP; 24 Jul 2012 17:28:54 -0000
+Received: from [98.138.87.3] by tm6.bullet.mail.ne1.yahoo.com with NNFMP; 24 Jul 2012 17:28:54 -0000
+Received: from [127.0.0.1] by omp1003.mail.ne1.yahoo.com with NNFMP; 24 Jul 2012 17:28:54 -0000
+X-Yahoo-Newman-Property: ymail-3
+X-Yahoo-Newman-Id: 463954.41581.bm@omp1003.mail.ne1.yahoo.com
+Received: (qmail 42678 invoked by uid 60001); 24 Jul 2012 17:28:54 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s1024; t=1343150934; bh=1IvZWmBPyQs/V5P1DmuftysmCCBIIlTxQ1d0fIuDhgE=; h=X-YMail-OSG:Received:X-Mailer:References:Message-ID:Date:From:Reply-To:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding; b=iUqquVDWWaCcr90MNxZEHdUvR9Xacenk1ec0/R5p9lu/UpKCtxU0SKl2rSobhjX8JwO6b34W45q7nSkfZZnRMTvUgqdZ54rNRpXP9A8CJJc0/q6FeKdvMy6FVEf7y4gqIU26m5V3XtBZTbJrRGcvlZo3DHcdKuJZbFvSAkjEz58=
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=X-YMail-OSG:Received:X-Mailer:References:Message-ID:Date:From:Reply-To:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=U5C8zo1eeGHyo5p9Km5pbLIBqVVKHRBCtUawMcL0xrUsGXQ98PCS6DTNT+oaXEWvtOg6T9h1KXWH5Jxtm82xvv/ZZ27wWjlEZrN2hOyp+ItI8123qZn+A84mSw9biFqsAK7AF8KAq89NwNgnFqteiZMhIPo1zkm51WV6RnAcYSg=;
+X-YMail-OSG: gtE8kOYVM1m97HaO7wQWuSE3csD833ZmPOnBeUPnPk_FShg
+ uX2Pr__SUnxxMIaWHV31kB1UTehJ81ylJuL1jq9roS_BGhQ3xNdihlYmBrgI
+ ui6eNtzyz6pGGeUqvLiQOo.IBGMjR2M0G7yDo32VdHpNh2lwX3mV1iHnp3vt
+ CEwb2_9v8apC3ROeuxPJnoV19dnCawzisvKcFX4kBtSLB6_saipFDw4FEj.d
+ 8ammgm8HUWOO9NbISZCIwGwRymfv6CwEj0TSJ0_yweZd1QoE.fCNU08GokyW
+ Q8rIqk_BY5FQi_ZRdFWRqKTYXy07RRRVU8Qj8iODb5jtAjvquTUUYx1cqTJJ
+ Y209J.MHQB4gATxaCkJd9d8xaDX944NNmT7TezfF5xKyx2SdKrSDjupzSYoZ
+ 29Gvp6g74MsfDSYdCaDdjl8Yye60rRXuGhYVJ0_yAEHOF.4Rcb89JUUqmL9b
+ J2SHSqBmdJzyZwKflLk9wV2LP03Wc.a3oMK0-
+Received: from [128.18.40.206] by web120104.mail.ne1.yahoo.com via HTTP; Tue, 24 Jul 2012 10:28:54 PDT
+X-Mailer: YahooMailWebService/0.8.120.356233
+References: <1342922751.65328.YahooMailNeo@web120106.mail.ne1.yahoo.com> <CAJd=RBC24UXztNoKews5sE06DRvk_cBEYunHT7Zc-rdvAFF0ew@mail.gmail.com>
+Message-ID: <1343150934.42443.YahooMailNeo@web120104.mail.ne1.yahoo.com>
+Date:   Tue, 24 Jul 2012 10:28:54 -0700 (PDT)
+From:   Victor Meyerson <calculuspenguin@yahoo.com>
+Reply-To: Victor Meyerson <calculuspenguin@yahoo.com>
+Subject: Re: Direct I/O bug in kernel
+To:     Hillf Danton <dhillf@gmail.com>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <CAJd=RBC24UXztNoKews5sE06DRvk_cBEYunHT7Zc-rdvAFF0ew@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 10.236.92.208 with HTTP; Tue, 24 Jul 2012 08:36:18 -0700 (PDT)
-In-Reply-To: <500EBE6F.5030208@einfach.org>
-References: <1342126445-13408-1-git-send-email-br1@einfach.org>
- <500EBB99.5050209@einfach.org> <CAOLZvyEvV7EQtZAQrzh8Ui-MD9BDXcdFGG6u6uQVeLQ6pqU6JQ@mail.gmail.com>
- <500EBE6F.5030208@einfach.org>
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-Date:   Tue, 24 Jul 2012 17:36:18 +0200
-Message-ID: <CAOLZvyHhkrZrbEKz_hDLjtH5F28YrQqjxO46OrYfKtwL56ByCw@mail.gmail.com>
-Subject: Re: [PATCH] mtx-1: add udelay to mtx1_pci_idsel
-To:     Bruno Randolf <br1@einfach.org>
-Cc:     linux-mips@linux-mips.org, manuel.lauss@googlemail.com,
-        ralf@linux-mips.org, florian@openwrt.org
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 33967
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 33968
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: calculuspenguin@yahoo.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,93 +59,133 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Jul 24, 2012 at 5:25 PM, Bruno Randolf <br1@einfach.org> wrote:
-> On 07/24/2012 04:20 PM, Manuel Lauss wrote:
->>
->> On Tue, Jul 24, 2012 at 5:13 PM, Bruno Randolf <br1@einfach.org> wrote:
->>>
->>> Hello? Any feedback?
->>>
->>> I know the description is not very good, but this patch is necessary for
->>> PCI
->>> to work on the Surfbox.
->>>
->>> Thanks,
->>> bruno
->>>
->>>
->>> On 07/12/2012 09:54 PM, Bruno Randolf wrote:
->>>>
->>>>
->>>> Without this udelay(1) PCI idsel does not work correctly on the
->>>> "singleboard"
->>>> (T-Mobile Surfbox) for the MiniPCI device. The result is that PCI
->>>> configuration
->>>> fails and the MiniPCI card is not detected correctly. Instead of
->>>>
->>>> PCI host bridge to bus 0000:00
->>>> pci_bus 0000:00: root bus resource [mem 0x40000000-0x4fffffff]
->>>> pci_bus 0000:00: root bus resource [io  0x1000-0xffff]
->>>> pci 0000:00:03.0: BAR 0: assigned [mem 0x40000000-0x4000ffff]
->>>> pci 0000:00:00.0: BAR 0: assigned [mem 0x40010000-0x40010fff]
->>>> pci 0000:00:00.1: BAR 0: assigned [mem 0x40011000-0x40011fff]
->>>>
->>>> We see only the CardBus device:
->>>>
->>>> PCI host bridge to bus 0000:00
->>>> pci_bus 0000:00: root bus resource [mem 0x40000000-0x4fffffff]
->>>> pci_bus 0000:00: root bus resource [io  0x1000-0xffff]
->>>> pci 0000:00:00.0: BAR 0: assigned [mem 0x40000000-0x40000fff]
->>>> pci 0000:00:00.1: BAR 0: assigned [mem 0x40001000-0x40001fff]
->>>>
->>>> Later the device driver shows this error:
->>>>
->>>> ath5k 0000:00:03.0: cannot remap PCI memory region
->>>> ath5k: probe of 0000:00:03.0 failed with error -5
->>>>
->>>> I assume that the logic chip which usually supresses the signal to the
->>>> CardBus
->>>> card has some settling time and without the delay it would still let the
->>>> Cardbus interfere with the response from the MiniPCI card.
->>>>
->>>> What I cannot explain is why this behaviour shows up now and not in
->>>> earlier
->>>> kernel versions before. Maybe older PCI code was slower?
->>>>
->>>> Signed-off-by: Bruno Randolf <br1@einfach.org>
->>>> ---
->>>>    arch/mips/alchemy/board-mtx1.c |    2 ++
->>>>    1 file changed, 2 insertions(+)
->>>>
->>>> diff --git a/arch/mips/alchemy/board-mtx1.c
->>>> b/arch/mips/alchemy/board-mtx1.c
->>>> index 295f1a9..e107a2f 100644
->>>> --- a/arch/mips/alchemy/board-mtx1.c
->>>> +++ b/arch/mips/alchemy/board-mtx1.c
->>>> @@ -228,6 +228,8 @@ static int mtx1_pci_idsel(unsigned int devsel, int
->>>> assert)
->>>>           * adapter on the mtx-1 "singleboard" variant. It triggers a
->>>> custom
->>>>           * logic chip connected to EXT_IO3 (GPIO1) to suppress IDSEL
->>>> signals.
->>>>           */
->>>> +       udelay(1);
->>>> +
->>>>          if (assert && devsel != 0)
->>>>                  /* Suppress signal to Cardbus */
->>>>                  alchemy_gpio_set_value(1, 0);   /* set EXT_IO3 OFF */
->>>>
->>
->> Why don't you increase the delay value in the udelay() immediately
->> following
->> this part?
->
->
-> Yes that would be logical and was my first try. Unfortunately it does not
-> work. It's weird, but the delay needs to be before as well.
+----- Original Message -----
 
-I don't get it.  I suppose the activation phase of the signal is too short, yes?
-Maybe a _much_ larger value (100/1000) would do the trick?   Do you have an
-oscilloscope to check the duty cycle?
+> From: Hillf Danton <dhillf@gmail.com>
+> To: Victor Meyerson <calculuspenguin@yahoo.com>
+> Cc: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>; Ralf Baechle <ralf@linux-mips.org>; LKML <linux-kernel@vger.kernel.org>
+> Sent: Tuesday, July 24, 2012 6:04 AM
+> Subject: Re: Direct I/O bug in kernel
+> 
+> On Sun, Jul 22, 2012 at 10:05 AM, Victor Meyerson
+> <calculuspenguin@yahoo.com> wrote:
+>>  Hi,
+>> 
+>>  I recently found a bug related to direct io in post 3.3 linux kernels.  
+> Fortunately, my hardware (a Cobalt Qube2) is supported by the vanilla kernel so 
+> I did not need additional patch sets to get the machine to boot.  I ran git 
+> bisect on the main tree[1] and tested the various bisect results until git 
+> reported the first bad commit.  After several bisects and many reboots, git 
+> reported that [2] was the first bad commit.
+>> 
+>>  In testing this I came up with a repeatable process.  Unfortunately, I do 
+> not have any other MIPS hardware to test this on and I believe that based on the 
+> commit in question that it is MIPS related.  My procedure is as follows:
+>> 
+>>  1) Create a random file to be used on the two kernels (one before the 
+> commit, and one that includes the commit)
+>>  $ dd if=/dev/urandom of=random-file bs=512 count=30720
+>>  30720+0 records in
+>>  30720+0 records out
+>>  15728640 bytes (16 MB) copied, 60.7035 s, 259 kB/s
+>>  $ chmod -w random-file
+>> 
+>>  2) Reboot to the kernel before the commit and run dd with direct io.  
+> Repeat.
+>>  $ uname -a
+>>  Linux horadric 3.2.0-dirty #2 Fri Jul 13 06:20:22 PDT 2012 mips64 Nevada 
+> V10.0 FPU V10.0 Cobalt Qube2 GNU/Linux
+>>  $ dd if=random-file of=portion-of-random-3.2.0 bs=512 count=20480 
+> iflag=direct
+>>  20480+0 records in
+>>  20480+0 records out
+>>  10485760 bytes (10 MB) copied, 42.3636 s, 248 kB/s
+>>  $ reboot
+>>  $ dd if=random-file of=portion-of-random-3.2.0-2 bs=512 count=20480 
+> iflag=direct
+>>  20480+0 records in
+>>  20480+0 records out
+>>  10485760 bytes (10 MB) copied, 42.5252 s, 247 kB/s
+>> 
+>>  3) Reboot to the kernel with the commit and run dd with direct io.  Repeat.
+>>  $ uname -a
+>>  Linux horadric 3.2.0-rc4-00003-gb1c10be-dirty #15 Fri Jul 20 15:05:13 PDT 
+> 2012 mips64 Nevada V10.0 FPU V10.0 Cobalt Qube2 GNU/Linux
+>>  $ dd if=random-file of=portion-of-random-3.2.0-rc4 bs=512 count=20480 
+> iflag=direct
+>>  20480+0 records in
+>>  20480+0 records out
+>>  10485760 bytes (10 MB) copied, 40.6226 s, 258 kB/s
+>>  $ reboot
+>>  $ dd if=random-file of=portion-of-random-3.2.0-rc4-2 bs=512 count=20480 
+> iflag=direct
+>>  20480+0 records in
+>>  20480+0 records out
+>>  10485760 bytes (10 MB) copied, 40.8856 s, 256 kB/s
+>> 
+> Hi Victor,
+> 
+> Create files with
+> 
+>     dd if=random-file of=portion-of-random-3.2.0-rc4    bs=8k
+> count=1280 iflag=direct
+>     dd if=random-file of=portion-of-random-3.2.0-rc4-2 bs=8k
+> count=1280 iflag=direct
+> 
+> without reboot(why reboot needed?), then see the changes in checksums.
+> 
+> Thanks
+> Hillf
+> 
 
-Manuel
+Hi Hillf,
+
+I rebooted in an attempt to make sure nothing was cached between runs.  In any case, here are the results without a reboot:
+
+$ dd if=random-file of=portion-of-random-3.2.0-rc4 bs=8k count=1280 iflag=direct
+1280+0 records in
+1280+0 records out
+10485760 bytes (10 MB) copied, 6.00599 s, 1.7 MB/s
+$ dd if=random-file of=portion-of-random-3.2.0-rc4-2 bs=8k count=1280 iflag=direct
+1280+0 records in
+1280+0 records out
+10485760 bytes (10 MB) copied, 5.25964 s, 2.0 MB/s
+$ sha256sum portion-of-random-3.2.0-rc4*
+4c56820030ce22e6cc96127a53f6025d11a78f2fd3b0c1dec44f6d6746f70bbd  portion-of-random-3.2.0-rc4
+05c41d626a67b9bcddb0e7b905533c63a0866092b819bf01cdb2a80f29c2b162  portion-of-random-3.2.0-rc4-2
+
+Still different checksums and I used the same random-file from my first test.
+
+Victor
+
+>>  4) Compare checksums of the resulting files.
+>>  $ sha256sum portion-of-random-3.2.0*
+>>  c98a6e949b36448842a21f68e7c6a5daff1f161e1eb3e3529176cf56bf5af89e  
+> portion-of-random-3.2.0
+>>  c98a6e949b36448842a21f68e7c6a5daff1f161e1eb3e3529176cf56bf5af89e  
+> portion-of-random-3.2.0-2
+>>  dca27da87a78580b8a34bbff2790ae80d3aa880d5d00fc2126f109d6fff9e056  
+> portion-of-random-3.2.0-rc4
+>>  703cf02d4fa90679d4a75900e7e5a3b8c3000a65bfc475610b10f17bb88bedbc  
+> portion-of-random-3.2.0-rc4-2
+>> 
+>>  Notice how the last two files have different checksums between themselves 
+> and even different from the first two files.  This lead me to believe that there 
+> is a problem with direct io.  All the files are the same size and should include 
+> the same portion of the random file created in step 1).
+>> 
+>>  My configuration is the Cobalt Qube2 with a 64-bit kernel and an n32 
+> userspace.  Hopefully someone with a much more deeper understanding of the 
+> kernel can confirm and provide a fix for this (assuming one has not been created 
+> yet).
+>> 
+>>  Thanks.  Let me know if there is any additional information that may help 
+> with the investigation.
+>> 
+>>  Victor
+>> 
+>> 
+>>  [1] http://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+>>  [2] 
+> http://git.kernel.org/?p=linux/kernel/git/torvalds/linux.git;a=commitdiff;h=b1c10bea620f79109b5cc9935267bea4f6f29ac6
+> 

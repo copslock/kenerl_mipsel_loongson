@@ -1,32 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2012 16:59:40 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:53199 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903773Ab2GXO7g (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 24 Jul 2012 16:59:36 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q6OExZTD010278;
-        Tue, 24 Jul 2012 16:59:35 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q6OExYc8010277;
-        Tue, 24 Jul 2012 16:59:34 +0200
-Date:   Tue, 24 Jul 2012 16:59:34 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jayachandran C <jayachandranc@netlogicmicro.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 02/12] MIPS: Netlogic: Fix low-level flush on core wakeup
-Message-ID: <20120724145934.GB9721@linux-mips.org>
-References: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
- <1342196605-4260-3-git-send-email-jayachandranc@netlogicmicro.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2012 17:13:43 +0200 (CEST)
+Received: from postler.einfach.org ([86.59.21.13]:55365 "EHLO
+        postler.einfach.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903748Ab2GXPNj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2012 17:13:39 +0200
+Received: from [192.168.2.106] (217.Red-88-23-52.staticIP.rima-tde.net [88.23.52.217])
+        by postler.einfach.org (Postfix) with ESMTPSA id 36FE721421EB;
+        Tue, 24 Jul 2012 17:13:31 +0200 (CEST)
+Message-ID: <500EBB99.5050209@einfach.org>
+Date:   Tue, 24 Jul 2012 16:13:29 +0100
+From:   Bruno Randolf <br1@einfach.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20120714 Thunderbird/14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1342196605-4260-3-git-send-email-jayachandranc@netlogicmicro.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 33962
+To:     Bruno Randolf <br1@einfach.org>
+CC:     linux-mips@linux-mips.org, manuel.lauss@googlemail.com,
+        ralf@linux-mips.org, florian@openwrt.org
+Subject: Re: [PATCH] mtx-1: add udelay to mtx1_pci_idsel
+References: <1342126445-13408-1-git-send-email-br1@einfach.org>
+In-Reply-To: <1342126445-13408-1-git-send-email-br1@einfach.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 33963
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: br1@einfach.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,6 +37,62 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Folded into https://patchwork.linux-mips.org/patch/3755/.  Thanks,
+Hello? Any feedback?
 
-  Ralf
+I know the description is not very good, but this patch is necessary for 
+PCI to work on the Surfbox.
+
+Thanks,
+bruno
+
+On 07/12/2012 09:54 PM, Bruno Randolf wrote:
+> Without this udelay(1) PCI idsel does not work correctly on the "singleboard"
+> (T-Mobile Surfbox) for the MiniPCI device. The result is that PCI configuration
+> fails and the MiniPCI card is not detected correctly. Instead of
+>
+> PCI host bridge to bus 0000:00
+> pci_bus 0000:00: root bus resource [mem 0x40000000-0x4fffffff]
+> pci_bus 0000:00: root bus resource [io  0x1000-0xffff]
+> pci 0000:00:03.0: BAR 0: assigned [mem 0x40000000-0x4000ffff]
+> pci 0000:00:00.0: BAR 0: assigned [mem 0x40010000-0x40010fff]
+> pci 0000:00:00.1: BAR 0: assigned [mem 0x40011000-0x40011fff]
+>
+> We see only the CardBus device:
+>
+> PCI host bridge to bus 0000:00
+> pci_bus 0000:00: root bus resource [mem 0x40000000-0x4fffffff]
+> pci_bus 0000:00: root bus resource [io  0x1000-0xffff]
+> pci 0000:00:00.0: BAR 0: assigned [mem 0x40000000-0x40000fff]
+> pci 0000:00:00.1: BAR 0: assigned [mem 0x40001000-0x40001fff]
+>
+> Later the device driver shows this error:
+>
+> ath5k 0000:00:03.0: cannot remap PCI memory region
+> ath5k: probe of 0000:00:03.0 failed with error -5
+>
+> I assume that the logic chip which usually supresses the signal to the CardBus
+> card has some settling time and without the delay it would still let the
+> Cardbus interfere with the response from the MiniPCI card.
+>
+> What I cannot explain is why this behaviour shows up now and not in earlier
+> kernel versions before. Maybe older PCI code was slower?
+>
+> Signed-off-by: Bruno Randolf <br1@einfach.org>
+> ---
+>   arch/mips/alchemy/board-mtx1.c |    2 ++
+>   1 file changed, 2 insertions(+)
+>
+> diff --git a/arch/mips/alchemy/board-mtx1.c b/arch/mips/alchemy/board-mtx1.c
+> index 295f1a9..e107a2f 100644
+> --- a/arch/mips/alchemy/board-mtx1.c
+> +++ b/arch/mips/alchemy/board-mtx1.c
+> @@ -228,6 +228,8 @@ static int mtx1_pci_idsel(unsigned int devsel, int assert)
+>   	 * adapter on the mtx-1 "singleboard" variant. It triggers a custom
+>   	 * logic chip connected to EXT_IO3 (GPIO1) to suppress IDSEL signals.
+>   	 */
+> +	udelay(1);
+> +
+>   	if (assert && devsel != 0)
+>   		/* Suppress signal to Cardbus */
+>   		alchemy_gpio_set_value(1, 0);	/* set EXT_IO3 OFF */
+>

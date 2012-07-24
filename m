@@ -1,29 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2012 23:23:03 +0200 (CEST)
-Received: from postler.einfach.org ([86.59.21.13]:55474 "EHLO
-        postler.einfach.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903509Ab2GXVWz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2012 23:22:55 +0200
-Received: from [192.168.2.106] (79.Red-193-153-81.dynamicIP.rima-tde.net [193.153.81.79])
-        by postler.einfach.org (Postfix) with ESMTPSA id DDC9221421EB;
-        Tue, 24 Jul 2012 23:22:48 +0200 (CEST)
-Message-ID: <500F1226.1070500@einfach.org>
-Date:   Tue, 24 Jul 2012 22:22:46 +0100
-From:   Bruno Randolf <br1@einfach.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20120714 Thunderbird/14.0
-MIME-Version: 1.0
-To:     Manuel Lauss <manuel.lauss@gmail.com>
-CC:     linux-mips@linux-mips.org, manuel.lauss@googlemail.com,
-        ralf@linux-mips.org, florian@openwrt.org
-Subject: Re: [PATCH] mtx-1: add udelay to mtx1_pci_idsel
-References: <1342126445-13408-1-git-send-email-br1@einfach.org> <500EBB99.5050209@einfach.org> <CAOLZvyEvV7EQtZAQrzh8Ui-MD9BDXcdFGG6u6uQVeLQ6pqU6JQ@mail.gmail.com> <500EBE6F.5030208@einfach.org> <CAOLZvyHhkrZrbEKz_hDLjtH5F28YrQqjxO46OrYfKtwL56ByCw@mail.gmail.com> <CAOLZvyHAs_QtDV5ZaOVurLLFzeHU5RK+ZrW-Ew2juPkjL=5f+Q@mail.gmail.com>
-In-Reply-To: <CAOLZvyHAs_QtDV5ZaOVurLLFzeHU5RK+ZrW-Ew2juPkjL=5f+Q@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 33970
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2012 23:40:01 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:49861 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903509Ab2GXVjy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2012 23:39:54 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1StmpW-0003xh-KC; Tue, 24 Jul 2012 16:39:46 -0500
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
+Subject: [PATCH v6,04/10] Add the MIPS32R2 'ins' and 'ext' instructions for use by the kernel's micro-assembler.
+Date:   Tue, 24 Jul 2012 16:39:41 -0500
+Message-Id: <1343165981-1570-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.11.1
+X-archive-position: 33971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: br1@einfach.org
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,104 +32,82 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 07/24/2012 08:08 PM, Manuel Lauss wrote:
-> On Tue, Jul 24, 2012 at 5:36 PM, Manuel Lauss <manuel.lauss@gmail.com> wrote:
->> On Tue, Jul 24, 2012 at 5:25 PM, Bruno Randolf <br1@einfach.org> wrote:
->>> On 07/24/2012 04:20 PM, Manuel Lauss wrote:
->>>>
->>>> On Tue, Jul 24, 2012 at 5:13 PM, Bruno Randolf <br1@einfach.org> wrote:
->>>>>
->>>>> Hello? Any feedback?
->>>>>
->>>>> I know the description is not very good, but this patch is necessary for
->>>>> PCI
->>>>> to work on the Surfbox.
->>>>>
->>>>> Thanks,
->>>>> bruno
->>>>>
->>>>>
->>>>> On 07/12/2012 09:54 PM, Bruno Randolf wrote:
->>>>>>
->>>>>>
->>>>>> Without this udelay(1) PCI idsel does not work correctly on the
->>>>>> "singleboard"
->>>>>> (T-Mobile Surfbox) for the MiniPCI device. The result is that PCI
->>>>>> configuration
->>>>>> fails and the MiniPCI card is not detected correctly. Instead of
->>>>>>
->>>>>> PCI host bridge to bus 0000:00
->>>>>> pci_bus 0000:00: root bus resource [mem 0x40000000-0x4fffffff]
->>>>>> pci_bus 0000:00: root bus resource [io  0x1000-0xffff]
->>>>>> pci 0000:00:03.0: BAR 0: assigned [mem 0x40000000-0x4000ffff]
->>>>>> pci 0000:00:00.0: BAR 0: assigned [mem 0x40010000-0x40010fff]
->>>>>> pci 0000:00:00.1: BAR 0: assigned [mem 0x40011000-0x40011fff]
->>>>>>
->>>>>> We see only the CardBus device:
->>>>>>
->>>>>> PCI host bridge to bus 0000:00
->>>>>> pci_bus 0000:00: root bus resource [mem 0x40000000-0x4fffffff]
->>>>>> pci_bus 0000:00: root bus resource [io  0x1000-0xffff]
->>>>>> pci 0000:00:00.0: BAR 0: assigned [mem 0x40000000-0x40000fff]
->>>>>> pci 0000:00:00.1: BAR 0: assigned [mem 0x40001000-0x40001fff]
->>>>>>
->>>>>> Later the device driver shows this error:
->>>>>>
->>>>>> ath5k 0000:00:03.0: cannot remap PCI memory region
->>>>>> ath5k: probe of 0000:00:03.0 failed with error -5
->>>>>>
->>>>>> I assume that the logic chip which usually supresses the signal to the
->>>>>> CardBus
->>>>>> card has some settling time and without the delay it would still let the
->>>>>> Cardbus interfere with the response from the MiniPCI card.
->>>>>>
->>>>>> What I cannot explain is why this behaviour shows up now and not in
->>>>>> earlier
->>>>>> kernel versions before. Maybe older PCI code was slower?
->>>>>>
->>>>>> Signed-off-by: Bruno Randolf <br1@einfach.org>
->>>>>> ---
->>>>>>     arch/mips/alchemy/board-mtx1.c |    2 ++
->>>>>>     1 file changed, 2 insertions(+)
->>>>>>
->>>>>> diff --git a/arch/mips/alchemy/board-mtx1.c
->>>>>> b/arch/mips/alchemy/board-mtx1.c
->>>>>> index 295f1a9..e107a2f 100644
->>>>>> --- a/arch/mips/alchemy/board-mtx1.c
->>>>>> +++ b/arch/mips/alchemy/board-mtx1.c
->>>>>> @@ -228,6 +228,8 @@ static int mtx1_pci_idsel(unsigned int devsel, int
->>>>>> assert)
->>>>>>            * adapter on the mtx-1 "singleboard" variant. It triggers a
->>>>>> custom
->>>>>>            * logic chip connected to EXT_IO3 (GPIO1) to suppress IDSEL
->>>>>> signals.
->>>>>>            */
->>>>>> +       udelay(1);
->>>>>> +
->>>>>>           if (assert && devsel != 0)
->>>>>>                   /* Suppress signal to Cardbus */
->>>>>>                   alchemy_gpio_set_value(1, 0);   /* set EXT_IO3 OFF */
->>>>>>
->>>>
->>>> Why don't you increase the delay value in the udelay() immediately
->>>> following
->>>> this part?
->>>
->>>
->>> Yes that would be logical and was my first try. Unfortunately it does not
->>> work. It's weird, but the delay needs to be before as well.
->>
->> I don't get it.  I suppose the activation phase of the signal is too short, yes?
->> Maybe a _much_ larger value (100/1000) would do the trick?   Do you have an
->> oscilloscope to check the duty cycle?
->
->
-> Ignore that.  After thinking more about it (and remembering
-> VHDL/Verilog classes)
-> I now understand what's going on and the original patch is okay.
+From: "Steven J. Hill" <sjhill@mips.com>
 
-Thanks! Honestly I don't understand it, but I know it works only that 
-way... ;) I tried a longer delay after (up to 100us for sure) and 
-unfortunately I don't have an oscilloscope to see the signals.
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/include/asm/uasm.h |  4 ++--
+ arch/mips/mm/uasm.c          | 15 +++++++++++++--
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-Bruno
+diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
+index 53db9d7..7e0bf17 100644
+--- a/arch/mips/include/asm/uasm.h
++++ b/arch/mips/include/asm/uasm.h
+@@ -66,8 +66,6 @@ Ip_u3u1u2(_addu);
+ Ip_u3u1u2(_and);
+ Ip_u2u1u3(_andi);
+ Ip_u1u2s3(_bbit0);
+-Ip_u1u2s3(_bbit0);
+-Ip_u1u2s3(_bbit1);
+ Ip_u1u2s3(_bbit1);
+ Ip_u1u2s3(_beq);
+ Ip_u1u2s3(_beql);
+@@ -92,6 +90,8 @@ Ip_u2u1u3(_dsrl);
+ Ip_u2u1u3(_dsrl32);
+ Ip_u3u1u2(_dsubu);
+ Ip_0(_eret);
++Ip_u2u1msbu3(_ext);
++Ip_u2u1msbu3(_ins);
+ Ip_u1(_j);
+ Ip_u1(_jal);
+ Ip_u1(_jr);
+diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+index 5fa1851..f6ba16e 100644
+--- a/arch/mips/mm/uasm.c
++++ b/arch/mips/mm/uasm.c
+@@ -63,8 +63,8 @@ enum opcode {
+ 	insn_bne, insn_cache, insn_daddu, insn_daddiu, insn_dmfc0,
+ 	insn_dmtc0, insn_dsll, insn_dsll32, insn_dsra, insn_dsrl,
+ 	insn_dsrl32, insn_drotr, insn_drotr32, insn_dsubu, insn_eret,
+-	insn_j, insn_jal, insn_jr, insn_ld, insn_ll, insn_lld,
+-	insn_lui, insn_lw, insn_mfc0, insn_mtc0, insn_or, insn_ori,
++	insn_ext, insn_ins, insn_j, insn_jal, insn_jr, insn_ld, insn_ll,
++	insn_lld, insn_lui, insn_lw, insn_mfc0, insn_mtc0, insn_or, insn_ori,
+ 	insn_pref, insn_rfe, insn_sc, insn_scd, insn_sd, insn_sll,
+ 	insn_sra, insn_srl, insn_rotr, insn_subu, insn_sw, insn_tlbp,
+ 	insn_tlbr, insn_tlbwi, insn_tlbwr, insn_xor, insn_xori,
+@@ -113,6 +113,8 @@ static struct insn insn_table[] __uasminitdata = {
+ 	{ insn_drotr32, M(spec_op, 1, 0, 0, 0, dsrl32_op), RT | RD | RE },
+ 	{ insn_dsubu, M(spec_op, 0, 0, 0, 0, dsubu_op), RS | RT | RD },
+ 	{ insn_eret,  M(cop0_op, cop_op, 0, 0, 0, eret_op),  0 },
++	{ insn_ext, M(spec3_op, 0, 0, 0, 0, ext_op), RS | RT | RD | RE },
++	{ insn_ins, M(spec3_op, 0, 0, 0, 0, ins_op), RS | RT | RD | RE },
+ 	{ insn_j,  M(j_op, 0, 0, 0, 0, 0),  JIMM },
+ 	{ insn_jal,  M(jal_op, 0, 0, 0, 0, 0),  JIMM },
+ 	{ insn_jr,  M(spec_op, 0, 0, 0, 0, jr_op),  RS },
+@@ -343,6 +345,13 @@ Ip_u2u1msbu3(op)					\
+ }							\
+ UASM_EXPORT_SYMBOL(uasm_i##op);
+ 
++#define I_u2u1msbdu3(op) 				\
++Ip_u2u1msbu3(op)					\
++{							\
++	build_insn(buf, insn##op, b, a, d-1, c);	\
++}							\
++UASM_EXPORT_SYMBOL(uasm_i##op);
++
+ #define I_u1u2(op)					\
+ Ip_u1u2(op)						\
+ {							\
+@@ -396,6 +405,8 @@ I_u2u1u3(_drotr)
+ I_u2u1u3(_drotr32)
+ I_u3u1u2(_dsubu)
+ I_0(_eret)
++I_u2u1msbdu3(_ext)
++I_u2u1msbu3(_ins)
+ I_u1(_j)
+ I_u1(_jal)
+ I_u1(_jr)
+-- 
+1.7.11.1

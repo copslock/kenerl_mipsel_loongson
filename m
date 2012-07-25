@@ -1,24 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2012 23:44:42 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:49887 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903786Ab2GXVk4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2012 23:40:56 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <sjhill@mips.com>)
-        id 1StmqX-0003yh-F3; Tue, 24 Jul 2012 16:40:49 -0500
-From:   "Steven J. Hill" <sjhill@mips.com>
-To:     linux-mips@linux-mips.org
-Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH] MIPS: Whitespace and various formatting clean-ups for microMIPS.
-Date:   Tue, 24 Jul 2012 16:40:45 -0500
-Message-Id: <1343166045-1974-1-git-send-email-sjhill@mips.com>
-X-Mailer: git-send-email 1.7.11.1
-X-archive-position: 33982
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2012 08:07:06 +0200 (CEST)
+Received: from mail-gg0-f177.google.com ([209.85.161.177]:60713 "EHLO
+        mail-gg0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1901173Ab2GYGG5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jul 2012 08:06:57 +0200
+Received: by ggcs5 with SMTP id s5so356961ggc.36
+        for <multiple recipients>; Tue, 24 Jul 2012 23:06:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=3ju8WvNY7xi2GYeY5hi8LsLpK3ktSZrCS5nbhLjRKCY=;
+        b=dNtl9E5WKnJ4fWvWKGPAWLYGftyCMOfwUpXiTMzmGeXh93JIL05lkiZfdB3RfnDfOA
+         0qNDqDkosaZyp3cXK4wXUrYUHtvz4zruwvMq+CqWleXhXyafaWkc6lyUeODXO+PDj5UR
+         rrNVR55t1UZM9qHBb47EByNhnDXoVPWMtRdlzR85U0vS3DhTERbCd8Hy57cSfZvbR6JQ
+         wGPQ9rpHBnCxtWDY0rR4aVzWGkjGASx1fos8bt4o3Nw3uvGcqvYNQ8XMO570BoU3bSic
+         Vgn0vfwhmJgBn6yEiS0Qb3k5odOi99sV5TCl4jlWY1zHsub+uNiiGUPr319qUD69DZ29
+         /vlQ==
+Received: by 10.68.217.73 with SMTP id ow9mr51492639pbc.75.1343196410164;
+        Tue, 24 Jul 2012 23:06:50 -0700 (PDT)
+Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
+        by mx.google.com with ESMTPS id pj10sm13694271pbb.46.2012.07.24.23.06.45
+        (version=SSLv3 cipher=OTHER);
+        Tue, 24 Jul 2012 23:06:49 -0700 (PDT)
+From:   Kelvin Cheung <keguang.zhang@gmail.com>
+To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org
+Cc:     wuzhangjin@gmail.com, zhzhl555@gmail.com,
+        Kelvin Cheung <keguang.zhang@gmail.com>
+Subject: [PATCH V7 2/4] (Updated) MIPS: Add board support for Loongson1B
+Date:   Wed, 25 Jul 2012 14:06:39 +0800
+Message-Id: <1343196401-6435-1-git-send-email-keguang.zhang@gmail.com>
+X-Mailer: git-send-email 1.7.1
+X-archive-position: 33983
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@mips.com
+X-original-sender: keguang.zhang@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -32,395 +48,1013 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: "Steven J. Hill" <sjhill@mips.com>
+This patch adds basic platform devices for Loongson1B,
+including serial port, ethernet, usb, rtc and interrupt handler.
 
-Signed-off-by: Steven J. Hill <sjhill@mips.com>
+Loongson1B UART is compatible with NS16550A.
+Loongson1B GMAC is built around Synopsys IP Core.
+
+Use normal descriptor instead of enhanced descriptor.
+Thanks to Giuseppe for updating the normal descriptor
+in stmmac driver.
+
+Thanks to Zhao Zhang for implementing the RTC driver.
+
+Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+
 ---
- arch/mips/include/asm/inst.h | 134 +++++++++++++++++++++----------------------
- arch/mips/kernel/proc.c      |   5 +-
- arch/mips/kernel/traps.c     |   4 +-
- 3 files changed, 72 insertions(+), 71 deletions(-)
+V7(updated):
+	1.Remove 'ifdef' of platform devices. (Asked by Ralf)
+	2.Modify plat_stmmacenet_data accordingly due to the change
+	  of upstream.
+---
+ arch/mips/include/asm/mach-loongson1/irq.h       |   73 ++++++++++
+ arch/mips/include/asm/mach-loongson1/loongson1.h |   44 ++++++
+ arch/mips/include/asm/mach-loongson1/platform.h  |   23 +++
+ arch/mips/include/asm/mach-loongson1/prom.h      |   24 +++
+ arch/mips/include/asm/mach-loongson1/regs-clk.h  |   33 +++++
+ arch/mips/include/asm/mach-loongson1/regs-wdt.h  |   22 +++
+ arch/mips/include/asm/mach-loongson1/war.h       |   25 ++++
+ arch/mips/loongson1/common/clock.c               |  165 ++++++++++++++++++++++
+ arch/mips/loongson1/common/irq.c                 |  147 +++++++++++++++++++
+ arch/mips/loongson1/common/platform.c            |  124 ++++++++++++++++
+ arch/mips/loongson1/common/prom.c                |   87 ++++++++++++
+ arch/mips/loongson1/common/reset.c               |   45 ++++++
+ arch/mips/loongson1/common/setup.c               |   29 ++++
+ arch/mips/loongson1/ls1b/board.c                 |   33 +++++
+ 14 files changed, 874 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-loongson1/irq.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/loongson1.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/platform.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/prom.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/regs-clk.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/regs-wdt.h
+ create mode 100644 arch/mips/include/asm/mach-loongson1/war.h
+ create mode 100644 arch/mips/loongson1/common/clock.c
+ create mode 100644 arch/mips/loongson1/common/irq.c
+ create mode 100644 arch/mips/loongson1/common/platform.c
+ create mode 100644 arch/mips/loongson1/common/prom.c
+ create mode 100644 arch/mips/loongson1/common/reset.c
+ create mode 100644 arch/mips/loongson1/common/setup.c
+ create mode 100644 arch/mips/loongson1/ls1b/board.c
 
-diff --git a/arch/mips/include/asm/inst.h b/arch/mips/include/asm/inst.h
-index 6212f58..39f943c 100644
---- a/arch/mips/include/asm/inst.h
-+++ b/arch/mips/include/asm/inst.h
-@@ -262,7 +262,7 @@ struct ma_format {	/* FPU multiply and add format (MIPS IV) */
- 	unsigned int fmt : 2;
- };
- 
--struct b_format { /* BREAK and SYSCALL */
-+struct b_format {	/* BREAK and SYSCALL */
- 	unsigned int opcode:6;
- 	unsigned int code:20;
- 	unsigned int func:6;
-@@ -276,7 +276,7 @@ struct fb_format {	/* FPU branch format */
- 	unsigned int simmediate:16;
- };
- 
--struct fp0_format {      /* FPU multipy and add format (MIPS32) */
-+struct fp0_format {	/* FPU multipy and add format (MIPS32) */
- 	unsigned int opcode:6;
- 	unsigned int fmt:5;
- 	unsigned int ft:5;
-@@ -285,7 +285,7 @@ struct fp0_format {      /* FPU multipy and add format (MIPS32) */
- 	unsigned int func:6;
- };
- 
--struct mm_fp0_format {      /* FPU multipy and add format (microMIPS) */
-+struct mm_fp0_format {	/* FPU multipy and add format (microMIPS) */
- 	unsigned int opcode:6;
- 	unsigned int ft:5;
- 	unsigned int fs:5;
-@@ -295,7 +295,7 @@ struct mm_fp0_format {      /* FPU multipy and add format (microMIPS) */
- 	unsigned int func:6;
- };
- 
--struct fp1_format {      /* FPU mfc1 and cfc1 format (MIPS32) */
-+struct fp1_format {	/* FPU mfc1 and cfc1 format (MIPS32) */
- 	unsigned int opcode:6;
- 	unsigned int op:5;
- 	unsigned int rt:5;
-@@ -304,7 +304,7 @@ struct fp1_format {      /* FPU mfc1 and cfc1 format (MIPS32) */
- 	unsigned int func:6;
- };
- 
--struct mm_fp1_format {      /* FPU mfc1 and cfc1 format (microMIPS) */
-+struct mm_fp1_format {	/* FPU mfc1 and cfc1 format (microMIPS) */
- 	unsigned int opcode:6;
- 	unsigned int rt:5;
- 	unsigned int fs:5;
-@@ -313,7 +313,7 @@ struct mm_fp1_format {      /* FPU mfc1 and cfc1 format (microMIPS) */
- 	unsigned int func:6;
- };
- 
--struct mm_fp2_format {      /* FPU movt and movf format (microMIPS) */
-+struct mm_fp2_format {	/* FPU movt and movf format (microMIPS) */
- 	unsigned int opcode:6;
- 	unsigned int fd:5;
- 	unsigned int fs:5;
-@@ -324,7 +324,7 @@ struct mm_fp2_format {      /* FPU movt and movf format (microMIPS) */
- 	unsigned int func:6;
- };
- 
--struct mm_fp3_format {      /* FPU abs and neg format (microMIPS) */
-+struct mm_fp3_format {	/* FPU abs and neg format (microMIPS) */
- 	unsigned int opcode:6;
- 	unsigned int rt:5;
- 	unsigned int fs:5;
-@@ -333,7 +333,7 @@ struct mm_fp3_format {      /* FPU abs and neg format (microMIPS) */
- 	unsigned int func:6;
- };
- 
--struct mm_fp4_format {      /* FPU c.cond format (microMIPS) */
-+struct mm_fp4_format {	/* FPU c.cond format (microMIPS) */
- 	unsigned int opcode:6;
- 	unsigned int rt:5;
- 	unsigned int fs:5;
-@@ -343,7 +343,7 @@ struct mm_fp4_format {      /* FPU c.cond format (microMIPS) */
- 	unsigned int func:6;
- };
- 
--struct mm_fp5_format {      /* FPU lwxc1 and swxc1 format (microMIPS) */
-+struct mm_fp5_format {	/* FPU lwxc1 and swxc1 format (microMIPS) */
- 	unsigned int opcode:6;
- 	unsigned int index:5;
- 	unsigned int base:5;
-@@ -370,20 +370,20 @@ struct mm_fp6_format {	/* FPU madd and msub format (microMIPS) */
- 	unsigned int func:6;
- };
- 
--struct mm16b1_format {		/* microMIPS 16-bit branch format */
-+struct mm16b1_format {	/* microMIPS 16-bit branch format */
- 	unsigned int opcode:6;
- 	unsigned int rs:3;
- 	signed int simmediate:7;
- 	unsigned int duplicate:16;	/* a copy of the instr */
- };
- 
--struct mm16b0_format {		/* microMIPS 16-bit branch format */
-+struct mm16b0_format {	/* microMIPS 16-bit branch format */
- 	unsigned int opcode:6;
- 	signed int simmediate:10;
- 	unsigned int duplicate:16;	/* a copy of the instr */
- };
- 
--struct mm_i_format {		/* Immediate format (addi, lw, ...) */
-+struct mm_i_format {	/* Immediate format (addi, lw, ...) */
- 	unsigned int opcode:6;
- 	unsigned int rt:5;
- 	unsigned int rs:5;
-@@ -495,72 +495,72 @@ struct j_format {	/* Jump format */
- };
- 
- struct i_format {	/* Immediate format */
--	signed int simmediate : 16;
--	unsigned int rt : 5;
--	unsigned int rs : 5;
--	unsigned int opcode : 6;
-+	signed int simmediate:16;
-+	unsigned int rt:5;
-+	unsigned int rs:5;
-+	unsigned int opcode:6;
- };
- 
- struct u_format {	/* Unsigned immediate format */
--	unsigned int uimmediate : 16;
--	unsigned int rt : 5;
--	unsigned int rs : 5;
--	unsigned int opcode : 6;
-+	unsigned int uimmediate:16;
-+	unsigned int rt:5;
-+	unsigned int rs:5;
-+	unsigned int opcode:6;
- };
- 
- struct c_format {	/* Cache (>= R6000) format */
--	unsigned int simmediate : 16;
--	unsigned int cache : 2;
--	unsigned int c_op : 3;
--	unsigned int rs : 5;
--	unsigned int opcode : 6;
-+	unsigned int simmediate:16;
-+	unsigned int cache:2;
-+	unsigned int c_op:3;
-+	unsigned int rs:5;
-+	unsigned int opcode:6;
- };
- 
- struct r_format {	/* Register format */
--	unsigned int func : 6;
--	unsigned int re : 5;
--	unsigned int rd : 5;
--	unsigned int rt : 5;
--	unsigned int rs : 5;
--	unsigned int opcode : 6;
-+	unsigned int func:6;
-+	unsigned int re:5;
-+	unsigned int rd:5;
-+	unsigned int rt:5;
-+	unsigned int rs:5;
-+	unsigned int opcode:6;
- };
- 
- struct p_format {	/* Performance counter format (R10000) */
--	unsigned int func : 6;
--	unsigned int re : 5;
--	unsigned int rd : 5;
--	unsigned int rt : 5;
--	unsigned int rs : 5;
--	unsigned int opcode : 6;
-+	unsigned int func:6;
-+	unsigned int re:5;
-+	unsigned int rd:5;
-+	unsigned int rt:5;
-+	unsigned int rs:5;
-+	unsigned int opcode:6;
- };
- 
- struct f_format {	/* FPU register format */
--	unsigned int func : 6;
--	unsigned int re : 5;
--	unsigned int rd : 5;
--	unsigned int rt : 5;
--	unsigned int fmt : 4;
--	unsigned int : 1;
--	unsigned int opcode : 6;
-+	unsigned int func:6;
-+	unsigned int re:5;
-+	unsigned int rd:5;
-+	unsigned int rt:5;
-+	unsigned int fmt:4;
-+	unsigned int:1;
-+	unsigned int opcode:6;
- };
- 
--struct ma_format {	/* FPU multiply and add format (MIPS IV) */
--	unsigned int fmt : 2;
--	unsigned int func : 4;
--	unsigned int fd : 5;
--	unsigned int fs : 5;
--	unsigned int ft : 5;
--	unsigned int fr : 5;
--	unsigned int opcode : 6;
-+struct ma_format {	/* FPU multipy and add format (MIPS IV) */
-+	unsigned int fmt:2;
-+	unsigned int func:4;
-+	unsigned int fd:5;
-+	unsigned int fs:5;
-+	unsigned int ft:5;
-+	unsigned int fr:5;
-+	unsigned int opcode:6;
- };
- 
--struct b_format { /* BREAK and SYSCALL */
-+struct b_format {	/* BREAK and SYSCALL */
- 	unsigned int func:6;
- 	unsigned int code:20;
- 	unsigned int opcode:6;
- };
- 
--struct fb_format {		/* FPU branch format */
-+struct fb_format {	/* FPU branch format */
- 	unsigned int simmediate:16;
- 	unsigned int flag:2;
- 	unsigned int cc:3;
-@@ -568,7 +568,7 @@ struct fb_format {		/* FPU branch format */
- 	unsigned int opcode:6;
- };
- 
--struct fp0_format {		/* FPU multipy and add format (MIPS32) */
-+struct fp0_format {	/* FPU multipy and add format (MIPS32) */
- 	unsigned int func:6;
- 	unsigned int fd:5;
- 	unsigned int fs:5;
-@@ -577,7 +577,7 @@ struct fp0_format {		/* FPU multipy and add format (MIPS32) */
- 	unsigned int opcode:6;
- };
- 
--struct mm_fp0_format {		/* FPU multipy and add format (microMIPS) */
-+struct mm_fp0_format {	/* FPU multipy and add format (microMIPS) */
- 	unsigned int func:6;
- 	unsigned int op:2;
- 	unsigned int fmt:3;
-@@ -587,7 +587,7 @@ struct mm_fp0_format {		/* FPU multipy and add format (microMIPS) */
- 	unsigned int opcode:6;
- };
- 
--struct fp1_format {		/* FPU mfc1 and cfc1 format (MIPS32) */
-+struct fp1_format {	/* FPU mfc1 and cfc1 format (MIPS32) */
- 	unsigned int func:6;
- 	unsigned int fd:5;
- 	unsigned int fs:5;
-@@ -596,7 +596,7 @@ struct fp1_format {		/* FPU mfc1 and cfc1 format (MIPS32) */
- 	unsigned int opcode:6;
- };
- 
--struct mm_fp1_format {		/* FPU mfc1 and cfc1 format (microMIPS) */
-+struct mm_fp1_format {	/* FPU mfc1 and cfc1 format (microMIPS) */
- 	unsigned int func:6;
- 	unsigned int op:8;
- 	unsigned int fmt:2;
-@@ -605,7 +605,7 @@ struct mm_fp1_format {		/* FPU mfc1 and cfc1 format (microMIPS) */
- 	unsigned int opcode:6;
- };
- 
--struct mm_fp2_format {		/* FPU movt and movf format (microMIPS) */
-+struct mm_fp2_format {	/* FPU movt and movf format (microMIPS) */
- 	unsigned int func:6;
- 	unsigned int op:3;
- 	unsigned int fmt:2;
-@@ -616,7 +616,7 @@ struct mm_fp2_format {		/* FPU movt and movf format (microMIPS) */
- 	unsigned int opcode:6;
- };
- 
--struct mm_fp3_format {		/* FPU abs and neg format (microMIPS) */
-+struct mm_fp3_format {	/* FPU abs and neg format (microMIPS) */
- 	unsigned int func:6;
- 	unsigned int op:7;
- 	unsigned int fmt:3;
-@@ -625,7 +625,7 @@ struct mm_fp3_format {		/* FPU abs and neg format (microMIPS) */
- 	unsigned int opcode:6;
- };
- 
--struct mm_fp4_format {		/* FPU c.cond format (microMIPS) */
-+struct mm_fp4_format {	/* FPU c.cond format (microMIPS) */
- 	unsigned int func:6;
- 	unsigned int cond:4;
- 	unsigned int fmt:3;
-@@ -635,7 +635,7 @@ struct mm_fp4_format {		/* FPU c.cond format (microMIPS) */
- 	unsigned int opcode:6;
- };
- 
--struct mm_fp5_format {		/* FPU lwxc1 and swxc1 format (microMIPS) */
-+struct mm_fp5_format {	/* FPU lwxc1 and swxc1 format (microMIPS) */
- 	unsigned int func:6;
- 	unsigned int op:5;
- 	unsigned int fd:5;
-@@ -644,7 +644,7 @@ struct mm_fp5_format {		/* FPU lwxc1 and swxc1 format (microMIPS) */
- 	unsigned int opcode:6;
- };
- 
--struct fp6_format {		/* FPU madd and msub format (MIPS IV) */
-+struct fp6_format {	/* FPU madd and msub format (MIPS IV) */
- 	unsigned int func:6;
- 	unsigned int fd:5;
- 	unsigned int fs:5;
-@@ -653,7 +653,7 @@ struct fp6_format {		/* FPU madd and msub format (MIPS IV) */
- 	unsigned int opcode:6;
- };
- 
--struct mm_fp6_format {		/* FPU madd and msub format (microMIPS) */
-+struct mm_fp6_format {	/* FPU madd and msub format (microMIPS) */
- 	unsigned int func:6;
- 	unsigned int fr:5;
- 	unsigned int fd:5;
-@@ -662,20 +662,20 @@ struct mm_fp6_format {		/* FPU madd and msub format (microMIPS) */
- 	unsigned int opcode:6;
- };
- 
--struct mm16b1_format {		/* microMIPS 16-bit branch format */
-+struct mm16b1_format {	/* microMIPS 16-bit branch format */
- 	unsigned int duplicate:16;	/* a copy of the instr */
- 	signed int simmediate:7;
- 	unsigned int rs:3;
- 	unsigned int opcode:6;
- };
- 
--struct mm16b0_format {		/* microMIPS 16-bit branch format */
-+struct mm16b0_format {	/* microMIPS 16-bit branch format */
- 	unsigned int duplicate:16;	/* a copy of the instr */
- 	signed int simmediate:10;
- 	unsigned int opcode:6;
- };
- 
--struct mm_i_format {		/* Immediate format */
-+struct mm_i_format {	/* Immediate format */
- 	signed int simmediate:16;
- 	unsigned int rs:5;
- 	unsigned int rt:5;
-diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-index 5542817..5569d09 100644
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -64,13 +64,14 @@ static int show_cpuinfo(struct seq_file *m, void *v)
- 				cpu_data[n].watch_reg_masks[i]);
- 		seq_printf(m, "]\n");
- 	}
--	seq_printf(m, "ASEs implemented\t:%s%s%s%s%s%s\n",
-+	seq_printf(m, "ASEs implemented\t:%s%s%s%s%s%s%s\n",
- 		      cpu_has_mips16 ? " mips16" : "",
- 		      cpu_has_mdmx ? " mdmx" : "",
- 		      cpu_has_mips3d ? " mips3d" : "",
- 		      cpu_has_smartmips ? " smartmips" : "",
- 		      cpu_has_dsp ? " dsp" : "",
--		      cpu_has_mipsmt ? " mt" : ""
-+		      cpu_has_mipsmt ? " mt" : "",
-+		      cpu_has_mmips ? " micromips" : ""
- 		);
- 	seq_printf(m, "shadow register sets\t: %d\n",
- 		      cpu_data[n].srsets);
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 516668c..8322ce9 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -514,7 +514,7 @@ static inline int simulate_ll(struct pt_regs *regs, unsigned int opcode)
- 	offset >>= 16;
- 
- 	vaddr = (unsigned long __user *)
--	        ((unsigned long)(regs->regs[(opcode & BASE) >> 21]) + offset);
-+		((unsigned long)(regs->regs[(opcode & BASE) >> 21]) + offset);
- 
- 	if ((unsigned long)vaddr & 3)
- 		return SIGBUS;
-@@ -554,7 +554,7 @@ static inline int simulate_sc(struct pt_regs *regs, unsigned int opcode)
- 	offset >>= 16;
- 
- 	vaddr = (unsigned long __user *)
--	        ((unsigned long)(regs->regs[(opcode & BASE) >> 21]) + offset);
-+		((unsigned long)(regs->regs[(opcode & BASE) >> 21]) + offset);
- 	reg = (opcode & RT) >> 16;
- 
- 	if ((unsigned long)vaddr & 3)
+diff --git a/arch/mips/include/asm/mach-loongson1/irq.h b/arch/mips/include/asm/mach-loongson1/irq.h
+new file mode 100644
+index 0000000..ccc42cc
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson1/irq.h
+@@ -0,0 +1,73 @@
++/*
++ * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ * IRQ mappings for Loongson1.
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++
++#ifndef __ASM_MACH_LOONGSON1_IRQ_H
++#define __ASM_MACH_LOONGSON1_IRQ_H
++
++/*
++ * CPU core Interrupt Numbers
++ */
++#define MIPS_CPU_IRQ_BASE		0
++#define MIPS_CPU_IRQ(x)			(MIPS_CPU_IRQ_BASE + (x))
++
++#define SOFTINT0_IRQ			MIPS_CPU_IRQ(0)
++#define SOFTINT1_IRQ			MIPS_CPU_IRQ(1)
++#define INT0_IRQ			MIPS_CPU_IRQ(2)
++#define INT1_IRQ			MIPS_CPU_IRQ(3)
++#define INT2_IRQ			MIPS_CPU_IRQ(4)
++#define INT3_IRQ			MIPS_CPU_IRQ(5)
++#define INT4_IRQ			MIPS_CPU_IRQ(6)
++#define TIMER_IRQ			MIPS_CPU_IRQ(7)		/* cpu timer */
++
++#define MIPS_CPU_IRQS		(MIPS_CPU_IRQ(7) + 1 - MIPS_CPU_IRQ_BASE)
++
++/*
++ * INT0~3 Interrupt Numbers
++ */
++#define LS1X_IRQ_BASE			MIPS_CPU_IRQS
++#define LS1X_IRQ(n, x)			(LS1X_IRQ_BASE + (n << 5) + (x))
++
++#define LS1X_UART0_IRQ			LS1X_IRQ(0, 2)
++#define LS1X_UART1_IRQ			LS1X_IRQ(0, 3)
++#define LS1X_UART2_IRQ			LS1X_IRQ(0, 4)
++#define LS1X_UART3_IRQ			LS1X_IRQ(0, 5)
++#define LS1X_CAN0_IRQ			LS1X_IRQ(0, 6)
++#define LS1X_CAN1_IRQ			LS1X_IRQ(0, 7)
++#define LS1X_SPI0_IRQ			LS1X_IRQ(0, 8)
++#define LS1X_SPI1_IRQ			LS1X_IRQ(0, 9)
++#define LS1X_AC97_IRQ			LS1X_IRQ(0, 10)
++#define LS1X_DMA0_IRQ			LS1X_IRQ(0, 13)
++#define LS1X_DMA1_IRQ			LS1X_IRQ(0, 14)
++#define LS1X_DMA2_IRQ			LS1X_IRQ(0, 15)
++#define LS1X_PWM0_IRQ			LS1X_IRQ(0, 17)
++#define LS1X_PWM1_IRQ			LS1X_IRQ(0, 18)
++#define LS1X_PWM2_IRQ			LS1X_IRQ(0, 19)
++#define LS1X_PWM3_IRQ			LS1X_IRQ(0, 20)
++#define LS1X_RTC_INT0_IRQ		LS1X_IRQ(0, 21)
++#define LS1X_RTC_INT1_IRQ		LS1X_IRQ(0, 22)
++#define LS1X_RTC_INT2_IRQ		LS1X_IRQ(0, 23)
++#define LS1X_TOY_INT0_IRQ		LS1X_IRQ(0, 24)
++#define LS1X_TOY_INT1_IRQ		LS1X_IRQ(0, 25)
++#define LS1X_TOY_INT2_IRQ		LS1X_IRQ(0, 26)
++#define LS1X_RTC_TICK_IRQ		LS1X_IRQ(0, 27)
++#define LS1X_TOY_TICK_IRQ		LS1X_IRQ(0, 28)
++
++#define LS1X_EHCI_IRQ			LS1X_IRQ(1, 0)
++#define LS1X_OHCI_IRQ			LS1X_IRQ(1, 1)
++#define LS1X_GMAC0_IRQ			LS1X_IRQ(1, 2)
++#define LS1X_GMAC1_IRQ			LS1X_IRQ(1, 3)
++
++#define LS1X_IRQS		(LS1X_IRQ(4, 31) + 1 - LS1X_IRQ_BASE)
++
++#define NR_IRQS			(MIPS_CPU_IRQS + LS1X_IRQS)
++
++#endif /* __ASM_MACH_LOONGSON1_IRQ_H */
+diff --git a/arch/mips/include/asm/mach-loongson1/loongson1.h b/arch/mips/include/asm/mach-loongson1/loongson1.h
+new file mode 100644
+index 0000000..0440627
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson1/loongson1.h
+@@ -0,0 +1,44 @@
++/*
++ * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ * Register mappings for Loongson1.
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++
++#ifndef __ASM_MACH_LOONGSON1_LOONGSON1_H
++#define __ASM_MACH_LOONGSON1_LOONGSON1_H
++
++#define DEFAULT_MEMSIZE			256	/* If no memsize provided */
++
++/* Loongson1 Register Bases */
++#define LS1X_INTC_BASE			0x1fd01040
++#define LS1X_EHCI_BASE			0x1fe00000
++#define LS1X_OHCI_BASE			0x1fe08000
++#define LS1X_GMAC0_BASE			0x1fe10000
++#define LS1X_GMAC1_BASE			0x1fe20000
++
++#define LS1X_UART0_BASE			0x1fe40000
++#define LS1X_UART1_BASE			0x1fe44000
++#define LS1X_UART2_BASE			0x1fe48000
++#define LS1X_UART3_BASE			0x1fe4c000
++#define LS1X_CAN0_BASE			0x1fe50000
++#define LS1X_CAN1_BASE			0x1fe54000
++#define LS1X_I2C0_BASE			0x1fe58000
++#define LS1X_I2C1_BASE			0x1fe68000
++#define LS1X_I2C2_BASE			0x1fe70000
++#define LS1X_PWM_BASE			0x1fe5c000
++#define LS1X_WDT_BASE			0x1fe5c060
++#define LS1X_RTC_BASE			0x1fe64000
++#define LS1X_AC97_BASE			0x1fe74000
++#define LS1X_NAND_BASE			0x1fe78000
++#define LS1X_CLK_BASE			0x1fe78030
++
++#include <regs-clk.h>
++#include <regs-wdt.h>
++
++#endif /* __ASM_MACH_LOONGSON1_LOONGSON1_H */
+diff --git a/arch/mips/include/asm/mach-loongson1/platform.h b/arch/mips/include/asm/mach-loongson1/platform.h
+new file mode 100644
+index 0000000..2f17161
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson1/platform.h
+@@ -0,0 +1,23 @@
++/*
++ * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++
++#ifndef __ASM_MACH_LOONGSON1_PLATFORM_H
++#define __ASM_MACH_LOONGSON1_PLATFORM_H
++
++#include <linux/platform_device.h>
++
++extern struct platform_device ls1x_uart_device;
++extern struct platform_device ls1x_eth0_device;
++extern struct platform_device ls1x_ehci_device;
++extern struct platform_device ls1x_rtc_device;
++
++void ls1x_serial_setup(void);
++
++#endif /* __ASM_MACH_LOONGSON1_PLATFORM_H */
+diff --git a/arch/mips/include/asm/mach-loongson1/prom.h b/arch/mips/include/asm/mach-loongson1/prom.h
+new file mode 100644
+index 0000000..b871dc4
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson1/prom.h
+@@ -0,0 +1,24 @@
++/*
++ * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#ifndef __ASM_MACH_LOONGSON1_PROM_H
++#define __ASM_MACH_LOONGSON1_PROM_H
++
++#include <linux/io.h>
++#include <linux/init.h>
++#include <linux/irq.h>
++
++/* environment arguments from bootloader */
++extern unsigned long memsize, highmemsize;
++
++/* loongson-specific command line, env and memory initialization */
++extern char *prom_getenv(char *name);
++extern void __init prom_init_cmdline(void);
++
++#endif /* __ASM_MACH_LOONGSON1_PROM_H */
+diff --git a/arch/mips/include/asm/mach-loongson1/regs-clk.h b/arch/mips/include/asm/mach-loongson1/regs-clk.h
+new file mode 100644
+index 0000000..5b9635a
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson1/regs-clk.h
+@@ -0,0 +1,33 @@
++/*
++ * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ * Loongson1 Clock Register Definitions.
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#ifndef __ASM_MACH_LOONGSON1_REGS_CLK_H
++#define __ASM_MACH_LOONGSON1_REGS_CLK_H
++
++#define LS1X_CLK_REG(x) \
++		((void __iomem *)KSEG1ADDR(LS1X_CLK_BASE + (x)))
++
++#define LS1X_CLK_PLL_FREQ		LS1X_CLK_REG(0x0)
++#define LS1X_CLK_PLL_DIV		LS1X_CLK_REG(0x4)
++
++/* Clock PLL Divisor Register Bits */
++#define DIV_DC_EN			(0x1 << 31)
++#define DIV_DC				(0x1f << 26)
++#define DIV_CPU_EN			(0x1 << 25)
++#define DIV_CPU				(0x1f << 20)
++#define DIV_DDR_EN			(0x1 << 19)
++#define DIV_DDR				(0x1f << 14)
++
++#define DIV_DC_SHIFT			26
++#define DIV_CPU_SHIFT			20
++#define DIV_DDR_SHIFT			14
++
++#endif /* __ASM_MACH_LOONGSON1_REGS_CLK_H */
+diff --git a/arch/mips/include/asm/mach-loongson1/regs-wdt.h b/arch/mips/include/asm/mach-loongson1/regs-wdt.h
+new file mode 100644
+index 0000000..d339fe7
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson1/regs-wdt.h
+@@ -0,0 +1,22 @@
++/*
++ * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ * Loongson1 Watchdog register definitions.
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#ifndef __ASM_MACH_LOONGSON1_REGS_WDT_H
++#define __ASM_MACH_LOONGSON1_REGS_WDT_H
++
++#define LS1X_WDT_REG(x) \
++		((void __iomem *)KSEG1ADDR(LS1X_WDT_BASE + (x)))
++
++#define LS1X_WDT_EN			LS1X_WDT_REG(0x0)
++#define LS1X_WDT_SET			LS1X_WDT_REG(0x4)
++#define LS1X_WDT_TIMER			LS1X_WDT_REG(0x8)
++
++#endif /* __ASM_MACH_LOONGSON1_REGS_WDT_H */
+diff --git a/arch/mips/include/asm/mach-loongson1/war.h b/arch/mips/include/asm/mach-loongson1/war.h
+new file mode 100644
+index 0000000..e3680a8
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson1/war.h
+@@ -0,0 +1,25 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2002, 2004, 2007 by Ralf Baechle <ralf@linux-mips.org>
++ */
++#ifndef __ASM_MACH_LOONGSON1_WAR_H
++#define __ASM_MACH_LOONGSON1_WAR_H
++
++#define R4600_V1_INDEX_ICACHEOP_WAR	0
++#define R4600_V1_HIT_CACHEOP_WAR	0
++#define R4600_V2_HIT_CACHEOP_WAR	0
++#define R5432_CP0_INTERRUPT_WAR		0
++#define BCM1250_M3_WAR			0
++#define SIBYTE_1956_WAR			0
++#define MIPS4K_ICACHE_REFILL_WAR	0
++#define MIPS_CACHE_SYNC_WAR		0
++#define TX49XX_ICACHE_INDEX_INV_WAR	0
++#define RM9000_CDEX_SMP_WAR		0
++#define ICACHE_REFILLS_WORKAROUND_WAR	0
++#define R10000_LLSC_WAR			0
++#define MIPS34K_MISSED_ITLB_WAR		0
++
++#endif /* __ASM_MACH_LOONGSON1_WAR_H */
+diff --git a/arch/mips/loongson1/common/clock.c b/arch/mips/loongson1/common/clock.c
+new file mode 100644
+index 0000000..2d98fb0
+--- /dev/null
++++ b/arch/mips/loongson1/common/clock.c
+@@ -0,0 +1,165 @@
++/*
++ * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <linux/module.h>
++#include <linux/list.h>
++#include <linux/mutex.h>
++#include <linux/clk.h>
++#include <linux/err.h>
++#include <asm/clock.h>
++#include <asm/time.h>
++
++#include <loongson1.h>
++
++static LIST_HEAD(clocks);
++static DEFINE_MUTEX(clocks_mutex);
++
++struct clk *clk_get(struct device *dev, const char *name)
++{
++	struct clk *c;
++	struct clk *ret = NULL;
++
++	mutex_lock(&clocks_mutex);
++	list_for_each_entry(c, &clocks, node) {
++		if (!strcmp(c->name, name)) {
++			ret = c;
++			break;
++		}
++	}
++	mutex_unlock(&clocks_mutex);
++
++	return ret;
++}
++EXPORT_SYMBOL(clk_get);
++
++unsigned long clk_get_rate(struct clk *clk)
++{
++	return clk->rate;
++}
++EXPORT_SYMBOL(clk_get_rate);
++
++static void pll_clk_init(struct clk *clk)
++{
++	u32 pll;
++
++	pll = __raw_readl(LS1X_CLK_PLL_FREQ);
++	clk->rate = (12 + (pll & 0x3f)) * 33 / 2
++			+ ((pll >> 8) & 0x3ff) * 33 / 1024 / 2;
++	clk->rate *= 1000000;
++}
++
++static void cpu_clk_init(struct clk *clk)
++{
++	u32 pll, ctrl;
++
++	pll = clk_get_rate(clk->parent);
++	ctrl = __raw_readl(LS1X_CLK_PLL_DIV) & DIV_CPU;
++	clk->rate = pll / (ctrl >> DIV_CPU_SHIFT);
++}
++
++static void ddr_clk_init(struct clk *clk)
++{
++	u32 pll, ctrl;
++
++	pll = clk_get_rate(clk->parent);
++	ctrl = __raw_readl(LS1X_CLK_PLL_DIV) & DIV_DDR;
++	clk->rate = pll / (ctrl >> DIV_DDR_SHIFT);
++}
++
++static void dc_clk_init(struct clk *clk)
++{
++	u32 pll, ctrl;
++
++	pll = clk_get_rate(clk->parent);
++	ctrl = __raw_readl(LS1X_CLK_PLL_DIV) & DIV_DC;
++	clk->rate = pll / (ctrl >> DIV_DC_SHIFT);
++}
++
++static struct clk_ops pll_clk_ops = {
++	.init	= pll_clk_init,
++};
++
++static struct clk_ops cpu_clk_ops = {
++	.init	= cpu_clk_init,
++};
++
++static struct clk_ops ddr_clk_ops = {
++	.init	= ddr_clk_init,
++};
++
++static struct clk_ops dc_clk_ops = {
++	.init	= dc_clk_init,
++};
++
++static struct clk pll_clk = {
++	.name	= "pll",
++	.ops	= &pll_clk_ops,
++};
++
++static struct clk cpu_clk = {
++	.name	= "cpu",
++	.parent = &pll_clk,
++	.ops	= &cpu_clk_ops,
++};
++
++static struct clk ddr_clk = {
++	.name	= "ddr",
++	.parent = &pll_clk,
++	.ops	= &ddr_clk_ops,
++};
++
++static struct clk dc_clk = {
++	.name	= "dc",
++	.parent = &pll_clk,
++	.ops	= &dc_clk_ops,
++};
++
++int clk_register(struct clk *clk)
++{
++	mutex_lock(&clocks_mutex);
++	list_add(&clk->node, &clocks);
++	if (clk->ops->init)
++		clk->ops->init(clk);
++	mutex_unlock(&clocks_mutex);
++
++	return 0;
++}
++EXPORT_SYMBOL(clk_register);
++
++static struct clk *ls1x_clks[] = {
++	&pll_clk,
++	&cpu_clk,
++	&ddr_clk,
++	&dc_clk,
++};
++
++int __init ls1x_clock_init(void)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(ls1x_clks); i++)
++		clk_register(ls1x_clks[i]);
++
++	return 0;
++}
++
++void __init plat_time_init(void)
++{
++	struct clk *clk;
++
++	/* Initialize LS1X clocks */
++	ls1x_clock_init();
++
++	/* setup mips r4k timer */
++	clk = clk_get(NULL, "cpu");
++	if (IS_ERR(clk))
++		panic("unable to get dc clock, err=%ld", PTR_ERR(clk));
++
++	mips_hpt_frequency = clk_get_rate(clk) / 2;
++}
+diff --git a/arch/mips/loongson1/common/irq.c b/arch/mips/loongson1/common/irq.c
+new file mode 100644
+index 0000000..41bc8ff
+--- /dev/null
++++ b/arch/mips/loongson1/common/irq.c
+@@ -0,0 +1,147 @@
++/*
++ * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <linux/interrupt.h>
++#include <linux/irq.h>
++#include <asm/irq_cpu.h>
++
++#include <loongson1.h>
++#include <irq.h>
++
++#define LS1X_INTC_REG(n, x) \
++		((void __iomem *)KSEG1ADDR(LS1X_INTC_BASE + (n * 0x18) + (x)))
++
++#define LS1X_INTC_INTISR(n)		LS1X_INTC_REG(n, 0x0)
++#define LS1X_INTC_INTIEN(n)		LS1X_INTC_REG(n, 0x4)
++#define LS1X_INTC_INTSET(n)		LS1X_INTC_REG(n, 0x8)
++#define LS1X_INTC_INTCLR(n)		LS1X_INTC_REG(n, 0xc)
++#define LS1X_INTC_INTPOL(n)		LS1X_INTC_REG(n, 0x10)
++#define LS1X_INTC_INTEDGE(n)		LS1X_INTC_REG(n, 0x14)
++
++static void ls1x_irq_ack(struct irq_data *d)
++{
++	unsigned int bit = (d->irq - LS1X_IRQ_BASE) & 0x1f;
++	unsigned int n = (d->irq - LS1X_IRQ_BASE) >> 5;
++
++	__raw_writel(__raw_readl(LS1X_INTC_INTCLR(n))
++			| (1 << bit), LS1X_INTC_INTCLR(n));
++}
++
++static void ls1x_irq_mask(struct irq_data *d)
++{
++	unsigned int bit = (d->irq - LS1X_IRQ_BASE) & 0x1f;
++	unsigned int n = (d->irq - LS1X_IRQ_BASE) >> 5;
++
++	__raw_writel(__raw_readl(LS1X_INTC_INTIEN(n))
++			& ~(1 << bit), LS1X_INTC_INTIEN(n));
++}
++
++static void ls1x_irq_mask_ack(struct irq_data *d)
++{
++	unsigned int bit = (d->irq - LS1X_IRQ_BASE) & 0x1f;
++	unsigned int n = (d->irq - LS1X_IRQ_BASE) >> 5;
++
++	__raw_writel(__raw_readl(LS1X_INTC_INTIEN(n))
++			& ~(1 << bit), LS1X_INTC_INTIEN(n));
++	__raw_writel(__raw_readl(LS1X_INTC_INTCLR(n))
++			| (1 << bit), LS1X_INTC_INTCLR(n));
++}
++
++static void ls1x_irq_unmask(struct irq_data *d)
++{
++	unsigned int bit = (d->irq - LS1X_IRQ_BASE) & 0x1f;
++	unsigned int n = (d->irq - LS1X_IRQ_BASE) >> 5;
++
++	__raw_writel(__raw_readl(LS1X_INTC_INTIEN(n))
++			| (1 << bit), LS1X_INTC_INTIEN(n));
++}
++
++static struct irq_chip ls1x_irq_chip = {
++	.name		= "LS1X-INTC",
++	.irq_ack	= ls1x_irq_ack,
++	.irq_mask	= ls1x_irq_mask,
++	.irq_mask_ack	= ls1x_irq_mask_ack,
++	.irq_unmask	= ls1x_irq_unmask,
++};
++
++static void ls1x_irq_dispatch(int n)
++{
++	u32 int_status, irq;
++
++	/* Get pending sources, masked by current enables */
++	int_status = __raw_readl(LS1X_INTC_INTISR(n)) &
++			__raw_readl(LS1X_INTC_INTIEN(n));
++
++	if (int_status) {
++		irq = LS1X_IRQ(n, __ffs(int_status));
++		do_IRQ(irq);
++	}
++}
++
++asmlinkage void plat_irq_dispatch(void)
++{
++	unsigned int pending;
++
++	pending = read_c0_cause() & read_c0_status() & ST0_IM;
++
++	if (pending & CAUSEF_IP7)
++		do_IRQ(TIMER_IRQ);
++	else if (pending & CAUSEF_IP2)
++		ls1x_irq_dispatch(0); /* INT0 */
++	else if (pending & CAUSEF_IP3)
++		ls1x_irq_dispatch(1); /* INT1 */
++	else if (pending & CAUSEF_IP4)
++		ls1x_irq_dispatch(2); /* INT2 */
++	else if (pending & CAUSEF_IP5)
++		ls1x_irq_dispatch(3); /* INT3 */
++	else if (pending & CAUSEF_IP6)
++		ls1x_irq_dispatch(4); /* INT4 */
++	else
++		spurious_interrupt();
++
++}
++
++struct irqaction cascade_irqaction = {
++	.handler = no_action,
++	.name = "cascade",
++	.flags = IRQF_NO_THREAD,
++};
++
++static void __init ls1x_irq_init(int base)
++{
++	int n;
++
++	/* Disable interrupts and clear pending,
++	 * setup all IRQs as high level triggered
++	 */
++	for (n = 0; n < 4; n++) {
++		__raw_writel(0x0, LS1X_INTC_INTIEN(n));
++		__raw_writel(0xffffffff, LS1X_INTC_INTCLR(n));
++		__raw_writel(0xffffffff, LS1X_INTC_INTPOL(n));
++		/* set DMA0, DMA1 and DMA2 to edge trigger */
++		__raw_writel(n ? 0x0 : 0xe000, LS1X_INTC_INTEDGE(n));
++	}
++
++
++	for (n = base; n < LS1X_IRQS; n++) {
++		irq_set_chip_and_handler(n, &ls1x_irq_chip,
++					 handle_level_irq);
++	}
++
++	setup_irq(INT0_IRQ, &cascade_irqaction);
++	setup_irq(INT1_IRQ, &cascade_irqaction);
++	setup_irq(INT2_IRQ, &cascade_irqaction);
++	setup_irq(INT3_IRQ, &cascade_irqaction);
++}
++
++void __init arch_init_irq(void)
++{
++	mips_cpu_irq_init();
++	ls1x_irq_init(LS1X_IRQ_BASE);
++}
+diff --git a/arch/mips/loongson1/common/platform.c b/arch/mips/loongson1/common/platform.c
+new file mode 100644
+index 0000000..e92d59c
+--- /dev/null
++++ b/arch/mips/loongson1/common/platform.c
+@@ -0,0 +1,124 @@
++/*
++ * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <linux/clk.h>
++#include <linux/dma-mapping.h>
++#include <linux/err.h>
++#include <linux/phy.h>
++#include <linux/serial_8250.h>
++#include <linux/stmmac.h>
++#include <asm-generic/sizes.h>
++
++#include <loongson1.h>
++
++#define LS1X_UART(_id)						\
++	{							\
++		.mapbase	= LS1X_UART ## _id ## _BASE,	\
++		.irq		= LS1X_UART ## _id ## _IRQ,	\
++		.iotype		= UPIO_MEM,			\
++		.flags		= UPF_IOREMAP | UPF_FIXED_TYPE,	\
++		.type		= PORT_16550A,			\
++	}
++
++static struct plat_serial8250_port ls1x_serial8250_port[] = {
++	LS1X_UART(0),
++	LS1X_UART(1),
++	LS1X_UART(2),
++	LS1X_UART(3),
++	{},
++};
++
++struct platform_device ls1x_uart_device = {
++	.name		= "serial8250",
++	.id		= PLAT8250_DEV_PLATFORM,
++	.dev		= {
++		.platform_data = ls1x_serial8250_port,
++	},
++};
++
++void __init ls1x_serial_setup(void)
++{
++	struct clk *clk;
++	struct plat_serial8250_port *p;
++
++	clk = clk_get(NULL, "dc");
++	if (IS_ERR(clk))
++		panic("unable to get dc clock, err=%ld", PTR_ERR(clk));
++
++	for (p = ls1x_serial8250_port; p->flags != 0; ++p)
++		p->uartclk = clk_get_rate(clk);
++}
++
++/* Synopsys Ethernet GMAC */
++static struct resource ls1x_eth0_resources[] = {
++	[0] = {
++		.start	= LS1X_GMAC0_BASE,
++		.end	= LS1X_GMAC0_BASE + SZ_64K - 1,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.name	= "macirq",
++		.start	= LS1X_GMAC0_IRQ,
++		.flags	= IORESOURCE_IRQ,
++	},
++};
++
++static struct stmmac_mdio_bus_data ls1x_mdio_bus_data = {
++	.bus_id		= 0,
++	.phy_mask	= 0,
++};
++
++static struct plat_stmmacenet_data ls1x_eth_data = {
++	.bus_id		= 0,
++	.phy_addr	= -1,
++	.mdio_bus_data	= &ls1x_mdio_bus_data,
++	.has_gmac	= 1,
++	.tx_coe		= 1,
++};
++
++struct platform_device ls1x_eth0_device = {
++	.name		= "stmmaceth",
++	.id		= 0,
++	.num_resources	= ARRAY_SIZE(ls1x_eth0_resources),
++	.resource	= ls1x_eth0_resources,
++	.dev		= {
++		.platform_data = &ls1x_eth_data,
++	},
++};
++
++/* USB EHCI */
++static u64 ls1x_ehci_dmamask = DMA_BIT_MASK(32);
++
++static struct resource ls1x_ehci_resources[] = {
++	[0] = {
++		.start	= LS1X_EHCI_BASE,
++		.end	= LS1X_EHCI_BASE + SZ_32K - 1,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= LS1X_EHCI_IRQ,
++		.flags	= IORESOURCE_IRQ,
++	},
++};
++
++struct platform_device ls1x_ehci_device = {
++	.name		= "ls1x-ehci",
++	.id		= -1,
++	.num_resources	= ARRAY_SIZE(ls1x_ehci_resources),
++	.resource	= ls1x_ehci_resources,
++	.dev		= {
++		.dma_mask = &ls1x_ehci_dmamask,
++	},
++};
++
++/* Real Time Clock */
++struct platform_device ls1x_rtc_device = {
++	.name		= "ls1x-rtc",
++	.id		= -1,
++};
+diff --git a/arch/mips/loongson1/common/prom.c b/arch/mips/loongson1/common/prom.c
+new file mode 100644
+index 0000000..1f8e49f
+--- /dev/null
++++ b/arch/mips/loongson1/common/prom.c
+@@ -0,0 +1,87 @@
++/*
++ * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ * Modified from arch/mips/pnx833x/common/prom.c.
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <linux/serial_reg.h>
++#include <asm/bootinfo.h>
++
++#include <loongson1.h>
++#include <prom.h>
++
++int prom_argc;
++char **prom_argv, **prom_envp;
++unsigned long memsize, highmemsize;
++
++char *prom_getenv(char *envname)
++{
++	char **env = prom_envp;
++	int i;
++
++	i = strlen(envname);
++
++	while (*env) {
++		if (strncmp(envname, *env, i) == 0 && *(*env+i) == '=')
++			return *env + i + 1;
++		env++;
++	}
++
++	return 0;
++}
++
++static inline unsigned long env_or_default(char *env, unsigned long dfl)
++{
++	char *str = prom_getenv(env);
++	return str ? simple_strtol(str, 0, 0) : dfl;
++}
++
++void __init prom_init_cmdline(void)
++{
++	char *c = &(arcs_cmdline[0]);
++	int i;
++
++	for (i = 1; i < prom_argc; i++) {
++		strcpy(c, prom_argv[i]);
++		c += strlen(prom_argv[i]);
++		if (i < prom_argc-1)
++			*c++ = ' ';
++	}
++	*c = 0;
++}
++
++void __init prom_init(void)
++{
++	prom_argc = fw_arg0;
++	prom_argv = (char **)fw_arg1;
++	prom_envp = (char **)fw_arg2;
++
++	prom_init_cmdline();
++
++	memsize = env_or_default("memsize", DEFAULT_MEMSIZE);
++	highmemsize = env_or_default("highmemsize", 0x0);
++}
++
++void __init prom_free_prom_memory(void)
++{
++}
++
++#define PORT(offset)	(u8 *)(KSEG1ADDR(LS1X_UART0_BASE + offset))
++
++void __init prom_putchar(char c)
++{
++	int timeout;
++
++	timeout = 1024;
++
++	while (((readb(PORT(UART_LSR)) & UART_LSR_THRE) == 0)
++			&& (timeout-- > 0))
++		;
++
++	writeb(c, PORT(UART_TX));
++}
+diff --git a/arch/mips/loongson1/common/reset.c b/arch/mips/loongson1/common/reset.c
+new file mode 100644
+index 0000000..fb979a7
+--- /dev/null
++++ b/arch/mips/loongson1/common/reset.c
+@@ -0,0 +1,45 @@
++/*
++ * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <linux/io.h>
++#include <linux/pm.h>
++#include <asm/reboot.h>
++
++#include <loongson1.h>
++
++static void ls1x_restart(char *command)
++{
++	__raw_writel(0x1, LS1X_WDT_EN);
++	__raw_writel(0x5000000, LS1X_WDT_TIMER);
++	__raw_writel(0x1, LS1X_WDT_SET);
++}
++
++static void ls1x_halt(void)
++{
++	while (1) {
++		if (cpu_wait)
++			cpu_wait();
++	}
++}
++
++static void ls1x_power_off(void)
++{
++	ls1x_halt();
++}
++
++static int __init ls1x_reboot_setup(void)
++{
++	_machine_restart = ls1x_restart;
++	_machine_halt = ls1x_halt;
++	pm_power_off = ls1x_power_off;
++
++	return 0;
++}
++
++arch_initcall(ls1x_reboot_setup);
+diff --git a/arch/mips/loongson1/common/setup.c b/arch/mips/loongson1/common/setup.c
+new file mode 100644
+index 0000000..62128cc
+--- /dev/null
++++ b/arch/mips/loongson1/common/setup.c
+@@ -0,0 +1,29 @@
++/*
++ * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <asm/bootinfo.h>
++
++#include <prom.h>
++
++void __init plat_mem_setup(void)
++{
++	add_memory_region(0x0, (memsize << 20), BOOT_MEM_RAM);
++}
++
++const char *get_system_type(void)
++{
++	unsigned int processor_id = (&current_cpu_data)->processor_id;
++
++	switch (processor_id & PRID_REV_MASK) {
++	case PRID_REV_LOONGSON1B:
++		return "LOONGSON LS1B";
++	default:
++		return "LOONGSON (unknown)";
++	}
++}
+diff --git a/arch/mips/loongson1/ls1b/board.c b/arch/mips/loongson1/ls1b/board.c
+new file mode 100644
+index 0000000..295b1be
+--- /dev/null
++++ b/arch/mips/loongson1/ls1b/board.c
+@@ -0,0 +1,33 @@
++/*
++ * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <platform.h>
++
++#include <linux/serial_8250.h>
++#include <loongson1.h>
++
++static struct platform_device *ls1b_platform_devices[] __initdata = {
++	&ls1x_uart_device,
++	&ls1x_eth0_device,
++	&ls1x_ehci_device,
++	&ls1x_rtc_device,
++};
++
++static int __init ls1b_platform_init(void)
++{
++	int err;
++
++	ls1x_serial_setup();
++
++	err = platform_add_devices(ls1b_platform_devices,
++				   ARRAY_SIZE(ls1b_platform_devices));
++	return err;
++}
++
++arch_initcall(ls1b_platform_init);
 -- 
-1.7.11.1
+1.7.1

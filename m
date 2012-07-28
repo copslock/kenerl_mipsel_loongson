@@ -1,30 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jul 2012 19:19:55 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:34446 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903480Ab2G0RTt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jul 2012 19:19:49 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <sjhill@realitydiluted.com>)
-        id 1SuoCS-0001FF-4p; Fri, 27 Jul 2012 12:19:40 -0500
-Message-ID: <5012CDA4.5000008@realitydiluted.com>
-Date:   Fri, 27 Jul 2012 12:19:32 -0500
-From:   "Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20120714 Thunderbird/14.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Jul 2012 11:09:09 +0200 (CEST)
+Received: from mail-ob0-f177.google.com ([209.85.214.177]:38128 "EHLO
+        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903487Ab2G1JJF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Jul 2012 11:09:05 +0200
+Received: by obbta17 with SMTP id ta17so5945551obb.36
+        for <linux-mips@linux-mips.org>; Sat, 28 Jul 2012 02:08:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=z7SkNGRZ70BVnzB7iFrNqvOiYYMEflKFV9Uo5+7Cbjw=;
+        b=Y45NFkQzlrHGdERa87NXE7vIvEFpSPx6r6wciu/jOV+YRTCSC5j+fn1+yFAVI+5tBt
+         0k7VOnsgjwwT0DfddlDMmFaTsXlaDewSJReQUNv9LE0T9cv0sopIj5ecRyScWCsFdIqG
+         73eBi4nZ56iSsO7nZouufmeScHgCKuaEePBhkClUthns6HLg8++JxiXpAjjsPdIdU2if
+         JOmLTY+53ehCcBgsi4uujh31YGmLe0PVCQvO+ko9JSz5KqC0xin1pOQHXMqmXp2gyLbM
+         qTol0g84cgM3yJc9Zxrt4nLvAPQM9G4ZJm0A136qjZWsAZnnJ8QW2eO323YVYi7jG4Tn
+         Rzyw==
 MIME-Version: 1.0
-To:     JoeJ <tttechmail@gmail.com>
-CC:     linux-mips@linux-mips.org, sjhill@mips.com
-Subject: Re: SMVP Support on MIPS34KC (linux-2.6.35)
-References: <34219711.post@talk.nabble.com>
-In-Reply-To: <34219711.post@talk.nabble.com>
-X-Enigmail-Version: 1.4.3
+Received: by 10.60.19.232 with SMTP id i8mr7390477oee.35.1343466539424; Sat,
+ 28 Jul 2012 02:08:59 -0700 (PDT)
+Received: by 10.60.61.193 with HTTP; Sat, 28 Jul 2012 02:08:59 -0700 (PDT)
+In-Reply-To: <1341203670-17544-1-git-send-email-roy.qing.li@gmail.com>
+References: <1341203670-17544-1-git-send-email-roy.qing.li@gmail.com>
+Date:   Sat, 28 Jul 2012 17:08:59 +0800
+Message-ID: <CAJFZqHxBE6wc2hJd=mKfx9D59S73qxJZFvbfqgmLkWZvtR7f_A@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: fix tc_id calculation
+From:   RongQing Li <roy.qing.li@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 33992
+X-archive-position: 33993
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: roy.qing.li@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,29 +47,36 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+Any advice
 
-Hello Joe.
-
-The 2.6.35.9 is obsolete with regards to SMVP support. You should grab the
-latest 3.4.2 kernel that has complete and working SMVP. To access it, do the
-following:
-
-git clone git://git.linux-mips.org/pub/scm/linux-mti
-git checkout -b linux-mti-3.4.2 origin/linux-mti-3.4.2
-
-Use the 'arch/mips/configs/maltasmvp_defconfig' as your base configuration
-file. If you have any issues, please let me know.
-
-- -Steve
-
-P.S. You can also reach me at <sjhill AT mips DOT com>
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
-
-iEYEARECAAYFAlASzaQACgkQgyK5H2Ic36cjbACfcgtny/+QYPBNhiDqC0I9QIfV
-4ZQAn2TlJWe+t2Jsriji2KAAtk8fwnu3
-=0aZ6
------END PGP SIGNATURE-----
+2012/7/2  <roy.qing.li@gmail.com>:
+> From: RongQing.Li <roy.qing.li@gmail.com>
+>
+> Now the tc_id is:
+>   (read_c0_tcbind() >> TCBIND_CURTC_SHIFT) & TCBIND_CURTC;
+> After substitute macro:
+>   (read_c0_tcbind() >> 21) & ((0xff) << 21)
+> It should be:
+>   (read_c0_tcbind() & ((0xff)<< 21)) >>21
+>
+> Signed-off-by: RongQing.Li <roy.qing.li@gmail.com>
+> ---
+>  arch/mips/kernel/smp-cmp.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+>
+> diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
+> index e7e03ec..afc379c 100644
+> --- a/arch/mips/kernel/smp-cmp.c
+> +++ b/arch/mips/kernel/smp-cmp.c
+> @@ -102,7 +102,7 @@ static void cmp_init_secondary(void)
+>         c->vpe_id = (read_c0_tcbind() >> TCBIND_CURVPE_SHIFT) & TCBIND_CURVPE;
+>  #endif
+>  #ifdef CONFIG_MIPS_MT_SMTC
+> -       c->tc_id  = (read_c0_tcbind() >> TCBIND_CURTC_SHIFT) & TCBIND_CURTC;
+> +       c->tc_id  = (read_c0_tcbind() & TCBIND_CURTC) >> TCBIND_CURTC_SHIFT;
+>  #endif
+>  }
+>
+> --
+> 1.7.1
+>

@@ -1,30 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2012 23:02:46 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:48822 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903645Ab2G3VCm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Jul 2012 23:02:42 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <sjhill@realitydiluted.com>)
-        id 1Svx6o-0007Sf-FA; Mon, 30 Jul 2012 16:02:34 -0500
-Message-ID: <5016F660.5020502@realitydiluted.com>
-Date:   Mon, 30 Jul 2012 16:02:24 -0500
-From:   "Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20120714 Thunderbird/14.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2012 01:56:57 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:37626 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903671Ab2G3X4y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Jul 2012 01:56:54 +0200
+Date:   Tue, 31 Jul 2012 00:56:54 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     =?ISO-8859-15?Q?Llu=EDs_Batlle_i_Rossell?= <viric@viric.name>
+cc:     linux-mips@linux-mips.org, tsbogend@alpha.franken.de
+Subject: Re: [PATCH] MIPS: Add emulation for fpureg-mem unaligned access
+In-Reply-To: <20120730194754.GA25996@vicerveza.homeunix.net>
+Message-ID: <alpine.LFD.2.00.1207310032520.1586@eddie.linux-mips.org>
+References: <20120615234641.6938B58FE7C@mail.viric.name> <CAOiHx==JS9KfPWxx+pyRNwvq-pWdhbZk+Q-qvRPsVGh90Xso9Q@mail.gmail.com> <20120616121513.GP2039@vicerveza.homeunix.net> <20120616124001.GQ2039@vicerveza.homeunix.net> <20120620190545.GV2039@vicerveza.homeunix.net>
+ <alpine.LFD.2.00.1207090122240.12288@eddie.linux-mips.org> <20120730194754.GA25996@vicerveza.homeunix.net>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
-To:     Jeffin <jeffinmammen@gmail.com>
-CC:     JoeJ <tttechmail@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: SMVP Support on MIPS34KC (linux-2.6.35)
-References: <34219711.post@talk.nabble.com> <5012CDA4.5000008@realitydiluted.com> <34230427.post@talk.nabble.com> <50169FA7.8010603@realitydiluted.com> <CAB4dzwWWCizOmQ=kGxCz1f6smjdMVXbUJ9+35EUckygEoG_ebQ@mail.gmail.com>
-In-Reply-To: <CAB4dzwWWCizOmQ=kGxCz1f6smjdMVXbUJ9+35EUckygEoG_ebQ@mail.gmail.com>
-X-Enigmail-Version: 1.4.3
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34002
+Content-Type: TEXT/PLAIN; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 34003
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,20 +34,55 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+Hi Lluís
 
-Jeffin,
+> >  I suggest that for 32-bit kernels you simply reuse the existing snippets 
+> > from that function and handle ldc1/sdc1 with a pair of lwl/ldr or swl/swr 
+> > pairs ordered as appropriate for the endianness selected -- that should be 
+> > fairly easy.
+> 
+> Hm I still don't understand well enough how to do that. Would I need to get some
+> aligned memory (a stack automatic variable for example), copy the double word
+> there with proper endianness, and then call again ldc1? (similar for sdc1)
 
-You will need to file an official support request with MIPS to proceed
-further. Additional time spent on this will need to be tracked. Thanks.
+ No need to copy anything to scratch space, you'd just handle the thing 
+piecewise in 32-bit chunks, transferring one FPR first, followed with the 
+other one -- this is exactly what LDC1/SDC1 logically do in the 32-bit 
+mode anyway.  Of course FPR indices are swapped between endiannesses (or 
+data in memory is swapped -- depending on how you look at it).
 
-- -Steve
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+> >  Also regardless of that, please make sure that your code handles the two 
+> > possible settings of CP0 Status register's bit FR correctly, as the 32-bit 
+> > halves of floating-point data are distributed differently across 
+> > floating-point registers based on this bit's setting (check if an o32 and 
+> > an n64 or n32 program gets these values right).
+> 
+> Hm I'm failing to find in the mips-iv.pdf how to check that FR bit, although I
+> see it mentioned there. Sorry.
 
-iEYEARECAAYFAlAW9mAACgkQgyK5H2Ic36eS0QCfW8Z1mH1qvLnarlr7HRAr1Lbc
-tloAni+7cilKyEy5eJD6ONUa+oZFctMp
-=Iz5d
------END PGP SIGNATURE-----
+ That'll be set in Linux's task status structure somewhere as the 
+floating-point model is implied by the ABI (FR is clear for o32 and set 
+for n32/n64) -- no need to poke at hardware.  Have a look at FP context 
+switching code -- it has to take similar measures.  There may be some code 
+that checks that in the FPU emulator as well.
+
+> > > As Jonas reported, I think that maybe I should rework the patch for it to emit
+> > > sigbus instead of sigill on ldc1,ldc1 for mips32. Do I understand it right?
+> > 
+> >  Have you checked your code against a non-FPU processor (or with the 
+> > "nofpu" kernel option) too?
+> 
+> No. Would in that case the processor have the fpu disabled? I understand that
+> the code path is called only in a particular case of 'unaligned access'
+> exception.
+
+ It may well possibly be, I'm not sure offhand, but unaligned access 
+emulation just has to work the same for floating-point transfers 
+regardless of whether the FPU has been enabled or is fully emulated.  
+This just have to be verified.
+
+ The MIPS/Linux user ABI specifies the presence of an FPU unconditionally 
+and a missing or disabled unit is automatically emulated in software 
+transparently (except for the performance loss of course).
+
+  Maciej

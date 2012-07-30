@@ -1,46 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2012 19:32:34 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:33933 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903637Ab2G3Rc1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Jul 2012 19:32:27 +0200
-Received: by pbbrq13 with SMTP id rq13so11008378pbb.36
-        for <linux-mips@linux-mips.org>; Mon, 30 Jul 2012 10:32:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references
-         :user-agent:x-gm-message-state;
-        bh=MiDzq5Kk0iwo/c1nHYZO3Ozr7JXCWxeXk7Z2OZl37pw=;
-        b=ijg7Q+Y4pzXZQS/hFqm2NrMLh0RVIIAwf16jyqr+HkIjCNUHLZVD2Wm3AQZbxRsHL6
-         LNU8jEKIz+/dQwxnLrnW21APahxc4/hNpXFlrJXTx8FZCFBDrVxAQyXt7BXS4amlhbMs
-         zike4HfOM5QVRDrXqQwdS/otH4d6iqrz9pO/hs0u9hpBvZKioPA7m5HhR9MM3IMctOiK
-         kd8FZ8XAZI27Xfrrvg+6RjZTe+jSwOuE5qaDHQW2p3Hm1Sn9UkTIYwQ4454kh1tvM43Y
-         TRv6EXk1By+CaaB1VMeIrZuE/ziPzjb8/Kc0I9YRjqBeqvlqVedx+GkrwfXQDeOXCXnz
-         pPAQ==
-Received: by 10.68.217.202 with SMTP id pa10mr7905967pbc.15.1343669540107;
-        Mon, 30 Jul 2012 10:32:20 -0700 (PDT)
-Received: from localhost (c-67-168-183-230.hsd1.wa.comcast.net. [67.168.183.230])
-        by mx.google.com with ESMTPS id qp6sm8290255pbc.55.2012.07.30.10.32.18
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 30 Jul 2012 10:32:19 -0700 (PDT)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        alan@lxorguk.ukuu.org.uk, David Daney <david.daney@cavium.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [ 04/41] MIPS: Properly align the .data..init_task section.
-Date:   Mon, 30 Jul 2012 10:31:03 -0700
-Message-Id: <20120730172901.652451653@linuxfoundation.org>
-X-Mailer: git-send-email 1.7.10.1.362.g242cab3
-In-Reply-To: <20120730172901.306897424@linuxfoundation.org>
-References: <20120730172901.306897424@linuxfoundation.org>
-User-Agent: quilt/0.60-20.4
-X-Gm-Message-State: ALoCoQmIpyCRp4g4kd0R3XLAPyCWxd8OX3bmkZ6GTMH/ua6pxcaFqeGRtWINQuk11PITyMUSF3pB
-X-archive-position: 34000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2012 21:48:12 +0200 (CEST)
+Received: from mho-01-ewr.mailhop.org ([204.13.248.71]:21588 "EHLO
+        mho-01-ewr.mailhop.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903458Ab2G3TsF convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 Jul 2012 21:48:05 +0200
+Received: from [188.77.107.114] (helo=mail.viric.name)
+        by mho-01-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.72)
+        (envelope-from <viric@viric.name>)
+        id 1Svvwd-000HQE-1a; Mon, 30 Jul 2012 19:47:59 +0000
+Received: by mail.viric.name (Postfix, from userid 1000)
+        id 8F8491E47; Mon, 30 Jul 2012 21:47:54 +0200 (CEST)
+X-Mail-Handler: Dyn Standard SMTP by Dyn
+X-Originating-IP: 188.77.107.114
+X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/sendlabs/outbound_abuse.html for abuse reporting information)
+X-MHO-User: U2FsdGVkX18XKJE4AnmnqaOOB8hSjhbA
+Date:   Mon, 30 Jul 2012 21:47:54 +0200
+From:   =?iso-8859-1?Q?Llu=EDs?= Batlle i Rossell <viric@viric.name>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, tsbogend@alpha.franken.de
+Subject: Re: [PATCH] MIPS: Add emulation for fpureg-mem unaligned access
+Message-ID: <20120730194754.GA25996@vicerveza.homeunix.net>
+References: <20120615234641.6938B58FE7C@mail.viric.name>
+ <CAOiHx==JS9KfPWxx+pyRNwvq-pWdhbZk+Q-qvRPsVGh90Xso9Q@mail.gmail.com>
+ <20120616121513.GP2039@vicerveza.homeunix.net>
+ <20120616124001.GQ2039@vicerveza.homeunix.net>
+ <20120620190545.GV2039@vicerveza.homeunix.net>
+ <alpine.LFD.2.00.1207090122240.12288@eddie.linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.00.1207090122240.12288@eddie.linux-mips.org>
+X-Accept-Language: ca, es, eo, ru, en, jbo, tokipona
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 34001
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: viric@viric.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,70 +52,43 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Greg KH <gregkh@linuxfoundation.org>
+Hello Maciej,
 
-3.0-stable review patch.  If anyone has any objections, please let me know.
+On Wed, Jul 11, 2012 at 01:05:04AM +0100, Maciej W. Rozycki wrote:
+> On Wed, 20 Jun 2012, Lluís Batlle i Rossell wrote:
+> 
+> > > > Well, I think I take my words back. Handling the ldc1/sdc1 cases in MIPS32 is
+> > > > tricker than I thought first, because I can't use ldl/ldr or sdl/sdr there.
+> > > > Given my ability with mips assembly, I leave the patch as is.
+>  I suggest that for 32-bit kernels you simply reuse the existing snippets 
+> from that function and handle ldc1/sdc1 with a pair of lwl/ldr or swl/swr 
+> pairs ordered as appropriate for the endianness selected -- that should be 
+> fairly easy.
 
-------------------
+Hm I still don't understand well enough how to do that. Would I need to get some
+aligned memory (a stack automatic variable for example), copy the double word
+there with proper endianness, and then call again ldc1? (similar for sdc1)
 
-From: David Daney <david.daney@cavium.com>
+>  Also regardless of that, please make sure that your code handles the two 
+> possible settings of CP0 Status register's bit FR correctly, as the 32-bit 
+> halves of floating-point data are distributed differently across 
+> floating-point registers based on this bit's setting (check if an o32 and 
+> an n64 or n32 program gets these values right).
 
-commit 7b1c0d26a8e272787f0f9fcc5f3e8531df3b3409 upstream.
+Hm I'm failing to find in the mips-iv.pdf how to check that FR bit, although I
+see it mentioned there. Sorry.
 
-Improper alignment can lead to unbootable systems and/or random
-crashes.
+> > As Jonas reported, I think that maybe I should rework the patch for it to emit
+> > sigbus instead of sigill on ldc1,ldc1 for mips32. Do I understand it right?
+> 
+>  Have you checked your code against a non-FPU processor (or with the 
+> "nofpu" kernel option) too?
 
-[ralf@linux-mips.org: This is a lond standing bug since
-6eb10bc9e2deab06630261cd05c4cb1e9a60e980 (kernel.org) rsp.
-c422a10917f75fd19fa7fe070aaaa23e384dae6f (lmo) [MIPS: Clean up linker script
-using new linker script macros.] so dates back to 2.6.32.]
+No. Would in that case the processor have the fpu disabled? I understand that
+the code path is called only in a particular case of 'unaligned access'
+exception.
 
-Signed-off-by: David Daney <david.daney@cavium.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/3881/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thank you for your comments.
 
----
- arch/mips/include/asm/thread_info.h |    4 ++--
- arch/mips/kernel/vmlinux.lds.S      |    3 ++-
- 2 files changed, 4 insertions(+), 3 deletions(-)
-
---- a/arch/mips/include/asm/thread_info.h
-+++ b/arch/mips/include/asm/thread_info.h
-@@ -60,6 +60,8 @@ struct thread_info {
- register struct thread_info *__current_thread_info __asm__("$28");
- #define current_thread_info()  __current_thread_info
- 
-+#endif /* !__ASSEMBLY__ */
-+
- /* thread information allocation */
- #if defined(CONFIG_PAGE_SIZE_4KB) && defined(CONFIG_32BIT)
- #define THREAD_SIZE_ORDER (1)
-@@ -97,8 +99,6 @@ register struct thread_info *__current_t
- 
- #define free_thread_info(info) kfree(info)
- 
--#endif /* !__ASSEMBLY__ */
--
- #define PREEMPT_ACTIVE		0x10000000
- 
- /*
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -1,5 +1,6 @@
- #include <asm/asm-offsets.h>
- #include <asm/page.h>
-+#include <asm/thread_info.h>
- #include <asm-generic/vmlinux.lds.h>
- 
- #undef mips
-@@ -73,7 +74,7 @@ SECTIONS
- 	.data : {	/* Data */
- 		. = . + DATAOFFSET;		/* for CONFIG_MAPPED_KERNEL */
- 
--		INIT_TASK_DATA(PAGE_SIZE)
-+		INIT_TASK_DATA(THREAD_SIZE)
- 		NOSAVE_DATA
- 		CACHELINE_ALIGNED_DATA(1 << CONFIG_MIPS_L1_CACHE_SHIFT)
- 		READ_MOSTLY_DATA(1 << CONFIG_MIPS_L1_CACHE_SHIFT)
+Regards,
+Lluís.

@@ -1,42 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2012 16:07:40 +0200 (CEST)
-Received: from mho-02-ewr.mailhop.org ([204.13.248.72]:25745 "EHLO
-        mho-02-ewr.mailhop.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903610Ab2GaOHd convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Jul 2012 16:07:33 +0200
-Received: from 114.107.77.188.dynamic.jazztel.es ([188.77.107.114] helo=mail.viric.name)
-        by mho-02-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.72)
-        (envelope-from <viric@viric.name>)
-        id 1SwD6d-000IDg-Sf; Tue, 31 Jul 2012 14:07:28 +0000
-Received: by mail.viric.name (Postfix, from userid 1000)
-        id BCBCC2446; Tue, 31 Jul 2012 16:07:23 +0200 (CEST)
-X-Mail-Handler: Dyn Standard SMTP by Dyn
-X-Originating-IP: 188.77.107.114
-X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/sendlabs/outbound_abuse.html for abuse reporting information)
-X-MHO-User: U2FsdGVkX18fsuIpaQBQwB9FMRSDIWw6
-Date:   Tue, 31 Jul 2012 16:07:23 +0200
-From:   =?iso-8859-1?Q?Llu=EDs?= Batlle i Rossell <viric@viric.name>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, loongson-dev@googlegroups.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2012 17:10:12 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:51996 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903690Ab2GaPKI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 31 Jul 2012 17:10:08 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q6VFA6G2020406;
+        Tue, 31 Jul 2012 17:10:06 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q6VFA5fL020405;
+        Tue, 31 Jul 2012 17:10:05 +0200
+Date:   Tue, 31 Jul 2012 17:10:05 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     linux-mips@linux-mips.org, loongson-dev@googlegroups.com
 Subject: Re: [PATCH] MIPS: Add emulation for fpureg-mem unaligned access
-Message-ID: <20120731140723.GB25996@vicerveza.homeunix.net>
-Mail-Followup-To: Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org, loongson-dev@googlegroups.com
+Message-ID: <20120731151005.GB14151@linux-mips.org>
 References: <20120615234641.6938B58FE7C@mail.viric.name>
  <20120731134001.GA14151@linux-mips.org>
+ <20120731140723.GB25996@vicerveza.homeunix.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20120731134001.GA14151@linux-mips.org>
-X-Accept-Language: ca, es, eo, ru, en, jbo, tokipona
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 34005
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20120731140723.GB25996@vicerveza.homeunix.net>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34006
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: viric@viric.name
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,27 +41,25 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Jul 31, 2012 at 03:40:01PM +0200, Ralf Baechle wrote:
-> On Sat, Jun 16, 2012 at 12:22:53AM +0200, Lluis Batlle i Rossell wrote:
-> 
-> > Reusing most of the code from lw,ld,sw,sd emulation,
-> > I add the emulation for lwc1,ldc1,swc1,sdc1.
-> > 
-> > This avoids the direct SIGBUS sent to userspace processes that have
-> > misaligned memory accesses.
-> > 
-> > I've tested the change in Loongson2F, with an own test program, and
-> > WebKit 1.4.0, as both were killed by sigbus without this patch.
-> 
-> A misaligned FPU access is a strong indication for broken, non-portable
-> software.  which means you're likely trying to fix the wrong issue.  It's
-> quite intentional that there is no unaligned handling for the FPU in the
-> kernel - and afaics there isn't for any other MIPS UNIX.
+On Tue, Jul 31, 2012 at 04:07:23PM +0200, Lluís Batlle i Rossell wrote:
 
-Ah, I had no idea it was intentional. 
+> Maybe there could be a cleaner declaration of that intention, though. The only
+> code there was "I herewith declare: this does not happen.  So send SIGBUS."
 
-Maybe there could be a cleaner declaration of that intention, though. The only
-code there was "I herewith declare: this does not happen.  So send SIGBUS."
+To give you an idea, the emulation is on the order of a 1000 times slower
+than the processing a properly aligned load in hardware.  And even where
+hardware does unaligned handling such as on x86 there still is a performance
+penalty though that would far less severe.
 
-Thank you,
-Lluís.
+So given that proper alignment is always the right thing.  There are very
+few cases were handling misalignment in software is justified, for example
+the IP stack.  Even the checks if a packet is misaligned would cause a
+performance penalty and it's (assuming sane networking hardware) a very
+rare event.
+
+lwl/lwr in the IP stack would be a bad tradeoff.  It's faster than the
+unaligned exception handler but would slow down processing of every
+correctly aligned packet.  So lwl/lwr are only a good choice where a high
+fraction of misaligned packets is expected.
+
+  Ralf

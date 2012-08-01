@@ -1,33 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2012 17:10:12 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:51996 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903690Ab2GaPKI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Jul 2012 17:10:08 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q6VFA6G2020406;
-        Tue, 31 Jul 2012 17:10:06 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q6VFA5fL020405;
-        Tue, 31 Jul 2012 17:10:05 +0200
-Date:   Tue, 31 Jul 2012 17:10:05 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org, loongson-dev@googlegroups.com
-Subject: Re: [PATCH] MIPS: Add emulation for fpureg-mem unaligned access
-Message-ID: <20120731151005.GB14151@linux-mips.org>
-References: <20120615234641.6938B58FE7C@mail.viric.name>
- <20120731134001.GA14151@linux-mips.org>
- <20120731140723.GB25996@vicerveza.homeunix.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20120731140723.GB25996@vicerveza.homeunix.net>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34006
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2012 08:43:37 +0200 (CEST)
+Received: from mo10.iij4u.or.jp ([210.138.174.78]:40592 "EHLO mo.iij4u.or.jp"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903693Ab2HAGn0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Aug 2012 08:43:26 +0200
+Received: by mo.iij4u.or.jp (mo10) id q716hMvq016957; Wed, 1 Aug 2012 15:43:22 +0900
+Received: from delta (UQ1-221-171-15-92.tky.mesh.ad.jp [221.171.15.92])
+        by mbox.iij4u.or.jp (mbox10) id q716hHJ1030252
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Wed, 1 Aug 2012 15:43:21 +0900
+Date:   Wed, 1 Aug 2012 15:38:00 +0900
+From:   Yoichi Yuasa <yuasa@linux-mips.org>
+To:     ralf@linux-mips.org
+Cc:     yuasa@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH 1/4] MIPS: AR7: add select HAVE_CLK
+Message-Id: <20120801153800.22d81b6d674d6722b2392574@linux-mips.org>
+X-Mailer: Sylpheed 3.2.0beta5 (GTK+ 2.24.10; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34007
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,25 +36,36 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Jul 31, 2012 at 04:07:23PM +0200, Lluís Batlle i Rossell wrote:
+fix redefinition of clk_*
 
-> Maybe there could be a cleaner declaration of that intention, though. The only
-> code there was "I herewith declare: this does not happen.  So send SIGBUS."
+arch/mips/ar7/clock.c:420:5: error: redefinition of 'clk_enable'
+include/linux/clk.h:295:19: note: previous definition of 'clk_enable' was here
+arch/mips/ar7/clock.c:426:6: error: redefinition of 'clk_disable'
+include/linux/clk.h:300:20: note: previous definition of 'clk_disable' was here
+arch/mips/ar7/clock.c:431:15: error: redefinition of 'clk_get_rate'
+include/linux/clk.h:302:29: note: previous definition of 'clk_get_rate' was here
+arch/mips/ar7/clock.c:437:13: error: redefinition of 'clk_get'
+include/linux/clk.h:281:27: note: previous definition of 'clk_get' was here
+arch/mips/ar7/clock.c:454:6: error: redefinition of 'clk_put'
+include/linux/clk.h:291:20: note: previous definition of 'clk_put' was here
+make[2]: *** [arch/mips/ar7/clock.o] Error 1
 
-To give you an idea, the emulation is on the order of a 1000 times slower
-than the processing a properly aligned load in hardware.  And even where
-hardware does unaligned handling such as on x86 there still is a performance
-penalty though that would far less severe.
+Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+---
+ arch/mips/Kconfig |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-So given that proper alignment is always the right thing.  There are very
-few cases were handling misalignment in software is justified, for example
-the IP stack.  Even the checks if a packet is misaligned would cause a
-performance penalty and it's (assuming sane networking hardware) a very
-rare event.
-
-lwl/lwr in the IP stack would be a bad tradeoff.  It's faster than the
-unaligned exception handler but would slow down processing of every
-correctly aligned packet.  So lwl/lwr are only a good choice where a high
-fraction of misaligned packets is expected.
-
-  Ralf
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 7e78a83..50fc7a1 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -78,6 +78,7 @@ config AR7
+ 	select SYS_SUPPORTS_ZBOOT_UART16550
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select VLYNQ
++	select HAVE_CLK
+ 	help
+ 	  Support for the Texas Instruments AR7 System-on-a-Chip
+ 	  family: TNETD7100, 7200 and 7300.
+-- 
+1.7.0.4

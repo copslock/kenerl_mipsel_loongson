@@ -1,26 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2012 08:44:28 +0200 (CEST)
-Received: from mo11.iij4u.or.jp ([210.138.174.79]:52689 "EHLO mo.iij4u.or.jp"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2012 08:44:52 +0200 (CEST)
+Received: from mo11.iij4u.or.jp ([210.138.174.79]:52697 "EHLO mo.iij4u.or.jp"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903788Ab2HAGna (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 1 Aug 2012 08:43:30 +0200
-Received: by mo.iij4u.or.jp (mo11) id q716hSRd031006; Wed, 1 Aug 2012 15:43:28 +0900
+        id S1903745Ab2HAGnd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Aug 2012 08:43:33 +0200
+Received: by mo.iij4u.or.jp (mo11) id q716hVxN031066; Wed, 1 Aug 2012 15:43:31 +0900
 Received: from delta (UQ1-221-171-15-92.tky.mesh.ad.jp [221.171.15.92])
-        by mbox.iij4u.or.jp (mbox10) id q716hQK3030339
+        by mbox.iij4u.or.jp (mbox10) id q716hTUj030358
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Wed, 1 Aug 2012 15:43:27 +0900
-Date:   Wed, 1 Aug 2012 15:41:06 +0900
+        Wed, 1 Aug 2012 15:43:30 +0900
+Date:   Wed, 1 Aug 2012 15:42:16 +0900
 From:   Yoichi Yuasa <yuasa@linux-mips.org>
 To:     ralf@linux-mips.org
 Cc:     yuasa@linux-mips.org, linux-mips@linux-mips.org
-Subject: [PATCH 3/4] MIPS: txx9: add select HAVE_CLK
-Message-Id: <20120801154106.70d9b84c066a9fa11bcaf8bb@linux-mips.org>
+Subject: [PATCH 4/4] MIPS: loongson1: more clk support and add select
+ HAVE_CLK
+Message-Id: <20120801154216.294110ab8af9f733752e85f3@linux-mips.org>
 In-Reply-To: <20120801153800.22d81b6d674d6722b2392574@linux-mips.org>
 References: <20120801153800.22d81b6d674d6722b2392574@linux-mips.org>
 X-Mailer: Sylpheed 3.2.0beta5 (GTK+ 2.24.10; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-archive-position: 34009
+X-archive-position: 34010
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,34 +41,62 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 fix redefinition of clk_*
 
-arch/mips/txx9/generic/setup.c:87:13: error: redefinition of 'clk_get'
+arch/mips/loongson1/common/clock.c:23:13: error: redefinition of 'clk_get'
 include/linux/clk.h:281:27: note: previous definition of 'clk_get' was here
-arch/mips/txx9/generic/setup.c:97:5: error: redefinition of 'clk_enable'
-include/linux/clk.h:295:19: note: previous definition of 'clk_enable' was here
-arch/mips/txx9/generic/setup.c:103:6: error: redefinition of 'clk_disable'
-include/linux/clk.h:300:20: note: previous definition of 'clk_disable' was here
-arch/mips/txx9/generic/setup.c:108:15: error: redefinition of 'clk_get_rate'
+arch/mips/loongson1/common/clock.c:41:15: error: redefinition of 'clk_get_rate'
 include/linux/clk.h:302:29: note: previous definition of 'clk_get_rate' was here
-arch/mips/txx9/generic/setup.c:114:6: error: redefinition of 'clk_put'
-include/linux/clk.h:291:20: note: previous definition of 'clk_put' was here
-make[3]: *** [arch/mips/txx9/generic/setup.o] Error 1
+make[3]: *** [arch/mips/loongson1/common/clock.o] Error 1
 
 Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
 ---
- arch/mips/txx9/Kconfig |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ arch/mips/loongson1/Kconfig        |    1 +
+ arch/mips/loongson1/common/clock.c |   16 ++++++++++++++++
+ 2 files changed, 17 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/txx9/Kconfig b/arch/mips/txx9/Kconfig
-index 852ae4b..6d40bc7 100644
---- a/arch/mips/txx9/Kconfig
-+++ b/arch/mips/txx9/Kconfig
-@@ -20,6 +20,7 @@ config MACH_TXX9
- 	select SYS_SUPPORTS_32BIT_KERNEL
+diff --git a/arch/mips/loongson1/Kconfig b/arch/mips/loongson1/Kconfig
+index 237fa21..a9a14d6 100644
+--- a/arch/mips/loongson1/Kconfig
++++ b/arch/mips/loongson1/Kconfig
+@@ -15,6 +15,7 @@ config LOONGSON1_LS1B
  	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_SUPPORTS_HIGHMEM
+ 	select SYS_HAS_EARLY_PRINTK
 +	select HAVE_CLK
  
- config TOSHIBA_JMR3927
- 	bool "Toshiba JMR-TX3927 board"
+ endchoice
+ 
+diff --git a/arch/mips/loongson1/common/clock.c b/arch/mips/loongson1/common/clock.c
+index 2d98fb0..1bbbbec 100644
+--- a/arch/mips/loongson1/common/clock.c
++++ b/arch/mips/loongson1/common/clock.c
+@@ -38,12 +38,28 @@ struct clk *clk_get(struct device *dev, const char *name)
+ }
+ EXPORT_SYMBOL(clk_get);
+ 
++int clk_enable(struct clk *clk)
++{
++	return 0;
++}
++EXPORT_SYMBOL(clk_enable);
++
++void clk_disable(struct clk *clk)
++{
++}
++EXPORT_SYMBOL(clk_disable);
++
+ unsigned long clk_get_rate(struct clk *clk)
+ {
+ 	return clk->rate;
+ }
+ EXPORT_SYMBOL(clk_get_rate);
+ 
++void clk_put(struct clk *clk)
++{
++}
++EXPORT_SYMBOL(clk_put);
++
+ static void pll_clk_init(struct clk *clk)
+ {
+ 	u32 pll;
 -- 
 1.7.0.4

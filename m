@@ -1,29 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Aug 2012 15:44:53 +0200 (CEST)
-Received: from sam.nabble.com ([216.139.236.26]:46751 "EHLO sam.nabble.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903546Ab2HBNor (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 2 Aug 2012 15:44:47 +0200
-Received: from telerig.nabble.com ([192.168.236.162])
-        by sam.nabble.com with esmtp (Exim 4.72)
-        (envelope-from <lists@nabble.com>)
-        id 1Swvhk-0001xf-Nv
-        for linux-mips@linux-mips.org; Thu, 02 Aug 2012 06:44:44 -0700
-Message-ID: <34245663.post@talk.nabble.com>
-Date:   Thu, 2 Aug 2012 06:44:44 -0700 (PDT)
-From:   JoeJ <tttechmail@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Aug 2012 16:25:58 +0200 (CEST)
+Received: from gw02.mail.saunalahti.fi ([195.197.172.116]:42592 "EHLO
+        gw02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1902244Ab2HBOZv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Aug 2012 16:25:51 +0200
+Received: from netra-ax.tal.org (a91-153-117-96.elisa-laajakaista.fi [91.153.117.96])
+        by gw02.mail.saunalahti.fi (Postfix) with ESMTP id A6A5813956F
+        for <linux-mips@linux-mips.org>; Thu,  2 Aug 2012 17:25:30 +0300 (EEST)
+Received: from localhost (localhost [127.0.0.1])
+        by netra-ax.tal.org (Postfix) with ESMTP id ACB9FE26F5
+        for <linux-mips@linux-mips.org>; Thu,  2 Aug 2012 17:20:25 +0300 (EEST)
+Received: from netra-ax.tal.org ([127.0.0.1])
+ by localhost (netra-ax.tal.org [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 06805-09 for <linux-mips@linux-mips.org>;
+ Thu,  2 Aug 2012 17:20:16 +0300 (EEST)
+Received: from tori.tal.org (tori.tal.org [195.16.220.82])
+        by netra-ax.tal.org (Postfix) with ESMTP id D68CAE26F4
+        for <linux-mips@linux-mips.org>; Thu,  2 Aug 2012 17:20:16 +0300 (EEST)
+Received: from [10.67.6.37] (unknown [194.111.70.80])
+        (using SSLv3 with cipher AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by tori.tal.org (Postfix) with ESMTP id BFBAD2C8D9D
+        for <linux-mips@linux-mips.org>; Thu,  2 Aug 2012 17:24:38 +0300 (EEST)
+Message-ID: <1343917513.13395.6.camel@ubctp.tal.org>
+Subject: Re: development board?
+From:   Kaj-Michael Lang <milang@tal.org>
 To:     linux-mips@linux-mips.org
-Subject: Re: SMVP Support on MIPS34KC (linux-2.6.35)
-In-Reply-To: <5016F660.5020502@realitydiluted.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Nabble-From: tttechmail@gmail.com
-References: <34219711.post@talk.nabble.com> <5012CDA4.5000008@realitydiluted.com> <34230427.post@talk.nabble.com> <50169FA7.8010603@realitydiluted.com> <CAB4dzwWWCizOmQ=kGxCz1f6smjdMVXbUJ9+35EUckygEoG_ebQ@mail.gmail.com> <5016F660.5020502@realitydiluted.com>
-X-archive-position: 34021
+Date:   Thu, 02 Aug 2012 17:25:13 +0300
+In-Reply-To: <50085CB4.3030205@gmx.de>
+References: <50085CB4.3030205@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3-0ubuntu6 
+Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Virus-Scanned: amavisd-new at tal.org
+X-archive-position: 34022
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tttechmail@gmail.com
+X-original-sender: milang@tal.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,39 +51,16 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+On Thu, 2012-07-19 at 21:15 +0200, Oliver Kowalke wrote:
+> I'm searching for an development board with a MIPS processor - 1GB
+> RAM 
+> would be nice but 10/100MBit ethernet is required. 
 
-Steve,
+Don't know about the ethernet part, but you could check out the very
+cheap mips based android tablets. Search for Ainol Novo 7 Paladin for
+example, under 100€.
 
- I have posted in the mips portal, addressing to you. Hope you must have got
-the mail. 
-
-Regards,
-Jeffin
-
-
-sjhill-3 wrote:
-> 
-> -----BEGIN PGP SIGNED MESSAGE-----
-> Hash: SHA1
-> 
-> Jeffin,
-> 
-> You will need to file an official support request with MIPS to proceed
-> further. Additional time spent on this will need to be tracked. Thanks.
-> 
-> - -Steve
-> -----BEGIN PGP SIGNATURE-----
-> Version: GnuPG v1.4.11 (GNU/Linux)
-> Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
-> 
-> iEYEARECAAYFAlAW9mAACgkQgyK5H2Ic36eS0QCfW8Z1mH1qvLnarlr7HRAr1Lbc
-> tloAni+7cilKyEy5eJD6ONUa+oZFctMp
-> =Iz5d
-> -----END PGP SIGNATURE-----
-> 
-> 
-> 
+Anyone tried getting plain-old-linux running on one?
 
 -- 
-View this message in context: http://old.nabble.com/SMVP-Support-on-MIPS34KC-%28linux-2.6.35%29-tp34219711p34245663.html
-Sent from the linux-mips main mailing list archive at Nabble.com.
+Kaj-Michael Lang <milang@tal.org>

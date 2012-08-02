@@ -1,35 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Aug 2012 06:42:17 +0200 (CEST)
-Received: from mail1.windriver.com ([147.11.146.13]:39109 "EHLO
-        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903482Ab2HBEmJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Aug 2012 06:42:09 +0200
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca [147.11.189.40])
-        by mail1.windriver.com (8.14.5/8.14.3) with ESMTP id q724fw28020449
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Wed, 1 Aug 2012 21:42:00 -0700 (PDT)
-Received: from [128.224.162.155] (128.224.162.155) by ALA-HCA.corp.ad.wrs.com
- (147.11.189.50) with Microsoft SMTP Server (TLS) id 14.2.309.2; Wed, 1 Aug
- 2012 21:41:56 -0700
-Message-ID: <501A05D7.5060005@windriver.com>
-Date:   Thu, 2 Aug 2012 12:45:11 +0800
-From:   Fan Du <fan.du@windriver.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.13) Gecko/20101208 Thunderbird/3.1.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Aug 2012 08:30:33 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:58954 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903514Ab2HBGaZ convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 2 Aug 2012 08:30:25 +0200
+Received: by lbbgg6 with SMTP id gg6so782320lbb.36
+        for <multiple recipients>; Wed, 01 Aug 2012 23:30:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=JlhJSxMOnNqpN4ZEN55IImlOnbmZFp/QKL8qntP7TRg=;
+        b=FBSrNWaOolxnHrCXWjnMn1dDIvdWAwJ1xWB+fwySDp+PnpJtpCdKQLvI8sWtgG7+GB
+         9BtHpTqQnL5u5ge/VU20YYszEbIE9WM+aqAtc8ZeYpPdW7sjG0WqL6O4ud+b79AfmFX6
+         K3GsJw9iqsQSw/RmsUWvW6q3Dn8Rbq6FOnh0OBfRrECmJNThPTqSEGULoinlknmozLgw
+         Jsm4JmX/6mWHWrn1ZzDzC/0ufS5fJBcWDvurt3xCLs8sKo91oQeRbMW8Xwc3bbvi7A3P
+         xaCdHdNQl01Xd7q7K990vuclJO/FeQFh8t+xydqodWNRz9UImT+8OXF2wqq0lcO4pRG9
+         UZ5A==
 MIME-Version: 1.0
-To:     Kevin Cernekee <cernekee@gmail.com>
-CC:     Fan Du <fdu@windriver.com>, <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        vincent wen <vincentwenlinux@gmail.com>
-Subject: Re: [PATCH] MIPS: oops when show backtrace of all active cpu
-References: <1343878276-4108-1-git-send-email-fdu@windriver.com> <CAJiQ=7Abc2sR2E2FXmeTr_Hc+CWH+J25=juB3wL172Tn6-PYuA@mail.gmail.com>
-In-Reply-To: <CAJiQ=7Abc2sR2E2FXmeTr_Hc+CWH+J25=juB3wL172Tn6-PYuA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [128.224.162.155]
-X-archive-position: 34019
+Received: by 10.152.132.233 with SMTP id ox9mr20332975lab.25.1343889019352;
+ Wed, 01 Aug 2012 23:30:19 -0700 (PDT)
+Received: by 10.152.105.51 with HTTP; Wed, 1 Aug 2012 23:30:19 -0700 (PDT)
+In-Reply-To: <CAAhV-H5pkm6en7oVjTdDmm2SSy1DyF7kDczPady+c+aB8eAXyA@mail.gmail.com>
+References: <1340334073-17804-1-git-send-email-chenhc@lemote.com>
+        <1340334073-17804-12-git-send-email-chenhc@lemote.com>
+        <1340342704.1381.9.camel@tellur>
+        <CAAhV-H5pkm6en7oVjTdDmm2SSy1DyF7kDczPady+c+aB8eAXyA@mail.gmail.com>
+Date:   Thu, 2 Aug 2012 14:30:19 +0800
+Message-ID: <CAAhV-H4XZCMfACTz5pL2metyPacdg3tN8q09_KLmkBcCBTbigw@mail.gmail.com>
+Subject: Re: [PATCH V3 11/16] drm/radeon: Make radeon card usable for Loongson.
+From:   Huacai Chen <chenhuacai@gmail.com>
+To:     Lucas Stach <dev@lynxeye.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Zhangjin Wu <wuzhangjin@gmail.com>, Hua Yan <yanh@lemote.com>,
+        Fuxin Zhang <zhangfx@lemote.com>, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Hongliang Tao <taohl@lemote.com>,
+        Huacai Chen <chenhc@lemote.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 34020
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fan.du@windriver.com
+X-original-sender: chenhuacai@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,38 +56,148 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+Hi, Lucas, sorry for so long a delay because I have a holiday for one month.
 
+I found Loongson-3 must turn on SWIOTLB if the system memory has
+addresses above 4G. As I know, there are two ways to get a DMA addr,
+the first way is use dma_alloc_coherent(), and the other one is use
+map_page()/map_sg() on an exsisting address. The first way can make
+sure DMA addr below 4G, but the second way cannot (unless the memory
+is so little that all the address space is below 4G).
 
-On 2012年08月02日 12:18, Kevin Cernekee wrote:
-> On Wed, Aug 1, 2012 at 8:31 PM, Fan Du<fdu@windriver.com>  wrote:
->> show_backtrace must have an valid task when calling unwind_stack,
->> so fix it by checking first.
-> [...]
->> --- a/arch/mips/kernel/traps.c
->> +++ b/arch/mips/kernel/traps.c
->> @@ -151,6 +151,10 @@ static void show_backtrace(struct task_struct *task, const struct pt_regs *regs)
->>                  show_raw_backtrace(sp);
->>                  return;
->>          }
->> +
->> +       if (task == NULL)
->> +               task = current;
->> +
->>          printk("Call Trace:\n");
->>          do {
->>                  print_ip_sym(pc);
+Take SATA driver as an example, during initialization an 'ata_device'
+struct is allocated and its address is probably above 4G (because this
+is first used by CPU, not for DMA). 'ata_device' has a member 'id' and
+'id' will be use for DMA in such a call path:
+
+ata_host_register() --> ata_scsi_add_hosts() --> async_port_probe()
+--> ata_port_probe() --> ata_bus_probe() --> ata_dev_read_id() -->
+ata_exec_internal() --> ata_exec_internal_sg() --> ata_qc_issue() -->
+ata_sg_setup() --> dma_map_sg()
+
+Here,  dma_map_sg() will get a DMA addr above 4G, then SATA init failed.
+
+In OHCI driver, there are similar situations.
+
+P.S.:  With recently drm changes, I found radeon with SWIOTLB can
+already work after suspend/resume, so my next version of Loongson
+patches will not modify radeon_ttm.c.
+
+On Fri, Jun 22, 2012 at 1:59 PM, Huacai Chen <chenhuacai@gmail.com> wrote:
+> On Fri, Jun 22, 2012 at 1:25 PM, Lucas Stach <dev@lynxeye.de> wrote:
+>> Hello Huacai,
+>>
+>> Am Freitag, den 22.06.2012, 11:01 +0800 schrieb Huacai Chen:
+>>> 1, Handle io prot correctly for MIPS.
+>>> 2, Define SAREA_MAX as the size of one page.
+>>> 3, Don't use swiotlb on Loongson machines (Loonson need swioitlb, but
+>>>    when use swiotlb, GPU reset occurs at resume from suspend).
+>>>
+>> I still think this is wrong. You say Loongson needs SWIOTLB, but when
+>> it's actually used you ignore it in the radeon driver code.
+>>
+>> I looked up why you are using SWIOTLB and I don't agree with you that it
+>> is needed. SWIOTLB just gives you bounce pages for DMA memory above
+>> DMA32 and therefore papers over your >4GB DMA platform bug in some
+>> cases, while hurting performance.
+>>
+>> Please fix your DMA platform code so that region DMA is an alias for
+>> region DMA32. It should allow you to drop all those ugly workarounds.
+>>
+> Hmm, you are probably right, I think I should have a discuss with the
+> original author of this part of code.
 >
-> FYI, a slightly different version of this change was accepted:
->
-> https://patchwork.linux-mips.org/patch/3524/
->
->
-
-Oh, Looks like I'm late :)
-thanks anyway.
-
-
--- 
-
-Love each day!
---fan
+>>> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+>>> Signed-off-by: Hongliang Tao <taohl@lemote.com>
+>>> Signed-off-by: Hua Yan <yanh@lemote.com>
+>>> Reviewed-by: Michel D�nzer <michel@daenzer.net>
+>>> Reviewed-by: Alex Deucher <alexdeucher@gmail.com>
+>>> Reviewed-by: Lucas Stach <dev@lynxeye.de>
+>>> Reviewed-by: j.glisse <j.glisse@gmail.com>
+>>
+>> You should probably only stick this tag on your patches after the people
+>> you are naming explicitly gave their r-b for a specific version of a
+>> patch.
+>>
+>> Thanks,
+>> Lucas
+>>> Cc: dri-devel@lists.freedesktop.org
+>>> ---
+>>>  drivers/gpu/drm/drm_vm.c            |    2 +-
+>>>  drivers/gpu/drm/radeon/radeon_ttm.c |    6 +++---
+>>>  drivers/gpu/drm/ttm/ttm_bo_util.c   |    2 +-
+>>>  include/drm/drm_sarea.h             |    2 ++
+>>>  4 files changed, 7 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/drm_vm.c b/drivers/gpu/drm/drm_vm.c
+>>> index 961ee08..3f06166 100644
+>>> --- a/drivers/gpu/drm/drm_vm.c
+>>> +++ b/drivers/gpu/drm/drm_vm.c
+>>> @@ -62,7 +62,7 @@ static pgprot_t drm_io_prot(uint32_t map_type, struct vm_area_struct *vma)
+>>>               tmp = pgprot_writecombine(tmp);
+>>>       else
+>>>               tmp = pgprot_noncached(tmp);
+>>> -#elif defined(__sparc__) || defined(__arm__)
+>>> +#elif defined(__sparc__) || defined(__arm__) || defined(__mips__)
+>>>       tmp = pgprot_noncached(tmp);
+>>>  #endif
+>>>       return tmp;
+>>> diff --git a/drivers/gpu/drm/radeon/radeon_ttm.c b/drivers/gpu/drm/radeon/radeon_ttm.c
+>>> index c94a225..f49bdd1 100644
+>>> --- a/drivers/gpu/drm/radeon/radeon_ttm.c
+>>> +++ b/drivers/gpu/drm/radeon/radeon_ttm.c
+>>> @@ -630,7 +630,7 @@ static int radeon_ttm_tt_populate(struct ttm_tt *ttm)
+>>>       }
+>>>  #endif
+>>>
+>>> -#ifdef CONFIG_SWIOTLB
+>>> +#if defined(CONFIG_SWIOTLB) && !defined(CONFIG_CPU_LOONGSON3)
+>>>       if (swiotlb_nr_tbl()) {
+>>>               return ttm_dma_populate(&gtt->ttm, rdev->dev);
+>>>       }
+>>> @@ -676,7 +676,7 @@ static void radeon_ttm_tt_unpopulate(struct ttm_tt *ttm)
+>>>       }
+>>>  #endif
+>>>
+>>> -#ifdef CONFIG_SWIOTLB
+>>> +#if defined(CONFIG_SWIOTLB) && !defined(CONFIG_CPU_LOONGSON3)
+>>>       if (swiotlb_nr_tbl()) {
+>>>               ttm_dma_unpopulate(&gtt->ttm, rdev->dev);
+>>>               return;
+>>> @@ -906,7 +906,7 @@ static int radeon_ttm_debugfs_init(struct radeon_device *rdev)
+>>>       radeon_mem_types_list[i].show = &ttm_page_alloc_debugfs;
+>>>       radeon_mem_types_list[i].driver_features = 0;
+>>>       radeon_mem_types_list[i++].data = NULL;
+>>> -#ifdef CONFIG_SWIOTLB
+>>> +#if defined(CONFIG_SWIOTLB) && !defined(CONFIG_CPU_LOONGSON3)
+>>>       if (swiotlb_nr_tbl()) {
+>>>               sprintf(radeon_mem_types_names[i], "ttm_dma_page_pool");
+>>>               radeon_mem_types_list[i].name = radeon_mem_types_names[i];
+>>> diff --git a/drivers/gpu/drm/ttm/ttm_bo_util.c b/drivers/gpu/drm/ttm/ttm_bo_util.c
+>>> index f8187ea..0df71ea 100644
+>>> --- a/drivers/gpu/drm/ttm/ttm_bo_util.c
+>>> +++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
+>>> @@ -472,7 +472,7 @@ pgprot_t ttm_io_prot(uint32_t caching_flags, pgprot_t tmp)
+>>>       else
+>>>               tmp = pgprot_noncached(tmp);
+>>>  #endif
+>>> -#if defined(__sparc__)
+>>> +#if defined(__sparc__) || defined(__mips__)
+>>>       if (!(caching_flags & TTM_PL_FLAG_CACHED))
+>>>               tmp = pgprot_noncached(tmp);
+>>>  #endif
+>>> diff --git a/include/drm/drm_sarea.h b/include/drm/drm_sarea.h
+>>> index ee5389d..1d1a858 100644
+>>> --- a/include/drm/drm_sarea.h
+>>> +++ b/include/drm/drm_sarea.h
+>>> @@ -37,6 +37,8 @@
+>>>  /* SAREA area needs to be at least a page */
+>>>  #if defined(__alpha__)
+>>>  #define SAREA_MAX                       0x2000U
+>>> +#elif defined(__mips__)
+>>> +#define SAREA_MAX                       0x4000U
+>>>  #elif defined(__ia64__)
+>>>  #define SAREA_MAX                       0x10000U     /* 64kB */
+>>>  #else
+>>
+>>

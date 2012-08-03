@@ -1,44 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2012 09:13:13 +0200 (CEST)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:34067 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903798Ab2HCHHz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Aug 2012 09:07:55 +0200
-Received: by mail-yx0-f177.google.com with SMTP id r9so506866yen.36
-        for <multiple recipients>; Fri, 03 Aug 2012 00:07:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=xyVbSDHLEy8ABlE+GomoLjIZR1xkl+XAl0Gna9UHoSw=;
-        b=AZCJr7YFDGUXxTgLxgU/MkysqECHLtMu2XWT2wK0Lk6G7wCvg+i2CKckI67b0Wzm+a
-         jQciBEbQPryKomDuzJ7BKddLMQALHX2xPnV/UsPagPuvPPFwb89oH2YmrBwE3nQI4Yse
-         7iMrfXKHzlIgZMy32YqY5ZwP+jVRQhcVQKzcIAu8QJIIwN74kWzpy3S4iTVTrV3RlJiK
-         TcQXQP1rm65DEySImwwak2Vx2XiyQqxLGBD3POQcENjibEqbEiVcOB9gy0nT8BNH+Z+2
-         SXCyE9ykPxbjS8Qp5HeD+ShTEmGY3MwwPx3WWj8V5v8pxWynTqllCjFXo4T0lUox45ua
-         F7nw==
-Received: by 10.50.188.131 with SMTP id ga3mr1446635igc.54.1343977673673;
-        Fri, 03 Aug 2012 00:07:53 -0700 (PDT)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id z3sm20852677igc.7.2012.08.03.00.07.49
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 03 Aug 2012 00:07:52 -0700 (PDT)
-From:   Huacai Chen <chenhuacai@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH V4 16/16] MIPS: Loongson: Add a Loongson-3 default config file.
-Date:   Fri,  3 Aug 2012 15:06:11 +0800
-Message-Id: <1343977571-2292-17-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 1.7.7.3
-In-Reply-To: <1343977571-2292-1-git-send-email-chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2012 10:01:20 +0200 (CEST)
+Received: from darkcity.gna.ch ([195.226.6.51]:42224 "EHLO mail.gna.ch"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1902235Ab2HCIBP convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Aug 2012 10:01:15 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by darkcity.gna.ch (Postfix) with ESMTP id F1EA75E060F;
+        Fri,  3 Aug 2012 10:01:14 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at gna.ch
+Received: from mail.gna.ch ([127.0.0.1])
+        by localhost (darkcity.gna.ch [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id elKAjUVGe7ks; Fri,  3 Aug 2012 10:01:04 +0200 (CEST)
+Received: from thor (77-56-77-139.dclient.hispeed.ch [77.56.77.139])
+        (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by darkcity.gna.ch (Postfix) with ESMTPSA id 366C65E0619;
+        Fri,  3 Aug 2012 10:01:03 +0200 (CEST)
+Received: from daenzer by thor with local (Exim 4.80)
+        (envelope-from <michel@daenzer.net>)
+        id 1SxCog-0008Ur-9A; Fri, 03 Aug 2012 10:01:02 +0200
+Message-ID: <1343980862.1772.211.camel@thor.local>
+Subject: Re: [PATCH V4 11/16] drm/radeon: Make radeon card usable for
+ Loongson.
+From:   Michel =?ISO-8859-1?Q?D=E4nzer?= <michel@daenzer.net>
+To:     Huacai Chen <chenhuacai@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Zhangjin Wu <wuzhangjin@gmail.com>, Hua Yan <yanh@lemote.com>,
+        Fuxin Zhang <zhangfx@lemote.com>, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Hongliang Tao <taohl@lemote.com>,
+        Huacai Chen <chenhc@lemote.com>
+Date:   Fri, 03 Aug 2012 10:01:02 +0200
+In-Reply-To: <1343977571-2292-12-git-send-email-chenhc@lemote.com>
 References: <1343977571-2292-1-git-send-email-chenhc@lemote.com>
-X-archive-position: 34040
+         <1343977571-2292-12-git-send-email-chenhc@lemote.com>
+Face:   iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAAXNSR0IArs4c6QAAADBQTFRFDg4OHh4eLCwsOzs7S0tLWlpaa2treXl5hISEjY2NmJiYqKiotLS0xsbG1dXV/Pz81CO0SQAAArtJREFUOMtd1M9P01AcAHCI/4AtGq/QDfDHRfraEX8eaNeJFw1rO/DCYet7mxc1ZG0x3sStHQkmZpqtHDwAi+tMiFEzbZdwNWEJR48cjPG4g5HhELUbrHvjpYe2n7zvt++977cD/7rjsCry8uNG93Gge9OKUyAAgLB1AlpTZICmAzR15QTEiQAPAKADYLMPfhNnEJR4HvD0tT5YI2KGUcyqihQN7mDwZ3hMN4q2N4ol+gEGTSLWhorrjYXrGPwc0jTDOoKP4xi8G0W6adl2Gz6zGDwag5p5PMON7vZgJuSB976+3U6y2QdeKNet1+uum9/qwVQHvEjtKesY0EIb7CNYe+7DIRXCID/vQ4tksVAY7JFBD7yvqrWTL93xoUmOQsPIddbnuk8v+bBPsigB2KRlFxS4nL/owwEpKBSg2MU3UcDf+nATyyHEQwrHzJZFNpXeuOHDC0qW4sMhEHESFGOUrvgQpWUYFVNQdjQxca8abnSB55CmehdcLSxa1ifoQ4JBpmGYWbhsly3X0fxQ7xmkW3Y5CztLcXI+fAu2oWho3nbV6s5rH35xSC/aBR2tOpVa/Utv25tcTDPL6aT21kG17WrvaFtMBJmFhJCsVF4uu9VG76DWBaRnEiNs7pU659pYlfwtQSRy9GCYlwR7C6/dPQgBw3MsTPNWA4d9SeMDDC9JYdnqq/amdF+diGnVhXFztQ/2lJSWjulOxjRX+uC7EkOqhLRk2ejrqHVBEqCqJLO5cmEXgx8TrBiWVQh1u2DhzQlPsyIveU2YLGorGBxODoR5notlpcUieoLB1/NEmGc4AalGJpLe8WF/8txMWASAkVVViQjzP
+ jycPrvgA
+        R1goSzOnkp14YCYHsp7QJHAS5QcXDqG1jBxdSITVgBNkBTFloj88Q/gMkFcuItYiQPUCBGc2xh5drsD/wGZrgsgDOE4ZAAAAABJRU5ErkJggg==
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Mailer: Evolution 3.4.3-1.0 
+Mime-Version: 1.0
+X-archive-position: 34041
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhuacai@gmail.com
+X-original-sender: michel@daenzer.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,302 +57,80 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Signed-off-by: Hongliang Tao <taohl@lemote.com>
-Signed-off-by: Hua Yan <yanh@lemote.com>
----
- arch/mips/configs/loongson3_defconfig |  283 +++++++++++++++++++++++++++++++++
- 1 files changed, 283 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/configs/loongson3_defconfig
+On Fre, 2012-08-03 at 15:06 +0800, Huacai Chen wrote: 
+> 1, Handle io prot correctly for MIPS.
+> 2, Define SAREA_MAX as the size of one page.
+> 3, Include swiotlb.h if SWIOTLB configured.
+> 
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> Signed-off-by: Hongliang Tao <taohl@lemote.com>
+> Signed-off-by: Hua Yan <yanh@lemote.com>
+> Cc: dri-devel@lists.freedesktop.org
+> ---
+>  drivers/gpu/drm/drm_vm.c            |    2 +-
+>  drivers/gpu/drm/radeon/radeon_ttm.c |    4 ++++
+>  drivers/gpu/drm/ttm/ttm_bo_util.c   |    2 +-
+>  include/drm/drm_sarea.h             |    2 ++
+>  4 files changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_vm.c b/drivers/gpu/drm/drm_vm.c
+> index 961ee08..3f06166 100644
+> --- a/drivers/gpu/drm/drm_vm.c
+> +++ b/drivers/gpu/drm/drm_vm.c
+> @@ -62,7 +62,7 @@ static pgprot_t drm_io_prot(uint32_t map_type, struct vm_area_struct *vma)
+>  		tmp = pgprot_writecombine(tmp);
+>  	else
+>  		tmp = pgprot_noncached(tmp);
+> -#elif defined(__sparc__) || defined(__arm__)
+> +#elif defined(__sparc__) || defined(__arm__) || defined(__mips__)
+>  	tmp = pgprot_noncached(tmp);
+>  #endif
+>  	return tmp;
+> diff --git a/drivers/gpu/drm/radeon/radeon_ttm.c b/drivers/gpu/drm/radeon/radeon_ttm.c
+> index 5b71c71..fc3ac22 100644
+> --- a/drivers/gpu/drm/radeon/radeon_ttm.c
+> +++ b/drivers/gpu/drm/radeon/radeon_ttm.c
+> @@ -41,6 +41,10 @@
+>  #include "radeon_reg.h"
+>  #include "radeon.h"
+>  
+> +#ifdef CONFIG_SWIOTLB
+> +#include <linux/swiotlb.h>
+> +#endif
+> +
+>  #define DRM_FILE_PAGE_OFFSET (0x100000000ULL >> PAGE_SHIFT)
+>  
+>  static int radeon_ttm_debugfs_init(struct radeon_device *rdev);
+> diff --git a/drivers/gpu/drm/ttm/ttm_bo_util.c b/drivers/gpu/drm/ttm/ttm_bo_util.c
+> index f8187ea..0df71ea 100644
+> --- a/drivers/gpu/drm/ttm/ttm_bo_util.c
+> +++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
+> @@ -472,7 +472,7 @@ pgprot_t ttm_io_prot(uint32_t caching_flags, pgprot_t tmp)
+>  	else
+>  		tmp = pgprot_noncached(tmp);
+>  #endif
+> -#if defined(__sparc__)
+> +#if defined(__sparc__) || defined(__mips__)
+>  	if (!(caching_flags & TTM_PL_FLAG_CACHED))
+>  		tmp = pgprot_noncached(tmp);
+>  #endif
+> diff --git a/include/drm/drm_sarea.h b/include/drm/drm_sarea.h
+> index ee5389d..1d1a858 100644
+> --- a/include/drm/drm_sarea.h
+> +++ b/include/drm/drm_sarea.h
+> @@ -37,6 +37,8 @@
+>  /* SAREA area needs to be at least a page */
+>  #if defined(__alpha__)
+>  #define SAREA_MAX                       0x2000U
+> +#elif defined(__mips__)
+> +#define SAREA_MAX                       0x4000U
+>  #elif defined(__ia64__)
+>  #define SAREA_MAX                       0x10000U	/* 64kB */
+>  #else
 
-diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
-new file mode 100644
-index 0000000..4a0722f
---- /dev/null
-+++ b/arch/mips/configs/loongson3_defconfig
-@@ -0,0 +1,283 @@
-+CONFIG_MACH_LOONGSON=y
-+CONFIG_LEMOTE_MACH3A=y
-+CONFIG_LOONGSON_BIGMEM=y
-+CONFIG_CPU_LOONGSON3=y
-+CONFIG_64BIT=y
-+CONFIG_PAGE_SIZE_16KB=y
-+CONFIG_SPARSEMEM_MANUAL=y
-+CONFIG_KSM=y
-+CONFIG_SMP=y
-+CONFIG_NR_CPUS=4
-+CONFIG_HZ_256=y
-+CONFIG_PREEMPT=y
-+CONFIG_KEXEC=y
-+CONFIG_EXPERIMENTAL=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_SYSVIPC=y
-+CONFIG_POSIX_MQUEUE=y
-+CONFIG_BSD_PROCESS_ACCT=y
-+CONFIG_BSD_PROCESS_ACCT_V3=y
-+CONFIG_AUDIT=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_CPUSETS=y
-+CONFIG_RESOURCE_COUNTERS=y
-+CONFIG_CGROUP_MEM_RES_CTLR=y
-+CONFIG_CGROUP_MEM_RES_CTLR_SWAP=y
-+CONFIG_BLK_CGROUP=y
-+CONFIG_SCHED_AUTOGROUP=y
-+CONFIG_SYSFS_DEPRECATED=y
-+CONFIG_RELAY=y
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
-+CONFIG_SYSCTL_SYSCALL=y
-+CONFIG_EMBEDDED=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODULE_FORCE_UNLOAD=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_CFQ_GROUP_IOSCHED=y
-+CONFIG_PCI=y
-+CONFIG_HT_PCI=y
-+CONFIG_HOTPLUG_PCI=y
-+CONFIG_HOTPLUG_PCI_SHPC=m
-+CONFIG_MIPS32_COMPAT=y
-+CONFIG_MIPS32_O32=y
-+CONFIG_MIPS32_N32=y
-+CONFIG_PM_RUNTIME=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_IP_MULTICAST=y
-+CONFIG_IP_ADVANCED_ROUTER=y
-+CONFIG_IP_MULTIPLE_TABLES=y
-+CONFIG_IP_ROUTE_MULTIPATH=y
-+CONFIG_IP_ROUTE_VERBOSE=y
-+CONFIG_NETFILTER=y
-+CONFIG_NETFILTER_NETLINK_LOG=m
-+CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
-+CONFIG_NETFILTER_XT_TARGET_MARK=m
-+CONFIG_NETFILTER_XT_TARGET_NFQUEUE=m
-+CONFIG_NETFILTER_XT_MATCH_COMMENT=m
-+CONFIG_NETFILTER_XT_MATCH_DCCP=m
-+CONFIG_NETFILTER_XT_MATCH_ESP=m
-+CONFIG_NETFILTER_XT_MATCH_LENGTH=m
-+CONFIG_NETFILTER_XT_MATCH_LIMIT=m
-+CONFIG_NETFILTER_XT_MATCH_MAC=m
-+CONFIG_NETFILTER_XT_MATCH_MARK=m
-+CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
-+CONFIG_NETFILTER_XT_MATCH_PKTTYPE=m
-+CONFIG_NETFILTER_XT_MATCH_QUOTA=m
-+CONFIG_NETFILTER_XT_MATCH_REALM=m
-+CONFIG_NETFILTER_XT_MATCH_SCTP=m
-+CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
-+CONFIG_NETFILTER_XT_MATCH_STRING=m
-+CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
-+CONFIG_IP_NF_QUEUE=m
-+CONFIG_IP_NF_IPTABLES=m
-+CONFIG_IP_NF_MATCH_AH=m
-+CONFIG_IP_NF_MATCH_ECN=m
-+CONFIG_IP_NF_MATCH_TTL=m
-+CONFIG_IP_NF_FILTER=m
-+CONFIG_IP_NF_TARGET_REJECT=m
-+CONFIG_IP_NF_TARGET_ULOG=m
-+CONFIG_IP_NF_MANGLE=m
-+CONFIG_IP_NF_TARGET_ECN=m
-+CONFIG_IP_NF_TARGET_TTL=m
-+CONFIG_IP_NF_RAW=m
-+CONFIG_IP_NF_ARPTABLES=m
-+CONFIG_IP_NF_ARPFILTER=m
-+CONFIG_IP_NF_ARP_MANGLE=m
-+CONFIG_CFG80211=y
-+CONFIG_LIB80211=y
-+CONFIG_MAC80211=y
-+CONFIG_RFKILL=y
-+CONFIG_RFKILL_INPUT=y
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+CONFIG_MTD=y
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_BLK_DEV_CRYPTOLOOP=y
-+CONFIG_BLK_DEV_RAM=y
-+CONFIG_BLK_DEV_RAM_SIZE=8192
-+CONFIG_RAID_ATTRS=m
-+CONFIG_SCSI_TGT=y
-+CONFIG_BLK_DEV_SD=y
-+CONFIG_CHR_DEV_SG=y
-+CONFIG_CHR_DEV_SCH=m
-+CONFIG_SCSI_MULTI_LUN=y
-+CONFIG_SCSI_CONSTANTS=y
-+CONFIG_SCSI_LOGGING=y
-+CONFIG_SCSI_SPI_ATTRS=m
-+CONFIG_SCSI_FC_ATTRS=m
-+CONFIG_SCSI_ISCSI_ATTRS=m
-+CONFIG_ATA=y
-+CONFIG_SATA_AHCI=y
-+CONFIG_MD=y
-+CONFIG_BLK_DEV_DM=y
-+CONFIG_DM_CRYPT=y
-+CONFIG_DM_SNAPSHOT=y
-+CONFIG_DM_MIRROR=y
-+CONFIG_DM_ZERO=y
-+CONFIG_NETDEVICES=y
-+CONFIG_R8169=y
-+CONFIG_ATH_COMMON=y
-+CONFIG_ATH9K=y
-+CONFIG_INPUT_POLLDEV=m
-+CONFIG_INPUT_SPARSEKMAP=y
-+CONFIG_INPUT_EVDEV=y
-+CONFIG_KEYBOARD_XTKBD=m
-+CONFIG_MOUSE_PS2_SENTELIC=y
-+CONFIG_MOUSE_SERIAL=m
-+CONFIG_INPUT_MISC=y
-+CONFIG_INPUT_UINPUT=m
-+CONFIG_SERIO_SERPORT=m
-+CONFIG_SERIO_RAW=m
-+CONFIG_LEGACY_PTY_COUNT=16
-+CONFIG_SERIAL_NONSTANDARD=y
-+CONFIG_N_HDLC=m
-+CONFIG_STALDRV=y
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_NR_UARTS=16
-+CONFIG_SERIAL_8250_EXTENDED=y
-+CONFIG_SERIAL_8250_MANY_PORTS=y
-+CONFIG_SERIAL_8250_SHARE_IRQ=y
-+CONFIG_SERIAL_8250_RSA=y
-+CONFIG_IPMI_HANDLER=m
-+CONFIG_IPMI_DEVICE_INTERFACE=m
-+CONFIG_IPMI_SI=m
-+CONFIG_IPMI_WATCHDOG=m
-+CONFIG_IPMI_POWEROFF=m
-+CONFIG_HW_RANDOM=y
-+CONFIG_R3964=m
-+CONFIG_RAW_DRIVER=m
-+CONFIG_I2C_CHARDEV=y
-+CONFIG_I2C_PIIX4=y
-+CONFIG_SPI=y
-+CONFIG_SPI_BITBANG=m
-+CONFIG_SENSORS_ADM1021=m
-+CONFIG_SENSORS_ADM1025=m
-+CONFIG_SENSORS_ADM1026=m
-+CONFIG_SENSORS_ADM1031=m
-+CONFIG_SENSORS_ADM9240=m
-+CONFIG_SENSORS_ATXP1=m
-+CONFIG_SENSORS_DS1621=m
-+CONFIG_SENSORS_GL518SM=m
-+CONFIG_SENSORS_GL520SM=m
-+CONFIG_SENSORS_IT87=m
-+CONFIG_SENSORS_LM63=m
-+CONFIG_SENSORS_LM70=m
-+CONFIG_SENSORS_LM75=m
-+CONFIG_SENSORS_LM77=m
-+CONFIG_SENSORS_LM78=m
-+CONFIG_SENSORS_LM80=m
-+CONFIG_SENSORS_LM83=m
-+CONFIG_SENSORS_LM85=m
-+CONFIG_SENSORS_LM87=m
-+CONFIG_SENSORS_LM90=m
-+CONFIG_SENSORS_LM92=m
-+CONFIG_SENSORS_MAX1619=m
-+CONFIG_SENSORS_PC87360=m
-+CONFIG_SENSORS_SMSC47M1=m
-+CONFIG_SENSORS_SMSC47M192=m
-+CONFIG_SENSORS_SMSC47B397=m
-+CONFIG_SENSORS_W83781D=m
-+CONFIG_SENSORS_W83791D=m
-+CONFIG_SENSORS_W83792D=m
-+CONFIG_SENSORS_W83793=m
-+CONFIG_SENSORS_W83L785TS=m
-+CONFIG_SENSORS_W83627HF=m
-+CONFIG_SENSORS_W83627EHF=m
-+CONFIG_DRM=y
-+CONFIG_DRM_RADEON=y
-+CONFIG_DRM_RADEON_KMS=y
-+CONFIG_VIDEO_OUTPUT_CONTROL=y
-+CONFIG_FB_RADEON=y
-+CONFIG_FB_ATY128=y
-+CONFIG_FB_ATY=y
-+CONFIG_FB_ATY_CT=y
-+CONFIG_FB_ATY_GENERIC_LCD=y
-+CONFIG_FB_ATY_GX=y
-+CONFIG_LCD_CLASS_DEVICE=y
-+# CONFIG_VGA_CONSOLE is not set
-+CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
-+CONFIG_LOGO=y
-+CONFIG_SOUND=y
-+CONFIG_SND=y
-+CONFIG_SND_SEQUENCER=m
-+CONFIG_SND_SEQ_DUMMY=m
-+CONFIG_SND_DUMMY=y
-+CONFIG_SND_ALOOP=y
-+CONFIG_SND_HDA_INTEL=y
-+CONFIG_SND_HDA_PATCH_LOADER=y
-+CONFIG_HID_A4TECH=m
-+CONFIG_USB=y
-+CONFIG_USB_MON=y
-+CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_EHCI_ROOT_HUB_TT=y
-+CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_UHCI_HCD=m
-+CONFIG_USB_STORAGE=m
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_CMOS=y
-+CONFIG_DMADEVICES=y
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT2_FS_XATTR=y
-+CONFIG_EXT2_FS_POSIX_ACL=y
-+CONFIG_EXT2_FS_SECURITY=y
-+CONFIG_EXT3_FS=y
-+CONFIG_EXT3_FS_POSIX_ACL=y
-+CONFIG_EXT3_FS_SECURITY=y
-+CONFIG_EXT4_FS=y
-+CONFIG_EXT4_FS_POSIX_ACL=y
-+CONFIG_EXT4_FS_SECURITY=y
-+CONFIG_QUOTA=y
-+CONFIG_AUTOFS4_FS=y
-+CONFIG_FUSE_FS=m
-+CONFIG_ISO9660_FS=m
-+CONFIG_JOLIET=y
-+CONFIG_MSDOS_FS=m
-+CONFIG_VFAT_FS=m
-+CONFIG_FAT_DEFAULT_CODEPAGE=936
-+CONFIG_FAT_DEFAULT_IOCHARSET="gb2312"
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_NFS_FS=m
-+CONFIG_NFS_V3_ACL=y
-+CONFIG_NFS_V4=y
-+CONFIG_NFSD=m
-+CONFIG_NFSD_V3_ACL=y
-+CONFIG_NFSD_V4=y
-+CONFIG_CIFS=m
-+CONFIG_NLS_CODEPAGE_437=y
-+CONFIG_NLS_CODEPAGE_936=y
-+CONFIG_NLS_UTF8=y
-+CONFIG_PRINTK_TIME=y
-+CONFIG_FRAME_WARN=1024
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_STRIP_ASM_SYMS=y
-+CONFIG_DEBUG_SECTION_MISMATCH=y
-+CONFIG_CRYPTO_AUTHENC=m
-+CONFIG_CRYPTO_HMAC=y
-+CONFIG_CRYPTO_MD5=y
-+CONFIG_CRYPTO_MICHAEL_MIC=m
-+CONFIG_CRYPTO_SHA1=m
-+CONFIG_CRYPTO_SHA256=m
-+CONFIG_CRYPTO_SHA512=m
-+CONFIG_CRYPTO_TGR192=m
-+CONFIG_CRYPTO_WP512=m
-+CONFIG_CRYPTO_ANUBIS=m
-+CONFIG_CRYPTO_BLOWFISH=m
-+CONFIG_CRYPTO_CAST5=m
-+CONFIG_CRYPTO_CAST6=m
-+CONFIG_CRYPTO_KHAZAD=m
-+CONFIG_CRYPTO_SERPENT=m
-+CONFIG_CRYPTO_TEA=m
-+CONFIG_CRYPTO_TWOFISH=m
-+CONFIG_CRYPTO_DEFLATE=m
-+CONFIG_CRC_T10DIF=m
-+CONFIG_LIBCRC32C=m
+This should be four separate patches.
+
+
 -- 
-1.7.7.3
+Earthling Michel Dänzer           |                   http://www.amd.com
+Libre software enthusiast         |          Debian, X and DRI developer

@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2012 09:09:56 +0200 (CEST)
-Received: from mail-gh0-f177.google.com ([209.85.160.177]:47200 "EHLO
-        mail-gh0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903606Ab2HCHHQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Aug 2012 09:07:16 +0200
-Received: by mail-gh0-f177.google.com with SMTP id f11so504498ghb.36
-        for <multiple recipients>; Fri, 03 Aug 2012 00:07:15 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2012 09:10:18 +0200 (CEST)
+Received: from mail-yx0-f177.google.com ([209.85.213.177]:34067 "EHLO
+        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903393Ab2HCHHZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Aug 2012 09:07:25 +0200
+Received: by mail-yx0-f177.google.com with SMTP id r9so506866yen.36
+        for <multiple recipients>; Fri, 03 Aug 2012 00:07:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=0clVjA/X/lXWLq8/eTDiFP19ZoZ3xsqKvlMs8NUC9NY=;
-        b=PBH6+MyyfrXqLTtb71nxn5wvUqWwcsJfFZYyeeqqWRfpQQbafDyMQgVifw2JqWfRMb
-         HkVpsgiPoU+xECFr8C3WGcxMGKJuuC00tx/SZ96YL3iYhbnwn8d+huhMsSw9i+phpFTY
-         zG6aWUzeyYg1Oz0fGPSnPwZTeE/3oGylYtakDLCoCdSMqj8kfmNFfG1rxp48Pdd5cdk6
-         fhy2K51QHP5m7wRYy4bbtKIRSWl3m43VBSxmsb3Oc3BqHMy44Woqodxz+JDfu9orl1FX
-         96Xb6qUTdLM08CpyuFDcLzGIWQflDgVlW0MoX+OzVXy3XGCDZesWPKjvKHtio8aXDQL5
-         MMrg==
-Received: by 10.50.184.227 with SMTP id ex3mr1508776igc.26.1343977635499;
-        Fri, 03 Aug 2012 00:07:15 -0700 (PDT)
+        bh=HuJdJer2ZrBGVMIeu6NwRMmqBeJVw1wLxJue5I6GaGU=;
+        b=OoC8AqGkeBdNNbx03B7BSrWIicTITyDv4b5ADVro5y0a+PcYN9F3tdT7cqUZGQDmQ1
+         IjJrH3qeoY87dR2YHwZH/stADEPkcBLzNXGummI4y3HQVAB9peXV/IFRNY5H7nmD9Ixe
+         c/R3dBW8YwzriqRC+AH8ZO69fWwjEjzmQYIOBz6gtVFS5kpJwEUq0bx03i3zIa2bjlP9
+         J3NQRExvLyrFDiyb3gIFoZzGXK7hlxWyItt8DWVIYKp8sHs8RbM3tR581ru2aV2Ji4PJ
+         jEe02LPiQvFU05xiPw/3AN9KFsRj3qJ2mnLTjKlB0ysSllNhm1TqVoAatHaUnJzMkeoO
+         QaMA==
+Received: by 10.50.57.130 with SMTP id i2mr1607635igq.2.1343977644948;
+        Fri, 03 Aug 2012 00:07:24 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id z3sm20852677igc.7.2012.08.03.00.07.11
+        by mx.google.com with ESMTPS id z3sm20852677igc.7.2012.08.03.00.07.20
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 03 Aug 2012 00:07:14 -0700 (PDT)
+        Fri, 03 Aug 2012 00:07:24 -0700 (PDT)
 From:   Huacai Chen <chenhuacai@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
@@ -28,13 +28,13 @@ Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH V4 08/16] MIPS: Loongson 3: Add serial port support.
-Date:   Fri,  3 Aug 2012 15:06:03 +0800
-Message-Id: <1343977571-2292-9-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V4 10/16] MIPS: Loongson: Add Loongson-3 Kconfig options.
+Date:   Fri,  3 Aug 2012 15:06:05 +0800
+Message-Id: <1343977571-2292-11-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1343977571-2292-1-git-send-email-chenhc@lemote.com>
 References: <1343977571-2292-1-git-send-email-chenhc@lemote.com>
-X-archive-position: 34032
+X-archive-position: 34033
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,101 +52,135 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Loongson family machines has three types of serial port: PCI UART, LPC
-UART and CPU internal UART. Loongson-2E and parts of Loongson-2F based
-machines use PCI UART; most Loongson-2F based machines use LPC UART;
-Loongson-2G/3A has both LPC and CPU UART but usually use CPU UART.
-
-Port address of UARTs:
-CPU UART: REG_BASE + OFFSET;
-LPC UART: LIO1_BASE + OFFSET;
-PCI UART: PCIIO_BASE + OFFSET.
-
-Since LPC UART are linked in "Local Bus", both CPU UART and LPC UART
-are called "CPU provided serial port".
+Added Kconfig options include: Loongson-3 CPU and machine definition,
+UEFI-like firmware interface, HT-linked PCI, big memory support, etc.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Hongliang Tao <taohl@lemote.com>
 Signed-off-by: Hua Yan <yanh@lemote.com>
 ---
- arch/mips/loongson/common/serial.c    |   26 +++++++++++++++-----------
- arch/mips/loongson/common/uart_base.c |    9 ++++++++-
- 2 files changed, 23 insertions(+), 12 deletions(-)
+ arch/mips/Kconfig          |   22 ++++++++++++++++++
+ arch/mips/loongson/Kconfig |   52 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 74 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/loongson/common/serial.c b/arch/mips/loongson/common/serial.c
-index 7580873..59c76b5 100644
---- a/arch/mips/loongson/common/serial.c
-+++ b/arch/mips/loongson/common/serial.c
-@@ -19,19 +19,19 @@
- #include <loongson.h>
- #include <machine.h>
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 331d574..9e8e86c 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1571,6 +1571,16 @@ config CPU_LOONGSON2
+ 	select CPU_SUPPORTS_64BIT_KERNEL
+ 	select CPU_SUPPORTS_HIGHMEM
  
--#define PORT(int)			\
-+#define PORT(int, clk)			\
- {								\
- 	.irq		= int,					\
--	.uartclk	= 1843200,				\
-+	.uartclk	= clk,					\
- 	.iotype		= UPIO_PORT,				\
- 	.flags		= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST,	\
- 	.regshift	= 0,					\
- }
++config CPU_LOONGSON3
++	bool "Loongson 3 CPU"
++	depends on SYS_HAS_CPU_LOONGSON3
++	select CPU_SUPPORTS_32BIT_KERNEL
++	select CPU_SUPPORTS_64BIT_KERNEL
++	select CPU_SUPPORTS_HIGHMEM
++	help
++		The Loongson 3 processor implements the MIPS III instruction set
++		with many extensions.
++
+ config CPU_LOONGSON1
+ 	bool
+ 	select CPU_MIPS32
+@@ -1597,6 +1607,9 @@ config SYS_HAS_CPU_LOONGSON2F
+ 	select CPU_SUPPORTS_ADDRWINCFG if 64BIT
+ 	select CPU_SUPPORTS_UNCACHED_ACCELERATED
  
--#define PORT_M(int)				\
-+#define PORT_M(int, clk)				\
- {								\
- 	.irq		= MIPS_CPU_IRQ_BASE + (int),		\
--	.uartclk	= 3686400,				\
-+	.uartclk	= clk,					\
- 	.iotype		= UPIO_MEM,				\
- 	.membase	= (void __iomem *)NULL,			\
- 	.flags		= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST,	\
-@@ -40,13 +40,17 @@
++config SYS_HAS_CPU_LOONGSON3
++	bool
++
+ config SYS_HAS_CPU_LOONGSON1B
+ 	bool
  
- static struct plat_serial8250_port uart8250_data[][2] = {
- 	[MACH_LOONGSON_UNKNOWN]         {},
--	[MACH_LEMOTE_FL2E]              {PORT(4), {} },
--	[MACH_LEMOTE_FL2F]              {PORT(3), {} },
--	[MACH_LEMOTE_ML2F7]             {PORT_M(3), {} },
--	[MACH_LEMOTE_YL2F89]            {PORT_M(3), {} },
--	[MACH_DEXXON_GDIUM2F10]         {PORT_M(3), {} },
--	[MACH_LEMOTE_NAS]               {PORT_M(3), {} },
--	[MACH_LEMOTE_LL2F]              {PORT(3), {} },
-+	[MACH_LEMOTE_FL2E]              {PORT(4, 1843200), {} },
-+	[MACH_LEMOTE_FL2F]              {PORT(3, 1843200), {} },
-+	[MACH_LEMOTE_ML2F7]             {PORT_M(3, 3686400), {} },
-+	[MACH_LEMOTE_YL2F89]            {PORT_M(3, 3686400), {} },
-+	[MACH_DEXXON_GDIUM2F10]         {PORT_M(3, 3686400), {} },
-+	[MACH_LEMOTE_NAS]               {PORT_M(3, 3686400), {} },
-+	[MACH_LEMOTE_LL2F]              {PORT(3, 1843200), {} },
-+	[MACH_LEMOTE_A1004]             {PORT_M(2, 33177600), {} },
-+	[MACH_LEMOTE_A1101]             {PORT_M(2, 25000000), {} },
-+	[MACH_LEMOTE_A1201]             {PORT_M(2, 25000000), {} },
-+	[MACH_LEMOTE_A1205]             {PORT_M(2, 25000000), {} },
- 	[MACH_LOONGSON_END]             {},
- };
+@@ -2399,6 +2412,15 @@ config PCI
+ 	  your box. Other bus systems are ISA, EISA, or VESA. If you have PCI,
+ 	  say Y, otherwise N.
  
-diff --git a/arch/mips/loongson/common/uart_base.c b/arch/mips/loongson/common/uart_base.c
-index d69ea54..ea8b501 100644
---- a/arch/mips/loongson/common/uart_base.c
-+++ b/arch/mips/loongson/common/uart_base.c
-@@ -35,9 +35,16 @@ void prom_init_loongson_uart_base(void)
- 	case MACH_DEXXON_GDIUM2F10:
- 	case MACH_LEMOTE_NAS:
- 	default:
--		/* The CPU provided serial port */
-+		/* The CPU provided serial port (LPC) */
- 		loongson_uart_base = LOONGSON_LIO1_BASE + 0x3f8;
- 		break;
-+	case MACH_LEMOTE_A1004:
-+	case MACH_LEMOTE_A1101:
-+	case MACH_LEMOTE_A1201:
-+	case MACH_LEMOTE_A1205:
-+		/* The CPU provided serial port (CPU) */
-+		loongson_uart_base = LOONGSON_REG_BASE + 0x1e0;
-+		break;
- 	}
++config HT_PCI
++	bool "Support for HT-linked PCI"
++	select PCI_DOMAINS
++	help
++	  Loongson family machines use Hyper-Transport bus for inter-core
++	  connection and device connection. The PCI bus is a subordinate
++	  linked at HT. Choose Y unless you are using Loongson 2E/2F based
++	  machines.
++
+ config PCI_DOMAINS
+ 	bool
  
- 	_loongson_uart_base =
+diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+index 263beb9..dd951b8 100644
+--- a/arch/mips/loongson/Kconfig
++++ b/arch/mips/loongson/Kconfig
+@@ -59,6 +59,33 @@ config LEMOTE_MACH2F
+ 
+ 	  These family machines include fuloong2f mini PC, yeeloong2f notebook,
+ 	  LingLoong allinone PC and so forth.
++
++config LEMOTE_MACH3A
++	bool "Lemote Loongson 3A family machines"
++	select ARCH_SPARSEMEM_ENABLE
++	select GENERIC_ISA_DMA_SUPPORT_BROKEN
++	select GENERIC_HARDIRQS_NO__DO_IRQ
++	select BOOT_ELF32
++	select BOARD_SCACHE
++	select CSRC_R4K
++	select CEVT_R4K
++	select CPU_HAS_WB
++	select HW_HAS_PCI
++	select ISA
++	select I8259
++	select IRQ_CPU
++	select SYS_HAS_CPU_LOONGSON3
++	select SYS_HAS_EARLY_PRINTK
++	select SYS_SUPPORTS_SMP
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_64BIT_KERNEL
++	select SYS_SUPPORTS_HIGHMEM
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select LOONGSON_MC146818
++	select UEFI_FIRMWARE_INTERFACE
++	help
++		Lemote Loongson 3A family machines utilize the 3A revision of
++		Loongson processor and RS780/SBX00 chipset.
+ endchoice
+ 
+ config CS5536
+@@ -86,8 +113,33 @@ config LOONGSON_UART_BASE
+ 	default y
+ 	depends on EARLY_PRINTK || SERIAL_8250
+ 
++config LOONGSON_BIGMEM
++	bool "Soft IOMMU Support for Big Memory (>4GB)"
++	depends on CPU_LOONGSON3
++	select SWIOTLB
++	select ZONE_DMA32
++
++config IOMMU_HELPER
++	bool
++
++config NEED_SG_DMA_LENGTH
++	bool
++
++config SWIOTLB
++	bool
++	select IOMMU_HELPER
++	select NEED_SG_DMA_LENGTH
++	select NEED_DMA_MAP_STATE
++
+ config LOONGSON_MC146818
+ 	bool
+ 	default n
+ 
++config ARCH_SPARSEMEM_ENABLE
++	bool
++	select SPARSEMEM_STATIC
++
++config UEFI_FIRMWARE_INTERFACE
++	bool
++
+ endif # MACH_LOONGSON
 -- 
 1.7.7.3

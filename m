@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2012 17:46:37 +0200 (CEST)
-Received: from mailout-de.gmx.net ([213.165.64.23]:38319 "HELO
-        mailout-de.gmx.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S1903528Ab2HCPqd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Aug 2012 17:46:33 +0200
-Received: (qmail 30891 invoked by uid 0); 3 Aug 2012 15:46:27 -0000
-Received: from 217.12.59.162 by www073.gmx.net with HTTP;
- Fri, 03 Aug 2012 17:46:26 +0200 (CEST)
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset="utf-8"
-Date:   Fri, 03 Aug 2012 17:46:26 +0200
-From:   "Oliver Kowalke" <oliver.kowalke@gmx.de>
-In-Reply-To: <20120803154011.214590@gmx.net>
-Message-ID: <20120803154626.214600@gmx.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Aug 2012 00:30:04 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:57394 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903712Ab2HCW35 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Aug 2012 00:29:57 +0200
+Received: by pbbrq13 with SMTP id rq13so2126777pbb.36
+        for <multiple recipients>; Fri, 03 Aug 2012 15:29:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        bh=hEa2fdtreexOJGzcnSPEwr5bvMhPe4q6tybK0MLqOZ8=;
+        b=TrmAIoXHjWns3jlGA8b1VKkw+j33n7dgcfonzIpBDqWnp6luYNkVIH/D2oDurl/0Dp
+         rDXHdQX4DNXVkUaL77IkNs0L7RWa6+3jqxyL9vyKfnyERWW9MfYuCIEbbvhL8g+WqkHq
+         Shr49Rms7qqGlmBJ3ZlVJHZ0KNbJ3Szs8MuVVI5mmW/jmSb2tlW1yMXxeZkuvGkkmKWc
+         uh3ScHmXQGKfuzwYPSbKkrKyBLvO9dIE9/+YFkYF0G4wbUmQjPZQ/A7WBQcRiOmM/6ms
+         gdv+RAk7z0VT2Z1rj46C4MsXtJ48ChhBncMHhzljDsUeZUCj1Scpn44ON7mkfovijJUU
+         O7NA==
 MIME-Version: 1.0
-References: <50085CB4.3030205@gmx.de> <1343917513.13395.6.camel@ubctp.tal.org>
- <20120803062242.GA22167@linux-mips.org> <20120803154011.214590@gmx.net>
-Subject: Re: development board?
-To:     "Oliver Kowalke" <oliver.kowalke@gmx.de>, milang@tal.org,
-        ralf@linux-mips.org
-X-Authenticated: #25097877
-X-Flags: 0001
-X-Mailer: WWW-Mail 6100 (Global Message Exchange)
-X-Priority: 3
-X-Provags-ID: V01U2FsdGVkX1/E7ntS2bPEIrZXp4GEB0P0zwBmImB9RKZXQq2U1g
- RQyWHCQOm492O/VpSQOVTb5uyWWmr+PNPKbg== 
-Content-Transfer-Encoding: 8bit
-X-GMX-UID: BZdpcLAyeSEqNvSVFXUhDMJ+IGRvbwBB
-X-archive-position: 34051
+Received: by 10.68.238.68 with SMTP id vi4mr796986pbc.123.1344032990725; Fri,
+ 03 Aug 2012 15:29:50 -0700 (PDT)
+Received: by 10.67.14.106 with HTTP; Fri, 3 Aug 2012 15:29:50 -0700 (PDT)
+Date:   Sat, 4 Aug 2012 03:59:50 +0530
+Message-ID: <CADArhcAOaYLVk2MU3aExBNumgKeUTC7WKHKSL3kZ-O82028vAw@mail.gmail.com>
+Subject: [Memory leak]: memory leak in apply_r_mips_lo16_rel
+From:   Akhilesh Kumar <akhilesh.lxr@gmail.com>
+To:     ralf@linux-mips.org
+Cc:     paul.gortmaker@windriver.com, linux-mips@linux-mips.org
+Content-Type: multipart/alternative; boundary=047d7b339601fa864c04c664102f
+X-archive-position: 34052
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oliver.kowalke@gmx.de
+X-original-sender: akhilesh.lxr@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,54 +43,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
+X-Status: A
 
-Atheros AR7161 == 32-bit MIPS 24K processor core
+--047d7b339601fa864c04c664102f
+Content-Type: text/plain; charset=ISO-8859-1
 
-price ca 85,- euros
+Hi Ralf,
 
-> I'll try MikroTik RouterBOARD 450G:
-> 
->     CPU: AR7161 680MHz
->     Memory 256MB DDR SDRAM onboard memory
->     Boot loader RouterBOOT
->     Data storage 512MB onboard NAND memory chip, microSD slot on back side
->     Ethernet Five 10/100/1000 Mbit/s Ethernet ports with Auto-MDI/X
->     miniPCI none
->     Extras Reset switch, Beeper
->     Serial port One DB9 RS232C asynchronous serial port
->     Power, NAND activity, 5 user LEDs
->     Power options Power over Ethernet: 18-28V DC (except power over
-> datalines). Power jack: 8-28V DC
->     Dimensions 9 cm x 11.5 cm, 105 grams
->     Operating System MikroTik RouterOS v3, Level5 license
->     Actual tested throughput
->         Ether1 <-> Ether2 = 1Gbps
->         Ether2 <-> Ether3 = 650Mbps
-> 
-> openvrt/debvrt support this board
-> 
-> (no FPU)
-> 
-> Oliver 
-> 
-> > On Thu, Aug 02, 2012 at 05:25:13PM +0300, Kaj-Michael Lang wrote:
-> > 
-> > > On Thu, 2012-07-19 at 21:15 +0200, Oliver Kowalke wrote:
-> > > > I'm searching for an development board with a MIPS processor - 1GB
-> > > > RAM 
-> > > > would be nice but 10/100MBit ethernet is required. 
-> > > 
-> > > Don't know about the ethernet part, but you could check out the very
-> > > cheap mips based android tablets. Search for Ainol Novo 7 Paladin for
-> > > example, under 100€.
-> > > 
-> > > Anyone tried getting plain-old-linux running on one?
-> > 
-> > I suggest that whoever has suggestions for suitable boards should list
-> > them including key technical data such as kernel / distribution support,
-> > CPU type, 32/64 bit, endianess, price, peripherals, manufacturing status
-> > and availability.
-> > 
-> >   Ralf
-> > 
-> 
+I found some memory leak in
+arch/mips/kernel/module.c file
+
+Please review below patch and share your review comments,
+
+Thanks,
+Akhilesh
+
+
+>From 77b8cae374a95000a1fd7e75bcda6694b8180fe9 Mon Sep 17 00:00:00 2001
+From: Akhilesh Kumar <akhilesh.lxr@gmail.com>
+Date: Sat, 4 Aug 2012 03:34:06 +0530
+Subject:  [Memory leak]: memory leak in  apply_r_mips_lo16_rel
+ module.c
+
+if (v != l->value)
+             goto out_danger ;
+out_danger:
+  pr_err("module %s: dangerous R_MIPS_LO16 REL relocation\n", me->name);
+  return -ENOEXEC;
+
+in case goto_out_danger kfree(l) is missing
+
+Signed-off-by: Akhilesh Kumar <akhilesh.lxr@gmail.com>
+---
+ arch/mips/kernel/module.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/arch/mips/kernel/module.c b/arch/mips/kernel/module.c
+index a5066b1..b1dce44 100644
+--- a/arch/mips/kernel/module.c
++++ b/arch/mips/kernel/module.c
+@@ -202,7 +202,7 @@ static int apply_r_mips_lo16_rel(struct module *me, u32
+*location, Elf_Addr v)
+
+ out_danger:
+  pr_err("module %s: dangerous R_MIPS_LO16 REL relocation\n", me->name);
+-
++ kfree(l);
+  return -ENOEXEC;
+ }
+
+-- 
+1.7.8.4
+
+--047d7b339601fa864c04c664102f
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div>Hi Ralf,</div><div><br></div><div>I found some memory leak in <br>arch=
+/mips/kernel/module.c file=A0</div><div><br></div><div>Please review below =
+patch and share your review comments,</div><div><br></div><div>Thanks,</div=
+>
+<div>Akhilesh=A0</div><div><br></div><div><br></div><div>From 77b8cae374a95=
+000a1fd7e75bcda6694b8180fe9 Mon Sep 17 00:00:00 2001</div><div>From: Akhile=
+sh Kumar &lt;<a href=3D"mailto:akhilesh.lxr@gmail.com">akhilesh.lxr@gmail.c=
+om</a>&gt;</div>
+<div>Date: Sat, 4 Aug 2012 03:34:06 +0530</div><div>Subject: =A0[Memory lea=
+k]: memory leak in =A0apply_r_mips_lo16_rel</div><div>=A0module.c</div><div=
+><br></div><div>if (v !=3D l-&gt;value)</div><div>=A0 =A0 =A0 =A0 =A0 =A0 =
+=A0goto out_danger ;</div>
+<div>out_danger:</div><div>=A0 pr_err(&quot;module %s: dangerous R_MIPS_LO1=
+6 REL relocation\n&quot;, me-&gt;name);</div><div>=A0 return -ENOEXEC;</div=
+><div><br></div><div>in case goto_out_danger kfree(l) is missing</div><div>
+<br></div><div>Signed-off-by: Akhilesh Kumar &lt;<a href=3D"mailto:akhilesh=
+.lxr@gmail.com">akhilesh.lxr@gmail.com</a>&gt;</div><div>---</div><div>=A0a=
+rch/mips/kernel/module.c | =A0 =A02 +-</div><div>=A01 files changed, 1 inse=
+rtions(+), 1 deletions(-)</div>
+<div><br></div><div>diff --git a/arch/mips/kernel/module.c b/arch/mips/kern=
+el/module.c</div><div>index a5066b1..b1dce44 100644</div><div>--- a/arch/mi=
+ps/kernel/module.c</div><div>+++ b/arch/mips/kernel/module.c</div><div>
+@@ -202,7 +202,7 @@ static int apply_r_mips_lo16_rel(struct module *me, u32=
+ *location, Elf_Addr v)</div><div>=A0</div><div>=A0out_danger:</div><div>=
+=A0<span class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>pr_err(=
+&quot;module %s: dangerous R_MIPS_LO16 REL relocation\n&quot;, me-&gt;name)=
+;</div>
+<div>-</div><div>+<span class=3D"Apple-tab-span" style=3D"white-space:pre">=
+	</span>kfree(l);</div><div>=A0<span class=3D"Apple-tab-span" style=3D"whit=
+e-space:pre">	</span>return -ENOEXEC;</div><div>=A0}</div><div>=A0</div><di=
+v>--=A0</div>
+<div>1.7.8.4</div>
+
+--047d7b339601fa864c04c664102f--

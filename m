@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Aug 2012 18:01:50 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:42792 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Aug 2012 18:02:13 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:42796 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903387Ab2HDQBo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1903468Ab2HDQBo (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sat, 4 Aug 2012 18:01:44 +0200
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 42FA423C005D;
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 7CE9423C007F;
         Sat,  4 Aug 2012 18:01:42 +0200 (CEST)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH v3 0/4] MIPS: ath79: various fixes
-Date:   Sat,  4 Aug 2012 18:01:23 +0200
-Message-Id: <1344096087-25044-1-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH v3 1/4] MIPS: ath79: fix number of GPIO lines for AR724[12]
+Date:   Sat,  4 Aug 2012 18:01:24 +0200
+Message-Id: <1344096087-25044-2-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.10
-X-archive-position: 34053
+In-Reply-To: <1344096087-25044-1-git-send-email-juhosg@openwrt.org>
+References: <1344096087-25044-1-git-send-email-juhosg@openwrt.org>
+X-archive-position: 34054
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,26 +34,44 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This set contains four fixes for the ath79 platform, and it is
-based on v3.6-rc1.
+The AR724[12] SoCs have more GPIO lines than the AR7240.
 
-v3:
-  - rebase against v3.6-rc1
-  - add two more patches
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+---
+ arch/mips/ath79/gpio.c                         |    6 ++++--
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    3 ++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-
-Gabor Juhos (4):
-  MIPS: ath79: fix number of GPIO lines for AR724[12]
-  MIPS: ath79: use correct IRQ number for the OHCI controller on AR7240
-  MIPS: ath79: select HAVE_CLK
-  MIPS: ath79: don't override CPU ASE features
-
- arch/mips/Kconfig                                        |    1 +
- arch/mips/ath79/dev-usb.c                                |    2 ++
- arch/mips/ath79/gpio.c                                   |    6 ++++--
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h           |    3 ++-
- arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h |    8 --------
- 5 files changed, 9 insertions(+), 11 deletions(-)
-
---
+diff --git a/arch/mips/ath79/gpio.c b/arch/mips/ath79/gpio.c
+index 29054f2..48fe762 100644
+--- a/arch/mips/ath79/gpio.c
++++ b/arch/mips/ath79/gpio.c
+@@ -188,8 +188,10 @@ void __init ath79_gpio_init(void)
+ 
+ 	if (soc_is_ar71xx())
+ 		ath79_gpio_count = AR71XX_GPIO_COUNT;
+-	else if (soc_is_ar724x())
+-		ath79_gpio_count = AR724X_GPIO_COUNT;
++	else if (soc_is_ar7240())
++		ath79_gpio_count = AR7240_GPIO_COUNT;
++	else if (soc_is_ar7241() || soc_is_ar7242())
++		ath79_gpio_count = AR7241_GPIO_COUNT;
+ 	else if (soc_is_ar913x())
+ 		ath79_gpio_count = AR913X_GPIO_COUNT;
+ 	else if (soc_is_ar933x())
+diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+index 1caa78a..dde5044 100644
+--- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
++++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+@@ -393,7 +393,8 @@
+ #define AR71XX_GPIO_REG_FUNC		0x28
+ 
+ #define AR71XX_GPIO_COUNT		16
+-#define AR724X_GPIO_COUNT		18
++#define AR7240_GPIO_COUNT		18
++#define AR7241_GPIO_COUNT		20
+ #define AR913X_GPIO_COUNT		22
+ #define AR933X_GPIO_COUNT		30
+ #define AR934X_GPIO_COUNT		23
+-- 
 1.7.10

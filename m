@@ -1,48 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2012 17:06:09 +0200 (CEST)
-Received: from mga09.intel.com ([134.134.136.24]:22958 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903776Ab2HIPEK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 9 Aug 2012 17:04:10 +0200
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga102.jf.intel.com with ESMTP; 09 Aug 2012 08:03:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.77,740,1336374000"; 
-   d="scan'208";a="183643532"
-Received: from blue.fi.intel.com ([10.237.72.50])
-  by orsmga002.jf.intel.com with ESMTP; 09 Aug 2012 08:03:10 -0700
-Received: by blue.fi.intel.com (Postfix, from userid 1000)
-        id 9127AE0080; Thu,  9 Aug 2012 18:03:14 +0300 (EEST)
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     linux-mm@kvack.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Andi Kleen <ak@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        Alex Shi <alex.shu@intel.com>,
-        Jan Beulich <jbeulich@novell.com>,
-        Robert Richter <robert.richter@amd.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Hugh Dickins <hughd@google.com>,
-        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
-        Mel Gorman <mgorman@suse.de>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: [PATCH v2 1/6] THP: Use real address for NUMA policy
-Date:   Thu,  9 Aug 2012 18:02:58 +0300
-Message-Id: <1344524583-1096-2-git-send-email-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1344524583-1096-1-git-send-email-kirill.shutemov@linux.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2012 17:22:20 +0200 (CEST)
+Received: from nat28.tlf.novell.com ([130.57.49.28]:43894 "EHLO
+        nat28.tlf.novell.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903682Ab2HIPWQ convert rfc822-to-8bit (ORCPT
+        <rfc822;groupwise-linux-mips@linux-mips.org:12:1>);
+        Thu, 9 Aug 2012 17:22:16 +0200
+Received: from EMEA1-MTA by nat28.tlf.novell.com
+        with Novell_GroupWise; Thu, 09 Aug 2012 16:22:07 +0100
+Message-Id: <5023F1BC0200007800093EF0@nat28.tlf.novell.com>
+X-Mailer: Novell GroupWise Internet Agent 12.0.0 
+Date:   Thu, 09 Aug 2012 16:22:04 +0100
+From:   "Jan Beulich" <JBeulich@suse.com>
+To:     "Andi Kleen" <ak@linux.intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     "Andy Lutomirski" <luto@amacapital.net>,
+        "Robert Richter" <robert.richter@amd.com>,
+        "Johannes Weiner" <hannes@cmpxchg.org>,
+        "Hugh Dickins" <hughd@google.com>, "Alex Shi" <alex.shu@intel.com>,
+        "KAMEZAWA Hiroyuki" <kamezawa.hiroyu@jp.fujitsu.com>,
+        <x86@kernel.org>, <linux-mm@kvack.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Andrew Morton" <akpm@linux-foundation.org>,
+        <linux-mips@linux-mips.org>,
+        "Tim Chen" <tim.c.chen@linux.intel.com>,
+        <linuxppc-dev@lists.ozlabs.org>,
+        "Andrea Arcangeli" <aarcange@redhat.com>,
+        "Ingo Molnar" <mingo@redhat.com>, "Mel Gorman" <mgorman@suse.de>,
+        <linux-kernel@vger.kernel.org>, <linux-sh@vger.kernel.org>,
+        <sparclinux@vger.kernel.org>, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v2 4/6] x86: Add clear_page_nocache
 References: <1344524583-1096-1-git-send-email-kirill.shutemov@linux.intel.com>
-X-archive-position: 34081
+ <1344524583-1096-5-git-send-email-kirill.shutemov@linux.intel.com>
+In-Reply-To: <1344524583-1096-5-git-send-email-kirill.shutemov@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+X-archive-position: 34082
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill.shutemov@linux.intel.com
+X-original-sender: JBeulich@suse.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,53 +53,67 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Andi Kleen <ak@linux.intel.com>
+>>> On 09.08.12 at 17:03, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:
+> From: Andi Kleen <ak@linux.intel.com>
+> 
+> Add a cache avoiding version of clear_page. Straight forward integer variant
+> of the existing 64bit clear_page, for both 32bit and 64bit.
 
-Use the fault address, not the rounded down hpage address for NUMA
-policy purposes. In some circumstances this can give more exact
-NUMA policy.
+While on 64-bit this is fine, I fail to see how you avoid using the
+SSE2 instruction on non-SSE2 systems.
 
-Signed-off-by: Andi Kleen <ak@linux.intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- mm/huge_memory.c |    8 ++++----
- 1 files changed, 4 insertions(+), 4 deletions(-)
+> Also add the necessary glue for highmem including a layer that non cache
+> coherent architectures that use the virtual address for flushing can
+> hook in. This is not needed on x86 of course.
+> 
+> If an architecture wants to provide cache avoiding version of clear_page
+> it should to define ARCH_HAS_USER_NOCACHE to 1 and implement
+> clear_page_nocache() and clear_user_highpage_nocache().
+> 
+> Signed-off-by: Andi Kleen <ak@linux.intel.com>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> ---
+>  arch/x86/include/asm/page.h          |    2 ++
+>  arch/x86/include/asm/string_32.h     |    5 +++++
+>  arch/x86/include/asm/string_64.h     |    5 +++++
+>  arch/x86/lib/Makefile                |    1 +
+>  arch/x86/lib/clear_page_nocache_32.S |   30 ++++++++++++++++++++++++++++++
+>  arch/x86/lib/clear_page_nocache_64.S |   29 +++++++++++++++++++++++++++++
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 57c4b93..70737ec 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -681,11 +681,11 @@ static inline gfp_t alloc_hugepage_gfpmask(int defrag, gfp_t extra_gfp)
- 
- static inline struct page *alloc_hugepage_vma(int defrag,
- 					      struct vm_area_struct *vma,
--					      unsigned long haddr, int nd,
-+					      unsigned long address, int nd,
- 					      gfp_t extra_gfp)
- {
- 	return alloc_pages_vma(alloc_hugepage_gfpmask(defrag, extra_gfp),
--			       HPAGE_PMD_ORDER, vma, haddr, nd);
-+			       HPAGE_PMD_ORDER, vma, address, nd);
- }
- 
- #ifndef CONFIG_NUMA
-@@ -710,7 +710,7 @@ int do_huge_pmd_anonymous_page(struct mm_struct *mm, struct vm_area_struct *vma,
- 		if (unlikely(khugepaged_enter(vma)))
- 			return VM_FAULT_OOM;
- 		page = alloc_hugepage_vma(transparent_hugepage_defrag(vma),
--					  vma, haddr, numa_node_id(), 0);
-+					  vma, address, numa_node_id(), 0);
- 		if (unlikely(!page)) {
- 			count_vm_event(THP_FAULT_FALLBACK);
- 			goto out;
-@@ -944,7 +944,7 @@ int do_huge_pmd_wp_page(struct mm_struct *mm, struct vm_area_struct *vma,
- 	if (transparent_hugepage_enabled(vma) &&
- 	    !transparent_hugepage_debug_cow())
- 		new_page = alloc_hugepage_vma(transparent_hugepage_defrag(vma),
--					      vma, haddr, numa_node_id(), 0);
-+					      vma, address, numa_node_id(), 0);
- 	else
- 		new_page = NULL;
- 
--- 
-1.7.7.6
+Couldn't this more reasonably go into clear_page_{32,64}.S?
+
+>  arch/x86/mm/fault.c                  |    7 +++++++
+>  7 files changed, 79 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/x86/lib/clear_page_nocache_32.S
+>  create mode 100644 arch/x86/lib/clear_page_nocache_64.S
+>...
+>--- /dev/null
+>+++ b/arch/x86/lib/clear_page_nocache_32.S
+>@@ -0,0 +1,30 @@
+>+#include <linux/linkage.h>
+>+#include <asm/dwarf2.h>
+>+
+>+/*
+>+ * Zero a page avoiding the caches
+>+ * rdi	page
+
+Wrong comment.
+
+>+ */
+>+ENTRY(clear_page_nocache)
+>+	CFI_STARTPROC
+>+	mov    %eax,%edi
+
+You need to pick a different register here (e.g. %edx), since
+%edi has to be preserved by all functions called from C.
+
+>+	xorl   %eax,%eax
+>+	movl   $4096/64,%ecx
+>+	.p2align 4
+>+.Lloop:
+>+	decl	%ecx
+>+#define PUT(x) movnti %eax,x*8(%edi) ; movnti %eax,x*8+4(%edi)
+
+Is doing twice as much unrolling as on 64-bit really worth it?
+
+Jan

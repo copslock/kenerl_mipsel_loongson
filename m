@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2012 17:22:20 +0200 (CEST)
-Received: from nat28.tlf.novell.com ([130.57.49.28]:43894 "EHLO
-        nat28.tlf.novell.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903682Ab2HIPWQ convert rfc822-to-8bit (ORCPT
-        <rfc822;groupwise-linux-mips@linux-mips.org:12:1>);
-        Thu, 9 Aug 2012 17:22:16 +0200
-Received: from EMEA1-MTA by nat28.tlf.novell.com
-        with Novell_GroupWise; Thu, 09 Aug 2012 16:22:07 +0100
-Message-Id: <5023F1BC0200007800093EF0@nat28.tlf.novell.com>
-X-Mailer: Novell GroupWise Internet Agent 12.0.0 
-Date:   Thu, 09 Aug 2012 16:22:04 +0100
-From:   "Jan Beulich" <JBeulich@suse.com>
-To:     "Andi Kleen" <ak@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     "Andy Lutomirski" <luto@amacapital.net>,
-        "Robert Richter" <robert.richter@amd.com>,
-        "Johannes Weiner" <hannes@cmpxchg.org>,
-        "Hugh Dickins" <hughd@google.com>, "Alex Shi" <alex.shu@intel.com>,
-        "KAMEZAWA Hiroyuki" <kamezawa.hiroyu@jp.fujitsu.com>,
-        <x86@kernel.org>, <linux-mm@kvack.org>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "Andrew Morton" <akpm@linux-foundation.org>,
-        <linux-mips@linux-mips.org>,
-        "Tim Chen" <tim.c.chen@linux.intel.com>,
-        <linuxppc-dev@lists.ozlabs.org>,
-        "Andrea Arcangeli" <aarcange@redhat.com>,
-        "Ingo Molnar" <mingo@redhat.com>, "Mel Gorman" <mgorman@suse.de>,
-        <linux-kernel@vger.kernel.org>, <linux-sh@vger.kernel.org>,
-        <sparclinux@vger.kernel.org>, "H. Peter Anvin" <hpa@zytor.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2012 17:24:29 +0200 (CEST)
+Received: from terminus.zytor.com ([198.137.202.10]:57096 "EHLO mail.zytor.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1902233Ab2HIPYZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 9 Aug 2012 17:24:25 +0200
+Received: from tazenda.hos.anvin.org (c-67-188-81-177.hsd1.ca.comcast.net [67.188.81.177])
+        (authenticated bits=0)
+        by mail.zytor.com (8.14.5/8.14.5) with ESMTP id q79FO03I011107
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-CAMELLIA256-SHA bits=256 verify=OK);
+        Thu, 9 Aug 2012 08:24:01 -0700
+Message-ID: <5023D60F.7010009@zytor.com>
+Date:   Thu, 09 Aug 2012 08:23:59 -0700
+From:   "H. Peter Anvin" <hpa@zytor.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20120717 Thunderbird/14.0
+MIME-Version: 1.0
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+CC:     linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
+        Andi Kleen <ak@linux.intel.com>,
+        Tim Chen <tim.c.chen@linux.intel.com>,
+        Alex Shi <alex.shu@intel.com>,
+        Jan Beulich <jbeulich@novell.com>,
+        Robert Richter <robert.richter@amd.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Hugh Dickins <hughd@google.com>,
+        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+        Mel Gorman <mgorman@suse.de>, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
 Subject: Re: [PATCH v2 4/6] x86: Add clear_page_nocache
-References: <1344524583-1096-1-git-send-email-kirill.shutemov@linux.intel.com>
- <1344524583-1096-5-git-send-email-kirill.shutemov@linux.intel.com>
+References: <1344524583-1096-1-git-send-email-kirill.shutemov@linux.intel.com> <1344524583-1096-5-git-send-email-kirill.shutemov@linux.intel.com>
 In-Reply-To: <1344524583-1096-5-git-send-email-kirill.shutemov@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-X-archive-position: 34082
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-archive-position: 34083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: JBeulich@suse.com
+X-original-sender: hpa@zytor.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,67 +53,51 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
->>> On 09.08.12 at 17:03, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:
+On 08/09/2012 08:03 AM, Kirill A. Shutemov wrote:
 > From: Andi Kleen <ak@linux.intel.com>
-> 
+>
 > Add a cache avoiding version of clear_page. Straight forward integer variant
 > of the existing 64bit clear_page, for both 32bit and 64bit.
-
-While on 64-bit this is fine, I fail to see how you avoid using the
-SSE2 instruction on non-SSE2 systems.
-
+>
 > Also add the necessary glue for highmem including a layer that non cache
 > coherent architectures that use the virtual address for flushing can
 > hook in. This is not needed on x86 of course.
-> 
+>
 > If an architecture wants to provide cache avoiding version of clear_page
 > it should to define ARCH_HAS_USER_NOCACHE to 1 and implement
 > clear_page_nocache() and clear_user_highpage_nocache().
-> 
-> Signed-off-by: Andi Kleen <ak@linux.intel.com>
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> ---
->  arch/x86/include/asm/page.h          |    2 ++
->  arch/x86/include/asm/string_32.h     |    5 +++++
->  arch/x86/include/asm/string_64.h     |    5 +++++
->  arch/x86/lib/Makefile                |    1 +
->  arch/x86/lib/clear_page_nocache_32.S |   30 ++++++++++++++++++++++++++++++
->  arch/x86/lib/clear_page_nocache_64.S |   29 +++++++++++++++++++++++++++++
+>
 
-Couldn't this more reasonably go into clear_page_{32,64}.S?
+Compile failure:
 
->  arch/x86/mm/fault.c                  |    7 +++++++
->  7 files changed, 79 insertions(+), 0 deletions(-)
->  create mode 100644 arch/x86/lib/clear_page_nocache_32.S
->  create mode 100644 arch/x86/lib/clear_page_nocache_64.S
->...
->--- /dev/null
->+++ b/arch/x86/lib/clear_page_nocache_32.S
->@@ -0,0 +1,30 @@
->+#include <linux/linkage.h>
->+#include <asm/dwarf2.h>
->+
->+/*
->+ * Zero a page avoiding the caches
->+ * rdi	page
+/home/hpa/kernel/tip.x86-mm/arch/x86/mm/fault.c: In function 
+‘clear_user_highpage_nocache’:
+/home/hpa/kernel/tip.x86-mm/arch/x86/mm/fault.c:1215:30: error: 
+‘KM_USER0’ undeclared (first use in this function)
+/home/hpa/kernel/tip.x86-mm/arch/x86/mm/fault.c:1215:30: note: each 
+undeclared identifier is reported only once for each function it appears in
+/home/hpa/kernel/tip.x86-mm/arch/x86/mm/fault.c:1215:2: error: too many 
+arguments to function ‘kmap_atomic’
+In file included from 
+/home/hpa/kernel/tip.x86-mm/include/linux/pagemap.h:10:0,
+                  from 
+/home/hpa/kernel/tip.x86-mm/include/linux/mempolicy.h:70,
+                  from 
+/home/hpa/kernel/tip.x86-mm/include/linux/hugetlb.h:15,
+                  from /home/hpa/kernel/tip.x86-mm/arch/x86/mm/fault.c:14:
+/home/hpa/kernel/tip.x86-mm/include/linux/highmem.h:66:21: note: 
+declared here
+make[4]: *** [arch/x86/mm/fault.o] Error 1
+make[3]: *** [arch/x86/mm] Error 2
+make[2]: *** [arch/x86] Error 2
+make[1]: *** [sub-make] Error 2
+make[1]: Leaving directory `/home/hpa/kernel/tip.x86-mm'
 
-Wrong comment.
+This happens on *all* my test configurations, including both x86-64 and 
+i386 allyesconfig.  I suspect your patchset base is stale.
 
->+ */
->+ENTRY(clear_page_nocache)
->+	CFI_STARTPROC
->+	mov    %eax,%edi
+	-hpa
 
-You need to pick a different register here (e.g. %edx), since
-%edi has to be preserved by all functions called from C.
-
->+	xorl   %eax,%eax
->+	movl   $4096/64,%ecx
->+	.p2align 4
->+.Lloop:
->+	decl	%ecx
->+#define PUT(x) movnti %eax,x*8(%edi) ; movnti %eax,x*8+4(%edi)
-
-Is doing twice as much unrolling as on 64-bit really worth it?
-
-Jan
+-- 
+H. Peter Anvin, Intel Open Source Technology Center
+I work for Intel.  I don't speak on their behalf.

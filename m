@@ -1,31 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Aug 2012 15:04:58 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:56999 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903755Ab2HHNEy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 8 Aug 2012 15:04:54 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q78D4pAv016354;
-        Wed, 8 Aug 2012 15:04:51 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q78D4nG3016351;
-        Wed, 8 Aug 2012 15:04:49 +0200
-Date:   Wed, 8 Aug 2012 15:04:49 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Akhilesh Kumar <akhilesh.lxr@gmail.com>
-Cc:     paul.gortmaker@windriver.com, linux-mips@linux-mips.org
-Subject: Re: [Memory leak]: memory leak in apply_r_mips_lo16_rel
-Message-ID: <20120808130449.GA11037@linux-mips.org>
-References: <CADArhcAOaYLVk2MU3aExBNumgKeUTC7WKHKSL3kZ-O82028vAw@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2012 05:36:06 +0200 (CEST)
+Received: from mail.lemote.com ([222.92.8.141]:34922 "EHLO lemote.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1902233Ab2HIDf7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 9 Aug 2012 05:35:59 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by lemote.com (Postfix) with ESMTP id 27EEA3415A;
+        Thu,  9 Aug 2012 10:55:52 +0800 (CST)
+X-Virus-Scanned: Debian amavisd-new at lemote.com
+Received: from lemote.com ([127.0.0.1])
+        by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id GEqCJcRrf84D; Thu,  9 Aug 2012 10:55:52 +0800 (CST)
+Received: from mail-pb0-f49.google.com (mail-pb0-f49.google.com [209.85.160.49])
+        by lemote.com (Postfix) with ESMTP id 98C4E31D7E8;
+        Thu,  9 Aug 2012 10:55:41 +0800 (CST)
+Received: by pbbrq13 with SMTP id rq13so195443pbb.36
+        for <multiple recipients>; Wed, 08 Aug 2012 20:35:36 -0700 (PDT)
+Received: by 10.68.219.135 with SMTP id po7mr416134pbc.149.1344483336372; Wed,
+ 08 Aug 2012 20:35:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CADArhcAOaYLVk2MU3aExBNumgKeUTC7WKHKSL3kZ-O82028vAw@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34070
+Received: by 10.68.32.231 with HTTP; Wed, 8 Aug 2012 20:35:15 -0700 (PDT)
+In-Reply-To: <s5hipd0m3bj.wl%tiwai@suse.de>
+References: <1343977571-2292-1-git-send-email-chenhc@lemote.com>
+ <1343977571-2292-13-git-send-email-chenhc@lemote.com> <s5hobmsqqeh.wl%tiwai@suse.de>
+ <CAAhV-H5ATFD7pksBkA374ShYWmvrgttGSs0vgu8QJ1F3VeRyzA@mail.gmail.com> <s5hipd0m3bj.wl%tiwai@suse.de>
+From:   Chen Jie <chenj@lemote.com>
+Date:   Thu, 9 Aug 2012 11:35:15 +0800
+Message-ID: <CAGXxSxVs0cq08d+xk3rew6tQttkw1XM7pugn142m1_F6tJBWNQ@mail.gmail.com>
+Subject: Re: [alsa-devel] [PATCH V4 12/16] ALSA: HDA: Make hda sound card
+ usable for Loongson.
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     Huacai Chen <chenhuacai@gmail.com>, linux-mips@linux-mips.org,
+        alsa-devel@alsa-project.org, Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hua Yan <yanh@lemote.com>, Ralf Baechle <ralf@linux-mips.org>,
+        Hongliang Tao <taohl@lemote.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Huacai Chen <chenhc@lemote.com>
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 34071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: chenj@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,119 +54,45 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sat, Aug 04, 2012 at 03:59:50AM +0530, Akhilesh Kumar wrote:
+Hi,
 
-> 
-> I found some memory leak in
-> arch/mips/kernel/module.c file
-> 
-> Please review below patch and share your review comments,
-> 
-> Thanks,
-> Akhilesh
-> 
-> 
-> >From 77b8cae374a95000a1fd7e75bcda6694b8180fe9 Mon Sep 17 00:00:00 2001
-> From: Akhilesh Kumar <akhilesh.lxr@gmail.com>
-> Date: Sat, 4 Aug 2012 03:34:06 +0530
-> Subject:  [Memory leak]: memory leak in  apply_r_mips_lo16_rel
->  module.c
-> 
-> if (v != l->value)
->              goto out_danger ;
-> out_danger:
->   pr_err("module %s: dangerous R_MIPS_LO16 REL relocation\n", me->name);
->   return -ENOEXEC;
-> 
-> in case goto_out_danger kfree(l) is missing
-> 
-> Signed-off-by: Akhilesh Kumar <akhilesh.lxr@gmail.com>
-> ---
->  arch/mips/kernel/module.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/module.c b/arch/mips/kernel/module.c
-> index a5066b1..b1dce44 100644
-> --- a/arch/mips/kernel/module.c
-> +++ b/arch/mips/kernel/module.c
-> @@ -202,7 +202,7 @@ static int apply_r_mips_lo16_rel(struct module *me, u32
-> *location, Elf_Addr v)
-> 
->  out_danger:
->   pr_err("module %s: dangerous R_MIPS_LO16 REL relocation\n", me->name);
-> -
-> + kfree(l);
+2012/8/3 Takashi Iwai <tiwai@suse.de>:
+> At Fri, 3 Aug 2012 18:36:40 +0800,
+> Huacai Chen wrote:
+>>
+>> We write these quirks on 2.6.36 some time ago, and then we port them
+>> to 3.x (3.2, 3.3, 3.4 and 3.5). As you say, PMON (BIOS for Loongson)
+>> doesn't set the pins correctly. Anyway, I'll try your suggestions.
+>
+> Thanks.  I guess it should work by just adding a new entry for your
+> device in cxt_fixups[] containing the right default pin-configuration
+> table, then point it in cxt5066_fixups[] with the corresponding PCI
+> (or codec) SSID.
+>
+>
+> Takashi
 
-The variable l isn't declared at this point.  You obviously haven't tried
-to compile this.
+I've found it is a little difficult to get proper pincfg values. The
+original patch builds  'input/output path' manually, the new way does
+it automatically as long as providing proper pincfgs for 'end points'.
 
->   return -ENOEXEC;
+I tried to copy related pincfgs from a workable lemote a1004
+laptop(kernel with the original patch, read from
+/proc/asound/card0/codec#0), didn't help much.
 
-Well spotted - this bug has been around for ages.  The fix is incorrect
-though.  L is pointing to a linked list and we need to free the entire
-linked list, not just the element currently being processed.
+I guess the pincfgs are not correct, and on the platform, the pincfgs
+are not touched by BIOS, so I have to calculate proper pincfgs, how?
 
-I noticed the same issue in VPE loader in arch/mips/kernel/vpe.c, function
-apply_r_mips_lo16() and fixed it in 477c4b07406357ad93d0e32788dbf3ee814eadaa
-/ 6f5d2e970452b5c86906adcb8e7ad246f535ba39 [MIPS: VPE: Free relocation chain
-on error.] but back then almost exactly 3 years ago I did not notice the
-same issue to exist in the module loader as well.
+HDA spec explains a pincfg as four bytes. For each byte, it has bits
+indicate amp/in/out/vref/ept.
 
-Also reviewing the HI16/LO16 processing I noticed that there is a race
-condition if multiple modules are being loaded in parallel - but that's a
-different problem.
+In the kernel side, it reads a pincfg and explains it as a 32bits
+flag, indicating
+connect/location/device/jack_connect_type/jack_color/misc/association/sequence.
 
-  Ralf
+Why they differ? How to get proper pincfg values?
 
->From 3ae0244ccd4cd56293fd5764aaf30127882a0170 Mon Sep 17 00:00:00 2001
-From: Ralf Baechle <ralf@linux-mips.org>
-Date: Wed, 8 Aug 2012 14:57:03 +0200
-Subject: [PATCH] MIPS: Fix memory leak in error path of HI16/LO16 relocation
- handling.
 
-Commit 6f5d2e970452b5c86906adcb8e7ad246f535ba39 (lmo) /
-477c4b07406357ad93d0e32788dbf3ee814eadaa (kernel.org) [[MIPS: VPE: Free
-relocation chain on error.] fixed the same issue in the vpe loader in 2009
-but back then the same bug in module.c went unfixed.
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Reported-by: Akhilesh Kumar <akhilesh.lxr@gmail.com>
----
- arch/mips/kernel/module.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/kernel/module.c b/arch/mips/kernel/module.c
-index a5066b1..e5f2f56 100644
---- a/arch/mips/kernel/module.c
-+++ b/arch/mips/kernel/module.c
-@@ -146,16 +146,15 @@ static int apply_r_mips_lo16_rel(struct module *me, u32 *location, Elf_Addr v)
- {
- 	unsigned long insnlo = *location;
- 	Elf_Addr val, vallo;
-+	struct mips_hi16 *l, *next;
- 
- 	/* Sign extend the addend we extract from the lo insn.  */
- 	vallo = ((insnlo & 0xffff) ^ 0x8000) - 0x8000;
- 
- 	if (mips_hi16_list != NULL) {
--		struct mips_hi16 *l;
- 
- 		l = mips_hi16_list;
- 		while (l != NULL) {
--			struct mips_hi16 *next;
- 			unsigned long insn;
- 
- 			/*
-@@ -201,6 +200,12 @@ static int apply_r_mips_lo16_rel(struct module *me, u32 *location, Elf_Addr v)
- 	return 0;
- 
- out_danger:
-+	while (l) {
-+		next = l->next;
-+		kfree(l);
-+		l = next;
-+	}
-+
- 	pr_err("module %s: dangerous R_MIPS_LO16 REL relocation\n", me->name);
- 
- 	return -ENOEXEC;
+Regards,
+-- Chen Jie

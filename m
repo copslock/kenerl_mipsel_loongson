@@ -1,53 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Aug 2012 08:19:11 +0200 (CEST)
-Received: from nm37-vm2.bullet.mail.ne1.yahoo.com ([98.138.229.130]:44238 "HELO
-        nm37-vm2.bullet.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1903610Ab2HIUxV convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 9 Aug 2012 22:53:21 +0200
-Received: from [98.138.90.48] by nm37.bullet.mail.ne1.yahoo.com with NNFMP; 09 Aug 2012 20:53:14 -0000
-Received: from [98.138.89.169] by tm1.bullet.mail.ne1.yahoo.com with NNFMP; 09 Aug 2012 20:53:14 -0000
-Received: from [127.0.0.1] by omp1025.mail.ne1.yahoo.com with NNFMP; 09 Aug 2012 20:53:14 -0000
-X-Yahoo-Newman-Property: ymail-3
-X-Yahoo-Newman-Id: 586631.68538.bm@omp1025.mail.ne1.yahoo.com
-Received: (qmail 44900 invoked by uid 60001); 9 Aug 2012 20:53:14 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s1024; t=1344545594; bh=Q2LT4jNAVGyjUu607cWwWq6MeQED+Shi4TsqGntFB+I=; h=X-YMail-OSG:Received:X-Mailer:References:Message-ID:Date:From:Reply-To:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding; b=rATsRjnI4en1DLPRHBtEUYHVcRrUVZ69UmG7pHcXMPFXPBhaQ7YPpCAzjM8L+bbWVhBjYNF+nkdS/KTjKJqqv4IWSfyfgW8XBKBFPb7SXuqOLE4ZJR/qgIZTekCa7QZrGEx5vl5UY2VfjwD5VxuowyeKMH3pjiBo6cnffFD7P2Q=
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=X-YMail-OSG:Received:X-Mailer:References:Message-ID:Date:From:Reply-To:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=4l2ZX0LZva2/d6OskB482quICLrqrfYigEajdxhQ4T7ltOcnfbnluvu+IF9TATbeBft4wzjWWU8lTWqyI1Ss6DGiQ9u9Uwer+6r1ao6vGfUkBIBq0n3NBMWaLMgmcACHGO8wpRSa2470GkqaHjbPbZE+Hzb/b/rb3l8anufjyx0=;
-X-YMail-OSG: 6Ff5.YoVM1lLo0Hzp7pPwnUfNwzk.TkQ3C4OPQHG_loFfWS
- ZKeGWvoggjL6_zaJE48xvVCxa.YONj9G1jxAcKUj9FN2g3_Gpmgid1K33ugQ
- pMt5qxSdyAhbCr2x.66RYiDMNCjPJx8BriJohaqBxO6n9017m2dBBcA9lQ6q
- UMws1UBhYqiKdsTeZWqMgs3X7ihLNBIoMRB7l5jVjbOyNd4hNDMH.HUZ9nfb
- YQcGdQiaLUsdLBufJTml10K.Ewb81ASH6hTx8_VsHGI0kg7bJqZooIKnM.1x
- iltL2cdjG2libBpVx6B3KyEMm0lkppl4YHBnlPy.pHCcQVR2N1gt9JLpUir7
- iQBzwE1WHSxM2Bni8A_BCNrdrNKqaKm_38gp15ROFHCbxXYeP3_YTqv9jTyj
- q6T1L8zHYwWyEyDSkrHwqeki8qqJ9P1F9_2jylK8pJYa4ZsbLWAGG2xNojyq
- 4ShBrqQPM5p0nyZ1Pa1TGU1n._xvYXNfh8_MIT5H4XdbB3F8ocjLcFmHeKM3
- T.EEn12.IPmPn1lAzyi_aA_G8D0vomOWyVccbD4bwjH0e52ZjbNsDcKWzlMU
- nBJA-
-Received: from [128.18.40.201] by web120102.mail.ne1.yahoo.com via HTTP; Thu, 09 Aug 2012 13:53:14 PDT
-X-Mailer: YahooMailWebService/0.8.120.356233
-References: <1342922751.65328.YahooMailNeo@web120106.mail.ne1.yahoo.com> <CAJd=RBC24UXztNoKews5sE06DRvk_cBEYunHT7Zc-rdvAFF0ew@mail.gmail.com> <1343150934.42443.YahooMailNeo@web120104.mail.ne1.yahoo.com> <CAJd=RBCy+zy6jRWkpjPx43H=jqs37-L8Qij4Z5y9DYak2L643w@mail.gmail.com>
-Message-ID: <1344545594.25895.YahooMailNeo@web120102.mail.ne1.yahoo.com>
-Date:   Thu, 9 Aug 2012 13:53:14 -0700 (PDT)
-From:   Victor Meyerson <calculuspenguin@yahoo.com>
-Reply-To: Victor Meyerson <calculuspenguin@yahoo.com>
-Subject: Re: Direct I/O bug in kernel
-To:     Hillf Danton <dhillf@gmail.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <CAJd=RBCy+zy6jRWkpjPx43H=jqs37-L8Qij4Z5y9DYak2L643w@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Aug 2012 12:34:02 +0200 (CEST)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:39353 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903556Ab2HJKd6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Aug 2012 12:33:58 +0200
+Received: by yhjj52 with SMTP id j52so1501436yhj.36
+        for <multiple recipients>; Fri, 10 Aug 2012 03:33:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:subject:message-id:mime-version:content-type
+         :content-disposition:user-agent;
+        bh=KDR44Y4DP+chboZ5Ec702S/DNMGitC8I/mnwNYlAkq4=;
+        b=lMK63xD58ct38Vy/QHpG4Es8OhxN7+6o3wfojfJlXPorvC4IGFKyMh113IKwOXMiNv
+         QWYkLUh2S6IjOUXck7pRPHhvaLxtqZNza2R19or2FK8Dwmn4ImLVJRf6uZ0Q9QVa9LKf
+         VjfYqFOBQ/C/A0Jm7I4smoIAEZ/ao5FLlHeMSMQ1Smn21RuoK4kn1FGJyB3gMRq2qHCG
+         OQDGG2vAMg1oPTcZl0yE8kmljDrIdmJbSJ6+yPVTAmyapUdUzMRqKcKkQsd7TyFaWllC
+         ep/y1moZgjPYvETy6cQOs/Or5OrGtZ4I2pR1gIdgt21Noo1GlVkCiXpF5PXOcZEuz1eZ
+         wmHA==
+Received: by 10.66.73.7 with SMTP id h7mr5333887pav.34.1344594831906;
+        Fri, 10 Aug 2012 03:33:51 -0700 (PDT)
+Received: from hades (111-243-156-32.dynamic.hinet.net. [111.243.156.32])
+        by mx.google.com with ESMTPS id pi7sm3099179pbb.56.2012.08.10.03.33.48
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 10 Aug 2012 03:33:50 -0700 (PDT)
+Date:   Fri, 10 Aug 2012 18:33:34 +0800
+From:   Tony Wu <tung7970@gmail.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: init module specific mips_hi16_list to NULL
+Message-ID: <20120810103334.GA1263@hades>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 34086
-X-Approved-By: ralf@linux-mips.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34087
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: calculuspenguin@yahoo.com
+X-original-sender: tung7970@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,26 +49,28 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
------ Original Message -----
+MIPS: init module specific mips_hi16_list to NULL
 
-> From: Hillf Danton <dhillf@gmail.com>
-> To: Victor Meyerson <calculuspenguin@yahoo.com>
-> Cc: "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>; Ralf Baechle <ralf@linux-mips.org>; LKML <linux-kernel@vger.kernel.org>
-> Sent: Friday, July 27, 2012 7:47 AM
-> Subject: Re: Direct I/O bug in kernel
-> 
-> On Wed, Jul 25, 2012 at 1:28 AM, Victor Meyerson
-> <calculuspenguin@yahoo.com> wrote:
->> 
->>  Still different checksums and I used the same random-file from my first 
-> test.
->> 
-> Then try the fix at
->             https://lkml.org/lkml/2012/7/27/54
-> 
+mips_hi16_list was moved from global to mod_arch_specific. While
+global, it was bss initialized automatically, when moved to
+mod_arch_specific, we have to do the zero initialization.
 
-I tried that patch, although I had to edit a slightly different line as dio_bio_alloc was near line 392 instead of 349 in the version of fs/direct-io.c in my tree.  I still got different checksums between the two files and even different checksums from my earlier attempts.
+Signed-off-by: Tony Wu <tung7970@gmail.com>
+---
+ arch/mips/kernel/module.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-I am not sure if this helps, but Ralf asked if I can try a different page size to see if this problem occurs.  I originally had CONFIG_PAGE_SIZE_4KB=y and changed it to CONFIG_PAGE_SIZE_16KB=y (via menuconfig).  Having a page size of 16KB (and the above patch not applied) made the checksum on the files match each other and match the file made from the working kernel.
-
-Victor
+diff --git a/arch/mips/kernel/module.c b/arch/mips/kernel/module.c
+index 8b29976..8e1fb80 100644
+--- a/arch/mips/kernel/module.c
++++ b/arch/mips/kernel/module.c
+@@ -276,6 +276,7 @@ int apply_relocate(Elf_Shdr *sechdrs, const char *strtab,
+ 	pr_debug("Applying relocate section %u to %u\n", relsec,
+ 	       sechdrs[relsec].sh_info);
+ 
++	me->arch.r_mips_hi16_list = NULL;
+ 	for (i = 0; i < sechdrs[relsec].sh_size / sizeof(*rel); i++) {
+ 		/* This is where to make the change */
+ 		location = (void *)sechdrs[sechdrs[relsec].sh_info].sh_addr
+-- 
+1.7.4.4

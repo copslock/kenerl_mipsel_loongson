@@ -1,47 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Aug 2012 14:18:35 +0200 (CEST)
-Received: from mail-vb0-f49.google.com ([209.85.212.49]:33264 "EHLO
-        mail-vb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903556Ab2HJMS3 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 10 Aug 2012 14:18:29 +0200
-Received: by vbbfo1 with SMTP id fo1so1542448vbb.36
-        for <multiple recipients>; Fri, 10 Aug 2012 05:18:22 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Aug 2012 16:50:08 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:34588 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903736Ab2HJOuE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Aug 2012 16:50:04 +0200
+Received: by pbbrq8 with SMTP id rq8so1389971pbb.36
+        for <multiple recipients>; Fri, 10 Aug 2012 07:49:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=ReNN/R3DP33BKGl7gOMZsW0+Yr0XRSOGh2ziMCVfvNE=;
-        b=GJ68I2Tu1/3CtgFnNgWWcUF7L3RPH/dhPnIhKNkZnBukNMN5Uyxxe8tkgKcdbBOGRC
-         1WRUfTT6FlBhbEPRFQkY1Ou3u65N3LOnvEON+SvLsTtE9TaMzewD7BHbA0N1/BKQpMr4
-         iqrYX9cpYZYQLnNaGV0jC1HG0R5+2Vv7wXKqwKxXW2NiZdOrc/l7/vyQ4z9dUyOzu5jJ
-         XhFG5WFVxnmIAa5u+9tNKeersH2Ce5SgqLyXvmQMky0PbD6H6RICIW7zneTYmzTLW0NZ
-         uWWhbgviMCmcupqJspQhYfmQC1ceToBi1sIEEMSmK5Gkps9+VZLt+abOe+NEW0msqJI9
-         W1jQ==
+        h=date:from:to:subject:message-id:mime-version:content-type
+         :content-disposition:user-agent;
+        bh=O62PrF/a1dgPfsStQH2Ig1vO/Mku2KfWlVK9tSLdPqA=;
+        b=Ushvb1OCh+QoGEWT9xxvbYUF2+NmWDZYjcgr5cofNs9+aCCJ9PStUjN8wQsjSXNAwE
+         f3TT1hyLF+0JADCIXkAaitywyaGMcgZ1a/IoMYO4bb38mZJeD0I8cMLpJtiCAYiC3J/N
+         O3RtCt9pqi1xG5AuYvEv/7dswY+WB0qya8o8sj3KMTtSJbEVepaMAZJ2+ZfdAKoQz9Y5
+         /rk8oy7vGI6GxIloyLrfN4KBn+VBMZiy2EPnjjFUHZj1VLa6Ax6E9Au2UDZkpOKRiZuR
+         /P28WH83M9Mu+1kHLLMgZNEByzo4AjCyAtVPNF9ajVUb/0y2wPggf3BVLg4JoSVAtTm5
+         RU1A==
+Received: by 10.68.134.161 with SMTP id pl1mr13161925pbb.29.1344610197264;
+        Fri, 10 Aug 2012 07:49:57 -0700 (PDT)
+Received: from hades (111-243-156-32.dynamic.hinet.net. [111.243.156.32])
+        by mx.google.com with ESMTPS id ph1sm3473476pbb.45.2012.08.10.07.49.39
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 10 Aug 2012 07:49:41 -0700 (PDT)
+Date:   Fri, 10 Aug 2012 22:49:35 +0800
+From:   Tony Wu <tung7970@gmail.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH v2] MIPS: init module specific mips_hi16_list to NULL
+Message-ID: <20120810144935.GA1395@hades>
 MIME-Version: 1.0
-Received: by 10.221.13.72 with SMTP id pl8mr2320028vcb.5.1344601102632; Fri,
- 10 Aug 2012 05:18:22 -0700 (PDT)
-Received: by 10.220.96.148 with HTTP; Fri, 10 Aug 2012 05:18:22 -0700 (PDT)
-In-Reply-To: <1344545594.25895.YahooMailNeo@web120102.mail.ne1.yahoo.com>
-References: <1342922751.65328.YahooMailNeo@web120106.mail.ne1.yahoo.com>
-        <CAJd=RBC24UXztNoKews5sE06DRvk_cBEYunHT7Zc-rdvAFF0ew@mail.gmail.com>
-        <1343150934.42443.YahooMailNeo@web120104.mail.ne1.yahoo.com>
-        <CAJd=RBCy+zy6jRWkpjPx43H=jqs37-L8Qij4Z5y9DYak2L643w@mail.gmail.com>
-        <1344545594.25895.YahooMailNeo@web120102.mail.ne1.yahoo.com>
-Date:   Fri, 10 Aug 2012 20:18:22 +0800
-Message-ID: <CAJd=RBA=gdh-9aSeNGSu=BMNgVAWOKNy_yL7sJPUUpyee5VBjQ@mail.gmail.com>
-Subject: Re: Direct I/O bug in kernel
-From:   Hillf Danton <dhillf@gmail.com>
-To:     Victor Meyerson <calculuspenguin@yahoo.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 34089
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34090
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhillf@gmail.com
+X-original-sender: tung7970@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,16 +49,28 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Aug 10, 2012 at 4:53 AM, Victor Meyerson
-<calculuspenguin@yahoo.com> wrote:
-> I tried that patch, although I had to edit a slightly different line as dio_bio_alloc was near line 392 instead of 349 in the version of fs/direct-io.c in my tree.  I still got different checksums between the two files and even different checksums from my earlier attempts.
->
-> I am not sure if this helps, but Ralf asked if I can try a different page size to see if this problem occurs.  I originally had CONFIG_PAGE_SIZE_4KB=y and changed it to CONFIG_PAGE_SIZE_16KB=y (via menuconfig).  Having a page size of 16KB (and the above patch not applied) made the checksum on the files match each other and match the file made from the working kernel.
->
+In commit 6c06adb3838d03a20af2e2effc145121444c3189 (lmo) [MIPS: Fix
+race condition in module relocation code.], mips_hi16_list was
+moved from global to mod_arch_specific to handle parallel module
+loading. While global, it was bss initialized to zero, when moved to
+mod_arch_specific, we have to do the zero initialization manually.
 
-Thanks for tests, Victor.
+Signed-off-by: Tony Wu <tung7970@gmail.com>
+---
+ arch/mips/kernel/module.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-Please elaborate on the role of page size in this case, Ralf.
-
-Good Weekend
-Hillf
+diff --git a/arch/mips/kernel/module.c b/arch/mips/kernel/module.c
+index 8b29976..8e1fb80 100644
+--- a/arch/mips/kernel/module.c
++++ b/arch/mips/kernel/module.c
+@@ -276,6 +276,7 @@ int apply_relocate(Elf_Shdr *sechdrs, const char *strtab,
+ 	pr_debug("Applying relocate section %u to %u\n", relsec,
+ 	       sechdrs[relsec].sh_info);
+ 
++	me->arch.r_mips_hi16_list = NULL;
+ 	for (i = 0; i < sechdrs[relsec].sh_size / sizeof(*rel); i++) {
+ 		/* This is where to make the change */
+ 		location = (void *)sechdrs[sechdrs[relsec].sh_info].sh_addr
+-- 
+1.7.4.4

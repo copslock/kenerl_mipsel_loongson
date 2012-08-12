@@ -1,25 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Aug 2012 08:29:13 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:51470 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1902235Ab2HLG3J (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 12 Aug 2012 08:29:09 +0200
-Message-ID: <50274CF9.2090402@phrozen.org>
-Date:   Sun, 12 Aug 2012 08:28:09 +0200
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.24) Gecko/20111114 Icedove/3.1.16
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Aug 2012 10:10:13 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:48234 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903414Ab2HLIKJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Aug 2012 10:10:09 +0200
+Received: by lbbgf7 with SMTP id gf7so1477794lbb.36
+        for <linux-mips@linux-mips.org>; Sun, 12 Aug 2012 01:10:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=v4gBiLtRzq6Cu8Ui942LQFgmldqq5zcCyq7eykiZYEc=;
+        b=sF2ib7E5uM63QSNhjoVdcxsYMYH43e9oUbVesrvP/b2DnBWjyd69oz4gDgsK/NODDa
+         YIRiMcFLYLDaYDYRoowpfbxTCBpNlj8L67xAT+Vx3bGA9ezDHJU4LTBNK1UHZCtj14D+
+         8cxAWJcExPRB67duTldwnpENKDu5vXzSalEM+To9DczxWjhsrvGTXN9PeoKn8N4nZozB
+         RIz1Qv5FIV+d96TnCXEwSR3NOU43UN1Sh8nrOo27XAUHVt893XUzpfSPzaNV6xsgJzDe
+         SRP/Kg/Zc+AbFlhto3ZSXZRv7DKnGtjItsHouhYlTfFqC9VXNuSUa4Fx3IWy3LD+bsp7
+         aHrw==
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: [Bug-fix] backtrace when HAVE_FUNCTION_TRACER is enable
-References: <CADArhcB+N+D4fyVN20f0hu=vfPj1tsn5NHi0cjG4JJcKAhTkeQ@mail.gmail.com>        <CAD+V5YKZJHKONehvT+-GrKLP2+e0PiLiFTJWEojiDoNyLT3yGQ@mail.gmail.com> <CADArhcAN4renH1hFnhc14d+VMn2N+k0GsDpXevRFKd6UD=X=8Q@mail.gmail.com>
-In-Reply-To: <CADArhcAN4renH1hFnhc14d+VMn2N+k0GsDpXevRFKd6UD=X=8Q@mail.gmail.com>
-X-Enigmail-Version: 1.1.2
+Received: by 10.152.105.173 with SMTP id gn13mr8142949lab.20.1344759003232;
+ Sun, 12 Aug 2012 01:10:03 -0700 (PDT)
+Received: by 10.152.105.51 with HTTP; Sun, 12 Aug 2012 01:10:03 -0700 (PDT)
+In-Reply-To: <5027498C.6020205@phrozen.org>
+References: <1344677543-22591-1-git-send-email-chenhc@lemote.com>
+        <5027498C.6020205@phrozen.org>
+Date:   Sun, 12 Aug 2012 16:10:03 +0800
+Message-ID: <CAAhV-H4J+0wZVw2FevTf2P5wCDHfZ6=WGA9sZ1OipvFiVe=g5g@mail.gmail.com>
+Subject: Re: [PATCH V5 00/16] MIPS: Add Loongson-3 based machines support.
+From:   Huacai Chen <chenhuacai@gmail.com>
+To:     John Crispin <john@phrozen.org>
+Cc:     linux-mips@linux-mips.org
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34117
+X-archive-position: 34118
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: chenhuacai@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,259 +48,157 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi,
+Thank you, I think the 11th and 17th patch can be sent independently,
+and the 14th patch can be sent after the Loongson patch series.
 
-This patch is missing the Description and SoB line
-
-John
-
-
-
-On 09/08/12 19:16, Akhilesh Kumar wrote:
-> yes Zhangin
-> 
-> please find the complete patch 
-> ====================================================================
-> diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-> index 7955409..df72738 100644
-> --- a/arch/mips/kernel/process.c
-> +++ b/arch/mips/kernel/process.c
-> @@ -290,12 +290,45 @@ static inline int is_sp_move_ins(union
-> mips_instruction *ip)
->   return 0;
->  }
-> 
-> +#ifdef CONFIG_DYNAMIC_FTRACE
-> +/*
-> + * To create the jal <> instruction from mcount.
-> + * taken from:
-> + * - arch/mips/kernel/ftrace.c
-> + */
-> +#define ADDR_MASK 0x03ffffff    /*  op_code|addr : 31...26|25 ....0 */
-> +#define JAL 0x0c000000      /* jump & link: ip --> ra, jump to target */
-> +#define INSN_JAL(addr)  \
-> +      ((unsigned int)(JAL | (((addr) >> 2) & ADDR_MASK)))
-> +
-> +/*
-> + * We assume jal <mcount>/<ftrace_caller> to be present in
-> + * first JAL_MAX_OFFSET instructions.
-> + * Increment this, if its otherwise
-> + */
-> +#define JAL_MAX_OFFSET 16U
-> +#define MCOUNT_STACK_INST 0x27bdfff8 /* addiu   sp,sp,-8 */
-> +
-> +/*
-> + * If Dynamic Ftrace is enabled, ftrace_caller is the trace function.
-> + * Otherwise its - mcount
-> + */
-> +extern void  ftrace_caller(void);
-> +#endif /* CONFIG_DYNAMIC_FTRACE */
-> +
->  static int get_frame_info(struct mips_frame_info *info)
->  {
->   union mips_instruction *ip = info->func;
->   unsigned max_insns = info->func_size / sizeof(union mips_instruction);
->   unsigned i;
-> 
-> +#ifdef CONFIG_DYNAMIC_FTRACE
-> + unsigned max_prolog_inst = max_insns;
-> + int jal_found = 0;
-> + /* instruction corresponding to jal <_mcount>/<ftrace_caller> */
-> + int jal_mcount = 0;
-> +#endif
-> +
->   info->pc_offset = -1;
->   info->frame_size = 0;
-> 
-> @@ -306,6 +339,28 @@ static int get_frame_info(struct mips_frame_info *info)
->    max_insns = 128U; /* unknown function size */
->   max_insns = min(128U, max_insns);
-> 
-> +#ifdef CONFIG_DYNAMIC_FTRACE
-> + max_prolog_inst = min(JAL_MAX_OFFSET, max_prolog_inst);
-> + jal_mcount = INSN_JAL((unsigned)&ftrace_caller);
-> +
-> + for (i = 0; i < max_prolog_inst; i++, ip++) {
-> +  if ((*(int *)ip == jal_mcount) ||
-> +    /*
-> +     * for dyn ftrace, the code initially has 0.
-> +     * so we check whether the next instruction is
-> +     * addiu   sp,sp,-8
-> +     */
-> +    (!(*(int *)ip) &&
-> +     (*(int *)(ip + 1) == MCOUNT_STACK_INST))
-> +     ) {
-> +   jal_found = 1;
-> +   break;
-> +  }
-> + }
-> + /* restore the ip to start of function */
-> + ip = info->func;
-> +#endif
-> +
->   for (i = 0; i < max_insns; i++, ip++) {
-> 
->    if (is_jal_jalr_jr_ins(ip))
-> @@ -321,6 +376,18 @@ static int get_frame_info(struct mips_frame_info *info)
->     break;
->    }
->   }
-> +#ifdef CONFIG_DYNAMIC_FTRACE
-> + /*
-> +  * to offset the effect of:
-> +  * addiu   sp,sp,-8
-> +  */
-> + if (jal_found) {
-> +  if (info->frame_size)
-> +   info->frame_size += 8;
-> +  if (info->pc_offset >= 0)
-> +   info->pc_offset += 8 / sizeof(long);
-> + }
-> +#endif
->   if (info->frame_size && info->pc_offset >= 0) /* nested */
->    return 0;
->   if (info->pc_offset < 0) /* leaf */
-> -- 
-> 1.7.8.4
-> 
-> ==================================================================== 
-> 
-> On Thu, Aug 9, 2012 at 9:41 PM, Wu Zhangjin <wuzhangjin@gmail.com
-> <mailto:wuzhangjin@gmail.com>> wrote:
-> 
->     Hi, Akhilesh
-> 
->     Thanks very much for your work.
-> 
->     Seems this patch has lost something, can you send a full one?
-> 
->     Best Regards,
->     Wu Zhangjin
-> 
->     On Thu, Aug 9, 2012 at 9:53 PM, Akhilesh Kumar
->     <akhilesh.lxr@gmail.com <mailto:akhilesh.lxr@gmail.com>> wrote:
->     > Hi Ralf,
->     >
->     >
->     > Sub:- Bug  unable to retrive backtrace when HAVE_FUNCTION_TRACER
->     is enable.
->     > I send this bug and bug fix long back, I am resending this patch
->     again for
->     > review.
->     >
->     > Please review below patch if you agree I will regenerate this
->     patch and with
->     > you.
->     >
->     > ====[ backtrace testing ]===========
->     > Testing a backtrace from process context.
->     > The following trace is a kernel self test and not a bug!
->     > Testing a backtrace.
->     > The following trace is a kernel self test and not a bug!
->     > Call Trace:
->     > [<80295134>] dump_stack+0x8/0x34
->     > [<c0946060>] backtrace_regression_test+0x60/0x94 [sisc_backtrcae]
->     > [<800004f0>] do_one_initcall+0xf0/0x1d0
->     > [<80060954>] sys_init_module+0x19c8/0x1c60
->     > [<8000a418>] stack_done+0x20/0x40
->     > output befor patch when HAVE_FUNCTION_TRACER is enable
->     > ---------------------------------------------------------------------
->     > #> insmod backtrace.ko
->     > ====[ backtrace testing ]===========
->     > Testing a backtrace from process context.
->     > The following trace is a kernel self test and not a bug!
->     > Testing a backtrace.
->     > The following trace is a kernel self test and not a bug!
->     > Call Trace:
->     > [<802e5164>] dump_stack+0x1c/0x50
->     > [<802e5164>] dump_stack+0x1c/0x50
->     > ====[ end of backtrace testing ]====
->     > ------------------------------------------------------
->     > above shows the wrong back trcae
->     > output after patch when HAVE_FUNCTION_TRACER is enable
->     > ----------------------------------------------------------------------
->     > ====[ backtrace testing ]===========
->     > Testing a backtrace from process context.
->     > The following trace is a kernel self test and not a bug!
->     > Testing a backtrace.
->     > The following trace is a kernel self test and not a bug!
->     > Call Trace:
->     > [<802eb1a4>] dump_stack+0x20/0x54
->     > [<c003405c>] backtrace_test_timer+0x5c/0x74 [sisc_backtrcae]
->     > [<c00340dc>] init_module+0x68/0xa0 [sisc_backtrcae]
->     > [<80000508>] do_one_initcall+0x108/0x1f0
->     > [<8006d4c4>] sys_init_module+0x1a10/0x1c74
->     > [<8000b038>] stack_done+0x20/0x40
->     > ------------------------------------------------------------------
->     > get_frame_info() is used to fetch the frame information from the
->     > function.
->     > However,
->     > 1. this function just considers the first stack adjustment for frame
->     > size.
->     > 2. On finding the save_lr instruction, it returns.
->     > It doesn't handle the ftrace condition.
->     > If Dynamic Frace "CONFIG_DYNAMIC_FTRACE" is enabled, the
->     instrumentation
->     > code is:
->     >  - jal <ftrace_caller>
->     >  - addiu sp,sp,-8
->     > Thus, the current Frame Size of function is increased by 8 for Ftrace.
->     > Signed-off-by: Akhilesh Kumar <akhilesh.lxr@gmail.com
->     <mailto:akhilesh.lxr@gmail.com>>
->     > ---
->     >  arch/mips/kernel/process.c |   67
->     > ++++++++++++++++++++++++++++++++++++++++++++
->     >  1 files changed, 67 insertions(+), 0 deletions(-)
->     > diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
->     > index 7955409..df72738 100644
->     > --- a/arch/mips/kernel/process.c
->     > +++ b/arch/mips/kernel/process.c
->     > @@ -290,12 +290,45 @@  static inline int is_sp_move_ins(union
->     > mips_instruction *ip)
->     >   return 0;
->     >  }
->     > +#ifdef CONFIG_DYNAMIC_FTRACE
->     > +/*
->     > + * To create the jal <> instruction from mcount.
->     > + * taken from:
->     > + * - arch/mips/kernel/ftrace.c
->     > + */
->     > +#define ADDR_MASK 0x03ffffff    /*  op_code|addr : 31...26|25
->     ....0 */
->     > +#define JAL 0x0c000000      /* jump & link: ip --> ra, jump to
->     target */
->     > +#define INSN_JAL(addr)  \
->     > +      ((unsigned int)(JAL | (((addr) >> 2) & ADDR_MASK)))
->     > +
->     > +/*
->     > + * We assume jal <mcount>/<ftrace_caller> to be present in
->     > + * first JAL_MAX_OFFSET instructions.
->     > + * Increment this, if its otherwise
->     > + */
->     > +#define JAL_MAX_OFFSET 16U
->     > +#define MCOUNT_STACK_INST 0x27bdfff8 /* addiu   sp,sp,-8 */
->     > +
->     > +/*
->     > + * If Dynamic Ftrace is enabled, ftrace_caller is the trace function.
->     > + * Otherwise its - mcount
->     > + */
->     > +extern void  ftrace_caller(void);
->     > +#endif /* CONFIG_DYNAMIC_FTRACE */
->     > +
->     >  static int get_frame_info(struct mips_frame_info *info)
->     >  {
->     >   union mips_instruction *ip = info->func;
->     >   unsigned max_insns = info->func_size / sizeof(union
->     mips_instruction);
->     >   unsigned i;
->     > +#ifdef CONFIG_DYNAMIC_FTRACE
->     > + unsigned max_prolog_inst = max_insns;
->     > + int jal_found = 0;
->     > + /* instruction corresponding to jal <_mcount>/<ftrace_caller> */
->     > + int jal_mcount = 0;
->     > +#endif
->     > +
->     >   info->pc_offset = -1;
->     >   info->frame_size = 0;
-> 
-> 
+On Sun, Aug 12, 2012 at 2:13 PM, John Crispin <john@phrozen.org> wrote:
+>
+>
+>
+>
+>
+>
+>
+> On 11/08/12 11:32, Huacai Chen wrote:
+>> This patchset is for git repository git://git.linux-mips.org/pub/scm/
+>> ralf/linux. Loongson-3 is a multi-core MIPS family CPU, it is MIPS64R2
+>> compatible and has the same IMP field (0x6300) as Loongson-2. These
+>> patches make Linux kernel support Loongson-3 CPU and Loongson-3 based
+>> computers (including Laptop, Mini-ITX, All-In-One PC, etc.)
+>>
+>> V1 -> V2:
+>> 1, Split the first patch to two patches, one is constant definition and
+>>    the other is CPU probing, cache initializing, etc.
+>> 2, Remove Kconfig options in the first 9 patches and put all of them in
+>>    the 10th patch.
+>> 3, Use "make savedefconfig" to generate the new default config file.
+>> 4, Rework serial port support to use PORT and PORT_M macros.
+>> 5, Fix some compile warnings.
+>>
+>> V2 -> V3:
+>> 1, Improve cache flushing code (use cpu_has_coherent_cache macro and
+>>    remove #ifdef clauses).
+>> 2, Improve platform-specific code to correctly set driver's dma_mask/
+>>    coherent_dma_mask so no longer need workarounds for each driver (
+>>    SATA, graphics card, sound card, etc.)
+>> 3, Use PCI quirk to provide vgabios and loongson3_read_bios() go away.
+>> 4, Improve CPU hotplug code and split the poweroff failure related code
+>>    to another patch (this issue affect all MIPS CPU, not only Loongson).
+>> 5, Some other small fixes.
+>>
+>> V3 -> V4:
+>> 1, Include swiotlb.h in radeon_ttm.c if SWIOTLB configured.
+>> 2, Remove "Reviewed-by" in patches which are added by mistake.
+>> 3, Sync the code to upstream.
+>>
+>> V4 -> V5:
+>> 1, Split the drm patch to three patches.
+>> 2, Use platform-specific pincfgs to replace old alsa quirks.
+>>
+>> Huacai Chen(18):
+>>  MIPS: Loongson: Add basic Loongson-3 definition.
+>>  MIPS: Loongson: Add basic Loongson-3 CPU support.
+>>  MIPS: Loongson 3: Add Lemote-3A machtypes definition.
+>>  MIPS: Loongson: Make Loongson-3 to use BCD format for RTC.
+>>  MIPS: Loongson: Add UEFI-like firmware interface support.
+>>  MIPS: Loongson 3: Add HT-linked PCI support.
+>>  MIPS: Loongson 3: Add IRQ init and dispatch support.
+>>  MIPS: Loongson 3: Add serial port support.
+>>  MIPS: Loongson: Add swiotlb to support big memory (>4GB).
+>>  MIPS: Loongson: Add Loongson-3 Kconfig options.
+>>  drm/radeon: Include swiotlb.h if SWIOTLB configured.
+>>  drm: Handle io prot correctly for MIPS.
+>>  drm: Define SAREA_MAX for Loongson (PageSize = 16KB).
+>>  ALSA: HDA: Make hda sound card usable for Loongson.
+>>  MIPS: Loongson 3: Add Loongson-3 SMP support.
+>>  MIPS: Loongson 3: Add CPU hotplug support.
+>>  MIPS: Fix poweroff failure when HOTPLUG_CPU configured.
+>>  MIPS: Loongson: Add a Loongson-3 default config file.
+>>
+>> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+>> Signed-off-by: Hongliang Tao <taohl@lemote.com>
+>> Signed-off-by: Hua Yan <yanh@lemote.com>
+>
+>
+> I just noticed, that you are cc'ing lkml for a series that is 14/18 MIPS
+> and the rest subsystems. Please read davem's mail and reconsider posting
+> a 18 patch series to lkml.
+>
+> -> http://marc.info/?l=linux-kernel&m=112112749912944&w=2
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>> ---
+>>  arch/mips/Kconfig                                  |   23 +
+>>  arch/mips/configs/loongson3_defconfig              |  283 ++++++++++++
+>>  arch/mips/include/asm/addrspace.h                  |    6 +
+>>  arch/mips/include/asm/bootinfo.h                   |   24 +-
+>>  arch/mips/include/asm/cpu.h                        |    6 +-
+>>  arch/mips/include/asm/dma-mapping.h                |    5 +
+>>  arch/mips/include/asm/mach-loongson/boot_param.h   |  151 +++++++
+>>  .../mips/include/asm/mach-loongson/dma-coherence.h |   25 +-
+>>  arch/mips/include/asm/mach-loongson/irq.h          |   24 +
+>>  arch/mips/include/asm/mach-loongson/loongson.h     |   26 +-
+>>  arch/mips/include/asm/mach-loongson/machine.h      |    6 +
+>>  arch/mips/include/asm/mach-loongson/mc146818rtc.h  |    4 +
+>>  arch/mips/include/asm/mach-loongson/pci.h          |    5 +
+>>  arch/mips/include/asm/mach-loongson/spaces.h       |   15 +
+>>  arch/mips/include/asm/module.h                     |    2 +
+>>  arch/mips/include/asm/pgtable-bits.h               |    7 +
+>>  arch/mips/include/asm/smp.h                        |    1 +
+>>  arch/mips/kernel/Makefile                          |    1 +
+>>  arch/mips/kernel/cpu-probe.c                       |   12 +-
+>>  arch/mips/kernel/process.c                         |    4 +-
+>>  arch/mips/lib/Makefile                             |    1 +
+>>  arch/mips/loongson/Kconfig                         |   52 +++
+>>  arch/mips/loongson/Makefile                        |    6 +
+>>  arch/mips/loongson/Platform                        |    1 +
+>>  arch/mips/loongson/common/Makefile                 |    5 +
+>>  arch/mips/loongson/common/dma-swiotlb.c            |  159 +++++++
+>>  arch/mips/loongson/common/env.c                    |   67 +++-
+>>  arch/mips/loongson/common/init.c                   |   14 +-
+>>  arch/mips/loongson/common/machtype.c               |   20 +-
+>>  arch/mips/loongson/common/mem.c                    |   42 ++
+>>  arch/mips/loongson/common/pci.c                    |    6 +-
+>>  arch/mips/loongson/common/reset.c                  |   14 +
+>>  arch/mips/loongson/common/serial.c                 |   26 +-
+>>  arch/mips/loongson/common/setup.c                  |    8 +-
+>>  arch/mips/loongson/common/uart_base.c              |    9 +-
+>>  arch/mips/loongson/loongson-3/Makefile             |    6 +
+>>  arch/mips/loongson/loongson-3/irq.c                |   97 +++++
+>>  arch/mips/loongson/loongson-3/smp.c                |  449 ++++++++++++++++++++
+>>  arch/mips/loongson/loongson-3/smp.h                |   24 +
+>>  arch/mips/mm/Makefile                              |    1 +
+>>  arch/mips/mm/c-r4k.c                               |   94 ++++-
+>>  arch/mips/mm/dma-default.c                         |   13 +-
+>>  arch/mips/mm/tlb-r4k.c                             |    2 +-
+>>  arch/mips/mm/tlbex.c                               |    1 +
+>>  arch/mips/pci/Makefile                             |    1 +
+>>  arch/mips/pci/fixup-loongson3.c                    |   64 +++
+>>  arch/mips/pci/ops-loongson3.c                      |  104 +++++
+>>  drivers/gpu/drm/drm_vm.c                           |    2 +-
+>>  drivers/gpu/drm/radeon/radeon_ttm.c                |    4 +
+>>  drivers/gpu/drm/ttm/ttm_bo_util.c                  |    2 +-
+>>  include/drm/drm_sarea.h                            |    2 +
+>>  include/linux/pci_ids.h                            |    2 +
+>>  sound/pci/hda/patch_conexant.c                     |   24 +
+>>  53 files changed, 1877 insertions(+), 75 deletions(-)
+>>  create mode 100644 arch/mips/configs/loongson3_defconfig
+>>  create mode 100644 arch/mips/include/asm/mach-loongson/boot_param.h
+>>  create mode 100644 arch/mips/include/asm/mach-loongson/irq.h
+>>  create mode 100644 arch/mips/include/asm/mach-loongson/spaces.h
+>>  create mode 100644 arch/mips/loongson/common/dma-swiotlb.c
+>>  create mode 100644 arch/mips/loongson/loongson-3/Makefile
+>>  create mode 100644 arch/mips/loongson/loongson-3/irq.c
+>>  create mode 100644 arch/mips/loongson/loongson-3/smp.c
+>>  create mode 100644 arch/mips/loongson/loongson-3/smp.h
+>>  create mode 100644 arch/mips/pci/fixup-loongson3.c
+>>  create mode 100644 arch/mips/pci/ops-loongson3.c
+>
+>

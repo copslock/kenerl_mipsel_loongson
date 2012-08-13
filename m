@@ -1,47 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2012 21:07:27 +0200 (CEST)
-Received: from shutemov.name ([176.9.204.213]:56789 "EHLO shutemov.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903532Ab2HMTHX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 13 Aug 2012 21:07:23 +0200
-Received: by shutemov.name (Postfix, from userid 1000)
-        id 44D242F09E; Mon, 13 Aug 2012 22:07:43 +0300 (EEST)
-Date:   Mon, 13 Aug 2012 22:07:43 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Borislav Petkov <bp@alien8.de>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Jan Beulich <JBeulich@suse.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Robert Richter <robert.richter@amd.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Hugh Dickins <hughd@google.com>, Alex Shi <alex.shu@intel.com>,
-        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
-        x86@kernel.org, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@linux-mips.org, Tim Chen <tim.c.chen@linux.intel.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>, Mel Gorman <mgorman@suse.de>,
-        linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v2 4/6] x86: Add clear_page_nocache
-Message-ID: <20120813190743.GA10584@shutemov.name>
-References: <1344524583-1096-1-git-send-email-kirill.shutemov@linux.intel.com>
- <1344524583-1096-5-git-send-email-kirill.shutemov@linux.intel.com>
- <5023F1BC0200007800093EF0@nat28.tlf.novell.com>
- <20120813114334.GA21855@otc-wbsnb-06>
- <20120813170402.GB15530@x1.osrc.amd.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2012 23:40:26 +0200 (CEST)
+Received: from mail-gg0-f177.google.com ([209.85.161.177]:46636 "EHLO
+        mail-gg0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903706Ab2HMVkU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Aug 2012 23:40:20 +0200
+Received: by ggnm2 with SMTP id m2so3942705ggn.36
+        for <multiple recipients>; Mon, 13 Aug 2012 14:40:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=8HgvZo1bQaSyW6Ns7LAZRB3wlNzf30w7xZMc/pQJ/DI=;
+        b=ywCO2j59ZE8YALJhbFp8JJ8KtbpBPUNPcG/BPutQ/GaGJMTiUoCGrNk3RbWKVHMprZ
+         ETPb/llwG5o9f+KtK5NUAgLZaV0bLz/wXVl9HZggpI83fJAZnef5tITyFL1cC5cHBAcZ
+         l6x5CyJXXUDLYNlUhFTfikkJ1iTT0JuG4XTSh46eOQX6iMWQNRLO0FgcfFHTJni0jo/e
+         ur/k+hMHWX6OdBLqdatEYagW7Y/wlrpXovuEXdOuAvsVxMvxNIuUUZcQBw6C1c7/W/tn
+         SWKzdrJNGJtgAci9rPy4swGf5Dnrw+cbVsTic5N5RYjJckUhjYSu8CaEZ39/Gs6SaIQl
+         5nSw==
+Received: by 10.50.85.230 with SMTP id k6mr7392156igz.49.1344894014200;
+        Mon, 13 Aug 2012 14:40:14 -0700 (PDT)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id bp8sm16513887igb.12.2012.08.13.14.40.05
+        (version=SSLv3 cipher=OTHER);
+        Mon, 13 Aug 2012 14:40:13 -0700 (PDT)
+Message-ID: <50297434.8090806@gmail.com>
+Date:   Mon, 13 Aug 2012 14:40:04 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20120813170402.GB15530@x1.osrc.amd.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34133
+To:     Jiang Liu <liuj97@gmail.com>, Ralf Baechle <ralf@linux-mips.org>
+CC:     Bjorn Helgaas <bhelgaas@google.com>,
+        Don Dutile <ddutile@redhat.com>,
+        Jiang Liu <jiang.liu@huawei.com>,
+        Yinghai Lu <yinghai@kernel.org>,
+        Taku Izumi <izumi.taku@jp.fujitsu.com>,
+        "Rafael J . Wysocki" <rjw@sisk.pl>,
+        Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
+        Yijing Wang <wangyijing@huawei.com>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-pci@vger.kernel.org
+Subject: Re: [PATCH v3 13/32] PCI/MIPS: use PCIe capabilities access functions
+ to simplify implementation
+References: <1343836477-7287-1-git-send-email-jiang.liu@huawei.com> <1343836477-7287-14-git-send-email-jiang.liu@huawei.com>
+In-Reply-To: <1343836477-7287-14-git-send-email-jiang.liu@huawei.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34134
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill@shutemov.name
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,69 +62,42 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, Aug 13, 2012 at 07:04:02PM +0200, Borislav Petkov wrote:
-> On Mon, Aug 13, 2012 at 02:43:34PM +0300, Kirill A. Shutemov wrote:
-> > $ cat test.c
-> > #include <stdio.h>
-> > #include <sys/mman.h>
-> > 
-> > #define SIZE 1024*1024*1024
-> > 
-> > void clear_page_nocache_sse2(void *page) __attribute__((regparm(1)));
-> > 
-> > int main(int argc, char** argv)
-> > {
-> >         char *p;
-> >         unsigned long i, j;
-> > 
-> >         p = mmap(NULL, SIZE, PROT_WRITE|PROT_READ,
-> >                         MAP_PRIVATE|MAP_ANONYMOUS|MAP_POPULATE, -1, 0);
-> >         for(j = 0; j < 100; j++) {
-> >                 for(i = 0; i < SIZE; i += 4096) {
-> >                         clear_page_nocache_sse2(p + i);
-> >                 }
-> >         }
-> > 
-> >         return 0;
-> > }
-> > $ cat clear_page_nocache_unroll32.S
-> > .globl clear_page_nocache_sse2
-> > .align 4,0x90
-> > clear_page_nocache_sse2:
-> > .cfi_startproc
-> >         mov    %eax,%edx
-> >         xorl   %eax,%eax
-> >         movl   $4096/32,%ecx
-> >         .p2align 4
-> > .Lloop_sse2:
-> >         decl    %ecx
-> > #define PUT(x) movnti %eax,x*4(%edx)
-> >         PUT(0)
-> >         PUT(1)
-> >         PUT(2)
-> >         PUT(3)
-> >         PUT(4)
-> >         PUT(5)
-> >         PUT(6)
-> >         PUT(7)
-> > #undef PUT
-> >         lea     32(%edx),%edx
-> >         jnz     .Lloop_sse2
-> >         nop
-> >         ret
-> > .cfi_endproc
-> > .type clear_page_nocache_sse2, @function
-> > .size clear_page_nocache_sse2, .-clear_page_nocache_sse2
-> > $ cat clear_page_nocache_unroll64.S
-> > .globl clear_page_nocache_sse2
-> > .align 4,0x90
-> > clear_page_nocache_sse2:
-> > .cfi_startproc
-> >         mov    %eax,%edx
-> 
-> This must still be the 32-bit version becaue it segfaults here.
+On 08/01/2012 08:54 AM, Jiang Liu wrote:
+> From: Jiang Liu<jiang.liu@huawei.com>
+>
+> Use PCIe capabilities access functions to simplify PCIe MIPS implementation.
+>
+> Signed-off-by: Jiang Liu<liuj97@gmail.com>
 
-Yes, it's test for 32-bit version.
+Acked-by: David Daney <david.daney@cavium.com>
 
--- 
- Kirill A. Shutemov
+> ---
+>   arch/mips/pci/pci-octeon.c |   15 +++++----------
+>   1 file changed, 5 insertions(+), 10 deletions(-)
+>
+> diff --git a/arch/mips/pci/pci-octeon.c b/arch/mips/pci/pci-octeon.c
+> index 52a1ba7..aaed2ad 100644
+> --- a/arch/mips/pci/pci-octeon.c
+> +++ b/arch/mips/pci/pci-octeon.c
+> @@ -117,16 +117,11 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
+>   	}
+>
+>   	/* Enable the PCIe normal error reporting */
+> -	pos = pci_find_capability(dev, PCI_CAP_ID_EXP);
+> -	if (pos) {
+> -		/* Update Device Control */
+> -		pci_read_config_word(dev, pos + PCI_EXP_DEVCTL,&config);
+> -		config |= PCI_EXP_DEVCTL_CERE; /* Correctable Error Reporting */
+> -		config |= PCI_EXP_DEVCTL_NFERE; /* Non-Fatal Error Reporting */
+> -		config |= PCI_EXP_DEVCTL_FERE;  /* Fatal Error Reporting */
+> -		config |= PCI_EXP_DEVCTL_URRE;  /* Unsupported Request */
+> -		pci_write_config_word(dev, pos + PCI_EXP_DEVCTL, config);
+> -	}
+> +	config = PCI_EXP_DEVCTL_CERE; /* Correctable Error Reporting */
+> +	config |= PCI_EXP_DEVCTL_NFERE; /* Non-Fatal Error Reporting */
+> +	config |= PCI_EXP_DEVCTL_FERE;  /* Fatal Error Reporting */
+> +	config |= PCI_EXP_DEVCTL_URRE;  /* Unsupported Request */
+> +	pci_pcie_capability_change_word(dev, PCI_EXP_DEVCTL, config, 0);
+>
+>   	/* Find the Advanced Error Reporting capability */
+>   	pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ERR);

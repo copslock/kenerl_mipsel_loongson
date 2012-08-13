@@ -1,46 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2012 14:03:16 +0200 (CEST)
-Received: from nat28.tlf.novell.com ([130.57.49.28]:41858 "EHLO
-        nat28.tlf.novell.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903386Ab2HMMDK convert rfc822-to-8bit (ORCPT
-        <rfc822;groupwise-linux-mips@linux-mips.org:12:1>);
-        Mon, 13 Aug 2012 14:03:10 +0200
-Received: from EMEA1-MTA by nat28.tlf.novell.com
-        with Novell_GroupWise; Mon, 13 Aug 2012 13:03:01 +0100
-Message-Id: <502909110200007800094719@nat28.tlf.novell.com>
-X-Mailer: Novell GroupWise Internet Agent 12.0.0 
-Date:   Mon, 13 Aug 2012 13:02:57 +0100
-From:   "Jan Beulich" <JBeulich@suse.com>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     "Andy Lutomirski" <luto@amacapital.net>,
-        "Robert Richter" <robert.richter@amd.com>,
-        "Johannes Weiner" <hannes@cmpxchg.org>,
-        "Hugh Dickins" <hughd@google.com>, "Alex Shi" <alex.shu@intel.com>,
-        "KAMEZAWA Hiroyuki" <kamezawa.hiroyu@jp.fujitsu.com>,
-        <x86@kernel.org>, <linux-mm@kvack.org>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "Andrew Morton" <akpm@linux-foundation.org>,
-        <linux-mips@linux-mips.org>, "Andi Kleen" <ak@linux.intel.com>,
-        "Tim Chen" <tim.c.chen@linux.intel.com>,
-        <linuxppc-dev@lists.ozlabs.org>,
-        "Andrea Arcangeli" <aarcange@redhat.com>,
-        "Ingo Molnar" <mingo@redhat.com>, "Mel Gorman" <mgorman@suse.de>,
-        <linux-kernel@vger.kernel.org>, <linux-sh@vger.kernel.org>,
-        <sparclinux@vger.kernel.org>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v2 4/6] x86: Add clear_page_nocache
-References: <1344524583-1096-1-git-send-email-kirill.shutemov@linux.intel.com>
- <1344524583-1096-5-git-send-email-kirill.shutemov@linux.intel.com>
- <5023F1BC0200007800093EF0@nat28.tlf.novell.com>
- <20120813114334.GA21855@otc-wbsnb-06>
-In-Reply-To: <20120813114334.GA21855@otc-wbsnb-06>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-X-archive-position: 34125
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2012 14:52:52 +0200 (CEST)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:35220 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903503Ab2HMMwq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Aug 2012 14:52:46 +0200
+Received: by yhjj52 with SMTP id j52so3289135yhj.36
+        for <multiple recipients>; Mon, 13 Aug 2012 05:52:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id:x-mailer;
+        bh=u8qlQZkE+zi4TzdsFk+tC2JNmiYcsC/3mAysIxourfQ=;
+        b=R6eOwYhcx7Vj71LplcsCiINfPdIhptgAlJmRL+wBYpag4FJM2ODhP9wP7+gLoCbJEK
+         lQLbnnTMe7bhKUyiUWN2OuthkRNcatkTgB/nGx2a4AQtYB461oOikh02F6vHKIuytunJ
+         trfK2rlO23LzXdcOqst+Vw+64kymGYpYuuGS7aDowcZ940adUVoMxirWv6k7dG6xSeOy
+         SY6QwAwcfV5GNIj+oqHDK8QTGV98PHGXxFG1CeOtS+6ivqYkEK7DvGaCvu6DlI6AJNzK
+         55BfG41bCvc0YY+pjtxF3zPOFzc/VTE7DNhP9iAO4+VhU2qgD3zSt7ZtlkCbAdc82B8Z
+         ORLA==
+Received: by 10.66.77.168 with SMTP id t8mr17388789paw.28.1344862360263;
+        Mon, 13 Aug 2012 05:52:40 -0700 (PDT)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id pn4sm5290599pbb.50.2012.08.13.05.52.34
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 13 Aug 2012 05:52:39 -0700 (PDT)
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
+        Yong Zhang <yong.zhang@windriver.com>, stable@vger.kernel.org
+Subject: [PATCH V2] MIPS: Fix poweroff failure when HOTPLUG_CPU configured.
+Date:   Mon, 13 Aug 2012 20:52:24 +0800
+Message-Id: <1344862344-27434-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+X-archive-position: 34126
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: JBeulich@suse.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,41 +51,39 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
->>> On 13.08.12 at 13:43, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:
-> On Thu, Aug 09, 2012 at 04:22:04PM +0100, Jan Beulich wrote:
->> >>> On 09.08.12 at 17:03, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>  wrote:
-> 
-> ...
-> 
->> > ---
->> >  arch/x86/include/asm/page.h          |    2 ++
->> >  arch/x86/include/asm/string_32.h     |    5 +++++
->> >  arch/x86/include/asm/string_64.h     |    5 +++++
->> >  arch/x86/lib/Makefile                |    1 +
->> >  arch/x86/lib/clear_page_nocache_32.S |   30 ++++++++++++++++++++++++++++++
->> >  arch/x86/lib/clear_page_nocache_64.S |   29 +++++++++++++++++++++++++++++
->> 
->> Couldn't this more reasonably go into clear_page_{32,64}.S?
-> 
-> We don't have clear_page_32.S.
+When poweroff machine, kernel_power_off() call disable_nonboot_cpus().
+And if we have HOTPLUG_CPU configured, disable_nonboot_cpus() is not an
+empty function but attempt to actually disable the nonboot cpus. Since
+system state is SYSTEM_POWER_OFF, play_dead() won't be called and thus
+disable_nonboot_cpus() hangs. Therefore, we make this patch to avoid
+poweroff failure.
 
-Sure, but you're introducing a file anyway. Fold the new code into
-the existing file for 64-bit, and create a new, similarly named one
-for 32-bit.
+V2:
+Make the From: address the same as Signed-off-by address.
 
->> >+	xorl   %eax,%eax
->> >+	movl   $4096/64,%ecx
->> >+	.p2align 4
->> >+.Lloop:
->> >+	decl	%ecx
->> >+#define PUT(x) movnti %eax,x*8(%edi) ; movnti %eax,x*8+4(%edi)
->> 
->> Is doing twice as much unrolling as on 64-bit really worth it?
-> 
-> Moving 64 bytes per cycle is faster on Sandy Bridge, but slower on
-> Westmere. Any preference? ;)
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Hongliang Tao <taohl@lemote.com>
+Signed-off-by: Hua Yan <yanh@lemote.com>
+Cc: Yong Zhang <yong.zhang@windriver.com>
+Cc: stable@vger.kernel.org
+---
+ arch/mips/kernel/process.c |    4 +---
+ 1 files changed, 1 insertions(+), 3 deletions(-)
 
-If it's not a clear win, I'd favor the 8-stores-per-cycle variant,
-matching x86-64.
-
-Jan
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index e9a5fd7..69b17a9 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -72,9 +72,7 @@ void __noreturn cpu_idle(void)
+ 			}
+ 		}
+ #ifdef CONFIG_HOTPLUG_CPU
+-		if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map) &&
+-		    (system_state == SYSTEM_RUNNING ||
+-		     system_state == SYSTEM_BOOTING))
++		if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map))
+ 			play_dead();
+ #endif
+ 		rcu_idle_exit();
+-- 
+1.7.7.3

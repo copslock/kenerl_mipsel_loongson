@@ -1,46 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2012 10:22:40 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:48521 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903386Ab2HMIWd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Aug 2012 10:22:33 +0200
-Received: by lbbgf7 with SMTP id gf7so1781931lbb.36
-        for <multiple recipients>; Mon, 13 Aug 2012 01:22:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=Pb+Fq0ar/crcXo8bjmqbHTUkxYwkMTPldTO1aut8Hmc=;
-        b=b+hXRKcUobl6MWSnx9Ax2e51Kd8Xg0kFCyXrTX7CRyI75t/aF/AgTZxsmjXFWLpzl/
-         keDqiVvtHB71zEi8lXMznDaF6cVqFLkTmn6go0HMcL+xKxuzJdMAGRmCC9xt6pB1gejo
-         dVWKkTKDWkVOILNKuOUQv057cXXqeqzNjEjmCF7d+8kY5TjTnqST1fF2k+H8oHE5SPWO
-         IK1OvWCf4id775XFYmL8J0xKClShKqjzGiCoLi4bC/DuuHAoljXvJXALQ5/HW7yoOz57
-         WVei7WU8QR12km6iD4wG6IJAOcBz7m+OD93Xw+slt9lq+JrVugDM29DW2I98wYyJcT/C
-         ldPQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2012 13:43:49 +0200 (CEST)
+Received: from mga14.intel.com ([143.182.124.37]:41167 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903544Ab2HMLnn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 13 Aug 2012 13:43:43 +0200
+Received: from azsmga001.ch.intel.com ([10.2.17.19])
+  by azsmga102.ch.intel.com with ESMTP; 13 Aug 2012 04:43:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.77,759,1336374000"; 
+   d="asc'?scan'208";a="180342019"
+Received: from blue.fi.intel.com ([10.237.72.50])
+  by azsmga001.ch.intel.com with ESMTP; 13 Aug 2012 04:43:28 -0700
+Received: by blue.fi.intel.com (Postfix, from userid 1000)
+        id E53BAE0073; Mon, 13 Aug 2012 14:43:34 +0300 (EEST)
+Date:   Mon, 13 Aug 2012 14:43:34 +0300
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Jan Beulich <JBeulich@suse.com>
+Cc:     Andi Kleen <ak@linux.intel.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Robert Richter <robert.richter@amd.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Hugh Dickins <hughd@google.com>, Alex Shi <alex.shu@intel.com>,
+        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+        x86@kernel.org, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-mips@linux-mips.org, Tim Chen <tim.c.chen@linux.intel.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>, Mel Gorman <mgorman@suse.de>,
+        linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v2 4/6] x86: Add clear_page_nocache
+Message-ID: <20120813114334.GA21855@otc-wbsnb-06>
+References: <1344524583-1096-1-git-send-email-kirill.shutemov@linux.intel.com>
+ <1344524583-1096-5-git-send-email-kirill.shutemov@linux.intel.com>
+ <5023F1BC0200007800093EF0@nat28.tlf.novell.com>
 MIME-Version: 1.0
-Received: by 10.112.27.71 with SMTP id r7mr5976661lbg.73.1344846147702; Mon,
- 13 Aug 2012 01:22:27 -0700 (PDT)
-Received: by 10.152.105.51 with HTTP; Mon, 13 Aug 2012 01:22:27 -0700 (PDT)
-In-Reply-To: <s5hlihjw7a2.wl%tiwai@suse.de>
-References: <1344677543-22591-1-git-send-email-chenhc@lemote.com>
-        <1344677543-22591-15-git-send-email-chenhc@lemote.com>
-        <s5hlihjw7a2.wl%tiwai@suse.de>
-Date:   Mon, 13 Aug 2012 16:22:27 +0800
-Message-ID: <CAAhV-H6DoZ2qCAO=vZiCLXLmxv4-CLZtWRtEvWhuR6im2r3PDg@mail.gmail.com>
-Subject: Re: [alsa-devel] [PATCH V5 14/18] ALSA: HDA: Make hda sound card
- usable for Loongson.
-From:   Huacai Chen <chenhuacai@gmail.com>
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        alsa-devel@alsa-project.org, Zhangjin Wu <wuzhangjin@gmail.com>,
-        Hua Yan <yanh@lemote.com>, Fuxin Zhang <zhangfx@lemote.com>,
-        linux-kernel@vger.kernel.org, Hongliang Tao <taohl@lemote.com>,
-        Jie Chen <chenj@lemote.com>, Huacai Chen <chenhc@lemote.com>
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 34123
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="n8g4imXOkfNTN/H1"
+Content-Disposition: inline
+In-Reply-To: <5023F1BC0200007800093EF0@nat28.tlf.novell.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34124
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhuacai@gmail.com
+X-original-sender: kirill.shutemov@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,105 +59,257 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-OK, I will improve the code.
 
-On Mon, Aug 13, 2012 at 4:00 PM, Takashi Iwai <tiwai@suse.de> wrote:
-> At Sat, 11 Aug 2012 17:32:19 +0800,
-> Huacai Chen wrote:
->>
->> Lemote A1004(Laptop) and A1205(All-In-One) use Conexant's hda codec,
->> this patch modify patch_conexant.c to add Lemote specific code.
->>
->> Signed-off-by: Jie Chen <chenj@lemote.com>
->> Signed-off-by: Huacai Chen <chenhc@lemote.com>
->> Signed-off-by: Hongliang Tao <taohl@lemote.com>
->> Signed-off-by: Hua Yan <yanh@lemote.com>
->> Cc: alsa-devel@alsa-project.org
->> ---
->>  include/linux/pci_ids.h        |    2 ++
->>  sound/pci/hda/patch_conexant.c |   24 ++++++++++++++++++++++++
->>  2 files changed, 26 insertions(+), 0 deletions(-)
->>
->> diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
->> index fc35260..b28270e 100644
->> --- a/include/linux/pci_ids.h
->> +++ b/include/linux/pci_ids.h
->> @@ -2918,3 +2918,5 @@
->>  #define PCI_DEVICE_ID_XEN_PLATFORM   0x0001
->>
->>  #define PCI_VENDOR_ID_OCZ            0x1b85
->> +
->> +#define PCI_VENDOR_ID_LEMOTE         0x1c06
->> diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
->> index 1436118..b7de368 100644
->> --- a/sound/pci/hda/patch_conexant.c
->> +++ b/sound/pci/hda/patch_conexant.c
->> @@ -4414,6 +4414,8 @@ static const struct hda_codec_ops cx_auto_patch_ops = {
->>  enum {
->>       CXT_PINCFG_LENOVO_X200,
->>       CXT_PINCFG_LENOVO_TP410,
->> +     CXT_PINCFG_LEMOTE_A1004,
->> +     CXT_PINCFG_LEMOTE_A1205,
->>       CXT_FIXUP_STEREO_DMIC,
->>  };
->>
->> @@ -4441,6 +4443,18 @@ static const struct hda_pintbl cxt_pincfg_lenovo_tp410[] = {
->>       {}
->>  };
->>
->> +/* Lemote A1004/A1205 with cxt5066 */
->> +static const struct hda_pintbl cxt_pincfg_lemote[] = {
->> +     { 0x1a, 0x90a10020 }, /* Internal mic */
->> +     { 0x1b, 0x03a11020 }, /* External mic */
->> +     { 0x1d, 0x400101f0 }, /* Not used */
->> +     { 0x1e, 0x40a701f0 }, /* Not used */
->> +     { 0x20, 0x404501f0 }, /* Not used */
->> +     { 0x22, 0x404401f0 }, /* Not used */
->> +     { 0x23, 0x40a701f0 }, /* Not used */
->> +     {}
->> +};
->> +
->>  static const struct hda_fixup cxt_fixups[] = {
->>       [CXT_PINCFG_LENOVO_X200] = {
->>               .type = HDA_FIXUP_PINS,
->> @@ -4450,6 +4464,14 @@ static const struct hda_fixup cxt_fixups[] = {
->>               .type = HDA_FIXUP_PINS,
->>               .v.pins = cxt_pincfg_lenovo_tp410,
->>       },
->> +     [CXT_PINCFG_LEMOTE_A1004] = {
->> +             .type = HDA_FIXUP_PINS,
->> +             .v.pins = cxt_pincfg_lemote,
->> +     },
->> +     [CXT_PINCFG_LEMOTE_A1205] = {
->> +             .type = HDA_FIXUP_PINS,
->> +             .v.pins = cxt_pincfg_lemote,
->> +     },
->
-> Well, if both point to the same pin configuration, there is no merit
-> to create two distinct fixup types.
-> Just create CXT_PINCFG_LEMOTE_A1X05, then pass it in your both device
-> entries.
->
->
->>       [CXT_FIXUP_STEREO_DMIC] = {
->>               .type = HDA_FIXUP_FUNC,
->>               .v.func = cxt_fixup_stereo_dmic,
->> @@ -4467,6 +4489,8 @@ static const struct snd_pci_quirk cxt5066_fixups[] = {
->>       SND_PCI_QUIRK(0x17aa, 0x215f, "Lenovo T510", CXT_PINCFG_LENOVO_TP410),
->>       SND_PCI_QUIRK(0x17aa, 0x21ce, "Lenovo T420", CXT_PINCFG_LENOVO_TP410),
->>       SND_PCI_QUIRK(0x17aa, 0x21cf, "Lenovo T520", CXT_PINCFG_LENOVO_TP410),
->> +     SND_PCI_QUIRK(PCI_VENDOR_ID_LEMOTE, 0x2011, "Lemote A1004", CXT_PINCFG_LEMOTE_A1004),
->> +     SND_PCI_QUIRK(PCI_VENDOR_ID_LEMOTE, 0x2012, "Lemote A1205", CXT_PINCFG_LEMOTE_A1205),
->>       SND_PCI_QUIRK(0x17aa, 0x3975, "Lenovo U300s", CXT_FIXUP_STEREO_DMIC),
->>       SND_PCI_QUIRK(0x17aa, 0x397b, "Lenovo S205", CXT_FIXUP_STEREO_DMIC),
->
-> Don't put entries suddenly in the middle of others.
-> As you can see, the list is sorted in the order of id numbers.
->
-> Also, in this case, we prefer having numbers over PCI_* literals.
-> It's easier to check through the table in the end.
->
->
-> thanks,
->
-> Takashi
+--n8g4imXOkfNTN/H1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Aug 09, 2012 at 04:22:04PM +0100, Jan Beulich wrote:
+> >>> On 09.08.12 at 17:03, "Kirill A. Shutemov" <kirill.shutemov@linux.int=
+el.com> wrote:
+
+=2E..
+
+> > ---
+> >  arch/x86/include/asm/page.h          |    2 ++
+> >  arch/x86/include/asm/string_32.h     |    5 +++++
+> >  arch/x86/include/asm/string_64.h     |    5 +++++
+> >  arch/x86/lib/Makefile                |    1 +
+> >  arch/x86/lib/clear_page_nocache_32.S |   30 ++++++++++++++++++++++++++=
+++++
+> >  arch/x86/lib/clear_page_nocache_64.S |   29 ++++++++++++++++++++++++++=
++++
+>=20
+> Couldn't this more reasonably go into clear_page_{32,64}.S?
+
+We don't have clear_page_32.S.
+
+> >+	xorl   %eax,%eax
+> >+	movl   $4096/64,%ecx
+> >+	.p2align 4
+> >+.Lloop:
+> >+	decl	%ecx
+> >+#define PUT(x) movnti %eax,x*8(%edi) ; movnti %eax,x*8+4(%edi)
+>=20
+> Is doing twice as much unrolling as on 64-bit really worth it?
+
+Moving 64 bytes per cycle is faster on Sandy Bridge, but slower on
+Westmere. Any preference? ;)
+
+Westmere:
+
+ Performance counter stats for './test_unroll32' (20 runs):
+
+      31498.420608 task-clock                #    0.998 CPUs utilized      =
+      ( +-  0.25% )
+                40 context-switches          #    0.001 K/sec              =
+      ( +-  1.40% )
+                 0 CPU-migrations            #    0.000 K/sec              =
+      ( +-100.00% )
+                89 page-faults               #    0.003 K/sec              =
+      ( +-  0.13% )
+    74,728,231,935 cycles                    #    2.372 GHz                =
+      ( +-  0.25% ) [83.34%]
+    53,789,969,009 stalled-cycles-frontend   #   71.98% frontend cycles idl=
+e     ( +-  0.35% ) [83.33%]
+    41,681,014,054 stalled-cycles-backend    #   55.78% backend  cycles idl=
+e     ( +-  0.43% ) [66.67%]
+    37,992,733,278 instructions              #    0.51  insns per cycle
+                                             #    1.42  stalled cycles per =
+insn  ( +-  0.05% ) [83.33%]
+     3,561,376,245 branches                  #  113.065 M/sec              =
+      ( +-  0.05% ) [83.33%]
+        27,182,795 branch-misses             #    0.76% of all branches    =
+      ( +-  0.06% ) [83.33%]
+
+      31.558545812 seconds time elapsed                                    =
+      ( +-  0.25% )
+
+ Performance counter stats for './test_unroll64' (20 runs):
+
+      31564.753623 task-clock                #    0.998 CPUs utilized      =
+      ( +-  0.19% )
+                39 context-switches          #    0.001 K/sec              =
+      ( +-  0.40% )
+                 0 CPU-migrations            #    0.000 K/sec
+                90 page-faults               #    0.003 K/sec              =
+      ( +-  0.12% )
+    74,886,045,192 cycles                    #    2.372 GHz                =
+      ( +-  0.19% ) [83.33%]
+    57,477,323,995 stalled-cycles-frontend   #   76.75% frontend cycles idl=
+e     ( +-  0.26% ) [83.34%]
+    44,548,142,150 stalled-cycles-backend    #   59.49% backend  cycles idl=
+e     ( +-  0.31% ) [66.67%]
+    32,940,027,099 instructions              #    0.44  insns per cycle
+                                             #    1.74  stalled cycles per =
+insn  ( +-  0.05% ) [83.34%]
+     1,884,944,093 branches                  #   59.717 M/sec              =
+      ( +-  0.05% ) [83.32%]
+         1,027,135 branch-misses             #    0.05% of all branches    =
+      ( +-  0.56% ) [83.34%]
+
+      31.621001407 seconds time elapsed                                    =
+      ( +-  0.19% )
+
+Sandy Bridge:
+
+ Performance counter stats for './test_unroll32' (20 runs):
+
+       8578.382891 task-clock                #    0.997 CPUs utilized      =
+      ( +-  0.08% )
+                15 context-switches          #    0.000 M/sec              =
+      ( +-  2.97% )
+                 0 CPU-migrations            #    0.000 M/sec
+                84 page-faults               #    0.000 M/sec              =
+      ( +-  0.13% )
+    29,154,476,597 cycles                    #    3.399 GHz                =
+      ( +-  0.08% ) [83.33%]
+    11,851,215,147 stalled-cycles-frontend   #   40.65% frontend cycles idl=
+e     ( +-  0.20% ) [83.33%]
+     1,530,172,593 stalled-cycles-backend    #    5.25% backend  cycles idl=
+e     ( +-  1.44% ) [66.67%]
+    37,915,778,094 instructions              #    1.30  insns per cycle
+                                             #    0.31  stalled cycles per =
+insn  ( +-  0.00% ) [83.34%]
+     3,590,533,447 branches                  #  418.556 M/sec              =
+      ( +-  0.01% ) [83.35%]
+        26,500,765 branch-misses             #    0.74% of all branches    =
+      ( +-  0.01% ) [83.34%]
+
+       8.604638449 seconds time elapsed                                    =
+      ( +-  0.08% )
+
+ Performance counter stats for './test_unroll64' (20 runs):
+
+       8463.789963 task-clock                #    0.997 CPUs utilized      =
+      ( +-  0.07% )
+                14 context-switches          #    0.000 M/sec              =
+      ( +-  1.70% )
+                 0 CPU-migrations            #    0.000 M/sec              =
+      ( +-100.00% )
+                85 page-faults               #    0.000 M/sec              =
+      ( +-  0.12% )
+    28,763,328,688 cycles                    #    3.398 GHz                =
+      ( +-  0.07% ) [83.32%]
+    13,517,462,952 stalled-cycles-frontend   #   47.00% frontend cycles idl=
+e     ( +-  0.14% ) [83.33%]
+     1,356,208,859 stalled-cycles-backend    #    4.72% backend  cycles idl=
+e     ( +-  1.42% ) [66.68%]
+    32,885,492,141 instructions              #    1.14  insns per cycle
+                                             #    0.41  stalled cycles per =
+insn  ( +-  0.00% ) [83.34%]
+     1,912,094,072 branches                  #  225.915 M/sec              =
+      ( +-  0.02% ) [83.34%]
+           305,896 branch-misses             #    0.02% of all branches    =
+      ( +-  1.05% ) [83.33%]
+
+       8.488304839 seconds time elapsed                                    =
+      ( +-  0.07% )
+
+$ cat test.c
+#include <stdio.h>
+#include <sys/mman.h>
+
+#define SIZE 1024*1024*1024
+
+void clear_page_nocache_sse2(void *page) __attribute__((regparm(1)));
+
+int main(int argc, char** argv)
+{
+        char *p;
+        unsigned long i, j;
+
+        p =3D mmap(NULL, SIZE, PROT_WRITE|PROT_READ,
+                        MAP_PRIVATE|MAP_ANONYMOUS|MAP_POPULATE, -1, 0);
+        for(j =3D 0; j < 100; j++) {
+                for(i =3D 0; i < SIZE; i +=3D 4096) {
+                        clear_page_nocache_sse2(p + i);
+                }
+        }
+
+        return 0;
+}
+$ cat clear_page_nocache_unroll32.S
+=2Eglobl clear_page_nocache_sse2
+=2Ealign 4,0x90
+clear_page_nocache_sse2:
+=2Ecfi_startproc
+        mov    %eax,%edx
+        xorl   %eax,%eax
+        movl   $4096/32,%ecx
+        .p2align 4
+=2ELloop_sse2:
+        decl    %ecx
+#define PUT(x) movnti %eax,x*4(%edx)
+        PUT(0)
+        PUT(1)
+        PUT(2)
+        PUT(3)
+        PUT(4)
+        PUT(5)
+        PUT(6)
+        PUT(7)
+#undef PUT
+        lea     32(%edx),%edx
+        jnz     .Lloop_sse2
+        nop
+        ret
+=2Ecfi_endproc
+=2Etype clear_page_nocache_sse2, @function
+=2Esize clear_page_nocache_sse2, .-clear_page_nocache_sse2
+$ cat clear_page_nocache_unroll64.S
+=2Eglobl clear_page_nocache_sse2
+=2Ealign 4,0x90
+clear_page_nocache_sse2:
+=2Ecfi_startproc
+        mov    %eax,%edx
+        xorl   %eax,%eax
+        movl   $4096/64,%ecx
+        .p2align 4
+=2ELloop_sse2:
+        decl    %ecx
+#define PUT(x) movnti %eax,x*8(%edx) ; movnti %eax,x*8+4(%edx)
+        PUT(0)
+        PUT(1)
+        PUT(2)
+        PUT(3)
+        PUT(4)
+        PUT(5)
+        PUT(6)
+        PUT(7)
+#undef PUT
+        lea     64(%edx),%edx
+        jnz     .Lloop_sse2
+        nop
+        ret
+=2Ecfi_endproc
+=2Etype clear_page_nocache_sse2, @function
+=2Esize clear_page_nocache_sse2, .-clear_page_nocache_sse2
+
+--=20
+ Kirill A. Shutemov
+
+--n8g4imXOkfNTN/H1
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQKOhmAAoJEAd+omnVudOMHkEP/A7UHD4QMEL2dJd8I/shucOu
+0nkj9L9KH3hKJHzBs+Qr+512UiWH5pNUuW4TuqNd4QZL1I0C5lJ9RxJeVwxVysvH
+KCL2XyAO8AuAHWTpJ/2rvEdktpEibI1ky2tfvxRFg1bHwUZ8mJ/EDhSVqauQ5oUM
+GyMqlsvPTB3TUGXp554KpaG507k6sWq5DJF7LB/9FWsKS6koyA+Dx/uUoDYnkGcW
+zlRV07GkyjH0HuvlhIsp9/FHV5qXwPDO1BahRfo1knFw8SdWC48vTOWGfDbgx5y7
+kndl3gYreG59HeSq8YOguD4oSaKxaJlAgWplOjeYamTuKlpozY3behmgE3ZoxH0c
+xvgRVe8D69dKGqJWjDctDOTAb3Qa391fJ92fnkci7YzNedfsSzkdhLlpyjJH9Bh9
+ez4+ZPvRHrIim854LyFn/g98NWGQXy+33//SCgU5f5Lo7O5DHshOsY4Lxuc476PJ
+sZo3wOdGoAOoUWTTnpr4Cb/B1GEDEYuJ/YdfMNWlpWCBG3T6g/LDcxqSjivlNFAu
+MkADxNkzKq3MlEdKfoqofzsQq2NxY4iyLWiEZeZ/sp6cnG6VhcbVYR3x3nX2FgEy
+1gWUOT1KNZqAU01XtF4H5P5Ie/rOe32U3HELEJiTNmNQjcIPbsRNBnJRhI1yA+CL
+MqSoymi0iq8J3qtkCJaP
+=sj4L
+-----END PGP SIGNATURE-----
+
+--n8g4imXOkfNTN/H1--

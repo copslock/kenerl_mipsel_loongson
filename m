@@ -1,35 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2012 13:15:51 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:33964 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903424Ab2HNLPr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Aug 2012 13:15:47 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q7EBFk1o013902;
-        Tue, 14 Aug 2012 13:15:46 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q7EBFj5K013900;
-        Tue, 14 Aug 2012 13:15:45 +0200
-Date:   Tue, 14 Aug 2012 13:15:45 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Akhilesh Kumar <akhilesh.lxr@gmail.com>
-Cc:     Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: [Bug-fix] backtrace when HAVE_FUNCTION_TRACER is enable
-Message-ID: <20120814111545.GA13470@linux-mips.org>
-References: <CADArhcB+N+D4fyVN20f0hu=vfPj1tsn5NHi0cjG4JJcKAhTkeQ@mail.gmail.com>
- <CAD+V5YKZJHKONehvT+-GrKLP2+e0PiLiFTJWEojiDoNyLT3yGQ@mail.gmail.com>
- <CADArhcAN4renH1hFnhc14d+VMn2N+k0GsDpXevRFKd6UD=X=8Q@mail.gmail.com>
- <CADArhcDuWksB2_ktGrhwRcb1yCuAiKMfnt8gd7+PHXFTTCzX-Q@mail.gmail.com>
- <20120813164717.GC5786@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2012 13:29:23 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:1264 "EHLO mms2.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903424Ab2HNL3P (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Aug 2012 13:29:15 +0200
+Received: from [10.9.200.133] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Tue, 14 Aug 2012 04:27:46 -0700
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+Received: from mail-irva-13.broadcom.com (10.11.16.103) by
+ IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
+ Server id 8.2.247.2; Tue, 14 Aug 2012 04:28:18 -0700
+Received: from jc-linux.netlogicmicro.com (unknown [10.7.2.153]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id C2BA99F9F5; Tue, 14
+ Aug 2012 04:28:53 -0700 (PDT)
+From:   "Jayachandran C" <jchandra@broadcom.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+cc:     "Jayachandran C" <jayachandranc@netlogicmicro.com>,
+        "Jayachandran C" <jchandra@broadcom.com>
+Subject: [PATCH 1/2] MIPS: Netlogic: define cpu_has_fpu macro
+Date:   Tue, 14 Aug 2012 17:00:12 +0530
+Message-ID: <1344943813-29087-1-git-send-email-jchandra@broadcom.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20120813164717.GC5786@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34142
+X-WSS-ID: 7C34E9A53NK15177695-01-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,17 +42,40 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, Aug 13, 2012 at 06:47:17PM +0200, Ralf Baechle wrote:
+From: Jayachandran C <jayachandranc@netlogicmicro.com>
 
-> 
-> > Detail Description is added in the patch
-> 
-> This patch is garbled and doesn't apply.  You can find some hints on
-> how to deal with patch-corrupting mail clients in:
-> 
->   http://www.linux-mips.org/wiki/Mailing-patches
+The default implementation of 'cpu_has_fpu' macro uses calls
+smp_processor_id() which causes this warning when preemption
+is enabled:
 
-Also it appears to be incomplete.  I see your patch plenty of macro
-definitions and function declarations but nothing appears to use them.
+[    4.664000] Algorithmics/MIPS FPU Emulator v1.5
+[    4.676000] BUG: using smp_processor_id() in preemptible [00000000] code: init/1
+[    4.700000] caller is fpu_emulator_cop1Handler+0x434/0x27b8
 
-  Ralf
+Work around this by defining cpu_has_fpu for XLR and XLP in
+mach-netlogic/cpu-feature-overrides.h
+
+Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+---
+ .../asm/mach-netlogic/cpu-feature-overrides.h      |    2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
+index 966db4b..4f5907f 100644
+--- a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
+@@ -44,10 +44,12 @@
+ #define cpu_has_dc_aliases	0
+ #define cpu_has_mips32r2	0
+ #define cpu_has_mips64r2	0
++#define cpu_has_fpu		0
+ #elif defined(CONFIG_CPU_XLP)
+ #define cpu_has_userlocal	1
+ #define cpu_has_mips32r2	1
+ #define cpu_has_mips64r2	1
++#define cpu_has_fpu		1
+ #else
+ #error "Unknown Netlogic CPU"
+ #endif
+-- 
+1.7.9.5

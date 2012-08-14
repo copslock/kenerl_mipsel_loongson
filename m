@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2012 13:29:47 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:1266 "EHLO mms2.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1902756Ab2HNL3P (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Aug 2012 13:29:15 +0200
-Received: from [10.9.200.133] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Tue, 14 Aug 2012 04:27:46 -0700
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
-Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Tue, 14 Aug 2012 04:28:19 -0700
-Received: from jc-linux.netlogicmicro.com (unknown [10.7.2.153]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 685CA9F9F9; Tue, 14
- Aug 2012 04:28:56 -0700 (PDT)
-From:   "Jayachandran C" <jchandra@broadcom.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-cc:     "Jayachandran C" <jayachandranc@netlogicmicro.com>,
-        "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 2/2] MIPS: Synchronize MIPS count one CPU at a time
-Date:   Tue, 14 Aug 2012 17:00:13 +0530
-Message-ID: <1344943813-29087-2-git-send-email-jchandra@broadcom.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1344943813-29087-1-git-send-email-jchandra@broadcom.com>
-References: <1344943813-29087-1-git-send-email-jchandra@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2012 13:49:09 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:36875 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903669Ab2HNLtF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Aug 2012 13:49:05 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q7EBn0OV018680;
+        Tue, 14 Aug 2012 13:49:00 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q7EBmu7r018672;
+        Tue, 14 Aug 2012 13:48:56 +0200
+Date:   Tue, 14 Aug 2012 13:48:56 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
+        Yong Zhang <yong.zhang@windriver.com>, stable@vger.kernel.org
+Subject: Re: [PATCH V2] MIPS: Fix poweroff failure when HOTPLUG_CPU
+ configured.
+Message-ID: <20120814114856.GA17040@linux-mips.org>
+References: <1344862344-27434-1-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-X-WSS-ID: 7C34E9A53NK15177695-04-01
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34144
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1344862344-27434-1-git-send-email-chenhc@lemote.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34145
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,192 +44,31 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Jayachandran C <jayachandranc@netlogicmicro.com>
+On Mon, Aug 13, 2012 at 08:52:24PM +0800, Huacai Chen wrote:
 
-The current implementation of synchronise_count_{master,slave} blocks
-slave CPUs in early boot until all of them come up. This no longer
-works because blocking a CPU with interrupts off after notifying the
-CPU to be online causes problems with the current kernel.
+> When poweroff machine, kernel_power_off() call disable_nonboot_cpus().
+> And if we have HOTPLUG_CPU configured, disable_nonboot_cpus() is not an
+> empty function but attempt to actually disable the nonboot cpus. Since
+> system state is SYSTEM_POWER_OFF, play_dead() won't be called and thus
+> disable_nonboot_cpus() hangs. Therefore, we make this patch to avoid
+> poweroff failure.
 
-Specifically, after the workqueue changes
-(commit a08489c569dc1 "Pull workqueue changes from Tejun Heo")
-the CPU_ONLINE notification callback workqueue_cpu_up_callback()
-will hang on wait_for_completion(&idle_rebind.done), if the slave
-CPUs are blocked for synchronize_count_slave().
+> diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+> index e9a5fd7..69b17a9 100644
+> --- a/arch/mips/kernel/process.c
+> +++ b/arch/mips/kernel/process.c
+> @@ -72,9 +72,7 @@ void __noreturn cpu_idle(void)
+>  			}
+>  		}
+>  #ifdef CONFIG_HOTPLUG_CPU
+> -		if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map) &&
+> -		    (system_state == SYSTEM_RUNNING ||
+> -		     system_state == SYSTEM_BOOTING))
+> +		if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map))
 
-The changes are to update synchronize_count_{master,slave}() to handle
-one CPU at a time and to call synchronise_count_master() in __cpu_up()
-so that the CPU_ONLINE notification goes out only after the COP0 COUNT
-register is synchronized.
+Looks good - but I'm wondering if the "!cpu_isset(cpu, cpu_callin_map)"
+can be removed as well?
 
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
----
- arch/mips/include/asm/r4k-timer.h |    8 ++++----
- arch/mips/kernel/smp.c            |    4 ++--
- arch/mips/kernel/sync-r4k.c       |   26 +++++++++++---------------
- 3 files changed, 17 insertions(+), 21 deletions(-)
+Also, which -stable branches is this patch applicable?
 
-diff --git a/arch/mips/include/asm/r4k-timer.h b/arch/mips/include/asm/r4k-timer.h
-index a37d12b..afe9e0e 100644
---- a/arch/mips/include/asm/r4k-timer.h
-+++ b/arch/mips/include/asm/r4k-timer.h
-@@ -12,16 +12,16 @@
- 
- #ifdef CONFIG_SYNC_R4K
- 
--extern void synchronise_count_master(void);
--extern void synchronise_count_slave(void);
-+extern void synchronise_count_master(int cpu);
-+extern void synchronise_count_slave(int cpu);
- 
- #else
- 
--static inline void synchronise_count_master(void)
-+static inline void synchronise_count_master(int cpu)
- {
- }
- 
--static inline void synchronise_count_slave(void)
-+static inline void synchronise_count_slave(int cpu)
- {
- }
- 
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index 31637d8..9005bf9 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -130,7 +130,7 @@ asmlinkage __cpuinit void start_secondary(void)
- 
- 	cpu_set(cpu, cpu_callin_map);
- 
--	synchronise_count_slave();
-+	synchronise_count_slave(cpu);
- 
- 	/*
- 	 * irq will be enabled in ->smp_finish(), enabling it too early
-@@ -173,7 +173,6 @@ void smp_send_stop(void)
- void __init smp_cpus_done(unsigned int max_cpus)
- {
- 	mp_ops->cpus_done();
--	synchronise_count_master();
- }
- 
- /* called from main before smp_init() */
-@@ -206,6 +205,7 @@ int __cpuinit __cpu_up(unsigned int cpu, struct task_struct *tidle)
- 	while (!cpu_isset(cpu, cpu_callin_map))
- 		udelay(100);
- 
-+	synchronise_count_master(cpu);
- 	return 0;
- }
- 
-diff --git a/arch/mips/kernel/sync-r4k.c b/arch/mips/kernel/sync-r4k.c
-index 842d55e..7f1eca3 100644
---- a/arch/mips/kernel/sync-r4k.c
-+++ b/arch/mips/kernel/sync-r4k.c
-@@ -28,12 +28,11 @@ static atomic_t __cpuinitdata count_reference = ATOMIC_INIT(0);
- #define COUNTON	100
- #define NR_LOOPS 5
- 
--void __cpuinit synchronise_count_master(void)
-+void __cpuinit synchronise_count_master(int cpu)
- {
- 	int i;
- 	unsigned long flags;
- 	unsigned int initcount;
--	int nslaves;
- 
- #ifdef CONFIG_MIPS_MT_SMTC
- 	/*
-@@ -43,8 +42,7 @@ void __cpuinit synchronise_count_master(void)
- 	return;
- #endif
- 
--	printk(KERN_INFO "Synchronize counters across %u CPUs: ",
--	       num_online_cpus());
-+	printk(KERN_INFO "Synchronize counters for CPU %u: ", cpu);
- 
- 	local_irq_save(flags);
- 
-@@ -52,7 +50,7 @@ void __cpuinit synchronise_count_master(void)
- 	 * Notify the slaves that it's time to start
- 	 */
- 	atomic_set(&count_reference, read_c0_count());
--	atomic_set(&count_start_flag, 1);
-+	atomic_set(&count_start_flag, cpu);
- 	smp_wmb();
- 
- 	/* Count will be initialised to current timer for all CPU's */
-@@ -69,10 +67,9 @@ void __cpuinit synchronise_count_master(void)
- 	 * two CPUs.
- 	 */
- 
--	nslaves = num_online_cpus()-1;
- 	for (i = 0; i < NR_LOOPS; i++) {
--		/* slaves loop on '!= ncpus' */
--		while (atomic_read(&count_count_start) != nslaves)
-+		/* slaves loop on '!= 2' */
-+		while (atomic_read(&count_count_start) != 1)
- 			mb();
- 		atomic_set(&count_count_stop, 0);
- 		smp_wmb();
-@@ -89,7 +86,7 @@ void __cpuinit synchronise_count_master(void)
- 		/*
- 		 * Wait for all slaves to leave the synchronization point:
- 		 */
--		while (atomic_read(&count_count_stop) != nslaves)
-+		while (atomic_read(&count_count_stop) != 1)
- 			mb();
- 		atomic_set(&count_count_start, 0);
- 		smp_wmb();
-@@ -97,6 +94,7 @@ void __cpuinit synchronise_count_master(void)
- 	}
- 	/* Arrange for an interrupt in a short while */
- 	write_c0_compare(read_c0_count() + COUNTON);
-+	atomic_set(&count_start_flag, 0);
- 
- 	local_irq_restore(flags);
- 
-@@ -108,11 +106,10 @@ void __cpuinit synchronise_count_master(void)
- 	printk("done.\n");
- }
- 
--void __cpuinit synchronise_count_slave(void)
-+void __cpuinit synchronise_count_slave(int cpu)
- {
- 	int i;
- 	unsigned int initcount;
--	int ncpus;
- 
- #ifdef CONFIG_MIPS_MT_SMTC
- 	/*
-@@ -127,16 +124,15 @@ void __cpuinit synchronise_count_slave(void)
- 	 * so we first wait for the master to say everyone is ready
- 	 */
- 
--	while (!atomic_read(&count_start_flag))
-+	while (atomic_read(&count_start_flag) != cpu)
- 		mb();
- 
- 	/* Count will be initialised to next expire for all CPU's */
- 	initcount = atomic_read(&count_reference);
- 
--	ncpus = num_online_cpus();
- 	for (i = 0; i < NR_LOOPS; i++) {
- 		atomic_inc(&count_count_start);
--		while (atomic_read(&count_count_start) != ncpus)
-+		while (atomic_read(&count_count_start) != 2)
- 			mb();
- 
- 		/*
-@@ -146,7 +142,7 @@ void __cpuinit synchronise_count_slave(void)
- 			write_c0_count(initcount);
- 
- 		atomic_inc(&count_count_stop);
--		while (atomic_read(&count_count_stop) != ncpus)
-+		while (atomic_read(&count_count_stop) != 2)
- 			mb();
- 	}
- 	/* Arrange for an interrupt in a short while */
--- 
-1.7.9.5
+  Ralf

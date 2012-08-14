@@ -1,39 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2012 20:40:00 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.126.187]:51657 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1902756Ab2HNSjw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Aug 2012 20:39:52 +0200
-Received: from klappe2.localnet (HSI-KBW-149-172-5-253.hsi13.kabel-badenwuerttemberg.de [149.172.5.253])
-        by mrelayeu.kundenserver.de (node=mrbap1) with ESMTP (Nemesis)
-        id 0Mc8Nr-1TJqcR2WO7-00J9DP; Tue, 14 Aug 2012 20:39:44 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     David Daney <ddaney.cavm@gmail.com>
-Subject: Re: [PATCH 0/2] Align MIPS swapper_pg_dir for faster code.
-Date:   Tue, 14 Aug 2012 18:39:41 +0000
-User-Agent: KMail/1.12.2 (Linux/3.5.0; KDE/4.3.2; x86_64; ; )
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>
-References: <1344967681-13179-1-git-send-email-ddaney.cavm@gmail.com>
-In-Reply-To: <1344967681-13179-1-git-send-email-ddaney.cavm@gmail.com>
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-15"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201208141839.41441.arnd@arndb.de>
-X-Provags-ID: V02:K0:i21pUrDBuA6vgW6GO8ZWM1ouWOKa4IeboWcf3hAMtAd
- OmAMrR12HTamt1WW5Hhh43SeC9JPiMf62FUKyvCHwFgAOR2wS6
- mvl108NOgoTwZjnGUb/LMSJX55MRiRdlYv4CQxYkiIEHByeDG4
- gnvrtz6VAmId8jM3OXElM1rdRMiksNqYfEL+0Pe1A4hf4H/UXZ
- 6HLP0olEmOrPRYD63wFSqigEWUqGUdyjGvAbhW8hV0/YtlisTo
- y44X1jRen0oGHYBslNM1i/K8ENfykwOPaUu+64J+0SzIvL7sw6
- btBy5RzRQB5c/7EVsBmId8jcWlhra6xiZSAAe4dXX6byB9e7OS
- DQ5VSZAk1EJZyOGd+iSQ=
-X-archive-position: 34168
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2012 21:12:31 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:35814 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1902756Ab2HNTM0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Aug 2012 21:12:26 +0200
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id BEEDC23C00D1;
+        Tue, 14 Aug 2012 21:12:23 +0200 (CEST)
+From:   Gabor Juhos <juhosg@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH] MIPS: ath79: don't hardcode the unavailability of the DSP ASE
+Date:   Tue, 14 Aug 2012 21:12:21 +0200
+Message-Id: <1344971541-22465-1-git-send-email-juhosg@openwrt.org>
+X-Mailer: git-send-email 1.7.10
+X-archive-position: 34169
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,8 +32,39 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tuesday 14 August 2012, David Daney wrote:
-> Since the initial use of the code is for MIPS, perhaps both parts
-> could be merged by Ralf's tree (after collecting any Acked-bys).
+The ath79 platform code allows to run a single kernel image
+on various SoCs which are based on the 24Kc and 74Kc cores.
+The current code explicitely disables the DSP ASE, but that
+is available in the 74Kc core.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Remove the override in order to let the kernel to detect the
+availability of the DSP ASE at runtime.
+
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+
+---
+This is a replacement of the 'MIPS: ath79: don't override CPU ASE features' 
+patch: https://patchwork.linux-mips.org/patch/4169/
+
+I don't think that the issue is critical enough to include that in 
+the stable trees.
+
+Gabor
+
+ arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h |    1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
+index 4476fa0..6ddae92 100644
+--- a/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
+@@ -42,7 +42,6 @@
+ #define cpu_has_mips64r1	0
+ #define cpu_has_mips64r2	0
+ 
+-#define cpu_has_dsp		0
+ #define cpu_has_mipsmt		0
+ 
+ #define cpu_has_64bits		0
+-- 
+1.7.10

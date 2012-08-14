@@ -1,31 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2012 14:37:20 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:46847 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903820Ab2HNMhQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Aug 2012 14:37:16 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q7ECbEGa025612;
-        Tue, 14 Aug 2012 14:37:14 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q7ECbDoF025609;
-        Tue, 14 Aug 2012 14:37:13 +0200
-Date:   Tue, 14 Aug 2012 14:37:13 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH]: Improve atomic.h robustness
-Message-ID: <20120814123713.GB17040@linux-mips.org>
-References: <4FE7B86E.7030601@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2012 14:49:29 +0200 (CEST)
+Received: from mail-ee0-f49.google.com ([74.125.83.49]:53233 "EHLO
+        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903820Ab2HNMtW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Aug 2012 14:49:22 +0200
+Received: by eekc13 with SMTP id c13so122498eek.36
+        for <multiple recipients>; Tue, 14 Aug 2012 05:49:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id:organization:user-agent
+         :in-reply-to:references:mime-version:content-transfer-encoding
+         :content-type;
+        bh=1JcyFwKHflNO8HJcWCHSVYN/dKuA1FpaoyJDSjlAVno=;
+        b=ebUvFrFpscDWBl5QddU5w/PZITi9itTQFp4bkl4aW6c1KbK8XCRbTvuIytX45wbLbM
+         SV4cIZioHrza57A9WsMEm+Fxecl3yJ/vqLiCB8tn50KkEuNgzcfmUyfxcHF+1CYgW1q9
+         at1R/JR2lOIl5xeP0LxGqRLflT6gPSM4fDrQSVrAO0uZsk8+LxE13X4xbeOdM3hrpNjd
+         NUGQysO9n/I60JfOk83Z0CwEcaq+dzgmgVKX35azq4GYjHVgtRAN1hvhOLCdn4xG0SuX
+         wa08AioZyUT57mWjXBX1xjiXxywrChmTAbVkiH8i3+Z9zQtsWq3hDv2SDh5koG2hoXfV
+         Nv1w==
+Received: by 10.14.180.68 with SMTP id i44mr19271664eem.20.1344948557489;
+        Tue, 14 Aug 2012 05:49:17 -0700 (PDT)
+Received: from flexo.localnet (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by mx.google.com with ESMTPS id h42sm6642267eem.5.2012.08.14.05.49.16
+        (version=SSLv3 cipher=OTHER);
+        Tue, 14 Aug 2012 05:49:16 -0700 (PDT)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     Kelvin Cheung <keguang.zhang@gmail.com>
+Cc:     stern@rowland.harvard.edu, linux-usb@vger.kernel.org,
+        ralf@linux-mips.org, linux-mips@linux-mips.org, gregkh@suse.de,
+        wuzhangjin@gmail.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V6 4/5] USB: Add EHCI bus glue for Loongson1x SoCs (UPDATED)
+Date:   Tue, 14 Aug 2012 14:49:04 +0200
+Message-ID: <2068844.Lgd4iRJr0U@flexo>
+Organization: OpenWrt
+User-Agent: KMail/4.8.4 (Linux/3.2.0-24-generic; KDE/4.8.4; x86_64; ; )
+In-Reply-To: <1326868876-20271-1-git-send-email-keguang.zhang@gmail.com>
+References: <1326868876-20271-1-git-send-email-keguang.zhang@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4FE7B86E.7030601@gentoo.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34150
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+X-archive-position: 34151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,34 +56,39 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sun, Jun 24, 2012 at 09:01:34PM -0400, Joshua Kinard wrote:
+Hello Kelvin,
 
-> I've maintained this patch, originally from Thiemo Seufer in 2004, for a
-> really long time, but I think it's time for it to get a look at for possible
-> inclusion.  I have had no problems with it across various SGI systems over
-> the years.
+On Wednesday 18 January 2012 14:41:16 Kelvin Cheung wrote:
+> Use ehci_setup() in ehci_ls1x_reset().
 > 
-> To quote the post here:
-> http://www.linux-mips.org/archives/linux-mips/2004-12/msg00000.html
+> The Loongson1x SoCs have a built-in EHCI controller.
+> This patch adds the necessary glue code to make the generic EHCI
+> driver usable for them.
 > 
-> "the atomic functions use so far memory references for the inline
-> assembler to access the semaphore. This can lead to additional
-> instructions in the ll/sc loop, because newer compilers don't
-> expand the memory reference any more but leave it to the assembler.
+> Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+> ---
+
+I do not see this driver doing anything fancy which would require an entirely 
+new ehci implementation so consider using the generic ehci platform driver 
+(drivers/usb/host/ehci-platforms.c) instead.
+
+>  drivers/usb/Kconfig          |    1 +
+>  drivers/usb/host/ehci-hcd.c  |    5 ++
+>  drivers/usb/host/ehci-ls1x.c |  159 
+++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 165 insertions(+), 0 deletions(-)
+>  create mode 100644 drivers/usb/host/ehci-ls1x.c
 > 
-> The appended patch uses registers instead, and makes the ll/sc
-> arguments more explicit. In some cases it will lead also to better
-> register scheduling because the register isn't bound to an output
-> any more."
+> diff --git a/drivers/usb/Kconfig b/drivers/usb/Kconfig
+> index 85d5a01..78ac78b 100644
+> --- a/drivers/usb/Kconfig
+> +++ b/drivers/usb/Kconfig
+> @@ -68,6 +68,7 @@ config USB_ARCH_HAS_EHCI
+>  	default y if ARCH_MSM
+>  	default y if MICROBLAZE
+>  	default y if SPARC_LEON
+> +	default y if MACH_LOONGSON1
 
-I have faint memories of having tried this myself and very ancient
-compilers didn't like the + constraint in inline assembler; somewhat
-less ancient compilers did generate slightly bigger code.  With gcc 4.7
-I am getting exactly the same codesize as without your patch applied.
-The patch shouldn't do anything to robustness but sureles makes the
-inline assembler a bit more readable so I'm queueing this for the next
-release.
-
-Thanks,
-
-  Ralf
+Do this in arch/mips/Kconfig instead.
+--
+Florian

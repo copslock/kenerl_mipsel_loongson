@@ -1,25 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2012 14:56:57 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:50088 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2012 15:25:19 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:2771 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903831Ab2HNM4x (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Aug 2012 14:56:53 +0200
-Message-ID: <502A4AD0.7030106@phrozen.org>
-Date:   Tue, 14 Aug 2012 14:55:44 +0200
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.24) Gecko/20111114 Icedove/3.1.16
+        id S1903784Ab2HNNZK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Aug 2012 15:25:10 +0200
+Received: from [10.9.200.133] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Tue, 14 Aug 2012 06:23:41 -0700
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+Received: from mail-irva-13.broadcom.com (10.11.16.103) by
+ IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
+ Server id 8.2.247.2; Tue, 14 Aug 2012 06:24:15 -0700
+Received: from jc-linux.netlogicmicro.com (unknown [10.7.2.153]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id E3BF89F9F5; Tue, 14
+ Aug 2012 06:24:52 -0700 (PDT)
+From:   "Jayachandran C" <jchandra@broadcom.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+cc:     "Jayachandran C" <jchandra@broadcom.com>
+Subject: [PATCH 0/2] MIPS: Netlogic: Fixes for 3.6
+Date:   Tue, 14 Aug 2012 18:56:11 +0530
+Message-ID: <1344950773-29299-1-git-send-email-jchandra@broadcom.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org, hauke@hauke-m.de
-Subject: Re: [PATCH 3/3] MIPS: BCM47xx: rewrite GPIO handling and use gpiolib
-References: <1344165123-4640-1-git-send-email-hauke@hauke-m.de> <1344165123-4640-4-git-send-email-hauke@hauke-m.de>
-In-Reply-To: <1344165123-4640-4-git-send-email-hauke@hauke-m.de>
-X-Enigmail-Version: 1.1.2
-Content-Type: text/plain; charset=ISO-8859-1
+X-WSS-ID: 7C348ED63NK15214745-01-01
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 34152
+X-archive-position: 34153
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,20 +41,24 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Hauke,
+Two patches for Netlogic processors for 3.6, the second patch is critical
+and fixes a hang on boot in 3.6, and the first patch is optional and fixes
+a BUG() when preempt is enabled.
 
->  int gpio_to_irq(unsigned gpio)
->  {
-> @@ -99,4 +216,11 @@ int gpio_to_irq(unsigned gpio)
->  	}
->  	return -EINVAL;
->  }
-> -EXPORT_SYMBOL_GPL(gpio_to_irq);
-> +EXPORT_SYMBOL(gpio_to_irq);
+I had send these two separately earlier today, but the patches had a
+mixture of netlogic and broadcom mail addresses.
 
-can you change this to use gpio_chip.to_irq()
+JC.
 
-and then #define gpio_to_irq __gpio_to_irq    inside your gpio.h ?
+Jayachandran C (2):
+  MIPS: Netlogic: define cpu_has_fpu macro
+  MIPS: Synchronize MIPS count one CPU at a time
 
-Thanks,
-John
+ .../asm/mach-netlogic/cpu-feature-overrides.h      |    2 ++
+ arch/mips/include/asm/r4k-timer.h                  |    8 +++---
+ arch/mips/kernel/smp.c                             |    4 +--
+ arch/mips/kernel/sync-r4k.c                        |   26 +++++++++-----------
+ 4 files changed, 19 insertions(+), 21 deletions(-)
+
+-- 
+1.7.9.5

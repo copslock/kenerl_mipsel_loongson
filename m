@@ -1,29 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2012 14:29:55 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:51493 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903553Ab2HNM3t (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Aug 2012 14:29:49 +0200
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from [192.168.254.129] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id AB10B23C0072;
-        Tue, 14 Aug 2012 14:29:46 +0200 (CEST)
-Message-ID: <502A44B9.6010708@openwrt.org>
-Date:   Tue, 14 Aug 2012 14:29:45 +0200
-From:   Gabor Juhos <juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2012 14:37:20 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:46847 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903820Ab2HNMhQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Aug 2012 14:37:16 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q7ECbEGa025612;
+        Tue, 14 Aug 2012 14:37:14 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q7ECbDoF025609;
+        Tue, 14 Aug 2012 14:37:13 +0200
+Date:   Tue, 14 Aug 2012 14:37:13 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Joshua Kinard <kumba@gentoo.org>
+Cc:     Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH]: Improve atomic.h robustness
+Message-ID: <20120814123713.GB17040@linux-mips.org>
+References: <4FE7B86E.7030601@gentoo.org>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH v3 4/4] MIPS: ath79: don't override CPU ASE features
-References: <1344096087-25044-1-git-send-email-juhosg@openwrt.org> <1344096087-25044-5-git-send-email-juhosg@openwrt.org> <20120814095923.GD28466@linux-mips.org>
-In-Reply-To: <20120814095923.GD28466@linux-mips.org>
-X-Enigmail-Version: 1.4.3
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-X-archive-position: 34149
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4FE7B86E.7030601@gentoo.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,76 +39,34 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-2012.08.14. 11:59 keltezéssel, Ralf Baechle írta:
-> On Sat, Aug 04, 2012 at 06:01:27PM +0200, Gabor Juhos wrote:
-> 
->> The ath79 platform covers various SoCs which are based on
->> the 24Kc and 74Kc cores. Currently various ASEs are disabled
->> explicitely by the cpu-feature-overrides header, even those
->> which are present in the 74Kc core.
->>
->> The kernel is able to detect the available ASEs, so remove
->> the overrides.
->>
->> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
->> ---
->>  arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h |    8 --------
->>  1 file changed, 8 deletions(-)
->>
->> diff --git a/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
->> index 4476fa0..edbf23e 100644
->> --- a/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
->> +++ b/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
->> @@ -32,19 +32,11 @@
->>  #define cpu_has_ejtag		1
->>  #define cpu_has_llsc		1
->>  
->> -#define cpu_has_mips16		1
-> 
-> Both 24K and 74K always implement MIPS16, so leave this defined to 1.
-> 
->> -#define cpu_has_mdmx		0
->> -#define cpu_has_mips3d		0
-> 
-> Neither the 24K nor he 74K implement MIPS-3D or MDMX, so best leave these
-> defined to 0.
-> 
->> -#define cpu_has_smartmips	0
-> 
-> Neither the 24K nor he 74K implement SmartMIPS, so best leave this defined
-> to 0.
+On Sun, Jun 24, 2012 at 09:01:34PM -0400, Joshua Kinard wrote:
 
-Ok, I will keep these lines.
-
+> I've maintained this patch, originally from Thiemo Seufer in 2004, for a
+> really long time, but I think it's time for it to get a look at for possible
+> inclusion.  I have had no problems with it across various SGI systems over
+> the years.
 > 
->>  #define cpu_has_mips32r1	1
->>  #define cpu_has_mips32r2	1
->>  #define cpu_has_mips64r1	0
->>  #define cpu_has_mips64r2	0
->>  
->> -#define cpu_has_dsp		0
+> To quote the post here:
+> http://www.linux-mips.org/archives/linux-mips/2004-12/msg00000.html
 > 
-> 24K has no DSP extension, 24KE has DSP extensions (version 1 afair).  74K
-> implements DSP ASE version 2.  So if you have a plain 24K (or 24Kc or
-> 24Kf or other non-24KE based 24K variant), wire this to 0.  If you have
-> a 24KE family core then removing the definition is the right thing.
-
-The AR71xx/AR724x/AR913x/AR933x SoCs are using the 24Kc core, but the AR934x
-SoCs are using 74K. The ath79 platform code can support all of these SoCs within
-a single kernel, so removing the definition seems to be the right thing.
-Although it would be possible to optimize things if only the 24K or the 74K
-based SoCs are selected, but that would require ugly ifdef statements.
-
+> "the atomic functions use so far memory references for the inline
+> assembler to access the semaphore. This can lead to additional
+> instructions in the ll/sc loop, because newer compilers don't
+> expand the memory reference any more but leave it to the assembler.
 > 
->> -#define cpu_has_mipsmt		0
-> 
-> Neither implements the MT ASE, so best leave these defined to 0.
+> The appended patch uses registers instead, and makes the ll/sc
+> arguments more explicit. In some cases it will lead also to better
+> register scheduling because the register isn't bound to an output
+> any more."
 
-Ok.
+I have faint memories of having tried this myself and very ancient
+compilers didn't like the + constraint in inline assembler; somewhat
+less ancient compilers did generate slightly bigger code.  With gcc 4.7
+I am getting exactly the same codesize as without your patch applied.
+The patch shouldn't do anything to robustness but sureles makes the
+inline assembler a bit more readable so I'm queueing this for the next
+release.
 
-> Generally, hardwire whatever you can.  This will make gcc eleminate lots
-> of dead code and result in a significantly smaller and also faster kernel.
+Thanks,
 
-I will send an updated patch. Thank you for the review!
-
--Gabor
+  Ralf

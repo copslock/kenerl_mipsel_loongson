@@ -1,29 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Aug 2012 05:51:59 +0200 (CEST)
-Received: from ozlabs.org ([203.10.76.45]:57307 "EHLO ozlabs.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Aug 2012 10:35:20 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:12917 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903472Ab2HODvv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 15 Aug 2012 05:51:51 +0200
-Received: by ozlabs.org (Postfix, from userid 1011)
-        id 1CA462C009F; Wed, 15 Aug 2012 13:51:48 +1000 (EST)
-From:   Rusty Russell <rusty@rustcorp.com.au>
-To:     David Howells <dhowells@redhat.com>
+        id S1902756Ab2HOIfL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 15 Aug 2012 10:35:11 +0200
+Received: from int-mx12.intmail.prod.int.phx2.redhat.com (int-mx12.intmail.prod.int.phx2.redhat.com [10.5.11.25])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id q7F8Z4Y5029136
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Wed, 15 Aug 2012 04:35:05 -0400
+Received: from warthog.procyon.org.uk ([10.3.112.16])
+        by int-mx12.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id q7F8YxK5029544;
+        Wed, 15 Aug 2012 04:35:00 -0400
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <87ipckrgal.fsf@rustcorp.com.au>
+References: <87ipckrgal.fsf@rustcorp.com.au> <87d32us55c.fsf@rustcorp.com.au> <1344332473-19842-1-git-send-email-jonas.gorski@gmail.com> <31154.1344872382@warthog.procyon.org.uk> <32504.1344953290@warthog.procyon.org.uk>
+To:     Rusty Russell <rusty@rustcorp.com.au>
 Cc:     dhowells@redhat.com, Jonas Gorski <jonas.gorski@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH] MIPS: fix module.c build for 32 bit
-In-Reply-To: <32504.1344953290@warthog.procyon.org.uk>
-References: <87d32us55c.fsf@rustcorp.com.au> <1344332473-19842-1-git-send-email-jonas.gorski@gmail.com> <31154.1344872382@warthog.procyon.org.uk> <32504.1344953290@warthog.procyon.org.uk>
-User-Agent: Notmuch/0.12 (http://notmuchmail.org) Emacs/23.3.1 (i686-pc-linux-gnu)
-Date:   Wed, 15 Aug 2012 12:51:38 +0930
-Message-ID: <87ipckrgal.fsf@rustcorp.com.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-archive-position: 34173
+Date:   Wed, 15 Aug 2012 09:34:58 +0100
+Message-ID: <1171.1345019698@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.25
+X-archive-position: 34174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rusty@rustcorp.com.au
+X-original-sender: dhowells@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,18 +44,11 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, 14 Aug 2012 15:08:10 +0100, David Howells <dhowells@redhat.com> wrote:
-> Rusty Russell <rusty@rustcorp.com.au> wrote:
-> 
-> > Yep, thanks.  And might as well sent them straight to Linus; since
-> > linux-next didn't catch this, there's little point baking them there if
-> > we have some acks.
-> > 
-> > If he misses it, I'll grab them.
-> 
-> It might have to wait for the next merge window.
+Rusty Russell <rusty@rustcorp.com.au> wrote:
 
-For a build fix????
+> For a build fix????
 
-Confused,
-Rusty.
+Linux hasn't pulled the asm-generic cleanup patch yet - you missed the merge
+window, I think.  Jonas detected the problem in linux-next.
+
+David

@@ -1,16 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 14:32:24 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:32806 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 14:41:21 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:43859 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903452Ab2HPMcR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Aug 2012 14:32:17 +0200
+        id S1903504Ab2HPMlN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Aug 2012 14:41:13 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH] MIPS: lantiq: adds support for gptu timers
-Date:   Thu, 16 Aug 2012 14:31:02 +0200
-Message-Id: <1345120262-12657-1-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V2 1/4] MIPS: lantiq: split up IRQ IM ranges
+Date:   Thu, 16 Aug 2012 14:39:57 +0200
+Message-Id: <1345120797-13542-2-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
-X-archive-position: 34205
+In-Reply-To: <1345120797-13542-1-git-send-email-blogic@openwrt.org>
+References: <1345120797-13542-1-git-send-email-blogic@openwrt.org>
+X-archive-position: 34206
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,244 +30,194 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Lantiq socs have a General Purpose Timer Unit (GPTU). This driver allows us to
-initialize the timers. The voice firmware needs these timers as a reference.
+Up to now all our SoCs had the 5 IM ranges in a consecutive order. To accomodate
+the SVIP we need to support IM ranges that are scattered inside the register range.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/lantiq/xway/Makefile |    4 +-
- arch/mips/lantiq/xway/gptu.c   |  214 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 217 insertions(+), 1 deletions(-)
- create mode 100644 arch/mips/lantiq/xway/gptu.c
+Changes in V2
+* fixes a typo in the commit description
 
-diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
-index 729ea9e..f37f6c5 100644
---- a/arch/mips/lantiq/xway/Makefile
-+++ b/arch/mips/lantiq/xway/Makefile
-@@ -1 +1,3 @@
--obj-y := prom.o sysctrl.o clk.o reset.o dma.o
-+obj-y := prom.o sysctrl.o clk.o reset.o dma.o gptu.o
+ .../include/asm/mach-lantiq/falcon/falcon_irq.h    |    2 +
+ .../mips/include/asm/mach-lantiq/xway/lantiq_irq.h |    2 +
+ arch/mips/lantiq/irq.c                             |   60 ++++++++++---------
+ 3 files changed, 36 insertions(+), 28 deletions(-)
+
+diff --git a/arch/mips/include/asm/mach-lantiq/falcon/falcon_irq.h b/arch/mips/include/asm/mach-lantiq/falcon/falcon_irq.h
+index 318f982..c6b63a4 100644
+--- a/arch/mips/include/asm/mach-lantiq/falcon/falcon_irq.h
++++ b/arch/mips/include/asm/mach-lantiq/falcon/falcon_irq.h
+@@ -20,4 +20,6 @@
+ 
+ #define MIPS_CPU_TIMER_IRQ			7
+ 
++#define MAX_IM			5
 +
-+obj-$(CONFIG_NAND_XWAY) += nand.o
-diff --git a/arch/mips/lantiq/xway/gptu.c b/arch/mips/lantiq/xway/gptu.c
-new file mode 100644
-index 0000000..cbb56fc
---- /dev/null
-+++ b/arch/mips/lantiq/xway/gptu.c
-@@ -0,0 +1,214 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2012 John Crispin <blogic@openwrt.org>
-+ *  Copyright (C) 2012 Lantiq GmbH
-+ */
+ #endif /* _FALCON_IRQ__ */
+diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
+index aa0b3b8..5eadfe5 100644
+--- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
++++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
+@@ -21,4 +21,6 @@
+ 
+ #define MIPS_CPU_TIMER_IRQ	7
+ 
++#define MAX_IM			5
 +
-+#include <linux/interrupt.h>
-+#include <linux/ioport.h>
-+#include <linux/module.h>
-+#include <linux/of_platform.h>
-+#include <linux/of_irq.h>
-+
-+#include <lantiq_soc.h>
-+#include "../clk.h"
-+
-+/* the magic ID byte of the core */
-+#define GPTU_MAGIC	0x59
-+/* clock control register */
-+#define GPTU_CLC	0x00
-+/* id register */
-+#define GPTU_ID		0x08
-+/* interrupt node enable */
-+#define GPTU_IRNEN	0xf4
-+/* interrupt control register */
-+#define GPTU_IRCR	0xf8
-+/* interrupt capture register */
-+#define GPTU_IRNCR	0xfc
-+/* there are 3 identical blocks of 2 timers. calculate register offsets */
-+#define GPTU_SHIFT(x)	(x % 2 ? 4 : 0)
-+#define GPTU_BASE(x)	(((x >> 1) * 0x20) + 0x10)
-+/* timer control register */
-+#define GPTU_CON(x)	(GPTU_BASE(x) + GPTU_SHIFT(x) + 0x00)
-+/* timer auto reload register */
-+#define GPTU_RUN(x)	(GPTU_BASE(x) + GPTU_SHIFT(x) + 0x08)
-+/* timer manual reload register */
-+#define GPTU_RLD(x)	(GPTU_BASE(x) + GPTU_SHIFT(x) + 0x10)
-+/* timer count register */
-+#define GPTU_CNT(x)	(GPTU_BASE(x) + GPTU_SHIFT(x) + 0x18)
-+
-+/* GPTU_CON(x) */
-+#define CON_CNT		BIT(2)
-+#define CON_EDGE_ANY	(BIT(7) | BIT(6))
-+#define CON_SYNC	BIT(8)
-+#define CON_CLK_INT	BIT(10)
-+
-+/* GPTU_RUN(x) */
-+#define RUN_SEN		BIT(0)
-+#define RUN_RL		BIT(2)
-+
-+/* set clock to runmode */
-+#define CLC_RMC		BIT(8)
-+/* bring core out of suspend */
-+#define CLC_SUSPEND	BIT(4)
-+/* the disable bit */
-+#define CLC_DISABLE	BIT(0)
-+
-+#define gptu_w32(x, y)	ltq_w32((x), gptu_membase + (y))
-+#define gptu_r32(x)	ltq_r32(gptu_membase + (x))
-+
-+enum gptu_timer {
-+	TIMER1A = 0,
-+	TIMER1B,
-+	TIMER2A,
-+	TIMER2B,
-+	TIMER3A,
-+	TIMER3B
-+};
-+
-+static void __iomem *gptu_membase;
-+static struct resource irqres[6];
-+
-+static irqreturn_t timer_irq_handler(int irq, void *priv)
-+{
-+	int timer = irq - irqres[0].start;
-+	gptu_w32(1 << timer, GPTU_IRNCR);
-+	return IRQ_HANDLED;
-+}
-+
-+static void gptu_hwinit(void)
-+{
-+	gptu_w32(0x00, GPTU_IRNEN);
-+	gptu_w32(0xff, GPTU_IRNCR);
-+	gptu_w32(CLC_RMC | CLC_SUSPEND, GPTU_CLC);
-+}
-+
-+static void gptu_hwexit(void)
-+{
-+	gptu_w32(0x00, GPTU_IRNEN);
-+	gptu_w32(0xff, GPTU_IRNCR);
-+	gptu_w32(CLC_DISABLE, GPTU_CLC);
-+}
-+
-+static int gptu_enable(struct clk *clk)
-+{
-+	int ret = request_irq(irqres[clk->bits].start, timer_irq_handler,
-+		IRQF_TIMER, "gtpu", NULL);
-+	if (ret) {
-+		pr_err("gptu: failed to request irq\n");
-+		return ret;
+ #endif
+diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
+index 57c1a4e..a2699a70 100644
+--- a/arch/mips/lantiq/irq.c
++++ b/arch/mips/lantiq/irq.c
+@@ -55,8 +55,8 @@
+  */
+ #define LTQ_ICU_EBU_IRQ		22
+ 
+-#define ltq_icu_w32(x, y)	ltq_w32((x), ltq_icu_membase + (y))
+-#define ltq_icu_r32(x)		ltq_r32(ltq_icu_membase + (x))
++#define ltq_icu_w32(m, x, y)	ltq_w32((x), ltq_icu_membase[m] + (y))
++#define ltq_icu_r32(m, x)	ltq_r32(ltq_icu_membase[m] + (x))
+ 
+ #define ltq_eiu_w32(x, y)	ltq_w32((x), ltq_eiu_membase + (y))
+ #define ltq_eiu_r32(x)		ltq_r32(ltq_eiu_membase + (x))
+@@ -82,17 +82,17 @@ static unsigned short ltq_eiu_irq[MAX_EIU] = {
+ };
+ 
+ static int exin_avail;
+-static void __iomem *ltq_icu_membase;
++static void __iomem *ltq_icu_membase[MAX_IM];
+ static void __iomem *ltq_eiu_membase;
+ 
+ void ltq_disable_irq(struct irq_data *d)
+ {
+ 	u32 ier = LTQ_ICU_IM0_IER;
+ 	int offset = d->hwirq - MIPS_CPU_IRQ_CASCADE;
++	int im = offset / INT_NUM_IM_OFFSET;
+ 
+-	ier += LTQ_ICU_OFFSET * (offset / INT_NUM_IM_OFFSET);
+ 	offset %= INT_NUM_IM_OFFSET;
+-	ltq_icu_w32(ltq_icu_r32(ier) & ~BIT(offset), ier);
++	ltq_icu_w32(im, ltq_icu_r32(im, ier) & ~BIT(offset), ier);
+ }
+ 
+ void ltq_mask_and_ack_irq(struct irq_data *d)
+@@ -100,32 +100,31 @@ void ltq_mask_and_ack_irq(struct irq_data *d)
+ 	u32 ier = LTQ_ICU_IM0_IER;
+ 	u32 isr = LTQ_ICU_IM0_ISR;
+ 	int offset = d->hwirq - MIPS_CPU_IRQ_CASCADE;
++	int im = offset / INT_NUM_IM_OFFSET;
+ 
+-	ier += LTQ_ICU_OFFSET * (offset / INT_NUM_IM_OFFSET);
+-	isr += LTQ_ICU_OFFSET * (offset / INT_NUM_IM_OFFSET);
+ 	offset %= INT_NUM_IM_OFFSET;
+-	ltq_icu_w32(ltq_icu_r32(ier) & ~BIT(offset), ier);
+-	ltq_icu_w32(BIT(offset), isr);
++	ltq_icu_w32(im, ltq_icu_r32(im, ier) & ~BIT(offset), ier);
++	ltq_icu_w32(im, BIT(offset), isr);
+ }
+ 
+ static void ltq_ack_irq(struct irq_data *d)
+ {
+ 	u32 isr = LTQ_ICU_IM0_ISR;
+ 	int offset = d->hwirq - MIPS_CPU_IRQ_CASCADE;
++	int im = offset / INT_NUM_IM_OFFSET;
+ 
+-	isr += LTQ_ICU_OFFSET * (offset / INT_NUM_IM_OFFSET);
+ 	offset %= INT_NUM_IM_OFFSET;
+-	ltq_icu_w32(BIT(offset), isr);
++	ltq_icu_w32(im, BIT(offset), isr);
+ }
+ 
+ void ltq_enable_irq(struct irq_data *d)
+ {
+ 	u32 ier = LTQ_ICU_IM0_IER;
+ 	int offset = d->hwirq - MIPS_CPU_IRQ_CASCADE;
++	int im = offset / INT_NUM_IM_OFFSET;
+ 
+-	ier += LTQ_ICU_OFFSET  * (offset / INT_NUM_IM_OFFSET);
+ 	offset %= INT_NUM_IM_OFFSET;
+-	ltq_icu_w32(ltq_icu_r32(ier) | BIT(offset), ier);
++	ltq_icu_w32(im, ltq_icu_r32(im, ier) | BIT(offset), ier);
+ }
+ 
+ static unsigned int ltq_startup_eiu_irq(struct irq_data *d)
+@@ -192,7 +191,7 @@ static void ltq_hw_irqdispatch(int module)
+ {
+ 	u32 irq;
+ 
+-	irq = ltq_icu_r32(LTQ_ICU_IM0_IOSR + (module * LTQ_ICU_OFFSET));
++	irq = ltq_icu_r32(module, LTQ_ICU_IM0_IOSR);
+ 	if (irq == 0)
+ 		return;
+ 
+@@ -275,7 +274,7 @@ asmlinkage void plat_irq_dispatch(void)
+ 		do_IRQ(MIPS_CPU_TIMER_IRQ);
+ 		goto out;
+ 	} else {
+-		for (i = 0; i < 5; i++) {
++		for (i = 0; i < MAX_IM; i++) {
+ 			if (pending & (CAUSEF_IP2 << i)) {
+ 				ltq_hw_irqdispatch(i);
+ 				goto out;
+@@ -318,15 +317,19 @@ int __init icu_of_init(struct device_node *node, struct device_node *parent)
+ 	struct resource res;
+ 	int i;
+ 
+-	if (of_address_to_resource(node, 0, &res))
+-		panic("Failed to get icu memory range");
++	for (i = 0; i < MAX_IM; i++) {
++		if (of_address_to_resource(node, i, &res))
++			panic("Failed to get icu memory range");
+ 
+-	if (request_mem_region(res.start, resource_size(&res), res.name) < 0)
+-		pr_err("Failed to request icu memory");
++		if (request_mem_region(res.start, resource_size(&res),
++					res.name) < 0)
++			pr_err("Failed to request icu memory");
+ 
+-	ltq_icu_membase = ioremap_nocache(res.start, resource_size(&res));
+-	if (!ltq_icu_membase)
+-		panic("Failed to remap icu memory");
++		ltq_icu_membase[i] = ioremap_nocache(res.start,
++					resource_size(&res));
++		if (!ltq_icu_membase[i])
++			panic("Failed to remap icu memory");
 +	}
-+
-+	gptu_w32(CON_CNT | CON_EDGE_ANY | CON_SYNC | CON_CLK_INT,
-+		GPTU_CON(clk->bits));
-+	gptu_w32(1, GPTU_RLD(clk->bits));
-+	gptu_w32(gptu_r32(GPTU_IRNEN) | BIT(clk->bits), GPTU_IRNEN);
-+	gptu_w32(RUN_SEN | RUN_RL, GPTU_RUN(clk->bits));
-+	return 0;
-+}
-+
-+static void gptu_disable(struct clk *clk)
-+{
-+	gptu_w32(0, GPTU_RUN(clk->bits));
-+	gptu_w32(0, GPTU_CON(clk->bits));
-+	gptu_w32(0, GPTU_RLD(clk->bits));
-+	gptu_w32(gptu_r32(GPTU_IRNEN) & ~BIT(clk->bits), GPTU_IRNEN);
-+	free_irq(irqres[clk->bits].start, NULL);
-+}
-+
-+static inline void clkdev_add_gptu(struct device *dev, const char *con,
-+							unsigned int timer)
-+{
-+	struct clk *clk = kzalloc(sizeof(struct clk), GFP_KERNEL);
-+
-+	clk->cl.dev_id = dev_name(dev);
-+	clk->cl.con_id = con;
-+	clk->cl.clk = clk;
-+	clk->enable = gptu_enable;
-+	clk->disable = gptu_disable;
-+	clk->bits = timer;
-+	clkdev_add(&clk->cl);
-+}
-+
-+static int __devinit gptu_probe(struct platform_device *pdev)
-+{
-+	struct clk *clk;
-+	struct resource *res;
-+
-+	if (of_irq_to_resource_table(pdev->dev.of_node, irqres, 6) != 6) {
-+		dev_err(&pdev->dev, "Failed to get IRQ list\n");
-+		return -EINVAL;
-+	}
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res) {
-+		dev_err(&pdev->dev, "Failed to get resource\n");
-+		return -ENOMEM;
-+	}
-+
-+	/* remap gptu register range */
-+	gptu_membase = devm_request_and_ioremap(&pdev->dev, res);
-+	if (!gptu_membase) {
-+		dev_err(&pdev->dev, "Failed to remap resource\n");
-+		return -ENOMEM;
-+	}
-+
-+	/* enable our clock */
-+	clk = clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(clk)) {
-+		dev_err(&pdev->dev, "Failed to get clock\n");
-+		return -ENOENT;
-+	}
-+	clk_enable(clk);
-+
-+	/* power up the core */
-+	gptu_hwinit();
-+
-+	/* the gptu has a ID register */
-+	if (((gptu_r32(GPTU_ID) >> 8) & 0xff) != GPTU_MAGIC) {
-+		dev_err(&pdev->dev, "Failed to find magic\n");
-+		gptu_hwexit();
-+		return -ENAVAIL;
-+	}
-+
-+	/* register the clocks */
-+	clkdev_add_gptu(&pdev->dev, "timer1a", TIMER1A);
-+	clkdev_add_gptu(&pdev->dev, "timer1b", TIMER1B);
-+	clkdev_add_gptu(&pdev->dev, "timer2a", TIMER2A);
-+	clkdev_add_gptu(&pdev->dev, "timer2b", TIMER2B);
-+	clkdev_add_gptu(&pdev->dev, "timer3a", TIMER3A);
-+	clkdev_add_gptu(&pdev->dev, "timer3b", TIMER3B);
-+
-+	dev_info(&pdev->dev, "gptu: 6 timers loaded\n");
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id gptu_match[] = {
-+	{ .compatible = "lantiq,gptu-xway" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, dma_match);
-+
-+static struct platform_driver dma_driver = {
-+	.probe = gptu_probe,
-+	.driver = {
-+		.name = "gptu-xway",
-+		.owner = THIS_MODULE,
-+		.of_match_table = gptu_match,
-+	},
-+};
-+
-+int __init gptu_init(void)
-+{
-+	int ret = platform_driver_register(&dma_driver);
-+
-+	if (ret)
-+		pr_info("gptu: Error registering platform driver\n");
-+	return ret;
-+}
-+
-+arch_initcall(gptu_init);
+ 
+ 	/* the external interrupts are optional and xway only */
+ 	eiu_node = of_find_compatible_node(NULL, NULL, "lantiq,eiu");
+@@ -351,17 +354,17 @@ int __init icu_of_init(struct device_node *node, struct device_node *parent)
+ 	}
+ 
+ 	/* turn off all irqs by default */
+-	for (i = 0; i < 5; i++) {
++	for (i = 0; i < MAX_IM; i++) {
+ 		/* make sure all irqs are turned off by default */
+-		ltq_icu_w32(0, LTQ_ICU_IM0_IER + (i * LTQ_ICU_OFFSET));
++		ltq_icu_w32(i, 0, LTQ_ICU_IM0_IER);
+ 		/* clear all possibly pending interrupts */
+-		ltq_icu_w32(~0, LTQ_ICU_IM0_ISR + (i * LTQ_ICU_OFFSET));
++		ltq_icu_w32(i, ~0, LTQ_ICU_IM0_ISR);
+ 	}
+ 
+ 	mips_cpu_irq_init();
+ 
+-	for (i = 2; i <= 6; i++)
+-		setup_irq(i, &cascade);
++	for (i = 0; i < MAX_IM; i++)
++		setup_irq(i + 2, &cascade);
+ 
+ 	if (cpu_has_vint) {
+ 		pr_info("Setting up vectored interrupts\n");
+@@ -373,7 +376,8 @@ int __init icu_of_init(struct device_node *node, struct device_node *parent)
+ 		set_vi_handler(7, ltq_hw5_irqdispatch);
+ 	}
+ 
+-	irq_domain_add_linear(node, 6 * INT_NUM_IM_OFFSET,
++	irq_domain_add_linear(node,
++		(MAX_IM * INT_NUM_IM_OFFSET) + MIPS_CPU_IRQ_CASCADE,
+ 		&irq_domain_ops, 0);
+ 
+ #if defined(CONFIG_MIPS_MT_SMP)
 -- 
 1.7.9.1

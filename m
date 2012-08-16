@@ -1,22 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 11:28:15 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:49350 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903523Ab2HPJ07 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Aug 2012 11:26:59 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH 4/4] MIPS: lantiq: enable pci clk conditional for xrx200 SoC
-Date:   Thu, 16 Aug 2012 11:25:42 +0200
-Message-Id: <1345109142-1756-4-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.9.1
-In-Reply-To: <1345109142-1756-1-git-send-email-blogic@openwrt.org>
-References: <1345109142-1756-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 34202
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 11:41:07 +0200 (CEST)
+Received: from mail-gg0-f177.google.com ([209.85.161.177]:64650 "EHLO
+        mail-gg0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903435Ab2HPJlD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Aug 2012 11:41:03 +0200
+Received: by ggnm2 with SMTP id m2so2875757ggn.36
+        for <linux-mips@linux-mips.org>; Thu, 16 Aug 2012 02:40:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=3CiwWcZRnf/p4trTEXZggrmxVTqRWzpHUp7aSCdurOU=;
+        b=KHOoz6H/hyWuwL/60AjQVR+t6uWH/wY1DTSa6SZckxCUNrbh+Tuokurqk+5f2KgZEE
+         kHaEYEUqBwS3KBX7NE39uUz7XmW0r1ZW8auvLXbBZ2SDLnj+EGZdCUIBk4xs0g6gr3Br
+         1dThBjh+SOGLkdDqY0FmRQ6YYrSlgbKIJv6FKWM6PidECeSGw/2DiOSWdho9pcIwQf5l
+         wQrFg47MzGcvQlSmWAgQyldr2uYafwImygygDBqUzUXMD3yKoXlkRrVDNKMjcoeM38wg
+         Vm1/RqemW4jiYJFTKxOL9dZW/20Cism7qFVLXBA6SxySEUT26SCYIyRH8KRYP1RW9S7c
+         jSjg==
+MIME-Version: 1.0
+Received: by 10.50.186.165 with SMTP id fl5mr545641igc.47.1345110056286; Thu,
+ 16 Aug 2012 02:40:56 -0700 (PDT)
+Received: by 10.43.44.7 with HTTP; Thu, 16 Aug 2012 02:40:56 -0700 (PDT)
+In-Reply-To: <502CB736.6010107@openwrt.org>
+References: <1345102448-4612-1-git-send-email-blogic@openwrt.org>
+        <CAM=Q2cvCmKMkQjWd0nvuvMMkNt3sH-AcupCq_KzM7EXDuD_-wQ@mail.gmail.com>
+        <502CB736.6010107@openwrt.org>
+Date:   Thu, 16 Aug 2012 15:10:56 +0530
+Message-ID: <CAM=Q2csrm-zfnGUvR03EXj-Ybi-py8VqAy39g8kBjSHcyZZ8mQ@mail.gmail.com>
+Subject: Re: [PATCH] I2C: MIPS: lantiq: add FALC-ON i2c bus master
+From:   Shubhrajyoti Datta <omaplinuxkernel@gmail.com>
+To:     John Crispin <blogic@openwrt.org>
+Cc:     Wolfram Sang <w.sang@pengutronix.de>, linux-i2c@vger.kernel.org,
+        linux-mips@linux-mips.org, Thomas Langer <thomas.langer@lantiq.com>
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 34203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: omaplinuxkernel@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -30,27 +50,21 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The xrx200 SoC family has the same PCI clock register layout as the AR9.
-Enable the same quirk as for AR9
+Hi John,
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
----
- arch/mips/lantiq/xway/sysctrl.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
+On Thu, Aug 16, 2012 at 2:32 PM, John Crispin <blogic@openwrt.org> wrote:
+> Hi Shubhrajyoti,
+>
+> Thanks for the comments, I just noticed that clk_put() is also missing
+> and that the clock gate should be deactivated upon a rmmod ... i will
+> fix all of these and resend the patch.
 
-diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-index 8863cca..655c210 100644
---- a/arch/mips/lantiq/xway/sysctrl.c
-+++ b/arch/mips/lantiq/xway/sysctrl.c
-@@ -149,7 +149,8 @@ static int pci_enable(struct clk *clk)
- {
- 	unsigned int val = ltq_cgu_r32(ifccr);
- 	/* set bus clock speed */
--	if (of_machine_is_compatible("lantiq,ar9")) {
-+	if (of_machine_is_compatible("lantiq,ar9") ||
-+			of_machine_is_compatible("lantiq,vr9")) {
- 		val &= ~0x1f00000;
- 		if (clk->rate == CLOCK_33M)
- 			val |= 0xe00000;
--- 
-1.7.9.1
+There are two things
+
+1> Relinquishing the handle. I think clk_put does that not sure.
+
+2> Gating , ie deactivating the clock the best place for this to
+happen is when there is no
+transfer. However that aggression in  PM can happen later.
+>
+> John

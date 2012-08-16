@@ -1,46 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 18:43:35 +0200 (CEST)
-Received: from shutemov.name ([176.9.204.213]:56834 "EHLO shutemov.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903435Ab2HPQnb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Aug 2012 18:43:31 +0200
-Received: by shutemov.name (Postfix, from userid 1000)
-        id C39902F0BF; Thu, 16 Aug 2012 19:43:56 +0300 (EEST)
-Date:   Thu, 16 Aug 2012 19:43:56 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Andrea Arcangeli <aarcange@redhat.com>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Andi Kleen <ak@linux.intel.com>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        Alex Shi <alex.shu@intel.com>,
-        Jan Beulich <jbeulich@novell.com>,
-        Robert Richter <robert.richter@amd.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Hugh Dickins <hughd@google.com>,
-        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
-        Mel Gorman <mgorman@suse.de>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v3 6/7] mm: make clear_huge_page cache clear only around
- the fault address
-Message-ID: <20120816164356.GA30106@shutemov.name>
-References: <1345130154-9602-1-git-send-email-kirill.shutemov@linux.intel.com>
- <1345130154-9602-7-git-send-email-kirill.shutemov@linux.intel.com>
- <20120816161647.GM11188@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 19:39:21 +0200 (CEST)
+Received: from mail-wi0-f171.google.com ([209.85.212.171]:32783 "EHLO
+        mail-wi0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903452Ab2HPRjP convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Aug 2012 19:39:15 +0200
+Received: by wibhq4 with SMTP id hq4so804005wib.6
+        for <multiple recipients>; Thu, 16 Aug 2012 10:39:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=YzvUXa0F5TWf5Q6hQD3rjDaJsqFMAY9Q/7mK85mxoJo=;
+        b=wsqVmV0xlSMl39XWi+TusLTqdlfJWom/MjkCO6rDqgRPB0SjBCzIEiqgdDR1XsW3OL
+         Bi7zELwH7h/PEjER2l1M/lua4CIWpNGKjO8fT7jTa5NEj8mX8tqOKIF93vl7HFt0kAxR
+         UOEEDbDY28vMjma/lg+GgKaj8rq8LPbOzwh4fO691gKpOy+UH7DUTzOe23CL1Ikt5pAv
+         rNgDM3qyUraJ2BYP0fD675w8pfbIS4Kk+i9RppwBPmynrdYSPH+jCxp4jkYVyhgp5Sm1
+         NiWNtYim/1hTd58zOmQil8P78CwdROm8I85s6nNBrb1KNbUUVKYnzBtpP7v7aaveO+N4
+         8q5g==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20120816161647.GM11188@redhat.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34222
+Received: by 10.180.96.3 with SMTP id do3mr4996518wib.5.1345138750395; Thu, 16
+ Aug 2012 10:39:10 -0700 (PDT)
+Received: by 10.216.169.136 with HTTP; Thu, 16 Aug 2012 10:39:10 -0700 (PDT)
+In-Reply-To: <1791263.5FQJJv4xHF@bender>
+References: <1345132801-8430-1-git-send-email-hauke@hauke-m.de>
+        <1345132801-8430-4-git-send-email-hauke@hauke-m.de>
+        <1791263.5FQJJv4xHF@bender>
+Date:   Thu, 16 Aug 2012 19:39:10 +0200
+Message-ID: <CACna6rxVOFO-n5J_6J7HFSt+WnoX0=2ULjiRv3p9va47K2Edsw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] MIPS: BCM47xx: rewrite GPIO handling and use gpiolib
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Florian Fainelli <florian@openwrt.org>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
+        john@phrozen.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 34223
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill@shutemov.name
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,53 +53,30 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Aug 16, 2012 at 06:16:47PM +0200, Andrea Arcangeli wrote:
-> Hi Kirill,
-> 
-> On Thu, Aug 16, 2012 at 06:15:53PM +0300, Kirill A. Shutemov wrote:
-> >  	for (i = 0; i < pages_per_huge_page;
-> >  	     i++, p = mem_map_next(p, page, i)) {
-> 
-> It may be more optimal to avoid a multiplication/shiftleft before the
-> add, and to do:
-> 
->   	for (i = 0, vaddr = haddr; i < pages_per_huge_page;
->   	     i++, p = mem_map_next(p, page, i), vaddr += PAGE_SIZE) {
-> 
+2012/8/16 Florian Fainelli <florian@openwrt.org>:
+>> +void __init bcm47xx_gpio_init(void)
+>> +{
+>> +     int err;
+>> +
+>> +     switch (bcm47xx_bus_type) {
+>> +#ifdef CONFIG_BCM47XX_SSB
+>> +     case BCM47XX_BUS_TYPE_SSB:
+>> +             bcm47xx_gpio_count = ssb_gpio_count(&bcm47xx_bus.ssb);
+>> +#endif
+>> +#ifdef CONFIG_BCM47XX_BCMA
+>> +     case BCM47XX_BUS_TYPE_BCMA:
+>> +             bcm47xx_gpio_count = bcma_gpio_count(&bcm47xx_bus.bcma.bus);
+>> +#endif
+>> +     }
+>
+> Is this exclusive? Cannot we have both SSB and BCMA on the same device?
 
-Makes sense. I'll update it.
+This applies to SoC only, so I believe it's fine. We don't have SoCs
+based on BCMA and SSB at the same time.
 
-> >  		cond_resched();
-> > -		clear_user_highpage(p, addr + i * PAGE_SIZE);
-> > +		vaddr = haddr + i*PAGE_SIZE;
-> 
-> Not sure if gcc can optimize it away because of the external calls.
-> 
-> > +		if (!ARCH_HAS_USER_NOCACHE || i == target)
-> > +			clear_user_highpage(page + i, vaddr);
-> > +		else
-> > +			clear_user_highpage_nocache(page + i, vaddr);
-> >  	}
-> 
-> 
-> My only worry overall is if there can be some workload where this may
-> actually slow down userland if the CPU cache is very large and
-> userland would access most of the faulted in memory after the first
-> fault.
-> 
-> So I wouldn't mind to add one more check in addition of
-> !ARCH_HAS_USER_NOCACHE above to check a runtime sysctl variable. It'll
-> waste a cacheline yes but I doubt it's measurable compared to the time
-> it takes to do a >=2M hugepage copy.
-
-Hm.. I think with static_key we can avoid cache overhead here. I'll try.
- 
-> Furthermore it would allow people to benchmark its effect without
-> having to rebuild the kernel themself.
-> 
-> All other patches looks fine to me.
-
-Thanks, for review. Could you take a look at huge zero page patchset? ;)
+You can find devices with multiple buses, but additional ones are
+connected via PCIE or USB interface (or some other I don't know
+about).
 
 -- 
- Kirill A. Shutemov
+Rafał

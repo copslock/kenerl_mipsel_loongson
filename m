@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 11:27:50 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:49348 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 11:28:15 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:49350 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903515Ab2HPJ06 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Aug 2012 11:26:58 +0200
+        id S1903523Ab2HPJ07 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Aug 2012 11:26:59 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH 3/4] MIPS: lantiq: falcon clocks were not enabled properly
-Date:   Thu, 16 Aug 2012 11:25:41 +0200
-Message-Id: <1345109142-1756-3-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 4/4] MIPS: lantiq: enable pci clk conditional for xrx200 SoC
+Date:   Thu, 16 Aug 2012 11:25:42 +0200
+Message-Id: <1345109142-1756-4-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
 In-Reply-To: <1345109142-1756-1-git-send-email-blogic@openwrt.org>
 References: <1345109142-1756-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 34201
+X-archive-position: 34202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,26 +30,27 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-As a result of a non populated ->bits field inside the clock struct, the clock
-domains were never powered on the Falcon. Until now we only used domains that
-were also used and powered by the bootloader.
+The xrx200 SoC family has the same PCI clock register layout as the AR9.
+Enable the same quirk as for AR9
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/lantiq/falcon/sysctrl.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ arch/mips/lantiq/xway/sysctrl.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-diff --git a/arch/mips/lantiq/falcon/sysctrl.c b/arch/mips/lantiq/falcon/sysctrl.c
-index ba0123d..2d4ced3 100644
---- a/arch/mips/lantiq/falcon/sysctrl.c
-+++ b/arch/mips/lantiq/falcon/sysctrl.c
-@@ -171,6 +171,7 @@ static inline void clkdev_add_sys(const char *dev, unsigned int module,
- 	clk->cl.con_id = NULL;
- 	clk->cl.clk = clk;
- 	clk->module = module;
-+	clk->bits = bits;
- 	clk->activate = sysctl_activate;
- 	clk->deactivate = sysctl_deactivate;
- 	clk->enable = sysctl_clken;
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index 8863cca..655c210 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -149,7 +149,8 @@ static int pci_enable(struct clk *clk)
+ {
+ 	unsigned int val = ltq_cgu_r32(ifccr);
+ 	/* set bus clock speed */
+-	if (of_machine_is_compatible("lantiq,ar9")) {
++	if (of_machine_is_compatible("lantiq,ar9") ||
++			of_machine_is_compatible("lantiq,vr9")) {
+ 		val &= ~0x1f00000;
+ 		if (clk->rate == CLOCK_33M)
+ 			val |= 0xe00000;
 -- 
 1.7.9.1

@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 05:21:00 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:65086 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 05:47:20 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:63473 "EHLO
         mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903452Ab2HPDUx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Aug 2012 05:20:53 +0200
-Received: by lbbgf7 with SMTP id gf7so1154164lbb.36
-        for <multiple recipients>; Wed, 15 Aug 2012 20:20:47 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1903435Ab2HPDrM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Aug 2012 05:47:12 +0200
+Received: by lbbgf7 with SMTP id gf7so1160897lbb.36
+        for <multiple recipients>; Wed, 15 Aug 2012 20:47:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=j0hOu4EFLgmQxh3JJQahGGWmOgDhDy4VUM17KU//HtQ=;
-        b=oYD5efcr5426uhGiSlb4Zhpb8xWOYtFCwcmsAu16ixQ3Rv6m0yCIwvYM/3Dh0nGUMU
-         eVBz6Y9Ck7JY4U5xQZM7B0f4nzUvvKhb0BOg5AcBUCWALAvroyAWvEcIRUW6geVeiMJN
-         0l58nsEHbyf17bRG0ADL1KCasaOjfmCOBkE7DQRXHDGZ2S+9SdOieyFV+Z/FT1cnRdwL
-         xu95xc87RrMRNdKHc3/qjz5U1OAjLc+/U9usWH8/Kzls9uJaped08KbdW/gxgc4tSpGc
-         gAoCFRILQLGsd5wZvqHwaS0+afm0/4vPH+cH6Qhnwt7HmHDxrsAtQT4CsBc8bYcKii1q
-         vFzw==
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=VzIT+pOKBGBURYjCpsYFFaKrPltwepyBeYhvKotD3gw=;
+        b=azgbP2NttR/4z0qia8K1siIJwLGHPQv7mq4r2yt7BKp4d/ZObh4inPJaPvCgOyJMlM
+         zINF2cssRgFsnwiKDLCB2905dg2Xzv/WIz8oJaU/vlMFjL3bjrr1Zh78A2R2NRXeASYb
+         Tc5YPHmGIGeXTG3eTGkNrtcErZH2Kg3QHpuA/904AtgEryWMwarKx6R7zpZaCod0CQno
+         XbyL3D3nXVqtWOjK/sm7m6sBW9T1rcjOW5DMpgMEAboRh2B0lB6aQKKvQfYS4g0+/qvb
+         0cyv3I57zA21Br/P6Lfvh0sO5hrXSb4yDWcqWFTQ+zPs/A9BuoJQb3k7sGIikm8qrXHg
+         41HA==
 MIME-Version: 1.0
-Received: by 10.152.105.51 with SMTP id gj19mr17819504lab.38.1345087247707;
- Wed, 15 Aug 2012 20:20:47 -0700 (PDT)
-Received: by 10.152.111.138 with HTTP; Wed, 15 Aug 2012 20:20:47 -0700 (PDT)
-In-Reply-To: <CAEdQ38EW_N2Qcquyvn5UxfEc8978i4=zQE_5H65PXahQPOOEuw@mail.gmail.com>
-References: <1344677543-22591-1-git-send-email-chenhc@lemote.com>
-        <1344677543-22591-14-git-send-email-chenhc@lemote.com>
-        <CAEdQ38EW_N2Qcquyvn5UxfEc8978i4=zQE_5H65PXahQPOOEuw@mail.gmail.com>
-Date:   Thu, 16 Aug 2012 11:20:47 +0800
-Message-ID: <CAAhV-H7dRNiZmPDnjn-qh7GPt0kW0x1tq7GiG-reyR+xTQE41g@mail.gmail.com>
-Subject: Re: [PATCH V5 13/18] drm: Define SAREA_MAX for Loongson (PageSize = 16KB).
-From:   Huacai Chen <chenhuacai@gmail.com>
-To:     Matt Turner <mattst88@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Fuxin Zhang <zhangfx@lemote.com>,
+Received: by 10.112.82.33 with SMTP id f1mr58459lby.35.1345088826876; Wed, 15
+ Aug 2012 20:47:06 -0700 (PDT)
+Received: by 10.152.111.138 with HTTP; Wed, 15 Aug 2012 20:47:06 -0700 (PDT)
+In-Reply-To: <20120814114856.GA17040@linux-mips.org>
+References: <1344862344-27434-1-git-send-email-chenhc@lemote.com>
+        <20120814114856.GA17040@linux-mips.org>
+Date:   Thu, 16 Aug 2012 11:47:06 +0800
+X-Google-Sender-Auth: N23f4-7LkWKTo8q6OnoFbgQfrlM
+Message-ID: <CAAhV-H4rbDp86cnrYn-2t05Sv17=LV6Hfchb=dBSeD3oc6x5kQ@mail.gmail.com>
+Subject: Re: [PATCH V2] MIPS: Fix poweroff failure when HOTPLUG_CPU configured.
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
-        dri-devel@lists.freedesktop.org
+        Yong Zhang <yong.zhang@windriver.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 34189
+X-archive-position: 34190
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhuacai@gmail.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,34 +53,36 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Aug 16, 2012 at 9:58 AM, Matt Turner <mattst88@gmail.com> wrote:
-> On Sat, Aug 11, 2012 at 2:32 AM, Huacai Chen <chenhuacai@gmail.com> wrote:
->> Signed-off-by: Huacai Chen <chenhc@lemote.com>
->> Signed-off-by: Hongliang Tao <taohl@lemote.com>
->> Signed-off-by: Hua Yan <yanh@lemote.com>
->> Cc: dri-devel@lists.freedesktop.org
->> ---
->>  include/drm/drm_sarea.h |    2 ++
->>  1 files changed, 2 insertions(+), 0 deletions(-)
->>
->> diff --git a/include/drm/drm_sarea.h b/include/drm/drm_sarea.h
->> index ee5389d..1d1a858 100644
->> --- a/include/drm/drm_sarea.h
->> +++ b/include/drm/drm_sarea.h
->> @@ -37,6 +37,8 @@
->>  /* SAREA area needs to be at least a page */
->>  #if defined(__alpha__)
->>  #define SAREA_MAX                       0x2000U
->> +#elif defined(__mips__)
->> +#define SAREA_MAX                       0x4000U
->>  #elif defined(__ia64__)
->>  #define SAREA_MAX                       0x10000U       /* 64kB */
->>  #else
->> --
->> 1.7.7.3
+On Tue, Aug 14, 2012 at 7:48 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Mon, Aug 13, 2012 at 08:52:24PM +0800, Huacai Chen wrote:
 >
-> SAREA is a DRI-1 concept. The Radeon drivers you're using is DRI-2, so
-> what do you need this for? All the DRI-1 drivers have been removed
-> from Mesa, so I think the answer is nothing.
+>> When poweroff machine, kernel_power_off() call disable_nonboot_cpus().
+>> And if we have HOTPLUG_CPU configured, disable_nonboot_cpus() is not an
+>> empty function but attempt to actually disable the nonboot cpus. Since
+>> system state is SYSTEM_POWER_OFF, play_dead() won't be called and thus
+>> disable_nonboot_cpus() hangs. Therefore, we make this patch to avoid
+>> poweroff failure.
+>
+>> diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+>> index e9a5fd7..69b17a9 100644
+>> --- a/arch/mips/kernel/process.c
+>> +++ b/arch/mips/kernel/process.c
+>> @@ -72,9 +72,7 @@ void __noreturn cpu_idle(void)
+>>                       }
+>>               }
+>>  #ifdef CONFIG_HOTPLUG_CPU
+>> -             if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map) &&
+>> -                 (system_state == SYSTEM_RUNNING ||
+>> -                  system_state == SYSTEM_BOOTING))
+>> +             if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map))
+>
+> Looks good - but I'm wondering if the "!cpu_isset(cpu, cpu_callin_map)"
+> can be removed as well?
+I removed "!cpu_isset(cpu, cpu_callin_map)" and it works well on
+Loongson, but I don't know whether it will affect cavium-octeon...
 
-This patch will be drop, thank you.
+>
+> Also, which -stable branches is this patch applicable?
+>
+>   Ralf
+>

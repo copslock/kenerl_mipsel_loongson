@@ -1,49 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 18:17:29 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:4089 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903438Ab2HPQRU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Aug 2012 18:17:20 +0200
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id q7GGGo4X014551
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 16 Aug 2012 12:16:50 -0400
-Received: from random.random (ovpn-116-31.ams2.redhat.com [10.36.116.31])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id q7GGGmIP000683;
-        Thu, 16 Aug 2012 12:16:48 -0400
-Date:   Thu, 16 Aug 2012 18:16:47 +0200
-From:   Andrea Arcangeli <aarcange@redhat.com>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Andi Kleen <ak@linux.intel.com>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        Alex Shi <alex.shu@intel.com>,
-        Jan Beulich <jbeulich@novell.com>,
-        Robert Richter <robert.richter@amd.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Hugh Dickins <hughd@google.com>,
-        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
-        Mel Gorman <mgorman@suse.de>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v3 6/7] mm: make clear_huge_page cache clear only around
- the fault address
-Message-ID: <20120816161647.GM11188@redhat.com>
-References: <1345130154-9602-1-git-send-email-kirill.shutemov@linux.intel.com>
- <1345130154-9602-7-git-send-email-kirill.shutemov@linux.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 18:26:34 +0200 (CEST)
+Received: from mail-ey0-f177.google.com ([209.85.215.177]:58175 "EHLO
+        mail-ey0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903435Ab2HPQ02 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Aug 2012 18:26:28 +0200
+Received: by eaai12 with SMTP id i12so800660eaa.36
+        for <multiple recipients>; Thu, 16 Aug 2012 09:26:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id:organization:user-agent
+         :in-reply-to:references:mime-version:content-transfer-encoding
+         :content-type;
+        bh=YVH06Z8bj4VVnc/dNu1lheQ9AFbkhddZcwFbmiSMz+Y=;
+        b=oTW7yvsears14Y60MHbXLCenfR/EJLsN3tiWOCd080gNR/JMtvIoGBWxA8824MNCsl
+         efBUOTjhKDyBeOqGhhPZ0zekQbX1lCKgWGyo48GnPBnILXVx+srwgBQSsmPUpmJ2dgjD
+         kNvTKDcp0wl7OUSqj9lZ9OCp4D4wpmxc9CVuk4lssHYykKK/r9q3MOVyDWjFMm5aqdsM
+         3hsR/Yr4zVRzZnl8V5HesC6VhVE9SWqGQZtTSdO60o0hdLbLrIyzohzzKzEeMrGxWtVL
+         Ecs74Okp45dl8NF5oiquPlM3MhKWQ+k6WxubHnqc+EK/x5KxFh/un1H59xtDoUyF42yM
+         SGPw==
+Received: by 10.14.182.134 with SMTP id o6mr2425760eem.26.1345134382699;
+        Thu, 16 Aug 2012 09:26:22 -0700 (PDT)
+Received: from bender.localnet ([2a01:e35:2f70:4010:d923:5f76:32a9:b2d0])
+        by mx.google.com with ESMTPS id l42sm13421491eep.1.2012.08.16.09.26.20
+        (version=SSLv3 cipher=OTHER);
+        Thu, 16 Aug 2012 09:26:21 -0700 (PDT)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-wireless@vger.kernel.org, john@phrozen.org
+Subject: Re: [PATCH v2 3/3] MIPS: BCM47xx: rewrite GPIO handling and use gpiolib
+Date:   Thu, 16 Aug 2012 18:26:18 +0200
+Message-ID: <1791263.5FQJJv4xHF@bender>
+Organization: OpenWrt
+User-Agent: KMail/4.8.4 (Linux/3.2.0-29-generic; KDE/4.8.4; x86_64; ; )
+In-Reply-To: <1345132801-8430-4-git-send-email-hauke@hauke-m.de>
+References: <1345132801-8430-1-git-send-email-hauke@hauke-m.de> <1345132801-8430-4-git-send-email-hauke@hauke-m.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1345130154-9602-7-git-send-email-kirill.shutemov@linux.intel.com>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
-X-archive-position: 34220
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-archive-position: 34221
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aarcange@redhat.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,45 +55,492 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Kirill,
+Hello Hauke,
 
-On Thu, Aug 16, 2012 at 06:15:53PM +0300, Kirill A. Shutemov wrote:
->  	for (i = 0; i < pages_per_huge_page;
->  	     i++, p = mem_map_next(p, page, i)) {
+On Thursday 16 August 2012 18:00:01 Hauke Mehrtens wrote:
+> The original implementation implemented functions like gpio_request()
+> itself, but it missed some new functions added to the GPIO interface.
+> This caused compile problems for some drivers using some of the special
+> request methods which where not implemented. Now it uses gpiolib and
+> this implements all the request methods needed.
+> 
+> The raw GPIO register access methods like bcm47xx_gpio_in() are
+> exported, because some special drivers for this target, not yet in
+> mainline, need them.
+> 
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> ---
 
-It may be more optimal to avoid a multiplication/shiftleft before the
-add, and to do:
+[snip]
 
-  	for (i = 0, vaddr = haddr; i < pages_per_huge_page;
-  	     i++, p = mem_map_next(p, page, i), vaddr += PAGE_SIZE) {
+>  
+> -int gpio_request(unsigned gpio, const char *tag)
+> +static unsigned long bcm47xx_gpio_count;
+> +
+> +/* low level BCM47xx gpio api */
+> +u32 bcm47xx_gpio_in(u32 mask)
 
->  		cond_resched();
-> -		clear_user_highpage(p, addr + i * PAGE_SIZE);
-> +		vaddr = haddr + i*PAGE_SIZE;
+Are you using these low-level helpers beyond the scope of this file? I do not 
+see them being used anywhere else. You might just mark them as static inline.
 
-Not sure if gcc can optimize it away because of the external calls.
-
-> +		if (!ARCH_HAS_USER_NOCACHE || i == target)
-> +			clear_user_highpage(page + i, vaddr);
-> +		else
-> +			clear_user_highpage_nocache(page + i, vaddr);
+>  {
+>  	switch (bcm47xx_bus_type) {
+>  #ifdef CONFIG_BCM47XX_SSB
+>  	case BCM47XX_BUS_TYPE_SSB:
+> -		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco) &&
+> -		    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
+> -			return -EINVAL;
+> -
+> -		if (ssb_extif_available(&bcm47xx_bus.ssb.extif) &&
+> -		    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
+> -			return -EINVAL;
+> -
+> -		if (test_and_set_bit(gpio, gpio_in_use))
+> -			return -EBUSY;
+> -
+> -		return 0;
+> +		return ssb_gpio_in(&bcm47xx_bus.ssb, mask);
+>  #endif
+>  #ifdef CONFIG_BCM47XX_BCMA
+>  	case BCM47XX_BUS_TYPE_BCMA:
+> -		if (gpio >= BCM47XX_CHIPCO_GPIO_LINES)
+> -			return -EINVAL;
+> -
+> -		if (test_and_set_bit(gpio, gpio_in_use))
+> -			return -EBUSY;
+> +		return bcma_gpio_in(&bcm47xx_bus.bcma.bus, mask);
+> +#endif
+> +	}
+> +	return -EINVAL;
+> +}
+> +EXPORT_SYMBOL(bcm47xx_gpio_in);
+>  
+> -		return 0;
+> +u32 bcm47xx_gpio_out(u32 mask, u32 value)
+> +{
+> +	switch (bcm47xx_bus_type) {
+> +#ifdef CONFIG_BCM47XX_SSB
+> +	case BCM47XX_BUS_TYPE_SSB:
+> +		return ssb_gpio_out(&bcm47xx_bus.ssb, mask, value);
+> +#endif
+> +#ifdef CONFIG_BCM47XX_BCMA
+> +	case BCM47XX_BUS_TYPE_BCMA:
+> +		return bcma_gpio_out(&bcm47xx_bus.bcma.bus, mask, value);
+>  #endif
 >  	}
+>  	return -EINVAL;
+>  }
+> -EXPORT_SYMBOL(gpio_request);
+> +EXPORT_SYMBOL(bcm47xx_gpio_out);
+>  
+> -void gpio_free(unsigned gpio)
+> +u32 bcm47xx_gpio_outen(u32 mask, u32 value)
+>  {
+>  	switch (bcm47xx_bus_type) {
+>  #ifdef CONFIG_BCM47XX_SSB
+>  	case BCM47XX_BUS_TYPE_SSB:
+> -		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco) &&
+> -		    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
+> -			return;
+> +		return ssb_gpio_outen(&bcm47xx_bus.ssb, mask, value);
+> +#endif
+> +#ifdef CONFIG_BCM47XX_BCMA
+> +	case BCM47XX_BUS_TYPE_BCMA:
+> +		return bcma_gpio_outen(&bcm47xx_bus.bcma.bus, mask, value);
+> +#endif
+> +	}
+> +	return -EINVAL;
+> +}
+> +EXPORT_SYMBOL(bcm47xx_gpio_outen);
+>  
+> -		if (ssb_extif_available(&bcm47xx_bus.ssb.extif) &&
+> -		    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
+> -			return;
+> +u32 bcm47xx_gpio_control(u32 mask, u32 value)
+> +{
+> +	switch (bcm47xx_bus_type) {
+> +#ifdef CONFIG_BCM47XX_SSB
+> +	case BCM47XX_BUS_TYPE_SSB:
+> +		return ssb_gpio_control(&bcm47xx_bus.ssb, mask, value);
+> +#endif
+> +#ifdef CONFIG_BCM47XX_BCMA
+> +	case BCM47XX_BUS_TYPE_BCMA:
+> +		return bcma_gpio_control(&bcm47xx_bus.bcma.bus, mask, value);
+> +#endif
+> +	}
+> +	return -EINVAL;
+> +}
+> +EXPORT_SYMBOL(bcm47xx_gpio_control);
+>  
+> -		clear_bit(gpio, gpio_in_use);
+> -		return;
+> +u32 bcm47xx_gpio_intmask(u32 mask, u32 value)
+> +{
+> +	switch (bcm47xx_bus_type) {
+> +#ifdef CONFIG_BCM47XX_SSB
+> +	case BCM47XX_BUS_TYPE_SSB:
+> +		return ssb_gpio_intmask(&bcm47xx_bus.ssb, mask, value);
+>  #endif
+>  #ifdef CONFIG_BCM47XX_BCMA
+>  	case BCM47XX_BUS_TYPE_BCMA:
+> -		if (gpio >= BCM47XX_CHIPCO_GPIO_LINES)
+> -			return;
+> +		return bcma_gpio_intmask(&bcm47xx_bus.bcma.bus, mask, value);
+> +#endif
+> +	}
+> +	return -EINVAL;
+> +}
+> +EXPORT_SYMBOL(bcm47xx_gpio_intmask);
+>  
+> -		clear_bit(gpio, gpio_in_use);
+> -		return;
+> +u32 bcm47xx_gpio_polarity(u32 mask, u32 value)
+> +{
+> +	switch (bcm47xx_bus_type) {
+> +#ifdef CONFIG_BCM47XX_SSB
+> +	case BCM47XX_BUS_TYPE_SSB:
+> +		return ssb_gpio_polarity(&bcm47xx_bus.ssb, mask, value);
+> +#endif
+> +#ifdef CONFIG_BCM47XX_BCMA
+> +	case BCM47XX_BUS_TYPE_BCMA:
+> +		return bcma_gpio_polarity(&bcm47xx_bus.bcma.bus, mask, value);
+>  #endif
+>  	}
+> +	return -EINVAL;
+> +}
+> +EXPORT_SYMBOL(bcm47xx_gpio_polarity);
+> +
+> +
+> +static int bcm47xx_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
+> +{
+> +	return bcm47xx_gpio_in(1 << gpio);
+> +}
 
 
-My only worry overall is if there can be some workload where this may
-actually slow down userland if the CPU cache is very large and
-userland would access most of the faulted in memory after the first
-fault.
+> +
+> +static void bcm47xx_gpio_set_value(struct gpio_chip *chip,
+> +				   unsigned gpio, int value)
+> +{
+> +	bcm47xx_gpio_out(1 << gpio, value ? 1 << gpio : 0);
+> +}
+> +
+> +static int bcm47xx_gpio_direction_input(struct gpio_chip *chip,
+> +					unsigned gpio)
+> +{
+> +	bcm47xx_gpio_outen(1 << gpio, 0);
+> +	return 0;
+> +}
+> +
+> +static int bcm47xx_gpio_direction_output(struct gpio_chip *chip,
+> +					 unsigned gpio, int value)
+> +{
+> +	/* first set the gpio out value */
+> +	bcm47xx_gpio_out(1 << gpio, value ? 1 << gpio : 0);
+> +	/* then set the gpio mode */
+> +	bcm47xx_gpio_outen(1 << gpio, 1 << gpio);
+> +	return 0;
+>  }
 
-So I wouldn't mind to add one more check in addition of
-!ARCH_HAS_USER_NOCACHE above to check a runtime sysctl variable. It'll
-waste a cacheline yes but I doubt it's measurable compared to the time
-it takes to do a >=2M hugepage copy.
+Ok, so either mark the low-level helpers static inline, or just get rid of 
+them and make the gpiolib callbacks use the same code directly, I do not think 
+there is a need for such an indirection level.
 
-Furthermore it would allow people to benchmark its effect without
-having to rebuild the kernel themself.
+> -EXPORT_SYMBOL(gpio_free);
+>  
+> -int gpio_to_irq(unsigned gpio)
+> +static int bcm47xx_gpio_to_irq(struct gpio_chip *chip, unsigned gpio)
+>  {
+>  	switch (bcm47xx_bus_type) {
+>  #ifdef CONFIG_BCM47XX_SSB
+> @@ -99,4 +166,53 @@ int gpio_to_irq(unsigned gpio)
+>  	}
+>  	return -EINVAL;
+>  }
+> -EXPORT_SYMBOL_GPL(gpio_to_irq);
+> +
+> +static struct gpio_chip bcm47xx_gpio_chip = {
+> +	.label			= "bcm47xx",
+> +	.get			= bcm47xx_gpio_get_value,
+> +	.set			= bcm47xx_gpio_set_value,
+> +	.direction_input	= bcm47xx_gpio_direction_input,
+> +	.direction_output	= bcm47xx_gpio_direction_output,
+> +	.to_irq			= bcm47xx_gpio_to_irq,
+> +	.base			= 0,
+> +};
+> +
+> +void __init bcm47xx_gpio_init(void)
+> +{
+> +	int err;
+> +
+> +	switch (bcm47xx_bus_type) {
+> +#ifdef CONFIG_BCM47XX_SSB
+> +	case BCM47XX_BUS_TYPE_SSB:
+> +		bcm47xx_gpio_count = ssb_gpio_count(&bcm47xx_bus.ssb);
+> +#endif
+> +#ifdef CONFIG_BCM47XX_BCMA
+> +	case BCM47XX_BUS_TYPE_BCMA:
+> +		bcm47xx_gpio_count = bcma_gpio_count(&bcm47xx_bus.bcma.bus);
+> +#endif
+> +	}
 
-All other patches looks fine to me.
+Is this exclusive? Cannot we have both SSB and BCMA on the same device?
 
-Thanks!
-Andrea
+> +
+> +	bcm47xx_gpio_chip.ngpio = bcm47xx_gpio_count;
+> +
+> +	err = gpiochip_add(&bcm47xx_gpio_chip);
+> +	if (err)
+> +		panic("cannot add BCM47xx GPIO chip, error=%d", err);
+> +}
+> +
+> +int gpio_get_value(unsigned gpio)
+> +{
+> +	if (gpio < bcm47xx_gpio_count)
+> +		return bcm47xx_gpio_in(1 << gpio);
+> +
+> +	return __gpio_get_value(gpio);
+> +}
+> +EXPORT_SYMBOL(gpio_get_value);
+> +
+> +void gpio_set_value(unsigned gpio, int value)
+> +{
+> +	if (gpio < bcm47xx_gpio_count)
+> +		bcm47xx_gpio_out(1 << gpio, value ? 1 << gpio : 0);
+> +	else
+> +		__gpio_set_value(gpio, value);
+> +}
+> +EXPORT_SYMBOL(gpio_set_value);
+
+Why do we need these stubs?
+
+> diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
+> index 95bf4d7..2936532 100644
+> --- a/arch/mips/bcm47xx/setup.c
+> +++ b/arch/mips/bcm47xx/setup.c
+> @@ -220,6 +220,8 @@ void __init plat_mem_setup(void)
+>  	_machine_restart = bcm47xx_machine_restart;
+>  	_machine_halt = bcm47xx_machine_halt;
+>  	pm_power_off = bcm47xx_machine_halt;
+> +
+> +	bcm47xx_gpio_init();
+>  }
+>  
+>  static int __init bcm47xx_register_bus_complete(void)
+> diff --git a/arch/mips/bcm47xx/wgt634u.c b/arch/mips/bcm47xx/wgt634u.c
+> index e9f9ec8..fd1066e 100644
+> --- a/arch/mips/bcm47xx/wgt634u.c
+> +++ b/arch/mips/bcm47xx/wgt634u.c
+> @@ -133,6 +133,7 @@ static int __init wgt634u_init(void)
+>  	 * been allocated ranges 00:09:5b:xx:xx:xx and 00:0f:b5:xx:xx:xx.
+>  	 */
+>  	u8 *et0mac;
+> +	int err;
+>  
+>  	if (bcm47xx_bus_type != BCM47XX_BUS_TYPE_SSB)
+>  		return -ENODEV;
+> @@ -146,6 +147,12 @@ static int __init wgt634u_init(void)
+>  
+>  		printk(KERN_INFO "WGT634U machine detected.\n");
+>  
+> +		err = gpio_request(WGT634U_GPIO_RESET, "reset-buton");
+> +		if (err) {
+> +			printk(KERN_INFO "Can not register gpio for reset button\n");
+> +			return 0;
+> +		}
+> +
+>  		if (!request_irq(gpio_to_irq(WGT634U_GPIO_RESET),
+>  				 gpio_interrupt, IRQF_SHARED,
+>  				 "WGT634U GPIO", &bcm47xx_bus.ssb.chipco)) {
+> diff --git a/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h 
+b/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
+> index 26fdaf4..1bd5560 100644
+> --- a/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
+> +++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
+> @@ -56,4 +56,6 @@ void bcm47xx_fill_bcma_boardinfo(struct bcma_boardinfo 
+*boardinfo,
+>  				 const char *prefix);
+>  #endif
+>  
+> +void bcm47xx_gpio_init(void);
+> +
+>  #endif /* __ASM_BCM47XX_H */
+> diff --git a/arch/mips/include/asm/mach-bcm47xx/gpio.h 
+b/arch/mips/include/asm/mach-bcm47xx/gpio.h
+> index 2ef17e8..27a5632 100644
+> --- a/arch/mips/include/asm/mach-bcm47xx/gpio.h
+> +++ b/arch/mips/include/asm/mach-bcm47xx/gpio.h
+> @@ -4,152 +4,42 @@
+>   * for more details.
+>   *
+>   * Copyright (C) 2007 Aurelien Jarno <aurelien@aurel32.net>
+> + * Copyright (C) 2012 Hauke Mehrtens <hauke@hauke-m.de>
+>   */
+>  
+>  #ifndef __BCM47XX_GPIO_H
+>  #define __BCM47XX_GPIO_H
+>  
+> -#include <linux/ssb/ssb_embedded.h>
+> -#include <linux/bcma/bcma.h>
+> -#include <asm/mach-bcm47xx/bcm47xx.h>
+> +#define ARCH_NR_GPIOS	64
+> +#include <asm-generic/gpio.h>
+>  
+> -#define BCM47XX_EXTIF_GPIO_LINES	5
+> -#define BCM47XX_CHIPCO_GPIO_LINES	16
+> +/* low level BCM47xx gpio api */
+> +u32 bcm47xx_gpio_in(u32 mask);
+> +u32 bcm47xx_gpio_out(u32 mask, u32 value);
+> +u32 bcm47xx_gpio_outen(u32 mask, u32 value);
+> +u32 bcm47xx_gpio_control(u32 mask, u32 value);
+> +u32 bcm47xx_gpio_intmask(u32 mask, u32 value);
+> +u32 bcm47xx_gpio_polarity(u32 mask, u32 value);
+>  
+> -extern int gpio_request(unsigned gpio, const char *label);
+> -extern void gpio_free(unsigned gpio);
+> -extern int gpio_to_irq(unsigned gpio);
+> +int gpio_get_value(unsigned gpio);
+> +void gpio_set_value(unsigned gpio, int value);
+>  
+> -static inline int gpio_get_value(unsigned gpio)
+> +static inline void gpio_intmask(unsigned gpio, int value)
+>  {
+> -	switch (bcm47xx_bus_type) {
+> -#ifdef CONFIG_BCM47XX_SSB
+> -	case BCM47XX_BUS_TYPE_SSB:
+> -		return ssb_gpio_in(&bcm47xx_bus.ssb, 1 << gpio);
+> -#endif
+> -#ifdef CONFIG_BCM47XX_BCMA
+> -	case BCM47XX_BUS_TYPE_BCMA:
+> -		return bcma_chipco_gpio_in(&bcm47xx_bus.bcma.bus.drv_cc,
+> -					   1 << gpio);
+> -#endif
+> -	}
+> -	return -EINVAL;
+> -}
+> -
+> -#define gpio_get_value_cansleep	gpio_get_value
+> -
+> -static inline void gpio_set_value(unsigned gpio, int value)
+> -{
+> -	switch (bcm47xx_bus_type) {
+> -#ifdef CONFIG_BCM47XX_SSB
+> -	case BCM47XX_BUS_TYPE_SSB:
+> -		ssb_gpio_out(&bcm47xx_bus.ssb, 1 << gpio,
+> -			     value ? 1 << gpio : 0);
+> -		return;
+> -#endif
+> -#ifdef CONFIG_BCM47XX_BCMA
+> -	case BCM47XX_BUS_TYPE_BCMA:
+> -		bcma_chipco_gpio_out(&bcm47xx_bus.bcma.bus.drv_cc, 1 << gpio,
+> -				     value ? 1 << gpio : 0);
+> -		return;
+> -#endif
+> -	}
+> -}
+> -
+> -#define gpio_set_value_cansleep gpio_set_value
+> -
+> -static inline int gpio_cansleep(unsigned gpio)
+> -{
+> -	return 0;
+> -}
+> -
+> -static inline int gpio_is_valid(unsigned gpio)
+> -{
+> -	return gpio < (BCM47XX_EXTIF_GPIO_LINES + BCM47XX_CHIPCO_GPIO_LINES);
+> -}
+> -
+> -
+> -static inline int gpio_direction_input(unsigned gpio)
+> -{
+> -	switch (bcm47xx_bus_type) {
+> -#ifdef CONFIG_BCM47XX_SSB
+> -	case BCM47XX_BUS_TYPE_SSB:
+> -		ssb_gpio_outen(&bcm47xx_bus.ssb, 1 << gpio, 0);
+> -		return 0;
+> -#endif
+> -#ifdef CONFIG_BCM47XX_BCMA
+> -	case BCM47XX_BUS_TYPE_BCMA:
+> -		bcma_chipco_gpio_outen(&bcm47xx_bus.bcma.bus.drv_cc, 1 << gpio,
+> -				       0);
+> -		return 0;
+> -#endif
+> -	}
+> -	return -EINVAL;
+> +	bcm47xx_gpio_intmask(1 << gpio, value ? 1 << gpio : 0);
+>  }
+>  
+> -static inline int gpio_direction_output(unsigned gpio, int value)
+> +static inline void gpio_polarity(unsigned gpio, int value)
+>  {
+> -	switch (bcm47xx_bus_type) {
+> -#ifdef CONFIG_BCM47XX_SSB
+> -	case BCM47XX_BUS_TYPE_SSB:
+> -		/* first set the gpio out value */
+> -		ssb_gpio_out(&bcm47xx_bus.ssb, 1 << gpio,
+> -			     value ? 1 << gpio : 0);
+> -		/* then set the gpio mode */
+> -		ssb_gpio_outen(&bcm47xx_bus.ssb, 1 << gpio, 1 << gpio);
+> -		return 0;
+> -#endif
+> -#ifdef CONFIG_BCM47XX_BCMA
+> -	case BCM47XX_BUS_TYPE_BCMA:
+> -		/* first set the gpio out value */
+> -		bcma_chipco_gpio_out(&bcm47xx_bus.bcma.bus.drv_cc, 1 << gpio,
+> -				     value ? 1 << gpio : 0);
+> -		/* then set the gpio mode */
+> -		bcma_chipco_gpio_outen(&bcm47xx_bus.bcma.bus.drv_cc, 1 << gpio,
+> -				       1 << gpio);
+> -		return 0;
+> -#endif
+> -	}
+> -	return -EINVAL;
+> -}
+> -
+> -static inline int gpio_intmask(unsigned gpio, int value)
+> -{
+> -	switch (bcm47xx_bus_type) {
+> -#ifdef CONFIG_BCM47XX_SSB
+> -	case BCM47XX_BUS_TYPE_SSB:
+> -		ssb_gpio_intmask(&bcm47xx_bus.ssb, 1 << gpio,
+> -				 value ? 1 << gpio : 0);
+> -		return 0;
+> -#endif
+> -#ifdef CONFIG_BCM47XX_BCMA
+> -	case BCM47XX_BUS_TYPE_BCMA:
+> -		bcma_chipco_gpio_intmask(&bcm47xx_bus.bcma.bus.drv_cc,
+> -					 1 << gpio, value ? 1 << gpio : 0);
+> -		return 0;
+> -#endif
+> -	}
+> -	return -EINVAL;
+> +	bcm47xx_gpio_polarity(1 << gpio, value ? 1 << gpio : 0);
+>  }
+>  
+> -static inline int gpio_polarity(unsigned gpio, int value)
+> +static inline int irq_to_gpio(int gpio)
+>  {
+> -	switch (bcm47xx_bus_type) {
+> -#ifdef CONFIG_BCM47XX_SSB
+> -	case BCM47XX_BUS_TYPE_SSB:
+> -		ssb_gpio_polarity(&bcm47xx_bus.ssb, 1 << gpio,
+> -				  value ? 1 << gpio : 0);
+> -		return 0;
+> -#endif
+> -#ifdef CONFIG_BCM47XX_BCMA
+> -	case BCM47XX_BUS_TYPE_BCMA:
+> -		bcma_chipco_gpio_polarity(&bcm47xx_bus.bcma.bus.drv_cc,
+> -					  1 << gpio, value ? 1 << gpio : 0);
+> -		return 0;
+> -#endif
+> -	}
+>  	return -EINVAL;
+>  }
+>  
+> +#define gpio_cansleep	__gpio_cansleep
+> +#define gpio_to_irq __gpio_to_irq
+>  
+>  #endif /* __BCM47XX_GPIO_H */
+> 
+-- 
+Florian

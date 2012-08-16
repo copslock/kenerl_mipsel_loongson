@@ -1,48 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 17:19:14 +0200 (CEST)
-Received: from mga01.intel.com ([192.55.52.88]:60927 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903523Ab2HPPQg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Aug 2012 17:16:36 +0200
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP; 16 Aug 2012 08:16:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.77,778,1336374000"; 
-   d="scan'208";a="209391446"
-Received: from blue.fi.intel.com ([10.237.72.50])
-  by fmsmga002.fm.intel.com with ESMTP; 16 Aug 2012 08:15:56 -0700
-Received: by blue.fi.intel.com (Postfix, from userid 1000)
-        id 470B5E008A; Thu, 16 Aug 2012 18:15:59 +0300 (EEST)
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     linux-mm@kvack.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Andi Kleen <ak@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        Alex Shi <alex.shu@intel.com>,
-        Jan Beulich <jbeulich@novell.com>,
-        Robert Richter <robert.richter@amd.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Hugh Dickins <hughd@google.com>,
-        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
-        Mel Gorman <mgorman@suse.de>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: [PATCH v3 6/7] mm: make clear_huge_page cache clear only around the fault address
-Date:   Thu, 16 Aug 2012 18:15:53 +0300
-Message-Id: <1345130154-9602-7-git-send-email-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1345130154-9602-1-git-send-email-kirill.shutemov@linux.intel.com>
-References: <1345130154-9602-1-git-send-email-kirill.shutemov@linux.intel.com>
-X-archive-position: 34215
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 18:00:30 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:39761 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903452Ab2HPQA0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Aug 2012 18:00:26 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 14BDE3EE1B;
+        Thu, 16 Aug 2012 18:00:26 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 0ZVwY+ZY2qof; Thu, 16 Aug 2012 18:00:22 +0200 (CEST)
+Received: from hauke.lan (unknown [134.102.133.158])
+        by hauke-m.de (Postfix) with ESMTPSA id 2696A3EE18;
+        Thu, 16 Aug 2012 18:00:22 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
+        john@phrozen.org, Hauke Mehrtens <hauke@hauke-m.de>,
+        Michael Buesch <m@bues.ch>
+Subject: [PATCH v2 1/3] ssb: add function to return number of gpio lines
+Date:   Thu, 16 Aug 2012 17:59:59 +0200
+Message-Id: <1345132801-8430-2-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1345132801-8430-1-git-send-email-hauke@hauke-m.de>
+References: <1345132801-8430-1-git-send-email-hauke@hauke-m.de>
+X-archive-position: 34216
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill.shutemov@linux.intel.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,87 +42,56 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Andi Kleen <ak@linux.intel.com>
-
-Clearing a 2MB huge page will typically blow away several levels
-of CPU caches. To avoid this only cache clear the 4K area
-around the fault address and use a cache avoiding clears
-for the rest of the 2MB area.
-
-Signed-off-by: Andi Kleen <ak@linux.intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+CC: Michael Buesch <m@bues.ch>
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- mm/memory.c |   34 +++++++++++++++++++++++++++++-----
- 1 files changed, 29 insertions(+), 5 deletions(-)
+ drivers/ssb/embedded.c           |   12 ++++++++++++
+ include/linux/ssb/ssb_embedded.h |    4 ++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index dfc179b..d4626b9 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3969,18 +3969,34 @@ EXPORT_SYMBOL(might_fault);
- #endif
- 
- #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLBFS)
-+
-+#ifndef ARCH_HAS_USER_NOCACHE
-+#define ARCH_HAS_USER_NOCACHE 0
-+#endif
-+
-+#if ARCH_HAS_USER_NOCACHE == 0
-+#define clear_user_highpage_nocache clear_user_highpage
-+#endif
-+
- static void clear_gigantic_page(struct page *page,
--				unsigned long addr,
--				unsigned int pages_per_huge_page)
-+		unsigned long haddr, unsigned long fault_address,
-+		unsigned int pages_per_huge_page)
- {
- 	int i;
- 	struct page *p = page;
-+	unsigned long vaddr;
-+	int target = (fault_address - haddr) >> PAGE_SHIFT;
- 
- 	might_sleep();
-+	vaddr = haddr;
- 	for (i = 0; i < pages_per_huge_page;
- 	     i++, p = mem_map_next(p, page, i)) {
- 		cond_resched();
--		clear_user_highpage(p, addr + i * PAGE_SIZE);
-+		vaddr = haddr + i*PAGE_SIZE;
-+		if (!ARCH_HAS_USER_NOCACHE  || i == target)
-+			clear_user_highpage(p, vaddr);
-+		else
-+			clear_user_highpage_nocache(p, vaddr);
- 	}
+diff --git a/drivers/ssb/embedded.c b/drivers/ssb/embedded.c
+index 9ef124f..078007c 100644
+--- a/drivers/ssb/embedded.c
++++ b/drivers/ssb/embedded.c
+@@ -136,6 +136,18 @@ u32 ssb_gpio_polarity(struct ssb_bus *bus, u32 mask, u32 value)
  }
- void clear_huge_page(struct page *page,
-@@ -3988,16 +4004,24 @@ void clear_huge_page(struct page *page,
- 		     unsigned int pages_per_huge_page)
+ EXPORT_SYMBOL(ssb_gpio_polarity);
+ 
++int ssb_gpio_count(struct ssb_bus *bus)
++{
++	if (ssb_chipco_available(&bus->chipco))
++		return SSB_GPIO_CHIPCO_LINES;
++	else if (ssb_extif_available(&bus->extif))
++		return SSB_GPIO_EXTIF_LINES;
++	else
++		SSB_WARN_ON(1);
++	return 0;
++}
++EXPORT_SYMBOL(ssb_gpio_count);
++
+ #ifdef CONFIG_SSB_DRIVER_GIGE
+ static int gige_pci_init_callback(struct ssb_bus *bus, unsigned long data)
  {
- 	int i;
-+	unsigned long vaddr;
-+	int target = (fault_address - haddr) >> PAGE_SHIFT;
+diff --git a/include/linux/ssb/ssb_embedded.h b/include/linux/ssb/ssb_embedded.h
+index 8d8dedf..f1618d2 100644
+--- a/include/linux/ssb/ssb_embedded.h
++++ b/include/linux/ssb/ssb_embedded.h
+@@ -7,6 +7,9 @@
  
- 	if (unlikely(pages_per_huge_page > MAX_ORDER_NR_PAGES)) {
--		clear_gigantic_page(page, haddr, pages_per_huge_page);
-+		clear_gigantic_page(page, haddr, fault_address,
-+				pages_per_huge_page);
- 		return;
- 	}
+ extern int ssb_watchdog_timer_set(struct ssb_bus *bus, u32 ticks);
  
- 	might_sleep();
-+	vaddr = haddr;
- 	for (i = 0; i < pages_per_huge_page; i++) {
- 		cond_resched();
--		clear_user_highpage(page + i, haddr + i * PAGE_SIZE);
-+		vaddr = haddr + i*PAGE_SIZE;
-+		if (!ARCH_HAS_USER_NOCACHE || i == target)
-+			clear_user_highpage(page + i, vaddr);
-+		else
-+			clear_user_highpage_nocache(page + i, vaddr);
- 	}
- }
++#define SSB_GPIO_EXTIF_LINES	5
++#define SSB_GPIO_CHIPCO_LINES	16
++
+ /* Generic GPIO API */
+ u32 ssb_gpio_in(struct ssb_bus *bus, u32 mask);
+ u32 ssb_gpio_out(struct ssb_bus *bus, u32 mask, u32 value);
+@@ -14,5 +17,6 @@ u32 ssb_gpio_outen(struct ssb_bus *bus, u32 mask, u32 value);
+ u32 ssb_gpio_control(struct ssb_bus *bus, u32 mask, u32 value);
+ u32 ssb_gpio_intmask(struct ssb_bus *bus, u32 mask, u32 value);
+ u32 ssb_gpio_polarity(struct ssb_bus *bus, u32 mask, u32 value);
++int ssb_gpio_count(struct ssb_bus *bus);
  
+ #endif /* LINUX_SSB_EMBEDDED_H_ */
 -- 
-1.7.7.6
+1.7.9.5

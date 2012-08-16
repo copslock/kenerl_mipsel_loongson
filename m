@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 09:35:36 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:51253 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2012 09:58:23 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:48804 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903487Ab2HPHf3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Aug 2012 09:35:29 +0200
+        id S1903487Ab2HPH6R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Aug 2012 09:58:17 +0200
 From:   John Crispin <blogic@openwrt.org>
-To:     Wolfram Sang <w.sang@pengutronix.de>
-Cc:     linux-i2c@vger.kernel.org, linux-mips@linux-mips.org,
+To:     Mark Brown <broonie@opensource.wolfsonmicro.com>
+Cc:     spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org,
         John Crispin <blogic@openwrt.org>,
-        Thomas Langer <thomas.langer@lantiq.com>
-Subject: [PATCH] I2C: MIPS: lantiq: add FALC-ON i2c bus master
-Date:   Thu, 16 Aug 2012 09:34:08 +0200
-Message-Id: <1345102448-4612-1-git-send-email-blogic@openwrt.org>
+        Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>
+Subject: [PATCH] SPI: MIPS: lantiq: adds spi-xway
+Date:   Thu, 16 Aug 2012 09:57:01 +0200
+Message-Id: <1345103821-12543-1-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
-X-archive-position: 34191
+X-archive-position: 34192
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,1049 +30,1030 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This patch adds the driver needed to make the I2C bus work on FALC-ON SoCs.
+This patch adds support for the SPI core found on several Lantiq SoCs.
+The Driver has been runtime tested in combination with m25p80 Flash Devices
+on Amazon_SE and VR9.
 
-Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
+Signed-off-by: Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- drivers/i2c/busses/Kconfig      |   10 +
- drivers/i2c/busses/Makefile     |    1 +
- drivers/i2c/busses/i2c-lantiq.c |  752 +++++++++++++++++++++++++++++++++++++++
- drivers/i2c/busses/i2c-lantiq.h |  234 ++++++++++++
- 4 files changed, 997 insertions(+), 0 deletions(-)
- create mode 100644 drivers/i2c/busses/i2c-lantiq.c
- create mode 100644 drivers/i2c/busses/i2c-lantiq.h
+ drivers/spi/Kconfig    |    8 +
+ drivers/spi/Makefile   |    1 +
+ drivers/spi/spi-xway.c |  977 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 986 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/spi/spi-xway.c
 
-diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-index b4aaa1b..1e80198 100644
---- a/drivers/i2c/busses/Kconfig
-+++ b/drivers/i2c/busses/Kconfig
-@@ -449,6 +449,16 @@ config I2C_IOP3XX
- 	  This driver can also be built as a module.  If so, the module
- 	  will be called i2c-iop3xx.
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 5f84b55..2f6a726 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -419,6 +419,14 @@ config SPI_NUC900
+ 	help
+ 	  SPI driver for Nuvoton NUC900 series ARM SoCs
  
-+config I2C_LANTIQ
-+	tristate "Lantiq I2C interface"
-+	depends on LANTIQ && SOC_FALCON
++config SPI_XWAY
++	tristate "Lantiq XWAY SPI controller"
++	depends on LANTIQ && SOC_TYPE_XWAY
++	select SPI_BITBANG
 +	help
-+	  If you say yes to this option, support will be included for the
-+	  Lantiq I2C core.
++	  This driver supports the Lantiq SoC SPI controller in master
++	  mode.
 +
-+	  This driver can also be built as a module. If so, the module
-+	  will be called i2c-lantiq.
-+
- config I2C_MPC
- 	tristate "MPC107/824x/85xx/512x/52xx/83xx/86xx"
- 	depends on PPC
-diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
-index ce3c2be..da72247 100644
---- a/drivers/i2c/busses/Makefile
-+++ b/drivers/i2c/busses/Makefile
-@@ -44,6 +44,7 @@ obj-$(CONFIG_I2C_IBM_IIC)	+= i2c-ibm_iic.o
- obj-$(CONFIG_I2C_IMX)		+= i2c-imx.o
- obj-$(CONFIG_I2C_INTEL_MID)	+= i2c-intel-mid.o
- obj-$(CONFIG_I2C_IOP3XX)	+= i2c-iop3xx.o
-+obj-$(CONFIG_I2C_LANTIQ)	+= i2c-lantiq.o
- obj-$(CONFIG_I2C_MPC)		+= i2c-mpc.o
- obj-$(CONFIG_I2C_MV64XXX)	+= i2c-mv64xxx.o
- obj-$(CONFIG_I2C_MXS)		+= i2c-mxs.o
-diff --git a/drivers/i2c/busses/i2c-lantiq.c b/drivers/i2c/busses/i2c-lantiq.c
+ #
+ # Add new SPI master controllers in alphabetical order above this line
+ #
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 3920dcf..5189bf5 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -64,4 +64,5 @@ obj-$(CONFIG_SPI_TOPCLIFF_PCH)		+= spi-topcliff-pch.o
+ obj-$(CONFIG_SPI_TXX9)			+= spi-txx9.o
+ obj-$(CONFIG_SPI_XCOMM)		+= spi-xcomm.o
+ obj-$(CONFIG_SPI_XILINX)		+= spi-xilinx.o
++obj-$(CONFIG_SPI_XWAY)		+= spi-xway.o
+ 
+diff --git a/drivers/spi/spi-xway.c b/drivers/spi/spi-xway.c
 new file mode 100644
-index 0000000..e0afa8c
+index 0000000..8441085
 --- /dev/null
-+++ b/drivers/i2c/busses/i2c-lantiq.c
-@@ -0,0 +1,752 @@
++++ b/drivers/spi/spi-xway.c
+@@ -0,0 +1,977 @@
 +/*
-+ * Lantiq I2C bus adapter
++ * Lantiq SoC SPI controller
 + *
-+ * Parts based on i2c-designware.c and other i2c drivers from Linux 2.6.33
++ * Copyright (C) 2011 Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>
++ * Copyright (C) 2012 John Crispin <blogic@openwrt.org>
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ * Copyright (C) 2012 Thomas Langer <thomas.langer@lantiq.com>
++ * This program is free software; you can distribute it and/or modify it
++ * under the terms of the GNU General Public License (Version 2) as
++ * published by the Free Software Foundation.
 + */
 +
-+#include <linux/kernel.h>
++#include <linux/init.h>
 +#include <linux/module.h>
-+#include <linux/delay.h>
-+#include <linux/slab.h> /* for kzalloc, kfree */
-+#include <linux/i2c.h>
-+#include <linux/errno.h>
-+#include <linux/completion.h>
-+#include <linux/interrupt.h>
++#include <linux/workqueue.h>
 +#include <linux/platform_device.h>
 +#include <linux/io.h>
++#include <linux/sched.h>
++#include <linux/delay.h>
++#include <linux/interrupt.h>
++#include <linux/completion.h>
++#include <linux/spinlock.h>
++#include <linux/err.h>
++#include <linux/clk.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/spi_bitbang.h>
 +#include <linux/of_irq.h>
-+#include <linux/of_i2c.h>
 +
 +#include <lantiq_soc.h>
-+#include "i2c-lantiq.h"
 +
-+/* CURRENT ISSUES:
-+ * - no high speed support
-+ * - ten bit mode is not tested (no slave devices)
-+ */
++#define LTQ_SPI_CLC		0x00	/* Clock control */
++#define LTQ_SPI_PISEL		0x04	/* Port input select */
++#define LTQ_SPI_ID		0x08	/* Identification */
++#define LTQ_SPI_CON		0x10	/* Control */
++#define LTQ_SPI_STAT		0x14	/* Status */
++#define LTQ_SPI_WHBSTATE	0x18	/* Write HW modified state */
++#define LTQ_SPI_TB		0x20	/* Transmit buffer */
++#define LTQ_SPI_RB		0x24	/* Receive buffer */
++#define LTQ_SPI_RXFCON		0x30	/* Receive FIFO control */
++#define LTQ_SPI_TXFCON		0x34	/* Transmit FIFO control */
++#define LTQ_SPI_FSTAT		0x38	/* FIFO status */
++#define LTQ_SPI_BRT		0x40	/* Baudrate timer */
++#define LTQ_SPI_BRSTAT		0x44	/* Baudrate timer status */
++#define LTQ_SPI_SFCON		0x60	/* Serial frame control */
++#define LTQ_SPI_SFSTAT		0x64	/* Serial frame status */
++#define LTQ_SPI_GPOCON		0x70	/* General purpose output control */
++#define LTQ_SPI_GPOSTAT		0x74	/* General purpose output status */
++#define LTQ_SPI_FGPO		0x78	/* Forced general purpose output */
++#define LTQ_SPI_RXREQ		0x80	/* Receive request */
++#define LTQ_SPI_RXCNT		0x84	/* Receive count */
++#define LTQ_SPI_DMACON		0xEC	/* DMA control */
++#define LTQ_SPI_IRNEN		0xF4	/* Interrupt node enable */
++#define LTQ_SPI_IRNICR		0xF8	/* Interrupt node interrupt capture */
++#define LTQ_SPI_IRNCR		0xFC	/* Interrupt node control */
 +
-+/* access macros */
-+#define i2c_r32(reg)	\
-+	__raw_readl(&(priv->membase)->reg)
-+#define i2c_w32(val, reg)	\
-+	__raw_writel(val, &(priv->membase)->reg)
-+#define i2c_w32_mask(clear, set, reg)	\
-+	i2c_w32((i2c_r32(reg) & ~(clear)) | (set), reg)
++#define LTQ_SPI_CLC_SMC_SHIFT	16	/* Clock divider for sleep mode */
++#define LTQ_SPI_CLC_SMC_MASK	0xFF
++#define LTQ_SPI_CLC_RMC_SHIFT	8	/* Clock divider for normal run mode */
++#define LTQ_SPI_CLC_RMC_MASK	0xFF
++#define LTQ_SPI_CLC_DISS	BIT(1)	/* Disable status bit */
++#define LTQ_SPI_CLC_DISR	BIT(0)	/* Disable request bit */
 +
-+#define DRV_NAME "i2c-lantiq"
-+#define DRV_VERSION "1.00"
++#define LTQ_SPI_ID_TXFS_SHIFT	24	/* Implemented TX FIFO size */
++#define LTQ_SPI_ID_TXFS_MASK	0x3F
++#define LTQ_SPI_ID_RXFS_SHIFT	16	/* Implemented RX FIFO size */
++#define LTQ_SPI_ID_RXFS_MASK	0x3F
++#define LTQ_SPI_ID_REV_MASK	0x1F	/* Hardware revision number */
++#define LTQ_SPI_ID_CFG		BIT(5)	/* DMA interface support */
 +
-+#define LTQ_I2C_BUSY_TIMEOUT		20 /* ms */
++#define LTQ_SPI_CON_BM_SHIFT	16	/* Data width selection */
++#define LTQ_SPI_CON_BM_MASK	0x1F
++#define LTQ_SPI_CON_EM		BIT(24)	/* Echo mode */
++#define LTQ_SPI_CON_IDLE	BIT(23)	/* Idle bit value */
++#define LTQ_SPI_CON_ENBV	BIT(22)	/* Enable byte valid control */
++#define LTQ_SPI_CON_RUEN	BIT(12)	/* Receive underflow error enable */
++#define LTQ_SPI_CON_TUEN	BIT(11)	/* Transmit underflow error enable */
++#define LTQ_SPI_CON_AEN		BIT(10)	/* Abort error enable */
++#define LTQ_SPI_CON_REN		BIT(9)	/* Receive overflow error enable */
++#define LTQ_SPI_CON_TEN		BIT(8)	/* Transmit overflow error enable */
++#define LTQ_SPI_CON_LB		BIT(7)	/* Loopback control */
++#define LTQ_SPI_CON_PO		BIT(6)	/* Clock polarity control */
++#define LTQ_SPI_CON_PH		BIT(5)	/* Clock phase control */
++#define LTQ_SPI_CON_HB		BIT(4)	/* Heading control */
++#define LTQ_SPI_CON_RXOFF	BIT(1)	/* Switch receiver off */
++#define LTQ_SPI_CON_TXOFF	BIT(0)	/* Switch transmitter off */
 +
-+#ifdef DEBUG
-+#define LTQ_I2C_XFER_TIMEOUT		(25*HZ)
-+#else
-+#define LTQ_I2C_XFER_TIMEOUT		HZ
-+#endif
-+#if defined(DEBUG) && 0
-+#define PRINTK(arg...) pr_debug(arg)
-+#else
-+#define PRINTK(arg...) do {} while (0)
-+#endif
++#define LTQ_SPI_STAT_RXBV_MASK	0x7
++#define LTQ_SPI_STAT_RXBV_SHIFT	28
++#define LTQ_SPI_STAT_BSY	BIT(13)	/* Busy flag */
++#define LTQ_SPI_STAT_RUE	BIT(12)	/* Receive underflow error flag */
++#define LTQ_SPI_STAT_TUE	BIT(11)	/* Transmit underflow error flag */
++#define LTQ_SPI_STAT_AE		BIT(10)	/* Abort error flag */
++#define LTQ_SPI_STAT_RE		BIT(9)	/* Receive error flag */
++#define LTQ_SPI_STAT_TE		BIT(8)	/* Transmit error flag */
++#define LTQ_SPI_STAT_MS		BIT(1)	/* Master/slave select bit */
++#define LTQ_SPI_STAT_EN		BIT(0)	/* Enable bit */
 +
-+#define LTQ_I2C_IMSC_DEFAULT_MASK	(I2C_IMSC_I2C_P_INT_EN | \
-+					 I2C_IMSC_I2C_ERR_INT_EN)
++#define LTQ_SPI_WHBSTATE_SETTUE	BIT(15)	/* Set transmit underflow error flag */
++#define LTQ_SPI_WHBSTATE_SETAE	BIT(14)	/* Set abort error flag */
++#define LTQ_SPI_WHBSTATE_SETRE	BIT(13)	/* Set receive error flag */
++#define LTQ_SPI_WHBSTATE_SETTE	BIT(12)	/* Set transmit error flag */
++#define LTQ_SPI_WHBSTATE_CLRTUE	BIT(11)	/* Clear transmit underflow error
++						flag */
++#define LTQ_SPI_WHBSTATE_CLRAE	BIT(10)	/* Clear abort error flag */
++#define LTQ_SPI_WHBSTATE_CLRRE	BIT(9)	/* Clear receive error flag */
++#define LTQ_SPI_WHBSTATE_CLRTE	BIT(8)	/* Clear transmit error flag */
++#define LTQ_SPI_WHBSTATE_SETME	BIT(7)	/* Set mode error flag */
++#define LTQ_SPI_WHBSTATE_CLRME	BIT(6)	/* Clear mode error flag */
++#define LTQ_SPI_WHBSTATE_SETRUE	BIT(5)	/* Set receive underflow error flag */
++#define LTQ_SPI_WHBSTATE_CLRRUE	BIT(4)	/* Clear receive underflow error flag */
++#define LTQ_SPI_WHBSTATE_SETMS	BIT(3)	/* Set master select bit */
++#define LTQ_SPI_WHBSTATE_CLRMS	BIT(2)	/* Clear master select bit */
++#define LTQ_SPI_WHBSTATE_SETEN	BIT(1)	/* Set enable bit (operational mode) */
++#define LTQ_SPI_WHBSTATE_CLREN	BIT(0)	/* Clear enable bit (config mode */
++#define LTQ_SPI_WHBSTATE_CLR_ERRORS	0x0F50
 +
-+#define LTQ_I2C_ARB_LOST		(1 << 0)
-+#define LTQ_I2C_NACK			(1 << 1)
-+#define LTQ_I2C_RX_UFL			(1 << 2)
-+#define LTQ_I2C_RX_OFL			(1 << 3)
-+#define LTQ_I2C_TX_UFL			(1 << 4)
-+#define LTQ_I2C_TX_OFL			(1 << 5)
++#define LTQ_SPI_RXFCON_RXFITL_SHIFT	8 /* FIFO interrupt trigger level */
++#define LTQ_SPI_RXFCON_RXFITL_MASK	0x3F
++#define LTQ_SPI_RXFCON_RXFLU		BIT(1)	/* FIFO flush */
++#define LTQ_SPI_RXFCON_RXFEN		BIT(0)	/* FIFO enable */
 +
-+struct lantiq_i2c {
-+	struct mutex mutex;
++#define LTQ_SPI_TXFCON_TXFITL_SHIFT	8 /* FIFO interrupt trigger level */
++#define LTQ_SPI_TXFCON_TXFITL_MASK	0x3F
++#define LTQ_SPI_TXFCON_TXFLU		BIT(1)	/* FIFO flush */
++#define LTQ_SPI_TXFCON_TXFEN		BIT(0)	/* FIFO enable */
 +
-+	/* active clock settings */
-+	unsigned int input_clock;	/* clock input for i2c hardware block */
-+	unsigned int i2c_clock;		/* approximated bus clock in kHz */
++#define LTQ_SPI_FSTAT_RXFFL_MASK	0x3f
++#define LTQ_SPI_FSTAT_RXFFL_SHIFT	0
++#define LTQ_SPI_FSTAT_TXFFL_MASK	0x3f
++#define LTQ_SPI_FSTAT_TXFFL_SHIFT	8
 +
-+	struct clk *clk_gate;
-+	struct clk *clk_input;
++#define LTQ_SPI_GPOCON_ISCSBN_SHIFT	8
++#define LTQ_SPI_GPOCON_INVOUTN_SHIFT	0
 +
-+	/* resources (memory and interrupts) */
-+	struct lantiq_reg_i2c __iomem *membase;	/* base of mapped registers */
-+	int irq_lb, irq_b, irq_err, irq_p;	/* last burst, burst, error,
-+						   protocol IRQs */
++#define LTQ_SPI_FGPO_SETOUTN_SHIFT	8
++#define LTQ_SPI_FGPO_CLROUTN_SHIFT	0
 +
-+	struct i2c_adapter adap;
-+	struct device *dev;
++#define LTQ_SPI_RXREQ_RXCNT_MASK	0xFFFF	/* Receive count value */
++#define LTQ_SPI_RXCNT_TODO_MASK		0xFFFF	/* Recevie to-do value */
 +
-+	struct completion cmd_complete;
++#define LTQ_SPI_IRNEN_F		BIT(3)	/* Frame end interrupt request */
++#define LTQ_SPI_IRNEN_E		BIT(2)	/* Error end interrupt request */
++#define LTQ_SPI_IRNEN_T		BIT(1)	/* Transmit end interrupt request */
++#define LTQ_SPI_IRNEN_R		BIT(0)	/* Receive end interrupt request */
++#define LTQ_SPI_IRNEN_ALL	0xF
 +
-+	/* message transfer data */
-+	/* current message */
-+	struct i2c_msg *current_msg;
-+	/* number of messages to handle */
-+	int msgs_num;
-+	/* current buffer */
-+	u8 *msg_buf;
-+	/* remaining length of current buffer */
-+	u32 msg_buf_len;
-+	/* error status of the current transfer */
-+	int msg_err;
++struct ltq_spi {
++	struct spi_bitbang	bitbang;
++	struct completion	done;
++	spinlock_t		lock;
 +
-+	/* master status codes */
-+	enum {
-+		STATUS_IDLE,
-+		STATUS_ADDR,	/* address phase */
-+		STATUS_WRITE,
-+		STATUS_READ,
-+		STATUS_READ_END,
-+		STATUS_STOP
-+	} status;
++	struct device		*dev;
++	void __iomem		*base;
++	struct clk		*fpiclk;
++	struct clk		*spiclk;
++
++	int			status;
++	int			irq[3];
++
++	const u8		*tx;
++	u8			*rx;
++	u32			tx_cnt;
++	u32			rx_cnt;
++	u32			len;
++	struct spi_transfer	*curr_transfer;
++
++	u32 (*get_tx) (struct ltq_spi *);
++
++	u16			txfs;
++	u16			rxfs;
++	unsigned		dma_support:1;
++	unsigned		cfg_mode:1;
 +};
 +
-+static irqreturn_t lantiq_i2c_isr(int irq, void *dev_id);
-+
-+static inline void enable_burst_irq(struct lantiq_i2c *priv)
++static inline struct ltq_spi *ltq_spi_to_hw(struct spi_device *spi)
 +{
-+	i2c_w32_mask(0, I2C_IMSC_LBREQ_INT_EN | I2C_IMSC_BREQ_INT_EN, imsc);
-+}
-+static inline void disable_burst_irq(struct lantiq_i2c *priv)
-+{
-+	i2c_w32_mask(I2C_IMSC_LBREQ_INT_EN | I2C_IMSC_BREQ_INT_EN, 0, imsc);
++	return spi_master_get_devdata(spi->master);
 +}
 +
-+static void prepare_msg_send_addr(struct lantiq_i2c *priv)
++static inline u32 ltq_spi_reg_read(struct ltq_spi *hw, u32 reg)
 +{
-+	struct i2c_msg *msg = priv->current_msg;
-+	int rd = !!(msg->flags & I2C_M_RD);	/* extends to 0 or 1 */
-+	u16 addr = msg->addr;
-+
-+	/* new i2c_msg */
-+	priv->msg_buf = msg->buf;
-+	priv->msg_buf_len = msg->len;
-+	if (rd)
-+		priv->status = STATUS_READ;
-+	else
-+		priv->status = STATUS_WRITE;
-+
-+	/* send slave address */
-+	if (msg->flags & I2C_M_TEN) {
-+		i2c_w32(0xf0 | ((addr & 0x300) >> 7) | rd, txd);
-+		i2c_w32(addr & 0xff, txd);
-+	} else
-+		i2c_w32((addr & 0x7f) << 1 | rd, txd);
++	return ioread32be(hw->base + reg);
 +}
 +
-+static void lantiq_i2c_set_tx_len(struct lantiq_i2c *priv)
++static inline void ltq_spi_reg_write(struct ltq_spi *hw, u32 val, u32 reg)
 +{
-+	struct i2c_msg *msg = priv->current_msg;
-+	int len = (msg->flags & I2C_M_TEN) ? 2 : 1;
-+
-+	PRINTK("set_tx_len %cX\n", (msg->flags & I2C_M_RD) ? 'R' : 'T');
-+
-+	priv->status = STATUS_ADDR;
-+
-+	if (!(msg->flags & I2C_M_RD)) {
-+		len += msg->len;
-+	} else {
-+		/* set maximum received packet size (before rx int!) */
-+		i2c_w32(msg->len, mrps_ctrl);
-+	}
-+	i2c_w32(len, tps_ctrl);
-+	enable_burst_irq(priv);
++	iowrite32be(val, hw->base + reg);
 +}
 +
-+static int lantiq_i2c_hw_set_clock(struct i2c_adapter *adap)
++static inline void ltq_spi_reg_setbit(struct ltq_spi *hw, u32 bits, u32 reg)
 +{
-+	struct lantiq_i2c *priv = i2c_get_adapdata(adap);
-+	unsigned int input_clock = clk_get_rate(priv->clk_input);
-+	u32 dec, inc = 1;
++	u32 val;
 +
-+	/* clock changed? */
-+	if (priv->input_clock == input_clock)
-+		return 0;
++	val = ltq_spi_reg_read(hw, reg);
++	val |= bits;
++	ltq_spi_reg_write(hw, val, reg);
++}
++
++static inline void ltq_spi_reg_clearbit(struct ltq_spi *hw, u32 bits, u32 reg)
++{
++	u32 val;
++
++	val = ltq_spi_reg_read(hw, reg);
++	val &= ~bits;
++	ltq_spi_reg_write(hw, val, reg);
++}
++
++static void ltq_spi_hw_enable(struct ltq_spi *hw)
++{
++	u32 clc;
++
++	/* Power-up module */
++	clk_enable(hw->spiclk);
 +
 +	/*
-+	 * this formula is only an approximation, found by the recommended
-+	 * values in the "I2C Architecture Specification 1.7.1"
++	 * Set clock divider for run mode to 1 to
++	 * run at same frequency as FPI bus
 +	 */
-+	dec = input_clock / (priv->i2c_clock * 2);
-+	if (dec <= 6)
-+		return -ENXIO;
-+
-+	i2c_w32(0, fdiv_high_cfg);
-+	i2c_w32((inc << I2C_FDIV_CFG_INC_OFFSET) |
-+		(dec << I2C_FDIV_CFG_DEC_OFFSET),
-+		fdiv_cfg);
-+
-+	dev_info(priv->dev, "setup clocks (in %d kHz, bus %d kHz, dec=%d)\n",
-+		input_clock, priv->i2c_clock, dec);
-+
-+	priv->input_clock = input_clock;
-+	return 0;
++	clc = (1 << LTQ_SPI_CLC_RMC_SHIFT);
++	ltq_spi_reg_write(hw, clc, LTQ_SPI_CLC);
 +}
 +
-+static int lantiq_i2c_hw_init(struct i2c_adapter *adap)
++static void ltq_spi_hw_disable(struct ltq_spi *hw)
 +{
-+	int ret = 0;
-+	struct lantiq_i2c *priv = i2c_get_adapdata(adap);
++	/* Set clock divider to 0 and set module disable bit */
++	ltq_spi_reg_write(hw, LTQ_SPI_CLC_DISS, LTQ_SPI_CLC);
 +
-+	/* disable bus */
-+	i2c_w32_mask(I2C_RUN_CTRL_RUN_EN, 0, run_ctrl);
++	/* Power-down module */
++	clk_disable(hw->spiclk);
++}
 +
-+#ifndef DEBUG
-+	/* set normal operation clock divider */
-+	i2c_w32(1 << I2C_CLC_RMC_OFFSET, clc);
-+#else
-+	/* for debugging a higher divider value! */
-+	i2c_w32(0xF0 << I2C_CLC_RMC_OFFSET, clc);
-+#endif
++static void ltq_spi_reset_fifos(struct ltq_spi *hw)
++{
++	u32 val;
 +
-+	/* setup clock */
-+	ret = lantiq_i2c_hw_set_clock(adap);
-+	if (ret != 0) {
-+		dev_warn(priv->dev, "invalid clock settings\n");
-+		return ret;
++	/*
++	 * Enable and flush FIFOs. Set interrupt trigger level to
++	 * half of FIFO count implemented in hardware.
++	 */
++	if (hw->txfs > 1) {
++		val = hw->txfs << (LTQ_SPI_TXFCON_TXFITL_SHIFT - 1);
++		val |= LTQ_SPI_TXFCON_TXFEN | LTQ_SPI_TXFCON_TXFLU;
++		ltq_spi_reg_write(hw, val, LTQ_SPI_TXFCON);
 +	}
 +
-+	/* configure fifo */
-+	i2c_w32(I2C_FIFO_CFG_TXFC | /* tx fifo as flow controller */
-+		I2C_FIFO_CFG_RXFC | /* rx fifo as flow controller */
-+		I2C_FIFO_CFG_TXFA_TXFA2 | /* tx fifo 4-byte aligned */
-+		I2C_FIFO_CFG_RXFA_RXFA2 | /* rx fifo 4-byte aligned */
-+		I2C_FIFO_CFG_TXBS_TXBS0 | /* tx fifo burst size is 1 word */
-+		I2C_FIFO_CFG_RXBS_RXBS0,  /* rx fifo burst size is 1 word */
-+		fifo_cfg);
-+
-+	/* configure address */
-+	i2c_w32(I2C_ADDR_CFG_SOPE_EN |	/* generate stop when no more data in
-+					   the fifo */
-+		I2C_ADDR_CFG_SONA_EN |	/* generate stop when NA received */
-+		I2C_ADDR_CFG_MnS_EN |	/* we are master device */
-+		0,			/* our slave address (not used!) */
-+		addr_cfg);
-+
-+	/* enable bus */
-+	i2c_w32_mask(0, I2C_RUN_CTRL_RUN_EN, run_ctrl);
-+
-+	return 0;
-+}
-+
-+static int lantiq_i2c_wait_bus_not_busy(struct lantiq_i2c *priv)
-+{
-+	int timeout = LTQ_I2C_BUSY_TIMEOUT;
-+
-+	while ((i2c_r32(bus_stat) & I2C_BUS_STAT_BS_MASK)
-+				 != I2C_BUS_STAT_BS_FREE) {
-+		if (timeout <= 0) {
-+			dev_err(priv->dev, "timeout waiting for bus ready\n");
-+			return -ETIMEDOUT;
-+		}
-+		timeout--;
-+		mdelay(1);
-+	}
-+
-+	return 0;
-+}
-+
-+static void lantiq_i2c_tx(struct lantiq_i2c *priv, int last)
-+{
-+	if (priv->msg_buf_len && priv->msg_buf) {
-+		i2c_w32(*priv->msg_buf, txd);
-+
-+		if (--priv->msg_buf_len)
-+			priv->msg_buf++;
-+		else
-+			priv->msg_buf = NULL;
-+	} else
-+		last = 1;
-+
-+	if (last)
-+		disable_burst_irq(priv);
-+}
-+
-+static void lantiq_i2c_rx(struct lantiq_i2c *priv, int last)
-+{
-+	u32 fifo_stat, timeout;
-+	if (priv->msg_buf_len && priv->msg_buf) {
-+		timeout = 5000000;
-+		do {
-+			fifo_stat = i2c_r32(ffs_stat);
-+		} while (!fifo_stat && --timeout);
-+		if (!timeout) {
-+			last = 1;
-+			PRINTK("\nrx timeout\n");
-+			goto err;
-+		}
-+		while (fifo_stat) {
-+			*priv->msg_buf = i2c_r32(rxd);
-+			if (--priv->msg_buf_len)
-+				priv->msg_buf++;
-+			else {
-+				priv->msg_buf = NULL;
-+				last = 1;
-+				break;
-+			}
-+			#if 0
-+			fifo_stat = i2c_r32(ffs_stat);
-+			#else
-+			/* do not read more than burst size, otherwise no "last
-+			burst" is generated and the transaction is blocked! */
-+			fifo_stat = 0;
-+			#endif
-+		}
-+	} else {
-+		last = 1;
-+	}
-+err:
-+	if (last) {
-+		disable_burst_irq(priv);
-+
-+		if (priv->status == STATUS_READ_END) {
-+			/* do the STATUS_STOP and complete() here, as sometimes
-+			   the tx_end is already seen before this is finished */
-+			priv->status = STATUS_STOP;
-+			complete(&priv->cmd_complete);
-+		} else {
-+			i2c_w32(I2C_ENDD_CTRL_SETEND, endd_ctrl);
-+			priv->status = STATUS_READ_END;
-+		}
++	if (hw->rxfs > 1) {
++		val = hw->rxfs << (LTQ_SPI_RXFCON_RXFITL_SHIFT - 1);
++		val |= LTQ_SPI_RXFCON_RXFEN | LTQ_SPI_RXFCON_RXFLU;
++		ltq_spi_reg_write(hw, val, LTQ_SPI_RXFCON);
 +	}
 +}
 +
-+static void lantiq_i2c_xfer_init(struct lantiq_i2c *priv)
++static inline int ltq_spi_wait_ready(struct ltq_spi *hw)
 +{
-+	/* enable interrupts */
-+	i2c_w32(LTQ_I2C_IMSC_DEFAULT_MASK, imsc);
++	u32 stat;
++	unsigned long timeout;
 +
-+	/* trigger transfer of first msg */
-+	lantiq_i2c_set_tx_len(priv);
++	timeout = jiffies + msecs_to_jiffies(200);
++
++	do {
++		stat = ltq_spi_reg_read(hw, LTQ_SPI_STAT);
++		if (!(stat & LTQ_SPI_STAT_BSY))
++			return 0;
++
++		cond_resched();
++	} while (!time_after_eq(jiffies, timeout));
++
++	dev_err(hw->dev, "SPI wait ready timed out stat: %x\n", stat);
++
++	return -ETIMEDOUT;
 +}
 +
-+static void dump_msgs(struct i2c_msg msgs[], int num, int rx)
++static void ltq_spi_config_mode_set(struct ltq_spi *hw)
 +{
-+#if defined(DEBUG)
-+	int i, j;
-+	pr_debug("Messages %d %s\n", num, rx ? "out" : "in");
-+	for (i = 0; i < num; i++) {
-+		pr_debug("%2d %cX Msg(%d) addr=0x%X: ", i,
-+			(msgs[i].flags & I2C_M_RD) ? 'R' : 'T',
-+			msgs[i].len, msgs[i].addr);
-+		if (!(msgs[i].flags & I2C_M_RD) || rx) {
-+			for (j = 0; j < msgs[i].len; j++)
-+				pr_debug("%02X ", msgs[i].buf[j]);
-+		}
-+		pr_debug("\n");
++	if (hw->cfg_mode)
++		return;
++
++	/*
++	 * Putting the SPI module in config mode is only safe if no
++	 * transfer is in progress as indicated by busy flag STATE.BSY.
++	 */
++	if (ltq_spi_wait_ready(hw)) {
++		ltq_spi_reset_fifos(hw);
++		hw->status = -ETIMEDOUT;
 +	}
-+#endif
++	ltq_spi_reg_write(hw, LTQ_SPI_WHBSTATE_CLREN, LTQ_SPI_WHBSTATE);
++
++	hw->cfg_mode = 1;
 +}
 +
-+static void lantiq_i2c_release_bus(struct lantiq_i2c *priv)
++static void ltq_spi_run_mode_set(struct ltq_spi *hw)
 +{
-+	if ((i2c_r32(bus_stat) & I2C_BUS_STAT_BS_MASK) == I2C_BUS_STAT_BS_BM)
-+		i2c_w32(I2C_ENDD_CTRL_SETEND, endd_ctrl);
++	if (!hw->cfg_mode)
++		return;
++
++	ltq_spi_reg_write(hw, LTQ_SPI_WHBSTATE_SETEN, LTQ_SPI_WHBSTATE);
++
++	hw->cfg_mode = 0;
 +}
 +
-+static int lantiq_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
-+			   int num)
++static u32 ltq_spi_tx_word_u8(struct ltq_spi *hw)
 +{
-+	struct lantiq_i2c *priv = i2c_get_adapdata(adap);
-+	int ret;
++	const u8 *tx = hw->tx;
++	u32 data = *tx++;
 +
-+	dev_dbg(priv->dev, "xfer %u messages\n", num);
-+	dump_msgs(msgs, num, 0);
++	hw->tx_cnt++;
++	hw->tx++;
 +
-+	mutex_lock(&priv->mutex);
-+
-+	INIT_COMPLETION(priv->cmd_complete);
-+	priv->current_msg = msgs;
-+	priv->msgs_num = num;
-+	priv->msg_err = 0;
-+	priv->status = STATUS_IDLE;
-+
-+	/* wait for the bus to become ready */
-+	ret = lantiq_i2c_wait_bus_not_busy(priv);
-+	if (ret)
-+		goto done;
-+
-+	while (priv->msgs_num) {
-+		/* start the transfers */
-+		lantiq_i2c_xfer_init(priv);
-+
-+		/* wait for transfers to complete */
-+		ret = wait_for_completion_interruptible_timeout(
-+			&priv->cmd_complete, LTQ_I2C_XFER_TIMEOUT);
-+		if (ret == 0) {
-+			dev_err(priv->dev, "controller timed out\n");
-+			lantiq_i2c_hw_init(adap);
-+			ret = -ETIMEDOUT;
-+			goto done;
-+		} else if (ret < 0)
-+			goto done;
-+
-+		if (priv->msg_err) {
-+			if (priv->msg_err & LTQ_I2C_NACK)
-+				ret = -ENXIO;
-+			else
-+				ret = -EREMOTEIO;
-+			goto done;
-+		}
-+		if (--priv->msgs_num)
-+			priv->current_msg++;
-+	}
-+	/* no error? */
-+	ret = num;
-+
-+done:
-+	lantiq_i2c_release_bus(priv);
-+
-+	mutex_unlock(&priv->mutex);
-+
-+	if (ret >= 0)
-+		dump_msgs(msgs, num, 1);
-+
-+	PRINTK("XFER ret %d\n", ret);
-+	return ret;
++	return data;
 +}
 +
-+static irqreturn_t lantiq_i2c_isr_burst(int irq, void *dev_id)
++static u32 ltq_spi_tx_word_u16(struct ltq_spi *hw)
 +{
-+	struct lantiq_i2c *priv = dev_id;
-+	struct i2c_msg *msg = priv->current_msg;
-+	int last = (irq == priv->irq_lb);
++	const u16 *tx = (u16 *) hw->tx;
++	u32 data = *tx++;
 +
-+	if (last)
-+		PRINTK("LB ");
++	hw->tx_cnt += 2;
++	hw->tx += 2;
++
++	return data;
++}
++
++static u32 ltq_spi_tx_word_u32(struct ltq_spi *hw)
++{
++	const u32 *tx = (u32 *) hw->tx;
++	u32 data = *tx++;
++
++	hw->tx_cnt += 4;
++	hw->tx += 4;
++
++	return data;
++}
++
++static void ltq_spi_bits_per_word_set(struct spi_device *spi)
++{
++	struct ltq_spi *hw = ltq_spi_to_hw(spi);
++	u32 bm;
++	u8 bits_per_word = spi->bits_per_word;
++
++	/*
++	 * Use either default value of SPI device or value
++	 * from current transfer.
++	 */
++	if (hw->curr_transfer && hw->curr_transfer->bits_per_word)
++		bits_per_word = hw->curr_transfer->bits_per_word;
++
++	if (bits_per_word <= 8)
++		hw->get_tx = ltq_spi_tx_word_u8;
++	else if (bits_per_word <= 16)
++		hw->get_tx = ltq_spi_tx_word_u16;
++	else if (bits_per_word <= 32)
++		hw->get_tx = ltq_spi_tx_word_u32;
++
++	/* CON.BM value = bits_per_word - 1 */
++	bm = (bits_per_word - 1) << LTQ_SPI_CON_BM_SHIFT;
++
++	ltq_spi_reg_clearbit(hw, LTQ_SPI_CON_BM_MASK <<
++			     LTQ_SPI_CON_BM_SHIFT, LTQ_SPI_CON);
++	ltq_spi_reg_setbit(hw, bm, LTQ_SPI_CON);
++}
++
++static void ltq_spi_speed_set(struct spi_device *spi)
++{
++	struct ltq_spi *hw = ltq_spi_to_hw(spi);
++	u32 br, max_speed_hz, spi_clk;
++	u32 speed_hz = spi->max_speed_hz;
++
++	/*
++	 * Use either default value of SPI device or value
++	 * from current transfer.
++	 */
++	if (hw->curr_transfer && hw->curr_transfer->speed_hz)
++		speed_hz = hw->curr_transfer->speed_hz;
++
++	/*
++	 * SPI module clock is derived from FPI bus clock dependent on
++	 * divider value in CLC.RMS which is always set to 1.
++	 */
++	spi_clk = clk_get_rate(hw->fpiclk);
++
++	/*
++	 * Maximum SPI clock frequency in master mode is half of
++	 * SPI module clock frequency. Maximum reload value of
++	 * baudrate generator BR is 2^16.
++	 */
++	max_speed_hz = spi_clk / 2;
++	if (speed_hz >= max_speed_hz)
++		br = 0;
 +	else
-+		PRINTK("B ");
++		br = (max_speed_hz / speed_hz) - 1;
 +
-+	if (msg->flags & I2C_M_RD) {
-+		switch (priv->status) {
-+		case STATUS_ADDR:
-+			PRINTK("X");
-+			prepare_msg_send_addr(priv);
-+			disable_burst_irq(priv);
-+			break;
-+		case STATUS_READ:
-+		case STATUS_READ_END:
-+			PRINTK("R");
-+			lantiq_i2c_rx(priv, last);
-+			break;
-+		default:
-+			disable_burst_irq(priv);
-+			pr_warn("Status R %d\n", priv->status);
-+			break;
++	if (br > 0xFFFF)
++		br = 0xFFFF;
++
++	ltq_spi_reg_write(hw, br, LTQ_SPI_BRT);
++}
++
++static void ltq_spi_clockmode_set(struct spi_device *spi)
++{
++	struct ltq_spi *hw = ltq_spi_to_hw(spi);
++	u32 con;
++
++	con = ltq_spi_reg_read(hw, LTQ_SPI_CON);
++
++	/*
++	 * SPI mode mapping in CON register:
++	 * Mode CPOL CPHA CON.PO CON.PH
++	 *  0    0    0      0      1
++	 *  1    0    1      0      0
++	 *  2    1    0      1      1
++	 *  3    1    1      1      0
++	 */
++	if (spi->mode & SPI_CPHA)
++		con &= ~LTQ_SPI_CON_PH;
++	else
++		con |= LTQ_SPI_CON_PH;
++
++	if (spi->mode & SPI_CPOL)
++		con |= LTQ_SPI_CON_PO;
++	else
++		con &= ~LTQ_SPI_CON_PO;
++
++	/* Set heading control */
++	if (spi->mode & SPI_LSB_FIRST)
++		con &= ~LTQ_SPI_CON_HB;
++	else
++		con |= LTQ_SPI_CON_HB;
++
++	ltq_spi_reg_write(hw, con, LTQ_SPI_CON);
++}
++
++static void ltq_spi_xmit_set(struct ltq_spi *hw, struct spi_transfer *t)
++{
++	u32 con;
++
++	con = ltq_spi_reg_read(hw, LTQ_SPI_CON);
++
++	if (t) {
++		if (t->tx_buf && t->rx_buf) {
++			con &= ~(LTQ_SPI_CON_TXOFF | LTQ_SPI_CON_RXOFF);
++		} else if (t->rx_buf) {
++			con &= ~LTQ_SPI_CON_RXOFF;
++			con |= LTQ_SPI_CON_TXOFF;
++		} else if (t->tx_buf) {
++			con &= ~LTQ_SPI_CON_TXOFF;
++			con |= LTQ_SPI_CON_RXOFF;
 +		}
-+	} else {
-+		switch (priv->status) {
-+		case STATUS_ADDR:
-+			PRINTK("x");
-+			prepare_msg_send_addr(priv);
-+			break;
-+		case STATUS_WRITE:
-+			PRINTK("w");
-+			lantiq_i2c_tx(priv, last);
-+			break;
-+		default:
-+			disable_burst_irq(priv);
-+			pr_warn("Status W %d\n", priv->status);
-+			break;
-+		}
++	} else
++		con |= (LTQ_SPI_CON_TXOFF | LTQ_SPI_CON_RXOFF);
++
++	ltq_spi_reg_write(hw, con, LTQ_SPI_CON);
++}
++
++static void ltq_spi_internal_cs_activate(struct spi_device *spi)
++{
++	struct ltq_spi *hw = ltq_spi_to_hw(spi);
++	u32 fgpo;
++
++	fgpo = (1 << (spi->chip_select + LTQ_SPI_FGPO_CLROUTN_SHIFT));
++	ltq_spi_reg_setbit(hw, fgpo, LTQ_SPI_FGPO);
++}
++
++static void ltq_spi_internal_cs_deactivate(struct spi_device *spi)
++{
++	struct ltq_spi *hw = ltq_spi_to_hw(spi);
++	u32 fgpo;
++
++	fgpo = (1 << (spi->chip_select + LTQ_SPI_FGPO_SETOUTN_SHIFT));
++	ltq_spi_reg_setbit(hw, fgpo, LTQ_SPI_FGPO);
++}
++
++static void ltq_spi_chipselect(struct spi_device *spi, int cs)
++{
++	struct ltq_spi *hw = ltq_spi_to_hw(spi);
++
++	switch (cs) {
++	case BITBANG_CS_ACTIVE:
++		ltq_spi_bits_per_word_set(spi);
++		ltq_spi_speed_set(spi);
++		ltq_spi_clockmode_set(spi);
++		ltq_spi_run_mode_set(hw);
++		ltq_spi_internal_cs_activate(spi);
++		break;
++
++	case BITBANG_CS_INACTIVE:
++		ltq_spi_internal_cs_deactivate(spi);
++		ltq_spi_config_mode_set(hw);
++		break;
++	}
++}
++
++static int ltq_spi_setup_transfer(struct spi_device *spi,
++				  struct spi_transfer *t)
++{
++	struct ltq_spi *hw = ltq_spi_to_hw(spi);
++	u8 bits_per_word = spi->bits_per_word;
++
++	hw->curr_transfer = t;
++
++	if (t && t->bits_per_word)
++		bits_per_word = t->bits_per_word;
++
++	if (bits_per_word > 32)
++		return -EINVAL;
++
++	ltq_spi_config_mode_set(hw);
++
++	return 0;
++}
++
++static int ltq_spi_setup(struct spi_device *spi)
++{
++	struct ltq_spi *hw = ltq_spi_to_hw(spi);
++	u32 gpocon, fgpo;
++
++	/* Set default word length to 8 if not set */
++	if (!spi->bits_per_word)
++		spi->bits_per_word = 8;
++
++	if (spi->bits_per_word > 32)
++		return -EINVAL;
++
++	/*
++	 * Up to six GPIOs can be connected to the SPI module
++	 * via GPIO alternate function to control the chip select lines.
++	 */
++	gpocon = (1 << (spi->chip_select +
++			LTQ_SPI_GPOCON_ISCSBN_SHIFT));
++
++	if (spi->mode & SPI_CS_HIGH)
++		gpocon |= (1 << spi->chip_select);
++
++	fgpo = (1 << (spi->chip_select + LTQ_SPI_FGPO_SETOUTN_SHIFT));
++
++	ltq_spi_reg_setbit(hw, gpocon, LTQ_SPI_GPOCON);
++	ltq_spi_reg_setbit(hw, fgpo, LTQ_SPI_FGPO);
++
++	return 0;
++}
++
++static void ltq_spi_cleanup(struct spi_device *spi)
++{
++
++}
++
++static void ltq_spi_txfifo_write(struct ltq_spi *hw)
++{
++	u32 fstat, data;
++	u16 fifo_space;
++
++	/* Determine how much FIFOs are free for TX data */
++	fstat = ltq_spi_reg_read(hw, LTQ_SPI_FSTAT);
++	fifo_space = hw->txfs - ((fstat >> LTQ_SPI_FSTAT_TXFFL_SHIFT) &
++					LTQ_SPI_FSTAT_TXFFL_MASK);
++
++	if (!fifo_space)
++		return;
++
++	while (hw->tx_cnt < hw->len && fifo_space) {
++		data = hw->get_tx(hw);
++		ltq_spi_reg_write(hw, data, LTQ_SPI_TB);
++		fifo_space--;
++	}
++}
++
++static void ltq_spi_rxfifo_read(struct ltq_spi *hw)
++{
++	u32 fstat, data, *rx32;
++	u16 fifo_fill;
++	u8 rxbv, shift, *rx8;
++
++	/* Determine how much FIFOs are filled with RX data */
++	fstat = ltq_spi_reg_read(hw, LTQ_SPI_FSTAT);
++	fifo_fill = ((fstat >> LTQ_SPI_FSTAT_RXFFL_SHIFT)
++			& LTQ_SPI_FSTAT_RXFFL_MASK);
++
++	if (!fifo_fill)
++		return;
++
++	/*
++	 * The 32 bit FIFO is always used completely independent from the
++	 * bits_per_word value. Thus four bytes have to be read at once
++	 * per FIFO.
++	 */
++	rx32 = (u32 *) hw->rx;
++	while (hw->len - hw->rx_cnt >= 4 && fifo_fill) {
++		*rx32++ = ltq_spi_reg_read(hw, LTQ_SPI_RB);
++		hw->rx_cnt += 4;
++		hw->rx += 4;
++		fifo_fill--;
 +	}
 +
-+	i2c_w32(I2C_ICR_BREQ_INT_CLR | I2C_ICR_LBREQ_INT_CLR, icr);
++	/*
++	 * If there are remaining bytes, read byte count from STAT.RXBV
++	 * register and read the data byte-wise.
++	 */
++	while (fifo_fill && hw->rx_cnt < hw->len) {
++		rxbv = (ltq_spi_reg_read(hw, LTQ_SPI_STAT) >>
++			LTQ_SPI_STAT_RXBV_SHIFT) & LTQ_SPI_STAT_RXBV_MASK;
++		data = ltq_spi_reg_read(hw, LTQ_SPI_RB);
++
++		shift = (rxbv - 1) * 8;
++		rx8 = hw->rx;
++
++		while (rxbv) {
++			*rx8++ = (data >> shift) & 0xFF;
++			rxbv--;
++			shift -= 8;
++			hw->rx_cnt++;
++			hw->rx++;
++		}
++
++		fifo_fill--;
++	}
++}
++
++static void ltq_spi_rxreq_set(struct ltq_spi *hw)
++{
++	u32 rxreq, rxreq_max, rxtodo;
++
++	rxtodo = ltq_spi_reg_read(hw, LTQ_SPI_RXCNT) & LTQ_SPI_RXCNT_TODO_MASK;
++
++	/*
++	 * In RX-only mode the serial clock is activated only after writing
++	 * the expected amount of RX bytes into RXREQ register.
++	 * To avoid receive overflows at high clocks it is better to request
++	 * only the amount of bytes that fits into all FIFOs. This value
++	 * depends on the FIFO size implemented in hardware.
++	 */
++	rxreq = hw->len - hw->rx_cnt;
++	rxreq_max = hw->rxfs << 2;
++	rxreq = min(rxreq_max, rxreq);
++
++	if (!rxtodo && rxreq)
++		ltq_spi_reg_write(hw, rxreq, LTQ_SPI_RXREQ);
++}
++
++static inline void ltq_spi_complete(struct ltq_spi *hw)
++{
++	complete(&hw->done);
++}
++
++irqreturn_t ltq_spi_tx_irq(int irq, void *data)
++{
++	struct ltq_spi *hw = data;
++	unsigned long flags;
++	int completed = 0;
++
++	spin_lock_irqsave(&hw->lock, flags);
++
++	if (hw->tx_cnt < hw->len)
++		ltq_spi_txfifo_write(hw);
++
++	if (hw->tx_cnt == hw->len)
++		completed = 1;
++
++	spin_unlock_irqrestore(&hw->lock, flags);
++
++	if (completed)
++		ltq_spi_complete(hw);
++
 +	return IRQ_HANDLED;
 +}
 +
-+static void lantiq_i2c_isr_prot(struct lantiq_i2c *priv)
++irqreturn_t ltq_spi_rx_irq(int irq, void *data)
 +{
-+	u32 i_pro = i2c_r32(p_irqss);
++	struct ltq_spi *hw = data;
++	unsigned long flags;
++	int completed = 0;
 +
-+	PRINTK("i2c-p");
++	spin_lock_irqsave(&hw->lock, flags);
 +
-+	/* not acknowledge */
-+	if (i_pro & I2C_P_IRQSS_NACK) {
-+		priv->msg_err |= LTQ_I2C_NACK;
-+		PRINTK(" nack");
++	if (hw->rx_cnt < hw->len) {
++		ltq_spi_rxfifo_read(hw);
++
++		if (hw->tx && hw->tx_cnt < hw->len)
++			ltq_spi_txfifo_write(hw);
 +	}
 +
-+	/* arbitration lost */
-+	if (i_pro & I2C_P_IRQSS_AL) {
-+		priv->msg_err |= LTQ_I2C_ARB_LOST;
-+		PRINTK(" arb-lost");
-+	}
-+	/* tx -> rx switch */
-+	if (i_pro & I2C_P_IRQSS_RX)
-+		PRINTK(" rx");
++	if (hw->rx_cnt == hw->len)
++		completed = 1;
++	else if (!hw->tx)
++		ltq_spi_rxreq_set(hw);
 +
-+	/* tx end */
-+	if (i_pro & I2C_P_IRQSS_TX_END)
-+		PRINTK(" txend");
-+	PRINTK("\n");
++	spin_unlock_irqrestore(&hw->lock, flags);
 +
-+	if (!priv->msg_err) {
-+		/* tx -> rx switch */
-+		if (i_pro & I2C_P_IRQSS_RX) {
-+			priv->status = STATUS_READ;
-+			enable_burst_irq(priv);
-+		}
-+		if (i_pro & I2C_P_IRQSS_TX_END) {
-+			if (priv->status == STATUS_READ)
-+				priv->status = STATUS_READ_END;
-+			else {
-+				disable_burst_irq(priv);
-+				priv->status = STATUS_STOP;
-+			}
-+		}
-+	}
-+
-+	i2c_w32(i_pro, p_irqsc);
-+}
-+
-+static irqreturn_t lantiq_i2c_isr(int irq, void *dev_id)
-+{
-+	u32 i_raw, i_err = 0;
-+	struct lantiq_i2c *priv = dev_id;
-+
-+	i_raw = i2c_r32(mis);
-+	PRINTK("i_raw 0x%08X\n", i_raw);
-+
-+	/* error interrupt */
-+	if (i_raw & I2C_RIS_I2C_ERR_INT_INTOCC) {
-+		i_err = i2c_r32(err_irqss);
-+		PRINTK("i_err 0x%08X bus_stat 0x%04X\n",
-+			i_err, i2c_r32(bus_stat));
-+
-+		/* tx fifo overflow (8) */
-+		if (i_err & I2C_ERR_IRQSS_TXF_OFL)
-+			priv->msg_err |= LTQ_I2C_TX_OFL;
-+
-+		/* tx fifo underflow (4) */
-+		if (i_err & I2C_ERR_IRQSS_TXF_UFL)
-+			priv->msg_err |= LTQ_I2C_TX_UFL;
-+
-+		/* rx fifo overflow (2) */
-+		if (i_err & I2C_ERR_IRQSS_RXF_OFL)
-+			priv->msg_err |= LTQ_I2C_RX_OFL;
-+
-+		/* rx fifo underflow (1) */
-+		if (i_err & I2C_ERR_IRQSS_RXF_UFL)
-+			priv->msg_err |= LTQ_I2C_RX_UFL;
-+
-+		i2c_w32(i_err, err_irqsc);
-+	}
-+
-+	/* protocol interrupt */
-+	if (i_raw & I2C_RIS_I2C_P_INT_INTOCC)
-+		lantiq_i2c_isr_prot(priv);
-+
-+	if ((priv->msg_err) || (priv->status == STATUS_STOP))
-+		complete(&priv->cmd_complete);
++	if (completed)
++		ltq_spi_complete(hw);
 +
 +	return IRQ_HANDLED;
 +}
 +
-+static u32 lantiq_i2c_functionality(struct i2c_adapter *adap)
++irqreturn_t ltq_spi_err_irq(int irq, void *data)
 +{
-+	return	I2C_FUNC_I2C |
-+		I2C_FUNC_10BIT_ADDR |
-+		I2C_FUNC_SMBUS_EMUL;
++	struct ltq_spi *hw = data;
++	unsigned long flags;
++
++	spin_lock_irqsave(&hw->lock, flags);
++
++	/* Disable all interrupts */
++	ltq_spi_reg_clearbit(hw, LTQ_SPI_IRNEN_ALL, LTQ_SPI_IRNEN);
++
++	/* Clear all error flags */
++	ltq_spi_reg_write(hw, LTQ_SPI_WHBSTATE_CLR_ERRORS, LTQ_SPI_WHBSTATE);
++
++	/* Flush FIFOs */
++	ltq_spi_reg_setbit(hw, LTQ_SPI_RXFCON_RXFLU, LTQ_SPI_RXFCON);
++	ltq_spi_reg_setbit(hw, LTQ_SPI_TXFCON_TXFLU, LTQ_SPI_TXFCON);
++
++	hw->status = -EIO;
++	spin_unlock_irqrestore(&hw->lock, flags);
++
++	ltq_spi_complete(hw);
++
++	return IRQ_HANDLED;
 +}
 +
-+static struct i2c_algorithm lantiq_i2c_algorithm = {
-+	.master_xfer	= lantiq_i2c_xfer,
-+	.functionality	= lantiq_i2c_functionality,
++static int ltq_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct ltq_spi *hw = ltq_spi_to_hw(spi);
++	u32 irq_flags = 0;
++
++	hw->tx = t->tx_buf;
++	hw->rx = t->rx_buf;
++	hw->len = t->len;
++	hw->tx_cnt = 0;
++	hw->rx_cnt = 0;
++	hw->status = 0;
++	INIT_COMPLETION(hw->done);
++
++	ltq_spi_xmit_set(hw, t);
++
++	/* Enable error interrupts */
++	ltq_spi_reg_setbit(hw, LTQ_SPI_IRNEN_E, LTQ_SPI_IRNEN);
++
++	if (hw->tx) {
++		/* Initially fill TX FIFO with as much data as possible */
++		ltq_spi_txfifo_write(hw);
++		irq_flags |= LTQ_SPI_IRNEN_T;
++
++		/* Always enable RX interrupt in Full Duplex mode */
++		if (hw->rx)
++			irq_flags |= LTQ_SPI_IRNEN_R;
++	} else if (hw->rx) {
++		/* Start RX clock */
++		ltq_spi_rxreq_set(hw);
++
++		/* Enable RX interrupt to receive data from RX FIFOs */
++		irq_flags |= LTQ_SPI_IRNEN_R;
++	}
++
++	/* Enable TX or RX interrupts */
++	ltq_spi_reg_setbit(hw, irq_flags, LTQ_SPI_IRNEN);
++	wait_for_completion_interruptible(&hw->done);
++
++	/* Disable all interrupts */
++	ltq_spi_reg_clearbit(hw, LTQ_SPI_IRNEN_ALL, LTQ_SPI_IRNEN);
++
++	/*
++	 * Return length of current transfer for bitbang utility code if
++	 * no errors occured during transmission.
++	 */
++	if (!hw->status)
++		hw->status = hw->len;
++
++	return hw->status;
++}
++
++static const struct ltq_spi_irq_map {
++	char *name;
++	irq_handler_t handler;
++} ltq_spi_irqs[] = {
++	{ "spi_rx", ltq_spi_rx_irq },
++	{ "spi_tx", ltq_spi_tx_irq },
++	{ "spi_err", ltq_spi_err_irq },
 +};
 +
-+static int __devinit lantiq_i2c_probe(struct platform_device *pdev)
++static int __devinit ltq_spi_probe(struct platform_device *pdev)
 +{
-+	struct device_node *node = pdev->dev.of_node;
-+	struct lantiq_i2c *priv;
-+	struct i2c_adapter *adap;
-+	struct resource *mmres, irqres[4];
-+	int ret = 0;
++	struct resource irqres[3];
++	struct spi_master *master;
++	struct resource *r;
++	struct ltq_spi *hw;
++	int ret, i;
++	u32 data, id;
 +
-+	dev_dbg(&pdev->dev, "probing\n");
-+
-+	mmres = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	ret = of_irq_to_resource_table(node, irqres, 4);
-+	if (!mmres || (ret != 4)) {
-+		dev_err(&pdev->dev, "no resources\n");
-+		return -ENODEV;
++	if (of_irq_to_resource_table(pdev->dev.of_node, irqres, 3) != 3) {
++		dev_err(&pdev->dev, "IRQ settings missing in device tree\n");
++		return -EINVAL;
 +	}
 +
-+	/* allocate private data */
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv) {
-+		dev_err(&pdev->dev, "can't allocate private data\n");
-+		return -ENOMEM;
++	master = spi_alloc_master(&pdev->dev, sizeof(struct ltq_spi));
++	if (!master) {
++		dev_err(&pdev->dev, "spi_alloc_master\n");
++		ret = -ENOMEM;
++		goto err;
 +	}
 +
-+	adap = &priv->adap;
-+	i2c_set_adapdata(adap, priv);
-+	adap->owner = THIS_MODULE;
-+	adap->class = I2C_CLASS_HWMON | I2C_CLASS_SPD;
-+	strlcpy(adap->name, DRV_NAME "-adapter", sizeof(adap->name));
-+	adap->algo = &lantiq_i2c_algorithm;
++	hw = spi_master_get_devdata(master);
 +
-+	if (of_property_read_u32(node, "clock-frequency", &priv->i2c_clock)) {
-+		dev_warn(&pdev->dev, "No I2C speed selected, using 100kHz\n");
-+		priv->i2c_clock = 100000;
++	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (r == NULL) {
++		dev_err(&pdev->dev, "platform_get_resource\n");
++		ret = -ENOENT;
++		goto err_master;
 +	}
 +
-+	init_completion(&priv->cmd_complete);
-+	mutex_init(&priv->mutex);
-+
-+	priv->membase = devm_request_and_ioremap(&pdev->dev, mmres);
-+	if (priv->membase == NULL)
-+		return -ENOMEM;
-+
-+	priv->clk_input = clk_get_fpi();
-+	if (IS_ERR(priv->clk_input)) {
-+		dev_err(&pdev->dev, "failed to get fpi clk\n");
-+		return -ENOENT;
++	r = devm_request_mem_region(&pdev->dev, r->start, resource_size(r),
++			pdev->name);
++	if (!r) {
++		dev_err(&pdev->dev, "failed to request memory region\n");
++		ret = -ENXIO;
++		goto err_master;
 +	}
 +
-+	priv->clk_gate = clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(priv->clk_gate)) {
-+		dev_err(&pdev->dev, "failed to get i2c clk\n");
-+		return -ENOENT;
++	hw->base = devm_ioremap_nocache(&pdev->dev, r->start, resource_size(r));
++	if (!hw->base) {
++		dev_err(&pdev->dev, "failed to remap memory region\n");
++		ret = -ENXIO;
++		goto err_master;
 +	}
-+	clk_activate(priv->clk_gate);
 +
-+	priv->dev = &pdev->dev;
-+	priv->irq_lb = irqres[0].start;
-+	ret = request_irq(priv->irq_lb, lantiq_i2c_isr_burst, IRQF_DISABLED,
-+			  "i2c lb", priv);
++	memset(hw->irq, 0, sizeof(hw->irq));
++	for (i = 0; i < ARRAY_SIZE(ltq_spi_irqs); i++) {
++		hw->irq[i] = irqres[i].start;
++		ret = request_irq(hw->irq[i], ltq_spi_irqs[i].handler,
++				  0, ltq_spi_irqs[i].name, hw);
++		if (ret) {
++			dev_err(&pdev->dev, "failed to request %s irq (%d)\n",
++					ltq_spi_irqs[i].name, hw->irq[i]);
++			goto err_irq;
++		}
++	}
++
++	hw->fpiclk = clk_get_fpi();
++	if (IS_ERR(hw->fpiclk)) {
++		dev_err(&pdev->dev, "failed to get fpi clock\n");
++		ret = PTR_ERR(hw->fpiclk);
++		goto err_clk;
++	}
++
++	hw->spiclk = clk_get(&pdev->dev, NULL);
++	if (IS_ERR(hw->spiclk)) {
++		dev_err(&pdev->dev, "failed to get spi clock gate\n");
++		ret = PTR_ERR(hw->spiclk);
++		goto err_clk;
++	}
++
++	hw->bitbang.master = spi_master_get(master);
++	hw->bitbang.chipselect = ltq_spi_chipselect;
++	hw->bitbang.setup_transfer = ltq_spi_setup_transfer;
++	hw->bitbang.txrx_bufs = ltq_spi_txrx_bufs;
++
++	if (of_machine_is_compatible("lantiq,ase"))
++		master->num_chipselect = 3;
++	else
++		master->num_chipselect = 6;
++	master->bus_num = pdev->id;
++	master->setup = ltq_spi_setup;
++	master->cleanup = ltq_spi_cleanup;
++	master->dev.of_node = pdev->dev.of_node;
++
++	hw->dev = &pdev->dev;
++	init_completion(&hw->done);
++	spin_lock_init(&hw->lock);
++
++	ltq_spi_hw_enable(hw);
++
++	/* Read module capabilities */
++	id = ltq_spi_reg_read(hw, LTQ_SPI_ID);
++	hw->txfs = (id >> LTQ_SPI_ID_TXFS_SHIFT) & LTQ_SPI_ID_TXFS_MASK;
++	hw->rxfs = (id >> LTQ_SPI_ID_TXFS_SHIFT) & LTQ_SPI_ID_TXFS_MASK;
++	hw->dma_support = (id & LTQ_SPI_ID_CFG) ? 1 : 0;
++
++	ltq_spi_config_mode_set(hw);
++
++	/* Enable error checking, disable TX/RX, set idle value high */
++	data = LTQ_SPI_CON_RUEN | LTQ_SPI_CON_AEN |
++	    LTQ_SPI_CON_TEN | LTQ_SPI_CON_REN |
++	    LTQ_SPI_CON_TXOFF | LTQ_SPI_CON_RXOFF | LTQ_SPI_CON_IDLE;
++	ltq_spi_reg_write(hw, data, LTQ_SPI_CON);
++
++	/* Enable master mode and clear error flags */
++	ltq_spi_reg_write(hw, LTQ_SPI_WHBSTATE_SETMS |
++			  LTQ_SPI_WHBSTATE_CLR_ERRORS, LTQ_SPI_WHBSTATE);
++
++	/* Reset GPIO/CS registers */
++	ltq_spi_reg_write(hw, 0x0, LTQ_SPI_GPOCON);
++	ltq_spi_reg_write(hw, 0xFF00, LTQ_SPI_FGPO);
++
++	/* Enable and flush FIFOs */
++	ltq_spi_reset_fifos(hw);
++
++	ret = spi_bitbang_start(&hw->bitbang);
 +	if (ret) {
-+		dev_err(&pdev->dev, "can't get last burst IRQ %d\n",
-+			irqres[0].start);
-+		return -ENODEV;
++		dev_err(&pdev->dev, "spi_bitbang_start failed\n");
++		goto err_bitbang;
 +	}
 +
-+	priv->irq_b = irqres[1].start;
-+	ret = request_irq(priv->irq_b, lantiq_i2c_isr_burst, IRQF_DISABLED,
-+			  "i2c b", priv);
-+	if (ret) {
-+		dev_err(&pdev->dev, "can't get burst IRQ %d\n",
-+			irqres[1].start);
-+		return -ENODEV;
-+	}
++	platform_set_drvdata(pdev, hw);
 +
-+	priv->irq_err = irqres[2].start;
-+	ret = request_irq(priv->irq_err, lantiq_i2c_isr, IRQF_DISABLED,
-+			  "i2c err", priv);
-+	if (ret) {
-+		dev_err(&pdev->dev, "can't get error IRQ %d\n",
-+			irqres[2].start);
-+		return -ENODEV;
-+	}
++	pr_info("Lantiq SoC SPI controller rev %u (TXFS %u, RXFS %u, DMA %u)\n",
++		id & LTQ_SPI_ID_REV_MASK, hw->txfs, hw->rxfs, hw->dma_support);
 +
-+	priv->irq_p = irqres[3].start;
-+	ret = request_irq(priv->irq_p, lantiq_i2c_isr, IRQF_DISABLED,
-+			  "i2c p", priv);
-+	if (ret) {
-+		dev_err(&pdev->dev, "can't get protocol IRQ %d\n",
-+			irqres[3].start);
-+		return -ENODEV;
-+	}
++	return 0;
 +
-+	dev_dbg(&pdev->dev, "mapped io-space to %p\n", priv->membase);
-+	dev_dbg(&pdev->dev, "use IRQs %d, %d, %d, %d\n", irqres[0].start,
-+		irqres[1].start, irqres[2].start, irqres[3].start);
++err_bitbang:
++	ltq_spi_hw_disable(hw);
 +
-+	/* add our adapter to the i2c stack */
-+	ret = i2c_add_numbered_adapter(adap);
-+	if (ret) {
-+		dev_err(&pdev->dev, "can't register I2C adapter\n");
-+		return ret;
-+	}
++err_clk:
++	if (hw->fpiclk)
++		clk_put(hw->fpiclk);
++	if (hw->spiclk)
++		clk_put(hw->spiclk);
 +
-+	platform_set_drvdata(pdev, priv);
-+	i2c_set_adapdata(adap, priv);
++err_irq:
++	clk_put(hw->fpiclk);
 +
-+	/* print module version information */
-+	dev_dbg(&pdev->dev, "module id=%u revision=%u\n",
-+		(i2c_r32(id) & I2C_ID_ID_MASK) >> I2C_ID_ID_OFFSET,
-+		(i2c_r32(id) & I2C_ID_REV_MASK) >> I2C_ID_REV_OFFSET);
++	for (; i > 0; i--)
++		free_irq(hw->irq[i], hw);
 +
-+	/* initialize HW */
-+	ret = lantiq_i2c_hw_init(adap);
-+	if (ret) {
-+		dev_err(&pdev->dev, "can't configure adapter\n");
-+		i2c_del_adapter(adap);
-+		platform_set_drvdata(pdev, NULL);
-+	} else {
-+		dev_info(&pdev->dev, "version %s\n", DRV_VERSION);
-+	}
++err_master:
++	spi_master_put(master);
 +
-+	of_i2c_register_devices(adap);
-+
++err:
 +	return ret;
 +}
 +
-+static int __devexit lantiq_i2c_remove(struct platform_device *pdev)
++static int __devexit ltq_spi_remove(struct platform_device *pdev)
 +{
-+	struct lantiq_i2c *priv = platform_get_drvdata(pdev);
-+	struct resource *mmres;
++	struct ltq_spi *hw = platform_get_drvdata(pdev);
++	int ret, i;
 +
-+	/* disable bus */
-+	i2c_w32_mask(I2C_RUN_CTRL_RUN_EN, 0, run_ctrl);
++	ret = spi_bitbang_stop(&hw->bitbang);
++	if (ret)
++		return ret;
 +
-+	/* remove driver */
 +	platform_set_drvdata(pdev, NULL);
-+	i2c_del_adapter(&priv->adap);
 +
-+	free_irq(priv->irq_lb, priv);
-+	free_irq(priv->irq_b, priv);
-+	free_irq(priv->irq_err, priv);
-+	free_irq(priv->irq_p, priv);
++	ltq_spi_config_mode_set(hw);
++	ltq_spi_hw_disable(hw);
 +
-+	iounmap(priv->membase);
++	for (i = 0; i < ARRAY_SIZE(hw->irq); i++)
++		if (0 < hw->irq[i])
++			free_irq(hw->irq[i], hw);
 +
-+	kfree(priv);
++	if (hw->fpiclk)
++		clk_put(hw->fpiclk);
++	if (hw->spiclk)
++		clk_put(hw->spiclk);
 +
-+	mmres = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	release_mem_region(mmres->start, resource_size(mmres));
-+
-+	dev_dbg(&pdev->dev, "removed\n");
++	spi_master_put(hw->bitbang.master);
 +
 +	return 0;
 +}
-+static const struct of_device_id ltq_i2c_match[] = {
-+	{ .compatible = "lantiq,lantiq-i2c" },
++
++static const struct of_device_id ltq_spi_match[] = {
++	{ .compatible = "lantiq,spi-xway" },
 +	{},
 +};
-+MODULE_DEVICE_TABLE(of, ltq_i2c_match);
++MODULE_DEVICE_TABLE(of, ltq_spi_match);
 +
-+static struct platform_driver lantiq_i2c_driver = {
-+	.probe	= lantiq_i2c_probe,
-+	.remove	= __devexit_p(lantiq_i2c_remove),
-+	.driver	= {
-+		.name	= DRV_NAME,
-+		.owner	= THIS_MODULE,
-+		.of_match_table = ltq_i2c_match,
++static struct platform_driver ltq_spi_driver = {
++	.probe = ltq_spi_probe,
++	.remove = __devexit_p(ltq_spi_remove),
++	.driver = {
++		.name = "spi-xway",
++		.owner = THIS_MODULE,
++		.of_match_table = ltq_spi_match,
 +	},
 +};
 +
-+module_platform_driver(lantiq_i2c_driver);
++module_platform_driver(ltq_spi_driver);
 +
-+MODULE_DESCRIPTION("Lantiq I2C bus adapter");
-+MODULE_AUTHOR("Thomas Langer <thomas.langer@lantiq.com>");
-+MODULE_ALIAS("platform:" DRV_NAME);
++MODULE_DESCRIPTION("Lantiq SoC SPI controller driver");
++MODULE_AUTHOR("Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>");
 +MODULE_LICENSE("GPL");
-+MODULE_VERSION(DRV_VERSION);
-diff --git a/drivers/i2c/busses/i2c-lantiq.h b/drivers/i2c/busses/i2c-lantiq.h
-new file mode 100644
-index 0000000..7a86b89
---- /dev/null
-+++ b/drivers/i2c/busses/i2c-lantiq.h
-@@ -0,0 +1,234 @@
-+#ifndef I2C_LANTIQ_H
-+#define I2C_LANTIQ_H
-+
-+/* I2C register structure */
-+struct lantiq_reg_i2c {
-+	/* I2C Kernel Clock Control Register */
-+	unsigned int clc; /* 0x00000000 */
-+	/* Reserved */
-+	unsigned int res_0; /* 0x00000004 */
-+	/* I2C Identification Register */
-+	unsigned int id; /* 0x00000008 */
-+	/* Reserved */
-+	unsigned int res_1; /* 0x0000000C */
-+	/*
-+	 * I2C RUN Control Register
-+	 * This register enables and disables the I2C peripheral. Before
-+	 * enabling, the I2C has to be configured properly. After enabling
-+	 * no configuration is possible
-+	 */
-+	unsigned int run_ctrl; /* 0x00000010 */
-+	/*
-+	 * I2C End Data Control Register
-+	 * This register is used to either turn around the data transmission
-+	 * direction or to address another slave without sending a stop
-+	 * condition. Also the software can stop the slave-transmitter by
-+	 * sending a not-accolade when working as master-receiver or even
-+	 * stop data transmission immediately when operating as
-+	 * master-transmitter. The writing to the bits of this control
-+	 * register is only effective when in MASTER RECEIVES BYTES, MASTER
-+	 * TRANSMITS BYTES, MASTER RESTART or SLAVE RECEIVE BYTES state
-+	 */
-+	unsigned int endd_ctrl; /* 0x00000014 */
-+	/*
-+	 * I2C Fractional Divider Configuration Register
-+	 * These register is used to program the fractional divider of the I2C
-+	 * bus. Before the peripheral is switched on by setting the RUN-bit the
-+	 * two (fixed) values for the two operating frequencies are programmed
-+	 * into these (configuration) registers. The Register FDIV_HIGH_CFG has
-+	 * the same layout as I2C_FDIV_CFG.
-+	 */
-+	unsigned int fdiv_cfg; /* 0x00000018 */
-+	/*
-+	 * I2C Fractional Divider (highspeed mode) Configuration Register
-+	 * These register is used to program the fractional divider of the I2C
-+	 * bus. Before the peripheral is switched on by setting the RUN-bit the
-+	 * two (fixed) values for the two operating frequencies are programmed
-+	 * into these (configuration) registers. The Register FDIV_CFG has the
-+	 * same layout as I2C_FDIV_CFG.
-+	 */
-+	unsigned int fdiv_high_cfg; /* 0x0000001C */
-+	/* I2C Address Configuration Register */
-+	unsigned int addr_cfg; /* 0x00000020 */
-+	/* I2C Bus Status Register
-+	 * This register gives a status information of the I2C. This additional
-+	 * information can be used by the software to start proper actions.
-+	 */
-+	unsigned int bus_stat; /* 0x00000024 */
-+	/* I2C FIFO Configuration Register */
-+	unsigned int fifo_cfg; /* 0x00000028 */
-+	/* I2C Maximum Received Packet Size Register */
-+	unsigned int mrps_ctrl; /* 0x0000002C */
-+	/* I2C Received Packet Size Status Register */
-+	unsigned int rps_stat; /* 0x00000030 */
-+	/* I2C Transmit Packet Size Register */
-+	unsigned int tps_ctrl; /* 0x00000034 */
-+	/* I2C Filled FIFO Stages Status Register */
-+	unsigned int ffs_stat; /* 0x00000038 */
-+	/* Reserved */
-+	unsigned int res_2; /* 0x0000003C */
-+	/* I2C Timing Configuration Register */
-+	unsigned int tim_cfg; /* 0x00000040 */
-+	/* Reserved */
-+	unsigned int res_3[7]; /* 0x00000044 */
-+	/* I2C Error Interrupt Request Source Mask Register */
-+	unsigned int err_irqsm; /* 0x00000060 */
-+	/* I2C Error Interrupt Request Source Status Register */
-+	unsigned int err_irqss; /* 0x00000064 */
-+	/* I2C Error Interrupt Request Source Clear Register */
-+	unsigned int err_irqsc; /* 0x00000068 */
-+	/* Reserved */
-+	unsigned int res_4; /* 0x0000006C */
-+	/* I2C Protocol Interrupt Request Source Mask Register */
-+	unsigned int p_irqsm; /* 0x00000070 */
-+	/* I2C Protocol Interrupt Request Source Status Register */
-+	unsigned int p_irqss; /* 0x00000074 */
-+	/* I2C Protocol Interrupt Request Source Clear Register */
-+	unsigned int p_irqsc; /* 0x00000078 */
-+	/* Reserved */
-+	unsigned int res_5; /* 0x0000007C */
-+	/* I2C Raw Interrupt Status Register */
-+	unsigned int ris; /* 0x00000080 */
-+	/* I2C Interrupt Mask Control Register */
-+	unsigned int imsc; /* 0x00000084 */
-+	/* I2C Masked Interrupt Status Register */
-+	unsigned int mis; /* 0x00000088 */
-+	/* I2C Interrupt Clear Register */
-+	unsigned int icr; /* 0x0000008C */
-+	/* I2C Interrupt Set Register */
-+	unsigned int isr; /* 0x00000090 */
-+	/* I2C DMA Enable Register */
-+	unsigned int dmae; /* 0x00000094 */
-+	/* Reserved */
-+	unsigned int res_6[8154]; /* 0x00000098 */
-+	/* I2C Transmit Data Register */
-+	unsigned int txd; /* 0x00008000 */
-+	/* Reserved */
-+	unsigned int res_7[4095]; /* 0x00008004 */
-+	/* I2C Receive Data Register */
-+	unsigned int rxd; /* 0x0000C000 */
-+	/* Reserved */
-+	unsigned int res_8[4095]; /* 0x0000C004 */
-+};
-+
-+/*
-+ * Clock Divider for Normal Run Mode
-+ * Max 8-bit divider value. IF RMC is 0 the module is disabled. Note: As long
-+ * as the new divider value RMC is not valid, the register returns 0x0000 00xx
-+ * on reading.
-+ */
-+#define I2C_CLC_RMC_MASK 0x0000FF00
-+/* field offset */
-+#define I2C_CLC_RMC_OFFSET 8
-+
-+/* Fields of "I2C Identification Register" */
-+/* Module ID */
-+#define I2C_ID_ID_MASK 0x0000FF00
-+/* field offset */
-+#define I2C_ID_ID_OFFSET 8
-+/* Revision */
-+#define I2C_ID_REV_MASK 0x000000FF
-+/* field offset */
-+#define I2C_ID_REV_OFFSET 0
-+
-+/* Fields of "I2C Interrupt Mask Control Register" */
-+/* Enable */
-+#define I2C_IMSC_BREQ_INT_EN 0x00000008
-+/* Enable */
-+#define I2C_IMSC_LBREQ_INT_EN 0x00000004
-+
-+/* Fields of "I2C Fractional Divider Configuration Register" */
-+/* field offset */
-+#define I2C_FDIV_CFG_INC_OFFSET 16
-+
-+/* Fields of "I2C Interrupt Mask Control Register" */
-+/* Enable */
-+#define I2C_IMSC_I2C_P_INT_EN 0x00000020
-+/* Enable */
-+#define I2C_IMSC_I2C_ERR_INT_EN 0x00000010
-+
-+/* Fields of "I2C Error Interrupt Request Source Status Register" */
-+/* TXF_OFL */
-+#define I2C_ERR_IRQSS_TXF_OFL 0x00000008
-+/* TXF_UFL */
-+#define I2C_ERR_IRQSS_TXF_UFL 0x00000004
-+/* RXF_OFL */
-+#define I2C_ERR_IRQSS_RXF_OFL 0x00000002
-+/* RXF_UFL */
-+#define I2C_ERR_IRQSS_RXF_UFL 0x00000001
-+
-+/* Fields of "I2C Raw Interrupt Status Register" */
-+/* Read: Interrupt occurred. */
-+#define I2C_RIS_I2C_ERR_INT_INTOCC 0x00000010
-+/* Read: Interrupt occurred. */
-+#define I2C_RIS_I2C_P_INT_INTOCC 0x00000020
-+
-+/* Fields of "I2C FIFO Configuration Register" */
-+/* TX FIFO Flow Control */
-+#define I2C_FIFO_CFG_TXFC 0x00020000
-+/* RX FIFO Flow Control */
-+#define I2C_FIFO_CFG_RXFC 0x00010000
-+/* Word aligned (character alignment of four characters) */
-+#define I2C_FIFO_CFG_TXFA_TXFA2 0x00002000
-+/* Word aligned (character alignment of four characters) */
-+#define I2C_FIFO_CFG_RXFA_RXFA2 0x00000200
-+/* 1 word */
-+#define I2C_FIFO_CFG_TXBS_TXBS0 0x00000000
-+
-+/* Fields of "I2C FIFO Configuration Register" */
-+/* 1 word */
-+#define I2C_FIFO_CFG_RXBS_RXBS0 0x00000000
-+/* Stop on Packet End Enable */
-+#define I2C_ADDR_CFG_SOPE_EN 0x00200000
-+/* Stop on Not Acknowledge Enable */
-+#define I2C_ADDR_CFG_SONA_EN 0x00100000
-+/* Enable */
-+#define I2C_ADDR_CFG_MnS_EN 0x00080000
-+
-+/* Fields of "I2C Interrupt Clear Register" */
-+/* Clear */
-+#define I2C_ICR_BREQ_INT_CLR 0x00000008
-+/* Clear */
-+#define I2C_ICR_LBREQ_INT_CLR 0x00000004
-+
-+/* Fields of "I2C Fractional Divider Configuration Register" */
-+/* field offset */
-+#define I2C_FDIV_CFG_DEC_OFFSET 0
-+
-+/* Fields of "I2C Bus Status Register" */
-+/* Bus Status */
-+#define I2C_BUS_STAT_BS_MASK 0x00000003
-+/* Read from I2C Bus. */
-+#define I2C_BUS_STAT_RNW_READ 0x00000004
-+/* I2C Bus is free. */
-+#define I2C_BUS_STAT_BS_FREE 0x00000000
-+/*
-+ * The device is working as master and has claimed the control on the
-+ * I2C-bus (busy master).
-+ */
-+#define I2C_BUS_STAT_BS_BM 0x00000002
-+
-+/* Fields of "I2C RUN Control Register" */
-+/* Enable */
-+#define I2C_RUN_CTRL_RUN_EN 0x00000001
-+
-+/* Fields of "I2C End Data Control Register" */
-+/*
-+ * Set End of Transmission
-+ * Note:Do not write '1' to this bit when bus is free. This will cause an
-+ * abort after the first byte when a new transfer is started.
-+ */
-+#define I2C_ENDD_CTRL_SETEND 0x00000002
-+
-+/* Fields of "I2C Protocol Interrupt Request Source Status Register" */
-+/* NACK */
-+#define I2C_P_IRQSS_NACK 0x00000010
-+/* AL */
-+#define I2C_P_IRQSS_AL 0x00000008
-+/* RX */
-+#define I2C_P_IRQSS_RX 0x00000040
-+/* TX_END */
-+#define I2C_P_IRQSS_TX_END 0x00000020
-+
-+
-+#endif /* I2C_LANTIQ_H */
++MODULE_ALIAS("platform:spi-xway");
 -- 
 1.7.9.1

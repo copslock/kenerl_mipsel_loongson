@@ -1,33 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2012 00:34:03 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:40575 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2012 00:38:19 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:40610 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903515Ab2HPWd5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Aug 2012 00:33:57 +0200
+        with ESMTP id S1903553Ab2HPWiM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Aug 2012 00:38:12 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 00F273EE18;
-        Fri, 17 Aug 2012 00:33:56 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id E229F3EE18;
+        Fri, 17 Aug 2012 00:38:11 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id kp8Nek3mTxME; Fri, 17 Aug 2012 00:33:52 +0200 (CEST)
+        with ESMTP id aJfxLudzFasq; Fri, 17 Aug 2012 00:38:06 +0200 (CEST)
 Received: from [IPv6:2001:470:1f0b:447:2a:1be:14a6:74fa] (unknown [IPv6:2001:470:1f0b:447:2a:1be:14a6:74fa])
-        by hauke-m.de (Postfix) with ESMTPSA id 882D83EE16;
-        Fri, 17 Aug 2012 00:33:52 +0200 (CEST)
-Message-ID: <502D754F.9090908@hauke-m.de>
-Date:   Fri, 17 Aug 2012 00:33:51 +0200
+        by hauke-m.de (Postfix) with ESMTPSA id 05E013EE16;
+        Fri, 17 Aug 2012 00:38:05 +0200 (CEST)
+Message-ID: <502D764C.1060501@hauke-m.de>
+Date:   Fri, 17 Aug 2012 00:38:04 +0200
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20120714 Thunderbird/14.0
 MIME-Version: 1.0
-To:     John Crispin <john@phrozen.org>
-CC:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-wireless@vger.kernel.org
+To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+CC:     Arend van Spriel <arend@broadcom.com>,
+        Florian Fainelli <florian@openwrt.org>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
+        john@phrozen.org
 Subject: Re: [PATCH v2 3/3] MIPS: BCM47xx: rewrite GPIO handling and use gpiolib
-References: <1345132801-8430-1-git-send-email-hauke@hauke-m.de> <1345132801-8430-4-git-send-email-hauke@hauke-m.de> <502D4B70.4010509@phrozen.org>
-In-Reply-To: <502D4B70.4010509@phrozen.org>
+References: <1345132801-8430-1-git-send-email-hauke@hauke-m.de> <1345132801-8430-4-git-send-email-hauke@hauke-m.de> <1791263.5FQJJv4xHF@bender> <CACna6rxVOFO-n5J_6J7HFSt+WnoX0=2ULjiRv3p9va47K2Edsw@mail.gmail.com> <502D3F3F.7060207@broadcom.com> <CACna6ryphAPip5hpAuzCMQjqvZe70MpPnFkCyzrMhFkk5iLS+A@mail.gmail.com>
+In-Reply-To: <CACna6ryphAPip5hpAuzCMQjqvZe70MpPnFkCyzrMhFkk5iLS+A@mail.gmail.com>
 X-Enigmail-Version: 1.5a1pre
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34232
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-archive-position: 34233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,31 +47,43 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 08/16/2012 09:35 PM, John Crispin wrote:
-> On 16/08/12 18:00, Hauke Mehrtens wrote:
->> int gpio_get_value(unsigned gpio)
->> +{
->> +	if (gpio < bcm47xx_gpio_count)
->> +		return bcm47xx_gpio_in(1 << gpio);
->> +
->> +	return __gpio_get_value(gpio);
->> +}
->> +EXPORT_SYMBOL(gpio_get_value);
+On 08/16/2012 09:29 PM, Rafał Miłecki wrote:
+> 2012/8/16 Arend van Spriel <arend@broadcom.com>:
+>> On 08/16/2012 07:39 PM, Rafał Miłecki wrote:
+>>>
+>>> 2012/8/16 Florian Fainelli<florian@openwrt.org>:
+>>>>>
+>>>>>>> +void __init bcm47xx_gpio_init(void)
+>>>>>>> +{
+>>>>>>> +     int err;
+>>>>>>> +
+>>>>>>> +     switch (bcm47xx_bus_type) {
+>>>>>>> +#ifdef CONFIG_BCM47XX_SSB
+>>>>>>> +     case BCM47XX_BUS_TYPE_SSB:
+>>>>>>> +             bcm47xx_gpio_count = ssb_gpio_count(&bcm47xx_bus.ssb);
+>>>>>>> +#endif
+>>>>>>> +#ifdef CONFIG_BCM47XX_BCMA
+>>>>>>> +     case BCM47XX_BUS_TYPE_BCMA:
+>>>>>>> +             bcm47xx_gpio_count =
+>>>>>>> bcma_gpio_count(&bcm47xx_bus.bcma.bus);
+>>>>>>> +#endif
+>>>>>>> +     }
+>>>>
+>>>>>
+>>>>> Is this exclusive? Cannot we have both SSB and BCMA on the same device?
+>>>
+>>> This applies to SoC only, so I believe it's fine. We don't have SoCs
+>>> based on BCMA and SSB at the same time.
+>>
+>>
+>> It is indeed more than unlikely for a chip to have two silicon
+>> interconnects, which is what SSB and BCMA are. However, it does look
+>> suspicious from a code reading perspective. So I general I stick to the rule
+>> that each case must have a break and fall-thru are clearly commented.
 > 
-> Hi,
-> 
-> You are using a gpio_chip. simply doing this
-> 
-> #define gpio_get_value __gpio_get_value
-> 
-> inside your arch/mips/include/asm/mach-bcm47xx/gpio.h will be enough.
-> __gpio_get_value() will then automatically find and use
-> bcm47xx_gpio_get_value() via the gpio_chip.
+> Ahh, I though question is related to the enum used for bustype. I
+> definitely vote for using "break"
 
-With this code gpio_get_value() is faster as the hole gpiolib is not
-called for the get and set methods. I assume then these gpios are the
-first being registered and all calls to these gpios are directly handled
-by this methods and are not going through the gpiolib code.
-This is based on the way it is done for ath79.
+I will add the missing break.
 
 Hauke

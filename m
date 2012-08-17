@@ -1,56 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2012 19:45:04 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:33848 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903458Ab2HQRo5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Aug 2012 19:44:57 +0200
-Received: by lbbgf7 with SMTP id gf7so2143649lbb.36
-        for <linux-mips@linux-mips.org>; Fri, 17 Aug 2012 10:44:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:x-system-of-record;
-        bh=Kd/JZBXbIX5coJ5LazkbyZsbv8yCIzO8HtCqcIW595o=;
-        b=f7BQXw29TubVrXg9kZjvyX2ystKMqiz4hk2MTjXOvRy+mQWsxS6QWwZ3aAmsBKGk+e
-         aaP7mJm6ief0eweFAab8jDy0mqEb5JWh66XOeSDb/rZyBRkKUkg4Cfp/sbwWDRq8x2Tc
-         UMikdsI7RIxqRCKju+QW9IavU8MKZOp6nT2sHF1M7AGMm6IIKwg2WDBZbFPSE8WlUL2f
-         ix1ta69qqfB+QvGoF8vacyuGcqperEkyEYVBt8hX/z2NlY6yM9Ot5RadeVat7Kktt3Fi
-         MEzW10HUmCk0045xasLSncywlvgee+KBdIhF6ag+3kki4GR4q8qJc6F/8z6jvAt0MM+x
-         yd+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:x-system-of-record:x-gm-message-state;
-        bh=Kd/JZBXbIX5coJ5LazkbyZsbv8yCIzO8HtCqcIW595o=;
-        b=M8KzRzyyPGRGBP4/SxLTKHyC5dmV+Y62cYHwNvStrjLMp/g3aP/6kimP/xbNos/yfE
-         06FrBBCOjM/BCIkiupe2eKMVXViVDyT7jhDu9NHmPwAketFohfHCc/5P3GBh6XJj0fXO
-         KovwKZfpeZAl7nFWp1Pz1+KvJtLL1oKq1k4/NliXMpz/K0+fbYHRemZF9ijy9AfM0cnu
-         Ra49z8nxMezNK48ZGpwB56Xi6vF9oGwGN3BreDslZmTNUbTd1i5za9n/ksHLOe5pZYUG
-         2w18KMSZNgfYJyDEUhKROvd0RZRWwVOQ98PW5XVJ8QIHhKdwQTyLSDeKDXZrB7ZfbWEI
-         0Whw==
-Received: by 10.112.39.135 with SMTP id p7mr2599183lbk.78.1345225491486;
-        Fri, 17 Aug 2012 10:44:51 -0700 (PDT)
-Received: by 10.112.39.135 with SMTP id p7mr2599171lbk.78.1345225491315; Fri,
- 17 Aug 2012 10:44:51 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.112.128.68 with HTTP; Fri, 17 Aug 2012 10:44:31 -0700 (PDT)
-In-Reply-To: <502E8115.90507@gmail.com>
-References: <502E8115.90507@gmail.com>
-From:   Bjorn Helgaas <bhelgaas@google.com>
-Date:   Fri, 17 Aug 2012 11:44:31 -0600
-Message-ID: <CAErSpo7a77wAxrgZYfg_UdqLEtEf0wUxcbxTghnR7HbRsncKRQ@mail.gmail.com>
-Subject: Re: PCI Section mismatch error in linux-next.
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Thierry Reding <thierry.reding@avionic-design.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2012 20:29:46 +0200 (CEST)
+Received: from moutng.kundenserver.de ([212.227.126.171]:60274 "EHLO
+        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903487Ab2HQS3k (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Aug 2012 20:29:40 +0200
+Received: from mailbox.adnet.avionic-design.de (mailbox.avionic-design.de [109.75.18.3])
+        by mrelayeu.kundenserver.de (node=mreu2) with ESMTP (Nemesis)
+        id 0MWvfk-1TEefi3oyy-00WIb5; Fri, 17 Aug 2012 20:29:35 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mailbox.adnet.avionic-design.de (Postfix) with ESMTP id 6386F2A2830D;
+        Fri, 17 Aug 2012 20:29:34 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at avionic-design.de
+Received: from mailbox.adnet.avionic-design.de ([127.0.0.1])
+        by localhost (mailbox.avionic-design.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id GgliOjEg+ZcM; Fri, 17 Aug 2012 20:29:32 +0200 (CEST)
+Received: from localhost (avionic-0098.adnet.avionic-design.de [172.20.31.233])
+        (Authenticated sender: thierry.reding)
+        by mailbox.adnet.avionic-design.de (Postfix) with ESMTPA id 8DC4E2A2819B;
+        Fri, 17 Aug 2012 20:29:32 +0200 (CEST)
+Date:   Fri, 17 Aug 2012 20:29:31 +0200
+From:   Thierry Reding <thierry.reding@avionic-design.de>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+Cc:     David Daney <ddaney.cavm@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-pci@vger.kernel.org,
         linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-X-System-Of-Record: true
-X-Gm-Message-State: ALoCoQmLyigWnaMkt2amaLLn1xdG6b1NwcPRaqt4FfU+EUCo/il2yQaEv7fOal3uCYpZmdkU+p4tPEJDnkFbDJkChNSLsWNHdrfmkB4mFZFd444m/K6b25v6aS31O0k/vCTFkFVYpvcepAOWI9+EfPUAN49MZUWcpZM345NMVCvpXqGJc51wpbFI6TtYeivm+RDXd89ryJnPiZsbZNg//J1kr2YDl5wVCg==
-X-archive-position: 34256
+Subject: Re: PCI Section mismatch error in linux-next.
+Message-ID: <20120817182931.GA27391@avionic-0098.adnet.avionic-design.de>
+References: <502E8115.90507@gmail.com>
+ <CAErSpo7a77wAxrgZYfg_UdqLEtEf0wUxcbxTghnR7HbRsncKRQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="opJtzjQTFsWo+cga"
+Content-Disposition: inline
+In-Reply-To: <CAErSpo7a77wAxrgZYfg_UdqLEtEf0wUxcbxTghnR7HbRsncKRQ@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Provags-ID: V02:K0:TXp0yK8x8qeMBEsyiVNnsdrKChhKtJ1BxsapVG2CJyp
+ OKraYsYC5BxC/PrG3HE3SeqBTwCAt0IPd0isQF6Um5V4KTfNbE
+ JESKtyuNZb2FcMnT0txyxSXPvXfoBs7lxfPeSbDKaqRPJJctXI
+ hsQC4K9e+9il5EPIRHX14OJFaTN1UzDbSbSzzsu9SYdKlx7reb
+ ietvAkV27AXFowCa5qA3mFMpVGdxn2f7+VrE1bimoEv9yQ0Drn
+ XETxo/xZHtaP7lGoqbPI2qAf4sUleyEWvNUmXYsjU3je+HG9LD
+ rr48H0KcnIllaN/20x/pJcTiNYcp9G1oRaw18a5fQYzgyvqPSk
+ oqohCaX6RXBoYeJR+WFS7dbhlDJTzXFwsg6+Qw6h6eFBephgds
+ D+4MKLppFQ0pEtQRhtCW1qAHAUwocEyek0=
+X-archive-position: 34257
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bhelgaas@google.com
+X-original-sender: thierry.reding@avionic-design.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,21 +60,60 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Aug 17, 2012 at 11:36 AM, David Daney <ddaney.cavm@gmail.com> wrote:
-> For MIPS, Thierry Reding's patch in linux-next (PCI: Keep pci_fixup_irqs()
-> around after init) causes:
->
-> WARNING: vmlinux.o(.text+0x22c784): Section mismatch in reference from the
-> function pci_fixup_irqs() to the function .init.text:pcibios_update_irq()
->
-> The MIPS implementation of pcibios_update_irq() is __init, so there is
-> conflict with the removal of __init from pci_fixup_irqs() and
-> pdev_fixup_irq().
->
-> Can you guys either remove the patch from linux-next, or improve it to also
-> fix up any architecture implementations of pdev_update_irq()?
 
-Crap, there are lots of arches with this issue.  I'll fix it up.
-Thanks for pointing it out!
+--opJtzjQTFsWo+cga
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Bjorn
+On Fri, Aug 17, 2012 at 11:44:31AM -0600, Bjorn Helgaas wrote:
+> On Fri, Aug 17, 2012 at 11:36 AM, David Daney <ddaney.cavm@gmail.com> wro=
+te:
+> > For MIPS, Thierry Reding's patch in linux-next (PCI: Keep pci_fixup_irq=
+s()
+> > around after init) causes:
+> >
+> > WARNING: vmlinux.o(.text+0x22c784): Section mismatch in reference from =
+the
+> > function pci_fixup_irqs() to the function .init.text:pcibios_update_irq=
+()
+> >
+> > The MIPS implementation of pcibios_update_irq() is __init, so there is
+> > conflict with the removal of __init from pci_fixup_irqs() and
+> > pdev_fixup_irq().
+> >
+> > Can you guys either remove the patch from linux-next, or improve it to =
+also
+> > fix up any architecture implementations of pdev_update_irq()?
+>=20
+> Crap, there are lots of arches with this issue.  I'll fix it up.
+> Thanks for pointing it out!
+
+Oh wow... looks like I've opened a can of worms there. This requires
+quite a lot of other functions to have their annotations removed as
+well. Bjorn, how do you want to handle this?
+
+Thierry
+
+--opJtzjQTFsWo+cga
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQLo2LAAoJEN0jrNd/PrOhb1IP/RdhIzUzNvyJ/Gtw7M0h2/5Q
+Jkj9EMeo6UcEaAx98xWTGYtNihfIDfg2LlmGJU5Sgu6mEQqRdFD6WMfOByis0bLP
+iS+w7cFA7K0qSdktxker+5+P8tYWIuh+oRXHSqNPvQXhm07XvM2BfYgHfWnvDLlK
+VvFeXf+dnXCb8dZUA+uiXXc1GeQbT8UJnx8VPuPPV5tOk8WIKyKopH6EzXWDiLNf
+uNrsr90DIv6O2p4qrfkcBiGpcbLaHWBOIJ3jwc6rbqfntL9c1DATZzW6Y0c5jBhh
+gX8e9KMMX3OllB6/mWfnjOyBc6Ah9+ZQKFTZIWjcyw0LZPPPVApnURBsU0HPvudZ
+wV3BDt22W+9Sq6ojiBr3EmFr8QK5XmpyevKQLBUsjTxVc1MNcPX+c+MgDSmvbZWd
+rgw3CtBPcSFCeD8lCr5xHETJ/8ws2v6JpJrm8z9EQNkq572Hiqx2KFL35PxNbFGn
+Wck0H+LnEGxr4RajQCDpnnzqTo+X7Xq9xuON/SxFrqUgAgBR1cEDGSM1nRyovXWe
+RhD1FjwTKJbKQltQxaXNUAoGMM+B91Ootx7OIhkWd+bpUZ/Z0DN36AjpsehA4c2i
+q8y75QpUyvq9cx4gOBO/jWOLj19ZI/DldaulA4dlixCeSM73poUO0C7dAp6wFZ3V
+LpRU2groV73HhmaV959s
+=Z87r
+-----END PGP SIGNATURE-----
+
+--opJtzjQTFsWo+cga--

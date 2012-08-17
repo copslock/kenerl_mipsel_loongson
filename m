@@ -1,44 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2012 19:36:36 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:36373 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903458Ab2HQRgb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Aug 2012 19:36:31 +0200
-Received: by pbbrq8 with SMTP id rq8so3854583pbb.36
-        for <multiple recipients>; Fri, 17 Aug 2012 10:36:24 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2012 19:45:04 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:33848 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903458Ab2HQRo5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Aug 2012 19:44:57 +0200
+Received: by lbbgf7 with SMTP id gf7so2143649lbb.36
+        for <linux-mips@linux-mips.org>; Fri, 17 Aug 2012 10:44:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :content-type:content-transfer-encoding;
-        bh=pHu1u9K2k9daHpg0+z7kryrl0ilVKJndHCBiqWfnNq0=;
-        b=KDL8r1bUwGQxHWxkxXYHlnkWZU42r/XEuL2ZYv+KZ4/vpg1E1vGEuCTcUaAk0i51m+
-         o9YLOFBqckCfSFQMh8so0eQ/WXzPnBQ16JWZX/KIhNhE7aLNhIvpUF+RVdOOZBjFq7N9
-         UslygXEL9j0Uj8HRmpTZ7cLBQlv2PRQGufoMsHanluooRjKJmOv36hnqfcKvvQ5QDkae
-         m2+mOfesRle2aN6+kI7bsQtbm7pFH89gz8b+Clgw5iEOZKbPZTk/wqcXe66cSRzS0AeC
-         SeypIxAzHCoMGa2MvFJ9c+MFKldn9Dw2zI2oadsAo9ivyuG6dWOYjlWRbfkxI+sIG8AW
-         5pTQ==
-Received: by 10.68.228.100 with SMTP id sh4mr13285202pbc.45.1345224984524;
-        Fri, 17 Aug 2012 10:36:24 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id pa6sm5307770pbc.47.2012.08.17.10.36.22
-        (version=SSLv3 cipher=OTHER);
-        Fri, 17 Aug 2012 10:36:23 -0700 (PDT)
-Message-ID: <502E8115.90507@gmail.com>
-Date:   Fri, 17 Aug 2012 10:36:21 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20120717 Thunderbird/14.0
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:x-system-of-record;
+        bh=Kd/JZBXbIX5coJ5LazkbyZsbv8yCIzO8HtCqcIW595o=;
+        b=f7BQXw29TubVrXg9kZjvyX2ystKMqiz4hk2MTjXOvRy+mQWsxS6QWwZ3aAmsBKGk+e
+         aaP7mJm6ief0eweFAab8jDy0mqEb5JWh66XOeSDb/rZyBRkKUkg4Cfp/sbwWDRq8x2Tc
+         UMikdsI7RIxqRCKju+QW9IavU8MKZOp6nT2sHF1M7AGMm6IIKwg2WDBZbFPSE8WlUL2f
+         ix1ta69qqfB+QvGoF8vacyuGcqperEkyEYVBt8hX/z2NlY6yM9Ot5RadeVat7Kktt3Fi
+         MEzW10HUmCk0045xasLSncywlvgee+KBdIhF6ag+3kki4GR4q8qJc6F/8z6jvAt0MM+x
+         yd+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:x-system-of-record:x-gm-message-state;
+        bh=Kd/JZBXbIX5coJ5LazkbyZsbv8yCIzO8HtCqcIW595o=;
+        b=M8KzRzyyPGRGBP4/SxLTKHyC5dmV+Y62cYHwNvStrjLMp/g3aP/6kimP/xbNos/yfE
+         06FrBBCOjM/BCIkiupe2eKMVXViVDyT7jhDu9NHmPwAketFohfHCc/5P3GBh6XJj0fXO
+         KovwKZfpeZAl7nFWp1Pz1+KvJtLL1oKq1k4/NliXMpz/K0+fbYHRemZF9ijy9AfM0cnu
+         Ra49z8nxMezNK48ZGpwB56Xi6vF9oGwGN3BreDslZmTNUbTd1i5za9n/ksHLOe5pZYUG
+         2w18KMSZNgfYJyDEUhKROvd0RZRWwVOQ98PW5XVJ8QIHhKdwQTyLSDeKDXZrB7ZfbWEI
+         0Whw==
+Received: by 10.112.39.135 with SMTP id p7mr2599183lbk.78.1345225491486;
+        Fri, 17 Aug 2012 10:44:51 -0700 (PDT)
+Received: by 10.112.39.135 with SMTP id p7mr2599171lbk.78.1345225491315; Fri,
+ 17 Aug 2012 10:44:51 -0700 (PDT)
 MIME-Version: 1.0
-To:     Thierry Reding <thierry.reding@avionic-design.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-pci@vger.kernel.org
-CC:     linux-mips <linux-mips@linux-mips.org>
-Subject: PCI Section mismatch error in linux-next.
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34255
+Received: by 10.112.128.68 with HTTP; Fri, 17 Aug 2012 10:44:31 -0700 (PDT)
+In-Reply-To: <502E8115.90507@gmail.com>
+References: <502E8115.90507@gmail.com>
+From:   Bjorn Helgaas <bhelgaas@google.com>
+Date:   Fri, 17 Aug 2012 11:44:31 -0600
+Message-ID: <CAErSpo7a77wAxrgZYfg_UdqLEtEf0wUxcbxTghnR7HbRsncKRQ@mail.gmail.com>
+Subject: Re: PCI Section mismatch error in linux-next.
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Thierry Reding <thierry.reding@avionic-design.de>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-pci@vger.kernel.org,
+        linux-mips <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+X-System-Of-Record: true
+X-Gm-Message-State: ALoCoQmLyigWnaMkt2amaLLn1xdG6b1NwcPRaqt4FfU+EUCo/il2yQaEv7fOal3uCYpZmdkU+p4tPEJDnkFbDJkChNSLsWNHdrfmkB4mFZFd444m/K6b25v6aS31O0k/vCTFkFVYpvcepAOWI9+EfPUAN49MZUWcpZM345NMVCvpXqGJc51wpbFI6TtYeivm+RDXd89ryJnPiZsbZNg//J1kr2YDl5wVCg==
+X-archive-position: 34256
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,20 +64,21 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-For MIPS, Thierry Reding's patch in linux-next (PCI: Keep 
-pci_fixup_irqs() around after init) causes:
+On Fri, Aug 17, 2012 at 11:36 AM, David Daney <ddaney.cavm@gmail.com> wrote:
+> For MIPS, Thierry Reding's patch in linux-next (PCI: Keep pci_fixup_irqs()
+> around after init) causes:
+>
+> WARNING: vmlinux.o(.text+0x22c784): Section mismatch in reference from the
+> function pci_fixup_irqs() to the function .init.text:pcibios_update_irq()
+>
+> The MIPS implementation of pcibios_update_irq() is __init, so there is
+> conflict with the removal of __init from pci_fixup_irqs() and
+> pdev_fixup_irq().
+>
+> Can you guys either remove the patch from linux-next, or improve it to also
+> fix up any architecture implementations of pdev_update_irq()?
 
-WARNING: vmlinux.o(.text+0x22c784): Section mismatch in reference from 
-the function pci_fixup_irqs() to the function 
-.init.text:pcibios_update_irq()
+Crap, there are lots of arches with this issue.  I'll fix it up.
+Thanks for pointing it out!
 
-The MIPS implementation of pcibios_update_irq() is __init, so there is 
-conflict with the removal of __init from pci_fixup_irqs() and 
-pdev_fixup_irq().
-
-Can you guys either remove the patch from linux-next, or improve it to 
-also fix up any architecture implementations of pdev_update_irq()?
-
-
-Thanks,
-David Daney
+Bjorn

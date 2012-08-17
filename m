@@ -1,63 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2012 23:46:52 +0200 (CEST)
-Received: from mail-gh0-f177.google.com ([209.85.160.177]:39792 "EHLO
-        mail-gh0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903609Ab2HQVqr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Aug 2012 23:46:47 +0200
-Received: by ghbf20 with SMTP id f20so4723004ghb.36
-        for <linux-mips@linux-mips.org>; Fri, 17 Aug 2012 14:46:41 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Aug 2012 01:55:56 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:62688 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903597Ab2HQXzu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 18 Aug 2012 01:55:50 +0200
+Received: by pbbrq8 with SMTP id rq8so4323322pbb.36
+        for <multiple recipients>; Fri, 17 Aug 2012 16:55:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:x-system-of-record;
-        bh=JHk0tx2BrnmiWkt9Wyt8EmI5ts93Qlctl2WzL9Ve/Mo=;
-        b=KS88xAgpLtBpV8kvUhVpto4IjXlLg4jXwkqvN0DpHd/oZ/vCjz9lToZL5thOK1+UWI
-         i9Eq+8FQ2hmgKjPqR+bTeoGoVlMclww2Ac8nt87XiT8khZkqnnMz6dYED/uCYC0U5byq
-         w4ROGKhPKRW/+tp9Sdc3x2MheVD+DtDpWOEG3QolqSdKz8Djx5I3/U44mFHNq0oWstum
-         lbjmYYLtDvnaURoSA13ldMTK9NfPpMyJXdIZzyzVJLC04SIv5//gjqNGLlbFqOTvrx30
-         0XiPGIRXGUP/ZBljL9fEDmQixfi84Q22nVShf/rpuK9ns9A4G0+CiURlusH2NKlF2tZj
-         6LjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:x-system-of-record:x-gm-message-state;
-        bh=JHk0tx2BrnmiWkt9Wyt8EmI5ts93Qlctl2WzL9Ve/Mo=;
-        b=E8Xt7VBGDjOSvIWFiWIkm9lg3fmcgSvbfe9YNtI4D1QGMhBIdIPPjXlPBGMhlgbbHD
-         fbZ81ZgMQcZLR/1bfx0MpaIAymqrTqcUufrnxGfAnhuo0r9yci3abkv9uUQf0hHNg0fU
-         IemLh+CFM+WibaNvMnF3/IjMumTMd2Ro3gZYBukxRhyHE7XXLDlwavJNhuHPDENFtlpg
-         earAka6aJEUTZK+J8N5xh1SKal5MItI4Qs/yjLzHIXuXWx80z1WQKJBU+9/o4AH6Y3fc
-         xo385C6Hmx5vE8F+/Oem1TJlEcotJlAoYCFzOTIseAlZ3lb0dmldqi+rVsryhKl+kFCP
-         BeaA==
-Received: by 10.50.189.134 with SMTP id gi6mr3315904igc.55.1345240001327;
-        Fri, 17 Aug 2012 14:46:41 -0700 (PDT)
-Received: by 10.50.189.134 with SMTP id gi6mr3315892igc.55.1345240001136; Fri,
- 17 Aug 2012 14:46:41 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.50.26.99 with HTTP; Fri, 17 Aug 2012 14:46:20 -0700 (PDT)
-In-Reply-To: <20120817213247.GA1056@avionic-0098.mockup.avionic-design.de>
-References: <502E8115.90507@gmail.com> <CAErSpo7a77wAxrgZYfg_UdqLEtEf0wUxcbxTghnR7HbRsncKRQ@mail.gmail.com>
- <20120817182931.GA27391@avionic-0098.adnet.avionic-design.de>
- <CAErSpo6xhbpmd-rnLqKp9SuRQCp5a7jUzKhz0n6zGGLNHybWqA@mail.gmail.com>
- <20120817200755.GA16021@avionic-0098.adnet.avionic-design.de>
- <CAErSpo4XX7mQBmJfYWzmXCSDAt4BzZoJV6gU9__409K=fpvC6A@mail.gmail.com>
- <20120817204839.GA2017@avionic-0098.mockup.avionic-design.de>
- <20120817210718.GA14842@avionic-0098.mockup.avionic-design.de>
- <CAErSpo7bwHNUchZHeJByxzhsc0uN7RJMLivBo5FuOJzA0Gz2Jg@mail.gmail.com> <20120817213247.GA1056@avionic-0098.mockup.avionic-design.de>
-From:   Bjorn Helgaas <bhelgaas@google.com>
-Date:   Fri, 17 Aug 2012 15:46:20 -0600
-Message-ID: <CAErSpo7D8HSKQ7o9peWBE6e30UcYOBj8KTEENzyxhTNKSUmYWg@mail.gmail.com>
-Subject: Re: PCI Section mismatch error in linux-next.
-To:     Thierry Reding <thierry.reding@avionic-design.de>
-Cc:     David Daney <ddaney.cavm@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-pci@vger.kernel.org,
-        linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-X-System-Of-Record: true
-X-Gm-Message-State: ALoCoQl3Lag9b0lZp9MjcBWsm67aJZghVa8UhkUctYMbVNyqw4lObZHZ1BRE6U1z2ZstI6vPwEZB/EYbMZ0o1okCHJqVZBRG5cqhya4wpurv+DnyouIWKAVxDnUKlL3PNdW8+GRbZYl+FBCgRnksLipQ8geBTR6ZKl7MZb6aWBShibXaECRpd4D+DbMicPjk031/6HynlDLeVJSR/H7sw5nqB/Yzo8jQ3A==
-X-archive-position: 34268
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=KrVsgqL6xbIRMUCIK4BqQxzONkuEL3/3Z3tPldL+UYQ=;
+        b=OLXhs/jQOu79Dcb2R7rbdxxWslzsSmVGZpUFXvWASR72VVxjTV86760F3J62lJB16f
+         PgheyfJTVryCbPfH+1IpGfczSTu2coTVuhfFEyqtagzqAEzMikPMomyCHxqus0k3qylv
+         uVT+tr85xdLSjPeA5mbu7xhNdo+WU6+Xwj+nr60AGhHivz87N/lCVcxplLOQjlKDcPI/
+         gBpRJkCWERV72W4iJqsJF88ovHFVpfOwr+Ly4B7NPpCVb6n2uwgqjAA4aBx8pp1b+eRa
+         yU7/a/U9tN+O7PyAP9s4eVSvgGnvdmWjX8/9NjJlXLQPXPJ2dOmkMOWHE3PMJOZcBihE
+         F0Jg==
+Received: by 10.68.197.228 with SMTP id ix4mr15787976pbc.40.1345247743520;
+        Fri, 17 Aug 2012 16:55:43 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id wn1sm5838297pbc.57.2012.08.17.16.55.42
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 17 Aug 2012 16:55:42 -0700 (PDT)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id q7HNseF6025130;
+        Fri, 17 Aug 2012 16:54:40 -0700
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id q7HNsevK025129;
+        Fri, 17 Aug 2012 16:54:40 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     ralf@linux-mips.org, linux-ide@vger.kernel.org,
+        Jeff Garzik <jgarzik@pobox.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        David Daney <david.daney@cavium.com>
+Subject: [PATCH 2/2] ata: pata_octeon_cf: Use correct byte order for DMA in when built little-endian.
+Date:   Fri, 17 Aug 2012 16:54:33 -0700
+Message-Id: <1345247673-25086-3-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.2
+In-Reply-To: <1345247673-25086-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1345247673-25086-1-git-send-email-ddaney.cavm@gmail.com>
+X-archive-position: 34269
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bhelgaas@google.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,52 +56,36 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Aug 17, 2012 at 3:32 PM, Thierry Reding
-<thierry.reding@avionic-design.de> wrote:
-> On Fri, Aug 17, 2012 at 03:25:22PM -0600, Bjorn Helgaas wrote:
->> On Fri, Aug 17, 2012 at 3:07 PM, Thierry Reding
->> <thierry.reding@avionic-design.de> wrote:
->> > On Fri, Aug 17, 2012 at 10:48:39PM +0200, Thierry Reding wrote:
->> >> On Fri, Aug 17, 2012 at 02:39:34PM -0600, Bjorn Helgaas wrote:
->> > [...]
->> >> > Well, maybe you just need to turn on CONFIG_HOTPLUG.  How would that
->> >> > affect you?  I think we would still have to change some __inits to
->> >> > __devinit, including pcibios_update_irq(), but it might be more
->> >> > manageable.
->> >>
->> >> You said that depending on HOTPLUG wouldn't be enough because it would
->> >> exclude reenumeration at runtime if HOTPLUG wasn't defined. Also it is
->> >> theoretically possible to build a kernel without HOTPLUG but have the
->> >> enumeration start after init because of deferred probing. Those cases
->> >> won't work if we keep __init or __devinit respectively, right?
->> >
->> > Another possibility would be to make PCI select HOTPLUG or depend on it.
->> > That way it would be made sure that __devinit wouldn't cause all the
->> > functions to be discarded after init.
->>
->> There's been some discussion recently about whether CONFIG_HOTPLUG is
->> worth keeping any more, but nothing's been resolved yet.  If we did
->> decide to remove CONFIG_HOTPLUG, or require it for PCI, I would rather
->> just remove all the __devinit annotations because they'd be
->> superfluous.
->
-> I've missed that discussion. Can you point me to it?
+From: David Daney <david.daney@cavium.com>
 
-Sure: http://lists.linux-foundation.org/pipermail/ksummit-2012-discuss/2012-June/000051.html
+We need to set the 'endian' bit in this case.
 
->From previous email:
->> This is the situation (deferred probing with CONFIG_HOTPLUG=n) that
->> I'm suggesting might not need to work.  After all, hotplug essentially
->> means "adding devices after init."
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ drivers/ata/pata_octeon_cf.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> Yes, I guess that would be appropriate. However I don't see how this
-> could be expressed in Kconfig unless the deferred probing itself is
-> conditionalized on HOTPLUG. Even in that case it would still be possible
-> to build a PCIe controller driver as a module and load it at runtime
-> after init.
-
-That's exactly it -- the deferred probing and any loadable PCI host
-bridge drivers would have to depend on HOTPLUG.  That seems like the
-most straightforward, least-surprises, approach for now.
-
-Bjorn
+diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
+index 652d035..4e1194b 100644
+--- a/drivers/ata/pata_octeon_cf.c
++++ b/drivers/ata/pata_octeon_cf.c
+@@ -20,6 +20,7 @@
+ #include <linux/platform_device.h>
+ #include <scsi/scsi_host.h>
+ 
++#include <asm/byteorder.h>
+ #include <asm/octeon/octeon.h>
+ 
+ /*
+@@ -589,6 +590,9 @@ static void octeon_cf_dma_start(struct ata_queued_cmd *qc)
+ 
+ 	/* Set the direction of the DMA */
+ 	mio_boot_dma_cfg.u64 = 0;
++#ifdef __LITTLE_ENDIAN
++	mio_boot_dma_cfg.s.endian = 1;
++#endif
+ 	mio_boot_dma_cfg.s.en = 1;
+ 	mio_boot_dma_cfg.s.rw = ((qc->tf.flags & ATA_TFLAG_WRITE) != 0);
+ 
+-- 
+1.7.11.2

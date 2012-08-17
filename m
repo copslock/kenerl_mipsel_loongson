@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2012 10:46:53 +0200 (CEST)
-Received: from mail-yw0-f49.google.com ([209.85.213.49]:36606 "EHLO
-        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903511Ab2HQIo3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Aug 2012 10:44:29 +0200
-Received: by yhjj52 with SMTP id j52so4033278yhj.36
-        for <multiple recipients>; Fri, 17 Aug 2012 01:44:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2012 10:47:15 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:52501 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903553Ab2HQIod (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Aug 2012 10:44:33 +0200
+Received: by mail-pz0-f49.google.com with SMTP id q27so797087daj.36
+        for <multiple recipients>; Fri, 17 Aug 2012 01:44:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
          :references;
-        bh=5O9vUnC34/xmqljJb6jy8I2sMyXLql4nIqE2POTXN9c=;
-        b=wPNcm6IPisDQjYmJUNnnTe2yfyMTtyyp9PbXw/XySuTQ/BnJbj/CNc79Gkuckxarvb
-         JafD7J8B/cNCgHUxu4uQVsIrPNIAREBTU/q7rhnRhlUGWSTUgqEwdB/DTc+cAx7K0/gS
-         LgqjgwxX1jBfRyTZMH08hrK0eSegW2HaD8RqA8MKiEEBD3dJEX7pXBDKprrlm7f3Yo+C
-         BNA6DBztg6DTY9ccW+BC4zNbITvFpeFfON1YrYEqChzlfbGjW08d4K0aUK/1GeJBdhKi
-         wt6a2mIVm5+KZAJT5DFlyTeT2P4xBzOHo3V5BeeOQKHNBFEoUBdugRjc8qEW/wrZC7Oc
-         F6lg==
-Received: by 10.66.81.66 with SMTP id y2mr7901749pax.62.1345193062870;
-        Fri, 17 Aug 2012 01:44:22 -0700 (PDT)
+        bh=0clVjA/X/lXWLq8/eTDiFP19ZoZ3xsqKvlMs8NUC9NY=;
+        b=RInfF8UYibb4S9YD4jkAKN/iX7en9It1T8/Cp8qMHeWcQtUmzz1H/Oqby/T7vWqZkF
+         /m9Etd2qw0ctXdPTbNQU0k12819soe3julzI8FoSAV0/IuFhrk5INy4pKUWNr27qS5Bs
+         9yeRj88ES8rSsyUDKcyxdsoUx2AQFS0WodEM2b+itAg28It0bx0B4FHtB0NKPvLWCoQu
+         w5qb2bOl+GNQRiyhMm0h+hqcJBFe8yyvBVgnwZF3HuCQHHkwy2Ly1qjmrBU61J9ChAEW
+         2t1k3lxjYNuxt1b47bGx7bYUsSZmhg/IqTYmd8VtA1UB2Ik1dTd8nzJQZlc/pOIkDMYX
+         REGQ==
+Received: by 10.68.130.163 with SMTP id of3mr9929606pbb.108.1345193072832;
+        Fri, 17 Aug 2012 01:44:32 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id sz3sm4503572pbc.21.2012.08.17.01.44.18
+        by mx.google.com with ESMTPS id sz3sm4503572pbc.21.2012.08.17.01.44.28
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 17 Aug 2012 01:44:22 -0700 (PDT)
+        Fri, 17 Aug 2012 01:44:31 -0700 (PDT)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
@@ -29,13 +29,13 @@ Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH V6 06/15] MIPS: Loongson 3: Add HT-linked PCI support
-Date:   Fri, 17 Aug 2012 16:43:26 +0800
-Message-Id: <1345193015-3024-7-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V6 08/15] MIPS: Loongson 3: Add serial port support
+Date:   Fri, 17 Aug 2012 16:43:28 +0800
+Message-Id: <1345193015-3024-9-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1345193015-3024-1-git-send-email-chenhc@lemote.com>
 References: <1345193015-3024-1-git-send-email-chenhc@lemote.com>
-X-archive-position: 34241
+X-archive-position: 34242
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,261 +53,101 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Loongson family machines use Hyper-Transport bus for inter-core
-connection and device connection. The PCI bus is a subordinate
-linked at HT1.
+Loongson family machines has three types of serial port: PCI UART, LPC
+UART and CPU internal UART. Loongson-2E and parts of Loongson-2F based
+machines use PCI UART; most Loongson-2F based machines use LPC UART;
+Loongson-2G/3A has both LPC and CPU UART but usually use CPU UART.
 
-With UEFI-like firmware interface, We don't need fixup for PCI irq
-routing.
+Port address of UARTs:
+CPU UART: REG_BASE + OFFSET;
+LPC UART: LIO1_BASE + OFFSET;
+PCI UART: PCIIO_BASE + OFFSET.
+
+Since LPC UART are linked in "Local Bus", both CPU UART and LPC UART
+are called "CPU provided serial port".
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Hongliang Tao <taohl@lemote.com>
 Signed-off-by: Hua Yan <yanh@lemote.com>
 ---
- arch/mips/include/asm/mach-loongson/loongson.h |    7 ++
- arch/mips/include/asm/mach-loongson/pci.h      |    5 +
- arch/mips/pci/Makefile                         |    1 +
- arch/mips/pci/fixup-loongson3.c                |   64 +++++++++++++++
- arch/mips/pci/ops-loongson3.c                  |  104 ++++++++++++++++++++++++
- 5 files changed, 181 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/pci/fixup-loongson3.c
- create mode 100644 arch/mips/pci/ops-loongson3.c
+ arch/mips/loongson/common/serial.c    |   26 +++++++++++++++-----------
+ arch/mips/loongson/common/uart_base.c |    9 ++++++++-
+ 2 files changed, 23 insertions(+), 12 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
-index 6a1bcf3..960811a 100644
---- a/arch/mips/include/asm/mach-loongson/loongson.h
-+++ b/arch/mips/include/asm/mach-loongson/loongson.h
-@@ -15,6 +15,7 @@
- #include <linux/init.h>
- #include <linux/irq.h>
- #include <linux/kconfig.h>
-+#include <boot_param.h>
+diff --git a/arch/mips/loongson/common/serial.c b/arch/mips/loongson/common/serial.c
+index 7580873..59c76b5 100644
+--- a/arch/mips/loongson/common/serial.c
++++ b/arch/mips/loongson/common/serial.c
+@@ -19,19 +19,19 @@
+ #include <loongson.h>
+ #include <machine.h>
  
- /* loongson internal northbridge initialization */
- extern void bonito_irq_init(void);
-@@ -101,7 +102,13 @@ static inline void do_perfcnt_IRQ(void)
- #define LOONGSON_PCICFG_BASE	0x1fe80000
- #define LOONGSON_PCICFG_SIZE	0x00000800	/* 2K */
- #define LOONGSON_PCICFG_TOP	(LOONGSON_PCICFG_BASE+LOONGSON_PCICFG_SIZE-1)
-+
-+#if defined(CONFIG_HT_PCI)
-+#define LOONGSON_PCIIO_BASE	loongson_pciio_base
-+#else
- #define LOONGSON_PCIIO_BASE	0x1fd00000
-+#endif
-+
- #define LOONGSON_PCIIO_SIZE	0x00100000	/* 1M */
- #define LOONGSON_PCIIO_TOP	(LOONGSON_PCIIO_BASE+LOONGSON_PCIIO_SIZE-1)
+-#define PORT(int)			\
++#define PORT(int, clk)			\
+ {								\
+ 	.irq		= int,					\
+-	.uartclk	= 1843200,				\
++	.uartclk	= clk,					\
+ 	.iotype		= UPIO_PORT,				\
+ 	.flags		= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST,	\
+ 	.regshift	= 0,					\
+ }
  
-diff --git a/arch/mips/include/asm/mach-loongson/pci.h b/arch/mips/include/asm/mach-loongson/pci.h
-index bc99dab..1212774 100644
---- a/arch/mips/include/asm/mach-loongson/pci.h
-+++ b/arch/mips/include/asm/mach-loongson/pci.h
-@@ -40,8 +40,13 @@ extern struct pci_ops loongson_pci_ops;
- #else	/* loongson2f/32bit & loongson2e */
+-#define PORT_M(int)				\
++#define PORT_M(int, clk)				\
+ {								\
+ 	.irq		= MIPS_CPU_IRQ_BASE + (int),		\
+-	.uartclk	= 3686400,				\
++	.uartclk	= clk,					\
+ 	.iotype		= UPIO_MEM,				\
+ 	.membase	= (void __iomem *)NULL,			\
+ 	.flags		= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST,	\
+@@ -40,13 +40,17 @@
  
- /* this pci memory space is mapped by pcimap in pci.c */
-+#ifdef CONFIG_CPU_LOONGSON3
-+#define LOONGSON_PCI_MEM_START	0x40000000UL
-+#define LOONGSON_PCI_MEM_END	0x7effffffUL
-+#else
- #define LOONGSON_PCI_MEM_START	LOONGSON_PCILO1_BASE
- #define LOONGSON_PCI_MEM_END	(LOONGSON_PCILO1_BASE + 0x04000000 * 2)
-+#endif
- /* this is an offset from mips_io_port_base */
- #define LOONGSON_PCI_IO_START	0x00004000UL
+ static struct plat_serial8250_port uart8250_data[][2] = {
+ 	[MACH_LOONGSON_UNKNOWN]         {},
+-	[MACH_LEMOTE_FL2E]              {PORT(4), {} },
+-	[MACH_LEMOTE_FL2F]              {PORT(3), {} },
+-	[MACH_LEMOTE_ML2F7]             {PORT_M(3), {} },
+-	[MACH_LEMOTE_YL2F89]            {PORT_M(3), {} },
+-	[MACH_DEXXON_GDIUM2F10]         {PORT_M(3), {} },
+-	[MACH_LEMOTE_NAS]               {PORT_M(3), {} },
+-	[MACH_LEMOTE_LL2F]              {PORT(3), {} },
++	[MACH_LEMOTE_FL2E]              {PORT(4, 1843200), {} },
++	[MACH_LEMOTE_FL2F]              {PORT(3, 1843200), {} },
++	[MACH_LEMOTE_ML2F7]             {PORT_M(3, 3686400), {} },
++	[MACH_LEMOTE_YL2F89]            {PORT_M(3, 3686400), {} },
++	[MACH_DEXXON_GDIUM2F10]         {PORT_M(3, 3686400), {} },
++	[MACH_LEMOTE_NAS]               {PORT_M(3, 3686400), {} },
++	[MACH_LEMOTE_LL2F]              {PORT(3, 1843200), {} },
++	[MACH_LEMOTE_A1004]             {PORT_M(2, 33177600), {} },
++	[MACH_LEMOTE_A1101]             {PORT_M(2, 25000000), {} },
++	[MACH_LEMOTE_A1201]             {PORT_M(2, 25000000), {} },
++	[MACH_LEMOTE_A1205]             {PORT_M(2, 25000000), {} },
+ 	[MACH_LOONGSON_END]             {},
+ };
  
-diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index e13a71c..0723723 100644
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -30,6 +30,7 @@ obj-$(CONFIG_MIPS_COBALT)	+= fixup-cobalt.o
- obj-$(CONFIG_SOC_PNX8550)	+= fixup-pnx8550.o ops-pnx8550.o
- obj-$(CONFIG_LEMOTE_FULOONG2E)	+= fixup-fuloong2e.o ops-loongson2.o
- obj-$(CONFIG_LEMOTE_MACH2F)	+= fixup-lemote2f.o ops-loongson2.o
-+obj-$(CONFIG_LEMOTE_MACH3A)	+= fixup-loongson3.o ops-loongson3.o
- obj-$(CONFIG_MIPS_MALTA)	+= fixup-malta.o
- obj-$(CONFIG_PMC_MSP7120_GW)	+= fixup-pmcmsp.o ops-pmcmsp.o
- obj-$(CONFIG_PMC_MSP7120_EVAL)	+= fixup-pmcmsp.o ops-pmcmsp.o
-diff --git a/arch/mips/pci/fixup-loongson3.c b/arch/mips/pci/fixup-loongson3.c
-new file mode 100644
-index 0000000..d716567
---- /dev/null
-+++ b/arch/mips/pci/fixup-loongson3.c
-@@ -0,0 +1,64 @@
-+/*
-+ * fixup-loongson3.c
-+ *
-+ * Copyright (C) 2012 Lemote, Inc.
-+ * Author: Xiang Yu, xiangy@lemote.com
-+ *         Chen Huacai, chenhc@lemote.com
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ *
-+ * THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-+ * WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-+ * NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-+ * NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-+ * USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-+ * ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ *
-+ * You should have received a copy of the  GNU General Public License along
-+ * with this program; if not, write  to the Free Software Foundation, Inc.,
-+ * 675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ */
-+
-+#include <linux/pci.h>
-+#include <boot_param.h>
-+
-+static void print_fixup_info(const struct pci_dev * pdev)
-+{
-+	printk(KERN_INFO "Fixup: bus%d dev%xh fun%xh %x:%x irq %d\n",
-+			pdev->bus->number, PCI_SLOT(pdev->devfn), PCI_FUNC(pdev->devfn),
-+			pdev->vendor, pdev->device, pdev->irq);
-+
-+}
-+
-+int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-+{
-+	print_fixup_info(dev);
-+	return dev->irq;
-+}
-+
-+static void __init pci_fixup_radeon(struct pci_dev *pdev)
-+{
-+	if (pdev->resource[PCI_ROM_RESOURCE].start)
-+		return;
-+
-+	pdev->resource[PCI_ROM_RESOURCE].start  = vgabios_addr;
-+	pdev->resource[PCI_ROM_RESOURCE].end    = vgabios_addr + 256*1024 - 1;
-+	pdev->resource[PCI_ROM_RESOURCE].flags |= IORESOURCE_ROM_COPY;
-+}
-+
-+DECLARE_PCI_FIXUP_CLASS_FINAL(PCI_VENDOR_ID_ATI, PCI_ANY_ID,
-+				PCI_CLASS_DISPLAY_VGA, 8, pci_fixup_radeon);
-+
-+/* Do platform specific device initialization at pci_enable_device() time */
-+int pcibios_plat_dev_init(struct pci_dev *dev)
-+{
-+	return 0;
-+}
-diff --git a/arch/mips/pci/ops-loongson3.c b/arch/mips/pci/ops-loongson3.c
-new file mode 100644
-index 0000000..b29d333
---- /dev/null
-+++ b/arch/mips/pci/ops-loongson3.c
-@@ -0,0 +1,104 @@
-+#include <linux/types.h>
-+#include <linux/pci.h>
-+#include <linux/kernel.h>
-+
-+#include <asm/mips-boards/bonito64.h>
-+
-+#include <loongson.h>
-+
-+#define PCI_ACCESS_READ  0
-+#define PCI_ACCESS_WRITE 1
-+
-+#define HT1LO_PCICFG_BASE      0x1a000000
-+#define HT1LO_PCICFG_BASE_TP1  0x1b000000
-+
-+static int loongson3_pci_config_access(unsigned char access_type,
-+		struct pci_bus *bus, unsigned int devfn,
-+		int where, u32 *data)
-+{
-+	unsigned char busnum = bus->number;
-+	u_int64_t addr, type;
-+	void *addrp;
-+	int device = PCI_SLOT(devfn);
-+	int function = PCI_FUNC(devfn);
-+	int reg = where & ~3;
-+
-+	if (busnum == 0) {
-+		if (device > 31)
-+			return PCIBIOS_DEVICE_NOT_FOUND;
-+		addr = (device << 11) | (function << 8) | reg;
-+	    addrp = (void *)(TO_UNCAC(HT1LO_PCICFG_BASE) | (addr & 0xffff));
-+		type = 0;
-+
-+	} else {
-+		addr = (busnum << 16) | (device << 11) | (function << 8) | reg;
-+	    addrp = (void *)(TO_UNCAC(HT1LO_PCICFG_BASE_TP1) | (addr));
-+		type = 0x10000;
-+	}
-+
-+	if (access_type == PCI_ACCESS_WRITE)
-+		*(volatile unsigned int *)addrp = cpu_to_le32(*data);
-+	else {
-+		*data = le32_to_cpu(*(volatile unsigned int *)addrp);
-+		if (*data == 0xffffffff) {
-+			*data = -1;
-+	        return PCIBIOS_DEVICE_NOT_FOUND;
-+		}
-+	}
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+static int loongson3_pci_pcibios_read(struct pci_bus *bus, unsigned int devfn,
-+				 int where, int size, u32 * val)
-+{
-+	u32 data = 0;
-+	int ret = loongson3_pci_config_access(PCI_ACCESS_READ,
-+			bus, devfn, where, &data);
-+
-+	if (ret != PCIBIOS_SUCCESSFUL)
-+		return ret;
-+
-+	if (size == 1)
-+		*val = (data >> ((where & 3) << 3)) & 0xff;
-+	else if (size == 2)
-+		*val = (data >> ((where & 3) << 3)) & 0xffff;
-+	else
-+		*val = data;
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+static int loongson3_pci_pcibios_write(struct pci_bus *bus, unsigned int devfn,
-+				  int where, int size, u32 val)
-+{
-+	u32 data = 0;
-+	int ret;
-+
-+	if (size == 4)
-+		data = val;
-+	else {
-+		ret = loongson3_pci_config_access(PCI_ACCESS_READ,
-+				bus, devfn, where, &data);
-+		if (ret != PCIBIOS_SUCCESSFUL)
-+			return ret;
-+
-+		if (size == 1)
-+			data = (data & ~(0xff << ((where & 3) << 3))) |
-+			    (val << ((where & 3) << 3));
-+		else if (size == 2)
-+			data = (data & ~(0xffff << ((where & 3) << 3))) |
-+			    (val << ((where & 3) << 3));
-+	}
-+
-+	ret = loongson3_pci_config_access(PCI_ACCESS_WRITE,
-+			bus, devfn, where, &data);
-+	if (ret != PCIBIOS_SUCCESSFUL)
-+		return ret;
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+struct pci_ops loongson_pci_ops = {
-+	.read = loongson3_pci_pcibios_read,
-+	.write = loongson3_pci_pcibios_write
-+};
+diff --git a/arch/mips/loongson/common/uart_base.c b/arch/mips/loongson/common/uart_base.c
+index d69ea54..ea8b501 100644
+--- a/arch/mips/loongson/common/uart_base.c
++++ b/arch/mips/loongson/common/uart_base.c
+@@ -35,9 +35,16 @@ void prom_init_loongson_uart_base(void)
+ 	case MACH_DEXXON_GDIUM2F10:
+ 	case MACH_LEMOTE_NAS:
+ 	default:
+-		/* The CPU provided serial port */
++		/* The CPU provided serial port (LPC) */
+ 		loongson_uart_base = LOONGSON_LIO1_BASE + 0x3f8;
+ 		break;
++	case MACH_LEMOTE_A1004:
++	case MACH_LEMOTE_A1101:
++	case MACH_LEMOTE_A1201:
++	case MACH_LEMOTE_A1205:
++		/* The CPU provided serial port (CPU) */
++		loongson_uart_base = LOONGSON_REG_BASE + 0x1e0;
++		break;
+ 	}
+ 
+ 	_loongson_uart_base =
 -- 
 1.7.7.3

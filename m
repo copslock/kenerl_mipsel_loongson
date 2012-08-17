@@ -1,39 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2012 00:38:19 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:40610 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903553Ab2HPWiM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Aug 2012 00:38:12 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id E229F3EE18;
-        Fri, 17 Aug 2012 00:38:11 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id aJfxLudzFasq; Fri, 17 Aug 2012 00:38:06 +0200 (CEST)
-Received: from [IPv6:2001:470:1f0b:447:2a:1be:14a6:74fa] (unknown [IPv6:2001:470:1f0b:447:2a:1be:14a6:74fa])
-        by hauke-m.de (Postfix) with ESMTPSA id 05E013EE16;
-        Fri, 17 Aug 2012 00:38:05 +0200 (CEST)
-Message-ID: <502D764C.1060501@hauke-m.de>
-Date:   Fri, 17 Aug 2012 00:38:04 +0200
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20120714 Thunderbird/14.0
-MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-CC:     Arend van Spriel <arend@broadcom.com>,
-        Florian Fainelli <florian@openwrt.org>, ralf@linux-mips.org,
-        linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
-        john@phrozen.org
-Subject: Re: [PATCH v2 3/3] MIPS: BCM47xx: rewrite GPIO handling and use gpiolib
-References: <1345132801-8430-1-git-send-email-hauke@hauke-m.de> <1345132801-8430-4-git-send-email-hauke@hauke-m.de> <1791263.5FQJJv4xHF@bender> <CACna6rxVOFO-n5J_6J7HFSt+WnoX0=2ULjiRv3p9va47K2Edsw@mail.gmail.com> <502D3F3F.7060207@broadcom.com> <CACna6ryphAPip5hpAuzCMQjqvZe70MpPnFkCyzrMhFkk5iLS+A@mail.gmail.com>
-In-Reply-To: <CACna6ryphAPip5hpAuzCMQjqvZe70MpPnFkCyzrMhFkk5iLS+A@mail.gmail.com>
-X-Enigmail-Version: 1.5a1pre
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 34233
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Aug 2012 10:44:06 +0200 (CEST)
+Received: from mail-yx0-f177.google.com ([209.85.213.177]:41142 "EHLO
+        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903451Ab2HQIn6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Aug 2012 10:43:58 +0200
+Received: by yenq9 with SMTP id q9so4028527yen.36
+        for <multiple recipients>; Fri, 17 Aug 2012 01:43:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id:x-mailer;
+        bh=UgUIGcuNIpGr8BCASwOHzVsWbo1CVgbOW9EEpTLXl7I=;
+        b=gta8zUvHBd4oOfSrrPu2lMW0bjb3eZlZm+ea00wTiJ3IQZ2HoLn2ZLJLQ7hoTuUvKa
+         PNKtYSuRNAq4q722Yk8zNcsVB58L6p4OwELrGInheKL9QsYA5OBaVFnrHIJLFlv7IypZ
+         M50GbuRpZlbAS0sZxZ9RghOjabeRbemKb1XqVyvZ2zpGSaAtpGcqYHJ2icwOUH8SAPi6
+         cLtLJ4qmf8fXkHDH+EgPR+rPB283cS23I78rbM6oF/W6QM5MoHwuLoFfbRRxKMPt9u11
+         ik8y23OHqEAjI8F8Rolwe4KBYTyUn75786e0hy1sx/8bvOFGH6pn4qSdEJfkmKC4HKNa
+         /OVA==
+Received: by 10.66.88.39 with SMTP id bd7mr7938131pab.50.1345193031983;
+        Fri, 17 Aug 2012 01:43:51 -0700 (PDT)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id sz3sm4503572pbc.21.2012.08.17.01.43.47
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 17 Aug 2012 01:43:50 -0700 (PDT)
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Subject: [PATCH V6 00/16] MIPS: Add Loongson-3 based machines support
+Date:   Fri, 17 Aug 2012 16:43:20 +0800
+Message-Id: <1345193015-3024-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+X-archive-position: 34234
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,43 +50,137 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 08/16/2012 09:29 PM, Rafał Miłecki wrote:
-> 2012/8/16 Arend van Spriel <arend@broadcom.com>:
->> On 08/16/2012 07:39 PM, Rafał Miłecki wrote:
->>>
->>> 2012/8/16 Florian Fainelli<florian@openwrt.org>:
->>>>>
->>>>>>> +void __init bcm47xx_gpio_init(void)
->>>>>>> +{
->>>>>>> +     int err;
->>>>>>> +
->>>>>>> +     switch (bcm47xx_bus_type) {
->>>>>>> +#ifdef CONFIG_BCM47XX_SSB
->>>>>>> +     case BCM47XX_BUS_TYPE_SSB:
->>>>>>> +             bcm47xx_gpio_count = ssb_gpio_count(&bcm47xx_bus.ssb);
->>>>>>> +#endif
->>>>>>> +#ifdef CONFIG_BCM47XX_BCMA
->>>>>>> +     case BCM47XX_BUS_TYPE_BCMA:
->>>>>>> +             bcm47xx_gpio_count =
->>>>>>> bcma_gpio_count(&bcm47xx_bus.bcma.bus);
->>>>>>> +#endif
->>>>>>> +     }
->>>>
->>>>>
->>>>> Is this exclusive? Cannot we have both SSB and BCMA on the same device?
->>>
->>> This applies to SoC only, so I believe it's fine. We don't have SoCs
->>> based on BCMA and SSB at the same time.
->>
->>
->> It is indeed more than unlikely for a chip to have two silicon
->> interconnects, which is what SSB and BCMA are. However, it does look
->> suspicious from a code reading perspective. So I general I stick to the rule
->> that each case must have a break and fall-thru are clearly commented.
-> 
-> Ahh, I though question is related to the enum used for bustype. I
-> definitely vote for using "break"
+This patchset is for git repository git://git.linux-mips.org/pub/scm/
+ralf/linux. Loongson-3 is a multi-core MIPS family CPU, it is MIPS64
+compatible and has the same IMP field (0x6300) as Loongson-2. These
+patches make Linux kernel support Loongson-3 CPU and Loongson-3 based
+computers (including Laptop, Mini-ITX, All-In-One PC, etc.)
 
-I will add the missing break.
+V1 -> V2:
+1, Split the first patch to two patches, one is constant definition and
+   the other is CPU probing, cache initializing, etc.
+2, Remove Kconfig options in the first 9 patches and put all of them in
+   the 10th patch.
+3, Use "make savedefconfig" to generate the new default config file.
+4, Rework serial port support to use PORT and PORT_M macros.
+5, Fix some compile warnings.
 
-Hauke
+V2 -> V3:
+1, Improve cache flushing code (use cpu_has_coherent_cache macro and
+   remove #ifdef clauses).
+2, Improve platform-specific code to correctly set driver's dma_mask/
+   coherent_dma_mask so no longer need workarounds for each driver (
+   SATA, graphics card, sound card, etc.)
+3, Use PCI quirk to provide vgabios and loongson3_read_bios() go away.
+4, Improve CPU hotplug code and split the poweroff failure related code
+   to another patch (this issue affect all MIPS CPU, not only Loongson).
+5, Some other small fixes.
+
+V3 -> V4:
+1, Include swiotlb.h in radeon_ttm.c if SWIOTLB configured.
+2, Remove "Reviewed-by" in patches which are added by mistake.
+3, Sync the code to upstream.
+
+V4 -> V5:
+1, Split the drm patch to three patches.
+2, Use platform-specific pincfgs to replace old alsa quirks.
+
+V5 -> V6:
+1, For better management, two non-Loongson-specific patches are sent
+   independently.
+2, Introduce cpu_has_coherent_cache feature and split cache flushing
+   changes to a separate patch.
+3, Remove PRID_IMP_LOONGSON3 and use PRID_IMP_LOONGSON2 since they are
+   the same.
+4, Don't define RTC_ALWAYS_BCD for Loongson-3 since BCD format can be
+   checked by RTC_CONTROL at runtime.
+5, Don't modify dma-default.c for Loongson since it is unnecessary.
+6, Don't define SAREA_MAX since it is useless.
+7, Increase the default boost of internal mic for Lemote A1004.
+8, Fix a #ifdef issue in dma-coherence.h.
+9, Some other small fixes.
+
+Huacai Chen(15):
+ MIPS: Loongson: Add basic Loongson-3 definition.
+ MIPS: Loongson: Add basic Loongson-3 CPU support.
+ MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature.
+ MIPS: Loongson 3: Add Lemote-3A machtypes definition.
+ MIPS: Loongson: Add UEFI-like firmware interface support.
+ MIPS: Loongson 3: Add HT-linked PCI support.
+ MIPS: Loongson 3: Add IRQ init and dispatch support.
+ MIPS: Loongson 3: Add serial port support.
+ MIPS: Loongson: Add swiotlb to support big memory (>4GB).
+ MIPS: Loongson: Add Loongson-3 Kconfig options.
+ drm: Handle io prot correctly for MIPS.
+ ALSA: HDA: Make hda sound card usable for Loongson.
+ MIPS: Loongson 3: Add Loongson-3 SMP support.
+ MIPS: Loongson 3: Add CPU hotplug support.
+ MIPS: Loongson: Add a Loongson-3 default config file.
+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Hongliang Tao <taohl@lemote.com>
+Signed-off-by: Hua Yan <yanh@lemote.com>
+---
+ arch/mips/Kconfig                                  |   27 ++
+ arch/mips/configs/loongson3_defconfig              |  283 ++++++++++++
+ arch/mips/include/asm/addrspace.h                  |    6 +
+ arch/mips/include/asm/bootinfo.h                   |   24 +-
+ arch/mips/include/asm/cacheflush.h                 |    6 +
+ arch/mips/include/asm/cpu-features.h               |    6 +
+ arch/mips/include/asm/cpu.h                        |    5 +-
+ arch/mips/include/asm/dma-mapping.h                |    5 +
+ arch/mips/include/asm/mach-loongson/boot_param.h   |  151 +++++++
+ .../mips/include/asm/mach-loongson/dma-coherence.h |   19 +
+ arch/mips/include/asm/mach-loongson/irq.h          |   24 +
+ arch/mips/include/asm/mach-loongson/loongson.h     |   26 +-
+ arch/mips/include/asm/mach-loongson/machine.h      |    6 +
+ arch/mips/include/asm/mach-loongson/pci.h          |    5 +
+ arch/mips/include/asm/mach-loongson/spaces.h       |   15 +
+ arch/mips/include/asm/module.h                     |    2 +
+ arch/mips/include/asm/pgtable-bits.h               |    7 +
+ arch/mips/include/asm/smp.h                        |    1 +
+ arch/mips/kernel/Makefile                          |    1 +
+ arch/mips/kernel/cpu-probe.c                       |   14 +-
+ arch/mips/lib/Makefile                             |    1 +
+ arch/mips/loongson/Kconfig                         |   52 +++
+ arch/mips/loongson/Makefile                        |    6 +
+ arch/mips/loongson/Platform                        |    1 +
+ arch/mips/loongson/common/Makefile                 |    5 +
+ arch/mips/loongson/common/dma-swiotlb.c            |  163 +++++++
+ arch/mips/loongson/common/env.c                    |   67 +++-
+ arch/mips/loongson/common/init.c                   |   14 +-
+ arch/mips/loongson/common/machtype.c               |   20 +-
+ arch/mips/loongson/common/mem.c                    |   42 ++
+ arch/mips/loongson/common/pci.c                    |    6 +-
+ arch/mips/loongson/common/reset.c                  |   14 +
+ arch/mips/loongson/common/serial.c                 |   26 +-
+ arch/mips/loongson/common/setup.c                  |    8 +-
+ arch/mips/loongson/common/uart_base.c              |    9 +-
+ arch/mips/loongson/loongson-3/Makefile             |    6 +
+ arch/mips/loongson/loongson-3/irq.c                |   97 +++++
+ arch/mips/loongson/loongson-3/smp.c                |  449 ++++++++++++++++++++
+ arch/mips/loongson/loongson-3/smp.h                |   24 +
+ arch/mips/mm/Makefile                              |    1 +
+ arch/mips/mm/c-r4k.c                               |   83 ++++-
+ arch/mips/mm/tlb-r4k.c                             |    2 +-
+ arch/mips/mm/tlbex.c                               |    1 +
+ arch/mips/pci/Makefile                             |    1 +
+ arch/mips/pci/fixup-loongson3.c                    |   64 +++
+ arch/mips/pci/ops-loongson3.c                      |  104 +++++
+ drivers/gpu/drm/drm_vm.c                           |    2 +-
+ drivers/gpu/drm/ttm/ttm_bo_util.c                  |    2 +-
+ sound/pci/hda/patch_conexant.c                     |   44 ++
+ 49 files changed, 1878 insertions(+), 69 deletions(-)
+ create mode 100644 arch/mips/configs/loongson3_defconfig
+ create mode 100644 arch/mips/include/asm/mach-loongson/boot_param.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/irq.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/spaces.h
+ create mode 100644 arch/mips/loongson/common/dma-swiotlb.c
+ create mode 100644 arch/mips/loongson/loongson-3/Makefile
+ create mode 100644 arch/mips/loongson/loongson-3/irq.c
+ create mode 100644 arch/mips/loongson/loongson-3/smp.c
+ create mode 100644 arch/mips/loongson/loongson-3/smp.h
+ create mode 100644 arch/mips/pci/fixup-loongson3.c
+ create mode 100644 arch/mips/pci/ops-loongson3.c
+-- 
+1.7.7.3

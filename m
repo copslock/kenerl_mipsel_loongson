@@ -1,37 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Aug 2012 13:54:35 +0200 (CEST)
-Received: from mail-vb0-f49.google.com ([209.85.212.49]:60399 "EHLO
-        mail-vb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1902232Ab2HRLyb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 18 Aug 2012 13:54:31 +0200
-Received: by vbbfo1 with SMTP id fo1so4388642vbb.36
-        for <linux-mips@linux-mips.org>; Sat, 18 Aug 2012 04:54:24 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Aug 2012 14:01:07 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:58490 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1902232Ab2HRMA7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 18 Aug 2012 14:00:59 +0200
+Received: by dajq27 with SMTP id q27so1330227daj.36
+        for <multiple recipients>; Sat, 18 Aug 2012 05:00:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=pmU5TvP9sVltismhV4eN1kdesb4dKaNTVrHqFBQ9KfE=;
-        b=FBNPkE3NuPhgz6JW6A5h6wzSHjHdurZ6/zmU3zA6LgDdsiLE4Q9czcBelqVD4uE+vC
-         JehP973WqA6aLFn3OHU+8hI6CY9plQrKZA3Hke+oLaZlZX0ZNZiMdy2JAPUMt5Sc2QVZ
-         gitXP8kGuW1Qi1mg/CgNdUARnWGq/v9+mE97I3VOsqN0cALrG1MQxBXtpPgZNedLOvju
-         5Mlq+Kh0vk1p/BltryKDA2zLQj9M5ccgWTua7ehz2oqbTUtPSuoT9TSOrbL4+J5WigK3
-         kORxld9AThm4eEKkeGPfuGoI9HAfGsrs0rkQ9HauFIPmG9SEzsMycR6/uSYP/YcPa3XV
-         6lpw==
-Received: by 10.221.11.197 with SMTP id pf5mr5218745vcb.29.1345290864211; Sat,
- 18 Aug 2012 04:54:24 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.220.77.130 with HTTP; Sat, 18 Aug 2012 04:54:03 -0700 (PDT)
-In-Reply-To: <CAAfyv36-wwvSFJGXN9bmDy8pdDOT_h0b7sy78+7f4kCW57AxuA@mail.gmail.com>
-References: <1345287301-18165-1-git-send-email-keguang.zhang@gmail.com> <CAAfyv36-wwvSFJGXN9bmDy8pdDOT_h0b7sy78+7f4kCW57AxuA@mail.gmail.com>
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=5Vu57TlHI9MuILw5JS8BSd6M0Zg93m7qNBl47nWgoHE=;
+        b=RnEz9JDYbMM/eiw9e4/L0FMtbIVxFKN88Q/857mHKPwKIXXUgp+B9hjTHFgqadPVaO
+         GECQxFE1pD+H04lE7/YXD21/f+zj57z0rroIcWPtMHhlfhmZLiS2RsNVJ4WXk4EMie0y
+         P8JLg+i0wdrZ/Uz6K2Dy5W4yU3auuxs9OLBBkaGhb89fvmdMa2b9fuRpA3SmA7cGDLa9
+         4JxySET++JtuBhbbCvBfgXnbs37EiVA2MWB8Ub6H6IYm3C368CeeFVtg+woH+iWnuO6R
+         vVroghYsbDUx6XLLSJOn37rcUL/dSwk2Lc9g6CfWxVpul7KxaGPN5HVocq2yn2IbHwNb
+         4lXA==
+Received: by 10.68.226.102 with SMTP id rr6mr8535429pbc.120.1345291252141;
+        Sat, 18 Aug 2012 05:00:52 -0700 (PDT)
+Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
+        by mx.google.com with ESMTPS id gf3sm6932951pbc.74.2012.08.18.05.00.47
+        (version=SSLv3 cipher=OTHER);
+        Sat, 18 Aug 2012 05:00:51 -0700 (PDT)
 From:   Kelvin Cheung <keguang.zhang@gmail.com>
-Date:   Sat, 18 Aug 2012 19:54:03 +0800
-Message-ID: <CAJhJPsVd_XM2QJnU7teQc4JCEPzp3e-YU5vTvW4Twzs9d--0FA@mail.gmail.com>
-Subject: Re: [PATCH] clk: add Loongson1B clock support
-To:     Belisko Marek <marek.belisko@gmail.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, Mike Turquette <mturquette@linaro.org>,
-        Russell King <linux@arm.linux.org.uk>
-Content-Type: multipart/alternative; boundary=bcaec54ee84a14b5c604c788f0e5
-X-archive-position: 34275
+To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org
+Cc:     Kelvin Cheung <keguang.zhang@gmail.com>
+Subject: [PATCH] MIPS: Loongson1B: use common clock infrastructure instead of private APIs.
+Date:   Sat, 18 Aug 2012 20:00:41 +0800
+Message-Id: <1345291241-25971-1-git-send-email-keguang.zhang@gmail.com>
+X-Mailer: git-send-email 1.7.1
+X-archive-position: 34276
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,406 +47,301 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
---bcaec54ee84a14b5c604c788f0e5
-Content-Type: text/plain; charset=ISO-8859-1
+1. Remove private clock APIs, which are replaced by the code in
+   drivers/clk/clk-ls1x.c
+2. Enable COMMON_CLK in the Kconfig.
+3. some minor modifications.
 
-2012/8/18 Belisko Marek <marek.belisko@gmail.com>
+Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+---
+ arch/mips/include/asm/mach-loongson1/platform.h |    3 +-
+ arch/mips/include/asm/mach-loongson1/regs-clk.h |    7 +-
+ arch/mips/loongson1/Kconfig                     |    2 +-
+ arch/mips/loongson1/common/clock.c              |  159 +----------------------
+ arch/mips/loongson1/common/platform.c           |    9 +-
+ arch/mips/loongson1/ls1b/board.c                |    5 +-
+ 6 files changed, 16 insertions(+), 169 deletions(-)
 
-> On Sat, Aug 18, 2012 at 12:55 PM, Kelvin Cheung <keguang.zhang@gmail.com>
-> wrote:
-> > This adds clock support to Loongson1B SoC using the common clock
-> > infrastructure.
-> >
-> > Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
-> > ---
-> >  drivers/clk/Makefile   |    1 +
-> >  drivers/clk/clk-ls1x.c |  108
-> ++++++++++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 109 insertions(+), 0 deletions(-)
-> >  create mode 100644 drivers/clk/clk-ls1x.c
-> >
-> > diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-> > index 5869ea3..018ec57 100644
-> > --- a/drivers/clk/Makefile
-> > +++ b/drivers/clk/Makefile
-> > @@ -10,6 +10,7 @@ obj-$(CONFIG_ARCH_SOCFPGA)    += socfpga/
-> >  obj-$(CONFIG_PLAT_SPEAR)       += spear/
-> >  obj-$(CONFIG_ARCH_U300)                += clk-u300.o
-> >  obj-$(CONFIG_ARCH_INTEGRATOR)  += versatile/
-> > +obj-$(CONFIG_MACH_LOONGSON1)   += clk-ls1x.o
-> >
-> >  # Chip specific
-> >  obj-$(CONFIG_COMMON_CLK_WM831X) += clk-wm831x.o
-> > diff --git a/drivers/clk/clk-ls1x.c b/drivers/clk/clk-ls1x.c
-> > new file mode 100644
-> > index 0000000..0aadf9d
-> > --- /dev/null
-> > +++ b/drivers/clk/clk-ls1x.c
-> > @@ -0,0 +1,108 @@
-> > +/*
-> > + * Copyright (c) 2012 Zhang, Keguang <keguang.zhang@gmail.com>
-> > + *
-> > + * This program is free software; you can redistribute  it and/or
-> modify it
-> > + * under  the terms of  the GNU General  Public License as published by
-> the
-> > + * Free Software Foundation;  either version 2 of the  License, or (at
-> your
-> > + * option) any later version.
-> > + */
-> > +
-> > +#include <linux/clkdev.h>
-> > +#include <linux/clk-provider.h>
-> > +#include <linux/io.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/err.h>
-> > +#include <asm/mach-loongson1/loongson1.h>
-> > +
-> > +#include <loongson1.h>
-> > +
-> > +#define OSC    33
-> > +
-> > +static DEFINE_SPINLOCK(_lock);
-> > +
-> > +int ls1x_pll_clk_enable(struct clk_hw *hw)
-> ^^^^static
->
-
-OK, will do.
-Thanks!
-
-
-> > +{
-> > +       return 0;
-> > +}
-> > +
-> > +void ls1x_pll_clk_disable(struct clk_hw *hw)
-> ^^^^ also static
-> > +{
-> > +}
-> > +
-> > +static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,
-> > +                                            unsigned long parent_rate)
-> > +{
-> > +       u32 pll, rate;
-> > +
-> > +       pll = __raw_readl(LS1X_CLK_PLL_FREQ);
-> > +       rate = ((12 + (pll & 0x3f)) * 1000000) +
-> > +               ((((pll >> 8) & 0x3ff) * 1000000) >> 10);
-> > +       rate *= OSC;
-> > +       rate >>= 1;
-> > +
-> > +       return rate;
-> > +}
-> > +
-> > +static const struct clk_ops ls1x_pll_clk_ops = {
-> > +       .enable = ls1x_pll_clk_enable,
-> > +       .disable = ls1x_pll_clk_disable,
-> > +       .recalc_rate = ls1x_pll_recalc_rate,
-> > +};
-> > +
-> > +static struct clk * __init clk_register_pll(struct device *dev,
-> > +        const char *name, const char *parent_name, unsigned long flags)
-> > +{
-> > +       struct clk_hw *hw;
-> > +       struct clk *clk;
-> > +       struct clk_init_data init;
-> > +
-> > +       /* allocate the divider */
-> > +       hw = kzalloc(sizeof(struct clk_hw), GFP_KERNEL);
-> > +       if (!hw) {
-> > +               pr_err("%s: could not allocate clk_hw\n", __func__);
-> > +               return ERR_PTR(-ENOMEM);
-> > +       }
-> > +
-> > +       init.name = name;
-> > +       init.ops = &ls1x_pll_clk_ops;
-> > +       init.flags = flags | CLK_IS_BASIC;
-> > +       init.parent_names = (parent_name ? &parent_name : NULL);
-> > +       init.num_parents = (parent_name ? 1 : 0);
-> > +       hw->init = &init;
-> > +
-> > +       /* register the clock */
-> > +       clk = clk_register(dev, hw);
-> > +
-> > +       if (IS_ERR(clk))
-> > +               kfree(hw);
-> > +
-> > +       return clk;
-> > +}
-> > +
-> > +void __init ls1x_clk_init(void)
-> > +{
-> > +       struct clk *clk;
-> > +
-> > +       clk = clk_register_pll(NULL, "pll_clk", NULL, CLK_IS_ROOT);
-> > +       clk_prepare_enable(clk);
-> > +
-> > +       clk = clk_register_divider(NULL, "cpu_clk", "pll_clk",
-> > +                       CLK_SET_RATE_PARENT, LS1X_CLK_PLL_DIV,
-> DIV_CPU_SHIFT,
-> > +                       DIV_CPU_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
-> > +       clk_prepare_enable(clk);
-> > +       clk_register_clkdev(clk, "cpu", NULL);
-> > +
-> > +       clk = clk_register_divider(NULL, "ddr_clk", "pll_clk",
-> > +                       CLK_SET_RATE_PARENT, LS1X_CLK_PLL_DIV,
-> DIV_DDR_SHIFT,
-> > +                       DIV_DDR_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
-> > +       clk_prepare_enable(clk);
-> > +       clk_register_clkdev(clk, "ddr", NULL);
-> > +       clk_register_clkdev(clk, "stmmaceth", NULL);
-> > +
-> > +       clk = clk_register_divider(NULL, "dc_clk", "pll_clk",
-> > +                       CLK_SET_RATE_PARENT, LS1X_CLK_PLL_DIV,
-> DIV_DC_SHIFT,
-> > +                       DIV_DC_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
-> > +       clk_prepare_enable(clk);
-> > +       clk_register_clkdev(clk, "dc", NULL);
-> > +       clk_register_clkdev(clk, "serial8250", NULL);
-> > +}
-> > --
-> > 1.7.1
-> >
-> > --
-> > To unsubscribe from this list: send the line "unsubscribe linux-kernel"
-> in
-> > the body of a message to majordomo@vger.kernel.org
-> > More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> > Please read the FAQ at  http://www.tux.org/lkml/
->
-> cheers,
->
-> marek
->
-> --
-> as simple and primitive as possible
-> -------------------------------------------------
-> Marek Belisko - OPEN-NANDRA
-> Freelance Developer
->
-> Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-> Tel: +421 915 052 184
-> skype: marekwhite
-> twitter: #opennandra
-> web: http://open-nandra.com
->
-
-
-
+diff --git a/arch/mips/include/asm/mach-loongson1/platform.h b/arch/mips/include/asm/mach-loongson1/platform.h
+index 2f17161..718a122 100644
+--- a/arch/mips/include/asm/mach-loongson1/platform.h
++++ b/arch/mips/include/asm/mach-loongson1/platform.h
+@@ -18,6 +18,7 @@ extern struct platform_device ls1x_eth0_device;
+ extern struct platform_device ls1x_ehci_device;
+ extern struct platform_device ls1x_rtc_device;
+ 
+-void ls1x_serial_setup(void);
++extern void __init ls1x_clk_init(void);
++extern void __init ls1x_serial_setup(struct platform_device *pdev);
+ 
+ #endif /* __ASM_MACH_LOONGSON1_PLATFORM_H */
+diff --git a/arch/mips/include/asm/mach-loongson1/regs-clk.h b/arch/mips/include/asm/mach-loongson1/regs-clk.h
+index 8efa7fb..a81fa3d 100644
+--- a/arch/mips/include/asm/mach-loongson1/regs-clk.h
++++ b/arch/mips/include/asm/mach-loongson1/regs-clk.h
+@@ -20,14 +20,15 @@
+ 
+ /* Clock PLL Divisor Register Bits */
+ #define DIV_DC_EN			(0x1 << 31)
+-#define DIV_DC				(0x1f << 26)
+ #define DIV_CPU_EN			(0x1 << 25)
+-#define DIV_CPU				(0x1f << 20)
+ #define DIV_DDR_EN			(0x1 << 19)
+-#define DIV_DDR				(0x1f << 14)
+ 
+ #define DIV_DC_SHIFT			26
+ #define DIV_CPU_SHIFT			20
+ #define DIV_DDR_SHIFT			14
+ 
++#define DIV_DC_WIDTH			5
++#define DIV_CPU_WIDTH			5
++#define DIV_DDR_WIDTH			5
++
+ #endif /* __ASM_MACH_LOONGSON1_REGS_CLK_H */
+diff --git a/arch/mips/loongson1/Kconfig b/arch/mips/loongson1/Kconfig
+index a9a14d6..fbf75f6 100644
+--- a/arch/mips/loongson1/Kconfig
++++ b/arch/mips/loongson1/Kconfig
+@@ -15,7 +15,7 @@ config LOONGSON1_LS1B
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_HIGHMEM
+ 	select SYS_HAS_EARLY_PRINTK
+-	select HAVE_CLK
++	select COMMON_CLK
+ 
+ endchoice
+ 
+diff --git a/arch/mips/loongson1/common/clock.c b/arch/mips/loongson1/common/clock.c
+index 1bbbbec..07133de 100644
+--- a/arch/mips/loongson1/common/clock.c
++++ b/arch/mips/loongson1/common/clock.c
+@@ -7,175 +7,22 @@
+  * option) any later version.
+  */
+ 
+-#include <linux/module.h>
+-#include <linux/list.h>
+-#include <linux/mutex.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+-#include <asm/clock.h>
+ #include <asm/time.h>
+-
+-#include <loongson1.h>
+-
+-static LIST_HEAD(clocks);
+-static DEFINE_MUTEX(clocks_mutex);
+-
+-struct clk *clk_get(struct device *dev, const char *name)
+-{
+-	struct clk *c;
+-	struct clk *ret = NULL;
+-
+-	mutex_lock(&clocks_mutex);
+-	list_for_each_entry(c, &clocks, node) {
+-		if (!strcmp(c->name, name)) {
+-			ret = c;
+-			break;
+-		}
+-	}
+-	mutex_unlock(&clocks_mutex);
+-
+-	return ret;
+-}
+-EXPORT_SYMBOL(clk_get);
+-
+-int clk_enable(struct clk *clk)
+-{
+-	return 0;
+-}
+-EXPORT_SYMBOL(clk_enable);
+-
+-void clk_disable(struct clk *clk)
+-{
+-}
+-EXPORT_SYMBOL(clk_disable);
+-
+-unsigned long clk_get_rate(struct clk *clk)
+-{
+-	return clk->rate;
+-}
+-EXPORT_SYMBOL(clk_get_rate);
+-
+-void clk_put(struct clk *clk)
+-{
+-}
+-EXPORT_SYMBOL(clk_put);
+-
+-static void pll_clk_init(struct clk *clk)
+-{
+-	u32 pll;
+-
+-	pll = __raw_readl(LS1X_CLK_PLL_FREQ);
+-	clk->rate = (12 + (pll & 0x3f)) * 33 / 2
+-			+ ((pll >> 8) & 0x3ff) * 33 / 1024 / 2;
+-	clk->rate *= 1000000;
+-}
+-
+-static void cpu_clk_init(struct clk *clk)
+-{
+-	u32 pll, ctrl;
+-
+-	pll = clk_get_rate(clk->parent);
+-	ctrl = __raw_readl(LS1X_CLK_PLL_DIV) & DIV_CPU;
+-	clk->rate = pll / (ctrl >> DIV_CPU_SHIFT);
+-}
+-
+-static void ddr_clk_init(struct clk *clk)
+-{
+-	u32 pll, ctrl;
+-
+-	pll = clk_get_rate(clk->parent);
+-	ctrl = __raw_readl(LS1X_CLK_PLL_DIV) & DIV_DDR;
+-	clk->rate = pll / (ctrl >> DIV_DDR_SHIFT);
+-}
+-
+-static void dc_clk_init(struct clk *clk)
+-{
+-	u32 pll, ctrl;
+-
+-	pll = clk_get_rate(clk->parent);
+-	ctrl = __raw_readl(LS1X_CLK_PLL_DIV) & DIV_DC;
+-	clk->rate = pll / (ctrl >> DIV_DC_SHIFT);
+-}
+-
+-static struct clk_ops pll_clk_ops = {
+-	.init	= pll_clk_init,
+-};
+-
+-static struct clk_ops cpu_clk_ops = {
+-	.init	= cpu_clk_init,
+-};
+-
+-static struct clk_ops ddr_clk_ops = {
+-	.init	= ddr_clk_init,
+-};
+-
+-static struct clk_ops dc_clk_ops = {
+-	.init	= dc_clk_init,
+-};
+-
+-static struct clk pll_clk = {
+-	.name	= "pll",
+-	.ops	= &pll_clk_ops,
+-};
+-
+-static struct clk cpu_clk = {
+-	.name	= "cpu",
+-	.parent = &pll_clk,
+-	.ops	= &cpu_clk_ops,
+-};
+-
+-static struct clk ddr_clk = {
+-	.name	= "ddr",
+-	.parent = &pll_clk,
+-	.ops	= &ddr_clk_ops,
+-};
+-
+-static struct clk dc_clk = {
+-	.name	= "dc",
+-	.parent = &pll_clk,
+-	.ops	= &dc_clk_ops,
+-};
+-
+-int clk_register(struct clk *clk)
+-{
+-	mutex_lock(&clocks_mutex);
+-	list_add(&clk->node, &clocks);
+-	if (clk->ops->init)
+-		clk->ops->init(clk);
+-	mutex_unlock(&clocks_mutex);
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL(clk_register);
+-
+-static struct clk *ls1x_clks[] = {
+-	&pll_clk,
+-	&cpu_clk,
+-	&ddr_clk,
+-	&dc_clk,
+-};
+-
+-int __init ls1x_clock_init(void)
+-{
+-	int i;
+-
+-	for (i = 0; i < ARRAY_SIZE(ls1x_clks); i++)
+-		clk_register(ls1x_clks[i]);
+-
+-	return 0;
+-}
++#include <platform.h>
+ 
+ void __init plat_time_init(void)
+ {
+ 	struct clk *clk;
+ 
+ 	/* Initialize LS1X clocks */
+-	ls1x_clock_init();
++	ls1x_clk_init();
+ 
+ 	/* setup mips r4k timer */
+ 	clk = clk_get(NULL, "cpu");
+ 	if (IS_ERR(clk))
+-		panic("unable to get dc clock, err=%ld", PTR_ERR(clk));
++		panic("unable to get cpu clock, err=%ld", PTR_ERR(clk));
+ 
+ 	mips_hpt_frequency = clk_get_rate(clk) / 2;
+ }
+diff --git a/arch/mips/loongson1/common/platform.c b/arch/mips/loongson1/common/platform.c
+index e92d59c..5ca38dc 100644
+--- a/arch/mips/loongson1/common/platform.c
++++ b/arch/mips/loongson1/common/platform.c
+@@ -42,16 +42,17 @@ struct platform_device ls1x_uart_device = {
+ 	},
+ };
+ 
+-void __init ls1x_serial_setup(void)
++void __init ls1x_serial_setup(struct platform_device *pdev)
+ {
+ 	struct clk *clk;
+ 	struct plat_serial8250_port *p;
+ 
+-	clk = clk_get(NULL, "dc");
++	clk = clk_get(NULL, pdev->name);
+ 	if (IS_ERR(clk))
+-		panic("unable to get dc clock, err=%ld", PTR_ERR(clk));
++		panic("unable to get %s clock, err=%ld",
++			pdev->name, PTR_ERR(clk));
+ 
+-	for (p = ls1x_serial8250_port; p->flags != 0; ++p)
++	for (p = pdev->dev.platform_data; p->flags != 0; ++p)
+ 		p->uartclk = clk_get_rate(clk);
+ }
+ 
+diff --git a/arch/mips/loongson1/ls1b/board.c b/arch/mips/loongson1/ls1b/board.c
+index 295b1be..1fbd526 100644
+--- a/arch/mips/loongson1/ls1b/board.c
++++ b/arch/mips/loongson1/ls1b/board.c
+@@ -9,9 +9,6 @@
+ 
+ #include <platform.h>
+ 
+-#include <linux/serial_8250.h>
+-#include <loongson1.h>
+-
+ static struct platform_device *ls1b_platform_devices[] __initdata = {
+ 	&ls1x_uart_device,
+ 	&ls1x_eth0_device,
+@@ -23,7 +20,7 @@ static int __init ls1b_platform_init(void)
+ {
+ 	int err;
+ 
+-	ls1x_serial_setup();
++	ls1x_serial_setup(&ls1x_uart_device);
+ 
+ 	err = platform_add_devices(ls1b_platform_devices,
+ 				   ARRAY_SIZE(ls1b_platform_devices));
 -- 
-Best Regards!
-Kelvin
-
---bcaec54ee84a14b5c604c788f0e5
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<div class=3D"gmail_quote">2012/8/18 Belisko Marek <span dir=3D"ltr">&lt;<a=
- href=3D"mailto:marek.belisko@gmail.com" target=3D"_blank">marek.belisko@gm=
-ail.com</a>&gt;</span><br><blockquote class=3D"gmail_quote" style=3D"margin=
-:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-
-<div class=3D"HOEnZb"><div class=3D"h5">On Sat, Aug 18, 2012 at 12:55 PM, K=
-elvin Cheung &lt;<a href=3D"mailto:keguang.zhang@gmail.com">keguang.zhang@g=
-mail.com</a>&gt; wrote:<br>
-&gt; This adds clock support to Loongson1B SoC using the common clock<br>
-&gt; infrastructure.<br>
-&gt;<br>
-&gt; Signed-off-by: Kelvin Cheung &lt;<a href=3D"mailto:keguang.zhang@gmail=
-.com">keguang.zhang@gmail.com</a>&gt;<br>
-&gt; ---<br>
-&gt; =A0drivers/clk/Makefile =A0 | =A0 =A01 +<br>
-&gt; =A0drivers/clk/clk-ls1x.c | =A0108 +++++++++++++++++++++++++++++++++++=
-+++++++++++++<br>
-&gt; =A02 files changed, 109 insertions(+), 0 deletions(-)<br>
-&gt; =A0create mode 100644 drivers/clk/clk-ls1x.c<br>
-&gt;<br>
-&gt; diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile<br>
-&gt; index 5869ea3..018ec57 100644<br>
-&gt; --- a/drivers/clk/Makefile<br>
-&gt; +++ b/drivers/clk/Makefile<br>
-&gt; @@ -10,6 +10,7 @@ obj-$(CONFIG_ARCH_SOCFPGA) =A0 =A0+=3D socfpga/<br>
-&gt; =A0obj-$(CONFIG_PLAT_SPEAR) =A0 =A0 =A0 +=3D spear/<br>
-&gt; =A0obj-$(CONFIG_ARCH_U300) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0+=3D clk-u30=
-0.o<br>
-&gt; =A0obj-$(CONFIG_ARCH_INTEGRATOR) =A0+=3D versatile/<br>
-&gt; +obj-$(CONFIG_MACH_LOONGSON1) =A0 +=3D clk-ls1x.o<br>
-&gt;<br>
-&gt; =A0# Chip specific<br>
-&gt; =A0obj-$(CONFIG_COMMON_CLK_WM831X) +=3D clk-wm831x.o<br>
-&gt; diff --git a/drivers/clk/clk-ls1x.c b/drivers/clk/clk-ls1x.c<br>
-&gt; new file mode 100644<br>
-&gt; index 0000000..0aadf9d<br>
-&gt; --- /dev/null<br>
-&gt; +++ b/drivers/clk/clk-ls1x.c<br>
-&gt; @@ -0,0 +1,108 @@<br>
-&gt; +/*<br>
-&gt; + * Copyright (c) 2012 Zhang, Keguang &lt;<a href=3D"mailto:keguang.zh=
-ang@gmail.com">keguang.zhang@gmail.com</a>&gt;<br>
-&gt; + *<br>
-&gt; + * This program is free software; you can redistribute =A0it and/or m=
-odify it<br>
-&gt; + * under =A0the terms of =A0the GNU General =A0Public License as publ=
-ished by the<br>
-&gt; + * Free Software Foundation; =A0either version 2 of the =A0License, o=
-r (at your<br>
-&gt; + * option) any later version.<br>
-&gt; + */<br>
-&gt; +<br>
-&gt; +#include &lt;linux/clkdev.h&gt;<br>
-&gt; +#include &lt;linux/clk-provider.h&gt;<br>
-&gt; +#include &lt;linux/io.h&gt;<br>
-&gt; +#include &lt;linux/slab.h&gt;<br>
-&gt; +#include &lt;linux/err.h&gt;<br>
-&gt; +#include &lt;asm/mach-loongson1/loongson1.h&gt;<br>
-&gt; +<br>
-&gt; +#include &lt;loongson1.h&gt;<br>
-&gt; +<br>
-&gt; +#define OSC =A0 =A033<br>
-&gt; +<br>
-&gt; +static DEFINE_SPINLOCK(_lock);<br>
-&gt; +<br>
-&gt; +int ls1x_pll_clk_enable(struct clk_hw *hw)<br>
-</div></div>^^^^static<br></blockquote><div><br>OK, will do.<br>Thanks!<br>=
-=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0pt 0pt 0pt 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<div class=3D"im">&gt; +{<br>
-&gt; + =A0 =A0 =A0 return 0;<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +void ls1x_pll_clk_disable(struct clk_hw *hw)<br>
-</div>^^^^ also static<br>
-<div><div class=3D"h5">&gt; +{<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,<br>
-&gt; + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 =A0 =A0unsigned long parent_rate)<br>
-&gt; +{<br>
-&gt; + =A0 =A0 =A0 u32 pll, rate;<br>
-&gt; +<br>
-&gt; + =A0 =A0 =A0 pll =3D __raw_readl(LS1X_CLK_PLL_FREQ);<br>
-&gt; + =A0 =A0 =A0 rate =3D ((12 + (pll &amp; 0x3f)) * 1000000) +<br>
-&gt; + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ((((pll &gt;&gt; 8) &amp; 0x3ff) * 10000=
-00) &gt;&gt; 10);<br>
-&gt; + =A0 =A0 =A0 rate *=3D OSC;<br>
-&gt; + =A0 =A0 =A0 rate &gt;&gt;=3D 1;<br>
-&gt; +<br>
-&gt; + =A0 =A0 =A0 return rate;<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +static const struct clk_ops ls1x_pll_clk_ops =3D {<br>
-&gt; + =A0 =A0 =A0 .enable =3D ls1x_pll_clk_enable,<br>
-&gt; + =A0 =A0 =A0 .disable =3D ls1x_pll_clk_disable,<br>
-&gt; + =A0 =A0 =A0 .recalc_rate =3D ls1x_pll_recalc_rate,<br>
-&gt; +};<br>
-&gt; +<br>
-&gt; +static struct clk * __init clk_register_pll(struct device *dev,<br>
-&gt; + =A0 =A0 =A0 =A0const char *name, const char *parent_name, unsigned l=
-ong flags)<br>
-&gt; +{<br>
-&gt; + =A0 =A0 =A0 struct clk_hw *hw;<br>
-&gt; + =A0 =A0 =A0 struct clk *clk;<br>
-&gt; + =A0 =A0 =A0 struct clk_init_data init;<br>
-&gt; +<br>
-&gt; + =A0 =A0 =A0 /* allocate the divider */<br>
-&gt; + =A0 =A0 =A0 hw =3D kzalloc(sizeof(struct clk_hw), GFP_KERNEL);<br>
-&gt; + =A0 =A0 =A0 if (!hw) {<br>
-&gt; + =A0 =A0 =A0 =A0 =A0 =A0 =A0 pr_err(&quot;%s: could not allocate clk_=
-hw\n&quot;, __func__);<br>
-&gt; + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return ERR_PTR(-ENOMEM);<br>
-&gt; + =A0 =A0 =A0 }<br>
-&gt; +<br>
-&gt; + =A0 =A0 =A0 <a href=3D"http://init.name" target=3D"_blank">init.name=
-</a> =3D name;<br>
-&gt; + =A0 =A0 =A0 init.ops =3D &amp;ls1x_pll_clk_ops;<br>
-&gt; + =A0 =A0 =A0 init.flags =3D flags | CLK_IS_BASIC;<br>
-&gt; + =A0 =A0 =A0 init.parent_names =3D (parent_name ? &amp;parent_name : =
-NULL);<br>
-&gt; + =A0 =A0 =A0 init.num_parents =3D (parent_name ? 1 : 0);<br>
-&gt; + =A0 =A0 =A0 hw-&gt;init =3D &amp;init;<br>
-&gt; +<br>
-&gt; + =A0 =A0 =A0 /* register the clock */<br>
-&gt; + =A0 =A0 =A0 clk =3D clk_register(dev, hw);<br>
-&gt; +<br>
-&gt; + =A0 =A0 =A0 if (IS_ERR(clk))<br>
-&gt; + =A0 =A0 =A0 =A0 =A0 =A0 =A0 kfree(hw);<br>
-&gt; +<br>
-&gt; + =A0 =A0 =A0 return clk;<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +void __init ls1x_clk_init(void)<br>
-&gt; +{<br>
-&gt; + =A0 =A0 =A0 struct clk *clk;<br>
-&gt; +<br>
-&gt; + =A0 =A0 =A0 clk =3D clk_register_pll(NULL, &quot;pll_clk&quot;, NULL=
-, CLK_IS_ROOT);<br>
-&gt; + =A0 =A0 =A0 clk_prepare_enable(clk);<br>
-&gt; +<br>
-&gt; + =A0 =A0 =A0 clk =3D clk_register_divider(NULL, &quot;cpu_clk&quot;, =
-&quot;pll_clk&quot;,<br>
-&gt; + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 CLK_SET_RATE_PARENT, LS1=
-X_CLK_PLL_DIV, DIV_CPU_SHIFT,<br>
-&gt; + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 DIV_CPU_WIDTH, CLK_DIVID=
-ER_ONE_BASED, &amp;_lock);<br>
-&gt; + =A0 =A0 =A0 clk_prepare_enable(clk);<br>
-&gt; + =A0 =A0 =A0 clk_register_clkdev(clk, &quot;cpu&quot;, NULL);<br>
-&gt; +<br>
-&gt; + =A0 =A0 =A0 clk =3D clk_register_divider(NULL, &quot;ddr_clk&quot;, =
-&quot;pll_clk&quot;,<br>
-&gt; + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 CLK_SET_RATE_PARENT, LS1=
-X_CLK_PLL_DIV, DIV_DDR_SHIFT,<br>
-&gt; + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 DIV_DDR_WIDTH, CLK_DIVID=
-ER_ONE_BASED, &amp;_lock);<br>
-&gt; + =A0 =A0 =A0 clk_prepare_enable(clk);<br>
-&gt; + =A0 =A0 =A0 clk_register_clkdev(clk, &quot;ddr&quot;, NULL);<br>
-&gt; + =A0 =A0 =A0 clk_register_clkdev(clk, &quot;stmmaceth&quot;, NULL);<b=
-r>
-&gt; +<br>
-&gt; + =A0 =A0 =A0 clk =3D clk_register_divider(NULL, &quot;dc_clk&quot;, &=
-quot;pll_clk&quot;,<br>
-&gt; + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 CLK_SET_RATE_PARENT, LS1=
-X_CLK_PLL_DIV, DIV_DC_SHIFT,<br>
-&gt; + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 DIV_DC_WIDTH, CLK_DIVIDE=
-R_ONE_BASED, &amp;_lock);<br>
-&gt; + =A0 =A0 =A0 clk_prepare_enable(clk);<br>
-&gt; + =A0 =A0 =A0 clk_register_clkdev(clk, &quot;dc&quot;, NULL);<br>
-&gt; + =A0 =A0 =A0 clk_register_clkdev(clk, &quot;serial8250&quot;, NULL);<=
-br>
-&gt; +}<br>
-&gt; --<br>
-&gt; 1.7.1<br>
-&gt;<br>
-</div></div>&gt; --<br>
-&gt; To unsubscribe from this list: send the line &quot;unsubscribe linux-k=
-ernel&quot; in<br>
-&gt; the body of a message to <a href=3D"mailto:majordomo@vger.kernel.org">=
-majordomo@vger.kernel.org</a><br>
-&gt; More majordomo info at =A0<a href=3D"http://vger.kernel.org/majordomo-=
-info.html" target=3D"_blank">http://vger.kernel.org/majordomo-info.html</a>=
-<br>
-&gt; Please read the FAQ at =A0<a href=3D"http://www.tux.org/lkml/" target=
-=3D"_blank">http://www.tux.org/lkml/</a><br>
-<br>
-cheers,<br>
-<br>
-marek<br>
-<span class=3D"HOEnZb"><font color=3D"#888888"><br>
---<br>
-as simple and primitive as possible<br>
--------------------------------------------------<br>
-Marek Belisko - OPEN-NANDRA<br>
-Freelance Developer<br>
-<br>
-Ruska Nova Ves 219 | Presov, 08005 Slovak Republic<br>
-Tel: +421 915 052 184<br>
-skype: marekwhite<br>
-twitter: #opennandra<br>
-web: <a href=3D"http://open-nandra.com" target=3D"_blank">http://open-nandr=
-a.com</a><br>
-</font></span></blockquote></div><br><br clear=3D"all"><br>-- <br>Best Rega=
-rds!<br>Kelvin<br><br><img src=3D"http://ubuntucounter.geekosophical.net/im=
-g/ubuntu-blogger.php?user=3D26540"><br><br>
-
---bcaec54ee84a14b5c604c788f0e5--
+1.7.1

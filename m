@@ -1,43 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Aug 2012 19:50:32 +0200 (CEST)
-Received: from mail-ee0-f49.google.com ([74.125.83.49]:34911 "EHLO
-        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1902755Ab2HRRuZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 18 Aug 2012 19:50:25 +0200
-Received: by eekc13 with SMTP id c13so1162624eek.36
-        for <multiple recipients>; Sat, 18 Aug 2012 10:50:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=5cbwiIiBjZYJxobxgmPJR56stCDW7dhU+YFdIT8yItM=;
-        b=vlycQ3EGpPsBFeoOmUhZsfe21xg2/Q3Ehw3q+BozfsGAcnaSAPfNo0thndzXmt89R5
-         acAoUfyH+p4adCTwR9EzYALzYCd9WJ1XMJvFGaWoUDrNI/p15Two9z+ywCozpMVVwUWh
-         I7cYnv5Fb2xZOzrNDKCoERY4y++7uWbRKHJ5HWLramC4J679tETOeyb/iBj7HsxcvLgq
-         YzOjEwfARm9fxwVA1f08ucW4ioOnT3Q4UOCBXMmPV0wFzXnlR8Uzt5SFV6YMvF3+b5rK
-         gfeQTxSyEWfAgWOjcYVnUu2+8Q9iXhqKFu2+cBaRpjWxr2cD1zpeNOY//kjI58mmdU99
-         CWig==
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Aug 2012 22:17:24 +0200 (CEST)
+Received: from Chamillionaire.breakpoint.cc ([80.244.247.6]:60153 "EHLO
+        Chamillionaire.breakpoint.cc" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1901761Ab2HSURQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Aug 2012 22:17:16 +0200
+Received: from bigeasy by Chamillionaire.breakpoint.cc with local (Exim 4.72)
+        (envelope-from <sebastian@breakpoint.cc>)
+        id 1T3Bvu-000399-M0; Sun, 19 Aug 2012 22:17:14 +0200
+Date:   Sun, 19 Aug 2012 22:17:14 +0200
+From:   Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     balbi@ti.com, ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH] usb: gadget: bcm63xx UDC driver
+Message-ID: <20120819201714.GA3152@breakpoint.cc>
+References: <97cb21b8063a02a9664baf8b749ae200@localhost>
 MIME-Version: 1.0
-Received: by 10.14.1.9 with SMTP id 9mr2082924eec.9.1345312220388; Sat, 18 Aug
- 2012 10:50:20 -0700 (PDT)
-Received: by 10.14.179.71 with HTTP; Sat, 18 Aug 2012 10:50:20 -0700 (PDT)
-In-Reply-To: <1344862344-27434-1-git-send-email-chenhc@lemote.com>
-References: <1344862344-27434-1-git-send-email-chenhc@lemote.com>
-Date:   Sat, 18 Aug 2012 10:50:20 -0700
-Message-ID: <CAJiQ=7DGRxHp2hv79xpBdB_gV=iTiQaap=aytMe8=cNcm29Vrg@mail.gmail.com>
-Subject: Re: [PATCH V2] MIPS: Fix poweroff failure when HOTPLUG_CPU configured.
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-kernel@vger.kernel.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
-        Yong Zhang <yong.zhang@windriver.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 34279
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <97cb21b8063a02a9664baf8b749ae200@localhost>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34280
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: sebastian@breakpoint.cc
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,26 +37,62 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, Aug 13, 2012 at 5:52 AM, Huacai Chen <chenhc@lemote.com> wrote:
-> When poweroff machine, kernel_power_off() call disable_nonboot_cpus().
-> And if we have HOTPLUG_CPU configured, disable_nonboot_cpus() is not an
-> empty function but attempt to actually disable the nonboot cpus. Since
-> system state is SYSTEM_POWER_OFF, play_dead() won't be called and thus
-> disable_nonboot_cpus() hangs. Therefore, we make this patch to avoid
-> poweroff failure.
+On Sat, Aug 18, 2012 at 10:18:01AM -0700, Kevin Cernekee wrote:
 
-I have seen the same problem; sometimes it causes a kernel oops too.
+This is a quick look :)
 
->  #ifdef CONFIG_HOTPLUG_CPU
-> -               if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map) &&
-> -                   (system_state == SYSTEM_RUNNING ||
-> -                    system_state == SYSTEM_BOOTING))
-> +               if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map))
->                         play_dead();
+> diff --git a/drivers/usb/gadget/bcm63xx_udc.c b/drivers/usb/gadget/bcm63xx_udc.c
+> new file mode 100644
+> index 0000000..da68f43
+> --- /dev/null
+> +++ b/drivers/usb/gadget/bcm63xx_udc.c
+<snip>
 
-This fix works for me.
+> +static irqreturn_t bcm63xx_udc_data_isr(int irq, void *dev_id)
+> +{
+> +	struct bcm63xx_udc *udc = dev_id;
+> +	struct bcm63xx_ep *bep;
+> +	struct iudma_ch *iudma = NULL;
+> +	struct usb_request *req = NULL;
+> +	struct bcm63xx_req *breq = NULL;
+> +	int is_done = 0, rc, i;
+> +
+> +	spin_lock(&udc->lock);
+> +
+> +	for (i = 0; i < NUM_IUDMA; i++)
+> +		if (udc->iudma[i].irq == irq)
+> +			iudma = &udc->iudma[i];
+> +	BUG_ON(!iudma);
 
-Acked-by: Kevin Cernekee <cernekee@gmail.com>
+This is rough. Please don't do this. Bail out in probe or print an error here
+and return with IRQ_NONE and time will close this irq.
 
-I do see SMP boot problems ("Attempted to kill the idle task!" panic)
-on a 4-way box if the !cpu_isset() check is removed.
+<snip>
+
+> +static int __devinit bcm63xx_udc_probe(struct platform_device *pdev)
+> +{
+
+<snip>
+
+> +	for (i = 0; i < NUM_IUDMA + 1; i++) {
+> +		int irq = platform_get_irq(pdev, i);
+> +		if (irq < 0) {
+> +			dev_err(dev, "missing IRQ resource #%d\n", i);
+> +			goto out_uninit;
+> +		}
+> +		if (devm_request_irq(dev, irq,
+> +		    i ? &bcm63xx_udc_data_isr : &bcm63xx_udc_ctrl_isr,
+> +		    0, dev_name(dev), udc) < 0) {
+> +			dev_err(dev, "error requesting IRQ #%d\n", irq);
+> +			goto out_uninit;
+> +		}
+> +		if (i > 0)
+> +			udc->iudma[i - 1].irq = irq;
+> +	}
+
+According to this code, i in iudma[] can be in 1..5. You could have more than
+one IRQ. The comment above this for loop is point less. So I think if you can
+only have _one_ idma irq than you could remove the for loop in
+bcm63xx_udc_data_isr().
+
+Sebastian

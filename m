@@ -1,48 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2012 15:56:24 +0200 (CEST)
-Received: from mga09.intel.com ([134.134.136.24]:7738 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903498Ab2HTNwx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 20 Aug 2012 15:52:53 +0200
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP; 20 Aug 2012 06:52:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.77,797,1336374000"; 
-   d="scan'208";a="182911903"
-Received: from blue.fi.intel.com ([10.237.72.50])
-  by orsmga001.jf.intel.com with ESMTP; 20 Aug 2012 06:52:38 -0700
-Received: by blue.fi.intel.com (Postfix, from userid 1000)
-        id B0FF0E008A; Mon, 20 Aug 2012 16:52:43 +0300 (EEST)
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     linux-mm@kvack.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Andi Kleen <ak@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        Alex Shi <alex.shu@intel.com>,
-        Jan Beulich <jbeulich@novell.com>,
-        Robert Richter <robert.richter@amd.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Hugh Dickins <hughd@google.com>,
-        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
-        Mel Gorman <mgorman@suse.de>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: [PATCH v4 7/8] x86: switch the 64bit uncached page clear to SSE/AVX v2
-Date:   Mon, 20 Aug 2012 16:52:36 +0300
-Message-Id: <1345470757-12005-8-git-send-email-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1345470757-12005-1-git-send-email-kirill.shutemov@linux.intel.com>
-References: <1345470757-12005-1-git-send-email-kirill.shutemov@linux.intel.com>
-X-archive-position: 34296
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2012 21:52:42 +0200 (CEST)
+Received: from Chamillionaire.breakpoint.cc ([80.244.247.6]:36094 "EHLO
+        Chamillionaire.breakpoint.cc" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903547Ab2HTTwf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Aug 2012 21:52:35 +0200
+Received: from bigeasy by Chamillionaire.breakpoint.cc with local (Exim 4.72)
+        (envelope-from <sebastian@breakpoint.cc>)
+        id 1T3Y1Y-00048l-Qs; Mon, 20 Aug 2012 21:52:33 +0200
+Date:   Mon, 20 Aug 2012 21:52:31 +0200
+From:   Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     Sebastian Andrzej Siewior <sebastian@breakpoint.cc>, balbi@ti.com,
+        ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH] usb: gadget: bcm63xx UDC driver
+Message-ID: <20120820195231.GA7087@breakpoint.cc>
+References: <97cb21b8063a02a9664baf8b749ae200@localhost>
+ <20120819201714.GA3152@breakpoint.cc>
+ <CAJiQ=7CADk_75U5=OQH8vXA=xtj-U=TbBhXzC8JfUGbYEKmxng@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJiQ=7CADk_75U5=OQH8vXA=xtj-U=TbBhXzC8JfUGbYEKmxng@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34297
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill.shutemov@linux.intel.com
+X-original-sender: sebastian@breakpoint.cc
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,123 +40,19 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Andi Kleen <ak@linux.intel.com>
+On Sun, Aug 19, 2012 at 01:53:26PM -0700, Kevin Cernekee wrote:
+> > According to this code, i in iudma[] can be in 1..5. You could have more than
+> > one IRQ. The comment above this for loop is point less. So I think if you can
+> > only have _one_ idma irq than you could remove the for loop in
+> > bcm63xx_udc_data_isr().
+> 
+> There are 6 IUDMA channels, and each one always has a dedicated
+> interrupt line.  IRQ resource #0 is the control (vbus/speed/cfg/etc.)
+> IRQ, and IRQ resources #1-6 are the IUDMA (IN/OUT data) IRQs.  Maybe
+> it would be good to add a longer comment to clarify this?
 
-With multiple threads vector stores are more efficient, so use them.
-This will cause the page clear to run non preemptable and add some
-overhead. However on 32bit it was already non preempable (due to
-kmap_atomic) and there is an preemption opportunity every 4K unit.
+Now that I look at the code again, I see what I've missed. So you can have
+multiple irqs in the range #1-6. Why not pass the iudma struct then?
+Passing the struct instead of a range is good thing.
 
-On a NPB (Nasa Parallel Benchmark) 128GB run on a Westmere this improves
-the performance regression of enabling transparent huge pages
-by ~2% (2.81% to 0.81%), near the runtime variability now.
-On a system with AVX support more is expected.
-
-Signed-off-by: Andi Kleen <ak@linux.intel.com>
-[kirill.shutemov@linux.intel.com: Properly save/restore arguments]
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/x86/lib/clear_page_64.S |   79 ++++++++++++++++++++++++++++++++++--------
- 1 files changed, 64 insertions(+), 15 deletions(-)
-
-diff --git a/arch/x86/lib/clear_page_64.S b/arch/x86/lib/clear_page_64.S
-index 9d2f3c2..b302cff 100644
---- a/arch/x86/lib/clear_page_64.S
-+++ b/arch/x86/lib/clear_page_64.S
-@@ -73,30 +73,79 @@ ENDPROC(clear_page)
- 			     .Lclear_page_end-clear_page,3b-2b
- 	.previous
- 
-+#define SSE_UNROLL 128
-+
- /*
-  * Zero a page avoiding the caches
-  * rdi	page
-  */
- ENTRY(clear_page_nocache)
- 	CFI_STARTPROC
--	xorl   %eax,%eax
--	movl   $4096/64,%ecx
-+	pushq_cfi %rdi
-+	call   kernel_fpu_begin
-+	popq_cfi  %rdi
-+	sub    $16,%rsp
-+	CFI_ADJUST_CFA_OFFSET 16
-+	movdqu %xmm0,(%rsp)
-+	xorpd  %xmm0,%xmm0
-+	movl   $4096/SSE_UNROLL,%ecx
- 	.p2align 4
- .Lloop_nocache:
- 	decl	%ecx
--#define PUT(x) movnti %rax,x*8(%rdi)
--	movnti %rax,(%rdi)
--	PUT(1)
--	PUT(2)
--	PUT(3)
--	PUT(4)
--	PUT(5)
--	PUT(6)
--	PUT(7)
--#undef PUT
--	leaq	64(%rdi),%rdi
-+	.set x,0
-+	.rept SSE_UNROLL/16
-+	movntdq %xmm0,x(%rdi)
-+	.set x,x+16
-+	.endr
-+	leaq	SSE_UNROLL(%rdi),%rdi
- 	jnz	.Lloop_nocache
--	nop
--	ret
-+	movdqu (%rsp),%xmm0
-+	addq   $16,%rsp
-+	CFI_ADJUST_CFA_OFFSET -16
-+	jmp   kernel_fpu_end
- 	CFI_ENDPROC
- ENDPROC(clear_page_nocache)
-+
-+#ifdef CONFIG_AS_AVX
-+
-+	.section .altinstr_replacement,"ax"
-+1:	.byte 0xeb					/* jmp <disp8> */
-+	.byte (clear_page_nocache_avx - clear_page_nocache) - (2f - 1b)
-+	/* offset */
-+2:
-+	.previous
-+	.section .altinstructions,"a"
-+	altinstruction_entry clear_page_nocache,1b,X86_FEATURE_AVX,\
-+	                     16, 2b-1b
-+	.previous
-+
-+#define AVX_UNROLL 256 /* TUNE ME */
-+
-+ENTRY(clear_page_nocache_avx)
-+	CFI_STARTPROC
-+	pushq_cfi %rdi
-+	call   kernel_fpu_begin
-+	popq_cfi  %rdi
-+	sub    $32,%rsp
-+	CFI_ADJUST_CFA_OFFSET 32
-+	vmovdqu %ymm0,(%rsp)
-+	vxorpd  %ymm0,%ymm0,%ymm0
-+	movl   $4096/AVX_UNROLL,%ecx
-+	.p2align 4
-+.Lloop_avx:
-+	decl	%ecx
-+	.set x,0
-+	.rept AVX_UNROLL/32
-+	vmovntdq %ymm0,x(%rdi)
-+	.set x,x+32
-+	.endr
-+	leaq	AVX_UNROLL(%rdi),%rdi
-+	jnz	.Lloop_avx
-+	vmovdqu (%rsp),%ymm0
-+	addq   $32,%rsp
-+	CFI_ADJUST_CFA_OFFSET -32
-+	jmp   kernel_fpu_end
-+	CFI_ENDPROC
-+ENDPROC(clear_page_nocache_avx)
-+
-+#endif
--- 
-1.7.7.6
+Sebastian

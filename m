@@ -1,40 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2012 12:06:00 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:57710 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1901761Ab2HTKFx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Aug 2012 12:05:53 +0200
-Received: by pbbrq8 with SMTP id rq8so7207255pbb.36
-        for <linux-mips@linux-mips.org>; Mon, 20 Aug 2012 03:05:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=XoTx2xBtiNHUp+OmifcqaCYIaaAkMIV6CrLNuTDss+4=;
-        b=jIMFh4KkXjbHhCB7rlkkoTqQ3suFceDpBZfPuIVXKb3d5jUQ6kyYPN8lWQvmlSDASL
-         zhU/NKsgd7IpNG/9lJICmi4jmifFY2eQIdGXV3MpOQ/W5UgCeT0AQbKSL95B1mv2EoUi
-         tVf7APEFaVtB1R2uVY2i/z6nbGrpnHeAjPC2D4fWVMiMRj3SgKpES8kz4krZoQQYo033
-         GaTLoupG5kv/L0TxXeBzi1UEp9Orfdmt6QPsC/5tOMHNGEUcfZ2fxnqEZVI53sv/EjJp
-         sXGQIYMyDE9yOVxFgyiJ+RJkb5QaHklobv07RowzwQm0x3ugfDOQwY86ESeTnALGoNd8
-         S1SA==
-Received: by 10.68.129.131 with SMTP id nw3mr33032725pbb.43.1345457146011;
-        Mon, 20 Aug 2012 03:05:46 -0700 (PDT)
-Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
-        by mx.google.com with ESMTPS id tq4sm10815866pbc.11.2012.08.20.03.05.41
-        (version=SSLv3 cipher=OTHER);
-        Mon, 20 Aug 2012 03:05:44 -0700 (PDT)
-From:   Kelvin Cheung <keguang.zhang@gmail.com>
-To:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc:     linux-mips@linux-mips.org, Mike Turquette <mturquette@linaro.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH v3] clk: add Loongson1B clock support
-Date:   Mon, 20 Aug 2012 18:05:35 +0800
-Message-Id: <1345457135-12737-1-git-send-email-keguang.zhang@gmail.com>
-X-Mailer: git-send-email 1.7.1
-X-archive-position: 34287
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2012 15:52:54 +0200 (CEST)
+Received: from mga03.intel.com ([143.182.124.21]:43507 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903451Ab2HTNwq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 20 Aug 2012 15:52:46 +0200
+Received: from azsmga002.ch.intel.com ([10.2.17.35])
+  by azsmga101.ch.intel.com with ESMTP; 20 Aug 2012 06:52:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.77,797,1336374000"; 
+   d="scan'208";a="136222980"
+Received: from blue.fi.intel.com ([10.237.72.50])
+  by AZSMGA002.ch.intel.com with ESMTP; 20 Aug 2012 06:52:32 -0700
+Received: by blue.fi.intel.com (Postfix, from userid 1000)
+        id 47DB6E0073; Mon, 20 Aug 2012 16:52:43 +0300 (EEST)
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     linux-mm@kvack.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Andi Kleen <ak@linux.intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Tim Chen <tim.c.chen@linux.intel.com>,
+        Alex Shi <alex.shu@intel.com>,
+        Jan Beulich <jbeulich@novell.com>,
+        Robert Richter <robert.richter@amd.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Hugh Dickins <hughd@google.com>,
+        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+        Mel Gorman <mgorman@suse.de>, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: [PATCH v4 0/8] Avoid cache trashing on clearing huge/gigantic page
+Date:   Mon, 20 Aug 2012 16:52:29 +0300
+Message-Id: <1345470757-12005-1-git-send-email-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 34288
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keguang.zhang@gmail.com
+X-original-sender: kirill.shutemov@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,144 +54,60 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This adds clock support to Loongson1B SoC using the common clock
-infrastructure.
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 
-Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
----
- drivers/clk/Makefile   |    1 +
- drivers/clk/clk-ls1x.c |  111 ++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 112 insertions(+), 0 deletions(-)
- create mode 100644 drivers/clk/clk-ls1x.c
+Clearing a 2MB huge page will typically blow away several levels of CPU
+caches.  To avoid this only cache clear the 4K area around the fault
+address and use a cache avoiding clears for the rest of the 2MB area.
 
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 5869ea3..018ec57 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -10,6 +10,7 @@ obj-$(CONFIG_ARCH_SOCFPGA)	+= socfpga/
- obj-$(CONFIG_PLAT_SPEAR)	+= spear/
- obj-$(CONFIG_ARCH_U300)		+= clk-u300.o
- obj-$(CONFIG_ARCH_INTEGRATOR)	+= versatile/
-+obj-$(CONFIG_MACH_LOONGSON1)	+= clk-ls1x.o
- 
- # Chip specific
- obj-$(CONFIG_COMMON_CLK_WM831X) += clk-wm831x.o
-diff --git a/drivers/clk/clk-ls1x.c b/drivers/clk/clk-ls1x.c
-new file mode 100644
-index 0000000..f20b750
---- /dev/null
-+++ b/drivers/clk/clk-ls1x.c
-@@ -0,0 +1,111 @@
-+/*
-+ * Copyright (c) 2012 Zhang, Keguang <keguang.zhang@gmail.com>
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <linux/clkdev.h>
-+#include <linux/clk-provider.h>
-+#include <linux/io.h>
-+#include <linux/slab.h>
-+#include <linux/err.h>
-+
-+#include <loongson1.h>
-+
-+#define OSC	33
-+
-+static DEFINE_SPINLOCK(_lock);
-+
-+static int ls1x_pll_clk_enable(struct clk_hw *hw)
-+{
-+	return 0;
-+}
-+
-+static void ls1x_pll_clk_disable(struct clk_hw *hw)
-+{
-+}
-+
-+static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,
-+					     unsigned long parent_rate)
-+{
-+	u32 pll, rate;
-+
-+	pll = __raw_readl(LS1X_CLK_PLL_FREQ);
-+	rate = ((12 + (pll & 0x3f)) * 1000000) +
-+		((((pll >> 8) & 0x3ff) * 1000000) >> 10);
-+	rate *= OSC;
-+	rate >>= 1;
-+
-+	return rate;
-+}
-+
-+static const struct clk_ops ls1x_pll_clk_ops = {
-+	.enable = ls1x_pll_clk_enable,
-+	.disable = ls1x_pll_clk_disable,
-+	.recalc_rate = ls1x_pll_recalc_rate,
-+};
-+
-+static struct clk * __init clk_register_pll(struct device *dev,
-+	 const char *name, const char *parent_name, unsigned long flags)
-+{
-+	struct clk_hw *hw;
-+	struct clk *clk;
-+	struct clk_init_data init;
-+
-+	/* allocate the divider */
-+	hw = kzalloc(sizeof(struct clk_hw), GFP_KERNEL);
-+	if (!hw) {
-+		pr_err("%s: could not allocate clk_hw\n", __func__);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+
-+	init.name = name;
-+	init.ops = &ls1x_pll_clk_ops;
-+	init.flags = flags | CLK_IS_BASIC;
-+	init.parent_names = (parent_name ? &parent_name : NULL);
-+	init.num_parents = (parent_name ? 1 : 0);
-+	hw->init = &init;
-+
-+	/* register the clock */
-+	clk = clk_register(dev, hw);
-+
-+	if (IS_ERR(clk))
-+		kfree(hw);
-+
-+	return clk;
-+}
-+
-+void __init ls1x_clk_init(void)
-+{
-+	struct clk *clk;
-+
-+	clk = clk_register_pll(NULL, "pll_clk", NULL, CLK_IS_ROOT);
-+	clk_prepare_enable(clk);
-+
-+	clk = clk_register_divider(NULL, "cpu_clk", "pll_clk",
-+			CLK_SET_RATE_PARENT, LS1X_CLK_PLL_DIV, DIV_CPU_SHIFT,
-+			DIV_CPU_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
-+	clk_prepare_enable(clk);
-+	clk_register_clkdev(clk, "cpu", NULL);
-+
-+	clk = clk_register_divider(NULL, "dc_clk", "pll_clk",
-+			CLK_SET_RATE_PARENT, LS1X_CLK_PLL_DIV, DIV_DC_SHIFT,
-+			DIV_DC_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
-+	clk_prepare_enable(clk);
-+	clk_register_clkdev(clk, "dc", NULL);
-+
-+	clk = clk_register_divider(NULL, "ahb_clk", "pll_clk",
-+			CLK_SET_RATE_PARENT, LS1X_CLK_PLL_DIV, DIV_DDR_SHIFT,
-+			DIV_DDR_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
-+	clk_prepare_enable(clk);
-+	clk_register_clkdev(clk, "ahb", NULL);
-+	clk_register_clkdev(clk, "stmmaceth", NULL);
-+
-+	clk = clk_register_fixed_factor(NULL, "apb_clk", "ahb_clk", 0, 1, 2);
-+	clk_prepare_enable(clk);
-+	clk_register_clkdev(clk, "apb", NULL);
-+	clk_register_clkdev(clk, "serial8250", NULL);
-+}
+This patchset implements cache avoiding version of clear_page only for
+x86. If an architecture wants to provide cache avoiding version of
+clear_page it should to define ARCH_HAS_USER_NOCACHE to 1 and implement
+clear_page_nocache() and clear_user_highpage_nocache().
+
+v4:
+  - vm.clear_huge_page_nocache sysctl;
+  - rework page iteration in clear_{huge,gigantic}_page according to
+    Andrea Arcangeli suggestion;
+v3:
+  - Rebased to current Linus' tree. kmap_atomic() build issue is fixed;
+  - Pass fault address to clear_huge_page(). v2 had problem with clearing
+    for sizes other than HPAGE_SIZE;
+  - x86: fix 32bit variant. Fallback version of clear_page_nocache() has
+    been added for non-SSE2 systems;
+  - x86: clear_page_nocache() moved to clear_page_{32,64}.S;
+  - x86: use pushq_cfi/popq_cfi instead of push/pop;
+v2:
+  - No code change. Only commit messages are updated;
+  - RFC mark is dropped;
+
+Andi Kleen (5):
+  THP: Use real address for NUMA policy
+  THP: Pass fault address to __do_huge_pmd_anonymous_page()
+  x86: Add clear_page_nocache
+  mm: make clear_huge_page cache clear only around the fault address
+  x86: switch the 64bit uncached page clear to SSE/AVX v2
+
+Kirill A. Shutemov (3):
+  hugetlb: pass fault address to hugetlb_no_page()
+  mm: pass fault address to clear_huge_page()
+  mm: implement vm.clear_huge_page_nocache sysctl
+
+ Documentation/sysctl/vm.txt      |   13 ++++++
+ arch/x86/include/asm/page.h      |    2 +
+ arch/x86/include/asm/string_32.h |    5 ++
+ arch/x86/include/asm/string_64.h |    5 ++
+ arch/x86/lib/Makefile            |    3 +-
+ arch/x86/lib/clear_page_32.S     |   72 +++++++++++++++++++++++++++++++++++
+ arch/x86/lib/clear_page_64.S     |   78 ++++++++++++++++++++++++++++++++++++++
+ arch/x86/mm/fault.c              |    7 +++
+ include/linux/mm.h               |    7 +++-
+ kernel/sysctl.c                  |   12 ++++++
+ mm/huge_memory.c                 |   17 ++++----
+ mm/hugetlb.c                     |   39 ++++++++++---------
+ mm/memory.c                      |   72 ++++++++++++++++++++++++++++++----
+ 13 files changed, 294 insertions(+), 38 deletions(-)
+ create mode 100644 arch/x86/lib/clear_page_32.S
+
 -- 
-1.7.1
+1.7.7.6

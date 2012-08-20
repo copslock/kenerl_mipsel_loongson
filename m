@@ -1,41 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Aug 2012 22:53:39 +0200 (CEST)
-Received: from mail-ee0-f49.google.com ([74.125.83.49]:57742 "EHLO
-        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1901170Ab2HSUxc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Aug 2012 22:53:32 +0200
-Received: by eekc13 with SMTP id c13so1302747eek.36
-        for <multiple recipients>; Sun, 19 Aug 2012 13:53:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=Lo+oKXb+x5p01o9UBWSHaCyBPxs/W6V8LaXBZIR65OI=;
-        b=IYdwnknno7Pt19gKcXJizipFl/iiDO//johp4U+nw6JVqUZsM3bh8Kx0Qh/Ex5klpY
-         uwzRKUBe7omewy0GFHXMcJPDSsblLG+b+Laj/vr+IPedtCLqtnYvSiJU/aiLyraXBN3B
-         +fMqnJE+rtRLYHa0MeM11qN6GZiAkHghkPmY5VJ+yO3Uc1LP99vMUMepPmyv6KR3FDDJ
-         ig3NMrPEfMDAbGToxVRHxVWxuJVqxVPdhLVMUvoxURY63TmD0fXIogYfjmlwXqwTEtid
-         XLx0b4Q6VaBkzerKqyomELomJ6kN2SCq8YLvnwYhmC0z5YtngaEDRN7rkJtiq25bpCU7
-         BDhQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2012 07:01:28 +0200 (CEST)
+Received: from ozlabs.org ([203.10.76.45]:48360 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1901163Ab2HTFBX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 20 Aug 2012 07:01:23 +0200
+Received: by ozlabs.org (Postfix, from userid 1011)
+        id C74072C0089; Mon, 20 Aug 2012 15:01:18 +1000 (EST)
+From:   Rusty Russell <rusty@rustcorp.com.au>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Howells <dhowells@redhat.com>
+Cc:     Jonas Gorski <jonas.gorski@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Fix module.c build for 32 bit
+In-Reply-To: <20120814151345.GB30856@linux-mips.org>
+References: <87d32us55c.fsf@rustcorp.com.au> <1344332473-19842-1-git-send-email-jonas.gorski@gmail.com> <31154.1344872382@warthog.procyon.org.uk> <32504.1344953290@warthog.procyon.org.uk> <20120814151345.GB30856@linux-mips.org>
+User-Agent: Notmuch/0.12 (http://notmuchmail.org) Emacs/23.3.1 (i686-pc-linux-gnu)
+Date:   Mon, 20 Aug 2012 12:19:36 +0930
+Message-ID: <87boi65lbz.fsf@rustcorp.com.au>
 MIME-Version: 1.0
-Received: by 10.14.203.73 with SMTP id e49mr5805167eeo.27.1345409606949; Sun,
- 19 Aug 2012 13:53:26 -0700 (PDT)
-Received: by 10.14.179.71 with HTTP; Sun, 19 Aug 2012 13:53:26 -0700 (PDT)
-In-Reply-To: <20120819201714.GA3152@breakpoint.cc>
-References: <97cb21b8063a02a9664baf8b749ae200@localhost>
-        <20120819201714.GA3152@breakpoint.cc>
-Date:   Sun, 19 Aug 2012 13:53:26 -0700
-Message-ID: <CAJiQ=7CADk_75U5=OQH8vXA=xtj-U=TbBhXzC8JfUGbYEKmxng@mail.gmail.com>
-Subject: Re: [PATCH] usb: gadget: bcm63xx UDC driver
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
-Cc:     balbi@ti.com, ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-usb@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 34281
+Content-Type: text/plain; charset=us-ascii
+X-archive-position: 34282
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: rusty@rustcorp.com.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,57 +37,35 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sun, Aug 19, 2012 at 1:17 PM, Sebastian Andrzej Siewior
-<sebastian@breakpoint.cc> wrote:
-> On Sat, Aug 18, 2012 at 10:18:01AM -0700, Kevin Cernekee wrote:
->
-> This is a quick look :)
+On Tue, 14 Aug 2012 17:13:45 +0200, Ralf Baechle <ralf@linux-mips.org> wrote:
+> Fixes build failure introduced by "Make most arch asm/module.h files use
+> asm-generic/module.h" by moving all the RELA processing code to a
+> separate file to be used only for RELA processing on 64-bit kernels.
+> 
+>   CC      arch/mips/kernel/module.o
+> arch/mips/kernel/module.c:250:14: error: 'reloc_handlers_rela' defined but not 
+> used [-Werror=unused-variable]
+> cc1: all warnings being treated as errors
+> 
+> make[6]: *** [arch/mips/kernel/module.o] Error 1
+> 
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+> 
+> ---
+> This is bigger than Jonas' suggested patch but far less #ifdefy.
+> A minimal fix would be to add __maybe_unused to the definition of
+> reloc_handlers_rela but imho __maybe_unused should be avoided where
+> possible.
+> 
+> I tested this on top of today's -next but ideally to keep bisectability
+> it should be applied early in the series before CONFIG_MODULES_USE_ELF_RELA
+> is introduced which would require trivial tweaking arch/mips/kernel/Makefile
+> tweaking.
 
-Thanks for the review.
+OK, as suggested, applied as a separate patch (with a bit of tweaking),
+and then modified David's patch to flip the condition in the Makefile.
 
->> +     for (i = 0; i < NUM_IUDMA; i++)
->> +             if (udc->iudma[i].irq == irq)
->> +                     iudma = &udc->iudma[i];
->> +     BUG_ON(!iudma);
->
-> This is rough. Please don't do this. Bail out in probe or print an error here
-> and return with IRQ_NONE and time will close this irq.
+This will sit in linux-next another cycle.
 
-OK, I will change it to warn + return IRQ_NONE, instead of BUG().
-
-That situation shouldn't ever happen anyway.  It would mean that our
-ISR is getting called with somebody else's IRQ number, or the iudma
-structs were corrupted.
-
-Probe does bail out if any of the IRQ resources are missing.
-
->> +     for (i = 0; i < NUM_IUDMA + 1; i++) {
->> +             int irq = platform_get_irq(pdev, i);
->> +             if (irq < 0) {
->> +                     dev_err(dev, "missing IRQ resource #%d\n", i);
->> +                     goto out_uninit;
->> +             }
->> +             if (devm_request_irq(dev, irq,
->> +                 i ? &bcm63xx_udc_data_isr : &bcm63xx_udc_ctrl_isr,
->> +                 0, dev_name(dev), udc) < 0) {
->> +                     dev_err(dev, "error requesting IRQ #%d\n", irq);
->> +                     goto out_uninit;
->> +             }
->> +             if (i > 0)
->> +                     udc->iudma[i - 1].irq = irq;
->> +     }
->
-> According to this code, i in iudma[] can be in 1..5. You could have more than
-> one IRQ. The comment above this for loop is point less. So I think if you can
-> only have _one_ idma irq than you could remove the for loop in
-> bcm63xx_udc_data_isr().
-
-There are 6 IUDMA channels, and each one always has a dedicated
-interrupt line.  IRQ resource #0 is the control (vbus/speed/cfg/etc.)
-IRQ, and IRQ resources #1-6 are the IUDMA (IN/OUT data) IRQs.  Maybe
-it would be good to add a longer comment to clarify this?
-
-An earlier iteration of the code had passed in an IRQ range, which
-worked for 6328, but then it was pointed out that the IRQ numbers are
-not contiguous on all platforms.  So 7 individual resources are indeed
-necessary.
+Cheers,
+Rusty.

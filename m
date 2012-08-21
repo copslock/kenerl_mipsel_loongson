@@ -1,48 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2012 21:30:31 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:35111 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903534Ab2HUTa1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2012 21:30:27 +0200
-Received: by dajq27 with SMTP id q27so108356daj.36
-        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2012 12:30:20 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2012 21:35:17 +0200 (CEST)
+Received: from mail-ee0-f49.google.com ([74.125.83.49]:61119 "EHLO
+        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903534Ab2HUTfK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2012 21:35:10 +0200
+Received: by eekc13 with SMTP id c13so52683eek.36
+        for <multiple recipients>; Tue, 21 Aug 2012 12:35:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=Jd1d6N8N22IftvL+uqboOcHwz7DbOyyaDHMpm67Sg/c=;
-        b=kR4w3s42AfFNa+shw4hUpUBW/EGnntIpYwEEXKgQ/XRUQkb66YT7YbeMf/QLCIjVin
-         w9tv3jS3UwNXuNBbuKY7xWLqgnJThFj0l13RjP0sCi+C5/a9cS8unIs/xFPgiYz/HP3O
-         F+c8ae+JMnbKDdzsY8p5KNx7pePtb2Og8SQ/gtwgoRdcEwgdNWEIH+DImeVml2Hr9sd0
-         Hn8qDR3TKUxljnbP4R8SwQgBCW7QBuBd4wPO5rWiRGOrp/iI17O3hjZPMZ2f0YknTw/k
-         N6W4eVLMs35gNVYBKfAjTL2qBbjBhWuDCbX0Dq/2Op7tUphKVTMpd6s9FQTBWSA/feWI
-         O9XQ==
-Received: by 10.68.200.98 with SMTP id jr2mr46665007pbc.81.1345577420503;
-        Tue, 21 Aug 2012 12:30:20 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id ox5sm1992509pbc.75.2012.08.21.12.30.18
-        (version=SSLv3 cipher=OTHER);
-        Tue, 21 Aug 2012 12:30:19 -0700 (PDT)
-Message-ID: <5033E1CA.8050107@gmail.com>
-Date:   Tue, 21 Aug 2012 12:30:18 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20120717 Thunderbird/14.0
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=tvq2Ii+OpX1CqJEXbf0690kJI8V63RuzZKz/6sz+688=;
+        b=KAyXWFxeVnLUAC+4xi1dnbb3Yg+VvnKF2IvTUxLyZ15hn+7OrX4Fz5W0jT5eILaDGf
+         9bbc06ROmTL4NmCM3pnEv0pDeMZaXOIP0SeZqdGVUl3zqDS53emKXGoks9eFw1aeHV99
+         ZxnxNmF3nNCPTQQpr04JV0L3lexK+HYAKldY0FVgjUZCZwpeDW3IngT3Y6FI2ogUms9p
+         0cF+bp1S7D4dGMHF1kVE8xavJ99nQrftyKofd3LbXVe1yqt68ZswkrovuQTraQQdjEc0
+         i6g1OsKMPamOsU0cmeY2wZ1P/oCrw5ShkJHqFxmCARQ0X8XvOaUjDjb0g6O1jW+qAGG8
+         e/cQ==
 MIME-Version: 1.0
-To:     Grant Likely <grant.likely@secretlab.ca>
-CC:     devicetree-discuss@lists.ozlabs.org,
-        Rob Herring <rob.herring@calxeda.com>,
-        spi-devel-general@lists.sourceforge.net,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 2/2] spi: Add SPI master controller for OCTEON SOCs.
-References: <1336772086-17248-1-git-send-email-ddaney.cavm@gmail.com> <1336772086-17248-3-git-send-email-ddaney.cavm@gmail.com> <20120520054657.091DA3E03B8@localhost>
-In-Reply-To: <20120520054657.091DA3E03B8@localhost>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34326
+Received: by 10.14.4.198 with SMTP id 46mr14862536eej.11.1345577705240; Tue,
+ 21 Aug 2012 12:35:05 -0700 (PDT)
+Received: by 10.14.179.71 with HTTP; Tue, 21 Aug 2012 12:35:05 -0700 (PDT)
+In-Reply-To: <20120821180818.GC20360@arwen.pp.htv.fi>
+References: <97cb21b8063a02a9664baf8b749ae200@localhost>
+        <20120820074041.GH17455@arwen.pp.htv.fi>
+        <CAJiQ=7CB2w=aNwtU4f3di6c31tD-EWO9YLejESY5HsUaHY6s1A@mail.gmail.com>
+        <20120821120418.GE10347@arwen.pp.htv.fi>
+        <CAJiQ=7BQz18s03du_Q33z45W+QrkVaPqgZSuUTU-x9v=48CGbA@mail.gmail.com>
+        <20120821180818.GC20360@arwen.pp.htv.fi>
+Date:   Tue, 21 Aug 2012 12:35:05 -0700
+Message-ID: <CAJiQ=7BJF39Xs3_U+8SnbBRPT3QyneCZmX3Z4WSvPfB3u88LSA@mail.gmail.com>
+Subject: Re: [PATCH] usb: gadget: bcm63xx UDC driver
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     balbi@ti.com
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-usb@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 34327
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,38 +53,19 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 05/19/2012 10:46 PM, Grant Likely wrote:
-> On Fri, 11 May 2012 14:34:46 -0700, David Daney <ddaney.cavm@gmail.com> wrote:
->> From: David Daney <david.daney@cavium.com>
->>
->> Add the driver, link it into the kbuild system and provide device tree
->> binding documentation.
->>
->> Signed-off-by: David Daney <david.daney@cavium.com>
->
-> Some comments below, but you can add my a-b:
->
-> Acked-by: Grant Likely <grant.likely@secretlab.ca>
->
-[...]
->> +	p->register_base = (u64)devm_ioremap(&pdev->dev, res_mem->start,
->> +					     resource_size(res_mem));
->
-> Nasty cast.  p->register_base needs to be an __iomem pointer
-> variable.
+On Tue, Aug 21, 2012 at 11:08 AM, Felipe Balbi <balbi@ti.com> wrote:
+> Then stick to a workqueue... but could you let me know why exactly you
+> have to fake SET_CONFIGURATION/SET_INTERFACE requests ? Is this a
+> silicon bug or a silicon feature ? That's quite weird to me.
 
-No, it is only ever used as an argument to cvmx_{read,write}_csr(),
-which want the u64 type.
+It is a silicon feature: the core will intercept SET_CONFIGURATION /
+SET_INTERFACE requests, store wValue/wIndex in the appropriate
+USBD_STATUS_REG field (cfg/intf/altintf), send an acknowledgement to
+the host, and raise a control interrupt.
 
->  The fact taht cvmx_read_csr accepts a uint64_t instead of
-> an __iomem pointer looks really wrong.  Why is it written that way?
+I haven't found it to be terribly helpful, but I don't know of a way
+to turn it off.
 
+I will reinstate the workqueue and submit V3.
 
-Register addresses on OCTEON are 64-bits wide.  In a 32-bit kernel,
-pointers are only 32-bits wide.  Thus was born the cvmx_read_csr()
-function that takes a u64 address.
-
-We no longer support 32-bit kernels, but the legacy of the interface
-lives on.
-
-David Daney
+Thanks.

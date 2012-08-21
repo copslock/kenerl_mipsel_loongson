@@ -1,41 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2012 23:08:37 +0200 (CEST)
-Received: from mail-ee0-f49.google.com ([74.125.83.49]:43772 "EHLO
-        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903498Ab2HUVIa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2012 23:08:30 +0200
-Received: by eekc13 with SMTP id c13so74847eek.36
-        for <multiple recipients>; Tue, 21 Aug 2012 14:08:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=CVPrF8P0an6PwixxKnRT1fzngMPHR1uGXrGelrZN5Ug=;
-        b=Ur2qMaV3ii3133kTKm1kam154KbytoqP7YG/CRiPLufOYOxQJPF4wiAlcJlexJGFWa
-         b8ESL52P0ZBCCoZ6NlBhSrrrqH8bLfm62ZPrL9sCem/LQqSPivrej/VVfOZHC4pO4xCI
-         FdvVqvj2cIKcFCLsn/D7Vmu1iOwfKknl6ll88YptSKxj88TSqMgGk5yeSLcwRlknyv52
-         6PtS7GZhOP0gd8zRWN2iTz6fzDe+uihIJ7tn/HTLyDAREnJgVoFuyZM7PB0wNFjVLqvD
-         2FWihOm7X02SK3/UVQXMzTktrlKqJ5Zz68EmeUqQfKyzVUIChInA2qvX4+0sgXiCqj+O
-         IKng==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2012 23:14:08 +0200 (CEST)
+Received: from Chamillionaire.breakpoint.cc ([80.244.247.6]:40376 "EHLO
+        Chamillionaire.breakpoint.cc" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903498Ab2HUVN7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2012 23:13:59 +0200
+Received: from bigeasy by Chamillionaire.breakpoint.cc with local (Exim 4.72)
+        (envelope-from <sebastian@breakpoint.cc>)
+        id 1T3vlt-0007TX-BF; Tue, 21 Aug 2012 23:13:57 +0200
+Date:   Tue, 21 Aug 2012 23:13:55 +0200
+From:   Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     balbi@ti.com, ralf@linux-mips.org, sebastian@breakpoint.cc,
+        linux-mips@linux-mips.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH V2] usb: gadget: bcm63xx UDC driver
+Message-ID: <20120821211355.GB6307@breakpoint.cc>
+References: <b3bb6f2afb3ed82fd1e64563c68fb8df@localhost>
 MIME-Version: 1.0
-Received: by 10.14.176.6 with SMTP id a6mr15223547eem.13.1345583305420; Tue,
- 21 Aug 2012 14:08:25 -0700 (PDT)
-Received: by 10.14.179.71 with HTTP; Tue, 21 Aug 2012 14:08:25 -0700 (PDT)
-In-Reply-To: <Pine.LNX.4.44L0.1208211625200.1163-100000@iolanthe.rowland.org>
-References: <CAJiQ=7BJF39Xs3_U+8SnbBRPT3QyneCZmX3Z4WSvPfB3u88LSA@mail.gmail.com>
-        <Pine.LNX.4.44L0.1208211625200.1163-100000@iolanthe.rowland.org>
-Date:   Tue, 21 Aug 2012 14:08:25 -0700
-Message-ID: <CAJiQ=7DefOV1daP5bfxmgPHseYvx8Yj1K7h=Kv3hc9iaKv0wXw@mail.gmail.com>
-Subject: Re: [PATCH] usb: gadget: bcm63xx UDC driver
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     balbi@ti.com, ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-usb@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 34331
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b3bb6f2afb3ed82fd1e64563c68fb8df@localhost>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34332
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: sebastian@breakpoint.cc
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,66 +37,111 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Aug 21, 2012 at 1:34 PM, Alan Stern <stern@rowland.harvard.edu> wrote:
->> It is a silicon feature: the core will intercept SET_CONFIGURATION /
->> SET_INTERFACE requests, store wValue/wIndex in the appropriate
->> USBD_STATUS_REG field (cfg/intf/altintf), send an acknowledgement to
->> the host, and raise a control interrupt.
->
-> Your explanation is not clear.  The operations you listed are exactly
-> what any UDC should do when it receives any control request: It should
-> store the bRequestType, bRequest, wValue, wIndex, and wLength values in
-> appropriate registers, send an ACK back to the host, and generate an
-> IRQ.  What's special about Set-Config and Set-Interface?
+On Mon, Aug 20, 2012 at 06:49:36PM -0700, Kevin Cernekee wrote:
+> Driver for the "USB20D" / "USBD" block on BCM6328, BCM6368, BCM6816,
+> BCM6362, BCM3383, and others.
 
-For "most" control requests (such as GET_DESCRIPTOR), this core writes
-the raw packet data out to a buffer in DRAM and raises an IUDMA IRQ.
-The UDC driver passes this data on to the gadget driver and allows it
-to decide what to send back in subsequent phases.
+looks good btw.
 
-But some requests are handled entirely in hardware, including the status phase:
+> diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+> index 51ab5fd..01efd9d 100644
+> --- a/drivers/usb/gadget/Kconfig
+> +++ b/drivers/usb/gadget/Kconfig
+> @@ -160,6 +160,19 @@ config USB_ATMEL_USBA
+>  	  USBA is the integrated high-speed USB Device controller on
+>  	  the AT32AP700x, some AT91SAM9 and AT91CAP9 processors from Atmel.
+>  
+> +config USB_BCM63XX_UDC
+> +	tristate "Broadcom BCM63xx Peripheral Controller"
+> +	select USB_GADGET_DUALSPEED
+> +	depends on BCM63XX
+> +	help
+> +	   Many Broadcom BCM63xx chipsets (such as the BCM6328) have a
+> +	   high speed USB Device Port with support for four fixed endpoints
+> +	   (plus endpoint zero).
+> +
+> +	   Say "y" to link the driver statically, or "m" to build a
+> +	   dynamically linked module called "bcm63xx_udc" and force
+> +	   all gadget drivers to also be dynamically linked.
+please drop the "force all gadget drivers to also be dynamically linked" part.
+We may want to change this one day :)
 
-SET_ADDRESS
-SET_CONFIGURATION
-SET_INTERFACE
-SET_FEATURE
-CLEAR_FEATURE
-GET_FEATURE
+> +
+>  config USB_FSL_USB2
+>  	tristate "Freescale Highspeed USB DR Peripheral Controller"
+>  	depends on FSL_SOC || ARCH_MXC
+> diff --git a/drivers/usb/gadget/Makefile b/drivers/usb/gadget/Makefile
+> index 3fd8cd0..d84f923 100644
 
-Where appropriate, the hardware block will update its registers to
-indicate the new settings and raise a control IRQ.
+> diff --git a/drivers/usb/gadget/bcm63xx_udc.c b/drivers/usb/gadget/bcm63xx_udc.c
+> new file mode 100644
+> index 0000000..a44352b
+> --- /dev/null
+> +++ b/drivers/usb/gadget/bcm63xx_udc.c
+...
 
->> I haven't found it to be terribly helpful, but I don't know of a way
->> to turn it off.
->
-> Why would you want to turn this off?  Isn't is exactly what you want to
-> have happen?  And why do you need a workqueue to handle the request?
+> +static bool use_fullspeed;
+> +module_param(use_fullspeed, bool, S_IRUGO);
+> +MODULE_PARM_DESC(use_fullspeed, "true for fullspeed only");
 
-SET_CONFIGURATION and SET_INTERFACE need to generate setup callbacks
-for the gadget driver, and the proper ordering of events needs to be
-enforced.  It is possible to receive IRQs for "SET_CONFIGURATION has
-happened," "SET_INTERFACE has happened," and "there is another control
-request pending," all at nearly the same time, before the gadget
-driver has had an opportunity to respond to the first setup request.
-But if that happened, we would not want to generate three setup
-callbacks in a row.
+How important is this option? Maybe this should become a generic option?
 
-Example:
+> +static int bcm63xx_udc_start(struct usb_gadget *gadget,
+> +		struct usb_gadget_driver *driver)
+> +{
+> +	struct bcm63xx_udc *udc = gadget_to_udc(gadget);
+> +	unsigned long flags;
+> +
+> +	if (!driver || driver->max_speed < USB_SPEED_HIGH ||
+Hmm. But if you set use_fullspeed isn't this kinda legal?
 
-1) SET_CONFIGURATION transfer completes (including status phase), all
-handled by hardware.  Control interrupt is raised.
+> +static int __devinit bcm63xx_udc_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct bcm63xx_usbd_platform_data *pd = dev->platform_data;
+> +	struct bcm63xx_udc *udc;
+> +	struct resource *res;
+> +	int rc = -ENOMEM, i, irq;
+> +
+> +	udc = devm_kzalloc(dev, sizeof(*udc), GFP_KERNEL);
+> +	if (!udc) {
+> +		dev_err(dev, "cannot allocate memory\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	platform_set_drvdata(pdev, udc);
+> +	udc->dev = dev;
+> +	udc->pd = pd;
+> +
+> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	if (!res) {
+> +		dev_err(dev, "error finding USBD resource\n");
+> +		return -ENXIO;
+> +	}
+> +	udc->usbd_regs = devm_request_and_ioremap(dev, res);
+> +
+> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+> +	if (!res) {
+> +		dev_err(dev, "error finding IUDMA resource\n");
+> +		return -ENXIO;
+> +	}
+> +	udc->iudma_regs = devm_request_and_ioremap(dev, res);
+> +
+> +	if (!udc->usbd_regs || !udc->iudma_regs) {
+> +		dev_err(dev, "error requesting resources\n");
+> +		return -ENXIO;
+> +	}
+> +
+> +	spin_lock_init(&udc->lock);
+> +	dev_set_name(&udc->gadget.dev, "gadget");
+> +
+> +	udc->gadget.ops = &bcm63xx_udc_ops;
+> +	udc->gadget.name = dev_name(dev);
+> +	udc->gadget.dev.parent = dev;
+> +	udc->gadget.dev.release = bcm63xx_udc_gadget_release;
+> +	udc->gadget.dev.dma_mask = dev->dma_mask;
+> +
+> +	if (!pd->use_fullspeed && !use_fullspeed)
+so it is a good advice to have pd not set to NULL :)
 
-2) Setup packet is sent to USB gadget driver (say, gadgetfs)
-
-3) SET_INTERFACE transfer completes, and another control interrupt is raised
-
-4) Gadget driver eventually gets around to queuing the SET_CONFIGURATION reply.
-
-5) Now we are in the UDC queue function and the gadget driver is
-probably holding a spinlock.  We want to invoke the setup callback
-with the spoofed SET_INTERFACE packet, but it's not safe to do it from
-here.
-
-To complicate the situation, another setup packet can arrive between
-steps 3 and 4.  But the worker function makes sure everything plays
-out in the right order.
+Sebastian

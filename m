@@ -1,45 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2012 21:35:17 +0200 (CEST)
-Received: from mail-ee0-f49.google.com ([74.125.83.49]:61119 "EHLO
-        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903534Ab2HUTfK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2012 21:35:10 +0200
-Received: by eekc13 with SMTP id c13so52683eek.36
-        for <multiple recipients>; Tue, 21 Aug 2012 12:35:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=tvq2Ii+OpX1CqJEXbf0690kJI8V63RuzZKz/6sz+688=;
-        b=KAyXWFxeVnLUAC+4xi1dnbb3Yg+VvnKF2IvTUxLyZ15hn+7OrX4Fz5W0jT5eILaDGf
-         9bbc06ROmTL4NmCM3pnEv0pDeMZaXOIP0SeZqdGVUl3zqDS53emKXGoks9eFw1aeHV99
-         ZxnxNmF3nNCPTQQpr04JV0L3lexK+HYAKldY0FVgjUZCZwpeDW3IngT3Y6FI2ogUms9p
-         0cF+bp1S7D4dGMHF1kVE8xavJ99nQrftyKofd3LbXVe1yqt68ZswkrovuQTraQQdjEc0
-         i6g1OsKMPamOsU0cmeY2wZ1P/oCrw5ShkJHqFxmCARQ0X8XvOaUjDjb0g6O1jW+qAGG8
-         e/cQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2012 21:49:42 +0200 (CEST)
+Received: from mail.active-venture.com ([67.228.131.205]:60186 "EHLO
+        mail.active-venture.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903534Ab2HUTti (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2012 21:49:38 +0200
+Received: (qmail 46043 invoked by uid 399); 21 Aug 2012 19:49:31 -0000
+Received: from unknown (HELO localhost) (guenter@roeck-us.net@108.223.40.66)
+  by mail.active-venture.com with ESMTPAM; 21 Aug 2012 19:49:31 -0000
+X-Originating-IP: 108.223.40.66
+X-Sender: guenter@roeck-us.net
+Date:   Tue, 21 Aug 2012 12:49:36 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     devicetree-discuss@lists.ozlabs.org,
+        Grant Likely <grant.likely@secretlab.ca>,
+        Rob Herring <rob.herring@calxeda.com>,
+        spi-devel-general@lists.sourceforge.net,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-doc@vger.kernel.org, David Daney <david.daney@cavium.com>
+Subject: Re: [2/2] spi: Add SPI master controller for OCTEON SOCs.
+Message-ID: <20120821194936.GA7145@roeck-us.net>
+References: <1336772086-17248-3-git-send-email-ddaney.cavm@gmail.com>
 MIME-Version: 1.0
-Received: by 10.14.4.198 with SMTP id 46mr14862536eej.11.1345577705240; Tue,
- 21 Aug 2012 12:35:05 -0700 (PDT)
-Received: by 10.14.179.71 with HTTP; Tue, 21 Aug 2012 12:35:05 -0700 (PDT)
-In-Reply-To: <20120821180818.GC20360@arwen.pp.htv.fi>
-References: <97cb21b8063a02a9664baf8b749ae200@localhost>
-        <20120820074041.GH17455@arwen.pp.htv.fi>
-        <CAJiQ=7CB2w=aNwtU4f3di6c31tD-EWO9YLejESY5HsUaHY6s1A@mail.gmail.com>
-        <20120821120418.GE10347@arwen.pp.htv.fi>
-        <CAJiQ=7BQz18s03du_Q33z45W+QrkVaPqgZSuUTU-x9v=48CGbA@mail.gmail.com>
-        <20120821180818.GC20360@arwen.pp.htv.fi>
-Date:   Tue, 21 Aug 2012 12:35:05 -0700
-Message-ID: <CAJiQ=7BJF39Xs3_U+8SnbBRPT3QyneCZmX3Z4WSvPfB3u88LSA@mail.gmail.com>
-Subject: Re: [PATCH] usb: gadget: bcm63xx UDC driver
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     balbi@ti.com
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-usb@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 34327
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1336772086-17248-3-git-send-email-ddaney.cavm@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34328
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,19 +43,44 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Aug 21, 2012 at 11:08 AM, Felipe Balbi <balbi@ti.com> wrote:
-> Then stick to a workqueue... but could you let me know why exactly you
-> have to fake SET_CONFIGURATION/SET_INTERFACE requests ? Is this a
-> silicon bug or a silicon feature ? That's quite weird to me.
+On Fri, May 11, 2012 at 08:34:46PM -0000, David Daney wrote:
+> From: David Daney <david.daney@cavium.com>
+> 
+> Add the driver, link it into the kbuild system and provide device tree
+> binding documentation.
+> 
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> Acked-by: Grant Likely <grant.likely@secretlab.ca>
+> 
+[ ... ]
 
-It is a silicon feature: the core will intercept SET_CONFIGURATION /
-SET_INTERFACE requests, store wValue/wIndex in the appropriate
-USBD_STATUS_REG field (cfg/intf/altintf), send an acknowledgement to
-the host, and raise a control interrupt.
+> +
+> +static int __devexit octeon_spi_remove(struct platform_device *pdev)
+> +{
+> +	struct octeon_spi *p = platform_get_drvdata(pdev);
+> +	struct spi_master *master = p->my_master;
+> +
+> +	spi_unregister_master(master);
+> +
 
-I haven't found it to be terribly helpful, but I don't know of a way
-to turn it off.
+I know it is a bit late, but ...
 
-I will reinstate the workqueue and submit V3.
+The call to spi_unregister_master() frees the memory associated with master,
+ie 'p', and the spi_master_put() below without matching spi_master_get() is
+unnecessary/wrong. One possible fix would be to use 
 
-Thanks.
+	struct spi_master *master = spi_master_get(p->my_master);
+
+above. That protects master and p while it is still being used, and makes use
+of the call to spi_master_put() below. Another option might be to move
+cvmx_write_csr() ahead of the call to spi_unregister_master() and drop the
+call to spi_master_put().
+
+Guenter
+
+> +	/* Clear the CSENA* and put everything in a known state. */
+> +	cvmx_write_csr(p->register_base + OCTEON_SPI_CFG, 0);
+> +	spi_master_put(master);
+> +	return 0;
+> +}
+> +

@@ -1,43 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2012 17:20:53 +0200 (CEST)
-Received: from mail-ee0-f49.google.com ([74.125.83.49]:51888 "EHLO
-        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903616Ab2HUPUt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2012 17:20:49 +0200
-Received: by eekc13 with SMTP id c13so1882453eek.36
-        for <multiple recipients>; Tue, 21 Aug 2012 08:20:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=xsFcsyq6UYpLfeIqmBZsDj4SxSvK4QL5aRNPpkQvz6o=;
-        b=d4Xg7b6L1OLaarsJpIpFzbKnIIzgq6ElQlOAdcjaL0PlCUurCWedRS18RKWUFoYtjR
-         D53PTGC3pwKj2GLAlp3BfjH6MjQ1FFCj7/HoEBWxo9agX9tPtw98AhW0lyDCIIjn/zwD
-         tBPjP3BrHc6h86/kRNkPMAlruC50H/sRGQTkbyR6Ionf0uCY+L8nLdNMA2AxDWKWkoIf
-         80AjjVV573aP+0/bQblH8KtwiLIcK9tZpanKpsRo5LaPonBdgmoCJ90GlJYCmDFdhZ0y
-         vQP+OzIfY3AlE55RWBO6oWGXRJzxr8CQbF+6Ck+QLfDI20x0gCHtiqYQtFmza0CIlxBg
-         MCmw==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2012 19:05:08 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:36936 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903621Ab2HURFE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 21 Aug 2012 19:05:04 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q7LH4xq7021520;
+        Tue, 21 Aug 2012 19:04:59 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q7LH4vlp021519;
+        Tue, 21 Aug 2012 19:04:57 +0200
+Date:   Tue, 21 Aug 2012 19:04:57 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Thierry Reding <thierry.reding@avionic-design.de>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        David Daney <ddaney.cavm@gmail.com>, linux-pci@vger.kernel.org,
+        linux-mips <linux-mips@linux-mips.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>
+Subject: Re: PCI Section mismatch error in linux-next.
+Message-ID: <20120821170456.GA18994@linux-mips.org>
+References: <20120817182931.GA27391@avionic-0098.adnet.avionic-design.de>
+ <CAErSpo6xhbpmd-rnLqKp9SuRQCp5a7jUzKhz0n6zGGLNHybWqA@mail.gmail.com>
+ <20120817200755.GA16021@avionic-0098.adnet.avionic-design.de>
+ <CAErSpo4XX7mQBmJfYWzmXCSDAt4BzZoJV6gU9__409K=fpvC6A@mail.gmail.com>
+ <20120817204839.GA2017@avionic-0098.mockup.avionic-design.de>
+ <20120817210718.GA14842@avionic-0098.mockup.avionic-design.de>
+ <CAErSpo7bwHNUchZHeJByxzhsc0uN7RJMLivBo5FuOJzA0Gz2Jg@mail.gmail.com>
+ <20120817213247.GA1056@avionic-0098.mockup.avionic-design.de>
+ <20120820053036.GA23166@kroah.com>
+ <CAMuHMdWfhATFQrP-ZiMi6Ub3ZbOgUhe7S_fVUzc7zOwDxRNsyw@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 10.14.4.198 with SMTP id 46mr13882433eej.11.1345562443842; Tue,
- 21 Aug 2012 08:20:43 -0700 (PDT)
-Received: by 10.14.179.71 with HTTP; Tue, 21 Aug 2012 08:20:43 -0700 (PDT)
-In-Reply-To: <20120821120418.GE10347@arwen.pp.htv.fi>
-References: <97cb21b8063a02a9664baf8b749ae200@localhost>
-        <20120820074041.GH17455@arwen.pp.htv.fi>
-        <CAJiQ=7CB2w=aNwtU4f3di6c31tD-EWO9YLejESY5HsUaHY6s1A@mail.gmail.com>
-        <20120821120418.GE10347@arwen.pp.htv.fi>
-Date:   Tue, 21 Aug 2012 08:20:43 -0700
-Message-ID: <CAJiQ=7BQz18s03du_Q33z45W+QrkVaPqgZSuUTU-x9v=48CGbA@mail.gmail.com>
-Subject: Re: [PATCH] usb: gadget: bcm63xx UDC driver
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     balbi@ti.com
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-usb@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 34303
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdWfhATFQrP-ZiMi6Ub3ZbOgUhe7S_fVUzc7zOwDxRNsyw@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34304
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,41 +53,22 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Aug 21, 2012 at 5:04 AM, Felipe Balbi <balbi@ti.com> wrote:
-> On Mon, Aug 20, 2012 at 08:48:11PM -0700, Kevin Cernekee wrote:
->> On Mon, Aug 20, 2012 at 12:40 AM, Felipe Balbi <balbi@ti.com> wrote:
->> > no workqueues, please either handle the IRQ here or use threaded_irqs.
->> >
->> > again, no workqueues.
->>
->> Felipe,
->>
->> I am seeing all sorts of deadlocks now, after removing the workqueue
->> (patch V2).  Some have easy fixes, but for others it is not as
->> obvious.  The code was much simpler when I could just trigger a
->> deferred worker function.
->>
->> Workqueues are used in at91_udc, lpc32xx_udc, mv_udc_core, and
->> pch_udc.  Could you please clarify why it is not OK to use one in
->> bcm63xx_udc?
->
-> Because threaded_irqs were added in order to drop such workqueues.
-> threaded_irqs also have the highest priority possible (only lower than
-> hardirq handlers), so you'll get scheduled much sooner.
->
-> Could it be that most of your deadlocks is because you're not setting
-> IRQF_ONESHOT ?
+On Tue, Aug 21, 2012 at 04:32:45PM +0200, Geert Uytterhoeven wrote:
 
-The deadlocks involve ep0 processing that is triggered through
-bcm63xx_udc_queue().  e.g. gadget driver queues a new request, it's a
-reply to a spoofed SET_CONFIGURATION / SET_INTERFACE transaction, and
-the UDC driver calls the completion immediately.
+> Anyone who disables CONFIG_HOTPLUG in his defconfig files?
+> 
+> $ git grep CONFIG_HOTPLUG arch/*/*config
+> arch/frv/defconfig:# CONFIG_HOTPLUG is not set
+> arch/h8300/defconfig:# CONFIG_HOTPLUG is not set
+> arch/um/defconfig:CONFIG_HOTPLUG=y
+> $
+> 
+> Yep, (at least --- not all defconfigs are up-to-date) frv and h8300.
 
-So, not all of the ep0 work is being done in response to an IRQ from
-the controller HW, and I think that is where this driver diverges from
-most of the others.
+Since we started stripping all the defconfigs down grepping through
+arch/*/configs/ doesn't yield much useful information anymore :-(
 
-Would it be OK to use a workqueue, or maybe a tasklet, given these
-circumstances?
+There are currently 8 MIPS default configurations that dondo not enable
+CONFIG_HOTPLUG.  I didn't check other architectures.
 
-Thanks.
+  Ralf

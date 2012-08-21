@@ -1,35 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2012 21:49:42 +0200 (CEST)
-Received: from mail.active-venture.com ([67.228.131.205]:60186 "EHLO
-        mail.active-venture.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903534Ab2HUTti (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2012 21:49:38 +0200
-Received: (qmail 46043 invoked by uid 399); 21 Aug 2012 19:49:31 -0000
-Received: from unknown (HELO localhost) (guenter@roeck-us.net@108.223.40.66)
-  by mail.active-venture.com with ESMTPAM; 21 Aug 2012 19:49:31 -0000
-X-Originating-IP: 108.223.40.66
-X-Sender: guenter@roeck-us.net
-Date:   Tue, 21 Aug 2012 12:49:36 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     devicetree-discuss@lists.ozlabs.org,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Rob Herring <rob.herring@calxeda.com>,
-        spi-devel-general@lists.sourceforge.net,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-doc@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: Re: [2/2] spi: Add SPI master controller for OCTEON SOCs.
-Message-ID: <20120821194936.GA7145@roeck-us.net>
-References: <1336772086-17248-3-git-send-email-ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2012 22:34:40 +0200 (CEST)
+Received: from iolanthe.rowland.org ([192.131.102.54]:38175 "HELO
+        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with SMTP id S1903629Ab2HUUeh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2012 22:34:37 +0200
+Received: (qmail 11833 invoked by uid 2102); 21 Aug 2012 16:34:33 -0400
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 21 Aug 2012 16:34:33 -0400
+Date:   Tue, 21 Aug 2012 16:34:33 -0400 (EDT)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@iolanthe.rowland.org
+To:     Kevin Cernekee <cernekee@gmail.com>
+cc:     balbi@ti.com, <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <linux-usb@vger.kernel.org>
+Subject: Re: [PATCH] usb: gadget: bcm63xx UDC driver
+In-Reply-To: <CAJiQ=7BJF39Xs3_U+8SnbBRPT3QyneCZmX3Z4WSvPfB3u88LSA@mail.gmail.com>
+Message-ID: <Pine.LNX.4.44L0.1208211625200.1163-100000@iolanthe.rowland.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1336772086-17248-3-git-send-email-ddaney.cavm@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34328
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-archive-position: 34329
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: stern@rowland.harvard.edu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,44 +35,33 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, May 11, 2012 at 08:34:46PM -0000, David Daney wrote:
-> From: David Daney <david.daney@cavium.com>
+On Tue, 21 Aug 2012, Kevin Cernekee wrote:
+
+> On Tue, Aug 21, 2012 at 11:08 AM, Felipe Balbi <balbi@ti.com> wrote:
+> > Then stick to a workqueue... but could you let me know why exactly you
+> > have to fake SET_CONFIGURATION/SET_INTERFACE requests ? Is this a
+> > silicon bug or a silicon feature ? That's quite weird to me.
 > 
-> Add the driver, link it into the kbuild system and provide device tree
-> binding documentation.
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> Acked-by: Grant Likely <grant.likely@secretlab.ca>
-> 
-[ ... ]
+> It is a silicon feature: the core will intercept SET_CONFIGURATION /
+> SET_INTERFACE requests, store wValue/wIndex in the appropriate
+> USBD_STATUS_REG field (cfg/intf/altintf), send an acknowledgement to
+> the host, and raise a control interrupt.
 
-> +
-> +static int __devexit octeon_spi_remove(struct platform_device *pdev)
-> +{
-> +	struct octeon_spi *p = platform_get_drvdata(pdev);
-> +	struct spi_master *master = p->my_master;
-> +
-> +	spi_unregister_master(master);
-> +
+Your explanation is not clear.  The operations you listed are exactly
+what any UDC should do when it receives any control request: It should
+store the bRequestType, bRequest, wValue, wIndex, and wLength values in
+appropriate registers, send an ACK back to the host, and generate an
+IRQ.  What's special about Set-Config and Set-Interface?
 
-I know it is a bit late, but ...
+The only thing to watch out for is the status stage of the control
+transfer.  The hardware must not complete the status stage for you;
+that would be a violation of the USB-2 spec.  (The only exception is
+for Set-Address requests.)
 
-The call to spi_unregister_master() frees the memory associated with master,
-ie 'p', and the spi_master_put() below without matching spi_master_get() is
-unnecessary/wrong. One possible fix would be to use 
+> I haven't found it to be terribly helpful, but I don't know of a way
+> to turn it off.
 
-	struct spi_master *master = spi_master_get(p->my_master);
+Why would you want to turn this off?  Isn't is exactly what you want to 
+have happen?  And why do you need a workqueue to handle the request?
 
-above. That protects master and p while it is still being used, and makes use
-of the call to spi_master_put() below. Another option might be to move
-cvmx_write_csr() ahead of the call to spi_unregister_master() and drop the
-call to spi_master_put().
-
-Guenter
-
-> +	/* Clear the CSENA* and put everything in a known state. */
-> +	cvmx_write_csr(p->register_base + OCTEON_SPI_CFG, 0);
-> +	spi_master_put(master);
-> +	return 0;
-> +}
-> +
+Alan Stern

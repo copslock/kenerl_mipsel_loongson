@@ -1,55 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2012 20:12:28 +0200 (CEST)
-Received: from na3sys009aog107.obsmtp.com ([74.125.149.197]:45525 "EHLO
-        na3sys009aog107.obsmtp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903534Ab2HUSMU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2012 20:12:20 +0200
-Received: from mail-lb0-f174.google.com ([209.85.217.174]) (using TLSv1) by na3sys009aob107.postini.com ([74.125.148.12]) with SMTP
-        ID DSNKUDPPgU1uIf0BA/nQNGKqCbhIQoQUBqls@postini.com; Tue, 21 Aug 2012 11:12:19 PDT
-Received: by lbbgj3 with SMTP id gj3so168643lbb.33
-        for <linux-mips@linux-mips.org>; Tue, 21 Aug 2012 11:12:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent
-         :x-gm-message-state;
-        bh=tpa++kbEBaBsIXnZomNnQ1CKR0WDJgVdNsOjMBV+Zrc=;
-        b=NKtUKpyIowLwdvAZdNQnwC9SV07n6ucP/2w+aQHI+82e4S6YY67AJQ3raLsK+1tHQx
-         xmLxuh/Fd5VtK4nrI49PgvI6cM5Jfyy+ghLaCyQi8L/Y/DSvtv0hwptJkVbib/465znE
-         AZRfJ/39k/WsF0Xp4KYWkl6soihs/Ixxzo9BuWYV0cHdnPBLNrs/d9Vc+cHpIGRBROGI
-         1g8JaaqGWHsLG8HnPCI4LP/LA5dckFAgPMmDEQF8/2c+nBJTbNwFQeMKQdyMbsPhiFKA
-         S1uwrjKLA5IzC5hn1HfFDOKaLC8m6HeSjSkosDfH+uqliknLghJBDp17sZOC3TxBrerm
-         IMSg==
-Received: by 10.112.25.4 with SMTP id y4mr8118488lbf.61.1345572736310;
-        Tue, 21 Aug 2012 11:12:16 -0700 (PDT)
-Received: from localhost (cs78217178.pp.htv.fi. [62.78.217.178])
-        by mx.google.com with ESMTPS id mq9sm2149314lab.0.2012.08.21.11.12.14
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 21 Aug 2012 11:12:15 -0700 (PDT)
-Date:   Tue, 21 Aug 2012 21:08:19 +0300
-From:   Felipe Balbi <balbi@ti.com>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     balbi@ti.com, ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH] usb: gadget: bcm63xx UDC driver
-Message-ID: <20120821180818.GC20360@arwen.pp.htv.fi>
-Reply-To: balbi@ti.com
-References: <97cb21b8063a02a9664baf8b749ae200@localhost>
- <20120820074041.GH17455@arwen.pp.htv.fi>
- <CAJiQ=7CB2w=aNwtU4f3di6c31tD-EWO9YLejESY5HsUaHY6s1A@mail.gmail.com>
- <20120821120418.GE10347@arwen.pp.htv.fi>
- <CAJiQ=7BQz18s03du_Q33z45W+QrkVaPqgZSuUTU-x9v=48CGbA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Aug 2012 20:15:20 +0200 (CEST)
+Received: from mail-vb0-f49.google.com ([209.85.212.49]:53161 "EHLO
+        mail-vb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903534Ab2HUSPO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Aug 2012 20:15:14 +0200
+Received: by vbbfo1 with SMTP id fo1so119607vbb.36
+        for <multiple recipients>; Tue, 21 Aug 2012 11:15:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=WMYZv4FyRJFsEGFv7VN1tev1s+PQk7O5yjYwavL612g=;
+        b=JglKWgsdwsrE/lHIfvs62YkIZwLrxLMwUc7FOH/n56JL0Pb5V+z09GxkIziDxkPesm
+         pUsAj71ChIs7EX9fhftXx8gHKFxgS/uWbU8B2m06zR0UBSVoTfUI0OqJ7xwEqjDPQNa/
+         TEAtdbVzu2wfOjhXGtArK5+vp5OTHgGPw5+BttTy9ELSxHkJIu8NuaDLG9Bdd8kGjx4Q
+         w8OO0ZIeIDM90zbGQM6vmDLLSP3OeeVsAdCZTQlcYlgdvJO9vhboG8prwVwRRBZI4vAw
+         bZCJoMHQ9gMIpHoW77hKc5Rm/gpUgnPx8fVUsoTsh2gLKiy3PTKsW+HeQMyhyDlwqSof
+         P0BQ==
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="ALfTUftag+2gvp1h"
-Content-Disposition: inline
-In-Reply-To: <CAJiQ=7BQz18s03du_Q33z45W+QrkVaPqgZSuUTU-x9v=48CGbA@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Gm-Message-State: ALoCoQnuT2wP+DzkDEukc8DC1ynQwErtZa3JWi2NvbzVVFCzU89FfErb8/8FCrB4csoD9SIaO+0z
-X-archive-position: 34307
+Received: by 10.220.141.208 with SMTP id n16mr14350061vcu.22.1345572907710;
+ Tue, 21 Aug 2012 11:15:07 -0700 (PDT)
+Received: by 10.220.22.202 with HTTP; Tue, 21 Aug 2012 11:15:07 -0700 (PDT)
+In-Reply-To: <20120821170456.GA18994@linux-mips.org>
+References: <20120817182931.GA27391@avionic-0098.adnet.avionic-design.de>
+        <CAErSpo6xhbpmd-rnLqKp9SuRQCp5a7jUzKhz0n6zGGLNHybWqA@mail.gmail.com>
+        <20120817200755.GA16021@avionic-0098.adnet.avionic-design.de>
+        <CAErSpo4XX7mQBmJfYWzmXCSDAt4BzZoJV6gU9__409K=fpvC6A@mail.gmail.com>
+        <20120817204839.GA2017@avionic-0098.mockup.avionic-design.de>
+        <20120817210718.GA14842@avionic-0098.mockup.avionic-design.de>
+        <CAErSpo7bwHNUchZHeJByxzhsc0uN7RJMLivBo5FuOJzA0Gz2Jg@mail.gmail.com>
+        <20120817213247.GA1056@avionic-0098.mockup.avionic-design.de>
+        <20120820053036.GA23166@kroah.com>
+        <CAMuHMdWfhATFQrP-ZiMi6Ub3ZbOgUhe7S_fVUzc7zOwDxRNsyw@mail.gmail.com>
+        <20120821170456.GA18994@linux-mips.org>
+Date:   Tue, 21 Aug 2012 20:15:07 +0200
+X-Google-Sender-Auth: yseKwQ2loEuLjJlqeoRx25Ea5Q8
+Message-ID: <CAMuHMdVrvT5RCp43bmbd9=MwsqhMWewJm4Xnq0ZMPT7hoEBSng@mail.gmail.com>
+Subject: Re: PCI Section mismatch error in linux-next.
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Thierry Reding <thierry.reding@avionic-design.de>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        David Daney <ddaney.cavm@gmail.com>, linux-pci@vger.kernel.org,
+        linux-mips <linux-mips@linux-mips.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 34308
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: balbi@ti.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,78 +63,95 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+Hi Ralf,
 
---ALfTUftag+2gvp1h
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, Aug 21, 2012 at 7:04 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+>> Anyone who disables CONFIG_HOTPLUG in his defconfig files?
+>>
+>> $ git grep CONFIG_HOTPLUG arch/*/*config
+>> arch/frv/defconfig:# CONFIG_HOTPLUG is not set
+>> arch/h8300/defconfig:# CONFIG_HOTPLUG is not set
+>> arch/um/defconfig:CONFIG_HOTPLUG=y
+>> $
+>>
+>> Yep, (at least --- not all defconfigs are up-to-date) frv and h8300.
+>
+> Since we started stripping all the defconfigs down grepping through
+> arch/*/configs/ doesn't yield much useful information anymore :-(
 
-On Tue, Aug 21, 2012 at 08:20:43AM -0700, Kevin Cernekee wrote:
-> On Tue, Aug 21, 2012 at 5:04 AM, Felipe Balbi <balbi@ti.com> wrote:
-> > On Mon, Aug 20, 2012 at 08:48:11PM -0700, Kevin Cernekee wrote:
-> >> On Mon, Aug 20, 2012 at 12:40 AM, Felipe Balbi <balbi@ti.com> wrote:
-> >> > no workqueues, please either handle the IRQ here or use threaded_irq=
-s.
-> >> >
-> >> > again, no workqueues.
-> >>
-> >> Felipe,
-> >>
-> >> I am seeing all sorts of deadlocks now, after removing the workqueue
-> >> (patch V2).  Some have easy fixes, but for others it is not as
-> >> obvious.  The code was much simpler when I could just trigger a
-> >> deferred worker function.
-> >>
-> >> Workqueues are used in at91_udc, lpc32xx_udc, mv_udc_core, and
-> >> pch_udc.  Could you please clarify why it is not OK to use one in
-> >> bcm63xx_udc?
-> >
-> > Because threaded_irqs were added in order to drop such workqueues.
-> > threaded_irqs also have the highest priority possible (only lower than
-> > hardirq handlers), so you'll get scheduled much sooner.
-> >
-> > Could it be that most of your deadlocks is because you're not setting
-> > IRQF_ONESHOT ?
->=20
-> The deadlocks involve ep0 processing that is triggered through
-> bcm63xx_udc_queue().  e.g. gadget driver queues a new request, it's a
-> reply to a spoofed SET_CONFIGURATION / SET_INTERFACE transaction, and
-> the UDC driver calls the completion immediately.
->=20
-> So, not all of the ep0 work is being done in response to an IRQ from
-> the controller HW, and I think that is where this driver diverges from
-> most of the others.
->=20
-> Would it be OK to use a workqueue, or maybe a tasklet, given these
-> circumstances?
+Sure, but since CONFIG_HOTPLUG=y and CONFIG_EXPERT=n are the
+defaults, disabling CONFIG_HOTPLUG should show up in the miniconfig.
 
-Then stick to a workqueue... but could you let me know why exactly you
-have to fake SET_CONFIGURATION/SET_INTERFACE requests ? Is this a
-silicon bug or a silicon feature ? That's quite weird to me.
+> There are currently 8 MIPS default configurations that dondo not enable
+> CONFIG_HOTPLUG.  I didn't check other architectures.
 
---=20
-balbi
+Strange, how come I didn't see those?
+Ah, wrong file pattern. They're stored in the "configs" subdir, not in "config".
+Better list:
 
---ALfTUftag+2gvp1h
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+$ git grep -w CONFIG_HOTPLUG arch/*/*config*
+arch/arm/configs/at91x40_defconfig:# CONFIG_HOTPLUG is not set
+arch/arm/configs/bcmring_defconfig:# CONFIG_HOTPLUG is not set
+arch/arm/configs/edb7211_defconfig:# CONFIG_HOTPLUG is not set
+arch/arm/configs/footbridge_defconfig:# CONFIG_HOTPLUG is not set
+arch/arm/configs/fortunet_defconfig:# CONFIG_HOTPLUG is not set
+arch/arm/configs/pleb_defconfig:# CONFIG_HOTPLUG is not set
+arch/blackfin/configs/IP0X_defconfig:# CONFIG_HOTPLUG is not set
+arch/cris/configs/artpec_3_defconfig:# CONFIG_HOTPLUG is not set
+arch/cris/configs/etrax-100lx_v2_defconfig:# CONFIG_HOTPLUG is not set
+arch/cris/configs/etraxfs_defconfig:# CONFIG_HOTPLUG is not set
+arch/frv/defconfig:# CONFIG_HOTPLUG is not set
+arch/h8300/defconfig:# CONFIG_HOTPLUG is not set
+arch/m68k/configs/m5208evb_defconfig:# CONFIG_HOTPLUG is not set
+arch/m68k/configs/m5249evb_defconfig:# CONFIG_HOTPLUG is not set
+arch/m68k/configs/m5272c3_defconfig:# CONFIG_HOTPLUG is not set
+arch/m68k/configs/m5275evb_defconfig:# CONFIG_HOTPLUG is not set
+arch/m68k/configs/m5307c3_defconfig:# CONFIG_HOTPLUG is not set
+arch/m68k/configs/m5407c3_defconfig:# CONFIG_HOTPLUG is not set
+arch/m68k/configs/m5475evb_defconfig:# CONFIG_HOTPLUG is not set
+arch/microblaze/configs/mmu_defconfig:# CONFIG_HOTPLUG is not set
+arch/microblaze/configs/nommu_defconfig:# CONFIG_HOTPLUG is not set
+arch/mips/configs/db1000_defconfig:CONFIG_HOTPLUG=y
+arch/mips/configs/db1300_defconfig:CONFIG_HOTPLUG=y
+arch/mips/configs/db1550_defconfig:CONFIG_HOTPLUG=y
+arch/mips/configs/decstation_defconfig:# CONFIG_HOTPLUG is not set
+arch/mips/configs/e55_defconfig:# CONFIG_HOTPLUG is not set
+arch/mips/configs/ip22_defconfig:# CONFIG_HOTPLUG is not set
+arch/mips/configs/ip28_defconfig:# CONFIG_HOTPLUG is not set
+arch/mips/configs/jmr3927_defconfig:# CONFIG_HOTPLUG is not set
+arch/mips/configs/lasat_defconfig:# CONFIG_HOTPLUG is not set
+arch/mips/configs/pnx8550-stb810_defconfig:# CONFIG_HOTPLUG is not set
+arch/mips/configs/rbtx49xx_defconfig:# CONFIG_HOTPLUG is not set
+arch/mn10300/configs/asb2303_defconfig:# CONFIG_HOTPLUG is not set
+arch/powerpc/configs/85xx/socrates_defconfig:# CONFIG_HOTPLUG is not set
+arch/powerpc/configs/85xx/tqm8540_defconfig:# CONFIG_HOTPLUG is not set
+arch/powerpc/configs/85xx/tqm8541_defconfig:# CONFIG_HOTPLUG is not set
+arch/powerpc/configs/85xx/tqm8555_defconfig:# CONFIG_HOTPLUG is not set
+arch/powerpc/configs/85xx/tqm8560_defconfig:# CONFIG_HOTPLUG is not set
+arch/powerpc/configs/mpc866_ads_defconfig:# CONFIG_HOTPLUG is not set
+arch/score/configs/spct6600_defconfig:# CONFIG_HOTPLUG is not set
+arch/sh/configs/edosk7705_defconfig:# CONFIG_HOTPLUG is not set
+arch/sh/configs/se7619_defconfig:# CONFIG_HOTPLUG is not set
+arch/sh/configs/se7705_defconfig:# CONFIG_HOTPLUG is not set
+arch/sh/configs/se7750_defconfig:# CONFIG_HOTPLUG is not set
+arch/sh/configs/se7751_defconfig:# CONFIG_HOTPLUG is not set
+arch/sh/configs/se7780_defconfig:# CONFIG_HOTPLUG is not set
+arch/sh/configs/secureedge5410_defconfig:# CONFIG_HOTPLUG is not set
+arch/sh/configs/shmin_defconfig:# CONFIG_HOTPLUG is not set
+arch/um/defconfig:CONFIG_HOTPLUG=y
+arch/unicore32/configs/unicore32_defconfig:CONFIG_HOTPLUG=y
+arch/xtensa/configs/common_defconfig:# CONFIG_HOTPLUG is not set
+arch/xtensa/configs/iss_defconfig:# CONFIG_HOTPLUG is not set
+arch/xtensa/configs/s6105_defconfig:# CONFIG_HOTPLUG is not set
+$
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
+Gr{oetje,eeting}s,
 
-iQIcBAEBAgAGBQJQM86SAAoJEIaOsuA1yqREvkYP/RYCdBoa2+q7rE679k9wTmOC
-zRSoowWiiQAjmYL7tFlMNXskedsEYO5utl/yjuXu0LiDLp6nQdJ6KwMBwpayTrli
-ZLmoTirV4i7slO7qfcWpb4Fkfn+mb9BBGeG6rFGX5PqGCK3EqpdIoLaqY3NMq6DG
-AJAoIamI+3qmFXQ4zpAQF1J+p/ewcsioxMGMiHH/xjp+HRc2gunJvQtPMGlJ+gWI
-rJmb1WRj0gHSMQBZctWxyr7LPrmmmwvXy7VtFEHdaG3GNvdAoQI5PhWEqK76N3Fr
-YMPx/LFJKjiWUAB6NUnR7Tgt5a/lAQxW2Vytf7YPAiOiYs7BWLq/GlQqSFKE+BJo
-5B6ZBkLgBQgWNiM3CYCTNRKcNRSZRMZNlN7iQtlNHU5+uo4IPyrkj55VlwfnkGG3
-qIq11kXz6dgXf5qz1G97pf9JkHXeWF75Bv23ll0yhRx29n4J88VnWJt7HYsBlEHI
-36y0yr0XPAZny0lUL98e/Ey4YJwoTA5bbYvo4PLB9VVLkW8ehGhCvRRBMCD+lQnB
-05nC2KDRWL5zmRDnhhun3xTI2d1kBJBOBkox9QtSCJdm1mYEf+pR6O61vxK65KbN
-Gns/Ov/ydP5GLHc/YD9ysIQOiY5/gWseAMtw73MNd8GbtFqd9pnYP0YB1SdtIR+R
-8/9oR827jLWPiy5E8X2H
-=V1Ht
------END PGP SIGNATURE-----
+                        Geert
 
---ALfTUftag+2gvp1h--
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

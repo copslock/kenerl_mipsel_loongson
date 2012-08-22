@@ -1,27 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2012 22:37:14 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:48808 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903611Ab2HVUhF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 22 Aug 2012 22:37:05 +0200
-Message-ID: <5035429B.6040202@phrozen.org>
-Date:   Wed, 22 Aug 2012 22:35:39 +0200
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.24) Gecko/20111114 Icedove/3.1.16
-MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-CC:     David Daney <david.daney@cavium.com>,
-        Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2012 23:43:59 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:41606 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903669Ab2HVVnz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 Aug 2012 23:43:55 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q7MLhqV3023671;
+        Wed, 22 Aug 2012 23:43:52 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q7MLhoi3023660;
+        Wed, 22 Aug 2012 23:43:50 +0200
+Date:   Wed, 22 Aug 2012 23:43:50 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     John Crispin <john@phrozen.org>
+Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
 Subject: Re: [PATCH v2] spi: Add SPI master controller for OCTEON SOCs.
+Message-ID: <20120822214350.GC22805@linux-mips.org>
 References: <1345663507-15423-1-git-send-email-ddaney.cavm@gmail.com>
-In-Reply-To: <1345663507-15423-1-git-send-email-ddaney.cavm@gmail.com>
-X-Enigmail-Version: 1.1.2
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34346
+ <5035429B.6040202@phrozen.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5035429B.6040202@phrozen.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34347
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,24 +40,25 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 24951
+X-UID: 25021
 
-On 22/08/12 21:25, David Daney wrote:
-> From: David Daney <david.daney@cavium.com>
-> 
-> Add the driver, link it into the kbuild system and provide device tree
-> binding documentation.
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> Acked-by: Grant Likely <grant.likely@secretlab.ca>
-> ---
-> 
-> This should replace the version merged up by blogic.
-> 
-> It builds against linux-next where in addition to the fixes requested
-> by the SPI maintainers, I fixed some errors caused by now improper
->  #includes.
+On Wed, Aug 22, 2012 at 10:35:39PM +0200, John Crispin wrote:
 
-Thanks, queued for 3.7 (replacing the previous version)
+> > Add the driver, link it into the kbuild system and provide device tree
+> > binding documentation.
+> > 
+> > Signed-off-by: David Daney <david.daney@cavium.com>
+> > Acked-by: Grant Likely <grant.likely@secretlab.ca>
+> > ---
+> > 
+> > This should replace the version merged up by blogic.
+> > 
+> > It builds against linux-next where in addition to the fixes requested
+> > by the SPI maintainers, I fixed some errors caused by now improper
+> >  #includes.
+> 
+> Thanks, queued for 3.7 (replacing the previous version)
 
-	John
+Updated also.  Thanks folks!
+
+  Ralf

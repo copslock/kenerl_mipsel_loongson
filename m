@@ -1,30 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2012 09:48:28 +0200 (CEST)
-Received: from Chamillionaire.breakpoint.cc ([80.244.247.6]:41690 "EHLO
-        Chamillionaire.breakpoint.cc" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903392Ab2HVHsU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Aug 2012 09:48:20 +0200
-Received: from bigeasy by Chamillionaire.breakpoint.cc with local (Exim 4.72)
-        (envelope-from <sebastian@breakpoint.cc>)
-        id 1T45fk-000663-1T; Wed, 22 Aug 2012 09:48:16 +0200
-Date:   Wed, 22 Aug 2012 09:48:15 +0200
-From:   Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     balbi@ti.com, ralf@linux-mips.org, sebastian@breakpoint.cc,
-        stern@rowland.harvard.edu, linux-mips@linux-mips.org,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH V3] usb: gadget: bcm63xx UDC driver
-Message-ID: <20120822074815.GB3563@breakpoint.cc>
-References: <5ff8f23aae05690ba89476c4924b9387@localhost>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2012 14:58:12 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:1430 "EHLO mms1.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903524Ab2HVM6E (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 Aug 2012 14:58:04 +0200
+Received: from [10.9.200.133] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Wed, 22 Aug 2012 05:56:54 -0700
+X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
+Received: from mail-irva-13.broadcom.com (10.11.16.103) by
+ IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
+ Server id 8.2.247.2; Wed, 22 Aug 2012 05:57:08 -0700
+Received: from jayachandranc.netlogicmicro.com (unknown [10.7.0.77]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 4278F9F9F5; Wed, 22
+ Aug 2012 05:57:44 -0700 (PDT)
+Date:   Wed, 22 Aug 2012 18:27:46 +0530
+From:   "Jayachandran C." <jchandra@broadcom.com>
+To:     "Ralf Baechle" <ralf@linux-mips.org>
+cc:     "Jayachandran C" <jayachandranc@netlogicmicro.com>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 12/12] MIPS: Netlogic: XLP defconfig update
+Message-ID: <20120822125745.GA17819@jayachandranc.netlogicmicro.com>
+References: <1342196605-4260-1-git-send-email-jayachandranc@netlogicmicro.com>
+ <1342196605-4260-13-git-send-email-jayachandranc@netlogicmicro.com>
+ <20120821125221.GC2550@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5ff8f23aae05690ba89476c4924b9387@localhost>
+In-Reply-To: <20120821125221.GC2550@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34340
+X-WSS-ID: 7C2A089C3MK23102546-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34341
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sebastian@breakpoint.cc
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,18 +48,35 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Aug 21, 2012 at 06:22:35PM -0700, Kevin Cernekee wrote:
+On Tue, Aug 21, 2012 at 02:52:21PM +0200, Ralf Baechle wrote:
+> On Fri, Jul 13, 2012 at 09:53:25PM +0530, Jayachandran C wrote:
+> 
+> > +CONFIG_PARTITION_ADVANCED=y
+> > +CONFIG_ACORN_PARTITION=y
+> > +CONFIG_ACORN_PARTITION_ICS=y
+> > +CONFIG_ACORN_PARTITION_RISCIX=y
+> > +CONFIG_OSF_PARTITION=y
+> > +CONFIG_AMIGA_PARTITION=y
+> > +CONFIG_ATARI_PARTITION=y
+> > +CONFIG_MAC_PARTITION=y
+> > +CONFIG_BSD_DISKLABEL=y
+> > +CONFIG_MINIX_SUBPARTITION=y
+> > +CONFIG_SOLARIS_X86_PARTITION=y
+> > +CONFIG_UNIXWARE_DISKLABEL=y
+> > +CONFIG_LDM_PARTITION=y
+> > +CONFIG_SGI_PARTITION=y
+> > +CONFIG_ULTRIX_PARTITION=y
+> > +CONFIG_SUN_PARTITION=y
+> > +CONFIG_KARMA_PARTITION=y
+> > +CONFIG_EFI_PARTITION=y
+> > +CONFIG_SYSV68_PARTITION=y
+> 
+> Plenty of weird partition types enabled in this config update; you may
+> want to review the config file for a future version.  Unless you really
+> want to be able to deal with 1980's partitioning schemes, of course.
 
-Just one thing that bit while I was sleeping:
-The HW acks SetConfig on its own. Once you notice this, you set
-->ep0_req_set_cfg and set state in bcm63xx_ep0_do_idle() to
-EP0_IN_FAKE_STATUS_PHASE. This is I guess the workaround for mass_storage's
-hold with DELAYED_STATUS and continues with a zero packet.
-Now two questions:
-- If a gadget descides not NAK / stall the SetConfig requests. What happens
-  here?
-- What happens if the host is faster than the UDC. SetConfig returns in
-  usb-storage with "DELAYED_STATUS". HW Acks this. Could the Host send another
-  request before the gadget queues the ep0 request?
+This seems to be present from the very first version, and got rearranged
+when I regenerated this file. Will clean this up with the next update.
 
-Sebastian
+Thanks,
+JC.

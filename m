@@ -1,32 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2012 23:43:59 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:41606 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903669Ab2HVVnz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 22 Aug 2012 23:43:55 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q7MLhqV3023671;
-        Wed, 22 Aug 2012 23:43:52 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q7MLhoi3023660;
-        Wed, 22 Aug 2012 23:43:50 +0200
-Date:   Wed, 22 Aug 2012 23:43:50 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     John Crispin <john@phrozen.org>
-Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH v2] spi: Add SPI master controller for OCTEON SOCs.
-Message-ID: <20120822214350.GC22805@linux-mips.org>
-References: <1345663507-15423-1-git-send-email-ddaney.cavm@gmail.com>
- <5035429B.6040202@phrozen.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5035429B.6040202@phrozen.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34347
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Aug 2012 04:17:08 +0200 (CEST)
+Received: from shards.monkeyblade.net ([149.20.54.216]:57659 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903389Ab2HWCQ7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Aug 2012 04:16:59 +0200
+Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 19F9C5883FD;
+        Wed, 22 Aug 2012 19:16:57 -0700 (PDT)
+Date:   Wed, 22 Aug 2012 19:16:54 -0700 (PDT)
+Message-Id: <20120822.191654.1727215659090597701.davem@davemloft.net>
+To:     ddaney.cavm@gmail.com
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        david.daney@cavium.com
+Subject: Re: [PATCH 0/8] netdev/MIPS: Improvements to octeon_mgmt Ethernet
+ driver.
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1345574712-21444-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1345574712-21444-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: Mew version 6.5 on Emacs 24.1 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,26 +38,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
-X-Keywords:                 
-X-UID: 25021
 
-On Wed, Aug 22, 2012 at 10:35:39PM +0200, John Crispin wrote:
+From: David Daney <ddaney.cavm@gmail.com>
+Date: Tue, 21 Aug 2012 11:45:04 -0700
 
-> > Add the driver, link it into the kbuild system and provide device tree
-> > binding documentation.
-> > 
-> > Signed-off-by: David Daney <david.daney@cavium.com>
-> > Acked-by: Grant Likely <grant.likely@secretlab.ca>
-> > ---
-> > 
-> > This should replace the version merged up by blogic.
-> > 
-> > It builds against linux-next where in addition to the fixes requested
-> > by the SPI maintainers, I fixed some errors caused by now improper
-> >  #includes.
+> From: David Daney <david.daney@cavium.com>
 > 
-> Thanks, queued for 3.7 (replacing the previous version)
+> Recent additions to the OCTEON SoC family have included enhancements
+> to the MIX (octeon_mgmt) Ethernet hardware.  These include:
+> 
+> o 1Gig support (up from 100M).
+> 
+> o Hardware timestamping for PTP.
+> 
+> Here we add support for these two features as well as some ethtool
+> improvements and cleanup of the MAC address handling.
+> 
+> Patch 1/8 is a prerequisite for the rest, and lives in the MIPS
+> architecture part of the tree.  Since octeon_mgmt devices are only
+> found in OCTEON SoCs we could merge the whole set via Ralf's tree, or
+> get Ralf to affix his Acked-by and have it go via the netdev tree.
 
-Updated also.  Thanks folks!
+You can send this all via the MIPS tree, and feel free to add my:
 
-  Ralf
+Acked-by: David S. Miller <davem@davemloft.net>

@@ -1,28 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Aug 2012 22:49:05 +0200 (CEST)
-Received: from netrider.rowland.org ([192.131.102.5]:37888 "HELO
-        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S1903558Ab2HYUs6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 25 Aug 2012 22:48:58 +0200
-Received: (qmail 533 invoked by uid 500); 25 Aug 2012 16:48:54 -0400
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 25 Aug 2012 16:48:54 -0400
-Date:   Sat, 25 Aug 2012 16:48:54 -0400 (EDT)
-From:   Alan Stern <stern@rowland.harvard.edu>
-X-X-Sender: stern@netrider.rowland.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Aug 2012 21:30:28 +0200 (CEST)
+Received: from Chamillionaire.breakpoint.cc ([80.244.247.6]:54465 "EHLO
+        Chamillionaire.breakpoint.cc" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903203Ab2HZTaT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 26 Aug 2012 21:30:19 +0200
+Received: from bigeasy by Chamillionaire.breakpoint.cc with local (Exim 4.72)
+        (envelope-from <sebastian@breakpoint.cc>)
+        id 1T5iXH-00062S-5X; Sun, 26 Aug 2012 21:30:15 +0200
+Date:   Sun, 26 Aug 2012 21:30:14 +0200
+From:   Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
 To:     Kevin Cernekee <cernekee@gmail.com>
-cc:     Sebastian Andrzej Siewior <sebastian@breakpoint.cc>,
-        <balbi@ti.com>, <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <linux-usb@vger.kernel.org>
+Cc:     Sebastian Andrzej Siewior <sebastian@breakpoint.cc>, balbi@ti.com,
+        ralf@linux-mips.org, stern@rowland.harvard.edu,
+        linux-mips@linux-mips.org, linux-usb@vger.kernel.org
 Subject: Re: [PATCH V3] usb: gadget: bcm63xx UDC driver
-In-Reply-To: <CAJiQ=7Da5CdoQ2e=CutFt32xRXqUGHitCC+GJMzvbUUPC5yQzQ@mail.gmail.com>
-Message-ID: <Pine.LNX.4.44L0.1208251646130.389-100000@netrider.rowland.org>
+Message-ID: <20120826193014.GL3690@breakpoint.cc>
+References: <5ff8f23aae05690ba89476c4924b9387@localhost>
+ <20120822074815.GB3563@breakpoint.cc>
+ <CAJiQ=7Da5CdoQ2e=CutFt32xRXqUGHitCC+GJMzvbUUPC5yQzQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-archive-position: 34359
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJiQ=7Da5CdoQ2e=CutFt32xRXqUGHitCC+GJMzvbUUPC5yQzQ@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stern@rowland.harvard.edu
+X-original-sender: sebastian@breakpoint.cc
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,16 +40,57 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sat, 25 Aug 2012, Kevin Cernekee wrote:
+On Sat, Aug 25, 2012 at 12:44:19PM -0700, Kevin Cernekee wrote:
+> When bcm63xx_udc is in EP0_IN_FAKE_STATUS_PHASE, it won't issue any
+> more setup() callbacks until the 0-byte reply arrives from the gadget
+> driver.  If the host sends a setup request, the callback will be held
+> off until after the (unused) status reply.  This keeps the gadget
+> driver from getting confused by out-of-sequence events.
 
-> I am hoping that these invalid SET_CONFIGURATION / SET_INTERFACE
-> requests are uncommon.  In what sorts of situations will a host
-> request a configuration that isn't advertised in the device's
-> descriptors?  I had trouble just convincing usb_set_interface() /
-> usb_driver_set_configuration() to send such a request because they
-> honor bInterfaceNumber / bConfigurationValue from the descriptors.
+Okay. Then it works as requested :)
 
-A request doesn't have to be invalid to fail.  Valid requests can fail
-for all sorts of reasons.  -ENOMEM is the prototypical example.
+> > - What happens if the host is faster than the UDC. SetConfig returns in
+> >   usb-storage with "DELAYED_STATUS". HW Acks this. Could the Host send another
+> >   request before the gadget queues the ep0 request?
+> 
+> Could you please clarify if this is the sequence of events you are describing:
+> 
+> 1) Host sends a valid SET_CONFIGURATION request to a mass storage gadget
+> 
+> 2) Hardware instantly auto-acks the request, completing the status
+> phase and allowing the host to proceed with another ep0 request
+> 
+> 3) bcm63xx_udc sends a spoofed SET_CONFIGURATION setup packet to the
+> gadget driver
+> 
+> 4) setup() callback returns USB_GADGET_DELAYED_STATUS (0x7fff) but
+> doesn't queue up a reply
+> 
+> 5) Host sends another setup packet before
+> usb_composite_setup_continue() is called to send the 0-byte status
+> reply
 
-Alan Stern
+exactly 
+ 
+> If so, the next steps should look like:
+> 
+> 6) bcm63xx_udc takes a data IRQ, and sets ep0_req_completed
+> 
+> 7) bcm63xx_udc stays in EP0_IN_FAKE_STATUS_PHASE until the 0-byte
+> reply is received from usb_composite_setup_continue()
+> 
+> 8) usb_composite_setup_continue() eventually sends the 0-byte reply
+> 
+> 9) bcm63xx_udc returns to EP0_IDLE and notices that ep0_req_completed is now set
+> 
+> 10) bcm63xx_ep0_do_setup() looks at the new request, and performs the
+> setup() callback for the new setup request
+
+Okay. This sounds good.
+
+> 11) Data/status phases are handled as usual
+
+Please tell you HW vendor that this auto ack feature is complete non sense
+unless you already have :)
+
+Sebastian

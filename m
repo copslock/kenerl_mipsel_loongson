@@ -1,29 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Aug 2012 12:40:47 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:49498 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903724Ab2H1Kki (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Aug 2012 12:40:38 +0200
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from [192.168.254.50] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id AFD8D23C0083;
-        Tue, 28 Aug 2012 12:40:33 +0200 (CEST)
-Message-ID: <503CA022.9000501@openwrt.org>
-Date:   Tue, 28 Aug 2012 12:40:34 +0200
-From:   Gabor Juhos <juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Aug 2012 15:06:48 +0200 (CEST)
+Received: from mail-ob0-f177.google.com ([209.85.214.177]:51968 "EHLO
+        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903718Ab2H1NGn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Aug 2012 15:06:43 +0200
+Received: by obbta17 with SMTP id ta17so10970568obb.36
+        for <multiple recipients>; Tue, 28 Aug 2012 06:06:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=aWeRT5cAReuXjvII/hSl7uLrglJ6oCLi7OdJlmUNSG8=;
+        b=G8nboh4ILOy9CkFG+YtBEJIYOhe+d2DhaLaURZKeby/6USYwRN7D3o8vprJeMEAd/j
+         ZwXcdRi2zGfze5sevVFzKBhwPrU0h2SKa27M12MC3v63ZcEJ94L1V8Hdil+La+V7VFtX
+         vNL4QwciCsP3gTllEx0VYmiNwIg9P5CnQvpFFaCunv04+s/oc4gITb3G0DlR+vgvXIkR
+         skWFgM++nhDhVZtXpLMiMomtPyPv/nlo3DJzlYd4wWh8ULGIiopUEM5UxHAIGAnceU6B
+         Dqr3p0s56t++0NC0hr0UzHTdB8CckANm8Z7XBJXYbE7/q3/+x3+67aqWHs7v/HEmqjaP
+         50qg==
+Received: by 10.60.2.42 with SMTP id 10mr12853611oer.9.1346159195125; Tue, 28
+ Aug 2012 06:06:35 -0700 (PDT)
 MIME-Version: 1.0
-To:     John Crispin <blogic@openwrt.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH v3 0/3] MIPS: ath79: allow to use USB on AR934x
-References: <1344096237-25221-1-git-send-email-juhosg@openwrt.org> <503C9E3D.9050406@openwrt.org>
-In-Reply-To: <503C9E3D.9050406@openwrt.org>
-X-Enigmail-Version: 1.4.3
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-X-archive-position: 34371
+Received: by 10.76.3.15 with HTTP; Tue, 28 Aug 2012 06:06:13 -0700 (PDT)
+In-Reply-To: <a403b82eaffa0faf3c17058c91f047e9@localhost>
+References: <a403b82eaffa0faf3c17058c91f047e9@localhost>
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+Date:   Tue, 28 Aug 2012 15:06:13 +0200
+Message-ID: <CAOiHx=m6eJS0YNGWDLcYUaZ-cXhDa=BCkaBVY3Q0+GxwfdcTQA@mail.gmail.com>
+Subject: Re: [PATCH V3 7/7] MIPS: BCM63XX: Create platform_device for USBD
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     ralf@linux-mips.org, ffainelli@freebox.fr, mbizon@freebox.fr,
+        linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 34372
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,35 +48,13 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-2012.08.28. 12:32 keltezéssel, John Crispin írta:
-> On 04/08/12 18:03, Gabor Juhos wrote:
->> This patch-set adds AR934x specific glue into the USB
->> platform device registration code. Additionally, it
->> registers the USB host controller device on the
->> DB120 board.
->>
->> This depends on the following patch set:
->> v3 of 'MIPS: ath79: various fixes'
->>
->> v3:
->>  - rebase aginas v3.6-rc1
->>  - fix AR934X_EHCI_SIZE
->>
->> Gabor Juhos (3):
->>   MIPS: ath79: use a helper function for USB resource initialization
->>   MIPS: ath79: add USB platform setup code for AR934X
->>   MIPS: ath79: register USB host controller on the DB120 board
->>
->>  arch/mips/ath79/dev-usb.c                      |   92 ++++++++++++++----------
->>  arch/mips/ath79/mach-db120.c                   |    2 +
->>  arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    7 ++
->>  3 files changed, 65 insertions(+), 36 deletions(-)
->>
->> --
->> 1.7.10
-> 
-> Linus pulled the pre-req series into his tree so I queued this one for 3.7
+On 14 July 2012 21:01, Kevin Cernekee <cernekee@gmail.com> wrote:
+> ...
 
-Thanks!
+I have no further objections and it looks good to me, so
 
--Gabor
+Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
+
+(for the whole series).
+
+Jonas

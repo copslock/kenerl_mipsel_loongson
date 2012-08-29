@@ -1,37 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2012 00:35:19 +0200 (CEST)
-Received: from mms3.broadcom.com ([216.31.210.19]:3574 "EHLO mms3.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903258Ab2H2Wev (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Aug 2012 00:34:51 +0200
-Received: from [10.9.200.131] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Wed, 29 Aug 2012 15:32:29 -0700
-X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
-Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
- Server id 8.2.247.2; Wed, 29 Aug 2012 15:34:32 -0700
-Received: from stbsrv-and-2.and.broadcom.com (
- stbsrv-and-2.and.broadcom.com [10.32.128.96]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 81D009FA03; Wed, 29
- Aug 2012 15:34:31 -0700 (PDT)
-From:   "Jim Quinlan" <jim2101024@gmail.com>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org
-cc:     "Jim Quinlan" <jim2101024@gmail.com>
-Subject: [PATCH V2 2/2] MIPS: irqflags.h: make funcs preempt-safe for
- non-mipsr2
-Date:   Wed, 29 Aug 2012 18:34:07 -0400
-Message-ID: <1346279647-27955-2-git-send-email-jim2101024@gmail.com>
-X-Mailer: git-send-email 1.7.6
-In-Reply-To: <1346279647-27955-1-git-send-email-jim2101024@gmail.com>
-References: <y> <1346279647-27955-1-git-send-email-jim2101024@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2012 01:02:14 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:58418 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903257Ab2H2XCJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Aug 2012 01:02:09 +0200
+Received: by pbbrq8 with SMTP id rq8so2108453pbb.36
+        for <multiple recipients>; Wed, 29 Aug 2012 16:02:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=Y/LVngYRWoXnWo/P7NMj7nHubXXLOKpcgAbKu5NtL/M=;
+        b=o05YYJgySRdVq3JrIMxwb8u7A23TH+JhJvtDId3rT9aV2//f56MeoWwvRoVJMWCLgc
+         vW1ca5zSIBSHLtdfnpj9TMtK1vaMsuT/pHrErG8h/jldb+Q+1S3j3EtFOTTF/1e1DXv7
+         gPhNE+/pCaMEZ6m8fbKbYtZTFGrDm0+Ja9h8d+/S80V4v+WTIWrWNM7PHk+v9nWPUWhx
+         dSUB2AFbbgidzThfcXppSeI8Nc2FlFoj5911L8D73/JFCFXcgDVEDYqoWkkAv6yUOXf6
+         U4Li8TKr3rRA8kfgxNGQfXpZnM6DCCV6rNKOlFFlk2tx6tBZWqNT+aK3Rc1LxovHKqD3
+         zqZg==
+Received: by 10.68.227.169 with SMTP id sb9mr7635120pbc.104.1346281322016;
+        Wed, 29 Aug 2012 16:02:02 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id ty1sm185632pbc.76.2012.08.29.16.01.59
+        (version=SSLv3 cipher=OTHER);
+        Wed, 29 Aug 2012 16:02:00 -0700 (PDT)
+Message-ID: <503E9F66.9030200@gmail.com>
+Date:   Wed, 29 Aug 2012 16:01:58 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20120717 Thunderbird/14.0
 MIME-Version: 1.0
-X-WSS-ID: 7C2047F749824978150-01-01
-Content-Type: text/plain
+To:     Jim Quinlan <jim2101024@gmail.com>, ralf@linux-mips.org
+CC:     linux-mips@linux-mips.org
+Subject: Re: [PATCH V2 1/2] asm-offsets.c: adding #define to break circular
+ dependency
+References: <y> <1346279647-27955-1-git-send-email-jim2101024@gmail.com>
+In-Reply-To: <1346279647-27955-1-git-send-email-jim2101024@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 34378
+X-archive-position: 34379
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jim2101024@gmail.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,167 +53,36 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-For non MIPSr2 processors, such as the BMIPS 5000, calls to
-arch_local_irq_disable() and others may be preempted, and in doing
-so a stale value may be restored to c0_status.  This fix disables
-preemption for such processors prior to the call and enables it
-after the call.
+On 08/29/2012 03:34 PM, Jim Quinlan wrote:
+> irqflags.h depends on asm-offsets.h, but asm-offsets.h depends
+> on irqflags.h when generating asm-offsets.h.
 
-This bug was observed in a BMIPS 5000, occuring once every few hours
-in a continuous reboot test.  It was traced to the write_lock_irq()
-function which was being invoked in release_task() in exit.c.
-By placing a number of "nops" inbetween the mfc0/mtc0 pair in
-arch_local_irq_disable(), which is called by write_lock_irq(), we
-were able to greatly increase the occurance of this bug.  Similarly,
-the application of this commit silenced the bug.
+What is there in irqflags.h that is required by asm-offsets.c?
 
-It is better to use the preemption functions declared in <linux/preempt.h>
-rather than defining new ones as is done in this commit.  However,
-including that file from irqflags effected many compiler errors.
+Why can't the include tangle be undone so that that part can be factored 
+out to a separate file?
 
-Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
----
- arch/mips/include/asm/irqflags.h |   81 ++++++++++++++++++++++++++++++++++++++
- 1 files changed, 81 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/include/asm/irqflags.h b/arch/mips/include/asm/irqflags.h
-index 309cbcd..d6e71ed 100644
---- a/arch/mips/include/asm/irqflags.h
-+++ b/arch/mips/include/asm/irqflags.h
-@@ -16,6 +16,71 @@
- #include <linux/compiler.h>
- #include <asm/hazards.h>
- 
-+#if defined(__GENERATING_BOUNDS_H) || defined(__GENERATING_OFFSETS_S)
-+#define __TI_PRE_COUNT (-1)
-+#else
-+#include <asm/asm-offsets.h>
-+#define __TI_PRE_COUNT TI_PRE_COUNT
-+#endif
-+
-+
-+/*
-+ * Non-mipsr2 processors executing functions such as arch_local_irq_disable()
-+ * are not preempt-safe: if preemption occurs between the mfc0 and the mtc0,
-+ * a stale status value may be stored.  To prevent this, we define
-+ * here arch_local_preempt_disable() and arch_local_preempt_enable(), which
-+ * are called before the mfc0 and after the mtc0, respectively.  A better
-+ * solution would "#include <linux/preempt.h> and use its declared routines,
-+ * but that is not viable due to numerous compile errors.
-+ *
-+ * MipsR2 processors with atomic interrupt enable/disable instructions
-+ * (ei/di) do not have this issue.
-+ */
-+__asm__(
-+	"	.macro	arch_local_preempt_disable ti_pre_count		\n"
-+	"	.set	push						\n"
-+	"	.set	noat						\n"
-+	"	lw	$1, \\ti_pre_count($28)				\n"
-+	"	addi	$1, $1, 1					\n"
-+	"	sw	$1, \\ti_pre_count($28)				\n"
-+	"	.set	pop						\n"
-+	"	.endm");
-+static inline void arch_local_preempt_disable(void)
-+{
-+#if defined(CONFIG_PREEMPT) && !defined(CONFIG_CPU_MIPSR2)
-+	__asm__ __volatile__(
-+		"arch_local_preempt_disable\t%0"
-+		: /* no outputs */
-+		: "n" (__TI_PRE_COUNT)
-+		: "memory");
-+	barrier();
-+#endif
-+}
-+
-+
-+__asm__(
-+	"	.macro	arch_local_preempt_enable ti_pre_count		\n"
-+	"	.set	push						\n"
-+	"	.set	noat						\n"
-+	"	lw	$1, \\ti_pre_count($28)				\n"
-+	"	addi	$1, $1, -1					\n"
-+	"	sw	$1, \\ti_pre_count($28)				\n"
-+	"	.set	pop						\n"
-+	"	.endm");
-+
-+static inline void arch_local_preempt_enable(void)
-+{
-+#if defined(CONFIG_PREEMPT) && !defined(CONFIG_CPU_MIPSR2)
-+	__asm__ __volatile__(
-+		"arch_local_preempt_enable\t%0"
-+		: /* no outputs */
-+		: "n" (__TI_PRE_COUNT)
-+		: "memory");
-+	barrier();
-+#endif
-+}
-+
-+
- __asm__(
- 	"	.macro	arch_local_irq_enable				\n"
- 	"	.set	push						\n"
-@@ -99,11 +164,15 @@ __asm__(
- 
- static inline void arch_local_irq_disable(void)
- {
-+	arch_local_preempt_disable();
-+
- 	__asm__ __volatile__(
- 		"arch_local_irq_disable"
- 		: /* no outputs */
- 		: /* no inputs */
- 		: "memory");
-+
-+	arch_local_preempt_enable();
- }
- 
- __asm__(
-@@ -153,10 +222,15 @@ __asm__(
- static inline unsigned long arch_local_irq_save(void)
- {
- 	unsigned long flags;
-+
-+	arch_local_preempt_disable();
-+
- 	asm volatile("arch_local_irq_save\t%0"
- 		     : "=r" (flags)
- 		     : /* no inputs */
- 		     : "memory");
-+
-+	arch_local_preempt_enable();
- 	return flags;
- }
- 
-@@ -214,23 +288,30 @@ static inline void arch_local_irq_restore(unsigned long flags)
- 	if (unlikely(!(flags & 0x0400)))
- 		smtc_ipi_replay();
- #endif
-+	arch_local_preempt_disable();
- 
- 	__asm__ __volatile__(
- 		"arch_local_irq_restore\t%0"
- 		: "=r" (__tmp1)
- 		: "0" (flags)
- 		: "memory");
-+
-+	arch_local_preempt_enable();
- }
- 
- static inline void __arch_local_irq_restore(unsigned long flags)
- {
- 	unsigned long __tmp1;
- 
-+	arch_local_preempt_disable();
-+
- 	__asm__ __volatile__(
- 		"arch_local_irq_restore\t%0"
- 		: "=r" (__tmp1)
- 		: "0" (flags)
- 		: "memory");
-+
-+	arch_local_preempt_enable();
- }
- 
- static inline int arch_irqs_disabled_flags(unsigned long flags)
--- 
-1.7.6
+
+> Adding a definition
+> to the top of asm-offsets.c allows us to break this circle.  There
+> is a similar define in bounds.c
+>
+> Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+> ---
+>   arch/mips/kernel/asm-offsets.c |    1 +
+>   1 files changed, 1 insertions(+), 0 deletions(-)
+>
+> diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
+> index 6b30fb2..035f167 100644
+> --- a/arch/mips/kernel/asm-offsets.c
+> +++ b/arch/mips/kernel/asm-offsets.c
+> @@ -8,6 +8,7 @@
+>    * Kevin Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com
+>    * Copyright (C) 2000 MIPS Technologies, Inc.
+>    */
+> +#define __GENERATING_OFFSETS_S
+>   #include <linux/compat.h>
+>   #include <linux/types.h>
+>   #include <linux/sched.h>
+>

@@ -1,46 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Aug 2012 23:49:03 +0200 (CEST)
-Received: from avon.wwwdotorg.org ([70.85.31.133]:53311 "EHLO
-        avon.wwwdotorg.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903257Ab2H2Vsz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Aug 2012 23:48:55 +0200
-Received: from severn.wwwdotorg.org (unknown [192.168.65.5])
-        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by avon.wwwdotorg.org (Postfix) with ESMTPS id 403F0625C;
-        Wed, 29 Aug 2012 15:56:15 -0600 (MDT)
-Received: from springbank2.nvidia.com (unknown [38.96.16.75])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by severn.wwwdotorg.org (Postfix) with ESMTPSA id 0CA4FE40E5;
-        Wed, 29 Aug 2012 15:48:48 -0600 (MDT)
-Message-ID: <503E8E6E.1010101@wwwdotorg.org>
-Date:   Wed, 29 Aug 2012 14:49:34 -0700
-From:   Stephen Warren <swarren@wwwdotorg.org>
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:14.0) Gecko/20120713 Thunderbird/14.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2012 00:34:56 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:3107 "EHLO mms1.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903257Ab2H2Weu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 Aug 2012 00:34:50 +0200
+Received: from [10.9.200.131] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Wed, 29 Aug 2012 15:33:37 -0700
+X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
+Received: from mail-irva-13.broadcom.com (10.11.16.103) by
+ IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
+ Server id 8.2.247.2; Wed, 29 Aug 2012 15:34:31 -0700
+Received: from stbsrv-and-2.and.broadcom.com (
+ stbsrv-and-2.and.broadcom.com [10.32.128.96]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id C84CC9F9F8; Wed, 29
+ Aug 2012 15:34:30 -0700 (PDT)
+From:   "Jim Quinlan" <jim2101024@gmail.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+cc:     "Jim Quinlan" <jim2101024@gmail.com>
+Subject: [PATCH V2 1/2] asm-offsets.c: adding #define to break circular
+ dependency
+Date:   Wed, 29 Aug 2012 18:34:06 -0400
+Message-ID: <1346279647-27955-1-git-send-email-jim2101024@gmail.com>
+X-Mailer: git-send-email 1.7.6
+In-Reply-To: <y>
+References: <y>
 MIME-Version: 1.0
-To:     Mark Brown <broonie@opensource.wolfsonmicro.com>
-CC:     Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@arm.linux.org.uk>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] clk: Make the generic clock API available by default
-References: <1346186104-4083-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-In-Reply-To: <1346186104-4083-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+X-WSS-ID: 7C20474B3MK25991850-01-01
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.96.5 at avon.wwwdotorg.org
-X-Virus-Status: Clean
-X-archive-position: 34376
+X-archive-position: 34377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: swarren@wwwdotorg.org
+X-original-sender: jim2101024@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,27 +45,27 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 08/28/12 13:35, Mark Brown wrote:
-> Rather than requiring platforms to select the generic clock API to make
-> it available make the API available as a user selectable option unless the
-> user either selects HAVE_CUSTOM_CLK (if they have their own implementation)
-> or selects COMMON_CLK (if they depend on the generic implementation).
->
-> All current architectures that HAVE_CLK but don't use the common clock
-> framework have selects of HAVE_CUSTOM_CLK added.
->
-> This allows drivers to use the generic API on platforms which have no need
-> for the clock API at platform level.
+irqflags.h depends on asm-offsets.h, but asm-offsets.h depends
+on irqflags.h when generating asm-offsets.h.  Adding a definition
+to the top of asm-offsets.c allows us to break this circle.  There
+is a similar define in bounds.c
 
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+---
+ arch/mips/kernel/asm-offsets.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-> @@ -674,6 +676,7 @@ config ARCH_TEGRA
->   	select GENERIC_CLOCKEVENTS
->   	select GENERIC_GPIO
->   	select HAVE_CLK
-> +	select HAVE_CUSTOM_CLK
-
-For 3.7, Tegra will switch to the common clock framework. I think this 
-patch would then disable that. How should we resolve this - rebase the 
-Tegra common-clk tree on top of any branch containing this patch in 
-order to remove that select statement?
+diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
+index 6b30fb2..035f167 100644
+--- a/arch/mips/kernel/asm-offsets.c
++++ b/arch/mips/kernel/asm-offsets.c
+@@ -8,6 +8,7 @@
+  * Kevin Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com
+  * Copyright (C) 2000 MIPS Technologies, Inc.
+  */
++#define __GENERATING_OFFSETS_S
+ #include <linux/compat.h>
+ #include <linux/types.h>
+ #include <linux/sched.h>
+-- 
+1.7.6

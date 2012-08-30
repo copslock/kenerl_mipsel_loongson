@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2012 10:52:05 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:54383 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903259Ab2H3IwB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Aug 2012 10:52:01 +0200
-Received: by pbbrq8 with SMTP id rq8so2878856pbb.36
-        for <linux-mips@linux-mips.org>; Thu, 30 Aug 2012 01:51:53 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2012 16:06:42 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:62877 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903264Ab2H3OGg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Aug 2012 16:06:36 +0200
+Received: by lbbgf7 with SMTP id gf7so496539lbb.36
+        for <multiple recipients>; Thu, 30 Aug 2012 07:06:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=XoTx2xBtiNHUp+OmifcqaCYIaaAkMIV6CrLNuTDss+4=;
-        b=YnvmGvnJT8vMI/WIMwjzTG1hozm4mBinPoAFSp3nxOEZUH3+CLuTPZqYf1iBU71iTp
-         f8b6nWeyGX1WWnQpSQ6FoNsIftSAMPdw4AY0OmzcfZOdMdOy2iTFy55dyVF+oR7cILf6
-         hQ+GqJi/K6zqsDNcZVi1xYB3zETcBqmDtYBmAvkrnzu9Y4+iqa6RpHroWRG1CwzQhlZL
-         hJw7RHlA2xWG18+pHU7Euk02vmOM7CgT/C7r6BojJWron/0VfFkN7SxXtooCa72vf+/Q
-         lGJAJC0sxEX8tjpjn/rKntw/NpZpo1f83eqmsqa2EsF2/w5SpMGIeg7p1QyE/cUNeTxZ
-         2GGA==
-Received: by 10.68.228.98 with SMTP id sh2mr10525911pbc.95.1346316713352;
-        Thu, 30 Aug 2012 01:51:53 -0700 (PDT)
-Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
-        by mx.google.com with ESMTPS id qp6sm1201091pbc.55.2012.08.30.01.51.45
-        (version=SSLv3 cipher=OTHER);
-        Thu, 30 Aug 2012 01:51:50 -0700 (PDT)
-From:   Kelvin Cheung <keguang.zhang@gmail.com>
-To:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Mike Turquette <mturquette@linaro.org>,
-        Russell King <linux@arm.linux.org.uk>
-Cc:     linux-mips@linux-mips.org, Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH v3] clk: add Loongson1B clock support
-Date:   Thu, 30 Aug 2012 16:51:34 +0800
-Message-Id: <1346316694-5270-1-git-send-email-keguang.zhang@gmail.com>
-X-Mailer: git-send-email 1.7.1
-X-archive-position: 34380
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=ds5dtQSS05ZFwRoHZDxfUXc+9Trd3qFK6v7+iFUn8+g=;
+        b=0oDqDtkiP7xMjdKaBQJ4l1gKtQtSeAxGBqik//qtfZASivtznY7NEE8iEVfTVh5ZNA
+         COjNPYt8aMdpXjmx2Pt5R1UBNtwXDU70PjZkSoKUznIHSSdNEfokvVPRAuDVipT51rrw
+         Pt7gc3PR5gLkuuhK5dFc4DG37z83Oa3h0ur+O/le26V6sqjTDvr4M9nvEiwBFUkAJ7fn
+         xhDiFafM8hTYORjVoXcdWHj/55TGKPs0TZarMb9NPfHNM3XX/Vt7UM33QmETvoYcbTAt
+         eghNHLPob/V8ESQracm6BeVuYEOBEwfyWiNcR/SkzLWdrqEU0MhNX5BWqmn2Go7WTyiP
+         NrSQ==
+MIME-Version: 1.0
+Received: by 10.112.88.2 with SMTP id bc2mr1423979lbb.61.1346335590548; Thu,
+ 30 Aug 2012 07:06:30 -0700 (PDT)
+Received: by 10.114.23.98 with HTTP; Thu, 30 Aug 2012 07:06:30 -0700 (PDT)
+In-Reply-To: <503E9F66.9030200@gmail.com>
+References: <1346279647-27955-1-git-send-email-jim2101024@gmail.com>
+        <503E9F66.9030200@gmail.com>
+Date:   Thu, 30 Aug 2012 10:06:30 -0400
+Message-ID: <CANCKTBsXhKNtNJxYhyn4Ygt=c3=4ZT-quB3L1XJVFC4y-mWM7Q@mail.gmail.com>
+Subject: Re: [PATCH V2 1/2] asm-offsets.c: adding #define to break circular dependency
+From:   Jim Quinlan <jim2101024@gmail.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 34381
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keguang.zhang@gmail.com
+X-original-sender: jim2101024@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,144 +48,58 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This adds clock support to Loongson1B SoC using the common clock
-infrastructure.
+I'm not sure the tangle is so easily undone.  The first dependency I see is
 
-Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
----
- drivers/clk/Makefile   |    1 +
- drivers/clk/clk-ls1x.c |  111 ++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 112 insertions(+), 0 deletions(-)
- create mode 100644 drivers/clk/clk-ls1x.c
+asm-offsets.c
+asm/processors.h
+linux/cpumask.h
+linux/kernel.h
+linux/bitops.h
+asm/bitops.h
+linux/irqflags.h
+asm/irqflags.h
 
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 5869ea3..018ec57 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -10,6 +10,7 @@ obj-$(CONFIG_ARCH_SOCFPGA)	+= socfpga/
- obj-$(CONFIG_PLAT_SPEAR)	+= spear/
- obj-$(CONFIG_ARCH_U300)		+= clk-u300.o
- obj-$(CONFIG_ARCH_INTEGRATOR)	+= versatile/
-+obj-$(CONFIG_MACH_LOONGSON1)	+= clk-ls1x.o
- 
- # Chip specific
- obj-$(CONFIG_COMMON_CLK_WM831X) += clk-wm831x.o
-diff --git a/drivers/clk/clk-ls1x.c b/drivers/clk/clk-ls1x.c
-new file mode 100644
-index 0000000..f20b750
---- /dev/null
-+++ b/drivers/clk/clk-ls1x.c
-@@ -0,0 +1,111 @@
-+/*
-+ * Copyright (c) 2012 Zhang, Keguang <keguang.zhang@gmail.com>
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <linux/clkdev.h>
-+#include <linux/clk-provider.h>
-+#include <linux/io.h>
-+#include <linux/slab.h>
-+#include <linux/err.h>
-+
-+#include <loongson1.h>
-+
-+#define OSC	33
-+
-+static DEFINE_SPINLOCK(_lock);
-+
-+static int ls1x_pll_clk_enable(struct clk_hw *hw)
-+{
-+	return 0;
-+}
-+
-+static void ls1x_pll_clk_disable(struct clk_hw *hw)
-+{
-+}
-+
-+static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,
-+					     unsigned long parent_rate)
-+{
-+	u32 pll, rate;
-+
-+	pll = __raw_readl(LS1X_CLK_PLL_FREQ);
-+	rate = ((12 + (pll & 0x3f)) * 1000000) +
-+		((((pll >> 8) & 0x3ff) * 1000000) >> 10);
-+	rate *= OSC;
-+	rate >>= 1;
-+
-+	return rate;
-+}
-+
-+static const struct clk_ops ls1x_pll_clk_ops = {
-+	.enable = ls1x_pll_clk_enable,
-+	.disable = ls1x_pll_clk_disable,
-+	.recalc_rate = ls1x_pll_recalc_rate,
-+};
-+
-+static struct clk * __init clk_register_pll(struct device *dev,
-+	 const char *name, const char *parent_name, unsigned long flags)
-+{
-+	struct clk_hw *hw;
-+	struct clk *clk;
-+	struct clk_init_data init;
-+
-+	/* allocate the divider */
-+	hw = kzalloc(sizeof(struct clk_hw), GFP_KERNEL);
-+	if (!hw) {
-+		pr_err("%s: could not allocate clk_hw\n", __func__);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+
-+	init.name = name;
-+	init.ops = &ls1x_pll_clk_ops;
-+	init.flags = flags | CLK_IS_BASIC;
-+	init.parent_names = (parent_name ? &parent_name : NULL);
-+	init.num_parents = (parent_name ? 1 : 0);
-+	hw->init = &init;
-+
-+	/* register the clock */
-+	clk = clk_register(dev, hw);
-+
-+	if (IS_ERR(clk))
-+		kfree(hw);
-+
-+	return clk;
-+}
-+
-+void __init ls1x_clk_init(void)
-+{
-+	struct clk *clk;
-+
-+	clk = clk_register_pll(NULL, "pll_clk", NULL, CLK_IS_ROOT);
-+	clk_prepare_enable(clk);
-+
-+	clk = clk_register_divider(NULL, "cpu_clk", "pll_clk",
-+			CLK_SET_RATE_PARENT, LS1X_CLK_PLL_DIV, DIV_CPU_SHIFT,
-+			DIV_CPU_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
-+	clk_prepare_enable(clk);
-+	clk_register_clkdev(clk, "cpu", NULL);
-+
-+	clk = clk_register_divider(NULL, "dc_clk", "pll_clk",
-+			CLK_SET_RATE_PARENT, LS1X_CLK_PLL_DIV, DIV_DC_SHIFT,
-+			DIV_DC_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
-+	clk_prepare_enable(clk);
-+	clk_register_clkdev(clk, "dc", NULL);
-+
-+	clk = clk_register_divider(NULL, "ahb_clk", "pll_clk",
-+			CLK_SET_RATE_PARENT, LS1X_CLK_PLL_DIV, DIV_DDR_SHIFT,
-+			DIV_DDR_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
-+	clk_prepare_enable(clk);
-+	clk_register_clkdev(clk, "ahb", NULL);
-+	clk_register_clkdev(clk, "stmmaceth", NULL);
-+
-+	clk = clk_register_fixed_factor(NULL, "apb_clk", "ahb_clk", 0, 1, 2);
-+	clk_prepare_enable(clk);
-+	clk_register_clkdev(clk, "apb", NULL);
-+	clk_register_clkdev(clk, "serial8250", NULL);
-+}
--- 
-1.7.1
+When compared to other architectures, the MIPS asm/bitops.h seems to
+include more files at the top, including linux/irqflags.h.
+Any suggestions?
+
+On Wed, Aug 29, 2012 at 7:01 PM, David Daney <ddaney.cavm@gmail.com> wrote:
+> On 08/29/2012 03:34 PM, Jim Quinlan wrote:
+>>
+>> irqflags.h depends on asm-offsets.h, but asm-offsets.h depends
+>> on irqflags.h when generating asm-offsets.h.
+>
+>
+> What is there in irqflags.h that is required by asm-offsets.c?
+>
+> Why can't the include tangle be undone so that that part can be factored out
+> to a separate file?
+>
+>
+>
+>
+>> Adding a definition
+>> to the top of asm-offsets.c allows us to break this circle.  There
+>> is a similar define in bounds.c
+>>
+>> Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+>> ---
+>>   arch/mips/kernel/asm-offsets.c |    1 +
+>>   1 files changed, 1 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/arch/mips/kernel/asm-offsets.c
+>> b/arch/mips/kernel/asm-offsets.c
+>> index 6b30fb2..035f167 100644
+>> --- a/arch/mips/kernel/asm-offsets.c
+>> +++ b/arch/mips/kernel/asm-offsets.c
+>> @@ -8,6 +8,7 @@
+>>    * Kevin Kissell, kevink@mips.com and Carsten Langgaard,
+>> carstenl@mips.com
+>>    * Copyright (C) 2000 MIPS Technologies, Inc.
+>>    */
+>> +#define __GENERATING_OFFSETS_S
+>>   #include <linux/compat.h>
+>>   #include <linux/types.h>
+>>   #include <linux/sched.h>
+>>
+>

@@ -1,42 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2012 22:35:46 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:61187 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903262Ab2H3Ufl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Aug 2012 22:35:41 +0200
-Received: by lbbgf7 with SMTP id gf7so754323lbb.36
-        for <multiple recipients>; Thu, 30 Aug 2012 13:35:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=CPbZ80Q2xWfpbZUnGDkytDBwt7c3iBvfah4VBYkcvqY=;
-        b=weHB9kIUNbX1lUe8Z54+TzI2L6oDj3neJuNiF6iE75H/3jcdm5FfPsS2dabEUpoWgI
-         z0p6lmwYh4592oVNGhiIQCZvsxex+lFWPlxt7i/wKiav/pNiGHVIrzFH4wIs00pTbVm6
-         h+457057KDGiNHjtTq5eNg/5ag6S4YmIiG7aSs5ss8D5M7mGZKGhI73/FHP2hkpsqThF
-         z5e7seWks/MLE3ttBbM0MW4im8rEhLfINvF7ZD5V0ka0o2ubL0e3oKCIHHx1xUHcfKZG
-         W3CzIv50btOL+4G5auFUpyRDp5S78DT7zdFqGhRIirYhib0Mfsw4hyQOzVO4MuMZZUhJ
-         joGA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Aug 2012 01:39:58 +0200 (CEST)
+Received: from avon.wwwdotorg.org ([70.85.31.133]:57771 "EHLO
+        avon.wwwdotorg.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903269Ab2H3Xjx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Aug 2012 01:39:53 +0200
+Received: from severn.wwwdotorg.org (unknown [192.168.65.5])
+        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by avon.wwwdotorg.org (Postfix) with ESMTPS id 43C73625C;
+        Thu, 30 Aug 2012 17:47:16 -0600 (MDT)
+Received: from springbank2.nvidia.com (unknown [38.96.16.75])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by severn.wwwdotorg.org (Postfix) with ESMTPSA id 71C1BE40E5;
+        Thu, 30 Aug 2012 17:39:44 -0600 (MDT)
+Message-ID: <503FF9E9.4020701@wwwdotorg.org>
+Date:   Thu, 30 Aug 2012 16:40:25 -0700
+From:   Stephen Warren <swarren@wwwdotorg.org>
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:14.0) Gecko/20120713 Thunderbird/14.0
 MIME-Version: 1.0
-Received: by 10.152.144.168 with SMTP id sn8mr4529327lab.1.1346358935448; Thu,
- 30 Aug 2012 13:35:35 -0700 (PDT)
-Received: by 10.114.23.98 with HTTP; Thu, 30 Aug 2012 13:35:35 -0700 (PDT)
-In-Reply-To: <20120830141525.GD23288@linux-mips.org>
-References: <1346279647-27955-1-git-send-email-jim2101024@gmail.com>
-        <503E9F66.9030200@gmail.com>
-        <CANCKTBsXhKNtNJxYhyn4Ygt=c3=4ZT-quB3L1XJVFC4y-mWM7Q@mail.gmail.com>
-        <20120830141525.GD23288@linux-mips.org>
-Date:   Thu, 30 Aug 2012 16:35:35 -0400
-Message-ID: <CANCKTBs83w=MTKE948-Vk7ArhF9d6X7viLTcPbZ27uCiXxDqgw@mail.gmail.com>
-Subject: Re: [PATCH V2 1/2] asm-offsets.c: adding #define to break circular dependency
-From:   Jim Quinlan <jim2101024@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 34386
+To:     Mark Brown <broonie@opensource.wolfsonmicro.com>
+CC:     Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@arm.linux.org.uk>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] clk: Make the generic clock API available by default
+References: <1346186104-4083-1-git-send-email-broonie@opensource.wolfsonmicro.com> <503E8E6E.1010101@wwwdotorg.org> <20120830171918.GE4356@opensource.wolfsonmicro.com>
+In-Reply-To: <20120830171918.GE4356@opensource.wolfsonmicro.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.96.5 at avon.wwwdotorg.org
+X-Virus-Status: Clean
+X-archive-position: 34387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jim2101024@gmail.com
+X-original-sender: swarren@wwwdotorg.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,37 +54,23 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Are you saying you want me to outline most of the functions in
-asm/bitops.h , or do you want me somehow outline just the "else"
-clause that invokes raw_local_irq_{save_restore}?
+On 08/30/12 10:19, Mark Brown wrote:
+> On Wed, Aug 29, 2012 at 02:49:34PM -0700, Stephen Warren wrote:
+>> On 08/28/12 13:35, Mark Brown wrote:
+>
+>>> @@ -674,6 +676,7 @@ config ARCH_TEGRA
+>>>   	select GENERIC_CLOCKEVENTS
+>>>   	select GENERIC_GPIO
+>>>   	select HAVE_CLK
+>>> +	select HAVE_CUSTOM_CLK
+>
+>> For 3.7, Tegra will switch to the common clock framework. I think
+>> this patch would then disable that. How should we resolve this -
+>> rebase the Tegra common-clk tree on top of any branch containing
+>> this patch in order to remove that select statement?
+>
+> I'd expect this to be applied on a separate branch so you should be able
+> to rebase your conversion on top of it or merge it into your branch
+> which should deal with things well enough I think?
 
-Jim
-
-On Thu, Aug 30, 2012 at 10:15 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Thu, Aug 30, 2012 at 10:06:30AM -0400, Jim Quinlan wrote:
->
->> I'm not sure the tangle is so easily undone.  The first dependency I see is
->>
->> asm-offsets.c
->> asm/processors.h
->> linux/cpumask.h
->> linux/kernel.h
->> linux/bitops.h
->> asm/bitops.h
->> linux/irqflags.h
->> asm/irqflags.h
->>
->> When compared to other architectures, the MIPS asm/bitops.h seems to
->> include more files at the top, including linux/irqflags.h.
->> Any suggestions?
->
-> This is because MIPS bitops for some ancient processors which don't have
-> atomic operations and Cavium cnMIPS cores where disabling interrupts is
-> faster than the atomic operations are implemented by disabling interrupts.
->
-> This makes these atomic operations relativly bloated in terms of code size
-> generated and may it'd be a good idea to outline the bits.  With a bit
-> of luck we even get better cache locality - and fewer header file
-> inclusions.
->
->   Ralf
+That should work.

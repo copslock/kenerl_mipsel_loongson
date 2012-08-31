@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Aug 2012 17:38:23 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:42571 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Aug 2012 17:38:48 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:42575 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903285Ab2HaPiR (ORCPT
+        with ESMTP id S1903289Ab2HaPiR (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 31 Aug 2012 17:38:17 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id AAEAA8F62;
-        Fri, 31 Aug 2012 17:38:15 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id 8FFF28F63;
+        Fri, 31 Aug 2012 17:38:17 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id g5fFcDW7K3zl; Fri, 31 Aug 2012 17:38:08 +0200 (CEST)
+        with ESMTP id eaa33Vg26V7w; Fri, 31 Aug 2012 17:38:08 +0200 (CEST)
 Received: from hauke.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 61A888880;
-        Fri, 31 Aug 2012 17:38:08 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTPSA id 0A85C87B9;
+        Fri, 31 Aug 2012 17:38:07 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org, john@phrozen.org
 Cc:     linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
-        florian@openwrt.org, Hauke Mehrtens <hauke@hauke-m.de>,
-        Michael Buesch <m@bues.ch>
-Subject: [PATCH v3 1/3] ssb: add function to return number of gpio lines
-Date:   Fri, 31 Aug 2012 17:38:03 +0200
-Message-Id: <1346427485-12801-2-git-send-email-hauke@hauke-m.de>
+        florian@openwrt.org, Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH v3 0/3] MIPS: BCM47xx: use gpiolib
+Date:   Fri, 31 Aug 2012 17:38:02 +0200
+Message-Id: <1346427485-12801-1-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1346427485-12801-1-git-send-email-hauke@hauke-m.de>
-References: <1346427485-12801-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 34388
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-archive-position: 34389
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,56 +42,42 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-CC: Michael Buesch <m@bues.ch>
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- drivers/ssb/embedded.c           |   12 ++++++++++++
- include/linux/ssb/ssb_embedded.h |    4 ++++
- 2 files changed, 16 insertions(+)
+The original code implemented the GPIO interface itself and this caused
+some problems. With this patch gpiolib is used.
 
-diff --git a/drivers/ssb/embedded.c b/drivers/ssb/embedded.c
-index 9ef124f..078007c 100644
---- a/drivers/ssb/embedded.c
-+++ b/drivers/ssb/embedded.c
-@@ -136,6 +136,18 @@ u32 ssb_gpio_polarity(struct ssb_bus *bus, u32 mask, u32 value)
- }
- EXPORT_SYMBOL(ssb_gpio_polarity);
- 
-+int ssb_gpio_count(struct ssb_bus *bus)
-+{
-+	if (ssb_chipco_available(&bus->chipco))
-+		return SSB_GPIO_CHIPCO_LINES;
-+	else if (ssb_extif_available(&bus->extif))
-+		return SSB_GPIO_EXTIF_LINES;
-+	else
-+		SSB_WARN_ON(1);
-+	return 0;
-+}
-+EXPORT_SYMBOL(ssb_gpio_count);
-+
- #ifdef CONFIG_SSB_DRIVER_GIGE
- static int gige_pci_init_callback(struct ssb_bus *bus, unsigned long data)
- {
-diff --git a/include/linux/ssb/ssb_embedded.h b/include/linux/ssb/ssb_embedded.h
-index 8d8dedf..f1618d2 100644
---- a/include/linux/ssb/ssb_embedded.h
-+++ b/include/linux/ssb/ssb_embedded.h
-@@ -7,6 +7,9 @@
- 
- extern int ssb_watchdog_timer_set(struct ssb_bus *bus, u32 ticks);
- 
-+#define SSB_GPIO_EXTIF_LINES	5
-+#define SSB_GPIO_CHIPCO_LINES	16
-+
- /* Generic GPIO API */
- u32 ssb_gpio_in(struct ssb_bus *bus, u32 mask);
- u32 ssb_gpio_out(struct ssb_bus *bus, u32 mask, u32 value);
-@@ -14,5 +17,6 @@ u32 ssb_gpio_outen(struct ssb_bus *bus, u32 mask, u32 value);
- u32 ssb_gpio_control(struct ssb_bus *bus, u32 mask, u32 value);
- u32 ssb_gpio_intmask(struct ssb_bus *bus, u32 mask, u32 value);
- u32 ssb_gpio_polarity(struct ssb_bus *bus, u32 mask, u32 value);
-+int ssb_gpio_count(struct ssb_bus *bus);
- 
- #endif /* LINUX_SSB_EMBEDDED_H_ */
+This is based on mips/master.
+
+This should go through linux-mips, John W. Linville approved that 
+for the bcma and ssb changes normally maintained in wireless-testing.
+
+v3:
+ - add missing break after setting bcm47xx_gpio_count in bcm47xx_gpio_init()
+
+v2:
+ - use use gpio_chip.to_irq() instead of directly declare gpio_to_irq
+
+Hauke Mehrtens (3):
+  ssb: add function to return number of gpio lines
+  bcma: add GPIO driver for SoCs
+  MIPS: BCM47xx: rewrite GPIO handling and use gpiolib
+
+ arch/mips/Kconfig                            |    2 +-
+ arch/mips/bcm47xx/gpio.c                     |  208 ++++++++++++++++++++------
+ arch/mips/bcm47xx/setup.c                    |    2 +
+ arch/mips/bcm47xx/wgt634u.c                  |    7 +
+ arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |    2 +
+ arch/mips/include/asm/mach-bcm47xx/gpio.h    |  148 +++---------------
+ drivers/bcma/Kconfig                         |    5 +
+ drivers/bcma/Makefile                        |    1 +
+ drivers/bcma/driver_gpio.c                   |   90 +++++++++++
+ drivers/bcma/scan.c                          |    4 +
+ drivers/ssb/embedded.c                       |   12 ++
+ include/linux/bcma/bcma.h                    |    5 +
+ include/linux/bcma/bcma_driver_gpio.h        |   21 +++
+ include/linux/ssb/ssb_embedded.h             |    4 +
+ 14 files changed, 336 insertions(+), 175 deletions(-)
+ create mode 100644 drivers/bcma/driver_gpio.c
+ create mode 100644 include/linux/bcma/bcma_driver_gpio.h
+
 -- 
 1.7.9.5

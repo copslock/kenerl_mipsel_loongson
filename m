@@ -1,36 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Sep 2012 17:01:25 +0200 (CEST)
-Received: from mail-vc0-f177.google.com ([209.85.220.177]:53916 "EHLO
-        mail-vc0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903297Ab2IAPBS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Sep 2012 17:01:18 +0200
-Received: by vcbfl15 with SMTP id fl15so4526389vcb.36
-        for <multiple recipients>; Sat, 01 Sep 2012 08:01:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        bh=r0OZiZ0zzPsK9c0N9CexNfLBdMDybaQwdYOZBEHUTjI=;
-        b=vuk/HxXIuDo3AZngAm4HjbBaVpDA2D48hGF8ib0r46J2ELq+F8QbIvq2I0aC7sqkbb
-         8/vSYooc2QdmPAFIVf98g+L2sKWQJ5oaU8RgXSVrTqxea42/KRCWpDIsqKrjykIT466m
-         TwJYhWWLGTlh1tKxvaoEvb/XkKvjManHSb42yiJzvhFOmevy2lKgh4ULHYSgyhBNUxZg
-         RFskidxejfXfeMeA8pHEp+9fw06ccB5VOCo10MuX2lUKqgtLyAgUeHYxZ3TL72jxPOXZ
-         zteBNqq5VF+1dtaiajUDIqBoh0PnpLYbHEFUOspDHhY7kdVmrbohcPhbJ3ZP13CI87cV
-         xQKg==
-MIME-Version: 1.0
-Received: by 10.52.70.46 with SMTP id j14mr6391340vdu.42.1346511672850; Sat,
- 01 Sep 2012 08:01:12 -0700 (PDT)
-Received: by 10.220.96.148 with HTTP; Sat, 1 Sep 2012 08:01:12 -0700 (PDT)
-Date:   Sat, 1 Sep 2012 23:01:12 +0800
-Message-ID: <CAJd=RBDuFF409=DQS-iErAT57K6x0yff+2a-7ReXQQOqyOxsFA@mail.gmail.com>
-Subject: [patch] MIPS: align address to HPAGE_SIZE when updating mmu for thp
-From:   Hillf Danton <dhillf@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Hillf Danton <dhillf@gmail.com>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 34393
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Sep 2012 18:46:22 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:46516 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903298Ab2IAQqQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 1 Sep 2012 18:46:16 +0200
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 5CFE323C0094;
+        Sat,  1 Sep 2012 18:46:14 +0200 (CEST)
+From:   Gabor Juhos <juhosg@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>,
+        <stable@vger.kernel.org>, "[3.5+]"@arrakis.dune.hu
+Subject: [PATCH] MIPS: ath79: use correct fractional dividers for {CPU,DDR}_PLL on AR934x
+Date:   Sat,  1 Sep 2012 18:46:00 +0200
+Message-Id: <1346517960-13537-1-git-send-email-juhosg@openwrt.org>
+X-Mailer: git-send-email 1.7.10
+X-archive-position: 34394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhillf@gmail.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,22 +32,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
+X-Status: A
 
-Make certain that we are always handling head page in all cases if address
-is aligned to HPAGE_SIZE.
+The current dividers in the code are wrong and this
+leads to broken CPU frequency calculation on boards
+where the fractional part is used.
 
-Signed-off-by: Hillf Danton <dhillf@gmail.com>
+For example, if the SoC is running from a 40MHz
+reference clock, refdiv=1, nint=14, outdiv=0 and
+nfrac=31 the real frequency is 579.375MHz but the
+current code calculates 569.687MHz instead.
+
+Because the system time is indirectly related to
+the CPU frequency the broken computation causes
+drift in the system time.
+
+The correct divider is 2^6 for the CPU PLL and 2^10
+for the DDR PLL. Use the correct values to fix the
+issue.
+
+Cc: <stable@vger.kernel.org>  [3.5+]
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 ---
+ arch/mips/ath79/clock.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/include/asm/pgtable.h	Sat Sep  1 22:27:12 2012
-+++ b/arch/mips/include/asm/pgtable.h	Sat Sep  1 22:38:02 2012
-@@ -546,7 +546,7 @@ static inline pmd_t pmdp_get_and_clear(s
- static inline void update_mmu_thp(struct vm_area_struct *vma,
- 					unsigned long addr, pmd_t *pmdp)
- {
--	update_mmu_cache(vma, addr, (pte_t *)pmdp);
-+	update_mmu_cache(vma, addr & HPAGE_PMD_MASK, (pte_t *)pmdp);
- }
-
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
---
+diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
+index b91ad3e..d272857 100644
+--- a/arch/mips/ath79/clock.c
++++ b/arch/mips/ath79/clock.c
+@@ -189,7 +189,7 @@ static void __init ar934x_clocks_init(void)
+ 	       AR934X_PLL_CPU_CONFIG_NFRAC_MASK;
+ 
+ 	cpu_pll = nint * ath79_ref_clk.rate / ref_div;
+-	cpu_pll += frac * ath79_ref_clk.rate / (ref_div * (2 << 6));
++	cpu_pll += frac * ath79_ref_clk.rate / (ref_div * (1 << 6));
+ 	cpu_pll /= (1 << out_div);
+ 
+ 	pll = ath79_pll_rr(AR934X_PLL_DDR_CONFIG_REG);
+@@ -203,7 +203,7 @@ static void __init ar934x_clocks_init(void)
+ 	       AR934X_PLL_DDR_CONFIG_NFRAC_MASK;
+ 
+ 	ddr_pll = nint * ath79_ref_clk.rate / ref_div;
+-	ddr_pll += frac * ath79_ref_clk.rate / (ref_div * (2 << 10));
++	ddr_pll += frac * ath79_ref_clk.rate / (ref_div * (1 << 10));
+ 	ddr_pll /= (1 << out_div);
+ 
+ 	clk_ctrl = ath79_pll_rr(AR934X_PLL_CPU_DDR_CLK_CTRL_REG);
+-- 
+1.7.10

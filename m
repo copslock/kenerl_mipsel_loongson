@@ -1,25 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Sep 2012 18:46:22 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:46516 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903298Ab2IAQqQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 1 Sep 2012 18:46:16 +0200
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 5CFE323C0094;
-        Sat,  1 Sep 2012 18:46:14 +0200 (CEST)
-From:   Gabor Juhos <juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Sep 2012 11:52:50 +0200 (CEST)
+Received: from moutng.kundenserver.de ([212.227.126.187]:58650 "EHLO
+        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1901165Ab2IBJwm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Sep 2012 11:52:42 +0200
+Received: from mailbox.adnet.avionic-design.de (mailbox.avionic-design.de [109.75.18.3])
+        by mrelayeu.kundenserver.de (node=mreu0) with ESMTP (Nemesis)
+        id 0M3O8y-1TPumw1gTQ-00r1Ts; Sun, 02 Sep 2012 11:52:34 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mailbox.adnet.avionic-design.de (Postfix) with ESMTP id A27752A28305;
+        Sun,  2 Sep 2012 11:52:33 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at avionic-design.de
+Received: from mailbox.adnet.avionic-design.de ([127.0.0.1])
+        by localhost (mailbox.avionic-design.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id twrgXeIIwXVe; Sun,  2 Sep 2012 11:52:32 +0200 (CEST)
+Received: from localhost (avionic-0098.adnet.avionic-design.de [172.20.31.233])
+        (Authenticated sender: thierry.reding)
+        by mailbox.adnet.avionic-design.de (Postfix) with ESMTPA id 449E22A282EC;
+        Sun,  2 Sep 2012 11:52:32 +0200 (CEST)
+From:   Thierry Reding <thierry.reding@avionic-design.de>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>,
-        <stable@vger.kernel.org>, "[3.5+]"@arrakis.dune.hu
-Subject: [PATCH] MIPS: ath79: use correct fractional dividers for {CPU,DDR}_PLL on AR934x
-Date:   Sat,  1 Sep 2012 18:46:00 +0200
-Message-Id: <1346517960-13537-1-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.10
-X-archive-position: 34394
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Antony Pavlov <antonynpavlov@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Maarten ter Huurne <maarten@treewalker.org>
+Subject: [PATCH 0/3] MIPS: JZ4740: Move PWM driver to PWM framework
+Date:   Sun,  2 Sep 2012 11:52:27 +0200
+Message-Id: <1346579550-5990-1-git-send-email-thierry.reding@avionic-design.de>
+X-Mailer: git-send-email 1.7.12
+X-Provags-ID: V02:K0:Y4bA/5CKk5Dd3Ey41RPM6LHj6BDA9/gLkEb5dPTFqcQ
+ jKzCCtGMrlx3LCpv+OXBJeeH9pe/i+4x3KT6XSDn7mjEPLv7+C
+ mKaJIakaY8igAFOgWbzM8vCYP/kWgeYdXpDa5EhquVni1bCRlA
+ cOb1TwTqmMERzjaNX7s2VvGXbVr7q0KEYSkoXCiPxVXgQKXPi9
+ FycTfEQvcFmLzWOCeoQSvCMrSarkZynsqsyM4/9gmVm97lSSp1
+ 8yyxeITSLSHYbTx07XD1VKsAjYBgSGaa5xOJR7POSt2XKgtm+o
+ phXjq0b/eDilil8g/9TqQdQCcZ90tAW0mw+vELxrYYmBRZIFIg
+ LpY5TvfgONTPu80IXYYqbUzNyFj+rgwl2puDMoswjAP0ND23Cc
+ iw0c3yTf4OKZvU34oN+CXqjN1oTxyd2Ym1odlyGWfJFS1YToxq
+ m9PWz
+X-archive-position: 34395
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: thierry.reding@avionic-design.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -32,52 +54,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
-X-Status: A
 
-The current dividers in the code are wrong and this
-leads to broken CPU frequency calculation on boards
-where the fractional part is used.
+Hi,
 
-For example, if the SoC is running from a 40MHz
-reference clock, refdiv=1, nint=14, outdiv=0 and
-nfrac=31 the real frequency is 579.375MHz but the
-current code calculates 569.687MHz instead.
+This small series fixes a build error due to a circular header
+dependency, exports the timer API so it can be used outside of
+the arch/mips/jz4740 tree and finally moves and converts the
+JZ4740 PWM driver to the PWM framework.
 
-Because the system time is indirectly related to
-the CPU frequency the broken computation causes
-drift in the system time.
+Note that I don't have any hardware to test this on, so I had to
+rely on compile tests only. Patches 1 and 2 should probably go
+through the MIPS tree, while I can take patch 3 through the PWM
+tree. It touches a couple of files in arch/mips but the changes
+are unlikely to cause conflicts.
 
-The correct divider is 2^6 for the CPU PLL and 2^10
-for the DDR PLL. Use the correct values to fix the
-issue.
+Thierry
 
-Cc: <stable@vger.kernel.org>  [3.5+]
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
----
- arch/mips/ath79/clock.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thierry Reding (3):
+  MIPS: JZ4740: Break circular header dependency
+  MIPS: JZ4740: Export timer API
+  pwm: Add Ingenic JZ4740 support
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index b91ad3e..d272857 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -189,7 +189,7 @@ static void __init ar934x_clocks_init(void)
- 	       AR934X_PLL_CPU_CONFIG_NFRAC_MASK;
- 
- 	cpu_pll = nint * ath79_ref_clk.rate / ref_div;
--	cpu_pll += frac * ath79_ref_clk.rate / (ref_div * (2 << 6));
-+	cpu_pll += frac * ath79_ref_clk.rate / (ref_div * (1 << 6));
- 	cpu_pll /= (1 << out_div);
- 
- 	pll = ath79_pll_rr(AR934X_PLL_DDR_CONFIG_REG);
-@@ -203,7 +203,7 @@ static void __init ar934x_clocks_init(void)
- 	       AR934X_PLL_DDR_CONFIG_NFRAC_MASK;
- 
- 	ddr_pll = nint * ath79_ref_clk.rate / ref_div;
--	ddr_pll += frac * ath79_ref_clk.rate / (ref_div * (2 << 10));
-+	ddr_pll += frac * ath79_ref_clk.rate / (ref_div * (1 << 10));
- 	ddr_pll /= (1 << out_div);
- 
- 	clk_ctrl = ath79_pll_rr(AR934X_PLL_CPU_DDR_CLK_CTRL_REG);
+ arch/mips/include/asm/mach-jz4740/irq.h      |   5 +
+ arch/mips/include/asm/mach-jz4740/platform.h |   1 +
+ arch/mips/include/asm/mach-jz4740/timer.h    |  35 +++++
+ arch/mips/jz4740/Kconfig                     |   3 -
+ arch/mips/jz4740/Makefile                    |   2 +-
+ arch/mips/jz4740/board-qi_lb60.c             |   3 +-
+ arch/mips/jz4740/irq.h                       |  23 ---
+ arch/mips/jz4740/platform.c                  |   6 +
+ arch/mips/jz4740/pwm.c                       | 177 -----------------------
+ arch/mips/jz4740/time.c                      |   2 +-
+ arch/mips/jz4740/timer.c                     | 128 +++++++++++++++--
+ arch/mips/jz4740/timer.h                     | 136 ------------------
+ drivers/pwm/Kconfig                          |  12 +-
+ drivers/pwm/Makefile                         |   1 +
+ drivers/pwm/core.c                           |   2 +-
+ drivers/pwm/pwm-jz4740.c                     | 205 +++++++++++++++++++++++++++
+ 16 files changed, 386 insertions(+), 355 deletions(-)
+ delete mode 100644 arch/mips/jz4740/irq.h
+ delete mode 100644 arch/mips/jz4740/pwm.c
+ delete mode 100644 arch/mips/jz4740/timer.h
+ create mode 100644 drivers/pwm/pwm-jz4740.c
+
 -- 
-1.7.10
+1.7.12

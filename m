@@ -1,57 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Sep 2012 22:46:48 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.17.10]:62475 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903298Ab2IBUql (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Sep 2012 22:46:41 +0200
-Received: from mailbox.adnet.avionic-design.de (mailbox.avionic-design.de [109.75.18.3])
-        by mrelayeu.kundenserver.de (node=mrbap0) with ESMTP (Nemesis)
-        id 0MKKU2-1T8p1e1LRm-001eOo; Sun, 02 Sep 2012 22:46:28 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTP id A827F2A282FF;
-        Sun,  2 Sep 2012 22:46:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at avionic-design.de
-Received: from mailbox.adnet.avionic-design.de ([127.0.0.1])
-        by localhost (mailbox.avionic-design.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id qdN7B+usgmFY; Sun,  2 Sep 2012 22:46:25 +0200 (CEST)
-Received: from localhost (avionic-0098.adnet.avionic-design.de [172.20.31.233])
-        (Authenticated sender: thierry.reding)
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTPA id 44B042A281A5;
-        Sun,  2 Sep 2012 22:46:25 +0200 (CEST)
-Date:   Sun, 2 Sep 2012 22:46:24 +0200
-From:   Thierry Reding <thierry.reding@avionic-design.de>
-To:     Lars-Peter Clausen <lars@metafoo.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Sep 2012 23:39:48 +0200 (CEST)
+Received: from smtp-vbr4.xs4all.nl ([194.109.24.24]:4573 "EHLO
+        smtp-vbr4.xs4all.nl" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903299Ab2IBVjl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Sep 2012 23:39:41 +0200
+Received: from starbug-2.trinair2002 (dhcp-089-098-069-120.chello.nl [89.98.69.120])
+        (authenticated bits=0)
+        by smtp-vbr4.xs4all.nl (8.13.8/8.13.8) with ESMTP id q82LcqwS052519;
+        Sun, 2 Sep 2012 23:38:52 +0200 (CEST)
+        (envelope-from maarten@treewalker.org)
+Received: from hyperion.localnet (hyperion.trinair2002 [192.168.0.43])
+        by starbug-2.trinair2002 (Postfix) with ESMTP id A8FA0401E7;
+        Sun,  2 Sep 2012 23:38:51 +0200 (CEST)
+From:   Maarten ter Huurne <maarten@treewalker.org>
+To:     Thierry Reding <thierry.reding@avionic-design.de>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org,
         Antony Pavlov <antonynpavlov@gmail.com>,
-        Maarten ter Huurne <maarten@treewalker.org>
-Subject: Re: [PATCH 2/3] MIPS: JZ4740: Export timer API
-Message-ID: <20120902204624.GC21635@avionic-0098.mockup.avionic-design.de>
-References: <1346579550-5990-1-git-send-email-thierry.reding@avionic-design.de>
- <1346579550-5990-3-git-send-email-thierry.reding@avionic-design.de>
- <50437117.8000700@metafoo.de>
- <20120902202124.GA21635@avionic-0098.mockup.avionic-design.de>
- <5043C139.2010700@metafoo.de>
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH 0/3] MIPS: JZ4740: Move PWM driver to PWM framework
+Date:   Sun, 02 Sep 2012 23:34:32 +0200
+Message-ID: <1494411.dJ2nCQkPX8@hyperion>
+User-Agent: KMail/4.9 (Linux/3.1.10-1.16-desktop; KDE/4.9.0; x86_64; ; )
+In-Reply-To: <20120902192752.GA10930@avionic-0098.mockup.avionic-design.de>
+References: <1346579550-5990-1-git-send-email-thierry.reding@avionic-design.de> <1890769.KjIbOv8Xbz@hyperion> <20120902192752.GA10930@avionic-0098.mockup.avionic-design.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="Fig2xvG2VGoz8o/s"
-Content-Disposition: inline
-In-Reply-To: <5043C139.2010700@metafoo.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Provags-ID: V02:K0:57/T1gPWzzr1/CoW8o5/G+57k2wz3faaVfTNA3CP/FC
- Pkdaq2pTSXRlkfO45pgrXaIQ6wK+5SXN7EeForI0NpDZY4l2d6
- jvDtyVB7ISc2lllOg/iQLrCSgbscfJvCR5CA1+rACjs9I/IVhY
- GRCZr8OsxcvMDj8J2sEvKQ77C6PgWvIAv7f1C8pdQ+gTgzwoDK
- x/l8YMYrMWaxX2X2A0SMzEis0iVahyitWVyLAP7ycJwps8c6Zq
- VFY+SZDsnlzQ3CHp+BCxACXtpI+fo84rwNYhuPjLwW/C4HNOof
- I47KFBLmjP/ChscQ4r1TYVBd5V9Kz1lCxVw5kQavTo2zRAsz1C
- GzwfSylEMfK71PX1RD82psyIp1dceRMn+TxDjfXFr3JhPPVU6u
- F6AnENONWxXJIgBDlbnSzNziioJLQQ/95gPX7VRNAeQDmAgj/T
- ry4Vc
-X-archive-position: 34410
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Virus-Scanned: by XS4ALL Virus Scanner
+X-archive-position: 34411
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@avionic-design.de
+X-original-sender: maarten@treewalker.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,61 +45,50 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+On Sunday 02 September 2012 21:27:53 Thierry Reding wrote:
+> On Sun, Sep 02, 2012 at 03:25:55PM +0200, Maarten ter Huurne wrote:
+> > I tested the "for-next" branch on the Dingoo A320 with the pwm-backlight
+> > driver. It didn't work at first, because the PWM number and the timer
+> > number didn't align: I requested PWM number 5 to get PWM7 and the GPIO
+> > of PWM7 was used, but with timer 5 instead of timer 7, resulting in a
+> > dark screen. However, it works fine after adding PWM0/1 as described
+> > above.
+> 
+> I haven't seen any usage of the pwm-backlight driver in mainline. I
+> assume this is only present in some downstream repository?
 
---Fig2xvG2VGoz8o/s
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yes, the Dingoo A320 support is currently only available in the qi-kernel 
+repository. We have some essential drivers (the SLCD framebuffer driver in 
+particular) that are in their current state just too ugly to submit to 
+mainline.
 
-On Sun, Sep 02, 2012 at 10:27:37PM +0200, Lars-Peter Clausen wrote:
-> On 09/02/2012 10:21 PM, Thierry Reding wrote:
-> > On Sun, Sep 02, 2012 at 04:45:43PM +0200, Lars-Peter Clausen wrote:
-> >> On 09/02/2012 11:52 AM, Thierry Reding wrote:
-> >>> This is a prerequisite for allowing the PWM driver to be converted to
-> >>> the PWM framework.
-> >>>
-> >>> Signed-off-by: Thierry Reding <thierry.reding@avionic-design.de>
-> >>
-> >> I'd prefer to keep the timer functions inline, some of them are called=
- quite
-> >> often in the system clock code.
-> >=20
-> > I've opted for this variant because it better hides the register values.
-> > If the functions are inlined it also means the complete register
-> > definitions need to go into timer.h. If you don't think that's an issue,
-> > I can update the patch accordingly.
-> >=20
->=20
-> It's not pretty, but it should be ok. Having a single global function for=
- each
-> and every register access is kind of ugly too.
+> > If other people want to test on real hardware, you can find the code in
+> > branch jz-3.6-rc2-pwm in the qi-kernel repository. Unfortunately our web
+> > interface for git is still broken, but the repo itself is fine.
+> > 
+> >   git://projects.qi-hardware.com/qi-kernel.git
 
-Okay, I'll update the patch accordingly. I probably won't get around to
-it until later this week because I won't have access to a computer for a
-few days but I'll be back at work on September 10 and should be able to
-send the next version of this series out then.
+This is where you can find the code. The relevant configs are 
+qi_lb60_defconfig and a320_defconfig.
 
-Thierry
+> An alternative approach would be to change pwm_chip.base from -1
+> (dynamically allocated) to 2, which would leave 0 and 1 unavailable.
+> That should at least solve the problem that you had regarding the GPIO
+> and timer mismatch.
 
---Fig2xvG2VGoz8o/s
-Content-Type: application/pgp-signature
+That could work, but the hardware does have PWM0 and PWM1, which are just 
+not available in our kernel, so adding them in busy state would better 
+describe real situation.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.19 (GNU/Linux)
+Maybe at some point we'll have a generic timer framework as well and then 
+having PWM0/1 defined but not requestable because the timers are busy would 
+be a natural fit.
 
-iQIcBAEBAgAGBQJQQ8WgAAoJEN0jrNd/PrOhm+EP/0Adl62IwELOR83e+uqIEADM
-+aLp3NHggdPe77rf/Tjn6zooAS7aPFnsqpave99BP8f5SzzbPI3i5GQRUVwA6TdP
-n+ivzgX5R8ml/5XqYtvX3y086c+1/1axvnj6D6FqJ/v/SN10I9GioiPMFtYwcK/S
-RfMvnlltpfcmO/ysvbXODnmlWEHb6oOUnzfVfQpd6SvCGQbJTeVMCZuNw5hMHKbs
-gg5SC/tDmsfrIqj7xuoXj9n9Ct+MH64hv8V5rDOmPqXM3RYG4XWX1d0nIYP1RCIi
-pijBA3q7jTlOrV7pHV+F0os15U/AagXlFZIRJAbcCuiNgIMd4FKqgM3AwHV+bhgT
-JzmTaEyS5F34keMbY/4qnn5B/cFRhHDURg5z9Yo7mDnkYjWbOifj15cgjYZHZEZe
-YAqhmhLm71IQRmrqTc81QZpigwttlHzG46DsJoUyvuxabMIHRZKMo2vlTydbbp5r
-bpqu3xF8jJkauORIKXNvKaeX9zfpFKOy4QRnCYSpFczMjNeYc+E9iPNBVuNHCYy5
-L68uIK88nzFikNRoEStJdHUKsu9W9H9QDBPrnzIMbgqOJp1ab/i8QW59sRm4dPf+
-jSXpiV/3JJX9JBGiCKq8lOxZzm+Xlg7QZbfooCvmzxyQWrrD8kl79sqtTNaYxTn9
-uyrYOCe0nDpcxMOunq0F
-=TXny
------END PGP SIGNATURE-----
+> But the above also sounds sensible, and since both you and Lars agree
+> that this is the better option, I can squash these changes into my patch
+> with your permission.
 
---Fig2xvG2VGoz8o/s--
+Yes, please do.
+
+Bye,
+		Maarten

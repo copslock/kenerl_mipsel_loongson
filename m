@@ -1,37 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Sep 2012 15:31:13 +0200 (CEST)
-Received: from smtp-vbr16.xs4all.nl ([194.109.24.36]:1598 "EHLO
-        smtp-vbr16.xs4all.nl" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1901165Ab2IBNbH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Sep 2012 15:31:07 +0200
-Received: from starbug-2.trinair2002 (dhcp-089-098-069-120.chello.nl [89.98.69.120])
-        (authenticated bits=0)
-        by smtp-vbr16.xs4all.nl (8.13.8/8.13.8) with ESMTP id q82DUExZ081653;
-        Sun, 2 Sep 2012 15:30:14 +0200 (CEST)
-        (envelope-from maarten@treewalker.org)
-Received: from hyperion.localnet (hyperion.trinair2002 [192.168.0.43])
-        by starbug-2.trinair2002 (Postfix) with ESMTP id 7CF822BA1C;
-        Sun,  2 Sep 2012 15:30:14 +0200 (CEST)
-From:   Maarten ter Huurne <maarten@treewalker.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Sep 2012 16:44:42 +0200 (CEST)
+Received: from mailhost.informatik.uni-hamburg.de ([134.100.9.70]:64956 "EHLO
+        mailhost.informatik.uni-hamburg.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1901165Ab2IBOoe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Sep 2012 16:44:34 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTP id 51ECA781;
+        Sun,  2 Sep 2012 16:44:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at informatik.uni-hamburg.de
+Received: from mailhost.informatik.uni-hamburg.de ([127.0.0.1])
+        by localhost (mailhost.informatik.uni-hamburg.de [127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id QBMhoc9GL2Kr; Sun,  2 Sep 2012 16:44:27 +0200 (CEST)
+Received: from [192.168.178.21] (ppp-88-217-76-199.dynamic.mnet-online.de [88.217.76.199])
+        (using TLSv1 with cipher DHE-RSA-CAMELLIA256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: 7clausen)
+        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTPSA id 13824780;
+        Sun,  2 Sep 2012 16:44:05 +0200 (CEST)
+Message-ID: <504370BF.6090702@metafoo.de>
+Date:   Sun, 02 Sep 2012 16:44:15 +0200
+From:   Lars-Peter Clausen <lars@metafoo.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.16) Gecko/20120724 Icedove/3.0.11
+MIME-Version: 1.0
 To:     Thierry Reding <thierry.reding@avionic-design.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org,
         Antony Pavlov <antonynpavlov@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 0/3] MIPS: JZ4740: Move PWM driver to PWM framework
-Date:   Sun, 02 Sep 2012 15:25:55 +0200
-Message-ID: <1890769.KjIbOv8Xbz@hyperion>
-User-Agent: KMail/4.9 (Linux/3.1.10-1.16-desktop; KDE/4.9.0; x86_64; ; )
-In-Reply-To: <1346579550-5990-1-git-send-email-thierry.reding@avionic-design.de>
-References: <1346579550-5990-1-git-send-email-thierry.reding@avionic-design.de>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="nextPart1496028.RW5dUh1a0f"
-Content-Transfer-Encoding: 7Bit
-X-Virus-Scanned: by XS4ALL Virus Scanner
-X-archive-position: 34399
+        Maarten ter Huurne <maarten@treewalker.org>
+Subject: Re: [PATCH 3/3] pwm: Add Ingenic JZ4740 support
+References: <1346579550-5990-1-git-send-email-thierry.reding@avionic-design.de> <1346579550-5990-4-git-send-email-thierry.reding@avionic-design.de>
+In-Reply-To: <1346579550-5990-4-git-send-email-thierry.reding@avionic-design.de>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34400
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maarten@treewalker.org
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,83 +49,263 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This is a multi-part message in MIME format.
-
---nextPart1496028.RW5dUh1a0f
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-
-On Sunday 02 September 2012 11:52:27 Thierry Reding wrote:
-
-> This small series fixes a build error due to a circular header
-> dependency, exports the timer API so it can be used outside of
-> the arch/mips/jz4740 tree and finally moves and converts the
-> JZ4740 PWM driver to the PWM framework.
+On 09/02/2012 11:52 AM, Thierry Reding wrote:
+> This commit moves the driver to drivers/pwm and converts it to the new
+> PWM framework.
 > 
-> Note that I don't have any hardware to test this on, so I had to
-> rely on compile tests only. Patches 1 and 2 should probably go
-> through the MIPS tree, while I can take patch 3 through the PWM
-> tree. It touches a couple of files in arch/mips but the changes
-> are unlikely to cause conflicts.
 
-Exporting the hardware outputs PWM2-7 as index 0-5 in the PWM core is rather 
-confusing. I discussed with Lars on IRC and it's probably better to expose 
-PWM0-7 through the API, but refuse to hand out PWM0 and PWM1 when requested, 
-since their associated timers are in use by the system. I attached a diff 
-that illustrates this approach.
+Thanks for taking care of this, some comments inline.
 
-Note that if this approach is taken, the beeper ID in board-qi_lb60.c should 
-be changed back from 2 to 4, since the beeper is attached to PWM4.
+[...]
+> diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+> index 92b1782..f5acdaa 100644
+> --- a/drivers/pwm/core.c
+> +++ b/drivers/pwm/core.c
+> @@ -371,7 +371,7 @@ EXPORT_SYMBOL_GPL(pwm_free);
+>   */
+>  int pwm_config(struct pwm_device *pwm, int duty_ns, int period_ns)
+>  {
+> -	if (!pwm || period_ns == 0 || duty_ns > period_ns)
+> +	if (!pwm || duty_ns < 0 || period_ns <= 0 || duty_ns > period_ns)
+>  		return -EINVAL;
+>  
 
-I tested the "for-next" branch on the Dingoo A320 with the pwm-backlight 
-driver. It didn't work at first, because the PWM number and the timer number 
-didn't align: I requested PWM number 5 to get PWM7 and the GPIO of PWM7 was 
-used, but with timer 5 instead of timer 7, resulting in a dark screen. 
-However, it works fine after adding PWM0/1 as described above.
+This change seems to be unrelated.
 
-If other people want to test on real hardware, you can find the code in 
-branch jz-3.6-rc2-pwm in the qi-kernel repository. Unfortunately our web 
-interface for git is still broken, but the repo itself is fine.
-  git://projects.qi-hardware.com/qi-kernel.git
+>  	return pwm->chip->ops->config(pwm->chip, pwm, duty_ns, period_ns);
+> diff --git a/drivers/pwm/pwm-jz4740.c b/drivers/pwm/pwm-jz4740.c
+> new file mode 100644
+> index 0000000..db29b37
+> --- /dev/null
+> +++ b/drivers/pwm/pwm-jz4740.c
+> @@ -0,0 +1,205 @@
+> +/*
+> + *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
+> + *  JZ4740 platform PWM support
+> + *
+> + *  This program is free software; you can redistribute it and/or modify it
+> + *  under  the terms of the GNU General  Public License as published by the
+> + *  Free Software Foundation;  either version 2 of the License, or (at your
+> + *  option) any later version.
+> + *
+> + *  You should have received a copy of the GNU General Public License along
+> + *  with this program; if not, write to the Free Software Foundation, Inc.,
+> + *  675 Mass Ave, Cambridge, MA 02139, USA.
+> + *
+> + */
+> +
+> +#include <linux/clk.h>
+> +#include <linux/err.h>
+> +#include <linux/gpio.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/pwm.h>
+> +
+> +#include <asm/mach-jz4740/gpio.h>
+> +#include <timer.h>
 
-Bye,
-		Maarten
+#include <asm/mach-jz4740/timer.h>
 
---nextPart1496028.RW5dUh1a0f
-Content-Disposition: inline; filename="jz4740-pwm-all-8.diff"
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/x-patch; charset="UTF-8"; name="jz4740-pwm-all-8.diff"
+> +
+> +#define NUM_PWM 6
+> +
+> +static const unsigned int jz4740_pwm_gpio_list[NUM_PWM] = {
 
-diff --git a/drivers/pwm/pwm-jz4740.c b/drivers/pwm/pwm-jz4740.c
-index db29b37..554e414 100644
---- a/drivers/pwm/pwm-jz4740.c
-+++ b/drivers/pwm/pwm-jz4740.c
-@@ -24,9 +24,11 @@
- #include <asm/mach-jz4740/gpio.h>
- #include <timer.h>
- 
--#define NUM_PWM 6
-+#define NUM_PWM 8
- 
- static const unsigned int jz4740_pwm_gpio_list[NUM_PWM] = {
-+	JZ_GPIO_PWM0,
-+	JZ_GPIO_PWM1,
- 	JZ_GPIO_PWM2,
- 	JZ_GPIO_PWM3,
- 	JZ_GPIO_PWM4,
-@@ -50,6 +52,13 @@ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
- 	unsigned int gpio = jz4740_pwm_gpio_list[pwm->hwpwm];
- 	int ret;
- 
-+	/*
-+	 * Timer 0 and 1 are used for system tasks, so they are unavailable
-+	 * for use as PWMs.
-+	 */
-+	if (pwm->hwpwm < 2)
-+		return -EBUSY;
-+
- 	ret = gpio_request(gpio, pwm->label);
- 
- 	if (ret) {
+As mth said, it would be better to have JZ_GPIO_PWM0 and here as well and set
+NUM_PWM to 8. Right now we are using the timers associated to PWM channel 0 and
+1 as system timers. But there might be devices where this is not possible, e.g.
+because the PWM is actually connected to something. Also this fixes the of by
+two for the hwpwm id.
 
---nextPart1496028.RW5dUh1a0f--
+> +	JZ_GPIO_PWM2,
+> +	JZ_GPIO_PWM3,
+> +	JZ_GPIO_PWM4,
+> +	JZ_GPIO_PWM5,
+> +	JZ_GPIO_PWM6,
+> +	JZ_GPIO_PWM7,
+> +};
+> +
+> +struct jz4740_pwm_chip {
+> +	struct pwm_chip chip;
+> +	struct clk *clk;
+> +};
+> +
+> +static inline struct jz4740_pwm_chip *to_jz4740(struct pwm_chip *chip)
+> +{
+> +	return container_of(chip, struct jz4740_pwm_chip, chip);
+> +}
+> +
+> +static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
+> +{
+> +	unsigned int gpio = jz4740_pwm_gpio_list[pwm->hwpwm];
+> +	int ret;
+> +
+> +	ret = gpio_request(gpio, pwm->label);
+> +
+> +	if (ret) {
+> +		printk(KERN_ERR "Failed to request pwm gpio: %d\n", ret);
+
+dev_err(chip->dev, ....
+
+> +		return ret;
+> +	}
+> +
+> +	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_PWM);
+> +
+> +	jz4740_timer_start(pwm->hwpwm);
+> +
+> +	return 0;
+> +}
+> +
+> +static void jz4740_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
+> +{
+> +	unsigned int gpio = jz4740_pwm_gpio_list[pwm->hwpwm];
+> +
+> +	jz4740_timer_set_ctrl(pwm->hwpwm, 0);
+> +
+> +	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_NONE);
+> +	gpio_free(gpio);
+> +
+> +	jz4740_timer_stop(pwm->hwpwm);
+> +}
+> +
+> +static int jz4740_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+> +			     int duty_ns, int period_ns)
+> +{
+> +	struct jz4740_pwm_chip *jz4740 = to_jz4740(pwm->chip);
+> +	unsigned long long tmp;
+> +	unsigned long period, duty;
+> +	unsigned int prescaler = 0;
+> +	uint16_t ctrl;
+> +	bool is_enabled;
+> +
+> +	tmp = (unsigned long long)clk_get_rate(jz4740->clk) * period_ns;
+> +	do_div(tmp, 1000000000);
+> +	period = tmp;
+> +
+> +	while (period > 0xffff && prescaler < 6) {
+> +		period >>= 2;
+> +		++prescaler;
+> +	}
+> +
+> +	if (prescaler == 6)
+> +		return -EINVAL;
+> +
+> +	tmp = (unsigned long long)period * duty_ns;
+> +	do_div(tmp, period_ns);
+> +	duty = period - tmp;
+> +
+> +	if (duty >= period)
+> +		duty = period - 1;
+> +
+> +	is_enabled = jz4740_timer_is_enabled(pwm->hwpwm);
+> +	if (is_enabled)
+> +		pwm_disable(pwm);
+
+I think this should be jz4740_pwm_disable
+
+> +
+> +	jz4740_timer_set_count(pwm->hwpwm, 0);
+> +	jz4740_timer_set_duty(pwm->hwpwm, duty);
+> +	jz4740_timer_set_period(pwm->hwpwm, period);
+> +
+> +	ctrl = JZ_TIMER_CTRL_PRESCALER(prescaler) | JZ_TIMER_CTRL_SRC_EXT |
+> +		JZ_TIMER_CTRL_PWM_ABBRUPT_SHUTDOWN;
+> +
+> +	jz4740_timer_set_ctrl(pwm->hwpwm, ctrl);
+> +
+> +	if (is_enabled)
+> +		pwm_enable(pwm);
+
+and jz4740_pwm_enable here.
+
+> +
+> +	return 0;
+> +}
+> +
+
+> +
+> +static const struct pwm_ops jz4740_pwm_ops = {
+> +	.request = jz4740_pwm_request,
+> +	.free = jz4740_pwm_free,
+> +	.config = jz4740_pwm_config,
+> +	.enable = jz4740_pwm_enable,
+> +	.disable = jz4740_pwm_disable,
+
+.owner = THIS_MODULE,
+
+> +};
+> +
+> +static int jz4740_pwm_probe(struct platform_device *pdev)
+__devinit
+> +{
+> +	struct jz4740_pwm_chip *jz4740;
+> +	int ret = 0;
+
+The '= 0' is not really necessary since it will be overwritten anyway.
+
+> +
+> +	jz4740 = devm_kzalloc(&pdev->dev, sizeof(*jz4740), GFP_KERNEL);
+> +	if (!jz4740)
+> +		return -ENOMEM;
+> +
+> +	jz4740->clk = clk_get(NULL, "ext");
+> +	if (IS_ERR(jz4740->clk))
+> +		return PTR_ERR(jz4740->clk);
+> +
+> +	jz4740->chip.dev = &pdev->dev;
+> +	jz4740->chip.ops = &jz4740_pwm_ops;
+> +	jz4740->chip.npwm = NUM_PWM;
+> +	jz4740->chip.base = -1;
+> +
+> +	ret = pwmchip_add(&jz4740->chip);
+> +	if (ret < 0) {
+> +		clk_put(jz4740->clk);
+> +		return ret;
+> +	}
+> +
+> +	platform_set_drvdata(pdev, jz4740);
+> +
+> +	return 0;
+> +}
+> +
+> +static int jz4740_pwm_remove(struct platform_device *pdev)
+__devexit
+> +{
+> +	struct jz4740_pwm_chip *jz4740 = platform_get_drvdata(pdev);
+> +	int ret;
+> +
+> +	ret = pwmchip_remove(&jz4740->chip);
+> +	if (ret < 0)
+> +		return ret;
+
+remove is not really allowed to fail, the return value is never really tested
+and the device is removed nevertheless. But this seems to be a problem with the
+PWM API. It should be possible to remove a PWM chip even if it is currently in
+use and after a PWM chip has been removed all calls to a pwm_device of that
+chip it should return an error. This will require reference counting for the
+pwm_device struct though. E.g. by adding a 'struct device' to it.
+
+> +
+> +	clk_put(jz4740->clk);
+> +
+> +	return 0;
+> +}
+> +
+> +static struct platform_driver jz4740_pwm_driver = {
+> +	.driver = {
+> +		.name = "jz4740-pwm",
+
+.owner = THIS_MODULE,
+
+> +	},
+> +	.probe = jz4740_pwm_probe,
+> +	.remove = jz4740_pwm_remove,
+
+.remove = __devexit_p(jz4740_pwm_remove),
+
+> +};
+> +module_platform_driver(jz4740_pwm_driver);
+
+MODULE_LICENSE(...), MODULE_AUTHOR(...), MODULE_DESCRIPTION(...), MODULE_ALIAS(...)

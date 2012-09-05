@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2012 22:28:19 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:56491 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2012 22:28:42 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:56493 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903404Ab2IEU2L (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2012 22:28:11 +0200
+        with ESMTP id S1903405Ab2IEU2N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2012 22:28:13 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1T9MCh-0004QI-Ve; Wed, 05 Sep 2012 15:28:03 -0500
+        id 1T9MCl-0004QI-7w; Wed, 05 Sep 2012 15:28:07 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 0/4] Add RI and XI bits to MIPS base architecture.
-Date:   Wed,  5 Sep 2012 15:27:54 -0500
-Message-Id: <1346876878-25965-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH 1/4] MIPS: Add base architecture support for RI and XI.
+Date:   Wed,  5 Sep 2012 15:27:55 -0500
+Message-Id: <1346876878-25965-2-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
-X-archive-position: 34418
+In-Reply-To: <1346876878-25965-1-git-send-email-sjhill@mips.com>
+References: <1346876878-25965-1-git-send-email-sjhill@mips.com>
+X-archive-position: 34419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,30 +36,85 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Add MIPSr3(TM) base architecture TLB support for Read Inhibit (RI)
-and Execute Inhibit (XI) page protection. SmartMIPS cores will not
-notice any change in functionality.
+Originally both Read Inhibit (RI) and Execute Inhibit (XI) were
+supported by the TLB only for a SmartMIPS core. The MIPSr3(TM)
+Architecture now defines an optional feature to implement these
+TLB bits separately. Support for one or both features can be
+checked by looking at the Config3.RXI bit.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/include/asm/cpu-features.h |    6 ++++++
+ arch/mips/include/asm/cpu.h          |    2 ++
+ arch/mips/include/asm/mipsregs.h     |    1 +
+ arch/mips/kernel/cpu-probe.c         |   12 +++++++++++-
+ 4 files changed, 20 insertions(+), 1 deletion(-)
 
-Steven J. Hill (4):
-  MIPS: Add base architecture support for RI and XI.
-  MIPS: Remove kernel_uses_smartmips_rixi use from arch/mips/mm.
-  MIPS: Remove kernel_uses_smartmips_rixi from page table bits.
-  MIPS: Remove kernel_uses_smartmips_rixi macro definition.
-
- arch/mips/include/asm/cpu-features.h               |    7 ++++--
- arch/mips/include/asm/cpu.h                        |    2 ++
- .../asm/mach-cavium-octeon/cpu-feature-overrides.h |    2 --
- arch/mips/include/asm/mipsregs.h                   |    1 +
- arch/mips/include/asm/pgtable-bits.h               |   24 ++++++++++++--------
- arch/mips/include/asm/pgtable.h                    |   12 +++++-----
- arch/mips/kernel/cpu-probe.c                       |   12 +++++++++-
- arch/mips/mm/cache.c                               |    2 +-
- arch/mips/mm/fault.c                               |    4 +++-
- arch/mips/mm/tlb-r4k.c                             |    7 ++++--
- arch/mips/mm/tlbex.c                               |   14 ++++++------
- 11 files changed, 55 insertions(+), 32 deletions(-)
-
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index 080edd8..c78a77b 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -98,6 +98,12 @@
+ #ifndef kernel_uses_smartmips_rixi
+ #define kernel_uses_smartmips_rixi 0
+ #endif
++#ifndef cpu_has_ri
++#define cpu_has_ri		(cpu_data[0].options & MIPS_CPU_RI)
++#endif 
++#ifndef cpu_has_xi
++#define cpu_has_xi		(cpu_data[0].options & MIPS_CPU_XI)
++#endif
+ #ifndef cpu_has_mmips
+ #define cpu_has_mmips		(cpu_data[0].options & MIPS_CPU_MICROMIPS)
+ #endif
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 4889fae..1b928ed 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -323,6 +323,8 @@ enum cpu_type_enum {
+ #define MIPS_CPU_VEIC		0x00100000 /* CPU supports MIPSR2 external interrupt controller mode */
+ #define MIPS_CPU_ULRI		0x00200000 /* CPU has ULRI feature */
+ #define MIPS_CPU_MICROMIPS	0x01000000 /* CPU has microMIPS capability */
++#define MIPS_CPU_RI		0x02000000 /* CPU has TLB Read Inhibit */
++#define MIPS_CPU_XI		0x04000000 /* CPU has TLB Execute Inhibit */
+ 
+ /*
+  * CPU ASE encodings
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index cdb9c87..19430fb 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -591,6 +591,7 @@
+ #define MIPS_CONF3_LPA		(_ULCAST_(1) <<  7)
+ #define MIPS_CONF3_DSP		(_ULCAST_(1) << 10)
+ #define MIPS_CONF3_DSP2P	(_ULCAST_(1) << 11)
++#define MIPS_CONF3_RXI		(_ULCAST_(1) << 12)
+ #define MIPS_CONF3_ULRI		(_ULCAST_(1) << 13)
+ #define MIPS_CONF3_ISA		(_ULCAST_(3) << 14)
+ #define MIPS_CONF3_ISA_OE	(_ULCAST_(1) << 16)
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 009fc13..e85d732 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -422,8 +422,18 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
+ 
+ 	config3 = read_c0_config3();
+ 
+-	if (config3 & MIPS_CONF3_SM)
++	if (config3 & MIPS_CONF3_SM) {
+ 		c->ases |= MIPS_ASE_SMARTMIPS;
++		c->options |= MIPS_CPU_RI;
++		c->options |= MIPS_CPU_XI;
++	}
++	if (config3 & MIPS_CONF3_RXI) {
++		write_c0_pagegrain(read_c0_pagegrain() | PG_RIE | PG_XIE);
++		if (read_c0_pagegrain() & PG_RIE)
++			c->options |= MIPS_CPU_RI;
++		if (read_c0_pagegrain() & PG_XIE)
++			c->options |= MIPS_CPU_XI;
++	}
+ 	if (config3 & MIPS_CONF3_DSP)
+ 		c->ases |= MIPS_ASE_DSP;
+ 	if (config3 & MIPS_CONF3_DSP2P)
 -- 
 1.7.9.5

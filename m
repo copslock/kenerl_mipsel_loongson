@@ -1,33 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2012 00:33:37 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:1990 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2012 00:34:01 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:1809 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903404Ab2IEWdI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1903407Ab2IEWdI (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 6 Sep 2012 00:33:08 +0200
 Received: from [10.9.200.133] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Wed, 05 Sep 2012 15:31:28 -0700
+ SMTP Relay (Email Firewall v6.5)); Wed, 05 Sep 2012 15:31:26 -0700
 X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
  IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Wed, 5 Sep 2012 15:32:16 -0700
+ Server id 8.2.247.2; Wed, 5 Sep 2012 15:32:14 -0700
 Received: from stbsrv-and-2.and.broadcom.com (
  stbsrv-and-2.and.broadcom.com [10.32.128.96]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 647A59F9F5; Wed, 5
- Sep 2012 15:32:52 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id C0D459F9F6; Wed, 5
+ Sep 2012 15:32:50 -0700 (PDT)
 From:   "Jim Quinlan" <jim2101024@gmail.com>
 To:     ralf@linux-mips.org, linux-mips@linux-mips.org
-cc:     ddaney.cavm@gmail.com, cernekee@gmail.com,
-        "Jim Quinlan" <jim2101024@gmail.com>
-Subject: [PATCH V4 2/3] MIPS: Remove irqflags.h dependency from bitops.h
-Date:   Wed, 5 Sep 2012 18:32:46 -0400
-Message-ID: <1346884367-6906-3-git-send-email-jim2101024@gmail.com>
+cc:     ddaney.cavm@gmail.com, cernekee@gmail.com
+Subject: [PATCH V4 0/3] MIPS: make funcs preempt-safe for non-mipsr2
+ cpus
+Date:   Wed, 5 Sep 2012 18:32:44 -0400
+Message-ID: <1346884367-6906-1-git-send-email-jim2101024@gmail.com>
 X-Mailer: git-send-email 1.7.6
-In-Reply-To: <1346884367-6906-1-git-send-email-jim2101024@gmail.com>
-References: <1346884367-6906-1-git-send-email-jim2101024@gmail.com>
 MIME-Version: 1.0
-X-WSS-ID: 7C590D4A3NK23809179-01-01
+X-WSS-ID: 7C590D343NK23809173-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 34429
+X-archive-position: 34430
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,410 +43,25 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The "else clause" of most functions in bitops.h invoked
-raw_local_irq_{save,restore}() and in doing so had a dependency on
-irqflags.h.  This fix moves said code to bitops.c, removing the
-dependency.
+This is V4 of my submission.  Here is a list of requested changes:
 
-Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
----
- arch/mips/include/asm/bitops.h |  114 +++++++------------------
- arch/mips/include/asm/io.h     |    1 +
- arch/mips/lib/Makefile         |    2 +-
- arch/mips/lib/bitops.c         |  179 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 213 insertions(+), 83 deletions(-)
- create mode 100644 arch/mips/lib/bitops.c
+  o Extra commit was added for changing an unsigned short to an int.
+  o Use of EXTERN_SYMBOL was added to mips-atomic.c and bitops.c,
+    as well as the removal of 'extern' in the functions' declarations.
+  o Name of funcs changed from atomic_xxx to __mips_xxx in bitops.c.
+  o The function comments in bitops.c were tweaked to please 
+    scripts/kernel-doc.
 
-diff --git a/arch/mips/include/asm/bitops.h b/arch/mips/include/asm/bitops.h
-index 455664c..46ac73a 100644
---- a/arch/mips/include/asm/bitops.h
-+++ b/arch/mips/include/asm/bitops.h
-@@ -14,7 +14,6 @@
- #endif
- 
- #include <linux/compiler.h>
--#include <linux/irqflags.h>
- #include <linux/types.h>
- #include <asm/barrier.h>
- #include <asm/byteorder.h>		/* sigh ... */
-@@ -44,6 +43,24 @@
- #define smp_mb__before_clear_bit()	smp_mb__before_llsc()
- #define smp_mb__after_clear_bit()	smp_llsc_mb()
- 
-+
-+/*
-+ * These are the "slower" versions of the functions and are in bitops.c.
-+ * These functions call raw_local_irq_{save,restore}().
-+ */
-+void __mips_set_bit(unsigned long nr, volatile unsigned long *addr);
-+void __mips_clear_bit(unsigned long nr, volatile unsigned long *addr);
-+void __mips_change_bit(unsigned long nr, volatile unsigned long *addr);
-+int __mips_test_and_set_bit(unsigned long nr,
-+			    volatile unsigned long *addr);
-+int __mips_test_and_set_bit_lock(unsigned long nr,
-+				 volatile unsigned long *addr);
-+int __mips_test_and_clear_bit(unsigned long nr,
-+			      volatile unsigned long *addr);
-+int __mips_test_and_change_bit(unsigned long nr,
-+			       volatile unsigned long *addr);
-+
-+
- /*
-  * set_bit - Atomically set a bit in memory
-  * @nr: the bit to set
-@@ -92,17 +109,8 @@ static inline void set_bit(unsigned long nr, volatile unsigned long *addr)
- 			: "=&r" (temp), "+m" (*m)
- 			: "ir" (1UL << bit));
- 		} while (unlikely(!temp));
--	} else {
--		volatile unsigned long *a = addr;
--		unsigned long mask;
--		unsigned long flags;
--
--		a += nr >> SZLONG_LOG;
--		mask = 1UL << bit;
--		raw_local_irq_save(flags);
--		*a |= mask;
--		raw_local_irq_restore(flags);
--	}
-+	} else
-+		__mips_set_bit(nr, addr);
- }
- 
- /*
-@@ -153,17 +161,8 @@ static inline void clear_bit(unsigned long nr, volatile unsigned long *addr)
- 			: "=&r" (temp), "+m" (*m)
- 			: "ir" (~(1UL << bit)));
- 		} while (unlikely(!temp));
--	} else {
--		volatile unsigned long *a = addr;
--		unsigned long mask;
--		unsigned long flags;
--
--		a += nr >> SZLONG_LOG;
--		mask = 1UL << bit;
--		raw_local_irq_save(flags);
--		*a &= ~mask;
--		raw_local_irq_restore(flags);
--	}
-+	} else
-+		__mips_clear_bit(nr, addr);
- }
- 
- /*
-@@ -220,17 +219,8 @@ static inline void change_bit(unsigned long nr, volatile unsigned long *addr)
- 			: "=&r" (temp), "+m" (*m)
- 			: "ir" (1UL << bit));
- 		} while (unlikely(!temp));
--	} else {
--		volatile unsigned long *a = addr;
--		unsigned long mask;
--		unsigned long flags;
--
--		a += nr >> SZLONG_LOG;
--		mask = 1UL << bit;
--		raw_local_irq_save(flags);
--		*a ^= mask;
--		raw_local_irq_restore(flags);
--	}
-+	} else
-+		__mips_change_bit(nr, addr);
- }
- 
- /*
-@@ -281,18 +271,8 @@ static inline int test_and_set_bit(unsigned long nr,
- 		} while (unlikely(!res));
- 
- 		res = temp & (1UL << bit);
--	} else {
--		volatile unsigned long *a = addr;
--		unsigned long mask;
--		unsigned long flags;
--
--		a += nr >> SZLONG_LOG;
--		mask = 1UL << bit;
--		raw_local_irq_save(flags);
--		res = (mask & *a);
--		*a |= mask;
--		raw_local_irq_restore(flags);
--	}
-+	} else
-+		res = __mips_test_and_set_bit(nr, addr);
- 
- 	smp_llsc_mb();
- 
-@@ -345,18 +325,8 @@ static inline int test_and_set_bit_lock(unsigned long nr,
- 		} while (unlikely(!res));
- 
- 		res = temp & (1UL << bit);
--	} else {
--		volatile unsigned long *a = addr;
--		unsigned long mask;
--		unsigned long flags;
--
--		a += nr >> SZLONG_LOG;
--		mask = 1UL << bit;
--		raw_local_irq_save(flags);
--		res = (mask & *a);
--		*a |= mask;
--		raw_local_irq_restore(flags);
--	}
-+	} else
-+		res = __mips_test_and_set_bit_lock(nr, addr);
- 
- 	smp_llsc_mb();
- 
-@@ -428,18 +398,8 @@ static inline int test_and_clear_bit(unsigned long nr,
- 		} while (unlikely(!res));
- 
- 		res = temp & (1UL << bit);
--	} else {
--		volatile unsigned long *a = addr;
--		unsigned long mask;
--		unsigned long flags;
--
--		a += nr >> SZLONG_LOG;
--		mask = 1UL << bit;
--		raw_local_irq_save(flags);
--		res = (mask & *a);
--		*a &= ~mask;
--		raw_local_irq_restore(flags);
--	}
-+	} else
-+		res = __mips_test_and_clear_bit(nr, addr);
- 
- 	smp_llsc_mb();
- 
-@@ -494,18 +454,8 @@ static inline int test_and_change_bit(unsigned long nr,
- 		} while (unlikely(!res));
- 
- 		res = temp & (1UL << bit);
--	} else {
--		volatile unsigned long *a = addr;
--		unsigned long mask;
--		unsigned long flags;
--
--		a += nr >> SZLONG_LOG;
--		mask = 1UL << bit;
--		raw_local_irq_save(flags);
--		res = (mask & *a);
--		*a ^= mask;
--		raw_local_irq_restore(flags);
--	}
-+	} else
-+		res = __mips_test_and_change_bit(nr, addr);
- 
- 	smp_llsc_mb();
- 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 29d9c23..ff2e034 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -15,6 +15,7 @@
- #include <linux/compiler.h>
- #include <linux/kernel.h>
- #include <linux/types.h>
-+#include <linux/irqflags.h>
- 
- #include <asm/addrspace.h>
- #include <asm/bug.h>
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index c4a82e8..a7b8937 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -2,7 +2,7 @@
- # Makefile for MIPS-specific library files..
- #
- 
--lib-y	+= csum_partial.o delay.o memcpy.o memset.o \
-+lib-y	+= bitops.o csum_partial.o delay.o memcpy.o memset.o \
- 	   strlen_user.o strncpy_user.o strnlen_user.o uncached.o
- 
- obj-y			+= iomap.o
-diff --git a/arch/mips/lib/bitops.c b/arch/mips/lib/bitops.c
-new file mode 100644
-index 0000000..239a9c9
---- /dev/null
-+++ b/arch/mips/lib/bitops.c
-@@ -0,0 +1,179 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (c) 1994-1997, 99, 2000, 06, 07 Ralf Baechle (ralf@linux-mips.org)
-+ * Copyright (c) 1999, 2000  Silicon Graphics, Inc.
-+ */
-+#include <linux/bitops.h>
-+#include <linux/irqflags.h>
-+#include <linux/export.h>
-+
-+
-+/**
-+ * __mips_set_bit - Atomically set a bit in memory.  This is called by
-+ * set_bit() if it cannot find a faster solution.
-+ * @nr: the bit to set
-+ * @addr: the address to start counting from
-+ */
-+void __mips_set_bit(unsigned long nr, volatile unsigned long *addr)
-+{
-+	volatile unsigned long *a = addr;
-+	unsigned bit = nr & SZLONG_MASK;
-+	unsigned long mask;
-+	unsigned long flags;
-+
-+	a += nr >> SZLONG_LOG;
-+	mask = 1UL << bit;
-+	raw_local_irq_save(flags);
-+	*a |= mask;
-+	raw_local_irq_restore(flags);
-+}
-+EXPORT_SYMBOL(__mips_set_bit);
-+
-+
-+/**
-+ * __mips_clear_bit - Clears a bit in memory.  This is called by clear_bit() if
-+ * it cannot find a faster solution.
-+ * @nr: Bit to clear
-+ * @addr: Address to start counting from
-+ */
-+void __mips_clear_bit(unsigned long nr, volatile unsigned long *addr)
-+{
-+	volatile unsigned long *a = addr;
-+	unsigned bit = nr & SZLONG_MASK;
-+	unsigned long mask;
-+	unsigned long flags;
-+
-+	a += nr >> SZLONG_LOG;
-+	mask = 1UL << bit;
-+	raw_local_irq_save(flags);
-+	*a &= ~mask;
-+	raw_local_irq_restore(flags);
-+}
-+EXPORT_SYMBOL(__mips_clear_bit);
-+
-+
-+/**
-+ * __mips_change_bit - Toggle a bit in memory.  This is called by change_bit()
-+ * if it cannot find a faster solution.
-+ * @nr: Bit to change
-+ * @addr: Address to start counting from
-+ */
-+void __mips_change_bit(unsigned long nr, volatile unsigned long *addr)
-+{
-+	volatile unsigned long *a = addr;
-+	unsigned bit = nr & SZLONG_MASK;
-+	unsigned long mask;
-+	unsigned long flags;
-+
-+	a += nr >> SZLONG_LOG;
-+	mask = 1UL << bit;
-+	raw_local_irq_save(flags);
-+	*a ^= mask;
-+	raw_local_irq_restore(flags);
-+}
-+EXPORT_SYMBOL(__mips_change_bit);
-+
-+
-+/**
-+ * __mips_test_and_set_bit - Set a bit and return its old value.  This is
-+ * called by test_and_set_bit() if it cannot find a faster solution.
-+ * @nr: Bit to set
-+ * @addr: Address to count from
-+ */
-+int __mips_test_and_set_bit(unsigned long nr,
-+			    volatile unsigned long *addr)
-+{
-+	volatile unsigned long *a = addr;
-+	unsigned bit = nr & SZLONG_MASK;
-+	unsigned long mask;
-+	unsigned long flags;
-+	unsigned long res;
-+
-+	a += nr >> SZLONG_LOG;
-+	mask = 1UL << bit;
-+	raw_local_irq_save(flags);
-+	res = (mask & *a);
-+	*a |= mask;
-+	raw_local_irq_restore(flags);
-+	return res;
-+}
-+EXPORT_SYMBOL(__mips_test_and_set_bit);
-+
-+
-+/**
-+ * __mips_test_and_set_bit_lock - Set a bit and return its old value.  This is
-+ * called by test_and_set_bit_lock() if it cannot find a faster solution.
-+ * @nr: Bit to set
-+ * @addr: Address to count from
-+ */
-+int __mips_test_and_set_bit_lock(unsigned long nr,
-+				 volatile unsigned long *addr)
-+{
-+	volatile unsigned long *a = addr;
-+	unsigned bit = nr & SZLONG_MASK;
-+	unsigned long mask;
-+	unsigned long flags;
-+	unsigned long res;
-+
-+	a += nr >> SZLONG_LOG;
-+	mask = 1UL << bit;
-+	raw_local_irq_save(flags);
-+	res = (mask & *a);
-+	*a |= mask;
-+	raw_local_irq_restore(flags);
-+	return res;
-+}
-+EXPORT_SYMBOL(__mips_test_and_set_bit_lock);
-+
-+
-+/**
-+ * __mips_test_and_clear_bit - Clear a bit and return its old value.  This is
-+ * called by test_and_clear_bit() if it cannot find a faster solution.
-+ * @nr: Bit to clear
-+ * @addr: Address to count from
-+ */
-+int __mips_test_and_clear_bit(unsigned long nr, volatile unsigned long *addr)
-+{
-+	volatile unsigned long *a = addr;
-+	unsigned bit = nr & SZLONG_MASK;
-+	unsigned long mask;
-+	unsigned long flags;
-+	unsigned long res;
-+
-+	a += nr >> SZLONG_LOG;
-+	mask = 1UL << bit;
-+	raw_local_irq_save(flags);
-+	res = (mask & *a);
-+	*a &= ~mask;
-+	raw_local_irq_restore(flags);
-+	return res;
-+}
-+EXPORT_SYMBOL(__mips_test_and_clear_bit);
-+
-+
-+/**
-+ * __mips_test_and_change_bit - Change a bit and return its old value.  This is
-+ * called by test_and_change_bit() if it cannot find a faster solution.
-+ * @nr: Bit to change
-+ * @addr: Address to count from
-+ */
-+int __mips_test_and_change_bit(unsigned long nr, volatile unsigned long *addr)
-+{
-+	volatile unsigned long *a = addr;
-+	unsigned bit = nr & SZLONG_MASK;
-+	unsigned long mask;
-+	unsigned long flags;
-+	unsigned long res;
-+
-+	a += nr >> SZLONG_LOG;
-+	mask = 1UL << bit;
-+	raw_local_irq_save(flags);
-+	res = (mask & *a);
-+	*a ^= mask;
-+	raw_local_irq_restore(flags);
-+	return res;
-+}
-+EXPORT_SYMBOL(__mips_test_and_change_bit);
--- 
-1.7.6
+Here is a list of requested changes that were not done (and why):
+
+  o Suggested optimization of _MIPS_SZLONG and others was not needed
+    as mips-atomic.c now includes <asm/irqflags.h>.
+  o Suggested fixes to please checkpatch.pl for whitespace before 
+    newlines in asm strings was attempted but the result made the 
+    assembly code look more cluttered => no change made.
+
+These were unrequested changes:
+  o Changed order of func listings in irqflags.h so that only one 
+    #ifdef/#endif pair was needed instead of three.
+
+Jim Quinlan

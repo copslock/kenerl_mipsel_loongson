@@ -1,36 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2012 04:04:25 +0200 (CEST)
-Received: from gate.crashing.org ([63.228.1.57]:55341 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903392Ab2IECEM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 5 Sep 2012 04:04:12 +0200
-Received: from [127.0.0.1] (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id q8523iQ0003954;
-        Tue, 4 Sep 2012 21:03:45 -0500
-Message-ID: <1346810624.2257.22.camel@pasglop>
-Subject: Re: [PATCH] clk: Make the generic clock API available by default
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Mark Brown <broonie@opensource.wolfsonmicro.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@arm.linux.org.uk>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org
-Date:   Wed, 05 Sep 2012 12:03:44 +1000
-In-Reply-To: <1346186104-4083-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-References: <1346186104-4083-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
-Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0
-X-archive-position: 34417
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2012 22:28:19 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:56491 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903404Ab2IEU2L (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2012 22:28:11 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1T9MCh-0004QI-Ve; Wed, 05 Sep 2012 15:28:03 -0500
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
+Subject: [PATCH 0/4] Add RI and XI bits to MIPS base architecture.
+Date:   Wed,  5 Sep 2012 15:27:54 -0500
+Message-Id: <1346876878-25965-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.9.5
+X-archive-position: 34418
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: benh@kernel.crashing.org
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,24 +32,32 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, 2012-08-28 at 13:35 -0700, Mark Brown wrote:
-> Rather than requiring platforms to select the generic clock API to make
-> it available make the API available as a user selectable option unless the
-> user either selects HAVE_CUSTOM_CLK (if they have their own implementation)
-> or selects COMMON_CLK (if they depend on the generic implementation).
-> 
-> All current architectures that HAVE_CLK but don't use the common clock
-> framework have selects of HAVE_CUSTOM_CLK added.
-> 
-> This allows drivers to use the generic API on platforms which have no need
-> for the clock API at platform level.
-> 
-> Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
-> ---
+From: "Steven J. Hill" <sjhill@mips.com>
 
-For powerpc:
+Add MIPSr3(TM) base architecture TLB support for Read Inhibit (RI)
+and Execute Inhibit (XI) page protection. SmartMIPS cores will not
+notice any change in functionality.
 
-Acked-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
 
-Cheers,
-Ben.
+Steven J. Hill (4):
+  MIPS: Add base architecture support for RI and XI.
+  MIPS: Remove kernel_uses_smartmips_rixi use from arch/mips/mm.
+  MIPS: Remove kernel_uses_smartmips_rixi from page table bits.
+  MIPS: Remove kernel_uses_smartmips_rixi macro definition.
+
+ arch/mips/include/asm/cpu-features.h               |    7 ++++--
+ arch/mips/include/asm/cpu.h                        |    2 ++
+ .../asm/mach-cavium-octeon/cpu-feature-overrides.h |    2 --
+ arch/mips/include/asm/mipsregs.h                   |    1 +
+ arch/mips/include/asm/pgtable-bits.h               |   24 ++++++++++++--------
+ arch/mips/include/asm/pgtable.h                    |   12 +++++-----
+ arch/mips/kernel/cpu-probe.c                       |   12 +++++++++-
+ arch/mips/mm/cache.c                               |    2 +-
+ arch/mips/mm/fault.c                               |    4 +++-
+ arch/mips/mm/tlb-r4k.c                             |    7 ++++--
+ arch/mips/mm/tlbex.c                               |   14 ++++++------
+ 11 files changed, 55 insertions(+), 32 deletions(-)
+
+-- 
+1.7.9.5

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2012 22:28:42 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:56493 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2012 22:29:08 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:56494 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903405Ab2IEU2N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2012 22:28:13 +0200
+        with ESMTP id S1903407Ab2IEU2O (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2012 22:28:14 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1T9MCl-0004QI-7w; Wed, 05 Sep 2012 15:28:07 -0500
+        id 1T9MCm-0004QI-0x; Wed, 05 Sep 2012 15:28:08 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 1/4] MIPS: Add base architecture support for RI and XI.
-Date:   Wed,  5 Sep 2012 15:27:55 -0500
-Message-Id: <1346876878-25965-2-git-send-email-sjhill@mips.com>
+Subject: [PATCH 2/4] MIPS: Remove kernel_uses_smartmips_rixi use from arch/mips/mm.
+Date:   Wed,  5 Sep 2012 15:27:56 -0500
+Message-Id: <1346876878-25965-3-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1346876878-25965-1-git-send-email-sjhill@mips.com>
 References: <1346876878-25965-1-git-send-email-sjhill@mips.com>
-X-archive-position: 34419
+X-archive-position: 34420
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,85 +36,140 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Originally both Read Inhibit (RI) and Execute Inhibit (XI) were
-supported by the TLB only for a SmartMIPS core. The MIPSr3(TM)
-Architecture now defines an optional feature to implement these
-TLB bits separately. Support for one or both features can be
-checked by looking at the Config3.RXI bit.
+Remove usage of the 'kernel_uses_smartmips_rixi' macro from all files
+in the 'arch/mips/mm' subsystem.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/cpu-features.h |    6 ++++++
- arch/mips/include/asm/cpu.h          |    2 ++
- arch/mips/include/asm/mipsregs.h     |    1 +
- arch/mips/kernel/cpu-probe.c         |   12 +++++++++++-
- 4 files changed, 20 insertions(+), 1 deletion(-)
+ arch/mips/mm/cache.c   |    2 +-
+ arch/mips/mm/fault.c   |    4 +++-
+ arch/mips/mm/tlb-r4k.c |    7 +++++--
+ arch/mips/mm/tlbex.c   |   14 +++++++-------
+ 4 files changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 080edd8..c78a77b 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -98,6 +98,12 @@
- #ifndef kernel_uses_smartmips_rixi
- #define kernel_uses_smartmips_rixi 0
+diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
+index ff910a1..b478c51 100644
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -183,7 +183,7 @@ EXPORT_SYMBOL(_page_cachable_default);
+ 
+ static inline void setup_protection_map(void)
+ {
+-	if (kernel_uses_smartmips_rixi) {
++	if (cpu_has_ri | cpu_has_xi) {
+ 		protection_map[0]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_NO_READ);
+ 		protection_map[1]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC);
+ 		protection_map[2]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_NO_READ);
+diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
+index c14f6df..153aeee 100644
+--- a/arch/mips/mm/fault.c
++++ b/arch/mips/mm/fault.c
+@@ -114,7 +114,7 @@ good_area:
+ 		if (!(vma->vm_flags & VM_WRITE))
+ 			goto bad_area;
+ 	} else {
+-		if (kernel_uses_smartmips_rixi) {
++		if (cpu_has_xi) {
+ 			if (address == regs->cp0_epc && !(vma->vm_flags & VM_EXEC)) {
+ #if 0
+ 				pr_notice("Cpu%d[%s:%d:%0*lx:%ld:%0*lx] XI violation\n",
+@@ -125,6 +125,8 @@ good_area:
  #endif
-+#ifndef cpu_has_ri
-+#define cpu_has_ri		(cpu_data[0].options & MIPS_CPU_RI)
-+#endif 
-+#ifndef cpu_has_xi
-+#define cpu_has_xi		(cpu_data[0].options & MIPS_CPU_XI)
-+#endif
- #ifndef cpu_has_mmips
- #define cpu_has_mmips		(cpu_data[0].options & MIPS_CPU_MICROMIPS)
+ 				goto bad_area;
+ 			}
++		}
++		else if (cpu_has_ri) {
+ 			if (!(vma->vm_flags & VM_READ)) {
+ #if 0
+ 				pr_notice("Cpu%d[%s:%d:%0*lx:%ld:%0*lx] RI violation\n",
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index d2572cb..df894f8 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -401,12 +401,15 @@ void __cpuinit tlb_init(void)
+ 	    current_cpu_type() == CPU_R14000)
+ 		write_c0_framemask(0);
+ 
+-	if (kernel_uses_smartmips_rixi) {
++	if (cpu_has_ri | cpu_has_xi) {
++		u32 pg;
++
+ 		/*
+ 		 * Enable the no read, no exec bits, and enable large virtual
+ 		 * address.
+ 		 */
+-		u32 pg = PG_RIE | PG_XIE;
++		pg = (cpu_has_ri ? PG_RIE : 0);
++		pg |= (cpu_has_xi ? PG_XIE : 0);
+ #ifdef CONFIG_64BIT
+ 		pg |= PG_ELPA;
  #endif
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 4889fae..1b928ed 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -323,6 +323,8 @@ enum cpu_type_enum {
- #define MIPS_CPU_VEIC		0x00100000 /* CPU supports MIPSR2 external interrupt controller mode */
- #define MIPS_CPU_ULRI		0x00200000 /* CPU has ULRI feature */
- #define MIPS_CPU_MICROMIPS	0x01000000 /* CPU has microMIPS capability */
-+#define MIPS_CPU_RI		0x02000000 /* CPU has TLB Read Inhibit */
-+#define MIPS_CPU_XI		0x04000000 /* CPU has TLB Execute Inhibit */
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index e565d45..90c86ee 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -601,7 +601,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
+ static __cpuinit __maybe_unused void build_convert_pte_to_entrylo(u32 **p,
+ 								  unsigned int reg)
+ {
+-	if (kernel_uses_smartmips_rixi) {
++	if (cpu_has_ri | cpu_has_xi) {
+ 		UASM_i_SRL(p, reg, reg, ilog2(_PAGE_NO_EXEC));
+ 		UASM_i_ROTR(p, reg, reg, ilog2(_PAGE_GLOBAL) - ilog2(_PAGE_NO_EXEC));
+ 	} else {
+@@ -1021,7 +1021,7 @@ static void __cpuinit build_update_entries(u32 **p, unsigned int tmp,
+ 	if (cpu_has_64bits) {
+ 		uasm_i_ld(p, tmp, 0, ptep); /* get even pte */
+ 		uasm_i_ld(p, ptep, sizeof(pte_t), ptep); /* get odd pte */
+-		if (kernel_uses_smartmips_rixi) {
++		if (cpu_has_ri | cpu_has_xi) {
+ 			UASM_i_SRL(p, tmp, tmp, ilog2(_PAGE_NO_EXEC));
+ 			UASM_i_SRL(p, ptep, ptep, ilog2(_PAGE_NO_EXEC));
+ 			UASM_i_ROTR(p, tmp, tmp, ilog2(_PAGE_GLOBAL) - ilog2(_PAGE_NO_EXEC));
+@@ -1048,7 +1048,7 @@ static void __cpuinit build_update_entries(u32 **p, unsigned int tmp,
+ 	UASM_i_LW(p, ptep, sizeof(pte_t), ptep); /* get odd pte */
+ 	if (r45k_bvahwbug())
+ 		build_tlb_probe_entry(p);
+-	if (kernel_uses_smartmips_rixi) {
++	if (cpu_has_ri | cpu_has_xi) {
+ 		UASM_i_SRL(p, tmp, tmp, ilog2(_PAGE_NO_EXEC));
+ 		UASM_i_SRL(p, ptep, ptep, ilog2(_PAGE_NO_EXEC));
+ 		UASM_i_ROTR(p, tmp, tmp, ilog2(_PAGE_GLOBAL) - ilog2(_PAGE_NO_EXEC));
+@@ -1214,7 +1214,7 @@ build_fast_tlb_refill_handler (u32 **p, struct uasm_label **l,
+ 		UASM_i_LW(p, even, 0, ptr); /* get even pte */
+ 		UASM_i_LW(p, odd, sizeof(pte_t), ptr); /* get odd pte */
+ 	}
+-	if (kernel_uses_smartmips_rixi) {
++	if (cpu_has_ri | cpu_has_xi) {
+ 		uasm_i_dsrl_safe(p, even, even, ilog2(_PAGE_NO_EXEC));
+ 		uasm_i_dsrl_safe(p, odd, odd, ilog2(_PAGE_NO_EXEC));
+ 		uasm_i_drotr(p, even, even,
+@@ -1576,7 +1576,7 @@ build_pte_present(u32 **p, struct uasm_reloc **r,
+ {
+ 	int t = scratch >= 0 ? scratch : pte;
  
- /*
-  * CPU ASE encodings
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index cdb9c87..19430fb 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -591,6 +591,7 @@
- #define MIPS_CONF3_LPA		(_ULCAST_(1) <<  7)
- #define MIPS_CONF3_DSP		(_ULCAST_(1) << 10)
- #define MIPS_CONF3_DSP2P	(_ULCAST_(1) << 11)
-+#define MIPS_CONF3_RXI		(_ULCAST_(1) << 12)
- #define MIPS_CONF3_ULRI		(_ULCAST_(1) << 13)
- #define MIPS_CONF3_ISA		(_ULCAST_(3) << 14)
- #define MIPS_CONF3_ISA_OE	(_ULCAST_(1) << 16)
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 009fc13..e85d732 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -422,8 +422,18 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
+-	if (kernel_uses_smartmips_rixi) {
++	if (cpu_has_ri | cpu_has_xi) {
+ 		if (use_bbit_insns()) {
+ 			uasm_il_bbit0(p, r, pte, ilog2(_PAGE_PRESENT), lid);
+ 			uasm_i_nop(p);
+@@ -1906,7 +1906,7 @@ static void __cpuinit build_r4000_tlb_load_handler(void)
+ 	if (m4kc_tlbp_war())
+ 		build_tlb_probe_entry(&p);
  
- 	config3 = read_c0_config3();
+-	if (kernel_uses_smartmips_rixi) {
++	if (cpu_has_ri | cpu_has_xi) {
+ 		/*
+ 		 * If the page is not _PAGE_VALID, RI or XI could not
+ 		 * have triggered it.  Skip the expensive test..
+@@ -1960,7 +1960,7 @@ static void __cpuinit build_r4000_tlb_load_handler(void)
+ 	build_pte_present(&p, &r, wr.r1, wr.r2, wr.r3, label_nopage_tlbl);
+ 	build_tlb_probe_entry(&p);
  
--	if (config3 & MIPS_CONF3_SM)
-+	if (config3 & MIPS_CONF3_SM) {
- 		c->ases |= MIPS_ASE_SMARTMIPS;
-+		c->options |= MIPS_CPU_RI;
-+		c->options |= MIPS_CPU_XI;
-+	}
-+	if (config3 & MIPS_CONF3_RXI) {
-+		write_c0_pagegrain(read_c0_pagegrain() | PG_RIE | PG_XIE);
-+		if (read_c0_pagegrain() & PG_RIE)
-+			c->options |= MIPS_CPU_RI;
-+		if (read_c0_pagegrain() & PG_XIE)
-+			c->options |= MIPS_CPU_XI;
-+	}
- 	if (config3 & MIPS_CONF3_DSP)
- 		c->ases |= MIPS_ASE_DSP;
- 	if (config3 & MIPS_CONF3_DSP2P)
+-	if (kernel_uses_smartmips_rixi) {
++	if (cpu_has_ri | cpu_has_xi) {
+ 		/*
+ 		 * If the page is not _PAGE_VALID, RI or XI could not
+ 		 * have triggered it.  Skip the expensive test..
 -- 
 1.7.9.5

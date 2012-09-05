@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2012 22:29:08 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:56494 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2012 22:29:36 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:56497 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903407Ab2IEU2O (ORCPT
+        with ESMTP id S1903408Ab2IEU2O (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2012 22:28:14 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1T9MCm-0004QI-0x; Wed, 05 Sep 2012 15:28:08 -0500
+        id 1T9MCm-0004QI-GA; Wed, 05 Sep 2012 15:28:08 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 2/4] MIPS: Remove kernel_uses_smartmips_rixi use from arch/mips/mm.
-Date:   Wed,  5 Sep 2012 15:27:56 -0500
-Message-Id: <1346876878-25965-3-git-send-email-sjhill@mips.com>
+Subject: [PATCH 3/4] MIPS: Remove kernel_uses_smartmips_rixi from page table bits.
+Date:   Wed,  5 Sep 2012 15:27:57 -0500
+Message-Id: <1346876878-25965-4-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1346876878-25965-1-git-send-email-sjhill@mips.com>
 References: <1346876878-25965-1-git-send-email-sjhill@mips.com>
-X-archive-position: 34420
+X-archive-position: 34421
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,140 +36,118 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Remove usage of the 'kernel_uses_smartmips_rixi' macro from all files
-in the 'arch/mips/mm' subsystem.
+Remove usage of the 'kernel_uses_smartmips_rixi' macro from all the
+page table bit definitions in 'arch/mips/include/asm' directory.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/mm/cache.c   |    2 +-
- arch/mips/mm/fault.c   |    4 +++-
- arch/mips/mm/tlb-r4k.c |    7 +++++--
- arch/mips/mm/tlbex.c   |   14 +++++++-------
- 4 files changed, 16 insertions(+), 11 deletions(-)
+ arch/mips/include/asm/pgtable-bits.h |   24 ++++++++++++++----------
+ arch/mips/include/asm/pgtable.h      |   12 ++++++------
+ 2 files changed, 20 insertions(+), 16 deletions(-)
 
-diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
-index ff910a1..b478c51 100644
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -183,7 +183,7 @@ EXPORT_SYMBOL(_page_cachable_default);
+diff --git a/arch/mips/include/asm/pgtable-bits.h b/arch/mips/include/asm/pgtable-bits.h
+index e9fe7e9..c266cba 100644
+--- a/arch/mips/include/asm/pgtable-bits.h
++++ b/arch/mips/include/asm/pgtable-bits.h
+@@ -79,9 +79,9 @@
+ /* implemented in software */
+ #define _PAGE_PRESENT_SHIFT	(0)
+ #define _PAGE_PRESENT		(1 << _PAGE_PRESENT_SHIFT)
+-/* implemented in software, should be unused if kernel_uses_smartmips_rixi. */
+-#define _PAGE_READ_SHIFT	(kernel_uses_smartmips_rixi ? _PAGE_PRESENT_SHIFT : _PAGE_PRESENT_SHIFT + 1)
+-#define _PAGE_READ ({if (kernel_uses_smartmips_rixi) BUG(); 1 << _PAGE_READ_SHIFT; })
++/* implemented in software, should be unused if cpu_has_ri. */
++#define _PAGE_READ_SHIFT	(cpu_has_ri ? _PAGE_PRESENT_SHIFT + 1: _PAGE_PRESENT_SHIFT)
++#define _PAGE_READ ({if (!cpu_has_ri) BUG(); 1 << _PAGE_READ_SHIFT; })
+ /* implemented in software */
+ #define _PAGE_WRITE_SHIFT	(_PAGE_READ_SHIFT + 1)
+ #define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
+@@ -104,12 +104,12 @@
+ #endif
  
- static inline void setup_protection_map(void)
+ /* Page cannot be executed */
+-#define _PAGE_NO_EXEC_SHIFT	(kernel_uses_smartmips_rixi ? _PAGE_HUGE_SHIFT + 1 : _PAGE_HUGE_SHIFT)
+-#define _PAGE_NO_EXEC		({if (!kernel_uses_smartmips_rixi) BUG(); 1 << _PAGE_NO_EXEC_SHIFT; })
++#define _PAGE_NO_EXEC_SHIFT	(cpu_has_xi ? _PAGE_HUGE_SHIFT + 1 : _PAGE_HUGE_SHIFT)
++#define _PAGE_NO_EXEC		({if (!cpu_has_xi) BUG(); 1 << _PAGE_NO_EXEC_SHIFT; })
+ 
+ /* Page cannot be read */
+-#define _PAGE_NO_READ_SHIFT	(kernel_uses_smartmips_rixi ? _PAGE_NO_EXEC_SHIFT + 1 : _PAGE_NO_EXEC_SHIFT)
+-#define _PAGE_NO_READ		({if (!kernel_uses_smartmips_rixi) BUG(); 1 << _PAGE_NO_READ_SHIFT; })
++#define _PAGE_NO_READ_SHIFT	(cpu_has_ri ? _PAGE_NO_EXEC_SHIFT + 1 : _PAGE_NO_EXEC_SHIFT)
++#define _PAGE_NO_READ		({if (!cpu_has_ri) BUG(); 1 << _PAGE_NO_READ_SHIFT; })
+ 
+ #define _PAGE_GLOBAL_SHIFT	(_PAGE_NO_READ_SHIFT + 1)
+ #define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
+@@ -155,20 +155,24 @@
+  */
+ static inline uint64_t pte_to_entrylo(unsigned long pte_val)
  {
 -	if (kernel_uses_smartmips_rixi) {
 +	if (cpu_has_ri | cpu_has_xi) {
- 		protection_map[0]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_NO_READ);
- 		protection_map[1]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC);
- 		protection_map[2]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_NO_READ);
-diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
-index c14f6df..153aeee 100644
---- a/arch/mips/mm/fault.c
-+++ b/arch/mips/mm/fault.c
-@@ -114,7 +114,7 @@ good_area:
- 		if (!(vma->vm_flags & VM_WRITE))
- 			goto bad_area;
- 	} else {
--		if (kernel_uses_smartmips_rixi) {
-+		if (cpu_has_xi) {
- 			if (address == regs->cp0_epc && !(vma->vm_flags & VM_EXEC)) {
- #if 0
- 				pr_notice("Cpu%d[%s:%d:%0*lx:%ld:%0*lx] XI violation\n",
-@@ -125,6 +125,8 @@ good_area:
++		unsigned long rixi;
+ 		int sa;
+ #ifdef CONFIG_32BIT
+ 		sa = 31 - _PAGE_NO_READ_SHIFT;
+ #else
+ 		sa = 63 - _PAGE_NO_READ_SHIFT;
  #endif
- 				goto bad_area;
- 			}
-+		}
-+		else if (cpu_has_ri) {
- 			if (!(vma->vm_flags & VM_READ)) {
- #if 0
- 				pr_notice("Cpu%d[%s:%d:%0*lx:%ld:%0*lx] RI violation\n",
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index d2572cb..df894f8 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -401,12 +401,15 @@ void __cpuinit tlb_init(void)
- 	    current_cpu_type() == CPU_R14000)
- 		write_c0_framemask(0);
- 
--	if (kernel_uses_smartmips_rixi) {
-+	if (cpu_has_ri | cpu_has_xi) {
-+		u32 pg;
++		rixi = ((cpu_has_ri ? _PAGE_NO_READ : 0) |
++			(cpu_has_xi ? _PAGE_NO_EXEC : 0));
 +
  		/*
- 		 * Enable the no read, no exec bits, and enable large virtual
- 		 * address.
+ 		 * C has no way to express that this is a DSRL
+ 		 * _PAGE_NO_EXEC_SHIFT followed by a ROTR 2.  Luckily
+ 		 * in the fast path this is done in assembly
  		 */
--		u32 pg = PG_RIE | PG_XIE;
-+		pg = (cpu_has_ri ? PG_RIE : 0);
-+		pg |= (cpu_has_xi ? PG_XIE : 0);
- #ifdef CONFIG_64BIT
- 		pg |= PG_ELPA;
- #endif
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index e565d45..90c86ee 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -601,7 +601,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
- static __cpuinit __maybe_unused void build_convert_pte_to_entrylo(u32 **p,
- 								  unsigned int reg)
- {
--	if (kernel_uses_smartmips_rixi) {
-+	if (cpu_has_ri | cpu_has_xi) {
- 		UASM_i_SRL(p, reg, reg, ilog2(_PAGE_NO_EXEC));
- 		UASM_i_ROTR(p, reg, reg, ilog2(_PAGE_GLOBAL) - ilog2(_PAGE_NO_EXEC));
- 	} else {
-@@ -1021,7 +1021,7 @@ static void __cpuinit build_update_entries(u32 **p, unsigned int tmp,
- 	if (cpu_has_64bits) {
- 		uasm_i_ld(p, tmp, 0, ptep); /* get even pte */
- 		uasm_i_ld(p, ptep, sizeof(pte_t), ptep); /* get odd pte */
--		if (kernel_uses_smartmips_rixi) {
-+		if (cpu_has_ri | cpu_has_xi) {
- 			UASM_i_SRL(p, tmp, tmp, ilog2(_PAGE_NO_EXEC));
- 			UASM_i_SRL(p, ptep, ptep, ilog2(_PAGE_NO_EXEC));
- 			UASM_i_ROTR(p, tmp, tmp, ilog2(_PAGE_GLOBAL) - ilog2(_PAGE_NO_EXEC));
-@@ -1048,7 +1048,7 @@ static void __cpuinit build_update_entries(u32 **p, unsigned int tmp,
- 	UASM_i_LW(p, ptep, sizeof(pte_t), ptep); /* get odd pte */
- 	if (r45k_bvahwbug())
- 		build_tlb_probe_entry(p);
--	if (kernel_uses_smartmips_rixi) {
-+	if (cpu_has_ri | cpu_has_xi) {
- 		UASM_i_SRL(p, tmp, tmp, ilog2(_PAGE_NO_EXEC));
- 		UASM_i_SRL(p, ptep, ptep, ilog2(_PAGE_NO_EXEC));
- 		UASM_i_ROTR(p, tmp, tmp, ilog2(_PAGE_GLOBAL) - ilog2(_PAGE_NO_EXEC));
-@@ -1214,7 +1214,7 @@ build_fast_tlb_refill_handler (u32 **p, struct uasm_label **l,
- 		UASM_i_LW(p, even, 0, ptr); /* get even pte */
- 		UASM_i_LW(p, odd, sizeof(pte_t), ptr); /* get odd pte */
+ 		return (pte_val >> _PAGE_GLOBAL_SHIFT) |
+-			((pte_val & (_PAGE_NO_EXEC | _PAGE_NO_READ)) << sa);
++			 ((pte_val & rixi) << sa);
  	}
--	if (kernel_uses_smartmips_rixi) {
-+	if (cpu_has_ri | cpu_has_xi) {
- 		uasm_i_dsrl_safe(p, even, even, ilog2(_PAGE_NO_EXEC));
- 		uasm_i_dsrl_safe(p, odd, odd, ilog2(_PAGE_NO_EXEC));
- 		uasm_i_drotr(p, even, even,
-@@ -1576,7 +1576,7 @@ build_pte_present(u32 **p, struct uasm_reloc **r,
+ 
+ 	return pte_val >> _PAGE_GLOBAL_SHIFT;
+@@ -220,7 +224,7 @@ static inline uint64_t pte_to_entrylo(unsigned long pte_val)
+ 
+ #endif
+ 
+-#define __READABLE	(_PAGE_SILENT_READ | _PAGE_ACCESSED | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ))
++#define __READABLE	(_PAGE_SILENT_READ | _PAGE_ACCESSED | (cpu_has_ri ? 0 : _PAGE_READ))
+ #define __WRITEABLE	(_PAGE_WRITE | _PAGE_SILENT_WRITE | _PAGE_MODIFIED)
+ 
+ #define _PAGE_CHG_MASK  (_PFN_MASK | _PAGE_ACCESSED | _PAGE_MODIFIED | _CACHE_MASK)
+diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
+index b2202a6..748aa6a 100644
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -22,15 +22,15 @@ struct mm_struct;
+ struct vm_area_struct;
+ 
+ #define PAGE_NONE	__pgprot(_PAGE_PRESENT | _CACHE_CACHABLE_NONCOHERENT)
+-#define PAGE_SHARED	__pgprot(_PAGE_PRESENT | _PAGE_WRITE | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ) | \
++#define PAGE_SHARED	__pgprot(_PAGE_PRESENT | _PAGE_WRITE | (cpu_has_ri ? 0 : _PAGE_READ) | \
+ 				 _page_cachable_default)
+-#define PAGE_COPY	__pgprot(_PAGE_PRESENT | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ) | \
+-				 (kernel_uses_smartmips_rixi ?  _PAGE_NO_EXEC : 0) | _page_cachable_default)
+-#define PAGE_READONLY	__pgprot(_PAGE_PRESENT | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ) | \
++#define PAGE_COPY	__pgprot(_PAGE_PRESENT | (cpu_has_ri ? 0 : _PAGE_READ) | \
++				 (cpu_has_xi ? _PAGE_NO_EXEC : 0) | _page_cachable_default)
++#define PAGE_READONLY	__pgprot(_PAGE_PRESENT | (cpu_has_ri ? 0 : _PAGE_READ) | \
+ 				 _page_cachable_default)
+ #define PAGE_KERNEL	__pgprot(_PAGE_PRESENT | __READABLE | __WRITEABLE | \
+ 				 _PAGE_GLOBAL | _page_cachable_default)
+-#define PAGE_USERIO	__pgprot(_PAGE_PRESENT | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ) | _PAGE_WRITE | \
++#define PAGE_USERIO	__pgprot(_PAGE_PRESENT | (cpu_has_ri ? 0 : _PAGE_READ) | _PAGE_WRITE | \
+ 				 _page_cachable_default)
+ #define PAGE_KERNEL_UNCACHED __pgprot(_PAGE_PRESENT | __READABLE | \
+ 			__WRITEABLE | _PAGE_GLOBAL | _CACHE_UNCACHED)
+@@ -299,7 +299,7 @@ static inline pte_t pte_mkdirty(pte_t pte)
+ static inline pte_t pte_mkyoung(pte_t pte)
  {
- 	int t = scratch >= 0 ? scratch : pte;
- 
+ 	pte_val(pte) |= _PAGE_ACCESSED;
 -	if (kernel_uses_smartmips_rixi) {
-+	if (cpu_has_ri | cpu_has_xi) {
- 		if (use_bbit_insns()) {
- 			uasm_il_bbit0(p, r, pte, ilog2(_PAGE_PRESENT), lid);
- 			uasm_i_nop(p);
-@@ -1906,7 +1906,7 @@ static void __cpuinit build_r4000_tlb_load_handler(void)
- 	if (m4kc_tlbp_war())
- 		build_tlb_probe_entry(&p);
- 
--	if (kernel_uses_smartmips_rixi) {
-+	if (cpu_has_ri | cpu_has_xi) {
- 		/*
- 		 * If the page is not _PAGE_VALID, RI or XI could not
- 		 * have triggered it.  Skip the expensive test..
-@@ -1960,7 +1960,7 @@ static void __cpuinit build_r4000_tlb_load_handler(void)
- 	build_pte_present(&p, &r, wr.r1, wr.r2, wr.r3, label_nopage_tlbl);
- 	build_tlb_probe_entry(&p);
- 
--	if (kernel_uses_smartmips_rixi) {
-+	if (cpu_has_ri | cpu_has_xi) {
- 		/*
- 		 * If the page is not _PAGE_VALID, RI or XI could not
- 		 * have triggered it.  Skip the expensive test..
++	if (cpu_has_ri) {
+ 		if (!(pte_val(pte) & _PAGE_NO_READ))
+ 			pte_val(pte) |= _PAGE_SILENT_READ;
+ 	} else {
 -- 
 1.7.9.5

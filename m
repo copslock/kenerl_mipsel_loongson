@@ -1,54 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2012 19:31:18 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.126.186]:60426 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903469Ab2IJRbL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Sep 2012 19:31:11 +0200
-Received: from mailbox.adnet.avionic-design.de (mailbox.avionic-design.de [109.75.18.3])
-        by mrelayeu.kundenserver.de (node=mrbap4) with ESMTP (Nemesis)
-        id 0LfBVo-1TvS0I2aTo-00olkH; Mon, 10 Sep 2012 19:30:58 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTP id 045E02A282F4;
-        Mon, 10 Sep 2012 19:30:58 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at avionic-design.de
-Received: from mailbox.adnet.avionic-design.de ([127.0.0.1])
-        by localhost (mailbox.avionic-design.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id RmwHvdBI+ORH; Mon, 10 Sep 2012 19:30:57 +0200 (CEST)
-Received: from localhost (avionic-0098.adnet.avionic-design.de [172.20.31.233])
-        (Authenticated sender: thierry.reding)
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTPA id 03A0A2A28295;
-        Mon, 10 Sep 2012 19:30:56 +0200 (CEST)
-Date:   Mon, 10 Sep 2012 19:30:56 +0200
-From:   Thierry Reding <thierry.reding@avionic-design.de>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Antony Pavlov <antonynpavlov@gmail.com>,
-        Maarten ter Huurne <maarten@treewalker.org>
-Subject: Re: [PATCH v2 0/3] MIPS: JZ4740: Move PWM driver to PWM framework
-Message-ID: <20120910173056.GA31611@avionic-0098.mockup.avionic-design.de>
-References: <1347278719-15276-1-git-send-email-thierry.reding@avionic-design.de>
- <504E0542.8020309@metafoo.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2012 20:05:13 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:57281 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903466Ab2IJSFF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Sep 2012 20:05:05 +0200
+Received: by pbbrq8 with SMTP id rq8so3024140pbb.36
+        for <linux-mips@linux-mips.org>; Mon, 10 Sep 2012 11:04:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=EX57iYaZsxkx6zesvcJPdvD8OFOwy8yP9r5YUnzXNQw=;
+        b=Ngi5kcqWdPs7t43yuHUQ9879hKttKcxtx6UBIkYfL3c+mFqhS9TjB9FendH1OrhURD
+         7iVFt0rWM8o0HIeoHuGoP6grbA5lDKei/QlotSQIVNGgsOrd5gvrdubOMICEezGOGXRb
+         h1Ih4NjsAXJ/H08l9Uxi4jGGc+KCwSrAnsX8Wbx2i6NR2AX5ZDeLWdfR5pHTsvV7QQsL
+         oUxhuMbJSbKR4yLTXn/fGlPk0feaiio+ciZJTDpFi+C2VQxElaBrnGcy6kktru0VgkHx
+         o3mAaEerLbSeJF5aF2jR8HTBRGyt1pzMuR7Hec2zanpRjIkiZynunw4DUtuB1n0Bo8kO
+         0Osw==
+Received: by 10.68.129.73 with SMTP id nu9mr7013787pbb.59.1347300298283;
+        Mon, 10 Sep 2012 11:04:58 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id uu10sm8424328pbc.2.2012.09.10.11.04.56
+        (version=SSLv3 cipher=OTHER);
+        Mon, 10 Sep 2012 11:04:57 -0700 (PDT)
+Message-ID: <504E2BC7.7000108@gmail.com>
+Date:   Mon, 10 Sep 2012 11:04:55 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:15.0) Gecko/20120828 Thunderbird/15.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="M9NhX3UHpAaciwkO"
-Content-Disposition: inline
-In-Reply-To: <504E0542.8020309@metafoo.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Provags-ID: V02:K0:j+SZqMo+4tu8auhFQAWVbVDyMzIr5zhpulQT4J4rUYl
- 9b3+yNfw4j8lQc/Quejgps51f26mutUFc+5ZboaCSEQzgWR0j3
- WCkCf9WuCtYqj/8QFU/1yT70PSjkPyb2uWxK5MaIXCCI0yDIh1
- DgvszMW/Pp9CH5y13HyzG9Gf68nWe0lOdEJmPoY+s15ATT+ka+
- IFMLs1YIvhQqMDVxOin6Ig0snaB6Lg/Ay/kXz2B6lulMRV8bBu
- jnqiL9C3jXEWITfjxqdlBTzFUzFqiNTOG6HEEkKxgoCAUwOxak
- Zxg8I/V/G4MePzSMXw90K3+iCMVfyxZIF+LBe4i5h0/gtoYFP+
- KbelZmr/VjjEXuNZi298tNwelXHbMgqpAzquA5jWraKybuEhzn
- Te/Vl7SgY4HtHWELIf9QLEOUJbmHFYdGBxk5o6NblbSIhZKifg
- PYNVU
-X-archive-position: 34455
+To:     Rich Felker <dalias@aerifal.cx>
+CC:     linux-mips@linux-mips.org
+Subject: Re: Is r25 saved across syscalls?
+References: <20120909193008.GA15157@brightrain.aerifal.cx> <20120910170830.GB24448@linux-mips.org> <20120910172248.GN27715@brightrain.aerifal.cx>
+In-Reply-To: <20120910172248.GN27715@brightrain.aerifal.cx>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34456
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@avionic-design.de
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,69 +52,54 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+On 09/10/2012 10:22 AM, Rich Felker wrote:
+> On Mon, Sep 10, 2012 at 07:08:30PM +0200, Ralf Baechle wrote:
+>> On Sun, Sep 09, 2012 at 03:30:08PM -0400, Rich Felker wrote:
+>>
+>>> The kernel syscall entry/exit code seems to always save and restore
+>>> r25. Is this stable/documented behavior I can rely on? If there's a
+>>> reason it _needs_ to be preserved, knowing that would help convince me
+>>> it's safe to assume it will always be done. The intended usage is to
+>>> be able to make syscalls (where the syscall # is not a constant that
+>>> could be loaded with lwi) without a stack frame, as in "move $2,$25 ;
+>>> syscall".
+>>
+>> The basic design idea is that syscalls use a calling convention similar
+>> to subroutine calls.  $25 is $t9, so a temp register which is callee saved.
+>>
+>> So if the kernel is saving $t9 and you've been relying on that, consider
+>> yourself lucky - there's not guarantee for that.
+>
+> Is there any documentation of what the kernel does guarantee?
 
---M9NhX3UHpAaciwkO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Not really.  The glibc souces can be used as the canonical 
+implementation as we cannot break it.  glibc assumes $25 is clobbered.
 
-On Mon, Sep 10, 2012 at 05:20:34PM +0200, Lars-Peter Clausen wrote:
-> On 09/10/2012 02:05 PM, Thierry Reding wrote:
-> > Hi,
-> >=20
->=20
-> I think v2 looks, good. Will give it some testing later.
->=20
-> > This small series fixes a build error due to a circular header
-> > dependency, exports the timer API so it can be used outside of
-> > the arch/mips/jz4740 tree and finally moves and converts the
-> > JZ4740 PWM driver to the PWM framework.
-> >=20
-> > Note that I don't have any hardware to test this on, so I had to
-> > rely on compile tests only. Patches 1 and 2 should probably go
-> > through the MIPS tree, while I can take patch 3 through the PWM
-> > tree. It touches a couple of files in arch/mips but the changes
-> > are unlikely to cause conflicts.
->=20
-> Patch 2 and 3 should probably go through the same tree since patch 3 depe=
-nds
-> on patch 2. I'd like to see them both go through the PWM tree.
+> All
+> existing syscall-making code I've seen depends at least on r4-r7 not
+> being clobbered when a signal interrupts a syscall
 
-That's fine with me. I'll probably need an Acked-by from Ralf just to be
-safe.
+This is an internal kernel implementation detail. Relying on it in 
+userspace is probably not a good idea.
 
-> Patch 1 should go through the MIPS tree, but I still can't see why the is=
-sue
-> should occur nor does it happen for anybody else except for you. Instead =
-of
-> moving the content over to the public irq.h I'd rather like to see the
-> private irq.h being renamed.
+> and sets it up for
+> restart (since the arguments still need to be there when it's
+> restarted), and seems to also depend on r4-r6 not being clobbered when
+> the syscall successfully returns (since they're not listed in the
+> clobber list, e.g. in uClibc's inline syscall asm).
 
-If we can solve this some other way I'm all for it. Maybe you can share
-the defconfig or .config that you use so I can test under the same
-conditions.
+Some versions of uClibc's inline syscall asm are buggy.  So they cannot 
+be used as an indication of what is supported.
 
-Thierry
+> These are
+> requirements beyond the normal function call convention (which does
+> not require the callee preserve the values of r4-r7).
 
---M9NhX3UHpAaciwkO
-Content-Type: application/pgp-signature
+I would assume these are clobbered (from glibc sources 
+ports/sysdeps/unix/sysv/linux/mips/mips64/n64/sysdep.h):
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.19 (GNU/Linux)
+"$1", "$3", "$10", "$11", "$12", "$13", "$14", "$15", "$24", "$25", 
+"hi", "lo"
 
-iQIcBAEBAgAGBQJQTiPQAAoJEN0jrNd/PrOhiAMQALvMtvosXECK2p3pb2bfBOtw
-NLKDadGL0SzXtBthxEI86edd6Px51aE7n1pmSa9p64ph1RqJXrD2/yl5E+FdmUFK
-csqn76lN7p/TM9uHj7pizVENTxKaDCVJmEpZz5zgTMEOnSURw6LWhv8xr1tmlFwz
-4FBpY2PQwCcqtfFN3YNU0CQycD3QxxVi46aMydflRjnfLa3TAIGsGYXQFO3XC1Ut
-B18hksX5J0Lo0i5w76APoRN5HtEy3JA7uDxW3WUMVzwCUR/H+w4CQmqklYcr+WjB
-QExWiexGLT5R7MF+PP2kBk6+YWbJIOO6z9CgFDmTHHxPVNpa9/yBmUHvXtrTKWdl
-VwMWRIun6h+/U2lApUDqGznO3By8o1tspOT/aDqqgWn4IaFesDSIv19AifePnAbv
-AfXZ8TOrGL33xK5LpbcVlarfGQz7RqXMP9XGwnckOxrd5z44mlSzOjrBV6MV95eS
-DgpTSHSjQwVqVR4CGN9QkEfrgyPMMH7QPPf6mYWFeeY/OeIqyDYYMT7MM4EGBAQL
-52ogcaEQQapiGv7MztTX4+haSSN/nSx3SZMedK+MdH1j+2uckYHUgSOLK5bdI2LE
-inqvcRx0pFCW5Y/K6jOL/4MaWIJWR/8h6LuLXkLoi4Hth4f7iFT3gDeQm7KBSKK4
-hZGXJy4zQgeglCRy3gko
-=ND9B
------END PGP SIGNATURE-----
 
---M9NhX3UHpAaciwkO--
+David Daney

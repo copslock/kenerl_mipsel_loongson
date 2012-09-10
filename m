@@ -1,32 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2012 19:12:04 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:38817 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903468Ab2IJRL6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Sep 2012 19:11:58 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q8AHBvYg014081;
-        Mon, 10 Sep 2012 19:11:57 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q8AHBvfM014080;
-        Mon, 10 Sep 2012 19:11:57 +0200
-Date:   Mon, 10 Sep 2012 19:11:57 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: MIPS: Fix build error with modern GCC for non-Cavium.
-Message-ID: <20120910171157.GC24448@linux-mips.org>
-References: <S1903390Ab2IDU16/20120904202758Z+1425@eddie.linux-mips.org>
- <alpine.LFD.2.00.1209082024560.8926@eddie.linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2012 19:20:02 +0200 (CEST)
+Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:39328 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903469Ab2IJRT6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Sep 2012 19:19:58 +0200
+Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
+        id 1TB7hC-0005TT-00
+        for linux-mips@linux-mips.org; Mon, 10 Sep 2012 17:22:50 +0000
+Date:   Mon, 10 Sep 2012 13:22:50 -0400
+To:     linux-mips@linux-mips.org
+Subject: Re: Is r25 saved across syscalls?
+Message-ID: <20120910172248.GN27715@brightrain.aerifal.cx>
+References: <20120909193008.GA15157@brightrain.aerifal.cx>
+ <20120910170830.GB24448@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.00.1209082024560.8926@eddie.linux-mips.org>
+In-Reply-To: <20120910170830.GB24448@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34453
+From:   Rich Felker <dalias@aerifal.cx>
+X-archive-position: 34454
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dalias@aerifal.cx
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,17 +36,36 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sat, Sep 08, 2012 at 08:28:26PM +0100, Maciej W. Rozycki wrote:
-
-> > An empty default block is not allowed so add a ; as empty statement to
-> > make gcc happy.
+On Mon, Sep 10, 2012 at 07:08:30PM +0200, Ralf Baechle wrote:
+> On Sun, Sep 09, 2012 at 03:30:08PM -0400, Rich Felker wrote:
 > 
->  A dummy "break" is the usual solution though.  I don't think GCC ever 
-> complains if it sees it unreachable after a "return" -- in a sense it is 
-> just as unreachable as this null instruction is.
+> > The kernel syscall entry/exit code seems to always save and restore
+> > r25. Is this stable/documented behavior I can rely on? If there's a
+> > reason it _needs_ to be preserved, knowing that would help convince me
+> > it's safe to assume it will always be done. The intended usage is to
+> > be able to make syscalls (where the syscall # is not a constant that
+> > could be loaded with lwi) without a stack frame, as in "move $2,$25 ;
+> > syscall".
+> 
+> The basic design idea is that syscalls use a calling convention similar
+> to subroutine calls.  $25 is $t9, so a temp register which is callee saved.
+> 
+> So if the kernel is saving $t9 and you've been relying on that, consider
+> yourself lucky - there's not guarantee for that.
 
-I wasn't overly picky.  Whatever gets the stuff to build correctly.  I'm
-doing one final round of test builds over all -stable branches before
-dropping most of them like radioctive rocks.  But more on that later.
+Is there any documentation of what the kernel does guarantee? All
+existing syscall-making code I've seen depends at least on r4-r7 not
+being clobbered when a signal interrupts a syscall and sets it up for
+restart (since the arguments still need to be there when it's
+restarted), and seems to also depend on r4-r6 not being clobbered when
+the syscall successfully returns (since they're not listed in the
+clobber list, e.g. in uClibc's inline syscall asm). These are
+requirements beyond the normal function call convention (which does
+not require the callee preserve the values of r4-r7).
 
-  Ralf
+As for my problem, I can use r7 as the temp ("move $2,$7 ; syscall")
+for syscalls with 3 or fewer args, but for the 4-arg syscall, $7 is
+occupied by an argument, and I'd need to spill the syscall number to
+the stack to be able to restore it if $25 is not available...
+
+Rich

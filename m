@@ -1,27 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2012 19:08:41 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:38805 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2012 19:12:04 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:38817 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903468Ab2IJRId (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Sep 2012 19:08:33 +0200
+        id S1903468Ab2IJRL6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 10 Sep 2012 19:11:58 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q8AH8W1h013802;
-        Mon, 10 Sep 2012 19:08:32 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q8AHBvYg014081;
+        Mon, 10 Sep 2012 19:11:57 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q8AH8UvH013801;
-        Mon, 10 Sep 2012 19:08:30 +0200
-Date:   Mon, 10 Sep 2012 19:08:30 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q8AHBvfM014080;
+        Mon, 10 Sep 2012 19:11:57 +0200
+Date:   Mon, 10 Sep 2012 19:11:57 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Rich Felker <dalias@aerifal.cx>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: Is r25 saved across syscalls?
-Message-ID: <20120910170830.GB24448@linux-mips.org>
-References: <20120909193008.GA15157@brightrain.aerifal.cx>
+Subject: Re: MIPS: Fix build error with modern GCC for non-Cavium.
+Message-ID: <20120910171157.GC24448@linux-mips.org>
+References: <S1903390Ab2IDU16/20120904202758Z+1425@eddie.linux-mips.org>
+ <alpine.LFD.2.00.1209082024560.8926@eddie.linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20120909193008.GA15157@brightrain.aerifal.cx>
+In-Reply-To: <alpine.LFD.2.00.1209082024560.8926@eddie.linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34452
+X-archive-position: 34453
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,20 +40,17 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sun, Sep 09, 2012 at 03:30:08PM -0400, Rich Felker wrote:
+On Sat, Sep 08, 2012 at 08:28:26PM +0100, Maciej W. Rozycki wrote:
 
-> The kernel syscall entry/exit code seems to always save and restore
-> r25. Is this stable/documented behavior I can rely on? If there's a
-> reason it _needs_ to be preserved, knowing that would help convince me
-> it's safe to assume it will always be done. The intended usage is to
-> be able to make syscalls (where the syscall # is not a constant that
-> could be loaded with lwi) without a stack frame, as in "move $2,$25 ;
-> syscall".
+> > An empty default block is not allowed so add a ; as empty statement to
+> > make gcc happy.
+> 
+>  A dummy "break" is the usual solution though.  I don't think GCC ever 
+> complains if it sees it unreachable after a "return" -- in a sense it is 
+> just as unreachable as this null instruction is.
 
-The basic design idea is that syscalls use a calling convention similar
-to subroutine calls.  $25 is $t9, so a temp register which is callee saved.
-
-So if the kernel is saving $t9 and you've been relying on that, consider
-yourself lucky - there's not guarantee for that.
+I wasn't overly picky.  Whatever gets the stuff to build correctly.  I'm
+doing one final round of test builds over all -stable branches before
+dropping most of them like radioctive rocks.  But more on that later.
 
   Ralf

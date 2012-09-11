@@ -1,28 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2012 15:29:57 +0200 (CEST)
-Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:36919 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2012 15:42:14 +0200 (CEST)
+Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:52723 "EHLO
         brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903487Ab2IKN3t (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Sep 2012 15:29:49 +0200
+        by eddie.linux-mips.org with ESMTP id S1903494Ab2IKNmE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Sep 2012 15:42:04 +0200
 Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
-        id 1TBQa3-00079E-00
-        for linux-mips@linux-mips.org; Tue, 11 Sep 2012 13:32:43 +0000
-Date:   Tue, 11 Sep 2012 09:32:43 -0400
+        id 1TBQlv-0007AB-00
+        for linux-mips@linux-mips.org; Tue, 11 Sep 2012 13:44:59 +0000
+Date:   Tue, 11 Sep 2012 09:44:59 -0400
 To:     linux-mips@linux-mips.org
 Subject: Re: Is r25 saved across syscalls?
-Message-ID: <20120911133243.GR27715@brightrain.aerifal.cx>
+Message-ID: <20120911134459.GS27715@brightrain.aerifal.cx>
 References: <20120909193008.GA15157@brightrain.aerifal.cx>
- <20120910170830.GB24448@linux-mips.org>
- <20120910172248.GN27715@brightrain.aerifal.cx>
- <504E2BC7.7000108@gmail.com>
- <20120910183720.GO27715@brightrain.aerifal.cx>
- <20120911084804.GE24448@linux-mips.org>
+ <20120911081256.GD24448@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20120911084804.GE24448@linux-mips.org>
+In-Reply-To: <20120911081256.GD24448@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 From:   Rich Felker <dalias@aerifal.cx>
-X-archive-position: 34467
+X-archive-position: 34468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,45 +36,65 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Sep 11, 2012 at 10:48:04AM +0200, Ralf Baechle wrote:
-> Note that c0_epc is made to point back to the SYSCALL instruction,
-> not the one preceeding the SYSCALL instructions since 8f5a00eb4 [MIPS:
-> Sanitize restart logics] which went in for 2.6.36.
+On Tue, Sep 11, 2012 at 10:12:56AM +0200, Ralf Baechle wrote:
+> On Sun, Sep 09, 2012 at 03:30:08PM -0400, Rich Felker wrote:
 > 
-> Relying on userland to reload $v0 was something ugly that Linux inherited
-> from god knows where and I'm happy to have gotten rid of that.
-
-So basically my whole question/concern is irrelevant to anything but
-pre-2.6.36 kernels, and all of those preserve $25, so it would have
-been safe to keep using $25.
-
-Thankfully I already found another solution using an "ir" constraint
-and "addu $2,$0,%2"; this assembles to "li" whenever the compiler can
-do constant propagation, and if CP fails or the syscall number is not
-constant, it allocates a register (either an unused argument register
-or a call-preserved register since all the others are already in the
-clobberlist or used as inputs).
-
-> > The code I'm looking at seems to match what you cited from glibc.
-> > 
-> > > >These are
-> > > >requirements beyond the normal function call convention (which does
-> > > >not require the callee preserve the values of r4-r7).
-> > > 
-> > > I would assume these are clobbered (from glibc sources
-> > > ports/sysdeps/unix/sysv/linux/mips/mips64/n64/sysdep.h):
-> > > 
-> > > "$1", "$3", "$10", "$11", "$12", "$13", "$14", "$15", "$24", "$25",
-> > > "hi", "lo"
+> > Hi all,
+> > The kernel syscall entry/exit code seems to always save and restore
+> > r25. Is this stable/documented behavior I can rely on? If there's a
+> > reason it _needs_ to be preserved, knowing that would help convince me
+> > it's safe to assume it will always be done. The intended usage is to
+> > be able to make syscalls (where the syscall # is not a constant that
+> > could be loaded with lwi) without a stack frame, as in "move $2,$25 ;
+> > syscall".
 > 
-> Which is correct but also means that the _syscallX() macros that were in
-> <asm/unistd.h> up to 2.6.19 were broken; the were lacking clobbers for
-> $25, $hi and $lo.  Unfortunately these macros were copied into many
-> libraries and applications.
+> Since there is no place where the syscall interface is documented other
+> than in the code itself, I've written a new wiki article
+> 
+>   http://www.linux-mips.org/wiki/Syscall
+> 
+> as start.  It's still lacking on the more obscure points but it at least
+> should have have answered your question, had it already existed when you
+> asked.
 
-I don't think the compiler will try to cache anything in $25 itself
-anyway. Normally it seems to only get used for its role in the
-function call ABI. But yes, in theory this is rather problematic,
-moreso that my issue of using $25 to restore $2 on restart.
+Thanks!
+
+Some comments... In the table,
+
+    $a0 ... $a2/$a7 except $a3
+
+is unclear. Do you mean to say $a0 ... $a2 on o32 and also $a4 ... $a7
+on all other ABIs? If so I think it would make sense to put those
+ranges as separate lines in the table, so it's clear that the second
+group are not preserved on o32 (if they were, they would also have
+solved my problem).
+
+As for
+
+    $a3  4th syscall argument   $a3 set to 0/1 for success/error
+
+Does the kernel guarantee 0/1, or is it 0/nonzero? This could matter
+to asm programmers using the syscall ABI who want to do bit twiddling.
+
+    Syscall restarting is a special case where $v0, $v1 and $a3 will
+    stay unmodified. Even the program counter will stay unmodified so
+    the same syscall will be executed again. This is something that
+    does not matter to application programmers but may become visible
+    in debuggers. Syscall restarting is something that is used
+    internally by the kernel, for example when during a large read(2)
+    syscall the kernel receives a signal.
+
+The way syscall restarting works does matter to userspace, although
+only to very low-level code. In musl (http://www.etalabs.net/musl),
+the syscall routine for cancellation-point syscalls uses labels in the
+asm before checking the cancellation flag and immediately after the
+syscall instruction so that the signal handler that processes thread
+cancellation can examine the saved program counter in the ucontext_t
+it receives and determine whether the interrupted code is at a
+cancellable syscall or not, with no race conditions. The glibc/NPTL
+approach of wrapping a plain syscall with code to change to async
+cancellation mode and back has extremely dangerous race conditions,
+and my approach in musl of examining the program counter and comparing
+it against asm labels is the only solution I've seen that's race-free.
 
 Rich

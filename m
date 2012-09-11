@@ -1,44 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2012 03:28:10 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:39299 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903487Ab2IKB2F (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Sep 2012 03:28:05 +0200
-Received: by pbbrq8 with SMTP id rq8so80753pbb.36
-        for <linux-mips@linux-mips.org>; Mon, 10 Sep 2012 18:27:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=p4PjrGXx3lKLKp2kQnzLpCiIVrj9McRvZZ4761IaWAQ=;
-        b=ucoG0MgH+9kaDRxQSpCOmglFe+uxWtSiMJ9FaJFL5iDrzJ3SfHyIO+6b8XaqnZ+KNv
-         dmjlrgWnH8URWtNYXPXWsskei8jeV1W0/uMW1beTarcYkuW3IEaGyjfn53+ow5quBkUm
-         R77RY5rFkaffAEpfrjexBFGKeZWp6WyGH6/+//Ki5N2k5nkFliTX+kKcSYwzLvHUIOzL
-         Cta6pPKxhFdPpR7PkXHdQp3MUO87gsyWNBQP5Ay21X11oCJvd7TqBMXwQjg85fbKhSPL
-         ehE3GbkPM734PdHeS5fkexap6cGCYg5oFH6fWR7i+Up+VSjKROT+YGOc9rby/AYGwL1B
-         diWw==
-Received: by 10.66.89.37 with SMTP id bl5mr24563085pab.55.1347326878848;
-        Mon, 10 Sep 2012 18:27:58 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id qf4sm8973626pbc.1.2012.09.10.18.27.55
-        (version=SSLv3 cipher=OTHER);
-        Mon, 10 Sep 2012 18:27:56 -0700 (PDT)
-Message-ID: <504E939B.5060209@gmail.com>
-Date:   Mon, 10 Sep 2012 18:27:55 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:15.0) Gecko/20120828 Thunderbird/15.0
-MIME-Version: 1.0
-To:     "Kevin D. Kissell" <kevink@paralogos.com>
-CC:     linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2012 04:25:52 +0200 (CEST)
+Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:51211 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1901165Ab2IKCZr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Sep 2012 04:25:47 +0200
+Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
+        id 1TBGDQ-0006UC-00
+        for linux-mips@linux-mips.org; Tue, 11 Sep 2012 02:28:40 +0000
+Date:   Mon, 10 Sep 2012 22:28:40 -0400
+To:     linux-mips@linux-mips.org
 Subject: Re: Is r25 saved across syscalls?
-References: <20120909193008.GA15157@brightrain.aerifal.cx> <20120910170830.GB24448@linux-mips.org> <20120910172248.GN27715@brightrain.aerifal.cx> <alpine.LFD.2.00.1209110059580.8926@eddie.linux-mips.org> <504E8E27.5030904@paralogos.com>
-In-Reply-To: <504E8E27.5030904@paralogos.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34461
+Message-ID: <20120911022840.GP27715@brightrain.aerifal.cx>
+References: <20120909193008.GA15157@brightrain.aerifal.cx>
+ <20120910170830.GB24448@linux-mips.org>
+ <20120910172248.GN27715@brightrain.aerifal.cx>
+ <alpine.LFD.2.00.1209110059580.8926@eddie.linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.00.1209110059580.8926@eddie.linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+From:   Rich Felker <dalias@aerifal.cx>
+X-archive-position: 34462
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: dalias@aerifal.cx
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,28 +38,53 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 09/10/2012 06:04 PM, Kevin D. Kissell wrote:
-> On 09/10/2012 05:29 PM, Maciej W. Rozycki wrote:
->> I do wonder however why we have these instructions to save/restore $25
->> in SAVE_SOME/RESTORE_SOME. This dates back to 2.4 at the very least.
->> Ralf, any insights?
-> Hi, guys.  Maybe the fact that it's used for dispatching PIC calls has
-> something to do with it?
->
+On Tue, Sep 11, 2012 at 01:29:52AM +0100, Maciej W. Rozycki wrote:
+> On Mon, 10 Sep 2012, Rich Felker wrote:
+> 
+> > As for my problem, I can use r7 as the temp ("move $2,$7 ; syscall")
+> > for syscalls with 3 or fewer args, but for the 4-arg syscall, $7 is
+> > occupied by an argument, and I'd need to spill the syscall number to
+> > the stack to be able to restore it if $25 is not available...
+> 
+>  If performance or some other factors require you to avoid spilling the 
+> syscall number to the stack or other readily-accessible (e.g. GP-relative) 
+> memory and the number is not a constant you could load with LI, then you 
+> can always store it in a call-saved register, one of $s0-$s8, that are 
+> guaranteed by the syscall ABI to be preserved across.
 
-I don't think so.  It is call clobbered in all Linux ABIs.  So there is 
-never a need to save it.  It even has the pseudonym of $t9 indicating 
-that it will get clobbered.
+That's not possible; you'd need to save the old contents of that
+register somewhere else, and that requires spilling it to the stack.
 
-The other call clobbered registers that happen to be saved are for the 
-nefarious uses of the kernel itself (a0..a6 for system call restarting), 
-I think this is just left over cruft.
+>  Relying on any call-clobbered registers, including $7 to be preserved 
+> across a syscall is risky, to say the least, as this is not guaranteed by 
+> the syscall ABI.
 
-David Daney
+Relying on them being preserved upon return from the syscall is
+"unsafe", I agree. In reality, r4-r6 are preserved, and r7 is
+clobbered with the syscall error flag. But there's no fundamental
+reason r4-r6 have to be preserved in this case.
 
+On the other hand, relying on them being preserved when the kernel
+resets PC to the instruction before the syscall instruction in order
+to restart as syscall after a signal interrupts it is completely safe.
+If it didn't restore them, the restarted syscall would be executed
+with the wrong arguments.
 
-> /K.
->
->
->
->
+Of course the kernel design could change to point PC at the syscall
+instruction rather than the previous instruction, and arrange for the
+registers (including $2) to all have their correct values for the
+syscall, and then the issue would become irrelevant because the
+instruction "move $2,$7" would not be executed again on restart.
+
+> I do wonder however why we have these instructions to 
+> save/restore $25 in SAVE_SOME/RESTORE_SOME.  This dates back to 2.4 at the 
+> very least.
+> 
+>  Ralf, any insights?
+
+I would be interested in knowing too. It goes back further than 2.4.
+It seems 2.0 saved and restored ALL registers, and 2.2 dropped it down
+to the current set. This past change is why I'm hesitant to rely on
+behavior that's not either documented or fundamentally required.
+
+Rich

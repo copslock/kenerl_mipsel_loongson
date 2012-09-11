@@ -1,28 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2012 15:42:14 +0200 (CEST)
-Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:52723 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903494Ab2IKNmE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Sep 2012 15:42:04 +0200
-Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
-        id 1TBQlv-0007AB-00
-        for linux-mips@linux-mips.org; Tue, 11 Sep 2012 13:44:59 +0000
-Date:   Tue, 11 Sep 2012 09:44:59 -0400
-To:     linux-mips@linux-mips.org
-Subject: Re: Is r25 saved across syscalls?
-Message-ID: <20120911134459.GS27715@brightrain.aerifal.cx>
-References: <20120909193008.GA15157@brightrain.aerifal.cx>
- <20120911081256.GD24448@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2012 17:15:35 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:38209 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903500Ab2IKPP2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Sep 2012 17:15:28 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 20E098F62;
+        Tue, 11 Sep 2012 17:15:22 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id l4Db6bGKhtG0; Tue, 11 Sep 2012 17:15:17 +0200 (CEST)
+Received: from hauke.lan (unknown [134.102.133.158])
+        by hauke-m.de (Postfix) with ESMTPSA id C0F7587B9;
+        Tue, 11 Sep 2012 17:15:16 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org, john@phrozen.org
+Cc:     linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
+        florian@openwrt.org, zajec5@gmail.com,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH v4 0/3] MIPS: BCM47xx: use gpiolib
+Date:   Tue, 11 Sep 2012 17:15:07 +0200
+Message-Id: <1347376511-20953-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20120911081256.GD24448@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-From:   Rich Felker <dalias@aerifal.cx>
-X-archive-position: 34468
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-archive-position: 34469
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dalias@aerifal.cx
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,65 +43,40 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Sep 11, 2012 at 10:12:56AM +0200, Ralf Baechle wrote:
-> On Sun, Sep 09, 2012 at 03:30:08PM -0400, Rich Felker wrote:
-> 
-> > Hi all,
-> > The kernel syscall entry/exit code seems to always save and restore
-> > r25. Is this stable/documented behavior I can rely on? If there's a
-> > reason it _needs_ to be preserved, knowing that would help convince me
-> > it's safe to assume it will always be done. The intended usage is to
-> > be able to make syscalls (where the syscall # is not a constant that
-> > could be loaded with lwi) without a stack frame, as in "move $2,$25 ;
-> > syscall".
-> 
-> Since there is no place where the syscall interface is documented other
-> than in the code itself, I've written a new wiki article
-> 
->   http://www.linux-mips.org/wiki/Syscall
-> 
-> as start.  It's still lacking on the more obscure points but it at least
-> should have have answered your question, had it already existed when you
-> asked.
+The original code implemented the GPIO interface itself and this caused
+some problems. With this patch gpiolib is used.
 
-Thanks!
+This is based on mips/master.
 
-Some comments... In the table,
+This should go through linux-mips, John W. Linville approved that 
+for the bcma and ssb changes normally maintained in wireless-testing.
 
-    $a0 ... $a2/$a7 except $a3
+v4:
+ - remove extra BCMA_DRIVER_GPIO option and inline the spinlocks in
+   bcma/driver_chipcommon.c.
 
-is unclear. Do you mean to say $a0 ... $a2 on o32 and also $a4 ... $a7
-on all other ABIs? If so I think it would make sense to put those
-ranges as separate lines in the table, so it's clear that the second
-group are not preserved on o32 (if they were, they would also have
-solved my problem).
+v3:
+ - add missing break after setting bcm47xx_gpio_count in bcm47xx_gpio_init()
 
-As for
+v2:
+ - use use gpio_chip.to_irq() instead of directly declare gpio_to_irq
 
-    $a3  4th syscall argument   $a3 set to 0/1 for success/error
+Hauke Mehrtens (3):
+  ssb: add function to return number of gpio lines
+  bcma: add GPIO driver for SoCs
+  MIPS: BCM47xx: rewrite GPIO handling and use gpiolib
 
-Does the kernel guarantee 0/1, or is it 0/nonzero? This could matter
-to asm programmers using the syscall ABI who want to do bit twiddling.
+ arch/mips/Kconfig                            |    2 +-
+ arch/mips/bcm47xx/gpio.c                     |  212 ++++++++++++++++++++------
+ arch/mips/bcm47xx/setup.c                    |    2 +
+ arch/mips/bcm47xx/wgt634u.c                  |    7 +
+ arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |    2 +
+ arch/mips/include/asm/mach-bcm47xx/gpio.h    |  148 +++---------------
+ drivers/bcma/driver_chipcommon.c             |   61 +++++++-
+ drivers/ssb/embedded.c                       |   12 ++
+ include/linux/bcma/bcma_driver_chipcommon.h  |   24 ++-
+ include/linux/ssb/ssb_embedded.h             |    4 +
+ 10 files changed, 287 insertions(+), 187 deletions(-)
 
-    Syscall restarting is a special case where $v0, $v1 and $a3 will
-    stay unmodified. Even the program counter will stay unmodified so
-    the same syscall will be executed again. This is something that
-    does not matter to application programmers but may become visible
-    in debuggers. Syscall restarting is something that is used
-    internally by the kernel, for example when during a large read(2)
-    syscall the kernel receives a signal.
-
-The way syscall restarting works does matter to userspace, although
-only to very low-level code. In musl (http://www.etalabs.net/musl),
-the syscall routine for cancellation-point syscalls uses labels in the
-asm before checking the cancellation flag and immediately after the
-syscall instruction so that the signal handler that processes thread
-cancellation can examine the saved program counter in the ucontext_t
-it receives and determine whether the interrupted code is at a
-cancellable syscall or not, with no race conditions. The glibc/NPTL
-approach of wrapping a plain syscall with code to change to async
-cancellation mode and back has extremely dangerous race conditions,
-and my approach in musl of examining the program counter and comparing
-it against asm labels is the only solution I've seen that's race-free.
-
-Rich
+-- 
+1.7.9.5

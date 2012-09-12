@@ -1,42 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2012 19:56:27 +0200 (CEST)
-Received: from mailhost.informatik.uni-hamburg.de ([134.100.9.70]:38034 "EHLO
-        mailhost.informatik.uni-hamburg.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903488Ab2IKR4X (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Sep 2012 19:56:23 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTP id 70E2985D;
-        Tue, 11 Sep 2012 19:56:18 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at informatik.uni-hamburg.de
-Received: from mailhost.informatik.uni-hamburg.de ([127.0.0.1])
-        by localhost (mailhost.informatik.uni-hamburg.de [127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id gcJYvVfP6mTm; Tue, 11 Sep 2012 19:56:17 +0200 (CEST)
-Received: from [192.168.178.21] (ppp-188-174-8-103.dynamic.mnet-online.de [188.174.8.103])
-        (using TLSv1 with cipher DHE-RSA-CAMELLIA256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: 7clausen)
-        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTPSA id 4795785C;
-        Tue, 11 Sep 2012 19:56:17 +0200 (CEST)
-Message-ID: <504F7B4D.3030602@metafoo.de>
-Date:   Tue, 11 Sep 2012 19:56:29 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.16) Gecko/20120724 Icedove/3.0.11
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2012 12:09:34 +0200 (CEST)
+Received: from mga03.intel.com ([143.182.124.21]:13805 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903325Ab2ILKJ3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 12 Sep 2012 12:09:29 +0200
+Received: from azsmga002.ch.intel.com ([10.2.17.35])
+  by azsmga101.ch.intel.com with ESMTP; 12 Sep 2012 03:09:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.80,408,1344236400"; 
+   d="asc'?scan'208";a="144142806"
+Received: from blue.fi.intel.com ([10.237.72.50])
+  by AZSMGA002.ch.intel.com with ESMTP; 12 Sep 2012 03:09:15 -0700
+Received: by blue.fi.intel.com (Postfix, from userid 1000)
+        id ABE50E0073; Wed, 12 Sep 2012 13:09:41 +0300 (EEST)
+Date:   Wed, 12 Sep 2012 13:09:41 +0300
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     linux-mm@kvack.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Andi Kleen <ak@linux.intel.com>,
+        Tim Chen <tim.c.chen@linux.intel.com>,
+        Alex Shi <alex.shu@intel.com>,
+        Jan Beulich <jbeulich@novell.com>,
+        Robert Richter <robert.richter@amd.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Hugh Dickins <hughd@google.com>,
+        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+        Mel Gorman <mgorman@suse.de>, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v4 0/8] Avoid cache trashing on clearing huge/gigantic
+ page
+Message-ID: <20120912100941.GA26582@otc-wbsnb-06>
+References: <1345470757-12005-1-git-send-email-kirill.shutemov@linux.intel.com>
 MIME-Version: 1.0
-To:     Thierry Reding <thierry.reding@avionic-design.de>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Antony Pavlov <antonynpavlov@gmail.com>,
-        Maarten ter Huurne <maarten@treewalker.org>
-Subject: Re: [PATCH v2 0/3] MIPS: JZ4740: Move PWM driver to PWM framework
-References: <1347278719-15276-1-git-send-email-thierry.reding@avionic-design.de> <504E0542.8020309@metafoo.de> <20120910173056.GA31611@avionic-0098.mockup.avionic-design.de>
-In-Reply-To: <20120910173056.GA31611@avionic-0098.mockup.avionic-design.de>
-X-Enigmail-Version: 1.0.1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34474
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="9amGYk9869ThD9tj"
+Content-Disposition: inline
+In-Reply-To: <1345470757-12005-1-git-send-email-kirill.shutemov@linux.intel.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: kirill.shutemov@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,26 +60,39 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 09/10/2012 07:30 PM, Thierry Reding wrote:
-> On Mon, Sep 10, 2012 at 05:20:34PM +0200, Lars-Peter Clausen wrote:
->> On 09/10/2012 02:05 PM, Thierry Reding wrote:
->>> Hi,
->>>
->>
->> [...]
-> 
->> Patch 1 should go through the MIPS tree, but I still can't see why the issue
->> should occur nor does it happen for anybody else except for you. Instead of
->> moving the content over to the public irq.h I'd rather like to see the
->> private irq.h being renamed.
-> 
-> If we can solve this some other way I'm all for it. Maybe you can share
-> the defconfig or .config that you use so I can test under the same
-> conditions.
-> 
-> Thierry
 
-This is the config I'm using:
-http://projects.qi-hardware.com/index.php/p/qi-kernel/source/tree/jz-3.4/arch/mips/configs/qi_lb60_defconfig
+--9amGYk9869ThD9tj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-- Lars
+Hi,
+
+Any feedback?
+
+--=20
+ Kirill A. Shutemov
+
+--9amGYk9869ThD9tj
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQUF9lAAoJEAd+omnVudOMqvgP/A9oBD+NU+NuFlm6b32IkUIR
+2jlEFuSzAp3dAS+aQWVcjLz88pNu7ZjD2m9dTWwVr03UKSlfc/UUcHctWmjrhj+B
+trkuGQ7qVadFTaunqj1z1NZGCrXwGTdw2f+soGtJ+cmwmOqxrqyDJlbJyyOfpiJe
+iYyOU522V7Rc/cnyjY+OxOkaHDBy3RIpo6DhVpSC4Ws6wH6bkuiM2ZYAx+fiRDnj
+Ii60Iel88rjQ0uSeTQ+Jznu16czL4q4bRB9IeT24jUQRgTp7kYKNyjzgy4/zrjOL
+Dlkck9VihPQhZ3QxAjqcxQQCwclB0GctZDFUIrP97+REFlvd3u7yVzgxpeVuqtsz
+K6aXJDcPqfTGyEe0OgOGVb+M6ylvIvsXjNXkym85PTCZNnw9smem1S2HY5689bH+
+ELP9ruYagr1yb+LTX3CQmFuvmoCyuzES/tgw97AJbFP3prkt0K44WhBsJCaflJjl
+efJg6qWTwTrIK8hq0ulcWnwa2oi9zbNwV2SVgDdVQmOfwtzKAp69ijF0Rd4lwpZf
+47ch8oZDVcn8Fv2nhv9FrFr8JiAZ07eIwzeAGiSfpIRpcKXoKUp8y950i++mlxNq
+xoGPDY1odKCKoVsbwYtW/E9l/tmUhTljqExfn9pzcHqMz4YUMGob7xnZOP0ljY5y
+ikNOztWkQPhLD2Cj1nLx
+=p8ME
+-----END PGP SIGNATURE-----
+
+--9amGYk9869ThD9tj--

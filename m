@@ -1,55 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2012 17:02:31 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.126.187]:63015 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903347Ab2ILPCZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2012 17:02:25 +0200
-Received: from mailbox.adnet.avionic-design.de (mailbox.avionic-design.de [109.75.18.3])
-        by mrelayeu.kundenserver.de (node=mreu3) with ESMTP (Nemesis)
-        id 0MITil-1TFwmu0ZEV-0049Fn; Wed, 12 Sep 2012 17:02:15 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTP id 710B72A28318;
-        Wed, 12 Sep 2012 17:02:14 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at avionic-design.de
-Received: from mailbox.adnet.avionic-design.de ([127.0.0.1])
-        by localhost (mailbox.avionic-design.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 7L1C-Zr5Ezaa; Wed, 12 Sep 2012 17:02:12 +0200 (CEST)
-Received: from localhost (avionic-0098.adnet.avionic-design.de [172.20.31.233])
-        (Authenticated sender: thierry.reding)
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTPA id B9A722A2830F;
-        Wed, 12 Sep 2012 17:02:11 +0200 (CEST)
-Date:   Wed, 12 Sep 2012 17:02:10 +0200
-From:   Thierry Reding <thierry.reding@avionic-design.de>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Antony Pavlov <antonynpavlov@gmail.com>,
-        Maarten ter Huurne <maarten@treewalker.org>
-Subject: Re: [PATCH v2 0/3] MIPS: JZ4740: Move PWM driver to PWM framework
-Message-ID: <20120912150210.GA20961@avionic-0098.mockup.avionic-design.de>
-References: <1347278719-15276-1-git-send-email-thierry.reding@avionic-design.de>
- <504E0542.8020309@metafoo.de>
- <20120910173056.GA31611@avionic-0098.mockup.avionic-design.de>
- <504F7B4D.3030602@metafoo.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2012 18:06:51 +0200 (CEST)
+Received: from arroyo.ext.ti.com ([192.94.94.40]:58475 "EHLO arroyo.ext.ti.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903341Ab2ILQGq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 12 Sep 2012 18:06:46 +0200
+Received: from dlelxv30.itg.ti.com ([172.17.2.17])
+        by arroyo.ext.ti.com (8.13.7/8.13.7) with ESMTP id q8CG5dLL029773;
+        Wed, 12 Sep 2012 11:05:39 -0500
+Received: from DFLE73.ent.ti.com (dfle73.ent.ti.com [128.247.5.110])
+        by dlelxv30.itg.ti.com (8.13.8/8.13.8) with ESMTP id q8CG5dix029882;
+        Wed, 12 Sep 2012 11:05:39 -0500
+Received: from dlelxv22.itg.ti.com (172.17.1.197) by dfle73.ent.ti.com
+ (128.247.5.110) with Microsoft SMTP Server id 14.1.323.3; Wed, 12 Sep 2012
+ 11:05:39 -0500
+Received: from ares-ubuntu.am.dhcp.ti.com (ares-ubuntu.am.dhcp.ti.com
+ [158.218.103.17])      by dlelxv22.itg.ti.com (8.13.8/8.13.8) with ESMTP id
+ q8CG5dki023284;        Wed, 12 Sep 2012 11:05:39 -0500
+Received: from a0875269 by ares-ubuntu.am.dhcp.ti.com with local (Exim 4.76)
+        (envelope-from <cyril@ti.com>)  id 1TBpRa-0001qg-S0; Wed, 12 Sep 2012 12:05:38
+ -0400
+From:   Cyril Chemparathy <cyril@ti.com>
+To:     <devicetree-discuss@lists.ozlabs.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-c6x-dev@linux-c6x.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, <linux@openrisc.net>,
+        <linuxppc-dev@lists.ozlabs.org>,
+        <microblaze-uclinux@itee.uq.edu.au>
+CC:     <a-jacquiot@ti.com>, <arnd@arndb.de>, <benh@kernel.crashing.org>,
+        <bigeasy@linutronix.de>, <blogic@openwrt.org>,
+        <david.daney@cavium.com>, <dhowells@redhat.com>,
+        <grant.likely@secretlab.ca>, <hpa@zytor.com>, <jonas@southpole.se>,
+        <linus.walleij@linaro.org>, <linux@arm.linux.org.uk>,
+        <m.szyprowski@samsung.com>, <mahesh@linux.vnet.ibm.com>,
+        <mingo@redhat.com>, <monstr@monstr.eu>, <msalter@redhat.com>,
+        <nico@linaro.org>, <paul.gortmaker@windriver.com>,
+        <paulus@samba.org>, <ralf@linux-mips.org>,
+        <rob.herring@calxeda.com>, <suzuki@in.ibm.com>,
+        <tglx@linutronix.de>, <tj@kernel.org>, <x86@kernel.org>,
+        Cyril Chemparathy <cyril@ti.com>
+Subject: [PATCH] of: specify initrd location using 64-bit
+Date:   Wed, 12 Sep 2012 12:05:37 -0400
+Message-ID: <1347465937-7056-1-git-send-email-cyril@ti.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="ZGiS0Q5IWpPtfppv"
-Content-Disposition: inline
-In-Reply-To: <504F7B4D.3030602@metafoo.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Provags-ID: V02:K0:+RgVVIBL7qWruvdn/em8uZQcQo6zGZLlZIB7AeqE8Aq
- E1YwlznOeyS9TBRrckMempIamMGmmdBHIba5cyRoSfhzg9Mhu7
- mfxFBsZPqkJOEJeQeB6IEIhOlSi9Mi7B2Bgi2mKdS93VSc2eeJ
- TPIyXhwHxgVdimGZ8l2BEwIHUO9euySuHh7Wwswz3oQb1f1Mk0
- l8V1cN4G7Nyl1eKR6wdw0HAAKMijRq00Jfra3xywxPkH/MxJkA
- 6A/4WlnFuoETSoDpOQjnDVA8aG3af2N1kvKS0YC0tmpugu1Bzs
- 3dWFBm1t4pieDvz469QDCTGmZMpDq/289/uQ5atJQOARFA9MUh
- eFNSIqdwYXOOnaiB0ITFJN73xrdocTKWtO/YqnCmxq4VYlGsXJ
- /k23aDGapXxPmdR2FmKL2J6VekiD9oEeb4=
-X-archive-position: 34476
+Content-Type: text/plain
+X-archive-position: 34477
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@avionic-design.de
+X-original-sender: cyril@ti.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,262 +61,168 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+On some PAE architectures, the entire range of physical memory could reside
+outside the 32-bit limit.  These systems need the ability to specify the
+initrd location using 64-bit numbers.
 
---ZGiS0Q5IWpPtfppv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch globally modifies the early_init_dt_setup_initrd_arch() function to
+use 64-bit numbers instead of the current unsigned long.
+---
+ arch/arm/mm/init.c            |    2 +-
+ arch/c6x/kernel/devicetree.c  |    3 +--
+ arch/microblaze/kernel/prom.c |    3 +--
+ arch/mips/kernel/prom.c       |    3 +--
+ arch/openrisc/kernel/prom.c   |    3 +--
+ arch/powerpc/kernel/prom.c    |    3 +--
+ arch/x86/kernel/devicetree.c  |    3 +--
+ drivers/of/fdt.c              |   10 ++++++----
+ include/linux/of_fdt.h        |    3 +--
+ 9 files changed, 14 insertions(+), 19 deletions(-)
 
-On Tue, Sep 11, 2012 at 07:56:29PM +0200, Lars-Peter Clausen wrote:
-> On 09/10/2012 07:30 PM, Thierry Reding wrote:
-> > On Mon, Sep 10, 2012 at 05:20:34PM +0200, Lars-Peter Clausen wrote:
-> >> On 09/10/2012 02:05 PM, Thierry Reding wrote:
-> >>> Hi,
-> >>>
-> >>
-> >> [...]
-> >=20
-> >> Patch 1 should go through the MIPS tree, but I still can't see why the=
- issue
-> >> should occur nor does it happen for anybody else except for you. Inste=
-ad of
-> >> moving the content over to the public irq.h I'd rather like to see the
-> >> private irq.h being renamed.
-> >=20
-> > If we can solve this some other way I'm all for it. Maybe you can share
-> > the defconfig or .config that you use so I can test under the same
-> > conditions.
-> >=20
-> > Thierry
->=20
-> This is the config I'm using:
-> http://projects.qi-hardware.com/index.php/p/qi-kernel/source/tree/jz-3.4/=
-arch/mips/configs/qi_lb60_defconfig
-
-I can still reproduce the error with that configuration. Perhaps related
-to the toolchain? I use a vanilla gcc 4.7.1 cross-compiler. This is all
-on top of Linux v3.6-rc2.
-
-Here's the complete error message:
-
-$ nice make ARCH=3Dmips CROSS_COMPILE=3D/home/thierry.reding/pbs-stage1/bin=
-/mips-linux-gnu- O=3Dbuild/jz4740
-  Using /home/thierry.reding/src/kernel/linux-pwm.git as source for kernel
-  GEN     /home/thierry.reding/src/kernel/linux-pwm.git/build/jz4740/Makefi=
-le
-  CHK     include/linux/version.h
-  CHK     include/generated/utsrelease.h
-  CALL    /home/thierry.reding/src/kernel/linux-pwm.git/scripts/checksyscal=
-ls.sh
-  CHK     include/generated/compile.h
-  CC      arch/mips/jz4740/irq.o
-In file included from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/irq.h:18:0,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/irq.h:27,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/asm-generic/hardirq.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/hardirq.h:16,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/hardirq.h:7,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/interrupt.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/jz4740/irq.c:19:
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:20:39:=
- error: 'struct irq_data' declared inside parameter list [-Werror]
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:20:39:=
- error: its scope is only this definition or declaration, which is probably=
- not what you want [-Werror]
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:21:38:=
- error: 'struct irq_data' declared inside parameter list [-Werror]
-In file included from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/irq.h:356:0,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/asm-generic/hardirq.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/hardirq.h:16,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/hardirq.h:7,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/interrupt.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/jz4740/irq.c:19:
-/home/thierry.reding/src/kernel/linux-pwm.git/include/linux/irqdesc.h:75:33=
-: error: 'NR_IRQS' undeclared here (not in a function)
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c: In fu=
-nction 'jz4740_cascade':
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:49:39:=
- error: 'JZ4740_IRQ_BASE' undeclared (first use in this function)
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:49:39:=
- note: each undeclared identifier is reported only once for each function i=
-t appears in
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c: At to=
-p level:
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:62:6: =
-error: conflicting types for 'jz4740_irq_suspend'
-In file included from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/irq.h:18:0,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/irq.h:27,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/asm-generic/hardirq.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/hardirq.h:16,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/hardirq.h:7,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/interrupt.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/jz4740/irq.c:19:
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:20:13:=
- note: previous declaration of 'jz4740_irq_suspend' was here
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:68:6: =
-error: conflicting types for 'jz4740_irq_resume'
-In file included from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/irq.h:18:0,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/irq.h:27,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/asm-generic/hardirq.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/hardirq.h:16,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/hardirq.h:7,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/interrupt.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/jz4740/irq.c:19:
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:21:13:=
- note: previous declaration of 'jz4740_irq_resume' was here
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c: In fu=
-nction 'arch_init_irq':
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:91:41:=
- error: 'JZ4740_IRQ_BASE' undeclared (first use in this function)
-cc1: all warnings being treated as errors
-make[3]: *** [arch/mips/jz4740/irq.o] Error 1
-make[2]: *** [arch/mips/jz4740] Error 2
-make[1]: *** [arch/mips] Error 2
-make: *** [sub-make] Error 2
-  Using /home/thierry.reding/src/kernel/linux-pwm.git as source for kernel
-  GEN     /home/thierry.reding/src/kernel/linux-pwm.git/build/jz4740/Makefi=
-le
-  CHK     include/linux/version.h
-  CHK     include/generated/utsrelease.h
-  CALL    /home/thierry.reding/src/kernel/linux-pwm.git/scripts/checksyscal=
-ls.sh
-  CHK     include/generated/compile.h
-  CC      arch/mips/jz4740/irq.o
-In file included from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/irq.h:18:0,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/irq.h:27,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/asm-generic/hardirq.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/hardirq.h:16,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/hardirq.h:7,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/interrupt.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/jz4740/irq.c:19:
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:20:39:=
- error: 'struct irq_data' declared inside parameter list [-Werror]
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:20:39:=
- error: its scope is only this definition or declaration, which is probably=
- not what you want [-Werror]
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:21:38:=
- error: 'struct irq_data' declared inside parameter list [-Werror]
-In file included from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/irq.h:356:0,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/asm-generic/hardirq.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/hardirq.h:16,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/hardirq.h:7,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/interrupt.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/jz4740/irq.c:19:
-/home/thierry.reding/src/kernel/linux-pwm.git/include/linux/irqdesc.h:75:33=
-: error: 'NR_IRQS' undeclared here (not in a function)
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c: In fu=
-nction 'jz4740_cascade':
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:49:39:=
- error: 'JZ4740_IRQ_BASE' undeclared (first use in this function)
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:49:39:=
- note: each undeclared identifier is reported only once for each function i=
-t appears in
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c: At to=
-p level:
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:62:6: =
-error: conflicting types for 'jz4740_irq_suspend'
-In file included from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/irq.h:18:0,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/irq.h:27,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/asm-generic/hardirq.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/hardirq.h:16,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/hardirq.h:7,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/interrupt.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/jz4740/irq.c:19:
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:20:13:=
- note: previous declaration of 'jz4740_irq_suspend' was here
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:68:6: =
-error: conflicting types for 'jz4740_irq_resume'
-In file included from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/irq.h:18:0,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/irq.h:27,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/asm-generic/hardirq.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/include/asm/hardirq.h:16,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/hardirq.h:7,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
-/linux/interrupt.h:12,
-                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
-ps/jz4740/irq.c:19:
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:21:13:=
- note: previous declaration of 'jz4740_irq_resume' was here
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c: In fu=
-nction 'arch_init_irq':
-/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:91:41:=
- error: 'JZ4740_IRQ_BASE' undeclared (first use in this function)
-cc1: all warnings being treated as errors
-make[3]: *** [arch/mips/jz4740/irq.o] Error 1
-make[2]: *** [arch/mips/jz4740] Error 2
-make[1]: *** [arch/mips] Error 2
-make: *** [sub-make] Error 2
-
---ZGiS0Q5IWpPtfppv
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.19 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQUKPyAAoJEN0jrNd/PrOhUJwP/1dIPL5IM60pGY/bOYYQ9Jff
-FK/Y8wiQjTfYFvdO7qlM5bzfAbifb0KeHNGVgk+Qyxj80EF3kK3finWCR2MdYKN7
-55fXKYDVbpeAcHQ1OAAN5i2fYhiCcs/uw0xXCqDw4miHoCo9BHPsHAX3/UdC4ILW
-oHV7kTAYYmP2sLGFTVgzpnr5s7ChPcddNZ7rY+uH4yalaYJhQgDP/JZygwsZc0p9
-upOtak5qPv9xQtyuTlhJ3PeEF94N7gT7/gOafbJibfXChV4kzh1fAFdlA8gQif6t
-hhjGta7bZS2SknFG+d0nqtyn/2/Iej41HKssIrvXNPX/5+Cm2L7YXEAXBxze4AwH
-VSQiFJF6okT8esl+ZYl24dF4trC4N9csLr2Do48sAikGIpI6U7zWDlIlMwTKC0Ig
-ZdO/qfK3X7+a/V18QpNW49xvWhaIIogxxvDTurPUeWm15/4QnIGTZHq1MMsvchOg
-IK6s8k52bwR0ad1/olx/w+RiM1/9WWaThAkHXhwnr/bK4YpJHAKa/ZD1kD+ue71u
-goqHK+3qRJL+bYzqqdtZPXuuxbFM68TECevyQ+9JXwzm7LqwskgMJcw+T+hbinSI
-NbmtrfM5JhrmeKMuaoclOUichAVld+TSzo5jiorDOJGXCWFnQRLZHgDLA7SMzQE1
-khK67KXm6n48kjmYb0Rl
-=GSpW
------END PGP SIGNATURE-----
-
---ZGiS0Q5IWpPtfppv--
+diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
+index ad722f1..579792c 100644
+--- a/arch/arm/mm/init.c
++++ b/arch/arm/mm/init.c
+@@ -76,7 +76,7 @@ static int __init parse_tag_initrd2(const struct tag *tag)
+ __tagtable(ATAG_INITRD2, parse_tag_initrd2);
+ 
+ #ifdef CONFIG_OF_FLATTREE
+-void __init early_init_dt_setup_initrd_arch(unsigned long start, unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	phys_initrd_start = start;
+ 	phys_initrd_size = end - start;
+diff --git a/arch/c6x/kernel/devicetree.c b/arch/c6x/kernel/devicetree.c
+index bdb56f0..287d0e6 100644
+--- a/arch/c6x/kernel/devicetree.c
++++ b/arch/c6x/kernel/devicetree.c
+@@ -33,8 +33,7 @@ void __init early_init_devtree(void *params)
+ 
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-		unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	initrd_start = (unsigned long)__va(start);
+ 	initrd_end = (unsigned long)__va(end);
+diff --git a/arch/microblaze/kernel/prom.c b/arch/microblaze/kernel/prom.c
+index 4a764cc..cecd42c 100644
+--- a/arch/microblaze/kernel/prom.c
++++ b/arch/microblaze/kernel/prom.c
+@@ -136,8 +136,7 @@ void __init early_init_devtree(void *params)
+ }
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-		unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	initrd_start = (unsigned long)__va(start);
+ 	initrd_end = (unsigned long)__va(end);
+diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
+index 028f6f8..e37e0dc 100644
+--- a/arch/mips/kernel/prom.c
++++ b/arch/mips/kernel/prom.c
+@@ -41,8 +41,7 @@ void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
+ }
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-					    unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	initrd_start = (unsigned long)__va(start);
+ 	initrd_end = (unsigned long)__va(end);
+diff --git a/arch/openrisc/kernel/prom.c b/arch/openrisc/kernel/prom.c
+index 5869e3f..150215a 100644
+--- a/arch/openrisc/kernel/prom.c
++++ b/arch/openrisc/kernel/prom.c
+@@ -96,8 +96,7 @@ void __init early_init_devtree(void *params)
+ }
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-		unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	initrd_start = (unsigned long)__va(start);
+ 	initrd_end = (unsigned long)__va(end);
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 37725e8..ac15f63 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -549,8 +549,7 @@ void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
+ }
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-		unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	initrd_start = (unsigned long)__va(start);
+ 	initrd_end = (unsigned long)__va(end);
+diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
+index b158152..2fbad6b 100644
+--- a/arch/x86/kernel/devicetree.c
++++ b/arch/x86/kernel/devicetree.c
+@@ -52,8 +52,7 @@ void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
+ }
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-					    unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	initrd_start = (unsigned long)__va(start);
+ 	initrd_end = (unsigned long)__va(end);
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 91a375f..2ff8b7a 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -554,7 +554,8 @@ int __init of_flat_dt_match(unsigned long node, const char *const *compat)
+  */
+ void __init early_init_dt_check_for_initrd(unsigned long node)
+ {
+-	unsigned long start, end, len;
++	u64 start, end;
++	unsigned long len;
+ 	__be32 *prop;
+ 
+ 	pr_debug("Looking for initrd properties... ");
+@@ -562,15 +563,16 @@ void __init early_init_dt_check_for_initrd(unsigned long node)
+ 	prop = of_get_flat_dt_prop(node, "linux,initrd-start", &len);
+ 	if (!prop)
+ 		return;
+-	start = of_read_ulong(prop, len/4);
++	start = of_read_number(prop, len/4);
+ 
+ 	prop = of_get_flat_dt_prop(node, "linux,initrd-end", &len);
+ 	if (!prop)
+ 		return;
+-	end = of_read_ulong(prop, len/4);
++	end = of_read_number(prop, len/4);
+ 
+ 	early_init_dt_setup_initrd_arch(start, end);
+-	pr_debug("initrd_start=0x%lx  initrd_end=0x%lx\n", start, end);
++	pr_debug("initrd_start=0x%llx  initrd_end=0x%llx\n",
++		 (unsigned long long)start, (unsigned long long)end);
+ }
+ #else
+ inline void early_init_dt_check_for_initrd(unsigned long node)
+diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
+index ed136ad..4a17939 100644
+--- a/include/linux/of_fdt.h
++++ b/include/linux/of_fdt.h
+@@ -106,8 +106,7 @@ extern u64 dt_mem_next_cell(int s, __be32 **cellp);
+  * physical addresses.
+  */
+ #ifdef CONFIG_BLK_DEV_INITRD
+-extern void early_init_dt_setup_initrd_arch(unsigned long start,
+-					    unsigned long end);
++extern void early_init_dt_setup_initrd_arch(u64 start, u64 end);
+ #endif
+ 
+ /* Early flat tree scan hooks */
+-- 
+1.7.9.5

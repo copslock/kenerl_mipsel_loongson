@@ -1,52 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2012 12:09:34 +0200 (CEST)
-Received: from mga03.intel.com ([143.182.124.21]:13805 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903325Ab2ILKJ3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 12 Sep 2012 12:09:29 +0200
-Received: from azsmga002.ch.intel.com ([10.2.17.35])
-  by azsmga101.ch.intel.com with ESMTP; 12 Sep 2012 03:09:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.80,408,1344236400"; 
-   d="asc'?scan'208";a="144142806"
-Received: from blue.fi.intel.com ([10.237.72.50])
-  by AZSMGA002.ch.intel.com with ESMTP; 12 Sep 2012 03:09:15 -0700
-Received: by blue.fi.intel.com (Postfix, from userid 1000)
-        id ABE50E0073; Wed, 12 Sep 2012 13:09:41 +0300 (EEST)
-Date:   Wed, 12 Sep 2012 13:09:41 +0300
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     linux-mm@kvack.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Andi Kleen <ak@linux.intel.com>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        Alex Shi <alex.shu@intel.com>,
-        Jan Beulich <jbeulich@novell.com>,
-        Robert Richter <robert.richter@amd.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Hugh Dickins <hughd@google.com>,
-        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
-        Mel Gorman <mgorman@suse.de>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v4 0/8] Avoid cache trashing on clearing huge/gigantic
- page
-Message-ID: <20120912100941.GA26582@otc-wbsnb-06>
-References: <1345470757-12005-1-git-send-email-kirill.shutemov@linux.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2012 17:02:31 +0200 (CEST)
+Received: from moutng.kundenserver.de ([212.227.126.187]:63015 "EHLO
+        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903347Ab2ILPCZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2012 17:02:25 +0200
+Received: from mailbox.adnet.avionic-design.de (mailbox.avionic-design.de [109.75.18.3])
+        by mrelayeu.kundenserver.de (node=mreu3) with ESMTP (Nemesis)
+        id 0MITil-1TFwmu0ZEV-0049Fn; Wed, 12 Sep 2012 17:02:15 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mailbox.adnet.avionic-design.de (Postfix) with ESMTP id 710B72A28318;
+        Wed, 12 Sep 2012 17:02:14 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at avionic-design.de
+Received: from mailbox.adnet.avionic-design.de ([127.0.0.1])
+        by localhost (mailbox.avionic-design.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 7L1C-Zr5Ezaa; Wed, 12 Sep 2012 17:02:12 +0200 (CEST)
+Received: from localhost (avionic-0098.adnet.avionic-design.de [172.20.31.233])
+        (Authenticated sender: thierry.reding)
+        by mailbox.adnet.avionic-design.de (Postfix) with ESMTPA id B9A722A2830F;
+        Wed, 12 Sep 2012 17:02:11 +0200 (CEST)
+Date:   Wed, 12 Sep 2012 17:02:10 +0200
+From:   Thierry Reding <thierry.reding@avionic-design.de>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Antony Pavlov <antonynpavlov@gmail.com>,
+        Maarten ter Huurne <maarten@treewalker.org>
+Subject: Re: [PATCH v2 0/3] MIPS: JZ4740: Move PWM driver to PWM framework
+Message-ID: <20120912150210.GA20961@avionic-0098.mockup.avionic-design.de>
+References: <1347278719-15276-1-git-send-email-thierry.reding@avionic-design.de>
+ <504E0542.8020309@metafoo.de>
+ <20120910173056.GA31611@avionic-0098.mockup.avionic-design.de>
+ <504F7B4D.3030602@metafoo.de>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="9amGYk9869ThD9tj"
+        protocol="application/pgp-signature"; boundary="ZGiS0Q5IWpPtfppv"
 Content-Disposition: inline
-In-Reply-To: <1345470757-12005-1-git-send-email-kirill.shutemov@linux.intel.com>
+In-Reply-To: <504F7B4D.3030602@metafoo.de>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34475
+X-Provags-ID: V02:K0:+RgVVIBL7qWruvdn/em8uZQcQo6zGZLlZIB7AeqE8Aq
+ E1YwlznOeyS9TBRrckMempIamMGmmdBHIba5cyRoSfhzg9Mhu7
+ mfxFBsZPqkJOEJeQeB6IEIhOlSi9Mi7B2Bgi2mKdS93VSc2eeJ
+ TPIyXhwHxgVdimGZ8l2BEwIHUO9euySuHh7Wwswz3oQb1f1Mk0
+ l8V1cN4G7Nyl1eKR6wdw0HAAKMijRq00Jfra3xywxPkH/MxJkA
+ 6A/4WlnFuoETSoDpOQjnDVA8aG3af2N1kvKS0YC0tmpugu1Bzs
+ 3dWFBm1t4pieDvz469QDCTGmZMpDq/289/uQ5atJQOARFA9MUh
+ eFNSIqdwYXOOnaiB0ITFJN73xrdocTKWtO/YqnCmxq4VYlGsXJ
+ /k23aDGapXxPmdR2FmKL2J6VekiD9oEeb4=
+X-archive-position: 34476
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill.shutemov@linux.intel.com
+X-original-sender: thierry.reding@avionic-design.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,38 +64,261 @@ X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
 
---9amGYk9869ThD9tj
+--ZGiS0Q5IWpPtfppv
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, Sep 11, 2012 at 07:56:29PM +0200, Lars-Peter Clausen wrote:
+> On 09/10/2012 07:30 PM, Thierry Reding wrote:
+> > On Mon, Sep 10, 2012 at 05:20:34PM +0200, Lars-Peter Clausen wrote:
+> >> On 09/10/2012 02:05 PM, Thierry Reding wrote:
+> >>> Hi,
+> >>>
+> >>
+> >> [...]
+> >=20
+> >> Patch 1 should go through the MIPS tree, but I still can't see why the=
+ issue
+> >> should occur nor does it happen for anybody else except for you. Inste=
+ad of
+> >> moving the content over to the public irq.h I'd rather like to see the
+> >> private irq.h being renamed.
+> >=20
+> > If we can solve this some other way I'm all for it. Maybe you can share
+> > the defconfig or .config that you use so I can test under the same
+> > conditions.
+> >=20
+> > Thierry
+>=20
+> This is the config I'm using:
+> http://projects.qi-hardware.com/index.php/p/qi-kernel/source/tree/jz-3.4/=
+arch/mips/configs/qi_lb60_defconfig
 
-Any feedback?
+I can still reproduce the error with that configuration. Perhaps related
+to the toolchain? I use a vanilla gcc 4.7.1 cross-compiler. This is all
+on top of Linux v3.6-rc2.
 
---=20
- Kirill A. Shutemov
+Here's the complete error message:
 
---9amGYk9869ThD9tj
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+$ nice make ARCH=3Dmips CROSS_COMPILE=3D/home/thierry.reding/pbs-stage1/bin=
+/mips-linux-gnu- O=3Dbuild/jz4740
+  Using /home/thierry.reding/src/kernel/linux-pwm.git as source for kernel
+  GEN     /home/thierry.reding/src/kernel/linux-pwm.git/build/jz4740/Makefi=
+le
+  CHK     include/linux/version.h
+  CHK     include/generated/utsrelease.h
+  CALL    /home/thierry.reding/src/kernel/linux-pwm.git/scripts/checksyscal=
+ls.sh
+  CHK     include/generated/compile.h
+  CC      arch/mips/jz4740/irq.o
+In file included from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/irq.h:18:0,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/irq.h:27,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/asm-generic/hardirq.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/hardirq.h:16,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/hardirq.h:7,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/interrupt.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/jz4740/irq.c:19:
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:20:39:=
+ error: 'struct irq_data' declared inside parameter list [-Werror]
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:20:39:=
+ error: its scope is only this definition or declaration, which is probably=
+ not what you want [-Werror]
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:21:38:=
+ error: 'struct irq_data' declared inside parameter list [-Werror]
+In file included from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/irq.h:356:0,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/asm-generic/hardirq.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/hardirq.h:16,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/hardirq.h:7,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/interrupt.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/jz4740/irq.c:19:
+/home/thierry.reding/src/kernel/linux-pwm.git/include/linux/irqdesc.h:75:33=
+: error: 'NR_IRQS' undeclared here (not in a function)
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c: In fu=
+nction 'jz4740_cascade':
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:49:39:=
+ error: 'JZ4740_IRQ_BASE' undeclared (first use in this function)
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:49:39:=
+ note: each undeclared identifier is reported only once for each function i=
+t appears in
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c: At to=
+p level:
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:62:6: =
+error: conflicting types for 'jz4740_irq_suspend'
+In file included from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/irq.h:18:0,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/irq.h:27,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/asm-generic/hardirq.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/hardirq.h:16,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/hardirq.h:7,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/interrupt.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/jz4740/irq.c:19:
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:20:13:=
+ note: previous declaration of 'jz4740_irq_suspend' was here
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:68:6: =
+error: conflicting types for 'jz4740_irq_resume'
+In file included from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/irq.h:18:0,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/irq.h:27,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/asm-generic/hardirq.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/hardirq.h:16,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/hardirq.h:7,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/interrupt.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/jz4740/irq.c:19:
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:21:13:=
+ note: previous declaration of 'jz4740_irq_resume' was here
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c: In fu=
+nction 'arch_init_irq':
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:91:41:=
+ error: 'JZ4740_IRQ_BASE' undeclared (first use in this function)
+cc1: all warnings being treated as errors
+make[3]: *** [arch/mips/jz4740/irq.o] Error 1
+make[2]: *** [arch/mips/jz4740] Error 2
+make[1]: *** [arch/mips] Error 2
+make: *** [sub-make] Error 2
+  Using /home/thierry.reding/src/kernel/linux-pwm.git as source for kernel
+  GEN     /home/thierry.reding/src/kernel/linux-pwm.git/build/jz4740/Makefi=
+le
+  CHK     include/linux/version.h
+  CHK     include/generated/utsrelease.h
+  CALL    /home/thierry.reding/src/kernel/linux-pwm.git/scripts/checksyscal=
+ls.sh
+  CHK     include/generated/compile.h
+  CC      arch/mips/jz4740/irq.o
+In file included from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/irq.h:18:0,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/irq.h:27,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/asm-generic/hardirq.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/hardirq.h:16,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/hardirq.h:7,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/interrupt.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/jz4740/irq.c:19:
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:20:39:=
+ error: 'struct irq_data' declared inside parameter list [-Werror]
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:20:39:=
+ error: its scope is only this definition or declaration, which is probably=
+ not what you want [-Werror]
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:21:38:=
+ error: 'struct irq_data' declared inside parameter list [-Werror]
+In file included from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/irq.h:356:0,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/asm-generic/hardirq.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/hardirq.h:16,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/hardirq.h:7,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/interrupt.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/jz4740/irq.c:19:
+/home/thierry.reding/src/kernel/linux-pwm.git/include/linux/irqdesc.h:75:33=
+: error: 'NR_IRQS' undeclared here (not in a function)
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c: In fu=
+nction 'jz4740_cascade':
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:49:39:=
+ error: 'JZ4740_IRQ_BASE' undeclared (first use in this function)
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:49:39:=
+ note: each undeclared identifier is reported only once for each function i=
+t appears in
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c: At to=
+p level:
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:62:6: =
+error: conflicting types for 'jz4740_irq_suspend'
+In file included from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/irq.h:18:0,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/irq.h:27,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/asm-generic/hardirq.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/hardirq.h:16,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/hardirq.h:7,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/interrupt.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/jz4740/irq.c:19:
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:20:13:=
+ note: previous declaration of 'jz4740_irq_suspend' was here
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:68:6: =
+error: conflicting types for 'jz4740_irq_resume'
+In file included from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/irq.h:18:0,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/irq.h:27,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/asm-generic/hardirq.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/include/asm/hardirq.h:16,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/hardirq.h:7,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/include=
+/linux/interrupt.h:12,
+                 from /home/thierry.reding/src/kernel/linux-pwm.git/arch/mi=
+ps/jz4740/irq.c:19:
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.h:21:13:=
+ note: previous declaration of 'jz4740_irq_resume' was here
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c: In fu=
+nction 'arch_init_irq':
+/home/thierry.reding/src/kernel/linux-pwm.git/arch/mips/jz4740/irq.c:91:41:=
+ error: 'JZ4740_IRQ_BASE' undeclared (first use in this function)
+cc1: all warnings being treated as errors
+make[3]: *** [arch/mips/jz4740/irq.o] Error 1
+make[2]: *** [arch/mips/jz4740] Error 2
+make[1]: *** [arch/mips] Error 2
+make: *** [sub-make] Error 2
+
+--ZGiS0Q5IWpPtfppv
+Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
+Version: GnuPG v2.0.19 (GNU/Linux)
 
-iQIcBAEBAgAGBQJQUF9lAAoJEAd+omnVudOMqvgP/A9oBD+NU+NuFlm6b32IkUIR
-2jlEFuSzAp3dAS+aQWVcjLz88pNu7ZjD2m9dTWwVr03UKSlfc/UUcHctWmjrhj+B
-trkuGQ7qVadFTaunqj1z1NZGCrXwGTdw2f+soGtJ+cmwmOqxrqyDJlbJyyOfpiJe
-iYyOU522V7Rc/cnyjY+OxOkaHDBy3RIpo6DhVpSC4Ws6wH6bkuiM2ZYAx+fiRDnj
-Ii60Iel88rjQ0uSeTQ+Jznu16czL4q4bRB9IeT24jUQRgTp7kYKNyjzgy4/zrjOL
-Dlkck9VihPQhZ3QxAjqcxQQCwclB0GctZDFUIrP97+REFlvd3u7yVzgxpeVuqtsz
-K6aXJDcPqfTGyEe0OgOGVb+M6ylvIvsXjNXkym85PTCZNnw9smem1S2HY5689bH+
-ELP9ruYagr1yb+LTX3CQmFuvmoCyuzES/tgw97AJbFP3prkt0K44WhBsJCaflJjl
-efJg6qWTwTrIK8hq0ulcWnwa2oi9zbNwV2SVgDdVQmOfwtzKAp69ijF0Rd4lwpZf
-47ch8oZDVcn8Fv2nhv9FrFr8JiAZ07eIwzeAGiSfpIRpcKXoKUp8y950i++mlxNq
-xoGPDY1odKCKoVsbwYtW/E9l/tmUhTljqExfn9pzcHqMz4YUMGob7xnZOP0ljY5y
-ikNOztWkQPhLD2Cj1nLx
-=p8ME
+iQIcBAEBAgAGBQJQUKPyAAoJEN0jrNd/PrOhUJwP/1dIPL5IM60pGY/bOYYQ9Jff
+FK/Y8wiQjTfYFvdO7qlM5bzfAbifb0KeHNGVgk+Qyxj80EF3kK3finWCR2MdYKN7
+55fXKYDVbpeAcHQ1OAAN5i2fYhiCcs/uw0xXCqDw4miHoCo9BHPsHAX3/UdC4ILW
+oHV7kTAYYmP2sLGFTVgzpnr5s7ChPcddNZ7rY+uH4yalaYJhQgDP/JZygwsZc0p9
+upOtak5qPv9xQtyuTlhJ3PeEF94N7gT7/gOafbJibfXChV4kzh1fAFdlA8gQif6t
+hhjGta7bZS2SknFG+d0nqtyn/2/Iej41HKssIrvXNPX/5+Cm2L7YXEAXBxze4AwH
+VSQiFJF6okT8esl+ZYl24dF4trC4N9csLr2Do48sAikGIpI6U7zWDlIlMwTKC0Ig
+ZdO/qfK3X7+a/V18QpNW49xvWhaIIogxxvDTurPUeWm15/4QnIGTZHq1MMsvchOg
+IK6s8k52bwR0ad1/olx/w+RiM1/9WWaThAkHXhwnr/bK4YpJHAKa/ZD1kD+ue71u
+goqHK+3qRJL+bYzqqdtZPXuuxbFM68TECevyQ+9JXwzm7LqwskgMJcw+T+hbinSI
+NbmtrfM5JhrmeKMuaoclOUichAVld+TSzo5jiorDOJGXCWFnQRLZHgDLA7SMzQE1
+khK67KXm6n48kjmYb0Rl
+=GSpW
 -----END PGP SIGNATURE-----
 
---9amGYk9869ThD9tj--
+--ZGiS0Q5IWpPtfppv--

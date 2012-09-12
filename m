@@ -1,31 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2012 22:31:42 +0200 (CEST)
-Received: from mail-qa0-f49.google.com ([209.85.216.49]:56318 "EHLO
-        mail-qa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903348Ab2ILUbi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2012 22:31:38 +0200
-Received: by qafk1 with SMTP id k1so1417399qaf.15
-        for <linux-mips@linux-mips.org>; Wed, 12 Sep 2012 13:31:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=date:from:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version:content-type:x-gm-message-state;
-        bh=4bXrofJBvKD27Thx87qmEQ7uxo2cJaabolvZNLZypjQ=;
-        b=awlzqzcB02rlBn3JqComf8hBzs4VnpiB9hS0HuZFKnhPdGvskWSzTjpU2L5FjTSHgg
-         82fma0NI9PEG/q/oBpTcs+b7ir9FYWCcK36++aQsa+pfJVbggafOfwV3tq1bQUk2iPFU
-         +7T8d3k40HNcsqladnJKjcK5tqVAsb24sA7XOmba9tVA9vEQTQFcd6W7z8O7+kzCmnJ1
-         1PVpzXhyIrxKdMPd9TwDbOgLZmzFsBbCZwPi9NApFi7dBesyqDfu1zpTYzsDiSp6EtaZ
-         KhJQD6T/dWT3crDPVnOoWVg0b8DWLuXUW+RtgHw6tQIweU3kbMxzF1eqWPzMfxf35JSH
-         L1YQ==
-Received: by 10.224.214.67 with SMTP id gz3mr698356qab.70.1347481892171;
-        Wed, 12 Sep 2012 13:31:32 -0700 (PDT)
-Received: from xanadu.home (modemcable149.196-201-24.mc.videotron.ca. [24.201.196.149])
-        by mx.google.com with ESMTPS id a13sm11255754qad.18.2012.09.12.13.31.30
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 12 Sep 2012 13:31:31 -0700 (PDT)
-Date:   Wed, 12 Sep 2012 16:31:29 -0400 (EDT)
-From:   Nicolas Pitre <nicolas.pitre@linaro.org>
-To:     Rob Herring <robherring2@gmail.com>
-cc:     Cyril Chemparathy <cyril@ti.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2012 22:56:39 +0200 (CEST)
+Received: from mail-ob0-f177.google.com ([209.85.214.177]:34009 "EHLO
+        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903508Ab2ILU4f (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2012 22:56:35 +0200
+Received: by obbta17 with SMTP id ta17so3496745obb.36
+        for <multiple recipients>; Wed, 12 Sep 2012 13:56:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=qRRupGy+jLT3bdqbyn8e1tMDubc+EYbZLTVrVRmvZnw=;
+        b=JChgIHL/IWqc3fX6MN40C73H2X+CFAyXwKFhePLSWFVfIpNKAHcleZchTwy5e5iH6p
+         WjZnYnnr00+VF+CQddicX1e9srJ+DreJqqRPmE6T1QQKsSc9uaeg1p80GZ1aggYUBlKg
+         DuFc3eTcZgPQMivbskhGW9k91o62NmNG0+Jn7YDm/n9aolvPo/Kb+SSW94Zz0hX4Dz9h
+         C9a0AZUl8ir62/UoALcPUQPi2g34hz7mXp2l4tDNK1OOBYTpOCukQac4DULWVZxdXv9d
+         Xpb5dg2rjHbFgXNvzhkIo9AfCcRMlzyKdY6eYjHizfJoH7jVi+GidYBHuhGuXtUoyCni
+         qNew==
+Received: by 10.60.30.201 with SMTP id u9mr24274025oeh.51.1347483388460;
+        Wed, 12 Sep 2012 13:56:28 -0700 (PDT)
+Received: from [10.10.10.90] ([173.226.190.126])
+        by mx.google.com with ESMTPS id ea6sm21321394obc.9.2012.09.12.13.56.25
+        (version=SSLv3 cipher=OTHER);
+        Wed, 12 Sep 2012 13:56:27 -0700 (PDT)
+Message-ID: <5050F6F8.6000008@gmail.com>
+Date:   Wed, 12 Sep 2012 15:56:24 -0500
+From:   Rob Herring <robherring2@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20120714 Thunderbird/14.0
+MIME-Version: 1.0
+To:     Nicolas Pitre <nicolas.pitre@linaro.org>
+CC:     Cyril Chemparathy <cyril@ti.com>,
         devicetree-discuss@lists.ozlabs.org,
         linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
@@ -42,18 +45,15 @@ cc:     Cyril Chemparathy <cyril@ti.com>,
         dhowells@redhat.com, monstr@monstr.eu, ralf@linux-mips.org,
         tj@kernel.org
 Subject: Re: [PATCH] of: specify initrd location using 64-bit
-In-Reply-To: <5050EF3F.6030003@gmail.com>
-Message-ID: <alpine.LFD.2.02.1209121629260.28681@xanadu.home>
-References: <1347465937-7056-1-git-send-email-cyril@ti.com> <5050EF3F.6030003@gmail.com>
-User-Agent: Alpine 2.02 (LFD 1266 2009-07-14)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Gm-Message-State: ALoCoQnekanbUMWQw6esCiKCfk07hXJe9kdlUWp666woH7Lrg4upM3HSkdk2b/wZDoiJZJJ8rMA0
-X-archive-position: 34486
+References: <1347465937-7056-1-git-send-email-cyril@ti.com> <5050EF3F.6030003@gmail.com> <alpine.LFD.2.02.1209121629260.28681@xanadu.home>
+In-Reply-To: <alpine.LFD.2.02.1209121629260.28681@xanadu.home>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34487
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nicolas.pitre@linaro.org
+X-original-sender: robherring2@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,45 +67,49 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, 12 Sep 2012, Rob Herring wrote:
-
-> On 09/12/2012 11:05 AM, Cyril Chemparathy wrote:
-> > On some PAE architectures, the entire range of physical memory could reside
-> > outside the 32-bit limit.  These systems need the ability to specify the
-> > initrd location using 64-bit numbers.
-> > 
-> > This patch globally modifies the early_init_dt_setup_initrd_arch() function to
-> > use 64-bit numbers instead of the current unsigned long.
+On 09/12/2012 03:31 PM, Nicolas Pitre wrote:
+> On Wed, 12 Sep 2012, Rob Herring wrote:
 > 
-> S-o-B?
+>> On 09/12/2012 11:05 AM, Cyril Chemparathy wrote:
+>>> On some PAE architectures, the entire range of physical memory could reside
+>>> outside the 32-bit limit.  These systems need the ability to specify the
+>>> initrd location using 64-bit numbers.
+>>>
+>>> This patch globally modifies the early_init_dt_setup_initrd_arch() function to
+>>> use 64-bit numbers instead of the current unsigned long.
+>>
+>> S-o-B?
+>>
+>>> ---
+>>>  arch/arm/mm/init.c            |    2 +-
+>>>  arch/c6x/kernel/devicetree.c  |    3 +--
+>>>  arch/microblaze/kernel/prom.c |    3 +--
+>>>  arch/mips/kernel/prom.c       |    3 +--
+>>>  arch/openrisc/kernel/prom.c   |    3 +--
+>>>  arch/powerpc/kernel/prom.c    |    3 +--
+>>>  arch/x86/kernel/devicetree.c  |    3 +--
+>>>  drivers/of/fdt.c              |   10 ++++++----
+>>>  include/linux/of_fdt.h        |    3 +--
+>>>  9 files changed, 14 insertions(+), 19 deletions(-)
+>>>
+>>> diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
+>>> index ad722f1..579792c 100644
+>>> --- a/arch/arm/mm/init.c
+>>> +++ b/arch/arm/mm/init.c
+>>> @@ -76,7 +76,7 @@ static int __init parse_tag_initrd2(const struct tag *tag)
+>>>  __tagtable(ATAG_INITRD2, parse_tag_initrd2);
+>>>  
+>>>  #ifdef CONFIG_OF_FLATTREE
+>>> -void __init early_init_dt_setup_initrd_arch(unsigned long start, unsigned long end)
+>>> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+>>
+>> phys_initrd_start/size need to change too. Not sure about similar things
+>> on other arches.
 > 
-> > ---
-> >  arch/arm/mm/init.c            |    2 +-
-> >  arch/c6x/kernel/devicetree.c  |    3 +--
-> >  arch/microblaze/kernel/prom.c |    3 +--
-> >  arch/mips/kernel/prom.c       |    3 +--
-> >  arch/openrisc/kernel/prom.c   |    3 +--
-> >  arch/powerpc/kernel/prom.c    |    3 +--
-> >  arch/x86/kernel/devicetree.c  |    3 +--
-> >  drivers/of/fdt.c              |   10 ++++++----
-> >  include/linux/of_fdt.h        |    3 +--
-> >  9 files changed, 14 insertions(+), 19 deletions(-)
-> > 
-> > diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
-> > index ad722f1..579792c 100644
-> > --- a/arch/arm/mm/init.c
-> > +++ b/arch/arm/mm/init.c
-> > @@ -76,7 +76,7 @@ static int __init parse_tag_initrd2(const struct tag *tag)
-> >  __tagtable(ATAG_INITRD2, parse_tag_initrd2);
-> >  
-> >  #ifdef CONFIG_OF_FLATTREE
-> > -void __init early_init_dt_setup_initrd_arch(unsigned long start, unsigned long end)
-> > +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
-> 
-> phys_initrd_start/size need to change too. Not sure about similar things
-> on other arches.
+> size ?
 
-size ?
+phys_initrd_size. Arguably, we'll never have a >4GB initrd with a PAE
+system or perhaps run into other issues first (like space to decompress
+it), but technically the DTS could specify one.
 
-
-Nicolas
+Rob

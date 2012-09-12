@@ -1,44 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2012 19:47:40 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:61459 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903340Ab2ILRre (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2012 19:47:34 +0200
-Received: by pbbrq8 with SMTP id rq8so2801931pbb.36
-        for <multiple recipients>; Wed, 12 Sep 2012 10:47:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=qkCcQGO3p2TVTvWfJKYhqNdRHh8A4tx7QyEIYSBv6wI=;
-        b=d+puFmdSpQ8qCxMGg3AG+WlUPwCzhJPnBKzQ7MjXDpjkxT7EBuk6LHcp+o+1M3fQEZ
-         9w1i4X30JMhPzV93EhQ7jclJd1wzZdzYj66U7IgvLTNLqgKuzFofsJ0h0aCN/lGtn8FQ
-         JUSMWcc+9/TT9HnWZbDNEw5hhO+2DdWK7LxA4z/ZXYhe81kSDPfXjtZ7hq5yveQ3utjL
-         d5X721R1lsfeX03lnxZTo/9NZtwJJZN1mH+8IZ6qzaCNtHOaSKU6nEorwyBVYPDYlshs
-         ScQkDPUDMtdtuFcFQefOX+HjMUOn71TfSvy5ZwNaVA4R1tIKn9NlOSXABFoGp+0TkzHX
-         GTWw==
-Received: by 10.66.76.165 with SMTP id l5mr32535439paw.79.1347472047910;
-        Wed, 12 Sep 2012 10:47:27 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id ka4sm11714859pbc.61.2012.09.12.10.47.25
-        (version=SSLv3 cipher=OTHER);
-        Wed, 12 Sep 2012 10:47:26 -0700 (PDT)
-Message-ID: <5050CAAC.1090600@gmail.com>
-Date:   Wed, 12 Sep 2012 10:47:24 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:15.0) Gecko/20120828 Thunderbird/15.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2012 20:03:31 +0200 (CEST)
+Received: from bear.ext.ti.com ([192.94.94.41]:51376 "EHLO bear.ext.ti.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903340Ab2ILSDU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 12 Sep 2012 20:03:20 +0200
+Received: from dlelxv30.itg.ti.com ([172.17.2.17])
+        by bear.ext.ti.com (8.13.7/8.13.7) with ESMTP id q8CI2Zvf021542;
+        Wed, 12 Sep 2012 13:02:35 -0500
+Received: from DFLE73.ent.ti.com (dfle73.ent.ti.com [128.247.5.110])
+        by dlelxv30.itg.ti.com (8.13.8/8.13.8) with ESMTP id q8CI2ZS9023276;
+        Wed, 12 Sep 2012 13:02:35 -0500
+Received: from dlelxv22.itg.ti.com (172.17.1.197) by dfle73.ent.ti.com
+ (128.247.5.110) with Microsoft SMTP Server id 14.1.323.3; Wed, 12 Sep 2012
+ 13:02:35 -0500
+Received: from [158.218.103.130] (gtla0875269.am.dhcp.ti.com
+ [158.218.103.130])     by dlelxv22.itg.ti.com (8.13.8/8.13.8) with ESMTP id
+ q8CI2RDL032273;        Wed, 12 Sep 2012 13:02:28 -0500
+Message-ID: <5050CE33.9060909@ti.com>
+Date:   Wed, 12 Sep 2012 14:02:27 -0400
+From:   Cyril Chemparathy <cyril@ti.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:15.0) Gecko/20120824 Thunderbird/15.0
 MIME-Version: 1.0
-To:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/2] Add RI and XI bits to MIPS base architecture.
-References: <1347469309-11468-1-git-send-email-sjhill@mips.com>
-In-Reply-To: <1347469309-11468-1-git-send-email-sjhill@mips.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+CC:     <devicetree-discuss@lists.ozlabs.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-c6x-dev@linux-c6x.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, <linux@openrisc.net>,
+        <linuxppc-dev@lists.ozlabs.org>,
+        <microblaze-uclinux@itee.uq.edu.au>, <a-jacquiot@ti.com>,
+        <arnd@arndb.de>, <benh@kernel.crashing.org>,
+        <bigeasy@linutronix.de>, <blogic@openwrt.org>,
+        <david.daney@cavium.com>, <dhowells@redhat.com>,
+        <grant.likely@secretlab.ca>, <hpa@zytor.com>, <jonas@southpole.se>,
+        <linus.walleij@linaro.org>, <linux@arm.linux.org.uk>,
+        <m.szyprowski@samsung.com>, <mahesh@linux.vnet.ibm.com>,
+        <mingo@redhat.com>, <monstr@monstr.eu>, <msalter@redhat.com>,
+        <nico@linaro.org>, <paul.gortmaker@windriver.com>,
+        <paulus@samba.org>, <ralf@linux-mips.org>,
+        <rob.herring@calxeda.com>, <suzuki@in.ibm.com>,
+        <tglx@linutronix.de>, <tj@kernel.org>, <x86@kernel.org>
+Subject: Re: [PATCH] of: specify initrd location using 64-bit
+References: <1347465937-7056-1-git-send-email-cyril@ti.com> <CAMuHMdUuQzD0bq8PifBea2-0Pk7RhmPA0-GAFprsk+vMxMGjGw@mail.gmail.com>
+In-Reply-To: <CAMuHMdUuQzD0bq8PifBea2-0Pk7RhmPA0-GAFprsk+vMxMGjGw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 34482
+X-archive-position: 34483
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: cyril@ti.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,37 +61,36 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 09/12/2012 10:01 AM, Steven J. Hill wrote:
-> From: "Steven J. Hill" <sjhill@mips.com>
+On 9/12/2012 12:16 PM, Geert Uytterhoeven wrote:
+> On Wed, Sep 12, 2012 at 6:05 PM, Cyril Chemparathy <cyril@ti.com> wrote:
+>> On some PAE architectures, the entire range of physical memory could reside
+>> outside the 32-bit limit.  These systems need the ability to specify the
+>> initrd location using 64-bit numbers.
+>>
+>> This patch globally modifies the early_init_dt_setup_initrd_arch() function to
+>> use 64-bit numbers instead of the current unsigned long.
 >
-> Add MIPSr3(TM) base architecture TLB support for Read Inhibit (RI)
-> and Execute Inhibit (XI) page protection. SmartMIPS cores will not
-> notice any change in functionality.
+>> -void __init early_init_dt_setup_initrd_arch(unsigned long start, unsigned long end)
+>> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
 >
-> This patchset obsoletes the previous patchset with four commits.
+> Why not phys_addr_t?
 >
-> Signed-off-by: Steven J. Hill <sjhill@mips.com>
 
-FWIW:  I haven't tested it, but the entire set ...
+The rest of the memory specific bits of the device-tree code use u64 for 
+addresses, and I kept it the same for consistency.
 
-Acked-by: David Daney <david.daney@cavium.com>
+> Gr{oetje,eeting}s,
+>
+>                          Geert
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                  -- Linus Torvalds
+>
 
-
->
-> Steven J. Hill (2):
->    MIPS: Add base architecture support for RI and XI.
->    MIPS: Replace 'kernel_uses_smartmips_rixi' with 'cpu_has_rixi'.
->
->   arch/mips/include/asm/cpu-features.h               |    4 ++--
->   arch/mips/include/asm/cpu.h                        |    1 +
->   .../asm/mach-cavium-octeon/cpu-feature-overrides.h |    2 +-
->   arch/mips/include/asm/mipsregs.h                   |    1 +
->   arch/mips/include/asm/pgtable-bits.h               |   18 +++++++++---------
->   arch/mips/include/asm/pgtable.h                    |   12 ++++++------
->   arch/mips/kernel/cpu-probe.c                       |    6 +++++-
->   arch/mips/mm/cache.c                               |    2 +-
->   arch/mips/mm/fault.c                               |    2 +-
->   arch/mips/mm/tlb-r4k.c                             |    2 +-
->   arch/mips/mm/tlbex.c                               |   14 +++++++-------
->   11 files changed, 35 insertions(+), 29 deletions(-)
->
+-- 
+Thanks
+- Cyril

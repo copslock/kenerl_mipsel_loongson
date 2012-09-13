@@ -1,52 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Sep 2012 01:47:38 +0200 (CEST)
-Received: from devils.ext.ti.com ([198.47.26.153]:49657 "EHLO
-        devils.ext.ti.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903508Ab2ILXrd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Sep 2012 01:47:33 +0200
-Received: from dlelxv30.itg.ti.com ([172.17.2.17])
-        by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id q8CNk0r8005534;
-        Wed, 12 Sep 2012 18:46:00 -0500
-Received: from DFLE72.ent.ti.com (dfle72.ent.ti.com [128.247.5.109])
-        by dlelxv30.itg.ti.com (8.13.8/8.13.8) with ESMTP id q8CNk0Zs001064;
-        Wed, 12 Sep 2012 18:46:00 -0500
-Received: from dlelxv22.itg.ti.com (172.17.1.197) by dfle72.ent.ti.com
- (128.247.5.109) with Microsoft SMTP Server id 14.1.323.3; Wed, 12 Sep 2012
- 18:45:59 -0500
-Received: from [158.218.103.130] (gtla0875269.am.dhcp.ti.com
- [158.218.103.130])     by dlelxv22.itg.ti.com (8.13.8/8.13.8) with ESMTP id
- q8CNjwdB007123;        Wed, 12 Sep 2012 18:45:58 -0500
-Message-ID: <50511EB5.800@ti.com>
-Date:   Wed, 12 Sep 2012 19:45:57 -0400
-From:   Cyril Chemparathy <cyril@ti.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:15.0) Gecko/20120907 Thunderbird/15.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Sep 2012 08:48:12 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:60940 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1902243Ab2IMGsD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Sep 2012 08:48:03 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtp (Exim 4.72)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1TC3Ce-0005AW-GH; Thu, 13 Sep 2012 08:47:08 +0200
+Message-ID: <5051816A.3050705@linutronix.de>
+Date:   Thu, 13 Sep 2012 08:47:06 +0200
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.6esrpre) Gecko/20120817 Icedove/10.0.6
 MIME-Version: 1.0
 To:     Rob Herring <robherring2@gmail.com>
-CC:     <devicetree-discuss@lists.ozlabs.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-c6x-dev@linux-c6x.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <linux@openrisc.net>,
-        <linuxppc-dev@lists.ozlabs.org>,
-        <microblaze-uclinux@itee.uq.edu.au>, <x86@kernel.org>,
-        <david.daney@cavium.com>, <benh@kernel.crashing.org>,
-        <bigeasy@linutronix.de>, <grant.likely@secretlab.ca>,
-        <paul.gortmaker@windriver.com>, <paulus@samba.org>,
-        <hpa@zytor.com>, <m.szyprowski@samsung.com>, <jonas@southpole.se>,
-        <linux@arm.linux.org.uk>, <nico@linaro.org>, <a-jacquiot@ti.com>,
-        <mingo@redhat.com>, <suzuki@in.ibm.com>,
-        <mahesh@linux.vnet.ibm.com>, <linus.walleij@linaro.org>,
-        <arnd@arndb.de>, <msalter@redhat.com>, <rob.herring@calxeda.com>,
-        <tglx@linutronix.de>, <blogic@openwrt.org>, <dhowells@redhat.com>,
-        <monstr@monstr.eu>, <ralf@linux-mips.org>, <tj@kernel.org>
+CC:     Cyril Chemparathy <cyril@ti.com>, linux-mips@linux-mips.org,
+        x86@kernel.org, a-jacquiot@ti.com, mahesh@linux.vnet.ibm.com,
+        linus.walleij@linaro.org, grant.likely@secretlab.ca,
+        paul.gortmaker@windriver.com, paulus@samba.org, hpa@zytor.com,
+        m.szyprowski@samsung.com, jonas@southpole.se,
+        linux@arm.linux.org.uk, linux-c6x-dev@linux-c6x.org,
+        nico@linaro.org, david.daney@cavium.com, mingo@redhat.com,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        benh@kernel.crashing.org, suzuki@in.ibm.com, linux@openrisc.net,
+        arnd@arndb.de, microblaze-uclinux@itee.uq.edu.au,
+        devicetree-discuss@lists.ozlabs.org, msalter@redhat.com,
+        rob.herring@calxeda.com, tglx@linutronix.de,
+        linux-arm-kernel@lists.infradead.org, blogic@openwrt.org,
+        dhowells@redhat.com, monstr@monstr.eu,
+        linux-kernel@vger.kernel.org, ralf@linux-mips.org, tj@kernel.org,
+        linuxppc-dev@lists.ozlabs.org
 Subject: Re: [PATCH] of: specify initrd location using 64-bit
-References: <1347465937-7056-1-git-send-email-cyril@ti.com> <5050EF3F.6030003@gmail.com>
-In-Reply-To: <5050EF3F.6030003@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+References: <1347465937-7056-1-git-send-email-cyril@ti.com> <CAMuHMdUuQzD0bq8PifBea2-0Pk7RhmPA0-GAFprsk+vMxMGjGw@mail.gmail.com> <5050CE33.9060909@ti.com> <5050E965.5080405@linutronix.de> <505107DF.5020105@gmail.com>
+In-Reply-To: <505107DF.5020105@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 34490
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+X-archive-position: 34491
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cyril@ti.com
+X-original-sender: bigeasy@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,45 +55,22 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 9/12/2012 4:23 PM, Rob Herring wrote:
-> On 09/12/2012 11:05 AM, Cyril Chemparathy wrote:
->> On some PAE architectures, the entire range of physical memory could reside
->> outside the 32-bit limit.  These systems need the ability to specify the
->> initrd location using 64-bit numbers.
->>
->> This patch globally modifies the early_init_dt_setup_initrd_arch() function to
->> use 64-bit numbers instead of the current unsigned long.
+On 09/13/2012 12:08 AM, Rob Herring wrote:
+>> Geert is right here. If it is a physical address, it should be
+>> phys_addr_t.
 >
-> S-o-B?
->
+> While generally true, for the DT specific code I think it should be a
+> fixed u64. The size of the address is defined by the FDT, not the
+> kernel. It is very likely we could have a FDT that specifies addresses
+> in 64-bit values, but then we boot a kernel is compiled for !LPAE.
+> phys_addr_t is currently sized based on LPAE setting.
 
-Sorry about that, will include in v2.
+If your kernel is 32bit without PAE and your DTB address is >32ibt than
+you can't handle it. If you don't notice this in your dt code than you
+remap the wrong memory ioremap().
 
-[...]
->> --- a/arch/arm/mm/init.c
->> +++ b/arch/arm/mm/init.c
->> @@ -76,7 +76,7 @@ static int __init parse_tag_initrd2(const struct tag *tag)
->>   __tagtable(ATAG_INITRD2, parse_tag_initrd2);
->>
->>   #ifdef CONFIG_OF_FLATTREE
->> -void __init early_init_dt_setup_initrd_arch(unsigned long start, unsigned long end)
->> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
 >
-> phys_initrd_start/size need to change too. Not sure about similar things
-> on other arches.
+> Rob
 >
 
-I've fixed phys_initrd_start (not size) in another patch, please see [1].
-
-> Does u-boot need similar fixes?
->
-
-We aren't there yet :-)  We are currently running this platform without 
-u-boot.
-
-
-[1] http://permalink.gmane.org/gmane.linux.kernel/1356713
-
--- 
-Thanks
-- Cyril
+Sebastian

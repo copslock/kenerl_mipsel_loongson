@@ -1,44 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2012 01:05:20 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:34724 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903384Ab2IMXFQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Sep 2012 01:05:16 +0200
-Received: from akpm.mtv.corp.google.com (216-239-45-4.google.com [216.239.45.4])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C8D9D9E3;
-        Thu, 13 Sep 2012 23:05:07 +0000 (UTC)
-Date:   Thu, 13 Sep 2012 16:05:06 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Andi Kleen <ak@linux.intel.com>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        Alex Shi <alex.shu@intel.com>,
-        Jan Beulich <jbeulich@novell.com>,
-        Robert Richter <robert.richter@amd.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Hugh Dickins <hughd@google.com>,
-        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
-        Mel Gorman <mgorman@suse.de>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v4 0/8] Avoid cache trashing on clearing huge/gigantic
- page
-Message-Id: <20120913160506.d394392a.akpm@linux-foundation.org>
-In-Reply-To: <1345470757-12005-1-git-send-email-kirill.shutemov@linux.intel.com>
-References: <1345470757-12005-1-git-send-email-kirill.shutemov@linux.intel.com>
-X-Mailer: Sylpheed 3.0.2 (GTK+ 2.20.1; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34496
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2012 01:08:06 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:56569 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903386Ab2IMXIC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 14 Sep 2012 01:08:02 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q8DN80rB004540;
+        Fri, 14 Sep 2012 01:08:00 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q8DN80nA004539;
+        Fri, 14 Sep 2012 01:08:00 +0200
+Date:   Fri, 14 Sep 2012 01:08:00 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Manuel Lauss <manuel.lauss@gmail.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Alchemy: single kernel for DB1200/1300/1550
+Message-ID: <20120913230800.GC19592@linux-mips.org>
+References: <1347551079-20965-1-git-send-email-manuel.lauss@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1347551079-20965-1-git-send-email-manuel.lauss@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34497
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,20 +39,15 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, 20 Aug 2012 16:52:29 +0300
-"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:
+On Thu, Sep 13, 2012 at 05:44:39PM +0200, Manuel Lauss wrote:
 
-> Clearing a 2MB huge page will typically blow away several levels of CPU
-> caches.  To avoid this only cache clear the 4K area around the fault
-> address and use a cache avoiding clears for the rest of the 2MB area.
+> Combine support for the DB1200/PB1200, DB1300 and DB1550 boards into
+> a single kernel image.
 > 
-> This patchset implements cache avoiding version of clear_page only for
-> x86. If an architecture wants to provide cache avoiding version of
-> clear_page it should to define ARCH_HAS_USER_NOCACHE to 1 and implement
-> clear_page_nocache() and clear_user_highpage_nocache().
+> defconfig-generated image verified on DB1200, DB1300 and DB1550.
 
-Patchset looks nice to me, but the changelogs are terribly short of
-performance measurements.  For this sort of change I do think it is
-important that pretty exhaustive testing be performed, and that the
-results (or a readable summary of them) be shown.  And that testing
-should be designed to probe for slowdowns, not just the speedups!
+Thanks, queued.
+
+What's the hardware difference between DB1200 and PB1200 boards?
+
+  Ralf

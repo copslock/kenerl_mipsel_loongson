@@ -1,39 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Sep 2012 00:35:47 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:54742 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903400Ab2INWfn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 15 Sep 2012 00:35:43 +0200
-Received: by dajq27 with SMTP id q27so1422327daj.36
-        for <linux-mips@linux-mips.org>; Fri, 14 Sep 2012 15:35:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent
-         :x-gm-message-state;
-        bh=QQPqKVcFXiZQc9S7EC9X4a9KvEqgrapKZDAnkrz3wmg=;
-        b=O9fCQhWUrtYZDEoE44sk0kprzB4HWoGHZ51K5R/WGJzprxT7TDlHfaJCfhejLjLqQd
-         5HIwcILkPLp5CcDqgX61LpXHqz64S/u6NC8PjT3D34z11Mfd3jUJ8zkrIslC939xVGDr
-         uuCoULiRfa+Yhq6jwAawYnDSgzUSshQTPIDek92TSa12zNLxwxku73qlYtjQinYS/7oF
-         9oAyo8Z9WguGdZQ+ej/j2wO8NNZJ/IFq39hQCCpNjtgSeuCUZBF2NIHI1ibDG+tMLp/n
-         7uZ2dfwnUmZru1yAHHz70CBibFEIiqB5Sau5JnczQOjmmBEnsEg89wZchEt9X4aBxpRT
-         GHiA==
-Received: by 10.68.242.164 with SMTP id wr4mr7073308pbc.41.1347662136386;
-        Fri, 14 Sep 2012 15:35:36 -0700 (PDT)
-Received: from localhost (c-67-168-183-230.hsd1.wa.comcast.net. [67.168.183.230])
-        by mx.google.com with ESMTPS id ho7sm1707972pbc.3.2012.09.14.15.35.32
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 14 Sep 2012 15:35:35 -0700 (PDT)
-Date:   Fri, 14 Sep 2012 15:35:31 -0700
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Thierry Reding <thierry.reding@avionic-design.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Sep 2012 09:32:24 +0200 (CEST)
+Received: from mail-vc0-f177.google.com ([209.85.220.177]:32916 "EHLO
+        mail-vc0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903234Ab2IOHcR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 15 Sep 2012 09:32:17 +0200
+Received: by vcbgb22 with SMTP id gb22so6047036vcb.36
+        for <multiple recipients>; Sat, 15 Sep 2012 00:32:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=oKUjMbnOdMtqIHRgQqgb+0OJdvE9f4xQvLSj2N0dESk=;
+        b=S6vCHoTLecI450CYovV8Z5ztOqEWmWJLeaWwNzYfRwEpMhQnIrFhwChcSlAXSUQdWU
+         Lz23tMClZxbIc2eJgyncGe4rTmzMQnan4kjMCWPDB4kH8y36rvg1l7gWX1fYoBW4A5W5
+         yzzcBxyY+hg7iJXLa0HJ1pMaeAy9DdQy5MvpPRDD8nIPc39I4LO6BXJ/cMhONcHiUIPU
+         uUFmLIRpJJEpQFXJh7d+l9ARBUwnFAd7hVo9oBv5uDaO6XoHSR9/2mhS4ppFStoZ8ZNc
+         4XOT1X39HM/9ZLd1Nw0MJKLEJld5+rVdkN1U+xzqf6JXp5y0tcWUIlyg3TCqy/7KzktG
+         VSXw==
+MIME-Version: 1.0
+Received: by 10.58.164.8 with SMTP id ym8mr4359961veb.39.1347694330690; Sat,
+ 15 Sep 2012 00:32:10 -0700 (PDT)
+Received: by 10.220.50.135 with HTTP; Sat, 15 Sep 2012 00:32:10 -0700 (PDT)
+In-Reply-To: <1347655456-2542-2-git-send-email-thierry.reding@avionic-design.de>
+References: <1347655456-2542-1-git-send-email-thierry.reding@avionic-design.de>
+        <1347655456-2542-2-git-send-email-thierry.reding@avionic-design.de>
+Date:   Sat, 15 Sep 2012 09:32:10 +0200
+X-Google-Sender-Auth: CKlwSCtI1vW5-tlPeb5XFNsfC2c
+Message-ID: <CAMuHMdWuR_tdMw9iVkaQ3D9p1HVU_L05ap=MzBuo1jLD6YdHHw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] PCI: Provide a default pcibios_update_irq()
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Thierry Reding <thierry.reding@avionic-design.de>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
         Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
         Russell King <linux@arm.linux.org.uk>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Mundt <lethal@linux-sh.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -48,21 +50,12 @@ Cc:     Thierry Reding <thierry.reding@avionic-design.de>,
         linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
         linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH 1/2] PCI: Annotate pci_fixup_irqs with __devinit
-Message-ID: <20120914223531.GA8771@kroah.com>
-References: <1347655456-2542-1-git-send-email-thierry.reding@avionic-design.de>
- <CAErSpo6BqPUEpMmh2+FuEi-mHFK0U1XCmdCpJfo6V2XcNxzMNg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAErSpo6BqPUEpMmh2+FuEi-mHFK0U1XCmdCpJfo6V2XcNxzMNg@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Gm-Message-State: ALoCoQmrqfD/EuigwgrftzoBa6Tumut7fZw8UJMz8rhk+URe2mpxU3wNyfBlSboNZ8ZVHUxzr7wz
-X-archive-position: 34508
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 34509
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,27 +69,34 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Sep 14, 2012 at 02:53:11PM -0600, Bjorn Helgaas wrote:
-> +cc Greg KH
-> 
-> On Fri, Sep 14, 2012 at 2:44 PM, Thierry Reding
-> <thierry.reding@avionic-design.de> wrote:
-> > In order to keep pci_fixup_irqs() around after init (e.g. for hotplug),
-> > mark it __devinit instead of __init. This requires the same change for
-> > the implementation of the pcibios_update_irq() function on all
-> > architectures.
-> >
-> > Signed-off-by: Thierry Reding <thierry.reding@avionic-design.de>
-> > ---
-> > Note: Ideally these annotations should go away completely in order to
-> > be independent of the HOTPLUG symbol. However, there is work underway
-> > to get rid of HOTPLUG altogether, so I've kept the __devinit for now.
+On Fri, Sep 14, 2012 at 10:44 PM, Thierry Reding
+<thierry.reding@avionic-design.de> wrote:
+> --- a/drivers/pci/setup-irq.c
+> +++ b/drivers/pci/setup-irq.c
+> @@ -17,6 +17,14 @@
+>  #include <linux/ioport.h>
+>  #include <linux/cache.h>
+>
+> +void __devinit __weak pcibios_update_irq(struct pci_dev *dev, int irq)
+> +{
+> +#ifdef CONFIG_PCI_DEBUG
+> +       printk(KERN_DEBUG "PCI: Assigning IRQ %02d to %s\n", irq,
+> +              pci_name(dev));
 
-No, just take away the __init marking completly.  For 3.7,
-CONFIG_HOTPLUG will always be enabled, making it be the same thing.
-That way this saves me the time and energy from deleting the __devinit
-markings when I get to that point in the patch series :)
+pr_debug()?
+Or even better, dev_dbg()?
 
-thanks,
+> +#endif
+> +       pci_write_config_byte(dev, PCI_INTERRUPT_LINE, irq);
+> +}
 
-greg k-h
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

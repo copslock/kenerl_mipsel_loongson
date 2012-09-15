@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Sep 2012 09:54:13 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.17.9]:49343 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Sep 2012 09:58:48 +0200 (CEST)
+Received: from moutng.kundenserver.de ([212.227.126.187]:61374 "EHLO
         moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903239Ab2IOHyE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 15 Sep 2012 09:54:04 +0200
+        by eddie.linux-mips.org with ESMTP id S1903236Ab2IOH6l (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 15 Sep 2012 09:58:41 +0200
 Received: from mailbox.adnet.avionic-design.de (mailbox.avionic-design.de [109.75.18.3])
-        by mrelayeu.kundenserver.de (node=mreu2) with ESMTP (Nemesis)
-        id 0MBG3l-1TKjfJ3xDh-009wBL; Sat, 15 Sep 2012 09:53:05 +0200
+        by mrelayeu.kundenserver.de (node=mreu3) with ESMTP (Nemesis)
+        id 0LblNw-1TtmyH06hY-00jHxy; Sat, 15 Sep 2012 09:57:42 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTP id 0BF6F2A282D4;
-        Sat, 15 Sep 2012 09:53:04 +0200 (CEST)
+        by mailbox.adnet.avionic-design.de (Postfix) with ESMTP id 221E92A282D4;
+        Sat, 15 Sep 2012 09:57:40 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at avionic-design.de
 Received: from mailbox.adnet.avionic-design.de ([127.0.0.1])
         by localhost (mailbox.avionic-design.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id GD-fCSsbMocr; Sat, 15 Sep 2012 09:53:03 +0200 (CEST)
+        with ESMTP id FU1EKzGoIfCK; Sat, 15 Sep 2012 09:57:38 +0200 (CEST)
 Received: from localhost (avionic-0098.adnet.avionic-design.de [172.20.31.233])
         (Authenticated sender: thierry.reding)
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTPA id 716852A2818B;
-        Sat, 15 Sep 2012 09:53:02 +0200 (CEST)
-Date:   Sat, 15 Sep 2012 09:53:01 +0200
+        by mailbox.adnet.avionic-design.de (Postfix) with ESMTPA id 6AB292A2818B;
+        Sat, 15 Sep 2012 09:57:38 +0200 (CEST)
+Date:   Sat, 15 Sep 2012 09:57:37 +0200
 From:   Thierry Reding <thierry.reding@avionic-design.de>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Bjorn Helgaas <bhelgaas@google.com>,
         Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -27,6 +27,7 @@ Cc:     Bjorn Helgaas <bhelgaas@google.com>,
         Russell King <linux@arm.linux.org.uk>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Mundt <lethal@linux-sh.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -41,27 +42,27 @@ Cc:     Bjorn Helgaas <bhelgaas@google.com>,
         linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
         linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH 2/2] PCI: Provide a default pcibios_update_irq()
-Message-ID: <20120915075301.GA31044@avionic-0098.mockup.avionic-design.de>
+Subject: Re: [PATCH 1/2] PCI: Annotate pci_fixup_irqs with __devinit
+Message-ID: <20120915075737.GA31258@avionic-0098.mockup.avionic-design.de>
 References: <1347655456-2542-1-git-send-email-thierry.reding@avionic-design.de>
- <1347655456-2542-2-git-send-email-thierry.reding@avionic-design.de>
- <CAMuHMdWuR_tdMw9iVkaQ3D9p1HVU_L05ap=MzBuo1jLD6YdHHw@mail.gmail.com>
+ <CAErSpo6BqPUEpMmh2+FuEi-mHFK0U1XCmdCpJfo6V2XcNxzMNg@mail.gmail.com>
+ <20120914223531.GA8771@kroah.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="9jxsPFA5p3P2qPhR"
+        protocol="application/pgp-signature"; boundary="+QahgC5+KEYLbs62"
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdWuR_tdMw9iVkaQ3D9p1HVU_L05ap=MzBuo1jLD6YdHHw@mail.gmail.com>
+In-Reply-To: <20120914223531.GA8771@kroah.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Provags-ID: V02:K0:+WM1IBlhxGXCa1U3T21B9tS4Ln9hnPL8z3edAljLR97
- tGcJzIAXzo25dc89sm6KU/20G61r+KrsRgf7uZs956M5WNoaHe
- XdBo8Ro5FYrhv3FesDimr5qug4tVoTZBUidqs5iJIhdN8Gnki1
- qjO4pXEiQ1rbkme7N5abi5Ce2p8Ru0N6cy4DFmwO1BEl3TH7LI
- l2jvH9UGSyOAdqRktKaMgK2kZs4w+1fmIAU6Uyfh+RywkBwUIn
- dnBqxWeWJ1MLJp+l1vdumWXHWze52MXfxAfsDy7H5hWqueCYYS
- wVGCttukaG2Q1e1jbAP4PQ/hpemaKywICjltOnFNWaIWHekbGc
- p0lFWRObMT6lbiBlfi5Rh2R5XQ90QA+QOFLC0oekzp87SWtWaV
- 9oa4hp4ICwAqeFWQwywIE0odZpLep5oEP0=
-X-archive-position: 34510
+X-Provags-ID: V02:K0:z4ZB6PdzY1xIrstHENAfrYAdSCRjDWPVsvDoaG48yS0
+ fhZjf4y14sTuedXfjMjHO9Rp0+V92pmUySAI+BVBgGfMziR0o1
+ lsfIEbEz9mdKlEhQFCi5/YIK0rlCS3A1Auy9J2Nnp1kDmOoQ4n
+ nRNGQg+2jjj5/4fYQMjNJ6vxePoIV+yJhsCc5Dxm5r4Nc2owtJ
+ SVsnWx3pffGLEdB28fD0gRsReX4YhzbX6DCdn/VmLnYmPeNVh2
+ bjaUXD2z87r1ie3+GeBhOHyu8HFqc8i9nz4C/GrUZE3AtLQXlG
+ lyN4VWby/me/rvw8lM7J2XH1dLLKBjFDyYPCJ9n5y9QfgfDyJA
+ 3VhLtlmvCQuCjRZZ12596QBc6uB2k5jm+SjdjoP2axtAtled4b
+ deJqhKxirkoSs8yO/QpqAHq4IT0OzUsH7M=
+X-archive-position: 34511
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -80,54 +81,58 @@ X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
 
---9jxsPFA5p3P2qPhR
+--+QahgC5+KEYLbs62
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 15, 2012 at 09:32:10AM +0200, Geert Uytterhoeven wrote:
-> On Fri, Sep 14, 2012 at 10:44 PM, Thierry Reding
-> <thierry.reding@avionic-design.de> wrote:
-> > --- a/drivers/pci/setup-irq.c
-> > +++ b/drivers/pci/setup-irq.c
-> > @@ -17,6 +17,14 @@
-> >  #include <linux/ioport.h>
-> >  #include <linux/cache.h>
-> >
-> > +void __devinit __weak pcibios_update_irq(struct pci_dev *dev, int irq)
-> > +{
-> > +#ifdef CONFIG_PCI_DEBUG
-> > +       printk(KERN_DEBUG "PCI: Assigning IRQ %02d to %s\n", irq,
-> > +              pci_name(dev));
+On Fri, Sep 14, 2012 at 03:35:31PM -0700, Greg Kroah-Hartman wrote:
+> On Fri, Sep 14, 2012 at 02:53:11PM -0600, Bjorn Helgaas wrote:
+> > +cc Greg KH
+> >=20
+> > On Fri, Sep 14, 2012 at 2:44 PM, Thierry Reding
+> > <thierry.reding@avionic-design.de> wrote:
+> > > In order to keep pci_fixup_irqs() around after init (e.g. for hotplug=
+),
+> > > mark it __devinit instead of __init. This requires the same change for
+> > > the implementation of the pcibios_update_irq() function on all
+> > > architectures.
+> > >
+> > > Signed-off-by: Thierry Reding <thierry.reding@avionic-design.de>
+> > > ---
+> > > Note: Ideally these annotations should go away completely in order to
+> > > be independent of the HOTPLUG symbol. However, there is work underway
+> > > to get rid of HOTPLUG altogether, so I've kept the __devinit for now.
 >=20
-> pr_debug()?
-> Or even better, dev_dbg()?
+> No, just take away the __init marking completly.  For 3.7,
+> CONFIG_HOTPLUG will always be enabled, making it be the same thing.
+> That way this saves me the time and energy from deleting the __devinit
+> markings when I get to that point in the patch series :)
 
-The problem with pr_debug() and dev_dbg() is that they will be compiled
-out if DEBUG is not defined. Perhaps we should pass -DDEBUG if PCI_DEBUG
-is configured and make this dev_dbg()?
+Done. I'll give other people some time to comment before sending the
+updated series.
 
 Thierry
 
---9jxsPFA5p3P2qPhR
+--+QahgC5+KEYLbs62
 Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.19 (GNU/Linux)
 
-iQIcBAEBAgAGBQJQVDPdAAoJEN0jrNd/PrOhyIYP/Ru7vr3AxNAHfW1yg4IPxgM0
-HlExgyk6vrHq2RxLK1h714L7sqYK3Gn7AQcXUa8sCHhTqJ7v/nmfnguP9m4K/QJO
-SnC+nG4VgwIn7aZHevaupjVcHWXGtL1aR7zUWb7LzqDq+bKYHxpXAz2p8bCzotJG
-nZd2OyMdbjVLnONcjdSpbVNHRvKe7UoS4R9I2PvciJI/oUYlV03aMXYpRxujxnIY
-DbLxoyCCLsBphYBDx9IvQCFFpBaXqgTVa9PWQ1MlytfuEWoLr6nOVD01bgMizOGS
-Ry1Wbs3YAVHjFN/68iLZGjZCz9ODft2MYpw47akDX2InilvlPUH3GZZ4bu+31tP1
-bd2M4ZCNAC8EK/UPxAxcyMFhqJ688qpHhDXsPDX349lYdo2SjG90/5CMl6cYL1Xv
-Hd/1Uygl+Mmw9oPNX/hpozAJeKvT9P8VqGunn0uabdBxl+4Uo6ucauWRs2V0DY+z
-eEX1mVwYSddgcLt9LCU45Io03p3M6W2CRIOwG9beckMj00c07riHX4w6z/OhIsF5
-/rhDGvqTr9LHs8L45SzqygsuVWGZiGAryRsHDdXxj2yS+yT1HCDjFboPwsgx6K9P
-IcUekJYFy1RxEB7YzK8oyfl7EhigIQAzdyhqL/QgjhtTla6vG7cXcgMYJgXhRtBG
-qq23DlFKzpQ/g5tsIqjp
-=aCDh
+iQIcBAEBAgAGBQJQVDTxAAoJEN0jrNd/PrOhY84P/1V6CjM7bTnYamaHDOKyZQUc
+IyLN3mZRN6AbMMO8awcN6B4BDXuB6ua8nN7ozdlqRnFSUgSXVwWwrezZnrpc+Sws
+yO4Axr8IOBxpG2IDX+d2bGWRV5W34kzty5WsZhlPEJxOBSQH0MiNJCgTojSIIf5n
+9a6+7fF5qsSamGnmtWKwe01nwvlAsJg0i3sxyguWlFuBqd1IyQMCptCWsSBzMQVc
+1EeCDtWdLTKzxNHhkl97rWcQYi3ov8LTK76zUutTSDlpc2+HhX0nu73Tz34fLs9m
+k4Z1mw2VLHRUorvFCptwhvB72LR2hssTZxGDt3xbPLERUECtV3wwpFTDT8J4jZj0
+bzHCpbfj11K1Y7/Ku/1FBWBXjFPh1+YS0lA39V00WnHBx9Xv2DX6Ytm8FwGCtqEN
+wfV+VGyR+tvIWI6oA8vIgc/1xuMuDlrK4Ldn2uwZBHZfq28ghCiKFHasHA5RW+D/
+kTA2p4Yvuujuvh6PbsvJv2h4A9Sudko6rzwlclnv7OGxsxCa624yF8YN+rqLVU9C
+7Sq/vSCmpj1E3AQ9TKcnYyFYP1sUsc9BnslLNEHNly+MFRJoAMOAx3M6s/30vRJp
+FKyDyeWTzkjnlCYDiH/ebSQRk1tO9h6HJXnzrAAU55iJYHDxCGQ15I2emj8v/bqT
+3iUVzezeZpRhZ0IPIxbq
+=Q8MZ
 -----END PGP SIGNATURE-----
 
---9jxsPFA5p3P2qPhR--
+--+QahgC5+KEYLbs62--

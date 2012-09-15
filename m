@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Sep 2012 00:22:44 +0200 (CEST)
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:38713 "EHLO
-        mail-lpp01m010-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903239Ab2IOWWh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Sep 2012 00:22:37 +0200
-Received: by lagu2 with SMTP id u2so3384018lag.36
-        for <linux-mips@linux-mips.org>; Sat, 15 Sep 2012 15:22:31 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Sep 2012 00:24:04 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:60846 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903402Ab2IOWX7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Sep 2012 00:23:59 +0200
+Received: by lbbgf7 with SMTP id gf7so3441653lbb.36
+        for <linux-mips@linux-mips.org>; Sat, 15 Sep 2012 15:23:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type:x-system-of-record;
-        bh=5Wt5qkgo+oOBcu3h8EKDod3tPReHpckJ7yb6KaH2bgU=;
-        b=JH7+btohi/2TyfzE5GKoDZF0YVfcFBB2RpB3XPn3CtutcjQnFTCIhYoMw2QgPcEYmU
-         uHi2yIVa3Pzr6M0BZU8tpg9tBs4Slywcvy/LVCyHi2VmODhZW1hvaBJ1oWH0xyRkAELj
-         HPRtdqZdCRyPTgo3znsEnOnavedOc6yzfESLyKTt/MKH0q3eo4m6bqbsVzRgYeinkUjH
-         HrER5rBXWi01UJOqP1/6SiwIzpXTMPsXeHCmjckFVxP1HE18gMsVc1Q9IcjI9fmlVBiB
-         yZf3Hff8M9qtSSMZC7l3zHs3YegSGqh/7JIEAjnjdC7/Okj0BUzWnwfQstuJz7PehNDD
-         ZsZQ==
+        bh=+x9faSjHzvy5gI7XXn/+Hp3u80GFlk6pZyOTpUMa1Fw=;
+        b=fAv7jg8WyuhcZQN33zmYFyA2eoP6tZCh72JRjWAiNmHMI5Qewe55BC6v0HySdgbWgW
+         AvyqmZhb/ll2JQm+cVTTqzvfKd2NavmwP25eyK6Rp5BpebFfAPUHAkIZgqF4vYh1u2WD
+         bvg19nr/9uI16wknCpCMtjJZBwSGMhmzjc+fNe98aay48PCYlMrC+uXcRqkwzQKYJ3D/
+         Puk7GQl8JSlmMQyDH0qdLA2rrhDYDhU6NSVOQ3bceH+KJiht/lr23ub5GQVKNY2ZNh3W
+         gtidxVaNskgh98ZT6AsJ256O9naVtRd7VhWUfqqfnN5xsIkKp2by/VdW9ZplU03lDxNE
+         OapQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type:x-system-of-record:x-gm-message-state;
-        bh=5Wt5qkgo+oOBcu3h8EKDod3tPReHpckJ7yb6KaH2bgU=;
-        b=MV/3pNm0fHG2y2ALeFSLCqZaOxp5TW2+BOwMgSBkXcQ8uya+Xui3tzaNFyideoa0XI
-         p5rBKnDN0eyNH2vfE9kFOTwc95otbg549km4A58HVrZR6VpQuMKai9bbCtUUsf3ptsLg
-         G1FZ6FriYbac6EkbD5uGrJC3klgiaBVjFQlvyZtDLQRAzZrrYFu2gClh1Uuunv7ajetJ
-         6cSkrrfSbm1dRUXRig9bMARPHvppLSif/yd7sJlfcuYw6+X1WxECE0kxO8oh4wps7k0Q
-         2vBou0nB44dZIpKR1OJ/8t4Ha3P9ekYdGv8TGOBwZHE89V1pfT5A1y1I89yEdehZ6EsJ
-         vcog==
-Received: by 10.152.114.3 with SMTP id jc3mr6171158lab.11.1347747751566;
-        Sat, 15 Sep 2012 15:22:31 -0700 (PDT)
-Received: by 10.152.114.3 with SMTP id jc3mr6171113lab.11.1347747751398; Sat,
- 15 Sep 2012 15:22:31 -0700 (PDT)
+        bh=+x9faSjHzvy5gI7XXn/+Hp3u80GFlk6pZyOTpUMa1Fw=;
+        b=BT7+U3d8+NCC3sYShxbCNHuAfB0jyUgK6l9rUhCXukgOEs75xW+pX4DjYZJDXekxIV
+         fFHyMMw686rAL4ekv+KnzvL4kfJR0TJiy3t9N7QpXrIH7p08G02n2wmpn0Mhg+cKEXW7
+         J9IKxS028DXFP5kvaW8fCjUMoOrMdCb1HgDGtuOw/iEpbCgMIfn18CwzrU+PqzvFKxZT
+         Yv0/MzpUuQ4mH0x1pGPeI+Ym1ZnWSQ4X1X6AglI0uEVWF47Kc5HeW9WzSeGj7rUl6iAg
+         FffExh/jCJ+3dxmDWfyusQJbBHTnQ7BBLbe/fscaxgVujP0L3CmlVptYzYt3n7JydhF0
+         FQug==
+Received: by 10.112.26.106 with SMTP id k10mr2521823lbg.100.1347747833588;
+        Sat, 15 Sep 2012 15:23:53 -0700 (PDT)
+Received: by 10.112.26.106 with SMTP id k10mr2521780lbg.100.1347747833420;
+ Sat, 15 Sep 2012 15:23:53 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.112.132.73 with HTTP; Sat, 15 Sep 2012 15:22:11 -0700 (PDT)
+Received: by 10.112.132.73 with HTTP; Sat, 15 Sep 2012 15:23:33 -0700 (PDT)
 In-Reply-To: <20120915075301.GA31044@avionic-0098.mockup.avionic-design.de>
 References: <1347655456-2542-1-git-send-email-thierry.reding@avionic-design.de>
  <1347655456-2542-2-git-send-email-thierry.reding@avionic-design.de>
  <CAMuHMdWuR_tdMw9iVkaQ3D9p1HVU_L05ap=MzBuo1jLD6YdHHw@mail.gmail.com> <20120915075301.GA31044@avionic-0098.mockup.avionic-design.de>
 From:   Bjorn Helgaas <bhelgaas@google.com>
-Date:   Sat, 15 Sep 2012 16:22:11 -0600
-Message-ID: <CAErSpo7q9fvtjatfKqtb8SP3UOJdEXpbvFC_qMBTc6mAoRTQuA@mail.gmail.com>
+Date:   Sat, 15 Sep 2012 16:23:33 -0600
+Message-ID: <CAErSpo6WaFv=CXtiWeDDvThjZRBRJKfJMgovuMjjZRpQGK-WJA@mail.gmail.com>
 Subject: Re: [PATCH 2/2] PCI: Provide a default pcibios_update_irq()
 To:     Thierry Reding <thierry.reding@avionic-design.de>
 Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
@@ -65,8 +65,8 @@ Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         sparclinux@vger.kernel.org, linux-pci@vger.kernel.org
 Content-Type: text/plain; charset=ISO-8859-1
 X-System-Of-Record: true
-X-Gm-Message-State: ALoCoQnbIur6eyJqKOpVuVPerbGLVOZB7tYTmNts9eFDFSIRIoNPd2L39kej7qqdMvuB0lb/+YXGfyvkSQqN9ak12oc/UFh1Baf6azjHinm7AIeYz4fFLRCUgAu2YiNBf/xbTlwHAjT7bkv59glJHM5lCD4zM+8qQ/WSOmbh8DgV+ANPBp/ZhC66DgD9juDB7GU8ZXRgW3aGph/KvNFuhHBJFmFu5dWHMQ==
-X-archive-position: 34512
+X-Gm-Message-State: ALoCoQkj7OFNqjL/srkpisa8dn4WkNfvdBwlIJmfuFB+QgdHM4p43bD15UY2EalD/lNxNY3d4SGgLCThLX1F4RP2G8uUCSdthW6u3jBebXPymsyZ9tfupweiGB6kyw//mKntoOS7HAn2bT1e7G4poFB0l8qQcJIT81eUhlFyx5OL7v7GSp4N7y5UZlMzxrFIbxgnqOiZwJ/M6XZnSTCTBbTU4P2+Eq7UKw==
+X-archive-position: 34513
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -107,3 +107,11 @@ On Sat, Sep 15, 2012 at 1:53 AM, Thierry Reding
 > The problem with pr_debug() and dev_dbg() is that they will be compiled
 > out if DEBUG is not defined. Perhaps we should pass -DDEBUG if PCI_DEBUG
 > is configured and make this dev_dbg()?
+
+Sorry, fat-fingered the previous empty response.
+
+We already have this in drivers/pci/Makefile:
+
+    ccflags-$(CONFIG_PCI_DEBUG) := -DDEBUG
+
+so dev_dbg() should be perfect.

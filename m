@@ -1,32 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Sep 2012 16:49:12 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:46462 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903242Ab2IPOso (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Sep 2012 16:48:44 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 2238E87B9;
-        Sun, 16 Sep 2012 16:48:44 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id AjfuMfz-vWit; Sun, 16 Sep 2012 16:48:40 +0200 (CEST)
-Received: from hauke.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 188088880;
-        Sun, 16 Sep 2012 16:48:40 +0200 (CEST)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     ralf@linux-mips.org, john@phrozen.org
-Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 2/2] MIPS BCM47XX: select NO_EXCEPT_FILL
-Date:   Sun, 16 Sep 2012 16:48:35 +0200
-Message-Id: <1347806915-25132-2-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.7.9.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Sep 2012 17:38:40 +0200 (CEST)
+Received: from mail-ey0-f177.google.com ([209.85.215.177]:62413 "EHLO
+        mail-ey0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903052Ab2IPPid (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Sep 2012 17:38:33 +0200
+Received: by eaai12 with SMTP id i12so2046096eaa.36
+        for <multiple recipients>; Sun, 16 Sep 2012 08:38:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=htV8wC9q/4GjeN07lmsoUzdY0tQUFc2M1i88ToaEvEY=;
+        b=q+C3Zaf8Am+6vgi9GEaL08Y7ni0K0cTgBInV0nlgwgBMa8iWM1wx5iNiuytpTVrdW7
+         29SCNr2GpPH6SJKjafP4ueFdwcLYVXonc1aAB9Pk3RA9cuT3vbMXa5VKNYWChhdWn8c7
+         qIYMD3C05UdrgAwLZ6aQHG/bqebC9ciTe4J73l02ZTqjy6UjJ/BkaQMsZaFOc9eam0xe
+         +Zpi0SAEQz2PkosLCZ3UXdFWfNwicIEht2/Be1R33A7HuELGP0nQGcQn2kC8UPQ3FXuN
+         d2LyiSojxRsPgPXcqhUhGiWaNWjfat96E4WAUX0lPCdFic5xWCmRbZE5PTZvipQRYeuV
+         c+JQ==
+MIME-Version: 1.0
+Received: by 10.14.173.9 with SMTP id u9mr10543738eel.8.1347809908368; Sun, 16
+ Sep 2012 08:38:28 -0700 (PDT)
+Received: by 10.14.179.71 with HTTP; Sun, 16 Sep 2012 08:38:28 -0700 (PDT)
 In-Reply-To: <1347806915-25132-1-git-send-email-hauke@hauke-m.de>
 References: <1347806915-25132-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 34518
+Date:   Sun, 16 Sep 2012 08:38:28 -0700
+Message-ID: <CAJiQ=7B+ohpoksFcH2Z9Twwc=3SbED1hSvssfmx5-kfb4dPJnQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] MIPS: BCM47XX: select BOOT_RAW
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     ralf@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     john@phrozen.org, linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 34519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,26 +47,18 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The kernel is loaded to 0x80001000 so there is some space left for the
-exception handlers and the kernel do not have to reserve some extra
-space for them.
+On Sun, Sep 16, 2012 at 7:48 AM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+> All the boot loaders I have seen are booting the kernel in raw mode by
+> default. CFE seams to support elf kernel images too, but the default
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- arch/mips/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+Nitpick: "seems"
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 564a06f..e372fe3 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -108,6 +108,7 @@ config BCM47XX
- 	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
- 	select IRQ_CPU
-+	select NO_EXCEPT_FILL
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select SYS_HAS_EARLY_PRINTK
--- 
-1.7.9.5
+> case is raw for the devices I know of. Select this option to make the
+> kernel boot on most of the devices with the default options.
+
+CONFIG_BOOT_RAW only adds about 8 bytes to the kernel image.  Since
+early 2008 it's just been implemented as a single jump instruction,
+and it's harmless on platforms that don't need it.
+
+Do you think it is worthwhile to delete the Kconfig option, and enable
+BOOT_RAW behavior on all builds?

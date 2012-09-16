@@ -1,26 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Sep 2012 16:48:47 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:46459 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Sep 2012 16:49:12 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:46462 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903241Ab2IPOso (ORCPT
+        with ESMTP id S1903242Ab2IPOso (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 16 Sep 2012 16:48:44 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 8E4B88E1C;
-        Sun, 16 Sep 2012 16:48:43 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id 2238E87B9;
+        Sun, 16 Sep 2012 16:48:44 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id IAKcFK4e-Woz; Sun, 16 Sep 2012 16:48:40 +0200 (CEST)
+        with ESMTP id AjfuMfz-vWit; Sun, 16 Sep 2012 16:48:40 +0200 (CEST)
 Received: from hauke.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id C817E87B9;
-        Sun, 16 Sep 2012 16:48:39 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTPSA id 188088880;
+        Sun, 16 Sep 2012 16:48:40 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org, john@phrozen.org
 Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 1/2] MIPS: BCM47XX: select BOOT_RAW
-Date:   Sun, 16 Sep 2012 16:48:34 +0200
-Message-Id: <1347806915-25132-1-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 2/2] MIPS BCM47XX: select NO_EXCEPT_FILL
+Date:   Sun, 16 Sep 2012 16:48:35 +0200
+Message-Id: <1347806915-25132-2-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.9.5
-X-archive-position: 34517
+In-Reply-To: <1347806915-25132-1-git-send-email-hauke@hauke-m.de>
+References: <1347806915-25132-1-git-send-email-hauke@hauke-m.de>
+X-archive-position: 34518
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,10 +40,9 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-All the boot loaders I have seen are booting the kernel in raw mode by
-default. CFE seams to support elf kernel images too, but the default
-case is raw for the devices I know of. Select this option to make the
-kernel boot on most of the devices with the default options.
+The kernel is loaded to 0x80001000 so there is some space left for the
+exception handlers and the kernel do not have to reserve some extra
+space for them.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
@@ -49,16 +50,16 @@ Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index fa171a3..564a06f 100644
+index 564a06f..e372fe3 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -102,6 +102,7 @@ config ATH79
- config BCM47XX
- 	bool "Broadcom BCM47XX based boards"
- 	select ARCH_REQUIRE_GPIOLIB
-+	select BOOT_RAW
- 	select CEVT_R4K
- 	select CSRC_R4K
+@@ -108,6 +108,7 @@ config BCM47XX
  	select DMA_NONCOHERENT
+ 	select HW_HAS_PCI
+ 	select IRQ_CPU
++	select NO_EXCEPT_FILL
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_HAS_EARLY_PRINTK
 -- 
 1.7.9.5

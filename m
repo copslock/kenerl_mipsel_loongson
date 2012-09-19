@@ -1,31 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Sep 2012 15:36:37 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:57188 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903293Ab2ISNgb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 19 Sep 2012 15:36:31 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q8JDaSCi008559;
-        Wed, 19 Sep 2012 15:36:28 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q8JDaRZX008558;
-        Wed, 19 Sep 2012 15:36:27 +0200
-Date:   Wed, 19 Sep 2012 15:36:27 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jonas Gorski <jonas.gorski@gmail.com>
-Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH] MIPS: hide USE_OF
-Message-ID: <20120919133627.GG19592@linux-mips.org>
-References: <1347960534-5760-1-git-send-email-jonas.gorski@gmail.com>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Sep 2012 16:55:14 +0200 (CEST)
+Received: from plane.gmane.org ([80.91.229.3]:37709 "EHLO plane.gmane.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903291Ab2ISOzC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 19 Sep 2012 16:55:02 +0200
+Received: from list by plane.gmane.org with local (Exim 4.69)
+        (envelope-from <sgi-linux-mips@m.gmane.org>)
+        id 1TELg8-0007e7-Gd
+        for linux-mips@linux-mips.org; Wed, 19 Sep 2012 16:55:04 +0200
+Received: from sestofw01.enea.se ([192.36.1.252])
+        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Wed, 19 Sep 2012 16:55:04 +0200
+Received: from ola.liljedahl by sestofw01.enea.se with local (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Wed, 19 Sep 2012 16:55:04 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To:     linux-mips@linux-mips.org
+From:   Ola Liljedahl <ola.liljedahl@gmail.com>
+Subject: Re: [PATCH 1/1] Pendantic stack backtrace code
+Date:   Wed, 19 Sep 2012 14:52:02 +0000 (UTC)
+Message-ID: <loom.20120919T164755-469@post.gmane.org>
+References: <20110706233614.GA19332@dvomlehn-lnx2.corp.sa.net> <20110802155759.GA891@linux-mips.org> <20110805020242.GA23916@dvomlehn-lnx2.corp.sa.net>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1347960534-5760-1-git-send-email-jonas.gorski@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34529
+Content-Transfer-Encoding: 7bit
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: sea.gmane.org
+User-Agent: Loom/3.14 (http://gmane.org/)
+X-Loom-IP: 192.36.1.252 (Mozilla/5.0 (Windows NT 5.1; rv:15.0) Gecko/20100101 Firefox/15.0)
+X-archive-position: 34530
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ola.liljedahl@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,15 +46,18 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Sep 18, 2012 at 11:28:54AM +0200, Jonas Gorski wrote:
+I have also written a back-trace utility for MIPS, for Enea's "OSE" realtime OS.
+Again, it was the sentences in "See MIPS Run" which inspired me (well the whole
+book is full of inspiration, a great read). My twist to the solution is that my
+design always scans instructions in the *forward* direction (from the specified
+PC), trying to find the end of the function. In the process of doing so,
+unconditional jumps are followed and conditional branches are followed both
+ways. There is however no support for tracing over signal handlers since in the
+OSE error handler, we will get the user space register dump for most exceptions
+and can start back-tracing there.
 
-> b01da9f1 ("MIPS: Prune some target specific code out of prom.c") removed
-> the generic implementation of device_tree_init, breaking the kernel
-> build when manually selecting USE_OF.
-> 
-> Hide the config symbol so it can't be selected acidentially anymore.
+The code is available here: https://dl.dropbox.com/u/45566557/mips_backtrace.c
 
-I'm inclined to accept this patch but would like to wait for a little
-longer for others' opinions.
+Improvement suggestions and other comments are welcome.
 
-  Ralf
+-- Ola Liljedahl

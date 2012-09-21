@@ -1,17 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2012 00:38:22 +0200 (CEST)
-Received: from haggis.pcug.org.au ([203.10.76.10]:58298 "EHLO
-        members.tip.net.au" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903294Ab2ISWiO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Sep 2012 00:38:14 +0200
-Received: from canb.auug.org.au (unknown [IPv6:2402:b800:7003:7010:223:14ff:fe30:c8e4])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by members.tip.net.au (Postfix) with ESMTPSA id 4E50316411E;
-        Thu, 20 Sep 2012 08:37:47 +1000 (EST)
-Date:   Thu, 20 Sep 2012 08:37:31 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Thierry Reding <thierry.reding@avionic-design.de>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2012 05:20:01 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:47439 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903318Ab2IUDT5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Sep 2012 05:19:57 +0200
+Received: by lbbgf7 with SMTP id gf7so3253981lbb.36
+        for <linux-mips@linux-mips.org>; Thu, 20 Sep 2012 20:19:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:x-system-of-record;
+        bh=Rtw/GkRDlF7fki5PjlDcM6jPF9f0BbRmFMmdNfrs20k=;
+        b=RMOxlJ35LjtETIc2eAIf5cUH41K9yX+YZWyguFHI+Ja1FHr63nesPrT0pUhXqqXBX7
+         8TV0rMd5R9NA3LsMsmqmjviuadijPg3BJI3n8R5dRJSb8w8dBKAczghZTs+XgkB2Oqnb
+         bAveLvYXu/oYwJi7fa+TMx20Gk+iuv3JpVOQkaX2T8atBH37OwKyl3K8WzOmmMX+Kfw0
+         E92hJgn5jLAd0Q3JnsnXo68W791Husi1OvnenBKacuw8vgivfOSuUEPtoJeFdl++z7LV
+         7huHBKlURmJGBjIqL1cU6SMpD3gC+nyGVw7TdTeWKbAx72ivHB1g2WX99YwcBFXfuikJ
+         w8cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:x-system-of-record:x-gm-message-state;
+        bh=Rtw/GkRDlF7fki5PjlDcM6jPF9f0BbRmFMmdNfrs20k=;
+        b=YHHGfuUwSedGa2XomtzBGx2SvLDOZ6QVXIRYfMnzPrwJ9AS8CT4CNTVMKuCDUwc5+X
+         Q67leLgllZu3orBjS8x4ctUHmEq3GHSmJHq7vSnu3tk/vJHaMuSgn5uKCZOA2refevfq
+         8Ay7kkso4X/3xkFNj1whrfRYfa65uGtApHF4in0JrjSRU4jONyaYgkslWhm4hgHTuaHe
+         Zh+y+LIV+qKwJ+82AElJjWSkJxaSKVTIhh3HOvVDgbTqEU1Hjyuc6bh8OGaCr/qiqB4v
+         mLoSn+E+BZA0fZpF3QL/UZGX2TZm2s4MmNmerc/a1KthVZHvh79vgkeOVYfmCvH7oHvg
+         sq2g==
+Received: by 10.152.114.3 with SMTP id jc3mr3154370lab.11.1348197590589;
+        Thu, 20 Sep 2012 20:19:50 -0700 (PDT)
+Received: by 10.152.114.3 with SMTP id jc3mr3154333lab.11.1348197590451; Thu,
+ 20 Sep 2012 20:19:50 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.112.132.73 with HTTP; Thu, 20 Sep 2012 20:19:30 -0700 (PDT)
+In-Reply-To: <20120920083731.b99255eb8fdeea908d34ed2f@canb.auug.org.au>
+References: <1347880974-13615-1-git-send-email-thierry.reding@avionic-design.de>
+ <1347880974-13615-2-git-send-email-thierry.reding@avionic-design.de> <20120920083731.b99255eb8fdeea908d34ed2f@canb.auug.org.au>
+From:   Bjorn Helgaas <bhelgaas@google.com>
+Date:   Thu, 20 Sep 2012 21:19:30 -0600
+Message-ID: <CAErSpo4RgNjFE7zH9vKTgAq_7djbWi5sR7k_DJYr8=G3A=0zeg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] PCI: Provide a default pcibios_update_irq()
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     Thierry Reding <thierry.reding@avionic-design.de>,
         Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
@@ -35,21 +65,14 @@ Cc:     Bjorn Helgaas <bhelgaas@google.com>,
         linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] PCI: Provide a default pcibios_update_irq()
-Message-Id: <20120920083731.b99255eb8fdeea908d34ed2f@canb.auug.org.au>
-In-Reply-To: <1347880974-13615-2-git-send-email-thierry.reding@avionic-design.de>
-References: <1347880974-13615-1-git-send-email-thierry.reding@avionic-design.de>
-        <1347880974-13615-2-git-send-email-thierry.reding@avionic-design.de>
-X-Mailer: Sylpheed 3.2.0 (GTK+ 2.24.10; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature";
- micalg="PGP-SHA256";
- boundary="Signature=_Thu__20_Sep_2012_08_37_31_+1000_w3NxfdoHc7EAjbxm"
-X-archive-position: 34532
+Content-Type: text/plain; charset=ISO-8859-1
+X-System-Of-Record: true
+X-Gm-Message-State: ALoCoQl3qJUaL4zconefUv2Av5jGDQmdUb53MkboklHy99Sey/WSO+uWpc+RoIKEbNqLJ1AGHpBPDIW1zuPMIXK9pduEqVmEOHXcyNIckwGwYdvBnTh2R+agtpjX2TfrPWyEJQJJPJZEcp9NkLF/F+Lzg1EMKxRlCGs+lGw0nFIDbMWtyrMQjRLT1xvLRIyBLcCQU8xRvrYCh8nuGVPG/njhIBmoq+rKIg==
+X-archive-position: 34533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sfr@canb.auug.org.au
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,61 +86,31 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
---Signature=_Thu__20_Sep_2012_08_37_31_+1000_w3NxfdoHc7EAjbxm
-Content-Type: text/plain; charset=US-ASCII
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-On Mon, 17 Sep 2012 13:22:54 +0200 Thierry Reding <thierry.reding@avionic-d=
-esign.de> wrote:
+On Wed, Sep 19, 2012 at 4:37 PM, Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+> Hi,
 >
-> diff --git a/drivers/pci/setup-irq.c b/drivers/pci/setup-irq.c
-> index 270ae7b..3d61ce3 100644
-> --- a/drivers/pci/setup-irq.c
-> +++ b/drivers/pci/setup-irq.c
-> @@ -17,6 +17,11 @@
->  #include <linux/ioport.h>
->  #include <linux/cache.h>
-> =20
-> +void __weak pcibios_update_irq(struct pci_dev *dev, int irq)
-> +{
-> +	dev_dbg(&dev->dev, "Assigning IRQ %02d\n", irq);
-> +	pci_write_config_byte(dev, PCI_INTERRUPT_LINE, irq);
-> +}
-> =20
->  static void
->  pdev_fixup_irq(struct pci_dev *dev,
+> On Mon, 17 Sep 2012 13:22:54 +0200 Thierry Reding <thierry.reding@avionic-design.de> wrote:
+>>
+>> diff --git a/drivers/pci/setup-irq.c b/drivers/pci/setup-irq.c
+>> index 270ae7b..3d61ce3 100644
+>> --- a/drivers/pci/setup-irq.c
+>> +++ b/drivers/pci/setup-irq.c
+>> @@ -17,6 +17,11 @@
+>>  #include <linux/ioport.h>
+>>  #include <linux/cache.h>
+>>
+>> +void __weak pcibios_update_irq(struct pci_dev *dev, int irq)
+>> +{
+>> +     dev_dbg(&dev->dev, "Assigning IRQ %02d\n", irq);
+>> +     pci_write_config_byte(dev, PCI_INTERRUPT_LINE, irq);
+>> +}
+>>
+>>  static void
+>>  pdev_fixup_irq(struct pci_dev *dev,
+>
+> Didn't we have a problem with some compiler versions when the weak
+> definition was in the same file as the call (there is a call to this
+> function in drivers/pci/setup-irq.c)?
 
-Didn't we have a problem with some compiler versions when the weak
-definition was in the same file as the call (there is a call to this
-function in drivers/pci/setup-irq.c)?
-
---=20
-Cheers,
-Stephen Rothwell                    sfr@canb.auug.org.au
-http://www.canb.auug.org.au/~sfr/
-
---Signature=_Thu__20_Sep_2012_08_37_31_+1000_w3NxfdoHc7EAjbxm
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBCAAGBQJQWkkrAAoJEECxmPOUX5FEW9wP/RZUlNoHKF/hdMIqgBXmqu9j
-ziwT/7xAnOx2PyPXzlr360bi/PMcjIv3oqf4DHv1tBxYe7tzxS9j1M2Moq8UHiWW
-1wOj+EXsgex73bIKtudojQojTpY9lZML9cdD5ki6zxvIEZTynAH4dSdomk2knPxw
-er3HuNnawQIA4iad+FF4IFp9ojKsduCCRHEGzgC0sfLm1zT/pKgT/jQjZYjdWtKy
-cTujkETaHoMG6rZdnUwmmZryGHWtPUAlWVyg9BDebJfIL32zzU66lQlpIFREyTnI
-zmOrfeJ4Ypw/B0NRUvEMQbUZJtRk7L/ovddItq9NNWHgYn5pznuJOlTaPQb9owOd
-i4oOZguBUyIQL92SrzMMXjxkx5RaBf8dtgGwvdvvCGv5F48Cnr3eCbQN5YQL08xQ
-fek/sjc5izX0MbNjKYw4twCrOwYVpd6Hj7W8L0lhZ0NgFZIoXQi8zTmEjDtf5cHw
-heVKZnH2zdtboYaiIB6utdl1/20mrq6YUd4yuQxwGpc9LveCkPxpPZ1fwTYJj6Fq
-sjabH0KJVKmHTKr3LJg6xFKNh98p+Z3PlVAz4Ac6JTfCWLroBb9df9XAbHZ5kUZd
-Q8RvTloTEYY6hiYKVUn7QF6iO7fUxYuY8/7s8HBhGEyJrwCrVJTpFCOgm7ySBwO5
-fqCAlk6bhtq1THZ3WZZh
-=VZA6
------END PGP SIGNATURE-----
-
---Signature=_Thu__20_Sep_2012_08_37_31_+1000_w3NxfdoHc7EAjbxm--
+There was such a bug, but as far as I know, we aren't worrying about
+it anymore: https://lkml.org/lkml/2011/7/4/9

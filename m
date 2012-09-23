@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Sep 2012 19:36:16 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:34083 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Sep 2012 19:42:32 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:36536 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903360Ab2IWRgM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 23 Sep 2012 19:36:12 +0200
+        id S1903365Ab2IWRm3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 23 Sep 2012 19:42:29 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q8NHaAmd006495;
-        Sun, 23 Sep 2012 19:36:10 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q8NHgS8d006995;
+        Sun, 23 Sep 2012 19:42:28 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q8NHa9D2006494;
-        Sun, 23 Sep 2012 19:36:09 +0200
-Date:   Sun, 23 Sep 2012 19:36:09 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q8NHgSHq006994;
+        Sun, 23 Sep 2012 19:42:28 +0200
+Date:   Sun, 23 Sep 2012 19:42:28 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     linux-mips@linux-mips.org, linux-next@vger.kernel.org
-Subject: Re: [PATCH -next] MIPS: ptrace: Add missing #include <asm/syscall.h>
-Message-ID: <20120923173609.GE13842@linux-mips.org>
-References: <1347913216-11140-1-git-send-email-geert@linux-m68k.org>
+To:     Gabor Juhos <juhosg@openwrt.org>
+Cc:     linux-mips@linux-mips.org, stable@vger.kernel.org
+Subject: Re: [PATCH] MIPS: ath79: use correct fractional dividers for
+ {CPU,DDR}_PLL on AR934x
+Message-ID: <20120923174228.GF13842@linux-mips.org>
+References: <1346517960-13537-1-git-send-email-juhosg@openwrt.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1347913216-11140-1-git-send-email-geert@linux-m68k.org>
+In-Reply-To: <1346517960-13537-1-git-send-email-juhosg@openwrt.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34540
+X-archive-position: 34541
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,13 +40,6 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, Sep 17, 2012 at 10:20:16PM +0200, Geert Uytterhoeven wrote:
-
-> arch/mips/kernel/ptrace.c: In function ‘syscall_trace_enter’:
-> arch/mips/kernel/ptrace.c:664: error: implicit declaration of function ‘__syscall_get_arch’
-> make[2]: *** [arch/mips/kernel/ptrace.o] Error 1
-
-Thanks, I already had fixed that in the linux-trace tree; the latest
-version just had not yet propagated yet to the other trees.
+Thanks, applied.
 
   Ralf

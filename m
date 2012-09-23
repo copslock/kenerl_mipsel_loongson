@@ -1,52 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Sep 2012 09:42:03 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.17.10]:61839 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903341Ab2IVHl6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Sep 2012 09:41:58 +0200
-Received: from mailbox.adnet.avionic-design.de (mailbox.avionic-design.de [109.75.18.3])
-        by mrelayeu.kundenserver.de (node=mreu1) with ESMTP (Nemesis)
-        id 0Mg2HB-1SruCf3v6L-00NOet; Sat, 22 Sep 2012 09:41:49 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTP id 51B4D2A282EB;
-        Sat, 22 Sep 2012 09:41:48 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at avionic-design.de
-Received: from mailbox.adnet.avionic-design.de ([127.0.0.1])
-        by localhost (mailbox.avionic-design.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id q5hKc3KW-Nux; Sat, 22 Sep 2012 09:41:46 +0200 (CEST)
-Received: from localhost (avionic-0098.adnet.avionic-design.de [172.20.31.233])
-        (Authenticated sender: thierry.reding)
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTPA id 51D272A2819B;
-        Sat, 22 Sep 2012 09:41:46 +0200 (CEST)
-Date:   Sat, 22 Sep 2012 09:41:45 +0200
-From:   Thierry Reding <thierry.reding@avionic-design.de>
-To:     Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Sep 2012 15:56:49 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:42599 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903360Ab2IWN4o (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 23 Sep 2012 15:56:44 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q8NDufa6021491;
+        Sun, 23 Sep 2012 15:56:41 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q8NDuZP1021490;
+        Sun, 23 Sep 2012 15:56:35 +0200
+Date:   Sun, 23 Sep 2012 15:56:35 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Thierry Reding <thierry.reding@avionic-design.de>,
+        Michal Marek <mmarek@suse.cz>, linux-kbuild@vger.kernel.org
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Antony Pavlov <antonynpavlov@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Maarten ter Huurne <maarten@treewalker.org>
 Subject: Re: [PATCH v2 0/3] MIPS: JZ4740: Move PWM driver to PWM framework
-Message-ID: <20120922074144.GC2538@avionic-0098.mockup.avionic-design.de>
+Message-ID: <20120923135635.GB13842@linux-mips.org>
 References: <1347278719-15276-1-git-send-email-thierry.reding@avionic-design.de>
+ <20120922074144.GC2538@avionic-0098.mockup.avionic-design.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="QRj9sO5tAVLaXnSD"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1347278719-15276-1-git-send-email-thierry.reding@avionic-design.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20120922074144.GC2538@avionic-0098.mockup.avionic-design.de>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Provags-ID: V02:K0:HKIQIIVHcPi0JX5bfrEeMQ+21+7wk9Pn68zVzqA42LU
- +9T+tYBrj3lZi/Wdw5v8OTh1L+6XGVTySSWoHVpDB40sZYR3hz
- f2TCYCZ+UDNIbFNLSMOOblrPBxdeySH3QfGkZ8hySlll97mWiX
- /LYLz1cQoyAQHPP/V2zZfhG1dQNZ62Tos/KENkcT04I42ALzTx
- td1RCeOB7RCEGb965CO72honskelPzj2ns/bfKvz1N5W4l8hfU
- sUJSkkoZynSSqlELo8GWFCwAWlmtS9oDcSJA7D7eokIfm7rChp
- jSH4WrJyneTxeyKDdOMPfjYD0SNnTdMEK8oKRxtpUkymkGqnE+
- sWBJJRjYzM1lZ1EYZ8oaGepmZ4odrrhtFOtbYhcurqG48ZdVQb
- MjEUydxmBV3AJ0lBtb9xqTf7EmGrmBivq0=
-X-archive-position: 34535
+X-archive-position: 34536
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@avionic-design.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,93 +44,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
-X-Status: A
 
+On Sat, Sep 22, 2012 at 09:41:45AM +0200, Thierry Reding wrote:
 
---QRj9sO5tAVLaXnSD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Have you had a chance to look at this? It is the last remaining PWM
+> driver that isn't moved to the PWM framework yet. All the others are
+> either in linux-next already and queued for 3.7 or have recently got
+> Acked-by the respective maintainers (Unicore32). Patches 2 and 3 were
+> already acked and tested by Lars-Peter who did the initial porting.
+> Patch 1 can probably be dropped since I seem to be the only one running
+> into that issue.
+> 
+> I really want to take this in for 3.7 so I can use the 3.7 cycle to
+> transition from the legacy API to the new API and possibly even get rid
+> of the legacy parts altogether. However I don't want to do this without
+> the Acked-by from the MIPS maintainer.
 
-On Mon, Sep 10, 2012 at 02:05:16PM +0200, Thierry Reding wrote:
-> Hi,
->=20
-> This small series fixes a build error due to a circular header
-> dependency, exports the timer API so it can be used outside of
-> the arch/mips/jz4740 tree and finally moves and converts the
-> JZ4740 PWM driver to the PWM framework.
->=20
-> Note that I don't have any hardware to test this on, so I had to
-> rely on compile tests only. Patches 1 and 2 should probably go
-> through the MIPS tree, while I can take patch 3 through the PWM
-> tree. It touches a couple of files in arch/mips but the changes
-> are unlikely to cause conflicts.
->=20
-> Thierry
->=20
-> Thierry Reding (3):
->   MIPS: JZ4740: Break circular header dependency
->   MIPS: JZ4740: Export timer API
->   pwm: Add Ingenic JZ4740 support
->=20
->  arch/mips/include/asm/mach-jz4740/irq.h      |   5 +
->  arch/mips/include/asm/mach-jz4740/platform.h |   1 +
->  arch/mips/include/asm/mach-jz4740/timer.h    | 113 ++++++++++++++
->  arch/mips/jz4740/Kconfig                     |   3 -
->  arch/mips/jz4740/Makefile                    |   2 +-
->  arch/mips/jz4740/board-qi_lb60.c             |   1 +
->  arch/mips/jz4740/irq.h                       |  23 ---
->  arch/mips/jz4740/platform.c                  |   6 +
->  arch/mips/jz4740/pwm.c                       | 177 ---------------------
->  arch/mips/jz4740/time.c                      |   2 +-
->  arch/mips/jz4740/timer.c                     |   4 +-
->  arch/mips/jz4740/timer.h                     | 136 -----------------
->  drivers/pwm/Kconfig                          |  12 +-
->  drivers/pwm/Makefile                         |   1 +
->  drivers/pwm/pwm-jz4740.c                     | 221 +++++++++++++++++++++=
-++++++
->  15 files changed, 363 insertions(+), 344 deletions(-)
->  delete mode 100644 arch/mips/jz4740/irq.h
->  delete mode 100644 arch/mips/jz4740/pwm.c
->  delete mode 100644 arch/mips/jz4740/timer.h
->  create mode 100644 drivers/pwm/pwm-jz4740.c
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-Hi Ralf,
+for 2/3 and 3/3.
 
-Have you had a chance to look at this? It is the last remaining PWM
-driver that isn't moved to the PWM framework yet. All the others are
-either in linux-next already and queued for 3.7 or have recently got
-Acked-by the respective maintainers (Unicore32). Patches 2 and 3 were
-already acked and tested by Lars-Peter who did the initial porting.
-Patch 1 can probably be dropped since I seem to be the only one running
-into that issue.
+I now can reproduce the build error that 1/3 is supposed to fix.  The issue
+is not as first suspected an odd bug in just your compiler.  The tree
+(I was testing on today's -next) is building fine when compiling in-tree
+but fails out of tree:
 
-I really want to take this in for 3.7 so I can use the 3.7 cycle to
-transition from the legacy API to the new API and possibly even get rid
-of the legacy parts altogether. However I don't want to do this without
-the Acked-by from the MIPS maintainer.
+  CC      arch/mips/jz4740/irq.o
+In file included from /home/ralf/src/linux/linux-jz4740/arch/mips/include/asm/irq.h:18:0,
+                 from /home/ralf/src/linux/linux-jz4740/include/linux/irq.h:27,
+                 from /home/ralf/src/linux/linux-jz4740/include/asm-generic/hardirq.h:12,
+                 from /home/ralf/src/linux/linux-jz4740/arch/mips/include/asm/hardirq.h:16,
+                 from /home/ralf/src/linux/linux-jz4740/include/linux/hardirq.h:7,
+                 from /home/ralf/src/linux/linux-jz4740/include/linux/interrupt.h:12,
+                 from /home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.c:19:
+/home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.h:20:39: error: ‘struct irq_data’ declared inside parameter list [-Werror]
+/home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.h:20:39: error: its scope is only this definition or declaration, which is probably not what you want [-Werror]
+/home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.h:21:38: error: ‘struct irq_data’ declared inside parameter list [-Werror]
+In file included from /home/ralf/src/linux/linux-jz4740/include/linux/irq.h:356:0,
+                 from /home/ralf/src/linux/linux-jz4740/include/asm-generic/hardirq.h:12,
+                 from /home/ralf/src/linux/linux-jz4740/arch/mips/include/asm/hardirq.h:16,
+                 from /home/ralf/src/linux/linux-jz4740/include/linux/hardirq.h:7,
+                 from /home/ralf/src/linux/linux-jz4740/include/linux/interrupt.h:12,
+                 from /home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.c:19:
+/home/ralf/src/linux/linux-jz4740/include/linux/irqdesc.h:73:33: error: ‘NR_IRQS’ undeclared here (not in a function)
+/home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.c: In function ‘jz4740_cascade’:
+/home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.c:49:39: error: ‘JZ4740_IRQ_BASE’ undeclared (first use in this function)
+/home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.c:49:39: note: each undeclared identifier is reported only once for each function it appears in
+/home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.c: At top level:
+/home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.c:62:6: error: conflicting types for ‘jz4740_irq_suspend’
+In file included from /home/ralf/src/linux/linux-jz4740/arch/mips/include/asm/irq.h:18:0,
+                 from /home/ralf/src/linux/linux-jz4740/include/linux/irq.h:27,
+                 from /home/ralf/src/linux/linux-jz4740/include/asm-generic/hardirq.h:12,
+                 from /home/ralf/src/linux/linux-jz4740/arch/mips/include/asm/hardirq.h:16,
+                 from /home/ralf/src/linux/linux-jz4740/include/linux/hardirq.h:7,
+                 from /home/ralf/src/linux/linux-jz4740/include/linux/interrupt.h:12,
+                 from /home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.c:19:
+/home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.h:20:13: note: previous declaration of ‘jz4740_irq_suspend’ was here
+/home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.c:68:6: error: conflicting types for ‘jz4740_irq_resume’
+In file included from /home/ralf/src/linux/linux-jz4740/arch/mips/include/asm/irq.h:18:0,
+                 from /home/ralf/src/linux/linux-jz4740/include/linux/irq.h:27,
+                 from /home/ralf/src/linux/linux-jz4740/include/asm-generic/hardirq.h:12,
+                 from /home/ralf/src/linux/linux-jz4740/arch/mips/include/asm/hardirq.h:16,
+                 from /home/ralf/src/linux/linux-jz4740/include/linux/hardirq.h:7,
+                 from /home/ralf/src/linux/linux-jz4740/include/linux/interrupt.h:12,
+                 from /home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.c:19:
+/home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.h:21:13: note: previous declaration of ‘jz4740_irq_resume’ was here
+/home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.c: In function ‘arch_init_irq’:
+/home/ralf/src/linux/linux-jz4740/arch/mips/jz4740/irq.c:91:41: error: ‘JZ4740_IRQ_BASE’ undeclared (first use in this function)
 
-Thierry
+Which (while your patch is probably fine, I haven't tested) this seems to
+be a build system issue, so should be preferably be fixed there.
 
---QRj9sO5tAVLaXnSD
-Content-Type: application/pgp-signature
+Marek, the whole email exchange is archived at
+http://www.linux-mips.org/archives/linux-mips/2012-09/threads.html
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.19 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQXWu4AAoJEN0jrNd/PrOhLDIP/iv28ONKXxxVsKa4449otNeV
-u28SXWhBbmqtIonkcLCiuiWV2/WbmQeZ6QvvhKKmXDIVdLtNGnBQXnoLJyjokIjf
-1Bq4mkFsJ021ltuHqfd8qyt80UMu2kYaxwXxPN+/H40vqeIb9UfQaE7XtV7y9/ho
-C7Jy4erKpLMpS5oWBZ151q8GpojczA0MC+OsTg0KlrphF3cSZOBeHouQwZ9anaOt
-aHttqo8zFQq5brXwVLdhhPOlJY3AOb3vEG3P9TUfXY/6uDQVnPKDs0Wpg/UDwS1X
-z/4U35MOQijMi22C0ajXs50jgfHqwV16Br/JQW+MckBxyeAxaOu1VHfZ+2bjzAYJ
-AJTdbWDmSzwSnamwUpf8UgR9v8IXDEuk8WcRsrNRAosy2F2EKO6JRhVtRqdS2nUo
-X1d4vSuxCPyyQQpDIN8tQK4rKsTsFwED6/RDFJHY2FCrpjtPvbGXYMxsL5Urwee+
-/KKVIo4cBAHm/zrWra7Dhg06x45JuEquPOjbS+H+bpLdyeGtw+SL7t4UCWFNZ5fK
-Z5H37MtO8Rk38kcZls+ltbEsVpVZxV7cr7YS6Uw/8aDLpHx1M9DiFowaVspWU2vb
-hKk0dSL6zKqLAXFAb4ykPLOprEbUthjen2/5NrAu0hQyE+/xTEtQKW0a7ACR6vvW
-4LPRc7GPkewsiujUXJtp
-=PsHc
------END PGP SIGNATURE-----
-
---QRj9sO5tAVLaXnSD--
+  Ralf

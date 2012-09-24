@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2012 16:47:42 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:37699 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2012 16:49:16 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:37709 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903394Ab2IXOre (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2012 16:47:34 +0200
+        with ESMTP id S1903398Ab2IXOtF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2012 16:49:05 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1TG9wR-0007fD-5S; Mon, 24 Sep 2012 09:47:23 -0500
+        id 1TG9xy-0007fV-Nn; Mon, 24 Sep 2012 09:48:58 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
-To:     linux-mips@linux-mips.org, netdev@vger.kernel.org
+To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH] net: mipsnet: Remove the MIPSsim Ethernet driver.
-Date:   Mon, 24 Sep 2012 09:47:16 -0500
-Message-Id: <1348498036-30257-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH] MIPS: MIPSsim: Remove the MIPSsim platform.
+Date:   Mon, 24 Sep 2012 09:48:53 -0500
+Message-Id: <1348498133-30328-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
-X-archive-position: 34544
+X-archive-position: 34545
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,399 +34,863 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-The MIPSsim platform is no longer supported or used. This patch
-deletes the Ethernet driver.
+The MIPSsim platform is no longer supported or used.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- drivers/net/ethernet/Kconfig   |    9 --
- drivers/net/ethernet/Makefile  |    1 -
- drivers/net/ethernet/mipsnet.c |  345 ----------------------------------------
- 3 files changed, 355 deletions(-)
- delete mode 100644 drivers/net/ethernet/mipsnet.c
+ arch/mips/Kconfig                          |   19 -----
+ arch/mips/configs/mipssim_defconfig        |   64 ---------------
+ arch/mips/include/asm/mips-boards/simint.h |   31 --------
+ arch/mips/mipssim/Makefile                 |   23 ------
+ arch/mips/mipssim/Platform                 |    6 --
+ arch/mips/mipssim/sim_console.c            |   40 ----------
+ arch/mips/mipssim/sim_int.c                |   87 ---------------------
+ arch/mips/mipssim/sim_mem.c                |  115 ---------------------------
+ arch/mips/mipssim/sim_platform.c           |   35 ---------
+ arch/mips/mipssim/sim_setup.c              |   99 -----------------------
+ arch/mips/mipssim/sim_smtc.c               |  116 ---------------------------
+ arch/mips/mipssim/sim_time.c               |  117 ----------------------------
+ 12 files changed, 752 deletions(-)
+ delete mode 100644 arch/mips/configs/mipssim_defconfig
+ delete mode 100644 arch/mips/include/asm/mips-boards/simint.h
+ delete mode 100644 arch/mips/mipssim/Makefile
+ delete mode 100644 arch/mips/mipssim/Platform
+ delete mode 100644 arch/mips/mipssim/sim_console.c
+ delete mode 100644 arch/mips/mipssim/sim_int.c
+ delete mode 100644 arch/mips/mipssim/sim_mem.c
+ delete mode 100644 arch/mips/mipssim/sim_platform.c
+ delete mode 100644 arch/mips/mipssim/sim_setup.c
+ delete mode 100644 arch/mips/mipssim/sim_smtc.c
+ delete mode 100644 arch/mips/mipssim/sim_time.c
 
-diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
-index e507b78..9ce995b 100644
---- a/drivers/net/ethernet/Kconfig
-+++ b/drivers/net/ethernet/Kconfig
-@@ -89,15 +89,6 @@ source "drivers/net/ethernet/marvell/Kconfig"
- source "drivers/net/ethernet/mellanox/Kconfig"
- source "drivers/net/ethernet/micrel/Kconfig"
- source "drivers/net/ethernet/microchip/Kconfig"
--
--config MIPS_SIM_NET
--	tristate "MIPS simulator Network device"
--	depends on MIPS_SIM
--	---help---
--	  The MIPSNET device is a simple Ethernet network device which is
--	  emulated by the MIPS Simulator.
--	  If you are not using a MIPSsim or are unsure, say N.
--
- source "drivers/net/ethernet/myricom/Kconfig"
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 6e52408..f989b0c 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -350,25 +350,6 @@ config MIPS_SEAD3
+ 	  This enables support for the MIPS Technologies SEAD3 evaluation
+ 	  board.
  
- config FEALNX
-diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
-index d1c7a11..9acd1d7 100644
---- a/drivers/net/ethernet/Makefile
-+++ b/drivers/net/ethernet/Makefile
-@@ -40,7 +40,6 @@ obj-$(CONFIG_NET_VENDOR_MARVELL) += marvell/
- obj-$(CONFIG_NET_VENDOR_MELLANOX) += mellanox/
- obj-$(CONFIG_NET_VENDOR_MICREL) += micrel/
- obj-$(CONFIG_NET_VENDOR_MICROCHIP) += microchip/
--obj-$(CONFIG_MIPS_SIM_NET) += mipsnet.o
- obj-$(CONFIG_NET_VENDOR_MYRI) += myricom/
- obj-$(CONFIG_FEALNX) += fealnx.o
- obj-$(CONFIG_NET_VENDOR_NATSEMI) += natsemi/
-diff --git a/drivers/net/ethernet/mipsnet.c b/drivers/net/ethernet/mipsnet.c
+-config MIPS_SIM
+-	bool 'MIPS simulator (MIPSsim)'
+-	select CEVT_R4K
+-	select CSRC_R4K
+-	select DMA_NONCOHERENT
+-	select SYS_HAS_EARLY_PRINTK
+-	select IRQ_CPU
+-	select BOOT_RAW
+-	select SYS_HAS_CPU_MIPS32_R1
+-	select SYS_HAS_CPU_MIPS32_R2
+-	select SYS_HAS_EARLY_PRINTK
+-	select SYS_SUPPORTS_32BIT_KERNEL
+-	select SYS_SUPPORTS_BIG_ENDIAN
+-	select SYS_SUPPORTS_MULTITHREADING
+-	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	help
+-	  This option enables support for MIPS Technologies MIPSsim software
+-	  emulator.
+-
+ config NEC_MARKEINS
+ 	bool "NEC EMMA2RH Mark-eins board"
+ 	select SOC_EMMA2RH
+diff --git a/arch/mips/configs/mipssim_defconfig b/arch/mips/configs/mipssim_defconfig
 deleted file mode 100644
-index db5285b..0000000
---- a/drivers/net/ethernet/mipsnet.c
+index b5ad738..0000000
+--- a/arch/mips/configs/mipssim_defconfig
 +++ /dev/null
-@@ -1,345 +0,0 @@
+@@ -1,64 +0,0 @@
+-CONFIG_MIPS_SIM=y
+-CONFIG_CPU_LITTLE_ENDIAN=y
+-CONFIG_HZ_100=y
+-# CONFIG_SECCOMP is not set
+-CONFIG_EXPERIMENTAL=y
+-# CONFIG_SWAP is not set
+-CONFIG_SYSVIPC=y
+-CONFIG_LOG_BUF_SHIFT=14
+-# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
+-CONFIG_EXPERT=y
+-CONFIG_SLAB=y
+-CONFIG_MODULES=y
+-CONFIG_MODULE_UNLOAD=y
+-CONFIG_MODVERSIONS=y
+-CONFIG_MODULE_SRCVERSION_ALL=y
+-# CONFIG_BLK_DEV_BSG is not set
+-CONFIG_NET=y
+-CONFIG_PACKET=y
+-CONFIG_UNIX=y
+-CONFIG_INET=y
+-CONFIG_IP_MULTICAST=y
+-CONFIG_IP_ADVANCED_ROUTER=y
+-CONFIG_IP_PNP=y
+-CONFIG_IP_PNP_DHCP=y
+-CONFIG_IP_PNP_BOOTP=y
+-# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
+-# CONFIG_INET_XFRM_MODE_TUNNEL is not set
+-# CONFIG_INET_XFRM_MODE_BEET is not set
+-# CONFIG_INET_LRO is not set
+-# CONFIG_IPV6 is not set
+-CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+-# CONFIG_STANDALONE is not set
+-# CONFIG_PREVENT_FIRMWARE_BUILD is not set
+-# CONFIG_FW_LOADER is not set
+-CONFIG_BLK_DEV_LOOP=y
+-CONFIG_BLK_DEV_NBD=y
+-# CONFIG_MISC_DEVICES is not set
+-CONFIG_NETDEVICES=y
+-CONFIG_NET_ETHERNET=y
+-CONFIG_MIPS_SIM_NET=y
+-# CONFIG_NETDEV_1000 is not set
+-# CONFIG_NETDEV_10000 is not set
+-# CONFIG_INPUT is not set
+-# CONFIG_SERIO is not set
+-# CONFIG_VT is not set
+-CONFIG_SERIAL_8250=y
+-CONFIG_SERIAL_8250_CONSOLE=y
+-CONFIG_SERIAL_8250_NR_UARTS=1
+-CONFIG_SERIAL_8250_RUNTIME_UARTS=1
+-# CONFIG_HW_RANDOM is not set
+-# CONFIG_HWMON is not set
+-# CONFIG_USB_SUPPORT is not set
+-# CONFIG_DNOTIFY is not set
+-CONFIG_TMPFS=y
+-CONFIG_ROMFS_FS=y
+-CONFIG_NFS_FS=y
+-CONFIG_NFS_V3=y
+-CONFIG_ROOT_NFS=y
+-CONFIG_DEBUG_KERNEL=y
+-# CONFIG_SCHED_DEBUG is not set
+-CONFIG_DEBUG_INFO=y
+-CONFIG_CMDLINE_BOOL=y
+-CONFIG_CMDLINE="nfsroot=192.168.192.169:/u1/mipsel,timeo=20 ip=dhcp"
+-# CONFIG_CRC32 is not set
+diff --git a/arch/mips/include/asm/mips-boards/simint.h b/arch/mips/include/asm/mips-boards/simint.h
+deleted file mode 100644
+index 8ef6db7..0000000
+--- a/arch/mips/include/asm/mips-boards/simint.h
++++ /dev/null
+@@ -1,31 +0,0 @@
+-/*
+- * Copyright (C) 2005 MIPS Technologies, Inc.  All rights reserved.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- */
+-#ifndef _MIPS_SIMINT_H
+-#define _MIPS_SIMINT_H
+-
+-#include <irq.h>
+-
+-#define SIM_INT_BASE		0
+-#define MIPSCPU_INT_MB0		2
+-#define MIPS_CPU_TIMER_IRQ	7
+-
+-
+-#define MSC01E_INT_BASE		64
+-
+-#define MSC01E_INT_CPUCTR	11
+-
+-#endif
+diff --git a/arch/mips/mipssim/Makefile b/arch/mips/mipssim/Makefile
+deleted file mode 100644
+index 01410a3..0000000
+--- a/arch/mips/mipssim/Makefile
++++ /dev/null
+@@ -1,23 +0,0 @@
+-#
+-# Copyright (C) 2005 MIPS Technologies, Inc.  All rights reserved.
+-# Copyright (C) 2007 MIPS Technologies, Inc.
+-#   written by Ralf Baechle (ralf@linux-mips.org)
+-#
+-# This program is free software; you can distribute it and/or modify it
+-# under the terms of the GNU General Public License (Version 2) as
+-# published by the Free Software Foundation.
+-#
+-# This program is distributed in the hope it will be useful, but WITHOUT
+-# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+-# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+-# for more details.
+-#
+-# You should have received a copy of the GNU General Public License along
+-# with this program; if not, write to the Free Software Foundation, Inc.,
+-# 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+-#
+-
+-obj-y := sim_platform.o sim_setup.o sim_mem.o sim_time.o sim_int.o
+-
+-obj-$(CONFIG_EARLY_PRINTK) += sim_console.o
+-obj-$(CONFIG_MIPS_MT_SMTC) += sim_smtc.o
+diff --git a/arch/mips/mipssim/Platform b/arch/mips/mipssim/Platform
+deleted file mode 100644
+index 3df60b8a..0000000
+--- a/arch/mips/mipssim/Platform
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#
+-# MIPS SIM
+-#
+-platform-$(CONFIG_MIPS_SIM)	+= mipssim/
+-cflags-$(CONFIG_MIPS_SIM)	+= -I$(srctree)/arch/mips/include/asm/mach-mipssim
+-load-$(CONFIG_MIPS_SIM)		+= 0x80100000
+diff --git a/arch/mips/mipssim/sim_console.c b/arch/mips/mipssim/sim_console.c
+deleted file mode 100644
+index a2f4167..0000000
+--- a/arch/mips/mipssim/sim_console.c
++++ /dev/null
+@@ -1,40 +0,0 @@
+-/*
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- * Copyright (C) 2007 MIPS Technologies, Inc.
+- *   written by Ralf Baechle
+- */
+-#include <linux/init.h>
+-#include <linux/io.h>
+-#include <linux/serial_reg.h>
+-
+-static inline unsigned int serial_in(int offset)
+-{
+-	return inb(0x3f8 + offset);
+-}
+-
+-static inline void serial_out(int offset, int value)
+-{
+-	outb(value, 0x3f8 + offset);
+-}
+-
+-void __init prom_putchar(char c)
+-{
+-	while ((serial_in(UART_LSR) & UART_LSR_THRE) == 0)
+-		;
+-
+-	serial_out(UART_TX, c);
+-}
+diff --git a/arch/mips/mipssim/sim_int.c b/arch/mips/mipssim/sim_int.c
+deleted file mode 100644
+index 5c779be..0000000
+--- a/arch/mips/mipssim/sim_int.c
++++ /dev/null
+@@ -1,87 +0,0 @@
+-/*
+- * Copyright (C) 1999, 2005 MIPS Technologies, Inc.  All rights reserved.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- */
+-#include <linux/init.h>
+-#include <linux/sched.h>
+-#include <linux/interrupt.h>
+-#include <linux/kernel_stat.h>
+-#include <asm/mips-boards/simint.h>
+-#include <asm/irq_cpu.h>
+-
+-static inline int clz(unsigned long x)
+-{
+-	__asm__(
+-	"	.set	push					\n"
+-	"	.set	mips32					\n"
+-	"	clz	%0, %1					\n"
+-	"	.set	pop					\n"
+-	: "=r" (x)
+-	: "r" (x));
+-
+-	return x;
+-}
+-
+-/*
+- * Version of ffs that only looks at bits 12..15.
+- */
+-static inline unsigned int irq_ffs(unsigned int pending)
+-{
+-#if defined(CONFIG_CPU_MIPS32) || defined(CONFIG_CPU_MIPS64)
+-	return -clz(pending) + 31 - CAUSEB_IP;
+-#else
+-	unsigned int a0 = 7;
+-	unsigned int t0;
+-
+-	t0 = s0 & 0xf000;
+-	t0 = t0 < 1;
+-	t0 = t0 << 2;
+-	a0 = a0 - t0;
+-	s0 = s0 << t0;
+-
+-	t0 = s0 & 0xc000;
+-	t0 = t0 < 1;
+-	t0 = t0 << 1;
+-	a0 = a0 - t0;
+-	s0 = s0 << t0;
+-
+-	t0 = s0 & 0x8000;
+-	t0 = t0 < 1;
+-	/* t0 = t0 << 2; */
+-	a0 = a0 - t0;
+-	/* s0 = s0 << t0; */
+-
+-	return a0;
+-#endif
+-}
+-
+-asmlinkage void plat_irq_dispatch(void)
+-{
+-	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
+-	int irq;
+-
+-	irq = irq_ffs(pending);
+-
+-	if (irq > 0)
+-		do_IRQ(MIPS_CPU_IRQ_BASE + irq);
+-	else
+-		spurious_interrupt();
+-}
+-
+-void __init arch_init_irq(void)
+-{
+-	mips_cpu_irq_init();
+-}
+diff --git a/arch/mips/mipssim/sim_mem.c b/arch/mips/mipssim/sim_mem.c
+deleted file mode 100644
+index 953d836..0000000
+--- a/arch/mips/mipssim/sim_mem.c
++++ /dev/null
+@@ -1,115 +0,0 @@
+-/*
+- * Copyright (C) 2005 MIPS Technologies, Inc.  All rights reserved.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- */
+-#include <linux/init.h>
+-#include <linux/mm.h>
+-#include <linux/bootmem.h>
+-#include <linux/pfn.h>
+-
+-#include <asm/bootinfo.h>
+-#include <asm/page.h>
+-#include <asm/sections.h>
+-
+-#include <asm/mips-boards/prom.h>
+-
+-/*#define DEBUG*/
+-
+-enum simmem_memtypes {
+-	simmem_reserved = 0,
+-	simmem_free,
+-};
+-struct prom_pmemblock mdesc[PROM_MAX_PMEMBLOCKS];
+-
+-#ifdef DEBUG
+-static char *mtypes[3] = {
+-	"SIM reserved memory",
+-	"SIM free memory",
+-};
+-#endif
+-
+-struct prom_pmemblock * __init prom_getmdesc(void)
+-{
+-	unsigned int memsize;
+-
+-	memsize = 0x02000000;
+-	pr_info("Setting default memory size 0x%08x\n", memsize);
+-
+-	memset(mdesc, 0, sizeof(mdesc));
+-
+-	mdesc[0].type = simmem_reserved;
+-	mdesc[0].base = 0x00000000;
+-	mdesc[0].size = 0x00001000;
+-
+-	mdesc[1].type = simmem_free;
+-	mdesc[1].base = 0x00001000;
+-	mdesc[1].size = 0x000ff000;
+-
+-	mdesc[2].type = simmem_reserved;
+-	mdesc[2].base = 0x00100000;
+-	mdesc[2].size = CPHYSADDR(PFN_ALIGN(&_end)) - mdesc[2].base;
+-
+-	mdesc[3].type = simmem_free;
+-	mdesc[3].base = CPHYSADDR(PFN_ALIGN(&_end));
+-	mdesc[3].size = memsize - mdesc[3].base;
+-
+-	return &mdesc[0];
+-}
+-
+-static int __init prom_memtype_classify(unsigned int type)
+-{
+-	switch (type) {
+-	case simmem_free:
+-		return BOOT_MEM_RAM;
+-	case simmem_reserved:
+-	default:
+-		return BOOT_MEM_RESERVED;
+-	}
+-}
+-
+-void __init prom_meminit(void)
+-{
+-	struct prom_pmemblock *p;
+-
+-	p = prom_getmdesc();
+-
+-	while (p->size) {
+-		long type;
+-		unsigned long base, size;
+-
+-		type = prom_memtype_classify(p->type);
+-		base = p->base;
+-		size = p->size;
+-
+-		add_memory_region(base, size, type);
+-		p++;
+-	}
+-}
+-
+-void __init prom_free_prom_memory(void)
+-{
+-	int i;
+-	unsigned long addr;
+-
+-	for (i = 0; i < boot_mem_map.nr_map; i++) {
+-		if (boot_mem_map.map[i].type != BOOT_MEM_ROM_DATA)
+-			continue;
+-
+-		addr = boot_mem_map.map[i].addr;
+-		free_init_pages("prom memory",
+-				addr, addr + boot_mem_map.map[i].size);
+-	}
+-}
+diff --git a/arch/mips/mipssim/sim_platform.c b/arch/mips/mipssim/sim_platform.c
+deleted file mode 100644
+index 53210a8..0000000
+--- a/arch/mips/mipssim/sim_platform.c
++++ /dev/null
+@@ -1,35 +0,0 @@
 -/*
 - * This file is subject to the terms and conditions of the GNU General Public
 - * License.  See the file "COPYING" in the main directory of this archive
 - * for more details.
+- *
+- * Copyright (C) 2007 by Ralf Baechle (ralf@linux-mips.org)
 - */
--
 -#include <linux/init.h>
--#include <linux/interrupt.h>
--#include <linux/io.h>
+-#include <linux/if_ether.h>
 -#include <linux/kernel.h>
--#include <linux/module.h>
--#include <linux/netdevice.h>
--#include <linux/etherdevice.h>
 -#include <linux/platform_device.h>
--#include <asm/mips-boards/simint.h>
--
--#define MIPSNET_VERSION "2007-11-17"
--
--/*
-- * Net status/control block as seen by sw in the core.
-- */
--struct mipsnet_regs {
--	/*
--	 * Device info for probing, reads as MIPSNET%d where %d is some
--	 * form of version.
--	 */
--	u64 devId;		/*0x00 */
--
--	/*
--	 * read only busy flag.
--	 * Set and cleared by the Net Device to indicate that an rx or a tx
--	 * is in progress.
--	 */
--	u32 busy;		/*0x08 */
--
--	/*
--	 * Set by the Net Device.
--	 * The device will set it once data has been received.
--	 * The value is the number of bytes that should be read from
--	 * rxDataBuffer.  The value will decrease till 0 until all the data
--	 * from rxDataBuffer has been read.
--	 */
--	u32 rxDataCount;	/*0x0c */
--#define MIPSNET_MAX_RXTX_DATACOUNT (1 << 16)
--
--	/*
--	 * Settable from the MIPS core, cleared by the Net Device.
--	 * The core should set the number of bytes it wants to send,
--	 * then it should write those bytes of data to txDataBuffer.
--	 * The device will clear txDataCount has been processed (not
--	 * necessarily sent).
--	 */
--	u32 txDataCount;	/*0x10 */
--
--	/*
--	 * Interrupt control
--	 *
--	 * Used to clear the interrupted generated by this dev.
--	 * Write a 1 to clear the interrupt. (except bit31).
--	 *
--	 * Bit0 is set if it was a tx-done interrupt.
--	 * Bit1 is set when new rx-data is available.
--	 *    Until this bit is cleared there will be no other RXs.
--	 *
--	 * Bit31 is used for testing, it clears after a read.
--	 *    Writing 1 to this bit will cause an interrupt to be generated.
--	 *    To clear the test interrupt, write 0 to this register.
--	 */
--	u32 interruptControl;	/*0x14 */
--#define MIPSNET_INTCTL_TXDONE     (1u << 0)
--#define MIPSNET_INTCTL_RXDONE     (1u << 1)
--#define MIPSNET_INTCTL_TESTBIT    (1u << 31)
--
--	/*
--	 * Readonly core-specific interrupt info for the device to signal
--	 * the core. The meaning of the contents of this field might change.
--	 */
--	/* XXX: the whole memIntf interrupt scheme is messy: the device
--	 * should have no control what so ever of what VPE/register set is
--	 * being used.
--	 * The MemIntf should only expose interrupt lines, and something in
--	 * the config should be responsible for the line<->core/vpe bindings.
--	 */
--	u32 interruptInfo;	/*0x18 */
--
--	/*
--	 * This is where the received data is read out.
--	 * There is more data to read until rxDataReady is 0.
--	 * Only 1 byte at this regs offset is used.
--	 */
--	u32 rxDataBuffer;	/*0x1c */
--
--	/*
--	 * This is where the data to transmit is written.
--	 * Data should be written for the amount specified in the
--	 * txDataCount register.
--	 * Only 1 byte at this regs offset is used.
--	 */
--	u32 txDataBuffer;	/*0x20 */
--};
--
--#define regaddr(dev, field) \
--  (dev->base_addr + offsetof(struct mipsnet_regs, field))
 -
 -static char mipsnet_string[] = "mipsnet";
 -
+-static struct platform_device eth1_device = {
+-	.name		= mipsnet_string,
+-	.id		= 0,
+-};
+-
 -/*
-- * Copy data from the MIPSNET rx data port
+- * Create a platform device for the GPI port that receives the
+- * image data from the embedded camera.
 - */
--static int ioiocpy_frommipsnet(struct net_device *dev, unsigned char *kdata,
--			int len)
--{
--	for (; len > 0; len--, kdata++)
--		*kdata = inb(regaddr(dev, rxDataBuffer));
--
--	return inl(regaddr(dev, rxDataCount));
--}
--
--static inline void mipsnet_put_todevice(struct net_device *dev,
--	struct sk_buff *skb)
--{
--	int count_to_go = skb->len;
--	char *buf_ptr = skb->data;
--
--	outl(skb->len, regaddr(dev, txDataCount));
--
--	for (; count_to_go; buf_ptr++, count_to_go--)
--		outb(*buf_ptr, regaddr(dev, txDataBuffer));
--
--	dev->stats.tx_packets++;
--	dev->stats.tx_bytes += skb->len;
--
--	dev_kfree_skb(skb);
--}
--
--static int mipsnet_xmit(struct sk_buff *skb, struct net_device *dev)
--{
--	/*
--	 * Only one packet at a time. Once TXDONE interrupt is serviced, the
--	 * queue will be restarted.
--	 */
--	netif_stop_queue(dev);
--	mipsnet_put_todevice(dev, skb);
--
--	return NETDEV_TX_OK;
--}
--
--static inline ssize_t mipsnet_get_fromdev(struct net_device *dev, size_t len)
--{
--	struct sk_buff *skb;
--
--	if (!len)
--		return len;
--
--	skb = netdev_alloc_skb(dev, len + NET_IP_ALIGN);
--	if (!skb) {
--		dev->stats.rx_dropped++;
--		return -ENOMEM;
--	}
--
--	skb_reserve(skb, NET_IP_ALIGN);
--	if (ioiocpy_frommipsnet(dev, skb_put(skb, len), len))
--		return -EFAULT;
--
--	skb->protocol = eth_type_trans(skb, dev);
--	skb->ip_summed = CHECKSUM_UNNECESSARY;
--
--	netif_rx(skb);
--
--	dev->stats.rx_packets++;
--	dev->stats.rx_bytes += len;
--
--	return len;
--}
--
--static irqreturn_t mipsnet_interrupt(int irq, void *dev_id)
--{
--	struct net_device *dev = dev_id;
--	u32 int_flags;
--	irqreturn_t ret = IRQ_NONE;
--
--	if (irq != dev->irq)
--		goto out_badirq;
--
--	/* TESTBIT is cleared on read. */
--	int_flags = inl(regaddr(dev, interruptControl));
--	if (int_flags & MIPSNET_INTCTL_TESTBIT) {
--		/* TESTBIT takes effect after a write with 0. */
--		outl(0, regaddr(dev, interruptControl));
--		ret = IRQ_HANDLED;
--	} else if (int_flags & MIPSNET_INTCTL_TXDONE) {
--		/* Only one packet at a time, we are done. */
--		dev->stats.tx_packets++;
--		netif_wake_queue(dev);
--		outl(MIPSNET_INTCTL_TXDONE,
--		     regaddr(dev, interruptControl));
--		ret = IRQ_HANDLED;
--	} else if (int_flags & MIPSNET_INTCTL_RXDONE) {
--		mipsnet_get_fromdev(dev, inl(regaddr(dev, rxDataCount)));
--		outl(MIPSNET_INTCTL_RXDONE, regaddr(dev, interruptControl));
--		ret = IRQ_HANDLED;
--	}
--	return ret;
--
--out_badirq:
--	printk(KERN_INFO "%s: %s(): irq %d for unknown device\n",
--	       dev->name, __func__, irq);
--	return ret;
--}
--
--static int mipsnet_open(struct net_device *dev)
+-static int __init mipsnet_devinit(void)
 -{
 -	int err;
 -
--	err = request_irq(dev->irq, mipsnet_interrupt,
--			  IRQF_SHARED, dev->name, (void *) dev);
--	if (err) {
--		release_region(dev->base_addr, sizeof(struct mipsnet_regs));
--		return err;
--	}
--
--	netif_start_queue(dev);
--
--	/* test interrupt handler */
--	outl(MIPSNET_INTCTL_TESTBIT, regaddr(dev, interruptControl));
--
--	return 0;
--}
--
--static int mipsnet_close(struct net_device *dev)
--{
--	netif_stop_queue(dev);
--	free_irq(dev->irq, dev);
--	return 0;
--}
--
--static void mipsnet_set_mclist(struct net_device *dev)
--{
--}
--
--static const struct net_device_ops mipsnet_netdev_ops = {
--	.ndo_open		= mipsnet_open,
--	.ndo_stop		= mipsnet_close,
--	.ndo_start_xmit		= mipsnet_xmit,
--	.ndo_set_rx_mode	= mipsnet_set_mclist,
--	.ndo_change_mtu		= eth_change_mtu,
--	.ndo_validate_addr	= eth_validate_addr,
--	.ndo_set_mac_address	= eth_mac_addr,
--};
--
--static int __devinit mipsnet_probe(struct platform_device *dev)
--{
--	struct net_device *netdev;
--	int err;
--
--	netdev = alloc_etherdev(0);
--	if (!netdev) {
--		err = -ENOMEM;
--		goto out;
--	}
--
--	platform_set_drvdata(dev, netdev);
--
--	netdev->netdev_ops = &mipsnet_netdev_ops;
--
--	/*
--	 * TODO: probe for these or load them from PARAM
--	 */
--	netdev->base_addr = 0x4200;
--	netdev->irq = MIPS_CPU_IRQ_BASE + MIPSCPU_INT_MB0 +
--		      inl(regaddr(netdev, interruptInfo));
--
--	/* Get the io region now, get irq on open() */
--	if (!request_region(netdev->base_addr, sizeof(struct mipsnet_regs),
--			    "mipsnet")) {
--		err = -EBUSY;
--		goto out_free_netdev;
--	}
--
--	/*
--	 * Lacking any better mechanism to allocate a MAC address we use a
--	 * random one ...
--	 */
--	eth_hw_addr_random(netdev);
--
--	err = register_netdev(netdev);
--	if (err) {
--		printk(KERN_ERR "MIPSNet: failed to register netdev.\n");
--		goto out_free_region;
--	}
--
--	return 0;
--
--out_free_region:
--	release_region(netdev->base_addr, sizeof(struct mipsnet_regs));
--
--out_free_netdev:
--	free_netdev(netdev);
--
--out:
--	return err;
--}
--
--static int __devexit mipsnet_device_remove(struct platform_device *device)
--{
--	struct net_device *dev = platform_get_drvdata(device);
--
--	unregister_netdev(dev);
--	release_region(dev->base_addr, sizeof(struct mipsnet_regs));
--	free_netdev(dev);
--	platform_set_drvdata(device, NULL);
--
--	return 0;
--}
--
--static struct platform_driver mipsnet_driver = {
--	.driver = {
--		.name		= mipsnet_string,
--		.owner		= THIS_MODULE,
--	},
--	.probe		= mipsnet_probe,
--	.remove		= __devexit_p(mipsnet_device_remove),
--};
--
--static int __init mipsnet_init_module(void)
--{
--	int err;
--
--	printk(KERN_INFO "MIPSNet Ethernet driver. Version: %s. "
--	       "(c)2005 MIPS Technologies, Inc.\n", MIPSNET_VERSION);
--
--	err = platform_driver_register(&mipsnet_driver);
+-	err = platform_device_register(&eth1_device);
 -	if (err)
--		printk(KERN_ERR "Driver registration failed\n");
+-		printk(KERN_ERR "%s: registration failed\n", mipsnet_string);
 -
 -	return err;
 -}
 -
--static void __exit mipsnet_exit_module(void)
+-device_initcall(mipsnet_devinit);
+diff --git a/arch/mips/mipssim/sim_setup.c b/arch/mips/mipssim/sim_setup.c
+deleted file mode 100644
+index 256e0cd..0000000
+--- a/arch/mips/mipssim/sim_setup.c
++++ /dev/null
+@@ -1,99 +0,0 @@
+-/*
+- * Copyright (C) 2005 MIPS Technologies, Inc.  All rights reserved.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- */
+-
+-#include <linux/init.h>
+-#include <linux/string.h>
+-#include <linux/kernel.h>
+-#include <linux/io.h>
+-#include <linux/irq.h>
+-#include <linux/ioport.h>
+-#include <linux/tty.h>
+-#include <linux/serial.h>
+-#include <linux/serial_core.h>
+-#include <linux/serial_8250.h>
+-
+-#include <asm/cpu.h>
+-#include <asm/bootinfo.h>
+-#include <asm/mips-boards/generic.h>
+-#include <asm/mips-boards/prom.h>
+-#include <asm/time.h>
+-#include <asm/mips-boards/sim.h>
+-#include <asm/mips-boards/simint.h>
+-#include <asm/smp-ops.h>
+-
+-
+-static void __init serial_init(void);
+-unsigned int _isbonito;
+-
+-const char *get_system_type(void)
 -{
--	platform_driver_unregister(&mipsnet_driver);
+-	return "MIPSsim";
 -}
 -
--module_init(mipsnet_init_module);
--module_exit(mipsnet_exit_module);
+-void __init plat_mem_setup(void)
+-{
+-	set_io_port_base(0xbfd00000);
+-
+-	serial_init();
+-}
+-
+-extern struct plat_smp_ops ssmtc_smp_ops;
+-
+-void __init prom_init(void)
+-{
+-	set_io_port_base(0xbfd00000);
+-
+-	prom_meminit();
+-
+-	if (cpu_has_mipsmt) {
+-		if (!register_vsmp_smp_ops())
+-			return;
+-
+-#ifdef CONFIG_MIPS_MT_SMTC
+-		register_smp_ops(&ssmtc_smp_ops);
+-			return;
+-#endif
+-	}
+-
+-	register_up_smp_ops();
+-}
+-
+-static void __init serial_init(void)
+-{
+-#ifdef CONFIG_SERIAL_8250
+-	struct uart_port s;
+-
+-	memset(&s, 0, sizeof(s));
+-
+-	s.iobase = 0x3f8;
+-
+-	/* hardware int 4 - the serial int, is CPU int 6
+-	 but poll for now */
+-	s.irq =  0;
+-	s.uartclk = 1843200;
+-	s.flags = UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
+-	s.iotype = UPIO_PORT;
+-	s.regshift = 0;
+-	s.timeout = 4;
+-
+-	if (early_serial_setup(&s) != 0) {
+-		printk(KERN_ERR "Serial setup failed!\n");
+-	}
+-
+-#endif
+-}
+diff --git a/arch/mips/mipssim/sim_smtc.c b/arch/mips/mipssim/sim_smtc.c
+deleted file mode 100644
+index 3c104ab..0000000
+--- a/arch/mips/mipssim/sim_smtc.c
++++ /dev/null
+@@ -1,116 +0,0 @@
+-/*
+- * Copyright (C) 2005 MIPS Technologies, Inc.  All rights reserved.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- */
+-/*
+- * Simulator Platform-specific hooks for SMTC operation
+- */
+-#include <linux/kernel.h>
+-#include <linux/sched.h>
+-#include <linux/cpumask.h>
+-#include <linux/interrupt.h>
+-#include <linux/smp.h>
+-
+-#include <linux/atomic.h>
+-#include <asm/cpu.h>
+-#include <asm/processor.h>
+-#include <asm/smtc.h>
+-#include <asm/mmu_context.h>
+-#include <asm/smtc_ipi.h>
+-
+-/* VPE/SMP Prototype implements platform interfaces directly */
+-
+-/*
+- * Cause the specified action to be performed on a targeted "CPU"
+- */
+-
+-static void ssmtc_send_ipi_single(int cpu, unsigned int action)
+-{
+-	smtc_send_ipi(cpu, LINUX_SMP_IPI, action);
+-	/* "CPU" may be TC of same VPE, VPE of same CPU, or different CPU */
+-}
+-
+-static inline void ssmtc_send_ipi_mask(const struct cpumask *mask,
+-				       unsigned int action)
+-{
+-	unsigned int i;
+-
+-	for_each_cpu(i, mask)
+-		ssmtc_send_ipi_single(i, action);
+-}
+-
+-/*
+- * Post-config but pre-boot cleanup entry point
+- */
+-static void __cpuinit ssmtc_init_secondary(void)
+-{
+-	smtc_init_secondary();
+-}
+-
+-/*
+- * SMP initialization finalization entry point
+- */
+-static void __cpuinit ssmtc_smp_finish(void)
+-{
+-	smtc_smp_finish();
+-}
+-
+-/*
+- * Hook for after all CPUs are online
+- */
+-static void ssmtc_cpus_done(void)
+-{
+-}
+-
+-/*
+- * Platform "CPU" startup hook
+- */
+-static void __cpuinit ssmtc_boot_secondary(int cpu, struct task_struct *idle)
+-{
+-	smtc_boot_secondary(cpu, idle);
+-}
+-
+-static void __init ssmtc_smp_setup(void)
+-{
+-	if (read_c0_config3() & (1 << 2))
+-		mipsmt_build_cpu_map(0);
+-}
+-
+-/*
+- * Platform SMP pre-initialization
+- */
+-static void ssmtc_prepare_cpus(unsigned int max_cpus)
+-{
+-	/*
+-	 * As noted above, we can assume a single CPU for now
+-	 * but it may be multithreaded.
+-	 */
+-
+-	if (read_c0_config3() & (1 << 2)) {
+-		mipsmt_prepare_cpus();
+-	}
+-}
+-
+-struct plat_smp_ops ssmtc_smp_ops = {
+-	.send_ipi_single	= ssmtc_send_ipi_single,
+-	.send_ipi_mask		= ssmtc_send_ipi_mask,
+-	.init_secondary		= ssmtc_init_secondary,
+-	.smp_finish		= ssmtc_smp_finish,
+-	.cpus_done		= ssmtc_cpus_done,
+-	.boot_secondary		= ssmtc_boot_secondary,
+-	.smp_setup		= ssmtc_smp_setup,
+-	.prepare_cpus		= ssmtc_prepare_cpus,
+-};
+diff --git a/arch/mips/mipssim/sim_time.c b/arch/mips/mipssim/sim_time.c
+deleted file mode 100644
+index 77bad3c..0000000
+--- a/arch/mips/mipssim/sim_time.c
++++ /dev/null
+@@ -1,117 +0,0 @@
+-#include <linux/types.h>
+-#include <linux/init.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/sched.h>
+-#include <linux/spinlock.h>
+-#include <linux/interrupt.h>
+-#include <linux/mc146818rtc.h>
+-#include <linux/smp.h>
+-#include <linux/timex.h>
+-
+-#include <asm/hardirq.h>
+-#include <asm/div64.h>
+-#include <asm/cpu.h>
+-#include <asm/setup.h>
+-#include <asm/time.h>
+-#include <asm/irq.h>
+-#include <asm/mc146818-time.h>
+-#include <asm/msc01_ic.h>
+-
+-#include <asm/mips-boards/generic.h>
+-#include <asm/mips-boards/prom.h>
+-#include <asm/mips-boards/simint.h>
+-
+-
+-unsigned long cpu_khz;
+-
+-/*
+- * Estimate CPU frequency.  Sets mips_hpt_frequency as a side-effect
+- */
+-static unsigned int __init estimate_cpu_frequency(void)
+-{
+-	unsigned int prid = read_c0_prid() & 0xffff00;
+-	unsigned int count;
+-
+-#if 1
+-	/*
+-	 * hardwire the board frequency to 12MHz.
+-	 */
+-
+-	if ((prid == (PRID_COMP_MIPS | PRID_IMP_20KC)) ||
+-	    (prid == (PRID_COMP_MIPS | PRID_IMP_25KF)))
+-		count = 12000000;
+-	else
+-		count =  6000000;
+-#else
+-	unsigned int flags;
+-
+-	local_irq_save(flags);
+-
+-	/* Start counter exactly on falling edge of update flag */
+-	while (CMOS_READ(RTC_REG_A) & RTC_UIP);
+-	while (!(CMOS_READ(RTC_REG_A) & RTC_UIP));
+-
+-	/* Start r4k counter. */
+-	write_c0_count(0);
+-
+-	/* Read counter exactly on falling edge of update flag */
+-	while (CMOS_READ(RTC_REG_A) & RTC_UIP);
+-	while (!(CMOS_READ(RTC_REG_A) & RTC_UIP));
+-
+-	count = read_c0_count();
+-
+-	/* restore interrupts */
+-	local_irq_restore(flags);
+-#endif
+-
+-	mips_hpt_frequency = count;
+-
+-	if ((prid != (PRID_COMP_MIPS | PRID_IMP_20KC)) &&
+-	    (prid != (PRID_COMP_MIPS | PRID_IMP_25KF)))
+-		count *= 2;
+-
+-	count += 5000;    /* round */
+-	count -= count%10000;
+-
+-	return count;
+-}
+-
+-static int mips_cpu_timer_irq;
+-
+-static void mips_timer_dispatch(void)
+-{
+-	do_IRQ(mips_cpu_timer_irq);
+-}
+-
+-
+-unsigned __cpuinit get_c0_compare_int(void)
+-{
+-#ifdef MSC01E_INT_BASE
+-	if (cpu_has_veic) {
+-		set_vi_handler(MSC01E_INT_CPUCTR, mips_timer_dispatch);
+-		mips_cpu_timer_irq = MSC01E_INT_BASE + MSC01E_INT_CPUCTR;
+-
+-		return mips_cpu_timer_irq;
+-	}
+-#endif
+-	if (cpu_has_vint)
+-		set_vi_handler(cp0_compare_irq, mips_timer_dispatch);
+-	mips_cpu_timer_irq = MIPS_CPU_IRQ_BASE + cp0_compare_irq;
+-
+-	return mips_cpu_timer_irq;
+-}
+-
+-void __init plat_time_init(void)
+-{
+-	unsigned int est_freq;
+-
+-	/* Set Data mode - binary. */
+-	CMOS_WRITE(CMOS_READ(RTC_CONTROL) | RTC_DM_BINARY, RTC_CONTROL);
+-
+-	est_freq = estimate_cpu_frequency();
+-
+-	printk(KERN_INFO "CPU frequency %d.%02d MHz\n", est_freq / 1000000,
+-	       (est_freq % 1000000) * 100 / 1000000);
+-
+-	cpu_khz = est_freq / 1000;
+-}
 -- 
 1.7.9.5

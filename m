@@ -1,29 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2012 22:41:43 +0200 (CEST)
-Received: from shards.monkeyblade.net ([149.20.54.216]:51816 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903439Ab2IXUlh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Sep 2012 22:41:37 +0200
-Received: from localhost (nat-pool-rdu.redhat.com [66.187.233.202])
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 9A1C9584CEA;
-        Mon, 24 Sep 2012 13:41:34 -0700 (PDT)
-Date:   Mon, 24 Sep 2012 16:41:30 -0400 (EDT)
-Message-Id: <20120924.164130.1073842749430205590.davem@davemloft.net>
-To:     sjhill@mips.com
-Cc:     linux-mips@linux-mips.org, netdev@vger.kernel.org,
-        ralf@linux-mips.org
-Subject: Re: [PATCH] net: mipsnet: Remove the MIPSsim Ethernet driver.
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <1348498036-30257-1-git-send-email-sjhill@mips.com>
-References: <1348498036-30257-1-git-send-email-sjhill@mips.com>
-X-Mailer: Mew version 6.5 on Emacs 24.1 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34547
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2012 12:33:40 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:45688 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903795Ab2IYKdg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 25 Sep 2012 12:33:36 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q8PAXZRK004693;
+        Tue, 25 Sep 2012 12:33:35 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q8PAXYmv004692;
+        Tue, 25 Sep 2012 12:33:34 +0200
+Date:   Tue, 25 Sep 2012 12:33:34 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Steven J. Hill" <sjhill@mips.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: MIPSsim: Remove the MIPSsim platform.
+Message-ID: <20120925103334.GC23828@linux-mips.org>
+References: <1348498133-30328-1-git-send-email-sjhill@mips.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1348498133-30328-1-git-send-email-sjhill@mips.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,14 +39,8 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: "Steven J. Hill" <sjhill@mips.com>
-Date: Mon, 24 Sep 2012 09:47:16 -0500
+On Mon, Sep 24, 2012 at 09:48:53AM -0500, Steven J. Hill wrote:
 
-> From: "Steven J. Hill" <sjhill@mips.com>
-> 
-> The MIPSsim platform is no longer supported or used. This patch
-> deletes the Ethernet driver.
-> 
-> Signed-off-by: Steven J. Hill <sjhill@mips.com>
+Applied, thanks.
 
-I'll apply this to net-next, thanks.
+  Ralf

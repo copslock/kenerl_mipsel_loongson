@@ -1,32 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2012 18:16:35 +0200 (CEST)
-Received: from zmc.proxad.net ([212.27.53.206]:45517 "EHLO zmc.proxad.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903843Ab2IZQPz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 26 Sep 2012 18:15:55 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id A6104A194F;
-        Wed, 26 Sep 2012 18:15:54 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at localhost
-Received: from zmc.proxad.net ([127.0.0.1])
-        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 3CVK4UqGoaFt; Wed, 26 Sep 2012 18:15:54 +0200 (CEST)
-Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 3C1CAA1A64;
-        Wed, 26 Sep 2012 18:15:54 +0200 (CEST)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH 2/2] MIPS: BCM63XX: remove "registering %d GPIOs" message
-Date:   Wed, 26 Sep 2012 18:15:02 +0200
-Message-Id: <1348676102-5651-2-git-send-email-florian@openwrt.org>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1348676102-5651-1-git-send-email-florian@openwrt.org>
-References: <1348676102-5651-1-git-send-email-florian@openwrt.org>
-X-archive-position: 34552
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2012 23:09:52 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:58261 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903846Ab2IZVJs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 26 Sep 2012 23:09:48 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q8QL9jIl019834;
+        Wed, 26 Sep 2012 23:09:45 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q8QL9h1x019830;
+        Wed, 26 Sep 2012 23:09:43 +0200
+Date:   Wed, 26 Sep 2012 23:09:43 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-mips@linux-mips.org, linux-next@vger.kernel.org
+Subject: Re: [PATCH -next] MIPS: ptrace: Add missing #include <asm/syscall.h>
+Message-ID: <20120926210943.GA4745@linux-mips.org>
+References: <1347913216-11140-1-git-send-email-geert@linux-m68k.org>
+ <20120923173609.GE13842@linux-mips.org>
+ <5060A52C.1050504@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5060A52C.1050504@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,25 +42,17 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-gpiolib already prints something similar, so let's get rid of this
-duplicate message.
+On Mon, Sep 24, 2012 at 11:23:40AM -0700, David Daney wrote:
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
- arch/mips/bcm63xx/gpio.c |    1 -
- 1 file changed, 1 deletion(-)
+> >Thanks, I already had fixed that in the linux-trace tree; the latest
+> >version just had not yet propagated yet to the other trees.
+> >
+> 
+> It is still not on mips-for-linux-next.  Perhaps we should arrange
+> for it to be there, so that the actual propagation may commence.
 
-diff --git a/arch/mips/bcm63xx/gpio.c b/arch/mips/bcm63xx/gpio.c
-index a6c2135..323c9e4 100644
---- a/arch/mips/bcm63xx/gpio.c
-+++ b/arch/mips/bcm63xx/gpio.c
-@@ -159,7 +159,6 @@ int __init bcm63xx_gpio_init(void)
- 	if (!BCMCPU_IS_6345())
- 		gpio_out_high = bcm_gpio_readl(GPIO_DATA_HI_REG);
- 	bcm63xx_gpio_chip.ngpio = bcm63xx_gpio_count();
--	pr_info("registering %d GPIOs\n", bcm63xx_gpio_chip.ngpio);
- 
- 	return gpiochip_add(&bcm63xx_gpio_chip);
- }
--- 
-1.7.9.5
+Seems my fix one branch, push the other strategy didn't work so well ;-)
+
+Fixed, sorry.
+
+  Ralf

@@ -1,26 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2012 18:16:04 +0200 (CEST)
-Received: from zmc.proxad.net ([212.27.53.206]:45516 "EHLO zmc.proxad.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2012 18:16:35 +0200 (CEST)
+Received: from zmc.proxad.net ([212.27.53.206]:45517 "EHLO zmc.proxad.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903842Ab2IZQPz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1903843Ab2IZQPz (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 26 Sep 2012 18:15:55 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id 9D364A1A66;
+        by zmc.proxad.net (Postfix) with ESMTP id A6104A194F;
         Wed, 26 Sep 2012 18:15:54 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at localhost
 Received: from zmc.proxad.net ([127.0.0.1])
         by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id yjmcGETCPcJp; Wed, 26 Sep 2012 18:15:54 +0200 (CEST)
+        with ESMTP id 3CVK4UqGoaFt; Wed, 26 Sep 2012 18:15:54 +0200 (CEST)
 Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 2E045A194F;
+        by zmc.proxad.net (Postfix) with ESMTPSA id 3C1CAA1A64;
         Wed, 26 Sep 2012 18:15:54 +0200 (CEST)
 From:   Florian Fainelli <florian@openwrt.org>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH 1/2] MIPS: AR7: remove "registered %d GPIOs" message
-Date:   Wed, 26 Sep 2012 18:15:01 +0200
-Message-Id: <1348676102-5651-1-git-send-email-florian@openwrt.org>
+Subject: [PATCH 2/2] MIPS: BCM63XX: remove "registering %d GPIOs" message
+Date:   Wed, 26 Sep 2012 18:15:02 +0200
+Message-Id: <1348676102-5651-2-git-send-email-florian@openwrt.org>
 X-Mailer: git-send-email 1.7.9.5
-X-archive-position: 34551
+In-Reply-To: <1348676102-5651-1-git-send-email-florian@openwrt.org>
+References: <1348676102-5651-1-git-send-email-florian@openwrt.org>
+X-archive-position: 34552
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,21 +45,20 @@ duplicate message.
 
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
- arch/mips/ar7/gpio.c |    2 --
- 1 file changed, 2 deletions(-)
+ arch/mips/bcm63xx/gpio.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/mips/ar7/gpio.c b/arch/mips/ar7/gpio.c
-index d8dbd8f..4b242b0 100644
---- a/arch/mips/ar7/gpio.c
-+++ b/arch/mips/ar7/gpio.c
-@@ -338,8 +338,6 @@ int __init ar7_gpio_init(void)
- 					gpch->chip.label);
- 		return ret;
- 	}
--	printk(KERN_INFO "%s: registered %d GPIOs\n",
--				gpch->chip.label, gpch->chip.ngpio);
+diff --git a/arch/mips/bcm63xx/gpio.c b/arch/mips/bcm63xx/gpio.c
+index a6c2135..323c9e4 100644
+--- a/arch/mips/bcm63xx/gpio.c
++++ b/arch/mips/bcm63xx/gpio.c
+@@ -159,7 +159,6 @@ int __init bcm63xx_gpio_init(void)
+ 	if (!BCMCPU_IS_6345())
+ 		gpio_out_high = bcm_gpio_readl(GPIO_DATA_HI_REG);
+ 	bcm63xx_gpio_chip.ngpio = bcm63xx_gpio_count();
+-	pr_info("registering %d GPIOs\n", bcm63xx_gpio_chip.ngpio);
  
- 	if (ar7_is_titan())
- 		titan_gpio_init();
+ 	return gpiochip_add(&bcm63xx_gpio_chip);
+ }
 -- 
 1.7.9.5

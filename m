@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Sep 2012 20:12:50 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:46291 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Sep 2012 20:13:13 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:46301 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903297Ab2I2SM1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 29 Sep 2012 20:12:27 +0200
+        with ESMTP id S1903298Ab2I2SMb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 29 Sep 2012 20:12:31 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 41B9887B9;
-        Sat, 29 Sep 2012 20:12:27 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id 583D687B9;
+        Sat, 29 Sep 2012 20:12:31 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 5ga7YWSCPusD; Sat, 29 Sep 2012 20:12:21 +0200 (CEST)
+        with ESMTP id wQQi8PKWcloK; Sat, 29 Sep 2012 20:12:19 +0200 (CEST)
 Received: from hauke.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 0FFEF8E1C;
+        by hauke-m.de (Postfix) with ESMTPSA id BAD9A8880;
         Sat, 29 Sep 2012 20:12:17 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org, john@phrozen.org
 Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 2/5] MIPS: BCM47XX: improve memory size detection
-Date:   Sat, 29 Sep 2012 20:12:03 +0200
-Message-Id: <1348942326-27195-3-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 1/5] MIPS: BCM47XX: ignore last memory page
+Date:   Sat, 29 Sep 2012 20:12:02 +0200
+Message-Id: <1348942326-27195-2-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1348942326-27195-1-git-send-email-hauke@hauke-m.de>
 References: <1348942326-27195-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 34559
+X-archive-position: 34560
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,61 +40,49 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The memory size is detected by finding a place where it repeats in
-memory. Currently we are just checking when the function prom_init is
-seen again, but with this patch it also checks some more bytes.
-
-This should fix a problem we saw in OpenWrt, where the detected
-available memory decreased on some devices when doing a soft reboot.
+Ignoring the last page when ddr size is 128M. Cached accesses to last
+page is causing the processor to prefetch using address above 128M
+stepping out of the ddr address space.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/bcm47xx/prom.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ arch/mips/bcm47xx/prom.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/arch/mips/bcm47xx/prom.c b/arch/mips/bcm47xx/prom.c
-index 22258a4..c18f59a 100644
+index f6e9063..22258a4 100644
 --- a/arch/mips/bcm47xx/prom.c
 +++ b/arch/mips/bcm47xx/prom.c
-@@ -1,6 +1,7 @@
- /*
-  *  Copyright (C) 2004 Florian Schirmer <jolt@tuxbox.org>
-  *  Copyright (C) 2007 Aurelien Jarno <aurelien@aurel32.net>
-+ *  Copyright (C) 2010-2012 Hauke Mehrtens <hauke@hauke-m.de>
-  *
-  *  This program is free software; you can redistribute  it and/or modify it
-  *  under  the terms of  the GNU General  Public License as published by the
-@@ -128,6 +129,7 @@ static __init void prom_init_mem(void)
+@@ -27,6 +27,7 @@
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/spinlock.h>
++#include <linux/smp.h>
+ #include <asm/bootinfo.h>
+ #include <asm/fw/cfe/cfe_api.h>
+ #include <asm/fw/cfe/cfe_error.h>
+@@ -127,6 +128,7 @@ static __init void prom_init_mem(void)
  {
  	unsigned long mem;
  	unsigned long max;
-+	unsigned long off, data, off1, data1;
- 	struct cpuinfo_mips *c = &current_cpu_data;
++	struct cpuinfo_mips *c = &current_cpu_data;
  
  	/* Figure out memory size by finding aliases.
-@@ -145,15 +147,19 @@ static __init void prom_init_mem(void)
- 	 * max contains the biggest possible address supported by the platform.
- 	 * If the method wants to try something above we assume 128MB ram.
- 	 */
--	max = ((unsigned long)(prom_init) | ((128 << 20) - 1));
-+	off = (unsigned long)prom_init;
-+	data = *(unsigned long *)prom_init;
-+	off1 = off + 4;
-+	data1 = *(unsigned long *)off1;
-+	max = off | ((128 << 20) - 1);
- 	for (mem = (1 << 20); mem < (128 << 20); mem += (1 << 20)) {
--		if (((unsigned long)(prom_init) + mem) > max) {
-+		if ((off + mem) > max) {
- 			mem = (128 << 20);
- 			printk(KERN_DEBUG "assume 128MB RAM\n");
- 			break;
- 		}
--		if (*(unsigned long *)((unsigned long)(prom_init) + mem) ==
--		    *(unsigned long *)(prom_init))
-+		if ((*(unsigned long *)(off + mem) == data) &&
-+			(*(unsigned long *)(off1 + mem) == data1))
+ 	 *
+@@ -155,6 +157,14 @@ static __init void prom_init_mem(void)
  			break;
  	}
+ 
++	/* Ignoring the last page when ddr size is 128M. Cached
++	 * accesses to last page is causing the processor to prefetch
++	 * using address above 128M stepping out of the ddr address
++	 * space.
++	 */
++	if (c->cputype == CPU_74K && (mem == (128  << 20)))
++		mem -= 0x1000;
++
+ 	add_memory_region(0, mem, BOOT_MEM_RAM);
+ }
  
 -- 
 1.7.9.5

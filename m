@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Sep 2012 20:13:37 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:46304 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Sep 2012 20:14:01 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:46309 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903299Ab2I2SMc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 29 Sep 2012 20:12:32 +0200
+        with ESMTP id S1903300Ab2I2SMf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 29 Sep 2012 20:12:35 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 93E9A87B9;
-        Sat, 29 Sep 2012 20:12:32 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id 84FE787B9;
+        Sat, 29 Sep 2012 20:12:35 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id UJkKODY9sq2W; Sat, 29 Sep 2012 20:12:27 +0200 (CEST)
+        with ESMTP id tokVlwi-Wlsn; Sat, 29 Sep 2012 20:12:32 +0200 (CEST)
 Received: from hauke.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id AC73B8F61;
-        Sat, 29 Sep 2012 20:12:18 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTPSA id 3DBEE8F62;
+        Sat, 29 Sep 2012 20:12:19 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org, john@phrozen.org
 Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 3/5] MIPS: BCM47xx: read out full board data
-Date:   Sat, 29 Sep 2012 20:12:04 +0200
-Message-Id: <1348942326-27195-4-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 4/5] MIPS: BCM47XX: read sprom without prefix if no ieee80211 core
+Date:   Sat, 29 Sep 2012 20:12:05 +0200
+Message-Id: <1348942326-27195-5-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1348942326-27195-1-git-send-email-hauke@hauke-m.de>
 References: <1348942326-27195-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 34561
+X-archive-position: 34562
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,98 +40,26 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Read out the full board data independently of the sprom version. Now we
-also get the full boardflags and so on if sromrev is not set and our
-code would assume a rev 1 device. When a nvram option is not set
-because it is not there this is no problem.
+If there is no ieee80211 core on the devices like on the BCM4706 read
+out the sprom and the other data without using a prefix.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/bcm47xx/sprom.c |   34 ++++++++++++++--------------------
- 1 file changed, 14 insertions(+), 20 deletions(-)
+ arch/mips/bcm47xx/setup.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
-index d3a8897..7fa3da3 100644
---- a/arch/mips/bcm47xx/sprom.c
-+++ b/arch/mips/bcm47xx/sprom.c
-@@ -164,10 +164,6 @@ static void nvram_read_alpha2(const char *prefix, const char *name,
- static void bcm47xx_fill_sprom_r1234589(struct ssb_sprom *sprom,
- 					const char *prefix)
- {
--	nvram_read_u16(prefix, NULL, "boardrev", &sprom->board_rev, 0);
--	if (!sprom->board_rev)
--		nvram_read_u16(NULL, NULL, "boardrev", &sprom->board_rev, 0);
--	nvram_read_u16(prefix, NULL, "boardnum", &sprom->board_num, 0);
- 	nvram_read_u8(prefix, NULL, "ledbh0", &sprom->gpio0, 0xff);
- 	nvram_read_u8(prefix, NULL, "ledbh1", &sprom->gpio1, 0xff);
- 	nvram_read_u8(prefix, NULL, "ledbh2", &sprom->gpio2, 0xff);
-@@ -214,13 +210,6 @@ static void bcm47xx_fill_sprom_r2389(struct ssb_sprom *sprom,
- 	nvram_read_u8(prefix, NULL, "pa1himaxpwr", &sprom->maxpwr_ah, 0);
- }
- 
--static void bcm47xx_fill_sprom_r2(struct ssb_sprom *sprom, const char *prefix)
--{
--	nvram_read_u32_2(prefix, "boardflags", &sprom->boardflags_lo,
--			 &sprom->boardflags_hi);
--	nvram_read_u16(prefix, NULL, "boardtype", &sprom->board_type, 0);
--}
--
- static void bcm47xx_fill_sprom_r389(struct ssb_sprom *sprom, const char *prefix)
- {
- 	nvram_read_u8(prefix, NULL, "bxa2g", &sprom->bxa2g, 0);
-@@ -241,9 +230,6 @@ static void bcm47xx_fill_sprom_r389(struct ssb_sprom *sprom, const char *prefix)
- 
- static void bcm47xx_fill_sprom_r3(struct ssb_sprom *sprom, const char *prefix)
- {
--	nvram_read_u32_2(prefix, "boardflags", &sprom->boardflags_lo,
--			 &sprom->boardflags_hi);
--	nvram_read_u16(prefix, NULL, "boardtype", &sprom->board_type, 0);
- 	nvram_read_u8(prefix, NULL, "regrev", &sprom->regrev, 0);
- 	nvram_read_leddc(prefix, "leddc", &sprom->leddc_on_time,
- 			 &sprom->leddc_off_time);
-@@ -252,11 +238,6 @@ static void bcm47xx_fill_sprom_r3(struct ssb_sprom *sprom, const char *prefix)
- static void bcm47xx_fill_sprom_r4589(struct ssb_sprom *sprom,
- 				     const char *prefix)
- {
--	nvram_read_u32_2(prefix, "boardflags", &sprom->boardflags_lo,
--			 &sprom->boardflags_hi);
--	nvram_read_u32_2(prefix, "boardflags2", &sprom->boardflags2_lo,
--			 &sprom->boardflags2_hi);
--	nvram_read_u16(prefix, NULL, "boardtype", &sprom->board_type, 0);
- 	nvram_read_u8(prefix, NULL, "regrev", &sprom->regrev, 0);
- 	nvram_read_s8(prefix, NULL, "ag2", &sprom->antenna_gain.a2, 0);
- 	nvram_read_s8(prefix, NULL, "ag3", &sprom->antenna_gain.a3, 0);
-@@ -555,9 +536,23 @@ void bcm47xx_fill_sprom_ethernet(struct ssb_sprom *sprom, const char *prefix)
- 	nvram_read_macaddr(prefix, "il0macaddr", &sprom->il0mac);
- }
- 
-+static void bcm47xx_fill_board_data(struct ssb_sprom *sprom, const char *prefix)
-+{
-+	nvram_read_u16(prefix, NULL, "boardrev", &sprom->board_rev, 0);
-+	if (!sprom->board_rev)
-+		nvram_read_u16(NULL, NULL, "boardrev", &sprom->board_rev, 0);
-+	nvram_read_u16(prefix, NULL, "boardnum", &sprom->board_num, 0);
-+	nvram_read_u16(prefix, NULL, "boardtype", &sprom->board_type, 0);
-+	nvram_read_u32_2(prefix, "boardflags", &sprom->boardflags_lo,
-+			 &sprom->boardflags_hi);
-+	nvram_read_u32_2(prefix, "boardflags2", &sprom->boardflags2_lo,
-+			 &sprom->boardflags2_hi);
-+}
-+
- void bcm47xx_fill_sprom(struct ssb_sprom *sprom, const char *prefix)
- {
- 	bcm47xx_fill_sprom_ethernet(sprom, prefix);
-+	bcm47xx_fill_board_data(sprom, prefix);
- 
- 	nvram_read_u8(prefix, NULL, "sromrev", &sprom->revision, 0);
- 
-@@ -571,7 +566,6 @@ void bcm47xx_fill_sprom(struct ssb_sprom *sprom, const char *prefix)
- 		bcm47xx_fill_sprom_r1234589(sprom, prefix);
- 		bcm47xx_fill_sprom_r12389(sprom, prefix);
- 		bcm47xx_fill_sprom_r2389(sprom, prefix);
--		bcm47xx_fill_sprom_r2(sprom, prefix);
- 		break;
- 	case 3:
- 		bcm47xx_fill_sprom_r1234589(sprom, prefix);
+diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
+index 95bf4d7..803764d 100644
+--- a/arch/mips/bcm47xx/setup.c
++++ b/arch/mips/bcm47xx/setup.c
+@@ -175,6 +175,8 @@ static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
+ 			snprintf(prefix, sizeof(prefix), "sb/%u/",
+ 				 core->core_index);
+ 			bcm47xx_fill_sprom(out, prefix);
++		} else {
++			bcm47xx_fill_sprom(out, NULL);
+ 		}
+ 		return 0;
+ 	default:
 -- 
 1.7.9.5

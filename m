@@ -1,56 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 12:27:47 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.17.10]:54611 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6902394Ab2JDK1TOaqem (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Oct 2012 12:27:19 +0200
-Received: from mailbox.adnet.avionic-design.de (mailbox.avionic-design.de [109.75.18.3])
-        by mrelayeu.kundenserver.de (node=mreu4) with ESMTP (Nemesis)
-        id 0LcrNk-1Tk9eK1SXw-00iCLq; Thu, 04 Oct 2012 08:07:05 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 11:59:22 +0200 (CEST)
+Received: from zmc.proxad.net ([212.27.53.206]:50394 "EHLO zmc.proxad.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6875888Ab2JDJxuJyEe2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 4 Oct 2012 11:53:50 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTP id 93EE52A282F5;
-        Thu,  4 Oct 2012 08:07:03 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at avionic-design.de
-Received: from mailbox.adnet.avionic-design.de ([127.0.0.1])
-        by localhost (mailbox.avionic-design.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id SqPrmzG2q6G0; Thu,  4 Oct 2012 08:07:00 +0200 (CEST)
-Received: from localhost (avionic-0098.adnet.avionic-design.de [172.20.31.233])
-        (Authenticated sender: thierry.reding)
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTPA id 9C1D52A28267;
-        Thu,  4 Oct 2012 08:07:00 +0200 (CEST)
-From:   Thierry Reding <thierry.reding@avionic-design.de>
-To:     linux-kernel@vger.kernel.org
-Cc:     Russell King <linux@arm.linux.org.uk>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        by zmc.proxad.net (Postfix) with ESMTP id C9B91A4BC2F;
+        Wed,  3 Oct 2012 17:04:55 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at localhost
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 2Lp-eMVhQw6a; Wed,  3 Oct 2012 17:04:55 +0200 (CEST)
+Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
+        by zmc.proxad.net (Postfix) with ESMTPSA id 3B7C512D394;
+        Wed,  3 Oct 2012 17:04:55 +0200 (CEST)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     stern@rowland.harvard.edu
+Cc:     linux-usb@vger.kernel.org, Florian Fainelli <florian@openwrt.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Bryan Wu <bryan.wu@canonical.com>,
-        Richard Purdie <rpurdie@rpsys.net>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        Ashish Jangam <ashish.jangam@kpitcummins.com>,
-        Andrew Jones <drjones@redhat.com>,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-input@vger.kernel.org, linux-leds@vger.kernel.org
-Subject: [PATCH] pwm: Get rid of HAVE_PWM
-Date:   Thu,  4 Oct 2012 08:06:59 +0200
-Message-Id: <1349330819-11924-1-git-send-email-thierry.reding@avionic-design.de>
-X-Mailer: git-send-email 1.7.12.2
-X-Provags-ID: V02:K0:t+3IkztqagaoZMhV8mQLBKCWHaUFmCSy2GntzOG8jmB
- NtSySscUEmGFyiFQ2IRfv9ToQOcayIgdrK2surXnVqNMuBpixM
- p1yCepO+RYFjsLRYPxf7ZMdILyjuxjb6yS/VmYfts41bdEnKvs
- IW2vVkR5dhzsXyt6Jegz67dX3ZAgX/S0C0Bk+bLEGmu4t307da
- 9Cs+dWOX2M8OC+bwqASHDUDB4dVjTuGg3f+sS0ERV+LOX8Yc1f
- ECqQI5qYr0MAUQR6pa9QqSwMIRMnFEF4zfI/zxUlPZtnZriqzf
- hz+mPRZ3HJlJ7sYOvopVuudszxccmeS85m4FrD+IKgm9wn+PW3
- 99O1/rwd5eJ7l7n9Uw0fCaqpqm7oa6QUpVTBx6E1H+1+Ae8GGT
- FCo9wvIpc+FzEjv3zR2q6l+qaC/1MGjH2tpFWgEty2BRqkUsKy
- 9wXCI
-X-archive-position: 34586
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Gabor Juhos <juhosg@openwrt.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Kelvin Cheung <keguang.zhang@gmail.com>,
+        Jayachandran C <jayachandranc@netlogicmicro.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 06/25] USB: ehci: allow need_io_watchdog to be passed to ehci-platform driver
+Date:   Wed,  3 Oct 2012 17:03:01 +0200
+Message-Id: <1349276601-8371-7-git-send-email-florian@openwrt.org>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1349276601-8371-1-git-send-email-florian@openwrt.org>
+References: <1349276601-8371-1-git-send-email-florian@openwrt.org>
+X-archive-position: 34584
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@avionic-design.de
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,286 +49,119 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Now that all drivers have been moved to the PWM subsystem, remove the
-legacy HAVE_PWM symbol and replace it with the new PWM symbol. While at
-it, select the PWM subsystem and corresponding PWM driver on boards that
-require PWM functionality.
+And convert all the existing users of ehci-platform to specify a correct
+need_io_watchdog value.
 
-Signed-off-by: Thierry Reding <thierry.reding@avionic-design.de>
-Cc: Russell King <linux@arm.linux.org.uk>
-Cc: Shawn Guo <shawn.guo@linaro.org>
-Cc: Eric Miao <eric.y.miao@gmail.com>
-Cc: Haojian Zhuang <haojian.zhuang@gmail.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Bryan Wu <bryan.wu@canonical.com>
-Cc: Richard Purdie <rpurdie@rpsys.net>
-Cc: Samuel Ortiz <sameo@linux.intel.com>
-Cc: Ashish Jangam <ashish.jangam@kpitcummins.com>
-Cc: Andrew Jones <drjones@redhat.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: linux-input@vger.kernel.org
-Cc: linux-leds@vger.kernel.org
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
- arch/arm/Kconfig           |  6 ++----
- arch/arm/mach-mxs/Kconfig  |  6 ++++--
- arch/arm/mach-pxa/Kconfig  | 42 ++++++++++++++++++++++++++++--------------
- arch/mips/Kconfig          |  3 ++-
- drivers/input/misc/Kconfig |  4 ++--
- drivers/leds/Kconfig       |  2 +-
- include/linux/pwm.h        |  2 +-
- 7 files changed, 40 insertions(+), 25 deletions(-)
+ arch/mips/ath79/dev-usb.c             |    2 ++
+ arch/mips/loongson1/common/platform.c |    1 +
+ arch/mips/netlogic/xlr/platform.c     |    1 +
+ drivers/usb/host/bcma-hcd.c           |    1 +
+ drivers/usb/host/ehci-platform.c      |    1 +
+ drivers/usb/host/ssb-hcd.c            |    1 +
+ include/linux/usb/ehci_pdriver.h      |    3 +++
+ 7 files changed, 10 insertions(+)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index e91c7cd..a0cebf8 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -69,9 +69,6 @@ config ARM_DMA_USE_IOMMU
- 	select ARM_HAS_SG_CHAIN
- 	bool
+diff --git a/arch/mips/ath79/dev-usb.c b/arch/mips/ath79/dev-usb.c
+index b2a2311..42b259b 100644
+--- a/arch/mips/ath79/dev-usb.c
++++ b/arch/mips/ath79/dev-usb.c
+@@ -71,12 +71,14 @@ static u64 ath79_ehci_dmamask = DMA_BIT_MASK(32);
+ static struct usb_ehci_pdata ath79_ehci_pdata_v1 = {
+ 	.has_synopsys_hc_bug	= 1,
+ 	.port_power_off		= 1,
++	.need_io_watchdog	= 1,
+ };
  
--config HAVE_PWM
--	bool
--
- config MIGHT_HAVE_PCI
- 	bool
+ static struct usb_ehci_pdata ath79_ehci_pdata_v2 = {
+ 	.caps_offset		= 0x100,
+ 	.has_tt			= 1,
+ 	.port_power_off		= 1,
++	.need_io_watchdog	= 1,
+ };
  
-@@ -610,7 +607,8 @@ config ARCH_LPC32XX
- 	select CLKDEV_LOOKUP
- 	select GENERIC_CLOCKEVENTS
- 	select USE_OF
--	select HAVE_PWM
-+	select PWM
-+	select PWM_LPC32XX
- 	help
- 	  Support for the NXP LPC32XX family of processors
+ static struct platform_device ath79_ehci_device = {
+diff --git a/arch/mips/loongson1/common/platform.c b/arch/mips/loongson1/common/platform.c
+index 2874bf2..fa6b5d6 100644
+--- a/arch/mips/loongson1/common/platform.c
++++ b/arch/mips/loongson1/common/platform.c
+@@ -110,6 +110,7 @@ static struct resource ls1x_ehci_resources[] = {
  
-diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
-index 9a8bbda..2fc01bd 100644
---- a/arch/arm/mach-mxs/Kconfig
-+++ b/arch/arm/mach-mxs/Kconfig
-@@ -6,7 +6,8 @@ config SOC_IMX23
- 	bool
- 	select ARM_AMBA
- 	select CPU_ARM926T
--	select HAVE_PWM
-+	select PWM
-+	select PWM_MXS
- 	select PINCTRL_IMX23
+ static struct usb_ehci_pdata ls1x_ehci_pdata = {
+ 	.port_power_off	= 1,
++	.need_io_watchdog = 1,
+ };
  
- config SOC_IMX28
-@@ -14,7 +15,8 @@ config SOC_IMX28
- 	select ARM_AMBA
- 	select CPU_ARM926T
- 	select HAVE_CAN_FLEXCAN if CAN
--	select HAVE_PWM
-+	select PWM
-+	select PWM_MXS
- 	select PINCTRL_IMX28
+ struct platform_device ls1x_ehci_device = {
+diff --git a/arch/mips/netlogic/xlr/platform.c b/arch/mips/netlogic/xlr/platform.c
+index 1731dfd..320b7ef 100644
+--- a/arch/mips/netlogic/xlr/platform.c
++++ b/arch/mips/netlogic/xlr/platform.c
+@@ -126,6 +126,7 @@ static u64 xls_usb_dmamask = ~(u32)0;
  
- comment "MXS platforms:"
-diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
-index fe2d1f8..14f41c3 100644
---- a/arch/arm/mach-pxa/Kconfig
-+++ b/arch/arm/mach-pxa/Kconfig
-@@ -33,12 +33,14 @@ config ARCH_LUBBOCK
- config MACH_MAINSTONE
- 	bool "Intel HCDDBBVA0 Development Platform (aka Mainstone)"
- 	select PXA27x
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
+ static struct usb_ehci_pdata xls_usb_ehci_pdata = {
+ 	.caps_offset	= 0,
++	.need_io_watchdog = 1,
+ };
  
- config MACH_ZYLONITE
- 	bool
- 	select PXA3xx
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
+ static struct platform_device xls_usb_ehci_device =
+diff --git a/drivers/usb/host/bcma-hcd.c b/drivers/usb/host/bcma-hcd.c
+index 443da21..e404f5c 100644
+--- a/drivers/usb/host/bcma-hcd.c
++++ b/drivers/usb/host/bcma-hcd.c
+@@ -160,6 +160,7 @@ static void __devinit bcma_hcd_init_chip(struct bcma_device *dev)
+ }
  
- config MACH_ZYLONITE300
- 	bool "PXA3xx Development Platform (aka Zylonite) PXA300/310"
-@@ -78,7 +80,8 @@ config ARCH_VIPER
- 	select PXA25x
- 	select ISA
- 	select I2C_GPIO
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
- 	select PXA_HAVE_ISA_IRQS
- 	select ARCOM_PCMCIA
+ static const struct usb_ehci_pdata ehci_pdata = {
++	.need_io_watchdog	= 1,
+ };
  
-@@ -128,7 +131,8 @@ config MACH_CM_X300
- 	select PXA3xx
- 	select CPU_PXA300
- 	select CPU_PXA310
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
+ static const struct usb_ohci_pdata ohci_pdata = {
+diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
+index 764e010..08d5dec 100644
+--- a/drivers/usb/host/ehci-platform.c
++++ b/drivers/usb/host/ehci-platform.c
+@@ -32,6 +32,7 @@ static int ehci_platform_reset(struct usb_hcd *hcd)
+ 	ehci->has_synopsys_hc_bug = pdata->has_synopsys_hc_bug;
+ 	ehci->big_endian_desc = pdata->big_endian_desc;
+ 	ehci->big_endian_mmio = pdata->big_endian_mmio;
++	ehci->need_io_watchdog = pdata->need_io_watchdog;
  
- config MACH_CAPC7117
- 	bool "Embedian CAPC-7117 evaluation kit based on the MXM-8x10 CoM"
-@@ -220,7 +224,8 @@ config TRIZEPS_PCMCIA
- config MACH_LOGICPD_PXA270
- 	bool "LogicPD PXA270 Card Engine Development Platform"
- 	select PXA27x
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
+ 	ehci->caps = hcd->regs + pdata->caps_offset;
+ 	retval = ehci_setup(hcd);
+diff --git a/drivers/usb/host/ssb-hcd.c b/drivers/usb/host/ssb-hcd.c
+index c2a29fa..77e2851 100644
+--- a/drivers/usb/host/ssb-hcd.c
++++ b/drivers/usb/host/ssb-hcd.c
+@@ -96,6 +96,7 @@ static u32 __devinit ssb_hcd_init_chip(struct ssb_device *dev)
+ }
  
- config MACH_PCM027
- 	bool "Phytec phyCORE-PXA270 CPU module (PCM-027)"
-@@ -229,7 +234,8 @@ config MACH_PCM027
+ static const struct usb_ehci_pdata ehci_pdata = {
++	.need_io_watchdog	 = 1,
+ };
  
- config MACH_PCM990_BASEBOARD
- 	bool "PHYTEC PCM-990 development board"
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
- 	depends on MACH_PCM027
+ static const struct usb_ohci_pdata ohci_pdata = {
+diff --git a/include/linux/usb/ehci_pdriver.h b/include/linux/usb/ehci_pdriver.h
+index c9d09f8..988504d 100644
+--- a/include/linux/usb/ehci_pdriver.h
++++ b/include/linux/usb/ehci_pdriver.h
+@@ -29,6 +29,8 @@
+  *			initialization.
+  * @port_power_off:	set to 1 if the controller needs to be powered down
+  *			after initialization.
++ * @need_io_watchdog:	set to 1 if the controller needs the I/O watchdog to
++ *			run.
+  *
+  * These are general configuration options for the EHCI controller. All of
+  * these options are activating more or less workarounds for some hardware.
+@@ -41,6 +43,7 @@ struct usb_ehci_pdata {
+ 	unsigned	big_endian_mmio:1;
+ 	unsigned	port_power_on:1;
+ 	unsigned	port_power_off:1;
++	unsigned	need_io_watchdog:1;
  
- choice
-@@ -255,7 +261,8 @@ config MACH_COLIBRI_PXA270_INCOME
- 	bool "Income s.r.o. PXA270 SBC"
- 	depends on MACH_COLIBRI
- 	select PXA27x
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
- 
- config MACH_COLIBRI300
- 	bool "Toradex Colibri PXA300/310"
-@@ -285,7 +292,8 @@ config MACH_H4700
- 	bool "HP iPAQ hx4700"
- 	select PXA27x
- 	select IWMMXT
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
- 
- config MACH_H5000
- 	bool "HP iPAQ h5000"
-@@ -299,13 +307,15 @@ config MACH_MAGICIAN
- 	bool "Enable HTC Magician Support"
- 	select PXA27x
- 	select IWMMXT
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
- 
- config MACH_MIOA701
- 	bool "Mitac Mio A701 Support"
- 	select PXA27x
- 	select IWMMXT
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
- 	select GPIO_SYSFS
- 	help
- 	  Say Y here if you intend to run this kernel on a
-@@ -316,7 +326,8 @@ config PXA_EZX
- 	bool "Motorola EZX Platform"
- 	select PXA27x
- 	select IWMMXT
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
- 
- config MACH_EZX_A780
- 	bool "Motorola EZX A780"
-@@ -354,7 +365,8 @@ config MACH_MP900C
- 
- config ARCH_PXA_PALM
- 	bool "PXA based Palm PDAs"
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
- 
- config MACH_PALM27X
- 	bool
-@@ -454,7 +466,8 @@ config MACH_RAUMFELD_RC
- 	select PXA3xx
- 	select CPU_PXA300
- 	select POWER_SUPPLY
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
- 
- config MACH_RAUMFELD_CONNECTOR
- 	bool "Raumfeld Connector"
-@@ -617,7 +630,8 @@ config MACH_E800
- config MACH_ZIPIT2
- 	bool "Zipit Z2 Handheld"
- 	select PXA27x
--	select HAVE_PWM
-+	select PWM
-+	select PWM_PXA
- endif
- endmenu
- 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 331d574..b38f23d 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -219,7 +219,8 @@ config MACH_JZ4740
- 	select GENERIC_GPIO
- 	select ARCH_REQUIRE_GPIOLIB
- 	select SYS_HAS_EARLY_PRINTK
--	select HAVE_PWM
-+	select PWM
-+	select PWM_JZ4740
- 	select HAVE_CLK
- 	select GENERIC_IRQ_CHIP
- 
-diff --git a/drivers/input/misc/Kconfig b/drivers/input/misc/Kconfig
-index 7c0f1ec..af6188b 100644
---- a/drivers/input/misc/Kconfig
-+++ b/drivers/input/misc/Kconfig
-@@ -146,7 +146,7 @@ config INPUT_MAX8925_ONKEY
- 
- config INPUT_MAX8997_HAPTIC
- 	tristate "MAXIM MAX8997 haptic controller support"
--	depends on HAVE_PWM && MFD_MAX8997
-+	depends on PWM && MFD_MAX8997
- 	select INPUT_FF_MEMLESS
- 	help
- 	  This option enables device driver support for the haptic controller
-@@ -444,7 +444,7 @@ config INPUT_PCF8574
- 
- config INPUT_PWM_BEEPER
- 	tristate "PWM beeper support"
--	depends on HAVE_PWM
-+	depends on PWM
- 	help
- 	  Say Y here to get support for PWM based beeper devices.
- 
-diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
-index c96bbaa..a720d99 100644
---- a/drivers/leds/Kconfig
-+++ b/drivers/leds/Kconfig
-@@ -298,7 +298,7 @@ config LEDS_DAC124S085
- config LEDS_PWM
- 	tristate "PWM driven LED Support"
- 	depends on LEDS_CLASS
--	depends on HAVE_PWM
-+	depends on PWM
- 	help
- 	  This option enables support for pwm driven LEDs
- 
-diff --git a/include/linux/pwm.h b/include/linux/pwm.h
-index 112b314..eea3f26 100644
---- a/include/linux/pwm.h
-+++ b/include/linux/pwm.h
-@@ -7,7 +7,7 @@
- struct pwm_device;
- struct seq_file;
- 
--#if IS_ENABLED(CONFIG_PWM) || IS_ENABLED(CONFIG_HAVE_PWM)
-+#if IS_ENABLED(CONFIG_PWM)
- /*
-  * pwm_request - request a PWM device
-  */
+ 	/* Turn on all power and clocks */
+ 	int (*power_on)(struct platform_device *pdev);
 -- 
-1.7.12.2
+1.7.9.5

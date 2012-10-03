@@ -1,37 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 11:57:00 +0200 (CEST)
-Received: from zmc.proxad.net ([212.27.53.206]:50389 "EHLO zmc.proxad.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6872768Ab2JDJxt58doS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Oct 2012 11:53:49 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id 80281A47A2E;
-        Wed,  3 Oct 2012 17:05:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at localhost
-Received: from zmc.proxad.net ([127.0.0.1])
-        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id VnBTHzMBddHk; Wed,  3 Oct 2012 17:05:02 +0200 (CEST)
-Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 2443AA332B4;
-        Wed,  3 Oct 2012 17:05:02 +0200 (CEST)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     stern@rowland.harvard.edu
-Cc:     linux-usb@vger.kernel.org, Florian Fainelli <florian@openwrt.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 12:14:31 +0200 (CEST)
+Received: from mail-gh0-f177.google.com ([209.85.160.177]:42651 "EHLO
+        mail-gh0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6892001Ab2JDKOOiuPjm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Oct 2012 12:14:14 +0200
+Received: by mail-gh0-f177.google.com with SMTP id f20so39504ghb.36
+        for <multiple recipients>; Thu, 04 Oct 2012 03:14:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=pWr8IvVNlvAgqinVJoHCR0zLA+OnJMgO7FoVhRPj+FU=;
+        b=q/4RLp5x0K1Bqg4AS7dwVVBNfsPNKcWfKMcGKyb4A7zw8aZPeDmKmjwCor31Xn7o/6
+         vtz99OLQvjf2Y1preNa6l2YnAx514plhvjngmdrqyvARYS3mo2a6aVTb01a4BoCXLNp4
+         LJdF2MY+ZO6s/NLd9oYSn0L+jS5TfhtyboF2Fr/xea7rUacvku7/KL9sqe5FNV+u4m5H
+         4C0kisHhUcxHeKcHSUrG+dZs/LyMCg0hpxGvrKX0lifYOUHA1uwCLcw+kbxQuGqTwdCU
+         Sr0pdpsjDt7nby3IE/TYJxqZjOElloCIYwQ7riAKC3Y5QiD7hgcEmwQUrSNfkVJtZ21B
+         uFiQ==
+Received: by 10.101.132.11 with SMTP id j11mr639573ann.65.1349277737729; Wed,
+ 03 Oct 2012 08:22:17 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.236.176.229 with HTTP; Wed, 3 Oct 2012 08:21:37 -0700 (PDT)
+In-Reply-To: <1349276601-8371-26-git-send-email-florian@openwrt.org>
+References: <1349276601-8371-1-git-send-email-florian@openwrt.org> <1349276601-8371-26-git-send-email-florian@openwrt.org>
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+Date:   Wed, 3 Oct 2012 17:21:37 +0200
+Message-ID: <CAOLZvyHyQGZ=Rs1=k07Saq16aZcntUe8N0Fc5iMoeOTeMpjcSw@mail.gmail.com>
+Subject: Re: [PATCH 24/25] MIPS: Alchemy: use the OHCI platform driver
+To:     Florian Fainelli <florian@openwrt.org>
+Cc:     stern@rowland.harvard.edu, linux-usb@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Wolfram Sang <w.sang@pengutronix.de>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 09/25] MIPS: Octeon: use ehci-platform driver
-Date:   Wed,  3 Oct 2012 17:03:04 +0200
-Message-Id: <1349276601-8371-10-git-send-email-florian@openwrt.org>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1349276601-8371-1-git-send-email-florian@openwrt.org>
-References: <1349276601-8371-1-git-send-email-florian@openwrt.org>
-X-archive-position: 34580
+        Manuel Lauss <manuel.lauss@googlemail.com>,
+        Thomas Meyer <thomas@m3y3r.de>,
+        "David S. Miller" <davem@davemloft.net>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 34585
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,88 +52,14 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
- arch/mips/cavium-octeon/octeon-platform.c |   43 ++++++++++++++++++++++++++++-
- 1 file changed, 42 insertions(+), 1 deletion(-)
+On Wed, Oct 3, 2012 at 5:03 PM, Florian Fainelli <florian@openwrt.org> wrote:
+> This also greatly simplifies the power_{on,off} callbacks and make them
+> work on platform device id instead of checking the OHCI controller base
+> address like what was done in ohci-au1xxx.c.
 
-diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index 0938df1..539e1bc 100644
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -18,9 +18,11 @@
- #include <linux/of_platform.h>
- #include <linux/of_fdt.h>
- #include <linux/libfdt.h>
-+#include <linux/usb/ehci_pdriver.h>
- 
- #include <asm/octeon/octeon.h>
- #include <asm/octeon/cvmx-rnm-defs.h>
-+#include <asm/octeon/cvmx-uctlx-defs.h>
- #include <asm/octeon/cvmx-helper.h>
- #include <asm/octeon/cvmx-helper-board.h>
- 
-@@ -169,6 +171,41 @@ out:
- device_initcall(octeon_rng_device_init);
- 
- #ifdef CONFIG_USB
-+void octeon2_usb_clocks_start(void);
-+void octeon2_usb_clocks_stop(void);
-+
-+static int octeon_ehci_power_on(struct platform_device *pdev)
-+{
-+	union cvmx_uctlx_ehci_ctl ehci_ctl;
-+
-+	octeon2_usb_clocks_start();
-+
-+	ehci_ctl.u64 = cvmx_read_csr(CVMX_UCTLX_EHCI_CTL(0));
-+	/* Use 64-bit addressing. */
-+	ehci_ctl.s.ehci_64b_addr_en = 1;
-+	ehci_ctl.s.l2c_addr_msb = 0;
-+	ehci_ctl.s.l2c_buff_emod = 1; /* Byte swapped. */
-+	ehci_ctl.s.l2c_desc_emod = 1; /* Byte swapped. */
-+	cvmx_write_csr(CVMX_UCTLX_EHCI_CTL(0), ehci_ctl.u64);
-+
-+	return 0;
-+}
-+
-+static void octeon_ehci_power_off(struct platform_device *pdev)
-+{
-+	octeon2_usb_clocks_stop();
-+}
-+
-+static struct usb_ehci_pdata octeon_ehci_pdata = {
-+#ifdef __BIG_ENDIAN
-+	.big_endian_mmio = 1,
-+#endif
-+	.port_power_on	= 1,
-+	.power_on	= octeon_ehci_power_on,
-+	.power_off	= octeon_ehci_power_off,
-+};
-+
-+static u64 octeon_ehci_dma_mask = DMA_BIT_MASK(64);
- 
- static int __init octeon_ehci_device_init(void)
- {
-@@ -190,7 +227,7 @@ static int __init octeon_ehci_device_init(void)
- 	if (octeon_is_simulation() || usb_disabled())
- 		return 0; /* No USB in the simulator. */
- 
--	pd = platform_device_alloc("octeon-ehci", 0);
-+	pd = platform_device_alloc("ehci-platform", 0);
- 	if (!pd) {
- 		ret = -ENOMEM;
- 		goto out;
-@@ -207,6 +244,10 @@ static int __init octeon_ehci_device_init(void)
- 	if (ret)
- 		goto fail;
- 
-+	pd.dev.platform_data = &octeon_ehci_pdata;
-+	pd.dev.coherent_dma_mask = DMA_BIT_MASK(32);
-+	pd.dev.dma_mask = &octeon_ehci_dma_mask;
-+
- 	ret = platform_device_add(pd);
- 	if (ret)
- 		goto fail;
--- 
-1.7.9.5
+That was by design -- the base address is far more reliable in identifying the
+correct controller instance than the platform device id.   There are systems
+in the field which don't use the alchemy/common/platform.c file at all.
+
+
+Manuel

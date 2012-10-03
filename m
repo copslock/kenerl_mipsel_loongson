@@ -1,32 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 11:43:37 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:56710 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6902530Ab2JDJmsd9G0o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Oct 2012 11:42:48 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 11:54:05 +0200 (CEST)
+Received: from zmc.proxad.net ([212.27.53.206]:50384 "EHLO zmc.proxad.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6870181Ab2JDJxtn8EPd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 4 Oct 2012 11:53:49 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 6251C8F68;
-        Wed,  3 Oct 2012 14:34:35 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id xI6OsM61ih-P; Wed,  3 Oct 2012 14:34:31 +0200 (CEST)
-Received: from hauke.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 8E0C48F62;
-        Wed,  3 Oct 2012 14:34:23 +0200 (CEST)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     ralf@linux-mips.org, john@phrozen.org
-Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v2 2/5] MIPS: BCM47XX: improve memory size detection
-Date:   Wed,  3 Oct 2012 14:34:17 +0200
-Message-Id: <1349267660-31845-3-git-send-email-hauke@hauke-m.de>
+        by zmc.proxad.net (Postfix) with ESMTP id 27FC6A4F9AE;
+        Wed,  3 Oct 2012 17:05:17 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at localhost
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 6-GCFTeADxqI; Wed,  3 Oct 2012 17:05:16 +0200 (CEST)
+Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
+        by zmc.proxad.net (Postfix) with ESMTPSA id D54501B93AE;
+        Wed,  3 Oct 2012 17:05:16 +0200 (CEST)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     stern@rowland.harvard.edu
+Cc:     linux-usb@vger.kernel.org, Florian Fainelli <florian@openwrt.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 14/25] MIPS: PNX8550: useOHCI platform driver
+Date:   Wed,  3 Oct 2012 17:03:10 +0200
+Message-Id: <1349276601-8371-16-git-send-email-florian@openwrt.org>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1349267660-31845-1-git-send-email-hauke@hauke-m.de>
-References: <1349267660-31845-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 34570
+In-Reply-To: <1349276601-8371-1-git-send-email-florian@openwrt.org>
+References: <1349276601-8371-1-git-send-email-florian@openwrt.org>
+X-archive-position: 34575
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,58 +42,64 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The memory size is detected by finding a place where it repeats in
-memory. Currently we are just checking when the function prom_init is
-seen again, but it is better to check for a bigger part of the memory
-to decrease the chance of wrong results.
-
-This should fix a problem we saw in OpenWrt, where the detected
-available memory decreed on some devices when doing a soft reboot.
-
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
- arch/mips/bcm47xx/prom.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/mips/pnx8550/common/platform.c |   31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/bcm47xx/prom.c b/arch/mips/bcm47xx/prom.c
-index 22258a4..8c155af 100644
---- a/arch/mips/bcm47xx/prom.c
-+++ b/arch/mips/bcm47xx/prom.c
-@@ -1,6 +1,7 @@
- /*
-  *  Copyright (C) 2004 Florian Schirmer <jolt@tuxbox.org>
-  *  Copyright (C) 2007 Aurelien Jarno <aurelien@aurel32.net>
-+ *  Copyright (C) 2010-2012 Hauke Mehrtens <hauke@hauke-m.de>
-  *
-  *  This program is free software; you can redistribute  it and/or modify it
-  *  under  the terms of  the GNU General  Public License as published by the
-@@ -128,6 +129,7 @@ static __init void prom_init_mem(void)
- {
- 	unsigned long mem;
- 	unsigned long max;
-+	unsigned long off;
- 	struct cpuinfo_mips *c = &current_cpu_data;
+diff --git a/arch/mips/pnx8550/common/platform.c b/arch/mips/pnx8550/common/platform.c
+index 5264cc0..0a8faea 100644
+--- a/arch/mips/pnx8550/common/platform.c
++++ b/arch/mips/pnx8550/common/platform.c
+@@ -20,6 +20,7 @@
+ #include <linux/serial.h>
+ #include <linux/serial_pnx8xxx.h>
+ #include <linux/platform_device.h>
++#include <linux/usb/ohci_pdriver.h>
  
- 	/* Figure out memory size by finding aliases.
-@@ -145,15 +147,15 @@ static __init void prom_init_mem(void)
- 	 * max contains the biggest possible address supported by the platform.
- 	 * If the method wants to try something above we assume 128MB ram.
- 	 */
--	max = ((unsigned long)(prom_init) | ((128 << 20) - 1));
-+	off = (unsigned long)prom_init;
-+	max = off | ((128 << 20) - 1);
- 	for (mem = (1 << 20); mem < (128 << 20); mem += (1 << 20)) {
--		if (((unsigned long)(prom_init) + mem) > max) {
-+		if ((off + mem) > max) {
- 			mem = (128 << 20);
- 			printk(KERN_DEBUG "assume 128MB RAM\n");
- 			break;
- 		}
--		if (*(unsigned long *)((unsigned long)(prom_init) + mem) ==
--		    *(unsigned long *)(prom_init))
-+		if (!memcmp(prom_init, prom_init + mem, 32))
- 			break;
- 	}
+ #include <int.h>
+ #include <usb.h>
+@@ -96,12 +97,40 @@ static u64 ohci_dmamask = DMA_BIT_MASK(32);
  
+ static u64 uart_dmamask = DMA_BIT_MASK(32);
+ 
++static int pnx8550_usb_ohci_power_on(struct platform_device *pdev)
++{
++	/*
++	 * Set register CLK48CTL to enable and 48MHz
++	 */
++	outl(0x00000003, PCI_BASE | 0x0004770c);
++
++	/*
++	 * Set register CLK12CTL to enable and 48MHz
++	 */
++	outl(0x00000003, PCI_BASE | 0x00047710);
++
++	udelay(100);
++
++	return 0;
++}
++
++static void pnx8550_usb_ohci_power_off(struct platform_device *pdev)
++{
++	udelay(10);
++}
++
++static struct usb_ohci_pdata pnx8550_usb_ohci_pdata = {
++	.power_on	= pnx8550_usb_ohci_power_on,
++	.power_off	= pnx8550_usb_ohci_power_off,
++};
++
+ static struct platform_device pnx8550_usb_ohci_device = {
+-	.name		= "pnx8550-ohci",
++	.name		= "ohci-platform",
+ 	.id		= -1,
+ 	.dev = {
+ 		.dma_mask		= &ohci_dmamask,
+ 		.coherent_dma_mask	= DMA_BIT_MASK(32),
++		.platform_data		= &pnx8550_usb_ohci_pdata,
+ 	},
+ 	.num_resources	= ARRAY_SIZE(pnx8550_usb_ohci_resources),
+ 	.resource	= pnx8550_usb_ohci_resources,
 -- 
 1.7.9.5

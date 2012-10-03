@@ -1,41 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 11:59:22 +0200 (CEST)
-Received: from zmc.proxad.net ([212.27.53.206]:50394 "EHLO zmc.proxad.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6875888Ab2JDJxuJyEe2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Oct 2012 11:53:50 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 11:43:37 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:56710 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6902530Ab2JDJmsd9G0o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Oct 2012 11:42:48 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id C9B91A4BC2F;
-        Wed,  3 Oct 2012 17:04:55 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at localhost
-Received: from zmc.proxad.net ([127.0.0.1])
-        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 2Lp-eMVhQw6a; Wed,  3 Oct 2012 17:04:55 +0200 (CEST)
-Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 3B7C512D394;
-        Wed,  3 Oct 2012 17:04:55 +0200 (CEST)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     stern@rowland.harvard.edu
-Cc:     linux-usb@vger.kernel.org, Florian Fainelli <florian@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Gabor Juhos <juhosg@openwrt.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Kelvin Cheung <keguang.zhang@gmail.com>,
-        Jayachandran C <jayachandranc@netlogicmicro.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 06/25] USB: ehci: allow need_io_watchdog to be passed to ehci-platform driver
-Date:   Wed,  3 Oct 2012 17:03:01 +0200
-Message-Id: <1349276601-8371-7-git-send-email-florian@openwrt.org>
+        by hauke-m.de (Postfix) with ESMTP id 6251C8F68;
+        Wed,  3 Oct 2012 14:34:35 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id xI6OsM61ih-P; Wed,  3 Oct 2012 14:34:31 +0200 (CEST)
+Received: from hauke.lan (unknown [134.102.133.158])
+        by hauke-m.de (Postfix) with ESMTPSA id 8E0C48F62;
+        Wed,  3 Oct 2012 14:34:23 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org, john@phrozen.org
+Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH v2 2/5] MIPS: BCM47XX: improve memory size detection
+Date:   Wed,  3 Oct 2012 14:34:17 +0200
+Message-Id: <1349267660-31845-3-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1349276601-8371-1-git-send-email-florian@openwrt.org>
-References: <1349276601-8371-1-git-send-email-florian@openwrt.org>
-X-archive-position: 34584
+In-Reply-To: <1349267660-31845-1-git-send-email-hauke@hauke-m.de>
+References: <1349267660-31845-1-git-send-email-hauke@hauke-m.de>
+X-archive-position: 34570
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,119 +40,58 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-And convert all the existing users of ehci-platform to specify a correct
-need_io_watchdog value.
+The memory size is detected by finding a place where it repeats in
+memory. Currently we are just checking when the function prom_init is
+seen again, but it is better to check for a bigger part of the memory
+to decrease the chance of wrong results.
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
+This should fix a problem we saw in OpenWrt, where the detected
+available memory decreed on some devices when doing a soft reboot.
+
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/ath79/dev-usb.c             |    2 ++
- arch/mips/loongson1/common/platform.c |    1 +
- arch/mips/netlogic/xlr/platform.c     |    1 +
- drivers/usb/host/bcma-hcd.c           |    1 +
- drivers/usb/host/ehci-platform.c      |    1 +
- drivers/usb/host/ssb-hcd.c            |    1 +
- include/linux/usb/ehci_pdriver.h      |    3 +++
- 7 files changed, 10 insertions(+)
+ arch/mips/bcm47xx/prom.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/ath79/dev-usb.c b/arch/mips/ath79/dev-usb.c
-index b2a2311..42b259b 100644
---- a/arch/mips/ath79/dev-usb.c
-+++ b/arch/mips/ath79/dev-usb.c
-@@ -71,12 +71,14 @@ static u64 ath79_ehci_dmamask = DMA_BIT_MASK(32);
- static struct usb_ehci_pdata ath79_ehci_pdata_v1 = {
- 	.has_synopsys_hc_bug	= 1,
- 	.port_power_off		= 1,
-+	.need_io_watchdog	= 1,
- };
- 
- static struct usb_ehci_pdata ath79_ehci_pdata_v2 = {
- 	.caps_offset		= 0x100,
- 	.has_tt			= 1,
- 	.port_power_off		= 1,
-+	.need_io_watchdog	= 1,
- };
- 
- static struct platform_device ath79_ehci_device = {
-diff --git a/arch/mips/loongson1/common/platform.c b/arch/mips/loongson1/common/platform.c
-index 2874bf2..fa6b5d6 100644
---- a/arch/mips/loongson1/common/platform.c
-+++ b/arch/mips/loongson1/common/platform.c
-@@ -110,6 +110,7 @@ static struct resource ls1x_ehci_resources[] = {
- 
- static struct usb_ehci_pdata ls1x_ehci_pdata = {
- 	.port_power_off	= 1,
-+	.need_io_watchdog = 1,
- };
- 
- struct platform_device ls1x_ehci_device = {
-diff --git a/arch/mips/netlogic/xlr/platform.c b/arch/mips/netlogic/xlr/platform.c
-index 1731dfd..320b7ef 100644
---- a/arch/mips/netlogic/xlr/platform.c
-+++ b/arch/mips/netlogic/xlr/platform.c
-@@ -126,6 +126,7 @@ static u64 xls_usb_dmamask = ~(u32)0;
- 
- static struct usb_ehci_pdata xls_usb_ehci_pdata = {
- 	.caps_offset	= 0,
-+	.need_io_watchdog = 1,
- };
- 
- static struct platform_device xls_usb_ehci_device =
-diff --git a/drivers/usb/host/bcma-hcd.c b/drivers/usb/host/bcma-hcd.c
-index 443da21..e404f5c 100644
---- a/drivers/usb/host/bcma-hcd.c
-+++ b/drivers/usb/host/bcma-hcd.c
-@@ -160,6 +160,7 @@ static void __devinit bcma_hcd_init_chip(struct bcma_device *dev)
- }
- 
- static const struct usb_ehci_pdata ehci_pdata = {
-+	.need_io_watchdog	= 1,
- };
- 
- static const struct usb_ohci_pdata ohci_pdata = {
-diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
-index 764e010..08d5dec 100644
---- a/drivers/usb/host/ehci-platform.c
-+++ b/drivers/usb/host/ehci-platform.c
-@@ -32,6 +32,7 @@ static int ehci_platform_reset(struct usb_hcd *hcd)
- 	ehci->has_synopsys_hc_bug = pdata->has_synopsys_hc_bug;
- 	ehci->big_endian_desc = pdata->big_endian_desc;
- 	ehci->big_endian_mmio = pdata->big_endian_mmio;
-+	ehci->need_io_watchdog = pdata->need_io_watchdog;
- 
- 	ehci->caps = hcd->regs + pdata->caps_offset;
- 	retval = ehci_setup(hcd);
-diff --git a/drivers/usb/host/ssb-hcd.c b/drivers/usb/host/ssb-hcd.c
-index c2a29fa..77e2851 100644
---- a/drivers/usb/host/ssb-hcd.c
-+++ b/drivers/usb/host/ssb-hcd.c
-@@ -96,6 +96,7 @@ static u32 __devinit ssb_hcd_init_chip(struct ssb_device *dev)
- }
- 
- static const struct usb_ehci_pdata ehci_pdata = {
-+	.need_io_watchdog	 = 1,
- };
- 
- static const struct usb_ohci_pdata ohci_pdata = {
-diff --git a/include/linux/usb/ehci_pdriver.h b/include/linux/usb/ehci_pdriver.h
-index c9d09f8..988504d 100644
---- a/include/linux/usb/ehci_pdriver.h
-+++ b/include/linux/usb/ehci_pdriver.h
-@@ -29,6 +29,8 @@
-  *			initialization.
-  * @port_power_off:	set to 1 if the controller needs to be powered down
-  *			after initialization.
-+ * @need_io_watchdog:	set to 1 if the controller needs the I/O watchdog to
-+ *			run.
+diff --git a/arch/mips/bcm47xx/prom.c b/arch/mips/bcm47xx/prom.c
+index 22258a4..8c155af 100644
+--- a/arch/mips/bcm47xx/prom.c
++++ b/arch/mips/bcm47xx/prom.c
+@@ -1,6 +1,7 @@
+ /*
+  *  Copyright (C) 2004 Florian Schirmer <jolt@tuxbox.org>
+  *  Copyright (C) 2007 Aurelien Jarno <aurelien@aurel32.net>
++ *  Copyright (C) 2010-2012 Hauke Mehrtens <hauke@hauke-m.de>
   *
-  * These are general configuration options for the EHCI controller. All of
-  * these options are activating more or less workarounds for some hardware.
-@@ -41,6 +43,7 @@ struct usb_ehci_pdata {
- 	unsigned	big_endian_mmio:1;
- 	unsigned	port_power_on:1;
- 	unsigned	port_power_off:1;
-+	unsigned	need_io_watchdog:1;
+  *  This program is free software; you can redistribute  it and/or modify it
+  *  under  the terms of  the GNU General  Public License as published by the
+@@ -128,6 +129,7 @@ static __init void prom_init_mem(void)
+ {
+ 	unsigned long mem;
+ 	unsigned long max;
++	unsigned long off;
+ 	struct cpuinfo_mips *c = &current_cpu_data;
  
- 	/* Turn on all power and clocks */
- 	int (*power_on)(struct platform_device *pdev);
+ 	/* Figure out memory size by finding aliases.
+@@ -145,15 +147,15 @@ static __init void prom_init_mem(void)
+ 	 * max contains the biggest possible address supported by the platform.
+ 	 * If the method wants to try something above we assume 128MB ram.
+ 	 */
+-	max = ((unsigned long)(prom_init) | ((128 << 20) - 1));
++	off = (unsigned long)prom_init;
++	max = off | ((128 << 20) - 1);
+ 	for (mem = (1 << 20); mem < (128 << 20); mem += (1 << 20)) {
+-		if (((unsigned long)(prom_init) + mem) > max) {
++		if ((off + mem) > max) {
+ 			mem = (128 << 20);
+ 			printk(KERN_DEBUG "assume 128MB RAM\n");
+ 			break;
+ 		}
+-		if (*(unsigned long *)((unsigned long)(prom_init) + mem) ==
+-		    *(unsigned long *)(prom_init))
++		if (!memcmp(prom_init, prom_init + mem, 32))
+ 			break;
+ 	}
+ 
 -- 
 1.7.9.5

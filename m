@@ -1,30 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 11:44:12 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:56712 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6902588Ab2JDJmseuc0E (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Oct 2012 11:42:48 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id D8B1D8F67;
-        Wed,  3 Oct 2012 14:34:30 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id MAUmXHseqBgi; Wed,  3 Oct 2012 14:34:23 +0200 (CEST)
-Received: from hauke.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 08E948F60;
-        Wed,  3 Oct 2012 14:34:22 +0200 (CEST)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     ralf@linux-mips.org, john@phrozen.org
-Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v2 0/5] MIPS: BCM47XX: mostly sprom fixes
-Date:   Wed,  3 Oct 2012 14:34:15 +0200
-Message-Id: <1349267660-31845-1-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.7.9.5
-X-archive-position: 34571
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 13:46:49 +0200 (CEST)
+Received: from mail-pa0-f49.google.com ([209.85.220.49]:39691 "EHLO
+        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6870412Ab2JDLqjfMoHi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Oct 2012 13:46:39 +0200
+Received: by mail-pa0-f49.google.com with SMTP id bi5so452917pad.36
+        for <multiple recipients>; Thu, 04 Oct 2012 04:46:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=5owT62RKovb8VKGC4Fcvz2u02R3MkBQ5NsoQ7brY/LI=;
+        b=oOgozR/IOTUXM/DdGpF0qyd6CP8kK+IHUUotk6GB4MCodTZD4ISmlmxtQPOCFafIJg
+         59dbIixscbmfUvffgt8oCZb38XZUyR98Mf1JhndepYghTVw51Yd6K6Mlz1as1gD9dJBn
+         euYlJ7oMZh5qujj1MH0aQeFgCHS9Llanuzga21CGeXFSdMYUdOc2pPMuPt/b/D/hyJpw
+         tRbxB9Ib6RP3Mpjs4jCTcgNq5SWqX8DYnbNSS5/y9PFh+KJQ/cFSBsqrfbglmc3kUQ58
+         bMFWbzicvLSmxBxZz4dgz9pRBZUPBJK+Mci1bdyHMGin+R4Fs1LRLkw9rVfJn/if/xT/
+         w7Lw==
+Received: by 10.68.138.166 with SMTP id qr6mr14367343pbb.69.1349282751779;
+        Wed, 03 Oct 2012 09:45:51 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id ko8sm2855491pbc.40.2012.10.03.09.45.49
+        (version=SSLv3 cipher=OTHER);
+        Wed, 03 Oct 2012 09:45:50 -0700 (PDT)
+Message-ID: <506C6BBC.7090806@gmail.com>
+Date:   Wed, 03 Oct 2012 09:45:48 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:15.0) Gecko/20120828 Thunderbird/15.0
+MIME-Version: 1.0
+To:     Florian Fainelli <florian@openwrt.org>
+CC:     stern@rowland.harvard.edu, linux-usb@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Wolfram Sang <w.sang@pengutronix.de>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/25] MIPS: Octeon: use ehci-platform driver
+References: <1349276601-8371-1-git-send-email-florian@openwrt.org> <1349276601-8371-10-git-send-email-florian@openwrt.org>
+In-Reply-To: <1349276601-8371-10-git-send-email-florian@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34595
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,24 +57,16 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This patch series fixes some problems on the BCM47xx SoCs.
+On 10/03/2012 08:03 AM, Florian Fainelli wrote:
+> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> ---
+>   arch/mips/cavium-octeon/octeon-platform.c |   43 ++++++++++++++++++++++++++++-
+>   1 file changed, 42 insertions(+), 1 deletion(-)
 
-v2:
-  - use memcmp in "improve memory size detection" and increase checked
-    memory region from 8 to 32 bytes.
 
-Hauke Mehrtens (5):
-  MIPS: BCM47XX: ignore last memory page
-  MIPS: BCM47XX: improve memory size detection
-  MIPS: BCM47xx: read out full board data
-  MIPS: BCM47XX: read sprom without prefix if no ieee80211 core
-  MIPS: BCM47xx: sprom: read values without prefix as fallback
+NACK.
 
- arch/mips/bcm47xx/prom.c                     |   20 +-
- arch/mips/bcm47xx/setup.c                    |   11 +-
- arch/mips/bcm47xx/sprom.c                    |  780 +++++++++++++++-----------
- arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |    4 +-
- 4 files changed, 470 insertions(+), 345 deletions(-)
+OCTEON uses device tree now (or as soon as I send in the corresponding 
+patches), so this would just be churning the code.
 
--- 
-1.7.9.5
+David Daney

@@ -1,24 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Oct 2012 09:21:06 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:50111 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1901548Ab2JBHVC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 2 Oct 2012 09:21:02 +0200
-Message-ID: <506A953A.4010908@phrozen.org>
-Date:   Tue, 02 Oct 2012 09:18:18 +0200
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.6esrpre) Gecko/20120817 Icedove/10.0.6
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 11:33:28 +0200 (CEST)
+Received: from mail-ee0-f49.google.com ([74.125.83.49]:48684 "EHLO
+        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817054Ab2JDJdVad5p5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Oct 2012 11:33:21 +0200
+Received: by mail-ee0-f49.google.com with SMTP id c1so217070eek.36
+        for <multiple recipients>; Thu, 04 Oct 2012 02:33:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id:organization:user-agent
+         :in-reply-to:references:mime-version:content-transfer-encoding
+         :content-type;
+        bh=YFSHaT4f5qjOgM7z8NugUyswadzYjmmi9yttmnlsM+8=;
+        b=famSCjGlfK6/GE/LBX5V1xNoDVyxHYaDd/T3NjqrVhG5SDEZAH7JIULSK4VDHx0MXK
+         GRzUsECei08DYBMHpU27I1A/MpidAkvdj6bHqB3aRm+rVvTIml7Xjh488AeIKgs86u78
+         oJIRRnJA12UvaACHCHuEA5BQS3tSEap802C8/SJogZ8cQcVn6XEE/XqdNSwPL9gogY8+
+         8Ovx69c+Ci82EeDdYF45ZW/Wa5XCN1aROG59jZfPh9GAnVuvEFzLii4jV7CkbY6sl2+3
+         Cn3xhX94tj6uWWqVVIUCcr3+Px191dc1irTa24rEaZiu5VjY4TIPrPZorq0z5hxE1RfU
+         /EZA==
+Received: by 10.14.223.4 with SMTP id u4mr3219801eep.19.1349277925765;
+        Wed, 03 Oct 2012 08:25:25 -0700 (PDT)
+Received: from flexo.localnet (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by mx.google.com with ESMTPS id t1sm10326393eeo.3.2012.10.03.08.25.24
+        (version=SSLv3 cipher=OTHER);
+        Wed, 03 Oct 2012 08:25:24 -0700 (PDT)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     Manuel Lauss <manuel.lauss@gmail.com>
+Cc:     stern@rowland.harvard.edu, linux-usb@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@googlemail.com>,
+        Thomas Meyer <thomas@m3y3r.de>,
+        "David S. Miller" <davem@davemloft.net>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 24/25] MIPS: Alchemy: use the OHCI platform driver
+Date:   Wed, 03 Oct 2012 17:24:25 +0200
+Message-ID: <2608261.j829MQZAuC@flexo>
+Organization: OpenWrt
+User-Agent: KMail/4.8.5 (Linux/3.2.0-24-generic; KDE/4.8.5; x86_64; ; )
+In-Reply-To: <CAOLZvyHyQGZ=Rs1=k07Saq16aZcntUe8N0Fc5iMoeOTeMpjcSw@mail.gmail.com>
+References: <1349276601-8371-1-git-send-email-florian@openwrt.org> <1349276601-8371-26-git-send-email-florian@openwrt.org> <CAOLZvyHyQGZ=Rs1=k07Saq16aZcntUe8N0Fc5iMoeOTeMpjcSw@mail.gmail.com>
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/5] MIPS: BCM47XX: improve memory size detection
-References: <1348942326-27195-1-git-send-email-hauke@hauke-m.de> <1348942326-27195-3-git-send-email-hauke@hauke-m.de>
-In-Reply-To: <1348942326-27195-3-git-send-email-hauke@hauke-m.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34566
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+X-archive-position: 34567
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -32,67 +59,21 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 29/09/12 20:12, Hauke Mehrtens wrote:
-> The memory size is detected by finding a place where it repeats in
-> memory. Currently we are just checking when the function prom_init is
-> seen again, but with this patch it also checks some more bytes.
->
-> This should fix a problem we saw in OpenWrt, where the detected
-> available memory decreased on some devices when doing a soft reboot.
->
-> Signed-off-by: Hauke Mehrtens<hauke@hauke-m.de>
-> ---
->   arch/mips/bcm47xx/prom.c |   14 ++++++++++----
->   1 file changed, 10 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/mips/bcm47xx/prom.c b/arch/mips/bcm47xx/prom.c
-> index 22258a4..c18f59a 100644
-> --- a/arch/mips/bcm47xx/prom.c
-> +++ b/arch/mips/bcm47xx/prom.c
-> @@ -1,6 +1,7 @@
->   /*
->    *  Copyright (C) 2004 Florian Schirmer<jolt@tuxbox.org>
->    *  Copyright (C) 2007 Aurelien Jarno<aurelien@aurel32.net>
-> + *  Copyright (C) 2010-2012 Hauke Mehrtens<hauke@hauke-m.de>
->    *
->    *  This program is free software; you can redistribute  it and/or modify it
->    *  under  the terms of  the GNU General  Public License as published by the
-> @@ -128,6 +129,7 @@ static __init void prom_init_mem(void)
->   {
->   	unsigned long mem;
->   	unsigned long max;
-> +	unsigned long off, data, off1, data1;
->   	struct cpuinfo_mips *c =&current_cpu_data;
->
->   	/* Figure out memory size by finding aliases.
-> @@ -145,15 +147,19 @@ static __init void prom_init_mem(void)
->   	 * max contains the biggest possible address supported by the platform.
->   	 * If the method wants to try something above we assume 128MB ram.
->   	 */
-> -	max = ((unsigned long)(prom_init) | ((128<<  20) - 1));
-> +	off = (unsigned long)prom_init;
-> +	data = *(unsigned long *)prom_init;
-> +	off1 = off + 4;
-> +	data1 = *(unsigned long *)off1;
-> +	max = off | ((128<<  20) - 1);
->   	for (mem = (1<<  20); mem<  (128<<  20); mem += (1<<  20)) {
-> -		if (((unsigned long)(prom_init) + mem)>  max) {
-> +		if ((off + mem)>  max) {
->   			mem = (128<<  20);
->   			printk(KERN_DEBUG "assume 128MB RAM\n");
->   			break;
->   		}
-> -		if (*(unsigned long *)((unsigned long)(prom_init) + mem) ==
-> -		    *(unsigned long *)(prom_init))
-> +		if ((*(unsigned long *)(off + mem) == data)&&
-> +			(*(unsigned long *)(off1 + mem) == data1))
->   			break;
->   	}
->
+On Wednesday 03 October 2012 17:21:37 Manuel Lauss wrote:
+> On Wed, Oct 3, 2012 at 5:03 PM, Florian Fainelli <florian@openwrt.org> wrote:
+> > This also greatly simplifies the power_{on,off} callbacks and make them
+> > work on platform device id instead of checking the OHCI controller base
+> > address like what was done in ohci-au1xxx.c.
+> 
+> That was by design -- the base address is far more reliable in identifying 
+the
+> correct controller instance than the platform device id.   There are systems
+> in the field which don't use the alchemy/common/platform.c file at all.
 
-Hi Hauke,
-
-somehow i have the feeling, that using memcmp() should be used here 
-instead of comparing memory by hand.
-
-	John
+Fair enough, but the way it was done previously was very error-prone if the 
+base address changed for any reason in the platform code, and you did not 
+notice it had to be changed in the OHCI driver too, then it simply did not 
+work. By systems in the field you mean out of tree users? If so, I'd say that 
+it's up to you to get them maintained or merged.
+--
+Florian

@@ -1,35 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 17:20:57 +0200 (CEST)
-Received: from zmc.proxad.net ([212.27.53.206]:43481 "EHLO zmc.proxad.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 17:21:27 +0200 (CEST)
+Received: from zmc.proxad.net ([212.27.53.206]:43652 "EHLO zmc.proxad.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6870423Ab2JDPTcIRHgq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Oct 2012 17:19:32 +0200
+        id S6870474Ab2JDPTnlpacC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 4 Oct 2012 17:19:43 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id A8FB7A9A38F;
-        Thu,  4 Oct 2012 17:19:31 +0200 (CEST)
+        by zmc.proxad.net (Postfix) with ESMTP id 6587BA98D81;
+        Thu,  4 Oct 2012 17:19:43 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at localhost
 Received: from zmc.proxad.net ([127.0.0.1])
         by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 9rcLHiev2hEa; Thu,  4 Oct 2012 17:19:31 +0200 (CEST)
+        with ESMTP id sVsiN56MFcWc; Thu,  4 Oct 2012 17:19:43 +0200 (CEST)
 Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 2CFDDA9A38E;
-        Thu,  4 Oct 2012 17:19:31 +0200 (CEST)
+        by zmc.proxad.net (Postfix) with ESMTPSA id 346A4A9A014;
+        Thu,  4 Oct 2012 17:19:42 +0200 (CEST)
 From:   Florian Fainelli <florian@openwrt.org>
 To:     stern@rowland.harvard.edu
 Cc:     linux-usb@vger.kernel.org, Florian Fainelli <florian@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@googlemail.com>,
-        Thomas Meyer <thomas@m3y3r.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Raghavendra K T <raghavendra.kt@linux.vnet.ibm.com>,
-        Ingo Molnar <mingo@kernel.org>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 07/24 v2] MIPS: Alchemy: use the ehci platform driver
-Date:   Thu,  4 Oct 2012 17:17:35 +0200
-Message-Id: <1349363872-27004-8-git-send-email-florian@openwrt.org>
+Subject: [PATCH 15/24 v2] MIPS: PNX8550: use OHCI platform driver
+Date:   Thu,  4 Oct 2012 17:17:43 +0200
+Message-Id: <1349363872-27004-16-git-send-email-florian@openwrt.org>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1349363872-27004-1-git-send-email-florian@openwrt.org>
 References: <1349363872-27004-1-git-send-email-florian@openwrt.org>
-X-archive-position: 34604
+X-archive-position: 34605
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,94 +42,66 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Use the ehci platform driver power_{on,suspend,off} callbacks to perform the
-USB block gate enabling/disabling as what the ehci-au1xxx.c driver does.
-Update the db1200 and db1300 defconfigs to now select the EHCI platform
-driver.
-
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
-Changes since v1:
-- update impacted alchemy defconfigs accordingly
+No changes since v1
 
- arch/mips/alchemy/common/platform.c |   23 ++++++++++++++++++++++-
- arch/mips/configs/db1200_defconfig  |    1 +
- arch/mips/configs/db1300_defconfig  |    1 +
- 3 files changed, 24 insertions(+), 1 deletion(-)
+ arch/mips/pnx8550/common/platform.c |   31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
-index c0f3ce6..b9a5f6d 100644
---- a/arch/mips/alchemy/common/platform.c
-+++ b/arch/mips/alchemy/common/platform.c
-@@ -17,6 +17,7 @@
+diff --git a/arch/mips/pnx8550/common/platform.c b/arch/mips/pnx8550/common/platform.c
+index 5264cc0..0a8faea 100644
+--- a/arch/mips/pnx8550/common/platform.c
++++ b/arch/mips/pnx8550/common/platform.c
+@@ -20,6 +20,7 @@
+ #include <linux/serial.h>
+ #include <linux/serial_pnx8xxx.h>
  #include <linux/platform_device.h>
- #include <linux/serial_8250.h>
- #include <linux/slab.h>
-+#include <linux/usb/ehci_pdriver.h>
++#include <linux/usb/ohci_pdriver.h>
  
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-au1x00/au1xxx_dbdma.h>
-@@ -122,6 +123,25 @@ static void __init alchemy_setup_uarts(int ctype)
- static u64 alchemy_ohci_dmamask = DMA_BIT_MASK(32);
- static u64 __maybe_unused alchemy_ehci_dmamask = DMA_BIT_MASK(32);
+ #include <int.h>
+ #include <usb.h>
+@@ -96,12 +97,40 @@ static u64 ohci_dmamask = DMA_BIT_MASK(32);
  
-+/* Power on callback for the ehci platform driver */
-+static int alchemy_ehci_power_on(struct platform_device *pdev)
+ static u64 uart_dmamask = DMA_BIT_MASK(32);
+ 
++static int pnx8550_usb_ohci_power_on(struct platform_device *pdev)
 +{
-+	return alchemy_usb_control(ALCHEMY_USB_EHCI0, 1);
++	/*
++	 * Set register CLK48CTL to enable and 48MHz
++	 */
++	outl(0x00000003, PCI_BASE | 0x0004770c);
++
++	/*
++	 * Set register CLK12CTL to enable and 48MHz
++	 */
++	outl(0x00000003, PCI_BASE | 0x00047710);
++
++	udelay(100);
++
++	return 0;
 +}
 +
-+/* Power off/suspend callback for the ehci platform driver */
-+static void alchemy_ehci_power_off(struct platform_device *pdev)
++static void pnx8550_usb_ohci_power_off(struct platform_device *pdev)
 +{
-+	alchemy_usb_control(ALCHEMY_USB_EHCI0, 0);
++	udelay(10);
 +}
 +
-+static struct usb_ehci_pdata alchemy_ehci_pdata = {
-+	.no_io_watchdog	= 1,
-+	.power_on	= alchemy_ehci_power_on,
-+	.power_off	= alchemy_ehci_power_off,
-+	.power_suspend	= alchemy_ehci_power_off,
++static struct usb_ohci_pdata pnx8550_usb_ohci_pdata = {
++	.power_on	= pnx8550_usb_ohci_power_on,
++	.power_off	= pnx8550_usb_ohci_power_off,
 +};
 +
- static unsigned long alchemy_ohci_data[][2] __initdata = {
- 	[ALCHEMY_CPU_AU1000] = { AU1000_USB_OHCI_PHYS_ADDR, AU1000_USB_HOST_INT },
- 	[ALCHEMY_CPU_AU1500] = { AU1000_USB_OHCI_PHYS_ADDR, AU1500_USB_HOST_INT },
-@@ -188,9 +208,10 @@ static void __init alchemy_setup_usb(int ctype)
- 		res[1].start = alchemy_ehci_data[ctype][1];
- 		res[1].end = res[1].start;
- 		res[1].flags = IORESOURCE_IRQ;
--		pdev->name = "au1xxx-ehci";
-+		pdev->name = "ehci-platform";
- 		pdev->id = 0;
- 		pdev->dev.dma_mask = &alchemy_ehci_dmamask;
-+		pdev->dev.platform_data = &alchemy_ehci_pdata;
- 
- 		if (platform_device_register(pdev))
- 			printk(KERN_INFO "Alchemy USB: cannot add EHCI0\n");
-diff --git a/arch/mips/configs/db1200_defconfig b/arch/mips/configs/db1200_defconfig
-index 1f69249..d31ac85 100644
---- a/arch/mips/configs/db1200_defconfig
-+++ b/arch/mips/configs/db1200_defconfig
-@@ -117,6 +117,7 @@ CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
- # CONFIG_USB_DEVICE_CLASS is not set
- CONFIG_USB_DYNAMIC_MINORS=y
- CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_EHCI_HCD_PLATFORM=y
- CONFIG_USB_EHCI_ROOT_HUB_TT=y
- CONFIG_USB_OHCI_HCD=y
- CONFIG_MMC=y
-diff --git a/arch/mips/configs/db1300_defconfig b/arch/mips/configs/db1300_defconfig
-index 3590ab5..717e7b2 100644
---- a/arch/mips/configs/db1300_defconfig
-+++ b/arch/mips/configs/db1300_defconfig
-@@ -288,6 +288,7 @@ CONFIG_USB_ARCH_HAS_EHCI=y
- CONFIG_USB=y
- CONFIG_USB_DYNAMIC_MINORS=y
- CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_EHCI_HCD_PLATFORM=y
- CONFIG_USB_EHCI_ROOT_HUB_TT=y
- CONFIG_USB_EHCI_TT_NEWSCHED=y
- CONFIG_USB_OHCI_HCD=y
+ static struct platform_device pnx8550_usb_ohci_device = {
+-	.name		= "pnx8550-ohci",
++	.name		= "ohci-platform",
+ 	.id		= -1,
+ 	.dev = {
+ 		.dma_mask		= &ohci_dmamask,
+ 		.coherent_dma_mask	= DMA_BIT_MASK(32),
++		.platform_data		= &pnx8550_usb_ohci_pdata,
+ 	},
+ 	.num_resources	= ARRAY_SIZE(pnx8550_usb_ohci_resources),
+ 	.resource	= pnx8550_usb_ohci_resources,
 -- 
 1.7.9.5

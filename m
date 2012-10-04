@@ -1,40 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 17:22:28 +0200 (CEST)
-Received: from zmc.proxad.net ([212.27.53.206]:43826 "EHLO zmc.proxad.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6870560Ab2JDPUdjWPgR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Oct 2012 17:20:33 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 20:30:05 +0200 (CEST)
+Received: from moutng.kundenserver.de ([212.227.126.187]:51920 "EHLO
+        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817521Ab2JDS36S8k0g (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Oct 2012 20:29:58 +0200
+Received: from mailbox.adnet.avionic-design.de (mailbox.avionic-design.de [109.75.18.3])
+        by mrelayeu.kundenserver.de (node=mreu1) with ESMTP (Nemesis)
+        id 0M3OD6-1TbEVC3I2K-00qw5j; Thu, 04 Oct 2012 20:29:35 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id CC874A31A5E;
-        Thu,  4 Oct 2012 17:20:32 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at localhost
-Received: from zmc.proxad.net ([127.0.0.1])
-        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id R5d7TdU30JcZ; Thu,  4 Oct 2012 17:20:32 +0200 (CEST)
-Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 404FBA9A1B7;
-        Thu,  4 Oct 2012 17:20:32 +0200 (CEST)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     stern@rowland.harvard.edu
-Cc:     linux-usb@vger.kernel.org, Florian Fainelli <florian@openwrt.org>,
+        by mailbox.adnet.avionic-design.de (Postfix) with ESMTP id BF5F42A2833A;
+        Thu,  4 Oct 2012 20:29:32 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at avionic-design.de
+Received: from mailbox.adnet.avionic-design.de ([127.0.0.1])
+        by localhost (mailbox.avionic-design.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id vEGq-SGvLoKt; Thu,  4 Oct 2012 20:29:32 +0200 (CEST)
+Received: from localhost (avionic-0098.adnet.avionic-design.de [172.20.31.233])
+        (Authenticated sender: thierry.reding)
+        by mailbox.adnet.avionic-design.de (Postfix) with ESMTPA id ADC752A282EE;
+        Thu,  4 Oct 2012 20:29:31 +0200 (CEST)
+Date:   Thu, 4 Oct 2012 20:29:31 +0200
+From:   Thierry Reding <thierry.reding@avionic-design.de>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-kernel@vger.kernel.org,
+        Russell King <linux@arm.linux.org.uk>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@googlemail.com>,
-        Thomas Meyer <thomas@m3y3r.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Raghavendra K T <raghavendra.kt@linux.vnet.ibm.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 23/24 v2] MIPS: Alchemy: use the OHCI platform driver
-Date:   Thu,  4 Oct 2012 17:17:51 +0200
-Message-Id: <1349363872-27004-24-git-send-email-florian@openwrt.org>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1349363872-27004-1-git-send-email-florian@openwrt.org>
-References: <1349363872-27004-1-git-send-email-florian@openwrt.org>
-X-archive-position: 34607
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Bryan Wu <bryan.wu@canonical.com>,
+        Richard Purdie <rpurdie@rpsys.net>,
+        Samuel Ortiz <sameo@linux.intel.com>,
+        Ashish Jangam <ashish.jangam@kpitcummins.com>,
+        Andrew Jones <drjones@redhat.com>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux-input@vger.kernel.org, linux-leds@vger.kernel.org
+Subject: Re: [PATCH] pwm: Get rid of HAVE_PWM
+Message-ID: <20121004182931.GA7228@avionic-0098.mockup.avionic-design.de>
+References: <1349330819-11924-1-git-send-email-thierry.reding@avionic-design.de>
+ <506DA487.9070400@metafoo.de>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="OXfL5xGRrasGEqWY"
+Content-Disposition: inline
+In-Reply-To: <506DA487.9070400@metafoo.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Provags-ID: V02:K0:hG1M9P3fohT8RoKb3XZkx3l8UfKm+75/T1W7y6LjLz2
+ a/HjxHGhB7BqKY23rXd2fn3pkP9oUpRFTSX4XEcoAPi8r8JzYD
+ N46BghJyeAzp+qmcH+7ic7usmBuQHbPlZaHHtmctyxQ7cgt8BI
+ 9J/ZjvoMZZLmwkX+ctqmvQangBVMA/b1Rp96YCND4TBkxH4Y5o
+ Ds0RRHhaEnE0vRLI87HBRyl497ItcHizncO+Nj01dO5L1NYShX
+ 1/tBPs6WpaNSJkcI+QcWdkE9zhJIYkCJGV8d+E/oBgwPlq+oTe
+ 4nLVZwdMXDvMrnqGsyUceRfSEmKmK7QWS8q9PKy52EpovcymLT
+ 8nOSVG3veuZ3fp70+/lfukfdXhkeI2Cs3S+x9ybe3JLmfXteM9
+ HmE33buuUxFUsabSVAgQJSrJVdj2WRIAtw=
+X-archive-position: 34608
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: thierry.reding@avionic-design.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,214 +71,58 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Convert the Alchemy platform to register the ohci-platform driver, now that
-the ohci-platform driver properly handles the specific ohci-au1xxx resume
-from suspend case.
 
-This also greatly simplifies the power_{on,off} callbacks and make them
-work on platform device id instead of checking the OHCI controller base
-address like what was done in ohci-au1xxx.c.
+--OXfL5xGRrasGEqWY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Impacted defconfigs are also updated accordingly to select the OHCI platform
-driver.
+On Thu, Oct 04, 2012 at 05:00:23PM +0200, Lars-Peter Clausen wrote:
+> On 10/04/2012 08:06 AM, Thierry Reding wrote:
+> > [...]
+> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> > index 331d574..b38f23d 100644
+> > --- a/arch/mips/Kconfig
+> > +++ b/arch/mips/Kconfig
+> > @@ -219,7 +219,8 @@ config MACH_JZ4740
+> >  	select GENERIC_GPIO
+> >  	select ARCH_REQUIRE_GPIOLIB
+> >  	select SYS_HAS_EARLY_PRINTK
+> > -	select HAVE_PWM
+> > +	select PWM
+> > +	select PWM_JZ4740
+> >  	select HAVE_CLK
+> >  	select GENERIC_IRQ_CHIP
+>=20
+> I'm not sure if this is such a good idea, not all jz4740 based board
+> necessarily require PWM.
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-Changes since v1:
-- updated defconfigs accordingly
-- really instantiate "ohci-platform" instead of "ohci-au1xxx"
-- rebased on top of the latest OHCI HCD changes
+This really only restores previous behaviour. But I agree that this is
+potentially not what we want. Maybe we should just not select this for
+any boards but rather leave it up to some default configuration. If so
+the patch can be made simpler by just removing the HAVE_PWM entries.
 
- arch/mips/alchemy/common/platform.c |   35 +++++++++++++++++++++++++++++++++--
- arch/mips/configs/db1000_defconfig  |    1 +
- arch/mips/configs/db1200_defconfig  |    1 +
- arch/mips/configs/db1300_defconfig  |    1 +
- arch/mips/configs/db1550_defconfig  |    1 +
- arch/mips/configs/gpr_defconfig     |    1 +
- arch/mips/configs/mtx1_defconfig    |    1 +
- arch/mips/configs/pb1100_defconfig  |    1 +
- arch/mips/configs/pb1500_defconfig  |    1 +
- arch/mips/configs/pb1550_defconfig  |    1 +
- 10 files changed, 42 insertions(+), 2 deletions(-)
+Thierry
 
-diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
-index b9a5f6d..7af941d 100644
---- a/arch/mips/alchemy/common/platform.c
-+++ b/arch/mips/alchemy/common/platform.c
-@@ -18,6 +18,7 @@
- #include <linux/serial_8250.h>
- #include <linux/slab.h>
- #include <linux/usb/ehci_pdriver.h>
-+#include <linux/usb/ohci_pdriver.h>
- 
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-au1x00/au1xxx_dbdma.h>
-@@ -142,6 +143,34 @@ static struct usb_ehci_pdata alchemy_ehci_pdata = {
- 	.power_suspend	= alchemy_ehci_power_off,
- };
- 
-+/* Power on callback for the ohci platform driver */
-+static int alchemy_ohci_power_on(struct platform_device *pdev)
-+{
-+	int unit;
-+
-+	unit = (pdev->id == 1) ?
-+		ALCHEMY_USB_OHCI1 : ALCHEMY_USB_OHCI0;
-+
-+	return alchemy_usb_control(unit, 1);
-+}
-+
-+/* Power off/suspend callback for the ohci platform driver */
-+static void alchemy_ohci_power_off(struct platform_device *pdev)
-+{
-+	int unit;
-+
-+	unit = (pdev->id == 1) ?
-+		ALCHEMY_USB_OHCI1 : ALCHEMY_USB_OHCI0;
-+
-+	alchemy_usb_control(unit, 0);
-+}
-+
-+static struct usb_ohci_pdata alchemy_ohci_pdata = {
-+	.power_on		= alchemy_ohci_power_on,
-+	.power_off		= alchemy_ohci_power_off,
-+	.power_suspend		= alchemy_ohci_power_off,
-+};
-+
- static unsigned long alchemy_ohci_data[][2] __initdata = {
- 	[ALCHEMY_CPU_AU1000] = { AU1000_USB_OHCI_PHYS_ADDR, AU1000_USB_HOST_INT },
- 	[ALCHEMY_CPU_AU1500] = { AU1000_USB_OHCI_PHYS_ADDR, AU1500_USB_HOST_INT },
-@@ -189,9 +218,10 @@ static void __init alchemy_setup_usb(int ctype)
- 	res[1].start = alchemy_ohci_data[ctype][1];
- 	res[1].end = res[1].start;
- 	res[1].flags = IORESOURCE_IRQ;
--	pdev->name = "au1xxx-ohci";
-+	pdev->name = "ohci-platform";
- 	pdev->id = 0;
- 	pdev->dev.dma_mask = &alchemy_ohci_dmamask;
-+	pdev->dev.platform_data = &alchemy_ohci_pdata;
- 
- 	if (platform_device_register(pdev))
- 		printk(KERN_INFO "Alchemy USB: cannot add OHCI0\n");
-@@ -228,9 +258,10 @@ static void __init alchemy_setup_usb(int ctype)
- 		res[1].start = AU1300_USB_INT;
- 		res[1].end = res[1].start;
- 		res[1].flags = IORESOURCE_IRQ;
--		pdev->name = "au1xxx-ohci";
-+		pdev->name = "ohci-platform";
- 		pdev->id = 1;
- 		pdev->dev.dma_mask = &alchemy_ohci_dmamask;
-+		pdev->dev.platform_data = &alchemy_ohci_pdata;
- 
- 		if (platform_device_register(pdev))
- 			printk(KERN_INFO "Alchemy USB: cannot add OHCI1\n");
-diff --git a/arch/mips/configs/db1000_defconfig b/arch/mips/configs/db1000_defconfig
-index 17a36c1..face9d2 100644
---- a/arch/mips/configs/db1000_defconfig
-+++ b/arch/mips/configs/db1000_defconfig
-@@ -233,6 +233,7 @@ CONFIG_USB_EHCI_HCD=y
- CONFIG_USB_EHCI_ROOT_HUB_TT=y
- CONFIG_USB_EHCI_TT_NEWSCHED=y
- CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_OHCI_HCD_PLATFORM=y
- CONFIG_USB_UHCI_HCD=y
- CONFIG_USB_STORAGE=y
- CONFIG_NEW_LEDS=y
-diff --git a/arch/mips/configs/db1200_defconfig b/arch/mips/configs/db1200_defconfig
-index d31ac85..e36f44a 100644
---- a/arch/mips/configs/db1200_defconfig
-+++ b/arch/mips/configs/db1200_defconfig
-@@ -120,6 +120,7 @@ CONFIG_USB_EHCI_HCD=y
- CONFIG_USB_EHCI_HCD_PLATFORM=y
- CONFIG_USB_EHCI_ROOT_HUB_TT=y
- CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_OHCI_HCD_PLATFORM=y
- CONFIG_MMC=y
- # CONFIG_MMC_BLOCK_BOUNCE is not set
- CONFIG_MMC_AU1X=y
-diff --git a/arch/mips/configs/db1300_defconfig b/arch/mips/configs/db1300_defconfig
-index 717e7b2..6873443 100644
---- a/arch/mips/configs/db1300_defconfig
-+++ b/arch/mips/configs/db1300_defconfig
-@@ -292,6 +292,7 @@ CONFIG_USB_EHCI_HCD_PLATFORM=y
- CONFIG_USB_EHCI_ROOT_HUB_TT=y
- CONFIG_USB_EHCI_TT_NEWSCHED=y
- CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_OHCI_HCD_PLATFORM=y
- CONFIG_USB_OHCI_LITTLE_ENDIAN=y
- CONFIG_RTC_LIB=y
- CONFIG_RTC_CLASS=y
-diff --git a/arch/mips/configs/db1550_defconfig b/arch/mips/configs/db1550_defconfig
-index 36cda27..315fe24 100644
---- a/arch/mips/configs/db1550_defconfig
-+++ b/arch/mips/configs/db1550_defconfig
-@@ -187,6 +187,7 @@ CONFIG_USB_EHCI_HCD=y
- CONFIG_USB_EHCI_ROOT_HUB_TT=y
- CONFIG_USB_EHCI_TT_NEWSCHED=y
- CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_OHCI_HCD_PLATFORM=y
- CONFIG_USB_OHCI_LITTLE_ENDIAN=y
- CONFIG_USB_UHCI_HCD=y
- CONFIG_USB_STORAGE=y
-diff --git a/arch/mips/configs/gpr_defconfig b/arch/mips/configs/gpr_defconfig
-index 48a40ae..fb64589 100644
---- a/arch/mips/configs/gpr_defconfig
-+++ b/arch/mips/configs/gpr_defconfig
-@@ -291,6 +291,7 @@ CONFIG_USB_MON=y
- CONFIG_USB_EHCI_HCD=y
- CONFIG_USB_EHCI_ROOT_HUB_TT=y
- CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_OHCI_HCD_PLATFORM=y
- CONFIG_USB_STORAGE=m
- CONFIG_USB_LIBUSUAL=y
- CONFIG_USB_SERIAL=y
-diff --git a/arch/mips/configs/mtx1_defconfig b/arch/mips/configs/mtx1_defconfig
-index 46c61edc..459018a 100644
---- a/arch/mips/configs/mtx1_defconfig
-+++ b/arch/mips/configs/mtx1_defconfig
-@@ -581,6 +581,7 @@ CONFIG_USB_MON=m
- CONFIG_USB_EHCI_HCD=m
- CONFIG_USB_EHCI_ROOT_HUB_TT=y
- CONFIG_USB_OHCI_HCD=m
-+CONFIG_USB_OHCI_HCD_PLATFORM=y
- CONFIG_USB_UHCI_HCD=m
- CONFIG_USB_U132_HCD=m
- CONFIG_USB_SL811_HCD=m
-diff --git a/arch/mips/configs/pb1100_defconfig b/arch/mips/configs/pb1100_defconfig
-index 75eb1b1..b47b1a3 100644
---- a/arch/mips/configs/pb1100_defconfig
-+++ b/arch/mips/configs/pb1100_defconfig
-@@ -97,6 +97,7 @@ CONFIG_USB=y
- CONFIG_USB_DYNAMIC_MINORS=y
- CONFIG_USB_SUSPEND=y
- CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_OHCI_HCD_PLATFORM=y
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_AU1XXX=y
- CONFIG_EXT2_FS=y
-diff --git a/arch/mips/configs/pb1500_defconfig b/arch/mips/configs/pb1500_defconfig
-index fa00487..adbc281 100644
---- a/arch/mips/configs/pb1500_defconfig
-+++ b/arch/mips/configs/pb1500_defconfig
-@@ -104,6 +104,7 @@ CONFIG_USB=y
- CONFIG_USB_DYNAMIC_MINORS=y
- CONFIG_USB_OTG_WHITELIST=y
- CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_OHCI_HCD_PLATFORM=y
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_AU1XXX=y
- CONFIG_EXT2_FS=y
-diff --git a/arch/mips/configs/pb1550_defconfig b/arch/mips/configs/pb1550_defconfig
-index e83d649..ef13bba 100644
---- a/arch/mips/configs/pb1550_defconfig
-+++ b/arch/mips/configs/pb1550_defconfig
-@@ -108,6 +108,7 @@ CONFIG_USB_SUSPEND=y
- CONFIG_USB_EHCI_HCD=y
- CONFIG_USB_EHCI_ROOT_HUB_TT=y
- CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_OHCI_HCD_PLATFORM=y
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_AU1XXX=y
- CONFIG_EXT2_FS=y
--- 
-1.7.9.5
+--OXfL5xGRrasGEqWY
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQbdWKAAoJEN0jrNd/PrOhg7gQAJQ6YVy/tvgoCjJ4ESOIEmUF
+cLyZDEsgwlHWcF2LilA9lync0s6ZcKAjg6RPOVRn8sCILBoxYqKQC2C7BGekETpC
+1D+p6L0kq8YY8+bBSWPDc/me+J0S0OoSHNhjZ4WWeqs+vGVnefqjQUJEZsthvy55
+tyQ2fmkXAFc/kCcpp+9PqJ71541uZqcaZcrFiYcDqdgAJA0MJ63OxbEQ4sgqjhJN
+tHVpW0mlEJw/RBpCI/yzCgaWP8nhPPX4ThUkydMuEVj3YJ2tkmbEpDdcOkAYqm0r
+iR551u4JM54ctWsztyWMbYa9dsntM8ZBVXjUeUgmw2C57J78wLIuPbkyiS2Q8wkO
+W/CMv6s7TV2jh8XL2i+3DDibcY8oRatW0yEys50V/mLDdOl1GTi9AgvlLqBWTj1Y
+mtRMoT2BVeVJtHzRWpEnbLizqIK4ItUc1/kAgIHlo/DWVJfctSz+EEr/BRVUFtJG
+hb10QW6DcagvjEyUWMpKejrCfjv9TG2yuLxJxl8WcR4iFAUnkcrSHWFhQVzDgBoG
+05wskTjr5rSKzUsEpUfFmrkbOW0Ks6FF9OmOcIEak3sOZM3RMRCJw9idfTClN+/k
+mlaRk1VJeeFMaYFPnT+P4rmIMFK0gDx9YVM3OeDD1SBXbZ7QPU3jGooqWjDjqfbM
+bhpeJuS1HCPiOe+ul0yN
+=fqL5
+-----END PGP SIGNATURE-----
+
+--OXfL5xGRrasGEqWY--

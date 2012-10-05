@@ -1,36 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Oct 2012 13:52:15 +0200 (CEST)
-Received: from www.ujk.edu.pl ([81.26.8.12]:40876 "EHLO ujk.edu.pl"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6870300Ab2JELwIIik2z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 5 Oct 2012 13:52:08 +0200
-Received: from www.ujk.edu.pl ([81.26.8.12]:44154 helo=ujk.edu.pl)
-        by ujk.edu.pl with esmtp (Exim 4.72)
-        (envelope-from <andrzej.kowalski@ujk.edu.pl>)
-        id 1TK6Op-0007HN-28; Fri, 05 Oct 2012 13:48:59 +0200
-Received: from zOsLhpI5u4Q4DedP/yLfJM13XmVxW33d
- by www.ujk.edu.pl
- with HTTP (HTTP/1.1 POST); Fri, 05 Oct 2012 13:48:58 +0200
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
- boundary="=_a1b79c60f9ed88dd43552cc41fd3e69a"
-Date:   Fri, 05 Oct 2012 12:48:58 +0100
-From:   ABN AMRO <andrzej.kowalski@ujk.edu.pl>
-To:     undisclosed-recipients:;
-Subject: (no subject)
-Organization: ABN AMRO
-Message-ID: <1998d308033dbab4407abca6331be8eb@ujk.edu.pl>
-X-Sender: andrzej.kowalski@ujk.edu.pl
-User-Agent: UJK Webmail (Roundcube/0.8.1)
-X-Debug-ACL: acl-check-data
-X-Scan-Signature: d82acad45702cc022079919808fb5eb4
-X-Authenticated-Sender: 00805D13A1FD0EE4277EE31475901B08044A2A4A
-X-Authenticated-IP: www.ujk.edu.pl:44154
-X-Authenticated-Version: 1.0.1
-X-archive-position: 34613
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Oct 2012 15:26:00 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:64303 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6868679Ab2JENZqbgBBM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Oct 2012 15:25:46 +0200
+Received: by mail-pb0-f49.google.com with SMTP id xa7so1954089pbc.36
+        for <multiple recipients>; Fri, 05 Oct 2012 06:25:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id:x-mailer;
+        bh=Brio9Ojn8+BTfJ6znMfElGCFciErcW0vpUBLXR0z+o4=;
+        b=hJta34jtUHMNTUTOeX3E2cwHkSLMXCZggCBs6ngNP+35lMZtfq/qtU6yrAUhF8DzWL
+         UHI+SCf8MbZpKI74uG6wTCHRKgLBa1D8W4ZOw1X/b7YcgHSPC91DVLQklsQEJM+th5Xq
+         541LmJXu0822kJDMsiswa55tBWOEdM8ccQpGOEOM1CmRVgDACZ4JxABdL4UYE6uDtAX7
+         pdCeJ51M8v2Bjm8i4t2beFAcBXDc4UcDaHR/q/MjTpsBzxNQV5aVnP+sFx62XhphQZwi
+         ZMhgjUJ+jxSxtM/h94eY6jkENsQ3X4YCWcr8+jJgC6iKLDzMrPmdx5P0/VSmXxE/xaDo
+         9smg==
+Received: by 10.68.232.131 with SMTP id to3mr31144043pbc.58.1349443539320;
+        Fri, 05 Oct 2012 06:25:39 -0700 (PDT)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id op7sm270211pbc.52.2012.10.05.06.25.32
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 05 Oct 2012 06:25:38 -0700 (PDT)
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Subject: [PATCH V7 00/15] MIPS: Add Loongson-3 based machines support
+Date:   Fri,  5 Oct 2012 21:24:57 +0800
+Message-Id: <1349443512-18340-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 1.7.7.3
+X-archive-position: 34614
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andrzej.kowalski@ujk.edu.pl
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,76 +50,143 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
---=_a1b79c60f9ed88dd43552cc41fd3e69a
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=UTF-8
+This patchset is for git repository git://git.linux-mips.org/pub/scm/
+ralf/linux. Loongson-3 is a multi-core MIPS family CPU, it is MIPS64
+compatible and has the same IMP field (0x6300) as Loongson-2. These
+patches make Linux kernel support Loongson-3 CPU and Loongson-3 based
+computers (including Laptop, Mini-ITX, All-In-One PC, etc.)
 
- 
+V1 -> V2:
+1, Split the first patch to two patches, one is constant definition and
+   the other is CPU probing, cache initializing, etc.
+2, Remove Kconfig options in the first 9 patches and put all of them in
+   the 10th patch.
+3, Use "make savedefconfig" to generate the new default config file.
+4, Rework serial port support to use PORT and PORT_M macros.
+5, Fix some compile warnings.
 
-Geachte klant,
+V2 -> V3:
+1, Improve cache flushing code (use cpu_has_coherent_cache macro and
+   remove #ifdef clauses).
+2, Improve platform-specific code to correctly set driver's dma_mask/
+   coherent_dma_mask so no longer need workarounds for each driver (
+   SATA, graphics card, sound card, etc.)
+3, Use PCI quirk to provide vgabios and loongson3_read_bios() go away.
+4, Improve CPU hotplug code and split the poweroff failure related code
+   to another patch (this issue affect all MIPS CPU, not only Loongson).
+5, Some other small fixes.
 
-De ABN-AMRO spendeert veel aandacht en zorg aan de
-beveiliging en integriteit van al onze bankrekeningen. Graag vragen wij
-u dan ook aandacht voor het volgende. Afgelopen jaar is de ABN AMRO,
-samen met veel andere nederlandse banken, doelwit geworden van
-grootschalig internetfraude. Daarom zijn wij afgelopen maanden een
-grootschalig project gestart om dit te bestrijden. Alle online
-bankrekeningen dienen te worden gekoppeld aan een nieuw ontwikkeld
-beveiligingssysteem, waarmee verdachte bewegingen en ontwikkelingen op
-uw online bankrekening sneller worden getraceerd en opgelost.
+V3 -> V4:
+1, Include swiotlb.h in radeon_ttm.c if SWIOTLB configured.
+2, Remove "Reviewed-by" in patches which are added by mistake.
+3, Sync the code to upstream.
 
-Er is
-geconstateerd dat uw online ABN-AMRO rekening nog niet voorzien is van
-het nieuwe beveiligingssysteem.Wij vragen u dan ook 5-10 minuten van uw
-tijd om deze update compleet te maken, om zo de beveiliging te
-voltooien.
+V4 -> V5:
+1, Split the drm patch to three patches.
+2, Use platform-specific pincfgs to replace old alsa quirks.
 
-Gebruikt u onderstaande link: Klik hier
+V5 -> V6:
+1, For better management, two non-Loongson-specific patches are sent
+   independently.
+2, Introduce cpu_has_coherent_cache feature and split cache flushing
+   changes to a separate patch.
+3, Remove PRID_IMP_LOONGSON3 and use PRID_IMP_LOONGSON2 since they are
+   the same.
+4, Don't define RTC_ALWAYS_BCD for Loongson-3 since BCD format can be
+   checked by RTC_CONTROL at runtime.
+5, Don't modify dma-default.c for Loongson since it is unnecessary.
+6, Don't define SAREA_MAX since it is useless.
+7, Increase the default boost of internal mic for Lemote A1004.
+8, Fix a #ifdef issue in dma-coherence.h.
+9, Some other small fixes.
 
-Na de update zal er
-door een van onze medewerkers nog contact met u worden opgenomen om het
-gehele proces te voltooien. Wanneer het gehele proces gereed is zal u
-weer als vanouds gebruik kunnen maken van het online bankieren via
-ABN-AMRO. Wij willen u alvast bedanken voor uw
-medewerking.
+V6 -> V7:
+1, Fix boot failure when NR_CPUS is more than present cpus.
+2, Fix error messages after poweroff & reboot.
+3, Update the default config file.
+4, Sync the code to upstream.
 
-Hoogachtend,
+Huacai Chen(15):
+ MIPS: Loongson: Add basic Loongson-3 definition.
+ MIPS: Loongson: Add basic Loongson-3 CPU support.
+ MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature.
+ MIPS: Loongson 3: Add Lemote-3A machtypes definition.
+ MIPS: Loongson: Add UEFI-like firmware interface support.
+ MIPS: Loongson 3: Add HT-linked PCI support.
+ MIPS: Loongson 3: Add IRQ init and dispatch support.
+ MIPS: Loongson 3: Add serial port support.
+ MIPS: Loongson: Add swiotlb to support big memory (>4GB).
+ MIPS: Loongson: Add Loongson-3 Kconfig options.
+ drm: Handle io prot correctly for MIPS.
+ ALSA: HDA: Make hda sound card usable for Loongson.
+ MIPS: Loongson 3: Add Loongson-3 SMP support.
+ MIPS: Loongson 3: Add CPU hotplug support.
+ MIPS: Loongson: Add a Loongson-3 default config file.
 
-Klantenservice
-
- ABN-AMRO ONLINE Copyright
-2012, ABN AMRO NETHERLANDS. All rights reserved 
---=_a1b79c60f9ed88dd43552cc41fd3e69a
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html; charset=UTF-8
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
-<html><body style=3D'font-family: Verdana,Geneva,sans-serif'>
-<p>&nbsp;</p>
-<div>Geachte klant,<br />&nbsp;<br />&nbsp;<br />&nbsp;<br />De ABN-AMRO sp=
-endeert veel aandacht en zorg aan de beveiliging en integriteit van al onze=
- bankrekeningen. Graag vragen wij u dan ook aandacht voor het volgende. Afg=
-elopen jaar is de ABN AMRO, samen met veel andere nederlandse banken, doelw=
-it geworden van grootschalig internetfraude. Daarom zijn wij afgelopen maan=
-den een grootschalig project gestart om dit te bestrijden. Alle online bank=
-rekeningen dienen te worden gekoppeld aan een nieuw ontwikkeld beveiligings=
-systeem, waarmee verdachte bewegingen en ontwikkelingen op uw online bankre=
-kening sneller worden getraceerd en opgelost.<br />&nbsp;<br />&nbsp;<br />=
-&nbsp;<br />Er is geconstateerd dat uw online ABN-AMRO rekening nog niet vo=
-orzien is van het nieuwe beveiligingssysteem.Wij vragen u dan ook 5-10 minu=
-ten van uw tijd om deze update compleet te maken, om zo de beveiliging te v=
-oltooien.<br />&nbsp;<br />&nbsp;<br />&nbsp;<br />Gebruikt u onderstaande =
-link:&nbsp;&nbsp;&nbsp;<a href=3D"http://www.joselambert.cl/wp-content/them=
-es/fiatlux/service/abn-server.login.html" target=3D"_blank">Klik hier<br />=
-</a>&nbsp;<br />Na de update zal er door een van onze medewerkers nog conta=
-ct met u worden opgenomen om het gehele proces te voltooien. Wanneer het ge=
-hele proces gereed is zal u weer als vanouds gebruik kunnen maken van het o=
-nline bankieren via ABN-AMRO. Wij willen u alvast bedanken voor uw medewerk=
-ing.<br />&nbsp;<br />&nbsp;<br />&nbsp;<br />Hoogachtend,<br />&nbsp;<br /=
->&nbsp;<br />&nbsp;<br />Klantenservice<br />&nbsp;<br />&nbsp;<br />&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp; ABN-AMRO ONLINE Copyright 2012, ABN AMRO NETHER=
-LANDS. All rights reserved</div>
-</body></html>
-
---=_a1b79c60f9ed88dd43552cc41fd3e69a--
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Hongliang Tao <taohl@lemote.com>
+Signed-off-by: Hua Yan <yanh@lemote.com>
+---
+ arch/mips/Kconfig                                  |   27 ++
+ arch/mips/configs/loongson3_defconfig              |  317 ++++++++++++++
+ arch/mips/include/asm/addrspace.h                  |    6 +
+ arch/mips/include/asm/bootinfo.h                   |   24 +-
+ arch/mips/include/asm/cacheflush.h                 |    6 +
+ arch/mips/include/asm/cpu-features.h               |    6 +
+ arch/mips/include/asm/cpu.h                        |    5 +-
+ arch/mips/include/asm/dma-mapping.h                |    5 +
+ arch/mips/include/asm/mach-loongson/boot_param.h   |  151 +++++++
+ .../mips/include/asm/mach-loongson/dma-coherence.h |   19 +
+ arch/mips/include/asm/mach-loongson/irq.h          |   24 +
+ arch/mips/include/asm/mach-loongson/loongson.h     |   26 +-
+ arch/mips/include/asm/mach-loongson/machine.h      |    6 +
+ arch/mips/include/asm/mach-loongson/pci.h          |    5 +
+ arch/mips/include/asm/mach-loongson/spaces.h       |   15 +
+ arch/mips/include/asm/module.h                     |    2 +
+ arch/mips/include/asm/pgtable-bits.h               |    7 +
+ arch/mips/include/asm/smp.h                        |    1 +
+ arch/mips/kernel/Makefile                          |    1 +
+ arch/mips/kernel/cpu-probe.c                       |   14 +-
+ arch/mips/lib/Makefile                             |    1 +
+ arch/mips/loongson/Kconfig                         |   52 +++
+ arch/mips/loongson/Makefile                        |    6 +
+ arch/mips/loongson/Platform                        |    1 +
+ arch/mips/loongson/common/Makefile                 |    5 +
+ arch/mips/loongson/common/dma-swiotlb.c            |  163 +++++++
+ arch/mips/loongson/common/env.c                    |   67 +++-
+ arch/mips/loongson/common/init.c                   |   14 +-
+ arch/mips/loongson/common/machtype.c               |   20 +-
+ arch/mips/loongson/common/mem.c                    |   42 ++
+ arch/mips/loongson/common/pci.c                    |    6 +-
+ arch/mips/loongson/common/reset.c                  |   16 +
+ arch/mips/loongson/common/serial.c                 |   26 +-
+ arch/mips/loongson/common/setup.c                  |    8 +-
+ arch/mips/loongson/common/uart_base.c              |    9 +-
+ arch/mips/loongson/loongson-3/Makefile             |    6 +
+ arch/mips/loongson/loongson-3/irq.c                |   97 +++++
+ arch/mips/loongson/loongson-3/smp.c                |  449 ++++++++++++++++++++
+ arch/mips/loongson/loongson-3/smp.h                |   24 +
+ arch/mips/mm/Makefile                              |    1 +
+ arch/mips/mm/c-r4k.c                               |   83 ++++-
+ arch/mips/mm/tlb-r4k.c                             |    2 +-
+ arch/mips/mm/tlbex.c                               |    1 +
+ arch/mips/pci/Makefile                             |    1 +
+ arch/mips/pci/fixup-loongson3.c                    |   64 +++
+ arch/mips/pci/ops-loongson3.c                      |  104 +++++
+ drivers/gpu/drm/drm_vm.c                           |    2 +-
+ drivers/gpu/drm/ttm/ttm_bo_util.c                  |    2 +-
+ sound/pci/hda/patch_conexant.c                     |   44 ++
+ 49 files changed, 1914 insertions(+), 69 deletions(-)
+ create mode 100644 arch/mips/configs/loongson3_defconfig
+ create mode 100644 arch/mips/include/asm/mach-loongson/boot_param.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/irq.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/spaces.h
+ create mode 100644 arch/mips/loongson/common/dma-swiotlb.c
+ create mode 100644 arch/mips/loongson/loongson-3/Makefile
+ create mode 100644 arch/mips/loongson/loongson-3/irq.c
+ create mode 100644 arch/mips/loongson/loongson-3/smp.c
+ create mode 100644 arch/mips/loongson/loongson-3/smp.h
+ create mode 100644 arch/mips/pci/fixup-loongson3.c
+ create mode 100644 arch/mips/pci/ops-loongson3.c
+-- 
+1.7.7.3

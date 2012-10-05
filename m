@@ -1,28 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2012 21:51:50 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:7801 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817053Ab2JDTvi2Fp0P (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Oct 2012 21:51:38 +0200
-Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id q94JpZo9026777
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 4 Oct 2012 15:51:35 -0400
-Received: from warthog.procyon.org.uk (ovpn-113-54.phx2.redhat.com [10.3.113.54])
-        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id q94JpXVY000908;
-        Thu, 4 Oct 2012 15:51:34 -0400
-From:   David Howells <dhowells@redhat.com>
-To:     ralf@linux-mips.org
-Cc:     dhowells@redhat.com, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Disintegrate UAPI for mips
-Date:   Thu, 04 Oct 2012 20:51:33 +0100
-Message-ID: <17389.1349380293@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
-X-archive-position: 34611
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Oct 2012 04:37:53 +0200 (CEST)
+Received: from mail-ie0-f193.google.com ([209.85.223.193]:46106 "EHLO
+        mail-ie0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817534Ab2JECht6Y0ff (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Oct 2012 04:37:49 +0200
+Received: by mail-ie0-f193.google.com with SMTP id 17so573753iea.0
+        for <linux-mips@linux-mips.org>; Thu, 04 Oct 2012 19:37:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:date:x-google-sender-auth:message-id:subject
+         :from:to:content-type;
+        bh=q3z5VTlRZwQhtyhNWmc01tXq8AT8snbMvR7b1JzNUsA=;
+        b=a1gokW3FILTxrMFaU879ei3L4r/65lJyKJOCHAh8EL5DQYGGZqqxfM5ywjbW0uaeUq
+         HTeuu0TLvA5IFoGg7iiJZRPKaU2nXul970PeReB8FvlL3cyyQVMFJR+1NKD0Hz0SIlLF
+         LpJUHmUFBnsQWFDplsZVOxQ6QW6dLl/QPRgm1tQlmpRxfKlR0F4BXvs0akCW36JohD0Q
+         zDeF1Gpxdpv0P1EoPu4MSm86JSXQdE4i5oM0hp7Uo7Nls/OmByOavAEI5T5xoMFCW50d
+         EGTbsELKgctkN4CsdtYdoSUFbplb53XoKo0KvJmq3YUreTONwhvPiV5F4Wc7R1Wqnhoa
+         TfLw==
+MIME-Version: 1.0
+Received: by 10.50.216.234 with SMTP id ot10mr7092251igc.71.1349402803326;
+ Thu, 04 Oct 2012 19:06:43 -0700 (PDT)
+Received: by 10.64.45.229 with HTTP; Thu, 4 Oct 2012 19:06:41 -0700 (PDT)
+Date:   Thu, 4 Oct 2012 19:06:41 -0700
+X-Google-Sender-Auth: X6Dfw3xxOPStIkPAKId7MVR7ock
+Message-ID: <CAHXOMRVYTFHdqSwojydtbhrs6OeZqLb2g9kEjmj5bx=YYzMCMg@mail.gmail.com>
+Subject: Hello Dear
+From:   Bintou Eboue <missbintou.eboue@hotmail.com>
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 34612
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhowells@redhat.com
+X-original-sender: missbintou.eboue@hotmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,218 +45,11 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Can you merge the following branch into the mips tree please.
-
-This is to complete part of the UAPI disintegration for which the preparatory
-patches were pulled recently.
-
-Note that there are some fixup patches which are at the base of the branch
-aimed at you, plus all arches get the asm-generic branch merged in too.
-
-The following changes since commit 612a9aab56a93533e76e3ad91642db7033e03b69:
-
-  Merge branch 'drm-next' of git://people.freedesktop.org/~airlied/linux (2012-10-03 23:29:23 -0700)
-
-are available in the git repository at:
-
-
-  git://git.infradead.org/users/dhowells/linux-headers.git disintegrate-mips
-
-for you to fetch changes up to 49c611211de4006faefba4ea9a4219ed97f71707:
-
-  UAPI: (Scripted) Disintegrate arch/mips/include/asm (2012-10-04 18:21:03 +0100)
-
-----------------------------------------------------------------
-David Howells (6):
-      UAPI: Fix the guards on various asm/unistd.h files
-      UAPI: Split compound conditionals containing __KERNEL__ in Arm64
-      Merge remote-tracking branch 'c6x/for-linux-next' into uapi-prep
-      UAPI: Fix conditional header installation handling (notably kvm_para.h on m68k)
-      UAPI: (Scripted) Disintegrate include/asm-generic
-      UAPI: (Scripted) Disintegrate arch/mips/include/asm
-
-Mark Salter (2):
-      c6x: make dsk6455 the default config
-      c6x: remove c6x signal.h
-
- arch/arm64/include/asm/hwcap.h                 |    4 +-
- arch/arm64/include/asm/stat.h                  |    4 +-
- arch/arm64/include/asm/unistd.h                |    8 +-
- arch/arm64/include/asm/unistd32.h              |    4 -
- arch/c6x/Makefile                              |    2 +
- arch/c6x/include/asm/Kbuild                    |    1 +
- arch/c6x/include/asm/signal.h                  |   17 -
- arch/c6x/include/asm/unistd.h                  |    4 -
- arch/hexagon/include/asm/unistd.h              |    5 -
- arch/mips/include/asm/Kbuild                   |    5 -
- arch/mips/include/asm/errno.h                  |  120 +--
- arch/mips/include/asm/ptrace.h                 |  107 +--
- arch/mips/include/asm/setup.h                  |    5 +-
- arch/mips/include/asm/sigcontext.h             |   66 +-
- arch/mips/include/asm/siginfo.h                |  104 +--
- arch/mips/include/asm/signal.h                 |  115 +--
- arch/mips/include/asm/socket.h                 |   83 +-
- arch/mips/include/asm/termios.h                |   73 +-
- arch/mips/include/asm/types.h                  |   16 +-
- arch/mips/include/asm/unistd.h                 | 1019 +----------------------
- arch/mips/include/uapi/asm/Kbuild              |   34 +
- arch/mips/include/{ => uapi}/asm/auxvec.h      |    0
- arch/mips/include/{ => uapi}/asm/bitsperlong.h |    0
- arch/mips/include/{ => uapi}/asm/byteorder.h   |    0
- arch/mips/include/{ => uapi}/asm/cachectl.h    |    0
- arch/mips/include/uapi/asm/errno.h             |  129 +++
- arch/mips/include/{ => uapi}/asm/fcntl.h       |    0
- arch/mips/include/{ => uapi}/asm/ioctl.h       |    0
- arch/mips/include/{ => uapi}/asm/ioctls.h      |    0
- arch/mips/include/{ => uapi}/asm/ipcbuf.h      |    0
- arch/mips/include/{ => uapi}/asm/kvm_para.h    |    0
- arch/mips/include/{ => uapi}/asm/mman.h        |    0
- arch/mips/include/{ => uapi}/asm/msgbuf.h      |    0
- arch/mips/include/{ => uapi}/asm/param.h       |    0
- arch/mips/include/{ => uapi}/asm/poll.h        |    0
- arch/mips/include/{ => uapi}/asm/posix_types.h |    0
- arch/mips/include/uapi/asm/ptrace.h            |  116 +++
- arch/mips/include/{ => uapi}/asm/resource.h    |    0
- arch/mips/include/{ => uapi}/asm/sembuf.h      |    0
- arch/mips/include/uapi/asm/setup.h             |    7 +
- arch/mips/include/{ => uapi}/asm/sgidefs.h     |    0
- arch/mips/include/{ => uapi}/asm/shmbuf.h      |    0
- arch/mips/include/uapi/asm/sigcontext.h        |   78 ++
- arch/mips/include/uapi/asm/siginfo.h           |  114 +++
- arch/mips/include/uapi/asm/signal.h            |  123 +++
- arch/mips/include/uapi/asm/socket.h            |   93 +++
- arch/mips/include/{ => uapi}/asm/sockios.h     |    0
- arch/mips/include/{ => uapi}/asm/stat.h        |    0
- arch/mips/include/{ => uapi}/asm/statfs.h      |    0
- arch/mips/include/{ => uapi}/asm/swab.h        |    0
- arch/mips/include/{ => uapi}/asm/sysmips.h     |    0
- arch/mips/include/{ => uapi}/asm/termbits.h    |    0
- arch/mips/include/uapi/asm/termios.h           |   80 ++
- arch/mips/include/uapi/asm/types.h             |   27 +
- arch/mips/include/uapi/asm/unistd.h            | 1032 ++++++++++++++++++++++++
- arch/openrisc/include/asm/unistd.h             |    5 -
- arch/score/include/asm/unistd.h                |    5 -
- arch/tile/include/asm/unistd.h                 |    5 -
- arch/unicore32/include/asm/unistd.h            |    4 -
- include/asm-generic/Kbuild                     |   35 -
- include/asm-generic/bitsperlong.h              |   13 +-
- include/asm-generic/int-l64.h                  |   26 +-
- include/asm-generic/int-ll64.h                 |   31 +-
- include/asm-generic/ioctl.h                    |   95 +--
- include/asm-generic/kvm_para.h                 |    5 +-
- include/asm-generic/param.h                    |   17 +-
- include/asm-generic/resource.h                 |   66 +-
- include/asm-generic/siginfo.h                  |  297 +------
- include/asm-generic/signal.h                   |  117 +--
- include/asm-generic/statfs.h                   |   81 +-
- include/asm-generic/termios.h                  |   49 +-
- include/asm-generic/unistd.h                   |  911 +--------------------
- include/linux/Kbuild                           |    9 +-
- include/uapi/asm-generic/Kbuild                |   35 +
- include/{ => uapi}/asm-generic/auxvec.h        |    0
- include/uapi/asm-generic/bitsperlong.h         |   15 +
- include/{ => uapi}/asm-generic/errno-base.h    |    0
- include/{ => uapi}/asm-generic/errno.h         |    0
- include/{ => uapi}/asm-generic/fcntl.h         |    0
- include/uapi/asm-generic/int-l64.h             |   34 +
- include/uapi/asm-generic/int-ll64.h            |   39 +
- include/uapi/asm-generic/ioctl.h               |   98 +++
- include/{ => uapi}/asm-generic/ioctls.h        |    0
- include/{ => uapi}/asm-generic/ipcbuf.h        |    0
- include/{ => uapi}/asm-generic/mman-common.h   |    0
- include/{ => uapi}/asm-generic/mman.h          |    0
- include/{ => uapi}/asm-generic/msgbuf.h        |    0
- include/uapi/asm-generic/param.h               |   19 +
- include/{ => uapi}/asm-generic/poll.h          |    0
- include/{ => uapi}/asm-generic/posix_types.h   |    0
- include/uapi/asm-generic/resource.h            |   68 ++
- include/{ => uapi}/asm-generic/sembuf.h        |    0
- include/{ => uapi}/asm-generic/setup.h         |    0
- include/{ => uapi}/asm-generic/shmbuf.h        |    0
- include/{ => uapi}/asm-generic/shmparam.h      |    0
- include/uapi/asm-generic/siginfo.h             |  298 +++++++
- include/{ => uapi}/asm-generic/signal-defs.h   |    0
- include/uapi/asm-generic/signal.h              |  123 +++
- include/{ => uapi}/asm-generic/socket.h        |    0
- include/{ => uapi}/asm-generic/sockios.h       |    0
- include/{ => uapi}/asm-generic/stat.h          |    0
- include/uapi/asm-generic/statfs.h              |   83 ++
- include/{ => uapi}/asm-generic/swab.h          |    0
- include/{ => uapi}/asm-generic/termbits.h      |    0
- include/uapi/asm-generic/termios.h             |   50 ++
- include/{ => uapi}/asm-generic/types.h         |    0
- include/{ => uapi}/asm-generic/ucontext.h      |    0
- include/uapi/asm-generic/unistd.h              |  902 +++++++++++++++++++++
- security/apparmor/Makefile                     |    2 +-
- 109 files changed, 3636 insertions(+), 3496 deletions(-)
- delete mode 100644 arch/c6x/include/asm/signal.h
- rename arch/mips/include/{ => uapi}/asm/auxvec.h (100%)
- rename arch/mips/include/{ => uapi}/asm/bitsperlong.h (100%)
- rename arch/mips/include/{ => uapi}/asm/byteorder.h (100%)
- rename arch/mips/include/{ => uapi}/asm/cachectl.h (100%)
- create mode 100644 arch/mips/include/uapi/asm/errno.h
- rename arch/mips/include/{ => uapi}/asm/fcntl.h (100%)
- rename arch/mips/include/{ => uapi}/asm/ioctl.h (100%)
- rename arch/mips/include/{ => uapi}/asm/ioctls.h (100%)
- rename arch/mips/include/{ => uapi}/asm/ipcbuf.h (100%)
- rename arch/mips/include/{ => uapi}/asm/kvm_para.h (100%)
- rename arch/mips/include/{ => uapi}/asm/mman.h (100%)
- rename arch/mips/include/{ => uapi}/asm/msgbuf.h (100%)
- rename arch/mips/include/{ => uapi}/asm/param.h (100%)
- rename arch/mips/include/{ => uapi}/asm/poll.h (100%)
- rename arch/mips/include/{ => uapi}/asm/posix_types.h (100%)
- create mode 100644 arch/mips/include/uapi/asm/ptrace.h
- rename arch/mips/include/{ => uapi}/asm/resource.h (100%)
- rename arch/mips/include/{ => uapi}/asm/sembuf.h (100%)
- create mode 100644 arch/mips/include/uapi/asm/setup.h
- rename arch/mips/include/{ => uapi}/asm/sgidefs.h (100%)
- rename arch/mips/include/{ => uapi}/asm/shmbuf.h (100%)
- create mode 100644 arch/mips/include/uapi/asm/sigcontext.h
- create mode 100644 arch/mips/include/uapi/asm/siginfo.h
- create mode 100644 arch/mips/include/uapi/asm/signal.h
- create mode 100644 arch/mips/include/uapi/asm/socket.h
- rename arch/mips/include/{ => uapi}/asm/sockios.h (100%)
- rename arch/mips/include/{ => uapi}/asm/stat.h (100%)
- rename arch/mips/include/{ => uapi}/asm/statfs.h (100%)
- rename arch/mips/include/{ => uapi}/asm/swab.h (100%)
- rename arch/mips/include/{ => uapi}/asm/sysmips.h (100%)
- rename arch/mips/include/{ => uapi}/asm/termbits.h (100%)
- create mode 100644 arch/mips/include/uapi/asm/termios.h
- create mode 100644 arch/mips/include/uapi/asm/types.h
- create mode 100644 arch/mips/include/uapi/asm/unistd.h
- rename include/{ => uapi}/asm-generic/auxvec.h (100%)
- create mode 100644 include/uapi/asm-generic/bitsperlong.h
- rename include/{ => uapi}/asm-generic/errno-base.h (100%)
- rename include/{ => uapi}/asm-generic/errno.h (100%)
- rename include/{ => uapi}/asm-generic/fcntl.h (100%)
- create mode 100644 include/uapi/asm-generic/int-l64.h
- create mode 100644 include/uapi/asm-generic/int-ll64.h
- create mode 100644 include/uapi/asm-generic/ioctl.h
- rename include/{ => uapi}/asm-generic/ioctls.h (100%)
- rename include/{ => uapi}/asm-generic/ipcbuf.h (100%)
- create mode 100644 include/uapi/asm-generic/kvm_para.h
- rename include/{ => uapi}/asm-generic/mman-common.h (100%)
- rename include/{ => uapi}/asm-generic/mman.h (100%)
- rename include/{ => uapi}/asm-generic/msgbuf.h (100%)
- create mode 100644 include/uapi/asm-generic/param.h
- rename include/{ => uapi}/asm-generic/poll.h (100%)
- rename include/{ => uapi}/asm-generic/posix_types.h (100%)
- create mode 100644 include/uapi/asm-generic/resource.h
- rename include/{ => uapi}/asm-generic/sembuf.h (100%)
- rename include/{ => uapi}/asm-generic/setup.h (100%)
- rename include/{ => uapi}/asm-generic/shmbuf.h (100%)
- rename include/{ => uapi}/asm-generic/shmparam.h (100%)
- create mode 100644 include/uapi/asm-generic/siginfo.h
- rename include/{ => uapi}/asm-generic/signal-defs.h (100%)
- create mode 100644 include/uapi/asm-generic/signal.h
- rename include/{ => uapi}/asm-generic/socket.h (100%)
- rename include/{ => uapi}/asm-generic/sockios.h (100%)
- rename include/{ => uapi}/asm-generic/stat.h (100%)
- create mode 100644 include/uapi/asm-generic/statfs.h
- rename include/{ => uapi}/asm-generic/swab.h (100%)
- rename include/{ => uapi}/asm-generic/termbits.h (100%)
- create mode 100644 include/uapi/asm-generic/termios.h
- rename include/{ => uapi}/asm-generic/types.h (100%)
- rename include/{ => uapi}/asm-generic/ucontext.h (100%)
- create mode 100644 include/uapi/asm-generic/unistd.h
-.
+how are you dear? I'm happy to write this little note just to say, how
+are you? I'm Bintou, single girl looking for a sincere and honest
+someone for friendship, i have made a very serious decision and I need
+to share it with a trusted someone for our own future benefits, i will
+tell you my motive in details with my picture as soon as i receive
+your response. bye and remain bless as am waiting to hear from you.
+Yours Sincerely
+Bintou

@@ -1,35 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2012 09:32:58 +0200 (CEST)
-Received: from mail-oa0-f49.google.com ([209.85.219.49]:40457 "EHLO
-        mail-oa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6870357Ab2JJHcygdrX- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Oct 2012 09:32:54 +0200
-Received: by mail-oa0-f49.google.com with SMTP id l10so207458oag.36
-        for <linux-mips@linux-mips.org>; Wed, 10 Oct 2012 00:32:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        bh=aMESkDqnAdIOchS4LR+7+ZxaGvncd2suA6oQwrg4Cag=;
-        b=JcA2GySNMMupQuRRYMUiLG8SjkF1mxxg6NvOhx2C6C9VMCUmw6rmRFfM87wx9uxacP
-         SoFhMBe7fxanjvlCJIp1Aah3cemSmicHJDiJPOxKtMuamQrnqQWQ8hnvnlrCiRfd9SPy
-         UJoWGWY72nKW5BWq0/uLY0UhjLkscEmsaHhtnYYuDDWVMudI3Es+MbaC8zpeI23efVMX
-         ARsFgHjKSP3uLIw38XAkUu9eNe3zBCou0Cj2TLxIXsmEhxCVa8RJu5UZn8fou2NoGR0q
-         nJPz2irdhoacXv+a3ct5RTsIonzXJYMBHvqkPLXOl7TzTGNSnQXB/AlABs9VAf3y7oIk
-         zKkQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2012 09:38:32 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:47335 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6870357Ab2JJHi2oEKp1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 10 Oct 2012 09:38:28 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q9A7cRVs005166;
+        Wed, 10 Oct 2012 09:38:27 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q9A7cQwn005163;
+        Wed, 10 Oct 2012 09:38:26 +0200
+Date:   Wed, 10 Oct 2012 09:38:26 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Steven J. Hill" <sjhill@mips.com>
+Cc:     linux-mips@linux-mips.org, Chris Dearman <chris@mips.com>,
+        John Crispin <blogic@openwrt.org>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH] MIPS: kspd: Remove kspd support.
+Message-ID: <20121010073826.GB6740@linux-mips.org>
+References: <1349821203-23083-1-git-send-email-sjhill@mips.com>
 MIME-Version: 1.0
-Received: by 10.60.32.176 with SMTP id k16mr11273983oei.130.1349850767919;
- Tue, 09 Oct 2012 23:32:47 -0700 (PDT)
-Received: by 10.60.66.4 with HTTP; Tue, 9 Oct 2012 23:32:47 -0700 (PDT)
-Date:   Wed, 10 Oct 2012 08:32:47 +0200
-Message-ID: <CAMJ=MEfFsJH6Cqkow7-w3a352iYiWWi+ubOSJaqhh2bp2MqPZg@mail.gmail.com>
-Subject: 2GB userspace limitation in ABI N32
-From:   Ronny Meeus <ronny.meeus@gmail.com>
-To:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 34664
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1349821203-23083-1-git-send-email-sjhill@mips.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34665
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ronny.meeus@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,26 +41,17 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello
+On Tue, Oct 09, 2012 at 05:20:03PM -0500, Steven J. Hill wrote:
 
-I have a legacy application that we want to port to a MIPS (Cavium)
-architecture from a PPC based one.
-The board has 4GB memory of which we actually need almost 3GB in
-application space. On the PPC this is no issue since the split
-user/kernel is 3GB/1GB.
-We have to use the N32 ABI Initial tests on MIPS showed me the
-user-space limit of 2GB.
-We do not want to port the application to a 64bit
+> From: "Steven J. Hill" <sjhill@mips.com>
+> 
+> There are no users of the kspd functionality anymore.
 
-Now the question is: are there any workarounds, tricks existing to get
-around this limitation?
-I found some mailthreads on this subject (n32-big ABI -
-http://gcc.gnu.org/ml/gcc/2011-02/msg00278.html,
-http://elinux.org/images/1/1f/New-tricks-mips-linux.pdf) but is looks
-like this is not accepted by the community. Is there any process
-planned or made in this area?
+Thanks.  I've already applied a probably identical patch.
 
-Thanks
+With kspd gone, the question is if there is still any point in keeping
+CONFIG_MIPS_VPE_APSP_API and MIPS_VPE_LOADER?  I've nuked those also but
+I'm holding back for others to get a fair chance to speak up against.
+But the fuse is now lit.
 
----
-Ronny
+  Ralf

@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2012 01:03:29 +0200 (CEST)
-Received: from out1-smtp.messagingengine.com ([66.111.4.25]:50277 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2012 02:13:37 +0200 (CEST)
+Received: from out1-smtp.messagingengine.com ([66.111.4.25]:59061 "EHLO
         out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6872812Ab2JJXDSeCYfC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Oct 2012 01:03:18 +0200
-Received: from compute4.internal (compute4.nyi.mail.srv.osa [10.202.2.44])
-        by gateway1.nyi.mail.srv.osa (Postfix) with ESMTP id 63B2020C73;
-        Wed, 10 Oct 2012 19:03:17 -0400 (EDT)
+        by eddie.linux-mips.org with ESMTP id S6872770Ab2JKANZnBvaC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Oct 2012 02:13:25 +0200
+Received: from compute3.internal (compute3.nyi.mail.srv.osa [10.202.2.43])
+        by gateway1.nyi.mail.srv.osa (Postfix) with ESMTP id C8BAA20979;
+        Wed, 10 Oct 2012 20:13:24 -0400 (EDT)
 Received: from frontend2.nyi.mail.srv.osa ([10.202.2.161])
-  by compute4.internal (MEProxy); Wed, 10 Oct 2012 19:03:17 -0400
+  by compute3.internal (MEProxy); Wed, 10 Oct 2012 20:13:24 -0400
 DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
         messagingengine.com; h=from:to:cc:subject:date:message-id
-        :in-reply-to:references; s=smtpout; bh=xm9ssfjDXNPmazK+CnSqXauTk
-        84=; b=Qa0rU5jq++Pbh5p45uK2cuo+JT1bPf/W/bvS1EW6nkBGuq24ldps0X18t
-        BDnxxuw7e9vApxmTHr1vQBeKgl0cwNn2hgC5/wIxz7ppztHjbXe69ynhZn4fqHqH
-        lnNkk1EXFoDJCQI7OlzsTxvbMTKGcyw9zTO9105CYXmOicLj1M=
-X-Sasl-enc: FWLgquWDS+P5w7jDILVeP9NVX1uOZOMiBGC3kbbwJX+7 1349910196
-Received: from localhost (unknown [222.106.197.2])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 9BFEA4827DC;
-        Wed, 10 Oct 2012 19:03:16 -0400 (EDT)
+        :in-reply-to:references; s=smtpout; bh=Q9sV+iHkkv4agkg7VCI79PFiz
+        rU=; b=JZDK+qcQsaTlTo7Vxd8aQm1/fb21hQahteSwWRqY0rstr4D/L5w7i3/AP
+        dfC9QPCDEMS6XR/WBswRNXF1VT4m/tDJY+UmHTQsa9YToTY9wn0V8PqpyAifDZNy
+        eBx53nyb7nmhVMjTlAr/c7h+EvrL3KgH29KA4us5EfRE3W6EQ0=
+X-Sasl-enc: HorpJp+NrI50zx0v/DlAze37Z7R5NMFeMt/v2EBP9KN3 1349914404
+Received: from localhost (unknown [222.106.197.10])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 090CC4827DB;
+        Wed, 10 Oct 2012 20:13:23 -0400 (EDT)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         alan@lxorguk.ukuu.org.uk, Gabor Juhos <juhosg@openwrt.org>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [ 063/122] MIPS: ath79: use correct fractional dividers for {CPU,DDR}_PLL on AR934x
-Date:   Thu, 11 Oct 2012 07:53:49 +0900
-Message-Id: <20121010225349.499192961@linuxfoundation.org>
+Subject: [ 084/133] MIPS: ath79: use correct fractional dividers for {CPU,DDR}_PLL on AR934x
+Date:   Thu, 11 Oct 2012 07:51:50 +0900
+Message-Id: <20121010224909.611488612@linuxfoundation.org>
 X-Mailer: git-send-email 1.8.0.rc0.18.gf84667d
-In-Reply-To: <20121010225337.989799482@linuxfoundation.org>
-References: <20121010225337.989799482@linuxfoundation.org>
+In-Reply-To: <20121010224854.313159132@linuxfoundation.org>
+References: <20121010224854.313159132@linuxfoundation.org>
 User-Agent: quilt/0.60-2.1.2
-X-archive-position: 34680
+X-archive-position: 34681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,7 +48,7 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-3.6-stable review patch.  If anyone has any objections, please let me know.
+3.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

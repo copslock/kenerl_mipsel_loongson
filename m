@@ -1,27 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2012 10:08:07 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:47506 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2012 10:21:33 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:47679 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6870520Ab2JJIH6mF0w5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Oct 2012 10:07:58 +0200
+        id S6870535Ab2JJIVRBhRaK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 10 Oct 2012 10:21:17 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q9A87uBI007344;
-        Wed, 10 Oct 2012 10:07:56 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q9A8LGE4008334
+        for <linux-mips@linux-mips.org>; Wed, 10 Oct 2012 10:21:16 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q9A87u8n007343;
-        Wed, 10 Oct 2012 10:07:56 +0200
-Date:   Wed, 10 Oct 2012 10:07:56 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q9A8LFWH008333
+        for linux-mips@linux-mips.org; Wed, 10 Oct 2012 10:21:15 +0200
+Date:   Wed, 10 Oct 2012 10:21:15 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Ronny Meeus <ronny.meeus@gmail.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: 2GB userspace limitation in ABI N32
-Message-ID: <20121010080756.GC6740@linux-mips.org>
-References: <CAMJ=MEfFsJH6Cqkow7-w3a352iYiWWi+ubOSJaqhh2bp2MqPZg@mail.gmail.com>
+To:     linux-mips@linux-mips.org
+Subject: [ADMIN] Issues with new linux-mips.org machine
+Message-ID: <20121010082115.GA7974@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMJ=MEfFsJH6Cqkow7-w3a352iYiWWi+ubOSJaqhh2bp2MqPZg@mail.gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34666
+X-archive-position: 34667
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,30 +36,14 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, Oct 10, 2012 at 08:32:47AM +0200, Ronny Meeus wrote:
+As you probably noticed there were a few kinks after last week's migration
+to the new machine, in particular the spam filter was somehow a little
+generous in what it allowed through.  This may need more fine tuning but
+one of the issues was that spamassassin didn't like it own database files
+anymore after the system's OS had been upgraded by 4 releases.
 
-> I have a legacy application that we want to port to a MIPS (Cavium)
-> architecture from a PPC based one.
-> The board has 4GB memory of which we actually need almost 3GB in
-> application space. On the PPC this is no issue since the split
-> user/kernel is 3GB/1GB.
-> We have to use the N32 ABI Initial tests on MIPS showed me the
-> user-space limit of 2GB.
-> We do not want to port the application to a 64bit
-> 
-> Now the question is: are there any workarounds, tricks existing to get
-> around this limitation?
-> I found some mailthreads on this subject (n32-big ABI -
-> http://gcc.gnu.org/ml/gcc/2011-02/msg00278.html,
-> http://elinux.org/images/1/1f/New-tricks-mips-linux.pdf) but is looks
-> like this is not accepted by the community. Is there any process
-> planned or made in this area?
-
-I think limited time and gain killed the propoosed ABI rather than
-theoretical issues raised.  Other architectures such as i386 - well,
-IIRC any 32-bit ABI with more than 2GB userspace and a signed
-ptrdiff_t - are suffering from them as well.
-
-Also there's limited gain and even more limited time to implement things ...
+Also during the last night the system crashed twice and required manual
+intervention to reboot resulting in some downtime.  The cause of this has
+been plugged as well.
 
   Ralf

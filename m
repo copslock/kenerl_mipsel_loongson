@@ -1,24 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2012 14:53:01 +0200 (CEST)
-Received: from elvis.franken.de ([193.175.24.41]:50397 "EHLO elvis.franken.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6870544Ab2JJMwtAoWgd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Oct 2012 14:52:49 +0200
-Received: from uucp (helo=solo.franken.de)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1TLvmK-0006Xd-00; Wed, 10 Oct 2012 14:52:48 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-        id 6FE621DB15; Wed, 10 Oct 2012 14:52:42 +0200 (CEST)
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH] Switch RM400 serial to SCCNXP driver
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2012 15:05:40 +0200 (CEST)
+Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:46318 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6870501Ab2JJNFdEGhv0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Oct 2012 15:05:33 +0200
+Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
+        id 1TLvqO-0003Ay-00
+        for linux-mips@linux-mips.org; Wed, 10 Oct 2012 12:57:00 +0000
+Date:   Wed, 10 Oct 2012 08:57:00 -0400
 To:     linux-mips@linux-mips.org
-cc:     ralf@linux-mips.org
-Message-Id: <20121010125242.6FE621DB15@solo.franken.de>
-Date:   Wed, 10 Oct 2012 14:52:42 +0200 (CEST)
-X-archive-position: 34671
+Subject: Re: 2GB userspace limitation in ABI N32
+Message-ID: <20121010125700.GR254@brightrain.aerifal.cx>
+References: <CAMJ=MEfFsJH6Cqkow7-w3a352iYiWWi+ubOSJaqhh2bp2MqPZg@mail.gmail.com>
+ <20121010080756.GC6740@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20121010080756.GC6740@linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+From:   Rich Felker <dalias@aerifal.cx>
+X-archive-position: 34672
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: dalias@aerifal.cx
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -32,64 +36,33 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The new SCCNXP driver supports the SC2681 chips used in RM400 machines.
-We now use the new driver instead of the old SC26xx driver.
+On Wed, Oct 10, 2012 at 10:07:56AM +0200, Ralf Baechle wrote:
+> On Wed, Oct 10, 2012 at 08:32:47AM +0200, Ronny Meeus wrote:
+> 
+> > I have a legacy application that we want to port to a MIPS (Cavium)
+> > architecture from a PPC based one.
+> > The board has 4GB memory of which we actually need almost 3GB in
+> > application space. On the PPC this is no issue since the split
+> > user/kernel is 3GB/1GB.
+> > We have to use the N32 ABI Initial tests on MIPS showed me the
+> > user-space limit of 2GB.
+> > We do not want to port the application to a 64bit
+> > 
+> > Now the question is: are there any workarounds, tricks existing to get
+> > around this limitation?
+> > I found some mailthreads on this subject (n32-big ABI -
+> > http://gcc.gnu.org/ml/gcc/2011-02/msg00278.html,
+> > http://elinux.org/images/1/1f/New-tricks-mips-linux.pdf) but is looks
+> > like this is not accepted by the community. Is there any process
+> > planned or made in this area?
+> 
+> I think limited time and gain killed the propoosed ABI rather than
+> theoretical issues raised.  Other architectures such as i386 - well,
+> IIRC any 32-bit ABI with more than 2GB userspace and a signed
+> ptrdiff_t - are suffering from them as well.
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
----
+There's no issue with ptrdiff_t being signed 32-bit as long as the
+implementation does not allow individual objects larger than 2GB.
+Taking differences between pointers into different objects is UB.
 
-Remark: This patch is against upstream-linus tree
-
- arch/mips/sni/a20r.c |   27 +++------------------------
- 1 files changed, 3 insertions(+), 24 deletions(-)
-
-diff --git a/arch/mips/sni/a20r.c b/arch/mips/sni/a20r.c
-index b2d4f49..9cb9d43 100644
---- a/arch/mips/sni/a20r.c
-+++ b/arch/mips/sni/a20r.c
-@@ -118,26 +118,6 @@ static struct resource sc26xx_rsrc[] = {
- 	}
- };
- 
--static unsigned int sc26xx_data[2] = {
--	/* DTR   |   RTS    |   DSR    |   CTS     |   DCD     |   RI    */
--	(8 << 0) | (4 << 4) | (6 << 8) | (0 << 12) | (6 << 16) | (0 << 20),
--	(3 << 0) | (2 << 4) | (1 << 8) | (2 << 12) | (3 << 16) | (4 << 20)
--};
--
--static struct platform_device sc26xx_pdev = {
--	.name           = "SC26xx",
--	.num_resources  = ARRAY_SIZE(sc26xx_rsrc),
--	.resource       = sc26xx_rsrc,
--	.dev			= {
--		.platform_data	= sc26xx_data,
--	}
--};
--
--#warning "Please try migrate to use new driver SCCNXP and report the status" \
--	 "in the linux-serial mailing list."
--
--/* The code bellow is a replacement of SC26XX to SCCNXP */
--#if 0
- #include <linux/platform_data/sccnxp.h>
- 
- static struct sccnxp_pdata sccnxp_data = {
-@@ -155,15 +135,14 @@ static struct sccnxp_pdata sccnxp_data = {
- 			  MCTRL_SIG(RNG_IP, LINE_IP3),
- };
- 
--static struct platform_device sc2681_pdev = {
-+static struct platform_device sc26xx_pdev = {
- 	.name		= "sc2681",
--	.resource	= sc2xxx_rsrc,
--	.num_resources	= ARRAY_SIZE(sc2xxx_rsrc),
-+	.resource	= sc26xx_rsrc,
-+	.num_resources	= ARRAY_SIZE(sc26xx_rsrc),
- 	.dev	= {
- 		.platform_data	= &sccnxp_data,
- 	},
- };
--#endif
- 
- static u32 a20r_ack_hwint(void)
- {
+Rich

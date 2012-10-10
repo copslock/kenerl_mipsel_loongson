@@ -1,46 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2012 20:09:04 +0200 (CEST)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:64097 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6872761Ab2JJSI5Ur1nO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Oct 2012 20:08:57 +0200
-Received: by mail-pa0-f49.google.com with SMTP id bi5so912353pad.36
-        for <multiple recipients>; Wed, 10 Oct 2012 11:08:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=1As622FIsHyMUg4di5eAF0kuWtsHM/ai6C/QGdt30pc=;
-        b=mLpNBbwxuJgDA3rh1w8yqh6UOURFe6WU5RvDkOGoEge5eEBtcv5wM7MB7PqTAalpwy
-         fvyUnG2rB+mM6WFpucRW8MNqytRrgLq+/YxMttX4Xc6zwjY7fj1nziffajkXm/q7OiLA
-         or2nSvu+sdOHMgjpE0t1i/aw5jjpu6JL4fcrfXWFYYP0eyHYIdOhtiJ4IQZWwCpn4GDo
-         HEq59HwMURZJfbCWH6zOK9+shfac/OwbfLpDxZGJjf5VHNAi4gN9OgtQqmArDkuR3B5K
-         A34MCsToNINzZ6x3iUzPNpy3sVX0Os+9JkUY8LvEA5x68AjNmB476pGcCWucmTOuEnx4
-         BjTw==
-Received: by 10.68.138.170 with SMTP id qr10mr75877566pbb.53.1349892530573;
-        Wed, 10 Oct 2012 11:08:50 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id it5sm1359369pbc.10.2012.10.10.11.08.49
-        (version=SSLv3 cipher=OTHER);
-        Wed, 10 Oct 2012 11:08:50 -0700 (PDT)
-Message-ID: <5075B9B1.2050503@gmail.com>
-Date:   Wed, 10 Oct 2012 11:08:49 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:15.0) Gecko/20120828 Thunderbird/15.0
-MIME-Version: 1.0
-To:     Ronny Meeus <ronny.meeus@gmail.com>
-CC:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Rich Felker <dalias@aerifal.cx>, linux-mips@linux-mips.org,
-        "Pinski, Andrew" <Andrew.Pinski@caviumnetworks.com>
-Subject: Re: 2GB userspace limitation in ABI N32
-References: <CAMJ=MEfFsJH6Cqkow7-w3a352iYiWWi+ubOSJaqhh2bp2MqPZg@mail.gmail.com> <20121010080756.GC6740@linux-mips.org> <20121010125700.GR254@brightrain.aerifal.cx> <5075A8D8.2080704@gmail.com> <alpine.LFD.2.02.1210101805410.21287@eddie.linux-mips.org> <5075B19D.4080701@gmail.com> <CAMJ=MEf2LFcWLo8f061-WiM9dMt-hQJUmoRCCs6agZvc2VQrNQ@mail.gmail.com>
-In-Reply-To: <CAMJ=MEf2LFcWLo8f061-WiM9dMt-hQJUmoRCCs6agZvc2VQrNQ@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34679
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2012 01:03:29 +0200 (CEST)
+Received: from out1-smtp.messagingengine.com ([66.111.4.25]:50277 "EHLO
+        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6872812Ab2JJXDSeCYfC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Oct 2012 01:03:18 +0200
+Received: from compute4.internal (compute4.nyi.mail.srv.osa [10.202.2.44])
+        by gateway1.nyi.mail.srv.osa (Postfix) with ESMTP id 63B2020C73;
+        Wed, 10 Oct 2012 19:03:17 -0400 (EDT)
+Received: from frontend2.nyi.mail.srv.osa ([10.202.2.161])
+  by compute4.internal (MEProxy); Wed, 10 Oct 2012 19:03:17 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
+        messagingengine.com; h=from:to:cc:subject:date:message-id
+        :in-reply-to:references; s=smtpout; bh=xm9ssfjDXNPmazK+CnSqXauTk
+        84=; b=Qa0rU5jq++Pbh5p45uK2cuo+JT1bPf/W/bvS1EW6nkBGuq24ldps0X18t
+        BDnxxuw7e9vApxmTHr1vQBeKgl0cwNn2hgC5/wIxz7ppztHjbXe69ynhZn4fqHqH
+        lnNkk1EXFoDJCQI7OlzsTxvbMTKGcyw9zTO9105CYXmOicLj1M=
+X-Sasl-enc: FWLgquWDS+P5w7jDILVeP9NVX1uOZOMiBGC3kbbwJX+7 1349910196
+Received: from localhost (unknown [222.106.197.2])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 9BFEA4827DC;
+        Wed, 10 Oct 2012 19:03:16 -0400 (EDT)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        alan@lxorguk.ukuu.org.uk, Gabor Juhos <juhosg@openwrt.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [ 063/122] MIPS: ath79: use correct fractional dividers for {CPU,DDR}_PLL on AR934x
+Date:   Thu, 11 Oct 2012 07:53:49 +0900
+Message-Id: <20121010225349.499192961@linuxfoundation.org>
+X-Mailer: git-send-email 1.8.0.rc0.18.gf84667d
+In-Reply-To: <20121010225337.989799482@linuxfoundation.org>
+References: <20121010225337.989799482@linuxfoundation.org>
+User-Agent: quilt/0.60-2.1.2
+X-archive-position: 34680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,66 +48,58 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 10/10/2012 10:49 AM, Ronny Meeus wrote:
-> This is exactly the platform we are targeting:
-> - a Cavium processor
-> - running 64bit Linux
-> - 4Gb of ram of which almost 3Gb will be used by 1 process (consisting
-> of multiple threads)
->
-> It would be really great that we could get help from you guys here.
+3.6-stable review patch.  If anyone has any objections, please let me know.
 
-As far as I know, we are not actively working on this.  So, as I see it, 
-your options are:
+------------------
 
-A) Use n64.
+From: Gabor Juhos <juhosg@openwrt.org>
 
-B) Do all the work yourself.
+commit 65fc7f9957c52ad4fdf4ee5dfe3a75aa0a633d39 upstream.
 
-C) Pay someone to do the work for you.
+The current dividers in the code are wrong and this
+leads to broken CPU frequency calculation on boards
+where the fractional part is used.
 
-David Daney
+For example, if the SoC is running from a 40MHz
+reference clock, refdiv=1, nint=14, outdiv=0 and
+nfrac=31 the real frequency is 579.375MHz but the
+current code calculates 569.687MHz instead.
 
+Because the system time is indirectly related to
+the CPU frequency the broken computation causes
+drift in the system time.
 
-> Many thanks for the effort you are putting into this.
->
-> On Wed, Oct 10, 2012 at 7:34 PM, David Daney <ddaney.cavm@gmail.com> wrote:
->> On 10/10/2012 10:10 AM, Maciej W. Rozycki wrote:
->>>
->>> On Wed, 10 Oct 2012, David Daney wrote:
->>>
->>>> The only disadvantage of doing this is that the code will be slightly
->>>> larger/slower as it takes three instructions to load a zero extended
->>>> 32-bit
->>>> pointer verses two for n32-2GB.
->>>
->>>
->>>    And of course such code will only run on 64-bit processors that not only
->>> support 64-bit data, but 64-bit addressing as well.
->>
->>
->> That's right.  All of this assumes a fully 64-bit operating system kernel
->> (Linux).
->>
->> It is not really very interesting on 'small' systems that have less than
->> about 1GB of RAM.  And obviously impossible if 64-bit addressing is not
->> supported.
->>
->> So the interesting use cases are 'modern' systems with 4GB or more of ram
->> installed.  And only then for the subset of applications that need more than
->> 2GB of virtual address space but will never need to consider more than 4GB.
->>
->>
->>
->>
->>>   That is implement the
->>> CP0.Status.UX bit rather than CP0.Status.PX only -- the latters are still
->>> compatible with the true n32 ABI.  See also CP0.Config.AT.
->>>
->>>     Maciej
->>>
->>>
->>
->>
->
->
+The correct divider is 2^6 for the CPU PLL and 2^10
+for the DDR PLL. Use the correct values to fix the
+issue.
+
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/4305/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/ath79/clock.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/arch/mips/ath79/clock.c
++++ b/arch/mips/ath79/clock.c
+@@ -189,7 +189,7 @@ static void __init ar934x_clocks_init(vo
+ 	       AR934X_PLL_CPU_CONFIG_NFRAC_MASK;
+ 
+ 	cpu_pll = nint * ath79_ref_clk.rate / ref_div;
+-	cpu_pll += frac * ath79_ref_clk.rate / (ref_div * (2 << 6));
++	cpu_pll += frac * ath79_ref_clk.rate / (ref_div * (1 << 6));
+ 	cpu_pll /= (1 << out_div);
+ 
+ 	pll = ath79_pll_rr(AR934X_PLL_DDR_CONFIG_REG);
+@@ -203,7 +203,7 @@ static void __init ar934x_clocks_init(vo
+ 	       AR934X_PLL_DDR_CONFIG_NFRAC_MASK;
+ 
+ 	ddr_pll = nint * ath79_ref_clk.rate / ref_div;
+-	ddr_pll += frac * ath79_ref_clk.rate / (ref_div * (2 << 10));
++	ddr_pll += frac * ath79_ref_clk.rate / (ref_div * (1 << 10));
+ 	ddr_pll /= (1 << out_div);
+ 
+ 	clk_ctrl = ath79_pll_rr(AR934X_PLL_CPU_DDR_CLK_CTRL_REG);

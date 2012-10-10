@@ -1,28 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2012 15:05:40 +0200 (CEST)
-Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:46318 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6870501Ab2JJNFdEGhv0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Oct 2012 15:05:33 +0200
-Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
-        id 1TLvqO-0003Ay-00
-        for linux-mips@linux-mips.org; Wed, 10 Oct 2012 12:57:00 +0000
-Date:   Wed, 10 Oct 2012 08:57:00 -0400
-To:     linux-mips@linux-mips.org
-Subject: Re: 2GB userspace limitation in ABI N32
-Message-ID: <20121010125700.GR254@brightrain.aerifal.cx>
-References: <CAMJ=MEfFsJH6Cqkow7-w3a352iYiWWi+ubOSJaqhh2bp2MqPZg@mail.gmail.com>
- <20121010080756.GC6740@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2012 16:37:16 +0200 (CEST)
+Received: from dns1.mips.com ([12.201.5.69]:52425 "EHLO dns1.mips.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6872754Ab2JJOhBYPlTC convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Oct 2012 16:37:01 +0200
+Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
+        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id q9AEaquj009169;
+        Wed, 10 Oct 2012 07:36:53 -0700
+X-WSS-ID: 0MBOLXD-01-14Y-02
+X-M-MSG: 
+Received: from exchdb01.mips.com (unknown [192.168.36.67])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mailgate1.mips.com (Postfix) with ESMTP id 20E5B364666;
+        Wed, 10 Oct 2012 07:36:48 -0700 (PDT)
+Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
+ exchdb01.mips.com ([fe80::2897:a30d:a923:303%16]) with mapi id
+ 14.01.0270.001; Wed, 10 Oct 2012 07:36:45 -0700
+From:   "Hill, Steven" <sjhill@mips.com>
+To:     Suprasad Mutalik Desai <suprasad.desai@gmail.com>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "Dearman, Chris" <chris@mips.com>,
+        John Crispin <blogic@openwrt.org>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Subject: RE: [PATCH] MIPS: kspd: Remove kspd support.
+Thread-Topic: [PATCH] MIPS: kspd: Remove kspd support.
+Thread-Index: AQHNpmxAeixNgwt+XE+io4KwpbtWYZeynPcAgAAYkgD//+ajzQ==
+Date:   Wed, 10 Oct 2012 14:36:44 +0000
+Message-ID: <31E06A9FC96CEC488B43B19E2957C1B801146A3B97@exchdb03.mips.com>
+References: <1349821203-23083-1-git-send-email-sjhill@mips.com>
+        <20121010073826.GB6740@linux-mips.org>,<CAJMXqXYQC6L3iS92p9R7FuQkuwJWN7SEZy2+E_v-0UKTp7SaSw@mail.gmail.com>
+In-Reply-To: <CAJMXqXYQC6L3iS92p9R7FuQkuwJWN7SEZy2+E_v-0UKTp7SaSw@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.36.79]
+x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
+x-ems-stamp: uGo2j33ClXfeKm13powxRQ==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20121010080756.GC6740@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-From:   Rich Felker <dalias@aerifal.cx>
-X-archive-position: 34672
+X-archive-position: 34673
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dalias@aerifal.cx
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,33 +59,8 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, Oct 10, 2012 at 10:07:56AM +0200, Ralf Baechle wrote:
-> On Wed, Oct 10, 2012 at 08:32:47AM +0200, Ronny Meeus wrote:
-> 
-> > I have a legacy application that we want to port to a MIPS (Cavium)
-> > architecture from a PPC based one.
-> > The board has 4GB memory of which we actually need almost 3GB in
-> > application space. On the PPC this is no issue since the split
-> > user/kernel is 3GB/1GB.
-> > We have to use the N32 ABI Initial tests on MIPS showed me the
-> > user-space limit of 2GB.
-> > We do not want to port the application to a 64bit
-> > 
-> > Now the question is: are there any workarounds, tricks existing to get
-> > around this limitation?
-> > I found some mailthreads on this subject (n32-big ABI -
-> > http://gcc.gnu.org/ml/gcc/2011-02/msg00278.html,
-> > http://elinux.org/images/1/1f/New-tricks-mips-linux.pdf) but is looks
-> > like this is not accepted by the community. Is there any process
-> > planned or made in this area?
-> 
-> I think limited time and gain killed the propoosed ABI rather than
-> theoretical issues raised.  Other architectures such as i386 - well,
-> IIRC any 32-bit ABI with more than 2GB userspace and a signed
-> ptrdiff_t - are suffering from them as well.
+Hello Suprasad.
 
-There's no issue with ptrdiff_t being signed 32-bit as long as the
-implementation does not allow individual objects larger than 2GB.
-Taking differences between pointers into different objects is UB.
+Certainly the AP/SP API can be left in. We wish to remove the kspd support. Do you or anyone on your team use kspd? Thanks.
 
-Rich
+-Steve

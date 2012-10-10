@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2012 14:51:52 +0200 (CEST)
-Received: from elvis.franken.de ([193.175.24.41]:50394 "EHLO elvis.franken.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2012 14:53:01 +0200 (CEST)
+Received: from elvis.franken.de ([193.175.24.41]:50397 "EHLO elvis.franken.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6870501Ab2JJMvpNx13E (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Oct 2012 14:51:45 +0200
+        id S6870544Ab2JJMwtAoWgd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 10 Oct 2012 14:52:49 +0200
 Received: from uucp (helo=solo.franken.de)
         by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1TLvlI-0006UG-00; Wed, 10 Oct 2012 14:51:44 +0200
+        id 1TLvmK-0006Xd-00; Wed, 10 Oct 2012 14:52:48 +0200
 Received: by solo.franken.de (Postfix, from userid 1000)
-        id EDCA61DB14; Wed, 10 Oct 2012 14:51:26 +0200 (CEST)
+        id 6FE621DB15; Wed, 10 Oct 2012 14:52:42 +0200 (CEST)
 From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Subject: [PATCH] Switch RM400 serial to SCCNXP driver
 To:     linux-mips@linux-mips.org
 cc:     ralf@linux-mips.org
-Message-Id: <20121010125126.EDCA61DB14@solo.franken.de>
-Date:   Wed, 10 Oct 2012 14:51:26 +0200 (CEST)
-X-archive-position: 34670
+Message-Id: <20121010125242.6FE621DB15@solo.franken.de>
+Date:   Wed, 10 Oct 2012 14:52:42 +0200 (CEST)
+X-archive-position: 34671
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,6 +37,8 @@ We now use the new driver instead of the old SC26xx driver.
 
 Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 ---
+
+Remark: This patch is against upstream-linus tree
 
  arch/mips/sni/a20r.c |   27 +++------------------------
  1 files changed, 3 insertions(+), 24 deletions(-)

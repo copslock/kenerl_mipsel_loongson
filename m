@@ -1,53 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2012 17:23:23 +0200 (CEST)
-Received: from dns1.mips.com ([12.201.5.69]:50804 "EHLO dns1.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6878777Ab2JKPVWvRDOi convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Oct 2012 17:21:22 +0200
-Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id q9BFKxDN007165;
-        Thu, 11 Oct 2012 08:20:59 -0700
-X-WSS-ID: 0MBQIMX-01-01B-02
-X-M-MSG: 
-Received: from exchdb01.mips.com (unknown [192.168.36.84])
-        (using TLSv1 with cipher AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mailgate1.mips.com (Postfix) with ESMTP id 2621B364645;
-        Thu, 11 Oct 2012 08:20:57 -0700 (PDT)
-Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
- exchhub01.mips.com ([::1]) with mapi id 14.01.0270.001; Thu, 11 Oct 2012
- 08:20:56 -0700
-From:   "Hill, Steven" <sjhill@mips.com>
-To:     Suprasad Mutalik Desai <suprasad.desai@gmail.com>
-CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "Dearman, Chris" <chris@mips.com>,
-        John Crispin <blogic@openwrt.org>,
-        Al Viro <viro@zeniv.linux.org.uk>
-Subject: RE: [PATCH] MIPS: kspd: Remove kspd support.
-Thread-Topic: [PATCH] MIPS: kspd: Remove kspd support.
-Thread-Index: AQHNpmxAeixNgwt+XE+io4KwpbtWYZeynPcAgAAYkgD//+ajzYABhGIAgAAaTZk=
-Date:   Thu, 11 Oct 2012 15:20:55 +0000
-Message-ID: <31E06A9FC96CEC488B43B19E2957C1B801146A3D01@exchdb03.mips.com>
-References: <1349821203-23083-1-git-send-email-sjhill@mips.com>
-        <20121010073826.GB6740@linux-mips.org>
-        <CAJMXqXYQC6L3iS92p9R7FuQkuwJWN7SEZy2+E_v-0UKTp7SaSw@mail.gmail.com>
-        <31E06A9FC96CEC488B43B19E2957C1B801146A3B97@exchdb03.mips.com>,<CAJMXqXaAKOdz3yxz1qJ1Xbd581bD1w3pZpb+qy_1zj9B_ahV9w@mail.gmail.com>
-In-Reply-To: <CAJMXqXaAKOdz3yxz1qJ1Xbd581bD1w3pZpb+qy_1zj9B_ahV9w@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.36.79]
-x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-x-ems-stamp: ywwDKKF4p+aftNswHNBirw==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-archive-position: 34684
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2012 18:50:41 +0200 (CEST)
+Received: from mail-pa0-f49.google.com ([209.85.220.49]:64373 "EHLO
+        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6872769Ab2JKQu0pdHJN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Oct 2012 18:50:26 +0200
+Received: by mail-pa0-f49.google.com with SMTP id bi5so2017489pad.36
+        for <multiple recipients>; Thu, 11 Oct 2012 09:50:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=4yfvNuu3eLDjb6r1Mgsm2GKXDVyUW55XZy91JSgDuYU=;
+        b=i8PNhGsrKvbi7BxQlojsCqrVr4bHeM1wLoV8Xu66HjVrJE6aIbdo4FabKJa8NwSgvH
+         m7WhgwCJPuVt8UW05DI4ZFAh8u8ig5DpYeyHCivYO6kWjUxFly/+jBvP09hLzLLixLsw
+         MmpocIFY1BRgZQudTf8ZlVl71h7UPNjHq4/sWSzVk04TY+luEo9FteXL+Lzg5UeNdaUi
+         tRJVapM8hmqB4ycfpY9WEhhkg4COx5th1HUg2pTMaXcl130UsGSTOin1HKLQycrWxNuH
+         qHhTsB66xRM1FW/fFcTcQvXrFplW6uBx6l0qxkmHSAwSvfzqaIGq/FXGGClgpRGJLpyK
+         +A1A==
+Received: by 10.68.116.239 with SMTP id jz15mr5369638pbb.43.1349974219521;
+        Thu, 11 Oct 2012 09:50:19 -0700 (PDT)
+Received: from localhost.localdomain ([115.111.18.195])
+        by mx.google.com with ESMTPS id rz10sm2988095pbc.32.2012.10.11.09.50.16
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 11 Oct 2012 09:50:19 -0700 (PDT)
+From:   jerin jacob <jerinjacobk@gmail.com>
+To:     ralf@linux-mips.org
+Cc:     jerin jacob <jerinjacobk@gmail.com>, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS:CMP Fix physical core number calculation logic
+Date:   Thu, 11 Oct 2012 22:18:51 +0530
+Message-Id: <1349974131-5856-1-git-send-email-jerinjacobk@gmail.com>
+X-Mailer: git-send-email 1.7.6.5
+X-archive-position: 34687
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@mips.com
+X-original-sender: jerinjacobk@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,8 +46,26 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Suprasad,
+CPUNum Field in EBase register is 10bit wide, so after 1 bit right shift, mask
+value should be 0x1ff
 
-I have submitted a patch to Ralf for removal of KSPD only. Thanks.
+Signed-off-by: jerin jacob <jerinjacobk@gmail.com>
+---
+ arch/mips/kernel/smp-cmp.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
--Steve
+diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
+index afc379c..06cd0c6 100644
+--- a/arch/mips/kernel/smp-cmp.c
++++ b/arch/mips/kernel/smp-cmp.c
+@@ -97,7 +97,7 @@ static void cmp_init_secondary(void)
+ 
+ 	/* Enable per-cpu interrupts: platform specific */
+ 
+-	c->core = (read_c0_ebase() >> 1) & 0xff;
++	c->core = (read_c0_ebase() >> 1) & 0x1ff;
+ #if defined(CONFIG_MIPS_MT_SMP) || defined(CONFIG_MIPS_MT_SMTC)
+ 	c->vpe_id = (read_c0_tcbind() >> TCBIND_CURVPE_SHIFT) & TCBIND_CURVPE;
+ #endif
+-- 
+1.7.6.5

@@ -1,38 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2012 18:50:41 +0200 (CEST)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:64373 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6872769Ab2JKQu0pdHJN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Oct 2012 18:50:26 +0200
-Received: by mail-pa0-f49.google.com with SMTP id bi5so2017489pad.36
-        for <multiple recipients>; Thu, 11 Oct 2012 09:50:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=4yfvNuu3eLDjb6r1Mgsm2GKXDVyUW55XZy91JSgDuYU=;
-        b=i8PNhGsrKvbi7BxQlojsCqrVr4bHeM1wLoV8Xu66HjVrJE6aIbdo4FabKJa8NwSgvH
-         m7WhgwCJPuVt8UW05DI4ZFAh8u8ig5DpYeyHCivYO6kWjUxFly/+jBvP09hLzLLixLsw
-         MmpocIFY1BRgZQudTf8ZlVl71h7UPNjHq4/sWSzVk04TY+luEo9FteXL+Lzg5UeNdaUi
-         tRJVapM8hmqB4ycfpY9WEhhkg4COx5th1HUg2pTMaXcl130UsGSTOin1HKLQycrWxNuH
-         qHhTsB66xRM1FW/fFcTcQvXrFplW6uBx6l0qxkmHSAwSvfzqaIGq/FXGGClgpRGJLpyK
-         +A1A==
-Received: by 10.68.116.239 with SMTP id jz15mr5369638pbb.43.1349974219521;
-        Thu, 11 Oct 2012 09:50:19 -0700 (PDT)
-Received: from localhost.localdomain ([115.111.18.195])
-        by mx.google.com with ESMTPS id rz10sm2988095pbc.32.2012.10.11.09.50.16
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 11 Oct 2012 09:50:19 -0700 (PDT)
-From:   jerin jacob <jerinjacobk@gmail.com>
-To:     ralf@linux-mips.org
-Cc:     jerin jacob <jerinjacobk@gmail.com>, linux-mips@linux-mips.org
-Subject: [PATCH] MIPS:CMP Fix physical core number calculation logic
-Date:   Thu, 11 Oct 2012 22:18:51 +0530
-Message-Id: <1349974131-5856-1-git-send-email-jerinjacobk@gmail.com>
-X-Mailer: git-send-email 1.7.6.5
-X-archive-position: 34687
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2012 12:18:46 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:60182 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6870515Ab2JLKSW1Kqud (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 12 Oct 2012 12:18:22 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q9CAIIdI012674;
+        Fri, 12 Oct 2012 12:18:18 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q9CAIHLY012673;
+        Fri, 12 Oct 2012 12:18:17 +0200
+Date:   Fri, 12 Oct 2012 12:18:17 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Ronny Meeus <ronny.meeus@gmail.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: 2GB userspace limitation in ABI N32
+Message-ID: <20121012101817.GC30020@linux-mips.org>
+References: <CAMJ=MEfFsJH6Cqkow7-w3a352iYiWWi+ubOSJaqhh2bp2MqPZg@mail.gmail.com>
+ <20121010080756.GC6740@linux-mips.org>
+ <CAMJ=MEeSxpcLRCWmkOn7w4Ge1J9Bg7_bFN+Z8xPoYumGFddabA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMJ=MEeSxpcLRCWmkOn7w4Ge1J9Bg7_bFN+Z8xPoYumGFddabA@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34688
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jerinjacobk@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,26 +41,27 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-CPUNum Field in EBase register is 10bit wide, so after 1 bit right shift, mask
-value should be 0x1ff
+On Wed, Oct 10, 2012 at 05:12:16PM +0200, Ronny Meeus wrote:
 
-Signed-off-by: jerin jacob <jerinjacobk@gmail.com>
----
- arch/mips/kernel/smp-cmp.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+> Do you have any clue (rough) on the amount of effort this change would cost?
 
-diff --git a/arch/mips/kernel/smp-cmp.c b/arch/mips/kernel/smp-cmp.c
-index afc379c..06cd0c6 100644
---- a/arch/mips/kernel/smp-cmp.c
-+++ b/arch/mips/kernel/smp-cmp.c
-@@ -97,7 +97,7 @@ static void cmp_init_secondary(void)
- 
- 	/* Enable per-cpu interrupts: platform specific */
- 
--	c->core = (read_c0_ebase() >> 1) & 0xff;
-+	c->core = (read_c0_ebase() >> 1) & 0x1ff;
- #if defined(CONFIG_MIPS_MT_SMP) || defined(CONFIG_MIPS_MT_SMTC)
- 	c->vpe_id = (read_c0_tcbind() >> TCBIND_CURVPE_SHIFT) & TCBIND_CURVPE;
- #endif
--- 
-1.7.6.5
+David Daney's reply should give you more information for an estimate.
+
+> About the limited gain we can discuss: if you have a large application
+> that has been created assuming 32bit and it needs to be ported to a
+> 64bit architecture, I think the effort can be huge and the risk for
+> forgetting things is high. It will be very hard to check whether the
+> system behaves well under all conditions.
+
+A 64-bit port could start right away without the delay of waiting for
+a usable N32-4GB.  Added benefit - with N64 you can grow beyond the 3GB.
+
+Downside, due to larger pointers thus better cache locality 32-bit code
+generally performs better.  And I agree that verification of N32-4GB
+probably is easier than for a large application that wasn't written
+with the intend of 64-bit support.
+
+In my past as a contractor I've dealth with a few customers who were
+trying to avoid going 64-bit at all cost.  They had to pay that cost ...
+
+  Ralf

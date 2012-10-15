@@ -1,34 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2012 13:59:58 +0200 (CEST)
-Received: from mga03.intel.com ([143.182.124.21]:52741 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823037Ab2JOL7lD3fKA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Oct 2012 13:59:41 +0200
-Received: from azsmga002.ch.intel.com ([10.2.17.35])
-  by azsmga101.ch.intel.com with ESMTP; 15 Oct 2012 04:59:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.80,587,1344236400"; 
-   d="scan'208";a="156290893"
-Received: from blue.fi.intel.com ([10.237.72.50])
-  by AZSMGA002.ch.intel.com with ESMTP; 15 Oct 2012 04:59:30 -0700
-Received: by blue.fi.intel.com (Postfix, from userid 1000)
-        id 14A54E0073; Mon, 15 Oct 2012 15:00:19 +0300 (EEST)
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org
-Cc:     linux-s390@vger.kernel.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH] asm-generic, mm: pgtable: consolidate zero page helpers
-Date:   Mon, 15 Oct 2012 14:59:59 +0300
-Message-Id: <1350302399-8036-1-git-send-email-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 1.7.10.4
-X-archive-position: 34699
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2012 19:45:21 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:36661 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6823034Ab2JORpQPO83Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Oct 2012 19:45:16 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q9FHjEZc025663;
+        Mon, 15 Oct 2012 19:45:14 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q9FHjB9U025662;
+        Mon, 15 Oct 2012 19:45:11 +0200
+Date:   Mon, 15 Oct 2012 19:45:11 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Suprasad Mutalik Desai <suprasad.desai@gmail.com>
+Cc:     "Steven J. Hill" <sjhill@mips.com>, linux-mips@linux-mips.org,
+        Chris Dearman <chris@mips.com>,
+        John Crispin <blogic@openwrt.org>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH] MIPS: kspd: Remove kspd support.
+Message-ID: <20121015174511.GA20197@linux-mips.org>
+References: <1349821203-23083-1-git-send-email-sjhill@mips.com>
+ <20121010073826.GB6740@linux-mips.org>
+ <CAJMXqXYQC6L3iS92p9R7FuQkuwJWN7SEZy2+E_v-0UKTp7SaSw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJMXqXYQC6L3iS92p9R7FuQkuwJWN7SEZy2+E_v-0UKTp7SaSw@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34700
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill.shutemov@linux.intel.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,140 +44,40 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+On Wed, Oct 10, 2012 at 02:36:22PM +0530, Suprasad Mutalik Desai wrote:
 
-We have two different implementation of is_zero_pfn() and
-my_zero_pfn() helpers: for architectures with and without zero page
-coloring.
+>  AFAIK, the "CONFIG_MIPS_VPE_APSP_API" was used to get the console dump of
+> the SP program running on the VPE1 (usually a bare-iron program compiled
+> with MIPS provided toolchain) . This option was useful on the MALTA
+> platform during the initial evaluation of the APRP or APSP mode.
 
-Let's consolidate them in <asm-generic/pgtable.h>.
+kspd has never been a brilliant thing - it's running in an essentially
+random thread / file context so it's just coincidence something is working
+at all.  Also syscalls from inside the kernel are frowned upon these days
+and are being eleminated.
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/mips/include/asm/pgtable.h |   11 +----------
- arch/s390/include/asm/pgtable.h |   11 +----------
- include/asm-generic/pgtable.h   |   26 ++++++++++++++++++++++++++
- include/linux/mm.h              |    8 --------
- mm/memory.c                     |    7 -------
- 5 files changed, 28 insertions(+), 35 deletions(-)
+Another issue was that the provided toolchain you mentioned was the SDE
+toolchain along with its libraries.  The SDE toolchain uses different
+values for all its constants which requires a compat layer.  That should
+rather stay outside the kernel but as it was, it was burried inside kspd.c.
 
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index c02158b..14490e9 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -76,16 +76,7 @@ extern unsigned long zero_page_mask;
- 
- #define ZERO_PAGE(vaddr) \
- 	(virt_to_page((void *)(empty_zero_page + (((unsigned long)(vaddr)) & zero_page_mask))))
--
--#define is_zero_pfn is_zero_pfn
--static inline int is_zero_pfn(unsigned long pfn)
--{
--	extern unsigned long zero_pfn;
--	unsigned long offset_from_zero_pfn = pfn - zero_pfn;
--	return offset_from_zero_pfn <= (zero_page_mask >> PAGE_SHIFT);
--}
--
--#define my_zero_pfn(addr)	page_to_pfn(ZERO_PAGE(addr))
-+#define __HAVE_COLOR_ZERO_PAGE
- 
- extern void paging_init(void);
- 
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index dd647c9..a76e53d 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -55,16 +55,7 @@ extern unsigned long zero_page_mask;
- #define ZERO_PAGE(vaddr) \
- 	(virt_to_page((void *)(empty_zero_page + \
- 	 (((unsigned long)(vaddr)) &zero_page_mask))))
--
--#define is_zero_pfn is_zero_pfn
--static inline int is_zero_pfn(unsigned long pfn)
--{
--	extern unsigned long zero_pfn;
--	unsigned long offset_from_zero_pfn = pfn - zero_pfn;
--	return offset_from_zero_pfn <= (zero_page_mask >> PAGE_SHIFT);
--}
--
--#define my_zero_pfn(addr)	page_to_pfn(ZERO_PAGE(addr))
-+#define __HAVE_COLOR_ZERO_PAGE
- 
- #endif /* !__ASSEMBLY__ */
- 
-diff --git a/include/asm-generic/pgtable.h b/include/asm-generic/pgtable.h
-index b36ce40..284e808 100644
---- a/include/asm-generic/pgtable.h
-+++ b/include/asm-generic/pgtable.h
-@@ -449,6 +449,32 @@ extern void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
- 			unsigned long size);
- #endif
- 
-+#ifdef __HAVE_COLOR_ZERO_PAGE
-+static inline int is_zero_pfn(unsigned long pfn)
-+{
-+	extern unsigned long zero_pfn;
-+	unsigned long offset_from_zero_pfn = pfn - zero_pfn;
-+	return offset_from_zero_pfn <= (zero_page_mask >> PAGE_SHIFT);
-+}
-+
-+static inline unsigned long my_zero_pfn(unsigned long addr)
-+{
-+	return page_to_pfn(ZERO_PAGE(addr));
-+}
-+#else
-+static inline int is_zero_pfn(unsigned long pfn)
-+{
-+	extern unsigned long zero_pfn;
-+	return pfn == zero_pfn;
-+}
-+
-+static inline unsigned long my_zero_pfn(unsigned long addr)
-+{
-+	extern unsigned long zero_pfn;
-+	return zero_pfn;
-+}
-+#endif
-+
- #ifdef CONFIG_MMU
- 
- #ifndef CONFIG_TRANSPARENT_HUGEPAGE
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index fe329da..fa06804 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -516,14 +516,6 @@ static inline pte_t maybe_mkwrite(pte_t pte, struct vm_area_struct *vma)
- }
- #endif
- 
--#ifndef my_zero_pfn
--static inline unsigned long my_zero_pfn(unsigned long addr)
--{
--	extern unsigned long zero_pfn;
--	return zero_pfn;
--}
--#endif
--
- /*
-  * Multiple processes may "see" the same page. E.g. for untouched
-  * mappings of /dev/null, all processes see the same page full of
-diff --git a/mm/memory.c b/mm/memory.c
-index 6017e23..d3f2120 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -717,13 +717,6 @@ static inline bool is_cow_mapping(vm_flags_t flags)
- 	return (flags & (VM_SHARED | VM_MAYWRITE)) == VM_MAYWRITE;
- }
- 
--#ifndef is_zero_pfn
--static inline int is_zero_pfn(unsigned long pfn)
--{
--	return pfn == zero_pfn;
--}
--#endif
--
- /*
-  * vm_normal_page -- This function gets the "struct page" associated with a pte.
-  *
--- 
-1.7.7.6
+If somebody fixed up kspd I absolutely don't mind resurrecting it but as
+it was, the sole feedback I ever had was from various other kernel
+developers.  NOT A SINGLE USER.  EVER.  So I quite liked the nuclear
+solution for kspd.
+
+My suggestion would be to convert the old kspd into some communication
+facility where the bare metal code talks through the rtlx with a userspace
+daemon which then does the actual I/O operations.  That also solved the
+ABI issue - as it was, kspd had no concept of which ABI to use.
+
+And probably not even the bare metal code should have or it ends up
+carrying half a libc along ...
+
+> Now if this support is removed then is there any alternative provided by
+> MIPS ?.
+
+You have to ask MIPS.  I'm only the God of Revenge that rips patches into
+bits and removes kernel features ;-)
+
+  Raf

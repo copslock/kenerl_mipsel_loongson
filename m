@@ -1,48 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2012 22:17:59 +0200 (CEST)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:54587 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2012 22:51:54 +0200 (CEST)
+Received: from mail-pa0-f49.google.com ([209.85.220.49]:51276 "EHLO
         mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823068Ab2JOUR35XPcI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Oct 2012 22:17:29 +0200
-Received: by mail-pa0-f49.google.com with SMTP id bi5so5431089pad.36
-        for <linux-mips@linux-mips.org>; Mon, 15 Oct 2012 13:17:22 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S6823041Ab2JOUvTi4l7T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Oct 2012 22:51:19 +0200
+Received: by mail-pa0-f49.google.com with SMTP id bi5so5455954pad.36
+        for <linux-mips@linux-mips.org>; Mon, 15 Oct 2012 13:51:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=date:from:x-x-sender:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version:content-type;
+        bh=ZphSaKwJQTYoGuZJtvF1BDTKqVMwUGAEFRDtKMbmExM=;
+        b=GYPwXvmqFjHwmrdeXlZJtrQDw3HpEJkL7eNBxyF2Fx59SODSddoJz2pK2B5+cHfU8J
+         F90ptbkWbSN6wj1Yb4txmp/nSiAILZCsCL07jQAvmQ4FlITrZX5r2+oXaeXJVzzeSDNv
+         5KhmgjJh0VpMScBKVPWz6Ia36VZvvZvtEYyhXHP3Ifp8uUB3sNC1hMfM9AXFzxjUFuJm
+         6EPb9D54Q0A20xxgnOiOL9bR/KXIsHyGqDJV31rzJ4bvPQYlYeLVPY+9nJdyA8jWdtQc
+         NJPamppcv8KPg3wZ41q+8M6VNWFj6uHOriaaLWUoWi2Ae1pI2gxRZUcBK+2V0cDAG6NP
+         V1jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent
-         :x-gm-message-state;
-        bh=1ENCQ460bwG/H7tt6SwNgyG/Rt9q+n1blFfzCqhuKl0=;
-        b=UiYIWk8FquTEe0rcWf59LbxXkpxqIA2We8/Moam1EfJfUjE4aeRsf1pZrg7wCQCZrO
-         ZeW2ym0RSXu7DiV43W7+KlwY/UlCeXq3o699s2NbwNMe1PdLnHsFezpmukxKlktYe4N9
-         rLlCLaR/nU0TcOKqhKp0K94hWzlrFQtN675DD3g4XAmifD7weYdvT+MTJq23HDh/h1uV
-         FQyOetZsCC+ms67lDTNyJFEQdoskOpBVaDagd8mhhbJ85lTaW3+MyCI6XSCs0RwqmwtU
-         fA5DX824G4hbuBRCjsBk891T1dTwYA5wbIjl98G1xMukC2cBiEsRjq8kSHV8DXcjR+HJ
-         dmkw==
-Received: by 10.68.248.33 with SMTP id yj1mr40863499pbc.141.1350332242767;
-        Mon, 15 Oct 2012 13:17:22 -0700 (PDT)
-Received: from localhost ([12.216.224.66])
-        by mx.google.com with ESMTPS id ru4sm9526410pbc.25.2012.10.15.13.17.20
+        h=date:from:x-x-sender:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version:content-type:x-gm-message-state;
+        bh=ZphSaKwJQTYoGuZJtvF1BDTKqVMwUGAEFRDtKMbmExM=;
+        b=K9zA4Xrxy/0AoKIY3Pltwxa8jkjxYPK/CW4CyZ3g/NP/UxXQ+7hwNpd8uOK/zRCCCI
+         9VTwmb+IvTawNRWM7kZe6CbxxLsaVTaHkrI7B7op9MQ8P0MN1EbGPVUIwtE02WEpEBsq
+         omzJfNU2ryg733nI3QrM/pHks7mAsGHv/FTlHdE+e0Xa7BAyIYgayQOpaCEi8vyJQZqm
+         LM5fA+fSVXTlFBl5JSiflNhjT7tCsOl0HtnsfBHJPg2AyazXhsx7sQYkv5i6kRYwcepY
+         fLjrOp0JxviFGrFMKIBqJwoKVzOoYKhTYbN5d3XPADTr02zjiWd9OsYqtToiCgg+rUsf
+         goWg==
+Received: by 10.68.131.40 with SMTP id oj8mr41348169pbb.40.1350334272976;
+        Mon, 15 Oct 2012 13:51:12 -0700 (PDT)
+Received: from [2620:0:1008:1101:be30:5bff:fed8:5e64] ([2620:0:1008:1101:be30:5bff:fed8:5e64])
+        by mx.google.com with ESMTPS id o5sm9588113paz.32.2012.10.15.13.51.11
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 15 Oct 2012 13:17:21 -0700 (PDT)
-Date:   Mon, 15 Oct 2012 13:17:19 -0700
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Gabor Juhos <juhosg@openwrt.org>
-Cc:     stable@vger.kernel.org, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH stable] MIPS: ath79: Fix CPU/DDR frequency calculation
- for SRIF PLLs
-Message-ID: <20121015201719.GB16888@kroah.com>
-References: <1350231436-27436-1-git-send-email-juhosg@openwrt.org>
+        Mon, 15 Oct 2012 13:51:12 -0700 (PDT)
+Date:   Mon, 15 Oct 2012 13:51:10 -0700 (PDT)
+From:   David Rientjes <rientjes@google.com>
+X-X-Sender: rientjes@chino.kir.corp.google.com
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH] mm: huge_memory: Fix build error.
+In-Reply-To: <20121015114456.GA30314@linux-mips.org>
+Message-ID: <alpine.DEB.2.00.1210151349560.17947@chino.kir.corp.google.com>
+References: <20121015114456.GA30314@linux-mips.org>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1350231436-27436-1-git-send-email-juhosg@openwrt.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Gm-Message-State: ALoCoQm9S18OsnHl5ziOS0khHKjV2Xo7Wrs1nu7QR9DvivvYVAk+z3/Hf116mL6ZEYUe3WgKQLW+
-X-archive-position: 34704
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Gm-Message-State: ALoCoQlddEsB7OroqiTDThQjZu9ykuISU0IFalEHxhaN6AD3wmHdaFmA2FZWgk3SmzmKtx7aQCzprYRJZgP+hIiMtUokXUS0dNJ50ESVT52Utb5hhNzDNi2ZzhW7qjhEwyhPQ4n0s6OwClig15gqXkYhRDUFzA12kMZDRZqHlXPCiUVFDuHjoUsUfEFDHVinh2YdDWT/XXGnvmLuHDJY/gie5eVi/BP8Vw==
+X-archive-position: 34705
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: rientjes@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,31 +67,22 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sun, Oct 14, 2012 at 06:17:16PM +0200, Gabor Juhos wrote:
-> commit 97541ccfb9db2bb9cd1dde6344d5834438d14bda upstream.
+On Mon, 15 Oct 2012, Ralf Baechle wrote:
+
+> Certain configurations won't implicitly pull in <linux/pagemap.h> resulting
+> in the following build error:
 > 
-> Besides the CPU and DDR PLLs, the CPU and DDR frequencies
-> can be derived from other PLLs in the SRIF block on the
-> AR934x SoCs. The current code does not checks if the SRIF
-> PLLs are used and this can lead to incorrectly calculated
-> CPU/DDR frequencies.
+> mm/huge_memory.c: In function 'release_pte_page':
+> mm/huge_memory.c:1697:2: error: implicit declaration of function 'unlock_page' [-Werror=implicit-function-declaration]
+> mm/huge_memory.c: In function '__collapse_huge_page_isolate':
+> mm/huge_memory.c:1757:3: error: implicit declaration of function 'trylock_page' [-Werror=implicit-function-declaration]
+> cc1: some warnings being treated as errors
 > 
-> Fix it by calculating the frequencies from SRIF PLLs if
-> those are used on a given board.
-> 
-> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-> Cc: linux-mips@linux-mips.org
-> Patchwork: https://patchwork.linux-mips.org/patch/4324/
+
+This is because CONFIG_HUGETLB_PAGE=n so mempolicy.h doesn't include 
+pagemap.h?
+
+> Reported-by: David Daney <david.daney@cavium.com>
 > Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> ---
-> The original change was a candidate for stable (3.5+) however it was
-> rejected during the stable-review process due to conflicts in
-> 'arch/mips/include/asm/mach-ath79/ar71xx_regs.h'
-> 
-> This is a backport of the aforementioned commit, and it is applicable 
-> to 3.5.7 and 3.6.2.
 
-3.5 is now end-of-life, but 3.6 is still alive, so I've applied this
-there.
-
-greg k-h
+Acked-by: David Rientjes <rientjes@google.com>

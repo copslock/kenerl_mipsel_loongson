@@ -1,27 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Oct 2012 11:45:36 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:37352 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Oct 2012 13:32:06 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:37796 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6817534Ab2JRJpf3ign5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 18 Oct 2012 11:45:35 +0200
+        id S6823112Ab2JRLcA3xkSa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 18 Oct 2012 13:32:00 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q9I9jYmK029630;
-        Thu, 18 Oct 2012 11:45:34 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q9IBVuBN005372;
+        Thu, 18 Oct 2012 13:31:56 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q9I9jXQo029629;
-        Thu, 18 Oct 2012 11:45:33 +0200
-Date:   Thu, 18 Oct 2012 11:45:33 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q9IBVtAV005371;
+        Thu, 18 Oct 2012 13:31:55 +0200
+Date:   Thu, 18 Oct 2012 13:31:55 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     jerin jacob <jerinjacobk@gmail.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS:CMP Fix physical core number calculation logic
-Message-ID: <20121018094533.GA28896@linux-mips.org>
-References: <1349974131-5856-1-git-send-email-jerinjacobk@gmail.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH] MIPS: Remove redundant TLB invalidate from
+ pmdp_splitting_flush().
+Message-ID: <20121018113154.GA2321@linux-mips.org>
+References: <1350519620-4582-1-git-send-email-ddaney.cavm@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1349974131-5856-1-git-send-email-jerinjacobk@gmail.com>
+In-Reply-To: <1350519620-4582-1-git-send-email-ddaney.cavm@gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34722
+X-archive-position: 34723
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,13 +40,19 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Oct 11, 2012 at 10:18:51PM +0530, jerin jacob wrote:
+On Wed, Oct 17, 2012 at 05:20:20PM -0700, David Daney wrote:
 
-> CPUNum Field in EBase register is 10bit wide, so after 1 bit right shift, mask
-> value should be 0x1ff
+> diff --git a/arch/mips/mm/pgtable-64.c b/arch/mips/mm/pgtable-64.c
+> index 6c9a477..5408bb5 100644
+> --- a/arch/mips/mm/pgtable-64.c
+> +++ b/arch/mips/mm/pgtable-64.c
+> @@ -71,7 +71,7 @@ void pmdp_splitting_flush(struct vm_area_struct *vma,
+>  	if (!pmd_trans_splitting(*pmdp)) {
+>  		pmd_t pmd = pmd_mksplitting(*pmdp);
+>  		set_pmd_at(vma->vm_mm, address, pmdp, pmd);
+> -		flush_tlb_range(vma, address, address + HPAGE_SIZE);
+> +		/* TLB already flushed by set_pmd_at() */
 
-Fortunately nobody has a CMP with more than 256 cores yet :-)
-
-Applied.  Thanks,
+Thanks, folded into the THP patch.
 
   Ralf

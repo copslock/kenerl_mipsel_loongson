@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 11:22:55 +0200 (CEST)
-Received: from opensource.wolfsonmicro.com ([80.75.67.52]:45027 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 11:47:34 +0200 (CEST)
+Received: from opensource.wolfsonmicro.com ([80.75.67.52]:43616 "EHLO
         opensource.wolfsonmicro.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817088Ab2JWJWyLcfG8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2012 11:22:54 +0200
+        by eddie.linux-mips.org with ESMTP id S6816671Ab2JWJrdk4WDg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2012 11:47:33 +0200
 Received: from finisterre.wolfsonmicro.main (unknown [87.246.78.26])
-        by opensource.wolfsonmicro.com (Postfix) with ESMTPSA id EFC3C110A00;
-        Tue, 23 Oct 2012 10:22:46 +0100 (BST)
+        by opensource.wolfsonmicro.com (Postfix) with ESMTPSA id D090D110A00;
+        Tue, 23 Oct 2012 10:47:27 +0100 (BST)
 Received: from broonie by finisterre.wolfsonmicro.main with local (Exim 4.80)
         (envelope-from <broonie@opensource.wolfsonmicro.com>)
-        id 1TQahC-0003dX-7T; Tue, 23 Oct 2012 10:22:46 +0100
-Date:   Tue, 23 Oct 2012 10:22:46 +0100
+        id 1TQb54-0003sd-Lx; Tue, 23 Oct 2012 10:47:27 +0100
+Date:   Tue, 23 Oct 2012 10:47:26 +0100
 From:   Mark Brown <broonie@opensource.wolfsonmicro.com>
-To:     Kelvin Cheung <keguang.zhang@gmail.com>
+To:     Stephen Warren <swarren@wwwdotorg.org>
 Cc:     Russell King <linux@arm.linux.org.uk>,
         Mike Turquette <mturquette@linaro.org>,
         Guan Xuetao <gxt@mprc.pku.edu.cn>,
@@ -19,17 +19,17 @@ Cc:     Russell King <linux@arm.linux.org.uk>,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] clk: Make the generic clock API available by default
-Message-ID: <20121023092245.GR4477@opensource.wolfsonmicro.com>
+Message-ID: <20121023094726.GT4477@opensource.wolfsonmicro.com>
 References: <1350910970-9095-1-git-send-email-broonie@opensource.wolfsonmicro.com>
- <CAJhJPsV0rnE+K-9bWFy85T36H+PfbibrsGQ_mN_miqttyQJNhw@mail.gmail.com>
+ <50856CC6.7010403@wwwdotorg.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="gMqNd2jlyJQcupG/"
+        protocol="application/pgp-signature"; boundary="BfbbJsf3thGkpLcA"
 Content-Disposition: inline
-In-Reply-To: <CAJhJPsV0rnE+K-9bWFy85T36H+PfbibrsGQ_mN_miqttyQJNhw@mail.gmail.com>
+In-Reply-To: <50856CC6.7010403@wwwdotorg.org>
 X-Cookie: Just to have it is enough.
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34746
+X-archive-position: 34747
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,42 +48,38 @@ X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
 
---gMqNd2jlyJQcupG/
+--BfbbJsf3thGkpLcA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Oct 23, 2012 at 10:10:09AM +0800, Kelvin Cheung wrote:
-> Hi Mark,
+On Mon, Oct 22, 2012 at 09:56:54AM -0600, Stephen Warren wrote:
 
-Don't top post!
+> Since v3.7-rc1, Tegra uses common clock, so I don't think the change
+> above is right is it?
 
-> But the common clock infrastructure of Loongson1 has been implemented and
-> enabled in previous patches.
-> http://patchwork.linux-mips.org/patch/4268/
-> Please remove this arch from your patch.
+No, updated.  It really shouldn't take multiple kernel releases to get
+something like this done...
 
-Done.
-
---gMqNd2jlyJQcupG/
+--BfbbJsf3thGkpLcA
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJQhmG4AAoJELSic+t+oim92SUP/3Nb6fOaMW5uFKSJMifluBPG
-jBC+4sUNF6OyC9zF6GQcw9+EasY9J0drkWlmsJnau8KzGPDTonCnBjBXk2rVAG6t
-vqnmMuK7R+ErO7/DOCiyKxZ73JaRCNHOMPB2sAsYFiUI8MZElyZZJ48BdqndD1EV
-4lIJ404Sc4GHFoLNb2ELVCmFhe6FH1Wr0v2vqhCx7FvKLvwLNJAv0eT9355hEPdg
-Mhe4tJC8eFnmIM14OoOgUDuv8izHUst7ak+tYZy2fuZmScccHGUGbMurqCmJhEmf
-F56fcT4VajWHbPI6euEAsYdJHg677hWn6cMGMT2wN2cRSjOKzb+Tu4oeRWSpSgTZ
-z5iYU2q+hFDCDk6FKBN9vmPurCn3yCjUfSHFaw1fJhjRzv1pAKNIH6egLGamYpBA
-Xu7PBwcMFHB0yA8JJEaKy/l59IBJoVxCkhRS/hvwja1WFAjgdEzobepRLgvRoa13
-gbXxnvlEi6yheaF6P2Bue3Yw7xDIvnwk8MzMbhBJlT+uX6IGOG5Sszk88AoxT7JS
-SUBWj+gu4FCGq+4Bh9tD2aT/S8UoCkO97mCIOGR+6QR64U33dKfU7tzfkPShpSWM
-SiVHXzJmvFQ+XLQu97Fwmu20J0TXbvbUnNjIf4Dtn37b1OUIS2LdYvtDYPbMmzAw
-SZ32wAM5iAE62WIvyGm4
-=VZg6
+iQIcBAEBAgAGBQJQhmd7AAoJELSic+t+oim9NygP/3BZNo0hOvHe/erUrjFum8wo
+xd0mchVp1nUxdz7p6bVY80ab7EBYTxW/6UjB6N3RIDECmHTrj85wziVo+LdTYJCw
+FjO+AGlZY725ETE9s9ua4jw/2dSrzaQmeXw5SHGsE/wGDBCckM9doIa8AT9gJjyn
+MciV6sxak/7hSCxYRpFlCZHwUaoSTiBNkZ/xztHNLnsU+jFrneeB0uNYrzk26S65
+ndfGe/xKjIx74/4xk1LuR0+vttsg7tPzL2Jq9VEThb+445I3XfnaazLPgMIYAfaE
+OPZuatK1ZfrQ4xrfxBmGLt4Ogmilb4u8QGMm3m1GFKIuCAWxJ1V0qDyREMTlkD7j
+G5h77woM4FdpB+LFbhPXmQghU7X90p4J8BTyGyPieuyDd/HUI7BFFImMoqxeSHOE
+9tjYyeOwka5YPyXFJ6m4hoSNHSaRqKJ37tGKMz3S+UssYmuJvNxIktA0mHR+TipC
+1+k4el6jbuwI1gxOomSChg2uyz667DFFw2vwZEVT8unNzt2KXazuCip8rQixFw9m
+lJieUC2AV4jpwY/TGpeLcZLE81IucW/YhU9LQqG+/jCLk1i67dDtdjBuI6c7o/fG
+j+xwIfx+Xo37yFaYA1jjcivilC/9f4y/kYIie6bKUfv5t6bC8lFWDQ9BCe3SVa8s
+mPaJ9q0Ol1rCTR79Q2uM
+=u/M+
 -----END PGP SIGNATURE-----
 
---gMqNd2jlyJQcupG/--
+--BfbbJsf3thGkpLcA--

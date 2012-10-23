@@ -1,39 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 19:52:05 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:63547 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825714Ab2JWRsKh0JTM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2012 19:48:10 +0200
-Received: by mail-lb0-f177.google.com with SMTP id gi11so520872lbb.36
-        for <multiple recipients>; Tue, 23 Oct 2012 10:48:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 19:53:50 +0200 (CEST)
+Received: from mail-ia0-f177.google.com ([209.85.210.177]:34302 "EHLO
+        mail-ia0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825707Ab2JWRxt1bvsD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2012 19:53:49 +0200
+Received: by mail-ia0-f177.google.com with SMTP id x26so3215887iak.36
+        for <multiple recipients>; Tue, 23 Oct 2012 10:53:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=Ov3w8UH/CSJPcUiTpZQZFT+83rmXPGxdeaxqVZCYXHo=;
-        b=izQNVs8x/E+h+Sm6/bKGsIuY1wjyiKwoxe+/mpg9xsAcheJ5sgIZSCTiag7aDthq11
-         CN+B0c6xJQO74q4aTEmzc1zZtE/XDNF0RbR6FWPHE5uw+Nw6ZeTA8Ar9zQ3lkml6X0vG
-         0ys7wudhDE/94BmRMD2wJDSAM5PTpr44HVNUfsnj5iVxXvDNRxypcc2piTgQ3OqTTZmM
-         nWbYknc9+t7uqEVRk3oMhsZEHkxbHJBHKlzGpT1D23VQ2dPnG1BKoUplbY7FLDQ/XbWI
-         SA2lhuhpaVsHAdJ1kPSMBy32auc1+JdlQvQJu7aD0R2LkP28O6+XlwQs6J5S4PM9wGEo
-         oviw==
-Received: by 10.112.103.135 with SMTP id fw7mr5303148lbb.16.1351014490088;
-        Tue, 23 Oct 2012 10:48:10 -0700 (PDT)
-Received: from lazar.cs.niisi.ras.ru (t109.niisi.ras.ru. [193.232.173.109])
-        by mx.google.com with ESMTPS id m6sm4260284lbh.10.2012.10.23.10.48.08
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 23 Oct 2012 10:48:09 -0700 (PDT)
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        bh=fqhZqn6auWlBi3C8BDElrx40n2GPI/tPMfgw8pywwdY=;
+        b=rBmxQ2oIdxOYvB4aeoxp69rSqpPx23gXIoNcnjgiQfNxZ8JSOTeUr1SqUgVycZAvxg
+         d77aXuinFvpR+jSwdv8XVQGdf0NAkXA/GbOcYQEHDDufPZ/NOX9oLN6yi3ZP2q5YHRhk
+         tZbYZ508S/P/jMCaMNWRhtiWKTdS8F0cRDSpjeDTv8ofQcZRbuC6jZK1dcJL/qkJ8yWQ
+         s57nLE4RDlr6D1RKJe6yeaA4brZUKwQjWdurYhs7ttB2gvWrTXwsSRdnjlvDbcLTeCJ4
+         dC3tvXbdlyyWWgzwuGsn+H0UzF8rDleU1HkXREJM5oGegvPemnhoZTaPjJiHXiUMMV5a
+         KYUQ==
+MIME-Version: 1.0
+Received: by 10.50.193.131 with SMTP id ho3mr21150652igc.51.1351014822703;
+ Tue, 23 Oct 2012 10:53:42 -0700 (PDT)
+Received: by 10.64.13.233 with HTTP; Tue, 23 Oct 2012 10:53:42 -0700 (PDT)
+Date:   Tue, 23 Oct 2012 21:53:42 +0400
+Message-ID: <CAA4bVAEFEhap9wCHroouCQZj+X_ccusoV13MmgDqFw1Kp813PA@mail.gmail.com>
+Subject: [RFC 00/13] MIPS: JZ4750D: Add base support for Ingenic JZ4750D SOC
 From:   Antony Pavlov <antonynpavlov@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Antony Pavlov <antonynpavlov@gmail.com>
-Subject: [RFC 13/13] MIPS: rzx50: Add defconfig file
-Date:   Tue, 23 Oct 2012 21:44:01 +0400
-Message-Id: <1351014241-3207-14-git-send-email-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1351014241-3207-1-git-send-email-antonynpavlov@gmail.com>
-References: <1351014241-3207-1-git-send-email-antonynpavlov@gmail.com>
-X-archive-position: 34763
+        Maarten ter Huurne <maarten@treewalker.org>
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 34764
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,80 +46,49 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/configs/ritmix-rzx50_defonfig |   63 +++++++++++++++++++++++++++++++
- 1 file changed, 63 insertions(+)
- create mode 100644 arch/mips/configs/ritmix-rzx50_defonfig
+AFAIK the single known chip in Ingenic JZ4750D line is JZ4755.
+It has just the same CPU core as JZ4740, but another set of
+peripherals (though the program model for the most
+of the peripherals is the same).
 
-diff --git a/arch/mips/configs/ritmix-rzx50_defonfig b/arch/mips/configs/ritmix-rzx50_defonfig
-new file mode 100644
-index 0000000..fc392f5
---- /dev/null
-+++ b/arch/mips/configs/ritmix-rzx50_defonfig
-@@ -0,0 +1,63 @@
-+CONFIG_MACH_JZ4750D=y
-+CONFIG_HZ_100=y
-+CONFIG_KEXEC=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_EXPERIMENTAL=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+# CONFIG_SWAP is not set
-+CONFIG_SYSVIPC=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_INITRAMFS_SOURCE="/home/antony/git/gcwnow-buildroot.git/output/images/rootfs.cpio"
-+CONFIG_SYSCTL_SYSCALL=y
-+CONFIG_EMBEDDED=y
-+# CONFIG_VM_EVENT_COUNTERS is not set
-+# CONFIG_SLUB_DEBUG is not set
-+# CONFIG_LBDAF is not set
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_IOSCHED_DEADLINE is not set
-+# CONFIG_IOSCHED_CFQ is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-+# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-+# CONFIG_INET_XFRM_MODE_BEET is not set
-+# CONFIG_INET_LRO is not set
-+# CONFIG_INET_DIAG is not set
-+# CONFIG_IPV6 is not set
-+# CONFIG_WIRELESS is not set
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+# CONFIG_FIRMWARE_IN_KERNEL is not set
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_BLK_DEV_RAM=y
-+CONFIG_NETDEVICES=y
-+# CONFIG_ETHERNET is not set
-+# CONFIG_WLAN is not set
-+# CONFIG_INPUT is not set
-+# CONFIG_SERIO is not set
-+# CONFIG_VT is not set
-+CONFIG_LEGACY_PTY_COUNT=2
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_NR_UARTS=2
-+CONFIG_SERIAL_8250_RUNTIME_UARTS=2
-+# CONFIG_HW_RANDOM is not set
-+# CONFIG_HWMON is not set
-+# CONFIG_USB_SUPPORT is not set
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+# CONFIG_MISC_FILESYSTEMS is not set
-+# CONFIG_NETWORK_FILESYSTEMS is not set
-+CONFIG_DEBUG_FS=y
-+# CONFIG_FTRACE is not set
-+CONFIG_CMDLINE_BOOL=y
-+CONFIG_CMDLINE="mem=64M root=/dev/loop0 ro rdinit=/bin/sh console=ttyS1,57600 panic=3"
-+CONFIG_CMDLINE_OVERRIDE=y
++-----------------+--------------+--------------+
+|                 |   JZ4755     |    JZ4740    |
++-----------------+--------------+--------------+
+| UART            |      3       |       4      |
+| MSC (mmc/sd)    |      2       |       1      |
+| GPIO            |     5x32     |      4x32    |
+| TCU (timers)    | 6x16 + 1x32  |      8x16    |
+| USB             |  device 2.0  |   host 1.1   |
+|                 |              |  device 2.0  |
++-----------------+--------------+--------------+
+
+The most significant advantage of the JZ4755 chip
+is the second MIPS core dedicated for image processing.
+Also JZ4755 is made with use of more precise technology
+and it can run on the higher clock rate (approx. 433 MHz
+for JZ4755 vs 336 MHz for JZ4740).
+
+The JZ4755 is used in some game consoles:
+* Ritmix RZX-50;
+* Dingoo A320E/A380;
+* GameLinBox.
+
+This patch series based on the work of Lars-Peter Clausen.
+To tell the truth it is the Lars-Peter Clausen's patches
+with some fixes and changes.
+
+As most of the code for JZ4750D is very close to code
+for JZ4740 we can incorporate the code for JZ4750D
+to the code for JZ4740 to avoid code duplication.
+
+I propose to rename 'jz4740' mach directory to 'xburst'
+or 'ingenic'.
+
+The patch series introduces the minimal support for the JZ4755,
+no peripherals are enabled save UART1. To test the kernel
+I run it with incorporated initrd rootfs made with help
+of https://github.com/gcwnow/buildroot.git
+
 -- 
-1.7.10.4
+Best regards,
+  Antony Pavlov

@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 19:48:56 +0200 (CEST)
-Received: from mail-la0-f49.google.com ([209.85.215.49]:65033 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 19:49:15 +0200 (CEST)
+Received: from mail-la0-f49.google.com ([209.85.215.49]:33813 "EHLO
         mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825697Ab2JWRsAT8HUY (ORCPT
+        by eddie.linux-mips.org with ESMTP id S6825698Ab2JWRsAeLx04 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2012 19:48:00 +0200
-Received: by mail-la0-f49.google.com with SMTP id z14so2431934lag.36
-        for <multiple recipients>; Tue, 23 Oct 2012 10:47:54 -0700 (PDT)
+Received: by mail-la0-f49.google.com with SMTP id z14so2431916lag.36
+        for <multiple recipients>; Tue, 23 Oct 2012 10:48:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=yakIoMfL5F1d1mjAp/1GKIw+GanWAlI5GQhptN7LBJM=;
-        b=n57xy8lPNpXH1DjutymRcCARcAE5OpagwgCCCDQzn9Tcma5LPmlm+ueJywl7N/GyA8
-         L3pf02lZf8TtVgHmgKPoutVYilnPTyCnoPIE2yKWnXmLzZ2ybKP6Di5Lea7rGgLsyCsr
-         4EgH+cE68uDKFRMp4NoOg8hf+lkIpLg4jLcLg0Ivm9+LgeWPR9pEK7gwye7O9DTkCES6
-         QLkKfKJELgkd3+rVQ/BUWnlOwg2UQq3ADD3vxGjv2rYTNvWpanC0zup86hAz5aZ8HGFa
-         O9/N/2Vk8L1jMhaJPiU0wapw7a4rGQDK73VTr8DMpXkoM1uCJUV05sefqO2D8EIxHXG/
-         GaBA==
-Received: by 10.152.144.201 with SMTP id so9mr12223311lab.24.1351014474583;
-        Tue, 23 Oct 2012 10:47:54 -0700 (PDT)
+        bh=sIBUmOe+lSN2n37V0e1aTdnku7fnj+9bQ1vi1qDJm+8=;
+        b=Wp0QaScxG+PS+21ia3CVm0EQ+gQdUGuygZL1MR3PT2S38z5EDVW8ssDIm5pgV0VGvO
+         5w6tABzqu8x/oKhFYC2Jy08FeecknS2l01o8D7jmAByVE9Vor6grsJNKKzpbAvU1XYFQ
+         EpbgOKO6Tysh6cppUEtanADXtNn+hDNSFGN2CyPvx6WGbHOj2IqEZfDqbxT+qrATTkRA
+         vRk52CgIkzMTGrkfKwbAAJkOqvAPABBkJyjwSEQlRhmd94g1jptOAg2wN90FVGvvff6M
+         vDQF+IQqpRJt8zqeT7Uwt0frt9PXZik7zJ4Nw4GNvOCdZJBaCH1YBVm4mEAgutYQiJEl
+         hASA==
+Received: by 10.112.102.195 with SMTP id fq3mr5318991lbb.46.1351014480063;
+        Tue, 23 Oct 2012 10:48:00 -0700 (PDT)
 Received: from lazar.cs.niisi.ras.ru (t109.niisi.ras.ru. [193.232.173.109])
-        by mx.google.com with ESMTPS id m6sm4260284lbh.10.2012.10.23.10.47.53
+        by mx.google.com with ESMTPS id m6sm4260284lbh.10.2012.10.23.10.47.58
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 23 Oct 2012 10:47:53 -0700 (PDT)
+        Tue, 23 Oct 2012 10:47:59 -0700 (PDT)
 From:   Antony Pavlov <antonynpavlov@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Maarten ter Huurne <maarten@treewalker.org>,
         Antony Pavlov <antonynpavlov@gmail.com>
-Subject: [RFC 03/13] MIPS: JZ4750D: Add IRQ handler code
-Date:   Tue, 23 Oct 2012 21:43:51 +0400
-Message-Id: <1351014241-3207-4-git-send-email-antonynpavlov@gmail.com>
+Subject: [RFC 06/13] MIPS: JZ4750D: Add system reset support
+Date:   Tue, 23 Oct 2012 21:43:54 +0400
+Message-Id: <1351014241-3207-7-git-send-email-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1351014241-3207-1-git-send-email-antonynpavlov@gmail.com>
 References: <1351014241-3207-1-git-send-email-antonynpavlov@gmail.com>
-X-archive-position: 34753
+X-archive-position: 34754
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,28 +51,28 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add support for IRQ handling on a JZ4750D SoC.
+Add support for poweroff/reboot on a JZ4750D SoC.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/include/asm/mach-jz4750d/irq.h |   29 ++++++
- arch/mips/jz4750d/irq.c                  |  158 ++++++++++++++++++++++++++++++
- 2 files changed, 187 insertions(+)
- create mode 100644 arch/mips/include/asm/mach-jz4750d/irq.h
- create mode 100644 arch/mips/jz4750d/irq.c
+ arch/mips/jz4750d/reset.c |   79 +++++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/jz4750d/reset.h |    6 ++++
+ 2 files changed, 85 insertions(+)
+ create mode 100644 arch/mips/jz4750d/reset.c
+ create mode 100644 arch/mips/jz4750d/reset.h
 
-diff --git a/arch/mips/include/asm/mach-jz4750d/irq.h b/arch/mips/include/asm/mach-jz4750d/irq.h
+diff --git a/arch/mips/jz4750d/reset.c b/arch/mips/jz4750d/reset.c
 new file mode 100644
-index 0000000..3b157d0
+index 0000000..eb8441c
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-jz4750d/irq.h
-@@ -0,0 +1,29 @@
++++ b/arch/mips/jz4750d/reset.c
+@@ -0,0 +1,79 @@
 +/*
 + *  Copyright (C) 2012, Antony Pavlov <antonynpavlov@gmail.com>
-+ *  JZ4750D IRQ definitions
++ *  JZ4750D reset routines
 + *
-+ *  based on JZ4740 IRQ definitions
-+ *  Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
++ *  based on JZ4740 reset routines
++ *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
 + *
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License as published by the
@@ -81,183 +81,81 @@ index 0000000..3b157d0
 + *
 + */
 +
-+#ifndef __ASM_MACH_JZ4750D_IRQ_H__
-+#define __ASM_MACH_JZ4750D_IRQ_H__
++#include <linux/io.h>
++#include <linux/kernel.h>
++#include <linux/pm.h>
 +
-+#define MIPS_CPU_IRQ_BASE 0
-+#define JZ4750D_IRQ_BASE 8
-+
-+#define JZ4750D_IRQ(x)		(JZ4750D_IRQ_BASE + (x))
-+
-+#define JZ4750D_IRQ_UART1	JZ4750D_IRQ(8)
-+#define JZ4750D_IRQ_UART0	JZ4750D_IRQ(9)
-+#define JZ4750D_IRQ_TCU1	JZ4750D_IRQ(22)
-+
-+#define NR_IRQS (256)
-+
-+#endif
-diff --git a/arch/mips/jz4750d/irq.c b/arch/mips/jz4750d/irq.c
-new file mode 100644
-index 0000000..dcd1153
---- /dev/null
-+++ b/arch/mips/jz4750d/irq.c
-@@ -0,0 +1,158 @@
-+/*
-+ *  Copyright (C) 2012, Antony Pavlov <antonynpavlov@gmail.com>
-+ *  JZ4750D platform IRQ support
-+ *
-+ *  based on JZ4740 platform IRQ support
-+ *  Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License as published by the
-+ *  Free Software Foundation; either version 2 of the License, or (at your
-+ *  option) any later version.
-+ *
-+ */
-+
-+#include <linux/errno.h>
-+#include <linux/init.h>
-+#include <linux/types.h>
-+#include <linux/interrupt.h>
-+#include <linux/ioport.h>
-+#include <linux/timex.h>
-+#include <linux/slab.h>
-+#include <linux/delay.h>
-+
-+#include <linux/debugfs.h>
-+#include <linux/seq_file.h>
-+
-+#include <asm/io.h>
-+#include <asm/mipsregs.h>
-+#include <asm/irq_cpu.h>
++#include <asm/reboot.h>
 +
 +#include <asm/mach-jz4750d/base.h>
++#include <asm/mach-jz4750d/timer.h>
 +
-+static void __iomem *jz_intc_base;
-+static uint32_t jz_intc_wakeup;
-+
-+#define JZ_REG_INTC_STATUS	0x00
-+#define JZ_REG_INTC_MASK	0x04
-+#define JZ_REG_INTC_SET_MASK	0x08
-+#define JZ_REG_INTC_CLEAR_MASK	0x0c
-+#define JZ_REG_INTC_PENDING	0x10
-+
-+#define IRQ_BIT(x) BIT((x) - JZ4750D_IRQ_BASE)
-+
-+static inline unsigned long intc_irq_bit(struct irq_data *data)
++static void jz4750d_halt(void)
 +{
-+	return (unsigned long)irq_data_get_irq_chip_data(data);
-+}
-+
-+static void intc_irq_unmask(struct irq_data *d)
-+{
-+	writel(intc_irq_bit(d), jz_intc_base + JZ_REG_INTC_CLEAR_MASK);
-+}
-+
-+static void intc_irq_mask(struct irq_data *d)
-+{
-+	writel(intc_irq_bit(d), jz_intc_base + JZ_REG_INTC_SET_MASK);
-+}
-+
-+static int intc_irq_set_wake(struct irq_data *d, unsigned int on)
-+{
-+	if (on)
-+		jz_intc_wakeup |= intc_irq_bit(d);
-+	else
-+		jz_intc_wakeup &= ~intc_irq_bit(d);
-+
-+	return 0;
-+}
-+
-+static struct irq_chip intc_irq_type = {
-+	.name =		"INTC",
-+	.irq_mask =	intc_irq_mask,
-+	.irq_mask_ack =	intc_irq_mask,
-+	.irq_unmask =	intc_irq_unmask,
-+	.irq_set_wake =	intc_irq_set_wake,
-+};
-+
-+static irqreturn_t jz4750d_cascade(int irq, void *data)
-+{
-+	uint32_t irq_reg;
-+
-+	irq_reg = readl(jz_intc_base + JZ_REG_INTC_PENDING);
-+
-+	if (irq_reg)
-+		generic_handle_irq(__fls(irq_reg) + JZ4750D_IRQ_BASE);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static struct irqaction jz4750d_cascade_action = {
-+	.handler = jz4750d_cascade,
-+	.name = "JZ4750D cascade interrupt",
-+};
-+
-+void __init arch_init_irq(void)
-+{
-+	int i;
-+
-+	mips_cpu_irq_init();
-+
-+	jz_intc_base = ioremap(JZ4750D_INTC_BASE_ADDR, 0x14);
-+
-+	for (i = JZ4750D_IRQ_BASE; i < JZ4750D_IRQ_BASE + 32; i++) {
-+		irq_set_chip_data(i, (void *)IRQ_BIT(i));
-+		irq_set_chip_and_handler(i, &intc_irq_type, handle_level_irq);
++	while (1) {
++		__asm__(".set push;\n"
++			".set mips3;\n"
++			"wait;\n"
++			".set pop;\n"
++		);
 +	}
-+
-+	setup_irq(2, &jz4750d_cascade_action);
 +}
 +
-+asmlinkage void plat_irq_dispatch(void)
++#define JZ_REG_WDT_DATA 0x00
++#define JZ_REG_WDT_COUNTER_ENABLE 0x04
++#define JZ_REG_WDT_COUNTER 0x08
++#define JZ_REG_WDT_CTRL 0x0c
++
++static void jz4750d_restart(char *command)
 +{
-+	unsigned int pending = read_c0_status() & read_c0_cause() & ST0_IM;
-+	if (pending & STATUSF_IP2)
-+		do_IRQ(2);
-+	else if (pending & STATUSF_IP3)
-+		do_IRQ(3);
-+	else
-+		spurious_interrupt();
++	void __iomem *wdt_base = ioremap(JZ4750D_WDT_BASE_ADDR, 0x0f);
++
++	jz4750d_timer_enable_watchdog();
++
++	writeb(0, wdt_base + JZ_REG_WDT_COUNTER_ENABLE);
++
++	writew(0, wdt_base + JZ_REG_WDT_COUNTER);
++	writew(0, wdt_base + JZ_REG_WDT_DATA);
++	writew(BIT(2), wdt_base + JZ_REG_WDT_CTRL);
++
++	writeb(1, wdt_base + JZ_REG_WDT_COUNTER_ENABLE);
++	jz4750d_halt();
 +}
 +
-+#ifdef CONFIG_DEBUG_FS
++#define JZ_REG_RTC_CTRL		0x00
++#define JZ_REG_RTC_HIBERNATE	0x20
 +
-+static inline void intc_seq_reg(struct seq_file *s, const char *name,
-+	unsigned int reg)
++#define JZ_RTC_CTRL_WRDY	BIT(7)
++
++static void jz4750d_power_off(void)
 +{
-+	seq_printf(s, "%s:\t\t%08x\n", name, readl(jz_intc_base + reg));
++	void __iomem *rtc_base = ioremap(JZ4750D_RTC_BASE_ADDR, 0x24);
++	uint32_t ctrl;
++
++	do {
++		ctrl = readl(rtc_base + JZ_REG_RTC_CTRL);
++	} while (!(ctrl & JZ_RTC_CTRL_WRDY));
++
++	writel(1, rtc_base + JZ_REG_RTC_HIBERNATE);
++	jz4750d_halt();
 +}
 +
-+static int intc_regs_show(struct seq_file *s, void *unused)
++void jz4750d_reset_init(void)
 +{
-+	intc_seq_reg(s, "Status", JZ_REG_INTC_STATUS);
-+	intc_seq_reg(s, "Mask", JZ_REG_INTC_MASK);
-+	intc_seq_reg(s, "Pending", JZ_REG_INTC_PENDING);
-+
-+	return 0;
++	_machine_restart = jz4750d_restart;
++	_machine_halt = jz4750d_halt;
++	pm_power_off = jz4750d_power_off;
 +}
+diff --git a/arch/mips/jz4750d/reset.h b/arch/mips/jz4750d/reset.h
+new file mode 100644
+index 0000000..e00d1e1
+--- /dev/null
++++ b/arch/mips/jz4750d/reset.h
+@@ -0,0 +1,6 @@
++#ifndef __MIPS_JZ4750D_RESET_H__
++#define __MIPS_JZ4750D_RESET_H__
 +
-+static int intc_regs_open(struct inode *inode, struct file *file)
-+{
-+	return single_open(file, intc_regs_show, NULL);
-+}
-+
-+static const struct file_operations intc_regs_operations = {
-+	.open		= intc_regs_open,
-+	.read		= seq_read,
-+	.llseek		= seq_lseek,
-+	.release	= single_release,
-+};
-+
-+static int __init intc_debugfs_init(void)
-+{
-+	(void) debugfs_create_file("jz_regs_intc", S_IFREG | S_IRUGO,
-+				NULL, NULL, &intc_regs_operations);
-+	return 0;
-+}
-+subsys_initcall(intc_debugfs_init);
++extern void jz4750d_reset_init(void);
 +
 +#endif
 -- 

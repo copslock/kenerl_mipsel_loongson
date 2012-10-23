@@ -1,35 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 11:47:34 +0200 (CEST)
-Received: from opensource.wolfsonmicro.com ([80.75.67.52]:43616 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 11:54:22 +0200 (CEST)
+Received: from opensource.wolfsonmicro.com ([80.75.67.52]:36068 "EHLO
         opensource.wolfsonmicro.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816671Ab2JWJrdk4WDg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2012 11:47:33 +0200
+        by eddie.linux-mips.org with ESMTP id S6816384Ab2JWJyST0ypq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2012 11:54:18 +0200
 Received: from finisterre.wolfsonmicro.main (unknown [87.246.78.26])
-        by opensource.wolfsonmicro.com (Postfix) with ESMTPSA id D090D110A00;
-        Tue, 23 Oct 2012 10:47:27 +0100 (BST)
+        by opensource.wolfsonmicro.com (Postfix) with ESMTPSA id 553BC110A00;
+        Tue, 23 Oct 2012 10:54:10 +0100 (BST)
 Received: from broonie by finisterre.wolfsonmicro.main with local (Exim 4.80)
         (envelope-from <broonie@opensource.wolfsonmicro.com>)
-        id 1TQb54-0003sd-Lx; Tue, 23 Oct 2012 10:47:27 +0100
-Date:   Tue, 23 Oct 2012 10:47:26 +0100
+        id 1TQbBZ-0003zT-M7; Tue, 23 Oct 2012 10:54:09 +0100
 From:   Mark Brown <broonie@opensource.wolfsonmicro.com>
-To:     Stephen Warren <swarren@wwwdotorg.org>
-Cc:     Russell King <linux@arm.linux.org.uk>,
-        Mike Turquette <mturquette@linaro.org>,
+To:     Mike Turquette <mturquette@linaro.org>,
+        Russell King <linux@arm.linux.org.uk>,
         Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] clk: Make the generic clock API available by default
-Message-ID: <20121023094726.GT4477@opensource.wolfsonmicro.com>
-References: <1350910970-9095-1-git-send-email-broonie@opensource.wolfsonmicro.com>
- <50856CC6.7010403@wwwdotorg.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="BfbbJsf3thGkpLcA"
-Content-Disposition: inline
-In-Reply-To: <50856CC6.7010403@wwwdotorg.org>
-X-Cookie: Just to have it is enough.
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34747
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org,
+        Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: [PATCH] clk: Make the generic clock API available by default
+Date:   Tue, 23 Oct 2012 10:54:08 +0100
+Message-Id: <1350986048-15309-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 34748
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,39 +39,254 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+Rather than requiring platforms to select the generic clock API to make
+it available make the API available as a user selectable option unless the
+user either selects HAVE_CUSTOM_CLK (if they have their own implementation)
+or selects COMMON_CLK (if they depend on the generic implementation).
 
---BfbbJsf3thGkpLcA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+All current architectures that HAVE_CLK but don't use the common clock
+framework have selects of HAVE_CUSTOM_CLK added.
 
-On Mon, Oct 22, 2012 at 09:56:54AM -0600, Stephen Warren wrote:
+This allows drivers to use the generic API on platforms which have no need
+for the clock API at platform level.
 
-> Since v3.7-rc1, Tegra uses common clock, so I don't think the change
-> above is right is it?
+Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Acked-by: Hans-Christian Egtvedt <egtvedt@samfundet.no>
+Acked-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+---
+ arch/arm/Kconfig           |   12 ++++++++++++
+ arch/avr32/Kconfig         |    1 +
+ arch/mips/Kconfig          |    4 ++++
+ arch/mips/loongson/Kconfig |    1 +
+ arch/mips/txx9/Kconfig     |    1 +
+ arch/powerpc/Kconfig       |    1 +
+ arch/unicore32/Kconfig     |    1 +
+ drivers/clk/Kconfig        |   13 ++++++++++---
+ 8 files changed, 31 insertions(+), 3 deletions(-)
 
-No, updated.  It really shouldn't take multiple kernel releases to get
-something like this done...
-
---BfbbJsf3thGkpLcA
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQhmd7AAoJELSic+t+oim9NygP/3BZNo0hOvHe/erUrjFum8wo
-xd0mchVp1nUxdz7p6bVY80ab7EBYTxW/6UjB6N3RIDECmHTrj85wziVo+LdTYJCw
-FjO+AGlZY725ETE9s9ua4jw/2dSrzaQmeXw5SHGsE/wGDBCckM9doIa8AT9gJjyn
-MciV6sxak/7hSCxYRpFlCZHwUaoSTiBNkZ/xztHNLnsU+jFrneeB0uNYrzk26S65
-ndfGe/xKjIx74/4xk1LuR0+vttsg7tPzL2Jq9VEThb+445I3XfnaazLPgMIYAfaE
-OPZuatK1ZfrQ4xrfxBmGLt4Ogmilb4u8QGMm3m1GFKIuCAWxJ1V0qDyREMTlkD7j
-G5h77woM4FdpB+LFbhPXmQghU7X90p4J8BTyGyPieuyDd/HUI7BFFImMoqxeSHOE
-9tjYyeOwka5YPyXFJ6m4hoSNHSaRqKJ37tGKMz3S+UssYmuJvNxIktA0mHR+TipC
-1+k4el6jbuwI1gxOomSChg2uyz667DFFw2vwZEVT8unNzt2KXazuCip8rQixFw9m
-lJieUC2AV4jpwY/TGpeLcZLE81IucW/YhU9LQqG+/jCLk1i67dDtdjBuI6c7o/fG
-j+xwIfx+Xo37yFaYA1jjcivilC/9f4y/kYIie6bKUfv5t6bC8lFWDQ9BCe3SVa8s
-mPaJ9q0Ol1rCTR79Q2uM
-=u/M+
------END PGP SIGNATURE-----
-
---BfbbJsf3thGkpLcA--
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index fe90e60..ec7baca 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -314,6 +314,7 @@ config ARCH_VERSATILE
+ 	select CLKDEV_LOOKUP
+ 	select GENERIC_CLOCKEVENTS
+ 	select HAVE_MACH_CLKDEV
++	select HAVE_CUSTOM_CLK
+ 	select ICST
+ 	select PLAT_VERSATILE
+ 	select PLAT_VERSATILE_CLCD
+@@ -327,6 +328,7 @@ config ARCH_AT91
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select CLKDEV_LOOKUP
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select IRQ_DOMAIN
+ 	select NEED_MACH_GPIO_H
+ 	select NEED_MACH_IO_H if PCCARD
+@@ -666,6 +668,7 @@ config ARCH_MSM
+ 	select CLKDEV_LOOKUP
+ 	select GENERIC_CLOCKEVENTS
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	help
+ 	  Support for Qualcomm MSM/QSD based systems.  This runs on the
+ 	  apps processor of the MSM/QSD and depends on a shared memory
+@@ -678,6 +681,7 @@ config ARCH_SHMOBILE
+ 	select CLKDEV_LOOKUP
+ 	select GENERIC_CLOCKEVENTS
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select HAVE_MACH_CLKDEV
+ 	select HAVE_SMP
+ 	select MIGHT_HAVE_CACHE_L2X0
+@@ -728,10 +732,12 @@ config ARCH_SA1100
+ config ARCH_S3C24XX
+ 	bool "Samsung S3C24XX SoCs"
+ 	select ARCH_HAS_CPUFREQ
++	select CLKDEV_LOOKUP
+ 	select ARCH_USES_GETTIMEOFFSET
+ 	select CLKDEV_LOOKUP
+ 	select GENERIC_GPIO
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select HAVE_S3C2410_I2C if I2C
+ 	select HAVE_S3C2410_WATCHDOG if WATCHDOG
+ 	select HAVE_S3C_RTC if RTC_CLASS
+@@ -752,6 +758,7 @@ config ARCH_S3C64XX
+ 	select CLKDEV_LOOKUP
+ 	select CPU_V6
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select HAVE_S3C2410_I2C if I2C
+ 	select HAVE_S3C2410_WATCHDOG if WATCHDOG
+ 	select HAVE_TCM
+@@ -775,6 +782,7 @@ config ARCH_S5P64X0
+ 	select GENERIC_CLOCKEVENTS
+ 	select GENERIC_GPIO
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select HAVE_S3C2410_I2C if I2C
+ 	select HAVE_S3C2410_WATCHDOG if WATCHDOG
+ 	select HAVE_S3C_RTC if RTC_CLASS
+@@ -790,6 +798,7 @@ config ARCH_S5PC100
+ 	select CPU_V7
+ 	select GENERIC_GPIO
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select HAVE_S3C2410_I2C if I2C
+ 	select HAVE_S3C2410_WATCHDOG if WATCHDOG
+ 	select HAVE_S3C_RTC if RTC_CLASS
+@@ -808,6 +817,7 @@ config ARCH_S5PV210
+ 	select GENERIC_CLOCKEVENTS
+ 	select GENERIC_GPIO
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select HAVE_S3C2410_I2C if I2C
+ 	select HAVE_S3C2410_WATCHDOG if WATCHDOG
+ 	select HAVE_S3C_RTC if RTC_CLASS
+@@ -826,6 +836,7 @@ config ARCH_EXYNOS
+ 	select GENERIC_CLOCKEVENTS
+ 	select GENERIC_GPIO
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select HAVE_S3C2410_I2C if I2C
+ 	select HAVE_S3C2410_WATCHDOG if WATCHDOG
+ 	select HAVE_S3C_RTC if RTC_CLASS
+@@ -928,6 +939,7 @@ config ARCH_OMAP
+ 	select CLKSRC_MMIO
+ 	select GENERIC_CLOCKEVENTS
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select NEED_MACH_GPIO_H
+ 	help
+ 	  Support for TI's OMAP platform (OMAP1/2/3/4).
+diff --git a/arch/avr32/Kconfig b/arch/avr32/Kconfig
+index 06e73bf..bfeb9cc 100644
+--- a/arch/avr32/Kconfig
++++ b/arch/avr32/Kconfig
+@@ -4,6 +4,7 @@ config AVR32
+ 	# that we usually don't need on AVR32.
+ 	select EXPERT
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select HAVE_OPROFILE
+ 	select HAVE_KPROBES
+ 	select HAVE_GENERIC_HARDIRQS
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index ce6c9a6..e0be02f 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -85,6 +85,7 @@ config AR7
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select VLYNQ
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	help
+ 	  Support for the Texas Instruments AR7 System-on-a-Chip
+ 	  family: TNETD7100, 7200 and 7300.
+@@ -97,6 +98,7 @@ config ATH79
+ 	select CSRC_R4K
+ 	select DMA_NONCOHERENT
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select IRQ_CPU
+ 	select MIPS_MACHINE
+ 	select SYS_HAS_CPU_MIPS32_R2
+@@ -134,6 +136,7 @@ config BCM63XX
+ 	select SWAP_IO_SPACE
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	help
+ 	 Support for BCM63XX based boards
+ 
+@@ -229,6 +232,7 @@ config MACH_JZ4740
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select HAVE_PWM
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select GENERIC_IRQ_CHIP
+ 
+ config LANTIQ
+diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+index 263beb9..ed42be1 100644
+--- a/arch/mips/loongson/Kconfig
++++ b/arch/mips/loongson/Kconfig
+@@ -42,6 +42,7 @@ config LEMOTE_MACH2F
+ 	select DMA_NONCOHERENT
+ 	select GENERIC_ISA_DMA_SUPPORT_BROKEN
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select HW_HAS_PCI
+ 	select I8259
+ 	select IRQ_CPU
+diff --git a/arch/mips/txx9/Kconfig b/arch/mips/txx9/Kconfig
+index 6d40bc7..04e3cdb 100644
+--- a/arch/mips/txx9/Kconfig
++++ b/arch/mips/txx9/Kconfig
+@@ -21,6 +21,7 @@ config MACH_TXX9
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 
+ config TOSHIBA_JMR3927
+ 	bool "Toshiba JMR-TX3927 board"
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 5af5aa7..da4ea6c 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -1028,6 +1028,7 @@ config PPC_CLOCK
+ 	bool
+ 	default n
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 
+ config PPC_LIB_RHEAP
+ 	bool
+diff --git a/arch/unicore32/Kconfig b/arch/unicore32/Kconfig
+index fda37c9..8247d69 100644
+--- a/arch/unicore32/Kconfig
++++ b/arch/unicore32/Kconfig
+@@ -89,6 +89,7 @@ config ARCH_PUV3
+ 	select CPU_UCV2
+ 	select GENERIC_CLOCKEVENTS
+ 	select HAVE_CLK
++	select HAVE_CUSTOM_CLK
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select ARCH_HAS_CPUFREQ
+ 
+diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+index bace9e9..8dc8391 100644
+--- a/drivers/clk/Kconfig
++++ b/drivers/clk/Kconfig
+@@ -9,16 +9,23 @@ config HAVE_CLK_PREPARE
+ config HAVE_MACH_CLKDEV
+ 	bool
+ 
+-config COMMON_CLK
++config HAVE_CUSTOM_CLK
+ 	bool
++	---help---
++	  Architectures which provide a custom clk API should select
++	  this to disable the common clock API.
++
++config COMMON_CLK
++	bool "Common clock framework"
++	depends on !HAVE_CUSTOM_CLK
+ 	select HAVE_CLK_PREPARE
+ 	select CLKDEV_LOOKUP
+ 	---help---
+ 	  The common clock framework is a single definition of struct
+ 	  clk, useful across many platforms, as well as an
+ 	  implementation of the clock API in include/linux/clk.h.
+-	  Architectures utilizing the common struct clk should select
+-	  this option.
++	  This provides a generic way for drivers to provide and use
++	  clocks without hard coded relationships in the drivers.
+ 
+ menu "Common Clock Framework"
+ 	depends on COMMON_CLK
+-- 
+1.7.10.4

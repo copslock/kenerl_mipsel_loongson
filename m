@@ -1,48 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 10:53:24 +0200 (CEST)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:56313 "EHLO
-        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6815793Ab2JWIxXZsxgv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2012 10:53:23 +0200
-Received: by mail-bk0-f49.google.com with SMTP id j4so1141030bkw.36
-        for <multiple recipients>; Tue, 23 Oct 2012 01:53:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:organization:user-agent
-         :in-reply-to:references:mime-version:content-transfer-encoding
-         :content-type;
-        bh=zI0RIrzFu/P70S7+RVmxv2DxAt1dZwHqpIDK0J+8IDY=;
-        b=iCpcuW44xFCLExjWdvrnqV1bW1opdqElqYg/ptZcHIASpyfyjhm/zI5yR99eReSfqo
-         ZofnnzhuFukMzJV0HhZy1ks+BsA5cNARDlxtgJpsTKUwYkvRh1Q1TECSALdQatRa5Dyn
-         q/QMq3SjkXqSVD62sZxhSqfA6AYyslzaq3p+pElyHyOb03LvowKNqlcpob3kxVesGvp5
-         KJfo+HrMxKmbyucp/hQ5aaybtQ+u4FpEUYpx8CnkBXtqcA8n4sHzQx3GntCh/Hsy6gS8
-         0NAYtQhrfpYL6JX+31WDbC1dTjGbdcFb+9EFZQ0dxhvC1LkAD7vn8+FE3VarP9abwKY5
-         fqyA==
-Received: by 10.204.0.74 with SMTP id 10mr3553707bka.83.1350982398017;
-        Tue, 23 Oct 2012 01:53:18 -0700 (PDT)
-Received: from flexo.localnet (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by mx.google.com with ESMTPS id z22sm5005027bkw.2.2012.10.23.01.53.16
-        (version=SSLv3 cipher=OTHER);
-        Tue, 23 Oct 2012 01:53:17 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 11:22:55 +0200 (CEST)
+Received: from opensource.wolfsonmicro.com ([80.75.67.52]:45027 "EHLO
+        opensource.wolfsonmicro.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817088Ab2JWJWyLcfG8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2012 11:22:54 +0200
+Received: from finisterre.wolfsonmicro.main (unknown [87.246.78.26])
+        by opensource.wolfsonmicro.com (Postfix) with ESMTPSA id EFC3C110A00;
+        Tue, 23 Oct 2012 10:22:46 +0100 (BST)
+Received: from broonie by finisterre.wolfsonmicro.main with local (Exim 4.80)
+        (envelope-from <broonie@opensource.wolfsonmicro.com>)
+        id 1TQahC-0003dX-7T; Tue, 23 Oct 2012 10:22:46 +0100
+Date:   Tue, 23 Oct 2012 10:22:46 +0100
+From:   Mark Brown <broonie@opensource.wolfsonmicro.com>
 To:     Kelvin Cheung <keguang.zhang@gmail.com>
-Cc:     stern@rowland.harvard.edu, linux-usb@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+Cc:     Russell King <linux@arm.linux.org.uk>,
+        Mike Turquette <mturquette@linaro.org>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 03/32 v4] MIPS: Loongson 1B: use ehci-platform instead of ehci-ls1x.
-Date:   Tue, 23 Oct 2012 01:53:17 -0700 (PDT)
-Message-ID: <10090450.q3VbTvBDPg@flexo>
-Organization: OpenWrt
-User-Agent: KMail/4.8.5 (Linux/3.2.0-24-generic; KDE/4.8.5; x86_64; ; )
-In-Reply-To: <36521520.iGJ91Agxac@flexo>
-References: <1349701906-16481-1-git-send-email-florian@openwrt.org> <CAJhJPsV5mFmOgU38ZpnYqUTNuOPmvRXjsf31XdFUqNOzsd_Edg@mail.gmail.com> <36521520.iGJ91Agxac@flexo>
+Subject: Re: [PATCH] clk: Make the generic clock API available by default
+Message-ID: <20121023092245.GR4477@opensource.wolfsonmicro.com>
+References: <1350910970-9095-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+ <CAJhJPsV0rnE+K-9bWFy85T36H+PfbibrsGQ_mN_miqttyQJNhw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-archive-position: 34745
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="gMqNd2jlyJQcupG/"
+Content-Disposition: inline
+In-Reply-To: <CAJhJPsV0rnE+K-9bWFy85T36H+PfbibrsGQ_mN_miqttyQJNhw@mail.gmail.com>
+X-Cookie: Just to have it is enough.
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34746
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: broonie@opensource.wolfsonmicro.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,25 +47,43 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tuesday 23 October 2012 10:46:50 Florian Fainelli wrote:
-> Hi Kelvin,
-> 
-> On Tuesday 23 October 2012 16:13:01 Kelvin Cheung wrote:
-> > Thank Florian.
-> > It looks great.
-> > However, you forget to remove corresponding section in
-> > drivers/usb/host/ehci-hcd.c
-> > ...
-> > #ifdef CONFIG_MACH_LOONGSON1
-> > #include "ehci-ls1x.c"
-> > #define PLATFORM_DRIVER         ehci_ls1x_driver
-> > #endif
-> 
-> Indeed, my bad I will follow up with some fixes for this patchset anyway.
-> Thank you!
 
-Looks like I hit reply too quickly, the patch entitled
-"USB: EHCI: remove Loongson 1B EHCI driver" actually removes this bit from
-ehci-hcd.c.
---
-Florian
+--gMqNd2jlyJQcupG/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Oct 23, 2012 at 10:10:09AM +0800, Kelvin Cheung wrote:
+> Hi Mark,
+
+Don't top post!
+
+> But the common clock infrastructure of Loongson1 has been implemented and
+> enabled in previous patches.
+> http://patchwork.linux-mips.org/patch/4268/
+> Please remove this arch from your patch.
+
+Done.
+
+--gMqNd2jlyJQcupG/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQhmG4AAoJELSic+t+oim92SUP/3Nb6fOaMW5uFKSJMifluBPG
+jBC+4sUNF6OyC9zF6GQcw9+EasY9J0drkWlmsJnau8KzGPDTonCnBjBXk2rVAG6t
+vqnmMuK7R+ErO7/DOCiyKxZ73JaRCNHOMPB2sAsYFiUI8MZElyZZJ48BdqndD1EV
+4lIJ404Sc4GHFoLNb2ELVCmFhe6FH1Wr0v2vqhCx7FvKLvwLNJAv0eT9355hEPdg
+Mhe4tJC8eFnmIM14OoOgUDuv8izHUst7ak+tYZy2fuZmScccHGUGbMurqCmJhEmf
+F56fcT4VajWHbPI6euEAsYdJHg677hWn6cMGMT2wN2cRSjOKzb+Tu4oeRWSpSgTZ
+z5iYU2q+hFDCDk6FKBN9vmPurCn3yCjUfSHFaw1fJhjRzv1pAKNIH6egLGamYpBA
+Xu7PBwcMFHB0yA8JJEaKy/l59IBJoVxCkhRS/hvwja1WFAjgdEzobepRLgvRoa13
+gbXxnvlEi6yheaF6P2Bue3Yw7xDIvnwk8MzMbhBJlT+uX6IGOG5Sszk88AoxT7JS
+SUBWj+gu4FCGq+4Bh9tD2aT/S8UoCkO97mCIOGR+6QR64U33dKfU7tzfkPShpSWM
+SiVHXzJmvFQ+XLQu97Fwmu20J0TXbvbUnNjIf4Dtn37b1OUIS2LdYvtDYPbMmzAw
+SZ32wAM5iAE62WIvyGm4
+=VZg6
+-----END PGP SIGNATURE-----
+
+--gMqNd2jlyJQcupG/--

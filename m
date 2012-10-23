@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 19:50:13 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:61911 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 19:50:32 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:63547 "EHLO
         mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825706Ab2JWRsEriRgx (ORCPT
+        by eddie.linux-mips.org with ESMTP id S6825707Ab2JWRsEre31o (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2012 19:48:04 +0200
-Received: by mail-lb0-f177.google.com with SMTP id gi11so520885lbb.36
+Received: by mail-lb0-f177.google.com with SMTP id gi11so520872lbb.36
         for <multiple recipients>; Tue, 23 Oct 2012 10:47:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=xJTLIqiLi/yb4cx2+H7jQT7CoZ07FHS3bCaIlFbuB4U=;
-        b=LJTwN49Zeig5/j/pT7YsIkvrPjK7xnp9HruDvT/+8JoloaiAxDytJraAsCMk+8hL4n
-         Bbe1wpldeFFUNohZaCmaGXckQyCXBSyAIdY1k/ZO9WHrqeR7PB+rJwVhAe3a9pATKO9D
-         HnqCzdnUpkl6YA0KY4WoBI7oba1ImjHPU1N6BMAZCCcB0GhYFnHzTxQv1+OptB4lNk/v
-         XDHuuDAKDI7znSGXp/vISkdEa0uPRo5aRV9ZTveIn1+2DIHx/JWcfEi8G/xAeHaOcDiT
-         O3EE7eSf8VGQ9bSjk187KUjjMHoI0jifi187LXTn3Si+1nam2GyYMKhHGeivLvpMcGq+
-         ArwQ==
-Received: by 10.112.48.200 with SMTP id o8mr5300263lbn.96.1351014478683;
-        Tue, 23 Oct 2012 10:47:58 -0700 (PDT)
-Received: from lazar.cs.niisi.ras.ru (t109.niisi.ras.ru. [193.232.173.109])
-        by mx.google.com with ESMTPS id m6sm4260284lbh.10.2012.10.23.10.47.57
-        (version=TLSv1/SSLv3 cipher=OTHER);
+        bh=hEJxWLf0GG4EQj/ZEGFluP71n2ATVaapEhUL3xqwBfM=;
+        b=tbXUV2fNsQukPCUEcQhFcYAGR+0d8Ue/3ZrXNUSaNRNAqm3o9P8JUQtE01N7hmgM1Q
+         VEk6dW2RXiFIetMxD8D4lvS4jtOh34qRr3tEA+rKyiPZ8E7sk6nVVu67Sa3JiOM4GD53
+         Di6kWAIlnra9V+X3PvKAnCCu0Ew+sWKELwMxFIrxLwcQHHPg4TOUpjdpCXWfxwFk/FxA
+         0Pz7cfKijGj75iakkPjhmuVHSFgBtd/2hnGN1+Hk6952sdOXWMIWEnAGMSZhNSOHy4T5
+         JLQZaAmUWHLBft7g9syyzS2kNu+xwJaGb3DqCRt34q0ALkqaLi1mtYGjk5GsFULtz+9K
+         SVUg==
+Received: by 10.152.108.197 with SMTP id hm5mr12138126lab.45.1351014477252;
         Tue, 23 Oct 2012 10:47:57 -0700 (PDT)
+Received: from lazar.cs.niisi.ras.ru (t109.niisi.ras.ru. [193.232.173.109])
+        by mx.google.com with ESMTPS id m6sm4260284lbh.10.2012.10.23.10.47.54
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 23 Oct 2012 10:47:55 -0700 (PDT)
 From:   Antony Pavlov <antonynpavlov@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Maarten ter Huurne <maarten@treewalker.org>,
         Antony Pavlov <antonynpavlov@gmail.com>
-Subject: [RFC 05/13] MIPS: JZ4750D: Add clocksource/clockevent support
-Date:   Tue, 23 Oct 2012 21:43:53 +0400
-Message-Id: <1351014241-3207-6-git-send-email-antonynpavlov@gmail.com>
+Subject: [RFC 04/13] MIPS: JZ4750D: Add timer support
+Date:   Tue, 23 Oct 2012 21:43:52 +0400
+Message-Id: <1351014241-3207-5-git-send-email-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1351014241-3207-1-git-send-email-antonynpavlov@gmail.com>
 References: <1351014241-3207-1-git-send-email-antonynpavlov@gmail.com>
-X-archive-position: 34757
+X-archive-position: 34758
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,26 +51,31 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add clocksource and clockevent support for the timer/counter unit on
-JZ4750D SoCs.
+Add support for the timer/counter unit on a JZ4750D SoC. This code is used
+as a common base for the JZ4750D clocksource/clockevent implementation and
+PWM support.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/jz4750d/time.c |  145 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 145 insertions(+)
- create mode 100644 arch/mips/jz4750d/time.c
+ arch/mips/include/asm/mach-jz4750d/timer.h |   21 ++++
+ arch/mips/jz4750d/timer.c                  |   49 ++++++++
+ arch/mips/jz4750d/timer.h                  |  182 ++++++++++++++++++++++++++++
+ 3 files changed, 252 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-jz4750d/timer.h
+ create mode 100644 arch/mips/jz4750d/timer.c
+ create mode 100644 arch/mips/jz4750d/timer.h
 
-diff --git a/arch/mips/jz4750d/time.c b/arch/mips/jz4750d/time.c
+diff --git a/arch/mips/include/asm/mach-jz4750d/timer.h b/arch/mips/include/asm/mach-jz4750d/timer.h
 new file mode 100644
-index 0000000..5df91e0
+index 0000000..7a1ba46
 --- /dev/null
-+++ b/arch/mips/jz4750d/time.c
-@@ -0,0 +1,145 @@
++++ b/arch/mips/include/asm/mach-jz4750d/timer.h
+@@ -0,0 +1,21 @@
 +/*
 + *  Copyright (C) 2012, Antony Pavlov <antonynpavlov@gmail.com>
-+ *  JZ4750D platform time support
++ *  JZ4750D platform timer support
 + *
-+ *  based on JZ4740 platform time support
++ *  based on JZ4740 platform timer support
 + *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
 + *
 + *  This program is free software; you can redistribute it and/or modify it
@@ -80,136 +85,255 @@ index 0000000..5df91e0
 + *
 + */
 +
-+#include <linux/interrupt.h>
++#ifndef __ASM_MACH_JZ4750D_TIMER
++#define __ASM_MACH_JZ4750D_TIMER
++
++void jz4750d_timer_enable_watchdog(void);
++void jz4750d_timer_disable_watchdog(void);
++
++#endif
+diff --git a/arch/mips/jz4750d/timer.c b/arch/mips/jz4750d/timer.c
+new file mode 100644
+index 0000000..85682b1
+--- /dev/null
++++ b/arch/mips/jz4750d/timer.c
+@@ -0,0 +1,49 @@
++/*
++ *  Copyright (C) 2012, Antony Pavlov <antonynpavlov@gmail.com>
++ *  JZ4750D platform timer support
++ *
++ *  based on JZ4740 platform timer support
++ *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License as published by the
++ *  Free Software Foundation; either version 2 of the License, or (at your
++ *  option) any later version.
++ *
++ */
++
++#include <linux/io.h>
 +#include <linux/kernel.h>
-+#include <linux/time.h>
++#include <linux/module.h>
 +
-+#include <linux/clockchips.h>
-+
-+#include <asm/time.h>
-+
-+#include "clock.h"
 +#include "timer.h"
 +
-+#define TIMER_CLOCKEVENT 5
++#include <asm/mach-jz4750d/base.h>
 +
-+static uint16_t jz4750d_jiffies_per_tick;
++void __iomem *jz4750d_timer_base;
 +
-+static cycle_t jz4750d_clocksource_read(struct clocksource *cs)
++void jz4750d_timer_enable_watchdog(void)
 +{
-+	return (cycle_t)jz4750d_ostimer_get_count();
++	writel(BIT(16), jz4750d_timer_base + JZ_REG_TIMER_STOP_CLEAR);
++}
++EXPORT_SYMBOL_GPL(jz4750d_timer_enable_watchdog);
++
++void jz4750d_timer_disable_watchdog(void)
++{
++	writel(BIT(16), jz4750d_timer_base + JZ_REG_TIMER_STOP_SET);
++}
++EXPORT_SYMBOL_GPL(jz4750d_timer_disable_watchdog);
++
++void __init jz4750d_timer_init(void)
++{
++	jz4750d_timer_base = ioremap(JZ4750D_TCU_BASE_ADDR, 0x100);
++
++	if (!jz4750d_timer_base)
++		panic("Failed to ioremap timer registers");
++
++	/* Disable __ALL__ timer clocks */
++	writel(0x000180ff, jz4750d_timer_base + JZ_REG_TIMER_STOP_SET);
++
++	/* Timer irqs are unmasked by default, mask them __ALL__ */
++	writel(0x003f803f, jz4750d_timer_base + JZ_REG_TIMER_MASK_SET);
++}
+diff --git a/arch/mips/jz4750d/timer.h b/arch/mips/jz4750d/timer.h
+new file mode 100644
+index 0000000..05e4752
+--- /dev/null
++++ b/arch/mips/jz4750d/timer.h
+@@ -0,0 +1,182 @@
++/*
++ *  Copyright (C) 2012, Antony Pavlov <antonynpavlov@gmail.com>
++ *  JZ4750D platform timer support
++ *
++ *  based on JZ4740 platform timer support
++ *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License as published by the
++ *  Free Software Foundation; either version 2 of the License, or (at your
++ *  option) any later version.
++ *
++ */
++
++#ifndef __MIPS_JZ4750D_TIMER_H__
++#define __MIPS_JZ4750D_TIMER_H__
++
++#include <linux/module.h>
++#include <linux/io.h>
++
++#define JZ_REG_TIMER_ENABLE		0x00
++#define JZ_REG_TIMER_ENABLE_SET		0x04
++#define JZ_REG_TIMER_ENABLE_CLEAR	0x08
++#define JZ_REG_TIMER_FLAG		0x10
++#define JZ_REG_TIMER_FLAG_SET		0x14
++#define JZ_REG_TIMER_FLAG_CLEAR		0x18
++#define JZ_REG_TIMER_STOP		0x0C
++#define JZ_REG_TIMER_STOP_SET		0x1C
++#define JZ_REG_TIMER_STOP_CLEAR		0x2C
++#define JZ_REG_TIMER_MASK		0x20
++#define JZ_REG_TIMER_MASK_SET		0x24
++#define JZ_REG_TIMER_MASK_CLEAR		0x28
++
++#define JZ_REG_TIMER_DFR(x) (((x) * 0x10) + 0x30)
++#define JZ_REG_TIMER_DHR(x) (((x) * 0x10) + 0x34)
++#define JZ_REG_TIMER_CNT(x) (((x) * 0x10) + 0x38)
++#define JZ_REG_TIMER_CTRL(x) (((x) * 0x10) + 0x3C)
++
++#define JZ_TIMER_IRQ_HALF(x) BIT((x) + 0x10)
++#define JZ_TIMER_IRQ_FULL(x) BIT(x)
++
++#define JZ_TIMER_CTRL_PWM_ABBRUPT_SHUTDOWN	BIT(9)
++#define JZ_TIMER_CTRL_PWM_ACTIVE_LOW		BIT(8)
++#define JZ_TIMER_CTRL_PWM_ENABLE		BIT(7)
++#define JZ_TIMER_CTRL_PRESCALE_MASK		0x1c
++#define JZ_TIMER_CTRL_PRESCALE_OFFSET		0x3
++#define JZ_TIMER_CTRL_PRESCALE_1		(0 << 3)
++#define JZ_TIMER_CTRL_PRESCALE_4		(1 << 3)
++#define JZ_TIMER_CTRL_PRESCALE_16		(2 << 3)
++#define JZ_TIMER_CTRL_PRESCALE_64		(3 << 3)
++#define JZ_TIMER_CTRL_PRESCALE_256		(4 << 3)
++#define JZ_TIMER_CTRL_PRESCALE_1024		(5 << 3)
++
++#define JZ_TIMER_CTRL_PRESCALER(x) ((x) << JZ_TIMER_CTRL_PRESCALE_OFFSET)
++
++#define JZ_TIMER_CTRL_SRC_EXT		BIT(2)
++#define JZ_TIMER_CTRL_SRC_RTC		BIT(1)
++#define JZ_TIMER_CTRL_SRC_PCLK		BIT(0)
++
++extern void __iomem *jz4750d_timer_base;
++void __init jz4750d_timer_init(void);
++
++static inline void jz4750d_timer_stop(unsigned int timer)
++{
++	writel(BIT(timer), jz4750d_timer_base + JZ_REG_TIMER_STOP_SET);
 +}
 +
-+static struct clocksource jz4750d_clocksource = {
-+	.name = "jz4750d-timer",
-+	.rating = 200,
-+	.read = jz4750d_clocksource_read,
-+	.mask = CLOCKSOURCE_MASK(32),
-+	.flags = CLOCK_SOURCE_WATCHDOG,
-+};
-+
-+static irqreturn_t jz4750d_clockevent_irq(int irq, void *devid)
++static inline void jz4750d_timer_start(unsigned int timer)
 +{
-+	struct clock_event_device *cd = devid;
-+
-+	jz4750d_timer_ack_full(TIMER_CLOCKEVENT);
-+
-+	if (cd->mode != CLOCK_EVT_MODE_PERIODIC)
-+		jz4750d_timer_disable(TIMER_CLOCKEVENT);
-+
-+	cd->event_handler(cd);
-+
-+	return IRQ_HANDLED;
++	writel(BIT(timer), jz4750d_timer_base + JZ_REG_TIMER_STOP_CLEAR);
 +}
 +
-+static void jz4750d_clockevent_set_mode(enum clock_event_mode mode,
-+	struct clock_event_device *cd)
++static inline bool jz4750d_timer_is_enabled(unsigned int timer)
 +{
-+	switch (mode) {
-+	case CLOCK_EVT_MODE_PERIODIC:
-+		jz4750d_timer_set_count(TIMER_CLOCKEVENT, 0);
-+		jz4750d_timer_set_period(TIMER_CLOCKEVENT, jz4750d_jiffies_per_tick);
-+	case CLOCK_EVT_MODE_RESUME:
-+		jz4750d_timer_irq_full_enable(TIMER_CLOCKEVENT);
-+		jz4750d_timer_enable(TIMER_CLOCKEVENT);
-+		break;
-+	case CLOCK_EVT_MODE_ONESHOT:
-+	case CLOCK_EVT_MODE_SHUTDOWN:
-+		jz4750d_timer_disable(TIMER_CLOCKEVENT);
-+		break;
-+	default:
-+		break;
-+	}
++	return readb(jz4750d_timer_base + JZ_REG_TIMER_ENABLE) & BIT(timer);
 +}
 +
-+static int jz4750d_clockevent_set_next(unsigned long evt,
-+	struct clock_event_device *cd)
++static inline void jz4750d_timer_enable(unsigned int timer)
 +{
-+	jz4750d_timer_set_count(TIMER_CLOCKEVENT, 0);
-+	jz4750d_timer_set_period(TIMER_CLOCKEVENT, evt);
-+	jz4750d_timer_enable(TIMER_CLOCKEVENT);
-+
-+	return 0;
++	writeb(BIT(timer), jz4750d_timer_base + JZ_REG_TIMER_ENABLE_SET);
 +}
 +
-+static struct clock_event_device jz4750d_clockevent = {
-+	.name = "jz4750d-timer",
-+	.features = CLOCK_EVT_FEAT_PERIODIC,
-+	.set_next_event = jz4750d_clockevent_set_next,
-+	.set_mode = jz4750d_clockevent_set_mode,
-+	.rating = 200,
-+	.irq = JZ4750D_IRQ_TCU1,
-+};
-+
-+static struct irqaction timer_irqaction = {
-+	.handler = jz4750d_clockevent_irq,
-+	.flags = IRQF_DISABLED | IRQF_PERCPU | IRQF_TIMER,
-+	.name = "jz4750d-timerirq",
-+	.dev_id = &jz4750d_clockevent,
-+};
-+
-+void __init plat_time_init(void)
++static inline void jz4750d_timer_disable(unsigned int timer)
 +{
-+	int ret;
-+	uint32_t clk_rate;
-+
-+	jz4750d_timer_init();
-+
-+	clk_rate = jz4750d_clock_bdata.ext_rate >> 4;
-+	jz4750d_jiffies_per_tick = DIV_ROUND_CLOSEST(clk_rate, HZ);
-+
-+	clockevent_set_clock(&jz4750d_clockevent, clk_rate);
-+	jz4750d_clockevent.min_delta_ns =
-+		clockevent_delta2ns(100, &jz4750d_clockevent);
-+	jz4750d_clockevent.max_delta_ns =
-+		clockevent_delta2ns(0xffff, &jz4750d_clockevent);
-+	jz4750d_clockevent.cpumask = cpumask_of(0);
-+
-+	jz4750d_timer_irq_full_disable(TIMER_CLOCKEVENT);
-+
-+	clockevents_register_device(&jz4750d_clockevent);
-+
-+	ret = clocksource_register_hz(&jz4750d_clocksource, clk_rate);
-+
-+	if (ret)
-+		printk(KERN_ERR "Failed to register clocksource: %d\n", ret);
-+
-+	setup_irq(JZ4750D_IRQ_TCU1, &timer_irqaction);
-+
-+	jz4750d_timer_set_ctrl(TIMER_CLOCKEVENT, JZ_TIMER_CTRL_PRESCALE_16
-+		| JZ_TIMER_CTRL_SRC_EXT);
-+	jz4750d_ostimer_set_ctrl(JZ_OSTIMER_CTRL_PRESCALE_16
-+		| JZ_OSTIMER_CTRL_SRC_EXT);
-+
-+	jz4750d_timer_set_period(TIMER_CLOCKEVENT, jz4750d_jiffies_per_tick);
-+	jz4750d_timer_irq_full_enable(TIMER_CLOCKEVENT);
-+
-+	jz4750d_ostimer_set_period(0xffffffff);
-+
-+	jz4750d_timer_enable(TIMER_CLOCKEVENT);
-+	jz4750d_timer_start(TIMER_CLOCKEVENT);
-+	jz4750d_ostimer_enable();
-+	jz4750d_ostimer_start();
++	writeb(BIT(timer), jz4750d_timer_base + JZ_REG_TIMER_ENABLE_CLEAR);
 +}
++
++static inline void jz4750d_timer_set_period(unsigned int timer, u16 period)
++{
++	writew(period, jz4750d_timer_base + JZ_REG_TIMER_DFR(timer));
++}
++
++static inline void jz4750d_timer_set_duty(unsigned int timer, u16 duty)
++{
++	writew(duty, jz4750d_timer_base + JZ_REG_TIMER_DHR(timer));
++}
++
++static inline void jz4750d_timer_set_count(unsigned int timer, u16 count)
++{
++	writew(count, jz4750d_timer_base + JZ_REG_TIMER_CNT(timer));
++}
++
++static inline u16 jz4750d_timer_get_count(unsigned int timer)
++{
++	return readw(jz4750d_timer_base + JZ_REG_TIMER_CNT(timer));
++}
++
++static inline void jz4750d_timer_ack_full(unsigned int timer)
++{
++	writel(JZ_TIMER_IRQ_FULL(timer),
++		jz4750d_timer_base + JZ_REG_TIMER_FLAG_CLEAR);
++}
++
++static inline void jz4750d_timer_irq_full_enable(unsigned int timer)
++{
++	writel(JZ_TIMER_IRQ_FULL(timer),
++		jz4750d_timer_base + JZ_REG_TIMER_FLAG_CLEAR);
++	writel(JZ_TIMER_IRQ_FULL(timer),
++		jz4750d_timer_base + JZ_REG_TIMER_MASK_CLEAR);
++}
++
++static inline void jz4750d_timer_irq_full_disable(unsigned int timer)
++{
++	writel(JZ_TIMER_IRQ_FULL(timer),
++		jz4750d_timer_base + JZ_REG_TIMER_MASK_SET);
++}
++
++static inline void jz4750d_timer_set_ctrl(unsigned int timer, u16 ctrl)
++{
++	writew(ctrl, jz4750d_timer_base + JZ_REG_TIMER_CTRL(timer));
++}
++
++static inline u16 jz4750d_timer_get_ctrl(unsigned int timer)
++{
++	return readw(jz4750d_timer_base + JZ_REG_TIMER_CTRL(timer));
++}
++
++#define JZ_REG_OSTIMER_DR		0xD0
++#define JZ_REG_OSTIMER_CNT		0xD8
++#define JZ_REG_OSTIMER_CTRL		0xDC
++
++#define JZ_OSTIMER_CTRL_PRESCALE_1		(0 << 3)
++#define JZ_OSTIMER_CTRL_PRESCALE_4		(1 << 3)
++#define JZ_OSTIMER_CTRL_PRESCALE_16		(2 << 3)
++#define JZ_OSTIMER_CTRL_PRESCALE_64		(3 << 3)
++#define JZ_OSTIMER_CTRL_PRESCALE_256		(4 << 3)
++#define JZ_OSTIMER_CTRL_PRESCALE_1024		(5 << 3)
++
++#define JZ_OSTIMER_CTRL_SRC_EXT		BIT(2)
++#define JZ_OSTIMER_CTRL_SRC_RTC		BIT(1)
++#define JZ_OSTIMER_CTRL_SRC_PCLK	BIT(0)
++
++#define JZ_TIMER_SCR_OSTSC		BIT(15)
++#define JZ_TIMER_ESR_OSTST		BIT(15)
++
++static inline void jz4750d_ostimer_set_ctrl(u16 ctrl)
++{
++	writew(ctrl, jz4750d_timer_base + JZ_REG_OSTIMER_CTRL);
++}
++
++static inline uint32_t jz4750d_ostimer_get_count(void)
++{
++	return readl(jz4750d_timer_base + JZ_REG_OSTIMER_CNT);
++}
++
++static inline void jz4750d_ostimer_start(void)
++{
++	writel(JZ_TIMER_SCR_OSTSC,
++		jz4750d_timer_base + JZ_REG_TIMER_STOP_CLEAR);
++}
++
++static inline void jz4750d_ostimer_enable(void)
++{
++	writel(JZ_TIMER_ESR_OSTST,
++		jz4750d_timer_base + JZ_REG_TIMER_ENABLE_SET);
++}
++
++static inline void jz4750d_ostimer_set_period(u32 period)
++{
++	writel(period, jz4750d_timer_base + JZ_REG_OSTIMER_DR);
++}
++#endif
 -- 
 1.7.10.4

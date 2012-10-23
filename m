@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 19:49:15 +0200 (CEST)
-Received: from mail-la0-f49.google.com ([209.85.215.49]:33813 "EHLO
-        mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825698Ab2JWRsAeLx04 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2012 19:48:00 +0200
-Received: by mail-la0-f49.google.com with SMTP id z14so2431916lag.36
-        for <multiple recipients>; Tue, 23 Oct 2012 10:48:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2012 19:49:34 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:48628 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825700Ab2JWRsCIykr5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2012 19:48:02 +0200
+Received: by mail-lb0-f177.google.com with SMTP id gi11so520790lbb.36
+        for <multiple recipients>; Tue, 23 Oct 2012 10:48:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=sIBUmOe+lSN2n37V0e1aTdnku7fnj+9bQ1vi1qDJm+8=;
-        b=Wp0QaScxG+PS+21ia3CVm0EQ+gQdUGuygZL1MR3PT2S38z5EDVW8ssDIm5pgV0VGvO
-         5w6tABzqu8x/oKhFYC2Jy08FeecknS2l01o8D7jmAByVE9Vor6grsJNKKzpbAvU1XYFQ
-         EpbgOKO6Tysh6cppUEtanADXtNn+hDNSFGN2CyPvx6WGbHOj2IqEZfDqbxT+qrATTkRA
-         vRk52CgIkzMTGrkfKwbAAJkOqvAPABBkJyjwSEQlRhmd94g1jptOAg2wN90FVGvvff6M
-         vDQF+IQqpRJt8zqeT7Uwt0frt9PXZik7zJ4Nw4GNvOCdZJBaCH1YBVm4mEAgutYQiJEl
-         hASA==
-Received: by 10.112.102.195 with SMTP id fq3mr5318991lbb.46.1351014480063;
-        Tue, 23 Oct 2012 10:48:00 -0700 (PDT)
+        bh=7fNihtDmco4Xy1RL3kDnFzVzPN5vC7OZompxmgn2v4I=;
+        b=lP7tJKWX7qDIG4C8UFw74OvQqelpaLgJ1mvoISr8zTdpc8znS1R9RVbLhG0Hl+x+c1
+         DJSOIK2Ejrxq1qwCloXvxTrdqqTYHSpEXZI4/aG5L+qwIi2uyFlVDUWxQwBEJXg7L/mZ
+         x2mup8PpVRb1tiC7RxnXQcRMLUAfAqG6f1ngow2nWV1UQoUHXeVNSkqwOEzZF6Z1ef6Z
+         z4QadsqUUXwtsQNelaBJYQSMqR0ZVWv7VXPcP2f5qkln+yt0BWT26YYf3y+Z/0cGZPoX
+         6MBCaksOg5XCKZR4VzKX2FbB1DgP+Xym12bWGxHlLwYGgVqF5pEl1EdTV0/nU8zxIpaF
+         9kcw==
+Received: by 10.152.133.140 with SMTP id pc12mr11952209lab.53.1351014481582;
+        Tue, 23 Oct 2012 10:48:01 -0700 (PDT)
 Received: from lazar.cs.niisi.ras.ru (t109.niisi.ras.ru. [193.232.173.109])
-        by mx.google.com with ESMTPS id m6sm4260284lbh.10.2012.10.23.10.47.58
+        by mx.google.com with ESMTPS id m6sm4260284lbh.10.2012.10.23.10.48.00
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 23 Oct 2012 10:47:59 -0700 (PDT)
+        Tue, 23 Oct 2012 10:48:00 -0700 (PDT)
 From:   Antony Pavlov <antonynpavlov@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Maarten ter Huurne <maarten@treewalker.org>,
         Antony Pavlov <antonynpavlov@gmail.com>
-Subject: [RFC 06/13] MIPS: JZ4750D: Add system reset support
-Date:   Tue, 23 Oct 2012 21:43:54 +0400
-Message-Id: <1351014241-3207-7-git-send-email-antonynpavlov@gmail.com>
+Subject: [RFC 07/13] MIPS: JZ4750D: Add setup code
+Date:   Tue, 23 Oct 2012 21:43:55 +0400
+Message-Id: <1351014241-3207-8-git-send-email-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1351014241-3207-1-git-send-email-antonynpavlov@gmail.com>
 References: <1351014241-3207-1-git-send-email-antonynpavlov@gmail.com>
-X-archive-position: 34754
+X-archive-position: 34755
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,28 +51,27 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add support for poweroff/reboot on a JZ4750D SoC.
+Add get_system_type for JZ4750D SoCs. Fix memory size to 64M.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/jz4750d/reset.c |   79 +++++++++++++++++++++++++++++++++++++++++++++
- arch/mips/jz4750d/reset.h |    6 ++++
- 2 files changed, 85 insertions(+)
- create mode 100644 arch/mips/jz4750d/reset.c
- create mode 100644 arch/mips/jz4750d/reset.h
+ arch/mips/jz4750d/setup.c |   35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+ create mode 100644 arch/mips/jz4750d/setup.c
 
-diff --git a/arch/mips/jz4750d/reset.c b/arch/mips/jz4750d/reset.c
+diff --git a/arch/mips/jz4750d/setup.c b/arch/mips/jz4750d/setup.c
 new file mode 100644
-index 0000000..eb8441c
+index 0000000..e36ed0a
 --- /dev/null
-+++ b/arch/mips/jz4750d/reset.c
-@@ -0,0 +1,79 @@
++++ b/arch/mips/jz4750d/setup.c
+@@ -0,0 +1,35 @@
 +/*
 + *  Copyright (C) 2012, Antony Pavlov <antonynpavlov@gmail.com>
-+ *  JZ4750D reset routines
++ *  JZ4750D setup code
 + *
-+ *  based on JZ4740 reset routines
-+ *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
++ *  based on JZ4740 setup code
++ *  Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
++ *  Copyright (C) 2011, Maarten ter Huurne <maarten@treewalker.org>
 + *
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License as published by the
@@ -81,82 +80,25 @@ index 0000000..eb8441c
 + *
 + */
 +
++#include <linux/init.h>
 +#include <linux/io.h>
 +#include <linux/kernel.h>
-+#include <linux/pm.h>
 +
-+#include <asm/reboot.h>
++#include <asm/bootinfo.h>
 +
-+#include <asm/mach-jz4750d/base.h>
-+#include <asm/mach-jz4750d/timer.h>
++#include "reset.h"
 +
-+static void jz4750d_halt(void)
++void __init plat_mem_setup(void)
 +{
-+	while (1) {
-+		__asm__(".set push;\n"
-+			".set mips3;\n"
-+			"wait;\n"
-+			".set pop;\n"
-+		);
-+	}
++	jz4750d_reset_init();
++
++	/* FIXME: the detection of the memory size is skipped */
++	add_memory_region(0, 0x04000000 /* 64 M */, BOOT_MEM_RAM);
 +}
 +
-+#define JZ_REG_WDT_DATA 0x00
-+#define JZ_REG_WDT_COUNTER_ENABLE 0x04
-+#define JZ_REG_WDT_COUNTER 0x08
-+#define JZ_REG_WDT_CTRL 0x0c
-+
-+static void jz4750d_restart(char *command)
++const char *get_system_type(void)
 +{
-+	void __iomem *wdt_base = ioremap(JZ4750D_WDT_BASE_ADDR, 0x0f);
-+
-+	jz4750d_timer_enable_watchdog();
-+
-+	writeb(0, wdt_base + JZ_REG_WDT_COUNTER_ENABLE);
-+
-+	writew(0, wdt_base + JZ_REG_WDT_COUNTER);
-+	writew(0, wdt_base + JZ_REG_WDT_DATA);
-+	writew(BIT(2), wdt_base + JZ_REG_WDT_CTRL);
-+
-+	writeb(1, wdt_base + JZ_REG_WDT_COUNTER_ENABLE);
-+	jz4750d_halt();
++	return "JZ4750D";
 +}
-+
-+#define JZ_REG_RTC_CTRL		0x00
-+#define JZ_REG_RTC_HIBERNATE	0x20
-+
-+#define JZ_RTC_CTRL_WRDY	BIT(7)
-+
-+static void jz4750d_power_off(void)
-+{
-+	void __iomem *rtc_base = ioremap(JZ4750D_RTC_BASE_ADDR, 0x24);
-+	uint32_t ctrl;
-+
-+	do {
-+		ctrl = readl(rtc_base + JZ_REG_RTC_CTRL);
-+	} while (!(ctrl & JZ_RTC_CTRL_WRDY));
-+
-+	writel(1, rtc_base + JZ_REG_RTC_HIBERNATE);
-+	jz4750d_halt();
-+}
-+
-+void jz4750d_reset_init(void)
-+{
-+	_machine_restart = jz4750d_restart;
-+	_machine_halt = jz4750d_halt;
-+	pm_power_off = jz4750d_power_off;
-+}
-diff --git a/arch/mips/jz4750d/reset.h b/arch/mips/jz4750d/reset.h
-new file mode 100644
-index 0000000..e00d1e1
---- /dev/null
-+++ b/arch/mips/jz4750d/reset.h
-@@ -0,0 +1,6 @@
-+#ifndef __MIPS_JZ4750D_RESET_H__
-+#define __MIPS_JZ4750D_RESET_H__
-+
-+extern void jz4750d_reset_init(void);
-+
-+#endif
 -- 
 1.7.10.4

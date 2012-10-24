@@ -1,49 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2012 19:43:35 +0200 (CEST)
-Received: from mail-wg0-f43.google.com ([74.125.82.43]:50565 "EHLO
-        mail-wg0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823030Ab2JXRnejXart (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Oct 2012 19:43:34 +0200
-Received: by mail-wg0-f43.google.com with SMTP id dq11so555110wgb.24
-        for <multiple recipients>; Wed, 24 Oct 2012 10:43:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:organization:user-agent
-         :in-reply-to:references:mime-version:content-transfer-encoding
-         :content-type;
-        bh=B49uMJpUFJNYkYlc4nUYaWHZ9xuDh3kjNlZzciwV80g=;
-        b=EO6dlKgx3poV8r/1W1nvrad1o5F2SAD0waLSqQAjjSAjLJR/Ulr1SVxLDbNECJglzK
-         YANYEvoueki6rMRGYdGHNJdaOy+8p+1cXesnFsyFj8BMmG2gSdUtrk1DPEiWSLVY166P
-         BWEqVydlK45RF4qJTqfs16KMPUmcSEauVNvy217824m6JT57pHsTk/9qesfCGVMp1ROG
-         V5x8+akJzjEJ1IBpoI3jueL59HB9ezlRKR2c3jqI1pKPC4FWQXQ4FeVXepzPkSC9t2ZL
-         x1+6JgElc5S074AqFOIJBDaIgmoYhQLc1ix43C7ArJWA0To6d//eHcnYxWAfmCdLj0y+
-         UbSg==
-Received: by 10.216.193.65 with SMTP id j43mr9438947wen.141.1351100608951;
-        Wed, 24 Oct 2012 10:43:28 -0700 (PDT)
-Received: from bender.localnet ([2a01:e35:2f70:4010:bcd3:247f:3658:db28])
-        by mx.google.com with ESMTPS id cu1sm5402930wib.6.2012.10.24.10.43.26
-        (version=SSLv3 cipher=OTHER);
-        Wed, 24 Oct 2012 10:43:27 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     linux-mips@linux-mips.org
-Cc:     Maarten ter Huurne <maarten@treewalker.org>,
-        Antony Pavlov <antonynpavlov@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2012 20:23:19 +0200 (CEST)
+Received: from smtp-vbr8.xs4all.nl ([194.109.24.28]:4367 "EHLO
+        smtp-vbr8.xs4all.nl" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6825702Ab2JXSXSFi4kI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Oct 2012 20:23:18 +0200
+Received: from starbug-2.trinair2002 (dhcp-089-098-069-120.chello.nl [89.98.69.120])
+        (authenticated bits=0)
+        by smtp-vbr8.xs4all.nl (8.13.8/8.13.8) with ESMTP id q9OIMQWr040413;
+        Wed, 24 Oct 2012 20:22:26 +0200 (CEST)
+        (envelope-from maarten@treewalker.org)
+Received: from hyperion.localnet (hyperion.trinair2002 [192.168.0.43])
+        by starbug-2.trinair2002 (Postfix) with ESMTP id 0688630AA;
+        Wed, 24 Oct 2012 20:22:26 +0200 (CEST)
+From:   Maarten ter Huurne <maarten@treewalker.org>
+To:     Florian Fainelli <florian@openwrt.org>
+Cc:     linux-mips@linux-mips.org, Antony Pavlov <antonynpavlov@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Lars-Peter Clausen <lars@metafoo.de>
 Subject: Re: [RFC 11/13] MIPS: JZ4750D: Add Kbuild files
-Date:   Wed, 24 Oct 2012 19:43:25 +0200
-Message-ID: <6315819.WnqMkxcSqV@bender>
-Organization: OpenWrt
-User-Agent: KMail/4.8.5 (Linux/3.2.0-32-generic; KDE/4.8.5; x86_64; ; )
-In-Reply-To: <4796718.WhuB0k6pfC@hyperion>
-References: <1351014241-3207-1-git-send-email-antonynpavlov@gmail.com> <1351014241-3207-12-git-send-email-antonynpavlov@gmail.com> <4796718.WhuB0k6pfC@hyperion>
+Date:   Wed, 24 Oct 2012 20:15:37 +0200
+Message-ID: <2898753.opXRKuz76b@hyperion>
+User-Agent: KMail/4.9.2 (Linux/3.4.11-2.16-desktop; KDE/4.9.2; x86_64; ; )
+In-Reply-To: <6315819.WnqMkxcSqV@bender>
+References: <1351014241-3207-1-git-send-email-antonynpavlov@gmail.com> <4796718.WhuB0k6pfC@hyperion> <6315819.WnqMkxcSqV@bender>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-archive-position: 34771
+Content-Type: text/plain; charset="us-ascii"
+X-Virus-Scanned: by XS4ALL Virus Scanner
+X-archive-position: 34772
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: maarten@treewalker.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,30 +44,47 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wednesday 24 October 2012 18:16:35 Maarten ter Huurne wrote:
-> On Tuesday 23 October 2012 21:43:59 Antony Pavlov wrote:
-> > Add the Kbuild files for the JZ4750D architecture and adds JZ4750D support
-> > to the MIPS Kbuild files.
-> [snip]
-> > diff --git a/arch/mips/jz4750d/Platform b/arch/mips/jz4750d/Platform
-> > new file mode 100644
-> > index 0000000..2e4e050
-> > --- /dev/null
-> > +++ b/arch/mips/jz4750d/Platform
-> > @@ -0,0 +1,3 @@
-> > +platform-$(CONFIG_MACH_JZ4750D)	+= jz4750d/
-> > +cflags-$(CONFIG_MACH_JZ4750D)	+=
-> > -I$(srctree)/arch/mips/include/asm/mach-jz4750d
-> > +load-$(CONFIG_MACH_JZ4750D)	+= 0xffffffff80010000
-> 
-> What is the purpose of padding the load address to 64 bits?
-> 
-> The reason I'm asking is that we encountered a bug with that when creating a 
-> u-boot image on a 32-bit host machine: the mkimage tool will only parse the 
-> first 8 hex digits and then inserts the wrong load address into the uImage.
+On Wednesday 24 October 2012 19:43:25 Florian Fainelli wrote:
+> On Wednesday 24 October 2012 18:16:35 Maarten ter Huurne wrote:
+> > On Tuesday 23 October 2012 21:43:59 Antony Pavlov wrote:
+> > > Add the Kbuild files for the JZ4750D architecture and adds JZ4750D
+> > > support to the MIPS Kbuild files.
+> > 
+> > [snip]
+> > 
+> > > diff --git a/arch/mips/jz4750d/Platform b/arch/mips/jz4750d/Platform
+> > > new file mode 100644
+> > > index 0000000..2e4e050
+> > > --- /dev/null
+> > > +++ b/arch/mips/jz4750d/Platform
+> > > @@ -0,0 +1,3 @@
+> > > +platform-$(CONFIG_MACH_JZ4750D)	+= jz4750d/
+> > > +cflags-$(CONFIG_MACH_JZ4750D)	+=
+> > > -I$(srctree)/arch/mips/include/asm/mach-jz4750d
+> > > +load-$(CONFIG_MACH_JZ4750D)	+= 0xffffffff80010000
+> > 
+> > What is the purpose of padding the load address to 64 bits?
+> > 
+> > The reason I'm asking is that we encountered a bug with that when
+> > creating a u-boot image on a 32-bit host machine: the mkimage tool will
+> > only parse the first 8 hex digits and then inserts the wrong load
+> > address into the uImage.
+>
+> AFAIR u-boot's mkimage expects 32-bits quantities as a load address, so I
+> would not be surprised that using this line as-is as an input parameter
+> to mkimage does not give yout the expected result.
 
-AFAIR u-boot's mkimage expects 32-bits quantities as a load address, so I would
-not be surprised that using this line as-is as an input parameter to mkimage
-does not give yout the expected result.
--- 
-Florian
+The actual uImage format supports only 32-bit addresses, but mkimage is 
+inconsistent in its handling of 64-bit addresses: if the tool is compiled 
+for x86_64 it parses all 16 hex digits and uses the lower 32 bits, but if it 
+is compiled for x86 it parses only the first 8 hex digits and the resulting 
+image won't boot.
+
+There is no "uImage" target for MIPS in the mainline kernel; we added our 
+own and it indeed passes $(VMLINUX_LOAD_ADDRESS) to mkimage as-is on the 
+command line. Since Ralf indicated that there are good reasons for sign 
+extending the address, I think I'll have to change how it is passed to 
+mkimage.
+
+Bye,
+		Maarten

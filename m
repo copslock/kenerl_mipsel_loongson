@@ -1,32 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2012 10:26:12 +0200 (CEST)
-Received: from smtp-out-141.synserver.de ([212.40.185.141]:1156 "EHLO
-        smtp-out-137.synserver.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6823021Ab2JXIZ27IlWA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Oct 2012 10:25:28 +0200
-Received: (qmail 27114 invoked by uid 0); 24 Oct 2012 08:25:24 -0000
-X-SynServer-TrustedSrc: 1
-X-SynServer-AuthUser: lars@metafoo.de
-X-SynServer-PPID: 27055
-Received: from p5491eca6.dip.t-dialin.net (HELO ?192.168.0.176?) [84.145.236.166]
-  by 217.119.54.96 with AES256-SHA encrypted SMTP; 24 Oct 2012 08:25:24 -0000
-Message-ID: <5087A5FA.70204@metafoo.de>
-Date:   Wed, 24 Oct 2012 10:25:30 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.9) Gecko/20121014 Icedove/10.0.9
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2012 18:24:16 +0200 (CEST)
+Received: from smtp-vbr13.xs4all.nl ([194.109.24.33]:1690 "EHLO
+        smtp-vbr13.xs4all.nl" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823040Ab2JXQYPudetD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Oct 2012 18:24:15 +0200
+Received: from starbug-2.trinair2002 (dhcp-089-098-069-120.chello.nl [89.98.69.120])
+        (authenticated bits=0)
+        by smtp-vbr13.xs4all.nl (8.13.8/8.13.8) with ESMTP id q9OGNPMm027120;
+        Wed, 24 Oct 2012 18:23:25 +0200 (CEST)
+        (envelope-from maarten@treewalker.org)
+Received: from hyperion.localnet (hyperion.trinair2002 [192.168.0.43])
+        by starbug-2.trinair2002 (Postfix) with ESMTP id B1F2F30AA;
+        Wed, 24 Oct 2012 18:23:24 +0200 (CEST)
+From:   Maarten ter Huurne <maarten@treewalker.org>
+To:     Antony Pavlov <antonynpavlov@gmail.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [RFC 11/13] MIPS: JZ4750D: Add Kbuild files
+Date:   Wed, 24 Oct 2012 18:16:35 +0200
+Message-ID: <4796718.WhuB0k6pfC@hyperion>
+User-Agent: KMail/4.9.2 (Linux/3.4.11-2.16-desktop; KDE/4.9.2; x86_64; ; )
+In-Reply-To: <1351014241-3207-12-git-send-email-antonynpavlov@gmail.com>
+References: <1351014241-3207-1-git-send-email-antonynpavlov@gmail.com> <1351014241-3207-12-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-To:     "Steven J. Hill" <sjhill@realitydiluted.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [RFC 00/13] MIPS: JZ4750D: Add base support for Ingenic JZ4750D
- SOC
-References: <1351014241-3207-1-git-send-email-antonynpavlov@gmail.com> <5086DEBB.1030506@metafoo.de> <5086F6AE.4030105@realitydiluted.com>
-In-Reply-To: <5086F6AE.4030105@realitydiluted.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34767
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Virus-Scanned: by XS4ALL Virus Scanner
+X-archive-position: 34768
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: maarten@treewalker.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,20 +43,26 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 10/23/2012 09:57 PM, Steven J. Hill wrote:
-> On 10/23/2012 01:15 PM, Lars-Peter Clausen wrote:
->> As for the renaming I'm not so sure if it is really necessary. We often
->> stick we the name for the driver or architecture version which was first
->> supported by the kernel and add note in Kconfig and comments that the
->> driver also supports other version/variants of the peripheral or SoC.
-> 
-> We currently have 'jz4740' and 'jz4770' directories. I think putting the
-> jz4750d code into 'jz4740' is a good idea too. Perhaps someday a 'jz47xx'
-> directory could be possible, but not sure it is worth the work.
+On Tuesday 23 October 2012 21:43:59 Antony Pavlov wrote:
+> Add the Kbuild files for the JZ4750D architecture and adds JZ4750D support
+> to the MIPS Kbuild files.
+[snip]
+> diff --git a/arch/mips/jz4750d/Platform b/arch/mips/jz4750d/Platform
+> new file mode 100644
+> index 0000000..2e4e050
+> --- /dev/null
+> +++ b/arch/mips/jz4750d/Platform
+> @@ -0,0 +1,3 @@
+> +platform-$(CONFIG_MACH_JZ4750D)	+= jz4750d/
+> +cflags-$(CONFIG_MACH_JZ4750D)	+=
+> -I$(srctree)/arch/mips/include/asm/mach-jz4750d
+> +load-$(CONFIG_MACH_JZ4750D)	+= 0xffffffff80010000
 
-In my opinion it is more effort to maintain these as separate
-subarchitectures. The peripherals are just to similar. Making a change to
-one of the jz4740 drivers will likely require the same change to the jz4770
-driver.
+What is the purpose of padding the load address to 64 bits?
 
-- Lars
+The reason I'm asking is that we encountered a bug with that when creating a 
+u-boot image on a 32-bit host machine: the mkimage tool will only parse the 
+first 8 hex digits and then inserts the wrong load address into the uImage.
+
+Bye,
+		Maarten

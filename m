@@ -1,39 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Oct 2012 23:51:15 +0200 (CEST)
-Received: from g4t0014.houston.hp.com ([15.201.24.17]:40303 "EHLO
-        g4t0014.houston.hp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823106Ab2JZVvOXuf8v (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Oct 2012 23:51:14 +0200
-Received: from g4t0018.houston.hp.com (g4t0018.houston.hp.com [16.234.32.27])
-        by g4t0014.houston.hp.com (Postfix) with ESMTP id DCB6F246F8;
-        Fri, 26 Oct 2012 21:51:07 +0000 (UTC)
-Received: from [10.152.1.34] (openvpn.lnx.usa.hp.com [16.125.113.33])
-        by g4t0018.houston.hp.com (Postfix) with ESMTP id C6842100F1;
-        Fri, 26 Oct 2012 21:51:05 +0000 (UTC)
-Message-ID: <1351288264.6885.11.camel@lorien2>
-Subject: Re: [PATCH RFT RESEND linux-next] mips: dma-mapping: support
- debug_dma_mapping_error
-From:   Shuah Khan <shuah.khan@hp.com>
-Reply-To: shuah.khan@hp.com
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     ralf@linux-mips.org, kyungmin.park@samsung.com, arnd@arndb.de,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Oct 2012 00:31:48 +0200 (CEST)
+Received: from mail-pa0-f49.google.com ([209.85.220.49]:40836 "EHLO
+        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823102Ab2JZWbrrMUUV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Oct 2012 00:31:47 +0200
+Received: by mail-pa0-f49.google.com with SMTP id bi5so2045805pad.36
+        for <multiple recipients>; Fri, 26 Oct 2012 15:31:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=Vn68WuMIa0bQ1bzoxH8HhgZxpsLsaPTWLXZm8+1p38k=;
+        b=zHG5Wg3gJlUeb0EQIbKLAe/RgcKuyETtUHvJ0avarlQlHMEzeGvT1p5CjPBoOK99DR
+         cjzOnp/6f2KgKS5FdJrcSNIWirsK3WZbrsVmA3B7a+mmEkx45+VNupsd1sCot1VQhhtC
+         noU/As0ZQmdpY/TnjvTDk6LOX9vcS2DomTYTSaykLy9GiZDGXhDf/uhcXYcCWHO3u4nc
+         gzWz/17TuVIAlnZ9Aj54A/HOhUCxJvUW9S1JDLaf9yPHNy6/0xYeLgJdxnGe/ryRxW6D
+         oxbL3shCCGq6roDefIm9QVUvEnDFfkUi4VQAxw45rodOFp2NQa7B91R1idhtSW35te1O
+         Fudw==
+Received: by 10.68.220.2 with SMTP id ps2mr73396529pbc.61.1351290700842;
+        Fri, 26 Oct 2012 15:31:40 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id iq3sm1787061pbc.5.2012.10.26.15.31.39
+        (version=SSLv3 cipher=OTHER);
+        Fri, 26 Oct 2012 15:31:40 -0700 (PDT)
+Message-ID: <508B0F4B.80601@gmail.com>
+Date:   Fri, 26 Oct 2012 15:31:39 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:16.0) Gecko/20121016 Thunderbird/16.0.1
+MIME-Version: 1.0
+To:     shuah.khan@hp.com
+CC:     ralf@linux-mips.org, kyungmin.park@samsung.com, arnd@arndb.de,
         andrzej.p@samsung.com, m.szyprowski@samsung.com,
         linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>,
         shuahkhan@gmail.com
-Date:   Fri, 26 Oct 2012 15:51:04 -0600
-In-Reply-To: <508AED66.3040808@gmail.com>
-References: <1351208193.6851.17.camel@lorien2>
-         <1351267298.4013.12.camel@lorien2> <508ABE1D.5010106@gmail.com>
-         <1351271198.4013.35.camel@lorien2> <508AED66.3040808@gmail.com>
-Organization: ISS-Linux
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
+Subject: Re: [PATCH RFT RESEND linux-next] mips: dma-mapping: support debug_dma_mapping_error
+References: <1351208193.6851.17.camel@lorien2>  <1351267298.4013.12.camel@lorien2> <508ABE1D.5010106@gmail.com>  <1351271198.4013.35.camel@lorien2> <508AED66.3040808@gmail.com> <1351288264.6885.11.camel@lorien2>
+In-Reply-To: <1351288264.6885.11.camel@lorien2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0
-X-archive-position: 34779
+X-archive-position: 34780
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shuah.khan@hp.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,69 +55,25 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, 2012-10-26 at 13:07 -0700, David Daney wrote:
-> On 10/26/2012 10:06 AM, Shuah Khan wrote:
-> > On Fri, 2012-10-26 at 09:45 -0700, David Daney wrote:
-> >> On 10/26/2012 09:01 AM, Shuah Khan wrote:
-> >>> Add support for debug_dma_mapping_error() call to avoid warning from
-> >>> debug_dma_unmap() interface when it checks for mapping error checked
-> >>> status. Without this patch, device driver failed to check map error
-> >>> warning is generated.
-> >>>
-> >>> Signed-off-by: Shuah Khan <shuah.khan@hp.com>
-> >>> ---
-> >>>    arch/mips/include/asm/dma-mapping.h |    2 ++
-> >>>    1 file changed, 2 insertions(+)
-> >>>
-> >>> diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
-> >>> index be39a12..006b43e 100644
-> >>> --- a/arch/mips/include/asm/dma-mapping.h
-> >>> +++ b/arch/mips/include/asm/dma-mapping.h
-> >>> @@ -40,6 +40,8 @@ static inline int dma_supported(struct device *dev, u64 mask)
-> >>>    static inline int dma_mapping_error(struct device *dev, u64 mask)
-> >>>    {
-> >>>    	struct dma_map_ops *ops = get_dma_ops(dev);
-> >>> +
-> >>> +	debug_dma_mapping_error(dev, mask);
-> >>>    	return ops->mapping_error(dev, mask);
-> >>>    }
-> >>>
-> >>>
-> >>
-> >> Although this is a start, I don't think it is sufficient.
-> >>
-> >> As far as I can tell, there are many missing calls to debug_dma_*() in
-> >> the various MIPS commone and sub-architecture DMA code.
-> >>
-> >> Really you (or someone) needs to look at *all* the functions in
-> >> arch/mips/asm/dma-mapping.h, and arch/mips/mm/dma-default.c and find
-> >> places missing a debug_dma_*().
-> >
-> > Is it correct to assume that this patch is not needed on MIPS until
-> > debug_dma interfaces get added to MIPS common and sub-architecture DMA
-> > code.
-> 
-> No, you have a false predicate here.
-> 
-> debug_dma_* *is* already mostly added.  The problem is that it is 
-> incomplete.  That is the nature of the problem.  Your patch makes it 
-> slightly better, but doesn't fully fix the problems.
+On 10/26/2012 02:51 PM, Shuah Khan wrote:
 
-Got it. Thanks. I would volunteer to look at fixing all the problems,
-but unfortunately I don't have a MIPS box handy for a thorough testing
-that would be necessary for such a change.
+>>>> On 10/26/2012 09:01 AM, Shuah Khan wrote:
+>>>>> Add support for debug_dma_mapping_error() call to avoid warning from
+>>>>> debug_dma_unmap() interface when it checks for mapping error checked
+>>>>> status. Without this patch, device driver failed to check map error
+>>>>> warning is generated.
 
--- Shuah
-> 
-> 
-> >
-> > When I didn't see dma_map_page() in arch/mips/include/asm/dma-mapping.h
-> > defined, and just an extern, I incorrectly assumed, it is getting picked
-> > up from <asm-generic/dma-mapping-common.h>, hence the need for this
-> > patch in the first place.
-> >
-> > -- Shuah
-> >
-> >
-> >
-> 
+I'm confused.
+
+Your claim that a 'warning is generated' seems to be in conflict with...
+
+
+[...]
+> Got it. Thanks. I would volunteer to look at fixing all the problems,
+> but unfortunately I don't have a MIPS box handy
+
+This statement that you don't have hardware that exhibits the problem.
+
+How was the patch tested?  How do you even know there is a problem?
+
+David Daney

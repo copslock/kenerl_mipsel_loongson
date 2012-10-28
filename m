@@ -1,47 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Oct 2012 00:31:48 +0200 (CEST)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:40836 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823102Ab2JZWbrrMUUV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Oct 2012 00:31:47 +0200
-Received: by mail-pa0-f49.google.com with SMTP id bi5so2045805pad.36
-        for <multiple recipients>; Fri, 26 Oct 2012 15:31:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Oct 2012 13:50:41 +0100 (CET)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:56726 "EHLO
+        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823121Ab2J1MukNO2IE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Oct 2012 13:50:40 +0100
+Received: by mail-bk0-f49.google.com with SMTP id j4so1438738bkw.36
+        for <multiple recipients>; Sun, 28 Oct 2012 05:50:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=Vn68WuMIa0bQ1bzoxH8HhgZxpsLsaPTWLXZm8+1p38k=;
-        b=zHG5Wg3gJlUeb0EQIbKLAe/RgcKuyETtUHvJ0avarlQlHMEzeGvT1p5CjPBoOK99DR
-         cjzOnp/6f2KgKS5FdJrcSNIWirsK3WZbrsVmA3B7a+mmEkx45+VNupsd1sCot1VQhhtC
-         noU/As0ZQmdpY/TnjvTDk6LOX9vcS2DomTYTSaykLy9GiZDGXhDf/uhcXYcCWHO3u4nc
-         gzWz/17TuVIAlnZ9Aj54A/HOhUCxJvUW9S1JDLaf9yPHNy6/0xYeLgJdxnGe/ryRxW6D
-         oxbL3shCCGq6roDefIm9QVUvEnDFfkUi4VQAxw45rodOFp2NQa7B91R1idhtSW35te1O
-         Fudw==
-Received: by 10.68.220.2 with SMTP id ps2mr73396529pbc.61.1351290700842;
-        Fri, 26 Oct 2012 15:31:40 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id iq3sm1787061pbc.5.2012.10.26.15.31.39
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=vXewmzsOTJpETxXLjqSauqm6FkM2kLqI9lrqbcd4WO4=;
+        b=hBgBGEvpPlE8DqXBzKK3JjrMr6tObrCjEX9H3kAazuVmTl1QH3MX/FIGE6vzaweQoU
+         c1gdo1ViLE4T5mcUUMzM6Jq36h9hNJxssfdsGgSZ7KB6+xwEHbst8m+VCfy5t9oBMQLV
+         4/FZRjVE2oyj3mt1EshX861o9EpvZLzRqS68r9wMlkY7f1kAOzAQ8fzkltRM38NV5Lik
+         Rm8eaQi2U5HL9lisJskjSVa5FlJWNY9IZ/HPZSp8jI6dJLDif4JQrCV+uWt0yiIatck0
+         AXMeqIoAdcldR6nnBWwqhYgQxq9Ag0cySD1PlWC9rhO62YNFt7x5XoSLsJUGYdGSVBjU
+         IDOg==
+Received: by 10.204.7.88 with SMTP id c24mr8563518bkc.118.1351428634703;
+        Sun, 28 Oct 2012 05:50:34 -0700 (PDT)
+Received: from shaker64.lan (dslb-088-073-158-247.pools.arcor-ip.net. [88.73.158.247])
+        by mx.google.com with ESMTPS id fm5sm2560095bkc.5.2012.10.28.05.50.33
         (version=SSLv3 cipher=OTHER);
-        Fri, 26 Oct 2012 15:31:40 -0700 (PDT)
-Message-ID: <508B0F4B.80601@gmail.com>
-Date:   Fri, 26 Oct 2012 15:31:39 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:16.0) Gecko/20121016 Thunderbird/16.0.1
-MIME-Version: 1.0
-To:     shuah.khan@hp.com
-CC:     ralf@linux-mips.org, kyungmin.park@samsung.com, arnd@arndb.de,
-        andrzej.p@samsung.com, m.szyprowski@samsung.com,
-        linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>,
-        shuahkhan@gmail.com
-Subject: Re: [PATCH RFT RESEND linux-next] mips: dma-mapping: support debug_dma_mapping_error
-References: <1351208193.6851.17.camel@lorien2>  <1351267298.4013.12.camel@lorien2> <508ABE1D.5010106@gmail.com>  <1351271198.4013.35.camel@lorien2> <508AED66.3040808@gmail.com> <1351288264.6885.11.camel@lorien2>
-In-Reply-To: <1351288264.6885.11.camel@lorien2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34780
+        Sun, 28 Oct 2012 05:50:33 -0700 (PDT)
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>,
+        Kevin Cernekee <cernekee@gmail.com>
+Subject: [PATCH] MIPS: BCM63XX: add and use a clock for PCIe
+Date:   Sun, 28 Oct 2012 13:49:53 +0100
+Message-Id: <1351428593-13355-1-git-send-email-jonas.gorski@gmail.com>
+X-Mailer: git-send-email 1.7.2.5
+X-archive-position: 34782
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,25 +50,91 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 10/26/2012 02:51 PM, Shuah Khan wrote:
+Add a PCIe clock and use that instead of directly touching the clock
+control register. While at it, fail if there is no such clock.
 
->>>> On 10/26/2012 09:01 AM, Shuah Khan wrote:
->>>>> Add support for debug_dma_mapping_error() call to avoid warning from
->>>>> debug_dma_unmap() interface when it checks for mapping error checked
->>>>> status. Without this patch, device driver failed to check map error
->>>>> warning is generated.
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+---
+ arch/mips/bcm63xx/clk.c     |   15 +++++++++++++++
+ arch/mips/pci/pci-bcm63xx.c |   15 ++++++++++-----
+ 2 files changed, 25 insertions(+), 5 deletions(-)
 
-I'm confused.
-
-Your claim that a 'warning is generated' seems to be in conflict with...
-
-
-[...]
-> Got it. Thanks. I would volunteer to look at fixing all the problems,
-> but unfortunately I don't have a MIPS box handy
-
-This statement that you don't have hardware that exhibits the problem.
-
-How was the patch tested?  How do you even know there is a problem?
-
-David Daney
+diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
+index dff79ab..89a5fb0 100644
+--- a/arch/mips/bcm63xx/clk.c
++++ b/arch/mips/bcm63xx/clk.c
+@@ -253,6 +253,19 @@ static struct clk clk_ipsec = {
+ };
+ 
+ /*
++ * PCIe clock
++ */
++
++static void pcie_set(struct clk *clk, int enable)
++{
++	bcm_hwclock_set(CKCTL_6328_PCIE_EN, enable);
++}
++
++static struct clk clk_pcie = {
++	.set	= pcie_set,
++};
++
++/*
+  * Internal peripheral clock
+  */
+ static struct clk clk_periph = {
+@@ -313,6 +326,8 @@ struct clk *clk_get(struct device *dev, const char *id)
+ 		return &clk_pcm;
+ 	if (BCMCPU_IS_6368() && !strcmp(id, "ipsec"))
+ 		return &clk_ipsec;
++	if (BCMCPU_IS_6328() && !strcmp(id, "pcie"))
++		return &clk_pcie;
+ 	return ERR_PTR(-ENOENT);
+ }
+ 
+diff --git a/arch/mips/pci/pci-bcm63xx.c b/arch/mips/pci/pci-bcm63xx.c
+index 8a48139..fa8c320 100644
+--- a/arch/mips/pci/pci-bcm63xx.c
++++ b/arch/mips/pci/pci-bcm63xx.c
+@@ -11,6 +11,7 @@
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/delay.h>
++#include <linux/clk.h>
+ #include <asm/bootinfo.h>
+ 
+ #include "pci-bcm63xx.h"
+@@ -119,11 +120,6 @@ static void __init bcm63xx_reset_pcie(void)
+ {
+ 	u32 val;
+ 
+-	/* enable clock */
+-	val = bcm_perf_readl(PERF_CKCTL_REG);
+-	val |= CKCTL_6328_PCIE_EN;
+-	bcm_perf_writel(val, PERF_CKCTL_REG);
+-
+ 	/* enable SERDES */
+ 	val = bcm_misc_readl(MISC_SERDES_CTRL_REG);
+ 	val |= SERDES_PCIE_EN | SERDES_PCIE_EXD_EN;
+@@ -150,10 +146,19 @@ static void __init bcm63xx_reset_pcie(void)
+ 	mdelay(200);
+ }
+ 
++static struct clk *pcie_clk;
++
+ static int __init bcm63xx_register_pcie(void)
+ {
+ 	u32 val;
+ 
++	/* enable clock */
++	pcie_clk = clk_get(NULL, "pcie");
++	if (IS_ERR_OR_NULL(pcie_clk))
++		return -ENODEV;
++
++	clk_prepare_enable(pcie_clk);
++
+ 	bcm63xx_reset_pcie();
+ 
+ 	/* configure the PCIe bridge */
+-- 
+1.7.2.5

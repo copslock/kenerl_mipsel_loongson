@@ -1,40 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Oct 2012 20:59:00 +0100 (CET)
-Received: from g4t0017.houston.hp.com ([15.201.24.20]:6959 "EHLO
-        g4t0017.houston.hp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6824283Ab2J3T66hdUwg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Oct 2012 20:58:58 +0100
-Received: from g4t0009.houston.hp.com (g4t0009.houston.hp.com [16.234.32.26])
-        by g4t0017.houston.hp.com (Postfix) with ESMTP id 704F33836F;
-        Tue, 30 Oct 2012 19:58:50 +0000 (UTC)
-Received: from [10.152.1.10] (openvpn.lnx.usa.hp.com [16.125.113.33])
-        by g4t0009.houston.hp.com (Postfix) with ESMTP id 7E363C22A;
-        Tue, 30 Oct 2012 19:58:47 +0000 (UTC)
-Message-ID: <1351627126.2654.15.camel@lorien2>
-Subject: Re: [PATCH RFT RESEND linux-next] mips: dma-mapping: support
- debug_dma_mapping_error
-From:   Shuah Khan <shuah.khan@hp.com>
-Reply-To: shuah.khan@hp.com
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     ralf@linux-mips.org, kyungmin.park@samsung.com, arnd@arndb.de,
-        andrzej.p@samsung.com, m.szyprowski@samsung.com,
-        linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>,
-        shuahkhan@gmail.com
-Date:   Tue, 30 Oct 2012 13:58:46 -0600
-In-Reply-To: <508B0F4B.80601@gmail.com>
-References: <1351208193.6851.17.camel@lorien2>
-         <1351267298.4013.12.camel@lorien2> <508ABE1D.5010106@gmail.com>
-         <1351271198.4013.35.camel@lorien2> <508AED66.3040808@gmail.com>
-         <1351288264.6885.11.camel@lorien2> <508B0F4B.80601@gmail.com>
-Organization: ISS-Linux
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
-Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0
-X-archive-position: 34793
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Oct 2012 21:28:16 +0100 (CET)
+Received: from smtp167.iad.emailsrvr.com ([207.97.245.167]:34842 "EHLO
+        smtp167.iad.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825741Ab2J3U2PoYuQ5 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 30 Oct 2012 21:28:15 +0100
+Received: from smtp56.relay.iad1a.emailsrvr.com (localhost.localdomain [127.0.0.1])
+        by smtp56.relay.iad1a.emailsrvr.com (SMTP Server) with ESMTP id 0645D3D85B3;
+        Tue, 30 Oct 2012 16:28:09 -0400 (EDT)
+X-SMTPDoctor-Processed: csmtpprox 2.7.4
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by smtp56.relay.iad1a.emailsrvr.com (SMTP Server) with ESMTP id ED9D73D85B5;
+        Tue, 30 Oct 2012 16:28:08 -0400 (EDT)
+X-Virus-Scanned: OK
+Received: from smtp192.mex02.mlsrvr.com (smtp192.mex02.mlsrvr.com [204.232.137.43])
+        by smtp56.relay.iad1a.emailsrvr.com (SMTP Server) with ESMTPS id C3CE93D85B3;
+        Tue, 30 Oct 2012 16:28:08 -0400 (EDT)
+Received: from IAD2MBX02.mex02.mlsrvr.com ([172.23.11.10]) by
+ iad2hub11.mex02.mlsrvr.com ([172.23.10.75]) with mapi; Tue, 30 Oct 2012
+ 16:28:05 -0400
+From:   Jacob Burkholder <jacob.burkholder@blinqnetworks.com>
+To:     David Daney <ddaney.cavm@gmail.com>, Jayachandran C.
+        <c.jayachandran@gmail.com>, Ralf Baechle <ralf@linux-mips.org>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Date:   Tue, 30 Oct 2012 16:28:04 -0400
+Subject: RE: linux 3.6.3 mips64 mtd jffs2 unmount issue
+Thread-Topic: linux 3.6.3 mips64 mtd jffs2 unmount issue
+Thread-Index: Ac22xSFQUT2U75hjRAeERV0E5Y++mQAFuJhg
+Message-ID: <14A0B61B8C8EFA4A9F40381A10D219104EEB0F541D@IAD2MBX02.mex02.mlsrvr.com>
+References: <14A0B61B8C8EFA4A9F40381A10D219104EEB0F5226@IAD2MBX02.mex02.mlsrvr.com>
+ <CA+7sy7CWkcsg9YffJ-rcdN7D=vZtuees31upGzgUya5puDN0og@mail.gmail.com>
+ <50901027.6090802@gmail.com>
+In-Reply-To: <50901027.6090802@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+acceptlanguage: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-archive-position: 34794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shuah.khan@hp.com
+X-original-sender: jacob.burkholder@blinqnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,36 +57,45 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, 2012-10-26 at 15:31 -0700, David Daney wrote:
-> On 10/26/2012 02:51 PM, Shuah Khan wrote:
-> 
-> >>>> On 10/26/2012 09:01 AM, Shuah Khan wrote:
-> >>>>> Add support for debug_dma_mapping_error() call to avoid warning from
-> >>>>> debug_dma_unmap() interface when it checks for mapping error checked
-> >>>>> status. Without this patch, device driver failed to check map error
-> >>>>> warning is generated.
-> 
-> I'm confused.
-> 
-> Your claim that a 'warning is generated' seems to be in conflict with...
-> 
-> 
+> On 10/30/2012 01:09 AM, Jayachandran C. wrote:
 > [...]
-> > Got it. Thanks. I would volunteer to look at fixing all the problems,
-> > but unfortunately I don't have a MIPS box handy
-> 
-> This statement that you don't have hardware that exhibits the problem.
-> 
-> How was the patch tested?  How do you even know there is a problem?
-
-I enhanced the existing dma debug interfaces to add an interface to
-debug missing dma_mapping_error() checks. That went into linux-next.
-With this patch, when dma_map_page() and dma_map_single() are debugged
-with a call to debug_dma_map_page() and the corresponding
-dma_mapping_error() interface doesn't call debug_dma_mapping_error()
-interface, a warning will be generated. I have been sending changes to
-arch specific dma_mapping_error() routines to add this debug interface.
-That is why I marked this patch RFT requesting testing.
-
-Thanks,
--- Shuah
+>
+> >
+> > We had seen the same issue here, and worked around it the same way
+> > (i.e use dynamic allocation for the backing dev structures).
+> >
+> > I ran across a similar issue in using built-in DTB (basically, kernel
+> > data address does not work for virt_to_phys/phys_to_virt in 64-bit
+> > when the load address is in CKSEG0).  There I did something like this:
+> >
+> > ptr = phys_to_virt(__pa(kernel_data_ptr));
+> >
+> > This works since __pa knows about CKSEG0 addresses in 64bit.
+> >
+> >
+>
+> Really the proper fix is to make virt_to_phys() work.  This isn't the only case where we have seen failures due to this issue:
+>
+>
+> http://www.linux-mips.org/archives/linux-mips/2011-09/msg00029.html
+>
+> I fixed it like this...
+>
+> In io.h:
+>
+> static inline unsigned long virt_to_phys(volatile const void *address)
+> {
+>       return __pa(address);
+> }
+>
+> Really this needs to be pushed upstream by somebody.
+>
+ 
+Thanks, this makes sense and seems a good fix.  I had some problems with
+twisty includes because page.h includes io.h.  Did you move the definition
+of __pa also?
+ 
+Anyway, if this can be pushed to master and merged to linux-stable I'll
+pick it up.
+ 
+Jake

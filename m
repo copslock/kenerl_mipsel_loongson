@@ -1,32 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 13:58:45 +0100 (CET)
-Received: from mms2.broadcom.com ([216.31.210.18]:2705 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 13:59:08 +0100 (CET)
+Received: from mms1.broadcom.com ([216.31.210.17]:2573 "EHLO mms1.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824847Ab2JaM6oKfy-x (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6825655Ab2JaM6oWqEE4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 31 Oct 2012 13:58:44 +0100
-Received: from [10.9.200.133] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Wed, 31 Oct 2012 05:56:40 -0700
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+Received: from [10.9.200.133] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Wed, 31 Oct 2012 05:57:18 -0700
+X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
  IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Wed, 31 Oct 2012 05:57:57 -0700
+ Server id 8.2.247.2; Wed, 31 Oct 2012 05:57:56 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 5F2DA40FE3; Wed, 31
- Oct 2012 05:58:26 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 850D540FE3; Wed, 31
+ Oct 2012 05:58:24 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-cc:     "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 03/15] MIPS: Netlogic: select MIPSR2 for XLP
-Date:   Wed, 31 Oct 2012 18:31:29 +0530
-Message-ID: <3172102a3b041fdefbc721e3a25a95427bdec384.1351688140.git.jchandra@broadcom.com>
+cc:     "Zi Shen Lim" <zlim@netlogicmicro.com>,
+        "Jayachandran C" <jchandra@broadcom.com>
+Subject: [PATCH 02/15] MIPS: perf: Add XLP support for hardware perf.
+Date:   Wed, 31 Oct 2012 18:31:28 +0530
+Message-ID: <3759c841ac7707f9e1eae0169773b580aebd9cd8.1351688140.git.jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <cover.1351688140.git.jchandra@broadcom.com>
 References: <cover.1351688140.git.jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7C8FFF823QC1968380-01-01
+X-WSS-ID: 7C8FFFA42102190968-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 34795
+X-archive-position: 34796
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,36 +45,186 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This allows us to use the r2 optimized code from kernel headers
-while compilation.
+From: Zi Shen Lim <zlim@netlogicmicro.com>
 
-Disable PGD_C0_CONTEXT option for XLP, which does not work.
+Add support for XLP performance counters register in perf. Update
+mips/Kconfig so that perf events can be selected for XLP.
 
+Signed-off-by: Zi Shen Lim <zlim@netlogicmicro.com>
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/Kconfig |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/Kconfig                    |    2 +-
+ arch/mips/kernel/perf_event_mipsxx.c |  124 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 125 insertions(+), 1 deletion(-)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index c40d282..346b44d 100644
+index 2a84ffd..c40d282 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -1525,6 +1525,7 @@ config CPU_XLP
- 	select WEAK_ORDERING
- 	select WEAK_REORDERING_BEYOND_LLSC
- 	select CPU_HAS_PREFETCH
-+	select CPU_MIPSR2
- 	help
- 	  Netlogic Microsystems XLP processors.
- endchoice
-@@ -1738,7 +1739,7 @@ config CPU_SUPPORTS_UNCACHED_ACCELERATED
- 	bool
- config MIPS_PGD_C0_CONTEXT
- 	bool
--	default y if 64BIT && CPU_MIPSR2
-+	default y if 64BIT && CPU_MIPSR2 && !CPU_XLP
+@@ -2168,7 +2168,7 @@ config NODES_SHIFT
  
- #
- # Set to y for ptrace access to watch registers.
+ config HW_PERF_EVENTS
+ 	bool "Enable hardware performance counter support for perf events"
+-	depends on PERF_EVENTS && !MIPS_MT_SMTC && OPROFILE=n && (CPU_MIPS32 || CPU_MIPS64 || CPU_R10000 || CPU_SB1 || CPU_CAVIUM_OCTEON)
++	depends on PERF_EVENTS && !MIPS_MT_SMTC && OPROFILE=n && (CPU_MIPS32 || CPU_MIPS64 || CPU_R10000 || CPU_SB1 || CPU_CAVIUM_OCTEON || CPU_XLP)
+ 	default y
+ 	help
+ 	  Enable hardware performance counter support for perf events. If
+diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
+index 2f28d3b..15cbbc3 100644
+--- a/arch/mips/kernel/perf_event_mipsxx.c
++++ b/arch/mips/kernel/perf_event_mipsxx.c
+@@ -829,6 +829,16 @@ static const struct mips_perf_event octeon_event_map[PERF_COUNT_HW_MAX] = {
+ 	[PERF_COUNT_HW_BUS_CYCLES] = { 0x25, CNTR_ALL },
+ };
+ 
++static const struct mips_perf_event xlp_event_map[PERF_COUNT_HW_MAX] = {
++	[PERF_COUNT_HW_CPU_CYCLES] = { 0x01, CNTR_ALL },
++	[PERF_COUNT_HW_INSTRUCTIONS] = { 0x18, CNTR_ALL }, /* PAPI_TOT_INS */
++	[PERF_COUNT_HW_CACHE_REFERENCES] = { 0x04, CNTR_ALL }, /* PAPI_L1_ICA */
++	[PERF_COUNT_HW_CACHE_MISSES] = { 0x07, CNTR_ALL }, /* PAPI_L1_ICM */
++	[PERF_COUNT_HW_BRANCH_INSTRUCTIONS] = { 0x1b, CNTR_ALL }, /* PAPI_BR_CN */
++	[PERF_COUNT_HW_BRANCH_MISSES] = { 0x1c, CNTR_ALL }, /* PAPI_BR_MSP */
++	[PERF_COUNT_HW_BUS_CYCLES] = { UNSUPPORTED_PERF_EVENT_ID },
++};
++
+ /* 24K/34K/1004K cores can share the same cache event map. */
+ static const struct mips_perf_event mipsxxcore_cache_map
+ 				[PERF_COUNT_HW_CACHE_MAX]
+@@ -1158,6 +1168,100 @@ static const struct mips_perf_event octeon_cache_map
+ },
+ };
+ 
++static const struct mips_perf_event xlp_cache_map
++				[PERF_COUNT_HW_CACHE_MAX]
++				[PERF_COUNT_HW_CACHE_OP_MAX]
++				[PERF_COUNT_HW_CACHE_RESULT_MAX] = {
++[C(L1D)] = {
++	[C(OP_READ)] = {
++		[C(RESULT_ACCESS)]	= { 0x31, CNTR_ALL }, /* PAPI_L1_DCR */
++		[C(RESULT_MISS)]	= { 0x30, CNTR_ALL }, /* PAPI_L1_LDM */
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_ACCESS)]	= { 0x2f, CNTR_ALL }, /* PAPI_L1_DCW */
++		[C(RESULT_MISS)]	= { 0x2e, CNTR_ALL }, /* PAPI_L1_STM */
++	},
++	[C(OP_PREFETCH)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++},
++[C(L1I)] = {
++	[C(OP_READ)] = {
++		[C(RESULT_ACCESS)]	= { 0x04, CNTR_ALL }, /* PAPI_L1_ICA */
++		[C(RESULT_MISS)]	= { 0x07, CNTR_ALL }, /* PAPI_L1_ICM */
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++	[C(OP_PREFETCH)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++},
++[C(LL)] = {
++	[C(OP_READ)] = {
++		[C(RESULT_ACCESS)]	= { 0x35, CNTR_ALL }, /* PAPI_L2_DCR */
++		[C(RESULT_MISS)]	= { 0x37, CNTR_ALL }, /* PAPI_L2_LDM */
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_ACCESS)]	= { 0x34, CNTR_ALL }, /* PAPI_L2_DCA */
++		[C(RESULT_MISS)]	= { 0x36, CNTR_ALL }, /* PAPI_L2_DCM */
++	},
++	[C(OP_PREFETCH)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++},
++[C(DTLB)] = {
++	/*
++	 * Only general DTLB misses are counted use the same event for
++	 * read and write.
++	 */
++	[C(OP_READ)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { 0x2d, CNTR_ALL }, /* PAPI_TLB_DM */
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { 0x2d, CNTR_ALL }, /* PAPI_TLB_DM */
++	},
++	[C(OP_PREFETCH)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++},
++[C(ITLB)] = {
++	[C(OP_READ)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { 0x08, CNTR_ALL }, /* PAPI_TLB_IM */
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { 0x08, CNTR_ALL }, /* PAPI_TLB_IM */
++	},
++	[C(OP_PREFETCH)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++},
++[C(BPU)] = {
++	[C(OP_READ)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { 0x25, CNTR_ALL },
++	},
++	[C(OP_WRITE)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++	[C(OP_PREFETCH)] = {
++		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
++	},
++},
++};
++
+ #ifdef CONFIG_MIPS_MT_SMP
+ static void check_and_calc_range(struct perf_event *event,
+ 				 const struct mips_perf_event *pev)
+@@ -1499,6 +1603,20 @@ static const struct mips_perf_event *octeon_pmu_map_raw_event(u64 config)
+ 	return &raw_event;
+ }
+ 
++static const struct mips_perf_event *xlp_pmu_map_raw_event(u64 config)
++{
++	unsigned int raw_id = config & 0xff;
++
++	/* Only 1-63 are defined */
++	if ((raw_id < 0x01) || (raw_id > 0x3f))
++		return ERR_PTR(-EOPNOTSUPP);
++
++	raw_event.cntr_mask = CNTR_ALL;
++	raw_event.event_id = raw_id;
++
++	return &raw_event;
++}
++
+ static int __init
+ init_hw_perf_events(void)
+ {
+@@ -1572,6 +1690,12 @@ init_hw_perf_events(void)
+ 		mipspmu.cache_event_map = &octeon_cache_map;
+ 		mipspmu.map_raw_event = octeon_pmu_map_raw_event;
+ 		break;
++	case CPU_XLP:
++		mipspmu.name = "xlp";
++		mipspmu.general_event_map = &xlp_event_map;
++		mipspmu.cache_event_map = &xlp_cache_map;
++		mipspmu.map_raw_event = xlp_pmu_map_raw_event;
++		break;
+ 	default:
+ 		pr_cont("Either hardware does not support performance "
+ 			"counters, or not yet implemented.\n");
 -- 
 1.7.9.5

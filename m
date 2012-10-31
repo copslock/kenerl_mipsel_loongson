@@ -1,32 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 14:29:00 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:49795 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6825887Ab2JaN2xivnJx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 31 Oct 2012 14:28:53 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id q9VDSp5j007180;
-        Wed, 31 Oct 2012 14:28:51 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id q9VDSoc7007178;
-        Wed, 31 Oct 2012 14:28:50 +0100
-Date:   Wed, 31 Oct 2012 14:28:50 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jayachandran C <jchandra@broadcom.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 03/15] MIPS: Netlogic: select MIPSR2 for XLP
-Message-ID: <20121031132850.GB6365@linux-mips.org>
-References: <cover.1351688140.git.jchandra@broadcom.com>
- <3172102a3b041fdefbc721e3a25a95427bdec384.1351688140.git.jchandra@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 15:34:24 +0100 (CET)
+Received: from mms2.broadcom.com ([216.31.210.18]:2741 "EHLO mms2.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6824847Ab2JaOeWnkRLk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 31 Oct 2012 15:34:22 +0100
+Received: from [10.9.200.133] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Wed, 31 Oct 2012 07:32:18 -0700
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+Received: from mail-irva-13.broadcom.com (10.11.16.103) by
+ IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
+ Server id 8.2.247.2; Wed, 31 Oct 2012 07:33:35 -0700
+Received: from jayachandranc.netlogicmicro.com (
+ netl-snoppy.ban.broadcom.com [10.132.128.129]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 0E0C840FEC; Wed, 31
+ Oct 2012 07:34:03 -0700 (PDT)
+Date:   Wed, 31 Oct 2012 20:07:35 +0530
+From:   "Jayachandran C." <jchandra@broadcom.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH 12/15] MIPS: Netlogic: Introduce support for
+ multi-node
+Message-ID: <20121031143734.GA18568@jayachandranc.netlogicmicro.com>
+References: <cover.1351687453.git.jchandra@broadcom.com>
+ <995719ada6db71c86b332df4698c1dbf748686c0.1351687453.git.jchandra@broadcom.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3172102a3b041fdefbc721e3a25a95427bdec384.1351688140.git.jchandra@broadcom.com>
+In-Reply-To: <995719ada6db71c86b332df4698c1dbf748686c0.1351687453.git.jchandra@broadcom.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34812
+X-WSS-ID: 7C8FE9F83QC1997164-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,10 +47,16 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, Oct 31, 2012 at 06:31:29PM +0530, Jayachandran C wrote:
+On Wed, Oct 31, 2012 at 06:31:38PM +0530, Jayachandran C wrote:
+> Upto 4 Netlogic XLP SoCs can be connected over ICI links to form a
+> coherent multi-node system.  Each SoC has its own set of on-chip
+> devices including PIC.  To support this, add a per SoC stucture and
+> use it for the PIC and SYS block addresses instead of using global
+> variables.
+> 
+> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 
-> Disable PGD_C0_CONTEXT option for XLP, which does not work.
+This is an older version of the patch, please ignore.  I have marked
+it superceded in patchwork as well.
 
-Why does this not work on XLP?
-
-  Ralf
+JC.

@@ -1,49 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Oct 2012 21:28:16 +0100 (CET)
-Received: from smtp167.iad.emailsrvr.com ([207.97.245.167]:34842 "EHLO
-        smtp167.iad.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825741Ab2J3U2PoYuQ5 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 30 Oct 2012 21:28:15 +0100
-Received: from smtp56.relay.iad1a.emailsrvr.com (localhost.localdomain [127.0.0.1])
-        by smtp56.relay.iad1a.emailsrvr.com (SMTP Server) with ESMTP id 0645D3D85B3;
-        Tue, 30 Oct 2012 16:28:09 -0400 (EDT)
-X-SMTPDoctor-Processed: csmtpprox 2.7.4
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by smtp56.relay.iad1a.emailsrvr.com (SMTP Server) with ESMTP id ED9D73D85B5;
-        Tue, 30 Oct 2012 16:28:08 -0400 (EDT)
-X-Virus-Scanned: OK
-Received: from smtp192.mex02.mlsrvr.com (smtp192.mex02.mlsrvr.com [204.232.137.43])
-        by smtp56.relay.iad1a.emailsrvr.com (SMTP Server) with ESMTPS id C3CE93D85B3;
-        Tue, 30 Oct 2012 16:28:08 -0400 (EDT)
-Received: from IAD2MBX02.mex02.mlsrvr.com ([172.23.11.10]) by
- iad2hub11.mex02.mlsrvr.com ([172.23.10.75]) with mapi; Tue, 30 Oct 2012
- 16:28:05 -0400
-From:   Jacob Burkholder <jacob.burkholder@blinqnetworks.com>
-To:     David Daney <ddaney.cavm@gmail.com>, Jayachandran C.
-        <c.jayachandran@gmail.com>, Ralf Baechle <ralf@linux-mips.org>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Date:   Tue, 30 Oct 2012 16:28:04 -0400
-Subject: RE: linux 3.6.3 mips64 mtd jffs2 unmount issue
-Thread-Topic: linux 3.6.3 mips64 mtd jffs2 unmount issue
-Thread-Index: Ac22xSFQUT2U75hjRAeERV0E5Y++mQAFuJhg
-Message-ID: <14A0B61B8C8EFA4A9F40381A10D219104EEB0F541D@IAD2MBX02.mex02.mlsrvr.com>
-References: <14A0B61B8C8EFA4A9F40381A10D219104EEB0F5226@IAD2MBX02.mex02.mlsrvr.com>
- <CA+7sy7CWkcsg9YffJ-rcdN7D=vZtuees31upGzgUya5puDN0og@mail.gmail.com>
- <50901027.6090802@gmail.com>
-In-Reply-To: <50901027.6090802@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 13:58:45 +0100 (CET)
+Received: from mms2.broadcom.com ([216.31.210.18]:2705 "EHLO mms2.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6824847Ab2JaM6oKfy-x (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 31 Oct 2012 13:58:44 +0100
+Received: from [10.9.200.133] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Wed, 31 Oct 2012 05:56:40 -0700
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+Received: from mail-irva-13.broadcom.com (10.11.16.103) by
+ IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
+ Server id 8.2.247.2; Wed, 31 Oct 2012 05:57:57 -0700
+Received: from netl-snoppy.ban.broadcom.com (
+ netl-snoppy.ban.broadcom.com [10.132.128.129]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 5F2DA40FE3; Wed, 31
+ Oct 2012 05:58:26 -0700 (PDT)
+From:   "Jayachandran C" <jchandra@broadcom.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+cc:     "Jayachandran C" <jchandra@broadcom.com>
+Subject: [PATCH 03/15] MIPS: Netlogic: select MIPSR2 for XLP
+Date:   Wed, 31 Oct 2012 18:31:29 +0530
+Message-ID: <3172102a3b041fdefbc721e3a25a95427bdec384.1351688140.git.jchandra@broadcom.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <cover.1351688140.git.jchandra@broadcom.com>
+References: <cover.1351688140.git.jchandra@broadcom.com>
 MIME-Version: 1.0
-X-archive-position: 34794
+X-WSS-ID: 7C8FFF823QC1968380-01-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34795
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jacob.burkholder@blinqnetworks.com
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,45 +44,36 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-> On 10/30/2012 01:09 AM, Jayachandran C. wrote:
-> [...]
->
-> >
-> > We had seen the same issue here, and worked around it the same way
-> > (i.e use dynamic allocation for the backing dev structures).
-> >
-> > I ran across a similar issue in using built-in DTB (basically, kernel
-> > data address does not work for virt_to_phys/phys_to_virt in 64-bit
-> > when the load address is in CKSEG0).  There I did something like this:
-> >
-> > ptr = phys_to_virt(__pa(kernel_data_ptr));
-> >
-> > This works since __pa knows about CKSEG0 addresses in 64bit.
-> >
-> >
->
-> Really the proper fix is to make virt_to_phys() work.  This isn't the only case where we have seen failures due to this issue:
->
->
-> http://www.linux-mips.org/archives/linux-mips/2011-09/msg00029.html
->
-> I fixed it like this...
->
-> In io.h:
->
-> static inline unsigned long virt_to_phys(volatile const void *address)
-> {
->       return __pa(address);
-> }
->
-> Really this needs to be pushed upstream by somebody.
->
+This allows us to use the r2 optimized code from kernel headers
+while compilation.
+
+Disable PGD_C0_CONTEXT option for XLP, which does not work.
+
+Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+---
+ arch/mips/Kconfig |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index c40d282..346b44d 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1525,6 +1525,7 @@ config CPU_XLP
+ 	select WEAK_ORDERING
+ 	select WEAK_REORDERING_BEYOND_LLSC
+ 	select CPU_HAS_PREFETCH
++	select CPU_MIPSR2
+ 	help
+ 	  Netlogic Microsystems XLP processors.
+ endchoice
+@@ -1738,7 +1739,7 @@ config CPU_SUPPORTS_UNCACHED_ACCELERATED
+ 	bool
+ config MIPS_PGD_C0_CONTEXT
+ 	bool
+-	default y if 64BIT && CPU_MIPSR2
++	default y if 64BIT && CPU_MIPSR2 && !CPU_XLP
  
-Thanks, this makes sense and seems a good fix.  I had some problems with
-twisty includes because page.h includes io.h.  Did you move the definition
-of __pa also?
- 
-Anyway, if this can be pushed to master and merged to linux-stable I'll
-pick it up.
- 
-Jake
+ #
+ # Set to y for ptrace access to watch registers.
+-- 
+1.7.9.5

@@ -1,33 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 14:03:54 +0100 (CET)
-Received: from mms2.broadcom.com ([216.31.210.18]:2714 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 14:04:12 +0100 (CET)
+Received: from mms2.broadcom.com ([216.31.210.18]:2705 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825881Ab2JaM7Ao9378 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6825882Ab2JaM7ApFGOM (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 31 Oct 2012 13:59:00 +0100
 Received: from [10.9.200.133] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Wed, 31 Oct 2012 05:56:37 -0700
+ SMTP Relay (Email Firewall v6.5)); Wed, 31 Oct 2012 05:56:35 -0700
 X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
  IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Wed, 31 Oct 2012 05:57:54 -0700
+ Server id 8.2.247.2; Wed, 31 Oct 2012 05:57:52 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id AC9BB40FE3; Wed, 31
- Oct 2012 05:58:22 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 15A6040FE3; Wed, 31
+ Oct 2012 05:58:20 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-cc:     "Madhusudan Bhat" <mbhat@netlogicmicro.com>,
-        "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 01/15] MIPS: oprofile: Support for XLR/XLS processors
-Date:   Wed, 31 Oct 2012 18:31:27 +0530
-Message-ID: <dba25e24c0201dfeb01ea3abac54fe33b12909f7.1351688140.git.jchandra@broadcom.com>
+cc:     "Jayachandran C" <jchandra@broadcom.com>
+Subject: [PATCH 00/15] Netlogic XLR/XLS/XLP updates
+Date:   Wed, 31 Oct 2012 18:31:26 +0530
+Message-ID: <cover.1351688140.git.jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <cover.1351688140.git.jchandra@broadcom.com>
-References: <cover.1351688140.git.jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7C8FFF8F3QC1968355-01-01
+X-WSS-ID: 7C8FFF893QC1968348-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 34810
+X-archive-position: 34811
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,123 +42,79 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Madhusudan Bhat <mbhat@netlogicmicro.com>
+Here's is the next patchset for Netlogic XLR/XLS/XLP CPUs. The 
+highlights are:
+ * Support for XLP multi-chip boards, this feature allows two or four
+   XLPs to be connected using an interconnect(ICI) to form a coherent
+   SMP system with upto 128 cpus (only 64 supported now).
+ * Support for XLR/XLS fast message network. The XLR/XLS CPU cores
+   talk to the high speed interfaces using a messaging mechanism
+   which uses the co-processor 2 on the CPU core. The code is to
+   intialize the bucket (message queue) sizes, and to distribute
+   credits on the queues to the devices (stations).
+ * oprofile support for XLR and perf support for XLP (this has been
+   posted a few times)
 
-Add support for XLR and XLS processors in MIPS Oprofile code. These
-processors are multi-threaded and have two counters per core. Each
-counter can track either all the events in the core (global mode),
-or events in just one thread.
+The patchset also includes few fixes to the XLR/XLS/XLP code.
 
-We use the counters in the global mode, and use only the first thread
-in each core to handle the configuration etc.
+JC.
 
-Signed-off-by: Madhusudan Bhat <mbhat@netlogicmicro.com>
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
----
- arch/mips/oprofile/Makefile          |    1 +
- arch/mips/oprofile/common.c          |    1 +
- arch/mips/oprofile/op_model_mipsxx.c |   29 +++++++++++++++++++++++++++++
- 3 files changed, 31 insertions(+)
+Ganesan Ramalingam (1):
+  MIPS: Netlogic: Support for XLR/XLS Fast Message Network
 
-diff --git a/arch/mips/oprofile/Makefile b/arch/mips/oprofile/Makefile
-index 1208c28..65f5237 100644
---- a/arch/mips/oprofile/Makefile
-+++ b/arch/mips/oprofile/Makefile
-@@ -12,5 +12,6 @@ oprofile-$(CONFIG_CPU_MIPS32)		+= op_model_mipsxx.o
- oprofile-$(CONFIG_CPU_MIPS64)		+= op_model_mipsxx.o
- oprofile-$(CONFIG_CPU_R10000)		+= op_model_mipsxx.o
- oprofile-$(CONFIG_CPU_SB1)		+= op_model_mipsxx.o
-+oprofile-$(CONFIG_CPU_XLR)		+= op_model_mipsxx.o
- oprofile-$(CONFIG_CPU_RM9000)		+= op_model_rm9000.o
- oprofile-$(CONFIG_CPU_LOONGSON2)	+= op_model_loongson2.o
-diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
-index f80480a..abd5a02 100644
---- a/arch/mips/oprofile/common.c
-+++ b/arch/mips/oprofile/common.c
-@@ -91,6 +91,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
- 	case CPU_R10000:
- 	case CPU_R12000:
- 	case CPU_R14000:
-+	case CPU_XLR:
- 		lmodel = &op_model_mipsxx_ops;
- 		break;
- 
-diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-index 28ea1a4..7862546 100644
---- a/arch/mips/oprofile/op_model_mipsxx.c
-+++ b/arch/mips/oprofile/op_model_mipsxx.c
-@@ -31,8 +31,22 @@
- 
- #define M_COUNTER_OVERFLOW		(1UL      << 31)
- 
-+/* Netlogic XLR specific, count events in all threads in a core */
-+#define M_PERFCTL_COUNT_ALL_THREADS	(1UL      << 13)
-+
- static int (*save_perf_irq)(void);
- 
-+/*
-+ * XLR has only one set of counters per core. Designate the
-+ * first hardware thread in the core for setup and init.
-+ * Skip CPUs with non-zero hardware thread id (4 hwt per core)
-+ */
-+#ifdef CONFIG_CPU_XLR
-+#define oprofile_skip_cpu(c)	((cpu_logical_map(c) & 0x3) != 0)
-+#else
-+#define oprofile_skip_cpu(c)	0
-+#endif
-+
- #ifdef CONFIG_MIPS_MT_SMP
- static int cpu_has_mipsmt_pertccounters;
- #define WHAT		(M_TC_EN_VPE | \
-@@ -152,6 +166,8 @@ static void mipsxx_reg_setup(struct op_counter_config *ctr)
- 			reg.control[i] |= M_PERFCTL_USER;
- 		if (ctr[i].exl)
- 			reg.control[i] |= M_PERFCTL_EXL;
-+		if (current_cpu_type() == CPU_XLR)
-+			reg.control[i] |= M_PERFCTL_COUNT_ALL_THREADS;
- 		reg.counter[i] = 0x80000000 - ctr[i].count;
- 	}
- }
-@@ -162,6 +178,9 @@ static void mipsxx_cpu_setup(void *args)
- {
- 	unsigned int counters = op_model_mipsxx_ops.num_counters;
- 
-+	if (oprofile_skip_cpu(smp_processor_id()))
-+		return;
-+
- 	switch (counters) {
- 	case 4:
- 		w_c0_perfctrl3(0);
-@@ -183,6 +202,9 @@ static void mipsxx_cpu_start(void *args)
- {
- 	unsigned int counters = op_model_mipsxx_ops.num_counters;
- 
-+	if (oprofile_skip_cpu(smp_processor_id()))
-+		return;
-+
- 	switch (counters) {
- 	case 4:
- 		w_c0_perfctrl3(WHAT | reg.control[3]);
-@@ -200,6 +222,9 @@ static void mipsxx_cpu_stop(void *args)
- {
- 	unsigned int counters = op_model_mipsxx_ops.num_counters;
- 
-+	if (oprofile_skip_cpu(smp_processor_id()))
-+		return;
-+
- 	switch (counters) {
- 	case 4:
- 		w_c0_perfctrl3(0);
-@@ -372,6 +397,10 @@ static int __init mipsxx_init(void)
- 		op_model_mipsxx_ops.cpu_type = "mips/loongson1";
- 		break;
- 
-+	case CPU_XLR:
-+		op_model_mipsxx_ops.cpu_type = "mips/xlr";
-+		break;
-+
- 	default:
- 		printk(KERN_ERR "Profiling unsupported for this CPU\n");
- 
+Jayachandran C (12):
+  MIPS: Netlogic: select MIPSR2 for XLP
+  MIPS: Netlogic: Enable SUE bit in cores
+  MIPS: Netlogic: keep .dtb/.dtb.S until make clean
+  MIPS: Netlogic: Move fdt init to plat_mem_setup
+  MIPS: Netlogic: Fix DMA zone selection for 64-bit
+  MIPS: Netlogic: Fix interrupt table entry init
+  MIPS: Netlogic: Pass cpuid to early_init_secondary
+  MIPS: Netlogic: Update PIC access functions
+  MIPS: Netlogic: Move from u32 cpumask to cpumask_t
+  MIPS: Netlogic: Support for multi-chip configuration
+  MIPS: Netlogic: Make number of nodes configurable
+  MIPS: Netlogic: PIC IRQ handling update for multi-chip
+
+Madhusudan Bhat (1):
+  MIPS: oprofile: Support for XLR/XLS processors
+
+Zi Shen Lim (1):
+  MIPS: perf: Add XLP support for hardware perf.
+
+ arch/mips/Kconfig                                |    9 +-
+ arch/mips/include/asm/mach-netlogic/irq.h        |    4 +-
+ arch/mips/include/asm/mach-netlogic/multi-node.h |   54 ++++
+ arch/mips/include/asm/netlogic/common.h          |   51 ++-
+ arch/mips/include/asm/netlogic/interrupt.h       |    2 +-
+ arch/mips/include/asm/netlogic/mips-extns.h      |  142 +++++++++
+ arch/mips/include/asm/netlogic/xlp-hal/pic.h     |   44 +--
+ arch/mips/include/asm/netlogic/xlp-hal/sys.h     |    1 -
+ arch/mips/include/asm/netlogic/xlr/fmn.h         |  363 ++++++++++++++++++++++
+ arch/mips/include/asm/netlogic/xlr/pic.h         |    2 -
+ arch/mips/include/asm/netlogic/xlr/xlr.h         |    6 +-
+ arch/mips/kernel/perf_event_mipsxx.c             |  124 ++++++++
+ arch/mips/netlogic/Kconfig                       |   28 ++
+ arch/mips/netlogic/common/irq.c                  |  165 ++++++----
+ arch/mips/netlogic/common/smp.c                  |   89 +++---
+ arch/mips/netlogic/common/smpboot.S              |    6 +-
+ arch/mips/netlogic/dts/Makefile                  |   16 +-
+ arch/mips/netlogic/xlp/nlm_hal.c                 |   67 +---
+ arch/mips/netlogic/xlp/setup.c                   |   50 +--
+ arch/mips/netlogic/xlp/wakeup.c                  |   83 +++--
+ arch/mips/netlogic/xlr/Makefile                  |    4 +-
+ arch/mips/netlogic/xlr/fmn-config.c              |  290 +++++++++++++++++
+ arch/mips/netlogic/xlr/fmn.c                     |  204 ++++++++++++
+ arch/mips/netlogic/xlr/setup.c                   |   37 ++-
+ arch/mips/netlogic/xlr/wakeup.c                  |   23 +-
+ arch/mips/oprofile/Makefile                      |    1 +
+ arch/mips/oprofile/common.c                      |    1 +
+ arch/mips/oprofile/op_model_mipsxx.c             |   29 ++
+ 28 files changed, 1620 insertions(+), 275 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-netlogic/multi-node.h
+ create mode 100644 arch/mips/include/asm/netlogic/xlr/fmn.h
+ create mode 100644 arch/mips/netlogic/xlr/fmn-config.c
+ create mode 100644 arch/mips/netlogic/xlr/fmn.c
+
 -- 
 1.7.9.5

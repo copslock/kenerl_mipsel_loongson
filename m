@@ -1,34 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 14:02:48 +0100 (CET)
-Received: from mms2.broadcom.com ([216.31.210.18]:2714 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 14:03:08 +0100 (CET)
+Received: from mms1.broadcom.com ([216.31.210.17]:2573 "EHLO mms1.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825755Ab2JaM6zuNARl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 31 Oct 2012 13:58:55 +0100
-Received: from [10.9.200.133] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Wed, 31 Oct 2012 05:57:01 -0700
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+        id S6825873Ab2JaM64f5cFF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 31 Oct 2012 13:58:56 +0100
+Received: from [10.9.200.133] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Wed, 31 Oct 2012 05:57:36 -0700
+X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
  IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Wed, 31 Oct 2012 05:58:19 -0700
+ Server id 8.2.247.2; Wed, 31 Oct 2012 05:58:14 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 8772740FE3; Wed, 31
- Oct 2012 05:58:47 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id A5A4D40FE3; Wed, 31
+ Oct 2012 05:58:42 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-cc:     "Ganesan Ramalingam" <ganesanr@broadcom.com>,
-        "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 15/15] MIPS: Netlogic: Support for XLR/XLS Fast Message
- Network
-Date:   Wed, 31 Oct 2012 18:31:42 +0530
-Message-ID: <2f1cd3e30b5a5cdfcd00ed0700041804c28631bb.1351688140.git.jchandra@broadcom.com>
+cc:     "Jayachandran C" <jchandra@broadcom.com>
+Subject: [PATCH 12/15] MIPS: Netlogic: Support for multi-chip
+ configuration
+Date:   Wed, 31 Oct 2012 18:31:39 +0530
+Message-ID: <f0023bc42065fbc5edb0e88f82d13edd38ef443f.1351688140.git.jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <cover.1351688140.git.jchandra@broadcom.com>
 References: <cover.1351688140.git.jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7C8FFF973QC1968480-01-01
+X-WSS-ID: 7C8FFFCA2102191082-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 34807
+X-archive-position: 34808
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,1214 +45,663 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Ganesan Ramalingam <ganesanr@broadcom.com>
+Upto 4 Netlogic XLP SoCs can be connected over ICI links to form a
+coherent multi-node system.  Each SoC has its own set of on-chip
+devices including PIC.  To support this, add a per SoC stucture and
+use it for the PIC and SYS block addresses instead of using global
+variables.
 
-On XLR/XLS, the cpu cores communicate with fast on-chip devices
-(e.g. network accelerator, security engine etc.) using the Fast
-Messaging Network(FMN). The FMN queues and credits needs to be
-configured and intialized before it can be used.
-
-The co-processor 2 on XLR/XLS CPU cores has registers for FMN access,
-and the XLR/XLS has custom instructions for sending and loading
-messages.  The FMN can deliver also per-cpu interrupts when messages
-are available at the CPU.
-
-This patch adds FMN initialization, adds interrupt setup and handling,
-and also provides support for sending and receiving FMN messages.
-
-Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/include/asm/netlogic/common.h     |    1 +
- arch/mips/include/asm/netlogic/interrupt.h  |    2 +-
- arch/mips/include/asm/netlogic/mips-extns.h |  137 ++++++++++
- arch/mips/include/asm/netlogic/xlr/fmn.h    |  363 +++++++++++++++++++++++++++
- arch/mips/include/asm/netlogic/xlr/xlr.h    |    6 +-
- arch/mips/netlogic/common/irq.c             |    8 +-
- arch/mips/netlogic/common/smp.c             |    4 +-
- arch/mips/netlogic/xlp/setup.c              |    4 +
- arch/mips/netlogic/xlr/Makefile             |    4 +-
- arch/mips/netlogic/xlr/fmn-config.c         |  290 +++++++++++++++++++++
- arch/mips/netlogic/xlr/fmn.c                |  204 +++++++++++++++
- arch/mips/netlogic/xlr/setup.c              |    9 +
- 12 files changed, 1020 insertions(+), 12 deletions(-)
- create mode 100644 arch/mips/include/asm/netlogic/xlr/fmn.h
- create mode 100644 arch/mips/netlogic/xlr/fmn-config.c
- create mode 100644 arch/mips/netlogic/xlr/fmn.c
+ arch/mips/include/asm/netlogic/common.h      |   42 +++++++++++++++++---
+ arch/mips/include/asm/netlogic/mips-extns.h  |    5 +++
+ arch/mips/include/asm/netlogic/xlp-hal/pic.h |    1 -
+ arch/mips/include/asm/netlogic/xlp-hal/sys.h |    1 -
+ arch/mips/include/asm/netlogic/xlr/pic.h     |    2 -
+ arch/mips/netlogic/common/irq.c              |   55 +++++++++++++++++---------
+ arch/mips/netlogic/common/smp.c              |   47 +++++++++++++---------
+ arch/mips/netlogic/xlp/nlm_hal.c             |   29 +++++++-------
+ arch/mips/netlogic/xlp/setup.c               |   17 ++++----
+ arch/mips/netlogic/xlp/wakeup.c              |   22 +++++++----
+ arch/mips/netlogic/xlr/setup.c               |   20 ++++++----
+ arch/mips/netlogic/xlr/wakeup.c              |   21 +++++++++-
+ 12 files changed, 176 insertions(+), 86 deletions(-)
 
 diff --git a/arch/mips/include/asm/netlogic/common.h b/arch/mips/include/asm/netlogic/common.h
-index 1fee7ef..42bfd5f 100644
+index fd735bc..2eb39fa 100644
 --- a/arch/mips/include/asm/netlogic/common.h
 +++ b/arch/mips/include/asm/netlogic/common.h
-@@ -57,6 +57,7 @@ void nlm_smp_irq_init(int hwcpuid);
- void nlm_boot_secondary_cpus(void);
- int nlm_wakeup_secondary_cpus(void);
- void nlm_rmiboot_preboot(void);
-+void nlm_percpu_init(int hwcpuid);
+@@ -46,10 +46,10 @@
  
- static inline void
- nlm_set_nmi_handler(void *handler)
-diff --git a/arch/mips/include/asm/netlogic/interrupt.h b/arch/mips/include/asm/netlogic/interrupt.h
-index a85aadb..ed5993d 100644
---- a/arch/mips/include/asm/netlogic/interrupt.h
-+++ b/arch/mips/include/asm/netlogic/interrupt.h
-@@ -39,7 +39,7 @@
+ #ifndef __ASSEMBLY__
+ #include <linux/cpumask.h>
++#include <linux/spinlock.h>
++#include <asm/irq.h>
  
- #define IRQ_IPI_SMP_FUNCTION	3
- #define IRQ_IPI_SMP_RESCHEDULE	4
--#define IRQ_MSGRING		6
-+#define IRQ_FMN			5
- #define IRQ_TIMER		7
+ struct irq_desc;
+-extern struct plat_smp_ops nlm_smp_ops;
+-extern char nlm_reset_entry[], nlm_reset_entry_end[];
+ void nlm_smp_function_ipi_handler(unsigned int irq, struct irq_desc *desc);
+ void nlm_smp_resched_ipi_handler(unsigned int irq, struct irq_desc *desc);
+ void nlm_smp_irq_init(void);
+@@ -70,10 +70,42 @@ nlm_set_nmi_handler(void *handler)
+  * Misc.
+  */
+ unsigned int nlm_get_cpu_frequency(void);
++void nlm_node_init(int node);
++extern struct plat_smp_ops nlm_smp_ops;
++extern char nlm_reset_entry[], nlm_reset_entry_end[];
  
+-extern unsigned long nlm_common_ebase;
+-extern int nlm_threads_per_core;
+-extern uint32_t nlm_coremask;
++extern unsigned int nlm_threads_per_core;
+ extern cpumask_t nlm_cpumask;
++
++struct nlm_soc_info {
++	unsigned long coremask;	/* cores enabled on the soc */
++	unsigned long ebase;
++	uint64_t irqmask;
++	uint64_t sysbase;	/* only for XLP */
++	uint64_t picbase;
++	spinlock_t piclock;
++};
++
++#define NLM_CORES_PER_NODE	8
++#define NLM_THREADS_PER_CORE	4
++#define NLM_CPUS_PER_NODE	(NLM_CORES_PER_NODE * NLM_THREADS_PER_CORE)
++#define	nlm_get_node(i)		(&nlm_nodes[i])
++#define NLM_NR_NODES		1
++#define	nlm_current_node()	(&nlm_nodes[0])
++
++struct irq_data;
++uint64_t nlm_pci_irqmask(int node);
++void nlm_set_pic_extra_ack(int node, int irq,  void (*xack)(struct irq_data *));
++
++/*
++ * The NR_IRQs is divided between nodes, each of them has a separate irq space
++ */
++static inline int nlm_irq_to_xirq(int node, int irq)
++{
++	return node * NR_IRQS / NLM_NR_NODES + irq;
++}
++
++extern struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
++extern int nlm_cpu_ready[];
  #endif
+ #endif /* _NETLOGIC_COMMON_H_ */
 diff --git a/arch/mips/include/asm/netlogic/mips-extns.h b/arch/mips/include/asm/netlogic/mips-extns.h
-index c9f6de5..32ba6d9 100644
+index 8c53d0b..c9f6de5 100644
 --- a/arch/mips/include/asm/netlogic/mips-extns.h
 +++ b/arch/mips/include/asm/netlogic/mips-extns.h
-@@ -78,4 +78,141 @@ static inline int nlm_nodeid(void)
- 	return (__read_32bit_c0_register($15, 1) >> 5) & 0x3;
+@@ -73,4 +73,9 @@ static inline int hard_smp_processor_id(void)
+ 	return __read_32bit_c0_register($15, 1) & 0x3ff;
  }
  
-+static inline unsigned int nlm_core_id(void)
++static inline int nlm_nodeid(void)
 +{
-+	return (read_c0_ebase() & 0x1c) >> 2;
++	return (__read_32bit_c0_register($15, 1) >> 5) & 0x3;
 +}
-+
-+static inline unsigned int nlm_thread_id(void)
-+{
-+	return read_c0_ebase() & 0x3;
-+}
-+
-+#define __read_64bit_c2_split(source, sel)				\
-+({									\
-+	unsigned long long __val;					\
-+	unsigned long __flags;						\
-+									\
-+	local_irq_save(__flags);					\
-+	if (sel == 0)							\
-+		__asm__ __volatile__(					\
-+			".set\tmips64\n\t"				\
-+			"dmfc2\t%M0, " #source "\n\t"			\
-+			"dsll\t%L0, %M0, 32\n\t"			\
-+			"dsra\t%M0, %M0, 32\n\t"			\
-+			"dsra\t%L0, %L0, 32\n\t"			\
-+			".set\tmips0\n\t"				\
-+			: "=r" (__val));				\
-+	else								\
-+		__asm__ __volatile__(					\
-+			".set\tmips64\n\t"				\
-+			"dmfc2\t%M0, " #source ", " #sel "\n\t"		\
-+			"dsll\t%L0, %M0, 32\n\t"			\
-+			"dsra\t%M0, %M0, 32\n\t"			\
-+			"dsra\t%L0, %L0, 32\n\t"			\
-+			".set\tmips0\n\t"				\
-+			: "=r" (__val));				\
-+	local_irq_restore(__flags);					\
-+									\
-+	__val;								\
-+})
-+
-+#define __write_64bit_c2_split(source, sel, val)			\
-+do {									\
-+	unsigned long __flags;						\
-+									\
-+	local_irq_save(__flags);					\
-+	if (sel == 0)							\
-+		__asm__ __volatile__(					\
-+			".set\tmips64\n\t"				\
-+			"dsll\t%L0, %L0, 32\n\t"			\
-+			"dsrl\t%L0, %L0, 32\n\t"			\
-+			"dsll\t%M0, %M0, 32\n\t"			\
-+			"or\t%L0, %L0, %M0\n\t"				\
-+			"dmtc2\t%L0, " #source "\n\t"			\
-+			".set\tmips0\n\t"				\
-+			: : "r" (val));					\
-+	else								\
-+		__asm__ __volatile__(					\
-+			".set\tmips64\n\t"				\
-+			"dsll\t%L0, %L0, 32\n\t"			\
-+			"dsrl\t%L0, %L0, 32\n\t"			\
-+			"dsll\t%M0, %M0, 32\n\t"			\
-+			"or\t%L0, %L0, %M0\n\t"				\
-+			"dmtc2\t%L0, " #source ", " #sel "\n\t"		\
-+			".set\tmips0\n\t"				\
-+			: : "r" (val));					\
-+	local_irq_restore(__flags);					\
-+} while (0)
-+
-+#define __read_32bit_c2_register(source, sel)				\
-+({ uint32_t __res;							\
-+	if (sel == 0)							\
-+		__asm__ __volatile__(					\
-+			".set\tmips32\n\t"				\
-+			"mfc2\t%0, " #source "\n\t"			\
-+			".set\tmips0\n\t"				\
-+			: "=r" (__res));				\
-+	else								\
-+		__asm__ __volatile__(					\
-+			".set\tmips32\n\t"				\
-+			"mfc2\t%0, " #source ", " #sel "\n\t"		\
-+			".set\tmips0\n\t"				\
-+			: "=r" (__res));				\
-+	__res;								\
-+})
-+
-+#define __read_64bit_c2_register(source, sel)				\
-+({ unsigned long long __res;						\
-+	if (sizeof(unsigned long) == 4)					\
-+		__res = __read_64bit_c2_split(source, sel);		\
-+	else if (sel == 0)						\
-+		__asm__ __volatile__(					\
-+			".set\tmips64\n\t"				\
-+			"dmfc2\t%0, " #source "\n\t"			\
-+			".set\tmips0\n\t"				\
-+			: "=r" (__res));				\
-+	else								\
-+		__asm__ __volatile__(					\
-+			".set\tmips64\n\t"				\
-+			"dmfc2\t%0, " #source ", " #sel "\n\t"		\
-+			".set\tmips0\n\t"				\
-+			: "=r" (__res));				\
-+	__res;								\
-+})
-+
-+#define __write_64bit_c2_register(register, sel, value)			\
-+do {									\
-+	if (sizeof(unsigned long) == 4)					\
-+		__write_64bit_c2_split(register, sel, value);		\
-+	else if (sel == 0)						\
-+		__asm__ __volatile__(					\
-+			".set\tmips64\n\t"				\
-+			"dmtc2\t%z0, " #register "\n\t"			\
-+			".set\tmips0\n\t"				\
-+			: : "Jr" (value));				\
-+	else								\
-+		__asm__ __volatile__(					\
-+			".set\tmips64\n\t"				\
-+			"dmtc2\t%z0, " #register ", " #sel "\n\t"	\
-+			".set\tmips0\n\t"				\
-+			: : "Jr" (value));				\
-+} while (0)
-+
-+#define __write_32bit_c2_register(reg, sel, value)			\
-+({									\
-+	if (sel == 0)							\
-+		__asm__ __volatile__(					\
-+			".set\tmips32\n\t"				\
-+			"mtc2\t%z0, " #reg "\n\t"			\
-+			".set\tmips0\n\t"				\
-+			: : "Jr" (value));				\
-+	else								\
-+		__asm__ __volatile__(                                   \
-+			".set\tmips32\n\t"				\
-+			"mtc2\t%z0, " #reg ", " #sel "\n\t"		\
-+			".set\tmips0\n\t"				\
-+			: : "Jr" (value));				\
-+})
 +
  #endif /*_ASM_NLM_MIPS_EXTS_H */
-diff --git a/arch/mips/include/asm/netlogic/xlr/fmn.h b/arch/mips/include/asm/netlogic/xlr/fmn.h
-new file mode 100644
-index 0000000..68d5167
---- /dev/null
-+++ b/arch/mips/include/asm/netlogic/xlr/fmn.h
-@@ -0,0 +1,363 @@
-+/*
-+ * Copyright (c) 2003-2012 Broadcom Corporation
-+ * All Rights Reserved
-+ *
-+ * This software is available to you under a choice of one of two
-+ * licenses.  You may choose to be licensed under the terms of the GNU
-+ * General Public License (GPL) Version 2, available from the file
-+ * COPYING in the main directory of this source tree, or the Broadcom
-+ * license below:
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions
-+ * are met:
-+ *
-+ * 1. Redistributions of source code must retain the above copyright
-+ *    notice, this list of conditions and the following disclaimer.
-+ * 2. Redistributions in binary form must reproduce the above copyright
-+ *    notice, this list of conditions and the following disclaimer in
-+ *    the documentation and/or other materials provided with the
-+ *    distribution.
-+ *
-+ * THIS SOFTWARE IS PROVIDED BY BROADCOM ``AS IS'' AND ANY EXPRESS OR
-+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-+ * ARE DISCLAIMED. IN NO EVENT SHALL BROADCOM OR CONTRIBUTORS BE LIABLE
-+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-+ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ */
-+
-+#ifndef _NLM_FMN_H_
-+#define _NLM_FMN_H_
-+
-+#include <asm/netlogic/mips-extns.h> /* for COP2 access */
-+
-+/* Station IDs */
-+#define	FMN_STNID_CPU0			0x00
-+#define	FMN_STNID_CPU1			0x08
-+#define	FMN_STNID_CPU2			0x10
-+#define	FMN_STNID_CPU3			0x18
-+#define	FMN_STNID_CPU4			0x20
-+#define	FMN_STNID_CPU5			0x28
-+#define	FMN_STNID_CPU6			0x30
-+#define	FMN_STNID_CPU7			0x38
-+
-+#define	FMN_STNID_XGS0_TX		64
-+#define	FMN_STNID_XMAC0_00_TX		64
-+#define	FMN_STNID_XMAC0_01_TX		65
-+#define	FMN_STNID_XMAC0_02_TX		66
-+#define	FMN_STNID_XMAC0_03_TX		67
-+#define	FMN_STNID_XMAC0_04_TX		68
-+#define	FMN_STNID_XMAC0_05_TX		69
-+#define	FMN_STNID_XMAC0_06_TX		70
-+#define	FMN_STNID_XMAC0_07_TX		71
-+#define	FMN_STNID_XMAC0_08_TX		72
-+#define	FMN_STNID_XMAC0_09_TX		73
-+#define	FMN_STNID_XMAC0_10_TX		74
-+#define	FMN_STNID_XMAC0_11_TX		75
-+#define	FMN_STNID_XMAC0_12_TX		76
-+#define	FMN_STNID_XMAC0_13_TX		77
-+#define	FMN_STNID_XMAC0_14_TX		78
-+#define	FMN_STNID_XMAC0_15_TX		79
-+
-+#define	FMN_STNID_XGS1_TX		80
-+#define	FMN_STNID_XMAC1_00_TX		80
-+#define	FMN_STNID_XMAC1_01_TX		81
-+#define	FMN_STNID_XMAC1_02_TX		82
-+#define	FMN_STNID_XMAC1_03_TX		83
-+#define	FMN_STNID_XMAC1_04_TX		84
-+#define	FMN_STNID_XMAC1_05_TX		85
-+#define	FMN_STNID_XMAC1_06_TX		86
-+#define	FMN_STNID_XMAC1_07_TX		87
-+#define	FMN_STNID_XMAC1_08_TX		88
-+#define	FMN_STNID_XMAC1_09_TX		89
-+#define	FMN_STNID_XMAC1_10_TX		90
-+#define	FMN_STNID_XMAC1_11_TX		91
-+#define	FMN_STNID_XMAC1_12_TX		92
-+#define	FMN_STNID_XMAC1_13_TX		93
-+#define	FMN_STNID_XMAC1_14_TX		94
-+#define	FMN_STNID_XMAC1_15_TX		95
-+
-+#define	FMN_STNID_GMAC			96
-+#define	FMN_STNID_GMACJFR_0		96
-+#define	FMN_STNID_GMACRFR_0		97
-+#define	FMN_STNID_GMACTX0		98
-+#define	FMN_STNID_GMACTX1		99
-+#define	FMN_STNID_GMACTX2		100
-+#define	FMN_STNID_GMACTX3		101
-+#define	FMN_STNID_GMACJFR_1		102
-+#define	FMN_STNID_GMACRFR_1		103
-+
-+#define	FMN_STNID_DMA			104
-+#define	FMN_STNID_DMA_0			104
-+#define	FMN_STNID_DMA_1			105
-+#define	FMN_STNID_DMA_2			106
-+#define	FMN_STNID_DMA_3			107
-+
-+#define	FMN_STNID_XGS0FR		112
-+#define	FMN_STNID_XMAC0JFR		112
-+#define	FMN_STNID_XMAC0RFR		113
-+
-+#define	FMN_STNID_XGS1FR		114
-+#define	FMN_STNID_XMAC1JFR		114
-+#define	FMN_STNID_XMAC1RFR		115
-+#define	FMN_STNID_SEC			120
-+#define	FMN_STNID_SEC0			120
-+#define	FMN_STNID_SEC1			121
-+#define	FMN_STNID_SEC2			122
-+#define	FMN_STNID_SEC3			123
-+#define	FMN_STNID_PK0			124
-+#define	FMN_STNID_SEC_RSA		124
-+#define	FMN_STNID_SEC_RSVD0		125
-+#define	FMN_STNID_SEC_RSVD1		126
-+#define	FMN_STNID_SEC_RSVD2		127
-+
-+#define	FMN_STNID_GMAC1			80
-+#define	FMN_STNID_GMAC1_FR_0		81
-+#define	FMN_STNID_GMAC1_TX0		82
-+#define	FMN_STNID_GMAC1_TX1		83
-+#define	FMN_STNID_GMAC1_TX2		84
-+#define	FMN_STNID_GMAC1_TX3		85
-+#define	FMN_STNID_GMAC1_FR_1		87
-+#define	FMN_STNID_GMAC0			96
-+#define	FMN_STNID_GMAC0_FR_0		97
-+#define	FMN_STNID_GMAC0_TX0		98
-+#define	FMN_STNID_GMAC0_TX1		99
-+#define	FMN_STNID_GMAC0_TX2		100
-+#define	FMN_STNID_GMAC0_TX3		101
-+#define	FMN_STNID_GMAC0_FR_1		103
-+#define	FMN_STNID_CMP_0			108
-+#define	FMN_STNID_CMP_1			109
-+#define	FMN_STNID_CMP_2			110
-+#define	FMN_STNID_CMP_3			111
-+#define	FMN_STNID_PCIE_0		116
-+#define	FMN_STNID_PCIE_1		117
-+#define	FMN_STNID_PCIE_2		118
-+#define	FMN_STNID_PCIE_3		119
-+#define	FMN_STNID_XLS_PK0		121
-+
-+#define nlm_read_c2_cc0(s)		__read_32bit_c2_register($16, s)
-+#define nlm_read_c2_cc1(s)		__read_32bit_c2_register($17, s)
-+#define nlm_read_c2_cc2(s)		__read_32bit_c2_register($18, s)
-+#define nlm_read_c2_cc3(s)		__read_32bit_c2_register($19, s)
-+#define nlm_read_c2_cc4(s)		__read_32bit_c2_register($20, s)
-+#define nlm_read_c2_cc5(s)		__read_32bit_c2_register($21, s)
-+#define nlm_read_c2_cc6(s)		__read_32bit_c2_register($22, s)
-+#define nlm_read_c2_cc7(s)		__read_32bit_c2_register($23, s)
-+#define nlm_read_c2_cc8(s)		__read_32bit_c2_register($24, s)
-+#define nlm_read_c2_cc9(s)		__read_32bit_c2_register($25, s)
-+#define nlm_read_c2_cc10(s)		__read_32bit_c2_register($26, s)
-+#define nlm_read_c2_cc11(s)		__read_32bit_c2_register($27, s)
-+#define nlm_read_c2_cc12(s)		__read_32bit_c2_register($28, s)
-+#define nlm_read_c2_cc13(s)		__read_32bit_c2_register($29, s)
-+#define nlm_read_c2_cc14(s)		__read_32bit_c2_register($30, s)
-+#define nlm_read_c2_cc15(s)		__read_32bit_c2_register($31, s)
-+
-+#define nlm_write_c2_cc0(s, v)		__write_32bit_c2_register($16, s, v)
-+#define nlm_write_c2_cc1(s, v)		__write_32bit_c2_register($17, s, v)
-+#define nlm_write_c2_cc2(s, v)		__write_32bit_c2_register($18, s, v)
-+#define nlm_write_c2_cc3(s, v)		__write_32bit_c2_register($19, s, v)
-+#define nlm_write_c2_cc4(s, v)		__write_32bit_c2_register($20, s, v)
-+#define nlm_write_c2_cc5(s, v)		__write_32bit_c2_register($21, s, v)
-+#define nlm_write_c2_cc6(s, v)		__write_32bit_c2_register($22, s, v)
-+#define nlm_write_c2_cc7(s, v)		__write_32bit_c2_register($23, s, v)
-+#define nlm_write_c2_cc8(s, v)		__write_32bit_c2_register($24, s, v)
-+#define nlm_write_c2_cc9(s, v)		__write_32bit_c2_register($25, s, v)
-+#define nlm_write_c2_cc10(s, v)		__write_32bit_c2_register($26, s, v)
-+#define nlm_write_c2_cc11(s, v)		__write_32bit_c2_register($27, s, v)
-+#define nlm_write_c2_cc12(s, v)		__write_32bit_c2_register($28, s, v)
-+#define nlm_write_c2_cc13(s, v)		__write_32bit_c2_register($29, s, v)
-+#define nlm_write_c2_cc14(s, v)		__write_32bit_c2_register($30, s, v)
-+#define nlm_write_c2_cc15(s, v)		__write_32bit_c2_register($31, s, v)
-+
-+#define	nlm_read_c2_status(sel)		__read_32bit_c2_register($2, 0)
-+#define	nlm_read_c2_config()		__read_32bit_c2_register($3, 0)
-+#define	nlm_write_c2_config(v)		__write_32bit_c2_register($3, 0, v)
-+#define	nlm_read_c2_bucksize(b)		__read_32bit_c2_register($4, b)
-+#define	nlm_write_c2_bucksize(b, v)	__write_32bit_c2_register($4, b, v)
-+
-+#define	nlm_read_c2_rx_msg0()		__read_64bit_c2_register($1, 0)
-+#define	nlm_read_c2_rx_msg1()		__read_64bit_c2_register($1, 1)
-+#define	nlm_read_c2_rx_msg2()		__read_64bit_c2_register($1, 2)
-+#define	nlm_read_c2_rx_msg3()		__read_64bit_c2_register($1, 3)
-+
-+#define	nlm_write_c2_tx_msg0(v)		__write_64bit_c2_register($0, 0, v)
-+#define	nlm_write_c2_tx_msg1(v)		__write_64bit_c2_register($0, 1, v)
-+#define	nlm_write_c2_tx_msg2(v)		__write_64bit_c2_register($0, 2, v)
-+#define	nlm_write_c2_tx_msg3(v)		__write_64bit_c2_register($0, 3, v)
-+
-+#define	FMN_STN_RX_QSIZE		256
-+#define	FMN_NSTATIONS			128
-+#define	FMN_CORE_NBUCKETS		8
-+
-+static inline void nlm_msgsnd(unsigned int stid)
-+{
-+	__asm__ volatile (
-+	    ".set	push\n"
-+	    ".set	noreorder\n"
-+	    ".set	noat\n"
-+	    "move	$1, %0\n"
-+	    "c2		0x10001\n"	/* msgsnd $1 */
-+	    ".set	pop\n"
-+	    : : "r" (stid) : "$1"
-+	);
-+}
-+
-+static inline void nlm_msgld(unsigned int pri)
-+{
-+	__asm__ volatile (
-+	    ".set	push\n"
-+	    ".set	noreorder\n"
-+	    ".set	noat\n"
-+	    "move	$1, %0\n"
-+	    "c2		0x10002\n"    /* msgld $1 */
-+	    ".set	pop\n"
-+	    : : "r" (pri) : "$1"
-+	);
-+}
-+
-+static inline void nlm_msgwait(unsigned int mask)
-+{
-+	__asm__ volatile (
-+	    ".set	push\n"
-+	    ".set	noreorder\n"
-+	    ".set	noat\n"
-+	    "move	$8, %0\n"
-+	    "c2		0x10003\n"    /* msgwait $1 */
-+	    ".set	pop\n"
-+	    : : "r" (mask) : "$1"
-+	);
-+}
-+
-+/*
-+ * Disable interrupts and enable COP2 access
-+ */
-+static inline uint32_t nlm_cop2_enable(void)
-+{
-+	uint32_t sr = read_c0_status();
-+
-+	write_c0_status((sr & ~ST0_IE) | ST0_CU2);
-+	return sr;
-+}
-+
-+static inline void nlm_cop2_restore(uint32_t sr)
-+{
-+	write_c0_status(sr);
-+}
-+
-+static inline void nlm_fmn_setup_intr(int irq, unsigned int tmask)
-+{
-+	uint32_t config;
-+
-+	config = (1 << 24)	/* interrupt water mark - 1 msg */
-+		| (irq << 16)	/* irq */
-+		| (tmask << 8)	/* thread mask */
-+		| 0x2;		/* enable watermark intr, disable empty intr */
-+	nlm_write_c2_config(config);
-+}
-+
-+struct nlm_fmn_msg {
-+	uint64_t msg0;
-+	uint64_t msg1;
-+	uint64_t msg2;
-+	uint64_t msg3;
-+};
-+
-+static inline int nlm_fmn_send(unsigned int size, unsigned int code,
-+		unsigned int stid, struct nlm_fmn_msg *msg)
-+{
-+	unsigned int dest;
-+	uint32_t status;
-+	int i;
-+
-+	/*
-+	 * Make sure that all the writes pending at the cpu are flushed.
-+	 * Any writes pending on CPU will not be see by devices. L1/L2
-+	 * caches are coherent with IO, so no cache flush needed.
-+	 */
-+	__asm __volatile("sync");
-+
-+	/* Load TX message buffers */
-+	nlm_write_c2_tx_msg0(msg->msg0);
-+	nlm_write_c2_tx_msg1(msg->msg1);
-+	nlm_write_c2_tx_msg2(msg->msg2);
-+	nlm_write_c2_tx_msg3(msg->msg3);
-+	dest = ((size - 1) << 16) | (code << 8) | stid;
-+
-+	/*
-+	 * Retry a few times on credit fail, this should be a
-+	 * transient condition, unless there is a configuration
-+	 * failure, or the receiver is stuck.
-+	 */
-+	for (i = 0; i < 8; i++) {
-+		nlm_msgsnd(dest);
-+		status = nlm_read_c2_status(0);
-+		if ((status & 0x2) == 1)
-+			pr_info("Send pending fail!\n");
-+		if ((status & 0x4) == 0)
-+			return 0;
-+	}
-+
-+	/* If there is a credit failure, return error */
-+	return status & 0x06;
-+}
-+
-+static inline int nlm_fmn_receive(int bucket, int *size, int *code, int *stid,
-+		struct nlm_fmn_msg *msg)
-+{
-+	uint32_t status, tmp;
-+
-+	nlm_msgld(bucket);
-+
-+	/* wait for load pending to clear */
-+	do {
-+		status = nlm_read_c2_status(1);
-+	} while ((status & 0x08) != 0);
-+
-+	/* receive error bits */
-+	tmp = status & 0x30;
-+	if (tmp != 0)
-+		return tmp;
-+
-+	*size = ((status & 0xc0) >> 6) + 1;
-+	*code = (status & 0xff00) >> 8;
-+	*stid = (status & 0x7f0000) >> 16;
-+	msg->msg0 = nlm_read_c2_rx_msg0();
-+	msg->msg1 = nlm_read_c2_rx_msg1();
-+	msg->msg2 = nlm_read_c2_rx_msg2();
-+	msg->msg3 = nlm_read_c2_rx_msg3();
-+
-+	return 0;
-+}
-+
-+struct xlr_fmn_info {
-+	int num_buckets;
-+	int start_stn_id;
-+	int end_stn_id;
-+	int credit_config[128];
-+};
-+
-+struct xlr_board_fmn_config {
-+	int bucket_size[128];		/* size of buckets for all stations */
-+	struct xlr_fmn_info cpu[8];
-+	struct xlr_fmn_info gmac[2];
-+	struct xlr_fmn_info dma;
-+	struct xlr_fmn_info cmp;
-+	struct xlr_fmn_info sae;
-+	struct xlr_fmn_info xgmac[2];
-+};
-+
-+extern int nlm_register_fmn_handler(int start, int end,
-+	void (*fn)(int, int, int, int, struct nlm_fmn_msg *, void *),
-+	void *arg);
-+extern void xlr_percpu_fmn_init(void);
-+extern void nlm_setup_fmn_irq(void);
-+extern void xlr_board_info_setup(void);
-+
-+extern struct xlr_board_fmn_config xlr_board_fmn_config;
-+#endif
-diff --git a/arch/mips/include/asm/netlogic/xlr/xlr.h b/arch/mips/include/asm/netlogic/xlr/xlr.h
-index ff4a17b..c1667e0 100644
---- a/arch/mips/include/asm/netlogic/xlr/xlr.h
-+++ b/arch/mips/include/asm/netlogic/xlr/xlr.h
-@@ -51,10 +51,8 @@ static inline unsigned int nlm_chip_is_xls_b(void)
- 	return ((prid & 0xf000) == 0x4000);
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/pic.h b/arch/mips/include/asm/netlogic/xlp-hal/pic.h
+index 061e071..857a967 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/pic.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/pic.h
+@@ -381,7 +381,6 @@ nlm_pic_init_irt(uint64_t base, int irt, int irq, int hwt)
+ 	nlm_pic_write_irt_direct(base, irt, 0, 0, 0, irq, hwt);
  }
  
--/*
-- *  XLR chip types
-- */
-- /* The XLS product line has chip versions 0x[48c]? */
-+/*  XLR chip types */
-+/* The XLS product line has chip versions 0x[48c]? */
- static inline unsigned int nlm_chip_is_xls(void)
- {
- 	uint32_t prid = read_c0_prid();
+-extern uint64_t nlm_pic_base;
+ int nlm_irq_to_irt(int irq);
+ int nlm_irt_to_irq(int irt);
+ 
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/sys.h b/arch/mips/include/asm/netlogic/xlp-hal/sys.h
+index 21432f7..258e8cc 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/sys.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/sys.h
+@@ -124,6 +124,5 @@
+ #define	nlm_get_sys_pcibase(node) nlm_pcicfg_base(XLP_IO_SYS_OFFSET(node))
+ #define	nlm_get_sys_regbase(node) (nlm_get_sys_pcibase(node) + XLP_IO_PCI_HDRSZ)
+ 
+-extern uint64_t nlm_sys_base;
+ #endif
+ #endif
+diff --git a/arch/mips/include/asm/netlogic/xlr/pic.h b/arch/mips/include/asm/netlogic/xlr/pic.h
+index 868013e..9a691b1 100644
+--- a/arch/mips/include/asm/netlogic/xlr/pic.h
++++ b/arch/mips/include/asm/netlogic/xlr/pic.h
+@@ -258,7 +258,5 @@ nlm_pic_init_irt(uint64_t base, int irt, int irq, int hwt)
+ 	nlm_write_reg(base, PIC_IRT_1(irt),
+ 		(1 << 30) | (1 << 6) | irq);
+ }
+-
+-extern uint64_t nlm_pic_base;
+ #endif
+ #endif /* _ASM_NLM_XLR_PIC_H */
 diff --git a/arch/mips/netlogic/common/irq.c b/arch/mips/netlogic/common/irq.c
-index b89d5a6..00dcc7a 100644
+index e52bfcb..4d6bd8f 100644
 --- a/arch/mips/netlogic/common/irq.c
 +++ b/arch/mips/netlogic/common/irq.c
-@@ -58,6 +58,7 @@
- #elif defined(CONFIG_CPU_XLR)
- #include <asm/netlogic/xlr/iomap.h>
- #include <asm/netlogic/xlr/pic.h>
-+#include <asm/netlogic/xlr/fmn.h>
- #else
- #error "Unknown CPU"
- #endif
-@@ -68,8 +69,8 @@
- #else
- #define SMP_IRQ_MASK	0
- #endif
--#define PERCPU_IRQ_MASK	(SMP_IRQ_MASK | (1ull << IRQ_TIMER))
--
-+#define PERCPU_IRQ_MASK	(SMP_IRQ_MASK | (1ull << IRQ_TIMER) | \
-+				(1ull << IRQ_FMN))
+@@ -70,33 +70,34 @@
+  */
  
- struct nlm_pic_irq {
- 	void	(*extra_ack)(struct irq_data *);
-@@ -241,6 +242,9 @@ void __init arch_init_irq(void)
- 	nlm_init_percpu_irqs();
- 	nlm_init_node_irqs(0);
- 	write_c0_eimr(nlm_current_node()->irqmask);
-+#if defined(CONFIG_CPU_XLR)
-+	nlm_setup_fmn_irq();
-+#endif
+ /* Globals */
+-static uint64_t nlm_irq_mask;
+-static DEFINE_SPINLOCK(nlm_pic_lock);
+-
+ static void xlp_pic_enable(struct irq_data *d)
+ {
+ 	unsigned long flags;
++	struct nlm_soc_info *nodep;
+ 	int irt;
+ 
++	nodep = nlm_current_node();
+ 	irt = nlm_irq_to_irt(d->irq);
+ 	if (irt == -1)
+ 		return;
+-	spin_lock_irqsave(&nlm_pic_lock, flags);
+-	nlm_pic_enable_irt(nlm_pic_base, irt);
+-	spin_unlock_irqrestore(&nlm_pic_lock, flags);
++	spin_lock_irqsave(&nodep->piclock, flags);
++	nlm_pic_enable_irt(nodep->picbase, irt);
++	spin_unlock_irqrestore(&nodep->piclock, flags);
  }
  
- void nlm_smp_irq_init(int hwcpuid)
+ static void xlp_pic_disable(struct irq_data *d)
+ {
++	struct nlm_soc_info *nodep;
+ 	unsigned long flags;
+ 	int irt;
+ 
++	nodep = nlm_current_node();
+ 	irt = nlm_irq_to_irt(d->irq);
+ 	if (irt == -1)
+ 		return;
+-	spin_lock_irqsave(&nlm_pic_lock, flags);
+-	nlm_pic_disable_irt(nlm_pic_base, irt);
+-	spin_unlock_irqrestore(&nlm_pic_lock, flags);
++	spin_lock_irqsave(&nodep->piclock, flags);
++	nlm_pic_disable_irt(nodep->picbase, irt);
++	spin_unlock_irqrestore(&nodep->piclock, flags);
+ }
+ 
+ static void xlp_pic_mask_ack(struct irq_data *d)
+@@ -109,8 +110,10 @@ static void xlp_pic_mask_ack(struct irq_data *d)
+ static void xlp_pic_unmask(struct irq_data *d)
+ {
+ 	void *hd = irq_data_get_irq_handler_data(d);
++	struct nlm_soc_info *nodep;
+ 	int irt;
+ 
++	nodep = nlm_current_node();
+ 	irt = nlm_irq_to_irt(d->irq);
+ 	if (irt == -1)
+ 		return;
+@@ -120,7 +123,7 @@ static void xlp_pic_unmask(struct irq_data *d)
+ 		extra_ack(d);
+ 	}
+ 	/* Ack is a single write, no need to lock */
+-	nlm_pic_ack(nlm_pic_base, irt);
++	nlm_pic_ack(nodep->picbase, irt);
+ }
+ 
+ static struct irq_chip xlp_pic = {
+@@ -177,7 +180,11 @@ struct irq_chip nlm_cpu_intr = {
+ void __init init_nlm_common_irqs(void)
+ {
+ 	int i, irq, irt;
++	uint64_t irqmask;
++	struct nlm_soc_info *nodep;
+ 
++	nodep = nlm_current_node();
++	irqmask = (1ULL << IRQ_TIMER);
+ 	for (i = 0; i < PIC_IRT_FIRST_IRQ; i++)
+ 		irq_set_chip_and_handler(i, &nlm_cpu_intr, handle_percpu_irq);
+ 
+@@ -189,7 +196,7 @@ void __init init_nlm_common_irqs(void)
+ 			 nlm_smp_function_ipi_handler);
+ 	irq_set_chip_and_handler(IRQ_IPI_SMP_RESCHEDULE, &nlm_cpu_intr,
+ 			 nlm_smp_resched_ipi_handler);
+-	nlm_irq_mask |=
++	irqmask |=
+ 	    ((1ULL << IRQ_IPI_SMP_FUNCTION) | (1ULL << IRQ_IPI_SMP_RESCHEDULE));
+ #endif
+ 
+@@ -197,11 +204,11 @@ void __init init_nlm_common_irqs(void)
+ 		irt = nlm_irq_to_irt(irq);
+ 		if (irt == -1)
+ 			continue;
+-		nlm_irq_mask |= (1ULL << irq);
+-		nlm_pic_init_irt(nlm_pic_base, irt, irq, 0);
++		irqmask |= (1ULL << irq);
++		nlm_pic_init_irt(nodep->picbase, irt, irq, 0);
+ 	}
+ 
+-	nlm_irq_mask |= (1ULL << IRQ_TIMER);
++	nodep->irqmask = irqmask;
+ }
+ 
+ void __init arch_init_irq(void)
+@@ -209,29 +216,39 @@ void __init arch_init_irq(void)
+ 	/* Initialize the irq descriptors */
+ 	init_nlm_common_irqs();
+ 
+-	write_c0_eimr(nlm_irq_mask);
++	write_c0_eimr(nlm_current_node()->irqmask);
+ }
+ 
+ void __cpuinit nlm_smp_irq_init(void)
+ {
+ 	/* set interrupt mask for non-zero cpus */
+-	write_c0_eimr(nlm_irq_mask);
++	write_c0_eimr(nlm_current_node()->irqmask);
+ }
+ 
+ asmlinkage void plat_irq_dispatch(void)
+ {
+ 	uint64_t eirr;
+-	int i;
++	int i, node;
+ 
++	node = nlm_nodeid();
+ 	eirr = read_c0_eirr() & read_c0_eimr();
+ 	if (eirr & (1 << IRQ_TIMER)) {
+ 		do_IRQ(IRQ_TIMER);
+ 		return;
+ 	}
+-
++#ifdef CONFIG_SMP
++	if (eirr & IRQ_IPI_SMP_FUNCTION) {
++		do_IRQ(IRQ_IPI_SMP_FUNCTION);
++		return;
++	}
++	if (eirr & IRQ_IPI_SMP_RESCHEDULE) {
++		do_IRQ(IRQ_IPI_SMP_RESCHEDULE);
++		return;
++	}
++#endif
+ 	i = __ilog2_u64(eirr);
+ 	if (i == -1)
+ 		return;
+ 
+-	do_IRQ(i);
++	do_IRQ(nlm_irq_to_xirq(node, i));
+ }
 diff --git a/arch/mips/netlogic/common/smp.c b/arch/mips/netlogic/common/smp.c
-index 0315b29..a080d9e 100644
+index 4fe8992..e40b467 100644
 --- a/arch/mips/netlogic/common/smp.c
 +++ b/arch/mips/netlogic/common/smp.c
-@@ -118,6 +118,7 @@ static void __cpuinit nlm_init_secondary(void)
+@@ -59,12 +59,17 @@
  
- 	hwtid = hard_smp_processor_id();
- 	current_cpu_data.core = hwtid / NLM_THREADS_PER_CORE;
-+	nlm_percpu_init(hwtid);
- 	nlm_smp_irq_init(hwtid);
- }
- 
-@@ -129,9 +130,6 @@ void nlm_prepare_cpus(unsigned int max_cpus)
- 
- void nlm_smp_finish(void)
+ void nlm_send_ipi_single(int logical_cpu, unsigned int action)
  {
--#ifdef notyet
--	nlm_common_msgring_cpu_init();
--#endif
- 	local_irq_enable();
+-	int cpu = cpu_logical_map(logical_cpu);
++	int cpu, node;
++	uint64_t picbase;
++
++	cpu = cpu_logical_map(logical_cpu);
++	node = cpu / NLM_CPUS_PER_NODE;
++	picbase = nlm_get_node(node)->picbase;
+ 
+ 	if (action & SMP_CALL_FUNCTION)
+-		nlm_pic_send_ipi(nlm_pic_base, cpu, IRQ_IPI_SMP_FUNCTION, 0);
++		nlm_pic_send_ipi(picbase, cpu, IRQ_IPI_SMP_FUNCTION, 0);
+ 	if (action & SMP_RESCHEDULE_YOURSELF)
+-		nlm_pic_send_ipi(nlm_pic_base, cpu, IRQ_IPI_SMP_RESCHEDULE, 0);
++		nlm_pic_send_ipi(picbase, cpu, IRQ_IPI_SMP_RESCHEDULE, 0);
  }
  
+ void nlm_send_ipi_mask(const struct cpumask *mask, unsigned int action)
+@@ -96,11 +101,12 @@ void nlm_smp_resched_ipi_handler(unsigned int irq, struct irq_desc *desc)
+ void nlm_early_init_secondary(int cpu)
+ {
+ 	change_c0_config(CONF_CM_CMASK, 0x3);
+-	write_c0_ebase((uint32_t)nlm_common_ebase);
+ #ifdef CONFIG_CPU_XLP
+-	if (cpu % 4 == 0)
++	/* mmu init, once per core */
++	if (cpu % NLM_THREADS_PER_CORE == 0)
+ 		xlp_mmu_init();
+ #endif
++	write_c0_ebase(nlm_current_node()->ebase);
+ }
+ 
+ /*
+@@ -108,7 +114,7 @@ void nlm_early_init_secondary(int cpu)
+  */
+ static void __cpuinit nlm_init_secondary(void)
+ {
+-	current_cpu_data.core = hard_smp_processor_id() / 4;
++	current_cpu_data.core = hard_smp_processor_id() / NLM_THREADS_PER_CORE;
+ 	nlm_smp_irq_init();
+ }
+ 
+@@ -142,22 +148,22 @@ cpumask_t phys_cpu_present_map;
+ 
+ void nlm_boot_secondary(int logical_cpu, struct task_struct *idle)
+ {
+-	unsigned long gp = (unsigned long)task_thread_info(idle);
+-	unsigned long sp = (unsigned long)__KSTK_TOS(idle);
+-	int cpu = cpu_logical_map(logical_cpu);
++	int cpu, node;
+ 
+-	nlm_next_sp = sp;
+-	nlm_next_gp = gp;
++	cpu = cpu_logical_map(logical_cpu);
++	node = cpu / NLM_CPUS_PER_NODE;
++	nlm_next_sp = (unsigned long)__KSTK_TOS(idle);
++	nlm_next_gp = (unsigned long)task_thread_info(idle);
+ 
+-	/* barrier */
++	/* barrier for sp/gp store above */
+ 	__sync();
+-	nlm_pic_send_ipi(nlm_pic_base, cpu, 1, 1);
++	nlm_pic_send_ipi(nlm_get_node(node)->picbase, cpu, 1, 1);  /* NMI */
+ }
+ 
+ void __init nlm_smp_setup(void)
+ {
+ 	unsigned int boot_cpu;
+-	int num_cpus, i;
++	int num_cpus, i, ncore;
+ 
+ 	boot_cpu = hard_smp_processor_id();
+ 	cpumask_clear(&phys_cpu_present_map);
+@@ -182,11 +188,16 @@ void __init nlm_smp_setup(void)
+ 		}
+ 	}
+ 
++	/* check with the cores we have worken up */
++	for (ncore = 0, i = 0; i < NLM_NR_NODES; i++)
++		ncore += hweight32(nlm_get_node(i)->coremask);
++
+ 	pr_info("Phys CPU present map: %lx, possible map %lx\n",
+ 		(unsigned long)cpumask_bits(&phys_cpu_present_map)[0],
+ 		(unsigned long)cpumask_bits(cpu_possible_mask)[0]);
+ 
+-	pr_info("Detected %i Slave CPU(s)\n", num_cpus);
++	pr_info("Detected (%dc%dt) %d Slave CPU(s)\n", ncore,
++		nlm_threads_per_core, num_cpus);
+ 	nlm_set_nmi_handler(nlm_boot_secondary_cpus);
+ }
+ 
+@@ -196,7 +207,7 @@ static int nlm_parse_cpumask(cpumask_t *wakeup_mask)
+ 	int threadmode, i, j;
+ 
+ 	core0_thr_mask = 0;
+-	for (i = 0; i < 4; i++)
++	for (i = 0; i < NLM_THREADS_PER_CORE; i++)
+ 		if (cpumask_test_cpu(i, wakeup_mask))
+ 			core0_thr_mask |= (1 << i);
+ 	switch (core0_thr_mask) {
+@@ -217,9 +228,9 @@ static int nlm_parse_cpumask(cpumask_t *wakeup_mask)
+ 	}
+ 
+ 	/* Verify other cores CPU masks */
+-	for (i = 0; i < NR_CPUS; i += 4) {
++	for (i = 0; i < NR_CPUS; i += NLM_THREADS_PER_CORE) {
+ 		core_thr_mask = 0;
+-		for (j = 0; j < 4; j++)
++		for (j = 0; j < NLM_THREADS_PER_CORE; j++)
+ 			if (cpumask_test_cpu(i + j, wakeup_mask))
+ 				core_thr_mask |= (1 << j);
+ 		if (core_thr_mask != 0 && core_thr_mask != core0_thr_mask)
+diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
+index 6c65ac7..d3a26e7 100644
+--- a/arch/mips/netlogic/xlp/nlm_hal.c
++++ b/arch/mips/netlogic/xlp/nlm_hal.c
+@@ -40,23 +40,23 @@
+ #include <asm/mipsregs.h>
+ #include <asm/time.h>
+ 
++#include <asm/netlogic/common.h>
+ #include <asm/netlogic/haldefs.h>
+ #include <asm/netlogic/xlp-hal/iomap.h>
+ #include <asm/netlogic/xlp-hal/xlp.h>
+ #include <asm/netlogic/xlp-hal/pic.h>
+ #include <asm/netlogic/xlp-hal/sys.h>
+ 
+-/* These addresses are computed by the nlm_hal_init() */
+-uint64_t nlm_io_base;
+-uint64_t nlm_sys_base;
+-uint64_t nlm_pic_base;
+-
+ /* Main initialization */
+-void nlm_hal_init(void)
++void nlm_node_init(int node)
+ {
+-	nlm_io_base = CKSEG1ADDR(XLP_DEFAULT_IO_BASE);
+-	nlm_sys_base = nlm_get_sys_regbase(0);	/* node 0 */
+-	nlm_pic_base = nlm_get_pic_regbase(0);	/* node 0 */
++	struct nlm_soc_info *nodep;
++
++	nodep = nlm_get_node(node);
++	nodep->sysbase = nlm_get_sys_regbase(node);
++	nodep->picbase = nlm_get_pic_regbase(node);
++	nodep->ebase = read_c0_ebase() & (~((1 << 12) - 1));
++	spin_lock_init(&nodep->piclock);
+ }
+ 
+ int nlm_irq_to_irt(int irq)
+@@ -138,14 +138,15 @@ int nlm_irt_to_irq(int irt)
+ 	}
+ }
+ 
+-unsigned int nlm_get_core_frequency(int core)
++unsigned int nlm_get_core_frequency(int node, int core)
+ {
+ 	unsigned int pll_divf, pll_divr, dfs_div, ext_div;
+ 	unsigned int rstval, dfsval, denom;
+-	uint64_t num;
++	uint64_t num, sysbase;
+ 
+-	rstval = nlm_read_sys_reg(nlm_sys_base, SYS_POWER_ON_RESET_CFG);
+-	dfsval = nlm_read_sys_reg(nlm_sys_base, SYS_CORE_DFS_DIV_VALUE);
++	sysbase = nlm_get_node(node)->sysbase;
++	rstval = nlm_read_sys_reg(sysbase, SYS_POWER_ON_RESET_CFG);
++	dfsval = nlm_read_sys_reg(sysbase, SYS_CORE_DFS_DIV_VALUE);
+ 	pll_divf = ((rstval >> 10) & 0x7f) + 1;
+ 	pll_divr = ((rstval >> 8)  & 0x3) + 1;
+ 	ext_div  = ((rstval >> 30) & 0x3) + 1;
+@@ -159,5 +160,5 @@ unsigned int nlm_get_core_frequency(int core)
+ 
+ unsigned int nlm_get_cpu_frequency(void)
+ {
+-	return nlm_get_core_frequency(0);
++	return nlm_get_core_frequency(0, 0);
+ }
 diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
-index 465b8d6..4894d62 100644
+index 9f8d360..465b8d6 100644
 --- a/arch/mips/netlogic/xlp/setup.c
 +++ b/arch/mips/netlogic/xlp/setup.c
-@@ -108,6 +108,10 @@ void xlp_mmu_init(void)
- 		(13 + (ffz(PM_DEFAULT_MASK >> 13) / 2)));
+@@ -52,17 +52,17 @@
+ #include <asm/netlogic/xlp-hal/xlp.h>
+ #include <asm/netlogic/xlp-hal/sys.h>
+ 
+-unsigned long nlm_common_ebase = 0x0;
+-
+-/* default to uniprocessor */
+-uint32_t nlm_coremask = 1;
++uint64_t nlm_io_base;
++struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
+ cpumask_t nlm_cpumask = CPU_MASK_CPU0;
+-int  nlm_threads_per_core = 1;
++unsigned int nlm_threads_per_core;
+ extern u32 __dtb_start[];
+ 
+ static void nlm_linux_exit(void)
+ {
+-	nlm_write_sys_reg(nlm_sys_base, SYS_CHIP_RESET, 1);
++	uint64_t sysbase = nlm_get_node(0)->sysbase;
++
++	nlm_write_sys_reg(sysbase, SYS_CHIP_RESET, 1);
+ 	for ( ; ; )
+ 		cpu_wait();
+ }
+@@ -110,10 +110,9 @@ void xlp_mmu_init(void)
+ 
+ void __init prom_init(void)
+ {
++	nlm_io_base = CKSEG1ADDR(XLP_DEFAULT_IO_BASE);
+ 	xlp_mmu_init();
+-	nlm_hal_init();
+-
+-	nlm_common_ebase = read_c0_ebase() & (~((1 << 12) - 1));
++	nlm_node_init(0);
+ 
+ #ifdef CONFIG_SMP
+ 	cpumask_setall(&nlm_cpumask);
+diff --git a/arch/mips/netlogic/xlp/wakeup.c b/arch/mips/netlogic/xlp/wakeup.c
+index 88ce38d..cb90106 100644
+--- a/arch/mips/netlogic/xlp/wakeup.c
++++ b/arch/mips/netlogic/xlp/wakeup.c
+@@ -79,32 +79,38 @@ static int xlp_wakeup_core(uint64_t sysbase, int core)
+ 
+ static void xlp_enable_secondary_cores(const cpumask_t *wakeup_mask)
+ {
+-	uint64_t syspcibase, sysbase;
++	struct nlm_soc_info *nodep;
++	uint64_t syspcibase;
+ 	uint32_t syscoremask;
+-	int core, n;
++	int core, n, cpu;
+ 
+-	for (n = 0; n < 4; n++) {
++	for (n = 0; n < NLM_NR_NODES; n++) {
+ 		syspcibase = nlm_get_sys_pcibase(n);
+ 		if (nlm_read_reg(syspcibase, 0) == 0xffffffff)
+ 			break;
+ 
+ 		/* read cores in reset from SYS and account for boot cpu */
+-		sysbase = nlm_get_sys_regbase(n);
+-		syscoremask = nlm_read_sys_reg(sysbase, SYS_CPU_RESET);
++		nlm_node_init(n);
++		nodep = nlm_get_node(n);
++		syscoremask = nlm_read_sys_reg(nodep->sysbase, SYS_CPU_RESET);
+ 		if (n == 0)
+ 			syscoremask |= 1;
+ 
+-		for (core = 0; core < 8; core++) {
++		for (core = 0; core < NLM_CORES_PER_NODE; core++) {
+ 			/* see if the core exists */
+ 			if ((syscoremask & (1 << core)) == 0)
+ 				continue;
+ 
+ 			/* see if at least the first thread is enabled */
+-			if (!cpumask_test_cpu((n * 8 + core) * 4, wakeup_mask))
++			cpu = (n * NLM_CORES_PER_NODE + core)
++						* NLM_THREADS_PER_CORE;
++			if (!cpumask_test_cpu(cpu, wakeup_mask))
+ 				continue;
+ 
+ 			/* wake up the core */
+-			if (!xlp_wakeup_core(sysbase, core))
++			if (xlp_wakeup_core(nodep->sysbase, core))
++				nodep->coremask |= 1u << core;
++			else
+ 				pr_err("Failed to enable core %d\n", core);
+ 		}
+ 	}
+diff --git a/arch/mips/netlogic/xlr/setup.c b/arch/mips/netlogic/xlr/setup.c
+index 8fca680..696d424 100644
+--- a/arch/mips/netlogic/xlr/setup.c
++++ b/arch/mips/netlogic/xlr/setup.c
+@@ -51,14 +51,11 @@
+ #include <asm/netlogic/xlr/gpio.h>
+ 
+ uint64_t nlm_io_base = DEFAULT_NETLOGIC_IO_BASE;
+-uint64_t nlm_pic_base;
+ struct psb_info nlm_prom_info;
+ 
+-unsigned long nlm_common_ebase = 0x0;
+-
+ /* default to uniprocessor */
+-uint32_t nlm_coremask = 1;
+-int  nlm_threads_per_core = 1;
++unsigned int  nlm_threads_per_core = 1;
++struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
+ cpumask_t nlm_cpumask = CPU_MASK_CPU0;
+ 
+ static void __init nlm_early_serial_setup(void)
+@@ -177,6 +174,16 @@ static void prom_add_memory(void)
+ 	}
  }
  
-+void nlm_percpu_init(int hwcpuid)
++static void nlm_init_node(void)
 +{
++	struct nlm_soc_info *nodep;
++
++	nodep = nlm_current_node();
++	nodep->picbase = nlm_mmio_base(NETLOGIC_IO_PIC_OFFSET);
++	nodep->ebase = read_c0_ebase() & (~((1 << 12) - 1));
++	spin_lock_init(&nodep->piclock);
 +}
 +
  void __init prom_init(void)
  {
- 	nlm_io_base = CKSEG1ADDR(XLP_DEFAULT_IO_BASE);
-diff --git a/arch/mips/netlogic/xlr/Makefile b/arch/mips/netlogic/xlr/Makefile
-index c287dea..05902bc 100644
---- a/arch/mips/netlogic/xlr/Makefile
-+++ b/arch/mips/netlogic/xlr/Makefile
-@@ -1,2 +1,2 @@
--obj-y				+= setup.o platform.o platform-flash.o
--obj-$(CONFIG_SMP)		+= wakeup.o
-+obj-y			+=  fmn.o fmn-config.o setup.o platform.o platform-flash.o
-+obj-$(CONFIG_SMP)	+= wakeup.o
-diff --git a/arch/mips/netlogic/xlr/fmn-config.c b/arch/mips/netlogic/xlr/fmn-config.c
-new file mode 100644
-index 0000000..bed2cff
---- /dev/null
-+++ b/arch/mips/netlogic/xlr/fmn-config.c
-@@ -0,0 +1,290 @@
-+/*
-+ * Copyright (c) 2003-2012 Broadcom Corporation
-+ * All Rights Reserved
-+ *
-+ * This software is available to you under a choice of one of two
-+ * licenses.  You may choose to be licensed under the terms of the GNU
-+ * General Public License (GPL) Version 2, available from the file
-+ * COPYING in the main directory of this source tree, or the Broadcom
-+ * license below:
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions
-+ * are met:
-+ *
-+ * 1. Redistributions of source code must retain the above copyright
-+ *    notice, this list of conditions and the following disclaimer.
-+ * 2. Redistributions in binary form must reproduce the above copyright
-+ *    notice, this list of conditions and the following disclaimer in
-+ *    the documentation and/or other materials provided with the
-+ *    distribution.
-+ *
-+ * THIS SOFTWARE IS PROVIDED BY BROADCOM ``AS IS'' AND ANY EXPRESS OR
-+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-+ * ARE DISCLAIMED. IN NO EVENT SHALL BROADCOM OR CONTRIBUTORS BE LIABLE
-+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-+ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ */
-+
-+#include <asm/cpu-info.h>
-+#include <linux/irq.h>
-+#include <linux/interrupt.h>
-+
-+#include <asm/mipsregs.h>
-+#include <asm/netlogic/xlr/fmn.h>
-+#include <asm/netlogic/xlr/xlr.h>
-+#include <asm/netlogic/common.h>
-+#include <asm/netlogic/haldefs.h>
-+
-+struct xlr_board_fmn_config xlr_board_fmn_config;
-+
-+static void __maybe_unused print_credit_config(struct xlr_fmn_info *fmn_info)
-+{
-+	int bkt;
-+
-+	pr_info("Bucket size :\n");
-+	pr_info("Station\t: Size\n");
-+	for (bkt = 0; bkt < 16; bkt++)
-+		pr_info(" %d  %d  %d  %d  %d  %d  %d %d\n",
-+			xlr_board_fmn_config.bucket_size[(bkt * 8) + 0],
-+			xlr_board_fmn_config.bucket_size[(bkt * 8) + 1],
-+			xlr_board_fmn_config.bucket_size[(bkt * 8) + 2],
-+			xlr_board_fmn_config.bucket_size[(bkt * 8) + 3],
-+			xlr_board_fmn_config.bucket_size[(bkt * 8) + 4],
-+			xlr_board_fmn_config.bucket_size[(bkt * 8) + 5],
-+			xlr_board_fmn_config.bucket_size[(bkt * 8) + 6],
-+			xlr_board_fmn_config.bucket_size[(bkt * 8) + 7]);
-+	pr_info("\n");
-+
-+	pr_info("Credits distribution :\n");
-+	pr_info("Station\t: Size\n");
-+	for (bkt = 0; bkt < 16; bkt++)
-+		pr_info(" %d  %d  %d  %d  %d  %d  %d %d\n",
-+			fmn_info->credit_config[(bkt * 8) + 0],
-+			fmn_info->credit_config[(bkt * 8) + 1],
-+			fmn_info->credit_config[(bkt * 8) + 2],
-+			fmn_info->credit_config[(bkt * 8) + 3],
-+			fmn_info->credit_config[(bkt * 8) + 4],
-+			fmn_info->credit_config[(bkt * 8) + 5],
-+			fmn_info->credit_config[(bkt * 8) + 6],
-+			fmn_info->credit_config[(bkt * 8) + 7]);
-+	pr_info("\n");
-+}
-+
-+static void check_credit_distribution(void)
-+{
-+	struct xlr_board_fmn_config *cfg = &xlr_board_fmn_config;
-+	int bkt, n, total_credits, ncores;
-+
-+	ncores = hweight32(nlm_current_node()->coremask);
-+	for (bkt = 0; bkt < 128; bkt++) {
-+		total_credits = 0;
-+		for (n = 0; n < ncores; n++)
-+			total_credits += cfg->cpu[n].credit_config[bkt];
-+		total_credits += cfg->gmac[0].credit_config[bkt];
-+		total_credits += cfg->gmac[1].credit_config[bkt];
-+		total_credits += cfg->dma.credit_config[bkt];
-+		total_credits += cfg->cmp.credit_config[bkt];
-+		total_credits += cfg->sae.credit_config[bkt];
-+		total_credits += cfg->xgmac[0].credit_config[bkt];
-+		total_credits += cfg->xgmac[1].credit_config[bkt];
-+		if (total_credits > cfg->bucket_size[bkt])
-+			pr_err("ERROR: Bucket %d: credits (%d) > size (%d)\n",
-+				bkt, total_credits, cfg->bucket_size[bkt]);
-+	}
-+	pr_info("Credit distribution complete.\n");
-+}
-+
-+/**
-+ * Configure bucket size and credits for a device. 'size' is the size of
-+ * the buckets for the device. This size is distributed among all the CPUs
-+ * so that all of them can send messages to the device.
-+ *
-+ * The device is also given 'cpu_credits' to send messages to the CPUs
-+ *
-+ * @dev_info: FMN information structure for each devices
-+ * @start_stn_id: Starting station id of dev_info
-+ * @end_stn_id: End station id of dev_info
-+ * @num_buckets: Total number of buckets for den_info
-+ * @cpu_credits: Allowed credits to cpu for each devices pointing by dev_info
-+ * @size: Size of the each buckets in the device station
-+ */
-+static void setup_fmn_cc(struct xlr_fmn_info *dev_info, int start_stn_id,
-+		int end_stn_id, int num_buckets, int cpu_credits, int size)
-+{
-+	int i, j, num_core, n, credits_per_cpu;
-+	struct xlr_fmn_info *cpu = xlr_board_fmn_config.cpu;
-+
-+	num_core = hweight32(nlm_current_node()->coremask);
-+	dev_info->num_buckets	= num_buckets;
-+	dev_info->start_stn_id	= start_stn_id;
-+	dev_info->end_stn_id	= end_stn_id;
-+
-+	n = num_core;
-+	if (num_core == 3)
-+		n = 4;
-+
-+	for (i = start_stn_id; i <= end_stn_id; i++) {
-+		xlr_board_fmn_config.bucket_size[i] = size;
-+
-+		/* Dividing device credits equally to cpus */
-+		credits_per_cpu = size / n;
-+		for (j = 0; j < num_core; j++)
-+			cpu[j].credit_config[i] = credits_per_cpu;
-+
-+		/* credits left to distribute */
-+		credits_per_cpu = size - (credits_per_cpu * num_core);
-+
-+		/* distribute the remaining credits (if any), among cores */
-+		for (j = 0; (j < num_core) && (credits_per_cpu >= 4); j++) {
-+			cpu[j].credit_config[i] += 4;
-+			credits_per_cpu -= 4;
-+		}
-+	}
-+
-+	/* Distributing cpu per bucket credits to devices */
-+	for (i = 0; i < num_core; i++) {
-+		for (j = 0; j < FMN_CORE_NBUCKETS; j++)
-+			dev_info->credit_config[(i * 8) + j] = cpu_credits;
-+	}
-+}
-+
-+/*
-+ * Each core has 256 slots and 8 buckets,
-+ * Configure the 8 buckets each with 32 slots
-+ */
-+static void setup_cpu_fmninfo(struct xlr_fmn_info *cpu, int num_core)
-+{
-+	int i, j;
-+
-+	for (i = 0; i < num_core; i++) {
-+		cpu[i].start_stn_id     = (8 * i);
-+		cpu[i].end_stn_id       = (8 * i + 8);
-+
-+		for (j = cpu[i].start_stn_id; j < cpu[i].end_stn_id; j++)
-+			xlr_board_fmn_config.bucket_size[j] = 32;
-+	}
-+}
-+
-+/**
-+ * Setup the FMN details for each devices according to the device available
-+ * in each variant of XLR/XLS processor
-+ */
-+void xlr_board_info_setup(void)
-+{
-+	struct xlr_fmn_info *cpu = xlr_board_fmn_config.cpu;
-+	struct xlr_fmn_info *gmac = xlr_board_fmn_config.gmac;
-+	struct xlr_fmn_info *xgmac = xlr_board_fmn_config.xgmac;
-+	struct xlr_fmn_info *dma = &xlr_board_fmn_config.dma;
-+	struct xlr_fmn_info *cmp = &xlr_board_fmn_config.cmp;
-+	struct xlr_fmn_info *sae = &xlr_board_fmn_config.sae;
-+	int processor_id, num_core;
-+
-+	num_core = hweight32(nlm_current_node()->coremask);
-+	processor_id = read_c0_prid() & 0xff00;
-+
-+	setup_cpu_fmninfo(cpu, num_core);
-+	switch (processor_id) {
-+	case PRID_IMP_NETLOGIC_XLS104:
-+	case PRID_IMP_NETLOGIC_XLS108:
-+		setup_fmn_cc(&gmac[0], FMN_STNID_GMAC0,
-+					FMN_STNID_GMAC0_TX3, 8, 16, 32);
-+		setup_fmn_cc(dma, FMN_STNID_DMA_0,
-+					FMN_STNID_DMA_3, 4, 8, 64);
-+		setup_fmn_cc(sae, FMN_STNID_SEC0,
-+					FMN_STNID_SEC1, 2, 8, 128);
-+		break;
-+
-+	case PRID_IMP_NETLOGIC_XLS204:
-+	case PRID_IMP_NETLOGIC_XLS208:
-+		setup_fmn_cc(&gmac[0], FMN_STNID_GMAC0,
-+					FMN_STNID_GMAC0_TX3, 8, 16, 32);
-+		setup_fmn_cc(dma, FMN_STNID_DMA_0,
-+					FMN_STNID_DMA_3, 4, 8, 64);
-+		setup_fmn_cc(sae, FMN_STNID_SEC0,
-+					FMN_STNID_SEC1, 2, 8, 128);
-+		break;
-+
-+	case PRID_IMP_NETLOGIC_XLS404:
-+	case PRID_IMP_NETLOGIC_XLS408:
-+	case PRID_IMP_NETLOGIC_XLS404B:
-+	case PRID_IMP_NETLOGIC_XLS408B:
-+	case PRID_IMP_NETLOGIC_XLS416B:
-+		setup_fmn_cc(&gmac[0], FMN_STNID_GMAC0,
-+					FMN_STNID_GMAC0_TX3, 8, 8, 32);
-+		setup_fmn_cc(&gmac[1], FMN_STNID_GMAC1_FR_0,
-+					FMN_STNID_GMAC1_TX3, 8, 8, 32);
-+		setup_fmn_cc(dma, FMN_STNID_DMA_0,
-+					FMN_STNID_DMA_3, 4, 4, 64);
-+		setup_fmn_cc(cmp, FMN_STNID_CMP_0,
-+					FMN_STNID_CMP_3, 4, 4, 64);
-+		setup_fmn_cc(sae, FMN_STNID_SEC0,
-+					FMN_STNID_SEC1, 2, 8, 128);
-+		break;
-+
-+	case PRID_IMP_NETLOGIC_XLS412B:
-+		setup_fmn_cc(&gmac[0], FMN_STNID_GMAC0,
-+					FMN_STNID_GMAC0_TX3, 8, 8, 32);
-+		setup_fmn_cc(&gmac[1], FMN_STNID_GMAC1_FR_0,
-+					FMN_STNID_GMAC1_TX3, 8, 8, 32);
-+		setup_fmn_cc(dma, FMN_STNID_DMA_0,
-+					FMN_STNID_DMA_3, 4, 4, 64);
-+		setup_fmn_cc(cmp, FMN_STNID_CMP_0,
-+					FMN_STNID_CMP_3, 4, 4, 64);
-+		setup_fmn_cc(sae, FMN_STNID_SEC0,
-+					FMN_STNID_SEC1, 2, 8, 128);
-+		break;
-+
-+	case PRID_IMP_NETLOGIC_XLR308:
-+	case PRID_IMP_NETLOGIC_XLR308C:
-+		setup_fmn_cc(&gmac[0], FMN_STNID_GMAC0,
-+					FMN_STNID_GMAC0_TX3, 8, 16, 32);
-+		setup_fmn_cc(dma, FMN_STNID_DMA_0,
-+					FMN_STNID_DMA_3, 4, 8, 64);
-+		setup_fmn_cc(sae, FMN_STNID_SEC0,
-+					FMN_STNID_SEC1, 2, 4, 128);
-+		break;
-+
-+	case PRID_IMP_NETLOGIC_XLR532:
-+	case PRID_IMP_NETLOGIC_XLR532C:
-+	case PRID_IMP_NETLOGIC_XLR516C:
-+	case PRID_IMP_NETLOGIC_XLR508C:
-+		setup_fmn_cc(&gmac[0], FMN_STNID_GMAC0,
-+					FMN_STNID_GMAC0_TX3, 8, 16, 32);
-+		setup_fmn_cc(dma, FMN_STNID_DMA_0,
-+					FMN_STNID_DMA_3, 4, 8, 64);
-+		setup_fmn_cc(sae, FMN_STNID_SEC0,
-+					FMN_STNID_SEC1, 2, 4, 128);
-+		break;
-+
-+	case PRID_IMP_NETLOGIC_XLR732:
-+	case PRID_IMP_NETLOGIC_XLR716:
-+		setup_fmn_cc(&xgmac[0], FMN_STNID_XMAC0_00_TX,
-+					FMN_STNID_XMAC0_15_TX, 8, 0, 32);
-+		setup_fmn_cc(&xgmac[1], FMN_STNID_XMAC1_00_TX,
-+					FMN_STNID_XMAC1_15_TX, 8, 0, 32);
-+		setup_fmn_cc(&gmac[0], FMN_STNID_GMAC0,
-+					FMN_STNID_GMAC0_TX3, 8, 24, 32);
-+		setup_fmn_cc(dma, FMN_STNID_DMA_0,
-+					FMN_STNID_DMA_3, 4, 4, 64);
-+		setup_fmn_cc(sae, FMN_STNID_SEC0,
-+					FMN_STNID_SEC1, 2, 4, 128);
-+		break;
-+	default:
-+		pr_err("Unknown CPU with processor ID [%d]\n", processor_id);
-+		pr_err("Error: Cannot initialize FMN credits.\n");
-+	}
-+
-+	check_credit_distribution();
-+
-+#if 0 /* debug */
-+	print_credit_config(&cpu[0]);
-+	print_credit_config(&gmac[0]);
-+#endif
-+}
-diff --git a/arch/mips/netlogic/xlr/fmn.c b/arch/mips/netlogic/xlr/fmn.c
-new file mode 100644
-index 0000000..4d74f03
---- /dev/null
-+++ b/arch/mips/netlogic/xlr/fmn.c
-@@ -0,0 +1,204 @@
-+/*
-+ * Copyright (c) 2003-2012 Broadcom Corporation
-+ * All Rights Reserved
-+ *
-+ * This software is available to you under a choice of one of two
-+ * licenses.  You may choose to be licensed under the terms of the GNU
-+ * General Public License (GPL) Version 2, available from the file
-+ * COPYING in the main directory of this source tree, or the Broadcom
-+ * license below:
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions
-+ * are met:
-+ *
-+ * 1. Redistributions of source code must retain the above copyright
-+ *    notice, this list of conditions and the following disclaimer.
-+ * 2. Redistributions in binary form must reproduce the above copyright
-+ *    notice, this list of conditions and the following disclaimer in
-+ *    the documentation and/or other materials provided with the
-+ *    distribution.
-+ *
-+ * THIS SOFTWARE IS PROVIDED BY BROADCOM ``AS IS'' AND ANY EXPRESS OR
-+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-+ * ARE DISCLAIMED. IN NO EVENT SHALL BROADCOM OR CONTRIBUTORS BE LIABLE
-+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-+ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/irqreturn.h>
-+#include <linux/irq.h>
-+#include <linux/interrupt.h>
-+
-+#include <asm/mipsregs.h>
-+#include <asm/netlogic/interrupt.h>
-+#include <asm/netlogic/xlr/fmn.h>
-+#include <asm/netlogic/common.h>
-+
-+#define COP2_CC_INIT_CPU_DEST(dest, conf) \
-+do { \
-+	nlm_write_c2_cc##dest(0, conf[(dest * 8) + 0]); \
-+	nlm_write_c2_cc##dest(1, conf[(dest * 8) + 1]); \
-+	nlm_write_c2_cc##dest(2, conf[(dest * 8) + 2]); \
-+	nlm_write_c2_cc##dest(3, conf[(dest * 8) + 3]); \
-+	nlm_write_c2_cc##dest(4, conf[(dest * 8) + 4]); \
-+	nlm_write_c2_cc##dest(5, conf[(dest * 8) + 5]); \
-+	nlm_write_c2_cc##dest(6, conf[(dest * 8) + 6]); \
-+	nlm_write_c2_cc##dest(7, conf[(dest * 8) + 7]); \
-+} while (0)
-+
-+struct fmn_message_handler {
-+	void (*action)(int, int, int, int, struct nlm_fmn_msg *, void *);
-+	void *arg;
-+} msg_handlers[128];
-+
-+/*
-+ * FMN interrupt handler. We configure the FMN so that any messages in
-+ * any of the CPU buckets will trigger an interrupt on the CPU.
-+ * The message can be from any device on the FMN (like NAE/SAE/DMA).
-+ * The source station id is used to figure out which of the registered
-+ * handlers have to be called.
-+ */
-+static irqreturn_t fmn_message_handler(int irq, void *data)
-+{
-+	struct fmn_message_handler *hndlr;
-+	int bucket, rv;
-+	int size = 0, code = 0, src_stnid = 0;
-+	struct nlm_fmn_msg msg;
-+	uint32_t mflags, bkt_status;
-+
-+	mflags = nlm_cop2_enable();
-+	/* Disable message ring interrupt */
-+	nlm_fmn_setup_intr(irq, 0);
-+	while (1) {
-+		/* 8 bkts per core, [24:31] each bit represents one bucket
-+		 * Bit is Zero if bucket is not empty */
-+		bkt_status = (nlm_read_c2_status() >> 24) & 0xff;
-+		if (bkt_status == 0xff)
-+			break;
-+		for (bucket = 0; bucket < 8; bucket++) {
-+			/* Continue on empty bucket */
-+			if (bkt_status & (1 << bucket))
-+				continue;
-+			rv = nlm_fmn_receive(bucket, &size, &code, &src_stnid,
-+						&msg);
-+			if (rv != 0)
-+				continue;
-+
-+			hndlr = &msg_handlers[src_stnid];
-+			if (hndlr->action == NULL)
-+				pr_warn("No msgring handler for stnid %d\n",
-+						src_stnid);
-+			else {
-+				nlm_cop2_restore(mflags);
-+				hndlr->action(bucket, src_stnid, size, code,
-+					&msg, hndlr->arg);
-+				mflags = nlm_cop2_enable();
-+			}
-+		}
-+	};
-+	/* Enable message ring intr, to any thread in core */
-+	nlm_fmn_setup_intr(irq, (1 << nlm_threads_per_core) - 1);
-+	nlm_cop2_restore(mflags);
-+	return IRQ_HANDLED;
-+}
-+
-+struct irqaction fmn_irqaction = {
-+	.handler = fmn_message_handler,
-+	.flags = IRQF_PERCPU,
-+	.name = "fmn",
-+};
-+
-+void xlr_percpu_fmn_init(void)
-+{
-+	struct xlr_fmn_info *cpu_fmn_info;
-+	int *bucket_sizes;
-+	uint32_t flags;
-+	int id;
-+
-+	BUG_ON(nlm_thread_id() != 0);
-+	id = nlm_core_id();
-+
-+	bucket_sizes = xlr_board_fmn_config.bucket_size;
-+	cpu_fmn_info = &xlr_board_fmn_config.cpu[id];
-+	flags = nlm_cop2_enable();
-+
-+	/* Setup bucket sizes for the core. */
-+	nlm_write_c2_bucksize(0, bucket_sizes[id * 8 + 0]);
-+	nlm_write_c2_bucksize(1, bucket_sizes[id * 8 + 1]);
-+	nlm_write_c2_bucksize(2, bucket_sizes[id * 8 + 2]);
-+	nlm_write_c2_bucksize(3, bucket_sizes[id * 8 + 3]);
-+	nlm_write_c2_bucksize(4, bucket_sizes[id * 8 + 4]);
-+	nlm_write_c2_bucksize(5, bucket_sizes[id * 8 + 5]);
-+	nlm_write_c2_bucksize(6, bucket_sizes[id * 8 + 6]);
-+	nlm_write_c2_bucksize(7, bucket_sizes[id * 8 + 7]);
-+
-+	/*
-+	 * For sending FMN messages, we need credits on the destination
-+	 * bucket. Program the credits this core has on the 128 possible
-+	 * destination buckets.
-+	 * We cannot use a loop here, because the the first argument has
-+	 * to be a constant integer value.
-+	 */
-+	COP2_CC_INIT_CPU_DEST(0, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(1, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(2, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(3, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(4, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(5, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(6, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(7, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(8, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(9, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(10, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(11, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(12, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(13, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(14, cpu_fmn_info->credit_config);
-+	COP2_CC_INIT_CPU_DEST(15, cpu_fmn_info->credit_config);
-+
-+	/* enable FMN interrupts on this CPU */
-+	nlm_fmn_setup_intr(IRQ_FMN, (1 << nlm_threads_per_core) - 1);
-+	nlm_cop2_restore(flags);
-+}
-+
-+
-+/*
-+ * Register a FMN message handler with respect to the source station id
-+ * @stnid: source station id
-+ * @action: Handler function pointer
-+ */
-+int nlm_register_fmn_handler(int start_stnid, int end_stnid,
-+	void (*action)(int, int, int, int, struct nlm_fmn_msg *, void *),
-+	void *arg)
-+{
-+	int sstnid;
-+
-+	for (sstnid = start_stnid; sstnid <= end_stnid; sstnid++) {
-+		msg_handlers[sstnid].arg = arg;
-+		smp_wmb();
-+		msg_handlers[sstnid].action = action;
-+	}
-+	pr_debug("Registered FMN msg handler for stnid %d-%d\n",
-+			start_stnid, end_stnid);
-+	return 0;
-+}
-+
-+void nlm_setup_fmn_irq(void)
-+{
-+	uint32_t flags;
-+
-+	/* setup irq only once */
-+	setup_irq(IRQ_FMN, &fmn_irqaction);
-+
-+	flags = nlm_cop2_enable();
-+	nlm_fmn_setup_intr(IRQ_FMN, (1 << nlm_threads_per_core) - 1);
-+	nlm_cop2_restore(flags);
-+}
-diff --git a/arch/mips/netlogic/xlr/setup.c b/arch/mips/netlogic/xlr/setup.c
-index 696d424..4e7f49d 100644
---- a/arch/mips/netlogic/xlr/setup.c
-+++ b/arch/mips/netlogic/xlr/setup.c
-@@ -49,6 +49,7 @@
- #include <asm/netlogic/xlr/iomap.h>
- #include <asm/netlogic/xlr/pic.h>
- #include <asm/netlogic/xlr/gpio.h>
-+#include <asm/netlogic/xlr/fmn.h>
+ 	int i, *argv, *envp;		/* passed as 32 bit ptrs */
+@@ -188,11 +195,10 @@ void __init prom_init(void)
+ 	prom_infop = (struct psb_info *)(long)(int)fw_arg3;
  
- uint64_t nlm_io_base = DEFAULT_NETLOGIC_IO_BASE;
- struct psb_info nlm_prom_info;
-@@ -111,6 +112,12 @@ void __init prom_free_prom_memory(void)
- 	/* Nothing yet */
- }
+ 	nlm_prom_info = *prom_infop;
+-	nlm_pic_base = nlm_mmio_base(NETLOGIC_IO_PIC_OFFSET);
++	nlm_init_node();
  
-+void nlm_percpu_init(int hwcpuid)
-+{
-+	if (hwcpuid % 4 == 0)
-+		xlr_percpu_fmn_init();
-+}
-+
- static void __init build_arcs_cmdline(int *argv)
+ 	nlm_early_serial_setup();
+ 	build_arcs_cmdline(argv);
+-	nlm_common_ebase = read_c0_ebase() & (~((1 << 12) - 1));
+ 	prom_add_memory();
+ 
+ #ifdef CONFIG_SMP
+diff --git a/arch/mips/netlogic/xlr/wakeup.c b/arch/mips/netlogic/xlr/wakeup.c
+index 0878924..3ebf741 100644
+--- a/arch/mips/netlogic/xlr/wakeup.c
++++ b/arch/mips/netlogic/xlr/wakeup.c
+@@ -33,6 +33,7 @@
+  */
+ 
+ #include <linux/init.h>
++#include <linux/delay.h>
+ #include <linux/threads.h>
+ 
+ #include <asm/asm.h>
+@@ -50,18 +51,34 @@
+ 
+ int __cpuinit xlr_wakeup_secondary_cpus(void)
  {
- 	int i, remain, len;
-@@ -208,4 +215,6 @@ void __init prom_init(void)
- 	nlm_wakeup_secondary_cpus();
- 	register_smp_ops(&nlm_smp_ops);
- #endif
-+	xlr_board_info_setup();
-+	xlr_percpu_fmn_init();
- }
+-	unsigned int i, boot_cpu;
++	struct nlm_soc_info *nodep;
++	unsigned int i, j, boot_cpu;
+ 
+ 	/*
+ 	 *  In case of RMI boot, hit with NMI to get the cores
+ 	 *  from bootloader to linux code.
+ 	 */
++	nodep = nlm_get_node(0);
+ 	boot_cpu = hard_smp_processor_id();
+ 	nlm_set_nmi_handler(nlm_rmiboot_preboot);
+ 	for (i = 0; i < NR_CPUS; i++) {
+ 		if (i == boot_cpu || !cpumask_test_cpu(i, &nlm_cpumask))
+ 			continue;
+-		nlm_pic_send_ipi(nlm_pic_base, i, 1, 1); /* send NMI */
++		nlm_pic_send_ipi(nodep->picbase, i, 1, 1); /* send NMI */
++	}
++
++	/* Fill up the coremask early */
++	nodep->coremask = 1;
++	for (i = 1; i < NLM_CORES_PER_NODE; i++) {
++		for (j = 1000000; j > 0; j--) {
++			if (nlm_cpu_ready[i * NLM_THREADS_PER_CORE])
++				break;
++			udelay(10);
++		}
++		if (j != 0)
++			nodep->coremask |= (1u << i);
++		else
++			pr_err("Failed to wakeup core %d\n", i);
+ 	}
+ 
+ 	return 0;
 -- 
 1.7.9.5

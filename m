@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 16:19:39 +0100 (CET)
-Received: from kymasys.com ([64.62.140.43]:36090 "HELO kymasys.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 16:21:40 +0100 (CET)
+Received: from kymasys.com ([64.62.140.43]:47728 "HELO kymasys.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6822164Ab2JaPT3Jrisx convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Oct 2012 16:19:29 +0100
-Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Wed, 31 Oct 2012 08:19:18 -0700
+        id S6822164Ab2JaPV3BVwR0 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Oct 2012 16:21:29 +0100
+Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Wed, 31 Oct 2012 08:21:15 -0700
 From:   Sanjay Lal <sanjayl@kymasys.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 8BIT
-Subject: [PATCH 06/20] KVM/MIPS32: Privileged instruction/target branch  emulation
-Date:   Wed, 31 Oct 2012 11:19:15 -0400
-Message-Id: <E95207BC-4837-4225-8E87-527FFDD6EF1F@kymasys.com>
+Subject: [PATCH 20/20] KVM/MIPS32: Malta config files for KVM host and guest  kernels.
+Date:   Wed, 31 Oct 2012 11:21:11 -0400
+Message-Id: <4A1D2FDD-4EAE-4461-B4DE-6B3A14AA3FDA@kymasys.com>
 To:     kvm@vger.kernel.org, linux-mips@linux-mips.org
 Mime-Version: 1.0 (Apple Message framework v1283)
 X-Mailer: Apple Mail (2.1283)
-X-archive-position: 34815
+X-archive-position: 34816
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,1842 +31,4506 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-- The Guest kernel is run in UM and privileged instructions cause a trap.
-- If the instruction causing the trap is in a branch delay slot, the branch needs to be emulated to figure
-out the PC @ which the guest will resume execution.
-
 Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
 ---
- arch/mips/kvm/kvm_mips_emul.c   | 1786 +++++++++++++++++++++++++++++++++++++++
- arch/mips/kvm/kvm_mips_opcode.h |   27 +
- 2 files changed, 1813 insertions(+)
- create mode 100644 arch/mips/kvm/kvm_mips_emul.c
- create mode 100644 arch/mips/kvm/kvm_mips_opcode.h
+ arch/mips/configs/malta_kvm_defconfig       | 2244 +++++++++++++++++++++++++++
+ arch/mips/configs/malta_kvm_guest_defconfig | 2237 ++++++++++++++++++++++++++
+ 2 files changed, 4481 insertions(+)
+ create mode 100644 arch/mips/configs/malta_kvm_defconfig
+ create mode 100644 arch/mips/configs/malta_kvm_guest_defconfig
 
-diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
+diff --git a/arch/mips/configs/malta_kvm_defconfig b/arch/mips/configs/malta_kvm_defconfig
 new file mode 100644
-index 0000000..6c03b4d
+index 0000000..6f76abb
 --- /dev/null
-+++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -0,0 +1,1786 @@
-+/*
-+* This file is subject to the terms and conditions of the GNU General Public
-+* License.  See the file "COPYING" in the main directory of this archive
-+* for more details.
-+*
-+* KVM/MIPS: Instruction/Exception emulation
-+*
-+* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
-+* Authors: Sanjay Lal <sanjayl@kymasys.com>
-+*/
-+
-+#include <linux/errno.h>
-+#include <linux/err.h>
-+#include <linux/kvm_host.h>
-+#include <linux/module.h>
-+#include <linux/vmalloc.h>
-+#include <linux/fs.h>
-+#include <linux/bootmem.h>
-+#include <linux/random.h>
-+#include <asm/page.h>
-+#include <asm/cacheflush.h>
-+#include <asm/cpu-info.h>
-+#include <asm/mmu_context.h>
-+#include <asm/tlbflush.h>
-+#include <asm/inst.h>
-+
-+#undef CONFIG_MIPS_MT
-+#include <asm/r4kcache.h>
-+#define CONFIG_MIPS_MT
-+
-+#include "kvm_mips_opcode.h"
-+#include "kvm_mips_int.h"
-+#include "kvm_mips_comm.h"
-+#include "kvm_mips_stats.h"
-+
-+static int debug __unused;
-+
-+/*
-+ * Compute the return address and do emulate branch simulation, if required.
-+ * This function should be called only in branch delay slot active.
-+ */
-+u_long
-+kvm_compute_return_epc(struct kvm_vcpu * vcpu, u_long instpc)
-+{
-+	unsigned int dspcontrol;
-+	union mips_instruction insn;
-+    struct kvm_vcpu_arch *arch = &vcpu->arch;
-+    long epc = instpc;
-+    long nextpc = KVM_INVALID_INST;
-+
-+	if (epc & 3)
-+		goto unaligned;
-+
-+	/*
-+	 * Read the instruction
-+	 */
-+    insn.word = kvm_get_inst((uint32_t *) epc, vcpu);
-+
-+    if (insn.word == KVM_INVALID_INST)
-+        return (KVM_INVALID_INST);
-+
-+	switch (insn.i_format.opcode) {
-+	/*
-+	 * jr and jalr are in r_format format.
-+	 */
-+	case spec_op:
-+		switch (insn.r_format.func) {
-+		case jalr_op:
-+			arch->gprs[insn.r_format.rd] = epc + 8;
-+			/* Fall through */
-+		case jr_op:
-+			nextpc = arch->gprs[insn.r_format.rs];
-+			break;
-+		}
-+		break;
-+
-+	/*
-+	 * This group contains:
-+	 * bltz_op, bgez_op, bltzl_op, bgezl_op,
-+	 * bltzal_op, bgezal_op, bltzall_op, bgezall_op.
-+	 */
-+	case bcond_op:
-+		switch (insn.i_format.rt) {
-+		case bltz_op:
-+		case bltzl_op:
-+			if ((long)arch->gprs[insn.i_format.rs] < 0)
-+				epc = epc + 4 + (insn.i_format.simmediate << 2);
-+			else
-+				epc += 8;
-+			nextpc = epc;
-+			break;
-+
-+		case bgez_op:
-+		case bgezl_op:
-+			if ((long)arch->gprs[insn.i_format.rs] >= 0)
-+				epc = epc + 4 + (insn.i_format.simmediate << 2);
-+			else
-+				epc += 8;
-+			nextpc = epc;
-+			break;
-+
-+		case bltzal_op:
-+		case bltzall_op:
-+			arch->gprs[31] = epc + 8;
-+			if ((long)arch->gprs[insn.i_format.rs] < 0)
-+				epc = epc + 4 + (insn.i_format.simmediate << 2);
-+			else
-+				epc += 8;
-+			nextpc = epc;
-+			break;
-+
-+		case bgezal_op:
-+		case bgezall_op:
-+			arch->gprs[31] = epc + 8;
-+			if ((long)arch->gprs[insn.i_format.rs] >= 0)
-+				epc = epc + 4 + (insn.i_format.simmediate << 2);
-+			else
-+				epc += 8;
-+			nextpc = epc;
-+			break;
-+		case bposge32_op:
-+			if (!cpu_has_dsp)
-+				goto sigill;
-+
-+			dspcontrol = rddsp(0x01);
-+
-+			if (dspcontrol >= 32) {
-+				epc = epc + 4 + (insn.i_format.simmediate << 2);
-+			} else
-+				epc += 8;
-+			nextpc = epc;
-+			break;
-+		}
-+		break;
-+
-+	/*
-+	 * These are unconditional and in j_format.
-+	 */
-+	case jal_op:
-+		arch->gprs[31] = instpc + 8;
-+	case j_op:
-+		epc += 4;
-+		epc >>= 28;
-+		epc <<= 28;
-+		epc |= (insn.j_format.target << 2);
-+		nextpc = epc;
-+		break;
-+
-+	/*
-+	 * These are conditional and in i_format.
-+	 */
-+	case beq_op:
-+	case beql_op:
-+		if (arch->gprs[insn.i_format.rs] ==
-+		    arch->gprs[insn.i_format.rt])
-+			epc = epc + 4 + (insn.i_format.simmediate << 2);
-+		else
-+			epc += 8;
-+		nextpc = epc;
-+		break;
-+
-+	case bne_op:
-+	case bnel_op:
-+		if (arch->gprs[insn.i_format.rs] !=
-+		    arch->gprs[insn.i_format.rt])
-+			epc = epc + 4 + (insn.i_format.simmediate << 2);
-+		else
-+			epc += 8;
-+		nextpc = epc;
-+		break;
-+
-+	case blez_op:	/* not really i_format */
-+	case blezl_op:
-+		/* rt field assumed to be zero */
-+		if ((long)arch->gprs[insn.i_format.rs] <= 0)
-+			epc = epc + 4 + (insn.i_format.simmediate << 2);
-+		else
-+			epc += 8;
-+		nextpc = epc;
-+		break;
-+
-+	case bgtz_op:
-+	case bgtzl_op:
-+		/* rt field assumed to be zero */
-+		if ((long)arch->gprs[insn.i_format.rs] > 0)
-+			epc = epc + 4 + (insn.i_format.simmediate << 2);
-+		else
-+			epc += 8;
-+		nextpc = epc;
-+		break;
-+
-+	/*
-+	 * And now the FPA/cp1 branch instructions.
-+	 */
-+	case cop1_op:
-+        printk("%s: unsupported cop1_op\n", __func__);
-+        break;
-+    }
-+
-+	return nextpc;
-+
-+unaligned:
-+	printk("%s: unaligned epc\n", __func__);
-+	return nextpc;
-+
-+sigill:
-+	printk("%s: DSP branch but not DSP ASE\n", __func__);
-+	return nextpc;
-+}
-+
-+
-+enum emulation_result
-+update_pc(struct kvm_vcpu *vcpu, uint32_t cause)
-+{
-+    u_long branch_pc;
-+    enum emulation_result er = EMULATE_DONE;
-+
-+    if (cause & CAUSEF_BD) {
-+        if ((branch_pc = kvm_compute_return_epc(vcpu, vcpu->arch.pc)) == KVM_INVALID_INST) {
-+            er = EMULATE_FAIL;
-+        }
-+        else {
-+            vcpu->arch.pc = branch_pc;
-+        }
-+    }
-+    else
-+        vcpu->arch.pc += 4;
-+
-+    kvm_debug("update_pc(): New PC: %#lx\n", vcpu->arch.pc);
-+
-+    return (er);
-+}
-+
-+/* Everytime the compare register is written to, we need to decide when to fire
-+ * the timer that represents timer ticks to the GUEST.
-+ *
-+ */
-+extern unsigned int mips_hpt_frequency;
-+enum emulation_result
-+kvm_mips_emulate_count(struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+
-+    /* If COUNT is enabled */
-+    if (!(kvm_read_c0_guest_cause(cop0) & CAUSEF_DC)) {
-+        hrtimer_try_to_cancel(&vcpu->arch.comparecount_timer);
-+        hrtimer_start(&vcpu->arch.comparecount_timer, ktime_set(0, MS_TO_NS(10)), HRTIMER_MODE_REL);
-+    }
-+    else {
-+        hrtimer_try_to_cancel(&vcpu->arch.comparecount_timer);
-+    }
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emul_eret(struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    if (kvm_read_c0_guest_status(cop0) & ST0_EXL) {
-+        kvm_debug("[%#lx] ERET to %#lx\n", vcpu->arch.pc,
-+                   kvm_read_c0_guest_epc(cop0));
-+        kvm_clear_c0_guest_status(cop0, ST0_EXL);
-+        vcpu->arch.pc = kvm_read_c0_guest_epc(cop0);
-+
-+    }
-+    else if (kvm_read_c0_guest_status(cop0) & ST0_ERL) {
-+        kvm_clear_c0_guest_status(cop0, ST0_ERL);
-+        vcpu->arch.pc = kvm_read_c0_guest_errorepc(cop0);
-+    }
-+    else {
-+        printk("[%#lx] ERET when MIPS_SR_EXL|MIPS_SR_ERL == 0\n",
-+               vcpu->arch.pc);
-+        er = EMULATE_FAIL;
-+    }
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emul_wait(struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+
-+    kvm_debug("[%#lx] !!!WAIT!!! (%#lx)\n", vcpu->arch.pc, vcpu->arch.pending_exceptions);
-+
-+    kvm_mips_account_exit(vcpu, WAIT_EXITS);
-+    if (!vcpu->arch.pending_exceptions) {
-+        vcpu->arch.wait = 1;
-+        kvm_vcpu_block(vcpu);
-+
-+        /* We we are runnable, then definitely go off to user space to check if any
-+         * I/O interrupts are pending.
-+         */
-+        if (kvm_check_request(KVM_REQ_UNHALT, vcpu)) {
-+            clear_bit(KVM_REQ_UNHALT, &vcpu->requests);
-+            vcpu->run->exit_reason = KVM_EXIT_IRQ_WINDOW_OPEN;
-+        }
-+    }
-+
-+    return (er);
-+}
-+
-+/* XXXKYMA: Linux doesn't seem to use TLBR, return EMULATE_FAIL for now so that we can catch
-+ * this, if things ever change
-+ */
-+enum emulation_result
-+kvm_mips_emul_tlbr(struct kvm_vcpu *vcpu)
-+{
-+    uint32_t pc = vcpu->arch.pc;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    enum emulation_result er = EMULATE_FAIL;
-+
-+    printk("[%#x] COP0_TLBR [%ld]\n", pc, kvm_read_c0_guest_index(cop0));
-+    return (er);
-+}
-+
-+/* Write Guest TLB Entry @ Index */
-+enum emulation_result
-+kvm_mips_emul_tlbwi(struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    int index = kvm_read_c0_guest_index(cop0);
-+    struct kvm_mips_tlb *tlb = NULL;
-+    uint32_t pc __unused = vcpu->arch.pc;
-+
-+    if (index < 0 || index >= KVM_MIPS_GUEST_TLB_SIZE) {
-+        printk("%s: illegal index: %d\n", __func__, index);
-+        printk ("[%#x] COP0_TLBWI [%d] (entryhi: %#lx, entrylo0: %#lx entrylo1: %#lx, mask: %#lx)\n",
-+             pc, index, kvm_read_c0_guest_entryhi(cop0),
-+             kvm_read_c0_guest_entrylo0(cop0), kvm_read_c0_guest_entrylo1(cop0),
-+             kvm_read_c0_guest_pagemask(cop0));
-+        index = (index & ~0x80000000) % KVM_MIPS_GUEST_TLB_SIZE;
-+    }
-+
-+    tlb = &vcpu->arch.guest_tlb[index];
-+    /* Probe the shadow host TLB for the entry being overwritten, if one matches, invalidate it */
-+    kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
-+
-+    tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
-+    tlb->tlb_hi = kvm_read_c0_guest_entryhi(cop0);
-+    tlb->tlb_lo0 = kvm_read_c0_guest_entrylo0(cop0);
-+    tlb->tlb_lo1 = kvm_read_c0_guest_entrylo1(cop0);
-+
-+    kvm_debug("[%#x] COP0_TLBWI [%d] (entryhi: %#lx, entrylo0: %#lx entrylo1: %#lx, mask: %#lx)\n",
-+        pc, index, kvm_read_c0_guest_entryhi(cop0),
-+        kvm_read_c0_guest_entrylo0(cop0), kvm_read_c0_guest_entrylo1(cop0),
-+        kvm_read_c0_guest_pagemask(cop0));
-+
-+    return (er);
-+}
-+
-+/* Write Guest TLB Entry @ Random Index */
-+enum emulation_result
-+kvm_mips_emul_tlbwr(struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    uint32_t pc __unused = vcpu->arch.pc;
-+    int index;
-+    struct kvm_mips_tlb *tlb = NULL;
-+
-+    get_random_bytes (&index, sizeof(index));
-+    index &= (KVM_MIPS_GUEST_TLB_SIZE - 1);
-+
-+    if (index < 0 || index >= KVM_MIPS_GUEST_TLB_SIZE) {
-+        printk("%s: illegal index: %d\n", __func__, index);
-+        return EMULATE_FAIL;
-+    }
-+
-+    tlb = &vcpu->arch.guest_tlb[index];
-+
-+    /* Probe the shadow host TLB for the entry being overwritten, if one matches, invalidate it */
-+    kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
-+
-+    tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
-+    tlb->tlb_hi = kvm_read_c0_guest_entryhi(cop0);
-+    tlb->tlb_lo0 = kvm_read_c0_guest_entrylo0(cop0);
-+    tlb->tlb_lo1 = kvm_read_c0_guest_entrylo1(cop0);
-+
-+    kvm_debug("[%#x] COP0_TLBWR[%d] (entryhi: %#lx, entrylo0: %#lx entrylo1: %#lx)\n",
-+        pc, index, kvm_read_c0_guest_entryhi(cop0),
-+        kvm_read_c0_guest_entrylo0(cop0), 
-+        kvm_read_c0_guest_entrylo1(cop0));
-+
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emul_tlbp(struct kvm_vcpu *vcpu)
-+{
-+    int index = -1;
-+    uint32_t pc __unused = vcpu->arch.pc;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    long entryhi = kvm_read_c0_guest_entryhi(cop0);
-+    enum emulation_result er = EMULATE_DONE;
-+
-+    index = kvm_mips_guest_tlb_lookup(vcpu, entryhi);
-+
-+    kvm_write_c0_guest_index(cop0, index);
-+
-+    kvm_debug("[%#x] COP0_TLBP (entryhi: %#lx), index: %d\n", pc, entryhi,
-+               index);
-+
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emulate_CP0(uint32_t inst, uint32_t * opc, uint32_t cause,
-+                     struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    int32_t rt, rd, copz, sel, co_bit, op;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    uint32_t pc __unused = vcpu->arch.pc;
-+    u_long curr_pc;
-+
-+    /*
-+     * Update PC and hold onto current PC in case there is 
-+     * an error and we want to rollback the PC
-+     */
-+    curr_pc = vcpu->arch.pc;
-+    er = update_pc(vcpu, cause);
-+    if (er == EMULATE_FAIL) {
-+        return (er);
-+    }
-+
-+    copz = (inst >> 21) & 0x1f;
-+    rt = (inst >> 16) & 0x1f;
-+    rd = (inst >> 11) & 0x1f;
-+    sel = inst & 0x7;
-+    co_bit = (inst >> 25) & 1;
-+
-+    /* Verify that the register is valid */
-+    if (rd > MIPS_CP0_DESAVE) {
-+        printk("Invalid rd: %d\n", rd);
-+        er = EMULATE_FAIL;
-+        goto done;
-+    }
-+
-+    if (co_bit) {
-+        op = (inst) & 0xff;
-+
-+        switch (op) {
-+        case tlbr_op:        /*  Read indexed TLB entry  */
-+            er = kvm_mips_emul_tlbr(vcpu);
-+            break;
-+        case tlbwi_op:       /*  Write indexed  */
-+            er = kvm_mips_emul_tlbwi(vcpu);
-+            break;
-+        case tlbwr_op:       /*  Write random  */
-+            er = kvm_mips_emul_tlbwr(vcpu);
-+            break;
-+        case tlbp_op:        /* TLB Probe */
-+            er = kvm_mips_emul_tlbp(vcpu);
-+            break;
-+        case rfe_op:
-+            printk("!!!COP0_RFE!!!\n");
-+            break;
-+        case eret_op:
-+            er = kvm_mips_emul_eret(vcpu);
-+            goto dont_update_pc;
-+            break;
-+        case wait_op:
-+            er = kvm_mips_emul_wait(vcpu);
-+            break;
-+        }
-+    }
-+    else {
-+        switch (copz) {
-+        case mfc_op:
-+#ifdef CONFIG_KVM_MIPS_DEBUG_COP0_COUNTERS
-+            cop0->stat[rd][sel]++;
-+#endif
-+            /* Get reg */
-+            if ((rd == MIPS_CP0_COUNT) && (sel == 0)) {
-+                /* XXXKYMA: Run the Guest count register @ 1/4 the rate of the host */
-+                vcpu->arch.gprs[rt] = (read_c0_count() >> 2) ;
-+            } 
-+            else  if ((rd == MIPS_CP0_ERRCTL) && (sel == 0)) {
-+                vcpu->arch.gprs[rt] = 0x0;
-+#ifdef CONFIG_KVM_MIPS_DYN_TRANS
-+              kvm_mips_trans_mfc0 (inst, opc, vcpu);
-+#endif
-+            }
-+            else {
-+                vcpu->arch.gprs[rt] = cop0->reg[rd][sel];
-+
-+#ifdef CONFIG_KVM_MIPS_DYN_TRANS
-+                kvm_mips_trans_mfc0 (inst, opc, vcpu);
-+#endif
-+            }
-+
-+            kvm_debug("[%#x] MFCz[%d][%d], vcpu->arch.gprs[%d]: %#lx\n", pc,
-+                       rd, sel, rt, vcpu->arch.gprs[rt]);
-+
-+            break;
-+
-+        case dmfc_op:
-+            vcpu->arch.gprs[rt] = cop0->reg[rd][sel];
-+            break;
-+
-+        case mtc_op:
-+#ifdef CONFIG_KVM_MIPS_DEBUG_COP0_COUNTERS
-+            cop0->stat[rd][sel]++;
-+#endif
-+            if ((rd == MIPS_CP0_TLB_INDEX) && (vcpu->arch.gprs[rt] >= KVM_MIPS_GUEST_TLB_SIZE)) {
-+                printk("Invalid TLB Index: %ld", vcpu->arch.gprs[rt]);
-+                er = EMULATE_FAIL;
-+                break;
-+            }
-+#define C0_EBASE_CORE_MASK 0xff
-+            if ((rd == MIPS_CP0_PRID) && (sel == 1)) {
-+                /* Preserve CORE number */
-+                kvm_change_c0_guest_ebase(cop0, ~(C0_EBASE_CORE_MASK), vcpu->arch.gprs[rt]);
-+                printk("MTCz, cop0->reg[EBASE]: %#lx\n", kvm_read_c0_guest_ebase(cop0));
-+            }
-+            else if (rd == MIPS_CP0_TLB_HI && sel == 0) {
-+                uint32_t nasid = vcpu->arch.gprs[rt] & ASID_MASK;
-+                if ((KSEGX(vcpu->arch.gprs[rt]) != CKSEG0) && 
-+                        ((kvm_read_c0_guest_entryhi(cop0) & ASID_MASK) != nasid)) {
-+
-+                    kvm_debug("MTCz, change ASID from %#lx to %#lx\n",
-+                               kvm_read_c0_guest_entryhi(cop0) & ASID_MASK, vcpu->arch.gprs[rt] & ASID_MASK);
-+
-+                    /* Blow away the shadow host TLBs */
-+                    kvm_mips_flush_host_tlb(1);
-+                }
-+                kvm_write_c0_guest_entryhi(cop0, vcpu->arch.gprs[rt]);
-+            }
-+            /* Are we writing to COUNT */
-+            else if ((rd == MIPS_CP0_COUNT) && (sel == 0)) {
-+                /* Linux doesn't seem to write into COUNT, we throw an error
-+                 * if we notice a write to COUNT
-+                 */
-+                /*er = EMULATE_FAIL; */
-+                goto done;
-+            }
-+            else if ((rd == MIPS_CP0_COMPARE) && (sel == 0)) {
-+                kvm_debug("[%#x] MTCz, COMPARE %#lx <- %#lx\n", pc,
-+                            kvm_read_c0_guest_compare(cop0), vcpu->arch.gprs[rt]);
-+
-+                /* If we are writing to COMPARE */
-+                /* Clear pending timer interrupt, if any */
-+                kvm_mips_callbacks->dequeue_timer_int(vcpu);
-+                kvm_write_c0_guest_compare(cop0, vcpu->arch.gprs[rt]);
-+            }
-+            else if ((rd == MIPS_CP0_STATUS) && (sel == 0)) {
-+                kvm_write_c0_guest_status(cop0, vcpu->arch.gprs[rt]);
-+                /* Make sure that CU1 and NMI bits are never set */
-+                kvm_clear_c0_guest_status(cop0, (ST0_CU1 | ST0_NMI));
-+
-+#ifdef CONFIG_KVM_MIPS_DYN_TRANS
-+                kvm_mips_trans_mtc0 (inst, opc, vcpu);
-+#endif
-+            }
-+            else {
-+                cop0->reg[rd][sel] = vcpu->arch.gprs[rt];
-+#ifdef CONFIG_KVM_MIPS_DYN_TRANS
-+                kvm_mips_trans_mtc0 (inst, opc, vcpu);
-+#endif
-+            }
-+
-+            kvm_debug("[%#x] MTCz, cop0->reg[%d][%d]: %#lx\n", pc, rd, sel,
-+                       cop0->reg[rd][sel]);
-+            break;
-+
-+        case dmtc_op:
-+            printk("!!!!!!![%#lx]dmtc_op: rt: %d, rd: %d, sel: %d!!!!!!\n",
-+                   vcpu->arch.pc, rt, rd, sel);
-+            er = EMULATE_FAIL;
-+            break;
-+
-+        case mfmcz_op:
-+#ifdef KVM_MIPS_DEBUG_COP0_COUNTERS
-+            cop0->stat[MIPS_CP0_STATUS][0]++;
-+#endif
-+            if (rt != 0) {
-+                vcpu->arch.gprs[rt] = kvm_read_c0_guest_status(cop0);
-+            }
-+            /* EI */
-+            if (inst & 0x20) {
-+                kvm_debug("[%#lx] mfmcz_op: EI\n", vcpu->arch.pc);
-+                kvm_set_c0_guest_status(cop0, ST0_IE);
-+            }
-+            else {
-+                kvm_debug("[%#lx] mfmcz_op: DI\n", vcpu->arch.pc);
-+                kvm_clear_c0_guest_status(cop0, ST0_IE);
-+            }
-+
-+            break;
-+
-+        case wrpgpr_op:
-+            {
-+                uint32_t css = cop0->reg[MIPS_CP0_STATUS][2] & 0xf;
-+                uint32_t pss = (cop0->reg[MIPS_CP0_STATUS][2] >> 6) & 0xf;
-+                /* We don't support any shadow register sets, so SRSCtl[PSS] == SRSCtl[CSS] = 0 */
-+                if (css || pss) {
-+                    er = EMULATE_FAIL;
-+                    break;
-+                }
-+                kvm_debug("WRPGPR[%d][%d] = %#lx\n", pss, rd, vcpu->arch.gprs[rt]);
-+                vcpu->arch.gprs[rd] = vcpu->arch.gprs[rt];
-+            }
-+            break;
-+        default:
-+            printk("[%#lx]MachEmulateCP0: unsupported COP0, copz: 0x%x\n",
-+                   vcpu->arch.pc, copz);
-+            er = EMULATE_FAIL;
-+            break;
-+        }
-+    }
-+
-+  done:
-+    /*
-+     * Rollback PC only if emulation was unsuccessful
-+     */
-+    if (er == EMULATE_FAIL) {
-+        vcpu->arch.pc = curr_pc;
-+    }
-+
-+  dont_update_pc:
-+    /*
-+     * This is for special instructions whose emulation
-+     * updates the PC, so do not overwrite the PC under
-+     * any circumstances
-+     */
-+    
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emulate_store(uint32_t inst, uint32_t cause,
-+                       struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DO_MMIO;
-+    int32_t op, base, rt, offset;
-+    uint32_t bytes;
-+    void *data = run->mmio.data;
-+    u_long curr_pc;
-+
-+    /*
-+     * Update PC and hold onto current PC in case there is 
-+     * an error and we want to rollback the PC
-+     */
-+    curr_pc = vcpu->arch.pc;
-+    er = update_pc(vcpu, cause);
-+    if (er == EMULATE_FAIL)   
-+        return (er);
-+
-+    rt = (inst >> 16) & 0x1f;
-+    base = (inst >> 21) & 0x1f;
-+    offset = inst & 0xffff;
-+    op = (inst >> 26) & 0x3f;
-+
-+    switch (op) {
-+    case sb_op:
-+        bytes = 1;
-+        if (bytes > sizeof(run->mmio.data)) {
-+            printk(KERN_ERR "%s: bad MMIO length: %d\n", __func__,
-+                   run->mmio.len);
-+        }
-+        run->mmio.phys_addr = kvm_mips_callbacks->gva_to_gpa(vcpu->arch.host_cp0_badvaddr);
-+        if (run->mmio.phys_addr == KVM_INVALID_ADDR) {
-+            er = EMULATE_FAIL;
-+            break;
-+        }
-+        run->mmio.len = bytes;
-+        run->mmio.is_write = 1;
-+        vcpu->mmio_needed = 1;
-+        vcpu->mmio_is_write = 1;
-+        *(u8 *) data = vcpu->arch.gprs[rt];
-+        kvm_debug("OP_SB: eaddr: %#lx, gpr: %#lx, data: %#x\n",
-+                   vcpu->arch.host_cp0_badvaddr, vcpu->arch.gprs[rt],
-+                   *(uint8_t *) data);
-+
-+        break;
-+
-+    case sw_op:
-+        bytes = 4;
-+        if (bytes > sizeof(run->mmio.data)) {
-+            printk(KERN_ERR "%s: bad MMIO length: %d\n", __func__,
-+                   run->mmio.len);
-+        }
-+        run->mmio.phys_addr = kvm_mips_callbacks->gva_to_gpa(vcpu->arch.host_cp0_badvaddr);
-+        if (run->mmio.phys_addr == KVM_INVALID_ADDR) {
-+            er = EMULATE_FAIL;
-+            break;
-+        }
-+
-+        run->mmio.len = bytes;
-+        run->mmio.is_write = 1;
-+        vcpu->mmio_needed = 1;
-+        vcpu->mmio_is_write = 1;
-+        *(uint32_t *) data = vcpu->arch.gprs[rt];
-+
-+        kvm_debug("[%#lx] OP_SW: eaddr: %#lx, gpr: %#lx, data: %#x\n",
-+                   vcpu->arch.pc, vcpu->arch.host_cp0_badvaddr,
-+                   vcpu->arch.gprs[rt], *(uint32_t *) data);
-+        break;
-+
-+    case sh_op:
-+        bytes = 2;
-+        if (bytes > sizeof(run->mmio.data)) {
-+            printk(KERN_ERR "%s: bad MMIO length: %d\n", __func__,
-+                   run->mmio.len);
-+        }
-+        run->mmio.phys_addr = kvm_mips_callbacks->gva_to_gpa(vcpu->arch.host_cp0_badvaddr);
-+        if (run->mmio.phys_addr == KVM_INVALID_ADDR) {
-+            er = EMULATE_FAIL;
-+            break;
-+        }
-+
-+        run->mmio.len = bytes;
-+        run->mmio.is_write = 1;
-+        vcpu->mmio_needed = 1;
-+        vcpu->mmio_is_write = 1;
-+        *(uint16_t *) data = vcpu->arch.gprs[rt];
-+
-+        kvm_debug("[%#lx] OP_SH: eaddr: %#lx, gpr: %#lx, data: %#x\n",
-+                   vcpu->arch.pc, vcpu->arch.host_cp0_badvaddr,
-+                   vcpu->arch.gprs[rt], *(uint32_t *) data);
-+        break;
-+
-+    default:
-+        printk("Store not yet supported");
-+        er = EMULATE_FAIL;
-+        break;
-+    }
-+
-+    /*
-+     * Rollback PC if emulation was unsuccessful
-+     */
-+    if (er == EMULATE_FAIL) {
-+        vcpu->arch.pc = curr_pc;
-+    }
-+
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emulate_load(uint32_t inst, uint32_t cause,
-+                      struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DO_MMIO;
-+    int32_t op, base, rt, offset;
-+    uint32_t bytes;
-+
-+    rt = (inst >> 16) & 0x1f;
-+    base = (inst >> 21) & 0x1f;
-+    offset = inst & 0xffff;
-+    op = (inst >> 26) & 0x3f;
-+
-+    vcpu->arch.pending_load_cause = cause;
-+    vcpu->arch.io_gpr = rt;
-+
-+    switch (op) {
-+    case lw_op:
-+        bytes = 4;
-+        if (bytes > sizeof(run->mmio.data)) {
-+            printk(KERN_ERR "%s: bad MMIO length: %d\n", __func__,
-+                   run->mmio.len);
-+            er = EMULATE_FAIL;
-+            break;
-+        }
-+        run->mmio.phys_addr = kvm_mips_callbacks->gva_to_gpa(vcpu->arch.host_cp0_badvaddr);
-+        if (run->mmio.phys_addr == KVM_INVALID_ADDR) {
-+            er = EMULATE_FAIL;
-+            break;
-+        }
-+
-+        run->mmio.len = bytes;
-+        run->mmio.is_write = 0;
-+        vcpu->mmio_needed = 1;
-+        vcpu->mmio_is_write = 0;
-+        break;
-+
-+    case lh_op:
-+    case lhu_op:
-+        bytes = 2;
-+        if (bytes > sizeof(run->mmio.data)) {
-+            printk(KERN_ERR "%s: bad MMIO length: %d\n", __func__,
-+                   run->mmio.len);
-+            er = EMULATE_FAIL;
-+            break;
-+        }
-+        run->mmio.phys_addr = kvm_mips_callbacks->gva_to_gpa(vcpu->arch.host_cp0_badvaddr);
-+        if (run->mmio.phys_addr == KVM_INVALID_ADDR) {
-+            er = EMULATE_FAIL;
-+            break;
-+        }
-+
-+        run->mmio.len = bytes;
-+        run->mmio.is_write = 0;
-+        vcpu->mmio_needed = 1;
-+        vcpu->mmio_is_write = 0;
-+
-+        if (op == lh_op)
-+            vcpu->mmio_needed = 2;
-+        else
-+            vcpu->mmio_needed = 1;
-+
-+        break;
-+
-+    case lbu_op:
-+    case lb_op:
-+        bytes = 1;
-+        if (bytes > sizeof(run->mmio.data)) {
-+            printk(KERN_ERR "%s: bad MMIO length: %d\n", __func__,
-+                   run->mmio.len);
-+            er = EMULATE_FAIL;
-+            break;
-+        }
-+        run->mmio.phys_addr = kvm_mips_callbacks->gva_to_gpa(vcpu->arch.host_cp0_badvaddr);
-+        if (run->mmio.phys_addr == KVM_INVALID_ADDR) {
-+            er = EMULATE_FAIL;
-+            break;
-+        }
-+
-+        run->mmio.len = bytes;
-+        run->mmio.is_write = 0;
-+        vcpu->mmio_is_write = 0;
-+
-+        if (op == lb_op)
-+            vcpu->mmio_needed = 2;
-+        else
-+            vcpu->mmio_needed = 1;
-+
-+        break;
-+
-+    default:
-+        printk("Load not yet supported");
-+        er = EMULATE_FAIL;
-+        break;
-+    }
-+
-+    return (er);
-+}
-+
-+int
-+kvm_mips_sync_icache(ulong va, struct kvm_vcpu *vcpu)
-+{
-+    gfn_t gfn;
-+    pfn_t pfn;
-+    ulong pa;
-+    ulong offset = (va & ~PAGE_MASK);
-+    struct kvm *kvm = vcpu->kvm;
-+
-+    gfn = va >> PAGE_SHIFT;
-+
-+    if (gfn >= kvm->arch.guest_pmap_npages) {
-+        printk("%s: Invalid gfn: %#llx\n", __func__, gfn);
-+        kvm_mips_dump_host_tlbs();
-+        kvm_arch_vcpu_dump_regs(vcpu);
-+        return -1;
-+    }
-+    pfn = kvm->arch.guest_pmap[gfn];
-+    pa = (pfn << PAGE_SHIFT) | offset;
-+
-+    printk("%s: va: %#lx, unmapped: %#x\n", __func__, va, CKSEG0ADDR(pa));
-+
-+    mips32_SyncICache(CKSEG0ADDR(pa), 32);
-+    return (0);
-+}
-+
-+#define MIPS_CACHE_OP_INDEX_INV         0x0
-+#define MIPS_CACHE_OP_INDEX_LD_TAG      0x1
-+#define MIPS_CACHE_OP_INDEX_ST_TAG      0x2
-+#define MIPS_CACHE_OP_IMP               0x3
-+#define MIPS_CACHE_OP_HIT_INV           0x4
-+#define MIPS_CACHE_OP_FILL_WB_INV       0x5
-+#define MIPS_CACHE_OP_HIT_HB            0x6
-+#define MIPS_CACHE_OP_FETCH_LOCK        0x7
-+
-+#define MIPS_CACHE_ICACHE               0x0
-+#define MIPS_CACHE_DCACHE               0x1
-+#define MIPS_CACHE_SEC                  0x3
-+
-+enum emulation_result
-+kvm_mips_emulate_cache(uint32_t inst,  uint32_t __user * opc, uint32_t cause, struct kvm_run *run,
-+                       struct kvm_vcpu *vcpu)
-+{
-+    extern void (* r4k_blast_dcache)(void);
-+    extern void (* r4k_blast_icache)(void);
-+    int debug __unused = 0;
-+    enum emulation_result er = EMULATE_DONE;
-+    int32_t offset, cache, op_inst, op, base;
-+    struct kvm_vcpu_arch *arch = &vcpu->arch;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    ulong va;
-+    u_long curr_pc;
-+
-+    /*
-+     * Update PC and hold onto current PC in case there is 
-+     * an error and we want to rollback the PC
-+     */
-+    curr_pc = vcpu->arch.pc;
-+    er = update_pc(vcpu, cause);
-+    if (er == EMULATE_FAIL)   
-+        return (er);
-+
-+    base = (inst >> 21) & 0x1f;
-+    op_inst = (inst >> 16) & 0x1f;
-+    offset = inst & 0xffff;
-+    cache = (inst >> 16) & 0x3;
-+    op = (inst >> 18) & 0x7;
-+
-+    va = arch->gprs[base] + offset;
-+
-+    kvm_debug("CACHE (cache: %#x, op: %#x, base[%d]: %#lx, offset: %#x\n",
-+               cache, op, base, arch->gprs[base], offset);
-+
-+    /* Treat INDEX_INV as a nop, basically issued by Linux on startup to invalidate
-+     * the caches entirely by stepping through all the ways/indexes
-+     */
-+    if (op == MIPS_CACHE_OP_INDEX_INV) {
-+        kvm_debug("@ %#lx/%#lx CACHE (cache: %#x, op: %#x, base[%d]: %#lx, offset: %#x\n",
-+            vcpu->arch.pc, vcpu->arch.gprs[31], cache, op, base, arch->gprs[base], offset);
-+
-+        if (cache ==  MIPS_CACHE_DCACHE)
-+			r4k_blast_dcache();
-+        else if (cache == MIPS_CACHE_ICACHE) 
-+		    r4k_blast_icache();
-+        else {
-+            printk("%s: unsupported CACHE INDEX operation\n", __func__);
-+            return (EMULATE_FAIL);
-+        }
-+
-+#ifdef CONFIG_KVM_MIPS_DYN_TRANS
-+        kvm_mips_trans_cache_index (inst, opc, vcpu);
-+#endif
-+        goto done;
-+    }
-+
-+
-+    preempt_disable();
-+    if (KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG0) {
-+
-+        if (kvm_mips_host_tlb_lookup(vcpu, va) < 0) {
-+            kvm_mips_handle_kseg0_tlb_fault(va, vcpu);
-+        }
-+    }
-+    else if ((KVM_GUEST_KSEGX(va) < KVM_GUEST_KSEG0) ||
-+             KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG23) {
-+        int index;
-+
-+        /* If an entry already exists then skip */
-+        if (kvm_mips_host_tlb_lookup(vcpu, va) >= 0) {
-+            goto skip_fault;
-+        }
-+
-+        /* If address not in the guest TLB, then give the guest a fault, the
-+         * resulting handler will do the right thing 
-+         */
-+        index = kvm_mips_guest_tlb_lookup(vcpu, (va & VPN2_MASK) |
-+                                          (kvm_read_c0_guest_entryhi(cop0) & ASID_MASK));
-+
-+        if (index < 0) {
-+            vcpu->arch.host_cp0_entryhi = (va & VPN2_MASK);
-+            vcpu->arch.host_cp0_badvaddr = va;
-+            er = kvm_mips_emulate_tlbmiss_ld(cause, NULL, run, vcpu);
-+            preempt_enable();
-+            goto dont_update_pc;
-+        }
-+        else {
-+            struct kvm_mips_tlb *tlb = &vcpu->arch.guest_tlb[index];
-+            /* Check if the entry is valid, if not then setup a TLB invalid exception to the guest */
-+            if (!TLB_IS_VALID(*tlb, va)) {
-+                er = kvm_mips_emulate_tlbinv_ld(cause, NULL, run, vcpu);
-+                preempt_enable();
-+                goto dont_update_pc;
-+            }
-+            else {
-+                /* We fault an entry from the guest tlb to the shadow host TLB */
-+                kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb, NULL, NULL);
-+            }
-+        }
-+    }
-+    else {
-+        printk ("INVALID CACHE INDEX/ADDRESS (cache: %#x, op: %#x, base[%d]: %#lx, offset: %#x\n",
-+             cache, op, base, arch->gprs[base], offset);
-+        er = EMULATE_FAIL;
-+        preempt_enable();
-+        goto dont_update_pc;
-+
-+    }
-+
-+  skip_fault:
-+    /* XXXKYMA: Only a subset of cache ops are supported, used by Linux */
-+    if (cache == MIPS_CACHE_DCACHE && (op == MIPS_CACHE_OP_FILL_WB_INV || op == MIPS_CACHE_OP_HIT_INV)) {
-+        flush_dcache_line(va);
-+
-+#ifdef CONFIG_KVM_MIPS_DYN_TRANS
-+        /* Replace the CACHE instruction, with a SYNCI, not the same, but avoids a trap */
-+        kvm_mips_trans_cache_va (inst, opc, vcpu);
-+#endif
-+    }
-+    else if (op == MIPS_CACHE_OP_HIT_INV && cache == MIPS_CACHE_ICACHE) {
-+        flush_dcache_line(va);
-+        flush_icache_line(va);
-+
-+#ifdef CONFIG_KVM_MIPS_DYN_TRANS
-+        /* Replace the CACHE instruction, with a SYNCI */
-+        kvm_mips_trans_cache_va (inst, opc, vcpu);
-+#endif
-+    }
-+    else {
-+        printk ("NO-OP CACHE (cache: %#x, op: %#x, base[%d]: %#lx, offset: %#x\n",
-+             cache, op, base, arch->gprs[base], offset);
-+        er = EMULATE_FAIL;
-+        preempt_enable();
-+        goto dont_update_pc;
-+    }
-+
-+    preempt_enable();
-+
-+  dont_update_pc:
-+    /*
-+     * Rollback PC 
-+     */
-+    vcpu->arch.pc = curr_pc;
-+  done:
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emulate_inst(ulong cause, uint32_t __user * opc,
-+                      struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    uint32_t inst;
-+
-+    /*
-+     *  Fetch the instruction.
-+     */
-+    if (cause & CAUSEF_BD) {
-+        opc += 1;
-+    }
-+
-+    inst = kvm_get_inst(opc, vcpu);
-+
-+    switch (((union mips_instruction) inst).r_format.opcode) {
-+    case cop0_op:
-+        er = kvm_mips_emulate_CP0(inst, opc, cause, run, vcpu);
-+        break;
-+    case sb_op:
-+    case sh_op:
-+    case sw_op:
-+        er = kvm_mips_emulate_store(inst, cause, run, vcpu);
-+        break;
-+    case lb_op:
-+    case lbu_op:
-+    case lhu_op:
-+    case lh_op:
-+    case lw_op:
-+        er = kvm_mips_emulate_load(inst, cause, run, vcpu);
-+        break;
-+
-+    case cache_op:
-+        kvm_mips_account_exit(vcpu, CACHE_EXITS);
-+        er = kvm_mips_emulate_cache(inst, opc, cause, run, vcpu);
-+        break;
-+
-+    default:
-+        printk("Instruction emulation not supported (%p/%#x)\n", opc, inst);
-+        kvm_arch_vcpu_dump_regs(vcpu);
-+        er = EMULATE_FAIL;
-+        break;
-+    }
-+
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emulate_syscall(ulong cause, uint32_t __user * opc,
-+                         struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct kvm_vcpu_arch *arch = &vcpu->arch;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+
-+    if ((kvm_read_c0_guest_status(cop0) & ST0_EXL) == 0) {
-+        /* save old pc */
-+        kvm_write_c0_guest_epc(cop0, arch->pc);
-+        kvm_set_c0_guest_status(cop0, ST0_EXL);
-+
-+        if (cause & CAUSEF_BD)
-+            kvm_set_c0_guest_cause(cop0, CAUSEF_BD);
-+        else
-+            kvm_clear_c0_guest_cause(cop0, CAUSEF_BD);
-+
-+        kvm_debug("Delivering SYSCALL @ pc %#lx\n", arch->pc);
-+
-+        kvm_change_c0_guest_cause(cop0, (0xff), (T_SYSCALL << CAUSEB_EXCCODE));
-+
-+        /* Set PC to the exception entry point */
-+        arch->pc = KVM_GUEST_KSEG0 + 0x180;
-+
-+    }
-+    else {
-+        printk("Trying to deliver SYSCALL when EXL is already set\n");
-+        er = EMULATE_FAIL;
-+    }
-+
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emulate_tlbmiss_ld(ulong cause, uint32_t __user * opc,
-+                            struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct kvm_vcpu_arch *arch = &vcpu->arch;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    ulong entryhi = (vcpu->arch.host_cp0_badvaddr & VPN2_MASK) | (kvm_read_c0_guest_entryhi(cop0) & ASID_MASK);
-+
-+    if ((kvm_read_c0_guest_status(cop0) & ST0_EXL) == 0) {
-+        /* save old pc */
-+        kvm_write_c0_guest_epc(cop0, arch->pc);
-+        kvm_set_c0_guest_status(cop0, ST0_EXL);
-+
-+        if (cause & CAUSEF_BD)
-+            kvm_set_c0_guest_cause(cop0, CAUSEF_BD);
-+        else
-+            kvm_clear_c0_guest_cause(cop0, CAUSEF_BD);
-+
-+       kvm_debug("[EXL == 0] delivering TLB MISS @ pc %#lx\n", arch->pc);
-+
-+        /* set pc to the exception entry point */
-+        arch->pc = KVM_GUEST_KSEG0 + 0x0;
-+
-+    }
-+    else {
-+       kvm_debug("[EXL == 1] delivering TLB MISS @ pc %#lx\n", arch->pc);
-+
-+        arch->pc = KVM_GUEST_KSEG0 + 0x180;
-+    }
-+
-+    kvm_change_c0_guest_cause(cop0, (0xff), (T_TLB_LD_MISS << CAUSEB_EXCCODE));
-+
-+    /* setup badvaddr, context and entryhi registers for the guest */
-+    kvm_write_c0_guest_badvaddr(cop0, vcpu->arch.host_cp0_badvaddr);
-+    /* XXXKYMA: is the context register used by linux??? */
-+    kvm_write_c0_guest_entryhi(cop0, entryhi);
-+    /* Blow away the shadow host TLBs */
-+    kvm_mips_flush_host_tlb(1);
-+
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emulate_tlbinv_ld(ulong cause, uint32_t __user * opc,
-+                           struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct kvm_vcpu_arch *arch = &vcpu->arch;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    ulong entryhi = (vcpu->arch.host_cp0_badvaddr & VPN2_MASK) | (kvm_read_c0_guest_entryhi(cop0) & ASID_MASK);
-+
-+    if ((kvm_read_c0_guest_status(cop0) & ST0_EXL) == 0) {
-+        /* save old pc */
-+        kvm_write_c0_guest_epc(cop0, arch->pc);
-+        kvm_set_c0_guest_status(cop0, ST0_EXL);
-+
-+        if (cause & CAUSEF_BD)
-+            kvm_set_c0_guest_cause(cop0, CAUSEF_BD);
-+        else
-+            kvm_clear_c0_guest_cause(cop0, CAUSEF_BD);
-+
-+       kvm_debug("[EXL == 0] delivering TLB INV @ pc %#lx\n", arch->pc);
-+
-+        /* set pc to the exception entry point */
-+        arch->pc = KVM_GUEST_KSEG0 + 0x180;
-+
-+    }
-+    else {
-+        kvm_debug("[EXL == 1] delivering TLB MISS @ pc %#lx\n", arch->pc);
-+        arch->pc = KVM_GUEST_KSEG0 + 0x180;
-+    }
-+
-+    kvm_change_c0_guest_cause(cop0, (0xff), (T_TLB_LD_MISS << CAUSEB_EXCCODE));
-+
-+    /* setup badvaddr, context and entryhi registers for the guest */
-+    kvm_write_c0_guest_badvaddr(cop0, vcpu->arch.host_cp0_badvaddr);
-+    /* XXXKYMA: is the context register used by linux??? */
-+    kvm_write_c0_guest_entryhi(cop0, entryhi);
-+    /* Blow away the shadow host TLBs */
-+    kvm_mips_flush_host_tlb(1);
-+
-+    return (er);
-+}
-+
-+
-+
-+
-+enum emulation_result
-+kvm_mips_emulate_tlbmiss_st(ulong cause, uint32_t __user * opc,
-+                            struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct kvm_vcpu_arch *arch = &vcpu->arch;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    ulong entryhi = (vcpu->arch.host_cp0_badvaddr & VPN2_MASK) |
-+        (kvm_read_c0_guest_entryhi(cop0) & ASID_MASK);
-+
-+
-+    if ((kvm_read_c0_guest_status(cop0) & ST0_EXL) == 0) {
-+        /* save old pc */
-+        kvm_write_c0_guest_epc(cop0, arch->pc);
-+        kvm_set_c0_guest_status(cop0, ST0_EXL);
-+
-+        if (cause & CAUSEF_BD)
-+            kvm_set_c0_guest_cause(cop0, CAUSEF_BD);
-+        else
-+            kvm_clear_c0_guest_cause(cop0, CAUSEF_BD);
-+
-+       kvm_debug("[EXL == 0] Delivering TLB MISS @ pc %#lx\n", arch->pc);
-+
-+        /* Set PC to the exception entry point */
-+        arch->pc = KVM_GUEST_KSEG0 + 0x0;
-+    }
-+    else {
-+        kvm_debug("[EXL == 1] Delivering TLB MISS @ pc %#lx\n", arch->pc);
-+        arch->pc = KVM_GUEST_KSEG0 + 0x180;
-+    }
-+
-+    kvm_change_c0_guest_cause(cop0, (0xff), (T_TLB_ST_MISS << CAUSEB_EXCCODE));
-+
-+    /* setup badvaddr, context and entryhi registers for the guest */
-+    kvm_write_c0_guest_badvaddr(cop0, vcpu->arch.host_cp0_badvaddr);
-+    /* XXXKYMA: is the context register used by linux??? */
-+    kvm_write_c0_guest_entryhi(cop0, entryhi);
-+    /* Blow away the shadow host TLBs */
-+    kvm_mips_flush_host_tlb(1);
-+
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emulate_tlbinv_st(ulong cause, uint32_t __user * opc,
-+                           struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct kvm_vcpu_arch *arch = &vcpu->arch;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    ulong entryhi = (vcpu->arch.host_cp0_badvaddr & VPN2_MASK) |
-+        (kvm_read_c0_guest_entryhi(cop0) & ASID_MASK);
-+
-+
-+    if ((kvm_read_c0_guest_status(cop0) & ST0_EXL) == 0) {
-+        /* save old pc */
-+        kvm_write_c0_guest_epc(cop0, arch->pc);
-+        kvm_set_c0_guest_status(cop0, ST0_EXL);
-+
-+        if (cause & CAUSEF_BD)
-+            kvm_set_c0_guest_cause(cop0, CAUSEF_BD);
-+        else
-+            kvm_clear_c0_guest_cause(cop0, CAUSEF_BD);
-+
-+        kvm_debug("[EXL == 0] Delivering TLB MISS @ pc %#lx\n", arch->pc);
-+
-+        /* Set PC to the exception entry point */
-+        arch->pc = KVM_GUEST_KSEG0 + 0x180;
-+    }
-+    else {
-+       kvm_debug("[EXL == 1] Delivering TLB MISS @ pc %#lx\n", arch->pc);
-+        arch->pc = KVM_GUEST_KSEG0 + 0x180;
-+    }
-+
-+    kvm_change_c0_guest_cause(cop0, (0xff), (T_TLB_ST_MISS << CAUSEB_EXCCODE));
-+
-+    /* setup badvaddr, context and entryhi registers for the guest */
-+    kvm_write_c0_guest_badvaddr(cop0, vcpu->arch.host_cp0_badvaddr);
-+    /* XXXKYMA: is the context register used by linux??? */
-+    kvm_write_c0_guest_entryhi(cop0, entryhi);
-+    /* Blow away the shadow host TLBs */
-+    kvm_mips_flush_host_tlb(1);
-+
-+    return (er);
-+}
-+
-+
-+/* TLBMOD: store into address matching TLB with Dirty bit off */
-+enum emulation_result
-+kvm_mips_handle_tlbmod(ulong cause, uint32_t __user * opc,
-+                       struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    int index __unused;
-+    ulong entryhi __unused = (vcpu->arch.host_cp0_badvaddr & VPN2_MASK) | (kvm_read_c0_guest_entryhi(cop0) & ASID_MASK);
-+
-+
-+    /* If address not in the guest TLB, then we are in trouble
-+     *
-+     */
-+#if 0
-+    index = kvm_mips_guest_tlb_lookup(vcpu, entryhi);
-+    if (index < 0) {
-+        /* XXXKYMA Invalidate and retry */
-+        kvm_mips_host_tlb_inv(vcpu, vcpu->arch.host_cp0_badvaddr);
-+        printk("%s: host got TLBMOD for %#lx but entry not present in Guest TLB\n", __func__, entryhi);
-+        kvm_mips_dump_guest_tlbs(vcpu);
-+        kvm_mips_dump_host_tlbs();
-+        return (EMULATE_FAIL);
-+    }
-+#endif
-+
-+    er = kvm_mips_emulate_tlbmod(cause, opc, run, vcpu);
-+    return (er);
-+}
-+
-+
-+enum emulation_result
-+kvm_mips_emulate_tlbmod(ulong cause, uint32_t __user * opc,
-+                        struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct kvm_vcpu_arch *arch = &vcpu->arch;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    ulong entryhi = (vcpu->arch.host_cp0_badvaddr & VPN2_MASK) |
-+        (kvm_read_c0_guest_entryhi(cop0) & ASID_MASK);
-+
-+    if ((kvm_read_c0_guest_status(cop0) & ST0_EXL) == 0) {
-+        /* save old pc */
-+        kvm_write_c0_guest_epc(cop0, arch->pc);
-+        kvm_set_c0_guest_status(cop0, ST0_EXL);
-+
-+        if (cause & CAUSEF_BD)
-+            kvm_set_c0_guest_cause(cop0, CAUSEF_BD);
-+        else
-+            kvm_clear_c0_guest_cause(cop0, CAUSEF_BD);
-+
-+        kvm_debug("[EXL == 0] Delivering TLB MOD @ pc %#lx\n", arch->pc);
-+
-+        arch->pc = KVM_GUEST_KSEG0 + 0x180;
-+    }
-+    else {
-+        kvm_debug("[EXL == 1] Delivering TLB MOD @ pc %#lx\n", arch->pc);
-+        arch->pc = KVM_GUEST_KSEG0 + 0x180;
-+    }
-+
-+    kvm_change_c0_guest_cause(cop0, (0xff), (T_TLB_MOD << CAUSEB_EXCCODE));
-+
-+    /* setup badvaddr, context and entryhi registers for the guest */
-+    kvm_write_c0_guest_badvaddr(cop0, vcpu->arch.host_cp0_badvaddr);
-+    /* XXXKYMA: is the context register used by linux??? */
-+    kvm_write_c0_guest_entryhi(cop0, entryhi);
-+    /* Blow away the shadow host TLBs */
-+    kvm_mips_flush_host_tlb(1);
-+
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emulate_fpu_exc(ulong cause, uint32_t __user * opc,
-+                         struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct kvm_vcpu_arch *arch = &vcpu->arch;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+
-+    if ((kvm_read_c0_guest_status(cop0) & ST0_EXL) == 0) {
-+        /* save old pc */
-+        kvm_write_c0_guest_epc(cop0, arch->pc);
-+        kvm_set_c0_guest_status(cop0, ST0_EXL);
-+
-+        if (cause & CAUSEF_BD)
-+            kvm_set_c0_guest_cause(cop0, CAUSEF_BD);
-+        else
-+            kvm_clear_c0_guest_cause(cop0, CAUSEF_BD);
-+
-+    }
-+
-+    arch->pc = KVM_GUEST_KSEG0 + 0x180;
-+
-+    kvm_change_c0_guest_cause(cop0, (0xff), (T_COP_UNUSABLE << CAUSEB_EXCCODE));
-+    kvm_change_c0_guest_cause(cop0, (CAUSEF_CE), (0x1 << CAUSEB_CE));
-+
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emulate_ri_exc(ulong cause, uint32_t __user * opc,
-+                        struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct kvm_vcpu_arch *arch = &vcpu->arch;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+
-+    if ((kvm_read_c0_guest_status(cop0) & ST0_EXL) == 0) {
-+        /* save old pc */
-+        kvm_write_c0_guest_epc(cop0, arch->pc);
-+        kvm_set_c0_guest_status(cop0, ST0_EXL);
-+
-+        if (cause & CAUSEF_BD)
-+            kvm_set_c0_guest_cause(cop0, CAUSEF_BD);
-+        else
-+            kvm_clear_c0_guest_cause(cop0, CAUSEF_BD);
-+
-+        kvm_debug("Delivering RI @ pc %#lx\n", arch->pc);
-+
-+        kvm_change_c0_guest_cause(cop0, (0xff), (T_RES_INST << CAUSEB_EXCCODE));
-+
-+        /* Set PC to the exception entry point */
-+        arch->pc = KVM_GUEST_KSEG0 + 0x180;
-+
-+    }
-+    else {
-+        printk("Trying to deliver RI when EXL is already set\n");
-+        er = EMULATE_FAIL;
-+    }
-+
-+    return (er);
-+}
-+
-+enum emulation_result
-+kvm_mips_emulate_bp_exc(ulong cause, uint32_t __user * opc,
-+                        struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct kvm_vcpu_arch *arch = &vcpu->arch;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+
-+    if ((kvm_read_c0_guest_status(cop0) & ST0_EXL) == 0) {
-+        /* save old pc */
-+        kvm_write_c0_guest_epc(cop0, arch->pc);
-+        kvm_set_c0_guest_status(cop0, ST0_EXL);
-+
-+        if (cause & CAUSEF_BD)
-+            kvm_set_c0_guest_cause(cop0, CAUSEF_BD);
-+        else
-+            kvm_clear_c0_guest_cause(cop0, CAUSEF_BD);
-+
-+        kvm_debug("Delivering BP @ pc %#lx\n", arch->pc);
-+
-+        kvm_change_c0_guest_cause(cop0, (0xff), (T_BREAK << CAUSEB_EXCCODE));
-+
-+        /* Set PC to the exception entry point */
-+        arch->pc = KVM_GUEST_KSEG0 + 0x180;
-+
-+    }
-+    else {
-+        printk("Trying to deliver BP when EXL is already set\n");
-+        er = EMULATE_FAIL;
-+    }
-+
-+    return (er);
-+}
-+
-+
-+
-+
-+
-+
-+/*
-+ * ll/sc, rdhwr, sync emulation
-+ */
-+
-+#define OPCODE 0xfc000000
-+#define BASE   0x03e00000
-+#define RT     0x001f0000
-+#define OFFSET 0x0000ffff
-+#define LL     0xc0000000
-+#define SC     0xe0000000
-+#define SPEC0  0x00000000
-+#define SPEC3  0x7c000000
-+#define RD     0x0000f800
-+#define FUNC   0x0000003f
-+#define SYNC   0x0000000f
-+#define RDHWR  0x0000003b
-+
-+enum emulation_result
-+kvm_mips_handle_ri(ulong cause, uint32_t __user * opc,
-+                   struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct kvm_vcpu_arch *arch = &vcpu->arch;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    uint32_t inst;
-+    u_long curr_pc;
-+
-+    /*
-+     * Update PC and hold onto current PC in case there is 
-+     * an error and we want to rollback the PC
-+     */
-+    curr_pc = vcpu->arch.pc;
-+    er = update_pc(vcpu, cause);
-+    if (er == EMULATE_FAIL)   
-+        return (er);
-+
-+    /*
-+     *  Fetch the instruction.
-+     */
-+    if (cause & CAUSEF_BD)
-+        opc += 1;
-+
-+    inst = kvm_get_inst(opc, vcpu);
-+
-+    if (inst == KVM_INVALID_INST) {
-+        printk("%s: Cannot get inst @ %p\n", __func__, opc);
-+        return EMULATE_FAIL;
-+    }
-+    
-+    if ((inst & OPCODE) == SPEC3 && (inst & FUNC) == RDHWR) {
-+        int rd = (inst & RD) >> 11;
-+        int rt = (inst & RT) >> 16;
-+        switch (rd) {
-+        case 0:                /* CPU number */
-+            arch->gprs[rt] = 0;
-+            break;
-+        case 1:                /* SYNCI length */
-+            arch->gprs[rt] = min(current_cpu_data.dcache.linesz,
-+                                 current_cpu_data.icache.linesz);
-+            break;
-+        case 2:                /* Read count register */
-+            printk("RDHWR: Cont register\n");
-+            arch->gprs[rt] = kvm_read_c0_guest_count(cop0);
-+            break;
-+        case 3:                /* Count register resolution */
-+            switch (current_cpu_data.cputype) {
-+            case CPU_20KC:
-+            case CPU_25KF:
-+                arch->gprs[rt] = 1;
-+                break;
-+            default:
-+                arch->gprs[rt] = 2;
-+            }
-+            break;
-+        case 29:
-+            arch->gprs[rt] = kvm_read_c0_guest_userlocal(cop0);
-+            break;
-+
-+        default:
-+            printk("RDHWR not supported\n");
-+            er = EMULATE_FAIL;
-+            break;
-+        }
-+    }
-+    else {
-+        printk("Emulate RI not supported @ %p: %#x\n", opc, inst);
-+        er = EMULATE_FAIL;
-+    }
-+
-+    /*
-+     * Rollback PC only if emulation was unsuccessful
-+     */
-+    if (er == EMULATE_FAIL) {
-+        vcpu->arch.pc = curr_pc;
-+    }
-+    return (er);
-+}
-+
-+
-+enum emulation_result
-+kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    ulong *gpr = &vcpu->arch.gprs[vcpu->arch.io_gpr];
-+    u_long curr_pc;
-+
-+    if (run->mmio.len > sizeof(*gpr)) {
-+        printk("Bad MMIO length: %d", run->mmio.len);
-+        er = EMULATE_FAIL;
-+        goto done;
-+    }
-+
-+    /*
-+     * Update PC and hold onto current PC in case there is 
-+     * an error and we want to rollback the PC
-+     */
-+    curr_pc = vcpu->arch.pc;
-+    er = update_pc(vcpu, vcpu->arch.pending_load_cause);
-+    if (er == EMULATE_FAIL)   
-+        return (er);
-+
-+    switch (run->mmio.len) {
-+    case 4:
-+        *gpr = *(int32_t *) run->mmio.data;
-+        break;
-+
-+    case 2:
-+        if (vcpu->mmio_needed == 2)
-+            *gpr = *(int16_t *) run->mmio.data;
-+        else
-+            *gpr = *(int16_t *) run->mmio.data;
-+
-+        break;
-+    case 1:
-+        if (vcpu->mmio_needed == 2)
-+            *gpr = *(int8_t *) run->mmio.data;
-+        else
-+            *gpr = *(u8 *) run->mmio.data;
-+        break;
-+    }
-+
-+    if (vcpu->arch.pending_load_cause & CAUSEF_BD)
-+        kvm_debug("[%#lx] Completing %d byte BD Load to gpr %d (0x%08lx) type %d\n",
-+             vcpu->arch.pc, run->mmio.len, vcpu->arch.io_gpr, *gpr,
-+             vcpu->mmio_needed);
-+
-+  done:
-+    return (er);
-+}
-+
-+static enum emulation_result
-+kvm_mips_emulate_exc(ulong cause, uint32_t __user * opc,
-+                     struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    struct kvm_vcpu_arch *arch = &vcpu->arch;
-+    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
-+    uint32_t exccode = (cause >> CAUSEB_EXCCODE) & 0x1f;
-+
-+
-+    if ((kvm_read_c0_guest_status(cop0) & ST0_EXL) == 0) {
-+        /* save old pc */
-+        kvm_write_c0_guest_epc(cop0, arch->pc);
-+        kvm_set_c0_guest_status(cop0, ST0_EXL);
-+
-+        if (cause & CAUSEF_BD)
-+            kvm_set_c0_guest_cause(cop0, CAUSEF_BD);
-+        else
-+            kvm_clear_c0_guest_cause(cop0, CAUSEF_BD);
-+
-+        kvm_change_c0_guest_cause(cop0, (0xff), (exccode << CAUSEB_EXCCODE));
-+
-+        /* Set PC to the exception entry point */
-+        arch->pc = KVM_GUEST_KSEG0 + 0x180;
-+        kvm_write_c0_guest_badvaddr(cop0, vcpu->arch.host_cp0_badvaddr);
-+
-+        kvm_debug("Delivering EXC %d @ pc %#lx, badVaddr: %#lx\n", exccode,
-+                   kvm_read_c0_guest_epc(cop0),
-+                   kvm_read_c0_guest_badvaddr(cop0));
-+    }
-+    else {
-+        printk("Trying to deliver EXC when EXL is already set\n");
-+        er = EMULATE_FAIL;
-+    }
-+
-+    return (er);
-+}
-+
-+
-+enum emulation_result
-+kvm_mips_check_privilege(ulong cause, uint32_t __user * opc,
-+                         struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    uint32_t exccode = (cause >> CAUSEB_EXCCODE) & 0x1f;
-+    ulong badvaddr = vcpu->arch.host_cp0_badvaddr;
-+
-+    int usermode = !KVM_GUEST_KERNEL_MODE(vcpu);
-+
-+    if (usermode) {
-+        switch (exccode) {
-+        case T_INT:
-+        case T_SYSCALL:
-+        case T_BREAK:
-+        case T_RES_INST:
-+            break;
-+
-+        case T_COP_UNUSABLE:
-+            if (((cause & CAUSEF_CE) >> CAUSEB_CE) == 0)
-+                er = EMULATE_PRIV_FAIL;
-+            break;
-+
-+        case T_TLB_MOD:
-+            break;
-+
-+        case T_TLB_LD_MISS:
-+            /* We we are accessing Guest kernel space, then send an address error exception to the guest */
-+            if (badvaddr >= (ulong)KVM_GUEST_KSEG0) {
-+                kvm_debug("%s: LD MISS @ %#lx\n", __func__, badvaddr);
-+                cause &= ~0xff;
-+                cause |= (T_ADDR_ERR_LD << CAUSEB_EXCCODE);
-+                er = EMULATE_PRIV_FAIL;
-+            }
-+            break;
-+
-+        case T_TLB_ST_MISS:
-+            /* We we are accessing Guest kernel space, then send an address error exception to the guest */
-+            if (badvaddr >= (ulong)KVM_GUEST_KSEG0) {
-+                kvm_debug("%s: ST MISS @ %#lx\n", __func__, badvaddr);
-+                cause &= ~0xff;
-+                cause |= (T_ADDR_ERR_ST << CAUSEB_EXCCODE);
-+                er = EMULATE_PRIV_FAIL;
-+            }
-+            break;
-+
-+        case T_ADDR_ERR_ST:
-+            kvm_debug("%s: address error ST @ %#lx\n", __func__, badvaddr);
-+            if ((badvaddr & PAGE_MASK) == KVM_GUEST_COMMPAGE_ADDR) {
-+                cause &= ~0xff;
-+                cause |= (T_TLB_ST_MISS << CAUSEB_EXCCODE);
-+            }
-+            er = EMULATE_PRIV_FAIL;
-+            break;
-+        case T_ADDR_ERR_LD:
-+            kvm_debug("%s: address error LD @ %#lx\n", __func__, badvaddr);
-+            if ((badvaddr & PAGE_MASK) == KVM_GUEST_COMMPAGE_ADDR) {
-+                cause &= ~0xff;
-+                cause |= (T_TLB_LD_MISS << CAUSEB_EXCCODE);
-+            }
-+            er = EMULATE_PRIV_FAIL;
-+            break;
-+        default:
-+            er = EMULATE_PRIV_FAIL;
-+            break;
-+        }
-+    }
-+
-+    if (er == EMULATE_PRIV_FAIL) {
-+        kvm_mips_emulate_exc(cause, opc, run, vcpu);
-+    }
-+    return (er);
-+}
-+
-+/* User Address (UA) fault, this could happen if
-+ * (1) TLB entry not present/valid in both Guest and shadow host TLBs, in this
-+ *     case we pass on the fault to the guest kernel and let it handle it.
-+ * (2) TLB entry is present in the Guest TLB but not in the shadow, in this
-+ *     case we inject the TLB from the Guest TLB into the shadow host TLB
-+ */
-+enum emulation_result
-+kvm_mips_handle_tlbmiss(ulong cause, uint32_t __user * opc,
-+                        struct kvm_run *run, struct kvm_vcpu *vcpu)
-+{
-+    enum emulation_result er = EMULATE_DONE;
-+    uint32_t exccode = (cause >> CAUSEB_EXCCODE) & 0x1f;
-+    ulong va = vcpu->arch.host_cp0_badvaddr;
-+    int index;
-+
-+    kvm_debug("kvm_mips_handle_tlbmiss: badvaddr: %#lx, entryhi: %#lx\n",
-+               vcpu->arch.host_cp0_badvaddr, vcpu->arch.host_cp0_entryhi);
-+
-+    /* KVM would not have got the exception if this entry was valid in the shadow host TLB
-+     * Check the Guest TLB, if the entry is not there then send the guest an
-+     * exception. The guest exc handler should then inject an entry into the
-+     * guest TLB
-+     */
-+    index = kvm_mips_guest_tlb_lookup(vcpu,
-+            (va & VPN2_MASK) | (kvm_read_c0_guest_entryhi(vcpu->arch.cop0) & ASID_MASK));
-+    if (index < 0) {
-+        if (exccode == T_TLB_LD_MISS) {
-+            er = kvm_mips_emulate_tlbmiss_ld(cause, opc, run, vcpu);
-+        }
-+        else if (exccode == T_TLB_ST_MISS) {
-+            er = kvm_mips_emulate_tlbmiss_st(cause, opc, run, vcpu);
-+        }
-+        else {
-+            printk("%s: invalid exc code: %d\n", __func__, exccode);
-+            er = EMULATE_FAIL;
-+        }
-+    }
-+    else {
-+        struct kvm_mips_tlb *tlb = &vcpu->arch.guest_tlb[index];
-+
-+        /* Check if the entry is valid, if not then setup a TLB invalid exception to the guest */
-+        if (!TLB_IS_VALID(*tlb, va)) {
-+            if (exccode == T_TLB_LD_MISS) {
-+                er = kvm_mips_emulate_tlbinv_ld(cause, opc, run, vcpu);
-+            }
-+            else if (exccode == T_TLB_ST_MISS) {
-+                er = kvm_mips_emulate_tlbinv_st(cause, opc, run, vcpu);
-+            }
-+            else {
-+                printk("%s: invalid exc code: %d\n", __func__, exccode);
-+                er = EMULATE_FAIL;
-+            }
-+        }
-+        else {
-+#ifdef  DEBUG
-+            kvm_debug("Injecting hi: %#lx, lo0: %#lx, lo1: %#lx into shadow host TLB\n",
-+                     tlb->tlb_hi, tlb->tlb_lo0, tlb->tlb_lo1);
-+#endif
-+            /* OK we have a Guest TLB entry, now inject it into the shadow host TLB */
-+            kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb, NULL, NULL);
-+        }
-+    }
-+
-+    return (er);
-+}
-+
-+
-diff --git a/arch/mips/kvm/kvm_mips_opcode.h b/arch/mips/kvm/kvm_mips_opcode.h
++++ b/arch/mips/configs/malta_kvm_defconfig
+@@ -0,0 +1,2244 @@
++#
++# Automatically generated file; DO NOT EDIT.
++# Linux/mips 3.7.0-rc2 Kernel Configuration
++#
++CONFIG_MIPS=y
++
++#
++# Machine selection
++#
++CONFIG_ZONE_DMA=y
++# CONFIG_MIPS_ALCHEMY is not set
++# CONFIG_AR7 is not set
++# CONFIG_ATH79 is not set
++# CONFIG_BCM47XX is not set
++# CONFIG_BCM63XX is not set
++# CONFIG_MIPS_COBALT is not set
++# CONFIG_MACH_DECSTATION is not set
++# CONFIG_MACH_JAZZ is not set
++# CONFIG_MACH_JZ4740 is not set
++# CONFIG_LANTIQ is not set
++# CONFIG_LASAT is not set
++# CONFIG_MACH_LOONGSON is not set
++# CONFIG_MACH_LOONGSON1 is not set
++CONFIG_MIPS_MALTA=y
++# CONFIG_MIPS_SEAD3 is not set
++# CONFIG_NEC_MARKEINS is not set
++# CONFIG_MACH_VR41XX is not set
++# CONFIG_NXP_STB220 is not set
++# CONFIG_NXP_STB225 is not set
++# CONFIG_PNX8550_JBS is not set
++# CONFIG_PNX8550_STB810 is not set
++# CONFIG_PMC_MSP is not set
++# CONFIG_PMC_YOSEMITE is not set
++# CONFIG_POWERTV is not set
++# CONFIG_SGI_IP22 is not set
++# CONFIG_SGI_IP27 is not set
++# CONFIG_SGI_IP28 is not set
++# CONFIG_SGI_IP32 is not set
++# CONFIG_SIBYTE_CRHINE is not set
++# CONFIG_SIBYTE_CARMEL is not set
++# CONFIG_SIBYTE_CRHONE is not set
++# CONFIG_SIBYTE_RHONE is not set
++# CONFIG_SIBYTE_SWARM is not set
++# CONFIG_SIBYTE_LITTLESUR is not set
++# CONFIG_SIBYTE_SENTOSA is not set
++# CONFIG_SIBYTE_BIGSUR is not set
++# CONFIG_SNI_RM is not set
++# CONFIG_MACH_TX39XX is not set
++# CONFIG_MACH_TX49XX is not set
++# CONFIG_MIKROTIK_RB532 is not set
++# CONFIG_WR_PPMC is not set
++# CONFIG_CAVIUM_OCTEON_SIMULATOR is not set
++# CONFIG_CAVIUM_OCTEON_REFERENCE_BOARD is not set
++# CONFIG_NLM_XLR_BOARD is not set
++# CONFIG_NLM_XLP_BOARD is not set
++# CONFIG_ALCHEMY_GPIO_INDIRECT is not set
++CONFIG_RWSEM_GENERIC_SPINLOCK=y
++# CONFIG_ARCH_HAS_ILOG2_U32 is not set
++# CONFIG_ARCH_HAS_ILOG2_U64 is not set
++CONFIG_GENERIC_HWEIGHT=y
++CONFIG_GENERIC_CALIBRATE_DELAY=y
++CONFIG_SCHED_OMIT_FRAME_POINTER=y
++CONFIG_ARCH_MAY_HAVE_PC_FDC=y
++CONFIG_BOOT_RAW=y
++CONFIG_CEVT_R4K_LIB=y
++CONFIG_CEVT_R4K=y
++CONFIG_CSRC_R4K_LIB=y
++CONFIG_CSRC_R4K=y
++# CONFIG_ARCH_DMA_ADDR_T_64BIT is not set
++CONFIG_DMA_NONCOHERENT=y
++CONFIG_NEED_DMA_MAP_STATE=y
++CONFIG_SYS_HAS_EARLY_PRINTK=y
++CONFIG_I8259=y
++CONFIG_MIPS_BONITO64=y
++CONFIG_MIPS_MSC=y
++# CONFIG_MIPS_MACHINE is not set
++# CONFIG_NO_IOPORT is not set
++CONFIG_GENERIC_ISA_DMA=y
++CONFIG_ISA_DMA_API=y
++# CONFIG_CPU_BIG_ENDIAN is not set
++CONFIG_CPU_LITTLE_ENDIAN=y
++CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
++CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
++CONFIG_IRQ_CPU=y
++CONFIG_IRQ_GIC=y
++CONFIG_MIPS_BOARDS_GEN=y
++CONFIG_PCI_GT64XXX_PCI0=y
++CONFIG_SWAP_IO_SPACE=y
++CONFIG_BOOT_ELF32=y
++CONFIG_MIPS_L1_CACHE_SHIFT=6
++
++#
++# CPU selection
++#
++# CONFIG_CPU_MIPS32_R1 is not set
++CONFIG_CPU_MIPS32_R2=y
++# CONFIG_CPU_MIPS64_R1 is not set
++# CONFIG_CPU_MIPS64_R2 is not set
++# CONFIG_CPU_NEVADA is not set
++# CONFIG_CPU_RM7000 is not set
++CONFIG_SYS_SUPPORTS_ZBOOT=y
++CONFIG_SYS_HAS_CPU_MIPS32_R1=y
++CONFIG_SYS_HAS_CPU_MIPS32_R2=y
++CONFIG_SYS_HAS_CPU_MIPS64_R1=y
++CONFIG_SYS_HAS_CPU_MIPS64_R2=y
++CONFIG_SYS_HAS_CPU_NEVADA=y
++CONFIG_SYS_HAS_CPU_RM7000=y
++CONFIG_CPU_MIPS32=y
++CONFIG_CPU_MIPSR2=y
++CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
++CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
++CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
++CONFIG_HARDWARE_WATCHPOINTS=y
++
++#
++# Kernel type
++#
++CONFIG_32BIT=y
++# CONFIG_KVM_GUEST is not set
++CONFIG_KVM_HOST_FREQ=500
++# CONFIG_PAGE_SIZE_4KB is not set
++CONFIG_PAGE_SIZE_16KB=y
++# CONFIG_PAGE_SIZE_64KB is not set
++CONFIG_FORCE_MAX_ZONEORDER=11
++CONFIG_BOARD_SCACHE=y
++CONFIG_MIPS_CPU_SCACHE=y
++CONFIG_CPU_HAS_PREFETCH=y
++CONFIG_CPU_GENERIC_DUMP_TLB=y
++CONFIG_CPU_R4K_FPU=y
++CONFIG_CPU_R4K_CACHE_TLB=y
++# CONFIG_MIPS_MT_DISABLED is not set
++CONFIG_MIPS_MT_SMP=y
++# CONFIG_MIPS_MT_SMTC is not set
++CONFIG_MIPS_MT=y
++# CONFIG_SCHED_SMT is not set
++CONFIG_SYS_SUPPORTS_SCHED_SMT=y
++CONFIG_SYS_SUPPORTS_MULTITHREADING=y
++CONFIG_MIPS_MT_FPAFF=y
++# CONFIG_MIPS_VPE_LOADER is not set
++# CONFIG_MIPS_CMP is not set
++# CONFIG_ARCH_PHYS_ADDR_T_64BIT is not set
++# CONFIG_CPU_HAS_SMARTMIPS is not set
++CONFIG_CPU_MIPSR2_IRQ_VI=y
++CONFIG_CPU_MIPSR2_IRQ_EI=y
++CONFIG_CPU_HAS_SYNC=y
++CONFIG_CPU_SUPPORTS_HIGHMEM=y
++CONFIG_SYS_SUPPORTS_SMARTMIPS=y
++CONFIG_ARCH_FLATMEM_ENABLE=y
++CONFIG_SELECT_MEMORY_MODEL=y
++CONFIG_FLATMEM_MANUAL=y
++CONFIG_FLATMEM=y
++CONFIG_FLAT_NODE_MEM_MAP=y
++CONFIG_HAVE_MEMBLOCK=y
++CONFIG_HAVE_MEMBLOCK_NODE_MAP=y
++CONFIG_ARCH_DISCARD_MEMBLOCK=y
++CONFIG_PAGEFLAGS_EXTENDED=y
++CONFIG_SPLIT_PTLOCK_CPUS=4
++CONFIG_COMPACTION=y
++CONFIG_MIGRATION=y
++# CONFIG_PHYS_ADDR_T_64BIT is not set
++CONFIG_ZONE_DMA_FLAG=1
++CONFIG_BOUNCE=y
++CONFIG_VIRT_TO_BUS=y
++# CONFIG_KSM is not set
++CONFIG_DEFAULT_MMAP_MIN_ADDR=4096
++CONFIG_CROSS_MEMORY_ATTACH=y
++# CONFIG_CLEANCACHE is not set
++# CONFIG_FRONTSWAP is not set
++CONFIG_SMP=y
++CONFIG_SMP_UP=y
++CONFIG_SYS_SUPPORTS_MIPS_CMP=y
++CONFIG_SYS_SUPPORTS_SMP=y
++CONFIG_NR_CPUS_DEFAULT_2=y
++CONFIG_NR_CPUS=2
++CONFIG_MIPS_PERF_SHARED_TC_COUNTERS=y
++# CONFIG_HZ_48 is not set
++CONFIG_HZ_100=y
++# CONFIG_HZ_128 is not set
++# CONFIG_HZ_250 is not set
++# CONFIG_HZ_256 is not set
++# CONFIG_HZ_1000 is not set
++# CONFIG_HZ_1024 is not set
++CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
++CONFIG_HZ=100
++CONFIG_PREEMPT_NONE=y
++# CONFIG_PREEMPT_VOLUNTARY is not set
++# CONFIG_PREEMPT is not set
++# CONFIG_KEXEC is not set
++CONFIG_SECCOMP=y
++CONFIG_LOCKDEP_SUPPORT=y
++CONFIG_STACKTRACE_SUPPORT=y
++CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
++CONFIG_HAVE_IRQ_WORK=y
++CONFIG_BUILDTIME_EXTABLE_SORT=y
++
++#
++# General setup
++#
++CONFIG_EXPERIMENTAL=y
++CONFIG_INIT_ENV_ARG_LIMIT=32
++CONFIG_CROSS_COMPILE=""
++CONFIG_LOCALVERSION=""
++CONFIG_LOCALVERSION_AUTO=y
++CONFIG_HAVE_KERNEL_GZIP=y
++CONFIG_HAVE_KERNEL_BZIP2=y
++CONFIG_HAVE_KERNEL_LZMA=y
++CONFIG_HAVE_KERNEL_LZO=y
++CONFIG_KERNEL_GZIP=y
++# CONFIG_KERNEL_BZIP2 is not set
++# CONFIG_KERNEL_LZMA is not set
++# CONFIG_KERNEL_LZO is not set
++CONFIG_DEFAULT_HOSTNAME="(none)"
++CONFIG_SWAP=y
++CONFIG_SYSVIPC=y
++CONFIG_SYSVIPC_SYSCTL=y
++# CONFIG_POSIX_MQUEUE is not set
++# CONFIG_FHANDLE is not set
++# CONFIG_AUDIT is not set
++CONFIG_HAVE_GENERIC_HARDIRQS=y
++
++#
++# IRQ subsystem
++#
++CONFIG_GENERIC_HARDIRQS=y
++CONFIG_GENERIC_IRQ_PROBE=y
++CONFIG_GENERIC_IRQ_SHOW=y
++CONFIG_IRQ_FORCED_THREADING=y
++CONFIG_GENERIC_CLOCKEVENTS=y
++CONFIG_GENERIC_CLOCKEVENTS_BUILD=y
++CONFIG_GENERIC_CMOS_UPDATE=y
++
++#
++# Timers subsystem
++#
++CONFIG_TICK_ONESHOT=y
++CONFIG_NO_HZ=y
++CONFIG_HIGH_RES_TIMERS=y
++
++#
++# CPU/Task time and stats accounting
++#
++CONFIG_TICK_CPU_ACCOUNTING=y
++# CONFIG_BSD_PROCESS_ACCT is not set
++# CONFIG_TASKSTATS is not set
++
++#
++# RCU Subsystem
++#
++CONFIG_TREE_RCU=y
++# CONFIG_PREEMPT_RCU is not set
++CONFIG_RCU_FANOUT=32
++CONFIG_RCU_FANOUT_LEAF=16
++# CONFIG_RCU_FANOUT_EXACT is not set
++# CONFIG_RCU_FAST_NO_HZ is not set
++# CONFIG_TREE_RCU_TRACE is not set
++# CONFIG_IKCONFIG is not set
++CONFIG_LOG_BUF_SHIFT=15
++# CONFIG_CGROUPS is not set
++# CONFIG_CHECKPOINT_RESTORE is not set
++CONFIG_NAMESPACES=y
++CONFIG_UTS_NS=y
++CONFIG_IPC_NS=y
++CONFIG_PID_NS=y
++CONFIG_NET_NS=y
++# CONFIG_SCHED_AUTOGROUP is not set
++# CONFIG_SYSFS_DEPRECATED is not set
++CONFIG_RELAY=y
++# CONFIG_BLK_DEV_INITRD is not set
++# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
++CONFIG_SYSCTL=y
++CONFIG_ANON_INODES=y
++CONFIG_EXPERT=y
++# CONFIG_SYSCTL_SYSCALL is not set
++CONFIG_KALLSYMS=y
++# CONFIG_KALLSYMS_ALL is not set
++CONFIG_HOTPLUG=y
++CONFIG_PRINTK=y
++CONFIG_BUG=y
++CONFIG_ELF_CORE=y
++CONFIG_PCSPKR_PLATFORM=y
++CONFIG_HAVE_PCSPKR_PLATFORM=y
++CONFIG_BASE_FULL=y
++CONFIG_FUTEX=y
++CONFIG_EPOLL=y
++CONFIG_SIGNALFD=y
++CONFIG_TIMERFD=y
++CONFIG_EVENTFD=y
++CONFIG_SHMEM=y
++CONFIG_AIO=y
++# CONFIG_EMBEDDED is not set
++CONFIG_HAVE_PERF_EVENTS=y
++CONFIG_PERF_USE_VMALLOC=y
++
++#
++# Kernel Performance Events And Counters
++#
++# CONFIG_PERF_EVENTS is not set
++CONFIG_VM_EVENT_COUNTERS=y
++CONFIG_PCI_QUIRKS=y
++# CONFIG_COMPAT_BRK is not set
++CONFIG_SLAB=y
++# CONFIG_SLUB is not set
++# CONFIG_SLOB is not set
++# CONFIG_PROFILING is not set
++CONFIG_HAVE_OPROFILE=y
++# CONFIG_KPROBES is not set
++# CONFIG_JUMP_LABEL is not set
++CONFIG_HAVE_KPROBES=y
++CONFIG_HAVE_KRETPROBES=y
++CONFIG_HAVE_DMA_ATTRS=y
++CONFIG_USE_GENERIC_SMP_HELPERS=y
++CONFIG_GENERIC_SMP_IDLE_THREAD=y
++CONFIG_HAVE_DMA_API_DEBUG=y
++CONFIG_HAVE_ARCH_JUMP_LABEL=y
++CONFIG_ARCH_WANT_IPC_PARSE_VERSION=y
++CONFIG_HAVE_MOD_ARCH_SPECIFIC=y
++CONFIG_MODULES_USE_ELF_REL=y
++
++#
++# GCOV-based kernel profiling
++#
++CONFIG_HAVE_GENERIC_DMA_COHERENT=y
++CONFIG_SLABINFO=y
++CONFIG_RT_MUTEXES=y
++CONFIG_BASE_SMALL=0
++CONFIG_MODULES=y
++# CONFIG_MODULE_FORCE_LOAD is not set
++CONFIG_MODULE_UNLOAD=y
++# CONFIG_MODULE_FORCE_UNLOAD is not set
++CONFIG_MODVERSIONS=y
++CONFIG_MODULE_SRCVERSION_ALL=y
++# CONFIG_MODULE_SIG is not set
++CONFIG_STOP_MACHINE=y
++CONFIG_BLOCK=y
++CONFIG_LBDAF=y
++CONFIG_BLK_DEV_BSG=y
++CONFIG_BLK_DEV_BSGLIB=y
++# CONFIG_BLK_DEV_INTEGRITY is not set
++
++#
++# Partition Types
++#
++# CONFIG_PARTITION_ADVANCED is not set
++CONFIG_MSDOS_PARTITION=y
++
++#
++# IO Schedulers
++#
++CONFIG_IOSCHED_NOOP=y
++CONFIG_IOSCHED_DEADLINE=y
++CONFIG_IOSCHED_CFQ=y
++# CONFIG_DEFAULT_DEADLINE is not set
++CONFIG_DEFAULT_CFQ=y
++# CONFIG_DEFAULT_NOOP is not set
++CONFIG_DEFAULT_IOSCHED="cfq"
++CONFIG_PREEMPT_NOTIFIERS=y
++CONFIG_INLINE_SPIN_UNLOCK_IRQ=y
++CONFIG_INLINE_READ_UNLOCK=y
++CONFIG_INLINE_READ_UNLOCK_IRQ=y
++CONFIG_INLINE_WRITE_UNLOCK=y
++CONFIG_INLINE_WRITE_UNLOCK_IRQ=y
++CONFIG_MUTEX_SPIN_ON_OWNER=y
++# CONFIG_FREEZER is not set
++
++#
++# Bus options (PCI, PCMCIA, EISA, ISA, TC)
++#
++CONFIG_HW_HAS_PCI=y
++CONFIG_PCI=y
++CONFIG_PCI_DOMAINS=y
++# CONFIG_PCI_DEBUG is not set
++# CONFIG_PCI_REALLOC_ENABLE_AUTO is not set
++# CONFIG_PCI_STUB is not set
++# CONFIG_PCI_IOV is not set
++# CONFIG_PCI_PRI is not set
++# CONFIG_PCI_PASID is not set
++# CONFIG_PCIEPORTBUS is not set
++CONFIG_MMU=y
++CONFIG_I8253=y
++# CONFIG_PCCARD is not set
++# CONFIG_HOTPLUG_PCI is not set
++# CONFIG_RAPIDIO is not set
++
++#
++# Executable file formats
++#
++CONFIG_BINFMT_ELF=y
++CONFIG_ARCH_BINFMT_ELF_RANDOMIZE_PIE=y
++CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS=y
++# CONFIG_HAVE_AOUT is not set
++# CONFIG_BINFMT_MISC is not set
++CONFIG_COREDUMP=y
++CONFIG_TRAD_SIGNALS=y
++
++#
++# Power management options
++#
++# CONFIG_PM_RUNTIME is not set
++CONFIG_MIPS_EXTERNAL_TIMER=y
++CONFIG_NET=y
++
++#
++# Networking options
++#
++CONFIG_PACKET=y
++# CONFIG_PACKET_DIAG is not set
++CONFIG_UNIX=y
++# CONFIG_UNIX_DIAG is not set
++CONFIG_XFRM=y
++CONFIG_XFRM_ALGO=y
++CONFIG_XFRM_USER=m
++# CONFIG_XFRM_SUB_POLICY is not set
++CONFIG_XFRM_MIGRATE=y
++# CONFIG_XFRM_STATISTICS is not set
++CONFIG_XFRM_IPCOMP=m
++CONFIG_NET_KEY=y
++CONFIG_NET_KEY_MIGRATE=y
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_ADVANCED_ROUTER=y
++# CONFIG_IP_FIB_TRIE_STATS is not set
++CONFIG_IP_MULTIPLE_TABLES=y
++CONFIG_IP_ROUTE_MULTIPATH=y
++CONFIG_IP_ROUTE_VERBOSE=y
++CONFIG_IP_ROUTE_CLASSID=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_IP_PNP_BOOTP=y
++# CONFIG_IP_PNP_RARP is not set
++CONFIG_NET_IPIP=m
++# CONFIG_NET_IPGRE_DEMUX is not set
++CONFIG_IP_MROUTE=y
++# CONFIG_IP_MROUTE_MULTIPLE_TABLES is not set
++CONFIG_IP_PIMSM_V1=y
++CONFIG_IP_PIMSM_V2=y
++# CONFIG_ARPD is not set
++CONFIG_SYN_COOKIES=y
++# CONFIG_NET_IPVTI is not set
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=m
++CONFIG_INET_IPCOMP=m
++CONFIG_INET_XFRM_TUNNEL=m
++CONFIG_INET_TUNNEL=m
++CONFIG_INET_XFRM_MODE_TRANSPORT=m
++CONFIG_INET_XFRM_MODE_TUNNEL=m
++CONFIG_INET_XFRM_MODE_BEET=y
++CONFIG_INET_LRO=y
++CONFIG_INET_DIAG=y
++CONFIG_INET_TCP_DIAG=y
++# CONFIG_INET_UDP_DIAG is not set
++# CONFIG_TCP_CONG_ADVANCED is not set
++CONFIG_TCP_CONG_CUBIC=y
++CONFIG_DEFAULT_TCP_CONG="cubic"
++CONFIG_TCP_MD5SIG=y
++CONFIG_IPV6=m
++CONFIG_IPV6_PRIVACY=y
++CONFIG_IPV6_ROUTER_PREF=y
++CONFIG_IPV6_ROUTE_INFO=y
++CONFIG_IPV6_OPTIMISTIC_DAD=y
++CONFIG_INET6_AH=m
++CONFIG_INET6_ESP=m
++CONFIG_INET6_IPCOMP=m
++# CONFIG_IPV6_MIP6 is not set
++CONFIG_INET6_XFRM_TUNNEL=m
++CONFIG_INET6_TUNNEL=m
++CONFIG_INET6_XFRM_MODE_TRANSPORT=m
++CONFIG_INET6_XFRM_MODE_TUNNEL=m
++CONFIG_INET6_XFRM_MODE_BEET=m
++# CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION is not set
++CONFIG_IPV6_SIT=m
++# CONFIG_IPV6_SIT_6RD is not set
++CONFIG_IPV6_NDISC_NODETYPE=y
++CONFIG_IPV6_TUNNEL=m
++# CONFIG_IPV6_GRE is not set
++# CONFIG_IPV6_MULTIPLE_TABLES is not set
++CONFIG_IPV6_MROUTE=y
++# CONFIG_IPV6_MROUTE_MULTIPLE_TABLES is not set
++CONFIG_IPV6_PIMSM_V2=y
++CONFIG_NETWORK_SECMARK=y
++# CONFIG_NETWORK_PHY_TIMESTAMPING is not set
++CONFIG_NETFILTER=y
++# CONFIG_NETFILTER_DEBUG is not set
++CONFIG_NETFILTER_ADVANCED=y
++CONFIG_BRIDGE_NETFILTER=y
++
++#
++# Core Netfilter Configuration
++#
++CONFIG_NETFILTER_NETLINK=m
++# CONFIG_NETFILTER_NETLINK_ACCT is not set
++CONFIG_NETFILTER_NETLINK_QUEUE=m
++CONFIG_NETFILTER_NETLINK_LOG=m
++CONFIG_NF_CONNTRACK=m
++CONFIG_NF_CONNTRACK_MARK=y
++CONFIG_NF_CONNTRACK_SECMARK=y
++CONFIG_NF_CONNTRACK_PROCFS=y
++CONFIG_NF_CONNTRACK_EVENTS=y
++# CONFIG_NF_CONNTRACK_TIMEOUT is not set
++# CONFIG_NF_CONNTRACK_TIMESTAMP is not set
++CONFIG_NF_CT_PROTO_DCCP=m
++CONFIG_NF_CT_PROTO_GRE=m
++CONFIG_NF_CT_PROTO_SCTP=m
++CONFIG_NF_CT_PROTO_UDPLITE=m
++CONFIG_NF_CONNTRACK_AMANDA=m
++CONFIG_NF_CONNTRACK_FTP=m
++CONFIG_NF_CONNTRACK_H323=m
++CONFIG_NF_CONNTRACK_IRC=m
++# CONFIG_NF_CONNTRACK_NETBIOS_NS is not set
++# CONFIG_NF_CONNTRACK_SNMP is not set
++CONFIG_NF_CONNTRACK_PPTP=m
++CONFIG_NF_CONNTRACK_SANE=m
++CONFIG_NF_CONNTRACK_SIP=m
++CONFIG_NF_CONNTRACK_TFTP=m
++CONFIG_NF_CT_NETLINK=m
++# CONFIG_NF_CT_NETLINK_TIMEOUT is not set
++# CONFIG_NETFILTER_NETLINK_QUEUE_CT is not set
++CONFIG_NETFILTER_TPROXY=m
++CONFIG_NETFILTER_XTABLES=m
++
++#
++# Xtables combined modules
++#
++CONFIG_NETFILTER_XT_MARK=m
++CONFIG_NETFILTER_XT_CONNMARK=m
++
++#
++# Xtables targets
++#
++# CONFIG_NETFILTER_XT_TARGET_CHECKSUM is not set
++CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
++CONFIG_NETFILTER_XT_TARGET_CONNMARK=m
++# CONFIG_NETFILTER_XT_TARGET_CONNSECMARK is not set
++# CONFIG_NETFILTER_XT_TARGET_CT is not set
++# CONFIG_NETFILTER_XT_TARGET_DSCP is not set
++CONFIG_NETFILTER_XT_TARGET_HL=m
++# CONFIG_NETFILTER_XT_TARGET_HMARK is not set
++# CONFIG_NETFILTER_XT_TARGET_IDLETIMER is not set
++# CONFIG_NETFILTER_XT_TARGET_LOG is not set
++CONFIG_NETFILTER_XT_TARGET_MARK=m
++CONFIG_NETFILTER_XT_TARGET_NFLOG=m
++CONFIG_NETFILTER_XT_TARGET_NFQUEUE=m
++CONFIG_NETFILTER_XT_TARGET_RATEEST=m
++# CONFIG_NETFILTER_XT_TARGET_TEE is not set
++CONFIG_NETFILTER_XT_TARGET_TPROXY=m
++CONFIG_NETFILTER_XT_TARGET_TRACE=m
++CONFIG_NETFILTER_XT_TARGET_SECMARK=m
++CONFIG_NETFILTER_XT_TARGET_TCPMSS=m
++CONFIG_NETFILTER_XT_TARGET_TCPOPTSTRIP=m
++
++#
++# Xtables matches
++#
++# CONFIG_NETFILTER_XT_MATCH_ADDRTYPE is not set
++# CONFIG_NETFILTER_XT_MATCH_CLUSTER is not set
++CONFIG_NETFILTER_XT_MATCH_COMMENT=m
++CONFIG_NETFILTER_XT_MATCH_CONNBYTES=m
++CONFIG_NETFILTER_XT_MATCH_CONNLIMIT=m
++CONFIG_NETFILTER_XT_MATCH_CONNMARK=m
++CONFIG_NETFILTER_XT_MATCH_CONNTRACK=m
++# CONFIG_NETFILTER_XT_MATCH_CPU is not set
++CONFIG_NETFILTER_XT_MATCH_DCCP=m
++# CONFIG_NETFILTER_XT_MATCH_DEVGROUP is not set
++# CONFIG_NETFILTER_XT_MATCH_DSCP is not set
++CONFIG_NETFILTER_XT_MATCH_ECN=m
++CONFIG_NETFILTER_XT_MATCH_ESP=m
++CONFIG_NETFILTER_XT_MATCH_HASHLIMIT=m
++CONFIG_NETFILTER_XT_MATCH_HELPER=m
++CONFIG_NETFILTER_XT_MATCH_HL=m
++CONFIG_NETFILTER_XT_MATCH_IPRANGE=m
++# CONFIG_NETFILTER_XT_MATCH_IPVS is not set
++CONFIG_NETFILTER_XT_MATCH_LENGTH=m
++CONFIG_NETFILTER_XT_MATCH_LIMIT=m
++CONFIG_NETFILTER_XT_MATCH_MAC=m
++CONFIG_NETFILTER_XT_MATCH_MARK=m
++CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
++# CONFIG_NETFILTER_XT_MATCH_NFACCT is not set
++# CONFIG_NETFILTER_XT_MATCH_OSF is not set
++CONFIG_NETFILTER_XT_MATCH_OWNER=m
++CONFIG_NETFILTER_XT_MATCH_POLICY=m
++# CONFIG_NETFILTER_XT_MATCH_PHYSDEV is not set
++CONFIG_NETFILTER_XT_MATCH_PKTTYPE=m
++CONFIG_NETFILTER_XT_MATCH_QUOTA=m
++CONFIG_NETFILTER_XT_MATCH_RATEEST=m
++CONFIG_NETFILTER_XT_MATCH_REALM=m
++CONFIG_NETFILTER_XT_MATCH_RECENT=m
++CONFIG_NETFILTER_XT_MATCH_SCTP=m
++CONFIG_NETFILTER_XT_MATCH_SOCKET=m
++CONFIG_NETFILTER_XT_MATCH_STATE=m
++CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
++CONFIG_NETFILTER_XT_MATCH_STRING=m
++CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
++CONFIG_NETFILTER_XT_MATCH_TIME=m
++CONFIG_NETFILTER_XT_MATCH_U32=m
++# CONFIG_IP_SET is not set
++CONFIG_IP_VS=m
++CONFIG_IP_VS_IPV6=y
++# CONFIG_IP_VS_DEBUG is not set
++CONFIG_IP_VS_TAB_BITS=12
++
++#
++# IPVS transport protocol load balancing support
++#
++CONFIG_IP_VS_PROTO_TCP=y
++CONFIG_IP_VS_PROTO_UDP=y
++CONFIG_IP_VS_PROTO_AH_ESP=y
++CONFIG_IP_VS_PROTO_ESP=y
++CONFIG_IP_VS_PROTO_AH=y
++# CONFIG_IP_VS_PROTO_SCTP is not set
++
++#
++# IPVS scheduler
++#
++CONFIG_IP_VS_RR=m
++CONFIG_IP_VS_WRR=m
++CONFIG_IP_VS_LC=m
++CONFIG_IP_VS_WLC=m
++CONFIG_IP_VS_LBLC=m
++CONFIG_IP_VS_LBLCR=m
++CONFIG_IP_VS_DH=m
++CONFIG_IP_VS_SH=m
++CONFIG_IP_VS_SED=m
++CONFIG_IP_VS_NQ=m
++
++#
++# IPVS SH scheduler
++#
++CONFIG_IP_VS_SH_TAB_BITS=8
++
++#
++# IPVS application helper
++#
++# CONFIG_IP_VS_NFCT is not set
++# CONFIG_IP_VS_PE_SIP is not set
++
++#
++# IP: Netfilter Configuration
++#
++CONFIG_NF_DEFRAG_IPV4=m
++CONFIG_NF_CONNTRACK_IPV4=m
++CONFIG_NF_CONNTRACK_PROC_COMPAT=y
++CONFIG_IP_NF_QUEUE=m
++CONFIG_IP_NF_IPTABLES=m
++CONFIG_IP_NF_MATCH_AH=m
++CONFIG_IP_NF_MATCH_ECN=m
++# CONFIG_IP_NF_MATCH_RPFILTER is not set
++CONFIG_IP_NF_MATCH_TTL=m
++CONFIG_IP_NF_FILTER=m
++CONFIG_IP_NF_TARGET_REJECT=m
++CONFIG_IP_NF_TARGET_ULOG=m
++# CONFIG_NF_NAT_IPV4 is not set
++CONFIG_IP_NF_MANGLE=m
++CONFIG_IP_NF_TARGET_CLUSTERIP=m
++CONFIG_IP_NF_TARGET_ECN=m
++CONFIG_IP_NF_TARGET_TTL=m
++CONFIG_IP_NF_RAW=m
++CONFIG_IP_NF_ARPTABLES=m
++CONFIG_IP_NF_ARPFILTER=m
++CONFIG_IP_NF_ARP_MANGLE=m
++
++#
++# IPv6: Netfilter Configuration
++#
++CONFIG_NF_DEFRAG_IPV6=m
++CONFIG_NF_CONNTRACK_IPV6=m
++CONFIG_IP6_NF_IPTABLES=m
++CONFIG_IP6_NF_MATCH_AH=m
++CONFIG_IP6_NF_MATCH_EUI64=m
++CONFIG_IP6_NF_MATCH_FRAG=m
++CONFIG_IP6_NF_MATCH_OPTS=m
++CONFIG_IP6_NF_MATCH_HL=m
++CONFIG_IP6_NF_MATCH_IPV6HEADER=m
++CONFIG_IP6_NF_MATCH_MH=m
++# CONFIG_IP6_NF_MATCH_RPFILTER is not set
++CONFIG_IP6_NF_MATCH_RT=m
++CONFIG_IP6_NF_TARGET_HL=m
++CONFIG_IP6_NF_FILTER=m
++CONFIG_IP6_NF_TARGET_REJECT=m
++CONFIG_IP6_NF_MANGLE=m
++CONFIG_IP6_NF_RAW=m
++# CONFIG_NF_NAT_IPV6 is not set
++CONFIG_BRIDGE_NF_EBTABLES=m
++CONFIG_BRIDGE_EBT_BROUTE=m
++CONFIG_BRIDGE_EBT_T_FILTER=m
++CONFIG_BRIDGE_EBT_T_NAT=m
++CONFIG_BRIDGE_EBT_802_3=m
++CONFIG_BRIDGE_EBT_AMONG=m
++CONFIG_BRIDGE_EBT_ARP=m
++CONFIG_BRIDGE_EBT_IP=m
++CONFIG_BRIDGE_EBT_IP6=m
++CONFIG_BRIDGE_EBT_LIMIT=m
++CONFIG_BRIDGE_EBT_MARK=m
++CONFIG_BRIDGE_EBT_PKTTYPE=m
++CONFIG_BRIDGE_EBT_STP=m
++CONFIG_BRIDGE_EBT_VLAN=m
++CONFIG_BRIDGE_EBT_ARPREPLY=m
++CONFIG_BRIDGE_EBT_DNAT=m
++CONFIG_BRIDGE_EBT_MARK_T=m
++CONFIG_BRIDGE_EBT_REDIRECT=m
++CONFIG_BRIDGE_EBT_SNAT=m
++CONFIG_BRIDGE_EBT_LOG=m
++CONFIG_BRIDGE_EBT_ULOG=m
++CONFIG_BRIDGE_EBT_NFLOG=m
++# CONFIG_IP_DCCP is not set
++CONFIG_IP_SCTP=m
++# CONFIG_SCTP_DBG_MSG is not set
++# CONFIG_SCTP_DBG_OBJCNT is not set
++# CONFIG_SCTP_HMAC_NONE is not set
++# CONFIG_SCTP_HMAC_SHA1 is not set
++CONFIG_SCTP_HMAC_MD5=y
++# CONFIG_RDS is not set
++# CONFIG_TIPC is not set
++# CONFIG_ATM is not set
++# CONFIG_L2TP is not set
++CONFIG_STP=m
++CONFIG_GARP=m
++CONFIG_BRIDGE=m
++CONFIG_BRIDGE_IGMP_SNOOPING=y
++# CONFIG_NET_DSA is not set
++CONFIG_VLAN_8021Q=m
++CONFIG_VLAN_8021Q_GVRP=y
++# CONFIG_DECNET is not set
++CONFIG_LLC=m
++# CONFIG_LLC2 is not set
++# CONFIG_IPX is not set
++CONFIG_ATALK=m
++CONFIG_DEV_APPLETALK=m
++CONFIG_IPDDP=m
++CONFIG_IPDDP_ENCAP=y
++CONFIG_IPDDP_DECAP=y
++# CONFIG_X25 is not set
++# CONFIG_LAPB is not set
++# CONFIG_WAN_ROUTER is not set
++CONFIG_PHONET=m
++# CONFIG_IEEE802154 is not set
++CONFIG_NET_SCHED=y
++
++#
++# Queueing/Scheduling
++#
++CONFIG_NET_SCH_CBQ=m
++CONFIG_NET_SCH_HTB=m
++CONFIG_NET_SCH_HFSC=m
++CONFIG_NET_SCH_PRIO=m
++# CONFIG_NET_SCH_MULTIQ is not set
++CONFIG_NET_SCH_RED=m
++# CONFIG_NET_SCH_SFB is not set
++CONFIG_NET_SCH_SFQ=m
++CONFIG_NET_SCH_TEQL=m
++CONFIG_NET_SCH_TBF=m
++CONFIG_NET_SCH_GRED=m
++CONFIG_NET_SCH_DSMARK=m
++CONFIG_NET_SCH_NETEM=m
++# CONFIG_NET_SCH_DRR is not set
++# CONFIG_NET_SCH_MQPRIO is not set
++# CONFIG_NET_SCH_CHOKE is not set
++# CONFIG_NET_SCH_QFQ is not set
++# CONFIG_NET_SCH_CODEL is not set
++# CONFIG_NET_SCH_FQ_CODEL is not set
++CONFIG_NET_SCH_INGRESS=m
++# CONFIG_NET_SCH_PLUG is not set
++
++#
++# Classification
++#
++CONFIG_NET_CLS=y
++CONFIG_NET_CLS_BASIC=m
++CONFIG_NET_CLS_TCINDEX=m
++CONFIG_NET_CLS_ROUTE4=m
++CONFIG_NET_CLS_FW=m
++CONFIG_NET_CLS_U32=m
++# CONFIG_CLS_U32_PERF is not set
++# CONFIG_CLS_U32_MARK is not set
++CONFIG_NET_CLS_RSVP=m
++CONFIG_NET_CLS_RSVP6=m
++CONFIG_NET_CLS_FLOW=m
++# CONFIG_NET_EMATCH is not set
++CONFIG_NET_CLS_ACT=y
++CONFIG_NET_ACT_POLICE=y
++CONFIG_NET_ACT_GACT=m
++CONFIG_GACT_PROB=y
++CONFIG_NET_ACT_MIRRED=m
++CONFIG_NET_ACT_IPT=m
++CONFIG_NET_ACT_NAT=m
++CONFIG_NET_ACT_PEDIT=m
++CONFIG_NET_ACT_SIMP=m
++CONFIG_NET_ACT_SKBEDIT=m
++# CONFIG_NET_ACT_CSUM is not set
++CONFIG_NET_CLS_IND=y
++CONFIG_NET_SCH_FIFO=y
++# CONFIG_DCB is not set
++# CONFIG_BATMAN_ADV is not set
++# CONFIG_OPENVSWITCH is not set
++CONFIG_RPS=y
++CONFIG_RFS_ACCEL=y
++CONFIG_XPS=y
++CONFIG_BQL=y
++
++#
++# Network testing
++#
++# CONFIG_NET_PKTGEN is not set
++# CONFIG_HAMRADIO is not set
++# CONFIG_CAN is not set
++# CONFIG_IRDA is not set
++# CONFIG_BT is not set
++# CONFIG_AF_RXRPC is not set
++CONFIG_FIB_RULES=y
++CONFIG_WIRELESS=y
++CONFIG_WIRELESS_EXT=y
++CONFIG_WEXT_CORE=y
++CONFIG_WEXT_PROC=y
++CONFIG_WEXT_SPY=y
++CONFIG_WEXT_PRIV=y
++CONFIG_CFG80211=m
++# CONFIG_NL80211_TESTMODE is not set
++# CONFIG_CFG80211_DEVELOPER_WARNINGS is not set
++# CONFIG_CFG80211_REG_DEBUG is not set
++# CONFIG_CFG80211_CERTIFICATION_ONUS is not set
++CONFIG_CFG80211_DEFAULT_PS=y
++# CONFIG_CFG80211_INTERNAL_REGDB is not set
++# CONFIG_CFG80211_WEXT is not set
++CONFIG_LIB80211=m
++CONFIG_LIB80211_CRYPT_WEP=m
++CONFIG_LIB80211_CRYPT_CCMP=m
++CONFIG_LIB80211_CRYPT_TKIP=m
++# CONFIG_LIB80211_DEBUG is not set
++CONFIG_MAC80211=m
++CONFIG_MAC80211_HAS_RC=y
++CONFIG_MAC80211_RC_PID=y
++CONFIG_MAC80211_RC_MINSTREL=y
++CONFIG_MAC80211_RC_MINSTREL_HT=y
++CONFIG_MAC80211_RC_DEFAULT_PID=y
++# CONFIG_MAC80211_RC_DEFAULT_MINSTREL is not set
++CONFIG_MAC80211_RC_DEFAULT="pid"
++CONFIG_MAC80211_MESH=y
++# CONFIG_MAC80211_MESSAGE_TRACING is not set
++# CONFIG_MAC80211_DEBUG_MENU is not set
++# CONFIG_WIMAX is not set
++CONFIG_RFKILL=m
++# CONFIG_RFKILL_INPUT is not set
++# CONFIG_NET_9P is not set
++# CONFIG_CAIF is not set
++# CONFIG_CEPH_LIB is not set
++# CONFIG_NFC is not set
++
++#
++# Device Drivers
++#
++
++#
++# Generic Driver Options
++#
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++# CONFIG_DEVTMPFS is not set
++CONFIG_STANDALONE=y
++CONFIG_PREVENT_FIRMWARE_BUILD=y
++CONFIG_FW_LOADER=y
++CONFIG_FIRMWARE_IN_KERNEL=y
++CONFIG_EXTRA_FIRMWARE=""
++# CONFIG_DEBUG_DRIVER is not set
++# CONFIG_DEBUG_DEVRES is not set
++# CONFIG_SYS_HYPERVISOR is not set
++# CONFIG_GENERIC_CPU_DEVICES is not set
++# CONFIG_DMA_SHARED_BUFFER is not set
++
++#
++# Bus devices
++#
++# CONFIG_OMAP_OCP2SCP is not set
++CONFIG_CONNECTOR=m
++CONFIG_MTD=y
++# CONFIG_MTD_TESTS is not set
++# CONFIG_MTD_REDBOOT_PARTS is not set
++# CONFIG_MTD_CMDLINE_PARTS is not set
++# CONFIG_MTD_AR7_PARTS is not set
++
++#
++# User Modules And Translation Layers
++#
++CONFIG_MTD_CHAR=y
++CONFIG_MTD_BLKDEVS=y
++CONFIG_MTD_BLOCK=y
++# CONFIG_FTL is not set
++# CONFIG_NFTL is not set
++# CONFIG_INFTL is not set
++# CONFIG_RFD_FTL is not set
++# CONFIG_SSFDC is not set
++# CONFIG_SM_FTL is not set
++CONFIG_MTD_OOPS=m
++# CONFIG_MTD_SWAP is not set
++
++#
++# RAM/ROM/Flash chip drivers
++#
++CONFIG_MTD_CFI=y
++# CONFIG_MTD_JEDECPROBE is not set
++CONFIG_MTD_GEN_PROBE=y
++# CONFIG_MTD_CFI_ADV_OPTIONS is not set
++CONFIG_MTD_MAP_BANK_WIDTH_1=y
++CONFIG_MTD_MAP_BANK_WIDTH_2=y
++CONFIG_MTD_MAP_BANK_WIDTH_4=y
++# CONFIG_MTD_MAP_BANK_WIDTH_8 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_16 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_32 is not set
++CONFIG_MTD_CFI_I1=y
++CONFIG_MTD_CFI_I2=y
++# CONFIG_MTD_CFI_I4 is not set
++# CONFIG_MTD_CFI_I8 is not set
++CONFIG_MTD_CFI_INTELEXT=y
++CONFIG_MTD_CFI_AMDSTD=y
++CONFIG_MTD_CFI_STAA=y
++CONFIG_MTD_CFI_UTIL=y
++# CONFIG_MTD_RAM is not set
++# CONFIG_MTD_ROM is not set
++# CONFIG_MTD_ABSENT is not set
++
++#
++# Mapping drivers for chip access
++#
++# CONFIG_MTD_COMPLEX_MAPPINGS is not set
++CONFIG_MTD_PHYSMAP=y
++# CONFIG_MTD_PHYSMAP_COMPAT is not set
++# CONFIG_MTD_INTEL_VR_NOR is not set
++# CONFIG_MTD_PLATRAM is not set
++
++#
++# Self-contained MTD device drivers
++#
++# CONFIG_MTD_PMC551 is not set
++# CONFIG_MTD_SLRAM is not set
++# CONFIG_MTD_PHRAM is not set
++# CONFIG_MTD_MTDRAM is not set
++# CONFIG_MTD_BLOCK2MTD is not set
++
++#
++# Disk-On-Chip Device Drivers
++#
++# CONFIG_MTD_DOCG3 is not set
++# CONFIG_MTD_NAND is not set
++# CONFIG_MTD_ONENAND is not set
++
++#
++# LPDDR flash memory drivers
++#
++# CONFIG_MTD_LPDDR is not set
++CONFIG_MTD_UBI=m
++CONFIG_MTD_UBI_WL_THRESHOLD=4096
++CONFIG_MTD_UBI_BEB_LIMIT=20
++# CONFIG_MTD_UBI_FASTMAP is not set
++CONFIG_MTD_UBI_GLUEBI=m
++# CONFIG_PARPORT is not set
++CONFIG_BLK_DEV=y
++CONFIG_BLK_DEV_FD=m
++# CONFIG_BLK_DEV_PCIESSD_MTIP32XX is not set
++# CONFIG_BLK_CPQ_DA is not set
++# CONFIG_BLK_CPQ_CISS_DA is not set
++# CONFIG_BLK_DEV_DAC960 is not set
++CONFIG_BLK_DEV_UMEM=m
++# CONFIG_BLK_DEV_COW_COMMON is not set
++CONFIG_BLK_DEV_LOOP=m
++CONFIG_BLK_DEV_LOOP_MIN_COUNT=8
++CONFIG_BLK_DEV_CRYPTOLOOP=m
++# CONFIG_BLK_DEV_DRBD is not set
++CONFIG_BLK_DEV_NBD=m
++# CONFIG_BLK_DEV_NVME is not set
++# CONFIG_BLK_DEV_SX8 is not set
++CONFIG_BLK_DEV_RAM=y
++CONFIG_BLK_DEV_RAM_COUNT=16
++CONFIG_BLK_DEV_RAM_SIZE=4096
++# CONFIG_BLK_DEV_XIP is not set
++CONFIG_CDROM_PKTCDVD=m
++CONFIG_CDROM_PKTCDVD_BUFFERS=8
++# CONFIG_CDROM_PKTCDVD_WCACHE is not set
++CONFIG_ATA_OVER_ETH=m
++# CONFIG_BLK_DEV_HD is not set
++# CONFIG_BLK_DEV_RBD is not set
++
++#
++# Misc devices
++#
++# CONFIG_SENSORS_LIS3LV02D is not set
++# CONFIG_PHANTOM is not set
++# CONFIG_INTEL_MID_PTI is not set
++# CONFIG_SGI_IOC4 is not set
++# CONFIG_TIFM_CORE is not set
++# CONFIG_ENCLOSURE_SERVICES is not set
++# CONFIG_HP_ILO is not set
++# CONFIG_PCH_PHUB is not set
++# CONFIG_C2PORT is not set
++
++#
++# EEPROM support
++#
++# CONFIG_EEPROM_93CX6 is not set
++# CONFIG_CB710_CORE is not set
++
++#
++# Texas Instruments shared transport line discipline
++#
++
++#
++# Altera FPGA firmware download module
++#
++CONFIG_HAVE_IDE=y
++CONFIG_IDE=y
++
++#
++# Please see Documentation/ide/ide.txt for help/info on IDE drives
++#
++CONFIG_IDE_XFER_MODE=y
++CONFIG_IDE_ATAPI=y
++# CONFIG_BLK_DEV_IDE_SATA is not set
++CONFIG_IDE_GD=y
++CONFIG_IDE_GD_ATA=y
++# CONFIG_IDE_GD_ATAPI is not set
++CONFIG_BLK_DEV_IDECD=y
++CONFIG_BLK_DEV_IDECD_VERBOSE_ERRORS=y
++# CONFIG_BLK_DEV_IDETAPE is not set
++# CONFIG_IDE_TASK_IOCTL is not set
++CONFIG_IDE_PROC_FS=y
++
++#
++# IDE chipset support/bugfixes
++#
++CONFIG_IDE_GENERIC=y
++# CONFIG_BLK_DEV_PLATFORM is not set
++CONFIG_BLK_DEV_IDEDMA_SFF=y
++
++#
++# PCI IDE chipsets support
++#
++CONFIG_BLK_DEV_IDEPCI=y
++CONFIG_IDEPCI_PCIBUS_ORDER=y
++# CONFIG_BLK_DEV_OFFBOARD is not set
++CONFIG_BLK_DEV_GENERIC=y
++# CONFIG_BLK_DEV_OPTI621 is not set
++CONFIG_BLK_DEV_IDEDMA_PCI=y
++# CONFIG_BLK_DEV_AEC62XX is not set
++# CONFIG_BLK_DEV_ALI15X3 is not set
++# CONFIG_BLK_DEV_AMD74XX is not set
++# CONFIG_BLK_DEV_CMD64X is not set
++# CONFIG_BLK_DEV_TRIFLEX is not set
++# CONFIG_BLK_DEV_CS5520 is not set
++# CONFIG_BLK_DEV_CS5530 is not set
++# CONFIG_BLK_DEV_HPT366 is not set
++# CONFIG_BLK_DEV_JMICRON is not set
++# CONFIG_BLK_DEV_SC1200 is not set
++CONFIG_BLK_DEV_PIIX=y
++# CONFIG_BLK_DEV_IT8172 is not set
++CONFIG_BLK_DEV_IT8213=m
++# CONFIG_BLK_DEV_IT821X is not set
++# CONFIG_BLK_DEV_NS87415 is not set
++# CONFIG_BLK_DEV_PDC202XX_OLD is not set
++# CONFIG_BLK_DEV_PDC202XX_NEW is not set
++# CONFIG_BLK_DEV_SVWKS is not set
++# CONFIG_BLK_DEV_SIIMAGE is not set
++# CONFIG_BLK_DEV_SLC90E66 is not set
++# CONFIG_BLK_DEV_TRM290 is not set
++# CONFIG_BLK_DEV_VIA82CXXX is not set
++CONFIG_BLK_DEV_TC86C001=m
++CONFIG_BLK_DEV_IDEDMA=y
++
++#
++# SCSI device support
++#
++CONFIG_SCSI_MOD=m
++CONFIG_RAID_ATTRS=m
++CONFIG_SCSI=m
++CONFIG_SCSI_DMA=y
++CONFIG_SCSI_TGT=m
++CONFIG_SCSI_NETLINK=y
++CONFIG_SCSI_PROC_FS=y
++
++#
++# SCSI support type (disk, tape, CD-ROM)
++#
++CONFIG_BLK_DEV_SD=m
++CONFIG_CHR_DEV_ST=m
++CONFIG_CHR_DEV_OSST=m
++CONFIG_BLK_DEV_SR=m
++CONFIG_BLK_DEV_SR_VENDOR=y
++CONFIG_CHR_DEV_SG=m
++# CONFIG_CHR_DEV_SCH is not set
++CONFIG_SCSI_MULTI_LUN=y
++CONFIG_SCSI_CONSTANTS=y
++CONFIG_SCSI_LOGGING=y
++CONFIG_SCSI_SCAN_ASYNC=y
++
++#
++# SCSI Transports
++#
++CONFIG_SCSI_SPI_ATTRS=m
++CONFIG_SCSI_FC_ATTRS=m
++# CONFIG_SCSI_FC_TGT_ATTRS is not set
++CONFIG_SCSI_ISCSI_ATTRS=m
++# CONFIG_SCSI_SAS_ATTRS is not set
++# CONFIG_SCSI_SAS_LIBSAS is not set
++# CONFIG_SCSI_SRP_ATTRS is not set
++CONFIG_SCSI_LOWLEVEL=y
++CONFIG_ISCSI_TCP=m
++# CONFIG_ISCSI_BOOT_SYSFS is not set
++# CONFIG_SCSI_CXGB3_ISCSI is not set
++# CONFIG_SCSI_CXGB4_ISCSI is not set
++# CONFIG_SCSI_BNX2_ISCSI is not set
++# CONFIG_SCSI_BNX2X_FCOE is not set
++# CONFIG_BE2ISCSI is not set
++CONFIG_BLK_DEV_3W_XXXX_RAID=m
++# CONFIG_SCSI_HPSA is not set
++CONFIG_SCSI_3W_9XXX=m
++# CONFIG_SCSI_3W_SAS is not set
++CONFIG_SCSI_ACARD=m
++CONFIG_SCSI_AACRAID=m
++CONFIG_SCSI_AIC7XXX=m
++CONFIG_AIC7XXX_CMDS_PER_DEVICE=32
++CONFIG_AIC7XXX_RESET_DELAY_MS=15000
++# CONFIG_AIC7XXX_DEBUG_ENABLE is not set
++CONFIG_AIC7XXX_DEBUG_MASK=0
++CONFIG_AIC7XXX_REG_PRETTY_PRINT=y
++# CONFIG_SCSI_AIC7XXX_OLD is not set
++# CONFIG_SCSI_AIC79XX is not set
++# CONFIG_SCSI_AIC94XX is not set
++# CONFIG_SCSI_MVSAS is not set
++# CONFIG_SCSI_MVUMI is not set
++# CONFIG_SCSI_DPT_I2O is not set
++# CONFIG_SCSI_ADVANSYS is not set
++# CONFIG_SCSI_ARCMSR is not set
++# CONFIG_MEGARAID_NEWGEN is not set
++# CONFIG_MEGARAID_LEGACY is not set
++# CONFIG_MEGARAID_SAS is not set
++# CONFIG_SCSI_MPT2SAS is not set
++# CONFIG_SCSI_UFSHCD is not set
++# CONFIG_SCSI_HPTIOP is not set
++# CONFIG_SCSI_BUSLOGIC is not set
++# CONFIG_LIBFC is not set
++# CONFIG_LIBFCOE is not set
++# CONFIG_FCOE is not set
++# CONFIG_SCSI_DMX3191D is not set
++# CONFIG_SCSI_EATA is not set
++# CONFIG_SCSI_FUTURE_DOMAIN is not set
++# CONFIG_SCSI_GDTH is not set
++# CONFIG_SCSI_IPS is not set
++# CONFIG_SCSI_INITIO is not set
++# CONFIG_SCSI_INIA100 is not set
++# CONFIG_SCSI_STEX is not set
++# CONFIG_SCSI_SYM53C8XX_2 is not set
++# CONFIG_SCSI_QLOGIC_1280 is not set
++# CONFIG_SCSI_QLA_FC is not set
++# CONFIG_SCSI_QLA_ISCSI is not set
++# CONFIG_SCSI_LPFC is not set
++# CONFIG_SCSI_DC395x is not set
++# CONFIG_SCSI_DC390T is not set
++# CONFIG_SCSI_NSP32 is not set
++# CONFIG_SCSI_DEBUG is not set
++# CONFIG_SCSI_PMCRAID is not set
++# CONFIG_SCSI_PM8001 is not set
++# CONFIG_SCSI_SRP is not set
++# CONFIG_SCSI_BFA_FC is not set
++# CONFIG_SCSI_DH is not set
++# CONFIG_SCSI_OSD_INITIATOR is not set
++# CONFIG_ATA is not set
++CONFIG_MD=y
++CONFIG_BLK_DEV_MD=m
++CONFIG_MD_LINEAR=m
++CONFIG_MD_RAID0=m
++CONFIG_MD_RAID1=m
++CONFIG_MD_RAID10=m
++CONFIG_MD_RAID456=m
++# CONFIG_MULTICORE_RAID456 is not set
++CONFIG_MD_MULTIPATH=m
++CONFIG_MD_FAULTY=m
++CONFIG_BLK_DEV_DM=m
++# CONFIG_DM_DEBUG is not set
++CONFIG_DM_CRYPT=m
++CONFIG_DM_SNAPSHOT=m
++# CONFIG_DM_THIN_PROVISIONING is not set
++CONFIG_DM_MIRROR=m
++# CONFIG_DM_RAID is not set
++# CONFIG_DM_LOG_USERSPACE is not set
++CONFIG_DM_ZERO=m
++CONFIG_DM_MULTIPATH=m
++# CONFIG_DM_MULTIPATH_QL is not set
++# CONFIG_DM_MULTIPATH_ST is not set
++# CONFIG_DM_DELAY is not set
++# CONFIG_DM_UEVENT is not set
++# CONFIG_DM_FLAKEY is not set
++# CONFIG_DM_VERITY is not set
++# CONFIG_TARGET_CORE is not set
++# CONFIG_FUSION is not set
++
++#
++# IEEE 1394 (FireWire) support
++#
++# CONFIG_FIREWIRE is not set
++# CONFIG_FIREWIRE_NOSY is not set
++# CONFIG_I2O is not set
++CONFIG_NETDEVICES=y
++CONFIG_NET_CORE=y
++CONFIG_BONDING=m
++CONFIG_DUMMY=m
++CONFIG_EQUALIZER=m
++# CONFIG_NET_FC is not set
++CONFIG_MII=y
++CONFIG_IFB=m
++# CONFIG_NET_TEAM is not set
++CONFIG_MACVLAN=m
++# CONFIG_MACVTAP is not set
++# CONFIG_VXLAN is not set
++# CONFIG_NETCONSOLE is not set
++# CONFIG_NETPOLL is not set
++# CONFIG_NET_POLL_CONTROLLER is not set
++CONFIG_TUN=m
++CONFIG_VETH=m
++# CONFIG_ARCNET is not set
++
++#
++# CAIF transport drivers
++#
++CONFIG_ETHERNET=y
++CONFIG_MDIO=m
++CONFIG_NET_VENDOR_3COM=y
++# CONFIG_VORTEX is not set
++# CONFIG_TYPHOON is not set
++CONFIG_NET_VENDOR_ADAPTEC=y
++# CONFIG_ADAPTEC_STARFIRE is not set
++CONFIG_NET_VENDOR_ALTEON=y
++# CONFIG_ACENIC is not set
++CONFIG_NET_VENDOR_AMD=y
++# CONFIG_AMD8111_ETH is not set
++CONFIG_PCNET32=y
++CONFIG_NET_VENDOR_ATHEROS=y
++# CONFIG_ATL2 is not set
++# CONFIG_ATL1 is not set
++# CONFIG_ATL1E is not set
++# CONFIG_ATL1C is not set
++CONFIG_NET_VENDOR_BROADCOM=y
++# CONFIG_B44 is not set
++# CONFIG_BNX2 is not set
++# CONFIG_CNIC is not set
++# CONFIG_TIGON3 is not set
++# CONFIG_BNX2X is not set
++CONFIG_NET_VENDOR_BROCADE=y
++# CONFIG_BNA is not set
++# CONFIG_NET_CALXEDA_XGMAC is not set
++CONFIG_NET_VENDOR_CHELSIO=y
++# CONFIG_CHELSIO_T1 is not set
++CONFIG_CHELSIO_T3=m
++# CONFIG_CHELSIO_T4 is not set
++# CONFIG_CHELSIO_T4VF is not set
++CONFIG_NET_VENDOR_CISCO=y
++# CONFIG_ENIC is not set
++# CONFIG_DM9000 is not set
++# CONFIG_DNET is not set
++CONFIG_NET_VENDOR_DEC=y
++# CONFIG_NET_TULIP is not set
++CONFIG_NET_VENDOR_DLINK=y
++# CONFIG_DL2K is not set
++# CONFIG_SUNDANCE is not set
++CONFIG_NET_VENDOR_EMULEX=y
++# CONFIG_BE2NET is not set
++CONFIG_NET_VENDOR_EXAR=y
++# CONFIG_S2IO is not set
++# CONFIG_VXGE is not set
++CONFIG_NET_VENDOR_HP=y
++# CONFIG_HP100 is not set
++CONFIG_NET_VENDOR_INTEL=y
++# CONFIG_E100 is not set
++# CONFIG_E1000 is not set
++# CONFIG_E1000E is not set
++# CONFIG_IGB is not set
++# CONFIG_IGBVF is not set
++# CONFIG_IXGB is not set
++# CONFIG_IXGBE is not set
++CONFIG_NET_VENDOR_I825XX=y
++# CONFIG_IP1000 is not set
++# CONFIG_JME is not set
++CONFIG_NET_VENDOR_MARVELL=y
++# CONFIG_SKGE is not set
++# CONFIG_SKY2 is not set
++CONFIG_NET_VENDOR_MELLANOX=y
++# CONFIG_MLX4_EN is not set
++# CONFIG_MLX4_CORE is not set
++CONFIG_NET_VENDOR_MICREL=y
++# CONFIG_KS8851_MLL is not set
++# CONFIG_KSZ884X_PCI is not set
++CONFIG_NET_VENDOR_MYRI=y
++# CONFIG_MYRI10GE is not set
++# CONFIG_FEALNX is not set
++CONFIG_NET_VENDOR_NATSEMI=y
++# CONFIG_NATSEMI is not set
++# CONFIG_NS83820 is not set
++CONFIG_NET_VENDOR_8390=y
++CONFIG_AX88796=m
++# CONFIG_AX88796_93CX6 is not set
++# CONFIG_NE2K_PCI is not set
++CONFIG_NET_VENDOR_NVIDIA=y
++# CONFIG_FORCEDETH is not set
++CONFIG_NET_VENDOR_OKI=y
++# CONFIG_PCH_GBE is not set
++# CONFIG_ETHOC is not set
++CONFIG_NET_PACKET_ENGINE=y
++# CONFIG_HAMACHI is not set
++# CONFIG_YELLOWFIN is not set
++CONFIG_NET_VENDOR_QLOGIC=y
++# CONFIG_QLA3XXX is not set
++# CONFIG_QLCNIC is not set
++# CONFIG_QLGE is not set
++CONFIG_NETXEN_NIC=m
++CONFIG_NET_VENDOR_REALTEK=y
++# CONFIG_8139CP is not set
++# CONFIG_8139TOO is not set
++# CONFIG_R8169 is not set
++CONFIG_NET_VENDOR_RDC=y
++# CONFIG_R6040 is not set
++CONFIG_NET_VENDOR_SEEQ=y
++# CONFIG_SEEQ8005 is not set
++CONFIG_NET_VENDOR_SILAN=y
++# CONFIG_SC92031 is not set
++CONFIG_NET_VENDOR_SIS=y
++# CONFIG_SIS900 is not set
++# CONFIG_SIS190 is not set
++# CONFIG_SFC is not set
++CONFIG_NET_VENDOR_SMSC=y
++# CONFIG_SMC91X is not set
++# CONFIG_EPIC100 is not set
++# CONFIG_SMSC911X is not set
++# CONFIG_SMSC9420 is not set
++CONFIG_NET_VENDOR_STMICRO=y
++# CONFIG_STMMAC_ETH is not set
++CONFIG_NET_VENDOR_SUN=y
++# CONFIG_HAPPYMEAL is not set
++# CONFIG_SUNGEM is not set
++# CONFIG_CASSINI is not set
++# CONFIG_NIU is not set
++CONFIG_NET_VENDOR_TEHUTI=y
++# CONFIG_TEHUTI is not set
++CONFIG_NET_VENDOR_TI=y
++# CONFIG_TLAN is not set
++CONFIG_NET_VENDOR_TOSHIBA=y
++CONFIG_TC35815=m
++CONFIG_NET_VENDOR_VIA=y
++# CONFIG_VIA_RHINE is not set
++# CONFIG_VIA_VELOCITY is not set
++CONFIG_NET_VENDOR_WIZNET=y
++# CONFIG_WIZNET_W5100 is not set
++# CONFIG_WIZNET_W5300 is not set
++# CONFIG_FDDI is not set
++# CONFIG_HIPPI is not set
++CONFIG_PHYLIB=m
++
++#
++# MII PHY device drivers
++#
++# CONFIG_AMD_PHY is not set
++CONFIG_MARVELL_PHY=m
++CONFIG_DAVICOM_PHY=m
++CONFIG_QSEMI_PHY=m
++CONFIG_LXT_PHY=m
++CONFIG_CICADA_PHY=m
++CONFIG_VITESSE_PHY=m
++CONFIG_SMSC_PHY=m
++CONFIG_BROADCOM_PHY=m
++# CONFIG_BCM87XX_PHY is not set
++CONFIG_ICPLUS_PHY=m
++CONFIG_REALTEK_PHY=m
++# CONFIG_NATIONAL_PHY is not set
++# CONFIG_STE10XP is not set
++# CONFIG_LSI_ET1011C_PHY is not set
++# CONFIG_MICREL_PHY is not set
++CONFIG_MDIO_BITBANG=m
++# CONFIG_PPP is not set
++# CONFIG_SLIP is not set
++CONFIG_WLAN=y
++# CONFIG_LIBERTAS_THINFIRM is not set
++# CONFIG_AIRO is not set
++CONFIG_ATMEL=m
++CONFIG_PCI_ATMEL=m
++CONFIG_PRISM54=m
++# CONFIG_RTL8180 is not set
++# CONFIG_ADM8211 is not set
++# CONFIG_MAC80211_HWSIM is not set
++# CONFIG_MWL8K is not set
++# CONFIG_ATH_COMMON is not set
++# CONFIG_B43 is not set
++# CONFIG_B43LEGACY is not set
++# CONFIG_BRCMFMAC is not set
++CONFIG_HOSTAP=m
++CONFIG_HOSTAP_FIRMWARE=y
++CONFIG_HOSTAP_FIRMWARE_NVRAM=y
++CONFIG_HOSTAP_PLX=m
++CONFIG_HOSTAP_PCI=m
++CONFIG_IPW2100=m
++CONFIG_IPW2100_MONITOR=y
++# CONFIG_IPW2100_DEBUG is not set
++CONFIG_LIBIPW=m
++# CONFIG_LIBIPW_DEBUG is not set
++# CONFIG_IWLWIFI is not set
++# CONFIG_IWL4965 is not set
++# CONFIG_IWL3945 is not set
++CONFIG_LIBERTAS=m
++# CONFIG_LIBERTAS_DEBUG is not set
++# CONFIG_LIBERTAS_MESH is not set
++# CONFIG_P54_COMMON is not set
++# CONFIG_RT2X00 is not set
++# CONFIG_RTL8192CE is not set
++# CONFIG_RTL8192SE is not set
++# CONFIG_RTL8192DE is not set
++# CONFIG_WL_TI is not set
++# CONFIG_MWIFIEX is not set
++
++#
++# Enable WiMAX (Networking options) to see the WiMAX drivers
++#
++# CONFIG_WAN is not set
++# CONFIG_VMXNET3 is not set
++# CONFIG_ISDN is not set
++
++#
++# Input device support
++#
++CONFIG_INPUT=y
++# CONFIG_INPUT_FF_MEMLESS is not set
++# CONFIG_INPUT_POLLDEV is not set
++# CONFIG_INPUT_SPARSEKMAP is not set
++# CONFIG_INPUT_MATRIXKMAP is not set
++
++#
++# Userland interfaces
++#
++CONFIG_INPUT_MOUSEDEV=y
++CONFIG_INPUT_MOUSEDEV_PSAUX=y
++CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
++CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
++# CONFIG_INPUT_JOYDEV is not set
++# CONFIG_INPUT_EVDEV is not set
++# CONFIG_INPUT_EVBUG is not set
++
++#
++# Input Device Drivers
++#
++# CONFIG_INPUT_KEYBOARD is not set
++# CONFIG_INPUT_MOUSE is not set
++# CONFIG_INPUT_JOYSTICK is not set
++# CONFIG_INPUT_TABLET is not set
++# CONFIG_INPUT_TOUCHSCREEN is not set
++# CONFIG_INPUT_MISC is not set
++
++#
++# Hardware I/O ports
++#
++CONFIG_SERIO=y
++# CONFIG_SERIO_I8042 is not set
++CONFIG_SERIO_SERPORT=y
++# CONFIG_SERIO_PCIPS2 is not set
++# CONFIG_SERIO_LIBPS2 is not set
++# CONFIG_SERIO_RAW is not set
++# CONFIG_SERIO_ALTERA_PS2 is not set
++# CONFIG_SERIO_PS2MULT is not set
++# CONFIG_GAMEPORT is not set
++
++#
++# Character devices
++#
++CONFIG_VT=y
++CONFIG_CONSOLE_TRANSLATIONS=y
++CONFIG_VT_CONSOLE=y
++CONFIG_HW_CONSOLE=y
++CONFIG_VT_HW_CONSOLE_BINDING=y
++CONFIG_UNIX98_PTYS=y
++# CONFIG_DEVPTS_MULTIPLE_INSTANCES is not set
++CONFIG_LEGACY_PTYS=y
++CONFIG_LEGACY_PTY_COUNT=256
++# CONFIG_SERIAL_NONSTANDARD is not set
++# CONFIG_NOZOMI is not set
++# CONFIG_N_GSM is not set
++# CONFIG_TRACE_SINK is not set
++CONFIG_DEVKMEM=y
++
++#
++# Serial drivers
++#
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_8250_PCI=y
++CONFIG_SERIAL_8250_NR_UARTS=4
++CONFIG_SERIAL_8250_RUNTIME_UARTS=4
++# CONFIG_SERIAL_8250_EXTENDED is not set
++
++#
++# Non-8250 serial port support
++#
++# CONFIG_SERIAL_MFD_HSU is not set
++CONFIG_SERIAL_CORE=y
++CONFIG_SERIAL_CORE_CONSOLE=y
++# CONFIG_SERIAL_JSM is not set
++# CONFIG_SERIAL_SCCNXP is not set
++# CONFIG_SERIAL_TIMBERDALE is not set
++# CONFIG_SERIAL_ALTERA_JTAGUART is not set
++# CONFIG_SERIAL_ALTERA_UART is not set
++# CONFIG_SERIAL_PCH_UART is not set
++# CONFIG_SERIAL_XILINX_PS_UART is not set
++# CONFIG_TTY_PRINTK is not set
++# CONFIG_IPMI_HANDLER is not set
++CONFIG_HW_RANDOM=m
++# CONFIG_HW_RANDOM_TIMERIOMEM is not set
++# CONFIG_R3964 is not set
++# CONFIG_APPLICOM is not set
++# CONFIG_RAW_DRIVER is not set
++# CONFIG_TCG_TPM is not set
++CONFIG_DEVPORT=y
++# CONFIG_I2C is not set
++# CONFIG_SPI is not set
++# CONFIG_HSI is not set
++
++#
++# PPS support
++#
++# CONFIG_PPS is not set
++
++#
++# PPS generators support
++#
++
++#
++# PTP clock support
++#
++
++#
++# Enable Device Drivers -> PPS to see the PTP clock options.
++#
++CONFIG_ARCH_HAVE_CUSTOM_GPIO_H=y
++# CONFIG_W1 is not set
++# CONFIG_POWER_SUPPLY is not set
++# CONFIG_POWER_AVS is not set
++# CONFIG_HWMON is not set
++# CONFIG_THERMAL is not set
++# CONFIG_WATCHDOG is not set
++CONFIG_SSB_POSSIBLE=y
++
++#
++# Sonics Silicon Backplane
++#
++# CONFIG_SSB is not set
++CONFIG_BCMA_POSSIBLE=y
++
++#
++# Broadcom specific AMBA
++#
++# CONFIG_BCMA is not set
++
++#
++# Multifunction device drivers
++#
++# CONFIG_MFD_CORE is not set
++# CONFIG_MFD_SM501 is not set
++# CONFIG_HTC_PASIC3 is not set
++# CONFIG_MFD_TMIO is not set
++# CONFIG_ABX500_CORE is not set
++# CONFIG_LPC_SCH is not set
++# CONFIG_LPC_ICH is not set
++# CONFIG_MFD_RDC321X is not set
++# CONFIG_MFD_JANZ_CMODIO is not set
++# CONFIG_MFD_VX855 is not set
++# CONFIG_REGULATOR is not set
++# CONFIG_MEDIA_SUPPORT is not set
++
++#
++# Graphics support
++#
++CONFIG_VGA_ARB=y
++CONFIG_VGA_ARB_MAX_GPUS=16
++# CONFIG_DRM is not set
++# CONFIG_STUB_POULSBO is not set
++# CONFIG_VGASTATE is not set
++# CONFIG_VIDEO_OUTPUT_CONTROL is not set
++CONFIG_FB=y
++# CONFIG_FIRMWARE_EDID is not set
++# CONFIG_FB_DDC is not set
++# CONFIG_FB_BOOT_VESA_SUPPORT is not set
++CONFIG_FB_CFB_FILLRECT=y
++CONFIG_FB_CFB_COPYAREA=y
++CONFIG_FB_CFB_IMAGEBLIT=y
++# CONFIG_FB_CFB_REV_PIXELS_IN_BYTE is not set
++# CONFIG_FB_SYS_FILLRECT is not set
++# CONFIG_FB_SYS_COPYAREA is not set
++# CONFIG_FB_SYS_IMAGEBLIT is not set
++# CONFIG_FB_FOREIGN_ENDIAN is not set
++# CONFIG_FB_SYS_FOPS is not set
++# CONFIG_FB_WMT_GE_ROPS is not set
++# CONFIG_FB_SVGALIB is not set
++# CONFIG_FB_MACMODES is not set
++# CONFIG_FB_BACKLIGHT is not set
++# CONFIG_FB_MODE_HELPERS is not set
++# CONFIG_FB_TILEBLITTING is not set
++
++#
++# Frame buffer hardware drivers
++#
++CONFIG_FB_CIRRUS=y
++# CONFIG_FB_PM2 is not set
++# CONFIG_FB_CYBER2000 is not set
++# CONFIG_FB_ASILIANT is not set
++# CONFIG_FB_IMSTT is not set
++# CONFIG_FB_UVESA is not set
++# CONFIG_FB_S1D13XXX is not set
++# CONFIG_FB_NVIDIA is not set
++# CONFIG_FB_RIVA is not set
++# CONFIG_FB_I740 is not set
++# CONFIG_FB_MATROX is not set
++# CONFIG_FB_RADEON is not set
++# CONFIG_FB_ATY128 is not set
++# CONFIG_FB_ATY is not set
++# CONFIG_FB_S3 is not set
++# CONFIG_FB_SAVAGE is not set
++# CONFIG_FB_SIS is not set
++# CONFIG_FB_NEOMAGIC is not set
++# CONFIG_FB_KYRO is not set
++# CONFIG_FB_3DFX is not set
++# CONFIG_FB_VOODOO1 is not set
++# CONFIG_FB_VT8623 is not set
++# CONFIG_FB_TRIDENT is not set
++# CONFIG_FB_ARK is not set
++# CONFIG_FB_PM3 is not set
++# CONFIG_FB_CARMINE is not set
++# CONFIG_FB_VIRTUAL is not set
++# CONFIG_FB_METRONOME is not set
++# CONFIG_FB_MB862XX is not set
++# CONFIG_FB_BROADSHEET is not set
++# CONFIG_FB_AUO_K190X is not set
++# CONFIG_EXYNOS_VIDEO is not set
++# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
++
++#
++# Console display driver support
++#
++# CONFIG_VGA_CONSOLE is not set
++CONFIG_DUMMY_CONSOLE=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
++# CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY is not set
++# CONFIG_FRAMEBUFFER_CONSOLE_ROTATION is not set
++# CONFIG_FONTS is not set
++CONFIG_FONT_8x8=y
++CONFIG_FONT_8x16=y
++# CONFIG_LOGO is not set
++# CONFIG_SOUND is not set
++
++#
++# HID support
++#
++CONFIG_HID=m
++# CONFIG_HIDRAW is not set
++# CONFIG_UHID is not set
++CONFIG_HID_GENERIC=m
++
++#
++# Special HID drivers
++#
++CONFIG_USB_ARCH_HAS_OHCI=y
++CONFIG_USB_ARCH_HAS_EHCI=y
++CONFIG_USB_ARCH_HAS_XHCI=y
++CONFIG_USB_SUPPORT=y
++CONFIG_USB_ARCH_HAS_HCD=y
++# CONFIG_USB is not set
++# CONFIG_USB_OTG_WHITELIST is not set
++# CONFIG_USB_OTG_BLACKLIST_HUB is not set
++
++#
++# NOTE: USB_STORAGE depends on SCSI but BLK_DEV_SD may
++#
++# CONFIG_USB_EZUSB_FX2 is not set
++# CONFIG_OMAP_USB2 is not set
++# CONFIG_USB_GADGET is not set
++
++#
++# OTG and related infrastructure
++#
++# CONFIG_UWB is not set
++# CONFIG_MMC is not set
++# CONFIG_MEMSTICK is not set
++# CONFIG_NEW_LEDS is not set
++# CONFIG_ACCESSIBILITY is not set
++# CONFIG_INFINIBAND is not set
++CONFIG_RTC_LIB=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_HCTOSYS=y
++CONFIG_RTC_HCTOSYS_DEVICE="rtc0"
++# CONFIG_RTC_DEBUG is not set
++
++#
++# RTC interfaces
++#
++CONFIG_RTC_INTF_SYSFS=y
++CONFIG_RTC_INTF_PROC=y
++CONFIG_RTC_INTF_DEV=y
++# CONFIG_RTC_INTF_DEV_UIE_EMUL is not set
++# CONFIG_RTC_DRV_TEST is not set
++
++#
++# SPI RTC drivers
++#
++
++#
++# Platform RTC drivers
++#
++CONFIG_RTC_DRV_CMOS=y
++# CONFIG_RTC_DRV_DS1286 is not set
++# CONFIG_RTC_DRV_DS1511 is not set
++# CONFIG_RTC_DRV_DS1553 is not set
++# CONFIG_RTC_DRV_DS1742 is not set
++# CONFIG_RTC_DRV_STK17TA8 is not set
++# CONFIG_RTC_DRV_M48T86 is not set
++# CONFIG_RTC_DRV_M48T35 is not set
++# CONFIG_RTC_DRV_M48T59 is not set
++# CONFIG_RTC_DRV_MSM6242 is not set
++# CONFIG_RTC_DRV_BQ4802 is not set
++# CONFIG_RTC_DRV_RP5C01 is not set
++# CONFIG_RTC_DRV_V3020 is not set
++# CONFIG_RTC_DRV_DS2404 is not set
++
++#
++# on-CPU RTC drivers
++#
++# CONFIG_DMADEVICES is not set
++# CONFIG_AUXDISPLAY is not set
++CONFIG_UIO=m
++CONFIG_UIO_CIF=m
++# CONFIG_UIO_PDRV is not set
++# CONFIG_UIO_PDRV_GENIRQ is not set
++# CONFIG_UIO_AEC is not set
++# CONFIG_UIO_SERCOS3 is not set
++# CONFIG_UIO_PCI_GENERIC is not set
++# CONFIG_UIO_NETX is not set
++
++#
++# Virtio drivers
++#
++# CONFIG_VIRTIO_PCI is not set
++# CONFIG_VIRTIO_MMIO is not set
++
++#
++# Microsoft Hyper-V guest support
++#
++# CONFIG_STAGING is not set
++
++#
++# Hardware Spinlock drivers
++#
++CONFIG_CLKSRC_I8253=y
++CONFIG_CLKEVT_I8253=y
++CONFIG_I8253_LOCK=y
++CONFIG_CLKBLD_I8253=y
++CONFIG_IOMMU_SUPPORT=y
++
++#
++# Remoteproc drivers (EXPERIMENTAL)
++#
++# CONFIG_STE_MODEM_RPROC is not set
++
++#
++# Rpmsg drivers (EXPERIMENTAL)
++#
++# CONFIG_VIRT_DRIVERS is not set
++# CONFIG_PM_DEVFREQ is not set
++# CONFIG_EXTCON is not set
++# CONFIG_MEMORY is not set
++# CONFIG_IIO is not set
++# CONFIG_VME_BUS is not set
++# CONFIG_PWM is not set
++
++#
++# File systems
++#
++CONFIG_EXT2_FS=y
++# CONFIG_EXT2_FS_XATTR is not set
++# CONFIG_EXT2_FS_XIP is not set
++CONFIG_EXT3_FS=y
++CONFIG_EXT3_DEFAULTS_TO_ORDERED=y
++CONFIG_EXT3_FS_XATTR=y
++# CONFIG_EXT3_FS_POSIX_ACL is not set
++# CONFIG_EXT3_FS_SECURITY is not set
++# CONFIG_EXT4_FS is not set
++CONFIG_JBD=y
++CONFIG_FS_MBCACHE=y
++CONFIG_REISERFS_FS=m
++# CONFIG_REISERFS_CHECK is not set
++CONFIG_REISERFS_PROC_INFO=y
++CONFIG_REISERFS_FS_XATTR=y
++CONFIG_REISERFS_FS_POSIX_ACL=y
++CONFIG_REISERFS_FS_SECURITY=y
++CONFIG_JFS_FS=m
++CONFIG_JFS_POSIX_ACL=y
++CONFIG_JFS_SECURITY=y
++# CONFIG_JFS_DEBUG is not set
++# CONFIG_JFS_STATISTICS is not set
++CONFIG_XFS_FS=m
++CONFIG_XFS_QUOTA=y
++CONFIG_XFS_POSIX_ACL=y
++# CONFIG_XFS_RT is not set
++# CONFIG_XFS_DEBUG is not set
++# CONFIG_GFS2_FS is not set
++# CONFIG_BTRFS_FS is not set
++# CONFIG_NILFS2_FS is not set
++CONFIG_FS_POSIX_ACL=y
++CONFIG_EXPORTFS=y
++CONFIG_FILE_LOCKING=y
++CONFIG_FSNOTIFY=y
++CONFIG_DNOTIFY=y
++CONFIG_INOTIFY_USER=y
++# CONFIG_FANOTIFY is not set
++CONFIG_QUOTA=y
++# CONFIG_QUOTA_NETLINK_INTERFACE is not set
++CONFIG_PRINT_QUOTA_WARNING=y
++# CONFIG_QUOTA_DEBUG is not set
++CONFIG_QUOTA_TREE=y
++# CONFIG_QFMT_V1 is not set
++CONFIG_QFMT_V2=y
++CONFIG_QUOTACTL=y
++# CONFIG_AUTOFS4_FS is not set
++CONFIG_FUSE_FS=m
++# CONFIG_CUSE is not set
++
++#
++# Caches
++#
++# CONFIG_FSCACHE is not set
++
++#
++# CD-ROM/DVD Filesystems
++#
++CONFIG_ISO9660_FS=m
++CONFIG_JOLIET=y
++CONFIG_ZISOFS=y
++CONFIG_UDF_FS=m
++CONFIG_UDF_NLS=y
++
++#
++# DOS/FAT/NT Filesystems
++#
++CONFIG_FAT_FS=m
++CONFIG_MSDOS_FS=m
++CONFIG_VFAT_FS=m
++CONFIG_FAT_DEFAULT_CODEPAGE=437
++CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
++# CONFIG_NTFS_FS is not set
++
++#
++# Pseudo filesystems
++#
++CONFIG_PROC_FS=y
++CONFIG_PROC_KCORE=y
++CONFIG_PROC_SYSCTL=y
++CONFIG_PROC_PAGE_MONITOR=y
++CONFIG_SYSFS=y
++CONFIG_TMPFS=y
++# CONFIG_TMPFS_POSIX_ACL is not set
++# CONFIG_TMPFS_XATTR is not set
++# CONFIG_HUGETLB_PAGE is not set
++# CONFIG_CONFIGFS_FS is not set
++CONFIG_MISC_FILESYSTEMS=y
++# CONFIG_ADFS_FS is not set
++CONFIG_AFFS_FS=m
++CONFIG_HFS_FS=m
++CONFIG_HFSPLUS_FS=m
++CONFIG_BEFS_FS=m
++# CONFIG_BEFS_DEBUG is not set
++CONFIG_BFS_FS=m
++CONFIG_EFS_FS=m
++CONFIG_JFFS2_FS=m
++CONFIG_JFFS2_FS_DEBUG=0
++CONFIG_JFFS2_FS_WRITEBUFFER=y
++# CONFIG_JFFS2_FS_WBUF_VERIFY is not set
++# CONFIG_JFFS2_SUMMARY is not set
++CONFIG_JFFS2_FS_XATTR=y
++CONFIG_JFFS2_FS_POSIX_ACL=y
++CONFIG_JFFS2_FS_SECURITY=y
++CONFIG_JFFS2_COMPRESSION_OPTIONS=y
++CONFIG_JFFS2_ZLIB=y
++# CONFIG_JFFS2_LZO is not set
++CONFIG_JFFS2_RTIME=y
++CONFIG_JFFS2_RUBIN=y
++# CONFIG_JFFS2_CMODE_NONE is not set
++CONFIG_JFFS2_CMODE_PRIORITY=y
++# CONFIG_JFFS2_CMODE_SIZE is not set
++# CONFIG_JFFS2_CMODE_FAVOURLZO is not set
++# CONFIG_UBIFS_FS is not set
++# CONFIG_LOGFS is not set
++CONFIG_CRAMFS=m
++# CONFIG_SQUASHFS is not set
++CONFIG_VXFS_FS=m
++CONFIG_MINIX_FS=m
++CONFIG_MINIX_FS_NATIVE_ENDIAN=y
++# CONFIG_OMFS_FS is not set
++# CONFIG_HPFS_FS is not set
++# CONFIG_QNX4FS_FS is not set
++# CONFIG_QNX6FS_FS is not set
++CONFIG_ROMFS_FS=m
++CONFIG_ROMFS_BACKED_BY_BLOCK=y
++# CONFIG_ROMFS_BACKED_BY_MTD is not set
++# CONFIG_ROMFS_BACKED_BY_BOTH is not set
++CONFIG_ROMFS_ON_BLOCK=y
++# CONFIG_PSTORE is not set
++CONFIG_SYSV_FS=m
++CONFIG_UFS_FS=m
++# CONFIG_UFS_FS_WRITE is not set
++# CONFIG_UFS_DEBUG is not set
++CONFIG_NETWORK_FILESYSTEMS=y
++CONFIG_NFS_FS=y
++CONFIG_NFS_V2=y
++CONFIG_NFS_V3=y
++# CONFIG_NFS_V3_ACL is not set
++# CONFIG_NFS_V4 is not set
++# CONFIG_NFS_SWAP is not set
++CONFIG_ROOT_NFS=y
++CONFIG_NFSD=y
++CONFIG_NFSD_V3=y
++# CONFIG_NFSD_V3_ACL is not set
++# CONFIG_NFSD_V4 is not set
++CONFIG_LOCKD=y
++CONFIG_LOCKD_V4=y
++CONFIG_NFS_COMMON=y
++CONFIG_SUNRPC=y
++# CONFIG_SUNRPC_DEBUG is not set
++# CONFIG_CEPH_FS is not set
++# CONFIG_CIFS is not set
++# CONFIG_NCP_FS is not set
++# CONFIG_CODA_FS is not set
++# CONFIG_AFS_FS is not set
++CONFIG_NLS=m
++CONFIG_NLS_DEFAULT="iso8859-1"
++CONFIG_NLS_CODEPAGE_437=m
++CONFIG_NLS_CODEPAGE_737=m
++CONFIG_NLS_CODEPAGE_775=m
++CONFIG_NLS_CODEPAGE_850=m
++CONFIG_NLS_CODEPAGE_852=m
++CONFIG_NLS_CODEPAGE_855=m
++CONFIG_NLS_CODEPAGE_857=m
++CONFIG_NLS_CODEPAGE_860=m
++CONFIG_NLS_CODEPAGE_861=m
++CONFIG_NLS_CODEPAGE_862=m
++CONFIG_NLS_CODEPAGE_863=m
++CONFIG_NLS_CODEPAGE_864=m
++CONFIG_NLS_CODEPAGE_865=m
++CONFIG_NLS_CODEPAGE_866=m
++CONFIG_NLS_CODEPAGE_869=m
++CONFIG_NLS_CODEPAGE_936=m
++CONFIG_NLS_CODEPAGE_950=m
++CONFIG_NLS_CODEPAGE_932=m
++CONFIG_NLS_CODEPAGE_949=m
++CONFIG_NLS_CODEPAGE_874=m
++CONFIG_NLS_ISO8859_8=m
++CONFIG_NLS_CODEPAGE_1250=m
++CONFIG_NLS_CODEPAGE_1251=m
++CONFIG_NLS_ASCII=m
++CONFIG_NLS_ISO8859_1=m
++CONFIG_NLS_ISO8859_2=m
++CONFIG_NLS_ISO8859_3=m
++CONFIG_NLS_ISO8859_4=m
++CONFIG_NLS_ISO8859_5=m
++CONFIG_NLS_ISO8859_6=m
++CONFIG_NLS_ISO8859_7=m
++CONFIG_NLS_ISO8859_9=m
++CONFIG_NLS_ISO8859_13=m
++CONFIG_NLS_ISO8859_14=m
++CONFIG_NLS_ISO8859_15=m
++CONFIG_NLS_KOI8_R=m
++CONFIG_NLS_KOI8_U=m
++# CONFIG_NLS_MAC_ROMAN is not set
++# CONFIG_NLS_MAC_CELTIC is not set
++# CONFIG_NLS_MAC_CENTEURO is not set
++# CONFIG_NLS_MAC_CROATIAN is not set
++# CONFIG_NLS_MAC_CYRILLIC is not set
++# CONFIG_NLS_MAC_GAELIC is not set
++# CONFIG_NLS_MAC_GREEK is not set
++# CONFIG_NLS_MAC_ICELAND is not set
++# CONFIG_NLS_MAC_INUIT is not set
++# CONFIG_NLS_MAC_ROMANIAN is not set
++# CONFIG_NLS_MAC_TURKISH is not set
++CONFIG_NLS_UTF8=m
++
++#
++# Kernel hacking
++#
++CONFIG_TRACE_IRQFLAGS_SUPPORT=y
++# CONFIG_PRINTK_TIME is not set
++CONFIG_DEFAULT_MESSAGE_LOGLEVEL=4
++CONFIG_ENABLE_WARN_DEPRECATED=y
++CONFIG_ENABLE_MUST_CHECK=y
++CONFIG_FRAME_WARN=1024
++# CONFIG_MAGIC_SYSRQ is not set
++# CONFIG_STRIP_ASM_SYMS is not set
++# CONFIG_READABLE_ASM is not set
++# CONFIG_UNUSED_SYMBOLS is not set
++# CONFIG_DEBUG_FS is not set
++# CONFIG_HEADERS_CHECK is not set
++# CONFIG_DEBUG_SECTION_MISMATCH is not set
++CONFIG_DEBUG_KERNEL=y
++# CONFIG_DEBUG_SHIRQ is not set
++# CONFIG_LOCKUP_DETECTOR is not set
++# CONFIG_PANIC_ON_OOPS is not set
++CONFIG_PANIC_ON_OOPS_VALUE=0
++# CONFIG_DETECT_HUNG_TASK is not set
++CONFIG_SCHED_DEBUG=y
++# CONFIG_SCHEDSTATS is not set
++# CONFIG_TIMER_STATS is not set
++# CONFIG_DEBUG_OBJECTS is not set
++# CONFIG_DEBUG_SLAB is not set
++CONFIG_HAVE_DEBUG_KMEMLEAK=y
++# CONFIG_DEBUG_KMEMLEAK is not set
++# CONFIG_DEBUG_RT_MUTEXES is not set
++# CONFIG_RT_MUTEX_TESTER is not set
++# CONFIG_DEBUG_SPINLOCK is not set
++# CONFIG_DEBUG_MUTEXES is not set
++# CONFIG_DEBUG_LOCK_ALLOC is not set
++# CONFIG_PROVE_LOCKING is not set
++# CONFIG_SPARSE_RCU_POINTER is not set
++# CONFIG_LOCK_STAT is not set
++# CONFIG_DEBUG_ATOMIC_SLEEP is not set
++# CONFIG_DEBUG_LOCKING_API_SELFTESTS is not set
++# CONFIG_DEBUG_STACK_USAGE is not set
++# CONFIG_DEBUG_KOBJECT is not set
++# CONFIG_DEBUG_INFO is not set
++# CONFIG_DEBUG_VM is not set
++# CONFIG_DEBUG_WRITECOUNT is not set
++# CONFIG_DEBUG_MEMORY_INIT is not set
++# CONFIG_DEBUG_LIST is not set
++# CONFIG_TEST_LIST_SORT is not set
++# CONFIG_DEBUG_SG is not set
++# CONFIG_DEBUG_NOTIFIERS is not set
++# CONFIG_DEBUG_CREDENTIALS is not set
++# CONFIG_BOOT_PRINTK_DELAY is not set
++# CONFIG_RCU_TORTURE_TEST is not set
++CONFIG_RCU_CPU_STALL_TIMEOUT=60
++# CONFIG_RCU_CPU_STALL_INFO is not set
++# CONFIG_RCU_TRACE is not set
++# CONFIG_BACKTRACE_SELF_TEST is not set
++# CONFIG_DEBUG_BLOCK_EXT_DEVT is not set
++# CONFIG_DEBUG_FORCE_WEAK_PER_CPU is not set
++# CONFIG_DEBUG_PER_CPU_MAPS is not set
++# CONFIG_NOTIFIER_ERROR_INJECTION is not set
++# CONFIG_FAULT_INJECTION is not set
++# CONFIG_DEBUG_PAGEALLOC is not set
++CONFIG_HAVE_FUNCTION_TRACER=y
++CONFIG_HAVE_FUNCTION_GRAPH_TRACER=y
++CONFIG_HAVE_FUNCTION_TRACE_MCOUNT_TEST=y
++CONFIG_HAVE_DYNAMIC_FTRACE=y
++CONFIG_HAVE_FTRACE_MCOUNT_RECORD=y
++CONFIG_HAVE_C_RECORDMCOUNT=y
++CONFIG_TRACING_SUPPORT=y
++CONFIG_FTRACE=y
++# CONFIG_FUNCTION_TRACER is not set
++# CONFIG_IRQSOFF_TRACER is not set
++# CONFIG_SCHED_TRACER is not set
++# CONFIG_ENABLE_DEFAULT_TRACERS is not set
++CONFIG_BRANCH_PROFILE_NONE=y
++# CONFIG_PROFILE_ANNOTATED_BRANCHES is not set
++# CONFIG_PROFILE_ALL_BRANCHES is not set
++# CONFIG_STACK_TRACER is not set
++# CONFIG_BLK_DEV_IO_TRACE is not set
++# CONFIG_PROBE_EVENTS is not set
++# CONFIG_RBTREE_TEST is not set
++# CONFIG_INTERVAL_TREE_TEST is not set
++# CONFIG_DMA_API_DEBUG is not set
++# CONFIG_ATOMIC64_SELFTEST is not set
++# CONFIG_ASYNC_RAID6_TEST is not set
++# CONFIG_SAMPLES is not set
++CONFIG_HAVE_ARCH_KGDB=y
++# CONFIG_KGDB is not set
++# CONFIG_TEST_KSTRTOX is not set
++CONFIG_EARLY_PRINTK=y
++# CONFIG_CMDLINE_BOOL is not set
++# CONFIG_DEBUG_STACKOVERFLOW is not set
++# CONFIG_RUNTIME_DEBUG is not set
++# CONFIG_DEBUG_ZBOOT is not set
++
++#
++# Security options
++#
++# CONFIG_KEYS is not set
++# CONFIG_SECURITY_DMESG_RESTRICT is not set
++# CONFIG_SECURITY is not set
++# CONFIG_SECURITYFS is not set
++CONFIG_DEFAULT_SECURITY_DAC=y
++CONFIG_DEFAULT_SECURITY=""
++CONFIG_XOR_BLOCKS=m
++CONFIG_ASYNC_CORE=m
++CONFIG_ASYNC_MEMCPY=m
++CONFIG_ASYNC_XOR=m
++CONFIG_ASYNC_PQ=m
++CONFIG_ASYNC_RAID6_RECOV=m
++CONFIG_CRYPTO=y
++
++#
++# Crypto core or helper
++#
++CONFIG_CRYPTO_ALGAPI=y
++CONFIG_CRYPTO_ALGAPI2=y
++CONFIG_CRYPTO_AEAD=m
++CONFIG_CRYPTO_AEAD2=y
++CONFIG_CRYPTO_BLKCIPHER=m
++CONFIG_CRYPTO_BLKCIPHER2=y
++CONFIG_CRYPTO_HASH=y
++CONFIG_CRYPTO_HASH2=y
++CONFIG_CRYPTO_RNG2=y
++CONFIG_CRYPTO_PCOMP2=y
++CONFIG_CRYPTO_MANAGER=y
++CONFIG_CRYPTO_MANAGER2=y
++# CONFIG_CRYPTO_USER is not set
++CONFIG_CRYPTO_MANAGER_DISABLE_TESTS=y
++CONFIG_CRYPTO_GF128MUL=m
++CONFIG_CRYPTO_NULL=m
++# CONFIG_CRYPTO_PCRYPT is not set
++CONFIG_CRYPTO_WORKQUEUE=y
++CONFIG_CRYPTO_CRYPTD=m
++CONFIG_CRYPTO_AUTHENC=m
++# CONFIG_CRYPTO_TEST is not set
++
++#
++# Authenticated Encryption with Associated Data
++#
++# CONFIG_CRYPTO_CCM is not set
++# CONFIG_CRYPTO_GCM is not set
++# CONFIG_CRYPTO_SEQIV is not set
++
++#
++# Block modes
++#
++CONFIG_CRYPTO_CBC=m
++# CONFIG_CRYPTO_CTR is not set
++# CONFIG_CRYPTO_CTS is not set
++CONFIG_CRYPTO_ECB=m
++CONFIG_CRYPTO_LRW=m
++CONFIG_CRYPTO_PCBC=m
++# CONFIG_CRYPTO_XTS is not set
++
++#
++# Hash modes
++#
++CONFIG_CRYPTO_HMAC=y
++CONFIG_CRYPTO_XCBC=m
++# CONFIG_CRYPTO_VMAC is not set
++
++#
++# Digest
++#
++CONFIG_CRYPTO_CRC32C=m
++# CONFIG_CRYPTO_GHASH is not set
++CONFIG_CRYPTO_MD4=m
++CONFIG_CRYPTO_MD5=y
++CONFIG_CRYPTO_MICHAEL_MIC=m
++# CONFIG_CRYPTO_RMD128 is not set
++# CONFIG_CRYPTO_RMD160 is not set
++# CONFIG_CRYPTO_RMD256 is not set
++# CONFIG_CRYPTO_RMD320 is not set
++CONFIG_CRYPTO_SHA1=m
++CONFIG_CRYPTO_SHA256=m
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_TGR192=m
++CONFIG_CRYPTO_WP512=m
++
++#
++# Ciphers
++#
++CONFIG_CRYPTO_AES=y
++CONFIG_CRYPTO_ANUBIS=m
++CONFIG_CRYPTO_ARC4=m
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_BLOWFISH_COMMON=m
++CONFIG_CRYPTO_CAMELLIA=m
++CONFIG_CRYPTO_CAST5=m
++CONFIG_CRYPTO_CAST6=m
++CONFIG_CRYPTO_DES=m
++CONFIG_CRYPTO_FCRYPT=m
++CONFIG_CRYPTO_KHAZAD=m
++# CONFIG_CRYPTO_SALSA20 is not set
++# CONFIG_CRYPTO_SEED is not set
++CONFIG_CRYPTO_SERPENT=m
++CONFIG_CRYPTO_TEA=m
++CONFIG_CRYPTO_TWOFISH=m
++CONFIG_CRYPTO_TWOFISH_COMMON=m
++
++#
++# Compression
++#
++CONFIG_CRYPTO_DEFLATE=m
++# CONFIG_CRYPTO_ZLIB is not set
++# CONFIG_CRYPTO_LZO is not set
++
++#
++# Random Number Generation
++#
++# CONFIG_CRYPTO_ANSI_CPRNG is not set
++# CONFIG_CRYPTO_USER_API_HASH is not set
++# CONFIG_CRYPTO_USER_API_SKCIPHER is not set
++CONFIG_CRYPTO_HW=y
++# CONFIG_CRYPTO_DEV_HIFN_795X is not set
++# CONFIG_BINARY_PRINTF is not set
++
++#
++# Library routines
++#
++CONFIG_RAID6_PQ=m
++CONFIG_BITREVERSE=y
++CONFIG_NO_GENERIC_PCI_IOPORT_MAP=y
++CONFIG_GENERIC_PCI_IOMAP=y
++CONFIG_GENERIC_IO=y
++# CONFIG_CRC_CCITT is not set
++CONFIG_CRC16=m
++# CONFIG_CRC_T10DIF is not set
++CONFIG_CRC_ITU_T=m
++CONFIG_CRC32=y
++# CONFIG_CRC32_SELFTEST is not set
++CONFIG_CRC32_SLICEBY8=y
++# CONFIG_CRC32_SLICEBY4 is not set
++# CONFIG_CRC32_SARWATE is not set
++# CONFIG_CRC32_BIT is not set
++# CONFIG_CRC7 is not set
++CONFIG_LIBCRC32C=m
++# CONFIG_CRC8 is not set
++CONFIG_ZLIB_INFLATE=m
++CONFIG_ZLIB_DEFLATE=m
++# CONFIG_XZ_DEC is not set
++# CONFIG_XZ_DEC_BCJ is not set
++CONFIG_TEXTSEARCH=y
++CONFIG_TEXTSEARCH_KMP=m
++CONFIG_TEXTSEARCH_BM=m
++CONFIG_TEXTSEARCH_FSM=m
++CONFIG_HAS_IOMEM=y
++CONFIG_HAS_IOPORT=y
++CONFIG_HAS_DMA=y
++CONFIG_CPU_RMAP=y
++CONFIG_DQL=y
++CONFIG_NLATTR=y
++CONFIG_GENERIC_ATOMIC64=y
++CONFIG_ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE=y
++CONFIG_AVERAGE=y
++# CONFIG_CORDIC is not set
++# CONFIG_DDR is not set
++CONFIG_HAVE_KVM=y
++CONFIG_KVM_MMIO=y
++CONFIG_VIRTUALIZATION=y
++CONFIG_KVM=m
++CONFIG_KVM_MIPS_DYN_TRANS=y
++CONFIG_KVM_EXIT_STATS=y
++CONFIG_KVM_MIPS_DEBUG_COP0_COUNTERS=y
++CONFIG_VHOST_NET=m
+diff --git a/arch/mips/configs/malta_kvm_guest_defconfig b/arch/mips/configs/malta_kvm_guest_defconfig
 new file mode 100644
-index 0000000..1c226d6
+index 0000000..17b6afa
 --- /dev/null
-+++ b/arch/mips/kvm/kvm_mips_opcode.h
-@@ -0,0 +1,27 @@
-+/*
-+* This file is subject to the terms and conditions of the GNU General Public
-+* License.  See the file "COPYING" in the main directory of this archive
-+* for more details.
-+*
-+* Op-codes for emulated instructions not handled by standard Linux includes
-+*
-+* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
-+* Authors: Sanjay Lal <sanjayl@kymasys.com>
-+*/
++++ b/arch/mips/configs/malta_kvm_guest_defconfig
+@@ -0,0 +1,2237 @@
++#
++# Automatically generated file; DO NOT EDIT.
++# Linux/mips 3.7.0-rc1 Kernel Configuration
++#
++CONFIG_MIPS=y
 +
-+/*
-+ * Define opcode values not defined in <asm/isnt.h>
-+ */
++#
++# Machine selection
++#
++CONFIG_ZONE_DMA=y
++# CONFIG_MIPS_ALCHEMY is not set
++# CONFIG_AR7 is not set
++# CONFIG_ATH79 is not set
++# CONFIG_BCM47XX is not set
++# CONFIG_BCM63XX is not set
++# CONFIG_MIPS_COBALT is not set
++# CONFIG_MACH_DECSTATION is not set
++# CONFIG_MACH_JAZZ is not set
++# CONFIG_MACH_JZ4740 is not set
++# CONFIG_LANTIQ is not set
++# CONFIG_LASAT is not set
++# CONFIG_MACH_LOONGSON is not set
++# CONFIG_MACH_LOONGSON1 is not set
++CONFIG_MIPS_MALTA=y
++# CONFIG_MIPS_SEAD3 is not set
++# CONFIG_NEC_MARKEINS is not set
++# CONFIG_MACH_VR41XX is not set
++# CONFIG_NXP_STB220 is not set
++# CONFIG_NXP_STB225 is not set
++# CONFIG_PNX8550_JBS is not set
++# CONFIG_PNX8550_STB810 is not set
++# CONFIG_PMC_MSP is not set
++# CONFIG_PMC_YOSEMITE is not set
++# CONFIG_POWERTV is not set
++# CONFIG_SGI_IP22 is not set
++# CONFIG_SGI_IP27 is not set
++# CONFIG_SGI_IP28 is not set
++# CONFIG_SGI_IP32 is not set
++# CONFIG_SIBYTE_CRHINE is not set
++# CONFIG_SIBYTE_CARMEL is not set
++# CONFIG_SIBYTE_CRHONE is not set
++# CONFIG_SIBYTE_RHONE is not set
++# CONFIG_SIBYTE_SWARM is not set
++# CONFIG_SIBYTE_LITTLESUR is not set
++# CONFIG_SIBYTE_SENTOSA is not set
++# CONFIG_SIBYTE_BIGSUR is not set
++# CONFIG_SNI_RM is not set
++# CONFIG_MACH_TX39XX is not set
++# CONFIG_MACH_TX49XX is not set
++# CONFIG_MIKROTIK_RB532 is not set
++# CONFIG_WR_PPMC is not set
++# CONFIG_CAVIUM_OCTEON_SIMULATOR is not set
++# CONFIG_CAVIUM_OCTEON_REFERENCE_BOARD is not set
++# CONFIG_NLM_XLR_BOARD is not set
++# CONFIG_NLM_XLP_BOARD is not set
++# CONFIG_ALCHEMY_GPIO_INDIRECT is not set
++CONFIG_RWSEM_GENERIC_SPINLOCK=y
++# CONFIG_ARCH_HAS_ILOG2_U32 is not set
++# CONFIG_ARCH_HAS_ILOG2_U64 is not set
++CONFIG_GENERIC_HWEIGHT=y
++CONFIG_GENERIC_CALIBRATE_DELAY=y
++CONFIG_SCHED_OMIT_FRAME_POINTER=y
++CONFIG_ARCH_MAY_HAVE_PC_FDC=y
++CONFIG_BOOT_RAW=y
++CONFIG_CEVT_R4K_LIB=y
++CONFIG_CEVT_R4K=y
++CONFIG_CSRC_R4K_LIB=y
++CONFIG_CSRC_R4K=y
++# CONFIG_ARCH_DMA_ADDR_T_64BIT is not set
++CONFIG_DMA_NONCOHERENT=y
++CONFIG_NEED_DMA_MAP_STATE=y
++CONFIG_SYS_HAS_EARLY_PRINTK=y
++CONFIG_I8259=y
++CONFIG_MIPS_BONITO64=y
++CONFIG_MIPS_MSC=y
++# CONFIG_MIPS_MACHINE is not set
++# CONFIG_NO_IOPORT is not set
++CONFIG_GENERIC_ISA_DMA=y
++CONFIG_ISA_DMA_API=y
++# CONFIG_CPU_BIG_ENDIAN is not set
++CONFIG_CPU_LITTLE_ENDIAN=y
++CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
++CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
++CONFIG_IRQ_CPU=y
++CONFIG_IRQ_GIC=y
++CONFIG_MIPS_BOARDS_GEN=y
++CONFIG_PCI_GT64XXX_PCI0=y
++CONFIG_SWAP_IO_SPACE=y
++CONFIG_BOOT_ELF32=y
++CONFIG_MIPS_L1_CACHE_SHIFT=6
 +
-+#ifndef __KVM_MIPS_OPCODE_H__
-+#define __KVM_MIPS_OPCODE_H__
++#
++# CPU selection
++#
++# CONFIG_CPU_MIPS32_R1 is not set
++CONFIG_CPU_MIPS32_R2=y
++# CONFIG_CPU_MIPS64_R1 is not set
++# CONFIG_CPU_MIPS64_R2 is not set
++# CONFIG_CPU_NEVADA is not set
++# CONFIG_CPU_RM7000 is not set
++CONFIG_SYS_SUPPORTS_ZBOOT=y
++CONFIG_SYS_HAS_CPU_MIPS32_R1=y
++CONFIG_SYS_HAS_CPU_MIPS32_R2=y
++CONFIG_SYS_HAS_CPU_MIPS64_R1=y
++CONFIG_SYS_HAS_CPU_MIPS64_R2=y
++CONFIG_SYS_HAS_CPU_NEVADA=y
++CONFIG_SYS_HAS_CPU_RM7000=y
++CONFIG_CPU_MIPS32=y
++CONFIG_CPU_MIPSR2=y
++CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
++CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
++CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
++CONFIG_HARDWARE_WATCHPOINTS=y
 +
-+/* COP0 Ops */
-+#define     mfmcz_op         0x0b           /*  01011  */
-+#define     wrpgpr_op        0x0e           /*  01110  */
++#
++# Kernel type
++#
++CONFIG_32BIT=y
++# CONFIG_PAGE_SIZE_4KB is not set
++CONFIG_PAGE_SIZE_16KB=y
++# CONFIG_PAGE_SIZE_64KB is not set
++CONFIG_FORCE_MAX_ZONEORDER=11
++CONFIG_BOARD_SCACHE=y
++CONFIG_MIPS_CPU_SCACHE=y
++CONFIG_CPU_HAS_PREFETCH=y
++CONFIG_CPU_GENERIC_DUMP_TLB=y
++CONFIG_CPU_R4K_FPU=y
++CONFIG_CPU_R4K_CACHE_TLB=y
++CONFIG_MIPS_MT_DISABLED=y
++# CONFIG_MIPS_MT_SMP is not set
++# CONFIG_MIPS_MT_SMTC is not set
++CONFIG_SYS_SUPPORTS_MULTITHREADING=y
++# CONFIG_MIPS_VPE_LOADER is not set
++# CONFIG_MIPS_CMP is not set
++CONFIG_KVM_GUEST=y
++CONFIG_KVM_HOST_FREQ=500
++# CONFIG_ARCH_PHYS_ADDR_T_64BIT is not set
++# CONFIG_CPU_HAS_SMARTMIPS is not set
++CONFIG_CPU_HAS_SYNC=y
++CONFIG_CPU_SUPPORTS_HIGHMEM=y
++CONFIG_SYS_SUPPORTS_SMARTMIPS=y
++CONFIG_ARCH_FLATMEM_ENABLE=y
++CONFIG_SELECT_MEMORY_MODEL=y
++CONFIG_FLATMEM_MANUAL=y
++CONFIG_FLATMEM=y
++CONFIG_FLAT_NODE_MEM_MAP=y
++CONFIG_HAVE_MEMBLOCK=y
++CONFIG_HAVE_MEMBLOCK_NODE_MAP=y
++CONFIG_ARCH_DISCARD_MEMBLOCK=y
++CONFIG_PAGEFLAGS_EXTENDED=y
++CONFIG_SPLIT_PTLOCK_CPUS=4
++CONFIG_COMPACTION=y
++CONFIG_MIGRATION=y
++# CONFIG_PHYS_ADDR_T_64BIT is not set
++CONFIG_ZONE_DMA_FLAG=1
++CONFIG_BOUNCE=y
++CONFIG_VIRT_TO_BUS=y
++# CONFIG_KSM is not set
++CONFIG_DEFAULT_MMAP_MIN_ADDR=4096
++CONFIG_CROSS_MEMORY_ATTACH=y
++CONFIG_NEED_PER_CPU_KM=y
++# CONFIG_CLEANCACHE is not set
++# CONFIG_FRONTSWAP is not set
++CONFIG_SYS_SUPPORTS_MIPS_CMP=y
++# CONFIG_HZ_48 is not set
++CONFIG_HZ_100=y
++# CONFIG_HZ_128 is not set
++# CONFIG_HZ_250 is not set
++# CONFIG_HZ_256 is not set
++# CONFIG_HZ_1000 is not set
++# CONFIG_HZ_1024 is not set
++CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
++CONFIG_HZ=100
++CONFIG_PREEMPT_NONE=y
++# CONFIG_PREEMPT_VOLUNTARY is not set
++# CONFIG_PREEMPT is not set
++# CONFIG_KEXEC is not set
++CONFIG_SECCOMP=y
++CONFIG_LOCKDEP_SUPPORT=y
++CONFIG_STACKTRACE_SUPPORT=y
++CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
++CONFIG_HAVE_IRQ_WORK=y
++CONFIG_BUILDTIME_EXTABLE_SORT=y
 +
-+/*  COP0 opcodes (only if COP0 and CO=1):  */
-+#define     wait_op               0x20      /*  100000  */ 
++#
++# General setup
++#
++CONFIG_EXPERIMENTAL=y
++CONFIG_BROKEN_ON_SMP=y
++CONFIG_INIT_ENV_ARG_LIMIT=32
++CONFIG_CROSS_COMPILE=""
++CONFIG_LOCALVERSION=""
++CONFIG_LOCALVERSION_AUTO=y
++CONFIG_HAVE_KERNEL_GZIP=y
++CONFIG_HAVE_KERNEL_BZIP2=y
++CONFIG_HAVE_KERNEL_LZMA=y
++CONFIG_HAVE_KERNEL_LZO=y
++CONFIG_KERNEL_GZIP=y
++# CONFIG_KERNEL_BZIP2 is not set
++# CONFIG_KERNEL_LZMA is not set
++# CONFIG_KERNEL_LZO is not set
++CONFIG_DEFAULT_HOSTNAME="(none)"
++CONFIG_SWAP=y
++CONFIG_SYSVIPC=y
++CONFIG_SYSVIPC_SYSCTL=y
++# CONFIG_POSIX_MQUEUE is not set
++# CONFIG_FHANDLE is not set
++# CONFIG_AUDIT is not set
++CONFIG_HAVE_GENERIC_HARDIRQS=y
 +
++#
++# IRQ subsystem
++#
++CONFIG_GENERIC_HARDIRQS=y
++CONFIG_GENERIC_IRQ_PROBE=y
++CONFIG_GENERIC_IRQ_SHOW=y
++CONFIG_IRQ_FORCED_THREADING=y
++CONFIG_GENERIC_CLOCKEVENTS=y
++CONFIG_GENERIC_CLOCKEVENTS_BUILD=y
++CONFIG_GENERIC_CMOS_UPDATE=y
 +
-+#endif /* __KVM_MIPS_OPCODE_H__ */
++#
++# Timers subsystem
++#
++CONFIG_TICK_ONESHOT=y
++CONFIG_NO_HZ=y
++CONFIG_HIGH_RES_TIMERS=y
++
++#
++# CPU/Task time and stats accounting
++#
++CONFIG_TICK_CPU_ACCOUNTING=y
++# CONFIG_BSD_PROCESS_ACCT is not set
++# CONFIG_TASKSTATS is not set
++
++#
++# RCU Subsystem
++#
++CONFIG_TINY_RCU=y
++# CONFIG_PREEMPT_RCU is not set
++# CONFIG_TREE_RCU_TRACE is not set
++# CONFIG_IKCONFIG is not set
++CONFIG_LOG_BUF_SHIFT=15
++# CONFIG_CGROUPS is not set
++# CONFIG_CHECKPOINT_RESTORE is not set
++CONFIG_NAMESPACES=y
++CONFIG_UTS_NS=y
++CONFIG_IPC_NS=y
++CONFIG_PID_NS=y
++CONFIG_NET_NS=y
++# CONFIG_SCHED_AUTOGROUP is not set
++# CONFIG_SYSFS_DEPRECATED is not set
++CONFIG_RELAY=y
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_INITRAMFS_SOURCE=""
++CONFIG_RD_GZIP=y
++# CONFIG_RD_BZIP2 is not set
++# CONFIG_RD_LZMA is not set
++# CONFIG_RD_XZ is not set
++# CONFIG_RD_LZO is not set
++# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
++CONFIG_SYSCTL=y
++CONFIG_ANON_INODES=y
++CONFIG_EXPERT=y
++# CONFIG_SYSCTL_SYSCALL is not set
++CONFIG_KALLSYMS=y
++# CONFIG_KALLSYMS_ALL is not set
++CONFIG_HOTPLUG=y
++CONFIG_PRINTK=y
++CONFIG_BUG=y
++CONFIG_ELF_CORE=y
++CONFIG_PCSPKR_PLATFORM=y
++CONFIG_HAVE_PCSPKR_PLATFORM=y
++CONFIG_BASE_FULL=y
++CONFIG_FUTEX=y
++CONFIG_EPOLL=y
++CONFIG_SIGNALFD=y
++CONFIG_TIMERFD=y
++CONFIG_EVENTFD=y
++CONFIG_SHMEM=y
++CONFIG_AIO=y
++# CONFIG_EMBEDDED is not set
++CONFIG_HAVE_PERF_EVENTS=y
++CONFIG_PERF_USE_VMALLOC=y
++
++#
++# Kernel Performance Events And Counters
++#
++# CONFIG_PERF_EVENTS is not set
++CONFIG_VM_EVENT_COUNTERS=y
++CONFIG_PCI_QUIRKS=y
++# CONFIG_COMPAT_BRK is not set
++CONFIG_SLAB=y
++# CONFIG_SLUB is not set
++# CONFIG_SLOB is not set
++# CONFIG_PROFILING is not set
++CONFIG_HAVE_OPROFILE=y
++# CONFIG_KPROBES is not set
++# CONFIG_JUMP_LABEL is not set
++CONFIG_HAVE_KPROBES=y
++CONFIG_HAVE_KRETPROBES=y
++CONFIG_HAVE_DMA_ATTRS=y
++CONFIG_GENERIC_SMP_IDLE_THREAD=y
++CONFIG_HAVE_DMA_API_DEBUG=y
++CONFIG_HAVE_ARCH_JUMP_LABEL=y
++CONFIG_ARCH_WANT_IPC_PARSE_VERSION=y
++CONFIG_HAVE_MOD_ARCH_SPECIFIC=y
++CONFIG_MODULES_USE_ELF_REL=y
++
++#
++# GCOV-based kernel profiling
++#
++CONFIG_HAVE_GENERIC_DMA_COHERENT=y
++CONFIG_SLABINFO=y
++CONFIG_RT_MUTEXES=y
++CONFIG_BASE_SMALL=0
++CONFIG_MODULES=y
++# CONFIG_MODULE_FORCE_LOAD is not set
++CONFIG_MODULE_UNLOAD=y
++# CONFIG_MODULE_FORCE_UNLOAD is not set
++CONFIG_MODVERSIONS=y
++CONFIG_MODULE_SRCVERSION_ALL=y
++# CONFIG_MODULE_SIG is not set
++CONFIG_BLOCK=y
++CONFIG_LBDAF=y
++CONFIG_BLK_DEV_BSG=y
++CONFIG_BLK_DEV_BSGLIB=y
++# CONFIG_BLK_DEV_INTEGRITY is not set
++
++#
++# Partition Types
++#
++# CONFIG_PARTITION_ADVANCED is not set
++CONFIG_MSDOS_PARTITION=y
++
++#
++# IO Schedulers
++#
++CONFIG_IOSCHED_NOOP=y
++CONFIG_IOSCHED_DEADLINE=y
++CONFIG_IOSCHED_CFQ=y
++# CONFIG_DEFAULT_DEADLINE is not set
++CONFIG_DEFAULT_CFQ=y
++# CONFIG_DEFAULT_NOOP is not set
++CONFIG_DEFAULT_IOSCHED="cfq"
++CONFIG_INLINE_SPIN_UNLOCK_IRQ=y
++CONFIG_INLINE_READ_UNLOCK=y
++CONFIG_INLINE_READ_UNLOCK_IRQ=y
++CONFIG_INLINE_WRITE_UNLOCK=y
++CONFIG_INLINE_WRITE_UNLOCK_IRQ=y
++CONFIG_FREEZER=y
++
++#
++# Bus options (PCI, PCMCIA, EISA, ISA, TC)
++#
++CONFIG_HW_HAS_PCI=y
++CONFIG_PCI=y
++CONFIG_PCI_DOMAINS=y
++# CONFIG_PCI_DEBUG is not set
++# CONFIG_PCI_REALLOC_ENABLE_AUTO is not set
++# CONFIG_PCI_STUB is not set
++# CONFIG_PCI_IOV is not set
++# CONFIG_PCI_PRI is not set
++# CONFIG_PCI_PASID is not set
++# CONFIG_PCIEPORTBUS is not set
++CONFIG_MMU=y
++CONFIG_I8253=y
++# CONFIG_PCCARD is not set
++# CONFIG_HOTPLUG_PCI is not set
++# CONFIG_RAPIDIO is not set
++
++#
++# Executable file formats
++#
++CONFIG_BINFMT_ELF=y
++CONFIG_ARCH_BINFMT_ELF_RANDOMIZE_PIE=y
++CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS=y
++# CONFIG_HAVE_AOUT is not set
++# CONFIG_BINFMT_MISC is not set
++CONFIG_COREDUMP=y
++CONFIG_TRAD_SIGNALS=y
++
++#
++# Power management options
++#
++CONFIG_ARCH_HIBERNATION_POSSIBLE=y
++CONFIG_ARCH_SUSPEND_POSSIBLE=y
++CONFIG_SUSPEND=y
++CONFIG_SUSPEND_FREEZER=y
++# CONFIG_HIBERNATION is not set
++CONFIG_PM_SLEEP=y
++# CONFIG_PM_AUTOSLEEP is not set
++# CONFIG_PM_WAKELOCKS is not set
++# CONFIG_PM_RUNTIME is not set
++CONFIG_PM=y
++# CONFIG_PM_DEBUG is not set
++CONFIG_MIPS_EXTERNAL_TIMER=y
++CONFIG_NET=y
++
++#
++# Networking options
++#
++CONFIG_PACKET=y
++# CONFIG_PACKET_DIAG is not set
++CONFIG_UNIX=y
++# CONFIG_UNIX_DIAG is not set
++CONFIG_XFRM=y
++CONFIG_XFRM_ALGO=y
++CONFIG_XFRM_USER=m
++# CONFIG_XFRM_SUB_POLICY is not set
++CONFIG_XFRM_MIGRATE=y
++# CONFIG_XFRM_STATISTICS is not set
++CONFIG_XFRM_IPCOMP=m
++CONFIG_NET_KEY=y
++CONFIG_NET_KEY_MIGRATE=y
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_ADVANCED_ROUTER=y
++# CONFIG_IP_FIB_TRIE_STATS is not set
++CONFIG_IP_MULTIPLE_TABLES=y
++CONFIG_IP_ROUTE_MULTIPATH=y
++CONFIG_IP_ROUTE_VERBOSE=y
++CONFIG_IP_ROUTE_CLASSID=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_IP_PNP_BOOTP=y
++# CONFIG_IP_PNP_RARP is not set
++CONFIG_NET_IPIP=m
++# CONFIG_NET_IPGRE_DEMUX is not set
++CONFIG_IP_MROUTE=y
++# CONFIG_IP_MROUTE_MULTIPLE_TABLES is not set
++CONFIG_IP_PIMSM_V1=y
++CONFIG_IP_PIMSM_V2=y
++# CONFIG_ARPD is not set
++CONFIG_SYN_COOKIES=y
++# CONFIG_NET_IPVTI is not set
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=m
++CONFIG_INET_IPCOMP=m
++CONFIG_INET_XFRM_TUNNEL=m
++CONFIG_INET_TUNNEL=m
++CONFIG_INET_XFRM_MODE_TRANSPORT=m
++CONFIG_INET_XFRM_MODE_TUNNEL=m
++CONFIG_INET_XFRM_MODE_BEET=y
++CONFIG_INET_LRO=y
++CONFIG_INET_DIAG=y
++CONFIG_INET_TCP_DIAG=y
++# CONFIG_INET_UDP_DIAG is not set
++# CONFIG_TCP_CONG_ADVANCED is not set
++CONFIG_TCP_CONG_CUBIC=y
++CONFIG_DEFAULT_TCP_CONG="cubic"
++CONFIG_TCP_MD5SIG=y
++CONFIG_IPV6=m
++CONFIG_IPV6_PRIVACY=y
++CONFIG_IPV6_ROUTER_PREF=y
++CONFIG_IPV6_ROUTE_INFO=y
++CONFIG_IPV6_OPTIMISTIC_DAD=y
++CONFIG_INET6_AH=m
++CONFIG_INET6_ESP=m
++CONFIG_INET6_IPCOMP=m
++# CONFIG_IPV6_MIP6 is not set
++CONFIG_INET6_XFRM_TUNNEL=m
++CONFIG_INET6_TUNNEL=m
++CONFIG_INET6_XFRM_MODE_TRANSPORT=m
++CONFIG_INET6_XFRM_MODE_TUNNEL=m
++CONFIG_INET6_XFRM_MODE_BEET=m
++# CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION is not set
++CONFIG_IPV6_SIT=m
++# CONFIG_IPV6_SIT_6RD is not set
++CONFIG_IPV6_NDISC_NODETYPE=y
++CONFIG_IPV6_TUNNEL=m
++# CONFIG_IPV6_GRE is not set
++# CONFIG_IPV6_MULTIPLE_TABLES is not set
++CONFIG_IPV6_MROUTE=y
++# CONFIG_IPV6_MROUTE_MULTIPLE_TABLES is not set
++CONFIG_IPV6_PIMSM_V2=y
++CONFIG_NETWORK_SECMARK=y
++# CONFIG_NETWORK_PHY_TIMESTAMPING is not set
++CONFIG_NETFILTER=y
++# CONFIG_NETFILTER_DEBUG is not set
++CONFIG_NETFILTER_ADVANCED=y
++CONFIG_BRIDGE_NETFILTER=y
++
++#
++# Core Netfilter Configuration
++#
++CONFIG_NETFILTER_NETLINK=m
++# CONFIG_NETFILTER_NETLINK_ACCT is not set
++CONFIG_NETFILTER_NETLINK_QUEUE=m
++CONFIG_NETFILTER_NETLINK_LOG=m
++CONFIG_NF_CONNTRACK=m
++CONFIG_NF_CONNTRACK_MARK=y
++CONFIG_NF_CONNTRACK_SECMARK=y
++CONFIG_NF_CONNTRACK_PROCFS=y
++CONFIG_NF_CONNTRACK_EVENTS=y
++# CONFIG_NF_CONNTRACK_TIMEOUT is not set
++# CONFIG_NF_CONNTRACK_TIMESTAMP is not set
++CONFIG_NF_CT_PROTO_DCCP=m
++CONFIG_NF_CT_PROTO_GRE=m
++CONFIG_NF_CT_PROTO_SCTP=m
++CONFIG_NF_CT_PROTO_UDPLITE=m
++CONFIG_NF_CONNTRACK_AMANDA=m
++CONFIG_NF_CONNTRACK_FTP=m
++CONFIG_NF_CONNTRACK_H323=m
++CONFIG_NF_CONNTRACK_IRC=m
++# CONFIG_NF_CONNTRACK_NETBIOS_NS is not set
++# CONFIG_NF_CONNTRACK_SNMP is not set
++CONFIG_NF_CONNTRACK_PPTP=m
++CONFIG_NF_CONNTRACK_SANE=m
++CONFIG_NF_CONNTRACK_SIP=m
++CONFIG_NF_CONNTRACK_TFTP=m
++CONFIG_NF_CT_NETLINK=m
++# CONFIG_NF_CT_NETLINK_TIMEOUT is not set
++# CONFIG_NETFILTER_NETLINK_QUEUE_CT is not set
++CONFIG_NETFILTER_TPROXY=m
++CONFIG_NETFILTER_XTABLES=m
++
++#
++# Xtables combined modules
++#
++CONFIG_NETFILTER_XT_MARK=m
++CONFIG_NETFILTER_XT_CONNMARK=m
++
++#
++# Xtables targets
++#
++# CONFIG_NETFILTER_XT_TARGET_CHECKSUM is not set
++CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
++CONFIG_NETFILTER_XT_TARGET_CONNMARK=m
++# CONFIG_NETFILTER_XT_TARGET_CONNSECMARK is not set
++# CONFIG_NETFILTER_XT_TARGET_CT is not set
++# CONFIG_NETFILTER_XT_TARGET_DSCP is not set
++CONFIG_NETFILTER_XT_TARGET_HL=m
++# CONFIG_NETFILTER_XT_TARGET_HMARK is not set
++# CONFIG_NETFILTER_XT_TARGET_IDLETIMER is not set
++# CONFIG_NETFILTER_XT_TARGET_LOG is not set
++CONFIG_NETFILTER_XT_TARGET_MARK=m
++CONFIG_NETFILTER_XT_TARGET_NFLOG=m
++CONFIG_NETFILTER_XT_TARGET_NFQUEUE=m
++CONFIG_NETFILTER_XT_TARGET_RATEEST=m
++# CONFIG_NETFILTER_XT_TARGET_TEE is not set
++CONFIG_NETFILTER_XT_TARGET_TPROXY=m
++CONFIG_NETFILTER_XT_TARGET_TRACE=m
++CONFIG_NETFILTER_XT_TARGET_SECMARK=m
++CONFIG_NETFILTER_XT_TARGET_TCPMSS=m
++CONFIG_NETFILTER_XT_TARGET_TCPOPTSTRIP=m
++
++#
++# Xtables matches
++#
++# CONFIG_NETFILTER_XT_MATCH_ADDRTYPE is not set
++# CONFIG_NETFILTER_XT_MATCH_CLUSTER is not set
++CONFIG_NETFILTER_XT_MATCH_COMMENT=m
++CONFIG_NETFILTER_XT_MATCH_CONNBYTES=m
++CONFIG_NETFILTER_XT_MATCH_CONNLIMIT=m
++CONFIG_NETFILTER_XT_MATCH_CONNMARK=m
++CONFIG_NETFILTER_XT_MATCH_CONNTRACK=m
++# CONFIG_NETFILTER_XT_MATCH_CPU is not set
++CONFIG_NETFILTER_XT_MATCH_DCCP=m
++# CONFIG_NETFILTER_XT_MATCH_DEVGROUP is not set
++# CONFIG_NETFILTER_XT_MATCH_DSCP is not set
++CONFIG_NETFILTER_XT_MATCH_ECN=m
++CONFIG_NETFILTER_XT_MATCH_ESP=m
++CONFIG_NETFILTER_XT_MATCH_HASHLIMIT=m
++CONFIG_NETFILTER_XT_MATCH_HELPER=m
++CONFIG_NETFILTER_XT_MATCH_HL=m
++CONFIG_NETFILTER_XT_MATCH_IPRANGE=m
++# CONFIG_NETFILTER_XT_MATCH_IPVS is not set
++CONFIG_NETFILTER_XT_MATCH_LENGTH=m
++CONFIG_NETFILTER_XT_MATCH_LIMIT=m
++CONFIG_NETFILTER_XT_MATCH_MAC=m
++CONFIG_NETFILTER_XT_MATCH_MARK=m
++CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
++# CONFIG_NETFILTER_XT_MATCH_NFACCT is not set
++# CONFIG_NETFILTER_XT_MATCH_OSF is not set
++CONFIG_NETFILTER_XT_MATCH_OWNER=m
++CONFIG_NETFILTER_XT_MATCH_POLICY=m
++# CONFIG_NETFILTER_XT_MATCH_PHYSDEV is not set
++CONFIG_NETFILTER_XT_MATCH_PKTTYPE=m
++CONFIG_NETFILTER_XT_MATCH_QUOTA=m
++CONFIG_NETFILTER_XT_MATCH_RATEEST=m
++CONFIG_NETFILTER_XT_MATCH_REALM=m
++CONFIG_NETFILTER_XT_MATCH_RECENT=m
++CONFIG_NETFILTER_XT_MATCH_SCTP=m
++CONFIG_NETFILTER_XT_MATCH_SOCKET=m
++CONFIG_NETFILTER_XT_MATCH_STATE=m
++CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
++CONFIG_NETFILTER_XT_MATCH_STRING=m
++CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
++CONFIG_NETFILTER_XT_MATCH_TIME=m
++CONFIG_NETFILTER_XT_MATCH_U32=m
++# CONFIG_IP_SET is not set
++CONFIG_IP_VS=m
++CONFIG_IP_VS_IPV6=y
++# CONFIG_IP_VS_DEBUG is not set
++CONFIG_IP_VS_TAB_BITS=12
++
++#
++# IPVS transport protocol load balancing support
++#
++CONFIG_IP_VS_PROTO_TCP=y
++CONFIG_IP_VS_PROTO_UDP=y
++CONFIG_IP_VS_PROTO_AH_ESP=y
++CONFIG_IP_VS_PROTO_ESP=y
++CONFIG_IP_VS_PROTO_AH=y
++# CONFIG_IP_VS_PROTO_SCTP is not set
++
++#
++# IPVS scheduler
++#
++CONFIG_IP_VS_RR=m
++CONFIG_IP_VS_WRR=m
++CONFIG_IP_VS_LC=m
++CONFIG_IP_VS_WLC=m
++CONFIG_IP_VS_LBLC=m
++CONFIG_IP_VS_LBLCR=m
++CONFIG_IP_VS_DH=m
++CONFIG_IP_VS_SH=m
++CONFIG_IP_VS_SED=m
++CONFIG_IP_VS_NQ=m
++
++#
++# IPVS SH scheduler
++#
++CONFIG_IP_VS_SH_TAB_BITS=8
++
++#
++# IPVS application helper
++#
++# CONFIG_IP_VS_NFCT is not set
++# CONFIG_IP_VS_PE_SIP is not set
++
++#
++# IP: Netfilter Configuration
++#
++CONFIG_NF_DEFRAG_IPV4=m
++CONFIG_NF_CONNTRACK_IPV4=m
++CONFIG_NF_CONNTRACK_PROC_COMPAT=y
++CONFIG_IP_NF_QUEUE=m
++CONFIG_IP_NF_IPTABLES=m
++CONFIG_IP_NF_MATCH_AH=m
++CONFIG_IP_NF_MATCH_ECN=m
++# CONFIG_IP_NF_MATCH_RPFILTER is not set
++CONFIG_IP_NF_MATCH_TTL=m
++CONFIG_IP_NF_FILTER=m
++CONFIG_IP_NF_TARGET_REJECT=m
++CONFIG_IP_NF_TARGET_ULOG=m
++# CONFIG_NF_NAT_IPV4 is not set
++CONFIG_IP_NF_MANGLE=m
++CONFIG_IP_NF_TARGET_CLUSTERIP=m
++CONFIG_IP_NF_TARGET_ECN=m
++CONFIG_IP_NF_TARGET_TTL=m
++CONFIG_IP_NF_RAW=m
++CONFIG_IP_NF_ARPTABLES=m
++CONFIG_IP_NF_ARPFILTER=m
++CONFIG_IP_NF_ARP_MANGLE=m
++
++#
++# IPv6: Netfilter Configuration
++#
++CONFIG_NF_DEFRAG_IPV6=m
++CONFIG_NF_CONNTRACK_IPV6=m
++CONFIG_IP6_NF_IPTABLES=m
++CONFIG_IP6_NF_MATCH_AH=m
++CONFIG_IP6_NF_MATCH_EUI64=m
++CONFIG_IP6_NF_MATCH_FRAG=m
++CONFIG_IP6_NF_MATCH_OPTS=m
++CONFIG_IP6_NF_MATCH_HL=m
++CONFIG_IP6_NF_MATCH_IPV6HEADER=m
++CONFIG_IP6_NF_MATCH_MH=m
++# CONFIG_IP6_NF_MATCH_RPFILTER is not set
++CONFIG_IP6_NF_MATCH_RT=m
++CONFIG_IP6_NF_TARGET_HL=m
++CONFIG_IP6_NF_FILTER=m
++CONFIG_IP6_NF_TARGET_REJECT=m
++CONFIG_IP6_NF_MANGLE=m
++CONFIG_IP6_NF_RAW=m
++# CONFIG_NF_NAT_IPV6 is not set
++CONFIG_BRIDGE_NF_EBTABLES=m
++CONFIG_BRIDGE_EBT_BROUTE=m
++CONFIG_BRIDGE_EBT_T_FILTER=m
++CONFIG_BRIDGE_EBT_T_NAT=m
++CONFIG_BRIDGE_EBT_802_3=m
++CONFIG_BRIDGE_EBT_AMONG=m
++CONFIG_BRIDGE_EBT_ARP=m
++CONFIG_BRIDGE_EBT_IP=m
++CONFIG_BRIDGE_EBT_IP6=m
++CONFIG_BRIDGE_EBT_LIMIT=m
++CONFIG_BRIDGE_EBT_MARK=m
++CONFIG_BRIDGE_EBT_PKTTYPE=m
++CONFIG_BRIDGE_EBT_STP=m
++CONFIG_BRIDGE_EBT_VLAN=m
++CONFIG_BRIDGE_EBT_ARPREPLY=m
++CONFIG_BRIDGE_EBT_DNAT=m
++CONFIG_BRIDGE_EBT_MARK_T=m
++CONFIG_BRIDGE_EBT_REDIRECT=m
++CONFIG_BRIDGE_EBT_SNAT=m
++CONFIG_BRIDGE_EBT_LOG=m
++CONFIG_BRIDGE_EBT_ULOG=m
++CONFIG_BRIDGE_EBT_NFLOG=m
++# CONFIG_IP_DCCP is not set
++CONFIG_IP_SCTP=m
++# CONFIG_SCTP_DBG_MSG is not set
++# CONFIG_SCTP_DBG_OBJCNT is not set
++# CONFIG_SCTP_HMAC_NONE is not set
++# CONFIG_SCTP_HMAC_SHA1 is not set
++CONFIG_SCTP_HMAC_MD5=y
++# CONFIG_RDS is not set
++# CONFIG_TIPC is not set
++# CONFIG_ATM is not set
++# CONFIG_L2TP is not set
++CONFIG_STP=m
++CONFIG_GARP=m
++CONFIG_BRIDGE=m
++CONFIG_BRIDGE_IGMP_SNOOPING=y
++# CONFIG_NET_DSA is not set
++CONFIG_VLAN_8021Q=m
++CONFIG_VLAN_8021Q_GVRP=y
++# CONFIG_DECNET is not set
++CONFIG_LLC=m
++# CONFIG_LLC2 is not set
++# CONFIG_IPX is not set
++CONFIG_ATALK=m
++CONFIG_DEV_APPLETALK=m
++CONFIG_IPDDP=m
++CONFIG_IPDDP_ENCAP=y
++CONFIG_IPDDP_DECAP=y
++# CONFIG_X25 is not set
++# CONFIG_LAPB is not set
++# CONFIG_WAN_ROUTER is not set
++CONFIG_PHONET=m
++# CONFIG_IEEE802154 is not set
++CONFIG_NET_SCHED=y
++
++#
++# Queueing/Scheduling
++#
++CONFIG_NET_SCH_CBQ=m
++CONFIG_NET_SCH_HTB=m
++CONFIG_NET_SCH_HFSC=m
++CONFIG_NET_SCH_PRIO=m
++# CONFIG_NET_SCH_MULTIQ is not set
++CONFIG_NET_SCH_RED=m
++# CONFIG_NET_SCH_SFB is not set
++CONFIG_NET_SCH_SFQ=m
++CONFIG_NET_SCH_TEQL=m
++CONFIG_NET_SCH_TBF=m
++CONFIG_NET_SCH_GRED=m
++CONFIG_NET_SCH_DSMARK=m
++CONFIG_NET_SCH_NETEM=m
++# CONFIG_NET_SCH_DRR is not set
++# CONFIG_NET_SCH_MQPRIO is not set
++# CONFIG_NET_SCH_CHOKE is not set
++# CONFIG_NET_SCH_QFQ is not set
++# CONFIG_NET_SCH_CODEL is not set
++# CONFIG_NET_SCH_FQ_CODEL is not set
++CONFIG_NET_SCH_INGRESS=m
++# CONFIG_NET_SCH_PLUG is not set
++
++#
++# Classification
++#
++CONFIG_NET_CLS=y
++CONFIG_NET_CLS_BASIC=m
++CONFIG_NET_CLS_TCINDEX=m
++CONFIG_NET_CLS_ROUTE4=m
++CONFIG_NET_CLS_FW=m
++CONFIG_NET_CLS_U32=m
++# CONFIG_CLS_U32_PERF is not set
++# CONFIG_CLS_U32_MARK is not set
++CONFIG_NET_CLS_RSVP=m
++CONFIG_NET_CLS_RSVP6=m
++CONFIG_NET_CLS_FLOW=m
++# CONFIG_NET_EMATCH is not set
++CONFIG_NET_CLS_ACT=y
++CONFIG_NET_ACT_POLICE=y
++CONFIG_NET_ACT_GACT=m
++CONFIG_GACT_PROB=y
++CONFIG_NET_ACT_MIRRED=m
++CONFIG_NET_ACT_IPT=m
++CONFIG_NET_ACT_NAT=m
++CONFIG_NET_ACT_PEDIT=m
++CONFIG_NET_ACT_SIMP=m
++CONFIG_NET_ACT_SKBEDIT=m
++# CONFIG_NET_ACT_CSUM is not set
++CONFIG_NET_CLS_IND=y
++CONFIG_NET_SCH_FIFO=y
++# CONFIG_DCB is not set
++# CONFIG_BATMAN_ADV is not set
++# CONFIG_OPENVSWITCH is not set
++CONFIG_BQL=y
++
++#
++# Network testing
++#
++# CONFIG_NET_PKTGEN is not set
++# CONFIG_HAMRADIO is not set
++# CONFIG_CAN is not set
++# CONFIG_IRDA is not set
++# CONFIG_BT is not set
++# CONFIG_AF_RXRPC is not set
++CONFIG_FIB_RULES=y
++CONFIG_WIRELESS=y
++CONFIG_WIRELESS_EXT=y
++CONFIG_WEXT_CORE=y
++CONFIG_WEXT_PROC=y
++CONFIG_WEXT_SPY=y
++CONFIG_WEXT_PRIV=y
++CONFIG_CFG80211=m
++# CONFIG_NL80211_TESTMODE is not set
++# CONFIG_CFG80211_DEVELOPER_WARNINGS is not set
++# CONFIG_CFG80211_REG_DEBUG is not set
++# CONFIG_CFG80211_CERTIFICATION_ONUS is not set
++CONFIG_CFG80211_DEFAULT_PS=y
++# CONFIG_CFG80211_INTERNAL_REGDB is not set
++# CONFIG_CFG80211_WEXT is not set
++CONFIG_LIB80211=m
++CONFIG_LIB80211_CRYPT_WEP=m
++CONFIG_LIB80211_CRYPT_CCMP=m
++CONFIG_LIB80211_CRYPT_TKIP=m
++# CONFIG_LIB80211_DEBUG is not set
++CONFIG_MAC80211=m
++CONFIG_MAC80211_HAS_RC=y
++CONFIG_MAC80211_RC_PID=y
++CONFIG_MAC80211_RC_MINSTREL=y
++CONFIG_MAC80211_RC_MINSTREL_HT=y
++CONFIG_MAC80211_RC_DEFAULT_PID=y
++# CONFIG_MAC80211_RC_DEFAULT_MINSTREL is not set
++CONFIG_MAC80211_RC_DEFAULT="pid"
++CONFIG_MAC80211_MESH=y
++# CONFIG_MAC80211_MESSAGE_TRACING is not set
++# CONFIG_MAC80211_DEBUG_MENU is not set
++# CONFIG_WIMAX is not set
++CONFIG_RFKILL=m
++# CONFIG_RFKILL_INPUT is not set
++# CONFIG_NET_9P is not set
++# CONFIG_CAIF is not set
++# CONFIG_CEPH_LIB is not set
++# CONFIG_NFC is not set
++
++#
++# Device Drivers
++#
++
++#
++# Generic Driver Options
++#
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++# CONFIG_DEVTMPFS is not set
++CONFIG_STANDALONE=y
++CONFIG_PREVENT_FIRMWARE_BUILD=y
++CONFIG_FW_LOADER=y
++CONFIG_FIRMWARE_IN_KERNEL=y
++CONFIG_EXTRA_FIRMWARE=""
++# CONFIG_DEBUG_DRIVER is not set
++# CONFIG_DEBUG_DEVRES is not set
++# CONFIG_SYS_HYPERVISOR is not set
++# CONFIG_GENERIC_CPU_DEVICES is not set
++# CONFIG_DMA_SHARED_BUFFER is not set
++
++#
++# Bus devices
++#
++# CONFIG_OMAP_OCP2SCP is not set
++CONFIG_CONNECTOR=m
++CONFIG_MTD=y
++# CONFIG_MTD_TESTS is not set
++# CONFIG_MTD_REDBOOT_PARTS is not set
++# CONFIG_MTD_CMDLINE_PARTS is not set
++# CONFIG_MTD_AR7_PARTS is not set
++
++#
++# User Modules And Translation Layers
++#
++CONFIG_MTD_CHAR=y
++CONFIG_MTD_BLKDEVS=y
++CONFIG_MTD_BLOCK=y
++# CONFIG_FTL is not set
++# CONFIG_NFTL is not set
++# CONFIG_INFTL is not set
++# CONFIG_RFD_FTL is not set
++# CONFIG_SSFDC is not set
++# CONFIG_SM_FTL is not set
++CONFIG_MTD_OOPS=m
++# CONFIG_MTD_SWAP is not set
++
++#
++# RAM/ROM/Flash chip drivers
++#
++CONFIG_MTD_CFI=y
++# CONFIG_MTD_JEDECPROBE is not set
++CONFIG_MTD_GEN_PROBE=y
++# CONFIG_MTD_CFI_ADV_OPTIONS is not set
++CONFIG_MTD_MAP_BANK_WIDTH_1=y
++CONFIG_MTD_MAP_BANK_WIDTH_2=y
++CONFIG_MTD_MAP_BANK_WIDTH_4=y
++# CONFIG_MTD_MAP_BANK_WIDTH_8 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_16 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_32 is not set
++CONFIG_MTD_CFI_I1=y
++CONFIG_MTD_CFI_I2=y
++# CONFIG_MTD_CFI_I4 is not set
++# CONFIG_MTD_CFI_I8 is not set
++CONFIG_MTD_CFI_INTELEXT=y
++CONFIG_MTD_CFI_AMDSTD=y
++CONFIG_MTD_CFI_STAA=y
++CONFIG_MTD_CFI_UTIL=y
++# CONFIG_MTD_RAM is not set
++# CONFIG_MTD_ROM is not set
++# CONFIG_MTD_ABSENT is not set
++
++#
++# Mapping drivers for chip access
++#
++# CONFIG_MTD_COMPLEX_MAPPINGS is not set
++CONFIG_MTD_PHYSMAP=y
++# CONFIG_MTD_PHYSMAP_COMPAT is not set
++# CONFIG_MTD_INTEL_VR_NOR is not set
++# CONFIG_MTD_PLATRAM is not set
++
++#
++# Self-contained MTD device drivers
++#
++# CONFIG_MTD_PMC551 is not set
++# CONFIG_MTD_SLRAM is not set
++# CONFIG_MTD_PHRAM is not set
++# CONFIG_MTD_MTDRAM is not set
++# CONFIG_MTD_BLOCK2MTD is not set
++
++#
++# Disk-On-Chip Device Drivers
++#
++# CONFIG_MTD_DOCG3 is not set
++# CONFIG_MTD_NAND is not set
++# CONFIG_MTD_ONENAND is not set
++
++#
++# LPDDR flash memory drivers
++#
++# CONFIG_MTD_LPDDR is not set
++CONFIG_MTD_UBI=m
++CONFIG_MTD_UBI_WL_THRESHOLD=4096
++CONFIG_MTD_UBI_BEB_LIMIT=20
++# CONFIG_MTD_UBI_FASTMAP is not set
++CONFIG_MTD_UBI_GLUEBI=m
++# CONFIG_PARPORT is not set
++CONFIG_BLK_DEV=y
++CONFIG_BLK_DEV_FD=m
++# CONFIG_BLK_DEV_PCIESSD_MTIP32XX is not set
++# CONFIG_BLK_CPQ_DA is not set
++# CONFIG_BLK_CPQ_CISS_DA is not set
++# CONFIG_BLK_DEV_DAC960 is not set
++CONFIG_BLK_DEV_UMEM=m
++# CONFIG_BLK_DEV_COW_COMMON is not set
++CONFIG_BLK_DEV_LOOP=m
++CONFIG_BLK_DEV_LOOP_MIN_COUNT=8
++CONFIG_BLK_DEV_CRYPTOLOOP=m
++# CONFIG_BLK_DEV_DRBD is not set
++CONFIG_BLK_DEV_NBD=m
++# CONFIG_BLK_DEV_NVME is not set
++# CONFIG_BLK_DEV_SX8 is not set
++CONFIG_BLK_DEV_RAM=y
++CONFIG_BLK_DEV_RAM_COUNT=16
++CONFIG_BLK_DEV_RAM_SIZE=4096
++# CONFIG_BLK_DEV_XIP is not set
++CONFIG_CDROM_PKTCDVD=m
++CONFIG_CDROM_PKTCDVD_BUFFERS=8
++# CONFIG_CDROM_PKTCDVD_WCACHE is not set
++CONFIG_ATA_OVER_ETH=m
++CONFIG_VIRTIO_BLK=y
++# CONFIG_BLK_DEV_HD is not set
++# CONFIG_BLK_DEV_RBD is not set
++
++#
++# Misc devices
++#
++# CONFIG_SENSORS_LIS3LV02D is not set
++# CONFIG_PHANTOM is not set
++# CONFIG_INTEL_MID_PTI is not set
++# CONFIG_SGI_IOC4 is not set
++# CONFIG_TIFM_CORE is not set
++# CONFIG_ENCLOSURE_SERVICES is not set
++# CONFIG_HP_ILO is not set
++# CONFIG_PCH_PHUB is not set
++# CONFIG_C2PORT is not set
++
++#
++# EEPROM support
++#
++# CONFIG_EEPROM_93CX6 is not set
++# CONFIG_CB710_CORE is not set
++
++#
++# Texas Instruments shared transport line discipline
++#
++
++#
++# Altera FPGA firmware download module
++#
++CONFIG_HAVE_IDE=y
++CONFIG_IDE=y
++
++#
++# Please see Documentation/ide/ide.txt for help/info on IDE drives
++#
++CONFIG_IDE_XFER_MODE=y
++CONFIG_IDE_ATAPI=y
++# CONFIG_BLK_DEV_IDE_SATA is not set
++CONFIG_IDE_GD=y
++CONFIG_IDE_GD_ATA=y
++# CONFIG_IDE_GD_ATAPI is not set
++CONFIG_BLK_DEV_IDECD=y
++CONFIG_BLK_DEV_IDECD_VERBOSE_ERRORS=y
++# CONFIG_BLK_DEV_IDETAPE is not set
++# CONFIG_IDE_TASK_IOCTL is not set
++CONFIG_IDE_PROC_FS=y
++
++#
++# IDE chipset support/bugfixes
++#
++CONFIG_IDE_GENERIC=y
++# CONFIG_BLK_DEV_PLATFORM is not set
++CONFIG_BLK_DEV_IDEDMA_SFF=y
++
++#
++# PCI IDE chipsets support
++#
++CONFIG_BLK_DEV_IDEPCI=y
++CONFIG_IDEPCI_PCIBUS_ORDER=y
++# CONFIG_BLK_DEV_OFFBOARD is not set
++CONFIG_BLK_DEV_GENERIC=y
++# CONFIG_BLK_DEV_OPTI621 is not set
++CONFIG_BLK_DEV_IDEDMA_PCI=y
++# CONFIG_BLK_DEV_AEC62XX is not set
++# CONFIG_BLK_DEV_ALI15X3 is not set
++# CONFIG_BLK_DEV_AMD74XX is not set
++# CONFIG_BLK_DEV_CMD64X is not set
++# CONFIG_BLK_DEV_TRIFLEX is not set
++# CONFIG_BLK_DEV_CS5520 is not set
++# CONFIG_BLK_DEV_CS5530 is not set
++# CONFIG_BLK_DEV_HPT366 is not set
++# CONFIG_BLK_DEV_JMICRON is not set
++# CONFIG_BLK_DEV_SC1200 is not set
++CONFIG_BLK_DEV_PIIX=y
++# CONFIG_BLK_DEV_IT8172 is not set
++CONFIG_BLK_DEV_IT8213=m
++# CONFIG_BLK_DEV_IT821X is not set
++# CONFIG_BLK_DEV_NS87415 is not set
++# CONFIG_BLK_DEV_PDC202XX_OLD is not set
++# CONFIG_BLK_DEV_PDC202XX_NEW is not set
++# CONFIG_BLK_DEV_SVWKS is not set
++# CONFIG_BLK_DEV_SIIMAGE is not set
++# CONFIG_BLK_DEV_SLC90E66 is not set
++# CONFIG_BLK_DEV_TRM290 is not set
++# CONFIG_BLK_DEV_VIA82CXXX is not set
++CONFIG_BLK_DEV_TC86C001=m
++CONFIG_BLK_DEV_IDEDMA=y
++
++#
++# SCSI device support
++#
++CONFIG_SCSI_MOD=m
++CONFIG_RAID_ATTRS=m
++CONFIG_SCSI=m
++CONFIG_SCSI_DMA=y
++CONFIG_SCSI_TGT=m
++CONFIG_SCSI_NETLINK=y
++CONFIG_SCSI_PROC_FS=y
++
++#
++# SCSI support type (disk, tape, CD-ROM)
++#
++CONFIG_BLK_DEV_SD=m
++CONFIG_CHR_DEV_ST=m
++CONFIG_CHR_DEV_OSST=m
++CONFIG_BLK_DEV_SR=m
++CONFIG_BLK_DEV_SR_VENDOR=y
++CONFIG_CHR_DEV_SG=m
++# CONFIG_CHR_DEV_SCH is not set
++CONFIG_SCSI_MULTI_LUN=y
++CONFIG_SCSI_CONSTANTS=y
++CONFIG_SCSI_LOGGING=y
++CONFIG_SCSI_SCAN_ASYNC=y
++
++#
++# SCSI Transports
++#
++CONFIG_SCSI_SPI_ATTRS=m
++CONFIG_SCSI_FC_ATTRS=m
++# CONFIG_SCSI_FC_TGT_ATTRS is not set
++CONFIG_SCSI_ISCSI_ATTRS=m
++# CONFIG_SCSI_SAS_ATTRS is not set
++# CONFIG_SCSI_SAS_LIBSAS is not set
++# CONFIG_SCSI_SRP_ATTRS is not set
++CONFIG_SCSI_LOWLEVEL=y
++CONFIG_ISCSI_TCP=m
++# CONFIG_ISCSI_BOOT_SYSFS is not set
++# CONFIG_SCSI_CXGB3_ISCSI is not set
++# CONFIG_SCSI_CXGB4_ISCSI is not set
++# CONFIG_SCSI_BNX2_ISCSI is not set
++# CONFIG_SCSI_BNX2X_FCOE is not set
++# CONFIG_BE2ISCSI is not set
++CONFIG_BLK_DEV_3W_XXXX_RAID=m
++# CONFIG_SCSI_HPSA is not set
++CONFIG_SCSI_3W_9XXX=m
++# CONFIG_SCSI_3W_SAS is not set
++CONFIG_SCSI_ACARD=m
++CONFIG_SCSI_AACRAID=m
++CONFIG_SCSI_AIC7XXX=m
++CONFIG_AIC7XXX_CMDS_PER_DEVICE=32
++CONFIG_AIC7XXX_RESET_DELAY_MS=15000
++# CONFIG_AIC7XXX_DEBUG_ENABLE is not set
++CONFIG_AIC7XXX_DEBUG_MASK=0
++CONFIG_AIC7XXX_REG_PRETTY_PRINT=y
++# CONFIG_SCSI_AIC7XXX_OLD is not set
++# CONFIG_SCSI_AIC79XX is not set
++# CONFIG_SCSI_AIC94XX is not set
++# CONFIG_SCSI_MVSAS is not set
++# CONFIG_SCSI_MVUMI is not set
++# CONFIG_SCSI_DPT_I2O is not set
++# CONFIG_SCSI_ADVANSYS is not set
++# CONFIG_SCSI_ARCMSR is not set
++# CONFIG_MEGARAID_NEWGEN is not set
++# CONFIG_MEGARAID_LEGACY is not set
++# CONFIG_MEGARAID_SAS is not set
++# CONFIG_SCSI_MPT2SAS is not set
++# CONFIG_SCSI_UFSHCD is not set
++# CONFIG_SCSI_HPTIOP is not set
++# CONFIG_SCSI_BUSLOGIC is not set
++# CONFIG_LIBFC is not set
++# CONFIG_LIBFCOE is not set
++# CONFIG_FCOE is not set
++# CONFIG_SCSI_DMX3191D is not set
++# CONFIG_SCSI_EATA is not set
++# CONFIG_SCSI_FUTURE_DOMAIN is not set
++# CONFIG_SCSI_GDTH is not set
++# CONFIG_SCSI_IPS is not set
++# CONFIG_SCSI_INITIO is not set
++# CONFIG_SCSI_INIA100 is not set
++# CONFIG_SCSI_STEX is not set
++# CONFIG_SCSI_SYM53C8XX_2 is not set
++# CONFIG_SCSI_QLOGIC_1280 is not set
++# CONFIG_SCSI_QLA_FC is not set
++# CONFIG_SCSI_QLA_ISCSI is not set
++# CONFIG_SCSI_LPFC is not set
++# CONFIG_SCSI_DC395x is not set
++# CONFIG_SCSI_DC390T is not set
++# CONFIG_SCSI_NSP32 is not set
++# CONFIG_SCSI_DEBUG is not set
++# CONFIG_SCSI_PMCRAID is not set
++# CONFIG_SCSI_PM8001 is not set
++# CONFIG_SCSI_SRP is not set
++# CONFIG_SCSI_BFA_FC is not set
++# CONFIG_SCSI_VIRTIO is not set
++# CONFIG_SCSI_DH is not set
++# CONFIG_SCSI_OSD_INITIATOR is not set
++# CONFIG_ATA is not set
++CONFIG_MD=y
++CONFIG_BLK_DEV_MD=m
++CONFIG_MD_LINEAR=m
++CONFIG_MD_RAID0=m
++CONFIG_MD_RAID1=m
++CONFIG_MD_RAID10=m
++CONFIG_MD_RAID456=m
++CONFIG_MD_MULTIPATH=m
++CONFIG_MD_FAULTY=m
++CONFIG_BLK_DEV_DM=m
++# CONFIG_DM_DEBUG is not set
++CONFIG_DM_CRYPT=m
++CONFIG_DM_SNAPSHOT=m
++# CONFIG_DM_THIN_PROVISIONING is not set
++CONFIG_DM_MIRROR=m
++# CONFIG_DM_RAID is not set
++# CONFIG_DM_LOG_USERSPACE is not set
++CONFIG_DM_ZERO=m
++CONFIG_DM_MULTIPATH=m
++# CONFIG_DM_MULTIPATH_QL is not set
++# CONFIG_DM_MULTIPATH_ST is not set
++# CONFIG_DM_DELAY is not set
++# CONFIG_DM_UEVENT is not set
++# CONFIG_DM_FLAKEY is not set
++# CONFIG_DM_VERITY is not set
++# CONFIG_TARGET_CORE is not set
++# CONFIG_FUSION is not set
++
++#
++# IEEE 1394 (FireWire) support
++#
++# CONFIG_FIREWIRE is not set
++# CONFIG_FIREWIRE_NOSY is not set
++# CONFIG_I2O is not set
++CONFIG_NETDEVICES=y
++CONFIG_NET_CORE=y
++CONFIG_BONDING=m
++CONFIG_DUMMY=m
++CONFIG_EQUALIZER=m
++# CONFIG_NET_FC is not set
++CONFIG_MII=y
++CONFIG_IFB=m
++# CONFIG_NET_TEAM is not set
++CONFIG_MACVLAN=m
++# CONFIG_MACVTAP is not set
++# CONFIG_VXLAN is not set
++# CONFIG_NETCONSOLE is not set
++# CONFIG_NETPOLL is not set
++# CONFIG_NET_POLL_CONTROLLER is not set
++CONFIG_TUN=m
++CONFIG_VETH=m
++CONFIG_VIRTIO_NET=y
++# CONFIG_ARCNET is not set
++
++#
++# CAIF transport drivers
++#
++CONFIG_ETHERNET=y
++CONFIG_MDIO=m
++CONFIG_NET_VENDOR_3COM=y
++# CONFIG_VORTEX is not set
++# CONFIG_TYPHOON is not set
++CONFIG_NET_VENDOR_ADAPTEC=y
++# CONFIG_ADAPTEC_STARFIRE is not set
++CONFIG_NET_VENDOR_ALTEON=y
++# CONFIG_ACENIC is not set
++CONFIG_NET_VENDOR_AMD=y
++# CONFIG_AMD8111_ETH is not set
++CONFIG_PCNET32=y
++CONFIG_NET_VENDOR_ATHEROS=y
++# CONFIG_ATL2 is not set
++# CONFIG_ATL1 is not set
++# CONFIG_ATL1E is not set
++# CONFIG_ATL1C is not set
++CONFIG_NET_VENDOR_BROADCOM=y
++# CONFIG_B44 is not set
++# CONFIG_BNX2 is not set
++# CONFIG_CNIC is not set
++# CONFIG_TIGON3 is not set
++# CONFIG_BNX2X is not set
++CONFIG_NET_VENDOR_BROCADE=y
++# CONFIG_BNA is not set
++# CONFIG_NET_CALXEDA_XGMAC is not set
++CONFIG_NET_VENDOR_CHELSIO=y
++# CONFIG_CHELSIO_T1 is not set
++CONFIG_CHELSIO_T3=m
++# CONFIG_CHELSIO_T4 is not set
++# CONFIG_CHELSIO_T4VF is not set
++CONFIG_NET_VENDOR_CISCO=y
++# CONFIG_ENIC is not set
++# CONFIG_DM9000 is not set
++# CONFIG_DNET is not set
++CONFIG_NET_VENDOR_DEC=y
++# CONFIG_NET_TULIP is not set
++CONFIG_NET_VENDOR_DLINK=y
++# CONFIG_DL2K is not set
++# CONFIG_SUNDANCE is not set
++CONFIG_NET_VENDOR_EMULEX=y
++# CONFIG_BE2NET is not set
++CONFIG_NET_VENDOR_EXAR=y
++# CONFIG_S2IO is not set
++# CONFIG_VXGE is not set
++CONFIG_NET_VENDOR_HP=y
++# CONFIG_HP100 is not set
++CONFIG_NET_VENDOR_INTEL=y
++# CONFIG_E100 is not set
++# CONFIG_E1000 is not set
++# CONFIG_E1000E is not set
++# CONFIG_IGB is not set
++# CONFIG_IGBVF is not set
++# CONFIG_IXGB is not set
++# CONFIG_IXGBE is not set
++CONFIG_NET_VENDOR_I825XX=y
++# CONFIG_IP1000 is not set
++# CONFIG_JME is not set
++CONFIG_NET_VENDOR_MARVELL=y
++# CONFIG_SKGE is not set
++# CONFIG_SKY2 is not set
++CONFIG_NET_VENDOR_MELLANOX=y
++# CONFIG_MLX4_EN is not set
++# CONFIG_MLX4_CORE is not set
++CONFIG_NET_VENDOR_MICREL=y
++# CONFIG_KS8851_MLL is not set
++# CONFIG_KSZ884X_PCI is not set
++CONFIG_NET_VENDOR_MYRI=y
++# CONFIG_MYRI10GE is not set
++# CONFIG_FEALNX is not set
++CONFIG_NET_VENDOR_NATSEMI=y
++# CONFIG_NATSEMI is not set
++# CONFIG_NS83820 is not set
++CONFIG_NET_VENDOR_8390=y
++CONFIG_AX88796=m
++# CONFIG_AX88796_93CX6 is not set
++# CONFIG_NE2K_PCI is not set
++CONFIG_NET_VENDOR_NVIDIA=y
++# CONFIG_FORCEDETH is not set
++CONFIG_NET_VENDOR_OKI=y
++# CONFIG_PCH_GBE is not set
++# CONFIG_ETHOC is not set
++CONFIG_NET_PACKET_ENGINE=y
++# CONFIG_HAMACHI is not set
++# CONFIG_YELLOWFIN is not set
++CONFIG_NET_VENDOR_QLOGIC=y
++# CONFIG_QLA3XXX is not set
++# CONFIG_QLCNIC is not set
++# CONFIG_QLGE is not set
++CONFIG_NETXEN_NIC=m
++CONFIG_NET_VENDOR_REALTEK=y
++# CONFIG_8139CP is not set
++# CONFIG_8139TOO is not set
++# CONFIG_R8169 is not set
++CONFIG_NET_VENDOR_RDC=y
++# CONFIG_R6040 is not set
++CONFIG_NET_VENDOR_SEEQ=y
++# CONFIG_SEEQ8005 is not set
++CONFIG_NET_VENDOR_SILAN=y
++# CONFIG_SC92031 is not set
++CONFIG_NET_VENDOR_SIS=y
++# CONFIG_SIS900 is not set
++# CONFIG_SIS190 is not set
++# CONFIG_SFC is not set
++CONFIG_NET_VENDOR_SMSC=y
++# CONFIG_SMC91X is not set
++# CONFIG_EPIC100 is not set
++# CONFIG_SMSC911X is not set
++# CONFIG_SMSC9420 is not set
++CONFIG_NET_VENDOR_STMICRO=y
++# CONFIG_STMMAC_ETH is not set
++CONFIG_NET_VENDOR_SUN=y
++# CONFIG_HAPPYMEAL is not set
++# CONFIG_SUNGEM is not set
++# CONFIG_CASSINI is not set
++# CONFIG_NIU is not set
++CONFIG_NET_VENDOR_TEHUTI=y
++# CONFIG_TEHUTI is not set
++CONFIG_NET_VENDOR_TI=y
++# CONFIG_TLAN is not set
++CONFIG_NET_VENDOR_TOSHIBA=y
++CONFIG_TC35815=m
++CONFIG_NET_VENDOR_VIA=y
++# CONFIG_VIA_RHINE is not set
++# CONFIG_VIA_VELOCITY is not set
++CONFIG_NET_VENDOR_WIZNET=y
++# CONFIG_WIZNET_W5100 is not set
++# CONFIG_WIZNET_W5300 is not set
++# CONFIG_FDDI is not set
++# CONFIG_HIPPI is not set
++CONFIG_PHYLIB=m
++
++#
++# MII PHY device drivers
++#
++# CONFIG_AMD_PHY is not set
++CONFIG_MARVELL_PHY=m
++CONFIG_DAVICOM_PHY=m
++CONFIG_QSEMI_PHY=m
++CONFIG_LXT_PHY=m
++CONFIG_CICADA_PHY=m
++CONFIG_VITESSE_PHY=m
++CONFIG_SMSC_PHY=m
++CONFIG_BROADCOM_PHY=m
++# CONFIG_BCM87XX_PHY is not set
++CONFIG_ICPLUS_PHY=m
++CONFIG_REALTEK_PHY=m
++# CONFIG_NATIONAL_PHY is not set
++# CONFIG_STE10XP is not set
++# CONFIG_LSI_ET1011C_PHY is not set
++# CONFIG_MICREL_PHY is not set
++CONFIG_MDIO_BITBANG=m
++# CONFIG_PPP is not set
++# CONFIG_SLIP is not set
++CONFIG_WLAN=y
++# CONFIG_LIBERTAS_THINFIRM is not set
++# CONFIG_AIRO is not set
++CONFIG_ATMEL=m
++CONFIG_PCI_ATMEL=m
++CONFIG_PRISM54=m
++# CONFIG_RTL8180 is not set
++# CONFIG_ADM8211 is not set
++# CONFIG_MAC80211_HWSIM is not set
++# CONFIG_MWL8K is not set
++# CONFIG_ATH_COMMON is not set
++# CONFIG_B43 is not set
++# CONFIG_B43LEGACY is not set
++# CONFIG_BRCMFMAC is not set
++CONFIG_HOSTAP=m
++CONFIG_HOSTAP_FIRMWARE=y
++CONFIG_HOSTAP_FIRMWARE_NVRAM=y
++CONFIG_HOSTAP_PLX=m
++CONFIG_HOSTAP_PCI=m
++CONFIG_IPW2100=m
++CONFIG_IPW2100_MONITOR=y
++# CONFIG_IPW2100_DEBUG is not set
++CONFIG_LIBIPW=m
++# CONFIG_LIBIPW_DEBUG is not set
++# CONFIG_IWLWIFI is not set
++# CONFIG_IWL4965 is not set
++# CONFIG_IWL3945 is not set
++CONFIG_LIBERTAS=m
++# CONFIG_LIBERTAS_DEBUG is not set
++# CONFIG_LIBERTAS_MESH is not set
++# CONFIG_P54_COMMON is not set
++# CONFIG_RT2X00 is not set
++# CONFIG_RTL8192CE is not set
++# CONFIG_RTL8192SE is not set
++# CONFIG_RTL8192DE is not set
++# CONFIG_WL_TI is not set
++# CONFIG_MWIFIEX is not set
++
++#
++# Enable WiMAX (Networking options) to see the WiMAX drivers
++#
++# CONFIG_WAN is not set
++# CONFIG_VMXNET3 is not set
++# CONFIG_ISDN is not set
++
++#
++# Input device support
++#
++CONFIG_INPUT=y
++# CONFIG_INPUT_FF_MEMLESS is not set
++# CONFIG_INPUT_POLLDEV is not set
++# CONFIG_INPUT_SPARSEKMAP is not set
++# CONFIG_INPUT_MATRIXKMAP is not set
++
++#
++# Userland interfaces
++#
++CONFIG_INPUT_MOUSEDEV=y
++CONFIG_INPUT_MOUSEDEV_PSAUX=y
++CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
++CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
++# CONFIG_INPUT_JOYDEV is not set
++# CONFIG_INPUT_EVDEV is not set
++# CONFIG_INPUT_EVBUG is not set
++
++#
++# Input Device Drivers
++#
++# CONFIG_INPUT_KEYBOARD is not set
++# CONFIG_INPUT_MOUSE is not set
++# CONFIG_INPUT_JOYSTICK is not set
++# CONFIG_INPUT_TABLET is not set
++# CONFIG_INPUT_TOUCHSCREEN is not set
++# CONFIG_INPUT_MISC is not set
++
++#
++# Hardware I/O ports
++#
++CONFIG_SERIO=y
++# CONFIG_SERIO_I8042 is not set
++CONFIG_SERIO_SERPORT=y
++# CONFIG_SERIO_PCIPS2 is not set
++# CONFIG_SERIO_LIBPS2 is not set
++# CONFIG_SERIO_RAW is not set
++# CONFIG_SERIO_ALTERA_PS2 is not set
++# CONFIG_SERIO_PS2MULT is not set
++# CONFIG_GAMEPORT is not set
++
++#
++# Character devices
++#
++CONFIG_VT=y
++CONFIG_CONSOLE_TRANSLATIONS=y
++CONFIG_VT_CONSOLE=y
++CONFIG_VT_CONSOLE_SLEEP=y
++CONFIG_HW_CONSOLE=y
++CONFIG_VT_HW_CONSOLE_BINDING=y
++CONFIG_UNIX98_PTYS=y
++# CONFIG_DEVPTS_MULTIPLE_INSTANCES is not set
++CONFIG_LEGACY_PTYS=y
++CONFIG_LEGACY_PTY_COUNT=256
++# CONFIG_SERIAL_NONSTANDARD is not set
++# CONFIG_NOZOMI is not set
++# CONFIG_N_GSM is not set
++# CONFIG_TRACE_SINK is not set
++CONFIG_DEVKMEM=y
++
++#
++# Serial drivers
++#
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_8250_PCI=y
++CONFIG_SERIAL_8250_NR_UARTS=4
++CONFIG_SERIAL_8250_RUNTIME_UARTS=4
++# CONFIG_SERIAL_8250_EXTENDED is not set
++
++#
++# Non-8250 serial port support
++#
++# CONFIG_SERIAL_MFD_HSU is not set
++CONFIG_SERIAL_CORE=y
++CONFIG_SERIAL_CORE_CONSOLE=y
++# CONFIG_SERIAL_JSM is not set
++# CONFIG_SERIAL_SCCNXP is not set
++# CONFIG_SERIAL_TIMBERDALE is not set
++# CONFIG_SERIAL_ALTERA_JTAGUART is not set
++# CONFIG_SERIAL_ALTERA_UART is not set
++# CONFIG_SERIAL_PCH_UART is not set
++# CONFIG_SERIAL_XILINX_PS_UART is not set
++# CONFIG_TTY_PRINTK is not set
++# CONFIG_VIRTIO_CONSOLE is not set
++# CONFIG_IPMI_HANDLER is not set
++CONFIG_HW_RANDOM=m
++# CONFIG_HW_RANDOM_TIMERIOMEM is not set
++# CONFIG_HW_RANDOM_VIRTIO is not set
++# CONFIG_R3964 is not set
++# CONFIG_APPLICOM is not set
++# CONFIG_RAW_DRIVER is not set
++# CONFIG_TCG_TPM is not set
++CONFIG_DEVPORT=y
++# CONFIG_I2C is not set
++# CONFIG_SPI is not set
++# CONFIG_HSI is not set
++
++#
++# PPS support
++#
++# CONFIG_PPS is not set
++
++#
++# PPS generators support
++#
++
++#
++# PTP clock support
++#
++
++#
++# Enable Device Drivers -> PPS to see the PTP clock options.
++#
++CONFIG_ARCH_HAVE_CUSTOM_GPIO_H=y
++# CONFIG_W1 is not set
++# CONFIG_POWER_SUPPLY is not set
++# CONFIG_POWER_AVS is not set
++# CONFIG_HWMON is not set
++# CONFIG_THERMAL is not set
++# CONFIG_WATCHDOG is not set
++CONFIG_SSB_POSSIBLE=y
++
++#
++# Sonics Silicon Backplane
++#
++# CONFIG_SSB is not set
++CONFIG_BCMA_POSSIBLE=y
++
++#
++# Broadcom specific AMBA
++#
++# CONFIG_BCMA is not set
++
++#
++# Multifunction device drivers
++#
++# CONFIG_MFD_CORE is not set
++# CONFIG_MFD_SM501 is not set
++# CONFIG_HTC_PASIC3 is not set
++# CONFIG_MFD_TMIO is not set
++# CONFIG_ABX500_CORE is not set
++# CONFIG_LPC_SCH is not set
++# CONFIG_LPC_ICH is not set
++# CONFIG_MFD_RDC321X is not set
++# CONFIG_MFD_JANZ_CMODIO is not set
++# CONFIG_MFD_VX855 is not set
++# CONFIG_REGULATOR is not set
++# CONFIG_MEDIA_SUPPORT is not set
++
++#
++# Graphics support
++#
++CONFIG_VGA_ARB=y
++CONFIG_VGA_ARB_MAX_GPUS=16
++# CONFIG_DRM is not set
++# CONFIG_STUB_POULSBO is not set
++# CONFIG_VGASTATE is not set
++# CONFIG_VIDEO_OUTPUT_CONTROL is not set
++CONFIG_FB=y
++# CONFIG_FIRMWARE_EDID is not set
++# CONFIG_FB_DDC is not set
++# CONFIG_FB_BOOT_VESA_SUPPORT is not set
++CONFIG_FB_CFB_FILLRECT=y
++CONFIG_FB_CFB_COPYAREA=y
++CONFIG_FB_CFB_IMAGEBLIT=y
++# CONFIG_FB_CFB_REV_PIXELS_IN_BYTE is not set
++# CONFIG_FB_SYS_FILLRECT is not set
++# CONFIG_FB_SYS_COPYAREA is not set
++# CONFIG_FB_SYS_IMAGEBLIT is not set
++# CONFIG_FB_FOREIGN_ENDIAN is not set
++# CONFIG_FB_SYS_FOPS is not set
++# CONFIG_FB_WMT_GE_ROPS is not set
++# CONFIG_FB_SVGALIB is not set
++# CONFIG_FB_MACMODES is not set
++# CONFIG_FB_BACKLIGHT is not set
++# CONFIG_FB_MODE_HELPERS is not set
++# CONFIG_FB_TILEBLITTING is not set
++
++#
++# Frame buffer hardware drivers
++#
++CONFIG_FB_CIRRUS=y
++# CONFIG_FB_PM2 is not set
++# CONFIG_FB_CYBER2000 is not set
++# CONFIG_FB_ASILIANT is not set
++# CONFIG_FB_IMSTT is not set
++# CONFIG_FB_UVESA is not set
++# CONFIG_FB_S1D13XXX is not set
++# CONFIG_FB_NVIDIA is not set
++# CONFIG_FB_RIVA is not set
++# CONFIG_FB_I740 is not set
++# CONFIG_FB_MATROX is not set
++# CONFIG_FB_RADEON is not set
++# CONFIG_FB_ATY128 is not set
++# CONFIG_FB_ATY is not set
++# CONFIG_FB_S3 is not set
++# CONFIG_FB_SAVAGE is not set
++# CONFIG_FB_SIS is not set
++# CONFIG_FB_NEOMAGIC is not set
++# CONFIG_FB_KYRO is not set
++# CONFIG_FB_3DFX is not set
++# CONFIG_FB_VOODOO1 is not set
++# CONFIG_FB_VT8623 is not set
++# CONFIG_FB_TRIDENT is not set
++# CONFIG_FB_ARK is not set
++# CONFIG_FB_PM3 is not set
++# CONFIG_FB_CARMINE is not set
++# CONFIG_FB_VIRTUAL is not set
++# CONFIG_FB_METRONOME is not set
++# CONFIG_FB_MB862XX is not set
++# CONFIG_FB_BROADSHEET is not set
++# CONFIG_FB_AUO_K190X is not set
++# CONFIG_EXYNOS_VIDEO is not set
++# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
++
++#
++# Console display driver support
++#
++# CONFIG_VGA_CONSOLE is not set
++CONFIG_DUMMY_CONSOLE=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
++# CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY is not set
++# CONFIG_FRAMEBUFFER_CONSOLE_ROTATION is not set
++# CONFIG_FONTS is not set
++CONFIG_FONT_8x8=y
++CONFIG_FONT_8x16=y
++# CONFIG_LOGO is not set
++# CONFIG_SOUND is not set
++
++#
++# HID support
++#
++CONFIG_HID=m
++# CONFIG_HIDRAW is not set
++# CONFIG_UHID is not set
++CONFIG_HID_GENERIC=m
++
++#
++# Special HID drivers
++#
++CONFIG_USB_ARCH_HAS_OHCI=y
++CONFIG_USB_ARCH_HAS_EHCI=y
++CONFIG_USB_ARCH_HAS_XHCI=y
++CONFIG_USB_SUPPORT=y
++CONFIG_USB_ARCH_HAS_HCD=y
++# CONFIG_USB is not set
++# CONFIG_USB_OTG_WHITELIST is not set
++# CONFIG_USB_OTG_BLACKLIST_HUB is not set
++
++#
++# NOTE: USB_STORAGE depends on SCSI but BLK_DEV_SD may
++#
++# CONFIG_USB_EZUSB_FX2 is not set
++# CONFIG_OMAP_USB2 is not set
++# CONFIG_USB_GADGET is not set
++
++#
++# OTG and related infrastructure
++#
++# CONFIG_UWB is not set
++# CONFIG_MMC is not set
++# CONFIG_MEMSTICK is not set
++# CONFIG_NEW_LEDS is not set
++# CONFIG_ACCESSIBILITY is not set
++# CONFIG_INFINIBAND is not set
++CONFIG_RTC_LIB=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_HCTOSYS=y
++CONFIG_RTC_HCTOSYS_DEVICE="rtc0"
++# CONFIG_RTC_DEBUG is not set
++
++#
++# RTC interfaces
++#
++CONFIG_RTC_INTF_SYSFS=y
++CONFIG_RTC_INTF_PROC=y
++CONFIG_RTC_INTF_DEV=y
++# CONFIG_RTC_INTF_DEV_UIE_EMUL is not set
++# CONFIG_RTC_DRV_TEST is not set
++
++#
++# SPI RTC drivers
++#
++
++#
++# Platform RTC drivers
++#
++CONFIG_RTC_DRV_CMOS=y
++# CONFIG_RTC_DRV_DS1286 is not set
++# CONFIG_RTC_DRV_DS1511 is not set
++# CONFIG_RTC_DRV_DS1553 is not set
++# CONFIG_RTC_DRV_DS1742 is not set
++# CONFIG_RTC_DRV_STK17TA8 is not set
++# CONFIG_RTC_DRV_M48T86 is not set
++# CONFIG_RTC_DRV_M48T35 is not set
++# CONFIG_RTC_DRV_M48T59 is not set
++# CONFIG_RTC_DRV_MSM6242 is not set
++# CONFIG_RTC_DRV_BQ4802 is not set
++# CONFIG_RTC_DRV_RP5C01 is not set
++# CONFIG_RTC_DRV_V3020 is not set
++# CONFIG_RTC_DRV_DS2404 is not set
++
++#
++# on-CPU RTC drivers
++#
++# CONFIG_DMADEVICES is not set
++# CONFIG_AUXDISPLAY is not set
++CONFIG_UIO=m
++CONFIG_UIO_CIF=m
++# CONFIG_UIO_PDRV is not set
++# CONFIG_UIO_PDRV_GENIRQ is not set
++# CONFIG_UIO_AEC is not set
++# CONFIG_UIO_SERCOS3 is not set
++# CONFIG_UIO_PCI_GENERIC is not set
++# CONFIG_UIO_NETX is not set
++CONFIG_VIRTIO=y
++
++#
++# Virtio drivers
++#
++CONFIG_VIRTIO_PCI=y
++CONFIG_VIRTIO_BALLOON=y
++CONFIG_VIRTIO_MMIO=y
++# CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES is not set
++
++#
++# Microsoft Hyper-V guest support
++#
++# CONFIG_STAGING is not set
++
++#
++# Hardware Spinlock drivers
++#
++CONFIG_CLKSRC_I8253=y
++CONFIG_CLKEVT_I8253=y
++CONFIG_I8253_LOCK=y
++CONFIG_CLKBLD_I8253=y
++CONFIG_IOMMU_SUPPORT=y
++
++#
++# Remoteproc drivers (EXPERIMENTAL)
++#
++# CONFIG_STE_MODEM_RPROC is not set
++
++#
++# Rpmsg drivers (EXPERIMENTAL)
++#
++# CONFIG_VIRT_DRIVERS is not set
++# CONFIG_PM_DEVFREQ is not set
++# CONFIG_EXTCON is not set
++# CONFIG_MEMORY is not set
++# CONFIG_IIO is not set
++# CONFIG_VME_BUS is not set
++# CONFIG_PWM is not set
++
++#
++# File systems
++#
++CONFIG_EXT2_FS=y
++# CONFIG_EXT2_FS_XATTR is not set
++# CONFIG_EXT2_FS_XIP is not set
++CONFIG_EXT3_FS=y
++CONFIG_EXT3_DEFAULTS_TO_ORDERED=y
++CONFIG_EXT3_FS_XATTR=y
++# CONFIG_EXT3_FS_POSIX_ACL is not set
++# CONFIG_EXT3_FS_SECURITY is not set
++# CONFIG_EXT4_FS is not set
++CONFIG_JBD=y
++CONFIG_FS_MBCACHE=y
++CONFIG_REISERFS_FS=m
++# CONFIG_REISERFS_CHECK is not set
++CONFIG_REISERFS_PROC_INFO=y
++CONFIG_REISERFS_FS_XATTR=y
++CONFIG_REISERFS_FS_POSIX_ACL=y
++CONFIG_REISERFS_FS_SECURITY=y
++CONFIG_JFS_FS=m
++CONFIG_JFS_POSIX_ACL=y
++CONFIG_JFS_SECURITY=y
++# CONFIG_JFS_DEBUG is not set
++# CONFIG_JFS_STATISTICS is not set
++CONFIG_XFS_FS=m
++CONFIG_XFS_QUOTA=y
++CONFIG_XFS_POSIX_ACL=y
++# CONFIG_XFS_RT is not set
++# CONFIG_XFS_DEBUG is not set
++# CONFIG_GFS2_FS is not set
++# CONFIG_BTRFS_FS is not set
++# CONFIG_NILFS2_FS is not set
++CONFIG_FS_POSIX_ACL=y
++CONFIG_EXPORTFS=y
++CONFIG_FILE_LOCKING=y
++CONFIG_FSNOTIFY=y
++CONFIG_DNOTIFY=y
++CONFIG_INOTIFY_USER=y
++# CONFIG_FANOTIFY is not set
++CONFIG_QUOTA=y
++# CONFIG_QUOTA_NETLINK_INTERFACE is not set
++CONFIG_PRINT_QUOTA_WARNING=y
++# CONFIG_QUOTA_DEBUG is not set
++CONFIG_QUOTA_TREE=y
++# CONFIG_QFMT_V1 is not set
++CONFIG_QFMT_V2=y
++CONFIG_QUOTACTL=y
++# CONFIG_AUTOFS4_FS is not set
++CONFIG_FUSE_FS=m
++# CONFIG_CUSE is not set
++
++#
++# Caches
++#
++# CONFIG_FSCACHE is not set
++
++#
++# CD-ROM/DVD Filesystems
++#
++CONFIG_ISO9660_FS=m
++CONFIG_JOLIET=y
++CONFIG_ZISOFS=y
++CONFIG_UDF_FS=m
++CONFIG_UDF_NLS=y
++
++#
++# DOS/FAT/NT Filesystems
++#
++CONFIG_FAT_FS=m
++CONFIG_MSDOS_FS=m
++CONFIG_VFAT_FS=m
++CONFIG_FAT_DEFAULT_CODEPAGE=437
++CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
++# CONFIG_NTFS_FS is not set
++
++#
++# Pseudo filesystems
++#
++CONFIG_PROC_FS=y
++CONFIG_PROC_KCORE=y
++CONFIG_PROC_SYSCTL=y
++CONFIG_PROC_PAGE_MONITOR=y
++CONFIG_SYSFS=y
++CONFIG_TMPFS=y
++# CONFIG_TMPFS_POSIX_ACL is not set
++# CONFIG_TMPFS_XATTR is not set
++# CONFIG_HUGETLB_PAGE is not set
++# CONFIG_CONFIGFS_FS is not set
++CONFIG_MISC_FILESYSTEMS=y
++# CONFIG_ADFS_FS is not set
++CONFIG_AFFS_FS=m
++CONFIG_HFS_FS=m
++CONFIG_HFSPLUS_FS=m
++CONFIG_BEFS_FS=m
++# CONFIG_BEFS_DEBUG is not set
++CONFIG_BFS_FS=m
++CONFIG_EFS_FS=m
++CONFIG_JFFS2_FS=m
++CONFIG_JFFS2_FS_DEBUG=0
++CONFIG_JFFS2_FS_WRITEBUFFER=y
++# CONFIG_JFFS2_FS_WBUF_VERIFY is not set
++# CONFIG_JFFS2_SUMMARY is not set
++CONFIG_JFFS2_FS_XATTR=y
++CONFIG_JFFS2_FS_POSIX_ACL=y
++CONFIG_JFFS2_FS_SECURITY=y
++CONFIG_JFFS2_COMPRESSION_OPTIONS=y
++CONFIG_JFFS2_ZLIB=y
++# CONFIG_JFFS2_LZO is not set
++CONFIG_JFFS2_RTIME=y
++CONFIG_JFFS2_RUBIN=y
++# CONFIG_JFFS2_CMODE_NONE is not set
++CONFIG_JFFS2_CMODE_PRIORITY=y
++# CONFIG_JFFS2_CMODE_SIZE is not set
++# CONFIG_JFFS2_CMODE_FAVOURLZO is not set
++# CONFIG_UBIFS_FS is not set
++# CONFIG_LOGFS is not set
++CONFIG_CRAMFS=m
++# CONFIG_SQUASHFS is not set
++CONFIG_VXFS_FS=m
++CONFIG_MINIX_FS=m
++CONFIG_MINIX_FS_NATIVE_ENDIAN=y
++# CONFIG_OMFS_FS is not set
++# CONFIG_HPFS_FS is not set
++# CONFIG_QNX4FS_FS is not set
++# CONFIG_QNX6FS_FS is not set
++CONFIG_ROMFS_FS=m
++CONFIG_ROMFS_BACKED_BY_BLOCK=y
++# CONFIG_ROMFS_BACKED_BY_MTD is not set
++# CONFIG_ROMFS_BACKED_BY_BOTH is not set
++CONFIG_ROMFS_ON_BLOCK=y
++# CONFIG_PSTORE is not set
++CONFIG_SYSV_FS=m
++CONFIG_UFS_FS=m
++# CONFIG_UFS_FS_WRITE is not set
++# CONFIG_UFS_DEBUG is not set
++CONFIG_NETWORK_FILESYSTEMS=y
++CONFIG_NFS_FS=y
++CONFIG_NFS_V2=y
++CONFIG_NFS_V3=y
++# CONFIG_NFS_V3_ACL is not set
++# CONFIG_NFS_V4 is not set
++# CONFIG_NFS_SWAP is not set
++CONFIG_ROOT_NFS=y
++CONFIG_NFSD=y
++CONFIG_NFSD_V3=y
++# CONFIG_NFSD_V3_ACL is not set
++# CONFIG_NFSD_V4 is not set
++CONFIG_LOCKD=y
++CONFIG_LOCKD_V4=y
++CONFIG_NFS_COMMON=y
++CONFIG_SUNRPC=y
++# CONFIG_SUNRPC_DEBUG is not set
++# CONFIG_CEPH_FS is not set
++# CONFIG_CIFS is not set
++# CONFIG_NCP_FS is not set
++# CONFIG_CODA_FS is not set
++# CONFIG_AFS_FS is not set
++CONFIG_NLS=m
++CONFIG_NLS_DEFAULT="iso8859-1"
++CONFIG_NLS_CODEPAGE_437=m
++CONFIG_NLS_CODEPAGE_737=m
++CONFIG_NLS_CODEPAGE_775=m
++CONFIG_NLS_CODEPAGE_850=m
++CONFIG_NLS_CODEPAGE_852=m
++CONFIG_NLS_CODEPAGE_855=m
++CONFIG_NLS_CODEPAGE_857=m
++CONFIG_NLS_CODEPAGE_860=m
++CONFIG_NLS_CODEPAGE_861=m
++CONFIG_NLS_CODEPAGE_862=m
++CONFIG_NLS_CODEPAGE_863=m
++CONFIG_NLS_CODEPAGE_864=m
++CONFIG_NLS_CODEPAGE_865=m
++CONFIG_NLS_CODEPAGE_866=m
++CONFIG_NLS_CODEPAGE_869=m
++CONFIG_NLS_CODEPAGE_936=m
++CONFIG_NLS_CODEPAGE_950=m
++CONFIG_NLS_CODEPAGE_932=m
++CONFIG_NLS_CODEPAGE_949=m
++CONFIG_NLS_CODEPAGE_874=m
++CONFIG_NLS_ISO8859_8=m
++CONFIG_NLS_CODEPAGE_1250=m
++CONFIG_NLS_CODEPAGE_1251=m
++CONFIG_NLS_ASCII=m
++CONFIG_NLS_ISO8859_1=m
++CONFIG_NLS_ISO8859_2=m
++CONFIG_NLS_ISO8859_3=m
++CONFIG_NLS_ISO8859_4=m
++CONFIG_NLS_ISO8859_5=m
++CONFIG_NLS_ISO8859_6=m
++CONFIG_NLS_ISO8859_7=m
++CONFIG_NLS_ISO8859_9=m
++CONFIG_NLS_ISO8859_13=m
++CONFIG_NLS_ISO8859_14=m
++CONFIG_NLS_ISO8859_15=m
++CONFIG_NLS_KOI8_R=m
++CONFIG_NLS_KOI8_U=m
++# CONFIG_NLS_MAC_ROMAN is not set
++# CONFIG_NLS_MAC_CELTIC is not set
++# CONFIG_NLS_MAC_CENTEURO is not set
++# CONFIG_NLS_MAC_CROATIAN is not set
++# CONFIG_NLS_MAC_CYRILLIC is not set
++# CONFIG_NLS_MAC_GAELIC is not set
++# CONFIG_NLS_MAC_GREEK is not set
++# CONFIG_NLS_MAC_ICELAND is not set
++# CONFIG_NLS_MAC_INUIT is not set
++# CONFIG_NLS_MAC_ROMANIAN is not set
++# CONFIG_NLS_MAC_TURKISH is not set
++CONFIG_NLS_UTF8=m
++
++#
++# Kernel hacking
++#
++CONFIG_TRACE_IRQFLAGS_SUPPORT=y
++# CONFIG_PRINTK_TIME is not set
++CONFIG_DEFAULT_MESSAGE_LOGLEVEL=4
++CONFIG_ENABLE_WARN_DEPRECATED=y
++CONFIG_ENABLE_MUST_CHECK=y
++CONFIG_FRAME_WARN=1024
++# CONFIG_MAGIC_SYSRQ is not set
++# CONFIG_STRIP_ASM_SYMS is not set
++# CONFIG_READABLE_ASM is not set
++# CONFIG_UNUSED_SYMBOLS is not set
++# CONFIG_DEBUG_FS is not set
++# CONFIG_HEADERS_CHECK is not set
++# CONFIG_DEBUG_SECTION_MISMATCH is not set
++CONFIG_DEBUG_KERNEL=y
++# CONFIG_DEBUG_SHIRQ is not set
++# CONFIG_LOCKUP_DETECTOR is not set
++# CONFIG_PANIC_ON_OOPS is not set
++CONFIG_PANIC_ON_OOPS_VALUE=0
++# CONFIG_DETECT_HUNG_TASK is not set
++CONFIG_SCHED_DEBUG=y
++# CONFIG_SCHEDSTATS is not set
++# CONFIG_TIMER_STATS is not set
++# CONFIG_DEBUG_OBJECTS is not set
++# CONFIG_DEBUG_SLAB is not set
++CONFIG_HAVE_DEBUG_KMEMLEAK=y
++# CONFIG_DEBUG_KMEMLEAK is not set
++# CONFIG_DEBUG_RT_MUTEXES is not set
++# CONFIG_RT_MUTEX_TESTER is not set
++# CONFIG_DEBUG_SPINLOCK is not set
++# CONFIG_DEBUG_MUTEXES is not set
++# CONFIG_DEBUG_LOCK_ALLOC is not set
++# CONFIG_PROVE_LOCKING is not set
++# CONFIG_SPARSE_RCU_POINTER is not set
++# CONFIG_LOCK_STAT is not set
++# CONFIG_DEBUG_ATOMIC_SLEEP is not set
++# CONFIG_DEBUG_LOCKING_API_SELFTESTS is not set
++# CONFIG_DEBUG_STACK_USAGE is not set
++# CONFIG_DEBUG_KOBJECT is not set
++# CONFIG_DEBUG_INFO is not set
++# CONFIG_DEBUG_VM is not set
++# CONFIG_DEBUG_WRITECOUNT is not set
++# CONFIG_DEBUG_MEMORY_INIT is not set
++# CONFIG_DEBUG_LIST is not set
++# CONFIG_TEST_LIST_SORT is not set
++# CONFIG_DEBUG_SG is not set
++# CONFIG_DEBUG_NOTIFIERS is not set
++# CONFIG_DEBUG_CREDENTIALS is not set
++# CONFIG_BOOT_PRINTK_DELAY is not set
++# CONFIG_RCU_TORTURE_TEST is not set
++# CONFIG_RCU_TRACE is not set
++# CONFIG_BACKTRACE_SELF_TEST is not set
++# CONFIG_DEBUG_BLOCK_EXT_DEVT is not set
++# CONFIG_DEBUG_FORCE_WEAK_PER_CPU is not set
++# CONFIG_NOTIFIER_ERROR_INJECTION is not set
++# CONFIG_FAULT_INJECTION is not set
++# CONFIG_DEBUG_PAGEALLOC is not set
++CONFIG_HAVE_FUNCTION_TRACER=y
++CONFIG_HAVE_FUNCTION_GRAPH_TRACER=y
++CONFIG_HAVE_FUNCTION_TRACE_MCOUNT_TEST=y
++CONFIG_HAVE_DYNAMIC_FTRACE=y
++CONFIG_HAVE_FTRACE_MCOUNT_RECORD=y
++CONFIG_HAVE_C_RECORDMCOUNT=y
++CONFIG_TRACING_SUPPORT=y
++CONFIG_FTRACE=y
++# CONFIG_FUNCTION_TRACER is not set
++# CONFIG_IRQSOFF_TRACER is not set
++# CONFIG_SCHED_TRACER is not set
++# CONFIG_ENABLE_DEFAULT_TRACERS is not set
++CONFIG_BRANCH_PROFILE_NONE=y
++# CONFIG_PROFILE_ANNOTATED_BRANCHES is not set
++# CONFIG_PROFILE_ALL_BRANCHES is not set
++# CONFIG_STACK_TRACER is not set
++# CONFIG_BLK_DEV_IO_TRACE is not set
++# CONFIG_PROBE_EVENTS is not set
++# CONFIG_RBTREE_TEST is not set
++# CONFIG_INTERVAL_TREE_TEST is not set
++# CONFIG_DMA_API_DEBUG is not set
++# CONFIG_ATOMIC64_SELFTEST is not set
++# CONFIG_ASYNC_RAID6_TEST is not set
++# CONFIG_SAMPLES is not set
++CONFIG_HAVE_ARCH_KGDB=y
++# CONFIG_KGDB is not set
++# CONFIG_TEST_KSTRTOX is not set
++CONFIG_EARLY_PRINTK=y
++# CONFIG_CMDLINE_BOOL is not set
++# CONFIG_DEBUG_STACKOVERFLOW is not set
++# CONFIG_RUNTIME_DEBUG is not set
++# CONFIG_DEBUG_ZBOOT is not set
++
++#
++# Security options
++#
++# CONFIG_KEYS is not set
++# CONFIG_SECURITY_DMESG_RESTRICT is not set
++# CONFIG_SECURITY is not set
++# CONFIG_SECURITYFS is not set
++CONFIG_DEFAULT_SECURITY_DAC=y
++CONFIG_DEFAULT_SECURITY=""
++CONFIG_XOR_BLOCKS=m
++CONFIG_ASYNC_CORE=m
++CONFIG_ASYNC_MEMCPY=m
++CONFIG_ASYNC_XOR=m
++CONFIG_ASYNC_PQ=m
++CONFIG_ASYNC_RAID6_RECOV=m
++CONFIG_CRYPTO=y
++
++#
++# Crypto core or helper
++#
++CONFIG_CRYPTO_ALGAPI=y
++CONFIG_CRYPTO_ALGAPI2=y
++CONFIG_CRYPTO_AEAD=m
++CONFIG_CRYPTO_AEAD2=y
++CONFIG_CRYPTO_BLKCIPHER=m
++CONFIG_CRYPTO_BLKCIPHER2=y
++CONFIG_CRYPTO_HASH=y
++CONFIG_CRYPTO_HASH2=y
++CONFIG_CRYPTO_RNG2=y
++CONFIG_CRYPTO_PCOMP2=y
++CONFIG_CRYPTO_MANAGER=y
++CONFIG_CRYPTO_MANAGER2=y
++# CONFIG_CRYPTO_USER is not set
++CONFIG_CRYPTO_MANAGER_DISABLE_TESTS=y
++CONFIG_CRYPTO_GF128MUL=m
++CONFIG_CRYPTO_NULL=m
++CONFIG_CRYPTO_WORKQUEUE=y
++CONFIG_CRYPTO_CRYPTD=m
++CONFIG_CRYPTO_AUTHENC=m
++# CONFIG_CRYPTO_TEST is not set
++
++#
++# Authenticated Encryption with Associated Data
++#
++# CONFIG_CRYPTO_CCM is not set
++# CONFIG_CRYPTO_GCM is not set
++# CONFIG_CRYPTO_SEQIV is not set
++
++#
++# Block modes
++#
++CONFIG_CRYPTO_CBC=m
++# CONFIG_CRYPTO_CTR is not set
++# CONFIG_CRYPTO_CTS is not set
++CONFIG_CRYPTO_ECB=m
++CONFIG_CRYPTO_LRW=m
++CONFIG_CRYPTO_PCBC=m
++# CONFIG_CRYPTO_XTS is not set
++
++#
++# Hash modes
++#
++CONFIG_CRYPTO_HMAC=y
++CONFIG_CRYPTO_XCBC=m
++# CONFIG_CRYPTO_VMAC is not set
++
++#
++# Digest
++#
++CONFIG_CRYPTO_CRC32C=m
++# CONFIG_CRYPTO_GHASH is not set
++CONFIG_CRYPTO_MD4=m
++CONFIG_CRYPTO_MD5=y
++CONFIG_CRYPTO_MICHAEL_MIC=m
++# CONFIG_CRYPTO_RMD128 is not set
++# CONFIG_CRYPTO_RMD160 is not set
++# CONFIG_CRYPTO_RMD256 is not set
++# CONFIG_CRYPTO_RMD320 is not set
++CONFIG_CRYPTO_SHA1=m
++CONFIG_CRYPTO_SHA256=m
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_TGR192=m
++CONFIG_CRYPTO_WP512=m
++
++#
++# Ciphers
++#
++CONFIG_CRYPTO_AES=y
++CONFIG_CRYPTO_ANUBIS=m
++CONFIG_CRYPTO_ARC4=m
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_BLOWFISH_COMMON=m
++CONFIG_CRYPTO_CAMELLIA=m
++CONFIG_CRYPTO_CAST5=m
++CONFIG_CRYPTO_CAST6=m
++CONFIG_CRYPTO_DES=m
++CONFIG_CRYPTO_FCRYPT=m
++CONFIG_CRYPTO_KHAZAD=m
++# CONFIG_CRYPTO_SALSA20 is not set
++# CONFIG_CRYPTO_SEED is not set
++CONFIG_CRYPTO_SERPENT=m
++CONFIG_CRYPTO_TEA=m
++CONFIG_CRYPTO_TWOFISH=m
++CONFIG_CRYPTO_TWOFISH_COMMON=m
++
++#
++# Compression
++#
++CONFIG_CRYPTO_DEFLATE=m
++# CONFIG_CRYPTO_ZLIB is not set
++# CONFIG_CRYPTO_LZO is not set
++
++#
++# Random Number Generation
++#
++# CONFIG_CRYPTO_ANSI_CPRNG is not set
++# CONFIG_CRYPTO_USER_API_HASH is not set
++# CONFIG_CRYPTO_USER_API_SKCIPHER is not set
++CONFIG_CRYPTO_HW=y
++# CONFIG_CRYPTO_DEV_HIFN_795X is not set
++# CONFIG_BINARY_PRINTF is not set
++
++#
++# Library routines
++#
++CONFIG_RAID6_PQ=m
++CONFIG_BITREVERSE=y
++CONFIG_NO_GENERIC_PCI_IOPORT_MAP=y
++CONFIG_GENERIC_PCI_IOMAP=y
++CONFIG_GENERIC_IO=y
++# CONFIG_CRC_CCITT is not set
++CONFIG_CRC16=m
++# CONFIG_CRC_T10DIF is not set
++CONFIG_CRC_ITU_T=m
++CONFIG_CRC32=y
++# CONFIG_CRC32_SELFTEST is not set
++CONFIG_CRC32_SLICEBY8=y
++# CONFIG_CRC32_SLICEBY4 is not set
++# CONFIG_CRC32_SARWATE is not set
++# CONFIG_CRC32_BIT is not set
++# CONFIG_CRC7 is not set
++CONFIG_LIBCRC32C=m
++# CONFIG_CRC8 is not set
++CONFIG_ZLIB_INFLATE=y
++CONFIG_ZLIB_DEFLATE=m
++# CONFIG_XZ_DEC is not set
++# CONFIG_XZ_DEC_BCJ is not set
++CONFIG_DECOMPRESS_GZIP=y
++CONFIG_TEXTSEARCH=y
++CONFIG_TEXTSEARCH_KMP=m
++CONFIG_TEXTSEARCH_BM=m
++CONFIG_TEXTSEARCH_FSM=m
++CONFIG_HAS_IOMEM=y
++CONFIG_HAS_IOPORT=y
++CONFIG_HAS_DMA=y
++CONFIG_DQL=y
++CONFIG_NLATTR=y
++CONFIG_GENERIC_ATOMIC64=y
++CONFIG_ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE=y
++CONFIG_AVERAGE=y
++# CONFIG_CORDIC is not set
++# CONFIG_DDR is not set
++CONFIG_HAVE_KVM=y
++# CONFIG_VIRTUALIZATION is not set
 -- 
 1.7.11.3

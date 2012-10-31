@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 16:25:37 +0100 (CET)
-Received: from kymasys.com ([64.62.140.43]:52202 "HELO kymasys.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 16:25:54 +0100 (CET)
+Received: from kymasys.com ([64.62.140.43]:49064 "HELO kymasys.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6825756Ab2JaPUts3-1u convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Oct 2012 16:20:49 +0100
-Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Wed, 31 Oct 2012 08:20:41 -0700
+        id S6822164Ab2JaPVOl2mBm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 31 Oct 2012 16:21:14 +0100
+Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Wed, 31 Oct 2012 08:21:07 -0700
 From:   Sanjay Lal <sanjayl@kymasys.com>
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Subject: [PATCH 14/20] MIPS: Use the UM bit instead of the CU0 enable bit in  the status register to figure out the stack for  saving regs.
-Date:   Wed, 31 Oct 2012 11:20:37 -0400
-Message-Id: <6BC12683-224F-4867-818C-FE4CF722B272@kymasys.com>
+Content-Transfer-Encoding: 7bit
+Subject: [PATCH 18/20] MIPS: Export symbols used by KVM/MIPS module
+Date:   Wed, 31 Oct 2012 11:21:03 -0400
+Message-Id: <FB1F4AAB-473A-41DC-8938-54464E0FAA73@kymasys.com>
 To:     kvm@vger.kernel.org, linux-mips@linux-mips.org
 Mime-Version: 1.0 (Apple Message framework v1283)
 X-Mailer: Apple Mail (2.1283)
-X-archive-position: 34828
+X-archive-position: 34829
 X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
@@ -34,33 +34,33 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
 ---
- arch/mips/include/asm/stackframe.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/kernel/smp.c | 1 +
+ mm/bootmem.c           | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-index cb41af5..59c9245 100644
---- a/arch/mips/include/asm/stackframe.h
-+++ b/arch/mips/include/asm/stackframe.h
-@@ -30,7 +30,7 @@
- #define STATMASK 0x1f
- #endif
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 9005bf9..60ea489 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -83,6 +83,7 @@ static inline void set_cpu_sibling_map(int cpu)
+ }
  
--#ifdef CONFIG_MIPS_MT_SMTC
-+#if defined(CONFIG_MIPS_MT_SMTC) || defined (CONFIG_MIPS_HW_FIBERS)
- #include <asm/mipsmtregs.h>
- #endif /* CONFIG_MIPS_MT_SMTC */
+ struct plat_smp_ops *mp_ops;
++EXPORT_SYMBOL(mp_ops);
  
-@@ -162,9 +162,9 @@
- 		.set	noat
- 		.set	reorder
- 		mfc0	k0, CP0_STATUS
--		sll	k0, 3		/* extract cu0 bit */
-+		andi    k0,k0,0x10 		/* check user mode bit*/
- 		.set	noreorder
--		bltz	k0, 8f
-+         beq     k0, $0, 8f
- 		 move	k1, sp
- 		.set	reorder
- 		/* Called from user mode, new stack. */
+ __cpuinit void register_smp_ops(struct plat_smp_ops *ops)
+ {
+diff --git a/mm/bootmem.c b/mm/bootmem.c
+index 434be4a..f9c0221 100644
+--- a/mm/bootmem.c
++++ b/mm/bootmem.c
+@@ -32,6 +32,7 @@ EXPORT_SYMBOL(contig_page_data);
+ 
+ unsigned long max_low_pfn;
+ unsigned long min_low_pfn;
++EXPORT_SYMBOL(min_low_pfn);
+ unsigned long max_pfn;
+ 
+ bootmem_data_t bootmem_node_data[MAX_NUMNODES] __initdata;
 -- 
 1.7.11.3

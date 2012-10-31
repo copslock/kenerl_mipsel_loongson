@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 16:25:20 +0100 (CET)
-Received: from kymasys.com ([64.62.140.43]:46731 "HELO kymasys.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 16:25:37 +0100 (CET)
+Received: from kymasys.com ([64.62.140.43]:52202 "HELO kymasys.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6822164Ab2JaPUxka8hR convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Oct 2012 16:20:53 +0100
-Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Wed, 31 Oct 2012 08:20:45 -0700
+        id S6825756Ab2JaPUts3-1u convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Oct 2012 16:20:49 +0100
+Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Wed, 31 Oct 2012 08:20:41 -0700
 From:   Sanjay Lal <sanjayl@kymasys.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 8BIT
-Subject: [PATCH 15/20] MIPS: If KVM is enabled then use the KVM specific  routine to flush the TLBs on a ASID wrap
-Date:   Wed, 31 Oct 2012 11:20:42 -0400
-Message-Id: <333219EB-AEDE-47AE-BD69-2B69BBECD188@kymasys.com>
+Subject: [PATCH 14/20] MIPS: Use the UM bit instead of the CU0 enable bit in  the status register to figure out the stack for  saving regs.
+Date:   Wed, 31 Oct 2012 11:20:37 -0400
+Message-Id: <6BC12683-224F-4867-818C-FE4CF722B272@kymasys.com>
 To:     kvm@vger.kernel.org, linux-mips@linux-mips.org
 Mime-Version: 1.0 (Apple Message framework v1283)
 X-Mailer: Apple Mail (2.1283)
-X-archive-position: 34827
+X-archive-position: 34828
 X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
@@ -34,34 +34,33 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
 ---
- arch/mips/include/asm/mmu_context.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/include/asm/stackframe.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-index 9b02cfb..9c7024c 100644
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -112,15 +112,21 @@ static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
- static inline void
- get_new_mmu_context(struct mm_struct *mm, unsigned long cpu)
- {
-+    extern void kvm_local_flush_tlb_all(void);
- 	unsigned long asid = asid_cache(cpu);
+diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
+index cb41af5..59c9245 100644
+--- a/arch/mips/include/asm/stackframe.h
++++ b/arch/mips/include/asm/stackframe.h
+@@ -30,7 +30,7 @@
+ #define STATMASK 0x1f
+ #endif
  
- 	if (! ((asid += ASID_INC) & ASID_MASK) ) {
- 		if (cpu_has_vtag_icache)
- 			flush_icache_all();
-+#ifdef CONFIG_VIRTUALIZATION
-+        kvm_local_flush_tlb_all();      /* start new asid cycle */
-+#else
- 		local_flush_tlb_all();	/* start new asid cycle */
-+#endif
- 		if (!asid)		/* fix version if needed */
- 			asid = ASID_FIRST_VERSION;
- 	}
-+
- 	cpu_context(cpu, mm) = asid_cache(cpu) = asid;
- }
+-#ifdef CONFIG_MIPS_MT_SMTC
++#if defined(CONFIG_MIPS_MT_SMTC) || defined (CONFIG_MIPS_HW_FIBERS)
+ #include <asm/mipsmtregs.h>
+ #endif /* CONFIG_MIPS_MT_SMTC */
  
+@@ -162,9 +162,9 @@
+ 		.set	noat
+ 		.set	reorder
+ 		mfc0	k0, CP0_STATUS
+-		sll	k0, 3		/* extract cu0 bit */
++		andi    k0,k0,0x10 		/* check user mode bit*/
+ 		.set	noreorder
+-		bltz	k0, 8f
++         beq     k0, $0, 8f
+ 		 move	k1, sp
+ 		.set	reorder
+ 		/* Called from user mode, new stack. */
 -- 
 1.7.11.3

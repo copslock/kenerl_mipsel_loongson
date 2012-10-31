@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 16:24:12 +0100 (CET)
-Received: from kymasys.com ([64.62.140.43]:52963 "HELO kymasys.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 16:24:28 +0100 (CET)
+Received: from kymasys.com ([64.62.140.43]:36957 "HELO kymasys.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6822164Ab2JaPUXvBK-8 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Oct 2012 16:20:23 +0100
-Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Wed, 31 Oct 2012 08:20:14 -0700
+        id S6825663Ab2JaPUcQ721u convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Oct 2012 16:20:32 +0100
+Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Wed, 31 Oct 2012 08:20:22 -0700
 From:   Sanjay Lal <sanjayl@kymasys.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 8BIT
-Subject: [PATCH 10/20] KVM/MIPS32: Keep track of VM exits and a historgram of  COP0 accesses.
-Date:   Wed, 31 Oct 2012 11:20:11 -0400
-Message-Id: <F20462A4-DD7D-40C8-813D-6742742EBEF9@kymasys.com>
+Subject: [PATCH 11/20] KVM/MIPS32: Guest interrupt delivery.
+Date:   Wed, 31 Oct 2012 11:20:19 -0400
+Message-Id: <1104E3AC-C69D-4BA7-B47A-531BC988DA5C@kymasys.com>
 To:     kvm@vger.kernel.org, linux-mips@linux-mips.org
 Mime-Version: 1.0 (Apple Message framework v1283)
 X-Mailer: Apple Mail (2.1283)
-X-archive-position: 34823
+X-archive-position: 34824
 X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
@@ -34,163 +34,323 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
 ---
- arch/mips/kvm/kvm_mips_stats.c | 93 ++++++++++++++++++++++++++++++++++++++++++
- arch/mips/kvm/kvm_mips_stats.h | 47 +++++++++++++++++++++
- 2 files changed, 140 insertions(+)
- create mode 100644 arch/mips/kvm/kvm_mips_stats.c
- create mode 100644 arch/mips/kvm/kvm_mips_stats.h
+ arch/mips/kvm/kvm_mips_int.c | 251 +++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/kvm/kvm_mips_int.h |  49 +++++++++
+ 2 files changed, 300 insertions(+)
+ create mode 100644 arch/mips/kvm/kvm_mips_int.c
+ create mode 100644 arch/mips/kvm/kvm_mips_int.h
 
-diff --git a/arch/mips/kvm/kvm_mips_stats.c b/arch/mips/kvm/kvm_mips_stats.c
+diff --git a/arch/mips/kvm/kvm_mips_int.c b/arch/mips/kvm/kvm_mips_int.c
 new file mode 100644
-index 0000000..232e91b
+index 0000000..2771446
 --- /dev/null
-+++ b/arch/mips/kvm/kvm_mips_stats.c
-@@ -0,0 +1,93 @@
++++ b/arch/mips/kvm/kvm_mips_int.c
+@@ -0,0 +1,251 @@
 +/*
 +* This file is subject to the terms and conditions of the GNU General Public
 +* License.  See the file "COPYING" in the main directory of this archive
 +* for more details.
 +*
-+* KVM/MIPS: VM Exit stats, COP0 access histogram
++* KVM/MIPS: Interrupt delivery
 +*
 +* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
 +* Authors: Sanjay Lal <sanjayl@kymasys.com>
 +*/
 +
++#include <linux/errno.h>
++#include <linux/err.h>
++#include <linux/module.h>
++#include <linux/vmalloc.h>
++#include <linux/fs.h>
++#include <linux/bootmem.h>
++#include <asm/page.h>
++#include <asm/cacheflush.h>
++
 +#include <linux/kvm_host.h>
 +
-+char *kvm_mips_exit_types_str[MAX_KVM_MIPS_EXIT_TYPES] = {
-+    "WAIT",
-+    "CACHE",
-+    "Signal",
-+    "Interrupt",
-+    "COP0/1 Unusable",
-+    "TLB Mod",
-+    "TLB Miss (LD)",
-+    "TLB Miss (ST)",
-+    "Address Err (ST)",
-+    "Address Error (LD)",
-+    "System Call",
-+    "Reserved Inst",
-+    "Break Inst",
-+    "D-Cache Flushes",
-+};
++#include "kvm_mips_int.h"
 +
-+char *kvm_cop0_str[N_MIPS_COPROC_REGS] = {
-+    "Index",
-+    "Random",
-+    "EntryLo0",
-+    "EntryLo1",
-+    "Context",
-+    "PG Mask",
-+    "Wired",
-+    "HWREna",
-+    "BadVAddr",
-+    "Count",
-+    "EntryHI",
-+    "Compare",
-+    "Status",
-+    "Cause",
-+    "EXC PC",
-+    "PRID",
-+    "Config",
-+    "LLAddr",
-+    "Watch Lo",
-+    "Watch Hi",
-+    "X Context",
-+    "Reserved",
-+    "Impl Dep",
-+    "Debug",
-+    "DEPC",
-+    "PerfCnt",
-+    "ErrCtl",
-+    "CacheErr",
-+    "TagLo",
-+    "TagHi",
-+    "ErrorEPC",
-+    "DESAVE"
-+};
++
++void
++kvm_mips_queue_irq(struct kvm_vcpu *vcpu, uint32_t priority)
++{
++    set_bit(priority, &vcpu->arch.pending_exceptions);
++}
++
++void
++kvm_mips_dequeue_irq(struct kvm_vcpu *vcpu, uint32_t priority)
++{
++    clear_bit(priority, &vcpu->arch.pending_exceptions);
++}
++
++void
++kvm_mips_queue_timer_int_cb(struct kvm_vcpu *vcpu)
++{
++    /* Cause bits to reflect the pending timer interrupt, 
++     * the EXC code will be set when we are actually
++     * delivering the interrupt:
++     */
++    kvm_set_c0_guest_cause(vcpu->arch.cop0, (C_IRQ5 | C_TI));
++
++    /* Queue up an INT exception for the core */
++    kvm_mips_queue_irq(vcpu, MIPS_EXC_INT_TIMER);
++
++}
++
++void
++kvm_mips_dequeue_timer_int_cb(struct kvm_vcpu *vcpu)
++{
++    kvm_clear_c0_guest_cause(vcpu->arch.cop0, (C_IRQ5 | C_TI));
++    kvm_mips_dequeue_irq(vcpu, MIPS_EXC_INT_TIMER);
++}
++
++void
++kvm_mips_queue_io_int_cb(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq)
++{
++    int intr = (int) irq->irq;
++
++    /* Cause bits to reflect the pending IO interrupt, 
++     * the EXC code will be set when we are actually
++     * delivering the interrupt:
++     */
++    switch (intr) {
++        case 2:
++            kvm_set_c0_guest_cause(vcpu->arch.cop0, (C_IRQ0));
++            /* Queue up an INT exception for the core */
++            kvm_mips_queue_irq(vcpu, MIPS_EXC_INT_IO);
++            break;
++
++        case 3:
++            kvm_set_c0_guest_cause(vcpu->arch.cop0, (C_IRQ1));
++            kvm_mips_queue_irq(vcpu, MIPS_EXC_INT_IPI_1);
++            break;
++
++        case 4:
++            kvm_set_c0_guest_cause(vcpu->arch.cop0, (C_IRQ2));
++            kvm_mips_queue_irq(vcpu, MIPS_EXC_INT_IPI_2);
++            break;
++
++        default:
++            break;
++    }
++
++}
++
++void
++kvm_mips_dequeue_io_int_cb(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq)
++{
++    int intr = (int) irq->irq;
++    switch (intr) {
++        case -2:
++            kvm_clear_c0_guest_cause(vcpu->arch.cop0, (C_IRQ0));
++            kvm_mips_dequeue_irq(vcpu, MIPS_EXC_INT_IO);
++            break;
++
++        case -3:
++            kvm_clear_c0_guest_cause(vcpu->arch.cop0, (C_IRQ1));
++            kvm_mips_dequeue_irq(vcpu, MIPS_EXC_INT_IPI_1);
++            break;
++
++        case -4:
++            kvm_clear_c0_guest_cause(vcpu->arch.cop0, (C_IRQ2));
++            kvm_mips_dequeue_irq(vcpu, MIPS_EXC_INT_IPI_2);
++            break;
++
++        default:
++            break;
++    }
++
++}
++
++/* Deliver the interrupt of the corresponding priority, if possible. */
++int
++kvm_mips_irq_deliver_cb(struct kvm_vcpu *vcpu, unsigned int priority,
++                        uint32_t cause)
++{
++    int allowed = 0;
++    uint32_t exccode;
++
++    struct kvm_vcpu_arch *arch = &vcpu->arch;
++    struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
++
++    switch (priority) {
++    case MIPS_EXC_INT_TIMER:
++        if ((kvm_read_c0_guest_status(cop0) & ST0_IE)
++            && (!(kvm_read_c0_guest_status(cop0) & (ST0_EXL | ST0_ERL)))
++            && (kvm_read_c0_guest_status(cop0) & IE_IRQ5)) {
++            allowed = 1;
++            exccode = T_INT;
++        }
++        break;
++
++    case MIPS_EXC_INT_IO:
++        if ((kvm_read_c0_guest_status(cop0) & ST0_IE)
++            && (!(kvm_read_c0_guest_status(cop0) & (ST0_EXL | ST0_ERL)))
++            && (kvm_read_c0_guest_status(cop0) & IE_IRQ0)) {
++            allowed = 1;
++            exccode = T_INT;
++        }
++        break;
++
++    case MIPS_EXC_INT_IPI_1:
++        if ((kvm_read_c0_guest_status(cop0) & ST0_IE)
++            && (!(kvm_read_c0_guest_status(cop0) & (ST0_EXL | ST0_ERL)))
++            && (kvm_read_c0_guest_status(cop0) & IE_IRQ1)) {
++            allowed = 1;
++            exccode = T_INT;
++        }
++        break;
++
++    case MIPS_EXC_INT_IPI_2:
++        if ((kvm_read_c0_guest_status(cop0) & ST0_IE)
++            && (!(kvm_read_c0_guest_status(cop0) & (ST0_EXL | ST0_ERL)))
++            && (kvm_read_c0_guest_status(cop0) & IE_IRQ2)) {
++            allowed = 1;
++            exccode = T_INT;
++        }
++        break;
++
++
++    default:
++        break;
++    }
++
++    /* Are we allowed to deliver the interrupt ??? */
++    if (allowed) {
++
++        if ((kvm_read_c0_guest_status(cop0) & ST0_EXL) == 0) {
++            /* save old pc */
++            kvm_write_c0_guest_epc(cop0, arch->pc);
++            kvm_set_c0_guest_status(cop0, ST0_EXL);
++
++            if (cause & CAUSEF_BD)
++                kvm_set_c0_guest_cause(cop0, CAUSEF_BD);
++            else
++                kvm_clear_c0_guest_cause(cop0, CAUSEF_BD);
++
++            kvm_debug("Delivering INT @ pc %#lx\n", arch->pc);
++
++        }
++        else
++            panic("Trying to deliver interrupt when EXL is already set\n");
++
++        kvm_change_c0_guest_cause(cop0, CAUSEF_EXCCODE, (exccode << CAUSEB_EXCCODE));
++
++        /* XXXSL Set PC to the interrupt exception entry point */
++        if (kvm_read_c0_guest_cause(cop0) & CAUSEF_IV)
++            arch->pc = KVM_GUEST_KSEG0 + 0x200;
++        else
++            arch->pc = KVM_GUEST_KSEG0 + 0x180;
++
++        clear_bit(priority, &vcpu->arch.pending_exceptions);
++    }
++
++    return allowed;
++}
 +
 +int
-+kvm_mips_dump_stats(struct kvm_vcpu *vcpu)
++kvm_mips_irq_clear_cb(struct kvm_vcpu *vcpu, unsigned int priority, uint32_t cause)
 +{
-+    int i, j __unused;
-+    ulong total_exits = 0;
-+
-+    /* 1st run, total exits */
-+    for (i = 0; i < MAX_KVM_MIPS_EXIT_TYPES; i++) {
-+        total_exits += vcpu->arch.exit_reason_stats[i];
-+    }
-+
-+    printk("KVM Exit Stats (%lu total exits):\n", total_exits);
-+    for (i = 0; i < MAX_KVM_MIPS_EXIT_TYPES; i++) {
-+        printk("\t%s: %lu\n", kvm_mips_exit_types_str[i], vcpu->arch.exit_reason_stats[i]);
-+    }
-+
-+#ifdef CONFIG_KVM_MIPS_DEBUG_COP0_COUNTERS
-+    printk("\nKVM COP0 Access Profile:\n");
-+    for (i = 0; i < N_MIPS_COPROC_REGS; i++) {
-+        for (j = 0; j < N_MIPS_COPROC_SEL; j++) {
-+            if (vcpu->arch.cop0->stat[i][j])
-+                printk("%s[%d]: %lu\n", kvm_cop0_str[i], j, vcpu->arch.cop0->stat[i][j]);
-+        }
-+    }
-+#endif
-+
-+    return 0;
++    return 1;
 +}
-diff --git a/arch/mips/kvm/kvm_mips_stats.h b/arch/mips/kvm/kvm_mips_stats.h
++
++void
++kvm_mips_deliver_interrupts(struct kvm_vcpu *vcpu, uint32_t cause)
++{
++    unsigned long *pending = &vcpu->arch.pending_exceptions;
++    unsigned long *pending_clr = &vcpu->arch.pending_exceptions_clr;
++    unsigned int priority;
++
++    if (!(*pending) && !(*pending_clr))
++        return;
++
++    priority = __ffs(*pending_clr);
++    while (priority <= MIPS_EXC_MAX) {
++        if (kvm_mips_callbacks->irq_clear(vcpu, priority, cause)) {
++            if (!KVM_MIPS_IRQ_CLEAR_ALL_AT_ONCE) {
++                break;
++            }
++        }
++
++        priority = find_next_bit(pending_clr,
++                                 BITS_PER_BYTE * sizeof(*pending_clr),
++                                 priority + 1);
++    }
++
++    priority = __ffs(*pending);
++    while (priority <= MIPS_EXC_MAX) {
++        if (kvm_mips_callbacks->irq_deliver(vcpu, priority, cause)) {
++            if (!KVM_MIPS_IRQ_DELIVER_ALL_AT_ONCE) {
++                break;
++            }
++        }
++
++        priority = find_next_bit(pending,
++                                 BITS_PER_BYTE * sizeof(*pending),
++                                 priority + 1);
++    }
++
++}
++
++int
++kvm_mips_pending_timer(struct kvm_vcpu *vcpu)
++{
++    return test_bit(MIPS_EXC_INT_TIMER, &vcpu->arch.pending_exceptions);
++}
+diff --git a/arch/mips/kvm/kvm_mips_int.h b/arch/mips/kvm/kvm_mips_int.h
 new file mode 100644
-index 0000000..df6872a
+index 0000000..09a1a5e
 --- /dev/null
-+++ b/arch/mips/kvm/kvm_mips_stats.h
-@@ -0,0 +1,47 @@
++++ b/arch/mips/kvm/kvm_mips_int.h
+@@ -0,0 +1,49 @@
 +/*
 +* This file is subject to the terms and conditions of the GNU General Public
 +* License.  See the file "COPYING" in the main directory of this archive
 +* for more details.
 +*
-+* KVM/MIPS: Instrumentation, currently logs VM exit stats and COP0 accesses
++* KVM/MIPS: Exception/Interrupt priorities
 +*
 +* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
 +* Authors: Sanjay Lal <sanjayl@kymasys.com>
 +*/
 +
-+#ifndef __KVM_MIPS_STATS_H__
-+#define __KVM_MIPS_STATS_H__
 +
-+#include <linux/kvm_host.h>
-+#include <asm/kvm_host.h>
++/* MIPS Exception Priorities, exceptions (including interrupts) are queued up
++ * for the guest in the order specified by their priorities 
++ */
 +
-+#ifdef CONFIG_KVM_EXIT_STATS
-+void kvm_mips_create_vcpu_debugfs(struct kvm_vcpu *vcpu, unsigned int id);
-+void kvm_mips_remove_vcpu_debugfs(struct kvm_vcpu *vcpu);
++#define MIPS_EXC_RESET              0
++#define MIPS_EXC_SRESET             1
++#define MIPS_EXC_DEBUG_ST           2
++#define MIPS_EXC_DEBUG              3
++#define MIPS_EXC_DDB                4
++#define MIPS_EXC_NMI                5
++#define MIPS_EXC_MCHK               6
++#define MIPS_EXC_INT_TIMER          7
++#define MIPS_EXC_INT_IO             8
++#define MIPS_EXC_EXECUTE            9
++#define MIPS_EXC_INT_IPI_1          10
++#define MIPS_EXC_INT_IPI_2          11 
++#define MIPS_EXC_MAX                12
++/* XXXSL More to follow */
 +
-+static inline void kvm_mips_set_exit_type(struct kvm_vcpu *vcpu, int type)
-+{
-+}
 +
-+/* account the exit in kvm_stats */
-+static inline void kvm_mips_account_exit_stat(struct kvm_vcpu *vcpu, enum kvm_mips_exit_types type)
-+{
-+    vcpu->arch.exit_reason_stats[type]++;
-+}
++#define C_TI        (_ULCAST_(1) << 30)
 +
-+/* wrapper to set exit time and account for it in kvm_stats */
-+static inline void kvm_mips_account_exit(struct kvm_vcpu *vcpu, enum kvm_mips_exit_types type)
-+{
-+	kvm_mips_account_exit_stat(vcpu, type);
-+}
++#define KVM_MIPS_IRQ_DELIVER_ALL_AT_ONCE (0)
++#define KVM_MIPS_IRQ_CLEAR_ALL_AT_ONCE   (0)
 +
-+#else
-+static inline void kvm_mips_create_vcpu_debugfs(struct kvm_vcpu *vcpu,
-+						unsigned int id) {}
-+static inline void kvm_mips_remove_vcpu_debugfs(struct kvm_vcpu *vcpu) {}
-+static inline void kvm_mips_set_exit_type(struct kvm_vcpu *vcpu, int type) {}
++void kvm_mips_queue_irq(struct kvm_vcpu *vcpu, uint32_t priority);
++void kvm_mips_dequeue_irq(struct kvm_vcpu *vcpu, uint32_t priority);
++int kvm_mips_pending_timer(struct kvm_vcpu *vcpu);
 +
-+static inline void kvm_mips_account_exit(struct kvm_vcpu *vcpu, enum kvm_mips_exit_types type) {}
-+#endif /* CONFIG_KVM_EXIT_STATS*/
++void kvm_mips_queue_timer_int_cb(struct kvm_vcpu *vcpu);
++void kvm_mips_dequeue_timer_int_cb(struct kvm_vcpu *vcpu);
++void kvm_mips_queue_io_int_cb(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq);
++void kvm_mips_dequeue_io_int_cb(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq);
++int kvm_mips_irq_deliver_cb(struct kvm_vcpu *vcpu, unsigned int priority, uint32_t cause);
++int kvm_mips_irq_clear_cb(struct kvm_vcpu *vcpu, unsigned int priority, uint32_t cause);
++void kvm_mips_deliver_interrupts(struct kvm_vcpu *vcpu, uint32_t cause);
 +
-+#endif /* __KVM_MIPS_STATS_H__ */
 -- 
 1.7.11.3

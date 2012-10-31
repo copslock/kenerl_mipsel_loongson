@@ -1,32 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 14:03:27 +0100 (CET)
-Received: from mms3.broadcom.com ([216.31.210.19]:4912 "EHLO mms3.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2012 14:03:54 +0100 (CET)
+Received: from mms2.broadcom.com ([216.31.210.18]:2714 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825878Ab2JaM65mkiOg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 31 Oct 2012 13:58:57 +0100
-Received: from [10.9.200.133] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Wed, 31 Oct 2012 05:55:38 -0700
-X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
+        id S6825881Ab2JaM7Ao9378 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 31 Oct 2012 13:59:00 +0100
+Received: from [10.9.200.133] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Wed, 31 Oct 2012 05:56:37 -0700
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
  IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Wed, 31 Oct 2012 05:58:15 -0700
+ Server id 8.2.247.2; Wed, 31 Oct 2012 05:57:54 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 4A05540FE4; Wed, 31
- Oct 2012 05:58:44 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id AC9BB40FE3; Wed, 31
+ Oct 2012 05:58:22 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-cc:     "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 13/15] MIPS: Netlogic: Make number of nodes configurable
-Date:   Wed, 31 Oct 2012 18:31:40 +0530
-Message-ID: <28f9760316d33165c8979baa30c476cbd8201a21.1351688140.git.jchandra@broadcom.com>
+cc:     "Madhusudan Bhat" <mbhat@netlogicmicro.com>,
+        "Jayachandran C" <jchandra@broadcom.com>
+Subject: [PATCH 01/15] MIPS: oprofile: Support for XLR/XLS processors
+Date:   Wed, 31 Oct 2012 18:31:27 +0530
+Message-ID: <dba25e24c0201dfeb01ea3abac54fe33b12909f7.1351688140.git.jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <cover.1351688140.git.jchandra@broadcom.com>
 References: <cover.1351688140.git.jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7C8FC0403QG1951230-01-01
+X-WSS-ID: 7C8FFF8F3QC1968355-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 34809
+X-archive-position: 34810
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,161 +45,123 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-There can be 1, 2 or 4 SoCs(nodes) in a multi-chip XLP board. Add an
-option for multi-chip boards in case of XLP, and make the number of
-nodes configurable.
+From: Madhusudan Bhat <mbhat@netlogicmicro.com>
 
+Add support for XLR and XLS processors in MIPS Oprofile code. These
+processors are multi-threaded and have two counters per core. Each
+counter can track either all the events in the core (global mode),
+or events in just one thread.
+
+We use the counters in the global mode, and use only the first thread
+in each core to handle the configuration etc.
+
+Signed-off-by: Madhusudan Bhat <mbhat@netlogicmicro.com>
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/include/asm/mach-netlogic/irq.h        |    4 +-
- arch/mips/include/asm/mach-netlogic/multi-node.h |   54 ++++++++++++++++++++++
- arch/mips/include/asm/netlogic/common.h          |    9 ++--
- arch/mips/netlogic/Kconfig                       |   28 +++++++++++
- 4 files changed, 90 insertions(+), 5 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-netlogic/multi-node.h
+ arch/mips/oprofile/Makefile          |    1 +
+ arch/mips/oprofile/common.c          |    1 +
+ arch/mips/oprofile/op_model_mipsxx.c |   29 +++++++++++++++++++++++++++++
+ 3 files changed, 31 insertions(+)
 
-diff --git a/arch/mips/include/asm/mach-netlogic/irq.h b/arch/mips/include/asm/mach-netlogic/irq.h
-index b590245..868ed8a 100644
---- a/arch/mips/include/asm/mach-netlogic/irq.h
-+++ b/arch/mips/include/asm/mach-netlogic/irq.h
-@@ -8,7 +8,9 @@
- #ifndef __ASM_NETLOGIC_IRQ_H
- #define __ASM_NETLOGIC_IRQ_H
+diff --git a/arch/mips/oprofile/Makefile b/arch/mips/oprofile/Makefile
+index 1208c28..65f5237 100644
+--- a/arch/mips/oprofile/Makefile
++++ b/arch/mips/oprofile/Makefile
+@@ -12,5 +12,6 @@ oprofile-$(CONFIG_CPU_MIPS32)		+= op_model_mipsxx.o
+ oprofile-$(CONFIG_CPU_MIPS64)		+= op_model_mipsxx.o
+ oprofile-$(CONFIG_CPU_R10000)		+= op_model_mipsxx.o
+ oprofile-$(CONFIG_CPU_SB1)		+= op_model_mipsxx.o
++oprofile-$(CONFIG_CPU_XLR)		+= op_model_mipsxx.o
+ oprofile-$(CONFIG_CPU_RM9000)		+= op_model_rm9000.o
+ oprofile-$(CONFIG_CPU_LOONGSON2)	+= op_model_loongson2.o
+diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
+index f80480a..abd5a02 100644
+--- a/arch/mips/oprofile/common.c
++++ b/arch/mips/oprofile/common.c
+@@ -91,6 +91,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
+ 	case CPU_R10000:
+ 	case CPU_R12000:
+ 	case CPU_R14000:
++	case CPU_XLR:
+ 		lmodel = &op_model_mipsxx_ops;
+ 		break;
  
--#define NR_IRQS			64
-+#include <asm/mach-netlogic/multi-node.h>
-+#define NR_IRQS			(64 * NLM_NR_NODES)
+diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
+index 28ea1a4..7862546 100644
+--- a/arch/mips/oprofile/op_model_mipsxx.c
++++ b/arch/mips/oprofile/op_model_mipsxx.c
+@@ -31,8 +31,22 @@
+ 
+ #define M_COUNTER_OVERFLOW		(1UL      << 31)
+ 
++/* Netlogic XLR specific, count events in all threads in a core */
++#define M_PERFCTL_COUNT_ALL_THREADS	(1UL      << 13)
 +
- #define MIPS_CPU_IRQ_BASE	0
+ static int (*save_perf_irq)(void);
  
- #endif /* __ASM_NETLOGIC_IRQ_H */
-diff --git a/arch/mips/include/asm/mach-netlogic/multi-node.h b/arch/mips/include/asm/mach-netlogic/multi-node.h
-new file mode 100644
-index 0000000..d62fc77
---- /dev/null
-+++ b/arch/mips/include/asm/mach-netlogic/multi-node.h
-@@ -0,0 +1,54 @@
 +/*
-+ * Copyright (c) 2003-2012 Broadcom Corporation
-+ * All Rights Reserved
-+ *
-+ * This software is available to you under a choice of one of two
-+ * licenses.  You may choose to be licensed under the terms of the GNU
-+ * General Public License (GPL) Version 2, available from the file
-+ * COPYING in the main directory of this source tree, or the Broadcom
-+ * license below:
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions
-+ * are met:
-+ *
-+ * 1. Redistributions of source code must retain the above copyright
-+ *    notice, this list of conditions and the following disclaimer.
-+ * 2. Redistributions in binary form must reproduce the above copyright
-+ *    notice, this list of conditions and the following disclaimer in
-+ *    the documentation and/or other materials provided with the
-+ *    distribution.
-+ *
-+ * THIS SOFTWARE IS PROVIDED BY BROADCOM ``AS IS'' AND ANY EXPRESS OR
-+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-+ * ARE DISCLAIMED. IN NO EVENT SHALL BROADCOM OR CONTRIBUTORS BE LIABLE
-+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-+ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ * XLR has only one set of counters per core. Designate the
++ * first hardware thread in the core for setup and init.
++ * Skip CPUs with non-zero hardware thread id (4 hwt per core)
 + */
-+
-+#ifndef _NETLOGIC_MULTI_NODE_H_
-+#define _NETLOGIC_MULTI_NODE_H_
-+
-+#ifndef CONFIG_NLM_MULTINODE
-+#define NLM_NR_NODES		1
-+#else
-+#if defined(CONFIG_NLM_MULTINODE_2)
-+#define NLM_NR_NODES		2
-+#elif defined(CONFIG_NLM_MULTINODE_4)
-+#define NLM_NR_NODES		4
-+#else
-+#define NLM_NR_NODES		1
-+#endif
-+#endif
-+
-+#define NLM_CORES_PER_NODE	8
-+#define NLM_THREADS_PER_CORE	4
-+#define NLM_CPUS_PER_NODE	(NLM_CORES_PER_NODE * NLM_THREADS_PER_CORE)
-+
-+#endif
-diff --git a/arch/mips/include/asm/netlogic/common.h b/arch/mips/include/asm/netlogic/common.h
-index 2eb39fa..3c6814e 100644
---- a/arch/mips/include/asm/netlogic/common.h
-+++ b/arch/mips/include/asm/netlogic/common.h
-@@ -48,6 +48,7 @@
- #include <linux/cpumask.h>
- #include <linux/spinlock.h>
- #include <asm/irq.h>
-+#include <asm/mach-netlogic/multi-node.h>
- 
- struct irq_desc;
- void nlm_smp_function_ipi_handler(unsigned int irq, struct irq_desc *desc);
-@@ -86,12 +87,12 @@ struct nlm_soc_info {
- 	spinlock_t piclock;
- };
- 
--#define NLM_CORES_PER_NODE	8
--#define NLM_THREADS_PER_CORE	4
--#define NLM_CPUS_PER_NODE	(NLM_CORES_PER_NODE * NLM_THREADS_PER_CORE)
- #define	nlm_get_node(i)		(&nlm_nodes[i])
--#define NLM_NR_NODES		1
 +#ifdef CONFIG_CPU_XLR
- #define	nlm_current_node()	(&nlm_nodes[0])
++#define oprofile_skip_cpu(c)	((cpu_logical_map(c) & 0x3) != 0)
 +#else
-+#define nlm_current_node()	(&nlm_nodes[nlm_nodeid()])
++#define oprofile_skip_cpu(c)	0
 +#endif
++
+ #ifdef CONFIG_MIPS_MT_SMP
+ static int cpu_has_mipsmt_pertccounters;
+ #define WHAT		(M_TC_EN_VPE | \
+@@ -152,6 +166,8 @@ static void mipsxx_reg_setup(struct op_counter_config *ctr)
+ 			reg.control[i] |= M_PERFCTL_USER;
+ 		if (ctr[i].exl)
+ 			reg.control[i] |= M_PERFCTL_EXL;
++		if (current_cpu_type() == CPU_XLR)
++			reg.control[i] |= M_PERFCTL_COUNT_ALL_THREADS;
+ 		reg.counter[i] = 0x80000000 - ctr[i].count;
+ 	}
+ }
+@@ -162,6 +178,9 @@ static void mipsxx_cpu_setup(void *args)
+ {
+ 	unsigned int counters = op_model_mipsxx_ops.num_counters;
  
- struct irq_data;
- uint64_t nlm_pci_irqmask(int node);
-diff --git a/arch/mips/netlogic/Kconfig b/arch/mips/netlogic/Kconfig
-index 8059eb7..3c05bf9 100644
---- a/arch/mips/netlogic/Kconfig
-+++ b/arch/mips/netlogic/Kconfig
-@@ -9,6 +9,34 @@ config DT_XLP_EVP
- 	  This DTB will be used if the firmware does not pass in a DTB
-           pointer to the kernel.  The corresponding DTS file is at
-           arch/mips/netlogic/dts/xlp_evp.dts
++	if (oprofile_skip_cpu(smp_processor_id()))
++		return;
 +
-+config NLM_MULTINODE
-+	bool "Support for multi-chip boards"
-+	depends on NLM_XLP_BOARD
-+	default n
-+	help
-+	  Add support for boards with 2 or 4 XLPs connected over ICI.
-+
-+if NLM_MULTINODE
-+choice
-+	prompt "Number of XLPs on the board"
-+	default NLM_MULTINODE_2
-+	help
-+	  In the multi-node case, specify the number of SoCs on the board.
-+
-+config NLM_MULTINODE_2
-+	bool "Dual-XLP board"
-+	help
-+	  Support boards with upto two XLPs connected over ICI.
-+
-+config NLM_MULTINODE_4
-+	bool "Quad-XLP board"
-+	help
-+	  Support boards with upto four XLPs connected over ICI.
-+
-+endchoice
-+
-+endif
- endif
+ 	switch (counters) {
+ 	case 4:
+ 		w_c0_perfctrl3(0);
+@@ -183,6 +202,9 @@ static void mipsxx_cpu_start(void *args)
+ {
+ 	unsigned int counters = op_model_mipsxx_ops.num_counters;
  
- config NLM_COMMON
++	if (oprofile_skip_cpu(smp_processor_id()))
++		return;
++
+ 	switch (counters) {
+ 	case 4:
+ 		w_c0_perfctrl3(WHAT | reg.control[3]);
+@@ -200,6 +222,9 @@ static void mipsxx_cpu_stop(void *args)
+ {
+ 	unsigned int counters = op_model_mipsxx_ops.num_counters;
+ 
++	if (oprofile_skip_cpu(smp_processor_id()))
++		return;
++
+ 	switch (counters) {
+ 	case 4:
+ 		w_c0_perfctrl3(0);
+@@ -372,6 +397,10 @@ static int __init mipsxx_init(void)
+ 		op_model_mipsxx_ops.cpu_type = "mips/loongson1";
+ 		break;
+ 
++	case CPU_XLR:
++		op_model_mipsxx_ops.cpu_type = "mips/xlr";
++		break;
++
+ 	default:
+ 		printk(KERN_ERR "Profiling unsupported for this CPU\n");
+ 
 -- 
 1.7.9.5

@@ -1,47 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2012 13:13:04 +0100 (CET)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:60256 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817667Ab2KAMM7sBrR2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2012 13:12:59 +0100
-Received: by mail-lb0-f177.google.com with SMTP id gi11so1693732lbb.36
-        for <linux-mips@linux-mips.org>; Thu, 01 Nov 2012 05:12:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding
-         :x-gm-message-state;
-        bh=682SZPIdAXOFOxoxlw801XY/P69lALsAk7tTIWMQMCg=;
-        b=cio6tmgAkJZTMrT0AQhqyZX5DOpdXRcjs8mcR6gGujFyh0u90R7+UVZXq2IImul/at
-         Z/X/CgwAQ57k7NOvvC4NqEc751Af6bDoPHBW/5Ubm5YNkj644whkP/UxWUebtnCR6M9+
-         4ta1OlSK/GjG/1nZrgsHlzkjOPlm3KatYFnJ+icQIgnl+yGg1oAEf9bNC5D4WCegQ3V2
-         2tlzHCRRhLlefg/fE7HuBi5rdeDbG8m5epLZ9uLnt3aSgkZrRBt507mBKyDuy7vb1erO
-         pD6M4q3rKR4dkf7gdfU4vQHKM8OdU3FUV5O/6AlNkBdtaD1GZcB7w2gZicPkLAo73YYE
-         yPQA==
-Received: by 10.152.48.111 with SMTP id k15mr36667952lan.17.1351771974171;
-        Thu, 01 Nov 2012 05:12:54 -0700 (PDT)
-Received: from [192.168.2.2] (ppp91-79-82-15.pppoe.mtu-net.ru. [91.79.82.15])
-        by mx.google.com with ESMTPS id y10sm2254561lbg.4.2012.11.01.05.12.52
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 01 Nov 2012 05:12:53 -0700 (PDT)
-Message-ID: <509266FC.60909@mvista.com>
-Date:   Thu, 01 Nov 2012 16:11:40 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:16.0) Gecko/20121026 Thunderbird/16.0.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2012 15:34:17 +0100 (CET)
+Received: from iolanthe.rowland.org ([192.131.102.54]:41271 "HELO
+        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with SMTP id S6825663Ab2KAOePgnN5X (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2012 15:34:15 +0100
+Received: (qmail 2274 invoked by uid 2102); 1 Nov 2012 10:34:12 -0400
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 1 Nov 2012 10:34:12 -0400
+Date:   Thu, 1 Nov 2012 10:34:12 -0400 (EDT)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@iolanthe.rowland.org
+To:     Michal Nazarewicz <mpn@google.com>
+cc:     Felipe Balbi <balbi@ti.com>, <linux-usb@vger.kernel.org>,
+        Russell King <linux@arm.linux.org.uk>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Mike Frysinger <vapier@gentoo.org>,
+        <uclinux-dist-devel@blackfin.uclinux.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>, Paul Mundt <lethal@linux-sh.org>,
+        <linux-sh@vger.kernel.org>
+Subject: Re: [PATCH 1/6] arch: Change defconfigs to point to g_mass_storage.
+In-Reply-To: <46dde680f525562e9fd19567deb5247f0bf26842.1351715302.git.mina86@mina86.com>
+Message-ID: <Pine.LNX.4.44L0.1211011033170.1762-100000@iolanthe.rowland.org>
 MIME-Version: 1.0
-To:     Sanjay Lal <sanjayl@kymasys.com>
-CC:     kvm@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 14/20] MIPS: Use the UM bit instead of the CU0 enable
- bit in the status register to figure out the stack for  saving regs.
-References: <6BC12683-224F-4867-818C-FE4CF722B272@kymasys.com>
-In-Reply-To: <6BC12683-224F-4867-818C-FE4CF722B272@kymasys.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQlTnhEzdanH8W+bhqM3Acmw/5EUbcFhdALkrgXnQgzCJbf9X5WJ7mDAO4D3a60j5qKxv1QZ
-X-archive-position: 34841
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-archive-position: 34842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: stern@rowland.harvard.edu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,24 +43,27 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 31-10-2012 19:20, Sanjay Lal wrote:
+On Wed, 31 Oct 2012, Michal Nazarewicz wrote:
 
-> Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
-> ---
->   arch/mips/include/asm/stackframe.h | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+> From: Michal Nazarewicz <mina86@mina86.com>
+> 
+> The File-backed Storage Gadget (g_file_storage) is being removed, since
+> it has been replaced by Mass Storage Gadget (g_mass_storage).  This commit
+> changes defconfigs point to the new gadget.
 
-> diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-> index cb41af5..59c9245 100644
-> --- a/arch/mips/include/asm/stackframe.h
-> +++ b/arch/mips/include/asm/stackframe.h
-> @@ -30,7 +30,7 @@
->   #define STATMASK 0x1f
->   #endif
->
-> -#ifdef CONFIG_MIPS_MT_SMTC
-> +#if defined(CONFIG_MIPS_MT_SMTC) || defined (CONFIG_MIPS_HW_FIBERS)
+...
 
-    Does this change have anything to do with the patch subject?
+> --- a/arch/arm/configs/qil-a9260_defconfig
+> +++ b/arch/arm/configs/qil-a9260_defconfig
+> @@ -108,7 +108,6 @@ CONFIG_ROOT_NFS=y
+>  CONFIG_NLS_CODEPAGE_437=y
+>  CONFIG_NLS_CODEPAGE_850=y
+>  CONFIG_NLS_ISO8859_1=y
+> -CONFIG_DEBUG_KERNEL=y
+>  CONFIG_DEBUG_USER=y
+>  CONFIG_DEBUG_LL=y
+>  # CONFIG_CRYPTO_HW is not set
 
-WBR, Sergei
+This seems to have crept in by mistake.
+
+Alan Stern

@@ -1,25 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2012 08:24:53 +0100 (CET)
-Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:46505 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6815793Ab2KAHYt7eaXZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2012 08:24:49 +0100
-Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
-        id 1TTp8y-00064F-00
-        for linux-mips@linux-mips.org; Thu, 01 Nov 2012 07:24:48 +0000
-Date:   Thu, 1 Nov 2012 03:24:48 -0400
-To:     linux-mips@linux-mips.org
-Subject: MIPS support in musl
-Message-ID: <20121101072448.GA6105@brightrain.aerifal.cx>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2012 11:21:40 +0100 (CET)
+Received: from mms1.broadcom.com ([216.31.210.17]:2343 "EHLO mms1.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816671Ab2KAKVjH-3xn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 1 Nov 2012 11:21:39 +0100
+Received: from [10.9.200.133] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Thu, 01 Nov 2012 03:20:14 -0700
+X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
+Received: from mail-irva-13.broadcom.com (10.11.16.103) by
+ IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
+ Server id 8.2.247.2; Thu, 1 Nov 2012 03:20:52 -0700
+Received: from jayachandranc.netlogicmicro.com (
+ netl-snoppy.ban.broadcom.com [10.132.128.129]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 0013340FE3; Thu, 1
+ Nov 2012 03:21:20 -0700 (PDT)
+Date:   Thu, 1 Nov 2012 15:54:56 +0530
+From:   "Jayachandran C." <jchandra@broadcom.com>
+To:     "Ralf Baechle" <ralf@linux-mips.org>
+cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 03/15] MIPS: Netlogic: select MIPSR2 for XLP
+Message-ID: <20121101102455.GA9437@jayachandranc.netlogicmicro.com>
+References: <cover.1351688140.git.jchandra@broadcom.com>
+ <3172102a3b041fdefbc721e3a25a95427bdec384.1351688140.git.jchandra@broadcom.com>
+ <20121031132850.GB6365@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <20121031132850.GB6365@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-From:   Rich Felker <dalias@aerifal.cx>
-X-archive-position: 34837
+X-WSS-ID: 7C8C93542102952504-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dalias@aerifal.cx
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,24 +48,16 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi all,
+On Wed, Oct 31, 2012 at 02:28:50PM +0100, Ralf Baechle wrote:
+> On Wed, Oct 31, 2012 at 06:31:29PM +0530, Jayachandran C wrote:
+> 
+> > Disable PGD_C0_CONTEXT option for XLP, which does not work.
+> 
+> Why does this not work on XLP?
+> 
 
-I would like to announce the MIPS port of musl, an MIT-licensed
-implementation of the standard library for Linux (including dynamic
-linker, threads, etc.) with focus on small size, correctness, and
-robustness. More information on musl is available at the website,
-http://www.musl-libc.org
+I see a kernel crash around the time init starts, planning to
+look at this next. For now, I thought I will enable R2 and disable
+PGD_C0_CONTEXT so that we get the rest of the R2 stuff for XLP.
 
-At first the MIPS port was experimental, but as of the latest release
-(0.9.7) it should be on par with the other ports. If there are
-remaining MIPS-specific bugs anyone runs into, I'm happy to help debug
-them, or just to help with usage issues. Currently, MIPS support is
-limited to o32-hardfloat ABI (real fpu or kernel emulation). We hope
-to have o32-softfloat and possibly n64 added in the next couple
-release cycles.
-
-To those of you on the list who helped with my earlier MIPS
-syscall-ABI questions getting efficient inline-syscall support into
-musl, thanks!
-
-Rich Felker
+JC.

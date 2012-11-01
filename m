@@ -1,33 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2012 16:29:02 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:40869 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6819780Ab2KAP3Bh1wPD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 1 Nov 2012 16:29:01 +0100
-Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id qA1FSvtg024129
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 1 Nov 2012 11:28:58 -0400
-Received: from balrog.usersys.tlv.redhat.com (dhcp-4-121.tlv.redhat.com [10.35.4.121])
-        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id qA1F4dDh009696;
-        Thu, 1 Nov 2012 11:04:40 -0400
-Message-ID: <50928F87.4060309@redhat.com>
-Date:   Thu, 01 Nov 2012 17:04:39 +0200
-From:   Avi Kivity <avi@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:16.0) Gecko/20121016 Thunderbird/16.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2012 17:29:52 +0100 (CET)
+Received: from mail-ee0-f49.google.com ([74.125.83.49]:56134 "EHLO
+        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825881Ab2KAQ3vWHrGk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2012 17:29:51 +0100
+Received: by mail-ee0-f49.google.com with SMTP id c1so1397002eek.36
+        for <linux-mips@linux-mips.org>; Thu, 01 Nov 2012 09:29:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=from:to:cc:subject:in-reply-to:organization:references:user-agent
+         :x-face:face:x-pgp:x-pgp-fp:date:message-id:mime-version
+         :content-type;
+        bh=v5hZuHQylme6iT5dN2UnoQJMwmVS0llr441iQV0Ycg4=;
+        b=RBUr3g0Ujc1QkC8Etv2eRRaOjz7vsK8l2HULODHqsW+cVA/JgXPCINvQNlAAgAIu1L
+         af+C2riHVsVnaUrohNuA1spNtfRtt7FlmmLbegGw9w30mSJfxFaCf3qrwsr3FvU2Hf4R
+         9vfWDlwm2PyPKMcLP/LCmIYL7My13n0yKjWdILIiDrOFgdg8IogWp0tCassAg6s4bViq
+         Y+ZjHsZLnNwAkL3ge71OQvXvKmSFiGpmb+5bHIvrWhLxAEawI+9GYtqES+ebC2soobLf
+         lSbFnfJf5limMERiMJUpWKOaOX+hejjGlW8/SdJ0n/+U8gSxlAusQ+83nJGLpU9z+GBC
+         j+jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=from:to:cc:subject:in-reply-to:organization:references:user-agent
+         :x-face:face:x-pgp:x-pgp-fp:date:message-id:mime-version
+         :content-type:x-gm-message-state;
+        bh=v5hZuHQylme6iT5dN2UnoQJMwmVS0llr441iQV0Ycg4=;
+        b=P9CGSBiqVuhY0D2yG4co/rpsaL27lnreJdDhGoaqVFTo6xUFwcMz9xsDAj9RsT+4o0
+         wmxseJ11eDe/wD2lHf+ksRzjGdlZiciURu3zZfQO8azr6aId1Ah5x5MJKqX3Pn4FfnbN
+         deyiRVMbkDJsPMgr9TSTfqgPhokKzfvL6ukyECGEURSSnWSAbLXcA8K+qjeVaGBCt9Zk
+         i+WgDRaLTUqkN5GtTvkZM9cNa4ktV94PKezUtHXpZjEf9ElebmAqbvwfPZ4R06zu0emh
+         WP6kUxe5tCHuQUnPwHsvmpy7DM63Yi9MES08mEeKnR9h1lgLy+tTbf8BnZQRwB8Xiiha
+         +s6Q==
+Received: by 10.14.220.71 with SMTP id n47mr99018294eep.26.1351787385779;
+        Thu, 01 Nov 2012 09:29:45 -0700 (PDT)
+Received: from mpn-glaptop ([2620:0:105f:5:7def:8108:f4e4:1aad])
+        by mx.google.com with ESMTPS id d44sm15740028eeo.10.2012.11.01.09.29.44
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 01 Nov 2012 09:29:45 -0700 (PDT)
+From:   Michal Nazarewicz <mpn@google.com>
+To:     Alan Stern <stern@rowland.harvard.edu>
+Cc:     Felipe Balbi <balbi@ti.com>, linux-usb@vger.kernel.org,
+        Russell King <linux@arm.linux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Mike Frysinger <vapier@gentoo.org>,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Paul Mundt <lethal@linux-sh.org>, linux-sh@vger.kernel.org
+Subject: Re: [PATCH 1/6] arch: Change defconfigs to point to g_mass_storage.
+In-Reply-To: <Pine.LNX.4.44L0.1211011033170.1762-100000@iolanthe.rowland.org>
+Organization: Google Inc
+References: <Pine.LNX.4.44L0.1211011033170.1762-100000@iolanthe.rowland.org>
+User-Agent: Notmuch/ (http://notmuchmail.org) Emacs/24.2.50.1 (x86_64-unknown-linux-gnu)
+X-Face: PbkBB1w#)bOqd`iCe"Ds{e+!C7`pkC9a|f)Qo^BMQvy\q5x3?vDQJeN(DS?|-^$uMti[3D*#^_Ts"pU$jBQLq~Ud6iNwAw_r_o_4]|JO?]}P_}Nc&"p#D(ZgUb4uCNPe7~a[DbPG0T~!&c.y$Ur,=N4RT>]dNpd;KFrfMCylc}gc??'U2j,!8%xdD
+Face:   iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAJFBMVEWbfGlUPDDHgE57V0jUupKjgIObY0PLrom9mH4dFRK4gmjPs41MxjOgAAACQElEQVQ4jW3TMWvbQBQHcBk1xE6WyALX1069oZBMlq+ouUwpEQQ6uRjttkWP4CmBgGM0BQLBdPFZYPsyFUo6uEtKDQ7oy/U96XR2Ux8ehH/89Z6enqxBcS7Lg81jmSuujrfCZcLI/TYYvbGj+jbgFpHJ/bqQAUISj8iLyu4LuFHJTosxsucO4jSDNE0Hq3hwK/ceQ5sx97b8LcUDsILfk+ovHkOIsMbBfg43VuQ5Ln9YAGCkUdKJoXR9EclFBhixy3EGVz1K6eEkhxCAkeMMnqoAhAKwhoUJkDrCqvbecaYINlFKSRS1i12VKH1XpUd4qxL876EkMcDvHj3s5RBajHHMlA5iK32e0C7VgG0RlzFPvoYHZLRmAC0BmNcBruhkE0KsMsbEc62ZwUJDxWUdMsMhVqovoT96i/DnX/ASvz/6hbCabELLk/6FF/8PNpPCGqcZTGFcBhhAaZZDbQPaAB3+KrWWy2XgbYDNIinkdWAFcCpraDE/knwe5DBqGmgzESl1p2E4MWAz0VUPgYYzmfWb9yS4vCvgsxJriNTHoIBz5YteBvg+VGISQWUqhMiByPIPpygeDBE6elD973xWwKkEiHZAHKjhuPsFnBuArrzxtakRcISv+XMIPl4aGBUJm8Emk7qBYU8IlgNEIpiJhk/No24jHwkKTFHDWfPniR4iw5vJaw2nzSjfq2zffcE/GDjRC2dn0J0XwPAbDL84TvaFCJEU4Oml9pRyEUhR3Cl2t01AoEjRbs0sYugp14/4X5n4pU4EHHnMAAAAAElFTkSuQmCC
+X-PGP:  50751FF4
+X-PGP-FP: AC1F 5F5C D418 88F8 CC84 5858 2060 4012 5075 1FF4
+Date:   Thu, 01 Nov 2012 17:29:38 +0100
+Message-ID: <xa1tobjhwakt.fsf@mina86.com>
 MIME-Version: 1.0
-To:     Sanjay Lal <sanjayl@kymasys.com>
-CC:     kvm@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 02/20] KVM/MIPS32: Arch specific KVM data structures.
-References: <54507365-0EF7-480A-8A54-75E12B3677D9@kymasys.com>
-In-Reply-To: <54507365-0EF7-480A-8A54-75E12B3677D9@kymasys.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
-X-archive-position: 34847
+Content-Type: multipart/mixed; boundary="=-=-="
+X-Gm-Message-State: ALoCoQme6srMo8uA4GnSLImgk53MFxHHOUVe7fPVV0lkH6ws/gYte0I7UaveK1Z7OUo9vrqJrdqe/prLCPeEFg93xHWVdWRoOLckRXvgGcUwUDBKI4sTMCKRsbHKq/CsVL1sQglRXRJNol6B6sWxKjWbbRm8kj7305DzWyWzZ4gnCeFAIqi3lI2Xk+Zaq3T1X/2iiatQEOt2ztAkLOvQqww0ISD3AlV9MA==
+X-archive-position: 34848
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: avi@redhat.com
+X-original-sender: mpn@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,142 +78,64 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 10/31/2012 05:18 PM, Sanjay Lal wrote:
-> 
-> Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
-> ---
->  arch/mips/include/asm/kvm.h      |  58 ++++
->  arch/mips/include/asm/kvm_host.h | 672 +++++++++++++++++++++++++++++++++++++++
->  2 files changed, 730 insertions(+)
->  create mode 100644 arch/mips/include/asm/kvm.h
->  create mode 100644 arch/mips/include/asm/kvm_host.h
-> 
-> diff --git a/arch/mips/include/asm/kvm.h b/arch/mips/include/asm/kvm.h
-> new file mode 100644
-> index 0000000..39bb715
-> --- /dev/null
-> +++ b/arch/mips/include/asm/kvm.h
-> @@ -0,0 +1,58 @@
-> +/*
-> +* This file is subject to the terms and conditions of the GNU General Public
-> +* License.  See the file "COPYING" in the main directory of this archive
-> +* for more details.
-> +*
-> +*
-> +* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
-> +* Authors: Sanjay Lal <sanjayl@kymasys.com>
-> +*/
-> +
-> +
-> +#ifndef __LINUX_KVM_MIPS_H
-> +#define __LINUX_KVM_MIPS_H
-> +
-> +#include <linux/types.h>
-> +
-> +#define __KVM_MIPS
-> +
-> +#define N_MIPS_COPROC_REGS      32
-> +#define N_MIPS_COPROC_SEL   	8
-> +
-> +/* for KVM_GET_REGS and KVM_SET_REGS */
-> +struct kvm_regs {
-> +    __u32 gprs[32];
-> +    __u32 hi;
-> +    __u32 lo;
-> +    __u32 pc;
-> +
-> +    ulong cp0reg[N_MIPS_COPROC_REGS][N_MIPS_COPROC_SEL];
-> +};
+--=-=-=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-ulong changes size in 64-bit archs, requiring compat translations when
-issuing 32-bit syscalls on a 64-bit kernel.  I don't know MIPS enough to
-know whether that's a useful scenario.
+> On Wed, 31 Oct 2012, Michal Nazarewicz wrote:
+>> --- a/arch/arm/configs/qil-a9260_defconfig
+>> +++ b/arch/arm/configs/qil-a9260_defconfig
+>> @@ -108,7 +108,6 @@ CONFIG_ROOT_NFS=3Dy
+>>  CONFIG_NLS_CODEPAGE_437=3Dy
+>>  CONFIG_NLS_CODEPAGE_850=3Dy
+>>  CONFIG_NLS_ISO8859_1=3Dy
+>> -CONFIG_DEBUG_KERNEL=3Dy
+>>  CONFIG_DEBUG_USER=3Dy
+>>  CONFIG_DEBUG_LL=3Dy
+>>  # CONFIG_CRYPTO_HW is not set
 
-> +
-> +#define KVM_MAX_VCPUS 8
+On Thu, Nov 01 2012, Alan Stern wrote:
+> This seems to have crept in by mistake.
 
-Set to 1 until smp is supported.
+Yes, obviously, thanks!
 
-> +#define KVM_MEMORY_SLOTS 32
-> +/* memory slots that does not exposed to userspace */
-> +#define KVM_PRIVATE_MEM_SLOTS 4
+I have updated version prepared, will send it tomorrow in case someone
+have some more comments.
 
-Do you really need those?
+--=20
+Best regards,                                         _     _
+.o. | Liege of Serenely Enlightened Majesty of      o' \,=3D./ `o
+..o | Computer Science,  Micha=C5=82 =E2=80=9Cmina86=E2=80=9D Nazarewicz   =
+ (o o)
+ooo +----<email/xmpp: mpn@google.com>--------------ooO--(_)--Ooo--
+--=-=-=
+Content-Type: multipart/signed; boundary="==-=-=";
+	micalg=pgp-sha1; protocol="application/pgp-signature"
 
-> +
-> +#define ENTER_CRITICAL(flags)   local_irq_save(flags)
-> +#define EXIT_CRITICAL(flags)    local_irq_restore(flags)
-
-Why wrap?
-
-> +
-> +
-> +#define KVM_GUEST_KERNEL_ASID  ((vcpu->arch.guest_kernel_asid[smp_processor_id()]) & ASID_MASK)
-> +
-> +#define KVM_GUEST_USER_ASID		((vcpu->arch.guest_user_asid[smp_processor_id()]) & ASID_MASK)
-> +
-> +
-> +#define KVM_GUEST_WIRED_TLBS    (current_cpu_data.tlbsize)
-> +#define KVM_GUEST_COMMPAGE_TLB  (vcpu->kvm->arch.commpage_tlb)
-> +#define KVM_GUEST_TLBS          KVM_GUEST_WIRED_TLBS
-
-Don't use defines for variable expressions.  Use inline functions for
-those, or just open-code when it's more readable.
-
-> +
-> +/* Special address that contains the comm page, used for reducing # of traps */
-> +#define KVM_GUEST_COMMPAGE_ADDR     0x0
-> +
-> +struct kvm_arch
-> +{
-> +    /* Guest GVA->HPA page table */
-> +    ulong *guest_pmap;
-> +    ulong guest_pmap_npages;
-> +
-> +    /* Wired host TLB used for the commpage */
-> +    int commpage_tlb;
-> +
-> +    pfn_t (*gfn_to_pfn) (struct kvm *kvm, gfn_t gfn);
-> +    void (*release_pfn_clean) (pfn_t pfn);
-> +    bool (*is_error_pfn) (pfn_t pfn);
-
-Why this indirection?  Do those functions change at runtime?
-
-> +
-> +    /* Stats for exit reasons */
-> +    ulong exit_reason_stats[MAX_KVM_MIPS_EXIT_TYPES];
-> +};
-
-Please use tracepoints for statistics instead of manual collection +
-debugfs.
-
-> +
-> +struct kvm_mips_callbacks {
-> +    int (*handle_cop_unusable)(struct kvm_vcpu *vcpu);
-> +    int (*handle_tlb_mod)(struct kvm_vcpu *vcpu);
-> +    int (*handle_tlb_ld_miss)(struct kvm_vcpu *vcpu);
-> +    int (*handle_tlb_st_miss)(struct kvm_vcpu *vcpu);
-> +    int (*handle_addr_err_st)(struct kvm_vcpu *vcpu);
-> +    int (*handle_addr_err_ld)(struct kvm_vcpu *vcpu);
-> +    int (*handle_syscall)(struct kvm_vcpu *vcpu);
-> +    int (*handle_res_inst)(struct kvm_vcpu *vcpu);
-> +    int (*handle_break)(struct kvm_vcpu *vcpu);
-> +    gpa_t (*gva_to_gpa)(gva_t gva);
-> +    void (*queue_timer_int)(struct kvm_vcpu *vcpu);
-> +    void (*dequeue_timer_int)(struct kvm_vcpu *vcpu);
-> +    void (*queue_io_int)(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq);
-> +    void (*dequeue_io_int)(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq);
-> +    int (*irq_deliver)(struct kvm_vcpu *vcpu, unsigned int priority, uint32_t cause);
-> +    int (*irq_clear)(struct kvm_vcpu *vcpu, unsigned int priority, uint32_t cause);
-> +    int (*vcpu_ioctl_get_regs)(struct kvm_vcpu *vcpu, struct kvm_regs *regs);
-> +    int (*vcpu_ioctl_set_regs)(struct kvm_vcpu *vcpu, struct kvm_regs *regs);
-> +    int (*vcpu_init)(struct kvm_vcpu *vcpu);
-> +};
-
-We use callbacks on x86 because we have two separate implementations
-(svm and vmx).  Will that be the case on MIPS? If not, use direct calls.
+--==-=-=
+Content-Type: text/plain
 
 
+--==-=-=
+Content-Type: application/pgp-signature
 
--- 
-error compiling committee.c: too many arguments to function
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQkqNyAAoJECBgQBJQdR/0YTEP/jnfvfot7qkoowcjQ5v+QRHg
+Ixubb3k2W/hiSvgttLx2Wek3OLmEXVG/6EAZT/1I/m2ddilFri5HAUm9Hd7YoH8U
+bkjhIyHJyRDQkGSN4znlxHglnwdqk0hxIemcei/FjBGCCqDysIgXDX3HWbYKkTwO
+N6MI7zbEXK9nV+AkGXz1AUa7xTw88M5X6TK28DIt9AIDpXpD4cI+Dv2l39EZirom
+D2gHZc18wcvdYrNEm36ePn2RHETe6HDijOWrxRmN0sf4S/sxHhpR/OwAlXuOSlir
+gvu3P+nzCDCKNTpg2eGbrkJxwL2B36YQwIm8CZOaE6p/3QBi/mWKCDzqgLyUsy3I
+peYosUiRPtzNJ8h5nSm1LX+xRU0B6oxKYYzBdJPeGIsmZn44Shn7UN+3PZw4r6fu
+8rb+WyFr4U5abHzpEmOf0PMr5EexTf1HPayLcEKpapEiCzW6p3okJCSLCbMLmB1Y
+qGOMO0rVB8gw2zuh2L+fuHwN8uZ0wxrvFWgWIDNwSVIy6xRvN5qKrJ0MtRYhDZ1D
+szTEisr5qr9Frj1nAuZVwo2ZiCEwvDX6DLT294NP8On27BaNVhELT6716NMqozAv
+LP84gnqJBA0T5UHxLp0zCTI3t/ctIz8n49BCuDP3dk3koNUwlT/8bpr5FJkxm9we
+bPkmNPz32ukFI26OiI/R
+=zLzH
+-----END PGP SIGNATURE-----
+--==-=-=--
+
+--=-=-=--

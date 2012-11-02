@@ -1,27 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Nov 2012 10:44:27 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:58403 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Nov 2012 10:58:21 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:58607 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6820610Ab2KBJo0odKBD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 2 Nov 2012 10:44:26 +0100
+        id S6823018Ab2KBJ6UmUTLI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 2 Nov 2012 10:58:20 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id qA29iO9o023423;
-        Fri, 2 Nov 2012 10:44:24 +0100
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id qA29wDmS024326;
+        Fri, 2 Nov 2012 10:58:13 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id qA29iNsr023422;
-        Fri, 2 Nov 2012 10:44:23 +0100
-Date:   Fri, 2 Nov 2012 10:44:23 +0100
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id qA29w1xw024288;
+        Fri, 2 Nov 2012 10:58:01 +0100
+Date:   Fri, 2 Nov 2012 10:58:01 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jean-Christophe PINCE <jcpince@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: MIPS ASID type conflicts
-Message-ID: <20121102094423.GB17860@linux-mips.org>
-References: <CAEiBgeAukAdZv1WNcJQ6DByP7Yy63gvRS0cY6q6yU27p+XRi4A@mail.gmail.com>
+To:     Stephen Warren <swarren@wwwdotorg.org>
+Cc:     Michal Marek <mmarek@suse.cz>,
+        David Gibson <david@gibson.dropbear.id.au>,
+        Jon Loeliger <jdl@jdl.com>,
+        Grant Likely <grant.likely@secretlab.ca>,
+        Rob Herring <rob.herring@calxeda.com>,
+        Scott Wood <scottwood@freescale.com>,
+        Mark Brown <broonie@opensource.wolfsonmicro.com>,
+        Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>,
+        Sam Ravnborg <sam@ravnborg.org>, linux-kernel@vger.kernel.org,
+        devicetree-discuss@lists.ozlabs.org, linux-arch@vger.kernel.org,
+        Stephen Warren <swarren@nvidia.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH V5 1/2] kbuild: centralize .dts->.dtb rule
+Message-ID: <20121102095801.GC17860@linux-mips.org>
+References: <1351721431-26220-1-git-send-email-swarren@wwwdotorg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAEiBgeAukAdZv1WNcJQ6DByP7Yy63gvRS0cY6q6yU27p+XRi4A@mail.gmail.com>
+In-Reply-To: <1351721431-26220-1-git-send-email-swarren@wwwdotorg.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34851
+X-archive-position: 34852
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,40 +49,43 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, Apr 23, 2012 at 01:49:26PM +0200, Jean-Christophe PINCE wrote:
+On Wed, Oct 31, 2012 at 04:10:30PM -0600, Stephen Warren wrote:
 
-> I am analyzing Linux MIPS tasks memory spaces and found out what I
-> think is a bug in the ASID management.
+> From: Stephen Warren <swarren@nvidia.com>
 > 
-> The structure "struct cpuinfo_mips" defined in
-> arch/mips/include/asm/cpu-info.h uses a "unsigned int" field for
-> asid_cache while the context field defined in
-> arch/mips/include/asm/mmu.h is a "unsigned long".
-> 
-> This is ok with 32bits kernel but leads to 4bytes vs 8bytes fields
-> with a 64bits kernel. And when the scheduler checks if the ASID is of
-> an older ASID_VERSION, the test will always return that the version
-> differs when the context bits above bit31 will be set.
-> 
-> I imagine this should be a quite rare issue but could likely happen on
-> devices running for very long and starting processes very often (or
-> running more than 256 processes per cpu). When this condition (bit 32
-> or above of asid_cache is set), the effect should be that the TLB will
-> be flushed on each context_switch required by the scheduler but there
-> shouldn't be any crash.
+> All architectures that use cmd_dtc do so in the same way. Move the build
+> rule to a central location to avoid duplication.
 
-A full flush of the TLB can be implemented by picking a fresh ASID as
-long as there are still fresh ASIDs available.  This happens fairly
-frequently; a typical system has burned through the first 256 ASIDs
-somewhen during bootup.
-
-There is not much advantage to be gained from having the ASID and generation
-counter in a 64-bit variable so I think I'm just going to change
-mmu_context_t to:
-
-typedef struct {
-        unsigned int asid[NR_CPUS];
-        void *vdso;
-} mm_context_t;
+Can you fold these MIPS bits into your patch?
 
   Ralf
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ arch/mips/cavium-octeon/Makefile | 3 ---
+ arch/mips/netlogic/dts/Makefile  | 3 ---
+ 2 files changed, 6 deletions(-)
+
+diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
+index bc96e29..6e927cf 100644
+--- a/arch/mips/cavium-octeon/Makefile
++++ b/arch/mips/cavium-octeon/Makefile
+@@ -24,9 +24,6 @@ DTB_FILES = $(patsubst %.dts, %.dtb, $(DTS_FILES))
+ 
+ obj-y += $(patsubst %.dts, %.dtb.o, $(DTS_FILES))
+ 
+-$(obj)/%.dtb: $(src)/%.dts FORCE
+-	$(call if_changed_dep,dtc)
+-
+ # Let's keep the .dtb files around in case we want to look at them.
+ .SECONDARY:  $(addprefix $(obj)/, $(DTB_FILES))
+ 
+diff --git a/arch/mips/netlogic/dts/Makefile b/arch/mips/netlogic/dts/Makefile
+index 67ae3fe2..d117d46 100644
+--- a/arch/mips/netlogic/dts/Makefile
++++ b/arch/mips/netlogic/dts/Makefile
+@@ -1,4 +1 @@
+ obj-$(CONFIG_DT_XLP_EVP) := xlp_evp.dtb.o
+-
+-$(obj)/%.dtb: $(obj)/%.dts
+-	$(call if_changed,dtc)

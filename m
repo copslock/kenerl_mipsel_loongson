@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Nov 2012 18:11:16 +0100 (CET)
-Received: from kymasys.com ([64.62.140.43]:50534 "HELO kymasys.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Nov 2012 18:14:19 +0100 (CET)
+Received: from kymasys.com ([64.62.140.43]:60603 "HELO kymasys.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6823043Ab2KBRLPSFTdF convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Nov 2012 18:11:15 +0100
-Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Fri, 2 Nov 2012 10:11:04 -0700
-Subject: Re: [PATCH 02/20] KVM/MIPS32: Arch specific KVM data structures.
+        id S6823039Ab2KBROSjFWcx convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Nov 2012 18:14:18 +0100
+Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Fri, 2 Nov 2012 10:14:10 -0700
+Subject: Re: [PATCH 00/20] KVM for MIPS32 Processors
 Mime-Version: 1.0 (Apple Message framework v1283)
 Content-Type:   text/plain; charset=US-ASCII
 From:   Sanjay Lal <sanjayl@kymasys.com>
-In-Reply-To: <50928F87.4060309@redhat.com>
-Date:   Fri, 2 Nov 2012 13:11:03 -0400
+In-Reply-To: <50928C83.60609@redhat.com>
+Date:   Fri, 2 Nov 2012 13:14:09 -0400
 Cc:     kvm@vger.kernel.org, linux-mips@linux-mips.org
 Content-Transfer-Encoding: 7BIT
-Message-Id: <1F345D52-BEA7-4930-8C24-7DBE1EA56986@kymasys.com>
-References: <54507365-0EF7-480A-8A54-75E12B3677D9@kymasys.com> <50928F87.4060309@redhat.com>
+Message-Id: <72741470-10BE-4F90-9BB7-66088FC08D48@kymasys.com>
+References: <C5B4CB07-2946-4536-9854-9F66893D2C2B@kymasys.com> <50928C83.60609@redhat.com>
 To:     Avi Kivity <avi@redhat.com>
 X-Mailer: Apple Mail (2.1283)
-X-archive-position: 34859
+X-archive-position: 34860
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,56 +35,70 @@ X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
 
-On Nov 1, 2012, at 11:04 AM, Avi Kivity wrote:
+On Nov 1, 2012, at 10:51 AM, Avi Kivity wrote:
 
-> On 10/31/2012 05:18 PM, Sanjay Lal wrote:
+> On 10/31/2012 05:17 PM, Sanjay Lal wrote:
+>> The following patchset implements KVM support for MIPS32R2 processors,
+>> using Trap & Emulate, with basic runtime binary translation to improve
+>> performance.  The goal has been to keep the Guest kernel changes to a
+>> minimum.
+>> 
+>> The patch is against Linux 3.7-rc2.  
+>> 
+>> There is a companion patchset for QEMU that adds KVM support for the 
+>> MIPS target.
+>> 
+>> KVM/MIPS should support MIPS32-R2 processors and beyond.
+>> It has been tested on the following platforms:
+>>  - Malta Board with FPGA based 34K (Little Endian).
+>>  - Sigma Designs TangoX board with a 24K based 8654 SoC (Little Endian).
+>>  - Malta Board with 74K @ 1GHz (Little Endian).
+>>  - OVPSim MIPS simulator from Imperas emulating a Malta board with 
+>>    24Kc and 1074Kc cores (Little Endian).
+>> 
+>> Both Guest kernel and Guest Userspace execute in UM. The Guest address space is
+>> as folows:
+>> Guest User address space:   0x00000000 -> 0x40000000
+>> Guest Kernel Unmapped:      0x40000000 -> 0x60000000
+>> Guest Kernel Mapped:        0x60000000 -> 0x80000000
+>> 
+>> As a result, Guest Usermode virtual memory is limited to 1GB.
+>> 
+>> Relase Notes
+>> ============
+>> (1) 16K Page Size:
+>>    Both Host Kernel and Guest Kernel should have the same page size, 
+>>    currently at least 16K.  Note that due to cache aliasing issues, 
+>>    4K page sizes are NOT supported.
+>> 
+>> (2) No HugeTLB/Large Page Support:
+>>    Both the host kernel and Guest kernel should have the page size 
+>>    set to at least 16K.
+>>    This will be implemented in a future release.
+>> 
+>> (3) SMP Guests to not work
+>>    Linux-3.7-rc2 based SMP guest hangs due to the following code sequence 
+>>    in the generated TLB handlers:
+>>         LL/TLBP/SC
+>>    Since the TLBP instruction causes a trap the reservation gets cleared
+>>    when we ERET back to the guest. This causes the guest to hang in an 
+>>    infinite loop.
+>>    As a workaround, make sure that CONFIG_SMP is disabled for Guest kernels.
+>>    This will be fixed in a future release.
+>> 
+>> (4) FPU support:
+>>    Currently KVM/MIPS emulates a 24K CPU without a FPU.
+>>    This will be fixed in a future release
+>> 
 > 
->> +
->> +/* Special address that contains the comm page, used for reducing # of traps */
->> +#define KVM_GUEST_COMMPAGE_ADDR     0x0
->> +
->> +struct kvm_arch
->> +{
->> +    /* Guest GVA->HPA page table */
->> +    ulong *guest_pmap;
->> +    ulong guest_pmap_npages;
->> +
->> +    /* Wired host TLB used for the commpage */
->> +    int commpage_tlb;
->> +
->> +    pfn_t (*gfn_to_pfn) (struct kvm *kvm, gfn_t gfn);
->> +    void (*release_pfn_clean) (pfn_t pfn);
->> +    bool (*is_error_pfn) (pfn_t pfn);
+> Thanks for posting this, new architectures are always a welcome addition.
 > 
-> Why this indirection?  Do those functions change at runtime?
+> Some general notes:
+> - please read and follow Documentation/CodingStyle.  In general the
+> patches are okay except for indentation (use tabs, not spaces, and set
+> your editor tab width to 8).
 
-On MIPS, kernel modules are executed from "mapped space", which requires TLBs.  The TLB handling code is statically linked with the rest of the kernel (kvm_tlb.c) to avoid the possibility of double faulting. The problem is that the code references routines that are part of the the KVM module, which are only available once the module is loaded, hence the indirection.
+I'll definitely be re-formatting the code based on the recommended coding style and running the patches through checkpatch.pl for v2 of the patch set.
 
-> 
->> +
->> +struct kvm_mips_callbacks {
->> +    int (*handle_cop_unusable)(struct kvm_vcpu *vcpu);
->> +    int (*handle_tlb_mod)(struct kvm_vcpu *vcpu);
->> +    int (*handle_tlb_ld_miss)(struct kvm_vcpu *vcpu);
->> +    int (*handle_tlb_st_miss)(struct kvm_vcpu *vcpu);
->> +    int (*handle_addr_err_st)(struct kvm_vcpu *vcpu);
->> +    int (*handle_addr_err_ld)(struct kvm_vcpu *vcpu);
->> +    int (*handle_syscall)(struct kvm_vcpu *vcpu);
->> +    int (*handle_res_inst)(struct kvm_vcpu *vcpu);
->> +    int (*handle_break)(struct kvm_vcpu *vcpu);
->> +    gpa_t (*gva_to_gpa)(gva_t gva);
->> +    void (*queue_timer_int)(struct kvm_vcpu *vcpu);
->> +    void (*dequeue_timer_int)(struct kvm_vcpu *vcpu);
->> +    void (*queue_io_int)(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq);
->> +    void (*dequeue_io_int)(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq);
->> +    int (*irq_deliver)(struct kvm_vcpu *vcpu, unsigned int priority, uint32_t cause);
->> +    int (*irq_clear)(struct kvm_vcpu *vcpu, unsigned int priority, uint32_t cause);
->> +    int (*vcpu_ioctl_get_regs)(struct kvm_vcpu *vcpu, struct kvm_regs *regs);
->> +    int (*vcpu_ioctl_set_regs)(struct kvm_vcpu *vcpu, struct kvm_regs *regs);
->> +    int (*vcpu_init)(struct kvm_vcpu *vcpu);
->> +};
-> 
-> We use callbacks on x86 because we have two separate implementations
-> (svm and vmx).  Will that be the case on MIPS? If not, use direct calls.
-
-We will eventually have separate implementations based on the features supported by H/W.
+Regards
+Sanjay

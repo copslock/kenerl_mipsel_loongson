@@ -1,59 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Nov 2012 06:59:12 +0100 (CET)
-Received: from co9ehsobe001.messaging.microsoft.com ([207.46.163.24]:7422 "EHLO
-        co9outboundpool.messaging.microsoft.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817528Ab2KBF7LGVGWN convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 2 Nov 2012 06:59:11 +0100
-Received: from mail114-co9-R.bigfish.com (10.236.132.253) by
- CO9EHSOBE018.bigfish.com (10.236.130.81) with Microsoft SMTP Server id
- 14.1.225.23; Fri, 2 Nov 2012 05:59:02 +0000
-Received: from mail114-co9 (localhost [127.0.0.1])      by
- mail114-co9-R.bigfish.com (Postfix) with ESMTP id 7BDED240160; Fri,  2 Nov
- 2012 05:59:02 +0000 (UTC)
-X-Forefront-Antispam-Report: CIP:70.37.183.190;KIP:(null);UIP:(null);IPV:NLI;H:mail.freescale.net;RD:none;EFVD:NLI
-X-SpamScore: -8
-X-BigFish: VS-8(zzbb2dI98dI9371I542M1432Izz1de0h1202h1d1ah1d2ahzz8275dhz2dh2a8h668h839h8e2h8e3h944hd25hf0ah1220h1288h12a5h12a9h12bdh137ah13b6h1441h1504h1537h153bhbe9i1155h)
-Received: from mail114-co9 (localhost.localdomain [127.0.0.1]) by mail114-co9
- (MessageSwitch) id 135183594135390_10338; Fri,  2 Nov 2012 05:59:01 +0000
- (UTC)
-Received: from CO9EHSMHS011.bigfish.com (unknown [10.236.132.229])      by
- mail114-co9.bigfish.com (Postfix) with ESMTP id 064C0200047;   Fri,  2 Nov 2012
- 05:59:01 +0000 (UTC)
-Received: from mail.freescale.net (70.37.183.190) by CO9EHSMHS011.bigfish.com
- (10.236.130.21) with Microsoft SMTP Server (TLS) id 14.1.225.23; Fri, 2 Nov
- 2012 05:59:01 +0000
-Received: from 039-SN2MPN1-013.039d.mgd.msft.net ([169.254.3.250]) by
- 039-SN1MMR1-001.039d.mgd.msft.net ([10.84.1.13]) with mapi id 14.02.0318.003;
- Fri, 2 Nov 2012 05:59:00 +0000
-From:   Sethi Varun-B16395 <B16395@freescale.com>
-To:     Sanjay Lal <sanjayl@kymasys.com>
-CC:     "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Avi Kivity <avi@redhat.com>
-Subject: RE: [PATCH 07/20] KVM/MIPS32: Dynamic binary translation of select
-  privileged instructions.
-Thread-Topic: [PATCH 07/20] KVM/MIPS32: Dynamic binary translation of select
-  privileged instructions.
-Thread-Index: AQHNuEVulN6OT9I95U21bJP1Lp8VEpfWDJDA
-Date:   Fri, 2 Nov 2012 05:58:59 +0000
-Message-ID: <C5ECD7A89D1DC44195F34B25E172658D25469A@039-SN2MPN1-013.039d.mgd.msft.net>
-References: <3E678B37-B4C1-409F-A1CB-A7CC83B2D874@kymasys.com>
- <5092942C.4080402@redhat.com>
-In-Reply-To: <5092942C.4080402@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.232.132.1]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Nov 2012 10:44:27 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:58403 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6820610Ab2KBJo0odKBD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 2 Nov 2012 10:44:26 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id qA29iO9o023423;
+        Fri, 2 Nov 2012 10:44:24 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id qA29iNsr023422;
+        Fri, 2 Nov 2012 10:44:23 +0100
+Date:   Fri, 2 Nov 2012 10:44:23 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Jean-Christophe PINCE <jcpince@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: MIPS ASID type conflicts
+Message-ID: <20121102094423.GB17860@linux-mips.org>
+References: <CAEiBgeAukAdZv1WNcJQ6DByP7Yy63gvRS0cY6q6yU27p+XRi4A@mail.gmail.com>
 MIME-Version: 1.0
-X-OriginatorOrg: freescale.com
-X-archive-position: 34850
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAEiBgeAukAdZv1WNcJQ6DByP7Yy63gvRS0cY6q6yU27p+XRi4A@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 34851
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: B16395@freescale.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,34 +39,40 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+On Mon, Apr 23, 2012 at 01:49:26PM +0200, Jean-Christophe PINCE wrote:
 
+> I am analyzing Linux MIPS tasks memory spaces and found out what I
+> think is a bug in the ASID management.
+> 
+> The structure "struct cpuinfo_mips" defined in
+> arch/mips/include/asm/cpu-info.h uses a "unsigned int" field for
+> asid_cache while the context field defined in
+> arch/mips/include/asm/mmu.h is a "unsigned long".
+> 
+> This is ok with 32bits kernel but leads to 4bytes vs 8bytes fields
+> with a 64bits kernel. And when the scheduler checks if the ASID is of
+> an older ASID_VERSION, the test will always return that the version
+> differs when the context bits above bit31 will be set.
+> 
+> I imagine this should be a quite rare issue but could likely happen on
+> devices running for very long and starting processes very often (or
+> running more than 256 processes per cpu). When this condition (bit 32
+> or above of asid_cache is set), the effect should be that the TLB will
+> be flushed on each context_switch required by the scheduler but there
+> shouldn't be any crash.
 
-> -----Original Message-----
-> From: kvm-owner@vger.kernel.org [mailto:kvm-owner@vger.kernel.org] On
-> Behalf Of Avi Kivity
-> Sent: Thursday, November 01, 2012 8:54 PM
-> To: Sanjay Lal
-> Cc: kvm@vger.kernel.org; linux-mips@linux-mips.org
-> Subject: Re: [PATCH 07/20] KVM/MIPS32: Dynamic binary translation of
-> select privileged instructions.
-> 
-> On 10/31/2012 05:19 PM, Sanjay Lal wrote:
-> > Currently, the following instructions are translated:
-> > - CACHE (indexed)
-> > - CACHE (va based): translated to a synci, overkill on D-CACHE
-> operations, but still much faster than a trap.
-> > - mfc0/mtc0: the virtual COP0 registers for the guest are implemented
-> as 2-D array
-> >   [COP#][SEL] and this is mapped into the guest kernel address space @
-> VA 0x0.
-> >   mfc0/mtc0 operations are transformed to load/stores.
-> >
-> 
-> Seems to be more of binary patching, yes?  Binary translation usually
-> involves hiding the translated code so the guest is not able to detect
-> that it is patched.
-> 
-Typically, a dynamic binary translation solution should also involve a mechanism to trace the guest access to the modified pages. I don't think that support is present as a part
-of the patch set. Do you plan to implement it?
+A full flush of the TLB can be implemented by picking a fresh ASID as
+long as there are still fresh ASIDs available.  This happens fairly
+frequently; a typical system has burned through the first 256 ASIDs
+somewhen during bootup.
 
--Varun
+There is not much advantage to be gained from having the ASID and generation
+counter in a 64-bit variable so I think I'm just going to change
+mmu_context_t to:
+
+typedef struct {
+        unsigned int asid[NR_CPUS];
+        void *vdso;
+} mm_context_t;
+
+  Ralf

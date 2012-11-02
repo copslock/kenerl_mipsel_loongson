@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Nov 2012 10:58:21 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:58607 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Nov 2012 11:23:44 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:58854 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823018Ab2KBJ6UmUTLI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 2 Nov 2012 10:58:20 +0100
+        id S6820301Ab2KBKXmoZ4u4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 2 Nov 2012 11:23:42 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id qA29wDmS024326;
-        Fri, 2 Nov 2012 10:58:13 +0100
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id qA2ANb7e026314;
+        Fri, 2 Nov 2012 11:23:37 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id qA29w1xw024288;
-        Fri, 2 Nov 2012 10:58:01 +0100
-Date:   Fri, 2 Nov 2012 10:58:01 +0100
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id qA2ANZGa026313;
+        Fri, 2 Nov 2012 11:23:35 +0100
+Date:   Fri, 2 Nov 2012 11:23:35 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Stephen Warren <swarren@wwwdotorg.org>
 Cc:     Michal Marek <mmarek@suse.cz>,
@@ -24,14 +24,15 @@ Cc:     Michal Marek <mmarek@suse.cz>,
         devicetree-discuss@lists.ozlabs.org, linux-arch@vger.kernel.org,
         Stephen Warren <swarren@nvidia.com>, linux-mips@linux-mips.org
 Subject: Re: [PATCH V5 1/2] kbuild: centralize .dts->.dtb rule
-Message-ID: <20121102095801.GC17860@linux-mips.org>
+Message-ID: <20121102102335.GF2905@linux-mips.org>
 References: <1351721431-26220-1-git-send-email-swarren@wwwdotorg.org>
+ <20121102095801.GC17860@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1351721431-26220-1-git-send-email-swarren@wwwdotorg.org>
+In-Reply-To: <20121102095801.GC17860@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 34852
+X-archive-position: 34853
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,22 +50,20 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, Oct 31, 2012 at 04:10:30PM -0600, Stephen Warren wrote:
+On Fri, Nov 02, 2012 at 10:58:01AM +0100, Ralf Baechle wrote:
 
-> From: Stephen Warren <swarren@nvidia.com>
-> 
-> All architectures that use cmd_dtc do so in the same way. Move the build
-> rule to a central location to avoid duplication.
+> Can you fold these MIPS bits into your patch?
 
-Can you fold these MIPS bits into your patch?
+I missed Lantiq.
 
   Ralf
 
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
  arch/mips/cavium-octeon/Makefile | 3 ---
+ arch/mips/lantiq/dts/Makefile    | 3 ---
  arch/mips/netlogic/dts/Makefile  | 3 ---
- 2 files changed, 6 deletions(-)
+ 3 files changed, 9 deletions(-)
 
 diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
 index bc96e29..6e927cf 100644
@@ -80,6 +79,15 @@ index bc96e29..6e927cf 100644
  # Let's keep the .dtb files around in case we want to look at them.
  .SECONDARY:  $(addprefix $(obj)/, $(DTB_FILES))
  
+diff --git a/arch/mips/lantiq/dts/Makefile b/arch/mips/lantiq/dts/Makefile
+index 674fca4..6fa72dd 100644
+--- a/arch/mips/lantiq/dts/Makefile
++++ b/arch/mips/lantiq/dts/Makefile
+@@ -1,4 +1 @@
+ obj-$(CONFIG_DT_EASY50712) := easy50712.dtb.o
+-
+-$(obj)/%.dtb: $(obj)/%.dts
+-	$(call if_changed,dtc)
 diff --git a/arch/mips/netlogic/dts/Makefile b/arch/mips/netlogic/dts/Makefile
 index 67ae3fe2..d117d46 100644
 --- a/arch/mips/netlogic/dts/Makefile

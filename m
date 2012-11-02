@@ -1,48 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Nov 2012 16:00:50 +0100 (CET)
-Received: from avon.wwwdotorg.org ([70.85.31.133]:46207 "EHLO
-        avon.wwwdotorg.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823038Ab2KBPApZ3NTj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Nov 2012 16:00:45 +0100
-Received: from severn.wwwdotorg.org (unknown [192.168.65.5])
-        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by avon.wwwdotorg.org (Postfix) with ESMTPS id BFED06231;
-        Fri,  2 Nov 2012 09:01:17 -0600 (MDT)
-Received: from [IPv6:::1] (localhost [127.0.0.1])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by severn.wwwdotorg.org (Postfix) with ESMTPSA id 2B685E40EF;
-        Fri,  2 Nov 2012 09:00:39 -0600 (MDT)
-Message-ID: <5093E015.1070504@wwwdotorg.org>
-Date:   Fri, 02 Nov 2012 09:00:37 -0600
-From:   Stephen Warren <swarren@wwwdotorg.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:15.0) Gecko/20120912 Thunderbird/15.0.1
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Michal Marek <mmarek@suse.cz>,
-        David Gibson <david@gibson.dropbear.id.au>,
-        Jon Loeliger <jdl@jdl.com>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Rob Herring <rob.herring@calxeda.com>,
-        Scott Wood <scottwood@freescale.com>,
-        Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>,
-        Sam Ravnborg <sam@ravnborg.org>, linux-kernel@vger.kernel.org,
-        devicetree-discuss@lists.ozlabs.org, linux-arch@vger.kernel.org,
-        Stephen Warren <swarren@nvidia.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH V5 1/2] kbuild: centralize .dts->.dtb rule
-References: <1351721431-26220-1-git-send-email-swarren@wwwdotorg.org> <20121102095801.GC17860@linux-mips.org> <20121102102335.GF2905@linux-mips.org>
-In-Reply-To: <20121102102335.GF2905@linux-mips.org>
-X-Enigmail-Version: 1.4.4
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.96.5 at avon.wwwdotorg.org
-X-Virus-Status: Clean
-X-archive-position: 34856
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Nov 2012 17:58:06 +0100 (CET)
+Received: from kymasys.com ([64.62.140.43]:41258 "HELO kymasys.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S6823043Ab2KBQ6Foc-NQ convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Nov 2012 17:58:05 +0100
+Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Fri, 2 Nov 2012 09:57:55 -0700
+Subject: Re: [PATCH 07/20] KVM/MIPS32: Dynamic binary translation of select privileged instructions.
+Mime-Version: 1.0 (Apple Message framework v1283)
+Content-Type:   text/plain; charset=US-ASCII
+From:   Sanjay Lal <sanjayl@kymasys.com>
+In-Reply-To: <5092942C.4080402@redhat.com>
+Date:   Fri, 2 Nov 2012 12:57:54 -0400
+Cc:     kvm@vger.kernel.org, linux-mips@linux-mips.org
+Content-Transfer-Encoding: 7BIT
+Message-Id: <6A66B968-ADE4-45F0-9CCD-B8B60591CA24@kymasys.com>
+References: <3E678B37-B4C1-409F-A1CB-A7CC83B2D874@kymasys.com> <5092942C.4080402@redhat.com>
+To:     Avi Kivity <avi@redhat.com>
+X-Mailer: Apple Mail (2.1283)
+X-archive-position: 34857
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: swarren@wwwdotorg.org
+X-original-sender: sanjayl@kymasys.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,12 +34,26 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 11/02/2012 04:23 AM, Ralf Baechle wrote:
-> On Fri, Nov 02, 2012 at 10:58:01AM +0100, Ralf Baechle wrote:
-> 
->> Can you fold these MIPS bits into your patch?
-> 
-> I missed Lantiq.
 
-Thanks, I've squashed that in, and with a quick grep noticed that
-arch/{arm64,microblaze} also need updating.
+On Nov 1, 2012, at 11:24 AM, Avi Kivity wrote:
+
+> On 10/31/2012 05:19 PM, Sanjay Lal wrote:
+>> Currently, the following instructions are translated:
+>> - CACHE (indexed)
+>> - CACHE (va based): translated to a synci, overkill on D-CACHE operations, but still much faster than a trap.
+>> - mfc0/mtc0: the virtual COP0 registers for the guest are implemented as 2-D array
+>>  [COP#][SEL] and this is mapped into the guest kernel address space @ VA 0x0.
+>>  mfc0/mtc0 operations are transformed to load/stores.
+>> 
+> 
+> Seems to be more of binary patching, yes?  Binary translation usually
+> involves hiding the translated code so the guest is not able to detect
+> that it is patched.
+> 
+> 
+> -- 
+> error compiling committee.c: too many arguments to function
+> --
+> To unsubscribe from this list: send the line "unsubscribe kvm" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html

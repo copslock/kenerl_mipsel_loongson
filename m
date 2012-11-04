@@ -1,34 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Nov 2012 20:04:58 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:11684 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825923Ab2KDTE4zJPwL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 4 Nov 2012 20:04:56 +0100
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id qA4J4pro022021
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Sun, 4 Nov 2012 14:04:52 -0500
-Received: from dragon.usersys.redhat.com (vpn-229-27.phx2.redhat.com [10.3.229.27])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id qA4J4nGe026307;
-        Sun, 4 Nov 2012 14:04:49 -0500
-Message-ID: <5096BC50.8070006@redhat.com>
-Date:   Sun, 04 Nov 2012 21:04:48 +0200
-From:   Avi Kivity <avi@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:16.0) Gecko/20121016 Thunderbird/16.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2012 00:21:32 +0100 (CET)
+Received: from mho-03-ewr.mailhop.org ([204.13.248.66]:52264 "EHLO
+        mho-01-ewr.mailhop.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6825931Ab2KDXV35lJH6 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 5 Nov 2012 00:21:29 +0100
+Received: from 210.34.21.95.dynamic.jazztel.es ([95.21.34.210] helo=mail.viric.name)
+        by mho-01-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.72)
+        (envelope-from <viric@viric.name>)
+        id 1TV9VL-000FFu-LQ
+        for linux-mips@linux-mips.org; Sun, 04 Nov 2012 23:21:24 +0000
+Received: by mail.viric.name (Postfix, from userid 1000)
+        id 450632D97F3; Mon,  5 Nov 2012 00:21:20 +0100 (CET)
+X-Mail-Handler: Dyn Standard SMTP by Dyn
+X-Originating-IP: 95.21.34.210
+X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/sendlabs/outbound_abuse.html for abuse reporting information)
+X-MHO-User: U2FsdGVkX1/PzvK1egHYKY1+LuwkI7Q9
+Date:   Mon, 5 Nov 2012 00:21:19 +0100
+From:   =?iso-8859-1?Q?Llu=EDs?= Batlle i Rossell <viric@viric.name>
+To:     linux-mips@linux-mips.org
+Subject: Failing readdir() on 3.6 (was: Failing INOTIFY in 3.6.x?)
+Message-ID: <20121104232119.GF2052@vicerveza.homeunix.net>
+References: <20121102183828.GX2052@vicerveza.homeunix.net>
 MIME-Version: 1.0
-To:     Sanjay Lal <sanjayl@kymasys.com>
-CC:     kvm@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 02/20] KVM/MIPS32: Arch specific KVM data structures.
-References: <54507365-0EF7-480A-8A54-75E12B3677D9@kymasys.com> <50928F87.4060309@redhat.com> <1F345D52-BEA7-4930-8C24-7DBE1EA56986@kymasys.com>
-In-Reply-To: <1F345D52-BEA7-4930-8C24-7DBE1EA56986@kymasys.com>
-X-Enigmail-Version: 1.4.5
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
-X-archive-position: 34864
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20121102183828.GX2052@vicerveza.homeunix.net>
+X-Accept-Language: ca, es, eo, ru, en, jbo, tokipona
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 34865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: avi@redhat.com
+X-original-sender: viric@viric.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,70 +47,103 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 11/02/2012 07:11 PM, Sanjay Lal wrote:
-> On Nov 1, 2012, at 11:04 AM, Avi Kivity wrote:
->
-> > On 10/31/2012 05:18 PM, Sanjay Lal wrote:
-> > 
-> >> +
-> >> +/* Special address that contains the comm page, used for reducing # of traps */
-> >> +#define KVM_GUEST_COMMPAGE_ADDR     0x0
-> >> +
-> >> +struct kvm_arch
-> >> +{
-> >> +    /* Guest GVA->HPA page table */
-> >> +    ulong *guest_pmap;
-> >> +    ulong guest_pmap_npages;
-> >> +
-> >> +    /* Wired host TLB used for the commpage */
-> >> +    int commpage_tlb;
-> >> +
-> >> +    pfn_t (*gfn_to_pfn) (struct kvm *kvm, gfn_t gfn);
-> >> +    void (*release_pfn_clean) (pfn_t pfn);
-> >> +    bool (*is_error_pfn) (pfn_t pfn);
-> > 
-> > Why this indirection?  Do those functions change at runtime?
->
-> On MIPS, kernel modules are executed from "mapped space", which requires TLBs.  The TLB handling code is statically linked with the rest of the kernel (kvm_tlb.c) to avoid the possibility of double faulting. The problem is that the code references routines that are part of the the KVM module, which are only available once the module is loaded, hence the indirection.
+I've investigated better the issue.
 
-Ok.  These should be global function pointers then, assigned when the
-module is loaded, and cleared when it is unloaded, with a comment
-explaining why.
+I found that, in 3.4 vs 3.6.4, the behaviour that changed is that of readdir().
 
->
-> > 
-> >> +
-> >> +struct kvm_mips_callbacks {
-> >> +    int (*handle_cop_unusable)(struct kvm_vcpu *vcpu);
-> >> +    int (*handle_tlb_mod)(struct kvm_vcpu *vcpu);
-> >> +    int (*handle_tlb_ld_miss)(struct kvm_vcpu *vcpu);
-> >> +    int (*handle_tlb_st_miss)(struct kvm_vcpu *vcpu);
-> >> +    int (*handle_addr_err_st)(struct kvm_vcpu *vcpu);
-> >> +    int (*handle_addr_err_ld)(struct kvm_vcpu *vcpu);
-> >> +    int (*handle_syscall)(struct kvm_vcpu *vcpu);
-> >> +    int (*handle_res_inst)(struct kvm_vcpu *vcpu);
-> >> +    int (*handle_break)(struct kvm_vcpu *vcpu);
-> >> +    gpa_t (*gva_to_gpa)(gva_t gva);
-> >> +    void (*queue_timer_int)(struct kvm_vcpu *vcpu);
-> >> +    void (*dequeue_timer_int)(struct kvm_vcpu *vcpu);
-> >> +    void (*queue_io_int)(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq);
-> >> +    void (*dequeue_io_int)(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq);
-> >> +    int (*irq_deliver)(struct kvm_vcpu *vcpu, unsigned int priority, uint32_t cause);
-> >> +    int (*irq_clear)(struct kvm_vcpu *vcpu, unsigned int priority, uint32_t cause);
-> >> +    int (*vcpu_ioctl_get_regs)(struct kvm_vcpu *vcpu, struct kvm_regs *regs);
-> >> +    int (*vcpu_ioctl_set_regs)(struct kvm_vcpu *vcpu, struct kvm_regs *regs);
-> >> +    int (*vcpu_init)(struct kvm_vcpu *vcpu);
-> >> +};
-> > 
-> > We use callbacks on x86 because we have two separate implementations
-> > (svm and vmx).  Will that be the case on MIPS? If not, use direct calls.
->
-> We will eventually have separate implementations based on the features supported by H/W.
+Using the same userland binaries, I've run a little program in both kernels:
+-------- prova.c
+#include <sys/types.h>
+#include <dirent.h>
 
-It's probably better to add the indirection when the need arrives,
-unless you already have hardware specs and know exactly the best points
-for a split.
+int main() {
+        DIR *d = opendir("/etc/init");
 
--- 
-I have a truly marvellous patch that fixes the bug which this
-signature is too narrow to contain.
+        if (d == NULL) {
+                fprintf(stderr, "d NULL\n");
+                return -1;
+        }
+
+        struct dirent *ent;
+        ent = readdir(d);
+
+        if (ent == NULL) {
+                fprintf(stderr, "ent NULL\n");
+                return -1;
+        }
+}
+-----------
+
+
+This program does not print anything on 3.4, but on 3.6, it prints "ent NULL".
+
+In both cases, /etc/init is full of symlinks, like this (from a script session
+in 3.6.4):
+-------
+S'ha iniciat l'execució de script a dl 05 nov 2012 00:16:53 CET
+sh-4.2# ./prova
+ent NULL
+sh-4.2# ls -ld /etc/init
+drwxr-xr-x 2 root root 4096  5 nov 00:12 /etc/init
+sh-4.2# ls -l /etc/init
+total 0
+lrwxrwxrwx 1 root root 25  5 nov 00:12 atd.conf -> /etc/static/init/atd.conf
+lrwxrwxrwx 1 root root 26  5 nov 00:12 boot.conf -> /etc/static/init/boot.conf
+lrwxrwxrwx 1 root root 40  5 nov 00:12 control-alt-delete.conf -> /etc/static/init/control-alt-delete.conf
+lrwxrwxrwx 1 root root 26  5 nov 00:12 cron.conf -> /etc/static/init/cron.conf
+lrwxrwxrwx 1 root root 26  5 nov 00:12 dbus.conf -> /etc/static/init/dbus.conf
+lrwxrwxrwx 1 root root 28  5 nov 00:12 dhcpcd.conf -> /etc/static/init/dhcpcd.conf
+lrwxrwxrwx 1 root root 37  5 nov 00:12 emergency-shell.conf -> /etc/static/init/emergency-shell.conf
+lrwxrwxrwx 1 root root 37  5 nov 00:12 invalidate-nscd.conf -> /etc/static/init/invalidate-nscd.conf
+lrwxrwxrwx 1 root root 25  5 nov 00:12 kbd.conf -> /etc/static/init/kbd.conf
+lrwxrwxrwx 1 root root 27  5 nov 00:12 klogd.conf -> /etc/static/init/klogd.conf
+lrwxrwxrwx 1 root root 25  5 nov 00:12 lvm.conf -> /etc/static/init/lvm.conf
+lrwxrwxrwx 1 root root 30  5 nov 00:12 mountall.conf -> /etc/static/init/mountall.conf
+lrwxrwxrwx 1 root root 36  5 nov 00:12 mountall-ip-up.conf -> /etc/static/init/mountall-ip-up.conf
+lrwxrwxrwx 1 root root 34  5 nov 00:12 mount-failed.conf -> /etc/static/init/mount-failed.conf
+lrwxrwxrwx 1 root root 32  5 nov 00:12 networking.conf -> /etc/static/init/networking.conf
+lrwxrwxrwx 1 root root 40  5 nov 00:12 network-interfaces.conf -> /etc/static/init/network-interfaces.conf
+lrwxrwxrwx 1 root root 32  5 nov 00:12 nix-daemon.conf -> /etc/static/init/nix-daemon.conf
+lrwxrwxrwx 1 root root 26  5 nov 00:12 nscd.conf -> /etc/static/init/nscd.conf
+lrwxrwxrwx 1 root root 26  5 nov 00:12 ntpd.conf -> /etc/static/init/ntpd.conf
+lrwxrwxrwx 1 root root 30  5 nov 00:12 runlevel.conf -> /etc/static/init/runlevel.conf
+lrwxrwxrwx 1 root root 30  5 nov 00:12 shutdown.conf -> /etc/static/init/shutdown.conf
+lrwxrwxrwx 1 root root 26  5 nov 00:12 sshd.conf -> /etc/static/init/sshd.conf
+lrwxrwxrwx 1 root root 29  5 nov 00:12 syslogd.conf -> /etc/static/init/syslogd.conf
+lrwxrwxrwx 1 root root 26  5 nov 00:12 tty1.conf -> /etc/static/init/tty1.conf
+lrwxrwxrwx 1 root root 26  5 nov 00:12 tty2.conf -> /etc/static/init/tty2.conf
+lrwxrwxrwx 1 root root 26  5 nov 00:12 tty3.conf -> /etc/static/init/tty3.conf
+lrwxrwxrwx 1 root root 26  5 nov 00:12 tty4.conf -> /etc/static/init/tty4.conf
+lrwxrwxrwx 1 root root 26  5 nov 00:12 tty5.conf -> /etc/static/init/tty5.conf
+lrwxrwxrwx 1 root root 26  5 nov 00:12 tty6.conf -> /etc/static/init/tty6.conf
+lrwxrwxrwx 1 root root 26  5 nov 00:12 udev.conf -> /etc/static/init/udev.conf
+lrwxrwxrwx 1 root root 33  5 nov 00:12 udevtrigger.conf -> /etc/static/init/udevtrigger.conf
+sh-4.2# exit
+
+S'ha finalitzat l'execució de script a dl 05 nov 2012 00:17:22 CET
+--------
+
+
+
+
+On Fri, Nov 02, 2012 at 07:38:28PM +0100, Lluís Batlle i Rossell wrote:
+> Hello,
+> 
+> updating my kernel from 3.4.2 to 3.6.4, I've noticed that upstart deadlocks at
+> the very start. Stracing, I think it has to do with INOTIFY, because it
+> deadlocks very early and little more has been done then.
+> 
+> Going 'back' to 3.4.16, makes upstart work fine. I've not tested middle kernels.
+> 
+> I've seen this only on the fuloong minipc (mips n64), but I've done similar
+> steps with the same distributions on armv5tel, i686 and x86_64, and there all
+> works fine.
+> 
+> Does anybody know of anything broken around inotify, between 3.4 and 3.6 linux
+> mips?
+> 
+> Any suggestion on what kernel change could have related to this, and so, get a
+> clue about what middle version to test?
+> 
+> Regards,
+> Lluís.

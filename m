@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2012 23:50:16 +0100 (CET)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:43960 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825973Ab2KEWrp5sFGd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2012 23:47:45 +0100
-Received: by mail-pa0-f49.google.com with SMTP id bi5so3945704pad.36
-        for <linux-mips@linux-mips.org>; Mon, 05 Nov 2012 14:47:45 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2012 23:50:35 +0100 (CET)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:42849 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825989Ab2KEWrr30aw3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2012 23:47:47 +0100
+Received: by mail-pb0-f49.google.com with SMTP id xa7so3934314pbc.36
+        for <linux-mips@linux-mips.org>; Mon, 05 Nov 2012 14:47:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=42IS+hQRw1ADfOLftQzPl7PxMg4IQjJkQMFWMKDSP6c=;
-        b=BTWWcGITnt10w9ODDwzgVyd4fvZLIhoOhGhassjJtWC3ep5kwz47pCPaaIoLUk/Ur5
-         ixwrhWYgkYixMKf5MBFXzRLMEnpnjtUzCGgg2ndY7QYADYIE6r8tIzOnOP6K0K1vzc5M
-         uE/Es2Df5i+72RiMVMrC6X3XAINjM+0HtJ9K0RPE0Mt4XolV0OKT02DlyAAer8hJCrlk
-         XSdkRECfbXvnRVKXNca5RHFA0tTq4aoA00jhNElKODpOwlu8g8Jd9A1Y2O0TXfjw+oBK
-         +T3ulyXwuveJEMwYrN/POaEgPFgBsMJGZsYmx+3NHhMQKfPQz44JHt86G7SiRU0t1y7s
-         hhxw==
+        bh=9d1p16UxpHgLiDgYrHm5qtZ+RMSoNXJrQ35btDVX0rw=;
+        b=ofN2QjRoBMSMq4+89G+B7mlBJNDSGdX22GlOoGSaifzVOtzSBGu7mg1yqLcbnFz/e7
+         RtRy1kEdrMWi8ffNUPoO4pghoUtIRYnF7Tp4YIrdVJVrK8PBNYcezR23KPIJb2Tjf0fT
+         +cYKxHpI9gqXdmNXFtK4Oo29vK/SgdP6bMiboSHGvyW9WFFlQI2ebMqir5NcYRML+Tv9
+         Tte1wgXWIbaxJzt7RCaU1rZVgYbol83hDR0+lk9v9L/NPJycV78onjn2suKp9CtPfIpD
+         rtEv7q/xz/IyPiLFgqMF0ZiA+oz69hozxUOBH8TDpson76P7kcexYa/BeGNEn5BGSFdr
+         xOGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references
          :x-gm-message-state;
-        bh=42IS+hQRw1ADfOLftQzPl7PxMg4IQjJkQMFWMKDSP6c=;
-        b=ax8iMSvDmgYzZXOpUhFnS+Za6d5sZtIhORAIvUIQDzzjWhjXiROjW1NZ1B1F2jgYVb
-         yNsBUHdxWsubGrrbMCqGYFtQGWrqqot1+kfiOFUVVxnK4VXIvrKwdP0ejNweApEuv0ub
-         3KuqNnQ+cNZo1dM0BOfQu2SJmykVdq4t6i+Bmo1WOC3gwShX7Gpxa4wJiMxkWwjAtnzP
-         9MmOmnQ4hRw1cepp//Q3qr7M8bAe/WPlAMRimFAxtA+d30XQuD83jVou5agh/6LN1HtQ
-         qwScKHIL7VVUcmI+BjYOX9m7utCNmKVEDUuSF9vQO276eYNxrvZRld0lH2QybJtfKoe+
-         rPWg==
-Received: by 10.68.143.201 with SMTP id sg9mr35295148pbb.32.1352155665025;
-        Mon, 05 Nov 2012 14:47:45 -0800 (PST)
+        bh=9d1p16UxpHgLiDgYrHm5qtZ+RMSoNXJrQ35btDVX0rw=;
+        b=SXOochFRKy1QBR1fvjEBaaPAgx0TNGcI22o/lu8WAaaY1H89TtdUrbFbg7CXTFEX5r
+         gTHy5w+jVGIUXM2fqOtYhZXNeJdgAoRppKmDJYs6DUl1afBPTDHk4PTV/wvHZDv9mO/6
+         m9uJYO47sFbW96vZdXdTBHRKttUPCyMkolDsZRKi3f2KqfWeXNH10NeVaBKuXtY3Csi/
+         hswCFkQ+kHKM1iQ9Gs1Tt7tnHjFf+wZ6K8MNn88OPs5AF1OLqFe4gt5xMEpJP0cDpMc1
+         gO/ElXN9m1fXoHIF9LbZjYOrsAUbfbzphSrvNLLi08Poe0OOVxVsaqCdIkBcBxcM4SgH
+         UWcA==
+Received: by 10.66.87.163 with SMTP id az3mr32328750pab.62.1352155666665;
+        Mon, 05 Nov 2012 14:47:46 -0800 (PST)
 Received: from studio.mtv.corp.google.com (studio.mtv.corp.google.com [172.17.131.106])
-        by mx.google.com with ESMTPS id jx4sm11201653pbc.27.2012.11.05.14.47.43
+        by mx.google.com with ESMTPS id jx4sm11201653pbc.27.2012.11.05.14.47.45
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 05 Nov 2012 14:47:44 -0800 (PST)
+        Mon, 05 Nov 2012 14:47:45 -0800 (PST)
 From:   Michel Lespinasse <walken@google.com>
 To:     Andrew Morton <akpm@linux-foundation.org>,
         Rik van Riel <riel@redhat.com>,
@@ -45,14 +45,14 @@ To:     Andrew Morton <akpm@linux-foundation.org>,
 Cc:     linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
         linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org
-Subject: [PATCH 08/16] mm: use vm_unmapped_area() in hugetlbfs
-Date:   Mon,  5 Nov 2012 14:47:05 -0800
-Message-Id: <1352155633-8648-9-git-send-email-walken@google.com>
+Subject: [PATCH 09/16] mm: use vm_unmapped_area() in hugetlbfs on i386 architecture
+Date:   Mon,  5 Nov 2012 14:47:06 -0800
+Message-Id: <1352155633-8648-10-git-send-email-walken@google.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1352155633-8648-1-git-send-email-walken@google.com>
 References: <1352155633-8648-1-git-send-email-walken@google.com>
-X-Gm-Message-State: ALoCoQnq/dUP1bbwBdMYwgMn4N2NUks4IZs0SvotUNSdExWQTTwk8U+e7sfRc46RYQJV0omFa53G0wVARb4uHOtQlrLhwCKxPtrj2Mz4kMXC6O2bYA5NWskWcA9YN9e7J6NL+Lj9ZGONpz3m/De5De5gd33kTjCZqrVtr1Vya/cYGrJtkTZVDNCymlflu2I9Na01W5gWKwWaWtPstQTuMYMfu9K0Ldl55w==
-X-archive-position: 34878
+X-Gm-Message-State: ALoCoQlh/PLJYLVw5+8YulTil7IfxT1mD1zGU5INEF3Isw4mcS7rZmQctv+x2xiaJ55wKYTs+cd13/4zzQ8oBvF3nSfhLNLr7ibuKVyiVpi5AoTMZ9ogqJSNJ3uVMbvo+hU9Iw77cOprmZ6KkXH3ZOYm/XoyI8Hn3SvKKyZB4nG9vzviiZUDi7217x/HwtOOhc9Y9zpV4FR6b5rZDUFj1T4FzQEo3t6z3g==
+X-archive-position: 34879
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,38 +70,32 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Update the hugetlb_get_unmapped_area function to make use of
+Update the i386 hugetlb_get_unmapped_area function to make use of
 vm_unmapped_area() instead of implementing a brute force search.
 
 Signed-off-by: Michel Lespinasse <walken@google.com>
 
 ---
- fs/hugetlbfs/inode.c |   42 ++++++++----------------------------------
- 1 files changed, 8 insertions(+), 34 deletions(-)
+ arch/x86/mm/hugetlbpage.c |  130 +++++++++------------------------------------
+ 1 files changed, 25 insertions(+), 105 deletions(-)
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index c5bc355d8243..14bc0c1fb4fb 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -151,8 +151,8 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
+diff --git a/arch/x86/mm/hugetlbpage.c b/arch/x86/mm/hugetlbpage.c
+index 937bff5cdaa7..c00c4a4cd564 100644
+--- a/arch/x86/mm/hugetlbpage.c
++++ b/arch/x86/mm/hugetlbpage.c
+@@ -274,42 +274,15 @@ static unsigned long hugetlb_get_unmapped_area_bottomup(struct file *file,
+ 		unsigned long pgoff, unsigned long flags)
  {
- 	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma;
--	unsigned long start_addr;
  	struct hstate *h = hstate_file(file);
-+	struct vm_unmapped_area_info info;
- 
- 	if (len & ~huge_page_mask(h))
- 		return -EINVAL;
-@@ -173,39 +173,13 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
- 			return addr;
- 	}
- 
--	if (len > mm->cached_hole_size)
--		start_addr = mm->free_area_cache;
--	else {
--		start_addr = TASK_UNMAPPED_BASE;
--		mm->cached_hole_size = 0;
+-	struct mm_struct *mm = current->mm;
+-	struct vm_area_struct *vma;
+-	unsigned long start_addr;
+-
+-	if (len > mm->cached_hole_size) {
+-	        start_addr = mm->free_area_cache;
+-	} else {
+-	        start_addr = TASK_UNMAPPED_BASE;
+-	        mm->cached_hole_size = 0;
 -	}
 -
 -full_search:
@@ -121,15 +115,16 @@ index c5bc355d8243..14bc0c1fb4fb 100644
 -			}
 -			return -ENOMEM;
 -		}
--
 -		if (!vma || addr + len <= vma->vm_start) {
 -			mm->free_area_cache = addr + len;
 -			return addr;
 -		}
 -		if (addr + mm->cached_hole_size < vma->vm_start)
--			mm->cached_hole_size = vma->vm_start - addr;
+-		        mm->cached_hole_size = vma->vm_start - addr;
 -		addr = ALIGN(vma->vm_end, huge_page_size(h));
 -	}
++	struct vm_unmapped_area_info info;
++
 +	info.flags = 0;
 +	info.length = len;
 +	info.low_limit = TASK_UNMAPPED_BASE;
@@ -138,7 +133,107 @@ index c5bc355d8243..14bc0c1fb4fb 100644
 +	info.align_offset = 0;
 +	return vm_unmapped_area(&info);
  }
- #endif
  
+ static unsigned long hugetlb_get_unmapped_area_topdown(struct file *file,
+@@ -317,83 +290,30 @@ static unsigned long hugetlb_get_unmapped_area_topdown(struct file *file,
+ 		unsigned long pgoff, unsigned long flags)
+ {
+ 	struct hstate *h = hstate_file(file);
+-	struct mm_struct *mm = current->mm;
+-	struct vm_area_struct *vma;
+-	unsigned long base = mm->mmap_base;
+-	unsigned long addr = addr0;
+-	unsigned long largest_hole = mm->cached_hole_size;
+-	unsigned long start_addr;
+-
+-	/* don't allow allocations above current base */
+-	if (mm->free_area_cache > base)
+-		mm->free_area_cache = base;
+-
+-	if (len <= largest_hole) {
+-	        largest_hole = 0;
+-		mm->free_area_cache  = base;
+-	}
+-try_again:
+-	start_addr = mm->free_area_cache;
+-
+-	/* make sure it can fit in the remaining address space */
+-	if (mm->free_area_cache < len)
+-		goto fail;
+-
+-	/* either no address requested or can't fit in requested address hole */
+-	addr = (mm->free_area_cache - len) & huge_page_mask(h);
+-	do {
+-		/*
+-		 * Lookup failure means no vma is above this address,
+-		 * i.e. return with success:
+-		 */
+-		vma = find_vma(mm, addr);
+-		if (!vma)
+-			return addr;
++	struct vm_unmapped_area_info info;
++	unsigned long addr;
+ 
+-		if (addr + len <= vma->vm_start) {
+-			/* remember the address as a hint for next time */
+-		        mm->cached_hole_size = largest_hole;
+-		        return (mm->free_area_cache = addr);
+-		} else if (mm->free_area_cache == vma->vm_end) {
+-			/* pull free_area_cache down to the first hole */
+-			mm->free_area_cache = vma->vm_start;
+-			mm->cached_hole_size = largest_hole;
+-		}
++	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
++	info.length = len;
++	info.low_limit = PAGE_SIZE;
++	info.high_limit = mm->mmap_base;
++	info.align_mask = PAGE_MASK & ~huge_page_mask(h);
++	info.align_offset = 0;
++	addr = vm_unmapped_area(&info);
+ 
+-		/* remember the largest hole we saw so far */
+-		if (addr + largest_hole < vma->vm_start)
+-		        largest_hole = vma->vm_start - addr;
+-
+-		/* try just below the current vma->vm_start */
+-		addr = (vma->vm_start - len) & huge_page_mask(h);
+-	} while (len <= vma->vm_start);
+-
+-fail:
+-	/*
+-	 * if hint left us with no space for the requested
+-	 * mapping then try again:
+-	 */
+-	if (start_addr != base) {
+-		mm->free_area_cache = base;
+-		largest_hole = 0;
+-		goto try_again;
+-	}
+ 	/*
+ 	 * A failed mmap() very likely causes application failure,
+ 	 * so fall back to the bottom-up function here. This scenario
+ 	 * can happen with large stack limits and large mmap()
+ 	 * allocations.
+ 	 */
+-	mm->free_area_cache = TASK_UNMAPPED_BASE;
+-	mm->cached_hole_size = ~0UL;
+-	addr = hugetlb_get_unmapped_area_bottomup(file, addr0,
+-			len, pgoff, flags);
+-
+-	/*
+-	 * Restore the topdown base:
+-	 */
+-	mm->free_area_cache = base;
+-	mm->cached_hole_size = ~0UL;
++	if (addr & ~PAGE_MASK) {
++		VM_BUG_ON(addr != -ENOMEM);
++		info.flags = 0;
++		info.low_limit = TASK_UNMAPPED_BASE;
++		info.high_limit = TASK_SIZE;
++		addr = vm_unmapped_area(&info);
++	}
+ 
+ 	return addr;
+ }
 -- 
 1.7.7.3

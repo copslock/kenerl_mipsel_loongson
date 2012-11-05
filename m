@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2012 23:51:51 +0100 (CET)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:58458 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825984Ab2KEWryy9FDI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2012 23:47:54 +0100
-Received: by mail-pa0-f49.google.com with SMTP id bi5so3945696pad.36
-        for <linux-mips@linux-mips.org>; Mon, 05 Nov 2012 14:47:54 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2012 23:52:10 +0100 (CET)
+Received: from mail-da0-f49.google.com ([209.85.210.49]:35354 "EHLO
+        mail-da0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825978Ab2KEWr4ZVOMJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2012 23:47:56 +0100
+Received: by mail-da0-f49.google.com with SMTP id q27so2653752daj.36
+        for <linux-mips@linux-mips.org>; Mon, 05 Nov 2012 14:47:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=TXWcsxmvWNKKo4G7onSquXN7SAJIfpqpWsvD69R3aXA=;
-        b=jpw9kmFzf8URdBFvpqrDKO4g0DCIjeDI+lf31oWZrmJkTZigBYYCgxeag85q7T67EM
-         wbI7Z9uFVdEy/Q3ZiXavXH1hLsZM9edXmBpI/LQX/zrBBwHc3rwVID7Dp9aUgy6JuAU7
-         YdrXjaG6uqy249OzER5b6qeKGpDs//817zNsnw1FrymiK5HkNxAjlJYnoGKLMNvTx7zp
-         i5nv3zI5A8E1negiEzCPzVzLi2URjnzTG6fhyZknRvO5LGLXEptoMdJiM35yA4yWpbu4
-         TtS/WiJvI4aipRMgUDkqqxO9Fn0oSgi34Wr1DJN9YunjsCdSpc/2FEwiPP+x43AYIPTx
-         ypTA==
+        bh=TYTK1BiBxj894RRVsaiUGPodY3/JxFBkeQ7voLG1cIY=;
+        b=G0B3QbC3azhj0lXPEXeM2Zle0as/uYqB6oIpN5Mz5XyGYjYgQYggwqvm+BkGyGKMT1
+         BAOim4TyE4CYZ8ZwEbvEyTTqwPwhGjcCxkwUUlNgoO+MeJBltlPvHHhnlAQaqArA2CuB
+         zzuBHd6uME+SrKeBlUC2DA/d6Xm6QMwxiUHEmC7ALVAMrL7DldrUUKjUROZnCsUeZamY
+         aK/hf9pjBbXjp6GuW1IpDeR2cRuBGfbZVX4fDBup9lLjOAUbkSDWrxcxD2VcXHA0t1n9
+         gCnQv/DZmZZ6vcx31jaWHTInmaQAbYYAaRUrRCm7B48PVQSDEzl1j8oShP3geBCdxQmK
+         PoSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references
          :x-gm-message-state;
-        bh=TXWcsxmvWNKKo4G7onSquXN7SAJIfpqpWsvD69R3aXA=;
-        b=NQoDHwYv9cHZ3vA4UR4Am51oSAFzLnjuBfqfHN47uickZV97HA6qKfUun5f8Ry4SI7
-         TCXaNNpcwMSopdomw9c05nKWbn7DaB3Ir+x58ArX7stWI15fxFknrtH6bqrPeiLjVrix
-         4SGkU4Ik4Ry67gFzawkr22BNWVncqPskP9mukk/oFvVog9meZnx0fe/DubJDKcyO1Yek
-         R3sbmotGokRl9WpLC5uVcTU6jV9UOaIVar6kGHWhV3Dkm55CDRZBs5hNms62GPFWXF1l
-         eRt8sp81lehVvUn2VPesqosgrZ9L4Eip20aIJZRYhgT8PQU/yysd0rfsw3corIbykFRw
-         t1lw==
-Received: by 10.66.73.227 with SMTP id o3mr22434840pav.78.1352155674079;
-        Mon, 05 Nov 2012 14:47:54 -0800 (PST)
+        bh=TYTK1BiBxj894RRVsaiUGPodY3/JxFBkeQ7voLG1cIY=;
+        b=lvo65T9fneSMPoaVZgIOgzi49xC2b+JhXU5zqt9StYKF8HnWZySpVjYJWeHvR5ynxl
+         4TvkFBW8EdAYzwy3gowe2rCIfd9rJtdrBDgOc/Hq96rZGO81Inj5EScvwNrhjWrH/Ew8
+         8RQEjkKUUbgZtG0sJ8lKHfpktIyyr0/PjSJ8x95S65BrvEUlkrfva5oPmva9vJxsQJNA
+         b+x24qstM+/BeDDEpe6itwOneccWhujUNfq/UiBNZDMY766TedX9ckYx8YldliTFl6sv
+         6jWqdB9U/Zq3JW5Vrj2zDmvEIL2EG1fE9aMKrgbiIryagjgXc/KC1VTGcIMyOm3NLW6H
+         bamA==
+Received: by 10.66.73.34 with SMTP id i2mr32481677pav.28.1352155675601;
+        Mon, 05 Nov 2012 14:47:55 -0800 (PST)
 Received: from studio.mtv.corp.google.com (studio.mtv.corp.google.com [172.17.131.106])
-        by mx.google.com with ESMTPS id jx4sm11201653pbc.27.2012.11.05.14.47.52
+        by mx.google.com with ESMTPS id jx4sm11201653pbc.27.2012.11.05.14.47.54
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 05 Nov 2012 14:47:52 -0800 (PST)
+        Mon, 05 Nov 2012 14:47:54 -0800 (PST)
 From:   Michel Lespinasse <walken@google.com>
 To:     Andrew Morton <akpm@linux-foundation.org>,
         Rik van Riel <riel@redhat.com>,
@@ -45,14 +45,14 @@ To:     Andrew Morton <akpm@linux-foundation.org>,
 Cc:     linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
         linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org
-Subject: [PATCH 13/16] mm: use vm_unmapped_area() on sparc64 architecture
-Date:   Mon,  5 Nov 2012 14:47:10 -0800
-Message-Id: <1352155633-8648-14-git-send-email-walken@google.com>
+Subject: [PATCH 14/16] mm: use vm_unmapped_area() in hugetlbfs on sparc64 architecture
+Date:   Mon,  5 Nov 2012 14:47:11 -0800
+Message-Id: <1352155633-8648-15-git-send-email-walken@google.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1352155633-8648-1-git-send-email-walken@google.com>
 References: <1352155633-8648-1-git-send-email-walken@google.com>
-X-Gm-Message-State: ALoCoQkYb6q4OY1lQ6AQZjBk6MJlH6rN0RrY/gM6S70c/7nWgdvMHClLuPuncOAjbRbeYs7rtf8aB/p/Q71RLrosEiuc/r9/ud2IPcGT7rZKrToxmxXcApaM2jHdXQuNEwX9SgQUdOEPSQSgh5/24O+kGNXXTgpB4JMyXcVLP3BofPIUHIZXaaIr2/E71jUJ4qtU8558cHahGrrfWBU7bwQx9NNCMGxXJg==
-X-archive-position: 34883
+X-Gm-Message-State: ALoCoQnIC80CbHEZF4OEWzSP6l8Lx1EpNhQfIBu9eBHyxVQV3aw5D6Vt5XaCCQnCX9osqsW0WaOmGdkZPBx9gT+LVSWe2Tfu4tMO+1a3Fm3kBfgygCAg6Jd9BRz9lTMoYhA1+g0gSZBlJv5GsxXCi/N2SYi216fQGJmQsFuKzRlkqJBXtoLLXHpHTVAkPYkLMIQQN/uWQYJiZRwHuTvMOgiwh7IUoF631g==
+X-archive-position: 34884
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,30 +70,33 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Update the sparc64 arch_get_unmapped_area[_topdown] functions to make
-use of vm_unmapped_area() instead of implementing a brute force search.
+Update the sparc64 hugetlb_get_unmapped_area function to make use of
+vm_unmapped_area() instead of implementing a brute force search.
 
 Signed-off-by: Michel Lespinasse <walken@google.com>
 
 ---
- arch/sparc/kernel/sys_sparc_64.c |  132 +++++++++-----------------------------
- 1 files changed, 30 insertions(+), 102 deletions(-)
+ arch/sparc/mm/hugetlbpage.c |  123 ++++++++++--------------------------------
+ 1 files changed, 30 insertions(+), 93 deletions(-)
 
-diff --git a/arch/sparc/kernel/sys_sparc_64.c b/arch/sparc/kernel/sys_sparc_64.c
-index 11c6c9603e71..2999253ff38a 100644
---- a/arch/sparc/kernel/sys_sparc_64.c
-+++ b/arch/sparc/kernel/sys_sparc_64.c
-@@ -102,6 +102,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsi
+diff --git a/arch/sparc/mm/hugetlbpage.c b/arch/sparc/mm/hugetlbpage.c
+index f76f83d5ac63..42e5dba6cb26 100644
+--- a/arch/sparc/mm/hugetlbpage.c
++++ b/arch/sparc/mm/hugetlbpage.c
+@@ -30,55 +30,28 @@ static unsigned long hugetlb_get_unmapped_area_bottomup(struct file *filp,
+ 							unsigned long pgoff,
+ 							unsigned long flags)
+ {
+-	struct mm_struct *mm = current->mm;
+-	struct vm_area_struct * vma;
  	unsigned long task_size = TASK_SIZE;
- 	unsigned long start_addr;
- 	int do_color_align;
+-	unsigned long start_addr;
 +	struct vm_unmapped_area_info info;
  
- 	if (flags & MAP_FIXED) {
- 		/* We do not accept a shared mapping if it would violate
-@@ -134,50 +135,22 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsi
- 			return addr;
- 	}
+ 	if (test_thread_flag(TIF_32BIT))
+ 		task_size = STACK_TOP32;
+-	if (unlikely(len >= VA_EXCLUDE_START))
+-		return -ENOMEM;
  
 -	if (len > mm->cached_hole_size) {
 -	        start_addr = addr = mm->free_area_cache;
@@ -104,8 +107,8 @@ index 11c6c9603e71..2999253ff38a 100644
 +	info.length = len;
 +	info.low_limit = TASK_UNMAPPED_BASE;
 +	info.high_limit = min(task_size, VA_EXCLUDE_START);
-+	info.align_mask = do_color_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
-+	info.align_offset = pgoff << PAGE_SHIFT;
++	info.align_mask = PAGE_MASK & ~HPAGE_MASK;
++	info.align_offset = 0;
 +	addr = vm_unmapped_area(&info);
 +
 +	if ((addr & ~PAGE_MASK) && task_size > VA_EXCLUDE_END) {
@@ -118,10 +121,7 @@ index 11c6c9603e71..2999253ff38a 100644
 -	task_size -= len;
 -
 -full_search:
--	if (do_color_align)
--		addr = COLOUR_ALIGN(addr, pgoff);
--	else
--		addr = PAGE_ALIGN(addr);
+-	addr = ALIGN(addr, HPAGE_SIZE);
 -
 -	for (vma = find_vma(mm, addr); ; vma = vma->vm_next) {
 -		/* At this point:  (!vma || addr < vma->vm_end). */
@@ -148,25 +148,20 @@ index 11c6c9603e71..2999253ff38a 100644
 -		if (addr + mm->cached_hole_size < vma->vm_start)
 -		        mm->cached_hole_size = vma->vm_start - addr;
 -
--		addr = vma->vm_end;
--		if (do_color_align)
--			addr = COLOUR_ALIGN(addr, pgoff);
+-		addr = ALIGN(vma->vm_end, HPAGE_SIZE);
 -	}
 +	return addr;
  }
  
- unsigned long
-@@ -190,6 +163,7 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
- 	unsigned long task_size = STACK_TOP32;
+ static unsigned long
+@@ -90,68 +63,32 @@ hugetlb_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ 	struct vm_area_struct *vma;
+ 	struct mm_struct *mm = current->mm;
  	unsigned long addr = addr0;
- 	int do_color_align;
 +	struct vm_unmapped_area_info info;
  
  	/* This should only ever run for 32-bit processes.  */
  	BUG_ON(!test_thread_flag(TIF_32BIT));
-@@ -224,73 +198,27 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
- 			return addr;
- 	}
  
 -	/* check if free_area_cache is useful for us */
 -	if (len <= mm->cached_hole_size) {
@@ -175,20 +170,8 @@ index 11c6c9603e71..2999253ff38a 100644
 - 	}
 -
 -	/* either no address requested or can't fit in requested address hole */
--	addr = mm->free_area_cache;
--	if (do_color_align) {
--		unsigned long base = COLOUR_ALIGN_DOWN(addr-len, pgoff);
+-	addr = mm->free_area_cache & HPAGE_MASK;
 -
--		addr = base + len;
--	}
-+	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
-+	info.length = len;
-+	info.low_limit = PAGE_SIZE;
-+	info.high_limit = mm->mmap_base;
-+	info.align_mask = do_colour_align ? (PAGE_MASK & shm_align_mask) : 0;
-+	info.align_offset = pgoff << PAGE_SHIFT;
-+	addr = vm_unmapped_area(&info);
- 
 -	/* make sure it can fit in the remaining address space */
 -	if (likely(addr > len)) {
 -		vma = find_vma(mm, addr-len);
@@ -201,9 +184,7 @@ index 11c6c9603e71..2999253ff38a 100644
 -	if (unlikely(mm->mmap_base < len))
 -		goto bottomup;
 -
--	addr = mm->mmap_base-len;
--	if (do_color_align)
--		addr = COLOUR_ALIGN_DOWN(addr, pgoff);
+-	addr = (mm->mmap_base-len) & HPAGE_MASK;
 -
 -	do {
 -		/*
@@ -216,15 +197,20 @@ index 11c6c9603e71..2999253ff38a 100644
 -			/* remember the address as a hint for next time */
 -			return (mm->free_area_cache = addr);
 -		}
--
++	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
++	info.length = len;
++	info.low_limit = PAGE_SIZE;
++	info.high_limit = mm->mmap_base;
++	info.align_mask = PAGE_MASK & ~HPAGE_MASK;
++	info.align_offset = 0;
++	addr = vm_unmapped_area(&info);
+ 
 - 		/* remember the largest hole we saw so far */
 - 		if (addr + mm->cached_hole_size < vma->vm_start)
 - 		        mm->cached_hole_size = vma->vm_start - addr;
 -
 -		/* try just below the current vma->vm_start */
--		addr = vma->vm_start-len;
--		if (do_color_align)
--			addr = COLOUR_ALIGN_DOWN(addr, pgoff);
+-		addr = (vma->vm_start-len) & HPAGE_MASK;
 -	} while (likely(len < vma->vm_start));
 -
 -bottomup:

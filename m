@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2012 23:48:20 +0100 (CET)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:43960 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2012 23:48:40 +0100 (CET)
+Received: from mail-pa0-f49.google.com ([209.85.220.49]:44191 "EHLO
         mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825981Ab2KEWrk5cmD5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2012 23:47:40 +0100
-Received: by mail-pa0-f49.google.com with SMTP id bi5so3945704pad.36
-        for <linux-mips@linux-mips.org>; Mon, 05 Nov 2012 14:47:34 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S6825980Ab2KEWrlB1Byy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2012 23:47:41 +0100
+Received: by mail-pa0-f49.google.com with SMTP id bi5so3945695pad.36
+        for <linux-mips@linux-mips.org>; Mon, 05 Nov 2012 14:47:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=Yid5AWhjb00shEhnqoBh3vNclIZEG1J/PacIg3y29t4=;
-        b=j7MCXUnA08iaq7E1SsW2SMPyHUaJ8LXdqs47fV8wxql0654NlkcnnA7b56UNT8D14b
-         xxjq/ZFcIjDKpWlq3z7KngFPvEz0xnmM04cWnGB9DH137gLRGxZhuDhHvfV4u6X1c84R
-         WCXZ8egdN00FaKpYdE/u1o7Ci/JMV94HKSP0Pi6k+VXUWqr4UL0ecpJT0e+EGQP3/v0i
-         bc0LhH/+f2bSRjUAkOFiFOIfXqweqwTb/bxszMbH+IGiZ21ROHWDutjRQEquLegvYpxH
-         4fZtgDuUeINEK7nlK0PnaxpwDTA5I2a5jxhkzCoTLBgv7OXgXH35XHV65S/pCl/UshxF
-         zOwA==
+        bh=ox5IO0GHV2ue8d0HfWIVdfsBboL4Ws3kfBYCYqJcyWw=;
+        b=MnlR9KVGWTcZu8QRT24kRVsmbmzL2+BYofxpMBsKhJ56TlQiBoDjNskiF0TL+AQ8pa
+         qlv8RcNsnE79OaFgc3xEJXgyDMkGwvvU61HisuCGC0ZRQLgmbkgsgSkpRWEl/V6eYQBr
+         LY7tKJniQz9xHHCNldUGIkZAuTMXfVB6zFyEGFsWOkKjZXLEC0gUnlJPZJVShGak39L+
+         kdgKZZ5wtGZE8lUoAxZBII03xUECBk29qN80rhkXPuWq5MczhgEycQZ2GpzewZK1+28K
+         QSt67qGJALM8ljsGoxu+KhZg/yYApoMPTLUOisr+c8+inYTHwdJNdJXSzT453L11lF7D
+         EJ3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references
          :x-gm-message-state;
-        bh=Yid5AWhjb00shEhnqoBh3vNclIZEG1J/PacIg3y29t4=;
-        b=S3Q7HW8vB9Vzfcf2L93mmVrLwzm8klpaMoraovtlwpoDqBTZwHbJGTGae+6ih8OHyB
-         JKhU8az5tbKictslHvuepDocJWvCEsxPz9oXt8lC3qhUgb/FvmMalNb+/QlGrqYrtMnw
-         YOzAXE2ne7EYvnbK4di5iGDon8f29sYDhgIVZJCA/WkzFbaxClAwChBppchIKK9vfKag
-         NzZ+XgeOfuFZRsI8E0Ppgn9NYkSKRMSx4k30FOIoiX2pF5qj9FSjBVv49FooW2vo1XKj
-         Uqgu/PMDFyfqgceYbXKtebDI9j5wQEFEVapodflD8RUTiL2MvQq7+1FPHW6J5MXN1cT1
-         5CCg==
-Received: by 10.68.201.6 with SMTP id jw6mr34254471pbc.149.1352155654551;
-        Mon, 05 Nov 2012 14:47:34 -0800 (PST)
+        bh=ox5IO0GHV2ue8d0HfWIVdfsBboL4Ws3kfBYCYqJcyWw=;
+        b=M4ttmbVRtXKnoCvU2XuzDgWCCQZjW4vEkUC5d1xBHDSRifCCubdRL/mhLugyTPtoc9
+         T/okm/pK8oOSvr4U7U3CKgP6lTzHEjqEWJgN//vFYl411HtiUcJMQ+/lbWrXODZsKExs
+         2VgcVqWlOqVtBm4V1UX9rCa7KtlbfrkRqSBf8fCNlyDk0XxrFC6bCS6AzB6zJdEa2U+d
+         3uvtoXTiK2ptJQLzUhMEeAPwvh59X/7BnASMUI/mE2ZaBYWJr6q4T4uoBPz5lhcjifBy
+         2GiIhGyG3nJ04ssXfiZVelz5rmBi7MEUXViK82INpknBEOz6Yxw82lBk/pNQyX/39WWd
+         AeDQ==
+Received: by 10.68.228.36 with SMTP id sf4mr34657627pbc.20.1352155659975;
+        Mon, 05 Nov 2012 14:47:39 -0800 (PST)
 Received: from studio.mtv.corp.google.com (studio.mtv.corp.google.com [172.17.131.106])
-        by mx.google.com with ESMTPS id jx4sm11201653pbc.27.2012.11.05.14.47.33
+        by mx.google.com with ESMTPS id jx4sm11201653pbc.27.2012.11.05.14.47.38
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 05 Nov 2012 14:47:33 -0800 (PST)
+        Mon, 05 Nov 2012 14:47:39 -0800 (PST)
 From:   Michel Lespinasse <walken@google.com>
 To:     Andrew Morton <akpm@linux-foundation.org>,
         Rik van Riel <riel@redhat.com>,
@@ -45,14 +45,14 @@ To:     Andrew Morton <akpm@linux-foundation.org>,
 Cc:     linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
         linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org
-Subject: [PATCH 02/16] mm: augment vma rbtree with rb_subtree_gap
-Date:   Mon,  5 Nov 2012 14:46:59 -0800
-Message-Id: <1352155633-8648-3-git-send-email-walken@google.com>
+Subject: [PATCH 05/16] mm: vm_unmapped_area() lookup function
+Date:   Mon,  5 Nov 2012 14:47:02 -0800
+Message-Id: <1352155633-8648-6-git-send-email-walken@google.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1352155633-8648-1-git-send-email-walken@google.com>
 References: <1352155633-8648-1-git-send-email-walken@google.com>
-X-Gm-Message-State: ALoCoQmIn7XVcWU2wPj8ogIRoR6vBODz8jz24Qoh3MPqMkNcV55BZHiW8JIc4McZ+izHfj+7qWtPTogGWlK10P2YkOSQO9vZnl/0uDfDoKD6MPIYXZfzUNxgv90Y8qlO++/U7oUzajvjU4xdNW/fZx5NguAbZ7aZCOZ582UZ4jQpmFqaTMdIg/VeZU9XMtnwFlWw+ecdy/8IPQVl3xTCreSyRNL60n1rvg==
-X-archive-position: 34872
+X-Gm-Message-State: ALoCoQlDG5uWIylTsRzmCIPAyDQNqjd4otbsvCBwukXVZx6j8x8VrzxitI7eXImG9p5lniNv7RB54lJyQtbIWRh7/Ad3xFJOyn8HltaCC/Hotg8Rn4PhOstTgud2oZc8sd9J0n+BEG8pTuryY2vIoOxB8sk7Wbzq2hTjf5SSHS1ykDB+OlkbAg7hPuY+WW+gTDl50Qrrz0HKtWy3Umwc5ZAMllENzCfD4A==
+X-archive-position: 34873
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,260 +70,427 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Define vma->rb_subtree_gap as the largest gap between any vma in the
-subtree rooted at that vma, and their predecessor. Or, for a recursive
-definition, vma->rb_subtree_gap is the max of:
-- vma->vm_start - vma->vm_prev->vm_end
-- rb_subtree_gap fields of the vmas pointed by vma->rb.rb_left and
-  vma->rb.rb_right
+Implement vm_unmapped_area() using the rb_subtree_gap and highest_vm_end
+information to look up for suitable virtual address space gaps.
 
-This will allow get_unmapped_area_* to find a free area of the right
-size in O(log(N)) time, instead of potentially having to do a linear
-walk across all the VMAs.
+struct vm_unmapped_area_info is used to define the desired allocation
+request:
+- lowest or highest possible address matching the remaining constraints
+- desired gap length
+- low/high address limits that the gap must fit into
+- alignment mask and offset
 
-Also define mm->highest_vm_end as the vm_end field of the highest vma,
-so that we can easily check if the following gap is suitable.
-
-This does have the potential to make unmapping VMAs more expensive,
-especially for processes with very large numbers of VMAs, where the
-VMA rbtree can grow quite deep.
+Also update the generic arch_get_unmapped_area[_topdown] functions to
+make use of vm_unmapped_area() instead of implementing a brute force search.
 
 Signed-off-by: Michel Lespinasse <walken@google.com>
 Reviewed-by: Rik van Riel <riel@redhat.com>
 
 ---
- include/linux/mm_types.h |    9 ++++
- mm/mmap.c                |  114 ++++++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 114 insertions(+), 9 deletions(-)
+ include/linux/mm.h |   31 +++++
+ mm/mmap.c          |  312 +++++++++++++++++++++++++++++++++++++---------------
+ 2 files changed, 253 insertions(+), 90 deletions(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 31f8a3af7d94..94fa52b28ee8 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -238,6 +238,14 @@ struct vm_area_struct {
- 	struct rb_node vm_rb;
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index fa0680402738..441dfe8ea24d 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1456,6 +1456,37 @@ extern unsigned long vm_mmap(struct file *, unsigned long,
+         unsigned long, unsigned long,
+         unsigned long, unsigned long);
  
- 	/*
-+	 * Largest free memory gap in bytes to the left of this VMA.
-+	 * Either between this VMA and vma->vm_prev, or between one of the
-+	 * VMAs below us in the VMA rbtree and its ->vm_prev. This helps
-+	 * get_unmapped_area find a free area of the right size.
-+	 */
-+	unsigned long rb_subtree_gap;
++struct vm_unmapped_area_info {
++#define VM_UNMAPPED_AREA_TOPDOWN 1
++	unsigned long flags;
++	unsigned long length;
++	unsigned long low_limit;
++	unsigned long high_limit;
++	unsigned long align_mask;
++	unsigned long align_offset;
++};
 +
-+	/*
- 	 * For areas with an address space and backing store,
- 	 * linkage into the address_space->i_mmap interval tree, or
- 	 * linkage of vma in the address_space->i_mmap_nonlinear list.
-@@ -322,6 +330,7 @@ struct mm_struct {
- 	unsigned long task_size;		/* size of task vm space */
- 	unsigned long cached_hole_size; 	/* if non-zero, the largest hole below free_area_cache */
- 	unsigned long free_area_cache;		/* first hole of size cached_hole_size or larger */
-+	unsigned long highest_vm_end;		/* highest vma end address */
- 	pgd_t * pgd;
- 	atomic_t mm_users;			/* How many users with user space? */
- 	atomic_t mm_count;			/* How many references to "struct mm_struct" (users count as 1) */
-diff --git a/mm/mmap.c b/mm/mmap.c
-index cf18502e75c6..2de8bcfe859d 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -31,6 +31,7 @@
- #include <linux/audit.h>
- #include <linux/khugepaged.h>
- #include <linux/uprobes.h>
-+#include <linux/rbtree_augmented.h>
- 
- #include <asm/uaccess.h>
- #include <asm/cacheflush.h>
-@@ -297,6 +298,70 @@ out:
- 	return retval;
- }
- 
-+static long vma_compute_subtree_gap(struct vm_area_struct *vma)
-+{
-+	unsigned long max, subtree_gap;
-+	max = vma->vm_start;
-+	if (vma->vm_prev)
-+		max -= vma->vm_prev->vm_end;
-+	if (vma->vm_rb.rb_left) {
-+		subtree_gap = rb_entry(vma->vm_rb.rb_left,
-+				struct vm_area_struct, vm_rb)->rb_subtree_gap;
-+		if (subtree_gap > max)
-+			max = subtree_gap;
-+	}
-+	if (vma->vm_rb.rb_right) {
-+		subtree_gap = rb_entry(vma->vm_rb.rb_right,
-+				struct vm_area_struct, vm_rb)->rb_subtree_gap;
-+		if (subtree_gap > max)
-+			max = subtree_gap;
-+	}
-+	return max;
-+}
-+
-+RB_DECLARE_CALLBACKS(static, vma_gap_callbacks, struct vm_area_struct, vm_rb,
-+		     unsigned long, rb_subtree_gap, vma_compute_subtree_gap)
++extern unsigned long unmapped_area(struct vm_unmapped_area_info *info);
++extern unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info);
 +
 +/*
-+ * Update augmented rbtree rb_subtree_gap values after vma->vm_start or
-+ * vma->vm_prev->vm_end values changed, without modifying the vma's position
-+ * in the rbtree.
++ * Search for an unmapped address range.
++ *
++ * We are looking for a range that:
++ * - does not intersect with any VMA;
++ * - is contained within the [low_limit, high_limit) interval;
++ * - is at least the desired size.
++ * - satisfies (begin_addr & align_mask) == (align_offset & align_mask)
 + */
-+static void vma_gap_update(struct vm_area_struct *vma)
++static inline unsigned long
++vm_unmapped_area(struct vm_unmapped_area_info *info)
 +{
-+	/*
-+	 * As it turns out, RB_DECLARE_CALLBACKS() already created a callback
-+	 * function that does exacltly what we want.
-+	 */
-+	vma_gap_callbacks_propagate(&vma->vm_rb, NULL);
-+}
-+
-+static inline void vma_rb_insert(struct vm_area_struct *vma,
-+				 struct rb_root *root)
-+{
-+	/*
-+	 * vma->vm_prev wasn't known when we followed the rbtree to find the
-+	 * correct insertion point for that vma. As a result, we could not
-+	 * update the vma vm_rb parents rb_subtree_gap values on the way down.
-+	 * So, we first insert the vma with a zero rb_subtree_gap value
-+	 * (to be consistent with what we did on the way down), and then
-+	 * immediately update the gap to the correct value.
-+	 */
-+	vma->rb_subtree_gap = 0;
-+	rb_insert_augmented(&vma->vm_rb, root, &vma_gap_callbacks);
-+	vma_gap_update(vma);
-+}
-+
-+static void vma_rb_erase(struct vm_area_struct *vma, struct rb_root *root)
-+{
-+	/*
-+	 * Note rb_erase_augmented is a fairly large inline function,
-+	 * so make sure we instantiate it only once with our desired
-+	 * augmented rbtree callbacks.
-+	 */
-+	rb_erase_augmented(&vma->vm_rb, root, &vma_gap_callbacks);
-+}
-+
- #ifdef CONFIG_DEBUG_VM_RB
- static int browse_rb(struct rb_root *root)
- {
-@@ -422,7 +487,11 @@ void __vma_link_rb(struct mm_struct *mm, struct vm_area_struct *vma,
- 		struct rb_node **rb_link, struct rb_node *rb_parent)
- {
- 	rb_link_node(&vma->vm_rb, rb_parent, rb_link);
--	rb_insert_color(&vma->vm_rb, &mm->mm_rb);
-+	vma_rb_insert(vma, &mm->mm_rb);
-+	if (vma->vm_next)
-+		vma_gap_update(vma->vm_next);
++	if (!(info->flags & VM_UNMAPPED_AREA_TOPDOWN))
++		return unmapped_area(info);
 +	else
-+		mm->highest_vm_end = vma->vm_end;
++		return unmapped_area_topdown(info);
++}
++
+ /* truncate.c */
+ extern void truncate_inode_pages(struct address_space *, loff_t);
+ extern void truncate_inode_pages_range(struct address_space *,
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 769a09cc71af..aa748988cd54 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1496,6 +1496,206 @@ unacct_error:
+ 	return error;
  }
  
- static void __vma_link_file(struct vm_area_struct *vma)
-@@ -503,7 +572,7 @@ __vma_unlink(struct mm_struct *mm, struct vm_area_struct *vma,
- 	prev->vm_next = next;
- 	if (next)
- 		next->vm_prev = prev;
--	rb_erase(&vma->vm_rb, &mm->mm_rb);
-+	vma_rb_erase(vma, &mm->mm_rb);
- 	if (mm->mmap_cache == vma)
- 		mm->mmap_cache = prev;
- }
-@@ -525,6 +594,7 @@ int vma_adjust(struct vm_area_struct *vma, unsigned long start,
- 	struct rb_root *root = NULL;
- 	struct anon_vma *anon_vma = NULL;
- 	struct file *file = vma->vm_file;
-+	bool start_changed = false, end_changed = false;
- 	long adjust_next = 0;
- 	int remove_next = 0;
- 
-@@ -615,8 +685,14 @@ again:			remove_next = 1 + (end > next->vm_end);
- 			vma_interval_tree_remove(next, root);
- 	}
- 
--	vma->vm_start = start;
--	vma->vm_end = end;
-+	if (start != vma->vm_start) {
-+		vma->vm_start = start;
-+		start_changed = true;
-+	}
-+	if (end != vma->vm_end) {
-+		vma->vm_end = end;
-+		end_changed = true;
-+	}
- 	vma->vm_pgoff = pgoff;
- 	if (adjust_next) {
- 		next->vm_start += adjust_next << PAGE_SHIFT;
-@@ -645,6 +721,15 @@ again:			remove_next = 1 + (end > next->vm_end);
- 		 * (it may either follow vma or precede it).
- 		 */
- 		__insert_vm_struct(mm, insert);
-+	} else {
-+		if (start_changed)
-+			vma_gap_update(vma);
-+		if (end_changed) {
-+			if (!next)
-+				mm->highest_vm_end = end;
-+			else if (!adjust_next)
-+				vma_gap_update(next);
++unsigned long unmapped_area(struct vm_unmapped_area_info *info)
++{
++	/*
++	 * We implement the search by looking for an rbtree node that
++	 * immediately follows a suitable gap. That is,
++	 * - gap_start = vma->vm_prev->vm_end <= info->high_limit - length;
++	 * - gap_end   = vma->vm_start        >= info->low_limit  + length;
++	 * - gap_end - gap_start >= length
++	 */
++
++	struct mm_struct *mm = current->mm;
++	struct vm_area_struct *vma;
++	unsigned long length, low_limit, high_limit, gap_start, gap_end;
++
++	/* Adjust search length to account for worst case alignment overhead */
++	length = info->length + info->align_mask;
++	if (length < info->length)
++		return -ENOMEM;
++
++	/* Adjust search limits by the desired length */
++	if (info->high_limit < length)
++		return -ENOMEM;
++	high_limit = info->high_limit - length;
++
++	if (info->low_limit > high_limit)
++		return -ENOMEM;
++	low_limit = info->low_limit + length;
++
++	/* Check if rbtree root looks promising */
++	if (RB_EMPTY_ROOT(&mm->mm_rb))
++		goto check_highest;
++	vma = rb_entry(mm->mm_rb.rb_node, struct vm_area_struct, vm_rb);
++	if (vma->rb_subtree_gap < length)
++		goto check_highest;
++
++	while (true) {
++		/* Visit left subtree if it looks promising */
++		gap_end = vma->vm_start;
++		if (gap_end >= low_limit && vma->vm_rb.rb_left) {
++			struct vm_area_struct *left =
++				rb_entry(vma->vm_rb.rb_left,
++					 struct vm_area_struct, vm_rb);
++			if (left->rb_subtree_gap >= length) {
++				vma = left;
++				continue;
++			}
 +		}
++
++		gap_start = vma->vm_prev ? vma->vm_prev->vm_end : 0;
++	check_current:
++		/* Check if current node has a suitable gap */
++		if (gap_start > high_limit)
++			return -ENOMEM;
++		if (gap_end >= low_limit && gap_end - gap_start >= length)
++			goto found;
++
++		/* Visit right subtree if it looks promising */
++		if (vma->vm_rb.rb_right) {
++			struct vm_area_struct *right =
++				rb_entry(vma->vm_rb.rb_right,
++					 struct vm_area_struct, vm_rb);
++			if (right->rb_subtree_gap >= length) {
++				vma = right;
++				continue;
++			}
++		}
++
++		/* Go back up the rbtree to find next candidate node */
++		while (true) {
++			struct rb_node *prev = &vma->vm_rb;
++			if (!rb_parent(prev))
++				goto check_highest;
++			vma = rb_entry(rb_parent(prev),
++				       struct vm_area_struct, vm_rb);
++			if (prev == vma->vm_rb.rb_left) {
++				gap_start = vma->vm_prev->vm_end;
++				gap_end = vma->vm_start;
++				goto check_current;
++			}
++		}
++	}
++
++check_highest:
++	/* Check highest gap, which does not precede any rbtree node */
++	gap_start = mm->highest_vm_end;
++	gap_end = ULONG_MAX;  /* Only for VM_BUG_ON below */
++	if (gap_start > high_limit)
++		return -ENOMEM;
++
++found:
++	/* We found a suitable gap. Clip it with the original low_limit. */
++	if (gap_start < info->low_limit)
++		gap_start = info->low_limit;
++
++	/* Adjust gap address to the desired alignment */
++	gap_start += (info->align_offset - gap_start) & info->align_mask;
++
++	VM_BUG_ON(gap_start + info->length > info->high_limit);
++	VM_BUG_ON(gap_start + info->length > gap_end);
++	return gap_start;
++}
++
++unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
++{
++	struct mm_struct *mm = current->mm;
++	struct vm_area_struct *vma;
++	unsigned long length, low_limit, high_limit, gap_start, gap_end;
++
++	/* Adjust search length to account for worst case alignment overhead */
++	length = info->length + info->align_mask;
++	if (length < info->length)
++		return -ENOMEM;
++
++	/*
++	 * Adjust search limits by the desired length.
++	 * See implementation comment at top of unmapped_area().
++	 */
++	gap_end = info->high_limit;
++	if (gap_end < length)
++		return -ENOMEM;
++	high_limit = gap_end - length;
++
++	if (info->low_limit > high_limit)
++		return -ENOMEM;
++	low_limit = info->low_limit + length;
++
++	/* Check highest gap, which does not precede any rbtree node */
++	gap_start = mm->highest_vm_end;
++	if (gap_start <= high_limit)
++		goto found_highest;
++
++	/* Check if rbtree root looks promising */
++	if (RB_EMPTY_ROOT(&mm->mm_rb))
++		return -ENOMEM;
++	vma = rb_entry(mm->mm_rb.rb_node, struct vm_area_struct, vm_rb);
++	if (vma->rb_subtree_gap < length)
++		return -ENOMEM;
++
++	while (true) {
++		/* Visit right subtree if it looks promising */
++		gap_start = vma->vm_prev ? vma->vm_prev->vm_end : 0;
++		if (gap_start <= high_limit && vma->vm_rb.rb_right) {
++			struct vm_area_struct *right =
++				rb_entry(vma->vm_rb.rb_right,
++					 struct vm_area_struct, vm_rb);
++			if (right->rb_subtree_gap >= length) {
++				vma = right;
++				continue;
++			}
++		}
++
++	check_current:
++		/* Check if current node has a suitable gap */
++		gap_end = vma->vm_start;
++		if (gap_end < low_limit)
++			return -ENOMEM;
++		if (gap_start <= high_limit && gap_end - gap_start >= length)
++			goto found;
++
++		/* Visit left subtree if it looks promising */
++		if (vma->vm_rb.rb_left) {
++			struct vm_area_struct *left =
++				rb_entry(vma->vm_rb.rb_left,
++					 struct vm_area_struct, vm_rb);
++			if (left->rb_subtree_gap >= length) {
++				vma = left;
++				continue;
++			}
++		}
++
++		/* Go back up the rbtree to find next candidate node */
++		while (true) {
++			struct rb_node *prev = &vma->vm_rb;
++			if (!rb_parent(prev))
++				return -ENOMEM;
++			vma = rb_entry(rb_parent(prev),
++				       struct vm_area_struct, vm_rb);
++			if (prev == vma->vm_rb.rb_right) {
++				gap_start = vma->vm_prev ?
++					vma->vm_prev->vm_end : 0;
++				goto check_current;
++			}
++		}
++	}
++
++found:
++	/* We found a suitable gap. Clip it with the original high_limit. */
++	if (gap_end > info->high_limit)
++		gap_end = info->high_limit;
++
++found_highest:
++	/* Compute highest gap address at the desired alignment */
++	gap_end -= info->length;
++	gap_end -= (gap_end - info->align_offset) & info->align_mask;
++
++	VM_BUG_ON(gap_end < info->low_limit);
++	VM_BUG_ON(gap_end < gap_start);
++	return gap_end;
++}
++
+ /* Get an address range which is currently unmapped.
+  * For shmat() with addr=0.
+  *
+@@ -1514,7 +1714,7 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ {
+ 	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma;
+-	unsigned long start_addr;
++	struct vm_unmapped_area_info info;
+ 
+ 	if (len > TASK_SIZE)
+ 		return -ENOMEM;
+@@ -1529,40 +1729,13 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 		    (!vma || addr + len <= vma->vm_start))
+ 			return addr;
+ 	}
+-	if (len > mm->cached_hole_size) {
+-	        start_addr = addr = mm->free_area_cache;
+-	} else {
+-	        start_addr = addr = TASK_UNMAPPED_BASE;
+-	        mm->cached_hole_size = 0;
+-	}
+ 
+-full_search:
+-	for (vma = find_vma(mm, addr); ; vma = vma->vm_next) {
+-		/* At this point:  (!vma || addr < vma->vm_end). */
+-		if (TASK_SIZE - len < addr) {
+-			/*
+-			 * Start a new search - just in case we missed
+-			 * some holes.
+-			 */
+-			if (start_addr != TASK_UNMAPPED_BASE) {
+-				addr = TASK_UNMAPPED_BASE;
+-			        start_addr = addr;
+-				mm->cached_hole_size = 0;
+-				goto full_search;
+-			}
+-			return -ENOMEM;
+-		}
+-		if (!vma || addr + len <= vma->vm_start) {
+-			/*
+-			 * Remember the place where we stopped the search:
+-			 */
+-			mm->free_area_cache = addr + len;
+-			return addr;
+-		}
+-		if (addr + mm->cached_hole_size < vma->vm_start)
+-		        mm->cached_hole_size = vma->vm_start - addr;
+-		addr = vma->vm_end;
+-	}
++	info.flags = 0;
++	info.length = len;
++	info.low_limit = TASK_UNMAPPED_BASE;
++	info.high_limit = TASK_SIZE;
++	info.align_mask = 0;
++	return vm_unmapped_area(&info);
+ }
+ #endif	
+ 
+@@ -1587,7 +1760,8 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ {
+ 	struct vm_area_struct *vma;
+ 	struct mm_struct *mm = current->mm;
+-	unsigned long addr = addr0, start_addr;
++	unsigned long addr = addr0;
++	struct vm_unmapped_area_info info;
+ 
+ 	/* requested length too big for entire address space */
+ 	if (len > TASK_SIZE)
+@@ -1605,53 +1779,12 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ 			return addr;
  	}
  
- 	if (anon_vma) {
-@@ -678,10 +763,13 @@ again:			remove_next = 1 + (end > next->vm_end);
- 		 * we must remove another next too. It would clutter
- 		 * up the code too much to do both in one go.
- 		 */
--		if (remove_next == 2) {
--			next = vma->vm_next;
-+		next = vma->vm_next;
-+		if (remove_next == 2)
- 			goto again;
--		}
-+		else if (next)
-+			vma_gap_update(next);
-+		else
-+			mm->highest_vm_end = end;
- 	}
- 	if (insert && file)
- 		uprobe_mmap(insert);
-@@ -1783,6 +1871,10 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
- 				anon_vma_interval_tree_pre_update_vma(vma);
- 				vma->vm_end = address;
- 				anon_vma_interval_tree_post_update_vma(vma);
-+				if (vma->vm_next)
-+					vma_gap_update(vma->vm_next);
-+				else
-+					mm->highest_vm_end = address;
- 				perf_event_mmap(vma);
- 			}
- 		}
-@@ -1837,6 +1929,7 @@ int expand_downwards(struct vm_area_struct *vma,
- 				vma->vm_start = address;
- 				vma->vm_pgoff -= grow;
- 				anon_vma_interval_tree_post_update_vma(vma);
-+				vma_gap_update(vma);
- 				perf_event_mmap(vma);
- 			}
- 		}
-@@ -1959,14 +2052,17 @@ detach_vmas_to_be_unmapped(struct mm_struct *mm, struct vm_area_struct *vma,
- 	insertion_point = (prev ? &prev->vm_next : &mm->mmap);
- 	vma->vm_prev = NULL;
- 	do {
--		rb_erase(&vma->vm_rb, &mm->mm_rb);
-+		vma_rb_erase(vma, &mm->mm_rb);
- 		mm->map_count--;
- 		tail_vma = vma;
- 		vma = vma->vm_next;
- 	} while (vma && vma->vm_start < end);
- 	*insertion_point = vma;
--	if (vma)
-+	if (vma) {
- 		vma->vm_prev = prev;
-+		vma_gap_update(vma);
-+	} else
-+		mm->highest_vm_end = prev ? prev->vm_end : 0;
- 	tail_vma->vm_next = NULL;
- 	if (mm->unmap_area == arch_unmap_area)
- 		addr = prev ? prev->vm_end : mm->mmap_base;
+-	/* check if free_area_cache is useful for us */
+-	if (len <= mm->cached_hole_size) {
+- 	        mm->cached_hole_size = 0;
+- 		mm->free_area_cache = mm->mmap_base;
+- 	}
+-
+-try_again:
+-	/* either no address requested or can't fit in requested address hole */
+-	start_addr = addr = mm->free_area_cache;
+-
+-	if (addr < len)
+-		goto fail;
+-
+-	addr -= len;
+-	do {
+-		/*
+-		 * Lookup failure means no vma is above this address,
+-		 * else if new region fits below vma->vm_start,
+-		 * return with success:
+-		 */
+-		vma = find_vma(mm, addr);
+-		if (!vma || addr+len <= vma->vm_start)
+-			/* remember the address as a hint for next time */
+-			return (mm->free_area_cache = addr);
+-
+- 		/* remember the largest hole we saw so far */
+- 		if (addr + mm->cached_hole_size < vma->vm_start)
+- 		        mm->cached_hole_size = vma->vm_start - addr;
+-
+-		/* try just below the current vma->vm_start */
+-		addr = vma->vm_start-len;
+-	} while (len < vma->vm_start);
+-
+-fail:
+-	/*
+-	 * if hint left us with no space for the requested
+-	 * mapping then try again:
+-	 *
+-	 * Note: this is different with the case of bottomup
+-	 * which does the fully line-search, but we use find_vma
+-	 * here that causes some holes skipped.
+-	 */
+-	if (start_addr != mm->mmap_base) {
+-		mm->free_area_cache = mm->mmap_base;
+-		mm->cached_hole_size = 0;
+-		goto try_again;
+-	}
++	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
++	info.length = len;
++	info.low_limit = PAGE_SIZE;
++	info.high_limit = mm->mmap_base;
++	info.align_mask = 0;
++	addr = vm_unmapped_area(&info);
+ 
+ 	/*
+ 	 * A failed mmap() very likely causes application failure,
+@@ -1659,14 +1792,13 @@ fail:
+ 	 * can happen with large stack limits and large mmap()
+ 	 * allocations.
+ 	 */
+-	mm->cached_hole_size = ~0UL;
+-  	mm->free_area_cache = TASK_UNMAPPED_BASE;
+-	addr = arch_get_unmapped_area(filp, addr0, len, pgoff, flags);
+-	/*
+-	 * Restore the topdown base:
+-	 */
+-	mm->free_area_cache = mm->mmap_base;
+-	mm->cached_hole_size = ~0UL;
++	if (addr & ~PAGE_MASK) {
++		VM_BUG_ON(addr != -ENOMEM);
++		info.flags = 0;
++		info.low_limit = TASK_UNMAPPED_BASE;
++		info.high_limit = TASK_SIZE;
++		addr = vm_unmapped_area(&info);
++	}
+ 
+ 	return addr;
+ }
 -- 
 1.7.7.3

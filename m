@@ -1,39 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2012 22:33:28 +0100 (CET)
-Received: from mailhost.informatik.uni-hamburg.de ([134.100.9.70]:60698 "EHLO
-        mailhost.informatik.uni-hamburg.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825968Ab2KEVd05ClCa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2012 22:33:26 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTP id 8656AD86;
-        Mon,  5 Nov 2012 22:33:11 +0100 (CET)
-X-Virus-Scanned: amavisd-new at informatik.uni-hamburg.de
-Received: from mailhost.informatik.uni-hamburg.de ([127.0.0.1])
-        by localhost (mailhost.informatik.uni-hamburg.de [127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id RNxbmaIO2loQ; Mon,  5 Nov 2012 22:33:10 +0100 (CET)
-Received: from [192.168.178.21] (ppp-188-174-75-12.dynamic.mnet-online.de [188.174.75.12])
-        (using TLSv1 with cipher DHE-RSA-CAMELLIA256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: 7clausen)
-        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTPSA id 2E2A5D84;
-        Mon,  5 Nov 2012 22:32:54 +0100 (CET)
-Message-ID: <509830A9.5050205@metafoo.de>
-Date:   Mon, 05 Nov 2012 22:33:29 +0100
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.16) Gecko/20121027 Icedove/3.0.11
-MIME-Version: 1.0
-To:     =?ISO-8859-1?Q?Llu=EDs_Batlle_i_Rossell?= <viric@viric.name>
-CC:     linux-mips@linux-mips.org
-Subject: Re: Broken readdir() since 3.5 for ext3 on mips-n32
-References: <20121102183828.GX2052@vicerveza.homeunix.net> <20121104232119.GF2052@vicerveza.homeunix.net> <20121105073221.GG2052@vicerveza.homeunix.net> <20121105212019.GN2052@vicerveza.homeunix.net>
-In-Reply-To: <20121105212019.GN2052@vicerveza.homeunix.net>
-X-Enigmail-Version: 1.0.1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-X-archive-position: 34869
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2012 23:47:39 +0100 (CET)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:46108 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825976Ab2KEWriDvdZY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2012 23:47:38 +0100
+Received: by mail-pb0-f49.google.com with SMTP id xa7so3934264pbc.36
+        for <linux-mips@linux-mips.org>; Mon, 05 Nov 2012 14:47:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=Aai+/WdvMNX3hHSB0PfhrQwvzJLJOlHhaLEAsjTbDh0=;
+        b=DeUh3QUdrSBY2OyF5RzXk8m+2Hx1Mim1LxN5g/YUES5ZGWI5gnVTzEabHpSvIxjcgo
+         k7281g8kAJvmW6b0KBL/dVLOcMtl3BAYtPk6m4OEdGXuNSiSgb17gZuHpzx0cLeLVf8t
+         g69cCw5EuhKanVp7o/MAOmasM5OBZD0j2bG0L6XjVWxtK62as7MDI9oPSUSjgE1FSpKN
+         +1aeqYmLkMySIbIDe2s+qShDSsMS3oyoOLbvzDR9gtmPAER8D5/1unF1LxbSSPfAp1uW
+         xpq1vaUKeQJzFwtqKgAArDKcHw8RsE3Ptq/RFbvBAcOHASmiBuFyqECFS+dVgNU9Ht7f
+         pcaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer:x-gm-message-state;
+        bh=Aai+/WdvMNX3hHSB0PfhrQwvzJLJOlHhaLEAsjTbDh0=;
+        b=LEf+ZVfSnRqb/xPOFg32UYbEw5QDgNhUGY/6PJaSpJSC/uXghg9Pb93UQzmCm5QWp0
+         jhRp7dFbTmT75CkpWnhKDn6zwpxqJA1Y+DKlznJU72JvUzwbohwAf5lkA7T2EEnheypm
+         RGjF6BM1a6teYo5lHSiwulgODBruVtSowyTiDVjG48NMz3Bwtuyd9aJEp3zGQ+e3LQNv
+         zoZCtqtgtlFbMjkxneh7DAhDUjvok/9yj8KaVliZqhzMN7ctjzWLf2hzJH81CItQfriB
+         dYw1Q5o541rMhDBM6Tg4N5SY/PeIP7vstkwiy5ih/E87XHzsITquO93on0cVGYBKKsv+
+         6ewQ==
+Received: by 10.66.87.133 with SMTP id ay5mr32357798pab.59.1352155651272;
+        Mon, 05 Nov 2012 14:47:31 -0800 (PST)
+Received: from studio.mtv.corp.google.com (studio.mtv.corp.google.com [172.17.131.106])
+        by mx.google.com with ESMTPS id jx4sm11201653pbc.27.2012.11.05.14.47.29
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 05 Nov 2012 14:47:30 -0800 (PST)
+From:   Michel Lespinasse <walken@google.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Rik van Riel <riel@redhat.com>,
+        Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org,
+        Russell King <linux@arm.linux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Mundt <lethal@linux-sh.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@tilera.com>, x86@kernel.org,
+        William Irwin <wli@holomorphy.com>
+Cc:     linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org
+Subject: [PATCH 00/16] mm: use augmented rbtrees for finding unmapped areas
+Date:   Mon,  5 Nov 2012 14:46:57 -0800
+Message-Id: <1352155633-8648-1-git-send-email-walken@google.com>
+X-Mailer: git-send-email 1.7.7.3
+X-Gm-Message-State: ALoCoQlFnHQoSnRv045pGlaB7HwhYsZiycvFODXkTZQ4YV4tTS+qv9UQsEDm+4RKR7ts8qY42CAy4KCEEdrltPHEe1c6C/FYzzcybP7K4a3jfVz9VFc9m9RRxjdSUxmpD363N9ZF5C3iTkOMwDkF8EmqFLnFju2xVEteddMnlqLNKQlPRcG6x7Nkz3rG3nLhhT3VG95Zbp5xAMA57B6d2MgnyYxOJUopow==
+X-archive-position: 34870
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: walken@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,175 +67,107 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 11/05/2012 10:20 PM, Lluís Batlle i Rossell wrote:
-> Hello,
-> 
-> with the help of Lars on irc, we've tracked down the issue to a broken readdir()
-> in ext3 in n32, introduced in the kernel 3.5 by this commit:
-> d7dab39b6e16d5eea78ed3c705d2a2d0772b4f06
-> 
-> That renders ext3 quite useless in mips n32.
-> 
-> In a kernel after that commit, the example program in the 'getdents' man page
-> returns this:
-> [root@fu2:~/readdir]# ./getdents 
-> --------------- nread=116 ---------------
-> i-node#  file type  d_reclen  d_off   d_name
->     3694  regular      20 1780583312  prova.c
->  1037850  regular      24 -985956880  getdents.c
->  1037848  directory    16 -1999547753  .
->  1037849  regular      20  222381689  getdents
->   778241  directory    16 -1849228342  ..
->     3647  regular      20         -1  prova
-> 
-> 
-> I took Lars suggestion of applying the patch I attach (forcing ext3 to think it
-> is a 32-bit system), and then all works. init (upstart) doesn't deadlock anymore, readdir() works fine, and the getdents info looks right:
-> [root@fu2:~/readdir]# ./getdents 
-> --------------- nread=116 ---------------
-> i-node#  file type  d_reclen  d_off   d_name
->     3694  regular      20  334739480  prova.c
->  1037850  regular      24  473707228  getdents.c
->  1037848  directory    16  824759881  .
->  1037849  regular      20  875064456  getdents
->   778241  directory    16 1524836457  ..
->     3647  regular      20 2147483647  prova
-> 
-> How to solve this, I don't know. But it seems that ext3 thinks that mips-n32
-> programs can eat some 64-bit words in d_off.
+Earlier this year, Rik proposed using augmented rbtrees to optimize
+our search for a suitable unmapped area during mmap(). This prompted
+my work on improving the augmented rbtree code. Rik doesn't seem to
+have time to follow up on his idea at this time, so I'm sending this
+series to revive the idea.
 
-I think the issue here is that is_compat_task() returns false if both o32 and
-n32 support are built into the kernel.
+These changes are against v3.7-rc4. I have not converted all applicable
+architectuers yet, but we don't necessarily need to get them all onboard
+at once - the series is fully bisectable and additional architectures
+can be added later on. I am confident enough in my tests for patches 1-8;
+however the second half of the series basically didn't get tested as
+I don't have access to all the relevant architectures.
 
-is_compat_task() is defined is
+Change log  since the previous (RFC) send:
+- Added bug fix in validate_mm(), noticed by Sasha Levin and figured
+  out by Bob Liu, which sometimes caused NULL pointer dereference when
+  running with CONFIG_DEBUG_VM_RB=y
+- Fixed generic and x86_64 arch_get_unmapped_area_topdown to avoid
+  allocating new areas at addr=0 as suggested by Rik Van Riel
+- Converted more architectures to use the new vm_unmapped_area()
+  search function
+- Converted hugetlbfs (generic / i386 / sparc64 / tile) to use the new
+  vm_unmapped_area() search function as well.
 
-static inline int is_compat_task(void)
-{
-    return test_thread_flag(TIF_32BIT);
-}
+In this resend, I have kept Rik's Reviewed-by tags from the original
+RFC submission for patches that haven't been updated other than applying
+his suggestions.
 
-and TIF_32BIT is defined as
+Patch 1 is the validate_mm() fix from Bob Liu (+ fixed-the-fix from me :)
 
-#ifdef CONFIG_MIPS32_O32
-#define TIF_32BIT TIF_32BIT_REGS
-#elif defined(CONFIG_MIPS32_N32)
-#define TIF_32BIT _TIF_32BIT_ADDR
-#endif /* CONFIG_MIPS32_O32 */
+Patch 2 augments the VMA rbtree with a new rb_subtree_gap field,
+indicating the length of the largest gap immediately preceding any
+VMAs in a subtree.
 
-the n32 personality only sets TIF_32BIT_ADDR, so the test will fail. Also
-shouldn't it be '#define TIF_32BIT TIF_32BIT_ADDR' instead of '#define
-TIF_32BIT _TIF_32BIT_ADDR'?
+Patch 3 adds new checks to CONFIG_DEBUG_VM_RB to verify the above
+information is correctly maintained.
 
-> 
-> Regards,
-> Lluís.
-> 
-> On Mon, Nov 05, 2012 at 08:32:21AM +0100, Lluís Batlle i Rossell wrote:
->> This same issue below happens to me in 3.5.7 too. So, the change is somewhere
->> between 3.4 and 3.5.
->>
->> Regards,
->> Lluís.
->>
->> On Mon, Nov 05, 2012 at 12:21:19AM +0100, Lluís Batlle i Rossell wrote:
->>> I've investigated better the issue.
->>>
->>> I found that, in 3.4 vs 3.6.4, the behaviour that changed is that of readdir().
->>>
->>> Using the same userland binaries, I've run a little program in both kernels:
->>> -------- prova.c
->>> #include <sys/types.h>
->>> #include <dirent.h>
->>>
->>> int main() {
->>>         DIR *d = opendir("/etc/init");
->>>
->>>         if (d == NULL) {
->>>                 fprintf(stderr, "d NULL\n");
->>>                 return -1;
->>>         }
->>>
->>>         struct dirent *ent;
->>>         ent = readdir(d);
->>>
->>>         if (ent == NULL) {
->>>                 fprintf(stderr, "ent NULL\n");
->>>                 return -1;
->>>         }
->>> }
->>> -----------
->>>
->>>
->>> This program does not print anything on 3.4, but on 3.6, it prints "ent NULL".
->>>
->>> In both cases, /etc/init is full of symlinks, like this (from a script session
->>> in 3.6.4):
->>> -------
->>> S'ha iniciat l'execució de script a dl 05 nov 2012 00:16:53 CET
->>> sh-4.2# ./prova
->>> ent NULL
->>> sh-4.2# ls -ld /etc/init
->>> drwxr-xr-x 2 root root 4096  5 nov 00:12 /etc/init
->>> sh-4.2# ls -l /etc/init
->>> total 0
->>> lrwxrwxrwx 1 root root 25  5 nov 00:12 atd.conf -> /etc/static/init/atd.conf
->>> lrwxrwxrwx 1 root root 26  5 nov 00:12 boot.conf -> /etc/static/init/boot.conf
->>> lrwxrwxrwx 1 root root 40  5 nov 00:12 control-alt-delete.conf -> /etc/static/init/control-alt-delete.conf
->>> lrwxrwxrwx 1 root root 26  5 nov 00:12 cron.conf -> /etc/static/init/cron.conf
->>> lrwxrwxrwx 1 root root 26  5 nov 00:12 dbus.conf -> /etc/static/init/dbus.conf
->>> lrwxrwxrwx 1 root root 28  5 nov 00:12 dhcpcd.conf -> /etc/static/init/dhcpcd.conf
->>> lrwxrwxrwx 1 root root 37  5 nov 00:12 emergency-shell.conf -> /etc/static/init/emergency-shell.conf
->>> lrwxrwxrwx 1 root root 37  5 nov 00:12 invalidate-nscd.conf -> /etc/static/init/invalidate-nscd.conf
->>> lrwxrwxrwx 1 root root 25  5 nov 00:12 kbd.conf -> /etc/static/init/kbd.conf
->>> lrwxrwxrwx 1 root root 27  5 nov 00:12 klogd.conf -> /etc/static/init/klogd.conf
->>> lrwxrwxrwx 1 root root 25  5 nov 00:12 lvm.conf -> /etc/static/init/lvm.conf
->>> lrwxrwxrwx 1 root root 30  5 nov 00:12 mountall.conf -> /etc/static/init/mountall.conf
->>> lrwxrwxrwx 1 root root 36  5 nov 00:12 mountall-ip-up.conf -> /etc/static/init/mountall-ip-up.conf
->>> lrwxrwxrwx 1 root root 34  5 nov 00:12 mount-failed.conf -> /etc/static/init/mount-failed.conf
->>> lrwxrwxrwx 1 root root 32  5 nov 00:12 networking.conf -> /etc/static/init/networking.conf
->>> lrwxrwxrwx 1 root root 40  5 nov 00:12 network-interfaces.conf -> /etc/static/init/network-interfaces.conf
->>> lrwxrwxrwx 1 root root 32  5 nov 00:12 nix-daemon.conf -> /etc/static/init/nix-daemon.conf
->>> lrwxrwxrwx 1 root root 26  5 nov 00:12 nscd.conf -> /etc/static/init/nscd.conf
->>> lrwxrwxrwx 1 root root 26  5 nov 00:12 ntpd.conf -> /etc/static/init/ntpd.conf
->>> lrwxrwxrwx 1 root root 30  5 nov 00:12 runlevel.conf -> /etc/static/init/runlevel.conf
->>> lrwxrwxrwx 1 root root 30  5 nov 00:12 shutdown.conf -> /etc/static/init/shutdown.conf
->>> lrwxrwxrwx 1 root root 26  5 nov 00:12 sshd.conf -> /etc/static/init/sshd.conf
->>> lrwxrwxrwx 1 root root 29  5 nov 00:12 syslogd.conf -> /etc/static/init/syslogd.conf
->>> lrwxrwxrwx 1 root root 26  5 nov 00:12 tty1.conf -> /etc/static/init/tty1.conf
->>> lrwxrwxrwx 1 root root 26  5 nov 00:12 tty2.conf -> /etc/static/init/tty2.conf
->>> lrwxrwxrwx 1 root root 26  5 nov 00:12 tty3.conf -> /etc/static/init/tty3.conf
->>> lrwxrwxrwx 1 root root 26  5 nov 00:12 tty4.conf -> /etc/static/init/tty4.conf
->>> lrwxrwxrwx 1 root root 26  5 nov 00:12 tty5.conf -> /etc/static/init/tty5.conf
->>> lrwxrwxrwx 1 root root 26  5 nov 00:12 tty6.conf -> /etc/static/init/tty6.conf
->>> lrwxrwxrwx 1 root root 26  5 nov 00:12 udev.conf -> /etc/static/init/udev.conf
->>> lrwxrwxrwx 1 root root 33  5 nov 00:12 udevtrigger.conf -> /etc/static/init/udevtrigger.conf
->>> sh-4.2# exit
->>>
->>> S'ha finalitzat l'execució de script a dl 05 nov 2012 00:17:22 CET
->>> --------
->>>
->>>
->>>
->>>
->>> On Fri, Nov 02, 2012 at 07:38:28PM +0100, Lluís Batlle i Rossell wrote:
->>>> Hello,
->>>>
->>>> updating my kernel from 3.4.2 to 3.6.4, I've noticed that upstart deadlocks at
->>>> the very start. Stracing, I think it has to do with INOTIFY, because it
->>>> deadlocks very early and little more has been done then.
->>>>
->>>> Going 'back' to 3.4.16, makes upstart work fine. I've not tested middle kernels.
->>>>
->>>> I've seen this only on the fuloong minipc (mips n64), but I've done similar
->>>> steps with the same distributions on armv5tel, i686 and x86_64, and there all
->>>> works fine.
->>>>
->>>> Does anybody know of anything broken around inotify, between 3.4 and 3.6 linux
->>>> mips?
->>>>
->>>> Any suggestion on what kernel change could have related to this, and so, get a
->>>> clue about what middle version to test?
->>>>
->>>> Regards,
->>>> Lluís.
-> 
+Patch 4 rearranges the vm_area_struct layout so that rbtree searches only
+need data that is contained in the first cacheline (this one is from
+Rik's original patch series)
+
+Patch 5 adds a generic vm_unmapped_area() search function, which
+allows for searching for an address space of any desired length,
+within [low; high[ address constraints, with any desired alignment.
+The generic arch_get_unmapped_area[_topdown] functions are also converted
+to use this.
+
+Patch 6 converts the x86_64 arch_get_unmapped_area[_topdown] functions
+to use vm_unmapped_area() as well.
+
+Patch 7 fixes cache coloring on x86_64, as suggested by Rik in his
+previous series.
+
+Patch 8 and 9 convert the generic and i386 hugetlbfs code to use
+vm_unmapped_area()
+
+Patches 10-16 convert extra architectures to use vm_unmapped_area()
+
+I'm happy that this series removes more code than it adds, as calling
+vm_unmapped_area() with the desired arguments is quite shorter than
+duplicating the brute force algorithm all over the place. There is
+still a bit of repetition between various implementations of
+arch_get_unmapped_area[_topdown] functions that could probably be
+simplified somehow, but I feel we can keep that for a later step...
+
+Michel Lespinasse (15):
+  mm: add anon_vma_lock to validate_mm()
+  mm: augment vma rbtree with rb_subtree_gap
+  mm: check rb_subtree_gap correctness
+  mm: vm_unmapped_area() lookup function
+  mm: use vm_unmapped_area() on x86_64 architecture
+  mm: fix cache coloring on x86_64 architecture
+  mm: use vm_unmapped_area() in hugetlbfs
+  mm: use vm_unmapped_area() in hugetlbfs on i386 architecture
+  mm: use vm_unmapped_area() on mips architecture
+  mm: use vm_unmapped_area() on arm architecture
+  mm: use vm_unmapped_area() on sh architecture
+  mm: use vm_unmapped_area() on sparc64 architecture
+  mm: use vm_unmapped_area() in hugetlbfs on sparc64 architecture
+  mm: use vm_unmapped_area() on sparc32 architecture
+  mm: use vm_unmapped_area() in hugetlbfs on tile architecture
+
+Rik van Riel (1):
+  mm: rearrange vm_area_struct for fewer cache misses
+
+ arch/arm/mm/mmap.c               |  119 ++--------
+ arch/mips/mm/mmap.c              |   99 ++-------
+ arch/sh/mm/mmap.c                |  126 ++---------
+ arch/sparc/kernel/sys_sparc_32.c |   24 +--
+ arch/sparc/kernel/sys_sparc_64.c |  132 +++---------
+ arch/sparc/mm/hugetlbpage.c      |  123 +++--------
+ arch/tile/mm/hugetlbpage.c       |  139 ++----------
+ arch/x86/include/asm/elf.h       |    6 +-
+ arch/x86/kernel/sys_x86_64.c     |  151 +++----------
+ arch/x86/mm/hugetlbpage.c        |  130 ++---------
+ arch/x86/vdso/vma.c              |    2 +-
+ fs/hugetlbfs/inode.c             |   42 +---
+ include/linux/mm.h               |   31 +++
+ include/linux/mm_types.h         |   19 ++-
+ mm/mmap.c                        |  452 +++++++++++++++++++++++++++++---------
+ 15 files changed, 616 insertions(+), 979 deletions(-)
+
+-- 
+1.7.7.3

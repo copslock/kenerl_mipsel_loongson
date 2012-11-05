@@ -1,62 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2012 23:52:48 +0100 (CET)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:43960 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825994Ab2KEWsAKjHYQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2012 23:48:00 +0100
-Received: by mail-pa0-f49.google.com with SMTP id bi5so3945704pad.36
-        for <linux-mips@linux-mips.org>; Mon, 05 Nov 2012 14:47:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=LonywyeY1NXUd18fG679gz3Gm1u+npkfSQa1NSSzh0c=;
-        b=RHdbx6J17EWCi4f+h4fbznabactrrrQ1pSPGKT6hFx47dg/WWM7OD/sYX/DQbaMkKo
-         miNi7UhoJzyQU5oXo2SqViglnHG0IWVe/2wV03hwkvfq6R4oouOE2M0y61I+po3v9qkG
-         yreKHvMCbxANA8W9VuFqGKHvytKaom13hpJEE+pNfkseqiY5WWYce/U70fC6R861mAb8
-         Z+7/sZ4uARc24OIGgtY7qLD6iRco01aHzUGe1RgHxnwR7vp3iGIIUB0zQhy46/Syt3Ew
-         e09oBFFxDI01P5H68bAb8rO+UPy4QVphkdJRKSGOrY1ff54lw5ipvZGjI5+GR2nCMLUf
-         75nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references
-         :x-gm-message-state;
-        bh=LonywyeY1NXUd18fG679gz3Gm1u+npkfSQa1NSSzh0c=;
-        b=dtGQRJHwtLaL+/7GXlzbldU9+65L8n8ZxMqqJ9Sfmr92wk0Ut/oemr4KQF4ySyRcov
-         00BC0tMDm3UiCv/5+V2NecnqXTqz2QLLwxktRlTyDYlQKlvEcIRD9tgJ2va3QDIibOh3
-         9JJkwGcEa6ZAu+mw4V7/OzHfA5tN3O/P67GlXmSmxKLSrBnf433cJcsEo5g44rRVRKCQ
-         37c9VyT8WROwmq1lBTQNpo5wUjbiaGuPVfV/3J9aAlobF59juY9cMHZirF3+6KI6x3qU
-         C7Xrd58Zb9waPo9OGpugQl/8pAbL8/8PoyGbmjxhmCJtx5W78amuuAby6u5WD6snt5Y3
-         +amQ==
-Received: by 10.69.1.8 with SMTP id bc8mr370495pbd.9.1352155679344;
-        Mon, 05 Nov 2012 14:47:59 -0800 (PST)
-Received: from studio.mtv.corp.google.com (studio.mtv.corp.google.com [172.17.131.106])
-        by mx.google.com with ESMTPS id jx4sm11201653pbc.27.2012.11.05.14.47.57
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 05 Nov 2012 14:47:58 -0800 (PST)
-From:   Michel Lespinasse <walken@google.com>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        Rik van Riel <riel@redhat.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2012 00:04:11 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:62612 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6825969Ab2KEXEKX0l9- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 6 Nov 2012 00:04:10 +0100
+Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id qA5N3swk002641
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Mon, 5 Nov 2012 18:03:54 -0500
+Received: from [10.3.112.32] (ovpn-112-32.phx2.redhat.com [10.3.112.32])
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id qA5N3ho8022079;
+        Mon, 5 Nov 2012 18:03:45 -0500
+Message-ID: <50984676.1080307@redhat.com>
+Date:   Mon, 05 Nov 2012 18:06:30 -0500
+From:   Rik van Riel <riel@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:16.0) Gecko/20121009 Thunderbird/16.0
+MIME-Version: 1.0
+To:     Michel Lespinasse <walken@google.com>
+CC:     Andrew Morton <akpm@linux-foundation.org>,
         Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org,
         Russell King <linux@arm.linux.org.uk>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Mundt <lethal@linux-sh.org>,
         "David S. Miller" <davem@davemloft.net>,
         Chris Metcalf <cmetcalf@tilera.com>, x86@kernel.org,
-        William Irwin <wli@holomorphy.com>
-Cc:     linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org
-Subject: [PATCH 16/16] mm: use vm_unmapped_area() in hugetlbfs on tile architecture
-Date:   Mon,  5 Nov 2012 14:47:13 -0800
-Message-Id: <1352155633-8648-17-git-send-email-walken@google.com>
-X-Mailer: git-send-email 1.7.7.3
-In-Reply-To: <1352155633-8648-1-git-send-email-walken@google.com>
-References: <1352155633-8648-1-git-send-email-walken@google.com>
-X-Gm-Message-State: ALoCoQljplCiHGwZO+gsZfU12HfrJpahpObhvYij0hY4RtLpdfegNHdPdC9J2v4pVo5V71RypFn9zM9G8Lh/dsK0j96E7bY7kZsnDEu8g+d3qW4EUPPl6O+YJQ8inK+a/t7YS2FkH1SncHwe9amflM2kNbOp+sdwkOVLqq0u9AunPKd21fcLB7jAg0+iAjhW07FAAEs4yjw/lPxyoNRuZBe765+qzC6oeg==
-X-archive-position: 34886
+        William Irwin <wli@holomorphy.com>, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH 01/16] mm: add anon_vma_lock to validate_mm()
+References: <1352155633-8648-1-git-send-email-walken@google.com> <1352155633-8648-2-git-send-email-walken@google.com>
+In-Reply-To: <1352155633-8648-2-git-send-email-walken@google.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
+X-archive-position: 34887
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: walken@google.com
+X-original-sender: riel@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,179 +50,52 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Update the tile hugetlb_get_unmapped_area function to make use of
-vm_unmapped_area() instead of implementing a brute force search.
+On 11/05/2012 05:46 PM, Michel Lespinasse wrote:
+> Iterate vma->anon_vma_chain without anon_vma_lock may cause NULL ptr deref in
+> anon_vma_interval_tree_verify(), because the node in the chain might have been
+> removed.
+>
+> [ 1523.657950] BUG: unable to handle kernel paging request at fffffffffffffff0
+> [ 1523.660022] IP: [<ffffffff8122c29c>] anon_vma_interval_tree_verify+0xc/0xa0
+> [ 1523.660022] PGD 4e28067 PUD 4e29067 PMD 0
+> [ 1523.675725] Oops: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC
+> [ 1523.750066] CPU 0
+> [ 1523.750066] Pid: 9050, comm: trinity-child64 Tainted: G        W    3.7.0-rc2-next-20121025-sasha-00001-g673f98e-dirty #77
+> [ 1523.750066] RIP: 0010:[<ffffffff8122c29c>]  [<ffffffff8122c29c>] anon_vma_interval_tree_verify+0xc/0xa0
+> [ 1523.750066] RSP: 0018:ffff880045f81d48  EFLAGS: 00010296
+> [ 1523.750066] RAX: 0000000000000000 RBX: fffffffffffffff0 RCX: 0000000000000000
+> [ 1523.750066] RDX: 0000000000000000 RSI: 0000000000000001 RDI: fffffffffffffff0
+> [ 1523.750066] RBP: ffff880045f81d58 R08: 0000000000000000 R09: 0000000000000f14
+> [ 1523.750066] R10: 0000000000000f12 R11: 0000000000000000 R12: ffff8800096c8d70
+> [ 1523.750066] R13: ffff8800096c8d00 R14: 0000000000000000 R15: ffff8800095b45e0
+> [ 1523.750066] FS:  00007f7a923f3700(0000) GS:ffff880013600000(0000) knlGS:0000000000000000
+> [ 1523.750066] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [ 1523.750066] CR2: fffffffffffffff0 CR3: 000000000969d000 CR4: 00000000000406f0
+> [ 1523.750066] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> [ 1523.750066] DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
+> [ 1523.750066] Process trinity-child64 (pid: 9050, threadinfo ffff880045f80000, task ffff880048eb0000)
+> [ 1523.750066] Stack:
+> [ 1523.750066]  ffff88000d7533f0 fffffffffffffff0 ffff880045f81da8 ffffffff812361d8
+> [ 1523.750066]  ffff880045f81d98 ffff880048ee9000 ffff8800095b4580 ffff8800095b4580
+> [ 1523.750066]  ffff88001d1cdb00 ffff8800095b45f0 ffff880022a4d630 ffff8800095b45e0
+> [ 1523.750066] Call Trace:
+> [ 1523.750066]  [<ffffffff812361d8>] validate_mm+0x58/0x1e0
+> [ 1523.750066]  [<ffffffff81236aa5>] vma_adjust+0x635/0x6b0
+> [ 1523.750066]  [<ffffffff81236c81>] __split_vma.isra.22+0x161/0x220
+> [ 1523.750066]  [<ffffffff81237934>] split_vma+0x24/0x30
+> [ 1523.750066]  [<ffffffff8122ce6a>] sys_madvise+0x5da/0x7b0
+> [ 1523.750066]  [<ffffffff811cd14c>] ? rcu_eqs_exit+0x9c/0xb0
+> [ 1523.750066]  [<ffffffff811802cd>] ? trace_hardirqs_on+0xd/0x10
+> [ 1523.750066]  [<ffffffff83aee198>] tracesys+0xe1/0xe6
+> [ 1523.750066] Code: 4c 09 ff 48 39 ce 77 9e f3 c3 0f 1f 44 00 00 31 c0 c3 66 66 66 66 2e 0f 1f 84 00 00 00 00 00 55 48 89 e5 53
+> 48 89 fb 48 83 ec 08 <48> 8b 17 48 8b 8a 90 00 00 00 48 39 4f 40 74 34 80 3d f7 1f 5c
+> [ 1523.750066] RIP  [<ffffffff8122c29c>] anon_vma_interval_tree_verify+0xc/0xa0
+> [ 1523.750066]  RSP <ffff880045f81d48>
+> [ 1523.750066] CR2: fffffffffffffff0
+> [ 1523.750066] ---[ end trace e35e5fa49072faf9 ]---
+>
+> Reported-by: Sasha Levin <sasha.levin@oracle.com>
+> Figured-out-by: Bob Liu <lliubbo@gmail.com>
+> Signed-off-by: Michel Lespinasse <walken@google.com>
 
-Signed-off-by: Michel Lespinasse <walken@google.com>
-
----
- arch/tile/mm/hugetlbpage.c |  139 ++++++++------------------------------------
- 1 files changed, 25 insertions(+), 114 deletions(-)
-
-diff --git a/arch/tile/mm/hugetlbpage.c b/arch/tile/mm/hugetlbpage.c
-index 812e2d037972..6f74cce053e1 100644
---- a/arch/tile/mm/hugetlbpage.c
-+++ b/arch/tile/mm/hugetlbpage.c
-@@ -231,42 +231,15 @@ static unsigned long hugetlb_get_unmapped_area_bottomup(struct file *file,
- 		unsigned long pgoff, unsigned long flags)
- {
- 	struct hstate *h = hstate_file(file);
--	struct mm_struct *mm = current->mm;
--	struct vm_area_struct *vma;
--	unsigned long start_addr;
--
--	if (len > mm->cached_hole_size) {
--		start_addr = mm->free_area_cache;
--	} else {
--		start_addr = TASK_UNMAPPED_BASE;
--		mm->cached_hole_size = 0;
--	}
--
--full_search:
--	addr = ALIGN(start_addr, huge_page_size(h));
--
--	for (vma = find_vma(mm, addr); ; vma = vma->vm_next) {
--		/* At this point:  (!vma || addr < vma->vm_end). */
--		if (TASK_SIZE - len < addr) {
--			/*
--			 * Start a new search - just in case we missed
--			 * some holes.
--			 */
--			if (start_addr != TASK_UNMAPPED_BASE) {
--				start_addr = TASK_UNMAPPED_BASE;
--				mm->cached_hole_size = 0;
--				goto full_search;
--			}
--			return -ENOMEM;
--		}
--		if (!vma || addr + len <= vma->vm_start) {
--			mm->free_area_cache = addr + len;
--			return addr;
--		}
--		if (addr + mm->cached_hole_size < vma->vm_start)
--			mm->cached_hole_size = vma->vm_start - addr;
--		addr = ALIGN(vma->vm_end, huge_page_size(h));
--	}
-+	struct vm_unmapped_area_info info;
-+
-+	info.flags = 0;
-+	info.length = len;
-+	info.low_limit = TASK_UNMAPPED_BASE;
-+	info.high_limit = TASK_SIZE;
-+	info.align_mask = PAGE_MASK & ~huge_page_mask(h);
-+	info.align_offset = 0;
-+	return vm_unmapped_area(&info);
- }
- 
- static unsigned long hugetlb_get_unmapped_area_topdown(struct file *file,
-@@ -274,92 +247,30 @@ static unsigned long hugetlb_get_unmapped_area_topdown(struct file *file,
- 		unsigned long pgoff, unsigned long flags)
- {
- 	struct hstate *h = hstate_file(file);
--	struct mm_struct *mm = current->mm;
--	struct vm_area_struct *vma, *prev_vma;
--	unsigned long base = mm->mmap_base, addr = addr0;
--	unsigned long largest_hole = mm->cached_hole_size;
--	int first_time = 1;
--
--	/* don't allow allocations above current base */
--	if (mm->free_area_cache > base)
--		mm->free_area_cache = base;
--
--	if (len <= largest_hole) {
--		largest_hole = 0;
--		mm->free_area_cache  = base;
--	}
--try_again:
--	/* make sure it can fit in the remaining address space */
--	if (mm->free_area_cache < len)
--		goto fail;
--
--	/* either no address requested or can't fit in requested address hole */
--	addr = (mm->free_area_cache - len) & huge_page_mask(h);
--	do {
--		/*
--		 * Lookup failure means no vma is above this address,
--		 * i.e. return with success:
--		 */
--		vma = find_vma_prev(mm, addr, &prev_vma);
--		if (!vma) {
--			return addr;
--			break;
--		}
--
--		/*
--		 * new region fits between prev_vma->vm_end and
--		 * vma->vm_start, use it:
--		 */
--		if (addr + len <= vma->vm_start &&
--			    (!prev_vma || (addr >= prev_vma->vm_end))) {
--			/* remember the address as a hint for next time */
--			mm->cached_hole_size = largest_hole;
--			mm->free_area_cache = addr;
--			return addr;
--		} else {
--			/* pull free_area_cache down to the first hole */
--			if (mm->free_area_cache == vma->vm_end) {
--				mm->free_area_cache = vma->vm_start;
--				mm->cached_hole_size = largest_hole;
--			}
--		}
-+	struct vm_unmapped_area_info info;
-+	unsigned long addr;
- 
--		/* remember the largest hole we saw so far */
--		if (addr + largest_hole < vma->vm_start)
--			largest_hole = vma->vm_start - addr;
-+	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
-+	info.length = len;
-+	info.low_limit = PAGE_SIZE;
-+	info.high_limit = mm->mmap_base;
-+	info.align_mask = PAGE_MASK & ~huge_page_mask(h);
-+	info.align_offset = 0;
-+	addr = vm_unmapped_area(&info);
- 
--		/* try just below the current vma->vm_start */
--		addr = (vma->vm_start - len) & huge_page_mask(h);
--
--	} while (len <= vma->vm_start);
--
--fail:
--	/*
--	 * if hint left us with no space for the requested
--	 * mapping then try again:
--	 */
--	if (first_time) {
--		mm->free_area_cache = base;
--		largest_hole = 0;
--		first_time = 0;
--		goto try_again;
--	}
- 	/*
- 	 * A failed mmap() very likely causes application failure,
- 	 * so fall back to the bottom-up function here. This scenario
- 	 * can happen with large stack limits and large mmap()
- 	 * allocations.
- 	 */
--	mm->free_area_cache = TASK_UNMAPPED_BASE;
--	mm->cached_hole_size = ~0UL;
--	addr = hugetlb_get_unmapped_area_bottomup(file, addr0,
--			len, pgoff, flags);
--
--	/*
--	 * Restore the topdown base:
--	 */
--	mm->free_area_cache = base;
--	mm->cached_hole_size = ~0UL;
-+	if (addr & ~PAGE_MASK) {
-+		VM_BUG_ON(addr != -ENOMEM);
-+		info.flags = 0;
-+		info.low_limit = TASK_UNMAPPED_BASE;
-+		info.high_limit = TASK_SIZE;
-+		addr = vm_unmapped_area(&info);
-+	}
- 
- 	return addr;
- }
--- 
-1.7.7.3
+Reviewed-by: Rik van Riel <riel@redhat.com>

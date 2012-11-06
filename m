@@ -1,43 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2012 00:35:12 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:28790 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825999Ab2KEXfLTThnI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 6 Nov 2012 00:35:11 +0100
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id qA5NZ0dC010149
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Mon, 5 Nov 2012 18:35:00 -0500
-Received: from [10.3.112.32] (ovpn-112-32.phx2.redhat.com [10.3.112.32])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id qA5NYoe0026836;
-        Mon, 5 Nov 2012 18:34:52 -0500
-Message-ID: <50984DC1.2030608@redhat.com>
-Date:   Mon, 05 Nov 2012 18:37:37 -0500
-From:   Rik van Riel <riel@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:16.0) Gecko/20121009 Thunderbird/16.0
-MIME-Version: 1.0
-To:     Michel Lespinasse <walken@google.com>
-CC:     Andrew Morton <akpm@linux-foundation.org>,
-        Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org,
-        Russell King <linux@arm.linux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@tilera.com>, x86@kernel.org,
-        William Irwin <wli@holomorphy.com>, linux-mm@kvack.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2012 02:25:11 +0100 (CET)
+Received: from shards.monkeyblade.net ([149.20.54.216]:49442 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825973Ab2KFBZJnDgXk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Nov 2012 02:25:09 +0100
+Received: from localhost (cpe-74-66-230-70.nyc.res.rr.com [74.66.230.70])
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 83A725845C2;
+        Mon,  5 Nov 2012 17:25:06 -0800 (PST)
+Date:   Mon, 05 Nov 2012 20:25:01 -0500 (EST)
+Message-Id: <20121105.202501.1246122770431623794.davem@davemloft.net>
+To:     walken@google.com
+Cc:     akpm@linux-foundation.org, riel@redhat.com, hughd@google.com,
+        linux-kernel@vger.kernel.org, linux@arm.linux.org.uk,
+        ralf@linux-mips.org, lethal@linux-sh.org, cmetcalf@tilera.com,
+        x86@kernel.org, wli@holomorphy.com, linux-mm@kvack.org,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 16/16] mm: use vm_unmapped_area() in hugetlbfs on tile
+Subject: Re: [PATCH 15/16] mm: use vm_unmapped_area() on sparc32
  architecture
-References: <1352155633-8648-1-git-send-email-walken@google.com> <1352155633-8648-17-git-send-email-walken@google.com>
-In-Reply-To: <1352155633-8648-17-git-send-email-walken@google.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1352155633-8648-16-git-send-email-walken@google.com>
+References: <1352155633-8648-1-git-send-email-walken@google.com>
+        <1352155633-8648-16-git-send-email-walken@google.com>
+X-Mailer: Mew version 6.5 on Emacs 24.1 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
-X-archive-position: 34896
+X-archive-position: 34897
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: riel@redhat.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,10 +43,20 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 11/05/2012 05:47 PM, Michel Lespinasse wrote:
-> Update the tile hugetlb_get_unmapped_area function to make use of
+From: Michel Lespinasse <walken@google.com>
+Date: Mon,  5 Nov 2012 14:47:12 -0800
+
+> Update the sparc32 arch_get_unmapped_area function to make use of
 > vm_unmapped_area() instead of implementing a brute force search.
->
+> 
 > Signed-off-by: Michel Lespinasse <walken@google.com>
 
-Reviewed-by: Rik van Riel <riel@redhat.com>
+Hmmm...
+
+> -	if (flags & MAP_SHARED)
+> -		addr = COLOUR_ALIGN(addr);
+> -	else
+> -		addr = PAGE_ALIGN(addr);
+
+What part of vm_unmapped_area() is going to duplicate this special
+aligning logic we need on sparc?

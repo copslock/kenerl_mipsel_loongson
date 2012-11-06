@@ -1,36 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2012 18:41:43 +0100 (CET)
-Received: from shards.monkeyblade.net ([149.20.54.216]:55917 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825981Ab2KFRllcTU40 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Nov 2012 18:41:41 +0100
-Received: from localhost (cpe-74-66-230-70.nyc.res.rr.com [74.66.230.70])
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 43FE1584C2B;
-        Tue,  6 Nov 2012 09:41:37 -0800 (PST)
-Date:   Tue, 06 Nov 2012 12:41:33 -0500 (EST)
-Message-Id: <20121106.124133.1287008316099748150.davem@davemloft.net>
-To:     riel@redhat.com
-Cc:     walken@google.com, akpm@linux-foundation.org, hughd@google.com,
-        linux-kernel@vger.kernel.org, linux@arm.linux.org.uk,
-        ralf@linux-mips.org, lethal@linux-sh.org, cmetcalf@tilera.com,
-        x86@kernel.org, wli@holomorphy.com, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 15/16] mm: use vm_unmapped_area() on sparc32
- architecture
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <5098BC7F.7090702@redhat.com>
-References: <1352155633-8648-16-git-send-email-walken@google.com>
-        <20121105.202501.1246122770431623794.davem@davemloft.net>
-        <5098BC7F.7090702@redhat.com>
-X-Mailer: Mew version 6.5 on Emacs 24.1 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34901
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2012 19:41:45 +0100 (CET)
+Received: from mho-03-ewr.mailhop.org ([204.13.248.66]:38748 "EHLO
+        mho-01-ewr.mailhop.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6826024Ab2KFSln6Y2Ji (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Nov 2012 19:41:43 +0100
+Received: from c-98-234-237-12.hsd1.ca.comcast.net ([98.234.237.12] helo=localhost.localdomain)
+        by mho-01-ewr.mailhop.org with esmtpa (Exim 4.72)
+        (envelope-from <tony@atomide.com>)
+        id 1TVo5U-0003Y5-Dt; Tue, 06 Nov 2012 18:41:24 +0000
+Received: from Mutt by mutt-smtp-wrapper.pl 1.2  (www.zdo.com/articles/mutt-smtp-wrapper.shtml)
+X-Mail-Handler: Dyn Standard SMTP by Dyn
+X-Originating-IP: 98.234.237.12
+X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/sendlabs/outbound_abuse.html for abuse reporting information)
+X-MHO-User: U2FsdGVkX193R/CO3Lr27LpzP2PqFgHJ
+Date:   Tue, 6 Nov 2012 10:41:17 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Felipe Balbi <balbi@ti.com>
+Cc:     Michal Nazarewicz <mpn@google.com>, linux-usb@vger.kernel.org,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Michal Nazarewicz <mina86@mina86.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Mike Frysinger <vapier@gentoo.org>,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Paul Mundt <lethal@linux-sh.org>, linux-sh@vger.kernel.org,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>
+Subject: Re: [PATCHv2 1/6] arch: Change defconfigs to point to
+ g_mass_storage.
+Message-ID: <20121106184117.GJ6801@atomide.com>
+References: <cover.1351715302.v2.git.mina86@mina86.com>
+ <46dde680f525562e9fd19567deb5247f0bf26842.1351715302.v2.git.mina86@mina86.com>
+ <20121106113157.GE11931@arwen.pp.htv.fi>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20121106113157.GE11931@arwen.pp.htv.fi>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 34902
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: tony@atomide.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,44 +56,20 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Rik van Riel <riel@redhat.com>
-Date: Tue, 06 Nov 2012 02:30:07 -0500
-
-> On 11/05/2012 08:25 PM, David Miller wrote:
->> From: Michel Lespinasse <walken@google.com>
->> Date: Mon,  5 Nov 2012 14:47:12 -0800
->>
->>> Update the sparc32 arch_get_unmapped_area function to make use of
->>> vm_unmapped_area() instead of implementing a brute force search.
->>>
->>> Signed-off-by: Michel Lespinasse <walken@google.com>
->>
->> Hmmm...
->>
->>> -	if (flags & MAP_SHARED)
->>> -		addr = COLOUR_ALIGN(addr);
->>> -	else
->>> -		addr = PAGE_ALIGN(addr);
->>
->> What part of vm_unmapped_area() is going to duplicate this special
->> aligning logic we need on sparc?
->>
+* Felipe Balbi <balbi@ti.com> [121106 03:40]:
+> Hi,
 > 
-> That would be this part:
+> On Fri, Nov 02, 2012 at 02:31:50PM +0100, Michal Nazarewicz wrote:
+> > From: Michal Nazarewicz <mina86@mina86.com>
+> > 
+> > The File-backed Storage Gadget (g_file_storage) is being removed, since
+> > it has been replaced by Mass Storage Gadget (g_mass_storage).  This commit
+> > changes defconfigs point to the new gadget.
+> > 
+> > Signed-off-by: Michal Nazarewicz <mina86@mina86.com>
 > 
-> +found:
-> + /* We found a suitable gap. Clip it with the original low_limit. */
-> +	if (gap_start < info->low_limit)
-> +		gap_start = info->low_limit;
-> +
-> +	/* Adjust gap address to the desired alignment */
-> + gap_start += (info->align_offset - gap_start) & info->align_mask;
-> +
-> +	VM_BUG_ON(gap_start + info->length > info->high_limit);
-> +	VM_BUG_ON(gap_start + info->length > gap_end);
-> +	return gap_start;
-> +}
+> I need more Acks here. Only got one from Nicolas. Anyone else ?
 
-Ok, now I understand.  Works for me:
+For omaps:
 
-Acked-by: David S. Miller <davem@davemloft.net>
+Acked-by: Tony Lindgren <tony@atomide.com>

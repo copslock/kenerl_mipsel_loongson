@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2012 23:11:48 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:51322 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2012 23:38:23 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:51437 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6826032Ab2KFWLrAge5w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Nov 2012 23:11:47 +0100
+        by eddie.linux-mips.org with ESMTP id S6826027Ab2KFWiWrvu2T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Nov 2012 23:38:22 +0100
 Received: from akpm.mtv.corp.google.com (216-239-45-4.google.com [216.239.45.4])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BA95326;
-        Tue,  6 Nov 2012 22:11:38 +0000 (UTC)
-Date:   Tue, 6 Nov 2012 14:11:37 -0800
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D6AD326;
+        Tue,  6 Nov 2012 22:38:15 +0000 (UTC)
+Date:   Tue, 6 Nov 2012 14:38:15 -0800
 From:   Andrew Morton <akpm@linux-foundation.org>
 To:     Michel Lespinasse <walken@google.com>
 Cc:     Rik van Riel <riel@redhat.com>, Hugh Dickins <hughd@google.com>,
@@ -19,16 +19,16 @@ Cc:     Rik van Riel <riel@redhat.com>, Hugh Dickins <hughd@google.com>,
         William Irwin <wli@holomorphy.com>, linux-mm@kvack.org,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 00/16] mm: use augmented rbtrees for finding unmapped
- areas
-Message-Id: <20121106141137.68bbd4ea.akpm@linux-foundation.org>
-In-Reply-To: <1352155633-8648-1-git-send-email-walken@google.com>
+Subject: Re: [PATCH 03/16] mm: check rb_subtree_gap correctness
+Message-Id: <20121106143815.2d311383.akpm@linux-foundation.org>
+In-Reply-To: <1352155633-8648-4-git-send-email-walken@google.com>
 References: <1352155633-8648-1-git-send-email-walken@google.com>
+        <1352155633-8648-4-git-send-email-walken@google.com>
 X-Mailer: Sylpheed 3.0.2 (GTK+ 2.20.1; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-archive-position: 34907
+X-archive-position: 34908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,38 +46,119 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon,  5 Nov 2012 14:46:57 -0800
+On Mon,  5 Nov 2012 14:47:00 -0800
 Michel Lespinasse <walken@google.com> wrote:
 
-> Earlier this year, Rik proposed using augmented rbtrees to optimize
-> our search for a suitable unmapped area during mmap(). This prompted
-> my work on improving the augmented rbtree code. Rik doesn't seem to
-> have time to follow up on his idea at this time, so I'm sending this
-> series to revive the idea.
+> When CONFIG_DEBUG_VM_RB is enabled, check that rb_subtree_gap is
+> correctly set for every vma and that mm->highest_vm_end is also correct.
+> 
+> Also add an explicit 'bug' variable to track if browse_rb() detected any
+> invalid condition.
+> 
+> ...
+>
+> @@ -365,7 +365,7 @@ static void vma_rb_erase(struct vm_area_struct *vma, struct rb_root *root)
+>  #ifdef CONFIG_DEBUG_VM_RB
+>  static int browse_rb(struct rb_root *root)
+>  {
+> -	int i = 0, j;
+> +	int i = 0, j, bug = 0;
+>  	struct rb_node *nd, *pn = NULL;
+>  	unsigned long prev = 0, pend = 0;
+>  
+> @@ -373,29 +373,33 @@ static int browse_rb(struct rb_root *root)
+>  		struct vm_area_struct *vma;
+>  		vma = rb_entry(nd, struct vm_area_struct, vm_rb);
+>  		if (vma->vm_start < prev)
+> -			printk("vm_start %lx prev %lx\n", vma->vm_start, prev), i = -1;
+> +			printk("vm_start %lx prev %lx\n", vma->vm_start, prev), bug = 1;
+>  		if (vma->vm_start < pend)
+> -			printk("vm_start %lx pend %lx\n", vma->vm_start, pend);
+> +			printk("vm_start %lx pend %lx\n", vma->vm_start, pend), bug = 1;
+>  		if (vma->vm_start > vma->vm_end)
+> -			printk("vm_end %lx < vm_start %lx\n", vma->vm_end, vma->vm_start);
+> +			printk("vm_end %lx < vm_start %lx\n", vma->vm_end, vma->vm_start), bug = 1;
+> +		if (vma->rb_subtree_gap != vma_compute_subtree_gap(vma))
+> +			printk("free gap %lx, correct %lx\n",
+> +			       vma->rb_subtree_gap,
+> +			       vma_compute_subtree_gap(vma)), bug = 1;
 
-Well, the key word here is "optimize".  Some quantitative testing
-results would be nice, please!
+OK, now who did that.  Whoever it was: stop it or you'll have your
+kernel license revoked!
 
-People do occasionally see nasty meltdowns in the get_unmapped_area()
-vicinity.  There was one case 2-3 years ago which was just ghastly, but
-I can't find the email (it's on linux-mm somewhere).  This one might be
-another case:
-http://lkml.indiana.edu/hypermail/linux/kernel/1101.1/00896.html
-
-If you can demonstrate that this patchset fixes some of all of the bad
-search complexity scenarios then that's quite a win?
-
-> These changes are against v3.7-rc4. I have not converted all applicable
-> architectuers yet, but we don't necessarily need to get them all onboard
-> at once - the series is fully bisectable and additional architectures
-> can be added later on. I am confident enough in my tests for patches 1-8;
-> however the second half of the series basically didn't get tested as
-> I don't have access to all the relevant architectures.
-
-Yes, I'll try to get these into -next so that the thousand monkeys at
-least give us some compilation coverage testing.  Hopefully the
-relevant arch maintainers will find time to perform a runtime test.
-
-> Patch 1 is the validate_mm() fix from Bob Liu (+ fixed-the-fix from me :)
-
-I grabbed this one separately, as a post-3.6 fix.
+--- a/mm/mmap.c~mm-check-rb_subtree_gap-correctness-fix
++++ a/mm/mmap.c
+@@ -372,16 +372,25 @@ static int browse_rb(struct rb_root *roo
+ 	for (nd = rb_first(root); nd; nd = rb_next(nd)) {
+ 		struct vm_area_struct *vma;
+ 		vma = rb_entry(nd, struct vm_area_struct, vm_rb);
+-		if (vma->vm_start < prev)
+-			printk("vm_start %lx prev %lx\n", vma->vm_start, prev), bug = 1;
+-		if (vma->vm_start < pend)
+-			printk("vm_start %lx pend %lx\n", vma->vm_start, pend), bug = 1;
+-		if (vma->vm_start > vma->vm_end)
+-			printk("vm_end %lx < vm_start %lx\n", vma->vm_end, vma->vm_start), bug = 1;
+-		if (vma->rb_subtree_gap != vma_compute_subtree_gap(vma))
++		if (vma->vm_start < prev) {
++			printk("vm_start %lx prev %lx\n", vma->vm_start, prev);
++			bug = 1;
++		}
++		if (vma->vm_start < pend) {
++			printk("vm_start %lx pend %lx\n", vma->vm_start, pend);
++			bug = 1;
++		}
++		if (vma->vm_start > vma->vm_end) {
++			printk("vm_end %lx < vm_start %lx\n",
++				vma->vm_end, vma->vm_start);
++			bug = 1;
++		}
++		if (vma->rb_subtree_gap != vma_compute_subtree_gap(vma)) {
+ 			printk("free gap %lx, correct %lx\n",
+ 			       vma->rb_subtree_gap,
+-			       vma_compute_subtree_gap(vma)), bug = 1;
++			       vma_compute_subtree_gap(vma));
++			bug = 1;
++		}
+ 		i++;
+ 		pn = nd;
+ 		prev = vma->vm_start;
+@@ -390,8 +399,10 @@ static int browse_rb(struct rb_root *roo
+ 	j = 0;
+ 	for (nd = pn; nd; nd = rb_prev(nd))
+ 		j++;
+-	if (i != j)
+-		printk("backwards %d, forwards %d\n", j, i), bug = 1;
++	if (i != j) {
++		printk("backwards %d, forwards %d\n", j, i);
++		bug = 1;
++	}
+ 	return bug ? -1 : i;
+ }
+ 
+@@ -411,14 +422,20 @@ void validate_mm(struct mm_struct *mm)
+ 		vma = vma->vm_next;
+ 		i++;
+ 	}
+-	if (i != mm->map_count)
+-		printk("map_count %d vm_next %d\n", mm->map_count, i), bug = 1;
+-	if (highest_address != mm->highest_vm_end)
++	if (i != mm->map_count) {
++		printk("map_count %d vm_next %d\n", mm->map_count, i);
++		bug = 1;
++	}
++	if (highest_address != mm->highest_vm_end) {
+ 		printk("mm->highest_vm_end %lx, found %lx\n",
+-		       mm->highest_vm_end, highest_address), bug = 1;
++		       mm->highest_vm_end, highest_address);
++		bug = 1;
++	}
+ 	i = browse_rb(&mm->mm_rb);
+-	if (i != mm->map_count)
+-		printk("map_count %d rb %d\n", mm->map_count, i), bug = 1;
++	if (i != mm->map_count) {
++		printk("map_count %d rb %d\n", mm->map_count, i);
++		bug = 1;
++	}
+ 	BUG_ON(bug);
+ }
+ #else

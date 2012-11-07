@@ -1,41 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2012 12:32:11 +0100 (CET)
-Received: from mms3.broadcom.com ([216.31.210.19]:4531 "EHLO mms3.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823426Ab2KGLcKRf-J1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 7 Nov 2012 12:32:10 +0100
-Received: from [10.9.200.133] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Wed, 07 Nov 2012 03:28:27 -0800
-X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
-Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Wed, 7 Nov 2012 03:31:25 -0800
-Received: from jayachandranc.netlogicmicro.com (
- netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 1CB5340FE4; Wed, 7
- Nov 2012 03:31:51 -0800 (PST)
-Date:   Wed, 7 Nov 2012 17:02:01 +0530
-From:   "Jayachandran C." <jchandra@broadcom.com>
-To:     "Ralf Baechle" <ralf@linux-mips.org>
-cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 03/15] MIPS: Netlogic: select MIPSR2 for XLP
-Message-ID: <20121107113200.GC23086@jayachandranc.netlogicmicro.com>
-References: <cover.1351688140.git.jchandra@broadcom.com>
- <3172102a3b041fdefbc721e3a25a95427bdec384.1351688140.git.jchandra@broadcom.com>
- <20121031132850.GB6365@linux-mips.org>
- <20121101102455.GA9437@jayachandranc.netlogicmicro.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2012 20:44:08 +0100 (CET)
+Received: from [69.28.251.93] ([69.28.251.93]:48615 "EHLO b32.net"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6824768Ab2KGToHS0fj2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 7 Nov 2012 20:44:07 +0100
+Received: (qmail 1979 invoked from network); 7 Nov 2012 19:44:03 -0000
+Received: from unknown (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
+  by 127.0.0.1 with (DHE-RSA-AES128-SHA encrypted) SMTP; 7 Nov 2012 19:44:03 -0000
+Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Wed, 07 Nov 2012 11:44:03 -0800
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: tlbex: Fix section mismatches
+Date:   Wed, 07 Nov 2012 11:39:48 -0800
+Message-Id: <9a08b5a0f8a4bf5d72913190a44bbea7@localhost>
+User-Agent: vim 7.2
 MIME-Version: 1.0
-In-Reply-To: <20121101102455.GA9437@jayachandranc.netlogicmicro.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-WSS-ID: 7C849A513T43628124-01-01
-Content-Type: text/plain;
- charset=us-ascii
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-X-archive-position: 34917
+X-archive-position: 34918
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,28 +35,55 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Nov 01, 2012 at 03:54:55PM +0530, Jayachandran C. wrote:
-> On Wed, Oct 31, 2012 at 02:28:50PM +0100, Ralf Baechle wrote:
-> > On Wed, Oct 31, 2012 at 06:31:29PM +0530, Jayachandran C wrote:
-> > 
-> > > Disable PGD_C0_CONTEXT option for XLP, which does not work.
-> > 
-> > Why does this not work on XLP?
-> > 
-> 
-> I see a kernel crash around the time init starts, planning to
-> look at this next. For now, I thought I will enable R2 and disable
-> PGD_C0_CONTEXT so that we get the rest of the R2 stuff for XLP.
+The new functions introduced in commit 02a5417751 (MIPS: tlbex: Deal with
+re-definition of label) should be marked __cpuinit, to eliminate a
+warning that can pop up when CONFIG_EXPORT_UASM is disabled:
 
-On XLP the XContext PTEbase is [63:55], but the current code tries to
-use XContext [63:48] to store the processor ID, which will not work.
+      LD      arch/mips/mm/built-in.o
+    WARNING: arch/mips/mm/built-in.o(.text+0x2a4c): Section mismatch in reference from the function uasm_bgezl_hazard() to the function .cpuinit.text:uasm_il_bgezl()
+    The function uasm_bgezl_hazard() references
+    the function __cpuinit uasm_il_bgezl().
+    This is often because uasm_bgezl_hazard lacks a __cpuinit
+    annotation or the annotation of uasm_il_bgezl is wrong.
 
-I can probably work around the issue by changing the shift from 51 to
-58, but that would not leave enough space for the 128 cpu config we
-want to support.
+    WARNING: arch/mips/mm/built-in.o(.text+0x2a68): Section mismatch in reference from the function uasm_bgezl_label() to the function .cpuinit.text:uasm_build_label()
+    The function uasm_bgezl_label() references
+    the function __cpuinit uasm_build_label().
+    This is often because uasm_bgezl_label lacks a __cpuinit
+    annotation or the annotation of uasm_build_label is wrong.
 
-I will send patch to fix this and to use the XLP c0 scratch registers
-(cop0 $22) in the tlb handlers. But until the PGD_C0_CONTEXT code is
-updated, this patch is probably the best solution.
+(This warning might not occur if the function was inlined.)
 
-JC.
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+---
+ arch/mips/mm/tlbex.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 2d29f6a..8c7a360 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -183,7 +183,9 @@ UASM_L_LA(_tlb_huge_update)
+ 
+ static int __cpuinitdata hazard_instance;
+ 
+-static void uasm_bgezl_hazard(u32 **p, struct uasm_reloc **r, int instance)
++static void __cpuinit uasm_bgezl_hazard(u32 **p,
++					struct uasm_reloc **r,
++					int instance)
+ {
+ 	switch (instance) {
+ 	case 0 ... 7:
+@@ -194,7 +196,9 @@ static void uasm_bgezl_hazard(u32 **p, struct uasm_reloc **r, int instance)
+ 	}
+ }
+ 
+-static void uasm_bgezl_label(struct uasm_label **l, u32 **p, int instance)
++static void __cpuinit uasm_bgezl_label(struct uasm_label **l,
++				       u32 **p,
++				       int instance)
+ {
+ 	switch (instance) {
+ 	case 0 ... 7:
+-- 
+1.7.11.1

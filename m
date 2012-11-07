@@ -1,43 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2012 23:45:47 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:2997 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6826037Ab2KFWpqN6W3P (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 6 Nov 2012 23:45:46 +0100
-Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id qA6MjUWE010676
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Tue, 6 Nov 2012 17:45:30 -0500
-Received: from [10.3.112.37] (ovpn-112-37.phx2.redhat.com [10.3.112.37])
-        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id qA6MjKeu024703;
-        Tue, 6 Nov 2012 17:45:21 -0500
-Message-ID: <509993A5.2000605@redhat.com>
-Date:   Tue, 06 Nov 2012 17:48:05 -0500
-From:   Rik van Riel <riel@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:16.0) Gecko/20121009 Thunderbird/16.0
-MIME-Version: 1.0
-To:     Andrew Morton <akpm@linux-foundation.org>
-CC:     Michel Lespinasse <walken@google.com>,
-        Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2012 01:40:05 +0100 (CET)
+Received: from cassarossa.samfundet.no ([129.241.93.19]:43208 "EHLO
+        cassarossa.samfundet.no" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6826031Ab2KGAkDlPwu0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Nov 2012 01:40:03 +0100
+Received: from egtvedt by cassarossa.samfundet.no with local (Exim 4.72)
+        (envelope-from <egtvedt@samfundet.no>)
+        id 1TVtfI-000406-ER; Wed, 07 Nov 2012 01:38:44 +0100
+Date:   Wed, 7 Nov 2012 01:38:44 +0100
+From:   Hans-Christian Egtvedt <egtvedt@samfundet.no>
+To:     Michal Nazarewicz <mpn@google.com>
+Cc:     Felipe Balbi <balbi@ti.com>, linux-usb@vger.kernel.org,
         Russell King <linux@arm.linux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@tilera.com>, x86@kernel.org,
-        William Irwin <wli@holomorphy.com>, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 09/16] mm: use vm_unmapped_area() in hugetlbfs on i386
- architecture
-References: <1352155633-8648-1-git-send-email-walken@google.com> <1352155633-8648-10-git-send-email-walken@google.com> <20121106143826.dc3b960c.akpm@linux-foundation.org>
-In-Reply-To: <20121106143826.dc3b960c.akpm@linux-foundation.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
-X-archive-position: 34913
+        linux-arm-kernel@lists.infradead.org,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Mike Frysinger <vapier@gentoo.org>,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Paul Mundt <lethal@linux-sh.org>, linux-sh@vger.kernel.org,
+        Nicolas Ferre <nicolas.ferre@atmel.com>,
+        Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCHv3 1/6] arch: Change defconfigs to point to
+ g_mass_storage.
+Message-ID: <20121107003844.GA8837@samfundet.no>
+References: <cover.1352237765.git.mina86@mina86.com>
+ <007d0b4e8872b877076918bd3268832e9ea9d667.1352237765.git.mina86@mina86.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <007d0b4e8872b877076918bd3268832e9ea9d667.1352237765.git.mina86@mina86.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 34914
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: riel@redhat.com
+X-original-sender: egtvedt@samfundet.no
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,19 +47,56 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 11/06/2012 05:38 PM, Andrew Morton wrote:
-> On Mon,  5 Nov 2012 14:47:06 -0800
-> Michel Lespinasse <walken@google.com> wrote:
->
->> Update the i386 hugetlb_get_unmapped_area function to make use of
->> vm_unmapped_area() instead of implementing a brute force search.
->
-> The x86_64 coloring "fix" wasn't copied into i386?
+Around Tue 06 Nov 2012 22:52:35 +0100 or thereabout, Michal Nazarewicz wrote:
+> From: Michal Nazarewicz <mina86@mina86.com>
+> 
+> The File-backed Storage Gadget (g_file_storage) is being removed, since
+> it has been replaced by Mass Storage Gadget (g_mass_storage).  This commit
+> changes defconfigs point to the new gadget.
+> 
+> Signed-off-by: Michal Nazarewicz <mina86@mina86.com>
+> Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>  (fort AT91)
+> Acked-by: Tony Lindgren <tony@atomide.com>  (for omap1)
+> ---
+>  arch/arm/configs/afeb9260_defconfig                |    2 +-
+>  arch/arm/configs/at91sam9260_defconfig             |    2 +-
+>  arch/arm/configs/at91sam9261_defconfig             |    2 +-
+>  arch/arm/configs/at91sam9263_defconfig             |    2 +-
+>  arch/arm/configs/at91sam9g20_defconfig             |    2 +-
+>  arch/arm/configs/corgi_defconfig                   |    2 +-
+>  arch/arm/configs/davinci_all_defconfig             |    2 +-
+>  arch/arm/configs/h7202_defconfig                   |    3 +--
+>  arch/arm/configs/magician_defconfig                |    2 +-
+>  arch/arm/configs/mini2440_defconfig                |    2 +-
+>  arch/arm/configs/omap1_defconfig                   |    3 +--
+>  arch/arm/configs/prima2_defconfig                  |    1 -
+>  arch/arm/configs/spitz_defconfig                   |    2 +-
+>  arch/arm/configs/stamp9g20_defconfig               |    2 +-
+>  arch/arm/configs/viper_defconfig                   |    2 +-
+>  arch/arm/configs/zeus_defconfig                    |    2 +-
+>  arch/avr32/configs/atngw100_defconfig              |    2 +-
+>  arch/avr32/configs/atngw100_evklcd100_defconfig    |    2 +-
+>  arch/avr32/configs/atngw100_evklcd101_defconfig    |    2 +-
+>  arch/avr32/configs/atngw100_mrmt_defconfig         |    2 +-
+>  arch/avr32/configs/atngw100mkii_defconfig          |    2 +-
+>  .../avr32/configs/atngw100mkii_evklcd100_defconfig |    2 +-
+>  .../avr32/configs/atngw100mkii_evklcd101_defconfig |    2 +-
+>  arch/avr32/configs/atstk1002_defconfig             |    2 +-
+>  arch/avr32/configs/atstk1003_defconfig             |    2 +-
+>  arch/avr32/configs/atstk1004_defconfig             |    2 +-
+>  arch/avr32/configs/atstk1006_defconfig             |    2 +-
+>  arch/avr32/configs/favr-32_defconfig               |    2 +-
+>  arch/avr32/configs/hammerhead_defconfig            |    2 +-
 
-Only certain 64 bit AMD CPUs have that issue at all.
+For all the AVR32 related changes +1 (-:
 
-On x86, page coloring is really not much of an issue.
+Acked-by: Hans-Christian Egtvedt <egtvedt@samfundet.no>
 
-All the x86-64 patch does is make the x86-64 page
-coloring code behave the same way page coloring
-does on MIPS, SPARC, ARM, PA-RISC and others...
+IMHO this patch is trivial and needed since you change all the users of a
+certain symbol. Thanks for doing the maintenance.
+
+<snipp diff>
+
+-- 
+mvh
+Hans-Christian Egtvedt

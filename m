@@ -1,27 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2012 20:44:08 +0100 (CET)
-Received: from [69.28.251.93] ([69.28.251.93]:48615 "EHLO b32.net"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824768Ab2KGToHS0fj2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 7 Nov 2012 20:44:07 +0100
-Received: (qmail 1979 invoked from network); 7 Nov 2012 19:44:03 -0000
-Received: from unknown (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
-  by 127.0.0.1 with (DHE-RSA-AES128-SHA encrypted) SMTP; 7 Nov 2012 19:44:03 -0000
-Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Wed, 07 Nov 2012 11:44:03 -0800
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: tlbex: Fix section mismatches
-Date:   Wed, 07 Nov 2012 11:39:48 -0800
-Message-Id: <9a08b5a0f8a4bf5d72913190a44bbea7@localhost>
-User-Agent: vim 7.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Nov 2012 09:37:34 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:36414 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6822164Ab2KIIhddGuVI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 9 Nov 2012 09:37:33 +0100
+Message-ID: <509CC092.8090609@phrozen.org>
+Date:   Fri, 09 Nov 2012 09:36:34 +0100
+From:   John Crispin <john@phrozen.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.7) Gecko/20120922 Icedove/10.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-archive-position: 34918
+To:     Takashi Iwai <tiwai@suse.de>
+CC:     Huacai Chen <chenhc@lemote.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        alsa-devel@alsa-project.org, Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hua Yan <yanh@lemote.com>, Fuxin Zhang <zhangfx@lemote.com>,
+        linux-kernel@vger.kernel.org, Hongliang Tao <taohl@lemote.com>,
+        Jie Chen <chenj@lemote.com>
+Subject: Re: [alsa-devel] [PATCH V6 12/15] ALSA: HDA: Make hda sound card
+ usable        for Loongson
+References: <1345193015-3024-1-git-send-email-chenhc@lemote.com>        <1345193015-3024-13-git-send-email-chenhc@lemote.com> <s5hy5ldvq9e.wl%tiwai@suse.de>
+In-Reply-To: <s5hy5ldvq9e.wl%tiwai@suse.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34919
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: john@phrozen.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,55 +39,40 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The new functions introduced in commit 02a5417751 (MIPS: tlbex: Deal with
-re-definition of label) should be marked __cpuinit, to eliminate a
-warning that can pop up when CONFIG_EXPORT_UASM is disabled:
+On 17/08/12 11:09, Takashi Iwai wrote:
+> At Fri, 17 Aug 2012 16:43:32 +0800,
+> Huacai Chen wrote:
+>> >
+>> >  Lemote A1004(Laptop) and A1205(All-In-One) use Conexant's hda codec,
+>> >  this patch modify patch_conexant.c to add Lemote specific code.
+>> >
+>> >  Both A1004 and A1205 use the same pin configurations, but A1004 need
+>> >  to increase the default boost of internal mic.
+>> >
+>> >  Signed-off-by: Jie Chen<chenj@lemote.com>
+>> >  Signed-off-by: Huacai Chen<chenhc@lemote.com>
+>> >  Signed-off-by: Hongliang Tao<taohl@lemote.com>
+>> >  Signed-off-by: Hua Yan<yanh@lemote.com>
+>> >  Cc:alsa-devel@alsa-project.org
+> Looks good.
+> 	Reviewed-by: Takashi Iwai<tiwai@suse.de>
+>
+> Should I apply it to sound git tree or all patches will go through
+> mips tree?
+>
+>
+> thanks,
+>
+> Takashi
+>
 
-      LD      arch/mips/mm/built-in.o
-    WARNING: arch/mips/mm/built-in.o(.text+0x2a4c): Section mismatch in reference from the function uasm_bgezl_hazard() to the function .cpuinit.text:uasm_il_bgezl()
-    The function uasm_bgezl_hazard() references
-    the function __cpuinit uasm_il_bgezl().
-    This is often because uasm_bgezl_hazard lacks a __cpuinit
-    annotation or the annotation of uasm_il_bgezl is wrong.
 
-    WARNING: arch/mips/mm/built-in.o(.text+0x2a68): Section mismatch in reference from the function uasm_bgezl_label() to the function .cpuinit.text:uasm_build_label()
-    The function uasm_bgezl_label() references
-    the function __cpuinit uasm_build_label().
-    This is often because uasm_bgezl_label lacks a __cpuinit
-    annotation or the annotation of uasm_build_label is wrong.
+Hi Takashi,
 
-(This warning might not occur if the function was inlined.)
+did you take this patch ? I will queue several of the other patches from 
+the series for 3.8 and let them go upstream via the mips tree. We have 
+this patch open in the linux-mips patchwork. I would set it to "Other 
+Subsystem" if you took it already.
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
- arch/mips/mm/tlbex.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 2d29f6a..8c7a360 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -183,7 +183,9 @@ UASM_L_LA(_tlb_huge_update)
- 
- static int __cpuinitdata hazard_instance;
- 
--static void uasm_bgezl_hazard(u32 **p, struct uasm_reloc **r, int instance)
-+static void __cpuinit uasm_bgezl_hazard(u32 **p,
-+					struct uasm_reloc **r,
-+					int instance)
- {
- 	switch (instance) {
- 	case 0 ... 7:
-@@ -194,7 +196,9 @@ static void uasm_bgezl_hazard(u32 **p, struct uasm_reloc **r, int instance)
- 	}
- }
- 
--static void uasm_bgezl_label(struct uasm_label **l, u32 **p, int instance)
-+static void __cpuinit uasm_bgezl_label(struct uasm_label **l,
-+				       u32 **p,
-+				       int instance)
- {
- 	switch (instance) {
- 	case 0 ... 7:
--- 
-1.7.11.1
+Thanks,
+	John

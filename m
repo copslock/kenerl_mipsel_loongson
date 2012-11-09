@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Nov 2012 19:38:05 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:42433 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Nov 2012 19:38:24 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:42435 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6826537Ab2KISh2jwuTU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 9 Nov 2012 19:37:28 +0100
+        id S6826541Ab2KISh3Z33yi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 9 Nov 2012 19:37:29 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH 3/6] MIPS: lantiq: verbose init of dma core
-Date:   Fri,  9 Nov 2012 19:36:20 +0100
-Message-Id: <1352486183-22576-3-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 4/6] MIPS: lantiq: adds xrx200 ethernet clock definition
+Date:   Fri,  9 Nov 2012 19:36:21 +0100
+Message-Id: <1352486183-22576-4-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1352486183-22576-1-git-send-email-blogic@openwrt.org>
 References: <1352486183-22576-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 34924
+X-archive-position: 34925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,46 +30,25 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Print the hardware revision and port/channel info when starting the dma core.
-
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/lantiq/xway/dma.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/mips/lantiq/xway/sysctrl.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
-index 55d2c4f..b5d76d1 100644
---- a/arch/mips/lantiq/xway/dma.c
-+++ b/arch/mips/lantiq/xway/dma.c
-@@ -25,6 +25,7 @@
- #include <lantiq_soc.h>
- #include <xway_dma.h>
- 
-+#define LTQ_DMA_ID		0x08
- #define LTQ_DMA_CTRL		0x10
- #define LTQ_DMA_CPOLL		0x14
- #define LTQ_DMA_CS		0x18
-@@ -214,6 +215,7 @@ ltq_dma_init(struct platform_device *pdev)
- {
- 	struct clk *clk;
- 	struct resource *res;
-+	unsigned id;
- 	int i;
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -243,7 +245,12 @@ ltq_dma_init(struct platform_device *pdev)
- 		ltq_dma_w32(DMA_POLL | DMA_CLK_DIV4, LTQ_DMA_CPOLL);
- 		ltq_dma_w32_mask(DMA_CHAN_ON, 0, LTQ_DMA_CCTRL);
- 	}
--	dev_info(&pdev->dev, "init done\n");
-+
-+	id = ltq_dma_r32(LTQ_DMA_ID);
-+	dev_info(&pdev->dev,
-+		"Init done - hw rev: %X, ports: %d, channels: %d\n",
-+		id & 0x1f, (id >> 16) & 0xf, id >> 20);
-+
- 	return 0;
- }
- 
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index 2917b56..3925e66 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -370,6 +370,10 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_pmu("1d900000.pcie", "pdi", 1, PMU1_PCIE_PDI);
+ 		clkdev_add_pmu("1d900000.pcie", "ctl", 1, PMU1_PCIE_CTL);
+ 		clkdev_add_pmu("1d900000.pcie", "ahb", 0, PMU_AHBM | PMU_AHBS);
++		clkdev_add_pmu("1e108000.eth", NULL, 0,
++				PMU_SWITCH | PMU_PPE_DPLUS | PMU_PPE_DPLUM |
++				PMU_PPE_EMA | PMU_PPE_TC | PMU_PPE_SLL01 |
++				PMU_PPE_QSB | PMU_PPE_TOP);
+ 	} else if (of_machine_is_compatible("lantiq,ar9")) {
+ 		clkdev_add_static(ltq_ar9_cpu_hz(), ltq_ar9_fpi_hz(),
+ 				ltq_ar9_fpi_hz());
 -- 
 1.7.10.4

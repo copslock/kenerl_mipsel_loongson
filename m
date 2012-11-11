@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2012 13:54:14 +0100 (CET)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:35486 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2012 13:54:33 +0100 (CET)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:64857 "EHLO
         mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6826610Ab2KKMuxGtzYE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2012 13:50:53 +0100
-Received: by mail-bk0-f49.google.com with SMTP id j4so2053444bkw.36
-        for <multiple recipients>; Sun, 11 Nov 2012 04:50:52 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S6826608Ab2KKMuyu4ugY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2012 13:50:54 +0100
+Received: by mail-bk0-f49.google.com with SMTP id j4so2053456bkw.36
+        for <multiple recipients>; Sun, 11 Nov 2012 04:50:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=XYqyugvqZdLHauWtnxvP3KdQ1m/8bW60VbmjURJ0Pw4=;
-        b=AVJLQy1x2kfXwmyE3tf38TpPoWjO6eT2HVme166PuV1PHunU/dEiemLYpKuyBTmk4P
-         Vno7vTLGlchNUXfblMJ3UUavjGM0WjmhO2Os6whvGUC9PBV+Gcg0T41flsDXUJ6is8jm
-         tjBojhG6oubcTnt2SA5P6FqGjCrN7wMEIYlm1JAflFy8ZOkrwkUagCRkcwRHKoQAaUBw
-         SSM87lL/jVS/2W2Zl9i/6ascdK9UGEtQqoOYR5tlPv0s+uisfnOh9wp2RaiiNYP/efh+
-         44Ua1/mclnylJIVEL+UlBhtoK4yvJEj2gxRSRuE9EWUoeE9Gu/z08wjLkogyuBUNsUTf
-         0uFQ==
-Received: by 10.205.132.72 with SMTP id ht8mr5790213bkc.72.1352638252852;
-        Sun, 11 Nov 2012 04:50:52 -0800 (PST)
+        bh=D6fyUFnLyBiwzw+T4eM91mawZ/63KXyv+JSqexnM3bY=;
+        b=UPTSubSawolkXjsGk+tRmj+tIYW02Pj+Giwz9yDD4Z51uju7vSX9UCFbH9Mt2jz9t1
+         Z+QQK0RzLrJLNaPI7lsWMgmce97bnbHeldWt+0Z840mDP8mPTP6OBIJ65EPg+vHZClq8
+         kULnff6yr4V+JFCdNxXS3DdOBFP8Nb3gTSnJaViq+RMdz9kB2z+SCRdCgUXS5FZbHxkh
+         fgCurMolu0v1ffc85XvT1hVjJ5aco6vsX6lB9dh6lFt4pIvBYqeJHfFGK69rCdhDrkEA
+         v/3xGcXZvb9yg3hMxd5lTW+YYUSYEjM2conoUWDhysfSG/ySD6XdNSI/xBVPaRVNVvA8
+         nMQQ==
+Received: by 10.204.147.89 with SMTP id k25mr5846211bkv.127.1352638254627;
+        Sun, 11 Nov 2012 04:50:54 -0800 (PST)
 Received: from shaker64.lan (dslb-088-073-158-247.pools.arcor-ip.net. [88.73.158.247])
-        by mx.google.com with ESMTPS id z22sm1436133bkw.2.2012.11.11.04.50.51
+        by mx.google.com with ESMTPS id z22sm1436133bkw.2.2012.11.11.04.50.52
         (version=SSLv3 cipher=OTHER);
-        Sun, 11 Nov 2012 04:50:52 -0800 (PST)
+        Sun, 11 Nov 2012 04:50:53 -0800 (PST)
 From:   Jonas Gorski <jonas.gorski@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -29,13 +29,13 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>,
         devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [RFC] MIPS: BCM63XX: register GPIO controller through Device Tree
-Date:   Sun, 11 Nov 2012 13:50:45 +0100
-Message-Id: <1352638249-29298-12-git-send-email-jonas.gorski@gmail.com>
+Subject: [RFC] serial: bcm63xx_uart: allow probing through Device Tree
+Date:   Sun, 11 Nov 2012 13:50:46 +0100
+Message-Id: <1352638249-29298-13-git-send-email-jonas.gorski@gmail.com>
 X-Mailer: git-send-email 1.7.2.5
 In-Reply-To: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com>
 References: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com>
-X-archive-position: 34942
+X-archive-position: 34943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,235 +53,111 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Register the GPIO controller through Device Tree and add the
-appropriate values in the include files.
-
-Since we can't register a platform driver at this early stage move the
-direct call to bcm63xx_gpio_init from prom_init to an arch initcall.
+Add support for probing the serial ports through Device Tree.
 
 Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 ---
- .../devicetree/bindings/gpio/bcm63xx-gpio.txt      |   24 +++++++++++++
- arch/mips/bcm63xx/dts/bcm6328.dtsi                 |    8 ++++
- arch/mips/bcm63xx/dts/bcm6338.dtsi                 |    8 ++++
- arch/mips/bcm63xx/dts/bcm6345.dtsi                 |    7 ++++
- arch/mips/bcm63xx/dts/bcm6348.dtsi                 |    8 ++++
- arch/mips/bcm63xx/dts/bcm6358.dtsi                 |    8 ++++
- arch/mips/bcm63xx/dts/bcm6368.dtsi                 |    8 ++++
- arch/mips/bcm63xx/gpio.c                           |   35 +++++++++++++++++--
- arch/mips/bcm63xx/prom.c                           |    3 --
- 9 files changed, 102 insertions(+), 7 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/gpio/bcm63xx-gpio.txt
+ .../bindings/tty/serial/bcm63xx-uart.txt           |   17 +++++++++
+ drivers/tty/serial/bcm63xx_uart.c                  |   35 ++++++++++++++------
+ 2 files changed, 42 insertions(+), 10 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/tty/serial/bcm63xx-uart.txt
 
-diff --git a/Documentation/devicetree/bindings/gpio/bcm63xx-gpio.txt b/Documentation/devicetree/bindings/gpio/bcm63xx-gpio.txt
+diff --git a/Documentation/devicetree/bindings/tty/serial/bcm63xx-uart.txt b/Documentation/devicetree/bindings/tty/serial/bcm63xx-uart.txt
 new file mode 100644
-index 0000000..283765d
+index 0000000..7623604
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/gpio/bcm63xx-gpio.txt
-@@ -0,0 +1,24 @@
-+* Broadcom BCM63XX GPIO controller
++++ b/Documentation/devicetree/bindings/tty/serial/bcm63xx-uart.txt
+@@ -0,0 +1,17 @@
++* Broadcom BCM63XX UART
 +
 +Required properties:
-+- compatible: "brcm,bcm63xx-gpio"
++- compatible: "brcm,bcm63xx-uart"
 +  Compatible with all BCM63XX SoCs.
 +
 +- reg: address and length of the register block.
 +
-+- gpio-controller: This is a GPIO controller.
-+
-+- #gpio-cells: Must be <2>. The first cell is the GPIO pin, and
-+  the second one the standard linux flags.
-+
-+- ngpio: number of GPIOs present in this SoC.
++- interrupts: the uart's interrupt number.
 +
 +Example:
 +
-+	gpio: gpio@80 {
-+		compatible = "brcm,bcm63xx-gpio";
-+		reg = <0x80 0x80>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		ngpio = <40>;
++	uart0: serial@100 {
++		compatible = "brcm,bcm63xx";
++		reg = <0x100 0x18>;
++		interrupts = <2>;
 +	};
-diff --git a/arch/mips/bcm63xx/dts/bcm6328.dtsi b/arch/mips/bcm63xx/dts/bcm6328.dtsi
-index 9055187..e2e92c3 100644
---- a/arch/mips/bcm63xx/dts/bcm6328.dtsi
-+++ b/arch/mips/bcm63xx/dts/bcm6328.dtsi
-@@ -132,5 +132,13 @@
- 				};
- 			};
- 		};
-+
-+		gpio0: gpio@80 {
-+			compatible = "brcm,bcm63xx-gpio";
-+			reg = <0x80 0x80>;
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			ngpio = <32>;
-+		};
- 	};
- };
-diff --git a/arch/mips/bcm63xx/dts/bcm6338.dtsi b/arch/mips/bcm63xx/dts/bcm6338.dtsi
-index 6346a7e..28e7cb6 100644
---- a/arch/mips/bcm63xx/dts/bcm6338.dtsi
-+++ b/arch/mips/bcm63xx/dts/bcm6338.dtsi
-@@ -89,5 +89,13 @@
- 				};
- 			};
- 		};
-+
-+		gpio0: gpio@400 {
-+			compatible = "brcm,bcm63xx-gpio";
-+			reg = <0x400 0x80>;
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			ngpio = <8>;
-+		};
- 	};
- };
-diff --git a/arch/mips/bcm63xx/dts/bcm6345.dtsi b/arch/mips/bcm63xx/dts/bcm6345.dtsi
-index 1771775..1ebc024 100644
---- a/arch/mips/bcm63xx/dts/bcm6345.dtsi
-+++ b/arch/mips/bcm63xx/dts/bcm6345.dtsi
-@@ -75,5 +75,12 @@
- 				};
- 			};
- 		};
-+		gpio0: gpio@400 {
-+			compatible = "brcm,bcm63xx-gpio";
-+			reg = <0x400 0x80>;
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			ngpio = <16>;
-+		};
- 	};
- };
-diff --git a/arch/mips/bcm63xx/dts/bcm6348.dtsi b/arch/mips/bcm63xx/dts/bcm6348.dtsi
-index 14f1996..89acec7 100644
---- a/arch/mips/bcm63xx/dts/bcm6348.dtsi
-+++ b/arch/mips/bcm63xx/dts/bcm6348.dtsi
-@@ -96,5 +96,13 @@
- 				};
- 			};
- 		};
-+
-+		gpio0: gpio@400 {
-+			compatible = "brcm,bcm63xx-gpio";
-+			regs = <0x400 0x80>;
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			ngpio = <37>;
-+		};
- 	};
- };
-diff --git a/arch/mips/bcm63xx/dts/bcm6358.dtsi b/arch/mips/bcm63xx/dts/bcm6358.dtsi
-index 943b480..52170d6 100644
---- a/arch/mips/bcm63xx/dts/bcm6358.dtsi
-+++ b/arch/mips/bcm63xx/dts/bcm6358.dtsi
-@@ -130,5 +130,13 @@
- 				};
- 			};
- 		};
-+
-+		gpio0: gpio@80 {
-+			compatible = "brcm,bcm63xx-gpio";
-+			reg = <0x80 0x80>;
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			ngpio = <40>;
-+		};
- 	};
- };
-diff --git a/arch/mips/bcm63xx/dts/bcm6368.dtsi b/arch/mips/bcm63xx/dts/bcm6368.dtsi
-index 2156be0..068231b 100644
---- a/arch/mips/bcm63xx/dts/bcm6368.dtsi
-+++ b/arch/mips/bcm63xx/dts/bcm6368.dtsi
-@@ -170,5 +170,13 @@
- 				};
- 			};
- 		};
-+
-+		gpio0: gpio@80 {
-+			compatible = "brcm,bcm63xx-gpio";
-+			regs = <0x80 0x80>;
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			ngpio = <38>;
-+		};
- 	};
- };
-diff --git a/arch/mips/bcm63xx/gpio.c b/arch/mips/bcm63xx/gpio.c
-index a6c2135..774fd08 100644
---- a/arch/mips/bcm63xx/gpio.c
-+++ b/arch/mips/bcm63xx/gpio.c
-@@ -141,7 +141,6 @@ static int bcm63xx_gpio_direction_output(struct gpio_chip *chip,
- 	return bcm63xx_gpio_set_direction(chip, gpio, BCM63XX_GPIO_DIR_OUT);
- }
+diff --git a/drivers/tty/serial/bcm63xx_uart.c b/drivers/tty/serial/bcm63xx_uart.c
+index 0187aff..4521a52 100644
+--- a/drivers/tty/serial/bcm63xx_uart.c
++++ b/drivers/tty/serial/bcm63xx_uart.c
+@@ -802,23 +802,32 @@ static struct uart_driver bcm_uart_driver = {
+  */
+ static int __devinit bcm_uart_probe(struct platform_device *pdev)
+ {
+-	struct resource *res_mem, *res_irq;
++	struct resource *res_mem;
+ 	struct uart_port *port;
+ 	struct clk *clk;
+-	int ret;
++	int ret, irq;
  
--
- static struct gpio_chip bcm63xx_gpio_chip = {
- 	.label			= "bcm63xx-gpio",
- 	.direction_input	= bcm63xx_gpio_direction_input,
-@@ -151,6 +150,34 @@ static struct gpio_chip bcm63xx_gpio_chip = {
- 	.base			= 0,
- };
+-	if (pdev->id < 0 || pdev->id >= BCM63XX_NR_UARTS)
+-		return -EINVAL;
++	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res_mem)
++		return -ENODEV;
++
++	if (pdev->id < 0)  {
++		void __iomem *membase;
++
++		membase = ioremap(res_mem->start, resource_size(res_mem));
++		if (membase == (void *)bcm63xx_regset_address(RSET_UART0))
++			pdev->id = 0;
++		else
++			pdev->id = 1;
++		iounmap(membase);
++	}
  
-+int __init bcm63xx_gpio_probe(struct platform_device *pdev)
-+{
-+	u32 val;
-+
-+	if (of_property_read_u32(pdev->dev.of_node, "ngpio", &val))
-+		return -EINVAL;
-+
-+	bcm63xx_gpio_chip.ngpio = val;
-+	bcm63xx_gpio_chip.dev = &pdev->dev;
-+	pr_info("registering %d GPIOs\n", bcm63xx_gpio_chip.ngpio);
-+
-+	return gpiochip_add(&bcm63xx_gpio_chip);
-+}
-+
-+static struct of_device_id of_bcm63xx_gpio_match[] = {
-+	{ .compatible = "brcm,bcm63xx-gpio" },
+ 	if (ports[pdev->id].membase)
+ 		return -EBUSY;
+ 
+-	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res_mem)
+-		return -ENODEV;
+ 
+-	res_irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+-	if (!res_irq)
++	irq = platform_get_irq(pdev, 0);
++	if (!irq)
+ 		return -ENODEV;
+ 
+ 	clk = clk_get(&pdev->dev, "periph");
+@@ -829,7 +838,7 @@ static int __devinit bcm_uart_probe(struct platform_device *pdev)
+ 	memset(port, 0, sizeof(*port));
+ 	port->iotype = UPIO_MEM;
+ 	port->mapbase = res_mem->start;
+-	port->irq = res_irq->start;
++	port->irq = irq;
+ 	port->ops = &bcm_uart_ops;
+ 	port->flags = UPF_BOOT_AUTOCONF;
+ 	port->dev = &pdev->dev;
+@@ -862,12 +871,18 @@ static int __devexit bcm_uart_remove(struct platform_device *pdev)
+ /*
+  * platform driver stuff
+  */
++static const struct of_device_id bcm_uart_match[] = {
++	{ .compatible = "brcm,bcm63xx-uart" },
 +	{ },
 +};
 +
-+static struct platform_driver bcm63xx_gpio_driver = {
-+	.driver = {
-+		.name = "bcm63xx-gpio",
-+		.owner = THIS_MODULE,
-+		.of_match_table = of_bcm63xx_gpio_match,
-+	},
-+	.probe = bcm63xx_gpio_probe,
-+};
-+
- int __init bcm63xx_gpio_init(void)
- {
- 	bcm63xx_gpio_out_low_reg_init();
-@@ -158,8 +185,8 @@ int __init bcm63xx_gpio_init(void)
- 	gpio_out_low = bcm_gpio_readl(gpio_out_low_reg);
- 	if (!BCMCPU_IS_6345())
- 		gpio_out_high = bcm_gpio_readl(GPIO_DATA_HI_REG);
--	bcm63xx_gpio_chip.ngpio = bcm63xx_gpio_count();
--	pr_info("registering %d GPIOs\n", bcm63xx_gpio_chip.ngpio);
+ static struct platform_driver bcm_uart_platform_driver = {
+ 	.probe	= bcm_uart_probe,
+ 	.remove	= __devexit_p(bcm_uart_remove),
+ 	.driver	= {
+ 		.owner = THIS_MODULE,
+ 		.name  = "bcm63xx_uart",
++		.of_match_table = bcm_uart_match,
+ 	},
+ };
  
--	return gpiochip_add(&bcm63xx_gpio_chip);
-+	return platform_driver_register(&bcm63xx_gpio_driver);
- }
-+
-+arch_initcall(bcm63xx_gpio_init);
-diff --git a/arch/mips/bcm63xx/prom.c b/arch/mips/bcm63xx/prom.c
-index 10eaff4..0b636d6 100644
---- a/arch/mips/bcm63xx/prom.c
-+++ b/arch/mips/bcm63xx/prom.c
-@@ -45,9 +45,6 @@ void __init prom_init(void)
- 	reg &= ~mask;
- 	bcm_perf_writel(reg, PERF_CKCTL_REG);
- 
--	/* register gpiochip */
--	bcm63xx_gpio_init();
--
- 	/* do low level board init */
- 	board_prom_init();
- }
 -- 
 1.7.2.5

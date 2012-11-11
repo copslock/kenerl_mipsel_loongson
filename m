@@ -1,20 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2012 19:04:39 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:36024 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6826641Ab2KKSEiMgSmn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 11 Nov 2012 19:04:38 +0100
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2012 19:19:34 +0100 (CET)
+Received: from mail-ee0-f49.google.com ([74.125.83.49]:43569 "EHLO
+        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6826641Ab2KKSTSgojBb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2012 19:19:18 +0100
+Received: by mail-ee0-f49.google.com with SMTP id c1so3016351eek.36
+        for <multiple recipients>; Sun, 11 Nov 2012 10:19:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=g5sqh49tccngtbqGwp6/8VJri83bis6tqBH4GGSo4mY=;
+        b=VRO3ebb31r9c3ddlkBPq44MV3w1+ua6OZD5UxLK3boENi/9KsZOQkvWzCn8ej+hQjy
+         qxmmu/15y8XUHk1kh5AmrsRzsk7++nmiCCtwugP0y+R76XTYsBnQ8h4FCLTSVOBl46hF
+         9rjgBIxcebs/BYvbrDMhuo/Rm+IyHaIhfbRzMV1Sux9/GDkGOK3MSrsyNHK6psGtjAsO
+         KNMLlf5b4ToJZOP/kvpVuuaOzgtLLqA0wX87QZA/KHh4YWIZW9MxtQ9bZQMt1A5PBy8j
+         02kQ6H9j0HB1DSIrgyJh2vhdrivFnMNQchHgGZst0BAXkvdpdbHCpzaR1uYUxInHVS1G
+         oWmg==
+MIME-Version: 1.0
+Received: by 10.14.182.5 with SMTP id n5mr55596355eem.5.1352657953224; Sun, 11
+ Nov 2012 10:19:13 -0800 (PST)
+Received: by 10.14.216.193 with HTTP; Sun, 11 Nov 2012 10:19:13 -0800 (PST)
+In-Reply-To: <1352657010-9632-1-git-send-email-blogic@openwrt.org>
+References: <1352657010-9632-1-git-send-email-blogic@openwrt.org>
+Date:   Sun, 11 Nov 2012 10:19:13 -0800
+Message-ID: <CAJiQ=7DKn9hUr_Y2xn6r7ZRNQ3FTOXe+rMq=ZigxMMZdL-d0TA@mail.gmail.com>
+Subject: Re: [MIPS] Pull request for 3.8
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>
 Cc:     linux-mips@linux-mips.org
-Subject: [MIPS] Pull request for 3.8
-Date:   Sun, 11 Nov 2012 19:03:30 +0100
-Message-Id: <1352657010-9632-1-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-X-archive-position: 34949
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 34950
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -28,155 +48,15 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Ralf,
+On Sun, Nov 11, 2012 at 10:03 AM, John Crispin <blogic@openwrt.org> wrote:
+> Hi Ralf,
+>
+> here is my queue of patches i consider ready for 3.8.
+[snip]
+> Kevin Cernekee (1):
+>       MIPS: tlbex: Fix section mismatches
 
-here is my queue of patches i consider ready for 3.8.
+The section mismatch in question first showed up in 3.7-rc2 with
+commit 02a5417751, so it's a recent regression with an easy fix.
 
-Included are mainly fixes for various of the supported platforms and 2 generic MIPS fixes.
-
-Please consider pulling this into the upstream-sfr tree.
-
-	John
-
-
-The following changes since commit 0e4a43ed08e2f44aa7b96aa95d0a540d675483e1:
-
-  Merge git://git.kernel.org/pub/scm/linux/kernel/git/steve/gfs2-3.0-fixes (2012-11-07 13:38:56 +0100)
-
-are available in the git repository at:
-
-
-  http://dev.phrozen.org/githttp/mips-next.git mips-next
-
-for you to fetch changes up to 0224cde212df4abf251f89c3724a800b1949a774:
-
-  MIPS: lantiq: adds GPHY firmware loader (2012-11-11 18:47:41 +0100)
-
-----------------------------------------------------------------
-Charles Hardin (1):
-      mips/octeon: 16-Bit NOR flash was not being detected during boot
-
-Ganesan Ramalingam (1):
-      MIPS: Netlogic: Support for XLR/XLS Fast Message Network
-
-Hauke Mehrtens (5):
-      MIPS: BCM47XX: ignore last memory page
-      MIPS: BCM47XX: improve memory size detection
-      MIPS: BCM47xx: read out full board data
-      MIPS: BCM47XX: read sprom without prefix if no ieee80211 core
-      MIPS: BCM47xx: sprom: read values without prefix as fallback
-
-Jayachandran C (11):
-      MIPS: Netlogic: select MIPSR2 for XLP
-      MIPS: Netlogic: Enable SUE bit in cores
-      MIPS: Netlogic: Move fdt init to plat_mem_setup
-      MIPS: Netlogic: Fix DMA zone selection for 64-bit
-      MIPS: Netlogic: Fix interrupt table entry init
-      MIPS: Netlogic: Pass cpuid to early_init_secondary
-      MIPS: Netlogic: Update PIC access functions
-      MIPS: Netlogic: Move from u32 cpumask to cpumask_t
-      MIPS: Netlogic: Support for multi-chip configuration
-      MIPS: Netlogic: Make number of nodes configurable
-      MIPS: Netlogic: PIC IRQ handling update for multi-chip
-
-John Crispin (6):
-      MIPS: lantiq: unbreak devicetree init
-      MIPS: lantiq: fix bootselect bits on XRX200 SoC
-      MIPS: lantiq: verbose init of dma core
-      MIPS: lantiq: adds xrx200 ethernet clock definition
-      MIPS: lantiq: adds code for booting GPHY
-      MIPS: lantiq: adds GPHY firmware loader
-
-Jonas Gorski (5):
-      MIPS: BCM63XX: add and use a clock for PCIe
-      MIPS: BCM63XX: add softreset register description for BCM6358
-      MIPS: BCM63XX: add core reset helper
-      MIPS: BCM63XX: use the new reset helper
-      MIPS: BCM63XX: move nvram functions into their own file
-
-Kelvin Cheung (4):
-      MIPS: Loongson1B: use common clock infrastructure instead of private APIs
-      MIPS: Loongson1B: improve ls1x_serial_setup()
-      MIPS: Loongson1B: Update stmmac_mdio_bus_data
-      MIPS: Loongson1B: Fix a typo
-
-Kevin Cernekee (1):
-      MIPS: tlbex: Fix section mismatches
-
-Madhusudan Bhat (1):
-      MIPS: oprofile: Support for XLR/XLS processors
-
-Shane McDonald (1):
-      MIPS: Move processing of coherency kernel parameters earlier
-
-Zi Shen Lim (1):
-      MIPS: perf: Add XLP support for hardware perf.
-
- arch/mips/Kconfig                                  |    9 +-
- arch/mips/bcm47xx/prom.c                           |   20 +-
- arch/mips/bcm47xx/setup.c                          |   11 +-
- arch/mips/bcm47xx/sprom.c                          |  780 +++++++++++---------
- arch/mips/bcm63xx/Makefile                         |    7 +-
- arch/mips/bcm63xx/boards/board_bcm963xx.c          |   71 +-
- arch/mips/bcm63xx/clk.c                            |   34 +-
- arch/mips/bcm63xx/nvram.c                          |  104 +++
- arch/mips/bcm63xx/reset.c                          |  223 ++++++
- arch/mips/cavium-octeon/flash_setup.c              |    3 +-
- arch/mips/include/asm/mach-bcm47xx/bcm47xx.h       |    4 +-
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_nvram.h |   35 +
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h  |   10 +
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_reset.h |   21 +
- .../mips/include/asm/mach-bcm63xx/board_bcm963xx.h |   17 -
- .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |    3 +
- arch/mips/include/asm/mach-loongson1/platform.h    |    3 +-
- arch/mips/include/asm/mach-loongson1/regs-clk.h    |    7 +-
- arch/mips/include/asm/mach-netlogic/irq.h          |    4 +-
- arch/mips/include/asm/mach-netlogic/multi-node.h   |   54 ++
- arch/mips/include/asm/netlogic/common.h            |   51 +-
- arch/mips/include/asm/netlogic/interrupt.h         |    2 +-
- arch/mips/include/asm/netlogic/mips-extns.h        |  142 ++++
- arch/mips/include/asm/netlogic/xlp-hal/pic.h       |   44 +-
- arch/mips/include/asm/netlogic/xlp-hal/sys.h       |    1 -
- arch/mips/include/asm/netlogic/xlr/fmn.h           |  363 +++++++++
- arch/mips/include/asm/netlogic/xlr/pic.h           |    2 -
- arch/mips/include/asm/netlogic/xlr/xlr.h           |    6 +-
- arch/mips/kernel/perf_event_mipsxx.c               |  124 ++++
- arch/mips/lantiq/Kconfig                           |    4 +
- arch/mips/lantiq/prom.c                            |    5 +-
- arch/mips/lantiq/xway/Makefile                     |    2 +
- arch/mips/lantiq/xway/dma.c                        |    9 +-
- arch/mips/lantiq/xway/reset.c                      |   58 +-
- arch/mips/lantiq/xway/sysctrl.c                    |    4 +
- arch/mips/lantiq/xway/xrx200_phy_fw.c              |   97 +++
- arch/mips/loongson1/Kconfig                        |    2 +-
- arch/mips/loongson1/common/clock.c                 |  159 +---
- arch/mips/loongson1/common/platform.c              |   10 +-
- arch/mips/loongson1/ls1b/board.c                   |    5 +-
- arch/mips/mm/c-r4k.c                               |    8 +-
- arch/mips/mm/tlbex.c                               |    8 +-
- arch/mips/netlogic/Kconfig                         |   28 +
- arch/mips/netlogic/common/irq.c                    |  165 +++--
- arch/mips/netlogic/common/smp.c                    |   89 ++-
- arch/mips/netlogic/common/smpboot.S                |    6 +-
- arch/mips/netlogic/xlp/nlm_hal.c                   |   67 +-
- arch/mips/netlogic/xlp/setup.c                     |   50 +-
- arch/mips/netlogic/xlp/wakeup.c                    |   83 ++-
- arch/mips/netlogic/xlr/Makefile                    |    4 +-
- arch/mips/netlogic/xlr/fmn-config.c                |  290 ++++++++
- arch/mips/netlogic/xlr/fmn.c                       |  204 +++++
- arch/mips/netlogic/xlr/setup.c                     |   37 +-
- arch/mips/netlogic/xlr/wakeup.c                    |   23 +-
- arch/mips/oprofile/Makefile                        |    1 +
- arch/mips/oprofile/common.c                        |    1 +
- arch/mips/oprofile/op_model_mipsxx.c               |   29 +
- arch/mips/pci/pci-bcm63xx.c                        |   34 +-
- 58 files changed, 2719 insertions(+), 918 deletions(-)
- create mode 100644 arch/mips/bcm63xx/nvram.c
- create mode 100644 arch/mips/bcm63xx/reset.c
- create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_nvram.h
- create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_reset.h
- create mode 100644 arch/mips/include/asm/mach-netlogic/multi-node.h
- create mode 100644 arch/mips/include/asm/netlogic/xlr/fmn.h
- create mode 100644 arch/mips/lantiq/xway/xrx200_phy_fw.c
- create mode 100644 arch/mips/netlogic/xlr/fmn-config.c
- create mode 100644 arch/mips/netlogic/xlr/fmn.c
+What do you think about rolling the fix into 3.7 instead of 3.8?

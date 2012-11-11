@@ -1,40 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2012 14:00:26 +0100 (CET)
-Received: from mail-oa0-f49.google.com ([209.85.219.49]:51427 "EHLO
-        mail-oa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6826558Ab2KKNAZ1dFrM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2012 14:00:25 +0100
-Received: by mail-oa0-f49.google.com with SMTP id l10so5222041oag.36
-        for <multiple recipients>; Sun, 11 Nov 2012 05:00:19 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2012 14:22:15 +0100 (CET)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:55461 "EHLO
+        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6826613Ab2KKNWO6mXoI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2012 14:22:14 +0100
+Received: by mail-bk0-f49.google.com with SMTP id j4so2057282bkw.36
+        for <multiple recipients>; Sun, 11 Nov 2012 05:22:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=UBPOtYl5dH0pF6Mxnpz8ei6bn8daNlKm3yFQuWQjM/A=;
-        b=SpYlKhBShNjWsrggX19esn3YkyTjYq9PXg69zviaFt8aS47n0dflIF+4lsYbRYO1la
-         jIJiLcJgVWs16j9ov6EIBIMn21mUesaifGhctsZyg54lyWZFPsdOAvSydcX+awuGdNXu
-         2frylgu8O4mhy1rpjXBRlK5x9RRMXoDhJwZJbIQgl1WDCZbHKPZgNN6AEKUe9R9wJWbt
-         S5m3k+47Q+jv+GS0370Cy7qOoPukCwlkw15PYty1jiJj/gIEkOFlAyYx2YoYuXyu/5pt
-         Ry05pA/NdwZZmrQUJ3Kh8GRVmElzWW3hqTvcQd1EjTsMH9a+gN1kwDg9gnKLaZNoE33f
-         w/Hg==
-Received: by 10.60.27.166 with SMTP id u6mr12026781oeg.86.1352638818941; Sun,
- 11 Nov 2012 05:00:18 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.76.28.70 with HTTP; Sun, 11 Nov 2012 04:59:58 -0800 (PST)
-In-Reply-To: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com>
-References: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com>
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=QmNQL2q+PxhmROOPNot6D8+3obmeyjc1CUXusc8eybg=;
+        b=zv3qaijy4s2iuFfuA1DJFgh746Fsrf0xeQFmfZljo2h46ix/mZznCqwlA7zQoMFho6
+         bu8Dtl+XBjt1GWwYpWh1f844u8sC8Ll47xTmdIVcXOABr3VHF5bNLc/orLLkySesLf39
+         Zs8HWZdDh0ge+7K+K+mucRMesift7yBEZrhQhPXgfks5vT0TxiD4zs2nwNSVR9gjG944
+         Tlgg/VzGP6wHnJMLerpXIy2IpOpG6wWEgPQwMbWAzDc1xSwS42raJiIz9wddjktH+DvC
+         UMgzB5wxgE4skmfYl3UTlnZWPLVWmwuiAf/aq/OtGhe155Y3dYyti5k1IjYX81bXH/Le
+         SrBA==
+Received: by 10.204.147.207 with SMTP id m15mr849229bkv.54.1352640129501;
+        Sun, 11 Nov 2012 05:22:09 -0800 (PST)
+Received: from shaker64.lan (dslb-088-073-158-247.pools.arcor-ip.net. [88.73.158.247])
+        by mx.google.com with ESMTPS id e3sm1458622bks.7.2012.11.11.05.22.07
+        (version=SSLv3 cipher=OTHER);
+        Sun, 11 Nov 2012 05:22:08 -0800 (PST)
 From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Sun, 11 Nov 2012 13:59:58 +0100
-Message-ID: <CAOiHx==bS=ZGk7TGrs16zT_UM3zjj1mKhb3NHdOBnhrCaxLoxA@mail.gmail.com>
-Subject: Re: [RFC] MIPS: BCM63XX: add initial Device Tree support
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         John Crispin <blogic@openwrt.org>,
         Maxime Bizon <mbizon@freebox.fr>,
         Florian Fainelli <florian@openwrt.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 34947
+        Kevin Cernekee <cernekee@gmail.com>
+Subject: [PATCH] MIPS: BCM63XX: fix nvram checksum calculation
+Date:   Sun, 11 Nov 2012 14:22:34 +0100
+Message-Id: <1352640154-30179-1-git-send-email-jonas.gorski@gmail.com>
+X-Mailer: git-send-email 1.7.2.5
+X-archive-position: 34948
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,12 +50,68 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-> [RFC] MIPS: BCM63XX: add initial Device Tree support
+The current checksum calculation code does nothing except checking that
+the first byte of nvram is 0 without actually checking the checksum.
 
-Disregard that, I can't git :-(
+Implement the correct checksum calculation by calculating the crc32 with
+the checksum field set to 0.
 
-That obviously should have been 0/15 and so on (even if many patches
-work stand alone). To not spam the lists, I'll wait for some comments
-before resending the patch series (with proper numbering).
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+---
 
-Jonas
+This patch depends on the previous nvram patch ("move nvram functions
+into their own file").
+
+ arch/mips/bcm63xx/nvram.c |   23 +++++++++++++----------
+ 1 files changed, 13 insertions(+), 10 deletions(-)
+
+diff --git a/arch/mips/bcm63xx/nvram.c b/arch/mips/bcm63xx/nvram.c
+index b57a10d..6206116 100644
+--- a/arch/mips/bcm63xx/nvram.c
++++ b/arch/mips/bcm63xx/nvram.c
+@@ -11,6 +11,7 @@
+ #define pr_fmt(fmt) "bcm63xx_nvram: " fmt
+ 
+ #include <linux/init.h>
++#include <linux/crc32.h>
+ #include <linux/export.h>
+ #include <linux/kernel.h>
+ #include <linux/if_ether.h>
+@@ -40,23 +41,25 @@ static int mac_addr_used;
+ int __init bcm63xx_nvram_init(void *addr)
+ {
+ 	unsigned int check_len;
+-	u8 *p;
+-	u32 val;
++	u32 crc, expected_crc;
+ 
+ 	/* extract nvram data */
+ 	memcpy(&nvram, addr, sizeof(nvram));
+ 
+ 	/* check checksum before using data */
+-	if (nvram.version <= 4)
+-		check_len = offsetof(struct bcm963xx_nvram, checksum_old);
+-	else
++	if (nvram.version <= 4) {
++		check_len = offsetof(struct bcm963xx_nvram, reserved3);
++		expected_crc = nvram.checksum_old;
++		nvram.checksum_old = 0;
++	} else {
+ 		check_len = sizeof(nvram);
+-	val = 0;
+-	p = (u8 *)&nvram;
++		expected_crc = nvram.checksum_high;
++		nvram.checksum_high = 0;
++	}
++
++	crc = crc32_le(~0, (u8 *)&nvram, check_len);
+ 
+-	while (check_len--)
+-		val += *p;
+-	if (val)
++	if (crc != expected_crc)
+ 		return -EINVAL;
+ 
+ 	return 0;
+-- 
+1.7.2.5

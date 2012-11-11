@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2012 13:53:55 +0100 (CET)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:33189 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2012 13:54:14 +0100 (CET)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:35486 "EHLO
         mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6826613Ab2KKMuvl0Kdj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2012 13:50:51 +0100
-Received: by mail-bk0-f49.google.com with SMTP id j4so2053461bkw.36
-        for <multiple recipients>; Sun, 11 Nov 2012 04:50:51 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S6826610Ab2KKMuxGtzYE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2012 13:50:53 +0100
+Received: by mail-bk0-f49.google.com with SMTP id j4so2053444bkw.36
+        for <multiple recipients>; Sun, 11 Nov 2012 04:50:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=2MWEoJGMPlFchAUdDsvxSwWgfLkrn5+w6hvGdjgzqNw=;
-        b=L7oj3n2v18BqmfNBJ1vfHIqSdm332RHCfeVlr43pym7GRbdCEEcbO+HVWDITAvBr9Y
-         sj05RiPpxDGVJM7Gnl4d43l4pqM8/Xqqh924tdSNuchjbCzp4WAePY0PkKLs7w94JGXC
-         mRjRYQ6zFiPWpPxgthIbAMdZXVJl+yhBQEOqsuMeun7XpwUMuuO/TLa8ostDWLefAg7S
-         ThS1/je/skIa53ftsQQluJ0/Um/3ieE1mgLtXgLeVhNsHGLF07YYUjHm/re2s4HfxLtU
-         uNTJYsR2rTp2CU6SnQ201yrJMzScE8ehGRilooG/2YhfrhoU1lh9dhJ1JiEVM1OozggR
-         B+4w==
-Received: by 10.204.146.1 with SMTP id f1mr286631bkv.130.1352638251120;
-        Sun, 11 Nov 2012 04:50:51 -0800 (PST)
+        bh=XYqyugvqZdLHauWtnxvP3KdQ1m/8bW60VbmjURJ0Pw4=;
+        b=AVJLQy1x2kfXwmyE3tf38TpPoWjO6eT2HVme166PuV1PHunU/dEiemLYpKuyBTmk4P
+         Vno7vTLGlchNUXfblMJ3UUavjGM0WjmhO2Os6whvGUC9PBV+Gcg0T41flsDXUJ6is8jm
+         tjBojhG6oubcTnt2SA5P6FqGjCrN7wMEIYlm1JAflFy8ZOkrwkUagCRkcwRHKoQAaUBw
+         SSM87lL/jVS/2W2Zl9i/6ascdK9UGEtQqoOYR5tlPv0s+uisfnOh9wp2RaiiNYP/efh+
+         44Ua1/mclnylJIVEL+UlBhtoK4yvJEj2gxRSRuE9EWUoeE9Gu/z08wjLkogyuBUNsUTf
+         0uFQ==
+Received: by 10.205.132.72 with SMTP id ht8mr5790213bkc.72.1352638252852;
+        Sun, 11 Nov 2012 04:50:52 -0800 (PST)
 Received: from shaker64.lan (dslb-088-073-158-247.pools.arcor-ip.net. [88.73.158.247])
-        by mx.google.com with ESMTPS id z22sm1436133bkw.2.2012.11.11.04.50.49
+        by mx.google.com with ESMTPS id z22sm1436133bkw.2.2012.11.11.04.50.51
         (version=SSLv3 cipher=OTHER);
-        Sun, 11 Nov 2012 04:50:50 -0800 (PST)
+        Sun, 11 Nov 2012 04:50:52 -0800 (PST)
 From:   Jonas Gorski <jonas.gorski@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -29,13 +29,13 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>,
         devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [RFC] MIPS: BCM63XX: switch to common clock and Device Tree
-Date:   Sun, 11 Nov 2012 13:50:44 +0100
-Message-Id: <1352638249-29298-11-git-send-email-jonas.gorski@gmail.com>
+Subject: [RFC] MIPS: BCM63XX: register GPIO controller through Device Tree
+Date:   Sun, 11 Nov 2012 13:50:45 +0100
+Message-Id: <1352638249-29298-12-git-send-email-jonas.gorski@gmail.com>
 X-Mailer: git-send-email 1.7.2.5
 In-Reply-To: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com>
 References: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com>
-X-archive-position: 34941
+X-archive-position: 34942
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,706 +53,235 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Switch BCM63XX to the common clock framework and use clkdev for
-providing clock name lookups for non-DT devices.
+Register the GPIO controller through Device Tree and add the
+appropriate values in the include files.
 
-Clocks can have a frequency and gate-bit, or none, in case they
-are just provided for drivers expecting them to be present.
+Since we can't register a platform driver at this early stage move the
+direct call to bcm63xx_gpio_init from prom_init to an arch initcall.
 
 Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 ---
- .../devicetree/bindings/clock/bcm63xx-clock.txt    |   32 ++
- arch/mips/Kconfig                                  |    3 +-
- arch/mips/bcm63xx/Makefile                         |    7 +-
- arch/mips/bcm63xx/clk.c                            |  331 --------------------
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_clk.h   |   11 -
- drivers/clk/Makefile                               |    1 +
- drivers/clk/clk-bcm63xx.c                          |  241 ++++++++++++++
- 7 files changed, 279 insertions(+), 347 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/clock/bcm63xx-clock.txt
- delete mode 100644 arch/mips/bcm63xx/clk.c
- delete mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_clk.h
- create mode 100644 drivers/clk/clk-bcm63xx.c
+ .../devicetree/bindings/gpio/bcm63xx-gpio.txt      |   24 +++++++++++++
+ arch/mips/bcm63xx/dts/bcm6328.dtsi                 |    8 ++++
+ arch/mips/bcm63xx/dts/bcm6338.dtsi                 |    8 ++++
+ arch/mips/bcm63xx/dts/bcm6345.dtsi                 |    7 ++++
+ arch/mips/bcm63xx/dts/bcm6348.dtsi                 |    8 ++++
+ arch/mips/bcm63xx/dts/bcm6358.dtsi                 |    8 ++++
+ arch/mips/bcm63xx/dts/bcm6368.dtsi                 |    8 ++++
+ arch/mips/bcm63xx/gpio.c                           |   35 +++++++++++++++++--
+ arch/mips/bcm63xx/prom.c                           |    3 --
+ 9 files changed, 102 insertions(+), 7 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/gpio/bcm63xx-gpio.txt
 
-diff --git a/Documentation/devicetree/bindings/clock/bcm63xx-clock.txt b/Documentation/devicetree/bindings/clock/bcm63xx-clock.txt
+diff --git a/Documentation/devicetree/bindings/gpio/bcm63xx-gpio.txt b/Documentation/devicetree/bindings/gpio/bcm63xx-gpio.txt
 new file mode 100644
-index 0000000..467c0c2
+index 0000000..283765d
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/bcm63xx-clock.txt
-@@ -0,0 +1,32 @@
-+* Broadcom BCM63XX Clock bindings
-+
-+This binding uses the common clock binding[1].
-+
-+[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
++++ b/Documentation/devicetree/bindings/gpio/bcm63xx-gpio.txt
+@@ -0,0 +1,24 @@
++* Broadcom BCM63XX GPIO controller
 +
 +Required properties:
-+- compatible: one of
-+  a) "brcm,bcm63xx-clock"
-+  Standard BCM63XX clock.
-+  b) "brcm,bcm63xx-sar-clock"
-+  SAR/ATM clock, which requires a reset of the SAR/ATM block.
-+  c) "brcm,bcm63xx-enetsw-clock"
-+  Generic ethernet switch clock, which requires a reset of the block.
-+  d) "brcm,bcm6368-enetsw-clock"
-+  BCM6368 ethernet switch clock, which requires additional clocks to be
-+  enabled during reset.
++- compatible: "brcm,bcm63xx-gpio"
++  Compatible with all BCM63XX SoCs.
 +
-+Optional properties:
-+- brcm,gate-bit: gate bit in the clock control register.
++- reg: address and length of the register block.
 +
-+- clock-frequency: frequency of this clock.
++- gpio-controller: This is a GPIO controller.
++
++- #gpio-cells: Must be <2>. The first cell is the GPIO pin, and
++  the second one the standard linux flags.
++
++- ngpio: number of GPIOs present in this SoC.
 +
 +Example:
 +
-+	hsspi: clock@9 {
-+		compatible = "brcm,bcm63xx-clock";
-+		#clock-cells = <0>;
-+		clock-output-names = "hsspi";
-+		brcm,gate-bit = <9>;
-+		clock-frequency = <133333333>;
++	gpio: gpio@80 {
++		compatible = "brcm,bcm63xx-gpio";
++		reg = <0x80 0x80>;
++		gpio-controller;
++		#gpio-cells = <2>;
++		ngpio = <40>;
 +	};
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 168b0fc..1203113 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -131,7 +131,8 @@ config BCM63XX
- 	select SYS_HAS_EARLY_PRINTK
- 	select SWAP_IO_SPACE
- 	select ARCH_REQUIRE_GPIOLIB
--	select HAVE_CLK
-+	select COMMON_CLK
-+	select CLKDEV
- 	select USE_OF
- 	help
- 	 Support for BCM63XX based boards
-diff --git a/arch/mips/bcm63xx/Makefile b/arch/mips/bcm63xx/Makefile
-index 30971a7..994893c 100644
---- a/arch/mips/bcm63xx/Makefile
-+++ b/arch/mips/bcm63xx/Makefile
-@@ -1,7 +1,6 @@
--obj-y		+= clk.o cpu.o cs.o gpio.o irq.o nvram.o prom.o reset.o \
--		   setup.o timer.o dev-dsp.o dev-enet.o dev-flash.o \
--		   dev-pcmcia.o dev-rng.o dev-spi.o dev-uart.o dev-wdt.o \
--		   dev-usb-usbd.o
-+obj-y		+= cpu.o cs.o gpio.o irq.o nvram.o prom.o reset.o setup.o \
-+		   timer.o dev-dsp.o dev-enet.o dev-flash.o dev-pcmcia.o \
-+		   dev-rng.o dev-spi.o dev-uart.o dev-wdt.o dev-usb-usbd.o
- obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
+diff --git a/arch/mips/bcm63xx/dts/bcm6328.dtsi b/arch/mips/bcm63xx/dts/bcm6328.dtsi
+index 9055187..e2e92c3 100644
+--- a/arch/mips/bcm63xx/dts/bcm6328.dtsi
++++ b/arch/mips/bcm63xx/dts/bcm6328.dtsi
+@@ -132,5 +132,13 @@
+ 				};
+ 			};
+ 		};
++
++		gpio0: gpio@80 {
++			compatible = "brcm,bcm63xx-gpio";
++			reg = <0x80 0x80>;
++			gpio-controller;
++			#gpio-cells = <2>;
++			ngpio = <32>;
++		};
+ 	};
+ };
+diff --git a/arch/mips/bcm63xx/dts/bcm6338.dtsi b/arch/mips/bcm63xx/dts/bcm6338.dtsi
+index 6346a7e..28e7cb6 100644
+--- a/arch/mips/bcm63xx/dts/bcm6338.dtsi
++++ b/arch/mips/bcm63xx/dts/bcm6338.dtsi
+@@ -89,5 +89,13 @@
+ 				};
+ 			};
+ 		};
++
++		gpio0: gpio@400 {
++			compatible = "brcm,bcm63xx-gpio";
++			reg = <0x400 0x80>;
++			gpio-controller;
++			#gpio-cells = <2>;
++			ngpio = <8>;
++		};
+ 	};
+ };
+diff --git a/arch/mips/bcm63xx/dts/bcm6345.dtsi b/arch/mips/bcm63xx/dts/bcm6345.dtsi
+index 1771775..1ebc024 100644
+--- a/arch/mips/bcm63xx/dts/bcm6345.dtsi
++++ b/arch/mips/bcm63xx/dts/bcm6345.dtsi
+@@ -75,5 +75,12 @@
+ 				};
+ 			};
+ 		};
++		gpio0: gpio@400 {
++			compatible = "brcm,bcm63xx-gpio";
++			reg = <0x400 0x80>;
++			gpio-controller;
++			#gpio-cells = <2>;
++			ngpio = <16>;
++		};
+ 	};
+ };
+diff --git a/arch/mips/bcm63xx/dts/bcm6348.dtsi b/arch/mips/bcm63xx/dts/bcm6348.dtsi
+index 14f1996..89acec7 100644
+--- a/arch/mips/bcm63xx/dts/bcm6348.dtsi
++++ b/arch/mips/bcm63xx/dts/bcm6348.dtsi
+@@ -96,5 +96,13 @@
+ 				};
+ 			};
+ 		};
++
++		gpio0: gpio@400 {
++			compatible = "brcm,bcm63xx-gpio";
++			regs = <0x400 0x80>;
++			gpio-controller;
++			#gpio-cells = <2>;
++			ngpio = <37>;
++		};
+ 	};
+ };
+diff --git a/arch/mips/bcm63xx/dts/bcm6358.dtsi b/arch/mips/bcm63xx/dts/bcm6358.dtsi
+index 943b480..52170d6 100644
+--- a/arch/mips/bcm63xx/dts/bcm6358.dtsi
++++ b/arch/mips/bcm63xx/dts/bcm6358.dtsi
+@@ -130,5 +130,13 @@
+ 				};
+ 			};
+ 		};
++
++		gpio0: gpio@80 {
++			compatible = "brcm,bcm63xx-gpio";
++			reg = <0x80 0x80>;
++			gpio-controller;
++			#gpio-cells = <2>;
++			ngpio = <40>;
++		};
+ 	};
+ };
+diff --git a/arch/mips/bcm63xx/dts/bcm6368.dtsi b/arch/mips/bcm63xx/dts/bcm6368.dtsi
+index 2156be0..068231b 100644
+--- a/arch/mips/bcm63xx/dts/bcm6368.dtsi
++++ b/arch/mips/bcm63xx/dts/bcm6368.dtsi
+@@ -170,5 +170,13 @@
+ 				};
+ 			};
+ 		};
++
++		gpio0: gpio@80 {
++			compatible = "brcm,bcm63xx-gpio";
++			regs = <0x80 0x80>;
++			gpio-controller;
++			#gpio-cells = <2>;
++			ngpio = <38>;
++		};
+ 	};
+ };
+diff --git a/arch/mips/bcm63xx/gpio.c b/arch/mips/bcm63xx/gpio.c
+index a6c2135..774fd08 100644
+--- a/arch/mips/bcm63xx/gpio.c
++++ b/arch/mips/bcm63xx/gpio.c
+@@ -141,7 +141,6 @@ static int bcm63xx_gpio_direction_output(struct gpio_chip *chip,
+ 	return bcm63xx_gpio_set_direction(chip, gpio, BCM63XX_GPIO_DIR_OUT);
+ }
  
- obj-y		+= boards/
-diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
-deleted file mode 100644
-index b9e948d..0000000
---- a/arch/mips/bcm63xx/clk.c
-+++ /dev/null
-@@ -1,331 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
-- */
 -
--#include <linux/module.h>
--#include <linux/mutex.h>
--#include <linux/err.h>
--#include <linux/clk.h>
--#include <linux/delay.h>
--#include <bcm63xx_cpu.h>
--#include <bcm63xx_io.h>
--#include <bcm63xx_regs.h>
--#include <bcm63xx_reset.h>
--#include <bcm63xx_clk.h>
--
--static DEFINE_MUTEX(clocks_mutex);
--
--
--static void clk_enable_unlocked(struct clk *clk)
--{
--	if (clk->set && (clk->usage++) == 0)
--		clk->set(clk, 1);
--}
--
--static void clk_disable_unlocked(struct clk *clk)
--{
--	if (clk->set && (--clk->usage) == 0)
--		clk->set(clk, 0);
--}
--
--static void bcm_hwclock_set(u32 mask, int enable)
--{
--	u32 reg;
--
--	reg = bcm_perf_readl(PERF_CKCTL_REG);
--	if (enable)
--		reg |= mask;
--	else
--		reg &= ~mask;
--	bcm_perf_writel(reg, PERF_CKCTL_REG);
--}
--
--/*
-- * Ethernet MAC "misc" clock: dma clocks and main clock on 6348
-- */
--static void enet_misc_set(struct clk *clk, int enable)
--{
--	u32 mask;
--
--	if (BCMCPU_IS_6338())
--		mask = CKCTL_6338_ENET_EN;
--	else if (BCMCPU_IS_6345())
--		mask = CKCTL_6345_ENET_EN;
--	else if (BCMCPU_IS_6348())
--		mask = CKCTL_6348_ENET_EN;
--	else
--		/* BCMCPU_IS_6358 */
--		mask = CKCTL_6358_EMUSB_EN;
--	bcm_hwclock_set(mask, enable);
--}
--
--static struct clk clk_enet_misc = {
--	.set	= enet_misc_set,
--};
--
--/*
-- * Ethernet MAC clocks: only revelant on 6358, silently enable misc
-- * clocks
-- */
--static void enetx_set(struct clk *clk, int enable)
--{
--	if (enable)
--		clk_enable_unlocked(&clk_enet_misc);
--	else
--		clk_disable_unlocked(&clk_enet_misc);
--
--	if (BCMCPU_IS_6358()) {
--		u32 mask;
--
--		if (clk->id == 0)
--			mask = CKCTL_6358_ENET0_EN;
--		else
--			mask = CKCTL_6358_ENET1_EN;
--		bcm_hwclock_set(mask, enable);
--	}
--}
--
--static struct clk clk_enet0 = {
--	.id	= 0,
--	.set	= enetx_set,
--};
--
--static struct clk clk_enet1 = {
--	.id	= 1,
--	.set	= enetx_set,
--};
--
--/*
-- * Ethernet PHY clock
-- */
--static void ephy_set(struct clk *clk, int enable)
--{
--	if (!BCMCPU_IS_6358())
--		return;
--	bcm_hwclock_set(CKCTL_6358_EPHY_EN, enable);
--}
--
--
--static struct clk clk_ephy = {
--	.set	= ephy_set,
--};
--
--/*
-- * Ethernet switch clock
-- */
--static void enetsw_set(struct clk *clk, int enable)
--{
--	if (!BCMCPU_IS_6368())
--		return;
--	bcm_hwclock_set(CKCTL_6368_ROBOSW_EN |
--			CKCTL_6368_SWPKT_USB_EN |
--			CKCTL_6368_SWPKT_SAR_EN, enable);
--	if (enable) {
--		/* reset switch core afer clock change */
--		bcm63xx_core_set_reset(BCM63XX_RESET_ENETSW, 1);
--		msleep(10);
--		bcm63xx_core_set_reset(BCM63XX_RESET_ENETSW, 0);
--		msleep(10);
--	}
--}
--
--static struct clk clk_enetsw = {
--	.set	= enetsw_set,
--};
--
--/*
-- * PCM clock
-- */
--static void pcm_set(struct clk *clk, int enable)
--{
--	if (!BCMCPU_IS_6358())
--		return;
--	bcm_hwclock_set(CKCTL_6358_PCM_EN, enable);
--}
--
--static struct clk clk_pcm = {
--	.set	= pcm_set,
--};
--
--/*
-- * USB host clock
-- */
--static void usbh_set(struct clk *clk, int enable)
--{
--	if (BCMCPU_IS_6328())
--		bcm_hwclock_set(CKCTL_6328_USBH_EN, enable);
--	else if (BCMCPU_IS_6348())
--		bcm_hwclock_set(CKCTL_6348_USBH_EN, enable);
--	else if (BCMCPU_IS_6368())
--		bcm_hwclock_set(CKCTL_6368_USBH_EN, enable);
--}
--
--static struct clk clk_usbh = {
--	.set	= usbh_set,
--};
--
--/*
-- * USB device clock
-- */
--static void usbd_set(struct clk *clk, int enable)
--{
--	if (BCMCPU_IS_6328())
--		bcm_hwclock_set(CKCTL_6328_USBD_EN, enable);
--	else if (BCMCPU_IS_6368())
--		bcm_hwclock_set(CKCTL_6368_USBD_EN, enable);
--}
--
--static struct clk clk_usbd = {
--	.set	= usbd_set,
--};
--
--/*
-- * SPI clock
-- */
--static void spi_set(struct clk *clk, int enable)
--{
--	u32 mask;
--
--	if (BCMCPU_IS_6338())
--		mask = CKCTL_6338_SPI_EN;
--	else if (BCMCPU_IS_6348())
--		mask = CKCTL_6348_SPI_EN;
--	else if (BCMCPU_IS_6358())
--		mask = CKCTL_6358_SPI_EN;
--	else
--		/* BCMCPU_IS_6368 */
--		mask = CKCTL_6368_SPI_EN;
--	bcm_hwclock_set(mask, enable);
--}
--
--static struct clk clk_spi = {
--	.set	= spi_set,
--};
--
--/*
-- * XTM clock
-- */
--static void xtm_set(struct clk *clk, int enable)
--{
--	if (!BCMCPU_IS_6368())
--		return;
--
--	bcm_hwclock_set(CKCTL_6368_SAR_EN |
--			CKCTL_6368_SWPKT_SAR_EN, enable);
--
--	if (enable) {
--		/* reset sar core afer clock change */
--		bcm63xx_core_set_reset(BCM63XX_RESET_SAR, 1);
--		mdelay(1);
--		bcm63xx_core_set_reset(BCM63XX_RESET_SAR, 0);
--		mdelay(1);
--	}
--}
--
--
--static struct clk clk_xtm = {
--	.set	= xtm_set,
--};
--
--/*
-- * IPsec clock
-- */
--static void ipsec_set(struct clk *clk, int enable)
--{
--	bcm_hwclock_set(CKCTL_6368_IPSEC_EN, enable);
--}
--
--static struct clk clk_ipsec = {
--	.set	= ipsec_set,
--};
--
--/*
-- * PCIe clock
-- */
--
--static void pcie_set(struct clk *clk, int enable)
--{
--	bcm_hwclock_set(CKCTL_6328_PCIE_EN, enable);
--}
--
--static struct clk clk_pcie = {
--	.set	= pcie_set,
--};
--
--/*
-- * Internal peripheral clock
-- */
--static struct clk clk_periph = {
--	.rate	= (50 * 1000 * 1000),
--};
--
--
--/*
-- * Linux clock API implementation
-- */
--int clk_enable(struct clk *clk)
--{
--	mutex_lock(&clocks_mutex);
--	clk_enable_unlocked(clk);
--	mutex_unlock(&clocks_mutex);
--	return 0;
--}
--
--EXPORT_SYMBOL(clk_enable);
--
--void clk_disable(struct clk *clk)
--{
--	mutex_lock(&clocks_mutex);
--	clk_disable_unlocked(clk);
--	mutex_unlock(&clocks_mutex);
--}
--
--EXPORT_SYMBOL(clk_disable);
--
--unsigned long clk_get_rate(struct clk *clk)
--{
--	return clk->rate;
--}
--
--EXPORT_SYMBOL(clk_get_rate);
--
--struct clk *clk_get(struct device *dev, const char *id)
--{
--	if (!strcmp(id, "enet0"))
--		return &clk_enet0;
--	if (!strcmp(id, "enet1"))
--		return &clk_enet1;
--	if (!strcmp(id, "enetsw"))
--		return &clk_enetsw;
--	if (!strcmp(id, "ephy"))
--		return &clk_ephy;
--	if (!strcmp(id, "usbh"))
--		return &clk_usbh;
--	if (!strcmp(id, "usbd"))
--		return &clk_usbd;
--	if (!strcmp(id, "spi"))
--		return &clk_spi;
--	if (!strcmp(id, "xtm"))
--		return &clk_xtm;
--	if (!strcmp(id, "periph"))
--		return &clk_periph;
--	if (BCMCPU_IS_6358() && !strcmp(id, "pcm"))
--		return &clk_pcm;
--	if (BCMCPU_IS_6368() && !strcmp(id, "ipsec"))
--		return &clk_ipsec;
--	if (BCMCPU_IS_6328() && !strcmp(id, "pcie"))
--		return &clk_pcie;
--	return ERR_PTR(-ENOENT);
--}
--
--EXPORT_SYMBOL(clk_get);
--
--void clk_put(struct clk *clk)
--{
--}
--
--EXPORT_SYMBOL(clk_put);
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_clk.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_clk.h
-deleted file mode 100644
-index 8fcf8df..0000000
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_clk.h
-+++ /dev/null
-@@ -1,11 +0,0 @@
--#ifndef BCM63XX_CLK_H_
--#define BCM63XX_CLK_H_
--
--struct clk {
--	void		(*set)(struct clk *, int);
--	unsigned int	rate;
--	unsigned int	usage;
--	int		id;
--};
--
--#endif /* ! BCM63XX_CLK_H_ */
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 71a25b9..c991c8b 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -19,6 +19,7 @@ endif
- obj-$(CONFIG_MACH_LOONGSON1)	+= clk-ls1x.o
- obj-$(CONFIG_ARCH_U8500)	+= ux500/
- obj-$(CONFIG_ARCH_VT8500)	+= clk-vt8500.o
-+obj-$(CONFIG_BCM63XX)		+= clk-bcm63xx.o
+ static struct gpio_chip bcm63xx_gpio_chip = {
+ 	.label			= "bcm63xx-gpio",
+ 	.direction_input	= bcm63xx_gpio_direction_input,
+@@ -151,6 +150,34 @@ static struct gpio_chip bcm63xx_gpio_chip = {
+ 	.base			= 0,
+ };
  
- # Chip specific
- obj-$(CONFIG_COMMON_CLK_WM831X) += clk-wm831x.o
-diff --git a/drivers/clk/clk-bcm63xx.c b/drivers/clk/clk-bcm63xx.c
-new file mode 100644
-index 0000000..571bb71
---- /dev/null
-+++ b/drivers/clk/clk-bcm63xx.c
-@@ -0,0 +1,241 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2012 Jonas Gorski <jonas.gorski@gmail.com>
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/slab.h>
-+#include <linux/clk.h>
-+#include <linux/clkdev.h>
-+#include <linux/clk-provider.h>
-+#include <linux/of.h>
-+#include <linux/delay.h>
-+
-+#include <bcm63xx_cpu.h>
-+#include <bcm63xx_io.h>
-+#include <bcm63xx_regs.h>
-+#include <bcm63xx_reset.h>
-+
-+DEFINE_SPINLOCK(bcm63xx_clk_lock);
-+
-+struct bcm63xx_clk {
-+	struct clk_hw hw;
-+	u32 rate;
-+	s8 gate_bit;
-+	void (*reset)(void);
-+};
-+
-+#define to_bcm63xx_clk(p) container_of(p, struct bcm63xx_clk, hw)
-+
-+static void bcm63xx_clk_set(u32 bit, int enable)
++int __init bcm63xx_gpio_probe(struct platform_device *pdev)
 +{
-+	unsigned long flags;
 +	u32 val;
 +
-+	spin_lock_irqsave(&bcm63xx_clk_lock, flags);
++	if (of_property_read_u32(pdev->dev.of_node, "ngpio", &val))
++		return -EINVAL;
 +
-+	val = bcm_perf_readl(PERF_CKCTL_REG);
-+	if (enable)
-+		val |= BIT(bit);
-+	else
-+		val &= ~BIT(bit);
++	bcm63xx_gpio_chip.ngpio = val;
++	bcm63xx_gpio_chip.dev = &pdev->dev;
++	pr_info("registering %d GPIOs\n", bcm63xx_gpio_chip.ngpio);
 +
-+	bcm_perf_writel(val, PERF_CKCTL_REG);
-+
-+	spin_unlock_irqrestore(&bcm63xx_clk_lock, flags);
-+
++	return gpiochip_add(&bcm63xx_gpio_chip);
 +}
 +
-+static int bcm63xx_clk_enable(struct clk_hw *hw)
-+{
-+	struct bcm63xx_clk *clk = to_bcm63xx_clk(hw);
-+
-+	if (clk->gate_bit >= 0)
-+		bcm63xx_clk_set(clk->gate_bit, 1);
-+
-+	if (clk->reset)
-+		clk->reset();
-+
-+	return 0;
-+}
-+
-+static void bcm63xx_clk_disable(struct clk_hw *hw)
-+{
-+	struct bcm63xx_clk *clk = to_bcm63xx_clk(hw);
-+
-+	if (clk->gate_bit >= 0)
-+		bcm63xx_clk_set(clk->gate_bit, 0);
-+}
-+
-+static int bcm63xx_clk_is_enabled(struct clk_hw *hw)
-+{
-+	struct bcm63xx_clk *clk = to_bcm63xx_clk(hw);
-+
-+	if (clk->gate_bit >= 0)
-+		return bcm_perf_readl(PERF_CKCTL_REG) & BIT(clk->gate_bit);
-+
-+	return 1;
-+}
-+
-+static unsigned long bcm63xx_clk_recalc_rate(struct clk_hw *hw,
-+					     unsigned long parent_state)
-+{
-+	return to_bcm63xx_clk(hw)->rate;
-+}
-+
-+static const struct clk_ops bcm63xx_clk_ops = {
-+	.enable		= bcm63xx_clk_enable,
-+	.disable	= bcm63xx_clk_disable,
-+	.is_enabled	= bcm63xx_clk_is_enabled,
-+	.recalc_rate	= bcm63xx_clk_recalc_rate,
++static struct of_device_id of_bcm63xx_gpio_match[] = {
++	{ .compatible = "brcm,bcm63xx-gpio" },
++	{ },
 +};
 +
-+static void bcm63xx_enetsw_reset(void)
-+{
-+	bcm63xx_core_set_reset(BCM63XX_RESET_ENETSW, 1);
-+	mdelay(100);
-+	bcm63xx_core_set_reset(BCM63XX_RESET_ENETSW, 0);
-+	mdelay(100);
-+}
-+
-+static void bcm6368_enetsw_reset(void)
-+{
-+	struct clk *enetsw_sar = clk_get(NULL, "enetsw-sar");
-+	struct clk *enetsw_usb = clk_get(NULL, "enetsw-usb");
-+
-+	/* secondary clocks need to be enabled while resetting the core */
-+	clk_prepare_enable(enetsw_sar);
-+	clk_prepare_enable(enetsw_usb);
-+
-+	bcm63xx_enetsw_reset();
-+
-+	clk_disable_unprepare(enetsw_usb);
-+	clk_disable_unprepare(enetsw_sar);
-+
-+	clk_put(enetsw_sar);
-+	clk_put(enetsw_usb);
-+}
-+
-+static void bcm63xx_sar_reset(void)
-+{
-+	bcm63xx_core_set_reset(BCM63XX_RESET_SAR, 1);
-+	mdelay(1);
-+	bcm63xx_core_set_reset(BCM63XX_RESET_SAR, 0);
-+	mdelay(1);
-+}
-+
-+static void __init bcm63xx_clock_init(struct device_node *node,
-+				      void (*reset)(void))
-+{
-+	u32 gate_bit_dt, rate = 0;
-+	s8 gate_bit = -1;
-+	struct clk *clk;
-+	struct bcm63xx_clk *bcm63xx_clk;
-+	const char *clk_name = node->name;
-+	const char *parent = NULL;
-+	int num_names, i;
-+	struct clk_init_data init;
-+
-+	if (!of_property_read_u32(node, "brcm,gate-bit", &gate_bit_dt) &&
-+	    !WARN_ON(gate_bit_dt > 32))
-+		gate_bit = gate_bit_dt;
-+
-+	of_property_read_u32(node, "clock-frequency", &rate);
-+
-+	num_names = of_property_count_strings(node, "clock-output-names");
-+
-+	if (!WARN_ON(num_names == 0))
-+		of_property_read_string_index(node, "clock-output-names", 0,
-+					      &clk_name);
-+
-+	parent = of_clk_get_parent_name(node, 0);
-+
-+	bcm63xx_clk = kzalloc(sizeof(*bcm63xx_clk), GFP_KERNEL);
-+	if (!bcm63xx_clk)
-+		return;
-+
-+	bcm63xx_clk->rate = rate;
-+	bcm63xx_clk->gate_bit = gate_bit;
-+	bcm63xx_clk->reset = reset;
-+
-+	init.name = clk_name;
-+	init.ops = &bcm63xx_clk_ops;
-+
-+	if (parent) {
-+		init.flags = 0;
-+		init.num_parents = 1;
-+		init.parent_names = &parent;
-+	} else {
-+		init.flags = CLK_IS_ROOT;
-+		init.num_parents = 0;
-+		init.parent_names = NULL;
-+	}
-+
-+	bcm63xx_clk->hw.init = &init;
-+
-+	clk = clk_register(NULL, &bcm63xx_clk->hw);
-+	if (IS_ERR(clk)) {
-+		kfree(bcm63xx_clk);
-+		return;
-+	}
-+
-+	of_clk_add_provider(node, of_clk_src_simple_get, clk);
-+	clk_register_clkdev(clk, clk_name, NULL);
-+
-+	/* register aliases */
-+	for (i = 1; i < num_names; i++) {
-+		of_property_read_string_index(node, "clock-output-names", i,
-+					      &clk_name);
-+		clk_register_clkdev(clk, clk_name, NULL);
-+	}
-+}
-+
-+static void __init bcm63xx_generic_clock_init(struct device_node *node)
-+{
-+	bcm63xx_clock_init(node, NULL);
-+}
-+
-+static void __init bcm63xx_enetsw_clock_init(struct device_node *node)
-+{
-+	bcm63xx_clock_init(node, bcm63xx_enetsw_reset);
-+}
-+
-+static void __init bcm6368_enetsw_clock_init(struct device_node *node)
-+{
-+	bcm63xx_clock_init(node, bcm6368_enetsw_reset);
-+}
-+
-+static void __init bcm63xx_sar_clock_init(struct device_node *node)
-+{
-+	bcm63xx_clock_init(node, bcm63xx_sar_reset);
-+}
-+
-+static const __initconst struct of_device_id clk_match[] = {
-+	{
-+		.compatible = "brcm,bcm63xx-clock",
-+		.data = bcm63xx_generic_clock_init,
++static struct platform_driver bcm63xx_gpio_driver = {
++	.driver = {
++		.name = "bcm63xx-gpio",
++		.owner = THIS_MODULE,
++		.of_match_table = of_bcm63xx_gpio_match,
 +	},
-+	{
-+		.compatible = "brcm,bcm63xx-enetsw-clock",
-+		.data = bcm63xx_enetsw_clock_init,
-+	},
-+	{
-+		.compatible = "brcm,bcm6368-enetsw-clock",
-+		.data = bcm63xx_enetsw_clock_init,
-+	},
-+	{
-+		.compatible = "brcm,bcm63xx-sar-clock",
-+		.data = bcm63xx_sar_clock_init,
-+	},
++	.probe = bcm63xx_gpio_probe,
 +};
 +
-+int __init bcm63xx_clocks_init(void)
-+{
-+	of_clk_init(clk_match);
+ int __init bcm63xx_gpio_init(void)
+ {
+ 	bcm63xx_gpio_out_low_reg_init();
+@@ -158,8 +185,8 @@ int __init bcm63xx_gpio_init(void)
+ 	gpio_out_low = bcm_gpio_readl(gpio_out_low_reg);
+ 	if (!BCMCPU_IS_6345())
+ 		gpio_out_high = bcm_gpio_readl(GPIO_DATA_HI_REG);
+-	bcm63xx_gpio_chip.ngpio = bcm63xx_gpio_count();
+-	pr_info("registering %d GPIOs\n", bcm63xx_gpio_chip.ngpio);
+ 
+-	return gpiochip_add(&bcm63xx_gpio_chip);
++	return platform_driver_register(&bcm63xx_gpio_driver);
+ }
 +
-+	return 0;
-+}
-+arch_initcall(bcm63xx_clocks_init);
++arch_initcall(bcm63xx_gpio_init);
+diff --git a/arch/mips/bcm63xx/prom.c b/arch/mips/bcm63xx/prom.c
+index 10eaff4..0b636d6 100644
+--- a/arch/mips/bcm63xx/prom.c
++++ b/arch/mips/bcm63xx/prom.c
+@@ -45,9 +45,6 @@ void __init prom_init(void)
+ 	reg &= ~mask;
+ 	bcm_perf_writel(reg, PERF_CKCTL_REG);
+ 
+-	/* register gpiochip */
+-	bcm63xx_gpio_init();
+-
+ 	/* do low level board init */
+ 	board_prom_init();
+ }
 -- 
 1.7.2.5

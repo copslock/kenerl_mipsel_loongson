@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2012 13:52:35 +0100 (CET)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:33189 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2012 13:52:54 +0100 (CET)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:35486 "EHLO
         mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6826607Ab2KKMuop3Xoc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2012 13:50:44 +0100
-Received: by mail-bk0-f49.google.com with SMTP id j4so2053461bkw.36
-        for <multiple recipients>; Sun, 11 Nov 2012 04:50:39 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S6826609Ab2KKMuqHXwMa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2012 13:50:46 +0100
+Received: by mail-bk0-f49.google.com with SMTP id j4so2053444bkw.36
+        for <multiple recipients>; Sun, 11 Nov 2012 04:50:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=ozj+RsIvpcZIAPZnAvxU0nakqJaZeuUVNbEcCxr4BCM=;
-        b=Ca5YnejKBSKraQJO+MSntNLrmazgB9lNS7s9Brquyl/1FPXhmHiQvTn2Cu+dXv1Yn8
-         m+NGFrlX7iXHSlYKUP7OTOxZOKTLrjSdsAdqcflQtqsVtyO6F9e9R2H5uzZy59RSxRWc
-         kV9IBpK3HXtsj32C1zbI5y+WhxNdOmBPz0VJMKSvB2XFTE4o6qKmu9CgdAmtgvLatdP/
-         rvXfaidVLJzz65LVFQ/whdx34ZNFaC1QfNkh70xRpDtP8J/ekUa8GczY5g6izJ7FpofF
-         8ya6wPwDj23/QAOclBvIZuEtWkuuLGDWfvFDWIOeGGQgUwtxRFEsch6XTnqVkciEpIvK
-         mhXQ==
-Received: by 10.204.150.218 with SMTP id z26mr1177855bkv.95.1352638239221;
-        Sun, 11 Nov 2012 04:50:39 -0800 (PST)
+        bh=o1j8t4tyqjOc3R6Kkv7FyAq+/ksowhquNFVVmhZH22I=;
+        b=LSJVk/ChyXp4VS+THVe2VjW8lRKX0Q/aMVlEsvhoGl6BQEiuFJZYaHT5nmaSryCeeH
+         9e3rKSRrQxc4MBKV+4jmZru4s6xob6izhvLmj2KpKWXCVz0XnGt9pLDKRkRKZfxEiEnw
+         APjLmbsWy9Q8dQsDisRTHLsCTN2vPknaENKHXhs6uMtQguL5Q6ckDng63mS4nPrxmbwo
+         cE73UqZuRSLmJgA+1Olq9epqTvupyhshEWq+e6fA9MgHyPZAUzN3Eq3fN7dagz5Voqmd
+         R7pADGf1hTxdv3uIIoWF5b5gcO1CUItfjUFR8PL2UYcYZ8nSYVaN/bkZLVOwMbVCvJuT
+         tSlg==
+Received: by 10.204.146.83 with SMTP id g19mr6092415bkv.33.1352638245890;
+        Sun, 11 Nov 2012 04:50:45 -0800 (PST)
 Received: from shaker64.lan (dslb-088-073-158-247.pools.arcor-ip.net. [88.73.158.247])
-        by mx.google.com with ESMTPS id z22sm1436133bkw.2.2012.11.11.04.50.37
+        by mx.google.com with ESMTPS id z22sm1436133bkw.2.2012.11.11.04.50.44
         (version=SSLv3 cipher=OTHER);
-        Sun, 11 Nov 2012 04:50:38 -0800 (PST)
+        Sun, 11 Nov 2012 04:50:45 -0800 (PST)
 From:   Jonas Gorski <jonas.gorski@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -29,13 +29,13 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>,
         devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [RFC] MIPS: BCM63XX: add generic fallback device trees
-Date:   Sun, 11 Nov 2012 13:50:37 +0100
-Message-Id: <1352638249-29298-4-git-send-email-jonas.gorski@gmail.com>
+Subject: [RFC] net: ethernet: bcm63xx_enet: use clk_{prepare_enable,disable_unprepare}
+Date:   Sun, 11 Nov 2012 13:50:41 +0100
+Message-Id: <1352638249-29298-8-git-send-email-jonas.gorski@gmail.com>
 X-Mailer: git-send-email 1.7.2.5
 In-Reply-To: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com>
 References: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com>
-X-archive-position: 34937
+X-archive-position: 34938
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,240 +53,63 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add generic fallback device trees to load if there is no specific
-device tree for the board available. This ensures that always present
-devices like interrupt controllers are always available.
+Use proper clk_prepare/unprepare calls in preparation for switching to
+the generic clock framework.
 
 Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 ---
- arch/mips/bcm63xx/dts/Makefile             |    8 ++++++++
- arch/mips/bcm63xx/dts/bcm96328_generic.dts |   21 +++++++++++++++++++++
- arch/mips/bcm63xx/dts/bcm96338_generic.dts |   21 +++++++++++++++++++++
- arch/mips/bcm63xx/dts/bcm96345_generic.dts |   21 +++++++++++++++++++++
- arch/mips/bcm63xx/dts/bcm96348_generic.dts |   21 +++++++++++++++++++++
- arch/mips/bcm63xx/dts/bcm96358_generic.dts |   21 +++++++++++++++++++++
- arch/mips/bcm63xx/dts/bcm96368_generic.dts |   21 +++++++++++++++++++++
- arch/mips/bcm63xx/setup.c                  |   17 +++++++++++------
- 8 files changed, 145 insertions(+), 6 deletions(-)
- create mode 100644 arch/mips/bcm63xx/dts/bcm96328_generic.dts
- create mode 100644 arch/mips/bcm63xx/dts/bcm96338_generic.dts
- create mode 100644 arch/mips/bcm63xx/dts/bcm96345_generic.dts
- create mode 100644 arch/mips/bcm63xx/dts/bcm96348_generic.dts
- create mode 100644 arch/mips/bcm63xx/dts/bcm96358_generic.dts
- create mode 100644 arch/mips/bcm63xx/dts/bcm96368_generic.dts
+ drivers/net/ethernet/broadcom/bcm63xx_enet.c |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/bcm63xx/dts/Makefile b/arch/mips/bcm63xx/dts/Makefile
-index 69c374b..94d1057 100644
---- a/arch/mips/bcm63xx/dts/Makefile
-+++ b/arch/mips/bcm63xx/dts/Makefile
-@@ -1,2 +1,10 @@
-+# generic fallback boards
-+obj-$(CONFIG_BCM63XX_CPU_6328)		+= bcm96328_generic.dtb.o
-+obj-$(CONFIG_BCM63XX_CPU_6338)		+= bcm96338_generic.dtb.o
-+obj-$(CONFIG_BCM63XX_CPU_6345)		+= bcm96345_generic.dtb.o
-+obj-$(CONFIG_BCM63XX_CPU_6348)		+= bcm96348_generic.dtb.o
-+obj-$(CONFIG_BCM63XX_CPU_6358)		+= bcm96358_generic.dtb.o
-+obj-$(CONFIG_BCM63XX_CPU_6368)		+= bcm96368_generic.dtb.o
-+
- $(obj)/%.dtb: $(obj)/%.dts
- 	$(call if_changed,dtc)
-diff --git a/arch/mips/bcm63xx/dts/bcm96328_generic.dts b/arch/mips/bcm63xx/dts/bcm96328_generic.dts
-new file mode 100644
-index 0000000..13cdc48
---- /dev/null
-+++ b/arch/mips/bcm63xx/dts/bcm96328_generic.dts
-@@ -0,0 +1,21 @@
-+/dts-v1/;
-+
-+/*
-+ * Fallback Device Tree Source for Broadcom BCM6328 based boards
-+ *
-+ * Copyright (C) 2012 Jonas Gorski <jonas.gorski@gmail.com>
-+ *
-+ * This file is licensed under the terms of the GNU General Public License
-+ * version 2.  This program is licensed "as is" without any warranty of any
-+ * kind, whether express or implied.
-+ */
-+
-+/include/ "bcm6328.dtsi"
-+
-+/ {
-+	model = "Generic BCM6328 board";
-+	compatible = "bcm96328-generic";
-+
-+	ubus@10000000 {
-+	};
-+};
-diff --git a/arch/mips/bcm63xx/dts/bcm96338_generic.dts b/arch/mips/bcm63xx/dts/bcm96338_generic.dts
-new file mode 100644
-index 0000000..3b4e7b0
---- /dev/null
-+++ b/arch/mips/bcm63xx/dts/bcm96338_generic.dts
-@@ -0,0 +1,21 @@
-+/dts-v1/;
-+
-+/*
-+ * Fallback Device Tree Source for Broadcom BCM6338 based boards
-+ *
-+ * Copyright (C) 2012 Jonas Gorski <jonas.gorski@gmail.com>
-+ *
-+ * This file is licensed under the terms of the GNU General Public License
-+ * version 2.  This program is licensed "as is" without any warranty of any
-+ * kind, whether express or implied.
-+ */
-+
-+/include/ "bcm6338.dtsi"
-+
-+/ {
-+	model = "Generic BCM6338 board";
-+	compatible = "bcm96338-generic";
-+
-+	ubus@fffe0000 {
-+	};
-+};
-diff --git a/arch/mips/bcm63xx/dts/bcm96345_generic.dts b/arch/mips/bcm63xx/dts/bcm96345_generic.dts
-new file mode 100644
-index 0000000..2bbf69e
---- /dev/null
-+++ b/arch/mips/bcm63xx/dts/bcm96345_generic.dts
-@@ -0,0 +1,21 @@
-+/dts-v1/;
-+
-+/*
-+ * Fallback Device Tree Source for Broadcom BCM6345 based boards
-+ *
-+ * Copyright (C) 2012 Jonas Gorski <jonas.gorski@gmail.com>
-+ *
-+ * This file is licensed under the terms of the GNU General Public License
-+ * version 2.  This program is licensed "as is" without any warranty of any
-+ * kind, whether express or implied.
-+ */
-+
-+/include/ "bcm6345.dtsi"
-+
-+/ {
-+	model = "Generic BCM6345 board";
-+	compatible = "bcm96345-generic";
-+
-+	ubus@fffe0000 {
-+	};
-+};
-diff --git a/arch/mips/bcm63xx/dts/bcm96348_generic.dts b/arch/mips/bcm63xx/dts/bcm96348_generic.dts
-new file mode 100644
-index 0000000..d3c21a9
---- /dev/null
-+++ b/arch/mips/bcm63xx/dts/bcm96348_generic.dts
-@@ -0,0 +1,21 @@
-+/dts-v1/;
-+
-+/*
-+ * Fallback Device Tree Source for Broadcom BCM6348 based boards
-+ *
-+ * Copyright (C) 2012 Jonas Gorski <jonas.gorski@gmail.com>
-+ *
-+ * This file is licensed under the terms of the GNU General Public License
-+ * version 2.  This program is licensed "as is" without any warranty of any
-+ * kind, whether express or implied.
-+ */
-+
-+/include/ "bcm6348.dtsi"
-+
-+/ {
-+	model = "Generic BCM6348 board";
-+	compatible = "bcm96348-generic";
-+
-+	ubus@fffe0000 {
-+	};
-+};
-diff --git a/arch/mips/bcm63xx/dts/bcm96358_generic.dts b/arch/mips/bcm63xx/dts/bcm96358_generic.dts
-new file mode 100644
-index 0000000..7db5b8f
---- /dev/null
-+++ b/arch/mips/bcm63xx/dts/bcm96358_generic.dts
-@@ -0,0 +1,21 @@
-+/dts-v1/;
-+
-+/*
-+ * Fallback Device Tree Source for Broadcom BCM6358 based boards
-+ *
-+ * Copyright (C) 2012 Jonas Gorski <jonas.gorski@gmail.com>
-+ *
-+ * This file is licensed under the terms of the GNU General Public License
-+ * version 2.  This program is licensed "as is" without any warranty of any
-+ * kind, whether express or implied.
-+ */
-+
-+/include/ "bcm6358.dtsi"
-+
-+/ {
-+	model = "Generic BCM6358 board";
-+	compatible = "bcm96358-generic";
-+
-+	ubus@fffe0000 {
-+	};
-+};
-diff --git a/arch/mips/bcm63xx/dts/bcm96368_generic.dts b/arch/mips/bcm63xx/dts/bcm96368_generic.dts
-new file mode 100644
-index 0000000..a5c79a6
---- /dev/null
-+++ b/arch/mips/bcm63xx/dts/bcm96368_generic.dts
-@@ -0,0 +1,21 @@
-+/dts-v1/;
-+
-+/*
-+ * Fallback Device Tree Source for Broadcom BCM6368 based boards
-+ *
-+ * Copyright (C) 2012 Jonas Gorski <jonas.gorski@gmail.com>
-+ *
-+ * This file is licensed under the terms of the GNU General Public License
-+ * version 2.  This program is licensed "as is" without any warranty of any
-+ * kind, whether express or implied.
-+ */
-+
-+/include/ "bcm6368.dtsi"
-+
-+/ {
-+	model = "Generic BCM6368 board";
-+	compatible = "bcm96368-generic";
-+
-+	ubus@10000000 {
-+	};
-+};
-diff --git a/arch/mips/bcm63xx/setup.c b/arch/mips/bcm63xx/setup.c
-index 8712354..b1fa63d 100644
---- a/arch/mips/bcm63xx/setup.c
-+++ b/arch/mips/bcm63xx/setup.c
-@@ -209,9 +209,16 @@ void __init device_tree_init(void)
+diff --git a/drivers/net/ethernet/broadcom/bcm63xx_enet.c b/drivers/net/ethernet/broadcom/bcm63xx_enet.c
+index c7ca7ec..9449e13 100644
+--- a/drivers/net/ethernet/broadcom/bcm63xx_enet.c
++++ b/drivers/net/ethernet/broadcom/bcm63xx_enet.c
+@@ -1677,7 +1677,7 @@ static int __devinit bcm_enet_probe(struct platform_device *pdev)
+ 		ret = PTR_ERR(priv->mac_clk);
+ 		goto out_unmap;
+ 	}
+-	clk_enable(priv->mac_clk);
++	clk_prepare_enable(priv->mac_clk);
  
- 	devtree = find_compatible_tree(of_ids[0].compatible);
- 	if (!devtree) {
--		pr_warn("no compatible device tree found for board %s\n"
-+		pr_warn("no compatible device tree found for board %s, using fallback tree\n",
- 			of_ids[0].compatible);
--		return;
-+
-+		snprintf(of_ids[0].compatible, sizeof(of_ids[0].compatible),
-+			 "bcm9%x-generic", bcm63xx_get_cpu_id());
-+		devtree = find_compatible_tree(of_ids[0].compatible);
-+
-+		if (!devtree)
-+			panic("no fallback tree available for BCM%x!\n",
-+			      bcm63xx_get_cpu_id());
+ 	/* initialize default and fetch platform data */
+ 	priv->rx_ring_size = BCMENET_DEF_RX_DESC;
+@@ -1706,7 +1706,7 @@ static int __devinit bcm_enet_probe(struct platform_device *pdev)
+ 			priv->phy_clk = NULL;
+ 			goto out_put_clk_mac;
+ 		}
+-		clk_enable(priv->phy_clk);
++		clk_prepare_enable(priv->phy_clk);
  	}
  
- 	__dt_setup_arch(devtree);
-@@ -223,10 +230,8 @@ void __init device_tree_init(void)
+ 	/* do minimal hardware init to be able to probe mii bus */
+@@ -1808,12 +1808,12 @@ out_uninit_hw:
+ 	/* turn off mdc clock */
+ 	enet_writel(priv, 0, ENET_MIISC_REG);
+ 	if (priv->phy_clk) {
+-		clk_disable(priv->phy_clk);
++		clk_disable_unprepare(priv->phy_clk);
+ 		clk_put(priv->phy_clk);
+ 	}
  
- int __init bcm63xx_populate_device_tree(void)
- {
--	if (!of_have_populated_dt()) {
--		pr_warn("device tree not available\n");
--		return -ENODEV;
--	}
-+	if (!of_have_populated_dt())
-+		panic("device tree not available\n");
+ out_put_clk_mac:
+-	clk_disable(priv->mac_clk);
++	clk_disable_unprepare(priv->mac_clk);
+ 	clk_put(priv->mac_clk);
  
- 	return of_platform_populate(NULL, of_ids, NULL, NULL);
- }
+ out_unmap:
+@@ -1864,10 +1864,10 @@ static int __devexit bcm_enet_remove(struct platform_device *pdev)
+ 
+ 	/* disable hw block clocks */
+ 	if (priv->phy_clk) {
+-		clk_disable(priv->phy_clk);
++		clk_disable_unprepare(priv->phy_clk);
+ 		clk_put(priv->phy_clk);
+ 	}
+-	clk_disable(priv->mac_clk);
++	clk_disable_unprepare(priv->mac_clk);
+ 	clk_put(priv->mac_clk);
+ 
+ 	platform_set_drvdata(pdev, NULL);
 -- 
 1.7.2.5

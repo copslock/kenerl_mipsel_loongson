@@ -1,45 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Nov 2012 09:37:49 +0100 (CET)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:58682 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822197Ab2KLIf3nJjFy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Nov 2012 09:35:29 +0100
-Received: by mail-pa0-f49.google.com with SMTP id bi5so3805949pad.36
-        for <multiple recipients>; Mon, 12 Nov 2012 00:35:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
-         :references;
-        bh=+yNlKTzVg36FhsYqrYu2G7Go54ZoSXZjd8kv4Bi+Lb8=;
-        b=FhIu91mhkjXK/6vPPGXnAfMv4hHpsioqv5DmjYZ12iITLG6GvR8SJQmCCVcv755DEs
-         RB1EMcVMDTt7CFTkbJ3Nvcilw7rjTAdj9ovmtZqwG6Hx9ZPAq+rKUGAilJxzg2aRkSKj
-         RFet1hoC7fcMvEFTQnZRRjC8o9DfUZeF50XY5HyVfvPh6CwIHaJiw8/uB4/CMGNK07Ht
-         7oKy1suNYvE4EuXwcEIlBSnsC2Hw12tvBz0gf2NB6GlP4h2cf4w5DyQ7vIdh2ed15CE0
-         k5YVKqKLJdkhBQZPU2frro0CI8sRh3Wjb9a1DWAFEHIIZOXcxJbhQqYpCr6JF6CbELC/
-         sZmg==
-Received: by 10.66.88.133 with SMTP id bg5mr52985914pab.80.1352709328790;
-        Mon, 12 Nov 2012 00:35:28 -0800 (PST)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id k4sm3967393pax.7.2012.11.12.00.35.21
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 12 Nov 2012 00:35:27 -0800 (PST)
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH V8 13/13] MIPS: Loongson: Add a Loongson-3 default config file
-Date:   Mon, 12 Nov 2012 16:32:49 +0800
-Message-Id: <1352709169-3481-14-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 1.7.7.3
-In-Reply-To: <1352709169-3481-1-git-send-email-chenhc@lemote.com>
-References: <1352709169-3481-1-git-send-email-chenhc@lemote.com>
-X-archive-position: 34965
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Nov 2012 10:50:32 +0100 (CET)
+Received: from zmc.proxad.net ([212.27.53.206]:40339 "EHLO zmc.proxad.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823017Ab2KLJucFXFqO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 12 Nov 2012 10:50:32 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by zmc.proxad.net (Postfix) with ESMTP id 8400FB138D4;
+        Mon, 12 Nov 2012 10:50:31 +0100 (CET)
+X-Virus-Scanned: amavisd-new at localhost
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id tgpRlyThBlX8; Mon, 12 Nov 2012 10:50:30 +0100 (CET)
+Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
+        by zmc.proxad.net (Postfix) with ESMTPSA id BEDEB2C847A;
+        Mon, 12 Nov 2012 10:50:30 +0100 (CET)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     ralf@linux-mips.org
+Cc:     blogic@openwrt.org, linux-mips@linux-mips.org,
+        Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH] MIPS: BCM63XX: fix BCM6345 clocks bits
+Date:   Mon, 12 Nov 2012 10:48:45 +0100
+Message-Id: <1352713725-11727-1-git-send-email-florian@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 34966
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,347 +39,50 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Signed-off-by: Hongliang Tao <taohl@lemote.com>
-Signed-off-by: Hua Yan <yanh@lemote.com>
----
- arch/mips/configs/loongson3_defconfig |  328 +++++++++++++++++++++++++++++++++
- 1 files changed, 328 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/configs/loongson3_defconfig
+BCM6345 has an intermediate 16-bits wide test control register between the
+peripheral identifier register, and its clock control register is only 16-bits
+wide contrary to other platforms where it is 32-bits wide. By shifting all
+clocks bits by 16-bits to the left we ensure they get written to the proper
+clock control register, without adding specific BCM6345 handling in the clock
+code.
 
-diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
-new file mode 100644
-index 0000000..c04a966
---- /dev/null
-+++ b/arch/mips/configs/loongson3_defconfig
-@@ -0,0 +1,328 @@
-+CONFIG_MACH_LOONGSON=y
-+CONFIG_LEMOTE_MACH3A=y
-+CONFIG_LOONGSON_BIGMEM=y
-+CONFIG_CPU_LOONGSON3=y
-+CONFIG_64BIT=y
-+CONFIG_PAGE_SIZE_16KB=y
-+CONFIG_SPARSEMEM_MANUAL=y
-+CONFIG_KSM=y
-+CONFIG_SMP=y
-+CONFIG_NR_CPUS=4
-+CONFIG_HZ_256=y
-+CONFIG_PREEMPT=y
-+CONFIG_KEXEC=y
-+CONFIG_EXPERIMENTAL=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_KERNEL_LZMA=y
-+CONFIG_SYSVIPC=y
-+CONFIG_POSIX_MQUEUE=y
-+CONFIG_AUDIT=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_BSD_PROCESS_ACCT=y
-+CONFIG_BSD_PROCESS_ACCT_V3=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_CPUSETS=y
-+CONFIG_RESOURCE_COUNTERS=y
-+CONFIG_MEMCG=y
-+CONFIG_MEMCG_SWAP=y
-+CONFIG_BLK_CGROUP=y
-+CONFIG_SCHED_AUTOGROUP=y
-+CONFIG_SYSFS_DEPRECATED=y
-+CONFIG_RELAY=y
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_RD_BZIP2=y
-+CONFIG_RD_LZMA=y
-+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
-+CONFIG_SYSCTL_SYSCALL=y
-+CONFIG_EMBEDDED=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODULE_FORCE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+CONFIG_BLK_DEV_INTEGRITY=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_IOSCHED_DEADLINE=m
-+CONFIG_CFQ_GROUP_IOSCHED=y
-+CONFIG_PCI=y
-+CONFIG_HT_PCI=y
-+CONFIG_PCIEPORTBUS=y
-+CONFIG_HOTPLUG_PCI_PCIE=m
-+# CONFIG_PCIEAER is not set
-+CONFIG_PCIEASPM_PERFORMANCE=y
-+CONFIG_HOTPLUG_PCI=y
-+CONFIG_HOTPLUG_PCI_SHPC=m
-+CONFIG_BINFMT_MISC=m
-+CONFIG_MIPS32_COMPAT=y
-+CONFIG_MIPS32_O32=y
-+CONFIG_MIPS32_N32=y
-+CONFIG_PM_RUNTIME=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_XFRM_USER=y
-+CONFIG_NET_KEY=y
-+CONFIG_INET=y
-+CONFIG_IP_MULTICAST=y
-+CONFIG_IP_ADVANCED_ROUTER=y
-+CONFIG_IP_MULTIPLE_TABLES=y
-+CONFIG_IP_ROUTE_MULTIPATH=y
-+CONFIG_IP_ROUTE_VERBOSE=y
-+CONFIG_NETFILTER=y
-+CONFIG_NETFILTER_NETLINK_LOG=m
-+CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
-+CONFIG_NETFILTER_XT_TARGET_MARK=m
-+CONFIG_NETFILTER_XT_TARGET_NFQUEUE=m
-+CONFIG_NETFILTER_XT_MATCH_COMMENT=m
-+CONFIG_NETFILTER_XT_MATCH_DCCP=m
-+CONFIG_NETFILTER_XT_MATCH_ESP=m
-+CONFIG_NETFILTER_XT_MATCH_LENGTH=m
-+CONFIG_NETFILTER_XT_MATCH_LIMIT=m
-+CONFIG_NETFILTER_XT_MATCH_MAC=m
-+CONFIG_NETFILTER_XT_MATCH_MARK=m
-+CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
-+CONFIG_NETFILTER_XT_MATCH_PKTTYPE=m
-+CONFIG_NETFILTER_XT_MATCH_QUOTA=m
-+CONFIG_NETFILTER_XT_MATCH_REALM=m
-+CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
-+CONFIG_NETFILTER_XT_MATCH_STRING=m
-+CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
-+CONFIG_IP_VS=m
-+CONFIG_IP_NF_QUEUE=m
-+CONFIG_IP_NF_IPTABLES=m
-+CONFIG_IP_NF_MATCH_AH=m
-+CONFIG_IP_NF_MATCH_ECN=m
-+CONFIG_IP_NF_MATCH_TTL=m
-+CONFIG_IP_NF_FILTER=m
-+CONFIG_IP_NF_TARGET_REJECT=m
-+CONFIG_IP_NF_TARGET_ULOG=m
-+CONFIG_IP_NF_MANGLE=m
-+CONFIG_IP_NF_TARGET_ECN=m
-+CONFIG_IP_NF_TARGET_TTL=m
-+CONFIG_IP_NF_RAW=m
-+CONFIG_IP_NF_ARPTABLES=m
-+CONFIG_IP_NF_ARPFILTER=m
-+CONFIG_IP_NF_ARP_MANGLE=m
-+CONFIG_IP_SCTP=m
-+CONFIG_L2TP=m
-+CONFIG_CFG80211=m
-+CONFIG_CFG80211_WEXT=y
-+CONFIG_LIB80211=y
-+CONFIG_MAC80211=m
-+CONFIG_RFKILL=m
-+CONFIG_RFKILL_INPUT=y
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+CONFIG_MTD=m
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_BLK_DEV_CRYPTOLOOP=y
-+CONFIG_BLK_DEV_RAM=y
-+CONFIG_BLK_DEV_RAM_SIZE=8192
-+CONFIG_RAID_ATTRS=m
-+CONFIG_SCSI_TGT=y
-+CONFIG_BLK_DEV_SD=y
-+CONFIG_BLK_DEV_SR=y
-+CONFIG_CHR_DEV_SG=y
-+CONFIG_CHR_DEV_SCH=m
-+CONFIG_SCSI_MULTI_LUN=y
-+CONFIG_SCSI_CONSTANTS=y
-+CONFIG_SCSI_LOGGING=y
-+CONFIG_SCSI_SPI_ATTRS=m
-+CONFIG_SCSI_FC_ATTRS=m
-+CONFIG_SCSI_ISCSI_ATTRS=m
-+CONFIG_ATA=y
-+CONFIG_SATA_AHCI=y
-+CONFIG_PATA_ATIIXP=y
-+CONFIG_MD=y
-+CONFIG_BLK_DEV_DM=m
-+CONFIG_DM_CRYPT=m
-+CONFIG_DM_SNAPSHOT=m
-+CONFIG_DM_MIRROR=m
-+CONFIG_DM_ZERO=m
-+CONFIG_NETDEVICES=y
-+CONFIG_TUN=m
-+# CONFIG_NET_VENDOR_3COM is not set
-+# CONFIG_NET_VENDOR_ADAPTEC is not set
-+# CONFIG_NET_VENDOR_ALTEON is not set
-+# CONFIG_NET_VENDOR_AMD is not set
-+# CONFIG_NET_VENDOR_ATHEROS is not set
-+# CONFIG_NET_VENDOR_BROADCOM is not set
-+# CONFIG_NET_VENDOR_BROCADE is not set
-+# CONFIG_NET_VENDOR_CHELSIO is not set
-+# CONFIG_NET_VENDOR_CIRRUS is not set
-+# CONFIG_NET_VENDOR_CISCO is not set
-+# CONFIG_NET_VENDOR_DEC is not set
-+# CONFIG_NET_VENDOR_DLINK is not set
-+# CONFIG_NET_VENDOR_EMULEX is not set
-+# CONFIG_NET_VENDOR_EXAR is not set
-+# CONFIG_NET_VENDOR_FUJITSU is not set
-+# CONFIG_NET_VENDOR_HP is not set
-+CONFIG_E1000=y
-+CONFIG_E1000E=y
-+CONFIG_IGB=y
-+# CONFIG_NET_VENDOR_I825XX is not set
-+# CONFIG_NET_VENDOR_MARVELL is not set
-+# CONFIG_NET_VENDOR_MELLANOX is not set
-+# CONFIG_NET_VENDOR_MICREL is not set
-+# CONFIG_NET_VENDOR_MYRI is not set
-+# CONFIG_NET_VENDOR_NATSEMI is not set
-+# CONFIG_NET_VENDOR_NVIDIA is not set
-+# CONFIG_NET_VENDOR_OKI is not set
-+# CONFIG_NET_PACKET_ENGINE is not set
-+# CONFIG_NET_VENDOR_QLOGIC is not set
-+# CONFIG_NET_VENDOR_RACAL is not set
-+CONFIG_R8169=y
-+# CONFIG_NET_VENDOR_RDC is not set
-+# CONFIG_NET_VENDOR_SEEQ is not set
-+# CONFIG_NET_VENDOR_SILAN is not set
-+# CONFIG_NET_VENDOR_SIS is not set
-+# CONFIG_NET_VENDOR_SMSC is not set
-+# CONFIG_NET_VENDOR_STMICRO is not set
-+# CONFIG_NET_VENDOR_SUN is not set
-+# CONFIG_NET_VENDOR_TEHUTI is not set
-+# CONFIG_NET_VENDOR_TI is not set
-+# CONFIG_NET_VENDOR_TOSHIBA is not set
-+# CONFIG_NET_VENDOR_VIA is not set
-+# CONFIG_NET_VENDOR_WIZNET is not set
-+CONFIG_PPP=m
-+CONFIG_PPP_BSDCOMP=m
-+CONFIG_PPP_DEFLATE=m
-+CONFIG_PPP_FILTER=y
-+CONFIG_PPP_MPPE=m
-+CONFIG_PPP_MULTILINK=y
-+CONFIG_PPPOE=m
-+CONFIG_PPPOL2TP=m
-+CONFIG_PPP_ASYNC=m
-+CONFIG_PPP_SYNC_TTY=m
-+CONFIG_ATH_COMMON=m
-+# CONFIG_ATH9K_BTCOEX_SUPPORT is not set
-+CONFIG_ATH9K=m
-+CONFIG_INPUT_POLLDEV=m
-+CONFIG_INPUT_SPARSEKMAP=y
-+CONFIG_INPUT_EVDEV=y
-+CONFIG_KEYBOARD_XTKBD=m
-+CONFIG_MOUSE_PS2_SENTELIC=y
-+CONFIG_MOUSE_SERIAL=m
-+CONFIG_INPUT_MISC=y
-+CONFIG_INPUT_UINPUT=m
-+CONFIG_SERIO_SERPORT=m
-+CONFIG_SERIO_RAW=m
-+CONFIG_LEGACY_PTY_COUNT=16
-+CONFIG_SERIAL_NONSTANDARD=y
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_NR_UARTS=16
-+CONFIG_SERIAL_8250_EXTENDED=y
-+CONFIG_SERIAL_8250_MANY_PORTS=y
-+CONFIG_SERIAL_8250_SHARE_IRQ=y
-+CONFIG_SERIAL_8250_RSA=y
-+CONFIG_HW_RANDOM=y
-+CONFIG_RAW_DRIVER=m
-+CONFIG_I2C_CHARDEV=y
-+CONFIG_I2C_PIIX4=y
-+CONFIG_SENSORS_LM75=m
-+CONFIG_SENSORS_LM93=m
-+CONFIG_MEDIA_SUPPORT=m
-+CONFIG_MEDIA_CAMERA_SUPPORT=y
-+CONFIG_MEDIA_USB_SUPPORT=y
-+CONFIG_USB_VIDEO_CLASS=m
-+CONFIG_DRM=y
-+CONFIG_DRM_RADEON=y
-+CONFIG_DRM_RADEON_KMS=y
-+CONFIG_VIDEO_OUTPUT_CONTROL=y
-+CONFIG_FB_RADEON=y
-+CONFIG_LCD_CLASS_DEVICE=y
-+CONFIG_LCD_PLATFORM=m
-+CONFIG_BACKLIGHT_GENERIC=m
-+# CONFIG_VGA_CONSOLE is not set
-+CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
-+CONFIG_LOGO=y
-+CONFIG_SOUND=y
-+CONFIG_SND=m
-+CONFIG_SND_SEQUENCER=m
-+CONFIG_SND_SEQ_DUMMY=m
-+# CONFIG_SND_ISA is not set
-+CONFIG_SND_HDA_INTEL=m
-+CONFIG_SND_HDA_PATCH_LOADER=y
-+# CONFIG_SND_USB is not set
-+CONFIG_HID_A4TECH=m
-+CONFIG_HID_SUNPLUS=m
-+CONFIG_USB=y
-+CONFIG_USB_MON=y
-+CONFIG_USB_XHCI_HCD=m
-+CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_EHCI_ROOT_HUB_TT=y
-+CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_UHCI_HCD=m
-+CONFIG_USB_STORAGE=m
-+CONFIG_USB_SERIAL=m
-+CONFIG_USB_SERIAL_OPTION=m
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_CMOS=y
-+CONFIG_DMADEVICES=y
-+CONFIG_PM_DEVFREQ=y
-+CONFIG_DEVFREQ_GOV_SIMPLE_ONDEMAND=y
-+CONFIG_DEVFREQ_GOV_PERFORMANCE=y
-+CONFIG_DEVFREQ_GOV_POWERSAVE=y
-+CONFIG_DEVFREQ_GOV_USERSPACE=y
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT2_FS_XATTR=y
-+CONFIG_EXT2_FS_POSIX_ACL=y
-+CONFIG_EXT2_FS_SECURITY=y
-+CONFIG_EXT3_FS=y
-+CONFIG_EXT3_FS_POSIX_ACL=y
-+CONFIG_EXT3_FS_SECURITY=y
-+CONFIG_EXT4_FS=y
-+CONFIG_EXT4_FS_POSIX_ACL=y
-+CONFIG_EXT4_FS_SECURITY=y
-+CONFIG_QUOTA=y
-+# CONFIG_PRINT_QUOTA_WARNING is not set
-+CONFIG_AUTOFS4_FS=y
-+CONFIG_FUSE_FS=m
-+CONFIG_ISO9660_FS=m
-+CONFIG_JOLIET=y
-+CONFIG_MSDOS_FS=m
-+CONFIG_VFAT_FS=m
-+CONFIG_FAT_DEFAULT_CODEPAGE=936
-+CONFIG_FAT_DEFAULT_IOCHARSET="gb2312"
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_CRAMFS=m
-+CONFIG_SQUASHFS=y
-+CONFIG_SQUASHFS_XATTR=y
-+CONFIG_NFS_FS=m
-+CONFIG_NFS_V3_ACL=y
-+CONFIG_NFS_V4=m
-+CONFIG_NFSD=m
-+CONFIG_NFSD_V3_ACL=y
-+CONFIG_NFSD_V4=y
-+CONFIG_CIFS=m
-+CONFIG_NLS_CODEPAGE_437=y
-+CONFIG_NLS_CODEPAGE_936=y
-+CONFIG_NLS_ASCII=y
-+CONFIG_NLS_UTF8=y
-+CONFIG_PRINTK_TIME=y
-+CONFIG_FRAME_WARN=1024
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_STRIP_ASM_SYMS=y
-+# CONFIG_SCHED_DEBUG is not set
-+# CONFIG_DEBUG_PREEMPT is not set
-+# CONFIG_RCU_CPU_STALL_VERBOSE is not set
-+# CONFIG_FTRACE is not set
-+CONFIG_CRYPTO_AUTHENC=m
-+CONFIG_CRYPTO_HMAC=y
-+CONFIG_CRYPTO_MD5=y
-+CONFIG_CRYPTO_MICHAEL_MIC=m
-+CONFIG_CRYPTO_SHA512=m
-+CONFIG_CRYPTO_TGR192=m
-+CONFIG_CRYPTO_WP512=m
-+CONFIG_CRYPTO_ANUBIS=m
-+CONFIG_CRYPTO_BLOWFISH=m
-+CONFIG_CRYPTO_CAST5=m
-+CONFIG_CRYPTO_CAST6=m
-+CONFIG_CRYPTO_KHAZAD=m
-+CONFIG_CRYPTO_SERPENT=m
-+CONFIG_CRYPTO_TEA=m
-+CONFIG_CRYPTO_TWOFISH=m
-+CONFIG_CRYPTO_DEFLATE=m
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+There is nothing currently using BCM6345 clocks, so this is not 3.7-rc
+material, but 3.8.
+
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
+
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+index 12963d0..57597ee 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+@@ -53,13 +53,18 @@
+ 					CKCTL_6338_SAR_EN |		\
+ 					CKCTL_6338_SPI_EN)
+ 
+-#define CKCTL_6345_CPU_EN		(1 << 0)
+-#define CKCTL_6345_BUS_EN		(1 << 1)
+-#define CKCTL_6345_EBI_EN		(1 << 2)
+-#define CKCTL_6345_UART_EN		(1 << 3)
+-#define CKCTL_6345_ADSLPHY_EN		(1 << 4)
+-#define CKCTL_6345_ENET_EN		(1 << 7)
+-#define CKCTL_6345_USBH_EN		(1 << 8)
++/* BCM6345 clock bits are shifted by 16 on the left, because of the test
++ * control register which is 16-bits wide. That way we do not have any
++ * specific BCM6345 code for handling clocks, and writing 0 to the test
++ * control register is fine.
++ */
++#define CKCTL_6345_CPU_EN		(1 << 16)
++#define CKCTL_6345_BUS_EN		(1 << 17)
++#define CKCTL_6345_EBI_EN		(1 << 18)
++#define CKCTL_6345_UART_EN		(1 << 19)
++#define CKCTL_6345_ADSLPHY_EN		(1 << 20)
++#define CKCTL_6345_ENET_EN		(1 << 23)
++#define CKCTL_6345_USBH_EN		(1 << 24)
+ 
+ #define CKCTL_6345_ALL_SAFE_EN		(CKCTL_6345_ENET_EN |	\
+ 					CKCTL_6345_USBH_EN |	\
 -- 
-1.7.7.3
+1.7.10.4

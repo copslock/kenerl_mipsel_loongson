@@ -1,63 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Nov 2012 22:28:21 +0100 (CET)
-Received: from mga02.intel.com ([134.134.136.20]:56249 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823426Ab2KMV2UAK9fZ convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Nov 2012 22:28:20 +0100
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga101.jf.intel.com with ESMTP; 13 Nov 2012 13:28:12 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.83,768,1352102400"; 
-   d="scan'208";a="241671630"
-Received: from orsmsx105.amr.corp.intel.com ([10.22.225.132])
-  by orsmga002.jf.intel.com with ESMTP; 13 Nov 2012 13:28:12 -0800
-Received: from orsmsx152.amr.corp.intel.com (10.22.226.39) by
- ORSMSX105.amr.corp.intel.com (10.22.225.132) with Microsoft SMTP Server (TLS)
- id 14.1.355.2; Tue, 13 Nov 2012 13:28:11 -0800
-Received: from orsmsx108.amr.corp.intel.com ([169.254.9.119]) by
- ORSMSX152.amr.corp.intel.com ([169.254.8.48]) with mapi id 14.01.0355.002;
- Tue, 13 Nov 2012 13:28:11 -0800
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     James Hogan <james.hogan@imgtec.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     "uclinux-dist-devel@blackfin.uclinux.org" 
-        <uclinux-dist-devel@blackfin.uclinux.org>,
-        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Frysinger <vapier@gentoo.org>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Mundt <lethal@linux-sh.org>
-Subject: RE: [PATCH 1/1] arch Kconfig: remove references to IRQ_PER_CPU
-Thread-Topic: [PATCH 1/1] arch Kconfig: remove references to IRQ_PER_CPU
-Thread-Index: AQHNwZaYI0r8PGS1HEq9XKPGYxEB6JfoR+uQ
-Date:   Tue, 13 Nov 2012 21:28:11 +0000
-Message-ID: <3908561D78D1C84285E8C5FCA982C28F19D5F453@ORSMSX108.amr.corp.intel.com>
-References: <1352807948-26920-1-git-send-email-james.hogan@imgtec.com>
-In-Reply-To: <1352807948-26920-1-git-send-email-james.hogan@imgtec.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.22.254.138]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-archive-position: 34990
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Nov 2012 23:17:45 +0100 (CET)
+Received: from shards.monkeyblade.net ([149.20.54.216]:48043 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823690Ab2KMWRnt5FNH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Nov 2012 23:17:43 +0100
+Received: from localhost (cpe-66-108-117-132.nyc.res.rr.com [66.108.117.132])
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 64A0F589DBC;
+        Tue, 13 Nov 2012 14:17:40 -0800 (PST)
+Date:   Tue, 13 Nov 2012 17:17:36 -0500 (EST)
+Message-Id: <20121113.171736.561094209116852795.davem@davemloft.net>
+To:     joe@perches.com
+Cc:     rob@landley.net, harryxiyou@gmail.com, jdike@addtoit.com,
+        richard@nod.at, linux@arm.linux.org.uk, ralf@linux-mips.org,
+        benh@kernel.crashing.org, paulus@samba.org, chris@zankel.net,
+        jcmvbkbc@gmail.com, isdn@linux-pingi.de, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        xiyoulinuxkernelgroup@googlegroups.com, linux-kernel@zh-kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org,
+        user-mode-linux-devel@lists.sourceforge.net,
+        user-mode-linux-user@lists.sourceforge.net,
+        linux-xtensa@linux-xtensa.org, netdev@vger.kernel.org
+Subject: Re: [PATCH V2] wanrouter: Remove it and the drivers that depend on
+ it
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1352837845.12850.3.camel@joe-AO722>
+References: <67fe0c5701a8c7cfe06b178cf04b1c5c06592714.1352548454.git.joe@perches.com>
+        <20121113.144406.1610017702502358739.davem@davemloft.net>
+        <1352837845.12850.3.camel@joe-AO722>
+X-Mailer: Mew version 6.5 on Emacs 24.1 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34991
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tony.luck@intel.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,10 +49,42 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-> But IRQ_PER_CPU wasn't removed from any of the architecture Kconfig
-> files where it was defined or selected. It's completely unused so remove
-> the remaining references.
+From: Joe Perches <joe@perches.com>
+Date: Tue, 13 Nov 2012 12:17:25 -0800
 
-Acked-by: Tony Luck <tony.luck@intel.com>
+> That seems an odd workflow as it leaves dangling CONFIG_<foo>
+> options set, but I guess it doesn't hurt so here it is.
 
-[Hope someone picks up this whole patch ... otherwise I can take the ia64 hunk]
+As you said it's harmless, and more importantly it avoids
+unnecessary conflicts.
+
+> I just removed the modified arch/.../<foo>defconfig files.
+
+Something is not right here:
+
+[davem@drr net-next]$ git am --signoff V2-wanrouter-Remove-it-and-the-drivers-that-depend-on-it.patch 
+Applying: wanrouter: Remove it and the drivers that depend on it
+error: removal patch leaves file contents
+error: net/wanrouter/Kconfig: patch does not apply
+error: removal patch leaves file contents
+error: net/wanrouter/Makefile: patch does not apply
+error: removal patch leaves file contents
+error: net/wanrouter/patchlevel: patch does not apply
+error: removal patch leaves file contents
+error: net/wanrouter/wanmain.c: patch does not apply
+error: removal patch leaves file contents
+error: net/wanrouter/wanproc.c: patch does not apply
+error: removal patch leaves file contents
+error: drivers/net/wan/cycx_drv.c: patch does not apply
+error: removal patch leaves file contents
+error: drivers/net/wan/cycx_main.c: patch does not apply
+error: removal patch leaves file contents
+error: drivers/net/wan/cycx_x25.c: patch does not apply
+error: removal patch leaves file contents
+error: include/linux/cyclomx.h: patch does not apply
+error: removal patch leaves file contents
+error: include/linux/cycx_drv.h: patch does not apply
+error: removal patch leaves file contents
+error: include/linux/wanrouter.h: patch does not apply
+error: removal patch leaves file contents
+error: include/uapi/linux/wanrouter.h: patch does not apply

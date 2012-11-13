@@ -1,48 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Nov 2012 20:15:31 +0100 (CET)
-Received: from dns1.mips.com ([12.201.5.69]:38316 "EHLO dns1.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823910Ab2KMTPT46yk1 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Nov 2012 20:15:19 +0100
-Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id qADJFDVn004768
-        for <linux-mips@linux-mips.org>; Tue, 13 Nov 2012 11:15:13 -0800
-X-WSS-ID: 0MDFXHA-01-0T0-02
-X-M-MSG: 
-Received: from exchdb01.mips.com (unknown [192.168.36.84])
-        (using TLSv1 with cipher AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mailgate1.mips.com (Postfix) with ESMTP id 23B8736465E
-        for <linux-mips@linux-mips.org>; Tue, 13 Nov 2012 11:15:09 -0800 (PST)
-Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
- exchhub01.mips.com ([::1]) with mapi id 14.01.0270.001; Tue, 13 Nov 2012
- 11:15:08 -0800
-From:   "Hill, Steven" <sjhill@mips.com>
-To:     kbuild test robot <fengguang.wu@intel.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: RE: [mips-sjhill:mti-next 7/16] arch/mips/kernel/traps.c:1822:6:
- warning: "cpu_data" is not defined
-Thread-Topic: [mips-sjhill:mti-next 7/16] arch/mips/kernel/traps.c:1822:6:
- warning: "cpu_data" is not defined
-Thread-Index: AQHNwXb6jboQW5XOFE+xOVi1ET0GmJfoI3Cy
-Date:   Tue, 13 Nov 2012 19:15:07 +0000
-Message-ID: <31E06A9FC96CEC488B43B19E2957C1B801146A7AA5@exchdb03.mips.com>
-References: <50a20174.JL3AqbvMzr+q2Po9%fengguang.wu@intel.com>
-In-Reply-To: <50a20174.JL3AqbvMzr+q2Po9%fengguang.wu@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.36.79]
-x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-x-ems-stamp: eQ30GX93IQYjrIT7vPZbiw==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-archive-position: 34987
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Nov 2012 20:44:14 +0100 (CET)
+Received: from shards.monkeyblade.net ([149.20.54.216]:46058 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823145Ab2KMToNMDMM- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Nov 2012 20:44:13 +0100
+Received: from localhost (cpe-66-108-117-132.nyc.res.rr.com [66.108.117.132])
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 843A9589CBF;
+        Tue, 13 Nov 2012 11:44:10 -0800 (PST)
+Date:   Tue, 13 Nov 2012 14:44:06 -0500 (EST)
+Message-Id: <20121113.144406.1610017702502358739.davem@davemloft.net>
+To:     joe@perches.com
+Cc:     rob@landley.net, harryxiyou@gmail.com, jdike@addtoit.com,
+        richard@nod.at, linux@arm.linux.org.uk, ralf@linux-mips.org,
+        benh@kernel.crashing.org, paulus@samba.org, chris@zankel.net,
+        jcmvbkbc@gmail.com, isdn@linux-pingi.de, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        xiyoulinuxkernelgroup@googlegroups.com, linux-kernel@zh-kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org,
+        user-mode-linux-devel@lists.sourceforge.net,
+        user-mode-linux-user@lists.sourceforge.net,
+        linux-xtensa@linux-xtensa.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] wanrouter: Remove it and the drivers that depend on it
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <67fe0c5701a8c7cfe06b178cf04b1c5c06592714.1352548454.git.joe@perches.com>
+References: <67fe0c5701a8c7cfe06b178cf04b1c5c06592714.1352548454.git.joe@perches.com>
+X-Mailer: Mew version 6.5 on Emacs 24.1 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-archive-position: 34988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@mips.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,4 +46,23 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Fixed and pushed to 'mti-next' branch.
+From: Joe Perches <joe@perches.com>
+Date: Sat, 10 Nov 2012 06:20:55 -0800
+
+> Remove wanrouter as it's obsolete and has not been updated
+> by sangoma since 2.4.3 or so and it's not used anymore.
+> 
+> Remove obsolete cyclomx drivers.
+> Update defconfig files that enable wanrouter.
+> Update files that include now deleted wanrouter bits.
+> 
+> Signed-off-by: Joe Perches <joe@perches.com>
+
+I'm fine with this change, except the arch defconfig bits.
+
+We've been leaving those alone, and letting the arch maintainers
+do the updates themselves periodically.
+
+Please resubmit this with those parts removed.
+
+Thanks.

@@ -1,46 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Nov 2012 12:27:05 +0100 (CET)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:35143 "EHLO
-        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823099Ab2KML1C6BWDs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Nov 2012 12:27:02 +0100
-Received: by mail-bk0-f49.google.com with SMTP id j4so2785715bkw.36
-        for <multiple recipients>; Tue, 13 Nov 2012 03:26:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:organization:user-agent
-         :in-reply-to:references:mime-version:content-transfer-encoding
-         :content-type;
-        bh=2s38WEZFZ1gLTnWzKoM0QX8B7GA+MUPnaehQ+xSvl44=;
-        b=NKvsSLgVh/pGBXeMVgSrIjK0Dc22lGKlV7Bizpdxj5jHu1GLuullSdEWfCyStXnFMF
-         5dSAYfR30ZTNXeIogywNefdnwo+GGvLmsr+2YOS4H6MiqHSu4x/pchN6F2BY/1iHb7Hd
-         z8mUeobD9qbgrQQpWqhhH8BaaReH/hg3f01Bb/WI5c8Rf9WzugYvTPczudNfq2RDbFE5
-         0cJ6Gke2ndL2OVnUgq82jdMaNDYkALajs45fnvWx2QhlYx9ZcpoZTgvO9yPjoLnQfqJM
-         E9rogg1+8prPiZMEC/bkhPGC/3sKick5g++Ol4hNzRVWx2Q3CFYVA0ExXisiQ2DU3s+u
-         jRRg==
-Received: by 10.204.11.141 with SMTP id t13mr7925639bkt.65.1352806014077;
-        Tue, 13 Nov 2012 03:26:54 -0800 (PST)
-Received: from flexo.localnet (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by mx.google.com with ESMTPS id go4sm4870382bkc.15.2012.11.13.03.26.52
-        (version=SSLv3 cipher=OTHER);
-        Tue, 13 Nov 2012 03:26:53 -0800 (PST)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, blogic@openwrt.org, wuzhangjin@gmail.com
-Subject: Re: [PATCH] MIPS: decompressor: fix build failure on memcpy() in decompress.c
-Date:   Tue, 13 Nov 2012 12:25:15 +0100
-Message-ID: <2522606.hXbg5cgH5o@flexo>
-Organization: OpenWrt
-User-Agent: KMail/4.9.2 (Linux/3.5.0-17-generic; KDE/4.9.2; x86_64; ; )
-In-Reply-To: <1352720818-9192-1-git-send-email-florian@openwrt.org>
-References: <1352720818-9192-1-git-send-email-florian@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Nov 2012 13:01:25 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:56880 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823116Ab2KMMBVIUhGF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Nov 2012 13:01:21 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     <uclinux-dist-devel@blackfin.uclinux.org>,
+        <linux-hexagon@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, <linux-parisc@vger.kernel.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-sh@vger.kernel.org>,
+        <linux-arch@vger.kernel.org>, James Hogan <james.hogan@imgtec.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Frysinger <vapier@gentoo.org>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Mundt <lethal@linux-sh.org>
+Subject: [PATCH 1/1] arch Kconfig: remove references to IRQ_PER_CPU
+Date:   Tue, 13 Nov 2012 11:59:08 +0000
+Message-ID: <1352807948-26920-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 1.7.7.6
+X-OriginalArrivalTime: 13 Nov 2012 11:59:42.0684 (UTC) FILETIME=[5DD0E9C0:01CDC196]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-archive-position: 34982
+Content-Type: text/plain
+X-SEF-Processed: 7_3_0_01181__2012_11_13_12_01_04
+X-archive-position: 34983
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,74 +47,130 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Monday 12 November 2012 12:46:58 Florian Fainelli wrote:
-> The decompress.c file includes linux/kernel.h which causes the following
-> inclusion chain to be pulled:
-> linux/kernel.h ->
-> 	linux/dynamic_debug.h ->
-> 		linux/string.h ->
-> 			asm/string.h
-> 
-> We end up having a the GCC builtin + architecture specific memcpy() expanding
-> into this:
-> 
-> void *({ size_t __len = (size_t n); void *__ret; if
-> (__builtin_constant_p(size_t n) && __len >= 64) __ret = memcpy((void *dest),
-> (const void *src), __len); else __ret = __builtin_memcpy((void *dest), (const
-> void *src), __len); __ret; })
+The IRQ_PER_CPU Kconfig symbol was removed in the following commit:
 
-After some more debugging, this expansion "failure" actually comes from one
-of our OpenWrt patch which allows the use of GCC builtins for memcpy and
-friends. The fix remains valid anyway.
+Commit 6a58fb3bad099076f36f0f30f44507bc3275cdb6 ("genirq: Remove
+CONFIG_IRQ_PER_CPU") merged in v2.6.39-rc1.
 
-> {
->  [memcpy implementation in decompress.c starts here]
->  int i;
->  const char *s = src;
->  char *d = dest;
-> 
->  for (i = 0; i < n; i++)
->   d[i] = s[i];
->  return dest;
-> }
-> 
-> raising the following compilation error:
-> arch/mips/boot/compressed/decompress.c:46:8: error: expected identifier or '('
-> before '{' token
-> 
-> There are at least three possibilities to fix this issue:
-> 
-> 1) define _LINUX_STRING_H_ at the beginning of decompress.c to prevent
->    further linux/string.h definitions and declarations from being used, and add
->    an explicit strstr() declaration for linux/dynamic_debug.h
-> 
-> 2) remove the inclusion of linux/kernel.h because we actually use no definition
->    or declaration from this header file
-> 
-> 3) undefine memcpy or re-define memcpy to memcpy thus resulting in picking up
->    the local memcpy() implementation to this compilation unit
-> 
-> This patch uses the second option which is the less intrusive one.
-> 
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
-> ---
->  arch/mips/boot/compressed/decompress.c |    2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
-> index 5cad0fa..d6c5586 100644
-> --- a/arch/mips/boot/compressed/decompress.c
-> +++ b/arch/mips/boot/compressed/decompress.c
-> @@ -10,9 +10,7 @@
->   * Free Software Foundation;  either version 2 of the  License, or (at your
->   * option) any later version.
->   */
-> -
->  #include <linux/types.h>
-> -#include <linux/kernel.h>
->  
->  #include <asm/addrspace.h>
->  
-> -- 
-> 1.7.10.4
-> 
+But IRQ_PER_CPU wasn't removed from any of the architecture Kconfig
+files where it was defined or selected. It's completely unused so remove
+the remaining references.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Mike Frysinger <vapier@gentoo.org>
+Cc: Richard Kuo <rkuo@codeaurora.org>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: "James E.J. Bottomley" <jejb@parisc-linux.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Paul Mundt <lethal@linux-sh.org>
+---
+Based on v3.7-rc5.
+
+Compile tested defconfigs for bfin, ia64, mips, parisc, powerpc, sh, but
+not hexagon.
+
+Grepped entire tree to check no references to CONFIG_IRQ_PER_CPU, and
+grepped arch/ for Kconfig files referencing IRQ_PER_CPU.
+
+ arch/blackfin/Kconfig |    1 -
+ arch/hexagon/Kconfig  |    1 -
+ arch/ia64/Kconfig     |    1 -
+ arch/mips/Kconfig     |    1 -
+ arch/parisc/Kconfig   |    1 -
+ arch/powerpc/Kconfig  |    1 -
+ arch/sh/Kconfig       |    3 ---
+ 7 files changed, 0 insertions(+), 9 deletions(-)
+
+diff --git a/arch/blackfin/Kconfig b/arch/blackfin/Kconfig
+index b6f3ad5..c709715 100644
+--- a/arch/blackfin/Kconfig
++++ b/arch/blackfin/Kconfig
+@@ -38,7 +38,6 @@ config BLACKFIN
+ 	select HAVE_GENERIC_HARDIRQS
+ 	select GENERIC_ATOMIC64
+ 	select GENERIC_IRQ_PROBE
+-	select IRQ_PER_CPU if SMP
+ 	select USE_GENERIC_SMP_HELPERS if SMP
+ 	select HAVE_NMI_WATCHDOG if NMI_WATCHDOG
+ 	select GENERIC_SMP_IDLE_THREAD
+diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
+index 0744f7d..800dd9c 100644
+--- a/arch/hexagon/Kconfig
++++ b/arch/hexagon/Kconfig
+@@ -12,7 +12,6 @@ config HEXAGON
+ 	# select ARCH_WANT_OPTIONAL_GPIOLIB
+ 	# select ARCH_REQUIRE_GPIOLIB
+ 	# select HAVE_CLK
+-	# select IRQ_PER_CPU
+ 	# select GENERIC_PENDING_IRQ if SMP
+ 	select HAVE_IRQ_WORK
+ 	select GENERIC_ATOMIC64
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index 3279646..00c2e88 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -29,7 +29,6 @@ config IA64
+ 	select ARCH_DISCARD_MEMBLOCK
+ 	select GENERIC_IRQ_PROBE
+ 	select GENERIC_PENDING_IRQ if SMP
+-	select IRQ_PER_CPU
+ 	select GENERIC_IRQ_SHOW
+ 	select ARCH_WANT_OPTIONAL_GPIOLIB
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index dba9390..d47de79 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2197,7 +2197,6 @@ source "mm/Kconfig"
+ config SMP
+ 	bool "Multi-Processing support"
+ 	depends on SYS_SUPPORTS_SMP
+-	select IRQ_PER_CPU
+ 	select USE_GENERIC_SMP_HELPERS
+ 	help
+ 	  This enables support for systems with more than one CPU. If you have
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 11def45..6d37987 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -16,7 +16,6 @@ config PARISC
+ 	select BROKEN_RODATA
+ 	select GENERIC_IRQ_PROBE
+ 	select GENERIC_PCI_IOMAP
+-	select IRQ_PER_CPU
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select GENERIC_SMP_IDLE_THREAD
+ 	select GENERIC_STRNCPY_FROM_USER
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index a902a5c..721dd7b 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -125,7 +125,6 @@ config PPC
+ 	select HAVE_GENERIC_HARDIRQS
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select SPARSE_IRQ
+-	select IRQ_PER_CPU
+ 	select IRQ_DOMAIN
+ 	select GENERIC_IRQ_SHOW
+ 	select GENERIC_IRQ_SHOW_LEVEL
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index babc2b8..6f799ec 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -91,9 +91,6 @@ config GENERIC_CSUM
+ config GENERIC_HWEIGHT
+ 	def_bool y
+ 
+-config IRQ_PER_CPU
+-	def_bool y
+-
+ config GENERIC_GPIO
+ 	def_bool n
+ 
+-- 
+1.7.7.6

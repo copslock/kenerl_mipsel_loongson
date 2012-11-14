@@ -1,39 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2012 13:07:35 +0100 (CET)
-Received: from mail-ob0-f177.google.com ([209.85.214.177]:47529 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2012 13:10:28 +0100 (CET)
+Received: from mail-ob0-f177.google.com ([209.85.214.177]:52122 "EHLO
         mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6824761Ab2KNMHeBdAhn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Nov 2012 13:07:34 +0100
-Received: by mail-ob0-f177.google.com with SMTP id eh20so291048obb.36
-        for <multiple recipients>; Wed, 14 Nov 2012 04:07:27 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S6823910Ab2KNMK0qHQoA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Nov 2012 13:10:26 +0100
+Received: by mail-ob0-f177.google.com with SMTP id eh20so293521obb.36
+        for <multiple recipients>; Wed, 14 Nov 2012 04:10:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type;
-        bh=8b9IfMonOjkwSL0HAqDA9FNELfIncJsRHGK5sHlF9jk=;
-        b=HMxO7qtRdVqQQgB0v+euNEaG/wU39hYTNqNNKriOHqiM+qeWMrset6Khyp+fYOs/ND
-         2SpUQQkS5zbG1evZT2fCWIqte9NwrdAtPaET0GTYR3fYcUh5n9d3ZnkUn8TkXPHFkDmM
-         BwqKLIhK0oS0MY6MyZ+Io4b+9i9MjRxHmW5pnYq3NCuCA45b01+RuXk6Wguen9JUlV2g
-         1gBth1Rwj0y6wfiv1Pn1EYPR7CjavDBYoum/bxpNLyMKlbrDMItnd/D/Mh6oL4xXplin
-         VXE4pGnG1s76L1FGuWbAaTDthRcafp/FKb3Z7jQpYWh4OkcNaShrT5xyioUP4UE1aG6d
-         M1Qg==
-Received: by 10.60.24.7 with SMTP id q7mr19556521oef.108.1352894847632; Wed,
- 14 Nov 2012 04:07:27 -0800 (PST)
+        bh=fRYithsN8hBb16Pk8ExHqfxvhDKVGMcP65cjZC12v0U=;
+        b=iILex9f2McY15gRFVDamiMsrgz8fyuMX6vYvJaNQNbLd81yFGHqAqr0hYPjnjIP2Li
+         wndRObbFB2JHBCBJjyN5d5jNL2wQZAjf92uJVIzAeg6tmCeZOHq3UvE9RnBGEx/iev3i
+         /4S6syScSONzobIGKrB+hrVT63AoZOeZQ0rwkIka6yQnd7onHec9nE2kDCG3Hn+LF1Zm
+         hq+dVx24qmF855904A4z/rwSY6jHODEvxGCyBkmHRuSmI3/vMgEs01MZiuNt9KHscTLa
+         n7rERmgx72Hb/h8dJK5E9IKnq2Ky0iMHA2l3paE69WfL5zrAAYnayjyRLkwZT/+BaaS9
+         iDaA==
+Received: by 10.60.172.138 with SMTP id bc10mr20404963oec.33.1352895020151;
+ Wed, 14 Nov 2012 04:10:20 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.76.28.70 with HTTP; Wed, 14 Nov 2012 04:07:07 -0800 (PST)
-In-Reply-To: <1352719094.10405.18.camel@sakura.staff.proxad.net>
-References: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com> <1352719094.10405.18.camel@sakura.staff.proxad.net>
+Received: by 10.76.28.70 with HTTP; Wed, 14 Nov 2012 04:09:59 -0800 (PST)
+In-Reply-To: <50A1D3FC.9010207@wwwdotorg.org>
+References: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com>
+ <1352638249-29298-5-git-send-email-jonas.gorski@gmail.com> <50A1D3FC.9010207@wwwdotorg.org>
 From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Wed, 14 Nov 2012 13:07:07 +0100
-Message-ID: <CAOiHx==1UxrmxB5kyeDQPF4HBYxY9h4Ha8mWErwm6znX=y75OA@mail.gmail.com>
-Subject: Re: [RFC] MIPS: BCM63XX: add initial Device Tree support
-To:     mbizon@freebox.fr
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        Florian Fainelli <florian@openwrt.org>,
+Date:   Wed, 14 Nov 2012 13:09:59 +0100
+Message-ID: <CAOiHx==Ufghuf8Oans2VV4eZ1LusdJH4rwq=oos_pM3_y0-omg@mail.gmail.com>
+Subject: Re: [RFC] MIPS: BCM63XX: add Device Tree glue code for IRQ handling
+To:     Stephen Warren <swarren@wwwdotorg.org>
+Cc:     linux-mips@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
         Kevin Cernekee <cernekee@gmail.com>,
-        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>
 Content-Type: text/plain; charset=UTF-8
-X-archive-position: 34997
+X-archive-position: 34998
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,112 +52,60 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 12 November 2012 12:18, Maxime Bizon <mbizon@freebox.fr> wrote:
-> On Sun, 2012-11-11 at 13:50 +0100, Jonas Gorski wrote:
+On 13 November 2012 06:00, Stephen Warren <swarren@wwwdotorg.org> wrote:
+> On 11/11/2012 05:50 AM, Jonas Gorski wrote:
+>> Register IRQ domains through Device Tree for the internal and external
+>> interrupt controllers. Register the same IRQ ranges as previously to
+>> provide backward compatibility for non-DT drivers.
 >
->> This patch series adds initial Device Tree support to BCM63XX by adding
->> bindings for interrupts, GPIOs and clocks to Device Tree. Finally it adds
->> one "real" user, the serial driver, to the device tree boards.
+>> diff --git a/Documentation/devicetree/bindings/mips/bcm63xx/epic.txt b/Documentation/devicetree/bindings/mips/bcm63xx/epic.txt
 >
->>  51 files changed, 1993 insertions(+), 392 deletions(-)
+> Rather than putting binding docs in an arch-specific directory, perhaps
+> put them into a device-type-specific directory, such as
+> bindings/interrupt-controller/brcm,bcm63xx-epic.txt?
+
+Almost everyone has their interrupt-controller bindings in
+$arch/$platform, but if interrupt-controller is the preferred
+location, I can certainly move it there; I have no hard preference for
+any location.
+
 >
-> I've already said what I think privately to you but I will do it again
+>> +- #interrupt-cells: <2>
+>> +  This controller supports level and edge triggered interrupts. The
+>> +  first cell is the interrupt number, the second is a 1:1 mapping to
+>> +  the linux interrupt flags.
 >
-> The bcm63xx code base is IMO quite clean. It does not suffer from code
-> duplication, and god it would have taken far less time to write it the
-> "bad" way.
+> The DT documentation should be self-contained, and not reference
+> anything OS-specific. In this case, you could reference
+> Documentation/devicetree/bindings/interrupt-controller/interrupts.txt
+> for the interrupt flags.
 
-The non-DT way of defining boards will not go away soon - see how all
-changes are done with keeping "backward" compatibility in mind: I
-don't remove the old device registration code, I don't remove any
-fields from the board struct, I added compatibility dts for when there
-is only a board struct, no board specific dts file.
+Good Idea, I'll do that for the next iteration.
 
-> We have only *one* register file for all the SOCs, only the different
-> bits are visible.
+>> diff --git a/arch/mips/bcm63xx/dts/bcm6328.dtsi b/arch/mips/bcm63xx/dts/bcm6328.dtsi
 >
-> We can even build a single kernel that support all SOCs/boards.
-
-That's not going to change with Device Tree, and I'm trying my best to
-keep this.
-
-> So what's the *point* of this ?
-
-Not having to update board_bcm963xx.{c,h} because some vendor decided
-to add e.g. a previously unused gpio-bitbanged device. Not having to
-modify the kernel but just attach a (externally build) dtb to the
-kernel to support a new board. Ideally in the far future even using a
-CFE provided dtb. I'm sure there are more reasons.
-
-> You *cannot* abstract hardware, you just can't guess now what the next
-> SOC peculiarity will be.
-
-And nobody wants to do that. But - as Kevin already mentioned - it
-would be nice if we get similar SoCs we already know about supported
-with the same code; or at least , like BCM33xx, BCM68xx or maybe even
-BCM7xxx (never looked at them, so I can't tell how viable that is).
-
->> Quoting your patch "BCM63XX: switch to common clock and Device Tree"
+>>               ranges = <0 0x10000000 0x20000>;
+>>               compatible = "simple-bus";
+>> +
+>> +             interrupt-parent = <&ipic>;
+>> +
+>> +             perf@0 {
+>> +                     epic: interrupt-controller@18 {
 >
-> +Required properties:
-> +- compatible: one of
-> +  a) "brcm,bcm63xx-clock"
-> +  Standard BCM63XX clock.
->
-> cool a nice abstraction, one register bit = one clock
->
-> +  b) "brcm,bcm63xx-sar-clock"
-> +  SAR/ATM clock, which requires a reset of the SAR/ATM block.
-> +  c) "brcm,bcm63xx-enetsw-clock"
-> +  Generic ethernet switch clock, which requires a reset of the block.
-> +  d) "brcm,bcm6368-enetsw-clock"
-> +  BCM6368 ethernet switch clock, which requires additional clocks to be
-> +  enabled during reset.
->
-> oops that abstraction did not fly because after enabling this particular
-> clock on this SOC you also need to toggle other bits.
+> Don't you need some reg properties in the perf and interrupt-controller
+> nodes so that the register address can be determined?
 
-These special clocks are so that the original behaviour of the clocks
-is kept.  I'd rather argue that the reset code does not belong into
-the clock code, and is actually the responsibility of the driver. It
-would make the clock code much simpler.
+Since there is no support code for that property yet I did not add it.
+I haven't quite finished yet how the final bindings will be (since
+there are/were a few things I haven't finished researching yet, e.g.
+how this controller works in SMP context, and how interrupt
+controllers are supposed to work).
 
-There will be exactly one consumer each for the enetsw/sar clocks; the
-drivers themselves. And since the drivers itself aren't upstream yet,
-it should be no problem modifying them to reset the cores instead of
-relying on the clock code to do that for them. then we can implement
-the reset call abstract enough so the entsw just expects a list of
-clocks through DT that need to be enabled during reset - without
-having to care about which exact clocks these are (and it will be zero
-except for two SoCs).
-
-
-What would you suggest? Please no "don't use Device Tree", as I don't
-think we can avoid that. I'm struggling to find something you are fine
-with.
-
-> that list is going to get longer and longer and at the end won't mean anything.
-
-BCM681x needs additional special handling, yes, but that's it
-currently. Neither BCM6362 nor BCM63168 have/need this. And there is
-no problem adding new support code in the kernel as needed. Nobody
-expects older kernels to work with newer SoCs. But as stated earlier,
-older kernels should work with newer boards.
-
-> and this is supposed to be a *STABLE* API
->
-> We don't add syscall everyday, because we have to support them forever.
-> Why would it be ok to add such abstractions that prevent further code
-> refactoring because they are fixed in stone ?
-
-I wouldn't treat this as stable until we got it into a satisfactory
-state with everything supported. Heck, I wouldn't even treat this as
-stable until Broadcom ships it in their SDKs to customers with CFEs
-providing DTBs to the kernel.
-
-What do you want to do, keep it out of the kernel until everything is
-supported, working and "polished up", then posting a big patch bomb? I
-don't think this will work well and will just cause pain for everyone.
+I can add all expected properties now and add support for them later,
+but I feel that this might add properties that will then never
+supported, and nobody updates the documentation for that, so I'd
+rather like to keep the documentation/dts(i) in sync with what the
+actual code expects/supports.
 
 
 Jonas

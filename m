@@ -1,40 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2012 15:47:54 +0100 (CET)
-Received: from ns.iliad.fr ([212.27.33.1]:35287 "EHLO ns.iliad.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2012 18:23:57 +0100 (CET)
+Received: from mga03.intel.com ([143.182.124.21]:63971 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825655Ab2KNOrx6LjPU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Nov 2012 15:47:53 +0100
-Received: from ns.iliad.fr (localhost [127.0.0.1])
-        by ns.iliad.fr (Postfix) with ESMTP id F3DFA4F8D5;
-        Wed, 14 Nov 2012 15:47:52 +0100 (CET)
-Received: from [192.168.108.17] (freebox.vlq16.iliad.fr [213.36.7.13])
-        by ns.iliad.fr (Postfix) with ESMTP id DD0824F8CE;
-        Wed, 14 Nov 2012 15:47:52 +0100 (CET)
-Message-ID: <1352904472.13818.66.camel@sakura.staff.proxad.net>
-Subject: Re: [RFC] MIPS: BCM63XX: add initial Device Tree support
-From:   Maxime Bizon <mbizon@freebox.fr>
-Reply-To: mbizon@freebox.fr
-To:     Jonas Gorski <jonas.gorski@gmail.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        Florian Fainelli <florian@openwrt.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Date:   Wed, 14 Nov 2012 15:47:52 +0100
-In-Reply-To: <CAOiHx==1UxrmxB5kyeDQPF4HBYxY9h4Ha8mWErwm6znX=y75OA@mail.gmail.com>
-References: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com>
-         <1352719094.10405.18.camel@sakura.staff.proxad.net>
-         <CAOiHx==1UxrmxB5kyeDQPF4HBYxY9h4Ha8mWErwm6znX=y75OA@mail.gmail.com>
-Organization: Freebox
-Content-Type: text/plain; charset="ANSI_X3.4-1968"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
+        id S6825655Ab2KNRX4VoL8N (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Nov 2012 18:23:56 +0100
+Received: from azsmga002.ch.intel.com ([10.2.17.35])
+  by azsmga101.ch.intel.com with ESMTP; 14 Nov 2012 09:23:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.83,252,1352102400"; 
+   d="scan'208";a="168341180"
+Received: from bee.sh.intel.com (HELO localhost) ([10.239.97.14])
+  by AZSMGA002.ch.intel.com with ESMTP; 14 Nov 2012 09:23:47 -0800
+Received: from [192.168.1.143] (helo=hive.lkp.intel.com)
+        by localhost with smtp (Exim 4.80)
+        (envelope-from <fengguang.wu@intel.com>)
+        id 1TYggV-000Lc4-Q6; Thu, 15 Nov 2012 01:23:31 +0800
+Date:   Thu, 15 Nov 2012 01:24:06 +0800
+From:   kbuild test robot <fengguang.wu@intel.com>
+To:     "Steven J. Hill" <sjhill@mips.com>
+Cc:     linux-mips@linux-mips.org
+Subject: [mips-sjhill:mti-next 7/16] (.init.text+0x1f28): undefined
+ reference to `except_vec3_r4000'
+Message-ID: <50a3d3b6.IOHCoq2CXkkWxneU%fengguang.wu@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0
-X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ; Wed Nov 14 15:47:53 2012 +0100 (CET)
-X-archive-position: 35003
+X-SA-Exim-Connect-IP: 192.168.1.143
+X-SA-Exim-Mail-From: fengguang.wu@intel.com
+X-SA-Exim-Scanned: No (on localhost); SAEximRunCond expanded to false
+X-archive-position: 35004
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mbizon@freebox.fr
+X-original-sender: fengguang.wu@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,72 +46,18 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+tree:   git://git.linux-mips.org/pub/scm/sjhill/linux-sjhill mti-next
+head:   ee9f3f81f9862ff37e0e98e1539d084a34c8445b
+commit: 033dc27ea782e36d34102f13e26ed7f27ce1aa3d [7/16] MIPS: Add support for microMIPS exception handling.
+config: make ARCH=mips allnoconfig
 
-On Wed, 2012-11-14 at 13:07 +0100, Jonas Gorski wrote:
+All error/warnings:
 
-Thanks for addressing my concerns
+arch/mips/built-in.o: In function `trap_init':
+(.init.text+0x1f28): undefined reference to `except_vec3_r4000'
+arch/mips/built-in.o: In function `trap_init':
+(.init.text+0x1f2c): undefined reference to `except_vec3_r4000'
 
-> > We can even build a single kernel that support all SOCs/boards.
-> 
-> That's not going to change with Device Tree, and I'm trying my best to
-> keep this.
-
-DT is said to be the solution to achieve this goal on ARM. I was just
-pointing out that we already have this today.
-
-> Not having to update board_bcm963xx.{c,h} because some vendor decided
-> to add e.g. a previously unused gpio-bitbanged device. Not having to
-> modify the kernel but just attach a (externally build) dtb to the
-> kernel to support a new board. Ideally in the far future even using a
-> CFE provided dtb. I'm sure there are more reasons.
-
-Put the board description in DT, but please leave the SOC out and don't
-try to describe them with DT, that's too preliminary.
-
-Let's support more SOCs first, we cannot generalize on what we don't
-know.
-
-> And nobody wants to do that. But - as Kevin already mentioned - it
-> would be nice if we get similar SoCs we already know about supported
-> with the same code; or at least , like BCM33xx, BCM68xx or maybe even
-> BCM7xxx (never looked at them, so I can't tell how viable that is).
-
-DT is not the key here
-
-code reuse/refactoring is
-
-> These special clocks are so that the original behaviour of the clocks
-> is kept.  I'd rather argue that the reset code does not belong into
-> the clock code, and is actually the responsibility of the driver. It
-> would make the clock code much simpler.
-
-and IMO would make the driver code uglier. You don't read clock code
-everyday, it's boring, you do read/change driver code much more often.
-
-> What would you suggest? Please no "don't use Device Tree", as I don't
-> think we can avoid that. I'm struggling to find something you are fine
-
-As I said in my original email, I don't think bcm63xx codebase suffers
-from any problem similar to what caused Linus' rant about ARM few years
-ago.
-
-Did someone threaten to stop merging our patches if we don't use DT ?
-
-> I wouldn't treat this as stable until we got it into a satisfactory
-> state with everything supported. Heck, I wouldn't even treat this as
-> stable until Broadcom ships it in their SDKs to customers with CFEs
-> providing DTBs to the kernel.
-
-DT will succeed if chip designers start thinking the other way around:
-making new chip backward compatible with existing code or DT bindings.
-If that does not happen, we just moving C struct/arrays into another
-format with no added benefits.
-
-So we have to call it stable, otherwise there is no incentive to use
-them.
-
-And I just hate stable interfaces (which developer doesn't ?), they
-require more maintenance/testing if you're serious about your work.
-
--- 
-Maxime
+---
+0-DAY kernel build testing backend         Open Source Technology Center
+Fengguang Wu, Yuanhan Liu                              Intel Corporation

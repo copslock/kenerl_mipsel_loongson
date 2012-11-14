@@ -1,45 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2012 13:15:53 +0100 (CET)
-Received: from mail-ob0-f177.google.com ([209.85.214.177]:35552 "EHLO
-        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823910Ab2KNMPwsoiz9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Nov 2012 13:15:52 +0100
-Received: by mail-ob0-f177.google.com with SMTP id eh20so297216obb.36
-        for <multiple recipients>; Wed, 14 Nov 2012 04:15:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=Rh2I+Tu8YrLnCPNUJiN0iWBTbsHF3GzinhsgPTznUuQ=;
-        b=SmnO9/Cxrq1zjxwEV4VPOexajAUCPt/0Ch4SI85xXh1iz+T7dJiLTaDPZwDFcH1Jvm
-         5kZuSakz7H47+ly+tZVk+i6p8ecgu30bWB3H+1PLdTDlO8v+k8fcIDQb9hqoEe6u7OPn
-         hri0OpYZf3qjNmEK7+w+Uhqjz0WA1Xgp6ZYNlMfIWHJyz6SdYa7ceyawZ0J0DNk7tlOy
-         PoEmuGovmErIS5JhXhh8eMYxC4oYAO75UHdzrhjQhCaNw8iFv1O0u+0sfpeDg+yOewVm
-         8Gz3Rw9acY5HH035lICssUK1Ek+Upm0Tbjzy0jPN6M4V3W92mjOpwzuQF7+rwW6uAMWx
-         LRhQ==
-Received: by 10.60.11.105 with SMTP id p9mr20352625oeb.128.1352895346392; Wed,
- 14 Nov 2012 04:15:46 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.76.28.70 with HTTP; Wed, 14 Nov 2012 04:15:26 -0800 (PST)
-In-Reply-To: <50A1D6C3.2010108@wwwdotorg.org>
-References: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com>
- <1352638249-29298-15-git-send-email-jonas.gorski@gmail.com> <50A1D6C3.2010108@wwwdotorg.org>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Wed, 14 Nov 2012 13:15:26 +0100
-Message-ID: <CAOiHx=mJ70_DAzJOHHc_h04Ut7NXtXcwuHS4GYfQqJsrjt=mCA@mail.gmail.com>
-Subject: Re: [RFC] MIPS: BCM63XX: add empty Device Trees for all supported boards
-To:     Stephen Warren <swarren@wwwdotorg.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2012 15:47:54 +0100 (CET)
+Received: from ns.iliad.fr ([212.27.33.1]:35287 "EHLO ns.iliad.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6825655Ab2KNOrx6LjPU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Nov 2012 15:47:53 +0100
+Received: from ns.iliad.fr (localhost [127.0.0.1])
+        by ns.iliad.fr (Postfix) with ESMTP id F3DFA4F8D5;
+        Wed, 14 Nov 2012 15:47:52 +0100 (CET)
+Received: from [192.168.108.17] (freebox.vlq16.iliad.fr [213.36.7.13])
+        by ns.iliad.fr (Postfix) with ESMTP id DD0824F8CE;
+        Wed, 14 Nov 2012 15:47:52 +0100 (CET)
+Message-ID: <1352904472.13818.66.camel@sakura.staff.proxad.net>
+Subject: Re: [RFC] MIPS: BCM63XX: add initial Device Tree support
+From:   Maxime Bizon <mbizon@freebox.fr>
+Reply-To: mbizon@freebox.fr
+To:     Jonas Gorski <jonas.gorski@gmail.com>
 Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         John Crispin <blogic@openwrt.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
         Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>,
         devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 35002
+Date:   Wed, 14 Nov 2012 15:47:52 +0100
+In-Reply-To: <CAOiHx==1UxrmxB5kyeDQPF4HBYxY9h4Ha8mWErwm6znX=y75OA@mail.gmail.com>
+References: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com>
+         <1352719094.10405.18.camel@sakura.staff.proxad.net>
+         <CAOiHx==1UxrmxB5kyeDQPF4HBYxY9h4Ha8mWErwm6znX=y75OA@mail.gmail.com>
+Organization: Freebox
+Content-Type: text/plain; charset="ANSI_X3.4-1968"
+X-Mailer: Evolution 3.2.3-0ubuntu6 
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ; Wed Nov 14 15:47:53 2012 +0100 (CET)
+X-archive-position: 35003
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: mbizon@freebox.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,61 +48,72 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 13 November 2012 06:12, Stephen Warren <swarren@wwwdotorg.org> wrote:
-> On 11/11/2012 05:50 AM, Jonas Gorski wrote:
->> Add empty board files for all boards supported by the legacy board
->> support.
->
->> diff --git a/arch/mips/bcm63xx/dts/96328avng.dts b/arch/mips/bcm63xx/dts/96328avng.dts
->
->> +/ {
->> +     model = "96328avng";
->> +     compatible = "96328avng";
->
-> The board should be compatible with both the board name and the SoC on
-> the board. I know that right now the MIPS code is choosing the DT to use
-> based on the board name, but I think it's more typical to pass an
-> explicit DT to the kernel, and then choose the kernel support to execute
-> based on the compatible value (certainly this is the case on ARM and I
-> assume other architectures too). That would require the DT content to
-> include the SoC name in the compatible property, so that the kernel
-> support didn't then need to contain a table of all supported board names.
 
-I'll add the SoC name to the compatible line.
+On Wed, 2012-11-14 at 13:07 +0100, Jonas Gorski wrote:
 
->> +     ubus@10000000 {
->> +
->> +     };
->
-> Do you need to include this empty node in each file? I guess it gets
-> added to in the next patch so it's not a big deal though.
+Thanks for addressing my concerns
 
-It's just there so it is already present when adding blocks to it. It
-is/was mainly for making reordering patches easier.
+> > We can even build a single kernel that support all SOCs/boards.
+> 
+> That's not going to change with Device Tree, and I'm trying my best to
+> keep this.
 
->
->> diff --git a/arch/mips/bcm63xx/dts/Kconfig b/arch/mips/bcm63xx/dts/Kconfig
->
->> +config BOARD_96328AVNG
->> +     bool "96328avng reference board"
->> +     select BCM63XX_CPU_6328
->
-> Why not simply compile all DTs whenever the SoC support is enabled? I
-> suppose you're trying to avoid packing all the DTs into the kernel
-> image. Does it make more sense to amend the MIPS kernel boot process so
-> that a single user-/firmware-selected DT is passed to the kernel, rather
-> than packing the DTs into the kernel and selecting one?
+DT is said to be the solution to achieve this goal on ARM. I was just
+pointing out that we already have this today.
 
-The plan is to add support for an externally attached DT (but not
-present yet), and eventually add support for a bootloader passed DT,
-but since I don't know yet how these will work, I didn't want to add
-something based on guesses.
+> Not having to update board_bcm963xx.{c,h} because some vendor decided
+> to add e.g. a previously unused gpio-bitbanged device. Not having to
+> modify the kernel but just attach a (externally build) dtb to the
+> kernel to support a new board. Ideally in the far future even using a
+> CFE provided dtb. I'm sure there are more reasons.
 
-My reasoning for allowing (de-)selecting each board is to dampen the
-bloat from the dtbs - after these few blocks the combined dtbs are
-already four times as large as the old board setup code including all
-boards. Especially older devices are constrained to 4 or even 2 MB
-flash, so every kB counts there.
+Put the board description in DT, but please leave the SOC out and don't
+try to describe them with DT, that's too preliminary.
 
+Let's support more SOCs first, we cannot generalize on what we don't
+know.
 
-Jonas
+> And nobody wants to do that. But - as Kevin already mentioned - it
+> would be nice if we get similar SoCs we already know about supported
+> with the same code; or at least , like BCM33xx, BCM68xx or maybe even
+> BCM7xxx (never looked at them, so I can't tell how viable that is).
+
+DT is not the key here
+
+code reuse/refactoring is
+
+> These special clocks are so that the original behaviour of the clocks
+> is kept.  I'd rather argue that the reset code does not belong into
+> the clock code, and is actually the responsibility of the driver. It
+> would make the clock code much simpler.
+
+and IMO would make the driver code uglier. You don't read clock code
+everyday, it's boring, you do read/change driver code much more often.
+
+> What would you suggest? Please no "don't use Device Tree", as I don't
+> think we can avoid that. I'm struggling to find something you are fine
+
+As I said in my original email, I don't think bcm63xx codebase suffers
+from any problem similar to what caused Linus' rant about ARM few years
+ago.
+
+Did someone threaten to stop merging our patches if we don't use DT ?
+
+> I wouldn't treat this as stable until we got it into a satisfactory
+> state with everything supported. Heck, I wouldn't even treat this as
+> stable until Broadcom ships it in their SDKs to customers with CFEs
+> providing DTBs to the kernel.
+
+DT will succeed if chip designers start thinking the other way around:
+making new chip backward compatible with existing code or DT bindings.
+If that does not happen, we just moving C struct/arrays into another
+format with no added benefits.
+
+So we have to call it stable, otherwise there is no incentive to use
+them.
+
+And I just hate stable interfaces (which developer doesn't ?), they
+require more maintenance/testing if you're serious about your work.
+
+-- 
+Maxime

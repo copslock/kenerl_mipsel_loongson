@@ -1,34 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Nov 2012 11:45:36 +0100 (CET)
-Received: from mms3.broadcom.com ([216.31.210.19]:4544 "EHLO mms3.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824769Ab2KOKperz4J1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 15 Nov 2012 11:45:34 +0100
-Received: from [10.9.200.133] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Thu, 15 Nov 2012 02:41:15 -0800
-X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
-Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Thu, 15 Nov 2012 02:44:52 -0800
-Received: from netl-snoppy.ban.broadcom.com (
- netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 0A7AC4102D; Thu, 15
- Nov 2012 02:45:09 -0800 (PST)
-From:   "Jayachandran C" <jchandra@broadcom.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-cc:     "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH] MIPS: PCI: Update XLR/XLS PCI for the new PIC code
-Date:   Thu, 15 Nov 2012 16:15:55 +0530
-Message-ID: <1352976355-2780-1-git-send-email-jchandra@broadcom.com>
-X-Mailer: git-send-email 1.7.9.5
-MIME-Version: 1.0
-X-WSS-ID: 7CBA19413P83174702-01-01
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35011
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Nov 2012 12:51:40 +0100 (CET)
+Received: from mail-we0-f177.google.com ([74.125.82.177]:42149 "EHLO
+        mail-we0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825910Ab2KOLvjNSfbG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Nov 2012 12:51:39 +0100
+Received: by mail-we0-f177.google.com with SMTP id u50so497110wey.36
+        for <linux-mips@linux-mips.org>; Thu, 15 Nov 2012 03:51:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
+         :references:x-gm-message-state;
+        bh=IOi2iYW6Hm4HogdVdJI1guxId252kYt7VSgPrOvNMXw=;
+        b=Il5rzVB5vev54Dl6JIk646YGBl3kNqJntU2DLwgUFzXwLAvnIbCxNleoyV1jFzDy4g
+         MIPHBwW7241oWe87ox6u5r6t6pUpmxMWaQF0NUEMe3f6bxoLTfIXqD8/f50UzMuBIQ3R
+         gVkQcxnnew+oqJ5maI38Kpz0isPorSsNDSuAzLYOj5vCJnn4iqqICbbp0IsNeTUD0QtG
+         BkOqBrm3W4rzZOwxk8Ud0ByIs/XAyQ58oFEI91bU6EI7Inf7KEpPgklyPwu0iW8q4AKy
+         qgAv58v/35GUJ5Ay49nQ0xMfZXGrlfQ9GsPVURj/osfd27UY7cOGITKS5qwjH4EmXY9u
+         i0/Q==
+Received: by 10.216.214.90 with SMTP id b68mr434576wep.194.1352980293552;
+        Thu, 15 Nov 2012 03:51:33 -0800 (PST)
+Received: from localhost (host86-182-21-215.range86-182.btcentralplus.com. [86.182.21.215])
+        by mx.google.com with ESMTPS id dm3sm6982501wib.3.2012.11.15.03.51.31
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 15 Nov 2012 03:51:32 -0800 (PST)
+Received: by localhost (Postfix, from userid 1000)
+        id 71DDD3E09BB; Thu, 15 Nov 2012 11:51:30 +0000 (GMT)
+From:   Grant Likely <grant.likely@secretlab.ca>
+Cc:     linux-kernel@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
+        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
+        Grant Likely <grant.likely@secretlab.ca>,
+        Stephen Warren <swarren@nvidia.com>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH V5 1/2] kbuild: centralize .dts->.dtb rule
+Date:   Thu, 15 Nov 2012 11:51:24 +0000
+Message-Id: <1352980284-2819-1-git-send-email-grant.likely@secretlab.ca>
+X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <CACxGe6vhd_4rcBbYyqtvbySVaY6XpNE+HQq42PZhKe5yt=zcaA@mail.gmail.com>
+References: <CACxGe6vhd_4rcBbYyqtvbySVaY6XpNE+HQq42PZhKe5yt=zcaA@mail.gmail.com>
+X-Gm-Message-State: ALoCoQmfHAxMuUvJRg29gvCp8CM10lmIK7xWK4g7u/69rf63UNT/oyZkqXXOFLx/2mIxf6gkTwr9
+To:     unlisted-recipients:; (no To-header on input)
+X-archive-position: 35012
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,128 +56,92 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Use the nlm_set_pic_extra_ack() call to setup the extra interrupt
-ACK needed by XLR PCI and XLS PCIe. Simplify the code by adding
-nlm_pci_link_to_irq().
+Grant Likely wrote:
+> Or how about: I could pick up the patch with only the MIPS hunk and
+> every other user can be fixed up independently to use the new rule.
 
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+Here's a trial patch to fix up ARM. Does this look correct? This patch
+depends on the generic dtb build rule already being applied.
+
+g.
+
 ---
- arch/mips/pci/pci-xlr.c |   69 +++++++++++++++++++++++------------------------
- 1 file changed, 34 insertions(+), 35 deletions(-)
 
-diff --git a/arch/mips/pci/pci-xlr.c b/arch/mips/pci/pci-xlr.c
-index 18af021..0c18ccc 100644
---- a/arch/mips/pci/pci-xlr.c
-+++ b/arch/mips/pci/pci-xlr.c
-@@ -47,6 +47,7 @@
+arm/of: Change .dtb build rules to build in dts directory
+
+The current rules have the .dtb files build in a different directory
+from the .dts files. The only reason for this is that it was what
+PowerPC has done historically. This patch changes ARM to use the generic
+dtb rule which builds .dtb files in the same directory as the source .dts.
+
+Signed-off-by: Grant Likely <grant.likely@secretlab.ca>
+Cc: Stephen Warren <swarren@nvidia.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+---
+ arch/arm/Makefile          |    4 ++--
+ arch/arm/boot/Makefile     |   12 ------------
+ arch/arm/boot/dts/Makefile |    4 ++++
+ 3 files changed, 6 insertions(+), 14 deletions(-)
+
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 5f914fc..c35baf1 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -292,10 +292,10 @@ zinstall uinstall install: vmlinux
+ 	$(Q)$(MAKE) $(build)=$(boot) MACHINE=$(MACHINE) $@
  
- #include <asm/netlogic/interrupt.h>
- #include <asm/netlogic/haldefs.h>
-+#include <asm/netlogic/common.h>
+ %.dtb: scripts
+-	$(Q)$(MAKE) $(build)=$(boot) MACHINE=$(MACHINE) $(boot)/$@
++	$(Q)$(MAKE) $(build)=$(boot)/dts MACHINE=$(MACHINE) $(boot)/dts/$@
  
- #include <asm/netlogic/xlr/msidef.h>
- #include <asm/netlogic/xlr/iomap.h>
-@@ -174,22 +175,9 @@ static struct pci_dev *xls_get_pcie_link(const struct pci_dev *dev)
- 	return p ? bus->self : NULL;
- }
+ dtbs: scripts
+-	$(Q)$(MAKE) $(build)=$(boot) MACHINE=$(MACHINE) $(boot)/$@
++	$(Q)$(MAKE) $(build)=$(boot)/dts MACHINE=$(MACHINE) dtbs
  
--static int get_irq_vector(const struct pci_dev *dev)
-+static int nlm_pci_link_to_irq(int link)
- {
--	struct pci_dev *lnk;
+ # We use MRPROPER_FILES and CLEAN_FILES now
+ archclean:
+diff --git a/arch/arm/boot/Makefile b/arch/arm/boot/Makefile
+index f2aa09e..801b92c 100644
+--- a/arch/arm/boot/Makefile
++++ b/arch/arm/boot/Makefile
+@@ -15,8 +15,6 @@ ifneq ($(MACHINE),)
+ include $(srctree)/$(MACHINE)/Makefile.boot
+ endif
+ 
+-include $(srctree)/arch/arm/boot/dts/Makefile
 -
--	if (!nlm_chip_is_xls())
--		return	PIC_PCIX_IRQ;	/* for XLR just one IRQ */
--
--	/*
--	 * For XLS PCIe, there is an IRQ per Link, find out which
--	 * link the device is on to assign interrupts
--	 */
--	lnk = xls_get_pcie_link(dev);
--	if (lnk == NULL)
--		return 0;
--
--	switch	(PCI_SLOT(lnk->devfn)) {
-+	switch	(link) {
- 	case 0:
- 		return PIC_PCIE_LINK0_IRQ;
- 	case 1:
-@@ -205,10 +193,26 @@ static int get_irq_vector(const struct pci_dev *dev)
- 		else
- 			return PIC_PCIE_LINK3_IRQ;
- 	}
--	WARN(1, "Unexpected devfn %d\n", lnk->devfn);
-+	WARN(1, "Unexpected link %d\n", link);
- 	return 0;
- }
+ # Note: the following conditions must always be true:
+ #   ZRELADDR == virt_to_phys(PAGE_OFFSET + TEXT_OFFSET)
+ #   PARAMS_PHYS must be within 4MB of ZRELADDR
+@@ -59,16 +57,6 @@ $(obj)/zImage:	$(obj)/compressed/vmlinux FORCE
  
-+static int get_irq_vector(const struct pci_dev *dev)
-+{
-+	struct pci_dev *lnk;
-+	int link;
-+
-+	if (!nlm_chip_is_xls())
-+		return	PIC_PCIX_IRQ;	/* for XLR just one IRQ */
-+
-+	lnk = xls_get_pcie_link(dev);
-+	if (lnk == NULL)
-+		return 0;
-+
-+	link = PCI_SLOT(lnk->devfn);
-+	return nlm_pci_link_to_irq(link);
-+}
-+
- #ifdef CONFIG_PCI_MSI
- void destroy_irq(unsigned int irq)
- {
-@@ -332,6 +336,9 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
+ endif
  
- static int __init pcibios_init(void)
- {
-+	void (*extra_ack)(struct irq_data *);
-+	int link, irq;
-+
- 	/* PSB assigns PCI resources */
- 	pci_set_flags(PCI_PROBE_ONLY);
- 	pci_config_base = ioremap(DEFAULT_PCI_CONFIG_BASE, 16 << 20);
-@@ -350,27 +357,19 @@ static int __init pcibios_init(void)
- 	 * For PCI interrupts, we need to ack the PCI controller too, overload
- 	 * irq handler data to do this
- 	 */
--	if (nlm_chip_is_xls()) {
--		if (nlm_chip_is_xls_b()) {
--			irq_set_handler_data(PIC_PCIE_LINK0_IRQ,
--							xls_pcie_ack_b);
--			irq_set_handler_data(PIC_PCIE_LINK1_IRQ,
--							xls_pcie_ack_b);
--			irq_set_handler_data(PIC_PCIE_XLSB0_LINK2_IRQ,
--							xls_pcie_ack_b);
--			irq_set_handler_data(PIC_PCIE_XLSB0_LINK3_IRQ,
--							xls_pcie_ack_b);
--		} else {
--			irq_set_handler_data(PIC_PCIE_LINK0_IRQ, xls_pcie_ack);
--			irq_set_handler_data(PIC_PCIE_LINK1_IRQ, xls_pcie_ack);
--			irq_set_handler_data(PIC_PCIE_LINK2_IRQ, xls_pcie_ack);
--			irq_set_handler_data(PIC_PCIE_LINK3_IRQ, xls_pcie_ack);
--		}
--	} else {
-+	if (!nlm_chip_is_xls()) {
- 		/* XLR PCI controller ACK */
--		irq_set_handler_data(PIC_PCIX_IRQ, xlr_pci_ack);
-+		nlm_set_pic_extra_ack(0, PIC_PCIX_IRQ, xlr_pci_ack);
-+	} else {
-+		if  (nlm_chip_is_xls_b())
-+			extra_ack = xls_pcie_ack_b;
-+		else
-+			extra_ack = xls_pcie_ack;
-+		for (link = 0; link < 4; link++) {
-+			irq = nlm_pci_link_to_irq(link);
-+			nlm_set_pic_extra_ack(0, irq, extra_ack);
-+		}
- 	}
+-targets += $(dtb-y)
 -
- 	return 0;
- }
+-# Rule to build device tree blobs
+-$(obj)/%.dtb: $(src)/dts/%.dts FORCE
+-	$(call if_changed_dep,dtc)
+-
+-$(obj)/dtbs: $(addprefix $(obj)/, $(dtb-y))
+-
+-clean-files := *.dtb
+-
+ ifneq ($(LOADADDR),)
+   UIMAGE_LOADADDR=$(LOADADDR)
+ else
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index f37cf9f..2aef042 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -104,4 +104,8 @@ dtb-$(CONFIG_ARCH_VT8500) += vt8500-bv07.dtb \
+ 	wm8505-ref.dtb \
+ 	wm8650-mid.dtb
  
++targets += dtbs
+ endif
++
++dtbs: $(addprefix $(obj)/, $(dtb-y))
++clean-files := *.dtb
 -- 
-1.7.9.5
+1.7.10.4

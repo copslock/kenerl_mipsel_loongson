@@ -1,44 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Nov 2012 07:37:58 +0100 (CET)
-Received: from us02smtp2.synopsys.com ([198.182.60.77]:32923 "EHLO
-        alvesta.synopsys.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823909Ab2KPGh5Dt0Rx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Nov 2012 07:37:57 +0100
-Received: from mailhost.synopsys.com (mailhost1.synopsys.com [10.12.238.239])
-        by alvesta.synopsys.com (Postfix) with ESMTP id EC8DCB4E28;
-        Thu, 15 Nov 2012 22:37:49 -0800 (PST)
-Received: from mailhost.synopsys.com (localhost [127.0.0.1])
-        by mailhost.synopsys.com (Postfix) with ESMTP id DB808C29;
-        Thu, 15 Nov 2012 22:37:49 -0800 (PST)
-Received: from us01wehtc1.internal.synopsys.com (us01wehtc1.internal.synopsys.com [10.12.239.235])
-        by mailhost.synopsys.com (Postfix) with ESMTP id 5989AC27;
-        Thu, 15 Nov 2012 22:37:49 -0800 (PST)
-Received: from IN01WEHTC2.internal.synopsys.com (10.144.199.212) by
- us01wehtc1.internal.synopsys.com (10.12.239.235) with Microsoft SMTP Server
- (TLS) id 14.2.298.4; Thu, 15 Nov 2012 22:36:16 -0800
-Received: from [10.12.197.205] (10.12.197.205) by
- in01wehtc2.internal.synopsys.com (10.144.199.243) with Microsoft SMTP Server
- (TLS) id 14.2.298.4; Fri, 16 Nov 2012 12:06:12 +0530
-Message-ID: <50A5DED2.5030803@synopsys.com>
-Date:   Fri, 16 Nov 2012 12:06:02 +0530
-From:   Vineet Gupta <Vineet.Gupta1@synopsys.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:16.0) Gecko/20121011 Thunderbird/16.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Nov 2012 10:51:08 +0100 (CET)
+Received: from mga02.intel.com ([134.134.136.20]:23244 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6825910Ab2KPJvGXAhzB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 16 Nov 2012 10:51:06 +0100
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP; 16 Nov 2012 01:50:58 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.83,263,1352102400"; 
+   d="asc'?scan'208";a="220572794"
+Received: from blue.fi.intel.com ([10.237.72.50])
+  by orsmga001.jf.intel.com with ESMTP; 16 Nov 2012 01:50:56 -0800
+Received: by blue.fi.intel.com (Postfix, from userid 1000)
+        id AE880E0073; Fri, 16 Nov 2012 11:52:06 +0200 (EET)
+Date:   Fri, 16 Nov 2012 11:52:06 +0200
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mm@kvack.org, linux-mips@linux-mips.org,
+        linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [next:akpm 205/376] mm/huge_memory.c:716:2: error: implicit
+ declaration of function 'pfn_pmd'
+Message-ID: <20121116095206.GA4043@otc-wbsnb-06>
+References: <50a4c285.wqKVmKLchrLESqoS%fengguang.wu@intel.com>
+ <20121115142728.190c5b3e.akpm@linux-foundation.org>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>, <linux-arch@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>,
-        <arnd@arndb.de>, <linux-mips@linux-mips.org>
-Subject: Re: [RFC PATCH v1 26/31] ARC: Build system: Makefiles, Kconfig, Linker
- script
-References: <1352281674-2186-1-git-send-email-vgupta@synopsys.com> <1352281674-2186-27-git-send-email-vgupta@synopsys.com> <50A52B45.6030907@imgtec.com> <20121115193050.GA1244@linux-mips.org>
-In-Reply-To: <20121115193050.GA1244@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.12.197.205]
-X-archive-position: 35023
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="ibTvN161/egqYuK8"
+Content-Disposition: inline
+In-Reply-To: <20121115142728.190c5b3e.akpm@linux-foundation.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 35024
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Vineet.Gupta1@synopsys.com
+X-original-sender: kirill.shutemov@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,22 +47,96 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Friday 16 November 2012 01:00 AM, Ralf Baechle wrote:
-> On Thu, Nov 15, 2012 at 05:49:57PM +0000, James Hogan wrote:
->
->> On 07/11/12 09:47, Vineet Gupta wrote:
->>> +config ARC
->> I just came across arch/mips/Kconfig which also defines ARC (and ARC32).
->> It's only used within arch/mips/, however it's probably more likely that
->> your ARC/CONFIG_ARC will find it's way into the generic bits of the
->> kernel which could get hit when the other ARC is defined.
->>
->> Perhaps it's worth getting the other ARC renamed just in case?
-> The MIPS world surely isn't as attached to the CONFIG_ARC config symbol
-> as Synopsis so I'm going to rename CONFIG_ARC and a few other firmware
-> related config symbols to use a consistent prefix of CONFIG_FW_.
 
-Thanks Ralf !
+--ibTvN161/egqYuK8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--Vineet
->   Ralf
+On Thu, Nov 15, 2012 at 02:27:28PM -0800, Andrew Morton wrote:
+> On Thu, 15 Nov 2012 18:23:01 +0800
+> kbuild test robot <fengguang.wu@intel.com> wrote:
+>=20
+> > tree:   git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.g=
+it akpm
+> > head:   d3faae60d84f586ff8937b77c8476bca1b5f8ec6
+> > commit: 165a1669c89b5fa2f6c54bf609b408a592f024b3 [205/376] thp: copy_hu=
+ge_pmd(): copy huge zero page
+> > config: make ARCH=3Dmips allmodconfig
+> >=20
+> > All error/warnings:
+> >=20
+> > mm/huge_memory.c: In function 'set_huge_zero_page':
+> > mm/huge_memory.c:716:2: error: implicit declaration of function 'pfn_pm=
+d' [-Werror=3Dimplicit-function-declaration]
+> > mm/huge_memory.c:716:8: error: incompatible types when assigning to typ=
+e 'pmd_t' from type 'int'
+> > mm/huge_memory.c: In function 'do_huge_pmd_numa_page':
+> > mm/huge_memory.c:825:2: error: incompatible type for argument 3 of 'upd=
+ate_mmu_cache_pmd'
+> > In file included from include/linux/mm.h:44:0,
+> >                  from mm/huge_memory.c:8:
+> > arch/mips/include/asm/pgtable.h:385:20: note: expected 'struct pmd_t *'=
+ but argument is of type 'pmd_t'
+> > mm/huge_memory.c:895:2: error: incompatible type for argument 3 of 'upd=
+ate_mmu_cache_pmd'
+> > In file included from include/linux/mm.h:44:0,
+> >                  from mm/huge_memory.c:8:
+> > arch/mips/include/asm/pgtable.h:385:20: note: expected 'struct pmd_t *'=
+ but argument is of type 'pmd_t'
+> > cc1: some warnings being treated as errors
+> >=20
+> > vim +716 +/pfn_pmd mm/huge_memory.c
+> >=20
+> > 0bbbc0b3 Andrea Arcangeli   2011-01-13  710  #endif
+> > 71e3aac0 Andrea Arcangeli   2011-01-13  711 =20
+> > 165a1669 Kirill A. Shutemov 2012-11-15  712  static void set_huge_zero_=
+page(pgtable_t pgtable, struct mm_struct *mm,
+> > 165a1669 Kirill A. Shutemov 2012-11-15  713  		struct vm_area_struct *v=
+ma, unsigned long haddr, pmd_t *pmd)
+> > 165a1669 Kirill A. Shutemov 2012-11-15  714  {
+> > 165a1669 Kirill A. Shutemov 2012-11-15  715  	pmd_t entry;
+> > 165a1669 Kirill A. Shutemov 2012-11-15 @716  	entry =3D pfn_pmd(huge_ze=
+ro_pfn, vma->vm_page_prot);
+> > 165a1669 Kirill A. Shutemov 2012-11-15  717  	entry =3D pmd_wrprotect(e=
+ntry);
+> > 165a1669 Kirill A. Shutemov 2012-11-15  718  	entry =3D pmd_mkhuge(entr=
+y);
+> > 165a1669 Kirill A. Shutemov 2012-11-15  719  	set_pmd_at(mm, haddr, pmd=
+, entry);
+>=20
+> hm.  mips doesn't implement pfn_pmd() - quite a few architectures
+> don't.
+
+I think it would be easier to fix it on arch side. Ralf?
+
+> Not sure about the update_mmu_cache_pmd() thing.
+
+I'll send a patchset to fix it. (it's not related to huge zero page)
+
+--=20
+ Kirill A. Shutemov
+
+--ibTvN161/egqYuK8
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQpgzGAAoJEAd+omnVudOMSgsP/i2Q3JaEN32QnJ7E4qbGC/05
+oJrGvfVxXkRRT//bLYG7zADB9ZhOcFHgyy82GLRH4GV4LNIHPs5VTIv/q85nbTYe
+SvWN8TazqmTmDwJQu43isU//Vi5SYN+p79dD9bM/K/Ol5O1kiDimcz2pKDkf4C85
+5Te5SyloKOVWWkpHmc8zARmG2PBlAtVa0laR4pIrSB4qQLrdhvtYhKMoqZQsB3z9
+Q5Wf2Q9zKJCEQpmBjC1Wosq6WEKJUs3ZfbONCFIEb6geDHUTr2g2/dm7QyQk8ucp
+W3/iYDPHlciTcnWik6pi2w0ZYaABGhpDVmlGs7lYk5uqeTIk+my18IdJ1G2IaxGn
+MAhdGzg55gRSjwQ+kmN3Icerz9eYm80HCZMhoGDJX5hhxqgH+TWf+DIyhVSpZY5h
+X0s0e9JOqhu6qA9wpungm1D6GdiFK1vtHx6ptjUgetqi+mbiT+hnobaaeCADSWOG
+cemHeF0BN7pwg+R47Rhfz27jeaBscwxCIhnFFGVIXIz0ctgcLzYk0UHXazu9ogrM
+sMec8s96WvxanwuvO+C3wQIzzhP77WznDrU7To/BaohD0WEQzdFGDldntUIzygKI
+E9LDnMiUO6iQZAB4dUX0vFWn2F0GgqLxqNdLHVwKgln6xY6d4mk1Qap7A2fDFcbQ
+RLb6+hl7ypvWeQZGzD9t
+=2YxA
+-----END PGP SIGNATURE-----
+
+--ibTvN161/egqYuK8--

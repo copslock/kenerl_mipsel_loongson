@@ -1,43 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Nov 2012 05:15:26 +0100 (CET)
-Received: from avon.wwwdotorg.org ([70.85.31.133]:56922 "EHLO
-        avon.wwwdotorg.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6821443Ab2KQEPZyhDmK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Nov 2012 05:15:25 +0100
-Received: from severn.wwwdotorg.org (unknown [192.168.65.5])
-        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by avon.wwwdotorg.org (Postfix) with ESMTPS id BEDF66234;
-        Fri, 16 Nov 2012 21:16:45 -0700 (MST)
-Received: from dart.wwwdotorg.org (unknown [IPv6:2001:470:bb52:63:5d70:fb63:5917:494d])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by severn.wwwdotorg.org (Postfix) with ESMTPSA id 52DEFE40EF;
-        Fri, 16 Nov 2012 21:15:24 -0700 (MST)
-Message-ID: <50A70F5C.3030205@wwwdotorg.org>
-Date:   Fri, 16 Nov 2012 21:15:24 -0700
-From:   Stephen Warren <swarren@wwwdotorg.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:15.0) Gecko/20120827 Thunderbird/15.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Nov 2012 12:05:34 +0100 (CET)
+Received: from mail-wi0-f177.google.com ([209.85.212.177]:40109 "EHLO
+        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823020Ab2KRLFdenyiJ convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 18 Nov 2012 12:05:33 +0100
+Received: by mail-wi0-f177.google.com with SMTP id c10so2324770wiw.6
+        for <multiple recipients>; Sun, 18 Nov 2012 03:05:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=Fo2ZmgXEyuVxIitz0ZmedHrOsJQTeb3MWC5YODZOGyQ=;
+        b=afWzWZkkl6mHZqUa2RtsLxoY8CZqpc1UhU2MrLpFyPcisbn2Lb1/9LuJVJy9fUkPeh
+         sbM3gzBjVVLvrMJlFQ+gX34h1rnB79ypVGX0A5RKG1NcYiUNKPZJF+qwiSIAX5ZzgGOw
+         rbxz4k2CbEndUVTVmF1K2pO99/xEwM+o6k3aWvtI6cHXgoMR0YXLX3fzgvS0ib8ajtv2
+         iA+rjNVOI1aq4GejvLROzBXBiXokz0jok38yVC+ReYD0HRoV3QUdT8yg3zy5cEEa4tg8
+         4dZaRE5ZNBCrnBI+uqkX/xk8r4jBiERjLxuMRj77frxDZlE7J9/SE0h0VlX+CJ6TeeTl
+         zZkg==
 MIME-Version: 1.0
-To:     Jonas Gorski <jonas.gorski@gmail.com>
-CC:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Florian Fainelli <florian@openwrt.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC] MIPS: BCM63XX: add Device Tree clock definitions
-References: <1352638249-29298-1-git-send-email-jonas.gorski@gmail.com> <1352638249-29298-10-git-send-email-jonas.gorski@gmail.com> <50A1D452.2020904@wwwdotorg.org> <CAOiHx=m=OxDiXKozQG1_iUBDhWj3iJDd9b8LHP_6mPL=FOyGPQ@mail.gmail.com>
-In-Reply-To: <CAOiHx=m=OxDiXKozQG1_iUBDhWj3iJDd9b8LHP_6mPL=FOyGPQ@mail.gmail.com>
-X-Enigmail-Version: 1.4.4
+Received: by 10.216.213.224 with SMTP id a74mr1405388wep.190.1353236728044;
+ Sun, 18 Nov 2012 03:05:28 -0800 (PST)
+Received: by 10.217.67.72 with HTTP; Sun, 18 Nov 2012 03:05:27 -0800 (PST)
+In-Reply-To: <1347376511-20953-1-git-send-email-hauke@hauke-m.de>
+References: <1347376511-20953-1-git-send-email-hauke@hauke-m.de>
+Date:   Sun, 18 Nov 2012 12:05:27 +0100
+Message-ID: <CACna6rw0Qy2=zo6wHcq20JBM8OJb-wnZJGLH3dksaLGFoyp+=w@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] MIPS: BCM47xx: use gpiolib
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     ralf@linux-mips.org, john@phrozen.org, linux-mips@linux-mips.org,
+        linux-wireless@vger.kernel.org, florian@openwrt.org
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.96.5 at avon.wwwdotorg.org
-X-Virus-Status: Clean
-X-archive-position: 35031
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 35032
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: swarren@wwwdotorg.org
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,31 +50,17 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 11/14/2012 05:11 AM, Jonas Gorski wrote:
-> On 13 November 2012 06:02, Stephen Warren <swarren@wwwdotorg.org> wrote:
->> On 11/11/2012 05:50 AM, Jonas Gorski wrote:
->>> Add definitions for the clocks found and used in all supported SoCs.
->>
->>> diff --git a/arch/mips/bcm63xx/dts/bcm6328.dtsi b/arch/mips/bcm63xx/dts/bcm6328.dtsi
->>
->>> +                     clocks {
->>> +                             #address-cells = <1>;
->>> +                             #size-cells = <0>;
->>> +
->>> +                             periph: pll {
->>> +                                     compatible = "brcm,bcm63xx-clock";
->>> +                                     #clock-cells = <0>;
->>> +                                     clock-frequency = <50000000>;
->>> +                                     clock-output-names = "periph";
->>> +                             };
->>
->> Here too, it seems like some reg properties would be required.
-> 
-> This is more or less a dummy clock with no real backing for it, but
-> some of the drivers expect this clock to be present (even just to get
-> the frequency).
+2012/9/11 Hauke Mehrtens <hauke@hauke-m.de>:
+> The original code implemented the GPIO interface itself and this caused
+> some problems. With this patch gpiolib is used.
+>
+> This is based on mips/master.
+>
+> This should go through linux-mips, John W. Linville approved that
+> for the bcma and ssb changes normally maintained in wireless-testing.
 
-Should compatible="fixed-clock" then if this is just a dummy? Ideally
-though, nothing "dummy" would be added to the DT; the kernel would
-continue to provide the dummy values via code until the DT was able to
-fully represent the actual HW.
+Ping? Did it go upstream? I can't find that commits in
+http://git.kernel.org/?p=linux/kernel/git/ralf/linux.git;a=summary
+
+-- 
+Rafał

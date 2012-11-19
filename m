@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2012 00:09:17 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:41948 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2012 00:19:04 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:42122 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6828034Ab2KSW7HniTry (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2012 23:59:07 +0100
+        with ESMTP id S6824766Ab2KSXTAJHg8k (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2012 00:19:00 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 8FEC58F63;
-        Mon, 19 Nov 2012 23:59:03 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id 4167F8F61;
+        Tue, 20 Nov 2012 00:18:59 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 4fOj8Vkc-yaW; Mon, 19 Nov 2012 23:58:56 +0100 (CET)
+        with ESMTP id QDGu7bqg26Rq; Tue, 20 Nov 2012 00:18:51 +0100 (CET)
 Received: from hauke-desktop.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 8ABE48F68;
-        Mon, 19 Nov 2012 23:58:15 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 5EF408F60;
+        Tue, 20 Nov 2012 00:18:51 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     john@phrozen.org, ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
         florian@openwrt.org, zajec5@gmail.com, m@bues.ch,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 8/8] MIPS: BCM47XX: remove GPIO driver
-Date:   Mon, 19 Nov 2012 23:57:57 +0100
-Message-Id: <1353365877-11131-9-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH v2 7/8] ssb: add GPIO driver
+Date:   Tue, 20 Nov 2012 00:18:37 +0100
+Message-Id: <1353367117-15689-1-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1353365877-11131-1-git-send-email-hauke@hauke-m.de>
-References: <1353365877-11131-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 35052
+In-Reply-To: <1353365877-11131-8-git-send-email-hauke@hauke-m.de>
+References: <1353365877-11131-8-git-send-email-hauke@hauke-m.de>
+X-archive-position: 35053
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,345 +42,282 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Instated of providing an own GPIO driver use the one provided by ssb and
-bcma.
+Register a GPIO driver to access the GPIOs provided by the chip.
+The GPIOs of the SoC should always start at 0 and the other GPIOs could
+start at a random position. There is just one SoC in a system and when
+they start at 0 the number is predictable.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/Kconfig                         |    2 +-
- arch/mips/bcm47xx/Kconfig                 |    2 +
- arch/mips/bcm47xx/Makefile                |    2 +-
- arch/mips/bcm47xx/gpio.c                  |  102 -------------------
- arch/mips/include/asm/mach-bcm47xx/gpio.h |  154 ++---------------------------
- 5 files changed, 12 insertions(+), 250 deletions(-)
- delete mode 100644 arch/mips/bcm47xx/gpio.c
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index dba9390..abc8b69 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -105,6 +105,7 @@ config ATH79
+v2: fix compile problem in drivers/ssb/ssb_private.h
+
+ drivers/ssb/Kconfig       |    9 +++
+ drivers/ssb/Makefile      |    1 +
+ drivers/ssb/driver_gpio.c |  170 +++++++++++++++++++++++++++++++++++++++++++++
+ drivers/ssb/main.c        |    1 +
+ drivers/ssb/ssb_private.h |    9 +++
+ include/linux/ssb/ssb.h   |    4 ++
+ 6 files changed, 194 insertions(+)
+ create mode 100644 drivers/ssb/driver_gpio.c
+
+diff --git a/drivers/ssb/Kconfig b/drivers/ssb/Kconfig
+index 42cdaa9..8b5460f 100644
+--- a/drivers/ssb/Kconfig
++++ b/drivers/ssb/Kconfig
+@@ -160,4 +160,13 @@ config SSB_DRIVER_GIGE
  
- config BCM47XX
- 	bool "Broadcom BCM47XX based boards"
-+	select ARCH_WANT_OPTIONAL_GPIOLIB
- 	select CEVT_R4K
- 	select CSRC_R4K
- 	select DMA_NONCOHERENT
-@@ -112,7 +113,6 @@ config BCM47XX
- 	select IRQ_CPU
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
--	select GENERIC_GPIO
- 	select SYS_HAS_EARLY_PRINTK
- 	select CFE
- 	help
-diff --git a/arch/mips/bcm47xx/Kconfig b/arch/mips/bcm47xx/Kconfig
-index b311be4..d7af29f 100644
---- a/arch/mips/bcm47xx/Kconfig
-+++ b/arch/mips/bcm47xx/Kconfig
-@@ -9,6 +9,7 @@ config BCM47XX_SSB
- 	select SSB_EMBEDDED
- 	select SSB_B43_PCI_BRIDGE if PCI
- 	select SSB_PCICORE_HOSTMODE if PCI
-+	select SSB_DRIVER_GPIO
- 	default y
- 	help
- 	 Add support for old Broadcom BCM47xx boards with Sonics Silicon Backplane support.
-@@ -23,6 +24,7 @@ config BCM47XX_BCMA
- 	select BCMA_DRIVER_MIPS
- 	select BCMA_HOST_PCI if PCI
- 	select BCMA_DRIVER_PCI_HOSTMODE if PCI
-+	select BCMA_DRIVER_GPIO
- 	default y
- 	help
- 	 Add support for new Broadcom BCM47xx boards with Broadcom specific Advanced Microcontroller Bus.
-diff --git a/arch/mips/bcm47xx/Makefile b/arch/mips/bcm47xx/Makefile
-index 4389de1..1a3567f 100644
---- a/arch/mips/bcm47xx/Makefile
-+++ b/arch/mips/bcm47xx/Makefile
-@@ -3,5 +3,5 @@
- # under Linux.
- #
+ 	  If unsure, say N
  
--obj-y 				+= gpio.o irq.o nvram.o prom.o serial.o setup.o time.o sprom.o
-+obj-y 				+= irq.o nvram.o prom.o serial.o setup.o time.o sprom.o
- obj-$(CONFIG_BCM47XX_SSB)	+= wgt634u.o
-diff --git a/arch/mips/bcm47xx/gpio.c b/arch/mips/bcm47xx/gpio.c
-deleted file mode 100644
-index 5ebdf62..0000000
---- a/arch/mips/bcm47xx/gpio.c
-+++ /dev/null
-@@ -1,102 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2007 Aurelien Jarno <aurelien@aurel32.net>
-- */
--
--#include <linux/export.h>
--#include <linux/ssb/ssb.h>
--#include <linux/ssb/ssb_driver_chipcommon.h>
--#include <linux/ssb/ssb_driver_extif.h>
--#include <asm/mach-bcm47xx/bcm47xx.h>
--#include <asm/mach-bcm47xx/gpio.h>
--
--#if (BCM47XX_CHIPCO_GPIO_LINES > BCM47XX_EXTIF_GPIO_LINES)
--static DECLARE_BITMAP(gpio_in_use, BCM47XX_CHIPCO_GPIO_LINES);
--#else
--static DECLARE_BITMAP(gpio_in_use, BCM47XX_EXTIF_GPIO_LINES);
--#endif
--
--int gpio_request(unsigned gpio, const char *tag)
--{
--	switch (bcm47xx_bus_type) {
--#ifdef CONFIG_BCM47XX_SSB
--	case BCM47XX_BUS_TYPE_SSB:
--		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco) &&
--		    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
--			return -EINVAL;
--
--		if (ssb_extif_available(&bcm47xx_bus.ssb.extif) &&
--		    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
--			return -EINVAL;
--
--		if (test_and_set_bit(gpio, gpio_in_use))
--			return -EBUSY;
--
--		return 0;
--#endif
--#ifdef CONFIG_BCM47XX_BCMA
--	case BCM47XX_BUS_TYPE_BCMA:
--		if (gpio >= BCM47XX_CHIPCO_GPIO_LINES)
--			return -EINVAL;
--
--		if (test_and_set_bit(gpio, gpio_in_use))
--			return -EBUSY;
--
--		return 0;
--#endif
--	}
--	return -EINVAL;
--}
--EXPORT_SYMBOL(gpio_request);
--
--void gpio_free(unsigned gpio)
--{
--	switch (bcm47xx_bus_type) {
--#ifdef CONFIG_BCM47XX_SSB
--	case BCM47XX_BUS_TYPE_SSB:
--		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco) &&
--		    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
--			return;
--
--		if (ssb_extif_available(&bcm47xx_bus.ssb.extif) &&
--		    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
--			return;
--
--		clear_bit(gpio, gpio_in_use);
--		return;
--#endif
--#ifdef CONFIG_BCM47XX_BCMA
--	case BCM47XX_BUS_TYPE_BCMA:
--		if (gpio >= BCM47XX_CHIPCO_GPIO_LINES)
--			return;
--
--		clear_bit(gpio, gpio_in_use);
--		return;
--#endif
--	}
--}
--EXPORT_SYMBOL(gpio_free);
--
--int gpio_to_irq(unsigned gpio)
--{
--	switch (bcm47xx_bus_type) {
--#ifdef CONFIG_BCM47XX_SSB
--	case BCM47XX_BUS_TYPE_SSB:
--		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco))
--			return ssb_mips_irq(bcm47xx_bus.ssb.chipco.dev) + 2;
--		else if (ssb_extif_available(&bcm47xx_bus.ssb.extif))
--			return ssb_mips_irq(bcm47xx_bus.ssb.extif.dev) + 2;
--		else
--			return -EINVAL;
--#endif
--#ifdef CONFIG_BCM47XX_BCMA
--	case BCM47XX_BUS_TYPE_BCMA:
--		return bcma_core_mips_irq(bcm47xx_bus.bcma.bus.drv_cc.core) + 2;
--#endif
--	}
--	return -EINVAL;
--}
--EXPORT_SYMBOL_GPL(gpio_to_irq);
-diff --git a/arch/mips/include/asm/mach-bcm47xx/gpio.h b/arch/mips/include/asm/mach-bcm47xx/gpio.h
-index 2ef17e8..90daefa 100644
---- a/arch/mips/include/asm/mach-bcm47xx/gpio.h
-+++ b/arch/mips/include/asm/mach-bcm47xx/gpio.h
-@@ -1,155 +1,17 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2007 Aurelien Jarno <aurelien@aurel32.net>
-- */
-+#ifndef __ASM_MIPS_MACH_BCM47XX_GPIO_H
-+#define __ASM_MIPS_MACH_BCM47XX_GPIO_H
++config SSB_DRIVER_GPIO
++	bool
++	depends on SSB
++	select GPIOLIB
++	help
++	  Driver to provide access to the GPIO pins.
++
++	  If unsure, say N
++
+ endmenu
+diff --git a/drivers/ssb/Makefile b/drivers/ssb/Makefile
+index 656e58b..9159ba7 100644
+--- a/drivers/ssb/Makefile
++++ b/drivers/ssb/Makefile
+@@ -15,6 +15,7 @@ ssb-$(CONFIG_SSB_DRIVER_MIPS)		+= driver_mipscore.o
+ ssb-$(CONFIG_SSB_DRIVER_EXTIF)		+= driver_extif.o
+ ssb-$(CONFIG_SSB_DRIVER_PCICORE)	+= driver_pcicore.o
+ ssb-$(CONFIG_SSB_DRIVER_GIGE)		+= driver_gige.o
++ssb-$(CONFIG_SSB_DRIVER_GPIO)		+= driver_gpio.o
  
--#ifndef __BCM47XX_GPIO_H
--#define __BCM47XX_GPIO_H
-+#include <asm-generic/gpio.h>
- 
--#include <linux/ssb/ssb_embedded.h>
--#include <linux/bcma/bcma.h>
--#include <asm/mach-bcm47xx/bcm47xx.h>
-+#define gpio_get_value __gpio_get_value
-+#define gpio_set_value __gpio_set_value
- 
--#define BCM47XX_EXTIF_GPIO_LINES	5
--#define BCM47XX_CHIPCO_GPIO_LINES	16
-+#define gpio_cansleep __gpio_cansleep
-+#define gpio_to_irq __gpio_to_irq
- 
--extern int gpio_request(unsigned gpio, const char *label);
--extern void gpio_free(unsigned gpio);
--extern int gpio_to_irq(unsigned gpio);
--
--static inline int gpio_get_value(unsigned gpio)
-+static inline int irq_to_gpio(unsigned int irq)
- {
--	switch (bcm47xx_bus_type) {
--#ifdef CONFIG_BCM47XX_SSB
--	case BCM47XX_BUS_TYPE_SSB:
--		return ssb_gpio_in(&bcm47xx_bus.ssb, 1 << gpio);
--#endif
--#ifdef CONFIG_BCM47XX_BCMA
--	case BCM47XX_BUS_TYPE_BCMA:
--		return bcma_chipco_gpio_in(&bcm47xx_bus.bcma.bus.drv_cc,
--					   1 << gpio);
--#endif
--	}
- 	return -EINVAL;
+ # b43 pci-ssb-bridge driver
+ # Not strictly a part of SSB, but kept here for convenience
+diff --git a/drivers/ssb/driver_gpio.c b/drivers/ssb/driver_gpio.c
+new file mode 100644
+index 0000000..e4ab9f6
+--- /dev/null
++++ b/drivers/ssb/driver_gpio.c
+@@ -0,0 +1,170 @@
++/*
++ * Sonics Silicon Backplane
++ * GPIO driver
++ *
++ * Copyright 2011, Broadcom Corporation
++ * Copyright 2012, Hauke Mehrtens <hauke@hauke-m.de>
++ *
++ * Licensed under the GNU/GPL. See COPYING for details.
++ */
++
++#include <linux/gpio.h>
++#include <linux/export.h>
++#include <linux/ssb/ssb.h>
++
++#include "ssb_private.h"
++
++static struct ssb_bus *ssb_gpio_get_bus(struct gpio_chip *chip)
++{
++	return container_of(chip, struct ssb_bus, gpio);
++}
++
++static int ssb_gpio_chipco_get_value(struct gpio_chip *chip, unsigned gpio)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	return !!ssb_chipco_gpio_in(&bus->chipco, 1 << gpio);
++}
++
++static void ssb_gpio_chipco_set_value(struct gpio_chip *chip, unsigned gpio,
++				      int value)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_chipco_gpio_out(&bus->chipco, 1 << gpio, value ? 1 << gpio : 0);
++}
++
++static int ssb_gpio_chipco_direction_input(struct gpio_chip *chip,
++					   unsigned gpio)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_chipco_gpio_outen(&bus->chipco, 1 << gpio, 0);
++	return 0;
++}
++
++static int ssb_gpio_chipco_direction_output(struct gpio_chip *chip,
++					    unsigned gpio, int value)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_chipco_gpio_outen(&bus->chipco, 1 << gpio, 1 << gpio);
++	ssb_chipco_gpio_out(&bus->chipco, 1 << gpio, value ? 1 << gpio : 0);
++	return 0;
++}
++
++static int ssb_gpio_chipco_request(struct gpio_chip *chip, unsigned gpio)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_chipco_gpio_control(&bus->chipco, 1 << gpio, 0);
++	/* clear pulldown */
++	ssb_chipco_gpio_pulldown(&bus->chipco, 1 << gpio, 0);
++	/* Set pullup */
++	ssb_chipco_gpio_pullup(&bus->chipco, 1 << gpio, 1 << gpio);
++
++	return 0;
++}
++
++static void ssb_gpio_chipco_free(struct gpio_chip *chip, unsigned gpio)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	/* clear pullup */
++	ssb_chipco_gpio_pullup(&bus->chipco, 1 << gpio, 0);
++}
++
++static int ssb_gpio_chipco_init(struct ssb_bus *bus)
++{
++	struct gpio_chip *chip = &bus->gpio;
++
++	chip->label		= "ssb_chipco_gpio";
++	chip->owner		= THIS_MODULE;
++	chip->request		= ssb_gpio_chipco_request;
++	chip->free		= ssb_gpio_chipco_free;
++	chip->get		= ssb_gpio_chipco_get_value;
++	chip->set		= ssb_gpio_chipco_set_value;
++	chip->direction_input	= ssb_gpio_chipco_direction_input;
++	chip->direction_output	= ssb_gpio_chipco_direction_output;
++	chip->ngpio		= 16;
++	if (bus->bustype == SSB_BUSTYPE_SSB)
++		chip->base		= 0;
++	else
++		chip->base		= -1;
++
++	return gpiochip_add(chip);
++}
++
++#ifdef CONFIG_SSB_DRIVER_EXTIF
++
++static int ssb_gpio_extif_get_value(struct gpio_chip *chip, unsigned gpio)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	return !!ssb_extif_gpio_in(&bus->extif, 1 << gpio);
++}
++
++static void ssb_gpio_extif_set_value(struct gpio_chip *chip, unsigned gpio,
++				     int value)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_extif_gpio_out(&bus->extif, 1 << gpio, value ? 1 << gpio : 0);
++}
++
++static int ssb_gpio_extif_direction_input(struct gpio_chip *chip,
++					  unsigned gpio)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_extif_gpio_outen(&bus->extif, 1 << gpio, 0);
++	return 0;
++}
++
++static int ssb_gpio_extif_direction_output(struct gpio_chip *chip,
++					   unsigned gpio, int value)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_extif_gpio_outen(&bus->extif, 1 << gpio, 1 << gpio);
++	ssb_extif_gpio_out(&bus->extif, 1 << gpio, value ? 1 << gpio : 0);
++	return 0;
++}
++
++static int ssb_gpio_extif_init(struct ssb_bus *bus)
++{
++	struct gpio_chip *chip = &bus->gpio;
++
++	chip->label		= "ssb_extif_gpio";
++	chip->owner		= THIS_MODULE;
++	chip->get		= ssb_gpio_extif_get_value;
++	chip->set		= ssb_gpio_extif_set_value;
++	chip->direction_input	= ssb_gpio_extif_direction_input;
++	chip->direction_output	= ssb_gpio_extif_direction_output;
++	chip->ngpio		= 5;
++	if (bus->bustype == SSB_BUSTYPE_SSB)
++		chip->base		= 0;
++	else
++		chip->base		= -1;
++
++	return gpiochip_add(chip);
++}
++
++#else
++static int ssb_gpio_extif_init(struct ssb_bus *bus)
++{
++	return 0;
++}
++#endif
++
++int ssb_gpio_init(struct ssb_bus *bus)
++{
++	if (ssb_chipco_available(&bus->chipco))
++		return ssb_gpio_chipco_init(bus);
++	else if (ssb_extif_available(&bus->extif))
++		return ssb_gpio_extif_init(bus);
++	else
++		SSB_WARN_ON(1);
++
++	return -1;
++}
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index 6fe2d10..6ac1ca3 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -798,6 +798,7 @@ static int __devinit ssb_bus_register(struct ssb_bus *bus,
+ 	ssb_chipcommon_init(&bus->chipco);
+ 	ssb_extif_init(&bus->extif);
+ 	ssb_mipscore_init(&bus->mipscore);
++	ssb_gpio_init(bus);
+ 	err = ssb_fetch_invariants(bus, get_invariants);
+ 	if (err) {
+ 		ssb_bus_may_powerdown(bus);
+diff --git a/drivers/ssb/ssb_private.h b/drivers/ssb/ssb_private.h
+index d6a1ba9..f86eeae 100644
+--- a/drivers/ssb/ssb_private.h
++++ b/drivers/ssb/ssb_private.h
+@@ -219,4 +219,13 @@ static inline void ssb_extif_init(struct ssb_extif *extif)
  }
- 
--#define gpio_get_value_cansleep	gpio_get_value
--
--static inline void gpio_set_value(unsigned gpio, int value)
--{
--	switch (bcm47xx_bus_type) {
--#ifdef CONFIG_BCM47XX_SSB
--	case BCM47XX_BUS_TYPE_SSB:
--		ssb_gpio_out(&bcm47xx_bus.ssb, 1 << gpio,
--			     value ? 1 << gpio : 0);
--		return;
--#endif
--#ifdef CONFIG_BCM47XX_BCMA
--	case BCM47XX_BUS_TYPE_BCMA:
--		bcma_chipco_gpio_out(&bcm47xx_bus.bcma.bus.drv_cc, 1 << gpio,
--				     value ? 1 << gpio : 0);
--		return;
  #endif
--	}
--}
--
--#define gpio_set_value_cansleep gpio_set_value
--
--static inline int gpio_cansleep(unsigned gpio)
--{
--	return 0;
--}
--
--static inline int gpio_is_valid(unsigned gpio)
--{
--	return gpio < (BCM47XX_EXTIF_GPIO_LINES + BCM47XX_CHIPCO_GPIO_LINES);
--}
--
--
--static inline int gpio_direction_input(unsigned gpio)
--{
--	switch (bcm47xx_bus_type) {
--#ifdef CONFIG_BCM47XX_SSB
--	case BCM47XX_BUS_TYPE_SSB:
--		ssb_gpio_outen(&bcm47xx_bus.ssb, 1 << gpio, 0);
--		return 0;
--#endif
--#ifdef CONFIG_BCM47XX_BCMA
--	case BCM47XX_BUS_TYPE_BCMA:
--		bcma_chipco_gpio_outen(&bcm47xx_bus.bcma.bus.drv_cc, 1 << gpio,
--				       0);
--		return 0;
--#endif
--	}
--	return -EINVAL;
--}
--
--static inline int gpio_direction_output(unsigned gpio, int value)
--{
--	switch (bcm47xx_bus_type) {
--#ifdef CONFIG_BCM47XX_SSB
--	case BCM47XX_BUS_TYPE_SSB:
--		/* first set the gpio out value */
--		ssb_gpio_out(&bcm47xx_bus.ssb, 1 << gpio,
--			     value ? 1 << gpio : 0);
--		/* then set the gpio mode */
--		ssb_gpio_outen(&bcm47xx_bus.ssb, 1 << gpio, 1 << gpio);
--		return 0;
--#endif
--#ifdef CONFIG_BCM47XX_BCMA
--	case BCM47XX_BUS_TYPE_BCMA:
--		/* first set the gpio out value */
--		bcma_chipco_gpio_out(&bcm47xx_bus.bcma.bus.drv_cc, 1 << gpio,
--				     value ? 1 << gpio : 0);
--		/* then set the gpio mode */
--		bcma_chipco_gpio_outen(&bcm47xx_bus.bcma.bus.drv_cc, 1 << gpio,
--				       1 << gpio);
--		return 0;
--#endif
--	}
--	return -EINVAL;
--}
--
--static inline int gpio_intmask(unsigned gpio, int value)
--{
--	switch (bcm47xx_bus_type) {
--#ifdef CONFIG_BCM47XX_SSB
--	case BCM47XX_BUS_TYPE_SSB:
--		ssb_gpio_intmask(&bcm47xx_bus.ssb, 1 << gpio,
--				 value ? 1 << gpio : 0);
--		return 0;
--#endif
--#ifdef CONFIG_BCM47XX_BCMA
--	case BCM47XX_BUS_TYPE_BCMA:
--		bcma_chipco_gpio_intmask(&bcm47xx_bus.bcma.bus.drv_cc,
--					 1 << gpio, value ? 1 << gpio : 0);
--		return 0;
--#endif
--	}
--	return -EINVAL;
--}
--
--static inline int gpio_polarity(unsigned gpio, int value)
--{
--	switch (bcm47xx_bus_type) {
--#ifdef CONFIG_BCM47XX_SSB
--	case BCM47XX_BUS_TYPE_SSB:
--		ssb_gpio_polarity(&bcm47xx_bus.ssb, 1 << gpio,
--				  value ? 1 << gpio : 0);
--		return 0;
--#endif
--#ifdef CONFIG_BCM47XX_BCMA
--	case BCM47XX_BUS_TYPE_BCMA:
--		bcma_chipco_gpio_polarity(&bcm47xx_bus.bcma.bus.drv_cc,
--					  1 << gpio, value ? 1 << gpio : 0);
--		return 0;
--#endif
--	}
--	return -EINVAL;
--}
--
--
--#endif /* __BCM47XX_GPIO_H */
+ 
++#ifdef CONFIG_SSB_DRIVER_GPIO
++extern int ssb_gpio_init(struct ssb_bus *bus);
++#else /* CONFIG_SSB_DRIVER_GPIO */
++static inline int ssb_gpio_init(struct ssb_bus *bus)
++{
++	return 0;
++}
++#endif /* CONFIG_SSB_DRIVER_GPIO */
++
+ #endif /* LINUX_SSB_PRIVATE_H_ */
+diff --git a/include/linux/ssb/ssb.h b/include/linux/ssb/ssb.h
+index bb674c0..3862a5b 100644
+--- a/include/linux/ssb/ssb.h
++++ b/include/linux/ssb/ssb.h
+@@ -6,6 +6,7 @@
+ #include <linux/types.h>
+ #include <linux/spinlock.h>
+ #include <linux/pci.h>
++#include <linux/gpio.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/dma-mapping.h>
+ 
+@@ -433,6 +434,9 @@ struct ssb_bus {
+ 	/* Lock for GPIO register access. */
+ 	spinlock_t gpio_lock;
+ #endif /* EMBEDDED */
++#ifdef CONFIG_SSB_DRIVER_GPIO
++	struct gpio_chip gpio;
++#endif /* DRIVER_GPIO */
+ 
+ 	/* Internal-only stuff follows. Do not touch. */
+ 	struct list_head list;
 -- 
 1.7.10.4

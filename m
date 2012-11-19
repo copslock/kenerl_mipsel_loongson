@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2012 00:08:35 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:41935 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2012 00:09:17 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:41948 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6828033Ab2KSW66HtWm1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2012 23:58:58 +0100
+        with ESMTP id S6828034Ab2KSW7HniTry (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2012 23:59:07 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id A41D68F67;
-        Mon, 19 Nov 2012 23:58:57 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id 8FEC58F63;
+        Mon, 19 Nov 2012 23:59:03 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id NiUZVsk83s2N; Mon, 19 Nov 2012 23:58:49 +0100 (CET)
+        with ESMTP id 4fOj8Vkc-yaW; Mon, 19 Nov 2012 23:58:56 +0100 (CET)
 Received: from hauke-desktop.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id D9BCA8F66;
-        Mon, 19 Nov 2012 23:58:11 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 8ABE48F68;
+        Mon, 19 Nov 2012 23:58:15 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     john@phrozen.org, ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
         florian@openwrt.org, zajec5@gmail.com, m@bues.ch,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 6/8] ssb: add locking around gpio register accesses
-Date:   Mon, 19 Nov 2012 23:57:55 +0100
-Message-Id: <1353365877-11131-7-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 8/8] MIPS: BCM47XX: remove GPIO driver
+Date:   Mon, 19 Nov 2012 23:57:57 +0100
+Message-Id: <1353365877-11131-9-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1353365877-11131-1-git-send-email-hauke@hauke-m.de>
 References: <1353365877-11131-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 35051
+X-archive-position: 35052
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,282 +42,345 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The GPIOs are access through some registers in the chip common core or
-over extif. We need locking around these GPIO accesses, all GPIOs are
-accessed through the same registers and parallel writes will cause
-problems.
+Instated of providing an own GPIO driver use the one provided by ssb and
+bcma.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/ssb/driver_chipcommon.c           |   75 ++++++++++++++++++++++++++---
- drivers/ssb/driver_extif.c                |   52 ++++++++++++++++++--
- drivers/ssb/main.c                        |    1 +
- drivers/ssb/ssb_private.h                 |    8 +++
- include/linux/ssb/ssb_driver_chipcommon.h |    1 +
- include/linux/ssb/ssb_driver_extif.h      |    1 +
- 6 files changed, 125 insertions(+), 13 deletions(-)
+ arch/mips/Kconfig                         |    2 +-
+ arch/mips/bcm47xx/Kconfig                 |    2 +
+ arch/mips/bcm47xx/Makefile                |    2 +-
+ arch/mips/bcm47xx/gpio.c                  |  102 -------------------
+ arch/mips/include/asm/mach-bcm47xx/gpio.h |  154 ++---------------------------
+ 5 files changed, 12 insertions(+), 250 deletions(-)
+ delete mode 100644 arch/mips/bcm47xx/gpio.c
 
-diff --git a/drivers/ssb/driver_chipcommon.c b/drivers/ssb/driver_chipcommon.c
-index 4df4926..3b1c5c7 100644
---- a/drivers/ssb/driver_chipcommon.c
-+++ b/drivers/ssb/driver_chipcommon.c
-@@ -284,6 +284,9 @@ void ssb_chipcommon_init(struct ssb_chipcommon *cc)
- {
- 	if (!cc->dev)
- 		return; /* We don't have a ChipCommon */
-+
-+	spin_lock_init(&cc->gpio_lock);
-+
- 	if (cc->dev->id.revision >= 11)
- 		cc->status = chipco_read32(cc, SSB_CHIPCO_CHIPSTAT);
- 	ssb_dprintk(KERN_INFO PFX "chipcommon status is 0x%x\n", cc->status);
-@@ -413,49 +416,105 @@ u32 ssb_chipco_irq_status(struct ssb_chipcommon *cc, u32 mask)
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index dba9390..abc8b69 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -105,6 +105,7 @@ config ATH79
  
- u32 ssb_chipco_gpio_in(struct ssb_chipcommon *cc, u32 mask)
+ config BCM47XX
+ 	bool "Broadcom BCM47XX based boards"
++	select ARCH_WANT_OPTIONAL_GPIOLIB
+ 	select CEVT_R4K
+ 	select CSRC_R4K
+ 	select DMA_NONCOHERENT
+@@ -112,7 +113,6 @@ config BCM47XX
+ 	select IRQ_CPU
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	select GENERIC_GPIO
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select CFE
+ 	help
+diff --git a/arch/mips/bcm47xx/Kconfig b/arch/mips/bcm47xx/Kconfig
+index b311be4..d7af29f 100644
+--- a/arch/mips/bcm47xx/Kconfig
++++ b/arch/mips/bcm47xx/Kconfig
+@@ -9,6 +9,7 @@ config BCM47XX_SSB
+ 	select SSB_EMBEDDED
+ 	select SSB_B43_PCI_BRIDGE if PCI
+ 	select SSB_PCICORE_HOSTMODE if PCI
++	select SSB_DRIVER_GPIO
+ 	default y
+ 	help
+ 	 Add support for old Broadcom BCM47xx boards with Sonics Silicon Backplane support.
+@@ -23,6 +24,7 @@ config BCM47XX_BCMA
+ 	select BCMA_DRIVER_MIPS
+ 	select BCMA_HOST_PCI if PCI
+ 	select BCMA_DRIVER_PCI_HOSTMODE if PCI
++	select BCMA_DRIVER_GPIO
+ 	default y
+ 	help
+ 	 Add support for new Broadcom BCM47xx boards with Broadcom specific Advanced Microcontroller Bus.
+diff --git a/arch/mips/bcm47xx/Makefile b/arch/mips/bcm47xx/Makefile
+index 4389de1..1a3567f 100644
+--- a/arch/mips/bcm47xx/Makefile
++++ b/arch/mips/bcm47xx/Makefile
+@@ -3,5 +3,5 @@
+ # under Linux.
+ #
+ 
+-obj-y 				+= gpio.o irq.o nvram.o prom.o serial.o setup.o time.o sprom.o
++obj-y 				+= irq.o nvram.o prom.o serial.o setup.o time.o sprom.o
+ obj-$(CONFIG_BCM47XX_SSB)	+= wgt634u.o
+diff --git a/arch/mips/bcm47xx/gpio.c b/arch/mips/bcm47xx/gpio.c
+deleted file mode 100644
+index 5ebdf62..0000000
+--- a/arch/mips/bcm47xx/gpio.c
++++ /dev/null
+@@ -1,102 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2007 Aurelien Jarno <aurelien@aurel32.net>
+- */
+-
+-#include <linux/export.h>
+-#include <linux/ssb/ssb.h>
+-#include <linux/ssb/ssb_driver_chipcommon.h>
+-#include <linux/ssb/ssb_driver_extif.h>
+-#include <asm/mach-bcm47xx/bcm47xx.h>
+-#include <asm/mach-bcm47xx/gpio.h>
+-
+-#if (BCM47XX_CHIPCO_GPIO_LINES > BCM47XX_EXTIF_GPIO_LINES)
+-static DECLARE_BITMAP(gpio_in_use, BCM47XX_CHIPCO_GPIO_LINES);
+-#else
+-static DECLARE_BITMAP(gpio_in_use, BCM47XX_EXTIF_GPIO_LINES);
+-#endif
+-
+-int gpio_request(unsigned gpio, const char *tag)
+-{
+-	switch (bcm47xx_bus_type) {
+-#ifdef CONFIG_BCM47XX_SSB
+-	case BCM47XX_BUS_TYPE_SSB:
+-		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco) &&
+-		    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
+-			return -EINVAL;
+-
+-		if (ssb_extif_available(&bcm47xx_bus.ssb.extif) &&
+-		    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
+-			return -EINVAL;
+-
+-		if (test_and_set_bit(gpio, gpio_in_use))
+-			return -EBUSY;
+-
+-		return 0;
+-#endif
+-#ifdef CONFIG_BCM47XX_BCMA
+-	case BCM47XX_BUS_TYPE_BCMA:
+-		if (gpio >= BCM47XX_CHIPCO_GPIO_LINES)
+-			return -EINVAL;
+-
+-		if (test_and_set_bit(gpio, gpio_in_use))
+-			return -EBUSY;
+-
+-		return 0;
+-#endif
+-	}
+-	return -EINVAL;
+-}
+-EXPORT_SYMBOL(gpio_request);
+-
+-void gpio_free(unsigned gpio)
+-{
+-	switch (bcm47xx_bus_type) {
+-#ifdef CONFIG_BCM47XX_SSB
+-	case BCM47XX_BUS_TYPE_SSB:
+-		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco) &&
+-		    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
+-			return;
+-
+-		if (ssb_extif_available(&bcm47xx_bus.ssb.extif) &&
+-		    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
+-			return;
+-
+-		clear_bit(gpio, gpio_in_use);
+-		return;
+-#endif
+-#ifdef CONFIG_BCM47XX_BCMA
+-	case BCM47XX_BUS_TYPE_BCMA:
+-		if (gpio >= BCM47XX_CHIPCO_GPIO_LINES)
+-			return;
+-
+-		clear_bit(gpio, gpio_in_use);
+-		return;
+-#endif
+-	}
+-}
+-EXPORT_SYMBOL(gpio_free);
+-
+-int gpio_to_irq(unsigned gpio)
+-{
+-	switch (bcm47xx_bus_type) {
+-#ifdef CONFIG_BCM47XX_SSB
+-	case BCM47XX_BUS_TYPE_SSB:
+-		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco))
+-			return ssb_mips_irq(bcm47xx_bus.ssb.chipco.dev) + 2;
+-		else if (ssb_extif_available(&bcm47xx_bus.ssb.extif))
+-			return ssb_mips_irq(bcm47xx_bus.ssb.extif.dev) + 2;
+-		else
+-			return -EINVAL;
+-#endif
+-#ifdef CONFIG_BCM47XX_BCMA
+-	case BCM47XX_BUS_TYPE_BCMA:
+-		return bcma_core_mips_irq(bcm47xx_bus.bcma.bus.drv_cc.core) + 2;
+-#endif
+-	}
+-	return -EINVAL;
+-}
+-EXPORT_SYMBOL_GPL(gpio_to_irq);
+diff --git a/arch/mips/include/asm/mach-bcm47xx/gpio.h b/arch/mips/include/asm/mach-bcm47xx/gpio.h
+index 2ef17e8..90daefa 100644
+--- a/arch/mips/include/asm/mach-bcm47xx/gpio.h
++++ b/arch/mips/include/asm/mach-bcm47xx/gpio.h
+@@ -1,155 +1,17 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2007 Aurelien Jarno <aurelien@aurel32.net>
+- */
++#ifndef __ASM_MIPS_MACH_BCM47XX_GPIO_H
++#define __ASM_MIPS_MACH_BCM47XX_GPIO_H
+ 
+-#ifndef __BCM47XX_GPIO_H
+-#define __BCM47XX_GPIO_H
++#include <asm-generic/gpio.h>
+ 
+-#include <linux/ssb/ssb_embedded.h>
+-#include <linux/bcma/bcma.h>
+-#include <asm/mach-bcm47xx/bcm47xx.h>
++#define gpio_get_value __gpio_get_value
++#define gpio_set_value __gpio_set_value
+ 
+-#define BCM47XX_EXTIF_GPIO_LINES	5
+-#define BCM47XX_CHIPCO_GPIO_LINES	16
++#define gpio_cansleep __gpio_cansleep
++#define gpio_to_irq __gpio_to_irq
+ 
+-extern int gpio_request(unsigned gpio, const char *label);
+-extern void gpio_free(unsigned gpio);
+-extern int gpio_to_irq(unsigned gpio);
+-
+-static inline int gpio_get_value(unsigned gpio)
++static inline int irq_to_gpio(unsigned int irq)
  {
--	return chipco_read32(cc, SSB_CHIPCO_GPIOIN) & mask;
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_read32(cc, SSB_CHIPCO_GPIOIN) & mask;
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
+-	switch (bcm47xx_bus_type) {
+-#ifdef CONFIG_BCM47XX_SSB
+-	case BCM47XX_BUS_TYPE_SSB:
+-		return ssb_gpio_in(&bcm47xx_bus.ssb, 1 << gpio);
+-#endif
+-#ifdef CONFIG_BCM47XX_BCMA
+-	case BCM47XX_BUS_TYPE_BCMA:
+-		return bcma_chipco_gpio_in(&bcm47xx_bus.bcma.bus.drv_cc,
+-					   1 << gpio);
+-#endif
+-	}
+ 	return -EINVAL;
  }
  
- u32 ssb_chipco_gpio_out(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOOUT, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOOUT, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_chipco_gpio_outen(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOOUTEN, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOOUTEN, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_chipco_gpio_control(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOCTL, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOCTL, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
- }
- EXPORT_SYMBOL(ssb_chipco_gpio_control);
- 
- u32 ssb_chipco_gpio_intmask(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOIRQ, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOIRQ, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_chipco_gpio_polarity(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOPOL, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOPOL, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_chipco_gpio_pullup(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
-+	unsigned long flags;
-+	u32 res = 0;
-+
- 	if (cc->dev->id.revision < 20)
- 		return 0xffffffff;
- 
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOPULLUP, mask, value);
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOPULLUP, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_chipco_gpio_pulldown(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
-+	unsigned long flags;
-+	u32 res = 0;
-+
- 	if (cc->dev->id.revision < 20)
- 		return 0xffffffff;
- 
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOPULLDOWN, mask, value);
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOPULLDOWN, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
- }
- 
- #ifdef CONFIG_SSB_SERIAL
-diff --git a/drivers/ssb/driver_extif.c b/drivers/ssb/driver_extif.c
-index dc47f30..c323579 100644
---- a/drivers/ssb/driver_extif.c
-+++ b/drivers/ssb/driver_extif.c
-@@ -118,29 +118,71 @@ void ssb_extif_watchdog_timer_set(struct ssb_extif *extif,
- 	extif_write32(extif, SSB_EXTIF_WATCHDOG, ticks);
- }
- 
-+void ssb_extif_init(struct ssb_extif *extif)
-+{
-+	if (!extif->dev)
-+		return; /* We don't have a Extif core */
-+	spin_lock_init(&extif->gpio_lock);
-+}
-+
- u32 ssb_extif_gpio_in(struct ssb_extif *extif, u32 mask)
- {
--	return extif_read32(extif, SSB_EXTIF_GPIO_IN) & mask;
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&extif->gpio_lock, flags);
-+	res = extif_read32(extif, SSB_EXTIF_GPIO_IN) & mask;
-+	spin_unlock_irqrestore(&extif->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_extif_gpio_out(struct ssb_extif *extif, u32 mask, u32 value)
- {
--	return extif_write32_masked(extif, SSB_EXTIF_GPIO_OUT(0),
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&extif->gpio_lock, flags);
-+	res = extif_write32_masked(extif, SSB_EXTIF_GPIO_OUT(0),
- 				   mask, value);
-+	spin_unlock_irqrestore(&extif->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_extif_gpio_outen(struct ssb_extif *extif, u32 mask, u32 value)
- {
--	return extif_write32_masked(extif, SSB_EXTIF_GPIO_OUTEN(0),
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&extif->gpio_lock, flags);
-+	res = extif_write32_masked(extif, SSB_EXTIF_GPIO_OUTEN(0),
- 				   mask, value);
-+	spin_unlock_irqrestore(&extif->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_extif_gpio_polarity(struct ssb_extif *extif, u32 mask, u32 value)
- {
--	return extif_write32_masked(extif, SSB_EXTIF_GPIO_INTPOL, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&extif->gpio_lock, flags);
-+	res = extif_write32_masked(extif, SSB_EXTIF_GPIO_INTPOL, mask, value);
-+	spin_unlock_irqrestore(&extif->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_extif_gpio_intmask(struct ssb_extif *extif, u32 mask, u32 value)
- {
--	return extif_write32_masked(extif, SSB_EXTIF_GPIO_INTMASK, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&extif->gpio_lock, flags);
-+	res = extif_write32_masked(extif, SSB_EXTIF_GPIO_INTMASK, mask, value);
-+	spin_unlock_irqrestore(&extif->gpio_lock, flags);
-+
-+	return res;
- }
-diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-index df0f145..6fe2d10 100644
---- a/drivers/ssb/main.c
-+++ b/drivers/ssb/main.c
-@@ -796,6 +796,7 @@ static int __devinit ssb_bus_register(struct ssb_bus *bus,
- 	if (err)
- 		goto err_pcmcia_exit;
- 	ssb_chipcommon_init(&bus->chipco);
-+	ssb_extif_init(&bus->extif);
- 	ssb_mipscore_init(&bus->mipscore);
- 	err = ssb_fetch_invariants(bus, get_invariants);
- 	if (err) {
-diff --git a/drivers/ssb/ssb_private.h b/drivers/ssb/ssb_private.h
-index a305550..d6a1ba9 100644
---- a/drivers/ssb/ssb_private.h
-+++ b/drivers/ssb/ssb_private.h
-@@ -211,4 +211,12 @@ static inline void b43_pci_ssb_bridge_exit(void)
- extern u32 ssb_pmu_get_cpu_clock(struct ssb_chipcommon *cc);
- extern u32 ssb_pmu_get_controlclock(struct ssb_chipcommon *cc);
- 
-+#ifdef CONFIG_SSB_DRIVER_EXTIF
-+extern void ssb_extif_init(struct ssb_extif *extif);
-+#else
-+static inline void ssb_extif_init(struct ssb_extif *extif)
-+{
-+}
-+#endif
-+
- #endif /* LINUX_SSB_PRIVATE_H_ */
-diff --git a/include/linux/ssb/ssb_driver_chipcommon.h b/include/linux/ssb/ssb_driver_chipcommon.h
-index c8d07c9..30b6943 100644
---- a/include/linux/ssb/ssb_driver_chipcommon.h
-+++ b/include/linux/ssb/ssb_driver_chipcommon.h
-@@ -590,6 +590,7 @@ struct ssb_chipcommon {
- 	u32 status;
- 	/* Fast Powerup Delay constant */
- 	u16 fast_pwrup_delay;
-+	spinlock_t gpio_lock;
- 	struct ssb_chipcommon_pmu pmu;
- };
- 
-diff --git a/include/linux/ssb/ssb_driver_extif.h b/include/linux/ssb/ssb_driver_extif.h
-index 91161f0..bd23068 100644
---- a/include/linux/ssb/ssb_driver_extif.h
-+++ b/include/linux/ssb/ssb_driver_extif.h
-@@ -158,6 +158,7 @@
- 
- struct ssb_extif {
- 	struct ssb_device *dev;
-+	spinlock_t gpio_lock;
- };
- 
- static inline bool ssb_extif_available(struct ssb_extif *extif)
+-#define gpio_get_value_cansleep	gpio_get_value
+-
+-static inline void gpio_set_value(unsigned gpio, int value)
+-{
+-	switch (bcm47xx_bus_type) {
+-#ifdef CONFIG_BCM47XX_SSB
+-	case BCM47XX_BUS_TYPE_SSB:
+-		ssb_gpio_out(&bcm47xx_bus.ssb, 1 << gpio,
+-			     value ? 1 << gpio : 0);
+-		return;
+-#endif
+-#ifdef CONFIG_BCM47XX_BCMA
+-	case BCM47XX_BUS_TYPE_BCMA:
+-		bcma_chipco_gpio_out(&bcm47xx_bus.bcma.bus.drv_cc, 1 << gpio,
+-				     value ? 1 << gpio : 0);
+-		return;
+ #endif
+-	}
+-}
+-
+-#define gpio_set_value_cansleep gpio_set_value
+-
+-static inline int gpio_cansleep(unsigned gpio)
+-{
+-	return 0;
+-}
+-
+-static inline int gpio_is_valid(unsigned gpio)
+-{
+-	return gpio < (BCM47XX_EXTIF_GPIO_LINES + BCM47XX_CHIPCO_GPIO_LINES);
+-}
+-
+-
+-static inline int gpio_direction_input(unsigned gpio)
+-{
+-	switch (bcm47xx_bus_type) {
+-#ifdef CONFIG_BCM47XX_SSB
+-	case BCM47XX_BUS_TYPE_SSB:
+-		ssb_gpio_outen(&bcm47xx_bus.ssb, 1 << gpio, 0);
+-		return 0;
+-#endif
+-#ifdef CONFIG_BCM47XX_BCMA
+-	case BCM47XX_BUS_TYPE_BCMA:
+-		bcma_chipco_gpio_outen(&bcm47xx_bus.bcma.bus.drv_cc, 1 << gpio,
+-				       0);
+-		return 0;
+-#endif
+-	}
+-	return -EINVAL;
+-}
+-
+-static inline int gpio_direction_output(unsigned gpio, int value)
+-{
+-	switch (bcm47xx_bus_type) {
+-#ifdef CONFIG_BCM47XX_SSB
+-	case BCM47XX_BUS_TYPE_SSB:
+-		/* first set the gpio out value */
+-		ssb_gpio_out(&bcm47xx_bus.ssb, 1 << gpio,
+-			     value ? 1 << gpio : 0);
+-		/* then set the gpio mode */
+-		ssb_gpio_outen(&bcm47xx_bus.ssb, 1 << gpio, 1 << gpio);
+-		return 0;
+-#endif
+-#ifdef CONFIG_BCM47XX_BCMA
+-	case BCM47XX_BUS_TYPE_BCMA:
+-		/* first set the gpio out value */
+-		bcma_chipco_gpio_out(&bcm47xx_bus.bcma.bus.drv_cc, 1 << gpio,
+-				     value ? 1 << gpio : 0);
+-		/* then set the gpio mode */
+-		bcma_chipco_gpio_outen(&bcm47xx_bus.bcma.bus.drv_cc, 1 << gpio,
+-				       1 << gpio);
+-		return 0;
+-#endif
+-	}
+-	return -EINVAL;
+-}
+-
+-static inline int gpio_intmask(unsigned gpio, int value)
+-{
+-	switch (bcm47xx_bus_type) {
+-#ifdef CONFIG_BCM47XX_SSB
+-	case BCM47XX_BUS_TYPE_SSB:
+-		ssb_gpio_intmask(&bcm47xx_bus.ssb, 1 << gpio,
+-				 value ? 1 << gpio : 0);
+-		return 0;
+-#endif
+-#ifdef CONFIG_BCM47XX_BCMA
+-	case BCM47XX_BUS_TYPE_BCMA:
+-		bcma_chipco_gpio_intmask(&bcm47xx_bus.bcma.bus.drv_cc,
+-					 1 << gpio, value ? 1 << gpio : 0);
+-		return 0;
+-#endif
+-	}
+-	return -EINVAL;
+-}
+-
+-static inline int gpio_polarity(unsigned gpio, int value)
+-{
+-	switch (bcm47xx_bus_type) {
+-#ifdef CONFIG_BCM47XX_SSB
+-	case BCM47XX_BUS_TYPE_SSB:
+-		ssb_gpio_polarity(&bcm47xx_bus.ssb, 1 << gpio,
+-				  value ? 1 << gpio : 0);
+-		return 0;
+-#endif
+-#ifdef CONFIG_BCM47XX_BCMA
+-	case BCM47XX_BUS_TYPE_BCMA:
+-		bcma_chipco_gpio_polarity(&bcm47xx_bus.bcma.bus.drv_cc,
+-					  1 << gpio, value ? 1 << gpio : 0);
+-		return 0;
+-#endif
+-	}
+-	return -EINVAL;
+-}
+-
+-
+-#endif /* __BCM47XX_GPIO_H */
 -- 
 1.7.10.4

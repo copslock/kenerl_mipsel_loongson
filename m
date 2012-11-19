@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2012 23:59:18 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:41896 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2012 00:01:06 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:41892 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6828026Ab2KSW6rxIAAa (ORCPT
+        with ESMTP id S6828027Ab2KSW6rxIAAa (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2012 23:58:47 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 29C908F63;
-        Mon, 19 Nov 2012 23:58:40 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id 3FDB28F6A;
+        Mon, 19 Nov 2012 23:58:38 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id lmTK3fdBXnSJ; Mon, 19 Nov 2012 23:58:30 +0100 (CET)
+        with ESMTP id mmVeeOFZjt4J; Mon, 19 Nov 2012 23:58:32 +0100 (CET)
 Received: from hauke-desktop.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id A67A08F62;
-        Mon, 19 Nov 2012 23:58:07 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 5CE778F63;
+        Mon, 19 Nov 2012 23:58:08 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     john@phrozen.org, ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
         florian@openwrt.org, zajec5@gmail.com, m@bues.ch,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 2/8] bcma: add bcma_chipco_gpio_pull{up,down}
-Date:   Mon, 19 Nov 2012 23:57:51 +0100
-Message-Id: <1353365877-11131-3-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 3/8] bcma: add comment to bcma_chipco_gpio_control
+Date:   Mon, 19 Nov 2012 23:57:52 +0100
+Message-Id: <1353365877-11131-4-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1353365877-11131-1-git-send-email-hauke@hauke-m.de>
 References: <1353365877-11131-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 35044
+X-archive-position: 35045
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,68 +42,27 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add functions to access the GPIO registers for pullup and pulldown.
-These are needed for handling gpio registration.
+Add description to the function.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/bcma/driver_chipcommon.c            |   30 +++++++++++++++++++++++++++
- include/linux/bcma/bcma_driver_chipcommon.h |    2 ++
- 2 files changed, 32 insertions(+)
+ drivers/bcma/driver_chipcommon.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/bcma/driver_chipcommon.c b/drivers/bcma/driver_chipcommon.c
-index 9b34316..f3c736a 100644
+index f3c736a..67a1c6b 100644
 --- a/drivers/bcma/driver_chipcommon.c
 +++ b/drivers/bcma/driver_chipcommon.c
-@@ -152,6 +152,36 @@ u32 bcma_chipco_gpio_polarity(struct bcma_drv_cc *cc, u32 mask, u32 value)
+@@ -115,6 +115,10 @@ u32 bcma_chipco_gpio_outen(struct bcma_drv_cc *cc, u32 mask, u32 value)
  	return res;
  }
  
-+u32 bcma_chipco_gpio_pullup(struct bcma_drv_cc *cc, u32 mask, u32 value)
-+{
-+	unsigned long flags;
-+	u32 res;
-+
-+	if (cc->core->id.rev < 20)
-+		return 0;
-+
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = bcma_cc_write32_masked(cc, BCMA_CC_GPIOPULLUP, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
-+}
-+
-+u32 bcma_chipco_gpio_pulldown(struct bcma_drv_cc *cc, u32 mask, u32 value)
-+{
-+	unsigned long flags;
-+	u32 res;
-+
-+	if (cc->core->id.rev < 20)
-+		return 0;
-+
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = bcma_cc_write32_masked(cc, BCMA_CC_GPIOPULLDOWN, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
-+}
-+
- #ifdef CONFIG_BCMA_DRIVER_MIPS
- void bcma_chipco_serial_init(struct bcma_drv_cc *cc)
++/*
++ * If the bit is set to 0, chipcommon controlls this GPIO,
++ * if the bit is set to 1, it is used by some part of the chip and not our code.
++ */
+ u32 bcma_chipco_gpio_control(struct bcma_drv_cc *cc, u32 mask, u32 value)
  {
-diff --git a/include/linux/bcma/bcma_driver_chipcommon.h b/include/linux/bcma/bcma_driver_chipcommon.h
-index a085d98..2567026 100644
---- a/include/linux/bcma/bcma_driver_chipcommon.h
-+++ b/include/linux/bcma/bcma_driver_chipcommon.h
-@@ -606,6 +606,8 @@ u32 bcma_chipco_gpio_outen(struct bcma_drv_cc *cc, u32 mask, u32 value);
- u32 bcma_chipco_gpio_control(struct bcma_drv_cc *cc, u32 mask, u32 value);
- u32 bcma_chipco_gpio_intmask(struct bcma_drv_cc *cc, u32 mask, u32 value);
- u32 bcma_chipco_gpio_polarity(struct bcma_drv_cc *cc, u32 mask, u32 value);
-+u32 bcma_chipco_gpio_pullup(struct bcma_drv_cc *cc, u32 mask, u32 value);
-+u32 bcma_chipco_gpio_pulldown(struct bcma_drv_cc *cc, u32 mask, u32 value);
- 
- /* PMU support */
- extern void bcma_pmu_init(struct bcma_drv_cc *cc);
+ 	unsigned long flags;
 -- 
 1.7.10.4

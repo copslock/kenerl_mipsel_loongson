@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Nov 2012 00:26:44 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:45600 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Nov 2012 00:27:04 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:45611 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6828026Ab2KTXZQQFXUz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Nov 2012 00:25:16 +0100
+        with ESMTP id S6828030Ab2KTXZVjNkka (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Nov 2012 00:25:21 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 6473F8F6F;
-        Wed, 21 Nov 2012 00:25:15 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id 3566F8F66;
+        Wed, 21 Nov 2012 00:25:21 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id PFShXM9R0uSy; Wed, 21 Nov 2012 00:25:08 +0100 (CET)
+        with ESMTP id Wyw4ZmZZUgO9; Wed, 21 Nov 2012 00:25:14 +0100 (CET)
 Received: from hauke-desktop.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 13FAE8F66;
+        by hauke-m.de (Postfix) with ESMTPSA id 76CC48F67;
         Wed, 21 Nov 2012 00:24:43 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     john@phrozen.org, ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
         florian@openwrt.org, zajec5@gmail.com, m@bues.ch,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v3 6/8] ssb: add locking around gpio register accesses
-Date:   Wed, 21 Nov 2012 00:24:32 +0100
-Message-Id: <1353453874-523-7-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH v3 7/8] ssb: add GPIO driver
+Date:   Wed, 21 Nov 2012 00:24:33 +0100
+Message-Id: <1353453874-523-8-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1353453874-523-1-git-send-email-hauke@hauke-m.de>
 References: <1353453874-523-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 35069
+X-archive-position: 35070
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,261 +42,290 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The GPIOs are access through some registers in the chip common core or
-over extif. We need locking around these GPIO accesses, all GPIOs are
-accessed through the same registers and parallel writes will cause
-problems.
+Register a GPIO driver to access the GPIOs provided by the chip.
+The GPIOs of the SoC should always start at 0 and the other GPIOs could
+start at a random position. There is just one SoC in a system and when
+they start at 0 the number is predictable.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/ssb/driver_chipcommon.c           |   66 ++++++++++++++++++++++++++---
- drivers/ssb/driver_extif.c                |   43 +++++++++++++++++--
- drivers/ssb/main.c                        |    1 +
- drivers/ssb/ssb_private.h                 |    8 ++++
- include/linux/ssb/ssb_driver_chipcommon.h |    1 +
- include/linux/ssb/ssb_driver_extif.h      |    1 +
- 6 files changed, 109 insertions(+), 11 deletions(-)
+ drivers/ssb/Kconfig       |    9 +++
+ drivers/ssb/Makefile      |    1 +
+ drivers/ssb/driver_gpio.c |  176 +++++++++++++++++++++++++++++++++++++++++++++
+ drivers/ssb/main.c        |    6 ++
+ drivers/ssb/ssb_private.h |    9 +++
+ include/linux/ssb/ssb.h   |    4 ++
+ 6 files changed, 205 insertions(+)
+ create mode 100644 drivers/ssb/driver_gpio.c
 
-diff --git a/drivers/ssb/driver_chipcommon.c b/drivers/ssb/driver_chipcommon.c
-index 4df4926..24e02bb 100644
---- a/drivers/ssb/driver_chipcommon.c
-+++ b/drivers/ssb/driver_chipcommon.c
-@@ -284,6 +284,9 @@ void ssb_chipcommon_init(struct ssb_chipcommon *cc)
- {
- 	if (!cc->dev)
- 		return; /* We don't have a ChipCommon */
-+
-+	spin_lock_init(&cc->gpio_lock);
-+
- 	if (cc->dev->id.revision >= 11)
- 		cc->status = chipco_read32(cc, SSB_CHIPCO_CHIPSTAT);
- 	ssb_dprintk(KERN_INFO PFX "chipcommon status is 0x%x\n", cc->status);
-@@ -418,44 +421,93 @@ u32 ssb_chipco_gpio_in(struct ssb_chipcommon *cc, u32 mask)
+diff --git a/drivers/ssb/Kconfig b/drivers/ssb/Kconfig
+index 42cdaa9..ff3c8a2 100644
+--- a/drivers/ssb/Kconfig
++++ b/drivers/ssb/Kconfig
+@@ -160,4 +160,13 @@ config SSB_DRIVER_GIGE
  
- u32 ssb_chipco_gpio_out(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOOUT, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOOUT, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
- }
+ 	  If unsure, say N
  
- u32 ssb_chipco_gpio_outen(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOOUTEN, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
++config SSB_DRIVER_GPIO
++	bool "SSB GPIO driver"
++	depends on SSB
++	select GPIOLIB
++	help
++	  Driver to provide access to the GPIO pins on the bus.
 +
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOOUTEN, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
++	  If unsure, say N
 +
-+	return res;
- }
+ endmenu
+diff --git a/drivers/ssb/Makefile b/drivers/ssb/Makefile
+index 656e58b..9159ba7 100644
+--- a/drivers/ssb/Makefile
++++ b/drivers/ssb/Makefile
+@@ -15,6 +15,7 @@ ssb-$(CONFIG_SSB_DRIVER_MIPS)		+= driver_mipscore.o
+ ssb-$(CONFIG_SSB_DRIVER_EXTIF)		+= driver_extif.o
+ ssb-$(CONFIG_SSB_DRIVER_PCICORE)	+= driver_pcicore.o
+ ssb-$(CONFIG_SSB_DRIVER_GIGE)		+= driver_gige.o
++ssb-$(CONFIG_SSB_DRIVER_GPIO)		+= driver_gpio.o
  
- u32 ssb_chipco_gpio_control(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOCTL, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
+ # b43 pci-ssb-bridge driver
+ # Not strictly a part of SSB, but kept here for convenience
+diff --git a/drivers/ssb/driver_gpio.c b/drivers/ssb/driver_gpio.c
+new file mode 100644
+index 0000000..97ac0a3
+--- /dev/null
++++ b/drivers/ssb/driver_gpio.c
+@@ -0,0 +1,176 @@
++/*
++ * Sonics Silicon Backplane
++ * GPIO driver
++ *
++ * Copyright 2011, Broadcom Corporation
++ * Copyright 2012, Hauke Mehrtens <hauke@hauke-m.de>
++ *
++ * Licensed under the GNU/GPL. See COPYING for details.
++ */
 +
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOCTL, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
++#include <linux/gpio.h>
++#include <linux/export.h>
++#include <linux/ssb/ssb.h>
 +
-+	return res;
- }
- EXPORT_SYMBOL(ssb_chipco_gpio_control);
- 
- u32 ssb_chipco_gpio_intmask(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOIRQ, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
++#include "ssb_private.h"
 +
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOIRQ, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_chipco_gpio_polarity(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOPOL, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOPOL, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_chipco_gpio_pullup(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
-+	unsigned long flags;
-+	u32 res = 0;
-+
- 	if (cc->dev->id.revision < 20)
- 		return 0xffffffff;
- 
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOPULLUP, mask, value);
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOPULLUP, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_chipco_gpio_pulldown(struct ssb_chipcommon *cc, u32 mask, u32 value)
- {
-+	unsigned long flags;
-+	u32 res = 0;
-+
- 	if (cc->dev->id.revision < 20)
- 		return 0xffffffff;
- 
--	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOPULLDOWN, mask, value);
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = chipco_write32_masked(cc, SSB_CHIPCO_GPIOPULLDOWN, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
- }
- 
- #ifdef CONFIG_SSB_SERIAL
-diff --git a/drivers/ssb/driver_extif.c b/drivers/ssb/driver_extif.c
-index dc47f30..e1d0bb8 100644
---- a/drivers/ssb/driver_extif.c
-+++ b/drivers/ssb/driver_extif.c
-@@ -118,6 +118,13 @@ void ssb_extif_watchdog_timer_set(struct ssb_extif *extif,
- 	extif_write32(extif, SSB_EXTIF_WATCHDOG, ticks);
- }
- 
-+void ssb_extif_init(struct ssb_extif *extif)
++static struct ssb_bus *ssb_gpio_get_bus(struct gpio_chip *chip)
 +{
-+	if (!extif->dev)
-+		return; /* We don't have a Extif core */
-+	spin_lock_init(&extif->gpio_lock);
++	return container_of(chip, struct ssb_bus, gpio);
 +}
 +
- u32 ssb_extif_gpio_in(struct ssb_extif *extif, u32 mask)
- {
- 	return extif_read32(extif, SSB_EXTIF_GPIO_IN) & mask;
-@@ -125,22 +132,50 @@ u32 ssb_extif_gpio_in(struct ssb_extif *extif, u32 mask)
- 
- u32 ssb_extif_gpio_out(struct ssb_extif *extif, u32 mask, u32 value)
- {
--	return extif_write32_masked(extif, SSB_EXTIF_GPIO_OUT(0),
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&extif->gpio_lock, flags);
-+	res = extif_write32_masked(extif, SSB_EXTIF_GPIO_OUT(0),
- 				   mask, value);
-+	spin_unlock_irqrestore(&extif->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_extif_gpio_outen(struct ssb_extif *extif, u32 mask, u32 value)
- {
--	return extif_write32_masked(extif, SSB_EXTIF_GPIO_OUTEN(0),
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&extif->gpio_lock, flags);
-+	res = extif_write32_masked(extif, SSB_EXTIF_GPIO_OUTEN(0),
- 				   mask, value);
-+	spin_unlock_irqrestore(&extif->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_extif_gpio_polarity(struct ssb_extif *extif, u32 mask, u32 value)
- {
--	return extif_write32_masked(extif, SSB_EXTIF_GPIO_INTPOL, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&extif->gpio_lock, flags);
-+	res = extif_write32_masked(extif, SSB_EXTIF_GPIO_INTPOL, mask, value);
-+	spin_unlock_irqrestore(&extif->gpio_lock, flags);
-+
-+	return res;
- }
- 
- u32 ssb_extif_gpio_intmask(struct ssb_extif *extif, u32 mask, u32 value)
- {
--	return extif_write32_masked(extif, SSB_EXTIF_GPIO_INTMASK, mask, value);
-+	unsigned long flags;
-+	u32 res = 0;
-+
-+	spin_lock_irqsave(&extif->gpio_lock, flags);
-+	res = extif_write32_masked(extif, SSB_EXTIF_GPIO_INTMASK, mask, value);
-+	spin_unlock_irqrestore(&extif->gpio_lock, flags);
-+
-+	return res;
- }
-diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-index df0f145..6fe2d10 100644
---- a/drivers/ssb/main.c
-+++ b/drivers/ssb/main.c
-@@ -796,6 +796,7 @@ static int __devinit ssb_bus_register(struct ssb_bus *bus,
- 	if (err)
- 		goto err_pcmcia_exit;
- 	ssb_chipcommon_init(&bus->chipco);
-+	ssb_extif_init(&bus->extif);
- 	ssb_mipscore_init(&bus->mipscore);
- 	err = ssb_fetch_invariants(bus, get_invariants);
- 	if (err) {
-diff --git a/drivers/ssb/ssb_private.h b/drivers/ssb/ssb_private.h
-index a305550..d6a1ba9 100644
---- a/drivers/ssb/ssb_private.h
-+++ b/drivers/ssb/ssb_private.h
-@@ -211,4 +211,12 @@ static inline void b43_pci_ssb_bridge_exit(void)
- extern u32 ssb_pmu_get_cpu_clock(struct ssb_chipcommon *cc);
- extern u32 ssb_pmu_get_controlclock(struct ssb_chipcommon *cc);
- 
-+#ifdef CONFIG_SSB_DRIVER_EXTIF
-+extern void ssb_extif_init(struct ssb_extif *extif);
-+#else
-+static inline void ssb_extif_init(struct ssb_extif *extif)
++static int ssb_gpio_chipco_get_value(struct gpio_chip *chip, unsigned gpio)
 +{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	return !!ssb_chipco_gpio_in(&bus->chipco, 1 << gpio);
++}
++
++static void ssb_gpio_chipco_set_value(struct gpio_chip *chip, unsigned gpio,
++				      int value)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_chipco_gpio_out(&bus->chipco, 1 << gpio, value ? 1 << gpio : 0);
++}
++
++static int ssb_gpio_chipco_direction_input(struct gpio_chip *chip,
++					   unsigned gpio)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_chipco_gpio_outen(&bus->chipco, 1 << gpio, 0);
++	return 0;
++}
++
++static int ssb_gpio_chipco_direction_output(struct gpio_chip *chip,
++					    unsigned gpio, int value)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_chipco_gpio_outen(&bus->chipco, 1 << gpio, 1 << gpio);
++	ssb_chipco_gpio_out(&bus->chipco, 1 << gpio, value ? 1 << gpio : 0);
++	return 0;
++}
++
++static int ssb_gpio_chipco_request(struct gpio_chip *chip, unsigned gpio)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_chipco_gpio_control(&bus->chipco, 1 << gpio, 0);
++	/* clear pulldown */
++	ssb_chipco_gpio_pulldown(&bus->chipco, 1 << gpio, 0);
++	/* Set pullup */
++	ssb_chipco_gpio_pullup(&bus->chipco, 1 << gpio, 1 << gpio);
++
++	return 0;
++}
++
++static void ssb_gpio_chipco_free(struct gpio_chip *chip, unsigned gpio)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	/* clear pullup */
++	ssb_chipco_gpio_pullup(&bus->chipco, 1 << gpio, 0);
++}
++
++static int ssb_gpio_chipco_init(struct ssb_bus *bus)
++{
++	struct gpio_chip *chip = &bus->gpio;
++
++	chip->label		= "ssb_chipco_gpio";
++	chip->owner		= THIS_MODULE;
++	chip->request		= ssb_gpio_chipco_request;
++	chip->free		= ssb_gpio_chipco_free;
++	chip->get		= ssb_gpio_chipco_get_value;
++	chip->set		= ssb_gpio_chipco_set_value;
++	chip->direction_input	= ssb_gpio_chipco_direction_input;
++	chip->direction_output	= ssb_gpio_chipco_direction_output;
++	chip->ngpio		= 16;
++	/* There is just one SoC in one device and its GPIO addresses should be
++	 * deterministic to address them more easily. The other buses could get
++	 * a random base number. */
++	if (bus->bustype == SSB_BUSTYPE_SSB)
++		chip->base		= 0;
++	else
++		chip->base		= -1;
++
++	return gpiochip_add(chip);
++}
++
++#ifdef CONFIG_SSB_DRIVER_EXTIF
++
++static int ssb_gpio_extif_get_value(struct gpio_chip *chip, unsigned gpio)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	return !!ssb_extif_gpio_in(&bus->extif, 1 << gpio);
++}
++
++static void ssb_gpio_extif_set_value(struct gpio_chip *chip, unsigned gpio,
++				     int value)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_extif_gpio_out(&bus->extif, 1 << gpio, value ? 1 << gpio : 0);
++}
++
++static int ssb_gpio_extif_direction_input(struct gpio_chip *chip,
++					  unsigned gpio)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_extif_gpio_outen(&bus->extif, 1 << gpio, 0);
++	return 0;
++}
++
++static int ssb_gpio_extif_direction_output(struct gpio_chip *chip,
++					   unsigned gpio, int value)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	ssb_extif_gpio_outen(&bus->extif, 1 << gpio, 1 << gpio);
++	ssb_extif_gpio_out(&bus->extif, 1 << gpio, value ? 1 << gpio : 0);
++	return 0;
++}
++
++static int ssb_gpio_extif_init(struct ssb_bus *bus)
++{
++	struct gpio_chip *chip = &bus->gpio;
++
++	chip->label		= "ssb_extif_gpio";
++	chip->owner		= THIS_MODULE;
++	chip->get		= ssb_gpio_extif_get_value;
++	chip->set		= ssb_gpio_extif_set_value;
++	chip->direction_input	= ssb_gpio_extif_direction_input;
++	chip->direction_output	= ssb_gpio_extif_direction_output;
++	chip->ngpio		= 5;
++	/* There is just one SoC in one device and its GPIO addresses should be
++	 * deterministic to address them more easily. The other buses could get
++	 * a random base number. */
++	if (bus->bustype == SSB_BUSTYPE_SSB)
++		chip->base		= 0;
++	else
++		chip->base		= -1;
++
++	return gpiochip_add(chip);
++}
++
++#else
++static int ssb_gpio_extif_init(struct ssb_bus *bus)
++{
++	return -ENOTSUPP;
 +}
 +#endif
 +
++int ssb_gpio_init(struct ssb_bus *bus)
++{
++	if (ssb_chipco_available(&bus->chipco))
++		return ssb_gpio_chipco_init(bus);
++	else if (ssb_extif_available(&bus->extif))
++		return ssb_gpio_extif_init(bus);
++	else
++		SSB_WARN_ON(1);
++
++	return -1;
++}
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index 6fe2d10..87f0ddf 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -798,6 +798,12 @@ static int __devinit ssb_bus_register(struct ssb_bus *bus,
+ 	ssb_chipcommon_init(&bus->chipco);
+ 	ssb_extif_init(&bus->extif);
+ 	ssb_mipscore_init(&bus->mipscore);
++	err = ssb_gpio_init(bus);
++	if (err == -ENOTSUPP)
++		ssb_dprintk(KERN_DEBUG PFX "GPIO driver not activated\n");
++	else if (err)
++		ssb_dprintk(KERN_ERR PFX
++			   "Error registering GPIO driver: %i\n", err);
+ 	err = ssb_fetch_invariants(bus, get_invariants);
+ 	if (err) {
+ 		ssb_bus_may_powerdown(bus);
+diff --git a/drivers/ssb/ssb_private.h b/drivers/ssb/ssb_private.h
+index d6a1ba9..463b76a2 100644
+--- a/drivers/ssb/ssb_private.h
++++ b/drivers/ssb/ssb_private.h
+@@ -219,4 +219,13 @@ static inline void ssb_extif_init(struct ssb_extif *extif)
+ }
+ #endif
+ 
++#ifdef CONFIG_SSB_DRIVER_GPIO
++extern int ssb_gpio_init(struct ssb_bus *bus);
++#else /* CONFIG_SSB_DRIVER_GPIO */
++static inline int ssb_gpio_init(struct ssb_bus *bus)
++{
++	return -ENOTSUPP;
++}
++#endif /* CONFIG_SSB_DRIVER_GPIO */
++
  #endif /* LINUX_SSB_PRIVATE_H_ */
-diff --git a/include/linux/ssb/ssb_driver_chipcommon.h b/include/linux/ssb/ssb_driver_chipcommon.h
-index c8d07c9..30b6943 100644
---- a/include/linux/ssb/ssb_driver_chipcommon.h
-+++ b/include/linux/ssb/ssb_driver_chipcommon.h
-@@ -590,6 +590,7 @@ struct ssb_chipcommon {
- 	u32 status;
- 	/* Fast Powerup Delay constant */
- 	u16 fast_pwrup_delay;
-+	spinlock_t gpio_lock;
- 	struct ssb_chipcommon_pmu pmu;
- };
+diff --git a/include/linux/ssb/ssb.h b/include/linux/ssb/ssb.h
+index bb674c0..3862a5b 100644
+--- a/include/linux/ssb/ssb.h
++++ b/include/linux/ssb/ssb.h
+@@ -6,6 +6,7 @@
+ #include <linux/types.h>
+ #include <linux/spinlock.h>
+ #include <linux/pci.h>
++#include <linux/gpio.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/dma-mapping.h>
  
-diff --git a/include/linux/ssb/ssb_driver_extif.h b/include/linux/ssb/ssb_driver_extif.h
-index 91161f0..bd23068 100644
---- a/include/linux/ssb/ssb_driver_extif.h
-+++ b/include/linux/ssb/ssb_driver_extif.h
-@@ -158,6 +158,7 @@
+@@ -433,6 +434,9 @@ struct ssb_bus {
+ 	/* Lock for GPIO register access. */
+ 	spinlock_t gpio_lock;
+ #endif /* EMBEDDED */
++#ifdef CONFIG_SSB_DRIVER_GPIO
++	struct gpio_chip gpio;
++#endif /* DRIVER_GPIO */
  
- struct ssb_extif {
- 	struct ssb_device *dev;
-+	spinlock_t gpio_lock;
- };
- 
- static inline bool ssb_extif_available(struct ssb_extif *extif)
+ 	/* Internal-only stuff follows. Do not touch. */
+ 	struct list_head list;
 -- 
 1.7.10.4

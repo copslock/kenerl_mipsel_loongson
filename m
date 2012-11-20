@@ -1,47 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2012 10:46:17 +0100 (CET)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:36581 "EHLO
-        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823021Ab2KTJqMxuYR4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2012 10:46:12 +0100
-Received: by mail-bk0-f49.google.com with SMTP id jm19so1065286bkc.36
-        for <multiple recipients>; Tue, 20 Nov 2012 01:46:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:organization:user-agent
-         :in-reply-to:references:mime-version:content-transfer-encoding
-         :content-type;
-        bh=7LQIFCTUSqwNqOF9OjWBsUz2+MD7t1clD7zZ9Wxq470=;
-        b=Vw8ZPoSAAqaWwRtvGeoaNdRj00nPqYpX8SUNvFJoz3Oxd3GsaVtf2OBW4Vg065Dleq
-         4SNC2vCrwEsF7h2RrLkle2/ojheyAczHuygh21BaF0sTSvrExca2CUh3tAQCe7iSAdp3
-         J+aB1VDtUje0EGAJADS51qbIgDpTfNK8YRkIoeY+Jy7hzuxnkrvJmjUSnTCfGBqBuZge
-         8MghKx4SDpV6mKe/IyKOuEKfD/udrchk+ZG0dYiuJyD7kH+H7+LMIu4/R4IMWLmi/ehk
-         JSMoZBL/dfHNgeCogDMwWmbD6j+fBHLZz4gJgSAdocMPFVNiuk2o4/AdjFlWaTsj/mwo
-         ltUA==
-Received: by 10.204.147.18 with SMTP id j18mr5763375bkv.79.1353404767484;
-        Tue, 20 Nov 2012 01:46:07 -0800 (PST)
-Received: from flexo.localnet (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by mx.google.com with ESMTPS id v8sm2963897bku.6.2012.11.20.01.46.06
-        (version=SSLv3 cipher=OTHER);
-        Tue, 20 Nov 2012 01:46:07 -0800 (PST)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     john@phrozen.org, ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-wireless@vger.kernel.org, zajec5@gmail.com, m@bues.ch
-Subject: Re: [PATCH 8/8] MIPS: BCM47XX: remove GPIO driver
-Date:   Tue, 20 Nov 2012 10:44:23 +0100
-Message-ID: <2709503.xrLFuOobtI@flexo>
-Organization: OpenWrt
-User-Agent: KMail/4.9.2 (Linux/3.5.0-17-generic; KDE/4.9.2; x86_64; ; )
-In-Reply-To: <1353365877-11131-9-git-send-email-hauke@hauke-m.de>
-References: <1353365877-11131-1-git-send-email-hauke@hauke-m.de> <1353365877-11131-9-git-send-email-hauke@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2012 22:05:38 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:44948 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6825923Ab2KTVFhiRZCO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2012 22:05:37 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id C44E88F61;
+        Tue, 20 Nov 2012 22:05:33 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id HCNmpNFvK5FP; Tue, 20 Nov 2012 22:05:29 +0100 (CET)
+Received: from [IPv6:2001:470:1f0b:447:6d1e:baeb:418:870b] (unknown [IPv6:2001:470:1f0b:447:6d1e:baeb:418:870b])
+        by hauke-m.de (Postfix) with ESMTPSA id AB94B8F60;
+        Tue, 20 Nov 2012 22:05:28 +0100 (CET)
+Message-ID: <50ABF095.4020502@hauke-m.de>
+Date:   Tue, 20 Nov 2012 22:05:25 +0100
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:16.0) Gecko/20121028 Thunderbird/16.0.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-archive-position: 35058
+To:     John Crispin <john@phrozen.org>
+CC:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-wireless@vger.kernel.org, florian@openwrt.org,
+        zajec5@gmail.com, m@bues.ch
+Subject: Re: [PATCH 1/8] bcma: add locking around GPIO register accesses
+References: <1353365877-11131-1-git-send-email-hauke@hauke-m.de> <1353365877-11131-2-git-send-email-hauke@hauke-m.de> <50AB3AFF.2000001@phrozen.org>
+In-Reply-To: <50AB3AFF.2000001@phrozen.org>
+X-Enigmail-Version: 1.4.5
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 35059
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,14 +46,32 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Monday 19 November 2012 23:57:57 Hauke Mehrtens wrote:
-> Instated of providing an own GPIO driver use the one provided by ssb and
-> bcma.
+On 11/20/2012 09:10 AM, John Crispin wrote:
+> Hi Hauke
 > 
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+>> u32 bcma_chipco_gpio_in(struct bcma_drv_cc *cc, u32 mask)
+>>   {
+>> -    return bcma_cc_read32(cc, BCMA_CC_GPIOIN)&  mask;
+>> +    unsigned long flags;
+>> +    u32 res;
+>> +
+>> +    spin_lock_irqsave(&cc->gpio_lock, flags);
+>> +    res = bcma_cc_read32(cc, BCMA_CC_GPIOIN)&  mask;
+>> +    spin_unlock_irqrestore(&cc->gpio_lock, flags);
+>> +
+>> +    return res;
+>>   }
+>>
+> 
+> Hi Hauke,
+> 
+> do you need to lock the read access ?
+> 
+> if bcma_cc_read32() is a simple memory read wrapper you most likely wont
+> need the lock
+> 
+>     John
+Yes you are right, I do not need it here, it is just needed for the
+masked write to the other GPIO registers.
 
-Acked-by: Florian Fainelli <florian@openwrt.org>
-
-Thanks Hauke!
---
-Florian
+Hauke

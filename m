@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Nov 2012 00:25:26 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:45562 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Nov 2012 00:25:47 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:45573 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6825936Ab2KTXZBNCVCz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Nov 2012 00:25:01 +0100
+        with ESMTP id S6825923Ab2KTXZHMvQVV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Nov 2012 00:25:07 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id CC9FB8F6C;
-        Wed, 21 Nov 2012 00:25:00 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id D91C18F6D;
+        Wed, 21 Nov 2012 00:25:06 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id AaFEj7yMmhfh; Wed, 21 Nov 2012 00:24:55 +0100 (CET)
+        with ESMTP id Gl-SodswLaGc; Wed, 21 Nov 2012 00:25:01 +0100 (CET)
 Received: from hauke-desktop.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 767448F62;
-        Wed, 21 Nov 2012 00:24:40 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 63D068F64;
+        Wed, 21 Nov 2012 00:24:41 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     john@phrozen.org, ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
         florian@openwrt.org, zajec5@gmail.com, m@bues.ch,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v3 2/8] bcma: add bcma_chipco_gpio_pull{up,down}
-Date:   Wed, 21 Nov 2012 00:24:28 +0100
-Message-Id: <1353453874-523-3-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH v3 4/8] bcma: add GPIO driver
+Date:   Wed, 21 Nov 2012 00:24:30 +0100
+Message-Id: <1353453874-523-5-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1353453874-523-1-git-send-email-hauke@hauke-m.de>
 References: <1353453874-523-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 35065
+X-archive-position: 35066
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,68 +42,215 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add functions to access the GPIO registers for pullup and pulldown.
-These are needed for handling gpio registration.
+Register a GPIO driver to access the GPIOs provided by the chip.
+The GPIOs of the SoC should always start at 0 and the other GPIOs could
+start at a random position. There is just one SoC in a system and when
+they start at 0 the number is predictable.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/bcma/driver_chipcommon.c            |   30 +++++++++++++++++++++++++++
- include/linux/bcma/bcma_driver_chipcommon.h |    2 ++
- 2 files changed, 32 insertions(+)
+ drivers/bcma/Kconfig                        |    9 +++
+ drivers/bcma/Makefile                       |    1 +
+ drivers/bcma/bcma_private.h                 |   10 +++
+ drivers/bcma/driver_gpio.c                  |   98 +++++++++++++++++++++++++++
+ drivers/bcma/main.c                         |    5 ++
+ include/linux/bcma/bcma_driver_chipcommon.h |    5 ++
+ 6 files changed, 128 insertions(+)
+ create mode 100644 drivers/bcma/driver_gpio.c
 
-diff --git a/drivers/bcma/driver_chipcommon.c b/drivers/bcma/driver_chipcommon.c
-index c9b63d9..0945383 100644
---- a/drivers/bcma/driver_chipcommon.c
-+++ b/drivers/bcma/driver_chipcommon.c
-@@ -145,6 +145,36 @@ u32 bcma_chipco_gpio_polarity(struct bcma_drv_cc *cc, u32 mask, u32 value)
- 	return res;
- }
+diff --git a/drivers/bcma/Kconfig b/drivers/bcma/Kconfig
+index a533af2..d7b56a8 100644
+--- a/drivers/bcma/Kconfig
++++ b/drivers/bcma/Kconfig
+@@ -65,6 +65,15 @@ config BCMA_DRIVER_GMAC_CMN
  
-+u32 bcma_chipco_gpio_pullup(struct bcma_drv_cc *cc, u32 mask, u32 value)
+ 	  If unsure, say N
+ 
++config BCMA_DRIVER_GPIO
++	bool "BCMA GPIO driver"
++	depends on BCMA
++	select GPIOLIB
++	help
++	  Driver to provide access to the GPIO pins of the bcma bus.
++
++	  If unsure, say N
++
+ config BCMA_DEBUG
+ 	bool "BCMA debugging"
+ 	depends on BCMA
+diff --git a/drivers/bcma/Makefile b/drivers/bcma/Makefile
+index 8ad42d4..734b32f 100644
+--- a/drivers/bcma/Makefile
++++ b/drivers/bcma/Makefile
+@@ -6,6 +6,7 @@ bcma-y					+= driver_pci.o
+ bcma-$(CONFIG_BCMA_DRIVER_PCI_HOSTMODE)	+= driver_pci_host.o
+ bcma-$(CONFIG_BCMA_DRIVER_MIPS)		+= driver_mips.o
+ bcma-$(CONFIG_BCMA_DRIVER_GMAC_CMN)	+= driver_gmac_cmn.o
++bcma-$(CONFIG_BCMA_DRIVER_GPIO)		+= driver_gpio.o
+ bcma-$(CONFIG_BCMA_HOST_PCI)		+= host_pci.o
+ bcma-$(CONFIG_BCMA_HOST_SOC)		+= host_soc.o
+ obj-$(CONFIG_BCMA)			+= bcma.o
+diff --git a/drivers/bcma/bcma_private.h b/drivers/bcma/bcma_private.h
+index 169fc58..8cd80bf 100644
+--- a/drivers/bcma/bcma_private.h
++++ b/drivers/bcma/bcma_private.h
+@@ -89,4 +89,14 @@ bool __devinit bcma_core_pci_is_in_hostmode(struct bcma_drv_pci *pc);
+ void __devinit bcma_core_pci_hostmode_init(struct bcma_drv_pci *pc);
+ #endif /* CONFIG_BCMA_DRIVER_PCI_HOSTMODE */
+ 
++#ifdef CONFIG_BCMA_DRIVER_GPIO
++/* driver_gpio.c */
++int bcma_gpio_init(struct bcma_drv_cc *cc);
++#else
++static inline int bcma_gpio_init(struct bcma_drv_cc *cc)
 +{
-+	unsigned long flags;
-+	u32 res;
++	return -ENOTSUPP;
++}
++#endif /* CONFIG_BCMA_DRIVER_GPIO */
 +
-+	if (cc->core->id.rev < 20)
-+		return 0;
+ #endif
+diff --git a/drivers/bcma/driver_gpio.c b/drivers/bcma/driver_gpio.c
+new file mode 100644
+index 0000000..9a6f585
+--- /dev/null
++++ b/drivers/bcma/driver_gpio.c
+@@ -0,0 +1,98 @@
++/*
++ * Broadcom specific AMBA
++ * GPIO driver
++ *
++ * Copyright 2011, Broadcom Corporation
++ * Copyright 2012, Hauke Mehrtens <hauke@hauke-m.de>
++ *
++ * Licensed under the GNU/GPL. See COPYING for details.
++ */
 +
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = bcma_cc_write32_masked(cc, BCMA_CC_GPIOPULLUP, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
++#include <linux/gpio.h>
++#include <linux/export.h>
++#include <linux/bcma/bcma.h>
 +
-+	return res;
++#include "bcma_private.h"
++
++static inline struct bcma_drv_cc *bcma_gpio_get_cc(struct gpio_chip *chip)
++{
++	return container_of(chip, struct bcma_drv_cc, gpio);
 +}
 +
-+u32 bcma_chipco_gpio_pulldown(struct bcma_drv_cc *cc, u32 mask, u32 value)
++static int bcma_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
 +{
-+	unsigned long flags;
-+	u32 res;
++	struct bcma_drv_cc *cc = bcma_gpio_get_cc(chip);
 +
-+	if (cc->core->id.rev < 20)
-+		return 0;
-+
-+	spin_lock_irqsave(&cc->gpio_lock, flags);
-+	res = bcma_cc_write32_masked(cc, BCMA_CC_GPIOPULLDOWN, mask, value);
-+	spin_unlock_irqrestore(&cc->gpio_lock, flags);
-+
-+	return res;
++	return !!bcma_chipco_gpio_in(cc, 1 << gpio);
 +}
 +
- #ifdef CONFIG_BCMA_DRIVER_MIPS
- void bcma_chipco_serial_init(struct bcma_drv_cc *cc)
- {
++static void bcma_gpio_set_value(struct gpio_chip *chip, unsigned gpio,
++				int value)
++{
++	struct bcma_drv_cc *cc = bcma_gpio_get_cc(chip);
++
++	bcma_chipco_gpio_out(cc, 1 << gpio, value ? 1 << gpio : 0);
++}
++
++static int bcma_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
++{
++	struct bcma_drv_cc *cc = bcma_gpio_get_cc(chip);
++
++	bcma_chipco_gpio_outen(cc, 1 << gpio, 0);
++	return 0;
++}
++
++static int bcma_gpio_direction_output(struct gpio_chip *chip, unsigned gpio,
++				      int value)
++{
++	struct bcma_drv_cc *cc = bcma_gpio_get_cc(chip);
++
++	bcma_chipco_gpio_outen(cc, 1 << gpio, 1 << gpio);
++	bcma_chipco_gpio_out(cc, 1 << gpio, value ? 1 << gpio : 0);
++	return 0;
++}
++
++static int bcma_gpio_request(struct gpio_chip *chip, unsigned gpio)
++{
++	struct bcma_drv_cc *cc = bcma_gpio_get_cc(chip);
++
++	bcma_chipco_gpio_control(cc, 1 << gpio, 0);
++	/* clear pulldown */
++	bcma_chipco_gpio_pulldown(cc, 1 << gpio, 0);
++	/* Set pullup */
++	bcma_chipco_gpio_pullup(cc, 1 << gpio, 1 << gpio);
++
++	return 0;
++}
++
++static void bcma_gpio_free(struct gpio_chip *chip, unsigned gpio)
++{
++	struct bcma_drv_cc *cc = bcma_gpio_get_cc(chip);
++
++	/* clear pullup */
++	bcma_chipco_gpio_pullup(cc, 1 << gpio, 0);
++}
++
++int bcma_gpio_init(struct bcma_drv_cc *cc)
++{
++	struct gpio_chip *chip = &cc->gpio;
++
++	chip->label		= "bcma_gpio";
++	chip->owner		= THIS_MODULE;
++	chip->request		= bcma_gpio_request;
++	chip->free		= bcma_gpio_free;
++	chip->get		= bcma_gpio_get_value;
++	chip->set		= bcma_gpio_set_value;
++	chip->direction_input	= bcma_gpio_direction_input;
++	chip->direction_output	= bcma_gpio_direction_output;
++	chip->ngpio		= 16;
++	/* There is just one SoC in one device and its GPIO addresses should be
++	 * deterministic to address them more easily. The other buses could get
++	 * a random base number. */
++	if (cc->core->bus->hosttype == BCMA_HOSTTYPE_SOC)
++		chip->base		= 0;
++	else
++		chip->base		= -1;
++
++	return gpiochip_add(chip);
++}
+diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
+index d865470..478ba01 100644
+--- a/drivers/bcma/main.c
++++ b/drivers/bcma/main.c
+@@ -152,6 +152,11 @@ static int bcma_register_cores(struct bcma_bus *bus)
+ 			bcma_err(bus, "Error registering NAND flash\n");
+ 	}
+ #endif
++	err = bcma_gpio_init(&bus->drv_cc);
++	if (err == -ENOTSUPP)
++		bcma_debug(bus, "GPIO driver not activated\n");
++	else if (err)
++		bcma_err(bus, "Error registering GPIO driver: %i\n", err);
+ 
+ 	return 0;
+ }
 diff --git a/include/linux/bcma/bcma_driver_chipcommon.h b/include/linux/bcma/bcma_driver_chipcommon.h
-index a085d98..2567026 100644
+index 2567026..7d662a9 100644
 --- a/include/linux/bcma/bcma_driver_chipcommon.h
 +++ b/include/linux/bcma/bcma_driver_chipcommon.h
-@@ -606,6 +606,8 @@ u32 bcma_chipco_gpio_outen(struct bcma_drv_cc *cc, u32 mask, u32 value);
- u32 bcma_chipco_gpio_control(struct bcma_drv_cc *cc, u32 mask, u32 value);
- u32 bcma_chipco_gpio_intmask(struct bcma_drv_cc *cc, u32 mask, u32 value);
- u32 bcma_chipco_gpio_polarity(struct bcma_drv_cc *cc, u32 mask, u32 value);
-+u32 bcma_chipco_gpio_pullup(struct bcma_drv_cc *cc, u32 mask, u32 value);
-+u32 bcma_chipco_gpio_pulldown(struct bcma_drv_cc *cc, u32 mask, u32 value);
+@@ -1,6 +1,8 @@
+ #ifndef LINUX_BCMA_DRIVER_CC_H_
+ #define LINUX_BCMA_DRIVER_CC_H_
  
- /* PMU support */
- extern void bcma_pmu_init(struct bcma_drv_cc *cc);
++#include <linux/gpio.h>
++
+ /** ChipCommon core registers. **/
+ #define BCMA_CC_ID			0x0000
+ #define  BCMA_CC_ID_ID			0x0000FFFF
+@@ -570,6 +572,9 @@ struct bcma_drv_cc {
+ 
+ 	/* Lock for GPIO register access. */
+ 	spinlock_t gpio_lock;
++#ifdef CONFIG_BCMA_DRIVER_GPIO
++	struct gpio_chip gpio;
++#endif
+ };
+ 
+ /* Register access */
 -- 
 1.7.10.4

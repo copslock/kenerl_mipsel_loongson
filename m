@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Nov 2012 00:26:06 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:45579 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Nov 2012 00:26:24 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:45593 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6828028Ab2KTXZItoiyX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Nov 2012 00:25:08 +0100
+        with ESMTP id S6828051Ab2KTXZOWdSjA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Nov 2012 00:25:14 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 711D18F64;
-        Wed, 21 Nov 2012 00:25:08 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id E91A78F6E;
+        Wed, 21 Nov 2012 00:25:13 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 4JGuanfP0c18; Wed, 21 Nov 2012 00:25:00 +0100 (CET)
+        with ESMTP id zyPHPyyZwkOF; Wed, 21 Nov 2012 00:25:07 +0100 (CET)
 Received: from hauke-desktop.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id DFAC18F63;
-        Wed, 21 Nov 2012 00:24:40 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 642DD8F65;
+        Wed, 21 Nov 2012 00:24:42 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     john@phrozen.org, ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
         florian@openwrt.org, zajec5@gmail.com, m@bues.ch,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v3s 3/8] bcma: add comment to bcma_chipco_gpio_control
-Date:   Wed, 21 Nov 2012 00:24:29 +0100
-Message-Id: <1353453874-523-4-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH v3 5/8] ssb: add ssb_chipco_gpio_pull{up,down}
+Date:   Wed, 21 Nov 2012 00:24:31 +0100
+Message-Id: <1353453874-523-6-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1353453874-523-1-git-send-email-hauke@hauke-m.de>
 References: <1353453874-523-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 35067
+X-archive-position: 35068
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,27 +42,54 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add description to the function.
+Add functions to access the GPIO registers for pullup and pulldown.
+These are needed for handling gpio registration.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/bcma/driver_chipcommon.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/ssb/driver_chipcommon.c           |   16 ++++++++++++++++
+ include/linux/ssb/ssb_driver_chipcommon.h |    2 ++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/drivers/bcma/driver_chipcommon.c b/drivers/bcma/driver_chipcommon.c
-index 0945383..994fce6 100644
---- a/drivers/bcma/driver_chipcommon.c
-+++ b/drivers/bcma/driver_chipcommon.c
-@@ -108,6 +108,10 @@ u32 bcma_chipco_gpio_outen(struct bcma_drv_cc *cc, u32 mask, u32 value)
- 	return res;
+diff --git a/drivers/ssb/driver_chipcommon.c b/drivers/ssb/driver_chipcommon.c
+index e9d2ca1..4df4926 100644
+--- a/drivers/ssb/driver_chipcommon.c
++++ b/drivers/ssb/driver_chipcommon.c
+@@ -442,6 +442,22 @@ u32 ssb_chipco_gpio_polarity(struct ssb_chipcommon *cc, u32 mask, u32 value)
+ 	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOPOL, mask, value);
  }
  
-+/*
-+ * If the bit is set to 0, chipcommon controlls this GPIO,
-+ * if the bit is set to 1, it is used by some part of the chip and not our code.
-+ */
- u32 bcma_chipco_gpio_control(struct bcma_drv_cc *cc, u32 mask, u32 value)
- {
- 	unsigned long flags;
++u32 ssb_chipco_gpio_pullup(struct ssb_chipcommon *cc, u32 mask, u32 value)
++{
++	if (cc->dev->id.revision < 20)
++		return 0xffffffff;
++
++	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOPULLUP, mask, value);
++}
++
++u32 ssb_chipco_gpio_pulldown(struct ssb_chipcommon *cc, u32 mask, u32 value)
++{
++	if (cc->dev->id.revision < 20)
++		return 0xffffffff;
++
++	return chipco_write32_masked(cc, SSB_CHIPCO_GPIOPULLDOWN, mask, value);
++}
++
+ #ifdef CONFIG_SSB_SERIAL
+ int ssb_chipco_serial_init(struct ssb_chipcommon *cc,
+ 			   struct ssb_serial_port *ports)
+diff --git a/include/linux/ssb/ssb_driver_chipcommon.h b/include/linux/ssb/ssb_driver_chipcommon.h
+index c2b02a5..c8d07c9 100644
+--- a/include/linux/ssb/ssb_driver_chipcommon.h
++++ b/include/linux/ssb/ssb_driver_chipcommon.h
+@@ -644,6 +644,8 @@ u32 ssb_chipco_gpio_outen(struct ssb_chipcommon *cc, u32 mask, u32 value);
+ u32 ssb_chipco_gpio_control(struct ssb_chipcommon *cc, u32 mask, u32 value);
+ u32 ssb_chipco_gpio_intmask(struct ssb_chipcommon *cc, u32 mask, u32 value);
+ u32 ssb_chipco_gpio_polarity(struct ssb_chipcommon *cc, u32 mask, u32 value);
++u32 ssb_chipco_gpio_pullup(struct ssb_chipcommon *cc, u32 mask, u32 value);
++u32 ssb_chipco_gpio_pulldown(struct ssb_chipcommon *cc, u32 mask, u32 value);
+ 
+ #ifdef CONFIG_SSB_SERIAL
+ extern int ssb_chipco_serial_init(struct ssb_chipcommon *cc,
 -- 
 1.7.10.4

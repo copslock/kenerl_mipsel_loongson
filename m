@@ -1,25 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Nov 2012 03:40:30 +0100 (CET)
-Received: from kymasys.com ([64.62.140.43]:54565 "HELO kymasys.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6828082Ab2KVCfqdRI1V (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 Nov 2012 03:35:46 +0100
-Received: from agni.kymasys.com ([75.40.23.192]) by kymasys.com for <linux-mips@linux-mips.org>; Wed, 21 Nov 2012 18:35:37 -0800
-Received: by agni.kymasys.com (Postfix, from userid 500)
-        id B97B0630287; Wed, 21 Nov 2012 18:34:18 -0800 (PST)
-From:   Sanjay Lal <sanjayl@kymasys.com>
-To:     kvm@vger.kernel.org, linux-mips@linux-mips.org
-Cc:     Sanjay Lal <sanjayl@kymasys.com>
-Subject: [PATCH v2 18/18] KVM/MIPS32: Binary patching of select privileged instructions.
-Date:   Wed, 21 Nov 2012 18:34:16 -0800
-Message-Id: <1353551656-23579-19-git-send-email-sanjayl@kymasys.com>
-X-Mailer: git-send-email 1.7.11.3
-In-Reply-To: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com>
-References: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com>
-X-archive-position: 35093
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Nov 2012 11:58:36 +0100 (CET)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:58791 "EHLO
+        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823033Ab2KVK6fQda-6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Nov 2012 11:58:35 +0100
+Received: by mail-bk0-f49.google.com with SMTP id jm19so2105150bkc.36
+        for <multiple recipients>; Thu, 22 Nov 2012 02:58:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=cN+seQ87APb+Urz7JCGflnit4Y+X2ST6jzUD8O4dty0=;
+        b=rhiigt6KXHnUxwg+6CQNtwVktCNBTdkszL2XiuKGMWrWz0tcqpI3fo/nno87nbaUt9
+         4JzKp/yFbeNP2Lhw04SdwuRyhb7zVSM+/9o/Qj/XCHVkECFv1n+eFz10wLjSloD9phI/
+         s/+qXfC1ObruHitNTrrvIThB32Jp+fOLYGv5oHuiUTugciAgOBcdspAHetm2oY9kJJyr
+         icn5fwUtoMZe7J3H139F5Nk1LTbj8J6W8aSTEPsglSANThF3xGOShjjfdQk+C5ioZDL0
+         2/lggSQMzxdePTIVDMXrBmxktZcW+wHdq/kQewkSj15SHS0OCfGy1261PjBJoNMzkwae
+         IwCw==
+Received: by 10.204.3.213 with SMTP id 21mr37335bko.121.1353581909785;
+        Thu, 22 Nov 2012 02:58:29 -0800 (PST)
+Received: from flagship.roarinelk.net (178-191-6-87.adsl.highway.telekom.at. [178.191.6.87])
+        by mx.google.com with ESMTPS id u3sm1950243bkw.9.2012.11.22.02.58.27
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 22 Nov 2012 02:58:28 -0800 (PST)
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Dmitry Kasatkin <dmitry.kasatkin@intel.com>,
+        James Morris <jmorris@namei.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [RFC PATCH] MPI: Fix compilation on MIPS with GCC 4.4 and newer
+Date:   Thu, 22 Nov 2012 11:58:22 +0100
+Message-Id: <1353581902-18938-1-git-send-email-manuel.lauss@googlemail.com>
+X-Mailer: git-send-email 1.8.0
+X-archive-position: 35094
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sanjayl@kymasys.com
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,249 +49,60 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Currently, the following instructions are translated:
-- CACHE (indexed)
-- CACHE (va based): translated to a synci, overkill on D-CACHE operations, but still much faster than a trap.
-- mfc0/mtc0: the virtual COP0 registers for the guest are implemented as 2-D array
-  [COP#][SEL] and this is mapped into the guest kernel address space @ VA 0x0.
-  mfc0/mtc0 operations are transformed to load/stores.
+From: Manuel Lauss <manuel.lauss@gmail.com>
 
-Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
+Since 4.4 GCC on MIPS no longer recognizes the "h" constraint,
+leading to this build failure:
+
+  CC      lib/mpi/generic_mpih-mul1.o
+lib/mpi/generic_mpih-mul1.c: In function 'mpihelp_mul_1':
+lib/mpi/generic_mpih-mul1.c:50:3: error: impossible constraint in 'asm'
+
+This patch updates MPI with the latest umul_ppm implementations for MIPS.
+
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
- arch/mips/kvm/kvm_mips_comm.h     |  23 ++++++
- arch/mips/kvm/kvm_mips_commpage.c |  37 ++++++++++
- arch/mips/kvm/kvm_mips_dyntrans.c | 149 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 209 insertions(+)
- create mode 100644 arch/mips/kvm/kvm_mips_comm.h
- create mode 100644 arch/mips/kvm/kvm_mips_commpage.c
- create mode 100644 arch/mips/kvm/kvm_mips_dyntrans.c
+Compile-tested on 32bit only.
 
-diff --git a/arch/mips/kvm/kvm_mips_comm.h b/arch/mips/kvm/kvm_mips_comm.h
-new file mode 100644
-index 0000000..7e903ec
---- /dev/null
-+++ b/arch/mips/kvm/kvm_mips_comm.h
-@@ -0,0 +1,23 @@
-+/*
-+* This file is subject to the terms and conditions of the GNU General Public
-+* License.  See the file "COPYING" in the main directory of this archive
-+* for more details.
-+*
-+* KVM/MIPS: commpage: mapped into get kernel space 
-+*
-+* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
-+* Authors: Sanjay Lal <sanjayl@kymasys.com>
-+*/
-+
-+#ifndef __KVM_MIPS_COMMPAGE_H__
-+#define __KVM_MIPS_COMMPAGE_H__
-+
-+struct kvm_mips_commpage {
-+	struct mips_coproc cop0;	/* COP0 state is mapped into Guest kernel via commpage */
-+};
-+
-+#define KVM_MIPS_COMM_EIDI_OFFSET       0x0
-+
-+extern void kvm_mips_commpage_init(struct kvm_vcpu *vcpu);
-+
-+#endif /* __KVM_MIPS_COMMPAGE_H__ */
-diff --git a/arch/mips/kvm/kvm_mips_commpage.c b/arch/mips/kvm/kvm_mips_commpage.c
-new file mode 100644
-index 0000000..3873b1e
---- /dev/null
-+++ b/arch/mips/kvm/kvm_mips_commpage.c
-@@ -0,0 +1,37 @@
-+/*
-+* This file is subject to the terms and conditions of the GNU General Public
-+* License.  See the file "COPYING" in the main directory of this archive
-+* for more details.
-+*
-+* commpage, currently used for Virtual COP0 registers.
-+* Mapped into the guest kernel @ 0x0.
-+*
-+* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
-+* Authors: Sanjay Lal <sanjayl@kymasys.com>
-+*/
-+
-+#include <linux/errno.h>
-+#include <linux/err.h>
-+#include <linux/module.h>
-+#include <linux/vmalloc.h>
-+#include <linux/fs.h>
-+#include <linux/bootmem.h>
-+#include <asm/page.h>
-+#include <asm/cacheflush.h>
-+#include <asm/mmu_context.h>
-+
-+#include <linux/kvm_host.h>
-+
-+#include "kvm_mips_comm.h"
-+
-+void kvm_mips_commpage_init(struct kvm_vcpu *vcpu)
-+{
-+	struct kvm_mips_commpage *page = vcpu->arch.kseg0_commpage;
-+	memset(page, 0, sizeof(struct kvm_mips_commpage));
-+
-+	/* Specific init values for fields */
-+	vcpu->arch.cop0 = &page->cop0;
-+	memset(vcpu->arch.cop0, 0, sizeof(struct mips_coproc));
-+
-+	return;
-+}
-diff --git a/arch/mips/kvm/kvm_mips_dyntrans.c b/arch/mips/kvm/kvm_mips_dyntrans.c
-new file mode 100644
-index 0000000..c657b37
---- /dev/null
-+++ b/arch/mips/kvm/kvm_mips_dyntrans.c
-@@ -0,0 +1,149 @@
-+/*
-+* This file is subject to the terms and conditions of the GNU General Public
-+* License.  See the file "COPYING" in the main directory of this archive
-+* for more details.
-+*
-+* KVM/MIPS: Binary Patching for privileged instructions, reduces traps.
-+*
-+* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
-+* Authors: Sanjay Lal <sanjayl@kymasys.com>
-+*/
-+
-+#include <linux/errno.h>
-+#include <linux/err.h>
-+#include <linux/kvm_host.h>
-+#include <linux/module.h>
-+#include <linux/vmalloc.h>
-+#include <linux/fs.h>
-+#include <linux/bootmem.h>
-+
-+#include "kvm_mips_comm.h"
-+
-+#define SYNCI_TEMPLATE  0x041f0000
-+#define SYNCI_BASE(x)   (((x) >> 21) & 0x1f)
-+#define SYNCI_OFFSET    ((x) & 0xffff)
-+
-+#define LW_TEMPLATE     0x8c000000
-+#define CLEAR_TEMPLATE  0x00000020
-+#define SW_TEMPLATE     0xac000000
-+
-+int
-+kvm_mips_trans_cache_index(uint32_t inst, uint32_t *opc,
-+			   struct kvm_vcpu *vcpu)
-+{
-+	int result = 0;
-+	ulong kseg0_opc;
-+	uint32_t synci_inst = 0x0;
-+
-+	/* Replace the CACHE instruction, with a NOP */
-+	kseg0_opc =
-+	    CKSEG0ADDR(kvm_mips_translate_guest_kseg0_to_hpa
-+		       (vcpu, (ulong) opc));
-+	memcpy((void *)kseg0_opc, (void *)&synci_inst, sizeof(uint32_t));
-+	mips32_SyncICache(kseg0_opc, 32);
-+
-+	return result;
-+}
-+
-+/*
-+ *  Address based CACHE instructions are transformed into synci(s). A little heavy
-+ * for just D-cache invalidates, but avoids an expensive trap
-+ */
-+int
-+kvm_mips_trans_cache_va(uint32_t inst, uint32_t *opc,
-+			struct kvm_vcpu *vcpu)
-+{
-+	int result = 0;
-+	ulong kseg0_opc;
-+	uint32_t synci_inst = SYNCI_TEMPLATE, base, offset;
-+
-+	base = (inst >> 21) & 0x1f;
-+	offset = inst & 0xffff;
-+	synci_inst |= (base << 21);
-+	synci_inst |= offset;
-+
-+	kseg0_opc =
-+	    CKSEG0ADDR(kvm_mips_translate_guest_kseg0_to_hpa
-+		       (vcpu, (ulong) opc));
-+	memcpy((void *)kseg0_opc, (void *)&synci_inst, sizeof(uint32_t));
-+	mips32_SyncICache(kseg0_opc, 32);
-+
-+	return result;
-+}
-+
-+int
-+kvm_mips_trans_mfc0(uint32_t inst, uint32_t *opc, struct kvm_vcpu *vcpu)
-+{
-+	int32_t rt, rd, sel;
-+	uint32_t mfc0_inst;
-+	ulong kseg0_opc, flags;
-+
-+	rt = (inst >> 16) & 0x1f;
-+	rd = (inst >> 11) & 0x1f;
-+	sel = inst & 0x7;
-+
-+	if ((rd == MIPS_CP0_ERRCTL) && (sel == 0)) {
-+		mfc0_inst = CLEAR_TEMPLATE;
-+		mfc0_inst |= ((rt & 0x1f) << 16);
-+	} else {
-+		mfc0_inst = LW_TEMPLATE;
-+		mfc0_inst |= ((rt & 0x1f) << 16);
-+		mfc0_inst |=
-+		    offsetof(struct mips_coproc,
-+			     reg[rd][sel]) + offsetof(struct kvm_mips_commpage,
-+						      cop0);
-+	}
-+
-+	if (KVM_GUEST_KSEGX(opc) == KVM_GUEST_KSEG0) {
-+		kseg0_opc =
-+		    CKSEG0ADDR(kvm_mips_translate_guest_kseg0_to_hpa
-+			       (vcpu, (ulong) opc));
-+		memcpy((void *)kseg0_opc, (void *)&mfc0_inst, sizeof(uint32_t));
-+		mips32_SyncICache(kseg0_opc, 32);
-+	} else if (KVM_GUEST_KSEGX((ulong) opc) == KVM_GUEST_KSEG23) {
-+		local_irq_save(flags);
-+		memcpy((void *)opc, (void *)&mfc0_inst, sizeof(uint32_t));
-+		mips32_SyncICache((ulong) opc, 32);
-+		local_irq_restore(flags);
-+	} else {
-+		kvm_err("%s: Invalid address: %p\n", __func__, opc);
-+		return -EFAULT;
-+	}
-+
-+	return 0;
-+}
-+
-+int
-+kvm_mips_trans_mtc0(uint32_t inst, uint32_t *opc, struct kvm_vcpu *vcpu)
-+{
-+	int32_t rt, rd, sel;
-+	uint32_t mtc0_inst = SW_TEMPLATE;
-+	ulong kseg0_opc, flags;
-+
-+	rt = (inst >> 16) & 0x1f;
-+	rd = (inst >> 11) & 0x1f;
-+	sel = inst & 0x7;
-+
-+	mtc0_inst |= ((rt & 0x1f) << 16);
-+	mtc0_inst |=
-+	    offsetof(struct mips_coproc,
-+		     reg[rd][sel]) + offsetof(struct kvm_mips_commpage, cop0);
-+
-+	if (KVM_GUEST_KSEGX(opc) == KVM_GUEST_KSEG0) {
-+		kseg0_opc =
-+		    CKSEG0ADDR(kvm_mips_translate_guest_kseg0_to_hpa
-+			       (vcpu, (ulong) opc));
-+		memcpy((void *)kseg0_opc, (void *)&mtc0_inst, sizeof(uint32_t));
-+		mips32_SyncICache(kseg0_opc, 32);
-+	} else if (KVM_GUEST_KSEGX((ulong) opc) == KVM_GUEST_KSEG23) {
-+		local_irq_save(flags);
-+		memcpy((void *)opc, (void *)&mtc0_inst, sizeof(uint32_t));
-+		mips32_SyncICache((ulong) opc, 32);
-+		local_irq_restore(flags);
-+	} else {
-+		kvm_err("%s: Invalid address: %p\n", __func__, opc);
-+		return -EFAULT;
-+	}
-+
-+	return 0;
-+}
+ lib/mpi/longlong.h | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/lib/mpi/longlong.h b/lib/mpi/longlong.h
+index 678ce4f..095ab15 100644
+--- a/lib/mpi/longlong.h
++++ b/lib/mpi/longlong.h
+@@ -641,7 +641,14 @@ do { \
+ 	**************  MIPS  *****************
+ 	***************************************/
+ #if defined(__mips__) && W_TYPE_SIZE == 32
+-#if __GNUC__ > 2 || __GNUC_MINOR__ >= 7
++#if __GNUC__ >= 4 && __GNUC_MINOR__ >= 4
++#define umul_ppmm(w1, w0, u, v)			\
++do {						\
++	UDItype __ll = (UDItype)(u) * (v);	\
++	w1 = __ll >> 32;			\
++	w0 = __ll;				\
++} while (0)
++#elif __GNUC__ > 2 || __GNUC_MINOR__ >= 7
+ #define umul_ppmm(w1, w0, u, v) \
+ 	__asm__ ("multu %2,%3" \
+ 	: "=l" ((USItype)(w0)), \
+@@ -666,7 +673,15 @@ do { \
+ 	**************  MIPS/64  **************
+ 	***************************************/
+ #if (defined(__mips) && __mips >= 3) && W_TYPE_SIZE == 64
+-#if __GNUC__ > 2 || __GNUC_MINOR__ >= 7
++#if __GNUC__ >= 4 && __GNUC_MINOR__ >= 4
++#define umul_ppmm(w1, w0, u, v) \
++do {									\
++	typedef unsigned int __ll_UTItype __attribute__((mode(TI)));	\
++	__ll_UTItype __ll = (__ll_UTItype)(u) * (v);			\
++	w1 = __ll >> 64;						\
++	w0 = __ll;							\
++} while (0)
++#elif __GNUC__ > 2 || __GNUC_MINOR__ >= 7
+ #define umul_ppmm(w1, w0, u, v) \
+ 	__asm__ ("dmultu %2,%3" \
+ 	: "=l" ((UDItype)(w0)), \
 -- 
-1.7.11.3
+1.8.0

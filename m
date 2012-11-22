@@ -1,41 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Nov 2012 11:58:36 +0100 (CET)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:58791 "EHLO
-        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823033Ab2KVK6fQda-6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Nov 2012 11:58:35 +0100
-Received: by mail-bk0-f49.google.com with SMTP id jm19so2105150bkc.36
-        for <multiple recipients>; Thu, 22 Nov 2012 02:58:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=cN+seQ87APb+Urz7JCGflnit4Y+X2ST6jzUD8O4dty0=;
-        b=rhiigt6KXHnUxwg+6CQNtwVktCNBTdkszL2XiuKGMWrWz0tcqpI3fo/nno87nbaUt9
-         4JzKp/yFbeNP2Lhw04SdwuRyhb7zVSM+/9o/Qj/XCHVkECFv1n+eFz10wLjSloD9phI/
-         s/+qXfC1ObruHitNTrrvIThB32Jp+fOLYGv5oHuiUTugciAgOBcdspAHetm2oY9kJJyr
-         icn5fwUtoMZe7J3H139F5Nk1LTbj8J6W8aSTEPsglSANThF3xGOShjjfdQk+C5ioZDL0
-         2/lggSQMzxdePTIVDMXrBmxktZcW+wHdq/kQewkSj15SHS0OCfGy1261PjBJoNMzkwae
-         IwCw==
-Received: by 10.204.3.213 with SMTP id 21mr37335bko.121.1353581909785;
-        Thu, 22 Nov 2012 02:58:29 -0800 (PST)
-Received: from flagship.roarinelk.net (178-191-6-87.adsl.highway.telekom.at. [178.191.6.87])
-        by mx.google.com with ESMTPS id u3sm1950243bkw.9.2012.11.22.02.58.27
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Nov 2012 12:47:10 +0100 (CET)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:48674 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823049Ab2KVLrJL6dXE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Nov 2012 12:47:09 +0100
+Received: by mail-lb0-f177.google.com with SMTP id n10so4238218lbo.36
+        for <linux-mips@linux-mips.org>; Thu, 22 Nov 2012 03:47:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding
+         :x-gm-message-state;
+        bh=yJRZ7tfRsFCxk8KoP/XB93UhXdKibFvmhZr8rOZuUPg=;
+        b=bwjBujIMZetbQV3pT4kej3M1Y02Ey2uipON5ASgMFH27tcd9FEmJMgfBkz4056jKZT
+         ehQOBc9+/YyVNpOHcuvrp0lELcTeUupAnloz6SwzIZfHHtleQp2PFYp6kgFCIL/AuBKs
+         eCGq/XewUfJU3PBzFwgTp3H0S1z6tv549mRVvaNjOftfL2T4Tzx+2TkIh2bHRl/lT2vI
+         h92LjIFn0qctWlDO2wJRFrJ0sJ2M/ZKxb3S3qwNgetYcjSf7Huo3Q147EhnUfLoj+0SF
+         6FWVXTPGQSPh6hJZbUvzWHRW0hZlNKqWq7Q2rkYkWRyfw8BGltGwdzGo8Rh/ZiDXnnxA
+         0t7A==
+Received: by 10.112.29.229 with SMTP id n5mr485910lbh.130.1353584823540;
+        Thu, 22 Nov 2012 03:47:03 -0800 (PST)
+Received: from [192.168.2.2] (ppp91-79-70-131.pppoe.mtu-net.ru. [91.79.70.131])
+        by mx.google.com with ESMTPS id oz12sm1117087lab.17.2012.11.22.03.47.01
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 22 Nov 2012 02:58:28 -0800 (PST)
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Dmitry Kasatkin <dmitry.kasatkin@intel.com>,
-        James Morris <jmorris@namei.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [RFC PATCH] MPI: Fix compilation on MIPS with GCC 4.4 and newer
-Date:   Thu, 22 Nov 2012 11:58:22 +0100
-Message-Id: <1353581902-18938-1-git-send-email-manuel.lauss@googlemail.com>
-X-Mailer: git-send-email 1.8.0
-X-archive-position: 35094
+        Thu, 22 Nov 2012 03:47:02 -0800 (PST)
+Message-ID: <50AE1065.9080909@mvista.com>
+Date:   Thu, 22 Nov 2012 15:45:41 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/17.0 Thunderbird/17.0
+MIME-Version: 1.0
+To:     Sanjay Lal <sanjayl@kymasys.com>
+CC:     kvm@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH v2 09/18] KVM/MIPS32: COP0 accesses profiling.
+References: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com> <1353551656-23579-10-git-send-email-sanjayl@kymasys.com>
+In-Reply-To: <1353551656-23579-10-git-send-email-sanjayl@kymasys.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Gm-Message-State: ALoCoQnj0U9waN1r9wlG0nMZK2MgmgC4KqCgOG14sqK06LkUxmxxrhnFMxeCW4H/lq7ooJI7m4A1
+X-archive-position: 35095
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,60 +54,76 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Manuel Lauss <manuel.lauss@gmail.com>
+Hello.
 
-Since 4.4 GCC on MIPS no longer recognizes the "h" constraint,
-leading to this build failure:
+On 22-11-2012 6:34, Sanjay Lal wrote:
 
-  CC      lib/mpi/generic_mpih-mul1.o
-lib/mpi/generic_mpih-mul1.c: In function 'mpihelp_mul_1':
-lib/mpi/generic_mpih-mul1.c:50:3: error: impossible constraint in 'asm'
+> Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
+> ---
+>   arch/mips/kvm/kvm_mips_stats.c | 81 ++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 81 insertions(+)
+>   create mode 100644 arch/mips/kvm/kvm_mips_stats.c
 
-This patch updates MPI with the latest umul_ppm implementations for MIPS.
+> diff --git a/arch/mips/kvm/kvm_mips_stats.c b/arch/mips/kvm/kvm_mips_stats.c
+> new file mode 100644
+> index 0000000..e442a26
+> --- /dev/null
+> +++ b/arch/mips/kvm/kvm_mips_stats.c
+> @@ -0,0 +1,81 @@
+> +/*
+> +* This file is subject to the terms and conditions of the GNU General Public
+> +* License.  See the file "COPYING" in the main directory of this archive
+> +* for more details.
+> +*
+> +* KVM/MIPS: COP0 access histogram
+> +*
+> +* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
+> +* Authors: Sanjay Lal <sanjayl@kymasys.com>
+> +*/
+> +
+> +#include <linux/kvm_host.h>
+> +
+> +char *kvm_mips_exit_types_str[MAX_KVM_MIPS_EXIT_TYPES] = {
+> +	"WAIT",
+> +	"CACHE",
+> +	"Signal",
+> +	"Interrupt",
+> +	"COP0/1 Unusable",
+> +	"TLB Mod",
+> +	"TLB Miss (LD)",
+> +	"TLB Miss (ST)",
+> +	"Address Err (ST)",
+> +	"Address Error (LD)",
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
-Compile-tested on 32bit only.
+    I guess it should be "Error" in both cases.
 
- lib/mpi/longlong.h | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+> +	"System Call",
+> +	"Reserved Inst",
+> +	"Break Inst",
+> +	"D-Cache Flushes",
+> +};
+> +
+> +char *kvm_cop0_str[N_MIPS_COPROC_REGS] = {
+> +	"Index",
+> +	"Random",
+> +	"EntryLo0",
+> +	"EntryLo1",
+> +	"Context",
+> +	"PG Mask",
+> +	"Wired",
+> +	"HWREna",
+> +	"BadVAddr",
+> +	"Count",
+> +	"EntryHI",
 
-diff --git a/lib/mpi/longlong.h b/lib/mpi/longlong.h
-index 678ce4f..095ab15 100644
---- a/lib/mpi/longlong.h
-+++ b/lib/mpi/longlong.h
-@@ -641,7 +641,14 @@ do { \
- 	**************  MIPS  *****************
- 	***************************************/
- #if defined(__mips__) && W_TYPE_SIZE == 32
--#if __GNUC__ > 2 || __GNUC_MINOR__ >= 7
-+#if __GNUC__ >= 4 && __GNUC_MINOR__ >= 4
-+#define umul_ppmm(w1, w0, u, v)			\
-+do {						\
-+	UDItype __ll = (UDItype)(u) * (v);	\
-+	w1 = __ll >> 32;			\
-+	w0 = __ll;				\
-+} while (0)
-+#elif __GNUC__ > 2 || __GNUC_MINOR__ >= 7
- #define umul_ppmm(w1, w0, u, v) \
- 	__asm__ ("multu %2,%3" \
- 	: "=l" ((USItype)(w0)), \
-@@ -666,7 +673,15 @@ do { \
- 	**************  MIPS/64  **************
- 	***************************************/
- #if (defined(__mips) && __mips >= 3) && W_TYPE_SIZE == 64
--#if __GNUC__ > 2 || __GNUC_MINOR__ >= 7
-+#if __GNUC__ >= 4 && __GNUC_MINOR__ >= 4
-+#define umul_ppmm(w1, w0, u, v) \
-+do {									\
-+	typedef unsigned int __ll_UTItype __attribute__((mode(TI)));	\
-+	__ll_UTItype __ll = (__ll_UTItype)(u) * (v);			\
-+	w1 = __ll >> 64;						\
-+	w0 = __ll;							\
-+} while (0)
-+#elif __GNUC__ > 2 || __GNUC_MINOR__ >= 7
- #define umul_ppmm(w1, w0, u, v) \
- 	__asm__ ("dmultu %2,%3" \
- 	: "=l" ((UDItype)(w0)), \
--- 
-1.8.0
+    EntryHi.
+
+> +int kvm_mips_dump_stats(struct kvm_vcpu *vcpu)
+> +{
+> +	int i, j __unused;
+
+    Empty line after declarations wouldn't hurt.
+
+> +#ifdef CONFIG_KVM_MIPS_DEBUG_COP0_COUNTERS
+
+WBR, Sergei

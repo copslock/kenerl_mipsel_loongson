@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Nov 2012 22:33:15 +0100 (CET)
-Received: from g1t0027.austin.hp.com ([15.216.28.34]:32487 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Nov 2012 22:33:54 +0100 (CET)
+Received: from g1t0027.austin.hp.com ([15.216.28.34]:32678 "EHLO
         g1t0027.austin.hp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6824768Ab2KWVdOOaww0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Nov 2012 22:33:14 +0100
+        by eddie.linux-mips.org with ESMTP id S6824768Ab2KWVdyC8GxR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Nov 2012 22:33:54 +0100
 Received: from g1t0039.austin.hp.com (g1t0039.austin.hp.com [16.236.32.45])
-        by g1t0027.austin.hp.com (Postfix) with ESMTP id 283DF38240;
-        Fri, 23 Nov 2012 21:33:05 +0000 (UTC)
+        by g1t0027.austin.hp.com (Postfix) with ESMTP id 4F2DB381B4;
+        Fri, 23 Nov 2012 21:33:47 +0000 (UTC)
 Received: from [10.152.0.6] (swa01cs005-da01.atlanta.hp.com [16.114.29.155])
-        by g1t0039.austin.hp.com (Postfix) with ESMTP id B9EE4341CC;
-        Fri, 23 Nov 2012 21:32:56 +0000 (UTC)
-Message-ID: <1353706375.5270.98.camel@lorien2>
-Subject: [PATCH 3/9] ia64: dma_debug: add debug_dma_mapping_error support
+        by g1t0039.austin.hp.com (Postfix) with ESMTP id 7D95E342C2;
+        Fri, 23 Nov 2012 21:33:43 +0000 (UTC)
+Message-ID: <1353706422.5270.99.camel@lorien2>
+Subject: [PATCH 4/9] microblaze: dma-mapping: support debug_dma_mapping_error
 From:   Shuah Khan <shuah.khan@hp.com>
 Reply-To: shuah.khan@hp.com
 To:     Joerg Roedel <joro@8bytes.org>, a-jacquiot@ti.com,
@@ -23,13 +23,13 @@ Cc:     linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
         linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, microblaze-uclinux@itee.uq.edu.au,
         shuahkhan@gmail.com, LKML <linux-kernel@vger.kernel.org>
-Date:   Fri, 23 Nov 2012 14:32:55 -0700
+Date:   Fri, 23 Nov 2012 14:33:42 -0700
 Organization: ISS-Linux
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.2.3-0ubuntu6 
 Content-Transfer-Encoding: 7bit
 Mime-Version: 1.0
-X-archive-position: 35100
+X-archive-position: 35101
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,26 +47,35 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add dma-debug interface debug_dma_mapping_error() to debug drivers that fail
-to check dma mapping errors on addresses returned by dma_map_single() and
-dma_map_page() interfaces.
+Add support for debug_dma_mapping_error() call to avoid warning from
+debug_dma_unmap() interface when it checks for mapping error checked
+status. Without this patch, device driver failed to check map error
+warning is generated.
 
 Signed-off-by: Shuah Khan <shuah.khan@hp.com>
+Acked-by: Michal Simek <monstr@monstr.eu>
 ---
- arch/ia64/include/asm/dma-mapping.h |    1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/arch/ia64/include/asm/dma-mapping.h b/arch/ia64/include/asm/dma-mapping.h
-index 4f5e814..cf3ab7e 100644
---- a/arch/ia64/include/asm/dma-mapping.h
-+++ b/arch/ia64/include/asm/dma-mapping.h
-@@ -58,6 +58,7 @@ static inline void dma_free_attrs(struct device *dev, size_t size,
- static inline int dma_mapping_error(struct device *dev, dma_addr_t daddr)
+This patch is already in linux-next. Including it in this series for
+completeness. linux-next commit f229605441030bcd315c21d97b25889d63ed0130
+
+-- shuah
+---
+ arch/microblaze/include/asm/dma-mapping.h |    2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/microblaze/include/asm/dma-mapping.h b/arch/microblaze/include/asm/dma-mapping.h
+index 01d2282..46460f1 100644
+--- a/arch/microblaze/include/asm/dma-mapping.h
++++ b/arch/microblaze/include/asm/dma-mapping.h
+@@ -114,6 +114,8 @@ static inline void __dma_sync(unsigned long paddr,
+ static inline int dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
  {
- 	struct dma_map_ops *ops = platform_dma_get_ops(dev);
-+	debug_dma_mapping_error(dev, daddr);
- 	return ops->mapping_error(dev, daddr);
- }
+ 	struct dma_map_ops *ops = get_dma_ops(dev);
++
++	debug_dma_mapping_error(dev, dma_addr);
+ 	if (ops->mapping_error)
+ 		return ops->mapping_error(dev, dma_addr);
  
 -- 
 1.7.9.5

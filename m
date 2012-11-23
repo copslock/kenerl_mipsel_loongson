@@ -1,40 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Nov 2012 17:05:27 +0100 (CET)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:45375 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823084Ab2KVQF0GeLy5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Nov 2012 17:05:26 +0100
-Received: by mail-pa0-f49.google.com with SMTP id bi1so2831333pad.36
-        for <multiple recipients>; Thu, 22 Nov 2012 08:05:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=XHe+myv199nhaMRYHGC34KsZUo4NJvcad2J8XxBd1Fk=;
-        b=F7lFRBzFIWHa8CDYp6GDxM7TV5QHhNqZ9OCPyuZ+FodoMHvKszm5//G08jtbZSJalm
-         fFrUSU3lzNr3zY2evJe+z7rDE2PpLlyfy8Pnz+imgmVjJJUn9brOteuEk8dHsVrf4cNy
-         2aw5ucBvq5stVrvCyZ/f5ciMSz3vF14S70QjGvKL9X3NltkOJjDJgAxyFtjo58612/Aq
-         oJzmJr7gr/Uq6oVDY379lRQplXrZrWr0KsuYFsxMWqq1NhX0LzBmeBaeWCljZdy1BqUR
-         bNL3H7KrRL3GYo1ex/IoZexBmzYHQSjhyhuAJ+jLWgGAbSvJKgUCDyHa2OHj9OEK9oBs
-         b8Vw==
-Received: by 10.68.191.10 with SMTP id gu10mr5849732pbc.115.1353600319132;
-        Thu, 22 Nov 2012 08:05:19 -0800 (PST)
-Received: from masabert (i118-21-156-233.s30.a048.ap.plala.or.jp. [118.21.156.233])
-        by mx.google.com with ESMTPS id g1sm2110536pax.21.2012.11.22.08.05.16
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 22 Nov 2012 08:05:18 -0800 (PST)
-Received: by masabert (Postfix, from userid 1000)
-        id 43F15204E4; Fri, 23 Nov 2012 01:05:15 +0900 (JST)
-From:   Masanari Iida <standby24x7@gmail.com>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org, trivial@kernel.org
-Cc:     linux-kernel@vger.kernel.org, Masanari Iida <standby24x7@gmail.com>
-Subject: [PATCH] [trivial] mips: lantiq: Fix typo endianess in dma.c
-Date:   Fri, 23 Nov 2012 01:05:13 +0900
-Message-Id: <1353600313-11983-1-git-send-email-standby24x7@gmail.com>
-X-Mailer: git-send-email 1.8.0.273.g2d242fb
-X-archive-position: 35096
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Nov 2012 22:29:22 +0100 (CET)
+Received: from g4t0014.houston.hp.com ([15.201.24.17]:39782 "EHLO
+        g4t0014.houston.hp.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6824768Ab2KWV3VNDM-8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Nov 2012 22:29:21 +0100
+Received: from g4t0018.houston.hp.com (g4t0018.houston.hp.com [16.234.32.27])
+        by g4t0014.houston.hp.com (Postfix) with ESMTP id 031CA24038;
+        Fri, 23 Nov 2012 21:29:14 +0000 (UTC)
+Received: from [10.152.0.6] (swa01cs005-da01.atlanta.hp.com [16.114.29.155])
+        by g4t0018.houston.hp.com (Postfix) with ESMTP id 8FD2410170;
+        Fri, 23 Nov 2012 21:29:03 +0000 (UTC)
+Message-ID: <1353706142.5270.93.camel@lorien2>
+Subject: [PATCH 0/9] dma_debug: add debug_dma_mapping_error support to
+ architectures that support DMA_DEBUG_API
+From:   Shuah Khan <shuah.khan@hp.com>
+Reply-To: shuah.khan@hp.com
+To:     Joerg Roedel <joro@8bytes.org>, a-jacquiot@ti.com,
+        fenghua.yu@intel.com, catalin.marinas@arm.com, lethal@linux-sh.org,
+        benh@kernel.crashing.org, ralf@linux-mips.org, tony.luck@intel.com,
+        davem@davemloft.net, m.szyprowski@samsung.com, msalter@redhat.com,
+        monstr@monstr.eu, Ming Lei <ming.lei@canonical.com>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        LKML <linux-kernel@vger.kernel.org>, linux-c6x-dev@linux-c6x.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, microblaze-uclinux@itee.uq.edu.au,
+        shuahkhan@gmail.com
+Date:   Fri, 23 Nov 2012 14:29:02 -0700
+Organization: ISS-Linux
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3-0ubuntu6 
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-archive-position: 35097
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: standby24x7@gmail.com
+X-original-sender: shuah.khan@hp.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,39 +49,43 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Correct spelling typo ENDIANESS to ENDIANNESS in
-arc/mips/lantiq/xway/dma.c
+An earlier patch added dma mapping error debug feature to dma_debug
+infrastructure. References:
 
-Signed-off-by: Masanari Iida <standby24x7@gmail.com>
----
- arch/mips/lantiq/xway/dma.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+https://lkml.org/lkml/2012/10/8/296
+https://lkml.org/lkml/2012/11/3/219
 
-diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
-index 55d2c4f..0f7228d 100644
---- a/arch/mips/lantiq/xway/dma.c
-+++ b/arch/mips/lantiq/xway/dma.c
-@@ -48,7 +48,7 @@
- #define DMA_CLK_DIV4		BIT(6)		/* polling clock divider */
- #define DMA_2W_BURST		BIT(1)		/* 2 word burst length */
- #define DMA_MAX_CHANNEL		20		/* the soc has 20 channels */
--#define DMA_ETOP_ENDIANESS	(0xf << 8) /* endianess swap etop channels */
-+#define DMA_ETOP_ENDIANNESS	(0xf << 8) /* endianness swap etop channels */
- #define DMA_WEIGHT	(BIT(17) | BIT(16))	/* default channel wheight */
- 
- #define ltq_dma_r32(x)			ltq_r32(ltq_dma_membase + (x))
-@@ -191,10 +191,10 @@ ltq_dma_init_port(int p)
- 	switch (p) {
- 	case DMA_PORT_ETOP:
- 		/*
--		 * Tell the DMA engine to swap the endianess of data frames and
-+		 * Tell the DMA engine to swap the endianness of data frames and
- 		 * drop packets if the channel arbitration fails.
- 		 */
--		ltq_dma_w32_mask(0, DMA_ETOP_ENDIANESS | DMA_PDEN,
-+		ltq_dma_w32_mask(0, DMA_ETOP_ENDIANNESS | DMA_PDEN,
- 			LTQ_DMA_PCTRL);
- 		break;
- 
--- 
-1.8.0.273.g2d242fb
+The following series of patches adds the call to debug_dma_mapping_error() to
+architecture specific dma_mapping_error() interfaces on the following
+architectures that support CONFIG_DMA_API_DEBUG.
+
+arm64
+c6x
+ia64
+microblaze
+mips
+powerpc
+sh
+sparc
+tile
+
+arm - Change is already in Marek's dma-mapping tree[1] 
+https://patchwork.kernel.org/patch/1625601/
+
+microblaze - Change is already in linux-next. Including it for completeness
+linux-next commit f229605441030bcd315c21d97b25889d63ed0130
+
+x86 - done in the first patch that added the feature.
+
+ARM64: dma_debug: add debug_dma_mapping_error support
+c6x: dma_debug: add debug_dma_mapping_error support
+ia64: dma_debug: add debug_dma_mapping_error support
+microblaze: dma-mapping: support debug_dma_mapping_error
+mips: dma_debug: add debug_dma_mapping_error support
+powerpc: dma_debug: add debug_dma_mapping_error support
+sh: dma_debug: add debug_dma_mapping_error support
+sparc: dma_debug: add debug_dma_mapping_error support
+tile: dma_debug: add debug_dma_mapping_error support
+
+Thanks,
+-- Shuah

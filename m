@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Nov 2012 23:26:26 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:55092 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Nov 2012 23:26:44 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:55112 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6825659Ab2KXWZKZy0hg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Nov 2012 23:25:10 +0100
+        with ESMTP id S6825657Ab2KXWZRTilK0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Nov 2012 23:25:17 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id DBDA38F75;
-        Sat, 24 Nov 2012 23:25:09 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id DB3F38F7B;
+        Sat, 24 Nov 2012 23:25:15 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id cNoJMNUsI166; Sat, 24 Nov 2012 23:25:03 +0100 (CET)
+        with ESMTP id boOJe+1NHhUN; Sat, 24 Nov 2012 23:25:08 +0100 (CET)
 Received: from hauke-desktop.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 42E578F65;
-        Sat, 24 Nov 2012 23:24:34 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 3279C8F66;
+        Sat, 24 Nov 2012 23:24:35 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linville@tuxdriver.com
 Cc:     linux-wireless@vger.kernel.org, wim@iguana.be,
         linux-watchdog@vger.kernel.org, castet.matthieu@free.fr,
         biblbroks@sezampro.rs, m@bues.ch, zajec5@gmail.com,
         linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 05/15] watchdog: bcm47xx_wdt.c: add hard timer
-Date:   Sat, 24 Nov 2012 23:24:05 +0100
-Message-Id: <1353795855-22236-6-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 06/15] bcma: add bcma_chipco_alp_clock
+Date:   Sat, 24 Nov 2012 23:24:06 +0100
+Message-Id: <1353795855-22236-7-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1353795855-22236-1-git-send-email-hauke@hauke-m.de>
 References: <1353795855-22236-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 35112
+X-archive-position: 35113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,141 +43,49 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The more recent devices have a watchdog timer which could be configured
-for over 2 hours and not just 2 seconds like the first generation
-devices. For those devices do not use the extra software timer, but
-directly program the time into the register. This will automatically be
-used if the timer supports more than a minute.
+For devices without a PMU the alp clock is always 20000000.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/watchdog/bcm47xx_wdt.c |   69 ++++++++++++++++++++++++++++++++++++----
- include/linux/bcm47xx_wdt.h    |    1 +
- 2 files changed, 64 insertions(+), 6 deletions(-)
+ drivers/bcma/driver_chipcommon.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/bcm47xx_wdt.c b/drivers/watchdog/bcm47xx_wdt.c
-index b6a8c49..c77f5ca 100644
---- a/drivers/watchdog/bcm47xx_wdt.c
-+++ b/drivers/watchdog/bcm47xx_wdt.c
-@@ -31,6 +31,7 @@
- 
- #define WDT_DEFAULT_TIME	30	/* seconds */
- #define WDT_SOFTTIMER_MAX	3600	/* seconds */
-+#define WDT_SOFTTIMER_THRESHOLD	60	/* seconds */
- 
- static int timeout = WDT_DEFAULT_TIME;
- static bool nowayout = WATCHDOG_NOWAYOUT;
-@@ -49,6 +50,53 @@ static inline struct bcm47xx_wdt *bcm47xx_wdt_get(struct watchdog_device *wdd)
- 	return container_of(wdd, struct bcm47xx_wdt, wdd);
+diff --git a/drivers/bcma/driver_chipcommon.c b/drivers/bcma/driver_chipcommon.c
+index ffd74e5..ef68553 100644
+--- a/drivers/bcma/driver_chipcommon.c
++++ b/drivers/bcma/driver_chipcommon.c
+@@ -4,6 +4,7 @@
+  *
+  * Copyright 2005, Broadcom Corporation
+  * Copyright 2006, 2007, Michael Buesch <m@bues.ch>
++ * Copyright 2012, Hauke Mehrtens <hauke@hauke-m.de>
+  *
+  * Licensed under the GNU/GPL. See COPYING for details.
+  */
+@@ -22,6 +23,14 @@ static inline u32 bcma_cc_write32_masked(struct bcma_drv_cc *cc, u16 offset,
+ 	return value;
  }
  
-+static int bcm47xx_wdt_hard_keepalive(struct watchdog_device *wdd)
++static u32 bcma_chipco_alp_clock(struct bcma_drv_cc *cc)
 +{
-+	struct bcm47xx_wdt *wdt = bcm47xx_wdt_get(wdd);
++	if (cc->capabilities & BCMA_CC_CAP_PMU)
++		return bcma_pmu_alp_clock(cc);
 +
-+	wdt->timer_set_ms(wdt, wdd->timeout * 1000);
-+
-+	return 0;
++	return 20000000;
 +}
 +
-+static int bcm47xx_wdt_hard_start(struct watchdog_device *wdd)
-+{
-+	return 0;
-+}
-+
-+static int bcm47xx_wdt_hard_stop(struct watchdog_device *wdd)
-+{
-+	struct bcm47xx_wdt *wdt = bcm47xx_wdt_get(wdd);
-+
-+	wdt->timer_set(wdt, 0);
-+
-+	return 0;
-+}
-+
-+static int bcm47xx_wdt_hard_set_timeout(struct watchdog_device *wdd,
-+					unsigned int new_time)
-+{
-+	struct bcm47xx_wdt *wdt = bcm47xx_wdt_get(wdd);
-+	u32 max_timer = wdt->max_timer_ms;
-+
-+	if (new_time < 1 || new_time > max_timer / 1000) {
-+		pr_warn("timeout value must be 1<=x<=%d, using %d\n",
-+			max_timer / 1000, new_time);
-+		return -EINVAL;
-+	}
-+
-+	wdd->timeout = new_time;
-+	return 0;
-+}
-+
-+static struct watchdog_ops bcm47xx_wdt_hard_ops = {
-+	.owner		= THIS_MODULE,
-+	.start		= bcm47xx_wdt_hard_start,
-+	.stop		= bcm47xx_wdt_hard_stop,
-+	.ping		= bcm47xx_wdt_hard_keepalive,
-+	.set_timeout	= bcm47xx_wdt_hard_set_timeout,
-+};
-+
- static void bcm47xx_wdt_soft_timer_tick(unsigned long data)
+ void bcma_core_chipcommon_early_init(struct bcma_drv_cc *cc)
  {
- 	struct bcm47xx_wdt *wdt = (struct bcm47xx_wdt *)data;
-@@ -133,15 +181,22 @@ static struct watchdog_ops bcm47xx_wdt_soft_ops = {
- static int __devinit bcm47xx_wdt_probe(struct platform_device *pdev)
- {
- 	int ret;
-+	bool soft;
- 	struct bcm47xx_wdt *wdt = dev_get_platdata(&pdev->dev);
+ 	if (cc->early_setup_done)
+@@ -131,8 +140,7 @@ void bcma_chipco_serial_init(struct bcma_drv_cc *cc)
+ 	struct bcma_serial_port *ports = cc->serial_ports;
  
- 	if (!wdt)
- 		return -ENXIO;
- 
--	setup_timer(&wdt->soft_timer, bcm47xx_wdt_soft_timer_tick,
--		    (long unsigned int)wdt);
-+	soft = wdt->max_timer_ms < WDT_SOFTTIMER_THRESHOLD * 1000;
-+
-+	if (soft) {
-+		wdt->wdd.ops = &bcm47xx_wdt_soft_ops;
-+		setup_timer(&wdt->soft_timer, bcm47xx_wdt_soft_timer_tick,
-+			    (long unsigned int)wdt);
-+	} else {
-+		wdt->wdd.ops = &bcm47xx_wdt_hard_ops;
-+	}
- 
--	wdt->wdd.ops = &bcm47xx_wdt_soft_ops;
- 	wdt->wdd.info = &bcm47xx_wdt_info;
- 	wdt->wdd.timeout = WDT_DEFAULT_TIME;
- 	ret = wdt->wdd.ops->set_timeout(&wdt->wdd, timeout);
-@@ -159,14 +214,16 @@ static int __devinit bcm47xx_wdt_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_notifier;
- 
--	pr_info("BCM47xx Watchdog Timer enabled (%d seconds%s)\n",
--		timeout, nowayout ? ", nowayout" : "");
-+	dev_info(&pdev->dev, "BCM47xx Watchdog Timer enabled (%d seconds%s%s)\n",
-+		timeout, nowayout ? ", nowayout" : "",
-+		soft ? ", Software Timer" : "");
- 	return 0;
- 
- err_notifier:
- 	unregister_reboot_notifier(&wdt->notifier);
- err_timer:
--	del_timer_sync(&wdt->soft_timer);
-+	if (soft)
-+		del_timer_sync(&wdt->soft_timer);
- 
- 	return ret;
- }
-diff --git a/include/linux/bcm47xx_wdt.h b/include/linux/bcm47xx_wdt.h
-index b94ac0e..b708786 100644
---- a/include/linux/bcm47xx_wdt.h
-+++ b/include/linux/bcm47xx_wdt.h
-@@ -10,6 +10,7 @@
- struct bcm47xx_wdt {
- 	u32 (*timer_set)(struct bcm47xx_wdt *, u32);
- 	u32 (*timer_set_ms)(struct bcm47xx_wdt *, u32);
-+	u32 max_timer_ms;
- 
- 	void *driver_data;
- 
+ 	if (ccrev >= 11 && ccrev != 15) {
+-		/* Fixed ALP clock */
+-		baud_base = bcma_pmu_alp_clock(cc);
++		baud_base = bcma_chipco_alp_clock(cc);
+ 		if (ccrev >= 21) {
+ 			/* Turn off UART clock before switching clocksource. */
+ 			bcma_cc_write32(cc, BCMA_CC_CORECTL,
 -- 
 1.7.10.4

@@ -1,30 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2012 18:00:50 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:33150 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822895Ab2KZRAqwDVbD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Nov 2012 18:00:46 +0100
-Received: from 189.58.19.107.dynamic.adsl.gvt.net.br ([189.58.19.107] helo=canonical.com)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <herton.krzesinski@canonical.com>)
-        id 1Td232-0006G6-Di; Mon, 26 Nov 2012 17:00:45 +0000
-From:   Herton Ronaldo Krzesinski <herton.krzesinski@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Herton Ronaldo Krzesinski <herton.krzesinski@canonical.com>
-Subject: [PATCH 017/270] MIPS: ath79: Fix CPU/DDR frequency calculation for SRIF PLLs
-Date:   Mon, 26 Nov 2012 14:55:07 -0200
-Message-Id: <1353949160-26803-18-git-send-email-herton.krzesinski@canonical.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1353949160-26803-1-git-send-email-herton.krzesinski@canonical.com>
-References: <1353949160-26803-1-git-send-email-herton.krzesinski@canonical.com>
-X-archive-position: 35129
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2012 19:58:31 +0100 (CET)
+Received: from mail-pa0-f49.google.com ([209.85.220.49]:38065 "EHLO
+        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825876Ab2KZS5R2NFXz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Nov 2012 19:57:17 +0100
+Received: by mail-pa0-f49.google.com with SMTP id bi1so4763439pad.36
+        for <multiple recipients>; Mon, 26 Nov 2012 10:53:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=kGiVQDu8QtdYvEIRCj4qFSpmseQRs/CfP7+9WmCsusM=;
+        b=tAJFPd15vH37tjK/K4YdfNkDmRMO21NTcvJCDkMVdbPzzTmVw6w+zDBxgzWo/mJnkJ
+         cbJUwZMTgS7tVl1CFdvVWvVhPZI7+25gcvKoAZx+oE71gqdts8bs5R5eEqIKEkMUSUeR
+         sWfIFBZWkrTAG4YNsSyjH4mT/8gpBPXqSycdcDYWueVokfgQdCcJBjXEjAhjQtvMJYHl
+         JtJ9QhXi17/0SxXAK8QVv5PIhTOR9GPUcXTZ/gj3nnah779CwiQ8Mgv4Smgxn0aYpDzB
+         zVKX14NAou66MAntLtqgDw3zLaxOpbG3DJLpn4WPEpjBdZK6NRiCY08R3GPegB8etsEm
+         Y98A==
+Received: by 10.66.78.67 with SMTP id z3mr35235241paw.33.1353956035348;
+        Mon, 26 Nov 2012 10:53:55 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id tm5sm9164211pbc.64.2012.11.26.10.53.52
+        (version=SSLv3 cipher=OTHER);
+        Mon, 26 Nov 2012 10:53:53 -0800 (PST)
+Message-ID: <50B3BAC0.6070407@gmail.com>
+Date:   Mon, 26 Nov 2012 10:53:52 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:16.0) Gecko/20121029 Thunderbird/16.0.2
+MIME-Version: 1.0
+To:     Sanjay Lal <sanjayl@kymasys.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     kvm@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH v2 00/18] KVM for MIPS32 Processors
+References: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com>
+In-Reply-To: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 35130
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: herton.krzesinski@canonical.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,216 +53,50 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-3.5.7u1 -stable review patch.  If anyone has any objections, please let me know.
 
-------------------
+I have several general questions about this patch...
 
-From: Gabor Juhos <juhosg@openwrt.org>
+On 11/21/2012 06:33 PM, Sanjay Lal wrote:
+> The following patchset implements KVM support for MIPS32R2 processors,
+> using Trap & Emulate, with basic runtime binary translation to improve
+> performance.  The goal has been to keep the Guest kernel changes to a
+> minimum.
 
-commit 97541ccfb9db2bb9cd1dde6344d5834438d14bda upstream.
+What is the point of minimizing guest kernel changes?
 
-Besides the CPU and DDR PLLs, the CPU and DDR frequencies
-can be derived from other PLLs in the SRIF block on the
-AR934x SoCs. The current code does not checks if the SRIF
-PLLs are used and this can lead to incorrectly calculated
-CPU/DDR frequencies.
+Because you are using an invented memory map, instead of the 
+architecturally defined map, there is no hope of running a single kernel 
+image both natively and as a guest.  So why do you care about how many 
+changes there are.
 
-Fix it by calculating the frequencies from SRIF PLLs if
-those are used on a given board.
+>
+> The patch is against Linux 3.7-rc6.  This is Version 2 of the patch set.
+>
+> There is a companion patchset for QEMU that adds KVM support for the
+> MIPS target.
+>
+> KVM/MIPS should support MIPS32-R2 processors and beyond.
+> It has been tested on the following platforms:
+>   - Malta Board with FPGA based 34K (Little Endian).
+>   - Sigma Designs TangoX board with a 24K based 8654 SoC (Little Endian).
+>   - Malta Board with 74K @ 1GHz (Little Endian).
+>   - OVPSim MIPS simulator from Imperas emulating a Malta board with
+>     24Kc and 1074Kc cores (Little Endian).
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/4324/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Herton Ronaldo Krzesinski <herton.krzesinski@canonical.com>
----
- arch/mips/ath79/clock.c                        |  109 ++++++++++++++++++------
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |   23 +++++
- 2 files changed, 104 insertions(+), 28 deletions(-)
+Unlike x86, there is no concept of a canonical MIPS system for you to 
+implement.  So the choice of emulating a Malta or one of the 
+SigmaDesigns boards doesn't seem to me to give you anything.
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index d272857..579f452 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -17,6 +17,8 @@
- #include <linux/err.h>
- #include <linux/clk.h>
- 
-+#include <asm/div64.h>
-+
- #include <asm/mach-ath79/ath79.h>
- #include <asm/mach-ath79/ar71xx_regs.h>
- #include "common.h"
-@@ -166,11 +168,34 @@ static void __init ar933x_clocks_init(void)
- 	ath79_uart_clk.rate = ath79_ref_clk.rate;
- }
- 
-+static u32 __init ar934x_get_pll_freq(u32 ref, u32 ref_div, u32 nint, u32 nfrac,
-+				      u32 frac, u32 out_div)
-+{
-+	u64 t;
-+	u32 ret;
-+
-+	t = ath79_ref_clk.rate;
-+	t *= nint;
-+	do_div(t, ref_div);
-+	ret = t;
-+
-+	t = ath79_ref_clk.rate;
-+	t *= nfrac;
-+	do_div(t, ref_div * frac);
-+	ret += t;
-+
-+	ret /= (1 << out_div);
-+	return ret;
-+}
-+
- static void __init ar934x_clocks_init(void)
- {
--	u32 pll, out_div, ref_div, nint, frac, clk_ctrl, postdiv;
-+	u32 pll, out_div, ref_div, nint, nfrac, frac, clk_ctrl, postdiv;
- 	u32 cpu_pll, ddr_pll;
- 	u32 bootstrap;
-+	void __iomem *dpll_base;
-+
-+	dpll_base = ioremap(AR934X_SRIF_BASE, AR934X_SRIF_SIZE);
- 
- 	bootstrap = ath79_reset_rr(AR934X_RESET_REG_BOOTSTRAP);
- 	if (bootstrap &	AR934X_BOOTSTRAP_REF_CLK_40)
-@@ -178,33 +203,59 @@ static void __init ar934x_clocks_init(void)
- 	else
- 		ath79_ref_clk.rate = 25 * 1000 * 1000;
- 
--	pll = ath79_pll_rr(AR934X_PLL_CPU_CONFIG_REG);
--	out_div = (pll >> AR934X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
--		  AR934X_PLL_CPU_CONFIG_OUTDIV_MASK;
--	ref_div = (pll >> AR934X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
--		  AR934X_PLL_CPU_CONFIG_REFDIV_MASK;
--	nint = (pll >> AR934X_PLL_CPU_CONFIG_NINT_SHIFT) &
--	       AR934X_PLL_CPU_CONFIG_NINT_MASK;
--	frac = (pll >> AR934X_PLL_CPU_CONFIG_NFRAC_SHIFT) &
--	       AR934X_PLL_CPU_CONFIG_NFRAC_MASK;
--
--	cpu_pll = nint * ath79_ref_clk.rate / ref_div;
--	cpu_pll += frac * ath79_ref_clk.rate / (ref_div * (1 << 6));
--	cpu_pll /= (1 << out_div);
--
--	pll = ath79_pll_rr(AR934X_PLL_DDR_CONFIG_REG);
--	out_div = (pll >> AR934X_PLL_DDR_CONFIG_OUTDIV_SHIFT) &
--		  AR934X_PLL_DDR_CONFIG_OUTDIV_MASK;
--	ref_div = (pll >> AR934X_PLL_DDR_CONFIG_REFDIV_SHIFT) &
--		  AR934X_PLL_DDR_CONFIG_REFDIV_MASK;
--	nint = (pll >> AR934X_PLL_DDR_CONFIG_NINT_SHIFT) &
--	       AR934X_PLL_DDR_CONFIG_NINT_MASK;
--	frac = (pll >> AR934X_PLL_DDR_CONFIG_NFRAC_SHIFT) &
--	       AR934X_PLL_DDR_CONFIG_NFRAC_MASK;
--
--	ddr_pll = nint * ath79_ref_clk.rate / ref_div;
--	ddr_pll += frac * ath79_ref_clk.rate / (ref_div * (1 << 10));
--	ddr_pll /= (1 << out_div);
-+	pll = __raw_readl(dpll_base + AR934X_SRIF_CPU_DPLL2_REG);
-+	if (pll & AR934X_SRIF_DPLL2_LOCAL_PLL) {
-+		out_div = (pll >> AR934X_SRIF_DPLL2_OUTDIV_SHIFT) &
-+			  AR934X_SRIF_DPLL2_OUTDIV_MASK;
-+		pll = __raw_readl(dpll_base + AR934X_SRIF_CPU_DPLL1_REG);
-+		nint = (pll >> AR934X_SRIF_DPLL1_NINT_SHIFT) &
-+		       AR934X_SRIF_DPLL1_NINT_MASK;
-+		nfrac = pll & AR934X_SRIF_DPLL1_NFRAC_MASK;
-+		ref_div = (pll >> AR934X_SRIF_DPLL1_REFDIV_SHIFT) &
-+			  AR934X_SRIF_DPLL1_REFDIV_MASK;
-+		frac = 1 << 18;
-+	} else {
-+		pll = ath79_pll_rr(AR934X_PLL_CPU_CONFIG_REG);
-+		out_div = (pll >> AR934X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
-+			AR934X_PLL_CPU_CONFIG_OUTDIV_MASK;
-+		ref_div = (pll >> AR934X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
-+			  AR934X_PLL_CPU_CONFIG_REFDIV_MASK;
-+		nint = (pll >> AR934X_PLL_CPU_CONFIG_NINT_SHIFT) &
-+		       AR934X_PLL_CPU_CONFIG_NINT_MASK;
-+		nfrac = (pll >> AR934X_PLL_CPU_CONFIG_NFRAC_SHIFT) &
-+			AR934X_PLL_CPU_CONFIG_NFRAC_MASK;
-+		frac = 1 << 6;
-+	}
-+
-+	cpu_pll = ar934x_get_pll_freq(ath79_ref_clk.rate, ref_div, nint,
-+				      nfrac, frac, out_div);
-+
-+	pll = __raw_readl(dpll_base + AR934X_SRIF_DDR_DPLL2_REG);
-+	if (pll & AR934X_SRIF_DPLL2_LOCAL_PLL) {
-+		out_div = (pll >> AR934X_SRIF_DPLL2_OUTDIV_SHIFT) &
-+			  AR934X_SRIF_DPLL2_OUTDIV_MASK;
-+		pll = __raw_readl(dpll_base + AR934X_SRIF_DDR_DPLL1_REG);
-+		nint = (pll >> AR934X_SRIF_DPLL1_NINT_SHIFT) &
-+		       AR934X_SRIF_DPLL1_NINT_MASK;
-+		nfrac = pll & AR934X_SRIF_DPLL1_NFRAC_MASK;
-+		ref_div = (pll >> AR934X_SRIF_DPLL1_REFDIV_SHIFT) &
-+			  AR934X_SRIF_DPLL1_REFDIV_MASK;
-+		frac = 1 << 18;
-+	} else {
-+		pll = ath79_pll_rr(AR934X_PLL_DDR_CONFIG_REG);
-+		out_div = (pll >> AR934X_PLL_DDR_CONFIG_OUTDIV_SHIFT) &
-+			  AR934X_PLL_DDR_CONFIG_OUTDIV_MASK;
-+		ref_div = (pll >> AR934X_PLL_DDR_CONFIG_REFDIV_SHIFT) &
-+			   AR934X_PLL_DDR_CONFIG_REFDIV_MASK;
-+		nint = (pll >> AR934X_PLL_DDR_CONFIG_NINT_SHIFT) &
-+		       AR934X_PLL_DDR_CONFIG_NINT_MASK;
-+		nfrac = (pll >> AR934X_PLL_DDR_CONFIG_NFRAC_SHIFT) &
-+			AR934X_PLL_DDR_CONFIG_NFRAC_MASK;
-+		frac = 1 << 10;
-+	}
-+
-+	ddr_pll = ar934x_get_pll_freq(ath79_ref_clk.rate, ref_div, nint,
-+				      nfrac, frac, out_div);
- 
- 	clk_ctrl = ath79_pll_rr(AR934X_PLL_CPU_DDR_CLK_CTRL_REG);
- 
-@@ -240,6 +291,8 @@ static void __init ar934x_clocks_init(void)
- 
- 	ath79_wdt_clk.rate = ath79_ref_clk.rate;
- 	ath79_uart_clk.rate = ath79_ref_clk.rate;
-+
-+	iounmap(dpll_base);
- }
- 
- void __init ath79_clocks_init(void)
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index 1caa78a..b682422 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -63,6 +63,8 @@
- 
- #define AR934X_WMAC_BASE	(AR71XX_APB_BASE + 0x00100000)
- #define AR934X_WMAC_SIZE	0x20000
-+#define AR934X_SRIF_BASE	(AR71XX_APB_BASE + 0x00116000)
-+#define AR934X_SRIF_SIZE	0x1000
- 
- /*
-  * DDR_CTRL block
-@@ -398,4 +400,25 @@
- #define AR933X_GPIO_COUNT		30
- #define AR934X_GPIO_COUNT		23
- 
-+/*
-+ * SRIF block
-+ */
-+#define AR934X_SRIF_CPU_DPLL1_REG	0x1c0
-+#define AR934X_SRIF_CPU_DPLL2_REG	0x1c4
-+#define AR934X_SRIF_CPU_DPLL3_REG	0x1c8
-+
-+#define AR934X_SRIF_DDR_DPLL1_REG	0x240
-+#define AR934X_SRIF_DDR_DPLL2_REG	0x244
-+#define AR934X_SRIF_DDR_DPLL3_REG	0x248
-+
-+#define AR934X_SRIF_DPLL1_REFDIV_SHIFT	27
-+#define AR934X_SRIF_DPLL1_REFDIV_MASK	0x1f
-+#define AR934X_SRIF_DPLL1_NINT_SHIFT	18
-+#define AR934X_SRIF_DPLL1_NINT_MASK	0x1ff
-+#define AR934X_SRIF_DPLL1_NFRAC_MASK	0x0003ffff
-+
-+#define AR934X_SRIF_DPLL2_LOCAL_PLL	BIT(30)
-+#define AR934X_SRIF_DPLL2_OUTDIV_SHIFT	13
-+#define AR934X_SRIF_DPLL2_OUTDIV_MASK	0x7
-+
- #endif /* __ASM_MACH_AR71XX_REGS_H */
--- 
-1.7.9.5
+Why not just define the guest system to be exactly the facilities 
+provided by the VirtIO drivers?
+
+
+[...]
+
+
+Perhaps it is obvious from the patches, but I wasn't able to figure out 
+how you solve the problem of the Root/Host kernel clobbering the K0 and 
+K1 registers in its exception handlers.  These registers are also used 
+by the Guest kernel (aren't they)?
+
+David Daney

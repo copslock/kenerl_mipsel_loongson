@@ -1,45 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2012 17:10:12 +0100 (CET)
-Received: from g1t0026.austin.hp.com ([15.216.28.33]:24460 "EHLO
-        g1t0026.austin.hp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822668Ab2KZQKHYoAGy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Nov 2012 17:10:07 +0100
-Received: from g1t0038.austin.hp.com (g1t0038.austin.hp.com [16.236.32.44])
-        by g1t0026.austin.hp.com (Postfix) with ESMTP id F1795DF3A;
-        Mon, 26 Nov 2012 16:09:58 +0000 (UTC)
-Received: from [10.152.0.190] (swa01cs003-da01.atlanta.hp.com [16.114.29.153])
-        by g1t0038.austin.hp.com (Postfix) with ESMTP id 167F23037C;
-        Mon, 26 Nov 2012 16:09:51 +0000 (UTC)
-Message-ID: <1353946190.2917.5.camel@lorien2>
-Subject: Re: [PATCH 0/9] dma_debug: add debug_dma_mapping_error support to
- architectures that support DMA_DEBUG_API
-From:   Shuah Khan <shuah.khan@hp.com>
-Reply-To: shuah.khan@hp.com
-To:     Joerg Roedel <joro@8bytes.org>
-Cc:     a-jacquiot@ti.com, fenghua.yu@intel.com, catalin.marinas@arm.com,
-        lethal@linux-sh.org, benh@kernel.crashing.org, ralf@linux-mips.org,
-        tony.luck@intel.com, davem@davemloft.net, m.szyprowski@samsung.com,
-        msalter@redhat.com, monstr@monstr.eu,
-        Ming Lei <ming.lei@canonical.com>,
-        linux-arm-kernel@lists.infradead.org,
-        LKML <linux-kernel@vger.kernel.org>, linux-c6x-dev@linux-c6x.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, microblaze-uclinux@itee.uq.edu.au,
-        shuahkhan@gmail.com
-Date:   Mon, 26 Nov 2012 09:09:50 -0700
-In-Reply-To: <20121126112217.GG25742@8bytes.org>
-References: <1353706142.5270.93.camel@lorien2>
-         <20121126112217.GG25742@8bytes.org>
-Organization: ISS-Linux
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
-Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0
-X-archive-position: 35128
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2012 18:00:50 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:33150 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822895Ab2KZRAqwDVbD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Nov 2012 18:00:46 +0100
+Received: from 189.58.19.107.dynamic.adsl.gvt.net.br ([189.58.19.107] helo=canonical.com)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <herton.krzesinski@canonical.com>)
+        id 1Td232-0006G6-Di; Mon, 26 Nov 2012 17:00:45 +0000
+From:   Herton Ronaldo Krzesinski <herton.krzesinski@canonical.com>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel-team@lists.ubuntu.com
+Cc:     Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Herton Ronaldo Krzesinski <herton.krzesinski@canonical.com>
+Subject: [PATCH 017/270] MIPS: ath79: Fix CPU/DDR frequency calculation for SRIF PLLs
+Date:   Mon, 26 Nov 2012 14:55:07 -0200
+Message-Id: <1353949160-26803-18-git-send-email-herton.krzesinski@canonical.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1353949160-26803-1-git-send-email-herton.krzesinski@canonical.com>
+References: <1353949160-26803-1-git-send-email-herton.krzesinski@canonical.com>
+X-archive-position: 35129
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shuah.khan@hp.com
+X-original-sender: herton.krzesinski@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,30 +38,216 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, 2012-11-26 at 12:22 +0100, Joerg Roedel wrote:
-> Hi Shuah,
-> 
-> On Fri, Nov 23, 2012 at 02:29:02PM -0700, Shuah Khan wrote:
-> > x86 - done in the first patch that added the feature.
-> > 
-> > ARM64: dma_debug: add debug_dma_mapping_error support
-> > c6x: dma_debug: add debug_dma_mapping_error support
-> > ia64: dma_debug: add debug_dma_mapping_error support
-> > microblaze: dma-mapping: support debug_dma_mapping_error
-> > mips: dma_debug: add debug_dma_mapping_error support
-> > powerpc: dma_debug: add debug_dma_mapping_error support
-> > sh: dma_debug: add debug_dma_mapping_error support
-> > sparc: dma_debug: add debug_dma_mapping_error support
-> > tile: dma_debug: add debug_dma_mapping_error support
-> 
-> Have you compile-tested the invididual archs you are changing here?
-> 
+3.5.7u1 -stable review patch.  If anyone has any objections, please let me know.
 
-Joerg,
+------------------
 
-Yes I compile tested all of them (except microblaze) on Nov 20th
-linux_next git. The patch for microblaze is already in linux_next when I
-tried to apply the patch to Nov 20th linux-next and figured that is
-already covered and skipped that one.
+From: Gabor Juhos <juhosg@openwrt.org>
 
--- Shuah
+commit 97541ccfb9db2bb9cd1dde6344d5834438d14bda upstream.
+
+Besides the CPU and DDR PLLs, the CPU and DDR frequencies
+can be derived from other PLLs in the SRIF block on the
+AR934x SoCs. The current code does not checks if the SRIF
+PLLs are used and this can lead to incorrectly calculated
+CPU/DDR frequencies.
+
+Fix it by calculating the frequencies from SRIF PLLs if
+those are used on a given board.
+
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/4324/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Herton Ronaldo Krzesinski <herton.krzesinski@canonical.com>
+---
+ arch/mips/ath79/clock.c                        |  109 ++++++++++++++++++------
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h |   23 +++++
+ 2 files changed, 104 insertions(+), 28 deletions(-)
+
+diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
+index d272857..579f452 100644
+--- a/arch/mips/ath79/clock.c
++++ b/arch/mips/ath79/clock.c
+@@ -17,6 +17,8 @@
+ #include <linux/err.h>
+ #include <linux/clk.h>
+ 
++#include <asm/div64.h>
++
+ #include <asm/mach-ath79/ath79.h>
+ #include <asm/mach-ath79/ar71xx_regs.h>
+ #include "common.h"
+@@ -166,11 +168,34 @@ static void __init ar933x_clocks_init(void)
+ 	ath79_uart_clk.rate = ath79_ref_clk.rate;
+ }
+ 
++static u32 __init ar934x_get_pll_freq(u32 ref, u32 ref_div, u32 nint, u32 nfrac,
++				      u32 frac, u32 out_div)
++{
++	u64 t;
++	u32 ret;
++
++	t = ath79_ref_clk.rate;
++	t *= nint;
++	do_div(t, ref_div);
++	ret = t;
++
++	t = ath79_ref_clk.rate;
++	t *= nfrac;
++	do_div(t, ref_div * frac);
++	ret += t;
++
++	ret /= (1 << out_div);
++	return ret;
++}
++
+ static void __init ar934x_clocks_init(void)
+ {
+-	u32 pll, out_div, ref_div, nint, frac, clk_ctrl, postdiv;
++	u32 pll, out_div, ref_div, nint, nfrac, frac, clk_ctrl, postdiv;
+ 	u32 cpu_pll, ddr_pll;
+ 	u32 bootstrap;
++	void __iomem *dpll_base;
++
++	dpll_base = ioremap(AR934X_SRIF_BASE, AR934X_SRIF_SIZE);
+ 
+ 	bootstrap = ath79_reset_rr(AR934X_RESET_REG_BOOTSTRAP);
+ 	if (bootstrap &	AR934X_BOOTSTRAP_REF_CLK_40)
+@@ -178,33 +203,59 @@ static void __init ar934x_clocks_init(void)
+ 	else
+ 		ath79_ref_clk.rate = 25 * 1000 * 1000;
+ 
+-	pll = ath79_pll_rr(AR934X_PLL_CPU_CONFIG_REG);
+-	out_div = (pll >> AR934X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
+-		  AR934X_PLL_CPU_CONFIG_OUTDIV_MASK;
+-	ref_div = (pll >> AR934X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
+-		  AR934X_PLL_CPU_CONFIG_REFDIV_MASK;
+-	nint = (pll >> AR934X_PLL_CPU_CONFIG_NINT_SHIFT) &
+-	       AR934X_PLL_CPU_CONFIG_NINT_MASK;
+-	frac = (pll >> AR934X_PLL_CPU_CONFIG_NFRAC_SHIFT) &
+-	       AR934X_PLL_CPU_CONFIG_NFRAC_MASK;
+-
+-	cpu_pll = nint * ath79_ref_clk.rate / ref_div;
+-	cpu_pll += frac * ath79_ref_clk.rate / (ref_div * (1 << 6));
+-	cpu_pll /= (1 << out_div);
+-
+-	pll = ath79_pll_rr(AR934X_PLL_DDR_CONFIG_REG);
+-	out_div = (pll >> AR934X_PLL_DDR_CONFIG_OUTDIV_SHIFT) &
+-		  AR934X_PLL_DDR_CONFIG_OUTDIV_MASK;
+-	ref_div = (pll >> AR934X_PLL_DDR_CONFIG_REFDIV_SHIFT) &
+-		  AR934X_PLL_DDR_CONFIG_REFDIV_MASK;
+-	nint = (pll >> AR934X_PLL_DDR_CONFIG_NINT_SHIFT) &
+-	       AR934X_PLL_DDR_CONFIG_NINT_MASK;
+-	frac = (pll >> AR934X_PLL_DDR_CONFIG_NFRAC_SHIFT) &
+-	       AR934X_PLL_DDR_CONFIG_NFRAC_MASK;
+-
+-	ddr_pll = nint * ath79_ref_clk.rate / ref_div;
+-	ddr_pll += frac * ath79_ref_clk.rate / (ref_div * (1 << 10));
+-	ddr_pll /= (1 << out_div);
++	pll = __raw_readl(dpll_base + AR934X_SRIF_CPU_DPLL2_REG);
++	if (pll & AR934X_SRIF_DPLL2_LOCAL_PLL) {
++		out_div = (pll >> AR934X_SRIF_DPLL2_OUTDIV_SHIFT) &
++			  AR934X_SRIF_DPLL2_OUTDIV_MASK;
++		pll = __raw_readl(dpll_base + AR934X_SRIF_CPU_DPLL1_REG);
++		nint = (pll >> AR934X_SRIF_DPLL1_NINT_SHIFT) &
++		       AR934X_SRIF_DPLL1_NINT_MASK;
++		nfrac = pll & AR934X_SRIF_DPLL1_NFRAC_MASK;
++		ref_div = (pll >> AR934X_SRIF_DPLL1_REFDIV_SHIFT) &
++			  AR934X_SRIF_DPLL1_REFDIV_MASK;
++		frac = 1 << 18;
++	} else {
++		pll = ath79_pll_rr(AR934X_PLL_CPU_CONFIG_REG);
++		out_div = (pll >> AR934X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
++			AR934X_PLL_CPU_CONFIG_OUTDIV_MASK;
++		ref_div = (pll >> AR934X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
++			  AR934X_PLL_CPU_CONFIG_REFDIV_MASK;
++		nint = (pll >> AR934X_PLL_CPU_CONFIG_NINT_SHIFT) &
++		       AR934X_PLL_CPU_CONFIG_NINT_MASK;
++		nfrac = (pll >> AR934X_PLL_CPU_CONFIG_NFRAC_SHIFT) &
++			AR934X_PLL_CPU_CONFIG_NFRAC_MASK;
++		frac = 1 << 6;
++	}
++
++	cpu_pll = ar934x_get_pll_freq(ath79_ref_clk.rate, ref_div, nint,
++				      nfrac, frac, out_div);
++
++	pll = __raw_readl(dpll_base + AR934X_SRIF_DDR_DPLL2_REG);
++	if (pll & AR934X_SRIF_DPLL2_LOCAL_PLL) {
++		out_div = (pll >> AR934X_SRIF_DPLL2_OUTDIV_SHIFT) &
++			  AR934X_SRIF_DPLL2_OUTDIV_MASK;
++		pll = __raw_readl(dpll_base + AR934X_SRIF_DDR_DPLL1_REG);
++		nint = (pll >> AR934X_SRIF_DPLL1_NINT_SHIFT) &
++		       AR934X_SRIF_DPLL1_NINT_MASK;
++		nfrac = pll & AR934X_SRIF_DPLL1_NFRAC_MASK;
++		ref_div = (pll >> AR934X_SRIF_DPLL1_REFDIV_SHIFT) &
++			  AR934X_SRIF_DPLL1_REFDIV_MASK;
++		frac = 1 << 18;
++	} else {
++		pll = ath79_pll_rr(AR934X_PLL_DDR_CONFIG_REG);
++		out_div = (pll >> AR934X_PLL_DDR_CONFIG_OUTDIV_SHIFT) &
++			  AR934X_PLL_DDR_CONFIG_OUTDIV_MASK;
++		ref_div = (pll >> AR934X_PLL_DDR_CONFIG_REFDIV_SHIFT) &
++			   AR934X_PLL_DDR_CONFIG_REFDIV_MASK;
++		nint = (pll >> AR934X_PLL_DDR_CONFIG_NINT_SHIFT) &
++		       AR934X_PLL_DDR_CONFIG_NINT_MASK;
++		nfrac = (pll >> AR934X_PLL_DDR_CONFIG_NFRAC_SHIFT) &
++			AR934X_PLL_DDR_CONFIG_NFRAC_MASK;
++		frac = 1 << 10;
++	}
++
++	ddr_pll = ar934x_get_pll_freq(ath79_ref_clk.rate, ref_div, nint,
++				      nfrac, frac, out_div);
+ 
+ 	clk_ctrl = ath79_pll_rr(AR934X_PLL_CPU_DDR_CLK_CTRL_REG);
+ 
+@@ -240,6 +291,8 @@ static void __init ar934x_clocks_init(void)
+ 
+ 	ath79_wdt_clk.rate = ath79_ref_clk.rate;
+ 	ath79_uart_clk.rate = ath79_ref_clk.rate;
++
++	iounmap(dpll_base);
+ }
+ 
+ void __init ath79_clocks_init(void)
+diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+index 1caa78a..b682422 100644
+--- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
++++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+@@ -63,6 +63,8 @@
+ 
+ #define AR934X_WMAC_BASE	(AR71XX_APB_BASE + 0x00100000)
+ #define AR934X_WMAC_SIZE	0x20000
++#define AR934X_SRIF_BASE	(AR71XX_APB_BASE + 0x00116000)
++#define AR934X_SRIF_SIZE	0x1000
+ 
+ /*
+  * DDR_CTRL block
+@@ -398,4 +400,25 @@
+ #define AR933X_GPIO_COUNT		30
+ #define AR934X_GPIO_COUNT		23
+ 
++/*
++ * SRIF block
++ */
++#define AR934X_SRIF_CPU_DPLL1_REG	0x1c0
++#define AR934X_SRIF_CPU_DPLL2_REG	0x1c4
++#define AR934X_SRIF_CPU_DPLL3_REG	0x1c8
++
++#define AR934X_SRIF_DDR_DPLL1_REG	0x240
++#define AR934X_SRIF_DDR_DPLL2_REG	0x244
++#define AR934X_SRIF_DDR_DPLL3_REG	0x248
++
++#define AR934X_SRIF_DPLL1_REFDIV_SHIFT	27
++#define AR934X_SRIF_DPLL1_REFDIV_MASK	0x1f
++#define AR934X_SRIF_DPLL1_NINT_SHIFT	18
++#define AR934X_SRIF_DPLL1_NINT_MASK	0x1ff
++#define AR934X_SRIF_DPLL1_NFRAC_MASK	0x0003ffff
++
++#define AR934X_SRIF_DPLL2_LOCAL_PLL	BIT(30)
++#define AR934X_SRIF_DPLL2_OUTDIV_SHIFT	13
++#define AR934X_SRIF_DPLL2_OUTDIV_MASK	0x7
++
+ #endif /* __ASM_MACH_AR71XX_REGS_H */
+-- 
+1.7.9.5

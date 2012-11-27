@@ -1,35 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Nov 2012 01:31:51 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:33135 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6825910Ab2K0A0l5NVMZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Nov 2012 01:26:41 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id EFAB98F79;
-        Tue, 27 Nov 2012 01:26:40 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id T-r8mYVCSt-V; Tue, 27 Nov 2012 01:26:36 +0100 (CET)
-Received: from hauke-desktop.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 60F5A8F6F;
-        Tue, 27 Nov 2012 01:25:51 +0100 (CET)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     linville@tuxdriver.com, wim@iguana.be
-Cc:     linux-wireless@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        castet.matthieu@free.fr, biblbroks@sezampro.rs, m@bues.ch,
-        zajec5@gmail.com, linux-mips@linux-mips.org,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v2 15/15] ssb: register watchdog driver
-Date:   Tue, 27 Nov 2012 01:25:25 +0100
-Message-Id: <1353975925-32056-16-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1353975925-32056-1-git-send-email-hauke@hauke-m.de>
-References: <1353975925-32056-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 35148
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Nov 2012 20:36:13 +0100 (CET)
+Received: from kymasys.com ([64.62.140.43]:48033 "HELO kymasys.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S6823436Ab2K0TgII9BFf convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Nov 2012 20:36:08 +0100
+Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Tue, 27 Nov 2012 11:35:58 -0800
+Subject: Re: [PATCH v2 00/18] KVM for MIPS32 Processors
+Mime-Version: 1.0 (Apple Message framework v1283)
+Content-Type: text/plain; charset=us-ascii
+From:   Sanjay Lal <sanjayl@kymasys.com>
+In-Reply-To: <50B3BAC0.6070407@gmail.com>
+Date:   Tue, 27 Nov 2012 14:35:27 -0500
+Cc:     Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org
+Content-Transfer-Encoding: 8BIT
+Message-Id: <F6277AC4-0419-40EE-AC54-C144576166EF@kymasys.com>
+References: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com> <50B3BAC0.6070407@gmail.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+X-Mailer: Apple Mail (2.1283)
+X-archive-position: 35149
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: sanjayl@kymasys.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,148 +35,54 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Register the watchdog driver to the system if it is a SoC. Using the
-watchdog on a non SoC device, like a PCI card, will make the PCI
-card die when the timeout expired, but starting it again is not
-supported by ssb.
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- drivers/ssb/embedded.c    |   35 +++++++++++++++++++++++++++++++++++
- drivers/ssb/main.c        |    8 ++++++++
- drivers/ssb/ssb_private.h |   10 ++++++++++
- include/linux/ssb/ssb.h   |    2 ++
- 4 files changed, 55 insertions(+)
+On Nov 26, 2012, at 1:53 PM, David Daney wrote:
 
-diff --git a/drivers/ssb/embedded.c b/drivers/ssb/embedded.c
-index 9ef124f..bb18d76 100644
---- a/drivers/ssb/embedded.c
-+++ b/drivers/ssb/embedded.c
-@@ -4,11 +4,13 @@
-  *
-  * Copyright 2005-2008, Broadcom Corporation
-  * Copyright 2006-2008, Michael Buesch <m@bues.ch>
-+ * Copyright 2012, Hauke Mehrtens <hauke@hauke-m.de>
-  *
-  * Licensed under the GNU/GPL. See COPYING for details.
-  */
- 
- #include <linux/export.h>
-+#include <linux/platform_device.h>
- #include <linux/ssb/ssb.h>
- #include <linux/ssb/ssb_embedded.h>
- #include <linux/ssb/ssb_driver_pci.h>
-@@ -32,6 +34,39 @@ int ssb_watchdog_timer_set(struct ssb_bus *bus, u32 ticks)
- }
- EXPORT_SYMBOL(ssb_watchdog_timer_set);
- 
-+int ssb_watchdog_register(struct ssb_bus *bus)
-+{
-+	struct bcm47xx_wdt wdt = {};
-+	struct platform_device *pdev;
-+
-+	if (ssb_chipco_available(&bus->chipco)) {
-+		wdt.driver_data = &bus->chipco;
-+		wdt.timer_set = ssb_chipco_watchdog_timer_set_wdt;
-+		wdt.timer_set_ms = ssb_chipco_watchdog_timer_set_ms;
-+		wdt.max_timer_ms = bus->chipco.max_timer_ms;
-+	} else if (ssb_extif_available(&bus->extif)) {
-+		wdt.driver_data = &bus->extif;
-+		wdt.timer_set = ssb_extif_watchdog_timer_set_wdt;
-+		wdt.timer_set_ms = ssb_extif_watchdog_timer_set_ms;
-+		wdt.max_timer_ms = SSB_EXTIF_WATCHDOG_MAX_TIMER_MS;
-+	} else {
-+		return -ENODEV;
-+	}
-+
-+	pdev = platform_device_register_data(NULL, "bcm47xx-wdt",
-+					     bus->busnumber, &wdt,
-+					     sizeof(wdt));
-+	if (IS_ERR(pdev)) {
-+		ssb_dprintk(KERN_INFO PFX
-+			    "can not register watchdog device, err: %li\n",
-+			    PTR_ERR(pdev));
-+		return PTR_ERR(pdev);
-+	}
-+
-+	bus->watchdog = pdev;
-+	return 0;
-+}
-+
- u32 ssb_gpio_in(struct ssb_bus *bus, u32 mask)
- {
- 	unsigned long flags;
-diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-index df0f145..58c7da2 100644
---- a/drivers/ssb/main.c
-+++ b/drivers/ssb/main.c
-@@ -13,6 +13,7 @@
- #include <linux/delay.h>
- #include <linux/io.h>
- #include <linux/module.h>
-+#include <linux/platform_device.h>
- #include <linux/ssb/ssb.h>
- #include <linux/ssb/ssb_regs.h>
- #include <linux/ssb/ssb_driver_gige.h>
-@@ -433,6 +434,11 @@ static void ssb_devices_unregister(struct ssb_bus *bus)
- 		if (sdev->dev)
- 			device_unregister(sdev->dev);
- 	}
-+
-+#ifdef CONFIG_SSB_EMBEDDED
-+	if (bus->bustype == SSB_BUSTYPE_SSB)
-+		platform_device_unregister(bus->watchdog);
-+#endif
- }
- 
- void ssb_bus_unregister(struct ssb_bus *bus)
-@@ -561,6 +567,8 @@ static int __devinit ssb_attach_queued_buses(void)
- 		if (err)
- 			goto error;
- 		ssb_pcicore_init(&bus->pcicore);
-+		if (bus->bustype == SSB_BUSTYPE_SSB)
-+			ssb_watchdog_register(bus);
- 		ssb_bus_may_powerdown(bus);
- 
- 		err = ssb_devices_register(bus);
-diff --git a/drivers/ssb/ssb_private.h b/drivers/ssb/ssb_private.h
-index 50ea028..8942db1 100644
---- a/drivers/ssb/ssb_private.h
-+++ b/drivers/ssb/ssb_private.h
-@@ -232,4 +232,14 @@ static inline u32 ssb_extif_watchdog_timer_set_ms(struct bcm47xx_wdt *wdt,
- 	return 0;
- }
- #endif
-+
-+#ifdef CONFIG_SSB_EMBEDDED
-+extern int ssb_watchdog_register(struct ssb_bus *bus);
-+#else /* CONFIG_SSB_EMBEDDED */
-+static inline int ssb_watchdog_register(struct ssb_bus *bus)
-+{
-+	return 0;
-+}
-+#endif /* CONFIG_SSB_EMBEDDED */
-+
- #endif /* LINUX_SSB_PRIVATE_H_ */
-diff --git a/include/linux/ssb/ssb.h b/include/linux/ssb/ssb.h
-index bb674c0..1f64e3f 100644
---- a/include/linux/ssb/ssb.h
-+++ b/include/linux/ssb/ssb.h
-@@ -8,6 +8,7 @@
- #include <linux/pci.h>
- #include <linux/mod_devicetable.h>
- #include <linux/dma-mapping.h>
-+#include <linux/platform_device.h>
- 
- #include <linux/ssb/ssb_regs.h>
- 
-@@ -432,6 +433,7 @@ struct ssb_bus {
- #ifdef CONFIG_SSB_EMBEDDED
- 	/* Lock for GPIO register access. */
- 	spinlock_t gpio_lock;
-+	struct platform_device *watchdog;
- #endif /* EMBEDDED */
- 
- 	/* Internal-only stuff follows. Do not touch. */
--- 
-1.7.10.4
+> 
+> I have several general questions about this patch...
+> 
+> On 11/21/2012 06:33 PM, Sanjay Lal wrote:
+>> The following patchset implements KVM support for MIPS32R2 processors,
+>> using Trap & Emulate, with basic runtime binary translation to improve
+>> performance.  The goal has been to keep the Guest kernel changes to a
+>> minimum.
+> 
+> What is the point of minimizing guest kernel changes?
+> 
+> Because you are using an invented memory map, instead of the architecturally defined map, there is no hope of running a single kernel image both natively and as a guest.  So why do you care about how many changes there are.
+
+It makes porting the code easier.  Since we need a special guest kernel, keeping the changes to minimum helps when migrating from one Linux version to another.  At this point we've migrated the code from 2.6.32 to 3.7 with 3.0 along the way, without any issues and anything more than an automatic merge.
+
+> 
+>> 
+>> The patch is against Linux 3.7-rc6.  This is Version 2 of the patch set.
+>> 
+>> There is a companion patchset for QEMU that adds KVM support for the
+>> MIPS target.
+>> 
+>> KVM/MIPS should support MIPS32-R2 processors and beyond.
+>> It has been tested on the following platforms:
+>>  - Malta Board with FPGA based 34K (Little Endian).
+>>  - Sigma Designs TangoX board with a 24K based 8654 SoC (Little Endian).
+>>  - Malta Board with 74K @ 1GHz (Little Endian).
+>>  - OVPSim MIPS simulator from Imperas emulating a Malta board with
+>>    24Kc and 1074Kc cores (Little Endian).
+> 
+> Unlike x86, there is no concept of a canonical MIPS system for you to implement.  So the choice of emulating a Malta or one of the SigmaDesigns boards doesn't seem to me to give you anything.
+> 
+> Why not just define the guest system to be exactly the facilities provided by the VirtIO drivers?
+
+The above list is a list of "host systems" that we've tested KVM/MIPS on.  The guest kernel runs on the Malta system that is emulated by QEMU regardless of the host system.
+
+And yes we do support VirtIO devices on the emulated Malta board to speed up I/O, but since they attach to the emulated systems' PCI bus, we still need a kernel and system that supports PCI.
+
+Just an FYI, we'll be posting the QEMU patch set shortly.
+
+> 
+> 
+> Perhaps it is obvious from the patches, but I wasn't able to figure out how you solve the problem of the Root/Host kernel clobbering the K0 and K1 registers in its exception handlers.  These registers are also used by the Guest kernel (aren't they)?
+
+Yes k0/k1 do need to be saved as they are used by both the guest and host kernels.  The code is in kvm_locore.S around line 250 where the L1 exception vectors are installed.
+
+Regards
+Sanjay

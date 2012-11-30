@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Nov 2012 19:57:11 +0100 (CET)
-Received: from mail.kernel.org ([198.145.19.201]:53750 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Nov 2012 20:02:57 +0100 (CET)
+Received: from mail.kernel.org ([198.145.19.201]:54773 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6828006Ab2K3S5JPX0AA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 30 Nov 2012 19:57:09 +0100
+        id S6828712Ab2K3TCzRusdN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 30 Nov 2012 20:02:55 +0100
 Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id E30C3205AA;
-        Fri, 30 Nov 2012 18:57:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTP id D329A205CE;
+        Fri, 30 Nov 2012 19:02:52 +0000 (UTC)
 Received: from localhost (c-67-168-183-230.hsd1.wa.comcast.net [67.168.183.230])
         (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A83CF205A2;
-        Fri, 30 Nov 2012 18:57:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BBF99205DB;
+        Fri, 30 Nov 2012 19:02:51 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -20,15 +20,15 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         James Morris <jmorris@namei.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Shuah Khan <shuah.khan@hp.com>
-Subject: [ 50/56] MPI: Fix compilation on MIPS with GCC 4.4 and newer
-Date:   Fri, 30 Nov 2012 10:55:42 -0800
-Message-Id: <20121130185123.424498734@linuxfoundation.org>
+Subject: [ 50/54] MPI: Fix compilation on MIPS with GCC 4.4 and newer
+Date:   Fri, 30 Nov 2012 10:56:21 -0800
+Message-Id: <20121130185212.938237697@linuxfoundation.org>
 X-Mailer: git-send-email 1.8.0.197.g5a90748
-In-Reply-To: <20121130185118.302752929@linuxfoundation.org>
-References: <20121130185118.302752929@linuxfoundation.org>
+In-Reply-To: <20121130185207.894301294@linuxfoundation.org>
+References: <20121130185207.894301294@linuxfoundation.org>
 User-Agent: quilt/0.60-2.1.2
 X-Virus-Scanned: ClamAV using ClamSMTP
-X-archive-position: 35161
+X-archive-position: 35162
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,7 +46,7 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-3.4-stable review patch.  If anyone has any objections, please let me know.
+3.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

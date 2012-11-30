@@ -1,37 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Nov 2012 14:29:37 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:45244 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816553Ab2K3N3c4g5-M (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Nov 2012 14:29:32 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id D7A078F65;
-        Fri, 30 Nov 2012 14:29:31 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 35jmJ7HhGjnS; Fri, 30 Nov 2012 14:29:19 +0100 (CET)
-Received: from [IPv6:2001:470:1f0b:447:c1a9:1867:9184:6e2a] (unknown [IPv6:2001:470:1f0b:447:c1a9:1867:9184:6e2a])
-        by hauke-m.de (Postfix) with ESMTPSA id 0A1B48F64;
-        Fri, 30 Nov 2012 14:29:18 +0100 (CET)
-Message-ID: <50B8B4AB.4060102@hauke-m.de>
-Date:   Fri, 30 Nov 2012 14:29:15 +0100
-From:   Hauke Mehrtens <hauke@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Nov 2012 17:25:27 +0100 (CET)
+Received: from mail-da0-f49.google.com ([209.85.210.49]:50545 "EHLO
+        mail-da0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822197Ab2K3QZ0dLdeR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Nov 2012 17:25:26 +0100
+Received: by mail-da0-f49.google.com with SMTP id v40so252501dad.36
+        for <linux-mips@linux-mips.org>; Fri, 30 Nov 2012 08:25:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=lwUorNm7h3Ph3ZBWm6FeSX8xf2RhvljXKgZoOcruHAA=;
+        b=XYWafHGYBc+9g51RziAEv5k4zo6uvnzQEgudY0x9V7JXyGTKHcMBDgrj4XQiYgw00L
+         tUYerqaJiFU1TwL6HSyKlxYOmLjnICKxp3nJGiDAlG5jk3un3kpyFuZlRjLbcnhwY79N
+         HIQLXm466LJNPgDotps96EZ3cyadqWhTaOG89aEykRl146zj6qkvMjYZdCFFCNK9w2jS
+         nHJxT9HiAkNf4+JQhoaiw51BJ+bFLgzpC5VA9r0GQEVQG6SkBjZauPjgBxo8xoZsi/Tm
+         ExHze1m99ZOjdn2rtPZ58A80Cuw4w1as7qj9H35r6kP9iSSBmVSf+zItu3CGHgNLLE6p
+         eqAA==
+Received: by 10.66.74.2 with SMTP id p2mr4448489pav.55.1354292718651;
+        Fri, 30 Nov 2012 08:25:18 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id om10sm3249744pbc.73.2012.11.30.08.25.16
+        (version=SSLv3 cipher=OTHER);
+        Fri, 30 Nov 2012 08:25:17 -0800 (PST)
+Message-ID: <50B8DDEC.30005@gmail.com>
+Date:   Fri, 30 Nov 2012 08:25:16 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
 MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-CC:     john@phrozen.org, ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-wireless@vger.kernel.org, florian@openwrt.org, m@bues.ch
-Subject: Re: [PATCH v3 0/8] bcma/ssb/BCM47XX: add GPIO driver to ssb/bcma
-References: <1353453874-523-1-git-send-email-hauke@hauke-m.de> <CACna6rzGE=CaD_9yAaTDkR6CuUy1HqRq1-v+fAd-Zg-uMmH2bQ@mail.gmail.com>
-In-Reply-To: <CACna6rzGE=CaD_9yAaTDkR6CuUy1HqRq1-v+fAd-Zg-uMmH2bQ@mail.gmail.com>
-X-Enigmail-Version: 1.4.6
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 35159
+To:     Alan Cooper <alcooperx@gmail.com>
+CC:     linux-mips <linux-mips@linux-mips.org>
+Subject: Re: MIPS Function Tracer question
+References: <CAOGqxeUOrVFoqsmUV19h5tXsD6pw5creXP9aN1C-V7K3WL2EXA@mail.gmail.com> <50B7E91C.6070403@gmail.com> <CAOGqxeU=BumDt6jnVc=sKk=q_v1eywGu=_Eo9xo3r9av3Ky6kw@mail.gmail.com>
+In-Reply-To: <CAOGqxeU=BumDt6jnVc=sKk=q_v1eywGu=_Eo9xo3r9av3Ky6kw@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 35160
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,26 +52,106 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 11/30/2012 02:11 PM, Rafał Miłecki wrote:
-> 2012/11/21 Hauke Mehrtens <hauke@hauke-m.de>:
->> This is a complete rewrote of the original patch "MIPS: BCM47xx: use
->> gpiolib"
->> Instead of providing the GPIO driver in the arch code it is now moved
->> into ssb and bcma and could also be used by other systems. The GPIO
->> functions in drivers/ssb/embedded.c are still used by arch/mips/bcm47xx
->> /wgt634u.c, but I am planing to write some code for baord detection and
->> a driver for LED and the buttons, after that wgt634u.c could be removed.
+On 11/30/2012 06:53 AM, Alan Cooper wrote:
+> I needed to be more specific. The issues I'm seeing are only on 32BIT
+> platforms with dynamic tracing.
+> Let me explain the issue. When the compiler flag "-pg" is specified
+> for 32BIT platforms to enable tracing, the compiler adds "addiu
+> sp,sp,-8" in the delay slot after every call to _mcount (some legacy
+> thing where 2 arguments used to be pushed on the stack). The _mcount
+> routine is expected to adjust the sp by 8 before returning.
+
+If the kernel's tracer infrastructure is broken for 32-bit kernels, then 
+it should be fixed.  I think it was only really tested on 64-bit kernels.
+
+It seems that the sp adjustment should be replaced by NOP as well if 
+tracing is disabled.
+
+> The
+> problem is when tracing is disabled, all calls to _mcount are
+> dynamically converted from "jal _mcount" to "nop" but the following
+> "addiu sp,sp,-8" instruction is unchanged and when executed leaves the
+> sp off by -8 for the remainder of the function. This bug is hidden
+> when the compiler is told to use frame pointers because all offsets
+> into the stack use the fp instead of the sp and the sp is restored
+> from the frame pointer instead of just adding a constant to sp. When
+> frame pointers are not enabled the code crashes. I don't think the
+> toolchain version makes any difference because the _mcount assembly
+> language routine adjusts the stack pointer by 8 if not CONFIG_64BIT
+> regardless of the toolchain version.
+>
+> On Thu, Nov 29, 2012 at 6:00 PM, David Daney <ddaney.cavm@gmail.com> wrote:
+>> On 11/29/2012 01:04 PM, Alan Cooper wrote:
+>>>
+>>> I've been doing some testing of the MIPS Function Tracer functionality
+>>> on the 3.3 kernel. I was surprised to find that the option to generate
+>>> frame pointers was required for tracing.
 >>
->> This is based on mips/master tree.
-> 
-> Is this patches supposed to appear in
-> http://git.kernel.org/?p=linux/kernel/git/ralf/linux.git;a=summary
-> ? Just so I can know where to look for it.
-> 
-Hi Rafał,
-
-It is in a mips tree at [0] and it is also in linux-next.
-
-Hauke
-
-[0]: http://git.linux-mips.org/?p=ralf/upstream-sfr.git;a=summary
+>>
+>> It is not really required for MIPS function tracing, but the Kconfigs for
+>> some reason set it.
+>>
+>>
+>>>   When I don't enable
+>>> FRAME_POINTER along with FUNCTION_TRACER, the kernel hangs on boot. I
+>>> also noticed that a checkin to the 3.4 kernel
+>>> (b732d439cb43336cd6d7e804ecb2c81193ef63b0) no longer forces on
+>>> FRAME_POINTER when FUNCTION_TRACER is selected. I was wondering how it
+>>> works in 3.4 and beyond, so I built a Malta kernel from the latest
+>>> MIPS tree with FUNCTION_TRACING enabled and tested it with QEMU. The
+>>> kernel hung the same way. I can think of 2 reasons for this:
+>>> 1. Function tracing is broken for MIPS in 3.4 and beyond.
+>>> 2. The 4.5.3 GNU C compiler I'm using is generating different code for
+>>> function tracing.
+>>
+>>
+>> Function tracing works best with recent versions of GCC (those that support
+>> -mmcount-ra-address).
+>>
+>>
+>>> I was wondering if anyone has MIPS function tracing working in 3.4 or
+>>> later?
+>>
+>>
+>> Yes.  Using GCC 4.7.0 on an octeon kernel (based on 3.4.14):
+>>
+>> # tracer: function_graph
+>> #
+>> # CPU  DURATION                  FUNCTION CALLS
+>> # |     |   |                     |   |   |   |
+>>    1)               |  __fsnotify_parent() {
+>>    1)   7.154 us    |  } /* __fsnotify_parent */
+>>    1)               |  fsnotify() {
+>>    1)               |    __srcu_read_lock() {
+>>    1)               |      add_preempt_count() {
+>>    1)   1.356 us    |      } /* add_preempt_count */
+>>    1)               |      sub_preempt_count() {
+>>    1)   1.385 us    |      } /* sub_preempt_count */
+>>    1)   6.747 us    |    } /* __srcu_read_lock */
+>>    1)               |    __srcu_read_unlock() {
+>>    1)               |      add_preempt_count() {
+>>    1)   1.383 us    |      } /* add_preempt_count */
+>>    1)               |      sub_preempt_count() {
+>>    1)   1.358 us    |      } /* sub_preempt_count */
+>>    1)   6.642 us    |    } /* __srcu_read_unlock */
+>>    1) + 17.861 us   |  } /* fsnotify */
+>> .
+>> .
+>> .
+>>
+>>
+>>
+>>>
+>>> I did figure out why it's hanging and I have some changes that will
+>>> allow the function tracer to run without frame pointers, but before I
+>>> proceed I want to rule out compiler differences.
+>>>
+>>> Thanks
+>>> --
+>>> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+>>> the body of a message to majordomo@vger.kernel.org
+>>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>>> Please read the FAQ at  http://www.tux.org/lkml/
+>>>
+>>>
+>>

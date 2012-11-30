@@ -1,38 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Nov 2012 20:02:57 +0100 (CET)
-Received: from mail.kernel.org ([198.145.19.201]:54773 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6828712Ab2K3TCzRusdN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 30 Nov 2012 20:02:55 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id D329A205CE;
-        Fri, 30 Nov 2012 19:02:52 +0000 (UTC)
-Received: from localhost (c-67-168-183-230.hsd1.wa.comcast.net [67.168.183.230])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BBF99205DB;
-        Fri, 30 Nov 2012 19:02:51 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        alan@lxorguk.ukuu.org.uk, Manuel Lauss <manuel.lauss@gmail.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Dmitry Kasatkin <dmitry.kasatkin@intel.com>,
-        James Morris <jmorris@namei.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Shuah Khan <shuah.khan@hp.com>
-Subject: [ 50/54] MPI: Fix compilation on MIPS with GCC 4.4 and newer
-Date:   Fri, 30 Nov 2012 10:56:21 -0800
-Message-Id: <20121130185212.938237697@linuxfoundation.org>
-X-Mailer: git-send-email 1.8.0.197.g5a90748
-In-Reply-To: <20121130185207.894301294@linuxfoundation.org>
-References: <20121130185207.894301294@linuxfoundation.org>
-User-Agent: quilt/0.60-2.1.2
-X-Virus-Scanned: ClamAV using ClamSMTP
-X-archive-position: 35162
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Nov 2012 20:27:29 +0100 (CET)
+Received: from mail-wi0-f173.google.com ([209.85.212.173]:32771 "EHLO
+        mail-wi0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6826533Ab2K3T12VGlSc convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 30 Nov 2012 20:27:28 +0100
+Received: by mail-wi0-f173.google.com with SMTP id hn17so6333115wib.6
+        for <multiple recipients>; Fri, 30 Nov 2012 11:27:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=KYdOTip/GZMSy0qKTfVpq6wDpPY//6bZEGZztGJDZvE=;
+        b=nnG7KC7hUB+t106PmA1A4O9T5UY4DeFUoJvB+mVUeq458KUOXs3d/iIzksh6nd3rNe
+         EinCFPt7p6h1mJv7yidqIB+79XElgfGv8nfIvxk5RGNUTGcvYwoyLrmA2/qyjvXL4qb6
+         G74f+rtPOtAu5uotzFTBnkI1096FK6Q2DB3BGueQA8OW/RN/ltxP1PdP57iVQC8qTy6n
+         H1BFWAM5wj0MG3rxSyIVP4+o/VFS7WfOJIdI8lhHts3u/t5d73mGdr0u37dTrkSjabCY
+         nqYpwjK09tkkJnxYwL9eYL4nt39uAaAm5Bz7zQT6jwqTQSXhTma8JT5foYwwo2Fy5yIK
+         WejQ==
+MIME-Version: 1.0
+Received: by 10.216.143.71 with SMTP id k49mr875452wej.7.1354303642858; Fri,
+ 30 Nov 2012 11:27:22 -0800 (PST)
+Received: by 10.216.21.8 with HTTP; Fri, 30 Nov 2012 11:27:22 -0800 (PST)
+In-Reply-To: <50B8B4AB.4060102@hauke-m.de>
+References: <1353453874-523-1-git-send-email-hauke@hauke-m.de>
+        <CACna6rzGE=CaD_9yAaTDkR6CuUy1HqRq1-v+fAd-Zg-uMmH2bQ@mail.gmail.com>
+        <50B8B4AB.4060102@hauke-m.de>
+Date:   Fri, 30 Nov 2012 20:27:22 +0100
+Message-ID: <CACna6ryzM-32BmF0BipEg+q8hr9kAjPP=_vzCvgssgnVe_muHw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/8] bcma/ssb/BCM47XX: add GPIO driver to ssb/bcma
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     john@phrozen.org, ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-wireless@vger.kernel.org, florian@openwrt.org, m@bues.ch
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 35163
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,68 +52,32 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-3.6-stable review patch.  If anyone has any objections, please let me know.
+2012/11/30 Hauke Mehrtens <hauke@hauke-m.de>:
+> On 11/30/2012 02:11 PM, Rafał Miłecki wrote:
+>> 2012/11/21 Hauke Mehrtens <hauke@hauke-m.de>:
+>>> This is a complete rewrote of the original patch "MIPS: BCM47xx: use
+>>> gpiolib"
+>>> Instead of providing the GPIO driver in the arch code it is now moved
+>>> into ssb and bcma and could also be used by other systems. The GPIO
+>>> functions in drivers/ssb/embedded.c are still used by arch/mips/bcm47xx
+>>> /wgt634u.c, but I am planing to write some code for baord detection and
+>>> a driver for LED and the buttons, after that wgt634u.c could be removed.
+>>>
+>>> This is based on mips/master tree.
+>>
+>> Is this patches supposed to appear in
+>> http://git.kernel.org/?p=linux/kernel/git/ralf/linux.git;a=summary
+>> ? Just so I can know where to look for it.
+>>
+> Hi Rafał,
+>
+> It is in a mips tree at [0] and it is also in linux-next.
+>
+> Hauke
+>
+> [0]: http://git.linux-mips.org/?p=ralf/upstream-sfr.git;a=summary
 
-------------------
+Thanks for pointing as well as for your work!
 
-From: Manuel Lauss <manuel.lauss@gmail.com>
-
-commit a3cea9894157c20a5b1ec08b7e0b5f2019740c10 upstream.
-
-Since 4.4 GCC on MIPS no longer recognizes the "h" constraint,
-leading to this build failure:
-
-  CC      lib/mpi/generic_mpih-mul1.o
-lib/mpi/generic_mpih-mul1.c: In function 'mpihelp_mul_1':
-lib/mpi/generic_mpih-mul1.c:50:3: error: impossible constraint in 'asm'
-
-This patch updates MPI with the latest umul_ppm implementations for MIPS.
-
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
-Cc: Linux-MIPS <linux-mips@linux-mips.org>
-Cc: Dmitry Kasatkin <dmitry.kasatkin@intel.com>
-Cc: James Morris <jmorris@namei.org>
-Patchwork: https://patchwork.linux-mips.org/patch/4612/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Cc: Shuah Khan <shuah.khan@hp.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- lib/mpi/longlong.h |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
-
---- a/lib/mpi/longlong.h
-+++ b/lib/mpi/longlong.h
-@@ -703,7 +703,14 @@ do { \
- 	**************  MIPS  *****************
- 	***************************************/
- #if defined(__mips__) && W_TYPE_SIZE == 32
--#if __GNUC__ > 2 || __GNUC_MINOR__ >= 7
-+#if __GNUC__ >= 4 && __GNUC_MINOR__ >= 4
-+#define umul_ppmm(w1, w0, u, v)			\
-+do {						\
-+	UDItype __ll = (UDItype)(u) * (v);	\
-+	w1 = __ll >> 32;			\
-+	w0 = __ll;				\
-+} while (0)
-+#elif __GNUC__ > 2 || __GNUC_MINOR__ >= 7
- #define umul_ppmm(w1, w0, u, v) \
- 	__asm__ ("multu %2,%3" \
- 	: "=l" ((USItype)(w0)), \
-@@ -728,7 +735,15 @@ do { \
- 	**************  MIPS/64  **************
- 	***************************************/
- #if (defined(__mips) && __mips >= 3) && W_TYPE_SIZE == 64
--#if __GNUC__ > 2 || __GNUC_MINOR__ >= 7
-+#if __GNUC__ >= 4 && __GNUC_MINOR__ >= 4
-+#define umul_ppmm(w1, w0, u, v) \
-+do {									\
-+	typedef unsigned int __ll_UTItype __attribute__((mode(TI)));	\
-+	__ll_UTItype __ll = (__ll_UTItype)(u) * (v);			\
-+	w1 = __ll >> 64;						\
-+	w0 = __ll;							\
-+} while (0)
-+#elif __GNUC__ > 2 || __GNUC_MINOR__ >= 7
- #define umul_ppmm(w1, w0, u, v) \
- 	__asm__ ("dmultu %2,%3" \
- 	: "=l" ((UDItype)(w0)), \
+-- 
+Rafał

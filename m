@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Nov 2012 03:03:25 +0100 (CET)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:63013 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6829664Ab2K3CDYpIlDZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Nov 2012 03:03:24 +0100
-Received: by mail-pb0-f49.google.com with SMTP id un15so60007pbc.36
-        for <linux-mips@linux-mips.org>; Thu, 29 Nov 2012 18:03:15 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Nov 2012 03:04:16 +0100 (CET)
+Received: from mail-pa0-f49.google.com ([209.85.220.49]:48300 "EHLO
+        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6829664Ab2K3CEKCTGHa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Nov 2012 03:04:10 +0100
+Received: by mail-pa0-f49.google.com with SMTP id bi1so7265198pad.36
+        for <linux-mips@linux-mips.org>; Thu, 29 Nov 2012 18:04:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=subject:to:cc:from:date:message-id:mime-version:content-type
          :content-transfer-encoding:x-gm-message-state;
-        bh=8KS1uFCLDTaAd0Wo5fak14Dv//yw4KY18dHptlp4wB8=;
-        b=MhOTEr836q76GKyVMCvZ7l0JjI6b8aGuxOWLUMMAwVfDcP56rYiEVtN7ZIDv+VvUYE
-         Tb3BuVT8WejqP5FL7VO044Q4AtrIluuQv38DmN32Umvi6oWq7XGwvFLrqu4apgVruWTI
-         G/zEPQ5B4Fiurz4Msc3dAcvoRL9yYKih8aQshX+xXs7CXf1CLUC/3Yxw8i8R5xKG0YCl
-         m5Uv7fJPaFvBdFRD4w4Mrdk7mH1GkIvPhw67IvDtM7zvLiSU69KIPMx4Qg3kWvOGQC6N
-         7avuEleg5lOoIGt8of4+8Sr2kQlVSlu+ms1ku8ufw0OtF6ZxMMrHTJp3BhZrO2/gaqEF
-         TO+w==
-Received: by 10.68.245.169 with SMTP id xp9mr1109644pbc.142.1354240995469;
-        Thu, 29 Nov 2012 18:03:15 -0800 (PST)
+        bh=/kwhbjAd19kTXt2rO2OvW1bx61it3nTjMhOBAws9GF0=;
+        b=K/OAnUNRcm+wmA2/dHt81z8WcdvfvMvrQq/36a/dLDNUn4bqTxBc8BclxVowyinZGi
+         /L3cmZ8a++g5ITGVlS5Tr0e7JGKkISpBlwzrxRjM/pKGp1NW14PbYgAJSXB+2jlf03JV
+         Qy+3BxiV2A7Z1JEQU5DIpSRG0UV0vv5lM80hjv3YSZAFTdqEwAuMWRrdrcQ5H7Vr27kU
+         M0HtiijfcdIfCA1+8bPR7/PiYz+PkyW3680si146oBoz0tlAR6j4PVGnZVFy9loQsmIa
+         lDpgd/Oo7ofsQ3D3d+9DOwwcWAE5bbn0kAH7PUSha2nzAMrdeJZV5Yqu+SB2naLjRbno
+         HMwg==
+Received: by 10.68.253.102 with SMTP id zz6mr1247689pbc.99.1354241043697;
+        Thu, 29 Nov 2012 18:04:03 -0800 (PST)
 Received: from localhost (c-67-168-183-230.hsd1.wa.comcast.net. [67.168.183.230])
-        by mx.google.com with ESMTPS id ay5sm1998007pab.1.2012.11.29.18.03.13
+        by mx.google.com with ESMTPS id p5sm1987805paz.22.2012.11.29.18.04.01
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 29 Nov 2012 18:03:14 -0800 (PST)
-Subject: Patch "MPI: Fix compilation on MIPS with GCC 4.4 and newer" has been added to the 3.4-stable tree
+        Thu, 29 Nov 2012 18:04:02 -0800 (PST)
+Subject: Patch "MPI: Fix compilation on MIPS with GCC 4.4 and newer" has been added to the 3.6-stable tree
 To:     manuel.lauss@gmail.com, dmitry.kasatkin@intel.com,
         gregkh@linuxfoundation.org, jmorris@namei.org,
         linux-mips@linux-mips.org, ralf@linux-mips.org, shuah.khan@hp.com
 Cc:     <stable@vger.kernel.org>, <stable-commits@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Thu, 29 Nov 2012 18:03:03 -0800
-Message-ID: <13542409833804@kroah.org>
+Date:   Thu, 29 Nov 2012 18:03:15 -0800
+Message-ID: <13542409951790@kroah.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ASCII
 Content-Transfer-Encoding: 8bit
-X-Gm-Message-State: ALoCoQlc5oSCqnbt0U/lrq5n0Xh01Caneu0A5KPlgKlauMcgR8bTO4ZZAc3/pq6fdHBHWeFU6JV0
-X-archive-position: 35155
+X-Gm-Message-State: ALoCoQkiayhIvL83EBdjkeKBBhiUbjBxcDwbH2mUbVEXwcp7G/mNCMcWWCnSeJ5UW2GeUgsTM2vS
+X-archive-position: 35156
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,12 +57,12 @@ This is a note to let you know that I've just added the patch titled
 
     MPI: Fix compilation on MIPS with GCC 4.4 and newer
 
-to the 3.4-stable tree which can be found at:
+to the 3.6-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
      mpi-fix-compilation-on-mips-with-gcc-4.4-and-newer.patch
-and it can be found in the queue-3.4 subdirectory.
+and it can be found in the queue-3.6 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
@@ -138,4 +138,4 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 Patches currently in stable-queue which might be from manuel.lauss@gmail.com are
 
-queue-3.4/mpi-fix-compilation-on-mips-with-gcc-4.4-and-newer.patch
+queue-3.6/mpi-fix-compilation-on-mips-with-gcc-4.4-and-newer.patch

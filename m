@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2012 15:40:55 +0100 (CET)
-Received: from hrndva-omtalb.mail.rr.com ([71.74.56.122]:28342 "EHLO
-        hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6826638Ab2LCOkxW4ywh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Dec 2012 15:40:53 +0100
-X-Authority-Analysis: v=2.0 cv=f9bK9ZOM c=1 sm=0 a=rXTBtCOcEpjy1lPqhTCpEQ==:17 a=mNMOxpOpBa8A:10 a=XlK8ECWECGUA:10 a=5SG0PmZfjMsA:10 a=Q9fys5e9bTEA:10 a=meVymXHHAAAA:8 a=aYz5cAgaFdEA:10 a=1g4hhj49uufQi-hBbH4A:9 a=PUjeQqilurYA:10 a=rXTBtCOcEpjy1lPqhTCpEQ==:117
-X-Cloudmark-Score: 0
-X-Authenticated-User: 
-X-Originating-IP: 74.67.115.198
-Received: from [74.67.115.198] ([74.67.115.198:52910] helo=[192.168.23.10])
-        by hrndva-oedge03.mail.rr.com (envelope-from <rostedt@goodmis.org>)
-        (ecelerity 2.2.3.46 r()) with ESMTP
-        id 3E/1F-18789-0F9BCB05; Mon, 03 Dec 2012 14:40:48 +0000
-Message-ID: <1354545648.6276.202.camel@gandalf.local.home>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2012 17:13:53 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:52260 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6831627Ab2LCQNvjmNDj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 3 Dec 2012 17:13:51 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id qB3GDmaF029676;
+        Mon, 3 Dec 2012 17:13:48 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id qB3GDkin029675;
+        Mon, 3 Dec 2012 17:13:46 +0100
+Date:   Mon, 3 Dec 2012 17:13:46 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     David Daney <ddaney.cavm@gmail.com>,
+        Alan Cooper <alcooperx@gmail.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
 Subject: Re: MIPS Function Tracer question
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Alan Cooper <alcooperx@gmail.com>, ralf@linux-mips.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Date:   Mon, 03 Dec 2012 09:40:48 -0500
-In-Reply-To: <50B7E91C.6070403@gmail.com>
+Message-ID: <20121203161346.GA29573@linux-mips.org>
 References: <CAOGqxeUOrVFoqsmUV19h5tXsD6pw5creXP9aN1C-V7K3WL2EXA@mail.gmail.com>
-         <50B7E91C.6070403@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.4.3-1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35171
+ <50B7E91C.6070403@gmail.com>
+ <1354545648.6276.202.camel@gandalf.local.home>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1354545648.6276.202.camel@gandalf.local.home>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 35172
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,36 +43,18 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, 2012-11-29 at 15:00 -0800, David Daney wrote:
-> On 11/29/2012 01:04 PM, Alan Cooper wrote:
-> > I've been doing some testing of the MIPS Function Tracer functionality
-> > on the 3.3 kernel. I was surprised to find that the option to generate
-> > frame pointers was required for tracing.
-> 
-> It is not really required for MIPS function tracing, but the Kconfigs 
-> for some reason set it.
-> 
+On Mon, Dec 03, 2012 at 09:40:48AM -0500, Steven Rostedt wrote:
 
-The issue is with x86. Gcc wont compile if you have -pg and
--fomit-frame-pointer on x86. I originally forced function tracing to
-select FRAME_POINTER, but because now on x86 with -mfentry, -pg no
-longer requires frame pointers being set, I just let -pg complain one
-way or the other. I believe that gcc by default will not add frame
-pointers. Thus adding function tracing just prevents
--fomit-frame-pointer from being set, and if -pg requires frame pointers
-it will automatically enable them otherwise they should not be enabled.
+> The issue is with x86. Gcc wont compile if you have -pg and
+> -fomit-frame-pointer on x86. I originally forced function tracing to
+> select FRAME_POINTER, but because now on x86 with -mfentry, -pg no
+> longer requires frame pointers being set, I just let -pg complain one
+> way or the other. I believe that gcc by default will not add frame
+> pointers. Thus adding function tracing just prevents
+> -fomit-frame-pointer from being set, and if -pg requires frame pointers
+> it will automatically enable them otherwise they should not be enabled.
 
--- Steve
+On architectures such as MIPS where a frame pointer is not required for
+debugging -O and higher imply -fomit-frame-pointer.
 
-> >  When I don't enable
-> > FRAME_POINTER along with FUNCTION_TRACER, the kernel hangs on boot. I
-> > also noticed that a checkin to the 3.4 kernel
-> > (b732d439cb43336cd6d7e804ecb2c81193ef63b0) no longer forces on
-> > FRAME_POINTER when FUNCTION_TRACER is selected. I was wondering how it
-> > works in 3.4 and beyond, so I built a Malta kernel from the latest
-> > MIPS tree with FUNCTION_TRACING enabled and tested it with QEMU. The
-> > kernel hung the same way. I can think of 2 reasons for this:
-> > 1. Function tracing is broken for MIPS in 3.4 and beyond.
-> > 2. The 4.5.3 GNU C compiler I'm using is generating different code for
-> > function tracing.
-> 
+  Ralf

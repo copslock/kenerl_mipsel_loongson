@@ -1,45 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2012 09:45:35 +0100 (CET)
-Received: from mail-wg0-f45.google.com ([74.125.82.45]:51858 "EHLO
-        mail-wg0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823123Ab2LCIpcaAKnH convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 3 Dec 2012 09:45:32 +0100
-Received: by mail-wg0-f45.google.com with SMTP id dq12so1306760wgb.24
-        for <linux-mips@linux-mips.org>; Mon, 03 Dec 2012 00:45:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=6+HwqQTBn/Uvd4qypeIUAkUpx2j80DMFAxt/8R9466c=;
-        b=pa70If8B+oWSrTJITQ6f5kaEd418wCMCXoVn/G9DOaRxSZPFkfNwVvbhxmpE4C8FJe
-         amSIIkvNoja2nYtJs7Ov1xnSeHj6YKe7qsglUf8IBnQMetXE9D8IiVA6jJOU8mySj6Hm
-         FsAwPOiwLxdw0FMNIAGLDBChEhGgrBOK+KE7FbMvEamwcEXJdD6vhkccwoa7ZfAbricA
-         XkPeHlU7/XZLR3OWPBjsFfNPlxLwutjVUO+tTGl9Zli2W+8/LbA6NjnGg5lMaHacNNcV
-         fyqj8nuz3/36N5OXiPImXXVuS1n/hQQ7s53r+I3ImlAytjMIU6hU7QZhe7sbJoUokMcW
-         cr7w==
-MIME-Version: 1.0
-Received: by 10.180.99.5 with SMTP id em5mr8057679wib.8.1354524326775; Mon, 03
- Dec 2012 00:45:26 -0800 (PST)
-Received: by 10.216.21.8 with HTTP; Mon, 3 Dec 2012 00:45:26 -0800 (PST)
-In-Reply-To: <1353975925-32056-1-git-send-email-hauke@hauke-m.de>
-References: <1353975925-32056-1-git-send-email-hauke@hauke-m.de>
-Date:   Mon, 3 Dec 2012 09:45:26 +0100
-Message-ID: <CACna6rwmfpNFAFZpvbt8GHzofC6UoyBC4oKF5rL=9xN5_=gYXw@mail.gmail.com>
-Subject: Re: [PATCH v2 00/15] watchdog/bcm47xx/bcma/ssb: add support for SoCs
- with PMU
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     linville@tuxdriver.com, wim@iguana.be,
-        linux-wireless@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        castet.matthieu@free.fr, biblbroks@sezampro.rs, m@bues.ch,
-        linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 35169
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2012 09:52:14 +0100 (CET)
+Received: from mailout4.w1.samsung.com ([210.118.77.14]:50239 "EHLO
+        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823123Ab2LCIwF4SZq8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Dec 2012 09:52:05 +0100
+Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
+ by mailout4.w1.samsung.com
+ (Oracle Communications Messaging Server 7u4-24.01(7.0.4.24.0) 64bit (built Nov
+ 17 2011)) with ESMTP id <0MEG009JZ61DGE30@mailout4.w1.samsung.com>; Mon,
+ 03 Dec 2012 08:54:43 +0000 (GMT)
+X-AuditID: cbfec7f4-b7f6d6d000001620-16-50bc682c1d78
+Received: from eusync2.samsung.com ( [203.254.199.212])
+        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id DE.E8.05664.C286CB05; Mon,
+ 03 Dec 2012 08:51:56 +0000 (GMT)
+Received: from [127.0.0.1] ([106.116.147.30])
+ by eusync2.samsung.com (Oracle Communications Messaging Server 7u4-23.01
+ (7.0.4.23.0) 64bit (built Aug 10 2011))
+ with ESMTPA id <0MEG00IUH5YHQ700@eusync2.samsung.com>; Mon,
+ 03 Dec 2012 08:51:56 +0000 (GMT)
+Message-id: <50BC6829.4060205@samsung.com>
+Date:   Mon, 03 Dec 2012 09:51:53 +0100
+From:   Marek Szyprowski <m.szyprowski@samsung.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/17.0 Thunderbird/17.0
+MIME-version: 1.0
+To:     Joerg Roedel <joro@8bytes.org>
+Cc:     shuah.khan@hp.com, a-jacquiot@ti.com, fenghua.yu@intel.com,
+        catalin.marinas@arm.com, lethal@linux-sh.org,
+        benh@kernel.crashing.org, ralf@linux-mips.org, tony.luck@intel.com,
+        davem@davemloft.net, msalter@redhat.com, monstr@monstr.eu,
+        Ming Lei <ming.lei@canonical.com>,
+        linux-arm-kernel@lists.infradead.org,
+        LKML <linux-kernel@vger.kernel.org>, linux-c6x-dev@linux-c6x.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, microblaze-uclinux@itee.uq.edu.au,
+        shuahkhan@gmail.com
+Subject: Re: [PATCH 0/9] dma_debug: add debug_dma_mapping_error support to
+ architectures that support DMA_DEBUG_API
+References: <1353706142.5270.93.camel@lorien2> <50B34B0F.3080204@samsung.com>
+ <20121202140644.GP30633@8bytes.org>
+In-reply-to: <20121202140644.GP30633@8bytes.org>
+Content-type: text/plain; charset=UTF-8; format=flowed
+Content-transfer-encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupjluLIzCtJLcpLzFFi42I5/e/4FV2djD0BBrtv8FhMmDqJ3eLSHhUH
+        Jo+jK9cyBTBGcdmkpOZklqUW6dslcGUsXZ5W8IWt4vDcm2wNjPtYuxg5OCQETCSu3XbrYuQE
+        MsUkLtxbz9bFyMUhJLCUUWLTllvsEE4zk8SWFc/ZQKp4BbQkfh36zw5iswioSqzomMkKYrMJ
+        GEp0ve0CqxEV8JWY9usaE0S9oMSPyfdYQGwRASWJ659bweqZBU6xSDSccgexhQVKJTp+P2MG
+        sYUEiiXavl5nAjmOU8BA4sGbWohyM4lHLeuYIWx5ic1r3jJPYBSYhWTDLCRls5CULWBkXsUo
+        mlqaXFCclJ5rqFecmFtcmpeul5yfu4kREoZfdjAuPmZ1iFGAg1GJh/fBl90BQqyJZcWVuYcY
+        JTiYlUR4o6z3BAjxpiRWVqUW5ccXleakFh9iZOLglGpgbFvhtyftHUP+pL+HRJ8odtlEZi++
+        Kfmiv+yDoWjZs2dX7hg5ObJxht0W7zpQvqVy8aSNc77s5TpuLWDEEewnrSH85pnHjGh1jpQd
+        PxpVLP4aScyemxW1cpK0cT63WLB47Z0Nv3OLRW4Kle7blHgh+p7/jqDX0qbb7sVsXfY7XGXd
+        Jf3VmxS6lViKMxINtZiLihMBAT1oLCECAAA=
+X-archive-position: 35170
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: m.szyprowski@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,30 +69,26 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-2012/11/27 Hauke Mehrtens <hauke@hauke-m.de>:
-> This patch series improves the watchdog driver used on the Broadcom
-> bcm47xx SoCs.
-> The watchdog driver does not access the functions directly any more,
-> but it registers as a platform device driver and ssb and bcma are
-> registering a device for this watchdog driver.
-> This also adds support for SoCs with a power management unit (PMU),
-> which have different clock rates.
+
+On 12/2/2012 3:06 PM, Joerg Roedel wrote:
+> Hi Marek,
+>   
+> On Mon, Nov 26, 2012 at 11:57:19AM +0100, Marek Szyprowski wrote:
 >
-> This code is currently based on the wireless-testing/master tree by
-> John Linville, because there are some changes in ssb and bcma in that
-> tree queued for 3.8 which will conflict with these changes, if this
-> would be based on an other tree. I have no problem with rebasing this
-> onto any other tree.
+> > I've took all the patches to the next-dma-debug branch in my tree, I sorry
+> > that You have to wait so long for it. My branch is based on Joerg's
+> > dma-debug branch and I've included it for testing in linux-next branch.
 >
-> @Wim Could you give me an ACK on the "watchdog: bcm47xx_wdt.c:" patches
->      so that John could take them trough the wireless-testing tree, or
->      provide me with some feedback on what I should change.
+> The patches are now two times in next. One version from my tree and one
+> from yours. Please remove the version from your tree, the patches should
+> go upstream via my dma-debug branch.
 
-Hi Wim,
+Ok, I've removed them from my dma-mapping-next tree. Please add/cherry-pick
+the missing patch for ARM architecture, which I've accidentally already
+pushed to mainline some time ago and then reverted. See commit
+871ae57adc5ed092 (and 697575896670ba).
 
-Have you got a chance to look at that patches?
-
-I've some additional bcma changes I wish to submit on top of this :)
-
+Best regards
 -- 
-Rafał
+Marek Szyprowski
+Samsung Poland R&D Center

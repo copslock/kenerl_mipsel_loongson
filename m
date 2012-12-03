@@ -1,47 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Dec 2012 15:06:49 +0100 (CET)
-Received: from 8bytes.org ([85.214.48.195]:43795 "EHLO mail.8bytes.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823252Ab2LBOGsONhOy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 2 Dec 2012 15:06:48 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by mail.8bytes.org (Postfix) with SMTP id 9F7F912AFB8
-        for <linux-mips@linux-mips.org>; Sun,  2 Dec 2012 15:06:47 +0100 (CET)
-Received: by mail.8bytes.org (Postfix, from userid 1000)
-        id 1CED212AF14; Sun,  2 Dec 2012 15:06:45 +0100 (CET)
-Date:   Sun, 2 Dec 2012 15:06:45 +0100
-From:   Joerg Roedel <joro@8bytes.org>
-To:     Marek Szyprowski <m.szyprowski@samsung.com>
-Cc:     shuah.khan@hp.com, a-jacquiot@ti.com, fenghua.yu@intel.com,
-        catalin.marinas@arm.com, lethal@linux-sh.org,
-        benh@kernel.crashing.org, ralf@linux-mips.org, tony.luck@intel.com,
-        davem@davemloft.net, msalter@redhat.com, monstr@monstr.eu,
-        Ming Lei <ming.lei@canonical.com>,
-        linux-arm-kernel@lists.infradead.org,
-        LKML <linux-kernel@vger.kernel.org>, linux-c6x-dev@linux-c6x.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, microblaze-uclinux@itee.uq.edu.au,
-        shuahkhan@gmail.com
-Subject: Re: [PATCH 0/9] dma_debug: add debug_dma_mapping_error support to
- architectures that support DMA_DEBUG_API
-Message-ID: <20121202140644.GP30633@8bytes.org>
-References: <1353706142.5270.93.camel@lorien2>
- <50B34B0F.3080204@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2012 09:45:35 +0100 (CET)
+Received: from mail-wg0-f45.google.com ([74.125.82.45]:51858 "EHLO
+        mail-wg0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823123Ab2LCIpcaAKnH convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 3 Dec 2012 09:45:32 +0100
+Received: by mail-wg0-f45.google.com with SMTP id dq12so1306760wgb.24
+        for <linux-mips@linux-mips.org>; Mon, 03 Dec 2012 00:45:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=6+HwqQTBn/Uvd4qypeIUAkUpx2j80DMFAxt/8R9466c=;
+        b=pa70If8B+oWSrTJITQ6f5kaEd418wCMCXoVn/G9DOaRxSZPFkfNwVvbhxmpE4C8FJe
+         amSIIkvNoja2nYtJs7Ov1xnSeHj6YKe7qsglUf8IBnQMetXE9D8IiVA6jJOU8mySj6Hm
+         FsAwPOiwLxdw0FMNIAGLDBChEhGgrBOK+KE7FbMvEamwcEXJdD6vhkccwoa7ZfAbricA
+         XkPeHlU7/XZLR3OWPBjsFfNPlxLwutjVUO+tTGl9Zli2W+8/LbA6NjnGg5lMaHacNNcV
+         fyqj8nuz3/36N5OXiPImXXVuS1n/hQQ7s53r+I3ImlAytjMIU6hU7QZhe7sbJoUokMcW
+         cr7w==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <50B34B0F.3080204@samsung.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-DSPAM-Result: Whitelisted
-X-DSPAM-Processed: Sun Dec  2 15:06:47 2012
-X-DSPAM-Confidence: 0.9989
-X-DSPAM-Probability: 0.0000
-X-DSPAM-Signature: 50bb607722971091017827
-X-archive-position: 35166
+Received: by 10.180.99.5 with SMTP id em5mr8057679wib.8.1354524326775; Mon, 03
+ Dec 2012 00:45:26 -0800 (PST)
+Received: by 10.216.21.8 with HTTP; Mon, 3 Dec 2012 00:45:26 -0800 (PST)
+In-Reply-To: <1353975925-32056-1-git-send-email-hauke@hauke-m.de>
+References: <1353975925-32056-1-git-send-email-hauke@hauke-m.de>
+Date:   Mon, 3 Dec 2012 09:45:26 +0100
+Message-ID: <CACna6rwmfpNFAFZpvbt8GHzofC6UoyBC4oKF5rL=9xN5_=gYXw@mail.gmail.com>
+Subject: Re: [PATCH v2 00/15] watchdog/bcm47xx/bcma/ssb: add support for SoCs
+ with PMU
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     linville@tuxdriver.com, wim@iguana.be,
+        linux-wireless@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        castet.matthieu@free.fr, biblbroks@sezampro.rs, m@bues.ch,
+        linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 35169
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joro@8bytes.org
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,17 +53,30 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Marek,
- 
-On Mon, Nov 26, 2012 at 11:57:19AM +0100, Marek Szyprowski wrote:
+2012/11/27 Hauke Mehrtens <hauke@hauke-m.de>:
+> This patch series improves the watchdog driver used on the Broadcom
+> bcm47xx SoCs.
+> The watchdog driver does not access the functions directly any more,
+> but it registers as a platform device driver and ssb and bcma are
+> registering a device for this watchdog driver.
+> This also adds support for SoCs with a power management unit (PMU),
+> which have different clock rates.
+>
+> This code is currently based on the wireless-testing/master tree by
+> John Linville, because there are some changes in ssb and bcma in that
+> tree queued for 3.8 which will conflict with these changes, if this
+> would be based on an other tree. I have no problem with rebasing this
+> onto any other tree.
+>
+> @Wim Could you give me an ACK on the "watchdog: bcm47xx_wdt.c:" patches
+>      so that John could take them trough the wireless-testing tree, or
+>      provide me with some feedback on what I should change.
 
-> I've took all the patches to the next-dma-debug branch in my tree, I sorry
-> that You have to wait so long for it. My branch is based on Joerg's
-> dma-debug branch and I've included it for testing in linux-next branch.
+Hi Wim,
 
-The patches are now two times in next. One version from my tree and one
-from yours. Please remove the version from your tree, the patches should
-go upstream via my dma-debug branch.
+Have you got a chance to look at that patches?
 
+I've some additional bcma changes I wish to submit on top of this :)
 
-	Joerg
+-- 
+Rafał

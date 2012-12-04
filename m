@@ -1,30 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Dec 2012 16:54:53 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:56085 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Dec 2012 17:22:29 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:56330 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6831636Ab2LDPyvv20rQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 4 Dec 2012 16:54:51 +0100
+        id S6829678Ab2LDQWZQYc1n (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 4 Dec 2012 17:22:25 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id qB4Fsmci019541;
-        Tue, 4 Dec 2012 16:54:48 +0100
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id qB4GMN9Y021324;
+        Tue, 4 Dec 2012 17:22:23 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id qB4FskiT019540;
-        Tue, 4 Dec 2012 16:54:46 +0100
-Date:   Tue, 4 Dec 2012 16:54:46 +0100
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id qB4GMN1x021323;
+        Tue, 4 Dec 2012 17:22:23 +0100
+Date:   Tue, 4 Dec 2012 17:22:23 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Hillf Danton <dhillf@gmail.com>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH] MIPS: Avoid Machine Check by flushing entire page range
- in huge_ptep_set_access_flags().
-Message-ID: <20121204155446.GA19472@linux-mips.org>
-References: <1354567466-23571-1-git-send-email-ddaney.cavm@gmail.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Pull request for v3.8 Octeon specific changes.
+Message-ID: <20121204162222.GA21111@linux-mips.org>
+References: <50B94DEB.3020608@caviumnetworks.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1354567466-23571-1-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <50B94DEB.3020608@caviumnetworks.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35175
+X-archive-position: 35176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,10 +39,24 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, Dec 03, 2012 at 12:44:26PM -0800, David Daney wrote:
+On Fri, Nov 30, 2012 at 04:23:07PM -0800, David Daney wrote:
 
-Looks good and has survived my testing so far.  Applied.
+> 
+> The ATA changes are alredy Acked-by the ATA mainainer.
+> 
+> The EDAC changes are just an extension of what you added for 3.8, they
+> were sent to the EDAC list here:
+> 
+> http://marc.info/?l=linux-edac&m=135302283022318&w=2
+> 
+> But no response yet.  My reasoning is that they should be OK as they
+> just improve things that only touch OCTEON.
 
-Thanks David!
+Yes and it'd be nice to have EDAC flying properly.
+
+Lots of MIPS hardware has some EDAC capability.  I hope now that there is
+at least one well supported platform EDAC support will spread.
+
+Thanks,
 
   Ralf

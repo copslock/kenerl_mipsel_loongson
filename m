@@ -1,40 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Dec 2012 00:57:02 +0100 (CET)
-Received: from dns1.mips.com ([12.201.5.69]:33046 "EHLO dns1.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6831649Ab2LDXzaQuwwy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 5 Dec 2012 00:55:30 +0100
-Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id qB4Nt9j4014727;
-        Tue, 4 Dec 2012 15:55:13 -0800
-X-WSS-ID: 0MEJ6FV-01-0P3-02
-X-M-MSG: 
-Received: from exchdb01.mips.com (unknown [192.168.36.84])
-        (using TLSv1 with cipher AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mailgate1.mips.com (Postfix) with ESMTP id 2D3AE364679;
-        Tue,  4 Dec 2012 15:55:06 -0800 (PST)
-Received: from fun-lab.mips.com (192.168.52.61) by exchhub01.mips.com
- (192.168.36.84) with Microsoft SMTP Server id 14.1.270.1; Tue, 4 Dec 2012
- 15:55:01 -0800
-From:   Deng-Cheng Zhu <dczhu@mips.com>
-To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
-        <kevink@paralogos.com>, <macro@linux-mips.org>, <john@phrozen.org>
-CC:     <dczhu@mips.com>
-Subject: [PATCH v3 4/5] MIPS: let amon_cpu_start() report results
-Date:   Tue, 4 Dec 2012 15:54:31 -0800
-Message-ID: <1354665272-22759-5-git-send-email-dczhu@mips.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1354665272-22759-1-git-send-email-dczhu@mips.com>
-References: <1354665272-22759-1-git-send-email-dczhu@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-EMS-Proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-X-EMS-STAMP: 9bFc4MSoXsHwgecOv69Vwg==
-X-archive-position: 35183
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Dec 2012 18:46:51 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:37744 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6831673Ab2LERqtsJo56 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Dec 2012 18:46:49 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 45CB18F6C;
+        Wed,  5 Dec 2012 18:46:48 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id VqkC42Nwgzho; Wed,  5 Dec 2012 18:46:23 +0100 (CET)
+Received: from hauke-desktop.lan (unknown [134.102.133.158])
+        by hauke-m.de (Postfix) with ESMTPSA id F2A468F61;
+        Wed,  5 Dec 2012 18:46:21 +0100 (CET)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     linville@tuxdriver.com, wim@iguana.be
+Cc:     linux-wireless@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        castet.matthieu@free.fr, biblbroks@sezampro.rs, m@bues.ch,
+        zajec5@gmail.com, linux-mips@linux-mips.org,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH v3 01/11] ssb/bcma: add common header for watchdog
+Date:   Wed,  5 Dec 2012 18:45:58 +0100
+Message-Id: <1354729568-19993-2-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1354729568-19993-1-git-send-email-hauke@hauke-m.de>
+References: <1354729568-19993-1-git-send-email-hauke@hauke-m.de>
+X-archive-position: 35184
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dczhu@mips.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,57 +43,41 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Change the return type of amon_cpu_start() from void to int.
+This adds a common header for watchdog functions, so a watchdog driver
+just needs to use this and could provide watchdog functionality for ssb
+and bcma based SoCs. Patches for a watchdog driver using this interface
+will be send later.
 
-Signed-off-by: Deng-Cheng Zhu <dczhu@mips.com>
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/include/asm/amon.h     |    2 +-
- arch/mips/mti-malta/malta-amon.c |    8 +++++---
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ include/linux/bcm47xx_wdt.h |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+ create mode 100644 include/linux/bcm47xx_wdt.h
 
-diff --git a/arch/mips/include/asm/amon.h b/arch/mips/include/asm/amon.h
-index c3dc1a6..c8af6b0 100644
---- a/arch/mips/include/asm/amon.h
-+++ b/arch/mips/include/asm/amon.h
-@@ -3,5 +3,5 @@
-  */
- 
- int amon_cpu_avail(int);
--void amon_cpu_start(int, unsigned long, unsigned long,
-+int amon_cpu_start(int, unsigned long, unsigned long,
- 		    unsigned long, unsigned long);
-diff --git a/arch/mips/mti-malta/malta-amon.c b/arch/mips/mti-malta/malta-amon.c
-index 469d9b0..fcd69cb 100644
---- a/arch/mips/mti-malta/malta-amon.c
-+++ b/arch/mips/mti-malta/malta-amon.c
-@@ -48,7 +48,7 @@ int amon_cpu_avail(int cpu)
- 	return 1;
- }
- 
--void amon_cpu_start(int cpu,
-+int amon_cpu_start(int cpu,
- 		    unsigned long pc, unsigned long sp,
- 		    unsigned long gp, unsigned long a0)
- {
-@@ -56,10 +56,10 @@ void amon_cpu_start(int cpu,
- 		(struct cpulaunch  *)CKSEG0ADDR(CPULAUNCH);
- 
- 	if (!amon_cpu_avail(cpu))
--		return;
-+		return -1;
- 	if (cpu == smp_processor_id()) {
- 		pr_debug("launch: I am cpu%d!\n", cpu);
--		return;
-+		return -1;
- 	}
- 	launch += cpu;
- 
-@@ -78,4 +78,6 @@ void amon_cpu_start(int cpu,
- 		;
- 	smp_rmb();      /* Target will be updating flags soon */
- 	pr_debug("launch: cpu%d gone!\n", cpu);
+diff --git a/include/linux/bcm47xx_wdt.h b/include/linux/bcm47xx_wdt.h
+new file mode 100644
+index 0000000..e5dfc25
+--- /dev/null
++++ b/include/linux/bcm47xx_wdt.h
+@@ -0,0 +1,19 @@
++#ifndef LINUX_BCM47XX_WDT_H_
++#define LINUX_BCM47XX_WDT_H_
 +
-+	return 0;
- }
++#include <linux/types.h>
++
++
++struct bcm47xx_wdt {
++	u32 (*timer_set)(struct bcm47xx_wdt *, u32);
++	u32 (*timer_set_ms)(struct bcm47xx_wdt *, u32);
++	u32 max_timer_ms;
++
++	void *driver_data;
++};
++
++static inline void *bcm47xx_wdt_get_drvdata(struct bcm47xx_wdt *wdt)
++{
++	return wdt->driver_data;
++}
++#endif /* LINUX_BCM47XX_WDT_H_ */
 -- 
-1.7.1
+1.7.10.4

@@ -1,40 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Dec 2012 22:28:24 +0100 (CET)
-Received: from mail-la0-f49.google.com ([209.85.215.49]:38653 "EHLO
-        mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823118Ab2LFV2XRO-Bs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Dec 2012 22:28:23 +0100
-Received: by mail-la0-f49.google.com with SMTP id r15so5159030lag.36
-        for <multiple recipients>; Thu, 06 Dec 2012 13:28:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=JQ2nrOU/dfh1hXQld9/BvzmciAaC5Ckd/XcHonKQ504=;
-        b=ptuBkwQqDpBEkp8Tjmw1AgAIXCTnGO62ELiFEJLaa5VG2Vkn26crzaelf1wIWFpyqk
-         uMm7lcOIqDU7CM4VNLQBkEwNumLE9/FJZq/HM5uD4rAFZCrMRuJ1mNvmtJOrHrDIGVQV
-         8AGREi9X8NtpoaVPEAB86hb/cXhUBBXMLq2ZtAjhwrWijkOmumr86R/MZdEStMeal4YR
-         wJGTN3/IyO4JeLBO5lIJQowmpslfRkiUXICDBCnkO1+7jUgSq4yxNlrn9tdmD5VcplO/
-         Jft8PgvMl1sAdNIfFUQXFM4GGm5RxLQKhny8DjreSHDLLvdK6oFZSusr88kGmnFlQAam
-         nXew==
-MIME-Version: 1.0
-Received: by 10.152.113.225 with SMTP id jb1mr3273402lab.23.1354829297427;
- Thu, 06 Dec 2012 13:28:17 -0800 (PST)
-Received: by 10.112.114.37 with HTTP; Thu, 6 Dec 2012 13:28:17 -0800 (PST)
-In-Reply-To: <20121206160052.GB32620@linux-mips.org>
-References: <20121206160052.GB32620@linux-mips.org>
-Date:   Thu, 6 Dec 2012 15:28:17 -0600
-Message-ID: <CACoURw7JTFMzmcRZHmBchcWPC8x5LFFfC1nGH-Xxc8f3KjNE2Q@mail.gmail.com>
-Subject: Re: RM9000 / E9000, MSP71xx class processors, SOCs and eval boards
-From:   Shane McDonald <mcdonald.shane@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 35200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Dec 2012 23:25:15 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:46245 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6831901Ab2LFWZNoMXdH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Dec 2012 23:25:13 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id EC7998F66;
+        Thu,  6 Dec 2012 23:25:12 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id zjkvW2t8vCQ4; Thu,  6 Dec 2012 23:25:07 +0100 (CET)
+Received: from hauke-desktop.lan (unknown [134.102.133.158])
+        by hauke-m.de (Postfix) with ESMTPSA id 1648F8F63;
+        Thu,  6 Dec 2012 23:25:06 +0100 (CET)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     john@phrozen.org, ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH] MIPS: BCM47XX: use fallback sprom var for board_{rev,type}
+Date:   Thu,  6 Dec 2012 23:25:05 +0100
+Message-Id: <1354832705-5926-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 35201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald.shane@gmail.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,32 +38,34 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Dec 6, 2012 at 10:00 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> Folks,
->
-> since many years the support code for those devices is rusting away in
-> the lmo git tree and frankly, I'd get rid of it because there's been
-> very few patch submissions or any kind of indication that somebody
-> still cares.  In short, this has turned into a waste of resource not
-> least my time.
->
-> So, is anybody still interested in maintaining that code?  If so, you
-> better attach a bunch of patches to your reply.
->
->   Ralf
->
+An SoC normally do not define path variables for board_rev and
+board_type and the Broadcom SDK also uses the nvram values without a
+prefix in such cases. Do the same to fill these sprom attributes from
+nvram and do not leave them empty, because brcmsmac do not like this.
 
-I'm interested in the MSP71xx eval board, although I may be
-the only person in the world who cares.  Specifically, I use the
-msp71xx_defconfig.  3.7-rc8 compiles with gcc-4.6.3
-without requiring any patches.
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+ arch/mips/bcm47xx/sprom.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-I don't know when the last time the RM9000 was compilable,
-but I have no interest in that, nor do I have interest in the
-FPGA or eval board versions of the MSP7120 (no hardware to
-test with).
-
-I had hoped that someone from PMC-Sierra would respond, but
-maybe they don't care anymore...
-
-Shane McDonald
+diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
+index 289cc0a..009c1ec 100644
+--- a/arch/mips/bcm47xx/sprom.c
++++ b/arch/mips/bcm47xx/sprom.c
+@@ -652,12 +652,10 @@ static void bcm47xx_fill_sprom_ethernet(struct ssb_sprom *sprom,
+ static void bcm47xx_fill_board_data(struct ssb_sprom *sprom, const char *prefix,
+ 				    bool fallback)
+ {
+-	nvram_read_u16(prefix, NULL, "boardrev", &sprom->board_rev, 0,
+-		       fallback);
++	nvram_read_u16(prefix, NULL, "boardrev", &sprom->board_rev, 0, true);
+ 	nvram_read_u16(prefix, NULL, "boardnum", &sprom->board_num, 0,
+ 		       fallback);
+-	nvram_read_u16(prefix, NULL, "boardtype", &sprom->board_type, 0,
+-		       fallback);
++	nvram_read_u16(prefix, NULL, "boardtype", &sprom->board_type, 0, true);
+ 	nvram_read_u32_2(prefix, "boardflags", &sprom->boardflags_lo,
+ 			 &sprom->boardflags_hi, fallback);
+ 	nvram_read_u32_2(prefix, "boardflags2", &sprom->boardflags2_lo,
+-- 
+1.7.10.4

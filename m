@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Dec 2012 17:00:58 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:36788 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6831874Ab2LFQAyQ4KkT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Dec 2012 17:00:54 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id qB6G0rjE003756;
-        Thu, 6 Dec 2012 17:00:53 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id qB6G0qlV003755;
-        Thu, 6 Dec 2012 17:00:52 +0100
-Date:   Thu, 6 Dec 2012 17:00:52 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: RM9000 / E9000, MSP71xx class processors, SOCs and eval boards
-Message-ID: <20121206160052.GB32620@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35197
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Dec 2012 20:12:32 +0100 (CET)
+Received: from georges.telenet-ops.be ([195.130.137.68]:47161 "EHLO
+        georges.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6831900Ab2LFTMbCrOMd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Dec 2012 20:12:31 +0100
+Received: from ayla.of.borg ([84.193.72.141])
+        by georges.telenet-ops.be with bizsmtp
+        id YKCS1k00Y32ts5g06KCSbZ; Thu, 06 Dec 2012 20:12:28 +0100
+Received: from geert by ayla.of.borg with local (Exim 4.71)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1Tggry-0001yS-HI; Thu, 06 Dec 2012 20:12:26 +0100
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>
+Cc:     linux-mips@linux-mips.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH] MIPS: Check BITS_PER_LONG instead of __SIZEOF_LONG__
+Date:   Thu,  6 Dec 2012 20:12:17 +0100
+Message-Id: <1354821137-7562-1-git-send-email-geert@linux-m68k.org>
+X-Mailer: git-send-email 1.7.0.4
+X-archive-position: 35198
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,15 +36,39 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Folks,
+When building a 32-bit kernel for RBTX4927 with gcc version 4.1.2 20061115
+(prerelease) (Ubuntu 4.1.1-21), I get:
 
-since many years the support code for those devices is rusting away in
-the lmo git tree and frankly, I'd get rid of it because there's been
-very few patch submissions or any kind of indication that somebody
-still cares.  In short, this has turned into a waste of resource not
-least my time.
+arch/mips/lib/delay.c:24:5: warning: "__SIZEOF_LONG__" is not defined
 
-So, is anybody still interested in maintaining that code?  If so, you
-better attach a bunch of patches to your reply.
+As a consequence, __delay() always uses the 64-bit "dsubu" instruction.
 
-  Ralf
+Replace the check for "__SIZEOF_LONG__ == 4" by "BITS_PER_LONG == 32" to
+fix this.
+
+Introduced by commit 5210edcd527773c227465ad18e416a894966324f ("MIPS: Make
+__{,n,u}delay declarations match definitions and generic delay.h")
+
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+--
+Untested on real hardware.
+Ralf, is this sufficient to prevent you from nuking RBTX4927 support? ;-)
+---
+ arch/mips/lib/delay.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/arch/mips/lib/delay.c b/arch/mips/lib/delay.c
+index dc81ca8..288f795 100644
+--- a/arch/mips/lib/delay.c
++++ b/arch/mips/lib/delay.c
+@@ -21,7 +21,7 @@ void __delay(unsigned long loops)
+ 	"	.set	noreorder				\n"
+ 	"	.align	3					\n"
+ 	"1:	bnez	%0, 1b					\n"
+-#if __SIZEOF_LONG__ == 4
++#if BITS_PER_LONG == 32
+ 	"	subu	%0, 1					\n"
+ #else
+ 	"	dsubu	%0, 1					\n"
+-- 
+1.7.0.4

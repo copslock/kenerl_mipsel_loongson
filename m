@@ -1,30 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Dec 2012 23:25:15 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:46245 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6831901Ab2LFWZNoMXdH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Dec 2012 23:25:13 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id EC7998F66;
-        Thu,  6 Dec 2012 23:25:12 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id zjkvW2t8vCQ4; Thu,  6 Dec 2012 23:25:07 +0100 (CET)
-Received: from hauke-desktop.lan (unknown [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 1648F8F63;
-        Thu,  6 Dec 2012 23:25:06 +0100 (CET)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     john@phrozen.org, ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH] MIPS: BCM47XX: use fallback sprom var for board_{rev,type}
-Date:   Thu,  6 Dec 2012 23:25:05 +0100
-Message-Id: <1354832705-5926-1-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.7.10.4
-X-archive-position: 35201
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 00:46:37 +0100 (CET)
+Received: from mail-gh0-f177.google.com ([209.85.160.177]:43118 "EHLO
+        mail-gh0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6831864Ab2LFXqgENiKH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 00:46:36 +0100
+Received: by mail-gh0-f177.google.com with SMTP id g22so1182474ghb.36
+        for <multiple recipients>; Thu, 06 Dec 2012 15:46:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=C8fytjMOHkHE5jAPCA4kxYlukDxaezm26ftd2Q3XZ+c=;
+        b=b2SMt1OLpZm1Tx7CW/hmZlX2Gu3Ca6oEPHRIuRnzXtc5587qZNSSaosqtojN4bX9lK
+         ausLv+S/mDc6ZSdze2bt8HZSiAc0Bprv+PkbAyl8/L4j9tfNlebQKeDtZYMedleER/9h
+         h+nB9HOajRrm+GWJEJrK98hk5iQfYQKKpmoVrTJGZm+dVpy/pE4pX2PhBBTDuci2GF8G
+         Z/Cgz7HMzQ+qJbGJXiskdvTQyes0LqIMfuISJDNHJ60p+Yvxvdb5MQ3GMtoEEX6ErubW
+         UK9TQjfN0svKHPxpeossk6yUglwl6qHG+sS0jLjzfTZhVCd884DzyFzDHd4l2TLJ8dHR
+         hP0Q==
+Received: by 10.236.92.172 with SMTP id j32mr4884558yhf.37.1354837589608;
+        Thu, 06 Dec 2012 15:46:29 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id n20sm10334376anl.19.2012.12.06.15.46.26
+        (version=SSLv3 cipher=OTHER);
+        Thu, 06 Dec 2012 15:46:27 -0800 (PST)
+Message-ID: <50C12E52.7010802@gmail.com>
+Date:   Thu, 06 Dec 2012 15:46:26 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
+MIME-Version: 1.0
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Check BITS_PER_LONG instead of __SIZEOF_LONG__
+References: <1354821137-7562-1-git-send-email-geert@linux-m68k.org>
+In-Reply-To: <1354821137-7562-1-git-send-email-geert@linux-m68k.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 35202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,34 +53,45 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-An SoC normally do not define path variables for board_rev and
-board_type and the Broadcom SDK also uses the nvram values without a
-prefix in such cases. Do the same to fill these sprom attributes from
-nvram and do not leave them empty, because brcmsmac do not like this.
+On 12/06/2012 11:12 AM, Geert Uytterhoeven wrote:
+> When building a 32-bit kernel for RBTX4927 with gcc version 4.1.2 20061115
+> (prerelease) (Ubuntu 4.1.1-21), I get:
+>
+> arch/mips/lib/delay.c:24:5: warning: "__SIZEOF_LONG__" is not defined
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- arch/mips/bcm47xx/sprom.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Sorry, looks like it may have been added in GCC-4.3.  I didn't check any 
+earlier versions when I made the original patch.
 
-diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
-index 289cc0a..009c1ec 100644
---- a/arch/mips/bcm47xx/sprom.c
-+++ b/arch/mips/bcm47xx/sprom.c
-@@ -652,12 +652,10 @@ static void bcm47xx_fill_sprom_ethernet(struct ssb_sprom *sprom,
- static void bcm47xx_fill_board_data(struct ssb_sprom *sprom, const char *prefix,
- 				    bool fallback)
- {
--	nvram_read_u16(prefix, NULL, "boardrev", &sprom->board_rev, 0,
--		       fallback);
-+	nvram_read_u16(prefix, NULL, "boardrev", &sprom->board_rev, 0, true);
- 	nvram_read_u16(prefix, NULL, "boardnum", &sprom->board_num, 0,
- 		       fallback);
--	nvram_read_u16(prefix, NULL, "boardtype", &sprom->board_type, 0,
--		       fallback);
-+	nvram_read_u16(prefix, NULL, "boardtype", &sprom->board_type, 0, true);
- 	nvram_read_u32_2(prefix, "boardflags", &sprom->boardflags_lo,
- 			 &sprom->boardflags_hi, fallback);
- 	nvram_read_u32_2(prefix, "boardflags2", &sprom->boardflags2_lo,
--- 
-1.7.10.4
+
+
+>
+> As a consequence, __delay() always uses the 64-bit "dsubu" instruction.
+>
+> Replace the check for "__SIZEOF_LONG__ == 4" by "BITS_PER_LONG == 32" to
+> fix this.
+>
+> Introduced by commit 5210edcd527773c227465ad18e416a894966324f ("MIPS: Make
+> __{,n,u}delay declarations match definitions and generic delay.h")
+>
+> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> --
+> Untested on real hardware.
+> Ralf, is this sufficient to prevent you from nuking RBTX4927 support? ;-)
+> ---
+>   arch/mips/lib/delay.c |    2 +-
+>   1 files changed, 1 insertions(+), 1 deletions(-)
+>
+> diff --git a/arch/mips/lib/delay.c b/arch/mips/lib/delay.c
+> index dc81ca8..288f795 100644
+> --- a/arch/mips/lib/delay.c
+> +++ b/arch/mips/lib/delay.c
+> @@ -21,7 +21,7 @@ void __delay(unsigned long loops)
+>   	"	.set	noreorder				\n"
+>   	"	.align	3					\n"
+>   	"1:	bnez	%0, 1b					\n"
+> -#if __SIZEOF_LONG__ == 4
+> +#if BITS_PER_LONG == 32
+>   	"	subu	%0, 1					\n"
+>   #else
+>   	"	dsubu	%0, 1					\n"
+>

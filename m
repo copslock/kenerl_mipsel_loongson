@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:21:21 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:60393 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:21:40 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:60396 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6824810Ab2LGFVDDU5L- (ORCPT
+        with ESMTP id S6824804Ab2LGFVDkhGQp (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:21:03 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1TgqMq-0007Pp-W9; Thu, 06 Dec 2012 23:20:57 -0600
+        id 1TgqMr-0007Pp-Ft; Thu, 06 Dec 2012 23:20:57 -0600
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 1/4] MIPS: FW: Add environment variable processing.
-Date:   Thu,  6 Dec 2012 23:20:46 -0600
-Message-Id: <1354857649-29224-2-git-send-email-sjhill@mips.com>
+Subject: [PATCH 2/4] MIPS: sead3: Use new common FW library variable processing.
+Date:   Thu,  6 Dec 2012 23:20:47 -0600
+Message-Id: <1354857649-29224-3-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1354857649-29224-1-git-send-email-sjhill@mips.com>
 References: <1354857649-29224-1-git-send-email-sjhill@mips.com>
-X-archive-position: 35230
+X-archive-position: 35231
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,188 +36,240 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Add parsing of the environment and command line variables passed to
-the kernel to the firmware library.
+Remove old YAMON prom code and use common firmware library code
+instead for the SEAD-3 platform.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/fw/lib/Makefile     |    2 +
- arch/mips/fw/lib/cmdline.c    |  101 +++++++++++++++++++++++++++++++++++++++++
- arch/mips/include/asm/fw/fw.h |   47 +++++++++++++++++++
- 3 files changed, 150 insertions(+)
- create mode 100644 arch/mips/fw/lib/cmdline.c
- create mode 100644 arch/mips/include/asm/fw/fw.h
+ arch/mips/mti-sead3/Makefile        |    8 ++--
+ arch/mips/mti-sead3/sead3-cmdline.c |   46 --------------------
+ arch/mips/mti-sead3/sead3-console.c |    2 +-
+ arch/mips/mti-sead3/sead3-display.c |    1 -
+ arch/mips/mti-sead3/sead3-init.c    |   82 ++++++++++++++++++++---------------
+ arch/mips/mti-sead3/sead3-time.c    |    1 -
+ 6 files changed, 51 insertions(+), 89 deletions(-)
+ delete mode 100644 arch/mips/mti-sead3/sead3-cmdline.c
 
-diff --git a/arch/mips/fw/lib/Makefile b/arch/mips/fw/lib/Makefile
-index 84befc9..5291505 100644
---- a/arch/mips/fw/lib/Makefile
-+++ b/arch/mips/fw/lib/Makefile
-@@ -2,4 +2,6 @@
- # Makefile for generic prom monitor library routines under Linux.
+diff --git a/arch/mips/mti-sead3/Makefile b/arch/mips/mti-sead3/Makefile
+index e2ace8a..fd384b5 100644
+--- a/arch/mips/mti-sead3/Makefile
++++ b/arch/mips/mti-sead3/Makefile
+@@ -8,10 +8,10 @@
+ # Copyright (C) 2012 MIPS Technoligies, Inc.  All rights reserved.
+ # Steven J. Hill <sjhill@mips.com>
  #
+-obj-y				:= sead3-lcd.o sead3-cmdline.o \
+-				   sead3-display.o sead3-init.o sead3-int.o \
+-				   sead3-mtd.o sead3-net.o sead3-platform.o \
+-				   sead3-reset.o sead3-setup.o sead3-time.o
++obj-y				:= sead3-lcd.o sead3-display.o sead3-init.o \
++				   sead3-int.o sead3-mtd.o sead3-net.o \
++				   sead3-platform.o sead3-reset.o \
++				   sead3-setup.o sead3-time.o
  
-+lib-y			+= cmdline.o
-+
- lib-$(CONFIG_64BIT)	+= call_o32.o
-diff --git a/arch/mips/fw/lib/cmdline.c b/arch/mips/fw/lib/cmdline.c
-new file mode 100644
-index 0000000..ffd0345
---- /dev/null
-+++ b/arch/mips/fw/lib/cmdline.c
-@@ -0,0 +1,101 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
-+ */
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/string.h>
-+
-+#include <asm/addrspace.h>
+ obj-y				+= sead3-i2c-dev.o sead3-i2c.o \
+ 				   sead3-pic32-i2c-drv.o sead3-pic32-bus.o \
+diff --git a/arch/mips/mti-sead3/sead3-cmdline.c b/arch/mips/mti-sead3/sead3-cmdline.c
+deleted file mode 100644
+index a2e6cec..0000000
+--- a/arch/mips/mti-sead3/sead3-cmdline.c
++++ /dev/null
+@@ -1,46 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+- */
+-#include <linux/init.h>
+-#include <linux/string.h>
+-
+-#include <asm/bootinfo.h>
+-
+-extern int prom_argc;
+-extern int *_prom_argv;
+-
+-/*
+- * YAMON (32-bit PROM) pass arguments and environment as 32-bit pointer.
+- * This macro take care of sign extension.
+- */
+-#define prom_argv(index) ((char *)(long)_prom_argv[(index)])
+-
+-char * __init prom_getcmdline(void)
+-{
+-	return &(arcs_cmdline[0]);
+-}
+-
+-void  __init prom_init_cmdline(void)
+-{
+-	char *cp;
+-	int actr;
+-
+-	actr = 1; /* Always ignore argv[0] */
+-
+-	cp = &(arcs_cmdline[0]);
+-	while (actr < prom_argc) {
+-		strcpy(cp, prom_argv(actr));
+-		cp += strlen(prom_argv(actr));
+-		*cp++ = ' ';
+-		actr++;
+-	}
+-	if (cp != &(arcs_cmdline[0])) {
+-		/* get rid of trailing space */
+-		--cp;
+-		*cp = '\0';
+-	}
+-}
+diff --git a/arch/mips/mti-sead3/sead3-console.c b/arch/mips/mti-sead3/sead3-console.c
+index b367391..1b6042c 100644
+--- a/arch/mips/mti-sead3/sead3-console.c
++++ b/arch/mips/mti-sead3/sead3-console.c
+@@ -26,7 +26,7 @@ static inline void serial_out(int offset, int value, unsigned int base_addr)
+ 	__raw_writel(value, PORT(base_addr, offset));
+ }
+ 
+-void __init prom_init_early_console(char port)
++void __init fw_init_early_console(char port)
+ {
+ 	console_port = port;
+ }
+diff --git a/arch/mips/mti-sead3/sead3-display.c b/arch/mips/mti-sead3/sead3-display.c
+index 8308c7f..62202e1 100644
+--- a/arch/mips/mti-sead3/sead3-display.c
++++ b/arch/mips/mti-sead3/sead3-display.c
+@@ -8,7 +8,6 @@
+ #include <linux/timer.h>
+ #include <linux/io.h>
+ #include <asm/mips-boards/generic.h>
+-#include <asm/mips-boards/prom.h>
+ 
+ static unsigned int display_count;
+ static unsigned int max_display_count;
+diff --git a/arch/mips/mti-sead3/sead3-init.c b/arch/mips/mti-sead3/sead3-init.c
+index 6939254..bfbd17b 100644
+--- a/arch/mips/mti-sead3/sead3-init.c
++++ b/arch/mips/mti-sead3/sead3-init.c
+@@ -12,38 +12,51 @@
+ #include <asm/cacheflush.h>
+ #include <asm/traps.h>
+ #include <asm/mips-boards/generic.h>
+-#include <asm/mips-boards/prom.h>
+-
+-extern void prom_init_early_console(char port);
 +#include <asm/fw/fw.h>
+ 
+ extern char except_vec_nmi;
+ extern char except_vec_ejtag_debug;
+ 
+-int prom_argc;
+-int *_prom_argv, *_prom_envp;
+-
+-#define prom_envp(index) ((char *)(long)_prom_envp[(index)])
+-
+-char *prom_getenv(char *envname)
++#ifdef CONFIG_SERIAL_8250_CONSOLE
++static void __init console_config(void)
+ {
+-	/*
+-	 * Return a pointer to the given environment variable.
+-	 * In 64-bit mode: we're using 64-bit pointers, but all pointers
+-	 * in the PROM structures are only 32-bit, so we need some
+-	 * workarounds, if we are running in 64-bit mode.
+-	 */
+-	int i, index = 0;
+-
+-	i = strlen(envname);
+-
+-	while (prom_envp(index)) {
+-		if (strncmp(envname, prom_envp(index), i) == 0)
+-			return prom_envp(index+1);
+-		index += 2;
++	char console_string[40];
++	int baud = 0;
++	char parity = '\0', bits = '\0', flow = '\0';
++	char *s;
 +
-+int fw_argc;
-+int *_fw_argv;
-+int *_fw_envp;
-+
-+void __init fw_init_cmdline(void)
-+{
-+	int i;
-+
-+	/* Validate command line parameters. */
-+	if ((fw_arg0 >= CKSEG0) || (fw_arg1 < CKSEG0)) {
-+		fw_argc = 0;
-+		_fw_argv = NULL;
-+	} else {
-+		fw_argc = (fw_arg0 & 0x0000ffff);
-+		_fw_argv = (int *)fw_arg1;
-+	}
-+
-+	/* Validate environment pointer. */
-+	if (fw_arg2 < CKSEG0)
-+		_fw_envp = NULL;
-+	else
-+		_fw_envp = (int *)fw_arg2;
-+
-+	for (i = 1; i < fw_argc; i++) {
-+		strlcat(arcs_cmdline, fw_argv(i), COMMAND_LINE_SIZE);
-+		if (i < (fw_argc - 1))
-+			strlcat(arcs_cmdline, " ", COMMAND_LINE_SIZE);
-+	}
-+}
-+
-+char * __init fw_getcmdline(void)
-+{
-+	return &(arcs_cmdline[0]);
-+}
-+
-+char *fw_getenv(char *envname)
-+{
-+	char *result = NULL;
-+
-+	if (_fw_envp != NULL) {
-+		/*
-+		 * Return a pointer to the given environment variable.
-+		 * YAMON uses "name", "value" pairs, while U-Boot uses
-+		 * "name=value".
-+		 */
-+		int i, yamon, index = 0;
-+
-+		yamon = (strchr(fw_envp(index), '=') == NULL);
-+		i = strlen(envname);
-+
-+		while (fw_envp(index)) {
-+			if (strncmp(envname, fw_envp(index), i) == 0) {
-+				if (yamon) {
-+					result = fw_envp(index + 1);
-+					break;
-+				} else if (fw_envp(index)[i] == '=') {
-+					result = (fw_envp(index + 1) + i);
-+					break;
-+				}
-+			}
-+
-+			/* Increment array index. */
-+			if (yamon)
-+				index += 2;
-+			else
-+				index += 1;
++	if ((strstr(fw_getcmdline(), "console=")) == NULL) {
++		s = fw_getenv("modetty0");
++		if (s) {
++			while (*s >= '0' && *s <= '9')
++				baud = baud*10 + *s++ - '0';
++			if (*s == ',')
++				s++;
++			if (*s)
++				parity = *s++;
++			if (*s == ',')
++				s++;
++			if (*s)
++				bits = *s++;
++			if (*s == ',')
++				s++;
++			if (*s == 'h')
++				flow = 'r';
 +		}
-+	}
-+
-+	return result;
-+}
-+
-+unsigned long fw_getenvl(char *envname)
-+{
-+	unsigned long envl = 0UL;
-+	char *str;
-+	long val;
-+	int tmp;
-+
-+	str = fw_getenv(envname);
-+	if (str) {
-+		tmp = kstrtol(str, 0, &val);
-+		envl = (unsigned long)val;
-+	}
-+
-+	return envl;
-+}
-diff --git a/arch/mips/include/asm/fw/fw.h b/arch/mips/include/asm/fw/fw.h
-new file mode 100644
-index 0000000..d6c50a7
---- /dev/null
-+++ b/arch/mips/include/asm/fw/fw.h
-@@ -0,0 +1,47 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2012 MIPS Technologies, Inc.
-+ */
-+#ifndef __ASM_FW_H_
-+#define __ASM_FW_H_
-+
-+#include <asm/bootinfo.h>	/* For cleaner code... */
-+
-+enum fw_memtypes {
-+	fw_dontuse,
-+	fw_code,
-+	fw_free,
-+};
-+
-+typedef struct {
-+	unsigned long base;	/* Within KSEG0 */
-+	unsigned int size;	/* bytes */
-+	enum fw_memtypes type;	/* fw_memtypes */
-+} fw_memblock_t;
-+
-+/* Maximum number of memory block descriptors. */
-+#define FW_MAX_MEMBLOCKS	32
-+
-+extern int fw_argc;
-+extern int *_fw_argv;
-+extern int *_fw_envp;
-+
-+/*
-+ * Most firmware like YAMON, PMON, etc. pass arguments and environment
-+ * variables as 32-bit pointers. These take care of sign extension.
-+ */
-+#define fw_argv(index)		((char *)(long)_fw_argv[(index)])
-+#define fw_envp(index)		((char *)(long)_fw_envp[(index)])
-+
-+extern void fw_init_cmdline(void);
-+extern char *fw_getcmdline(void);
-+extern fw_memblock_t *fw_getmdesc(void);
-+extern void fw_meminit(void);
-+extern char *fw_getenv(char *name);
-+extern unsigned long fw_getenvl(char *name);
-+extern void fw_init_early_console(char port);
-+
-+#endif /* __ASM_FW_H_ */
++		if (baud == 0)
++			baud = 38400;
++		if (parity != 'n' && parity != 'o' && parity != 'e')
++			parity = 'n';
++		if (bits != '7' && bits != '8')
++			bits = '8';
++		if (flow == '\0')
++			flow = 'r';
++		sprintf(console_string, " console=ttyS0,%d%c%c%c", baud,
++			parity, bits, flow);
++		strcat(fw_getcmdline(), console_string);
+ 	}
+-
+-	return NULL;
+ }
++#endif
+ 
+ static void __init mips_nmi_setup(void)
+ {
+@@ -117,23 +130,20 @@ static void __init mips_ejtag_setup(void)
+ 
+ void __init prom_init(void)
+ {
+-	prom_argc = fw_arg0;
+-	_prom_argv = (int *) fw_arg1;
+-	_prom_envp = (int *) fw_arg2;
+-
+ 	board_nmi_handler_setup = mips_nmi_setup;
+ 	board_ejtag_handler_setup = mips_ejtag_setup;
+ 
+-	prom_init_cmdline();
++	fw_init_cmdline();
+ #ifdef CONFIG_EARLY_PRINTK
+-	if ((strstr(prom_getcmdline(), "console=ttyS0")) != NULL)
+-		prom_init_early_console(0);
+-	else if ((strstr(prom_getcmdline(), "console=ttyS1")) != NULL)
+-		prom_init_early_console(1);
++	if ((strstr(fw_getcmdline(), "console=ttyS0")) != NULL)
++		fw_init_early_console(0);
++	else if ((strstr(fw_getcmdline(), "console=ttyS1")) != NULL)
++		fw_init_early_console(1);
+ #endif
+ #ifdef CONFIG_SERIAL_8250_CONSOLE
+-	if ((strstr(prom_getcmdline(), "console=")) == NULL)
+-		strcat(prom_getcmdline(), " console=ttyS0,38400n8r");
++	if ((strstr(fw_getcmdline(), "console=")) == NULL)
++		strcat(fw_getcmdline(), " console=ttyS0,38400n8r");
++	console_config();
+ #endif
+ }
+ 
+diff --git a/arch/mips/mti-sead3/sead3-time.c b/arch/mips/mti-sead3/sead3-time.c
+index 048e781..418c07a 100644
+--- a/arch/mips/mti-sead3/sead3-time.c
++++ b/arch/mips/mti-sead3/sead3-time.c
+@@ -11,7 +11,6 @@
+ #include <asm/time.h>
+ #include <asm/irq.h>
+ #include <asm/mips-boards/generic.h>
+-#include <asm/mips-boards/prom.h>
+ 
+ unsigned long cpu_khz;
+ 
 -- 
 1.7.9.5

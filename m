@@ -1,40 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 08:59:29 +0100 (CET)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:39172 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817318Ab2LGH716YNr0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 08:59:27 +0100
-Received: by mail-lb0-f177.google.com with SMTP id n10so185407lbo.36
-        for <multiple recipients>; Thu, 06 Dec 2012 23:59:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=YRmf6SDtwqu7yAxj/jJCzb4Vi6yYXiQIwS8m3jkkjVc=;
-        b=h7mx0Z3VrW958KYF1GRoIIH09ghnGCbdjGNa7t4Bi7GVaXdBSm2T8DoVGz+ua7eLPm
-         izVY4JM5BInpDEH4vCPRGLBPoPmhVo0uXl+zS6FEmXr4sEgRe4DdJiPx1bVsR3gau4XQ
-         dbeBydDVdrpVZulQWMssXSBYtINM40CFVX8MlI34pR1svfzUUFllsrPeRe/gdbvtUGB/
-         0TFNol4iHhPLd4Y29XLkmb4PTXIQ2xEkiRotFsYA/Te0jEQpM4+IuCTru73dWq5GI401
-         wDL9cqAKnT+1JEIND2ZkalwKhyzEeczjFrRTRbtTEFwkEHX0UwOaffucltu2O1vmDlLw
-         GHtQ==
-MIME-Version: 1.0
-Received: by 10.112.43.161 with SMTP id x1mr2198235lbl.32.1354867162281; Thu,
- 06 Dec 2012 23:59:22 -0800 (PST)
-Received: by 10.114.20.137 with HTTP; Thu, 6 Dec 2012 23:59:22 -0800 (PST)
-In-Reply-To: <1354856737-28678-3-git-send-email-sjhill@mips.com>
-References: <1354856737-28678-1-git-send-email-sjhill@mips.com>
-        <1354856737-28678-3-git-send-email-sjhill@mips.com>
-Date:   Thu, 6 Dec 2012 23:59:22 -0800
-Message-ID: <CAJiQ=7DhoP0n0mUfZbq82td1FDKFx_GoAQkW4rC73zLSjf6g8g@mail.gmail.com>
-Subject: Re: [PATCH v99,02/13] MIPS: Whitespace clean-ups after microMIPS additions.
-From:   Kevin Cernekee <cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 11:19:43 +0100 (CET)
+Received: from mga11.intel.com ([192.55.52.93]:35839 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817667Ab2LGKTlF-G6S (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 7 Dec 2012 11:19:41 +0100
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP; 07 Dec 2012 02:19:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.84,236,1355126400"; 
+   d="scan'208";a="260408354"
+Received: from bee.sh.intel.com (HELO localhost) ([10.239.97.14])
+  by fmsmga002.fm.intel.com with ESMTP; 07 Dec 2012 02:19:32 -0800
+Received: from [192.168.1.143] (helo=hive.lkp.intel.com)
+        by localhost with smtp (Exim 4.80)
+        (envelope-from <fengguang.wu@intel.com>)
+        id 1Tgv17-0002rQ-8X; Fri, 07 Dec 2012 18:18:49 +0800
+Date:   Fri, 07 Dec 2012 18:20:37 +0800
+From:   kbuild test robot <fengguang.wu@intel.com>
 To:     "Steven J. Hill" <sjhill@mips.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 35243
+Cc:     linux-mips@linux-mips.org
+Subject: [mips-sjhill:mti-next 31/35] dma-default.c:(.text+0xb958):
+ undefined reference to `hw_coherentio'
+Message-ID: <50c1c2f5.TyQEXFiN4QI5UfpT%fengguang.wu@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 192.168.1.143
+X-SA-Exim-Mail-From: fengguang.wu@intel.com
+X-SA-Exim-Scanned: No (on localhost); SAEximRunCond expanded to false
+X-archive-position: 35244
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: fengguang.wu@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,28 +46,40 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Dec 6, 2012 at 9:05 PM, Steven J. Hill <sjhill@mips.com> wrote:
-> From: "Steven J. Hill" <sjhill@mips.com>
->
-> Clean-up tabs, spaces, macros, etc. after adding in microMIPS
-> instructions for the micro-assembler.
+tree:   git://git.linux-mips.org/pub/scm/sjhill/linux-sjhill mti-next
+head:   76965291af22d5e06b8ffff677cfe2b227a9487a
+commit: 5e8848b05d0c0a6854c7de9f55122ccf2f47a248 [31/35] MIPS: Add option to disable software I/O coherency.
+config: make ARCH=mips allnoconfig
 
-My personal preference would be to fix up the whitespace in the
-existing code first, then make the new (MM) code follow the convention
-from the get-go.
+All error/warnings:
 
-> -struct fp0_format {      /* FPU multipy and add format (MIPS32) */
-> +struct fp0_format {    /* FPU multipy and add format (MIPS32) */
+arch/mips/built-in.o: In function `mips_dma_map_sg':
+dma-default.c:(.text+0xb310): undefined reference to `coherentio'
+dma-default.c:(.text+0xb360): undefined reference to `coherentio'
+arch/mips/built-in.o: In function `mips_dma_map_page':
+dma-default.c:(.text+0xb430): undefined reference to `coherentio'
+dma-default.c:(.text+0xb434): undefined reference to `coherentio'
+arch/mips/built-in.o: In function `mips_dma_unmap_sg':
+dma-default.c:(.text+0xb58c): undefined reference to `coherentio'
+arch/mips/built-in.o:dma-default.c:(.text+0xb5bc): more undefined references to `coherentio' follow
+arch/mips/built-in.o: In function `mips_dma_free_coherent':
+dma-default.c:(.text+0xb958): undefined reference to `hw_coherentio'
+dma-default.c:(.text+0xb95c): undefined reference to `hw_coherentio'
+arch/mips/built-in.o: In function `mips_dma_alloc_coherent':
+dma-default.c:(.text+0xbae8): undefined reference to `coherentio'
+dma-default.c:(.text+0xbaec): undefined reference to `coherentio'
+dma-default.c:(.text+0xbb3c): undefined reference to `hw_coherentio'
+dma-default.c:(.text+0xbb40): undefined reference to `hw_coherentio'
+arch/mips/built-in.o: In function `mips_dma_unmap_page':
+dma-default.c:(.text+0xbb6c): undefined reference to `coherentio'
+dma-default.c:(.text+0xbb70): undefined reference to `coherentio'
+arch/mips/built-in.o: In function `mips_dma_sync_single_for_cpu':
+dma-default.c:(.text+0xbbf8): undefined reference to `coherentio'
+dma-default.c:(.text+0xbbfc): undefined reference to `coherentio'
+arch/mips/built-in.o: In function `mips_dma_sync_single_for_device':
+dma-default.c:(.text+0xbc84): undefined reference to `coherentio'
+arch/mips/built-in.o:dma-default.c:(.text+0xbc88): more undefined references to `coherentio' follow
 
-"multiply"
-
-> --- a/arch/mips/kernel/proc.c
-> +++ b/arch/mips/kernel/proc.c
-> @@ -73,6 +73,7 @@ static int show_cpuinfo(struct seq_file *m, void *v)
->         if (cpu_has_dsp)        seq_printf(m, "%s", " dsp");
->         if (cpu_has_dsp2)       seq_printf(m, "%s", " dsp2");
->         if (cpu_has_mipsmt)     seq_printf(m, "%s", " mt");
-> +       if (cpu_has_mmips)      seq_printf(m, "%s", " micromips");
->         seq_printf(m, "\n");
-
-This should probably go into a different commit.
+---
+0-DAY kernel build testing backend         Open Source Technology Center
+Fengguang Wu, Yuanhan Liu                              Intel Corporation

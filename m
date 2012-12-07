@@ -1,22 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:07:18 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:60313 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:07:36 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:60314 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6824759Ab2LGFFxQkwAk (ORCPT
+        with ESMTP id S6824761Ab2LGFFx11Rwi (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:05:53 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1Tgq8A-0007MA-71; Thu, 06 Dec 2012 23:05:46 -0600
+        id 1Tgq8A-0007MA-MX; Thu, 06 Dec 2012 23:05:46 -0600
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
-Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH v99,04/13] MIPS: microMIPS: Add support for exception handling.
-Date:   Thu,  6 Dec 2012 23:05:28 -0600
-Message-Id: <1354856737-28678-5-git-send-email-sjhill@mips.com>
+Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org,
+        Leonid Yegoshin <yegoshin@mips.com>
+Subject: [PATCH v99,05/13] MIPS: microMIPS: Support handling of delay slots.
+Date:   Thu,  6 Dec 2012 23:05:29 -0600
+Message-Id: <1354856737-28678-6-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1354856737-28678-1-git-send-email-sjhill@mips.com>
 References: <1354856737-28678-1-git-send-email-sjhill@mips.com>
-X-archive-position: 35215
+X-archive-position: 35216
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,907 +37,325 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-All exceptions must be taken in microMIPS mode, never in MIPS32R2
-mode or the kernel falls apart. A few 'nop' instructions are used
-to maintain the correct alignment of microMIPS versions of the
-exception vectors.
+Add logic needed to properly calculate exceptions for delay slots
+when in microMIPS or MIPS16e modes.
 
+Signed-off-by: Leonid Yegoshin <yegoshin@mips.com>
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/mipsregs.h   |    1 +
- arch/mips/include/asm/stackframe.h |   12 +-
- arch/mips/kernel/cpu-probe.c       |    3 +
- arch/mips/kernel/genex.S           |   74 ++++++---
- arch/mips/kernel/scall32-o32.S     |    9 ++
- arch/mips/kernel/smtc-asm.S        |    3 +
- arch/mips/kernel/traps.c           |  290 ++++++++++++++++++++++++++----------
- arch/mips/mm/tlbex.c               |   21 +++
- arch/mips/mti-sead3/sead3-init.c   |   48 ++++++
- 9 files changed, 354 insertions(+), 107 deletions(-)
+ arch/mips/include/asm/branch.h |   33 +++++++-
+ arch/mips/include/asm/inst.h   |    3 +
+ arch/mips/kernel/branch.c      |  183 +++++++++++++++++++++++++++++++++++++++-
+ arch/mips/kernel/unaligned.c   |    3 +
+ 4 files changed, 219 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 4b55a5a..5e9707e 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -596,6 +596,7 @@
- #define MIPS_CONF3_RXI		(_ULCAST_(1) << 12)
- #define MIPS_CONF3_ULRI		(_ULCAST_(1) << 13)
- #define MIPS_CONF3_ISA		(_ULCAST_(3) << 14)
-+#define MIPS_CONF3_ISA_OE	(_ULCAST_(1) << 16)
- 
- #define MIPS_CONF4_MMUSIZEEXT	(_ULCAST_(255) << 0)
- #define MIPS_CONF4_MMUEXTDEF	(_ULCAST_(3) << 14)
-diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-index cb41af5..335ce06 100644
---- a/arch/mips/include/asm/stackframe.h
-+++ b/arch/mips/include/asm/stackframe.h
-@@ -139,7 +139,7 @@
- 1:		move	ra, k0
- 		li	k0, 3
- 		mtc0	k0, $22
--#endif /* CONFIG_CPU_LOONGSON2F */
-+#endif /* CONFIG_CPU_JUMP_WORKAROUNDS */
- #if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
- 		lui	k1, %hi(kernelsp)
- #else
-@@ -189,6 +189,7 @@
- 		LONG_S	$0, PT_R0(sp)
- 		mfc0	v1, CP0_STATUS
- 		LONG_S	$2, PT_R2(sp)
-+		LONG_S	v1, PT_STATUS(sp)
- #ifdef CONFIG_MIPS_MT_SMTC
- 		/*
- 		 * Ideally, these instructions would be shuffled in
-@@ -200,21 +201,20 @@
- 		LONG_S	k0, PT_TCSTATUS(sp)
- #endif /* CONFIG_MIPS_MT_SMTC */
- 		LONG_S	$4, PT_R4(sp)
--		LONG_S	$5, PT_R5(sp)
--		LONG_S	v1, PT_STATUS(sp)
- 		mfc0	v1, CP0_CAUSE
--		LONG_S	$6, PT_R6(sp)
--		LONG_S	$7, PT_R7(sp)
-+		LONG_S	$5, PT_R5(sp)
- 		LONG_S	v1, PT_CAUSE(sp)
-+		LONG_S	$6, PT_R6(sp)
- 		MFC0	v1, CP0_EPC
-+		LONG_S	$7, PT_R7(sp)
- #ifdef CONFIG_64BIT
- 		LONG_S	$8, PT_R8(sp)
- 		LONG_S	$9, PT_R9(sp)
- #endif
-+		LONG_S	v1, PT_EPC(sp)
- 		LONG_S	$25, PT_R25(sp)
- 		LONG_S	$28, PT_R28(sp)
- 		LONG_S	$31, PT_R31(sp)
--		LONG_S	v1, PT_EPC(sp)
- 		ori	$28, sp, _THREAD_MASK
- 		xori	$28, _THREAD_MASK
- #ifdef CONFIG_CPU_CAVIUM_OCTEON
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 8db7a47..98eb036 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -442,6 +442,9 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
- 		c->options |= MIPS_CPU_ULRI;
- 	if (config3 & MIPS_CONF3_ISA)
- 		c->options |= MIPS_CPU_MICROMIPS;
-+#ifdef CONFIG_CPU_MICROMIPS
-+	write_c0_config3(read_c0_config3() | MIPS_CONF3_ISA_OE);
-+#endif
- 
- 	return config3 & MIPS_CONF_M;
+diff --git a/arch/mips/include/asm/branch.h b/arch/mips/include/asm/branch.h
+index 888766a..ccc938a 100644
+--- a/arch/mips/include/asm/branch.h
++++ b/arch/mips/include/asm/branch.h
+@@ -16,11 +16,16 @@ static inline int delay_slot(struct pt_regs *regs)
+ 	return regs->cp0_cause & CAUSEF_BD;
  }
-diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-index 8882e57..dc7d756 100644
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -5,8 +5,8 @@
-  *
-  * Copyright (C) 1994 - 2000, 2001, 2003 Ralf Baechle
-  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-- * Copyright (C) 2001 MIPS Technologies, Inc.
-  * Copyright (C) 2002, 2007  Maciej W. Rozycki
-+ * Copyright (C) 2001, 2012 MIPS Technologies, Inc.  All rights reserved.
-  */
- #include <linux/init.h>
  
-@@ -22,8 +22,10 @@
- #include <asm/page.h>
- #include <asm/thread_info.h>
- 
-+#ifdef CONFIG_MIPS_MT_SMTC
- #define PANIC_PIC(msg)					\
--		.set push;				\
-+		.set	push;				\
-+		.set	nomicromips;			\
- 		.set	reorder;			\
- 		PTR_LA	a0,8f;				\
- 		.set	noat;				\
-@@ -32,17 +34,10 @@
- 9:		b	9b;				\
- 		.set	pop;				\
- 		TEXT(msg)
-+#endif
- 
- 	__INIT
- 
--NESTED(except_vec0_generic, 0, sp)
--	PANIC_PIC("Exception vector 0 called")
--	END(except_vec0_generic)
--
--NESTED(except_vec1_generic, 0, sp)
--	PANIC_PIC("Exception vector 1 called")
--	END(except_vec1_generic)
--
- /*
-  * General exception vector for all other CPUs.
-  *
-@@ -139,12 +134,19 @@ LEAF(r4k_wait)
- 	 nop
- 	nop
- 	nop
-+#ifdef CONFIG_CPU_MICROMIPS
-+	nop
-+	nop
-+	nop
-+	nop
-+#endif
- 	.set	mips3
- 	wait
- 	/* end of rollback region (the region size must be power of two) */
--	.set	pop
- 1:
- 	jr	ra
-+	nop
-+	.set	pop
- 	END(r4k_wait)
- 
- 	.macro	BUILD_ROLLBACK_PROLOGUE handler
-@@ -202,7 +204,11 @@ NESTED(handle_int, PT_SIZE, sp)
- 	LONG_L	s0, TI_REGS($28)
- 	LONG_S	sp, TI_REGS($28)
- 	PTR_LA	ra, ret_from_irq
--	j	plat_irq_dispatch
-+	PTR_LA  v0, plat_irq_dispatch
-+	jr	v0
-+#ifdef CONFIG_CPU_MICROMIPS
-+	nop
-+#endif
- 	END(handle_int)
- 
- 	__INIT
-@@ -223,11 +229,14 @@ NESTED(except_vec4, 0, sp)
- /*
-  * EJTAG debug exception handler.
-  * The EJTAG debug exception entry point is 0xbfc00480, which
-- * normally is in the boot PROM, so the boot PROM must do a
-+ * normally is in the boot PROM, so the boot PROM must do an
-  * unconditional jump to this vector.
-  */
- NESTED(except_vec_ejtag_debug, 0, sp)
- 	j	ejtag_debug_handler
-+#ifdef CONFIG_CPU_MICROMIPS
-+	 nop
-+#endif
- 	END(except_vec_ejtag_debug)
- 
- 	__FINIT
-@@ -252,9 +261,10 @@ NESTED(except_vec_vi, 0, sp)
- FEXPORT(except_vec_vi_mori)
- 	ori	a0, $0, 0
- #endif /* CONFIG_MIPS_MT_SMTC */
-+	PTR_LA	v1, except_vec_vi_handler
- FEXPORT(except_vec_vi_lui)
- 	lui	v0, 0		/* Patched */
--	j	except_vec_vi_handler
-+	jr	v1
- FEXPORT(except_vec_vi_ori)
- 	 ori	v0, 0		/* Patched */
- 	.set	pop
-@@ -355,6 +365,9 @@ EXPORT(ejtag_debug_buffer)
-  */
- NESTED(except_vec_nmi, 0, sp)
- 	j	nmi_handler
-+#ifdef CONFIG_CPU_MICROMIPS
-+	 nop
-+#endif
- 	END(except_vec_nmi)
- 
- 	__FINIT
-@@ -501,13 +514,36 @@ NESTED(nmi_handler, PT_SIZE, sp)
- 	.set	push
- 	.set	noat
- 	.set	noreorder
--	/* 0x7c03e83b: rdhwr v1,$29 */
-+	/* MIPS32: 0x7c03e83b: rdhwr v1,$29 */
-+	/* uMIPS:  0x007d6b3c: rdhwr v1,$29 -- in MIPS16e it is  */
-+	/*         ADDIUSP $16,0x7d; LI $3,0x3c and never RI. LY22 */
- 	MFC0	k1, CP0_EPC
--	lui	k0, 0x7c03
--	lw	k1, (k1)
--	ori	k0, 0xe83b
--	.set	reorder
-+#if defined(CONFIG_CPU_MICROMIPS) || defined(CONFIG_CPU_MIPS32_R2) || defined(CONFIG_CPU_MIPS64_R2)
-+	and     k0, k1, 1
-+	beqz    k0, 1f
-+	xor     k1, k0
-+	lhu     k0, (k1)
-+	lhu     k1, 2(k1)
-+	ins     k1, k0, 16, 16
-+	lui     k0, 0x007d
-+	b       docheck
-+	ori     k0, 0x6b3c
-+1:
-+	lui     k0, 0x7c03
-+	lw      k1, (k1)
-+	ori     k0, 0xe83b
-+#else
-+	andi    k0, k1, 1
-+	bnez    k0, handle_ri
-+	lui     k0, 0x7c03
-+	lw      k1, (k1)
-+	ori     k0, 0xe83b
-+#endif
-+	.set    reorder
-+docheck:
- 	bne	k0, k1, handle_ri	/* if not ours */
++extern int __isa_exception_epc(struct pt_regs *regs);
 +
-+isrdhwr:
- 	/* The insn is rdhwr.  No need to check CAUSE.BD here. */
- 	get_saved_sp	/* k1 := current_thread_info */
- 	.set	noreorder
-diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
-index 374f66e..2c0b071 100644
---- a/arch/mips/kernel/scall32-o32.S
-+++ b/arch/mips/kernel/scall32-o32.S
-@@ -138,9 +138,18 @@ stackargs:
- 5:	jr	t1
- 	 sw	t5, 16(sp)		# argument #5 to ksp
- 
-+#ifdef CONFIG_CPU_MICROMIPS
- 	sw	t8, 28(sp)		# argument #8 to ksp
-+	nop
- 	sw	t7, 24(sp)		# argument #7 to ksp
-+	nop
- 	sw	t6, 20(sp)		# argument #6 to ksp
-+	nop
-+#else
-+	sw	t8, 28(sp)		# argument #8 to ksp
-+	sw	t7, 24(sp)		# argument #7 to ksp
-+	sw	t6, 20(sp)		# argument #6 to ksp
-+#endif
- 6:	j	stack_done		# go back
- 	 nop
- 	.set	pop
-diff --git a/arch/mips/kernel/smtc-asm.S b/arch/mips/kernel/smtc-asm.S
-index 20938a4..8e9ae50 100644
---- a/arch/mips/kernel/smtc-asm.S
-+++ b/arch/mips/kernel/smtc-asm.S
-@@ -49,6 +49,9 @@ CAN WE PROVE THAT WE WON'T DO THIS IF INTS DISABLED??
- 	.text
- 	.align 5
- FEXPORT(__smtc_ipi_vector)
-+#ifdef CONFIG_CPU_MICROMIPS
-+	nop
-+#endif
- 	.set	noat
- 	/* Disable thread scheduling to make Status update atomic */
- 	DMT	27					# dmt	k1
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index c0dc176..feccbe8 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -8,8 +8,8 @@
-  * Copyright (C) 1998 Ulf Carlsson
-  * Copyright (C) 1999 Silicon Graphics, Inc.
-  * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com
-- * Copyright (C) 2000, 01 MIPS Technologies, Inc.
-  * Copyright (C) 2002, 2003, 2004, 2005, 2007  Maciej W. Rozycki
-+ * Copyright (C) 2000, 2001, 2012 MIPS Technologies, Inc.  All rights reserved.
-  */
- #include <linux/bug.h>
- #include <linux/compiler.h>
-@@ -82,10 +82,6 @@ extern asmlinkage void handle_dsp(void);
- extern asmlinkage void handle_mcheck(void);
- extern asmlinkage void handle_reserved(void);
- 
--extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
--				    struct mips_fpu_struct *ctx, int has_fpu,
--				    void *__user *fault_addr);
--
- void (*board_be_init)(void);
- int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
- void (*board_nmi_handler_setup)(void);
-@@ -491,6 +487,12 @@ asmlinkage void do_be(struct pt_regs *regs)
- #define SYNC   0x0000000f
- #define RDHWR  0x0000003b
- 
-+/*  microMIPS definitions   */
-+#define MM_POOL32A_FUNC 0xfc00ffff
-+#define MM_RDHWR        0x00006b3c
-+#define MM_RS           0x001f0000
-+#define MM_RT           0x03e00000
-+
- /*
-  * The ll_bit is cleared by r*_switch.S
-  */
-@@ -605,42 +607,62 @@ static int simulate_llsc(struct pt_regs *regs, unsigned int opcode)
-  * Simulate trapping 'rdhwr' instructions to provide user accessible
-  * registers not implemented in hardware.
-  */
--static int simulate_rdhwr(struct pt_regs *regs, unsigned int opcode)
-+static int simulate_rdhwr(struct pt_regs *regs, int rd, int rt)
+ static inline unsigned long exception_epc(struct pt_regs *regs)
  {
- 	struct thread_info *ti = task_thread_info(current);
+-	if (!delay_slot(regs))
++	if (likely(!delay_slot(regs)))
+ 		return regs->cp0_epc;
  
-+	perf_sw_event(PERF_COUNT_SW_EMULATION_FAULTS,
-+			1, regs, 0);
-+	switch (rd) {
-+	case 0:		/* CPU number */
-+		regs->regs[rt] = smp_processor_id();
-+		return 0;
-+	case 1:		/* SYNCI length */
-+		regs->regs[rt] = min(current_cpu_data.dcache.linesz,
-+				     current_cpu_data.icache.linesz);
-+		return 0;
-+	case 2:		/* Read count register */
-+		regs->regs[rt] = read_c0_count();
-+		return 0;
-+	case 3:		/* Count register resolution */
-+		switch (current_cpu_data.cputype) {
-+		case CPU_20KC:
-+		case CPU_25KF:
-+			regs->regs[rt] = 1;
-+			break;
-+		default:
-+			regs->regs[rt] = 2;
-+		}
-+		return 0;
-+	case 29:
-+		regs->regs[rt] = ti->tp_value;
-+		return 0;
-+	default:
-+		return -1;
++	if (is16mode(regs))
++		return __isa_exception_epc(regs);
++
+ 	return regs->cp0_epc + 4;
+ }
+ 
+@@ -29,9 +34,20 @@ static inline unsigned long exception_epc(struct pt_regs *regs)
+ extern int __compute_return_epc(struct pt_regs *regs);
+ extern int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 					 union mips_instruction insn);
++extern int __MIPS16e_compute_return_epc(struct pt_regs *regs);
++extern int __microMIPS_compute_return_epc(struct pt_regs *regs);
+ 
++/*  only for MIPS32/64 but not 16bits variants */
+ static inline int compute_return_epc(struct pt_regs *regs)
+ {
++	if (is16mode(regs)) {
++		if (cpu_has_mips16)
++			return __MIPS16e_compute_return_epc(regs);
++		if (cpu_has_mmips)
++			return __microMIPS_compute_return_epc(regs);
++		return regs->cp0_epc;
 +	}
++
+ 	if (!delay_slot(regs)) {
+ 		regs->cp0_epc += 4;
+ 		return 0;
+@@ -40,4 +56,19 @@ static inline int compute_return_epc(struct pt_regs *regs)
+ 	return __compute_return_epc(regs);
+ }
+ 
++static inline int MIPS16e_compute_return_epc(struct pt_regs *regs,
++					     union mips16e_instruction *inst)
++{
++	if (likely(!delay_slot(regs))) {
++		if (inst->ri.opcode == MIPS16e_extend_op) {
++			regs->cp0_epc += 4;
++			return 0;
++		}
++		regs->cp0_epc += 2;
++		return 0;
++	}
++
++	return __MIPS16e_compute_return_epc(regs);
 +}
 +
-+static int simulate_rdhwr_normal(struct pt_regs *regs, unsigned int opcode)
+ #endif /* _ASM_BRANCH_H */
+diff --git a/arch/mips/include/asm/inst.h b/arch/mips/include/asm/inst.h
+index 2b2e0e3..c97b854 100644
+--- a/arch/mips/include/asm/inst.h
++++ b/arch/mips/include/asm/inst.h
+@@ -1122,6 +1122,9 @@ struct decoded_instn {
+ 	int micro_mips_mode;
+ };
+ 
++/* Recode table from MIPS16e register notation to GPR. */
++extern const int mips16e_reg2gpr[];
++
+ union mips16e_instruction {
+ 	unsigned int full:16;
+ 	struct rr rr;
+diff --git a/arch/mips/kernel/branch.c b/arch/mips/kernel/branch.c
+index 4d735d0..01b4e91 100644
+--- a/arch/mips/kernel/branch.c
++++ b/arch/mips/kernel/branch.c
+@@ -14,10 +14,188 @@
+ #include <asm/cpu.h>
+ #include <asm/cpu-features.h>
+ #include <asm/fpu.h>
++#include <asm/fpu_emulator.h>
+ #include <asm/inst.h>
+ #include <asm/ptrace.h>
+ #include <asm/uaccess.h>
+ 
++/*
++ * Calculate and return exception epc in case of
++ * branch delay slot for microMIPS/MIPS16e
++ * It doesn't clear ISA mode bit.
++ */
++int __isa_exception_epc(struct pt_regs *regs)
 +{
- 	if ((opcode & OPCODE) == SPEC3 && (opcode & FUNC) == RDHWR) {
- 		int rd = (opcode & RD) >> 11;
- 		int rt = (opcode & RT) >> 16;
--		perf_sw_event(PERF_COUNT_SW_EMULATION_FAULTS,
--				1, regs, 0);
--		switch (rd) {
--		case 0:		/* CPU number */
--			regs->regs[rt] = smp_processor_id();
--			return 0;
--		case 1:		/* SYNCI length */
--			regs->regs[rt] = min(current_cpu_data.dcache.linesz,
--					     current_cpu_data.icache.linesz);
--			return 0;
--		case 2:		/* Read count register */
--			regs->regs[rt] = read_c0_count();
--			return 0;
--		case 3:		/* Count register resolution */
--			switch (current_cpu_data.cputype) {
--			case CPU_20KC:
--			case CPU_25KF:
--				regs->regs[rt] = 1;
--				break;
--			default:
--				regs->regs[rt] = 2;
--			}
--			return 0;
--		case 29:
--			regs->regs[rt] = ti->tp_value;
--			return 0;
--		default:
--			return -1;
--		}
++	long epc;
++	union mips16e_instruction inst;
 +
-+		simulate_rdhwr(regs, rd, rt);
-+		return 0;
++	/* calc exception pc in branch delay slot */
++	epc = regs->cp0_epc;
++	if (__get_user(inst.full, (u16 __user *) (epc & ~MIPS_ISA_MODE))) {
++		/* it should never happens... because delay slot was checked */
++		force_sig(SIGSEGV, current);
++		return epc;
 +	}
++	if (cpu_has_mips16) {
++		if (inst.ri.opcode == MIPS16e_jal_op)
++			epc += 4;
++		else
++			epc += 2;
++	} else if (mm_is16bit(inst.full))
++		epc += 2;
++	else
++		epc += 4;
 +
-+	/* Not ours.  */
-+	return -1;
++	return epc;
 +}
 +
-+static int simulate_rdhwr_mm(struct pt_regs *regs, unsigned short opcode)
++/*
++ * Compute the return address and do emulate branch simulation in MIPS16e mode,
++ * if required.
++ * After exception only - doesn't do 'compact' branch/jumps and can't be used
++ * during interrupt (compact B/J doesn't do exception)
++ */
++int __MIPS16e_compute_return_epc(struct pt_regs *regs)
 +{
-+	if ((opcode & MM_POOL32A_FUNC) == MM_RDHWR) {
-+		int rd = (opcode & MM_RS) >> 16;
-+		int rt = (opcode & MM_RT) >> 21;
-+		simulate_rdhwr(regs, rd, rt);
-+		return 0;
- 	}
- 
- 	/* Not ours.  */
-@@ -822,9 +844,29 @@ static void do_trap_or_bp(struct pt_regs *regs, unsigned int code,
- asmlinkage void do_bp(struct pt_regs *regs)
- {
- 	unsigned int opcode, bcode;
--
--	if (__get_user(opcode, (unsigned int __user *) exception_epc(regs)))
--		goto out_sigsegv;
-+	unsigned long epc;
-+	u16 instr[2];
++	u16 __user *addr;
++	union mips16e_instruction inst;
++	u16 inst2;
++	u32 fullinst;
++	long epc;
 +
-+	if (regs->cp0_epc & MIPS_ISA_MODE) {
-+		/* calc exception pc */
-+		epc = exception_epc(regs);
-+		if (cpu_has_mmips) {
-+			if ((__get_user(instr[0], (u16 __user *)(epc & ~MIPS_ISA_MODE))) ||
-+			    (__get_user(instr[1], (u16 __user *)((epc+2) & ~MIPS_ISA_MODE))))
-+				goto out_sigsegv;
-+		    opcode = (instr[0] << 16) | instr[1];
-+		} else {
-+		    /* MIPS16e mode */
-+		    if (__get_user(instr[0], (u16 __user *)(epc & ~MIPS_ISA_MODE)))
-+				goto out_sigsegv;
-+		    bcode = (instr[0] >> 6) & 0x3f;
-+		    do_trap_or_bp(regs, bcode, "Break");
-+		    return;
-+		}
-+	} else {
-+		if (__get_user(opcode, (unsigned int __user *) exception_epc(regs)))
-+			goto out_sigsegv;
++	epc = regs->cp0_epc;
++	/*
++	 * Read the instruction
++	 */
++	addr = (u16 __user *) (epc & ~MIPS_ISA_MODE);
++	if (__get_user(inst.full, addr)) {
++		force_sig(SIGSEGV, current);
++		return -EFAULT;
 +	}
++
++	switch (inst.ri.opcode) {
++	case MIPS16e_extend_op:
++		regs->cp0_epc += 4;
++		return 0;
++
++		/*
++		 *  JAL and JALX in MIPS16e mode
++		 */
++	case MIPS16e_jal_op:
++		addr += 1;
++		if (__get_user(inst2, addr)) {
++			force_sig(SIGSEGV, current);
++			return -EFAULT;
++		}
++		fullinst = ((unsigned)inst.full << 16) | inst2;
++		regs->regs[31] = epc + 6;
++		epc += 4;
++		epc >>= 28;
++		epc <<= 28;
++		/*
++		 * JAL:5 X:1 TARGET[20-16]:5 TARGET[25:21]:5 TARGET[15:0]:16
++		 *
++		 * ......TARGET[15:0].................TARGET[20:16]...........
++		 * ......TARGET[25:21]
++		 */
++		epc |=
++		    ((fullinst & 0xffff) << 2) | ((fullinst & 0x3e00000) >> 3) |
++		    ((fullinst & 0x1f0000) << 7);
++		if (!inst.jal.x)
++			epc |= MIPS_ISA_MODE;	/* set ISA mode 1 */
++		regs->cp0_epc = epc;
++		return 0;
++
++		/*
++		 *  J(AL)R(C)
++		 */
++	case MIPS16e_rr_op:
++		if (inst.rr.func == MIPS16e_jr_func) {
++
++			if (inst.rr.ra)
++				regs->cp0_epc = regs->regs[31];
++			else
++				regs->cp0_epc =
++				    regs->regs[mips16e_reg2gpr[inst.rr.rx]];
++
++			if (inst.rr.l) {
++				if (inst.rr.nd)
++					regs->regs[31] = epc + 2;
++				else
++					regs->regs[31] = epc + 4;
++			}
++			return 0;
++		}
++		break;
++	}
++
++	/* all other cases have no branch delay slot and are 16bits,
++	   and branches do not do exception */
++	regs->cp0_epc += 2;
++
++	return 0;
++}
++
++/*
++ * Compute the return address and do emulate branch simulation in
++ * microMIPS mode, if required.
++ * After exception only - doesn't do 'compact' branch/jumps and can't be used
++ * during interrupt (compact B/J doesn't do exception)
++ */
++int __microMIPS_compute_return_epc(struct pt_regs *regs)
++{
++	u16 __user *pc16;
++	u16 halfword;
++	unsigned int word;
++	unsigned long contpc;
++	struct decoded_instn mminst = { 0 };
++
++	mminst.micro_mips_mode = 1;
++
++	/*
++	 * This load never faults.
++	 */
++	pc16 = (unsigned short __user *)(regs->cp0_epc & ~MIPS_ISA_MODE);
++	__get_user(halfword, pc16);
++	pc16++;
++	contpc = regs->cp0_epc + 2;
++	word = ((unsigned int)halfword << 16);
++	mminst.pc_inc = 2;
++
++	if (!mm_is16bit(halfword)) {
++		__get_user(halfword, pc16);
++		pc16++;
++		contpc = regs->cp0_epc + 4;
++		mminst.pc_inc = 4;
++		word |= halfword;
++	}
++	mminst.insn = word;
++
++	if (get_user(halfword, pc16))
++		goto sigsegv;
++	mminst.next_pc_inc = 2;
++	word = ((unsigned int)halfword << 16);
++
++	if (!mm_is16bit(halfword)) {
++		pc16++;
++		if (get_user(halfword, pc16))
++			goto sigsegv;
++		mminst.next_pc_inc = 4;
++		word |= halfword;
++	}
++	mminst.next_insn = word;
++
++	mm_isBranchInstr(regs, mminst, &contpc);
++
++	regs->cp0_epc = contpc;
++
++	return 0;
++
++sigsegv:
++	force_sig(SIGSEGV, current);
++	return -EFAULT;
++}
++
+ /**
+  * __compute_return_epc_for_insn - Computes the return address and do emulate
+  *				    branch simulation, if required.
+@@ -57,7 +235,7 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 	 */
+ 	case bcond_op:
+ 		switch (insn.i_format.rt) {
+-	 	case bltz_op:
++		case bltz_op:
+ 		case bltzl_op:
+ 			if ((long)regs->regs[insn.i_format.rs] < 0) {
+ 				epc = epc + 4 + (insn.i_format.simmediate << 2);
+@@ -129,6 +307,8 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
+ 		epc <<= 28;
+ 		epc |= (insn.j_format.target << 2);
+ 		regs->cp0_epc = epc;
++		if (insn.i_format.opcode == jalx_op)
++			regs->cp0_epc |= MIPS_ISA_MODE;
+ 		break;
  
  	/*
- 	 * There is the ancient bug in the MIPS assemblers that the break
-@@ -865,13 +907,22 @@ out_sigsegv:
- asmlinkage void do_tr(struct pt_regs *regs)
- {
- 	unsigned int opcode, tcode = 0;
-+	u16 instr[2];
-+	unsigned long epc = exception_epc(regs);
- 
--	if (__get_user(opcode, (unsigned int __user *) exception_epc(regs)))
--		goto out_sigsegv;
-+	if ((__get_user(instr[0], (u16 __user *)(epc & ~MIPS_ISA_MODE))) ||
-+		(__get_user(instr[1], (u16 __user *)((epc+2) & ~MIPS_ISA_MODE))))
-+			goto out_sigsegv;
-+	opcode = (instr[0] << 16) | instr[1];
- 
- 	/* Immediate versions don't provide a code.  */
--	if (!(opcode & OPCODE))
--		tcode = ((opcode >> 6) & ((1 << 10) - 1));
-+	if (!(opcode & OPCODE)) {
-+		if (is16mode(regs))
-+			/* microMIPS */
-+			tcode = (opcode >> 12) & 0x1f;
-+		else
-+			tcode = ((opcode >> 6) & ((1 << 10) - 1));
-+	}
- 
- 	do_trap_or_bp(regs, tcode, "Trap");
- 	return;
-@@ -884,6 +935,7 @@ asmlinkage void do_ri(struct pt_regs *regs)
- {
- 	unsigned int __user *epc = (unsigned int __user *)exception_epc(regs);
- 	unsigned long old_epc = regs->cp0_epc;
-+	unsigned long old31 = regs->regs[31];
- 	unsigned int opcode = 0;
- 	int status = -1;
- 
-@@ -896,23 +948,37 @@ asmlinkage void do_ri(struct pt_regs *regs)
- 	if (unlikely(compute_return_epc(regs) < 0))
- 		return;
- 
--	if (unlikely(get_user(opcode, epc) < 0))
--		status = SIGSEGV;
-+	if (is16mode(regs)) {
-+		unsigned short mmop[2] = { 0 };
- 
--	if (!cpu_has_llsc && status < 0)
--		status = simulate_llsc(regs, opcode);
-+		if (unlikely(get_user(mmop[0], epc) < 0))
-+			status = SIGSEGV;
-+		if (unlikely(get_user(mmop[1], epc) < 0))
-+			status = SIGSEGV;
-+		opcode = (mmop[0] << 16) | mmop[1];
- 
--	if (status < 0)
--		status = simulate_rdhwr(regs, opcode);
-+		if (status < 0)
-+			status = simulate_rdhwr_mm(regs, opcode);
-+	} else {
-+		if (unlikely(get_user(opcode, epc) < 0))
-+			status = SIGSEGV;
- 
--	if (status < 0)
--		status = simulate_sync(regs, opcode);
-+		if (!cpu_has_llsc && status < 0)
-+			status = simulate_llsc(regs, opcode);
-+
-+		if (status < 0)
-+			status = simulate_rdhwr_normal(regs, opcode);
-+
-+		if (status < 0)
-+			status = simulate_sync(regs, opcode);
-+	}
- 
- 	if (status < 0)
- 		status = SIGILL;
- 
- 	if (unlikely(status > 0)) {
- 		regs->cp0_epc = old_epc;		/* Undo skip-over.  */
-+		regs->regs[31] = old31;
- 		force_sig(status, current);
- 	}
- }
-@@ -982,7 +1048,7 @@ static int default_cu2_call(struct notifier_block *nfb, unsigned long action,
- asmlinkage void do_cpu(struct pt_regs *regs)
- {
- 	unsigned int __user *epc;
--	unsigned long old_epc;
-+	unsigned long old_epc, old31;
- 	unsigned int opcode;
- 	unsigned int cpid;
- 	int status;
-@@ -996,26 +1062,41 @@ asmlinkage void do_cpu(struct pt_regs *regs)
- 	case 0:
- 		epc = (unsigned int __user *)exception_epc(regs);
- 		old_epc = regs->cp0_epc;
-+		old31 = regs->regs[31];
- 		opcode = 0;
- 		status = -1;
- 
- 		if (unlikely(compute_return_epc(regs) < 0))
- 			return;
- 
--		if (unlikely(get_user(opcode, epc) < 0))
--			status = SIGSEGV;
-+		if (is16mode(regs)) {
-+			unsigned short mmop[2] = { 0 };
- 
--		if (!cpu_has_llsc && status < 0)
--			status = simulate_llsc(regs, opcode);
-+			if (unlikely(get_user(mmop[0], epc) < 0))
-+				status = SIGSEGV;
-+			if (unlikely(get_user(mmop[1], epc) < 0))
-+				status = SIGSEGV;
-+			opcode = (mmop[0] << 16) | mmop[1];
- 
--		if (status < 0)
--			status = simulate_rdhwr(regs, opcode);
-+			if (status < 0)
-+				status = simulate_rdhwr_mm(regs, opcode);
-+		} else {
-+			if (unlikely(get_user(opcode, epc) < 0))
-+				status = SIGSEGV;
-+
-+			if (!cpu_has_llsc && status < 0)
-+				status = simulate_llsc(regs, opcode);
-+
-+			if (status < 0)
-+				status = simulate_rdhwr_normal(regs, opcode);
-+		}
- 
- 		if (status < 0)
- 			status = SIGILL;
- 
- 		if (unlikely(status > 0)) {
- 			regs->cp0_epc = old_epc;	/* Undo skip-over.  */
-+			regs->regs[31] = old31;
- 			force_sig(status, current);
- 		}
- 
-@@ -1329,7 +1410,7 @@ asmlinkage void cache_parity_error(void)
- void ejtag_exception_handler(struct pt_regs *regs)
- {
- 	const int field = 2 * sizeof(unsigned long);
--	unsigned long depc, old_epc;
-+	unsigned long depc, old_epc, old_ra;
- 	unsigned int debug;
- 
- 	printk(KERN_DEBUG "SDBBP EJTAG debug exception - not handled yet, just ignored!\n");
-@@ -1344,10 +1425,12 @@ void ejtag_exception_handler(struct pt_regs *regs)
- 		 * calculation.
- 		 */
- 		old_epc = regs->cp0_epc;
-+		old_ra = regs->regs[31];
- 		regs->cp0_epc = depc;
--		__compute_return_epc(regs);
-+		compute_return_epc(regs);
- 		depc = regs->cp0_epc;
- 		regs->cp0_epc = old_epc;
-+		regs->regs[31] = old_ra;
- 	} else
- 		depc += 4;
- 	write_c0_depc(depc);
-@@ -1388,9 +1471,24 @@ void __init *set_except_vector(int n, void *addr)
- 	unsigned long handler = (unsigned long) addr;
- 	unsigned long old_handler = exception_handlers[n];
- 
-+#ifdef CONFIG_CPU_MICROMIPS
-+	/*
-+	 * Only the TLB handlers are cache aligned with an even
-+	 * address. All other handlers are on an odd address and
-+	 * require no modification. Otherwise, MIPS32 mode will
-+	 * be entered when handling any TLB exceptions. That
-+	 * would be bad...since we must stay in microMIPS mode.
-+	 */
-+	if (!(handler & 0x1))
-+		handler |= 1;
-+#endif
- 	exception_handlers[n] = handler;
- 	if (n == 0 && cpu_has_divec) {
-+#ifdef CONFIG_CPU_MICROMIPS
-+		unsigned long jump_mask = ~((1 << 27) - 1);
-+#else
- 		unsigned long jump_mask = ~((1 << 28) - 1);
-+#endif
- 		u32 *buf = (u32 *)(ebase + 0x200);
- 		unsigned int k0 = 26;
- 		if ((handler & jump_mask) == ((ebase + 0x200) & jump_mask)) {
-@@ -1417,17 +1515,18 @@ static void *set_vi_srs_handler(int n, vi_handler_t addr, int srs)
- 	unsigned long handler;
- 	unsigned long old_handler = vi_handlers[n];
- 	int srssets = current_cpu_data.srsets;
--	u32 *w;
-+	u16 *h;
- 	unsigned char *b;
- 
- 	BUG_ON(!cpu_has_veic && !cpu_has_vint);
-+	BUG_ON((n < 0) && (n > 9));
- 
- 	if (addr == NULL) {
- 		handler = (unsigned long) do_default_vi;
- 		srs = 0;
- 	} else
- 		handler = (unsigned long) addr;
--	vi_handlers[n] = (unsigned long) addr;
-+	vi_handlers[n] = handler;
- 
- 	b = (unsigned char *)(ebase + 0x200 + n*VECTORSPACING);
- 
-@@ -1446,9 +1545,8 @@ static void *set_vi_srs_handler(int n, vi_handler_t addr, int srs)
- 	if (srs == 0) {
- 		/*
- 		 * If no shadow set is selected then use the default handler
--		 * that does normal register saving and a standard interrupt exit
-+		 * that does normal register saving and standard interrupt exit
- 		 */
+@@ -289,5 +469,4 @@ unaligned:
+ 	printk("%s: unaligned epc - sending SIGBUS.\n", current->comm);
+ 	force_sig(SIGBUS, current);
+ 	return -EFAULT;
 -
- 		extern char except_vec_vi, except_vec_vi_lui;
- 		extern char except_vec_vi_ori, except_vec_vi_end;
- 		extern char rollback_except_vec_vi;
-@@ -1461,11 +1559,20 @@ static void *set_vi_srs_handler(int n, vi_handler_t addr, int srs)
- 		 * Status.IM bit to be masked before going there.
- 		 */
- 		extern char except_vec_vi_mori;
-+#if defined(CONFIG_CPU_MICROMIPS) || defined(CONFIG_CPU_BIG_ENDIAN)
-+		const int mori_offset = &except_vec_vi_mori - vec_start + 2;
-+#else
- 		const int mori_offset = &except_vec_vi_mori - vec_start;
-+#endif
- #endif /* CONFIG_MIPS_MT_SMTC */
--		const int handler_len = &except_vec_vi_end - vec_start;
-+#if defined(CONFIG_CPU_MICROMIPS) || defined(CONFIG_CPU_BIG_ENDIAN)
-+		const int lui_offset = &except_vec_vi_lui - vec_start + 2;
-+		const int ori_offset = &except_vec_vi_ori - vec_start + 2;
-+#else
- 		const int lui_offset = &except_vec_vi_lui - vec_start;
- 		const int ori_offset = &except_vec_vi_ori - vec_start;
-+#endif
-+		const int handler_len = &except_vec_vi_end - vec_start;
+ }
+diff --git a/arch/mips/kernel/unaligned.c b/arch/mips/kernel/unaligned.c
+index 9c58bdf..ad855db 100644
+--- a/arch/mips/kernel/unaligned.c
++++ b/arch/mips/kernel/unaligned.c
+@@ -102,6 +102,9 @@ static u32 unaligned_action;
+ #endif
+ extern void show_registers(struct pt_regs *regs);
  
- 		if (handler_len > VECTORSPACING) {
- 			/*
-@@ -1475,30 +1582,44 @@ static void *set_vi_srs_handler(int n, vi_handler_t addr, int srs)
- 			panic("VECTORSPACING too small");
- 		}
- 
--		memcpy(b, vec_start, handler_len);
-+		set_handler(((unsigned long)b - ebase), vec_start,
-+#ifdef CONFIG_CPU_MICROMIPS
-+				(handler_len - 1));
-+#else
-+				handler_len);
-+#endif
- #ifdef CONFIG_MIPS_MT_SMTC
- 		BUG_ON(n > 7);	/* Vector index %d exceeds SMTC maximum. */
- 
--		w = (u32 *)(b + mori_offset);
--		*w = (*w & 0xffff0000) | (0x100 << n);
-+		h = (u16 *)(b + mori_offset);
-+		*h = (0x100 << n);
- #endif /* CONFIG_MIPS_MT_SMTC */
--		w = (u32 *)(b + lui_offset);
--		*w = (*w & 0xffff0000) | (((u32)handler >> 16) & 0xffff);
--		w = (u32 *)(b + ori_offset);
--		*w = (*w & 0xffff0000) | ((u32)handler & 0xffff);
-+		h = (u16 *)(b + lui_offset);
-+		*h = (handler >> 16) & 0xffff;
-+		h = (u16 *)(b + ori_offset);
-+		*h = (handler & 0xffff);
- 		local_flush_icache_range((unsigned long)b,
- 					 (unsigned long)(b+handler_len));
- 	}
- 	else {
- 		/*
--		 * In other cases jump directly to the interrupt handler
--		 *
--		 * It is the handlers responsibility to save registers if required
--		 * (eg hi/lo) and return from the exception using "eret"
-+		 * In other cases jump directly to the interrupt handler. It
-+		 * is the handler's responsibility to save registers if required
-+		 * (eg hi/lo) and return from the exception using "eret".
- 		 */
--		w = (u32 *)b;
--		*w++ = 0x08000000 | (((u32)handler >> 2) & 0x03fffff); /* j handler */
--		*w = 0;
-+		u32 insn;
++/* Recode table from MIPS16e register notation to GPR. */
++const int mips16e_reg2gpr[] = { 16, 17, 2, 3, 4, 5, 6, 7 };
 +
-+		h = (u16 *)b;
-+		/* j handler */
-+#ifdef CONFIG_CPU_MICROMIPS
-+		insn = 0xd4000000 | (((u32)handler & 0x07ffffff) >> 1);
-+#else
-+		insn = 0x08000000 | (((u32)handler & 0x0fffffff) >> 2);
-+#endif
-+		h[0] = (insn >> 16) & 0xffff;
-+		h[1] = insn & 0xffff;
-+		h[2] = 0;
-+		h[3] = 0;
- 		local_flush_icache_range((unsigned long)b,
- 					 (unsigned long)(b+8));
- 	}
-@@ -1657,7 +1778,11 @@ void __cpuinit per_cpu_trap_init(bool is_boot_cpu)
- /* Install CPU exception handler */
- void __cpuinit set_handler(unsigned long offset, void *addr, unsigned long size)
+ static void emulate_load_store_insn(struct pt_regs *regs,
+ 	void __user *addr, unsigned int __user *pc)
  {
-+#ifdef CONFIG_CPU_MICROMIPS
-+	memcpy((void *)(ebase + offset), ((unsigned char *)addr - 1), size);
-+#else
- 	memcpy((void *)(ebase + offset), addr, size);
-+#endif
- 	local_flush_icache_range(ebase + offset, ebase + offset + size);
- }
- 
-@@ -1691,8 +1816,9 @@ __setup("rdhwr_noopt", set_rdhwr_noopt);
- 
- void __init trap_init(void)
- {
--	extern char except_vec3_generic, except_vec3_r4000;
-+	extern char except_vec3_generic;
- 	extern char except_vec4;
-+	extern char except_vec3_r4000;
- 	unsigned long i;
- 	int rollback;
- 
-@@ -1825,11 +1951,11 @@ void __init trap_init(void)
- 
- 	if (cpu_has_vce)
- 		/* Special exception: R4[04]00 uses also the divec space. */
--		memcpy((void *)(ebase + 0x180), &except_vec3_r4000, 0x100);
-+		set_handler(0x180, &except_vec3_r4000, 0x100);
- 	else if (cpu_has_4kex)
--		memcpy((void *)(ebase + 0x180), &except_vec3_generic, 0x80);
-+		set_handler(0x180, &except_vec3_generic, 0x80);
- 	else
--		memcpy((void *)(ebase + 0x080), &except_vec3_generic, 0x80);
-+		set_handler(0x080, &except_vec3_generic, 0x80);
- 
- 	local_flush_icache_range(ebase, ebase + 0x400);
- 	flush_tlb_handlers();
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 6f3d4007..cd9ad1b 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -2021,6 +2021,13 @@ static void __cpuinit build_r4000_tlb_load_handler(void)
- 
- 	uasm_l_nopage_tlbl(&l, p);
- 	build_restore_work_registers(&p);
-+#ifdef CONFIG_CPU_MICROMIPS
-+	if ((unsigned long)tlb_do_page_fault_0 & 1) {
-+		uasm_i_lui(&p, K0, uasm_rel_hi((long)tlb_do_page_fault_0));
-+		uasm_i_addiu(&p, K0, K0, uasm_rel_lo((long)tlb_do_page_fault_0));
-+		uasm_i_jr(&p, K0);
-+	} else
-+#endif
- 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_0 & 0x0fffffff);
- 	uasm_i_nop(&p);
- 
-@@ -2068,6 +2075,13 @@ static void __cpuinit build_r4000_tlb_store_handler(void)
- 
- 	uasm_l_nopage_tlbs(&l, p);
- 	build_restore_work_registers(&p);
-+#ifdef CONFIG_CPU_MICROMIPS
-+	if ((unsigned long)tlb_do_page_fault_1 & 1) {
-+		uasm_i_lui(&p, K0, uasm_rel_hi((long)tlb_do_page_fault_1));
-+		uasm_i_addiu(&p, K0, K0, uasm_rel_lo((long)tlb_do_page_fault_1));
-+		uasm_i_jr(&p, K0);
-+	} else
-+#endif
- 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_1 & 0x0fffffff);
- 	uasm_i_nop(&p);
- 
-@@ -2116,6 +2130,13 @@ static void __cpuinit build_r4000_tlb_modify_handler(void)
- 
- 	uasm_l_nopage_tlbm(&l, p);
- 	build_restore_work_registers(&p);
-+#ifdef CONFIG_CPU_MICROMIPS
-+	if ((unsigned long)tlb_do_page_fault_1 & 1) {
-+		uasm_i_lui(&p, K0, uasm_rel_hi((long)tlb_do_page_fault_1));
-+		uasm_i_addiu(&p, K0, K0, uasm_rel_lo((long)tlb_do_page_fault_1));
-+		uasm_i_jr(&p, K0);
-+	} else
-+#endif
- 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_1 & 0x0fffffff);
- 	uasm_i_nop(&p);
- 
-diff --git a/arch/mips/mti-sead3/sead3-init.c b/arch/mips/mti-sead3/sead3-init.c
-index a958cad..802fce2 100644
---- a/arch/mips/mti-sead3/sead3-init.c
-+++ b/arch/mips/mti-sead3/sead3-init.c
-@@ -52,7 +52,41 @@ static void __init mips_nmi_setup(void)
- 	base = cpu_has_veic ?
- 		(void *)(CAC_BASE + 0xa80) :
- 		(void *)(CAC_BASE + 0x380);
-+#ifdef CONFIG_CPU_MICROMIPS
-+	/*
-+	 * Decrement the exception vector address by one for microMIPS.
-+	 */
-+	memcpy(base, (&except_vec_nmi - 1), 0x80);
-+
-+	/*
-+	 * This is a hack. We do not know if the boot loader was built with
-+	 * microMIPS instructions or not. If it was not, the NMI exception
-+	 * code at 0x80000a80 will be taken in MIPS32 mode. The hand coded
-+	 * assembly below forces us into microMIPS mode if we are a pure
-+	 * microMIPS kernel. The assembly instructions are:
-+	 *
-+	 *  3C1A8000   lui       k0,0x8000
-+	 *  375A0381   ori       k0,k0,0x381
-+	 *  03400008   jr        k0
-+	 *  00000000   nop
-+	 *
-+	 * The mode switch occurs by jumping to the unaligned exception
-+	 * vector address at 0x80000381 which would have been 0x80000380
-+	 * in MIPS32 mode. The jump to the unaligned address transitions
-+	 * us into microMIPS mode.
-+	 */
-+	if (!cpu_has_veic) {
-+		void *base2 = (void *)(CAC_BASE + 0xa80);
-+		*((unsigned int *)base2) = 0x3c1a8000;
-+		*((unsigned int *)base2 + 1) = 0x375a0381;
-+		*((unsigned int *)base2 + 2) = 0x03400008;
-+		*((unsigned int *)base2 + 3) = 0x00000000;
-+		flush_icache_range((unsigned long)base2,
-+			(unsigned long)base2 + 0x10);
-+	}
-+#else
- 	memcpy(base, &except_vec_nmi, 0x80);
-+#endif
- 	flush_icache_range((unsigned long)base, (unsigned long)base + 0x80);
- }
- 
-@@ -63,7 +97,21 @@ static void __init mips_ejtag_setup(void)
- 	base = cpu_has_veic ?
- 		(void *)(CAC_BASE + 0xa00) :
- 		(void *)(CAC_BASE + 0x300);
-+#ifdef CONFIG_CPU_MICROMIPS
-+	/* Deja vu... */
-+	memcpy(base, (&except_vec_ejtag_debug - 1), 0x80);
-+	if (!cpu_has_veic) {
-+		void *base2 = (void *)(CAC_BASE + 0xa00);
-+		*((unsigned int *)base2) = 0x3c1a8000;
-+		*((unsigned int *)base2 + 1) = 0x375a0301;
-+		*((unsigned int *)base2 + 2) = 0x03400008;
-+		*((unsigned int *)base2 + 3) = 0x00000000;
-+		flush_icache_range((unsigned long)base2,
-+			(unsigned long)base2 + 0x10);
-+	}
-+#else
- 	memcpy(base, &except_vec_ejtag_debug, 0x80);
-+#endif
- 	flush_icache_range((unsigned long)base, (unsigned long)base + 0x80);
- }
- 
 -- 
 1.7.9.5

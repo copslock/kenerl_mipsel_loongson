@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:08:34 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:60321 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:08:52 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:60323 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6824774Ab2LGFFyw8Axs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:05:54 +0100
+        with ESMTP id S6824804Ab2LGFFzGnwJP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:05:55 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1Tgq8C-0007MA-Dj; Thu, 06 Dec 2012 23:05:48 -0600
+        id 1Tgq8C-0007MA-Ul; Thu, 06 Dec 2012 23:05:48 -0600
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH v99,08/13] MIPS: microMIPS: Add configuration option for microMIPS kernel.
-Date:   Thu,  6 Dec 2012 23:05:32 -0600
-Message-Id: <1354856737-28678-9-git-send-email-sjhill@mips.com>
+Subject: [PATCH v99,09/13] MIPS: microMIPS: Work-around for assembler bug.
+Date:   Thu,  6 Dec 2012 23:05:33 -0600
+Message-Id: <1354856737-28678-10-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1354856737-28678-1-git-send-email-sjhill@mips.com>
 References: <1354856737-28678-1-git-send-email-sjhill@mips.com>
-X-archive-position: 35219
+X-archive-position: 35220
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,212 +36,88 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-This adds the option to build the Linux kernel using only the
-microMIPS ISA. The resulting kernel binary is, at a minimum,
-20% smaller than using the MIPS32R2 ISA.
+When building a microMIPS instructions only kernel, the linker
+complains about ISA mode switches in the .fixup section. We
+explicitly add the .insn assembler directive to address this.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/Kconfig                      |   11 +++
- arch/mips/Makefile                     |    1 +
- arch/mips/configs/sead3micro_defconfig |  125 ++++++++++++++++++++++++++++++++
- arch/mips/kernel/proc.c                |    4 +
- 4 files changed, 141 insertions(+)
- create mode 100644 arch/mips/configs/sead3micro_defconfig
+ arch/mips/include/asm/uaccess.h |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 99c3ad7..07f2dff 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -350,6 +350,7 @@ config MIPS_SEAD3
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select SYS_SUPPORTS_SMARTMIPS
-+	select SYS_SUPPORTS_MICROMIPS
- 	select USB_ARCH_HAS_EHCI
- 	select USB_EHCI_BIG_ENDIAN_DESC
- 	select USB_EHCI_BIG_ENDIAN_MMIO
-@@ -2087,6 +2088,13 @@ config CPU_HAS_SMARTMIPS
- 	  you don't know you probably don't have SmartMIPS and should say N
- 	  here.
- 
-+config CPU_MICROMIPS
-+	depends on SYS_SUPPORTS_MICROMIPS
-+	bool "Build kernel using microMIPS ISA"
-+	help
-+	  When this option is enabled the kernel will be built using the
-+	  microMIPS ISA
-+
- config CPU_HAS_WB
- 	bool
- 
-@@ -2149,6 +2157,9 @@ config SYS_SUPPORTS_HIGHMEM
- config SYS_SUPPORTS_SMARTMIPS
- 	bool
- 
-+config SYS_SUPPORTS_MICROMIPS
-+	bool
-+
- config ARCH_FLATMEM_ENABLE
- 	def_bool y
- 	depends on !NUMA && !CPU_LOONGSON2
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 654b1ad..6f829de6 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -114,6 +114,7 @@ cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(shell $(CC) -dumpmachine |grep -q 'mips.*e
- cflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' || echo -EL $(undef-all) $(predef-le))
- 
- cflags-$(CONFIG_CPU_HAS_SMARTMIPS)	+= $(call cc-option,-msmartmips)
-+cflags-$(CONFIG_CPU_MICROMIPS) += $(call cc-option,-mmicromips -mno-jals)
- 
- cflags-$(CONFIG_SB1XXX_CORELIS)	+= $(call cc-option,-mno-sched-prolog) \
- 				   -fno-omit-frame-pointer
-diff --git a/arch/mips/configs/sead3micro_defconfig b/arch/mips/configs/sead3micro_defconfig
-new file mode 100644
-index 0000000..403332f
---- /dev/null
-+++ b/arch/mips/configs/sead3micro_defconfig
-@@ -0,0 +1,125 @@
-+CONFIG_MIPS_SEAD3=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_CPU_MICROMIPS=y
-+CONFIG_HZ_100=y
-+CONFIG_EXPERIMENTAL=y
-+CONFIG_SYSVIPC=y
-+CONFIG_POSIX_MQUEUE=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=15
-+CONFIG_EMBEDDED=y
-+CONFIG_SLAB=y
-+CONFIG_PROFILING=y
-+CONFIG_OPROFILE=y
-+CONFIG_MODULES=y
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_DHCP=y
-+CONFIG_IP_PNP_BOOTP=y
-+# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-+# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-+# CONFIG_INET_XFRM_MODE_BEET is not set
-+# CONFIG_INET_LRO is not set
-+# CONFIG_INET_DIAG is not set
-+# CONFIG_IPV6 is not set
-+# CONFIG_WIRELESS is not set
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_MTD=y
-+CONFIG_MTD_CHAR=y
-+CONFIG_MTD_BLOCK=y
-+CONFIG_MTD_CFI=y
-+CONFIG_MTD_CFI_INTELEXT=y
-+CONFIG_MTD_PHYSMAP=y
-+CONFIG_MTD_UBI=y
-+CONFIG_MTD_UBI_GLUEBI=y
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_BLK_DEV_CRYPTOLOOP=m
-+CONFIG_SCSI=y
-+# CONFIG_SCSI_PROC_FS is not set
-+CONFIG_BLK_DEV_SD=y
-+CONFIG_CHR_DEV_SG=y
-+# CONFIG_SCSI_LOWLEVEL is not set
-+CONFIG_NETDEVICES=y
-+CONFIG_SMSC911X=y
-+# CONFIG_NET_VENDOR_WIZNET is not set
-+CONFIG_MARVELL_PHY=y
-+CONFIG_DAVICOM_PHY=y
-+CONFIG_QSEMI_PHY=y
-+CONFIG_LXT_PHY=y
-+CONFIG_CICADA_PHY=y
-+CONFIG_VITESSE_PHY=y
-+CONFIG_SMSC_PHY=y
-+CONFIG_BROADCOM_PHY=y
-+CONFIG_ICPLUS_PHY=y
-+# CONFIG_WLAN is not set
-+# CONFIG_INPUT_MOUSEDEV is not set
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+# CONFIG_CONSOLE_TRANSLATIONS is not set
-+CONFIG_VT_HW_CONSOLE_BINDING=y
-+CONFIG_LEGACY_PTY_COUNT=32
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_NR_UARTS=2
-+CONFIG_SERIAL_8250_RUNTIME_UARTS=2
-+# CONFIG_HW_RANDOM is not set
-+CONFIG_I2C=y
-+# CONFIG_I2C_COMPAT is not set
-+CONFIG_I2C_CHARDEV=y
-+# CONFIG_I2C_HELPER_AUTO is not set
-+CONFIG_SPI=y
-+CONFIG_SENSORS_ADT7475=y
-+CONFIG_BACKLIGHT_LCD_SUPPORT=y
-+CONFIG_LCD_CLASS_DEVICE=y
-+CONFIG_BACKLIGHT_CLASS_DEVICE=y
-+# CONFIG_VGA_CONSOLE is not set
-+CONFIG_USB=y
-+CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
-+CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_EHCI_ROOT_HUB_TT=y
-+CONFIG_USB_STORAGE=y
-+CONFIG_MMC=y
-+CONFIG_MMC_DEBUG=y
-+CONFIG_MMC_SPI=y
-+CONFIG_NEW_LEDS=y
-+CONFIG_LEDS_CLASS=y
-+CONFIG_LEDS_TRIGGERS=y
-+CONFIG_LEDS_TRIGGER_HEARTBEAT=y
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_M41T80=y
-+CONFIG_EXT3_FS=y
-+# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
-+CONFIG_XFS_FS=y
-+CONFIG_XFS_QUOTA=y
-+CONFIG_XFS_POSIX_ACL=y
-+CONFIG_QUOTA=y
-+# CONFIG_PRINT_QUOTA_WARNING is not set
-+CONFIG_MSDOS_FS=m
-+CONFIG_VFAT_FS=m
-+CONFIG_TMPFS=y
-+CONFIG_JFFS2_FS=y
-+CONFIG_NFS_FS=y
-+CONFIG_ROOT_NFS=y
-+CONFIG_NLS_CODEPAGE_437=y
-+CONFIG_NLS_ASCII=y
-+CONFIG_NLS_ISO8859_1=y
-+CONFIG_NLS_ISO8859_15=y
-+CONFIG_NLS_UTF8=y
-+# CONFIG_FTRACE is not set
-+CONFIG_CRYPTO=y
-+CONFIG_CRYPTO_CBC=y
-+CONFIG_CRYPTO_ECB=y
-+CONFIG_CRYPTO_AES=y
-+CONFIG_CRYPTO_ARC4=y
-+# CONFIG_CRYPTO_ANSI_CPRNG is not set
-+# CONFIG_CRYPTO_HW is not set
-diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-index 239ae03..54ac39a 100644
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -76,6 +76,10 @@ static int show_cpuinfo(struct seq_file *m, void *v)
- 	if (cpu_has_mmips)	seq_printf(m, "%s", " micromips");
- 	seq_printf(m, "\n");
- 
-+	if (cpu_has_mmips) {
-+		seq_printf(m, "micromips kernel\t: %s\n",
-+		      (read_c0_config3() & MIPS_CONF3_ISA_OE) ?  "yes" : "no");
-+	}
- 	seq_printf(m, "shadow register sets\t: %d\n",
- 		      cpu_data[n].srsets);
- 	seq_printf(m, "kscratch registers\t: %d\n",
+diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
+index 3b92efe..d2f99ba 100644
+--- a/arch/mips/include/asm/uaccess.h
++++ b/arch/mips/include/asm/uaccess.h
+@@ -261,6 +261,7 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	" insn "	%1, %3				\n"	\
+ 	"2:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section .fixup,\"ax\"				\n"	\
+ 	"3:	li	%0, %4					\n"	\
+ 	"	j	2b					\n"	\
+@@ -287,7 +288,9 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	lw	%1, (%3)				\n"	\
+ 	"2:	lw	%D1, 4(%3)				\n"	\
+-	"3:	.section	.fixup,\"ax\"			\n"	\
++	"3:							\n"	\
++	"	.insn						\n"	\
++	"	.section	.fixup,\"ax\"			\n"	\
+ 	"4:	li	%0, %4					\n"	\
+ 	"	move	%1, $0					\n"	\
+ 	"	move	%D1, $0					\n"	\
+@@ -355,6 +358,7 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	" insn "	%z2, %3		# __put_user_asm\n"	\
+ 	"2:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
+ 	"3:	li	%0, %4					\n"	\
+ 	"	j	2b					\n"	\
+@@ -373,6 +377,7 @@ do {									\
+ 	"1:	sw	%2, (%3)	# __put_user_asm_ll32	\n"	\
+ 	"2:	sw	%D2, 4(%3)				\n"	\
+ 	"3:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
+ 	"4:	li	%0, %4					\n"	\
+ 	"	j	3b					\n"	\
+@@ -524,6 +529,7 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	" insn "	%1, %3				\n"	\
+ 	"2:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section .fixup,\"ax\"				\n"	\
+ 	"3:	li	%0, %4					\n"	\
+ 	"	j	2b					\n"	\
+@@ -549,7 +555,9 @@ do {									\
+ 	"1:	ulw	%1, (%3)				\n"	\
+ 	"2:	ulw	%D1, 4(%3)				\n"	\
+ 	"	move	%0, $0					\n"	\
+-	"3:	.section	.fixup,\"ax\"			\n"	\
++	"3:							\n"	\
++	"	.insn						\n"	\
++	"	.section	.fixup,\"ax\"			\n"	\
+ 	"4:	li	%0, %4					\n"	\
+ 	"	move	%1, $0					\n"	\
+ 	"	move	%D1, $0					\n"	\
+@@ -616,6 +624,7 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	" insn "	%z2, %3		# __put_user_unaligned_asm\n" \
+ 	"2:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
+ 	"3:	li	%0, %4					\n"	\
+ 	"	j	2b					\n"	\
+@@ -634,6 +643,7 @@ do {									\
+ 	"1:	sw	%2, (%3)	# __put_user_unaligned_asm_ll32	\n" \
+ 	"2:	sw	%D2, 4(%3)				\n"	\
+ 	"3:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
+ 	"4:	li	%0, %4					\n"	\
+ 	"	j	3b					\n"	\
 -- 
 1.7.9.5

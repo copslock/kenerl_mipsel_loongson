@@ -1,38 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 11:19:43 +0100 (CET)
-Received: from mga11.intel.com ([192.55.52.93]:35839 "EHLO mga11.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 12:52:31 +0100 (CET)
+Received: from mga01.intel.com ([192.55.52.88]:56955 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817667Ab2LGKTlF-G6S (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 7 Dec 2012 11:19:41 +0100
+        id S6823910Ab2LGLw3ySzrb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 7 Dec 2012 12:52:29 +0100
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP; 07 Dec 2012 02:19:32 -0800
+  by fmsmga101.fm.intel.com with ESMTP; 07 Dec 2012 03:52:21 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="4.84,236,1355126400"; 
-   d="scan'208";a="260408354"
-Received: from bee.sh.intel.com (HELO localhost) ([10.239.97.14])
-  by fmsmga002.fm.intel.com with ESMTP; 07 Dec 2012 02:19:32 -0800
-Received: from [192.168.1.143] (helo=hive.lkp.intel.com)
-        by localhost with smtp (Exim 4.80)
-        (envelope-from <fengguang.wu@intel.com>)
-        id 1Tgv17-0002rQ-8X; Fri, 07 Dec 2012 18:18:49 +0800
-Date:   Fri, 07 Dec 2012 18:20:37 +0800
-From:   kbuild test robot <fengguang.wu@intel.com>
-To:     "Steven J. Hill" <sjhill@mips.com>
-Cc:     linux-mips@linux-mips.org
-Subject: [mips-sjhill:mti-next 31/35] dma-default.c:(.text+0xb958):
- undefined reference to `hw_coherentio'
-Message-ID: <50c1c2f5.TyQEXFiN4QI5UfpT%fengguang.wu@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 192.168.1.143
-X-SA-Exim-Mail-From: fengguang.wu@intel.com
-X-SA-Exim-Scanned: No (on localhost); SAEximRunCond expanded to false
-X-archive-position: 35244
+   d="scan'208";a="260440328"
+Received: from blue.fi.intel.com ([10.237.72.156])
+  by fmsmga002.fm.intel.com with ESMTP; 07 Dec 2012 03:52:18 -0800
+Received: by blue.fi.intel.com (Postfix, from userid 1000)
+        id D0A93E0073; Fri,  7 Dec 2012 13:53:42 +0200 (EET)
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org
+Cc:     linux-s390@vger.kernel.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCH, RESEND] asm-generic, mm: pgtable: consolidate zero page helpers
+Date:   Fri,  7 Dec 2012 13:53:35 +0200
+Message-Id: <1354881215-26257-1-git-send-email-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 35245
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fengguang.wu@intel.com
+X-original-sender: kirill.shutemov@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,40 +43,140 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-tree:   git://git.linux-mips.org/pub/scm/sjhill/linux-sjhill mti-next
-head:   76965291af22d5e06b8ffff677cfe2b227a9487a
-commit: 5e8848b05d0c0a6854c7de9f55122ccf2f47a248 [31/35] MIPS: Add option to disable software I/O coherency.
-config: make ARCH=mips allnoconfig
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 
-All error/warnings:
+We have two different implementation of is_zero_pfn() and
+my_zero_pfn() helpers: for architectures with and without zero page
+coloring.
 
-arch/mips/built-in.o: In function `mips_dma_map_sg':
-dma-default.c:(.text+0xb310): undefined reference to `coherentio'
-dma-default.c:(.text+0xb360): undefined reference to `coherentio'
-arch/mips/built-in.o: In function `mips_dma_map_page':
-dma-default.c:(.text+0xb430): undefined reference to `coherentio'
-dma-default.c:(.text+0xb434): undefined reference to `coherentio'
-arch/mips/built-in.o: In function `mips_dma_unmap_sg':
-dma-default.c:(.text+0xb58c): undefined reference to `coherentio'
-arch/mips/built-in.o:dma-default.c:(.text+0xb5bc): more undefined references to `coherentio' follow
-arch/mips/built-in.o: In function `mips_dma_free_coherent':
-dma-default.c:(.text+0xb958): undefined reference to `hw_coherentio'
-dma-default.c:(.text+0xb95c): undefined reference to `hw_coherentio'
-arch/mips/built-in.o: In function `mips_dma_alloc_coherent':
-dma-default.c:(.text+0xbae8): undefined reference to `coherentio'
-dma-default.c:(.text+0xbaec): undefined reference to `coherentio'
-dma-default.c:(.text+0xbb3c): undefined reference to `hw_coherentio'
-dma-default.c:(.text+0xbb40): undefined reference to `hw_coherentio'
-arch/mips/built-in.o: In function `mips_dma_unmap_page':
-dma-default.c:(.text+0xbb6c): undefined reference to `coherentio'
-dma-default.c:(.text+0xbb70): undefined reference to `coherentio'
-arch/mips/built-in.o: In function `mips_dma_sync_single_for_cpu':
-dma-default.c:(.text+0xbbf8): undefined reference to `coherentio'
-dma-default.c:(.text+0xbbfc): undefined reference to `coherentio'
-arch/mips/built-in.o: In function `mips_dma_sync_single_for_device':
-dma-default.c:(.text+0xbc84): undefined reference to `coherentio'
-arch/mips/built-in.o:dma-default.c:(.text+0xbc88): more undefined references to `coherentio' follow
+Let's consolidate them in <asm-generic/pgtable.h>.
 
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
-0-DAY kernel build testing backend         Open Source Technology Center
-Fengguang Wu, Yuanhan Liu                              Intel Corporation
+ arch/mips/include/asm/pgtable.h |   11 +----------
+ arch/s390/include/asm/pgtable.h |   11 +----------
+ include/asm-generic/pgtable.h   |   26 ++++++++++++++++++++++++++
+ include/linux/mm.h              |    8 --------
+ mm/memory.c                     |    7 -------
+ 5 files changed, 28 insertions(+), 35 deletions(-)
+
+diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
+index 252202d..ec50d52 100644
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -77,16 +77,7 @@ extern unsigned long zero_page_mask;
+ 
+ #define ZERO_PAGE(vaddr) \
+ 	(virt_to_page((void *)(empty_zero_page + (((unsigned long)(vaddr)) & zero_page_mask))))
+-
+-#define is_zero_pfn is_zero_pfn
+-static inline int is_zero_pfn(unsigned long pfn)
+-{
+-	extern unsigned long zero_pfn;
+-	unsigned long offset_from_zero_pfn = pfn - zero_pfn;
+-	return offset_from_zero_pfn <= (zero_page_mask >> PAGE_SHIFT);
+-}
+-
+-#define my_zero_pfn(addr)	page_to_pfn(ZERO_PAGE(addr))
++#define __HAVE_COLOR_ZERO_PAGE
+ 
+ extern void paging_init(void);
+ 
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index 23d9a8a..c928dc1 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -54,16 +54,7 @@ extern unsigned long zero_page_mask;
+ #define ZERO_PAGE(vaddr) \
+ 	(virt_to_page((void *)(empty_zero_page + \
+ 	 (((unsigned long)(vaddr)) &zero_page_mask))))
+-
+-#define is_zero_pfn is_zero_pfn
+-static inline int is_zero_pfn(unsigned long pfn)
+-{
+-	extern unsigned long zero_pfn;
+-	unsigned long offset_from_zero_pfn = pfn - zero_pfn;
+-	return offset_from_zero_pfn <= (zero_page_mask >> PAGE_SHIFT);
+-}
+-
+-#define my_zero_pfn(addr)	page_to_pfn(ZERO_PAGE(addr))
++#define __HAVE_COLOR_ZERO_PAGE
+ 
+ #endif /* !__ASSEMBLY__ */
+ 
+diff --git a/include/asm-generic/pgtable.h b/include/asm-generic/pgtable.h
+index d03d0a8..04a398e 100644
+--- a/include/asm-generic/pgtable.h
++++ b/include/asm-generic/pgtable.h
+@@ -453,6 +453,32 @@ extern void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
+ 			unsigned long size);
+ #endif
+ 
++#ifdef __HAVE_COLOR_ZERO_PAGE
++static inline int is_zero_pfn(unsigned long pfn)
++{
++	extern unsigned long zero_pfn;
++	unsigned long offset_from_zero_pfn = pfn - zero_pfn;
++	return offset_from_zero_pfn <= (zero_page_mask >> PAGE_SHIFT);
++}
++
++static inline unsigned long my_zero_pfn(unsigned long addr)
++{
++	return page_to_pfn(ZERO_PAGE(addr));
++}
++#else
++static inline int is_zero_pfn(unsigned long pfn)
++{
++	extern unsigned long zero_pfn;
++	return pfn == zero_pfn;
++}
++
++static inline unsigned long my_zero_pfn(unsigned long addr)
++{
++	extern unsigned long zero_pfn;
++	return zero_pfn;
++}
++#endif
++
+ #ifdef CONFIG_MMU
+ 
+ #ifndef CONFIG_TRANSPARENT_HUGEPAGE
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 2984e07..dad5c73 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -516,14 +516,6 @@ static inline pte_t maybe_mkwrite(pte_t pte, struct vm_area_struct *vma)
+ }
+ #endif
+ 
+-#ifndef my_zero_pfn
+-static inline unsigned long my_zero_pfn(unsigned long addr)
+-{
+-	extern unsigned long zero_pfn;
+-	return zero_pfn;
+-}
+-#endif
+-
+ /*
+  * Multiple processes may "see" the same page. E.g. for untouched
+  * mappings of /dev/null, all processes see the same page full of
+diff --git a/mm/memory.c b/mm/memory.c
+index 3db03ed..efd870d 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -725,13 +725,6 @@ static inline bool is_cow_mapping(vm_flags_t flags)
+ 	return (flags & (VM_SHARED | VM_MAYWRITE)) == VM_MAYWRITE;
+ }
+ 
+-#ifndef is_zero_pfn
+-static inline int is_zero_pfn(unsigned long pfn)
+-{
+-	return pfn == zero_pfn;
+-}
+-#endif
+-
+ /*
+  * vm_normal_page -- This function gets the "struct page" associated with a pte.
+  *
+-- 
+1.7.10.4

@@ -1,22 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:10:07 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:60341 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:15:00 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:60365 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6824766Ab2LGFJ3XWfXa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:09:29 +0100
+        with ESMTP id S6824759Ab2LGFO73g6nr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:14:59 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1Tgq8E-0007MA-Fn; Thu, 06 Dec 2012 23:05:50 -0600
+        id 1TgqGz-0007Oy-D6; Thu, 06 Dec 2012 23:14:53 -0600
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH v99,12/13] MIPS: microMIPS: Optimise 'strlen' core library function.
-Date:   Thu,  6 Dec 2012 23:05:36 -0600
-Message-Id: <1354856737-28678-13-git-send-email-sjhill@mips.com>
+Subject: [PATCH] MIPS: Reduce code size for MIPS32R2 platforms.
+Date:   Thu,  6 Dec 2012 23:14:49 -0600
+Message-Id: <1354857289-28828-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1354856737-28678-1-git-send-email-sjhill@mips.com>
-References: <1354856737-28678-1-git-send-email-sjhill@mips.com>
-X-archive-position: 35224
+X-archive-position: 35225
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,42 +34,67 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Optimise 'strlen' to use microMIPS instructions and/or optimisations
-for binary size reduction. When the microMIPS ISA is not being used,
-the library function compiles to the original binary code.
+If the CPU type is selected to be a MIPS32R2 core, we surround
+some code with #ifdef's to reduce the kernel binary size.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/lib/strlen_user.S |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/mips/mm/tlbex.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/lib/strlen_user.S b/arch/mips/lib/strlen_user.S
-index fdbb970..e362dcd 100644
---- a/arch/mips/lib/strlen_user.S
-+++ b/arch/mips/lib/strlen_user.S
-@@ -3,8 +3,9 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-- * Copyright (c) 1996, 1998, 1999, 2004 by Ralf Baechle
-- * Copyright (c) 1999 Silicon Graphics, Inc.
-+ * Copyright (C) 1996, 1998, 1999, 2004 by Ralf Baechle
-+ * Copyright (C) 1999 Silicon Graphics, Inc.
-+ * Copyright (C) 2011 MIPS Technologies, Inc.
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index cd9ad1b..4c23656 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -364,6 +364,7 @@ static void __cpuinit build_restore_work_registers(u32 **p)
   */
- #include <asm/asm.h>
- #include <asm/asm-offsets.h>
-@@ -28,9 +29,9 @@ LEAF(__strlen_user_asm)
+ extern unsigned long pgd_current[];
  
- FEXPORT(__strlen_user_nocheck_asm)
- 	move		v0, a0
--1:	EX(lb, t0, (v0), .Lfault)
-+1:	EX(lbu, v1, (v0), .Lfault)
- 	PTR_ADDIU	v0, 1
--	bnez		t0, 1b
-+	bnez		v1, 1b
- 	PTR_SUBU	v0, a0
- 	jr		ra
- 	END(__strlen_user_asm)
++# ifndef CONFIG_CPU_MIPS32_R2
+ /*
+  * The R3000 TLB handler is simple.
+  */
+@@ -403,6 +404,7 @@ static void __cpuinit build_r3000_tlb_refill_handler(void)
+ 
+ 	dump_handler((u32 *)ebase, 32);
+ }
++# endif /* !CONFIG_CPU_MIPS32_R2 */
+ #endif /* CONFIG_MIPS_PGD_C0_CONTEXT */
+ 
+ /*
+@@ -1672,7 +1674,7 @@ build_pte_modifiable(u32 **p, struct uasm_reloc **r,
+ 	}
+ }
+ 
+-#ifndef CONFIG_MIPS_PGD_C0_CONTEXT
++#if !defined(CONFIG_MIPS_PGD_C0_CONTEXT) && !defined(CONFIG_CPU_MIPS32_R2)
+ 
+ 
+ /*
+@@ -1826,7 +1828,7 @@ static void __cpuinit build_r3000_tlb_modify_handler(void)
+ 
+ 	dump_handler(handle_tlbm, ARRAY_SIZE(handle_tlbm));
+ }
+-#endif /* CONFIG_MIPS_PGD_C0_CONTEXT */
++#endif /* !CONFIG_MIPS_PGD_C0_CONTEXT && !CONFIG_CPU_MIPS32_R2 */
+ 
+ /*
+  * R4000 style TLB load/store/modify handlers.
+@@ -2164,6 +2166,7 @@ void __cpuinit build_tlb_refill_handler(void)
+ #endif
+ 
+ 	switch (current_cpu_type()) {
++#ifndef CONFIG_CPU_MIPS32_R2
+ 	case CPU_R2000:
+ 	case CPU_R3000:
+ 	case CPU_R3000A:
+@@ -2193,6 +2196,7 @@ void __cpuinit build_tlb_refill_handler(void)
+ 		panic("No R8000 TLB refill handler yet");
+ 		break;
+ 
++#endif /* !CONFIG_CPU_MIPS32_R2 */
+ 	default:
+ 		if (!run_once) {
+ 			scratch_reg = allocate_kscratch();
 -- 
 1.7.9.5

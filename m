@@ -1,22 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:22:20 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:60400 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:23:34 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:60409 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6824840Ab2LGFVFA3yIy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:21:05 +0100
+        with ESMTP id S6816521Ab2LGFXdaRc2L (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:23:33 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1TgqMs-0007Pp-LZ; Thu, 06 Dec 2012 23:20:58 -0600
+        id 1TgqPH-0007QJ-15; Thu, 06 Dec 2012 23:23:27 -0600
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 4/4] MIPS: malta: Code clean-ups.
-Date:   Thu,  6 Dec 2012 23:20:49 -0600
-Message-Id: <1354857649-29224-5-git-send-email-sjhill@mips.com>
+Subject: [PATCH] MIPS: Add option to disable software I/O coherency.
+Date:   Thu,  6 Dec 2012 23:23:22 -0600
+Message-Id: <1354857802-29348-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1354857649-29224-1-git-send-email-sjhill@mips.com>
-References: <1354857649-29224-1-git-send-email-sjhill@mips.com>
-X-archive-position: 35233
+X-archive-position: 35234
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,390 +34,247 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Do whitespace/formatting clean-up and remove obsolete header file.
+Some MIPS controllers have hardware I/O coherency. This patch
+detects those and turns off software coherency. A new kernel
+command line option also allows the user to manually turn
+software coherency on or off.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/mips-boards/prom.h |   49 -------------------------
- arch/mips/mti-malta/malta-display.c      |   39 +++++++++-----------
- arch/mips/mti-malta/malta-init.c         |   58 ++++++++++++++----------------
- arch/mips/mti-malta/malta-memory.c       |   42 +++++++++-------------
- arch/mips/mti-malta/malta-setup.c        |   15 ++++----
- 5 files changed, 66 insertions(+), 137 deletions(-)
- delete mode 100644 arch/mips/include/asm/mips-boards/prom.h
+ arch/mips/include/asm/mach-generic/dma-coherence.h |    4 +-
+ arch/mips/mm/c-r4k.c                               |   21 +---
+ arch/mips/mm/dma-default.c                         |    8 +-
+ arch/mips/mti-malta/malta-setup.c                  |  102 ++++++++++++++++++++
+ 4 files changed, 116 insertions(+), 19 deletions(-)
 
-diff --git a/arch/mips/include/asm/mips-boards/prom.h b/arch/mips/include/asm/mips-boards/prom.h
-deleted file mode 100644
-index 2d427aa..0000000
---- a/arch/mips/include/asm/mips-boards/prom.h
-+++ /dev/null
-@@ -1,49 +0,0 @@
--/*
-- * Carsten Langgaard, carstenl@mips.com
-- * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
-- *
-- * ########################################################################
-- *
-- *  This program is free software; you can distribute it and/or modify it
-- *  under the terms of the GNU General Public License (Version 2) as
-- *  published by the Free Software Foundation.
-- *
-- *  This program is distributed in the hope it will be useful, but WITHOUT
-- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-- *  for more details.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
-- *
-- * ########################################################################
-- *
-- * MIPS boards bootprom interface for the Linux kernel.
-- *
-- */
--
--#ifndef _MIPS_PROM_H
--#define _MIPS_PROM_H
--
--extern char *prom_getcmdline(void);
--extern char *prom_getenv(char *name);
--extern void prom_init_cmdline(void);
--extern void prom_meminit(void);
--extern void prom_fixup_mem_map(unsigned long start_mem, unsigned long end_mem);
--extern void mips_display_message(const char *str);
--extern void mips_display_word(unsigned int num);
--extern void mips_scroll_message(void);
--extern int get_ethernet_addr(char *ethernet_addr);
--
--/* Memory descriptor management. */
--#define PROM_MAX_PMEMBLOCKS    32
--struct prom_pmemblock {
--        unsigned long base; /* Within KSEG0. */
--        unsigned int size;  /* In bytes. */
--        unsigned int type;  /* free or prom memory */
--};
--
--extern struct boot_param_header __dtb_start;
--
--#endif /* !(_MIPS_PROM_H) */
-diff --git a/arch/mips/mti-malta/malta-display.c b/arch/mips/mti-malta/malta-display.c
-index 2a0057c..04826d7 100644
---- a/arch/mips/mti-malta/malta-display.c
-+++ b/arch/mips/mti-malta/malta-display.c
-@@ -1,26 +1,19 @@
- /*
-- * Carsten Langgaard, carstenl@mips.com
-- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
-- *
-- *  This program is free software; you can distribute it and/or modify it
-- *  under the terms of the GNU General Public License (Version 2) as
-- *  published by the Free Software Foundation.
-- *
-- *  This program is distributed in the hope it will be useful, but WITHOUT
-- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-- *  for more details.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  *
-  * Display routines for display messages in MIPS boards ascii display.
-+ *
-+ * Copyright (C) 1999,2000,2012  MIPS Technologies, Inc.
-+ * All rights reserved.
-+ * Authors: Carsten Langgaard <carstenl@mips.com>
-+ *          Steven J. Hill <sjhill@mips.com>
-  */
--
- #include <linux/compiler.h>
- #include <linux/timer.h>
--#include <asm/io.h>
-+#include <linux/io.h>
+diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
+index 9c95177..9f1cd31 100644
+--- a/arch/mips/include/asm/mach-generic/dma-coherence.h
++++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
+@@ -63,7 +63,9 @@ static inline int plat_device_is_coherent(struct device *dev)
+ 	return 1;
+ #endif
+ #ifdef CONFIG_DMA_NONCOHERENT
+-	return 0;
++	extern int coherentio;
 +
- #include <asm/mips-boards/generic.h>
++	return coherentio;
+ #endif
+ }
  
- extern const char display_string[];
-@@ -29,17 +22,17 @@ static unsigned int max_display_count;
- 
- void mips_display_message(const char *str)
- {
--	static unsigned int __iomem *display = NULL;
-+	static unsigned int __iomem *display;
- 	int i;
- 
- 	if (unlikely(display == NULL))
- 		display = ioremap(ASCII_DISPLAY_POS_BASE, 16*sizeof(int));
- 
--	for (i = 0; i <= 14; i=i+2) {
--	         if (*str)
--		         __raw_writel(*str++, display + i);
--		 else
--		         __raw_writel(' ', display + i);
-+	for (i = 0; i <= 14; i += 2) {
-+		if (*str)
-+			__raw_writel(*str++, display + i);
-+		else
-+			__raw_writel(' ', display + i);
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index c0f27c8..7f13f24 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1383,20 +1383,6 @@ static void __cpuinit coherency_setup(void)
  	}
  }
  
-diff --git a/arch/mips/mti-malta/malta-init.c b/arch/mips/mti-malta/malta-init.c
-index 6c61e94..0ae857a 100644
---- a/arch/mips/mti-malta/malta-init.c
-+++ b/arch/mips/mti-malta/malta-init.c
-@@ -1,42 +1,29 @@
- /*
-- * Copyright (C) 1999, 2000, 2004, 2005  MIPS Technologies, Inc.
-- *	All rights reserved.
-- *	Authors: Carsten Langgaard <carstenl@mips.com>
-- *		 Maciej W. Rozycki <macro@mips.com>
-- *
-- *  This program is free software; you can distribute it and/or modify it
-- *  under the terms of the GNU General Public License (Version 2) as
-- *  published by the Free Software Foundation.
-- *
-- *  This program is distributed in the hope it will be useful, but WITHOUT
-- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-- *  for more details.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  *
-  * PROM library initialisation code.
-+ *
-+ * Copyright (C) 1999,2000,2004,2005,2012  MIPS Technologies, Inc.
-+ * All rights reserved.
-+ * Authors: Carsten Langgaard <carstenl@mips.com>
-+ *	    Maciej W. Rozycki <macro@mips.com>
-+ *          Steven J. Hill <sjhill@mips.com>
-  */
- #include <linux/init.h>
- #include <linux/string.h>
- #include <linux/kernel.h>
- 
--#include <asm/gt64120.h>
--#include <asm/io.h>
- #include <asm/cacheflush.h>
- #include <asm/smp-ops.h>
- #include <asm/traps.h>
- #include <asm/fw/fw.h>
- #include <asm/gcmpregs.h>
- #include <asm/mips-boards/generic.h>
--#include <asm/mips-boards/bonito64.h>
--#include <asm/mips-boards/msc01_pci.h>
+-#if defined(CONFIG_DMA_NONCOHERENT)
 -
- #include <asm/mips-boards/malta.h>
- 
--int init_debug;
-+extern void mips_display_message(const char *str);
- 
- static int mips_revision_corid;
- int mips_revision_sconid;
-@@ -64,12 +51,18 @@ static void __init console_config(void)
- 		if (s) {
- 			while (*s >= '0' && *s <= '9')
- 				baud = baud*10 + *s++ - '0';
--			if (*s == ',') s++;
--			if (*s) parity = *s++;
--			if (*s == ',') s++;
--			if (*s) bits = *s++;
--			if (*s == ',') s++;
--			if (*s == 'h') flow = 'r';
-+			if (*s == ',')
-+				s++;
-+			if (*s)
-+				parity = *s++;
-+			if (*s == ',')
-+				s++;
-+			if (*s)
-+				bits = *s++;
-+			if (*s == ',')
-+				s++;
-+			if (*s == 'h')
-+				flow = 'r';
- 		}
- 		if (baud == 0)
- 			baud = 38400;
-@@ -79,7 +72,8 @@ static void __init console_config(void)
- 			bits = '8';
- 		if (flow == '\0')
- 			flow = 'r';
--		sprintf(console_string, " console=ttyS0,%d%c%c%c", baud, parity, bits, flow);
-+		sprintf(console_string, " console=ttyS0,%d%c%c%c", baud,
-+			parity, bits, flow);
- 		strcat(fw_getcmdline(), console_string);
- 		pr_info("Config serial console:%s\n", console_string);
- 	}
-@@ -223,7 +217,7 @@ void __init prom_init(void)
- 	case MIPS_REVISION_SCON_SOCIT:
- 	case MIPS_REVISION_SCON_ROCIT:
- 		_pcictrl_msc = (unsigned long)ioremap(MIPS_MSC01_PCI_REG_BASE, 0x2000);
--	mips_pci_controller:
-+mips_pci_controller:
- 		mb();
- 		MSC_READ(MSC01_PCI_CFG, data);
- 		MSC_WRITE(MSC01_PCI_CFG, data & ~MSC01_PCI_CFG_EN_BIT);
-@@ -265,7 +259,7 @@ void __init prom_init(void)
- 	default:
- 		/* Unknown system controller */
- 		mips_display_message("SC Error");
--		while (1);   /* We die here... */
-+		while (1);	/* We die here... */
- 	}
- 	board_nmi_handler_setup = mips_nmi_setup;
- 	board_ejtag_handler_setup = mips_ejtag_setup;
-diff --git a/arch/mips/mti-malta/malta-memory.c b/arch/mips/mti-malta/malta-memory.c
-index 06fa4ad..391960a 100644
---- a/arch/mips/mti-malta/malta-memory.c
-+++ b/arch/mips/mti-malta/malta-memory.c
-@@ -1,31 +1,21 @@
- /*
-- * Carsten Langgaard, carstenl@mips.com
-- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
-- *
-- *  This program is free software; you can distribute it and/or modify it
-- *  under the terms of the GNU General Public License (Version 2) as
-- *  published by the Free Software Foundation.
-- *
-- *  This program is distributed in the hope it will be useful, but WITHOUT
-- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-- *  for more details.
-- *
-- *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  *
-  * PROM library functions for acquiring/using memory descriptors given to
-  * us from the YAMON.
-+ *
-+ * Copyright (C) 1999,2000,2012  MIPS Technologies, Inc.
-+ * All rights reserved.
-+ * Authors: Carsten Langgaard <carstenl@mips.com>
-+ *          Steven J. Hill <sjhill@mips.com>
-  */
- #include <linux/init.h>
--#include <linux/mm.h>
- #include <linux/bootmem.h>
--#include <linux/pfn.h>
- #include <linux/string.h>
- 
- #include <asm/bootinfo.h>
--#include <asm/page.h>
- #include <asm/sections.h>
- #include <asm/fw/fw.h>
- 
-@@ -36,19 +26,20 @@ unsigned long physical_memsize = 0L;
- 
- fw_memblock_t * __init fw_getmdesc(void)
+-static int __cpuinitdata coherentio;
+-
+-static int __init setcoherentio(char *str)
+-{
+-	coherentio = 1;
+-
+-	return 1;
+-}
+-
+-__setup("coherentio", setcoherentio);
+-#endif
+-
+ static void __cpuinit r4k_cache_error_setup(void)
  {
--	char *memsize_str;
-+	char *memsize_str, *ptr;
- 	unsigned int memsize;
--	char *ptr;
- 	static char cmdline[COMMAND_LINE_SIZE] __initdata;
-+	long val;
-+	int tmp;
+ 	extern char __weak except_vec2_generic;
+@@ -1419,6 +1405,7 @@ void __cpuinit r4k_cache_init(void)
+ {
+ 	extern void build_clear_page(void);
+ 	extern void build_copy_page(void);
++	extern int coherentio;
+ 	struct cpuinfo_mips *c = &current_cpu_data;
  
- 	/* otherwise look in the environment */
- 	memsize_str = fw_getenv("memsize");
- 	if (!memsize_str) {
--		printk(KERN_WARNING
--		       "memsize not set in boot prom, set to default (32Mb)\n");
-+		pr_warn("memsize not set in YAMON, set to default (32Mb)\n");
- 		physical_memsize = 0x02000000;
- 	} else {
--		physical_memsize = simple_strtol(memsize_str, NULL, 0);
-+		tmp = kstrtol(memsize_str, 0, &val);
-+		physical_memsize = (unsigned long)val;
+ 	probe_pcache();
+@@ -1478,9 +1465,11 @@ void __cpuinit r4k_cache_init(void)
+ 
+ 	build_clear_page();
+ 	build_copy_page();
+-#if !defined(CONFIG_MIPS_CMP)
++
++	/* We want to run CMP kernels on core(s) with and without coherent caches */
++	/* Therefore can't use CONFIG_MIPS_CMP to decide to flush cache */
+ 	local_r4k___flush_cache_all(NULL);
+-#endif
++
+ 	coherency_setup();
+ 	board_cache_error_setup = r4k_cache_error_setup;
+ }
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index 3fab204..058c2ca 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -100,6 +100,7 @@ EXPORT_SYMBOL(dma_alloc_noncoherent);
+ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+ 	dma_addr_t * dma_handle, gfp_t gfp, struct dma_attrs *attrs)
+ {
++	extern int hw_coherentio;
+ 	void *ret;
+ 
+ 	if (dma_alloc_from_coherent(dev, size, dma_handle, &ret))
+@@ -115,7 +116,8 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+ 
+ 		if (!plat_device_is_coherent(dev)) {
+ 			dma_cache_wback_inv((unsigned long) ret, size);
+-			ret = UNCAC_ADDR(ret);
++			if (!hw_coherentio)
++				ret = UNCAC_ADDR(ret);
+ 		}
  	}
  
- #ifdef CONFIG_CPU_BIG_ENDIAN
-@@ -92,7 +83,8 @@ fw_memblock_t * __init fw_getmdesc(void)
+@@ -134,6 +136,7 @@ EXPORT_SYMBOL(dma_free_noncoherent);
+ static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
+ 	dma_addr_t dma_handle, struct dma_attrs *attrs)
+ {
++	extern int hw_coherentio;
+ 	unsigned long addr = (unsigned long) vaddr;
+ 	int order = get_order(size);
  
- 	mdesc[3].type = fw_dontuse;
- 	mdesc[3].base = 0x00100000;
--	mdesc[3].size = CPHYSADDR(PFN_ALIGN((unsigned long)&_end)) - mdesc[3].base;
-+	mdesc[3].size = CPHYSADDR(PFN_ALIGN((unsigned long)&_end)) -
-+		mdesc[3].base;
+@@ -143,7 +146,8 @@ static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
+ 	plat_unmap_dma_mem(dev, dma_handle, size, DMA_BIDIRECTIONAL);
  
- 	mdesc[4].type = fw_free;
- 	mdesc[4].base = CPHYSADDR(PFN_ALIGN(&_end));
-@@ -142,7 +134,7 @@ void __init prom_free_prom_memory(void)
- 			continue;
+ 	if (!plat_device_is_coherent(dev))
+-		addr = CAC_ADDR(addr);
++		if (!hw_coherentio)
++			addr = CAC_ADDR(addr);
  
- 		addr = boot_mem_map.map[i].addr;
--		free_init_pages("prom memory",
-+		free_init_pages("YAMON memory",
- 				addr, addr + boot_mem_map.map[i].size);
- 	}
+ 	free_pages(addr, get_order(size));
  }
 diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
-index 08cdf8f..ed68073 100644
+index ed68073..0bac429 100644
 --- a/arch/mips/mti-malta/malta-setup.c
 +++ b/arch/mips/mti-malta/malta-setup.c
-@@ -117,13 +117,12 @@ static void __init pci_clock_check(void)
- 	char *argptr = fw_getcmdline();
- 
- 	if (pciclock != 33 && !strstr(argptr, "idebus=")) {
--		printk(KERN_WARNING "WARNING: PCI clock is %dMHz, "
--				"setting idebus\n", pciclock);
-+		pr_warn("WARNING: PCI clock is %dMHz, setting idebus\n",
-+			pciclock);
- 		argptr += strlen(argptr);
- 		sprintf(argptr, " idebus=%d", pciclock);
- 		if (pciclock < 20 || pciclock > 66)
--			printk(KERN_WARNING "WARNING: IDE timing "
--					"calculations will be incorrect\n");
-+			pr_warn("WARNING: IDE timing calculations will be incorrect\n");
- 	}
+@@ -31,6 +31,7 @@
+ #include <asm/mips-boards/maltaint.h>
+ #include <asm/dma.h>
+ #include <asm/traps.h>
++#include <asm/gcmpregs.h>
+ #ifdef CONFIG_VT
+ #include <linux/console.h>
+ #endif
+@@ -104,6 +105,105 @@ static void __init fd_activate(void)
  }
  #endif
-@@ -155,14 +154,14 @@ static void __init bonito_quirks_setup(void)
- 	argptr = fw_getcmdline();
- 	if (strstr(argptr, "debug")) {
- 		BONITO_BONGENCFG |= BONITO_BONGENCFG_DEBUGMODE;
--		printk(KERN_INFO "Enabled Bonito debug mode\n");
-+		pr_info("Enabled Bonito debug mode\n");
- 	} else
- 		BONITO_BONGENCFG &= ~BONITO_BONGENCFG_DEBUGMODE;
  
- #ifdef CONFIG_DMA_COHERENT
- 	if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
- 		BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
--		printk(KERN_INFO "Enabled Bonito CPU coherency\n");
-+		pr_info("Enabled Bonito CPU coherency\n");
- 
- 		argptr = fw_getcmdline();
- 		if (strstr(argptr, "iobcuncached")) {
-@@ -170,13 +169,13 @@ static void __init bonito_quirks_setup(void)
- 			BONITO_PCIMEMBASECFG = BONITO_PCIMEMBASECFG &
- 				~(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
- 					BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
--			printk(KERN_INFO "Disabled Bonito IOBC coherency\n");
++int coherentio = -1;	/* no DMA cache coherency (may be set by user) */
++int hw_coherentio;	/* init to 0 => no HW DMA cache coherency (reflects real HW) */
++static int __init setcoherentio(char *str)
++{
++	if (coherentio < 0)
++		pr_info("Command line checking done before"
++				" plat_setup_iocoherency!!\n");
++	if (coherentio == 0)
++		pr_info("Command line enabling coherentio"
++				" (this will break...)!!\n");
++
++	coherentio = 1;
++	pr_info("Hardware DMA cache coherency (command line)\n");
++	return 1;
++}
++__setup("coherentio", setcoherentio);
++
++static int __init setnocoherentio(char *str)
++{
++	if (coherentio < 0)
++		pr_info("Command line checking done before"
++				" plat_setup_iocoherency!!\n");
++	if (coherentio == 1)
++		pr_info("Command line disabling coherentio\n");
++
++	coherentio = 0;
++	pr_info("Software DMA cache coherency (command line)\n");
++	return 1;
++}
++__setup("nocoherentio", setnocoherentio);
++
++static int __init
++plat_enable_iocoherency(void)
++{
++	int supported = 0;
++	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO) {
++		if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
++			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
++			pr_info("Enabled Bonito CPU coherency\n");
++			supported = 1;
++		}
++		if (strstr(fw_getcmdline(), "iobcuncached")) {
++			BONITO_PCICACHECTRL &= ~BONITO_PCICACHECTRL_IOBCCOH_EN;
++			BONITO_PCIMEMBASECFG = BONITO_PCIMEMBASECFG &
++				~(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
++				  BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
 +			pr_info("Disabled Bonito IOBC coherency\n");
- 		} else {
- 			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_IOBCCOH_EN;
- 			BONITO_PCIMEMBASECFG |=
- 				(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
- 					BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
--			printk(KERN_INFO "Enabled Bonito IOBC coherency\n");
++		} else {
++			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_IOBCCOH_EN;
++			BONITO_PCIMEMBASECFG |=
++				(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
++				 BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
 +			pr_info("Enabled Bonito IOBC coherency\n");
- 		}
- 	} else
- 		panic("Hardware DMA cache coherency not supported");
++		}
++	} else if (gcmp_niocu() != 0) {
++		/* Nothing special needs to be done to enable coherency */
++		pr_info("CMP IOCU detected\n");
++		if ((*(unsigned int *)0xbf403000 & 0x81) != 0x81) {
++			pr_crit("IOCU OPERATION DISABLED BY SWITCH"
++				" - DEFAULTING TO SW IO COHERENCY\n");
++			return 0;
++		}
++		supported = 1;
++	}
++	hw_coherentio = supported;
++	return supported;
++}
++
++static void __init
++plat_setup_iocoherency(void)
++{
++#ifdef CONFIG_DMA_NONCOHERENT
++	/*
++	 * Kernel has been configured with software coherency
++	 * but we might choose to turn it off
++	 */
++	if (plat_enable_iocoherency()) {
++		if (coherentio == 0)
++			pr_info("Hardware DMA cache coherency supported"
++					" but disabled from command line\n");
++		else {
++			coherentio = 1;
++			printk(KERN_INFO "Hardware DMA cache coherency\n");
++		}
++	} else {
++		if (coherentio == 1)
++			pr_info("Hardware DMA cache coherency not supported"
++				" but enabled from command line\n");
++		else {
++			coherentio = 0;
++			pr_info("Software DMA cache coherency\n");
++		}
++	}
++#else
++	if (!plat_enable_iocoherency())
++		panic("Hardware DMA cache coherency not supported");
++#endif
++}
++
+ #ifdef CONFIG_BLK_DEV_IDE
+ static void __init pci_clock_check(void)
+ {
+@@ -205,6 +305,8 @@ void __init plat_mem_setup(void)
+ 	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO)
+ 		bonito_quirks_setup();
+ 
++	plat_setup_iocoherency();
++
+ #ifdef CONFIG_BLK_DEV_IDE
+ 	pci_clock_check();
+ #endif
 -- 
 1.7.9.5

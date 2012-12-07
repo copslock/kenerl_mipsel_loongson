@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:21:03 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:60391 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:21:21 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:60393 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823707Ab2LGFVB4QUQA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:21:01 +0100
+        with ESMTP id S6824810Ab2LGFVDDU5L- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:21:03 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1TgqMp-0007Pp-6G; Thu, 06 Dec 2012 23:20:55 -0600
+        id 1TgqMq-0007Pp-W9; Thu, 06 Dec 2012 23:20:57 -0600
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH 0/4] Add environment variable processing to firmware library.
-Date:   Thu,  6 Dec 2012 23:20:45 -0600
-Message-Id: <1354857649-29224-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH 1/4] MIPS: FW: Add environment variable processing.
+Date:   Thu,  6 Dec 2012 23:20:46 -0600
+Message-Id: <1354857649-29224-2-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
-X-archive-position: 35229
+In-Reply-To: <1354857649-29224-1-git-send-email-sjhill@mips.com>
+References: <1354857649-29224-1-git-send-email-sjhill@mips.com>
+X-archive-position: 35230
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,40 +36,188 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Update firmware library functionality to do environment variable
-processing. Updates the Malta and SEAD-3 platforms to use the new
-functionality.
+Add parsing of the environment and command line variables passed to
+the kernel to the firmware library.
 
-Steven J. Hill (4):
-  MIPS: FW: Add environment variable processing.
-  MIPS: sead3: Use new common FW library variable processing.
-  MIPS: malta: Use new common FW library variable processing.
-  MIPS: malta: Code clean-ups.
-
- arch/mips/fw/lib/Makefile                   |    2 +
- arch/mips/fw/lib/cmdline.c                  |  101 ++++++++++++++++++
- arch/mips/include/asm/fw/fw.h               |   47 ++++++++
- arch/mips/include/asm/mips-boards/generic.h |    1 +
- arch/mips/include/asm/mips-boards/prom.h    |   49 ---------
- arch/mips/mti-malta/Makefile                |    5 +-
- arch/mips/mti-malta/malta-cmdline.c         |   59 -----------
- arch/mips/mti-malta/malta-display.c         |   40 +++----
- arch/mips/mti-malta/malta-init.c            |  153 ++++++---------------------
- arch/mips/mti-malta/malta-memory.c          |  104 ++++++------------
- arch/mips/mti-malta/malta-setup.c           |   24 ++---
- arch/mips/mti-malta/malta-time.c            |    1 -
- arch/mips/mti-sead3/Makefile                |    8 +-
- arch/mips/mti-sead3/sead3-cmdline.c         |   46 --------
- arch/mips/mti-sead3/sead3-console.c         |    2 +-
- arch/mips/mti-sead3/sead3-display.c         |    1 -
- arch/mips/mti-sead3/sead3-init.c            |   82 +++++++-------
- arch/mips/mti-sead3/sead3-time.c            |    1 -
- 18 files changed, 296 insertions(+), 430 deletions(-)
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/fw/lib/Makefile     |    2 +
+ arch/mips/fw/lib/cmdline.c    |  101 +++++++++++++++++++++++++++++++++++++++++
+ arch/mips/include/asm/fw/fw.h |   47 +++++++++++++++++++
+ 3 files changed, 150 insertions(+)
  create mode 100644 arch/mips/fw/lib/cmdline.c
  create mode 100644 arch/mips/include/asm/fw/fw.h
- delete mode 100644 arch/mips/include/asm/mips-boards/prom.h
- delete mode 100644 arch/mips/mti-malta/malta-cmdline.c
- delete mode 100644 arch/mips/mti-sead3/sead3-cmdline.c
 
+diff --git a/arch/mips/fw/lib/Makefile b/arch/mips/fw/lib/Makefile
+index 84befc9..5291505 100644
+--- a/arch/mips/fw/lib/Makefile
++++ b/arch/mips/fw/lib/Makefile
+@@ -2,4 +2,6 @@
+ # Makefile for generic prom monitor library routines under Linux.
+ #
+ 
++lib-y			+= cmdline.o
++
+ lib-$(CONFIG_64BIT)	+= call_o32.o
+diff --git a/arch/mips/fw/lib/cmdline.c b/arch/mips/fw/lib/cmdline.c
+new file mode 100644
+index 0000000..ffd0345
+--- /dev/null
++++ b/arch/mips/fw/lib/cmdline.c
+@@ -0,0 +1,101 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/string.h>
++
++#include <asm/addrspace.h>
++#include <asm/fw/fw.h>
++
++int fw_argc;
++int *_fw_argv;
++int *_fw_envp;
++
++void __init fw_init_cmdline(void)
++{
++	int i;
++
++	/* Validate command line parameters. */
++	if ((fw_arg0 >= CKSEG0) || (fw_arg1 < CKSEG0)) {
++		fw_argc = 0;
++		_fw_argv = NULL;
++	} else {
++		fw_argc = (fw_arg0 & 0x0000ffff);
++		_fw_argv = (int *)fw_arg1;
++	}
++
++	/* Validate environment pointer. */
++	if (fw_arg2 < CKSEG0)
++		_fw_envp = NULL;
++	else
++		_fw_envp = (int *)fw_arg2;
++
++	for (i = 1; i < fw_argc; i++) {
++		strlcat(arcs_cmdline, fw_argv(i), COMMAND_LINE_SIZE);
++		if (i < (fw_argc - 1))
++			strlcat(arcs_cmdline, " ", COMMAND_LINE_SIZE);
++	}
++}
++
++char * __init fw_getcmdline(void)
++{
++	return &(arcs_cmdline[0]);
++}
++
++char *fw_getenv(char *envname)
++{
++	char *result = NULL;
++
++	if (_fw_envp != NULL) {
++		/*
++		 * Return a pointer to the given environment variable.
++		 * YAMON uses "name", "value" pairs, while U-Boot uses
++		 * "name=value".
++		 */
++		int i, yamon, index = 0;
++
++		yamon = (strchr(fw_envp(index), '=') == NULL);
++		i = strlen(envname);
++
++		while (fw_envp(index)) {
++			if (strncmp(envname, fw_envp(index), i) == 0) {
++				if (yamon) {
++					result = fw_envp(index + 1);
++					break;
++				} else if (fw_envp(index)[i] == '=') {
++					result = (fw_envp(index + 1) + i);
++					break;
++				}
++			}
++
++			/* Increment array index. */
++			if (yamon)
++				index += 2;
++			else
++				index += 1;
++		}
++	}
++
++	return result;
++}
++
++unsigned long fw_getenvl(char *envname)
++{
++	unsigned long envl = 0UL;
++	char *str;
++	long val;
++	int tmp;
++
++	str = fw_getenv(envname);
++	if (str) {
++		tmp = kstrtol(str, 0, &val);
++		envl = (unsigned long)val;
++	}
++
++	return envl;
++}
+diff --git a/arch/mips/include/asm/fw/fw.h b/arch/mips/include/asm/fw/fw.h
+new file mode 100644
+index 0000000..d6c50a7
+--- /dev/null
++++ b/arch/mips/include/asm/fw/fw.h
+@@ -0,0 +1,47 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.
++ */
++#ifndef __ASM_FW_H_
++#define __ASM_FW_H_
++
++#include <asm/bootinfo.h>	/* For cleaner code... */
++
++enum fw_memtypes {
++	fw_dontuse,
++	fw_code,
++	fw_free,
++};
++
++typedef struct {
++	unsigned long base;	/* Within KSEG0 */
++	unsigned int size;	/* bytes */
++	enum fw_memtypes type;	/* fw_memtypes */
++} fw_memblock_t;
++
++/* Maximum number of memory block descriptors. */
++#define FW_MAX_MEMBLOCKS	32
++
++extern int fw_argc;
++extern int *_fw_argv;
++extern int *_fw_envp;
++
++/*
++ * Most firmware like YAMON, PMON, etc. pass arguments and environment
++ * variables as 32-bit pointers. These take care of sign extension.
++ */
++#define fw_argv(index)		((char *)(long)_fw_argv[(index)])
++#define fw_envp(index)		((char *)(long)_fw_envp[(index)])
++
++extern void fw_init_cmdline(void);
++extern char *fw_getcmdline(void);
++extern fw_memblock_t *fw_getmdesc(void);
++extern void fw_meminit(void);
++extern char *fw_getenv(char *name);
++extern unsigned long fw_getenvl(char *name);
++extern void fw_init_early_console(char port);
++
++#endif /* __ASM_FW_H_ */
 -- 
 1.7.9.5

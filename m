@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 05:54:07 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:60265 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:05:51 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:60304 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823142Ab2LGEyEz6JYO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 05:54:04 +0100
+        with ESMTP id S6815793Ab2LGFFtn7xi0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:05:49 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1Tgpwk-0007Kw-Ob; Thu, 06 Dec 2012 22:53:58 -0600
+        id 1Tgq86-0007MA-T8; Thu, 06 Dec 2012 23:05:42 -0600
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH] MIPS: dsp: Simplify the DSP macros.
-Date:   Thu,  6 Dec 2012 22:53:52 -0600
-Message-Id: <1354856032-28475-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH v99,00/13] Add support for pure microMIPS kernel.
+Date:   Thu,  6 Dec 2012 23:05:24 -0600
+Message-Id: <1354856737-28678-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
-X-archive-position: 35210
+X-archive-position: 35211
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,277 +34,63 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Simplify the DSP macros for vanilla (non-microMIPS) kernels and
-toolchains that do not support the DSP ASEs.
+This set of patches is to support building a pure microMIPS kernel
+image using only instructions from the microMIPS ISA. The result is
+a kernel binary size reduction of more than 20% and an increase in
+the speed of execution due to the smaller and faster instructions.
 
-Signed-off-by: Steven J. Hill <sjhill@mips.com>
----
- arch/mips/include/asm/mipsregs.h |  231 +++++---------------------------------
- 1 file changed, 30 insertions(+), 201 deletions(-)
+Douglas Leung (1):
+  MIPS: microMIPS: Add vdso support.
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index c1e0221..0c0e4a6 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1322,229 +1322,58 @@ do {									\
- 	: "r" (val), "i" (mask));					\
- } while (0)
- 
--#define mfhi0()								\
-+#define _dsp_mfxxx(ins)							\
- ({									\
- 	unsigned long __treg;						\
- 									\
- 	__asm__ __volatile__(						\
--	"	.set	push			\n"			\
--	"	.set	noat			\n"			\
--	"	# mfhi	%0, $ac0		\n"			\
--	"	.word	0x00000810		\n"			\
--	"	move	%0, $1			\n"			\
--	"	.set	pop			\n"			\
--	: "=r" (__treg));						\
--	__treg;								\
--})
--
--#define mfhi1()								\
--({									\
--	unsigned long __treg;						\
--									\
--	__asm__ __volatile__(						\
--	"	.set	push			\n"			\
--	"	.set	noat			\n"			\
--	"	# mfhi	%0, $ac1		\n"			\
--	"	.word	0x00200810		\n"			\
--	"	move	%0, $1			\n"			\
--	"	.set	pop			\n"			\
--	: "=r" (__treg));						\
--	__treg;								\
--})
--
--#define mfhi2()								\
--({									\
--	unsigned long __treg;						\
--									\
--	__asm__ __volatile__(						\
--	"	.set	push			\n"			\
--	"	.set	noat			\n"			\
--	"	# mfhi	%0, $ac2		\n"			\
--	"	.word	0x00400810		\n"			\
--	"	move	%0, $1			\n"			\
--	"	.set	pop			\n"			\
--	: "=r" (__treg));						\
--	__treg;								\
--})
--
--#define mfhi3()								\
--({									\
--	unsigned long __treg;						\
--									\
--	__asm__ __volatile__(						\
--	"	.set	push			\n"			\
--	"	.set	noat			\n"			\
--	"	# mfhi	%0, $ac3		\n"			\
--	"	.word	0x00600810		\n"			\
--	"	move	%0, $1			\n"			\
--	"	.set	pop			\n"			\
--	: "=r" (__treg));						\
--	__treg;								\
--})
--
--#define mflo0()								\
--({									\
--	unsigned long __treg;						\
--									\
--	__asm__ __volatile__(						\
--	"	.set	push			\n"			\
--	"	.set	noat			\n"			\
--	"	# mflo	%0, $ac0		\n"			\
--	"	.word	0x00000812		\n"			\
--	"	move	%0, $1			\n"			\
--	"	.set	pop			\n"			\
--	: "=r" (__treg));						\
--	__treg;								\
--})
--
--#define mflo1()								\
--({									\
--	unsigned long __treg;						\
--									\
--	__asm__ __volatile__(						\
--	"	.set	push			\n"			\
--	"	.set	noat			\n"			\
--	"	# mflo	%0, $ac1		\n"			\
--	"	.word	0x00200812		\n"			\
--	"	move	%0, $1			\n"			\
--	"	.set	pop			\n"			\
--	: "=r" (__treg));						\
--	__treg;								\
--})
--
--#define mflo2()								\
--({									\
--	unsigned long __treg;						\
--									\
--	__asm__ __volatile__(						\
--	"	.set	push			\n"			\
--	"	.set	noat			\n"			\
--	"	# mflo	%0, $ac2		\n"			\
--	"	.word	0x00400812		\n"			\
--	"	move	%0, $1			\n"			\
--	"	.set	pop			\n"			\
--	: "=r" (__treg));						\
--	__treg;								\
--})
--
--#define mflo3()								\
--({									\
--	unsigned long __treg;						\
--									\
--	__asm__ __volatile__(						\
--	"	.set	push			\n"			\
--	"	.set	noat			\n"			\
--	"	# mflo	%0, $ac3		\n"			\
--	"	.word	0x00600812		\n"			\
--	"	move	%0, $1			\n"			\
--	"	.set	pop			\n"			\
--	: "=r" (__treg));						\
--	__treg;								\
--})
--
--#define mthi0(x)							\
--do {									\
--	__asm__ __volatile__(						\
- 	"	.set	push					\n"	\
- 	"	.set	noat					\n"	\
--	"	move	$1, %0					\n"	\
--	"	# mthi	$1, $ac0				\n"	\
--	"	.word	0x00200011				\n"	\
-+	"	.word	(0x00000810 | %1)			\n"	\
-+	"	move	%0, $1					\n"	\
- 	"	.set	pop					\n"	\
--	:								\
--	: "r" (x));							\
--} while (0)
-+	: "=r" (__treg)							\
-+	: "i" (ins));							\
-+	__treg;								\
-+})
- 
--#define mthi1(x)							\
-+#define _dsp_mtxxx(val, ins)						\
- do {									\
- 	__asm__ __volatile__(						\
- 	"	.set	push					\n"	\
- 	"	.set	noat					\n"	\
- 	"	move	$1, %0					\n"	\
--	"	# mthi	$1, $ac1				\n"	\
--	"	.word	0x00200811				\n"	\
-+	"	.word	(0x00200011 | %1)			\n"	\
- 	"	.set	pop					\n"	\
- 	:								\
--	: "r" (x));							\
-+	: "r" (val), "i" (ins));					\
- } while (0)
- 
--#define mthi2(x)							\
--do {									\
--	__asm__ __volatile__(						\
--	"	.set	push					\n"	\
--	"	.set	noat					\n"	\
--	"	move	$1, %0					\n"	\
--	"	# mthi	$1, $ac2				\n"	\
--	"	.word	0x00201011				\n"	\
--	"	.set	pop					\n"	\
--	:								\
--	: "r" (x));							\
--} while (0)
-+#define _dsp_mflo(reg) _dsp_mfxxx((reg << 21) | 0x0002)
-+#define _dsp_mfhi(reg) _dsp_mfxxx((reg << 21) | 0x0000)
- 
--#define mthi3(x)							\
--do {									\
--	__asm__ __volatile__(						\
--	"	.set	push					\n"	\
--	"	.set	noat					\n"	\
--	"	move	$1, %0					\n"	\
--	"	# mthi	$1, $ac3				\n"	\
--	"	.word	0x00201811				\n"	\
--	"	.set	pop					\n"	\
--	:								\
--	: "r" (x));							\
--} while (0)
-+#define _dsp_mtlo(val, reg) _dsp_mtxxx(val, ((reg << 11) | 0x0002))
-+#define _dsp_mthi(val, reg) _dsp_mtxxx(val, ((reg << 11) | 0x0000))
- 
--#define mtlo0(x)							\
--do {									\
--	__asm__ __volatile__(						\
--	"	.set	push					\n"	\
--	"	.set	noat					\n"	\
--	"	move	$1, %0					\n"	\
--	"	# mtlo	$1, $ac0				\n"	\
--	"	.word	0x00200013				\n"	\
--	"	.set	pop					\n"	\
--	:								\
--	: "r" (x));							\
--} while (0)
-+#define mflo0() _dsp_mflo(0)
-+#define mflo1() _dsp_mflo(1)
-+#define mflo2() _dsp_mflo(2)
-+#define mflo3() _dsp_mflo(3)
- 
--#define mtlo1(x)							\
--do {									\
--	__asm__ __volatile__(						\
--	"	.set	push					\n"	\
--	"	.set	noat					\n"	\
--	"	move	$1, %0					\n"	\
--	"	# mtlo	$1, $ac1				\n"	\
--	"	.word	0x00200813				\n"	\
--	"	.set	pop					\n"	\
--	:								\
--	: "r" (x));							\
--} while (0)
-+#define mfhi0() _dsp_mfhi(0)
-+#define mfhi1() _dsp_mfhi(1)
-+#define mfhi2() _dsp_mfhi(2)
-+#define mfhi3() _dsp_mfhi(3)
- 
--#define mtlo2(x)							\
--do {									\
--	__asm__ __volatile__(						\
--	"	.set	push					\n"	\
--	"	.set	noat					\n"	\
--	"	move	$1, %0					\n"	\
--	"	# mtlo	$1, $ac2				\n"	\
--	"	.word	0x00201013				\n"	\
--	"	.set	pop					\n"	\
--	:								\
--	: "r" (x));							\
--} while (0)
-+#define mtlo0(x) _dsp_mtlo(x, 0)
-+#define mtlo1(x) _dsp_mtlo(x, 1)
-+#define mtlo2(x) _dsp_mtlo(x, 2)
-+#define mtlo3(x) _dsp_mtlo(x, 3)
- 
--#define mtlo3(x)							\
--do {									\
--	__asm__ __volatile__(						\
--	"	.set	push					\n"	\
--	"	.set	noat					\n"	\
--	"	move	$1, %0					\n"	\
--	"	# mtlo	$1, $ac3				\n"	\
--	"	.word	0x00201813				\n"	\
--	"	.set	pop					\n"	\
--	:								\
--	: "r" (x));							\
--} while (0)
-+#define mthi0(x) _dsp_mthi(x, 0)
-+#define mthi1(x) _dsp_mthi(x, 1)
-+#define mthi2(x) _dsp_mthi(x, 2)
-+#define mthi3(x) _dsp_mthi(x, 3)
- 
- #endif /* CONFIG_CPU_MICROMIPS */
- #endif
+Steven J. Hill (12):
+  MIPS: microMIPS: Add support for microMIPS instructions.
+  MIPS: Whitespace clean-ups after microMIPS additions.
+  MIPS: microMIPS: Floating point support for 16-bit instructions.
+  MIPS: microMIPS: Add support for exception handling.
+  MIPS: microMIPS: Support handling of delay slots.
+  MIPS: microMIPS: Add unaligned access support.
+  MIPS: microMIPS: Add configuration option for microMIPS kernel.
+  MIPS: microMIPS: Work-around for assembler bug.
+  MIPS: microMIPS: Optimise 'memset' core library function.
+  MIPS: microMIPS: Optimise 'strncpy' core library function.
+  MIPS: microMIPS: Optimise 'strlen' core library function.
+  MIPS: microMIPS: Optimise 'strnlen' core library function.
+
+ arch/mips/Kconfig                      |   11 +
+ arch/mips/Makefile                     |    1 +
+ arch/mips/configs/sead3micro_defconfig |  125 +++
+ arch/mips/include/asm/asm.h            |    2 +
+ arch/mips/include/asm/branch.h         |   33 +-
+ arch/mips/include/asm/fpu_emulator.h   |    7 +
+ arch/mips/include/asm/inst.h           |  858 +++++++++++++++++-
+ arch/mips/include/asm/mipsregs.h       |   41 +-
+ arch/mips/include/asm/stackframe.h     |   12 +-
+ arch/mips/include/asm/uaccess.h        |   14 +-
+ arch/mips/kernel/branch.c              |  183 +++-
+ arch/mips/kernel/cpu-probe.c           |    3 +
+ arch/mips/kernel/genex.S               |   74 +-
+ arch/mips/kernel/proc.c                |    5 +
+ arch/mips/kernel/process.c             |  101 +++
+ arch/mips/kernel/scall32-o32.S         |    9 +
+ arch/mips/kernel/signal.c              |    6 +
+ arch/mips/kernel/smtc-asm.S            |    3 +
+ arch/mips/kernel/traps.c               |  296 +++++--
+ arch/mips/kernel/unaligned.c           | 1496 +++++++++++++++++++++++++++-----
+ arch/mips/lib/memset.S                 |   84 +-
+ arch/mips/lib/strlen_user.S            |    9 +-
+ arch/mips/lib/strncpy_user.S           |   28 +-
+ arch/mips/lib/strnlen_user.S           |    2 +-
+ arch/mips/math-emu/cp1emu.c            |  766 ++++++++++++++--
+ arch/mips/math-emu/dsemul.c            |   40 +-
+ arch/mips/mm/tlbex.c                   |   21 +
+ arch/mips/mm/uasm-micromips.c          |  194 +++++
+ arch/mips/mm/uasm-mips.c               |  178 ++++
+ arch/mips/mm/uasm.c                    |  211 +----
+ arch/mips/mti-sead3/sead3-init.c       |   48 +
+ 31 files changed, 4159 insertions(+), 702 deletions(-)
+ create mode 100644 arch/mips/configs/sead3micro_defconfig
+ create mode 100644 arch/mips/mm/uasm-micromips.c
+ create mode 100644 arch/mips/mm/uasm-mips.c
+
 -- 
 1.7.9.5

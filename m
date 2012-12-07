@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:23:34 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:60409 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:23:56 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:60411 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816521Ab2LGFXdaRc2L (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:23:33 +0100
+        with ESMTP id S6831898Ab2LGFXkQJizd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:23:40 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1TgqPH-0007QJ-15; Thu, 06 Dec 2012 23:23:27 -0600
+        id 1TgqPN-0007QO-Nq; Thu, 06 Dec 2012 23:23:33 -0600
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH] MIPS: Add option to disable software I/O coherency.
-Date:   Thu,  6 Dec 2012 23:23:22 -0600
-Message-Id: <1354857802-29348-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH] MIPS: malta: Add new Malta config files.
+Date:   Thu,  6 Dec 2012 23:23:28 -0600
+Message-Id: <1354857808-29382-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
-X-archive-position: 35234
+X-archive-position: 35235
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,247 +34,1044 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Some MIPS controllers have hardware I/O coherency. This patch
-detects those and turns off software coherency. A new kernel
-command line option also allows the user to manually turn
-software coherency on or off.
+Add in new Malta config files for SMVP, SMTC, and APRP. Also update
+the original 'malta_defconfig' config file.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/mach-generic/dma-coherence.h |    4 +-
- arch/mips/mm/c-r4k.c                               |   21 +---
- arch/mips/mm/dma-default.c                         |    8 +-
- arch/mips/mti-malta/malta-setup.c                  |  102 ++++++++++++++++++++
- 4 files changed, 116 insertions(+), 19 deletions(-)
+ arch/mips/configs/malta_defconfig     |   67 ++---------
+ arch/mips/configs/maltaaprp_defconfig |  197 ++++++++++++++++++++++++++++++++
+ arch/mips/configs/maltasmtc_defconfig |  198 ++++++++++++++++++++++++++++++++
+ arch/mips/configs/maltasmvp_defconfig |  201 +++++++++++++++++++++++++++++++++
+ arch/mips/configs/maltaup_defconfig   |  196 ++++++++++++++++++++++++++++++++
+ 5 files changed, 804 insertions(+), 55 deletions(-)
+ create mode 100644 arch/mips/configs/maltaaprp_defconfig
+ create mode 100644 arch/mips/configs/maltasmtc_defconfig
+ create mode 100644 arch/mips/configs/maltasmvp_defconfig
+ create mode 100644 arch/mips/configs/maltaup_defconfig
 
-diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
-index 9c95177..9f1cd31 100644
---- a/arch/mips/include/asm/mach-generic/dma-coherence.h
-+++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
-@@ -63,7 +63,9 @@ static inline int plat_device_is_coherent(struct device *dev)
- 	return 1;
- #endif
- #ifdef CONFIG_DMA_NONCOHERENT
--	return 0;
-+	extern int coherentio;
-+
-+	return coherentio;
- #endif
- }
- 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index c0f27c8..7f13f24 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1383,20 +1383,6 @@ static void __cpuinit coherency_setup(void)
- 	}
- }
- 
--#if defined(CONFIG_DMA_NONCOHERENT)
--
--static int __cpuinitdata coherentio;
--
--static int __init setcoherentio(char *str)
--{
--	coherentio = 1;
--
--	return 1;
--}
--
--__setup("coherentio", setcoherentio);
--#endif
--
- static void __cpuinit r4k_cache_error_setup(void)
- {
- 	extern char __weak except_vec2_generic;
-@@ -1419,6 +1405,7 @@ void __cpuinit r4k_cache_init(void)
- {
- 	extern void build_clear_page(void);
- 	extern void build_copy_page(void);
-+	extern int coherentio;
- 	struct cpuinfo_mips *c = &current_cpu_data;
- 
- 	probe_pcache();
-@@ -1478,9 +1465,11 @@ void __cpuinit r4k_cache_init(void)
- 
- 	build_clear_page();
- 	build_copy_page();
--#if !defined(CONFIG_MIPS_CMP)
-+
-+	/* We want to run CMP kernels on core(s) with and without coherent caches */
-+	/* Therefore can't use CONFIG_MIPS_CMP to decide to flush cache */
- 	local_r4k___flush_cache_all(NULL);
--#endif
-+
- 	coherency_setup();
- 	board_cache_error_setup = r4k_cache_error_setup;
- }
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index 3fab204..058c2ca 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -100,6 +100,7 @@ EXPORT_SYMBOL(dma_alloc_noncoherent);
- static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
- 	dma_addr_t * dma_handle, gfp_t gfp, struct dma_attrs *attrs)
- {
-+	extern int hw_coherentio;
- 	void *ret;
- 
- 	if (dma_alloc_from_coherent(dev, size, dma_handle, &ret))
-@@ -115,7 +116,8 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
- 
- 		if (!plat_device_is_coherent(dev)) {
- 			dma_cache_wback_inv((unsigned long) ret, size);
--			ret = UNCAC_ADDR(ret);
-+			if (!hw_coherentio)
-+				ret = UNCAC_ADDR(ret);
- 		}
- 	}
- 
-@@ -134,6 +136,7 @@ EXPORT_SYMBOL(dma_free_noncoherent);
- static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
- 	dma_addr_t dma_handle, struct dma_attrs *attrs)
- {
-+	extern int hw_coherentio;
- 	unsigned long addr = (unsigned long) vaddr;
- 	int order = get_order(size);
- 
-@@ -143,7 +146,8 @@ static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
- 	plat_unmap_dma_mem(dev, dma_handle, size, DMA_BIDIRECTIONAL);
- 
- 	if (!plat_device_is_coherent(dev))
--		addr = CAC_ADDR(addr);
-+		if (!hw_coherentio)
-+			addr = CAC_ADDR(addr);
- 
- 	free_pages(addr, get_order(size));
- }
-diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
-index ed68073..0bac429 100644
---- a/arch/mips/mti-malta/malta-setup.c
-+++ b/arch/mips/mti-malta/malta-setup.c
-@@ -31,6 +31,7 @@
- #include <asm/mips-boards/maltaint.h>
- #include <asm/dma.h>
- #include <asm/traps.h>
-+#include <asm/gcmpregs.h>
- #ifdef CONFIG_VT
- #include <linux/console.h>
- #endif
-@@ -104,6 +105,105 @@ static void __init fd_activate(void)
- }
- #endif
- 
-+int coherentio = -1;	/* no DMA cache coherency (may be set by user) */
-+int hw_coherentio;	/* init to 0 => no HW DMA cache coherency (reflects real HW) */
-+static int __init setcoherentio(char *str)
-+{
-+	if (coherentio < 0)
-+		pr_info("Command line checking done before"
-+				" plat_setup_iocoherency!!\n");
-+	if (coherentio == 0)
-+		pr_info("Command line enabling coherentio"
-+				" (this will break...)!!\n");
-+
-+	coherentio = 1;
-+	pr_info("Hardware DMA cache coherency (command line)\n");
-+	return 1;
-+}
-+__setup("coherentio", setcoherentio);
-+
-+static int __init setnocoherentio(char *str)
-+{
-+	if (coherentio < 0)
-+		pr_info("Command line checking done before"
-+				" plat_setup_iocoherency!!\n");
-+	if (coherentio == 1)
-+		pr_info("Command line disabling coherentio\n");
-+
-+	coherentio = 0;
-+	pr_info("Software DMA cache coherency (command line)\n");
-+	return 1;
-+}
-+__setup("nocoherentio", setnocoherentio);
-+
-+static int __init
-+plat_enable_iocoherency(void)
-+{
-+	int supported = 0;
-+	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO) {
-+		if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
-+			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
-+			pr_info("Enabled Bonito CPU coherency\n");
-+			supported = 1;
-+		}
-+		if (strstr(fw_getcmdline(), "iobcuncached")) {
-+			BONITO_PCICACHECTRL &= ~BONITO_PCICACHECTRL_IOBCCOH_EN;
-+			BONITO_PCIMEMBASECFG = BONITO_PCIMEMBASECFG &
-+				~(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
-+				  BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
-+			pr_info("Disabled Bonito IOBC coherency\n");
-+		} else {
-+			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_IOBCCOH_EN;
-+			BONITO_PCIMEMBASECFG |=
-+				(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
-+				 BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
-+			pr_info("Enabled Bonito IOBC coherency\n");
-+		}
-+	} else if (gcmp_niocu() != 0) {
-+		/* Nothing special needs to be done to enable coherency */
-+		pr_info("CMP IOCU detected\n");
-+		if ((*(unsigned int *)0xbf403000 & 0x81) != 0x81) {
-+			pr_crit("IOCU OPERATION DISABLED BY SWITCH"
-+				" - DEFAULTING TO SW IO COHERENCY\n");
-+			return 0;
-+		}
-+		supported = 1;
-+	}
-+	hw_coherentio = supported;
-+	return supported;
-+}
-+
-+static void __init
-+plat_setup_iocoherency(void)
-+{
-+#ifdef CONFIG_DMA_NONCOHERENT
-+	/*
-+	 * Kernel has been configured with software coherency
-+	 * but we might choose to turn it off
-+	 */
-+	if (plat_enable_iocoherency()) {
-+		if (coherentio == 0)
-+			pr_info("Hardware DMA cache coherency supported"
-+					" but disabled from command line\n");
-+		else {
-+			coherentio = 1;
-+			printk(KERN_INFO "Hardware DMA cache coherency\n");
-+		}
-+	} else {
-+		if (coherentio == 1)
-+			pr_info("Hardware DMA cache coherency not supported"
-+				" but enabled from command line\n");
-+		else {
-+			coherentio = 0;
-+			pr_info("Software DMA cache coherency\n");
-+		}
-+	}
-+#else
-+	if (!plat_enable_iocoherency())
-+		panic("Hardware DMA cache coherency not supported");
-+#endif
-+}
-+
- #ifdef CONFIG_BLK_DEV_IDE
- static void __init pci_clock_check(void)
- {
-@@ -205,6 +305,8 @@ void __init plat_mem_setup(void)
- 	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO)
- 		bonito_quirks_setup();
- 
-+	plat_setup_iocoherency();
-+
- #ifdef CONFIG_BLK_DEV_IDE
- 	pci_clock_check();
- #endif
+diff --git a/arch/mips/configs/malta_defconfig b/arch/mips/configs/malta_defconfig
+index cd732e5..c55cf15 100644
+--- a/arch/mips/configs/malta_defconfig
++++ b/arch/mips/configs/malta_defconfig
+@@ -2,30 +2,22 @@ CONFIG_MIPS_MALTA=y
+ CONFIG_CPU_LITTLE_ENDIAN=y
+ CONFIG_CPU_MIPS32_R2=y
+ CONFIG_MIPS_MT_SMP=y
+-CONFIG_NO_HZ=y
+-CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_HZ_100=y
+ CONFIG_EXPERIMENTAL=y
+ CONFIG_SYSVIPC=y
++CONFIG_NO_HZ=y
++CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_LOG_BUF_SHIFT=15
+-CONFIG_SYSFS_DEPRECATED_V2=y
+-CONFIG_RELAY=y
+ CONFIG_NAMESPACES=y
+-CONFIG_UTS_NS=y
+-CONFIG_IPC_NS=y
+-CONFIG_PID_NS=y
+-# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
++CONFIG_RELAY=y
+ CONFIG_EXPERT=y
+-# CONFIG_SYSCTL_SYSCALL is not set
+ # CONFIG_COMPAT_BRK is not set
+ CONFIG_SLAB=y
+ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODVERSIONS=y
+ CONFIG_MODULE_SRCVERSION_ALL=y
+-# CONFIG_BLK_DEV_BSG is not set
+ CONFIG_PCI=y
+-CONFIG_PM=y
+ CONFIG_PACKET=y
+ CONFIG_UNIX=y
+ CONFIG_XFRM_USER=m
+@@ -41,8 +33,6 @@ CONFIG_IP_PNP=y
+ CONFIG_IP_PNP_DHCP=y
+ CONFIG_IP_PNP_BOOTP=y
+ CONFIG_NET_IPIP=m
+-CONFIG_NET_IPGRE=m
+-CONFIG_NET_IPGRE_BROADCAST=y
+ CONFIG_IP_MROUTE=y
+ CONFIG_IP_PIMSM_V1=y
+ CONFIG_IP_PIMSM_V2=y
+@@ -65,7 +55,6 @@ CONFIG_IPV6_MROUTE=y
+ CONFIG_IPV6_PIMSM_V2=y
+ CONFIG_NETWORK_SECMARK=y
+ CONFIG_NETFILTER=y
+-CONFIG_NETFILTER_NETLINK_QUEUE=m
+ CONFIG_NF_CONNTRACK=m
+ CONFIG_NF_CONNTRACK_SECMARK=y
+ CONFIG_NF_CONNTRACK_EVENTS=y
+@@ -136,23 +125,15 @@ CONFIG_IP_VS_DH=m
+ CONFIG_IP_VS_SH=m
+ CONFIG_IP_VS_SED=m
+ CONFIG_IP_VS_NQ=m
+-CONFIG_IP_VS_FTP=m
+ CONFIG_NF_CONNTRACK_IPV4=m
+ CONFIG_IP_NF_QUEUE=m
+ CONFIG_IP_NF_IPTABLES=m
+-CONFIG_IP_NF_MATCH_ADDRTYPE=m
+ CONFIG_IP_NF_MATCH_AH=m
+ CONFIG_IP_NF_MATCH_ECN=m
+ CONFIG_IP_NF_MATCH_TTL=m
+ CONFIG_IP_NF_FILTER=m
+ CONFIG_IP_NF_TARGET_REJECT=m
+-CONFIG_IP_NF_TARGET_LOG=m
+ CONFIG_IP_NF_TARGET_ULOG=m
+-CONFIG_NF_NAT=m
+-CONFIG_IP_NF_TARGET_MASQUERADE=m
+-CONFIG_IP_NF_TARGET_NETMAP=m
+-CONFIG_IP_NF_TARGET_REDIRECT=m
+-CONFIG_NF_NAT_SNMP_BASIC=m
+ CONFIG_IP_NF_MANGLE=m
+ CONFIG_IP_NF_TARGET_CLUSTERIP=m
+ CONFIG_IP_NF_TARGET_ECN=m
+@@ -162,7 +143,6 @@ CONFIG_IP_NF_ARPTABLES=m
+ CONFIG_IP_NF_ARPFILTER=m
+ CONFIG_IP_NF_ARP_MANGLE=m
+ CONFIG_NF_CONNTRACK_IPV6=m
+-CONFIG_IP6_NF_QUEUE=m
+ CONFIG_IP6_NF_IPTABLES=m
+ CONFIG_IP6_NF_MATCH_AH=m
+ CONFIG_IP6_NF_MATCH_EUI64=m
+@@ -173,7 +153,6 @@ CONFIG_IP6_NF_MATCH_IPV6HEADER=m
+ CONFIG_IP6_NF_MATCH_MH=m
+ CONFIG_IP6_NF_MATCH_RT=m
+ CONFIG_IP6_NF_TARGET_HL=m
+-CONFIG_IP6_NF_TARGET_LOG=m
+ CONFIG_IP6_NF_FILTER=m
+ CONFIG_IP6_NF_TARGET_REJECT=m
+ CONFIG_IP6_NF_MANGLE=m
+@@ -247,12 +226,10 @@ CONFIG_MAC80211=m
+ CONFIG_MAC80211_RC_PID=y
+ CONFIG_MAC80211_RC_DEFAULT_PID=y
+ CONFIG_MAC80211_MESH=y
+-CONFIG_MAC80211_LEDS=y
+ CONFIG_RFKILL=m
+ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+ CONFIG_CONNECTOR=m
+ CONFIG_MTD=y
+-CONFIG_MTD_PARTITIONS=y
+ CONFIG_MTD_CHAR=y
+ CONFIG_MTD_BLOCK=y
+ CONFIG_MTD_OOPS=m
+@@ -271,7 +248,6 @@ CONFIG_BLK_DEV_NBD=m
+ CONFIG_BLK_DEV_RAM=y
+ CONFIG_CDROM_PKTCDVD=m
+ CONFIG_ATA_OVER_ETH=m
+-# CONFIG_MISC_DEVICES is not set
+ CONFIG_IDE=y
+ CONFIG_BLK_DEV_IDECD=y
+ CONFIG_IDE_GENERIC=y
+@@ -317,13 +293,19 @@ CONFIG_DM_MIRROR=m
+ CONFIG_DM_ZERO=m
+ CONFIG_DM_MULTIPATH=m
+ CONFIG_NETDEVICES=y
+-CONFIG_IFB=m
+-CONFIG_DUMMY=m
+ CONFIG_BONDING=m
+-CONFIG_MACVLAN=m
++CONFIG_DUMMY=m
+ CONFIG_EQUALIZER=m
++CONFIG_IFB=m
++CONFIG_MACVLAN=m
+ CONFIG_TUN=m
+ CONFIG_VETH=m
++# CONFIG_NET_VENDOR_3COM is not set
++CONFIG_PCNET32=y
++CONFIG_CHELSIO_T3=m
++CONFIG_AX88796=m
++CONFIG_NETXEN_NIC=m
++CONFIG_TC35815=m
+ CONFIG_MARVELL_PHY=m
+ CONFIG_DAVICOM_PHY=m
+ CONFIG_QSEMI_PHY=m
+@@ -334,14 +316,6 @@ CONFIG_SMSC_PHY=m
+ CONFIG_BROADCOM_PHY=m
+ CONFIG_ICPLUS_PHY=m
+ CONFIG_REALTEK_PHY=m
+-CONFIG_MDIO_BITBANG=m
+-CONFIG_NET_ETHERNET=y
+-CONFIG_AX88796=m
+-CONFIG_NET_PCI=y
+-CONFIG_PCNET32=y
+-CONFIG_TC35815=m
+-CONFIG_CHELSIO_T3=m
+-CONFIG_NETXEN_NIC=m
+ CONFIG_ATMEL=m
+ CONFIG_PCI_ATMEL=m
+ CONFIG_PRISM54=m
+@@ -352,15 +326,7 @@ CONFIG_HOSTAP_PLX=m
+ CONFIG_HOSTAP_PCI=m
+ CONFIG_IPW2100=m
+ CONFIG_IPW2100_MONITOR=y
+-CONFIG_IPW2200=m
+-CONFIG_IPW2200_MONITOR=y
+-CONFIG_IPW2200_PROMISCUOUS=y
+-CONFIG_IPW2200_QOS=y
+ CONFIG_LIBERTAS=m
+-CONFIG_HERMES=m
+-CONFIG_PLX_HERMES=m
+-CONFIG_TMD_HERMES=m
+-CONFIG_NORTEL_HERMES=m
+ # CONFIG_INPUT_KEYBOARD is not set
+ # CONFIG_INPUT_MOUSE is not set
+ # CONFIG_SERIO_I8042 is not set
+@@ -373,12 +339,6 @@ CONFIG_FB_CIRRUS=y
+ # CONFIG_VGA_CONSOLE is not set
+ CONFIG_FRAMEBUFFER_CONSOLE=y
+ CONFIG_HID=m
+-CONFIG_LEDS_CLASS=y
+-CONFIG_LEDS_TRIGGER_TIMER=m
+-CONFIG_LEDS_TRIGGER_IDE_DISK=y
+-CONFIG_LEDS_TRIGGER_HEARTBEAT=m
+-CONFIG_LEDS_TRIGGER_BACKLIGHT=m
+-CONFIG_LEDS_TRIGGER_DEFAULT_ON=m
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_CMOS=y
+ CONFIG_UIO=m
+@@ -398,7 +358,6 @@ CONFIG_XFS_QUOTA=y
+ CONFIG_XFS_POSIX_ACL=y
+ CONFIG_QUOTA=y
+ CONFIG_QFMT_V2=y
+-CONFIG_AUTOFS_FS=y
+ CONFIG_FUSE_FS=m
+ CONFIG_ISO9660_FS=m
+ CONFIG_JOLIET=y
+@@ -425,7 +384,6 @@ CONFIG_ROMFS_FS=m
+ CONFIG_SYSV_FS=m
+ CONFIG_UFS_FS=m
+ CONFIG_NFS_FS=y
+-CONFIG_NFS_V3=y
+ CONFIG_ROOT_NFS=y
+ CONFIG_NFSD=y
+ CONFIG_NFSD_V3=y
+@@ -466,7 +424,6 @@ CONFIG_NLS_ISO8859_14=m
+ CONFIG_NLS_ISO8859_15=m
+ CONFIG_NLS_KOI8_R=m
+ CONFIG_NLS_KOI8_U=m
+-# CONFIG_RCU_CPU_STALL_DETECTOR is not set
+ CONFIG_CRYPTO_NULL=m
+ CONFIG_CRYPTO_CRYPTD=m
+ CONFIG_CRYPTO_LRW=m
+diff --git a/arch/mips/configs/maltaaprp_defconfig b/arch/mips/configs/maltaaprp_defconfig
+new file mode 100644
+index 0000000..efd6604
+--- /dev/null
++++ b/arch/mips/configs/maltaaprp_defconfig
+@@ -0,0 +1,197 @@
++CONFIG_MIPS_MALTA=y
++CONFIG_CPU_LITTLE_ENDIAN=y
++CONFIG_CPU_MIPS32_R2=y
++CONFIG_MIPS_VPE_LOADER=y
++CONFIG_MIPS_VPE_APSP_API=y
++CONFIG_HZ_100=y
++CONFIG_EXPERIMENTAL=y
++CONFIG_LOCALVERSION="aprp"
++CONFIG_SYSVIPC=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_AUDIT=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=15
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_EMBEDDED=y
++CONFIG_SLAB=y
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODVERSIONS=y
++CONFIG_MODULE_SRCVERSION_ALL=y
++# CONFIG_BLK_DEV_BSG is not set
++CONFIG_PCI=y
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_XFRM_USER=m
++CONFIG_NET_KEY=y
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_ADVANCED_ROUTER=y
++CONFIG_IP_MULTIPLE_TABLES=y
++CONFIG_IP_ROUTE_MULTIPATH=y
++CONFIG_IP_ROUTE_VERBOSE=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_IP_PNP_BOOTP=y
++CONFIG_NET_IPIP=m
++CONFIG_IP_MROUTE=y
++CONFIG_IP_PIMSM_V1=y
++CONFIG_IP_PIMSM_V2=y
++CONFIG_SYN_COOKIES=y
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=m
++CONFIG_INET_IPCOMP=m
++# CONFIG_INET_LRO is not set
++CONFIG_IPV6_PRIVACY=y
++CONFIG_INET6_AH=m
++CONFIG_INET6_ESP=m
++CONFIG_INET6_IPCOMP=m
++CONFIG_IPV6_TUNNEL=m
++CONFIG_BRIDGE=m
++CONFIG_VLAN_8021Q=m
++CONFIG_ATALK=m
++CONFIG_DEV_APPLETALK=m
++CONFIG_IPDDP=m
++CONFIG_IPDDP_ENCAP=y
++CONFIG_IPDDP_DECAP=y
++CONFIG_NET_SCHED=y
++CONFIG_NET_SCH_CBQ=m
++CONFIG_NET_SCH_HTB=m
++CONFIG_NET_SCH_HFSC=m
++CONFIG_NET_SCH_PRIO=m
++CONFIG_NET_SCH_RED=m
++CONFIG_NET_SCH_SFQ=m
++CONFIG_NET_SCH_TEQL=m
++CONFIG_NET_SCH_TBF=m
++CONFIG_NET_SCH_GRED=m
++CONFIG_NET_SCH_DSMARK=m
++CONFIG_NET_SCH_NETEM=m
++CONFIG_NET_SCH_INGRESS=m
++CONFIG_NET_CLS_BASIC=m
++CONFIG_NET_CLS_TCINDEX=m
++CONFIG_NET_CLS_ROUTE4=m
++CONFIG_NET_CLS_FW=m
++CONFIG_NET_CLS_U32=m
++CONFIG_NET_CLS_RSVP=m
++CONFIG_NET_CLS_RSVP6=m
++CONFIG_NET_CLS_ACT=y
++CONFIG_NET_ACT_POLICE=y
++CONFIG_NET_CLS_IND=y
++# CONFIG_WIRELESS is not set
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_CRYPTOLOOP=m
++CONFIG_IDE=y
++# CONFIG_IDE_PROC_FS is not set
++# CONFIG_IDEPCI_PCIBUS_ORDER is not set
++CONFIG_BLK_DEV_GENERIC=y
++CONFIG_BLK_DEV_PIIX=y
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_SG=y
++# CONFIG_SCSI_LOWLEVEL is not set
++CONFIG_NETDEVICES=y
++# CONFIG_NET_VENDOR_3COM is not set
++# CONFIG_NET_VENDOR_ADAPTEC is not set
++# CONFIG_NET_VENDOR_ALTEON is not set
++CONFIG_PCNET32=y
++# CONFIG_NET_VENDOR_ATHEROS is not set
++# CONFIG_NET_VENDOR_BROADCOM is not set
++# CONFIG_NET_VENDOR_BROCADE is not set
++# CONFIG_NET_VENDOR_CHELSIO is not set
++# CONFIG_NET_VENDOR_CISCO is not set
++# CONFIG_NET_VENDOR_DEC is not set
++# CONFIG_NET_VENDOR_DLINK is not set
++# CONFIG_NET_VENDOR_EMULEX is not set
++# CONFIG_NET_VENDOR_EXAR is not set
++# CONFIG_NET_VENDOR_HP is not set
++# CONFIG_NET_VENDOR_INTEL is not set
++# CONFIG_NET_VENDOR_MARVELL is not set
++# CONFIG_NET_VENDOR_MELLANOX is not set
++# CONFIG_NET_VENDOR_MICREL is not set
++# CONFIG_NET_VENDOR_MYRI is not set
++# CONFIG_NET_VENDOR_NATSEMI is not set
++# CONFIG_NET_VENDOR_NVIDIA is not set
++# CONFIG_NET_VENDOR_OKI is not set
++# CONFIG_NET_PACKET_ENGINE is not set
++# CONFIG_NET_VENDOR_QLOGIC is not set
++# CONFIG_NET_VENDOR_REALTEK is not set
++# CONFIG_NET_VENDOR_RDC is not set
++# CONFIG_NET_VENDOR_SEEQ is not set
++# CONFIG_NET_VENDOR_SILAN is not set
++# CONFIG_NET_VENDOR_SIS is not set
++# CONFIG_NET_VENDOR_SMSC is not set
++# CONFIG_NET_VENDOR_STMICRO is not set
++# CONFIG_NET_VENDOR_SUN is not set
++# CONFIG_NET_VENDOR_TEHUTI is not set
++# CONFIG_NET_VENDOR_TI is not set
++# CONFIG_NET_VENDOR_TOSHIBA is not set
++# CONFIG_NET_VENDOR_VIA is not set
++# CONFIG_WLAN is not set
++# CONFIG_VT is not set
++CONFIG_LEGACY_PTY_COUNT=16
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_HW_RANDOM=y
++# CONFIG_HWMON is not set
++CONFIG_VIDEO_OUTPUT_CONTROL=m
++CONFIG_FB=y
++CONFIG_FIRMWARE_EDID=y
++CONFIG_FB_MATROX=y
++CONFIG_FB_MATROX_G=y
++CONFIG_USB=y
++CONFIG_USB_EHCI_HCD=y
++# CONFIG_USB_EHCI_TT_NEWSCHED is not set
++CONFIG_USB_UHCI_HCD=y
++CONFIG_USB_STORAGE=y
++CONFIG_NEW_LEDS=y
++CONFIG_LEDS_CLASS=y
++CONFIG_LEDS_TRIGGERS=y
++CONFIG_LEDS_TRIGGER_TIMER=y
++CONFIG_LEDS_TRIGGER_IDE_DISK=y
++CONFIG_LEDS_TRIGGER_HEARTBEAT=y
++CONFIG_LEDS_TRIGGER_BACKLIGHT=y
++CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_CMOS=y
++CONFIG_EXT2_FS=y
++CONFIG_EXT3_FS=y
++# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
++CONFIG_XFS_FS=y
++CONFIG_XFS_QUOTA=y
++CONFIG_XFS_POSIX_ACL=y
++CONFIG_QUOTA=y
++CONFIG_QFMT_V2=y
++CONFIG_MSDOS_FS=m
++CONFIG_VFAT_FS=m
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_NFS_FS=y
++CONFIG_ROOT_NFS=y
++CONFIG_CIFS=m
++CONFIG_CIFS_WEAK_PW_HASH=y
++CONFIG_CIFS_XATTR=y
++CONFIG_CIFS_POSIX=y
++CONFIG_NLS_CODEPAGE_437=m
++CONFIG_NLS_ISO8859_1=m
++# CONFIG_FTRACE is not set
++CONFIG_CRYPTO_NULL=m
++CONFIG_CRYPTO_PCBC=m
++CONFIG_CRYPTO_HMAC=y
++CONFIG_CRYPTO_CRC32C=m
++CONFIG_CRYPTO_MICHAEL_MIC=m
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_TGR192=m
++CONFIG_CRYPTO_WP512=m
++CONFIG_CRYPTO_ANUBIS=m
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_CAST5=m
++CONFIG_CRYPTO_CAST6=m
++CONFIG_CRYPTO_KHAZAD=m
++CONFIG_CRYPTO_SERPENT=m
++CONFIG_CRYPTO_TEA=m
++CONFIG_CRYPTO_TWOFISH=m
++# CONFIG_CRYPTO_ANSI_CPRNG is not set
++# CONFIG_CRYPTO_HW is not set
+diff --git a/arch/mips/configs/maltasmtc_defconfig b/arch/mips/configs/maltasmtc_defconfig
+new file mode 100644
+index 0000000..ee19a15
+--- /dev/null
++++ b/arch/mips/configs/maltasmtc_defconfig
+@@ -0,0 +1,198 @@
++CONFIG_MIPS_MALTA=y
++CONFIG_CPU_LITTLE_ENDIAN=y
++CONFIG_CPU_MIPS32_R2=y
++CONFIG_MIPS_MT_SMTC=y
++# CONFIG_MIPS_MT_FPAFF is not set
++CONFIG_NR_CPUS=9
++CONFIG_HZ_48=y
++CONFIG_EXPERIMENTAL=y
++CONFIG_LOCALVERSION="smtc"
++CONFIG_SYSVIPC=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_AUDIT=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=15
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_EMBEDDED=y
++CONFIG_SLAB=y
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODVERSIONS=y
++CONFIG_MODULE_SRCVERSION_ALL=y
++# CONFIG_BLK_DEV_BSG is not set
++CONFIG_PCI=y
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_XFRM_USER=m
++CONFIG_NET_KEY=y
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_ADVANCED_ROUTER=y
++CONFIG_IP_MULTIPLE_TABLES=y
++CONFIG_IP_ROUTE_MULTIPATH=y
++CONFIG_IP_ROUTE_VERBOSE=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_IP_PNP_BOOTP=y
++CONFIG_NET_IPIP=m
++CONFIG_IP_MROUTE=y
++CONFIG_IP_PIMSM_V1=y
++CONFIG_IP_PIMSM_V2=y
++CONFIG_SYN_COOKIES=y
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=m
++CONFIG_INET_IPCOMP=m
++# CONFIG_INET_LRO is not set
++CONFIG_IPV6_PRIVACY=y
++CONFIG_INET6_AH=m
++CONFIG_INET6_ESP=m
++CONFIG_INET6_IPCOMP=m
++CONFIG_IPV6_TUNNEL=m
++CONFIG_BRIDGE=m
++CONFIG_VLAN_8021Q=m
++CONFIG_ATALK=m
++CONFIG_DEV_APPLETALK=m
++CONFIG_IPDDP=m
++CONFIG_IPDDP_ENCAP=y
++CONFIG_IPDDP_DECAP=y
++CONFIG_NET_SCHED=y
++CONFIG_NET_SCH_CBQ=m
++CONFIG_NET_SCH_HTB=m
++CONFIG_NET_SCH_HFSC=m
++CONFIG_NET_SCH_PRIO=m
++CONFIG_NET_SCH_RED=m
++CONFIG_NET_SCH_SFQ=m
++CONFIG_NET_SCH_TEQL=m
++CONFIG_NET_SCH_TBF=m
++CONFIG_NET_SCH_GRED=m
++CONFIG_NET_SCH_DSMARK=m
++CONFIG_NET_SCH_NETEM=m
++CONFIG_NET_SCH_INGRESS=m
++CONFIG_NET_CLS_BASIC=m
++CONFIG_NET_CLS_TCINDEX=m
++CONFIG_NET_CLS_ROUTE4=m
++CONFIG_NET_CLS_FW=m
++CONFIG_NET_CLS_U32=m
++CONFIG_NET_CLS_RSVP=m
++CONFIG_NET_CLS_RSVP6=m
++CONFIG_NET_CLS_ACT=y
++CONFIG_NET_ACT_POLICE=y
++CONFIG_NET_CLS_IND=y
++# CONFIG_WIRELESS is not set
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_CRYPTOLOOP=m
++CONFIG_IDE=y
++# CONFIG_IDE_PROC_FS is not set
++# CONFIG_IDEPCI_PCIBUS_ORDER is not set
++CONFIG_BLK_DEV_GENERIC=y
++CONFIG_BLK_DEV_PIIX=y
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_SG=y
++# CONFIG_SCSI_LOWLEVEL is not set
++CONFIG_NETDEVICES=y
++# CONFIG_NET_VENDOR_3COM is not set
++# CONFIG_NET_VENDOR_ADAPTEC is not set
++# CONFIG_NET_VENDOR_ALTEON is not set
++CONFIG_PCNET32=y
++# CONFIG_NET_VENDOR_ATHEROS is not set
++# CONFIG_NET_VENDOR_BROADCOM is not set
++# CONFIG_NET_VENDOR_BROCADE is not set
++# CONFIG_NET_VENDOR_CHELSIO is not set
++# CONFIG_NET_VENDOR_CISCO is not set
++# CONFIG_NET_VENDOR_DEC is not set
++# CONFIG_NET_VENDOR_DLINK is not set
++# CONFIG_NET_VENDOR_EMULEX is not set
++# CONFIG_NET_VENDOR_EXAR is not set
++# CONFIG_NET_VENDOR_HP is not set
++# CONFIG_NET_VENDOR_INTEL is not set
++# CONFIG_NET_VENDOR_MARVELL is not set
++# CONFIG_NET_VENDOR_MELLANOX is not set
++# CONFIG_NET_VENDOR_MICREL is not set
++# CONFIG_NET_VENDOR_MYRI is not set
++# CONFIG_NET_VENDOR_NATSEMI is not set
++# CONFIG_NET_VENDOR_NVIDIA is not set
++# CONFIG_NET_VENDOR_OKI is not set
++# CONFIG_NET_PACKET_ENGINE is not set
++# CONFIG_NET_VENDOR_QLOGIC is not set
++# CONFIG_NET_VENDOR_REALTEK is not set
++# CONFIG_NET_VENDOR_RDC is not set
++# CONFIG_NET_VENDOR_SEEQ is not set
++# CONFIG_NET_VENDOR_SILAN is not set
++# CONFIG_NET_VENDOR_SIS is not set
++# CONFIG_NET_VENDOR_SMSC is not set
++# CONFIG_NET_VENDOR_STMICRO is not set
++# CONFIG_NET_VENDOR_SUN is not set
++# CONFIG_NET_VENDOR_TEHUTI is not set
++# CONFIG_NET_VENDOR_TI is not set
++# CONFIG_NET_VENDOR_TOSHIBA is not set
++# CONFIG_NET_VENDOR_VIA is not set
++# CONFIG_WLAN is not set
++# CONFIG_VT is not set
++CONFIG_LEGACY_PTY_COUNT=16
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_HW_RANDOM=y
++# CONFIG_HWMON is not set
++CONFIG_VIDEO_OUTPUT_CONTROL=m
++CONFIG_FB=y
++CONFIG_FIRMWARE_EDID=y
++CONFIG_FB_MATROX=y
++CONFIG_FB_MATROX_G=y
++CONFIG_USB=y
++CONFIG_USB_EHCI_HCD=y
++# CONFIG_USB_EHCI_TT_NEWSCHED is not set
++CONFIG_USB_UHCI_HCD=y
++CONFIG_USB_STORAGE=y
++CONFIG_NEW_LEDS=y
++CONFIG_LEDS_CLASS=y
++CONFIG_LEDS_TRIGGERS=y
++CONFIG_LEDS_TRIGGER_TIMER=y
++CONFIG_LEDS_TRIGGER_IDE_DISK=y
++CONFIG_LEDS_TRIGGER_HEARTBEAT=y
++CONFIG_LEDS_TRIGGER_BACKLIGHT=y
++CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_CMOS=y
++CONFIG_EXT2_FS=y
++CONFIG_EXT3_FS=y
++# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
++CONFIG_XFS_FS=y
++CONFIG_XFS_QUOTA=y
++CONFIG_XFS_POSIX_ACL=y
++CONFIG_QUOTA=y
++CONFIG_QFMT_V2=y
++CONFIG_MSDOS_FS=m
++CONFIG_VFAT_FS=m
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_NFS_FS=y
++CONFIG_ROOT_NFS=y
++CONFIG_CIFS=m
++CONFIG_CIFS_WEAK_PW_HASH=y
++CONFIG_CIFS_XATTR=y
++CONFIG_CIFS_POSIX=y
++CONFIG_NLS_CODEPAGE_437=m
++CONFIG_NLS_ISO8859_1=m
++# CONFIG_FTRACE is not set
++CONFIG_CRYPTO_NULL=m
++CONFIG_CRYPTO_PCBC=m
++CONFIG_CRYPTO_HMAC=y
++CONFIG_CRYPTO_CRC32C=m
++CONFIG_CRYPTO_MICHAEL_MIC=m
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_TGR192=m
++CONFIG_CRYPTO_WP512=m
++CONFIG_CRYPTO_ANUBIS=m
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_CAST5=m
++CONFIG_CRYPTO_CAST6=m
++CONFIG_CRYPTO_KHAZAD=m
++CONFIG_CRYPTO_SERPENT=m
++CONFIG_CRYPTO_TEA=m
++CONFIG_CRYPTO_TWOFISH=m
++# CONFIG_CRYPTO_ANSI_CPRNG is not set
++# CONFIG_CRYPTO_HW is not set
+diff --git a/arch/mips/configs/maltasmvp_defconfig b/arch/mips/configs/maltasmvp_defconfig
+new file mode 100644
+index 0000000..b0fca9e
+--- /dev/null
++++ b/arch/mips/configs/maltasmvp_defconfig
+@@ -0,0 +1,201 @@
++CONFIG_MIPS_MALTA=y
++CONFIG_CPU_LITTLE_ENDIAN=y
++CONFIG_CPU_MIPS32_R2=y
++CONFIG_MIPS_MT_SMP=y
++CONFIG_SCHED_SMT=y
++CONFIG_MIPS_CMP=y
++CONFIG_NR_CPUS=8
++CONFIG_HZ_48=y
++CONFIG_EXPERIMENTAL=y
++CONFIG_LOCALVERSION="cmp"
++CONFIG_SYSVIPC=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_AUDIT=y
++CONFIG_NO_HZ=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=15
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_EMBEDDED=y
++CONFIG_SLAB=y
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODVERSIONS=y
++CONFIG_MODULE_SRCVERSION_ALL=y
++# CONFIG_BLK_DEV_BSG is not set
++CONFIG_PCI=y
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_XFRM_USER=m
++CONFIG_NET_KEY=y
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_ADVANCED_ROUTER=y
++CONFIG_IP_MULTIPLE_TABLES=y
++CONFIG_IP_ROUTE_MULTIPATH=y
++CONFIG_IP_ROUTE_VERBOSE=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_IP_PNP_BOOTP=y
++CONFIG_NET_IPIP=m
++CONFIG_IP_MROUTE=y
++CONFIG_IP_PIMSM_V1=y
++CONFIG_IP_PIMSM_V2=y
++CONFIG_SYN_COOKIES=y
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=m
++CONFIG_INET_IPCOMP=m
++# CONFIG_INET_LRO is not set
++CONFIG_IPV6_PRIVACY=y
++CONFIG_INET6_AH=m
++CONFIG_INET6_ESP=m
++CONFIG_INET6_IPCOMP=m
++CONFIG_IPV6_TUNNEL=m
++CONFIG_BRIDGE=m
++CONFIG_VLAN_8021Q=m
++CONFIG_ATALK=m
++CONFIG_DEV_APPLETALK=m
++CONFIG_IPDDP=m
++CONFIG_IPDDP_ENCAP=y
++CONFIG_IPDDP_DECAP=y
++CONFIG_NET_SCHED=y
++CONFIG_NET_SCH_CBQ=m
++CONFIG_NET_SCH_HTB=m
++CONFIG_NET_SCH_HFSC=m
++CONFIG_NET_SCH_PRIO=m
++CONFIG_NET_SCH_RED=m
++CONFIG_NET_SCH_SFQ=m
++CONFIG_NET_SCH_TEQL=m
++CONFIG_NET_SCH_TBF=m
++CONFIG_NET_SCH_GRED=m
++CONFIG_NET_SCH_DSMARK=m
++CONFIG_NET_SCH_NETEM=m
++CONFIG_NET_SCH_INGRESS=m
++CONFIG_NET_CLS_BASIC=m
++CONFIG_NET_CLS_TCINDEX=m
++CONFIG_NET_CLS_ROUTE4=m
++CONFIG_NET_CLS_FW=m
++CONFIG_NET_CLS_U32=m
++CONFIG_NET_CLS_RSVP=m
++CONFIG_NET_CLS_RSVP6=m
++CONFIG_NET_CLS_ACT=y
++CONFIG_NET_ACT_POLICE=y
++CONFIG_NET_CLS_IND=y
++# CONFIG_WIRELESS is not set
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_CRYPTOLOOP=m
++CONFIG_IDE=y
++# CONFIG_IDE_PROC_FS is not set
++# CONFIG_IDEPCI_PCIBUS_ORDER is not set
++CONFIG_BLK_DEV_GENERIC=y
++CONFIG_BLK_DEV_PIIX=y
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_SG=y
++# CONFIG_SCSI_LOWLEVEL is not set
++CONFIG_NETDEVICES=y
++# CONFIG_NET_VENDOR_3COM is not set
++# CONFIG_NET_VENDOR_ADAPTEC is not set
++# CONFIG_NET_VENDOR_ALTEON is not set
++CONFIG_PCNET32=y
++# CONFIG_NET_VENDOR_ATHEROS is not set
++# CONFIG_NET_VENDOR_BROADCOM is not set
++# CONFIG_NET_VENDOR_BROCADE is not set
++# CONFIG_NET_VENDOR_CHELSIO is not set
++# CONFIG_NET_VENDOR_CISCO is not set
++# CONFIG_NET_VENDOR_DEC is not set
++# CONFIG_NET_VENDOR_DLINK is not set
++# CONFIG_NET_VENDOR_EMULEX is not set
++# CONFIG_NET_VENDOR_EXAR is not set
++# CONFIG_NET_VENDOR_HP is not set
++# CONFIG_NET_VENDOR_INTEL is not set
++# CONFIG_NET_VENDOR_MARVELL is not set
++# CONFIG_NET_VENDOR_MELLANOX is not set
++# CONFIG_NET_VENDOR_MICREL is not set
++# CONFIG_NET_VENDOR_MYRI is not set
++# CONFIG_NET_VENDOR_NATSEMI is not set
++# CONFIG_NET_VENDOR_NVIDIA is not set
++# CONFIG_NET_VENDOR_OKI is not set
++# CONFIG_NET_PACKET_ENGINE is not set
++# CONFIG_NET_VENDOR_QLOGIC is not set
++# CONFIG_NET_VENDOR_REALTEK is not set
++# CONFIG_NET_VENDOR_RDC is not set
++# CONFIG_NET_VENDOR_SEEQ is not set
++# CONFIG_NET_VENDOR_SILAN is not set
++# CONFIG_NET_VENDOR_SIS is not set
++# CONFIG_NET_VENDOR_SMSC is not set
++# CONFIG_NET_VENDOR_STMICRO is not set
++# CONFIG_NET_VENDOR_SUN is not set
++# CONFIG_NET_VENDOR_TEHUTI is not set
++# CONFIG_NET_VENDOR_TI is not set
++# CONFIG_NET_VENDOR_TOSHIBA is not set
++# CONFIG_NET_VENDOR_VIA is not set
++# CONFIG_NET_VENDOR_WIZNET is not set
++# CONFIG_WLAN is not set
++# CONFIG_VT is not set
++CONFIG_LEGACY_PTY_COUNT=4
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_HW_RANDOM=y
++# CONFIG_HWMON is not set
++CONFIG_VIDEO_OUTPUT_CONTROL=m
++CONFIG_FB=y
++CONFIG_FIRMWARE_EDID=y
++CONFIG_FB_MATROX=y
++CONFIG_FB_MATROX_G=y
++CONFIG_USB=y
++CONFIG_USB_EHCI_HCD=y
++# CONFIG_USB_EHCI_TT_NEWSCHED is not set
++CONFIG_USB_UHCI_HCD=y
++CONFIG_USB_STORAGE=y
++CONFIG_NEW_LEDS=y
++CONFIG_LEDS_CLASS=y
++CONFIG_LEDS_TRIGGERS=y
++CONFIG_LEDS_TRIGGER_TIMER=y
++CONFIG_LEDS_TRIGGER_IDE_DISK=y
++CONFIG_LEDS_TRIGGER_HEARTBEAT=y
++CONFIG_LEDS_TRIGGER_BACKLIGHT=y
++CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_CMOS=y
++CONFIG_EXT2_FS=y
++CONFIG_EXT3_FS=y
++# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
++CONFIG_XFS_FS=y
++CONFIG_XFS_QUOTA=y
++CONFIG_XFS_POSIX_ACL=y
++CONFIG_QUOTA=y
++CONFIG_QFMT_V2=y
++CONFIG_MSDOS_FS=m
++CONFIG_VFAT_FS=m
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_NFS_FS=y
++CONFIG_ROOT_NFS=y
++CONFIG_CIFS=m
++CONFIG_CIFS_WEAK_PW_HASH=y
++CONFIG_CIFS_XATTR=y
++CONFIG_CIFS_POSIX=y
++CONFIG_NLS_CODEPAGE_437=m
++CONFIG_NLS_ISO8859_1=m
++# CONFIG_FTRACE is not set
++CONFIG_CRYPTO_NULL=m
++CONFIG_CRYPTO_PCBC=m
++CONFIG_CRYPTO_HMAC=y
++CONFIG_CRYPTO_CRC32C=m
++CONFIG_CRYPTO_MICHAEL_MIC=m
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_TGR192=m
++CONFIG_CRYPTO_WP512=m
++CONFIG_CRYPTO_ANUBIS=m
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_CAST5=m
++CONFIG_CRYPTO_CAST6=m
++CONFIG_CRYPTO_KHAZAD=m
++CONFIG_CRYPTO_SERPENT=m
++CONFIG_CRYPTO_TEA=m
++CONFIG_CRYPTO_TWOFISH=m
++# CONFIG_CRYPTO_ANSI_CPRNG is not set
++# CONFIG_CRYPTO_HW is not set
+diff --git a/arch/mips/configs/maltaup_defconfig b/arch/mips/configs/maltaup_defconfig
+new file mode 100644
+index 0000000..c2c4f6e
+--- /dev/null
++++ b/arch/mips/configs/maltaup_defconfig
+@@ -0,0 +1,196 @@
++CONFIG_MIPS_MALTA=y
++CONFIG_CPU_LITTLE_ENDIAN=y
++CONFIG_CPU_MIPS32_R2=y
++CONFIG_HZ_100=y
++CONFIG_EXPERIMENTAL=y
++CONFIG_LOCALVERSION="up"
++CONFIG_SYSVIPC=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_AUDIT=y
++CONFIG_NO_HZ=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=15
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_EMBEDDED=y
++CONFIG_SLAB=y
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODVERSIONS=y
++CONFIG_MODULE_SRCVERSION_ALL=y
++# CONFIG_BLK_DEV_BSG is not set
++CONFIG_PCI=y
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_XFRM_USER=m
++CONFIG_NET_KEY=y
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_ADVANCED_ROUTER=y
++CONFIG_IP_MULTIPLE_TABLES=y
++CONFIG_IP_ROUTE_MULTIPATH=y
++CONFIG_IP_ROUTE_VERBOSE=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_IP_PNP_BOOTP=y
++CONFIG_NET_IPIP=m
++CONFIG_IP_MROUTE=y
++CONFIG_IP_PIMSM_V1=y
++CONFIG_IP_PIMSM_V2=y
++CONFIG_SYN_COOKIES=y
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=m
++CONFIG_INET_IPCOMP=m
++# CONFIG_INET_LRO is not set
++CONFIG_IPV6_PRIVACY=y
++CONFIG_INET6_AH=m
++CONFIG_INET6_ESP=m
++CONFIG_INET6_IPCOMP=m
++CONFIG_IPV6_TUNNEL=m
++CONFIG_BRIDGE=m
++CONFIG_VLAN_8021Q=m
++CONFIG_ATALK=m
++CONFIG_DEV_APPLETALK=m
++CONFIG_IPDDP=m
++CONFIG_IPDDP_ENCAP=y
++CONFIG_IPDDP_DECAP=y
++CONFIG_NET_SCHED=y
++CONFIG_NET_SCH_CBQ=m
++CONFIG_NET_SCH_HTB=m
++CONFIG_NET_SCH_HFSC=m
++CONFIG_NET_SCH_PRIO=m
++CONFIG_NET_SCH_RED=m
++CONFIG_NET_SCH_SFQ=m
++CONFIG_NET_SCH_TEQL=m
++CONFIG_NET_SCH_TBF=m
++CONFIG_NET_SCH_GRED=m
++CONFIG_NET_SCH_DSMARK=m
++CONFIG_NET_SCH_NETEM=m
++CONFIG_NET_SCH_INGRESS=m
++CONFIG_NET_CLS_BASIC=m
++CONFIG_NET_CLS_TCINDEX=m
++CONFIG_NET_CLS_ROUTE4=m
++CONFIG_NET_CLS_FW=m
++CONFIG_NET_CLS_U32=m
++CONFIG_NET_CLS_RSVP=m
++CONFIG_NET_CLS_RSVP6=m
++CONFIG_NET_CLS_ACT=y
++CONFIG_NET_ACT_POLICE=y
++CONFIG_NET_CLS_IND=y
++# CONFIG_WIRELESS is not set
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_CRYPTOLOOP=m
++CONFIG_IDE=y
++# CONFIG_IDE_PROC_FS is not set
++# CONFIG_IDEPCI_PCIBUS_ORDER is not set
++CONFIG_BLK_DEV_GENERIC=y
++CONFIG_BLK_DEV_PIIX=y
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_SG=y
++# CONFIG_SCSI_LOWLEVEL is not set
++CONFIG_NETDEVICES=y
++# CONFIG_NET_VENDOR_3COM is not set
++# CONFIG_NET_VENDOR_ADAPTEC is not set
++# CONFIG_NET_VENDOR_ALTEON is not set
++CONFIG_PCNET32=y
++# CONFIG_NET_VENDOR_ATHEROS is not set
++# CONFIG_NET_VENDOR_BROADCOM is not set
++# CONFIG_NET_VENDOR_BROCADE is not set
++# CONFIG_NET_VENDOR_CHELSIO is not set
++# CONFIG_NET_VENDOR_CISCO is not set
++# CONFIG_NET_VENDOR_DEC is not set
++# CONFIG_NET_VENDOR_DLINK is not set
++# CONFIG_NET_VENDOR_EMULEX is not set
++# CONFIG_NET_VENDOR_EXAR is not set
++# CONFIG_NET_VENDOR_HP is not set
++# CONFIG_NET_VENDOR_INTEL is not set
++# CONFIG_NET_VENDOR_MARVELL is not set
++# CONFIG_NET_VENDOR_MELLANOX is not set
++# CONFIG_NET_VENDOR_MICREL is not set
++# CONFIG_NET_VENDOR_MYRI is not set
++# CONFIG_NET_VENDOR_NATSEMI is not set
++# CONFIG_NET_VENDOR_NVIDIA is not set
++# CONFIG_NET_VENDOR_OKI is not set
++# CONFIG_NET_PACKET_ENGINE is not set
++# CONFIG_NET_VENDOR_QLOGIC is not set
++# CONFIG_NET_VENDOR_REALTEK is not set
++# CONFIG_NET_VENDOR_RDC is not set
++# CONFIG_NET_VENDOR_SEEQ is not set
++# CONFIG_NET_VENDOR_SILAN is not set
++# CONFIG_NET_VENDOR_SIS is not set
++# CONFIG_NET_VENDOR_SMSC is not set
++# CONFIG_NET_VENDOR_STMICRO is not set
++# CONFIG_NET_VENDOR_SUN is not set
++# CONFIG_NET_VENDOR_TEHUTI is not set
++# CONFIG_NET_VENDOR_TI is not set
++# CONFIG_NET_VENDOR_TOSHIBA is not set
++# CONFIG_NET_VENDOR_VIA is not set
++# CONFIG_WLAN is not set
++# CONFIG_VT is not set
++CONFIG_LEGACY_PTY_COUNT=16
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_HW_RANDOM=y
++# CONFIG_HWMON is not set
++CONFIG_VIDEO_OUTPUT_CONTROL=m
++CONFIG_FB=y
++CONFIG_FIRMWARE_EDID=y
++CONFIG_FB_MATROX=y
++CONFIG_FB_MATROX_G=y
++CONFIG_USB=y
++CONFIG_USB_EHCI_HCD=y
++# CONFIG_USB_EHCI_TT_NEWSCHED is not set
++CONFIG_USB_UHCI_HCD=y
++CONFIG_USB_STORAGE=y
++CONFIG_NEW_LEDS=y
++CONFIG_LEDS_CLASS=y
++CONFIG_LEDS_TRIGGERS=y
++CONFIG_LEDS_TRIGGER_TIMER=y
++CONFIG_LEDS_TRIGGER_IDE_DISK=y
++CONFIG_LEDS_TRIGGER_HEARTBEAT=y
++CONFIG_LEDS_TRIGGER_BACKLIGHT=y
++CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_CMOS=y
++CONFIG_EXT2_FS=y
++CONFIG_EXT3_FS=y
++# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
++CONFIG_XFS_FS=y
++CONFIG_XFS_QUOTA=y
++CONFIG_XFS_POSIX_ACL=y
++CONFIG_QUOTA=y
++CONFIG_QFMT_V2=y
++CONFIG_MSDOS_FS=m
++CONFIG_VFAT_FS=m
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_NFS_FS=y
++CONFIG_ROOT_NFS=y
++CONFIG_CIFS=m
++CONFIG_CIFS_WEAK_PW_HASH=y
++CONFIG_CIFS_XATTR=y
++CONFIG_CIFS_POSIX=y
++CONFIG_NLS_CODEPAGE_437=m
++CONFIG_NLS_ISO8859_1=m
++# CONFIG_FTRACE is not set
++CONFIG_CRYPTO_NULL=m
++CONFIG_CRYPTO_PCBC=m
++CONFIG_CRYPTO_HMAC=y
++CONFIG_CRYPTO_CRC32C=m
++CONFIG_CRYPTO_MICHAEL_MIC=m
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_TGR192=m
++CONFIG_CRYPTO_WP512=m
++CONFIG_CRYPTO_ANUBIS=m
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_CAST5=m
++CONFIG_CRYPTO_CAST6=m
++CONFIG_CRYPTO_KHAZAD=m
++CONFIG_CRYPTO_SERPENT=m
++CONFIG_CRYPTO_TEA=m
++CONFIG_CRYPTO_TWOFISH=m
++# CONFIG_CRYPTO_ANSI_CPRNG is not set
++# CONFIG_CRYPTO_HW is not set
 -- 
 1.7.9.5

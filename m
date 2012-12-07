@@ -1,23 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:06:56 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:60310 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 06:07:18 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:60313 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823763Ab2LGFFwpirV1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:05:52 +0100
+        with ESMTP id S6824759Ab2LGFFxQkwAk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 06:05:53 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1Tgq89-0007MA-O8; Thu, 06 Dec 2012 23:05:45 -0600
+        id 1Tgq8A-0007MA-71; Thu, 06 Dec 2012 23:05:46 -0600
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
-Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org,
-        Leonid Yegoshin <yegoshin@mips.com>
-Subject: [PATCH v99,03/13] MIPS: microMIPS: Floating point support for 16-bit instructions.
-Date:   Thu,  6 Dec 2012 23:05:27 -0600
-Message-Id: <1354856737-28678-4-git-send-email-sjhill@mips.com>
+Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
+Subject: [PATCH v99,04/13] MIPS: microMIPS: Add support for exception handling.
+Date:   Thu,  6 Dec 2012 23:05:28 -0600
+Message-Id: <1354856737-28678-5-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1354856737-28678-1-git-send-email-sjhill@mips.com>
 References: <1354856737-28678-1-git-send-email-sjhill@mips.com>
-X-archive-position: 35214
+X-archive-position: 35215
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,1020 +36,907 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Add logic needed to do floating point emulation when in microMIPS or
-MIPS16e modes.
+All exceptions must be taken in microMIPS mode, never in MIPS32R2
+mode or the kernel falls apart. A few 'nop' instructions are used
+to maintain the correct alignment of microMIPS versions of the
+exception vectors.
 
-Signed-off-by: Leonid Yegoshin <yegoshin@mips.com>
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/fpu_emulator.h |    7 +
- arch/mips/kernel/traps.c             |    2 +-
- arch/mips/math-emu/cp1emu.c          |  766 ++++++++++++++++++++++++++++++----
- arch/mips/math-emu/dsemul.c          |   40 +-
- 4 files changed, 718 insertions(+), 97 deletions(-)
+ arch/mips/include/asm/mipsregs.h   |    1 +
+ arch/mips/include/asm/stackframe.h |   12 +-
+ arch/mips/kernel/cpu-probe.c       |    3 +
+ arch/mips/kernel/genex.S           |   74 ++++++---
+ arch/mips/kernel/scall32-o32.S     |    9 ++
+ arch/mips/kernel/smtc-asm.S        |    3 +
+ arch/mips/kernel/traps.c           |  290 ++++++++++++++++++++++++++----------
+ arch/mips/mm/tlbex.c               |   21 +++
+ arch/mips/mti-sead3/sead3-init.c   |   48 ++++++
+ 9 files changed, 354 insertions(+), 107 deletions(-)
 
-diff --git a/arch/mips/include/asm/fpu_emulator.h b/arch/mips/include/asm/fpu_emulator.h
-index 3b40927..67d5028 100644
---- a/arch/mips/include/asm/fpu_emulator.h
-+++ b/arch/mips/include/asm/fpu_emulator.h
-@@ -54,6 +54,12 @@ do {									\
- extern int mips_dsemul(struct pt_regs *regs, mips_instruction ir,
- 	unsigned long cpc);
- extern int do_dsemulret(struct pt_regs *xcp);
-+extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
-+				    struct mips_fpu_struct *ctx, int has_fpu,
-+				    void *__user *fault_addr);
-+int process_fpemu_return(int sig, void __user *fault_addr);
-+int mm_isBranchInstr(struct pt_regs *regs, struct decoded_instn dec_insn,
-+		     unsigned long *contpc);
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 4b55a5a..5e9707e 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -596,6 +596,7 @@
+ #define MIPS_CONF3_RXI		(_ULCAST_(1) << 12)
+ #define MIPS_CONF3_ULRI		(_ULCAST_(1) << 13)
+ #define MIPS_CONF3_ISA		(_ULCAST_(3) << 14)
++#define MIPS_CONF3_ISA_OE	(_ULCAST_(1) << 16)
  
- /*
-  * Instruction inserted following the badinst to further tag the sequence
-@@ -64,5 +70,6 @@ extern int do_dsemulret(struct pt_regs *xcp);
-  * Break instruction with special math emu break code set
+ #define MIPS_CONF4_MMUSIZEEXT	(_ULCAST_(255) << 0)
+ #define MIPS_CONF4_MMUEXTDEF	(_ULCAST_(3) << 14)
+diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
+index cb41af5..335ce06 100644
+--- a/arch/mips/include/asm/stackframe.h
++++ b/arch/mips/include/asm/stackframe.h
+@@ -139,7 +139,7 @@
+ 1:		move	ra, k0
+ 		li	k0, 3
+ 		mtc0	k0, $22
+-#endif /* CONFIG_CPU_LOONGSON2F */
++#endif /* CONFIG_CPU_JUMP_WORKAROUNDS */
+ #if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
+ 		lui	k1, %hi(kernelsp)
+ #else
+@@ -189,6 +189,7 @@
+ 		LONG_S	$0, PT_R0(sp)
+ 		mfc0	v1, CP0_STATUS
+ 		LONG_S	$2, PT_R2(sp)
++		LONG_S	v1, PT_STATUS(sp)
+ #ifdef CONFIG_MIPS_MT_SMTC
+ 		/*
+ 		 * Ideally, these instructions would be shuffled in
+@@ -200,21 +201,20 @@
+ 		LONG_S	k0, PT_TCSTATUS(sp)
+ #endif /* CONFIG_MIPS_MT_SMTC */
+ 		LONG_S	$4, PT_R4(sp)
+-		LONG_S	$5, PT_R5(sp)
+-		LONG_S	v1, PT_STATUS(sp)
+ 		mfc0	v1, CP0_CAUSE
+-		LONG_S	$6, PT_R6(sp)
+-		LONG_S	$7, PT_R7(sp)
++		LONG_S	$5, PT_R5(sp)
+ 		LONG_S	v1, PT_CAUSE(sp)
++		LONG_S	$6, PT_R6(sp)
+ 		MFC0	v1, CP0_EPC
++		LONG_S	$7, PT_R7(sp)
+ #ifdef CONFIG_64BIT
+ 		LONG_S	$8, PT_R8(sp)
+ 		LONG_S	$9, PT_R9(sp)
+ #endif
++		LONG_S	v1, PT_EPC(sp)
+ 		LONG_S	$25, PT_R25(sp)
+ 		LONG_S	$28, PT_R28(sp)
+ 		LONG_S	$31, PT_R31(sp)
+-		LONG_S	v1, PT_EPC(sp)
+ 		ori	$28, sp, _THREAD_MASK
+ 		xori	$28, _THREAD_MASK
+ #ifdef CONFIG_CPU_CAVIUM_OCTEON
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 8db7a47..98eb036 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -442,6 +442,9 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
+ 		c->options |= MIPS_CPU_ULRI;
+ 	if (config3 & MIPS_CONF3_ISA)
+ 		c->options |= MIPS_CPU_MICROMIPS;
++#ifdef CONFIG_CPU_MICROMIPS
++	write_c0_config3(read_c0_config3() | MIPS_CONF3_ISA_OE);
++#endif
+ 
+ 	return config3 & MIPS_CONF_M;
+ }
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index 8882e57..dc7d756 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -5,8 +5,8 @@
+  *
+  * Copyright (C) 1994 - 2000, 2001, 2003 Ralf Baechle
+  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
+- * Copyright (C) 2001 MIPS Technologies, Inc.
+  * Copyright (C) 2002, 2007  Maciej W. Rozycki
++ * Copyright (C) 2001, 2012 MIPS Technologies, Inc.  All rights reserved.
   */
- #define BREAK_MATH (0x0000000d | (BRK_MEMU << 16))
-+#define MM_BREAK_MATH (0x00000007 | (MM_BRK_MEMU << 16))
+ #include <linux/init.h>
  
- #endif /* _ASM_FPU_EMULATOR_H */
+@@ -22,8 +22,10 @@
+ #include <asm/page.h>
+ #include <asm/thread_info.h>
+ 
++#ifdef CONFIG_MIPS_MT_SMTC
+ #define PANIC_PIC(msg)					\
+-		.set push;				\
++		.set	push;				\
++		.set	nomicromips;			\
+ 		.set	reorder;			\
+ 		PTR_LA	a0,8f;				\
+ 		.set	noat;				\
+@@ -32,17 +34,10 @@
+ 9:		b	9b;				\
+ 		.set	pop;				\
+ 		TEXT(msg)
++#endif
+ 
+ 	__INIT
+ 
+-NESTED(except_vec0_generic, 0, sp)
+-	PANIC_PIC("Exception vector 0 called")
+-	END(except_vec0_generic)
+-
+-NESTED(except_vec1_generic, 0, sp)
+-	PANIC_PIC("Exception vector 1 called")
+-	END(except_vec1_generic)
+-
+ /*
+  * General exception vector for all other CPUs.
+  *
+@@ -139,12 +134,19 @@ LEAF(r4k_wait)
+ 	 nop
+ 	nop
+ 	nop
++#ifdef CONFIG_CPU_MICROMIPS
++	nop
++	nop
++	nop
++	nop
++#endif
+ 	.set	mips3
+ 	wait
+ 	/* end of rollback region (the region size must be power of two) */
+-	.set	pop
+ 1:
+ 	jr	ra
++	nop
++	.set	pop
+ 	END(r4k_wait)
+ 
+ 	.macro	BUILD_ROLLBACK_PROLOGUE handler
+@@ -202,7 +204,11 @@ NESTED(handle_int, PT_SIZE, sp)
+ 	LONG_L	s0, TI_REGS($28)
+ 	LONG_S	sp, TI_REGS($28)
+ 	PTR_LA	ra, ret_from_irq
+-	j	plat_irq_dispatch
++	PTR_LA  v0, plat_irq_dispatch
++	jr	v0
++#ifdef CONFIG_CPU_MICROMIPS
++	nop
++#endif
+ 	END(handle_int)
+ 
+ 	__INIT
+@@ -223,11 +229,14 @@ NESTED(except_vec4, 0, sp)
+ /*
+  * EJTAG debug exception handler.
+  * The EJTAG debug exception entry point is 0xbfc00480, which
+- * normally is in the boot PROM, so the boot PROM must do a
++ * normally is in the boot PROM, so the boot PROM must do an
+  * unconditional jump to this vector.
+  */
+ NESTED(except_vec_ejtag_debug, 0, sp)
+ 	j	ejtag_debug_handler
++#ifdef CONFIG_CPU_MICROMIPS
++	 nop
++#endif
+ 	END(except_vec_ejtag_debug)
+ 
+ 	__FINIT
+@@ -252,9 +261,10 @@ NESTED(except_vec_vi, 0, sp)
+ FEXPORT(except_vec_vi_mori)
+ 	ori	a0, $0, 0
+ #endif /* CONFIG_MIPS_MT_SMTC */
++	PTR_LA	v1, except_vec_vi_handler
+ FEXPORT(except_vec_vi_lui)
+ 	lui	v0, 0		/* Patched */
+-	j	except_vec_vi_handler
++	jr	v1
+ FEXPORT(except_vec_vi_ori)
+ 	 ori	v0, 0		/* Patched */
+ 	.set	pop
+@@ -355,6 +365,9 @@ EXPORT(ejtag_debug_buffer)
+  */
+ NESTED(except_vec_nmi, 0, sp)
+ 	j	nmi_handler
++#ifdef CONFIG_CPU_MICROMIPS
++	 nop
++#endif
+ 	END(except_vec_nmi)
+ 
+ 	__FINIT
+@@ -501,13 +514,36 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	.set	push
+ 	.set	noat
+ 	.set	noreorder
+-	/* 0x7c03e83b: rdhwr v1,$29 */
++	/* MIPS32: 0x7c03e83b: rdhwr v1,$29 */
++	/* uMIPS:  0x007d6b3c: rdhwr v1,$29 -- in MIPS16e it is  */
++	/*         ADDIUSP $16,0x7d; LI $3,0x3c and never RI. LY22 */
+ 	MFC0	k1, CP0_EPC
+-	lui	k0, 0x7c03
+-	lw	k1, (k1)
+-	ori	k0, 0xe83b
+-	.set	reorder
++#if defined(CONFIG_CPU_MICROMIPS) || defined(CONFIG_CPU_MIPS32_R2) || defined(CONFIG_CPU_MIPS64_R2)
++	and     k0, k1, 1
++	beqz    k0, 1f
++	xor     k1, k0
++	lhu     k0, (k1)
++	lhu     k1, 2(k1)
++	ins     k1, k0, 16, 16
++	lui     k0, 0x007d
++	b       docheck
++	ori     k0, 0x6b3c
++1:
++	lui     k0, 0x7c03
++	lw      k1, (k1)
++	ori     k0, 0xe83b
++#else
++	andi    k0, k1, 1
++	bnez    k0, handle_ri
++	lui     k0, 0x7c03
++	lw      k1, (k1)
++	ori     k0, 0xe83b
++#endif
++	.set    reorder
++docheck:
+ 	bne	k0, k1, handle_ri	/* if not ours */
++
++isrdhwr:
+ 	/* The insn is rdhwr.  No need to check CAUSE.BD here. */
+ 	get_saved_sp	/* k1 := current_thread_info */
+ 	.set	noreorder
+diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+index 374f66e..2c0b071 100644
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -138,9 +138,18 @@ stackargs:
+ 5:	jr	t1
+ 	 sw	t5, 16(sp)		# argument #5 to ksp
+ 
++#ifdef CONFIG_CPU_MICROMIPS
+ 	sw	t8, 28(sp)		# argument #8 to ksp
++	nop
+ 	sw	t7, 24(sp)		# argument #7 to ksp
++	nop
+ 	sw	t6, 20(sp)		# argument #6 to ksp
++	nop
++#else
++	sw	t8, 28(sp)		# argument #8 to ksp
++	sw	t7, 24(sp)		# argument #7 to ksp
++	sw	t6, 20(sp)		# argument #6 to ksp
++#endif
+ 6:	j	stack_done		# go back
+ 	 nop
+ 	.set	pop
+diff --git a/arch/mips/kernel/smtc-asm.S b/arch/mips/kernel/smtc-asm.S
+index 20938a4..8e9ae50 100644
+--- a/arch/mips/kernel/smtc-asm.S
++++ b/arch/mips/kernel/smtc-asm.S
+@@ -49,6 +49,9 @@ CAN WE PROVE THAT WE WON'T DO THIS IF INTS DISABLED??
+ 	.text
+ 	.align 5
+ FEXPORT(__smtc_ipi_vector)
++#ifdef CONFIG_CPU_MICROMIPS
++	nop
++#endif
+ 	.set	noat
+ 	/* Disable thread scheduling to make Status update atomic */
+ 	DMT	27					# dmt	k1
 diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index cc7f4cc..c0dc176 100644
+index c0dc176..feccbe8 100644
 --- a/arch/mips/kernel/traps.c
 +++ b/arch/mips/kernel/traps.c
-@@ -671,7 +671,7 @@ asmlinkage void do_ov(struct pt_regs *regs)
- 	force_sig_info(SIGFPE, &info, current);
- }
+@@ -8,8 +8,8 @@
+  * Copyright (C) 1998 Ulf Carlsson
+  * Copyright (C) 1999 Silicon Graphics, Inc.
+  * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 2000, 01 MIPS Technologies, Inc.
+  * Copyright (C) 2002, 2003, 2004, 2005, 2007  Maciej W. Rozycki
++ * Copyright (C) 2000, 2001, 2012 MIPS Technologies, Inc.  All rights reserved.
+  */
+ #include <linux/bug.h>
+ #include <linux/compiler.h>
+@@ -82,10 +82,6 @@ extern asmlinkage void handle_dsp(void);
+ extern asmlinkage void handle_mcheck(void);
+ extern asmlinkage void handle_reserved(void);
  
--static int process_fpemu_return(int sig, void __user *fault_addr)
-+int process_fpemu_return(int sig, void __user *fault_addr)
+-extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
+-				    struct mips_fpu_struct *ctx, int has_fpu,
+-				    void *__user *fault_addr);
+-
+ void (*board_be_init)(void);
+ int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
+ void (*board_nmi_handler_setup)(void);
+@@ -491,6 +487,12 @@ asmlinkage void do_be(struct pt_regs *regs)
+ #define SYNC   0x0000000f
+ #define RDHWR  0x0000003b
+ 
++/*  microMIPS definitions   */
++#define MM_POOL32A_FUNC 0xfc00ffff
++#define MM_RDHWR        0x00006b3c
++#define MM_RS           0x001f0000
++#define MM_RT           0x03e00000
++
+ /*
+  * The ll_bit is cleared by r*_switch.S
+  */
+@@ -605,42 +607,62 @@ static int simulate_llsc(struct pt_regs *regs, unsigned int opcode)
+  * Simulate trapping 'rdhwr' instructions to provide user accessible
+  * registers not implemented in hardware.
+  */
+-static int simulate_rdhwr(struct pt_regs *regs, unsigned int opcode)
++static int simulate_rdhwr(struct pt_regs *regs, int rd, int rt)
  {
- 	if (sig == SIGSEGV || sig == SIGBUS) {
- 		struct siginfo si = {0};
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 47c77e7..d0fd160 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -45,6 +45,7 @@
- #include <asm/signal.h>
- #include <asm/mipsregs.h>
- #include <asm/fpu_emulator.h>
-+#include <asm/fpu.h>
- #include <asm/uaccess.h>
- #include <asm/branch.h>
+ 	struct thread_info *ti = task_thread_info(current);
  
-@@ -110,6 +111,477 @@ static const unsigned int fpucondbit[8] = {
- };
- #endif
- 
-+/* convert 16-bit register encoding to 32-bit register encoding */
-+static const unsigned int reg16to32map[8] = {16, 17, 2, 3, 4, 5, 6, 7};
-+
-+/* convert micro_mips to mips32 format */
-+static const int sd_format[] = {16, 17, 0, 0, 0, 0, 0, 0};
-+static const int sdps_format[] = {16, 17, 22, 0, 0, 0, 0, 0};
-+static const int dwl_format[] = {17, 20, 21, 0, 0, 0, 0, 0};
-+static const int swl_format[] = {16, 20, 21, 0, 0, 0, 0, 0};
-+
-+/*
-+ * This functions translates a 32 bit micro_mips instr into a 32 bit mips32 instr.
-+ * It return 0 or SIGILL.
-+ */
-+static int micro_mips32_to_mips32(union mips_instruction *insn_ptr)
-+{
-+	union mips_instruction insn = *insn_ptr;
-+	union mips_instruction mips32_insn = insn;  /* assume they are the same */
-+	int func;
-+	int fmt;
-+	int op;
-+
-+	switch (insn.mm_i_format.opcode) {
-+	case mm_ldc132_op:
-+		mips32_insn.mm_i_format.opcode = ldc1_op;
-+		mips32_insn.mm_i_format.rt = insn.mm_i_format.rs;
-+		mips32_insn.mm_i_format.rs = insn.mm_i_format.rt;
-+		break;
-+	case mm_lwc132_op:
-+		mips32_insn.mm_i_format.opcode = lwc1_op;
-+		mips32_insn.mm_i_format.rt = insn.mm_i_format.rs;
-+		mips32_insn.mm_i_format.rs = insn.mm_i_format.rt;
-+		break;
-+	case mm_sdc132_op:
-+		mips32_insn.mm_i_format.opcode = sdc1_op;
-+		mips32_insn.mm_i_format.rt = insn.mm_i_format.rs;
-+		mips32_insn.mm_i_format.rs = insn.mm_i_format.rt;
-+		break;
-+	case mm_swc132_op:
-+		mips32_insn.mm_i_format.opcode = swc1_op;
-+		mips32_insn.mm_i_format.rt = insn.mm_i_format.rs;
-+		mips32_insn.mm_i_format.rs = insn.mm_i_format.rt;
-+		break;
-+	case mm_pool32i_op:
-+		/* NOTE: offset is << by 1 if in micro_mips mode */
-+		if ((insn.mm_i_format.rt == mm_bc1f_op) || (insn.mm_i_format.rt == mm_bc1t_op)) {
-+			mips32_insn.fb_format.opcode = cop1_op;
-+			mips32_insn.fb_format.bc = bc_op;
-+			mips32_insn.fb_format.flag = (insn.mm_i_format.rt == mm_bc1t_op) ? 1 : 0;
-+		} else
-+			return SIGILL;
-+		break;
-+	case mm_pool32f_op:
-+		switch (insn.mm_fp0_format.func) {
-+		case mm_32f_01_op:
-+		case mm_32f_11_op:
-+		case mm_32f_02_op:
-+		case mm_32f_12_op:
-+		case mm_32f_41_op:
-+		case mm_32f_51_op:
-+		case mm_32f_42_op:
-+		case mm_32f_52_op:
-+			op = insn.mm_fp0_format.func;
-+			if (op == mm_32f_01_op)
-+				func = madd_s_op;
-+			else if (op == mm_32f_11_op)
-+				func = madd_d_op;
-+			else if (op == mm_32f_02_op)
-+				func = nmadd_s_op;
-+			else if (op == mm_32f_12_op)
-+				func = nmadd_d_op;
-+			else if (op == mm_32f_41_op)
-+				func = msub_s_op;
-+			else if (op == mm_32f_51_op)
-+				func = msub_d_op;
-+			else if (op == mm_32f_42_op)
-+				func = nmsub_s_op;
-+			else
-+				func = nmsub_d_op;
-+			mips32_insn.fp6_format.opcode = cop1x_op;
-+			mips32_insn.fp6_format.fr = insn.mm_fp6_format.fr;
-+			mips32_insn.fp6_format.ft = insn.mm_fp6_format.ft;
-+			mips32_insn.fp6_format.fs = insn.mm_fp6_format.fs;
-+			mips32_insn.fp6_format.fd = insn.mm_fp6_format.fd;
-+			mips32_insn.fp6_format.func = func;
-+			break;
-+		case mm_32f_10_op:
-+			func = -1;  /* set to invalid value */
-+			op = insn.mm_fp5_format.op & 0x7;
-+			if (op == mm_ldxc1_op)
-+				func = ldxc1_op;
-+			else if (op == mm_sdxc1_op)
-+				func = sdxc1_op;
-+			else if (op == mm_lwxc1_op)
-+				func = lwxc1_op;
-+			else if (op == mm_swxc1_op)
-+				func = swxc1_op;
-+
-+			if (func != -1) {
-+				mips32_insn.r_format.opcode = cop1x_op;
-+				mips32_insn.r_format.rs = insn.mm_fp5_format.base;
-+				mips32_insn.r_format.rt = insn.mm_fp5_format.index;
-+				mips32_insn.r_format.rd = 0;
-+				mips32_insn.r_format.re = insn.mm_fp5_format.fd;
-+				mips32_insn.r_format.func = func;
-+			} else
-+				return SIGILL;
-+			break;
-+		case mm_32f_40_op:
-+			op = -1;  /* set to invalid value */
-+			if (insn.mm_fp2_format.op == mm_fmovt_op)
-+				op = 1;
-+			else if (insn.mm_fp2_format.op == mm_fmovf_op)
-+				op = 0;
-+			if (op != -1) {
-+				mips32_insn.fp0_format.opcode = cop1_op;
-+				mips32_insn.fp0_format.fmt = sdps_format[insn.mm_fp2_format.fmt];
-+				mips32_insn.fp0_format.ft = (insn.mm_fp2_format.cc<<2) + op;
-+				mips32_insn.fp0_format.fs = insn.mm_fp2_format.fs;
-+				mips32_insn.fp0_format.fd = insn.mm_fp2_format.fd;
-+				mips32_insn.fp0_format.func = fmovc_op;
-+			} else
-+				return SIGILL;
-+			break;
-+		case mm_32f_60_op:
-+			func = -1;  /* set to invalid value */
-+			if (insn.mm_fp0_format.op == mm_fadd_op)
-+				func = fadd_op;
-+			else if (insn.mm_fp0_format.op == mm_fsub_op)
-+				func = fsub_op;
-+			else if (insn.mm_fp0_format.op == mm_fmul_op)
-+				func = fmul_op;
-+			else if (insn.mm_fp0_format.op == mm_fdiv_op)
-+				func = fdiv_op;
-+			if (func != -1) {
-+				mips32_insn.fp0_format.opcode = cop1_op;
-+				mips32_insn.fp0_format.fmt = sdps_format[insn.mm_fp0_format.fmt];
-+				mips32_insn.fp0_format.ft = insn.mm_fp0_format.ft;
-+				mips32_insn.fp0_format.fs = insn.mm_fp0_format.fs;
-+				mips32_insn.fp0_format.fd = insn.mm_fp0_format.fd;
-+				mips32_insn.fp0_format.func = func;
-+			} else
-+				return SIGILL;
-+			break;
-+		case mm_32f_70_op:
-+			func = -1;  /* set to invalid value */
-+			if (insn.mm_fp0_format.op == mm_fmovn_op)
-+				func = fmovn_op;
-+			else if (insn.mm_fp0_format.op == mm_fmovz_op)
-+				func = fmovz_op;
-+			if (func != -1) {
-+				mips32_insn.fp0_format.opcode = cop1_op;
-+				mips32_insn.fp0_format.fmt = sdps_format[insn.mm_fp0_format.fmt];
-+				mips32_insn.fp0_format.ft = insn.mm_fp0_format.ft;
-+				mips32_insn.fp0_format.fs = insn.mm_fp0_format.fs;
-+				mips32_insn.fp0_format.fd = insn.mm_fp0_format.fd;
-+				mips32_insn.fp0_format.func = func;
-+			} else
-+				return SIGILL;
-+			break;
-+		case mm_32f_73_op:    /* POOL32FXF */
-+			switch (insn.mm_fp1_format.op) {
-+			case mm_movf0_op:
-+			case mm_movf1_op:
-+			case mm_movt0_op:
-+			case mm_movt1_op:
-+				if ((insn.mm_fp1_format.op & 0x7f) == mm_movf0_op)
-+					op = 0;
-+				else
-+					op = 1;
-+				mips32_insn.r_format.opcode = spec_op;
-+				mips32_insn.r_format.rs = insn.mm_fp4_format.fs;
-+				mips32_insn.r_format.rt = (insn.mm_fp4_format.cc<<2) + op;
-+				mips32_insn.r_format.rd = insn.mm_fp4_format.rt;
-+				mips32_insn.r_format.re = 0;
-+				mips32_insn.r_format.func = movc_op;
-+				break;
-+			case mm_fcvtd0_op:
-+			case mm_fcvtd1_op:
-+			case mm_fcvts0_op:
-+			case mm_fcvts1_op:
-+				if ((insn.mm_fp1_format.op & 0x7f) == mm_fcvtd0_op) {
-+					func = fcvtd_op;
-+					fmt = swl_format[insn.mm_fp3_format.fmt];
-+				} else {
-+					func = fcvts_op;
-+					fmt = dwl_format[insn.mm_fp3_format.fmt];
-+				}
-+				mips32_insn.fp0_format.opcode = cop1_op;
-+				mips32_insn.fp0_format.fmt = fmt;
-+				mips32_insn.fp0_format.ft = 0;
-+				mips32_insn.fp0_format.fs = insn.mm_fp3_format.fs;
-+				mips32_insn.fp0_format.fd = insn.mm_fp3_format.rt;
-+				mips32_insn.fp0_format.func = func;
-+				break;
-+			case mm_fmov0_op:
-+			case mm_fmov1_op:
-+			case mm_fabs0_op:
-+			case mm_fabs1_op:
-+			case mm_fneg0_op:
-+			case mm_fneg1_op:
-+				if ((insn.mm_fp1_format.op & 0x7f) == mm_fmov0_op)
-+					func = fmov_op;
-+				else if ((insn.mm_fp1_format.op & 0x7f) == mm_fabs0_op)
-+					func = fabs_op;
-+				else
-+					func = fneg_op;
-+				mips32_insn.fp0_format.opcode = cop1_op;
-+				mips32_insn.fp0_format.fmt = sdps_format[insn.mm_fp3_format.fmt];
-+				mips32_insn.fp0_format.ft = 0;
-+				mips32_insn.fp0_format.fs = insn.mm_fp3_format.fs;
-+				mips32_insn.fp0_format.fd = insn.mm_fp3_format.rt;
-+				mips32_insn.fp0_format.func = func;
-+				break;
-+			case mm_ffloorl_op:
-+			case mm_ffloorw_op:
-+			case mm_fceill_op:
-+			case mm_fceilw_op:
-+			case mm_ftruncl_op:
-+			case mm_ftruncw_op:
-+			case mm_froundl_op:
-+			case mm_froundw_op:
-+			case mm_fcvtl_op:
-+			case mm_fcvtw_op:
-+				if (insn.mm_fp1_format.op == mm_ffloorl_op)
-+					func = ffloorl_op;
-+				else if (insn.mm_fp1_format.op == mm_ffloorw_op)
-+					func = ffloor_op;
-+				else if (insn.mm_fp1_format.op == mm_fceill_op)
-+					func = fceill_op;
-+				else if (insn.mm_fp1_format.op == mm_fceilw_op)
-+					func = fceil_op;
-+				else if (insn.mm_fp1_format.op == mm_ftruncl_op)
-+					func = ftruncl_op;
-+				else if (insn.mm_fp1_format.op == mm_ftruncw_op)
-+					func = ftrunc_op;
-+				else if (insn.mm_fp1_format.op == mm_froundl_op)
-+					func = froundl_op;
-+				else if (insn.mm_fp1_format.op == mm_froundw_op)
-+					func = fround_op;
-+				else if (insn.mm_fp1_format.op == mm_fcvtl_op)
-+					func = fcvtl_op;
-+				else
-+					func = fcvtw_op;
-+				mips32_insn.fp0_format.opcode = cop1_op;
-+				mips32_insn.fp0_format.fmt = sd_format[insn.mm_fp1_format.fmt];
-+				mips32_insn.fp0_format.ft = 0;
-+				mips32_insn.fp0_format.fs = insn.mm_fp1_format.fs;
-+				mips32_insn.fp0_format.fd = insn.mm_fp1_format.rt;
-+				mips32_insn.fp0_format.func = func;
-+				break;
-+			case mm_frsqrt_op:
-+			case mm_fsqrt_op:
-+			case mm_frecip_op:
-+				if (insn.mm_fp1_format.op == mm_frsqrt_op)
-+					func = frsqrt_op;
-+				else if (insn.mm_fp1_format.op == mm_fsqrt_op)
-+					func = fsqrt_op;
-+				else
-+					func = frecip_op;
-+				mips32_insn.fp0_format.opcode = cop1_op;
-+				mips32_insn.fp0_format.fmt = sdps_format[insn.mm_fp1_format.fmt];
-+				mips32_insn.fp0_format.ft = 0;
-+				mips32_insn.fp0_format.fs = insn.mm_fp1_format.fs;
-+				mips32_insn.fp0_format.fd = insn.mm_fp1_format.rt;
-+				mips32_insn.fp0_format.func = func;
-+				break;
-+			case mm_mfc1_op:
-+			case mm_mtc1_op:
-+			case mm_cfc1_op:
-+			case mm_ctc1_op:
-+				if (insn.mm_fp1_format.op == mm_mfc1_op)
-+					op = mfc_op;
-+				else if (insn.mm_fp1_format.op == mm_mtc1_op)
-+					op = mtc_op;
-+				else if (insn.mm_fp1_format.op == mm_cfc1_op)
-+					op = cfc_op;
-+				else
-+					op = ctc_op;
-+				mips32_insn.fp1_format.opcode = cop1_op;
-+				mips32_insn.fp1_format.op = op;
-+				mips32_insn.fp1_format.rt = insn.mm_fp1_format.rt;
-+				mips32_insn.fp1_format.fs = insn.mm_fp1_format.fs;
-+				mips32_insn.fp1_format.fd = 0;
-+				mips32_insn.fp1_format.func = 0;
-+				break;
-+			default:
-+				return SIGILL;
-+				break;
-+			}
-+			break;
-+		case mm_32f_74_op:    /* c.cond.fmt */
-+			mips32_insn.fp0_format.opcode = cop1_op;
-+			mips32_insn.fp0_format.fmt = sdps_format[insn.mm_fp4_format.fmt];
-+			mips32_insn.fp0_format.ft = insn.mm_fp4_format.rt;
-+			mips32_insn.fp0_format.fs = insn.mm_fp4_format.fs;
-+			mips32_insn.fp0_format.fd = insn.mm_fp4_format.cc<<2;
-+			mips32_insn.fp0_format.func = insn.mm_fp4_format.cond | MIPS32_COND_FC;
++	perf_sw_event(PERF_COUNT_SW_EMULATION_FAULTS,
++			1, regs, 0);
++	switch (rd) {
++	case 0:		/* CPU number */
++		regs->regs[rt] = smp_processor_id();
++		return 0;
++	case 1:		/* SYNCI length */
++		regs->regs[rt] = min(current_cpu_data.dcache.linesz,
++				     current_cpu_data.icache.linesz);
++		return 0;
++	case 2:		/* Read count register */
++		regs->regs[rt] = read_c0_count();
++		return 0;
++	case 3:		/* Count register resolution */
++		switch (current_cpu_data.cputype) {
++		case CPU_20KC:
++		case CPU_25KF:
++			regs->regs[rt] = 1;
 +			break;
 +		default:
-+			return SIGILL;
-+			break;
++			regs->regs[rt] = 2;
 +		}
-+		break;
++		return 0;
++	case 29:
++		regs->regs[rt] = ti->tp_value;
++		return 0;
 +	default:
-+		return SIGILL;
-+		break;
++		return -1;
 +	}
-+
-+	*insn_ptr = mips32_insn;
-+	return 0;
 +}
 +
-+/* micro_mips version of isBranchInstr() */
-+int mm_isBranchInstr(struct pt_regs *regs, struct decoded_instn dec_insn,
-+		     unsigned long *contpc)
++static int simulate_rdhwr_normal(struct pt_regs *regs, unsigned int opcode)
 +{
-+	union mips_instruction insn = (union mips_instruction)dec_insn.insn;
-+	int bc_false = 0;
-+	unsigned int fcr31;
-+	unsigned int bit;
+ 	if ((opcode & OPCODE) == SPEC3 && (opcode & FUNC) == RDHWR) {
+ 		int rd = (opcode & RD) >> 11;
+ 		int rt = (opcode & RT) >> 16;
+-		perf_sw_event(PERF_COUNT_SW_EMULATION_FAULTS,
+-				1, regs, 0);
+-		switch (rd) {
+-		case 0:		/* CPU number */
+-			regs->regs[rt] = smp_processor_id();
+-			return 0;
+-		case 1:		/* SYNCI length */
+-			regs->regs[rt] = min(current_cpu_data.dcache.linesz,
+-					     current_cpu_data.icache.linesz);
+-			return 0;
+-		case 2:		/* Read count register */
+-			regs->regs[rt] = read_c0_count();
+-			return 0;
+-		case 3:		/* Count register resolution */
+-			switch (current_cpu_data.cputype) {
+-			case CPU_20KC:
+-			case CPU_25KF:
+-				regs->regs[rt] = 1;
+-				break;
+-			default:
+-				regs->regs[rt] = 2;
+-			}
+-			return 0;
+-		case 29:
+-			regs->regs[rt] = ti->tp_value;
+-			return 0;
+-		default:
+-			return -1;
+-		}
 +
-+	/* NOTE: for 16-bit instructions, they are duplicated and stored as a 32-bit value. */
-+	switch (insn.mm_i_format.opcode) {
-+	case mm_pool32a_op:
-+		if ((insn.mm_i_format.simmediate & MM_POOL32A_MINOR_MSK) == mm_pool32axf_op) {
-+			switch (insn.mm_i_format.simmediate >> MM_POOL32A_MINOR_SFT) {
-+			case mm_jalr_op:
-+			case mm_jalrhb_op:
-+			case mm_jalrs_op:
-+			case mm_jalrshb_op:
-+				if (insn.mm_i_format.rt != 0)   /* not a mm_jr_op */
-+					regs->regs[insn.mm_i_format.rt] = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+				*contpc = regs->regs[insn.mm_i_format.rs];
-+				return 1;
-+				break;
-+			}
-+		}
-+		break;
-+	case mm_pool32i_op:
-+		switch (insn.mm_i_format.rt) {
-+		case mm_bltzals_op:
-+		case mm_bltzal_op:
-+			regs->regs[31] = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			/* Fall through */
-+		case mm_bltz_op:
-+			if ((long)regs->regs[insn.mm_i_format.rs] < 0)
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.mm_i_format.simmediate << 1);
-+			else
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			return 1;
-+			break;
-+		case mm_bgezals_op:
-+		case mm_bgezal_op:
-+			regs->regs[31] = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			/* Fall through */
-+		case mm_bgez_op:
-+			if ((long)regs->regs[insn.mm_i_format.rs] >= 0)
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.mm_i_format.simmediate << 1);
-+			else
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			return 1;
-+			break;
-+		case mm_blez_op:
-+			if ((long)regs->regs[insn.mm_i_format.rs] <= 0)
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.mm_i_format.simmediate << 1);
-+			else
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			return 1;
-+			break;
-+		case mm_bgtz_op:
-+			if ((long)regs->regs[insn.mm_i_format.rs] <= 0)
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.mm_i_format.simmediate << 1);
-+			else
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			return 1;
-+			break;
-+		case mm_bc2f_op:
-+		case mm_bc1f_op:
-+			bc_false = 1;
-+			/* Fall through */
-+		case mm_bc2t_op:
-+		case mm_bc1t_op:
-+			preempt_disable();
-+			if (is_fpu_owner())
-+				asm volatile("cfc1\t%0,$31" : "=r" (fcr31));
-+			else
-+				fcr31 = current->thread.fpu.fcr31;
-+			preempt_enable();
-+
-+			if (bc_false)
-+				fcr31 = ~fcr31;
-+
-+			bit = (insn.mm_i_format.rs >> 2);
-+			bit += (bit != 0);
-+			bit += 23;
-+			if (fcr31 & (1 << bit))
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.mm_i_format.simmediate << 1);
-+			else
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			return 1;
-+			break;
-+		}
-+		break;
-+	case mm_pool16c_op:
-+		switch (insn.mm_i_format.rt) {
-+		case mm_jalr16_op:
-+		case mm_jalrs16_op:
-+			regs->regs[31] = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			/* Fall through */
-+		case mm_jr16_op:
-+			*contpc = regs->regs[insn.mm_i_format.rs];
-+			return 1;
-+			break;
-+		}
-+		break;
-+	case mm_beqz16_op:
-+		if ((long)regs->regs[reg16to32map[insn.mm16b1_format.rs]] == 0)
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.mm16b1_format.simmediate << 1);
-+		else
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		return 1;
-+		break;
-+	case mm_bnez16_op:
-+		if ((long)regs->regs[reg16to32map[insn.mm16b1_format.rs]] != 0)
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.mm16b1_format.simmediate << 1);
-+		else
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		return 1;
-+		break;
-+	case mm_b16_op:
-+		*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.mm16b0_format.simmediate << 1);
-+		return 1;
-+		break;
-+	case mm_beq32_op:
-+		if (regs->regs[insn.mm_i_format.rs] == regs->regs[insn.mm_i_format.rt])
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.mm_i_format.simmediate << 1);
-+		else
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		return 1;
-+		break;
-+	case mm_bne32_op:
-+		if (regs->regs[insn.mm_i_format.rs] != regs->regs[insn.mm_i_format.rt])
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.mm_i_format.simmediate << 1);
-+		else
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		return 1;
-+		break;
-+	case mm_jalx32_op:
-+		regs->regs[31] = regs->cp0_epc + dec_insn.pc_inc +
-+			dec_insn.next_pc_inc;
-+		*contpc = regs->cp0_epc + dec_insn.pc_inc;
-+		*contpc >>= 28;
-+		*contpc <<= 28;
-+		*contpc |= (insn.j_format.target << 2);
-+		return 1;
-+		break;
-+	case mm_jals32_op:
-+	case mm_jal32_op:
-+		regs->regs[31] = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		/* Fall through */
-+	case mm_j32_op:
-+		*contpc = regs->cp0_epc + dec_insn.pc_inc;
-+		*contpc >>= 27;
-+		*contpc <<= 27;
-+		*contpc |= (insn.j_format.target << 1);
-+		*contpc |= MIPS_ISA_MODE;
-+		return 1;
-+		break;
++		simulate_rdhwr(regs, rd, rt);
++		return 0;
 +	}
-+	return 0;
++
++	/* Not ours.  */
++	return -1;
 +}
- 
- /*
-  * Redundant with logic already in kernel/branch.c,
-@@ -117,53 +589,134 @@ static const unsigned int fpucondbit[8] = {
-  * a single subroutine should be used across both
-  * modules.
-  */
--static int isBranchInstr(mips_instruction * i)
-+static int isBranchInstr(struct pt_regs *regs, struct decoded_instn dec_insn, unsigned long *contpc)
- {
--	switch (MIPSInst_OPCODE(*i)) {
-+	union mips_instruction insn = (union mips_instruction)dec_insn.insn;
-+	unsigned int fcr31;
-+	unsigned int bit = 0;
 +
-+	switch (insn.i_format.opcode) {
- 	case spec_op:
--		switch (MIPSInst_FUNC(*i)) {
-+		switch (insn.r_format.func) {
- 		case jalr_op:
-+			regs->regs[insn.r_format.rd] = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			/* Fall through */
- 		case jr_op:
-+			*contpc = regs->regs[insn.r_format.rs];
- 			return 1;
-+			break;
- 		}
- 		break;
--
- 	case bcond_op:
--		switch (MIPSInst_RT(*i)) {
-+		switch (insn.i_format.rt) {
-+		case bltzal_op:
-+		case bltzall_op:
-+			regs->regs[31] = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			/* Fall through */
- 		case bltz_op:
--		case bgez_op:
- 		case bltzl_op:
--		case bgezl_op:
--		case bltzal_op:
-+			if ((long)regs->regs[insn.i_format.rs] < 0)
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.i_format.simmediate << 2);
-+			else
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			return 1;
-+			break;
- 		case bgezal_op:
--		case bltzall_op:
- 		case bgezall_op:
-+			regs->regs[31] = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+			/* Fall through */
-+		case bgez_op:
-+		case bgezl_op:
-+			if ((long)regs->regs[insn.i_format.rs] >= 0)
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.i_format.simmediate << 2);
-+			else
-+				*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
- 			return 1;
-+			break;
- 		}
- 		break;
--
--	case j_op:
--	case jal_op:
- 	case jalx_op:
-+		bit = MIPS_ISA_MODE;
-+	case jal_op:
-+		regs->regs[31] = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		/* Fall through */
-+	case j_op:
-+		*contpc = regs->cp0_epc + dec_insn.pc_inc;
-+		*contpc >>= 28;
-+		*contpc <<= 28;
-+		*contpc |= (insn.j_format.target << 2);
-+		/* set micro_mips mode bit: xor for jalx. LY22 */
-+		*contpc ^= bit;
-+		return 1;
-+		break;
- 	case beq_op:
--	case bne_op:
--	case blez_op:
--	case bgtz_op:
- 	case beql_op:
-+		if (regs->regs[insn.i_format.rs] == regs->regs[insn.i_format.rt])
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.i_format.simmediate << 2);
-+		else
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		return 1;
-+		break;
-+	case bne_op:
- 	case bnel_op:
-+		if (regs->regs[insn.i_format.rs] != regs->regs[insn.i_format.rt])
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.i_format.simmediate << 2);
-+		else
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		return 1;
-+		break;
-+	case blez_op:
- 	case blezl_op:
-+		if ((long)regs->regs[insn.i_format.rs] <= 0)
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.i_format.simmediate << 2);
-+		else
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+		return 1;
-+		break;
-+	case bgtz_op:
- 	case bgtzl_op:
-+		if ((long)regs->regs[insn.i_format.rs] > 0)
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.i_format.simmediate << 2);
-+		else
-+			*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
- 		return 1;
--
-+		break;
- 	case cop0_op:
- 	case cop1_op:
- 	case cop2_op:
- 	case cop1x_op:
--		if (MIPSInst_RS(*i) == bc_op)
--			return 1;
-+		if (insn.i_format.rs == bc_op) {
-+			preempt_disable();
-+			if (is_fpu_owner())
-+				asm volatile("cfc1\t%0,$31" : "=r" (fcr31));
-+			else
-+				fcr31 = current->thread.fpu.fcr31;
-+			preempt_enable();
-+
-+			bit = (insn.i_format.rt >> 2);
-+			bit += (bit != 0);
-+			bit += 23;
-+			switch (insn.i_format.rt & 3) {
-+			case 0: /* bc1f */
-+			case 2: /* bc1fl */
-+				if (~fcr31 & (1 << bit))
-+					*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.i_format.simmediate << 2);
-+				else
-+					*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+				return 1;
-+				break;
-+			case 1: /* bc1t */
-+			case 3: /* bc1tl */
-+				if (fcr31 & (1 << bit))
-+					*contpc = regs->cp0_epc + dec_insn.pc_inc + (insn.i_format.simmediate << 2);
-+				else
-+					*contpc = regs->cp0_epc + dec_insn.pc_inc + dec_insn.next_pc_inc;
-+				return 1;
-+				break;
-+			}  /* end of inner switch-statement */
-+		}
- 		break;
- 	}
--
- 	return 0;
- }
- 
-@@ -210,26 +763,23 @@ static inline int cop1_64bit(struct pt_regs *xcp)
-  */
- 
- static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
--		       void *__user *fault_addr)
-+		struct decoded_instn dec_insn, void *__user *fault_addr)
- {
- 	mips_instruction ir;
--	unsigned long emulpc, contpc;
-+	unsigned long contpc = xcp->cp0_epc + dec_insn.pc_inc;
- 	unsigned int cond;
--
--	if (!access_ok(VERIFY_READ, xcp->cp0_epc, sizeof(mips_instruction))) {
--		MIPS_FPU_EMU_INC_STATS(errors);
--		*fault_addr = (mips_instruction __user *)xcp->cp0_epc;
--		return SIGBUS;
--	}
--	if (__get_user(ir, (mips_instruction __user *) xcp->cp0_epc)) {
--		MIPS_FPU_EMU_INC_STATS(errors);
--		*fault_addr = (mips_instruction __user *)xcp->cp0_epc;
--		return SIGSEGV;
--	}
-+	int pc_inc;
- 
- 	/* XXX NEC Vr54xx bug workaround */
--	if ((xcp->cp0_cause & CAUSEF_BD) && !isBranchInstr(&ir))
--		xcp->cp0_cause &= ~CAUSEF_BD;
-+	if (xcp->cp0_cause & CAUSEF_BD) {
-+		if (dec_insn.micro_mips_mode) {
-+			if (!mm_isBranchInstr(xcp, dec_insn, &contpc))
-+				xcp->cp0_cause &= ~CAUSEF_BD;
-+		} else {
-+			if (!isBranchInstr(xcp, dec_insn, &contpc))
-+				xcp->cp0_cause &= ~CAUSEF_BD;
-+		}
-+	}
- 
- 	if (xcp->cp0_cause & CAUSEF_BD) {
- 		/*
-@@ -244,32 +794,27 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 		 * Linux MIPS branch emulator operates on context, updating the
- 		 * cp0_epc.
- 		 */
--		emulpc = xcp->cp0_epc + 4;	/* Snapshot emulation target */
- 
--		if (__compute_return_epc(xcp) < 0) {
--#ifdef CP1DBG
--			printk("failed to emulate branch at %p\n",
--				(void *) (xcp->cp0_epc));
--#endif
--			return SIGILL;
--		}
--		if (!access_ok(VERIFY_READ, emulpc, sizeof(mips_instruction))) {
--			MIPS_FPU_EMU_INC_STATS(errors);
--			*fault_addr = (mips_instruction __user *)emulpc;
--			return SIGBUS;
--		}
--		if (__get_user(ir, (mips_instruction __user *) emulpc)) {
--			MIPS_FPU_EMU_INC_STATS(errors);
--			*fault_addr = (mips_instruction __user *)emulpc;
--			return SIGSEGV;
--		}
--		/* __compute_return_epc() will have updated cp0_epc */
--		contpc = xcp->cp0_epc;
--		/* In order not to confuse ptrace() et al, tweak context */
--		xcp->cp0_epc = emulpc - 4;
-+		/* NOTE: contpc is modified by isBranchInstr() if it is a branch instr */
-+
-+		ir = dec_insn.next_insn;  /* process delay slot instr */
-+		pc_inc = dec_insn.next_pc_inc;
- 	} else {
--		emulpc = xcp->cp0_epc;
--		contpc = xcp->cp0_epc + 4;
-+		ir = dec_insn.insn;       /* process current instr */
-+		pc_inc = dec_insn.pc_inc;
-+	}
-+
-+	/* Since micro_mips FPU instructios are a subset of mips32 FPU instructions,   */
-+	/* we want to convert micro_mips FPU instructions into mips32 instrunction so  */
-+	/* that we could reuse all of the FPU emulation code.                          */
-+	/* NOTE: we can't do this for branch instructions since they are not a subset  */
-+	/*       ex: can't emulate a 16-bit aligned target address with a mips32 instn */
-+	if (dec_insn.micro_mips_mode) {
-+		/* if next instn is a 16-bit instn then it can't be FPU instn */
-+		/* This could happen since this function can be called with non FPU instructions. */
-+		if ((pc_inc == 2) ||
-+			(micro_mips32_to_mips32((union mips_instruction *)&ir) == SIGILL))
-+			return SIGILL;
++static int simulate_rdhwr_mm(struct pt_regs *regs, unsigned short opcode)
++{
++	if ((opcode & MM_POOL32A_FUNC) == MM_RDHWR) {
++		int rd = (opcode & MM_RS) >> 16;
++		int rt = (opcode & MM_RT) >> 21;
++		simulate_rdhwr(regs, rd, rt);
++		return 0;
  	}
  
-       emul:
-@@ -474,22 +1019,30 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 				/* branch taken: emulate dslot
- 				 * instruction
- 				 */
--				xcp->cp0_epc += 4;
--				contpc = (xcp->cp0_epc +
--					(MIPSInst_SIMM(ir) << 2));
--
--				if (!access_ok(VERIFY_READ, xcp->cp0_epc,
--					       sizeof(mips_instruction))) {
--					MIPS_FPU_EMU_INC_STATS(errors);
--					*fault_addr = (mips_instruction __user *)xcp->cp0_epc;
--					return SIGBUS;
--				}
--				if (__get_user(ir,
--				    (mips_instruction __user *) xcp->cp0_epc)) {
--					MIPS_FPU_EMU_INC_STATS(errors);
--					*fault_addr = (mips_instruction __user *)xcp->cp0_epc;
--					return SIGSEGV;
--				}
-+				xcp->cp0_epc += dec_insn.pc_inc;
-+
-+				contpc = MIPSInst_SIMM(ir);
-+				ir = dec_insn.next_insn;
-+				if (dec_insn.micro_mips_mode) {
-+					contpc = (xcp->cp0_epc + (contpc << 1));
-+
-+					/* if next instn is a 16-bit instn then it can't be FPU instn */
-+					if ((dec_insn.next_pc_inc == 2) ||
-+						(micro_mips32_to_mips32((union mips_instruction *)&ir) == SIGILL)) {
-+
-+						/* since this instn will be put on the stack with 32-bit words */
-+						/* get around this problem by putting a NOP16 as the 2nd instn */
-+						if (dec_insn.next_pc_inc == 2)
-+							ir = (ir & (~0xffff)) | MM_NOP16;
-+
-+						/*
-+						 * Single step the non-cp1
-+						 * instruction in the dslot
-+						 */
-+						return mips_dsemul(xcp, ir, contpc);
-+					}
-+				} else
-+					contpc = (xcp->cp0_epc + (contpc << 2));
- 
- 				switch (MIPSInst_OPCODE(ir)) {
- 				case lwc1_op:
-@@ -525,8 +1078,8 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 					 * branch likely nullifies
- 					 * dslot if not taken
- 					 */
--					xcp->cp0_epc += 4;
--					contpc += 4;
-+					xcp->cp0_epc += dec_insn.pc_inc;
-+					contpc += dec_insn.pc_inc;
- 					/*
- 					 * else continue & execute
- 					 * dslot as normal insn
-@@ -1313,25 +1866,58 @@ int fpu_emulator_cop1Handler(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 	int has_fpu, void *__user *fault_addr)
+ 	/* Not ours.  */
+@@ -822,9 +844,29 @@ static void do_trap_or_bp(struct pt_regs *regs, unsigned int code,
+ asmlinkage void do_bp(struct pt_regs *regs)
  {
- 	unsigned long oldepc, prevepc;
--	mips_instruction insn;
-+	struct decoded_instn dec_insn;
-+	u16 instr[4];
-+	u16 *instr_ptr;
- 	int sig = 0;
- 
- 	oldepc = xcp->cp0_epc;
- 	do {
- 		prevepc = xcp->cp0_epc;
- 
--		if (!access_ok(VERIFY_READ, xcp->cp0_epc, sizeof(mips_instruction))) {
--			MIPS_FPU_EMU_INC_STATS(errors);
--			*fault_addr = (mips_instruction __user *)xcp->cp0_epc;
--			return SIGBUS;
--		}
--		if (__get_user(insn, (mips_instruction __user *) xcp->cp0_epc)) {
--			MIPS_FPU_EMU_INC_STATS(errors);
--			*fault_addr = (mips_instruction __user *)xcp->cp0_epc;
--			return SIGSEGV;
-+		if (is16mode(xcp) && cpu_has_mmips) {
-+			/* get the next 2 micro_mips instn and decode them into 2 mips32 instn */
-+			if ((get_user(instr[0], (u16 __user *)(xcp->cp0_epc & ~MIPS_ISA_MODE))) ||
-+			    (get_user(instr[1], (u16 __user *)((xcp->cp0_epc+2) & ~MIPS_ISA_MODE))) ||
-+			    (get_user(instr[2], (u16 __user *)((xcp->cp0_epc+4) & ~MIPS_ISA_MODE))) ||
-+			    (get_user(instr[3], (u16 __user *)((xcp->cp0_epc+6) & ~MIPS_ISA_MODE)))) {
-+				MIPS_FPU_EMU_INC_STATS(errors);
-+				return SIGBUS;
-+			}
-+			instr_ptr = instr;
-+			/* get 1st instruction */
-+			if (mm_is16bit(*instr_ptr)) {
-+				dec_insn.insn = (*instr_ptr << 16) | (*instr_ptr); /* duplicate the half-word */
-+				dec_insn.pc_inc = 2;         /* 16 bit instr */
-+				instr_ptr += 1;
-+			} else {
-+				dec_insn.insn = (*instr_ptr << 16) | *(instr_ptr+1);
-+				dec_insn.pc_inc = 4;         /* 32 bit instr */
-+				instr_ptr += 2;
-+			}
-+			/* get 2nd instruction */
-+			if (mm_is16bit(*instr_ptr)) {
-+				dec_insn.next_insn = (*instr_ptr << 16) | (*instr_ptr); /* duplicate the half-word */
-+				dec_insn.next_pc_inc = 2;    /* 16 bit instr */
-+			} else {
-+				dec_insn.next_insn = (*instr_ptr << 16) | *(instr_ptr+1);
-+				dec_insn.next_pc_inc = 4;    /* 32 bit instr */
-+			}
-+			dec_insn.micro_mips_mode = 1;
-+		} else {
-+			if ((get_user(dec_insn.insn, (mips_instruction __user *) xcp->cp0_epc)) ||
-+				(get_user(dec_insn.next_insn, (mips_instruction __user *)(xcp->cp0_epc+4)))) {
-+				MIPS_FPU_EMU_INC_STATS(errors);
-+				return SIGBUS;
-+			}
-+			dec_insn.pc_inc = 4;
-+			dec_insn.next_pc_inc = 4;
-+			dec_insn.micro_mips_mode = 0;
- 		}
--		if (insn == 0)
--			xcp->cp0_epc += 4;	/* skip nops */
-+
-+		if ((dec_insn.insn == 0) ||
-+			((dec_insn.pc_inc == 2) && ((dec_insn.insn & 0xffff) == MM_NOP16)))
-+			xcp->cp0_epc += dec_insn.pc_inc;	/* skip nops */
- 		else {
- 			/*
- 			 * The 'ieee754_csr' is an alias of
-@@ -1341,7 +1927,7 @@ int fpu_emulator_cop1Handler(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 			 */
- 			/* convert to ieee library modes */
- 			ieee754_csr.rm = ieee_rm[ieee754_csr.rm];
--			sig = cop1Emulate(xcp, ctx, fault_addr);
-+			sig = cop1Emulate(xcp, ctx, dec_insn, fault_addr);
- 			/* revert to mips rounding mode */
- 			ieee754_csr.rm = mips_rm[ieee754_csr.rm];
- 		}
-@@ -1359,6 +1945,8 @@ int fpu_emulator_cop1Handler(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 		/* but if epc has advanced, then ignore it */
- 		sig = 0;
- 
-+	/*if (sig == SIGILL) printk("Illegal micro_mips FPU instruction: 0x%x, 0x%x\n", dec_insn.insn, dec_insn.next_insn);*/
-+
- 	return sig;
- }
- 
-diff --git a/arch/mips/math-emu/dsemul.c b/arch/mips/math-emu/dsemul.c
-index 384a3b0..67bf6d5 100644
---- a/arch/mips/math-emu/dsemul.c
-+++ b/arch/mips/math-emu/dsemul.c
-@@ -54,8 +54,15 @@ int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
- 	extern asmlinkage void handle_dsemulret(void);
- 	struct emuframe __user *fr;
- 	int err;
-+	int nop = 0;
- 
--	if (ir == 0) {		/* a nop is easy */
-+	if (regs->cp0_epc & 1) {
-+		if ((ir >> 16) == MM_NOP16)
-+			nop = 1;
-+	} else if (ir == 0)
-+			nop = 1;
-+
-+	if (nop == 1) {		/* a nop is easy */
- 		regs->cp0_epc = cpc;
- 		regs->cp0_cause &= ~CAUSEF_BD;
- 		return 0;
-@@ -91,8 +98,17 @@ int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
- 	if (unlikely(!access_ok(VERIFY_WRITE, fr, sizeof(struct emuframe))))
- 		return SIGBUS;
- 
--	err = __put_user(ir, &fr->emul);
--	err |= __put_user((mips_instruction)BREAK_MATH, &fr->badinst);
-+	if (regs->cp0_epc & 1) {
-+		err = __put_user(ir >> 16, (u16 __user *)(&fr->emul));
-+		err |= __put_user(ir & 0xffff, (u16 __user *)((long)(&fr->emul) + 2));
-+		err |= __put_user(MM_BREAK_MATH >> 16, (u16 __user *)(&fr->badinst));
-+		err |= __put_user(MM_BREAK_MATH & 0xffff, (u16 __user *)((long)(&fr->badinst) + 2));
-+	} else {
-+		err = __put_user(ir, &fr->emul);
-+		err |= __put_user((mips_instruction)BREAK_MATH, &fr->badinst);
-+	}
-+
-+	/* NOTE: assume the 2nd instn is never executed => can leave as mips32 instr */
- 	err |= __put_user((mips_instruction)BD_COOKIE, &fr->cookie);
- 	err |= __put_user(cpc, &fr->epc);
- 
-@@ -101,7 +117,7 @@ int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
- 		return SIGBUS;
- 	}
- 
--	regs->cp0_epc = (unsigned long) &fr->emul;
-+	regs->cp0_epc = ((unsigned long) &fr->emul) | (regs->cp0_epc & 1);
- 
- 	flush_cache_sigtramp((unsigned long)&fr->badinst);
- 
-@@ -114,9 +130,14 @@ int do_dsemulret(struct pt_regs *xcp)
- 	unsigned long epc;
- 	u32 insn, cookie;
- 	int err = 0;
-+	u32 break_math = BREAK_MATH;
+ 	unsigned int opcode, bcode;
+-
+-	if (__get_user(opcode, (unsigned int __user *) exception_epc(regs)))
+-		goto out_sigsegv;
++	unsigned long epc;
 +	u16 instr[2];
 +
-+	if (xcp->cp0_epc & 1)
-+		break_math = MM_BREAK_MATH;
- 
- 	fr = (struct emuframe __user *)
--		(xcp->cp0_epc - sizeof(mips_instruction));
-+		((xcp->cp0_epc & (~1)) - sizeof(mips_instruction));
++	if (regs->cp0_epc & MIPS_ISA_MODE) {
++		/* calc exception pc */
++		epc = exception_epc(regs);
++		if (cpu_has_mmips) {
++			if ((__get_user(instr[0], (u16 __user *)(epc & ~MIPS_ISA_MODE))) ||
++			    (__get_user(instr[1], (u16 __user *)((epc+2) & ~MIPS_ISA_MODE))))
++				goto out_sigsegv;
++		    opcode = (instr[0] << 16) | instr[1];
++		} else {
++		    /* MIPS16e mode */
++		    if (__get_user(instr[0], (u16 __user *)(epc & ~MIPS_ISA_MODE)))
++				goto out_sigsegv;
++		    bcode = (instr[0] >> 6) & 0x3f;
++		    do_trap_or_bp(regs, bcode, "Break");
++		    return;
++		}
++	} else {
++		if (__get_user(opcode, (unsigned int __user *) exception_epc(regs)))
++			goto out_sigsegv;
++	}
  
  	/*
- 	 * If we can't even access the area, something is very wrong, but we'll
-@@ -131,10 +152,15 @@ int do_dsemulret(struct pt_regs *xcp)
- 	 *  - Is the instruction pointed to by the EPC an BREAK_MATH?
- 	 *  - Is the following memory word the BD_COOKIE?
- 	 */
--	err = __get_user(insn, &fr->badinst);
-+	if (xcp->cp0_epc & 1) {
-+		err = __get_user(instr[0], (u16 __user *)(&fr->badinst));
-+		err |= __get_user(instr[1], (u16 __user *)((long)(&fr->badinst) + 2));
-+		insn = (instr[0] << 16) | instr[1];
-+	} else
-+		err = __get_user(insn, &fr->badinst);
- 	err |= __get_user(cookie, &fr->cookie);
+ 	 * There is the ancient bug in the MIPS assemblers that the break
+@@ -865,13 +907,22 @@ out_sigsegv:
+ asmlinkage void do_tr(struct pt_regs *regs)
+ {
+ 	unsigned int opcode, tcode = 0;
++	u16 instr[2];
++	unsigned long epc = exception_epc(regs);
  
--	if (unlikely(err || (insn != BREAK_MATH) || (cookie != BD_COOKIE))) {
-+	if (unlikely(err || (insn != break_math) || (cookie != BD_COOKIE))) {
- 		MIPS_FPU_EMU_INC_STATS(errors);
- 		return 0;
+-	if (__get_user(opcode, (unsigned int __user *) exception_epc(regs)))
+-		goto out_sigsegv;
++	if ((__get_user(instr[0], (u16 __user *)(epc & ~MIPS_ISA_MODE))) ||
++		(__get_user(instr[1], (u16 __user *)((epc+2) & ~MIPS_ISA_MODE))))
++			goto out_sigsegv;
++	opcode = (instr[0] << 16) | instr[1];
+ 
+ 	/* Immediate versions don't provide a code.  */
+-	if (!(opcode & OPCODE))
+-		tcode = ((opcode >> 6) & ((1 << 10) - 1));
++	if (!(opcode & OPCODE)) {
++		if (is16mode(regs))
++			/* microMIPS */
++			tcode = (opcode >> 12) & 0x1f;
++		else
++			tcode = ((opcode >> 6) & ((1 << 10) - 1));
++	}
+ 
+ 	do_trap_or_bp(regs, tcode, "Trap");
+ 	return;
+@@ -884,6 +935,7 @@ asmlinkage void do_ri(struct pt_regs *regs)
+ {
+ 	unsigned int __user *epc = (unsigned int __user *)exception_epc(regs);
+ 	unsigned long old_epc = regs->cp0_epc;
++	unsigned long old31 = regs->regs[31];
+ 	unsigned int opcode = 0;
+ 	int status = -1;
+ 
+@@ -896,23 +948,37 @@ asmlinkage void do_ri(struct pt_regs *regs)
+ 	if (unlikely(compute_return_epc(regs) < 0))
+ 		return;
+ 
+-	if (unlikely(get_user(opcode, epc) < 0))
+-		status = SIGSEGV;
++	if (is16mode(regs)) {
++		unsigned short mmop[2] = { 0 };
+ 
+-	if (!cpu_has_llsc && status < 0)
+-		status = simulate_llsc(regs, opcode);
++		if (unlikely(get_user(mmop[0], epc) < 0))
++			status = SIGSEGV;
++		if (unlikely(get_user(mmop[1], epc) < 0))
++			status = SIGSEGV;
++		opcode = (mmop[0] << 16) | mmop[1];
+ 
+-	if (status < 0)
+-		status = simulate_rdhwr(regs, opcode);
++		if (status < 0)
++			status = simulate_rdhwr_mm(regs, opcode);
++	} else {
++		if (unlikely(get_user(opcode, epc) < 0))
++			status = SIGSEGV;
+ 
+-	if (status < 0)
+-		status = simulate_sync(regs, opcode);
++		if (!cpu_has_llsc && status < 0)
++			status = simulate_llsc(regs, opcode);
++
++		if (status < 0)
++			status = simulate_rdhwr_normal(regs, opcode);
++
++		if (status < 0)
++			status = simulate_sync(regs, opcode);
++	}
+ 
+ 	if (status < 0)
+ 		status = SIGILL;
+ 
+ 	if (unlikely(status > 0)) {
+ 		regs->cp0_epc = old_epc;		/* Undo skip-over.  */
++		regs->regs[31] = old31;
+ 		force_sig(status, current);
  	}
+ }
+@@ -982,7 +1048,7 @@ static int default_cu2_call(struct notifier_block *nfb, unsigned long action,
+ asmlinkage void do_cpu(struct pt_regs *regs)
+ {
+ 	unsigned int __user *epc;
+-	unsigned long old_epc;
++	unsigned long old_epc, old31;
+ 	unsigned int opcode;
+ 	unsigned int cpid;
+ 	int status;
+@@ -996,26 +1062,41 @@ asmlinkage void do_cpu(struct pt_regs *regs)
+ 	case 0:
+ 		epc = (unsigned int __user *)exception_epc(regs);
+ 		old_epc = regs->cp0_epc;
++		old31 = regs->regs[31];
+ 		opcode = 0;
+ 		status = -1;
+ 
+ 		if (unlikely(compute_return_epc(regs) < 0))
+ 			return;
+ 
+-		if (unlikely(get_user(opcode, epc) < 0))
+-			status = SIGSEGV;
++		if (is16mode(regs)) {
++			unsigned short mmop[2] = { 0 };
+ 
+-		if (!cpu_has_llsc && status < 0)
+-			status = simulate_llsc(regs, opcode);
++			if (unlikely(get_user(mmop[0], epc) < 0))
++				status = SIGSEGV;
++			if (unlikely(get_user(mmop[1], epc) < 0))
++				status = SIGSEGV;
++			opcode = (mmop[0] << 16) | mmop[1];
+ 
+-		if (status < 0)
+-			status = simulate_rdhwr(regs, opcode);
++			if (status < 0)
++				status = simulate_rdhwr_mm(regs, opcode);
++		} else {
++			if (unlikely(get_user(opcode, epc) < 0))
++				status = SIGSEGV;
++
++			if (!cpu_has_llsc && status < 0)
++				status = simulate_llsc(regs, opcode);
++
++			if (status < 0)
++				status = simulate_rdhwr_normal(regs, opcode);
++		}
+ 
+ 		if (status < 0)
+ 			status = SIGILL;
+ 
+ 		if (unlikely(status > 0)) {
+ 			regs->cp0_epc = old_epc;	/* Undo skip-over.  */
++			regs->regs[31] = old31;
+ 			force_sig(status, current);
+ 		}
+ 
+@@ -1329,7 +1410,7 @@ asmlinkage void cache_parity_error(void)
+ void ejtag_exception_handler(struct pt_regs *regs)
+ {
+ 	const int field = 2 * sizeof(unsigned long);
+-	unsigned long depc, old_epc;
++	unsigned long depc, old_epc, old_ra;
+ 	unsigned int debug;
+ 
+ 	printk(KERN_DEBUG "SDBBP EJTAG debug exception - not handled yet, just ignored!\n");
+@@ -1344,10 +1425,12 @@ void ejtag_exception_handler(struct pt_regs *regs)
+ 		 * calculation.
+ 		 */
+ 		old_epc = regs->cp0_epc;
++		old_ra = regs->regs[31];
+ 		regs->cp0_epc = depc;
+-		__compute_return_epc(regs);
++		compute_return_epc(regs);
+ 		depc = regs->cp0_epc;
+ 		regs->cp0_epc = old_epc;
++		regs->regs[31] = old_ra;
+ 	} else
+ 		depc += 4;
+ 	write_c0_depc(depc);
+@@ -1388,9 +1471,24 @@ void __init *set_except_vector(int n, void *addr)
+ 	unsigned long handler = (unsigned long) addr;
+ 	unsigned long old_handler = exception_handlers[n];
+ 
++#ifdef CONFIG_CPU_MICROMIPS
++	/*
++	 * Only the TLB handlers are cache aligned with an even
++	 * address. All other handlers are on an odd address and
++	 * require no modification. Otherwise, MIPS32 mode will
++	 * be entered when handling any TLB exceptions. That
++	 * would be bad...since we must stay in microMIPS mode.
++	 */
++	if (!(handler & 0x1))
++		handler |= 1;
++#endif
+ 	exception_handlers[n] = handler;
+ 	if (n == 0 && cpu_has_divec) {
++#ifdef CONFIG_CPU_MICROMIPS
++		unsigned long jump_mask = ~((1 << 27) - 1);
++#else
+ 		unsigned long jump_mask = ~((1 << 28) - 1);
++#endif
+ 		u32 *buf = (u32 *)(ebase + 0x200);
+ 		unsigned int k0 = 26;
+ 		if ((handler & jump_mask) == ((ebase + 0x200) & jump_mask)) {
+@@ -1417,17 +1515,18 @@ static void *set_vi_srs_handler(int n, vi_handler_t addr, int srs)
+ 	unsigned long handler;
+ 	unsigned long old_handler = vi_handlers[n];
+ 	int srssets = current_cpu_data.srsets;
+-	u32 *w;
++	u16 *h;
+ 	unsigned char *b;
+ 
+ 	BUG_ON(!cpu_has_veic && !cpu_has_vint);
++	BUG_ON((n < 0) && (n > 9));
+ 
+ 	if (addr == NULL) {
+ 		handler = (unsigned long) do_default_vi;
+ 		srs = 0;
+ 	} else
+ 		handler = (unsigned long) addr;
+-	vi_handlers[n] = (unsigned long) addr;
++	vi_handlers[n] = handler;
+ 
+ 	b = (unsigned char *)(ebase + 0x200 + n*VECTORSPACING);
+ 
+@@ -1446,9 +1545,8 @@ static void *set_vi_srs_handler(int n, vi_handler_t addr, int srs)
+ 	if (srs == 0) {
+ 		/*
+ 		 * If no shadow set is selected then use the default handler
+-		 * that does normal register saving and a standard interrupt exit
++		 * that does normal register saving and standard interrupt exit
+ 		 */
+-
+ 		extern char except_vec_vi, except_vec_vi_lui;
+ 		extern char except_vec_vi_ori, except_vec_vi_end;
+ 		extern char rollback_except_vec_vi;
+@@ -1461,11 +1559,20 @@ static void *set_vi_srs_handler(int n, vi_handler_t addr, int srs)
+ 		 * Status.IM bit to be masked before going there.
+ 		 */
+ 		extern char except_vec_vi_mori;
++#if defined(CONFIG_CPU_MICROMIPS) || defined(CONFIG_CPU_BIG_ENDIAN)
++		const int mori_offset = &except_vec_vi_mori - vec_start + 2;
++#else
+ 		const int mori_offset = &except_vec_vi_mori - vec_start;
++#endif
+ #endif /* CONFIG_MIPS_MT_SMTC */
+-		const int handler_len = &except_vec_vi_end - vec_start;
++#if defined(CONFIG_CPU_MICROMIPS) || defined(CONFIG_CPU_BIG_ENDIAN)
++		const int lui_offset = &except_vec_vi_lui - vec_start + 2;
++		const int ori_offset = &except_vec_vi_ori - vec_start + 2;
++#else
+ 		const int lui_offset = &except_vec_vi_lui - vec_start;
+ 		const int ori_offset = &except_vec_vi_ori - vec_start;
++#endif
++		const int handler_len = &except_vec_vi_end - vec_start;
+ 
+ 		if (handler_len > VECTORSPACING) {
+ 			/*
+@@ -1475,30 +1582,44 @@ static void *set_vi_srs_handler(int n, vi_handler_t addr, int srs)
+ 			panic("VECTORSPACING too small");
+ 		}
+ 
+-		memcpy(b, vec_start, handler_len);
++		set_handler(((unsigned long)b - ebase), vec_start,
++#ifdef CONFIG_CPU_MICROMIPS
++				(handler_len - 1));
++#else
++				handler_len);
++#endif
+ #ifdef CONFIG_MIPS_MT_SMTC
+ 		BUG_ON(n > 7);	/* Vector index %d exceeds SMTC maximum. */
+ 
+-		w = (u32 *)(b + mori_offset);
+-		*w = (*w & 0xffff0000) | (0x100 << n);
++		h = (u16 *)(b + mori_offset);
++		*h = (0x100 << n);
+ #endif /* CONFIG_MIPS_MT_SMTC */
+-		w = (u32 *)(b + lui_offset);
+-		*w = (*w & 0xffff0000) | (((u32)handler >> 16) & 0xffff);
+-		w = (u32 *)(b + ori_offset);
+-		*w = (*w & 0xffff0000) | ((u32)handler & 0xffff);
++		h = (u16 *)(b + lui_offset);
++		*h = (handler >> 16) & 0xffff;
++		h = (u16 *)(b + ori_offset);
++		*h = (handler & 0xffff);
+ 		local_flush_icache_range((unsigned long)b,
+ 					 (unsigned long)(b+handler_len));
+ 	}
+ 	else {
+ 		/*
+-		 * In other cases jump directly to the interrupt handler
+-		 *
+-		 * It is the handlers responsibility to save registers if required
+-		 * (eg hi/lo) and return from the exception using "eret"
++		 * In other cases jump directly to the interrupt handler. It
++		 * is the handler's responsibility to save registers if required
++		 * (eg hi/lo) and return from the exception using "eret".
+ 		 */
+-		w = (u32 *)b;
+-		*w++ = 0x08000000 | (((u32)handler >> 2) & 0x03fffff); /* j handler */
+-		*w = 0;
++		u32 insn;
++
++		h = (u16 *)b;
++		/* j handler */
++#ifdef CONFIG_CPU_MICROMIPS
++		insn = 0xd4000000 | (((u32)handler & 0x07ffffff) >> 1);
++#else
++		insn = 0x08000000 | (((u32)handler & 0x0fffffff) >> 2);
++#endif
++		h[0] = (insn >> 16) & 0xffff;
++		h[1] = insn & 0xffff;
++		h[2] = 0;
++		h[3] = 0;
+ 		local_flush_icache_range((unsigned long)b,
+ 					 (unsigned long)(b+8));
+ 	}
+@@ -1657,7 +1778,11 @@ void __cpuinit per_cpu_trap_init(bool is_boot_cpu)
+ /* Install CPU exception handler */
+ void __cpuinit set_handler(unsigned long offset, void *addr, unsigned long size)
+ {
++#ifdef CONFIG_CPU_MICROMIPS
++	memcpy((void *)(ebase + offset), ((unsigned char *)addr - 1), size);
++#else
+ 	memcpy((void *)(ebase + offset), addr, size);
++#endif
+ 	local_flush_icache_range(ebase + offset, ebase + offset + size);
+ }
+ 
+@@ -1691,8 +1816,9 @@ __setup("rdhwr_noopt", set_rdhwr_noopt);
+ 
+ void __init trap_init(void)
+ {
+-	extern char except_vec3_generic, except_vec3_r4000;
++	extern char except_vec3_generic;
+ 	extern char except_vec4;
++	extern char except_vec3_r4000;
+ 	unsigned long i;
+ 	int rollback;
+ 
+@@ -1825,11 +1951,11 @@ void __init trap_init(void)
+ 
+ 	if (cpu_has_vce)
+ 		/* Special exception: R4[04]00 uses also the divec space. */
+-		memcpy((void *)(ebase + 0x180), &except_vec3_r4000, 0x100);
++		set_handler(0x180, &except_vec3_r4000, 0x100);
+ 	else if (cpu_has_4kex)
+-		memcpy((void *)(ebase + 0x180), &except_vec3_generic, 0x80);
++		set_handler(0x180, &except_vec3_generic, 0x80);
+ 	else
+-		memcpy((void *)(ebase + 0x080), &except_vec3_generic, 0x80);
++		set_handler(0x080, &except_vec3_generic, 0x80);
+ 
+ 	local_flush_icache_range(ebase, ebase + 0x400);
+ 	flush_tlb_handlers();
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 6f3d4007..cd9ad1b 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -2021,6 +2021,13 @@ static void __cpuinit build_r4000_tlb_load_handler(void)
+ 
+ 	uasm_l_nopage_tlbl(&l, p);
+ 	build_restore_work_registers(&p);
++#ifdef CONFIG_CPU_MICROMIPS
++	if ((unsigned long)tlb_do_page_fault_0 & 1) {
++		uasm_i_lui(&p, K0, uasm_rel_hi((long)tlb_do_page_fault_0));
++		uasm_i_addiu(&p, K0, K0, uasm_rel_lo((long)tlb_do_page_fault_0));
++		uasm_i_jr(&p, K0);
++	} else
++#endif
+ 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_0 & 0x0fffffff);
+ 	uasm_i_nop(&p);
+ 
+@@ -2068,6 +2075,13 @@ static void __cpuinit build_r4000_tlb_store_handler(void)
+ 
+ 	uasm_l_nopage_tlbs(&l, p);
+ 	build_restore_work_registers(&p);
++#ifdef CONFIG_CPU_MICROMIPS
++	if ((unsigned long)tlb_do_page_fault_1 & 1) {
++		uasm_i_lui(&p, K0, uasm_rel_hi((long)tlb_do_page_fault_1));
++		uasm_i_addiu(&p, K0, K0, uasm_rel_lo((long)tlb_do_page_fault_1));
++		uasm_i_jr(&p, K0);
++	} else
++#endif
+ 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_1 & 0x0fffffff);
+ 	uasm_i_nop(&p);
+ 
+@@ -2116,6 +2130,13 @@ static void __cpuinit build_r4000_tlb_modify_handler(void)
+ 
+ 	uasm_l_nopage_tlbm(&l, p);
+ 	build_restore_work_registers(&p);
++#ifdef CONFIG_CPU_MICROMIPS
++	if ((unsigned long)tlb_do_page_fault_1 & 1) {
++		uasm_i_lui(&p, K0, uasm_rel_hi((long)tlb_do_page_fault_1));
++		uasm_i_addiu(&p, K0, K0, uasm_rel_lo((long)tlb_do_page_fault_1));
++		uasm_i_jr(&p, K0);
++	} else
++#endif
+ 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_1 & 0x0fffffff);
+ 	uasm_i_nop(&p);
+ 
+diff --git a/arch/mips/mti-sead3/sead3-init.c b/arch/mips/mti-sead3/sead3-init.c
+index a958cad..802fce2 100644
+--- a/arch/mips/mti-sead3/sead3-init.c
++++ b/arch/mips/mti-sead3/sead3-init.c
+@@ -52,7 +52,41 @@ static void __init mips_nmi_setup(void)
+ 	base = cpu_has_veic ?
+ 		(void *)(CAC_BASE + 0xa80) :
+ 		(void *)(CAC_BASE + 0x380);
++#ifdef CONFIG_CPU_MICROMIPS
++	/*
++	 * Decrement the exception vector address by one for microMIPS.
++	 */
++	memcpy(base, (&except_vec_nmi - 1), 0x80);
++
++	/*
++	 * This is a hack. We do not know if the boot loader was built with
++	 * microMIPS instructions or not. If it was not, the NMI exception
++	 * code at 0x80000a80 will be taken in MIPS32 mode. The hand coded
++	 * assembly below forces us into microMIPS mode if we are a pure
++	 * microMIPS kernel. The assembly instructions are:
++	 *
++	 *  3C1A8000   lui       k0,0x8000
++	 *  375A0381   ori       k0,k0,0x381
++	 *  03400008   jr        k0
++	 *  00000000   nop
++	 *
++	 * The mode switch occurs by jumping to the unaligned exception
++	 * vector address at 0x80000381 which would have been 0x80000380
++	 * in MIPS32 mode. The jump to the unaligned address transitions
++	 * us into microMIPS mode.
++	 */
++	if (!cpu_has_veic) {
++		void *base2 = (void *)(CAC_BASE + 0xa80);
++		*((unsigned int *)base2) = 0x3c1a8000;
++		*((unsigned int *)base2 + 1) = 0x375a0381;
++		*((unsigned int *)base2 + 2) = 0x03400008;
++		*((unsigned int *)base2 + 3) = 0x00000000;
++		flush_icache_range((unsigned long)base2,
++			(unsigned long)base2 + 0x10);
++	}
++#else
+ 	memcpy(base, &except_vec_nmi, 0x80);
++#endif
+ 	flush_icache_range((unsigned long)base, (unsigned long)base + 0x80);
+ }
+ 
+@@ -63,7 +97,21 @@ static void __init mips_ejtag_setup(void)
+ 	base = cpu_has_veic ?
+ 		(void *)(CAC_BASE + 0xa00) :
+ 		(void *)(CAC_BASE + 0x300);
++#ifdef CONFIG_CPU_MICROMIPS
++	/* Deja vu... */
++	memcpy(base, (&except_vec_ejtag_debug - 1), 0x80);
++	if (!cpu_has_veic) {
++		void *base2 = (void *)(CAC_BASE + 0xa00);
++		*((unsigned int *)base2) = 0x3c1a8000;
++		*((unsigned int *)base2 + 1) = 0x375a0301;
++		*((unsigned int *)base2 + 2) = 0x03400008;
++		*((unsigned int *)base2 + 3) = 0x00000000;
++		flush_icache_range((unsigned long)base2,
++			(unsigned long)base2 + 0x10);
++	}
++#else
+ 	memcpy(base, &except_vec_ejtag_debug, 0x80);
++#endif
+ 	flush_icache_range((unsigned long)base, (unsigned long)base + 0x80);
+ }
+ 
 -- 
 1.7.9.5

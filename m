@@ -1,39 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2012 16:55:35 +0100 (CET)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:43312 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6824759Ab2LGPzd2BAkK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2012 16:55:33 +0100
-Received: by mail-lb0-f177.google.com with SMTP id n10so484827lbo.36
-        for <multiple recipients>; Fri, 07 Dec 2012 07:55:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=A7kOjls63oS0doXNCWP7irJGK66TnEmdmIl3ThH4m/Q=;
-        b=FqEwLGtsGDMND0chMy8zLeIGVTJVEmnRNj9xBZ6oGA2YSI918foJAD4o+l0/hqUBMF
-         6Iz4JPeQ2Lps2GOR6//IEwPipX92Z0LJ90qaXE13VvstpX6HDUwgGMw1KupPWUCZMrhv
-         wAs+42JWZt8bwG6A7wnt47vyGwKg0hz50rXHEPO4CQw1zEkOdnFq18glt6be/2Et4OT5
-         eAmiqFGYYTJObpSXjJUbyEQzjTu8wZopEnX/sUAAqIhdXvn2gqL2DIht6qItrF19LwXE
-         cmJpZNteoUbJ1s2dTW8lLU7YCJKdv+xT6IVI4dWtPZ0/J/ETWvcZMdkqc1TCllLezcKB
-         PRBQ==
-MIME-Version: 1.0
-Received: by 10.152.105.68 with SMTP id gk4mr5751592lab.48.1354895727737; Fri,
- 07 Dec 2012 07:55:27 -0800 (PST)
-Received: by 10.112.114.37 with HTTP; Fri, 7 Dec 2012 07:55:27 -0800 (PST)
-In-Reply-To: <1354857802-29348-1-git-send-email-sjhill@mips.com>
-References: <1354857802-29348-1-git-send-email-sjhill@mips.com>
-Date:   Fri, 7 Dec 2012 09:55:27 -0600
-Message-ID: <CACoURw62dWy1g2hKLCLwQugtrxPDOAcMgCtHTQFYno8qTktLRw@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Add option to disable software I/O coherency.
-From:   Shane McDonald <mcdonald.shane@gmail.com>
-To:     "Steven J. Hill" <sjhill@mips.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 35248
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Dec 2012 15:58:49 +0100 (CET)
+Received: from zmc.proxad.net ([212.27.53.206]:36700 "EHLO zmc.proxad.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6831922Ab2LJO6sHakmk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 10 Dec 2012 15:58:48 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by zmc.proxad.net (Postfix) with ESMTP id 9ACC7B8786B;
+        Mon, 10 Dec 2012 15:58:47 +0100 (CET)
+X-Virus-Scanned: amavisd-new at localhost
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 1kjiged+3EJY; Mon, 10 Dec 2012 15:58:47 +0100 (CET)
+Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
+        by zmc.proxad.net (Postfix) with ESMTPSA id 419DAB83F79;
+        Mon, 10 Dec 2012 15:58:47 +0100 (CET)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, blogic@openwrt.org,
+        Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH 3.7-rc8] MIPS: MT: fix build with CONFIG_UIDGID_STRICT_TYPE_CHECKS=y
+Date:   Mon, 10 Dec 2012 15:56:44 +0100
+Message-Id: <1355151404-7499-1-git-send-email-florian@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 35250
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald.shane@gmail.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,17 +39,43 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Dec 6, 2012 at 11:23 PM, Steven J. Hill <sjhill@mips.com> wrote:
-> From: "Steven J. Hill" <sjhill@mips.com>
->
-> Some MIPS controllers have hardware I/O coherency. This patch
-> detects those and turns off software coherency. A new kernel
-> command line option also allows the user to manually turn
-> software coherency on or off.
->
-> Signed-off-by: Steven J. Hill <sjhill@mips.com>
+When CONFIG_UIDGID_STRICT_TYPE_CHECKS is enabled, plain integer checking
+between different uids/gids is explicitely turned into a build failure
+by making the k{uid,gid}_t types a structure containing a value:
 
-This patch conflicts with commit b5b64f2ba4 "MIPS: Move processing of
-coherency kernel parameters earlier" in the linux-next tree.
+arch/mips/kernel/mips-mt-fpaff.c: In function 'check_same_owner':
+arch/mips/kernel/mips-mt-fpaff.c:53:22: error: invalid operands to
+binary == (have 'kuid_t' and 'kuid_t')
+arch/mips/kernel/mips-mt-fpaff.c:54:15: error: invalid operands to
+binary == (have 'kuid_t' and 'kuid_t')
 
-Shane McDonald
+This problem got introduced with commit 17c04139 (MIPS: MT: Fix FPU affinity.)
+
+In order to ensure proper comparison between uids, using the helper
+function uid_eq() which performs the right thing whenever this config
+option is turned on or off.
+
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+Ralf, I think you might want to sneak this into 3.7-rc8 if possible at all.
+
+ arch/mips/kernel/mips-mt-fpaff.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/kernel/mips-mt-fpaff.c b/arch/mips/kernel/mips-mt-fpaff.c
+index 33f63ba..fd814e0 100644
+--- a/arch/mips/kernel/mips-mt-fpaff.c
++++ b/arch/mips/kernel/mips-mt-fpaff.c
+@@ -50,8 +50,8 @@ static bool check_same_owner(struct task_struct *p)
+ 
+ 	rcu_read_lock();
+ 	pcred = __task_cred(p);
+-	match = (cred->euid == pcred->euid ||
+-		 cred->euid == pcred->uid);
++	match = (uid_eq(cred->euid, pcred->euid) ||
++		 uid_eq(cred->euid, pcred->uid));
+ 	rcu_read_unlock();
+ 	return match;
+ }
+-- 
+1.7.10.4

@@ -1,32 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 15:53:28 +0100 (CET)
-Received: from smtp-out-249.synserver.de ([212.40.185.249]:1080 "EHLO
-        smtp-out-249.synserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825730Ab2LLOx2FJbuq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 15:53:28 +0100
-Received: (qmail 26908 invoked by uid 0); 12 Dec 2012 14:53:26 -0000
-X-SynServer-TrustedSrc: 1
-X-SynServer-AuthUser: lars@metafoo.de
-X-SynServer-PPID: 26804
-Received: from p4fe627b7.dip.t-dialin.net (HELO ?192.168.0.176?) [79.230.39.183]
-  by 217.119.54.87 with AES256-SHA encrypted SMTP; 12 Dec 2012 14:53:26 -0000
-Message-ID: <50C89A6C.705@metafoo.de>
-Date:   Wed, 12 Dec 2012 15:53:32 +0100
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.10) Gecko/20121027 Icedove/10.0.10
-MIME-Version: 1.0
-To:     Florian Fainelli <florian@openwrt.org>
-CC:     "Steven J. Hill" <sjhill@mips.com>, linux-mips@linux-mips.org,
-        ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 15:55:52 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:60230 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6825716Ab2LLOzsSnwmE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 12 Dec 2012 15:55:48 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id qBCEtlWP005814;
+        Wed, 12 Dec 2012 15:55:47 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id qBCEtjNp005813;
+        Wed, 12 Dec 2012 15:55:45 +0100
+Date:   Wed, 12 Dec 2012 15:55:45 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Florian Fainelli <florian@openwrt.org>,
+        "Steven J. Hill" <sjhill@mips.com>, linux-mips@linux-mips.org
 Subject: Re: [PATCH] OF: MIPS: sead3: Implement OF support.
-References: <1354857297-28863-1-git-send-email-sjhill@mips.com> <50C894D4.4090008@openwrt.org>
-In-Reply-To: <50C894D4.4090008@openwrt.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 35263
+Message-ID: <20121212145545.GC11791@linux-mips.org>
+References: <1354857297-28863-1-git-send-email-sjhill@mips.com>
+ <50C894D4.4090008@openwrt.org>
+ <50C89A6C.705@metafoo.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <50C89A6C.705@metafoo.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 35264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,53 +42,16 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 12/12/2012 03:29 PM, Florian Fainelli wrote:
-> Hello Steven,
-> 
-> Le 12/07/12 06:14, Steven J. Hill a écrit :
-> [snip]
-> 
->> +/ {
->> +    #address-cells = <1>;
->> +    #size-cells = <1>;
->> +    compatible = "mips,sead-3";
->> +
->> +    cpus {
->> +        cpu@0 {
->> +            compatible = "mips,mips14Kc,mips14KEc";
->> +        };
-> 
-> You probably want this the other way around:
-> 
-> mips14KEc,mips14Kc,mips
-> 
-> you should always have the left-most string being the most descriptive about
-> the hardware and the last one being the less descriptive and thus less
-> "specializing" in order to be backward compatible.
+On Wed, Dec 12, 2012 at 03:53:32PM +0100, Lars-Peter Clausen wrote:
 
-This is one compatible string though, what you describe is for when use
-multiple compatible string. E.g.
-compatible = "mips14KEc", "mips14Kc", "mips";
-
-The "mips" in Stevens patch is probably the vendor prefix. Maybe a more
-correct compatible would be.
-
-compatible = "mips,mips14KEc", "mips,mips14Kc";
-
-But in anyway the patch should also add documentation under
-Documentation/devicetree/bindings describing the binding.
-
+> This is one compatible string though, what you describe is for when use
+> multiple compatible string. E.g.
+> compatible = "mips14KEc", "mips14Kc", "mips";
 > 
->> +    };
->> +
->> +    chosen {
->> +        bootargs = "console=ttyS1,38400 rootdelay=10 root=/dev/sda3";
->> +    };
->> +
->> +    memory {
->> +        device_type = "memory";
->> +        reg = <0x0 0x08000000>;
->> +    };
->> +};
->>
-> 
+> The "mips" in Stevens patch is probably the vendor prefix. Maybe a more
+> correct compatible would be.
+
+How about using something like mti (for MIPS Technologies, Inc.) instead
+of MIPS to differenciate the architecture from the company name?
+
+  Ralf

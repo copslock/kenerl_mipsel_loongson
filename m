@@ -1,43 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 11:54:23 +0100 (CET)
-Received: from mga11.intel.com ([192.55.52.93]:4084 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6828015Ab2LLKyVhElkJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 12 Dec 2012 11:54:21 +0100
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP; 12 Dec 2012 02:54:13 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.84,265,1355126400"; 
-   d="asc'?scan'208";a="261054906"
-Received: from blue.fi.intel.com ([10.237.72.156])
-  by fmsmga001.fm.intel.com with ESMTP; 12 Dec 2012 02:54:10 -0800
-Received: by blue.fi.intel.com (Postfix, from userid 1000)
-        id 828A2E0073; Wed, 12 Dec 2012 12:55:38 +0200 (EET)
-Date:   Wed, 12 Dec 2012 12:55:38 +0200
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     David Rientjes <rientjes@google.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-        linux-s390@vger.kernel.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>
-Subject: Re: [PATCH, RESEND] asm-generic, mm: pgtable: consolidate zero page
- helpers
-Message-ID: <20121212105538.GA14208@otc-wbsnb-06>
-References: <1354881215-26257-1-git-send-email-kirill.shutemov@linux.intel.com>
- <alpine.DEB.2.00.1212111906270.18872@chino.kir.corp.google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 15:26:23 +0100 (CET)
+Received: from mail-la0-f49.google.com ([209.85.215.49]:63976 "EHLO
+        mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823690Ab2LLO0WNsL0N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 15:26:22 +0100
+Received: by mail-la0-f49.google.com with SMTP id r15so654213lag.36
+        for <multiple recipients>; Wed, 12 Dec 2012 06:26:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:message-id:date:from:organization:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=BWC70ruUfUEo9agIGAATFfwpkH7zOrtLKKd5qdd5hMI=;
+        b=myXHd0WwSTrK//ANhC+hGCWevPPkkzZAV9Cor8Sa8G/3BnZfuwsJUBaU860/XhAI2M
+         7ceBIb+yFOJd0Bjk2CUjufeYe68JmSIDlHZTkZ/Vz7g+YdPJF+9anbqRPFAjmaJLCA2V
+         nCT3vWlEZJ3WLc9AybX35LJfSSTEq0QKj5+diS6dx7xsikB3w3k10Gnws74WY98U7A0w
+         El0o7wVciMVxLQo3w2IPX2Il+QjyFoc5lb9be3ChMIME+a8LJ92NVnwYlHMXwTvaLxRp
+         ePQbb34dKi9HciElzvWc2GsNDGv3KbtJZd3MwZxq/nPgiOqcsn2YT25XVrSQLqT7xdFc
+         lz2Q==
+Received: by 10.152.135.139 with SMTP id ps11mr1215913lab.29.1355322376483;
+        Wed, 12 Dec 2012 06:26:16 -0800 (PST)
+Received: from [192.168.108.37] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by mx.google.com with ESMTPS id u9sm10787664lbf.5.2012.12.12.06.26.15
+        (version=SSLv3 cipher=OTHER);
+        Wed, 12 Dec 2012 06:26:16 -0800 (PST)
+Message-ID: <50C8938C.8020705@openwrt.org>
+Date:   Wed, 12 Dec 2012 15:24:12 +0100
+From:   Florian Fainelli <florian@openwrt.org>
+Organization: OpenWrt
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="+QahgC5+KEYLbs62"
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1212111906270.18872@chino.kir.corp.google.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35257
+To:     "Steven J. Hill" <sjhill@mips.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] MIPS: dsp: Add assembler support for DSP ASEs.
+References: <1354855981-28392-1-git-send-email-sjhill@mips.com>
+In-Reply-To: <1354855981-28392-1-git-send-email-sjhill@mips.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-archive-position: 35258
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill.shutemov@linux.intel.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,57 +54,76 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+Hi Steven,
 
---+QahgC5+KEYLbs62
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Le 12/07/12 05:53, Steven J. Hill a écrit :
+> From: "Steven J. Hill" <sjhill@mips.com>
+>
+> Newer toolchains support the DSP and DSP Rev2 instructions. This patch
+> performs a check for that support and adds compiler and assembler
+> flags for only the files that need use those instructions.
+>
+> Signed-off-by: Steven J. Hill <sjhill@mips.com>
+> ---
+>   arch/mips/include/asm/mipsregs.h |   53 ++++++++++++++++++++++++++------------
+>   arch/mips/kernel/Makefile        |   24 +++++++++++++++++
+>   2 files changed, 60 insertions(+), 17 deletions(-)
+>
+> --- a/arch/mips/kernel/Makefile
+> +++ b/arch/mips/kernel/Makefile
+> @@ -99,4 +99,28 @@ obj-$(CONFIG_HW_PERF_EVENTS)	+= perf_event_mipsxx.o
+>
+>   obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
+>
+> +ifeq ($(CONFIG_CPU_MIPS32), y)
+> +#
+> +# Check if assembler supports DSP ASE
+> +#
+> +ifeq ($(call cc-option-yn,-mdsp), y)
+> +CFLAGS_signal.o			= -mdsp -DHAVE_AS_DSP
+> +CFLAGS_signal32.o		= -mdsp -DHAVE_AS_DSP
+> +CFLAGS_process.o		= -mdsp -DHAVE_AS_DSP
+> +CFLAGS_branch.o			= -mdsp -DHAVE_AS_DSP
+> +CFLAGS_ptrace.o			= -mdsp -DHAVE_AS_DSP
+> +endif
+> +
+> +#
+> +# Check if assembler supports DSP ASE Rev2
+> +#
+> +ifeq ($(call cc-option-yn,-mdsp2), y)
+> +CFLAGS_signal.o			= -mdsp2 -DHAVE_AS_DSP
+> +CFLAGS_signal32.o		= -mdsp2 -DHAVE_AS_DSP
+> +CFLAGS_process.o		= -mdsp2 -DHAVE_AS_DSP
+> +CFLAGS_branch.o			= -mdsp2 -DHAVE_AS_DSP
+> +CFLAGS_ptrace.o			= -mdsp2 -DHAVE_AS_DSP
 
-On Tue, Dec 11, 2012 at 07:07:14PM -0800, David Rientjes wrote:
-> On Fri, 7 Dec 2012, Kirill A. Shutemov wrote:
->=20
-> > From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-> >=20
-> > We have two different implementation of is_zero_pfn() and
-> > my_zero_pfn() helpers: for architectures with and without zero page
-> > coloring.
-> >=20
-> > Let's consolidate them in <asm-generic/pgtable.h>.
-> >=20
->=20
-> What's the benefit from doing this other than generalizing some per-arch=
-=20
-> code?  It simply adds on more layer of redirection to try to find the=20
-> implementation that matters for the architecture you're hacking on.
+Should not this be -mdspr2 here? My GCC man page suggests that.
 
-The idea of asm-generic is consolidation arch code which can be re-used
-for different arches. It also makes support of new arches easier.
+By the way, should not we also check that we are building for a 
+MIPS32_R2 CPU when checking for -mdsp2?
 
-Do you think have copy of the same code here and there is any better?
+> +endif
+> +endif
+> +
 
---=20
- Kirill A. Shutemov
+I would simplify this like this:
 
---+QahgC5+KEYLbs62
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+ifeq ($(CONFIG_CPU_MIPS32),y)
+CFLAGS_DSP = -DHAVE_AS_DSP
+ifeq ($(call cc-option-yn,-mdsp),y)
+CFLAGS_DSP += -mdsp
+endif
+ifeq ($(call cc-option-yn,-mdsp2),y)
+CFLAGS-DSP += -mdsp2
+endif
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
+CFLAGS_signal.o		= $(CFLAGS_DSP)
+...
+CFLAGS_ptrace.o		= $(CFLAGS_DSP)
+endif
 
-iQIcBAEBAgAGBQJQyGKqAAoJEAd+omnVudOMyuEQAMemWRvnFt+7wByWD1jXWC2Z
-nUe8yPig5B3W4uawzQNJXj7PS9xr+xHCi52KlJT5TLnpPAih8ozor0Ohj+hxWBG0
-OssHOzZhk6z+/IEG1DB8UDOmVUK9z3k17yfqsZkx+YB9F/x5tSug1Qt5AHGYvzt8
-LXYbtVBx5CJm21TlnnOfx7woy21Q6CgAWhA+wBm+MiUbTN1btI8xmapBAuzrE+vh
-1EIFdZe+7uWJOqHNadmVhjFvhF/Bym9z3dY7+hCc6dKvqPVOm2Bd1KJ5Pw3kgXls
-m1d2Z6LEdC7k7z1ZtU1T+mUSVSJbEMCc3F9x7FcP24sw/9zYWNX0zG6t2Iz0Mr5N
-AQ7uZxWIn9OdEhmViJyoqHDUNBIP+k+fg5M57ZsgB42BR4orJvRgCEtV2Byts+sN
-kn0AqJHU2n7v60liv/mzeKKK9z/c+Kjeg3Tp6vRSg7jSjl1Akk9M4urtuu9fFEBw
-bNS0IsIdjMwMF5DVXJGR5fCW8wu4r20VvRv8ISjGTo+g7FngSphafmwEq5Fl0/Hh
-2c0sZ+j9fpuuvwzzYBUPdulXji8frkHZ4WxMGJ1DINTq6kARaaxGkNFUS1IeteCG
-Wpyj+chEnkL+1UwLLdrfGz7gbO/+fmeiuTOAnbS2qOe5zcRD8pcTCBhQ4W/IQXcG
-5L9+tvjncCAEktFUZWvH
-=6aAs
------END PGP SIGNATURE-----
-
---+QahgC5+KEYLbs62--
+such that the day you can take advantage of a third DSP flavor it's only 
+3 lines worth of Makefile to get it used, and you only have one place 
+where you need to change CFLAGS.
+--
+Florian

@@ -1,31 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 02:18:05 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:36987 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6831966Ab2LLBRsQtH8q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 02:17:48 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id EC3508F65;
-        Wed, 12 Dec 2012 02:17:47 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id BTL5a0ziM33t; Wed, 12 Dec 2012 02:17:22 +0100 (CET)
-Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 8717C8F64;
-        Wed, 12 Dec 2012 02:17:20 +0100 (CET)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     john@phrozen.org, ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 1/2] bcma: add gpio_to_irq again
-Date:   Wed, 12 Dec 2012 02:17:10 +0100
-Message-Id: <1355275031-19297-1-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.7.10.4
-X-archive-position: 35254
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 04:07:24 +0100 (CET)
+Received: from mail-pb0-f50.google.com ([209.85.160.50]:46906 "EHLO
+        mail-pb0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822197Ab2LLDHX0HAE3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 04:07:23 +0100
+Received: by mail-pb0-f50.google.com with SMTP id wz7so134581pbc.23
+        for <linux-mips@linux-mips.org>; Tue, 11 Dec 2012 19:07:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=date:from:x-x-sender:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version:content-type;
+        bh=AXcc5Eq99161lzFJvTaCxrnO6e8wTJzfXq9SVlSWDck=;
+        b=S3m8NfFNAR+SUOCm7Rnv2DPzXbPO6dkbMPeWgOfe12eDLZt73tjMf7osyknmncn72u
+         XaE9F72soe3SkTE11zpGW6NZqCowRBCJ8GEkQyo4+16yCVD+yFDxVxPKwM/rSomEI0VA
+         ksS/r+HA2YvoaK5JqNILeubEchIVvowDJNTnmo8KSZ+Ss8gpArlJgxJYOSFVCP5O4gxS
+         RSIErUSuGRqc2VXc0PqcLk8SSIWWR1KbfIMe1Pb4gzoEL1ICuIPSavI7vIeljDra/NeH
+         14ifT/iXx33BlN2eMEFv9AgEFWINf5mkWcl+HN7jAsuLdyFUjSVZbtK8EDENQhWLbTea
+         C1tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=date:from:x-x-sender:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version:content-type:x-gm-message-state;
+        bh=AXcc5Eq99161lzFJvTaCxrnO6e8wTJzfXq9SVlSWDck=;
+        b=iL4AN0TcXUqo66dVmgLsUXpJRRgXAvf2dcYTYvoSZGEiuqPdsSPMgk6vM9Yyzz9Qh/
+         3hc3vL/v6fEOH/JHTwYxHL0wZ8deWvBZ8U4sOUUBhNrUKuV7+0cuvlG8j3g23X1NlhYE
+         voUgo2jMNRa/MbMpeI+aYYggfHNoqzkOZqYKfefmwIzAjSVv6Sgbpo8lNxwpPB/KfLsw
+         2w9xze9f2gJkjpFvVNFhnA97kg5QEqdsiOhY22nERiVTvguhe8gzWG0wIODicAbh7kDp
+         jZK9M4af1Ht8SWoccZnHH1mkSD2y7/18Phls0JVCl5zcL07mGN8ilYLowsAMw8cyJZuH
+         PF7w==
+Received: by 10.66.88.198 with SMTP id bi6mr1307299pab.54.1355281636043;
+        Tue, 11 Dec 2012 19:07:16 -0800 (PST)
+Received: from [2620:0:1008:1101:be30:5bff:fed8:5e64] ([2620:0:1008:1101:be30:5bff:fed8:5e64])
+        by mx.google.com with ESMTPS id o5sm1059149pay.5.2012.12.11.19.07.14
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 11 Dec 2012 19:07:15 -0800 (PST)
+Date:   Tue, 11 Dec 2012 19:07:14 -0800 (PST)
+From:   David Rientjes <rientjes@google.com>
+X-X-Sender: rientjes@chino.kir.corp.google.com
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+        linux-s390@vger.kernel.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>
+Subject: Re: [PATCH, RESEND] asm-generic, mm: pgtable: consolidate zero page
+ helpers
+In-Reply-To: <1354881215-26257-1-git-send-email-kirill.shutemov@linux.intel.com>
+Message-ID: <alpine.DEB.2.00.1212111906270.18872@chino.kir.corp.google.com>
+References: <1354881215-26257-1-git-send-email-kirill.shutemov@linux.intel.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Gm-Message-State: ALoCoQm8Z9ciarVszOTVfJau6SGwPkGGVVmQAl1Ul/hRQEja+GcrU8eZ0HK1qVWaUo2jF8zdp0Kq6tTt+GN4MjSA3GJwUvQ/o5HXdj/cUmOC6a8IwhFm+dTodiLQye7H/JT0upPNaH0ZBN0UZZNULNJHDJhE5AIW1n1138RY0+aFMILJW8YYeNR7wtofCJpAr4LY2LKexwp1QLk7LwjoR/HABF//2fPa+g==
+X-archive-position: 35255
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: rientjes@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,43 +71,17 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The old code had support for gpio_to_irq, but the new code did not
-provide this function, but returned -ENXIO all the time. This patch
-adds the missing function.
+On Fri, 7 Dec 2012, Kirill A. Shutemov wrote:
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- drivers/bcma/driver_gpio.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+> 
+> We have two different implementation of is_zero_pfn() and
+> my_zero_pfn() helpers: for architectures with and without zero page
+> coloring.
+> 
+> Let's consolidate them in <asm-generic/pgtable.h>.
+> 
 
-diff --git a/drivers/bcma/driver_gpio.c b/drivers/bcma/driver_gpio.c
-index 9a6f585..212fda6 100644
---- a/drivers/bcma/driver_gpio.c
-+++ b/drivers/bcma/driver_gpio.c
-@@ -73,6 +73,16 @@ static void bcma_gpio_free(struct gpio_chip *chip, unsigned gpio)
- 	bcma_chipco_gpio_pullup(cc, 1 << gpio, 0);
- }
- 
-+static int bcma_gpio_to_irq(struct gpio_chip *chip, unsigned gpio)
-+{
-+	struct bcma_drv_cc *cc = bcma_gpio_get_cc(chip);
-+
-+	if (cc->core->bus->hosttype == BCMA_HOSTTYPE_SOC)
-+		return bcma_core_mips_irq(cc->core) + 2;
-+	else
-+		return -EINVAL;
-+}
-+
- int bcma_gpio_init(struct bcma_drv_cc *cc)
- {
- 	struct gpio_chip *chip = &cc->gpio;
-@@ -85,6 +95,7 @@ int bcma_gpio_init(struct bcma_drv_cc *cc)
- 	chip->set		= bcma_gpio_set_value;
- 	chip->direction_input	= bcma_gpio_direction_input;
- 	chip->direction_output	= bcma_gpio_direction_output;
-+	chip->to_irq		= bcma_gpio_to_irq;
- 	chip->ngpio		= 16;
- 	/* There is just one SoC in one device and its GPIO addresses should be
- 	 * deterministic to address them more easily. The other buses could get
--- 
-1.7.10.4
+What's the benefit from doing this other than generalizing some per-arch 
+code?  It simply adds on more layer of redirection to try to find the 
+implementation that matters for the architecture you're hacking on.

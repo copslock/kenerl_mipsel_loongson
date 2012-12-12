@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 15:28:20 +0100 (CET)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:47264 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823690Ab2LLO2UCT1Tn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 15:28:20 +0100
-Received: by mail-lb0-f177.google.com with SMTP id n10so687229lbo.36
-        for <multiple recipients>; Wed, 12 Dec 2012 06:28:14 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 15:31:50 +0100 (CET)
+Received: from mail-la0-f49.google.com ([209.85.215.49]:40677 "EHLO
+        mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823690Ab2LLObuP71QP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 15:31:50 +0100
+Received: by mail-la0-f49.google.com with SMTP id r15so660471lag.36
+        for <multiple recipients>; Wed, 12 Dec 2012 06:31:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:message-id:date:from:organization:user-agent:mime-version:to
          :cc:subject:references:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=ZO80q6H/TycvM7quSLIZGrZ8Az43BzdUC+OnBkV56Fg=;
-        b=jeb+8Rer72WLHklfLTnfoG+zXJq5As2QJVH4T8MgrpdmksgmSWbrG7f1/YERZcxUk0
-         U6JWvheA2WOe7CMKsXQkDfR6Bl2V/UE0ivTtTMqmTkKoeQXzjPVOFMGxrxwOxzuOAgPR
-         WoOhlZ7yYxK3nDcW+A6FrxjC7VdSFpNW+EHcG1wUtsgvT2Kt+dKSJYPdMN2gg6nJOJv5
-         mrHHoXgUt23GVFxfV6qKCwt1kt3kJY4xTHQsGywh48VYedc++9bNQklEJbk3pFh/r0M0
-         xWT2oLzVwdfIPzIFvTRMwO61Wjxhl8f57jeCw/evEE0hmXQY3bQjfXZnMGW6rohWdJEE
-         +RFQ==
-Received: by 10.112.23.234 with SMTP id p10mr535181lbf.35.1355322494212;
-        Wed, 12 Dec 2012 06:28:14 -0800 (PST)
+        bh=L2ALDhU5foDbrLvL5LCUIbcMqDf5lZAe2Fk2Ul1YaeA=;
+        b=S/PKhJYJNwFRTRYadm/ajD8QRySJJT3yU+ECi47XRMCXOKRuS6mkVVJfKhOUxXjXY+
+         wrjFeoh/Nr96pNCv4YeXv9Lf8otuoOXJ2DZOfpuNykjCPPCCuh5zKbi8UwuMXjbuIvue
+         jeuYaj6kA70P/hdm3i0JH/VXf1yMAPOlJGSwPk4mLcM+9BnZP6KJqS3pKLFGku6CYvrF
+         I4o/Z+I4rk1WTcedkc73PwOnQWDtHfYUjFaqBZd7B5dFGNi72dJoReo/AykftF4UxYRQ
+         aDk2srF7tWqvhH492+FfVRSCcm34iOcdi/9W+R5FreLAeKcCx+LqOW9ThikrwYUr1BXk
+         C7xA==
+Received: by 10.152.108.48 with SMTP id hh16mr1225514lab.25.1355322704645;
+        Wed, 12 Dec 2012 06:31:44 -0800 (PST)
 Received: from [192.168.108.37] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by mx.google.com with ESMTPS id pg5sm9306249lab.6.2012.12.12.06.28.13
+        by mx.google.com with ESMTPS id v6sm10790757lbf.11.2012.12.12.06.31.43
         (version=SSLv3 cipher=OTHER);
-        Wed, 12 Dec 2012 06:28:13 -0800 (PST)
-Message-ID: <50C89401.70705@openwrt.org>
-Date:   Wed, 12 Dec 2012 15:26:09 +0100
+        Wed, 12 Dec 2012 06:31:44 -0800 (PST)
+Message-ID: <50C894D4.4090008@openwrt.org>
+Date:   Wed, 12 Dec 2012 15:29:40 +0100
 From:   Florian Fainelli <florian@openwrt.org>
 Organization: OpenWrt
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
 MIME-Version: 1.0
 To:     "Steven J. Hill" <sjhill@mips.com>
 CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] MIPS: Make CP0 config registers readable via sysfs.
-References: <1354858280-29576-1-git-send-email-sjhill@mips.com>
-In-Reply-To: <1354858280-29576-1-git-send-email-sjhill@mips.com>
+Subject: Re: [PATCH] OF: MIPS: sead3: Implement OF support.
+References: <1354857297-28863-1-git-send-email-sjhill@mips.com>
+In-Reply-To: <1354857297-28863-1-git-send-email-sjhill@mips.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-archive-position: 35259
+X-archive-position: 35260
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,45 +56,36 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 Hello Steven,
 
-Le 12/07/12 06:31, Steven J. Hill a écrit :
-
+Le 12/07/12 06:14, Steven J. Hill a écrit :
 [snip]
 
+> +/ {
+> +	#address-cells = <1>;
+> +	#size-cells = <1>;
+> +	compatible = "mips,sead-3";
 > +
-> +#define __BUILD_CP0_SYSFS(reg)					\
-> +static DEFINE_PER_CPU(unsigned int, cpu_config##reg);		\
-> +static ssize_t show_config##reg(struct device *dev,		\
-> +		struct device_attribute *attr, char *buf)	\
-> +{								\
-> +	struct cpu *cpu = container_of(dev, struct cpu, dev);	\
-> +	int n = snprintf(buf, PAGE_SIZE-2, "%x\n",		\
-> +		per_cpu(cpu_config##reg, cpu->dev.id));		\
-> +	return n;						\
-> +}								\
-> +static DEVICE_ATTR(config##reg, 0444, show_config##reg, NULL);
-> +
-> +__BUILD_CP0_SYSFS(0)
-> +__BUILD_CP0_SYSFS(1)
-> +__BUILD_CP0_SYSFS(2)
-> +__BUILD_CP0_SYSFS(3)
-> +__BUILD_CP0_SYSFS(4)
-> +__BUILD_CP0_SYSFS(5)
-> +__BUILD_CP0_SYSFS(6)
-> +__BUILD_CP0_SYSFS(7)
-> +
-> +static void read_c0_registers(void *arg)
-> +{
-> +	struct device *dev = get_cpu_device(smp_processor_id());
-> +	struct cpu *cpu;
-> +	int ok;
-> +
-> +	if (dev != NULL) {
-> +		cpu = container_of(dev, struct cpu, dev);
-> +		per_cpu(cpu_config0, cpu->dev.id) = read_c0_config();
-> +		device_create_file(dev, &dev_attr_config0);
-> +		ok = per_cpu(cpu_config0, cpu->dev.id) & MIPS_CONF_M;
-> +	} else
+> +	cpus {
+> +		cpu@0 {
+> +			compatible = "mips,mips14Kc,mips14KEc";
+> +		};
 
-Is there any reason you are not using a macro here too?
---
-Florian
+You probably want this the other way around:
+
+mips14KEc,mips14Kc,mips
+
+you should always have the left-most string being the most descriptive 
+about the hardware and the last one being the less descriptive and thus 
+less "specializing" in order to be backward compatible.
+
+> +	};
+> +
+> +	chosen {
+> +		bootargs = "console=ttyS1,38400 rootdelay=10 root=/dev/sda3";
+> +	};
+> +
+> +	memory {
+> +		device_type = "memory";
+> +		reg = <0x0 0x08000000>;
+> +	};
+> +};
+>

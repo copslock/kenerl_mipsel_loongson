@@ -1,47 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 16:17:45 +0100 (CET)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:34881 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823126Ab2LLPRof7aVO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 16:17:44 +0100
-Received: by mail-lb0-f177.google.com with SMTP id n10so743600lbo.36
-        for <multiple recipients>; Wed, 12 Dec 2012 07:17:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:message-id:date:from:organization:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=qPW7EssFAccBBgr1jC27oIkIQWglovQhi/S0FGj5Dgc=;
-        b=X7t/obbnbKcakW6fB7TS3OCRGnyfFeXaleP76JLzOFc8scaAewaRPLWnZXOz9fp51H
-         LOdUnqUm1qntVbX6vhuX0VvJnzj1SWwBhXjBsH2Q3ojlLdQAtq5xNzN4OA7O7my1ejGK
-         odLIkQ9zEp+FqJ9N6CfwEx0IimAm7CJQr7qLB/RMfckDB7CQ3WggR3d4kBzTcv8WHxmw
-         utb0a61tO4A2UDRz9nY1RBVbPxUWRvfaDDCYyy6XpAmzcflZpoQTY9lDn4Fpvpq0RF7c
-         unZmrZwx4r2r9LZu9L7e2DOt60sAyp6gnZ2nii0Fzm/+OCrgdgex78qyRMB/y4Buuo4e
-         PwUg==
-Received: by 10.112.45.232 with SMTP id q8mr603765lbm.23.1355325458925;
-        Wed, 12 Dec 2012 07:17:38 -0800 (PST)
-Received: from [192.168.108.37] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by mx.google.com with ESMTPS id pg5sm9366346lab.6.2012.12.12.07.17.37
-        (version=SSLv3 cipher=OTHER);
-        Wed, 12 Dec 2012 07:17:38 -0800 (PST)
-Message-ID: <50C89F96.7010605@openwrt.org>
-Date:   Wed, 12 Dec 2012 16:15:34 +0100
-From:   Florian Fainelli <florian@openwrt.org>
-Organization: OpenWrt
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 17:57:51 +0100 (CET)
+Received: from dns1.mips.com ([12.201.5.69]:44609 "EHLO dns1.mips.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823668Ab2LLQpdQrdFY convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 17:45:33 +0100
+Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
+        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id qBCGjPo9007815;
+        Wed, 12 Dec 2012 08:45:25 -0800
+X-WSS-ID: 0MEXFVP-01-17B-02
+X-M-MSG: 
+Received: from exchdb01.mips.com (unknown [192.168.36.67])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mailgate1.mips.com (Postfix) with ESMTP id 26838364636;
+        Wed, 12 Dec 2012 08:45:24 -0800 (PST)
+Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
+ exchdb01.mips.com ([fe80::2897:a30d:a923:303%16]) with mapi id
+ 14.01.0270.001; Wed, 12 Dec 2012 08:45:21 -0800
+From:   "Hill, Steven" <sjhill@mips.com>
+To:     Florian Fainelli <florian@openwrt.org>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>
+Subject: RE: [PATCH] MIPS: Make CP0 config registers readable via sysfs.
+Thread-Topic: [PATCH] MIPS: Make CP0 config registers readable via sysfs.
+Thread-Index: AQHN1DwdFeowWwCT60yFwo2HgIhlxJgVxuWA//+glV4=
+Date:   Wed, 12 Dec 2012 16:45:20 +0000
+Message-ID: <31E06A9FC96CEC488B43B19E2957C1B801146AA787@exchdb03.mips.com>
+References: <1354858280-29576-1-git-send-email-sjhill@mips.com>,<50C89401.70705@openwrt.org>
+In-Reply-To: <50C89401.70705@openwrt.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.36.79]
+x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
+x-ems-stamp: mFQmxRa3Uy4dygvk5+9FNg==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        "Steven J. Hill" <sjhill@mips.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] OF: MIPS: sead3: Implement OF support.
-References: <1354857297-28863-1-git-send-email-sjhill@mips.com> <50C894D4.4090008@openwrt.org> <50C89A6C.705@metafoo.de> <20121212145545.GC11791@linux-mips.org> <50C89C67.7040908@openwrt.org> <20121212151204.GD11791@linux-mips.org>
-In-Reply-To: <20121212151204.GD11791@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-archive-position: 35268
+X-archive-position: 35269
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,17 +56,4 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Le 12/12/12 16:12, Ralf Baechle a écrit :
-> On Wed, Dec 12, 2012 at 04:01:59PM +0100, Florian Fainelli wrote:
->
->> The convention for vendor prefixes is to use the stock exchange
->> prefix, giving us "mips". The same problem exist for ARM Ltd. vs
->> architecture and they use "arm" as a prefix unconditionaly.
-> ARM is traded at LSE as ARM but on Nasdaq as ARMH.  Pick one ;)
->
-> Conventions are made to be violated for good reasons ...
-
-As I looked into Documentation/device-tree/bindings/vendor-prefixes.txt 
-I found quite some good counter examples as well, so let's go for "mti".
---
-Florian
+By golly you're right! I can use a macro for the other code block. Thanks.

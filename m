@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Dec 2012 12:14:32 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:53521 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823908Ab2LKLObMfguU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 11 Dec 2012 12:14:31 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id qBBBETxi027300;
-        Tue, 11 Dec 2012 12:14:29 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id qBBBESgY027266;
-        Tue, 11 Dec 2012 12:14:28 +0100
-Date:   Tue, 11 Dec 2012 12:14:28 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Shane McDonald <mcdonald.shane@gmail.com>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: RM9000 / E9000, MSP71xx class processors, SOCs and eval boards
-Message-ID: <20121211111427.GA23572@linux-mips.org>
-References: <20121206160052.GB32620@linux-mips.org>
- <CACoURw7JTFMzmcRZHmBchcWPC8x5LFFfC1nGH-Xxc8f3KjNE2Q@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 02:10:37 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:36929 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6831957Ab2LLBKeYN4UK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 02:10:34 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id CF38C8F67;
+        Wed, 12 Dec 2012 02:10:31 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id HO-qkxwLvUy2; Wed, 12 Dec 2012 02:10:18 +0100 (CET)
+Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
+        by hauke-m.de (Postfix) with ESMTPSA id 422E98F64;
+        Wed, 12 Dec 2012 02:10:17 +0100 (CET)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     john@phrozen.org, ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH] MIPS: BCM47XX: fix compile error in wgt634u.c
+Date:   Wed, 12 Dec 2012 02:10:12 +0100
+Message-Id: <1355274612-19167-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.10.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACoURw7JTFMzmcRZHmBchcWPC8x5LFFfC1nGH-Xxc8f3KjNE2Q@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35251
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-archive-position: 35252
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,31 +41,56 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Dec 06, 2012 at 03:28:17PM -0600, Shane McDonald wrote:
+After the new GPIO handling for the bcm47xx target was introduced
+wgt634u.c was not changed.
+This patch fixes the following compile error:
 
-> I'm interested in the MSP71xx eval board, although I may be
-> the only person in the world who cares.  Specifically, I use the
-> msp71xx_defconfig.  3.7-rc8 compiles with gcc-4.6.3
-> without requiring any patches.
-> 
-> I don't know when the last time the RM9000 was compilable,
-> but I have no interest in that, nor do I have interest in the
-> FPGA or eval board versions of the MSP7120 (no hardware to
-> test with).
-> 
-> I had hoped that someone from PMC-Sierra would respond, but
-> maybe they don't care anymore...
+arch/mips/bcm47xx/wgt634u.c: In function ‘gpio_interrupt’:
+arch/mips/bcm47xx/wgt634u.c:119:2: error: implicit declaration of function ‘gpio_polarity’ [-Werror=implicit-function-declaration]
+arch/mips/bcm47xx/wgt634u.c: In function ‘wgt634u_init’:
+arch/mips/bcm47xx/wgt634u.c:153:4: error: implicit declaration of function ‘gpio_intmask’ [-Werror=implicit-function-declaration]
 
-Being a crazy tradition set by the Sparc AP1000, I'm happy with a single
-user :-)
+Reported-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+ arch/mips/bcm47xx/wgt634u.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-The Yosemite stuff scores higher on my kill list anyway.  The board
-support code was never too great but that's not the issue; the SOC's
-network driver which is rotting away in the linux-mips.org git tree as
-the last change that can't be merged upstream as it is, stopped even
-compiling ages ago and while a superior replacement has been posted,
-nobody cared enough to get it into mergeable shape.
+I am planing to remove this entire file, but I haven't come up with 
+code adding support for most of the boards found in the wild.
 
-Now that 3.7 is finally released, hasta la vista, Yosemite.
-
-  Ralf
+diff --git a/arch/mips/bcm47xx/wgt634u.c b/arch/mips/bcm47xx/wgt634u.c
+index e9f9ec8..6c28f6d 100644
+--- a/arch/mips/bcm47xx/wgt634u.c
++++ b/arch/mips/bcm47xx/wgt634u.c
+@@ -11,6 +11,7 @@
+ #include <linux/leds.h>
+ #include <linux/mtd/physmap.h>
+ #include <linux/ssb/ssb.h>
++#include <linux/ssb/ssb_embedded.h>
+ #include <linux/interrupt.h>
+ #include <linux/reboot.h>
+ #include <linux/gpio.h>
+@@ -116,7 +117,8 @@ static irqreturn_t gpio_interrupt(int irq, void *ignored)
+ 
+ 	/* Interrupt are level triggered, revert the interrupt polarity
+ 	   to clear the interrupt. */
+-	gpio_polarity(WGT634U_GPIO_RESET, state);
++	ssb_gpio_polarity(&bcm47xx_bus.ssb, 1 << WGT634U_GPIO_RESET,
++			  state ? 1 << WGT634U_GPIO_RESET : 0);
+ 
+ 	if (!state) {
+ 		printk(KERN_INFO "Reset button pressed");
+@@ -150,7 +152,9 @@ static int __init wgt634u_init(void)
+ 				 gpio_interrupt, IRQF_SHARED,
+ 				 "WGT634U GPIO", &bcm47xx_bus.ssb.chipco)) {
+ 			gpio_direction_input(WGT634U_GPIO_RESET);
+-			gpio_intmask(WGT634U_GPIO_RESET, 1);
++			ssb_gpio_intmask(&bcm47xx_bus.ssb,
++					 1 << WGT634U_GPIO_RESET,
++					 1 << WGT634U_GPIO_RESET);
+ 			ssb_chipco_irq_mask(&bcm47xx_bus.ssb.chipco,
+ 					    SSB_CHIPCO_IRQ_GPIO,
+ 					    SSB_CHIPCO_IRQ_GPIO);
+-- 
+1.7.10.4

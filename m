@@ -1,46 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 10:15:50 +0100 (CET)
-Received: from mail-la0-f49.google.com ([209.85.215.49]:47904 "EHLO
-        mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6828015Ab2LLJPtWRjLL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 10:15:49 +0100
-Received: by mail-la0-f49.google.com with SMTP id r15so353705lag.36
-        for <multiple recipients>; Wed, 12 Dec 2012 01:15:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:message-id:date:from:organization:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=QF2kaAKw4I4Zcb4sewnWvmYfYvZJh+U1DwryLc6DHcA=;
-        b=o4eYlR+hUqQKbx0kJk2eyCMqgrLKFhVXn2s8YWuSXNyZYrrYxBHREv113itbRXLh3p
-         4nAt/orjH4f1cJyJ/CLZ+MPeFqTTdELigfsUuXfQpYZGHBiRoy+g8j7evtv8HapiMbZw
-         6fgR7wgnRpxA1D/wu2KhW2z8liu/7WYX5CE1vuCBauoH496jXhgEiLtFqX2p7LECuYfk
-         cScIyQyjeuuKGPhoXo6y9f7ewZVMYrBjGaVtuEPRWvnKJsL0brgOaRSvw9xUVy14jcFu
-         JHUB3mSSc0MWUoZOD72hSCi/fAMCjSiB4SM/a1PwMzm35g3V+/3cc0sg+DSM2Dy81nYS
-         Q3Fw==
-Received: by 10.152.108.42 with SMTP id hh10mr329703lab.4.1355303743736;
-        Wed, 12 Dec 2012 01:15:43 -0800 (PST)
-Received: from [192.168.108.37] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by mx.google.com with ESMTPS id v7sm9246637lbj.13.2012.12.12.01.15.42
-        (version=SSLv3 cipher=OTHER);
-        Wed, 12 Dec 2012 01:15:43 -0800 (PST)
-Message-ID: <50C84AC3.9020809@openwrt.org>
-Date:   Wed, 12 Dec 2012 10:13:39 +0100
-From:   Florian Fainelli <florian@openwrt.org>
-Organization: OpenWrt
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 11:54:23 +0100 (CET)
+Received: from mga11.intel.com ([192.55.52.93]:4084 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6828015Ab2LLKyVhElkJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 12 Dec 2012 11:54:21 +0100
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP; 12 Dec 2012 02:54:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.84,265,1355126400"; 
+   d="asc'?scan'208";a="261054906"
+Received: from blue.fi.intel.com ([10.237.72.156])
+  by fmsmga001.fm.intel.com with ESMTP; 12 Dec 2012 02:54:10 -0800
+Received: by blue.fi.intel.com (Postfix, from userid 1000)
+        id 828A2E0073; Wed, 12 Dec 2012 12:55:38 +0200 (EET)
+Date:   Wed, 12 Dec 2012 12:55:38 +0200
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     David Rientjes <rientjes@google.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+        linux-s390@vger.kernel.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>
+Subject: Re: [PATCH, RESEND] asm-generic, mm: pgtable: consolidate zero page
+ helpers
+Message-ID: <20121212105538.GA14208@otc-wbsnb-06>
+References: <1354881215-26257-1-git-send-email-kirill.shutemov@linux.intel.com>
+ <alpine.DEB.2.00.1212111906270.18872@chino.kir.corp.google.com>
 MIME-Version: 1.0
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-CC:     john@phrozen.org, ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: BCM47XX: fix compile error in wgt634u.c
-References: <1355274612-19167-1-git-send-email-hauke@hauke-m.de>
-In-Reply-To: <1355274612-19167-1-git-send-email-hauke@hauke-m.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-archive-position: 35256
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="+QahgC5+KEYLbs62"
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1212111906270.18872@chino.kir.corp.google.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 35257
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: kirill.shutemov@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,63 +51,57 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello Hauke,
 
-Le 12/12/12 02:10, Hauke Mehrtens a écrit :
-> After the new GPIO handling for the bcm47xx target was introduced
-> wgt634u.c was not changed.
-> This patch fixes the following compile error:
->
-> arch/mips/bcm47xx/wgt634u.c: In function ‘gpio_interrupt’:
-> arch/mips/bcm47xx/wgt634u.c:119:2: error: implicit declaration of function ‘gpio_polarity’ [-Werror=implicit-function-declaration]
-> arch/mips/bcm47xx/wgt634u.c: In function ‘wgt634u_init’:
-> arch/mips/bcm47xx/wgt634u.c:153:4: error: implicit declaration of function ‘gpio_intmask’ [-Werror=implicit-function-declaration]
+--+QahgC5+KEYLbs62
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for fixing this. We should probably remove this wgt634u file some 
-day or the other as it was an ad-hoc hack for this single device while 
-we actually need a general solution for all BCM47xx boards out there.
+On Tue, Dec 11, 2012 at 07:07:14PM -0800, David Rientjes wrote:
+> On Fri, 7 Dec 2012, Kirill A. Shutemov wrote:
+>=20
+> > From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+> >=20
+> > We have two different implementation of is_zero_pfn() and
+> > my_zero_pfn() helpers: for architectures with and without zero page
+> > coloring.
+> >=20
+> > Let's consolidate them in <asm-generic/pgtable.h>.
+> >=20
+>=20
+> What's the benefit from doing this other than generalizing some per-arch=
+=20
+> code?  It simply adds on more layer of redirection to try to find the=20
+> implementation that matters for the architecture you're hacking on.
 
->
-> Reported-by: Ralf Baechle <ralf@linux-mips.org>
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> ---
->   arch/mips/bcm47xx/wgt634u.c |    8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
->
-> I am planing to remove this entire file, but I haven't come up with
-> code adding support for most of the boards found in the wild.
->
-> diff --git a/arch/mips/bcm47xx/wgt634u.c b/arch/mips/bcm47xx/wgt634u.c
-> index e9f9ec8..6c28f6d 100644
-> --- a/arch/mips/bcm47xx/wgt634u.c
-> +++ b/arch/mips/bcm47xx/wgt634u.c
-> @@ -11,6 +11,7 @@
->   #include <linux/leds.h>
->   #include <linux/mtd/physmap.h>
->   #include <linux/ssb/ssb.h>
-> +#include <linux/ssb/ssb_embedded.h>
->   #include <linux/interrupt.h>
->   #include <linux/reboot.h>
->   #include <linux/gpio.h>
-> @@ -116,7 +117,8 @@ static irqreturn_t gpio_interrupt(int irq, void *ignored)
->
->   	/* Interrupt are level triggered, revert the interrupt polarity
->   	   to clear the interrupt. */
-> -	gpio_polarity(WGT634U_GPIO_RESET, state);
-> +	ssb_gpio_polarity(&bcm47xx_bus.ssb, 1 << WGT634U_GPIO_RESET,
-> +			  state ? 1 << WGT634U_GPIO_RESET : 0);
->
->   	if (!state) {
->   		printk(KERN_INFO "Reset button pressed");
-> @@ -150,7 +152,9 @@ static int __init wgt634u_init(void)
->   				 gpio_interrupt, IRQF_SHARED,
->   				 "WGT634U GPIO", &bcm47xx_bus.ssb.chipco)) {
->   			gpio_direction_input(WGT634U_GPIO_RESET);
-> -			gpio_intmask(WGT634U_GPIO_RESET, 1);
-> +			ssb_gpio_intmask(&bcm47xx_bus.ssb,
-> +					 1 << WGT634U_GPIO_RESET,
-> +					 1 << WGT634U_GPIO_RESET);
->   			ssb_chipco_irq_mask(&bcm47xx_bus.ssb.chipco,
->   					    SSB_CHIPCO_IRQ_GPIO,
->   					    SSB_CHIPCO_IRQ_GPIO);
->
+The idea of asm-generic is consolidation arch code which can be re-used
+for different arches. It also makes support of new arches easier.
+
+Do you think have copy of the same code here and there is any better?
+
+--=20
+ Kirill A. Shutemov
+
+--+QahgC5+KEYLbs62
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQyGKqAAoJEAd+omnVudOMyuEQAMemWRvnFt+7wByWD1jXWC2Z
+nUe8yPig5B3W4uawzQNJXj7PS9xr+xHCi52KlJT5TLnpPAih8ozor0Ohj+hxWBG0
+OssHOzZhk6z+/IEG1DB8UDOmVUK9z3k17yfqsZkx+YB9F/x5tSug1Qt5AHGYvzt8
+LXYbtVBx5CJm21TlnnOfx7woy21Q6CgAWhA+wBm+MiUbTN1btI8xmapBAuzrE+vh
+1EIFdZe+7uWJOqHNadmVhjFvhF/Bym9z3dY7+hCc6dKvqPVOm2Bd1KJ5Pw3kgXls
+m1d2Z6LEdC7k7z1ZtU1T+mUSVSJbEMCc3F9x7FcP24sw/9zYWNX0zG6t2Iz0Mr5N
+AQ7uZxWIn9OdEhmViJyoqHDUNBIP+k+fg5M57ZsgB42BR4orJvRgCEtV2Byts+sN
+kn0AqJHU2n7v60liv/mzeKKK9z/c+Kjeg3Tp6vRSg7jSjl1Akk9M4urtuu9fFEBw
+bNS0IsIdjMwMF5DVXJGR5fCW8wu4r20VvRv8ISjGTo+g7FngSphafmwEq5Fl0/Hh
+2c0sZ+j9fpuuvwzzYBUPdulXji8frkHZ4WxMGJ1DINTq6kARaaxGkNFUS1IeteCG
+Wpyj+chEnkL+1UwLLdrfGz7gbO/+fmeiuTOAnbS2qOe5zcRD8pcTCBhQ4W/IQXcG
+5L9+tvjncCAEktFUZWvH
+=6aAs
+-----END PGP SIGNATURE-----
+
+--+QahgC5+KEYLbs62--

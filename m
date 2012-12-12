@@ -1,34 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 15:55:52 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:60230 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6825716Ab2LLOzsSnwmE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 12 Dec 2012 15:55:48 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id qBCEtlWP005814;
-        Wed, 12 Dec 2012 15:55:47 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id qBCEtjNp005813;
-        Wed, 12 Dec 2012 15:55:45 +0100
-Date:   Wed, 12 Dec 2012 15:55:45 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Florian Fainelli <florian@openwrt.org>,
-        "Steven J. Hill" <sjhill@mips.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] OF: MIPS: sead3: Implement OF support.
-Message-ID: <20121212145545.GC11791@linux-mips.org>
-References: <1354857297-28863-1-git-send-email-sjhill@mips.com>
- <50C894D4.4090008@openwrt.org>
- <50C89A6C.705@metafoo.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 15:58:55 +0100 (CET)
+Received: from mail-la0-f49.google.com ([209.85.215.49]:59815 "EHLO
+        mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823128Ab2LLO6yR-s3A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 15:58:54 +0100
+Received: by mail-la0-f49.google.com with SMTP id r15so691340lag.36
+        for <multiple recipients>; Wed, 12 Dec 2012 06:58:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:message-id:date:from:organization:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=BrdTQJz6fgVJLsVXw4sLcITUwP+9RBYNq4X7KTnIur4=;
+        b=vAu+cDGxfxs1zpNnIf3HxsnMhSqMWUNecTkVVsScTHvzNz6TPFFlCL8iATvd+TxV+C
+         THz9NDoOfYTGDsnL+TTseIhSz9v0syv0qa0+tx7SDHGAZ164qzDxX9TSRtlxy8kEeSB0
+         hh1lMclEYuXLiq7Jlpl1qrddNhSVL9tvPrHfMsYnDLOeWNm3RfHneWCfBGa4/yCNNKDS
+         2qKPz5zKKjCUQRZs5xIz1bduOUz4UMQXSLJokWArw7P7vtY1qYMuyZs4zFbp03bJjGBj
+         acDL3SLJLX1nC+p6d+CHdmJM4cG7CMMjorYiYYEqSsN1ZcCXJ1fXgFKL02kdytwQfbNd
+         OGOw==
+Received: by 10.112.103.202 with SMTP id fy10mr562164lbb.13.1355324328489;
+        Wed, 12 Dec 2012 06:58:48 -0800 (PST)
+Received: from [192.168.108.37] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by mx.google.com with ESMTPS id fe4sm4786613lbb.1.2012.12.12.06.58.47
+        (version=SSLv3 cipher=OTHER);
+        Wed, 12 Dec 2012 06:58:47 -0800 (PST)
+Message-ID: <50C89B2C.1070903@openwrt.org>
+Date:   Wed, 12 Dec 2012 15:56:44 +0100
+From:   Florian Fainelli <florian@openwrt.org>
+Organization: OpenWrt
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+To:     Lars-Peter Clausen <lars@metafoo.de>
+CC:     "Steven J. Hill" <sjhill@mips.com>, linux-mips@linux-mips.org,
+        ralf@linux-mips.org
+Subject: Re: [PATCH] OF: MIPS: sead3: Implement OF support.
+References: <1354857297-28863-1-git-send-email-sjhill@mips.com> <50C894D4.4090008@openwrt.org> <50C89A6C.705@metafoo.de>
 In-Reply-To: <50C89A6C.705@metafoo.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35264
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-archive-position: 35265
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,16 +55,45 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, Dec 12, 2012 at 03:53:32PM +0100, Lars-Peter Clausen wrote:
-
+Le 12/12/12 15:53, Lars-Peter Clausen a écrit :
+> On 12/12/2012 03:29 PM, Florian Fainelli wrote:
+>> Hello Steven,
+>>
+>> Le 12/07/12 06:14, Steven J. Hill a écrit :
+>> [snip]
+>>
+>>> +/ {
+>>> +    #address-cells = <1>;
+>>> +    #size-cells = <1>;
+>>> +    compatible = "mips,sead-3";
+>>> +
+>>> +    cpus {
+>>> +        cpu@0 {
+>>> +            compatible = "mips,mips14Kc,mips14KEc";
+>>> +        };
+>> You probably want this the other way around:
+>>
+>> mips14KEc,mips14Kc,mips
+>>
+>> you should always have the left-most string being the most descriptive about
+>> the hardware and the last one being the less descriptive and thus less
+>> "specializing" in order to be backward compatible.
 > This is one compatible string though, what you describe is for when use
 > multiple compatible string. E.g.
 > compatible = "mips14KEc", "mips14Kc", "mips";
-> 
+>
 > The "mips" in Stevens patch is probably the vendor prefix. Maybe a more
 > correct compatible would be.
+>
+> compatible = "mips,mips14KEc", "mips,mips14Kc";
 
-How about using something like mti (for MIPS Technologies, Inc.) instead
-of MIPS to differenciate the architecture from the company name?
+Right, this should be the proper compatible string. Steven's patch does 
+not make any use of this compatible string right now anyway.
 
-  Ralf
+>
+> But in anyway the patch should also add documentation under
+> Documentation/devicetree/bindings describing the binding.
+>
+Obviously
+--
+Florian

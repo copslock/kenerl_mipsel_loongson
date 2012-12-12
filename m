@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 17:58:19 +0100 (CET)
-Received: from dns1.mips.com ([12.201.5.69]:44605 "EHLO dns1.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823668Ab2LLQohku-3m convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 17:44:37 +0100
-Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id qBCGiTHF007797;
-        Wed, 12 Dec 2012 08:44:29 -0800
-X-WSS-ID: 0MEXFU1-01-17A-02
-X-M-MSG: 
-Received: from exchdb01.mips.com (unknown [192.168.36.67])
-        (using TLSv1 with cipher AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mailgate1.mips.com (Postfix) with ESMTP id 210E8364636;
-        Wed, 12 Dec 2012 08:44:25 -0800 (PST)
-Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
- exchdb01.mips.com ([fe80::2897:a30d:a923:303%16]) with mapi id
- 14.01.0270.001; Wed, 12 Dec 2012 08:44:20 -0800
-From:   "Hill, Steven" <sjhill@mips.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: RE: [PATCH] MIPS: Make CP0 config registers readable via sysfs.
-Thread-Topic: [PATCH] MIPS: Make CP0 config registers readable via sysfs.
-Thread-Index: AQHN1DwdFeowWwCT60yFwo2HgIhlxJgVzC4A//+Y9N8=
-Date:   Wed, 12 Dec 2012 16:44:19 +0000
-Message-ID: <31E06A9FC96CEC488B43B19E2957C1B801146AA779@exchdb03.mips.com>
-References: <1354858280-29576-1-git-send-email-sjhill@mips.com>,<50C89870.5000704@metafoo.de>
-In-Reply-To: <50C89870.5000704@metafoo.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.36.79]
-x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-x-ems-stamp: mtBau5Behgb/BpTq54FqTw==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 18:05:28 +0100 (CET)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:33041 "EHLO
+        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823128Ab2LLRF0wcno1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 18:05:26 +0100
+Received: by mail-bk0-f49.google.com with SMTP id jm19so510621bkc.36
+        for <linux-mips@linux-mips.org>; Wed, 12 Dec 2012 09:05:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:message-id:date:from:organization:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=hF//RoxMDe9Bi4Ock0FHe2sWkSIdkQMHSJJbGxnsm30=;
+        b=rkbTcAqFelQyewGTgFZ077NWM9PDiYY3QTvPUdPwE2pabIef+JT/ehI9WoJARfep3G
+         jbm4oHd9nk7gBJ1sePFQQofp2M4Gy4Sw8Eyy5UXRa0gtN/MuoX6EJ/JTjkhf3GK7ItjV
+         yrBOYjwD7kQz5nthzW4CNsL1ee2W94bcYY1gtU3Xi6V4P95KAniML5zh/PPNsssZ4p2D
+         G3ZGDXi+6K1gqmWXs9qXnB5IGmPGOJc5ID5z/SV76r4l0Lb+D+XAAzvqEDKK7YBDAflT
+         850UJik4ToOhLrsX8M/gF9M515qWI+jlMbYYHGMuJWVmbWKQL4JGLZiuomgzGupfKm75
+         mNgA==
+Received: by 10.204.8.136 with SMTP id h8mr876497bkh.62.1355331921406;
+        Wed, 12 Dec 2012 09:05:21 -0800 (PST)
+Received: from [192.168.108.37] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by mx.google.com with ESMTPS id o9sm21070412bko.15.2012.12.12.09.05.20
+        (version=SSLv3 cipher=OTHER);
+        Wed, 12 Dec 2012 09:05:20 -0800 (PST)
+Message-ID: <50C8B8D4.6070305@openwrt.org>
+Date:   Wed, 12 Dec 2012 18:03:16 +0100
+From:   Florian Fainelli <florian@openwrt.org>
+Organization: OpenWrt
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
 MIME-Version: 1.0
-X-archive-position: 35270
-X-Approved-By: ralf@linux-mips.org
+To:     "Hill, Steven" <sjhill@mips.com>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Make CP0 config registers readable via sysfs.
+References: <1354858280-29576-1-git-send-email-sjhill@mips.com>,<50C89870.5000704@metafoo.de> <31E06A9FC96CEC488B43B19E2957C1B801146AA779@exchdb03.mips.com>
+In-Reply-To: <31E06A9FC96CEC488B43B19E2957C1B801146AA779@exchdb03.mips.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-archive-position: 35271
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@mips.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,8 +55,15 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Lars,
+Le 12/12/12 17:44, Hill, Steven a écrit :
+> Lars,
+>
+> This patch was requested by our DSP/Codec group to help with selecting the best user-space codecs at runtime. Simply reading /proc/cpuinfo was insufficient. I posted this patch more for feedback and interest with minimal expectations that it would make it upstream. This patch will always be in our supported branches, but I will defer to everyone else on its worth for upstream.
 
-This patch was requested by our DSP/Codec group to help with selecting the best user-space codecs at runtime. Simply reading /proc/cpuinfo was insufficient. I posted this patch more for feedback and interest with minimal expectations that it would make it upstream. This patch will always be in our supported branches, but I will defer to everyone else on its worth for upstream.
+How do they actually make their choices? Is it just about advertising 
+dsp vs. dspr2 to user-space?
 
--Steve
+Have you looked into modifying the ELF platform via set_elf_platform() 
+to help these binaries with identify the underlying platform/kernel?
+--
+Florian

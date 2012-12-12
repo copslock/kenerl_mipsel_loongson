@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 02:10:37 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:36929 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 02:17:48 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:36983 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6831957Ab2LLBKeYN4UK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 02:10:34 +0100
+        with ESMTP id S6831957Ab2LLBRrqCH0m (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 02:17:47 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id CF38C8F67;
-        Wed, 12 Dec 2012 02:10:31 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id 1174F8F69;
+        Wed, 12 Dec 2012 02:17:46 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id HO-qkxwLvUy2; Wed, 12 Dec 2012 02:10:18 +0100 (CET)
+        with ESMTP id c84WLB66ot6v; Wed, 12 Dec 2012 02:17:24 +0100 (CET)
 Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 422E98F64;
-        Wed, 12 Dec 2012 02:10:17 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 1812F8F65;
+        Wed, 12 Dec 2012 02:17:22 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     john@phrozen.org, ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH] MIPS: BCM47XX: fix compile error in wgt634u.c
-Date:   Wed, 12 Dec 2012 02:10:12 +0100
-Message-Id: <1355274612-19167-1-git-send-email-hauke@hauke-m.de>
+Cc:     linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH 2/2] ssb: add gpio_to_irq again
+Date:   Wed, 12 Dec 2012 02:17:11 +0100
+Message-Id: <1355275031-19297-2-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.10.4
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 35252
+In-Reply-To: <1355275031-19297-1-git-send-email-hauke@hauke-m.de>
+References: <1355275031-19297-1-git-send-email-hauke@hauke-m.de>
+X-archive-position: 35253
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,56 +41,72 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-After the new GPIO handling for the bcm47xx target was introduced
-wgt634u.c was not changed.
-This patch fixes the following compile error:
+The old code had support for gpio_to_irq, but the new code did not
+provide this function, but returned -ENXIO all the time. This patch
+adds the missing function.
 
-arch/mips/bcm47xx/wgt634u.c: In function ‘gpio_interrupt’:
-arch/mips/bcm47xx/wgt634u.c:119:2: error: implicit declaration of function ‘gpio_polarity’ [-Werror=implicit-function-declaration]
-arch/mips/bcm47xx/wgt634u.c: In function ‘wgt634u_init’:
-arch/mips/bcm47xx/wgt634u.c:153:4: error: implicit declaration of function ‘gpio_intmask’ [-Werror=implicit-function-declaration]
+arch/mips/bcm47xx/wgt634u.c calls gpio_to_irq() and got the correct irq
+number with the old gpio handling code. With this patch the code in
+wgt634u.c should work again. I do not have a wgt634u to test this.
 
-Reported-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/bcm47xx/wgt634u.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/ssb/driver_gpio.c |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-I am planing to remove this entire file, but I haven't come up with 
-code adding support for most of the boards found in the wild.
-
-diff --git a/arch/mips/bcm47xx/wgt634u.c b/arch/mips/bcm47xx/wgt634u.c
-index e9f9ec8..6c28f6d 100644
---- a/arch/mips/bcm47xx/wgt634u.c
-+++ b/arch/mips/bcm47xx/wgt634u.c
-@@ -11,6 +11,7 @@
- #include <linux/leds.h>
- #include <linux/mtd/physmap.h>
- #include <linux/ssb/ssb.h>
-+#include <linux/ssb/ssb_embedded.h>
- #include <linux/interrupt.h>
- #include <linux/reboot.h>
- #include <linux/gpio.h>
-@@ -116,7 +117,8 @@ static irqreturn_t gpio_interrupt(int irq, void *ignored)
+diff --git a/drivers/ssb/driver_gpio.c b/drivers/ssb/driver_gpio.c
+index 97ac0a3..accabe3 100644
+--- a/drivers/ssb/driver_gpio.c
++++ b/drivers/ssb/driver_gpio.c
+@@ -74,6 +74,16 @@ static void ssb_gpio_chipco_free(struct gpio_chip *chip, unsigned gpio)
+ 	ssb_chipco_gpio_pullup(&bus->chipco, 1 << gpio, 0);
+ }
  
- 	/* Interrupt are level triggered, revert the interrupt polarity
- 	   to clear the interrupt. */
--	gpio_polarity(WGT634U_GPIO_RESET, state);
-+	ssb_gpio_polarity(&bcm47xx_bus.ssb, 1 << WGT634U_GPIO_RESET,
-+			  state ? 1 << WGT634U_GPIO_RESET : 0);
++static int ssb_gpio_chipco_to_irq(struct gpio_chip *chip, unsigned gpio)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	if (bus->bustype == SSB_BUSTYPE_SSB)
++		return ssb_mips_irq(bus->chipco.dev) + 2;
++	else
++		return -EINVAL;
++}
++
+ static int ssb_gpio_chipco_init(struct ssb_bus *bus)
+ {
+ 	struct gpio_chip *chip = &bus->gpio;
+@@ -86,6 +96,7 @@ static int ssb_gpio_chipco_init(struct ssb_bus *bus)
+ 	chip->set		= ssb_gpio_chipco_set_value;
+ 	chip->direction_input	= ssb_gpio_chipco_direction_input;
+ 	chip->direction_output	= ssb_gpio_chipco_direction_output;
++	chip->to_irq		= ssb_gpio_chipco_to_irq;
+ 	chip->ngpio		= 16;
+ 	/* There is just one SoC in one device and its GPIO addresses should be
+ 	 * deterministic to address them more easily. The other buses could get
+@@ -134,6 +145,16 @@ static int ssb_gpio_extif_direction_output(struct gpio_chip *chip,
+ 	return 0;
+ }
  
- 	if (!state) {
- 		printk(KERN_INFO "Reset button pressed");
-@@ -150,7 +152,9 @@ static int __init wgt634u_init(void)
- 				 gpio_interrupt, IRQF_SHARED,
- 				 "WGT634U GPIO", &bcm47xx_bus.ssb.chipco)) {
- 			gpio_direction_input(WGT634U_GPIO_RESET);
--			gpio_intmask(WGT634U_GPIO_RESET, 1);
-+			ssb_gpio_intmask(&bcm47xx_bus.ssb,
-+					 1 << WGT634U_GPIO_RESET,
-+					 1 << WGT634U_GPIO_RESET);
- 			ssb_chipco_irq_mask(&bcm47xx_bus.ssb.chipco,
- 					    SSB_CHIPCO_IRQ_GPIO,
- 					    SSB_CHIPCO_IRQ_GPIO);
++static int ssb_gpio_extif_to_irq(struct gpio_chip *chip, unsigned gpio)
++{
++	struct ssb_bus *bus = ssb_gpio_get_bus(chip);
++
++	if (bus->bustype == SSB_BUSTYPE_SSB)
++		return ssb_mips_irq(bus->extif.dev) + 2;
++	else
++		return -EINVAL;
++}
++
+ static int ssb_gpio_extif_init(struct ssb_bus *bus)
+ {
+ 	struct gpio_chip *chip = &bus->gpio;
+@@ -144,6 +165,7 @@ static int ssb_gpio_extif_init(struct ssb_bus *bus)
+ 	chip->set		= ssb_gpio_extif_set_value;
+ 	chip->direction_input	= ssb_gpio_extif_direction_input;
+ 	chip->direction_output	= ssb_gpio_extif_direction_output;
++	chip->to_irq		= ssb_gpio_extif_to_irq;
+ 	chip->ngpio		= 5;
+ 	/* There is just one SoC in one device and its GPIO addresses should be
+ 	 * deterministic to address them more easily. The other buses could get
 -- 
 1.7.10.4

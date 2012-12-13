@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Dec 2012 09:47:56 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:58333 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Dec 2012 09:53:59 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:58347 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823911Ab2LMIrzVjRQm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Dec 2012 09:47:55 +0100
+        with ESMTP id S6824762Ab2LMIx6ZduUe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Dec 2012 09:53:58 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1Tj4Rz-0004iA-1I; Thu, 13 Dec 2012 02:47:27 -0600
+        id 1Tj4Y9-0004iP-AN; Thu, 13 Dec 2012 02:53:49 -0600
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH v2] MIPS: Make CP0 config registers readable via sysfs.
-Date:   Thu, 13 Dec 2012 02:47:21 -0600
-Message-Id: <1355388441-6762-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH v3] MIPS: Make CP0 config registers readable via sysfs.
+Date:   Thu, 13 Dec 2012 02:53:44 -0600
+Message-Id: <1355388824-7655-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
-X-archive-position: 35278
+X-archive-position: 35279
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,8 +44,8 @@ Only CP0 config registers 0 through 7 are currently supported.
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
  arch/mips/kernel/Makefile |    1 +
- arch/mips/kernel/sysfs.c  |   93 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 94 insertions(+)
+ arch/mips/kernel/sysfs.c  |   68 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 69 insertions(+)
  create mode 100644 arch/mips/kernel/sysfs.c
 
 diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
@@ -62,10 +62,10 @@ index cc5eec6..0c3eb97 100644
  #
 diff --git a/arch/mips/kernel/sysfs.c b/arch/mips/kernel/sysfs.c
 new file mode 100644
-index 0000000..a64f559
+index 0000000..4f26349
 --- /dev/null
 +++ b/arch/mips/kernel/sysfs.c
-@@ -0,0 +1,93 @@
+@@ -0,0 +1,68 @@
 +/*
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
@@ -80,15 +80,15 @@ index 0000000..a64f559
 +
 +#include <asm/page.h>
 +
++/* Convenience macro */
++#define read_c0_config0()	read_c0_config()
 +
 +#define __BUILD_CP0_SYSFS(reg)					\
-+static DEFINE_PER_CPU(unsigned int, cpu_config##reg);		\
 +static ssize_t show_config##reg(struct device *dev,		\
 +		struct device_attribute *attr, char *buf)	\
 +{								\
-+	struct cpu *cpu = container_of(dev, struct cpu, dev);	\
 +	int n = snprintf(buf, PAGE_SIZE-2, "%x\n",		\
-+		per_cpu(cpu_config##reg, cpu->dev.id));		\
++		read_c0_config##reg());				\
 +	return n;						\
 +}								\
 +static DEVICE_ATTR(config##reg, 0444, show_config##reg, NULL);
@@ -102,61 +102,36 @@ index 0000000..a64f559
 +__BUILD_CP0_SYSFS(6)
 +__BUILD_CP0_SYSFS(7)
 +
++#define __CHECK_CONFIG_EXIST(reg)			\
++if (ok)	{						\
++	device_create_file(dev, &dev_attr_config##reg);	\
++	ok = read_c0_config##reg() & MIPS_CONF_M;	\
++}
++
 +static void read_c0_registers(void *arg)
 +{
 +	struct device *dev = get_cpu_device(smp_processor_id());
-+	struct cpu *cpu;
-+	int ok;
++	int ok = 1;
 +
-+	if (dev != NULL) {
-+		cpu = container_of(dev, struct cpu, dev);
-+		per_cpu(cpu_config0, cpu->dev.id) = read_c0_config();
-+		device_create_file(dev, &dev_attr_config0);
-+		ok = per_cpu(cpu_config0, cpu->dev.id) & MIPS_CONF_M;
-+	} else
-+		return;
-+
-+	if (ok) {
-+		per_cpu(cpu_config1, cpu->dev.id) = read_c0_config1();
-+		device_create_file(dev, &dev_attr_config1);
-+		ok = per_cpu(cpu_config1, cpu->dev.id) & MIPS_CONF_M;
-+	}
-+	if (ok) {
-+		per_cpu(cpu_config2, cpu->dev.id) = read_c0_config2();
-+		device_create_file(dev, &dev_attr_config2);
-+		ok = per_cpu(cpu_config2, cpu->dev.id) & MIPS_CONF_M;
-+	}
-+	if (ok) {
-+		per_cpu(cpu_config3, cpu->dev.id) = read_c0_config3();
-+		device_create_file(dev, &dev_attr_config3);
-+		ok = per_cpu(cpu_config3, cpu->dev.id) & MIPS_CONF_M;
-+	}
-+	if (ok) {
-+		per_cpu(cpu_config4, cpu->dev.id) = read_c0_config4();
-+		device_create_file(dev, &dev_attr_config4);
-+		ok = per_cpu(cpu_config4, cpu->dev.id) & MIPS_CONF_M;
-+	}
-+	if (ok) {
-+		per_cpu(cpu_config5, cpu->dev.id) = read_c0_config5();
-+		device_create_file(dev, &dev_attr_config5);
-+		ok = per_cpu(cpu_config5, cpu->dev.id) & MIPS_CONF_M;
-+	}
-+	if (ok) {
-+		per_cpu(cpu_config6, cpu->dev.id) = read_c0_config6();
-+		device_create_file(dev, &dev_attr_config6);
-+		ok = per_cpu(cpu_config6, cpu->dev.id) & MIPS_CONF_M;
-+	}
-+	if (ok) {
-+		per_cpu(cpu_config7, cpu->dev.id) = read_c0_config7();
-+		device_create_file(dev, &dev_attr_config7);
-+		ok = per_cpu(cpu_config7, cpu->dev.id) & MIPS_CONF_M;
-+	}
++	__CHECK_CONFIG_EXIST(0);
++	__CHECK_CONFIG_EXIST(1);
++	__CHECK_CONFIG_EXIST(2);
++	__CHECK_CONFIG_EXIST(3);
++	__CHECK_CONFIG_EXIST(4);
++	__CHECK_CONFIG_EXIST(5);
++	__CHECK_CONFIG_EXIST(6);
++	__CHECK_CONFIG_EXIST(7);
 +}
 +
 +static int __init mips_sysfs_registers(void)
 +{
++	/* Not CPU hotplug safe. */
++#ifndef CONFIG_HOTPLUG_CPU
 +	on_each_cpu(read_c0_registers, NULL, 1);
 +	return 0;
++#else
++	return 1;
++#endif
 +}
 +late_initcall(mips_sysfs_registers);
 -- 

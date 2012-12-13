@@ -1,63 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2012 23:55:07 +0100 (CET)
-Received: from mail-pa0-f49.google.com ([209.85.220.49]:42128 "EHLO
-        mail-pa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6831627Ab2LLWzFusmx0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Dec 2012 23:55:05 +0100
-Received: by mail-pa0-f49.google.com with SMTP id bi1so948777pad.36
-        for <linux-mips@linux-mips.org>; Wed, 12 Dec 2012 14:54:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=date:from:x-x-sender:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version:content-type;
-        bh=05+xC4fgB6q12pou/KeBZJUaZRI19bHQ4h7zg86XZ/Q=;
-        b=jaXxxHKtcWHNODDn+0qAT+oKB3ptWEM88mymZquMWmHrY2KzJeBzSztGr73GGjgl1v
-         8ATpnsftrFJHUK4JfE98oBf598bvl0+c9SDh4qi05a0quLJ/lQRJ5Ap+5zK3gnQDWJwf
-         Ql0LDd6XgctRDsogyD4v1beaB3Wv3EFuAT14P7VEHK69tCsr94PBb2+QkMPYuXupGu5B
-         1pJqNw0Mxkcw157zqtB3SlSqLmfPejsfCYuHY3UY4p5LpCS/m2KaCfP1Tvl2aSsN78/U
-         SC/RTM6dqIdF+bWFwWqu8JINNy2C8UB8fV3uvCmpt6puUf8lWRPGAiQgzJIug6x0vtlY
-         Qvzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=date:from:x-x-sender:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version:content-type:x-gm-message-state;
-        bh=05+xC4fgB6q12pou/KeBZJUaZRI19bHQ4h7zg86XZ/Q=;
-        b=PWVhZZmksaSViZQS4pt9YQQ50otV5iJpP0yaFHcZ+osT1hq02FMlRcr8UF5o1dBB6i
-         jydyX0zJWtGVWCmDT2dIrk6t1ByX2AV74K6082mZrTF29JOO/P5QHNCfhN838w+As4BV
-         nCdwn8lSLPSkSBlGmYydaEPKQxiCrhHMoEPwYc4P5KeE3XLMhde931Xz9yXoalBigbzM
-         RYvmb3SwZGo863ILJ51Yvy/h6ayThRfe1D93M6511aaTB5hAJOCqTwLbTKTjcB/qJGcX
-         0HJsfgVfQJOPZbpHWYtLrvOXTrQorqBxIWnipPEvpwFJjs2X7jGl2PJVl+F1P4iIVd+H
-         SAWw==
-Received: by 10.68.230.135 with SMTP id sy7mr6851311pbc.76.1355352897459;
-        Wed, 12 Dec 2012 14:54:57 -0800 (PST)
-Received: from [2620:0:1008:1101:be30:5bff:fed8:5e64] ([2620:0:1008:1101:be30:5bff:fed8:5e64])
-        by mx.google.com with ESMTPS id pl10sm5570717pbc.60.2012.12.12.14.54.56
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 12 Dec 2012 14:54:56 -0800 (PST)
-Date:   Wed, 12 Dec 2012 14:54:55 -0800 (PST)
-From:   David Rientjes <rientjes@google.com>
-X-X-Sender: rientjes@chino.kir.corp.google.com
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-        linux-s390@vger.kernel.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>
-Subject: Re: [PATCH, RESEND] asm-generic, mm: pgtable: consolidate zero page
- helpers
-In-Reply-To: <20121212105538.GA14208@otc-wbsnb-06>
-Message-ID: <alpine.DEB.2.00.1212121452430.23465@chino.kir.corp.google.com>
-References: <1354881215-26257-1-git-send-email-kirill.shutemov@linux.intel.com> <alpine.DEB.2.00.1212111906270.18872@chino.kir.corp.google.com> <20121212105538.GA14208@otc-wbsnb-06>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Gm-Message-State: ALoCoQnkre78oUxp73D0SbOFdaZSqKo5T6w6CFvvUxBJ1ETnRSrzPYcxzoDuHikqHVeyyYvkIrJjSKfxw+PeEFvFpsmi3i2NbT6mmTmuSYABlzQqJTyc6WAdeC94vjmjhVg48rHRej8RW6oESKvJz6nwpjr6cAMxrwISg+uPWNjKHCVdNEcWwyfkH5FKYjRFOCeL0Wu24VbdtvfyR5PZx4vyZYZzxtF8Jw==
-X-archive-position: 35277
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Dec 2012 09:47:56 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:58333 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823911Ab2LMIrzVjRQm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Dec 2012 09:47:55 +0100
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1Tj4Rz-0004iA-1I; Thu, 13 Dec 2012 02:47:27 -0600
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
+Subject: [PATCH v2] MIPS: Make CP0 config registers readable via sysfs.
+Date:   Thu, 13 Dec 2012 02:47:21 -0600
+Message-Id: <1355388441-6762-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.9.5
+X-archive-position: 35278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rientjes@google.com
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,18 +32,132 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, 12 Dec 2012, Kirill A. Shutemov wrote:
+From: "Steven J. Hill" <sjhill@mips.com>
 
-> > What's the benefit from doing this other than generalizing some per-arch 
-> > code?  It simply adds on more layer of redirection to try to find the 
-> > implementation that matters for the architecture you're hacking on.
-> 
-> The idea of asm-generic is consolidation arch code which can be re-used
-> for different arches. It also makes support of new arches easier.
-> 
+Allow reading of CP0 config registers via sysfs for each core
+in the system. The registers will show up in sysfs at the path:
 
-Yeah, but you're moving is_zero_pfn() unnecessarily into a header file 
-when it is only used mm/memory.c and it adds a __HAVE_* definition that we 
-always try to reduce (both __HAVE and __ARCH definitions are frowned 
-upon).  I don't think it's much of a win to obfuscate the code because 
-mips and s390 implement colored zero pages.
+   /sys/devices/system/cpu/cpuX/configX
+
+Only CP0 config registers 0 through 7 are currently supported.
+
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/kernel/Makefile |    1 +
+ arch/mips/kernel/sysfs.c  |   93 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 94 insertions(+)
+ create mode 100644 arch/mips/kernel/sysfs.c
+
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index cc5eec6..0c3eb97 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -97,6 +97,7 @@ obj-$(CONFIG_PERF_EVENTS)	+= perf_event.o
+ obj-$(CONFIG_HW_PERF_EVENTS)	+= perf_event_mipsxx.o
+ 
+ obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
++obj-y				+= sysfs.o
+ 
+ ifeq ($(CONFIG_CPU_MIPS32), y)
+ #
+diff --git a/arch/mips/kernel/sysfs.c b/arch/mips/kernel/sysfs.c
+new file mode 100644
+index 0000000..a64f559
+--- /dev/null
++++ b/arch/mips/kernel/sysfs.c
+@@ -0,0 +1,93 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
++ */
++#include <linux/init.h>
++#include <linux/string.h>
++#include <linux/cpu.h>
++#include <linux/percpu.h>
++
++#include <asm/page.h>
++
++
++#define __BUILD_CP0_SYSFS(reg)					\
++static DEFINE_PER_CPU(unsigned int, cpu_config##reg);		\
++static ssize_t show_config##reg(struct device *dev,		\
++		struct device_attribute *attr, char *buf)	\
++{								\
++	struct cpu *cpu = container_of(dev, struct cpu, dev);	\
++	int n = snprintf(buf, PAGE_SIZE-2, "%x\n",		\
++		per_cpu(cpu_config##reg, cpu->dev.id));		\
++	return n;						\
++}								\
++static DEVICE_ATTR(config##reg, 0444, show_config##reg, NULL);
++
++__BUILD_CP0_SYSFS(0)
++__BUILD_CP0_SYSFS(1)
++__BUILD_CP0_SYSFS(2)
++__BUILD_CP0_SYSFS(3)
++__BUILD_CP0_SYSFS(4)
++__BUILD_CP0_SYSFS(5)
++__BUILD_CP0_SYSFS(6)
++__BUILD_CP0_SYSFS(7)
++
++static void read_c0_registers(void *arg)
++{
++	struct device *dev = get_cpu_device(smp_processor_id());
++	struct cpu *cpu;
++	int ok;
++
++	if (dev != NULL) {
++		cpu = container_of(dev, struct cpu, dev);
++		per_cpu(cpu_config0, cpu->dev.id) = read_c0_config();
++		device_create_file(dev, &dev_attr_config0);
++		ok = per_cpu(cpu_config0, cpu->dev.id) & MIPS_CONF_M;
++	} else
++		return;
++
++	if (ok) {
++		per_cpu(cpu_config1, cpu->dev.id) = read_c0_config1();
++		device_create_file(dev, &dev_attr_config1);
++		ok = per_cpu(cpu_config1, cpu->dev.id) & MIPS_CONF_M;
++	}
++	if (ok) {
++		per_cpu(cpu_config2, cpu->dev.id) = read_c0_config2();
++		device_create_file(dev, &dev_attr_config2);
++		ok = per_cpu(cpu_config2, cpu->dev.id) & MIPS_CONF_M;
++	}
++	if (ok) {
++		per_cpu(cpu_config3, cpu->dev.id) = read_c0_config3();
++		device_create_file(dev, &dev_attr_config3);
++		ok = per_cpu(cpu_config3, cpu->dev.id) & MIPS_CONF_M;
++	}
++	if (ok) {
++		per_cpu(cpu_config4, cpu->dev.id) = read_c0_config4();
++		device_create_file(dev, &dev_attr_config4);
++		ok = per_cpu(cpu_config4, cpu->dev.id) & MIPS_CONF_M;
++	}
++	if (ok) {
++		per_cpu(cpu_config5, cpu->dev.id) = read_c0_config5();
++		device_create_file(dev, &dev_attr_config5);
++		ok = per_cpu(cpu_config5, cpu->dev.id) & MIPS_CONF_M;
++	}
++	if (ok) {
++		per_cpu(cpu_config6, cpu->dev.id) = read_c0_config6();
++		device_create_file(dev, &dev_attr_config6);
++		ok = per_cpu(cpu_config6, cpu->dev.id) & MIPS_CONF_M;
++	}
++	if (ok) {
++		per_cpu(cpu_config7, cpu->dev.id) = read_c0_config7();
++		device_create_file(dev, &dev_attr_config7);
++		ok = per_cpu(cpu_config7, cpu->dev.id) & MIPS_CONF_M;
++	}
++}
++
++static int __init mips_sysfs_registers(void)
++{
++	on_each_cpu(read_c0_registers, NULL, 1);
++	return 0;
++}
++late_initcall(mips_sysfs_registers);
+-- 
+1.7.9.5

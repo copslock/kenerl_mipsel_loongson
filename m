@@ -1,45 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Dec 2012 00:39:08 +0100 (CET)
-Received: from mail-da0-f49.google.com ([209.85.210.49]:33125 "EHLO
-        mail-da0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6829678Ab2LMXjHdsbdz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Dec 2012 00:39:07 +0100
-Received: by mail-da0-f49.google.com with SMTP id v40so1018150dad.36
-        for <multiple recipients>; Thu, 13 Dec 2012 15:39:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=VTABqe3S7OO3Ep3/PurOxZNtPmjmh2USs6RfbyoMKeU=;
-        b=gd0l1yStgBASdBpIkGL+f/nUUzFVW5TsV3mrR/pqTGHH54GTtoxJbsGipYKVujXDg3
-         XLBY0ulfrhUquhUFSgpPyuckTef3hNfssMj1VX3NVOw1bLKzicE9ufv2lsPDHowEHIEh
-         qWSCVW4LrBebkY3bpJ7/pvRFnqQylcYAJXW4HG/Z1atCQSilIvYTx8MFxKw0CRe6RKNF
-         T+Tbk2JkPM0Y7LderZxNT+h5HYDk+lbXdeATWFskpBSRvi40uzRhXTsi01eHBYdKxrO/
-         puagHbyJ5snv1YFkjk8kKYed0z1TM86Va5RUDMH7cvfCxQu218wfi7ho+KciKpK+h6mf
-         v1IQ==
-Received: by 10.66.90.72 with SMTP id bu8mr10548439pab.69.1355441940381;
-        Thu, 13 Dec 2012 15:39:00 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id k4sm2022252paz.26.2012.12.13.15.38.59
-        (version=SSLv3 cipher=OTHER);
-        Thu, 13 Dec 2012 15:38:59 -0800 (PST)
-Message-ID: <50CA6712.1060809@gmail.com>
-Date:   Thu, 13 Dec 2012 15:38:58 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Dec 2012 06:03:13 +0100 (CET)
+Received: from dns1.mips.com ([12.201.5.69]:46322 "EHLO dns1.mips.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816743Ab2LNFDMk-vWM convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Dec 2012 06:03:12 +0100
+Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
+        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id qBE534Fp016489;
+        Thu, 13 Dec 2012 21:03:04 -0800
+X-WSS-ID: 0MF08P4-01-2AY-02
+X-M-MSG: 
+Received: from exchdb01.mips.com (unknown [192.168.36.84])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mailgate1.mips.com (Postfix) with ESMTP id 2A72D36465D;
+        Thu, 13 Dec 2012 21:03:03 -0800 (PST)
+Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
+ exchhub01.mips.com ([::1]) with mapi id 14.01.0270.001; Thu, 13 Dec 2012
+ 21:03:00 -0800
+From:   "Hill, Steven" <sjhill@mips.com>
+To:     Florian Fainelli <florian@openwrt.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>
+Subject: RE: [PATCH] OF: MIPS: sead3: Implement OF support.
+Thread-Topic: [PATCH] OF: MIPS: sead3: Implement OF support.
+Thread-Index: AQHN1DnSWGjTUvhf40CMe1gF/gDbQ5gVx+UAgAAGqwCAAADlAIAB+Dr+
+Date:   Fri, 14 Dec 2012 05:02:58 +0000
+Message-ID: <31E06A9FC96CEC488B43B19E2957C1B801146AB302@exchdb03.mips.com>
+References: <1354857297-28863-1-git-send-email-sjhill@mips.com>
+ <50C894D4.4090008@openwrt.org>
+ <50C89A6C.705@metafoo.de>,<50C89B2C.1070903@openwrt.org>
+In-Reply-To: <50C89B2C.1070903@openwrt.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.36.79]
+x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
+x-ems-stamp: 1eWDm6UTv4bHtGJs39amCg==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     "Steven J. Hill" <sjhill@mips.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH v4] MIPS: Make CP0 config registers readable via sysfs.
-References: <1355436915-24381-1-git-send-email-sjhill@mips.com> <alpine.LFD.2.02.1212132325180.5950@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.02.1212132325180.5950@eddie.linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35285
+X-archive-position: 35286
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,34 +58,8 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 12/13/2012 03:27 PM, Maciej W. Rozycki wrote:
-> On Thu, 13 Dec 2012, Steven J. Hill wrote:
 >
->> Allow reading of CP0 config registers via sysfs for each core
->> in the system. The registers will show up in sysfs at the path:
->>
->>     /sys/devices/system/cpu/cpuX/configX
+> But in anyway the patch should also add documentation under
+> Documentation/devicetree/bindings describing the binding.
 >
->   You're exporting privileged context outside the kernel -- have all the
-> security implications been considered?
-
-Can you give an example of what would be risky?
-
-
->  At the very least I don't think
-> these files should be word-readable.
->
-
-
-According to Steven's earlier comments, all he really cares about are 
-the ASEs implemented.
-
-We have a patch (that I will send soon) that exports the Cache 
-configurations via the same method that x86 Cache information is 
-reported, so that part of the config register information would be 
-reported separately.
-
-The rest of the CP0_ConfigX bits really report things that are only 
-useful to privileged mode software, so perhaps they shouldn't be reported.
-
-David Daney
+There is not much in the SEAD-3 .dts file and I see zero documentation for Lantiq or Netlogic. I am skipping adding anything in the Documentation directory.

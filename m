@@ -1,20 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Dec 2012 06:06:22 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:33791 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816206Ab2LOFGVHarlN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 15 Dec 2012 06:06:21 +0100
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <sjhill@mips.com>)
-        id 1Tjjwz-0006mh-Er; Fri, 14 Dec 2012 23:06:13 -0600
-From:   "Steven J. Hill" <sjhill@mips.com>
-To:     linux-mips@linux-mips.org
-Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH v2] MIPS: dsp: Add assembler support for DSP ASEs.
-Date:   Fri, 14 Dec 2012 23:06:07 -0600
-Message-Id: <1355547967-13779-1-git-send-email-sjhill@mips.com>
-X-Mailer: git-send-email 1.7.9.5
-X-archive-position: 35290
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Dec 2012 06:10:26 +0100 (CET)
+Received: from dns1.mips.com ([12.201.5.69]:47452 "EHLO dns1.mips.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816206Ab2LOFKVAX5b8 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 15 Dec 2012 06:10:21 +0100
+Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
+        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id qBF5ACR0006690;
+        Fri, 14 Dec 2012 21:10:12 -0800
+X-WSS-ID: 0MF23OX-01-2RQ-02
+X-M-MSG: 
+Received: from exchdb01.mips.com (unknown [192.168.36.84])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mailgate1.mips.com (Postfix) with ESMTP id 2882336465D;
+        Fri, 14 Dec 2012 21:10:09 -0800 (PST)
+Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
+ exchhub01.mips.com ([::1]) with mapi id 14.01.0270.001; Fri, 14 Dec 2012
+ 21:10:06 -0800
+From:   "Hill, Steven" <sjhill@mips.com>
+To:     Florian Fainelli <florian@openwrt.org>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH] MIPS: dsp: Add assembler support for DSP ASEs.
+Thread-Topic: [PATCH] MIPS: dsp: Add assembler support for DSP ASEs.
+Thread-Index: AQHN1DbCEutikq7i/UCxLXUHzYmgqZgVxmQAgAOVCZc=
+Date:   Sat, 15 Dec 2012 05:10:05 +0000
+Message-ID: <31E06A9FC96CEC488B43B19E2957C1B801146AB429@exchdb03.mips.com>
+References: <1354855981-28392-1-git-send-email-sjhill@mips.com>,<50C8938C.8020705@openwrt.org>
+In-Reply-To: <50C8938C.8020705@openwrt.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.36.79]
+x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
+x-ems-stamp: 2PYP6mgVtyrb/8rE9O0mAQ==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-archive-position: 35291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,137 +54,44 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: "Steven J. Hill" <sjhill@mips.com>
+>> +ifeq ($(call cc-option-yn,-mdsp2), y)
+>> +CFLAGS_signal.o                      = -mdsp2 -DHAVE_AS_DSP
+>> +CFLAGS_signal32.o            = -mdsp2 -DHAVE_AS_DSP
+>> +CFLAGS_process.o             = -mdsp2 -DHAVE_AS_DSP
+>> +CFLAGS_branch.o                      = -mdsp2 -DHAVE_AS_DSP
+>> +CFLAGS_ptrace.o                      = -mdsp2 -DHAVE_AS_DSP
+>
+> Should not this be -mdspr2 here? My GCC man page suggests that.
+>
+Yes, corrected this.
 
-Newer toolchains support the DSP and DSP Rev2 instructions. This patch
-performs a check for that support and adds compiler and assembler
-flags for only the files that need use those instructions.
+> By the way, should not we also check that we are building for a
+> MIPS32_R2 CPU when checking for -mdsp2?
+>
+Yes, fixed this also.
 
-Signed-off-by: Steven J. Hill <sjhill@mips.com>
----
- arch/mips/include/asm/mipsregs.h |   53 ++++++++++++++++++++++++++------------
- arch/mips/kernel/Makefile        |   27 +++++++++++++++++++
- 2 files changed, 63 insertions(+), 17 deletions(-)
+> I would simplify this like this:
+>
+> ifeq ($(CONFIG_CPU_MIPS32),y)
+> CFLAGS_DSP = -DHAVE_AS_DSP
+> ifeq ($(call cc-option-yn,-mdsp),y)
+> CFLAGS_DSP += -mdsp
+> endif
+> ifeq ($(call cc-option-yn,-mdsp2),y)
+> CFLAGS-DSP += -mdsp2
+>endif
+>
+> CFLAGS_signal.o         = $(CFLAGS_DSP)
+> ...
+> CFLAGS_ptrace.o         = $(CFLAGS_DSP)
+> endif
+>
+> such that the day you can take advantage of a third DSP flavor it's only
+> 3 lines worth of Makefile to get it used, and you only have one place
+> where you need to change CFLAGS.
+>
+Good idea, fixed.
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index a9ed612..0960d68 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1155,36 +1155,26 @@ do {									\
-         : "=r" (__res));                                        \
-         __res;})
- 
-+#ifdef HAVE_AS_DSP
- #define rddsp(mask)							\
- ({									\
--	unsigned int __res;						\
-+	unsigned int __dspctl;						\
- 									\
- 	__asm__ __volatile__(						\
--	"	.set	push				\n"		\
--	"	.set	noat				\n"		\
--	"	# rddsp $1, %x1				\n"		\
--	"	.word	0x7c000cb8 | (%x1 << 16)	\n"		\
--	"	move	%0, $1				\n"		\
--	"	.set	pop				\n"		\
--	: "=r" (__res)							\
-+	"	rddsp	%0, %x1					\n"	\
-+	: "=r" (__dspctl)						\
- 	: "i" (mask));							\
--	__res;								\
-+	__dspctl;							\
- })
- 
- #define wrdsp(val, mask)						\
- do {									\
- 	__asm__ __volatile__(						\
--	"	.set	push					\n"	\
--	"	.set	noat					\n"	\
--	"	move	$1, %0					\n"	\
--	"	# wrdsp $1, %x1					\n"	\
--	"	.word	0x7c2004f8 | (%x1 << 11)		\n"	\
--	"	.set	pop					\n"	\
--        :								\
-+	"	wrdsp	%0, %x1					\n"	\
-+	:								\
- 	: "r" (val), "i" (mask));					\
- } while (0)
- 
--#if 0	/* Need DSP ASE capable assembler ... */
- #define mflo0() ({ long mflo0; __asm__("mflo %0, $ac0" : "=r" (mflo0)); mflo0;})
- #define mflo1() ({ long mflo1; __asm__("mflo %0, $ac1" : "=r" (mflo1)); mflo1;})
- #define mflo2() ({ long mflo2; __asm__("mflo %0, $ac2" : "=r" (mflo2)); mflo2;})
-@@ -1207,6 +1197,35 @@ do {									\
- 
- #else
- 
-+#define rddsp(mask)							\
-+({									\
-+	unsigned int __res;						\
-+									\
-+	__asm__ __volatile__(						\
-+	"	.set	push				\n"		\
-+	"	.set	noat				\n"		\
-+	"	# rddsp $1, %x1				\n"		\
-+	"	.word	0x7c000cb8 | (%x1 << 16)	\n"		\
-+	"	move	%0, $1				\n"		\
-+	"	.set	pop				\n"		\
-+	: "=r" (__res)							\
-+	: "i" (mask));							\
-+	__res;								\
-+})
-+
-+#define wrdsp(val, mask)						\
-+do {									\
-+	__asm__ __volatile__(						\
-+	"	.set	push					\n"	\
-+	"	.set	noat					\n"	\
-+	"	move	$1, %0					\n"	\
-+	"	# wrdsp $1, %x1					\n"	\
-+	"	.word	0x7c2004f8 | (%x1 << 11)		\n"	\
-+	"	.set	pop					\n"	\
-+        :								\
-+	: "r" (val), "i" (mask));					\
-+} while (0)
-+
- #define mfhi0()								\
- ({									\
- 	unsigned long __treg;						\
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index 33a96a9..c3c8cba 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -98,4 +98,31 @@ obj-$(CONFIG_HW_PERF_EVENTS)	+= perf_event_mipsxx.o
- 
- obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
- 
-+#
-+# DSP ASE supported for MIPS32 or MIPS64 Release 2 cores only
-+#
-+ifeq ($(CONFIG_CPU_MIPSR2), y)
-+CFLAGS_DSP 			= -DHAVE_AS_DSP
-+
-+#
-+# Check if assembler supports DSP ASE
-+#
-+ifeq ($(call cc-option-yn,-mdsp), y)
-+CFLAGS_DSP			+= -mdsp
-+endif
-+
-+#
-+# Check if assembler supports DSP ASE Rev2
-+#
-+ifeq ($(call cc-option-yn,-mdspr2), y)
-+CFLAGS_DSP			+= -mdspr2
-+endif
-+
-+CFLAGS_signal.o			= $(CFLAGS_DSP)
-+CFLAGS_signal32.o		= $(CFLAGS_DSP)
-+CFLAGS_process.o		= $(CFLAGS_DSP)
-+CFLAGS_branch.o			= $(CFLAGS_DSP)
-+CFLAGS_ptrace.o			= $(CFLAGS_DSP)
-+endif
-+
- CPPFLAGS_vmlinux.lds		:= $(KBUILD_CFLAGS)
--- 
-1.7.9.5
+I have posted a new patch for review.
+
+-Steve

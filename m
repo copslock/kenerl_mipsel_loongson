@@ -1,39 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Dec 2012 20:41:49 +0100 (CET)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:44580 "EHLO
-        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823059Ab2LPTlry0hwJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Dec 2012 20:41:47 +0100
-Received: by mail-bk0-f49.google.com with SMTP id jm19so2353786bkc.36
-        for <multiple recipients>; Sun, 16 Dec 2012 11:41:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=gBlJZw82KRibjIa9dMuttcVeP6JODlfrzAPmbcwhwtE=;
-        b=SSULHaDmsbKqhjBK8jYV8hfoBusXDbnJPeH0DmJgngzr87OGxeKeVYIUYEZHOGFjRQ
-         hdl+he6l0Vn8QBGs7RD7aSpdeo/pvMel/UdNnnFr9tZ7zZkkW1idZgo+Ur51nhhmSv2N
-         4qglPJMutX3D4kQgtbfCN4gClOiDPZFgpaYdBUks9SjCFkHWTZXPWwe75Q1n5awIYC4H
-         6/OrLst6aNOEKkanCsp9QXHYt7WPJa9AX22AnXHwJ3JxKdkJBQWwRPU+0c4FECj+Op3d
-         MXLCncHh8ckZEDGxhoNevQn1ttJizbys8d3shg+tdE20RgvuHjVenS8Jht/DjGleTSk3
-         U/cQ==
-Received: by 10.204.151.21 with SMTP id a21mr5141023bkw.124.1355686902381;
-        Sun, 16 Dec 2012 11:41:42 -0800 (PST)
-Received: from flagship.roarinelk.net (188-22-154-9.adsl.highway.telekom.at. [188.22.154.9])
-        by mx.google.com with ESMTPS id v8sm7861031bku.6.2012.12.16.11.41.40
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Dec 2012 21:17:44 +0100 (CET)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:59820 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823043Ab2LPURmJm4-8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Dec 2012 21:17:42 +0100
+Received: by mail-lb0-f177.google.com with SMTP id n10so4107894lbo.36
+        for <linux-mips@linux-mips.org>; Sun, 16 Dec 2012 12:17:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding
+         :x-gm-message-state;
+        bh=MP+T3n1RgdaQNYwDZnCwawtsqMJUhnlvyQnhBIKxbXI=;
+        b=USB0WNyuGoZ8N9Hpe0GLZRIBlfdJKebPrCON4YSmEbGFGoKypO0zSrcJK4QM+1kEZ+
+         TZjeSiKMojO+mwqxxRaKppjKjtst7NWNo20A/yR2J9H5DCzhed5hI+PhGknFbZLqW8EF
+         tO7eS2Z8B/rp+lXTYU1HNEAGvY2ByJcOxqqVKYK/fSE8eTGua021XU2cSxiziGr6XC4f
+         5EwvjQl7ZpNpLxvCKt6HBpPDIQF7wV6RgGzwi04cyj7rlZW/1xz1eHhHFlOLAoJf130k
+         frbZBC7Nt8GTI9gyrjHSBn+TlB5Pz5Z0X2sRkdv7osC3SACwrJviqxsvrlmBLeRo1Qvt
+         8fgw==
+Received: by 10.152.46.161 with SMTP id w1mr8904068lam.27.1355689056381;
+        Sun, 16 Dec 2012 12:17:36 -0800 (PST)
+Received: from [192.168.2.2] (ppp91-79-89-229.pppoe.mtu-net.ru. [91.79.89.229])
+        by mx.google.com with ESMTPS id pw17sm4039964lab.5.2012.12.16.12.17.34
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 16 Dec 2012 11:41:41 -0800 (PST)
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
+        Sun, 16 Dec 2012 12:17:35 -0800 (PST)
+Message-ID: <50CE2C65.6020805@mvista.com>
+Date:   Mon, 17 Dec 2012 00:17:41 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/17.0 Thunderbird/17.0
+MIME-Version: 1.0
+To:     Manuel Lauss <manuel.lauss@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
         Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH] MIPS: Alchemy: make 32kHz and r4k timer coexist peacefully
-Date:   Sun, 16 Dec 2012 20:41:36 +0100
-Message-Id: <1355686896-26001-1-git-send-email-manuel.lauss@googlemail.com>
-X-Mailer: git-send-email 1.8.0.2
-X-archive-position: 35297
+Subject: Re: [PATCH] MIPS: Alchemy: make 32kHz and r4k timer coexist peacefully
+References: <1355686896-26001-1-git-send-email-manuel.lauss@googlemail.com>
+In-Reply-To: <1355686896-26001-1-git-send-email-manuel.lauss@googlemail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Gm-Message-State: ALoCoQlVkkcIL1dO4HVQ8wCly0HbOUf3AN9uU+WNjzTHIJhjcI3D1AutHPvXId42xJICQZdOCeOa
+X-archive-position: 35298
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,87 +55,56 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Manuel Lauss <manuel.lauss@gmail.com>
+Hello.
 
-Now that the r4k timer is registered no matter what, bump the rating of
-the Alchemy 32kHz timer so that it gets used when it is working,
-and fall back on the r4k when it isn't.
+On 16-12-2012 23:41, Manuel Lauss wrote:
 
-This fixes a timer-related hang on platform with a working 32kHz timer
-(the better rated c0 timer stops while executing 'wait' leading to (almost) 
-eternal sleep) and an oops on boot on platforms without a working 32kHz timer
-(due to double registration of the r4k timer).
+> From: Manuel Lauss <manuel.lauss@gmail.com>
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
-For what is to become 3.8.
+> Now that the r4k timer is registered no matter what, bump the rating of
+> the Alchemy 32kHz timer so that it gets used when it is working,
+> and fall back on the r4k when it isn't.
 
-This is a quick fix; it's far less invasive than my preferred solution:
-having each platform register the r4k clocksource explicitly.
-It should be enough until Alchemy variants with speeds >= 1.3GHz appear
-(which is very unlikely).
+> This fixes a timer-related hang on platform with a working 32kHz timer
+> (the better rated c0 timer stops while executing 'wait' leading to (almost)
+> eternal sleep) and an oops on boot on platforms without a working 32kHz timer
+> (due to double registration of the r4k timer).
 
- arch/mips/alchemy/common/time.c | 29 ++++++-----------------------
- 1 file changed, 6 insertions(+), 23 deletions(-)
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+> ---
+> For what is to become 3.8.
 
-diff --git a/arch/mips/alchemy/common/time.c b/arch/mips/alchemy/common/time.c
-index a7193ae..12589d0 100644
---- a/arch/mips/alchemy/common/time.c
-+++ b/arch/mips/alchemy/common/time.c
-@@ -53,7 +53,7 @@ static struct clocksource au1x_counter1_clocksource = {
- 	.read		= au1x_counter1_read,
- 	.mask		= CLOCKSOURCE_MASK(32),
- 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
--	.rating		= 100,
-+	.rating		= 1500,
- };
- 
- static int au1x_rtcmatch2_set_next_event(unsigned long delta,
-@@ -84,7 +84,7 @@ static irqreturn_t au1x_rtcmatch2_irq(int irq, void *dev_id)
- static struct clock_event_device au1x_rtcmatch2_clockdev = {
- 	.name		= "rtcmatch2",
- 	.features	= CLOCK_EVT_FEAT_ONESHOT,
--	.rating		= 100,
-+	.rating		= 1500,
- 	.set_next_event	= au1x_rtcmatch2_set_next_event,
- 	.set_mode	= au1x_rtcmatch2_set_mode,
- 	.cpumask	= cpu_all_mask,
-@@ -158,20 +158,6 @@ cntr_err:
- 	return -1;
- }
- 
--static void __init alchemy_setup_c0timer(void)
--{
--	/*
--	 * MIPS kernel assigns 'au1k_wait' to 'cpu_wait' before this
--	 * function is called.  Because the Alchemy counters are unusable
--	 * the C0 timekeeping code is installed and use of the 'wait'
--	 * instruction must be prohibited, which is done most easily by
--	 * assigning NULL to cpu_wait.
--	 */
--	cpu_wait = NULL;
--	r4k_clockevent_init();
--	init_r4k_clocksource();
--}
--
- static int alchemy_m2inttab[] __initdata = {
- 	AU1000_RTC_MATCH2_INT,
- 	AU1500_RTC_MATCH2_INT,
-@@ -183,11 +169,8 @@ static int alchemy_m2inttab[] __initdata = {
- 
- void __init plat_time_init(void)
- {
--	int t;
--
--	t = alchemy_get_cputype();
--	if (t == ALCHEMY_CPU_UNKNOWN)
--		alchemy_setup_c0timer();
--	else if (alchemy_time_init(alchemy_m2inttab[t]))
--		alchemy_setup_c0timer();
-+	int t = alchemy_get_cputype();
-+	if ((t == ALCHEMY_CPU_UNKNOWN) ||
-+	    (alchemy_time_init(alchemy_m2inttab[t])))
-+		cpu_wait = NULL;	/* wait doesn't work with r4k timer */
- }
--- 
-1.8.0.2
+> This is a quick fix; it's far less invasive than my preferred solution:
+> having each platform register the r4k clocksource explicitly.
+> It should be enough until Alchemy variants with speeds >= 1.3GHz appear
+> (which is very unlikely).
+
+>   arch/mips/alchemy/common/time.c | 29 ++++++-----------------------
+>   1 file changed, 6 insertions(+), 23 deletions(-)
+
+> diff --git a/arch/mips/alchemy/common/time.c b/arch/mips/alchemy/common/time.c
+> index a7193ae..12589d0 100644
+> --- a/arch/mips/alchemy/common/time.c
+> +++ b/arch/mips/alchemy/common/time.c
+[...]
+> @@ -183,11 +169,8 @@ static int alchemy_m2inttab[] __initdata = {
+>
+>   void __init plat_time_init(void)
+>   {
+> -	int t;
+> -
+> -	t = alchemy_get_cputype();
+> -	if (t == ALCHEMY_CPU_UNKNOWN)
+> -		alchemy_setup_c0timer();
+> -	else if (alchemy_time_init(alchemy_m2inttab[t]))
+> -		alchemy_setup_c0timer();
+> +	int t = alchemy_get_cputype();
+
+    Could you please keep the coding style and insert empty line here?
+
+> +	if ((t == ALCHEMY_CPU_UNKNOWN) ||
+> +	    (alchemy_time_init(alchemy_m2inttab[t])))
+
+    Useless parens around == and especially around function call.
+
+WBR, Sergei

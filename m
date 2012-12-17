@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Dec 2012 08:22:02 +0100 (CET)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:52241 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Dec 2012 08:26:30 +0100 (CET)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:61799 "EHLO
         mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816668Ab2LQHWBSNrzz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Dec 2012 08:22:01 +0100
-Received: by mail-bk0-f49.google.com with SMTP id jm19so2464483bkc.36
-        for <multiple recipients>; Sun, 16 Dec 2012 23:21:56 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S6816671Ab2LQH03uWmQr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Dec 2012 08:26:29 +0100
+Received: by mail-bk0-f49.google.com with SMTP id jm19so2465762bkc.36
+        for <multiple recipients>; Sun, 16 Dec 2012 23:26:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=OWmsNDNVI1yp0W7eeM4QJRQOOfNWza4xKRiOMbM2Tl0=;
-        b=ElBM3erYm7/G7ODnGKmMzzKMAF/FXDydvtCm72jmfqhe2kPZ5WbjXEJhuXkdRcr64I
-         zM/Vw7NiFc9fdkf58NpU1M0RB0sRDiKW6cEj5qZp7/v5v7PfT20EGFBqtdt+rb9mFjoD
-         88YY5nNLp5gjWjZlYweTkv0FZ2e1BsdpixUIWptwQsPmH0cbpDO17JTjKziYM7yaxSz0
-         SVPp+EC7x8iv7tqJ7HDEMRe8q9dYShm2739JvSNU2qtYVn1kA0nnXUP15imLyjh2bvRl
-         YdXn5XC6si32Gq19ao228NKFiWxbEx/OqlhtbkZ/yIvETtvKYP+EDBg9T53N+sLoSlce
-         KRJA==
-Received: by 10.204.147.207 with SMTP id m15mr5407875bkv.54.1355728915947;
-        Sun, 16 Dec 2012 23:21:55 -0800 (PST)
+        bh=ItrBgqnjIyPlHpvNnhMCeNerYfVRaHaSgaydA8+Hj4I=;
+        b=Q6EcymrKnlEfVJfUJSsFqB+w1d2jU85IEr+oFNqqe7PGvhcihR6bAwqURq+kJe0wf9
+         oTfjQ1uhoeqXicOxwsBkurIzGTTn6Gg6Vj6tRXdueIAfsmfd9xASgONc0SurwobdVsR/
+         G+8mCnvkJFwptr6oVfT/leCGmH+YsVr0wAlkOfUj3s33W5viQsW19zIlcNtjx9va3hT6
+         vIatobzHZag+vKz5dp5XaKmuz+S4ksxn17ZlqaNoyzEqdTiUBEnjxBLyD6DnBUxXLlU8
+         p0z5PKz031LCMHqzIZFQKpFw1PSfrGG/2DONyKmQT4gbyjfe36XiQu3LkLXnIc7/YTo/
+         gNRQ==
+Received: by 10.204.146.6 with SMTP id f6mr5373172bkv.69.1355729184487;
+        Sun, 16 Dec 2012 23:26:24 -0800 (PST)
 Received: from flagship.roarinelk.net (178-191-3-232.adsl.highway.telekom.at. [178.191.3.232])
-        by mx.google.com with ESMTPS id d16sm8364392bkw.2.2012.12.16.23.21.54
+        by mx.google.com with ESMTPS id i20sm8369277bkw.5.2012.12.16.23.26.22
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 16 Dec 2012 23:21:55 -0800 (PST)
+        Sun, 16 Dec 2012 23:26:23 -0800 (PST)
 From:   Manuel Lauss <manuel.lauss@gmail.com>
 To:     Linux-MIPS <linux-mips@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
@@ -28,11 +28,11 @@ Cc:     John Crispin <blogic@openwrt.org>,
         Manuel Lauss <manuel.lauss@gmail.com>,
         Zi Shen Lim <zlim@netlogicmicro.com>,
         Jayachandran C <jchandra@broadcom.com>
-Subject: [PATCH] MIPS: perf: fix build failure in XLP perf support.
-Date:   Mon, 17 Dec 2012 08:21:46 +0100
-Message-Id: <1355728906-24370-1-git-send-email-manuel.lauss@gmail.com>
+Subject: [PATCH v2] MIPS: perf: fix build failure in XLP perf support.
+Date:   Mon, 17 Dec 2012 08:26:19 +0100
+Message-Id: <1355729179-5442-1-git-send-email-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 1.8.0.2
-X-archive-position: 35300
+X-archive-position: 35301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,13 +58,15 @@ Cc: Zi Shen Lim <zlim@netlogicmicro.com>
 Cc: Jayachandran C <jchandra@broadcom.com>
 Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
+v2: one escaped me and I left the array in a bad state. Now fixed and compile tested!
+
 Against Linus' latest -git.  That's also where the commit-id is from.
 
  arch/mips/kernel/perf_event_mipsxx.c | 38 ------------------------------------
  1 file changed, 38 deletions(-)
 
 diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
-index b14c14d..51aa6a4 100644
+index b14c14d..d9c81c5 100644
 --- a/arch/mips/kernel/perf_event_mipsxx.c
 +++ b/arch/mips/kernel/perf_event_mipsxx.c
 @@ -847,7 +847,6 @@ static const struct mips_perf_event xlp_event_map[PERF_COUNT_HW_MAX] = {
@@ -111,7 +113,7 @@ index b14c14d..51aa6a4 100644
  },
  [C(DTLB)] = {
  	/*
-@@ -1154,46 +1137,25 @@ static const struct mips_perf_event xlp_cache_map
+@@ -1154,45 +1137,24 @@ static const struct mips_perf_event xlp_cache_map
  	 * read and write.
  	 */
  	[C(OP_READ)] = {
@@ -143,7 +145,7 @@ index b14c14d..51aa6a4 100644
  },
  [C(BPU)] = {
  	[C(OP_READ)] = {
- 		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
+-		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
  		[C(RESULT_MISS)]	= { 0x25, CNTR_ALL },
  	},
 -	[C(OP_WRITE)] = {
@@ -154,9 +156,8 @@ index b14c14d..51aa6a4 100644
 -		[C(RESULT_ACCESS)]	= { UNSUPPORTED_PERF_EVENT_ID },
 -		[C(RESULT_MISS)]	= { UNSUPPORTED_PERF_EVENT_ID },
 -	},
--},
+ },
  };
  
- #ifdef CONFIG_MIPS_MT_SMP
 -- 
 1.8.0.2

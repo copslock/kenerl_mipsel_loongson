@@ -1,46 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Dec 2012 19:27:38 +0100 (CET)
-Received: from mail-pb0-f54.google.com ([209.85.160.54]:39617 "EHLO
-        mail-pb0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817293Ab2LRS1bOLoVV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Dec 2012 19:27:31 +0100
-Received: by mail-pb0-f54.google.com with SMTP id wz12so629353pbc.41
-        for <multiple recipients>; Tue, 18 Dec 2012 10:27:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=aDsi/h8kZtCk7CsUzkeu4CUYxin+i3YM9zjP/O/udGM=;
-        b=BUTH9R/uWU7qAJwg3ldHQl2wXPMSlSbQVKars+bE3hs+xROZSe9RBmRTrNMpPKhCUt
-         0FBRM1GXlPJNhU4K33p1bj76L/3sEir4h2PjUpWXosIGVYGkBmZNVZToUynh0MeTVZBu
-         vPJESKba9CRqY/QC1liycpWl2H5iT6VgpJjQaj5db5HxcfbGQ0pDG7IUWD6cDDLh6xjr
-         xoU8S71HliKmSWGMFL3a3e3EFBnORe967CIcgLSJgOl40370rBe/P345RmfUMxOgE3P/
-         oCqQYIQ+U+Nj9iYM0PzxN/cNdzbVQ28lqaD+dlC0BRWwpyW85XpUshNRgVmwYIdXpfpV
-         5LoA==
-X-Received: by 10.66.86.71 with SMTP id n7mr8903135paz.77.1355855244271;
-        Tue, 18 Dec 2012 10:27:24 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id ai8sm1547777pbd.14.2012.12.18.10.27.21
-        (version=SSLv3 cipher=OTHER);
-        Tue, 18 Dec 2012 10:27:22 -0800 (PST)
-Message-ID: <50D0B588.2070906@gmail.com>
-Date:   Tue, 18 Dec 2012 10:27:20 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
-MIME-Version: 1.0
-To:     Jayachandran C <jchandra@broadcom.com>, ralf@linux-mips.org
-CC:     "Steven J . Hill" <sjhill@mips.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Revert "MIPS: Optimise TLB handlers for MIPS32/64 R2
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Dec 2012 19:39:34 +0100 (CET)
+Received: from dns1.mips.com ([12.201.5.69]:51561 "EHLO dns1.mips.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817293Ab2LRSjdK8WDy convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Dec 2012 19:39:33 +0100
+Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
+        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id qBIIdPTv011295;
+        Tue, 18 Dec 2012 10:39:25 -0800
+X-WSS-ID: 0MF8P5O-01-06C-02
+X-M-MSG: 
+Received: from exchdb01.mips.com (unknown [192.168.36.84])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mailgate1.mips.com (Postfix) with ESMTP id 2962D364669;
+        Tue, 18 Dec 2012 10:39:24 -0800 (PST)
+Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
+ exchhub01.mips.com ([::1]) with mapi id 14.02.0247.003; Tue, 18 Dec 2012
+ 10:39:24 -0800
+From:   "Hill, Steven" <sjhill@mips.com>
+To:     David Daney <ddaney.cavm@gmail.com>,
+        Jayachandran C <jchandra@broadcom.com>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH] Revert "MIPS: Optimise TLB handlers for MIPS32/64 R2
  cores."
-References: <1355824203-18912-1-git-send-email-jchandra@broadcom.com>
-In-Reply-To: <1355824203-18912-1-git-send-email-jchandra@broadcom.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35308
+Thread-Topic: [PATCH] Revert "MIPS: Optimise TLB handlers for MIPS32/64 R2
+ cores."
+Thread-Index: AQHN3QUIS1qOm5BxXUKcek/ScPwLU5gfZrMA//98wuU=
+Date:   Tue, 18 Dec 2012 18:39:23 +0000
+Message-ID: <31E06A9FC96CEC488B43B19E2957C1B801146AB823@exchdb03.mips.com>
+References: <1355824203-18912-1-git-send-email-jchandra@broadcom.com>,<50D0B588.2070906@gmail.com>
+In-Reply-To: <50D0B588.2070906@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.4.41]
+x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
+x-ems-stamp: aQhcYonXhPxqYobTiKZC9g==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-archive-position: 35309
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,59 +58,6 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 12/18/2012 01:50 AM, Jayachandran C wrote:
-> This reverts commit ff401e52100dcdc85e572d1ad376d3307b3fe28e.
->
-> The commit causes a boot-time crash on Netlogic XLP boards. The
-> crash is caused by the second part of the patch that changes
-> build_get_ptep(), which seems to break mips64 TLB handling on r2
-> platforms.
->
-> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+I would ask that we hold off on the revert patch as I will have the 64-bit fix today in the next 2 hours. Thank you.
 
-Acked-by: David Daney <david.daney@cavium.com>
-
-The offending patch is incorrect and should be reverted.  It uses EXT 
-and INS on 64-bit values.
-
-David Daney
-
-> ---
->   arch/mips/mm/tlbex.c |   16 ----------------
->   1 file changed, 16 deletions(-)
->
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index e085e15..1a17a9b 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -976,13 +976,6 @@ build_get_pgde32(u32 **p, unsigned int tmp, unsigned int ptr)
->   #endif
->   	uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
->   	uasm_i_lw(p, ptr, uasm_rel_lo(pgdc), ptr);
-> -
-> -	if (cpu_has_mips_r2) {
-> -		uasm_i_ext(p, tmp, tmp, PGDIR_SHIFT, (32 - PGDIR_SHIFT));
-> -		uasm_i_ins(p, ptr, tmp, PGD_T_LOG2, (32 - PGDIR_SHIFT));
-> -		return;
-> -	}
-> -
->   	uasm_i_srl(p, tmp, tmp, PGDIR_SHIFT); /* get pgd only bits */
->   	uasm_i_sll(p, tmp, tmp, PGD_T_LOG2);
->   	uasm_i_addu(p, ptr, ptr, tmp); /* add in pgd offset */
-> @@ -1018,15 +1011,6 @@ static void __cpuinit build_adjust_context(u32 **p, unsigned int ctx)
->
->   static void __cpuinit build_get_ptep(u32 **p, unsigned int tmp, unsigned int ptr)
->   {
-> -	if (cpu_has_mips_r2) {
-> -		/* PTE ptr offset is obtained from BadVAddr */
-> -		UASM_i_MFC0(p, tmp, C0_BADVADDR);
-> -		UASM_i_LW(p, ptr, 0, ptr);
-> -		uasm_i_ext(p, tmp, tmp, PAGE_SHIFT+1, PGDIR_SHIFT-PAGE_SHIFT-1);
-> -		uasm_i_ins(p, ptr, tmp, PTE_T_LOG2+1, PGDIR_SHIFT-PAGE_SHIFT-1);
-> -		return;
-> -	}
-> -
->   	/*
->   	 * Bug workaround for the Nevada. It seems as if under certain
->   	 * circumstances the move from cp0_context might produce a
->
+-Steve

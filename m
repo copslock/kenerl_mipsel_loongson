@@ -1,38 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Dec 2012 13:46:35 +0100 (CET)
-Received: from mms3.broadcom.com ([216.31.210.19]:4613 "EHLO mms3.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Dec 2012 10:50:04 +0100 (CET)
+Received: from mms2.broadcom.com ([216.31.210.18]:1721 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823021Ab2LQMqaYmi0t (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 17 Dec 2012 13:46:30 +0100
-Received: from [10.9.200.133] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Mon, 17 Dec 2012 04:41:24 -0800
-X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
+        id S6822190Ab2LRJuBK8vXX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 18 Dec 2012 10:50:01 +0100
+Received: from [10.9.200.133] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Tue, 18 Dec 2012 01:46:45 -0800
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
  IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Mon, 17 Dec 2012 04:45:32 -0800
-Received: from jayachandranc.netlogicmicro.com (
+ Server id 8.2.247.2; Tue, 18 Dec 2012 01:49:22 -0800
+Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 283F940FE4; Mon, 17
- Dec 2012 04:45:47 -0800 (PST)
-Date:   Mon, 17 Dec 2012 18:16:11 +0530
-From:   "Jayachandran C." <jchandra@broadcom.com>
-To:     "Manuel Lauss" <manuel.lauss@gmail.com>
-cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        "John Crispin" <blogic@openwrt.org>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "Zi Shen Lim" <zlim@netlogicmicro.com>
-Subject: Re: [PATCH v2] MIPS: perf: fix build failure in XLP perf
- support.
-Message-ID: <20121217124610.GA30888@jayachandranc.netlogicmicro.com>
-References: <1355729179-5442-1-git-send-email-manuel.lauss@gmail.com>
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id EB66A40FE4; Tue, 18
+ Dec 2012 01:49:37 -0800 (PST)
+From:   "Jayachandran C" <jchandra@broadcom.com>
+To:     "Steven J . Hill" <sjhill@mips.com>, ralf@linux-mips.org
+cc:     "Jayachandran C" <jchandra@broadcom.com>, linux-mips@linux-mips.org
+Subject: [PATCH] Revert
+ "MIPS: Optimise TLB handlers for MIPS32/64 R2 cores."
+Date:   Tue, 18 Dec 2012 15:20:03 +0530
+Message-ID: <1355824203-18912-1-git-send-email-jchandra@broadcom.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-In-Reply-To: <1355729179-5442-1-git-send-email-manuel.lauss@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-WSS-ID: 7CD1CD7E39W12673483-15-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline
+X-WSS-ID: 7CCEE40F3R022890145-01-01
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35303
+X-archive-position: 35304
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,26 +43,51 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, Dec 17, 2012 at 08:26:19AM +0100, Manuel Lauss wrote:
-> Commit 4be3d2f3966b9f010bb997dcab25e7af489a841e ("MIPS: perf: Add
-> XLP support for hardware perf.") added UNSUPPORTED_PERF_EVENT_ID
-> which was removed a while back.
-> 
-> Cc: Zi Shen Lim <zlim@netlogicmicro.com>
-> Cc: Jayachandran C <jchandra@broadcom.com>
-> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
-> ---
-> v2: one escaped me and I left the array in a bad state. Now fixed and compile tested!
-> 
-> Against Linus' latest -git.  That's also where the commit-id is from.
-> 
->  arch/mips/kernel/perf_event_mipsxx.c | 38 ------------------------------------
->  1 file changed, 38 deletions(-)
-> 
+This reverts commit ff401e52100dcdc85e572d1ad376d3307b3fe28e.
 
-Acked-by: Jayachandran C <jchandra@broadcom.com>
+The commit causes a boot-time crash on Netlogic XLP boards. The
+crash is caused by the second part of the patch that changes
+build_get_ptep(), which seems to break mips64 TLB handling on r2
+platforms.
 
-Thanks for fixing this up, I did not notice the perf change [c5600b] which went
-into 3.7 when submitting the patch. Sorry for the breakage.
+Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+---
+ arch/mips/mm/tlbex.c |   16 ----------------
+ 1 file changed, 16 deletions(-)
 
-JC.
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index e085e15..1a17a9b 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -976,13 +976,6 @@ build_get_pgde32(u32 **p, unsigned int tmp, unsigned int ptr)
+ #endif
+ 	uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
+ 	uasm_i_lw(p, ptr, uasm_rel_lo(pgdc), ptr);
+-
+-	if (cpu_has_mips_r2) {
+-		uasm_i_ext(p, tmp, tmp, PGDIR_SHIFT, (32 - PGDIR_SHIFT));
+-		uasm_i_ins(p, ptr, tmp, PGD_T_LOG2, (32 - PGDIR_SHIFT));
+-		return;
+-	}
+-
+ 	uasm_i_srl(p, tmp, tmp, PGDIR_SHIFT); /* get pgd only bits */
+ 	uasm_i_sll(p, tmp, tmp, PGD_T_LOG2);
+ 	uasm_i_addu(p, ptr, ptr, tmp); /* add in pgd offset */
+@@ -1018,15 +1011,6 @@ static void __cpuinit build_adjust_context(u32 **p, unsigned int ctx)
+ 
+ static void __cpuinit build_get_ptep(u32 **p, unsigned int tmp, unsigned int ptr)
+ {
+-	if (cpu_has_mips_r2) {
+-		/* PTE ptr offset is obtained from BadVAddr */
+-		UASM_i_MFC0(p, tmp, C0_BADVADDR);
+-		UASM_i_LW(p, ptr, 0, ptr);
+-		uasm_i_ext(p, tmp, tmp, PAGE_SHIFT+1, PGDIR_SHIFT-PAGE_SHIFT-1);
+-		uasm_i_ins(p, ptr, tmp, PTE_T_LOG2+1, PGDIR_SHIFT-PAGE_SHIFT-1);
+-		return;
+-	}
+-
+ 	/*
+ 	 * Bug workaround for the Nevada. It seems as if under certain
+ 	 * circumstances the move from cp0_context might produce a
+-- 
+1.7.9.5

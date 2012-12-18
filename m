@@ -1,42 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Dec 2012 13:08:37 +0100 (CET)
-Received: from zoneX.GCU-Squad.org ([194.213.125.0]:6834 "EHLO
-        services.gcu-squad.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6824761Ab2LRMIcUqxMw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Dec 2012 13:08:32 +0100
-Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=endymion.delvare)
-        by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1TkvyG-0006jc-Pw
-        (TLSv1:AES128-SHA:128)
-        (envelope-from <khali@linux-fr.org>)
-        ; Tue, 18 Dec 2012 13:08:28 +0100
-Date:   Tue, 18 Dec 2012 13:08:23 +0100
-From:   Jean Delvare <khali@linux-fr.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Matt Turner <mattst88@gmail.com>
-Cc:     linux-i2c@vger.kernel.org, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Dec 2012 13:11:41 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:37607 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823031Ab2LRMLkChIO- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 18 Dec 2012 13:11:40 +0100
+Message-ID: <50D05D02.1090405@openwrt.org>
+Date:   Tue, 18 Dec 2012 13:09:38 +0100
+From:   John Crispin <blogic@openwrt.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.7) Gecko/20120922 Icedove/10.0.7
+MIME-Version: 1.0
+To:     Manuel Lauss <manuel.lauss@gmail.com>
+CC:     Linux-MIPS <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Guenter Roeck <guenter.roeck@ericsson.com>
-Subject: Re: [PATCH] I2C: SiByte: Convert the driver to make use of 
- interrupts
-Message-ID: <20121218130823.183a0322@endymion.delvare>
-In-Reply-To: <alpine.LFD.2.00.1207160208570.12288@eddie.linux-mips.org>
-References: <1313710991-3596-1-git-send-email-mattst88@gmail.com>
-        <20110903103036.161616a5@endymion.delvare>
-        <20111031105354.4b888e44@endymion.delvare>
-        <20120110153834.531664db@endymion.delvare>
-        <CAEdQ38FpG11m50pwg2=tu1fJRRg=zixFKLsPmVPOzWNBCjbNBg@mail.gmail.com>
-        <20120331082346.26cc95cb@endymion.delvare>
-        <CAEdQ38Ez+8DudAaJY7HZu9jbisk_KMbBO5h=s+P4pjJ0Va-zWw@mail.gmail.com>
-        <CAEdQ38EDKndUcdBu1tZ_dOuhweVRW6aA=YKb6kUE3gUQJiwWoQ@mail.gmail.com>
-        <alpine.LFD.2.00.1207160208570.12288@eddie.linux-mips.org>
-X-Mailer: Claws Mail 3.7.10 (GTK+ 2.24.7; x86_64-suse-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        Zi Shen Lim <zlim@netlogicmicro.com>,
+        Jayachandran C <jchandra@broadcom.com>
+Subject: Re: [PATCH v2] MIPS: perf: fix build failure in XLP perf support.
+References: <1355729179-5442-1-git-send-email-manuel.lauss@gmail.com>
+In-Reply-To: <1355729179-5442-1-git-send-email-manuel.lauss@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35306
+X-archive-position: 35307
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khali@linux-fr.org
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,20 +36,19 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, 19 Jul 2012 22:01:08 +0100 (BST), Maciej W. Rozycki wrote:
-> On Sat, 30 Jun 2012, Matt Turner wrote:
-> 
-> > I'm not going to have time to do this. :(
-> > 
-> > I had another look at the code, and I'm not sure I really understand
-> > it well enough to address your concerns.
-> 
->  I'll try then, as soon as I can.
+On 17/12/12 08:26, Manuel Lauss wrote:
+> Commit 4be3d2f3966b9f010bb997dcab25e7af489a841e ("MIPS: perf: Add
+> XLP support for hardware perf.") added UNSUPPORTED_PERF_EVENT_ID
+> which was removed a while back.
+>
+> Cc: Zi Shen Lim<zlim@netlogicmicro.com>
+> Cc: Jayachandran C<jchandra@broadcom.com>
+> Signed-off-by: Manuel Lauss<manuel.lauss@gmail.com>
+> ---
+>
 
-I'm giving up on this one, sorry. I've been waiting for an update for
-over a year, this is simply too much. I just don't get why this patch
-was ever submitted if there was no intent to actually get it included.
-This has been a waste of many people's time :(
+Hi,
 
--- 
-Jean Delvare
+my bad, this commit clashed with on in Ralf's tree...
+
+Acked-by: John Crispin <blogic@openwrt.org

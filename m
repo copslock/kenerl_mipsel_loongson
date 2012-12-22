@@ -1,36 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Dec 2012 14:09:53 +0100 (CET)
-Received: from mga03.intel.com ([143.182.124.21]:49730 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823098Ab2LVNJwJwPKV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 22 Dec 2012 14:09:52 +0100
-Received: from azsmga001.ch.intel.com ([10.2.17.19])
-  by azsmga101.ch.intel.com with ESMTP; 22 Dec 2012 05:09:44 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.84,336,1355126400"; 
-   d="asc'?scan'208";a="235561035"
-Received: from blue.fi.intel.com ([10.237.72.156])
-  by azsmga001.ch.intel.com with ESMTP; 22 Dec 2012 05:09:36 -0800
-Received: by blue.fi.intel.com (Postfix, from userid 1000)
-        id 18EA8E0073; Sat, 22 Dec 2012 15:10:23 +0200 (EET)
-Date:   Sat, 22 Dec 2012 15:10:23 +0200
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Dec 2012 14:31:48 +0100 (CET)
+Received: from filtteri6.pp.htv.fi ([213.243.153.189]:49945 "EHLO
+        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823113Ab2LVNbrmu39A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Dec 2012 14:31:47 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri6.pp.htv.fi (Postfix) with ESMTP id 19D9256E7DF;
+        Sat, 22 Dec 2012 15:31:47 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp5.welho.com ([213.243.153.39])
+        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
+        with ESMTP id AxQN2NjjUBP7; Sat, 22 Dec 2012 15:31:46 +0200 (EET)
+Received: from musicnaut.iki.fi (cs181064211.pp.htv.fi [82.181.64.211])
+        by smtp5.welho.com (Postfix) with SMTP id AFB955BC004;
+        Sat, 22 Dec 2012 15:31:45 +0200 (EET)
+Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Sat, 22 Dec 2012 15:31:45 +0200
+Date:   Sat, 22 Dec 2012 15:31:45 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-mips@linux-mips.org
 Subject: Re: 3.8-rc1 build failure with MIPS/SPARSEMEM
-Message-ID: <20121222131022.GA16364@otc-wbsnb-06>
+Message-ID: <20121222133145.GC6847@blackmetal.musicnaut.iki.fi>
 References: <20121222122757.GB6847@blackmetal.musicnaut.iki.fi>
+ <20121222131022.GA16364@otc-wbsnb-06>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="a8Wt8u1KmwUX3Y2C"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20121222122757.GB6847@blackmetal.musicnaut.iki.fi>
+In-Reply-To: <20121222131022.GA16364@otc-wbsnb-06>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35313
+X-archive-position: 35314
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill.shutemov@linux.intel.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,47 +46,25 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+Hi,
 
---a8Wt8u1KmwUX3Y2C
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Sat, Dec 22, 2012 at 03:10:23PM +0200, Kirill A. Shutemov wrote:
+> On Sat, Dec 22, 2012 at 02:27:57PM +0200, Aaro Koskinen wrote:
+> > It looks like commit 816422ad76474fed8052b6f7b905a054d082e59a
+> > (asm-generic, mm: pgtable: consolidate zero page helpers) broke
+> > MIPS/SPARSEMEM build in 3.8-rc1:
+> 
+> Could you try this:
+> 
+> http://permalink.gmane.org/gmane.linux.kernel/1410981
 
-On Sat, Dec 22, 2012 at 02:27:57PM +0200, Aaro Koskinen wrote:
-> Hi,
->=20
-> It looks like commit 816422ad76474fed8052b6f7b905a054d082e59a
-> (asm-generic, mm: pgtable: consolidate zero page helpers) broke
-> MIPS/SPARSEMEM build in 3.8-rc1:
+It's not helping. And if you look at the error, it shows linux/mm.h is
+already there?
 
-Could you try this:
+[...]
+In file included from /home/aaro/git/linux/arch/mips/include/asm/pgtable.h:388:0,
+                 from include/linux/mm.h:44,
+                 from arch/mips/kernel/asm-offsets.c:14:
+[...]
 
-http://permalink.gmane.org/gmane.linux.kernel/1410981
-
-?
---=20
- Kirill A. Shutemov
-
---a8Wt8u1KmwUX3Y2C
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQ1bE+AAoJEAd+omnVudOMApcP/1uIiUWCXP8Lym3KcmCKmK1j
-pqU/ALq5X8t6SAcZTOMF7xroFabeSGZ5mXTWFJ26fgMY95LkddsFzcvO1zgl5BFp
-OBkT4shs/M/cDvEcetOO0lBExAkKngOXQGd8ZATMIlXaIyZ03dJ3m/A0chsfRdwE
-COPgc5ixTTwGEhAcMy1r6MBokO+pFc8ODlUGWNHOvgsW4/YKwjgzGZ1rT6vtv0rN
-ah7cWeJ5PTD1HupHZSOh1P91pGwQbV1TWML+hEEJlbeLxFW47yx9vNkdjwoi1kvm
-PSjHZOs1SeMQxpGP9icE/ZH1tnCeQoyIk8SD90xusV+5YRktPw8BTpdErLT7z03P
-ebAKfQgixSMhEawHSe9wW6DMSRt5+IFTZlz0lYrHSfSVb2k0SbyN2oFepmih0q98
-tBI8I63QpqlVlYrAFktURnNg794sWXNtsxJ4yaXBwrw5CfxFM3YalPHJOmPgB/QX
-MiMBKkMVmFh+2P+Imf3w/oMqDJcg5vNjjoGG75LoIn1LnZELmc1IDoe+igof1Uac
-sr7SkycpcSBshtggTvxvxO5EEgmZqNck+t4ixwQKbYOnge7SBNPzqZaa9XePeiyU
-574fk+hUnQSjk1WpWzaKPmvuLnNibF6WMSBYMjbeg0sbdNLOpf0ZTp1bH5WLbmfO
-nVYpX2z0UbR/s6MCw/vD
-=FFgu
------END PGP SIGNATURE-----
-
---a8Wt8u1KmwUX3Y2C--
+A.

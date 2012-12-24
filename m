@@ -1,38 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Dec 2012 14:31:48 +0100 (CET)
-Received: from filtteri6.pp.htv.fi ([213.243.153.189]:49945 "EHLO
-        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823113Ab2LVNbrmu39A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Dec 2012 14:31:47 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri6.pp.htv.fi (Postfix) with ESMTP id 19D9256E7DF;
-        Sat, 22 Dec 2012 15:31:47 +0200 (EET)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp5.welho.com ([213.243.153.39])
-        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
-        with ESMTP id AxQN2NjjUBP7; Sat, 22 Dec 2012 15:31:46 +0200 (EET)
-Received: from musicnaut.iki.fi (cs181064211.pp.htv.fi [82.181.64.211])
-        by smtp5.welho.com (Postfix) with SMTP id AFB955BC004;
-        Sat, 22 Dec 2012 15:31:45 +0200 (EET)
-Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Sat, 22 Dec 2012 15:31:45 +0200
-Date:   Sat, 22 Dec 2012 15:31:45 +0200
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-mips@linux-mips.org
-Subject: Re: 3.8-rc1 build failure with MIPS/SPARSEMEM
-Message-ID: <20121222133145.GC6847@blackmetal.musicnaut.iki.fi>
-References: <20121222122757.GB6847@blackmetal.musicnaut.iki.fi>
- <20121222131022.GA16364@otc-wbsnb-06>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20121222131022.GA16364@otc-wbsnb-06>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35314
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Dec 2012 05:06:38 +0100 (CET)
+Received: from mail-ia0-f180.google.com ([209.85.210.180]:41264 "EHLO
+        mail-ia0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817286Ab2LXEGhhQwNE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Dec 2012 05:06:37 +0100
+Received: by mail-ia0-f180.google.com with SMTP id t4so5718482iag.11
+        for <multiple recipients>; Sun, 23 Dec 2012 20:06:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:date:message-id:to:subject:from;
+        bh=0ATmrfeqXoZIuXtfnoLS/iOn19EdagiWg5Of0lr66H4=;
+        b=dwulcPWBh1L+dgynVr05gIHE7+1ALsNlKHhI9Oz0uzZcW/3UF805k3qHd0qqHJvGOy
+         8VlGwTCkTqVSm2Qh5OyF/2sW2meGz1TNo4Nwg76BGasU7BpEP0Pqzz5KB5t8GCADRMyk
+         EMpn86WlkSX+ChUxv3doHkvowysnzYuskCfiQCOGstpy9DsVpvcb2kK43SF4eysFVWZT
+         DbuhuZYMPQxU6jDWhMVwFHr9OccdmOZQpFrSydYJ5DFu2r0otUDH/+qT6X8w9nnCH6mr
+         d2l6s6/Ii8eGX/j5ObGWwOqxjG5/MAl/u92uMTFsDmaA8lzq7bGG/mGtHN2OMFfCc+6G
+         qZyg==
+X-Received: by 10.50.41.165 with SMTP id g5mr19347011igl.66.1356321990861;
+        Sun, 23 Dec 2012 20:06:30 -0800 (PST)
+Received: from localhost ([207.47.250.72])
+        by mx.google.com with ESMTPS id pr7sm21624102igc.16.2012.12.23.20.06.28
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sun, 23 Dec 2012 20:06:29 -0800 (PST)
+Received: from shane by localhost with local (Exim 4.72)
+        (envelope-from <shane@localhost>)
+        id 1TmzJ4-0003mm-3H; Sun, 23 Dec 2012 22:06:26 -0600
+Date:   Sun, 23 Dec 2012 22:06:26 -0600
+Message-Id: <E1TmzJ4-0003mm-3H@localhost>
+To:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        ralf@linux-mips.org
+Subject: MIPS: MSP71xx: Indicate new location of source files in Platform file
+From:   Shane McDonald <mcdonald.shane@gmail.com>
+X-archive-position: 35316
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: mcdonald.shane@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,25 +48,29 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi,
+The source files for the MSP71xx support code have been moved
+in commit 13a347ef60c68e490809dad8fcf79c25eabc4d58,
+"MIPS: MSP71xx: Move code." Update the Platform file
+to indicate the new location.
 
-On Sat, Dec 22, 2012 at 03:10:23PM +0200, Kirill A. Shutemov wrote:
-> On Sat, Dec 22, 2012 at 02:27:57PM +0200, Aaro Koskinen wrote:
-> > It looks like commit 816422ad76474fed8052b6f7b905a054d082e59a
-> > (asm-generic, mm: pgtable: consolidate zero page helpers) broke
-> > MIPS/SPARSEMEM build in 3.8-rc1:
-> 
-> Could you try this:
-> 
-> http://permalink.gmane.org/gmane.linux.kernel/1410981
+Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
+---
+ arch/mips/pmcs-msp71xx/Platform |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-It's not helping. And if you look at the error, it shows linux/mm.h is
-already there?
-
-[...]
-In file included from /home/aaro/git/linux/arch/mips/include/asm/pgtable.h:388:0,
-                 from include/linux/mm.h:44,
-                 from arch/mips/kernel/asm-offsets.c:14:
-[...]
-
-A.
+diff --git a/arch/mips/pmcs-msp71xx/Platform b/arch/mips/pmcs-msp71xx/Platform
+index 17299f9..9a86e29 100644
+--- a/arch/mips/pmcs-msp71xx/Platform
++++ b/arch/mips/pmcs-msp71xx/Platform
+@@ -1,7 +1,7 @@
+ #
+ # PMC-Sierra MSP SOCs
+ #
+-platform-$(CONFIG_PMC_MSP)	+= pmc-sierra/
+-cflags-$(CONFIG_PMC_MSP)	+= -I$(srctree)/arch/mips/include/asm/pmc-sierra \
++platform-$(CONFIG_PMC_MSP)	+= pmcs-msp71xx/
++cflags-$(CONFIG_PMC_MSP)	+= -I$(srctree)/arch/mips/include/asm/pmc-sierra/msp71xx \
+ 					-mno-branch-likely
+ load-$(CONFIG_PMC_MSP)		+= 0xffffffff80100000
+-- 
+1.7.2.5

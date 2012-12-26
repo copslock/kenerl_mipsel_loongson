@@ -1,36 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Dec 2012 01:34:00 +0100 (CET)
-Received: from mga01.intel.com ([192.55.52.88]:33923 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823111Ab2LZAd4OTJPN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 26 Dec 2012 01:33:56 +0100
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP; 25 Dec 2012 16:33:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.84,354,1355126400"; 
-   d="asc'?scan'208";a="266912831"
-Received: from blue.fi.intel.com ([10.237.72.156])
-  by fmsmga001.fm.intel.com with ESMTP; 25 Dec 2012 16:33:46 -0800
-Received: by blue.fi.intel.com (Postfix, from userid 1000)
-        id 21770E0073; Wed, 26 Dec 2012 02:34:35 +0200 (EET)
-Date:   Wed, 26 Dec 2012 02:34:35 +0200
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-mips@linux-mips.org
-Subject: Re: 3.8-rc1 build failure with MIPS/SPARSEMEM
-Message-ID: <20121226003434.GA27760@otc-wbsnb-06>
-References: <20121222122757.GB6847@blackmetal.musicnaut.iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Dec 2012 10:29:32 +0100 (CET)
+Received: from mail-ee0-f42.google.com ([74.125.83.42]:35892 "EHLO
+        mail-ee0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816900Ab2LZJ3bKBree (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Dec 2012 10:29:31 +0100
+Received: by mail-ee0-f42.google.com with SMTP id c41so4067669eek.15
+        for <multiple recipients>; Wed, 26 Dec 2012 01:29:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:from:to:cc:subject:date:message-id:x-mailer:mime-version
+         :content-type:content-transfer-encoding;
+        bh=NcEIo+XaQoldoC1zBPxhYn/Mz9EIqeIlRUOAFa4/ea8=;
+        b=ApUoELE1r96L/jyxpPdYKUNvWKYYDP+hB0Y+d7dvMPa9NklQjwv5X+waVH7JFEKwVS
+         vB2ZdTP3/1yxkgm2Kj8P239S8AmRJTk4ZGmLp4uEfhyGAZgObc+X1wXyovSV9AJfEheJ
+         BuPUfsaUkhxp4H10dwGiBdZ75yoH6aWu1W/kQqPu2YF7maEMB2wCyjODKvEgM/hKJ237
+         pc4fwKMU4S9J+nneE91PypKzt7ppmjvid2mgLWUG/Cz2CN9CPMDEJJ3910mlO7j7JR2+
+         +eLEHGpJzBY3e7yocMdFxtwDI8+/BuGhTyBB4n6pAtHLjXOikfrrW+dhZEb4cscCJcxh
+         P1sA==
+X-Received: by 10.14.225.194 with SMTP id z42mr68767624eep.22.1356514165703;
+        Wed, 26 Dec 2012 01:29:25 -0800 (PST)
+Received: from localhost.localdomain (egr183.neoplus.adsl.tpnet.pl. [83.21.81.183])
+        by mx.google.com with ESMTPS id r1sm52022497eeo.2.2012.12.26.01.29.24
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 26 Dec 2012 01:29:25 -0800 (PST)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Subject: [PATCH] MIPS: bcm47xx: separate functions finding flash window addr
+Date:   Wed, 26 Dec 2012 10:29:17 +0100
+Message-Id: <1356514157-7547-1-git-send-email-zajec5@gmail.com>
+X-Mailer: git-send-email 1.7.7
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="mP3DRpeJDSE+ciuQ"
-Content-Disposition: inline
-In-Reply-To: <20121222122757.GB6847@blackmetal.musicnaut.iki.fi>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35320
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-archive-position: 35321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill.shutemov@linux.intel.com
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,122 +51,124 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+Also check if parallel flash is present at all before accessing it and
+add support for serial flash on BCMA bus.
 
---mP3DRpeJDSE+ciuQ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Dec 22, 2012 at 02:27:57PM +0200, Aaro Koskinen wrote:
-> Hi,
->=20
-> It looks like commit 816422ad76474fed8052b6f7b905a054d082e59a
-> (asm-generic, mm: pgtable: consolidate zero page helpers) broke
-> MIPS/SPARSEMEM build in 3.8-rc1:
->=20
->   CHK     include/generated/uapi/linux/version.h
->   CHK     include/generated/utsrelease.h
->   Checking missing-syscalls for N32
->   CC      arch/mips/kernel/asm-offsets.s
-> In file included from /home/aaro/git/linux/arch/mips/include/asm/pgtable.=
-h:388:0,
->                  from include/linux/mm.h:44,
->                  from arch/mips/kernel/asm-offsets.c:14:
-> include/asm-generic/pgtable.h: In function 'my_zero_pfn':
-> include/asm-generic/pgtable.h:462:9: error: implicit declaration of funct=
-ion 'page_to_section' [-Werror=3Dimplicit-function-declaration]
-> In file included from arch/mips/kernel/asm-offsets.c:14:0:
-> include/linux/mm.h: At top level:
-> include/linux/mm.h:708:29: error: conflicting types for 'page_to_section'
-> In file included from /home/aaro/git/linux/arch/mips/include/asm/pgtable.=
-h:388:0,
->                  from include/linux/mm.h:44,
->                  from arch/mips/kernel/asm-offsets.c:14:
-> include/asm-generic/pgtable.h:462:9: note: previous implicit declaration =
-of 'page_to_section' was here
-> cc1: some warnings being treated as errors
-> make[1]: *** [arch/mips/kernel/asm-offsets.s] Error 1
-> make: *** [archprepare] Error 2
-
-The patch below works for me. Could you try?
-
-=46rom a123a406fdc3aee7ca0eae04b6b4a231872dbb51 Mon Sep 17 00:00:00 2001
-=46rom: "Kirill A. Shutemov" <kirill@shutemov.name>
-Date: Wed, 26 Dec 2012 03:19:55 +0300
-Subject: [PATCH] asm-generic, mm: pgtable: convert my_zero_pfn() to macros =
-to
- fix build
-MIME-Version: 1.0
-Content-Type: text/plain; charset=3DUTF-8
-Content-Transfer-Encoding: 8bit
-
-On MIPS if SPARSEMEM is enabled we've got this:
-
-In file included from /home/kas/git/public/linux/arch/mips/include/asm/pgta=
-ble.h:552,
-                 from include/linux/mm.h:44,
-                 from arch/mips/kernel/asm-offsets.c:14:
-include/asm-generic/pgtable.h: In function =E2=80=98my_zero_pfn=E2=80=99:
-include/asm-generic/pgtable.h:466: error: implicit declaration of function =
-=E2=80=98page_to_section=E2=80=99
-In file included from arch/mips/kernel/asm-offsets.c:14:
-include/linux/mm.h: At top level:
-include/linux/mm.h:738: error: conflicting types for =E2=80=98page_to_secti=
-on=E2=80=99
-include/asm-generic/pgtable.h:466: note: previous implicit declaration of =
-=E2=80=98page_to_section=E2=80=99 was here
-
-Due header files inter-dependencies, the only way I see to fix it is
-convert my_zero_pfn() for __HAVE_COLOR_ZERO_PAGE to macros.
-
-Signed-off-by: Kirill A. Shutemov <kirill@shutemov.name>
+Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
 ---
- include/asm-generic/pgtable.h | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/mips/bcm47xx/nvram.c |   87 +++++++++++++++++++++++++++++++--------------
+ 1 files changed, 60 insertions(+), 27 deletions(-)
 
-diff --git a/include/asm-generic/pgtable.h b/include/asm-generic/pgtable.h
-index 701beab..5cf680a 100644
---- a/include/asm-generic/pgtable.h
-+++ b/include/asm-generic/pgtable.h
-@@ -461,10 +461,8 @@ static inline int is_zero_pfn(unsigned long pfn)
- 	return offset_from_zero_pfn <=3D (zero_page_mask >> PAGE_SHIFT);
- }
-=20
--static inline unsigned long my_zero_pfn(unsigned long addr)
--{
--	return page_to_pfn(ZERO_PAGE(addr));
--}
-+#define my_zero_pfn(addr)	page_to_pfn(ZERO_PAGE(addr))
-+
- #else
- static inline int is_zero_pfn(unsigned long pfn)
+diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
+index 48a4c70..6461367 100644
+--- a/arch/mips/bcm47xx/nvram.c
++++ b/arch/mips/bcm47xx/nvram.c
+@@ -23,39 +23,13 @@
+ 
+ static char nvram_buf[NVRAM_SPACE];
+ 
+-/* Probe for NVRAM header */
+-static void early_nvram_init(void)
++static void nvram_find_and_copy(u32 base, u32 lim)
  {
---=20
-1.8.0.2
-
---=20
- Kirill A. Shutemov
-
---mP3DRpeJDSE+ciuQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQ2kYaAAoJEAd+omnVudOMDEgP/iUqZr7TalBS0Wz0s0kXnF6Q
-fZkCIZInO98chygGuCZWo/3OggufeaLopnhDazJN4jSkxPwLDWTGlcIJCSZh4vNK
-hc/ojg3UOb28u9gRDQDDoPxrzIFFIKZTZXb6NAE3nVsv/3xNy3lNRwnPxUIwmnjY
-cGyV37H6Eofi4E5d/MEIvoO/DbfBy8Aa4ZJ2/aasbbJE2o0jnvaL9Wji1zJfCj+X
-ZD3dUvchrddzSzkL0K7KJ4If2euCIy1xiiIm6hQgCio9BXHTNzgj2mwkBwWe0JSl
-KMYXSGbwv5FrAa8r4wdWW/VxIQavXZtaO05zkGsLe1wdLStJ/Z4YKZoBbvX6YU4V
-IbDd0Zg230pO7Rf0dsdCUfJE43kUFresPV88rTlYKjhM8nKqVUSpHeROTtePZUBX
-fbgUT1QLXMWgGnCljiPWxQtm5tHunHIycZwIO7N8sq+f42IxSOMQG6j4Z3KCR/iG
-MT0c4RYFpsSvdy5DPvSY75kdPzQDjK/VQta7SEMWp1URpISOQ8yZyAp0XrhhUwXu
-4Kfiig+pp0QNkvtO7TNJCxHxQVkKn8u2YWj7+KS6P7IMp8bgY8FVdBSNf3VTH6d9
-2/iL4Dblezjabc3esav4wW5Wirpe2/GZzEa3nK2dlJm7QTPlZbaM5P3FdFvGAIBK
-wvYS/w1LURzEbwIEz/zT
-=1Y63
------END PGP SIGNATURE-----
-
---mP3DRpeJDSE+ciuQ--
+-#ifdef CONFIG_BCM47XX_SSB
+-	struct ssb_mipscore *mcore_ssb;
+-#endif
+-#ifdef CONFIG_BCM47XX_BCMA
+-	struct bcma_drv_cc *bcma_cc;
+-#endif
+ 	struct nvram_header *header;
+ 	int i;
+-	u32 base = 0;
+-	u32 lim = 0;
+ 	u32 off;
+ 	u32 *src, *dst;
+ 
+-	switch (bcm47xx_bus_type) {
+-#ifdef CONFIG_BCM47XX_SSB
+-	case BCM47XX_BUS_TYPE_SSB:
+-		mcore_ssb = &bcm47xx_bus.ssb.mipscore;
+-		base = mcore_ssb->pflash.window;
+-		lim = mcore_ssb->pflash.window_size;
+-		break;
+-#endif
+-#ifdef CONFIG_BCM47XX_BCMA
+-	case BCM47XX_BUS_TYPE_BCMA:
+-		bcma_cc = &bcm47xx_bus.bcma.bus.drv_cc;
+-		base = bcma_cc->pflash.window;
+-		lim = bcma_cc->pflash.window_size;
+-		break;
+-#endif
+-	}
+-
+ 	off = FLASH_MIN;
+ 	while (off <= lim) {
+ 		/* Windowed flash access */
+@@ -86,6 +60,65 @@ found:
+ 		*dst++ = le32_to_cpu(*src++);
+ }
+ 
++#ifdef CONFIG_BCM47XX_SSB
++static void nvram_init_ssb(void)
++{
++	struct ssb_mipscore *mcore = &bcm47xx_bus.ssb.mipscore;
++	u32 base;
++	u32 lim;
++
++	if (mcore->pflash.present) {
++		base = mcore->pflash.window;
++		lim = mcore->pflash.window_size;
++	} else {
++		pr_err("Couldn't find supported flash memory\n");
++		return;
++	}
++
++	nvram_find_and_copy(base, lim);
++}
++#endif
++
++#ifdef CONFIG_BCM47XX_BCMA
++static void nvram_init_bcma(void)
++{
++	struct bcma_drv_cc *cc = &bcm47xx_bus.bcma.bus.drv_cc;
++	u32 base;
++	u32 lim;
++
++	if (cc->pflash.present) {
++		base = cc->pflash.window;
++		lim = cc->pflash.window_size;
++#ifdef CONFIG_BCMA_SFLASH
++	} else if (cc->sflash.present) {
++		base = cc->sflash.window;
++		lim = cc->sflash.size;
++#endif
++	} else {
++		pr_err("Couldn't find supported flash memory\n");
++		return;
++	}
++
++	nvram_find_and_copy(base, lim);
++}
++#endif
++
++static void early_nvram_init(void)
++{
++	switch (bcm47xx_bus_type) {
++#ifdef CONFIG_BCM47XX_SSB
++	case BCM47XX_BUS_TYPE_SSB:
++		nvram_init_ssb();
++		break;
++#endif
++#ifdef CONFIG_BCM47XX_BCMA
++	case BCM47XX_BUS_TYPE_BCMA:
++		nvram_init_bcma();
++		break;
++#endif
++	}
++}
++
+ int nvram_getenv(char *name, char *val, size_t val_len)
+ {
+ 	char *var, *value, *end, *eq;
+-- 
+1.7.7

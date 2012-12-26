@@ -1,35 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Dec 2012 14:14:52 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:11343 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823020Ab2LZNOvvhKrX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 26 Dec 2012 14:14:51 +0100
-Received: from int-mx02.intmail.prod.int.phx2.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id qBQDElVl001906
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 26 Dec 2012 08:14:47 -0500
-Received: from dhcp-1-237.tlv.redhat.com (dhcp-4-26.tlv.redhat.com [10.35.4.26])
-        by int-mx02.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id qBQDEkTp031459;
-        Wed, 26 Dec 2012 08:14:46 -0500
-Received: by dhcp-1-237.tlv.redhat.com (Postfix, from userid 13519)
-        id 0528018D414; Wed, 26 Dec 2012 15:14:45 +0200 (IST)
-Date:   Wed, 26 Dec 2012 15:14:45 +0200
-From:   Gleb Natapov <gleb@redhat.com>
-To:     Sanjay Lal <sanjayl@kymasys.com>
-Cc:     kvm@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v2 02/18] KVM/MIPS32: Arch specific KVM data structures.
-Message-ID: <20121226131445.GH17584@redhat.com>
-References: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com>
- <1353551656-23579-3-git-send-email-sanjayl@kymasys.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Dec 2012 21:52:00 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:52624 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6817387Ab2LZUv730ksE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Dec 2012 21:51:59 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id C7F1C8E1C;
+        Wed, 26 Dec 2012 21:51:58 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 21xDEwIG3wAE; Wed, 26 Dec 2012 21:51:44 +0100 (CET)
+Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
+        by hauke-m.de (Postfix) with ESMTPSA id 9695E8F60;
+        Wed, 26 Dec 2012 21:51:36 +0100 (CET)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     john@phrozen.org, ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, zajec5@gmail.com,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: =?UTF-8?q?=5BPATCH=200/6=5D=20MIPS=3A=20BCM47XX=3A=20nvram=20read=20enhancements?=
+Date:   Wed, 26 Dec 2012 21:51:08 +0100
+Message-Id: <1356555074-1230-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.10.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1353551656-23579-3-git-send-email-sanjayl@kymasys.com>
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.12
-X-archive-position: 35323
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-archive-position: 35324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gleb@redhat.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,14 +42,30 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, Nov 21, 2012 at 06:34:00PM -0800, Sanjay Lal wrote:
-> +
-> +#ifndef __unused
-> +#define __unused __attribute__((unused))
-> +#endif
-> +
-There are __maybe_unused and __always_unused, no need to define your
-own.
+Clean up the nvram reading code and add support for different nvram 
+sizes.
 
---
-			Gleb.
+This depends on patch "MIPS: bcm47xx: separate functions finding flash 
+window addr" by Rafał Miłeck, Patchwork:  https://patchwork.linux-mips.org/patch/4738/
+
+Hauke Mehrtens (6):
+  MIPS: BCM47XX: use common error codes in nvram reads
+  MIPS: BCM47XX: return error when init of nvram failed
+  MIPS: BCM47XX: nvram add nand flash support
+  MIPS: BCM47XX: rename early_nvram_init to nvram_init
+  MIPS: BCM47XX: handle different nvram sizes
+  MIPS: BCM47XX: add bcm47xx prefix in front of nvram function names
+
+ arch/mips/bcm47xx/nvram.c                          |   98 ++++++++++++++------
+ arch/mips/bcm47xx/setup.c                          |    6 +-
+ arch/mips/bcm47xx/sprom.c                          |   10 +-
+ .../asm/mach-bcm47xx/{nvram.h => bcm47xx_nvram.h}  |   13 +--
+ drivers/mtd/bcm47xxpart.c                          |    2 +-
+ drivers/net/ethernet/broadcom/b44.c                |    4 +-
+ drivers/ssb/driver_chipcommon_pmu.c                |    4 +-
+ include/linux/ssb/ssb_driver_gige.h                |    6 +-
+ 8 files changed, 92 insertions(+), 51 deletions(-)
+ rename arch/mips/include/asm/mach-bcm47xx/{nvram.h => bcm47xx_nvram.h} (84%)
+
+-- 
+1.7.10.4

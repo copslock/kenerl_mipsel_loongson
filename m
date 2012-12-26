@@ -1,40 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Dec 2012 20:19:37 +0100 (CET)
-Received: from mail-ia0-f169.google.com ([209.85.210.169]:63934 "EHLO
-        mail-ia0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6820301Ab2LXTTgeeMaM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Dec 2012 20:19:36 +0100
-Received: by mail-ia0-f169.google.com with SMTP id r4so6105179iaj.14
-        for <multiple recipients>; Mon, 24 Dec 2012 11:19:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:date:message-id:to:subject:from;
-        bh=f8DlF44tbgk2MK2o79FMGrSBGi1cM0yhFZfQESyMcOE=;
-        b=sOXQ+pFb8Zfb1MsTOegc8PKWXmY9y7UeOY+PfwJkFRfvjYMhIZXwozVp2Z55Hs0L/C
-         MYK4zn1/vx+bT9oxhdVv8Rhh9NQo4WsFjHY3wZmdul4otHwBTLvf91Lty0rMT4Q5P6MJ
-         pVFJJDdV9K5fDz941yF1xGNFP2GwgZexCP4GxplpsYyTw+dfA2e9hiI4sDK/IsXkUDyD
-         q5tQTpVvPMzP+1NOIr/+TufAViwuNRBIhR5rNZgBUuJtKyRpvVBVtduC+aent5DufwHJ
-         tsZpKoT3IQgit15gXCnAiO4wIeFP0qv3WzHM8KxyYK+KdCpIOnvO1/e2Om+Lr7rQPHL2
-         400Q==
-X-Received: by 10.50.195.162 with SMTP id if2mr15591950igc.91.1356376769889;
-        Mon, 24 Dec 2012 11:19:29 -0800 (PST)
-Received: from localhost ([207.47.250.72])
-        by mx.google.com with ESMTPS id ez8sm17497056igb.17.2012.12.24.11.19.27
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 24 Dec 2012 11:19:28 -0800 (PST)
-Received: from shane by localhost with local (Exim 4.72)
-        (envelope-from <shane@localhost>)
-        id 1TnDYb-0003FO-4k; Mon, 24 Dec 2012 13:19:25 -0600
-Date:   Mon, 24 Dec 2012 13:19:25 -0600
-Message-Id: <E1TnDYb-0003FO-4k@localhost>
-To:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, sshtylyov@mvista.com
-Subject: [PATCH v2] MIPS: MSP71xx: Move include files
-From:   Shane McDonald <mcdonald.shane@gmail.com>
-X-archive-position: 35319
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Dec 2012 01:34:00 +0100 (CET)
+Received: from mga01.intel.com ([192.55.52.88]:33923 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823111Ab2LZAd4OTJPN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 26 Dec 2012 01:33:56 +0100
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP; 25 Dec 2012 16:33:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.84,354,1355126400"; 
+   d="asc'?scan'208";a="266912831"
+Received: from blue.fi.intel.com ([10.237.72.156])
+  by fmsmga001.fm.intel.com with ESMTP; 25 Dec 2012 16:33:46 -0800
+Received: by blue.fi.intel.com (Postfix, from userid 1000)
+        id 21770E0073; Wed, 26 Dec 2012 02:34:35 +0200 (EET)
+Date:   Wed, 26 Dec 2012 02:34:35 +0200
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-mips@linux-mips.org
+Subject: Re: 3.8-rc1 build failure with MIPS/SPARSEMEM
+Message-ID: <20121226003434.GA27760@otc-wbsnb-06>
+References: <20121222122757.GB6847@blackmetal.musicnaut.iki.fi>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="mP3DRpeJDSE+ciuQ"
+Content-Disposition: inline
+In-Reply-To: <20121222122757.GB6847@blackmetal.musicnaut.iki.fi>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 35320
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald.shane@gmail.com
+X-original-sender: kirill.shutemov@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,101 +44,122 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Now that Yosemite's gone we can move the MSP71xx include files
-one level up.
 
-Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
+--mP3DRpeJDSE+ciuQ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sat, Dec 22, 2012 at 02:27:57PM +0200, Aaro Koskinen wrote:
+> Hi,
+>=20
+> It looks like commit 816422ad76474fed8052b6f7b905a054d082e59a
+> (asm-generic, mm: pgtable: consolidate zero page helpers) broke
+> MIPS/SPARSEMEM build in 3.8-rc1:
+>=20
+>   CHK     include/generated/uapi/linux/version.h
+>   CHK     include/generated/utsrelease.h
+>   Checking missing-syscalls for N32
+>   CC      arch/mips/kernel/asm-offsets.s
+> In file included from /home/aaro/git/linux/arch/mips/include/asm/pgtable.=
+h:388:0,
+>                  from include/linux/mm.h:44,
+>                  from arch/mips/kernel/asm-offsets.c:14:
+> include/asm-generic/pgtable.h: In function 'my_zero_pfn':
+> include/asm-generic/pgtable.h:462:9: error: implicit declaration of funct=
+ion 'page_to_section' [-Werror=3Dimplicit-function-declaration]
+> In file included from arch/mips/kernel/asm-offsets.c:14:0:
+> include/linux/mm.h: At top level:
+> include/linux/mm.h:708:29: error: conflicting types for 'page_to_section'
+> In file included from /home/aaro/git/linux/arch/mips/include/asm/pgtable.=
+h:388:0,
+>                  from include/linux/mm.h:44,
+>                  from arch/mips/kernel/asm-offsets.c:14:
+> include/asm-generic/pgtable.h:462:9: note: previous implicit declaration =
+of 'page_to_section' was here
+> cc1: some warnings being treated as errors
+> make[1]: *** [arch/mips/kernel/asm-offsets.s] Error 1
+> make: *** [archprepare] Error 2
+
+The patch below works for me. Could you try?
+
+=46rom a123a406fdc3aee7ca0eae04b6b4a231872dbb51 Mon Sep 17 00:00:00 2001
+=46rom: "Kirill A. Shutemov" <kirill@shutemov.name>
+Date: Wed, 26 Dec 2012 03:19:55 +0300
+Subject: [PATCH] asm-generic, mm: pgtable: convert my_zero_pfn() to macros =
+to
+ fix build
+MIME-Version: 1.0
+Content-Type: text/plain; charset=3DUTF-8
+Content-Transfer-Encoding: 8bit
+
+On MIPS if SPARSEMEM is enabled we've got this:
+
+In file included from /home/kas/git/public/linux/arch/mips/include/asm/pgta=
+ble.h:552,
+                 from include/linux/mm.h:44,
+                 from arch/mips/kernel/asm-offsets.c:14:
+include/asm-generic/pgtable.h: In function =E2=80=98my_zero_pfn=E2=80=99:
+include/asm-generic/pgtable.h:466: error: implicit declaration of function =
+=E2=80=98page_to_section=E2=80=99
+In file included from arch/mips/kernel/asm-offsets.c:14:
+include/linux/mm.h: At top level:
+include/linux/mm.h:738: error: conflicting types for =E2=80=98page_to_secti=
+on=E2=80=99
+include/asm-generic/pgtable.h:466: note: previous implicit declaration of =
+=E2=80=98page_to_section=E2=80=99 was here
+
+Due header files inter-dependencies, the only way I see to fix it is
+convert my_zero_pfn() for __HAVE_COLOR_ZERO_PAGE to macros.
+
+Signed-off-by: Kirill A. Shutemov <kirill@shutemov.name>
 ---
-Patch history:
-V1: Original patch
-V2: Use format-patch's -M option to indicate file renames
+ include/asm-generic/pgtable.h | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
- .../cpu-feature-overrides.h                        |    0
- .../msp71xx => mach-pmcs-msp71xx}/gpio.h           |    0
- .../msp71xx => mach-pmcs-msp71xx}/msp_cic_int.h    |    0
- .../msp_gpio_macros.h                              |    0
- .../msp71xx => mach-pmcs-msp71xx}/msp_int.h        |    0
- .../msp71xx => mach-pmcs-msp71xx}/msp_pci.h        |    0
- .../msp71xx => mach-pmcs-msp71xx}/msp_prom.h       |    0
- .../msp71xx => mach-pmcs-msp71xx}/msp_regops.h     |    0
- .../msp71xx => mach-pmcs-msp71xx}/msp_regs.h       |    0
- .../msp71xx => mach-pmcs-msp71xx}/msp_slp_int.h    |    0
- .../msp71xx => mach-pmcs-msp71xx}/msp_usb.h        |    0
- .../msp71xx => mach-pmcs-msp71xx}/war.h            |    0
- arch/mips/pmcs-msp71xx/Platform                    |    2 +-
- 13 files changed, 1 insertions(+), 1 deletions(-)
- rename arch/mips/include/asm/{pmc-sierra/msp71xx => mach-pmcs-msp71xx}/cpu-feature-overrides.h (100%)
- rename arch/mips/include/asm/{pmc-sierra/msp71xx => mach-pmcs-msp71xx}/gpio.h (100%)
- rename arch/mips/include/asm/{pmc-sierra/msp71xx => mach-pmcs-msp71xx}/msp_cic_int.h (100%)
- rename arch/mips/include/asm/{pmc-sierra/msp71xx => mach-pmcs-msp71xx}/msp_gpio_macros.h (100%)
- rename arch/mips/include/asm/{pmc-sierra/msp71xx => mach-pmcs-msp71xx}/msp_int.h (100%)
- rename arch/mips/include/asm/{pmc-sierra/msp71xx => mach-pmcs-msp71xx}/msp_pci.h (100%)
- rename arch/mips/include/asm/{pmc-sierra/msp71xx => mach-pmcs-msp71xx}/msp_prom.h (100%)
- rename arch/mips/include/asm/{pmc-sierra/msp71xx => mach-pmcs-msp71xx}/msp_regops.h (100%)
- rename arch/mips/include/asm/{pmc-sierra/msp71xx => mach-pmcs-msp71xx}/msp_regs.h (100%)
- rename arch/mips/include/asm/{pmc-sierra/msp71xx => mach-pmcs-msp71xx}/msp_slp_int.h (100%)
- rename arch/mips/include/asm/{pmc-sierra/msp71xx => mach-pmcs-msp71xx}/msp_usb.h (100%)
- rename arch/mips/include/asm/{pmc-sierra/msp71xx => mach-pmcs-msp71xx}/war.h (100%)
+diff --git a/include/asm-generic/pgtable.h b/include/asm-generic/pgtable.h
+index 701beab..5cf680a 100644
+--- a/include/asm-generic/pgtable.h
++++ b/include/asm-generic/pgtable.h
+@@ -461,10 +461,8 @@ static inline int is_zero_pfn(unsigned long pfn)
+ 	return offset_from_zero_pfn <=3D (zero_page_mask >> PAGE_SHIFT);
+ }
+=20
+-static inline unsigned long my_zero_pfn(unsigned long addr)
+-{
+-	return page_to_pfn(ZERO_PAGE(addr));
+-}
++#define my_zero_pfn(addr)	page_to_pfn(ZERO_PAGE(addr))
++
+ #else
+ static inline int is_zero_pfn(unsigned long pfn)
+ {
+--=20
+1.8.0.2
 
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/cpu-feature-overrides.h b/arch/mips/include/asm/mach-pmcs-msp71xx/cpu-feature-overrides.h
-similarity index 100%
-rename from arch/mips/include/asm/pmc-sierra/msp71xx/cpu-feature-overrides.h
-rename to arch/mips/include/asm/mach-pmcs-msp71xx/cpu-feature-overrides.h
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/gpio.h b/arch/mips/include/asm/mach-pmcs-msp71xx/gpio.h
-similarity index 100%
-rename from arch/mips/include/asm/pmc-sierra/msp71xx/gpio.h
-rename to arch/mips/include/asm/mach-pmcs-msp71xx/gpio.h
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_cic_int.h b/arch/mips/include/asm/mach-pmcs-msp71xx/msp_cic_int.h
-similarity index 100%
-rename from arch/mips/include/asm/pmc-sierra/msp71xx/msp_cic_int.h
-rename to arch/mips/include/asm/mach-pmcs-msp71xx/msp_cic_int.h
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_gpio_macros.h b/arch/mips/include/asm/mach-pmcs-msp71xx/msp_gpio_macros.h
-similarity index 100%
-rename from arch/mips/include/asm/pmc-sierra/msp71xx/msp_gpio_macros.h
-rename to arch/mips/include/asm/mach-pmcs-msp71xx/msp_gpio_macros.h
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_int.h b/arch/mips/include/asm/mach-pmcs-msp71xx/msp_int.h
-similarity index 100%
-rename from arch/mips/include/asm/pmc-sierra/msp71xx/msp_int.h
-rename to arch/mips/include/asm/mach-pmcs-msp71xx/msp_int.h
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_pci.h b/arch/mips/include/asm/mach-pmcs-msp71xx/msp_pci.h
-similarity index 100%
-rename from arch/mips/include/asm/pmc-sierra/msp71xx/msp_pci.h
-rename to arch/mips/include/asm/mach-pmcs-msp71xx/msp_pci.h
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h b/arch/mips/include/asm/mach-pmcs-msp71xx/msp_prom.h
-similarity index 100%
-rename from arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h
-rename to arch/mips/include/asm/mach-pmcs-msp71xx/msp_prom.h
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_regops.h b/arch/mips/include/asm/mach-pmcs-msp71xx/msp_regops.h
-similarity index 100%
-rename from arch/mips/include/asm/pmc-sierra/msp71xx/msp_regops.h
-rename to arch/mips/include/asm/mach-pmcs-msp71xx/msp_regops.h
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_regs.h b/arch/mips/include/asm/mach-pmcs-msp71xx/msp_regs.h
-similarity index 100%
-rename from arch/mips/include/asm/pmc-sierra/msp71xx/msp_regs.h
-rename to arch/mips/include/asm/mach-pmcs-msp71xx/msp_regs.h
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_slp_int.h b/arch/mips/include/asm/mach-pmcs-msp71xx/msp_slp_int.h
-similarity index 100%
-rename from arch/mips/include/asm/pmc-sierra/msp71xx/msp_slp_int.h
-rename to arch/mips/include/asm/mach-pmcs-msp71xx/msp_slp_int.h
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_usb.h b/arch/mips/include/asm/mach-pmcs-msp71xx/msp_usb.h
-similarity index 100%
-rename from arch/mips/include/asm/pmc-sierra/msp71xx/msp_usb.h
-rename to arch/mips/include/asm/mach-pmcs-msp71xx/msp_usb.h
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/war.h b/arch/mips/include/asm/mach-pmcs-msp71xx/war.h
-similarity index 100%
-rename from arch/mips/include/asm/pmc-sierra/msp71xx/war.h
-rename to arch/mips/include/asm/mach-pmcs-msp71xx/war.h
-diff --git a/arch/mips/pmcs-msp71xx/Platform b/arch/mips/pmcs-msp71xx/Platform
-index 9a86e29..7af0734 100644
---- a/arch/mips/pmcs-msp71xx/Platform
-+++ b/arch/mips/pmcs-msp71xx/Platform
-@@ -2,6 +2,6 @@
- # PMC-Sierra MSP SOCs
- #
- platform-$(CONFIG_PMC_MSP)	+= pmcs-msp71xx/
--cflags-$(CONFIG_PMC_MSP)	+= -I$(srctree)/arch/mips/include/asm/pmc-sierra/msp71xx \
-+cflags-$(CONFIG_PMC_MSP)	+= -I$(srctree)/arch/mips/include/asm/mach-pmcs-msp71xx \
- 					-mno-branch-likely
- load-$(CONFIG_PMC_MSP)		+= 0xffffffff80100000
--- 
-1.7.2.5
+--=20
+ Kirill A. Shutemov
+
+--mP3DRpeJDSE+ciuQ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQ2kYaAAoJEAd+omnVudOMDEgP/iUqZr7TalBS0Wz0s0kXnF6Q
+fZkCIZInO98chygGuCZWo/3OggufeaLopnhDazJN4jSkxPwLDWTGlcIJCSZh4vNK
+hc/ojg3UOb28u9gRDQDDoPxrzIFFIKZTZXb6NAE3nVsv/3xNy3lNRwnPxUIwmnjY
+cGyV37H6Eofi4E5d/MEIvoO/DbfBy8Aa4ZJ2/aasbbJE2o0jnvaL9Wji1zJfCj+X
+ZD3dUvchrddzSzkL0K7KJ4If2euCIy1xiiIm6hQgCio9BXHTNzgj2mwkBwWe0JSl
+KMYXSGbwv5FrAa8r4wdWW/VxIQavXZtaO05zkGsLe1wdLStJ/Z4YKZoBbvX6YU4V
+IbDd0Zg230pO7Rf0dsdCUfJE43kUFresPV88rTlYKjhM8nKqVUSpHeROTtePZUBX
+fbgUT1QLXMWgGnCljiPWxQtm5tHunHIycZwIO7N8sq+f42IxSOMQG6j4Z3KCR/iG
+MT0c4RYFpsSvdy5DPvSY75kdPzQDjK/VQta7SEMWp1URpISOQ8yZyAp0XrhhUwXu
+4Kfiig+pp0QNkvtO7TNJCxHxQVkKn8u2YWj7+KS6P7IMp8bgY8FVdBSNf3VTH6d9
+2/iL4Dblezjabc3esav4wW5Wirpe2/GZzEa3nK2dlJm7QTPlZbaM5P3FdFvGAIBK
+wvYS/w1LURzEbwIEz/zT
+=1Y63
+-----END PGP SIGNATURE-----
+
+--mP3DRpeJDSE+ciuQ--

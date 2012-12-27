@@ -1,36 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Dec 2012 13:54:44 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:54504 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817128Ab2L0MymcLwEg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Dec 2012 13:54:42 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id A62598F61;
-        Thu, 27 Dec 2012 13:54:41 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id de+CwJJbxhcd; Thu, 27 Dec 2012 13:54:35 +0100 (CET)
-Received: from [151.217.209.14] (unknown [151.217.209.14])
-        by hauke-m.de (Postfix) with ESMTPSA id 21DFF8E1C;
-        Thu, 27 Dec 2012 13:54:34 +0100 (CET)
-Message-ID: <50DC4509.8090502@hauke-m.de>
-Date:   Thu, 27 Dec 2012 13:54:33 +0100
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Dec 2012 20:44:08 +0100 (CET)
+Received: from qmta03.westchester.pa.mail.comcast.net ([76.96.62.32]:54455
+        "EHLO qmta03.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823037Ab2L0ToAB7Iwk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Dec 2012 20:44:00 +0100
+Received: from omta11.westchester.pa.mail.comcast.net ([76.96.62.36])
+        by qmta03.westchester.pa.mail.comcast.net with comcast
+        id gcF31k0080mv7h053jjteZ; Thu, 27 Dec 2012 19:43:53 +0000
+Received: from [192.168.1.13] ([76.106.69.86])
+        by omta11.westchester.pa.mail.comcast.net with comcast
+        id gjjs1k00L1rgsis3Xjjs1x; Thu, 27 Dec 2012 19:43:53 +0000
+Message-ID: <50DCA50A.3020704@gentoo.org>
+Date:   Thu, 27 Dec 2012 14:44:10 -0500
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/17.0 Thunderbird/17.0
 MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-CC:     john@phrozen.org, ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/6] MIPS: BCM47XX: nvram read enhancements
-References: <1356555074-1230-1-git-send-email-hauke@hauke-m.de> <CACna6rwqPtCb7GqXYQw5qL3_cUQ8xn6z_U5zCq0E0vZ0yhJXTA@mail.gmail.com>
-In-Reply-To: <CACna6rwqPtCb7GqXYQw5qL3_cUQ8xn6z_U5zCq0E0vZ0yhJXTA@mail.gmail.com>
+To:     Linux MIPS List <linux-mips@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH]: Fix 3.7 mips build if !CONFIG_MODULES
+References: <50DC174D.6090302@gentoo.org> <CAMuHMdXyMzQtejXOHEcSUO7fLh7CP+sPvNYdVnzKjwZx9Vj6xg@mail.gmail.com>
+In-Reply-To: <CAMuHMdXyMzQtejXOHEcSUO7fLh7CP+sPvNYdVnzKjwZx9Vj6xg@mail.gmail.com>
 X-Enigmail-Version: 1.4.6
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 35338
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig45F2602B37BA6F00EE3074FF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20121106; t=1356637433;
+        bh=YWRFQj+xdISLhCQY3o1Cv0x+uD5UsidzOWdkrUod3kI=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=ea2ToXJQKUO5yGtAI/COfqodlquDaCkXNYNLAh0BqK0vIF3CNIz7ZDGd09WOZo+3l
+         ri+v6gU0r05YgUmISCxO4dSJdaUvIMYYhXewlWSAEqHpU2B+fMFnGpjmXHl/fPjFoq
+         fqQo32lvIOYMUeKbo8ARoEpiMqgZ/ATQPER9mykgp1z1g3i7yltgTGg7fokl3Yw3ey
+         ooR3PpJkHElHMp2GciNQJy/IqwEOaokq9tKOWVaLdnB7+Qy46QG2N6/7WObyMFWMVp
+         E0RBeXDg5dnZRoOsFYcv1gXnrVaOzlLLu5ycBpPXLvOpyEbmiTUXHQwplE1iRf1XI5
+         M9Pq69Ysv/cQA==
+X-archive-position: 35339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,32 +52,87 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 12/27/2012 09:49 AM, Rafał Miłecki wrote:
-> 2012/12/26 Hauke Mehrtens <hauke@hauke-m.de>:
->> Clean up the nvram reading code and add support for different nvram
->> sizes.
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig45F2602B37BA6F00EE3074FF
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+On 12/27/2012 4:45 AM, Geert Uytterhoeven wrote:
+> On Thu, Dec 27, 2012 at 10:39 AM, Joshua Kinard <kumba@gentoo.org> wrot=
+e:
+>> The attached patch fixes a build failure if building a monolithic kern=
+el due
+>> to arch/mips/kernel/Kconfig selecting MODULES_USE_ELF_REL[A] without
+>> checking to see if MODULES is set or not.  This leads to 'struct modul=
+e' not
+>> existing, which triggers a compile failure in arch/mips/kernel/module-=
+rela.c
+>> when the compiler attempts to dereference me->name on lines 36, 48, an=
+d 133.
 >>
->> This depends on patch "MIPS: bcm47xx: separate functions finding flash
->> window addr" by Rafał Miłeck, Patchwork:  https://patchwork.linux-mips.org/patch/4738/
+>> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+>> ---
 >>
->> Hauke Mehrtens (6):
->>   MIPS: BCM47XX: use common error codes in nvram reads
->>   MIPS: BCM47XX: return error when init of nvram failed
->>   MIPS: BCM47XX: nvram add nand flash support
->>   MIPS: BCM47XX: rename early_nvram_init to nvram_init
->>   MIPS: BCM47XX: handle different nvram sizes
->>   MIPS: BCM47XX: add bcm47xx prefix in front of nvram function names
-> 
-> Hm, the only question? Why so late ;) I've spent 3 hours yesterday
-> debugging nvram on my WNDR4500, it didn't fill SPROM of PCIe cards
-> correctly. Will test your patches today.
+>>  Kconfig |    4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>>
+>> diff -Naurp a/arch/mips/Kconfig b/arch/mips/Kconfig
+>> --- a/arch/mips/Kconfig 2012-12-22 22:52:28.264461836 -0500
+>> +++ b/arch/mips/Kconfig 2012-12-26 23:00:46.202996691 -0500
+>> @@ -39,8 +39,8 @@ config MIPS
+>>         select GENERIC_CLOCKEVENTS
+>>         select GENERIC_CMOS_UPDATE
+>>         select HAVE_MOD_ARCH_SPECIFIC
+>> -       select MODULES_USE_ELF_REL
+>> -       select MODULES_USE_ELF_RELA if 64BIT
+>> +       select MODULES_USE_ELF_REL && MODULES
+>=20
+> Shouldn't that be
+>=20
+>     select MODULES_USE_ELF_REL if MODULES
+>=20
+> ?
+>=20
+>> +       select MODULES_USE_ELF_RELA if MODULES && 64BIT
 
-I waited till the bit in the flash part in bcma got into the mips tree.
-Most of the patches in this series were already in my tree and OpenWrt
-for some time.
+Whoops, yep!  Thanks for the catch, I'll resend a fixed patch.
 
-Does it work now? Your patch was the most important one. In this series
-only the "handle different nvram sizes" could fix the problem with your
-device.
+--=20
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28
 
-Hauke
+"The past tempts us, the present confuses us, the future frightens us.  A=
+nd
+our lives slip away, moment by moment, lost in that vast, terrible in-bet=
+ween."
+
+--Emperor Turhan, Centauri Republic
+
+
+--------------enig45F2602B37BA6F00EE3074FF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.17 (MingW32)
+
+iQIcBAEBAgAGBQJQ3KULAAoJENsjoH7SXZXjus8P/jUxPQ+uHEASKdJA6KHcnJwd
+k8PQ9YI39Xuj8uGU4kXUSh5ySFkTxG6EKIaRkFpmeompuSSBgK4VHttzylScbOj0
+hXzW+7Wf3z1OiSCXs5YwUmauvazu5ZxUGCGeG6PQoUkPPwK3jeyDIS/b9LHTPS64
+ITp1hZqQovQtF61EvwTdwEcnJZd4CSw6xbP3+II5AOqHiecOjDXlH6/ygf5iIHjT
+sgeJfrjTtyk3poPjj7O5UyoR25fsOo0813KPMToM5BsLmhLDMdB2GezixhHMRdQ0
+adEOjqrnndQ4KcWy86YGjEd4klEnsKNzTmNMR/FrLi/T1LBpZxx9bSEv5fSk/nZY
+o2cgwe+ml+yt5s43rTNnp50Ig3fI4KMtAwg4phrzj+j0Nwgrh/aUnuNx+fW5aZGA
+U5Fr9zU8S8jN9UzRBxKNb6xrxC1U10OoiS7MY1HDl3n9AFwQYKvWF6Gc66vBl4Uy
+lIihRWB9loEJOXJHfiKhsZTM+1xBdCEmfjvQ1SQGJBTPd19kaZKzMJxa9vwZ3RS6
+MXKGZJspwf069SeRuppQbK2qAPvpN007+Wtvu6o6Qm7+uuDj+kTZRIt4P1SOm/7N
+ULYCf/p4JA/jo9YcoOtD1fyc783bjaRXkOnP1+G5hXkWPY6OOmqT6kgbeWmNjVV2
+r0MWoa1FZ9iuOHmr+ZMv
+=IOVV
+-----END PGP SIGNATURE-----
+
+--------------enig45F2602B37BA6F00EE3074FF--

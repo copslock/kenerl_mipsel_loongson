@@ -1,46 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jan 2013 23:38:10 +0100 (CET)
-Received: from mail-da0-f47.google.com ([209.85.210.47]:63163 "EHLO
-        mail-da0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823014Ab3ACWiGYbjmz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Jan 2013 23:38:06 +0100
-Received: by mail-da0-f47.google.com with SMTP id s35so7170721dak.34
-        for <multiple recipients>; Thu, 03 Jan 2013 14:37:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=sq4HBGXbNAUWQKVXuCpC5tkNnOOoUOZn1GR58x/C1q4=;
-        b=mNUO6phBOd4fnnQEWsIqHudGXmBiE04O3tHCtpiBXLh5SFDHVCbZD9jDDZXtgB3PtG
-         pAr5HuxSgqetBir0/t2zhxPpcbiThp+R8k7skOlZijkV2d1+4f9WwvehKV/OEolAzulN
-         9c8spwwn2iD3v1rYq6vPpi3qVq7aau8y4Q2BfeeEamzawUaddGwfuYamzFcgzYaRuBIb
-         fw8M1Qp04dSqjXTC1SmI2/4/je1fW6abNbTGs3iuig7ItqJ4qwGaSv9O72PoBt68TIg4
-         oTICy7G/AlOXvhqUZpOBLHIcTDmynMgfSl/UYyEJlBkZ2lQO/FXEH3gQm5jLTK4ml0ao
-         MPHA==
-X-Received: by 10.66.72.225 with SMTP id g1mr149039326pav.79.1357252679475;
-        Thu, 03 Jan 2013 14:37:59 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id t1sm31930503paw.11.2013.01.03.14.37.58
-        (version=SSLv3 cipher=OTHER);
-        Thu, 03 Jan 2013 14:37:58 -0800 (PST)
-Message-ID: <50E60845.9060700@gmail.com>
-Date:   Thu, 03 Jan 2013 14:37:57 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2013 00:00:40 +0100 (CET)
+Received: from dns1.mips.com ([12.201.5.69]:47424 "EHLO dns1.mips.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816521Ab3ACXAjvunWN convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Jan 2013 00:00:39 +0100
+Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
+        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id r03N0WwU022536;
+        Thu, 3 Jan 2013 15:00:32 -0800
+X-WSS-ID: 0MG2NWS-01-1TI-02
+X-M-MSG: 
+Received: from exchdb01.mips.com (unknown [192.168.36.84])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mailgate1.mips.com (Postfix) with ESMTP id 29D0236464B;
+        Thu,  3 Jan 2013 15:00:28 -0800 (PST)
+Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
+ exchhub01.mips.com ([::1]) with mapi id 14.02.0247.003; Thu, 3 Jan 2013
+ 15:00:26 -0800
+From:   "Hill, Steven" <sjhill@mips.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "jchandra@broadcom.com" <jchandra@broadcom.com>
+Subject: RE: [PATCH v2] MIPS: Optimise TLB handlers for MIPS32/64 R2 cores.
+Thread-Topic: [PATCH v2] MIPS: Optimise TLB handlers for MIPS32/64 R2 cores.
+Thread-Index: AQHN6fuyFYyNoBfwFkawzkGY5WNW8Jg4uBmA//99ra8=
+Date:   Thu, 3 Jan 2013 23:00:24 +0000
+Message-ID: <31E06A9FC96CEC488B43B19E2957C1B801146AF09D@exchdb03.mips.com>
+References: <1357249536-2308-1-git-send-email-sjhill@mips.com>,<50E60845.9060700@gmail.com>
+In-Reply-To: <50E60845.9060700@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.36.79]
+x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
+x-ems-stamp: 4+XaOD2R76cQfdm1fZtJYA==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     "Steven J. Hill" <sjhill@mips.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        jchandra@broadcom.com
-Subject: Re: [PATCH v2] MIPS: Optimise TLB handlers for MIPS32/64 R2 cores.
-References: <1357249536-2308-1-git-send-email-sjhill@mips.com>
-In-Reply-To: <1357249536-2308-1-git-send-email-sjhill@mips.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35360
+X-archive-position: 35361
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,51 +56,27 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 01/03/2013 01:45 PM, Steven J. Hill wrote:
-> From: "Steven J. Hill" <sjhill@mips.com>
+>> +     if (cpu_has_mips_r2) {
+>> +             /* PTE ptr offset is obtained from BadVAddr */
+>> +             UASM_i_MFC0(p, tmp, C0_BADVADDR);
+>> +             UASM_i_LW(p, ptr, 0, ptr);
+>> +#ifdef CONFIG_CPU_MIPS64
 >
-> The EXT and INS instructions can be used to decrease code size and
-> thus speed up TLB handlers on MIPS32R2 and MIPS64R2 cores.
+> Is this the right condition?  Is is correct for a 32-bit kernel running
+> on a 64-bit CPU?  Will OCTEON be covered? (no, but it should)
 >
-[...]
-> @@ -1012,6 +1019,24 @@ static void __cpuinit build_adjust_context(u32 **p, unsigned int ctx)
+You're right. The condition should be using CONFIG_64BIT instead. With regards to OCTEON, please test on your platforms and give me a patch.
+
+> Can this whole thing be made more clear by defining UASM_i_EXT(...) that
+> does the proper thing for either 32 or 64 bit kernels as the rest of the
+> capitolized versions of the macros do?
 >
->   static void __cpuinit build_get_ptep(u32 **p, unsigned int tmp, unsigned int ptr)
->   {
-> +	if (cpu_has_mips_r2) {
-> +		/* PTE ptr offset is obtained from BadVAddr */
-> +		UASM_i_MFC0(p, tmp, C0_BADVADDR);
-> +		UASM_i_LW(p, ptr, 0, ptr);
-> +#ifdef CONFIG_CPU_MIPS64
+Certainly.
 
-Is this the right condition?  Is is correct for a 32-bit kernel running 
-on a 64-bit CPU?  Will OCTEON be covered? (no, but it should)
+> Is (PAGE_SHIFT - PTE_ORDER - PTE_T_LOG2 - 1) != (PGDIR_SHIFT -
+> PAGE_SHIFT - 1) for any combinations of config options?  Why are they
+> different for the two cases?
+>
+I do not have 64-bit R2 hardware access. I plugged in the value that jchandra gave to me that worked for him. Other platform testers and their input would be appreciated and welcomed.
 
-> +		uasm_i_dext(p, tmp, tmp, (PAGE_SHIFT + 1),
-> +			(PAGE_SHIFT - PTE_ORDER - PTE_T_LOG2 - 1));
-> +		uasm_i_dins(p, ptr, tmp, (PTE_T_LOG2 + 1),
-> +			(PAGE_SHIFT - PTE_ORDER - PTE_T_LOG2 - 1));
-> +#else
-> +		uasm_i_ext(p, tmp, tmp, (PAGE_SHIFT + 1),
-> +			(PGDIR_SHIFT - PAGE_SHIFT - 1);
-
-Did you even compile this?  It looks like a mismatch in the number of 
-'(' and ')'.
-
-> +		uasm_i_ins(p, ptr, tmp, (PTE_T_LOG2 + 1),
-> +			(PGDIR_SHIFT - PAGE_SHIFT - 1);
-> +#endif
-> +		return;
-> +	}
-
-
-Can this whole thing be made more clear by defining UASM_i_EXT(...) that 
-does the proper thing for either 32 or 64 bit kernels as the rest of the 
-capitolized versions of the macros do?
-
-
-Is (PAGE_SHIFT - PTE_ORDER - PTE_T_LOG2 - 1) != (PGDIR_SHIFT - 
-PAGE_SHIFT - 1) for any combinations of config options?  Why are they 
-different for the two cases?
-
-David Daney
+-Steve

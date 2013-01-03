@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jan 2013 10:34:32 +0100 (CET)
-Received: from mail1-relais-roc.national.inria.fr ([192.134.164.82]:2829 "EHLO
-        mail1-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816521Ab3ACJeauDha1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Jan 2013 10:34:30 +0100
-X-IronPort-AV: E=Sophos;i="4.84,402,1355094000"; 
-   d="scan'208";a="188308018"
-Received: from palace.lip6.fr (HELO localhost.localdomain) ([132.227.105.202])
-  by mail1-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-SHA; 03 Jan 2013 10:34:25 +0100
-From:   Julia Lawall <Julia.Lawall@lip6.fr>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] arch/mips/kernel/cpufreq/loongson2_cpufreq.c: use clk API instead of direct dereferences
-Date:   Thu,  3 Jan 2013 11:34:20 +0100
-Message-Id: <1357209260-15412-2-git-send-email-Julia.Lawall@lip6.fr>
-X-Mailer: git-send-email 1.7.8.6
-X-archive-position: 35355
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jan 2013 21:02:11 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:43179 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6822150Ab3ACUCJTvvS7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Jan 2013 21:02:09 +0100
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1TqqzI-0005U0-EA; Thu, 03 Jan 2013 14:02:00 -0600
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org,
+        florian@openwrt.org
+Subject: [PATCH v3] MIPS: dsp: Add assembler support for DSP ASEs.
+Date:   Thu,  3 Jan 2013 14:01:52 -0600
+Message-Id: <1357243312-23070-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.9.5
+X-archive-position: 35356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Julia.Lawall@lip6.fr
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,72 +33,141 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Julia Lawall <Julia.Lawall@lip6.fr>
+From: "Steven J. Hill" <sjhill@mips.com>
 
-A struct clk value is intended to be an abstract pointer, so it should be
-manipulated using the various API functions.
+Newer toolchains support the DSP and DSP Rev2 instructions. This patch
+performs a check for that support and adds compiler and assembler
+flags for only the files that need use those instructions.
 
-clk_put is additionally added on the failure paths.
-
-The semantic match that finds the first problem is as follows:
-(http://coccinelle.lip6.fr/)
-
-// <smpl>
-@@
-expression e,e1;
-identifier i;
-@@
-
-*e = clk_get(...)
- ... when != e = e1
-     when any
-*e->i
-// </smpl>
-
-Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
-
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
-I am not able to compile this code.
+ arch/mips/include/asm/mipsregs.h |   53 ++++++++++++++++++++++++++------------
+ arch/mips/kernel/Makefile        |   31 ++++++++++++++++++++++
+ 2 files changed, 67 insertions(+), 17 deletions(-)
 
- arch/mips/kernel/cpufreq/loongson2_cpufreq.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/kernel/cpufreq/loongson2_cpufreq.c b/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
-index e7c98e2..51f5b68 100644
---- a/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
-+++ b/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
-@@ -107,6 +107,8 @@ static int loongson2_cpufreq_target(struct cpufreq_policy *policy,
- static int loongson2_cpufreq_cpu_init(struct cpufreq_policy *policy)
- {
- 	int i;
-+	unsigned long rate;
-+	int ret;
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 3e36745..5781322 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -1155,36 +1155,26 @@ do {									\
+         : "=r" (__res));                                        \
+         __res;})
  
- 	if (!cpu_online(policy->cpu))
- 		return -ENODEV;
-@@ -117,15 +119,22 @@ static int loongson2_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 		return PTR_ERR(cpuclk);
- 	}
++#ifdef HAVE_AS_DSP
+ #define rddsp(mask)							\
+ ({									\
+-	unsigned int __res;						\
++	unsigned int __dspctl;						\
+ 									\
+ 	__asm__ __volatile__(						\
+-	"	.set	push				\n"		\
+-	"	.set	noat				\n"		\
+-	"	# rddsp $1, %x1				\n"		\
+-	"	.word	0x7c000cb8 | (%x1 << 16)	\n"		\
+-	"	move	%0, $1				\n"		\
+-	"	.set	pop				\n"		\
+-	: "=r" (__res)							\
++	"	rddsp	%0, %x1					\n"	\
++	: "=r" (__dspctl)						\
+ 	: "i" (mask));							\
+-	__res;								\
++	__dspctl;							\
+ })
  
--	cpuclk->rate = cpu_clock_freq / 1000;
--	if (!cpuclk->rate)
-+	rate = cpu_clock_freq / 1000;
-+	if (!rate) {
-+		clk_put(cpuclk);
- 		return -EINVAL;
-+	}
-+	ret = clk_set_rate(cpuclk, rate);
-+	if (ret) {
-+		clk_put(cpuclk);
-+		return ret;
-+	}
+ #define wrdsp(val, mask)						\
+ do {									\
+ 	__asm__ __volatile__(						\
+-	"	.set	push					\n"	\
+-	"	.set	noat					\n"	\
+-	"	move	$1, %0					\n"	\
+-	"	# wrdsp $1, %x1					\n"	\
+-	"	.word	0x7c2004f8 | (%x1 << 11)		\n"	\
+-	"	.set	pop					\n"	\
+-        :								\
++	"	wrdsp	%0, %x1					\n"	\
++	:								\
+ 	: "r" (val), "i" (mask));					\
+ } while (0)
  
- 	/* clock table init */
- 	for (i = 2;
- 	     (loongson2_clockmod_table[i].frequency != CPUFREQ_TABLE_END);
- 	     i++)
--		loongson2_clockmod_table[i].frequency = (cpuclk->rate * i) / 8;
-+		loongson2_clockmod_table[i].frequency = (rate * i) / 8;
+-#if 0	/* Need DSP ASE capable assembler ... */
+ #define mflo0() ({ long mflo0; __asm__("mflo %0, $ac0" : "=r" (mflo0)); mflo0;})
+ #define mflo1() ({ long mflo1; __asm__("mflo %0, $ac1" : "=r" (mflo1)); mflo1;})
+ #define mflo2() ({ long mflo2; __asm__("mflo %0, $ac2" : "=r" (mflo2)); mflo2;})
+@@ -1207,6 +1197,35 @@ do {									\
  
- 	policy->cur = loongson2_cpufreq_get(policy->cpu);
+ #else
  
++#define rddsp(mask)							\
++({									\
++	unsigned int __res;						\
++									\
++	__asm__ __volatile__(						\
++	"	.set	push				\n"		\
++	"	.set	noat				\n"		\
++	"	# rddsp $1, %x1				\n"		\
++	"	.word	0x7c000cb8 | (%x1 << 16)	\n"		\
++	"	move	%0, $1				\n"		\
++	"	.set	pop				\n"		\
++	: "=r" (__res)							\
++	: "i" (mask));							\
++	__res;								\
++})
++
++#define wrdsp(val, mask)						\
++do {									\
++	__asm__ __volatile__(						\
++	"	.set	push					\n"	\
++	"	.set	noat					\n"	\
++	"	move	$1, %0					\n"	\
++	"	# wrdsp $1, %x1					\n"	\
++	"	.word	0x7c2004f8 | (%x1 << 11)		\n"	\
++	"	.set	pop					\n"	\
++        :								\
++	: "r" (val), "i" (mask));					\
++} while (0)
++
+ #define mfhi0()								\
+ ({									\
+ 	unsigned long __treg;						\
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index de119c6..f416de3 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -99,4 +99,35 @@ obj-$(CONFIG_HW_PERF_EVENTS)	+= perf_event_mipsxx.o
+ 
+ obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
+ 
++#
++# DSP ASE supported for MIPS32 or MIPS64 Release 2 cores only. It is safe
++# to enable DSP assembler support here even if the MIPS Release 2 CPU we
++# are targetting does not support DSP because all code-paths making use of
++# it properly check that the running CPU *actually does* support these
++# instructions.
++#
++ifeq ($(CONFIG_CPU_MIPSR2), y)
++CFLAGS_DSP 			= -DHAVE_AS_DSP
++
++#
++# Check if assembler supports DSP ASE
++#
++ifeq ($(call cc-option-yn,-mdsp), y)
++CFLAGS_DSP			+= -mdsp
++endif
++
++#
++# Check if assembler supports DSP ASE Rev2
++#
++ifeq ($(call cc-option-yn,-mdspr2), y)
++CFLAGS_DSP			+= -mdspr2
++endif
++
++CFLAGS_signal.o			= $(CFLAGS_DSP)
++CFLAGS_signal32.o		= $(CFLAGS_DSP)
++CFLAGS_process.o		= $(CFLAGS_DSP)
++CFLAGS_branch.o			= $(CFLAGS_DSP)
++CFLAGS_ptrace.o			= $(CFLAGS_DSP)
++endif
++
+ CPPFLAGS_vmlinux.lds		:= $(KBUILD_CFLAGS)
+-- 
+1.7.9.5

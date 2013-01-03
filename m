@@ -1,44 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jan 2013 12:29:15 +0100 (CET)
-Received: from mail-wg0-f48.google.com ([74.125.82.48]:48252 "EHLO
-        mail-wg0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6815858Ab3AAL3OYW0qJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Jan 2013 12:29:14 +0100
-Received: by mail-wg0-f48.google.com with SMTP id dt10so5965815wgb.15
-        for <multiple recipients>; Tue, 01 Jan 2013 03:29:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-type:content-transfer-encoding;
-        bh=ltC5HGHh5ze4QK6BcCyO+5cXUbETgTd3JXZJopn1HEY=;
-        b=MKc35v3GnQw+7vn1IPmMaoeuzsc+TJj/AGsJTYVbZ5nmfUNp5Vapwcl6/sB56yS8gw
-         lJRE9Bdiq6F9IKNKKeSLmH4ra+heaDtdWaGBAfMYfSATOeiXHNoIcTsWxvo0jJnf8sfh
-         XbcgtWx1MHeNB3/N5kuDB1LKwzbMD2EWQ9bk1SH+w68sbpggepWyN9MZFu1DAq7gnbp4
-         DAJoHWbfSUo+9fHwujfkx+BRZfc8bP0xZduIWLr1BVmZ8Y9eg3vBEeS+gBgk0wfkiyKb
-         9iyq89rnYLFOtc9zOxLLJv2IT8QjJAa4AB25LnuYGXkuff5HRi40lWefnK8bln9V+K8f
-         347A==
-X-Received: by 10.180.24.70 with SMTP id s6mr66705840wif.22.1357039749062;
-        Tue, 01 Jan 2013 03:29:09 -0800 (PST)
-Received: from pixies.home.jungo.com (212-150-239-254.bb.netvision.net.il. [212.150.239.254])
-        by mx.google.com with ESMTPS id t17sm74595913wiv.6.2013.01.01.03.29.07
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 01 Jan 2013 03:29:08 -0800 (PST)
-Date:   Tue, 1 Jan 2013 13:29:05 +0200
-From:   Shmulik Ladkani <shmulik.ladkani@gmail.com>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: Regarding commit a16dad7 [MIPS: Fix potencial corruption]
-Message-ID: <20130101132905.0c733b69@pixies.home.jungo.com>
-In-Reply-To: <CAJiQ=7DZq7CO3FHtDe3OX12fZy70AUTJxAq90G5GXEewZdgqHw@mail.gmail.com>
-References: <20130101112340.0a0e8c08@pixies.home.jungo.com>
-        <CAJiQ=7DZq7CO3FHtDe3OX12fZy70AUTJxAq90G5GXEewZdgqHw@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35354
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jan 2013 10:34:32 +0100 (CET)
+Received: from mail1-relais-roc.national.inria.fr ([192.134.164.82]:2829 "EHLO
+        mail1-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816521Ab3ACJeauDha1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Jan 2013 10:34:30 +0100
+X-IronPort-AV: E=Sophos;i="4.84,402,1355094000"; 
+   d="scan'208";a="188308018"
+Received: from palace.lip6.fr (HELO localhost.localdomain) ([132.227.105.202])
+  by mail1-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-SHA; 03 Jan 2013 10:34:25 +0100
+From:   Julia Lawall <Julia.Lawall@lip6.fr>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 2/2] arch/mips/kernel/cpufreq/loongson2_cpufreq.c: use clk API instead of direct dereferences
+Date:   Thu,  3 Jan 2013 11:34:20 +0100
+Message-Id: <1357209260-15412-2-git-send-email-Julia.Lawall@lip6.fr>
+X-Mailer: git-send-email 1.7.8.6
+X-archive-position: 35355
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shmulik.ladkani@gmail.com
+X-original-sender: Julia.Lawall@lip6.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,44 +33,72 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Kevin,
+From: Julia Lawall <Julia.Lawall@lip6.fr>
 
-On Tue, 1 Jan 2013 01:47:52 -0800 Kevin Cernekee <cernekee@gmail.com> wrote:
-> On Tue, Jan 1, 2013 at 1:23 AM, Shmulik Ladkani
-> <shmulik.ladkani@gmail.com> wrote:
-> > Following a8ca8b64, another commit was submitted, adding similar
-> > 'cache_op' instructions to 'mips_sc_inv' - namely 96983ffe
-> > (MIPS: MIPSxx SC: Avoid destructive invalidation on partial L2 cachelines).
-> >
-> > Its purpose was to extend a8ca8b64, aligning behavior of 'mips_sc_inv'
-> > to be similar to 'r4k_dma_cache_inv'.
-> >
-> > Since the explicit 'cache_op' instrcutions are now removed from
-> > 'r4k_dma_cache_inv' (as of a16dad77), it probably makes sense to remove
-> > them from 'mips_sc_inv' as well.
-> >
-> > Any reason to keep these 'cache_op's? If not, I'll submit a patch.
-> 
-> There were a couple of USB drivers that stored DMA buffers inside a
-> struct with other data, and invalidating the whole cacheline tended to
-> clobber the other data.  For instance, intr_buff in
-> drivers/net/usb/pegasus.h .
+A struct clk value is intended to be an abstract pointer, so it should be
+manipulated using the various API functions.
 
-I see.
+clk_put is additionally added on the failure paths.
 
-> Does CONFIG_DMA_API_DEBUG complain if it sees unaligned start
-> addresses or sizes?  That would be a much nicer way of catching the
-> problem, than troubleshooting random corruption.
+The semantic match that finds the first problem is as follows:
+(http://coccinelle.lip6.fr/)
 
-Have no idea ;)
-Hoping for Ralf to examine this.
+// <smpl>
+@@
+expression e,e1;
+identifier i;
+@@
 
-I accidentally happened to notice an anomaly in the code: a revert was
-executed (by Ralf Baechle in a16dad77), but it was incomplete:
-(1) the comment was left, (2) revert wasn't executed on 'mips_sc_inv'.
+*e = clk_get(...)
+ ... when != e = e1
+     when any
+*e->i
+// </smpl>
 
-Just pointing out the anomalies, for Ralf to acknowledge whether they
-were deliberate or not.
+Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
 
-Regards,
-Shmulik
+---
+I am not able to compile this code.
+
+ arch/mips/kernel/cpufreq/loongson2_cpufreq.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/arch/mips/kernel/cpufreq/loongson2_cpufreq.c b/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
+index e7c98e2..51f5b68 100644
+--- a/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
++++ b/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
+@@ -107,6 +107,8 @@ static int loongson2_cpufreq_target(struct cpufreq_policy *policy,
+ static int loongson2_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ {
+ 	int i;
++	unsigned long rate;
++	int ret;
+ 
+ 	if (!cpu_online(policy->cpu))
+ 		return -ENODEV;
+@@ -117,15 +119,22 @@ static int loongson2_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 		return PTR_ERR(cpuclk);
+ 	}
+ 
+-	cpuclk->rate = cpu_clock_freq / 1000;
+-	if (!cpuclk->rate)
++	rate = cpu_clock_freq / 1000;
++	if (!rate) {
++		clk_put(cpuclk);
+ 		return -EINVAL;
++	}
++	ret = clk_set_rate(cpuclk, rate);
++	if (ret) {
++		clk_put(cpuclk);
++		return ret;
++	}
+ 
+ 	/* clock table init */
+ 	for (i = 2;
+ 	     (loongson2_clockmod_table[i].frequency != CPUFREQ_TABLE_END);
+ 	     i++)
+-		loongson2_clockmod_table[i].frequency = (cpuclk->rate * i) / 8;
++		loongson2_clockmod_table[i].frequency = (rate * i) / 8;
+ 
+ 	policy->cur = loongson2_cpufreq_get(policy->cpu);
+ 

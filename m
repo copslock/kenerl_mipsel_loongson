@@ -1,46 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2013 19:14:26 +0100 (CET)
-Received: from mail-da0-f50.google.com ([209.85.210.50]:53360 "EHLO
-        mail-da0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816521Ab3ADSOZq3gtN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Jan 2013 19:14:25 +0100
-Received: by mail-da0-f50.google.com with SMTP id h15so7626689dan.9
-        for <multiple recipients>; Fri, 04 Jan 2013 10:14:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=2wvmZ8TQzoebBFkKr93wPyWHqgIwGcFwipYnbXi6YxI=;
-        b=l0JZDLBmAz293hEWXdN7kNG/Cv1XK4kkBFmqJ1RfRc+SV1CMWz4AA9IqyvfX7MDrrb
-         ALMvHsoTglydn+E3xJGmcwI6HfwUL0n0YgLt/htqyax4A9dOgq6GL1tmVMLBWQdFJq19
-         6puXRNCp/jot6T04CGTrzHvejp/lS7kULp5lKQsHZHBk+4pe6Bw70k9jiS95JXnSRgfP
-         GmqVAayA+ZuHl816tgqDEkUOOUr3FCRJl+ac0gz60dT2yH+u33hsJqcmRgSRPeNEDI8C
-         EGFPbMMcyak5llKRxphlRorshsqN/uSIBHpmKnK8pXvXnpx5B69nCUJ6EEtcZnDz7Ajt
-         kgOQ==
-X-Received: by 10.66.86.71 with SMTP id n7mr156601970paz.77.1357323258764;
-        Fri, 04 Jan 2013 10:14:18 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id m3sm33581884pav.4.2013.01.04.10.14.17
-        (version=SSLv3 cipher=OTHER);
-        Fri, 04 Jan 2013 10:14:17 -0800 (PST)
-Message-ID: <50E71BF8.3050308@gmail.com>
-Date:   Fri, 04 Jan 2013 10:14:16 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2013 19:25:49 +0100 (CET)
+Received: from dns1.mips.com ([12.201.5.69]:59818 "EHLO dns1.mips.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816521Ab3ADSZscWZwy convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Jan 2013 19:25:48 +0100
+Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
+        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id r04IPeQ1009287;
+        Fri, 4 Jan 2013 10:25:40 -0800
+X-WSS-ID: 0MG45TP-01-24M-02
+X-M-MSG: 
+Received: from exchdb01.mips.com (unknown [192.168.36.84])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mailgate1.mips.com (Postfix) with ESMTP id 229D236465C;
+        Fri,  4 Jan 2013 10:25:00 -0800 (PST)
+Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
+ exchhub01.mips.com ([::1]) with mapi id 14.02.0247.003; Fri, 4 Jan 2013
+ 10:24:55 -0800
+From:   "Hill, Steven" <sjhill@mips.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "jchandra@broadcom.com" <jchandra@broadcom.com>
+Subject: RE: [PATCH v3] MIPS: Optimise TLB handlers for MIPS32/64 R2 cores.
+Thread-Topic: [PATCH v3] MIPS: Optimise TLB handlers for MIPS32/64 R2 cores.
+Thread-Index: AQHN6qU9UKBlTq5FeUuwhULMCz9AMZg5/24A//97J4Y=
+Date:   Fri, 4 Jan 2013 18:24:54 +0000
+Message-ID: <31E06A9FC96CEC488B43B19E2957C1B801146AF100@exchdb03.mips.com>
+References: <1357322355-31622-1-git-send-email-sjhill@mips.com>,<50E71BF8.3050308@gmail.com>
+In-Reply-To: <50E71BF8.3050308@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.36.79]
+x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
+x-ems-stamp: NtxUHQ/gjj18I5uxbWYO/Q==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     "Steven J. Hill" <sjhill@mips.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        jchandra@broadcom.com
-Subject: Re: [PATCH v3] MIPS: Optimise TLB handlers for MIPS32/64 R2 cores.
-References: <1357322355-31622-1-git-send-email-sjhill@mips.com>
-In-Reply-To: <1357322355-31622-1-git-send-email-sjhill@mips.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35369
+X-archive-position: 35370
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,26 +56,20 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 01/04/2013 09:59 AM, Steven J. Hill wrote:
-> From: "Steven J. Hill" <sjhill@mips.com>
+>> +#ifdef CONFIG_64BIT
+>> +                     (PAGE_SHIFT - PTE_ORDER - PTE_T_LOG2 - 1));
+>> +#else
+>> +                     (PGDIR_SHIFT - PAGE_SHIFT - 1));
+>> +#endif
+>> +             UASM_i_INS(p, ptr, tmp, (PTE_T_LOG2 + 1),
 >
-> The EXT and INS instructions can be used to decrease code size and
-> thus speed up TLB handlers on MIPS32R2 and MIPS64R2 cores.
+> As far as I can tell, (PAGE_SHIFT - PTE_ORDER - PTE_T_LOG2 - 1) and
+> (PGDIR_SHIFT - PAGE_SHIFT - 1) are the same thing.  So why the two cases?
 >
-> Signed-off-by: Steven J. Hill <sjhill@mips.com>
-[...]
-> +#ifdef CONFIG_64BIT
-> +			(PAGE_SHIFT - PTE_ORDER - PTE_T_LOG2 - 1));
-> +#else
-> +			(PGDIR_SHIFT - PAGE_SHIFT - 1));
-> +#endif
-> +		UASM_i_INS(p, ptr, tmp, (PTE_T_LOG2 + 1),
+>Can you give an example of where they might differ?
+>
+David,
 
+Actually, no I cannot. The calculation was given to me by 'jchandra' and since I do not have 64-bit R2 hardware let alone the Broadcom platform, he said it worked on his platform and I took it from him as is. So does this patch work on Cavium platforms using both calculation methods? It would be nice if 'jchandra' could chime in, but he may be on holiday or something.
 
-
-As far as I can tell, (PAGE_SHIFT - PTE_ORDER - PTE_T_LOG2 - 1) and 
-(PGDIR_SHIFT - PAGE_SHIFT - 1) are the same thing.  So why the two cases?
-
-Can you give an example of where they might differ?
-
-David Daney
+-Steve

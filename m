@@ -1,49 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2013 19:38:45 +0100 (CET)
-Received: from dns1.mips.com ([12.201.5.69]:33005 "EHLO dns1.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816521Ab3ADSinkQhQ0 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Jan 2013 19:38:43 +0100
-Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id r04Ica87009682;
-        Fri, 4 Jan 2013 10:38:36 -0800
-X-WSS-ID: 0MG46GC-01-252-02
-X-M-MSG: 
-Received: from exchdb01.mips.com (unknown [192.168.36.84])
-        (using TLSv1 with cipher AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mailgate1.mips.com (Postfix) with ESMTP id 2776436465C;
-        Fri,  4 Jan 2013 10:38:36 -0800 (PST)
-Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
- exchhub01.mips.com ([::1]) with mapi id 14.02.0247.003; Fri, 4 Jan 2013
- 10:38:34 -0800
-From:   "Hill, Steven" <sjhill@mips.com>
-To:     David Daney <ddaney.cavm@gmail.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>
-Subject: RE: [PATCH v4] MIPS: Make CP0 config registers readable via sysfs.
-Thread-Topic: [PATCH v4] MIPS: Make CP0 config registers readable via sysfs.
-Thread-Index: AQHN2X9pyfb9ZaeD/km09iPLMrJAg5gX5feAgAADMQCAIbbgOA==
-Date:   Fri, 4 Jan 2013 18:38:32 +0000
-Message-ID: <31E06A9FC96CEC488B43B19E2957C1B801146AF10B@exchdb03.mips.com>
-References: <1355436915-24381-1-git-send-email-sjhill@mips.com>
- <alpine.LFD.2.02.1212132325180.5950@eddie.linux-mips.org>,<50CA6712.1060809@gmail.com>
-In-Reply-To: <50CA6712.1060809@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.36.79]
-x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-x-ems-stamp: /Khdoq2rU3xB5aGaH5PAOA==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2013 20:05:15 +0100 (CET)
+Received: from mail-pb0-f53.google.com ([209.85.160.53]:63355 "EHLO
+        mail-pb0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816521Ab3ADTFOfCl9C (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Jan 2013 20:05:14 +0100
+Received: by mail-pb0-f53.google.com with SMTP id jt11so9314620pbb.26
+        for <multiple recipients>; Fri, 04 Jan 2013 11:05:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=ORHSDGg59oCKhIKA9/cwFsuJVM/1NJ1zxemBLh1Y7Bo=;
+        b=DZ+ynN3bFLXzm28YK2mHiSUZNq4BQQMiyNy8u4aJalgOp4LE4mssmuX2eId+5UNHhn
+         u8lPqFZUfr1F2Ei6TWkEoyXn7JX908y87g3Hv+zdBwh7BuZ72dtR5dsjhvWROJ7o7aEK
+         iDVartADHjNV7kwXbBJvGeriMBIcFbT3WsPmi3Z2L2UXdVy5K9Nys0O+tUkeenC5LdXu
+         zAnUAaTLw7IclCT9kL7+iO9UyX9zgqMmfboP/Kn69DsaM6ZWRm+Y6R/VQ7CQNSFkvB5q
+         v0Z8ICaex2yRy4nMz4T3LxwZwvvRGE6lmn8o9zHrxRrxIXGriczEekraMZr0gp75XbvN
+         gxeQ==
+X-Received: by 10.68.209.230 with SMTP id mp6mr163572503pbc.8.1357326307601;
+        Fri, 04 Jan 2013 11:05:07 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id pm8sm32665936pbb.29.2013.01.04.11.05.06
+        (version=SSLv3 cipher=OTHER);
+        Fri, 04 Jan 2013 11:05:06 -0800 (PST)
+Message-ID: <50E727E1.8040604@gmail.com>
+Date:   Fri, 04 Jan 2013 11:05:05 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
 MIME-Version: 1.0
-X-archive-position: 35371
+To:     "Hill, Steven" <sjhill@mips.com>
+CC:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>
+Subject: Re: [PATCH v4] MIPS: Make CP0 config registers readable via sysfs.
+References: <1355436915-24381-1-git-send-email-sjhill@mips.com> <alpine.LFD.2.02.1212132325180.5950@eddie.linux-mips.org>,<50CA6712.1060809@gmail.com> <31E06A9FC96CEC488B43B19E2957C1B801146AF10B@exchdb03.mips.com>
+In-Reply-To: <31E06A9FC96CEC488B43B19E2957C1B801146AF10B@exchdb03.mips.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 35372
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@mips.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,11 +55,22 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-> You're exporting privileged context outside the kernel -- have all the
-> security implications been considered?
+On 01/04/2013 10:38 AM, Hill, Steven wrote:
+>> You're exporting privileged context outside the kernel -- have all the
+>> security implications been considered?
+>>
+> Maciej,
 >
-Maciej,
+> I have gone through the config registers bit-by-bit and I do not see
+> where there are any security implications.
 
-I have gone through the config registers bit-by-bit and I do not see where there are any security implications. There are maybe 7 bits total in config registers 0 through 5 that are R/W and this patch, of course, is providing RO access. A motivated person could download the PRA documents from our website even without this patch to discover what was implemented in the system. I could certainly see security implications if we were exporting the STATUS, CAUSE, and other critical registers. Unless you can provide a counterexample, this patch does not compromise the system in anyway.  
+[...]
 
--Steve
+> Unless you can provide a counterexample,
+> this patch does not compromise the system in anyway.
+>
+
+The patch stands alone.  Any security problems it might have are 
+completely unrelated to any hypothetical Counter Examples.
+
+David Daney

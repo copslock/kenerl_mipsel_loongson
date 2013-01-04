@@ -1,39 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2013 04:40:16 +0100 (CET)
-Received: from mail-ia0-f169.google.com ([209.85.210.169]:59424 "EHLO
-        mail-ia0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816383Ab3ADDkOrtgQm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Jan 2013 04:40:14 +0100
-Received: by mail-ia0-f169.google.com with SMTP id u20so6877732iag.14
-        for <multiple recipients>; Thu, 03 Jan 2013 19:40:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:date:message-id:to:subject:from;
-        bh=dWuFON15dyQb57+zeH11EuVJTmhE2D6tcROiMI+DH1E=;
-        b=SxcblVaq2PSZg+M/tLChFOmt3NcoKw7QwG6PPNHmYP+JpFzAiNOvhT6lres61Bkq3h
-         dhEikKpOtvpN01Z5yEbxl76zIpQ9F3rMGpzr5s9soXS9IQirk952/Y90gmpVtQx6AXvb
-         IJyfNpm5mWSLNRyHFPVc36bra77sSofSTRvAgLvKFsD+tpXiAmi5YeGwGABg/Qc8we0P
-         RoLPnLTky8+0WUDqOY7PBXsX4MpFElN5ndoNbZIRS3I8k0ZMhhoXoHOkMpqBCYPp2p5w
-         Yt7XEeUEehnPmnHO9bvaLHlNOB5tgraqSGIXKNG71KvVdC0QlzUtNkvHniX6ini55c4b
-         6LAg==
-X-Received: by 10.50.197.169 with SMTP id iv9mr42550192igc.32.1357270807448;
-        Thu, 03 Jan 2013 19:40:07 -0800 (PST)
-Received: from localhost ([207.47.250.72])
-        by mx.google.com with ESMTPS id eu3sm46094529igc.7.2013.01.03.19.40.05
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2013 13:13:54 +0100 (CET)
+Received: from mail-la0-f53.google.com ([209.85.215.53]:61365 "EHLO
+        mail-la0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816671Ab3ADMNwmzPkl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Jan 2013 13:13:52 +0100
+Received: by mail-la0-f53.google.com with SMTP id fn20so9660077lab.12
+        for <linux-mips@linux-mips.org>; Fri, 04 Jan 2013 04:13:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding:x-gm-message-state;
+        bh=dt4zimQaJ0mzs/+SodCArpnmuFEx4aIMTG3htFMAUjs=;
+        b=Sx2ZzeTenhRmd3l5VFI0GdgPrHnwitP//8bB4G9PrFemd350DlDYEWTEUJorikLCf9
+         69xlksC//LYXx71+yT+EVKpQ/NSuNLkVvTrGNcU9KNgkPxeoxdDaThFwzkEXp10NcICN
+         JOR7e4TMYbp6718AXZ+iGW9jxWz1dKWKm7vUGOxJHGcZfRH2Ziqc+Yc6aznPeMWXvL/y
+         N1Xi52O5rfRr+1Kl4l/t6IkIUDHF7fx2luw6ZvDSTpRfN/tV7xCr0WpD/V+BmgXhTU9l
+         +wwji8KW9qr4l9aJ+rvkLugqBtYi8O9bKXD0Zhc6B6vvc61B56z0eeY+ulRlLX3QOv3z
+         VngQ==
+X-Received: by 10.112.54.6 with SMTP id f6mr21393757lbp.71.1357301626691;
+        Fri, 04 Jan 2013 04:13:46 -0800 (PST)
+Received: from [192.168.2.2] (ppp91-79-95-142.pppoe.mtu-net.ru. [91.79.95.142])
+        by mx.google.com with ESMTPS id fh4sm17879228lbb.7.2013.01.04.04.13.43
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 03 Jan 2013 19:40:06 -0800 (PST)
-Received: from shane by localhost with local (Exim 4.72)
-        (envelope-from <shane@localhost>)
-        id 1Tqy8Z-0003Uc-Cm; Thu, 03 Jan 2013 21:40:03 -0600
-Date:   Thu, 03 Jan 2013 21:40:03 -0600
-Message-Id: <E1Tqy8Z-0003Uc-Cm@localhost>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: [PATCH] MIPS: Fix build failure of msp71xx default configuration
-From:   Shane McDonald <mcdonald.shane@gmail.com>
-X-archive-position: 35365
+        Fri, 04 Jan 2013 04:13:45 -0800 (PST)
+Message-ID: <50E6C776.7060707@mvista.com>
+Date:   Fri, 04 Jan 2013 16:13:42 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/17.0 Thunderbird/17.0
+MIME-Version: 1.0
+To:     Srivatsa Vaddagiri <vatsa@codeaurora.org>
+CC:     Russell King <linux@arm.linux.org.uk>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Mike Frysinger <vapier@gentoo.org>,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        linux-s390@vger.kernel.org, Paul Mundt <lethal@linux-sh.org>,
+        linux-sh@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, mhocko@suse.cz,
+        srivatsa.bhat@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 2/2] Revert "nohz: Fix idle ticks in cpu summary line
+ of /proc/stat" (commit 7386cdbf2f57ea8cff3c9fde93f206e58b9fe13f).
+References: <1357268337-8025-1-git-send-email-vatsa@codeaurora.org>
+In-Reply-To: <1357268337-8025-1-git-send-email-vatsa@codeaurora.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Gm-Message-State: ALoCoQmcrg/lCFAZMvVWKZQbTpjDWNSEy7sIQrF/oW15y39S3UB7BWe74wNEkjheYyuA8/UUAJEo
+X-archive-position: 35366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald.shane@gmail.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,45 +71,21 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The msp71xx default configuration fails to compile in Linux 3.8-rc2:
+Hello.
 
-In file included from /home/shane/linux-mips/linux/arch/mips/include/asm/bitops.h:22,
-                 from include/linux/bitops.h:22,
-                 from include/linux/kernel.h:10,
-                 from include/asm-generic/bug.h:13,
-                 from /home/shane/linux-mips/linux/arch/mips/include/asm/bug.h:41,
-                 from include/linux/bug.h:4,
-                 from include/linux/page-flags.h:9,
-                 from kernel/bounds.c:9:
-/home/shane/linux-mips/linux/arch/mips/include/asm/war.h:12:17: error: war.h: No such file or directory
+On 04-01-2013 6:58, Srivatsa Vaddagiri wrote:
 
-This is because the Platform file points at the incorrect include file
-location, and therefore the war.h file cannot be found.
+> With offline cpus no longer beeing seen in nohz mode (ts->idle_active=0), we
+> don't need the check for cpu_online() introduced in commit 7386cdbf. Offline
 
-This patch changes the Platform file to point to the correct location.
+    Please also specify the summary of that commit in parens (or however you 
+like).
 
-Caused by a combination of the following lmo-only patches:
+> cpu's idle time as last recorded in its ts->idle_sleeptime will be reported
+> (thus excluding its offline time as part of idle time statistics).
 
-13a347ef60c68e490809dad8fcf79c25eabc4d58 [MIPS: MSP71xx: Move code.]
-a89c0370cb5429891d49abcc66f93c63b43c7dbe
-  [MIPS: Fix make distclean after moving the PMC-Sierra code.]
+> Cc: mhocko@suse.cz
+> Cc: srivatsa.bhat@linux.vnet.ibm.com
+> Signed-off-by: Srivatsa Vaddagiri <vatsa@codeaurora.org>
 
-Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
----
- arch/mips/pmcs-msp71xx/Platform |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/pmcs-msp71xx/Platform b/arch/mips/pmcs-msp71xx/Platform
-index e42a4d6..9a86e29 100644
---- a/arch/mips/pmcs-msp71xx/Platform
-+++ b/arch/mips/pmcs-msp71xx/Platform
-@@ -2,6 +2,6 @@
- # PMC-Sierra MSP SOCs
- #
- platform-$(CONFIG_PMC_MSP)	+= pmcs-msp71xx/
--cflags-$(CONFIG_PMC_MSP)	+= -I$(srctree)/arch/mips/include/asm/pmc-sierra \
-+cflags-$(CONFIG_PMC_MSP)	+= -I$(srctree)/arch/mips/include/asm/pmc-sierra/msp71xx \
- 					-mno-branch-likely
- load-$(CONFIG_PMC_MSP)		+= 0xffffffff80100000
--- 
-1.7.2.5
+WBR, Sergei

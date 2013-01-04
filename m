@@ -1,50 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2013 20:30:46 +0100 (CET)
-Received: from dns1.mips.com ([12.201.5.69]:49974 "EHLO dns1.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6820513Ab3ADTapQHtjF convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Jan 2013 20:30:45 +0100
-Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id r04JUbEb010958;
-        Fri, 4 Jan 2013 11:30:37 -0800
-X-WSS-ID: 0MG48UY-01-26P-02
-X-M-MSG: 
-Received: from exchdb01.mips.com (unknown [192.168.36.84])
-        (using TLSv1 with cipher AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mailgate1.mips.com (Postfix) with ESMTP id 231F936465C;
-        Fri,  4 Jan 2013 11:30:34 -0800 (PST)
-Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
- exchhub01.mips.com ([::1]) with mapi id 14.02.0247.003; Fri, 4 Jan 2013
- 11:30:33 -0800
-From:   "Hill, Steven" <sjhill@mips.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>
-Subject: RE: [PATCH v4] MIPS: Make CP0 config registers readable via sysfs.
-Thread-Topic: [PATCH v4] MIPS: Make CP0 config registers readable via sysfs.
-Thread-Index: AQHN2X9pyfb9ZaeD/km09iPLMrJAg5gX5feAgAADMQCAIbbgOIAAj+WA//+AxrE=
-Date:   Fri, 4 Jan 2013 19:30:31 +0000
-Message-ID: <31E06A9FC96CEC488B43B19E2957C1B801146AF11F@exchdb03.mips.com>
-References: <1355436915-24381-1-git-send-email-sjhill@mips.com>
- <alpine.LFD.2.02.1212132325180.5950@eddie.linux-mips.org>,<50CA6712.1060809@gmail.com>
- <31E06A9FC96CEC488B43B19E2957C1B801146AF10B@exchdb03.mips.com>,<50E727E1.8040604@gmail.com>
-In-Reply-To: <50E727E1.8040604@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.36.79]
-x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-x-ems-stamp: T1AhJZHQKcGYobS2TeX/pA==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2013 20:44:20 +0100 (CET)
+Received: from mail-la0-f51.google.com ([209.85.215.51]:49260 "EHLO
+        mail-la0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6820513Ab3ADToTquM6i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Jan 2013 20:44:19 +0100
+Received: by mail-la0-f51.google.com with SMTP id fj20so10097213lab.24
+        for <linux-mips@linux-mips.org>; Fri, 04 Jan 2013 11:44:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding:x-gm-message-state;
+        bh=f/qIS7csv+7S92xYwzs8Yh7E285UKmwCDR7VTITzdH4=;
+        b=T84xqdlkpf21hd8+36WhqqsIywL4Ph+N+Buo8Br1khj8x2eZfOj/QjnBW3TgiUKYpC
+         vWnrQ2I+GZ4cv23JPEM51EnI+IArF60clvWSYbNub+nyDLuaE38FXJNwHyqwe1E1NJNz
+         VKvEJk8+1l5GLwN0usVjAi+34AseYrwEFRlzqW08GD2OAfNDgVx3+Q9I0tFElG9aw7iN
+         uX86rlWuC5D81RIOJB/YmXaH4YjNP6iCk/VXvGcQQCOKPrOjhZZpWOL+pqpmWHXJ/jHm
+         KjtKvktqpB/LNxR2PtNCPqCWjjXNIr5Luiun2d9nEAD15SKHKBo3Q8v3SmhXjuvJ2JbT
+         0mAQ==
+X-Received: by 10.112.17.108 with SMTP id n12mr20489224lbd.21.1357328653767;
+        Fri, 04 Jan 2013 11:44:13 -0800 (PST)
+Received: from wasted.dev.rtsoft.ru (mail.dev.rtsoft.ru. [213.79.90.226])
+        by mx.google.com with ESMTPS id u5sm18214231lbm.8.2013.01.04.11.44.11
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 04 Jan 2013 11:44:12 -0800 (PST)
+Message-ID: <50E73EB6.9090100@mvista.com>
+Date:   Fri, 04 Jan 2013 23:42:30 +0300
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/17.0 Thunderbird/17.0
 MIME-Version: 1.0
-X-archive-position: 35374
+To:     Srivatsa Vaddagiri <vatsa@codeaurora.org>
+CC:     Russell King <linux@arm.linux.org.uk>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Mike Frysinger <vapier@gentoo.org>,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        linux-s390@vger.kernel.org, Paul Mundt <lethal@linux-sh.org>,
+        linux-sh@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, mhocko@suse.cz,
+        srivatsa.bhat@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 2/2] Revert "nohz: Fix idle ticks in cpu summary line
+ of /proc/stat" (commit 7386cdbf2f57ea8cff3c9fde93f206e58b9fe13f).
+References: <1357268337-8025-1-git-send-email-vatsa@codeaurora.org> <50E6C776.7060707@mvista.com> <20130104192934.GB29866@quicinc.com>
+In-Reply-To: <20130104192934.GB29866@quicinc.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Gm-Message-State: ALoCoQloT3DHFxnSeSz8+laetL+MAz4Cfz38wkd59v9RYheqelRB+20PukV1bbfqAoch+RpiGpN8
+X-archive-position: 35375
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@mips.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,9 +71,23 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-> The patch stands alone.  Any security problems it might have are
-> completely unrelated to any hypothetical Counter Examples.
->
-Indeed. So, can I get an ACK or what next? Thanks.
+Hello.
 
--Steve
+On 01/04/2013 10:29 PM, Srivatsa Vaddagiri wrote:
+
+>>> With offline cpus no longer beeing seen in nohz mode (ts->idle_active=0), we
+>>> don't need the check for cpu_online() introduced in commit 7386cdbf. Offline
+
+>>    Please also specify the summary of that commit in parens (or
+>> however you like).
+
+> I had that in Subject line, but yes would be good to include in commit message
+> as well. I will incorporate that change alongwith anything else required in
+> next version of this patch.
+
+   Ah, that was a revert with atypical subject -- didn't notice. Then there's no
+need to specify it twice.
+
+> - vatsa
+
+WBR, Sergei

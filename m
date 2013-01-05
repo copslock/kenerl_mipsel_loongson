@@ -1,43 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2013 20:50:33 +0100 (CET)
-Received: from mms2.broadcom.com ([216.31.210.18]:1676 "EHLO mms2.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823011Ab3ADTubaT1P0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 Jan 2013 20:50:31 +0100
-Received: from [10.9.200.133] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Fri, 04 Jan 2013 11:47:13 -0800
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
-Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Fri, 4 Jan 2013 11:50:02 -0800
-Received: from jayachandranc.netlogicmicro.com (
- netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 0FE4B40FF1; Fri, 4
- Jan 2013 11:50:04 -0800 (PST)
-Date:   Sat, 5 Jan 2013 01:21:58 +0530
-From:   "Jayachandran C." <jchandra@broadcom.com>
-To:     "Hill, Steven" <sjhill@mips.com>
-cc:     "David Daney" <ddaney.cavm@gmail.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>
-Subject: Re: [PATCH v3] MIPS: Optimise TLB handlers for MIPS32/64 R2
- cores.
-Message-ID: <20130104195157.GA2140@jayachandranc.netlogicmicro.com>
-References: <1357322355-31622-1-git-send-email-sjhill@mips.com>
- <50E71BF8.3050308@gmail.com>
- <31E06A9FC96CEC488B43B19E2957C1B801146AF100@exchdb03.mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jan 2013 11:42:33 +0100 (CET)
+Received: from caramon.arm.linux.org.uk ([78.32.30.218]:47071 "EHLO
+        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817419Ab3AEKmcNhF-v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Jan 2013 11:42:32 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
+        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=jbSseclF9gdDoy8T9I67kyHqUdPYmyudsA98UVl52Tc=;
+        b=cy2cx5ne6AL1+JSmLXYwQxU8ety66/XHcxRZQVaIMS/wMeYSHFyItZmgPwNQBo3xzXF8ZPsgrZsPSk10Hpqnjz9NwJVANtAAbELYAvfA2/glvajaDy5bYkZW2ECvpg11KI/TjgWnzaVvDiwG6+peihdJ9MFzL31XTT1Gn2Us00g=;
+Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:36638)
+        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.76)
+        (envelope-from <linux@arm.linux.org.uk>)
+        id 1TrR77-0005SY-D3; Sat, 05 Jan 2013 10:36:29 +0000
+Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
+        (envelope-from <linux@n2100.arm.linux.org.uk>)
+        id 1TrR76-0000Qo-0m; Sat, 05 Jan 2013 10:36:28 +0000
+Date:   Sat, 5 Jan 2013 10:36:27 +0000
+From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
+To:     Srivatsa Vaddagiri <vatsa@codeaurora.org>
+Cc:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Mike Frysinger <vapier@gentoo.org>,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        linux-s390@vger.kernel.org, Paul Mundt <lethal@linux-sh.org>,
+        linux-sh@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, mhocko@suse.cz,
+        srivatsa.bhat@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 1/2] cpuhotplug/nohz: Remove offline cpus from
+        nohz-idle state
+Message-ID: <20130105103627.GU2631@n2100.arm.linux.org.uk>
+References: <1357268318-7993-1-git-send-email-vatsa@codeaurora.org>
 MIME-Version: 1.0
-In-Reply-To: <31E06A9FC96CEC488B43B19E2957C1B801146AF100@exchdb03.mips.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-WSS-ID: 7CF9EE4B3Q4705309-01-01
-Content-Type: text/plain;
- charset=us-ascii
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35377
+In-Reply-To: <1357268318-7993-1-git-send-email-vatsa@codeaurora.org>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+X-archive-position: 35378
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: linux@arm.linux.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,31 +60,19 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Jan 04, 2013 at 06:24:54PM +0000, Hill, Steven wrote:
-> >> +#ifdef CONFIG_64BIT
-> >> +                     (PAGE_SHIFT - PTE_ORDER - PTE_T_LOG2 - 1));
-> >> +#else
-> >> +                     (PGDIR_SHIFT - PAGE_SHIFT - 1));
-> >> +#endif
-> >> +             UASM_i_INS(p, ptr, tmp, (PTE_T_LOG2 + 1),
-> >
-> > As far as I can tell, (PAGE_SHIFT - PTE_ORDER - PTE_T_LOG2 - 1) and
-> > (PGDIR_SHIFT - PAGE_SHIFT - 1) are the same thing.  So why the two cases?
-> >
-> >Can you give an example of where they might differ?
-> >
-> David,
-> 
-> Actually, no I cannot. The calculation was given to me by 'jchandra' and since I do not have 64-bit R2 hardware let alone the Broadcom platform, he said it worked on his platform and I took it from him as is. So does this patch work on Cavium platforms using both calculation methods? It would be nice if 'jchandra' could chime in, but he may be on holiday or something.
+On Thu, Jan 03, 2013 at 06:58:38PM -0800, Srivatsa Vaddagiri wrote:
+> I also think that the
+> wait_for_completion() based wait in ARM's __cpu_die() can be replaced with a
+> busy-loop based one, as the wait there in general should be terminated within
+> few cycles.
 
-This does not really need hardware. On 64bit, with 16k page, the expansion of
-the macro is (from tlbex.i):
+Why open-code this stuff when we have infrastructure already in the kernel
+for waiting for stuff to happen?  I chose to use the standard infrastructure
+because its better tested, and avoids having to think about whether we need
+CPU barriers and such like to ensure that updates are seen in a timely
+manner.
 
-uasm_i_dext(p, tmp, tmp, 14 +1, ((14 + (14 + 0 - 3)) + (14 + 0 - 3))-14 -1); 
-
-This evaluates to 21, which is obviously wrong (should be 10).
-
-I had sent the generated tlb handler which showed the incorrect size to sjhill,
-but that probably got lost in the new year holiday mails.
-
-JC.
+My stance on a lot of this idle/cpu dying code is that much of it can
+probably be cleaned up and merged into a single common implementation -
+in which case the use of standard infrastructure for things like waiting
+for other CPUs do stuff is even more justified.

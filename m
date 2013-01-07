@@ -1,40 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jan 2013 19:07:42 +0100 (CET)
-Received: from dns1.mips.com ([12.201.5.69]:44311 "EHLO dns1.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822501Ab3AGSGKmJ3Kz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 7 Jan 2013 19:06:10 +0100
-Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id r07I64G5030394;
-        Mon, 7 Jan 2013 10:06:04 -0800
-X-WSS-ID: 0MG9OY0-01-2WJ-02
-X-M-MSG: 
-Received: from exchdb01.mips.com (unknown [192.168.36.84])
-        (using TLSv1 with cipher AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mailgate1.mips.com (Postfix) with ESMTP id 26D0636464E;
-        Mon,  7 Jan 2013 10:06:00 -0800 (PST)
-Received: from fun-lab.mips.com (192.168.52.61) by exchhub01.mips.com
- (192.168.36.84) with Microsoft SMTP Server id 14.2.247.3; Mon, 7 Jan 2013
- 10:05:56 -0800
-From:   Deng-Cheng Zhu <dczhu@mips.com>
-To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
-        <kevink@paralogos.com>, <macro@linux-mips.org>, <john@phrozen.org>
-CC:     <sjhill@mips.com>, <dczhu@mips.com>
-Subject: [RESEND PATCH v3 5/5] MIPS: APRP (APSP): malta board support
-Date:   Mon, 7 Jan 2013 10:05:14 -0800
-Message-ID: <1357581914-4589-6-git-send-email-dczhu@mips.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1357581914-4589-1-git-send-email-dczhu@mips.com>
-References: <1357581914-4589-1-git-send-email-dczhu@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-EMS-Proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-X-EMS-STAMP: cirqJNRCtQ0vG6JiHl3CRQ==
-X-archive-position: 35389
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jan 2013 21:39:11 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:36167 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817128Ab3AGUjHvO1QA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Jan 2013 21:39:07 +0100
+Received: from 189.114.234.143.dynamic.adsl.gvt.net.br ([189.114.234.143] helo=canonical.com)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <herton.krzesinski@canonical.com>)
+        id 1TsJTJ-0003EV-Ii; Mon, 07 Jan 2013 20:39:02 +0000
+From:   Herton Ronaldo Krzesinski <herton.krzesinski@canonical.com>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
+        Yong Zhang <yong.zhang@windriver.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Herton Ronaldo Krzesinski <herton.krzesinski@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [ 3.5.y.z extended stable ] Patch "MIPS: Fix poweroff failure when HOTPLUG_CPU configured." has been added to staging queue
+Date:   Mon,  7 Jan 2013 18:38:56 -0200
+Message-Id: <1357591136-22589-1-git-send-email-herton.krzesinski@canonical.com>
+X-Mailer: git-send-email 1.7.9.5
+X-Extended-Stable: 3.5
+X-archive-position: 35390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dczhu@mips.com
+X-original-sender: herton.krzesinski@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,119 +41,69 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-APRP is supposed to be platform independent, however, this patch is needed
-for Malta for various reasons, see code and code comments.
+This is a note to let you know that I have just added a patch titled
 
-Cc: Steven J. Hill <sjhill@mips.com>
-Signed-off-by: Deng-Cheng Zhu <dczhu@mips.com>
+    MIPS: Fix poweroff failure when HOTPLUG_CPU configured.
+
+to the linux-3.5.y-queue branch of the 3.5.y.z extended stable tree 
+which can be found at:
+
+ http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.5.y-queue
+
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
+
+For more information about the 3.5.y.z tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Herton
+
+------
+
+>From 81d3bedcd96bc0c48c5e8dec5193719bbce7511f Mon Sep 17 00:00:00 2001
+From: Huacai Chen <chenhc@lemote.com>
+Date: Mon, 13 Aug 2012 20:52:24 +0800
+Subject: [PATCH] MIPS: Fix poweroff failure when HOTPLUG_CPU configured.
+
+commit 8add1ecb81f541ef2fcb0b85a5470ad9ecfb4a84 upstream.
+
+When poweroff machine, kernel_power_off() call disable_nonboot_cpus().
+And if we have HOTPLUG_CPU configured, disable_nonboot_cpus() is not an
+empty function but attempt to actually disable the nonboot cpus. Since
+system state is SYSTEM_POWER_OFF, play_dead() won't be called and thus
+disable_nonboot_cpus() hangs. Therefore, we make this patch to avoid
+poweroff failure.
+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Signed-off-by: Hongliang Tao <taohl@lemote.com>
+Signed-off-by: Hua Yan <yanh@lemote.com>
+Cc: Yong Zhang <yong.zhang@windriver.com>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Patchwork: https://patchwork.linux-mips.org/patch/4211/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Herton Ronaldo Krzesinski <herton.krzesinski@canonical.com>
 ---
- .../include/asm/mach-malta/cpu-feature-overrides.h |    3 ++
- arch/mips/kernel/vpe-cmp.c                         |   17 +++++++++++++++
- arch/mips/mti-malta/malta-int.c                    |   22 +++++++++++++++++++-
- 3 files changed, 41 insertions(+), 1 deletions(-)
+ arch/mips/kernel/process.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-malta/cpu-feature-overrides.h b/arch/mips/include/asm/mach-malta/cpu-feature-overrides.h
-index 37e3583..0bf3872 100644
---- a/arch/mips/include/asm/mach-malta/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-malta/cpu-feature-overrides.h
-@@ -17,6 +17,9 @@
- #define cpu_has_tlb		1
- #define cpu_has_4kex		1
- #define cpu_has_4k_cache	1
-+#ifdef CONFIG_MIPS_SP_FP_INTENSIVE
-+#define cpu_has_fpu		0
-+#endif
- /* #define cpu_has_fpu		? */
- /* #define cpu_has_32fpr	? */
- #define cpu_has_counter		1
-diff --git a/arch/mips/kernel/vpe-cmp.c b/arch/mips/kernel/vpe-cmp.c
-index 9d0c375..20f4497 100644
---- a/arch/mips/kernel/vpe-cmp.c
-+++ b/arch/mips/kernel/vpe-cmp.c
-@@ -25,7 +25,24 @@
- 
- static int major;
- 
-+#ifdef CONFIG_MIPS_MALTA
-+#include <asm/amon.h>
-+
-+int vpe_run(struct vpe *v)
-+{
-+	struct vpe_notifications *n;
-+
-+	if (amon_cpu_start(aprp_cpu_index(), v->__start, 0, 0, 0) < 0)
-+		return -1;
-+
-+	list_for_each_entry(n, &v->notify, list)
-+		n->start(VPE_MODULE_MINOR);
-+
-+	return 0;
-+}
-+#else
- #error CMP vpe_run() not implemented!
-+#endif
- 
- void cleanup_tc(struct tc *tc)
- {
-diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
-index 647b863..cddda99 100644
---- a/arch/mips/mti-malta/malta-int.c
-+++ b/arch/mips/mti-malta/malta-int.c
-@@ -1,6 +1,6 @@
- /*
-  * Carsten Langgaard, carstenl@mips.com
-- * Copyright (C) 2000, 2001, 2004 MIPS Technologies, Inc.
-+ * Copyright (C) 2000, 2001, 2004, 2012 MIPS Technologies, Inc.
-  * Copyright (C) 2001 Ralf Baechle
-  *
-  *  This program is free software; you can distribute it and/or modify it
-@@ -45,6 +45,9 @@
- #include <asm/gic.h>
- #include <asm/gcmpregs.h>
- #include <asm/setup.h>
-+#ifdef CONFIG_MIPS_VPE_APSP_API
-+#include <asm/rtlx.h>
-+#endif
- 
- int gcmp_present = -1;
- int gic_present;
-@@ -128,6 +131,15 @@ static void malta_hw0_irqdispatch(void)
- 	}
- 
- 	do_IRQ(MALTA_INT_BASE + irq);
-+
-+#if defined(CONFIG_MIPS_VPE_APSP_API) && !defined(CONFIG_MIPS_CMP)
-+	/*
-+	 * When sw0 gets set, a spurious hw interrupt is signaled as well.
-+	 * The sw0 will not be handled until the hw interrupt is cleared.
-+	 * We use the hook to handle sw0 and the hw interrupt gets cleared.
-+	 */
-+	aprp_hook();
-+#endif
- }
- 
- static void malta_ipi_irqdispatch(void)
-@@ -312,6 +324,10 @@ static void ipi_call_dispatch(void)
- 
- static irqreturn_t ipi_resched_interrupt(int irq, void *dev_id)
- {
-+#if defined(CONFIG_MIPS_VPE_APSP_API) && defined(CONFIG_MIPS_CMP)
-+	aprp_hook();
-+#endif
-+
- 	scheduler_ipi();
- 
- 	return IRQ_HANDLED;
-@@ -622,6 +638,10 @@ void __init arch_init_irq(void)
- 		arch_init_ipiirq(cpu_ipi_call_irq, &irq_call);
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index e9a5fd7..69b17a9 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -72,9 +72,7 @@ void __noreturn cpu_idle(void)
+ 			}
+ 		}
+ #ifdef CONFIG_HOTPLUG_CPU
+-		if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map) &&
+-		    (system_state == SYSTEM_RUNNING ||
+-		     system_state == SYSTEM_BOOTING))
++		if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map))
+ 			play_dead();
  #endif
- 	}
-+
-+#ifdef CONFIG_MIPS_VPE_APSP_API
-+	aprp_hook = null_aprp_hook;
-+#endif
- }
- 
- void malta_be_init(void)
--- 
-1.7.1
+ 		rcu_idle_exit();
+--
+1.7.9.5

@@ -1,33 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jan 2013 21:39:11 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:36167 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817128Ab3AGUjHvO1QA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Jan 2013 21:39:07 +0100
-Received: from 189.114.234.143.dynamic.adsl.gvt.net.br ([189.114.234.143] helo=canonical.com)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <herton.krzesinski@canonical.com>)
-        id 1TsJTJ-0003EV-Ii; Mon, 07 Jan 2013 20:39:02 +0000
-From:   Herton Ronaldo Krzesinski <herton.krzesinski@canonical.com>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
-        Yong Zhang <yong.zhang@windriver.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Herton Ronaldo Krzesinski <herton.krzesinski@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [ 3.5.y.z extended stable ] Patch "MIPS: Fix poweroff failure when HOTPLUG_CPU configured." has been added to staging queue
-Date:   Mon,  7 Jan 2013 18:38:56 -0200
-Message-Id: <1357591136-22589-1-git-send-email-herton.krzesinski@canonical.com>
-X-Mailer: git-send-email 1.7.9.5
-X-Extended-Stable: 3.5
-X-archive-position: 35390
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jan 2013 07:57:54 +0100 (CET)
+Received: from e23smtp04.au.ibm.com ([202.81.31.146]:46042 "EHLO
+        e23smtp04.au.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823003Ab3AHG5xL9XhY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Jan 2013 07:57:53 +0100
+Received: from /spool/local
+        by e23smtp04.au.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <srivatsa.bhat@linux.vnet.ibm.com>;
+        Tue, 8 Jan 2013 16:50:22 +1000
+Received: from d23dlp01.au.ibm.com (202.81.31.203)
+        by e23smtp04.au.ibm.com (202.81.31.210) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Tue, 8 Jan 2013 16:50:21 +1000
+Received: from d23relay05.au.ibm.com (d23relay05.au.ibm.com [9.190.235.152])
+        by d23dlp01.au.ibm.com (Postfix) with ESMTP id 867A62CE804A;
+        Tue,  8 Jan 2013 17:57:37 +1100 (EST)
+Received: from d23av03.au.ibm.com (d23av03.au.ibm.com [9.190.234.97])
+        by d23relay05.au.ibm.com (8.13.8/8.13.8/NCO v10.0) with ESMTP id r086jxBJ58851496;
+        Tue, 8 Jan 2013 17:45:59 +1100
+Received: from d23av03.au.ibm.com (loopback [127.0.0.1])
+        by d23av03.au.ibm.com (8.14.4/8.13.1/NCO v10.0 AVout) with ESMTP id r086vYQe022837;
+        Tue, 8 Jan 2013 17:57:36 +1100
+Received: from srivatsabhat.in.ibm.com (srivatsabhat.in.ibm.com [9.124.35.111] (may be forged))
+        by d23av03.au.ibm.com (8.14.4/8.13.1/NCO v10.0 AVin) with ESMTP id r086vTw4022727;
+        Tue, 8 Jan 2013 17:57:30 +1100
+Message-ID: <50EBC2F9.70303@linux.vnet.ibm.com>
+Date:   Tue, 08 Jan 2013 12:25:53 +0530
+From:   "Srivatsa S. Bhat" <srivatsa.bhat@linux.vnet.ibm.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:15.0) Gecko/20120828 Thunderbird/15.0
+MIME-Version: 1.0
+To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
+CC:     Srivatsa Vaddagiri <vatsa@codeaurora.org>,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
+        mhocko@suse.cz, "H. Peter Anvin" <hpa@zytor.com>,
+        sparclinux@vger.kernel.org, linux-s390@vger.kernel.org,
+        x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Mike Frysinger <vapier@gentoo.org>,
+        linux-arm-msm@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Nikunj A Dadhania <nikunj@linux.vnet.ibm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "rusty@rustcorp.com.au" <rusty@rustcorp.com.au>
+Subject: Re: [PATCH 1/2] cpuhotplug/nohz: Remove offline cpus from nohz-idle
+ state
+References: <1357268318-7993-1-git-send-email-vatsa@codeaurora.org> <20130105103627.GU2631@n2100.arm.linux.org.uk>
+In-Reply-To: <20130105103627.GU2631@n2100.arm.linux.org.uk>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 13010806-9264-0000-0000-000002F4F48B
+X-archive-position: 35391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: herton.krzesinski@canonical.com
+X-original-sender: srivatsa.bhat@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,69 +74,41 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This is a note to let you know that I have just added a patch titled
+On 01/05/2013 04:06 PM, Russell King - ARM Linux wrote:
+> On Thu, Jan 03, 2013 at 06:58:38PM -0800, Srivatsa Vaddagiri wrote:
+>> I also think that the
+>> wait_for_completion() based wait in ARM's __cpu_die() can be replaced with a
+>> busy-loop based one, as the wait there in general should be terminated within
+>> few cycles.
+> 
+> Why open-code this stuff when we have infrastructure already in the kernel
+> for waiting for stuff to happen?  I chose to use the standard infrastructure
+> because its better tested, and avoids having to think about whether we need
+> CPU barriers and such like to ensure that updates are seen in a timely
+> manner.
+> 
+> My stance on a lot of this idle/cpu dying code is that much of it can
+> probably be cleaned up and merged into a single common implementation -
+> in which case the use of standard infrastructure for things like waiting
+> for other CPUs do stuff is even more justified.
 
-    MIPS: Fix poweroff failure when HOTPLUG_CPU configured.
+On similar lines, Nikunj (in CC) and I had posted a patchset sometime ago to
+consolidate some of the CPU hotplug related code in the various architectures
+into a common standard implementation [1].
 
-to the linux-3.5.y-queue branch of the 3.5.y.z extended stable tree 
-which can be found at:
+However, we ended up hitting a problem with Xen, because its existing code
+was unlike the other arch/ pieces [2]. At that time, we decided that we will
+first make the CPU online and offline paths symmetric in the generic code and
+then provide a common implementation of the duplicated bits in arch/, for the
+new CPU hotplug model [3].
 
- http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.5.y-queue
+I guess we should probably revisit it sometime, consolidating the code in
+incremental steps if not all at a time...
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
-
-For more information about the 3.5.y.z tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Herton
-
-------
-
->From 81d3bedcd96bc0c48c5e8dec5193719bbce7511f Mon Sep 17 00:00:00 2001
-From: Huacai Chen <chenhc@lemote.com>
-Date: Mon, 13 Aug 2012 20:52:24 +0800
-Subject: [PATCH] MIPS: Fix poweroff failure when HOTPLUG_CPU configured.
-
-commit 8add1ecb81f541ef2fcb0b85a5470ad9ecfb4a84 upstream.
-
-When poweroff machine, kernel_power_off() call disable_nonboot_cpus().
-And if we have HOTPLUG_CPU configured, disable_nonboot_cpus() is not an
-empty function but attempt to actually disable the nonboot cpus. Since
-system state is SYSTEM_POWER_OFF, play_dead() won't be called and thus
-disable_nonboot_cpus() hangs. Therefore, we make this patch to avoid
-poweroff failure.
-
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Signed-off-by: Hongliang Tao <taohl@lemote.com>
-Signed-off-by: Hua Yan <yanh@lemote.com>
-Cc: Yong Zhang <yong.zhang@windriver.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-Patchwork: https://patchwork.linux-mips.org/patch/4211/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Herton Ronaldo Krzesinski <herton.krzesinski@canonical.com>
----
- arch/mips/kernel/process.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index e9a5fd7..69b17a9 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -72,9 +72,7 @@ void __noreturn cpu_idle(void)
- 			}
- 		}
- #ifdef CONFIG_HOTPLUG_CPU
--		if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map) &&
--		    (system_state == SYSTEM_RUNNING ||
--		     system_state == SYSTEM_BOOTING))
-+		if (!cpu_online(cpu) && !cpu_isset(cpu, cpu_callin_map))
- 			play_dead();
- #endif
- 		rcu_idle_exit();
 --
-1.7.9.5
+[1]. http://lwn.net/Articles/500185/
+[2]. http://thread.gmane.org/gmane.linux.kernel.cross-arch/14342/focus=14430
+[3]. http://thread.gmane.org/gmane.linux.kernel.cross-arch/14342/focus=15567
+
+Regards,
+Srivatsa S. Bhat

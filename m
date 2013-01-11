@@ -1,37 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jan 2013 15:35:39 +0100 (CET)
-Received: from mms1.broadcom.com ([216.31.210.17]:2826 "EHLO mms1.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823016Ab3AKOekBeDEs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 11 Jan 2013 15:34:40 +0100
-Received: from [10.9.208.26] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Fri, 11 Jan 2013 06:31:58 -0800
-X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
-Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHCAS05.corp.ad.broadcom.com (10.9.208.26) with Microsoft SMTP
- Server id 14.1.355.2; Fri, 11 Jan 2013 06:33:53 -0800
-Received: from stbsrv-and-2.and.broadcom.com (
- stbsrv-and-2.and.broadcom.com [10.32.128.96]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 9C28040FE6; Fri, 11
- Jan 2013 06:33:52 -0800 (PST)
-From:   "Al Cooper" <alcooperx@gmail.com>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-cc:     "Al Cooper" <alcooperx@gmail.com>
-Subject: [PATCH] mips: function tracer: Fix broken function tracing
-Date:   Fri, 11 Jan 2013 09:33:30 -0500
-Message-ID: <1357914810-20656-1-git-send-email-alcooperx@gmail.com>
-X-Mailer: git-send-email 1.7.6
-In-Reply-To: <y>
-References: <y>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jan 2013 18:01:11 +0100 (CET)
+Received: from mail-pb0-f51.google.com ([209.85.160.51]:61752 "EHLO
+        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6818323Ab3AKRBKSGB-I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Jan 2013 18:01:10 +0100
+Received: by mail-pb0-f51.google.com with SMTP id ro12so1047350pbb.38
+        for <multiple recipients>; Fri, 11 Jan 2013 09:01:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=2SV2OxWpELTs07N0aG9QprxqOl1yqFranzACXKFwLYc=;
+        b=ixRS5oEHEN1lrf1JqlYYC6Fljt5LutjHNxBIBhC1854k668O8E2hikSeq/COkHRSEq
+         hY7O0zZuWDBfys/iCOYRzkFArBzSvNBeQvHUNEuYJx526Wbr97lKjb7OavQdVZXCds6q
+         EsQEYktAu72iHRk7CB1us57hvJ0R/YBq/HNY0U86sa6KDScev++Mc+E1wbYzhtIklBdg
+         5V0c5mc0wWktG5Tq8TXR642FdQJuRii0CDPVhFDNPI7qx+yMQPOzLfIefI53YjMJ9zh0
+         ieZbjhuzA1AkKNmsH0hcu8ewnqMbD3gptWa6c3HIeWkMbuRf89HAX1+qUWRlOFSNT594
+         svGQ==
+X-Received: by 10.68.130.135 with SMTP id oe7mr62374996pbb.38.1357923663210;
+        Fri, 11 Jan 2013 09:01:03 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id rk6sm3075655pbc.20.2013.01.11.09.01.01
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 11 Jan 2013 09:01:02 -0800 (PST)
+Message-ID: <50F0454D.5060109@gmail.com>
+Date:   Fri, 11 Jan 2013 09:01:01 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
 MIME-Version: 1.0
-X-WSS-ID: 7CEEFDD41ZS4162332-01-01
-Content-Type: text/plain
+To:     Al Cooper <alcooperx@gmail.com>
+CC:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mips: function tracer: Fix broken function tracing
+References: <y> <1357914810-20656-1-git-send-email-alcooperx@gmail.com>
+In-Reply-To: <1357914810-20656-1-git-send-email-alcooperx@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35402
+X-archive-position: 35403
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alcooperx@gmail.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,129 +54,60 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Function tracing is currently broken for all 32 bit MIPS platforms.
-When tracing is enabled, the kernel immediately hangs on boot.
-This is a result of commit b732d439cb43336cd6d7e804ecb2c81193ef63b0
-that changes the kernel/trace/Kconfig file so that is no longer
-forces FRAME_POINTER when FUNCTION_TRACING is enabled.
+On 01/11/2013 06:33 AM, Al Cooper wrote:
+> Function tracing is currently broken for all 32 bit MIPS platforms.
+> When tracing is enabled, the kernel immediately hangs on boot.
+> This is a result of commit b732d439cb43336cd6d7e804ecb2c81193ef63b0
+> that changes the kernel/trace/Kconfig file so that is no longer
+> forces FRAME_POINTER when FUNCTION_TRACING is enabled.
+>
+> MIPS frame pointers are generally considered to be useless because
+> they cannot be used to unwind the stack. Unfortunately the MIPS
+> function tracing code has bugs that are masked by the use of frame
+> pointers. This commit fixes the bugs so that MIPS frame pointers do
+> not need to be enabled.
+>
+> The bugs are a result of the odd calling sequence used to call the trace
+> routine. This calling sequence is inserted into every tracable function
+> when the tracing CONFIG option is enabled. This sequence is generated
+> for 32bit MIPS platforms by the compiler via the "-pg" flag.
+> Part of the sequence is "addiu sp,sp,-8" in the delay slot after every
+> call to the trace routine "_mcount" (some legacy thing where 2 arguments
+> used to be pushed on the stack). The _mcount routine is expected to
+> adjust the sp by +8 before returning.
+>
+> One of the bugs is that when tracing is disabled for a function, the
+> "jalr _mcount" instruction is replaced with a nop, but the
+> "addiu sp,sp,-8" is still executed and the stack pointer is left
+> trashed. When frame pointers are enabled the problem is masked
+> because any access to the stack is done through the frame
+> pointer and the stack pointer is restored from the frame pointer when
+> the function returns. This patch uses a branch likely instruction
+> "bltzl zero, f1" instead of "nop" to disable the call because this
+> instruction will not execute the "addiu sp,sp,-8" instruction in
+> the delay slot. The other possible solution would be to nop out both
+> the jalr and the "addiu sp,sp,-8", but this would need to be interrupt
+> and SMP safe and would be much more intrusive.
 
-MIPS frame pointers are generally considered to be useless because
-they cannot be used to unwind the stack. Unfortunately the MIPS
-function tracing code has bugs that are masked by the use of frame
-pointers. This commit fixes the bugs so that MIPS frame pointers do
-not need to be enabled.
+I thought all CPUs were in stop_machine() when the modifications were 
+done, so that there is no issue with multi-word instruction patching.
 
-The bugs are a result of the odd calling sequence used to call the trace
-routine. This calling sequence is inserted into every tracable function
-when the tracing CONFIG option is enabled. This sequence is generated
-for 32bit MIPS platforms by the compiler via the "-pg" flag.
-Part of the sequence is "addiu sp,sp,-8" in the delay slot after every
-call to the trace routine "_mcount" (some legacy thing where 2 arguments
-used to be pushed on the stack). The _mcount routine is expected to
-adjust the sp by +8 before returning.
+Am I wrong about this?
 
-One of the bugs is that when tracing is disabled for a function, the
-"jalr _mcount" instruction is replaced with a nop, but the
-"addiu sp,sp,-8" is still executed and the stack pointer is left
-trashed. When frame pointers are enabled the problem is masked
-because any access to the stack is done through the frame
-pointer and the stack pointer is restored from the frame pointer when
-the function returns. This patch uses a branch likely instruction
-"bltzl zero, f1" instead of "nop" to disable the call because this
-instruction will not execute the "addiu sp,sp,-8" instruction in
-the delay slot. The other possible solution would be to nop out both
-the jalr and the "addiu sp,sp,-8", but this would need to be interrupt
-and SMP safe and would be much more intrusive.
+So really I think you can do two NOP just as easily.
 
-A few other bugs were fixed where the _mcount routine itself did not
-always fix the sp on return.
+The only reason I bring this up is that I am not sure all 32-bit CPUs 
+implement the 'Likely' branch variants. Also there may be an affect on 
+the branch predictor.
 
-Signed-off-by: Al Cooper <alcooperx@gmail.com>
----
- arch/mips/kernel/ftrace.c |    9 ++++++++-
- arch/mips/kernel/mcount.S |   14 ++++++++++----
- 2 files changed, 18 insertions(+), 5 deletions(-)
+A third possibility would be to replace the JALR with 'ADDIU SP,SP,8' 
+That way the following adjustment would be canceled out.  This would 
+work well on single-issue CPUs, but the instructions may not be able to 
+dual-issue on a multi issue machine due to data dependencies.
 
-diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
-index 6a2d758..f761130 100644
---- a/arch/mips/kernel/ftrace.c
-+++ b/arch/mips/kernel/ftrace.c
-@@ -46,6 +46,13 @@ static inline int in_kernel_space(unsigned long ip)
- #define JUMP_RANGE_MASK ((1UL << 28) - 1)
- 
- #define INSN_NOP 0x00000000	/* nop */
-+
-+/*
-+ * This branch likely instruction is used to nop the call to _mcount
-+ * and skip the stack adjust instruction in the delay slot.
-+ */
-+#define INSN_NOP_SKIP 0x04020001	/* bltzl zero, f1 */
-+
- #define INSN_JAL(addr)	\
- 	((unsigned int)(JAL | (((addr) >> 2) & ADDR_MASK)))
- 
-@@ -130,7 +137,7 @@ int ftrace_make_nop(struct module *mod,
- 	 * If ip is in kernel space, no long call, otherwise, long call is
- 	 * needed.
- 	 */
--	new = in_kernel_space(ip) ? INSN_NOP : INSN_B_1F;
-+	new = in_kernel_space(ip) ? INSN_NOP_SKIP : INSN_B_1F;
- 
- 	return ftrace_modify_code(ip, new);
- }
-diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-index 4c968e7..78ac3cc 100644
---- a/arch/mips/kernel/mcount.S
-+++ b/arch/mips/kernel/mcount.S
-@@ -68,10 +68,10 @@
- NESTED(ftrace_caller, PT_SIZE, ra)
- 	.globl _mcount
- _mcount:
--	b	ftrace_stub
-+	b	ftrace_stub_restore_sp
- 	 nop
- 	lw	t1, function_trace_stop
--	bnez	t1, ftrace_stub
-+	bnez	t1, ftrace_stub_restore_sp
- 	 nop
- 
- 	MCOUNT_SAVE_REGS
-@@ -96,13 +96,16 @@ ftrace_graph_call:
- 	.globl ftrace_stub
- ftrace_stub:
- 	RETURN_BACK
-+ftrace_stub_restore_sp:
-+	PTR_ADDIU	sp, 8
-+	RETURN_BACK
- 	END(ftrace_caller)
- 
- #else	/* ! CONFIG_DYNAMIC_FTRACE */
- 
- NESTED(_mcount, PT_SIZE, ra)
- 	lw	t1, function_trace_stop
--	bnez	t1, ftrace_stub
-+	bnez	t1, ftrace_stub_restore_sp
- 	 nop
- 	PTR_LA	t1, ftrace_stub
- 	PTR_L	t2, ftrace_trace_function /* Prepare t2 for (1) */
-@@ -118,7 +121,7 @@ NESTED(_mcount, PT_SIZE, ra)
- 	bne	t1, t3, ftrace_graph_caller
- 	 nop
- #endif
--	b	ftrace_stub
-+	b	ftrace_stub_restore_sp
- 	 nop
- 
- static_trace:
-@@ -132,6 +135,9 @@ static_trace:
- 	.globl ftrace_stub
- ftrace_stub:
- 	RETURN_BACK
-+ftrace_stub_restore_sp:
-+	PTR_ADDIU	sp, 8
-+	RETURN_BACK
- 	END(_mcount)
- 
- #endif	/* ! CONFIG_DYNAMIC_FTRACE */
--- 
-1.7.6
+David Daney
+
+>
+> A few other bugs were fixed where the _mcount routine itself did not
+> always fix the sp on return.
+>

@@ -1,46 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jan 2013 18:01:11 +0100 (CET)
-Received: from mail-pb0-f51.google.com ([209.85.160.51]:61752 "EHLO
-        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6818323Ab3AKRBKSGB-I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Jan 2013 18:01:10 +0100
-Received: by mail-pb0-f51.google.com with SMTP id ro12so1047350pbb.38
-        for <multiple recipients>; Fri, 11 Jan 2013 09:01:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=2SV2OxWpELTs07N0aG9QprxqOl1yqFranzACXKFwLYc=;
-        b=ixRS5oEHEN1lrf1JqlYYC6Fljt5LutjHNxBIBhC1854k668O8E2hikSeq/COkHRSEq
-         hY7O0zZuWDBfys/iCOYRzkFArBzSvNBeQvHUNEuYJx526Wbr97lKjb7OavQdVZXCds6q
-         EsQEYktAu72iHRk7CB1us57hvJ0R/YBq/HNY0U86sa6KDScev++Mc+E1wbYzhtIklBdg
-         5V0c5mc0wWktG5Tq8TXR642FdQJuRii0CDPVhFDNPI7qx+yMQPOzLfIefI53YjMJ9zh0
-         ieZbjhuzA1AkKNmsH0hcu8ewnqMbD3gptWa6c3HIeWkMbuRf89HAX1+qUWRlOFSNT594
-         svGQ==
-X-Received: by 10.68.130.135 with SMTP id oe7mr62374996pbb.38.1357923663210;
-        Fri, 11 Jan 2013 09:01:03 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id rk6sm3075655pbc.20.2013.01.11.09.01.01
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 11 Jan 2013 09:01:02 -0800 (PST)
-Message-ID: <50F0454D.5060109@gmail.com>
-Date:   Fri, 11 Jan 2013 09:01:01 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
-MIME-Version: 1.0
-To:     Al Cooper <alcooperx@gmail.com>
-CC:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mips: function tracer: Fix broken function tracing
-References: <y> <1357914810-20656-1-git-send-email-alcooperx@gmail.com>
-In-Reply-To: <1357914810-20656-1-git-send-email-alcooperx@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35403
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jan 2013 22:55:42 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:59550 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6825698Ab3AKVzkmcz9a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Jan 2013 22:55:40 +0100
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1TtmZX-00060R-Dr; Fri, 11 Jan 2013 15:55:31 -0600
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org,
+        mcdonald.shane@gmail.com
+Subject: [PATCH v3] MIPS: Add option to disable software I/O coherency.
+Date:   Fri, 11 Jan 2013 15:55:25 -0600
+Message-Id: <1357941325-25718-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.9.5
+X-archive-position: 35404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,60 +33,229 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 01/11/2013 06:33 AM, Al Cooper wrote:
-> Function tracing is currently broken for all 32 bit MIPS platforms.
-> When tracing is enabled, the kernel immediately hangs on boot.
-> This is a result of commit b732d439cb43336cd6d7e804ecb2c81193ef63b0
-> that changes the kernel/trace/Kconfig file so that is no longer
-> forces FRAME_POINTER when FUNCTION_TRACING is enabled.
->
-> MIPS frame pointers are generally considered to be useless because
-> they cannot be used to unwind the stack. Unfortunately the MIPS
-> function tracing code has bugs that are masked by the use of frame
-> pointers. This commit fixes the bugs so that MIPS frame pointers do
-> not need to be enabled.
->
-> The bugs are a result of the odd calling sequence used to call the trace
-> routine. This calling sequence is inserted into every tracable function
-> when the tracing CONFIG option is enabled. This sequence is generated
-> for 32bit MIPS platforms by the compiler via the "-pg" flag.
-> Part of the sequence is "addiu sp,sp,-8" in the delay slot after every
-> call to the trace routine "_mcount" (some legacy thing where 2 arguments
-> used to be pushed on the stack). The _mcount routine is expected to
-> adjust the sp by +8 before returning.
->
-> One of the bugs is that when tracing is disabled for a function, the
-> "jalr _mcount" instruction is replaced with a nop, but the
-> "addiu sp,sp,-8" is still executed and the stack pointer is left
-> trashed. When frame pointers are enabled the problem is masked
-> because any access to the stack is done through the frame
-> pointer and the stack pointer is restored from the frame pointer when
-> the function returns. This patch uses a branch likely instruction
-> "bltzl zero, f1" instead of "nop" to disable the call because this
-> instruction will not execute the "addiu sp,sp,-8" instruction in
-> the delay slot. The other possible solution would be to nop out both
-> the jalr and the "addiu sp,sp,-8", but this would need to be interrupt
-> and SMP safe and would be much more intrusive.
+From: "Steven J. Hill" <sjhill@mips.com>
 
-I thought all CPUs were in stop_machine() when the modifications were 
-done, so that there is no issue with multi-word instruction patching.
+Some MIPS controllers have hardware I/O coherency. This patch
+detects those and turns off software coherency. A new kernel
+command line option also allows the user to manually turn
+software coherency on or off.
 
-Am I wrong about this?
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/include/asm/mach-generic/dma-coherence.h |    5 +-
+ arch/mips/mm/c-r4k.c                               |   34 +++++++---
+ arch/mips/mm/dma-default.c                         |    6 +-
+ arch/mips/mti-malta/malta-setup.c                  |   71 ++++++++++++++++++++
+ 4 files changed, 105 insertions(+), 11 deletions(-)
 
-So really I think you can do two NOP just as easily.
-
-The only reason I bring this up is that I am not sure all 32-bit CPUs 
-implement the 'Likely' branch variants. Also there may be an affect on 
-the branch predictor.
-
-A third possibility would be to replace the JALR with 'ADDIU SP,SP,8' 
-That way the following adjustment would be canceled out.  This would 
-work well on single-issue CPUs, but the instructions may not be able to 
-dual-issue on a multi issue machine due to data dependencies.
-
-David Daney
-
->
-> A few other bugs were fixed where the _mcount routine itself did not
-> always fix the sp on return.
->
+diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
+index 9c95177..cd17f22 100644
+--- a/arch/mips/include/asm/mach-generic/dma-coherence.h
++++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
+@@ -57,13 +57,16 @@ static inline int plat_dma_mapping_error(struct device *dev,
+ 	return 0;
+ }
+ 
++extern int coherentio;
++extern int hw_coherentio;
++
+ static inline int plat_device_is_coherent(struct device *dev)
+ {
+ #ifdef CONFIG_DMA_COHERENT
+ 	return 1;
+ #endif
+ #ifdef CONFIG_DMA_NONCOHERENT
+-	return 0;
++	return coherentio;
+ #endif
+ }
+ 
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 606e828..e4ee358 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1379,19 +1379,34 @@ static void __cpuinit coherency_setup(void)
+ 	}
+ }
+ 
+-#if defined(CONFIG_DMA_NONCOHERENT)
+-
+-static int __cpuinitdata coherentio;
++int coherentio = 0;	/* no DMA cache coherency (may be set by user) */
++int hw_coherentio = 0;	/* no HW DMA cache coherency (reflects real HW) */
+ 
+ static int __init setcoherentio(char *str)
+ {
+-	coherentio = 1;
++	if (coherentio == 0)
++		pr_info("Command line enabling coherentio"
++				" (this will break...)!!\n");
+ 
++	coherentio = 1;
++	pr_info("Hardware DMA cache coherency (command line)\n");
+ 	return 0;
+ }
+-
+ early_param("coherentio", setcoherentio);
+-#endif
++
++static int __init setnocoherentio(char *str)
++{
++	if (coherentio < 0)
++		pr_info("Command line checking done before"
++				" plat_setup_iocoherency!!\n");
++	if (coherentio == 1)
++		pr_info("Command line disabling coherentio\n");
++
++	coherentio = 0;
++	pr_info("Software DMA cache coherency (command line)\n");
++	return 0;
++}
++early_param("nocoherentio", setnocoherentio);
+ 
+ static void __cpuinit r4k_cache_error_setup(void)
+ {
+@@ -1415,6 +1430,7 @@ void __cpuinit r4k_cache_init(void)
+ {
+ 	extern void build_clear_page(void);
+ 	extern void build_copy_page(void);
++	extern int coherentio;
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+ 
+ 	probe_pcache();
+@@ -1474,9 +1490,11 @@ void __cpuinit r4k_cache_init(void)
+ 
+ 	build_clear_page();
+ 	build_copy_page();
+-#if !defined(CONFIG_MIPS_CMP)
++
++	/* We want to run CMP kernels on core(s) with and without coherent caches */
++	/* Therefore can't use CONFIG_MIPS_CMP to decide to flush cache */
+ 	local_r4k___flush_cache_all(NULL);
+-#endif
++
+ 	coherency_setup();
+ 	board_cache_error_setup = r4k_cache_error_setup;
+ }
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index 3fab204..aad5f7e 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -115,7 +115,8 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+ 
+ 		if (!plat_device_is_coherent(dev)) {
+ 			dma_cache_wback_inv((unsigned long) ret, size);
+-			ret = UNCAC_ADDR(ret);
++			if (!hw_coherentio)
++				ret = UNCAC_ADDR(ret);
+ 		}
+ 	}
+ 
+@@ -143,7 +144,8 @@ static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
+ 	plat_unmap_dma_mem(dev, dma_handle, size, DMA_BIDIRECTIONAL);
+ 
+ 	if (!plat_device_is_coherent(dev))
+-		addr = CAC_ADDR(addr);
++		if (!hw_coherentio)
++			addr = CAC_ADDR(addr);
+ 
+ 	free_pages(addr, get_order(size));
+ }
+diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
+index ed68073..4187102 100644
+--- a/arch/mips/mti-malta/malta-setup.c
++++ b/arch/mips/mti-malta/malta-setup.c
+@@ -31,6 +31,7 @@
+ #include <asm/mips-boards/maltaint.h>
+ #include <asm/dma.h>
+ #include <asm/traps.h>
++#include <asm/gcmpregs.h>
+ #ifdef CONFIG_VT
+ #include <linux/console.h>
+ #endif
+@@ -104,6 +105,74 @@ static void __init fd_activate(void)
+ }
+ #endif
+ 
++static int __init
++plat_enable_iocoherency(void)
++{
++	int supported = 0;
++	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO) {
++		if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
++			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
++			pr_info("Enabled Bonito CPU coherency\n");
++			supported = 1;
++		}
++		if (strstr(fw_getcmdline(), "iobcuncached")) {
++			BONITO_PCICACHECTRL &= ~BONITO_PCICACHECTRL_IOBCCOH_EN;
++			BONITO_PCIMEMBASECFG = BONITO_PCIMEMBASECFG &
++				~(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
++				  BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
++			pr_info("Disabled Bonito IOBC coherency\n");
++		} else {
++			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_IOBCCOH_EN;
++			BONITO_PCIMEMBASECFG |=
++				(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
++				 BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
++			pr_info("Enabled Bonito IOBC coherency\n");
++		}
++	} else if (gcmp_niocu() != 0) {
++		/* Nothing special needs to be done to enable coherency */
++		pr_info("CMP IOCU detected\n");
++		if ((*(unsigned int *)0xbf403000 & 0x81) != 0x81) {
++			pr_crit("IOCU OPERATION DISABLED BY SWITCH"
++				" - DEFAULTING TO SW IO COHERENCY\n");
++			return 0;
++		}
++		supported = 1;
++	}
++	hw_coherentio = supported;
++	return supported;
++}
++
++static void __init
++plat_setup_iocoherency(void)
++{
++#ifdef CONFIG_DMA_NONCOHERENT
++	/*
++	 * Kernel has been configured with software coherency
++	 * but we might choose to turn it off
++	 */
++	if (plat_enable_iocoherency()) {
++		if (coherentio == 0)
++			pr_info("Hardware DMA cache coherency supported"
++					" but disabled from command line\n");
++		else {
++			coherentio = 1;
++			printk(KERN_INFO "Hardware DMA cache coherency\n");
++		}
++	} else {
++		if (coherentio == 1)
++			pr_info("Hardware DMA cache coherency not supported"
++				" but enabled from command line\n");
++		else {
++			coherentio = 0;
++			pr_info("Software DMA cache coherency\n");
++		}
++	}
++#else
++	if (!plat_enable_iocoherency())
++		panic("Hardware DMA cache coherency not supported");
++#endif
++}
++
+ #ifdef CONFIG_BLK_DEV_IDE
+ static void __init pci_clock_check(void)
+ {
+@@ -205,6 +274,8 @@ void __init plat_mem_setup(void)
+ 	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO)
+ 		bonito_quirks_setup();
+ 
++	plat_setup_iocoherency();
++
+ #ifdef CONFIG_BLK_DEV_IDE
+ 	pci_clock_check();
+ #endif
+-- 
+1.7.9.5

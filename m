@@ -1,33 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Jan 2013 18:16:02 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:45945 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823910Ab3ALROnu1JBl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Jan 2013 18:14:43 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 76C938F61;
-        Sat, 12 Jan 2013 18:14:42 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id gLrO6aO8GJAW; Sat, 12 Jan 2013 18:14:34 +0100 (CET)
-Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 23A678F69;
-        Sat, 12 Jan 2013 18:14:19 +0100 (CET)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     wim@iguana.be
-Cc:     linux-watchdog@vger.kernel.org, zajec5@gmail.com,
-        linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v4 5/5] watchdog: bcm47xx_wdt.c: add hard timer
-Date:   Sat, 12 Jan 2013 18:14:11 +0100
-Message-Id: <1358010851-28077-6-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1358010851-28077-1-git-send-email-hauke@hauke-m.de>
-References: <1358010851-28077-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 35411
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jan 2013 00:38:15 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:33366 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6824768Ab3ALXiNjusER (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Jan 2013 00:38:13 +0100
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1TuAeK-0006pC-Dr; Sat, 12 Jan 2013 17:38:04 -0600
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org,
+        mcdonald.shane@gmail.com
+Subject: [PATCH v4] MIPS: Add option to disable software I/O coherency.
+Date:   Sat, 12 Jan 2013 17:38:00 -0600
+Message-Id: <1358033880-18652-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.9.5
+X-archive-position: 35412
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,128 +33,245 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The more recent devices have a watchdog timer which could be configured
-for over 2 hours and not just 2 seconds like the first generation
-devices. For those devices do not use the extra software timer, but
-directly program the time into the register. This will automatically be
-used if the timer supports more than a minute.
+From: "Steven J. Hill" <sjhill@mips.com>
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Some MIPS controllers have hardware I/O coherency. This patch
+detects those and turns off software coherency. A new kernel
+command line option also allows the user to manually turn
+software coherency on or off.
+
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- drivers/watchdog/bcm47xx_wdt.c |   69 ++++++++++++++++++++++++++++++++++++----
- 1 file changed, 63 insertions(+), 6 deletions(-)
+ arch/mips/include/asm/mach-generic/dma-coherence.h |    5 +-
+ arch/mips/mm/c-r4k.c                               |   34 +++++++---
+ arch/mips/mm/dma-default.c                         |    6 +-
+ arch/mips/mti-malta/malta-setup.c                  |   71 ++++++++++++++++++++
+ arch/mips/mti-sead3/sead3-setup.c                  |    4 +-
+ 5 files changed, 106 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/watchdog/bcm47xx_wdt.c b/drivers/watchdog/bcm47xx_wdt.c
-index f188097..9cb69ad 100644
---- a/drivers/watchdog/bcm47xx_wdt.c
-+++ b/drivers/watchdog/bcm47xx_wdt.c
-@@ -31,6 +31,7 @@
- 
- #define WDT_DEFAULT_TIME	30	/* seconds */
- #define WDT_SOFTTIMER_MAX	255	/* seconds */
-+#define WDT_SOFTTIMER_THRESHOLD	60	/* seconds */
- 
- static int timeout = WDT_DEFAULT_TIME;
- static bool nowayout = WATCHDOG_NOWAYOUT;
-@@ -49,6 +50,53 @@ static inline struct bcm47xx_wdt *bcm47xx_wdt_get(struct watchdog_device *wdd)
- 	return container_of(wdd, struct bcm47xx_wdt, wdd);
- }
- 
-+static int bcm47xx_wdt_hard_keepalive(struct watchdog_device *wdd)
-+{
-+	struct bcm47xx_wdt *wdt = bcm47xx_wdt_get(wdd);
-+
-+	wdt->timer_set_ms(wdt, wdd->timeout * 1000);
-+
-+	return 0;
-+}
-+
-+static int bcm47xx_wdt_hard_start(struct watchdog_device *wdd)
-+{
-+	return 0;
-+}
-+
-+static int bcm47xx_wdt_hard_stop(struct watchdog_device *wdd)
-+{
-+	struct bcm47xx_wdt *wdt = bcm47xx_wdt_get(wdd);
-+
-+	wdt->timer_set(wdt, 0);
-+
-+	return 0;
-+}
-+
-+static int bcm47xx_wdt_hard_set_timeout(struct watchdog_device *wdd,
-+					unsigned int new_time)
-+{
-+	struct bcm47xx_wdt *wdt = bcm47xx_wdt_get(wdd);
-+	u32 max_timer = wdt->max_timer_ms;
-+
-+	if (new_time < 1 || new_time > max_timer / 1000) {
-+		pr_warn("timeout value must be 1<=x<=%d, using %d\n",
-+			max_timer / 1000, new_time);
-+		return -EINVAL;
-+	}
-+
-+	wdd->timeout = new_time;
-+	return 0;
-+}
-+
-+static struct watchdog_ops bcm47xx_wdt_hard_ops = {
-+	.owner		= THIS_MODULE,
-+	.start		= bcm47xx_wdt_hard_start,
-+	.stop		= bcm47xx_wdt_hard_stop,
-+	.ping		= bcm47xx_wdt_hard_keepalive,
-+	.set_timeout	= bcm47xx_wdt_hard_set_timeout,
-+};
-+
- static void bcm47xx_wdt_soft_timer_tick(unsigned long data)
- {
- 	struct bcm47xx_wdt *wdt = (struct bcm47xx_wdt *)data;
-@@ -133,15 +181,22 @@ static struct watchdog_ops bcm47xx_wdt_soft_ops = {
- static int __devinit bcm47xx_wdt_probe(struct platform_device *pdev)
- {
- 	int ret;
-+	bool soft;
- 	struct bcm47xx_wdt *wdt = dev_get_platdata(&pdev->dev);
- 
- 	if (!wdt)
- 		return -ENXIO;
- 
--	setup_timer(&wdt->soft_timer, bcm47xx_wdt_soft_timer_tick,
--		    (long unsigned int)wdt);
-+	soft = wdt->max_timer_ms < WDT_SOFTTIMER_THRESHOLD * 1000;
-+
-+	if (soft) {
-+		wdt->wdd.ops = &bcm47xx_wdt_soft_ops;
-+		setup_timer(&wdt->soft_timer, bcm47xx_wdt_soft_timer_tick,
-+			    (long unsigned int)wdt);
-+	} else {
-+		wdt->wdd.ops = &bcm47xx_wdt_hard_ops;
-+	}
- 
--	wdt->wdd.ops = &bcm47xx_wdt_soft_ops;
- 	wdt->wdd.info = &bcm47xx_wdt_info;
- 	wdt->wdd.timeout = WDT_DEFAULT_TIME;
- 	ret = wdt->wdd.ops->set_timeout(&wdt->wdd, timeout);
-@@ -159,14 +214,16 @@ static int __devinit bcm47xx_wdt_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_notifier;
- 
--	pr_info("BCM47xx Watchdog Timer enabled (%d seconds%s)\n",
--		timeout, nowayout ? ", nowayout" : "");
-+	dev_info(&pdev->dev, "BCM47xx Watchdog Timer enabled (%d seconds%s%s)\n",
-+		timeout, nowayout ? ", nowayout" : "",
-+		soft ? ", Software Timer" : "");
+diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
+index 9c95177..cd17f22 100644
+--- a/arch/mips/include/asm/mach-generic/dma-coherence.h
++++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
+@@ -57,13 +57,16 @@ static inline int plat_dma_mapping_error(struct device *dev,
  	return 0;
- 
- err_notifier:
- 	unregister_reboot_notifier(&wdt->notifier);
- err_timer:
--	del_timer_sync(&wdt->soft_timer);
-+	if (soft)
-+		del_timer_sync(&wdt->soft_timer);
- 
- 	return ret;
  }
+ 
++extern int coherentio;
++extern int hw_coherentio;
++
+ static inline int plat_device_is_coherent(struct device *dev)
+ {
+ #ifdef CONFIG_DMA_COHERENT
+ 	return 1;
+ #endif
+ #ifdef CONFIG_DMA_NONCOHERENT
+-	return 0;
++	return coherentio;
+ #endif
+ }
+ 
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 606e828..e4ee358 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1379,19 +1379,34 @@ static void __cpuinit coherency_setup(void)
+ 	}
+ }
+ 
+-#if defined(CONFIG_DMA_NONCOHERENT)
+-
+-static int __cpuinitdata coherentio;
++int coherentio = 0;	/* no DMA cache coherency (may be set by user) */
++int hw_coherentio = 0;	/* no HW DMA cache coherency (reflects real HW) */
+ 
+ static int __init setcoherentio(char *str)
+ {
+-	coherentio = 1;
++	if (coherentio == 0)
++		pr_info("Command line enabling coherentio"
++				" (this will break...)!!\n");
+ 
++	coherentio = 1;
++	pr_info("Hardware DMA cache coherency (command line)\n");
+ 	return 0;
+ }
+-
+ early_param("coherentio", setcoherentio);
+-#endif
++
++static int __init setnocoherentio(char *str)
++{
++	if (coherentio < 0)
++		pr_info("Command line checking done before"
++				" plat_setup_iocoherency!!\n");
++	if (coherentio == 1)
++		pr_info("Command line disabling coherentio\n");
++
++	coherentio = 0;
++	pr_info("Software DMA cache coherency (command line)\n");
++	return 0;
++}
++early_param("nocoherentio", setnocoherentio);
+ 
+ static void __cpuinit r4k_cache_error_setup(void)
+ {
+@@ -1415,6 +1430,7 @@ void __cpuinit r4k_cache_init(void)
+ {
+ 	extern void build_clear_page(void);
+ 	extern void build_copy_page(void);
++	extern int coherentio;
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+ 
+ 	probe_pcache();
+@@ -1474,9 +1490,11 @@ void __cpuinit r4k_cache_init(void)
+ 
+ 	build_clear_page();
+ 	build_copy_page();
+-#if !defined(CONFIG_MIPS_CMP)
++
++	/* We want to run CMP kernels on core(s) with and without coherent caches */
++	/* Therefore can't use CONFIG_MIPS_CMP to decide to flush cache */
+ 	local_r4k___flush_cache_all(NULL);
+-#endif
++
+ 	coherency_setup();
+ 	board_cache_error_setup = r4k_cache_error_setup;
+ }
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index 3fab204..aad5f7e 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -115,7 +115,8 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+ 
+ 		if (!plat_device_is_coherent(dev)) {
+ 			dma_cache_wback_inv((unsigned long) ret, size);
+-			ret = UNCAC_ADDR(ret);
++			if (!hw_coherentio)
++				ret = UNCAC_ADDR(ret);
+ 		}
+ 	}
+ 
+@@ -143,7 +144,8 @@ static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
+ 	plat_unmap_dma_mem(dev, dma_handle, size, DMA_BIDIRECTIONAL);
+ 
+ 	if (!plat_device_is_coherent(dev))
+-		addr = CAC_ADDR(addr);
++		if (!hw_coherentio)
++			addr = CAC_ADDR(addr);
+ 
+ 	free_pages(addr, get_order(size));
+ }
+diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
+index ed68073..4187102 100644
+--- a/arch/mips/mti-malta/malta-setup.c
++++ b/arch/mips/mti-malta/malta-setup.c
+@@ -31,6 +31,7 @@
+ #include <asm/mips-boards/maltaint.h>
+ #include <asm/dma.h>
+ #include <asm/traps.h>
++#include <asm/gcmpregs.h>
+ #ifdef CONFIG_VT
+ #include <linux/console.h>
+ #endif
+@@ -104,6 +105,74 @@ static void __init fd_activate(void)
+ }
+ #endif
+ 
++static int __init
++plat_enable_iocoherency(void)
++{
++	int supported = 0;
++	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO) {
++		if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
++			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
++			pr_info("Enabled Bonito CPU coherency\n");
++			supported = 1;
++		}
++		if (strstr(fw_getcmdline(), "iobcuncached")) {
++			BONITO_PCICACHECTRL &= ~BONITO_PCICACHECTRL_IOBCCOH_EN;
++			BONITO_PCIMEMBASECFG = BONITO_PCIMEMBASECFG &
++				~(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
++				  BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
++			pr_info("Disabled Bonito IOBC coherency\n");
++		} else {
++			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_IOBCCOH_EN;
++			BONITO_PCIMEMBASECFG |=
++				(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
++				 BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
++			pr_info("Enabled Bonito IOBC coherency\n");
++		}
++	} else if (gcmp_niocu() != 0) {
++		/* Nothing special needs to be done to enable coherency */
++		pr_info("CMP IOCU detected\n");
++		if ((*(unsigned int *)0xbf403000 & 0x81) != 0x81) {
++			pr_crit("IOCU OPERATION DISABLED BY SWITCH"
++				" - DEFAULTING TO SW IO COHERENCY\n");
++			return 0;
++		}
++		supported = 1;
++	}
++	hw_coherentio = supported;
++	return supported;
++}
++
++static void __init
++plat_setup_iocoherency(void)
++{
++#ifdef CONFIG_DMA_NONCOHERENT
++	/*
++	 * Kernel has been configured with software coherency
++	 * but we might choose to turn it off
++	 */
++	if (plat_enable_iocoherency()) {
++		if (coherentio == 0)
++			pr_info("Hardware DMA cache coherency supported"
++					" but disabled from command line\n");
++		else {
++			coherentio = 1;
++			printk(KERN_INFO "Hardware DMA cache coherency\n");
++		}
++	} else {
++		if (coherentio == 1)
++			pr_info("Hardware DMA cache coherency not supported"
++				" but enabled from command line\n");
++		else {
++			coherentio = 0;
++			pr_info("Software DMA cache coherency\n");
++		}
++	}
++#else
++	if (!plat_enable_iocoherency())
++		panic("Hardware DMA cache coherency not supported");
++#endif
++}
++
+ #ifdef CONFIG_BLK_DEV_IDE
+ static void __init pci_clock_check(void)
+ {
+@@ -205,6 +274,8 @@ void __init plat_mem_setup(void)
+ 	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO)
+ 		bonito_quirks_setup();
+ 
++	plat_setup_iocoherency();
++
+ #ifdef CONFIG_BLK_DEV_IDE
+ 	pci_clock_check();
+ #endif
+diff --git a/arch/mips/mti-sead3/sead3-setup.c b/arch/mips/mti-sead3/sead3-setup.c
+index af8903d..7610069 100644
+--- a/arch/mips/mti-sead3/sead3-setup.c
++++ b/arch/mips/mti-sead3/sead3-setup.c
+@@ -11,9 +11,7 @@
+ #include <linux/bootmem.h>
+ 
+ #include <asm/prom.h>
+-
+-int coherentio;		/* 0 => no DMA cache coherency (may be set by user) */
+-int hw_coherentio;	/* 0 => no HW DMA cache coherency (reflects real HW) */
++#include <asm/dma.h>
+ 
+ const char *get_system_type(void)
+ {
 -- 
-1.7.10.4
+1.7.9.5

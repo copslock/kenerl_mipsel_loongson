@@ -1,25 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jan 2013 01:29:40 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:33432 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817419Ab3AMA3jYemoZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Jan 2013 01:29:39 +0100
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <sjhill@mips.com>)
-        id 1TuBS7-0006qh-L0; Sat, 12 Jan 2013 18:29:31 -0600
-From:   "Steven J. Hill" <sjhill@mips.com>
-To:     linux-mips@linux-mips.org
-Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org,
-        cernekee@gmail.com
-Subject: [PATCH] MIPS: Whitespace clean-ups.
-Date:   Sat, 12 Jan 2013 18:29:27 -0600
-Message-Id: <1358036967-21858-1-git-send-email-sjhill@mips.com>
-X-Mailer: git-send-email 1.7.9.5
-X-archive-position: 35415
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2013 16:15:51 +0100 (CET)
+Received: from mga01.intel.com ([192.55.52.88]:34023 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6831947Ab3ANPPtvnVGJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 Jan 2013 16:15:49 +0100
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP; 14 Jan 2013 07:15:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.84,468,1355126400"; 
+   d="asc'?scan'208";a="276659674"
+Received: from blue.fi.intel.com ([10.237.72.156])
+  by fmsmga002.fm.intel.com with ESMTP; 14 Jan 2013 07:15:39 -0800
+Received: by blue.fi.intel.com (Postfix, from userid 1000)
+        id C0CB4E0073; Mon, 14 Jan 2013 17:16:41 +0200 (EET)
+Date:   Mon, 14 Jan 2013 17:16:41 +0200
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-mips@linux-mips.org, Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: Re: 3.8-rc1 build failure with MIPS/SPARSEMEM
+Message-ID: <20130114151641.GA17996@otc-wbsnb-06>
+References: <20121222122757.GB6847@blackmetal.musicnaut.iki.fi>
+ <20121226003434.GA27760@otc-wbsnb-06>
+ <20121227121607.GA7097@blackmetal.musicnaut.iki.fi>
+ <20121230103850.GA5424@otc-wbsnb-06>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="TB36FDmn/VVEgNH/"
+Content-Disposition: inline
+In-Reply-To: <20121230103850.GA5424@otc-wbsnb-06>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 35417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@mips.com
+X-original-sender: kirill.shutemov@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,307 +47,70 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: "Steven J. Hill" <sjhill@mips.com>
 
-Clean-up tabs, spaces, macros, etc.
+--TB36FDmn/VVEgNH/
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Steven J. Hill <sjhill@mips.com>
----
- arch/mips/include/asm/inst.h     |  168 +++++++++++++++++++-------------------
- arch/mips/include/asm/mipsregs.h |   26 +++---
- arch/mips/kernel/traps.c         |    4 +-
- 3 files changed, 101 insertions(+), 97 deletions(-)
+On Sun, Dec 30, 2012 at 12:38:50PM +0200, Kirill A. Shutemov wrote:
+> On Thu, Dec 27, 2012 at 02:16:07PM +0200, Aaro Koskinen wrote:
+> > Hi,
+> >=20
+> > On Wed, Dec 26, 2012 at 02:34:35AM +0200, Kirill A. Shutemov wrote:
+> > > On MIPS if SPARSEMEM is enabled we've got this:
+> > >=20
+> > > In file included from /home/kas/git/public/linux/arch/mips/include/as=
+m/pgtable.h:552,
+> > >                  from include/linux/mm.h:44,
+> > >                  from arch/mips/kernel/asm-offsets.c:14:
+> > > include/asm-generic/pgtable.h: In function =E2=80=98my_zero_pfn=E2=80=
+=99:
+> > > include/asm-generic/pgtable.h:466: error: implicit declaration of fun=
+ction =E2=80=98page_to_section=E2=80=99
+> > > In file included from arch/mips/kernel/asm-offsets.c:14:
+> > > include/linux/mm.h: At top level:
+> > > include/linux/mm.h:738: error: conflicting types for =E2=80=98page_to=
+_section=E2=80=99
+> > > include/asm-generic/pgtable.h:466: note: previous implicit declaratio=
+n of =E2=80=98page_to_section=E2=80=99 was here
+> > >=20
+> > > Due header files inter-dependencies, the only way I see to fix it is
+> > > convert my_zero_pfn() for __HAVE_COLOR_ZERO_PAGE to macros.
+> > >=20
+> > > Signed-off-by: Kirill A. Shutemov <kirill@shutemov.name>
+> >=20
+> > Thanks, this works.
+> >=20
+> > Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+>=20
+> Andrew, could you take the patch?
 
-diff --git a/arch/mips/include/asm/inst.h b/arch/mips/include/asm/inst.h
-index ab84064..69b072f 100644
---- a/arch/mips/include/asm/inst.h
-+++ b/arch/mips/include/asm/inst.h
-@@ -197,71 +197,71 @@ enum lx_func {
-  */
- #ifdef __MIPSEB__
- struct j_format {	/* Jump format */
--	unsigned int opcode : 6;
--	unsigned int target : 26;
-+	unsigned int opcode:6;
-+	unsigned int target:26;
- };
- 
- struct i_format {	/* Immediate format (addi, lw, ...) */
--	unsigned int opcode : 6;
--	unsigned int rs : 5;
--	unsigned int rt : 5;
--	signed int simmediate : 16;
-+	unsigned int opcode:6;
-+	unsigned int rs:5;
-+	unsigned int rt:5;
-+	signed int simmediate:16;
- };
- 
- struct u_format {	/* Unsigned immediate format (ori, xori, ...) */
--	unsigned int opcode : 6;
--	unsigned int rs : 5;
--	unsigned int rt : 5;
--	unsigned int uimmediate : 16;
-+	unsigned int opcode:6;
-+	unsigned int rs:5;
-+	unsigned int rt:5;
-+	unsigned int uimmediate:16;
- };
- 
- struct c_format {	/* Cache (>= R6000) format */
--	unsigned int opcode : 6;
--	unsigned int rs : 5;
--	unsigned int c_op : 3;
--	unsigned int cache : 2;
--	unsigned int simmediate : 16;
-+	unsigned int opcode:6;
-+	unsigned int rs:5;
-+	unsigned int c_op:3;
-+	unsigned int cache:2;
-+	unsigned int simmediate:16;
- };
- 
- struct r_format {	/* Register format */
--	unsigned int opcode : 6;
--	unsigned int rs : 5;
--	unsigned int rt : 5;
--	unsigned int rd : 5;
--	unsigned int re : 5;
--	unsigned int func : 6;
-+	unsigned int opcode:6;
-+	unsigned int rs:5;
-+	unsigned int rt:5;
-+	unsigned int rd:5;
-+	unsigned int re:5;
-+	unsigned int func:6;
- };
- 
- struct p_format {	/* Performance counter format (R10000) */
--	unsigned int opcode : 6;
--	unsigned int rs : 5;
--	unsigned int rt : 5;
--	unsigned int rd : 5;
--	unsigned int re : 5;
--	unsigned int func : 6;
-+	unsigned int opcode:6;
-+	unsigned int rs:5;
-+	unsigned int rt:5;
-+	unsigned int rd:5;
-+	unsigned int re:5;
-+	unsigned int func:6;
- };
- 
- struct f_format {	/* FPU register format */
--	unsigned int opcode : 6;
--	unsigned int : 1;
--	unsigned int fmt : 4;
--	unsigned int rt : 5;
--	unsigned int rd : 5;
--	unsigned int re : 5;
--	unsigned int func : 6;
-+	unsigned int opcode:6;
-+	unsigned int :1;
-+	unsigned int fmt:4;
-+	unsigned int rt:5;
-+	unsigned int rd:5;
-+	unsigned int re:5;
-+	unsigned int func:6;
- };
- 
- struct ma_format {	/* FPU multiply and add format (MIPS IV) */
--	unsigned int opcode : 6;
--	unsigned int fr : 5;
--	unsigned int ft : 5;
--	unsigned int fs : 5;
--	unsigned int fd : 5;
--	unsigned int func : 4;
--	unsigned int fmt : 2;
-+	unsigned int opcode:6;
-+	unsigned int fr:5;
-+	unsigned int ft:5;
-+	unsigned int fs:5;
-+	unsigned int fd:5;
-+	unsigned int func:4;
-+	unsigned int fmt:2;
- };
- 
--struct b_format { /* BREAK and SYSCALL */
-+struct b_format {	/* BREAK and SYSCALL */
- 	unsigned int opcode:6;
- 	unsigned int code:20;
- 	unsigned int func:6;
-@@ -270,71 +270,71 @@ struct b_format { /* BREAK and SYSCALL */
- #elif defined(__MIPSEL__)
- 
- struct j_format {	/* Jump format */
--	unsigned int target : 26;
--	unsigned int opcode : 6;
-+	unsigned int target:26;
-+	unsigned int opcode:6;
- };
- 
- struct i_format {	/* Immediate format */
--	signed int simmediate : 16;
--	unsigned int rt : 5;
--	unsigned int rs : 5;
--	unsigned int opcode : 6;
-+	signed int simmediate:16;
-+	unsigned int rt:5;
-+	unsigned int rs:5;
-+	unsigned int opcode:6;
- };
- 
- struct u_format {	/* Unsigned immediate format */
--	unsigned int uimmediate : 16;
--	unsigned int rt : 5;
--	unsigned int rs : 5;
--	unsigned int opcode : 6;
-+	unsigned int uimmediate:16;
-+	unsigned int rt:5;
-+	unsigned int rs:5;
-+	unsigned int opcode:6;
- };
- 
- struct c_format {	/* Cache (>= R6000) format */
--	unsigned int simmediate : 16;
--	unsigned int cache : 2;
--	unsigned int c_op : 3;
--	unsigned int rs : 5;
--	unsigned int opcode : 6;
-+	unsigned int simmediate:16;
-+	unsigned int cache:2;
-+	unsigned int c_op:3;
-+	unsigned int rs:5;
-+	unsigned int opcode:6;
- };
- 
- struct r_format {	/* Register format */
--	unsigned int func : 6;
--	unsigned int re : 5;
--	unsigned int rd : 5;
--	unsigned int rt : 5;
--	unsigned int rs : 5;
--	unsigned int opcode : 6;
-+	unsigned int func:6;
-+	unsigned int re:5;
-+	unsigned int rd:5;
-+	unsigned int rt:5;
-+	unsigned int rs:5;
-+	unsigned int opcode:6;
- };
- 
- struct p_format {	/* Performance counter format (R10000) */
--	unsigned int func : 6;
--	unsigned int re : 5;
--	unsigned int rd : 5;
--	unsigned int rt : 5;
--	unsigned int rs : 5;
--	unsigned int opcode : 6;
-+	unsigned int func:6;
-+	unsigned int re:5;
-+	unsigned int rd:5;
-+	unsigned int rt:5;
-+	unsigned int rs:5;
-+	unsigned int opcode:6;
- };
- 
- struct f_format {	/* FPU register format */
--	unsigned int func : 6;
--	unsigned int re : 5;
--	unsigned int rd : 5;
--	unsigned int rt : 5;
--	unsigned int fmt : 4;
--	unsigned int : 1;
--	unsigned int opcode : 6;
-+	unsigned int func:6;
-+	unsigned int re:5;
-+	unsigned int rd:5;
-+	unsigned int rt:5;
-+	unsigned int fmt:4;
-+	unsigned int :1;
-+	unsigned int opcode:6;
- };
- 
- struct ma_format {	/* FPU multiply and add format (MIPS IV) */
--	unsigned int fmt : 2;
--	unsigned int func : 4;
--	unsigned int fd : 5;
--	unsigned int fs : 5;
--	unsigned int ft : 5;
--	unsigned int fr : 5;
--	unsigned int opcode : 6;
-+	unsigned int fmt:2;
-+	unsigned int func:4;
-+	unsigned int fd:5;
-+	unsigned int fs:5;
-+	unsigned int ft:5;
-+	unsigned int fr:5;
-+	unsigned int opcode:6;
- };
- 
--struct b_format { /* BREAK and SYSCALL */
-+struct b_format {	/* BREAK and SYSCALL */
- 	unsigned int func:6;
- 	unsigned int code:20;
- 	unsigned int opcode:6;
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 7e4e6f8..1ad3e34 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1142,17 +1142,21 @@ do {									\
- /*
-  * Macros to access the floating point coprocessor control registers
-  */
--#define read_32bit_cp1_register(source)                         \
--({ int __res;                                                   \
--	__asm__ __volatile__(                                   \
--	".set\tpush\n\t"					\
--	".set\treorder\n\t"					\
--	/* gas fails to assemble cfc1 for some archs (octeon).*/ \
--	".set\tmips1\n\t"					\
--        "cfc1\t%0,"STR(source)"\n\t"                            \
--	".set\tpop"						\
--        : "=r" (__res));                                        \
--        __res;})
-+#define read_32bit_cp1_register(source)					\
-+({									\
-+	int __res;							\
-+									\
-+	__asm__ __volatile__(						\
-+	"	.set	push					\n"	\
-+	"	.set	reorder					\n"	\
-+	"	# gas fails to assemble cfc1 for some archs,	\n"	\
-+	"	# like Octeon.					\n"	\
-+	"	.set	mips1					\n"	\
-+	"	cfc1	%0,"STR(source)"			\n"	\
-+	"	.set	pop					\n"	\
-+	: "=r" (__res));						\
-+	__res;								\
-+})
- 
- #define rddsp(mask)							\
- ({									\
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index cf7ac54..e3a5f3d 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -518,7 +518,7 @@ static inline int simulate_ll(struct pt_regs *regs, unsigned int opcode)
- 	offset >>= 16;
- 
- 	vaddr = (unsigned long __user *)
--	        ((unsigned long)(regs->regs[(opcode & BASE) >> 21]) + offset);
-+		((unsigned long)(regs->regs[(opcode & BASE) >> 21]) + offset);
- 
- 	if ((unsigned long)vaddr & 3)
- 		return SIGBUS;
-@@ -558,7 +558,7 @@ static inline int simulate_sc(struct pt_regs *regs, unsigned int opcode)
- 	offset >>= 16;
- 
- 	vaddr = (unsigned long __user *)
--	        ((unsigned long)(regs->regs[(opcode & BASE) >> 21]) + offset);
-+		((unsigned long)(regs->regs[(opcode & BASE) >> 21]) + offset);
- 	reg = (opcode & RT) >> 16;
- 
- 	if ((unsigned long)vaddr & 3)
--- 
-1.7.9.5
+ping?
+
+--=20
+ Kirill A. Shutemov
+
+--TB36FDmn/VVEgNH/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQ9CFZAAoJEAd+omnVudOMbdUP/24tVWl2QDuay6OFsj6muPt+
+fyeM0Rjl+vwOi3UaIz5Xhckf7mVJEE1P/xMkxL2GLf8anJL4fRxrYDE30phPOuOz
+YRQ4xGEDzjmfHNLQJgzgUdbcM03RwNazwteFYOHh67/Ag8CkPDUEqWgd/cmDjeKy
+Q/DFpxuqrVmgRQ0Mekei5vMGDd/k05piDgGzglsORTcAKxmFTH8R7XA8TtX7VzyN
+xI1+TA1hnGbS2lYJVNsoB1Q7FQUSHri06RtBzC8lbk5NDqrrNdilKqwZomuCPwuz
+9Qbaiht0+LoVbipPylAspJpJ+wNMCLE7UpGsfwB326Y/io/1lW9D4UAWgYzIVcNw
+o48a9v7C8GA0K5VWQg6Ps2t8FsRPsDDIE0asTp6w3yLhrwlvgl46kD5wVlXQDww9
+C0CKqV4UYLkyhmK6vHsoH9E9+pgsg420Xd9B7bPmoMOQVshtor9PyMnqNT500v3W
+feefsvorH+gDacvIzpHVd685dgi2EcGrNFv3St+qOlMUUJ7STBP8+WF7J8SpTY7/
+4OqTyavnLuAwYoQ7fri5S7pBITAPLCrcBe4oIKWFY9d5l6hsCokeMka8en1LBimA
+fGaI9i9dOim+aCKbMrCj4Lg18HIxJ45pAfoGnuvoRasslyFW8NhkIClQVI/gbmUq
+LFUita7qoobzjt4YCPG7
+=M1Vh
+-----END PGP SIGNATURE-----
+
+--TB36FDmn/VVEgNH/--

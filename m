@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2013 07:18:06 +0100 (CET)
-Received: from mms2.broadcom.com ([216.31.210.18]:3027 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2013 07:36:06 +0100 (CET)
+Received: from mms3.broadcom.com ([216.31.210.19]:4831 "EHLO mms3.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6832184Ab3AOGSEm7ZVK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 15 Jan 2013 07:18:04 +0100
-Received: from [10.9.208.26] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Mon, 14 Jan 2013 22:14:42 -0800
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+        id S6832072Ab3AOGgEgUbWc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 15 Jan 2013 07:36:04 +0100
+Received: from [10.9.208.53] by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Mon, 14 Jan 2013 22:30:35 -0800
+X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHCAS05.corp.ad.broadcom.com (10.9.208.26) with Microsoft SMTP
- Server id 14.1.355.2; Mon, 14 Jan 2013 22:17:48 -0800
+ irvexchcas06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
+ Server id 14.1.355.2; Mon, 14 Jan 2013 22:35:46 -0800
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 87DD440FE8; Mon, 14
- Jan 2013 22:17:46 -0800 (PST)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id C565840FE5; Mon, 14
+ Jan 2013 22:35:45 -0800 (PST)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 cc:     "Jayachandran C" <jchandra@broadcom.com>
 Subject: [PATCH 10/10] MIPS: PCI: Multi-node PCI support for Netlogic
  XLP
-Date:   Tue, 15 Jan 2013 11:50:29 +0530
-Message-ID: <1358230829-13820-1-git-send-email-jchandra@broadcom.com>
+Date:   Tue, 15 Jan 2013 12:08:27 +0530
+Message-ID: <1358231908-14458-1-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1358179922-26663-11-git-send-email-jchandra@broadcom.com>
 References: <1358179922-26663-11-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7CEA2C583QG29118-01-01
+X-WSS-ID: 7CEA28013Q42212848-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35440
+X-archive-position: 35441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

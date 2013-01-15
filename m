@@ -1,33 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2013 07:36:06 +0100 (CET)
-Received: from mms3.broadcom.com ([216.31.210.19]:4831 "EHLO mms3.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2013 07:36:24 +0100 (CET)
+Received: from mms3.broadcom.com ([216.31.210.19]:4833 "EHLO mms3.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6832072Ab3AOGgEgUbWc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6832184Ab3AOGgErhaUT (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 15 Jan 2013 07:36:04 +0100
-Received: from [10.9.208.53] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Mon, 14 Jan 2013 22:30:35 -0800
+Received: from [10.9.208.26] by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Mon, 14 Jan 2013 22:30:38 -0800
 X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- irvexchcas06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
- Server id 14.1.355.2; Mon, 14 Jan 2013 22:35:46 -0800
+ IRVEXCHCAS05.corp.ad.broadcom.com (10.9.208.26) with Microsoft SMTP
+ Server id 14.1.355.2; Mon, 14 Jan 2013 22:35:49 -0800
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id C565840FE5; Mon, 14
- Jan 2013 22:35:45 -0800 (PST)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id BEF2740FE8; Mon, 14
+ Jan 2013 22:35:47 -0800 (PST)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 cc:     "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 10/10] MIPS: PCI: Multi-node PCI support for Netlogic
- XLP
-Date:   Tue, 15 Jan 2013 12:08:27 +0530
-Message-ID: <1358231908-14458-1-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH 03/10] MIPS: PCI: Byteswap not needed in little-endian
+ mode
+Date:   Tue, 15 Jan 2013 12:08:28 +0530
+Message-ID: <1358231908-14458-2-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1358179922-26663-11-git-send-email-jchandra@broadcom.com>
+In-Reply-To: <1358231908-14458-1-git-send-email-jchandra@broadcom.com>
 References: <1358179922-26663-11-git-send-email-jchandra@broadcom.com>
+ <1358231908-14458-1-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7CEA28013Q42212848-01-01
+X-WSS-ID: 7CEA28043Q42212864-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35441
+X-archive-position: 35442
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,172 +46,56 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On a multi-chip XLP board, each node can have 4 PCIe links. Update
-XLP PCI code to initialize PCI on all the nodes.
+Rename xlp_enable_pci_bswap() to xlp_config_pci_bswap(), and add
+'#ifdef __BIG_ENDIAN' to its contents so that it is an empty function
+when compiled in little-endian mode.
+
+On Netlogic XLP, the PCIe initialization code to enable byteswap is
+needed only in big-endian mode.
 
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/pci/pci-xlp.c |  107 ++++++++++++++++++++++++++++-------------------
- 1 file changed, 65 insertions(+), 42 deletions(-)
+[Update comments to reflect changes in updated patch. The changes are
+ based on a suggestion on #ifdef usage by sshtylyov@mvista.com ]
+
+ arch/mips/pci/pci-xlp.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/arch/mips/pci/pci-xlp.c b/arch/mips/pci/pci-xlp.c
-index 5f1a6de..920b715 100644
+index 140557a..d201efa 100644
 --- a/arch/mips/pci/pci-xlp.c
 +++ b/arch/mips/pci/pci-xlp.c
-@@ -46,6 +46,7 @@
- 
- #include <asm/netlogic/interrupt.h>
- #include <asm/netlogic/haldefs.h>
-+#include <asm/netlogic/common.h>
- 
- #include <asm/netlogic/xlp-hal/iomap.h>
- #include <asm/netlogic/xlp-hal/pic.h>
-@@ -161,32 +162,38 @@ struct pci_controller nlm_pci_controller = {
- 	.io_offset      = 0x00000000UL,
- };
- 
--static int get_irq_vector(const struct pci_dev *dev)
-+static struct pci_dev *xlp_get_pcie_link(const struct pci_dev *dev)
- {
--	/*
--	 * For XLP PCIe, there is an IRQ per Link, find out which
--	 * link the device is on to assign interrupts
--	*/
--	if (dev->bus->self == NULL)
--		return 0;
-+	struct pci_bus *bus, *p;
- 
--	switch	(dev->bus->self->devfn) {
--	case 0x8:
--		return PIC_PCIE_LINK_0_IRQ;
--	case 0x9:
--		return PIC_PCIE_LINK_1_IRQ;
--	case 0xa:
--		return PIC_PCIE_LINK_2_IRQ;
--	case 0xb:
--		return PIC_PCIE_LINK_3_IRQ;
--	}
--	WARN(1, "Unexpected devfn %d\n", dev->bus->self->devfn);
--	return 0;
-+	/* Find the bridge on bus 0 */
-+	bus = dev->bus;
-+	for (p = bus->parent; p && p->number != 0; p = p->parent)
-+		bus = p;
-+
-+	return p ? bus->self : NULL;
-+}
-+
-+static inline int nlm_pci_link_to_irq(int link)
-+{
-+	return PIC_PCIE_LINK_0_IRQ + link;
+@@ -191,8 +191,14 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
+ 	return 0;
  }
  
- int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
+-static int xlp_enable_pci_bswap(void)
++/*
++ * If big-endian, enable hardware byteswap on the PCIe bridges.
++ * This will make both the SoC and PCIe devices behave consistently with
++ * readl/writel.
++ */
++static void xlp_config_pci_bswap(void)
  {
--	return get_irq_vector(dev);
-+	struct pci_dev *lnkdev;
-+	int lnkslot, lnkfunc, irq;
-+
-+	/*
-+	 * For XLP PCIe, there is an IRQ per Link, find out which
-+	 * link the device is on to assign interrupts
-+	*/
-+	lnkdev = xlp_get_pcie_link(dev);
-+	if (lnkdev == NULL)
-+		return 0;
-+	lnkfunc = PCI_FUNC(lnkdev->devfn);
-+	lnkslot = PCI_SLOT(lnkdev->devfn);
-+	return nlm_irq_to_xirq(lnkslot / 8, nlm_pci_link_to_irq(lnkfunc));
- }
- 
- /* Do platform specific device initialization at pci_enable_device() time */
-@@ -200,43 +207,40 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
-  * This will make both the SoC and PCIe devices behave consistently with
-  * readl/writel.
-  */
--static void xlp_config_pci_bswap(void)
-+static int xlp_config_pci_bswap(int node, int link)
- {
- #ifdef __BIG_ENDIAN
--	uint64_t pciebase, sysbase;
--	int node, i;
-+	uint64_t nbubase, lnkbase;
++#ifdef __BIG_ENDIAN
+ 	uint64_t pciebase, sysbase;
+ 	int node, i;
  	u32 reg;
- 
--	/* Chip-0 so node set to 0 */
--	node = 0;
--	sysbase = nlm_get_bridge_regbase(node);
-+	nbubase = nlm_get_bridge_regbase(node);
-+	lnkbase = nlm_get_pcie_base(node, link);
-+
- 	/*
- 	 *  Enable byte swap in hardware. Program each link's PCIe SWAP regions
- 	 * from the link's address ranges.
- 	 */
--	for (i = 0; i < 4; i++) {
--		pciebase = nlm_pcicfg_base(XLP_IO_PCIE_OFFSET(node, i));
--		if (nlm_read_pci_reg(pciebase, 0) == 0xffffffff)
--			continue;
-+	reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEMEM_BASE0 + link);
-+	nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_MEM_BASE, reg);
- 
--		reg = nlm_read_bridge_reg(sysbase, BRIDGE_PCIEMEM_BASE0 + i);
--		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_MEM_BASE, reg);
-+	reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEMEM_LIMIT0 + link);
-+	nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_MEM_LIM, reg | 0xfff);
- 
--		reg = nlm_read_bridge_reg(sysbase, BRIDGE_PCIEMEM_LIMIT0 + i);
--		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_MEM_LIM,
--			reg | 0xfff);
-+	reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEIO_BASE0 + link);
-+	nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_IO_BASE, reg);
- 
--		reg = nlm_read_bridge_reg(sysbase, BRIDGE_PCIEIO_BASE0 + i);
--		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_IO_BASE, reg);
--
--		reg = nlm_read_bridge_reg(sysbase, BRIDGE_PCIEIO_LIMIT0 + i);
--		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_IO_LIM, reg | 0xfff);
--	}
-+	reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEIO_LIMIT0 + link);
-+	nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_IO_LIM, reg | 0xfff);
- #endif
+@@ -222,7 +228,7 @@ static int xlp_enable_pci_bswap(void)
+ 		reg = nlm_read_bridge_reg(sysbase, BRIDGE_PCIEIO_LIMIT0 + i);
+ 		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_IO_LIM, reg | 0xfff);
+ 	}
+-	return 0;
++#endif
  }
  
  static int __init pcibios_init(void)
- {
-+	struct nlm_soc_info *nodep;
-+	uint64_t pciebase;
-+	int link, n;
-+	u32 reg;
-+
- 	/* Firmware assigns PCI resources */
- 	pci_set_flags(PCI_PROBE_ONLY);
- 	pci_config_base = ioremap(XLP_DEFAULT_PCI_ECFG_BASE, 64 << 20);
-@@ -245,7 +249,26 @@ static int __init pcibios_init(void)
+@@ -235,7 +241,7 @@ static int __init pcibios_init(void)
  	ioport_resource.start =  0;
  	ioport_resource.end   = ~0;
  
--	xlp_config_pci_bswap();
-+	for (n = 0; n < NLM_NR_NODES; n++) {
-+		nodep = nlm_get_node(n);
-+		if (!nodep->coremask)
-+			continue;	/* node does not exist */
-+
-+		for (link = 0; link < 4; link++) {
-+			pciebase = nlm_get_pcie_base(n, link);
-+			if (nlm_read_pci_reg(pciebase, 0) == 0xffffffff)
-+				continue;
-+			xlp_config_pci_bswap(n, link);
-+
-+			/* put in intpin and irq - u-boot does not */
-+			reg = nlm_read_pci_reg(pciebase, 0xf);
-+			reg &= ~0x1fu;
-+			reg |= (1 << 8) | nlm_pci_link_to_irq(link);
-+			nlm_write_pci_reg(pciebase, 0xf, reg);
-+			pr_info("XLP PCIe: Link %d-%d initialized.\n", n, link);
-+		}
-+	}
-+
+-	xlp_enable_pci_bswap();
++	xlp_config_pci_bswap();
  	set_io_port_base(CKSEG1);
  	nlm_pci_controller.io_map_base = CKSEG1;
  

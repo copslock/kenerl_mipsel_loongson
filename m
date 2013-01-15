@@ -1,48 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2013 13:18:56 +0100 (CET)
-Received: from mail-la0-f51.google.com ([209.85.215.51]:46515 "EHLO
-        mail-la0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6832195Ab3AOMSz2Of-q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Jan 2013 13:18:55 +0100
-Received: by mail-la0-f51.google.com with SMTP id fj20so24754lab.24
-        for <multiple recipients>; Tue, 15 Jan 2013 04:18:49 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2013 18:53:08 +0100 (CET)
+Received: from mail-qa0-f41.google.com ([209.85.216.41]:36018 "EHLO
+        mail-qa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6832207Ab3AORxHmngS3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Jan 2013 18:53:07 +0100
+Received: by mail-qa0-f41.google.com with SMTP id o19so2612570qap.14
+        for <multiple recipients>; Tue, 15 Jan 2013 09:53:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=x-received:sender:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=+PPuMZX3q7q/QYf4TPilurslNaYh1jyOQuSOKQUsKvc=;
-        b=EX2E1vvM2q/O53XPt+++O/Y6Izw5cd4PrQNSq//bzZlr9xlQXdv6reg+AI1OQLWCaA
-         7+tG9Bgp71BCguR9S/TAp3SRmt1dVO8aXhCPuejUVscl8bDi4Cua6/DjgdbT1gQq0V5N
-         cw8qfavf0yHQ9xnYFRTbVt5+gogQfCsoZb6YGM6zb5dQ/7RI/EWvrjFEzVaL3POteVNu
-         /xxCgwO6bn5PeDCBL31tB6P7w3d8iVSf5eZ4CP2l0fXoG1A0V+z+U/OE57nDuF5W4/Nm
-         SU2FLoUKK7F62vEP4S/w/00JFYQtj+h8gSxQ6HIVfdLOf0sFOR3ObWg/YH5Qj/fajRX1
-         fc1Q==
-X-Received: by 10.152.145.37 with SMTP id sr5mr28713094lab.33.1358252329757;
-        Tue, 15 Jan 2013 04:18:49 -0800 (PST)
-Received: from [192.168.108.37] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by mx.google.com with ESMTPS id v7sm6686079lbj.13.2013.01.15.04.18.48
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 15 Jan 2013 04:18:49 -0800 (PST)
-Message-ID: <50F5488C.4010006@openwrt.org>
-Date:   Tue, 15 Jan 2013 13:16:12 +0100
-From:   Florian Fainelli <florian@openwrt.org>
-Organization: OpenWrt
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=eXVA+JLHeye3fE9u6QNZg4QFfKFxF2EGYouEeKF5RaE=;
+        b=NV8VW1h081Oq5/TfrQNuDB3/Cupyc3bjzumQgND5ajZG+q0Y6blMpTARZHZJAUNAVn
+         1vQjz9ErgshmccBMiHWPqiaOxmaHE7Jtsp5zKBV+fUhgEbwBrfBmPugtZZthSnnwDzQX
+         0w/CORnLUCnNjX47j0P7rdwo6Wr466bUCRicazkcXaYKrDSPPjUijIAEUKzNI2sMRNxd
+         l8mbx7oObeQdrldYxWuEErZfDdrvbfoxAAmb/sij9GQjyF63UH2RsjDGBGcTl5uvs/cn
+         /gz0ozuQ50bFIE42pQkZjcRR94gzUjVpHyOq1ztK6aZFPX48cmYz3NeG7W4Bywx5IDNG
+         MWhQ==
 MIME-Version: 1.0
-To:     Sergei Shtylyov <sshtylyov@mvista.com>
-CC:     Jayachandran C <jchandra@broadcom.com>, linux-mips@linux-mips.org,
-        ralf@linux-mips.org
-Subject: Re: [PATCH 03/10] MIPS: PCI: Byteswap not needed in little-endian
- mode
-References: <1358179922-26663-4-git-send-email-jchandra@broadcom.com> <1358230746-13785-1-git-send-email-jchandra@broadcom.com> <50F5444C.5020209@mvista.com>
-In-Reply-To: <50F5444C.5020209@mvista.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35445
+Received: by 10.224.59.135 with SMTP id l7mr74488205qah.25.1358272381177; Tue,
+ 15 Jan 2013 09:53:01 -0800 (PST)
+Received: by 10.49.117.161 with HTTP; Tue, 15 Jan 2013 09:53:00 -0800 (PST)
+In-Reply-To: <20130115034006.GA3854@home.goodmis.org>
+References: <1357914810-20656-1-git-send-email-alcooperx@gmail.com>
+        <50F0454D.5060109@gmail.com>
+        <20130115034006.GA3854@home.goodmis.org>
+Date:   Tue, 15 Jan 2013 12:53:00 -0500
+Message-ID: <CAOGqxeUSAikiRpVY=Lsu71DzBU6Mmt7C319NqLOv1WscESq=tw@mail.gmail.com>
+Subject: Re: [PATCH] mips: function tracer: Fix broken function tracing
+From:   Alan Cooper <alcooperx@gmail.com>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     David Daney <ddaney.cavm@gmail.com>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 35446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: alcooperx@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,50 +50,73 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 01/15/2013 12:58 PM, Sergei Shtylyov wrote:
-> Hello.
+On Mon, Jan 14, 2013 at 10:40 PM, Steven Rostedt <rostedt@goodmis.org> wrote:
+> On Fri, Jan 11, 2013 at 09:01:01AM -0800, David Daney wrote:
+>>
+>> I thought all CPUs were in stop_machine() when the modifications
+>> were done, so that there is no issue with multi-word instruction
+>> patching.
+>>
+>> Am I wrong about this?
+>>
+>> So really I think you can do two NOP just as easily.
 >
-> On 15-01-2013 10:19, Jayachandran C wrote:
+> The problem with double NOPs is that it can only work if there's no
+> problem executing one nop and a non NOP. Which I think is an issue here.
 >
->> Wrap the xlp_enable_pci_bswap() function and its call with
->> '#ifdef __BIG_ENDIAN'. On Netlogic XLP, the PCIe initialization code
->> to setup to byteswap is needed only in big-endian mode.
 >
->> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
-
-[snip]
-
->> +/*
->> + * If big-endian, enable hardware byteswap on the PCIe bridges.
->> + * This will make both the SoC and PCIe devices behave consistently with
->> + * readl/writel.
->> + */
->> +static void xlp_config_pci_bswap(void)
->>   {
->> +#ifdef __BIG_ENDIAN
->>       uint64_t pciebase, sysbase;
->>       int node, i;
->>       u32 reg;
->> @@ -222,7 +228,7 @@ static int xlp_enable_pci_bswap(void)
->>           reg = nlm_read_bridge_reg(sysbase, BRIDGE_PCIEIO_LIMIT0 + i);
->>           nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_IO_LIM, reg |
->> 0xfff);
->>       }
->> -    return 0;
->> +#endif
+> If you have something like:
 >
->     You misunderstood. #ifdef within functions are frowned upon. Thios
-> patch is hardly better than previous then.
-
-Jayachandran, you probably need something like this:
-
-#ifdef __BIG_ENDIAN
-static void xlp_config_pci_bswap(void)
-{
-	/* perform the actual swapping */
-}
-#else
-static inline void xlp_config_pci_bswap(void) { }
-#endif
---
-Florian
+>         bl      _mcount
+>         addiu   sp,sp,-8
+>
+> And you convert that to:
+>
+>         nop
+>         nop
+>
+> Now if you convert that back to:
+>
+>         bl      ftrace_caller
+>         addiu   sp,sp,-8
+>
+> then you can have an issue if the task was preempted after that first
+> nop. Because stop_machine() doesn't wait for tasks to exit kernel space.
+> If you have a CONFIG_PREEMPT kernel, a task can be sleeping anywhere.
+> Thus you have a task execute the first nop, get preempted. You update
+> the code to be:
+>
+>         bl      ftrace_caller
+>         addiu   sp,sp,-8
+>
+> When that task gets scheduled back in, it will act like it just
+> executed:
+>
+>         nop
+>         addiu   sp,sp,-8
+>
+> Which is the problem you're trying to solve in the first place.
+>
+> Now that said, There's no reason we need that addiu sp,sp,-8 there.
+> That's just what the mips defined mcount requires. But as you can see
+> above, with dynamic ftrace, the defined mcount is only called at boot
+> up, and never again. That means at boot up you can convert to:
+>
+>         nop
+>         nop
+>
+> and then when you enable tracing just convert it to:
+>
+>         bl      ftrace_caller
+>         nop
+>
+> There's nothing that states what the ftrace caller must be. We can have
+> it do a proper stack update. That is, only at boot up do we need to
+> handle the defined mcount. After that, those instructions are just place
+> holders for our own algorithms. If the addiu was needed for the defined
+> mcount, there's no reason to keep it for our own ftrace_caller.
+>
+> Would that work?
+>
+> -- Steve
+>

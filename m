@@ -1,47 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2013 20:41:17 +0100 (CET)
-Received: from mail-da0-f48.google.com ([209.85.210.48]:64543 "EHLO
-        mail-da0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6832208Ab3AOTlNDq0lB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Jan 2013 20:41:13 +0100
-Received: by mail-da0-f48.google.com with SMTP id k18so186328dae.7
-        for <multiple recipients>; Tue, 15 Jan 2013 11:41:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=AHnlWPAyEij0BReHwacG16bM6bZMCMls3qVspKTG5LY=;
-        b=zwR8z0TKK48f7mz/Bc2nNUVY2HMQHlW4EN1ROFXB7YjrXWNP6K7BKjPwO4vaEXZify
-         lZXrzxWs16zs+I6hItr+4TX5R9G/z/OBsjkgZzTibyrj9MC4QsVj/bBXpV4mSWvWOKmP
-         HAdvqzvnQUo5061ahXU0WVieqkAfoePrSrGnkYJps9oGwm6RR70UvtHnsARvDeV3BkVm
-         XsnepsLINKMvtzc2CvB9ldTwPdhwrCXwgooWnYHc2iBbk6hXCkMyv6ZtAXMQ0V0qJ8EW
-         Lm3Ax3YYDNK/Gb3X4MeH+P3Eojjjsb9iu1yb+eVQndgmQFy3BliI9BbnXUHzfTfDKjB3
-         OLqg==
-X-Received: by 10.68.220.6 with SMTP id ps6mr267007958pbc.80.1358278866272;
-        Tue, 15 Jan 2013 11:41:06 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id tq4sm10721802pbc.50.2013.01.15.11.41.05
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 15 Jan 2013 11:41:05 -0800 (PST)
-Message-ID: <50F5B0D0.9010604@gmail.com>
-Date:   Tue, 15 Jan 2013 11:41:04 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
-MIME-Version: 1.0
-To:     "Steven J. Hill" <sjhill@mips.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org, cernekee@gmail.com,
-        kevink@paralogos.com
-Subject: Re: [PATCH] [RFC] Proposed changes to eliminate 'union mips_instruction'
- type.
-References: <1358230420-3575-1-git-send-email-sjhill@mips.com>
-In-Reply-To: <1358230420-3575-1-git-send-email-sjhill@mips.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2013 22:07:43 +0100 (CET)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.122]:17960 "EHLO
+        hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6832214Ab3AOVHhlPcZq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Jan 2013 22:07:37 +0100
+X-Authority-Analysis: v=2.0 cv=e+OEuNV/ c=1 sm=0 a=rXTBtCOcEpjy1lPqhTCpEQ==:17 a=mNMOxpOpBa8A:10 a=79wlbEtt-9EA:10 a=5SG0PmZfjMsA:10 a=Q9fys5e9bTEA:10 a=meVymXHHAAAA:8 a=pX4miy-IAAsA:10 a=2Jtw9-WZmrLkOvoCA9IA:9 a=PUjeQqilurYA:10 a=rXTBtCOcEpjy1lPqhTCpEQ==:117
+X-Cloudmark-Score: 0
+X-Authenticated-User: 
+X-Originating-IP: 74.67.115.198
+Received: from [74.67.115.198] ([74.67.115.198:51664] helo=[192.168.23.10])
+        by hrndva-oedge03.mail.rr.com (envelope-from <rostedt@goodmis.org>)
+        (ecelerity 2.2.3.46 r()) with ESMTP
+        id 42/55-25872-215C5F05; Tue, 15 Jan 2013 21:07:30 +0000
+Message-ID: <1358284049.4068.21.camel@gandalf.local.home>
+Subject: Re: [PATCH] mips: function tracer: Fix broken function tracing
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Al Cooper <alcooperx@gmail.com>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Date:   Tue, 15 Jan 2013 16:07:29 -0500
+In-Reply-To: <50F59812.6040806@gmail.com>
+References: <y> <1357914810-20656-1-git-send-email-alcooperx@gmail.com>
+         <50F0454D.5060109@gmail.com> <20130115034006.GA3854@home.goodmis.org>
+         <50F59812.6040806@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.4.4-1 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35449
+X-archive-position: 35450
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,83 +44,48 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 01/14/2013 10:13 PM, Steven J. Hill wrote:
-> From: "Steven J. Hill" <sjhill@mips.com>
->
-> This patch shows the use of macros in place of 'union mips_instruction'
-> type.
+On Tue, 2013-01-15 at 09:55 -0800, David Daney wrote:
 
-Why?  What are the benefits of doing this?
+> > There's nothing that states what the ftrace caller must be. We can have
+> > it do a proper stack update. That is, only at boot up do we need to
+> > handle the defined mcount. After that, those instructions are just place
+> > holders for our own algorithms. If the addiu was needed for the defined
+> > mcount, there's no reason to keep it for our own ftrace_caller.
+> >
+> > Would that work?
+> 
+> ... either do as you suggest and dynamically change the ABI of the 
+> target function.
 
-> I converted all usages of 'j_format' and 'r_format' to show how
-> the code and macros could look and be defined. I have tested these
-> changes on big and little endian platforms.
->
-> I want input from everyone, please!!! I want consensus on the macro
-> definitions, placement of parenthesis for them, spacing in the header
-> file, etc. This is your chance to be completely anal and have fun
-> arguments over how things should be. I would also like input on how
-> the maintainers would like the patchsets to look like. For example:
->
->    [1/X] - Convert 'j_format'
->    [2/X] - Convert 'r_format'
->    [3/X] - Convert 'f_format'
->    [4/X] - Convert 'u_format'
->    ...
->    [X/X] - Remove usage of 'union mips_instruction' type completely.
->
-> Also, I noticed 'p_format' is not used anywhere. Can we kill it? Be
-> picky and help with this conversion. Thanks.
->
-> Signed-off-by: Steven J. Hill <sjhill@mips.com>
-> ---
->   arch/mips/include/asm/inst.h   |   66 +++++++++++-----------------------------
->   arch/mips/kernel/branch.c      |   13 ++++----
->   arch/mips/kernel/jump_label.c  |   10 +++---
->   arch/mips/kernel/kgdb.c        |   10 ++----
->   arch/mips/kernel/kprobes.c     |   18 +++++------
->   arch/mips/kernel/process.c     |   10 +++---
->   arch/mips/oprofile/backtrace.c |    2 +-
->   7 files changed, 46 insertions(+), 83 deletions(-)
->
-> diff --git a/arch/mips/include/asm/inst.h b/arch/mips/include/asm/inst.h
-> index ab84064..856b14e 100644
-> --- a/arch/mips/include/asm/inst.h
-> +++ b/arch/mips/include/asm/inst.h
-> @@ -192,15 +192,27 @@ enum lx_func {
->   	lbx_op	= 0x16,
->   };
->
-> +#define INSN_OPCODE(insn)		(insn >> 26)
-> +#define INSN_RS(insn)			((insn >> 21) & 0x1f)
-> +#define INSN_RT(insn)			((insn >> 16) & 0x1f)
-> +#define INSN_RD(insn)			((insn >> 11) & 0x1f)
-> +#define INSN_RE(insn)			((insn >> 6) & 0x1f)
-> +#define INSN_FUNC(insn)			(insn & 0x0000003f)
-> +
-> +#define J_INSN(op,target)		((op << 26) | target)
+We already change the ABI. We have it call ftrace_caller instead of
+mcount.
 
-What is the type of J_INSN()?  What happens if target overflows into the 
-'op' field?
+BTW, I've just compiled with gcc 4.6.3 against mips, and I don't see the
+issue. I have:
 
+0000000000000000 <account_kernel_stack>:
+       0:       03e0082d        move    at,ra
+       4:       0c000000        jal     0 <account_kernel_stack>
+                        4: R_MIPS_26    _mcount
+                        4: R_MIPS_NONE  *ABS*
+                        4: R_MIPS_NONE  *ABS*
+       8:       0000602d        move    t0,zero
+       c:       2402000d        li      v0,13
+      10:       3c030000        lui     v1,0x0
+                        10: R_MIPS_HI16 mem_section
+                        10: R_MIPS_NONE *ABS*
+                        10: R_MIPS_NONE *ABS*
+      14:       000216fc        dsll32  v0,v0,0x1b
+      18:       64630000        daddiu  v1,v1,0
 
-> +#define J_INSN_TARGET(insn)		(insn & 0x03ffffff)
-> +#define R_INSN(op,rs,rt,rd,re,func)	((op << 26) | (rs << 21) |	\
-> +					 (rt << 16) | (rd << 11) |	\
-> +					 (re << 6) | func)
-> +#define F_INSN(op,fmt,rt,rd,re,func)	R_INSN(op,fmt,rt,rd,re,func)
-> +#define F_INSN_FMT(insn)		INSN_RS(insn)
-> +#define U_INSN(op,rs,uimm)		((op << 26) | (rs << 21) | uimmediate)
-[...]
-> +	unsigned int n_insn = insn.word;
+Is it dependent on the config?
 
-I don't like that the width of an insn is not obvious by looking at the 
-code.
+> 
+> Or add support to GCC for a better tracing ABI (as I already said we did 
+> for mips64).
 
-Can we, assuming we merge something like this, make it something like 
-u32, or insn_t?  I'm not sure which is better.
+I wouldn't waste time changing gcc for this. If you're going to change
+gcc than please implement the -mfentry option. Look at x86_64 to
+understand this more.
 
-
-[...]
-
-David Daney
+-- Steve

@@ -1,46 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jan 2013 10:18:20 +0100 (CET)
-Received: from mail-lb0-f182.google.com ([209.85.217.182]:43073 "EHLO
-        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6821310Ab3APJSTsJ9vC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Jan 2013 10:18:19 +0100
-Received: by mail-lb0-f182.google.com with SMTP id gg6so230146lbb.13
-        for <multiple recipients>; Wed, 16 Jan 2013 01:18:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:sender:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=bPjldk2Q6/TXBHs2RiufpdaPr/lVvxMzkPENjUKF/es=;
-        b=YmTaWxAAcWcvRS9uZ0QyquNyBSn1OuVz02ZTIlaoyJpukARD9gUls+uGnsS/6pCWWL
-         Pc8Kmw8gk1HV/N356/aBdV1YrJw0qtpga75i+TirfgdNPiAsUB5sR+yWRShfqj7dcS/d
-         jIOnmtSdKHaQaq0nrMUitiPtT4iQIJnvTLPWCni8Qd3R1Ns2xDfJ1/Sz+Vs7TUcLdIiE
-         E7tmbhnW+CyKu2AUY3H6+tWCG9pWa1C+K4RlAOWZid2M/6cCGCk078w9rENS01vtA0mE
-         RW3J/Ev32WBLpHSyZ+4n+8PNJjc7i3ItScSUeub4UOnlnPRpwH6m+6J/WN1iiKinpcwG
-         +fFw==
-X-Received: by 10.112.29.104 with SMTP id j8mr356181lbh.0.1358327894008;
-        Wed, 16 Jan 2013 01:18:14 -0800 (PST)
-Received: from [192.168.108.37] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by mx.google.com with ESMTPS id v7sm7728346lbj.13.2013.01.16.01.18.12
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Wed, 16 Jan 2013 01:18:13 -0800 (PST)
-Message-ID: <50F66FB8.7030207@openwrt.org>
-Date:   Wed, 16 Jan 2013 10:15:36 +0100
-From:   Florian Fainelli <florian@openwrt.org>
-Organization: OpenWrt
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jan 2013 10:47:17 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:55042 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823034Ab3APJrQriM8w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Jan 2013 10:47:16 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id F1EC78F61;
+        Wed, 16 Jan 2013 10:47:15 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id pcC5qMX4gE7t; Wed, 16 Jan 2013 10:47:08 +0100 (CET)
+Received: from [IPv6:2001:470:1f0b:447:a03b:8863:ffdb:a382] (unknown [IPv6:2001:470:1f0b:447:a03b:8863:ffdb:a382])
+        by hauke-m.de (Postfix) with ESMTPSA id AB3628E1C;
+        Wed, 16 Jan 2013 10:47:07 +0100 (CET)
+Message-ID: <50F67719.5010005@hauke-m.de>
+Date:   Wed, 16 Jan 2013 10:47:05 +0100
+From:   Hauke Mehrtens <hauke@hauke-m.de>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
 MIME-Version: 1.0
 To:     Thierry Reding <thierry.reding@avionic-design.de>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: PNX8550: Fix build failures
-References: <1358320033-30032-1-git-send-email-thierry.reding@avionic-design.de>
-In-Reply-To: <1358320033-30032-1-git-send-email-thierry.reding@avionic-design.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Arend van Spriel <arend@broadcom.com>
+Subject: Re: [PATCH] MIPS: bcm47xx: Fix BCMA build failure
+References: <1358321286-8695-1-git-send-email-thierry.reding@avionic-design.de>
+In-Reply-To: <1358321286-8695-1-git-send-email-thierry.reding@avionic-design.de>
+X-Enigmail-Version: 1.4.6
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35458
+X-archive-position: 35459
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,36 +45,41 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 01/16/2013 08:07 AM, Thierry Reding wrote:
-> The OHCI support code fails to build because the PCI_BASE and udelay()
-> macros which are defined in pci.h and linux/time.h respectively. Adding
-> corresponding includes fixes these build failures.
->
+On 01/16/2013 08:28 AM, Thierry Reding wrote:
+> Enabling the BCMA driver automatically selects BCMA_DRIVER_GPIO, which
+> in turn depends on GPIOLIB. GPIOLIB support is not enabled by default,
+> however, so Kconfig complains about it:
+> 
+> 	warning: (BCM47XX_BCMA) selects BCMA_DRIVER_GPIO which has unmet direct dependencies (BCMA_POSSIBLE && BCMA && GPIOLIB)
+> 	warning: (BCM47XX_SSB) selects SSB_DRIVER_GPIO which has unmet direct dependencies (SSB_POSSIBLE && SSB && GPIOLIB)
+> 	warning: (BCM47XX_SSB) selects SSB_DRIVER_GPIO which has unmet direct dependencies (SSB_POSSIBLE && SSB && GPIOLIB)
+> 	warning: (BCM47XX_BCMA) selects BCMA_DRIVER_GPIO which has unmet direct dependencies (BCMA_POSSIBLE && BCMA && GPIOLIB)
+> 
+> This patch fixes the issue by explicitly selecting GPIOLIB if
+> BCM47XX_BCMA is enabled.
+> 
 > Signed-off-by: Thierry Reding <thierry.reding@avionic-design.de>
 
-Thanks for fixing this Thierry, I completely missed that when moving the 
-OHCI code to platform.c
+Arend van Spriel already send a similar patch fixing this issue, but it
+was not applied yet:
+https://patchwork.linux-mips.org/patch/4759/
 
-Acked-by: Florian Fainelli <florian@openwrt.org>
+CONFIG_GPIOLIB should also be selected by CONFIG_BCM47XX_SSB.
 
 > ---
->   arch/mips/pnx8550/common/platform.c | 2 ++
->   1 file changed, 2 insertions(+)
->
-> diff --git a/arch/mips/pnx8550/common/platform.c b/arch/mips/pnx8550/common/platform.c
-> index 0a8faea..9782fde 100644
-> --- a/arch/mips/pnx8550/common/platform.c
-> +++ b/arch/mips/pnx8550/common/platform.c
-> @@ -19,10 +19,12 @@
->   #include <linux/resource.h>
->   #include <linux/serial.h>
->   #include <linux/serial_pnx8xxx.h>
-> +#include <linux/delay.h>
->   #include <linux/platform_device.h>
->   #include <linux/usb/ohci_pdriver.h>
->   
->   #include <int.h>
-> +#include <pci.h>
->   #include <usb.h>
->   #include <uart.h>
->   
+>  arch/mips/bcm47xx/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/mips/bcm47xx/Kconfig b/arch/mips/bcm47xx/Kconfig
+> index d7af29f..0f95b5e 100644
+> --- a/arch/mips/bcm47xx/Kconfig
+> +++ b/arch/mips/bcm47xx/Kconfig
+> @@ -19,6 +19,7 @@ config BCM47XX_SSB
+>  config BCM47XX_BCMA
+>  	bool "BCMA Support for Broadcom BCM47XX"
+>  	select SYS_HAS_CPU_MIPS32_R2
+> +	select GPIOLIB
+>  	select BCMA
+>  	select BCMA_HOST_SOC
+>  	select BCMA_DRIVER_MIPS
+> 

@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jan 2013 18:37:48 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:42805 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jan 2013 18:40:32 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:42813 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6832251Ab3AQRhOfNf8U (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jan 2013 18:37:14 +0100
+        with ESMTP id S6832251Ab3AQRk2OcEDQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jan 2013 18:40:28 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1TvtOm-0003H0-CY; Thu, 17 Jan 2013 11:37:08 -0600
+        id 1TvtRt-0003He-O7; Thu, 17 Jan 2013 11:40:21 -0600
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
-Subject: [PATCH v4] OF: MIPS: sead3: Implement OF support.
-Date:   Thu, 17 Jan 2013 11:37:03 -0600
-Message-Id: <1358444223-17247-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH v2,4/4] MIPS: malta: Code clean-ups.
+Date:   Thu, 17 Jan 2013 11:40:16 -0600
+Message-Id: <1358444416-17457-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
-X-archive-position: 35485
+X-archive-position: 35486
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,314 +34,388 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Activate USE_OF for SEAD-3 platform. Add basic DTS file and convert
-memory detection and reservations to use OF.
+Do whitespace/formatting clean-up and remove obsolete header file.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/Kconfig                           |    1 +
- arch/mips/include/asm/mips-boards/generic.h |    4 +
- arch/mips/mti-sead3/Makefile                |   10 +-
- arch/mips/mti-sead3/sead3-init.c            |    5 +-
- arch/mips/mti-sead3/sead3-memory.c          |  138 ---------------------------
- arch/mips/mti-sead3/sead3-setup.c           |   27 ++++++
- arch/mips/mti-sead3/sead3.dts               |   26 +++++
- 7 files changed, 70 insertions(+), 141 deletions(-)
- delete mode 100644 arch/mips/mti-sead3/sead3-memory.c
- create mode 100644 arch/mips/mti-sead3/sead3.dts
+ arch/mips/include/asm/mips-boards/prom.h |   47 ------------------------
+ arch/mips/mti-malta/malta-display.c      |   39 +++++++++-----------
+ arch/mips/mti-malta/malta-init.c         |   58 ++++++++++++++----------------
+ arch/mips/mti-malta/malta-memory.c       |   42 +++++++++-------------
+ arch/mips/mti-malta/malta-setup.c        |   15 ++++----
+ 5 files changed, 66 insertions(+), 135 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mips-boards/prom.h
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 86153b6..88af14c 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -355,6 +355,7 @@ config MIPS_SEAD3
- 	select USB_ARCH_HAS_EHCI
- 	select USB_EHCI_BIG_ENDIAN_DESC
- 	select USB_EHCI_BIG_ENDIAN_MMIO
-+	select USE_OF
- 	help
- 	  This enables support for the MIPS Technologies SEAD3 evaluation
- 	  board.
-diff --git a/arch/mips/include/asm/mips-boards/generic.h b/arch/mips/include/asm/mips-boards/generic.h
-index 6e23ceb..c01e286 100644
---- a/arch/mips/include/asm/mips-boards/generic.h
-+++ b/arch/mips/include/asm/mips-boards/generic.h
-@@ -87,6 +87,10 @@
- 
- extern int mips_revision_sconid;
- 
-+#ifdef CONFIG_OF
-+extern struct boot_param_header __dtb_start;
-+#endif
-+
- #ifdef CONFIG_PCI
- extern void mips_pcibios_init(void);
- #else
-diff --git a/arch/mips/mti-sead3/Makefile b/arch/mips/mti-sead3/Makefile
-index 626afea..10ec701 100644
---- a/arch/mips/mti-sead3/Makefile
-+++ b/arch/mips/mti-sead3/Makefile
-@@ -5,10 +5,12 @@
- # Copyright (C) 2008 Wind River Systems, Inc.
- #   written by Ralf Baechle <ralf@linux-mips.org>
- #
-+# Copyright (C) 2012 MIPS Technoligies, Inc.  All rights reserved.
-+# Steven J. Hill <sjhill@mips.com>
-+#
- obj-y				:= sead3-lcd.o sead3-cmdline.o \
- 				   sead3-display.o sead3-init.o sead3-int.o \
--				   sead3-mtd.o sead3-net.o \
--				   sead3-memory.o sead3-platform.o \
-+				   sead3-mtd.o sead3-net.o sead3-platform.o \
- 				   sead3-reset.o sead3-setup.o sead3-time.o
- 
- obj-y				+= sead3-i2c-dev.o sead3-i2c.o \
-@@ -17,3 +19,7 @@ obj-y				+= sead3-i2c-dev.o sead3-i2c.o \
- 
- obj-$(CONFIG_EARLY_PRINTK)	+= sead3-console.o
- obj-$(CONFIG_USB_EHCI_HCD)	+= sead3-ehci.o
-+obj-$(CONFIG_OF)		+= sead3.dtb.o
-+
-+$(obj)/%.dtb: $(obj)/%.dts
-+	$(call if_changed,dtc)
-diff --git a/arch/mips/mti-sead3/sead3-init.c b/arch/mips/mti-sead3/sead3-init.c
-index 802fce2..6939254 100644
---- a/arch/mips/mti-sead3/sead3-init.c
-+++ b/arch/mips/mti-sead3/sead3-init.c
-@@ -125,7 +125,6 @@ void __init prom_init(void)
- 	board_ejtag_handler_setup = mips_ejtag_setup;
- 
- 	prom_init_cmdline();
--	prom_meminit();
- #ifdef CONFIG_EARLY_PRINTK
- 	if ((strstr(prom_getcmdline(), "console=ttyS0")) != NULL)
- 		prom_init_early_console(0);
-@@ -137,3 +136,7 @@ void __init prom_init(void)
- 		strcat(prom_getcmdline(), " console=ttyS0,38400n8r");
- #endif
- }
-+
-+void prom_free_prom_memory(void)
-+{
-+}
-diff --git a/arch/mips/mti-sead3/sead3-memory.c b/arch/mips/mti-sead3/sead3-memory.c
+diff --git a/arch/mips/include/asm/mips-boards/prom.h b/arch/mips/include/asm/mips-boards/prom.h
 deleted file mode 100644
-index da92441..0000000
---- a/arch/mips/mti-sead3/sead3-memory.c
+index a9db576..0000000
+--- a/arch/mips/include/asm/mips-boards/prom.h
 +++ /dev/null
-@@ -1,138 +0,0 @@
+@@ -1,47 +0,0 @@
 -/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
 - *
-- * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+- * ########################################################################
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * ########################################################################
+- *
+- * MIPS boards bootprom interface for the Linux kernel.
+- *
 - */
--#include <linux/bootmem.h>
 -
--#include <asm/bootinfo.h>
--#include <asm/sections.h>
--#include <asm/mips-boards/prom.h>
+-#ifndef _MIPS_PROM_H
+-#define _MIPS_PROM_H
 -
--enum yamon_memtypes {
--	yamon_dontuse,
--	yamon_prom,
--	yamon_free,
+-extern char *prom_getcmdline(void);
+-extern char *prom_getenv(char *name);
+-extern void prom_init_cmdline(void);
+-extern void prom_meminit(void);
+-extern void prom_fixup_mem_map(unsigned long start_mem, unsigned long end_mem);
+-extern void mips_display_message(const char *str);
+-extern void mips_display_word(unsigned int num);
+-extern void mips_scroll_message(void);
+-extern int get_ethernet_addr(char *ethernet_addr);
+-
+-/* Memory descriptor management. */
+-#define PROM_MAX_PMEMBLOCKS    32
+-struct prom_pmemblock {
+-        unsigned long base; /* Within KSEG0. */
+-        unsigned int size;  /* In bytes. */
+-        unsigned int type;  /* free or prom memory */
 -};
 -
--static struct prom_pmemblock mdesc[PROM_MAX_PMEMBLOCKS];
+-#endif /* !(_MIPS_PROM_H) */
+diff --git a/arch/mips/mti-malta/malta-display.c b/arch/mips/mti-malta/malta-display.c
+index 2a0057c..04826d7 100644
+--- a/arch/mips/mti-malta/malta-display.c
++++ b/arch/mips/mti-malta/malta-display.c
+@@ -1,26 +1,19 @@
+ /*
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
+  *
+  * Display routines for display messages in MIPS boards ascii display.
++ *
++ * Copyright (C) 1999,2000,2012  MIPS Technologies, Inc.
++ * All rights reserved.
++ * Authors: Carsten Langgaard <carstenl@mips.com>
++ *          Steven J. Hill <sjhill@mips.com>
+  */
 -
--/* determined physical memory size, not overridden by command line args  */
--unsigned long physical_memsize = 0L;
--
--struct prom_pmemblock * __init prom_getmdesc(void)
--{
--	char *memsize_str, *ptr;
--	unsigned int memsize;
--	static char cmdline[COMMAND_LINE_SIZE] __initdata;
--	long val;
--	int tmp;
--
--	/* otherwise look in the environment */
--	memsize_str = prom_getenv("memsize");
--	if (!memsize_str) {
--		pr_warn("memsize not set in boot prom, set to default 32Mb\n");
--		physical_memsize = 0x02000000;
--	} else {
--		tmp = kstrtol(memsize_str, 0, &val);
--		physical_memsize = (unsigned long)val;
--	}
--
--#ifdef CONFIG_CPU_BIG_ENDIAN
--	/* SOC-it swaps, or perhaps doesn't swap, when DMA'ing the last
--	   word of physical memory */
--	physical_memsize -= PAGE_SIZE;
--#endif
--
--	/* Check the command line for a memsize directive that overrides
--	   the physical/default amount */
--	strcpy(cmdline, arcs_cmdline);
--	ptr = strstr(cmdline, "memsize=");
--	if (ptr && (ptr != cmdline) && (*(ptr - 1) != ' '))
--		ptr = strstr(ptr, " memsize=");
--
--	if (ptr)
--		memsize = memparse(ptr + 8, &ptr);
--	else
--		memsize = physical_memsize;
--
--	memset(mdesc, 0, sizeof(mdesc));
--
--	mdesc[0].type = yamon_dontuse;
--	mdesc[0].base = 0x00000000;
--	mdesc[0].size = 0x00001000;
--
--	mdesc[1].type = yamon_prom;
--	mdesc[1].base = 0x00001000;
--	mdesc[1].size = 0x000ef000;
--
--	/*
--	 * The area 0x000f0000-0x000fffff is allocated for BIOS memory by the
--	 * south bridge and PCI access always forwarded to the ISA Bus and
--	 * BIOSCS# is always generated.
--	 * This mean that this area can't be used as DMA memory for PCI
--	 * devices.
--	 */
--	mdesc[2].type = yamon_dontuse;
--	mdesc[2].base = 0x000f0000;
--	mdesc[2].size = 0x00010000;
--
--	mdesc[3].type = yamon_dontuse;
--	mdesc[3].base = 0x00100000;
--	mdesc[3].size = CPHYSADDR(PFN_ALIGN((unsigned long)&_end)) -
--		mdesc[3].base;
--
--	mdesc[4].type = yamon_free;
--	mdesc[4].base = CPHYSADDR(PFN_ALIGN(&_end));
--	mdesc[4].size = memsize - mdesc[4].base;
--
--	return &mdesc[0];
--}
--
--static int __init prom_memtype_classify(unsigned int type)
--{
--	switch (type) {
--	case yamon_free:
--		return BOOT_MEM_RAM;
--	case yamon_prom:
--		return BOOT_MEM_ROM_DATA;
--	default:
--		return BOOT_MEM_RESERVED;
--	}
--}
--
--void __init prom_meminit(void)
--{
--	struct prom_pmemblock *p;
--
--	p = prom_getmdesc();
--
--	while (p->size) {
--		long type;
--		unsigned long base, size;
--
--		type = prom_memtype_classify(p->type);
--		base = p->base;
--		size = p->size;
--
--		add_memory_region(base, size, type);
--		p++;
--	}
--}
--
--void __init prom_free_prom_memory(void)
--{
--	unsigned long addr;
--	int i;
--
--	for (i = 0; i < boot_mem_map.nr_map; i++) {
--		if (boot_mem_map.map[i].type != BOOT_MEM_ROM_DATA)
--			continue;
--
--		addr = boot_mem_map.map[i].addr;
--		free_init_pages("prom memory",
--				addr, addr + boot_mem_map.map[i].size);
--	}
--}
-diff --git a/arch/mips/mti-sead3/sead3-setup.c b/arch/mips/mti-sead3/sead3-setup.c
-index 8ad46ad..f012fd1 100644
---- a/arch/mips/mti-sead3/sead3-setup.c
-+++ b/arch/mips/mti-sead3/sead3-setup.c
-@@ -6,6 +6,12 @@
-  * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+ #include <linux/compiler.h>
+ #include <linux/timer.h>
+-#include <asm/io.h>
++#include <linux/io.h>
++
+ #include <asm/mips-boards/generic.h>
+ 
+ extern const char display_string[];
+@@ -29,17 +22,17 @@ static unsigned int max_display_count;
+ 
+ void mips_display_message(const char *str)
+ {
+-	static unsigned int __iomem *display = NULL;
++	static unsigned int __iomem *display;
+ 	int i;
+ 
+ 	if (unlikely(display == NULL))
+ 		display = ioremap(ASCII_DISPLAY_POS_BASE, 16*sizeof(int));
+ 
+-	for (i = 0; i <= 14; i=i+2) {
+-	         if (*str)
+-		         __raw_writel(*str++, display + i);
+-		 else
+-		         __raw_writel(' ', display + i);
++	for (i = 0; i <= 14; i += 2) {
++		if (*str)
++			__raw_writel(*str++, display + i);
++		else
++			__raw_writel(' ', display + i);
+ 	}
+ }
+ 
+diff --git a/arch/mips/mti-malta/malta-init.c b/arch/mips/mti-malta/malta-init.c
+index 6c61e94..0ae857a 100644
+--- a/arch/mips/mti-malta/malta-init.c
++++ b/arch/mips/mti-malta/malta-init.c
+@@ -1,42 +1,29 @@
+ /*
+- * Copyright (C) 1999, 2000, 2004, 2005  MIPS Technologies, Inc.
+- *	All rights reserved.
+- *	Authors: Carsten Langgaard <carstenl@mips.com>
+- *		 Maciej W. Rozycki <macro@mips.com>
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
+  *
+  * PROM library initialisation code.
++ *
++ * Copyright (C) 1999,2000,2004,2005,2012  MIPS Technologies, Inc.
++ * All rights reserved.
++ * Authors: Carsten Langgaard <carstenl@mips.com>
++ *	    Maciej W. Rozycki <macro@mips.com>
++ *          Steven J. Hill <sjhill@mips.com>
   */
  #include <linux/init.h>
-+#include <linux/of_platform.h>
-+#include <linux/of_fdt.h>
-+#include <linux/bootmem.h>
-+
-+#include <asm/mips-boards/generic.h>
-+#include <asm/prom.h>
+ #include <linux/string.h>
+ #include <linux/kernel.h>
  
- int coherentio;		/* 0 => no DMA cache coherency (may be set by user) */
- int hw_coherentio;	/* 0 => no HW DMA cache coherency (reflects real HW) */
-@@ -17,4 +23,25 @@ const char *get_system_type(void)
+-#include <asm/gt64120.h>
+-#include <asm/io.h>
+ #include <asm/cacheflush.h>
+ #include <asm/smp-ops.h>
+ #include <asm/traps.h>
+ #include <asm/fw/fw.h>
+ #include <asm/gcmpregs.h>
+ #include <asm/mips-boards/generic.h>
+-#include <asm/mips-boards/bonito64.h>
+-#include <asm/mips-boards/msc01_pci.h>
+-
+ #include <asm/mips-boards/malta.h>
  
- void __init plat_mem_setup(void)
+-int init_debug;
++extern void mips_display_message(const char *str);
+ 
+ static int mips_revision_corid;
+ int mips_revision_sconid;
+@@ -64,12 +51,18 @@ static void __init console_config(void)
+ 		if (s) {
+ 			while (*s >= '0' && *s <= '9')
+ 				baud = baud*10 + *s++ - '0';
+-			if (*s == ',') s++;
+-			if (*s) parity = *s++;
+-			if (*s == ',') s++;
+-			if (*s) bits = *s++;
+-			if (*s == ',') s++;
+-			if (*s == 'h') flow = 'r';
++			if (*s == ',')
++				s++;
++			if (*s)
++				parity = *s++;
++			if (*s == ',')
++				s++;
++			if (*s)
++				bits = *s++;
++			if (*s == ',')
++				s++;
++			if (*s == 'h')
++				flow = 'r';
+ 		}
+ 		if (baud == 0)
+ 			baud = 38400;
+@@ -79,7 +72,8 @@ static void __init console_config(void)
+ 			bits = '8';
+ 		if (flow == '\0')
+ 			flow = 'r';
+-		sprintf(console_string, " console=ttyS0,%d%c%c%c", baud, parity, bits, flow);
++		sprintf(console_string, " console=ttyS0,%d%c%c%c", baud,
++			parity, bits, flow);
+ 		strcat(fw_getcmdline(), console_string);
+ 		pr_info("Config serial console:%s\n", console_string);
+ 	}
+@@ -223,7 +217,7 @@ void __init prom_init(void)
+ 	case MIPS_REVISION_SCON_SOCIT:
+ 	case MIPS_REVISION_SCON_ROCIT:
+ 		_pcictrl_msc = (unsigned long)ioremap(MIPS_MSC01_PCI_REG_BASE, 0x2000);
+-	mips_pci_controller:
++mips_pci_controller:
+ 		mb();
+ 		MSC_READ(MSC01_PCI_CFG, data);
+ 		MSC_WRITE(MSC01_PCI_CFG, data & ~MSC01_PCI_CFG_EN_BIT);
+@@ -265,7 +259,7 @@ void __init prom_init(void)
+ 	default:
+ 		/* Unknown system controller */
+ 		mips_display_message("SC Error");
+-		while (1);   /* We die here... */
++		while (1);	/* We die here... */
+ 	}
+ 	board_nmi_handler_setup = mips_nmi_setup;
+ 	board_ejtag_handler_setup = mips_ejtag_setup;
+diff --git a/arch/mips/mti-malta/malta-memory.c b/arch/mips/mti-malta/malta-memory.c
+index 06fa4ad..391960a 100644
+--- a/arch/mips/mti-malta/malta-memory.c
++++ b/arch/mips/mti-malta/malta-memory.c
+@@ -1,31 +1,21 @@
+ /*
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
+  *
+  * PROM library functions for acquiring/using memory descriptors given to
+  * us from the YAMON.
++ *
++ * Copyright (C) 1999,2000,2012  MIPS Technologies, Inc.
++ * All rights reserved.
++ * Authors: Carsten Langgaard <carstenl@mips.com>
++ *          Steven J. Hill <sjhill@mips.com>
+  */
+ #include <linux/init.h>
+-#include <linux/mm.h>
+ #include <linux/bootmem.h>
+-#include <linux/pfn.h>
+ #include <linux/string.h>
+ 
+ #include <asm/bootinfo.h>
+-#include <asm/page.h>
+ #include <asm/sections.h>
+ #include <asm/fw/fw.h>
+ 
+@@ -36,19 +26,20 @@ unsigned long physical_memsize = 0L;
+ 
+ fw_memblock_t * __init fw_getmdesc(void)
  {
-+	/*
-+	 * Load the builtin devicetree. This causes the chosen node to be
-+	 * parsed resulting in our memory appearing
-+	 */
-+	__dt_setup_arch(&__dtb_start);
-+}
-+
-+void __init device_tree_init(void)
-+{
-+	unsigned long base, size;
-+
-+	if (!initial_boot_params)
-+		return;
-+
-+	base = virt_to_phys((void *)initial_boot_params);
-+	size = be32_to_cpu(initial_boot_params->totalsize);
-+
-+	/* Before we do anything, lets reserve the dt blob */
-+	reserve_bootmem(base, size, BOOTMEM_DEFAULT);
-+
-+	unflatten_device_tree();
+-	char *memsize_str;
++	char *memsize_str, *ptr;
+ 	unsigned int memsize;
+-	char *ptr;
+ 	static char cmdline[COMMAND_LINE_SIZE] __initdata;
++	long val;
++	int tmp;
+ 
+ 	/* otherwise look in the environment */
+ 	memsize_str = fw_getenv("memsize");
+ 	if (!memsize_str) {
+-		printk(KERN_WARNING
+-		       "memsize not set in boot prom, set to default (32Mb)\n");
++		pr_warn("memsize not set in YAMON, set to default (32Mb)\n");
+ 		physical_memsize = 0x02000000;
+ 	} else {
+-		physical_memsize = simple_strtol(memsize_str, NULL, 0);
++		tmp = kstrtol(memsize_str, 0, &val);
++		physical_memsize = (unsigned long)val;
+ 	}
+ 
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+@@ -92,7 +83,8 @@ fw_memblock_t * __init fw_getmdesc(void)
+ 
+ 	mdesc[3].type = fw_dontuse;
+ 	mdesc[3].base = 0x00100000;
+-	mdesc[3].size = CPHYSADDR(PFN_ALIGN((unsigned long)&_end)) - mdesc[3].base;
++	mdesc[3].size = CPHYSADDR(PFN_ALIGN((unsigned long)&_end)) -
++		mdesc[3].base;
+ 
+ 	mdesc[4].type = fw_free;
+ 	mdesc[4].base = CPHYSADDR(PFN_ALIGN(&_end));
+@@ -142,7 +134,7 @@ void __init prom_free_prom_memory(void)
+ 			continue;
+ 
+ 		addr = boot_mem_map.map[i].addr;
+-		free_init_pages("prom memory",
++		free_init_pages("YAMON memory",
+ 				addr, addr + boot_mem_map.map[i].size);
+ 	}
  }
-diff --git a/arch/mips/mti-sead3/sead3.dts b/arch/mips/mti-sead3/sead3.dts
-new file mode 100644
-index 0000000..658f437
---- /dev/null
-+++ b/arch/mips/mti-sead3/sead3.dts
-@@ -0,0 +1,26 @@
-+/dts-v1/;
-+
-+/memreserve/ 0x00000000 0x00001000;	// reserved
-+/memreserve/ 0x00001000 0x000ef000;	// ROM data
-+/memreserve/ 0x000f0000 0x004cc000;	// reserved
-+
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "mti,sead-3";
-+
-+	cpus {
-+		cpu@0 {
-+			compatible = "mti,mips14KEc", "mti,mips14Kc";
-+		};
-+	};
-+
-+	chosen {
-+		bootargs = "console=ttyS1,38400 rootdelay=10 root=/dev/sda3";
-+	};
-+
-+	memory {
-+		device_type = "memory";
-+		reg = <0x0 0x08000000>;
-+	};
-+};
+diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
+index 08cdf8f..ed68073 100644
+--- a/arch/mips/mti-malta/malta-setup.c
++++ b/arch/mips/mti-malta/malta-setup.c
+@@ -117,13 +117,12 @@ static void __init pci_clock_check(void)
+ 	char *argptr = fw_getcmdline();
+ 
+ 	if (pciclock != 33 && !strstr(argptr, "idebus=")) {
+-		printk(KERN_WARNING "WARNING: PCI clock is %dMHz, "
+-				"setting idebus\n", pciclock);
++		pr_warn("WARNING: PCI clock is %dMHz, setting idebus\n",
++			pciclock);
+ 		argptr += strlen(argptr);
+ 		sprintf(argptr, " idebus=%d", pciclock);
+ 		if (pciclock < 20 || pciclock > 66)
+-			printk(KERN_WARNING "WARNING: IDE timing "
+-					"calculations will be incorrect\n");
++			pr_warn("WARNING: IDE timing calculations will be incorrect\n");
+ 	}
+ }
+ #endif
+@@ -155,14 +154,14 @@ static void __init bonito_quirks_setup(void)
+ 	argptr = fw_getcmdline();
+ 	if (strstr(argptr, "debug")) {
+ 		BONITO_BONGENCFG |= BONITO_BONGENCFG_DEBUGMODE;
+-		printk(KERN_INFO "Enabled Bonito debug mode\n");
++		pr_info("Enabled Bonito debug mode\n");
+ 	} else
+ 		BONITO_BONGENCFG &= ~BONITO_BONGENCFG_DEBUGMODE;
+ 
+ #ifdef CONFIG_DMA_COHERENT
+ 	if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
+ 		BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
+-		printk(KERN_INFO "Enabled Bonito CPU coherency\n");
++		pr_info("Enabled Bonito CPU coherency\n");
+ 
+ 		argptr = fw_getcmdline();
+ 		if (strstr(argptr, "iobcuncached")) {
+@@ -170,13 +169,13 @@ static void __init bonito_quirks_setup(void)
+ 			BONITO_PCIMEMBASECFG = BONITO_PCIMEMBASECFG &
+ 				~(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
+ 					BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
+-			printk(KERN_INFO "Disabled Bonito IOBC coherency\n");
++			pr_info("Disabled Bonito IOBC coherency\n");
+ 		} else {
+ 			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_IOBCCOH_EN;
+ 			BONITO_PCIMEMBASECFG |=
+ 				(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
+ 					BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
+-			printk(KERN_INFO "Enabled Bonito IOBC coherency\n");
++			pr_info("Enabled Bonito IOBC coherency\n");
+ 		}
+ 	} else
+ 		panic("Hardware DMA cache coherency not supported");
 -- 
 1.7.9.5

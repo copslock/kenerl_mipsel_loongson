@@ -1,37 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jan 2013 13:57:37 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:58355 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6832832Ab3AQM5gEVh1c (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jan 2013 13:57:36 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 3B9388F61;
-        Thu, 17 Jan 2013 13:57:35 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id eIp0TCh5FupW; Thu, 17 Jan 2013 13:57:29 +0100 (CET)
-Received: from [IPv6:2001:470:1f0b:447:bcb8:fe27:f188:5366] (unknown [IPv6:2001:470:1f0b:447:bcb8:fe27:f188:5366])
-        by hauke-m.de (Postfix) with ESMTPSA id 073318E1C;
-        Thu, 17 Jan 2013 13:57:28 +0100 (CET)
-Message-ID: <50F7F537.6020000@hauke-m.de>
-Date:   Thu, 17 Jan 2013 13:57:27 +0100
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jan 2013 15:05:17 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:46212 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6832832Ab3AQOFQ4nW6v (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 Jan 2013 15:05:16 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r0HE5Eai026534;
+        Thu, 17 Jan 2013 15:05:14 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r0HE5Alw026533;
+        Thu, 17 Jan 2013 15:05:10 +0100
+Date:   Thu, 17 Jan 2013 15:05:10 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     "Hill, Steven" <sjhill@mips.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "cernekee@gmail.com" <cernekee@gmail.com>,
+        "kevink@paralogos.com" <kevink@paralogos.com>
+Subject: Re: [PATCH] [RFC] Proposed changes to eliminate 'union
+ mips_instruction' type.
+Message-ID: <20130117140510.GA19406@linux-mips.org>
+References: <1358230420-3575-1-git-send-email-sjhill@mips.com>
+ <50F5B0D0.9010604@gmail.com>
+ <31E06A9FC96CEC488B43B19E2957C1B801146C51CC@exchdb03.mips.com>
+ <50F5DA93.2080706@gmail.com>
+ <20130116141618.GC26569@linux-mips.org>
+ <50F7289A.3000102@gmail.com>
 MIME-Version: 1.0
-To:     Arend Van Spriel <arend@broadcom.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] mips: bcm47xx: select GPIOLIB for BCMA on bcm47xx platform
-References: <1357323005-28008-1-git-send-email-arend@broadcom.com> <A47087626F2942499CF47E79803E771E04294E30@SJEXCHMB13.corp.ad.broadcom.com>
-In-Reply-To: <A47087626F2942499CF47E79803E771E04294E30@SJEXCHMB13.corp.ad.broadcom.com>
-X-Enigmail-Version: 1.4.6
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35478
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <50F7289A.3000102@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 35479
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,28 +48,17 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 01/17/2013 12:07 PM, Arend Van Spriel wrote:
->> From: Arend van Spriel [arend@broadcom.com]
->> Sent: Friday, January 04, 2013 7:10 PM
->>
->> The Kconfig items BCM47XX_BCMA and BCM47XX_SSB selected
->> respectively BCMA_DRIVER_GPIO and SSB_DRIVER_GPIO. These
->> options depend on GPIOLIB without explicitly selecting it
->> so it results in a warning when GPIOLIB is not set:
+On Wed, Jan 16, 2013 at 02:24:26PM -0800, David Daney wrote:
+
+> ... In the very last BITFIELD_FIELD(), you need a valid token as the
+> second parameter, otherwise (according to Pinski) C90 behavior is
+> undefined.
 > 
-> Hi Ralf
-> 
-> Are you still intending to take this patch or did it slip by?
-> 
-> Gr. AvS
+> Use a ';'
 
-This was applied by Ralf in his tree for linux next integration [0] [1].
+While Andrew is correct, I don't think this argument matters unless
+we're going to export <asm/inst.h> to userspace.  Should we?  Historically
+it was meant to be exported and accessed by application code from
+<sys/inst.h>.
 
-@Ralf could you please also send these patches to Linus for 3.8.
-
-Hauke
-
-[0]:
-http://git.linux-mips.org/?p=ralf/upstream-sfr.git;a=commitdiff;h=a9e985783ed936376de9f27eff54e37d584fb855;hp=3d2d03247632920aa21b42a0b032a4ffd44ce15e
-[1]:
-http://git.linux-mips.org/?p=ralf/upstream-sfr.git;a=commitdiff;h=b26d9ac76b22f53f1553d63c676dc2e70a8e3157;hp=a9e985783ed936376de9f27eff54e37d584fb855
+  Ralf

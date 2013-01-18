@@ -1,31 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jan 2013 14:25:06 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:50977 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823128Ab3ARNZBIsggt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 18 Jan 2013 14:25:01 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r0IDP05M027875;
-        Fri, 18 Jan 2013 14:25:00 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r0IDOxcZ027874;
-        Fri, 18 Jan 2013 14:24:59 +0100
-Date:   Fri, 18 Jan 2013 14:24:59 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Steven J. Hill" <sjhill@mips.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH v4] OF: MIPS: sead3: Implement OF support.
-Message-ID: <20130118132459.GC19406@linux-mips.org>
-References: <1358444223-17247-1-git-send-email-sjhill@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1358444223-17247-1-git-send-email-sjhill@mips.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35491
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jan 2013 18:53:35 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:44755 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6824763Ab3ARRxeDavWM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Jan 2013 18:53:34 +0100
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1TwG85-00043O-Gh; Fri, 18 Jan 2013 11:53:25 -0600
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
+Subject: [PATCH v2] MIPS: microMIPS: Redefine value of BRK_BUG.
+Date:   Fri, 18 Jan 2013 11:53:20 -0600
+Message-Id: <1358531600-5330-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.9.5
+X-archive-position: 35492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,43 +32,31 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Jan 17, 2013 at 11:37:03AM -0600, Steven J. Hill wrote:
+From: "Steven J. Hill" <sjhill@mips.com>
 
-> From: "Steven J. Hill" <sjhill@mips.com>
-> 
-> Activate USE_OF for SEAD-3 platform. Add basic DTS file and convert
-> memory detection and reservations to use OF.
+The BRK_BUG value is used in the BUG and __BUG_ON inline macros. For
+standard MIPS cores the code in the 'tne' instruction is 10-bits long.
+In microMIPS, the 'tne' instruction is recoded and the code can only be
+4-bits long. We change the value to 12 instead of 512 so that both
+classic and microMIPS kernels build.
 
-Applied with this little patch on top:
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/include/asm/break.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
- arch/mips/include/asm/mips-boards/generic.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/arch/mips/include/asm/mips-boards/generic.h b/arch/mips/include/asm/mips-boards/generic.h
-index c01e286..3fc764a 100644
---- a/arch/mips/include/asm/mips-boards/generic.h
-+++ b/arch/mips/include/asm/mips-boards/generic.h
-@@ -20,6 +20,7 @@
- #ifndef __ASM_MIPS_BOARDS_GENERIC_H
- #define __ASM_MIPS_BOARDS_GENERIC_H
- 
-+#include <linux/of_fdt.h>
- #include <asm/addrspace.h>
- #include <asm/byteorder.h>
- #include <asm/mips-boards/bonito64.h>
-
-Otherwise including generic.h might result in an error if <linux/of_fdt.h>
-has not been included before.
-
-@@ -87,9 +88,7 @@
- 
- extern int mips_revision_sconid;
- 
--#ifdef CONFIG_OF
- extern struct boot_param_header __dtb_start;
--#endif
-
-There's no need to wrap this declaration.
-
-  Ralf
+diff --git a/arch/mips/include/asm/break.h b/arch/mips/include/asm/break.h
+index 9161e68..51e1535 100644
+--- a/arch/mips/include/asm/break.h
++++ b/arch/mips/include/asm/break.h
+@@ -27,7 +27,7 @@
+ #define BRK_STACKOVERFLOW 9	/* For Ada stackchecking */
+ #define BRK_NORLD	10	/* No rld found - not used by Linux/MIPS */
+ #define _BRK_THREADBP	11	/* For threads, user bp (used by debuggers) */
+-#define BRK_BUG		512	/* Used by BUG() */
++#define BRK_BUG		12	/* Used by BUG() */
+ #define BRK_KDB		513	/* Used in KDB_ENTER() */
+ #define BRK_MEMU	514	/* Used by FPU emulator */
+ #define BRK_KPROBE_BP	515	/* Kprobe break */
+-- 
+1.7.9.5

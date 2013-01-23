@@ -1,42 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 13:14:00 +0100 (CET)
-Received: from mail-wi0-f174.google.com ([209.85.212.174]:41395 "EHLO
-        mail-wi0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6833402Ab3AWMN7htCFw convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 23 Jan 2013 13:13:59 +0100
-Received: by mail-wi0-f174.google.com with SMTP id hq4so632404wib.13
-        for <multiple recipients>; Wed, 23 Jan 2013 04:13:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:x-received:date:message-id:subject:from:to:cc
-         :content-type:content-transfer-encoding;
-        bh=Buu41WyhP5DF7zOdjjLGomDK9DtRxQrUi9HKagfUDuI=;
-        b=JuTX+nuo9NjaKuU4FTaYFvp2x23nsGODtIUBJ/RLMhElI1+A2chZ9WoYwqpFVUte0D
-         lxC0Ikd+t/E5kow81yJIQr4rvCRHW9/rU/wIDvMlOPea+/8ptZNBV56iQwKSRBrl6lmA
-         awAluy7rvPGcfiskQJQRLmU41Sjr/itT1CeBsyTmVY0jwWGaJalLjnPCSOyIPFPwe9u3
-         KSbdIyE1AqB5L4jvzwmEBacbhh136tyLeRO7qd0aXA4WZwewjn9sgWVHDY4azaPuA0Tt
-         y0dJfbs5f+vJDbuDuT93wUA/4ehcbupjzpMBx7uqbhqdIxbqZLBGSdLQRN5i5vRhYP6A
-         5P9Q==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 20:15:52 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:41327 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6833413Ab3AWTPvxZD-v (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 23 Jan 2013 20:15:51 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r0NJFomo008685;
+        Wed, 23 Jan 2013 20:15:50 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r0NJFoFc008684;
+        Wed, 23 Jan 2013 20:15:50 +0100
+Date:   Wed, 23 Jan 2013 20:15:50 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: git (linux-queue.git) not available: access denied or repository
+ not exported
+Message-ID: <20130123191549.GB7294@linux-mips.org>
+References: <CACna6rz2mpRUZsXqDr7wDjgTSz0bunq9wZ9PumyR5gO_cRhS1Q@mail.gmail.com>
 MIME-Version: 1.0
-X-Received: by 10.180.88.134 with SMTP id bg6mr2076897wib.26.1358943234005;
- Wed, 23 Jan 2013 04:13:54 -0800 (PST)
-Received: by 10.216.72.134 with HTTP; Wed, 23 Jan 2013 04:13:53 -0800 (PST)
-Date:   Wed, 23 Jan 2013 13:13:53 +0100
-Message-ID: <CACna6ryD3SjLN-oauvVuRa+q7an8DaULj+Uj4bwFSzQf2WCvMw@mail.gmail.com>
-Subject: Upcoming cross-tree build breakage on merge window
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     john@phrozen.org, ralf@linux-mips.org,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     linux-mips@linux-mips.org,
-        Network Development <netdev@vger.kernel.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 35518
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACna6rz2mpRUZsXqDr7wDjgTSz0bunq9wZ9PumyR5gO_cRhS1Q@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 35519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,21 +41,18 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-I've noticed possible build breakage when two trees get merged:
-net-next and linux-john (MIPS).
+On Wed, Jan 23, 2013 at 11:45:16AM +0100, Rafał Miłecki wrote:
 
-This is about two following commits:
-http://git.kernel.org/?p=linux/kernel/git/davem/net-next.git;a=commit;h=dd4544f05469aaaeee891d7dc54d66430344321e
-http://git.linux-mips.org/?p=john/linux-john.git;a=commit;h=a008ca117bc85a9d66c47cd5ab18a6c332411919
+> # git clone git://git.linux-mips.org/pub/scm/ralf/linux-queue.git
+> Cloning into 'linux-queue'...
+> fatal: remote error: access denied or repository not exported:
+> /pub/scm/ralf/linux-queue.git
+> 
+> I've tried this on two machines. Is there some mirror?
 
-The first one adds "bgmac" driver which uses asm/mach-bcm47xx/nvram.h
-and nvram_getenv. The second one renames them.
+The repository has been superseeded by upstream-sfr.git.  linux-queue.git
+used to serve almost the same purpose and has been dropped.
 
-Can you handle this in some clever way during merge window, please?
+Is there a stale reference to linux-queue.git somewhere?
 
-The fix is trivial:
-1) Use <bcm47xx_nvram.h>
-2) Use bcm47xx_nvram_getenv
-
--- 
-Rafał
+  Ralf

@@ -1,38 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 11:45:26 +0100 (CET)
-Received: from mail-we0-f180.google.com ([74.125.82.180]:45690 "EHLO
-        mail-we0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6831954Ab3AWKpYVL0pg convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 23 Jan 2013 11:45:24 +0100
-Received: by mail-we0-f180.google.com with SMTP id k14so538581wer.25
-        for <linux-mips@linux-mips.org>; Wed, 23 Jan 2013 02:45:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:x-received:date:message-id:subject:from:to
-         :content-type:content-transfer-encoding;
-        bh=6IM1K/YzQZDjtonWJ51mhRaX2H25MVyWq5sY7hXUC0Y=;
-        b=t1d0w2yqfflVTR37SrTdXIpac5U4YVFvIftyAfbsDWRi1SQI4rfRG/tqsBpOocn4Sd
-         PT+nzNDAR9zF3BsUn0jKO0yjhNcHRhhKffLmNFUQo8gYM8zgrI+OuLgHovPWOH+37+Yq
-         +iHLy2pDTKUAsdL4SseBN6CPezXUEQMVZtD0ilA6JOl5M8+QT3r2NghevA9YIXmIPngH
-         qy1HX4/JB+wqIqQikiTrhS6wWxLWG27M6WHcrhh739oTf3FVMVN8q/PfzQDzn7xIhb9R
-         BSvEkpE8+V2p7fKR/xi0TlUmP/5NpchKCXdNNWFffto692WmceMwdgm2zEP25zLpE0Z5
-         Dbkg==
-MIME-Version: 1.0
-X-Received: by 10.180.20.138 with SMTP id n10mr31027020wie.0.1358937917261;
- Wed, 23 Jan 2013 02:45:17 -0800 (PST)
-Received: by 10.216.72.134 with HTTP; Wed, 23 Jan 2013 02:45:16 -0800 (PST)
-Date:   Wed, 23 Jan 2013 11:45:16 +0100
-Message-ID: <CACna6rz2mpRUZsXqDr7wDjgTSz0bunq9wZ9PumyR5gO_cRhS1Q@mail.gmail.com>
-Subject: git (linux-queue.git) not available: access denied or repository not exported
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 35505
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 13:08:44 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:52008 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6831954Ab3AWMIl1Ay7c (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 23 Jan 2013 13:08:41 +0100
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [RFC 00/11] MIPS: ralink: adds support for ralink platform
+Date:   Wed, 23 Jan 2013 13:05:44 +0100
+Message-Id: <1358942755-25371-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 35506
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,12 +28,60 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-# git clone git://git.linux-mips.org/pub/scm/ralf/linux-queue.git
-Cloning into 'linux-queue'...
-fatal: remote error: access denied or repository not exported:
-/pub/scm/ralf/linux-queue.git
+This series adds support for the ralink SoC family. Currently RT305X type
+SoC is supported. RT2880/3883 are in my local queue already but require
+further testing.
 
-I've tried this on two machines. Is there some mirror?
+John Crispin (11):
+  MIPS: allow platforms to override cp0_compare_irq
+  MIPS: ralink: adds include files
+  MIPS: ralink: adds irq code
+  MIPS: ralink: adds reset code
+  MIPS: ralink: adds prom and cmdline code
+  MIPS: ralink: adds clkdev code
+  MIPS: ralink: adds OF code
+  MIPS: ralink: adds early_printk support
+  MIPS: ralink: adds support for RT305x SoC family
+  MIPS: ralink: adds rt305x devicetree
+  MIPS: ralink: adds Kbuild files
+
+ arch/mips/Kbuild.platforms                      |    1 +
+ arch/mips/Kconfig                               |   19 +-
+ arch/mips/include/asm/mach-ralink/ralink_regs.h |   39 ++++
+ arch/mips/include/asm/mach-ralink/rt305x.h      |  139 ++++++++++++++
+ arch/mips/include/asm/mach-ralink/war.h         |   25 +++
+ arch/mips/include/asm/time.h                    |    1 +
+ arch/mips/kernel/traps.c                        |    7 +-
+ arch/mips/ralink/Kconfig                        |   27 +++
+ arch/mips/ralink/Makefile                       |   15 ++
+ arch/mips/ralink/Platform                       |   11 ++
+ arch/mips/ralink/clk.c                          |   72 +++++++
+ arch/mips/ralink/common.h                       |   43 +++++
+ arch/mips/ralink/dts/Makefile                   |    1 +
+ arch/mips/ralink/dts/rt305x.dts                 |  156 +++++++++++++++
+ arch/mips/ralink/early_printk.c                 |   43 +++++
+ arch/mips/ralink/irq.c                          |  182 ++++++++++++++++++
+ arch/mips/ralink/of.c                           |  105 +++++++++++
+ arch/mips/ralink/prom.c                         |   69 +++++++
+ arch/mips/ralink/reset.c                        |   44 +++++
+ arch/mips/ralink/rt305x.c                       |  231 +++++++++++++++++++++++
+ 20 files changed, 1228 insertions(+), 2 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-ralink/ralink_regs.h
+ create mode 100644 arch/mips/include/asm/mach-ralink/rt305x.h
+ create mode 100644 arch/mips/include/asm/mach-ralink/war.h
+ create mode 100644 arch/mips/ralink/Kconfig
+ create mode 100644 arch/mips/ralink/Makefile
+ create mode 100644 arch/mips/ralink/Platform
+ create mode 100644 arch/mips/ralink/clk.c
+ create mode 100644 arch/mips/ralink/common.h
+ create mode 100644 arch/mips/ralink/dts/Makefile
+ create mode 100644 arch/mips/ralink/dts/rt305x.dts
+ create mode 100644 arch/mips/ralink/early_printk.c
+ create mode 100644 arch/mips/ralink/irq.c
+ create mode 100644 arch/mips/ralink/of.c
+ create mode 100644 arch/mips/ralink/prom.c
+ create mode 100644 arch/mips/ralink/reset.c
+ create mode 100644 arch/mips/ralink/rt305x.c
 
 -- 
-Rafał
+1.7.10.4

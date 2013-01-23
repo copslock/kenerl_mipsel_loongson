@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 13:09:03 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:52010 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 13:09:23 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:52012 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6833383Ab3AWMIlyA7bx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 23 Jan 2013 13:08:41 +0100
+        id S6833386Ab3AWMImNigr0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 23 Jan 2013 13:08:42 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [RFC 01/11] MIPS: allow platforms to override cp0_compare_irq
-Date:   Wed, 23 Jan 2013 13:05:45 +0100
-Message-Id: <1358942755-25371-2-git-send-email-blogic@openwrt.org>
+Subject: [RFC 02/11] MIPS: ralink: adds include files
+Date:   Wed, 23 Jan 2013 13:05:46 +0100
+Message-Id: <1358942755-25371-3-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1358942755-25371-1-git-send-email-blogic@openwrt.org>
 References: <1358942755-25371-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 35507
+X-archive-position: 35508
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,51 +30,142 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Ralink SoC needs to be able to override cp0_compare_irq. We do this similar to
-the way in which how cp0_compare_int can be overridden.
+Before we start adding the platform code we add the common include files.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/include/asm/time.h |    1 +
- arch/mips/kernel/traps.c     |    7 ++++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/mach-ralink/ralink_regs.h |   39 ++++++++++++++++++++
+ arch/mips/include/asm/mach-ralink/war.h         |   25 +++++++++++++
+ arch/mips/ralink/common.h                       |   43 +++++++++++++++++++++++
+ 3 files changed, 107 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-ralink/ralink_regs.h
+ create mode 100644 arch/mips/include/asm/mach-ralink/war.h
+ create mode 100644 arch/mips/ralink/common.h
 
-diff --git a/arch/mips/include/asm/time.h b/arch/mips/include/asm/time.h
-index 761f2e9..c5ad468 100644
---- a/arch/mips/include/asm/time.h
-+++ b/arch/mips/include/asm/time.h
-@@ -51,6 +51,7 @@ extern int (*perf_irq)(void);
-  * Initialize the calling CPU's compare interrupt as clockevent device
-  */
- extern unsigned int __weak get_c0_compare_int(void);
-+extern unsigned int __weak get_c0_compare_irq(void);
- extern int r4k_clockevent_init(void);
- 
- static inline int mips_clockevent_init(void)
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index cf7ac54..260d7f6 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -55,6 +55,7 @@
- #include <asm/types.h>
- #include <asm/stacktrace.h>
- #include <asm/uasm.h>
-+#include <asm/time.h>
- 
- extern void check_wait(void);
- extern asmlinkage void r4k_wait(void);
-@@ -1616,7 +1617,11 @@ void __cpuinit per_cpu_trap_init(bool is_boot_cpu)
- 	 */
- 	if (cpu_has_mips_r2) {
- 		cp0_compare_irq_shift = CAUSEB_TI - CAUSEB_IP;
--		cp0_compare_irq = (read_c0_intctl() >> INTCTLB_IPTI) & 7;
-+		if (get_c0_compare_irq)
-+			cp0_compare_irq = get_c0_compare_irq();
-+		else
-+			cp0_compare_irq =
-+				(read_c0_intctl() >> INTCTLB_IPTI) & 7;
- 		cp0_perfcount_irq = (read_c0_intctl() >> INTCTLB_IPPCI) & 7;
- 		if (cp0_perfcount_irq == cp0_compare_irq)
- 			cp0_perfcount_irq = -1;
+diff --git a/arch/mips/include/asm/mach-ralink/ralink_regs.h b/arch/mips/include/asm/mach-ralink/ralink_regs.h
+new file mode 100644
+index 0000000..5a508f9
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ralink/ralink_regs.h
+@@ -0,0 +1,39 @@
++/*
++ *  Ralink SoC register definitions
++ *
++ *  Copyright (C) 2013 John Crispin <blogic@openwrt.org>
++ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
++
++#ifndef _RALINK_REGS_H_
++#define _RALINK_REGS_H_
++
++extern __iomem void *rt_sysc_membase;
++extern __iomem void *rt_memc_membase;
++
++static inline void rt_sysc_w32(u32 val, unsigned reg)
++{
++	__raw_writel(val, rt_sysc_membase + reg);
++}
++
++static inline u32 rt_sysc_r32(unsigned reg)
++{
++	return __raw_readl(rt_sysc_membase + reg);
++}
++
++static inline void rt_memc_w32(u32 val, unsigned reg)
++{
++	__raw_writel(val, rt_memc_membase + reg);
++}
++
++static inline u32 rt_memc_r32(unsigned reg)
++{
++	return __raw_readl(rt_memc_membase + reg);
++}
++
++#endif /* _RALINK_REGS_H_ */
+diff --git a/arch/mips/include/asm/mach-ralink/war.h b/arch/mips/include/asm/mach-ralink/war.h
+new file mode 100644
+index 0000000..a7b712c
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ralink/war.h
+@@ -0,0 +1,25 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2002, 2004, 2007 by Ralf Baechle <ralf@linux-mips.org>
++ */
++#ifndef __ASM_MACH_RALINK_WAR_H
++#define __ASM_MACH_RALINK_WAR_H
++
++#define R4600_V1_INDEX_ICACHEOP_WAR	0
++#define R4600_V1_HIT_CACHEOP_WAR	0
++#define R4600_V2_HIT_CACHEOP_WAR	0
++#define R5432_CP0_INTERRUPT_WAR		0
++#define BCM1250_M3_WAR			0
++#define SIBYTE_1956_WAR			0
++#define MIPS4K_ICACHE_REFILL_WAR	0
++#define MIPS_CACHE_SYNC_WAR		0
++#define TX49XX_ICACHE_INDEX_INV_WAR	0
++#define RM9000_CDEX_SMP_WAR		0
++#define ICACHE_REFILLS_WORKAROUND_WAR	0
++#define R10000_LLSC_WAR			0
++#define MIPS34K_MISSED_ITLB_WAR		0
++
++#endif /* __ASM_MACH_RALINK_WAR_H */
+diff --git a/arch/mips/ralink/common.h b/arch/mips/ralink/common.h
+new file mode 100644
+index 0000000..8c751f5
+--- /dev/null
++++ b/arch/mips/ralink/common.h
+@@ -0,0 +1,43 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
++ */
++
++#ifndef _RALINK_COMMON_H__
++#define _RALINK_COMMON_H__
++
++#define RAMIPS_SYS_TYPE_LEN	0x100
++
++struct ralink_pinmux_grp {
++	const char *name;
++	u32 mask;
++	int gpio_first;
++	int gpio_last;
++};
++
++struct ralink_pinmux {
++	struct ralink_pinmux_grp *mode;
++	struct ralink_pinmux_grp *uart;
++	int uart_shift;
++	void (*wdt_reset)(void);
++};
++extern struct ralink_pinmux gpio_pinmux;
++
++struct ralink_soc_info {
++	unsigned char *name;
++	unsigned char sys_type[RAMIPS_SYS_TYPE_LEN];
++	unsigned char *compatible;
++};
++extern struct ralink_soc_info soc_info;
++
++extern void ralink_of_remap(void);
++
++extern void ralink_clk_init(void);
++extern void ralink_clk_add(const char *dev, unsigned long rate);
++
++extern void prom_soc_init(struct ralink_soc_info *soc_info);
++
++#endif /* _RALINK_COMMON_H__ */
 -- 
 1.7.10.4

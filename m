@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 13:10:58 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:52031 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 13:11:16 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:52039 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6833397Ab3AWMIo4CqDi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 23 Jan 2013 13:08:44 +0100
+        id S6833401Ab3AWMIp2Bw-o (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 23 Jan 2013 13:08:45 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [RFC 07/11] MIPS: ralink: adds OF code
-Date:   Wed, 23 Jan 2013 13:05:51 +0100
-Message-Id: <1358942755-25371-8-git-send-email-blogic@openwrt.org>
+Subject: [RFC 08/11] MIPS: ralink: adds early_printk support
+Date:   Wed, 23 Jan 2013 13:05:52 +0100
+Message-Id: <1358942755-25371-9-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1358942755-25371-1-git-send-email-blogic@openwrt.org>
 References: <1358942755-25371-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 35513
+X-archive-position: 35514
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,126 +30,62 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Until there is a generic MIPS way of handing the DTB over from bootloader to
-kernel we rely on a built in devicetrees. The OF code also remaps those register
-ranges that we use global in our drivers.
+Add the code needed to make early printk work.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/of.c |  105 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 105 insertions(+)
- create mode 100644 arch/mips/ralink/of.c
+ arch/mips/ralink/early_printk.c |   43 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+ create mode 100644 arch/mips/ralink/early_printk.c
 
-diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
+diff --git a/arch/mips/ralink/early_printk.c b/arch/mips/ralink/early_printk.c
 new file mode 100644
-index 0000000..02814b3
+index 0000000..c610084
 --- /dev/null
-+++ b/arch/mips/ralink/of.c
-@@ -0,0 +1,105 @@
++++ b/arch/mips/ralink/early_printk.c
+@@ -0,0 +1,43 @@
 +/*
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published
-+ * by the Free Software Foundation.
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
 + *
-+ * Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ * Copyright (C) 2008-2009 Gabor Juhos <juhosg@openwrt.org>
-+ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
++ *  Copyright (C) 2011-2012 Gabor Juhos <juhosg@openwrt.org>
 + */
 +
 +#include <linux/io.h>
-+#include <linux/clk.h>
-+#include <linux/init.h>
-+#include <linux/of_fdt.h>
-+#include <linux/kernel.h>
-+#include <linux/bootmem.h>
-+#include <linux/of_platform.h>
-+#include <linux/of_address.h>
++#include <linux/serial_reg.h>
 +
-+#include <asm/reboot.h>
-+#include <asm/bootinfo.h>
 +#include <asm/addrspace.h>
 +
-+#include "common.h"
++/* UART registers */
++#define EARLY_UART_BASE         0x10000c00
 +
-+__iomem void *rt_sysc_membase;
-+__iomem void *rt_memc_membase;
++#define UART_REG_RX             0
++#define UART_REG_TX             1
++#define UART_REG_IER            2
++#define UART_REG_IIR            3
++#define UART_REG_FCR            4
++#define UART_REG_LCR            5
++#define UART_REG_MCR            6
++#define UART_REG_LSR            7
 +
-+extern struct boot_param_header __dtb_start;
-+
-+void __init ralink_of_remap(void)
++static inline void uart_w32(u32 val, unsigned reg)
 +{
-+	struct resource res_sysc, res_memc;
-+	struct device_node *np_sysc =
-+			of_find_compatible_node(NULL, NULL, "ralink,sysc");
-+	struct device_node *np_memc =
-+			of_find_compatible_node(NULL, NULL, "ralink,memc");
-+
-+	if (!np_sysc || !np_memc)
-+		panic("Failed to load core nodes from devicetree");
-+
-+	if (of_address_to_resource(np_sysc, 0, &res_sysc) ||
-+			of_address_to_resource(np_memc, 0, &res_memc))
-+		panic("Failed to get core resources");
-+
-+	if ((request_mem_region(res_sysc.start, resource_size(&res_sysc),
-+				res_sysc.name) < 0) ||
-+		(request_mem_region(res_memc.start, resource_size(&res_memc),
-+				res_memc.name) < 0))
-+		pr_err("Failed to request core resources");
-+
-+	rt_sysc_membase = ioremap_nocache(res_sysc.start,
-+						resource_size(&res_sysc));
-+	rt_memc_membase = ioremap_nocache(res_memc.start,
-+						resource_size(&res_memc));
-+
-+	if (!rt_sysc_membase || !rt_memc_membase)
-+		panic("Failed to remap core resources");
++	__raw_writel((val),
++		(void __iomem *)(KSEG1ADDR(EARLY_UART_BASE) + 4 * (reg)));
 +}
 +
-+void __init device_tree_init(void)
++static inline u32 uart_r32(unsigned reg)
 +{
-+	unsigned long base, size;
-+
-+	if (!initial_boot_params)
-+		return;
-+
-+	base = virt_to_phys((void *)initial_boot_params);
-+	size = be32_to_cpu(initial_boot_params->totalsize);
-+
-+	/* Before we do anything, lets reserve the dt blob */
-+	reserve_bootmem(base, size, BOOTMEM_DEFAULT);
-+
-+	unflatten_device_tree();
++	return __raw_readl(
++		(void __iomem *)(KSEG1ADDR(EARLY_UART_BASE) + 4 * (reg)));
 +}
 +
-+void __init plat_mem_setup(void)
++void prom_putchar(unsigned char ch)
 +{
-+	set_io_port_base(KSEG1);
-+
-+	/*
-+	 * Load the builtin devicetree. This causes the chosen node to be
-+	 * parsed resulting in our memory appearing
-+	 */
-+	__dt_setup_arch(&__dtb_start);
++	while (((uart_r32(UART_REG_LSR)) & UART_LSR_THRE) == 0);
++	uart_w32(UART_REG_TX, ch);
++	while (((uart_r32(UART_REG_LSR)) & UART_LSR_THRE) == 0);
 +}
-+
-+static int __init plat_of_setup(void)
-+{
-+	static struct of_device_id of_ids[3];
-+	int len = sizeof(of_ids[0].compatible);
-+
-+	if (!of_have_populated_dt())
-+		panic("device tree not present");
-+
-+	strncpy(of_ids[0].compatible, soc_info.compatible, len);
-+	strncpy(of_ids[1].compatible, "palmbus", len);
-+
-+	if (of_platform_populate(NULL, of_ids, NULL, NULL))
-+		panic("failed to populate DT\n");
-+
-+	return 0;
-+}
-+
-+arch_initcall(plat_of_setup);
 -- 
 1.7.10.4

@@ -1,16 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 13:08:44 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:52008 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 13:09:03 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:52010 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6831954Ab3AWMIl1Ay7c (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6833383Ab3AWMIlyA7bx (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 23 Jan 2013 13:08:41 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [RFC 00/11] MIPS: ralink: adds support for ralink platform
-Date:   Wed, 23 Jan 2013 13:05:44 +0100
-Message-Id: <1358942755-25371-1-git-send-email-blogic@openwrt.org>
+Subject: [RFC 01/11] MIPS: allow platforms to override cp0_compare_irq
+Date:   Wed, 23 Jan 2013 13:05:45 +0100
+Message-Id: <1358942755-25371-2-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
-X-archive-position: 35506
+In-Reply-To: <1358942755-25371-1-git-send-email-blogic@openwrt.org>
+References: <1358942755-25371-1-git-send-email-blogic@openwrt.org>
+X-archive-position: 35507
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,60 +30,51 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This series adds support for the ralink SoC family. Currently RT305X type
-SoC is supported. RT2880/3883 are in my local queue already but require
-further testing.
+Ralink SoC needs to be able to override cp0_compare_irq. We do this similar to
+the way in which how cp0_compare_int can be overridden.
 
-John Crispin (11):
-  MIPS: allow platforms to override cp0_compare_irq
-  MIPS: ralink: adds include files
-  MIPS: ralink: adds irq code
-  MIPS: ralink: adds reset code
-  MIPS: ralink: adds prom and cmdline code
-  MIPS: ralink: adds clkdev code
-  MIPS: ralink: adds OF code
-  MIPS: ralink: adds early_printk support
-  MIPS: ralink: adds support for RT305x SoC family
-  MIPS: ralink: adds rt305x devicetree
-  MIPS: ralink: adds Kbuild files
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+ arch/mips/include/asm/time.h |    1 +
+ arch/mips/kernel/traps.c     |    7 ++++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
- arch/mips/Kbuild.platforms                      |    1 +
- arch/mips/Kconfig                               |   19 +-
- arch/mips/include/asm/mach-ralink/ralink_regs.h |   39 ++++
- arch/mips/include/asm/mach-ralink/rt305x.h      |  139 ++++++++++++++
- arch/mips/include/asm/mach-ralink/war.h         |   25 +++
- arch/mips/include/asm/time.h                    |    1 +
- arch/mips/kernel/traps.c                        |    7 +-
- arch/mips/ralink/Kconfig                        |   27 +++
- arch/mips/ralink/Makefile                       |   15 ++
- arch/mips/ralink/Platform                       |   11 ++
- arch/mips/ralink/clk.c                          |   72 +++++++
- arch/mips/ralink/common.h                       |   43 +++++
- arch/mips/ralink/dts/Makefile                   |    1 +
- arch/mips/ralink/dts/rt305x.dts                 |  156 +++++++++++++++
- arch/mips/ralink/early_printk.c                 |   43 +++++
- arch/mips/ralink/irq.c                          |  182 ++++++++++++++++++
- arch/mips/ralink/of.c                           |  105 +++++++++++
- arch/mips/ralink/prom.c                         |   69 +++++++
- arch/mips/ralink/reset.c                        |   44 +++++
- arch/mips/ralink/rt305x.c                       |  231 +++++++++++++++++++++++
- 20 files changed, 1228 insertions(+), 2 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-ralink/ralink_regs.h
- create mode 100644 arch/mips/include/asm/mach-ralink/rt305x.h
- create mode 100644 arch/mips/include/asm/mach-ralink/war.h
- create mode 100644 arch/mips/ralink/Kconfig
- create mode 100644 arch/mips/ralink/Makefile
- create mode 100644 arch/mips/ralink/Platform
- create mode 100644 arch/mips/ralink/clk.c
- create mode 100644 arch/mips/ralink/common.h
- create mode 100644 arch/mips/ralink/dts/Makefile
- create mode 100644 arch/mips/ralink/dts/rt305x.dts
- create mode 100644 arch/mips/ralink/early_printk.c
- create mode 100644 arch/mips/ralink/irq.c
- create mode 100644 arch/mips/ralink/of.c
- create mode 100644 arch/mips/ralink/prom.c
- create mode 100644 arch/mips/ralink/reset.c
- create mode 100644 arch/mips/ralink/rt305x.c
-
+diff --git a/arch/mips/include/asm/time.h b/arch/mips/include/asm/time.h
+index 761f2e9..c5ad468 100644
+--- a/arch/mips/include/asm/time.h
++++ b/arch/mips/include/asm/time.h
+@@ -51,6 +51,7 @@ extern int (*perf_irq)(void);
+  * Initialize the calling CPU's compare interrupt as clockevent device
+  */
+ extern unsigned int __weak get_c0_compare_int(void);
++extern unsigned int __weak get_c0_compare_irq(void);
+ extern int r4k_clockevent_init(void);
+ 
+ static inline int mips_clockevent_init(void)
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index cf7ac54..260d7f6 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -55,6 +55,7 @@
+ #include <asm/types.h>
+ #include <asm/stacktrace.h>
+ #include <asm/uasm.h>
++#include <asm/time.h>
+ 
+ extern void check_wait(void);
+ extern asmlinkage void r4k_wait(void);
+@@ -1616,7 +1617,11 @@ void __cpuinit per_cpu_trap_init(bool is_boot_cpu)
+ 	 */
+ 	if (cpu_has_mips_r2) {
+ 		cp0_compare_irq_shift = CAUSEB_TI - CAUSEB_IP;
+-		cp0_compare_irq = (read_c0_intctl() >> INTCTLB_IPTI) & 7;
++		if (get_c0_compare_irq)
++			cp0_compare_irq = get_c0_compare_irq();
++		else
++			cp0_compare_irq =
++				(read_c0_intctl() >> INTCTLB_IPTI) & 7;
+ 		cp0_perfcount_irq = (read_c0_intctl() >> INTCTLB_IPPCI) & 7;
+ 		if (cp0_perfcount_irq == cp0_compare_irq)
+ 			cp0_perfcount_irq = -1;
 -- 
 1.7.10.4

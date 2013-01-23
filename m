@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 13:11:56 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:52055 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 13:12:18 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:52061 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6833402Ab3AWMJBukEaA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 23 Jan 2013 13:09:01 +0100
+        id S6833407Ab3AWMJGS6uYa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 23 Jan 2013 13:09:06 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [RFC 10/11] MIPS: ralink: adds rt305x devicetree
-Date:   Wed, 23 Jan 2013 13:05:54 +0100
-Message-Id: <1358942755-25371-11-git-send-email-blogic@openwrt.org>
+Subject: [RFC 11/11] MIPS: ralink: adds Kbuild files
+Date:   Wed, 23 Jan 2013 13:05:55 +0100
+Message-Id: <1358942755-25371-12-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1358942755-25371-1-git-send-email-blogic@openwrt.org>
 References: <1358942755-25371-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 35516
+X-archive-position: 35517
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,175 +30,156 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This adds the devicetree file that describes the rt305x evaluation kit.
+Add the Kbuild symbols and Makefiles needed to actually build the ralink code
+from this series
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/dts/rt305x.dts |  156 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 156 insertions(+)
- create mode 100644 arch/mips/ralink/dts/rt305x.dts
+ arch/mips/Kbuild.platforms    |    1 +
+ arch/mips/Kconfig             |   19 ++++++++++++++++++-
+ arch/mips/ralink/Kconfig      |   27 +++++++++++++++++++++++++++
+ arch/mips/ralink/Makefile     |   15 +++++++++++++++
+ arch/mips/ralink/Platform     |   11 +++++++++++
+ arch/mips/ralink/dts/Makefile |    1 +
+ 6 files changed, 73 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/ralink/Kconfig
+ create mode 100644 arch/mips/ralink/Makefile
+ create mode 100644 arch/mips/ralink/Platform
+ create mode 100644 arch/mips/ralink/dts/Makefile
 
-diff --git a/arch/mips/ralink/dts/rt305x.dts b/arch/mips/ralink/dts/rt305x.dts
+diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
+index 91b9d69..9a73ce6 100644
+--- a/arch/mips/Kbuild.platforms
++++ b/arch/mips/Kbuild.platforms
+@@ -22,6 +22,7 @@ platforms += pmc-sierra
+ platforms += pnx833x
+ platforms += pnx8550
+ platforms += powertv
++platforms += ralink
+ platforms += rb532
+ platforms += sgi-ip22
+ platforms += sgi-ip27
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 2ac626a..89c92d3 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -434,6 +434,22 @@ config POWERTV
+ 	help
+ 	  This enables support for the Cisco PowerTV Platform.
+ 
++config RALINK
++	bool "Ralink based machines"
++	select CEVT_R4K
++	select CSRC_R4K
++	select BOOT_RAW
++	select DMA_NONCOHERENT
++	select IRQ_CPU
++	select USE_OF
++	select SYS_HAS_CPU_MIPS32_R1
++	select SYS_HAS_CPU_MIPS32_R2
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select SYS_HAS_EARLY_PRINTK
++	select HAVE_MACH_CLKDEV
++	select CLKDEV_LOOKUP
++
+ config SGI_IP22
+ 	bool "SGI IP22 (Indy/Indigo2)"
+ 	select FW_ARC
+@@ -846,6 +862,7 @@ source "arch/mips/lantiq/Kconfig"
+ source "arch/mips/lasat/Kconfig"
+ source "arch/mips/pmc-sierra/Kconfig"
+ source "arch/mips/powertv/Kconfig"
++source "arch/mips/ralink/Kconfig"
+ source "arch/mips/sgi-ip27/Kconfig"
+ source "arch/mips/sibyte/Kconfig"
+ source "arch/mips/txx9/Kconfig"
+@@ -1160,7 +1177,7 @@ config BOOT_ELF32
+ 
+ config MIPS_L1_CACHE_SHIFT
+ 	int
+-	default "4" if MACH_DECSTATION || MIKROTIK_RB532 || PMC_MSP4200_EVAL
++	default "4" if MACH_DECSTATION || MIKROTIK_RB532 || PMC_MSP4200_EVAL || RALINK_RT288X
+ 	default "6" if MIPS_CPU_SCACHE
+ 	default "7" if SGI_IP22 || SGI_IP27 || SGI_IP28 || SNI_RM || CPU_CAVIUM_OCTEON
+ 	default "5"
+diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
 new file mode 100644
-index 0000000..6554cfd
+index 0000000..1be044c
 --- /dev/null
-+++ b/arch/mips/ralink/dts/rt305x.dts
-@@ -0,0 +1,156 @@
-+/dts-v1/;
++++ b/arch/mips/ralink/Kconfig
+@@ -0,0 +1,27 @@
++if RALINK
 +
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "ralink,rt305x";
++choice
++	prompt "Ralink SoC selection"
++	default SOC_RT305X
++	help
++	  Select Ralink MIPS SoC type.
 +
-+	cpus {
-+		cpu@0 {
-+			compatible = "mips,mips24KEc";
-+		};
-+	};
++	config SOC_RT305X
++		bool "RT305x"
++		select USB_ARCH_HAS_OHCI
++		select USB_ARCH_HAS_EHCI
 +
-+	memory@0 {
-+		reg = <0x0 0x4000000>;
-+	};
++endchoice
 +
-+	chosen {
-+		bootargs = "console=ttyS0,57600 init=/init";
-+	};
++choice
++	prompt "Devicetree selection"
++	default DTB_RT305X_EVAL
++	help
++	  Select the devicetree.
 +
-+	palmbus@10000000 {
-+		compatible = "palmbus";
-+		reg = <0x10000000 0x200000>;
-+                ranges = <0x0 0x10000000 0x1FFFFF>;
++	config DTB_RT305X_EVAL
++		bool "RT305x eval kit"
 +
-+		#address-cells = <1>;
-+		#size-cells = <1>;
++endchoice
 +
-+		sysc@0 {
-+			compatible = "ralink,sysc";
-+			reg = <0x0 0x100>;
++endif
+diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
+new file mode 100644
+index 0000000..939757f
+--- /dev/null
++++ b/arch/mips/ralink/Makefile
+@@ -0,0 +1,15 @@
++# This program is free software; you can redistribute it and/or modify it
++# under the terms of the GNU General Public License version 2 as published
++# by the Free Software Foundation.#
++# Makefile for the Ralink common stuff
++#
++# Copyright (C) 2009-2011 Gabor Juhos <juhosg@openwrt.org>
++# Copyright (C) 2013 John Crispin <blogic@openwrt.org>
 +
-+			ralink,pinmmux = "uartlite", "spi";
-+			ralink,uartmux = "gpio";
-+			ralink,wdtmux = <0>;
-+		};
++obj-y := prom.o of.o reset.o clk.o irq.o
 +
-+		timer@100 {
-+			compatible = "ralink,wdt";
-+			reg = <0x100 0x100>;
-+		};
++obj-$(CONFIG_SOC_RT305X) += rt305x.o
 +
-+		intc: intc@200 {
-+			compatible = "ralink,intc";
-+			reg = <0x200 0x100>;
++obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
 +
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+		};
++obj-y += dts/
+diff --git a/arch/mips/ralink/Platform b/arch/mips/ralink/Platform
+new file mode 100644
+index 0000000..1d7e8fb
+--- /dev/null
++++ b/arch/mips/ralink/Platform
+@@ -0,0 +1,11 @@
++#
++# Ralink SoC common stuff
++#
++core-$(CONFIG_RALINK)     += arch/mips/ralink/
++cflags-$(CONFIG_RALINK)   += -I$(srctree)/arch/mips/include/asm/mach-ralink
 +
-+		memc@300 {
-+			compatible = "ralink,memc";
-+			reg = <0x300 0x100>;
-+		};
-+
-+		gpio0: gpio@600 {
-+			compatible = "ralink,gpio";
-+			reg = <0x600 0x34>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+
-+			ralink,ngpio = <24>;
-+			ralink,regs = [ 00 04 08 0c
-+					20 24 28 2c
-+					30 34 ];
-+		};
-+
-+		gpio1: gpio@638 {
-+			compatible = "ralink,gpio";
-+			reg = <0x638 0x24>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+
-+			ralink,ngpio = <16>;
-+			ralink,regs = [ 00 04 08 0c
-+					10 14 18 1c
-+					20 24 ];
-+		};
-+
-+		gpio2: gpio@660 {
-+			compatible = "ralink,gpio";
-+			reg = <0x660 0x24>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+
-+			ralink,ngpio = <12>;
-+			ralink,regs = [ 00 04 08 0c
-+					10 14 18 1c
-+					20 24 ];
-+		};
-+
-+		spi@b00 {
-+			compatible = "ralink,spi";
-+			reg = <0xb00 0x100>;
-+		};
-+
-+		uartlite@c00 {
-+			compatible = "ns16550a";
-+			reg = <0xc00 0x100>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <20>;
-+
-+			reg-shift = <2>;
-+		};
-+
-+		fe@100000 {
-+			compatible = "ralink,fe";
-+			reg = <0x100000 0x10000>;
-+		};
-+
-+		esw@110000 {
-+			compatible = "ralink,esw";
-+			reg = <0x110000 0x8000>;
-+		};
-+
-+		dwc_otg@1c0000 {
-+			compatible = "dwc_otg";
-+			reg = <0x1c0000 0x40000>;
-+		};
-+	};
-+
-+	cfi@1f000000 {
-+		compatible = "cfi-flash";
-+		reg = <0x1f000000 0x800000>;
-+
-+		bank-width = <2>;
-+		device-width = <2>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		partition@0 {
-+			label = "uboot";
-+			reg = <0x0 0x30000>;
-+			read-only;
-+		};
-+		partition@30000 {
-+			label = "uboot-env";
-+			reg = <0x30000 0x10000>;
-+			read-only;
-+		};
-+		partition@40000 {
-+			label = "calibration";
-+			reg = <0x40000 0x10000>;
-+			read-only;
-+		};
-+		partition@50000 {
-+			label = "linux";
-+			reg = <0x50000 0x7b0000>;
-+		};
-+	};
-+};
++#
++# Ralink RT305x
++#
++cflags-$(CONFIG_SOC_RT305X) += -I$(srctree)/arch/mips/include/asm/mach-ralink/rt305x
++load-$(CONFIG_SOC_RT305X)   += 0xffffffff80000000
+diff --git a/arch/mips/ralink/dts/Makefile b/arch/mips/ralink/dts/Makefile
+new file mode 100644
+index 0000000..e2ce7b4
+--- /dev/null
++++ b/arch/mips/ralink/dts/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_DTB_RT305X_EVAL) := rt305x.dtb.o
 -- 
 1.7.10.4

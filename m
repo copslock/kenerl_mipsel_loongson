@@ -1,43 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 21:08:22 +0100 (CET)
-Received: from mail-wi0-f170.google.com ([209.85.212.170]:57232 "EHLO
-        mail-wi0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6833408Ab3AWUIUy7sZe convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 23 Jan 2013 21:08:20 +0100
-Received: by mail-wi0-f170.google.com with SMTP id hq7so4770441wib.3
-        for <multiple recipients>; Wed, 23 Jan 2013 12:08:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:x-received:in-reply-to:references:date:message-id
-         :subject:from:to:cc:content-type:content-transfer-encoding;
-        bh=6IMbL/jknWsyPOgXnPphZsjk1YPYRK7xBqCbMbdkJdQ=;
-        b=S0DO5H81mPT+OKoD98nYYLwuP0ZlNKONFPfkNq97Rs3I5Dnj2oFNXPtQ5gHEwUdkEI
-         6KKEOAkyRQirijKwhOH6GjxNDOB1yTYNvTC+MzWBQXLFne71inN+O8n2YUifAGdjnw47
-         upF8X3GrkZvVOldcxvc7OoKbSNPpg+FGapcEPrCljghSVRPMzFSweofIarjF0PtZ9WEt
-         8HP1wcp+Sg5yI2Q9CKyBrxLYBZu2GLjpRGA4co1yDbiYxbWFUzLVp85Tbl5OjpJcQLVD
-         QECquWAAcPN39cx6I9iFM53r/6G0lwBfjIeFZImBt986ZcXMGpvzCrbug1UilokURJqX
-         U9Xg==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2013 22:55:09 +0100 (CET)
+Received: from mail-la0-f49.google.com ([209.85.215.49]:50370 "EHLO
+        mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6833416Ab3AWVzHqsqNs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jan 2013 22:55:07 +0100
+Received: by mail-la0-f49.google.com with SMTP id fs13so3092719lab.36
+        for <linux-mips@linux-mips.org>; Wed, 23 Jan 2013 13:55:02 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding:x-gm-message-state;
+        bh=6TKmiFgS7ghLLobDtIaN60j5fzw5pC76bzdN8Wr5YvQ=;
+        b=i6aGnF3hmzoD2/YEeQi8j4mx3Qg7c3xK/sOOG5c30zD7xXwB67KyQrA4jbzt68oa7E
+         lfO45CtFmTHcvMBDMlONb4O5Q18YdqpQmh2T/4ca1rLzrdq7JD9vTp0y457H/MCSI6sr
+         MROUTiCv3TwX/3xrF7TD7/h/6lsLYVpyPNPmXa/pw9vppoDP0Kggy5UQHVdS9zYEKZvc
+         TW1bk89yaa2dGBoqd6qHt5LTWm/uoSo+sYuIQMfFyTVyZx8Ey412UkZD2Q87hIoFgDx7
+         xs7rwULrbbAnMhgUJ3xHe8qjyDz8e14w11uwtEbEtyQXmbr/XWid74EHLIZ/UXNNwHgR
+         r2gA==
+X-Received: by 10.112.8.231 with SMTP id u7mr1234336lba.45.1358978102095;
+        Wed, 23 Jan 2013 13:55:02 -0800 (PST)
+Received: from [192.168.2.2] (ppp91-79-77-250.pppoe.mtu-net.ru. [91.79.77.250])
+        by mx.google.com with ESMTPS id n2sm8891835lbc.5.2013.01.23.13.55.00
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Wed, 23 Jan 2013 13:55:00 -0800 (PST)
+Message-ID: <51005C28.4050002@mvista.com>
+Date:   Thu, 24 Jan 2013 01:54:48 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/20130107 Thunderbird/17.0.2
 MIME-Version: 1.0
-X-Received: by 10.194.88.98 with SMTP id bf2mr4834534wjb.49.1358971695520;
- Wed, 23 Jan 2013 12:08:15 -0800 (PST)
-Received: by 10.216.72.134 with HTTP; Wed, 23 Jan 2013 12:08:15 -0800 (PST)
-In-Reply-To: <20130123191549.GB7294@linux-mips.org>
-References: <CACna6rz2mpRUZsXqDr7wDjgTSz0bunq9wZ9PumyR5gO_cRhS1Q@mail.gmail.com>
-        <20130123191549.GB7294@linux-mips.org>
-Date:   Wed, 23 Jan 2013 21:08:15 +0100
-Message-ID: <CACna6rwGGWa3+Fbj1fntJh2UKsriWH55ejeWo1cVPAY3aOJZmg@mail.gmail.com>
-Subject: Re: git (linux-queue.git) not available: access denied or repository
- not exported
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 35522
+To:     Florian Fainelli <florian@openwrt.org>
+CC:     John Crispin <blogic@openwrt.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [RFC 08/11] MIPS: ralink: adds early_printk support
+References: <1358942755-25371-1-git-send-email-blogic@openwrt.org> <1358942755-25371-9-git-send-email-blogic@openwrt.org> <510038A8.6020606@openwrt.org>
+In-Reply-To: <510038A8.6020606@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Gm-Message-State: ALoCoQkf2FiPs8sLq1zgpG98TO+5avzpO0YOP72hrpLa15GvxIfC1uMYTdyZpIZsZ+UfVldtT52q
+X-archive-position: 35523
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,25 +55,54 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-2013/1/23 Ralf Baechle <ralf@linux-mips.org>:
-> On Wed, Jan 23, 2013 at 11:45:16AM +0100, Rafał Miłecki wrote:
->
->> # git clone git://git.linux-mips.org/pub/scm/ralf/linux-queue.git
->> Cloning into 'linux-queue'...
->> fatal: remote error: access denied or repository not exported:
->> /pub/scm/ralf/linux-queue.git
->>
->> I've tried this on two machines. Is there some mirror?
->
-> The repository has been superseeded by upstream-sfr.git.  linux-queue.git
-> used to serve almost the same purpose and has been dropped.
->
-> Is there a stale reference to linux-queue.git somewhere?
+Hello.
 
-Yes: http://www.linux-mips.org/wiki/Git
+On 23-01-2013 23:23, Florian Fainelli wrote:
 
-Would be nice to update that page and probably include also web access
-URLs. Quick task for someone with wiki account :)
+>> Add the code needed to make early printk work.
 
--- 
-Rafał
+>> Signed-off-by: John Crispin <blogic@openwrt.org>
+>> ---
+>>   arch/mips/ralink/early_printk.c |   43
+>> +++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 43 insertions(+)
+>>   create mode 100644 arch/mips/ralink/early_printk.c
+
+>> diff --git a/arch/mips/ralink/early_printk.c b/arch/mips/ralink/early_printk.c
+>> new file mode 100644
+>> index 0000000..c610084
+>> --- /dev/null
+>> +++ b/arch/mips/ralink/early_printk.c
+>> @@ -0,0 +1,43 @@
+>> +/*
+>> + *  This program is free software; you can redistribute it and/or modify it
+>> + *  under the terms of the GNU General Public License version 2 as published
+>> + *  by the Free Software Foundation.
+>> + *
+>> + *  Copyright (C) 2011-2012 Gabor Juhos <juhosg@openwrt.org>
+>> + */
+>> +
+>> +#include <linux/io.h>
+>> +#include <linux/serial_reg.h>
+>> +
+>> +#include <asm/addrspace.h>
+>> +
+>> +/* UART registers */
+>> +#define EARLY_UART_BASE         0x10000c00
+>> +
+>> +#define UART_REG_RX             0
+>> +#define UART_REG_TX             1
+>> +#define UART_REG_IER            2
+>> +#define UART_REG_IIR            3
+>> +#define UART_REG_FCR            4
+>> +#define UART_REG_LCR            5
+>> +#define UART_REG_MCR            6
+>> +#define UART_REG_LSR            7
+
+> Is that really required considering that you already include serial_reg.h and
+> could use defines from there?
+
+    Off the top of my head, these #define's are not quite compatible with 
+standard 8250 registers.
+
+WBR, Sergei

@@ -1,20 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jan 2013 18:47:57 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:52028 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6833459Ab3AXRr4h09vf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 24 Jan 2013 18:47:56 +0100
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: mips-next: Pull Request for 3.9
-Date:   Thu, 24 Jan 2013 18:45:13 +0100
-Message-Id: <1359049513-10847-1-git-send-email-blogic@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jan 2013 21:22:02 +0100 (CET)
+Received: from userp1040.oracle.com ([156.151.31.81]:31234 "EHLO
+        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6833456Ab3AXUVzFxIzh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Jan 2013 21:21:55 +0100
+Received: from acsinet22.oracle.com (acsinet22.oracle.com [141.146.126.238])
+        by userp1040.oracle.com (Sentrion-MTA-4.2.2/Sentrion-MTA-4.2.2) with ESMTP id r0OKKrkg005157
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Thu, 24 Jan 2013 20:20:54 GMT
+Received: from acsmt356.oracle.com (acsmt356.oracle.com [141.146.40.156])
+        by acsinet22.oracle.com (8.14.4+Sun/8.14.4) with ESMTP id r0OKKpwR022286
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Thu, 24 Jan 2013 20:20:51 GMT
+Received: from abhmt120.oracle.com (abhmt120.oracle.com [141.146.116.72])
+        by acsmt356.oracle.com (8.12.11.20060308/8.12.11) with ESMTP id r0OKKnLD027976;
+        Thu, 24 Jan 2013 14:20:49 -0600
+Received: from linux-siqj.site (/10.132.126.191)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 24 Jan 2013 12:20:48 -0800
+From:   Yinghai Lu <yinghai@kernel.org>
+To:     Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@elte.hu>,
+        "H. Peter Anvin" <hpa@zytor.com>
+Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jan Kiszka <jan.kiszka@web.de>,
+        Jason Wessel <jason.wessel@windriver.com>,
+        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org,
+        Yinghai Lu <yinghai@kernel.org>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jeremy Fitzhardinge <jeremy@goop.org>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrzej Pietrasiewicz <andrzej.p@samsung.com>,
+        linux-mips@linux-mips.org, xen-devel@lists.xensource.com,
+        virtualization@lists.linux-foundation.org,
+        Shuah Khan <shuahkhan@gmail.com>
+Subject: [PATCH 35/35] x86: Don't panic if can not alloc buffer for swiotlb
+Date:   Thu, 24 Jan 2013 12:20:16 -0800
+Message-Id: <1359058816-7615-36-git-send-email-yinghai@kernel.org>
 X-Mailer: git-send-email 1.7.10.4
-X-archive-position: 35548
+In-Reply-To: <1359058816-7615-1-git-send-email-yinghai@kernel.org>
+References: <1359058816-7615-1-git-send-email-yinghai@kernel.org>
+X-Source-IP: acsinet22.oracle.com [141.146.126.238]
+X-archive-position: 35549
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: yinghai@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -28,180 +62,193 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The following changes since commit 5da1f88b8b727dc3a66c52d4513e871be6d43d19:
+Normal boot path on system with iommu support:
+swiotlb buffer will be allocated early at first and then try to initialize
+iommu, if iommu for intel or AMD could setup properly, swiotlb buffer
+will be freed.
 
-  Merge tag 'usb-3.8-rc4' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb (2013-01-18 14:06:29 -0800)
+The early allocating is with bootmem, and could panic when we try to use
+kdump with buffer above 4G only, or with memmap to limit mem under 4G.
+for example: memmap=4095M$1M to remove memory under 4G.
 
-are available in the git repository at:
+According to Eric, add _nopanic version and no_iotlb_memory to fail
+map single later if swiotlb is still needed.
 
+-v2: don't pass nopanic, and use -ENOMEM return value according to Eric.
+     panic early instead of using swiotlb_full to panic...according to Eric/Konrad.
+-v3: make swiotlb_init to be notpanic, but will affect:
+     arm64, ia64, powerpc, tile, unicore32, x86.
+-v4: cleanup swiotlb_init by removing swiotlb_init_with_default_size.
 
-  git://git.linux-mips.org/pub/scm/john/linux-john.git mips-next-3.9
+Suggested-by: Eric W. Biederman <ebiederm@xmission.com>
+Signed-off-by: Yinghai Lu <yinghai@kernel.org>
+Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Jeremy Fitzhardinge <jeremy@goop.org>
+Cc: Kyungmin Park <kyungmin.park@samsung.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Andrzej Pietrasiewicz <andrzej.p@samsung.com>
+Cc: linux-mips@linux-mips.org
+Cc: xen-devel@lists.xensource.com
+Cc: virtualization@lists.linux-foundation.org
+Cc: Shuah Khan <shuahkhan@gmail.com>
+---
+ arch/mips/cavium-octeon/dma-octeon.c |    3 ++-
+ drivers/xen/swiotlb-xen.c            |    4 ++-
+ include/linux/swiotlb.h              |    2 +-
+ lib/swiotlb.c                        |   47 +++++++++++++++++++++-------------
+ 4 files changed, 35 insertions(+), 21 deletions(-)
 
-for you to fetch changes up to 25ab7db41c1bcb07eb728b83b75022dc5e7f5dc6:
-
-  MIPS: Loongson: Add a Loongson-3 default config file (2013-01-24 16:07:19 +0100)
-
-
-
-Hi Ralf,
-
-various patches for the following platforms bcm47xx, loongson3, xlp, lantiq and
-a few generic patches from Steven
-
-Please consider pulling these into upstream-sfr.git
-
-	John
-
-----------------------------------------------------------------
-Hauke Mehrtens (12):
-      MIPS: BCM47XX: use common error codes in nvram reads
-      MIPS: BCM47XX: return error when init of nvram failed
-      MIPS: BCM47XX: nvram add nand flash support
-      MIPS: BCM47XX: rename early_nvram_init to nvram_init
-      MIPS: BCM47XX: handle different nvram sizes
-      MIPS: BCM47XX: add bcm47xx prefix in front of nvram function names
-      MIPS: BCM47XX: trim the nvram values for parsing
-      MIPS: BCM47XX: select BOOT_RAW
-      MIPS: BCM47XX: select NO_EXCEPT_FILL
-      MIPS: BCM47XX: use fallback sprom var for board_{rev,type}
-      bcma: add gpio_to_irq again
-      ssb: add gpio_to_irq again
-
-Huacai Chen (12):
-      MIPS: Loongson: Add basic Loongson-3 definition
-      MIPS: Loongson: Add basic Loongson-3 CPU support
-      MIPS: Loongson 3: Add Lemote-3A machtypes definition
-      MIPS: Loongson: Add UEFI-like firmware interface support
-      MIPS: Loongson 3: Add HT-linked PCI support
-      MIPS: Loongson 3: Add IRQ init and dispatch support
-      MIPS: Loongson 3: Add serial port support
-      MIPS: Loongson: Add swiotlb to support big memory (>4GB)
-      MIPS: Loongson: Add Loongson-3 Kconfig options
-      MIPS: Loongson 3: Add Loongson-3 SMP support
-      MIPS: Loongson 3: Add CPU hotplug support
-      MIPS: Loongson: Add a Loongson-3 default config file
-
-Jayachandran C (11):
-      MIPS: Netlogic: Fix UP compilation on XLR
-      MIPS: Netlogic: add XLS6xx to FMN config
-      MIPS: Netlogic: Optimize EIMR/EIRR accesses in 32-bit
-      MIPS: PCI: Byteswap not needed in little-endian mode
-      MIPS: Netlogic: Split XLP L1 i-cache among threads
-      MIPS: Netlogic: Use PIC timer as a clocksource
-      MIPS: PCI: Prevent hang on XLP reg read
-      MIPS: Netlogic: No hazards needed for XLR/XLS
-      MIPS: Netlogic: use preset loops per jiffy
-      MIPS: Netlogic: Fix for quad-XLP boot
-      MIPS: PCI: Multi-node PCI support for Netlogic XLP
-
-John Crispin (6):
-      MIPS: show correct cpu name for 24KEc
-      MIPS: lantiq: trivial typo fix
-      MIPS: lantiq: adds static clock for PP32
-      MIPS: lantiq: add GPHY clock gate bits
-      MIPS: lantiq: improve pci reset gpio handling
-      MIPS: lantiq: rework external irq code
-
-Rafal Milecki (1):
-      MIPS: bcm47xx: separate functions finding flash window addr
-
-Steven J. Hill (5):
-      MIPS: Clean-ups for MIPS Technologies Inc. generic header file.
-      MIPS: Add support for the M14KEc core.
-      MIPS: dsp: Add assembler support for DSP ASEs.
-      MIPS: dsp: Support toolchains without DSP ASE and microMIPS.
-      MIPS: dsp: Simplify the DSP macros.
-
- arch/mips/Kconfig                                  |   31 ++
- arch/mips/bcm47xx/nvram.c                          |  159 +++++--
- arch/mips/bcm47xx/setup.c                          |    6 +-
- arch/mips/bcm47xx/sprom.c                          |   22 +-
- arch/mips/configs/loongson3_defconfig              |  328 ++++++++++++++
- arch/mips/include/asm/addrspace.h                  |    6 +
- arch/mips/include/asm/bootinfo.h                   |   24 +-
- arch/mips/include/asm/cpu-features.h               |    3 +
- arch/mips/include/asm/cpu.h                        |    8 +-
- arch/mips/include/asm/dma-mapping.h                |    5 +
- arch/mips/include/asm/hazards.h                    |    2 +-
- .../asm/mach-bcm47xx/{nvram.h => bcm47xx_nvram.h}  |   13 +-
- arch/mips/include/asm/mach-lantiq/lantiq.h         |    2 +
- arch/mips/include/asm/mach-loongson/boot_param.h   |  151 +++++++
- .../mips/include/asm/mach-loongson/dma-coherence.h |   23 +
- arch/mips/include/asm/mach-loongson/irq.h          |   24 ++
- arch/mips/include/asm/mach-loongson/loongson.h     |   26 +-
- arch/mips/include/asm/mach-loongson/machine.h      |    6 +
- arch/mips/include/asm/mach-loongson/pci.h          |    5 +
- arch/mips/include/asm/mach-loongson/spaces.h       |   15 +
- arch/mips/include/asm/mips-boards/generic.h        |   28 +-
- arch/mips/include/asm/mipsregs.h                   |  312 ++++++--------
- arch/mips/include/asm/module.h                     |    2 +
- arch/mips/include/asm/netlogic/mips-extns.h        |   79 ++++
- .../mips/include/asm/netlogic/xlp-hal/cpucontrol.h |    2 +
- arch/mips/include/asm/netlogic/xlp-hal/pic.h       |   12 +-
- arch/mips/include/asm/netlogic/xlr/pic.h           |   48 ++-
- arch/mips/include/asm/pgtable-bits.h               |    7 +
- arch/mips/include/asm/smp.h                        |    1 +
- arch/mips/kernel/Makefile                          |   31 ++
- arch/mips/kernel/cpu-probe.c                       |   26 +-
- arch/mips/lantiq/clk.c                             |   12 +-
- arch/mips/lantiq/clk.h                             |    7 +-
- arch/mips/lantiq/falcon/sysctrl.c                  |    4 +-
- arch/mips/lantiq/irq.c                             |  105 +++--
- arch/mips/lantiq/xway/clk.c                        |   43 ++
- arch/mips/lantiq/xway/reset.c                      |    9 +
- arch/mips/lantiq/xway/sysctrl.c                    |   15 +-
- arch/mips/loongson/Kconfig                         |   52 +++
- arch/mips/loongson/Makefile                        |    6 +
- arch/mips/loongson/Platform                        |    1 +
- arch/mips/loongson/common/Makefile                 |    5 +
- arch/mips/loongson/common/dma-swiotlb.c            |  163 +++++++
- arch/mips/loongson/common/env.c                    |   67 ++-
- arch/mips/loongson/common/init.c                   |   14 +-
- arch/mips/loongson/common/machtype.c               |   20 +-
- arch/mips/loongson/common/mem.c                    |   42 ++
- arch/mips/loongson/common/pci.c                    |    6 +-
- arch/mips/loongson/common/reset.c                  |   16 +
- arch/mips/loongson/common/serial.c                 |   26 +-
- arch/mips/loongson/common/setup.c                  |    8 +-
- arch/mips/loongson/common/uart_base.c              |    9 +-
- arch/mips/loongson/loongson-3/Makefile             |    6 +
- arch/mips/loongson/loongson-3/irq.c                |   97 +++++
- arch/mips/loongson/loongson-3/smp.c                |  450 ++++++++++++++++++++
- arch/mips/loongson/loongson-3/smp.h                |   24 ++
- arch/mips/mm/c-r4k.c                               |   63 ++-
- arch/mips/mm/tlb-r4k.c                             |    2 +-
- arch/mips/mm/tlbex.c                               |    2 +
- arch/mips/netlogic/common/irq.c                    |   41 +-
- arch/mips/netlogic/common/smp.c                    |    8 +-
- arch/mips/netlogic/common/smpboot.S                |    6 +
- arch/mips/netlogic/common/time.c                   |   56 +++
- arch/mips/netlogic/xlp/wakeup.c                    |   35 +-
- arch/mips/netlogic/xlr/fmn-config.c                |    2 +
- arch/mips/netlogic/xlr/platform.c                  |    2 +-
- arch/mips/netlogic/xlr/setup.c                     |    7 +-
- arch/mips/oprofile/common.c                        |    1 +
- arch/mips/oprofile/op_model_mipsxx.c               |    4 +
- arch/mips/pci/Makefile                             |    1 +
- arch/mips/pci/fixup-loongson3.c                    |   64 +++
- arch/mips/pci/ops-loongson3.c                      |  104 +++++
- arch/mips/pci/pci-lantiq.c                         |   12 +-
- arch/mips/pci/pci-xlp.c                            |  124 ++++--
- drivers/bcma/driver_gpio.c                         |   11 +
- drivers/mtd/bcm47xxpart.c                          |    2 +-
- drivers/net/ethernet/broadcom/b44.c                |    4 +-
- drivers/ssb/driver_chipcommon_pmu.c                |    4 +-
- drivers/ssb/driver_gpio.c                          |   22 +
- include/linux/ssb/ssb_driver_gige.h                |    6 +-
- 80 files changed, 2714 insertions(+), 483 deletions(-)
- create mode 100644 arch/mips/configs/loongson3_defconfig
- rename arch/mips/include/asm/mach-bcm47xx/{nvram.h => bcm47xx_nvram.h} (84%)
- create mode 100644 arch/mips/include/asm/mach-loongson/boot_param.h
- create mode 100644 arch/mips/include/asm/mach-loongson/irq.h
- create mode 100644 arch/mips/include/asm/mach-loongson/spaces.h
- create mode 100644 arch/mips/loongson/common/dma-swiotlb.c
- create mode 100644 arch/mips/loongson/loongson-3/Makefile
- create mode 100644 arch/mips/loongson/loongson-3/irq.c
- create mode 100644 arch/mips/loongson/loongson-3/smp.c
- create mode 100644 arch/mips/loongson/loongson-3/smp.h
- create mode 100644 arch/mips/pci/fixup-loongson3.c
- create mode 100644 arch/mips/pci/ops-loongson3.c
+diff --git a/arch/mips/cavium-octeon/dma-octeon.c b/arch/mips/cavium-octeon/dma-octeon.c
+index 41dd0088..02f2444 100644
+--- a/arch/mips/cavium-octeon/dma-octeon.c
++++ b/arch/mips/cavium-octeon/dma-octeon.c
+@@ -317,7 +317,8 @@ void __init plat_swiotlb_setup(void)
+ 
+ 	octeon_swiotlb = alloc_bootmem_low_pages(swiotlbsize);
+ 
+-	swiotlb_init_with_tbl(octeon_swiotlb, swiotlb_nslabs, 1);
++	if (swiotlb_init_with_tbl(octeon_swiotlb, swiotlb_nslabs, 1) == -ENOMEM)
++		panic("Cannot allocate SWIOTLB buffer");
+ 
+ 	mips_dma_map_ops = &octeon_linear_dma_map_ops.dma_map_ops;
+ }
+diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+index af47e75..1d94316 100644
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -231,7 +231,9 @@ retry:
+ 	}
+ 	start_dma_addr = xen_virt_to_bus(xen_io_tlb_start);
+ 	if (early) {
+-		swiotlb_init_with_tbl(xen_io_tlb_start, xen_io_tlb_nslabs, verbose);
++		if (swiotlb_init_with_tbl(xen_io_tlb_start, xen_io_tlb_nslabs,
++			 verbose))
++			panic("Cannot allocate SWIOTLB buffer");
+ 		rc = 0;
+ 	} else
+ 		rc = swiotlb_late_init_with_tbl(xen_io_tlb_start, xen_io_tlb_nslabs);
+diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
+index 071d62c..2de42f9 100644
+--- a/include/linux/swiotlb.h
++++ b/include/linux/swiotlb.h
+@@ -23,7 +23,7 @@ extern int swiotlb_force;
+ #define IO_TLB_SHIFT 11
+ 
+ extern void swiotlb_init(int verbose);
+-extern void swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose);
++int swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose);
+ extern unsigned long swiotlb_nr_tbl(void);
+ extern int swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs);
+ 
+diff --git a/lib/swiotlb.c b/lib/swiotlb.c
+index 196b069..bfe02b8 100644
+--- a/lib/swiotlb.c
++++ b/lib/swiotlb.c
+@@ -122,11 +122,18 @@ static dma_addr_t swiotlb_virt_to_bus(struct device *hwdev,
+ 	return phys_to_dma(hwdev, virt_to_phys(address));
+ }
+ 
++static bool no_iotlb_memory;
++
+ void swiotlb_print_info(void)
+ {
+ 	unsigned long bytes = io_tlb_nslabs << IO_TLB_SHIFT;
+ 	unsigned char *vstart, *vend;
+ 
++	if (no_iotlb_memory) {
++		pr_warn("software IO TLB: No low mem\n");
++		return;
++	}
++
+ 	vstart = phys_to_virt(io_tlb_start);
+ 	vend = phys_to_virt(io_tlb_end);
+ 
+@@ -136,7 +143,7 @@ void swiotlb_print_info(void)
+ 	       bytes >> 20, vstart, vend - 1);
+ }
+ 
+-void __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
++int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+ {
+ 	void *v_overflow_buffer;
+ 	unsigned long i, bytes;
+@@ -150,9 +157,10 @@ void __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+ 	/*
+ 	 * Get the overflow emergency buffer
+ 	 */
+-	v_overflow_buffer = alloc_bootmem_low_pages(PAGE_ALIGN(io_tlb_overflow));
++	v_overflow_buffer = alloc_bootmem_low_pages_nopanic(
++						PAGE_ALIGN(io_tlb_overflow));
+ 	if (!v_overflow_buffer)
+-		panic("Cannot allocate SWIOTLB overflow buffer!\n");
++		return -ENOMEM;
+ 
+ 	io_tlb_overflow_buffer = __pa(v_overflow_buffer);
+ 
+@@ -169,15 +177,19 @@ void __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+ 
+ 	if (verbose)
+ 		swiotlb_print_info();
++
++	return 0;
+ }
+ 
+ /*
+  * Statically reserve bounce buffer space and initialize bounce buffer data
+  * structures for the software IO TLB used to implement the DMA API.
+  */
+-static void __init
+-swiotlb_init_with_default_size(size_t default_size, int verbose)
++void  __init
++swiotlb_init(int verbose)
+ {
++	/* default to 64MB */
++	size_t default_size = 64UL<<20;
+ 	unsigned char *vstart;
+ 	unsigned long bytes;
+ 
+@@ -188,20 +200,16 @@ swiotlb_init_with_default_size(size_t default_size, int verbose)
+ 
+ 	bytes = io_tlb_nslabs << IO_TLB_SHIFT;
+ 
+-	/*
+-	 * Get IO TLB memory from the low pages
+-	 */
+-	vstart = alloc_bootmem_low_pages(PAGE_ALIGN(bytes));
+-	if (!vstart)
+-		panic("Cannot allocate SWIOTLB buffer");
+-
+-	swiotlb_init_with_tbl(vstart, io_tlb_nslabs, verbose);
+-}
++	/* Get IO TLB memory from the low pages */
++	vstart = alloc_bootmem_low_pages_nopanic(PAGE_ALIGN(bytes));
++	if (vstart && !swiotlb_init_with_tbl(vstart, io_tlb_nslabs, verbose))
++		return;
+ 
+-void __init
+-swiotlb_init(int verbose)
+-{
+-	swiotlb_init_with_default_size(64 * (1<<20), verbose);	/* default to 64MB */
++	if (io_tlb_start)
++		free_bootmem(io_tlb_start,
++				 PAGE_ALIGN(io_tlb_nslabs << IO_TLB_SHIFT));
++	pr_warn("Cannot allocate SWIOTLB buffer");
++	no_iotlb_memory = true;
+ }
+ 
+ /*
+@@ -405,6 +413,9 @@ phys_addr_t swiotlb_tbl_map_single(struct device *hwdev,
+ 	unsigned long offset_slots;
+ 	unsigned long max_slots;
+ 
++	if (no_iotlb_memory)
++		panic("Can not allocate SWIOTLB buffer earlier and can't now provide you with the DMA bounce buffer");
++
+ 	mask = dma_get_seg_boundary(hwdev);
+ 
+ 	tbl_dma_addr &= mask;
+-- 
+1.7.10.4

@@ -1,38 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jan 2013 18:16:06 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:47429 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6833443Ab3AXRQFKxmAK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Jan 2013 18:16:05 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id A7B8B8F67;
-        Thu, 24 Jan 2013 18:16:04 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id jOGQNRxQy7K1; Thu, 24 Jan 2013 18:15:59 +0100 (CET)
-Received: from [IPv6:2001:470:1f0b:447:e019:523f:af57:3383] (unknown [IPv6:2001:470:1f0b:447:e019:523f:af57:3383])
-        by hauke-m.de (Postfix) with ESMTPSA id 373468F63;
-        Thu, 24 Jan 2013 18:15:59 +0100 (CET)
-Message-ID: <51016C4D.40707@hauke-m.de>
-Date:   Thu, 24 Jan 2013 18:15:57 +0100
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
-MIME-Version: 1.0
-To:     wim@iguana.be
-CC:     linux-watchdog@vger.kernel.org, zajec5@gmail.com,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v4 0/5] watchdog: bcm47xx_wdt.c: add support for SoCs
- with PMU
-References: <1358010851-28077-1-git-send-email-hauke@hauke-m.de>
-In-Reply-To: <1358010851-28077-1-git-send-email-hauke@hauke-m.de>
-X-Enigmail-Version: 1.4.6
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35546
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jan 2013 18:26:49 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:56052 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6833443Ab3AXR0rtHL-3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Jan 2013 18:26:47 +0100
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1TyQZT-0000RJ-Vu; Thu, 24 Jan 2013 11:26:39 -0600
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org
+Subject: [PATCH v3] MIPS: microMIPS: Redefine value of BRK_BUG.
+Date:   Thu, 24 Jan 2013 11:26:35 -0600
+Message-Id: <1359048395-32736-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.9.5
+X-archive-position: 35547
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,46 +32,31 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 01/12/2013 06:14 PM, Hauke Mehrtens wrote:
-> This patch series improves the functions for setting the watchdog 
-> driver for bcm47xx based SoCs using ssb and bcma. This makes the 
-> watchdog driver use the platform device provided by bcma or ssb.
-> 
-> This code is currently based on the linux-watchdog/master tree by 
-> Wim Van Sebroeck.
-> 
-> v4:
->  * Just the parts changing the watchdog driver itself and not ssb or bcma.
-> 
-> v3:
->  * Remove changes done to the watchdog driver so John could pull this 
->    into wireless-testing, this sill works with the old watchdog driver. 
->    The patches changing the watchdog driver will be send later.
->    This was done to get this into 3.8 because Wim Van Sebroeck is 
->    neither giving an Ack or a Nack on these patches and we want to do 
->    more changes to bcma/ssb on top of these.
-> 
-> v2:
->  * reword some commit messages
->  * rebase on current wireless-testing/master with 
->       "ssb: extif: fix compile errors" applied on top of it.
->  * do not change value of WDT_SOFTTIMER_MAX
->  * moved some small changes in the bcm47xx_wdt.c patches
-> 
-> Hauke Mehrtens (5):
->   watchdog: bcm47xx_wdt.c: convert to watchdog core api
->   watchdog: bcm47xx_wdt.c: use platform device
->   watchdog: bcm47xx_wdt.c: rename ops methods
->   watchdog: bcm47xx_wdt.c: rename wdt_time to timeout
->   watchdog: bcm47xx_wdt.c: add hard timer
-> 
->  drivers/watchdog/Kconfig       |    1 +
->  drivers/watchdog/bcm47xx_wdt.c |  339 +++++++++++++++++-----------------------
->  include/linux/bcm47xx_wdt.h    |    9 ++
->  3 files changed, 154 insertions(+), 195 deletions(-)
-> 
-Hi Wim,
+From: "Steven J. Hill" <sjhill@mips.com>
 
-what is the status of these patches?
+The BRK_BUG value is used in the BUG and __BUG_ON inline macros. For
+standard MIPS cores the code in the 'tne' instruction is 10-bits long.
+In microMIPS, the 'tne' instruction is recoded and the code can only be
+4-bits long. We change the value to 12 instead of 512 so that both
+classic and microMIPS kernels build.
 
-Hauke
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/include/uapi/asm/break.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/include/uapi/asm/break.h b/arch/mips/include/uapi/asm/break.h
+index e5fa7b5..73455e9 100644
+--- a/arch/mips/include/uapi/asm/break.h
++++ b/arch/mips/include/uapi/asm/break.h
+@@ -27,7 +27,7 @@
+ #define BRK_STACKOVERFLOW 9	/* For Ada stackchecking */
+ #define BRK_NORLD	10	/* No rld found - not used by Linux/MIPS */
+ #define _BRK_THREADBP	11	/* For threads, user bp (used by debuggers) */
+-#define BRK_BUG		512	/* Used by BUG() */
++#define BRK_BUG		12	/* Used by BUG() */
+ #define BRK_KDB		513	/* Used in KDB_ENTER() */
+ #define BRK_MEMU	514	/* Used by FPU emulator */
+ #define BRK_KPROBE_BP	515	/* Kprobe break */
+-- 
+1.7.9.5

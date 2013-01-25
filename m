@@ -1,47 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jan 2013 17:58:20 +0100 (CET)
-Received: from mail-pa0-f52.google.com ([209.85.220.52]:60283 "EHLO
-        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6833461Ab3AYQ6PlfqmL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Jan 2013 17:58:15 +0100
-Received: by mail-pa0-f52.google.com with SMTP id fb1so363791pad.11
-        for <linux-mips@linux-mips.org>; Fri, 25 Jan 2013 08:58:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent:x-gm-message-state;
-        bh=6pe7J2GPhYC4gVIlaUYGYUUIhzlTjBV05/UY/bvtRB0=;
-        b=GhO/y4dXKZ0bv9+nELQc7u5bncvPd67YNkAtG19yMHbu/3+UMeuh7Zuz7dhmMp7bsw
-         aSftJHWfEnl9F04w8hwdkYVwL0PgDvWJfvw/zwcnsunkuwvmwIzv3eG/9orEjff52bOO
-         6MAjmwt3r2SybGSmPiIfsQL9x5D7BDjoyShrANk8mBJEIa/DGGIZ6rZ91vL8kXjV2ikz
-         URuaQsDuSzhQlJY7TBTdl46I8B3yAUJ0Nxo8bSvGyxJpjV186kBDFKqnzEFl1Fb8Bt8g
-         3ulkx0rCrczK/Onqj6NZq/UwjdlAHxW+Nzw7sMn9QrGq/JGmkQ95neBYdsREPA+1S8wp
-         bDZw==
-X-Received: by 10.66.89.132 with SMTP id bo4mr14876951pab.62.1359133088204;
-        Fri, 25 Jan 2013 08:58:08 -0800 (PST)
-Received: from localhost (c-67-168-183-230.hsd1.wa.comcast.net. [67.168.183.230])
-        by mx.google.com with ESMTPS id w5sm1168876pax.28.2013.01.25.08.58.06
-        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 25 Jan 2013 08:58:07 -0800 (PST)
-Date:   Fri, 25 Jan 2013 08:58:06 -0800
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     John Crispin <blogic@openwrt.org>
-Cc:     linux-serial@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH V2 1/2] serial: ralink: adds support for the serial core
- found on ralink wisoc
-Message-ID: <20130125165806.GA16911@kroah.com>
-References: <1359121440-14266-1-git-send-email-blogic@openwrt.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1359121440-14266-1-git-send-email-blogic@openwrt.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Gm-Message-State: ALoCoQlCySXMgrw/O+8sKdN95hOFKkivvhLDFLyW0dA+8CmkMG4vX2jst5b5VjlbGTbFNKmnz7oM
-X-archive-position: 35560
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jan 2013 19:04:29 +0100 (CET)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.122]:3299 "EHLO
+        hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6833472Ab3AYSEY4uV5d (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Jan 2013 19:04:24 +0100
+X-Authority-Analysis: v=2.0 cv=W/m6pGqk c=1 sm=0 a=rXTBtCOcEpjy1lPqhTCpEQ==:17 a=mNMOxpOpBa8A:10 a=AHYp2_bTrk8A:10 a=5SG0PmZfjMsA:10 a=Q9fys5e9bTEA:10 a=meVymXHHAAAA:8 a=ikAxON-xGAUA:10 a=pGLkceISAAAA:8 a=N5gpYUMNoHB8MiE9ncsA:9 a=PUjeQqilurYA:10 a=MSl-tDqOz04A:10 a=jeBq3FmKZ4MA:10 a=rXTBtCOcEpjy1lPqhTCpEQ==:117
+X-Cloudmark-Score: 0
+X-Authenticated-User: 
+X-Originating-IP: 74.67.115.198
+Received: from [74.67.115.198] ([74.67.115.198:52572] helo=[192.168.23.10])
+        by hrndva-oedge02.mail.rr.com (envelope-from <rostedt@goodmis.org>)
+        (ecelerity 2.2.3.46 r()) with ESMTP
+        id 6B/A8-08009-129C2015; Fri, 25 Jan 2013 18:04:17 +0000
+Message-ID: <1359137056.21576.239.camel@gandalf.local.home>
+Subject: [PATCH] mips/ftrace: Fix kernel compile error
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     LKML <linux-kernel@vger.kernel.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Cc:     Al Cooper <alcooperx@gmail.com>,
+        David Daney <ddaney.cavm@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Date:   Fri, 25 Jan 2013 13:04:16 -0500
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.4.4-1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-archive-position: 35561
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,23 +42,44 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Jan 25, 2013 at 02:44:00PM +0100, John Crispin wrote:
-> The MIPS based Ralink WiSoC platform has 1 or more 8250 compatible serial cores.
-> To make them work we require the same quirks that are used by AU1x00.
-> 
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> ---
-> Changes in V2
-> * adds missing "/" in source code comment
-> 
->  drivers/tty/serial/8250/8250.c  |    6 +++---
->  drivers/tty/serial/8250/Kconfig |    8 ++++++++
->  include/linux/serial_core.h     |    2 +-
->  3 files changed, 12 insertions(+), 4 deletions(-)
+While compiling for my yeeloong2 laptop, I hit this compile error.
 
-What tree did you make this against?  I can't apply it to my tty-next
-one, so I can't take this series.  Care to refresh it and resend it?
+As warnings are set for errors, if we define ftrace_modify_code_2(), we
+must use it. As MIPS 64 does not use this function, it requires being
+commented out via an #ifndef CONFIG_64bit. Otherwise you get this error:
 
-thanks,
+  CC      arch/mips/kernel/ftrace.o
+cc1: warnings being treated as errors
+/work/autotest/nobackup/mips-test.git/arch/mips/kernel/ftrace.c:98:12:
+error: 'ftrace_modify_code_2' defined but not used
+make[3]: *** [arch/mips/kernel/ftrace.o] Error 1
+make[2]: *** [arch/mips/kernel] Error 2
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [arch/mips] Error 2
+make[1]: *** Waiting for unfinished jobs....
 
-greg k-h
+
+Cc: Al Cooper <alcooperx@gmail.com>
+Cc: David Daney <ddaney.cvm@gmail.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+
+diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
+index 6bcb678..83fa146 100644
+--- a/arch/mips/kernel/ftrace.c
++++ b/arch/mips/kernel/ftrace.c
+@@ -95,6 +95,7 @@ static int ftrace_modify_code(unsigned long ip, unsigned int new_code)
+ 	return 0;
+ }
+ 
++#ifndef CONFIG_64BIT
+ static int ftrace_modify_code_2(unsigned long ip, unsigned int new_code1,
+ 				unsigned int new_code2)
+ {
+@@ -110,6 +111,7 @@ static int ftrace_modify_code_2(unsigned long ip, unsigned int new_code1,
+ 	flush_icache_range(ip, ip + 8); /* original ip + 12 */
+ 	return 0;
+ }
++#endif
+ 
+ /*
+  * The details about the calling site of mcount on MIPS

@@ -1,37 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jan 2013 13:39:06 +0100 (CET)
-Received: from mail.kernel.org ([198.145.19.201]:39149 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jan 2013 14:46:50 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:46067 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6833461Ab3AYMjBFBelp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 25 Jan 2013 13:39:01 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 6898220233;
-        Fri, 25 Jan 2013 12:38:57 +0000 (UTC)
-Received: from localhost (c-67-168-183-230.hsd1.wa.comcast.net [67.168.183.230])
-        (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E4A40201CC;
-        Fri, 25 Jan 2013 12:38:52 +0000 (UTC)
-Date:   Fri, 25 Jan 2013 04:40:30 -0800
-From:   Greg KH <greg@kroah.com>
-To:     Sergei Shtylyov <sshtylyov@mvista.com>
-Cc:     John Crispin <blogic@openwrt.org>, Alan Cox <alan@linux.intel.com>,
-        linux-serial@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] serial: of: allow au1x00 and rt288x to load from OF
-Message-ID: <20130125124030.GA14952@kroah.com>
-References: <1359111008-9998-1-git-send-email-blogic@openwrt.org>
- <1359111008-9998-2-git-send-email-blogic@openwrt.org>
- <51027021.8010802@mvista.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <51027021.8010802@mvista.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Virus-Scanned: ClamAV using ClamSMTP
-X-archive-position: 35557
+        id S6821310Ab3AYNqqEBSZc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 25 Jan 2013 14:46:46 +0100
+From:   John Crispin <blogic@openwrt.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-serial@vger.kernel.org, linux-mips@linux-mips.org,
+        John Crispin <blogic@openwrt.org>
+Subject: [PATCH V2 1/2] serial: ralink: adds support for the serial core found on ralink wisoc
+Date:   Fri, 25 Jan 2013 14:44:00 +0100
+Message-Id: <1359121440-14266-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 35558
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: greg@kroah.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,18 +29,75 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Jan 25, 2013 at 03:44:33PM +0400, Sergei Shtylyov wrote:
-> Hello.
-> 
-> On 25-01-2013 14:50, John Crispin wrote:
-> 
-> >In order to make serial_8250 loadable via OF on Au1x00 and Ralink WiSoC we need
-> >to default the iotype to UPIO_AU.
-> 
->    Alan Cox no longer works on Linux, Greg KH looks after the serial
-> drivers snow.
+The MIPS based Ralink WiSoC platform has 1 or more 8250 compatible serial cores.
+To make them work we require the same quirks that are used by AU1x00.
 
-It's ok, I'm on the mailing list and pick this stuff up, no need to
-resend.
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+Changes in V2
+* adds missing "/" in source code comment
 
-greg k-h
+ drivers/tty/serial/8250/8250.c  |    6 +++---
+ drivers/tty/serial/8250/Kconfig |    8 ++++++++
+ include/linux/serial_core.h     |    2 +-
+ 3 files changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/tty/serial/8250/8250.c b/drivers/tty/serial/8250/8250.c
+index f932043..f72eb7d 100644
+--- a/drivers/tty/serial/8250/8250.c
++++ b/drivers/tty/serial/8250/8250.c
+@@ -324,9 +324,9 @@ static void default_serial_dl_write(struct uart_8250_port *up, int value)
+ 	serial_out(up, UART_DLM, value >> 8 & 0xff);
+ }
+ 
+-#ifdef CONFIG_MIPS_ALCHEMY
++#if defined(CONFIG_MIPS_ALCHEMY) || defined(CONFIG_SERIAL_8250_RT288X)
+ 
+-/* Au1x00 UART hardware has a weird register layout */
++/* Au1x00/RT288x UART hardware has a weird register layout */
+ static const u8 au_io_in_map[] = {
+ 	[UART_RX]  = 0,
+ 	[UART_IER] = 2,
+@@ -506,7 +506,7 @@ static void set_io_from_upio(struct uart_port *p)
+ 		break;
+ #endif
+ 
+-#ifdef CONFIG_MIPS_ALCHEMY
++#if defined(CONFIG_MIPS_ALCHEMY) || defined(CONFIG_SERIAL_8250_RT288X)
+ 	case UPIO_AU:
+ 		p->serial_in = au_serial_in;
+ 		p->serial_out = au_serial_out;
+diff --git a/drivers/tty/serial/8250/Kconfig b/drivers/tty/serial/8250/Kconfig
+index c31133a..c583799 100644
+--- a/drivers/tty/serial/8250/Kconfig
++++ b/drivers/tty/serial/8250/Kconfig
+@@ -249,6 +249,14 @@ config SERIAL_8250_ACORN
+ 	  system, say Y to this option.  The driver can handle 1, 2, or 3 port
+ 	  cards.  If unsure, say N.
+ 
++config SERIAL_8250_RT288X
++	bool "Ralink RT288x/RT305x/RT3662/RT3883 serial port support"
++	depends on SERIAL_8250 != n && (SOC_RT288X || SOC_RT305X || SOC_RT3883)
++	help
++	  If you have a Ralink RT288x/RT305x SoC based board and want to use the
++	  serial port, say Y to this option. The driver can handle up to 2 serial
++	  ports. If unsure, say N.
++
+ config SERIAL_8250_RM9K
+ 	bool "Support for MIPS RM9xxx integrated serial port"
+ 	depends on SERIAL_8250 != n && SERIAL_RM9000
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+index c6690a2..0b428d6 100644
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -134,7 +134,7 @@ struct uart_port {
+ #define UPIO_HUB6		(1)
+ #define UPIO_MEM		(2)
+ #define UPIO_MEM32		(3)
+-#define UPIO_AU			(4)			/* Au1x00 type IO */
++#define UPIO_AU			(4)			/* Au1x00 and RT288x type IO */
+ #define UPIO_TSI		(5)			/* Tsi108/109 type IO */
+ #define UPIO_RM9000		(6)			/* RM9000 type IO */
+ 
+-- 
+1.7.10.4

@@ -1,28 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jan 2013 07:28:18 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:59005 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jan 2013 11:53:02 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:49209 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6831950Ab3AYG2NlDC0D (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 25 Jan 2013 07:28:13 +0100
-Message-ID: <51022564.1090109@phrozen.org>
-Date:   Fri, 25 Jan 2013 07:25:40 +0100
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.7) Gecko/20120922 Icedove/10.0.7
-MIME-Version: 1.0
-To:     =?GB2312?B?s8K7qrLF?= <chenhc@lemote.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH V8 00/13] MIPS: Add Loongson-3 based machines support
-References: <2658.219.143.8.242.1359072905.squirrel@mail.lemote.com>
-In-Reply-To: <2658.219.143.8.242.1359072905.squirrel@mail.lemote.com>
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: 8bit
-X-archive-position: 35552
+        id S6832244Ab3AYKw5OrXch (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 25 Jan 2013 11:52:57 +0100
+From:   John Crispin <blogic@openwrt.org>
+To:     Alan Cox <alan@linux.intel.com>
+Cc:     linux-serial@vger.kernel.org, linux-mips@linux-mips.org,
+        John Crispin <blogic@openwrt.org>
+Subject: [PATCH 1/2] serial: ralink: adds support for the serial core found on ralink wisoc
+Date:   Fri, 25 Jan 2013 11:50:07 +0100
+Message-Id: <1359111008-9998-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 35553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,58 +29,72 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 25/01/13 01:15, ³Â»ª²Å wrote:
-> ok, I'll prepare v9 of this seris in these days.
->>
+The MIPS based Ralink WiSoC platform has 1 or more 8250 compatible serial cores.
+To make them work we require the same quirks that are used by AU1x00.
 
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+ drivers/tty/serial/8250/8250.c  |    6 +++---
+ drivers/tty/serial/8250/Kconfig |    8 ++++++++
+ include/linux/serial_core.h     |    2 +-
+ 3 files changed, 12 insertions(+), 4 deletions(-)
 
-Please dont send v9
-
-read my mail and compile / runtime test the tree please
-
-only patch 3 needs to be reworked and an update for the "MIPS: Loongson
-3: Add HT-linked PCI support." needs to e made
-
-	John
-
->>>
->>> Huacai Chen(13):
->>>    MIPS: Loongson: Add basic Loongson-3 definition.
->>>    MIPS: Loongson: Add basic Loongson-3 CPU support.
->>>    MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature.
->>>    MIPS: Loongson 3: Add Lemote-3A machtypes definition.
->>>    MIPS: Loongson: Add UEFI-like firmware interface support.
->>>    MIPS: Loongson 3: Add HT-linked PCI support.
->>>    MIPS: Loongson 3: Add IRQ init and dispatch support.
->>>    MIPS: Loongson 3: Add serial port support.
->>>    MIPS: Loongson: Add swiotlb to support big memory (>4GB).
->>>    MIPS: Loongson: Add Loongson-3 Kconfig options.
->>>    MIPS: Loongson 3: Add Loongson-3 SMP support.
->>>    MIPS: Loongson 3: Add CPU hotplug support.
->>>    MIPS: Loongson: Add a Loongson-3 default config file.
->>>
->>> Signed-off-by: Huacai Chen<chenhc@lemote.com>
->>> Signed-off-by: Hongliang Tao<taohl@lemote.com>
->>> Signed-off-by: Hua Yan<yanh@lemote.com>
->>> ---
->>
->> Hi,
->>
->> I have added all patches apart from 3/13 to my queue.
->>
->> I believe "MIPS: Loongson: Introduce and use cpu_has_coherent_cache
->> feature." should e rewritten in a saner way.
->>
->> Please compile and runtime test the tree before I send it to Ralf
->> -->
->> http://git.linux-mips.org/?p=john/linux-john.git;a=shortlog;h=refs/heads/mips-next-3.9
->>
->> I cleaned up a few minor whitespace errors while merging.
->>
->> http://patchwork.linux-mips.org/patch/4547/ has a few comments. Please
->> prepare a patch asap to address those so i can fold it into the series.
->>
->> 	John
->>
-> 
-> 
+diff --git a/drivers/tty/serial/8250/8250.c b/drivers/tty/serial/8250/8250.c
+index f932043..b727779 100644
+--- a/drivers/tty/serial/8250/8250.c
++++ b/drivers/tty/serial/8250/8250.c
+@@ -324,9 +324,9 @@ static void default_serial_dl_write(struct uart_8250_port *up, int value)
+ 	serial_out(up, UART_DLM, value >> 8 & 0xff);
+ }
+ 
+-#ifdef CONFIG_MIPS_ALCHEMY
++#if defined(CONFIG_MIPS_ALCHEMY) || defined(CONFIG_SERIAL_8250_RT288X)
+ 
+-/* Au1x00 UART hardware has a weird register layout */
++/* Au1x00 RT288x UART hardware has a weird register layout */
+ static const u8 au_io_in_map[] = {
+ 	[UART_RX]  = 0,
+ 	[UART_IER] = 2,
+@@ -506,7 +506,7 @@ static void set_io_from_upio(struct uart_port *p)
+ 		break;
+ #endif
+ 
+-#ifdef CONFIG_MIPS_ALCHEMY
++#if defined(CONFIG_MIPS_ALCHEMY) || defined(CONFIG_SERIAL_8250_RT288X)
+ 	case UPIO_AU:
+ 		p->serial_in = au_serial_in;
+ 		p->serial_out = au_serial_out;
+diff --git a/drivers/tty/serial/8250/Kconfig b/drivers/tty/serial/8250/Kconfig
+index c31133a..c583799 100644
+--- a/drivers/tty/serial/8250/Kconfig
++++ b/drivers/tty/serial/8250/Kconfig
+@@ -249,6 +249,14 @@ config SERIAL_8250_ACORN
+ 	  system, say Y to this option.  The driver can handle 1, 2, or 3 port
+ 	  cards.  If unsure, say N.
+ 
++config SERIAL_8250_RT288X
++	bool "Ralink RT288x/RT305x/RT3662/RT3883 serial port support"
++	depends on SERIAL_8250 != n && (SOC_RT288X || SOC_RT305X || SOC_RT3883)
++	help
++	  If you have a Ralink RT288x/RT305x SoC based board and want to use the
++	  serial port, say Y to this option. The driver can handle up to 2 serial
++	  ports. If unsure, say N.
++
+ config SERIAL_8250_RM9K
+ 	bool "Support for MIPS RM9xxx integrated serial port"
+ 	depends on SERIAL_8250 != n && SERIAL_RM9000
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+index c6690a2..0b428d6 100644
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -134,7 +134,7 @@ struct uart_port {
+ #define UPIO_HUB6		(1)
+ #define UPIO_MEM		(2)
+ #define UPIO_MEM32		(3)
+-#define UPIO_AU			(4)			/* Au1x00 type IO */
++#define UPIO_AU			(4)			/* Au1x00 and RT288x type IO */
+ #define UPIO_TSI		(5)			/* Tsi108/109 type IO */
+ #define UPIO_RM9000		(6)			/* RM9000 type IO */
+ 
+-- 
+1.7.10.4

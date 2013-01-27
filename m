@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Jan 2013 19:09:18 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:41599 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Jan 2013 19:09:36 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:41602 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6833524Ab3A0SGvthaNM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 27 Jan 2013 19:06:51 +0100
+        id S6833525Ab3A0SGwfkyrq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 27 Jan 2013 19:06:52 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 08/10] MIPS: ralink: adds support for RT305x SoC family
-Date:   Sun, 27 Jan 2013 19:04:00 +0100
-Message-Id: <1359309842-31925-9-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V2 09/10] MIPS: ralink: adds rt305x devicetree
+Date:   Sun, 27 Jan 2013 19:04:01 +0100
+Message-Id: <1359309842-31925-10-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1359309842-31925-1-git-send-email-blogic@openwrt.org>
 References: <1359309842-31925-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 35576
+X-archive-position: 35577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,410 +30,170 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add support code for rt3050, rt3052, rt3350, rt3352 and rt5350 SOC.
-
-The code detects the SoC and registers the clk / pinmux settings.
+This adds the devicetree file that describes the rt305x evaluation kit.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/include/asm/mach-ralink/rt305x.h |  139 ++++++++++++++++
- arch/mips/ralink/rt305x.c                  |  242 ++++++++++++++++++++++++++++
- 2 files changed, 381 insertions(+)
- create mode 100644 arch/mips/include/asm/mach-ralink/rt305x.h
- create mode 100644 arch/mips/ralink/rt305x.c
+ arch/mips/ralink/dts/rt305x.dts |  151 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 151 insertions(+)
+ create mode 100644 arch/mips/ralink/dts/rt305x.dts
 
-diff --git a/arch/mips/include/asm/mach-ralink/rt305x.h b/arch/mips/include/asm/mach-ralink/rt305x.h
+diff --git a/arch/mips/ralink/dts/rt305x.dts b/arch/mips/ralink/dts/rt305x.dts
 new file mode 100644
-index 0000000..7d344f2
+index 0000000..3ee6086
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-ralink/rt305x.h
-@@ -0,0 +1,139 @@
-+/*
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published
-+ * by the Free Software Foundation.
-+ *
-+ * Parts of this file are based on Ralink's 2.6.21 BSP
-+ *
-+ * Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
-+ * Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
-+ */
++++ b/arch/mips/ralink/dts/rt305x.dts
+@@ -0,0 +1,151 @@
++/dts-v1/;
 +
-+#ifndef _RT305X_REGS_H_
-+#define _RT305X_REGS_H_
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	compatible = "ralink,rt305x";
 +
-+enum rt305x_soc_type {
-+	RT305X_SOC_UNKNOWN = 0,
-+	RT305X_SOC_RT3050,
-+	RT305X_SOC_RT3052,
-+	RT305X_SOC_RT3350,
-+	RT305X_SOC_RT3352,
-+	RT305X_SOC_RT5350,
++	cpus {
++		cpu@0 {
++			compatible = "mips,mips24KEc";
++		};
++	};
++
++	memory@0 {
++		reg = <0x0 0x2000000>;
++	};
++
++	chosen {
++		bootargs = "console=ttyS0,57600 init=/init";
++	};
++
++	palmbus@10000000 {
++		compatible = "palmbus";
++		reg = <0x10000000 0x200000>;
++                ranges = <0x0 0x10000000 0x1FFFFF>;
++
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		sysc@0 {
++			compatible = "ralink,rt305x-sysc";
++			reg = <0x0 0x100>;
++
++			ralink,pinmmux = "uartlite", "spi";
++			ralink,uartmux = "gpio";
++			ralink,wdtmux = <0>;
++		};
++
++		timer@100 {
++			compatible = "ralink,rt305x-wdt";
++			reg = <0x100 0x100>;
++		};
++
++		intc: intc@200 {
++			compatible = "ralink,rt305x-intc";
++			reg = <0x200 0x100>;
++
++			interrupt-controller;
++			#interrupt-cells = <1>;
++		};
++
++		memc@300 {
++			compatible = "ralink,rt305x-memc";
++			reg = <0x300 0x100>;
++		};
++
++		gpio0: gpio@600 {
++			compatible = "ralink,rt305x-gpio";
++			reg = <0x600 0x34>;
++
++			gpio-controller;
++			#gpio-cells = <2>;
++
++			ralink,ngpio = <24>;
++			ralink,regs = [ 00 04 08 0c
++					20 24 28 2c
++					30 34 ];
++		};
++
++		gpio1: gpio@638 {
++			compatible = "ralink,rt305x-gpio";
++			reg = <0x638 0x24>;
++
++			gpio-controller;
++			#gpio-cells = <2>;
++
++			ralink,ngpio = <16>;
++			ralink,regs = [ 00 04 08 0c
++					10 14 18 1c
++					20 24 ];
++		};
++
++		gpio2: gpio@660 {
++			compatible = "ralink,rt305x-gpio";
++			reg = <0x660 0x24>;
++
++			gpio-controller;
++			#gpio-cells = <2>;
++
++			ralink,ngpio = <12>;
++			ralink,regs = [ 00 04 08 0c
++					10 14 18 1c
++					20 24 ];
++		};
++
++		spi@b00 {
++			compatible = "ralink,rt305x-spi";
++			reg = <0xb00 0x100>;
++		};
++
++		uartlite@c00 {
++			compatible = "ns16550a";
++			reg = <0xc00 0x100>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <20>;
++
++			reg-shift = <2>;
++		};
++
++		fe@100000 {
++			compatible = "ralink,rt305x-fe";
++			reg = <0x100000 0x10000>;
++		};
++
++		esw@110000 {
++			compatible = "ralink,rt305x-esw";
++			reg = <0x110000 0x8000>;
++		};
++	};
++
++	cfi@1f000000 {
++		compatible = "cfi-flash";
++		reg = <0x1f000000 0x800000>;
++
++		bank-width = <2>;
++		device-width = <2>;
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		partition@0 {
++			label = "uboot";
++			reg = <0x0 0x30000>;
++			read-only;
++		};
++		partition@30000 {
++			label = "uboot-env";
++			reg = <0x30000 0x10000>;
++			read-only;
++		};
++		partition@40000 {
++			label = "calibration";
++			reg = <0x40000 0x10000>;
++			read-only;
++		};
++		partition@50000 {
++			label = "linux";
++			reg = <0x50000 0x7b0000>;
++		};
++	};
 +};
-+
-+extern enum rt305x_soc_type rt305x_soc;
-+
-+static inline int soc_is_rt3050(void)
-+{
-+	return rt305x_soc == RT305X_SOC_RT3050;
-+}
-+
-+static inline int soc_is_rt3052(void)
-+{
-+	return rt305x_soc == RT305X_SOC_RT3052;
-+}
-+
-+static inline int soc_is_rt305x(void)
-+{
-+	return soc_is_rt3050() || soc_is_rt3052();
-+}
-+
-+static inline int soc_is_rt3350(void)
-+{
-+	return rt305x_soc == RT305X_SOC_RT3350;
-+}
-+
-+static inline int soc_is_rt3352(void)
-+{
-+	return rt305x_soc == RT305X_SOC_RT3352;
-+}
-+
-+static inline int soc_is_rt5350(void)
-+{
-+	return rt305x_soc == RT305X_SOC_RT5350;
-+}
-+
-+#define RT305X_SYSC_BASE		0x10000000
-+
-+#define SYSC_REG_CHIP_NAME0		0x00
-+#define SYSC_REG_CHIP_NAME1		0x04
-+#define SYSC_REG_CHIP_ID		0x0c
-+#define SYSC_REG_SYSTEM_CONFIG		0x10
-+
-+#define RT3052_CHIP_NAME0		0x30335452
-+#define RT3052_CHIP_NAME1		0x20203235
-+
-+#define RT3350_CHIP_NAME0		0x33335452
-+#define RT3350_CHIP_NAME1		0x20203035
-+
-+#define RT3352_CHIP_NAME0		0x33335452
-+#define RT3352_CHIP_NAME1		0x20203235
-+
-+#define RT5350_CHIP_NAME0		0x33355452
-+#define RT5350_CHIP_NAME1		0x20203035
-+
-+#define CHIP_ID_ID_MASK			0xff
-+#define CHIP_ID_ID_SHIFT		8
-+#define CHIP_ID_REV_MASK		0xff
-+
-+#define RT305X_SYSCFG_CPUCLK_SHIFT		18
-+#define RT305X_SYSCFG_CPUCLK_MASK		0x1
-+#define RT305X_SYSCFG_CPUCLK_LOW		0x0
-+#define RT305X_SYSCFG_CPUCLK_HIGH		0x1
-+
-+#define RT305X_SYSCFG_SRAM_CS0_MODE_SHIFT	2
-+#define RT305X_SYSCFG_CPUCLK_MASK		0x1
-+#define RT305X_SYSCFG_SRAM_CS0_MODE_WDT		0x1
-+
-+#define RT3352_SYSCFG0_CPUCLK_SHIFT	8
-+#define RT3352_SYSCFG0_CPUCLK_MASK	0x1
-+#define RT3352_SYSCFG0_CPUCLK_LOW	0x0
-+#define RT3352_SYSCFG0_CPUCLK_HIGH	0x1
-+
-+#define RT5350_SYSCFG0_CPUCLK_SHIFT	8
-+#define RT5350_SYSCFG0_CPUCLK_MASK	0x3
-+#define RT5350_SYSCFG0_CPUCLK_360	0x0
-+#define RT5350_SYSCFG0_CPUCLK_320	0x2
-+#define RT5350_SYSCFG0_CPUCLK_300	0x3
-+
-+/* multi function gpio pins */
-+#define RT305X_GPIO_I2C_SD		1
-+#define RT305X_GPIO_I2C_SCLK		2
-+#define RT305X_GPIO_SPI_EN		3
-+#define RT305X_GPIO_SPI_CLK		4
-+/* GPIO 7-14 is shared between UART0, PCM  and I2S interfaces */
-+#define RT305X_GPIO_7			7
-+#define RT305X_GPIO_10			10
-+#define RT305X_GPIO_14			14
-+#define RT305X_GPIO_UART1_TXD		15
-+#define RT305X_GPIO_UART1_RXD		16
-+#define RT305X_GPIO_JTAG_TDO		17
-+#define RT305X_GPIO_JTAG_TDI		18
-+#define RT305X_GPIO_MDIO_MDC		22
-+#define RT305X_GPIO_MDIO_MDIO		23
-+#define RT305X_GPIO_SDRAM_MD16		24
-+#define RT305X_GPIO_SDRAM_MD31		39
-+#define RT305X_GPIO_GE0_TXD0		40
-+#define RT305X_GPIO_GE0_RXCLK		51
-+
-+#define RT305X_GPIO_MODE_I2C		BIT(0)
-+#define RT305X_GPIO_MODE_SPI		BIT(1)
-+#define RT305X_GPIO_MODE_UART0_SHIFT	2
-+#define RT305X_GPIO_MODE_UART0_MASK	0x7
-+#define RT305X_GPIO_MODE_UART0(x)	((x) << RT305X_GPIO_MODE_UART0_SHIFT)
-+#define RT305X_GPIO_MODE_UARTF		0x0
-+#define RT305X_GPIO_MODE_PCM_UARTF	0x1
-+#define RT305X_GPIO_MODE_PCM_I2S	0x2
-+#define RT305X_GPIO_MODE_I2S_UARTF	0x3
-+#define RT305X_GPIO_MODE_PCM_GPIO	0x4
-+#define RT305X_GPIO_MODE_GPIO_UARTF	0x5
-+#define RT305X_GPIO_MODE_GPIO_I2S	0x6
-+#define RT305X_GPIO_MODE_GPIO		0x7
-+#define RT305X_GPIO_MODE_UART1		BIT(5)
-+#define RT305X_GPIO_MODE_JTAG		BIT(6)
-+#define RT305X_GPIO_MODE_MDIO		BIT(7)
-+#define RT305X_GPIO_MODE_SDRAM		BIT(8)
-+#define RT305X_GPIO_MODE_RGMII		BIT(9)
-+
-+#endif
-diff --git a/arch/mips/ralink/rt305x.c b/arch/mips/ralink/rt305x.c
-new file mode 100644
-index 0000000..1e24439
---- /dev/null
-+++ b/arch/mips/ralink/rt305x.c
-@@ -0,0 +1,242 @@
-+/*
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published
-+ * by the Free Software Foundation.
-+ *
-+ * Parts of this file are based on Ralink's 2.6.21 BSP
-+ *
-+ * Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
-+ * Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/module.h>
-+
-+#include <asm/mipsregs.h>
-+#include <asm/mach-ralink/ralink_regs.h>
-+#include <asm/mach-ralink/rt305x.h>
-+
-+#include "common.h"
-+
-+enum rt305x_soc_type rt305x_soc;
-+
-+struct ralink_pinmux_grp mode_mux[] = {
-+	{
-+		.name = "i2c",
-+		.mask = RT305X_GPIO_MODE_I2C,
-+		.gpio_first = RT305X_GPIO_I2C_SD,
-+		.gpio_last = RT305X_GPIO_I2C_SCLK,
-+	}, {
-+		.name = "spi",
-+		.mask = RT305X_GPIO_MODE_SPI,
-+		.gpio_first = RT305X_GPIO_SPI_EN,
-+		.gpio_last = RT305X_GPIO_SPI_CLK,
-+	}, {
-+		.name = "uartlite",
-+		.mask = RT305X_GPIO_MODE_UART1,
-+		.gpio_first = RT305X_GPIO_UART1_TXD,
-+		.gpio_last = RT305X_GPIO_UART1_RXD,
-+	}, {
-+		.name = "jtag",
-+		.mask = RT305X_GPIO_MODE_JTAG,
-+		.gpio_first = RT305X_GPIO_JTAG_TDO,
-+		.gpio_last = RT305X_GPIO_JTAG_TDI,
-+	}, {
-+		.name = "mdio",
-+		.mask = RT305X_GPIO_MODE_MDIO,
-+		.gpio_first = RT305X_GPIO_MDIO_MDC,
-+		.gpio_last = RT305X_GPIO_MDIO_MDIO,
-+	}, {
-+		.name = "sdram",
-+		.mask = RT305X_GPIO_MODE_SDRAM,
-+		.gpio_first = RT305X_GPIO_SDRAM_MD16,
-+		.gpio_last = RT305X_GPIO_SDRAM_MD31,
-+	}, {
-+		.name = "rgmii",
-+		.mask = RT305X_GPIO_MODE_RGMII,
-+		.gpio_first = RT305X_GPIO_GE0_TXD0,
-+		.gpio_last = RT305X_GPIO_GE0_RXCLK,
-+	}, {0}
-+};
-+
-+struct ralink_pinmux_grp uart_mux[] = {
-+	{
-+		.name = "uartf",
-+		.mask = RT305X_GPIO_MODE_UARTF,
-+		.gpio_first = RT305X_GPIO_7,
-+		.gpio_last = RT305X_GPIO_14,
-+	}, {
-+		.name = "pcm uartf",
-+		.mask = RT305X_GPIO_MODE_PCM_UARTF,
-+		.gpio_first = RT305X_GPIO_7,
-+		.gpio_last = RT305X_GPIO_14,
-+	}, {
-+		.name = "pcm i2s",
-+		.mask = RT305X_GPIO_MODE_PCM_I2S,
-+		.gpio_first = RT305X_GPIO_7,
-+		.gpio_last = RT305X_GPIO_14,
-+	}, {
-+		.name = "i2s uartf",
-+		.mask = RT305X_GPIO_MODE_I2S_UARTF,
-+		.gpio_first = RT305X_GPIO_7,
-+		.gpio_last = RT305X_GPIO_14,
-+	}, {
-+		.name = "pcm gpio",
-+		.mask = RT305X_GPIO_MODE_PCM_GPIO,
-+		.gpio_first = RT305X_GPIO_10,
-+		.gpio_last = RT305X_GPIO_14,
-+	}, {
-+		.name = "gpio uartf",
-+		.mask = RT305X_GPIO_MODE_GPIO_UARTF,
-+		.gpio_first = RT305X_GPIO_7,
-+		.gpio_last = RT305X_GPIO_14,
-+	}, {
-+		.name = "gpio i2s",
-+		.mask = RT305X_GPIO_MODE_GPIO_I2S,
-+		.gpio_first = RT305X_GPIO_7,
-+		.gpio_last = RT305X_GPIO_14,
-+	}, {
-+		.name = "gpio",
-+		.mask = RT305X_GPIO_MODE_GPIO,
-+	}, {0}
-+};
-+
-+void rt305x_wdt_reset(void)
-+{
-+	u32 t;
-+
-+	/* enable WDT reset output on pin SRAM_CS_N */
-+	t = rt_sysc_r32(SYSC_REG_SYSTEM_CONFIG);
-+	t |= RT305X_SYSCFG_SRAM_CS0_MODE_WDT <<
-+		RT305X_SYSCFG_SRAM_CS0_MODE_SHIFT;
-+	rt_sysc_w32(t, SYSC_REG_SYSTEM_CONFIG);
-+}
-+
-+struct ralink_pinmux gpio_pinmux = {
-+	.mode = mode_mux,
-+	.uart = uart_mux,
-+	.uart_shift = RT305X_GPIO_MODE_UART0_SHIFT,
-+	.wdt_reset = rt305x_wdt_reset,
-+};
-+
-+void __init ralink_clk_init(void)
-+{
-+	unsigned long cpu_rate, sys_rate, wdt_rate, uart_rate;
-+	u32 t = rt_sysc_r32(SYSC_REG_SYSTEM_CONFIG);
-+
-+	if (soc_is_rt305x() || soc_is_rt3350()) {
-+		t = (t >> RT305X_SYSCFG_CPUCLK_SHIFT) &
-+		     RT305X_SYSCFG_CPUCLK_MASK;
-+		switch (t) {
-+		case RT305X_SYSCFG_CPUCLK_LOW:
-+			cpu_rate = 320000000;
-+			break;
-+		case RT305X_SYSCFG_CPUCLK_HIGH:
-+			cpu_rate = 384000000;
-+			break;
-+		}
-+		sys_rate = uart_rate = wdt_rate = cpu_rate / 3;
-+	} else if (soc_is_rt3352()) {
-+		t = (t >> RT3352_SYSCFG0_CPUCLK_SHIFT) &
-+		     RT3352_SYSCFG0_CPUCLK_MASK;
-+		switch (t) {
-+		case RT3352_SYSCFG0_CPUCLK_LOW:
-+			cpu_rate = 384000000;
-+			break;
-+		case RT3352_SYSCFG0_CPUCLK_HIGH:
-+			cpu_rate = 400000000;
-+			break;
-+		}
-+		sys_rate = wdt_rate = cpu_rate / 3;
-+		uart_rate = 40000000;
-+	} else if (soc_is_rt5350()) {
-+		t = (t >> RT5350_SYSCFG0_CPUCLK_SHIFT) &
-+		     RT5350_SYSCFG0_CPUCLK_MASK;
-+		switch (t) {
-+		case RT5350_SYSCFG0_CPUCLK_360:
-+			cpu_rate = 360000000;
-+			sys_rate = cpu_rate / 3;
-+			break;
-+		case RT5350_SYSCFG0_CPUCLK_320:
-+			cpu_rate = 320000000;
-+			sys_rate = cpu_rate / 4;
-+			break;
-+		case RT5350_SYSCFG0_CPUCLK_300:
-+			cpu_rate = 300000000;
-+			sys_rate = cpu_rate / 3;
-+			break;
-+		default:
-+			BUG();
-+		}
-+		uart_rate = 40000000;
-+		wdt_rate = sys_rate;
-+	} else {
-+		BUG();
-+	}
-+
-+	ralink_clk_add("cpu", cpu_rate);
-+	ralink_clk_add("10000b00.spi", sys_rate);
-+	ralink_clk_add("10000100.timer", wdt_rate);
-+	ralink_clk_add("10000500.uart", uart_rate);
-+	ralink_clk_add("10000c00.uartlite", uart_rate);
-+}
-+
-+void __init ralink_of_remap(void)
-+{
-+	rt_sysc_membase = plat_of_remap_node("ralink,rt305x-sysc");
-+	rt_memc_membase = plat_of_remap_node("ralink,rt305x-memc");
-+
-+	if (!rt_sysc_membase || !rt_memc_membase)
-+		panic("Failed to remap core resources");
-+}
-+
-+void prom_soc_init(struct ralink_soc_info *soc_info)
-+{
-+	void __iomem *sysc = (void __iomem *) KSEG1ADDR(RT305X_SYSC_BASE);
-+	unsigned char *name;
-+	u32 n0;
-+	u32 n1;
-+	u32 id;
-+
-+	n0 = __raw_readl(sysc + SYSC_REG_CHIP_NAME0);
-+	n1 = __raw_readl(sysc + SYSC_REG_CHIP_NAME1);
-+
-+	if (n0 == RT3052_CHIP_NAME0 && n1 == RT3052_CHIP_NAME1) {
-+		unsigned long icache_sets;
-+
-+		icache_sets = (read_c0_config1() >> 22) & 7;
-+		if (icache_sets == 1) {
-+			rt305x_soc = RT305X_SOC_RT3050;
-+			name = "RT3050";
-+			soc_info->compatible = "ralink,rt3050";
-+		} else {
-+			rt305x_soc = RT305X_SOC_RT3052;
-+			name = "RT3052";
-+			soc_info->compatible = "ralink,rt3052";
-+		}
-+	} else if (n0 == RT3350_CHIP_NAME0 && n1 == RT3350_CHIP_NAME1) {
-+		rt305x_soc = RT305X_SOC_RT3350;
-+		name = "RT3350";
-+		soc_info->compatible = "ralink,rt3350";
-+	} else if (n0 == RT3352_CHIP_NAME0 && n1 == RT3352_CHIP_NAME1) {
-+		rt305x_soc = RT305X_SOC_RT3352;
-+		name = "RT3352";
-+		soc_info->compatible = "ralink,rt3352";
-+	} else if (n0 == RT5350_CHIP_NAME0 && n1 == RT5350_CHIP_NAME1) {
-+		rt305x_soc = RT305X_SOC_RT5350;
-+		name = "RT5350";
-+		soc_info->compatible = "ralink,rt5350";
-+	} else {
-+		panic("rt305x: unknown SoC, n0:%08x n1:%08x\n", n0, n1);
-+	}
-+
-+	id = __raw_readl(sysc + SYSC_REG_CHIP_ID);
-+
-+	snprintf(soc_info->sys_type, RAMIPS_SYS_TYPE_LEN,
-+		"Ralink %s id:%u rev:%u",
-+		name,
-+		(id >> CHIP_ID_ID_SHIFT) & CHIP_ID_ID_MASK,
-+		(id & CHIP_ID_REV_MASK));
-+}
 -- 
 1.7.10.4

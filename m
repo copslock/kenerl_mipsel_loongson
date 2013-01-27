@@ -1,22 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Jan 2013 19:09:53 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:41750 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6833517Ab3A0SJbXX4Sy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 27 Jan 2013 19:09:31 +0100
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 10/10] MIPS: ralink: adds Kbuild files
-Date:   Sun, 27 Jan 2013 19:04:02 +0100
-Message-Id: <1359309842-31925-11-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1359309842-31925-1-git-send-email-blogic@openwrt.org>
-References: <1359309842-31925-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 35578
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Jan 2013 20:26:46 +0100 (CET)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:56728 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6833471Ab3A0T0pPHGHm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 27 Jan 2013 20:26:45 +0100
+Received: by mail-lb0-f177.google.com with SMTP id go11so2963605lbb.8
+        for <linux-mips@linux-mips.org>; Sun, 27 Jan 2013 11:26:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding:x-gm-message-state;
+        bh=0XflQaUdkG4Sc4KEU0D1lTOe71FJd7H0Xw5lvPgoFhg=;
+        b=kXDdvDLatWv3UYvwgcdb9kL+vyvev5JDOKH8eAa74u0G0ZdnBzBQMKHNwhZa/0fyIG
+         iKQDLzLgKMqNQpTxRvXwHxUCZwv1rOZqo6OylH6+E2K117pw0DIAgVyMiG4XAuKdPoMo
+         fsNsnceG/oIpNQdznyXhm8ymOxpygeT8VArNb2yTX16SzkAm/lesa94vkF/RfHJsCd4F
+         cJELXMo9f/uAHdDQgBWdqIo3sWptZOuo2UqfL5cUQRs8vE/xIdac4mXPV56Ve8msWLAW
+         2YZHGDHTsSNGH3fqg+klLjqNcaqqX9t/1lzKxXTmTL+dfrHODd1L4yKDuV2Vhg+sFSO7
+         Kohg==
+X-Received: by 10.152.125.239 with SMTP id mt15mr11043770lab.26.1359314798992;
+        Sun, 27 Jan 2013 11:26:38 -0800 (PST)
+Received: from [192.168.2.2] (ppp91-79-68-130.pppoe.mtu-net.ru. [91.79.68.130])
+        by mx.google.com with ESMTPS id o2sm2689272lby.11.2013.01.27.11.26.37
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sun, 27 Jan 2013 11:26:38 -0800 (PST)
+Message-ID: <51057F5E.80708@mvista.com>
+Date:   Sun, 27 Jan 2013 23:26:22 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/20130107 Thunderbird/17.0.2
+MIME-Version: 1.0
+To:     John Crispin <blogic@openwrt.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH V2 07/10] MIPS: ralink: adds early_printk support
+References: <1359309842-31925-1-git-send-email-blogic@openwrt.org> <1359309842-31925-8-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1359309842-31925-8-git-send-email-blogic@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Gm-Message-State: ALoCoQkoS4YX+MYMqVOfCjJeAwy5+sfTytvNLagvQFslR2+56AMk7mutHarRFMXWtuhmL6djXWJp
+X-archive-position: 35579
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -30,160 +54,64 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add the Kbuild symbols and Makefiles needed to actually build the ralink code
-from this series
+Hello.
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
----
- arch/mips/Kbuild.platforms    |    1 +
- arch/mips/Kconfig             |   19 ++++++++++++++++++-
- arch/mips/ralink/Kconfig      |   32 ++++++++++++++++++++++++++++++++
- arch/mips/ralink/Makefile     |   15 +++++++++++++++
- arch/mips/ralink/Platform     |   10 ++++++++++
- arch/mips/ralink/dts/Makefile |    1 +
- 6 files changed, 77 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/ralink/Kconfig
- create mode 100644 arch/mips/ralink/Makefile
- create mode 100644 arch/mips/ralink/Platform
- create mode 100644 arch/mips/ralink/dts/Makefile
+On 27-01-2013 22:03, John Crispin wrote:
 
-diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
-index 91b9d69..9a73ce6 100644
---- a/arch/mips/Kbuild.platforms
-+++ b/arch/mips/Kbuild.platforms
-@@ -22,6 +22,7 @@ platforms += pmc-sierra
- platforms += pnx833x
- platforms += pnx8550
- platforms += powertv
-+platforms += ralink
- platforms += rb532
- platforms += sgi-ip22
- platforms += sgi-ip27
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index daeafe2..e52ae2b 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -436,6 +436,22 @@ config POWERTV
- 	help
- 	  This enables support for the Cisco PowerTV Platform.
- 
-+config RALINK
-+	bool "Ralink based machines"
-+	select CEVT_R4K
-+	select CSRC_R4K
-+	select BOOT_RAW
-+	select DMA_NONCOHERENT
-+	select IRQ_CPU
-+	select USE_OF
-+	select SYS_HAS_CPU_MIPS32_R1
-+	select SYS_HAS_CPU_MIPS32_R2
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_HAS_EARLY_PRINTK
-+	select HAVE_MACH_CLKDEV
-+	select CLKDEV_LOOKUP
-+
- config SGI_IP22
- 	bool "SGI IP22 (Indy/Indigo2)"
- 	select FW_ARC
-@@ -848,6 +864,7 @@ source "arch/mips/lantiq/Kconfig"
- source "arch/mips/lasat/Kconfig"
- source "arch/mips/pmc-sierra/Kconfig"
- source "arch/mips/powertv/Kconfig"
-+source "arch/mips/ralink/Kconfig"
- source "arch/mips/sgi-ip27/Kconfig"
- source "arch/mips/sibyte/Kconfig"
- source "arch/mips/txx9/Kconfig"
-@@ -1162,7 +1179,7 @@ config BOOT_ELF32
- 
- config MIPS_L1_CACHE_SHIFT
- 	int
--	default "4" if MACH_DECSTATION || MIKROTIK_RB532 || PMC_MSP4200_EVAL
-+	default "4" if MACH_DECSTATION || MIKROTIK_RB532 || PMC_MSP4200_EVAL || RALINK_RT288X
- 	default "6" if MIPS_CPU_SCACHE
- 	default "7" if SGI_IP22 || SGI_IP27 || SGI_IP28 || SNI_RM || CPU_CAVIUM_OCTEON
- 	default "5"
-diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
-new file mode 100644
-index 0000000..a0b0197
---- /dev/null
-+++ b/arch/mips/ralink/Kconfig
-@@ -0,0 +1,32 @@
-+if RALINK
-+
-+choice
-+	prompt "Ralink SoC selection"
-+	default SOC_RT305X
-+	help
-+	  Select Ralink MIPS SoC type.
-+
-+	config SOC_RT305X
-+		bool "RT305x"
-+		select USB_ARCH_HAS_HCD
-+		select USB_ARCH_HAS_OHCI
-+		select USB_ARCH_HAS_EHCI
-+
-+endchoice
-+
-+choice
-+	prompt "Devicetree selection"
-+	default DTB_RT_NONE
-+	help
-+	  Select the devicetree.
-+
-+	config DTB_RT_NONE
-+		bool "None"
-+
-+	config DTB_RT305X_EVAL
-+		bool "RT305x eval kit"
-+		depends on SOC_RT305X
-+
-+endchoice
-+
-+endif
-diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
-new file mode 100644
-index 0000000..939757f
---- /dev/null
-+++ b/arch/mips/ralink/Makefile
-@@ -0,0 +1,15 @@
-+# This program is free software; you can redistribute it and/or modify it
-+# under the terms of the GNU General Public License version 2 as published
-+# by the Free Software Foundation.#
-+# Makefile for the Ralink common stuff
-+#
-+# Copyright (C) 2009-2011 Gabor Juhos <juhosg@openwrt.org>
-+# Copyright (C) 2013 John Crispin <blogic@openwrt.org>
-+
-+obj-y := prom.o of.o reset.o clk.o irq.o
-+
-+obj-$(CONFIG_SOC_RT305X) += rt305x.o
-+
-+obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
-+
-+obj-y += dts/
-diff --git a/arch/mips/ralink/Platform b/arch/mips/ralink/Platform
-new file mode 100644
-index 0000000..6babd65
---- /dev/null
-+++ b/arch/mips/ralink/Platform
-@@ -0,0 +1,10 @@
-+#
-+# Ralink SoC common stuff
-+#
-+core-$(CONFIG_RALINK)		+= arch/mips/ralink/
-+cflags-$(CONFIG_RALINK)		+= -I$(srctree)/arch/mips/include/asm/mach-ralink
-+
-+#
-+# Ralink RT305x
-+#
-+load-$(CONFIG_SOC_RT305X)	+= 0xffffffff80000000
-diff --git a/arch/mips/ralink/dts/Makefile b/arch/mips/ralink/dts/Makefile
-new file mode 100644
-index 0000000..e2ce7b4
---- /dev/null
-+++ b/arch/mips/ralink/dts/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_DTB_RT305X_EVAL) := rt305x.dtb.o
--- 
-1.7.10.4
+> Add the code needed to make early printk work.
+
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+> ---
+>   arch/mips/ralink/early_printk.c |   45 +++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 45 insertions(+)
+>   create mode 100644 arch/mips/ralink/early_printk.c
+
+> diff --git a/arch/mips/ralink/early_printk.c b/arch/mips/ralink/early_printk.c
+> new file mode 100644
+> index 0000000..7a9b474
+> --- /dev/null
+> +++ b/arch/mips/ralink/early_printk.c
+> @@ -0,0 +1,45 @@
+> +/*
+> + *  This program is free software; you can redistribute it and/or modify it
+> + *  under the terms of the GNU General Public License version 2 as published
+> + *  by the Free Software Foundation.
+> + *
+> + *  Copyright (C) 2011-2012 Gabor Juhos <juhosg@openwrt.org>
+> + */
+> +
+> +#include <linux/io.h>
+> +#include <linux/serial_reg.h>
+> +
+> +#include <asm/addrspace.h>
+> +
+> +/* UART registers */
+> +#define EARLY_UART_BASE         0x10000c00
+> +
+> +#define UART_REG_RX             0
+> +#define UART_REG_TX             1
+> +#define UART_REG_IER            2
+> +#define UART_REG_IIR            3
+> +#define UART_REG_FCR            4
+> +#define UART_REG_LCR            5
+> +#define UART_REG_MCR            6
+> +#define UART_REG_LSR            7
+
+    Isn;t it better to have register offsets premultiplied by 4? Saves you a 
+multiplication in read/write functions (although they probably would be 
+optmized out by gcc anyway).
+
+> +
+> +static __iomem void *uart_membase = (__iomem void *) KSEG1ADDR(EARLY_UART_BASE);
+> +
+> +static inline void uart_w32(u32 val, unsigned reg)
+> +{
+> +	__raw_writel(val, uart_membase + (4 * reg));
+> +}
+> +
+> +static inline u32 uart_r32(unsigned reg)
+> +{
+> +	return __raw_readl(uart_membase + (4 * reg));
+> +}
+
+WBR, Sergei

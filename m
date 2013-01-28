@@ -1,25 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jan 2013 22:29:22 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:53149 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6833254Ab3A1V3WNl6Cr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 Jan 2013 22:29:22 +0100
-Message-ID: <5106ED18.5080309@openwrt.org>
-Date:   Mon, 28 Jan 2013 22:26:48 +0100
-From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.7) Gecko/20120922 Icedove/10.0.7
-MIME-Version: 1.0
-To:     Sergei Shtylyov <sshtylyov@mvista.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH V3 7/10] MIPS: ralink: adds early_printk support
-References: <1359358817-3867-1-git-send-email-blogic@openwrt.org> <51066C27.4070403@mvista.com>
-In-Reply-To: <51066C27.4070403@mvista.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35604
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jan 2013 22:35:47 +0100 (CET)
+Received: from ns1.pc-advies.be ([83.149.101.17]:32909 "EHLO
+        spo001.leaseweb.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6833254Ab3A1VfqtTEY7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Jan 2013 22:35:46 +0100
+Received: from wimvs by spo001.leaseweb.com with local (Exim 4.50)
+        id 1TzwMi-00009M-Ke; Mon, 28 Jan 2013 22:35:44 +0100
+Date:   Mon, 28 Jan 2013 22:35:44 +0100
+From:   Wim Van Sebroeck <wim@iguana.be>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     linux-watchdog@vger.kernel.org, zajec5@gmail.com,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH v4 0/5] watchdog: bcm47xx_wdt.c: add support for SoCs with PMU
+Message-ID: <20130128213544.GB3338@spo001.leaseweb.com>
+References: <1358010851-28077-1-git-send-email-hauke@hauke-m.de> <51016C4D.40707@hauke-m.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <51016C4D.40707@hauke-m.de>
+User-Agent: Mutt/1.4.1i
+X-archive-position: 35605
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: wim@iguana.be
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,20 +36,13 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+Hi Hauke,
 
->> +#include <linux/serial_reg.h>
->> +
->> +#include <asm/addrspace.h>
->> +
->> +/* UART registers */
->
->    this comment refers to the register #defines below, why it is here?
->
->> +#define EARLY_UART_BASE         0x10000c00
->> +
+> what is the status of these patches?
 
-Hi,
+First reading/checking (v4+v5) seems OK.
+1 small remark allready: the settimeout functions seem to check the min and max timeout values.
+Can't you use the min and max values of the watchdog structure for this?
 
-i removed the comment inside the tree that ralf will pull the patches from.
-
-     John
+Kind regards,
+Wim.

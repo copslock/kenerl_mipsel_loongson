@@ -1,46 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jan 2013 13:17:05 +0100 (CET)
-Received: from mail-la0-f47.google.com ([209.85.215.47]:51795 "EHLO
-        mail-la0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6833251Ab3A1MRDkPgTN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Jan 2013 13:17:03 +0100
-Received: by mail-la0-f47.google.com with SMTP id fj20so740017lab.34
-        for <linux-mips@linux-mips.org>; Mon, 28 Jan 2013 04:16:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding:x-gm-message-state;
-        bh=RaiN88RtiFQQVbQM6CfSI7Xr3dxCvIYzL5ig/eauGCs=;
-        b=jpwqLMneBT7bAoMH20RjdGS+ZjtzztVHpSMIXFfqGt7wvIh7crYNg+mnWXlbjA/dub
-         fWdp7+/I5Kz9IC+6RyFLGv9sMOyxriBDVBVp4aDvJMryDGWcEvlZJzzD9aaNHuvIQJlE
-         vWjZYZwfn78OAvK6m03LPpS7vFM2h7oDQjn7CcTcPlFAPWDCgK+67vE+mg5aGEqitjKC
-         MY+3qd172S2VjxB+nYZzLPmT2Jia2+ld+fhWwXJJzIqwPeXrPW0b5tOs4GTwqqnPf1rg
-         0Vedd1qmm3KSAY6e1+Y+rqFatqp/vZ7eq3WhAcPu4RWhiAoIP9ADXlwsoNQWBSAcRjB6
-         DWsw==
-X-Received: by 10.112.49.66 with SMTP id s2mr5507497lbn.16.1359375417095;
-        Mon, 28 Jan 2013 04:16:57 -0800 (PST)
-Received: from [192.168.2.2] (ppp91-79-64-122.pppoe.mtu-net.ru. [91.79.64.122])
-        by mx.google.com with ESMTPS id fj2sm3545283lbb.6.2013.01.28.04.16.55
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Mon, 28 Jan 2013 04:16:55 -0800 (PST)
-Message-ID: <51066C27.4070403@mvista.com>
-Date:   Mon, 28 Jan 2013 16:16:39 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/20130107 Thunderbird/17.0.2
-MIME-Version: 1.0
-To:     John Crispin <blogic@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH V3 7/10] MIPS: ralink: adds early_printk support
-References: <1359358817-3867-1-git-send-email-blogic@openwrt.org>
-In-Reply-To: <1359358817-3867-1-git-send-email-blogic@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQkOwJyez4sbS0wWKnVqambd68dFSo9EGVaAlUCXlToK1EmCGydbuzEdrMor7t3ybv53ej5h
-X-archive-position: 35582
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jan 2013 20:09:29 +0100 (CET)
+Received: from zmc.proxad.net ([212.27.53.206]:33183 "EHLO zmc.proxad.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6833255Ab3A1TJ0eTOJo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 Jan 2013 20:09:26 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by zmc.proxad.net (Postfix) with ESMTP id 1A96DBF51CE;
+        Mon, 28 Jan 2013 20:09:26 +0100 (CET)
+X-Virus-Scanned: amavisd-new at localhost
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Tgi7LrCDDNSS; Mon, 28 Jan 2013 20:09:25 +0100 (CET)
+Received: from flexo.localdomain (freebox.vlq16.iliad.fr [213.36.7.13])
+        by zmc.proxad.net (Postfix) with ESMTPSA id 74704BF5183;
+        Mon, 28 Jan 2013 20:09:25 +0100 (CET)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, jogo@openwrt.org, mbizon@freebox.fr,
+        cenerkee@gmail.com, linux-usb@vger.kernel.org,
+        stern@rowland.harvard.edu, gregkh@linuxfoundation.org,
+        blogic@openwrt.org, Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH 04/13] MIPS: BCM63XX: add OHCI/EHCI configuration bits to common USB code
+Date:   Mon, 28 Jan 2013 20:06:22 +0100
+Message-Id: <1359399991-2236-5-git-send-email-florian@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1359399991-2236-1-git-send-email-florian@openwrt.org>
+References: <1359399991-2236-1-git-send-email-florian@openwrt.org>
+X-archive-position: 35583
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,50 +43,172 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+This patch updates the common USB code touching the USB private
+registers with the specific bits to properly enable OHCI and EHCI
+controllers on BCM63xx SoCs. As a result we now need to protect access
+to Read Modify Write sequences using a spinlock because we cannot
+guarantee that any of the exposed helper will not be called
+concurrently.
 
-On 28-01-2013 11:40, John Crispin wrote:
+Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+ arch/mips/bcm63xx/usb-common.c                     |   97 ++++++++++++++++++++
+ .../include/asm/mach-bcm63xx/bcm63xx_usb_priv.h    |    2 +
+ 2 files changed, 99 insertions(+)
 
-> Add the code needed to make early printk work.
-
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> ---
->   arch/mips/ralink/early_printk.c |   45 +++++++++++++++++++++++++++++++++++++++
->   1 file changed, 45 insertions(+)
->   create mode 100644 arch/mips/ralink/early_printk.c
-
-> diff --git a/arch/mips/ralink/early_printk.c b/arch/mips/ralink/early_printk.c
-> new file mode 100644
-> index 0000000..68aabb9
-> --- /dev/null
-> +++ b/arch/mips/ralink/early_printk.c
-> @@ -0,0 +1,45 @@
-> +/*
-> + *  This program is free software; you can redistribute it and/or modify it
-> + *  under the terms of the GNU General Public License version 2 as published
-> + *  by the Free Software Foundation.
-> + *
-> + *  Copyright (C) 2011-2012 Gabor Juhos <juhosg@openwrt.org>
-> + */
-> +
-> +#include <linux/io.h>
-> +#include <linux/serial_reg.h>
-> +
-> +#include <asm/addrspace.h>
-> +
-> +/* UART registers */
-
-    this comment refers to the register #defines below, why it is here?
-
-> +#define EARLY_UART_BASE         0x10000c00
-> +
-> +#define UART_REG_RX             0x00
-> +#define UART_REG_TX             0x04
-> +#define UART_REG_IER            0x08
-> +#define UART_REG_IIR            0x0c
-> +#define UART_REG_FCR            0x10
-> +#define UART_REG_LCR            0x14
-> +#define UART_REG_MCR            0x18
-> +#define UART_REG_LSR            0x1c
-
-WBR, Sergei
+diff --git a/arch/mips/bcm63xx/usb-common.c b/arch/mips/bcm63xx/usb-common.c
+index b617cf6..e18ac08 100644
+--- a/arch/mips/bcm63xx/usb-common.c
++++ b/arch/mips/bcm63xx/usb-common.c
+@@ -5,10 +5,12 @@
+  * License.  See the file "COPYING" in the main directory of this archive
+  * for more details.
+  *
++ * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
+  * Copyright (C) 2012 Kevin Cernekee <cernekee@gmail.com>
+  * Copyright (C) 2012 Broadcom Corporation
+  *
+  */
++#include <linux/spinlock.h>
+ #include <linux/export.h>
+ 
+ #include <bcm63xx_cpu.h>
+@@ -16,9 +18,14 @@
+ #include <bcm63xx_io.h>
+ #include <bcm63xx_usb_priv.h>
+ 
++static DEFINE_SPINLOCK(usb_priv_reg_lock);
++
+ void bcm63xx_usb_priv_select_phy_mode(u32 portmask, bool is_device)
+ {
+ 	u32 val;
++	unsigned long flags;
++
++	spin_lock_irqsave(&usb_priv_reg_lock, flags);
+ 
+ 	val = bcm_rset_readl(RSET_USBH_PRIV, USBH_PRIV_UTMI_CTL_6368_REG);
+ 	if (is_device) {
+@@ -36,12 +43,17 @@ void bcm63xx_usb_priv_select_phy_mode(u32 portmask, bool is_device)
+ 	else
+ 		val &= ~USBH_PRIV_SWAP_USBD_MASK;
+ 	bcm_rset_writel(RSET_USBH_PRIV, val, USBH_PRIV_SWAP_6368_REG);
++
++	spin_unlock_irqrestore(&usb_priv_reg_lock, flags);
+ }
+ EXPORT_SYMBOL(bcm63xx_usb_host_priv_cfg_set);
+ 
+ void bcm63xx_usb_priv_select_pullup(u32 portmask, bool is_on)
+ {
+ 	u32 val;
++	unsigned long flags;
++
++	spin_lock_irqsave(&usb_priv_reg_lock, flags);
+ 
+ 	val = bcm_rset_readl(RSET_USBH_PRIV, USBH_PRIV_UTMI_CTL_6368_REG);
+ 	if (is_on)
+@@ -49,5 +61,90 @@ void bcm63xx_usb_priv_select_pullup(u32 portmask, bool is_on)
+ 	else
+ 		val |= (portmask << USBH_PRIV_UTMI_CTL_NODRIV_SHIFT);
+ 	bcm_rset_writel(RSET_USBH_PRIV, val, USBH_PRIV_UTMI_CTL_6368_REG);
++
++	spin_unlock_irqrestore(&usb_priv_reg_lock, flags);
+ }
+ EXPORT_SYMBOL(bcm63xx_usb_priv_select_pullup);
++
++/* The following array represents the meaning of the DESC/DATA
++ * endian swapping with respect to the CPU configured endianness
++ *
++ * DATA	ENDN	mmio	descriptor
++ * 0	0	BE	invalid
++ * 0	1	BE	LE
++ * 1	0	BE	BE
++ * 1	1	BE	invalid
++ *
++ * Since BCM63XX SoCs are configured to be in big-endian mode
++ * we want configuration at line 3.
++ */
++void bcm63xx_usb_priv_ohci_cfg_set(void)
++{
++	u32 reg;
++	unsigned long flags;
++
++	spin_lock_irqsave(&usb_priv_reg_lock, flags);
++
++	if (BCMCPU_IS_6348())
++		bcm_rset_writel(RSET_OHCI_PRIV, 0, OHCI_PRIV_REG);
++	else if (BCMCPU_IS_6358()) {
++		reg = bcm_rset_readl(RSET_USBH_PRIV, USBH_PRIV_SWAP_6358_REG);
++		reg &= ~USBH_PRIV_SWAP_OHCI_ENDN_MASK;
++		reg |= USBH_PRIV_SWAP_OHCI_DATA_MASK;
++		bcm_rset_writel(RSET_USBH_PRIV, reg, USBH_PRIV_SWAP_6358_REG);
++		/*
++		 * The magic value comes for the original vendor BSP
++		 * and is needed for USB to work. Datasheet does not
++		 * help, so the magic value is used as-is.
++		 */
++		bcm_rset_writel(RSET_USBH_PRIV, 0x1c0020,
++				USBH_PRIV_TEST_6358_REG);
++
++	} else if (BCMCPU_IS_6328() || BCMCPU_IS_6368()) {
++		reg = bcm_rset_readl(RSET_USBH_PRIV, USBH_PRIV_SWAP_6368_REG);
++		reg &= ~USBH_PRIV_SWAP_OHCI_ENDN_MASK;
++		reg |= USBH_PRIV_SWAP_OHCI_DATA_MASK;
++		bcm_rset_writel(RSET_USBH_PRIV, reg, USBH_PRIV_SWAP_6368_REG);
++
++		reg = bcm_rset_readl(RSET_USBH_PRIV, USBH_PRIV_SETUP_6368_REG);
++		reg |= USBH_PRIV_SETUP_IOC_MASK;
++		bcm_rset_writel(RSET_USBH_PRIV, reg, USBH_PRIV_SETUP_6368_REG);
++	}
++
++	spin_unlock_irqrestore(&usb_priv_reg_lock, flags);
++}
++
++void bcm63xx_usb_priv_ehci_cfg_set(void)
++{
++	u32 reg;
++	unsigned long flags;
++
++	spin_lock_irqsave(&usb_priv_reg_lock, flags);
++
++	if (BCMCPU_IS_6358()) {
++		reg = bcm_rset_readl(RSET_USBH_PRIV, USBH_PRIV_SWAP_6358_REG);
++		reg &= ~USBH_PRIV_SWAP_EHCI_ENDN_MASK;
++		reg |= USBH_PRIV_SWAP_EHCI_DATA_MASK;
++		bcm_rset_writel(RSET_USBH_PRIV, reg, USBH_PRIV_SWAP_6358_REG);
++
++		/*
++		 * The magic value comes for the original vendor BSP
++		 * and is needed for USB to work. Datasheet does not
++		 * help, so the magic value is used as-is.
++		 */
++		bcm_rset_writel(RSET_USBH_PRIV, 0x1c0020,
++				USBH_PRIV_TEST_6358_REG);
++
++	} else if (BCMCPU_IS_6328() || BCMCPU_IS_6368()) {
++		reg = bcm_rset_readl(RSET_USBH_PRIV, USBH_PRIV_SWAP_6368_REG);
++		reg &= ~USBH_PRIV_SWAP_EHCI_ENDN_MASK;
++		reg |= USBH_PRIV_SWAP_EHCI_DATA_MASK;
++		bcm_rset_writel(RSET_USBH_PRIV, reg, USBH_PRIV_SWAP_6368_REG);
++
++		reg = bcm_rset_readl(RSET_USBH_PRIV, USBH_PRIV_SETUP_6368_REG);
++		reg |= USBH_PRIV_SETUP_IOC_MASK;
++		bcm_rset_writel(RSET_USBH_PRIV, reg, USBH_PRIV_SETUP_6368_REG);
++	}
++
++	spin_unlock_irqrestore(&usb_priv_reg_lock, flags);
++}
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_usb_priv.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_usb_priv.h
+index f0d4b59..e7c01e4 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_usb_priv.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_usb_priv.h
+@@ -5,5 +5,7 @@
+ 
+ void bcm63xx_usb_priv_select_phy_mode(u32 portmask, bool is_device);
+ void bcm63xx_usb_priv_select_pullup(u32 portmask, bool is_on);
++void bcm63xx_usb_priv_ohci_cfg_set(void);
++void bcm63xx_usb_priv_ehci_cfg_set(void);
+ 
+ #endif /* BCM63XX_USB_PRIV_H_ */
+-- 
+1.7.10.4

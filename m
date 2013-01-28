@@ -1,28 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jan 2013 22:35:47 +0100 (CET)
-Received: from ns1.pc-advies.be ([83.149.101.17]:32909 "EHLO
-        spo001.leaseweb.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6833254Ab3A1VfqtTEY7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Jan 2013 22:35:46 +0100
-Received: from wimvs by spo001.leaseweb.com with local (Exim 4.50)
-        id 1TzwMi-00009M-Ke; Mon, 28 Jan 2013 22:35:44 +0100
-Date:   Mon, 28 Jan 2013 22:35:44 +0100
-From:   Wim Van Sebroeck <wim@iguana.be>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     linux-watchdog@vger.kernel.org, zajec5@gmail.com,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v4 0/5] watchdog: bcm47xx_wdt.c: add support for SoCs with PMU
-Message-ID: <20130128213544.GB3338@spo001.leaseweb.com>
-References: <1358010851-28077-1-git-send-email-hauke@hauke-m.de> <51016C4D.40707@hauke-m.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <51016C4D.40707@hauke-m.de>
-User-Agent: Mutt/1.4.1i
-X-archive-position: 35605
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jan 2013 23:01:46 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:35907 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6833264Ab3A1WBpkiVs7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 Jan 2013 23:01:45 +0100
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>,
+        John Crispin <blogic@openwrt.org>
+Subject: [PATCH] MIPS: add irqdomain support for the CPU IRQ controller
+Date:   Mon, 28 Jan 2013 22:59:04 +0100
+Message-Id: <1359410344-19737-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 35606
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wim@iguana.be
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,13 +29,98 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Hauke,
+From: Gabor Juhos <juhosg@openwrt.org>
 
-> what is the status of these patches?
+Adds an irqdomain wrapper for the cpu irq controller that can be passed inside
+the of_device_id to of_irq_init().
 
-First reading/checking (v4+v5) seems OK.
-1 small remark allready: the settimeout functions seem to check the min and max timeout values.
-Can't you use the min and max values of the watchdog structure for this?
+A device_node inside a dts file would look as such.
 
-Kind regards,
-Wim.
+cpuintc: cpuintc@0 {
+	#address-cells = <0>;
+	#interrupt-cells = <1>;
+	interrupt-controller;
+	compatible = "mti,cpu-intc";
+};
+
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+ arch/mips/include/asm/irq_cpu.h |    6 ++++++
+ arch/mips/kernel/irq_cpu.c      |   42 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+)
+
+diff --git a/arch/mips/include/asm/irq_cpu.h b/arch/mips/include/asm/irq_cpu.h
+index ef6a07c..3f11fdb 100644
+--- a/arch/mips/include/asm/irq_cpu.h
++++ b/arch/mips/include/asm/irq_cpu.h
+@@ -17,4 +17,10 @@ extern void mips_cpu_irq_init(void);
+ extern void rm7k_cpu_irq_init(void);
+ extern void rm9k_cpu_irq_init(void);
+ 
++#ifdef CONFIG_IRQ_DOMAIN
++struct device_node;
++extern int mips_cpu_intc_init(struct device_node *of_node,
++			      struct device_node *parent);
++#endif
++
+ #endif /* _ASM_IRQ_CPU_H */
+diff --git a/arch/mips/kernel/irq_cpu.c b/arch/mips/kernel/irq_cpu.c
+index 972263b..49bc9ca 100644
+--- a/arch/mips/kernel/irq_cpu.c
++++ b/arch/mips/kernel/irq_cpu.c
+@@ -31,6 +31,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/kernel.h>
+ #include <linux/irq.h>
++#include <linux/irqdomain.h>
+ 
+ #include <asm/irq_cpu.h>
+ #include <asm/mipsregs.h>
+@@ -113,3 +114,44 @@ void __init mips_cpu_irq_init(void)
+ 		irq_set_chip_and_handler(i, &mips_cpu_irq_controller,
+ 					 handle_percpu_irq);
+ }
++
++#ifdef CONFIG_IRQ_DOMAIN
++static int mips_cpu_intc_map(struct irq_domain *d, unsigned int irq,
++			     irq_hw_number_t hw)
++{
++	static struct irq_chip *chip;
++
++	if (hw < 2 && cpu_has_mipsmt) {
++		/* Software interrupts are used for MT/CMT IPI */
++		chip = &mips_mt_cpu_irq_controller;
++	} else {
++		chip = &mips_cpu_irq_controller;
++	}
++
++	irq_set_chip_and_handler(irq, chip, handle_percpu_irq);
++
++	return 0;
++}
++
++static const struct irq_domain_ops mips_cpu_intc_irq_domain_ops = {
++	.map = mips_cpu_intc_map,
++	.xlate = irq_domain_xlate_onecell,
++};
++
++int __init mips_cpu_intc_init(struct device_node *of_node,
++			      struct device_node *parent)
++{
++	struct irq_domain *domain;
++
++	/* Mask interrupts. */
++	clear_c0_status(ST0_IM);
++	clear_c0_cause(CAUSEF_IP);
++
++	domain = irq_domain_add_legacy(of_node, 8, MIPS_CPU_IRQ_BASE, 0,
++				       &mips_cpu_intc_irq_domain_ops, NULL);
++	if (!domain)
++		panic("Failed to add irqdomain for MIPS CPU\n");
++
++	return 0;
++}
++#endif /* CONFIG_IRQ_DOMAIN */
+-- 
+1.7.10.4

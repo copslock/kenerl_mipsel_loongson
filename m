@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jan 2013 21:08:25 +0100 (CET)
-Received: from iolanthe.rowland.org ([192.131.102.54]:41874 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jan 2013 21:15:31 +0100 (CET)
+Received: from iolanthe.rowland.org ([192.131.102.54]:41893 "HELO
         iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S6833254Ab3A1UIYZcxGj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Jan 2013 21:08:24 +0100
-Received: (qmail 2975 invoked by uid 2102); 28 Jan 2013 15:08:21 -0500
+        with SMTP id S6833254Ab3A1UPa4J012 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Jan 2013 21:15:30 +0100
+Received: (qmail 3005 invoked by uid 2102); 28 Jan 2013 15:15:29 -0500
 Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 28 Jan 2013 15:08:21 -0500
-Date:   Mon, 28 Jan 2013 15:08:21 -0500 (EST)
+  by localhost with SMTP; 28 Jan 2013 15:15:29 -0500
+Date:   Mon, 28 Jan 2013 15:15:29 -0500 (EST)
 From:   Alan Stern <stern@rowland.harvard.edu>
 X-X-Sender: stern@iolanthe.rowland.org
 To:     Florian Fainelli <florian@openwrt.org>
-cc:     linux-mips@linux-mips.org, <ralf@linux-mips.org>,
-        <jogo@openwrt.org>, <mbizon@freebox.fr>, <cenerkee@gmail.com>,
-        <linux-usb@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+cc:     David Daney <ddaney.cavm@gmail.com>, <linux-usb@vger.kernel.org>,
+        <gregkh@linuxfoundation.org>, <linux-mips@linux-mips.org>,
+        <ralf@linux-mips.org>, <jogo@openwrt.org>, <mbizon@freebox.fr>,
         <blogic@openwrt.org>
-Subject: Re: [PATCH 11/13] USB: EHCI: add ignore_oc flag to disable overcurrent
- checking
-In-Reply-To: <1359399991-2236-12-git-send-email-florian@openwrt.org>
-Message-ID: <Pine.LNX.4.44L0.1301281500530.1997-100000@iolanthe.rowland.org>
+Subject: Re: [PATCH 08/13] MIPS: BCM63XX: introduce BCM63XX_EHCI configuration
+ symbol
+In-Reply-To: <5106D80C.7050508@openwrt.org>
+Message-ID: <Pine.LNX.4.44L0.1301281512190.1997-100000@iolanthe.rowland.org>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-archive-position: 35599
+X-archive-position: 35600
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,41 +40,43 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 On Mon, 28 Jan 2013, Florian Fainelli wrote:
 
-> This patch adds an ignore_oc flag which can be set by EHCI controller
-> not supporting or wanting to disable overcurrent checking. The EHCI
-> platform data in include/linux/usb/ehci_pdriver.h is also augmented to
-> take advantage of this new flag.
+> >> --- a/drivers/usb/host/Kconfig
+> >> +++ b/drivers/usb/host/Kconfig
+> >> @@ -115,14 +115,15 @@ config USB_EHCI_BIG_ENDIAN_MMIO
+> >>       depends on USB_EHCI_HCD && (PPC_CELLEB || PPC_PS3 || 440EPX || \
+> >>                       ARCH_IXP4XX || XPS_USB_HCD_XILINX || \
+> >>                       PPC_MPC512x || CPU_CAVIUM_OCTEON || \
+> >> -                    PMC_MSP || SPARC_LEON || MIPS_SEAD3)
+> >> +                    PMC_MSP || SPARC_LEON || MIPS_SEAD3 || \
+> >> +                    BCM63XX)
+> >>       default y
+> >
+> > This is a complete mess.
+> >
+> > Can we get rid of the 'default y' and all those things after the '&&',
+> > and select USB_EHCI_BIG_ENDIAN_MMIO in the board Kconfig files?
 > 
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
-> ---
->  drivers/usb/host/ehci-hcd.c      |    2 +-
->  drivers/usb/host/ehci-hub.c      |    4 ++--
->  drivers/usb/host/ehci.h          |    1 +
->  include/linux/usb/ehci_pdriver.h |    1 +
->  4 files changed, 5 insertions(+), 3 deletions(-)
+> Yes, pretty much like what exists for OHCI, scales much better.
+> 
+> >
+> > I am as guilty as anyone here (see || CPU_CAVIUM_OCTEON above).  But
+> > this doesn't seem sustainable.  We should be trying to keep the
+> > configuration information for all this in one spot.
+> >
+> > Now you have it spread across two files.  One to enable it, and the
+> > other to select it.  But do you really need to select it if it defaults
+> > to 'y'
+> 
+> I do agree with you, but I don't want this patchset to be blocked by the 
+> removal of the depends on (FOO && BAR && ...), but I can send a 
+> preliminary patch for this and get it merged with Greg's tree first.
 
-You forgot to add
+If you decide to do this, consider the discussion starting here:
 
-	ehci->ignore_oc = pdata->ignore_oc;
+	http://marc.info/?l=linux-usb&m=135886919810940&w=2
 
-to ehci_platform_reset().  This makes me wonder: Either the patches 
-were not tested very well or else the new ignore_oc stuff isn't needed.
-
-> diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-> index c97503b..bd435ac 100644
-> --- a/drivers/usb/host/ehci-hcd.c
-> +++ b/drivers/usb/host/ehci-hcd.c
-> @@ -634,7 +634,7 @@ static int ehci_run (struct usb_hcd *hcd)
->  		"USB %x.%x started, EHCI %x.%02x%s\n",
->  		((ehci->sbrn & 0xf0)>>4), (ehci->sbrn & 0x0f),
->  		temp >> 8, temp & 0xff,
-> -		ignore_oc ? ", overcurrent ignored" : "");
-> +		(ignore_oc || ehci->ignore_oc) ? ", overcurrent ignored" : "");
-
-You could simplify the code here and other places if you add
-
-	ehci->ignore_oc ||= ignore_oc;
-
-to ehci_init().  Then you wouldn't need to test ignore_oc all the time.
+As far as I know, there is no good reason for keeping the 
+USB_ARCH_HAS_EHCI symbol at all.  And the glue drivers can select 
+USB_EHCI_HCD instead of depending on it.
 
 Alan Stern

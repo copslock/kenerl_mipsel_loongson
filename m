@@ -1,44 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jan 2013 21:41:41 +0100 (CET)
-Received: from comal.ext.ti.com ([198.47.26.152]:52679 "EHLO comal.ext.ti.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6833470Ab3A1UljojkCQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 Jan 2013 21:41:39 +0100
-Received: from dlelxv30.itg.ti.com ([172.17.2.17])
-        by comal.ext.ti.com (8.13.7/8.13.7) with ESMTP id r0SKfZGq004639;
-        Mon, 28 Jan 2013 14:41:36 -0600
-Received: from DFLE73.ent.ti.com (dfle73.ent.ti.com [128.247.5.110])
-        by dlelxv30.itg.ti.com (8.13.8/8.13.8) with ESMTP id r0SKfXgE022872;
-        Mon, 28 Jan 2013 14:41:33 -0600
-Received: from dlelxv22.itg.ti.com (172.17.1.197) by dfle73.ent.ti.com
- (128.247.5.110) with Microsoft SMTP Server id 14.1.323.3; Mon, 28 Jan 2013
- 14:41:33 -0600
-Received: from localhost (h78-16.vpn.ti.com [172.24.78.16])     by
- dlelxv22.itg.ti.com (8.13.8/8.13.8) with ESMTP id r0SKfW7I015527;      Mon, 28 Jan
- 2013 14:41:33 -0600
-Date:   Mon, 28 Jan 2013 22:41:14 +0200
-From:   Felipe Balbi <balbi@ti.com>
-To:     Florian Fainelli <florian@openwrt.org>
-CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
-        <jogo@openwrt.org>, <mbizon@freebox.fr>, <cenerkee@gmail.com>,
-        <linux-usb@vger.kernel.org>, <stern@rowland.harvard.edu>,
-        <gregkh@linuxfoundation.org>, <blogic@openwrt.org>
-Subject: Re: [PATCH 03/13] MIPS: BCM63XX: move code touching the USB private
- register
-Message-ID: <20130128204114.GA5509@arwen.pp.htv.fi>
-Reply-To: <balbi@ti.com>
-References: <1359399991-2236-1-git-send-email-florian@openwrt.org>
- <1359399991-2236-4-git-send-email-florian@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jan 2013 21:58:20 +0100 (CET)
+Received: from mail-bk0-f43.google.com ([209.85.214.43]:54884 "EHLO
+        mail-bk0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6833256Ab3A1U6TzEY6d (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Jan 2013 21:58:19 +0100
+Received: by mail-bk0-f43.google.com with SMTP id jm19so1137718bkc.16
+        for <multiple recipients>; Mon, 28 Jan 2013 12:58:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:sender:message-id:date:from:organization:user-agent
+         :mime-version:to:cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=BXSjMTm+g7uLJ/lr7XYiXGLRLv7+R8Dug3cChW+Pf4o=;
+        b=LyQuvCCrm4wNcSVNKYz3uU23gIXoR+W/eXMqmfbcxYqLc4+pvHWge0T/JMY7fXg1/q
+         ylhEFvBzsbDi402XfHkgdqpyDG0QrnGWoJl+PJcmU0miyFGDo6cR9UBZ8Sgg/qc0+VgB
+         V9l6sRSMBWtZ1mq3i8WNk5LEw1X/S/r1DhTgcjhtRdGmcf5i4viE2h1pJofEGOzImTuR
+         dYwNC6+M/4KfiXbeiMmEGk5VowZCBB0v5sg04W07tEk+Re/FRPAgWVpuCPuscGFVGIEY
+         RH9bu3FDsaAKsL7wQIugxhLCYZeWEZK90LrjX3REBIuJGFrSAgFzNFE4fJivAnBZ1WWw
+         72+A==
+X-Received: by 10.204.9.132 with SMTP id l4mr4463413bkl.6.1359406694353;
+        Mon, 28 Jan 2013 12:58:14 -0800 (PST)
+Received: from ?IPv6:2a01:e35:2f70:4010:b9ce:7b43:9b76:2dfe? ([2a01:e35:2f70:4010:b9ce:7b43:9b76:2dfe])
+        by mx.google.com with ESMTPS id i20sm7553291bkw.5.2013.01.28.12.58.12
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Mon, 28 Jan 2013 12:58:13 -0800 (PST)
+Message-ID: <5106E665.7020105@openwrt.org>
+Date:   Mon, 28 Jan 2013 21:58:13 +0100
+From:   Florian Fainelli <florian@openwrt.org>
+Organization: OpenWrt
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/20130107 Thunderbird/17.0.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="C7zPtVaVf+AK4Oqc"
-Content-Disposition: inline
-In-Reply-To: <1359399991-2236-4-git-send-email-florian@openwrt.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35601
+To:     Alan Stern <stern@rowland.harvard.edu>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org, jogo@openwrt.org,
+        mbizon@freebox.fr, linux-usb@vger.kernel.org,
+        gregkh@linuxfoundation.org, blogic@openwrt.org
+Subject: Re: [PATCH 11/13] USB: EHCI: add ignore_oc flag to disable overcurrent
+ checking
+References: <Pine.LNX.4.44L0.1301281500530.1997-100000@iolanthe.rowland.org>
+In-Reply-To: <Pine.LNX.4.44L0.1301281500530.1997-100000@iolanthe.rowland.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+X-archive-position: 35602
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: balbi@ti.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,52 +57,50 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
---C7zPtVaVf+AK4Oqc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Le 28/01/2013 21:08, Alan Stern a écrit :
+> On Mon, 28 Jan 2013, Florian Fainelli wrote:
+>
+>> This patch adds an ignore_oc flag which can be set by EHCI controller
+>> not supporting or wanting to disable overcurrent checking. The EHCI
+>> platform data in include/linux/usb/ehci_pdriver.h is also augmented to
+>> take advantage of this new flag.
+>>
+>> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+>> ---
+>>   drivers/usb/host/ehci-hcd.c      |    2 +-
+>>   drivers/usb/host/ehci-hub.c      |    4 ++--
+>>   drivers/usb/host/ehci.h          |    1 +
+>>   include/linux/usb/ehci_pdriver.h |    1 +
+>>   4 files changed, 5 insertions(+), 3 deletions(-)
+>
+> You forgot to add
+>
+> 	ehci->ignore_oc = pdata->ignore_oc;
+>
+> to ehci_platform_reset().  This makes me wonder: Either the patches
+> were not tested very well or else the new ignore_oc stuff isn't needed.
 
-Hi,
+ignore_oc is not actually needed for all BCM63xx boards, and mine does 
+not require it, but that is clearly an oversight, thanks for spotting this.
 
-On Mon, Jan 28, 2013 at 08:06:21PM +0100, Florian Fainelli wrote:
-> diff --git a/drivers/usb/gadget/bcm63xx_udc.c b/drivers/usb/gadget/bcm63x=
-x_udc.c
-> index ad17533..af450c4 100644
-> --- a/drivers/usb/gadget/bcm63xx_udc.c
-> +++ b/drivers/usb/gadget/bcm63xx_udc.c
-> @@ -41,6 +41,7 @@
->  #include <bcm63xx_dev_usb_usbd.h>
->  #include <bcm63xx_io.h>
->  #include <bcm63xx_regs.h>
-> +#include <bcm63xx_usb_priv.h>
-
-actually, I want to see this arch dependency vanish. The whole
-"phy_mode" stuff should be a PHY driver, care to implement this properly
-using the PHY layer ?
-
---=20
-balbi
-
---C7zPtVaVf+AK4Oqc
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRBuJqAAoJEIaOsuA1yqREZqIP/2R/Qe91Wq5F2fujZBPvEmXK
-+8WfYf+q50nC/nD7KTUJCr3YvhxDT4UnseHXpEsQaCv7DMdJdGwpmtg3GJaSzRki
-HDLf5XbDdolqEIOt/GLVZfyF6DaPCB8LjLzV5AtaRukPcDVRP2H7V9VsvMBPuyK2
-+aA03RYnfIIpE06l+3YV5UPbi0bbUITLq3w9wH0V2jtLrgFqsstDL/eQEhyEsLyY
-qPPlTLfjxVDQF+4I/prsVYTi6qaubss6txjE/0i23u3vw1AjfK4nQ+sxOTDh0iVe
-l7bDJDQSAEUHG3nSoRBZekC3AWr9f8iHZfM1qGImFxe2y2pC96JolvQtNwz9ogmO
-m1ujfP19aYmDmxmOjY3dr7OgUftWPwKUmJlHMgw61ZETaEp8pgLN+Qk+pP5Btld+
-UO6uMBS9SPOc1lRtXhPM81JtzoRye2oSNYceriHT/U/6eNAcDbthyUp1YF94jzan
-NhkcFd4aCIdSQd7GiZVoEDLRPKjCcgHfC7nZ8dQHlv12EFYSnD/BmEmz5iw0S+5H
-xupxFdGlVY5lcL144R7qzKnC01HUIKBIattVTc0pZp/Uqj9VbbcpIplKWE6dTqau
-OQIqToM++5Mcn3LOkmRh046iNV+cs8VJcqpCE0f1+ChUUSCLgWRNZyvqZkR7bTVM
-v/fzDm+1RdD47fecNq/F
-=c77T
------END PGP SIGNATURE-----
-
---C7zPtVaVf+AK4Oqc--
+>
+>> diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+>> index c97503b..bd435ac 100644
+>> --- a/drivers/usb/host/ehci-hcd.c
+>> +++ b/drivers/usb/host/ehci-hcd.c
+>> @@ -634,7 +634,7 @@ static int ehci_run (struct usb_hcd *hcd)
+>>   		"USB %x.%x started, EHCI %x.%02x%s\n",
+>>   		((ehci->sbrn & 0xf0)>>4), (ehci->sbrn & 0x0f),
+>>   		temp >> 8, temp & 0xff,
+>> -		ignore_oc ? ", overcurrent ignored" : "");
+>> +		(ignore_oc || ehci->ignore_oc) ? ", overcurrent ignored" : "");
+>
+> You could simplify the code here and other places if you add
+>
+> 	ehci->ignore_oc ||= ignore_oc;
+>
+> to ehci_init().  Then you wouldn't need to test ignore_oc all the time.
+>
+> Alan Stern
+>
+>

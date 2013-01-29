@@ -1,24 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jan 2013 19:35:20 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:36942 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jan 2013 20:48:49 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:37367 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6833269Ab3A2SfSZV9cZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Jan 2013 19:35:18 +0100
-Message-ID: <510815CB.7030100@phrozen.org>
-Date:   Tue, 29 Jan 2013 19:32:43 +0100
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.7) Gecko/20120922 Icedove/10.0.7
-MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: add irqdomain support for the CPU IRQ controller
-References: <1359410344-19737-1-git-send-email-blogic@openwrt.org> <5106F7DC.1040307@openwrt.org> <51080992.6030905@gmail.com>
-In-Reply-To: <51080992.6030905@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35618
+        id S6820301Ab3A2TssAm-X5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 29 Jan 2013 20:48:48 +0100
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
+        Conor O'Gorman <i@conorogorman.net>
+Subject: [PATCH] MIPS: lantiq: fix cp0_perfcount_irq mapping
+Date:   Tue, 29 Jan 2013 20:46:02 +0100
+Message-Id: <1359488762-13076-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 35619
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -32,40 +29,35 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+The introduction of the OF support broken the cp0_perfcount_irq mapping. This
+resulted in oprofile not working anymore.
 
-> Is it necessary to use the word 'intc'? What does that mean? Perhaps
-> "mti,cpu-interrupt-controller"?
->
+Offending commit is :
 
-the name is only a detail and if you prefer said name i have no prolem 
-with that.
+commit 3645da0276ae9f6938ff29b13904b803ecb68424
+Author: John Crispin <blogic@openwrt.org>
+Date:   Tue Apr 17 10:18:32 2012 +0200
 
+OF: MIPS: lantiq: implement irq_domain support
 
->> Please use this as an actual device tree documentation binding.
->
-> Yes, bindings should be documented in
-> Documentation/devicetree/bindings/mips
+Signed-off-by: Conor O'Gorman <i@conorogorman.net>
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+ arch/mips/lantiq/irq.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sure i will repost in a bit with a binding document
-
-> Just to satisfy my curiosity, Which drivers are using (or will be using)
-> these mapping facilities? The timer and performance counters already
-> work, so it isn't needed for them. What will use this.
-
-we updated the ralink series i posted a few days ago to make use of this 
-patch.
-
-the SoC has its own irq controller behind STATUSF_IP2.
-
-STATUSF_IP5 is wired to ethernet and STATUSF_IP6 is wired to wifi
-
-i think on some socs from ralink the pci is wired to STATUSF_IP3
-
-to be able to nicely represent this in a devicetree we need an entry for 
-the mips cpu interrupt controller.
-
-as the patch no exists I am considering to update the lantiq code to 
-make use of it. Also the patch originates from gabors ath79 devicetree 
-series, which also makes use of it.
-
-	John
+diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
+index 6f84009..5119487 100644
+--- a/arch/mips/lantiq/irq.c
++++ b/arch/mips/lantiq/irq.c
+@@ -449,7 +449,7 @@ int __init icu_of_init(struct device_node *node, struct device_node *parent)
+ #endif
+ 
+ 	/* tell oprofile which irq to use */
+-	cp0_perfcount_irq = LTQ_PERF_IRQ;
++	cp0_perfcount_irq = irq_create_mapping(ltq_domain, LTQ_PERF_IRQ);
+ 
+ 	/*
+ 	 * if the timer irq is not one of the mips irqs we need to
+-- 
+1.7.10.4

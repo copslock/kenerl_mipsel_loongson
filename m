@@ -1,31 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jan 2013 18:13:27 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:40205 "EHLO
-        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6833287Ab3A2RN0CHfco (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Jan 2013 18:13:26 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id C3F2025C822;
-        Tue, 29 Jan 2013 18:13:20 +0100 (CET)
-Received: from mail.szarvasnet.hu ([127.0.0.1])
-        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id sL4iKH-EXXHU; Tue, 29 Jan 2013 18:13:20 +0100 (CET)
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 8565725C820;
-        Tue, 29 Jan 2013 18:13:20 +0100 (CET)
-From:   Gabor Juhos <juhosg@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <blogic@openwrt.org>,
-        linux-mips <linux-mips@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jan 2013 18:40:45 +0100 (CET)
+Received: from mail-da0-f46.google.com ([209.85.210.46]:54334 "EHLO
+        mail-da0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6833292Ab3A2Rknw6HBm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Jan 2013 18:40:43 +0100
+Received: by mail-da0-f46.google.com with SMTP id p5so326108dak.5
+        for <multiple recipients>; Tue, 29 Jan 2013 09:40:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=B177XJeqq5MqDbUItDhwRxSvNupJQUKccB1ihWNVOpc=;
+        b=mvGkbQWuRpptvt6CeCPNIY1Hylvp55Aw9/kFO8tBeRUVNlBibOufuB1VHYYp71DIXy
+         5I6+Cjh6F8kCTZmCWPjQYYBccb8RvWlQaijQZQcJ8tpQoZQAHN8f/JFjiSossMWbhSA8
+         rOrty102p648aWX8U73B80WNPmRU0W9/EqisZSOb/f01d1oG9JS2VB2rfZ9zf5POZycI
+         cPxLAP8ThnX+y+s5b6SE+ZriJQa+Ca5TbaRk/U6o8rhTTiO/rh8C6XEJr+ICSqtRXkbt
+         3I1J6S8NEgx4vpJumu26cp6+HRsxhLNnl3+A0eLwLb42uNVq0ESdIO1tueencDZToo3y
+         m/4w==
+X-Received: by 10.68.211.42 with SMTP id mz10mr4460902pbc.100.1359481236922;
+        Tue, 29 Jan 2013 09:40:36 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id gj1sm8766457pbc.11.2013.01.29.09.40.35
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Tue, 29 Jan 2013 09:40:36 -0800 (PST)
+Message-ID: <51080992.6030905@gmail.com>
+Date:   Tue, 29 Jan 2013 09:40:34 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130110 Thunderbird/17.0.2
+MIME-Version: 1.0
+To:     Florian Fainelli <florian@openwrt.org>
+CC:     John Crispin <blogic@openwrt.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH] MIPS: ath79: simplify MISC IRQ handling
-Date:   Tue, 29 Jan 2013 18:13:17 +0100
-Message-Id: <1359479597-11431-1-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.10
-X-archive-position: 35616
+Subject: Re: [PATCH] MIPS: add irqdomain support for the CPU IRQ controller
+References: <1359410344-19737-1-git-send-email-blogic@openwrt.org> <5106F7DC.1040307@openwrt.org>
+In-Reply-To: <5106F7DC.1040307@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+X-archive-position: 35617
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,90 +55,123 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The current code uses multiple if statements for
-demultiplexing the different interrupt sources.
-Additionally, the MISC interrupt controller has
-32 interrupt sources and the current code does not
-handles all of them.
+On 01/28/2013 02:12 PM, Florian Fainelli wrote:
+> Le 28/01/2013 22:59, John Crispin a écrit :
+>> From: Gabor Juhos <juhosg@openwrt.org>
+>>
+>> Adds an irqdomain wrapper for the cpu irq controller that can be
+>> passed inside
+>> the of_device_id to of_irq_init().
+>>
+>> A device_node inside a dts file would look as such.
+>>
+>> cpuintc: cpuintc@0 {
+>>     #address-cells = <0>;
+>>     #interrupt-cells = <1>;
+>>     interrupt-controller;
+>>     compatible = "mti,cpu-intc";
 
-Get rid of the if statements and process all interrupt
-sources in a loop to fix these issues.
+Is it necessary to use the word 'intc'?  What does that mean?  Perhaps 
+"mti,cpu-interrupt-controller"?
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
----
- arch/mips/ath79/irq.c                  |   45 +++++++-------------------------
- arch/mips/include/asm/mach-ath79/irq.h |    1 +
- 2 files changed, 10 insertions(+), 36 deletions(-)
+>> };
+>
+> Please use this as an actual device tree documentation binding.
 
-diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
-index 90d09fc..219cfa1 100644
---- a/arch/mips/ath79/irq.c
-+++ b/arch/mips/ath79/irq.c
-@@ -35,44 +35,17 @@ static void ath79_misc_irq_handler(unsigned int irq, struct irq_desc *desc)
- 	pending = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_STATUS) &
- 		  __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
- 
--	if (pending & MISC_INT_UART)
--		generic_handle_irq(ATH79_MISC_IRQ_UART);
--
--	else if (pending & MISC_INT_DMA)
--		generic_handle_irq(ATH79_MISC_IRQ_DMA);
--
--	else if (pending & MISC_INT_PERFC)
--		generic_handle_irq(ATH79_MISC_IRQ_PERFC);
--
--	else if (pending & MISC_INT_TIMER)
--		generic_handle_irq(ATH79_MISC_IRQ_TIMER);
--
--	else if (pending & MISC_INT_TIMER2)
--		generic_handle_irq(ATH79_MISC_IRQ_TIMER2);
--
--	else if (pending & MISC_INT_TIMER3)
--		generic_handle_irq(ATH79_MISC_IRQ_TIMER3);
--
--	else if (pending & MISC_INT_TIMER4)
--		generic_handle_irq(ATH79_MISC_IRQ_TIMER4);
--
--	else if (pending & MISC_INT_OHCI)
--		generic_handle_irq(ATH79_MISC_IRQ_OHCI);
--
--	else if (pending & MISC_INT_ERROR)
--		generic_handle_irq(ATH79_MISC_IRQ_ERROR);
--
--	else if (pending & MISC_INT_GPIO)
--		generic_handle_irq(ATH79_MISC_IRQ_GPIO);
--
--	else if (pending & MISC_INT_WDOG)
--		generic_handle_irq(ATH79_MISC_IRQ_WDOG);
-+	if (!pending) {
-+		spurious_interrupt();
-+		return;
-+	}
- 
--	else if (pending & MISC_INT_ETHSW)
--		generic_handle_irq(ATH79_MISC_IRQ_ETHSW);
-+	while (pending) {
-+		int bit = __ffs(pending);
- 
--	else
--		spurious_interrupt();
-+		generic_handle_irq(ATH79_MISC_IRQ(bit));
-+		pending &= ~BIT(bit);
-+	}
- }
- 
- static void ar71xx_misc_irq_unmask(struct irq_data *d)
-diff --git a/arch/mips/include/asm/mach-ath79/irq.h b/arch/mips/include/asm/mach-ath79/irq.h
-index 0968f69..158ad7f 100644
---- a/arch/mips/include/asm/mach-ath79/irq.h
-+++ b/arch/mips/include/asm/mach-ath79/irq.h
-@@ -14,6 +14,7 @@
- 
- #define ATH79_MISC_IRQ_BASE	8
- #define ATH79_MISC_IRQ_COUNT	32
-+#define ATH79_MISC_IRQ(_x)	(ATH79_MISC_IRQ_BASE + (_x))
- 
- #define ATH79_PCI_IRQ_BASE	(ATH79_MISC_IRQ_BASE + ATH79_MISC_IRQ_COUNT)
- #define ATH79_PCI_IRQ_COUNT	6
--- 
-1.7.10
+Yes, bindings should be documented in Documentation/devicetree/bindings/mips
+
+
+Just to satisfy my curiosity, Which drivers are using (or will be using) 
+these mapping facilities?  The timer and performance counters already 
+work, so it isn't needed for them.  What will use this.
+
+David Daney
+
+>
+>>
+>> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+>> Signed-off-by: John Crispin <blogic@openwrt.org>
+>> ---
+>>   arch/mips/include/asm/irq_cpu.h |    6 ++++++
+>>   arch/mips/kernel/irq_cpu.c      |   42
+>> +++++++++++++++++++++++++++++++++++++++
+>>   2 files changed, 48 insertions(+)
+>>
+>> diff --git a/arch/mips/include/asm/irq_cpu.h
+>> b/arch/mips/include/asm/irq_cpu.h
+>> index ef6a07c..3f11fdb 100644
+>> --- a/arch/mips/include/asm/irq_cpu.h
+>> +++ b/arch/mips/include/asm/irq_cpu.h
+>> @@ -17,4 +17,10 @@ extern void mips_cpu_irq_init(void);
+>>   extern void rm7k_cpu_irq_init(void);
+>>   extern void rm9k_cpu_irq_init(void);
+>>
+>> +#ifdef CONFIG_IRQ_DOMAIN
+>> +struct device_node;
+>> +extern int mips_cpu_intc_init(struct device_node *of_node,
+>> +                  struct device_node *parent);
+>> +#endif
+>> +
+>>   #endif /* _ASM_IRQ_CPU_H */
+>> diff --git a/arch/mips/kernel/irq_cpu.c b/arch/mips/kernel/irq_cpu.c
+>> index 972263b..49bc9ca 100644
+>> --- a/arch/mips/kernel/irq_cpu.c
+>> +++ b/arch/mips/kernel/irq_cpu.c
+>> @@ -31,6 +31,7 @@
+>>   #include <linux/interrupt.h>
+>>   #include <linux/kernel.h>
+>>   #include <linux/irq.h>
+>> +#include <linux/irqdomain.h>
+>>
+>>   #include <asm/irq_cpu.h>
+>>   #include <asm/mipsregs.h>
+>> @@ -113,3 +114,44 @@ void __init mips_cpu_irq_init(void)
+>>           irq_set_chip_and_handler(i, &mips_cpu_irq_controller,
+>>                        handle_percpu_irq);
+>>   }
+>> +
+>> +#ifdef CONFIG_IRQ_DOMAIN
+>> +static int mips_cpu_intc_map(struct irq_domain *d, unsigned int irq,
+>> +                 irq_hw_number_t hw)
+>> +{
+>> +    static struct irq_chip *chip;
+>> +
+>> +    if (hw < 2 && cpu_has_mipsmt) {
+>> +        /* Software interrupts are used for MT/CMT IPI */
+>> +        chip = &mips_mt_cpu_irq_controller;
+>> +    } else {
+>> +        chip = &mips_cpu_irq_controller;
+>> +    }
+>> +
+>> +    irq_set_chip_and_handler(irq, chip, handle_percpu_irq);
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static const struct irq_domain_ops mips_cpu_intc_irq_domain_ops = {
+>> +    .map = mips_cpu_intc_map,
+>> +    .xlate = irq_domain_xlate_onecell,
+>> +};
+>> +
+>> +int __init mips_cpu_intc_init(struct device_node *of_node,
+>> +                  struct device_node *parent)
+>> +{
+>> +    struct irq_domain *domain;
+>> +
+>> +    /* Mask interrupts. */
+>> +    clear_c0_status(ST0_IM);
+>> +    clear_c0_cause(CAUSEF_IP);
+>> +
+>> +    domain = irq_domain_add_legacy(of_node, 8, MIPS_CPU_IRQ_BASE, 0,
+>> +                       &mips_cpu_intc_irq_domain_ops, NULL);
+>> +    if (!domain)
+>> +        panic("Failed to add irqdomain for MIPS CPU\n");
+>> +
+>> +    return 0;
+>> +}
+>> +#endif /* CONFIG_IRQ_DOMAIN */
+>>
+>
+>
+>
+>

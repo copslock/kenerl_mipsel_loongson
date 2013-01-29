@@ -1,29 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jan 2013 10:27:32 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:53429 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jan 2013 18:13:27 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:40205 "EHLO
         mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6825706Ab3A2J1MF5ZQU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Jan 2013 10:27:12 +0100
+        with ESMTP id S6833287Ab3A2RN0CHfco (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Jan 2013 18:13:26 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id F2D9C25C693;
-        Tue, 29 Jan 2013 10:27:06 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id C3F2025C822;
+        Tue, 29 Jan 2013 18:13:20 +0100 (CET)
 Received: from mail.szarvasnet.hu ([127.0.0.1])
         by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id ihi572nxJFCP; Tue, 29 Jan 2013 10:27:06 +0100 (CET)
+        with ESMTP id sL4iKH-EXXHU; Tue, 29 Jan 2013 18:13:20 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id B947225C695;
-        Tue, 29 Jan 2013 10:27:06 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 8565725C820;
+        Tue, 29 Jan 2013 18:13:20 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
         linux-mips <linux-mips@linux-mips.org>,
         Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 2/2] MIPS: pci-ar71xx: fix AR71XX_PCI_MEM_SIZE
-Date:   Tue, 29 Jan 2013 10:27:04 +0100
-Message-Id: <1359451624-13759-2-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH] MIPS: ath79: simplify MISC IRQ handling
+Date:   Tue, 29 Jan 2013 18:13:17 +0100
+Message-Id: <1359479597-11431-1-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.10
-In-Reply-To: <1359451624-13759-1-git-send-email-juhosg@openwrt.org>
-References: <1359451624-13759-1-git-send-email-juhosg@openwrt.org>
-X-archive-position: 35615
+X-archive-position: 35616
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,36 +39,90 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The base address of the PCI memory is
-0x10000000 and the base address of the
-PCI configuration space is 0x17000000
-on the AR71xx SoCs.
+The current code uses multiple if statements for
+demultiplexing the different interrupt sources.
+Additionally, the MISC interrupt controller has
+32 interrupt sources and the current code does not
+handles all of them.
 
-The AR71XX_PCI_MEM_SIZE is defined as
-0x08000000 which is wrong because that
-overlaps with the configuration space.
-
-The patch fixes the value of the
-AR71XX_PCI_MEM_SIZE constant, in order
-to avoid this resource conflicts.
+Get rid of the if statements and process all interrupt
+sources in a loop to fix these issues.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 ---
- arch/mips/pci/pci-ar71xx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/ath79/irq.c                  |   45 +++++++-------------------------
+ arch/mips/include/asm/mach-ath79/irq.h |    1 +
+ 2 files changed, 10 insertions(+), 36 deletions(-)
 
-diff --git a/arch/mips/pci/pci-ar71xx.c b/arch/mips/pci/pci-ar71xx.c
-index 1552522..6eaa4f2 100644
---- a/arch/mips/pci/pci-ar71xx.c
-+++ b/arch/mips/pci/pci-ar71xx.c
-@@ -24,7 +24,7 @@
- #include <asm/mach-ath79/pci.h>
+diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
+index 90d09fc..219cfa1 100644
+--- a/arch/mips/ath79/irq.c
++++ b/arch/mips/ath79/irq.c
+@@ -35,44 +35,17 @@ static void ath79_misc_irq_handler(unsigned int irq, struct irq_desc *desc)
+ 	pending = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_STATUS) &
+ 		  __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
  
- #define AR71XX_PCI_MEM_BASE	0x10000000
--#define AR71XX_PCI_MEM_SIZE	0x08000000
-+#define AR71XX_PCI_MEM_SIZE	0x07000000
+-	if (pending & MISC_INT_UART)
+-		generic_handle_irq(ATH79_MISC_IRQ_UART);
+-
+-	else if (pending & MISC_INT_DMA)
+-		generic_handle_irq(ATH79_MISC_IRQ_DMA);
+-
+-	else if (pending & MISC_INT_PERFC)
+-		generic_handle_irq(ATH79_MISC_IRQ_PERFC);
+-
+-	else if (pending & MISC_INT_TIMER)
+-		generic_handle_irq(ATH79_MISC_IRQ_TIMER);
+-
+-	else if (pending & MISC_INT_TIMER2)
+-		generic_handle_irq(ATH79_MISC_IRQ_TIMER2);
+-
+-	else if (pending & MISC_INT_TIMER3)
+-		generic_handle_irq(ATH79_MISC_IRQ_TIMER3);
+-
+-	else if (pending & MISC_INT_TIMER4)
+-		generic_handle_irq(ATH79_MISC_IRQ_TIMER4);
+-
+-	else if (pending & MISC_INT_OHCI)
+-		generic_handle_irq(ATH79_MISC_IRQ_OHCI);
+-
+-	else if (pending & MISC_INT_ERROR)
+-		generic_handle_irq(ATH79_MISC_IRQ_ERROR);
+-
+-	else if (pending & MISC_INT_GPIO)
+-		generic_handle_irq(ATH79_MISC_IRQ_GPIO);
+-
+-	else if (pending & MISC_INT_WDOG)
+-		generic_handle_irq(ATH79_MISC_IRQ_WDOG);
++	if (!pending) {
++		spurious_interrupt();
++		return;
++	}
  
- #define AR71XX_PCI_WIN0_OFFS		0x10000000
- #define AR71XX_PCI_WIN1_OFFS		0x11000000
+-	else if (pending & MISC_INT_ETHSW)
+-		generic_handle_irq(ATH79_MISC_IRQ_ETHSW);
++	while (pending) {
++		int bit = __ffs(pending);
+ 
+-	else
+-		spurious_interrupt();
++		generic_handle_irq(ATH79_MISC_IRQ(bit));
++		pending &= ~BIT(bit);
++	}
+ }
+ 
+ static void ar71xx_misc_irq_unmask(struct irq_data *d)
+diff --git a/arch/mips/include/asm/mach-ath79/irq.h b/arch/mips/include/asm/mach-ath79/irq.h
+index 0968f69..158ad7f 100644
+--- a/arch/mips/include/asm/mach-ath79/irq.h
++++ b/arch/mips/include/asm/mach-ath79/irq.h
+@@ -14,6 +14,7 @@
+ 
+ #define ATH79_MISC_IRQ_BASE	8
+ #define ATH79_MISC_IRQ_COUNT	32
++#define ATH79_MISC_IRQ(_x)	(ATH79_MISC_IRQ_BASE + (_x))
+ 
+ #define ATH79_PCI_IRQ_BASE	(ATH79_MISC_IRQ_BASE + ATH79_MISC_IRQ_COUNT)
+ #define ATH79_PCI_IRQ_COUNT	6
 -- 
 1.7.10

@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jan 2013 13:02:33 +0100 (CET)
-Received: from mail-pa0-f51.google.com ([209.85.220.51]:59263 "EHLO
-        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823020Ab3A3MC3wW4YR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jan 2013 13:02:29 +0100
-Received: by mail-pa0-f51.google.com with SMTP id hz1so130941pad.38
-        for <multiple recipients>; Wed, 30 Jan 2013 04:02:23 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jan 2013 13:05:24 +0100 (CET)
+Received: from mail-da0-f50.google.com ([209.85.210.50]:59839 "EHLO
+        mail-da0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827447Ab3A3MFU4nKwC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jan 2013 13:05:20 +0100
+Received: by mail-da0-f50.google.com with SMTP id h15so743954dan.37
+        for <multiple recipients>; Wed, 30 Jan 2013 04:05:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=x-received:sender:from:to:cc:subject:date:message-id:x-mailer
          :in-reply-to:references;
-        bh=T2olCVS+YVETcBiY9olet4ASVI2tUCbpsVLD6qQunOE=;
-        b=rJRJIEE1GXr8xX8VZKXTQrpZL/UXE+MN6vjgwAkGN/qB3kxIJYTY4v+qzdKPip55jD
-         CzLYxYB6f3PaNkWRfUYhy4GELI3ruvPGmZEAFvP9+qJRxefc2qhDPESKlvGSoTvMXFo2
-         5DVBqCZRHSoIXGfG4OgCq/9c8bTYvMEaxlKz2igYPARjdDfSP6bledGUMGP9Le3aJg4s
-         u5Cyn8sbgehdqQX+MFJIrJrVb3QFM2AaNYGrvQVkF+CpZpEVCOeBBrZpQ1d5zkQ5zBSC
-         VyM79Q9duVYyNqo4lmDXi1u1v65zdPdWt/iUGTRyifLvRPYBivnmfj4lcmsQBKtGTPzM
-         ueig==
-X-Received: by 10.68.237.42 with SMTP id uz10mr9655568pbc.118.1359527305805;
-        Tue, 29 Jan 2013 22:28:25 -0800 (PST)
+        bh=IaJcTJy9ax4JWUI9eNXm0UkAMau/fWOUsIOBB3hDrIg=;
+        b=vq69zlGd8e4hhnfR4MsU1kePZQr3pAry4pF9lZvCJrFuw1J0eZ0biVJQGtXfEaR6z3
+         70JuPik0XwatKCoDd/tvHD8hg6LR2nDZl+9VT8Y2ixeGWfTmXH7aGbdKtCXTwmj2GI7W
+         whwGQL0q6vElDg/hdoKDfMKIKIF6tYimXlnrdgFDcOwj1OyxUP+jswWkokoWIgeIjwqN
+         ldDV1wd2PYkEJXpEdSgXDvgTHhwdtYgXSUUTM7imwrTA4ZIbSEq6PEmI/qMq8nRkBMHA
+         S22NIOqkCLUoSrkjmpmpqwrodGX9hSf44LQc+4wEE8pT8TJ7Ev5UVX0SsuWaujFnwuoF
+         ND3Q==
+X-Received: by 10.68.238.165 with SMTP id vl5mr3631526pbc.0.1359527480998;
+        Tue, 29 Jan 2013 22:31:20 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id gj1sm612282pbc.11.2013.01.29.22.27.52
+        by mx.google.com with ESMTPS id gj1sm612282pbc.11.2013.01.29.22.31.09
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 29 Jan 2013 22:28:24 -0800 (PST)
+        Tue, 29 Jan 2013 22:31:19 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
@@ -29,13 +29,13 @@ Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH V9 02/13] MIPS: Loongson: Add basic Loongson-3 CPU support
-Date:   Wed, 30 Jan 2013 14:24:55 +0800
-Message-Id: <1359527106-22879-3-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V9 07/13] MIPS: Loongson 3: Add IRQ init and dispatch support
+Date:   Wed, 30 Jan 2013 14:25:00 +0800
+Message-Id: <1359527106-22879-8-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1359527106-22879-1-git-send-email-chenhc@lemote.com>
 References: <1359527106-22879-1-git-send-email-chenhc@lemote.com>
-X-archive-position: 35630
+X-archive-position: 35631
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,166 +53,207 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Basic Loongson-3 CPU support include CPU probing and TLB/cache
-initializing.
+IRQ routing path of Loongson-3:
+Devices(most) --> I8259 --> HT Controller --> IRQ Routing Table --> CPU
+                                                  ^
+                                                  |
+Device(legacy devices such as UART) --> Bonito ---|
+
+IRQ Routing Table route 32 INTs to CPU's INT0~INT3(IP2~IP5 of CP0), 32
+INTs include 16 HT INTs(mostly), 4 PCI INTs, 1 LPC INT, etc. IP6 is used
+for IPI and IP7 is used for internal MIPS timer. LOONGSON_INT_ROUTER_*
+are IRQ Routing Table registers.
+
+I8259 IRQs are 1:1 mapped to HT1 INTs. LOONGSON_HT1_* are configuration
+registers of HT1 controller.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Hongliang Tao <taohl@lemote.com>
 Signed-off-by: Hua Yan <yanh@lemote.com>
 ---
- arch/mips/kernel/cpu-probe.c |   14 +++++++---
- arch/mips/mm/c-r4k.c         |   62 +++++++++++++++++++++++++++++++++++++++++-
- arch/mips/mm/tlb-r4k.c       |    2 +-
- arch/mips/mm/tlbex.c         |    1 +
- 4 files changed, 73 insertions(+), 6 deletions(-)
+ arch/mips/include/asm/mach-loongson/irq.h      |   24 +++++++
+ arch/mips/include/asm/mach-loongson/loongson.h |    9 +++
+ arch/mips/loongson/Makefile                    |    6 ++
+ arch/mips/loongson/loongson-3/Makefile         |    4 +
+ arch/mips/loongson/loongson-3/irq.c            |   87 ++++++++++++++++++++++++
+ 5 files changed, 130 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-loongson/irq.h
+ create mode 100644 arch/mips/loongson/loongson-3/Makefile
+ create mode 100644 arch/mips/loongson/loongson-3/irq.c
 
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 9f31334..23ee426 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -773,17 +773,23 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 			     MIPS_CPU_LLSC;
- 		c->tlbsize = 64;
- 		break;
--	case PRID_IMP_LOONGSON2:
--		c->cputype = CPU_LOONGSON2;
--		__cpu_name[cpu] = "ICT Loongson-2";
--
-+	case PRID_IMP_LOONGSON2: /* Loongson-2/3 have the same PRID_IMP field */
- 		switch (c->processor_id & PRID_REV_MASK) {
- 		case PRID_REV_LOONGSON2E:
-+			c->cputype = CPU_LOONGSON2;
-+			__cpu_name[cpu] = "ICT Loongson-2E";
- 			set_elf_platform(cpu, "loongson2e");
- 			break;
- 		case PRID_REV_LOONGSON2F:
-+			c->cputype = CPU_LOONGSON2;
-+			__cpu_name[cpu] = "ICT Loongson-2F";
- 			set_elf_platform(cpu, "loongson2f");
- 			break;
-+		case PRID_REV_LOONGSON3A:
-+			c->cputype = CPU_LOONGSON3;
-+			__cpu_name[cpu] = "ICT Loongson-3A";
-+			set_elf_platform(cpu, "loongson3a");
-+			break;
- 		}
- 
- 		c->isa_level = MIPS_CPU_ISA_III;
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 0f7d788..d1b9da3 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -968,6 +968,31 @@ static void __cpuinit probe_pcache(void)
- 		c->dcache.waybit = 0;
- 		break;
- 
-+	case CPU_LOONGSON3:
-+		config1 = read_c0_config1();
-+		if ((lsize = ((config1 >> 19) & 7)))
-+			c->icache.linesz = 2 << lsize;
-+		else
-+			c->icache.linesz = lsize;
-+		c->icache.sets = 64 << ((config1 >> 22) & 7);
-+		c->icache.ways = 1 + ((config1 >> 16) & 7);
-+		icache_size = c->icache.sets *
-+					  c->icache.ways *
-+					  c->icache.linesz;
-+		c->icache.waybit = 0;
+diff --git a/arch/mips/include/asm/mach-loongson/irq.h b/arch/mips/include/asm/mach-loongson/irq.h
+new file mode 100644
+index 0000000..4787cd0
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson/irq.h
+@@ -0,0 +1,24 @@
++#ifndef __ASM_MACH_LOONGSON_IRQ_H_
++#define __ASM_MACH_LOONGSON_IRQ_H_
 +
-+		if ((lsize = ((config1 >> 10) & 7)))
-+			c->dcache.linesz = 2 << lsize;
-+		else
-+			c->dcache.linesz = lsize;
-+		c->dcache.sets = 64 << ((config1 >> 13) & 7);
-+		c->dcache.ways = 1 + ((config1 >> 7) & 7);
-+		dcache_size = c->dcache.sets *
-+					  c->dcache.ways *
-+					  c->dcache.linesz;
-+		c->dcache.waybit = 0;
-+		break;
++#include <boot_param.h>
 +
- 	default:
- 		if (!(config & MIPS_CONF_M))
- 			panic("Don't know how to probe P-caches on this cpu.");
-@@ -1188,6 +1213,34 @@ static void __init loongson2_sc_init(void)
- }
- #endif
++/* cpu core interrupt numbers */
++#define MIPS_CPU_IRQ_BASE 56
++
++#ifdef CONFIG_CPU_LOONGSON3
++
++#define LOONGSON_UART_IRQ   (MIPS_CPU_IRQ_BASE + 2) /* uart */
++#define LOONGSON_I8259_IRQ  (MIPS_CPU_IRQ_BASE + 3) /* i8259 */
++#define LOONGSON_TIMER_IRQ  (MIPS_CPU_IRQ_BASE + 7) /* cpu timer */
++
++#define LOONGSON_HT1_CFG_BASE		ht_control_base
++#define LOONGSON_HT1_INT_VECTOR_BASE	LOONGSON_HT1_CFG_BASE + 0x80
++#define LOONGSON_HT1_INT_EN_BASE	LOONGSON_HT1_CFG_BASE + 0xa0
++#define LOONGSON_HT1_INT_VECTOR(n)	LOONGSON3_REG32(LOONGSON_HT1_INT_VECTOR_BASE, 4 * n)
++#define LOONGSON_HT1_INTN_EN(n)		LOONGSON3_REG32(LOONGSON_HT1_INT_EN_BASE, 4 * n)
++
++#endif
++
++#include_next <irq.h>
++#endif /* __ASM_MACH_LOONGSON_IRQ_H_ */
+diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
+index 960811a..f573e47 100644
+--- a/arch/mips/include/asm/mach-loongson/loongson.h
++++ b/arch/mips/include/asm/mach-loongson/loongson.h
+@@ -62,6 +62,12 @@ extern int mach_i8259_irq(void);
+ #define LOONGSON_REG(x) \
+ 	(*(volatile u32 *)((char *)CKSEG1ADDR(LOONGSON_REG_BASE) + (x)))
  
-+#if defined(CONFIG_CPU_LOONGSON3)
-+static void __init loongson3_sc_init(void)
++#define LOONGSON3_REG8(base, x) \
++	(*(volatile u8 *)((char *)TO_UNCAC(base) + (x)))
++
++#define LOONGSON3_REG32(base, x) \
++	(*(volatile u32 *)((char *)TO_UNCAC(base) + (x)))
++
+ #define LOONGSON_IRQ_BASE	32
+ #define LOONGSON2_PERFCNT_IRQ	(MIPS_CPU_IRQ_BASE + 6) /* cpu perf counter */
+ 
+@@ -87,6 +93,9 @@ static inline void do_perfcnt_IRQ(void)
+ #define LOONGSON_REG_BASE 	0x1fe00000
+ #define LOONGSON_REG_SIZE 	0x00100000	/* 256Bytes + 256Bytes + ??? */
+ #define LOONGSON_REG_TOP	(LOONGSON_REG_BASE+LOONGSON_REG_SIZE-1)
++#define LOONGSON3_REG_BASE	0x3ff00000
++#define LOONGSON3_REG_SIZE 	0x00100000	/* 256Bytes + 256Bytes + ??? */
++#define LOONGSON3_REG_TOP	(LOONGSON3_REG_BASE+LOONGSON3_REG_SIZE-1)
+ 
+ #define LOONGSON_LIO1_BASE 	0x1ff00000
+ #define LOONGSON_LIO1_SIZE 	0x00100000	/* 1M */
+diff --git a/arch/mips/loongson/Makefile b/arch/mips/loongson/Makefile
+index 2b76cb0..b1e4f05 100644
+--- a/arch/mips/loongson/Makefile
++++ b/arch/mips/loongson/Makefile
+@@ -15,3 +15,9 @@ obj-$(CONFIG_LEMOTE_FULOONG2E)  += fuloong-2e/
+ #
+ 
+ obj-$(CONFIG_LEMOTE_MACH2F)  += lemote-2f/
++
++#
++# All Loongson-3 family machines
++#
++
++obj-$(CONFIG_CPU_LOONGSON3)  += loongson-3/
+diff --git a/arch/mips/loongson/loongson-3/Makefile b/arch/mips/loongson/loongson-3/Makefile
+new file mode 100644
+index 0000000..b9968cd
+--- /dev/null
++++ b/arch/mips/loongson/loongson-3/Makefile
+@@ -0,0 +1,4 @@
++#
++# Makefile for Loongson-3 family machines
++#
++obj-y			+= irq.o
+diff --git a/arch/mips/loongson/loongson-3/irq.c b/arch/mips/loongson/loongson-3/irq.c
+new file mode 100644
+index 0000000..27aef31
+--- /dev/null
++++ b/arch/mips/loongson/loongson-3/irq.c
+@@ -0,0 +1,87 @@
++#include <loongson.h>
++#include <irq.h>
++#include <linux/interrupt.h>
++#include <linux/module.h>
++
++#include <asm/irq_cpu.h>
++#include <asm/i8259.h>
++#include <asm/mipsregs.h>
++
++#define LOONGSON_INT_ROUTER_OFFSET	0x1400
++#define LOONGSON_INT_ROUTER_INTEN	LOONGSON3_REG32(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET + 0x24)
++#define LOONGSON_INT_ROUTER_INTENSET	LOONGSON3_REG32(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET + 0x28)
++#define LOONGSON_INT_ROUTER_INTENCLR	LOONGSON3_REG32(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET + 0x2c)
++#define LOONGSON_INT_ROUTER_ENTRY(n)	LOONGSON3_REG8(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET + n)
++#define LOONGSON_INT_ROUTER_LPC		LOONGSON_INT_ROUTER_ENTRY(0x0a)
++#define LOONGSON_INT_ROUTER_HT1(n)	LOONGSON_INT_ROUTER_ENTRY(n + 0x18)
++
++#define LOONGSON_INT_CORE0_INT0		0x11 /* route to int 0 of core 0 */
++#define LOONGSON_INT_CORE0_INT1		0x21 /* route to int 1 of core 0 */
++
++extern void loongson3_ipi_interrupt(struct pt_regs *regs);
++
++static void ht_irqdispatch(void)
 +{
-+	struct cpuinfo_mips *c = &current_cpu_data;
-+	unsigned int config2, lsize;
++	unsigned int i, irq;
++	unsigned int ht_irq[] = {1, 3, 4, 5, 6, 7, 8, 12, 14, 15};
 +
-+	config2 = read_c0_config2();
-+	if ((lsize = ((config2 >> 4) & 15)))
-+		c->scache.linesz = 2 << lsize;
-+	else
-+		c->scache.linesz = lsize;
-+	c->scache.sets = 64 << ((config2 >> 8) & 15);
-+	c->scache.ways = 1 + (config2 & 15);
++	irq = LOONGSON_HT1_INT_VECTOR(0);
++	LOONGSON_HT1_INT_VECTOR(0) = irq;
 +
-+	scache_size = c->scache.sets *
-+				  c->scache.ways *
-+				  c->scache.linesz;
-+	/* Loongson-3 has 4 cores, 1MB scache for each. scaches are shared */
-+	scache_size *= 4;
-+	c->scache.waybit = 0;
-+	pr_info("Unified secondary cache %ldkB %s, linesize %d bytes.\n",
-+	       scache_size >> 10, way_string[c->scache.ways], c->scache.linesz);
-+	if (scache_size)
-+		c->options |= MIPS_CPU_INCLUSIVE_CACHES;
-+	return;
++	for (i = 0; i < (sizeof(ht_irq) / sizeof(*ht_irq)); i++) {
++		if (irq & (0x1 << ht_irq[i]))
++			do_IRQ(ht_irq[i]);
++	}
 +}
++
++void mach_irq_dispatch(unsigned int pending)
++{
++	if (pending & CAUSEF_IP7)
++		do_IRQ(LOONGSON_TIMER_IRQ);
++#if defined(CONFIG_SMP)
++	else if (pending & CAUSEF_IP6)
++		loongson3_ipi_interrupt(NULL);
 +#endif
++	else if (pending & CAUSEF_IP3)
++		ht_irqdispatch();
++	else if (pending & CAUSEF_IP2)
++		do_IRQ(LOONGSON_UART_IRQ);
++	else {
++		printk(KERN_ERR "%s : spurious interrupt\n", __func__);
++		spurious_interrupt();
++	}
++}
 +
- extern int r5k_sc_init(void);
- extern int rm7k_sc_init(void);
- extern int mips_sc_init(void);
-@@ -1236,11 +1289,18 @@ static void __cpuinit setup_scache(void)
- #endif
- 		return;
- 
--#if defined(CONFIG_CPU_LOONGSON2)
- 	case CPU_LOONGSON2:
-+#if defined(CONFIG_CPU_LOONGSON2)
- 		loongson2_sc_init();
-+#endif
- 		return;
++static struct irqaction cascade_irqaction = {
++	.handler = no_action,
++	.name = "cascade",
++};
 +
-+	case CPU_LOONGSON3:
-+#if defined(CONFIG_CPU_LOONGSON3)
-+		loongson3_sc_init();
- #endif
-+		return;
++void irq_router_init(void)
++{
++	int i;
 +
- 	case CPU_XLP:
- 		/* don't need to worry about L2, fully coherent */
- 		return;
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 2a7c972..0113330 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -50,7 +50,7 @@ extern void build_tlb_refill_handler(void);
- 
- #endif /* CONFIG_MIPS_MT_SMTC */
- 
--#if defined(CONFIG_CPU_LOONGSON2)
-+#if defined(CONFIG_CPU_LOONGSON2) || defined(CONFIG_CPU_LOONGSON3)
- /*
-  * LOONGSON2 has a 4 entry itlb which is a subset of dtlb,
-  * unfortrunately, itlb is not totally transparent to software.
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 1c8ac49..ac715b5 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -592,6 +592,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
- 	case CPU_BMIPS4380:
- 	case CPU_BMIPS5000:
- 	case CPU_LOONGSON2:
-+	case CPU_LOONGSON3:
- 	case CPU_R5500:
- 		if (m4kc_tlbp_war())
- 			uasm_i_nop(p);
++	/* route LPC int to cpu core0 int 0 */
++	LOONGSON_INT_ROUTER_LPC = LOONGSON_INT_CORE0_INT0;
++	/* route HT1 int0 ~ int7 to cpu core0 INT1*/
++	for (i = 0; i < 8; i++)
++		LOONGSON_INT_ROUTER_HT1(i) = LOONGSON_INT_CORE0_INT1;
++	/* enable HT1 interrupt */
++	LOONGSON_HT1_INTN_EN(0) = 0xffffffff;
++	/* enable router interrupt intenset */
++	LOONGSON_INT_ROUTER_INTENSET = LOONGSON_INT_ROUTER_INTEN | (0xffff << 16) | 0x1 << 10;
++}
++
++void __init mach_init_irq(void)
++{
++	clear_c0_status(ST0_IM | ST0_BEV);
++
++	irq_router_init();
++	mips_cpu_irq_init();
++	init_i8259_irqs();
++
++	/* setup i8259 irq */
++	setup_irq(LOONGSON_I8259_IRQ, &cascade_irqaction);
++
++	set_c0_status(STATUSF_IP2 | STATUSF_IP6);
++}
 -- 
 1.7.7.3

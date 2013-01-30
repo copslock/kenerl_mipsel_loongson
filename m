@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jan 2013 14:21:27 +0100 (CET)
-Received: from mail-pb0-f53.google.com ([209.85.160.53]:36617 "EHLO
-        mail-pb0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816859Ab3A3NVZrVJbx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jan 2013 14:21:25 +0100
-Received: by mail-pb0-f53.google.com with SMTP id un1so964572pbc.26
-        for <multiple recipients>; Wed, 30 Jan 2013 05:21:19 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jan 2013 14:36:15 +0100 (CET)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:41826 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817037Ab3A3NgNc9RiW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jan 2013 14:36:13 +0100
+Received: by mail-pb0-f49.google.com with SMTP id xa12so972478pbc.8
+        for <multiple recipients>; Wed, 30 Jan 2013 05:36:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=x-received:sender:from:to:cc:subject:date:message-id:x-mailer
          :in-reply-to:references;
-        bh=dsAUVWa0/6gP107XDa9xz4S5UukeJzOrxIqNAn8ke6I=;
-        b=a07y/nZofhdIrfKLeA+VDnJ4J5kAyK90PqQbLCbP0zSB90HL/1bQURcAnkCx9y80YJ
-         YJhY+Pf6803RsWjxGnZ40VFqQE6vhDKxQggTfQG5FcJyGpGcR3XMBVoDVPgExDVYeRUu
-         9kli/wlLdzm13/g9pWAzkn2BcNd5RXWVYm5HY6TEzCbsg5ryWHGTFMi1Hqupfv+sSN8d
-         flNMi+io/ccqlIOfCy5cuXAgH+uggeFvh7skW9QloZPYWYMoAv9v3S9M9FNkXBhwX2Vj
-         v0joILN2/41wQkQlKrmJMpJPjtGDZx+cxpFx2d67KI3aKbBn/aYp3t0LV8lc061o5JjT
-         SDOw==
-X-Received: by 10.68.130.195 with SMTP id og3mr9923341pbb.10.1359527624554;
-        Tue, 29 Jan 2013 22:33:44 -0800 (PST)
+        bh=fN5AENRwgdTC2u/WDQCCGQBGaz4mTEMUXd/rSb3pcRY=;
+        b=loaTa5gr29tH8gRzuGupPv4LOdP3+21QGOozIYHGVtx4rktBh9CEDp4tdauSRq+nJ/
+         loeaGpLTaLbLxxBjyh1ovVQiTF8xzuBLwl3bq5YX/61Ei6jE/ktCGjcmF8nZa9LIpg9q
+         zFHy6ZluhmRWKUPPyGuRAAxwxsFp5WULVlg0GGTrOOJHy7jGQssSBGZMPV3HnEJn+db5
+         FWPXw5cjJPWidIwhPqcvf8d/emAM4ONviWQc7yDYYOjet5lCaIcz4lPU6c8oh1o3Hul2
+         Ta+HrFGbXk9CNBuulrGXS/kL12hi4LIJUc6gukbQmNRMjJHyJTohozR3hfnxf1lD/8SZ
+         iUsg==
+X-Received: by 10.68.219.67 with SMTP id pm3mr9639295pbc.150.1359527360536;
+        Tue, 29 Jan 2013 22:29:20 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id gj1sm612282pbc.11.2013.01.29.22.33.30
+        by mx.google.com with ESMTPS id gj1sm612282pbc.11.2013.01.29.22.28.28
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 29 Jan 2013 22:33:43 -0800 (PST)
+        Tue, 29 Jan 2013 22:29:19 -0800 (PST)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
@@ -29,13 +29,13 @@ Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH V9 13/13] MIPS: Loongson: Add a Loongson-3 default config file
-Date:   Wed, 30 Jan 2013 14:25:06 +0800
-Message-Id: <1359527106-22879-14-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V9 03/13] MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature
+Date:   Wed, 30 Jan 2013 14:24:56 +0800
+Message-Id: <1359527106-22879-4-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1359527106-22879-1-git-send-email-chenhc@lemote.com>
 References: <1359527106-22879-1-git-send-email-chenhc@lemote.com>
-X-archive-position: 35635
+X-archive-position: 35636
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,348 +53,134 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+Loongson-3 maintains cache coherency by hardware. So we introduce a cpu
+feature named cpu_has_coherent_cache and use it to modify MIPS's cache
+flushing functions.
+
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Hongliang Tao <taohl@lemote.com>
 Signed-off-by: Hua Yan <yanh@lemote.com>
 ---
- arch/mips/configs/loongson3_defconfig |  330 +++++++++++++++++++++++++++++++++
- 1 files changed, 330 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/configs/loongson3_defconfig
+ arch/mips/include/asm/cacheflush.h                 |    6 +++++
+ arch/mips/include/asm/cpu-features.h               |    3 ++
+ .../asm/mach-loongson/cpu-feature-overrides.h      |    6 +++++
+ arch/mips/mm/c-r4k.c                               |   21 ++++++++++++++++++-
+ 4 files changed, 34 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
-new file mode 100644
-index 0000000..3b76056
---- /dev/null
-+++ b/arch/mips/configs/loongson3_defconfig
-@@ -0,0 +1,329 @@
-+CONFIG_MACH_LOONGSON=y
-+CONFIG_LEMOTE_MACH3A=y
-+CONFIG_LOONGSON_BIGMEM=y
-+CONFIG_CPU_LOONGSON3=y
-+CONFIG_64BIT=y
-+CONFIG_PAGE_SIZE_16KB=y
-+CONFIG_SPARSEMEM_MANUAL=y
-+CONFIG_KSM=y
-+CONFIG_SMP=y
-+CONFIG_NR_CPUS=4
-+CONFIG_HZ_256=y
-+CONFIG_PREEMPT=y
-+CONFIG_KEXEC=y
-+CONFIG_EXPERIMENTAL=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_KERNEL_LZMA=y
-+CONFIG_SYSVIPC=y
-+CONFIG_POSIX_MQUEUE=y
-+CONFIG_AUDIT=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_BSD_PROCESS_ACCT=y
-+CONFIG_BSD_PROCESS_ACCT_V3=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_CPUSETS=y
-+CONFIG_RESOURCE_COUNTERS=y
-+CONFIG_MEMCG=y
-+CONFIG_MEMCG_SWAP=y
-+CONFIG_BLK_CGROUP=y
-+CONFIG_SCHED_AUTOGROUP=y
-+CONFIG_SYSFS_DEPRECATED=y
-+CONFIG_RELAY=y
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_RD_BZIP2=y
-+CONFIG_RD_LZMA=y
-+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
-+CONFIG_SYSCTL_SYSCALL=y
-+CONFIG_EMBEDDED=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_FORCE_LOAD=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODULE_FORCE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+CONFIG_BLK_DEV_INTEGRITY=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_IOSCHED_DEADLINE=m
-+CONFIG_CFQ_GROUP_IOSCHED=y
-+CONFIG_PCI=y
-+CONFIG_HT_PCI=y
-+CONFIG_PCIEPORTBUS=y
-+CONFIG_HOTPLUG_PCI_PCIE=m
-+# CONFIG_PCIEAER is not set
-+CONFIG_PCIEASPM_PERFORMANCE=y
-+CONFIG_HOTPLUG_PCI=y
-+CONFIG_HOTPLUG_PCI_SHPC=m
-+CONFIG_BINFMT_MISC=m
-+CONFIG_MIPS32_COMPAT=y
-+CONFIG_MIPS32_O32=y
-+CONFIG_MIPS32_N32=y
-+CONFIG_PM_RUNTIME=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_XFRM_USER=y
-+CONFIG_NET_KEY=y
-+CONFIG_INET=y
-+CONFIG_IP_MULTICAST=y
-+CONFIG_IP_ADVANCED_ROUTER=y
-+CONFIG_IP_MULTIPLE_TABLES=y
-+CONFIG_IP_ROUTE_MULTIPATH=y
-+CONFIG_IP_ROUTE_VERBOSE=y
-+CONFIG_NETFILTER=y
-+CONFIG_NETFILTER_NETLINK_LOG=m
-+CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
-+CONFIG_NETFILTER_XT_TARGET_MARK=m
-+CONFIG_NETFILTER_XT_TARGET_NFQUEUE=m
-+CONFIG_NETFILTER_XT_MATCH_COMMENT=m
-+CONFIG_NETFILTER_XT_MATCH_DCCP=m
-+CONFIG_NETFILTER_XT_MATCH_ESP=m
-+CONFIG_NETFILTER_XT_MATCH_LENGTH=m
-+CONFIG_NETFILTER_XT_MATCH_LIMIT=m
-+CONFIG_NETFILTER_XT_MATCH_MAC=m
-+CONFIG_NETFILTER_XT_MATCH_MARK=m
-+CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
-+CONFIG_NETFILTER_XT_MATCH_PKTTYPE=m
-+CONFIG_NETFILTER_XT_MATCH_QUOTA=m
-+CONFIG_NETFILTER_XT_MATCH_REALM=m
-+CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
-+CONFIG_NETFILTER_XT_MATCH_STRING=m
-+CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
-+CONFIG_IP_VS=m
-+CONFIG_IP_NF_QUEUE=m
-+CONFIG_IP_NF_IPTABLES=m
-+CONFIG_IP_NF_MATCH_AH=m
-+CONFIG_IP_NF_MATCH_ECN=m
-+CONFIG_IP_NF_MATCH_TTL=m
-+CONFIG_IP_NF_FILTER=m
-+CONFIG_IP_NF_TARGET_REJECT=m
-+CONFIG_IP_NF_TARGET_ULOG=m
-+CONFIG_IP_NF_MANGLE=m
-+CONFIG_IP_NF_TARGET_ECN=m
-+CONFIG_IP_NF_TARGET_TTL=m
-+CONFIG_IP_NF_RAW=m
-+CONFIG_IP_NF_ARPTABLES=m
-+CONFIG_IP_NF_ARPFILTER=m
-+CONFIG_IP_NF_ARP_MANGLE=m
-+CONFIG_IP_SCTP=m
-+CONFIG_L2TP=m
-+CONFIG_CFG80211=m
-+CONFIG_CFG80211_WEXT=y
-+CONFIG_MAC80211=m
-+CONFIG_RFKILL=m
-+CONFIG_RFKILL_INPUT=y
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+CONFIG_MTD=m
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_BLK_DEV_CRYPTOLOOP=y
-+CONFIG_BLK_DEV_RAM=y
-+CONFIG_BLK_DEV_RAM_SIZE=8192
-+CONFIG_RAID_ATTRS=m
-+CONFIG_SCSI_TGT=y
-+CONFIG_BLK_DEV_SD=y
-+CONFIG_BLK_DEV_SR=y
-+CONFIG_CHR_DEV_SG=y
-+CONFIG_CHR_DEV_SCH=m
-+CONFIG_SCSI_MULTI_LUN=y
-+CONFIG_SCSI_CONSTANTS=y
-+CONFIG_SCSI_LOGGING=y
-+CONFIG_SCSI_SPI_ATTRS=m
-+CONFIG_SCSI_FC_ATTRS=m
-+CONFIG_SCSI_ISCSI_ATTRS=m
-+CONFIG_ATA=y
-+CONFIG_SATA_AHCI=y
-+CONFIG_PATA_ATIIXP=y
-+CONFIG_MD=y
-+CONFIG_BLK_DEV_DM=m
-+CONFIG_DM_CRYPT=m
-+CONFIG_DM_SNAPSHOT=m
-+CONFIG_DM_MIRROR=m
-+CONFIG_DM_ZERO=m
-+CONFIG_NETDEVICES=y
-+CONFIG_TUN=m
-+# CONFIG_NET_VENDOR_3COM is not set
-+# CONFIG_NET_VENDOR_ADAPTEC is not set
-+# CONFIG_NET_VENDOR_ALTEON is not set
-+# CONFIG_NET_VENDOR_AMD is not set
-+# CONFIG_NET_VENDOR_ATHEROS is not set
-+# CONFIG_NET_CADENCE is not set
-+# CONFIG_NET_VENDOR_BROADCOM is not set
-+# CONFIG_NET_VENDOR_BROCADE is not set
-+# CONFIG_NET_VENDOR_CHELSIO is not set
-+# CONFIG_NET_VENDOR_CIRRUS is not set
-+# CONFIG_NET_VENDOR_CISCO is not set
-+# CONFIG_NET_VENDOR_DEC is not set
-+# CONFIG_NET_VENDOR_DLINK is not set
-+# CONFIG_NET_VENDOR_EMULEX is not set
-+# CONFIG_NET_VENDOR_EXAR is not set
-+# CONFIG_NET_VENDOR_FUJITSU is not set
-+# CONFIG_NET_VENDOR_HP is not set
-+CONFIG_E1000=y
-+CONFIG_E1000E=y
-+CONFIG_IGB=y
-+# CONFIG_NET_VENDOR_I825XX is not set
-+# CONFIG_NET_VENDOR_MARVELL is not set
-+# CONFIG_NET_VENDOR_MELLANOX is not set
-+# CONFIG_NET_VENDOR_MICREL is not set
-+# CONFIG_NET_VENDOR_MYRI is not set
-+# CONFIG_NET_VENDOR_NATSEMI is not set
-+# CONFIG_NET_VENDOR_NVIDIA is not set
-+# CONFIG_NET_VENDOR_OKI is not set
-+# CONFIG_NET_PACKET_ENGINE is not set
-+# CONFIG_NET_VENDOR_QLOGIC is not set
-+# CONFIG_NET_VENDOR_RACAL is not set
-+CONFIG_R8169=y
-+# CONFIG_NET_VENDOR_RDC is not set
-+# CONFIG_NET_VENDOR_SEEQ is not set
-+# CONFIG_NET_VENDOR_SILAN is not set
-+# CONFIG_NET_VENDOR_SIS is not set
-+# CONFIG_NET_VENDOR_SMSC is not set
-+# CONFIG_NET_VENDOR_STMICRO is not set
-+# CONFIG_NET_VENDOR_SUN is not set
-+# CONFIG_NET_VENDOR_TEHUTI is not set
-+# CONFIG_NET_VENDOR_TI is not set
-+# CONFIG_NET_VENDOR_TOSHIBA is not set
-+# CONFIG_NET_VENDOR_VIA is not set
-+# CONFIG_NET_VENDOR_WIZNET is not set
-+CONFIG_PPP=m
-+CONFIG_PPP_BSDCOMP=m
-+CONFIG_PPP_DEFLATE=m
-+CONFIG_PPP_FILTER=y
-+CONFIG_PPP_MPPE=m
-+CONFIG_PPP_MULTILINK=y
-+CONFIG_PPPOE=m
-+CONFIG_PPPOL2TP=m
-+CONFIG_PPP_ASYNC=m
-+CONFIG_PPP_SYNC_TTY=m
-+CONFIG_ATH_CARDS=m
-+CONFIG_ATH9K=m
-+CONFIG_HOSTAP=m
-+CONFIG_INPUT_POLLDEV=m
-+CONFIG_INPUT_SPARSEKMAP=y
-+CONFIG_INPUT_EVDEV=y
-+CONFIG_KEYBOARD_XTKBD=m
-+CONFIG_MOUSE_PS2_SENTELIC=y
-+CONFIG_MOUSE_SERIAL=m
-+CONFIG_INPUT_MISC=y
-+CONFIG_INPUT_UINPUT=m
-+CONFIG_SERIO_SERPORT=m
-+CONFIG_SERIO_RAW=m
-+CONFIG_LEGACY_PTY_COUNT=16
-+CONFIG_SERIAL_NONSTANDARD=y
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_NR_UARTS=16
-+CONFIG_SERIAL_8250_EXTENDED=y
-+CONFIG_SERIAL_8250_MANY_PORTS=y
-+CONFIG_SERIAL_8250_SHARE_IRQ=y
-+CONFIG_SERIAL_8250_RSA=y
-+CONFIG_HW_RANDOM=y
-+CONFIG_RAW_DRIVER=m
-+CONFIG_I2C_CHARDEV=y
-+CONFIG_I2C_PIIX4=y
-+CONFIG_SENSORS_LM75=m
-+CONFIG_SENSORS_LM93=m
-+CONFIG_MEDIA_SUPPORT=m
-+CONFIG_MEDIA_CAMERA_SUPPORT=y
-+CONFIG_MEDIA_USB_SUPPORT=y
-+CONFIG_USB_VIDEO_CLASS=m
-+CONFIG_DRM=y
-+CONFIG_DRM_RADEON=y
-+CONFIG_DRM_RADEON_KMS=y
-+CONFIG_VIDEO_OUTPUT_CONTROL=y
-+CONFIG_FB_RADEON=y
-+CONFIG_LCD_CLASS_DEVICE=y
-+CONFIG_LCD_PLATFORM=m
-+CONFIG_BACKLIGHT_GENERIC=m
-+# CONFIG_VGA_CONSOLE is not set
-+CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
-+CONFIG_LOGO=y
-+CONFIG_SOUND=y
-+CONFIG_SND=m
-+CONFIG_SND_SEQUENCER=m
-+CONFIG_SND_SEQ_DUMMY=m
-+# CONFIG_SND_ISA is not set
-+CONFIG_SND_HDA_INTEL=m
-+CONFIG_SND_HDA_PATCH_LOADER=y
-+# CONFIG_SND_USB is not set
-+CONFIG_HID_A4TECH=m
-+CONFIG_HID_SUNPLUS=m
-+CONFIG_USB=y
-+CONFIG_USB_MON=y
-+CONFIG_USB_XHCI_HCD=m
-+CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_EHCI_ROOT_HUB_TT=y
-+CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_UHCI_HCD=m
-+CONFIG_USB_STORAGE=m
-+CONFIG_USB_SERIAL=m
-+CONFIG_USB_SERIAL_OPTION=m
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_CMOS=y
-+CONFIG_DMADEVICES=y
-+CONFIG_PM_DEVFREQ=y
-+CONFIG_DEVFREQ_GOV_SIMPLE_ONDEMAND=y
-+CONFIG_DEVFREQ_GOV_PERFORMANCE=y
-+CONFIG_DEVFREQ_GOV_POWERSAVE=y
-+CONFIG_DEVFREQ_GOV_USERSPACE=y
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT2_FS_XATTR=y
-+CONFIG_EXT2_FS_POSIX_ACL=y
-+CONFIG_EXT2_FS_SECURITY=y
-+CONFIG_EXT3_FS=y
-+CONFIG_EXT3_FS_POSIX_ACL=y
-+CONFIG_EXT3_FS_SECURITY=y
-+CONFIG_EXT4_FS=y
-+CONFIG_EXT4_FS_POSIX_ACL=y
-+CONFIG_EXT4_FS_SECURITY=y
-+CONFIG_QUOTA=y
-+# CONFIG_PRINT_QUOTA_WARNING is not set
-+CONFIG_AUTOFS4_FS=y
-+CONFIG_FUSE_FS=m
-+CONFIG_ISO9660_FS=m
-+CONFIG_JOLIET=y
-+CONFIG_MSDOS_FS=m
-+CONFIG_VFAT_FS=m
-+CONFIG_FAT_DEFAULT_CODEPAGE=936
-+CONFIG_FAT_DEFAULT_IOCHARSET="gb2312"
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+CONFIG_CRAMFS=m
-+CONFIG_SQUASHFS=y
-+CONFIG_SQUASHFS_XATTR=y
-+CONFIG_NFS_FS=m
-+CONFIG_NFS_V3_ACL=y
-+CONFIG_NFS_V4=m
-+CONFIG_NFSD=m
-+CONFIG_NFSD_V3_ACL=y
-+CONFIG_NFSD_V4=y
-+CONFIG_CIFS=m
-+CONFIG_NLS_CODEPAGE_437=y
-+CONFIG_NLS_CODEPAGE_936=y
-+CONFIG_NLS_ASCII=y
-+CONFIG_NLS_UTF8=y
-+CONFIG_PRINTK_TIME=y
-+CONFIG_FRAME_WARN=1024
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_STRIP_ASM_SYMS=y
-+# CONFIG_SCHED_DEBUG is not set
-+# CONFIG_DEBUG_PREEMPT is not set
-+# CONFIG_RCU_CPU_STALL_VERBOSE is not set
-+# CONFIG_FTRACE is not set
-+CONFIG_CRYPTO_AUTHENC=m
-+CONFIG_CRYPTO_HMAC=y
-+CONFIG_CRYPTO_MD5=y
-+CONFIG_CRYPTO_SHA512=m
-+CONFIG_CRYPTO_TGR192=m
-+CONFIG_CRYPTO_WP512=m
-+CONFIG_CRYPTO_ANUBIS=m
-+CONFIG_CRYPTO_BLOWFISH=m
-+CONFIG_CRYPTO_CAST5=m
-+CONFIG_CRYPTO_CAST6=m
-+CONFIG_CRYPTO_KHAZAD=m
-+CONFIG_CRYPTO_SERPENT=m
-+CONFIG_CRYPTO_TEA=m
-+CONFIG_CRYPTO_TWOFISH=m
-+CONFIG_CRYPTO_DEFLATE=m
+diff --git a/arch/mips/include/asm/cacheflush.h b/arch/mips/include/asm/cacheflush.h
+index 69468de..8c4fa0d 100644
+--- a/arch/mips/include/asm/cacheflush.h
++++ b/arch/mips/include/asm/cacheflush.h
+@@ -70,6 +70,9 @@ extern void (*__flush_cache_vmap)(void);
+ 
+ static inline void flush_cache_vmap(unsigned long start, unsigned long end)
+ {
++	if (cpu_has_coherent_cache)
++		return;
++
+ 	if (cpu_has_dc_aliases)
+ 		__flush_cache_vmap();
+ }
+@@ -78,6 +81,9 @@ extern void (*__flush_cache_vunmap)(void);
+ 
+ static inline void flush_cache_vunmap(unsigned long start, unsigned long end)
+ {
++	if (cpu_has_coherent_cache)
++		return;
++
+ 	if (cpu_has_dc_aliases)
+ 		__flush_cache_vunmap();
+ }
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index c507b93..55213ca 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -110,6 +110,9 @@
+ #ifndef cpu_has_pindexed_dcache
+ #define cpu_has_pindexed_dcache	(cpu_data[0].dcache.flags & MIPS_CACHE_PINDEX)
+ #endif
++#ifndef cpu_has_coherent_cache
++#define cpu_has_coherent_cache	0
++#endif
+ 
+ /*
+  * I-Cache snoops remote store.  This only matters on SMP.  Some multiprocessors
+diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+index 1a05d85..f72b6be 100644
+--- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+@@ -57,5 +57,11 @@
+ #define cpu_has_vint		0
+ #define cpu_has_vtag_icache	0
+ #define cpu_has_watch		1
++#ifdef CONFIG_CPU_SUPPORTS_COHERENT_CACHE
++#define cpu_has_coherent_cache	1
++#else
++#define cpu_has_coherent_cache	0
++#endif
++
+ 
+ #endif /* __ASM_MACH_LOONGSON_CPU_FEATURE_OVERRIDES_H */
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index d1b9da3..5f9171d 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -345,6 +345,10 @@ static inline void local_r4k___flush_cache_all(void * args)
+ 	r4k_blast_scache();
+ 	return;
+ #endif
++
++	if (cpu_has_coherent_cache)
++		return;
++
+ 	r4k_blast_dcache();
+ 	r4k_blast_icache();
+ 
+@@ -406,8 +410,12 @@ static inline void local_r4k_flush_cache_range(void * args)
+ static void r4k_flush_cache_range(struct vm_area_struct *vma,
+ 	unsigned long start, unsigned long end)
+ {
+-	int exec = vma->vm_flags & VM_EXEC;
++	int exec __maybe_unused;
++
++	if (cpu_has_coherent_cache)
++		return;
+ 
++	exec = vma->vm_flags & VM_EXEC;
+ 	if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc))
+ 		r4k_on_each_cpu(local_r4k_flush_cache_range, vma);
+ }
+@@ -527,7 +535,10 @@ static inline void local_r4k_flush_cache_page(void *args)
+ static void r4k_flush_cache_page(struct vm_area_struct *vma,
+ 	unsigned long addr, unsigned long pfn)
+ {
+-	struct flush_cache_page_args args;
++	struct flush_cache_page_args args __maybe_unused;
++
++	if (cpu_has_coherent_cache)
++		return;
+ 
+ 	args.vma = vma;
+ 	args.addr = addr;
+@@ -543,6 +554,9 @@ static inline void local_r4k_flush_data_cache_page(void * addr)
+ 
+ static void r4k_flush_data_cache_page(unsigned long addr)
+ {
++	if (cpu_has_coherent_cache)
++		return;
++
+ 	if (in_atomic())
+ 		local_r4k_flush_data_cache_page((void *)addr);
+ 	else
+@@ -701,6 +715,9 @@ static void local_r4k_flush_cache_sigtramp(void * arg)
+ 
+ static void r4k_flush_cache_sigtramp(unsigned long addr)
+ {
++	if (cpu_has_coherent_cache)
++		return;
++
+ 	r4k_on_each_cpu(local_r4k_flush_cache_sigtramp, (void *) addr);
+ }
+ 
 -- 
 1.7.7.3

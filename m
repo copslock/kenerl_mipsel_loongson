@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 13:02:47 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:48272 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 13:03:06 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:48274 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823910Ab3AaMCI5TA6D (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 Jan 2013 13:02:08 +0100
+        id S6824788Ab3AaMCJaPJ-1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Jan 2013 13:02:09 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V3 03/10] MIPS: ralink: adds reset code
-Date:   Thu, 31 Jan 2013 12:59:14 +0100
-Message-Id: <1359633561-4980-4-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V3 04/10] MIPS: ralink: adds prom and cmdline code
+Date:   Thu, 31 Jan 2013 12:59:15 +0100
+Message-Id: <1359633561-4980-5-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1359633561-4980-1-git-send-email-blogic@openwrt.org>
 References: <1359633561-4980-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 35645
+X-archive-position: 35646
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,63 +30,88 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Resetting these SoCs requires no real magic. The code is straight forward.
+Add minimal code to handle commandlines.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/reset.c |   44 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
- create mode 100644 arch/mips/ralink/reset.c
+ arch/mips/ralink/prom.c |   69 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
+ create mode 100644 arch/mips/ralink/prom.c
 
-diff --git a/arch/mips/ralink/reset.c b/arch/mips/ralink/reset.c
+diff --git a/arch/mips/ralink/prom.c b/arch/mips/ralink/prom.c
 new file mode 100644
-index 0000000..22120e5
+index 0000000..9c64f02
 --- /dev/null
-+++ b/arch/mips/ralink/reset.c
-@@ -0,0 +1,44 @@
++++ b/arch/mips/ralink/prom.c
+@@ -0,0 +1,69 @@
 +/*
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published
-+ * by the Free Software Foundation.
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
 + *
-+ * Copyright (C) 2008-2009 Gabor Juhos <juhosg@openwrt.org>
-+ * Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
++ *  Copyright (C) 2009 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2010 Joonas Lahtinen <joonas.lahtinen@gmail.com>
++ *  Copyright (C) 2013 John Crispin <blogic@openwrt.org>
 + */
 +
-+#include <linux/pm.h>
-+#include <linux/io.h>
++#include <linux/string.h>
++#include <linux/of_fdt.h>
++#include <linux/of_platform.h>
 +
-+#include <asm/reboot.h>
++#include <asm/bootinfo.h>
++#include <asm/addrspace.h>
 +
-+#include <asm/mach-ralink/ralink_regs.h>
++#include "common.h"
 +
-+/* Reset Control */
-+#define SYSC_REG_RESET_CTRL     0x034
-+#define RSTCTL_RESET_SYSTEM     BIT(0)
++struct ralink_soc_info soc_info;
 +
-+static void ralink_restart(char *command)
++const char *get_system_type(void)
 +{
-+	local_irq_disable();
-+	rt_sysc_w32(RSTCTL_RESET_SYSTEM, SYSC_REG_RESET_CTRL);
-+	unreachable();
++	return soc_info.sys_type;
 +}
 +
-+static void ralink_halt(void)
++static __init void prom_init_cmdline(int argc, char **argv)
 +{
-+	local_irq_disable();
-+	unreachable();
++	int i;
++
++	pr_debug("prom: fw_arg0=%08x fw_arg1=%08x fw_arg2=%08x fw_arg3=%08x\n",
++	       (unsigned int)fw_arg0, (unsigned int)fw_arg1,
++	       (unsigned int)fw_arg2, (unsigned int)fw_arg3);
++
++	argc = fw_arg0;
++	argv = (char **) KSEG1ADDR(fw_arg1);
++
++	if (!argv) {
++		pr_debug("argv=%p is invalid, skipping\n",
++		       argv);
++		return;
++	}
++
++	for (i = 0; i < argc; i++) {
++		char *p = (char *) KSEG1ADDR(argv[i]);
++
++		if (CPHYSADDR(p) && *p) {
++			pr_debug("argv[%d]: %s\n", i, p);
++			strlcat(arcs_cmdline, " ", sizeof(arcs_cmdline));
++			strlcat(arcs_cmdline, p, sizeof(arcs_cmdline));
++		}
++	}
 +}
 +
-+static int __init mips_reboot_setup(void)
++void __init prom_init(void)
 +{
-+	_machine_restart = ralink_restart;
-+	_machine_halt = ralink_halt;
-+	pm_power_off = ralink_halt;
++	int argc;
++	char **argv;
 +
-+	return 0;
++	prom_soc_init(&soc_info);
++
++	pr_info("SoC Type: %s\n", get_system_type());
++
++	prom_init_cmdline(argc, argv);
 +}
 +
-+arch_initcall(mips_reboot_setup);
++void __init prom_free_prom_memory(void)
++{
++}
 -- 
 1.7.10.4

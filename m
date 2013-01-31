@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 13:02:29 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:48270 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 13:02:47 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:48272 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823732Ab3AaMCIf5dxW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6823910Ab3AaMCI5TA6D (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 31 Jan 2013 13:02:08 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V3 02/10] MIPS: ralink: adds irq code
-Date:   Thu, 31 Jan 2013 12:59:13 +0100
-Message-Id: <1359633561-4980-3-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V3 03/10] MIPS: ralink: adds reset code
+Date:   Thu, 31 Jan 2013 12:59:14 +0100
+Message-Id: <1359633561-4980-4-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1359633561-4980-1-git-send-email-blogic@openwrt.org>
 References: <1359633561-4980-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 35644
+X-archive-position: 35645
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,196 +30,63 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-All of the Ralink Wifi SoC currently supported by this series share the same
-interrupt controller (INTC).
+Resetting these SoCs requires no real magic. The code is straight forward.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/irq.c |  176 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 176 insertions(+)
- create mode 100644 arch/mips/ralink/irq.c
+ arch/mips/ralink/reset.c |   44 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
+ create mode 100644 arch/mips/ralink/reset.c
 
-diff --git a/arch/mips/ralink/irq.c b/arch/mips/ralink/irq.c
+diff --git a/arch/mips/ralink/reset.c b/arch/mips/ralink/reset.c
 new file mode 100644
-index 0000000..e62c975
+index 0000000..22120e5
 --- /dev/null
-+++ b/arch/mips/ralink/irq.c
-@@ -0,0 +1,176 @@
++++ b/arch/mips/ralink/reset.c
+@@ -0,0 +1,44 @@
 +/*
 + * This program is free software; you can redistribute it and/or modify it
 + * under the terms of the GNU General Public License version 2 as published
 + * by the Free Software Foundation.
 + *
-+ * Copyright (C) 2009 Gabor Juhos <juhosg@openwrt.org>
++ * Copyright (C) 2008-2009 Gabor Juhos <juhosg@openwrt.org>
++ * Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
 + * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
 + */
 +
++#include <linux/pm.h>
 +#include <linux/io.h>
-+#include <linux/bitops.h>
-+#include <linux/of_platform.h>
-+#include <linux/of_address.h>
-+#include <linux/of_irq.h>
-+#include <linux/irqdomain.h>
-+#include <linux/interrupt.h>
 +
-+#include <asm/irq_cpu.h>
-+#include <asm/mipsregs.h>
++#include <asm/reboot.h>
 +
-+#include "common.h"
++#include <asm/mach-ralink/ralink_regs.h>
 +
-+/* INTC register offsets */
-+#define INTC_REG_STATUS0	0x00
-+#define INTC_REG_STATUS1	0x04
-+#define INTC_REG_TYPE		0x20
-+#define INTC_REG_RAW_STATUS	0x30
-+#define INTC_REG_ENABLE		0x34
-+#define INTC_REG_DISABLE	0x38
++/* Reset Control */
++#define SYSC_REG_RESET_CTRL     0x034
++#define RSTCTL_RESET_SYSTEM     BIT(0)
 +
-+#define INTC_INT_GLOBAL		BIT(31)
-+
-+#define RALINK_CPU_IRQ_INTC	(MIPS_CPU_IRQ_BASE + 2)
-+#define RALINK_CPU_IRQ_FE	(MIPS_CPU_IRQ_BASE + 5)
-+#define RALINK_CPU_IRQ_WIFI	(MIPS_CPU_IRQ_BASE + 6)
-+#define RALINK_CPU_IRQ_COUNTER	(MIPS_CPU_IRQ_BASE + 7)
-+
-+/* we have a cascade of 8 irqs */
-+#define RALINK_INTC_IRQ_BASE	8
-+
-+/* we have 32 SoC irqs */
-+#define RALINK_INTC_IRQ_COUNT	32
-+
-+#define RALINK_INTC_IRQ_PERFC   (RALINK_INTC_IRQ_BASE + 9)
-+
-+static void __iomem *rt_intc_membase;
-+
-+static inline void rt_intc_w32(u32 val, unsigned reg)
++static void ralink_restart(char *command)
 +{
-+	__raw_writel(val, rt_intc_membase + reg);
++	local_irq_disable();
++	rt_sysc_w32(RSTCTL_RESET_SYSTEM, SYSC_REG_RESET_CTRL);
++	unreachable();
 +}
 +
-+static inline u32 rt_intc_r32(unsigned reg)
++static void ralink_halt(void)
 +{
-+	return __raw_readl(rt_intc_membase + reg);
++	local_irq_disable();
++	unreachable();
 +}
 +
-+static void ralink_intc_irq_unmask(struct irq_data *d)
++static int __init mips_reboot_setup(void)
 +{
-+	rt_intc_w32(BIT(d->hwirq), INTC_REG_ENABLE);
-+}
-+
-+static void ralink_intc_irq_mask(struct irq_data *d)
-+{
-+	rt_intc_w32(BIT(d->hwirq), INTC_REG_DISABLE);
-+}
-+
-+static struct irq_chip ralink_intc_irq_chip = {
-+	.name		= "INTC",
-+	.irq_unmask	= ralink_intc_irq_unmask,
-+	.irq_mask	= ralink_intc_irq_mask,
-+	.irq_mask_ack	= ralink_intc_irq_mask,
-+};
-+
-+unsigned int __cpuinit get_c0_compare_int(void)
-+{
-+	return CP0_LEGACY_COMPARE_IRQ;
-+}
-+
-+static void ralink_intc_irq_handler(unsigned int irq, struct irq_desc *desc)
-+{
-+	u32 pending = rt_intc_r32(INTC_REG_STATUS0);
-+
-+	if (pending) {
-+		struct irq_domain *domain = irq_get_handler_data(irq);
-+		generic_handle_irq(irq_find_mapping(domain, __ffs(pending)));
-+	} else {
-+		spurious_interrupt();
-+	}
-+}
-+
-+asmlinkage void plat_irq_dispatch(void)
-+{
-+	unsigned long pending;
-+
-+	pending = read_c0_status() & read_c0_cause() & ST0_IM;
-+
-+	if (pending & STATUSF_IP7)
-+		do_IRQ(RALINK_CPU_IRQ_COUNTER);
-+
-+	else if (pending & STATUSF_IP5)
-+		do_IRQ(RALINK_CPU_IRQ_FE);
-+
-+	else if (pending & STATUSF_IP6)
-+		do_IRQ(RALINK_CPU_IRQ_WIFI);
-+
-+	else if (pending & STATUSF_IP2)
-+		do_IRQ(RALINK_CPU_IRQ_INTC);
-+
-+	else
-+		spurious_interrupt();
-+}
-+
-+static int intc_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
-+{
-+	irq_set_chip_and_handler(irq, &ralink_intc_irq_chip, handle_level_irq);
++	_machine_restart = ralink_restart;
++	_machine_halt = ralink_halt;
++	pm_power_off = ralink_halt;
 +
 +	return 0;
 +}
 +
-+static const struct irq_domain_ops irq_domain_ops = {
-+	.xlate = irq_domain_xlate_onecell,
-+	.map = intc_map,
-+};
-+
-+static int __init intc_of_init(struct device_node *node,
-+			       struct device_node *parent)
-+{
-+	struct resource res;
-+	struct irq_domain *domain;
-+
-+	mips_cpu_irq_init();
-+
-+	if (of_address_to_resource(node, 0, &res))
-+		panic("Failed to get intc memory range");
-+
-+	if (request_mem_region(res.start, resource_size(&res),
-+				res.name) < 0)
-+		pr_err("Failed to request intc memory");
-+
-+	rt_intc_membase = ioremap_nocache(res.start,
-+					resource_size(&res));
-+	if (!rt_intc_membase)
-+		panic("Failed to remap intc memory");
-+
-+	/* disable all interrupts */
-+	rt_intc_w32(~0, INTC_REG_DISABLE);
-+
-+	/* route all INTC interrupts to MIPS HW0 interrupt */
-+	rt_intc_w32(0, INTC_REG_TYPE);
-+
-+	domain = irq_domain_add_legacy(node, RALINK_INTC_IRQ_COUNT,
-+			RALINK_INTC_IRQ_BASE, 0, &irq_domain_ops, NULL);
-+	if (!domain)
-+		panic("Failed to add irqdomain");
-+
-+	rt_intc_w32(INTC_INT_GLOBAL, INTC_REG_ENABLE);
-+
-+	irq_set_chained_handler(RALINK_CPU_IRQ_INTC, ralink_intc_irq_handler);
-+	irq_set_handler_data(RALINK_CPU_IRQ_INTC, domain);
-+
-+	cp0_perfcount_irq = irq_create_mapping(domain, 9);
-+
-+	return 0;
-+}
-+
-+static struct of_device_id __initdata of_irq_ids[] = {
-+	{ .compatible = "ralink,rt2880-intc", .data = intc_of_init },
-+	{},
-+};
-+
-+void __init arch_init_irq(void)
-+{
-+	of_irq_init(of_irq_ids);
-+}
-+
++arch_initcall(mips_reboot_setup);
 -- 
 1.7.10.4

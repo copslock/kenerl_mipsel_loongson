@@ -1,43 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 18:07:21 +0100 (CET)
-Received: from mail-pa0-f52.google.com ([209.85.220.52]:43246 "EHLO
-        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825725Ab3AaRHSotgeH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Jan 2013 18:07:18 +0100
-Received: by mail-pa0-f52.google.com with SMTP id fb1so411441pad.11
-        for <multiple recipients>; Thu, 31 Jan 2013 09:07:11 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 21:12:56 +0100 (CET)
+Received: from mail-da0-f43.google.com ([209.85.210.43]:41412 "EHLO
+        mail-da0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825898Ab3AaUMz7XVsd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Jan 2013 21:12:55 +0100
+Received: by mail-da0-f43.google.com with SMTP id u36so1432597dak.16
+        for <multiple recipients>; Thu, 31 Jan 2013 12:12:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=x-received:message-id:date:from:user-agent:mime-version:to:cc
          :subject:references:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=xQcexh85Znj65JUO+yJHkJorP0PgYhkjXjhbc11bfhI=;
-        b=zaXyG97u/ihVulMLusttBbhaOWBHYjAhXfh8imP/Yh1VL9UhMGLtLjBENBGKuCjlV+
-         4ea7jYX3Mzq9eoJWXU9FMs97Kqx/PVpZpFcij691hyQ+QPO37/jo4bVRTDB3JMiDcrNk
-         15qbi0DUi7+oUqAdAc6/HCnV8yuQmNgtZX0CKovuZC9S5g5Ld//7KQyRWmkCohB+Fges
-         XUhSWXrwKUrT6uwPRV1pPq5tpkha4fMrLz9mIM+DnLN9AVmsxaS+RUX+EpcUb85zS5NZ
-         9vZX9jE2ZjG2XV0dCsvjFXSii282f52nA+Qj7D2KAvPCYSWp71lKfJk/1iKkPgLwHKxK
-         InBQ==
-X-Received: by 10.68.209.230 with SMTP id mp6mr23975764pbc.8.1359652031605;
-        Thu, 31 Jan 2013 09:07:11 -0800 (PST)
+        bh=c0oZ25/t5AMMOdl27UNSXoM5A1c5nmtuWXVuoiqIo/w=;
+        b=K1fP6Ru1ax+Tui4C6zeInWHgmHeUP9VoR+70TowTVIhEu8mA3yx/z8cVz38JXHhdSq
+         4xp0XRM2WsXUz4bT9Mfr4pkLv5uRouQMUPoT7nkrfrCCbFXnd/MmqEyzApY0EKZJlPrv
+         iGNhqy0C7zFABw3VIrf3j0GDiV0O1boWSFMgmc4fKsmIJA541TgMJnmLe11gKo8P9b38
+         WtsNEHJMx9Z9kUVI73c4iYHEyknbe8RFqlW4Ngnv8CurSaWQUMPgIQgl6xwUdWi9O660
+         j15aN/oHWoqJ27ye6Pik6/KYYiXR/E2zC+Lc1HX2EvGIo1jrZwgp9eebz1TvCdPEJbPH
+         wMAw==
+X-Received: by 10.68.203.137 with SMTP id kq9mr25168750pbc.115.1359663169015;
+        Thu, 31 Jan 2013 12:12:49 -0800 (PST)
 Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id ba3sm5520376pbd.29.2013.01.31.09.07.10
+        by mx.google.com with ESMTPS id ba3sm5895276pbd.29.2013.01.31.12.12.47
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 31 Jan 2013 09:07:10 -0800 (PST)
-Message-ID: <510AA4BD.2030000@gmail.com>
-Date:   Thu, 31 Jan 2013 09:07:09 -0800
+        Thu, 31 Jan 2013 12:12:47 -0800 (PST)
+Message-ID: <510AD03E.1030105@gmail.com>
+Date:   Thu, 31 Jan 2013 12:12:46 -0800
 From:   David Daney <ddaney.cavm@gmail.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130110 Thunderbird/17.0.2
 MIME-Version: 1.0
-To:     John Crispin <blogic@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org
-Subject: Re: [PATCH 1/3] Document: devicetree: add OF documents for MIPS interrupt
- controller
-References: <1359638444-8891-1-git-send-email-blogic@openwrt.org>
-In-Reply-To: <1359638444-8891-1-git-send-email-blogic@openwrt.org>
+To:     Sanjay Lal <sanjayl@kymasys.com>
+CC:     kvm@vger.kernel.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH v2 02/18] KVM/MIPS32: Arch specific KVM data structures.
+References: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com> <1353551656-23579-3-git-send-email-sanjayl@kymasys.com>
+In-Reply-To: <1353551656-23579-3-git-send-email-sanjayl@kymasys.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35673
+X-archive-position: 35674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,66 +54,100 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 01/31/2013 05:20 AM, John Crispin wrote:
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-Acked-by: David Daney <david.daney@cavium.com>
-
+On 11/21/2012 06:34 PM, Sanjay Lal wrote:
+> Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
 > ---
->   Documentation/devicetree/bindings/mips/cpu_irq.txt |   47 ++++++++++++++++++++
->   1 file changed, 47 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/mips/cpu_irq.txt
+>   arch/mips/include/asm/kvm.h      |  55 ++++
+
+asm/kvm.h defines the user space ABI, and thus should be placed in 
+arch/mips/include/uapi/asm instead.
+
+
+
+>   arch/mips/include/asm/kvm_host.h | 669 +++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 724 insertions(+)
+>   create mode 100644 arch/mips/include/asm/kvm.h
+>   create mode 100644 arch/mips/include/asm/kvm_host.h
 >
-> diff --git a/Documentation/devicetree/bindings/mips/cpu_irq.txt b/Documentation/devicetree/bindings/mips/cpu_irq.txt
+> diff --git a/arch/mips/include/asm/kvm.h b/arch/mips/include/asm/kvm.h
 > new file mode 100644
-> index 0000000..13aa4b6
+> index 0000000..85789ea
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mips/cpu_irq.txt
-> @@ -0,0 +1,47 @@
-> +MIPS CPU interrupt controller
+> +++ b/arch/mips/include/asm/kvm.h
+> @@ -0,0 +1,55 @@
+> +/*
+> +* This file is subject to the terms and conditions of the GNU General Public
+> +* License.  See the file "COPYING" in the main directory of this archive
+> +* for more details.
+> +*
+> +* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
+> +* Authors: Sanjay Lal <sanjayl@kymasys.com>
+> +*/
 > +
-> +On MIPS the mips_cpu_intc_init() helper can be used to initialize the 8 CPU
-> +IRQs from a devicetree file and create a irq_domain for IRQ controller.
+> +#ifndef __LINUX_KVM_MIPS_H
+> +#define __LINUX_KVM_MIPS_H
 > +
-> +With the irq_domain in place we can describe how the 8 IRQs are wired to the
-> +platforms internal interrupt controller cascade.
+> +#include <linux/types.h>
 > +
-> +Below is an example of a platform describing the cascade inside the devicetree
-> +and the code used to load it inside arch_init_irq().
+> +#define __KVM_MIPS
 > +
-> +Required properties:
-> +- compatible : Should be "mti,cpu-interrupt-controller"
+> +#define N_MIPS_COPROC_REGS      32
+> +#define N_MIPS_COPROC_SEL   	8
 > +
-> +Example devicetree:
-> +	cpu-irq: cpu-irq@0 {
-> +		#address-cells = <0>;
+> +/* for KVM_GET_REGS and KVM_SET_REGS */
+> +struct kvm_regs {
+> +	__u32 gprs[32];
+
+MIPS64 registers are 64 bits wide.  How is this going to work for MIPS64?
+
+It seems a little important to answer this question as this is a 
+userspace ABI that really cannot be changed once it is published.
+
+
+> +	__u32 hi;
+> +	__u32 lo;
+> +	__u32 pc;
 > +
-> +		interrupt-controller;
-> +		#interrupt-cells = <1>;
-> +
-> +		compatible = "mti,cpu-interrupt-controller";
-> +	};
-> +
-> +	intc: intc@200 {
-> +		compatible = "ralink,rt2880-intc";
-> +		reg = <0x200 0x100>;
-> +
-> +		interrupt-controller;
-> +		#interrupt-cells = <1>;
-> +
-> +		interrupt-parent = <&cpu-irq>;
-> +		interrupts = <2>;
-> +	};
-> +
-> +
-> +Example platform irq.c:
-> +static struct of_device_id __initdata of_irq_ids[] = {
-> +	{ .compatible = "mti,cpu-interrupt-controller", .data = mips_cpu_intc_init },
-> +	{ .compatible = "ralink,rt2880-intc", .data = intc_of_init },
-> +	{},
+> +	__u32 cp0reg[N_MIPS_COPROC_REGS][N_MIPS_COPROC_SEL];
+
+Do we really want CP0 regs in here?  Other architectures don't have 
+things like this.  They use things like KVM_GET_MSRS and KVM_SET_MSRS 
+for this.
+
 > +};
 > +
-> +void __init arch_init_irq(void)
-> +{
-> +	of_irq_init(of_irq_ids);
-> +}
->
+> +/* for KVM_GET_SREGS and KVM_SET_SREGS */
+> +struct kvm_sregs {
+> +};
+> +
+> +/* for KVM_GET_FPU and KVM_SET_FPU */
+> +struct kvm_fpu {
+
+This is a userspace ABI, and MIPS definitely has a FPU.  That means that 
+we cannot change the definition after it is merged, but we know this 
+must have the FPU registers in it.
+
+So it cannot be both present and empty.
+
+
+> +};
+> +
+> +struct kvm_debug_exit_arch {
+> +};
+> +
+> +/* for KVM_SET_GUEST_DEBUG */
+> +struct kvm_guest_debug_arch {
+> +};
+> +
+> +struct kvm_mips_interrupt {
+> +	/* in */
+> +	__u32 cpu;
+> +	__u32 irq;
+> +};
+> +
+> +/* definition of registers in kvm_run */
+> +struct kvm_sync_regs {
+> +};
+> +
+> +#endif /* __LINUX_KVM_MIPS_H */
+[...]

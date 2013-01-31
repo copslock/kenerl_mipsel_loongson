@@ -1,22 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 13:09:29 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:45659 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824803Ab3AaMJ0hn-fX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 Jan 2013 13:09:26 +0100
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V3 10/10] MIPS: ralink: adds Kbuild files
-Date:   Thu, 31 Jan 2013 12:59:21 +0100
-Message-Id: <1359633561-4980-11-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1359633561-4980-1-git-send-email-blogic@openwrt.org>
-References: <1359633561-4980-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 35653
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 13:59:53 +0100 (CET)
+Received: from mail-wi0-f178.google.com ([209.85.212.178]:57960 "EHLO
+        mail-wi0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823555Ab3AaM7wXmYAQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Jan 2013 13:59:52 +0100
+Received: by mail-wi0-f178.google.com with SMTP id hn3so2748473wib.11
+        for <multiple recipients>; Thu, 31 Jan 2013 04:59:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:sender:message-id:date:from:organization:user-agent
+         :mime-version:to:cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=z232m/0O7xHKvfRjLEJ+X0rLc3wVtUmCSlRW3GS15Hc=;
+        b=U7BSJIlpcD0FNWoyxC3WyX/pGvqpCycC72RxjyK8Wkycj3oCjH0xtqXDJa3hhYxlEC
+         +MduSmjX2YWcerejHEtrrsETaj9nIGLwxNmWkAWQzT6MmZXD3dzZt2sdiQLaskhP963p
+         RgyhRxPTMRK/qgmpWiEpABRy5Mpo+SIBC2hSeHidkFKzwjxZ+/ltHMx30JVVjjjo81jy
+         ji7F81bLOnK67N7eZlf4W840ls4l8s3Yq4U5w1rZea5udnrTSIvC7SFaNzy/9+lKjAhq
+         tRiM6KFteFQUKOw9pQdC7Q0sCMfSagLVEmUXEKL6s84+ewQ2eLTOULPiyh/tIgr0SygL
+         QraA==
+X-Received: by 10.194.59.40 with SMTP id w8mr15290843wjq.51.1359637187004;
+        Thu, 31 Jan 2013 04:59:47 -0800 (PST)
+Received: from [192.168.108.37] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by mx.google.com with ESMTPS id q13sm2994647wie.0.2013.01.31.04.59.45
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Thu, 31 Jan 2013 04:59:46 -0800 (PST)
+Message-ID: <510A6A17.5050003@openwrt.org>
+Date:   Thu, 31 Jan 2013 13:56:55 +0100
+From:   Florian Fainelli <florian@openwrt.org>
+Organization: OpenWrt
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
+MIME-Version: 1.0
+To:     John Crispin <blogic@openwrt.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH V3 10/10] MIPS: ralink: adds Kbuild files
+References: <1359633561-4980-1-git-send-email-blogic@openwrt.org> <1359633561-4980-11-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1359633561-4980-11-git-send-email-blogic@openwrt.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 35654
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -30,160 +54,19 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add the Kbuild symbols and Makefiles needed to actually build the ralink code
-from this series
+Hello John,
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
----
- arch/mips/Kbuild.platforms    |    1 +
- arch/mips/Kconfig             |   19 ++++++++++++++++++-
- arch/mips/ralink/Kconfig      |   32 ++++++++++++++++++++++++++++++++
- arch/mips/ralink/Makefile     |   15 +++++++++++++++
- arch/mips/ralink/Platform     |   10 ++++++++++
- arch/mips/ralink/dts/Makefile |    1 +
- 6 files changed, 77 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/ralink/Kconfig
- create mode 100644 arch/mips/ralink/Makefile
- create mode 100644 arch/mips/ralink/Platform
- create mode 100644 arch/mips/ralink/dts/Makefile
+On 01/31/2013 12:59 PM, John Crispin wrote:
+[snip]
+>
+>   config MIPS_L1_CACHE_SHIFT
+>   	int
+> -	default "4" if MACH_DECSTATION || MIKROTIK_RB532 || PMC_MSP4200_EVAL
+> +	default "4" if MACH_DECSTATION || MIKROTIK_RB532 || PMC_MSP4200_EVAL || RALINK_RT288X
 
-diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
-index 91b9d69..9a73ce6 100644
---- a/arch/mips/Kbuild.platforms
-+++ b/arch/mips/Kbuild.platforms
-@@ -22,6 +22,7 @@ platforms += pmc-sierra
- platforms += pnx833x
- platforms += pnx8550
- platforms += powertv
-+platforms += ralink
- platforms += rb532
- platforms += sgi-ip22
- platforms += sgi-ip27
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index daeafe2..e52ae2b 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -436,6 +436,22 @@ config POWERTV
- 	help
- 	  This enables support for the Cisco PowerTV Platform.
- 
-+config RALINK
-+	bool "Ralink based machines"
-+	select CEVT_R4K
-+	select CSRC_R4K
-+	select BOOT_RAW
-+	select DMA_NONCOHERENT
-+	select IRQ_CPU
-+	select USE_OF
-+	select SYS_HAS_CPU_MIPS32_R1
-+	select SYS_HAS_CPU_MIPS32_R2
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_HAS_EARLY_PRINTK
-+	select HAVE_MACH_CLKDEV
-+	select CLKDEV_LOOKUP
-+
- config SGI_IP22
- 	bool "SGI IP22 (Indy/Indigo2)"
- 	select FW_ARC
-@@ -848,6 +864,7 @@ source "arch/mips/lantiq/Kconfig"
- source "arch/mips/lasat/Kconfig"
- source "arch/mips/pmc-sierra/Kconfig"
- source "arch/mips/powertv/Kconfig"
-+source "arch/mips/ralink/Kconfig"
- source "arch/mips/sgi-ip27/Kconfig"
- source "arch/mips/sibyte/Kconfig"
- source "arch/mips/txx9/Kconfig"
-@@ -1162,7 +1179,7 @@ config BOOT_ELF32
- 
- config MIPS_L1_CACHE_SHIFT
- 	int
--	default "4" if MACH_DECSTATION || MIKROTIK_RB532 || PMC_MSP4200_EVAL
-+	default "4" if MACH_DECSTATION || MIKROTIK_RB532 || PMC_MSP4200_EVAL || RALINK_RT288X
- 	default "6" if MIPS_CPU_SCACHE
- 	default "7" if SGI_IP22 || SGI_IP27 || SGI_IP28 || SNI_RM || CPU_CAVIUM_OCTEON
- 	default "5"
-diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
-new file mode 100644
-index 0000000..a0b0197
---- /dev/null
-+++ b/arch/mips/ralink/Kconfig
-@@ -0,0 +1,32 @@
-+if RALINK
-+
-+choice
-+	prompt "Ralink SoC selection"
-+	default SOC_RT305X
-+	help
-+	  Select Ralink MIPS SoC type.
-+
-+	config SOC_RT305X
-+		bool "RT305x"
-+		select USB_ARCH_HAS_HCD
-+		select USB_ARCH_HAS_OHCI
-+		select USB_ARCH_HAS_EHCI
-+
-+endchoice
-+
-+choice
-+	prompt "Devicetree selection"
-+	default DTB_RT_NONE
-+	help
-+	  Select the devicetree.
-+
-+	config DTB_RT_NONE
-+		bool "None"
-+
-+	config DTB_RT305X_EVAL
-+		bool "RT305x eval kit"
-+		depends on SOC_RT305X
-+
-+endchoice
-+
-+endif
-diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
-new file mode 100644
-index 0000000..939757f
---- /dev/null
-+++ b/arch/mips/ralink/Makefile
-@@ -0,0 +1,15 @@
-+# This program is free software; you can redistribute it and/or modify it
-+# under the terms of the GNU General Public License version 2 as published
-+# by the Free Software Foundation.#
-+# Makefile for the Ralink common stuff
-+#
-+# Copyright (C) 2009-2011 Gabor Juhos <juhosg@openwrt.org>
-+# Copyright (C) 2013 John Crispin <blogic@openwrt.org>
-+
-+obj-y := prom.o of.o reset.o clk.o irq.o
-+
-+obj-$(CONFIG_SOC_RT305X) += rt305x.o
-+
-+obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
-+
-+obj-y += dts/
-diff --git a/arch/mips/ralink/Platform b/arch/mips/ralink/Platform
-new file mode 100644
-index 0000000..6babd65
---- /dev/null
-+++ b/arch/mips/ralink/Platform
-@@ -0,0 +1,10 @@
-+#
-+# Ralink SoC common stuff
-+#
-+core-$(CONFIG_RALINK)		+= arch/mips/ralink/
-+cflags-$(CONFIG_RALINK)		+= -I$(srctree)/arch/mips/include/asm/mach-ralink
-+
-+#
-+# Ralink RT305x
-+#
-+load-$(CONFIG_SOC_RT305X)	+= 0xffffffff80000000
-diff --git a/arch/mips/ralink/dts/Makefile b/arch/mips/ralink/dts/Makefile
-new file mode 100644
-index 0000000..e2ce7b4
---- /dev/null
-+++ b/arch/mips/ralink/dts/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_DTB_RT305X_EVAL) := rt305x.dtb.o
--- 
-1.7.10.4
+I got slightly confused here because this is actually ok, RALINK_RT288X 
+should have MIPS_L1_CACHE_SHIFT=4, but rt305x and rt3883 have 
+MIPS_L1_CACHE_SHIFT=5. So I would drop this hunk until you add support 
+for rt288x.
+--
+Florian

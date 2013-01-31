@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 14:11:39 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:60539 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 14:16:01 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:40676 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823555Ab3AaNLiTFMbh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 Jan 2013 14:11:38 +0100
-Message-ID: <510A6CEB.4090009@phrozen.org>
-Date:   Thu, 31 Jan 2013 14:08:59 +0100
+        id S6823555Ab3AaNQArYxLw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Jan 2013 14:16:00 +0100
+Message-ID: <510A6DF2.6000509@phrozen.org>
+Date:   Thu, 31 Jan 2013 14:13:22 +0100
 From:   John Crispin <john@phrozen.org>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.7) Gecko/20120922 Icedove/10.0.7
 MIME-Version: 1.0
 To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH V3 08/10] MIPS: ralink: adds support for RT305x SoC family
-References: <1359633561-4980-1-git-send-email-blogic@openwrt.org> <1359633561-4980-9-git-send-email-blogic@openwrt.org> <510A6C55.5080004@openwrt.org>
-In-Reply-To: <510A6C55.5080004@openwrt.org>
+Subject: Re: [PATCH V3 09/10] MIPS: ralink: adds rt305x devicetree
+References: <1359633561-4980-1-git-send-email-blogic@openwrt.org> <1359633561-4980-10-git-send-email-blogic@openwrt.org> <510A6ABB.2090800@openwrt.org>
+In-Reply-To: <510A6ABB.2090800@openwrt.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35658
+Content-Transfer-Encoding: 8bit
+X-archive-position: 35659
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,33 +32,37 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 31/01/13 14:06, Florian Fainelli wrote:
-> Hello John,
+
+> The specific partition mapping definitively belongs to a rt305x-eval.dts
+> file and not a dtsi you would create.
+
+I’ll split this into 2 files
+
 >
-> On 01/31/2013 12:59 PM, John Crispin wrote:
-> [snip]
->
->> +
->> +struct ralink_pinmux gpio_pinmux = {
->> + .mode = mode_mux,
->> + .uart = uart_mux,
->> + .uart_shift = RT305X_GPIO_MODE_UART0_SHIFT,
->> + .wdt_reset = rt305x_wdt_reset,
 >> +};
+>> diff --git a/arch/mips/ralink/rt305x.c b/arch/mips/ralink/rt305x.c
+>> index 1e24439..f4b2e4d 100644
+>> --- a/arch/mips/ralink/rt305x.c
+>> +++ b/arch/mips/ralink/rt305x.c
+>> @@ -185,8 +185,8 @@ void __init ralink_clk_init(void)
+>>
+>> void __init ralink_of_remap(void)
+>> {
+>> - rt_sysc_membase = plat_of_remap_node("ralink,rt305x-sysc");
+>> - rt_memc_membase = plat_of_remap_node("ralink,rt305x-memc");
+>> + rt_sysc_membase = plat_of_remap_node("ralink,rt3052-sysc");
+>> + rt_memc_membase = plat_of_remap_node("ralink,rt3052-memc");
 >
-> It seems to me like the new convention for pinctrl/pinmux etc .. is to
-> actually create drivers/pinctrl/pinctrl-ralink.c and
-> drivers/pinctrl/pinctrl-rt305x.c, I guess this can be done later when
-> you come up with support for the other Ralink SoCs.
-> --
-> Florian
->
->
+> Why are you doing this? If you specify multiple compatible properties,
+> such as:
+> compatible = "ralink,rt3052-sysc", "ralink,rt305x-sysc" you should be
+> good in any case no?
 
-Hi,
 
-pinctrl is bloat in this context. the pinmux breaks down to a single 32 
-bit register. i did not send the patch yet as i am wanting to make sure 
-it works on the new MTK7620 aswell.
+I folded that fix into the wrong patch :-)
+
+
+using wild cards is discouraged for compatible strings rt3052 was the 
+first silicon with this sysc version.
 
 	John

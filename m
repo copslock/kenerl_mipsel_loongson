@@ -1,43 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 04:44:13 +0100 (CET)
-Received: from mail-pb0-f51.google.com ([209.85.160.51]:55975 "EHLO
-        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816383Ab3AaDoMMquxH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Jan 2013 04:44:12 +0100
-Received: by mail-pb0-f51.google.com with SMTP id un15so1371611pbc.10
-        for <linux-mips@linux-mips.org>; Wed, 30 Jan 2013 19:44:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:date:from:to:cc:subject:message-id:mail-followup-to
-         :mime-version:content-type:content-disposition:user-agent;
-        bh=Pv5DIRve2P6bXa4CNfFyXQYkyjSYl5er2bBGmE0YMQs=;
-        b=MilrvEf2onJqh6zKFG/9QEB/kIJbiAtxS0YJqe8KrFIvvWPUMqNVFqnQk3Z7XbZ+7y
-         JXW9QCqbg62OCc9iwTmFVBcII57bRalsFP7GLz0IZQFQDWn40YAUsF1ThFseBngup2XR
-         fO031kQIfoKdPDQLfkOBvIpYC1jVL1VaatXI9lEyuU0vDD9h2KZwykJq+wKrJfccWaqv
-         IthCPCk1pm6DsM/PFWZFP+LFRbNK0V90gp1I2GFh6oJBxjrgs9kC/KtEaEKvxu/HRvyi
-         jbfvdKaqgJ1AlwhKkOzWH28go6nUGRr52J3GYa9tFp7lk9cwEi6uQ2e5GYgU8NNBSSMw
-         UVRQ==
-X-Received: by 10.66.88.164 with SMTP id bh4mr16900960pab.41.1359603845466;
-        Wed, 30 Jan 2013 19:44:05 -0800 (PST)
-Received: from localhost ([159.226.43.42])
-        by mx.google.com with ESMTPS id a4sm4076294paw.21.2013.01.30.19.44.03
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Wed, 30 Jan 2013 19:44:04 -0800 (PST)
-Date:   Thu, 31 Jan 2013 11:43:21 +0800
-From:   yili0568@gmail.com
-To:     linux-mips@linux-mips.org
-Cc:     linux-kernel@vger.kernel.org
-Subject: MIPS atomic_set_mask and atomic_clear_mask
-Message-ID: <20130131034320.GA15216@gentoo.L3L6.loongson.cn>
-Mail-Followup-To: linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 11:26:56 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:40368 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6823555Ab3AaK0zlZaiQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Jan 2013 11:26:55 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r0VAQswW019165;
+        Thu, 31 Jan 2013 11:26:54 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r0VAQrtL019164;
+        Thu, 31 Jan 2013 11:26:53 +0100
+Date:   Thu, 31 Jan 2013 11:26:53 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: MIPS atomic_set_mask and atomic_clear_mask
+Message-ID: <20130131102653.GA17834@linux-mips.org>
+References: <20130131034320.GA15216@gentoo.L3L6.loongson.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20130131034320.GA15216@gentoo.L3L6.loongson.cn>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35641
+X-archive-position: 35642
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yili0568@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,6 +38,16 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello, everybody:
-     Does MIPS need the functions atomic_set_mask and atomic_clear_mask?
-     Or how can I implement these functions.
+On Thu, Jan 31, 2013 at 11:43:21AM +0800, yili0568@gmail.com wrote:
+
+> Hello, everybody:
+>      Does MIPS need the functions atomic_set_mask and atomic_clear_mask?
+>      Or how can I implement these functions.
+
+No, it doesn't need them.  a quick grep would have shown that all users
+are either other architectures or architecture-specific code.
+
+As for a possible implementation, there are plenty of examples in
+<asm/bitops.h> and <asm/atomic.h> that would need only minor modification.
+
+  Ralf

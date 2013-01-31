@@ -1,30 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 11:26:56 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:40368 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823555Ab3AaK0zlZaiQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 Jan 2013 11:26:55 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r0VAQswW019165;
-        Thu, 31 Jan 2013 11:26:54 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r0VAQrtL019164;
-        Thu, 31 Jan 2013 11:26:53 +0100
-Date:   Thu, 31 Jan 2013 11:26:53 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: MIPS atomic_set_mask and atomic_clear_mask
-Message-ID: <20130131102653.GA17834@linux-mips.org>
-References: <20130131034320.GA15216@gentoo.L3L6.loongson.cn>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20130131034320.GA15216@gentoo.L3L6.loongson.cn>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35642
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 13:02:09 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:48268 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823555Ab3AaMCIH4i7e (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Jan 2013 13:02:08 +0100
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [PATCH V3 00/10] MIPS: ralink: adds support for ralink platform
+Date:   Thu, 31 Jan 2013 12:59:11 +0100
+Message-Id: <1359633561-4980-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 35643
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,16 +28,57 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Jan 31, 2013 at 11:43:21AM +0800, yili0568@gmail.com wrote:
+This series adds support for the ralink SoC family. Currently RT305X type
+SoC is supported. RT2880/3883 are in my local queue already but require
+further testing.
 
-> Hello, everybody:
->      Does MIPS need the functions atomic_set_mask and atomic_clear_mask?
->      Or how can I implement these functions.
+John Crispin (10):
+  MIPS: ralink: adds include files
+  MIPS: ralink: adds irq code
+  MIPS: ralink: adds reset code
+  MIPS: ralink: adds prom and cmdline code
+  MIPS: ralink: adds clkdev code
+  MIPS: ralink: adds OF code
+  MIPS: ralink: adds early_printk support
+  MIPS: ralink: adds support for RT305x SoC family
+  MIPS: ralink: adds rt305x devicetree
+  MIPS: ralink: adds Kbuild files
 
-No, it doesn't need them.  a quick grep would have shown that all users
-are either other architectures or architecture-specific code.
+ arch/mips/Kbuild.platforms                      |    1 +
+ arch/mips/Kconfig                               |   19 +-
+ arch/mips/include/asm/mach-ralink/ralink_regs.h |   39 ++++
+ arch/mips/include/asm/mach-ralink/rt305x.h      |  139 +++++++++++++
+ arch/mips/include/asm/mach-ralink/war.h         |   25 +++
+ arch/mips/ralink/Kconfig                        |   32 +++
+ arch/mips/ralink/Makefile                       |   15 ++
+ arch/mips/ralink/Platform                       |   10 +
+ arch/mips/ralink/clk.c                          |   72 +++++++
+ arch/mips/ralink/common.h                       |   44 +++++
+ arch/mips/ralink/dts/Makefile                   |    1 +
+ arch/mips/ralink/dts/rt305x.dts                 |  151 ++++++++++++++
+ arch/mips/ralink/early_printk.c                 |   44 +++++
+ arch/mips/ralink/irq.c                          |  176 +++++++++++++++++
+ arch/mips/ralink/of.c                           |  107 ++++++++++
+ arch/mips/ralink/prom.c                         |   69 +++++++
+ arch/mips/ralink/reset.c                        |   44 +++++
+ arch/mips/ralink/rt305x.c                       |  242 +++++++++++++++++++++++
+ 18 files changed, 1229 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/include/asm/mach-ralink/ralink_regs.h
+ create mode 100644 arch/mips/include/asm/mach-ralink/rt305x.h
+ create mode 100644 arch/mips/include/asm/mach-ralink/war.h
+ create mode 100644 arch/mips/ralink/Kconfig
+ create mode 100644 arch/mips/ralink/Makefile
+ create mode 100644 arch/mips/ralink/Platform
+ create mode 100644 arch/mips/ralink/clk.c
+ create mode 100644 arch/mips/ralink/common.h
+ create mode 100644 arch/mips/ralink/dts/Makefile
+ create mode 100644 arch/mips/ralink/dts/rt305x.dts
+ create mode 100644 arch/mips/ralink/early_printk.c
+ create mode 100644 arch/mips/ralink/irq.c
+ create mode 100644 arch/mips/ralink/of.c
+ create mode 100644 arch/mips/ralink/prom.c
+ create mode 100644 arch/mips/ralink/reset.c
+ create mode 100644 arch/mips/ralink/rt305x.c
 
-As for a possible implementation, there are plenty of examples in
-<asm/bitops.h> and <asm/atomic.h> that would need only minor modification.
-
-  Ralf
+-- 
+1.7.10.4

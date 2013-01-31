@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 13:03:06 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:48274 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2013 13:03:29 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:48280 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824788Ab3AaMCJaPJ-1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 Jan 2013 13:02:09 +0100
+        id S6824786Ab3AaMCKe8ezz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Jan 2013 13:02:10 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V3 04/10] MIPS: ralink: adds prom and cmdline code
-Date:   Thu, 31 Jan 2013 12:59:15 +0100
-Message-Id: <1359633561-4980-5-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V3 01/10] MIPS: ralink: adds include files
+Date:   Thu, 31 Jan 2013 12:59:12 +0100
+Message-Id: <1359633561-4980-2-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1359633561-4980-1-git-send-email-blogic@openwrt.org>
 References: <1359633561-4980-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 35646
+X-archive-position: 35647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,88 +30,143 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add minimal code to handle commandlines.
+Before we start adding the platform code we add the common include files.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/prom.c |   69 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
- create mode 100644 arch/mips/ralink/prom.c
+ arch/mips/include/asm/mach-ralink/ralink_regs.h |   39 ++++++++++++++++++++
+ arch/mips/include/asm/mach-ralink/war.h         |   25 +++++++++++++
+ arch/mips/ralink/common.h                       |   44 +++++++++++++++++++++++
+ 3 files changed, 108 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-ralink/ralink_regs.h
+ create mode 100644 arch/mips/include/asm/mach-ralink/war.h
+ create mode 100644 arch/mips/ralink/common.h
 
-diff --git a/arch/mips/ralink/prom.c b/arch/mips/ralink/prom.c
+diff --git a/arch/mips/include/asm/mach-ralink/ralink_regs.h b/arch/mips/include/asm/mach-ralink/ralink_regs.h
 new file mode 100644
-index 0000000..9c64f02
+index 0000000..5a508f9
 --- /dev/null
-+++ b/arch/mips/ralink/prom.c
-@@ -0,0 +1,69 @@
++++ b/arch/mips/include/asm/mach-ralink/ralink_regs.h
+@@ -0,0 +1,39 @@
++/*
++ *  Ralink SoC register definitions
++ *
++ *  Copyright (C) 2013 John Crispin <blogic@openwrt.org>
++ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
++
++#ifndef _RALINK_REGS_H_
++#define _RALINK_REGS_H_
++
++extern __iomem void *rt_sysc_membase;
++extern __iomem void *rt_memc_membase;
++
++static inline void rt_sysc_w32(u32 val, unsigned reg)
++{
++	__raw_writel(val, rt_sysc_membase + reg);
++}
++
++static inline u32 rt_sysc_r32(unsigned reg)
++{
++	return __raw_readl(rt_sysc_membase + reg);
++}
++
++static inline void rt_memc_w32(u32 val, unsigned reg)
++{
++	__raw_writel(val, rt_memc_membase + reg);
++}
++
++static inline u32 rt_memc_r32(unsigned reg)
++{
++	return __raw_readl(rt_memc_membase + reg);
++}
++
++#endif /* _RALINK_REGS_H_ */
+diff --git a/arch/mips/include/asm/mach-ralink/war.h b/arch/mips/include/asm/mach-ralink/war.h
+new file mode 100644
+index 0000000..a7b712c
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ralink/war.h
+@@ -0,0 +1,25 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2002, 2004, 2007 by Ralf Baechle <ralf@linux-mips.org>
++ */
++#ifndef __ASM_MACH_RALINK_WAR_H
++#define __ASM_MACH_RALINK_WAR_H
++
++#define R4600_V1_INDEX_ICACHEOP_WAR	0
++#define R4600_V1_HIT_CACHEOP_WAR	0
++#define R4600_V2_HIT_CACHEOP_WAR	0
++#define R5432_CP0_INTERRUPT_WAR		0
++#define BCM1250_M3_WAR			0
++#define SIBYTE_1956_WAR			0
++#define MIPS4K_ICACHE_REFILL_WAR	0
++#define MIPS_CACHE_SYNC_WAR		0
++#define TX49XX_ICACHE_INDEX_INV_WAR	0
++#define RM9000_CDEX_SMP_WAR		0
++#define ICACHE_REFILLS_WORKAROUND_WAR	0
++#define R10000_LLSC_WAR			0
++#define MIPS34K_MISSED_ITLB_WAR		0
++
++#endif /* __ASM_MACH_RALINK_WAR_H */
+diff --git a/arch/mips/ralink/common.h b/arch/mips/ralink/common.h
+new file mode 100644
+index 0000000..3009903
+--- /dev/null
++++ b/arch/mips/ralink/common.h
+@@ -0,0 +1,44 @@
 +/*
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
 + *
-+ *  Copyright (C) 2009 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2010 Joonas Lahtinen <joonas.lahtinen@gmail.com>
-+ *  Copyright (C) 2013 John Crispin <blogic@openwrt.org>
++ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
 + */
 +
-+#include <linux/string.h>
-+#include <linux/of_fdt.h>
-+#include <linux/of_platform.h>
++#ifndef _RALINK_COMMON_H__
++#define _RALINK_COMMON_H__
 +
-+#include <asm/bootinfo.h>
-+#include <asm/addrspace.h>
++#define RAMIPS_SYS_TYPE_LEN	32
 +
-+#include "common.h"
++struct ralink_pinmux_grp {
++	const char *name;
++	u32 mask;
++	int gpio_first;
++	int gpio_last;
++};
 +
-+struct ralink_soc_info soc_info;
++struct ralink_pinmux {
++	struct ralink_pinmux_grp *mode;
++	struct ralink_pinmux_grp *uart;
++	int uart_shift;
++	void (*wdt_reset)(void);
++};
++extern struct ralink_pinmux gpio_pinmux;
 +
-+const char *get_system_type(void)
-+{
-+	return soc_info.sys_type;
-+}
++struct ralink_soc_info {
++	unsigned char sys_type[RAMIPS_SYS_TYPE_LEN];
++	unsigned char *compatible;
++};
++extern struct ralink_soc_info soc_info;
 +
-+static __init void prom_init_cmdline(int argc, char **argv)
-+{
-+	int i;
++extern void ralink_of_remap(void);
 +
-+	pr_debug("prom: fw_arg0=%08x fw_arg1=%08x fw_arg2=%08x fw_arg3=%08x\n",
-+	       (unsigned int)fw_arg0, (unsigned int)fw_arg1,
-+	       (unsigned int)fw_arg2, (unsigned int)fw_arg3);
++extern void ralink_clk_init(void);
++extern void ralink_clk_add(const char *dev, unsigned long rate);
 +
-+	argc = fw_arg0;
-+	argv = (char **) KSEG1ADDR(fw_arg1);
++extern void prom_soc_init(struct ralink_soc_info *soc_info);
 +
-+	if (!argv) {
-+		pr_debug("argv=%p is invalid, skipping\n",
-+		       argv);
-+		return;
-+	}
++__iomem void *plat_of_remap_node(const char *node);
 +
-+	for (i = 0; i < argc; i++) {
-+		char *p = (char *) KSEG1ADDR(argv[i]);
-+
-+		if (CPHYSADDR(p) && *p) {
-+			pr_debug("argv[%d]: %s\n", i, p);
-+			strlcat(arcs_cmdline, " ", sizeof(arcs_cmdline));
-+			strlcat(arcs_cmdline, p, sizeof(arcs_cmdline));
-+		}
-+	}
-+}
-+
-+void __init prom_init(void)
-+{
-+	int argc;
-+	char **argv;
-+
-+	prom_soc_init(&soc_info);
-+
-+	pr_info("SoC Type: %s\n", get_system_type());
-+
-+	prom_init_cmdline(argc, argv);
-+}
-+
-+void __init prom_free_prom_memory(void)
-+{
-+}
++#endif /* _RALINK_COMMON_H__ */
 -- 
 1.7.10.4

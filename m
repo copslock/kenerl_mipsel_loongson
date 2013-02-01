@@ -1,25 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Feb 2013 12:50:17 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:45424 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823006Ab3BALuQPQyhV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 1 Feb 2013 12:50:16 +0100
-Message-ID: <510BAB57.4030708@openwrt.org>
-Date:   Fri, 01 Feb 2013 12:47:35 +0100
-From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.7) Gecko/20120922 Icedove/10.0.7
-MIME-Version: 1.0
-To:     Florian Fainelli <florian@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH V3 00/10] MIPS: ralink: adds support for ralink platform
-References: <1359633561-4980-1-git-send-email-blogic@openwrt.org> <510BA9AF.9030905@openwrt.org>
-In-Reply-To: <510BA9AF.9030905@openwrt.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35676
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Feb 2013 20:21:44 +0100 (CET)
+Received: from mail-da0-f41.google.com ([209.85.210.41]:41019 "EHLO
+        mail-da0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825898Ab3BATVnYbwdN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Feb 2013 20:21:43 +0100
+Received: by mail-da0-f41.google.com with SMTP id e20so1848892dak.0
+        for <multiple recipients>; Fri, 01 Feb 2013 11:21:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:from:to:cc:subject:date:message-id:x-mailer;
+        bh=bGn/qD+qLnzakEI+QTY6ilHV3tpN+rYIpG1n8sL6jo0=;
+        b=MqxHxq5OGAHGX1fg93OcvC07e/M7S0RDa1dLynMXgR0rNnceXxuuCZjpWnG7SG/dvd
+         IZQo7+whxZObhLaE5E/MN1bh++28JdMHGIENgpt8XyqRwYro4Juu+JPRCZoizop4f96Y
+         ds3QcBpkEGwduT3NlQsvC2EbgM973rDd5L2JdCo0KoSdhcA7HdnTs2NNqV4y5nvNiq95
+         5gRdSPXC/M2Q3XH3j/lg35Sr1EdvAdoB9GLHci4ooc/9GjOyKnR2TbVHszxteQxRixod
+         7l6EkcpDqqFdD9M7YTptNN+Ubf/PBAbpFnRsSISdbMz5n8WIA8bFdJjwqBqj7IgRzPvj
+         Webg==
+X-Received: by 10.68.213.233 with SMTP id nv9mr35071708pbc.155.1359746496378;
+        Fri, 01 Feb 2013 11:21:36 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id x6sm10002052paw.0.2013.02.01.11.21.35
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 01 Feb 2013 11:21:35 -0800 (PST)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r11JLY14017939;
+        Fri, 1 Feb 2013 11:21:34 -0800
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r11JLXsm017938;
+        Fri, 1 Feb 2013 11:21:33 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH] MIPS: Don't export kernel internal details in uapi/asm/break.h
+Date:   Fri,  1 Feb 2013 11:21:32 -0800
+Message-Id: <1359746492-17905-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+X-archive-position: 35677
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,24 +52,33 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 01/02/13 12:40, Florian Fainelli wrote:
-> Hey John,
->
-> On 01/31/2013 12:59 PM, John Crispin wrote:
->> This series adds support for the ralink SoC family. Currently RT305X 
->> type
->> SoC is supported. RT2880/3883 are in my local queue already but require
->> further testing.
->
-> One last thing, I think Ralf wants a defconfig for this new platform 
-> as well. Thanks!
-> -- 
-> Florian
->
+From: David Daney <david.daney@cavium.com>
 
+Only the codes used by userspace should be exported.
 
-Hi,
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/include/uapi/asm/break.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-well noticed, i will add it to the pull tree
-
-     John
+diff --git a/arch/mips/include/uapi/asm/break.h b/arch/mips/include/uapi/asm/break.h
+index 6f61d08..652431f 100644
+--- a/arch/mips/include/uapi/asm/break.h
++++ b/arch/mips/include/uapi/asm/break.h
+@@ -20,10 +20,14 @@
+ #define BRK_OVERFLOW	6	/* Overflow check */
+ #define BRK_DIVZERO	7	/* Divide by zero check */
+ #define BRK_RANGE	8	/* Range error check */
++
++#ifdef __KERNEL__
++/* Break codes used internally to the kernel. */
+ #define BRK_BUG		12	/* Used by BUG() */
+ #define BRK_MEMU	514	/* Used by FPU emulator */
+ #define BRK_KPROBE_BP	515	/* Kprobe break */
+ #define BRK_KPROBE_SSTEPBP 516	/* Kprobe single step software implementation */
+ #define BRK_MULOVF	1023	/* Multiply overflow */
++#endif /* __KERNEL__ */
+ 
+ #endif /* __ASM_BREAK_H */
+-- 
+1.7.11.7

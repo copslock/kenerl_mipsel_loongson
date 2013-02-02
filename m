@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Feb 2013 13:41:37 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:45756 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Feb 2013 13:44:57 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:45814 "EHLO
         mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6827471Ab3BBMl2cbTAb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 2 Feb 2013 13:41:28 +0100
+        with ESMTP id S6827470Ab3BBMo4Y5SK6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 2 Feb 2013 13:44:56 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 6A4FD25D27A;
-        Sat,  2 Feb 2013 13:41:23 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 3DACC25D27C;
+        Sat,  2 Feb 2013 13:44:51 +0100 (CET)
 Received: from mail.szarvasnet.hu ([127.0.0.1])
         by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id MuFi7mqAVhSe; Sat,  2 Feb 2013 13:41:23 +0100 (CET)
+        with ESMTP id uBbie7X6EeGo; Sat,  2 Feb 2013 13:44:51 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 6B8C025D03A;
-        Sat,  2 Feb 2013 13:41:13 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 5ACA425D27A;
+        Sat,  2 Feb 2013 13:44:50 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips <linux-mips@linux-mips.org>,
         John Crispin <blogic@openwrt.org>,
         Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 2/5] MIPS: pci-ar71xx: convert into a platform driver
-Date:   Sat,  2 Feb 2013 13:40:43 +0100
-Message-Id: <1359808846-23083-2-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH 3/5] MIPS: ath79: move global PCI defines into a common header
+Date:   Sat,  2 Feb 2013 13:44:23 +0100
+Message-Id: <1359809064-23253-1-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.10
 In-Reply-To: <1359808846-23083-1-git-send-email-juhosg@openwrt.org>
 References: <1359808846-23083-1-git-send-email-juhosg@openwrt.org>
-X-archive-position: 35681
+X-archive-position: 35682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,117 +41,100 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The patch converts the pci-ar71xx driver into a
-platform driver. This makes it possible to register
-the PCI controller as a plain platform device.
+The constants will be used by a subsequent patch.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 ---
-Note:
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h |   24 ++++++++++++++++++++++++
+ arch/mips/pci/pci-ar71xx.c                     |   16 ----------------
+ arch/mips/pci/pci-ar724x.c                     |    8 --------
+ 3 files changed, 24 insertions(+), 24 deletions(-)
 
-In order to make the patch simple, the registration
-of the corresponding platform device, and the removal
-of the ar71xx_pcibios_init function is implemented in
-subsequent patches.
----
- arch/mips/pci/pci-ar71xx.c |   60 +++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 56 insertions(+), 4 deletions(-)
-
+diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+index 7d44b5d..7c87bfe 100644
+--- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
++++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+@@ -41,11 +41,35 @@
+ #define AR71XX_RESET_BASE	(AR71XX_APB_BASE + 0x00060000)
+ #define AR71XX_RESET_SIZE	0x100
+ 
++#define AR71XX_PCI_MEM_BASE	0x10000000
++#define AR71XX_PCI_MEM_SIZE	0x07000000
++
++#define AR71XX_PCI_WIN0_OFFS	0x10000000
++#define AR71XX_PCI_WIN1_OFFS	0x11000000
++#define AR71XX_PCI_WIN2_OFFS	0x12000000
++#define AR71XX_PCI_WIN3_OFFS	0x13000000
++#define AR71XX_PCI_WIN4_OFFS	0x14000000
++#define AR71XX_PCI_WIN5_OFFS	0x15000000
++#define AR71XX_PCI_WIN6_OFFS	0x16000000
++#define AR71XX_PCI_WIN7_OFFS	0x07000000
++
++#define AR71XX_PCI_CFG_BASE	\
++	(AR71XX_PCI_MEM_BASE + AR71XX_PCI_WIN7_OFFS + 0x10000)
++#define AR71XX_PCI_CFG_SIZE	0x100
++
+ #define AR7240_USB_CTRL_BASE	(AR71XX_APB_BASE + 0x00030000)
+ #define AR7240_USB_CTRL_SIZE	0x100
+ #define AR7240_OHCI_BASE	0x1b000000
+ #define AR7240_OHCI_SIZE	0x1000
+ 
++#define AR724X_PCI_MEM_BASE	0x10000000
++#define AR724X_PCI_MEM_SIZE	0x04000000
++
++#define AR724X_PCI_CFG_BASE	0x14000000
++#define AR724X_PCI_CFG_SIZE	0x1000
++#define AR724X_PCI_CTRL_BASE	(AR71XX_APB_BASE + 0x000f0000)
++#define AR724X_PCI_CTRL_SIZE	0x100
++
+ #define AR724X_EHCI_BASE	0x1b000000
+ #define AR724X_EHCI_SIZE	0x1000
+ 
 diff --git a/arch/mips/pci/pci-ar71xx.c b/arch/mips/pci/pci-ar71xx.c
-index 6eaa4f2..0d8412f 100644
+index 0d8412f..35ee234 100644
 --- a/arch/mips/pci/pci-ar71xx.c
 +++ b/arch/mips/pci/pci-ar71xx.c
-@@ -18,6 +18,8 @@
- #include <linux/pci.h>
- #include <linux/pci_regs.h>
- #include <linux/interrupt.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
- 
- #include <asm/mach-ath79/ar71xx_regs.h>
+@@ -25,22 +25,6 @@
  #include <asm/mach-ath79/ath79.h>
-@@ -309,7 +311,7 @@ static struct irq_chip ar71xx_pci_irq_chip = {
- 	.irq_mask_ack	= ar71xx_pci_irq_mask,
- };
+ #include <asm/mach-ath79/pci.h>
  
--static __init void ar71xx_pci_irq_init(void)
-+static void ar71xx_pci_irq_init(int irq)
- {
- 	void __iomem *base = ath79_reset_base;
- 	int i;
-@@ -324,10 +326,10 @@ static __init void ar71xx_pci_irq_init(void)
- 		irq_set_chip_and_handler(i, &ar71xx_pci_irq_chip,
- 					 handle_level_irq);
+-#define AR71XX_PCI_MEM_BASE	0x10000000
+-#define AR71XX_PCI_MEM_SIZE	0x07000000
+-
+-#define AR71XX_PCI_WIN0_OFFS		0x10000000
+-#define AR71XX_PCI_WIN1_OFFS		0x11000000
+-#define AR71XX_PCI_WIN2_OFFS		0x12000000
+-#define AR71XX_PCI_WIN3_OFFS		0x13000000
+-#define AR71XX_PCI_WIN4_OFFS		0x14000000
+-#define AR71XX_PCI_WIN5_OFFS		0x15000000
+-#define AR71XX_PCI_WIN6_OFFS		0x16000000
+-#define AR71XX_PCI_WIN7_OFFS		0x07000000
+-
+-#define AR71XX_PCI_CFG_BASE		\
+-	(AR71XX_PCI_MEM_BASE + AR71XX_PCI_WIN7_OFFS + 0x10000)
+-#define AR71XX_PCI_CFG_SIZE		0x100
+-
+ #define AR71XX_PCI_REG_CRP_AD_CBE	0x00
+ #define AR71XX_PCI_REG_CRP_WRDATA	0x04
+ #define AR71XX_PCI_REG_CRP_RDDATA	0x08
+diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
+index e7aca88b..b3f9d09 100644
+--- a/arch/mips/pci/pci-ar724x.c
++++ b/arch/mips/pci/pci-ar724x.c
+@@ -17,14 +17,6 @@
+ #include <asm/mach-ath79/ar71xx_regs.h>
+ #include <asm/mach-ath79/pci.h>
  
--	irq_set_chained_handler(ATH79_CPU_IRQ_IP2, ar71xx_pci_irq_handler);
-+	irq_set_chained_handler(irq, ar71xx_pci_irq_handler);
- }
- 
--static __init void ar71xx_pci_reset(void)
-+static void ar71xx_pci_reset(void)
- {
- 	void __iomem *ddr_base = ath79_ddr_base;
- 
-@@ -367,9 +369,59 @@ __init int ar71xx_pcibios_init(void)
- 	/* clear bus errors */
- 	ar71xx_pci_check_error(1);
- 
--	ar71xx_pci_irq_init();
-+	ar71xx_pci_irq_init(ATH79_CPU_IRQ_IP2);
- 
- 	register_pci_controller(&ar71xx_pci_controller);
- 
- 	return 0;
- }
-+
-+static int ar71xx_pci_probe(struct platform_device *pdev)
-+{
-+	struct resource *res;
-+	int irq;
-+	u32 t;
-+
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "cfg_base");
-+	if (!res)
-+		return -EINVAL;
-+
-+	ar71xx_pcicfg_base = devm_request_and_ioremap(&pdev->dev, res);
-+	if (!ar71xx_pcicfg_base)
-+		return -ENOMEM;
-+
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0)
-+		return -EINVAL;
-+
-+	ar71xx_pci_reset();
-+
-+	/* setup COMMAND register */
-+	t = PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER | PCI_COMMAND_INVALIDATE
-+	  | PCI_COMMAND_PARITY | PCI_COMMAND_SERR | PCI_COMMAND_FAST_BACK;
-+	ar71xx_pci_local_write(PCI_COMMAND, 4, t);
-+
-+	/* clear bus errors */
-+	ar71xx_pci_check_error(1);
-+
-+	ar71xx_pci_irq_init(irq);
-+
-+	register_pci_controller(&ar71xx_pci_controller);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver ar71xx_pci_driver = {
-+	.probe = ar71xx_pci_probe,
-+	.driver = {
-+		.name = "ar71xx-pci",
-+		.owner = THIS_MODULE,
-+	},
-+};
-+
-+static int __init ar71xx_pci_init(void)
-+{
-+	return platform_driver_register(&ar71xx_pci_driver);
-+}
-+
-+postcore_initcall(ar71xx_pci_init);
+-#define AR724X_PCI_CFG_BASE	0x14000000
+-#define AR724X_PCI_CFG_SIZE	0x1000
+-#define AR724X_PCI_CTRL_BASE	(AR71XX_APB_BASE + 0x000f0000)
+-#define AR724X_PCI_CTRL_SIZE	0x100
+-
+-#define AR724X_PCI_MEM_BASE	0x10000000
+-#define AR724X_PCI_MEM_SIZE	0x04000000
+-
+ #define AR724X_PCI_REG_RESET		0x18
+ #define AR724X_PCI_REG_INT_STATUS	0x4c
+ #define AR724X_PCI_REG_INT_MASK		0x50
 -- 
 1.7.10

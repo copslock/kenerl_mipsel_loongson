@@ -1,39 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Feb 2013 23:44:15 +0100 (CET)
-Received: from mail-ob0-f169.google.com ([209.85.214.169]:64794 "EHLO
-        mail-ob0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823006Ab3BAWoOqhwMb convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 1 Feb 2013 23:44:14 +0100
-Received: by mail-ob0-f169.google.com with SMTP id ta14so4666835obb.14
-        for <linux-mips@linux-mips.org>; Fri, 01 Feb 2013 14:44:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:x-received:date:message-id:subject:from:to:cc
-         :content-type:content-transfer-encoding;
-        bh=dCNw1WBN6CHA2gU8BCYoksczFuUaBU25m2G/GICzwQI=;
-        b=fbpV/BpJT8J4UYdUWZxNPA5/325nBk+oO9/R1/ii/qI/z3rsz0GdXJG1Uxgq1QQZOX
-         ELwOOt+zRXAkfM3f+8RIeBttKpXg1S9pDP1ccsRwUo1Tbps8Zud4r9bKt04BUU00OkDd
-         HNzNFp6IQ9ANtJmsUYALScGL0xp780DUyrvAhgRErhNPERiJzMvUYs6i+CiZjX48QZse
-         4pujIfEX4vG8+VDcv4IJ5IJkFiuIzgWa1GC6uyoHcrRFfRBKI1+NgtKbYZ08pm8dUZEU
-         aT+o+ErYLyZVu+POQ0aB5lhPg2WIuGTnP6rchJFhLGqflCAKbCj8bPshMBfDxU4/xIsA
-         NLlg==
-MIME-Version: 1.0
-X-Received: by 10.60.32.33 with SMTP id f1mr11457037oei.122.1359758648348;
- Fri, 01 Feb 2013 14:44:08 -0800 (PST)
-Received: by 10.76.109.197 with HTTP; Fri, 1 Feb 2013 14:44:08 -0800 (PST)
-Date:   Fri, 1 Feb 2013 23:44:08 +0100
-Message-ID: <CACna6rxU3LX+PBgyddMqGtM4=_zvzLZMehB1W1PwN36ZUwF3sA@mail.gmail.com>
-Subject: CPU hang on cpu_wait in CPU_74K
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 35679
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Feb 2013 13:41:20 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:45752 "EHLO
+        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6816511Ab3BBMlSoSUbN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 2 Feb 2013 13:41:18 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 0FD9225D27A;
+        Sat,  2 Feb 2013 13:41:13 +0100 (CET)
+Received: from mail.szarvasnet.hu ([127.0.0.1])
+        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Zj6n4NGWraOw; Sat,  2 Feb 2013 13:41:12 +0100 (CET)
+Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id B919B25D03A;
+        Sat,  2 Feb 2013 13:41:07 +0100 (CET)
+From:   Gabor Juhos <juhosg@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips <linux-mips@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH 1/5] MIPS: pci-ar724x: convert into a platform driver
+Date:   Sat,  2 Feb 2013 13:40:42 +0100
+Message-Id: <1359808846-23083-1-git-send-email-juhosg@openwrt.org>
+X-Mailer: git-send-email 1.7.10
+X-archive-position: 35680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,31 +39,107 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello again ;)
+The patch converts the pci-ar724x driver into a
+platform driver. This makes it possible to register
+the PCI controller as a plain platform device.
 
-I'm hacking a BCM4706 based board which uses a 74K CPU. The problem is
-that wait_cpu (see cpu-probe.c) hangs my machine (is happens as soon
-as the first [um]sleep is called).
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+---
+Note:
 
-The hang is related to the cpu-probe.c and:
-> cpu_wait = r4k_wait;
-> if ((c->processor_id & 0xff) >= PRID_REV_ENCODE_332(2, 1, 0))
-> 	cpu_wait = r4k_wait_irqoff;
+In order to make the patch simple, the registration
+of the corresponding platform device, and the removal
+of the ar724x_pcibios_init function is implemented in
+subsequent patches.
+---
+ arch/mips/pci/pci-ar724x.c |   57 ++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 55 insertions(+), 2 deletions(-)
 
-If I remove that lines completely [um]sleep doesn't hang machine
-anymore. I'm not sure if removing that code is a proper solution. I'm
-not sure what is the
-> c->processor_id & 0xff
-on my machine, but I've tried forcing both:
-> cpu_wait = r4k_wait;
-and
-> cpu_wait = r4k_wait_irqoff;
-and both are causing hangs.
-
-If I recall correctly, Hauke was checking Broadcom's code and they're
-using the same solution: removing that lines completely.
-
-Do you have any idea how this could be solved?
-
+diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
+index c11c75b..e7aca88b 100644
+--- a/arch/mips/pci/pci-ar724x.c
++++ b/arch/mips/pci/pci-ar724x.c
+@@ -11,6 +11,8 @@
+ 
+ #include <linux/irq.h>
+ #include <linux/pci.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
+ #include <asm/mach-ath79/ath79.h>
+ #include <asm/mach-ath79/ar71xx_regs.h>
+ #include <asm/mach-ath79/pci.h>
+@@ -262,7 +264,7 @@ static struct irq_chip ar724x_pci_irq_chip = {
+ 	.irq_mask_ack	= ar724x_pci_irq_mask,
+ };
+ 
+-static void __init ar724x_pci_irq_init(int irq)
++static void ar724x_pci_irq_init(int irq)
+ {
+ 	void __iomem *base;
+ 	int i;
+@@ -282,7 +284,7 @@ static void __init ar724x_pci_irq_init(int irq)
+ 	irq_set_chained_handler(irq, ar724x_pci_irq_handler);
+ }
+ 
+-int __init ar724x_pcibios_init(int irq)
++int ar724x_pcibios_init(int irq)
+ {
+ 	int ret;
+ 
+@@ -312,3 +314,54 @@ err_unmap_devcfg:
+ err:
+ 	return ret;
+ }
++
++static int ar724x_pci_probe(struct platform_device *pdev)
++{
++	struct resource *res;
++	int irq;
++
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ctrl_base");
++	if (!res)
++		return -EINVAL;
++
++	ar724x_pci_ctrl_base = devm_request_and_ioremap(&pdev->dev, res);
++	if (ar724x_pci_ctrl_base == NULL)
++		return -EBUSY;
++
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "cfg_base");
++	if (!res)
++		return -EINVAL;
++
++	ar724x_pci_devcfg_base = devm_request_and_ioremap(&pdev->dev, res);
++	if (!ar724x_pci_devcfg_base)
++		return -EBUSY;
++
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0)
++		return -EINVAL;
++
++	ar724x_pci_link_up = ar724x_pci_check_link();
++	if (!ar724x_pci_link_up)
++		dev_warn(&pdev->dev, "PCIe link is down\n");
++
++	ar724x_pci_irq_init(irq);
++
++	register_pci_controller(&ar724x_pci_controller);
++
++	return 0;
++}
++
++static struct platform_driver ar724x_pci_driver = {
++	.probe = ar724x_pci_probe,
++	.driver = {
++		.name = "ar724x-pci",
++		.owner = THIS_MODULE,
++	},
++};
++
++static int __init ar724x_pci_init(void)
++{
++	return platform_driver_register(&ar724x_pci_driver);
++}
++
++postcore_initcall(ar724x_pci_init);
 -- 
-Rafał
+1.7.10

@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Feb 2013 11:59:57 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:37445 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Feb 2013 12:00:24 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:37450 "EHLO
         mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816288Ab3BCK74YQYH2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Feb 2013 11:59:56 +0100
+        with ESMTP id S6816288Ab3BCLAYF6R9o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Feb 2013 12:00:24 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 2082625D3E0;
-        Sun,  3 Feb 2013 11:59:51 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id E7B0725D404;
+        Sun,  3 Feb 2013 12:00:18 +0100 (CET)
 Received: from mail.szarvasnet.hu ([127.0.0.1])
         by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id avSQjbKzCxy1; Sun,  3 Feb 2013 11:59:51 +0100 (CET)
+        with ESMTP id I1AFiIdHCOql; Sun,  3 Feb 2013 12:00:18 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 41C7425C680;
-        Sun,  3 Feb 2013 11:59:50 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 94CEF25D403;
+        Sun,  3 Feb 2013 12:00:18 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips <linux-mips@linux-mips.org>,
         John Crispin <blogic@openwrt.org>,
         Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 3/4] MIPS: pci-ar724x: remove static PCI IO/MEM resources
-Date:   Sun,  3 Feb 2013 11:59:45 +0100
-Message-Id: <1359889185-15779-1-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH 4/4] MIPS: pci-ar724x: use per-controller IRQ base
+Date:   Sun,  3 Feb 2013 12:00:16 +0100
+Message-Id: <1359889216-15851-1-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.10
 In-Reply-To: <1359889120-15699-1-git-send-email-juhosg@openwrt.org>
 References: <1359889120-15699-1-git-send-email-juhosg@openwrt.org>
-X-archive-position: 35691
+X-archive-position: 35692
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,139 +41,115 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Static resources become impractical when multiple
-PCI controllers are present. Move the resources
-into the platform device registration code and
-change the probe routine to get those from there
-platform device's resources.
+Change to the code to use per-controller IRQ base.
+This is needed for multiple PCI controller support.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 ---
- arch/mips/ath79/pci.c      |   21 ++++++++++++++++++++-
- arch/mips/pci/pci-ar724x.c |   40 ++++++++++++++++++++++++----------------
- 2 files changed, 44 insertions(+), 17 deletions(-)
+ arch/mips/pci/pci-ar724x.c |   31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
-index d90e071..45d1112 100644
---- a/arch/mips/ath79/pci.c
-+++ b/arch/mips/ath79/pci.c
-@@ -139,10 +139,13 @@ static struct platform_device *
- ath79_register_pci_ar724x(int id,
- 			  unsigned long cfg_base,
- 			  unsigned long ctrl_base,
-+			  unsigned long mem_base,
-+			  unsigned long mem_size,
-+			  unsigned long io_base,
- 			  int irq)
- {
- 	struct platform_device *pdev;
--	struct resource res[3];
-+	struct resource res[5];
- 
- 	memset(res, 0, sizeof(res));
- 
-@@ -160,6 +163,16 @@ ath79_register_pci_ar724x(int id,
- 	res[2].start = irq;
- 	res[2].end = irq;
- 
-+	res[3].name = "mem_base";
-+	res[3].flags = IORESOURCE_MEM;
-+	res[3].start = mem_base;
-+	res[3].end = mem_base + mem_size - 1;
-+
-+	res[4].name = "io_base";
-+	res[4].flags = IORESOURCE_IO;
-+	res[4].start = io_base;
-+	res[4].end = io_base;
-+
- 	pdev = platform_device_register_simple("ar724x-pci", id,
- 					       res, ARRAY_SIZE(res));
- 	return pdev;
-@@ -175,6 +188,9 @@ int __init ath79_register_pci(void)
- 		pdev = ath79_register_pci_ar724x(-1,
- 						 AR724X_PCI_CFG_BASE,
- 						 AR724X_PCI_CTRL_BASE,
-+						 AR724X_PCI_MEM_BASE,
-+						 AR724X_PCI_MEM_SIZE,
-+						 0,
- 						 ATH79_CPU_IRQ_IP2);
- 	} else if (soc_is_ar9342() ||
- 		   soc_is_ar9344()) {
-@@ -187,6 +203,9 @@ int __init ath79_register_pci(void)
- 		pdev = ath79_register_pci_ar724x(-1,
- 						 AR724X_PCI_CFG_BASE,
- 						 AR724X_PCI_CTRL_BASE,
-+						 AR724X_PCI_MEM_BASE,
-+						 AR724X_PCI_MEM_SIZE,
-+						 0,
- 						 ATH79_IP2_IRQ(0));
- 	} else {
- 		/* No PCI support */
 diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
-index 93ab877..d0d707d 100644
+index d0d707d..0440d88 100644
 --- a/arch/mips/pci/pci-ar724x.c
 +++ b/arch/mips/pci/pci-ar724x.c
-@@ -42,6 +42,8 @@ struct ar724x_pci_controller {
- 	spinlock_t lock;
+@@ -34,6 +34,7 @@ struct ar724x_pci_controller {
+ 	void __iomem *ctrl_base;
  
- 	struct pci_controller pci_controller;
-+	struct resource io_res;
-+	struct resource mem_res;
- };
+ 	int irq;
++	int irq_base;
  
- static inline bool ar724x_pci_check_link(struct ar724x_pci_controller *apc)
-@@ -190,20 +192,6 @@ static struct pci_ops ar724x_pci_ops = {
- 	.write	= ar724x_pci_write,
- };
+ 	bool link_up;
+ 	bool bar0_is_cached;
+@@ -205,7 +206,7 @@ static void ar724x_pci_irq_handler(unsigned int irq, struct irq_desc *desc)
+ 		  __raw_readl(base + AR724X_PCI_REG_INT_MASK);
  
--static struct resource ar724x_io_resource = {
--	.name   = "PCI IO space",
--	.start  = 0,
--	.end    = 0,
--	.flags  = IORESOURCE_IO,
--};
--
--static struct resource ar724x_mem_resource = {
--	.name   = "PCI memory space",
--	.start  = AR724X_PCI_MEM_BASE,
--	.end    = AR724X_PCI_MEM_BASE + AR724X_PCI_MEM_SIZE - 1,
--	.flags  = IORESOURCE_MEM,
--};
--
- static void ar724x_pci_irq_handler(unsigned int irq, struct irq_desc *desc)
+ 	if (pending & AR724X_PCI_INT_DEV0)
+-		generic_handle_irq(ATH79_PCI_IRQ(0));
++		generic_handle_irq(apc->irq_base + 0);
+ 
+ 	else
+ 		spurious_interrupt();
+@@ -215,13 +216,15 @@ static void ar724x_pci_irq_unmask(struct irq_data *d)
  {
  	struct ar724x_pci_controller *apc;
-@@ -331,9 +319,29 @@ static int ar724x_pci_probe(struct platform_device *pdev)
+ 	void __iomem *base;
++	int offset;
+ 	u32 t;
  
- 	spin_lock_init(&apc->lock);
+ 	apc = irq_data_get_irq_chip_data(d);
+ 	base = apc->ctrl_base;
++	offset = apc->irq_base - d->irq;
  
-+	res = platform_get_resource_byname(pdev, IORESOURCE_IO, "io_base");
-+	if (!res)
-+		return -EINVAL;
-+
-+	apc->io_res.parent = res;
-+	apc->io_res.name = "PCI IO space";
-+	apc->io_res.start = res->start;
-+	apc->io_res.end = res->end;
-+	apc->io_res.flags = IORESOURCE_IO;
-+
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "mem_base");
-+	if (!res)
-+		return -EINVAL;
-+
-+	apc->mem_res.parent = res;
-+	apc->mem_res.name = "PCI memory space";
-+	apc->mem_res.start = res->start;
-+	apc->mem_res.end = res->end;
-+	apc->mem_res.flags = IORESOURCE_MEM;
-+
- 	apc->pci_controller.pci_ops = &ar724x_pci_ops;
--	apc->pci_controller.io_resource = &ar724x_io_resource;
--	apc->pci_controller.mem_resource = &ar724x_mem_resource;
-+	apc->pci_controller.io_resource = &apc->io_res;
-+	apc->pci_controller.mem_resource = &apc->mem_res;
+-	switch (d->irq) {
+-	case ATH79_PCI_IRQ(0):
++	switch (offset) {
++	case 0:
+ 		t = __raw_readl(base + AR724X_PCI_REG_INT_MASK);
+ 		__raw_writel(t | AR724X_PCI_INT_DEV0,
+ 			     base + AR724X_PCI_REG_INT_MASK);
+@@ -234,13 +237,15 @@ static void ar724x_pci_irq_mask(struct irq_data *d)
+ {
+ 	struct ar724x_pci_controller *apc;
+ 	void __iomem *base;
++	int offset;
+ 	u32 t;
  
- 	apc->link_up = ar724x_pci_check_link(apc);
+ 	apc = irq_data_get_irq_chip_data(d);
+ 	base = apc->ctrl_base;
++	offset = apc->irq_base - d->irq;
+ 
+-	switch (d->irq) {
+-	case ATH79_PCI_IRQ(0):
++	switch (offset) {
++	case 0:
+ 		t = __raw_readl(base + AR724X_PCI_REG_INT_MASK);
+ 		__raw_writel(t & ~AR724X_PCI_INT_DEV0,
+ 			     base + AR724X_PCI_REG_INT_MASK);
+@@ -264,7 +269,8 @@ static struct irq_chip ar724x_pci_irq_chip = {
+ 	.irq_mask_ack	= ar724x_pci_irq_mask,
+ };
+ 
+-static void ar724x_pci_irq_init(struct ar724x_pci_controller *apc)
++static void ar724x_pci_irq_init(struct ar724x_pci_controller *apc,
++				int id)
+ {
+ 	void __iomem *base;
+ 	int i;
+@@ -274,10 +280,10 @@ static void ar724x_pci_irq_init(struct ar724x_pci_controller *apc)
+ 	__raw_writel(0, base + AR724X_PCI_REG_INT_MASK);
+ 	__raw_writel(0, base + AR724X_PCI_REG_INT_STATUS);
+ 
+-	BUILD_BUG_ON(ATH79_PCI_IRQ_COUNT < AR724X_PCI_IRQ_COUNT);
++	apc->irq_base = ATH79_PCI_IRQ_BASE + (id * AR724X_PCI_IRQ_COUNT);
+ 
+-	for (i = ATH79_PCI_IRQ_BASE;
+-	     i < ATH79_PCI_IRQ_BASE + AR724X_PCI_IRQ_COUNT; i++) {
++	for (i = apc->irq_base;
++	     i < apc->irq_base + AR724X_PCI_IRQ_COUNT; i++) {
+ 		irq_set_chip_and_handler(i, &ar724x_pci_irq_chip,
+ 					 handle_level_irq);
+ 		irq_set_chip_data(i, apc);
+@@ -291,6 +297,11 @@ static int ar724x_pci_probe(struct platform_device *pdev)
+ {
+ 	struct ar724x_pci_controller *apc;
+ 	struct resource *res;
++	int id;
++
++	id = pdev->id;
++	if (id == -1)
++		id = 0;
+ 
+ 	apc = devm_kzalloc(&pdev->dev, sizeof(struct ar724x_pci_controller),
+ 			    GFP_KERNEL);
+@@ -347,7 +358,7 @@ static int ar724x_pci_probe(struct platform_device *pdev)
  	if (!apc->link_up)
+ 		dev_warn(&pdev->dev, "PCIe link is down\n");
+ 
+-	ar724x_pci_irq_init(apc);
++	ar724x_pci_irq_init(apc, id);
+ 
+ 	register_pci_controller(&apc->pci_controller);
+ 
 -- 
 1.7.10

@@ -1,48 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Feb 2013 12:19:29 +0100 (CET)
-Received: from mail-lb0-f179.google.com ([209.85.217.179]:50948 "EHLO
-        mail-lb0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6819546Ab3BCLTTr-Nsu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Feb 2013 12:19:19 +0100
-Received: by mail-lb0-f179.google.com with SMTP id j14so5916257lbo.38
-        for <linux-mips@linux-mips.org>; Sun, 03 Feb 2013 03:19:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding:x-gm-message-state;
-        bh=45HgMP6NCBRX07s9NU85Ec/MMx0uK8i1Ot34WU1eXpU=;
-        b=On+kySxPqrUK66DlhP1uYzog/8C/vNQeMRTiWwq5D4J60UaYDYOa+L/w4ZHN+xZlsI
-         u6b0nne/WAn+bKIJZVk2T1iiDh/gOjth114OmWAt54GmZ0aUbTx9+U3PaPqdgmgv31sZ
-         Sug0zfHShoLTHG4TJkOQyF1kenciDTtDNxwyr9xrdpUg8AjDNQ5qW+K4ee6Pg9PScYkM
-         B+IAttJEzpQABC2q9xBpNsTK/6VG2UqufPOGO7VgleZP20xi/jYEHwBmlpps/iJVT/mI
-         zIWAu13xkPOmBK8bdsE9q4U4RUrItt7q5Pdi2rlJTwv+hlXtQKPWohhPehInO7E6UU8C
-         qCZg==
-X-Received: by 10.152.121.212 with SMTP id lm20mr15980493lab.42.1359890354023;
-        Sun, 03 Feb 2013 03:19:14 -0800 (PST)
-Received: from [192.168.2.2] (ppp91-79-88-113.pppoe.mtu-net.ru. [91.79.88.113])
-        by mx.google.com with ESMTPS id fh4sm4319173lbb.7.2013.02.03.03.19.12
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sun, 03 Feb 2013 03:19:13 -0800 (PST)
-Message-ID: <510E479C.4020305@mvista.com>
-Date:   Sun, 03 Feb 2013 15:18:52 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/20130107 Thunderbird/17.0.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Feb 2013 12:35:29 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:45558 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6817128Ab3BCLf2Zm5Ws (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Feb 2013 12:35:28 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id A7B068F62;
+        Sun,  3 Feb 2013 12:35:27 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id eT0uZ6Y7ojg0; Sun,  3 Feb 2013 12:35:22 +0100 (CET)
+Received: from [IPv6:2001:470:1f0b:447:b54f:3623:690c:6cea] (unknown [IPv6:2001:470:1f0b:447:b54f:3623:690c:6cea])
+        by hauke-m.de (Postfix) with ESMTPSA id 933358F60;
+        Sun,  3 Feb 2013 12:35:22 +0100 (CET)
+Message-ID: <510E4B79.3040903@hauke-m.de>
+Date:   Sun, 03 Feb 2013 12:35:21 +0100
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
 MIME-Version: 1.0
-To:     Gabor Juhos <juhosg@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>
-Subject: Re: [PATCH 3/4] MIPS: pci-ar724x: remove static PCI IO/MEM resources
-References: <1359889120-15699-1-git-send-email-juhosg@openwrt.org> <1359889185-15779-1-git-send-email-juhosg@openwrt.org>
-In-Reply-To: <1359889185-15779-1-git-send-email-juhosg@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQkeXMoTvkCPjp3LRNb1S6Hv3GtDCZGLGE7ytZbN3suuRxtRAh9th5A8lDcx+/q7r/+CCKZd
-X-archive-position: 35693
+To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+CC:     linux-mips@linux-mips.org
+Subject: Re: CPU hang on cpu_wait in CPU_74K
+References: <CACna6rxU3LX+PBgyddMqGtM4=_zvzLZMehB1W1PwN36ZUwF3sA@mail.gmail.com>
+In-Reply-To: <CACna6rxU3LX+PBgyddMqGtM4=_zvzLZMehB1W1PwN36ZUwF3sA@mail.gmail.com>
+X-Enigmail-Version: 1.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-archive-position: 35694
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,55 +44,41 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+On 02/01/2013 11:44 PM, Rafał Miłecki wrote:
+> Hello again ;)
+> 
+> I'm hacking a BCM4706 based board which uses a 74K CPU. The problem is
+> that wait_cpu (see cpu-probe.c) hangs my machine (is happens as soon
+> as the first [um]sleep is called).
+> 
+> The hang is related to the cpu-probe.c and:
+>> cpu_wait = r4k_wait;
+>> if ((c->processor_id & 0xff) >= PRID_REV_ENCODE_332(2, 1, 0))
+>> 	cpu_wait = r4k_wait_irqoff;
+> 
+> If I remove that lines completely [um]sleep doesn't hang machine
+> anymore. I'm not sure if removing that code is a proper solution. I'm
+> not sure what is the
+>> c->processor_id & 0xff
+> on my machine, but I've tried forcing both:
+>> cpu_wait = r4k_wait;
+> and
+>> cpu_wait = r4k_wait_irqoff;
+> and both are causing hangs.
+> 
+> If I recall correctly, Hauke was checking Broadcom's code and they're
+> using the same solution: removing that lines completely.
+> 
+> Do you have any idea how this could be solved?
+> 
+Hello Rafał,
 
-On 03-02-2013 14:59, Gabor Juhos wrote:
+In the Linux kernel form the Broadcom SDK the lines you mentioned are
+removed, but we can not do this in the mainline kernel as this would
+also affect some other non broken Broadcom MIPS CPUs. I talked about
+this with Ralf some days ago and he said we should add cpu_wait = NULL;
+somewhere in the platform specific code. This problem seams to just
+affect the 74K CPU used on the BCM4706 and not on the other Broadcom SoC
+using a 74K CPU.
 
-> Static resources become impractical when multiple
-> PCI controllers are present. Move the resources
-> into the platform device registration code and
-> change the probe routine to get those from there
-> platform device's resources.
-
-> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-> ---
->   arch/mips/ath79/pci.c      |   21 ++++++++++++++++++++-
->   arch/mips/pci/pci-ar724x.c |   40 ++++++++++++++++++++++++----------------
->   2 files changed, 44 insertions(+), 17 deletions(-)
-
-> diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
-> index d90e071..45d1112 100644
-> --- a/arch/mips/ath79/pci.c
-> +++ b/arch/mips/ath79/pci.c
-> @@ -139,10 +139,13 @@ static struct platform_device *
->   ath79_register_pci_ar724x(int id,
->   			  unsigned long cfg_base,
->   			  unsigned long ctrl_base,
-> +			  unsigned long mem_base,
-> +			  unsigned long mem_size,
-> +			  unsigned long io_base,
->   			  int irq)
->   {
->   	struct platform_device *pdev;
-> -	struct resource res[3];
-> +	struct resource res[5];
->
->   	memset(res, 0, sizeof(res));
->
-> @@ -160,6 +163,16 @@ ath79_register_pci_ar724x(int id,
->   	res[2].start = irq;
->   	res[2].end = irq;
->
-> +	res[3].name = "mem_base";
-> +	res[3].flags = IORESOURCE_MEM;
-> +	res[3].start = mem_base;
-> +	res[3].end = mem_base + mem_size - 1;
-> +
-> +	res[4].name = "io_base";
-> +	res[4].flags = IORESOURCE_IO;
-> +	res[4].start = io_base;
-> +	res[4].end = io_base;
-
-    One I/O port, hm? What is it good for?
-
-WBR, Sergei
+Hauke

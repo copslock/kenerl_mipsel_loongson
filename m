@@ -1,33 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Feb 2013 12:00:24 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:37450 "EHLO
-        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816288Ab3BCLAYF6R9o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Feb 2013 12:00:24 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id E7B0725D404;
-        Sun,  3 Feb 2013 12:00:18 +0100 (CET)
-Received: from mail.szarvasnet.hu ([127.0.0.1])
-        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id I1AFiIdHCOql; Sun,  3 Feb 2013 12:00:18 +0100 (CET)
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 94CEF25D403;
-        Sun,  3 Feb 2013 12:00:18 +0100 (CET)
-From:   Gabor Juhos <juhosg@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 4/4] MIPS: pci-ar724x: use per-controller IRQ base
-Date:   Sun,  3 Feb 2013 12:00:16 +0100
-Message-Id: <1359889216-15851-1-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.10
-In-Reply-To: <1359889120-15699-1-git-send-email-juhosg@openwrt.org>
-References: <1359889120-15699-1-git-send-email-juhosg@openwrt.org>
-X-archive-position: 35692
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Feb 2013 12:19:29 +0100 (CET)
+Received: from mail-lb0-f179.google.com ([209.85.217.179]:50948 "EHLO
+        mail-lb0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6819546Ab3BCLTTr-Nsu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Feb 2013 12:19:19 +0100
+Received: by mail-lb0-f179.google.com with SMTP id j14so5916257lbo.38
+        for <linux-mips@linux-mips.org>; Sun, 03 Feb 2013 03:19:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding:x-gm-message-state;
+        bh=45HgMP6NCBRX07s9NU85Ec/MMx0uK8i1Ot34WU1eXpU=;
+        b=On+kySxPqrUK66DlhP1uYzog/8C/vNQeMRTiWwq5D4J60UaYDYOa+L/w4ZHN+xZlsI
+         u6b0nne/WAn+bKIJZVk2T1iiDh/gOjth114OmWAt54GmZ0aUbTx9+U3PaPqdgmgv31sZ
+         Sug0zfHShoLTHG4TJkOQyF1kenciDTtDNxwyr9xrdpUg8AjDNQ5qW+K4ee6Pg9PScYkM
+         B+IAttJEzpQABC2q9xBpNsTK/6VG2UqufPOGO7VgleZP20xi/jYEHwBmlpps/iJVT/mI
+         zIWAu13xkPOmBK8bdsE9q4U4RUrItt7q5Pdi2rlJTwv+hlXtQKPWohhPehInO7E6UU8C
+         qCZg==
+X-Received: by 10.152.121.212 with SMTP id lm20mr15980493lab.42.1359890354023;
+        Sun, 03 Feb 2013 03:19:14 -0800 (PST)
+Received: from [192.168.2.2] (ppp91-79-88-113.pppoe.mtu-net.ru. [91.79.88.113])
+        by mx.google.com with ESMTPS id fh4sm4319173lbb.7.2013.02.03.03.19.12
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sun, 03 Feb 2013 03:19:13 -0800 (PST)
+Message-ID: <510E479C.4020305@mvista.com>
+Date:   Sun, 03 Feb 2013 15:18:52 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/20130107 Thunderbird/17.0.2
+MIME-Version: 1.0
+To:     Gabor Juhos <juhosg@openwrt.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>
+Subject: Re: [PATCH 3/4] MIPS: pci-ar724x: remove static PCI IO/MEM resources
+References: <1359889120-15699-1-git-send-email-juhosg@openwrt.org> <1359889185-15779-1-git-send-email-juhosg@openwrt.org>
+In-Reply-To: <1359889185-15779-1-git-send-email-juhosg@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Gm-Message-State: ALoCoQkeXMoTvkCPjp3LRNb1S6Hv3GtDCZGLGE7ytZbN3suuRxtRAh9th5A8lDcx+/q7r/+CCKZd
+X-archive-position: 35693
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,115 +56,55 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Change to the code to use per-controller IRQ base.
-This is needed for multiple PCI controller support.
+Hello.
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
----
- arch/mips/pci/pci-ar724x.c |   31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+On 03-02-2013 14:59, Gabor Juhos wrote:
 
-diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
-index d0d707d..0440d88 100644
---- a/arch/mips/pci/pci-ar724x.c
-+++ b/arch/mips/pci/pci-ar724x.c
-@@ -34,6 +34,7 @@ struct ar724x_pci_controller {
- 	void __iomem *ctrl_base;
- 
- 	int irq;
-+	int irq_base;
- 
- 	bool link_up;
- 	bool bar0_is_cached;
-@@ -205,7 +206,7 @@ static void ar724x_pci_irq_handler(unsigned int irq, struct irq_desc *desc)
- 		  __raw_readl(base + AR724X_PCI_REG_INT_MASK);
- 
- 	if (pending & AR724X_PCI_INT_DEV0)
--		generic_handle_irq(ATH79_PCI_IRQ(0));
-+		generic_handle_irq(apc->irq_base + 0);
- 
- 	else
- 		spurious_interrupt();
-@@ -215,13 +216,15 @@ static void ar724x_pci_irq_unmask(struct irq_data *d)
- {
- 	struct ar724x_pci_controller *apc;
- 	void __iomem *base;
-+	int offset;
- 	u32 t;
- 
- 	apc = irq_data_get_irq_chip_data(d);
- 	base = apc->ctrl_base;
-+	offset = apc->irq_base - d->irq;
- 
--	switch (d->irq) {
--	case ATH79_PCI_IRQ(0):
-+	switch (offset) {
-+	case 0:
- 		t = __raw_readl(base + AR724X_PCI_REG_INT_MASK);
- 		__raw_writel(t | AR724X_PCI_INT_DEV0,
- 			     base + AR724X_PCI_REG_INT_MASK);
-@@ -234,13 +237,15 @@ static void ar724x_pci_irq_mask(struct irq_data *d)
- {
- 	struct ar724x_pci_controller *apc;
- 	void __iomem *base;
-+	int offset;
- 	u32 t;
- 
- 	apc = irq_data_get_irq_chip_data(d);
- 	base = apc->ctrl_base;
-+	offset = apc->irq_base - d->irq;
- 
--	switch (d->irq) {
--	case ATH79_PCI_IRQ(0):
-+	switch (offset) {
-+	case 0:
- 		t = __raw_readl(base + AR724X_PCI_REG_INT_MASK);
- 		__raw_writel(t & ~AR724X_PCI_INT_DEV0,
- 			     base + AR724X_PCI_REG_INT_MASK);
-@@ -264,7 +269,8 @@ static struct irq_chip ar724x_pci_irq_chip = {
- 	.irq_mask_ack	= ar724x_pci_irq_mask,
- };
- 
--static void ar724x_pci_irq_init(struct ar724x_pci_controller *apc)
-+static void ar724x_pci_irq_init(struct ar724x_pci_controller *apc,
-+				int id)
- {
- 	void __iomem *base;
- 	int i;
-@@ -274,10 +280,10 @@ static void ar724x_pci_irq_init(struct ar724x_pci_controller *apc)
- 	__raw_writel(0, base + AR724X_PCI_REG_INT_MASK);
- 	__raw_writel(0, base + AR724X_PCI_REG_INT_STATUS);
- 
--	BUILD_BUG_ON(ATH79_PCI_IRQ_COUNT < AR724X_PCI_IRQ_COUNT);
-+	apc->irq_base = ATH79_PCI_IRQ_BASE + (id * AR724X_PCI_IRQ_COUNT);
- 
--	for (i = ATH79_PCI_IRQ_BASE;
--	     i < ATH79_PCI_IRQ_BASE + AR724X_PCI_IRQ_COUNT; i++) {
-+	for (i = apc->irq_base;
-+	     i < apc->irq_base + AR724X_PCI_IRQ_COUNT; i++) {
- 		irq_set_chip_and_handler(i, &ar724x_pci_irq_chip,
- 					 handle_level_irq);
- 		irq_set_chip_data(i, apc);
-@@ -291,6 +297,11 @@ static int ar724x_pci_probe(struct platform_device *pdev)
- {
- 	struct ar724x_pci_controller *apc;
- 	struct resource *res;
-+	int id;
-+
-+	id = pdev->id;
-+	if (id == -1)
-+		id = 0;
- 
- 	apc = devm_kzalloc(&pdev->dev, sizeof(struct ar724x_pci_controller),
- 			    GFP_KERNEL);
-@@ -347,7 +358,7 @@ static int ar724x_pci_probe(struct platform_device *pdev)
- 	if (!apc->link_up)
- 		dev_warn(&pdev->dev, "PCIe link is down\n");
- 
--	ar724x_pci_irq_init(apc);
-+	ar724x_pci_irq_init(apc, id);
- 
- 	register_pci_controller(&apc->pci_controller);
- 
--- 
-1.7.10
+> Static resources become impractical when multiple
+> PCI controllers are present. Move the resources
+> into the platform device registration code and
+> change the probe routine to get those from there
+> platform device's resources.
+
+> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+> ---
+>   arch/mips/ath79/pci.c      |   21 ++++++++++++++++++++-
+>   arch/mips/pci/pci-ar724x.c |   40 ++++++++++++++++++++++++----------------
+>   2 files changed, 44 insertions(+), 17 deletions(-)
+
+> diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
+> index d90e071..45d1112 100644
+> --- a/arch/mips/ath79/pci.c
+> +++ b/arch/mips/ath79/pci.c
+> @@ -139,10 +139,13 @@ static struct platform_device *
+>   ath79_register_pci_ar724x(int id,
+>   			  unsigned long cfg_base,
+>   			  unsigned long ctrl_base,
+> +			  unsigned long mem_base,
+> +			  unsigned long mem_size,
+> +			  unsigned long io_base,
+>   			  int irq)
+>   {
+>   	struct platform_device *pdev;
+> -	struct resource res[3];
+> +	struct resource res[5];
+>
+>   	memset(res, 0, sizeof(res));
+>
+> @@ -160,6 +163,16 @@ ath79_register_pci_ar724x(int id,
+>   	res[2].start = irq;
+>   	res[2].end = irq;
+>
+> +	res[3].name = "mem_base";
+> +	res[3].flags = IORESOURCE_MEM;
+> +	res[3].start = mem_base;
+> +	res[3].end = mem_base + mem_size - 1;
+> +
+> +	res[4].name = "io_base";
+> +	res[4].flags = IORESOURCE_IO;
+> +	res[4].start = io_base;
+> +	res[4].end = io_base;
+
+    One I/O port, hm? What is it good for?
+
+WBR, Sergei

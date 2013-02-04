@@ -1,33 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Feb 2013 14:14:51 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:56526 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Feb 2013 17:06:57 +0100 (CET)
+Received: from dns1.mips.com ([12.201.5.69]:52341 "EHLO dns1.mips.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817032Ab3BDNOtvFFQ0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 4 Feb 2013 14:14:49 +0100
-Received: from arrakis.dune.hu ([127.0.0.1])
-        by localhost (arrakis.dune.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id tZt8X6F7sFPU; Mon,  4 Feb 2013 14:14:46 +0100 (CET)
-Received: from [192.168.254.50] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id CD32C2840E6;
-        Mon,  4 Feb 2013 14:14:45 +0100 (CET)
-Message-ID: <510FB449.2040806@openwrt.org>
-Date:   Mon, 04 Feb 2013 14:14:49 +0100
-From:   Gabor Juhos <juhosg@openwrt.org>
+        id S6823901Ab3BDQGzmuUQw convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Feb 2013 17:06:55 +0100
+Received: from mailgate1.mips.com (mailgate1.mips.com [12.201.5.111])
+        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id r14G6mRY001243;
+        Mon, 4 Feb 2013 08:06:48 -0800
+X-WSS-ID: 0MHPE39-01-0U0-02
+X-M-MSG: 
+Received: from exchdb01.mips.com (unknown [192.168.36.67])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mailgate1.mips.com (Postfix) with ESMTP id 2E65F364664;
+        Mon,  4 Feb 2013 08:06:44 -0800 (PST)
+Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
+ exchdb01.mips.com ([::1]) with mapi id 14.02.0247.003; Mon, 4 Feb 2013
+ 08:06:40 -0800
+From:   "Hill, Steven" <sjhill@mips.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "cernekee@gmail.com" <cernekee@gmail.com>
+Subject: RE: [PATCH][RFC] MIPS: microMIPS: Add support to micro-assembler.
+Thread-Topic: [PATCH][RFC] MIPS: microMIPS: Add support to micro-assembler.
+Thread-Index: AQHN/pSXpmmHN005Y0SyRQVcOld1K5hisX+AgAcyAHs=
+Date:   Mon, 4 Feb 2013 16:06:39 +0000
+Message-ID: <31E06A9FC96CEC488B43B19E2957C1B801146CA6BA@exchdb03.mips.com>
+References: <1359514228-2161-1-git-send-email-sjhill@mips.com>,<510960B9.1060800@gmail.com>
+In-Reply-To: <510960B9.1060800@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.36.79]
+x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
+x-ems-stamp: OLtTF1Ph702SdH+XV5a0hQ==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     Sergei Shtylyov <sshtylyov@mvista.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>
-Subject: Re: [PATCH 3/4] MIPS: pci-ar724x: remove static PCI IO/MEM resources
-References: <1359889120-15699-1-git-send-email-juhosg@openwrt.org> <1359889185-15779-1-git-send-email-juhosg@openwrt.org> <510E479C.4020305@mvista.com> <510E58B5.9060107@openwrt.org> <510FA5E3.4010403@mvista.com>
-In-Reply-To: <510FA5E3.4010403@mvista.com>
-X-Enigmail-Version: 1.5
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-X-archive-position: 35700
+X-archive-position: 35701
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,55 +56,21 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-2013.02.04. 13:13 keltezéssel, Sergei Shtylyov írta:
-> Hello.
+> I wonder if we could get rid of most of these #ifdefs by taking the
+> approach used in scripts/recordmcount.{c,h} or scripts/sortextable.{c,h}
 > 
-> On 03-02-2013 16:31, Gabor Juhos wrote:
-> 
->>>> @@ -160,6 +163,16 @@ ath79_register_pci_ar724x(int id,
->>>>        res[2].start = irq;
->>>>        res[2].end = irq;
->>>>
->>>> +    res[3].name = "mem_base";
->>>> +    res[3].flags = IORESOURCE_MEM;
->>>> +    res[3].start = mem_base;
->>>> +    res[3].end = mem_base + mem_size - 1;
->>>> +
->>>> +    res[4].name = "io_base";
->>>> +    res[4].flags = IORESOURCE_IO;
->>>> +    res[4].start = io_base;
->>>> +    res[4].end = io_base;
->>>
->>>     One I/O port, hm? What is it good for?
-> 
->> Strictly speaking it is not good for anything. This is a PCIe controller and it
->> does not support IO requests at all.
-> 
->    Is this the case with every PCIe controller or only this particular one?
+I do not see how these are at all applicable. I am not going to modify any compiled
+ELF binary.
 
-It is a limitation of this controller.
+> That is, move all the code that varies between microMIPS and MIPS to an
+> included file.  At the top of that file have a single
+> #if...#else...#endif block that defines the constants for each variety.
+> 
+> Then include this file as many times as needed (once or twice) to
+> produce the definitions required.
+> 
+> This would allow both a MIPS and microMIPS uasm to exist in the same kernel.
+> 
+I did this already did this once before in the <http://patchwork.linux-mips.org/patch/4688/> patch. The only modification of the patch would be to get rid of CONFIG_CPU_MICROMIPS controlling the inclusion of the 'uasm-micromips' and to include it unconditionally. Comments?
 
-> 
->> However the whole PCI code assumes that
->> each PCI controller have an IO resource and uses the hose->io_resource pointer
->> unconditionally.
-> 
->> Additionally, this matches with the removed static resource:
-> 
->>> -static struct resource ar724x_io_resource = {
->>> -    .name   = "PCI IO space",
->>> -    .start  = 0,
->>> -    .end    = 0,
->>> -    .flags  = IORESOURCE_IO,
->>> -};
->>> -
-> 
->    Since you seems to always pass 0, maybe you don't need 'io_base' parameter to
-> the function above?
-
-The AR724x SoCs SoCs have one PCIe controller only. However newer chips have
-more than one PCIe controllers, and each of those controllers needs a different
-io_base value to avoid resource conflicts. I'm preparing patches for newer SoCs
-and if everything goes well I will send those today.
-
--GAbor
+-Steve

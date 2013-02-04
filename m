@@ -1,33 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Feb 2013 16:52:56 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:42373 "EHLO
-        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816288Ab3BCPwwr5Blh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Feb 2013 16:52:52 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 6606E25D424;
-        Sun,  3 Feb 2013 16:52:46 +0100 (CET)
-Received: from mail.szarvasnet.hu ([127.0.0.1])
-        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 5UfKkb4ZncJx; Sun,  3 Feb 2013 16:52:46 +0100 (CET)
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 33AE025C76B;
-        Sun,  3 Feb 2013 16:52:46 +0100 (CET)
-From:   Gabor Juhos <juhosg@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 5/4] MIPS: pci-ar724x: setup command register of the PCI controller
-Date:   Sun,  3 Feb 2013 16:52:47 +0100
-Message-Id: <1359906767-20512-1-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.10
-In-Reply-To: <1359889120-15699-1-git-send-email-juhosg@openwrt.org>
-References: <1359889120-15699-1-git-send-email-juhosg@openwrt.org>
-X-archive-position: 35696
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Feb 2013 11:10:15 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:57570 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816671Ab3BDKKKJYOYg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 4 Feb 2013 11:10:10 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     <uclinux-dist-devel@blackfin.uclinux.org>,
+        <linux-hexagon@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, <linux-parisc@vger.kernel.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-sh@vger.kernel.org>,
+        <linux-arch@vger.kernel.org>, James Hogan <james.hogan@imgtec.com>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        Mike Frysinger <vapier@gentoo.org>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Mundt <lethal@linux-sh.org>
+Subject: [PATCH RESEND 1/1] arch Kconfig: remove references to IRQ_PER_CPU
+Date:   Mon, 4 Feb 2013 10:09:43 +0000
+Message-ID: <1359972583-17134-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 1.7.7.6
+MIME-Version: 1.0
+Content-Type: text/plain
+X-SEF-Processed: 7_3_0_01181__2013_02_04_10_10_00
+X-archive-position: 35697
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,185 +44,125 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The command register of the PCI controller is
-not initialized correctly by the bootloader on
-some boards and this leads to non working PCI
-bus.
+The IRQ_PER_CPU Kconfig symbol was removed in the following commit:
 
-Add code to initialize the command register
-from the Linux code to avoid this.
+Commit 6a58fb3bad099076f36f0f30f44507bc3275cdb6 ("genirq: Remove
+CONFIG_IRQ_PER_CPU") merged in v2.6.39-rc1.
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+But IRQ_PER_CPU wasn't removed from any of the architecture Kconfig
+files where it was defined or selected. It's completely unused so remove
+the remaining references.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Mike Frysinger <vapier@gentoo.org>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: "James E.J. Bottomley" <jejb@parisc-linux.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Paul Mundt <lethal@linux-sh.org>
+Acked-by: Tony Luck <tony.luck@intel.com>
+Acked-by: Richard Kuo <rkuo@codeaurora.org>
 ---
-Sorry for the confusing patch number. This belongs to the 
-previous 'pci-ar724x' series but I forgot to add it there.
 
-Gabor
+Does anybody want to pick this patch up?
 
+ arch/blackfin/Kconfig |    1 -
+ arch/hexagon/Kconfig  |    1 -
+ arch/ia64/Kconfig     |    1 -
+ arch/mips/Kconfig     |    1 -
+ arch/parisc/Kconfig   |    1 -
+ arch/powerpc/Kconfig  |    1 -
+ arch/sh/Kconfig       |    3 ---
+ 7 files changed, 0 insertions(+), 9 deletions(-)
 
- arch/mips/ath79/pci.c                          |   10 +++-
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    2 +
- arch/mips/pci/pci-ar724x.c                     |   63 ++++++++++++++++++++++++
- 3 files changed, 74 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
-index 45d1112..942e3f9 100644
---- a/arch/mips/ath79/pci.c
-+++ b/arch/mips/ath79/pci.c
-@@ -139,13 +139,14 @@ static struct platform_device *
- ath79_register_pci_ar724x(int id,
- 			  unsigned long cfg_base,
- 			  unsigned long ctrl_base,
-+			  unsigned long crp_base,
- 			  unsigned long mem_base,
- 			  unsigned long mem_size,
- 			  unsigned long io_base,
- 			  int irq)
- {
- 	struct platform_device *pdev;
--	struct resource res[5];
-+	struct resource res[6];
+diff --git a/arch/blackfin/Kconfig b/arch/blackfin/Kconfig
+index b6f3ad5..c709715 100644
+--- a/arch/blackfin/Kconfig
++++ b/arch/blackfin/Kconfig
+@@ -38,7 +38,6 @@ config BLACKFIN
+ 	select HAVE_GENERIC_HARDIRQS
+ 	select GENERIC_ATOMIC64
+ 	select GENERIC_IRQ_PROBE
+-	select IRQ_PER_CPU if SMP
+ 	select USE_GENERIC_SMP_HELPERS if SMP
+ 	select HAVE_NMI_WATCHDOG if NMI_WATCHDOG
+ 	select GENERIC_SMP_IDLE_THREAD
+diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
+index 0744f7d..800dd9c 100644
+--- a/arch/hexagon/Kconfig
++++ b/arch/hexagon/Kconfig
+@@ -12,7 +12,6 @@ config HEXAGON
+ 	# select ARCH_WANT_OPTIONAL_GPIOLIB
+ 	# select ARCH_REQUIRE_GPIOLIB
+ 	# select HAVE_CLK
+-	# select IRQ_PER_CPU
+ 	# select GENERIC_PENDING_IRQ if SMP
+ 	select HAVE_IRQ_WORK
+ 	select GENERIC_ATOMIC64
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index 3279646..00c2e88 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -29,7 +29,6 @@ config IA64
+ 	select ARCH_DISCARD_MEMBLOCK
+ 	select GENERIC_IRQ_PROBE
+ 	select GENERIC_PENDING_IRQ if SMP
+-	select IRQ_PER_CPU
+ 	select GENERIC_IRQ_SHOW
+ 	select ARCH_WANT_OPTIONAL_GPIOLIB
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 2ac626a..451c2e7 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2161,7 +2161,6 @@ source "mm/Kconfig"
+ config SMP
+ 	bool "Multi-Processing support"
+ 	depends on SYS_SUPPORTS_SMP
+-	select IRQ_PER_CPU
+ 	select USE_GENERIC_SMP_HELPERS
+ 	help
+ 	  This enables support for systems with more than one CPU. If you have
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index b77feff..8525be4 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -16,7 +16,6 @@ config PARISC
+ 	select BROKEN_RODATA
+ 	select GENERIC_IRQ_PROBE
+ 	select GENERIC_PCI_IOMAP
+-	select IRQ_PER_CPU
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select GENERIC_SMP_IDLE_THREAD
+ 	select GENERIC_STRNCPY_FROM_USER
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 17903f1..f3d7090a 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -125,7 +125,6 @@ config PPC
+ 	select HAVE_GENERIC_HARDIRQS
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select SPARSE_IRQ
+-	select IRQ_PER_CPU
+ 	select IRQ_DOMAIN
+ 	select GENERIC_IRQ_SHOW
+ 	select GENERIC_IRQ_SHOW_LEVEL
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index babc2b8..6f799ec 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -91,9 +91,6 @@ config GENERIC_CSUM
+ config GENERIC_HWEIGHT
+ 	def_bool y
  
- 	memset(res, 0, sizeof(res));
+-config IRQ_PER_CPU
+-	def_bool y
+-
+ config GENERIC_GPIO
+ 	def_bool n
  
-@@ -173,6 +174,11 @@ ath79_register_pci_ar724x(int id,
- 	res[4].start = io_base;
- 	res[4].end = io_base;
- 
-+	res[5].name = "crp_base";
-+	res[5].flags = IORESOURCE_MEM;
-+	res[5].start = crp_base;
-+	res[5].end = crp_base + AR724X_PCI_CRP_SIZE - 1;
-+
- 	pdev = platform_device_register_simple("ar724x-pci", id,
- 					       res, ARRAY_SIZE(res));
- 	return pdev;
-@@ -188,6 +194,7 @@ int __init ath79_register_pci(void)
- 		pdev = ath79_register_pci_ar724x(-1,
- 						 AR724X_PCI_CFG_BASE,
- 						 AR724X_PCI_CTRL_BASE,
-+						 AR724X_PCI_CRP_BASE,
- 						 AR724X_PCI_MEM_BASE,
- 						 AR724X_PCI_MEM_SIZE,
- 						 0,
-@@ -203,6 +210,7 @@ int __init ath79_register_pci(void)
- 		pdev = ath79_register_pci_ar724x(-1,
- 						 AR724X_PCI_CFG_BASE,
- 						 AR724X_PCI_CTRL_BASE,
-+						 AR724X_PCI_CRP_BASE,
- 						 AR724X_PCI_MEM_BASE,
- 						 AR724X_PCI_MEM_SIZE,
- 						 0,
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index 7c87bfe..a77f6ee 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -67,6 +67,8 @@
- 
- #define AR724X_PCI_CFG_BASE	0x14000000
- #define AR724X_PCI_CFG_SIZE	0x1000
-+#define AR724X_PCI_CRP_BASE	(AR71XX_APB_BASE + 0x000c0000)
-+#define AR724X_PCI_CRP_SIZE	0x1000
- #define AR724X_PCI_CTRL_BASE	(AR71XX_APB_BASE + 0x000f0000)
- #define AR724X_PCI_CTRL_SIZE	0x100
- 
-diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
-index 0440d88..8a0700d 100644
---- a/arch/mips/pci/pci-ar724x.c
-+++ b/arch/mips/pci/pci-ar724x.c
-@@ -29,9 +29,17 @@
- 
- #define AR7240_BAR0_WAR_VALUE	0xffff
- 
-+#define AR724X_PCI_CMD_INIT	(PCI_COMMAND_MEMORY |		\
-+				 PCI_COMMAND_MASTER |		\
-+				 PCI_COMMAND_INVALIDATE |	\
-+				 PCI_COMMAND_PARITY |		\
-+				 PCI_COMMAND_SERR |		\
-+				 PCI_COMMAND_FAST_BACK)
-+
- struct ar724x_pci_controller {
- 	void __iomem *devcfg_base;
- 	void __iomem *ctrl_base;
-+	void __iomem *crp_base;
- 
- 	int irq;
- 	int irq_base;
-@@ -64,6 +72,51 @@ pci_bus_to_ar724x_controller(struct pci_bus *bus)
- 	return container_of(hose, struct ar724x_pci_controller, pci_controller);
- }
- 
-+static int ar724x_pci_local_write(struct ar724x_pci_controller *apc,
-+				  int where, int size, u32 value)
-+{
-+	unsigned long flags;
-+	void __iomem *base;
-+	u32 data;
-+	int s;
-+
-+	WARN_ON(where & (size - 1));
-+
-+	if (!apc->link_up)
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+	base = apc->crp_base;
-+
-+	spin_lock_irqsave(&apc->lock, flags);
-+	data = __raw_readl(base + (where & ~3));
-+
-+	switch (size) {
-+	case 1:
-+		s = ((where & 3) * 8);
-+		data &= ~(0xff << s);
-+		data |= ((value & 0xff) << s);
-+		break;
-+	case 2:
-+		s = ((where & 2) * 8);
-+		data &= ~(0xffff << s);
-+		data |= ((value & 0xffff) << s);
-+		break;
-+	case 4:
-+		data = value;
-+		break;
-+	default:
-+		spin_unlock_irqrestore(&apc->lock, flags);
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+	}
-+
-+	__raw_writel(data, base + (where & ~3));
-+	/* flush write */
-+	__raw_readl(base + (where & ~3));
-+	spin_unlock_irqrestore(&apc->lock, flags);
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
- static int ar724x_pci_read(struct pci_bus *bus, unsigned int devfn, int where,
- 			    int size, uint32_t *value)
- {
-@@ -324,6 +377,14 @@ static int ar724x_pci_probe(struct platform_device *pdev)
- 	if (!apc->devcfg_base)
- 		return -EBUSY;
- 
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "crp_base");
-+	if (!res)
-+		return -EINVAL;
-+
-+	apc->crp_base = devm_request_and_ioremap(&pdev->dev, res);
-+	if (apc->crp_base == NULL)
-+		return -EBUSY;
-+
- 	apc->irq = platform_get_irq(pdev, 0);
- 	if (apc->irq < 0)
- 		return -EINVAL;
-@@ -360,6 +421,8 @@ static int ar724x_pci_probe(struct platform_device *pdev)
- 
- 	ar724x_pci_irq_init(apc, id);
- 
-+	ar724x_pci_local_write(apc, PCI_COMMAND, 4, AR724X_PCI_CMD_INIT);
-+
- 	register_pci_controller(&apc->pci_controller);
- 
- 	return 0;
 -- 
-1.7.10
+1.7.7.6

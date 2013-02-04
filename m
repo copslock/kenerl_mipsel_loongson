@@ -1,55 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Feb 2013 19:09:28 +0100 (CET)
-Received: from terminus.zytor.com ([198.137.202.10]:47997 "EHLO
-        terminus.zytor.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6826484Ab3BDSJZOdTVP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Feb 2013 19:09:25 +0100
-Received: from terminus.zytor.com (localhost [127.0.0.1])
-        by terminus.zytor.com (8.14.5/8.14.5) with ESMTP id r14I8GCr026632
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Mon, 4 Feb 2013 10:08:21 -0800
-Received: (from tipbot@localhost)
-        by terminus.zytor.com (8.14.5/8.14.5/Submit) id r14I8Dtq026629;
-        Mon, 4 Feb 2013 10:08:13 -0800
-Date:   Mon, 4 Feb 2013 10:08:13 -0800
-X-Authentication-Warning: terminus.zytor.com: tipbot set sender to tipbot@zytor.com using -f
-From:   tip-bot for James Hogan <james.hogan@imgtec.com>
-Message-ID: <tip-f7c819c020db9796ae3a662b82a310617f92b15b@git.kernel.org>
-Cc:     mingo@kernel.org, linuxppc-dev@lists.ozlabs.org,
-        tony.luck@intel.com, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, vapier@gentoo.org, tglx@linutronix.de,
-        deller@gmx.de, linux-kernel@vger.kernel.org, hpa@zytor.com,
-        paulus@samba.org, james.hogan@imgtec.com, lethal@linux-sh.org,
-        benh@kernel.crashing.org, fenghua.yu@intel.com,
-        jejb@parisc-linux.org, uclinux-dist-devel@blackfin.uclinux.org,
-        rkuo@codeaurora.org
-Reply-To: mingo@kernel.org, linuxppc-dev@lists.ozlabs.org,
-          tony.luck@intel.com, linux-mips@linux-mips.org,
-          ralf@linux-mips.org, vapier@gentoo.org, tglx@linutronix.de,
-          deller@gmx.de, linux-kernel@vger.kernel.org, hpa@zytor.com,
-          paulus@samba.org, james.hogan@imgtec.com, lethal@linux-sh.org,
-          benh@kernel.crashing.org, fenghua.yu@intel.com,
-          jejb@parisc-linux.org, uclinux-dist-devel@blackfin.uclinux.org,
-          rkuo@codeaurora.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Feb 2013 19:30:31 +0100 (CET)
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:56408 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827479Ab3BDSa2X3blS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Feb 2013 19:30:28 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id DFCF68EE0E2;
+        Mon,  4 Feb 2013 10:30:19 -0800 (PST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id CncHN6wDpoxw; Mon,  4 Feb 2013 10:30:19 -0800 (PST)
+Received: from [172.25.2.120] (66-59-47-3.static-ip.telepacific.net [66.59.47.3])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 4F0CE8EE0E0;
+        Mon,  4 Feb 2013 10:30:18 -0800 (PST)
+Message-ID: <1360002617.2465.33.camel@dabdike>
+Subject: Re: [PATCH RESEND 1/1] arch Kconfig: remove references to
+ IRQ_PER_CPU
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     linux-kernel@vger.kernel.org,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Mike Frysinger <vapier@gentoo.org>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Mundt <lethal@linux-sh.org>
+Date:   Mon, 04 Feb 2013 10:30:17 -0800
 In-Reply-To: <1359972583-17134-1-git-send-email-james.hogan@imgtec.com>
 References: <1359972583-17134-1-git-send-email-james.hogan@imgtec.com>
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip:irq/core] arch Kconfig: Remove references to IRQ_PER_CPU
-Git-Commit-ID: f7c819c020db9796ae3a662b82a310617f92b15b
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot.git.kernel.org>
-Robot-Unsubscribe: Contact <mailto:hpa@kernel.org>
-  to get blacklisted from these emails
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
-Precedence: bulk
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.2.7 (terminus.zytor.com [127.0.0.1]); Mon, 04 Feb 2013 10:08:22 -0800 (PST)
-X-archive-position: 35702
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.6.2 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-archive-position: 35703
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: James.Bottomley@HansenPartnership.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,133 +56,36 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Commit-ID:  f7c819c020db9796ae3a662b82a310617f92b15b
-Gitweb:     http://git.kernel.org/tip/f7c819c020db9796ae3a662b82a310617f92b15b
-Author:     James Hogan <james.hogan@imgtec.com>
-AuthorDate: Mon, 4 Feb 2013 10:09:43 +0000
-Committer:  Thomas Gleixner <tglx@linutronix.de>
-CommitDate: Mon, 4 Feb 2013 18:53:20 +0100
+On Mon, 2013-02-04 at 10:09 +0000, James Hogan wrote:
+> The IRQ_PER_CPU Kconfig symbol was removed in the following commit:
+> 
+> Commit 6a58fb3bad099076f36f0f30f44507bc3275cdb6 ("genirq: Remove
+> CONFIG_IRQ_PER_CPU") merged in v2.6.39-rc1.
+> 
+> But IRQ_PER_CPU wasn't removed from any of the architecture Kconfig
+> files where it was defined or selected. It's completely unused so remove
+> the remaining references.
+> 
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Mike Frysinger <vapier@gentoo.org>
+> Cc: Fenghua Yu <fenghua.yu@intel.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: "James E.J. Bottomley" <jejb@parisc-linux.org>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Paul Mundt <lethal@linux-sh.org>
+> Acked-by: Tony Luck <tony.luck@intel.com>
+> Acked-by: Richard Kuo <rkuo@codeaurora.org>
 
-arch Kconfig: Remove references to IRQ_PER_CPU
+For what it's worth ACK, but I don't really think you need it since the
+patch is trivial and obviously correct.
 
-The IRQ_PER_CPU Kconfig symbol was removed in the following commit:
+> 
+> Does anybody want to pick this patch up?
 
-Commit 6a58fb3bad099076f36f0f30f44507bc3275cdb6 ("genirq: Remove
-CONFIG_IRQ_PER_CPU") merged in v2.6.39-rc1.
+I see Thomas already has.  Thanks, by the way, for not doing this as one
+patch per architecture ...
 
-But IRQ_PER_CPU wasn't removed from any of the architecture Kconfig
-files where it was defined or selected. It's completely unused so remove
-the remaining references.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: <uclinux-dist-devel@blackfin.uclinux.org>
-Cc: <linux-mips@linux-mips.org>
-Cc: <linuxppc-dev@lists.ozlabs.org>
-Cc: Mike Frysinger <vapier@gentoo.org>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
-Cc: James E.J. Bottomley <jejb@parisc-linux.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Acked-by: Paul Mundt <lethal@linux-sh.org>
-Acked-by: Tony Luck <tony.luck@intel.com>
-Acked-by: Richard Kuo <rkuo@codeaurora.org>
-Link: http://lkml.kernel.org/r/1359972583-17134-1-git-send-email-james.hogan@imgtec.com
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
----
- arch/blackfin/Kconfig | 1 -
- arch/hexagon/Kconfig  | 1 -
- arch/ia64/Kconfig     | 1 -
- arch/mips/Kconfig     | 1 -
- arch/parisc/Kconfig   | 1 -
- arch/powerpc/Kconfig  | 1 -
- arch/sh/Kconfig       | 3 ---
- 7 files changed, 9 deletions(-)
-
-diff --git a/arch/blackfin/Kconfig b/arch/blackfin/Kconfig
-index 86f891f..67e4aaa 100644
---- a/arch/blackfin/Kconfig
-+++ b/arch/blackfin/Kconfig
-@@ -37,7 +37,6 @@ config BLACKFIN
- 	select HAVE_GENERIC_HARDIRQS
- 	select GENERIC_ATOMIC64
- 	select GENERIC_IRQ_PROBE
--	select IRQ_PER_CPU if SMP
- 	select USE_GENERIC_SMP_HELPERS if SMP
- 	select HAVE_NMI_WATCHDOG if NMI_WATCHDOG
- 	select GENERIC_SMP_IDLE_THREAD
-diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
-index 40a3185..e4decc6 100644
---- a/arch/hexagon/Kconfig
-+++ b/arch/hexagon/Kconfig
-@@ -12,7 +12,6 @@ config HEXAGON
- 	# select ARCH_WANT_OPTIONAL_GPIOLIB
- 	# select ARCH_REQUIRE_GPIOLIB
- 	# select HAVE_CLK
--	# select IRQ_PER_CPU
- 	# select GENERIC_PENDING_IRQ if SMP
- 	select GENERIC_ATOMIC64
- 	select HAVE_PERF_EVENTS
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index 3279646..00c2e88 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -29,7 +29,6 @@ config IA64
- 	select ARCH_DISCARD_MEMBLOCK
- 	select GENERIC_IRQ_PROBE
- 	select GENERIC_PENDING_IRQ if SMP
--	select IRQ_PER_CPU
- 	select GENERIC_IRQ_SHOW
- 	select ARCH_WANT_OPTIONAL_GPIOLIB
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 121ed51..9becc44 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2160,7 +2160,6 @@ source "mm/Kconfig"
- config SMP
- 	bool "Multi-Processing support"
- 	depends on SYS_SUPPORTS_SMP
--	select IRQ_PER_CPU
- 	select USE_GENERIC_SMP_HELPERS
- 	help
- 	  This enables support for systems with more than one CPU. If you have
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 9dd5c18..a32e34e 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -15,7 +15,6 @@ config PARISC
- 	select BROKEN_RODATA
- 	select GENERIC_IRQ_PROBE
- 	select GENERIC_PCI_IOMAP
--	select IRQ_PER_CPU
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_STRNCPY_FROM_USER
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index d45edca..561ccca 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -124,7 +124,6 @@ config PPC
- 	select HAVE_GENERIC_HARDIRQS
- 	select ARCH_WANT_IPC_PARSE_VERSION
- 	select SPARSE_IRQ
--	select IRQ_PER_CPU
- 	select IRQ_DOMAIN
- 	select GENERIC_IRQ_SHOW
- 	select GENERIC_IRQ_SHOW_LEVEL
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 996e008..9c833c5 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -90,9 +90,6 @@ config GENERIC_CSUM
- config GENERIC_HWEIGHT
- 	def_bool y
- 
--config IRQ_PER_CPU
--	def_bool y
--
- config GENERIC_GPIO
- 	def_bool n
- 
+James

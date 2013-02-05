@@ -1,37 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Feb 2013 12:31:55 +0100 (CET)
-Received: from mms2.broadcom.com ([216.31.210.18]:2760 "EHLO mms2.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823092Ab3BELbuTligd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 5 Feb 2013 12:31:50 +0100
-Received: from [10.9.208.53] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Tue, 05 Feb 2013 03:28:22 -0800
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
- Server (TLS) id 14.1.355.2; Tue, 5 Feb 2013 03:31:37 -0800
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
- Server id 14.1.355.2; Tue, 5 Feb 2013 03:31:37 -0800
-Received: from lc-blr-152.ban.broadcom.com (lc-blr-152.ban.broadcom.com
- [10.132.129.187]) by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- AC22C40FE3; Tue, 5 Feb 2013 03:31:35 -0800 (PST)
-From:   ganesanr@broadcom.com
-To:     linux-mips@linux-mips.org, netdev@vger.kernel.org
-cc:     "Ganesan Ramalingam" <ganesanr@broadcom.com>
-Subject: [PATCH v2 2/2] MIPS: Netlogic: Platform changes for XLR/XLS
- gmac
-Date:   Tue, 5 Feb 2013 17:01:30 +0530
-Message-ID: <1360063890-17623-1-git-send-email-ganesanr@broadcom.com>
-X-Mailer: git-send-email 1.7.6
-MIME-Version: 1.0
-X-WSS-ID: 7D0E335C3SK791210-01-01
-Content-Type: text/plain
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Feb 2013 20:48:30 +0100 (CET)
+Received: from webmail.solarflare.com ([12.187.104.25]:17760 "EHLO
+        webmail.solarflare.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6824405Ab3BETs1dBYp0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Feb 2013 20:48:27 +0100
+Received: from [10.17.20.137] (10.17.20.137) by ocex02.SolarFlarecom.com
+ (10.20.40.31) with Microsoft SMTP Server (TLS) id 14.1.355.2; Tue, 5 Feb 2013
+ 11:48:18 -0800
+Message-ID: <1360093696.2857.18.camel@bwh-desktop.uk.solarflarecom.com>
+Subject: Re: [PATCH v2 1/2] NET: ethernet/netlogic: Netlogic XLR/XLS GMAC
+ driver
+From:   Ben Hutchings <bhutchings@solarflare.com>
+To:     <ganesanr@broadcom.com>
+CC:     <linux-mips@linux-mips.org>, <netdev@vger.kernel.org>
+Date:   Tue, 5 Feb 2013 19:48:16 +0000
+In-Reply-To: <1360063819-17555-1-git-send-email-ganesanr@broadcom.com>
+References: <1360063819-17555-1-git-send-email-ganesanr@broadcom.com>
+Organization: Solarflare
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3 (3.2.3-3.fc16) 
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35706
+MIME-Version: 1.0
+X-Originating-IP: [10.17.20.137]
+X-TM-AS-Product-Ver: SMEX-10.0.0.1412-7.000.1014-19612.005
+X-TM-AS-Result: No--17.535400-0.000000-31
+X-TM-AS-User-Approved-Sender: Yes
+X-TM-AS-User-Blocked-Sender: No
+X-archive-position: 35707
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ganesanr@broadcom.com
+X-original-sender: bhutchings@solarflare.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,332 +43,97 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Ganesan Ramalingam <ganesanr@broadcom.com>
+On Tue, 2013-02-05 at 17:00 +0530, ganesanr@broadcom.com wrote:
+> From: Ganesan Ramalingam <ganesanr@broadcom.com>
+> 
+> Add support for the Network Accelerator Engine on Netlogic XLR/XLS
+> MIPS SoCs. The XLR/XLS NAE blocks can be configured as one 10G
+> interface or four 1G interfaces. This driver supports blocks
+> with 1G ports.
+> 
+> Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
+> ---
+>  This patch has to be merged through netdev tree.
+> 
+>  Changes since v1:
+>  * Implementing ethtool using phylib
+>  * Free skb buf incase of nlm_fmn_send() fail
+>  * Use of ndo_get_stats64 instead of ndo_get_stats
+>  * Watchdog timeo fix
+[...]
+> +static void xlr_stats(struct net_device *ndev, struct rtnl_link_stats64 *stats)
+> +{
+> +	struct xlr_net_priv *priv = netdev_priv(ndev);
+> +
+> +	stats->rx_packets = xlr_nae_rdreg(priv->base_addr, RX_PACKET_COUNTER);
+> +	stats->tx_packets = xlr_nae_rdreg(priv->base_addr, TX_PACKET_COUNTER);
+> +	stats->rx_bytes = xlr_nae_rdreg(priv->base_addr, RX_BYTE_COUNTER);
+> +	stats->tx_bytes = xlr_nae_rdreg(priv->base_addr, TX_BYTE_COUNTER);
+> +	stats->tx_errors = xlr_nae_rdreg(priv->base_addr, TX_FCS_ERROR_COUNTER);
+> +	stats->rx_dropped = xlr_nae_rdreg(priv->base_addr,
+> +			RX_DROP_PACKET_COUNTER);
+> +	stats->tx_dropped = xlr_nae_rdreg(priv->base_addr,
+> +			TX_DROP_FRAME_COUNTER);
+[...]
 
-Add platform code to create network interface (xlr-net) for XLR/XLS
-boards.
+But these are still 32-bit counters in hardware, yes?  So I think you
+need to arrange to poll at least the byte counters every few seconds and
+maintain the higher bits in software e.g.:
 
-Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
----
- This patch has to be merged through MIPS tree.
- This patch depends on patch [PATCH v2 1/2] NET: ethernet/netlogic: Netlogic XLR/XLS GMAC driver.
+struct xlr_stats {
+	spinlock_t lock;
+	struct timer timer;
+	u64 rx_bytes;
+	u64 tx_bytes;
+	...
+};
 
- arch/mips/include/asm/netlogic/xlr/platform_net.h |   46 +++++
- arch/mips/netlogic/xlr/Makefile                   |    3 +-
- arch/mips/netlogic/xlr/fmn.c                      |    2 +
- arch/mips/netlogic/xlr/platform_net.c             |  222 +++++++++++++++++++++
- 4 files changed, 272 insertions(+), 1 deletions(-)
- create mode 100644 arch/mips/include/asm/netlogic/xlr/platform_net.h
- create mode 100644 arch/mips/netlogic/xlr/platform_net.c
+static void xlr_poll_stats(struct xlr_net_priv *priv)
+{
+	struct xlr_stats = &priv->stats;
+	u32 counter;
 
-diff --git a/arch/mips/include/asm/netlogic/xlr/platform_net.h b/arch/mips/include/asm/netlogic/xlr/platform_net.h
-new file mode 100644
-index 0000000..29deeea
---- /dev/null
-+++ b/arch/mips/include/asm/netlogic/xlr/platform_net.h
-@@ -0,0 +1,46 @@
-+/*
-+ * Copyright (c) 2003-2012 Broadcom Corporation
-+ * All Rights Reserved
-+ *
-+ * This software is available to you under a choice of one of two
-+ * licenses.  You may choose to be licensed under the terms of the GNU
-+ * General Public License (GPL) Version 2, available from the file
-+ * COPYING in the main directory of this source tree, or the Broadcom
-+ * license below:
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions
-+ * are met:
-+ *
-+ * 1. Redistributions of source code must retain the above copyright
-+ *    notice, this list of conditions and the following disclaimer.
-+ * 2. Redistributions in binary form must reproduce the above copyright
-+ *    notice, this list of conditions and the following disclaimer in
-+ *    the documentation and/or other materials provided with the
-+ *    distribution.
-+ *
-+ * THIS SOFTWARE IS PROVIDED BY BROADCOM ``AS IS'' AND ANY EXPRESS OR
-+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-+ * ARE DISCLAIMED. IN NO EVENT SHALL BROADCOM OR CONTRIBUTORS BE LIABLE
-+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-+ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ */
-+struct xlr_net_data {
-+	int cpu_mask;
-+	u32 __iomem *mii_addr;
-+	u32 __iomem *serdes_addr;
-+	u32 __iomem *pcs_addr;
-+	u32 __iomem *gpio_addr;
-+	int phy_interface;
-+	int rfr_station;
-+	int tx_stnid;
-+	int *bucket_size;
-+	int phy_addr;
-+	struct xlr_fmn_info *gmac_fmn_info;
-+};
-diff --git a/arch/mips/netlogic/xlr/Makefile b/arch/mips/netlogic/xlr/Makefile
-index 05902bc..ff7ed2e 100644
---- a/arch/mips/netlogic/xlr/Makefile
-+++ b/arch/mips/netlogic/xlr/Makefile
-@@ -1,2 +1,3 @@
--obj-y			+=  fmn.o fmn-config.o setup.o platform.o platform-flash.o
-+obj-y			+=  fmn.o fmn-config.o setup.o platform.o \
-+				 platform-flash.o platform_net.o
- obj-$(CONFIG_SMP)	+= wakeup.o
-diff --git a/arch/mips/netlogic/xlr/fmn.c b/arch/mips/netlogic/xlr/fmn.c
-index 4d74f03..d93e11a 100644
---- a/arch/mips/netlogic/xlr/fmn.c
-+++ b/arch/mips/netlogic/xlr/fmn.c
-@@ -33,6 +33,7 @@
-  */
- 
- #include <linux/kernel.h>
-+#include <linux/export.h>
- #include <linux/irqreturn.h>
- #include <linux/irq.h>
- #include <linux/interrupt.h>
-@@ -190,6 +191,7 @@ int nlm_register_fmn_handler(int start_stnid, int end_stnid,
- 			start_stnid, end_stnid);
- 	return 0;
- }
-+EXPORT_SYMBOL(nlm_register_fmn_handler);
- 
- void nlm_setup_fmn_irq(void)
- {
-diff --git a/arch/mips/netlogic/xlr/platform_net.c b/arch/mips/netlogic/xlr/platform_net.c
-new file mode 100644
-index 0000000..f6626a3
---- /dev/null
-+++ b/arch/mips/netlogic/xlr/platform_net.c
-@@ -0,0 +1,222 @@
-+/*
-+ * Copyright (c) 2003-2012 Broadcom Corporation
-+ * All Rights Reserved
-+ *
-+ * This software is available to you under a choice of one of two
-+ * licenses.  You may choose to be licensed under the terms of the GNU
-+ * 1. Redistributions of source code must retain the above copyright
-+ * General Public License (GPL) Version 2, available from the file
-+ * COPYING in the main directory of this source tree, or the Broadcom
-+ * license below:
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions
-+ * are met:
-+ *
-+ * 1. Redistributions of source code must retain the above copyright
-+ *    notice, this list of conditions and the following disclaimer.
-+ * 2. Redistributions in binary form must reproduce the above copyright
-+ *    notice, this list of conditions and the following disclaimer in
-+ *    the documentation and/or other materials provided with the
-+ *    distribution.
-+ *
-+ * THIS SOFTWARE IS PROVIDED BY BROADCOM ``AS IS'' AND ANY EXPRESS OR
-+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-+ * ARE DISCLAIMED. IN NO EVENT SHALL BROADCOM OR CONTRIBUTORS BE LIABLE
-+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-+ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/platform_device.h>
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/io.h>
-+#include <linux/delay.h>
-+#include <linux/ioport.h>
-+#include <linux/resource.h>
-+#include <linux/phy.h>
-+
-+#include <asm/netlogic/haldefs.h>
-+#include <asm/netlogic/common.h>
-+#include <asm/netlogic/xlr/fmn.h>
-+#include <asm/netlogic/xlr/xlr.h>
-+#include <asm/netlogic/psb-bootinfo.h>
-+#include <asm/netlogic/xlr/pic.h>
-+#include <asm/netlogic/xlr/iomap.h>
-+#include <asm/netlogic/xlr/platform_net.h>
-+
-+/* Linux Net */
-+#define MAX_NUM_GMAC		8
-+#define MAX_NUM_XLS_GMAC	8
-+#define MAX_NUM_XLR_GMAC	4
-+
-+
-+static u32 xlr_gmac_offsets[] = {
-+	NETLOGIC_IO_GMAC_0_OFFSET, NETLOGIC_IO_GMAC_1_OFFSET,
-+	NETLOGIC_IO_GMAC_2_OFFSET, NETLOGIC_IO_GMAC_3_OFFSET,
-+	NETLOGIC_IO_GMAC_4_OFFSET, NETLOGIC_IO_GMAC_5_OFFSET,
-+	NETLOGIC_IO_GMAC_6_OFFSET, NETLOGIC_IO_GMAC_7_OFFSET
-+};
-+
-+static u32 xlr_gmac_irqs[] = { PIC_GMAC_0_IRQ, PIC_GMAC_1_IRQ,
-+	PIC_GMAC_2_IRQ, PIC_GMAC_3_IRQ,
-+	PIC_GMAC_4_IRQ, PIC_GMAC_5_IRQ,
-+	PIC_GMAC_6_IRQ, PIC_GMAC_7_IRQ
-+};
-+
-+static struct xlr_net_data ndata[MAX_NUM_GMAC];
-+static struct resource xlr_net_res[8][2];
-+static struct platform_device xlr_net_dev[8];
-+static u32 __iomem *gmac0_addr;
-+static u32 __iomem *gmac4_addr;
-+static u32 __iomem *gpio_addr;
-+
-+static void config_mac(struct xlr_net_data *nd, int phy, u32 __iomem *serdes,
-+		u32 __iomem *pcs, int rfr, int tx, int *bkt_size,
-+		struct xlr_fmn_info *gmac_fmn_info, int phy_addr)
-+{
-+	nd->cpu_mask = nlm_current_node()->coremask;
-+	nd->phy_interface = phy;
-+	nd->rfr_station = rfr;
-+	nd->tx_stnid = tx;
-+	nd->mii_addr = gmac0_addr;
-+	nd->serdes_addr = serdes;
-+	nd->pcs_addr = pcs;
-+	nd->gpio_addr = gpio_addr;
-+
-+	nd->bucket_size = bkt_size;
-+	nd->gmac_fmn_info = gmac_fmn_info;
-+	nd->phy_addr = phy_addr;
-+}
-+
-+static void net_device_init(int id, struct resource *res, int offset, int irq)
-+{
-+	res[0].name = "gmac";
-+	res[0].start = CPHYSADDR(nlm_mmio_base(offset));
-+	res[0].end = res[0].start + 0xfff;
-+	res[0].flags = IORESOURCE_MEM;
-+
-+	res[1].name = "gmac";
-+	res[1].start = irq;
-+	res[1].end = irq;
-+	res[1].flags = IORESOURCE_IRQ;
-+
-+	xlr_net_dev[id].name = "xlr-net";
-+	xlr_net_dev[id].id = id;
-+	xlr_net_dev[id].num_resources = 2;
-+	xlr_net_dev[id].resource = res;
-+	xlr_net_dev[id].dev.platform_data = &ndata[id];
-+}
-+
-+static void xls_gmac_init(void)
-+{
-+	int mac;
-+
-+	gmac4_addr = ioremap(CPHYSADDR(
-+		nlm_mmio_base(NETLOGIC_IO_GMAC_4_OFFSET)), 0xfff);
-+	/* Passing GPIO base for serdes init. Only needed on sgmii ports*/
-+	gpio_addr = ioremap(CPHYSADDR(
-+		nlm_mmio_base(NETLOGIC_IO_GPIO_OFFSET)), 0xfff);
-+
-+	switch (nlm_prom_info.board_major_version) {
-+	case 12:
-+		/* first block RGMII or XAUI, use RGMII */
-+		config_mac(&ndata[0],
-+			PHY_INTERFACE_MODE_RGMII,
-+			gmac0_addr,	/* serdes */
-+			gmac0_addr,	/* pcs */
-+			FMN_STNID_GMACRFR_0,
-+			FMN_STNID_GMAC0_TX0,
-+			xlr_board_fmn_config.bucket_size,
-+			&xlr_board_fmn_config.gmac[0],
-+			0);
-+
-+		net_device_init(0, xlr_net_res[0], xlr_gmac_offsets[0],
-+				xlr_gmac_irqs[0]);
-+		platform_device_register(&xlr_net_dev[0]);
-+
-+		/* second block is XAUI, not supported yet */
-+		break;
-+	default:
-+		/* default XLS config, all ports SGMII */
-+		for (mac = 0; mac < 4; mac++) {
-+			config_mac(&ndata[mac],
-+				PHY_INTERFACE_MODE_SGMII,
-+				gmac0_addr,	/* serdes */
-+				gmac0_addr,	/* pcs */
-+				FMN_STNID_GMACRFR_0,
-+				FMN_STNID_GMAC0_TX0 + mac,
-+				xlr_board_fmn_config.bucket_size,
-+				&xlr_board_fmn_config.gmac[0],
-+				/* PHY address according to chip/board */
-+				mac + 0x10);
-+
-+			net_device_init(mac, xlr_net_res[mac],
-+					xlr_gmac_offsets[mac],
-+					xlr_gmac_irqs[mac]);
-+			platform_device_register(&xlr_net_dev[mac]);
-+		}
-+
-+		for (mac = 4; mac < MAX_NUM_XLS_GMAC; mac++) {
-+			config_mac(&ndata[mac],
-+				PHY_INTERFACE_MODE_SGMII,
-+				gmac4_addr,	/* serdes */
-+				gmac4_addr,	/* pcs */
-+				FMN_STNID_GMAC1_FR_0,
-+				FMN_STNID_GMAC1_TX0 + mac - 4,
-+				xlr_board_fmn_config.bucket_size,
-+				&xlr_board_fmn_config.gmac[1],
-+				/* PHY address according to chip/board */
-+				mac + 0x10);
-+
-+			net_device_init(mac, xlr_net_res[mac],
-+					xlr_gmac_offsets[mac],
-+					xlr_gmac_irqs[mac]);
-+			platform_device_register(&xlr_net_dev[mac]);
-+		}
-+	}
-+}
-+
-+static void xlr_gmac_init(void)
-+{
-+	int mac;
-+
-+	/* assume all GMACs for now */
-+	for (mac = 0; mac < MAX_NUM_XLR_GMAC; mac++) {
-+		config_mac(&ndata[mac],
-+			PHY_INTERFACE_MODE_RGMII,
-+			0,
-+			0,
-+			FMN_STNID_GMACRFR_0,
-+			FMN_STNID_GMAC0_TX0,
-+			xlr_board_fmn_config.bucket_size,
-+			&xlr_board_fmn_config.gmac[0],
-+			mac);
-+
-+		net_device_init(mac, xlr_net_res[mac], xlr_gmac_offsets[mac],
-+				xlr_gmac_irqs[mac]);
-+		platform_device_register(&xlr_net_dev[mac]);
-+	}
-+}
-+
-+static int __init xlr_net_init(void)
-+{
-+	gmac0_addr = ioremap(CPHYSADDR(
-+		nlm_mmio_base(NETLOGIC_IO_GMAC_0_OFFSET)), 0xfff);
-+
-+	if (nlm_chip_is_xls())
-+		xls_gmac_init();
-+	else
-+		xlr_gmac_init();
-+
-+	return 0;
-+}
-+
-+arch_initcall(xlr_net_init);
+	spin_lock_bh(&stats->lock);
+	counter = xlr_nae_rdreg(priv->base_addr, RX_BYTE_COUNTER);
+	stats->rx_bytes += (u32)(counter - stats->rx_bytes);
+	counter = xlr_nae_rdreg(priv->base_addr, TX_BYTE_COUNTER);
+	stats->tx_bytes += (u32)(counter - stats->tx_bytes);
+	...
+	spin_unlock_bh(&stats->lock);
+}
+
+static void xlr_poll_stats_timer(void *data)
+{
+	struct xlr_net_priv *priv = data;
+
+	xlr_poll_stats(priv);
+	mod_timer(&priv->stats.timer, jiffies + 2 * HZ);
+}
+
+static void xlr_stats(struct net_device *ndev, struct rtnl_link_stats64 *stats)
+{
+	struct xlr_net_priv *priv = netdev_priv(ndev);
+
+	xlr_poll_stats(priv);
+	...
+}
+
+static int xlr_net_probe(struct platform_device *pdev)
+{
+	...
+	spin_lock_init(&priv->stats.lock);
+	setup_timer(&priv->stats.timer, xlr_poll_stats_timer, priv);
+	...
+}
+
+Plus add_timer() and del_timer_sync() when starting/stopping the
+interface.  Also you need to clear the software stats if you have to
+reset the hardware.  All of which is a fair amount of work but you can't
+avoid it if the hardware counters just aren't wide enough.
+
+Ben.
+
 -- 
-1.7.6
+Ben Hutchings, Staff Engineer, Solarflare
+Not speaking for my employer; that's the marketing department's job.
+They asked us to note that Solarflare product names are trademarked.

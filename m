@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Feb 2013 23:52:37 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:49914 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Feb 2013 23:52:59 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:49919 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823099Ab3BEWwSBeB50 (ORCPT
+        with ESMTP id S6824757Ab3BEWwSZjLb0 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 5 Feb 2013 23:52:18 +0100
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1U2rN4-0008Ky-1q; Tue, 05 Feb 2013 16:52:10 -0600
+        id 1U2rN5-0008Ky-FW; Tue, 05 Feb 2013 16:52:11 -0600
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, ralf@linux-mips.org,
         cernekee@gmail.com, kevink@paralogos.com, ddaney.cavm@gmail.com
-Subject: [PATCH 1/4] MIPS: microMIPS: Add instruction formats.
-Date:   Tue,  5 Feb 2013 16:52:00 -0600
-Message-Id: <1360104723-29529-2-git-send-email-sjhill@mips.com>
+Subject: [PATCH 2/4] MIPS: microMIPS: uasm: Split 'uasm.c' into two files.
+Date:   Tue,  5 Feb 2013 16:52:01 -0600
+Message-Id: <1360104723-29529-3-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1360104723-29529-1-git-send-email-sjhill@mips.com>
 References: <1360104723-29529-1-git-send-email-sjhill@mips.com>
-X-archive-position: 35709
+X-archive-position: 35710
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,494 +37,905 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Add structures for all the microMIPS instructions. Also add the
-enumerations for all the bit fields for opcodes, functions, etc.
+Split 'uasm.c' into two files. The new file 'uasm-mips.c' has the
+functions specific to the classic MIPS ISA. The 'uasm.c' file
+contains common code that can be used by classic or other ISAs
+that could be supported by the kernel.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/uapi/asm/inst.h |  449 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 449 insertions(+)
+ arch/mips/include/asm/uasm.h |   62 ++++----
+ arch/mips/mm/Makefile        |    2 +-
+ arch/mips/mm/uasm-mips.c     |  196 +++++++++++++++++++++++++
+ arch/mips/mm/uasm.c          |  326 ++++++++++--------------------------------
+ 4 files changed, 313 insertions(+), 273 deletions(-)
+ create mode 100644 arch/mips/mm/uasm-mips.c
 
-diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
-index 50b3d12..6a7f02f8 100644
---- a/arch/mips/include/uapi/asm/inst.h
-+++ b/arch/mips/include/uapi/asm/inst.h
-@@ -7,6 +7,7 @@
-  *
-  * Copyright (C) 1996, 2000 by Ralf Baechle
-  * Copyright (C) 2006 by Thiemo Seufer
-+ * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
+index 058e941..f7d8f15 100644
+--- a/arch/mips/include/asm/uasm.h
++++ b/arch/mips/include/asm/uasm.h
+@@ -6,7 +6,7 @@
+  * Copyright (C) 2004, 2005, 2006, 2008	 Thiemo Seufer
+  * Copyright (C) 2005  Maciej W. Rozycki
+  * Copyright (C) 2006  Ralf Baechle (ralf@linux-mips.org)
+- * Copyright (C) 2012  MIPS Technologies, Inc.
++ * Copyright (C) 2012, 2013  MIPS Technologies, Inc.  All rights reserved.
   */
- #ifndef _UAPI_ASM_INST_H
- #define _UAPI_ASM_INST_H
-@@ -193,6 +194,236 @@ enum lx_func {
+ 
+ #include <linux/types.h>
+@@ -22,44 +22,57 @@
+ #define UASM_EXPORT_SYMBOL(sym)
+ #endif
+ 
++#define _UASM_ISA_CLASSIC	0
++
++#ifndef UASM_ISA
++#define UASM_ISA	_UASM_ISA_CLASSIC
++#endif
++
++#if (UASM_ISA == _UASM_ISA_CLASSIC)
++#define ISAOPC(op)	uasm_i##op
++#define ISAFUNC(x)	x
++#else
++#error Unsupported micro-assembler ISA!!!
++#endif
++
+ #define Ip_u1u2u3(op)							\
+ void __uasminit								\
+-uasm_i##op(u32 **buf, unsigned int a, unsigned int b, unsigned int c)
++ISAOPC(op)(u32 **buf, unsigned int a, unsigned int b, unsigned int c)
+ 
+ #define Ip_u2u1u3(op)							\
+ void __uasminit								\
+-uasm_i##op(u32 **buf, unsigned int a, unsigned int b, unsigned int c)
++ISAOPC(op)(u32 **buf, unsigned int a, unsigned int b, unsigned int c)
+ 
+ #define Ip_u3u1u2(op)							\
+ void __uasminit								\
+-uasm_i##op(u32 **buf, unsigned int a, unsigned int b, unsigned int c)
++ISAOPC(op)(u32 **buf, unsigned int a, unsigned int b, unsigned int c)
+ 
+ #define Ip_u1u2s3(op)							\
+ void __uasminit								\
+-uasm_i##op(u32 **buf, unsigned int a, unsigned int b, signed int c)
++ISAOPC(op)(u32 **buf, unsigned int a, unsigned int b, signed int c)
+ 
+ #define Ip_u2s3u1(op)							\
+ void __uasminit								\
+-uasm_i##op(u32 **buf, unsigned int a, signed int b, unsigned int c)
++ISAOPC(op)(u32 **buf, unsigned int a, signed int b, unsigned int c)
+ 
+ #define Ip_u2u1s3(op)							\
+ void __uasminit								\
+-uasm_i##op(u32 **buf, unsigned int a, unsigned int b, signed int c)
++ISAOPC(op)(u32 **buf, unsigned int a, unsigned int b, signed int c)
+ 
+ #define Ip_u2u1msbu3(op)						\
+ void __uasminit								\
+-uasm_i##op(u32 **buf, unsigned int a, unsigned int b, unsigned int c,	\
++ISAOPC(op)(u32 **buf, unsigned int a, unsigned int b, unsigned int c,	\
+ 	   unsigned int d)
+ 
+ #define Ip_u1u2(op)							\
+-void __uasminit uasm_i##op(u32 **buf, unsigned int a, unsigned int b)
++void __uasminit ISAOPC(op)(u32 **buf, unsigned int a, unsigned int b)
+ 
+ #define Ip_u1s2(op)							\
+-void __uasminit uasm_i##op(u32 **buf, unsigned int a, signed int b)
++void __uasminit ISAOPC(op)(u32 **buf, unsigned int a, signed int b)
+ 
+-#define Ip_u1(op) void __uasminit uasm_i##op(u32 **buf, unsigned int a)
++#define Ip_u1(op) void __uasminit ISAOPC(op)(u32 **buf, unsigned int a)
+ 
+-#define Ip_0(op) void __uasminit uasm_i##op(u32 **buf)
++#define Ip_0(op) void __uasminit ISAOPC(op)(u32 **buf)
+ 
+ Ip_u2u1s3(_addiu);
+ Ip_u3u1u2(_addu);
+@@ -132,14 +145,15 @@ struct uasm_label {
+ 	int lab;
  };
  
- /*
-+ * (microMIPS) Major opcodes.
-+ */
-+enum mm_major_op {
-+	mm_pool32a_op, mm_pool16a_op, mm_lbu16_op, mm_move16_op,
-+	mm_addi32_op, mm_lbu32_op, mm_sb32_op, mm_lb32_op,
-+	mm_pool32b_op, mm_pool16b_op, mm_lhu16_op, mm_andi16_op,
-+	mm_addiu32_op, mm_lhu32_op, mm_sh32_op, mm_lh32_op,
-+	mm_pool32i_op, mm_pool16c_op, mm_lwsp16_op, mm_pool16d_op,
-+	mm_ori32_op, mm_pool32f_op, mm_reserved1_op, mm_reserved2_op,
-+	mm_pool32c_op, mm_lwgp16_op, mm_lw16_op, mm_pool16e_op,
-+	mm_xori32_op, mm_jals32_op, mm_addiupc_op, mm_reserved3_op,
-+	mm_reserved4_op, mm_pool16f_op, mm_sb16_op, mm_beqz16_op,
-+	mm_slti32_op, mm_beq32_op, mm_swc132_op, mm_lwc132_op,
-+	mm_reserved5_op, mm_reserved6_op, mm_sh16_op, mm_bnez16_op,
-+	mm_sltiu32_op, mm_bne32_op, mm_sdc132_op, mm_ldc132_op,
-+	mm_reserved7_op, mm_reserved8_op, mm_swsp16_op, mm_b16_op,
-+	mm_andi32_op, mm_j32_op, mm_sd32_op, mm_ld32_op,
-+	mm_reserved11_op, mm_reserved12_op, mm_sw16_op, mm_li16_op,
-+	mm_jalx32_op, mm_jal32_op, mm_sw32_op, mm_lw32_op,
-+};
-+
-+/*
-+ * (microMIPS) POOL32I minor opcodes.
-+ */
-+enum mm_32i_minor_op {
-+	mm_bltz_op, mm_bltzal_op, mm_bgez_op, mm_bgezal_op,
-+	mm_blez_op, mm_bnezc_op, mm_bgtz_op, mm_beqzc_op,
-+	mm_tlti_op, mm_tgei_op, mm_tltiu_op, mm_tgeiu_op,
-+	mm_tnei_op, mm_lui_op, mm_teqi_op, mm_reserved13_op,
-+	mm_synci_op, mm_bltzals_op, mm_reserved14_op, mm_bgezals_op,
-+	mm_bc2f_op, mm_bc2t_op, mm_reserved15_op, mm_reserved16_op,
-+	mm_reserved17_op, mm_reserved18_op, mm_bposge64_op, mm_bposge32_op,
-+	mm_bc1f_op, mm_bc1t_op, mm_reserved19_op, mm_reserved20_op,
-+	mm_bc1any2f_op, mm_bc1any2t_op, mm_bc1any4f_op, mm_bc1any4t_op,
-+};
-+
-+/*
-+ * (microMIPS) POOL32A minor opcodes.
-+ */
-+enum mm_32a_minor_op {
-+	mm_sll32_op = 0x000,
-+	mm_ins_op = 0x00c,
-+	mm_ext_op = 0x02c,
-+	mm_pool32axf_op = 0x03c,
-+	mm_srl32_op = 0x040,
-+	mm_sra_op = 0x080,
-+	mm_rotr_op = 0x0c0,
-+	mm_lwxs_op = 0x118,
-+	mm_addu32_op = 0x150,
-+	mm_subu32_op = 0x1d0,
-+	mm_and_op = 0x250,
-+	mm_or32_op = 0x290,
-+	mm_xor32_op = 0x310,
-+};
-+
-+/*
-+ * (microMIPS) POOL32B functions.
-+ */
-+enum mm_32b_func {
-+	mm_lwc2_func = 0x0,
-+	mm_lwp_func = 0x1,
-+	mm_ldc2_func = 0x2,
-+	mm_ldp_func = 0x4,
-+	mm_lwm32_func = 0x5,
-+	mm_cache_func = 0x6,
-+	mm_ldm_func = 0x7,
-+	mm_swc2_func = 0x8,
-+	mm_swp_func = 0x9,
-+	mm_sdc2_func = 0xa,
-+	mm_sdp_func = 0xc,
-+	mm_swm32_func = 0xd,
-+	mm_sdm_func = 0xf,
-+};
-+
-+/*
-+ * (microMIPS) POOL32C functions.
-+ */
-+enum mm_32c_func {
-+	mm_pref_func = 0x2,
-+	mm_ll_func = 0x3,
-+	mm_swr_func = 0x9,
-+	mm_sc_func = 0xb,
-+	mm_lwu_func = 0xe,
-+};
-+
-+/*
-+ * (microMIPS) POOL32AXF minor opcodes.
-+ */
-+enum mm_32axf_minor_op {
-+	mm_mfc0_op = 0x003,
-+	mm_mtc0_op = 0x00b,
-+	mm_tlbp_op = 0x00d,
-+	mm_jalr_op = 0x03c,
-+	mm_tlbr_op = 0x04d,
-+	mm_jalrhb_op = 0x07c,
-+	mm_tlbwi_op = 0x08d,
-+	mm_tlbwr_op = 0x0cd,
-+	mm_jalrs_op = 0x13c,
-+	mm_jalrshb_op = 0x17c,
-+	mm_syscall_op = 0x22d,
-+	mm_eret_op = 0x3cd,
-+};
-+
-+/*
-+ * (microMIPS) POOL32F minor opcodes.
-+ */
-+enum mm_32f_minor_op {
-+	mm_32f_00_op = 0x00,
-+	mm_32f_01_op = 0x01,
-+	mm_32f_02_op = 0x02,
-+	mm_32f_10_op = 0x08,
-+	mm_32f_11_op = 0x09,
-+	mm_32f_12_op = 0x0a,
-+	mm_32f_20_op = 0x10,
-+	mm_32f_30_op = 0x18,
-+	mm_32f_40_op = 0x20,
-+	mm_32f_41_op = 0x21,
-+	mm_32f_42_op = 0x22,
-+	mm_32f_50_op = 0x28,
-+	mm_32f_51_op = 0x29,
-+	mm_32f_52_op = 0x2a,
-+	mm_32f_60_op = 0x30,
-+	mm_32f_70_op = 0x38,
-+	mm_32f_73_op = 0x3b,
-+	mm_32f_74_op = 0x3c,
-+};
-+
-+/*
-+ * (microMIPS) POOL32F secondary minor opcodes.
-+ */
-+enum mm_32f_10_minor_op {
-+	mm_lwxc1_op = 0x1,
-+	mm_swxc1_op,
-+	mm_ldxc1_op,
-+	mm_sdxc1_op,
-+	mm_luxc1_op,
-+	mm_suxc1_op,
-+};
-+
-+enum mm_32f_func {
-+	mm_lwxc1_func = 0x048,
-+	mm_swxc1_func = 0x088,
-+	mm_ldxc1_func = 0x0c8,
-+	mm_sdxc1_func = 0x108,
-+};
-+
-+/*
-+ * (microMIPS) POOL32F secondary minor opcodes.
-+ */
-+enum mm_32f_40_minor_op {
-+	mm_fmovf_op,
-+	mm_fmovt_op,
-+};
-+
-+/*
-+ * (microMIPS) POOL32F secondary minor opcodes.
-+ */
-+enum mm_32f_60_minor_op {
-+	mm_fadd_op,
-+	mm_fsub_op,
-+	mm_fmul_op,
-+	mm_fdiv_op,
-+};
-+
-+/*
-+ * (microMIPS) POOL32F secondary minor opcodes.
-+ */
-+enum mm_32f_70_minor_op {
-+	mm_fmovn_op,
-+	mm_fmovz_op,
-+};
-+
-+/*
-+ * (microMIPS) POOL32FXF secondary minor opcodes for POOL32F.
-+ */
-+enum mm_32f_73_minor_op {
-+	mm_fmov0_op = 0x01,
-+	mm_fcvtl_op = 0x04,
-+	mm_movf0_op = 0x05,
-+	mm_frsqrt_op = 0x08,
-+	mm_ffloorl_op = 0x0c,
-+	mm_fabs0_op = 0x0d,
-+	mm_fcvtw_op = 0x24,
-+	mm_movt0_op = 0x25,
-+	mm_fsqrt_op = 0x28,
-+	mm_ffloorw_op = 0x2c,
-+	mm_fneg0_op = 0x2d,
-+	mm_cfc1_op = 0x40,
-+	mm_frecip_op = 0x48,
-+	mm_fceill_op = 0x4c,
-+	mm_fcvtd0_op = 0x4d,
-+	mm_ctc1_op = 0x60,
-+	mm_fceilw_op = 0x6c,
-+	mm_fcvts0_op = 0x6d,
-+	mm_mfc1_op = 0x80,
-+	mm_fmov1_op = 0x81,
-+	mm_movf1_op = 0x85,
-+	mm_ftruncl_op = 0x8c,
-+	mm_fabs1_op = 0x8d,
-+	mm_mtc1_op = 0xa0,
-+	mm_movt1_op = 0xa5,
-+	mm_ftruncw_op = 0xac,
-+	mm_fneg1_op = 0xad,
-+	mm_froundl_op = 0xcc,
-+	mm_fcvtd1_op = 0xcd,
-+	mm_froundw_op = 0xec,
-+	mm_fcvts1_op = 0xed,
-+};
-+
-+/*
-+ * (microMIPS) POOL16C minor opcodes.
-+ */
-+enum mm_16c_minor_op {
-+	mm_lwm16_op = 0x04,
-+	mm_swm16_op = 0x05,
-+	mm_jr16_op = 0x18,
-+	mm_jrc_op = 0x1a,
-+	mm_jalr16_op = 0x1c,
-+	mm_jalrs16_op = 0x1e,
-+};
-+
-+/*
-+ * (microMIPS) POOL16D minor opcodes.
-+ */
-+enum mm_16d_minor_op {
-+	mm_addius5_func,
-+	mm_addiusp_func,
-+};
-+
-+/*
-  * Damn ...  bitfields depend from byteorder :-(
-  */
- #ifdef __MIPSEB__
-@@ -311,6 +542,204 @@ struct v_format {				/* MDMX vector format */
- 	;)))))))
- };
+-void __uasminit uasm_build_label(struct uasm_label **lab, u32 *addr, int lid);
++void __uasminit ISAFUNC(uasm_build_label)(struct uasm_label **lab, u32 *addr,
++			int lid);
+ #ifdef CONFIG_64BIT
+-int uasm_in_compat_space_p(long addr);
++int ISAFUNC(uasm_in_compat_space_p)(long addr);
+ #endif
+-int uasm_rel_hi(long val);
+-int uasm_rel_lo(long val);
+-void UASM_i_LA_mostly(u32 **buf, unsigned int rs, long addr);
+-void UASM_i_LA(u32 **buf, unsigned int rs, long addr);
++int ISAFUNC(uasm_rel_hi)(long val);
++int ISAFUNC(uasm_rel_lo)(long val);
++void ISAFUNC(UASM_i_LA_mostly)(u32 **buf, unsigned int rs, long addr);
++void ISAFUNC(UASM_i_LA)(u32 **buf, unsigned int rs, long addr);
  
+ #define UASM_L_LA(lb)							\
+ static inline void __uasminit uasm_l##lb(struct uasm_label **lab, u32 *addr) \
+@@ -196,27 +210,27 @@ static inline void uasm_i_drotr_safe(u32 **p, unsigned int a1,
+ 				     unsigned int a2, unsigned int a3)
+ {
+ 	if (a3 < 32)
+-		uasm_i_drotr(p, a1, a2, a3);
++		ISAOPC(_drotr)(p, a1, a2, a3);
+ 	else
+-		uasm_i_drotr32(p, a1, a2, a3 - 32);
++		ISAOPC(_drotr32)(p, a1, a2, a3 - 32);
+ }
+ 
+ static inline void uasm_i_dsll_safe(u32 **p, unsigned int a1,
+ 				    unsigned int a2, unsigned int a3)
+ {
+ 	if (a3 < 32)
+-		uasm_i_dsll(p, a1, a2, a3);
++		ISAOPC(_dsll)(p, a1, a2, a3);
+ 	else
+-		uasm_i_dsll32(p, a1, a2, a3 - 32);
++		ISAOPC(_dsll32)(p, a1, a2, a3 - 32);
+ }
+ 
+ static inline void uasm_i_dsrl_safe(u32 **p, unsigned int a1,
+ 				    unsigned int a2, unsigned int a3)
+ {
+ 	if (a3 < 32)
+-		uasm_i_dsrl(p, a1, a2, a3);
++		ISAOPC(_dsrl)(p, a1, a2, a3);
+ 	else
+-		uasm_i_dsrl32(p, a1, a2, a3 - 32);
++		ISAOPC(_dsrl32)(p, a1, a2, a3 - 32);
+ }
+ 
+ /* Handle relocations. */
+diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
+index 1dcec30..9e90c21 100644
+--- a/arch/mips/mm/Makefile
++++ b/arch/mips/mm/Makefile
+@@ -4,7 +4,7 @@
+ 
+ obj-y				+= cache.o dma-default.o extable.o fault.o \
+ 				   gup.o init.o mmap.o page.o page-funcs.o \
+-				   tlbex.o tlbex-fault.o uasm.o
++				   tlbex.o tlbex-fault.o uasm-mips.o
+ 
+ obj-$(CONFIG_32BIT)		+= ioremap.o pgtable-32.o
+ obj-$(CONFIG_64BIT)		+= pgtable-64.o
+diff --git a/arch/mips/mm/uasm-mips.c b/arch/mips/mm/uasm-mips.c
+new file mode 100644
+index 0000000..e78e74d
+--- /dev/null
++++ b/arch/mips/mm/uasm-mips.c
+@@ -0,0 +1,196 @@
 +/*
-+ * microMIPS instruction formats (32-bit length)
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
 + *
-+ * NOTE:
-+ *	Parenthesis denote whether the format is a microMIPS instruction or
-+ *	if it is MIPS32 instruction re-encoded for use in the microMIPS ASE.
++ * A small micro-assembler. It is intentionally kept simple, does only
++ * support a subset of instructions, and does not try to hide pipeline
++ * effects like branch delay slots.
++ *
++ * Copyright (C) 2004, 2005, 2006, 2008	 Thiemo Seufer
++ * Copyright (C) 2005, 2007  Maciej W. Rozycki
++ * Copyright (C) 2006  Ralf Baechle (ralf@linux-mips.org)
++ * Copyright (C) 2012, 2013  MIPS Technologies, Inc.  All rights reserved.
 + */
-+struct fb_format {		/* FPU branch format (MIPS32) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int bc : 5,
-+	BITFIELD_FIELD(unsigned int cc : 3,
-+	BITFIELD_FIELD(unsigned int flag : 2,
-+	BITFIELD_FIELD(signed int simmediate : 16,
-+	;)))))
++
++#include <linux/kernel.h>
++#include <linux/types.h>
++#include <linux/init.h>
++
++#include <asm/inst.h>
++#include <asm/elf.h>
++#include <asm/bugs.h>
++#include <asm/uasm.h>
++
++#define RS_MASK		0x1f
++#define RS_SH		21
++#define RT_MASK		0x1f
++#define RT_SH		16
++#define SCIMM_MASK	0xfffff
++#define SCIMM_SH	6
++
++/* This macro sets the non-variable bits of an instruction. */
++#define M(a, b, c, d, e, f)					\
++	((a) << OP_SH						\
++	 | (b) << RS_SH						\
++	 | (c) << RT_SH						\
++	 | (d) << RD_SH						\
++	 | (e) << RE_SH						\
++	 | (f) << FUNC_SH)
++
++#include "uasm.c"
++
++static struct insn insn_table[] __uasminitdata = {
++	{ insn_addiu, M(addiu_op, 0, 0, 0, 0, 0), RS | RT | SIMM },
++	{ insn_addu, M(spec_op, 0, 0, 0, 0, addu_op), RS | RT | RD },
++	{ insn_andi, M(andi_op, 0, 0, 0, 0, 0), RS | RT | UIMM },
++	{ insn_and, M(spec_op, 0, 0, 0, 0, and_op), RS | RT | RD },
++	{ insn_bbit0, M(lwc2_op, 0, 0, 0, 0, 0), RS | RT | BIMM },
++	{ insn_bbit1, M(swc2_op, 0, 0, 0, 0, 0), RS | RT | BIMM },
++	{ insn_beql, M(beql_op, 0, 0, 0, 0, 0), RS | RT | BIMM },
++	{ insn_beq, M(beq_op, 0, 0, 0, 0, 0), RS | RT | BIMM },
++	{ insn_bgezl, M(bcond_op, 0, bgezl_op, 0, 0, 0), RS | BIMM },
++	{ insn_bgez, M(bcond_op, 0, bgez_op, 0, 0, 0), RS | BIMM },
++	{ insn_bltzl, M(bcond_op, 0, bltzl_op, 0, 0, 0), RS | BIMM },
++	{ insn_bltz, M(bcond_op, 0, bltz_op, 0, 0, 0), RS | BIMM },
++	{ insn_bne, M(bne_op, 0, 0, 0, 0, 0), RS | RT | BIMM },
++	{ insn_cache,  M(cache_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
++	{ insn_daddiu, M(daddiu_op, 0, 0, 0, 0, 0), RS | RT | SIMM },
++	{ insn_daddu, M(spec_op, 0, 0, 0, 0, daddu_op), RS | RT | RD },
++	{ insn_dinsm, M(spec3_op, 0, 0, 0, 0, dinsm_op), RS | RT | RD | RE },
++	{ insn_dins, M(spec3_op, 0, 0, 0, 0, dins_op), RS | RT | RD | RE },
++	{ insn_dmfc0, M(cop0_op, dmfc_op, 0, 0, 0, 0), RT | RD | SET},
++	{ insn_dmtc0, M(cop0_op, dmtc_op, 0, 0, 0, 0), RT | RD | SET},
++	{ insn_drotr32, M(spec_op, 1, 0, 0, 0, dsrl32_op), RT | RD | RE },
++	{ insn_drotr, M(spec_op, 1, 0, 0, 0, dsrl_op), RT | RD | RE },
++	{ insn_dsll32, M(spec_op, 0, 0, 0, 0, dsll32_op), RT | RD | RE },
++	{ insn_dsll, M(spec_op, 0, 0, 0, 0, dsll_op), RT | RD | RE },
++	{ insn_dsra, M(spec_op, 0, 0, 0, 0, dsra_op), RT | RD | RE },
++	{ insn_dsrl32, M(spec_op, 0, 0, 0, 0, dsrl32_op), RT | RD | RE },
++	{ insn_dsrl, M(spec_op, 0, 0, 0, 0, dsrl_op), RT | RD | RE },
++	{ insn_dsubu, M(spec_op, 0, 0, 0, 0, dsubu_op), RS | RT | RD },
++	{ insn_eret,  M(cop0_op, cop_op, 0, 0, 0, eret_op),  0 },
++	{ insn_ext, M(spec3_op, 0, 0, 0, 0, ext_op), RS | RT | RD | RE },
++	{ insn_ins, M(spec3_op, 0, 0, 0, 0, ins_op), RS | RT | RD | RE },
++	{ insn_j,  M(j_op, 0, 0, 0, 0, 0),  JIMM },
++	{ insn_jal,  M(jal_op, 0, 0, 0, 0, 0),	JIMM },
++	{ insn_j,  M(j_op, 0, 0, 0, 0, 0),  JIMM },
++	{ insn_jr,  M(spec_op, 0, 0, 0, 0, jr_op),  RS },
++	{ insn_ld,  M(ld_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
++	{ insn_ldx, M(spec3_op, 0, 0, 0, ldx_op, lx_op), RS | RT | RD },
++	{ insn_lld,  M(lld_op, 0, 0, 0, 0, 0),	RS | RT | SIMM },
++	{ insn_ll,  M(ll_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
++	{ insn_lui,  M(lui_op, 0, 0, 0, 0, 0),	RT | SIMM },
++	{ insn_lw,  M(lw_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
++	{ insn_lwx, M(spec3_op, 0, 0, 0, lwx_op, lx_op), RS | RT | RD },
++	{ insn_mfc0,  M(cop0_op, mfc_op, 0, 0, 0, 0),  RT | RD | SET},
++	{ insn_mtc0,  M(cop0_op, mtc_op, 0, 0, 0, 0),  RT | RD | SET},
++	{ insn_ori,  M(ori_op, 0, 0, 0, 0, 0),	RS | RT | UIMM },
++	{ insn_or,  M(spec_op, 0, 0, 0, 0, or_op),  RS | RT | RD },
++	{ insn_pref,  M(pref_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
++	{ insn_rfe,  M(cop0_op, cop_op, 0, 0, 0, rfe_op),  0 },
++	{ insn_rotr,  M(spec_op, 1, 0, 0, 0, srl_op),  RT | RD | RE },
++	{ insn_scd,  M(scd_op, 0, 0, 0, 0, 0),	RS | RT | SIMM },
++	{ insn_sc,  M(sc_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
++	{ insn_sd,  M(sd_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
++	{ insn_sll,  M(spec_op, 0, 0, 0, 0, sll_op),  RT | RD | RE },
++	{ insn_sra,  M(spec_op, 0, 0, 0, 0, sra_op),  RT | RD | RE },
++	{ insn_srl,  M(spec_op, 0, 0, 0, 0, srl_op),  RT | RD | RE },
++	{ insn_subu,  M(spec_op, 0, 0, 0, 0, subu_op),	RS | RT | RD },
++	{ insn_sw,  M(sw_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
++	{ insn_syscall, M(spec_op, 0, 0, 0, 0, syscall_op), SCIMM},
++	{ insn_tlbp,  M(cop0_op, cop_op, 0, 0, 0, tlbp_op),  0 },
++	{ insn_tlbr,  M(cop0_op, cop_op, 0, 0, 0, tlbr_op),  0 },
++	{ insn_tlbwi,  M(cop0_op, cop_op, 0, 0, 0, tlbwi_op),  0 },
++	{ insn_tlbwr,  M(cop0_op, cop_op, 0, 0, 0, tlbwr_op),  0 },
++	{ insn_xori,  M(xori_op, 0, 0, 0, 0, 0),  RS | RT | UIMM },
++	{ insn_xor,  M(spec_op, 0, 0, 0, 0, xor_op),  RS | RT | RD },
++	{ insn_invalid, 0, 0 }
 +};
 +
-+struct fp0_format {		/* FPU multiply and add format (MIPS32) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int fmt : 5,
-+	BITFIELD_FIELD(unsigned int ft : 5,
-+	BITFIELD_FIELD(unsigned int fs : 5,
-+	BITFIELD_FIELD(unsigned int fd : 5,
-+	BITFIELD_FIELD(unsigned int func : 6,
-+	;))))))
-+};
++#undef M
 +
-+struct mm_fp0_format {		/* FPU multipy and add format (microMIPS) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int ft : 5,
-+	BITFIELD_FIELD(unsigned int fs : 5,
-+	BITFIELD_FIELD(unsigned int fd : 5,
-+	BITFIELD_FIELD(unsigned int fmt : 3,
-+	BITFIELD_FIELD(unsigned int op : 2,
-+	BITFIELD_FIELD(unsigned int func : 6,
-+	;)))))))
-+};
++static inline __uasminit u32 build_bimm(s32 arg)
++{
++	WARN(arg > 0x1ffff || arg < -0x20000,
++	     KERN_WARNING "Micro-assembler field overflow\n");
 +
-+struct fp1_format {		/* FPU mfc1 and cfc1 format (MIPS32) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int op : 5,
-+	BITFIELD_FIELD(unsigned int rt : 5,
-+	BITFIELD_FIELD(unsigned int fs : 5,
-+	BITFIELD_FIELD(unsigned int fd : 5,
-+	BITFIELD_FIELD(unsigned int func : 6,
-+	;))))))
-+};
++	WARN(arg & 0x3, KERN_WARNING "Invalid micro-assembler branch target\n");
 +
-+struct mm_fp1_format {		/* FPU mfc1 and cfc1 format (microMIPS) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int rt : 5,
-+	BITFIELD_FIELD(unsigned int fs : 5,
-+	BITFIELD_FIELD(unsigned int fmt : 2,
-+	BITFIELD_FIELD(unsigned int op : 8,
-+	BITFIELD_FIELD(unsigned int func : 6,
-+	;))))))
-+};
++	return ((arg < 0) ? (1 << 15) : 0) | ((arg >> 2) & 0x7fff);
++}
 +
-+struct mm_fp2_format {		/* FPU movt and movf format (microMIPS) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int fd : 5,
-+	BITFIELD_FIELD(unsigned int fs : 5,
-+	BITFIELD_FIELD(unsigned int cc : 3,
-+	BITFIELD_FIELD(unsigned int zero : 2,
-+	BITFIELD_FIELD(unsigned int fmt : 2,
-+	BITFIELD_FIELD(unsigned int op : 3,
-+	BITFIELD_FIELD(unsigned int func : 6,
-+	;))))))))
-+};
++static inline __uasminit u32 build_jimm(u32 arg)
++{
++	WARN(arg & ~(JIMM_MASK << 2),
++	     KERN_WARNING "Micro-assembler field overflow\n");
 +
-+struct mm_fp3_format {		/* FPU abs and neg format (microMIPS) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int rt : 5,
-+	BITFIELD_FIELD(unsigned int fs : 5,
-+	BITFIELD_FIELD(unsigned int fmt : 3,
-+	BITFIELD_FIELD(unsigned int op : 7,
-+	BITFIELD_FIELD(unsigned int func : 6,
-+	;))))))
-+};
-+
-+struct mm_fp4_format {		/* FPU c.cond format (microMIPS) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int rt : 5,
-+	BITFIELD_FIELD(unsigned int fs : 5,
-+	BITFIELD_FIELD(unsigned int cc : 3,
-+	BITFIELD_FIELD(unsigned int fmt : 3,
-+	BITFIELD_FIELD(unsigned int cond : 4,
-+	BITFIELD_FIELD(unsigned int func : 6,
-+	;)))))))
-+};
-+
-+struct mm_fp5_format {		/* FPU lwxc1 and swxc1 format (microMIPS) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int index : 5,
-+	BITFIELD_FIELD(unsigned int base : 5,
-+	BITFIELD_FIELD(unsigned int fd : 5,
-+	BITFIELD_FIELD(unsigned int op : 5,
-+	BITFIELD_FIELD(unsigned int func : 6,
-+	;))))))
-+};
-+
-+struct fp6_format {		/* FPU madd and msub format (MIPS IV) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int fr : 5,
-+	BITFIELD_FIELD(unsigned int ft : 5,
-+	BITFIELD_FIELD(unsigned int fs : 5,
-+	BITFIELD_FIELD(unsigned int fd : 5,
-+	BITFIELD_FIELD(unsigned int func : 6,
-+	;))))))
-+};
-+
-+struct mm_fp6_format {		/* FPU madd and msub format (microMIPS) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int ft : 5,
-+	BITFIELD_FIELD(unsigned int fs : 5,
-+	BITFIELD_FIELD(unsigned int fd : 5,
-+	BITFIELD_FIELD(unsigned int fr : 5,
-+	BITFIELD_FIELD(unsigned int func : 6,
-+	;))))))
-+};
-+
-+struct mm_i_format {		/* Immediate format (microMIPS) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int rt : 5,
-+	BITFIELD_FIELD(unsigned int rs : 5,
-+	BITFIELD_FIELD(signed int simmediate : 16,
-+	;))))
-+};
-+
-+struct mm_m_format {		/* Multi-word load/store format (microMIPS) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int rd : 5,
-+	BITFIELD_FIELD(unsigned int base : 5,
-+	BITFIELD_FIELD(unsigned int func : 4,
-+	BITFIELD_FIELD(signed int simmediate : 12,
-+	;)))))
-+};
-+
-+struct mm_x_format {		/* Scaled indexed load format (microMIPS) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int index : 5,
-+	BITFIELD_FIELD(unsigned int base : 5,
-+	BITFIELD_FIELD(unsigned int rd : 5,
-+	BITFIELD_FIELD(unsigned int func : 11,
-+	;)))))
-+};
++	return (arg >> 2) & JIMM_MASK;
++}
 +
 +/*
-+ * microMIPS instruction formats (16-bit length)
++ * The order of opcode arguments is implicitly left to right,
++ * starting with RS and ending with FUNC or IMM.
 + */
-+struct mm_b0_format {		/* Unconditional branch format (microMIPS) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(signed int simmediate : 10,
-+	BITFIELD_FIELD(unsigned int : 16, /* Ignored */
-+	;)))
-+};
++static void __uasminit build_insn(u32 **buf, enum opcode opc, ...)
++{
++	struct insn *ip = NULL;
++	unsigned int i;
++	va_list ap;
++	u32 op;
 +
-+struct mm_b1_format {		/* Conditional branch format (microMIPS) */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int rs : 3,
-+	BITFIELD_FIELD(signed int simmediate : 7,
-+	BITFIELD_FIELD(unsigned int : 16, /* Ignored */
-+	;))))
-+};
++	for (i = 0; insn_table[i].opcode != insn_invalid; i++)
++		if (insn_table[i].opcode == opc) {
++			ip = &insn_table[i];
++			break;
++		}
 +
-+struct mm16_m_format {		/* Multi-word load/store format */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int func : 4,
-+	BITFIELD_FIELD(unsigned int rlist : 2,
-+	BITFIELD_FIELD(unsigned int imm : 4,
-+	BITFIELD_FIELD(unsigned int : 16, /* Ignored */
-+	;)))))
-+};
++	if (!ip || (opc == insn_daddiu && r4k_daddiu_bug()))
++		panic("Unsupported Micro-assembler instruction %d", opc);
 +
-+struct mm16_rb_format {		/* Signed immediate format */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int rt : 3,
-+	BITFIELD_FIELD(unsigned int base : 3,
-+	BITFIELD_FIELD(signed int simmediate : 4,
-+	BITFIELD_FIELD(unsigned int : 16, /* Ignored */
-+	;)))))
-+};
++	op = ip->match;
++	va_start(ap, opc);
++	if (ip->fields & RS)
++		op |= build_rs(va_arg(ap, u32));
++	if (ip->fields & RT)
++		op |= build_rt(va_arg(ap, u32));
++	if (ip->fields & RD)
++		op |= build_rd(va_arg(ap, u32));
++	if (ip->fields & RE)
++		op |= build_re(va_arg(ap, u32));
++	if (ip->fields & SIMM)
++		op |= build_simm(va_arg(ap, s32));
++	if (ip->fields & UIMM)
++		op |= build_uimm(va_arg(ap, u32));
++	if (ip->fields & BIMM)
++		op |= build_bimm(va_arg(ap, s32));
++	if (ip->fields & JIMM)
++		op |= build_jimm(va_arg(ap, u32));
++	if (ip->fields & FUNC)
++		op |= build_func(va_arg(ap, u32));
++	if (ip->fields & SET)
++		op |= build_set(va_arg(ap, u32));
++	if (ip->fields & SCIMM)
++		op |= build_scimm(va_arg(ap, u32));
++	va_end(ap);
 +
-+struct mm16_r3_format {		/* Load from global pointer format */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int rt : 3,
-+	BITFIELD_FIELD(signed int simmediate : 7,
-+	BITFIELD_FIELD(unsigned int : 16, /* Ignored */
-+	;))))
-+};
++	**buf = op;
++	(*buf)++;
++}
 +
-+struct mm16_r5_format {		/* Load/store from stack pointer format */
-+	BITFIELD_FIELD(unsigned int opcode : 6,
-+	BITFIELD_FIELD(unsigned int rt : 5,
-+	BITFIELD_FIELD(signed int simmediate : 5,
-+	BITFIELD_FIELD(unsigned int : 16, /* Ignored */
-+	;))))
-+};
++static inline void __uasminit
++__resolve_relocs(struct uasm_reloc *rel, struct uasm_label *lab)
++{
++	long laddr = (long)lab->addr;
++	long raddr = (long)rel->addr;
 +
- union mips_instruction {
- 	unsigned int word;
- 	unsigned short halfword[2];
-@@ -325,6 +754,26 @@ union mips_instruction {
- 	struct b_format b_format;
- 	struct ps_format ps_format;
- 	struct v_format v_format;
-+	struct fb_format fb_format;
-+	struct fp0_format fp0_format;
-+	struct mm_fp0_format mm_fp0_format;
-+	struct fp1_format fp1_format;
-+	struct mm_fp1_format mm_fp1_format;
-+	struct mm_fp2_format mm_fp2_format;
-+	struct mm_fp3_format mm_fp3_format;
-+	struct mm_fp4_format mm_fp4_format;
-+	struct mm_fp5_format mm_fp5_format;
-+	struct fp6_format fp6_format;
-+	struct mm_fp6_format mm_fp6_format;
-+	struct mm_i_format mm_i_format;
-+	struct mm_m_format mm_m_format;
-+	struct mm_x_format mm_x_format;
-+	struct mm_b0_format mm_b0_format;
-+	struct mm_b1_format mm_b1_format;
-+	struct mm16_m_format mm16_m_format ;
-+	struct mm16_rb_format mm16_rb_format;
-+	struct mm16_r3_format mm16_r3_format;
-+	struct mm16_r5_format mm16_r5_format;
++	switch (rel->type) {
++	case R_MIPS_PC16:
++		*rel->addr |= build_bimm(laddr - (raddr + 4));
++		break;
++
++	default:
++		panic("Unsupported Micro-assembler relocation %d",
++		      rel->type);
++	}
++}
+diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+index 942ff6c..7eb5e43 100644
+--- a/arch/mips/mm/uasm.c
++++ b/arch/mips/mm/uasm.c
+@@ -10,17 +10,9 @@
+  * Copyright (C) 2004, 2005, 2006, 2008	 Thiemo Seufer
+  * Copyright (C) 2005, 2007  Maciej W. Rozycki
+  * Copyright (C) 2006  Ralf Baechle (ralf@linux-mips.org)
++ * Copyright (C) 2012, 2013  MIPS Technologies, Inc.  All rights reserved.
+  */
+ 
+-#include <linux/kernel.h>
+-#include <linux/types.h>
+-#include <linux/init.h>
+-
+-#include <asm/inst.h>
+-#include <asm/elf.h>
+-#include <asm/bugs.h>
+-#include <asm/uasm.h>
+-
+ enum fields {
+ 	RS = 0x001,
+ 	RT = 0x002,
+@@ -37,10 +29,6 @@ enum fields {
+ 
+ #define OP_MASK		0x3f
+ #define OP_SH		26
+-#define RS_MASK		0x1f
+-#define RS_SH		21
+-#define RT_MASK		0x1f
+-#define RT_SH		16
+ #define RD_MASK		0x1f
+ #define RD_SH		11
+ #define RE_MASK		0x1f
+@@ -53,8 +41,6 @@ enum fields {
+ #define FUNC_SH		0
+ #define SET_MASK	0x7
+ #define SET_SH		0
+-#define SCIMM_MASK	0xfffff
+-#define SCIMM_SH	6
+ 
+ enum opcode {
+ 	insn_invalid,
+@@ -77,85 +63,6 @@ struct insn {
+ 	enum fields fields;
  };
  
- #endif /* _UAPI_ASM_INST_H */
+-/* This macro sets the non-variable bits of an instruction. */
+-#define M(a, b, c, d, e, f)					\
+-	((a) << OP_SH						\
+-	 | (b) << RS_SH						\
+-	 | (c) << RT_SH						\
+-	 | (d) << RD_SH						\
+-	 | (e) << RE_SH						\
+-	 | (f) << FUNC_SH)
+-
+-static struct insn insn_table[] __uasminitdata = {
+-	{ insn_addiu, M(addiu_op, 0, 0, 0, 0, 0), RS | RT | SIMM },
+-	{ insn_addu, M(spec_op, 0, 0, 0, 0, addu_op), RS | RT | RD },
+-	{ insn_andi, M(andi_op, 0, 0, 0, 0, 0), RS | RT | UIMM },
+-	{ insn_and, M(spec_op, 0, 0, 0, 0, and_op), RS | RT | RD },
+-	{ insn_bbit0, M(lwc2_op, 0, 0, 0, 0, 0), RS | RT | BIMM },
+-	{ insn_bbit1, M(swc2_op, 0, 0, 0, 0, 0), RS | RT | BIMM },
+-	{ insn_beql, M(beql_op, 0, 0, 0, 0, 0), RS | RT | BIMM },
+-	{ insn_beq, M(beq_op, 0, 0, 0, 0, 0), RS | RT | BIMM },
+-	{ insn_bgezl, M(bcond_op, 0, bgezl_op, 0, 0, 0), RS | BIMM },
+-	{ insn_bgez, M(bcond_op, 0, bgez_op, 0, 0, 0), RS | BIMM },
+-	{ insn_bltzl, M(bcond_op, 0, bltzl_op, 0, 0, 0), RS | BIMM },
+-	{ insn_bltz, M(bcond_op, 0, bltz_op, 0, 0, 0), RS | BIMM },
+-	{ insn_bne, M(bne_op, 0, 0, 0, 0, 0), RS | RT | BIMM },
+-	{ insn_cache,  M(cache_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
+-	{ insn_daddiu, M(daddiu_op, 0, 0, 0, 0, 0), RS | RT | SIMM },
+-	{ insn_daddu, M(spec_op, 0, 0, 0, 0, daddu_op), RS | RT | RD },
+-	{ insn_dinsm, M(spec3_op, 0, 0, 0, 0, dinsm_op), RS | RT | RD | RE },
+-	{ insn_dins, M(spec3_op, 0, 0, 0, 0, dins_op), RS | RT | RD | RE },
+-	{ insn_dmfc0, M(cop0_op, dmfc_op, 0, 0, 0, 0), RT | RD | SET},
+-	{ insn_dmtc0, M(cop0_op, dmtc_op, 0, 0, 0, 0), RT | RD | SET},
+-	{ insn_drotr32, M(spec_op, 1, 0, 0, 0, dsrl32_op), RT | RD | RE },
+-	{ insn_drotr, M(spec_op, 1, 0, 0, 0, dsrl_op), RT | RD | RE },
+-	{ insn_dsll32, M(spec_op, 0, 0, 0, 0, dsll32_op), RT | RD | RE },
+-	{ insn_dsll, M(spec_op, 0, 0, 0, 0, dsll_op), RT | RD | RE },
+-	{ insn_dsra, M(spec_op, 0, 0, 0, 0, dsra_op), RT | RD | RE },
+-	{ insn_dsrl32, M(spec_op, 0, 0, 0, 0, dsrl32_op), RT | RD | RE },
+-	{ insn_dsrl, M(spec_op, 0, 0, 0, 0, dsrl_op), RT | RD | RE },
+-	{ insn_dsubu, M(spec_op, 0, 0, 0, 0, dsubu_op), RS | RT | RD },
+-	{ insn_eret,  M(cop0_op, cop_op, 0, 0, 0, eret_op),  0 },
+-	{ insn_ext, M(spec3_op, 0, 0, 0, 0, ext_op), RS | RT | RD | RE },
+-	{ insn_ins, M(spec3_op, 0, 0, 0, 0, ins_op), RS | RT | RD | RE },
+-	{ insn_j,  M(j_op, 0, 0, 0, 0, 0),  JIMM },
+-	{ insn_jal,  M(jal_op, 0, 0, 0, 0, 0),	JIMM },
+-	{ insn_j,  M(j_op, 0, 0, 0, 0, 0),  JIMM },
+-	{ insn_jr,  M(spec_op, 0, 0, 0, 0, jr_op),  RS },
+-	{ insn_ld,  M(ld_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
+-	{ insn_ldx, M(spec3_op, 0, 0, 0, ldx_op, lx_op), RS | RT | RD },
+-	{ insn_lld,  M(lld_op, 0, 0, 0, 0, 0),	RS | RT | SIMM },
+-	{ insn_ll,  M(ll_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
+-	{ insn_lui,  M(lui_op, 0, 0, 0, 0, 0),	RT | SIMM },
+-	{ insn_lw,  M(lw_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
+-	{ insn_lwx, M(spec3_op, 0, 0, 0, lwx_op, lx_op), RS | RT | RD },
+-	{ insn_mfc0,  M(cop0_op, mfc_op, 0, 0, 0, 0),  RT | RD | SET},
+-	{ insn_mtc0,  M(cop0_op, mtc_op, 0, 0, 0, 0),  RT | RD | SET},
+-	{ insn_ori,  M(ori_op, 0, 0, 0, 0, 0),	RS | RT | UIMM },
+-	{ insn_or,  M(spec_op, 0, 0, 0, 0, or_op),  RS | RT | RD },
+-	{ insn_pref,  M(pref_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
+-	{ insn_rfe,  M(cop0_op, cop_op, 0, 0, 0, rfe_op),  0 },
+-	{ insn_rotr,  M(spec_op, 1, 0, 0, 0, srl_op),  RT | RD | RE },
+-	{ insn_scd,  M(scd_op, 0, 0, 0, 0, 0),	RS | RT | SIMM },
+-	{ insn_sc,  M(sc_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
+-	{ insn_sd,  M(sd_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
+-	{ insn_sll,  M(spec_op, 0, 0, 0, 0, sll_op),  RT | RD | RE },
+-	{ insn_sra,  M(spec_op, 0, 0, 0, 0, sra_op),  RT | RD | RE },
+-	{ insn_srl,  M(spec_op, 0, 0, 0, 0, srl_op),  RT | RD | RE },
+-	{ insn_subu,  M(spec_op, 0, 0, 0, 0, subu_op),	RS | RT | RD },
+-	{ insn_sw,  M(sw_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
+-	{ insn_syscall, M(spec_op, 0, 0, 0, 0, syscall_op), SCIMM},
+-	{ insn_tlbp,  M(cop0_op, cop_op, 0, 0, 0, tlbp_op),  0 },
+-	{ insn_tlbr,  M(cop0_op, cop_op, 0, 0, 0, tlbr_op),  0 },
+-	{ insn_tlbwi,  M(cop0_op, cop_op, 0, 0, 0, tlbwi_op),  0 },
+-	{ insn_tlbwr,  M(cop0_op, cop_op, 0, 0, 0, tlbwr_op),  0 },
+-	{ insn_xori,  M(xori_op, 0, 0, 0, 0, 0),  RS | RT | UIMM },
+-	{ insn_xor,  M(spec_op, 0, 0, 0, 0, xor_op),  RS | RT | RD },
+-	{ insn_invalid, 0, 0 }
+-};
+-
+-#undef M
+-
+ static inline __uasminit u32 build_rs(u32 arg)
+ {
+ 	WARN(arg & ~RS_MASK, KERN_WARNING "Micro-assembler field overflow\n");
+@@ -199,24 +106,6 @@ static inline __uasminit u32 build_uimm(u32 arg)
+ 	return arg & IMM_MASK;
+ }
+ 
+-static inline __uasminit u32 build_bimm(s32 arg)
+-{
+-	WARN(arg > 0x1ffff || arg < -0x20000,
+-	     KERN_WARNING "Micro-assembler field overflow\n");
+-
+-	WARN(arg & 0x3, KERN_WARNING "Invalid micro-assembler branch target\n");
+-
+-	return ((arg < 0) ? (1 << 15) : 0) | ((arg >> 2) & 0x7fff);
+-}
+-
+-static inline __uasminit u32 build_jimm(u32 arg)
+-{
+-	WARN(arg & ~(JIMM_MASK << 2),
+-	     KERN_WARNING "Micro-assembler field overflow\n");
+-
+-	return (arg >> 2) & JIMM_MASK;
+-}
+-
+ static inline __uasminit u32 build_scimm(u32 arg)
+ {
+ 	WARN(arg & ~SCIMM_MASK,
+@@ -239,55 +128,7 @@ static inline __uasminit u32 build_set(u32 arg)
+ 	return arg & SET_MASK;
+ }
+ 
+-/*
+- * The order of opcode arguments is implicitly left to right,
+- * starting with RS and ending with FUNC or IMM.
+- */
+-static void __uasminit build_insn(u32 **buf, enum opcode opc, ...)
+-{
+-	struct insn *ip = NULL;
+-	unsigned int i;
+-	va_list ap;
+-	u32 op;
+-
+-	for (i = 0; insn_table[i].opcode != insn_invalid; i++)
+-		if (insn_table[i].opcode == opc) {
+-			ip = &insn_table[i];
+-			break;
+-		}
+-
+-	if (!ip || (opc == insn_daddiu && r4k_daddiu_bug()))
+-		panic("Unsupported Micro-assembler instruction %d", opc);
+-
+-	op = ip->match;
+-	va_start(ap, opc);
+-	if (ip->fields & RS)
+-		op |= build_rs(va_arg(ap, u32));
+-	if (ip->fields & RT)
+-		op |= build_rt(va_arg(ap, u32));
+-	if (ip->fields & RD)
+-		op |= build_rd(va_arg(ap, u32));
+-	if (ip->fields & RE)
+-		op |= build_re(va_arg(ap, u32));
+-	if (ip->fields & SIMM)
+-		op |= build_simm(va_arg(ap, s32));
+-	if (ip->fields & UIMM)
+-		op |= build_uimm(va_arg(ap, u32));
+-	if (ip->fields & BIMM)
+-		op |= build_bimm(va_arg(ap, s32));
+-	if (ip->fields & JIMM)
+-		op |= build_jimm(va_arg(ap, u32));
+-	if (ip->fields & FUNC)
+-		op |= build_func(va_arg(ap, u32));
+-	if (ip->fields & SET)
+-		op |= build_set(va_arg(ap, u32));
+-	if (ip->fields & SCIMM)
+-		op |= build_scimm(va_arg(ap, u32));
+-	va_end(ap);
+-
+-	**buf = op;
+-	(*buf)++;
+-}
++static void __uasminit build_insn(u32 **buf, enum opcode opc, ...);
+ 
+ #define I_u1u2u3(op)					\
+ Ip_u1u2u3(op)						\
+@@ -445,7 +286,7 @@ I_u3u1u2(_ldx)
+ 
+ #ifdef CONFIG_CPU_CAVIUM_OCTEON
+ #include <asm/octeon/octeon.h>
+-void __uasminit uasm_i_pref(u32 **buf, unsigned int a, signed int b,
++void __uasminit ISAFUNC(uasm_i_pref)(u32 **buf, unsigned int a, signed int b,
+ 			    unsigned int c)
+ {
+ 	if (OCTEON_IS_MODEL(OCTEON_CN63XX_PASS1_X) && a <= 24 && a != 5)
+@@ -457,21 +298,21 @@ void __uasminit uasm_i_pref(u32 **buf, unsigned int a, signed int b,
+ 	else
+ 		build_insn(buf, insn_pref, c, a, b);
+ }
+-UASM_EXPORT_SYMBOL(uasm_i_pref);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_i_pref));
+ #else
+ I_u2s3u1(_pref)
+ #endif
+ 
+ /* Handle labels. */
+-void __uasminit uasm_build_label(struct uasm_label **lab, u32 *addr, int lid)
++void __uasminit ISAFUNC(uasm_build_label)(struct uasm_label **lab, u32 *addr, int lid)
+ {
+ 	(*lab)->addr = addr;
+ 	(*lab)->lab = lid;
+ 	(*lab)++;
+ }
+-UASM_EXPORT_SYMBOL(uasm_build_label);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_build_label));
+ 
+-int __uasminit uasm_in_compat_space_p(long addr)
++int __uasminit ISAFUNC(uasm_in_compat_space_p)(long addr)
+ {
+ 	/* Is this address in 32bit compat space? */
+ #ifdef CONFIG_64BIT
+@@ -480,7 +321,7 @@ int __uasminit uasm_in_compat_space_p(long addr)
+ 	return 1;
+ #endif
+ }
+-UASM_EXPORT_SYMBOL(uasm_in_compat_space_p);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_in_compat_space_p));
+ 
+ static int __uasminit uasm_rel_highest(long val)
+ {
+@@ -500,77 +341,66 @@ static int __uasminit uasm_rel_higher(long val)
+ #endif
+ }
+ 
+-int __uasminit uasm_rel_hi(long val)
++int __uasminit ISAFUNC(uasm_rel_hi)(long val)
+ {
+ 	return ((((val + 0x8000L) >> 16) & 0xffff) ^ 0x8000) - 0x8000;
+ }
+-UASM_EXPORT_SYMBOL(uasm_rel_hi);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_rel_hi));
+ 
+-int __uasminit uasm_rel_lo(long val)
++int __uasminit ISAFUNC(uasm_rel_lo)(long val)
+ {
+ 	return ((val & 0xffff) ^ 0x8000) - 0x8000;
+ }
+-UASM_EXPORT_SYMBOL(uasm_rel_lo);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_rel_lo));
+ 
+-void __uasminit UASM_i_LA_mostly(u32 **buf, unsigned int rs, long addr)
++void __uasminit ISAFUNC(UASM_i_LA_mostly)(u32 **buf, unsigned int rs, long addr)
+ {
+-	if (!uasm_in_compat_space_p(addr)) {
+-		uasm_i_lui(buf, rs, uasm_rel_highest(addr));
++	if (!ISAFUNC(uasm_in_compat_space_p)(addr)) {
++		ISAFUNC(uasm_i_lui)(buf, rs, uasm_rel_highest(addr));
+ 		if (uasm_rel_higher(addr))
+-			uasm_i_daddiu(buf, rs, rs, uasm_rel_higher(addr));
+-		if (uasm_rel_hi(addr)) {
+-			uasm_i_dsll(buf, rs, rs, 16);
+-			uasm_i_daddiu(buf, rs, rs, uasm_rel_hi(addr));
+-			uasm_i_dsll(buf, rs, rs, 16);
++			ISAFUNC(uasm_i_daddiu)(buf, rs, rs, uasm_rel_higher(addr));
++		if (ISAFUNC(uasm_rel_hi(addr))) {
++			ISAFUNC(uasm_i_dsll)(buf, rs, rs, 16);
++			ISAFUNC(uasm_i_daddiu)(buf, rs, rs,
++					ISAFUNC(uasm_rel_hi)(addr));
++			ISAFUNC(uasm_i_dsll)(buf, rs, rs, 16);
+ 		} else
+-			uasm_i_dsll32(buf, rs, rs, 0);
++			ISAFUNC(uasm_i_dsll32)(buf, rs, rs, 0);
+ 	} else
+-		uasm_i_lui(buf, rs, uasm_rel_hi(addr));
++		ISAFUNC(uasm_i_lui)(buf, rs, ISAFUNC(uasm_rel_hi(addr)));
+ }
+-UASM_EXPORT_SYMBOL(UASM_i_LA_mostly);
++UASM_EXPORT_SYMBOL(ISAFUNC(UASM_i_LA_mostly));
+ 
+-void __uasminit UASM_i_LA(u32 **buf, unsigned int rs, long addr)
++void __uasminit ISAFUNC(UASM_i_LA)(u32 **buf, unsigned int rs, long addr)
+ {
+-	UASM_i_LA_mostly(buf, rs, addr);
+-	if (uasm_rel_lo(addr)) {
+-		if (!uasm_in_compat_space_p(addr))
+-			uasm_i_daddiu(buf, rs, rs, uasm_rel_lo(addr));
++	ISAFUNC(UASM_i_LA_mostly)(buf, rs, addr);
++	if (ISAFUNC(uasm_rel_lo(addr))) {
++		if (!ISAFUNC(uasm_in_compat_space_p)(addr))
++			ISAFUNC(uasm_i_daddiu)(buf, rs, rs,
++					ISAFUNC(uasm_rel_lo(addr)));
+ 		else
+-			uasm_i_addiu(buf, rs, rs, uasm_rel_lo(addr));
++			ISAFUNC(uasm_i_addiu)(buf, rs, rs,
++					ISAFUNC(uasm_rel_lo(addr)));
+ 	}
+ }
+-UASM_EXPORT_SYMBOL(UASM_i_LA);
++UASM_EXPORT_SYMBOL(ISAFUNC(UASM_i_LA));
+ 
+ /* Handle relocations. */
+ void __uasminit
+-uasm_r_mips_pc16(struct uasm_reloc **rel, u32 *addr, int lid)
++ISAFUNC(uasm_r_mips_pc16)(struct uasm_reloc **rel, u32 *addr, int lid)
+ {
+ 	(*rel)->addr = addr;
+ 	(*rel)->type = R_MIPS_PC16;
+ 	(*rel)->lab = lid;
+ 	(*rel)++;
+ }
+-UASM_EXPORT_SYMBOL(uasm_r_mips_pc16);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_r_mips_pc16));
+ 
+ static inline void __uasminit
+-__resolve_relocs(struct uasm_reloc *rel, struct uasm_label *lab)
+-{
+-	long laddr = (long)lab->addr;
+-	long raddr = (long)rel->addr;
+-
+-	switch (rel->type) {
+-	case R_MIPS_PC16:
+-		*rel->addr |= build_bimm(laddr - (raddr + 4));
+-		break;
+-
+-	default:
+-		panic("Unsupported Micro-assembler relocation %d",
+-		      rel->type);
+-	}
+-}
++__resolve_relocs(struct uasm_reloc *rel, struct uasm_label *lab);
+ 
+ void __uasminit
+-uasm_resolve_relocs(struct uasm_reloc *rel, struct uasm_label *lab)
++ISAFUNC(uasm_resolve_relocs)(struct uasm_reloc *rel, struct uasm_label *lab)
+ {
+ 	struct uasm_label *l;
+ 
+@@ -579,40 +409,40 @@ uasm_resolve_relocs(struct uasm_reloc *rel, struct uasm_label *lab)
+ 			if (rel->lab == l->lab)
+ 				__resolve_relocs(rel, l);
+ }
+-UASM_EXPORT_SYMBOL(uasm_resolve_relocs);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_resolve_relocs));
+ 
+ void __uasminit
+-uasm_move_relocs(struct uasm_reloc *rel, u32 *first, u32 *end, long off)
++ISAFUNC(uasm_move_relocs)(struct uasm_reloc *rel, u32 *first, u32 *end, long off)
+ {
+ 	for (; rel->lab != UASM_LABEL_INVALID; rel++)
+ 		if (rel->addr >= first && rel->addr < end)
+ 			rel->addr += off;
+ }
+-UASM_EXPORT_SYMBOL(uasm_move_relocs);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_move_relocs));
+ 
+ void __uasminit
+-uasm_move_labels(struct uasm_label *lab, u32 *first, u32 *end, long off)
++ISAFUNC(uasm_move_labels)(struct uasm_label *lab, u32 *first, u32 *end, long off)
+ {
+ 	for (; lab->lab != UASM_LABEL_INVALID; lab++)
+ 		if (lab->addr >= first && lab->addr < end)
+ 			lab->addr += off;
+ }
+-UASM_EXPORT_SYMBOL(uasm_move_labels);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_move_labels));
+ 
+ void __uasminit
+-uasm_copy_handler(struct uasm_reloc *rel, struct uasm_label *lab, u32 *first,
++ISAFUNC(uasm_copy_handler)(struct uasm_reloc *rel, struct uasm_label *lab, u32 *first,
+ 		  u32 *end, u32 *target)
+ {
+ 	long off = (long)(target - first);
+ 
+ 	memcpy(target, first, (end - first) * sizeof(u32));
+ 
+-	uasm_move_relocs(rel, first, end, off);
+-	uasm_move_labels(lab, first, end, off);
++	ISAFUNC(uasm_move_relocs(rel, first, end, off));
++	ISAFUNC(uasm_move_labels(lab, first, end, off));
+ }
+-UASM_EXPORT_SYMBOL(uasm_copy_handler);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_copy_handler));
+ 
+-int __uasminit uasm_insn_has_bdelay(struct uasm_reloc *rel, u32 *addr)
++int __uasminit ISAFUNC(uasm_insn_has_bdelay)(struct uasm_reloc *rel, u32 *addr)
+ {
+ 	for (; rel->lab != UASM_LABEL_INVALID; rel++) {
+ 		if (rel->addr == addr
+@@ -623,88 +453,88 @@ int __uasminit uasm_insn_has_bdelay(struct uasm_reloc *rel, u32 *addr)
+ 
+ 	return 0;
+ }
+-UASM_EXPORT_SYMBOL(uasm_insn_has_bdelay);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_insn_has_bdelay));
+ 
+ /* Convenience functions for labeled branches. */
+ void __uasminit
+-uasm_il_bltz(u32 **p, struct uasm_reloc **r, unsigned int reg, int lid)
++ISAFUNC(uasm_il_bltz)(u32 **p, struct uasm_reloc **r, unsigned int reg, int lid)
+ {
+ 	uasm_r_mips_pc16(r, *p, lid);
+-	uasm_i_bltz(p, reg, 0);
++	ISAFUNC(uasm_i_bltz)(p, reg, 0);
+ }
+-UASM_EXPORT_SYMBOL(uasm_il_bltz);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_il_bltz));
+ 
+ void __uasminit
+-uasm_il_b(u32 **p, struct uasm_reloc **r, int lid)
++ISAFUNC(uasm_il_b)(u32 **p, struct uasm_reloc **r, int lid)
+ {
+ 	uasm_r_mips_pc16(r, *p, lid);
+-	uasm_i_b(p, 0);
++	ISAFUNC(uasm_i_b)(p, 0);
+ }
+-UASM_EXPORT_SYMBOL(uasm_il_b);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_il_b));
+ 
+ void __uasminit
+-uasm_il_beqz(u32 **p, struct uasm_reloc **r, unsigned int reg, int lid)
++ISAFUNC(uasm_il_beqz)(u32 **p, struct uasm_reloc **r, unsigned int reg, int lid)
+ {
+ 	uasm_r_mips_pc16(r, *p, lid);
+-	uasm_i_beqz(p, reg, 0);
++	ISAFUNC(uasm_i_beqz)(p, reg, 0);
+ }
+-UASM_EXPORT_SYMBOL(uasm_il_beqz);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_il_beqz));
+ 
+ void __uasminit
+-uasm_il_beqzl(u32 **p, struct uasm_reloc **r, unsigned int reg, int lid)
++ISAFUNC(uasm_il_beqzl)(u32 **p, struct uasm_reloc **r, unsigned int reg, int lid)
+ {
+ 	uasm_r_mips_pc16(r, *p, lid);
+-	uasm_i_beqzl(p, reg, 0);
++	ISAFUNC(uasm_i_beqzl)(p, reg, 0);
+ }
+-UASM_EXPORT_SYMBOL(uasm_il_beqzl);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_il_beqzl));
+ 
+ void __uasminit
+-uasm_il_bne(u32 **p, struct uasm_reloc **r, unsigned int reg1,
++ISAFUNC(uasm_il_bne)(u32 **p, struct uasm_reloc **r, unsigned int reg1,
+ 	unsigned int reg2, int lid)
+ {
+ 	uasm_r_mips_pc16(r, *p, lid);
+-	uasm_i_bne(p, reg1, reg2, 0);
++	ISAFUNC(uasm_i_bne)(p, reg1, reg2, 0);
+ }
+-UASM_EXPORT_SYMBOL(uasm_il_bne);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_il_bne));
+ 
+ void __uasminit
+-uasm_il_bnez(u32 **p, struct uasm_reloc **r, unsigned int reg, int lid)
++ISAFUNC(uasm_il_bnez)(u32 **p, struct uasm_reloc **r, unsigned int reg, int lid)
+ {
+ 	uasm_r_mips_pc16(r, *p, lid);
+-	uasm_i_bnez(p, reg, 0);
++	ISAFUNC(uasm_i_bnez)(p, reg, 0);
+ }
+-UASM_EXPORT_SYMBOL(uasm_il_bnez);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_il_bnez));
+ 
+ void __uasminit
+-uasm_il_bgezl(u32 **p, struct uasm_reloc **r, unsigned int reg, int lid)
++ISAFUNC(uasm_il_bgezl)(u32 **p, struct uasm_reloc **r, unsigned int reg, int lid)
+ {
+ 	uasm_r_mips_pc16(r, *p, lid);
+-	uasm_i_bgezl(p, reg, 0);
++	ISAFUNC(uasm_i_bgezl)(p, reg, 0);
+ }
+-UASM_EXPORT_SYMBOL(uasm_il_bgezl);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_il_bgezl));
+ 
+ void __uasminit
+-uasm_il_bgez(u32 **p, struct uasm_reloc **r, unsigned int reg, int lid)
++ISAFUNC(uasm_il_bgez)(u32 **p, struct uasm_reloc **r, unsigned int reg, int lid)
+ {
+ 	uasm_r_mips_pc16(r, *p, lid);
+-	uasm_i_bgez(p, reg, 0);
++	ISAFUNC(uasm_i_bgez)(p, reg, 0);
+ }
+-UASM_EXPORT_SYMBOL(uasm_il_bgez);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_il_bgez));
+ 
+ void __uasminit
+-uasm_il_bbit0(u32 **p, struct uasm_reloc **r, unsigned int reg,
++ISAFUNC(uasm_il_bbit0)(u32 **p, struct uasm_reloc **r, unsigned int reg,
+ 	      unsigned int bit, int lid)
+ {
+ 	uasm_r_mips_pc16(r, *p, lid);
+-	uasm_i_bbit0(p, reg, bit, 0);
++	ISAFUNC(uasm_i_bbit0)(p, reg, bit, 0);
+ }
+-UASM_EXPORT_SYMBOL(uasm_il_bbit0);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_il_bbit0));
+ 
+ void __uasminit
+-uasm_il_bbit1(u32 **p, struct uasm_reloc **r, unsigned int reg,
++ISAFUNC(uasm_il_bbit1)(u32 **p, struct uasm_reloc **r, unsigned int reg,
+ 	      unsigned int bit, int lid)
+ {
+ 	uasm_r_mips_pc16(r, *p, lid);
+-	uasm_i_bbit1(p, reg, bit, 0);
++	ISAFUNC(uasm_i_bbit1)(p, reg, bit, 0);
+ }
+-UASM_EXPORT_SYMBOL(uasm_il_bbit1);
++UASM_EXPORT_SYMBOL(ISAFUNC(uasm_il_bbit1));
 -- 
 1.7.9.5

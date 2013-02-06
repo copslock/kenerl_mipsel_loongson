@@ -1,38 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Feb 2013 17:05:13 +0100 (CET)
-Received: from keetweej.vanheusden.com ([80.101.105.103]:41972 "EHLO
-        keetweej.vanheusden.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827497Ab3BFQFM2LcFe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Feb 2013 17:05:12 +0100
-Received: from belle.intranet.vanheusden.com (unknown [192.168.64.100])
-        by keetweej.vanheusden.com (Postfix) with ESMTP id 629CC15FB05
-        for <linux-mips@linux-mips.org>; Wed,  6 Feb 2013 17:05:11 +0100 (CET)
-Received: by belle.intranet.vanheusden.com (Postfix, from userid 1000)
-        id 141E4945E7; Wed,  6 Feb 2013 17:05:10 +0100 (CET)
-Date:   Wed, 6 Feb 2013 17:05:10 +0100
-From:   folkert <folkert@vanheusden.com>
-To:     linux-mips@linux-mips.org
-Subject: prom start
-Message-ID: <20130206160508.GR2118@belle.intranet.vanheusden.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Organization: www.unixexpert.nl
-X-Chameleon-Return-To: folkert@vanheusden.com
-X-Xfmail-Return-To: folkert@vanheusden.com
-X-Phonenumber: +31-6-41278122
-X-URL:  http://www.vanheusden.com/
-X-PGP-KeyID: 1F28D8AE
-X-GPG-fingerprint: AC89 09CE 41F2 00B4 FCF2  B174 3019 0E8C 1F28 D8AE
-X-Key:  http://pgp.surfnet.nl:11371/pks/lookup?op=get&search=0x1F28D8AE
-Read-Receipt-To: <folkert@vanheusden.com>
-Reply-By: Sat Feb  2 10:16:14 CET 2013
-X-Message-Flag: www.unixexpert.nl
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35718
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Feb 2013 21:11:44 +0100 (CET)
+Received: from shards.monkeyblade.net ([149.20.54.216]:40672 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827506Ab3BFULlmsUvQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Feb 2013 21:11:41 +0100
+Received: from localhost (nat-pool-rdu.redhat.com [66.187.233.202])
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 5D0DD58426F;
+        Wed,  6 Feb 2013 12:11:41 -0800 (PST)
+Date:   Wed, 06 Feb 2013 15:11:36 -0500 (EST)
+Message-Id: <20130206.151136.28894146016087360.davem@davemloft.net>
+To:     ganesanr@broadcom.com
+Cc:     linux-mips@linux-mips.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] NET: ethernet/netlogic: Netlogic XLR/XLS GMAC
+ driver
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1360063819-17555-1-git-send-email-ganesanr@broadcom.com>
+References: <1360063819-17555-1-git-send-email-ganesanr@broadcom.com>
+X-Mailer: Mew version 6.5 on Emacs 24.1 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-archive-position: 35719
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: folkert@vanheusden.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,22 +38,81 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi,
+From: ganesanr@broadcom.com
+Date: Tue, 5 Feb 2013 17:00:19 +0530
 
-Is this mailing list also meant for generic mips questions? (if not: any
-suggestions for one that is?)
+> +config NETLOGIC_XLR_NET
+> +	tristate "Netlogic XLR/XLS network device"
+> +	default y
+> +	select PHYLIB
+> +	depends on CPU_XLR
+> +	---help---
+> +	This driver support Netlogic XLR/XLS on chip gigabit
+> +	Ethernet.
 
-If so: I'mm experimenting a bit with mips, specifically on SGI hardware
-(Indigo). Now it seems all mips systems have the prom at 0xbfc00000. But
-how does it start? The first 0x3c0 bytes seem to be nonsense. Somewhere
-on the web I found that 0xbfc00884 is the starting point but after
-single stepping 5 instructions, the program counter jumps to 0x00000000
-so I don't think that's the right one either. Also, reading the first 4
-bytes from bfc00000 and using that as a pointer seems to be invalid too:
-0bf000f0.
-Anyone with insights regarding the booting of the prom on sgi systems?
+No individual device driver should default to 'y'.   Vendor guards, yes, can
+default to 'y', but not individual drivers.
 
+> +/*
+> + * The readl/writel implementation byteswaps on XLR/XLS, so
+> + * we need to use __raw_ IO to read the NAE registers
+> + * because they are in the big-endian MMIO area on the SoC.
+> + */
 
-Regards,
+Comments in the networking are to be formatted:
 
-Folkert van Heusden
+	/* Like
+	 * this.
+	 */
+
+Please fix this up in your entire driver.
+
+> +/*
+> + * Table of net_device pointers indexed by port, this will be used to
+> + * lookup the net_device corresponding to a port by the message ring handler.
+> + *
+> + * Maximum ports in XLR/XLS is 8(8 GMAC on XLS, 4 GMAC + 2 XGMAC on XLR)
+> + */
+> +static struct net_device *mac_to_ndev[8];
+
+Make this a dynamic data structure, a parent device that the individual
+netdevs are hung off of, it can still be an array.  That way you can have
+a bonafide struct device instance and associated hierarchy of devices in
+the kernel device list.
+
+Also avoid this strange and non-standard usage of "MAC" as an integer
+port index.  The canonical meaning of MAC is the link-layer address of
+the device.
+
+> +
+> +static inline struct sk_buff *mac_get_skb_back_ptr(void *addr)
+> +{
+> +	struct sk_buff **back_ptr;
+> +
+> +	/* this function should be used only for newly allocated packets.
+> +	 * It assumes the first cacheline is for the back pointer related
+> +	 * book keeping info.
+> +	 */
+> +	back_ptr = (struct sk_buff **)(addr - MAC_SKB_BACK_PTR_SIZE);
+> +	return *back_ptr;
+> +}
+
+Use the skb->cb[] control block rather than mis-using the skb data area
+for storing internal driver state.
+
+> +	paddr = virt_to_bus(addr);
+
+virt_to_bus() is verboten, use the proper DMA APIs.  I don't care if
+this is a specialized driver for a special platform.
+
+> +		addr = bus_to_virt(msg->msg0 & 0xffffffffffULL);
+
+bus_to_virt() is verbotten, use the proper DMA APIs and store correct
+references to packets in a translation data structure in your per-netdev
+software state.
+
+> +static void __maybe_unused xlr_wakeup_queue(unsigned long dev)
+
+This is really unused, just delete it.
+
+That's enough for me, this driver needs a lot of work.

@@ -1,36 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Feb 2013 15:18:08 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:57515 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825735Ab3BFOSDwj-3m (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 6 Feb 2013 15:18:03 +0100
-Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r16EG9MW005095
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 6 Feb 2013 09:18:00 -0500
-Received: from dhcp-1-237.tlv.redhat.com (dhcp-4-26.tlv.redhat.com [10.35.4.26])
-        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r16DKIcc003858;
-        Wed, 6 Feb 2013 08:20:23 -0500
-Received: by dhcp-1-237.tlv.redhat.com (Postfix, from userid 13519)
-        id 423DB18D479; Wed,  6 Feb 2013 15:20:18 +0200 (IST)
-Date:   Wed, 6 Feb 2013 15:20:18 +0200
-From:   Gleb Natapov <gleb@redhat.com>
-To:     Sanjay Lal <sanjayl@kymasys.com>
-Cc:     kvm@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v2 11/18] KVM/MIPS32: Routines to handle specific
- traps/exceptions while executing the guest.
-Message-ID: <20130206132018.GC7837@redhat.com>
-References: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com>
- <1353551656-23579-12-git-send-email-sanjayl@kymasys.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Feb 2013 17:05:13 +0100 (CET)
+Received: from keetweej.vanheusden.com ([80.101.105.103]:41972 "EHLO
+        keetweej.vanheusden.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827497Ab3BFQFM2LcFe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Feb 2013 17:05:12 +0100
+Received: from belle.intranet.vanheusden.com (unknown [192.168.64.100])
+        by keetweej.vanheusden.com (Postfix) with ESMTP id 629CC15FB05
+        for <linux-mips@linux-mips.org>; Wed,  6 Feb 2013 17:05:11 +0100 (CET)
+Received: by belle.intranet.vanheusden.com (Postfix, from userid 1000)
+        id 141E4945E7; Wed,  6 Feb 2013 17:05:10 +0100 (CET)
+Date:   Wed, 6 Feb 2013 17:05:10 +0100
+From:   folkert <folkert@vanheusden.com>
+To:     linux-mips@linux-mips.org
+Subject: prom start
+Message-ID: <20130206160508.GR2118@belle.intranet.vanheusden.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1353551656-23579-12-git-send-email-sanjayl@kymasys.com>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
-X-archive-position: 35717
+Organization: www.unixexpert.nl
+X-Chameleon-Return-To: folkert@vanheusden.com
+X-Xfmail-Return-To: folkert@vanheusden.com
+X-Phonenumber: +31-6-41278122
+X-URL:  http://www.vanheusden.com/
+X-PGP-KeyID: 1F28D8AE
+X-GPG-fingerprint: AC89 09CE 41F2 00B4 FCF2  B174 3019 0E8C 1F28 D8AE
+X-Key:  http://pgp.surfnet.nl:11371/pks/lookup?op=get&search=0x1F28D8AE
+Read-Receipt-To: <folkert@vanheusden.com>
+Reply-By: Sat Feb  2 10:16:14 CET 2013
+X-Message-Flag: www.unixexpert.nl
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 35718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gleb@redhat.com
+X-original-sender: folkert@vanheusden.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,30 +46,22 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, Nov 21, 2012 at 06:34:09PM -0800, Sanjay Lal wrote:
-> +static gpa_t kvm_trap_emul_gva_to_gpa_cb(gva_t gva)
-> +{
-> +	gpa_t gpa;
-> +	uint32_t kseg = KSEGX(gva);
-> +
-> +	if ((kseg == CKSEG0) || (kseg == CKSEG1))
-You seems to be using KVM_GUEST_KSEGX variants on gva in all other
-places. Why not here?
+Hi,
 
-> +		gpa = CPHYSADDR(gva);
-> +	else {
-> +		printk("%s: cannot find GPA for GVA: %#lx\n", __func__, gva);
-> +		kvm_mips_dump_host_tlbs();
-> +		gpa = KVM_INVALID_ADDR;
-> +	}
-> +
-> +#ifdef DEBUG
-> +	kvm_debug("%s: gva %#lx, gpa: %#llx\n", __func__, gva, gpa);
-> +#endif
-> +
-> +	return gpa;
-> +}
-> +
+Is this mailing list also meant for generic mips questions? (if not: any
+suggestions for one that is?)
 
---
-			Gleb.
+If so: I'mm experimenting a bit with mips, specifically on SGI hardware
+(Indigo). Now it seems all mips systems have the prom at 0xbfc00000. But
+how does it start? The first 0x3c0 bytes seem to be nonsense. Somewhere
+on the web I found that 0xbfc00884 is the starting point but after
+single stepping 5 instructions, the program counter jumps to 0x00000000
+so I don't think that's the right one either. Also, reading the first 4
+bytes from bfc00000 and using that as a pointer seems to be invalid too:
+0bf000f0.
+Anyone with insights regarding the booting of the prom on sgi systems?
+
+
+Regards,
+
+Folkert van Heusden

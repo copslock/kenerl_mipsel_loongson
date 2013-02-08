@@ -1,28 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Feb 2013 23:29:32 +0100 (CET)
-Received: from ns1.pc-advies.be ([83.149.101.17]:34173 "EHLO
-        spo001.leaseweb.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6827531Ab3BGW3cLYvsr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Feb 2013 23:29:32 +0100
-Received: from wimvs by spo001.leaseweb.com with local (Exim 4.50)
-        id 1U3ZyB-0007MT-Ec; Thu, 07 Feb 2013 23:29:27 +0100
-Date:   Thu, 7 Feb 2013 23:29:27 +0100
-From:   Wim Van Sebroeck <wim@iguana.be>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     linux-watchdog@vger.kernel.org, zajec5@gmail.com,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v4 0/5] watchdog: bcm47xx_wdt.c: add support for SoCs with PMU
-Message-ID: <20130207222927.GA28281@spo001.leaseweb.com>
-References: <1358010851-28077-1-git-send-email-hauke@hauke-m.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1358010851-28077-1-git-send-email-hauke@hauke-m.de>
-User-Agent: Mutt/1.4.1i
-X-archive-position: 35726
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Feb 2013 11:48:17 +0100 (CET)
+Received: from zmc.proxad.net ([212.27.53.206]:35964 "EHLO zmc.proxad.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6818020Ab3BHKsPfRrOC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 8 Feb 2013 11:48:15 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by zmc.proxad.net (Postfix) with ESMTP id D867A1B43C1;
+        Fri,  8 Feb 2013 11:48:14 +0100 (CET)
+X-Virus-Scanned: amavisd-new at localhost
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id lPSpyWiHGz59; Fri,  8 Feb 2013 11:48:14 +0100 (CET)
+Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
+        by zmc.proxad.net (Postfix) with ESMTPSA id 31C2EC194E3;
+        Fri,  8 Feb 2013 11:48:14 +0100 (CET)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, blogic@openwrt.org,
+        Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH] MIPS: SMTC: fix implicit declaration of set_vi_handler
+Date:   Fri,  8 Feb 2013 11:45:14 +0100
+Message-Id: <1360320314-9255-1-git-send-email-florian@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 35727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wim@iguana.be
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,16 +39,34 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Hauke
+This patch fixes the following implicit declaration while building with
+MIPS SMTC support enabled:
 
-> This patch series improves the functions for setting the watchdog 
-> driver for bcm47xx based SoCs using ssb and bcma. This makes the 
-> watchdog driver use the platform device provided by bcma or ssb.
-> 
-> This code is currently based on the linux-watchdog/master tree by 
-> Wim Van Sebroeck.
+arch/mips/kernel/smtc.c: In function 'setup_cross_vpe_interrupts':
+arch/mips/kernel/smtc.c:1205:2: error: implicit declaration of function
+'set_vi_handler' [-Werror=implicit-function-declaration]
+cc1: all warnings being treated as errors
 
-V5 patches have been added to linux-watchdog-next.
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+Ralf, John,
 
-Kind regards,
-Wim.
+This is applicable to both mips-for-linux-next and master.
+
+ arch/mips/kernel/smtc.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/mips/kernel/smtc.c b/arch/mips/kernel/smtc.c
+index 1c152a9..7186222 100644
+--- a/arch/mips/kernel/smtc.c
++++ b/arch/mips/kernel/smtc.c
+@@ -41,6 +41,7 @@
+ #include <asm/addrspace.h>
+ #include <asm/smtc.h>
+ #include <asm/smtc_proc.h>
++#include <asm/setup.h>
+ 
+ /*
+  * SMTC Kernel needs to manipulate low-level CPU interrupt mask
+-- 
+1.7.10.4

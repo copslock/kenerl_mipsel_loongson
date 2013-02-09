@@ -1,44 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Feb 2013 18:37:05 +0100 (CET)
-Received: from mail-da0-f42.google.com ([209.85.210.42]:41782 "EHLO
-        mail-da0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823899Ab3BHRhDyjRyd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Feb 2013 18:37:03 +0100
-Received: by mail-da0-f42.google.com with SMTP id z17so1916184dal.29
-        for <multiple recipients>; Fri, 08 Feb 2013 09:36:56 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Feb 2013 14:23:30 +0100 (CET)
+Received: from mail-ie0-f181.google.com ([209.85.223.181]:38149 "EHLO
+        mail-ie0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6826533Ab3BINXaIrkvu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Feb 2013 14:23:30 +0100
+Received: by mail-ie0-f181.google.com with SMTP id 17so6058902iea.26
+        for <linux-mips@linux-mips.org>; Sat, 09 Feb 2013 05:23:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=x-received:from:to:cc:subject:date:message-id:x-mailer;
-        bh=i3ns2P73+eYkZfGJdsk225D8ev3lCcZZ31Dhvnl78kA=;
-        b=CJaBnwui32NqoXvNITiI3HU9380HxtwMMdOzalMcGaGxqR9XNMeRJG9F6R9RxSnB/r
-         8zLifp7+eiB6wiop2SRanqTry1jH+tKX4KhHrL/2bIsVr0E+8YlH9qmQoEhuggmRE6/s
-         meFwLVqQp8HNEvfhGL/p9TV3XCDZ/YZANcwj3GC6gqPI5w1Xo1rkDFzmil8z1HRhHO6L
-         TINSzRriDptpBm9zpsIlSrfFb0voaURNgIs1OxRD3OwIplpxNqGJyuivR231Ozeu/GIx
-         2BWmlKQgbMJY16FLILCC2lIFaVa9FwzuxJ/BRx9BaBlXSQEwAdhja2k6NQ1F4s+fDAbF
-         pi5Q==
-X-Received: by 10.66.84.10 with SMTP id u10mr19471597pay.24.1360345016247;
-        Fri, 08 Feb 2013 09:36:56 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id y9sm56010099paw.1.2013.02.08.09.36.54
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 08 Feb 2013 09:36:55 -0800 (PST)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r18Harj1020648;
-        Fri, 8 Feb 2013 09:36:53 -0800
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r18HaqFd020647;
-        Fri, 8 Feb 2013 09:36:52 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH] MIPS: Quit exporting kernel internel break codes to uapi/asm/break.h
-Date:   Fri,  8 Feb 2013 09:36:51 -0800
-Message-Id: <1360345011-20614-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-X-archive-position: 35729
+        h=x-received:mime-version:from:date:message-id:subject:to
+         :content-type;
+        bh=CX4qdacUOc/rXRhAKOCa+4p7eRGfwYh4Z5L+jaDFp80=;
+        b=UnGUvwRwEGY+oEJIkJvnCfZtLWgNt73aOBlBKRySeAP+Oyk6FjQlkolpR0MU+T+O2s
+         Fg2IcTskrdp85Sovx2NYXbCTWiH/Ha2Wad/R8DsIRdAoic76QBXARhTnaATlqD65W6xI
+         m+whf9J7hA65bBe6W8DRM7fHSJRbzODJkh0+qbCZ02BFPYe+t7BNkud/z1hP8FNKk+hR
+         kXXVEG0CvFlLeUFwA/e118eODzkytB+BpJX/qoYJr5shYLovzblYAT2AgyLvnIAus2Ol
+         iXBBDoO6zJOWwq0DDhjNqi+Cj2TtbKkFm+PnGnPbB6FTLZuT/7mt/h6Ljo8Wk1LKQlD7
+         o87w==
+X-Received: by 10.50.88.200 with SMTP id bi8mr7599596igb.52.1360416203403;
+ Sat, 09 Feb 2013 05:23:23 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.42.85.83 with HTTP; Sat, 9 Feb 2013 05:23:03 -0800 (PST)
+From:   Ronny Meeus <ronny.meeus@gmail.com>
+Date:   Sat, 9 Feb 2013 14:23:03 +0100
+Message-ID: <CAMJ=MEdryShKJD9v5Xp3ZouPzss_TK+QjVZ=Nng3cvDGfAiYzA@mail.gmail.com>
+Subject: Reserving a part of the system ram.
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 35730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: ronny.meeus@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,82 +44,23 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: David Daney <david.daney@cavium.com>
+Hello
 
-The internal codes are not part of the kernel's abi.
+I have a board that has 4Gb of RAM which can completely be used by
+Linux, except for a 64Mb block located just below the 2G boundary.
+This block will be used to implement a kind of persistent storage.
 
-Signed-off-by: David Daney <david.daney@cavium.com>
----
+On PPC we do this with a memreserve in the device tree but this does
+not seem to work on MIPS.
+Another option I found is the memmap kernel parameter, which  can also
+be used the reserve a piece of memory that is reserved (something like
+memmap=size$addres would do the trick, but no luck, this is also not
+supported.
 
-The transition of break.h to /uapi/asm happened in 3.8rc, so it is not
-too late to prevent this crap from escaping to the kernel's userspace
-ABI.
+This is the Linux version I'm using for my project:
+Linux version 2.6.32.27-Cavium-Octeon
 
- arch/mips/include/asm/break.h      | 27 +++++++++++++++++++++++++++
- arch/mips/include/uapi/asm/break.h | 12 +++---------
- 2 files changed, 30 insertions(+), 9 deletions(-)
- create mode 100644 arch/mips/include/asm/break.h
+What is the correct way to make this work?
 
-diff --git a/arch/mips/include/asm/break.h b/arch/mips/include/asm/break.h
-new file mode 100644
-index 0000000..67b6f72
---- /dev/null
-+++ b/arch/mips/include/asm/break.h
-@@ -0,0 +1,27 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 1995, 2003 by Ralf Baechle
-+ * Copyright (C) 1999 Silicon Graphics, Inc.
-+ */
-+#ifndef __ASM_BREAK_H
-+#define __ASM_BREAK_H
-+
-+#ifdef __UAPI_ASM_BREAK_H
-+#error "Error: Do not directly include <uapi/asm/break.h>"
-+#endif
-+#include <uapi/asm/break.h>
-+
-+/*
-+ * Break codes used internally to the kernel.
-+ */
-+#define BRK_BUG		512	/* Used by BUG() */
-+#define BRK_KDB		513	/* Used in KDB_ENTER() */
-+#define BRK_MEMU	514	/* Used by FPU emulator */
-+#define BRK_KPROBE_BP	515	/* Kprobe break */
-+#define BRK_KPROBE_SSTEPBP 516	/* Kprobe single step software implementation */
-+#define BRK_MULOVF	1023	/* Multiply overflow */
-+
-+#endif /* __ASM_BREAK_H */
-diff --git a/arch/mips/include/uapi/asm/break.h b/arch/mips/include/uapi/asm/break.h
-index 9161e68..ede4baa 100644
---- a/arch/mips/include/uapi/asm/break.h
-+++ b/arch/mips/include/uapi/asm/break.h
-@@ -6,8 +6,8 @@
-  * Copyright (C) 1995, 2003 by Ralf Baechle
-  * Copyright (C) 1999 Silicon Graphics, Inc.
-  */
--#ifndef __ASM_BREAK_H
--#define __ASM_BREAK_H
-+#ifndef __UAPI_ASM_BREAK_H
-+#define __UAPI_ASM_BREAK_H
- 
- /*
-  * The following break codes are or were in use for specific purposes in
-@@ -27,11 +27,5 @@
- #define BRK_STACKOVERFLOW 9	/* For Ada stackchecking */
- #define BRK_NORLD	10	/* No rld found - not used by Linux/MIPS */
- #define _BRK_THREADBP	11	/* For threads, user bp (used by debuggers) */
--#define BRK_BUG		512	/* Used by BUG() */
--#define BRK_KDB		513	/* Used in KDB_ENTER() */
--#define BRK_MEMU	514	/* Used by FPU emulator */
--#define BRK_KPROBE_BP	515	/* Kprobe break */
--#define BRK_KPROBE_SSTEPBP 516	/* Kprobe single step software implementation */
--#define BRK_MULOVF	1023	/* Multiply overflow */
- 
--#endif /* __ASM_BREAK_H */
-+#endif /* __UAPI_ASM_BREAK_H */
--- 
-1.7.11.7
+Thanks,
+Ronny

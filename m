@@ -1,36 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Feb 2013 14:23:30 +0100 (CET)
-Received: from mail-ie0-f181.google.com ([209.85.223.181]:38149 "EHLO
-        mail-ie0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6826533Ab3BINXaIrkvu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Feb 2013 14:23:30 +0100
-Received: by mail-ie0-f181.google.com with SMTP id 17so6058902iea.26
-        for <linux-mips@linux-mips.org>; Sat, 09 Feb 2013 05:23:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:mime-version:from:date:message-id:subject:to
-         :content-type;
-        bh=CX4qdacUOc/rXRhAKOCa+4p7eRGfwYh4Z5L+jaDFp80=;
-        b=UnGUvwRwEGY+oEJIkJvnCfZtLWgNt73aOBlBKRySeAP+Oyk6FjQlkolpR0MU+T+O2s
-         Fg2IcTskrdp85Sovx2NYXbCTWiH/Ha2Wad/R8DsIRdAoic76QBXARhTnaATlqD65W6xI
-         m+whf9J7hA65bBe6W8DRM7fHSJRbzODJkh0+qbCZ02BFPYe+t7BNkud/z1hP8FNKk+hR
-         kXXVEG0CvFlLeUFwA/e118eODzkytB+BpJX/qoYJr5shYLovzblYAT2AgyLvnIAus2Ol
-         iXBBDoO6zJOWwq0DDhjNqi+Cj2TtbKkFm+PnGnPbB6FTLZuT/7mt/h6Ljo8Wk1LKQlD7
-         o87w==
-X-Received: by 10.50.88.200 with SMTP id bi8mr7599596igb.52.1360416203403;
- Sat, 09 Feb 2013 05:23:23 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.42.85.83 with HTTP; Sat, 9 Feb 2013 05:23:03 -0800 (PST)
-From:   Ronny Meeus <ronny.meeus@gmail.com>
-Date:   Sat, 9 Feb 2013 14:23:03 +0100
-Message-ID: <CAMJ=MEdryShKJD9v5Xp3ZouPzss_TK+QjVZ=Nng3cvDGfAiYzA@mail.gmail.com>
-Subject: Reserving a part of the system ram.
-To:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 35730
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Feb 2013 19:58:06 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:52492 "EHLO
+        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6827458Ab3BIS6FH9Rn1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Feb 2013 19:58:05 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id ACDD925E6D7;
+        Sat,  9 Feb 2013 19:57:58 +0100 (CET)
+Received: from mail.szarvasnet.hu ([127.0.0.1])
+        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id FVuFozMAtQhN; Sat,  9 Feb 2013 19:57:58 +0100 (CET)
+Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 4ED7225DC0A;
+        Sat,  9 Feb 2013 19:57:58 +0100 (CET)
+From:   Gabor Juhos <juhosg@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <blogic@openwrt.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH] MIPS: ath79: use dynamically allocated USB platform devices
+Date:   Sat,  9 Feb 2013 19:57:52 +0100
+Message-Id: <1360436272-10854-1-git-send-email-juhosg@openwrt.org>
+X-Mailer: git-send-email 1.7.10
+X-archive-position: 35731
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ronny.meeus@gmail.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,23 +39,202 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello
+The current code uses static resources and static platform
+device instances for the possible USB controllers in the
+system. These static variables contains initial values which
+leads to data segment pollution.
 
-I have a board that has 4Gb of RAM which can completely be used by
-Linux, except for a 64Mb block located just below the 2G boundary.
-This block will be used to implement a kind of persistent storage.
+Remove the static variables and use dynamically allocated
+structures instead.
 
-On PPC we do this with a memreserve in the device tree but this does
-not seem to work on MIPS.
-Another option I found is the memmap kernel parameter, which  can also
-be used the reserve a piece of memory that is reserved (something like
-memmap=size$addres would do the trick, but no luck, this is also not
-supported.
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+---
+ arch/mips/ath79/dev-usb.c |  111 +++++++++++++++++++++------------------------
+ 1 file changed, 51 insertions(+), 60 deletions(-)
 
-This is the Linux version I'm using for my project:
-Linux version 2.6.32.27-Cavium-Octeon
-
-What is the correct way to make this work?
-
-Thanks,
-Ronny
+diff --git a/arch/mips/ath79/dev-usb.c b/arch/mips/ath79/dev-usb.c
+index bcb165b..02124d0 100644
+--- a/arch/mips/ath79/dev-usb.c
++++ b/arch/mips/ath79/dev-usb.c
+@@ -25,29 +25,11 @@
+ #include "common.h"
+ #include "dev-usb.h"
+ 
+-static struct resource ath79_ohci_resources[2];
+-
+-static u64 ath79_ohci_dmamask = DMA_BIT_MASK(32);
++static u64 ath79_usb_dmamask = DMA_BIT_MASK(32);
+ 
+ static struct usb_ohci_pdata ath79_ohci_pdata = {
+ };
+ 
+-static struct platform_device ath79_ohci_device = {
+-	.name		= "ohci-platform",
+-	.id		= -1,
+-	.resource	= ath79_ohci_resources,
+-	.num_resources	= ARRAY_SIZE(ath79_ohci_resources),
+-	.dev = {
+-		.dma_mask		= &ath79_ohci_dmamask,
+-		.coherent_dma_mask	= DMA_BIT_MASK(32),
+-		.platform_data		= &ath79_ohci_pdata,
+-	},
+-};
+-
+-static struct resource ath79_ehci_resources[2];
+-
+-static u64 ath79_ehci_dmamask = DMA_BIT_MASK(32);
+-
+ static struct usb_ehci_pdata ath79_ehci_pdata_v1 = {
+ 	.has_synopsys_hc_bug	= 1,
+ };
+@@ -57,22 +39,16 @@ static struct usb_ehci_pdata ath79_ehci_pdata_v2 = {
+ 	.has_tt			= 1,
+ };
+ 
+-static struct platform_device ath79_ehci_device = {
+-	.name		= "ehci-platform",
+-	.id		= -1,
+-	.resource	= ath79_ehci_resources,
+-	.num_resources	= ARRAY_SIZE(ath79_ehci_resources),
+-	.dev = {
+-		.dma_mask		= &ath79_ehci_dmamask,
+-		.coherent_dma_mask	= DMA_BIT_MASK(32),
+-	},
+-};
+-
+-static void __init ath79_usb_init_resource(struct resource res[2],
+-					   unsigned long base,
+-					   unsigned long size,
+-					   int irq)
++static void __init ath79_usb_register(const char *name, int id,
++				      unsigned long base, unsigned long size,
++				      int irq, const void *data,
++				      size_t data_size)
+ {
++	struct resource res[2];
++	struct platform_device *pdev;
++
++	memset(res, 0, sizeof(res));
++
+ 	res[0].flags = IORESOURCE_MEM;
+ 	res[0].start = base;
+ 	res[0].end = base + size - 1;
+@@ -80,6 +56,19 @@ static void __init ath79_usb_init_resource(struct resource res[2],
+ 	res[1].flags = IORESOURCE_IRQ;
+ 	res[1].start = irq;
+ 	res[1].end = irq;
++
++	pdev = platform_device_register_resndata(NULL, name, id,
++						 res, ARRAY_SIZE(res),
++						 data, data_size);
++
++	if (IS_ERR(pdev)) {
++		pr_err("ath79: unable to register USB at %08lx, err=%d\n",
++		       base, (int) PTR_ERR(pdev));
++		return;
++	}
++
++	pdev->dev.dma_mask = &ath79_usb_dmamask;
++	pdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
+ }
+ 
+ #define AR71XX_USB_RESET_MASK	(AR71XX_RESET_USB_HOST | \
+@@ -106,14 +95,15 @@ static void __init ath79_usb_setup(void)
+ 
+ 	mdelay(900);
+ 
+-	ath79_usb_init_resource(ath79_ohci_resources, AR71XX_OHCI_BASE,
+-				AR71XX_OHCI_SIZE, ATH79_MISC_IRQ(6));
+-	platform_device_register(&ath79_ohci_device);
++	ath79_usb_register("ohci-platform", -1,
++			   AR71XX_OHCI_BASE, AR71XX_OHCI_SIZE,
++			   ATH79_MISC_IRQ(6),
++			   &ath79_ohci_pdata, sizeof(ath79_ohci_pdata));
+ 
+-	ath79_usb_init_resource(ath79_ehci_resources, AR71XX_EHCI_BASE,
+-				AR71XX_EHCI_SIZE, ATH79_CPU_IRQ(3));
+-	ath79_ehci_device.dev.platform_data = &ath79_ehci_pdata_v1;
+-	platform_device_register(&ath79_ehci_device);
++	ath79_usb_register("ehci-platform", -1,
++			   AR71XX_EHCI_BASE, AR71XX_EHCI_SIZE,
++			   ATH79_CPU_IRQ(3),
++			   &ath79_ehci_pdata_v1, sizeof(ath79_ehci_pdata_v1));
+ }
+ 
+ static void __init ar7240_usb_setup(void)
+@@ -135,9 +125,10 @@ static void __init ar7240_usb_setup(void)
+ 
+ 	iounmap(usb_ctrl_base);
+ 
+-	ath79_usb_init_resource(ath79_ohci_resources, AR7240_OHCI_BASE,
+-				AR7240_OHCI_SIZE, ATH79_CPU_IRQ(3));
+-	platform_device_register(&ath79_ohci_device);
++	ath79_usb_register("ohci-platform", -1,
++			   AR7240_OHCI_BASE, AR7240_OHCI_SIZE,
++			   ATH79_CPU_IRQ(3),
++			   &ath79_ohci_pdata, sizeof(ath79_ohci_pdata));
+ }
+ 
+ static void __init ar724x_usb_setup(void)
+@@ -151,10 +142,10 @@ static void __init ar724x_usb_setup(void)
+ 	ath79_device_reset_clear(AR724X_RESET_USB_PHY);
+ 	mdelay(10);
+ 
+-	ath79_usb_init_resource(ath79_ehci_resources, AR724X_EHCI_BASE,
+-				AR724X_EHCI_SIZE, ATH79_CPU_IRQ(3));
+-	ath79_ehci_device.dev.platform_data = &ath79_ehci_pdata_v2;
+-	platform_device_register(&ath79_ehci_device);
++	ath79_usb_register("ehci-platform", -1,
++			   AR724X_EHCI_BASE, AR724X_EHCI_SIZE,
++			   ATH79_CPU_IRQ(3),
++			   &ath79_ehci_pdata_v2, sizeof(ath79_ehci_pdata_v2));
+ }
+ 
+ static void __init ar913x_usb_setup(void)
+@@ -168,10 +159,10 @@ static void __init ar913x_usb_setup(void)
+ 	ath79_device_reset_clear(AR913X_RESET_USB_PHY);
+ 	mdelay(10);
+ 
+-	ath79_usb_init_resource(ath79_ehci_resources, AR913X_EHCI_BASE,
+-				AR913X_EHCI_SIZE, ATH79_CPU_IRQ(3));
+-	ath79_ehci_device.dev.platform_data = &ath79_ehci_pdata_v2;
+-	platform_device_register(&ath79_ehci_device);
++	ath79_usb_register("ehci-platform", -1,
++			   AR913X_EHCI_BASE, AR913X_EHCI_SIZE,
++			   ATH79_CPU_IRQ(3),
++			   &ath79_ehci_pdata_v2, sizeof(ath79_ehci_pdata_v2));
+ }
+ 
+ static void __init ar933x_usb_setup(void)
+@@ -185,10 +176,10 @@ static void __init ar933x_usb_setup(void)
+ 	ath79_device_reset_clear(AR933X_RESET_USB_PHY);
+ 	mdelay(10);
+ 
+-	ath79_usb_init_resource(ath79_ehci_resources, AR933X_EHCI_BASE,
+-				AR933X_EHCI_SIZE, ATH79_CPU_IRQ(3));
+-	ath79_ehci_device.dev.platform_data = &ath79_ehci_pdata_v2;
+-	platform_device_register(&ath79_ehci_device);
++	ath79_usb_register("ehci-platform", -1,
++			   AR933X_EHCI_BASE, AR933X_EHCI_SIZE,
++			   ATH79_CPU_IRQ(3),
++			   &ath79_ehci_pdata_v2, sizeof(ath79_ehci_pdata_v2));
+ }
+ 
+ static void __init ar934x_usb_setup(void)
+@@ -211,10 +202,10 @@ static void __init ar934x_usb_setup(void)
+ 	ath79_device_reset_clear(AR934X_RESET_USB_HOST);
+ 	udelay(1000);
+ 
+-	ath79_usb_init_resource(ath79_ehci_resources, AR934X_EHCI_BASE,
+-				AR934X_EHCI_SIZE, ATH79_CPU_IRQ(3));
+-	ath79_ehci_device.dev.platform_data = &ath79_ehci_pdata_v2;
+-	platform_device_register(&ath79_ehci_device);
++	ath79_usb_register("ehci-platform", -1,
++			   AR934X_EHCI_BASE, AR934X_EHCI_SIZE,
++			   ATH79_CPU_IRQ(3),
++			   &ath79_ehci_pdata_v2, sizeof(ath79_ehci_pdata_v2));
+ }
+ 
+ void __init ath79_register_usb(void)
+-- 
+1.7.10

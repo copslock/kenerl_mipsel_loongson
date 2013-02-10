@@ -1,33 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Feb 2013 21:43:04 +0100 (CET)
-Received: from vms173013pub.verizon.net ([206.46.173.13]:57025 "EHLO
-        vms173013pub.verizon.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827604Ab3BLUmdNmEPK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Feb 2013 21:42:33 +0100
-Received: from wf-rch.minyard.home ([unknown] [173.74.121.95])
- by vms173013.mailsrvcs.net
- (Sun Java(tm) System Messaging Server 7u2-7.02 32bit (built Apr 16 2009))
- with ESMTPA id <0MI40056XK5SS9D0@vms173013.mailsrvcs.net>; Tue,
- 12 Feb 2013 14:41:57 -0600 (CST)
-Received: from i.minyard.home (i2.minyard.home [192.168.27.116])
-        by wf-rch.minyard.home (Postfix) with ESMTP id 2B7D71F95B; Tue,
- 12 Feb 2013 14:41:51 -0600 (CST)
-Received: by i.minyard.home (Postfix, from userid 1000) id 6BBCF8069A; Tue,
- 12 Feb 2013 14:41:51 -0600 (CST)
-From:   minyard@acm.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Feb 2013 15:23:35 +0100 (CET)
+Received: from qmta09.westchester.pa.mail.comcast.net ([76.96.62.96]:60189
+        "EHLO qmta09.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816607Ab3BJDytx6MYe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 10 Feb 2013 04:54:49 +0100
+Received: from omta20.westchester.pa.mail.comcast.net ([76.96.62.71])
+        by qmta09.westchester.pa.mail.comcast.net with comcast
+        id yTgb1k0031YDfWL59TujZv; Sun, 10 Feb 2013 03:54:43 +0000
+Received: from [192.168.1.13] ([69.251.154.25])
+        by omta20.westchester.pa.mail.comcast.net with comcast
+        id yTuh1k00F0Z8pnp3gTuigU; Sun, 10 Feb 2013 03:54:42 +0000
+Message-ID: <51171A08.20302@gentoo.org>
+Date:   Sat, 09 Feb 2013 22:54:48 -0500
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130107 Thunderbird/17.0.2
+MIME-Version: 1.0
 To:     linux-mips@linux-mips.org
-Cc:     Corey Minyard <cminyard@mvista.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 1/2] mips: Make sure kernel memory is in iomem
-Date:   Tue, 12 Feb 2013 14:41:47 -0600
-Message-id: <1360701708-21371-2-git-send-email-minyard@acm.org>
-X-Mailer: git-send-email 1.7.4.1
-In-reply-to: <1360701708-21371-1-git-send-email-minyard@acm.org>
-References: <1360701708-21371-1-git-send-email-minyard@acm.org>
-X-archive-position: 35738
+Subject: Re: prom start
+References: <20130206160508.GR2118@belle.intranet.vanheusden.com>
+In-Reply-To: <20130206160508.GR2118@belle.intranet.vanheusden.com>
+X-Enigmail-Version: 1.5
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="----enig2PGLTWBNJCWMINDHNICSC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20121106; t=1360468483;
+        bh=mwMbqKzT8reVObD521VYpEapjt4P6oXsuuKLVsTyiTs=;
+        h=Received:Received:Message-ID:Date:From:MIME-Version:To:Subject:
+         Content-Type;
+        b=A6Pnef17wXtTz0SdqtHPNOKbeJBDoA680cghQQi3DSeCkLKYN+d8idZkzydIvGNku
+         Yc5gYzGboMTwHLqk944x7AmKZjOWaBYYbcXXuT3wcHOguJH+zmyMxmcT8HffI47oIR
+         Y0uNH6Yl70I3au+aU2+4QFfTqOdaxIAATTpoE0hzooP4AvUlu+5L0WJOu4uf+zO/G+
+         It+dAaKIfI63w3yEodpOPL2OXk0WmUdJ+Mjrcav6zGQ6wwRW/GiTGZ3PGkXslUJjz+
+         rL6HdD9xD/uRHYdK4MluGs/JoXCLd0lAszsOgb6/26Ylt/HMMyTUYg0F5vyGvBr/+y
+         8hjokYCS5fXOQ==
+X-archive-position: 35739
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: minyard@acm.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,88 +52,97 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Corey Minyard <cminyard@mvista.com>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+------enig2PGLTWBNJCWMINDHNICSC
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Kernel memory isn't necessarily added to the memory tables, so it
-wouldn't show up in /proc/iomem.  This was breaking kdump, which
-requires these memory addresses to work correctly.
+On 02/06/2013 11:05 AM, folkert wrote:
+> Hi,
+>=20
+> Is this mailing list also meant for generic mips questions? (if not: an=
+y
+> suggestions for one that is?)
+>=20
+> If so: I'mm experimenting a bit with mips, specifically on SGI hardware=
 
-Signed-off-by: Corey Minyard <cminyard@mvista.com>
-Acked-by: David Daney  <ddaney@caviumnetworks.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
----
- arch/mips/kernel/setup.c |   52 +++++++++++++++++++++++++++------------------
- 1 files changed, 31 insertions(+), 21 deletions(-)
+> (Indigo). Now it seems all mips systems have the prom at 0xbfc00000. Bu=
+t
+> how does it start? The first 0x3c0 bytes seem to be nonsense. Somewhere=
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 8c41187..5346250 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -480,34 +480,44 @@ static int __init early_parse_mem(char *p)
- }
- early_param("mem", early_parse_mem);
- 
--static void __init arch_mem_init(char **cmdline_p)
-+static void __init arch_mem_addpart(phys_t mem, phys_t end, int type)
- {
--	phys_t init_mem, init_end, init_size;
-+	phys_t size;
-+	int i;
-+
-+	size = end - mem;
-+	if (!size)
-+		return;
-+
-+	/* Make sure it is in the boot_mem_map */
-+	for (i = 0; i < boot_mem_map.nr_map; i++) {
-+		if (mem >= boot_mem_map.map[i].addr &&
-+		    mem < (boot_mem_map.map[i].addr +
-+			   boot_mem_map.map[i].size))
-+			return;
-+	}
-+	add_memory_region(mem, size, type);
-+}
- 
-+static void __init arch_mem_init(char **cmdline_p)
-+{
- 	extern void plat_mem_setup(void);
- 
- 	/* call board setup routine */
- 	plat_mem_setup();
- 
--	init_mem = PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT;
--	init_end = PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT;
--	init_size = init_end - init_mem;
--	if (init_size) {
--		/* Make sure it is in the boot_mem_map */
--		int i, found;
--		found = 0;
--		for (i = 0; i < boot_mem_map.nr_map; i++) {
--			if (init_mem >= boot_mem_map.map[i].addr &&
--			    init_mem < (boot_mem_map.map[i].addr +
--					boot_mem_map.map[i].size)) {
--				found = 1;
--				break;
--			}
--		}
--		if (!found)
--			add_memory_region(init_mem, init_size,
--					  BOOT_MEM_INIT_RAM);
--	}
-+	/*
-+	 * Make sure all kernel memory is in the maps.  The "UP" and
-+	 * "DOWN" are opposite for initdata since if it crosses over
-+	 * into another memory section you don't want that to be
-+	 * freed when the initdata is freed.
-+	 */
-+	arch_mem_addpart(PFN_DOWN(__pa_symbol(&_text)) << PAGE_SHIFT,
-+			 PFN_UP(__pa_symbol(&_edata)) << PAGE_SHIFT,
-+			 BOOT_MEM_RAM);
-+	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
-+			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
-+			 BOOT_MEM_INIT_RAM);
- 
- 	pr_info("Determined physical RAM map:\n");
- 	print_memory_map();
--- 
-1.7.4.1
+> on the web I found that 0xbfc00884 is the starting point but after
+> single stepping 5 instructions, the program counter jumps to 0x00000000=
+
+> so I don't think that's the right one either. Also, reading the first 4=
+
+> bytes from bfc00000 and using that as a pointer seems to be invalid too=
+:
+> 0bf000f0.
+> Anyone with insights regarding the booting of the prom on sgi systems?
+>=20
+>=20
+> Regards,
+>=20
+> Folkert van Heusden
+
+The first Indigo?  IP12?  Or the Indigo2 series (IP22, IP26, or IP28)?
+
+ARCS (the SGI prom) is a bit of black magic and voodoo.  It also terrifie=
+s
+the priests of Ancient Mu.
+
+You might want to hunt down copies of the PROM images for other SGI syste=
+ms,
+such as IP22, IP32 (O2), IP30 (Octane) (the latter two are on certain IRI=
+X
+media) and analyze those in a disassembler and see if you can discern
+something from there.
+
+You might also try gxemul and see if it can boot one of those proms (it's=
+ a
+machine emulator like Qemu, but has some code tailored to SGI hardware in=
+
+it).  Might give you some additional insight.
+
+Would be curious about your results if you can learn anything else from i=
+t
+via your own work.
+
+--=20
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28
+
+"The past tempts us, the present confuses us, the future frightens us.  A=
+nd
+our lives slip away, moment by moment, lost in that vast, terrible in-bet=
+ween."
+
+--Emperor Turhan, Centauri Republic
+
+
+------enig2PGLTWBNJCWMINDHNICSC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (MingW32)
+
+iQIcBAEBAgAGBQJRFxoPAAoJENsjoH7SXZXj6F8P/3DUdC+viQBkxZ0hR7Eoq269
+g1WMRyRRsCVLbFSBThAiMoEPcFuZFdgn8KZMEgvMaCiUOCiMPCnSQL5MU7j4ffea
+1eOyswMXjhsNXMq+WCOgQjrj/B0rT/a8qFNwSBbSUGY2I/a7Cmqpp3p8HnmIoIMa
+qdE3bbopb/Q0bTQ/DGQitqy8NiGIthbEu24af+wwOuu8DVhaoSlhSTAnljYJ3BgO
+/u4cgMmI060IjVg9CCzw4u68USBy68E7N3RO1eeoJuyxyBN11y4US4g8fxXHWDUb
+drHOGsfVR2bx26WMt4nlO2VHHbAX7pU46weR6bubet2Oal252o7pe5KzH/DrU94z
+Clqhs/A3/XgAq+8Vhbx2ab+Jv103MKeY2dgXpyfstg6fLpKdT/CUKWuPpRLOD9y+
+hiKj89/Q7pkF2EETlJYpWM0TEtqI8USi4SMR6rgfmhQSDEEN199iHdPNoDIpTiG7
+LA2py3YOHU3g2JmCIroelWZua1nL+Mw6QDHrFrlAsCebje5cdvEe8EAcyJOG2QOP
+yGTeuZSy2Eo/khSelYvgxDfUoyyun6m07OoOqpOLorDzbdO4A02YKg45WsDHC/wp
+3H3iD4FfvxgAn9RjXxHBpRE4k6h0CTRjpZdmm12RSAKWYR2DNLOftq5TgI2ytTC3
+k915PNZwKb0qgDmps7hB
+=q0OC
+-----END PGP SIGNATURE-----
+
+------enig2PGLTWBNJCWMINDHNICSC--

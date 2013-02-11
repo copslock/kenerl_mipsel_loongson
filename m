@@ -1,39 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Feb 2013 20:00:47 +0100 (CET)
-Received: from mail-ie0-f173.google.com ([209.85.223.173]:33708 "EHLO
-        mail-ie0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827591Ab3BKTAqyJp0q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Feb 2013 20:00:46 +0100
-Received: by mail-ie0-f173.google.com with SMTP id 9so8111905iec.4
-        for <linux-mips@linux-mips.org>; Mon, 11 Feb 2013 11:00:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:mime-version:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=lGcg6h7LfQp/SWaLLJcAMAL6YyoeAxY48Zc1GXXVlSw=;
-        b=UyOTGHgPLGDGjYsOgHx7GHV2tfDNh1mRZ7eb9/bezFIqmF3Vvd8UN1L5YxDgHSdhF8
-         NN0/Khc3xKA1VYPW7uiCQwS1z251GZBdPcF0XnIHJquwvjc8Xqt6AclpxFlzKz1j9h/x
-         k22xw0QMJ3GbwbGA9OP/ESk5MvDY6XKlnctwoyyjnTnw2uS0L5Krw3lH8vOQEqn3tZQt
-         ++OyXZQiJUvnuVsbn8sL03VQX9AdH/Dh5q9CocJFQ76ofqTCmFnx43U92Dl9YorABJfM
-         vZILoulyWaPhUcH3LY3pF9kx220cSoeckUjgtSKiKXBGfuHMWLyfv5Zd1J7sqMt4I2FA
-         DThA==
-X-Received: by 10.43.111.201 with SMTP id ep9mr8206375icc.43.1360609240130;
- Mon, 11 Feb 2013 11:00:40 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.42.85.83 with HTTP; Mon, 11 Feb 2013 11:00:20 -0800 (PST)
-In-Reply-To: <CAMJ=MEdryShKJD9v5Xp3ZouPzss_TK+QjVZ=Nng3cvDGfAiYzA@mail.gmail.com>
-References: <CAMJ=MEdryShKJD9v5Xp3ZouPzss_TK+QjVZ=Nng3cvDGfAiYzA@mail.gmail.com>
-From:   Ronny Meeus <ronny.meeus@gmail.com>
-Date:   Mon, 11 Feb 2013 20:00:20 +0100
-Message-ID: <CAMJ=MEdT+mpNmOWFtT4bKEiyib+hhRxbOgS5aS9OmEewoGxAUg@mail.gmail.com>
-Subject: Re: Reserving a part of the system ram.
-To:     linux-mips@linux-mips.org
-Cc:     David Daney <ddaney.cavm@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 35734
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Feb 2013 22:52:30 +0100 (CET)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:53790 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6827599Ab3BKVw1CFc89 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Feb 2013 22:52:27 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 49AE821B655;
+        Mon, 11 Feb 2013 23:52:06 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id ber-KRvdomFQ; Mon, 11 Feb 2013 23:52:05 +0200 (EET)
+Received: from blackmetal.pp.htv.fi (cs181064211.pp.htv.fi [82.181.64.211])
+        by smtp4.welho.com (Postfix) with ESMTP id CA3415BC005;
+        Mon, 11 Feb 2013 23:52:05 +0200 (EET)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH] MIPS: early_printk: drop __init annotations
+Date:   Mon, 11 Feb 2013 23:51:49 +0200
+Message-Id: <1360619509-6576-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 35735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ronny.meeus@gmail.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,117 +39,120 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sat, Feb 9, 2013 at 2:23 PM, Ronny Meeus <ronny.meeus@gmail.com> wrote:
-> Hello
->
-> I have a board that has 4Gb of RAM which can completely be used by
-> Linux, except for a 64Mb block located just below the 2G boundary.
-> This block will be used to implement a kind of persistent storage.
->
-> On PPC we do this with a memreserve in the device tree but this does
-> not seem to work on MIPS.
-> Another option I found is the memmap kernel parameter, which  can also
-> be used the reserve a piece of memory that is reserved (something like
-> memmap=size$addres would do the trick, but no luck, this is also not
-> supported.
->
-> This is the Linux version I'm using for my project:
-> Linux version 2.6.32.27-Cavium-Octeon
->
-> What is the correct way to make this work?
->
-> Thanks,
-> Ronny
+We cannot use __init for earlyprintk code or data, since the kernel
+parameter "keep_bootcon" allows leaving the boot console enabled.
 
+Currently MIPS will crash/hang/die if you use keep_bootcon. The patch
+fixes it at least on Lemote FuLoong mini-PC. Changes for other boards
+were done based on what I could find with grep...
 
-Hello
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ arch/mips/bcm63xx/early_printk.c  |    4 ++--
+ arch/mips/kernel/early_printk.c   |    5 ++---
+ arch/mips/loongson1/common/prom.c |    2 +-
+ arch/mips/sgi-ip27/ip27-console.c |    2 +-
+ arch/mips/txx9/generic/setup.c    |    8 ++++----
+ 5 files changed, 10 insertions(+), 11 deletions(-)
 
-I had a look to the code over the weekend and I was able to
-understand how it works.
-Today I changed the code and it looks like it works. The change I have
-made can be found in the patch below.
-
-The clue is that the complete memory of the Cavium board is
-managed/known by uboot.
-It creates a bootmemory structure that is used by Linux to configure
-its memory during init.
-
-It basically allocates blocks of 4MB from this bootmem until the size
-specified in the mem parameter is reached.
-If 0 is passed to the mem command line parameter, it allocates all
-available memory.
-
-Uboot knows already about the memreserves done in the device tree so
-the only thing
-that was missing is to allocate the memory specified in the
-memreserves from the bootmemory.
-Once this was done, Linux does not touch the memreserved memory anymore.
-
-The patch below is not a Linux patch, but a uboot one.
-Is this way of working a standard solution or is it dedicated to Mips or Cavium?
-
-Regards,
-Ronny
-
-diff --git a/arch/mips/cpu/octeon/commands/cmd_octeon_linux.c
-b/arch/mips/cpu/octeon/commands/cmd_octeon_linux.c
---- a/arch/mips/cpu/octeon/commands/cmd_octeon_linux.c
-+++ b/arch/mips/cpu/octeon/commands/cmd_octeon_linux.c
-@@ -189,6 +189,8 @@ int do_bootoctlinux(cmd_tbl_t * cmdtp, i
-         */
-        cvmx_bootmem_phy_named_block_free(OCTEON_LINUX_RESERVED_MEM_NAME, 0);
-
-+       octeon_alloc_memreserves_from_bootmem();
-+
-        if (((Elf32_Ehdr *)addr)->e_ident[EI_CLASS] == ELFCLASS32) {
-                if (alloc_elf32_image(addr)) {
-                        entry_addr = load_elf_image(addr);
-diff --git a/arch/mips/cpu/octeon/octeon_fdt.c
-b/arch/mips/cpu/octeon/octeon_fdt.c
---- a/arch/mips/cpu/octeon/octeon_fdt.c
-+++ b/arch/mips/cpu/octeon/octeon_fdt.c
-@@ -344,3 +344,30 @@ int __board_fixup_fdt(void)
+diff --git a/arch/mips/bcm63xx/early_printk.c b/arch/mips/bcm63xx/early_printk.c
+index bf353c9..aa8f7f9 100644
+--- a/arch/mips/bcm63xx/early_printk.c
++++ b/arch/mips/bcm63xx/early_printk.c
+@@ -10,7 +10,7 @@
+ #include <bcm63xx_io.h>
+ #include <bcm63xx_regs.h>
+ 
+-static void __init wait_xfered(void)
++static void wait_xfered(void)
+ {
+ 	unsigned int val;
+ 
+@@ -22,7 +22,7 @@ static void __init wait_xfered(void)
+ 	} while (1);
  }
- int board_fixup_fdt(void)
-        __attribute__((weak, alias("__board_fixup_fdt")));
-+
-+
-+void octeon_alloc_memreserves_from_bootmem(void)
-+{
-+       uint64_t addr, size;
-+       int j, err;
-+       char name[32];
-+       int total = fdt_num_mem_rsv(working_fdt);
-+       for (j = 0; j < total; j++) {
-+               int64_t mem = 0;
-+               err = fdt_get_mem_rsv(working_fdt, j, &addr, &size);
-+               if (err < 0) {
-+                       printf("libfdt fdt_get_mem_rsv():  %s\n",
-+                       fdt_strerror(err));
-+                       return err;
-+               }
-+               sprintf(name,"fdt_memreserve%d",j);
-+               printf("alloc_bootmem %16s %08x%08x %08x%08x\n",name,
-+                       (u32)(addr >> 32),(u32)(addr & 0xffffffff),
-+                       (u32)(size >> 32),(u32)(size & 0xffffffff));
-+               mem =
-cvmx_bootmem_phy_named_block_alloc(size,addr,addr+size,0,name,0);
-+               if (mem < 0) {
-+                       printf("Named allocation failed!\n");
-+               }
-+       }
-+}
-+
-diff --git a/arch/mips/include/asm/arch-octeon/octeon_fdt.h
-b/arch/mips/include/asm/arch-octeon/octeon_fdt.h
---- a/arch/mips/include/asm/arch-octeon/octeon_fdt.h
-+++ b/arch/mips/include/asm/arch-octeon/octeon_fdt.h
-@@ -77,5 +77,6 @@
- int octeon_fdt_patch(void *fdt, const char *fdt_key, const char *trim_name);
- int board_fixup_fdt(void);
- void octeon_fixup_fdt(void);
-+void octeon_alloc_memreserves_from_bootmem(void);
-
--#endif /* __OCTEON_FDT_H__ */
-\ No newline at end of file
-+#endif /* __OCTEON_FDT_H__ */
+ 
+-void __init prom_putchar(char c)
++void prom_putchar(char c)
+ {
+ 	wait_xfered();
+ 	bcm_uart0_writel(c, UART_FIFO_REG);
+diff --git a/arch/mips/kernel/early_printk.c b/arch/mips/kernel/early_printk.c
+index 9ae813e..9e6440e 100644
+--- a/arch/mips/kernel/early_printk.c
++++ b/arch/mips/kernel/early_printk.c
+@@ -14,8 +14,7 @@
+ 
+ extern void prom_putchar(char);
+ 
+-static void __init
+-early_console_write(struct console *con, const char *s, unsigned n)
++static void early_console_write(struct console *con, const char *s, unsigned n)
+ {
+ 	while (n-- && *s) {
+ 		if (*s == '\n')
+@@ -25,7 +24,7 @@ early_console_write(struct console *con, const char *s, unsigned n)
+ 	}
+ }
+ 
+-static struct console early_console __initdata = {
++static struct console early_console = {
+ 	.name	= "early",
+ 	.write	= early_console_write,
+ 	.flags	= CON_PRINTBUFFER | CON_BOOT,
+diff --git a/arch/mips/loongson1/common/prom.c b/arch/mips/loongson1/common/prom.c
+index 1f8e49f..54dee09 100644
+--- a/arch/mips/loongson1/common/prom.c
++++ b/arch/mips/loongson1/common/prom.c
+@@ -73,7 +73,7 @@ void __init prom_free_prom_memory(void)
+ 
+ #define PORT(offset)	(u8 *)(KSEG1ADDR(LS1X_UART0_BASE + offset))
+ 
+-void __init prom_putchar(char c)
++void prom_putchar(char c)
+ {
+ 	int timeout;
+ 
+diff --git a/arch/mips/sgi-ip27/ip27-console.c b/arch/mips/sgi-ip27/ip27-console.c
+index 984e561..b952d5b 100644
+--- a/arch/mips/sgi-ip27/ip27-console.c
++++ b/arch/mips/sgi-ip27/ip27-console.c
+@@ -31,7 +31,7 @@ static inline struct ioc3_uartregs *console_uart(void)
+ 	return &ioc3->sregs.uarta;
+ }
+ 
+-void __init prom_putchar(char c)
++void prom_putchar(char c)
+ {
+ 	struct ioc3_uartregs *uart = console_uart();
+ 
+diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+index 560fe89..5524f2c 100644
+--- a/arch/mips/txx9/generic/setup.c
++++ b/arch/mips/txx9/generic/setup.c
+@@ -513,19 +513,19 @@ void __init txx9_sio_init(unsigned long baseaddr, int irq,
+ }
+ 
+ #ifdef CONFIG_EARLY_PRINTK
+-static void __init null_prom_putchar(char c)
++static void null_prom_putchar(char c)
+ {
+ }
+-void (*txx9_prom_putchar)(char c) __initdata = null_prom_putchar;
++void (*txx9_prom_putchar)(char c) = null_prom_putchar;
+ 
+-void __init prom_putchar(char c)
++void prom_putchar(char c)
+ {
+ 	txx9_prom_putchar(c);
+ }
+ 
+ static void __iomem *early_txx9_sio_port;
+ 
+-static void __init early_txx9_sio_putchar(char c)
++static void early_txx9_sio_putchar(char c)
+ {
+ #define TXX9_SICISR	0x0c
+ #define TXX9_SITFIFO	0x1c
+-- 
+1.7.10.4

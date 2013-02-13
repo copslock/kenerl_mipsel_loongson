@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Feb 2013 22:41:12 +0100 (CET)
-Received: from mail-ee0-f44.google.com ([74.125.83.44]:59469 "EHLO
-        mail-ee0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827627Ab3BMVlFS3I3Z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Feb 2013 22:41:05 +0100
-Received: by mail-ee0-f44.google.com with SMTP id l10so953999eei.31
-        for <linux-mips@linux-mips.org>; Wed, 13 Feb 2013 13:41:00 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Feb 2013 22:41:36 +0100 (CET)
+Received: from mail-ea0-f170.google.com ([209.85.215.170]:47207 "EHLO
+        mail-ea0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827628Ab3BMVlfJOohr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Feb 2013 22:41:35 +0100
+Received: by mail-ea0-f170.google.com with SMTP id a11so644292eaa.15
+        for <linux-mips@linux-mips.org>; Wed, 13 Feb 2013 13:41:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
          :references:x-gm-message-state;
-        bh=JGf43I2JYRg975wQDaa2KePFFzAFZ74m/bpqIgCsU98=;
-        b=NfwVTpNye9HggMTsnLL0tv6ndXKjomZOuInOwmN77A5TdfI+rdol3iDbkUrm1OTjc0
-         bKnU+QumKaZhLUxjj1Iz2viCNJsOrzoXcQA9R2GgBXbueGaqdrLJnqaMctww6YBwf6LD
-         ef9hAND8J6RLW8pr17pRB1k7NuyG+8/UTA5A50TgYdy/8j+WNPVxaNB8gDUpWNlXtkty
-         TEt6VdkAD9Bl0DXG1J7ICFy2Vsz1ni96O+luAJPP1SsNXezRJEkY6u5oXu9EY6q25mJD
-         JMHn+cIXF4yHtOtBL0pegB1DZ19hi2WWt9Ec3V300/B1lHwkLIYWui3tZl0J7MlCVP2Y
-         EAIg==
-X-Received: by 10.14.207.200 with SMTP id n48mr8988091eeo.4.1360791659465;
-        Wed, 13 Feb 2013 13:40:59 -0800 (PST)
+        bh=Pknm0aZkCVZhEqJsUMCwq6O5DE+Xz6wQPjN+mPAvKd0=;
+        b=ih1bMroGldHWt3s7Cu35/wZJvq1pcvXHAMGlWuJZoFL4KYisiW0BE2jcapVqV/yoV7
+         wZ4j/qGrEGYw/HbSksF3dDCeJDMBb+GN+olZRFOf9EQWPs4A5BG22pZvcI7uuUF0u4aN
+         cvtCrPJ6xlzcGqqLHkbTWUJofkBMz8A6vC4mM3Y5nTb1PKjF010Vhc8nh3ymIODHteEB
+         2ye+waYLRGIECBcYvAWZReiDwXSZzF+JrnCx/vbhquqjcDanOGpBh25/OtIKJ7OW4Vz2
+         C8GwCHv8Tu1/RM90krw/Ff4PNonyGJyUhW2caLh3ToPUm5iOmWc1PjkeXLfzmev1Uzhx
+         AogA==
+X-Received: by 10.14.207.200 with SMTP id n48mr8993630eeo.4.1360791689503;
+        Wed, 13 Feb 2013 13:41:29 -0800 (PST)
 Received: from localhost.localdomain ([77.70.100.51])
-        by mx.google.com with ESMTPS id r4sm30921681eeo.12.2013.02.13.13.40.57
+        by mx.google.com with ESMTPS id r4sm30921681eeo.12.2013.02.13.13.41.27
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Wed, 13 Feb 2013 13:40:58 -0800 (PST)
+        Wed, 13 Feb 2013 13:41:28 -0800 (PST)
 From:   Svetoslav Neykov <svetoslav@neykov.name>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
@@ -32,14 +32,14 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
         "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>
 Cc:     linux-mips@linux-mips.org, linux-usb@vger.kernel.org,
         Svetoslav Neykov <svetoslav@neykov.name>
-Subject: [PATCH 1/5] usb: chipidea: big-endian support
-Date:   Wed, 13 Feb 2013 23:38:54 +0200
-Message-Id: <1360791538-6332-2-git-send-email-svetoslav@neykov.name>
+Subject: [PATCH 2/5] usb: chipidea: flags to force usb mode (host/device)
+Date:   Wed, 13 Feb 2013 23:38:55 +0200
+Message-Id: <1360791538-6332-3-git-send-email-svetoslav@neykov.name>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1360791538-6332-1-git-send-email-svetoslav@neykov.name>
 References: <1360791538-6332-1-git-send-email-svetoslav@neykov.name>
-X-Gm-Message-State: ALoCoQnxGNWYwx+6Mp2mcp9v50Olt9nxxeQ4witOmBAnso0NTeSITsBiubPEwuQb/YeI0psiGDQg
-X-archive-position: 35741
+X-Gm-Message-State: ALoCoQk/yweb5DjzecT2RKvcApN1ulpOHNEMXvIO3/soDEMGGsgftOX3piwMjE1vrQvYKaiHKurm
+X-archive-position: 35742
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,169 +57,79 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Convert between big-endian and little-endian format when accessing the usb controller structures which are little-endian by specification.
-Fix cases where the little-endian memory layout is taken for granted.
-The patch doesn't have any effect on the already supported little-endian architectures.
+The chipidea controller in the AR933x SOC supports both host and device modes but not OTG.
+Which USB mode is used depends on a pin state (GIPO13) during boot - HIGH for host, LOW for device mode.
+Currently if both host and device modes are available, the code assumes OTG support. Add flags to allow
+the platform code for force a specific mode based on the pin state.
 
 Signed-off-by: Svetoslav Neykov <svetoslav@neykov.name>
 ---
- drivers/usb/chipidea/core.c |    2 +-
- drivers/usb/chipidea/udc.c  |   59 +++++++++++++++++++++++--------------------
- 2 files changed, 32 insertions(+), 29 deletions(-)
+ drivers/usb/chipidea/core.c  |   22 +++++++++++++++++-----
+ include/linux/usb/chipidea.h |    2 ++
+ 2 files changed, 19 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
-index aebf695..3cefb4c 100644
+index 3cefb4c..85c72e5 100644
 --- a/drivers/usb/chipidea/core.c
 +++ b/drivers/usb/chipidea/core.c
-@@ -181,7 +181,7 @@ static int hw_device_init(struct ci13xxx *ci, void __iomem *base)
+@@ -398,6 +398,8 @@ static int ci_hdrc_probe(struct platform_device *pdev)
+ 	struct resource	*res;
+ 	void __iomem	*base;
+ 	int		ret;
++	bool force_host_mode;
++	bool force_device_mode;
  
- 	ci->hw_bank.cap = ci->hw_bank.abs;
- 	ci->hw_bank.cap += ci->platdata->capoffset;
--	ci->hw_bank.op = ci->hw_bank.cap + ioread8(ci->hw_bank.cap);
-+	ci->hw_bank.op = ci->hw_bank.cap + (ioread32(ci->hw_bank.cap) & 0xFF);
- 
- 	hw_alloc_regmap(ci, false);
- 	reg = hw_read(ci, CAP_HCCPARAMS, HCCPARAMS_LEN) >>
-diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-index 2f45bba..78ac5e5 100644
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -432,10 +432,10 @@ static int _hardware_enqueue(struct ci13xxx_ep *mEp, struct ci13xxx_req *mReq)
- 			return -ENOMEM;
- 
- 		memset(mReq->zptr, 0, sizeof(*mReq->zptr));
--		mReq->zptr->next    = TD_TERMINATE;
--		mReq->zptr->token   = TD_STATUS_ACTIVE;
-+		mReq->zptr->next    = cpu_to_le32(TD_TERMINATE);
-+		mReq->zptr->token   = cpu_to_le32(TD_STATUS_ACTIVE);
- 		if (!mReq->req.no_interrupt)
--			mReq->zptr->token   |= TD_IOC;
-+			mReq->zptr->token   |= cpu_to_le32(TD_IOC);
- 	}
- 	ret = usb_gadget_map_request(&ci->gadget, &mReq->req, mEp->dir);
+ 	if (!dev->platform_data) {
+ 		dev_err(dev, "platform data missing\n");
+@@ -459,21 +461,31 @@ static int ci_hdrc_probe(struct platform_device *pdev)
  	if (ret)
-@@ -446,32 +446,35 @@ static int _hardware_enqueue(struct ci13xxx_ep *mEp, struct ci13xxx_req *mReq)
- 	 * TODO - handle requests which spawns into several TDs
- 	 */
- 	memset(mReq->ptr, 0, sizeof(*mReq->ptr));
--	mReq->ptr->token    = length << ffs_nr(TD_TOTAL_BYTES);
--	mReq->ptr->token   &= TD_TOTAL_BYTES;
--	mReq->ptr->token   |= TD_STATUS_ACTIVE;
-+	mReq->ptr->token    = cpu_to_le32(length << ffs_nr(TD_TOTAL_BYTES));
-+	mReq->ptr->token   &= cpu_to_le32(TD_TOTAL_BYTES);
-+	mReq->ptr->token   |= cpu_to_le32(TD_STATUS_ACTIVE);
- 	if (mReq->zptr) {
--		mReq->ptr->next    = mReq->zdma;
-+		mReq->ptr->next    = cpu_to_le32(mReq->zdma);
+ 		dev_info(dev, "doesn't support gadget\n");
+ 
+-	if (!ci->roles[CI_ROLE_HOST] && !ci->roles[CI_ROLE_GADGET]) {
++	force_host_mode = ci->platdata->flags & CI13XXX_FORCE_HOST_MODE;
++	force_device_mode = ci->platdata->flags & CI13XXX_FORCE_DEVICE_MODE;
++	if ((!ci->roles[CI_ROLE_HOST] && !ci->roles[CI_ROLE_GADGET]) ||
++			(force_host_mode && !ci->roles[CI_ROLE_HOST]) ||
++			(force_device_mode && !ci->roles[CI_ROLE_GADGET])) {
+ 		dev_err(dev, "no supported roles\n");
+ 		ret = -ENODEV;
+ 		goto rm_wq;
+ 	}
+ 
+-	if (ci->roles[CI_ROLE_HOST] && ci->roles[CI_ROLE_GADGET]) {
++	if (!force_host_mode && !force_device_mode &&
++			ci->roles[CI_ROLE_HOST] && ci->roles[CI_ROLE_GADGET]) {
+ 		ci->is_otg = true;
+ 		/* ID pin needs 1ms debouce time, we delay 2ms for safe */
+ 		mdelay(2);
+ 		ci->role = ci_otg_role(ci);
  	} else {
--		mReq->ptr->next    = TD_TERMINATE;
-+		mReq->ptr->next    = cpu_to_le32(TD_TERMINATE);
- 		if (!mReq->req.no_interrupt)
--			mReq->ptr->token  |= TD_IOC;
-+			mReq->ptr->token  |= cpu_to_le32(TD_IOC);
-+	}
-+	mReq->ptr->page[0]  = cpu_to_le32(mReq->req.dma);
-+	for (i = 1; i < 5; i++) {
-+		u32 page = mReq->req.dma + i * CI13XXX_PAGE_SIZE;
-+		page &= ~TD_RESERVED_MASK;
-+		mReq->ptr->page[i] = cpu_to_le32(page);
- 	}
--	mReq->ptr->page[0]  = mReq->req.dma;
--	for (i = 1; i < 5; i++)
--		mReq->ptr->page[i] =
--			(mReq->req.dma + i * CI13XXX_PAGE_SIZE) & ~TD_RESERVED_MASK;
- 
- 	if (!list_empty(&mEp->qh.queue)) {
- 		struct ci13xxx_req *mReqPrev;
- 		int n = hw_ep_bit(mEp->num, mEp->dir);
- 		int tmp_stat;
-+		u32 next = mReq->dma & TD_ADDR_MASK;
- 
- 		mReqPrev = list_entry(mEp->qh.queue.prev,
- 				struct ci13xxx_req, queue);
- 		if (mReqPrev->zptr)
--			mReqPrev->zptr->next = mReq->dma & TD_ADDR_MASK;
-+			mReqPrev->zptr->next = cpu_to_le32(next);
- 		else
--			mReqPrev->ptr->next = mReq->dma & TD_ADDR_MASK;
-+			mReqPrev->ptr->next = cpu_to_le32(next);
- 		wmb();
- 		if (hw_read(ci, OP_ENDPTPRIME, BIT(n)))
- 			goto done;
-@@ -485,9 +488,9 @@ static int _hardware_enqueue(struct ci13xxx_ep *mEp, struct ci13xxx_req *mReq)
+-		ci->role = ci->roles[CI_ROLE_HOST]
+-			? CI_ROLE_HOST
+-			: CI_ROLE_GADGET;
++		if (force_host_mode)
++			ci->role = CI_ROLE_HOST;
++		else if (force_device_mode)
++			ci->role = CI_ROLE_GADGET;
++		else
++			ci->role = ci->roles[CI_ROLE_HOST]
++				? CI_ROLE_HOST
++				: CI_ROLE_GADGET;
  	}
  
- 	/*  QH configuration */
--	mEp->qh.ptr->td.next   = mReq->dma;    /* TERMINATE = 0 */
--	mEp->qh.ptr->td.token &= ~TD_STATUS;   /* clear status */
--	mEp->qh.ptr->cap |=  QH_ZLT;
-+	mEp->qh.ptr->td.next   = cpu_to_le32(mReq->dma);    /* TERMINATE = 0 */
-+	mEp->qh.ptr->td.token &= cpu_to_le32(~TD_STATUS);   /* clear status */
-+	mEp->qh.ptr->cap |=  cpu_to_le32(QH_ZLT);
+ 	ret = ci_role_start(ci, ci->role);
+diff --git a/include/linux/usb/chipidea.h b/include/linux/usb/chipidea.h
+index 544825d..e6f44d2 100644
+--- a/include/linux/usb/chipidea.h
++++ b/include/linux/usb/chipidea.h
+@@ -19,6 +19,8 @@ struct ci13xxx_platform_data {
+ #define CI13XXX_REQUIRE_TRANSCEIVER	BIT(1)
+ #define CI13XXX_PULLUP_ON_VBUS		BIT(2)
+ #define CI13XXX_DISABLE_STREAMING	BIT(3)
++#define CI13XXX_FORCE_HOST_MODE		BIT(5)
++#define CI13XXX_FORCE_DEVICE_MODE	BIT(6)
  
- 	wmb();   /* synchronize before ep prime */
- 
-@@ -509,11 +512,11 @@ static int _hardware_dequeue(struct ci13xxx_ep *mEp, struct ci13xxx_req *mReq)
- 	if (mReq->req.status != -EALREADY)
- 		return -EINVAL;
- 
--	if ((TD_STATUS_ACTIVE & mReq->ptr->token) != 0)
-+	if ((cpu_to_le32(TD_STATUS_ACTIVE) & mReq->ptr->token) != 0)
- 		return -EBUSY;
- 
- 	if (mReq->zptr) {
--		if ((TD_STATUS_ACTIVE & mReq->zptr->token) != 0)
-+		if ((cpu_to_le32(TD_STATUS_ACTIVE) & mReq->zptr->token) != 0)
- 			return -EBUSY;
- 		dma_pool_free(mEp->td_pool, mReq->zptr, mReq->zdma);
- 		mReq->zptr = NULL;
-@@ -523,7 +526,7 @@ static int _hardware_dequeue(struct ci13xxx_ep *mEp, struct ci13xxx_req *mReq)
- 
- 	usb_gadget_unmap_request(&mEp->ci->gadget, &mReq->req, mEp->dir);
- 
--	mReq->req.status = mReq->ptr->token & TD_STATUS;
-+	mReq->req.status = le32_to_cpu(mReq->ptr->token) & TD_STATUS;
- 	if ((TD_STATUS_HALTED & mReq->req.status) != 0)
- 		mReq->req.status = -1;
- 	else if ((TD_STATUS_DT_ERR & mReq->req.status) != 0)
-@@ -531,7 +534,7 @@ static int _hardware_dequeue(struct ci13xxx_ep *mEp, struct ci13xxx_req *mReq)
- 	else if ((TD_STATUS_TR_ERR & mReq->req.status) != 0)
- 		mReq->req.status = -1;
- 
--	mReq->req.actual   = mReq->ptr->token & TD_TOTAL_BYTES;
-+	mReq->req.actual   = le32_to_cpu(mReq->ptr->token) & TD_TOTAL_BYTES;
- 	mReq->req.actual >>= ffs_nr(TD_TOTAL_BYTES);
- 	mReq->req.actual   = mReq->req.length - mReq->req.actual;
- 	mReq->req.actual   = mReq->req.status ? 0 : mReq->req.actual;
-@@ -801,7 +804,7 @@ __acquires(mEp->lock)
- 		if (retval < 0)
- 			break;
- 		list_del_init(&mReq->queue);
--		dbg_done(_usb_addr(mEp), mReq->ptr->token, retval);
-+		dbg_done(_usb_addr(mEp), le32_to_cpu(mReq->ptr->token), retval);
- 		if (mReq->req.complete != NULL) {
- 			spin_unlock(mEp->lock);
- 			if ((mEp->type == USB_ENDPOINT_XFER_CONTROL) &&
-@@ -1045,15 +1048,15 @@ static int ep_enable(struct usb_ep *ep,
- 	mEp->qh.ptr->cap = 0;
- 
- 	if (mEp->type == USB_ENDPOINT_XFER_CONTROL)
--		mEp->qh.ptr->cap |=  QH_IOS;
-+		mEp->qh.ptr->cap |=  cpu_to_le32(QH_IOS);
- 	else if (mEp->type == USB_ENDPOINT_XFER_ISOC)
--		mEp->qh.ptr->cap &= ~QH_MULT;
-+		mEp->qh.ptr->cap &= cpu_to_le32(~QH_MULT);
- 	else
--		mEp->qh.ptr->cap &= ~QH_ZLT;
-+		mEp->qh.ptr->cap &= cpu_to_le32(~QH_ZLT);
- 
- 	mEp->qh.ptr->cap |=
--		(mEp->ep.maxpacket << ffs_nr(QH_MAX_PKT)) & QH_MAX_PKT;
--	mEp->qh.ptr->td.next |= TD_TERMINATE;   /* needed? */
-+		cpu_to_le32((mEp->ep.maxpacket << ffs_nr(QH_MAX_PKT)) & QH_MAX_PKT);
-+	mEp->qh.ptr->td.next |= cpu_to_le32(TD_TERMINATE);   /* needed? */
- 
- 	/*
- 	 * Enable endpoints in the HW other than ep0 as ep0
+ #define CI13XXX_CONTROLLER_RESET_EVENT		0
+ #define CI13XXX_CONTROLLER_STOPPED_EVENT	1
 -- 
 1.7.9.5

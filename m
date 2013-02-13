@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Feb 2013 22:41:36 +0100 (CET)
-Received: from mail-ea0-f170.google.com ([209.85.215.170]:47207 "EHLO
-        mail-ea0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827628Ab3BMVlfJOohr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Feb 2013 22:41:35 +0100
-Received: by mail-ea0-f170.google.com with SMTP id a11so644292eaa.15
-        for <linux-mips@linux-mips.org>; Wed, 13 Feb 2013 13:41:29 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Feb 2013 22:41:55 +0100 (CET)
+Received: from mail-ee0-f42.google.com ([74.125.83.42]:44877 "EHLO
+        mail-ee0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827630Ab3BMVlk2TfNC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Feb 2013 22:41:40 +0100
+Received: by mail-ee0-f42.google.com with SMTP id b47so916501eek.29
+        for <linux-mips@linux-mips.org>; Wed, 13 Feb 2013 13:41:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
          :references:x-gm-message-state;
-        bh=Pknm0aZkCVZhEqJsUMCwq6O5DE+Xz6wQPjN+mPAvKd0=;
-        b=ih1bMroGldHWt3s7Cu35/wZJvq1pcvXHAMGlWuJZoFL4KYisiW0BE2jcapVqV/yoV7
-         wZ4j/qGrEGYw/HbSksF3dDCeJDMBb+GN+olZRFOf9EQWPs4A5BG22pZvcI7uuUF0u4aN
-         cvtCrPJ6xlzcGqqLHkbTWUJofkBMz8A6vC4mM3Y5nTb1PKjF010Vhc8nh3ymIODHteEB
-         2ye+waYLRGIECBcYvAWZReiDwXSZzF+JrnCx/vbhquqjcDanOGpBh25/OtIKJ7OW4Vz2
-         C8GwCHv8Tu1/RM90krw/Ff4PNonyGJyUhW2caLh3ToPUm5iOmWc1PjkeXLfzmev1Uzhx
-         AogA==
-X-Received: by 10.14.207.200 with SMTP id n48mr8993630eeo.4.1360791689503;
-        Wed, 13 Feb 2013 13:41:29 -0800 (PST)
+        bh=oewUzHaKjVOZA3iVWdw78z1AzhMIuDJ1W7s5lz/FSgE=;
+        b=ldbhLuaiZnPEw9yZ2/ZGWy2NhHDO3QOOcPdXpYfwxCKMVYWXUbnt/7jmYLB+luYiEU
+         XOLHdH9jNOb26Ed4LGbnrBlubptHHUjvQd3822FSDL7GJCCY9UF4MTVgeKCAj1rzuj0E
+         8i8gGLQ7tW/zUlPrckO715ys/RNYxD44FeRzJHKCL3FEmHkNdjJDA/a45EG2PxTzXUSt
+         g4Txja3Mkno7JcrUWnLd+pGR3Yf5j0eTosNdA0iMlXus+AtPj6gEGUhdqfBrmW88TfLg
+         1puFpQBsVnH3wg39FugShKipWtpjwRwHaxDsO6fnDDky3h1eweDCcDTOULvxQVnj/ZG8
+         1V9Q==
+X-Received: by 10.14.175.129 with SMTP id z1mr9670228eel.7.1360791694970;
+        Wed, 13 Feb 2013 13:41:34 -0800 (PST)
 Received: from localhost.localdomain ([77.70.100.51])
-        by mx.google.com with ESMTPS id r4sm30921681eeo.12.2013.02.13.13.41.27
+        by mx.google.com with ESMTPS id r4sm30921681eeo.12.2013.02.13.13.41.32
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Wed, 13 Feb 2013 13:41:28 -0800 (PST)
+        Wed, 13 Feb 2013 13:41:34 -0800 (PST)
 From:   Svetoslav Neykov <svetoslav@neykov.name>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
@@ -32,14 +32,14 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
         "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>
 Cc:     linux-mips@linux-mips.org, linux-usb@vger.kernel.org,
         Svetoslav Neykov <svetoslav@neykov.name>
-Subject: [PATCH 2/5] usb: chipidea: flags to force usb mode (host/device)
-Date:   Wed, 13 Feb 2013 23:38:55 +0200
-Message-Id: <1360791538-6332-3-git-send-email-svetoslav@neykov.name>
+Subject: [PATCH 3/5] usb: chipidea: Don't access OTG related registers
+Date:   Wed, 13 Feb 2013 23:38:56 +0200
+Message-Id: <1360791538-6332-4-git-send-email-svetoslav@neykov.name>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1360791538-6332-1-git-send-email-svetoslav@neykov.name>
 References: <1360791538-6332-1-git-send-email-svetoslav@neykov.name>
-X-Gm-Message-State: ALoCoQk/yweb5DjzecT2RKvcApN1ulpOHNEMXvIO3/soDEMGGsgftOX3piwMjE1vrQvYKaiHKurm
-X-archive-position: 35742
+X-Gm-Message-State: ALoCoQmTryZrVJcxwX2Wjl6qxRnT1yhwFWVv0odeh3LMaFPDSfdj+C/d6UtXJ/q908XpuA03j4+f
+X-archive-position: 35743
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,79 +57,77 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The chipidea controller in the AR933x SOC supports both host and device modes but not OTG.
-Which USB mode is used depends on a pin state (GIPO13) during boot - HIGH for host, LOW for device mode.
-Currently if both host and device modes are available, the code assumes OTG support. Add flags to allow
-the platform code for force a specific mode based on the pin state.
+According to the datasheet the chipidea controller in AR933x doesn't expose OTG and TEST registers.
+If no OTG support is detected don't call functions which access those registers.
 
 Signed-off-by: Svetoslav Neykov <svetoslav@neykov.name>
 ---
- drivers/usb/chipidea/core.c  |   22 +++++++++++++++++-----
- include/linux/usb/chipidea.h |    2 ++
- 2 files changed, 19 insertions(+), 5 deletions(-)
+ drivers/usb/chipidea/udc.c |   24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
-index 3cefb4c..85c72e5 100644
---- a/drivers/usb/chipidea/core.c
-+++ b/drivers/usb/chipidea/core.c
-@@ -398,6 +398,8 @@ static int ci_hdrc_probe(struct platform_device *pdev)
- 	struct resource	*res;
- 	void __iomem	*base;
- 	int		ret;
-+	bool force_host_mode;
-+	bool force_device_mode;
- 
- 	if (!dev->platform_data) {
- 		dev_err(dev, "platform data missing\n");
-@@ -459,21 +461,31 @@ static int ci_hdrc_probe(struct platform_device *pdev)
- 	if (ret)
- 		dev_info(dev, "doesn't support gadget\n");
- 
--	if (!ci->roles[CI_ROLE_HOST] && !ci->roles[CI_ROLE_GADGET]) {
-+	force_host_mode = ci->platdata->flags & CI13XXX_FORCE_HOST_MODE;
-+	force_device_mode = ci->platdata->flags & CI13XXX_FORCE_DEVICE_MODE;
-+	if ((!ci->roles[CI_ROLE_HOST] && !ci->roles[CI_ROLE_GADGET]) ||
-+			(force_host_mode && !ci->roles[CI_ROLE_HOST]) ||
-+			(force_device_mode && !ci->roles[CI_ROLE_GADGET])) {
- 		dev_err(dev, "no supported roles\n");
- 		ret = -ENODEV;
- 		goto rm_wq;
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index 78ac5e5..9fda4d8 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -1395,7 +1395,10 @@ static int ci13xxx_vbus_session(struct usb_gadget *_gadget, int is_active)
+ 		if (is_active) {
+ 			pm_runtime_get_sync(&_gadget->dev);
+ 			hw_device_reset(ci, USBMODE_CM_DC);
+-			hw_enable_vbus_intr(ci);
++
++			if (ci->is_otg)
++				hw_enable_vbus_intr(ci);
++
+ 			hw_device_state(ci, ci->ep0out->qh.dma);
+ 		} else {
+ 			hw_device_state(ci, 0);
+@@ -1572,7 +1575,8 @@ static int ci13xxx_start(struct usb_gadget *gadget,
+ 		if (ci->vbus_active) {
+ 			if (ci->platdata->flags & CI13XXX_REGS_SHARED) {
+ 				hw_device_reset(ci, USBMODE_CM_DC);
+-				hw_enable_vbus_intr(ci);
++				if (ci->is_otg)
++					hw_enable_vbus_intr(ci);
+ 			}
+ 		} else {
+ 			pm_runtime_put_sync(&ci->gadget.dev);
+@@ -1680,11 +1684,13 @@ static irqreturn_t udc_irq(struct ci13xxx *ci)
+ 		retval = IRQ_NONE;
  	}
  
--	if (ci->roles[CI_ROLE_HOST] && ci->roles[CI_ROLE_GADGET]) {
-+	if (!force_host_mode && !force_device_mode &&
-+			ci->roles[CI_ROLE_HOST] && ci->roles[CI_ROLE_GADGET]) {
- 		ci->is_otg = true;
- 		/* ID pin needs 1ms debouce time, we delay 2ms for safe */
- 		mdelay(2);
- 		ci->role = ci_otg_role(ci);
- 	} else {
--		ci->role = ci->roles[CI_ROLE_HOST]
--			? CI_ROLE_HOST
--			: CI_ROLE_GADGET;
-+		if (force_host_mode)
-+			ci->role = CI_ROLE_HOST;
-+		else if (force_device_mode)
-+			ci->role = CI_ROLE_GADGET;
-+		else
-+			ci->role = ci->roles[CI_ROLE_HOST]
-+				? CI_ROLE_HOST
-+				: CI_ROLE_GADGET;
+-	intr = hw_read(ci, OP_OTGSC, ~0);
+-	hw_write(ci, OP_OTGSC, ~0, intr);
++	if (ci->is_otg) {
++		intr = hw_read(ci, OP_OTGSC, ~0);
++		hw_write(ci, OP_OTGSC, ~0, intr);
+ 
+-	if (intr & (OTGSC_AVVIE & OTGSC_AVVIS))
+-		queue_work(ci->wq, &ci->vbus_work);
++		if (intr & (OTGSC_AVVIE & OTGSC_AVVIS))
++			queue_work(ci->wq, &ci->vbus_work);
++	}
+ 
+ 	spin_unlock(&ci->lock);
+ 
+@@ -1761,7 +1767,8 @@ static int udc_start(struct ci13xxx *ci)
+ 		retval = hw_device_reset(ci, USBMODE_CM_DC);
+ 		if (retval)
+ 			goto put_transceiver;
+-		hw_enable_vbus_intr(ci);
++		if (ci->is_otg)
++			hw_enable_vbus_intr(ci);
  	}
  
- 	ret = ci_role_start(ci, ci->role);
-diff --git a/include/linux/usb/chipidea.h b/include/linux/usb/chipidea.h
-index 544825d..e6f44d2 100644
---- a/include/linux/usb/chipidea.h
-+++ b/include/linux/usb/chipidea.h
-@@ -19,6 +19,8 @@ struct ci13xxx_platform_data {
- #define CI13XXX_REQUIRE_TRANSCEIVER	BIT(1)
- #define CI13XXX_PULLUP_ON_VBUS		BIT(2)
- #define CI13XXX_DISABLE_STREAMING	BIT(3)
-+#define CI13XXX_FORCE_HOST_MODE		BIT(5)
-+#define CI13XXX_FORCE_DEVICE_MODE	BIT(6)
+ 	retval = device_register(&ci->gadget.dev);
+@@ -1824,7 +1831,8 @@ static void udc_stop(struct ci13xxx *ci)
+ 	if (ci == NULL)
+ 		return;
  
- #define CI13XXX_CONTROLLER_RESET_EVENT		0
- #define CI13XXX_CONTROLLER_STOPPED_EVENT	1
+-	hw_disable_vbus_intr(ci);
++	if (ci->is_otg)
++		hw_disable_vbus_intr(ci);
+ 	cancel_work_sync(&ci->vbus_work);
+ 
+ 	usb_del_gadget_udc(&ci->gadget);
 -- 
 1.7.9.5

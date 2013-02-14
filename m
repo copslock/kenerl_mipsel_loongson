@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Feb 2013 12:44:01 +0100 (CET)
-Received: from mga03.intel.com ([143.182.124.21]:35174 "EHLO mga03.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Feb 2013 15:19:40 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:60547 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823126Ab3BNLoAToZdr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 14 Feb 2013 12:44:00 +0100
-Received: from azsmga002.ch.intel.com ([10.2.17.35])
-  by azsmga101.ch.intel.com with ESMTP; 14 Feb 2013 03:43:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.84,665,1355126400"; 
-   d="scan'208";a="202309498"
-Received: from um.fi.intel.com (HELO localhost) ([10.237.72.164])
-  by AZSMGA002.ch.intel.com with ESMTP; 14 Feb 2013 03:43:49 -0800
-From:   Alexander Shishkin <alexander.shishkin@linux.intel.com>
-To:     Svetoslav Neykov <svetoslav@neykov.name>,
-        Ralf Baechle <ralf@linux-mips.org>,
+        id S6823080Ab3BNOTjTo4y9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 14 Feb 2013 15:19:39 +0100
+Received: from arrakis.dune.hu ([127.0.0.1])
+        by localhost (arrakis.dune.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id G56qhYG9OGOO; Thu, 14 Feb 2013 15:19:24 +0100 (CET)
+Received: from [192.168.254.50] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 7EAEB284467;
+        Thu, 14 Feb 2013 15:19:24 +0100 (CET)
+Message-ID: <511CF27F.3080604@openwrt.org>
+Date:   Thu, 14 Feb 2013 15:19:43 +0100
+From:   Gabor Juhos <juhosg@openwrt.org>
+MIME-Version: 1.0
+To:     Svetoslav Neykov <svetoslav@neykov.name>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Gabor Juhos <juhosg@openwrt.org>,
         John Crispin <blogic@openwrt.org>,
         Alan Stern <stern@rowland.harvard.edu>,
-        "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>
-Cc:     linux-mips@linux-mips.org, linux-usb@vger.kernel.org,
-        Svetoslav Neykov <svetoslav@neykov.name>
-Subject: Re: [PATCH 3/5] usb: chipidea: Don't access OTG related registers
-In-Reply-To: <1360791538-6332-4-git-send-email-svetoslav@neykov.name>
-References: <1360791538-6332-1-git-send-email-svetoslav@neykov.name> <1360791538-6332-4-git-send-email-svetoslav@neykov.name>
-User-Agent: Notmuch/0.12+187~ga2502b0 (http://notmuchmail.org) Emacs/23.4.1 (x86_64-pc-linux-gnu)
-Date:   Thu, 14 Feb 2013 13:45:26 +0200
-Message-ID: <874nhfazl5.fsf@ashishki-desk.ger.corp.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-archive-position: 35751
+        "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>,
+        linux-mips@linux-mips.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH 4/5] usb: chipidea: AR933x platform support for the chipidea
+ driver
+References: <1360791538-6332-1-git-send-email-svetoslav@neykov.name> <1360791538-6332-5-git-send-email-svetoslav@neykov.name>
+In-Reply-To: <1360791538-6332-5-git-send-email-svetoslav@neykov.name>
+X-Enigmail-Version: 1.5
+Content-Type: text/plain; charset=ISO-8859-2
+Content-Transfer-Encoding: 7bit
+X-archive-position: 35752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexander.shishkin@linux.intel.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,32 +46,115 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Svetoslav Neykov <svetoslav@neykov.name> writes:
+Hi Svetoslav,
 
-> According to the datasheet the chipidea controller in AR933x doesn't expose OTG and TEST registers.
-> If no OTG support is detected don't call functions which access those registers.
->
+> Support host and device usb modes for the chipidea controller in AR933x.
+> The controller doesn't support OTG functionality so the platform code
+> forces one of the modes based on the state of GPIO13 pin at startup.
+> 
 > Signed-off-by: Svetoslav Neykov <svetoslav@neykov.name>
 > ---
->  drivers/usb/chipidea/udc.c |   24 ++++++++++++++++--------
->  1 file changed, 16 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-> index 78ac5e5..9fda4d8 100644
-> --- a/drivers/usb/chipidea/udc.c
-> +++ b/drivers/usb/chipidea/udc.c
-> @@ -1395,7 +1395,10 @@ static int ci13xxx_vbus_session(struct usb_gadget *_gadget, int is_active)
->  		if (is_active) {
->  			pm_runtime_get_sync(&_gadget->dev);
->  			hw_device_reset(ci, USBMODE_CM_DC);
-> -			hw_enable_vbus_intr(ci);
-> +
-> +			if (ci->is_otg)
-> +				hw_enable_vbus_intr(ci);
 
-It might be easier on the eyes if you move the "if (ci->is_otg)" check
-inside hw_enable_vbus_intr(). But otherwise looks sensible.
+<...>
+
+> diff --git a/drivers/usb/chipidea/ci13xxx_ar933x.c b/drivers/usb/chipidea/ci13xxx_ar933x.c
+> new file mode 100644
+> index 0000000..046a4b6
+> --- /dev/null
+> +++ b/drivers/usb/chipidea/ci13xxx_ar933x.c
+> @@ -0,0 +1,73 @@
+> +/* Copyright (c) 2010, Code Aurora Forum. All rights reserved.
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 and
+> + * only version 2 as published by the Free Software Foundation.
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/usb/ulpi.h>
+> +#include <linux/usb/gadget.h>
+> +#include <linux/usb/chipidea.h>
+> +#include <asm/mach-ath79/ath79.h>
+> +#include <asm/mach-ath79/ar71xx_regs.h>
+> +
+> +#include "ci.h"
+> +
+> +static struct ci13xxx_platform_data ci13xxx_ar933x_platdata = {
+> +	.name			= "ci13xxx_ar933x",
+> +	.flags			= 0,
+> +	.capoffset		= DEF_CAPOFFSET
+> +};
+
+Static data only works if there are only one USB IP in the SoCs. It is true for
+the AR9330 SoC, but newer SoCs may have more. Please use a dynamically allocated
+structure and fill that in the probe routine.
+
+> +
+> +static int __devinit ci13xxx_ar933x_probe(struct platform_device *pdev)
+> +{
+> +	u32 bootstrap;
+> +	struct platform_device *plat_ci;
+> +
+> +	dev_dbg(&pdev->dev, "ci13xxx_ar933x_probe\n");
+> +
+> +	bootstrap = ath79_reset_rr(AR933X_RESET_REG_BOOTSTRAP);
+> +	if (bootstrap & AR933X_BOOTSTRAP_USB_MODE_HOST)
+> +		ci13xxx_ar933x_platdata.flags = CI13XXX_FORCE_HOST_MODE;
+> +	else
+> +		ci13xxx_ar933x_platdata.flags = CI13XXX_FORCE_DEVICE_MODE;
+
+This bootstrap setting is only valid for the AR933x SoCs. It would be better to
+move this code into the SoC specific USB device registration code, and use
+platform data to pass that information to this driver.
+
+> +
+> +	plat_ci = ci13xxx_add_device(&pdev->dev,
+> +				pdev->resource, pdev->num_resources,
+> +				&ci13xxx_ar933x_platdata);
+> +	if (IS_ERR(plat_ci)) {
+> +		dev_err(&pdev->dev, "ci13xxx_add_device failed!\n");
+> +		return PTR_ERR(plat_ci);
+> +	}
+> +
+> +	platform_set_drvdata(pdev, plat_ci);
+> +
+> +	pm_runtime_no_callbacks(&pdev->dev);
+> +	pm_runtime_enable(&pdev->dev);
+> +
+> +	return 0;
+> +}
+> +
+> +static int __devexit ci13xxx_ar933x_remove(struct platform_device *pdev)
+> +{
+> +	struct platform_device *plat_ci = platform_get_drvdata(pdev);
+> +
+> +	pm_runtime_disable(&pdev->dev);
+> +	ci13xxx_remove_device(plat_ci);
+> +
+> +	return 0;
+> +}
+> +
+> +static struct platform_driver ci13xxx_ar933x_driver = {
+> +	.probe = ci13xxx_ar933x_probe,
+> +	.remove = __devexit_p(ci13xxx_ar933x_remove),
+> +	.driver = { .name = "ehci-platform", },
+
+This name is used by the ehci-platform driver. You should pick a different one
+for this driver. Additionally, the device registration code in
+'arch/mips/ath79/dev-usb.c' must be adjusted as well.
+
+> +};
+> +
+> +module_platform_driver(ci13xxx_ar933x_driver);
+> +
+> +MODULE_ALIAS("platform:ar933x_hsusb");
+
+The driver part of the MODULE_ALIAS string should match with the driver name.
+You should use this instead ci13xxx_ar933x_driver
+
+> +MODULE_LICENSE("GPL v2");
 
 Regards,
---
-Alex
+Gabor

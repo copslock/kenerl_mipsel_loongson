@@ -1,34 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Feb 2013 15:19:40 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:60547 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Feb 2013 15:38:32 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:58566 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823080Ab3BNOTjTo4y9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 14 Feb 2013 15:19:39 +0100
+        id S6823126Ab3BOOibFFl8N (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 Feb 2013 15:38:31 +0100
 Received: from arrakis.dune.hu ([127.0.0.1])
         by localhost (arrakis.dune.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id G56qhYG9OGOO; Thu, 14 Feb 2013 15:19:24 +0100 (CET)
-Received: from [192.168.254.50] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 7EAEB284467;
-        Thu, 14 Feb 2013 15:19:24 +0100 (CET)
-Message-ID: <511CF27F.3080604@openwrt.org>
-Date:   Thu, 14 Feb 2013 15:19:43 +0100
+        with ESMTP id 07Ar_s5T08rv; Fri, 15 Feb 2013 15:38:19 +0100 (CET)
+Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id E9E4A2801AE;
+        Fri, 15 Feb 2013 15:38:18 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
-MIME-Version: 1.0
-To:     Svetoslav Neykov <svetoslav@neykov.name>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Crispin <blogic@openwrt.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>,
-        linux-mips@linux-mips.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH 4/5] usb: chipidea: AR933x platform support for the chipidea
- driver
-References: <1360791538-6332-1-git-send-email-svetoslav@neykov.name> <1360791538-6332-5-git-send-email-svetoslav@neykov.name>
-In-Reply-To: <1360791538-6332-5-git-send-email-svetoslav@neykov.name>
-X-Enigmail-Version: 1.5
-Content-Type: text/plain; charset=ISO-8859-2
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35752
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <blogic@openwrt.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH 00/11] MIPS: ath79: add support for the QCA955X SoCs
+Date:   Fri, 15 Feb 2013 15:38:14 +0100
+Message-Id: <1360939105-23591-1-git-send-email-juhosg@openwrt.org>
+X-Mailer: git-send-email 1.7.10
+X-archive-position: 35753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,115 +36,46 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Svetoslav,
+This series adds support for the Qualcomm Atheros QCA955[68] SoCs
+and for the AP136-010 reference board
 
-> Support host and device usb modes for the chipidea controller in AR933x.
-> The controller doesn't support OTG functionality so the platform code
-> forces one of the modes based on the state of GPIO13 pin at startup.
-> 
-> Signed-off-by: Svetoslav Neykov <svetoslav@neykov.name>
-> ---
+The series depends on the following patch:
+  MIPS: ath79: use dynamically allocated USB platform devices
+  https://patchwork.linux-mips.org/patch/4933/
 
-<...>
+Gabor Juhos (11):
+  MIPS: ath79: add early printk support for the QCA955X SoCs
+  MIPS: ath79: add SoC detection code for the QCA955X SoCs
+  MIPS: ath79: add clock setup code for the QCA955X SoCs
+  MIPS: ath79: add IRQ handling code for the QCA955X SoCs
+  MIPS: ath79: add GPIO setup code for the QCA955X SoCs
+  MIPS: ath79: add QCA955X specific glue to ath79_device_reset_{set,clear}
+  MIPS: ath79: register UART for the QCA955X SoCs
+  MIPS: ath79: add WMAC registration code for the QCA955X SoCs
+  MIPS: ath79: add PCI controller registration code for the QCA9558 SoC
+  MIPS: ath79: add USB controller registration code for the QCA955X SoCs
+  MIPS: ath79: add support for the Qualcomm Atheros AP136-010 board
 
-> diff --git a/drivers/usb/chipidea/ci13xxx_ar933x.c b/drivers/usb/chipidea/ci13xxx_ar933x.c
-> new file mode 100644
-> index 0000000..046a4b6
-> --- /dev/null
-> +++ b/drivers/usb/chipidea/ci13xxx_ar933x.c
-> @@ -0,0 +1,73 @@
-> +/* Copyright (c) 2010, Code Aurora Forum. All rights reserved.
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 and
-> + * only version 2 as published by the Free Software Foundation.
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/usb/ulpi.h>
-> +#include <linux/usb/gadget.h>
-> +#include <linux/usb/chipidea.h>
-> +#include <asm/mach-ath79/ath79.h>
-> +#include <asm/mach-ath79/ar71xx_regs.h>
-> +
-> +#include "ci.h"
-> +
-> +static struct ci13xxx_platform_data ci13xxx_ar933x_platdata = {
-> +	.name			= "ci13xxx_ar933x",
-> +	.flags			= 0,
-> +	.capoffset		= DEF_CAPOFFSET
-> +};
+ arch/mips/ath79/Kconfig                        |   20 ++-
+ arch/mips/ath79/Makefile                       |    1 +
+ arch/mips/ath79/clock.c                        |   78 ++++++++++++
+ arch/mips/ath79/common.c                       |    4 +
+ arch/mips/ath79/dev-common.c                   |    3 +-
+ arch/mips/ath79/dev-usb.c                      |   15 +++
+ arch/mips/ath79/dev-wmac.c                     |   20 +++
+ arch/mips/ath79/early_printk.c                 |    2 +
+ arch/mips/ath79/gpio.c                         |    4 +-
+ arch/mips/ath79/irq.c                          |  110 +++++++++++++++--
+ arch/mips/ath79/mach-ap136.c                   |  156 ++++++++++++++++++++++++
+ arch/mips/ath79/machtypes.h                    |    1 +
+ arch/mips/ath79/pci.c                          |   36 ++++++
+ arch/mips/ath79/setup.c                        |   18 ++-
+ arch/mips/configs/ath79_defconfig              |    1 +
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h |   96 +++++++++++++++
+ arch/mips/include/asm/mach-ath79/ath79.h       |   17 +++
+ arch/mips/include/asm/mach-ath79/irq.h         |    6 +-
+ 18 files changed, 576 insertions(+), 12 deletions(-)
+ create mode 100644 arch/mips/ath79/mach-ap136.c
 
-Static data only works if there are only one USB IP in the SoCs. It is true for
-the AR9330 SoC, but newer SoCs may have more. Please use a dynamically allocated
-structure and fill that in the probe routine.
-
-> +
-> +static int __devinit ci13xxx_ar933x_probe(struct platform_device *pdev)
-> +{
-> +	u32 bootstrap;
-> +	struct platform_device *plat_ci;
-> +
-> +	dev_dbg(&pdev->dev, "ci13xxx_ar933x_probe\n");
-> +
-> +	bootstrap = ath79_reset_rr(AR933X_RESET_REG_BOOTSTRAP);
-> +	if (bootstrap & AR933X_BOOTSTRAP_USB_MODE_HOST)
-> +		ci13xxx_ar933x_platdata.flags = CI13XXX_FORCE_HOST_MODE;
-> +	else
-> +		ci13xxx_ar933x_platdata.flags = CI13XXX_FORCE_DEVICE_MODE;
-
-This bootstrap setting is only valid for the AR933x SoCs. It would be better to
-move this code into the SoC specific USB device registration code, and use
-platform data to pass that information to this driver.
-
-> +
-> +	plat_ci = ci13xxx_add_device(&pdev->dev,
-> +				pdev->resource, pdev->num_resources,
-> +				&ci13xxx_ar933x_platdata);
-> +	if (IS_ERR(plat_ci)) {
-> +		dev_err(&pdev->dev, "ci13xxx_add_device failed!\n");
-> +		return PTR_ERR(plat_ci);
-> +	}
-> +
-> +	platform_set_drvdata(pdev, plat_ci);
-> +
-> +	pm_runtime_no_callbacks(&pdev->dev);
-> +	pm_runtime_enable(&pdev->dev);
-> +
-> +	return 0;
-> +}
-> +
-> +static int __devexit ci13xxx_ar933x_remove(struct platform_device *pdev)
-> +{
-> +	struct platform_device *plat_ci = platform_get_drvdata(pdev);
-> +
-> +	pm_runtime_disable(&pdev->dev);
-> +	ci13xxx_remove_device(plat_ci);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct platform_driver ci13xxx_ar933x_driver = {
-> +	.probe = ci13xxx_ar933x_probe,
-> +	.remove = __devexit_p(ci13xxx_ar933x_remove),
-> +	.driver = { .name = "ehci-platform", },
-
-This name is used by the ehci-platform driver. You should pick a different one
-for this driver. Additionally, the device registration code in
-'arch/mips/ath79/dev-usb.c' must be adjusted as well.
-
-> +};
-> +
-> +module_platform_driver(ci13xxx_ar933x_driver);
-> +
-> +MODULE_ALIAS("platform:ar933x_hsusb");
-
-The driver part of the MODULE_ALIAS string should match with the driver name.
-You should use this instead ci13xxx_ar933x_driver
-
-> +MODULE_LICENSE("GPL v2");
-
-Regards,
-Gabor
+--
+1.7.10

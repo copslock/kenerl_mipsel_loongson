@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Feb 2013 15:39:41 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:58586 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Feb 2013 15:40:00 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:58590 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827506Ab3BOOibdCss5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6827515Ab3BOOibxuSWN (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Fri, 15 Feb 2013 15:38:31 +0100
 Received: from arrakis.dune.hu ([127.0.0.1])
         by localhost (arrakis.dune.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id b1Dcv167nEEL; Fri, 15 Feb 2013 15:38:20 +0100 (CET)
+        with ESMTP id 3XSO-2JOHyW3; Fri, 15 Feb 2013 15:38:21 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 5BCAF2801AE;
+        by arrakis.dune.hu (Postfix) with ESMTPSA id E563A2802DD;
         Fri, 15 Feb 2013 15:38:20 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -17,13 +17,13 @@ Cc:     John Crispin <blogic@openwrt.org>,
         "Rodriguez, Luis" <rodrigue@qca.qualcomm.com>,
         "Giori, Kathy" <kgiori@qca.qualcomm.com>,
         QCA Linux Team <qca-linux-team@qca.qualcomm.com>
-Subject: [PATCH 03/11] MIPS: ath79: add clock setup code for the QCA955X SoCs
-Date:   Fri, 15 Feb 2013 15:38:17 +0100
-Message-Id: <1360939105-23591-4-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH 04/11] MIPS: ath79: add IRQ handling code for the QCA955X SoCs
+Date:   Fri, 15 Feb 2013 15:38:18 +0100
+Message-Id: <1360939105-23591-5-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.10
 In-Reply-To: <1360939105-23591-1-git-send-email-juhosg@openwrt.org>
 References: <1360939105-23591-1-git-send-email-juhosg@openwrt.org>
-X-archive-position: 35756
+X-archive-position: 35757
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,177 +41,248 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The patch adds code to get various clock frequencies
-from the PLLs used in the QCA955x SoCs.
+The IRQ routing in the QCA955x SoCs is slightly
+different from the routing implemented in the
+already supported SoCs.
 
 Cc: Rodriguez, Luis <rodrigue@qca.qualcomm.com>
 Cc: Giori, Kathy <kgiori@qca.qualcomm.com>
 Cc: QCA Linux Team <qca-linux-team@qca.qualcomm.com>
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 ---
- arch/mips/ath79/clock.c                        |   78 ++++++++++++++++++++++++
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |   39 ++++++++++++
- 2 files changed, 117 insertions(+)
+ arch/mips/ath79/irq.c                          |  110 ++++++++++++++++++++++--
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h |   32 +++++++
+ arch/mips/include/asm/mach-ath79/irq.h         |    6 +-
+ 3 files changed, 140 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index 579f452..555e603 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -295,6 +295,82 @@ static void __init ar934x_clocks_init(void)
- 	iounmap(dpll_base);
- }
+diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
+index df88d49..b0f85a6 100644
+--- a/arch/mips/ath79/irq.c
++++ b/arch/mips/ath79/irq.c
+@@ -103,7 +103,10 @@ static void __init ath79_misc_irq_init(void)
  
-+static void __init qca955x_clocks_init(void)
-+{
-+	u32 pll, out_div, ref_div, nint, frac, clk_ctrl, postdiv;
-+	u32 cpu_pll, ddr_pll;
-+	u32 bootstrap;
-+
-+	bootstrap = ath79_reset_rr(QCA955X_RESET_REG_BOOTSTRAP);
-+	if (bootstrap &	QCA955X_BOOTSTRAP_REF_CLK_40)
-+		ath79_ref_clk.rate = 40 * 1000 * 1000;
-+	else
-+		ath79_ref_clk.rate = 25 * 1000 * 1000;
-+
-+	pll = ath79_pll_rr(QCA955X_PLL_CPU_CONFIG_REG);
-+	out_div = (pll >> QCA955X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
-+		  QCA955X_PLL_CPU_CONFIG_OUTDIV_MASK;
-+	ref_div = (pll >> QCA955X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
-+		  QCA955X_PLL_CPU_CONFIG_REFDIV_MASK;
-+	nint = (pll >> QCA955X_PLL_CPU_CONFIG_NINT_SHIFT) &
-+	       QCA955X_PLL_CPU_CONFIG_NINT_MASK;
-+	frac = (pll >> QCA955X_PLL_CPU_CONFIG_NFRAC_SHIFT) &
-+	       QCA955X_PLL_CPU_CONFIG_NFRAC_MASK;
-+
-+	cpu_pll = nint * ath79_ref_clk.rate / ref_div;
-+	cpu_pll += frac * ath79_ref_clk.rate / (ref_div * (1 << 6));
-+	cpu_pll /= (1 << out_div);
-+
-+	pll = ath79_pll_rr(QCA955X_PLL_DDR_CONFIG_REG);
-+	out_div = (pll >> QCA955X_PLL_DDR_CONFIG_OUTDIV_SHIFT) &
-+		  QCA955X_PLL_DDR_CONFIG_OUTDIV_MASK;
-+	ref_div = (pll >> QCA955X_PLL_DDR_CONFIG_REFDIV_SHIFT) &
-+		  QCA955X_PLL_DDR_CONFIG_REFDIV_MASK;
-+	nint = (pll >> QCA955X_PLL_DDR_CONFIG_NINT_SHIFT) &
-+	       QCA955X_PLL_DDR_CONFIG_NINT_MASK;
-+	frac = (pll >> QCA955X_PLL_DDR_CONFIG_NFRAC_SHIFT) &
-+	       QCA955X_PLL_DDR_CONFIG_NFRAC_MASK;
-+
-+	ddr_pll = nint * ath79_ref_clk.rate / ref_div;
-+	ddr_pll += frac * ath79_ref_clk.rate / (ref_div * (1 << 10));
-+	ddr_pll /= (1 << out_div);
-+
-+	clk_ctrl = ath79_pll_rr(QCA955X_PLL_CLK_CTRL_REG);
-+
-+	postdiv = (clk_ctrl >> QCA955X_PLL_CLK_CTRL_CPU_POST_DIV_SHIFT) &
-+		  QCA955X_PLL_CLK_CTRL_CPU_POST_DIV_MASK;
-+
-+	if (clk_ctrl & QCA955X_PLL_CLK_CTRL_CPU_PLL_BYPASS)
-+		ath79_cpu_clk.rate = ath79_ref_clk.rate;
-+	else if (clk_ctrl & QCA955X_PLL_CLK_CTRL_CPUCLK_FROM_CPUPLL)
-+		ath79_cpu_clk.rate = ddr_pll / (postdiv + 1);
-+	else
-+		ath79_cpu_clk.rate = cpu_pll / (postdiv + 1);
-+
-+	postdiv = (clk_ctrl >> QCA955X_PLL_CLK_CTRL_DDR_POST_DIV_SHIFT) &
-+		  QCA955X_PLL_CLK_CTRL_DDR_POST_DIV_MASK;
-+
-+	if (clk_ctrl & QCA955X_PLL_CLK_CTRL_DDR_PLL_BYPASS)
-+		ath79_ddr_clk.rate = ath79_ref_clk.rate;
-+	else if (clk_ctrl & QCA955X_PLL_CLK_CTRL_DDRCLK_FROM_DDRPLL)
-+		ath79_ddr_clk.rate = cpu_pll / (postdiv + 1);
-+	else
-+		ath79_ddr_clk.rate = ddr_pll / (postdiv + 1);
-+
-+	postdiv = (clk_ctrl >> QCA955X_PLL_CLK_CTRL_AHB_POST_DIV_SHIFT) &
-+		  QCA955X_PLL_CLK_CTRL_AHB_POST_DIV_MASK;
-+
-+	if (clk_ctrl & QCA955X_PLL_CLK_CTRL_AHB_PLL_BYPASS)
-+		ath79_ahb_clk.rate = ath79_ref_clk.rate;
-+	else if (clk_ctrl & QCA955X_PLL_CLK_CTRL_AHBCLK_FROM_DDRPLL)
-+		ath79_ahb_clk.rate = ddr_pll / (postdiv + 1);
-+	else
-+		ath79_ahb_clk.rate = cpu_pll / (postdiv + 1);
-+
-+	ath79_wdt_clk.rate = ath79_ref_clk.rate;
-+	ath79_uart_clk.rate = ath79_ref_clk.rate;
-+}
-+
- void __init ath79_clocks_init(void)
- {
- 	if (soc_is_ar71xx())
-@@ -307,6 +383,8 @@ void __init ath79_clocks_init(void)
- 		ar933x_clocks_init();
- 	else if (soc_is_ar934x())
- 		ar934x_clocks_init();
-+	else if (soc_is_qca955x())
-+		qca955x_clocks_init();
+ 	if (soc_is_ar71xx() || soc_is_ar913x())
+ 		ath79_misc_irq_chip.irq_mask_ack = ar71xx_misc_irq_mask;
+-	else if (soc_is_ar724x() || soc_is_ar933x() || soc_is_ar934x())
++	else if (soc_is_ar724x() ||
++		 soc_is_ar933x() ||
++		 soc_is_ar934x() ||
++		 soc_is_qca955x())
+ 		ath79_misc_irq_chip.irq_ack = ar724x_misc_irq_ack;
  	else
  		BUG();
+@@ -150,6 +153,88 @@ static void ar934x_ip2_irq_init(void)
+ 	irq_set_chained_handler(ATH79_CPU_IRQ(2), ar934x_ip2_irq_dispatch);
+ }
  
++static void qca955x_ip2_irq_dispatch(unsigned int irq, struct irq_desc *desc)
++{
++	u32 status;
++
++	disable_irq_nosync(irq);
++
++	status = ath79_reset_rr(QCA955X_RESET_REG_EXT_INT_STATUS);
++	status &= QCA955X_EXT_INT_PCIE_RC1_ALL | QCA955X_EXT_INT_WMAC_ALL;
++
++	if (status == 0) {
++		spurious_interrupt();
++		goto enable;
++	}
++
++	if (status & QCA955X_EXT_INT_PCIE_RC1_ALL) {
++		/* TODO: flush DDR? */
++		generic_handle_irq(ATH79_IP2_IRQ(0));
++	}
++
++	if (status & QCA955X_EXT_INT_WMAC_ALL) {
++		/* TODO: flsuh DDR? */
++		generic_handle_irq(ATH79_IP2_IRQ(1));
++	}
++
++enable:
++	enable_irq(irq);
++}
++
++static void qca955x_ip3_irq_dispatch(unsigned int irq, struct irq_desc *desc)
++{
++	u32 status;
++
++	disable_irq_nosync(irq);
++
++	status = ath79_reset_rr(QCA955X_RESET_REG_EXT_INT_STATUS);
++	status &= QCA955X_EXT_INT_PCIE_RC2_ALL |
++		  QCA955X_EXT_INT_USB1 |
++		  QCA955X_EXT_INT_USB2;
++
++	if (status == 0) {
++		spurious_interrupt();
++		goto enable;
++	}
++
++	if (status & QCA955X_EXT_INT_USB1) {
++		/* TODO: flush DDR? */
++		generic_handle_irq(ATH79_IP3_IRQ(0));
++	}
++
++	if (status & QCA955X_EXT_INT_USB2) {
++		/* TODO: flsuh DDR? */
++		generic_handle_irq(ATH79_IP3_IRQ(1));
++	}
++
++	if (status & QCA955X_EXT_INT_PCIE_RC2_ALL) {
++		/* TODO: flush DDR? */
++		generic_handle_irq(ATH79_IP3_IRQ(2));
++	}
++
++enable:
++	enable_irq(irq);
++}
++
++static void qca955x_irq_init(void)
++{
++	int i;
++
++	for (i = ATH79_IP2_IRQ_BASE;
++	     i < ATH79_IP2_IRQ_BASE + ATH79_IP2_IRQ_COUNT; i++)
++		irq_set_chip_and_handler(i, &dummy_irq_chip,
++					 handle_level_irq);
++
++	irq_set_chained_handler(ATH79_CPU_IRQ(2), qca955x_ip2_irq_dispatch);
++
++	for (i = ATH79_IP3_IRQ_BASE;
++	     i < ATH79_IP3_IRQ_BASE + ATH79_IP3_IRQ_COUNT; i++)
++		irq_set_chip_and_handler(i, &dummy_irq_chip,
++					 handle_level_irq);
++
++	irq_set_chained_handler(ATH79_CPU_IRQ(3), qca955x_ip3_irq_dispatch);
++}
++
+ asmlinkage void plat_irq_dispatch(void)
+ {
+ 	unsigned long pending;
+@@ -185,6 +270,17 @@ asmlinkage void plat_irq_dispatch(void)
+  * Issue a flush in the handlers to ensure that the driver sees
+  * the update.
+  */
++
++static void ath79_default_ip2_handler(void)
++{
++	do_IRQ(ATH79_CPU_IRQ(2));
++}
++
++static void ath79_default_ip3_handler(void)
++{
++	do_IRQ(ATH79_CPU_IRQ(3));
++}
++
+ static void ar71xx_ip2_handler(void)
+ {
+ 	ath79_ddr_wb_flush(AR71XX_DDR_REG_FLUSH_PCI);
+@@ -209,11 +305,6 @@ static void ar933x_ip2_handler(void)
+ 	do_IRQ(ATH79_CPU_IRQ(2));
+ }
+ 
+-static void ar934x_ip2_handler(void)
+-{
+-	do_IRQ(ATH79_CPU_IRQ(2));
+-}
+-
+ static void ar71xx_ip3_handler(void)
+ {
+ 	ath79_ddr_wb_flush(AR71XX_DDR_REG_FLUSH_USB);
+@@ -259,8 +350,11 @@ void __init arch_init_irq(void)
+ 		ath79_ip2_handler = ar933x_ip2_handler;
+ 		ath79_ip3_handler = ar933x_ip3_handler;
+ 	} else if (soc_is_ar934x()) {
+-		ath79_ip2_handler = ar934x_ip2_handler;
++		ath79_ip2_handler = ath79_default_ip2_handler;
+ 		ath79_ip3_handler = ar934x_ip3_handler;
++	} else if (soc_is_qca955x()) {
++		ath79_ip2_handler = ath79_default_ip2_handler;
++		ath79_ip3_handler = ath79_default_ip3_handler;
+ 	} else {
+ 		BUG();
+ 	}
+@@ -271,4 +365,6 @@ void __init arch_init_irq(void)
+ 
+ 	if (soc_is_ar934x())
+ 		ar934x_ip2_irq_init();
++	else if (soc_is_qca955x())
++		qca955x_irq_init();
+ }
 diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index 63a9f2b..7b00e12 100644
+index 7b00e12..8782d8b 100644
 --- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
 +++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -225,6 +225,41 @@
- #define AR934X_PLL_CPU_DDR_CLK_CTRL_DDRCLK_FROM_DDRPLL	BIT(21)
- #define AR934X_PLL_CPU_DDR_CLK_CTRL_AHBCLK_FROM_DDRPLL	BIT(24)
- 
-+#define QCA955X_PLL_CPU_CONFIG_REG		0x00
-+#define QCA955X_PLL_DDR_CONFIG_REG		0x04
-+#define QCA955X_PLL_CLK_CTRL_REG		0x08
-+
-+#define QCA955X_PLL_CPU_CONFIG_NFRAC_SHIFT	0
-+#define QCA955X_PLL_CPU_CONFIG_NFRAC_MASK	0x3f
-+#define QCA955X_PLL_CPU_CONFIG_NINT_SHIFT	6
-+#define QCA955X_PLL_CPU_CONFIG_NINT_MASK	0x3f
-+#define QCA955X_PLL_CPU_CONFIG_REFDIV_SHIFT	12
-+#define QCA955X_PLL_CPU_CONFIG_REFDIV_MASK	0x1f
-+#define QCA955X_PLL_CPU_CONFIG_OUTDIV_SHIFT	19
-+#define QCA955X_PLL_CPU_CONFIG_OUTDIV_MASK	0x3
-+
-+#define QCA955X_PLL_DDR_CONFIG_NFRAC_SHIFT	0
-+#define QCA955X_PLL_DDR_CONFIG_NFRAC_MASK	0x3ff
-+#define QCA955X_PLL_DDR_CONFIG_NINT_SHIFT	10
-+#define QCA955X_PLL_DDR_CONFIG_NINT_MASK	0x3f
-+#define QCA955X_PLL_DDR_CONFIG_REFDIV_SHIFT	16
-+#define QCA955X_PLL_DDR_CONFIG_REFDIV_MASK	0x1f
-+#define QCA955X_PLL_DDR_CONFIG_OUTDIV_SHIFT	23
-+#define QCA955X_PLL_DDR_CONFIG_OUTDIV_MASK	0x7
-+
-+#define QCA955X_PLL_CLK_CTRL_CPU_PLL_BYPASS		BIT(2)
-+#define QCA955X_PLL_CLK_CTRL_DDR_PLL_BYPASS		BIT(3)
-+#define QCA955X_PLL_CLK_CTRL_AHB_PLL_BYPASS		BIT(4)
-+#define QCA955X_PLL_CLK_CTRL_CPU_POST_DIV_SHIFT		5
-+#define QCA955X_PLL_CLK_CTRL_CPU_POST_DIV_MASK		0x1f
-+#define QCA955X_PLL_CLK_CTRL_DDR_POST_DIV_SHIFT		10
-+#define QCA955X_PLL_CLK_CTRL_DDR_POST_DIV_MASK		0x1f
-+#define QCA955X_PLL_CLK_CTRL_AHB_POST_DIV_SHIFT		15
-+#define QCA955X_PLL_CLK_CTRL_AHB_POST_DIV_MASK		0x1f
-+#define QCA955X_PLL_CLK_CTRL_CPUCLK_FROM_CPUPLL		BIT(20)
-+#define QCA955X_PLL_CLK_CTRL_DDRCLK_FROM_DDRPLL		BIT(21)
-+#define QCA955X_PLL_CLK_CTRL_AHBCLK_FROM_DDRPLL		BIT(24)
-+
- /*
-  * USB_CONFIG block
-  */
-@@ -264,6 +299,8 @@
- #define AR934X_RESET_REG_BOOTSTRAP		0xb0
+@@ -300,6 +300,7 @@
  #define AR934X_RESET_REG_PCIE_WMAC_INT_STATUS	0xac
  
-+#define QCA955X_RESET_REG_BOOTSTRAP		0xb0
-+
+ #define QCA955X_RESET_REG_BOOTSTRAP		0xb0
++#define QCA955X_RESET_REG_EXT_INT_STATUS	0xac
+ 
  #define MISC_INT_ETHSW			BIT(12)
  #define MISC_INT_TIMER4			BIT(10)
- #define MISC_INT_TIMER3			BIT(9)
-@@ -341,6 +378,8 @@
- #define AR934X_BOOTSTRAP_SDRAM_DISABLED	BIT(1)
- #define AR934X_BOOTSTRAP_DDR1		BIT(0)
+@@ -398,6 +399,37 @@
+ 	 AR934X_PCIE_WMAC_INT_PCIE_RC1 | AR934X_PCIE_WMAC_INT_PCIE_RC2 | \
+ 	 AR934X_PCIE_WMAC_INT_PCIE_RC3)
  
-+#define QCA955X_BOOTSTRAP_REF_CLK_40	BIT(4)
++#define QCA955X_EXT_INT_WMAC_MISC		BIT(0)
++#define QCA955X_EXT_INT_WMAC_TX			BIT(1)
++#define QCA955X_EXT_INT_WMAC_RXLP		BIT(2)
++#define QCA955X_EXT_INT_WMAC_RXHP		BIT(3)
++#define QCA955X_EXT_INT_PCIE_RC1		BIT(4)
++#define QCA955X_EXT_INT_PCIE_RC1_INT0		BIT(5)
++#define QCA955X_EXT_INT_PCIE_RC1_INT1		BIT(6)
++#define QCA955X_EXT_INT_PCIE_RC1_INT2		BIT(7)
++#define QCA955X_EXT_INT_PCIE_RC1_INT3		BIT(8)
++#define QCA955X_EXT_INT_PCIE_RC2		BIT(12)
++#define QCA955X_EXT_INT_PCIE_RC2_INT0		BIT(13)
++#define QCA955X_EXT_INT_PCIE_RC2_INT1		BIT(14)
++#define QCA955X_EXT_INT_PCIE_RC2_INT2		BIT(15)
++#define QCA955X_EXT_INT_PCIE_RC2_INT3		BIT(16)
++#define QCA955X_EXT_INT_USB1			BIT(24)
++#define QCA955X_EXT_INT_USB2			BIT(28)
 +
- #define AR934X_PCIE_WMAC_INT_WMAC_MISC		BIT(0)
- #define AR934X_PCIE_WMAC_INT_WMAC_TX		BIT(1)
- #define AR934X_PCIE_WMAC_INT_WMAC_RXLP		BIT(2)
++#define QCA955X_EXT_INT_WMAC_ALL \
++	(QCA955X_EXT_INT_WMAC_MISC | QCA955X_EXT_INT_WMAC_TX | \
++	 QCA955X_EXT_INT_WMAC_RXLP | QCA955X_EXT_INT_WMAC_RXHP)
++
++#define QCA955X_EXT_INT_PCIE_RC1_ALL \
++	(QCA955X_EXT_INT_PCIE_RC1 | QCA955X_EXT_INT_PCIE_RC1_INT0 | \
++	 QCA955X_EXT_INT_PCIE_RC1_INT1 | QCA955X_EXT_INT_PCIE_RC1_INT2 | \
++	 QCA955X_EXT_INT_PCIE_RC1_INT3)
++
++#define QCA955X_EXT_INT_PCIE_RC2_ALL \
++	(QCA955X_EXT_INT_PCIE_RC2 | QCA955X_EXT_INT_PCIE_RC2_INT0 | \
++	 QCA955X_EXT_INT_PCIE_RC2_INT1 | QCA955X_EXT_INT_PCIE_RC2_INT2 | \
++	 QCA955X_EXT_INT_PCIE_RC2_INT3)
++
+ #define REV_ID_MAJOR_MASK		0xfff0
+ #define REV_ID_MAJOR_AR71XX		0x00a0
+ #define REV_ID_MAJOR_AR913X		0x00b0
+diff --git a/arch/mips/include/asm/mach-ath79/irq.h b/arch/mips/include/asm/mach-ath79/irq.h
+index 23e2bba..5c9ca76 100644
+--- a/arch/mips/include/asm/mach-ath79/irq.h
++++ b/arch/mips/include/asm/mach-ath79/irq.h
+@@ -10,7 +10,7 @@
+ #define __ASM_MACH_ATH79_IRQ_H
+ 
+ #define MIPS_CPU_IRQ_BASE	0
+-#define NR_IRQS			48
++#define NR_IRQS			51
+ 
+ #define ATH79_CPU_IRQ(_x)	(MIPS_CPU_IRQ_BASE + (_x))
+ 
+@@ -26,6 +26,10 @@
+ #define ATH79_IP2_IRQ_COUNT	2
+ #define ATH79_IP2_IRQ(_x)	(ATH79_IP2_IRQ_BASE + (_x))
+ 
++#define ATH79_IP3_IRQ_BASE	(ATH79_IP2_IRQ_BASE + ATH79_IP2_IRQ_COUNT)
++#define ATH79_IP3_IRQ_COUNT     3
++#define ATH79_IP3_IRQ(_x)       (ATH79_IP3_IRQ_BASE + (_x))
++
+ #include_next <irq.h>
+ 
+ #endif /* __ASM_MACH_ATH79_IRQ_H */
 -- 
 1.7.10

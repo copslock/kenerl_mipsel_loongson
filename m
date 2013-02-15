@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Feb 2013 15:40:58 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:58604 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Feb 2013 15:41:19 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:58608 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827605Ab3BOOidvKbu0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Feb 2013 15:38:33 +0100
+        id S6827626Ab3BOOieRuRyk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 Feb 2013 15:38:34 +0100
 Received: from arrakis.dune.hu ([127.0.0.1])
         by localhost (arrakis.dune.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id VjPz2X_HzF1p; Fri, 15 Feb 2013 15:38:23 +0100 (CET)
+        with ESMTP id M0ZzVByXgMtM; Fri, 15 Feb 2013 15:38:23 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id B8B1128039B;
-        Fri, 15 Feb 2013 15:38:22 +0100 (CET)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 449DF2803BD;
+        Fri, 15 Feb 2013 15:38:23 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
@@ -17,13 +17,13 @@ Cc:     John Crispin <blogic@openwrt.org>,
         "Rodriguez, Luis" <rodrigue@qca.qualcomm.com>,
         "Giori, Kathy" <kgiori@qca.qualcomm.com>,
         QCA Linux Team <qca-linux-team@qca.qualcomm.com>
-Subject: [PATCH 07/11] MIPS: ath79: register UART for the QCA955X SoCs
-Date:   Fri, 15 Feb 2013 15:38:21 +0100
-Message-Id: <1360939105-23591-8-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH 08/11] MIPS: ath79: add WMAC registration code for the QCA955X SoCs
+Date:   Fri, 15 Feb 2013 15:38:22 +0100
+Message-Id: <1360939105-23591-9-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.10
 In-Reply-To: <1360939105-23591-1-git-send-email-juhosg@openwrt.org>
 References: <1360939105-23591-1-git-send-email-juhosg@openwrt.org>
-X-archive-position: 35760
+X-archive-position: 35761
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,32 +41,83 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Similarly to the preceding SoCs, the QCA955X SoCs
-also have a built-in NS16650 compatible UART.
-Register the platform device for that to make
-it usable.
+The SoC has a built-in wireless MAC. Register a platform
+device for that to make it usable with the ath9k driver.
 
 Cc: Rodriguez, Luis <rodrigue@qca.qualcomm.com>
 Cc: Giori, Kathy <kgiori@qca.qualcomm.com>
 Cc: QCA Linux Team <qca-linux-team@qca.qualcomm.com>
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 ---
- arch/mips/ath79/dev-common.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/ath79/Kconfig                        |    2 +-
+ arch/mips/ath79/dev-wmac.c                     |   20 ++++++++++++++++++++
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    3 +++
+ 3 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/ath79/dev-common.c b/arch/mips/ath79/dev-common.c
-index 9be1465..a3a2741 100644
---- a/arch/mips/ath79/dev-common.c
-+++ b/arch/mips/ath79/dev-common.c
-@@ -90,7 +90,8 @@ void __init ath79_register_uart(void)
- 	if (soc_is_ar71xx() ||
- 	    soc_is_ar724x() ||
- 	    soc_is_ar913x() ||
--	    soc_is_ar934x()) {
-+	    soc_is_ar934x() ||
-+	    soc_is_qca955x()) {
- 		ath79_uart_data[0].uartclk = clk_get_rate(clk);
- 		platform_device_register(&ath79_uart_device);
- 	} else if (soc_is_ar933x()) {
+diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
+index cffdc8e..77926e3 100644
+--- a/arch/mips/ath79/Kconfig
++++ b/arch/mips/ath79/Kconfig
+@@ -108,7 +108,7 @@ config ATH79_DEV_USB
+ 	def_bool n
+ 
+ config ATH79_DEV_WMAC
+-	depends on (SOC_AR913X || SOC_AR933X || SOC_AR934X)
++	depends on (SOC_AR913X || SOC_AR933X || SOC_AR934X || SOC_QCA955X)
+ 	def_bool n
+ 
+ endif
+diff --git a/arch/mips/ath79/dev-wmac.c b/arch/mips/ath79/dev-wmac.c
+index 4f6c4e3..3e00c09 100644
+--- a/arch/mips/ath79/dev-wmac.c
++++ b/arch/mips/ath79/dev-wmac.c
+@@ -116,6 +116,24 @@ static void ar934x_wmac_setup(void)
+ 		ath79_wmac_data.is_clk_25mhz = true;
+ }
+ 
++static void qca955x_wmac_setup(void)
++{
++	u32 t;
++
++	ath79_wmac_device.name = "qca955x_wmac";
++
++	ath79_wmac_resources[0].start = QCA955X_WMAC_BASE;
++	ath79_wmac_resources[0].end = QCA955X_WMAC_BASE + QCA955X_WMAC_SIZE - 1;
++	ath79_wmac_resources[1].start = ATH79_IP2_IRQ(1);
++	ath79_wmac_resources[1].start = ATH79_IP2_IRQ(1);
++
++	t = ath79_reset_rr(QCA955X_RESET_REG_BOOTSTRAP);
++	if (t & QCA955X_BOOTSTRAP_REF_CLK_40)
++		ath79_wmac_data.is_clk_25mhz = false;
++	else
++		ath79_wmac_data.is_clk_25mhz = true;
++}
++
+ void __init ath79_register_wmac(u8 *cal_data)
+ {
+ 	if (soc_is_ar913x())
+@@ -124,6 +142,8 @@ void __init ath79_register_wmac(u8 *cal_data)
+ 		ar933x_wmac_setup();
+ 	else if (soc_is_ar934x())
+ 		ar934x_wmac_setup();
++	else if (soc_is_qca955x())
++		qca955x_wmac_setup();
+ 	else
+ 		BUG();
+ 
+diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+index bf50ddf..4728212 100644
+--- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
++++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+@@ -94,6 +94,9 @@
+ #define AR934X_SRIF_BASE	(AR71XX_APB_BASE + 0x00116000)
+ #define AR934X_SRIF_SIZE	0x1000
+ 
++#define QCA955X_WMAC_BASE	(AR71XX_APB_BASE + 0x00100000)
++#define QCA955X_WMAC_SIZE	0x20000
++
+ /*
+  * DDR_CTRL block
+  */
 -- 
 1.7.10

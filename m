@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Feb 2013 19:19:37 +0100 (CET)
-Received: from kymasys.com ([64.62.140.43]:53172 "HELO kymasys.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Feb 2013 19:22:23 +0100 (CET)
+Received: from kymasys.com ([64.62.140.43]:38526 "HELO kymasys.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6827653Ab3BOSTgeqCMI convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Feb 2013 19:19:36 +0100
-Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Fri, 15 Feb 2013 10:19:27 -0800
-Subject: Re: [PATCH v2 07/18] KVM/MIPS32: MMU/TLB operations for the Guest.
+        id S6827653Ab3BOSWX0CHZe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 Feb 2013 19:22:23 +0100
+Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Fri, 15 Feb 2013 10:22:13 -0800
+Subject: Re: [PATCH v2 09/18] KVM/MIPS32: COP0 accesses profiling.
 Mime-Version: 1.0 (Apple Message framework v1283)
-Content-Type: text/plain; charset=windows-1255
+Content-Type: text/plain; charset=us-ascii
 From:   Sanjay Lal <sanjayl@kymasys.com>
-In-Reply-To: <20130206120820.GN23213@redhat.com>
-Date:   Fri, 15 Feb 2013 13:19:29 -0500
+In-Reply-To: <20130206131715.GB7837@redhat.com>
+Date:   Fri, 15 Feb 2013 13:22:15 -0500
 Cc:     kvm@vger.kernel.org, linux-mips@linux-mips.org
-Content-Transfer-Encoding: 8BIT
-Message-Id: <69F3ED2A-A9B3-4046-9B40-98125ED5A8FB@kymasys.com>
-References: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com> <1353551656-23579-8-git-send-email-sanjayl@kymasys.com> <20130206120820.GN23213@redhat.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <88677E83-88FD-4AD2-88BD-09FF6BA68F63@kymasys.com>
+References: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com> <1353551656-23579-10-git-send-email-sanjayl@kymasys.com> <20130206131715.GB7837@redhat.com>
 To:     Gleb Natapov <gleb@redhat.com>
 X-Mailer: Apple Mail (2.1283)
-X-archive-position: 35774
+X-archive-position: 35775
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,43 +35,33 @@ X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
 
-On Feb 6, 2013, at 7:08 AM, Gleb Natapov wrote:
+On Feb 6, 2013, at 8:17 AM, Gleb Natapov wrote:
 
+> On Wed, Nov 21, 2012 at 06:34:07PM -0800, Sanjay Lal wrote:
 >> 
->> +static void kvm_mips_map_page(struct kvm *kvm, gfn_t gfn)
+>> +int kvm_mips_dump_stats(struct kvm_vcpu *vcpu)
 >> +{
->> +	pfn_t pfn;
+>> +	int i, j __unused;
+>> +#ifdef CONFIG_KVM_MIPS_DEBUG_COP0_COUNTERS
+>> +	printk("\nKVM VCPU[%d] COP0 Access Profile:\n", vcpu->vcpu_id);
+>> +	for (i = 0; i < N_MIPS_COPROC_REGS; i++) {
+>> +		for (j = 0; j < N_MIPS_COPROC_SEL; j++) {
+>> +			if (vcpu->arch.cop0->stat[i][j])
+>> +				printk("%s[%d]: %lu\n", kvm_cop0_str[i], j,
+>> +				       vcpu->arch.cop0->stat[i][j]);
+>> +		}
+>> +	}
+>> +#endif
 >> +
->> +	if (kvm->arch.guest_pmap[gfn] != KVM_INVALID_PAGE)
->> +		return;
->> +
->> +	pfn =kvm_mips_gfn_to_pfn(kvm, gfn);
-> This call should be in srcu read section since it access memory slots which
-> are srcu protected. You should test with RCU debug enabled.
-
-kvm_mips_gfn_to_pfn just maps to gfn_to_pfn. I don't see an instance where gfn_to_pfn is in a scru read section?
-
+>> +	return 0;
+>> +}
+> You need to use ftrace event for that. Much more flexible with perf
+> integration and no need to recompile to enabled/disable.
 > 
->> 
->> +
->> +uint32_t kvm_get_inst(uint32_t *opc, struct kvm_vcpu *vcpu)
->> +{
->> +	uint32_t inst;
->> +	struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
->> +	int index;
->> +	ulong paddr, flags;
->> +
->> +	if (KVM_GUEST_KSEGX((ulong) opc) < KVM_GUEST_KSEG0 ||
->> +	    KVM_GUEST_KSEGX((ulong) opc) == KVM_GUEST_KSEG23) {
->> +		local_irq_save(flags);
->> +		index = kvm_mips_host_tlb_lookup(vcpu, (ulong) opc);
->> +		if (index >= 0) {
->> +			inst = *(opc);
-> Here and in some more places below you access __user memory. Shouldn't you
-> use get_user() to access it? What prevents the kernel crash by access fault here
-> if userspace remaps the memory to be non-readable? Hmm, may be it uses
-> guest translation here so it cannot happen, but still, sparse will not
-> be happy and kvm_mips_translate_guest_kseg0_to_hpa() case below uses
-> host translation anyway.
-> 
-Actually, I don't need the __user declaration in most cases, since KVM/MIPS handles mapping the page (if needed) and does not rely on the usual kernel mechanisms.
+> --
+> 			Gleb.
+
+Agreed, I'll start using trace for keeping track of COP0 accesses.
+
+Regards
+Sanjay

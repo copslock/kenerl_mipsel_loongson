@@ -1,10 +1,10 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Feb 2013 17:05:16 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:60627 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Feb 2013 17:05:38 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:60639 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827646Ab3BOQErJTscW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Feb 2013 17:04:47 +0100
-Message-ID: <511E5BE9.7010400@openwrt.org>
-Date:   Fri, 15 Feb 2013 17:01:45 +0100
+        id S6827650Ab3BOQFDIPeUd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 Feb 2013 17:05:03 +0100
+Message-ID: <511E5BF9.9070208@openwrt.org>
+Date:   Fri, 15 Feb 2013 17:02:01 +0100
 From:   John Crispin <blogic@openwrt.org>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.7) Gecko/20120922 Icedove/10.0.7
 MIME-Version: 1.0
@@ -14,13 +14,13 @@ CC:     Ralf Baechle <ralf@linux-mips.org>,
         "Rodriguez, Luis" <rodrigue@qca.qualcomm.com>,
         "Giori, Kathy" <kgiori@qca.qualcomm.com>,
         QCA Linux Team <qca-linux-team@qca.qualcomm.com>
-Subject: Re: [PATCH 08/11] MIPS: ath79: add WMAC registration code for the
- QCA955X SoCs
-References: <1360939105-23591-1-git-send-email-juhosg@openwrt.org> <1360939105-23591-9-git-send-email-juhosg@openwrt.org>
-In-Reply-To: <1360939105-23591-9-git-send-email-juhosg@openwrt.org>
+Subject: Re: [PATCH 11/11] MIPS: ath79: add support for the Qualcomm Atheros
+ AP136-010 board
+References: <1360939105-23591-1-git-send-email-juhosg@openwrt.org> <1360939105-23591-12-git-send-email-juhosg@openwrt.org>
+In-Reply-To: <1360939105-23591-12-git-send-email-juhosg@openwrt.org>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35767
+X-archive-position: 35768
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,10 +39,11 @@ X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
 On 15/02/13 15:38, Gabor Juhos wrote:
-> +	ath79_wmac_resources[1].start = ATH79_IP2_IRQ(1);
-> +	ath79_wmac_resources[1].start = ATH79_IP2_IRQ(1);
+> +	ATH79_MACH_AP136_010,		/* Atheros AP136-010 reference board */
+
 Hi,
 
-second line should read .stop ?
+just because i am curious ... why the AP136_010 the rest of the code 
+uses AP136 with no suffix
 
      John

@@ -1,37 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Feb 2013 21:20:51 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:52338 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6827665Ab3BOUUuzJ54k (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Feb 2013 21:20:50 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id A40228F60;
-        Fri, 15 Feb 2013 21:20:49 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 4QCMKBSUVLgW; Fri, 15 Feb 2013 21:20:41 +0100 (CET)
-Received: from [IPv6:2001:470:1f0b:447:6453:c44e:14a5:63c1] (unknown [IPv6:2001:470:1f0b:447:6453:c44e:14a5:63c1])
-        by hauke-m.de (Postfix) with ESMTPSA id 013BC85EA;
-        Fri, 15 Feb 2013 21:20:40 +0100 (CET)
-Message-ID: <511E9896.9010502@hauke-m.de>
-Date:   Fri, 15 Feb 2013 21:20:38 +0100
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
-MIME-Version: 1.0
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-CC:     john@phrozen.org, ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 2/2] ssb: add gpio_to_irq again
-References: <1355275031-19297-1-git-send-email-hauke@hauke-m.de> <1355275031-19297-2-git-send-email-hauke@hauke-m.de>
-In-Reply-To: <1355275031-19297-2-git-send-email-hauke@hauke-m.de>
-X-Enigmail-Version: 1.4.6
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35780
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Feb 2013 16:57:34 +0100 (CET)
+Received: from kymasys.com ([64.62.140.43]:54783 "HELO kymasys.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S6825751Ab3BPP5cgpDRy convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Feb 2013 16:57:32 +0100
+Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Sat, 16 Feb 2013 07:57:22 -0800
+Subject: Re: [PATCH v2 07/18] KVM/MIPS32: MMU/TLB operations for the Guest.
+Mime-Version: 1.0 (Apple Message framework v1283)
+Content-Type: text/plain; charset=us-ascii
+From:   Sanjay Lal <sanjayl@kymasys.com>
+In-Reply-To: <20130215184159.GA16755@redhat.com>
+Date:   Sat, 16 Feb 2013 10:57:22 -0500
+Cc:     kvm@vger.kernel.org, linux-mips@linux-mips.org
+Content-Transfer-Encoding: 8BIT
+Message-Id: <15B0FF73-7030-4861-B7BD-834F12CEF5B1@kymasys.com>
+References: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com> <1353551656-23579-8-git-send-email-sanjayl@kymasys.com> <20130206120820.GN23213@redhat.com> <69F3ED2A-A9B3-4046-9B40-98125ED5A8FB@kymasys.com> <20130215184159.GA16755@redhat.com>
+To:     Gleb Natapov <gleb@redhat.com>
+X-Mailer: Apple Mail (2.1283)
+X-archive-position: 35781
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: sanjayl@kymasys.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,20 +34,67 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 12/12/2012 02:17 AM, Hauke Mehrtens wrote:
-> The old code had support for gpio_to_irq, but the new code did not
-> provide this function, but returned -ENXIO all the time. This patch
-> adds the missing function.
+
+On Feb 15, 2013, at 1:41 PM, Gleb Natapov wrote:
+
+> On Fri, Feb 15, 2013 at 01:19:29PM -0500, Sanjay Lal wrote:
+>> 
+>> On Feb 6, 2013, at 7:08 AM, Gleb Natapov wrote:
+>> 
+>>>> 
+>>>> +static void kvm_mips_map_page(struct kvm *kvm, gfn_t gfn)
+>>>> +{
+>>>> +	pfn_t pfn;
+>>>> +
+>>>> +	if (kvm->arch.guest_pmap[gfn] != KVM_INVALID_PAGE)
+>>>> +		return;
+>>>> +
+>>>> +	pfn =kvm_mips_gfn_to_pfn(kvm, gfn);
+>>> This call should be in srcu read section since it access memory slots which
+>>> are srcu protected. You should test with RCU debug enabled.
+>> 
+>> kvm_mips_gfn_to_pfn just maps to gfn_to_pfn. I don't see an instance where gfn_to_pfn is in a scru read section?
+>> 
+> Where are you looking?  On x86 if vcpu is not in a guest mode it is in
+> srcu read section. The lock is taken immediately after exit and released
+> before entry. This is because x86 access memory slots a lot. Other
+> arches, that do not access memory slots as much, take the lock around
+> each individual access. As far as I see this is the only place in MIPS
+> kvm where this is needed.
+
+Ah I see what you mean.  I'll wrap the access in a scru read section.
+
 > 
-> arch/mips/bcm47xx/wgt634u.c calls gpio_to_irq() and got the correct irq
-> number with the old gpio handling code. With this patch the code in
-> wgt634u.c should work again. I do not have a wgt634u to test this.
+>>> 
+>>>> 
+>>>> +
+>>>> +uint32_t kvm_get_inst(uint32_t *opc, struct kvm_vcpu *vcpu)
+>>>> +{
+>>>> +	uint32_t inst;
+>>>> +	struct mips_coproc *cop0 __unused = vcpu->arch.cop0;
+>>>> +	int index;
+>>>> +	ulong paddr, flags;
+>>>> +
+>>>> +	if (KVM_GUEST_KSEGX((ulong) opc) < KVM_GUEST_KSEG0 ||
+>>>> +	    KVM_GUEST_KSEGX((ulong) opc) == KVM_GUEST_KSEG23) {
+>>>> +		local_irq_save(flags);
+>>>> +		index = kvm_mips_host_tlb_lookup(vcpu, (ulong) opc);
+>>>> +		if (index >= 0) {
+>>>> +			inst = *(opc);
+>>> Here and in some more places below you access __user memory. Shouldn't you
+>>> use get_user() to access it? What prevents the kernel crash by access fault here
+>>> if userspace remaps the memory to be non-readable? Hmm, may be it uses
+>>> guest translation here so it cannot happen, but still, sparse will not
+>>> be happy and kvm_mips_translate_guest_kseg0_to_hpa() case below uses
+>>> host translation anyway.
+>>> 
+>> Actually, I don't need the __user declaration in most cases, since KVM/MIPS handles mapping the page (if needed) and does not rely on the usual kernel mechanisms.
+> Yes I see that you check/populate tlb for non KVM_GUEST_KSEG0 access,
+> for kvm_mips_translate_guest_kseg0_to_hpa() you do not, but now I notice
+> that you are not using the address directly but uses CKSEG0ADDR() on it,
+> which, as far as I can tell, gives you kernel mapping for the page,
+> correct? Why this is better than using get_user()? To save tlb entries?
 > 
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 
-Please drop these two patches
 
-They will cause merge problems. After I talked to blogic and after that
-I send these patches to John Linville for inclusion into the wireless tree.
-
-Hauke
+Couple of reasons, KVM/MIPS uses its own TLB handlers while the guest is running, so get_user is not an option, and (2) it does save on TLBs when accessing the guest memory via KSEG0.

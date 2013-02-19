@@ -1,38 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Feb 2013 10:44:58 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:65502 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816354Ab3BRJo4drKMo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 Feb 2013 10:44:56 +0100
-Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r1I9iqE6021110
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Mon, 18 Feb 2013 04:44:52 -0500
-Received: from dhcp-1-237.tlv.redhat.com (dhcp-4-26.tlv.redhat.com [10.35.4.26])
-        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r1I9ipTK005431;
-        Mon, 18 Feb 2013 04:44:51 -0500
-Received: by dhcp-1-237.tlv.redhat.com (Postfix, from userid 13519)
-        id C2CE818D479; Mon, 18 Feb 2013 11:44:50 +0200 (IST)
-Date:   Mon, 18 Feb 2013 11:44:50 +0200
-From:   Gleb Natapov <gleb@redhat.com>
-To:     Sanjay Lal <sanjayl@kymasys.com>
-Cc:     kvm@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v2 11/18] KVM/MIPS32: Routines to handle specific
- traps/exceptions while executing the guest.
-Message-ID: <20130218094450.GA9817@redhat.com>
-References: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com>
- <1353551656-23579-12-git-send-email-sanjayl@kymasys.com>
- <20130206132018.GC7837@redhat.com>
- <D2EC658F-5271-4221-8141-930E00D3FF84@kymasys.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D2EC658F-5271-4221-8141-930E00D3FF84@kymasys.com>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
-X-archive-position: 35784
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Feb 2013 01:01:25 +0100 (CET)
+Received: from filtteri2.pp.htv.fi ([213.243.153.185]:47648 "EHLO
+        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823899Ab3BSABXDreTr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Feb 2013 01:01:23 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 33A5819BA98;
+        Tue, 19 Feb 2013 02:01:21 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
+        with ESMTP id 5HG2tH16qkPZ; Tue, 19 Feb 2013 02:01:20 +0200 (EET)
+Received: from blackmetal.pp.htv.fi (cs181064211.pp.htv.fi [82.181.64.211])
+        by smtp4.welho.com (Postfix) with ESMTP id 901185BC011;
+        Tue, 19 Feb 2013 02:01:20 +0200 (EET)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH] MIPS: loongson: fix random early boot hang
+Date:   Tue, 19 Feb 2013 02:00:39 +0200
+Message-Id: <1361232039-12555-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 35785
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gleb@redhat.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,35 +39,78 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Feb 15, 2013 at 11:10:46AM -0500, Sanjay Lal wrote:
-> 
-> On Feb 6, 2013, at 8:20 AM, Gleb Natapov wrote:
-> 
-> > On Wed, Nov 21, 2012 at 06:34:09PM -0800, Sanjay Lal wrote:
-> >> +static gpa_t kvm_trap_emul_gva_to_gpa_cb(gva_t gva)
-> >> +{
-> >> +	gpa_t gpa;
-> >> +	uint32_t kseg = KSEGX(gva);
-> >> +
-> >> +	if ((kseg == CKSEG0) || (kseg == CKSEG1))
-> > You seems to be using KVM_GUEST_KSEGX variants on gva in all other
-> > places. Why not here?
-> 
-> This function is invoked to handle 2 scenarios:
-> (1) Parse the boot code config tables setup by QEMU's Malta emulation. The pointers in the tables are actual KSEG0 addresses (unmapped, cached) and not Guest KSEG0 addresses.
-> 
-Where is it called for that purpose? The only place where gva_to_gpa
-callback is called is in kvm/kvm_mips_emul.c:kvm_mips_emulate_(store|load)
+Some Loongson boards (e.g. Lemote FuLoong mini-PC) use ISA/southbridge
+device (CS5536 general purpose timer) for the timer interrupt. It starts
+running early and is already enabled during the PCI configuration,
+during which there is a small window in pci_read_base() when the register
+access is temporarily disabled. If the timer interrupts at this point,
+the system will hang. Fix this by adding a fixup that keeps the register
+access always enabled.
 
-> (2) Handle I/O accesses by the guest.  On MIPS platforms, I/O device registers are mapped into the KSEG1 address space (unmapped, uncached).  Again like (1) these are actual KSEG1 addresses, which cause an exception and are passed onto QEMU for I/O emulation.
-> 
-So guest KSEG1 registers is mapped to 0xA0000000-0xBFFFFFFF ranges just
-like on a host? Can you give corresponding segment names to those ranges
+The hang the patch fixes usually looks like this:
 
-Guest User address space:   0x00000000 -> 0x40000000 (useg?)
-Guest Kernel Unmapped:      0x40000000 -> 0x60000000 (kseg0?)
-Guest Kernel Mapped:        0x60000000 -> 0x80000000 (?)
+[    0.844000] pci 0000:00:0e.0: [1022:2090] type 00 class 0x060100
+[    0.848000] pci 0000:00:0e.0: reg 10: [io  0xb410-0xb417]
+[    0.852000] pci 0000:00:0e.0: reg 14: [io  0xb000-0xb0ff]
+[    0.856000] pci 0000:00:0e.0: reg 18: [io  0xb380-0xb3bf]
+[   28.140000] BUG: soft lockup - CPU#0 stuck for 23s! [swapper:1]
+[   28.140000] Modules linked in:
+[   28.140000] irq event stamp: 37965
+[   28.140000] hardirqs last  enabled at (37964): [<ffffffff80204c0c>] restore_partial+0x6c/0x13c
+[   28.140000] hardirqs last disabled at (37965): [<ffffffff80204f8c>] handle_int+0x144/0x15c
+[   28.140000] softirqs last  enabled at (24316): [<ffffffff802381f4>] __do_softirq+0x1cc/0x258
+[   28.140000] softirqs last disabled at (24327): [<ffffffff80238420>] do_softirq+0xc8/0xd0
+[   28.140000] Cpu 0
+[   28.140000] $ 0   : 0000000000000000 00000000140044e1 980000009f090000 0000000000000001
+[   28.140000] $ 4   : 980000009f090000 0000000000000000 0000000000000100 03b7fff87fbde011
+[   28.140000] $ 8   : ffffffff812b1928 000000000001e000 043ffff87fbde011 fffffff87fbde011
+[   28.140000] $12   : 000000000000000e ffffffff807a0000 0000000000000698 0000000000000000
+[   28.140000] $16   : 0000000000000002 ffffffff81055e20 ffffffff80786810 0000000000000000
+[   28.140000] $20   : 000000000000000a ffffffff807bc244 ffffffff807e6350 ffffffff80770000
+[   28.140000] $24   : 0000000000000d80 00000000fffedbe0
+[   28.140000] $28   : 980000009f07c000 980000009f07fa10 ffffffff81050000 ffffffff802380f8
+[   28.140000] Hi    : 0000000000d0fc00
+[   28.140000] Lo    : 0000000000f82b40
+[   28.140000] epc   : ffffffff8023810c __do_softirq+0xe4/0x258
+[   28.140000]     Not tainted
+[   28.140000] ra    : ffffffff802380f8 __do_softirq+0xd0/0x258
+[   28.140000] Status: 140044e3    KX SX UX KERNEL EXL IE
+[   28.140000] Cause : 10008400
+[   28.140000] PrId  : 00006303 (ICT Loongson-2)
 
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ arch/mips/loongson/common/cs5536/cs5536_isa.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---
-			Gleb.
+diff --git a/arch/mips/loongson/common/cs5536/cs5536_isa.c b/arch/mips/loongson/common/cs5536/cs5536_isa.c
+index 4d9f65a..7b31ea7 100644
+--- a/arch/mips/loongson/common/cs5536/cs5536_isa.c
++++ b/arch/mips/loongson/common/cs5536/cs5536_isa.c
+@@ -13,6 +13,7 @@
+  * option) any later version.
+  */
+ 
++#include <linux/pci.h>
+ #include <cs5536/cs5536.h>
+ #include <cs5536/cs5536_pci.h>
+ 
+@@ -314,3 +315,16 @@ u32 pci_isa_read_reg(int reg)
+ 
+ 	return conf_data;
+ }
++
++/*
++ * The mfgpt timer interrupt is running early, so we must keep the south bridge
++ * mmio always enabled. Otherwise we may race with the PCI configuration which
++ * may temporarily disable it. When that happens and the timer interrupt fires,
++ * we are not able to clear it and the system will hang.
++ */
++static void cs5536_isa_mmio_always_on(struct pci_dev *dev)
++{
++	dev->mmio_always_on = 1;
++}
++DECLARE_PCI_FIXUP_CLASS_EARLY(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CS5536_ISA,
++	PCI_CLASS_BRIDGE_ISA, 8, cs5536_isa_mmio_always_on);
+-- 
+1.7.10.4

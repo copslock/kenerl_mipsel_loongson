@@ -1,26 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Feb 2013 03:31:30 +0100 (CET)
-Received: from kymasys.com ([64.62.140.43]:60280 "HELO kymasys.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6824790Ab3BSCb3kHiM6 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Feb 2013 03:31:29 +0100
-Received: from ::ffff:75.40.23.192 ([75.40.23.192]) by kymasys.com for <linux-mips@linux-mips.org>; Mon, 18 Feb 2013 18:31:17 -0800
-Subject: Re: [PATCH v2 11/18] KVM/MIPS32: Routines to handle specific traps/exceptions while executing the guest.
-Mime-Version: 1.0 (Apple Message framework v1283)
-Content-Type: text/plain; charset=us-ascii
-From:   Sanjay Lal <sanjayl@kymasys.com>
-In-Reply-To: <20130218094450.GA9817@redhat.com>
-Date:   Mon, 18 Feb 2013 18:31:17 -0800
-Cc:     kvm@vger.kernel.org, linux-mips@linux-mips.org
-Content-Transfer-Encoding: 8BIT
-Message-Id: <47FBD60F-AF5B-48C7-BCCF-C26AC581E540@kymasys.com>
-References: <1353551656-23579-1-git-send-email-sanjayl@kymasys.com> <1353551656-23579-12-git-send-email-sanjayl@kymasys.com> <20130206132018.GC7837@redhat.com> <D2EC658F-5271-4221-8141-930E00D3FF84@kymasys.com> <20130218094450.GA9817@redhat.com>
-To:     Gleb Natapov <gleb@redhat.com>
-X-Mailer: Apple Mail (2.1283)
-X-archive-position: 35786
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Feb 2013 09:13:00 +0100 (CET)
+Received: from cn.fujitsu.com ([222.73.24.84]:13878 "EHLO song.cn.fujitsu.com"
+        rhost-flags-OK-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823059Ab3BSIM6c6wi9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Feb 2013 09:12:58 +0100
+X-IronPort-AV: E=Sophos;i="4.84,693,1355068800"; 
+   d="scan'208";a="6729000"
+Received: from unknown (HELO tang.cn.fujitsu.com) ([10.167.250.3])
+  by song.cn.fujitsu.com with ESMTP; 19 Feb 2013 16:10:29 +0800
+Received: from fnstmail02.fnst.cn.fujitsu.com (tang.cn.fujitsu.com [127.0.0.1])
+        by tang.cn.fujitsu.com (8.14.3/8.13.1) with ESMTP id r1J8Cllm009740;
+        Tue, 19 Feb 2013 16:12:47 +0800
+Received: from liguang.fnst.cn.fujitsu.com ([10.167.225.128])
+          by fnstmail02.fnst.cn.fujitsu.com (Lotus Domino Release 8.5.3)
+          with ESMTP id 2013021916120874-239743 ;
+          Tue, 19 Feb 2013 16:12:08 +0800 
+From:   liguang <lig.fnst@cn.fujitsu.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Cc:     liguang <lig.fnst@cn.fujitsu.com>
+Subject: [PATCH] mips: remove unecessary __linux__ check
+Date:   Tue, 19 Feb 2013 16:12:51 +0800
+Message-Id: <1361261571-1556-1-git-send-email-lig.fnst@cn.fujitsu.com>
+X-Mailer: git-send-email 1.7.2.5
+X-MIMETrack: Itemize by SMTP Server on mailserver/fnst(Release 8.5.3|September 15, 2011) at
+ 2013/02/19 16:12:08,
+        Serialize by Router on mailserver/fnst(Release 8.5.3|September 15, 2011) at
+ 2013/02/19 16:12:09,
+        Serialize complete at 2013/02/19 16:12:09
+X-archive-position: 35787
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sanjayl@kymasys.com
+X-original-sender: lig.fnst@cn.fujitsu.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -34,43 +45,36 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+sgidefs.h has strict check for __linux__,
+it seems too harsh, as far as I test, 2 cross
+compiler for mips will not define it automatically,
+and exit build process with error
+"#error Use a Linux compiler or give up".
+remove it will not hurt, I think.
 
-On Feb 18, 2013, at 1:44 AM, Gleb Natapov wrote:
+Signed-off-by: liguang <lig.fnst@cn.fujitsu.com>
+---
+ arch/mips/include/uapi/asm/sgidefs.h |    8 --------
+ 1 files changed, 0 insertions(+), 8 deletions(-)
 
-> On Fri, Feb 15, 2013 at 11:10:46AM -0500, Sanjay Lal wrote:
->> 
->> On Feb 6, 2013, at 8:20 AM, Gleb Natapov wrote:
->> 
->>> On Wed, Nov 21, 2012 at 06:34:09PM -0800, Sanjay Lal wrote:
->>>> +static gpa_t kvm_trap_emul_gva_to_gpa_cb(gva_t gva)
->>>> +{
->>>> +	gpa_t gpa;
->>>> +	uint32_t kseg = KSEGX(gva);
->>>> +
->>>> +	if ((kseg == CKSEG0) || (kseg == CKSEG1))
->>> You seems to be using KVM_GUEST_KSEGX variants on gva in all other
->>> places. Why not here?
->> 
->> This function is invoked to handle 2 scenarios:
->> (1) Parse the boot code config tables setup by QEMU's Malta emulation. The pointers in the tables are actual KSEG0 addresses (unmapped, cached) and not Guest KSEG0 addresses.
->> 
-> Where is it called for that purpose? The only place where gva_to_gpa
-> callback is called is in kvm/kvm_mips_emul.c:kvm_mips_emulate_(store|load)
-Load/stores from/to KSEG1 generate the Address Error Load/Store exceptions. The handler calls kvm_mips_emul.c:kvm_mips_emulate_(store|load) which then call the gva_to_gpa callback.
-
-> 
->> (2) Handle I/O accesses by the guest.  On MIPS platforms, I/O device registers are mapped into the KSEG1 address space (unmapped, uncached).  Again like (1) these are actual KSEG1 addresses, which cause an exception and are passed onto QEMU for I/O emulation.
->> 
-> So guest KSEG1 registers is mapped to 0xA0000000-0xBFFFFFFF ranges just
-> like on a host? Can you give corresponding segment names to those ranges
-> 
-> Guest User address space:   0x00000000 -> 0x40000000 (useg?)
-> Guest Kernel Unmapped:      0x40000000 -> 0x60000000 (kseg0?)
-> Guest Kernel Mapped:        0x60000000 -> 0x80000000 (?)
-> 
-
-
-Yes, now that you mention it :-). I'll add a corresponding Guest Kernel KSEG1 segment name.
-
-Regards
-Sanjay
+diff --git a/arch/mips/include/uapi/asm/sgidefs.h b/arch/mips/include/uapi/asm/sgidefs.h
+index 876442f..5be81f8 100644
+--- a/arch/mips/include/uapi/asm/sgidefs.h
++++ b/arch/mips/include/uapi/asm/sgidefs.h
+@@ -11,14 +11,6 @@
+ #define __ASM_SGIDEFS_H
+ 
+ /*
+- * Using a Linux compiler for building Linux seems logic but not to
+- * everybody.
+- */
+-#ifndef __linux__
+-#error Use a Linux compiler or give up.
+-#endif
+-
+-/*
+  * Definitions for the ISA levels
+  *
+  * With the introduction of MIPS32 / MIPS64 instruction sets definitions
+-- 
+1.7.2.5

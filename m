@@ -1,28 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Feb 2013 21:50:11 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:41853 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825899Ab3BSUuJL9hd9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 19 Feb 2013 21:50:09 +0100
-Message-ID: <5123E45B.8060203@phrozen.org>
-Date:   Tue, 19 Feb 2013 21:45:15 +0100
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.7) Gecko/20120922 Icedove/10.0.7
-MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-CC:     ralf@linux-mips.org, "David S. Miller" <davem@davemloft.net>,
-        linux-mips@linux-mips.org,
-        Network Development <netdev@vger.kernel.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: Re: Upcoming cross-tree build breakage on merge window
-References: <CACna6ryD3SjLN-oauvVuRa+q7an8DaULj+Uj4bwFSzQf2WCvMw@mail.gmail.com> <CACna6rwYZWsGhb8ksko+XGvod=hVyVHu2QrCfEisTG=YAEfBRQ@mail.gmail.com>
-In-Reply-To: <CACna6rwYZWsGhb8ksko+XGvod=hVyVHu2QrCfEisTG=YAEfBRQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-archive-position: 35789
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Feb 2013 07:17:57 +0100 (CET)
+Received: from mail-bk0-f46.google.com ([209.85.214.46]:61443 "EHLO
+        mail-bk0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827454Ab3BTGRzIZPkH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Feb 2013 07:17:55 +0100
+Received: by mail-bk0-f46.google.com with SMTP id j5so3481077bkw.19
+        for <multiple recipients>; Tue, 19 Feb 2013 22:17:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:from:to:cc:subject:date:message-id:x-mailer;
+        bh=nbm0gZCeSkLhw8gAiYRbblFBhUEtHW9Z98h8f04L03o=;
+        b=IaFwuz8CQc4jVyn/8HctSDBc4Wjr+uo36m6dQ8n1bnRv+haLIq2hf/7eaiOCk5QRWm
+         e3y9CcP7VrHF7PnQDzdGkCWUE82wWeTKlVozEvmu8RqUks146+xsv99Tyxn1KwpnU8SQ
+         TTFy9RcYe/1GU0CgWfpXZkgwc+e8vzqdTIpPqmBoVUMYZZ98IqGvJC1UdTFGMZd2zglQ
+         jC6vqcM5lVjBG3hE1dIWHdTMy4QIf+reSF7dwu3f+VGHL0t6qBEp3zoqhtIAtUUg80dm
+         iHOnWsEQMuxBpKmCgS/g081+Hjp+G3IkCa4xJQIZoK/IrnqshrAx07Dl8AJfzxx8pWPn
+         iiuQ==
+X-Received: by 10.205.127.135 with SMTP id ha7mr7633253bkc.140.1361341069628;
+        Tue, 19 Feb 2013 22:17:49 -0800 (PST)
+Received: from localhost ([61.148.56.138])
+        by mx.google.com with ESMTPS id go8sm22899083bkc.20.2013.02.19.22.17.44
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Tue, 19 Feb 2013 22:17:49 -0800 (PST)
+From:   Yong Zhang <yong.zhang0@gmail.com>
+To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>
+Subject: [PATCH] MIPS: fix access_ok()
+Date:   Wed, 20 Feb 2013 14:17:36 +0800
+Message-Id: <1361341056-15287-1-git-send-email-yong.zhang0@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
+X-archive-position: 35790
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: yong.zhang0@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,31 +47,50 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 19/02/13 20:44, Rafał Miłecki wrote:
-> 2013/1/23 Rafał Miłecki<zajec5@gmail.com>:
->> I've noticed possible build breakage when two trees get merged:
->> net-next and linux-john (MIPS).
->>
->> This is about two following commits:
->> http://git.kernel.org/?p=linux/kernel/git/davem/net-next.git;a=commit;h=dd4544f05469aaaeee891d7dc54d66430344321e
->> http://git.linux-mips.org/?p=john/linux-john.git;a=commit;h=a008ca117bc85a9d66c47cd5ab18a6c332411919
->>
->> The first one adds "bgmac" driver which uses asm/mach-bcm47xx/nvram.h
->> and nvram_getenv. The second one renames them.
->>
->> Can you handle this in some clever way during merge window, please?
->>
->> The fix is trivial:
->> 1) Use<bcm47xx_nvram.h>
->> 2) Use bcm47xx_nvram_getenv
->
-> Just a reminder.
->
+From: Yong Zhang <yong.zhang@windriver.com>
 
+Current access_ok() will fail even if the address range is
+valid when it reaches to the end of TASK_SIZE.
+For exampe: addr = 0xfffffffff0; size = 16;
+the real address range it want to access is 0xfffffffff0~0xfffffffff;
+but addr + size = 0x10000000000 which we will not and can't access.
+In current realization of access_ok(), the high bit will be 1
+thus access_ok() indicates the operation is not allowed.
 
-Hi,
+The bug is found in old kerenl(before vdso is realized) in
+following typical call trace:
+sys_mount()
+  copy_mount_options()
+    exact_copy_from_user()
+When the parameter 'from' for exact_copy_from_user() residents in
+the last page of the task's virtual address, such as stack.
+But it's still in current kernel.
 
-Ralf told me he will pull the fix into his upstream-sfr.git today so 
-that the upcoming linux-next should not build break due to this patch
+Signed-off-by: Yong Zhang <yong.zhang0@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: David Daney <david.daney@cavium.com>
+---
+ arch/mips/include/asm/uaccess.h |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-	John
+diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
+index 3b92efe..55d4214 100644
+--- a/arch/mips/include/asm/uaccess.h
++++ b/arch/mips/include/asm/uaccess.h
+@@ -114,8 +114,12 @@ extern u64 __ua_limit;
+ 	unsigned long __ok;						\
+ 									\
+ 	__chk_user_ptr(addr);						\
+-	__ok = (signed long)(__mask & (__addr | (__addr + __size) |	\
+-		__ua_size(__size)));					\
++	if (likely(size))						\
++		__ok = (signed long)(__mask & (__addr |			\
++				(__addr + __size - 1) |			\
++				__ua_size(__size)));			\
++	else								\
++		__ok = 0;						\
+ 	__ok == 0;							\
+ })
+ 
+-- 
+1.7.9.5

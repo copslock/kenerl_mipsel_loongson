@@ -1,28 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Feb 2013 07:39:16 +0100 (CET)
-Received: from mo10.iij4u.or.jp ([210.138.174.78]:58980 "EHLO mo.iij4u.or.jp"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827530Ab3BUGjOTVvWf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Feb 2013 07:39:14 +0100
-Received: by mo.iij4u.or.jp (mo10) id r1L6d9hw021022; Thu, 21 Feb 2013 15:39:09 +0900
-Received: from delta (sannin29190.nirai.ne.jp [203.160.29.190])
-        by mbox.iij4u.or.jp (mbox10) id r1L6d713000384
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Thu, 21 Feb 2013 15:39:09 +0900
-Date:   Thu, 21 Feb 2013 15:38:19 +0900
-From:   Yoichi Yuasa <yuasa@linux-mips.org>
-To:     ralf@linux-mips.org
-Cc:     yuasa@linux-mips.org, linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: VR4133: add LL/SC support
-Message-Id: <20130221153819.b3e9b650d87ffea492679a86@linux-mips.org>
-X-Mailer: Sylpheed 3.2.0beta5 (GTK+ 2.24.10; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35801
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Feb 2013 14:30:54 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:36240 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6827538Ab3BUNawlF9CW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 Feb 2013 14:30:52 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r1LDUopH011512;
+        Thu, 21 Feb 2013 14:30:50 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r1LDUmjV011502;
+        Thu, 21 Feb 2013 14:30:48 +0100
+Date:   Thu, 21 Feb 2013 14:30:48 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Steven Hill <Steven.Hill@imgtec.com>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "mcdonald.shane@gmail.com" <mcdonald.shane@gmail.com>
+Subject: Re: [PATCH v5] MIPS: Add option to disable software I/O coherency.
+Message-ID: <20130221133048.GA6065@linux-mips.org>
+References: <1361390840-31415-1-git-send-email-Steven.Hill@imgtec.com>
+ <0573B2AE5BBFFC408CC8740092293B5ACB389E@bamail02.ba.imgtec.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0573B2AE5BBFFC408CC8740092293B5ACB389E@bamail02.ba.imgtec.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 35802
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,43 +41,10 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+On Wed, Feb 20, 2013 at 08:22:06PM +0000, Steven Hill wrote:
 
-Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
----
- arch/mips/kernel/cpu-probe.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+> This new version of the patch fixes the error from the kbuild test robot from yesterday and also updates my email address.
 
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 9f31334..44c5aad 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -547,6 +547,9 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		c->tlbsize = 48;
- 		break;
- 	case PRID_IMP_VR41XX:
-+		c->isa_level = MIPS_CPU_ISA_III;
-+		c->options = R4K_OPTS;
-+		c->tlbsize = 32;
- 		switch (c->processor_id & 0xf0) {
- 		case PRID_REV_VR4111:
- 			c->cputype = CPU_VR4111;
-@@ -571,6 +574,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 				__cpu_name[cpu] = "NEC VR4131";
- 			} else {
- 				c->cputype = CPU_VR4133;
-+				c->options |= MIPS_CPU_LLSC;
- 				__cpu_name[cpu] = "NEC VR4133";
- 			}
- 			break;
-@@ -580,9 +584,6 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 			__cpu_name[cpu] = "NEC Vr41xx";
- 			break;
- 		}
--		c->isa_level = MIPS_CPU_ISA_III;
--		c->options = R4K_OPTS;
--		c->tlbsize = 32;
- 		break;
- 	case PRID_IMP_R4300:
- 		c->cputype = CPU_R4300;
--- 
-1.7.9.5
+Maybe we should update the addresses of everybody in a single big patch?
+
+  Ralf

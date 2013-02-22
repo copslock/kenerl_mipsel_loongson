@@ -1,30 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Feb 2013 18:39:30 +0100 (CET)
-Received: from userp1040.oracle.com ([156.151.31.81]:45986 "EHLO
-        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6827576Ab3BVRj3D0LW0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Feb 2013 18:39:29 +0100
-Received: from ucsinet21.oracle.com (ucsinet21.oracle.com [156.151.31.93])
-        by userp1040.oracle.com (Sentrion-MTA-4.3.1/Sentrion-MTA-4.3.1) with ESMTP id r1MHcEIr014128
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 22 Feb 2013 17:38:15 GMT
-Received: from acsmt356.oracle.com (acsmt356.oracle.com [141.146.40.156])
-        by ucsinet21.oracle.com (8.14.4+Sun/8.14.4) with ESMTP id r1MHcCoQ001862
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Fri, 22 Feb 2013 17:38:12 GMT
-Received: from abhmt109.oracle.com (abhmt109.oracle.com [141.146.116.61])
-        by acsmt356.oracle.com (8.12.11.20060308/8.12.11) with ESMTP id r1MHcAQ8005390;
-        Fri, 22 Feb 2013 11:38:10 -0600
-Received: from phenom.dumpdata.com (/50.195.21.189)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 22 Feb 2013 09:38:10 -0800
-Received: by phenom.dumpdata.com (Postfix, from userid 1000)
-        id B5AA41C3935; Fri, 22 Feb 2013 12:38:05 -0500 (EST)
-Date:   Fri, 22 Feb 2013 12:38:05 -0500
-From:   Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-To:     "H. Peter Anvin" <hpa@zytor.com>
-Cc:     "H. Peter Anvin" <hpa@linux.intel.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Feb 2013 18:46:16 +0100 (CET)
+Received: from e39.co.us.ibm.com ([32.97.110.160]:58315 "EHLO
+        e39.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6827576Ab3BVRqOyOac1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Feb 2013 18:46:14 +0100
+Received: from /spool/local
+        by e39.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <dave@linux.vnet.ibm.com>;
+        Fri, 22 Feb 2013 10:46:07 -0700
+Received: from d03dlp02.boulder.ibm.com (9.17.202.178)
+        by e39.co.us.ibm.com (192.168.1.139) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Fri, 22 Feb 2013 10:46:05 -0700
+Received: from d03relay04.boulder.ibm.com (d03relay04.boulder.ibm.com [9.17.195.106])
+        by d03dlp02.boulder.ibm.com (Postfix) with ESMTP id D82123E40040;
+        Fri, 22 Feb 2013 10:45:55 -0700 (MST)
+Received: from d03av03.boulder.ibm.com (d03av03.boulder.ibm.com [9.17.195.169])
+        by d03relay04.boulder.ibm.com (8.13.8/8.13.8/NCO v10.0) with ESMTP id r1MHiVjW154482;
+        Fri, 22 Feb 2013 10:46:04 -0700
+Received: from d03av03.boulder.ibm.com (loopback [127.0.0.1])
+        by d03av03.boulder.ibm.com (8.14.4/8.13.1/NCO v10.0 AVout) with ESMTP id r1MHdDhE032706;
+        Fri, 22 Feb 2013 10:39:27 -0700
+Received: from kernel.stglabs.ibm.com (kernel.stglabs.ibm.com [9.114.214.19])
+        by d03av03.boulder.ibm.com (8.14.4/8.13.1/NCO v10.0 AVin) with ESMTP id r1MHd9qx031972;
+        Fri, 22 Feb 2013 10:39:09 -0700
+Received: from [9.65.132.22] (sig-9-65-132-22.mts.ibm.com [9.65.132.22])
+        by kernel.stglabs.ibm.com (Postfix) with SMTP id 712E924028D;
+        Fri, 22 Feb 2013 09:30:30 -0800 (PST)
+Message-ID: <5127AB34.8090406@linux.vnet.ibm.com>
+Date:   Fri, 22 Feb 2013 09:30:28 -0800
+From:   Dave Hansen <dave@linux.vnet.ibm.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
+MIME-Version: 1.0
+To:     Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+CC:     "H. Peter Anvin" <hpa@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         "David S. Miller" <davem@davemloft.net>,
+        "H. Peter Anvin" <hpa@zytor.com>,
         "Rafael J. Wysocki" <rjw@sisk.pl>, stable@vger.kernel.org,
         Alexander Duyck <alexander.h.duyck@intel.com>,
         Andrea Arcangeli <aarcange@redhat.com>,
@@ -33,7 +43,6 @@ Cc:     "H. Peter Anvin" <hpa@linux.intel.com>,
         Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
         Borislav Petkov <bp@suse.de>, Christoph Lameter <cl@linux.com>,
         Daniel J Blueman <daniel@numascale-asia.com>,
-        Dave Hansen <dave@linux.vnet.ibm.com>,
         Eric Biederman <ebiederm@xmission.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
         Frederic Weisbecker <fweisbec@gmail.com>,
@@ -69,8 +78,7 @@ Cc:     "H. Peter Anvin" <hpa@linux.intel.com>,
         Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
         Steven Rostedt <rostedt@goodmis.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
-        <ville.syrjala@linux.intel.com>,
+        =?ISO-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>,
         Yasuaki Ishimatsu <isimatu.yasuaki@jp.fujitsu.com>,
         Yinghai Lu <yinghai@kernel.org>,
         Zachary Amsden <zamsden@gmail.com>, avi@redhat.com,
@@ -79,21 +87,17 @@ Cc:     "H. Peter Anvin" <hpa@linux.intel.com>,
         virtualization@lists.linux-foundation.org,
         xen-devel@lists.xensource.com
 Subject: Re: [GIT PULL] x86/mm changes for v3.9-rc1
-Message-ID: <20130222173805.GC7768@phenom.dumpdata.com>
-References: <201302220034.r1M0Y6O8008311@terminus.zytor.com>
- <20130222165531.GA29308@phenom.dumpdata.com>
- <5127A719.3060702@zytor.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5127A719.3060702@zytor.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Source-IP: ucsinet21.oracle.com [156.151.31.93]
-X-archive-position: 35813
+References: <201302220034.r1M0Y6O8008311@terminus.zytor.com> <20130222165531.GA29308@phenom.dumpdata.com>
+In-Reply-To: <20130222165531.GA29308@phenom.dumpdata.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 13022217-3620-0000-0000-0000015836C2
+X-archive-position: 35814
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: konrad.wilk@oracle.com
+X-original-sender: dave@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -107,27 +111,76 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Feb 22, 2013 at 09:12:57AM -0800, H. Peter Anvin wrote:
-> On 02/22/2013 08:55 AM, Konrad Rzeszutek Wilk wrote:
-> >
-> >What is bizzare is that I do recall testing this (and Stefano also did it).
-> >So I am not sure what has altered.
-> >
+On 02/22/2013 08:55 AM, Konrad Rzeszutek Wilk wrote:
+> On Thu, Feb 21, 2013 at 04:34:06PM -0800, H. Peter Anvin wrote:
+>> Hi Linus,
+>>
+>> This is a huge set of several partly interrelated (and concurrently
+>> developed) changes, which is why the branch history is messier than
+>> one would like.
+>>
+>> The *really* big items are two humonguous patchsets mostly developed
+>> by Yinghai Lu at my request, which completely revamps the way we
+>> create initial page tables.  In particular, rather than estimating how
+>> much memory we will need for page tables and then build them into that
+>> memory -- a calculation that has shown to be incredibly fragile -- we
+>> now build them (on 64 bits) with the aid of a "pseudo-linear mode" --
+>> a #PF handler which creates temporary page tables on demand.
+>>
+>> This has several advantages:
+>>
+>> 1. It makes it much easier to support things that need access to
+>>    data very early (a followon patchset uses this to load microcode
+>>    way early in the kernel startup).
+>>
+>> 2. It allows the kernel and all the kernel data objects to be invoked
+>>    from above the 4 GB limit.  This allows kdump to work on very large
+>>    systems.
+>>
+>> 3. It greatly reduces the difference between Xen and native (Xen's
+>>    equivalent of the #PF handler are the temporary page tables created
+>>    by the domain builder), eliminating a bunch of fragile hooks.
+>>
+>> The patch series also gets us a bit closer to W^X.
+>>
+>> Additional work in this pull is the 64-bit get_user() work which you
+>> were also involved with, and a bunch of cleanups/speedups to
+>> __phys_addr()/__pa().
 > 
-> Yes, there was a very specific reason why I wanted you guys to test it...
+> Looking at figuring out which of the patches in the branch did this, but
+> with this merge I am getting a crash with a very simple PV guest (booted with
+> one 1G):
+> 
+> Call Trace:
+>   [<ffffffff8103feba>] xen_get_user_pgd+0x5a  <--
+>   [<ffffffff8103feba>] xen_get_user_pgd+0x5a 
+>   [<ffffffff81042d27>] xen_write_cr3+0x77 
+>   [<ffffffff81ad2d21>] init_mem_mapping+0x1f9 
+>   [<ffffffff81ac293f>] setup_arch+0x742 
+>   [<ffffffff81666d71>] printk+0x48 
+>   [<ffffffff81abcd62>] start_kernel+0x90 
+>   [<ffffffff8109416b>] __add_preferred_console.clone.1+0x9b 
+>   [<ffffffff81abc5f7>] x86_64_start_reservations+0x2a 
+>   [<ffffffff81abf0c7>] xen_start_kernel+0x564 
 
-Exactly. And I re-ran the same test, but with a new kernel. This is what
-git reflog tells me:
+Do you have CONFIG_DEBUG_VIRTUAL on?
 
-473cd24 HEAD@{75}: checkout: moving from 08f321ed97353cf3b3fafa6b1c1971d6a8970830 to linux-next
-08f321e HEAD@{76}: checkout: moving from linux-next to yinghai/for-x86-mm
-eb827a7 HEAD@{77}: checkout: moving from 1b66ccf15ff4bd0200567e8d70446a8763f96ee7 to linux-next
-[konrad@build linux]$ git show 08f321e
-commit 08f321ed97353cf3b3fafa6b1c1971d6a8970830
-Author: Yinghai Lu <yinghai@kernel.org>
-Date:   Thu Nov 8 00:00:19 2012 -0800
+You're probably hitting the new BUG_ON() in __phys_addr().  It's
+intended to detect places where someone is doing a __pa()/__phys_addr()
+on an address that's outside the kernel's identity mapping.
 
-    mm: Kill NO_BOOTMEM version free_all_bootmem_node()
+There are a lot of __pa() calls around there, but from the looks of it,
+it's this code:
 
-And I recall Stefano later on testing (I was in a conference and did not have
-the opportunity to test it). Not sure what he ran with.
+static pgd_t *xen_get_user_pgd(pgd_t *pgd)
+{
+...
+        if (offset < pgd_index(USER_LIMIT)) {
+                struct page *page = virt_to_page(pgd_page);
+
+I'm a bit fuzzy on exactly what the code is trying to do here.  It could
+mean either that the identity mapping isn't set up enough yet, or that
+__pa() is getting called on a bogus address.
+
+I'm especially fuzzy on why we'd be calling anything that's looking at
+userspace pagetables (xen_get_user_pgd() ??) this early in boot.

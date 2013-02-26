@@ -1,55 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Feb 2013 15:55:05 +0100 (CET)
-Received: from mail-ee0-f54.google.com ([74.125.83.54]:41674 "EHLO
-        mail-ee0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823907Ab3BZOzBNOskf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Feb 2013 15:55:01 +0100
-Received: by mail-ee0-f54.google.com with SMTP id c41so2468669eek.41
-        for <linux-mips@linux-mips.org>; Tue, 26 Feb 2013 06:54:55 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:from:to:cc:references:in-reply-to:subject:date
-         :message-id:mime-version:content-type:content-transfer-encoding
-         :x-mailer:thread-index:content-language:x-gm-message-state;
-        bh=6RgI3oV8uf5xQUmef9sfEYVW8mL8EYzqqhk3KHimCtI=;
-        b=ahedxSS7/OkMNnNiVZCBNl0OF25ie86Zxy0jeKASgwOHSO5OHgGIZgiLnUT7j32gcs
-         bb6O/dPisjSS6mZ8La/34DWeZFFBEbD3jfdSai147v2zmwwBuAjclUECVvgXhrPLta72
-         D9GkSItUBMnRxDurkfSQA+XQxk+0Orr5IFg1jrFw3aB4UKlWZvp1DuWj1xCa5DdozHEA
-         aHnuF7iWxhLOH2Yi8IxJYMhmjicMa4nDxwaOL5xEI+PF6LY4sjKdRRwUNWSFZXYNkqbj
-         KfIGuD707L8odeIbhyTMfd8kaPJlGWeQ3WPpNDxgkz8rb+V7kF8ySJ5jXGbuTsmG1fKs
-         mncg==
-X-Received: by 10.14.179.194 with SMTP id h42mr50197864eem.46.1361890495848;
-        Tue, 26 Feb 2013 06:54:55 -0800 (PST)
-Received: from hotrod ([77.70.100.51])
-        by mx.google.com with ESMTPS id 3sm1876437eej.6.2013.02.26.06.54.53
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 26 Feb 2013 06:54:54 -0800 (PST)
-From:   "Svetoslav Neykov" <svetoslav@neykov.name>
-To:     "'Alexander Shishkin'" <alexander.shishkin@linux.intel.com>,
-        "'Ralf Baechle'" <ralf@linux-mips.org>,
-        "'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>,
-        "'Gabor Juhos'" <juhosg@openwrt.org>,
-        "'John Crispin'" <blogic@openwrt.org>,
-        "'Alan Stern'" <stern@rowland.harvard.edu>,
-        "'Luis R. Rodriguez'" <mcgrof@qca.qualcomm.com>
-Cc:     <linux-mips@linux-mips.org>, <linux-usb@vger.kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Feb 2013 16:45:43 +0100 (CET)
+Received: from metis.ext.pengutronix.de ([92.198.50.35]:50537 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6818018Ab3BZPpjMDQRx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Feb 2013 16:45:39 +0100
+Received: from gallifrey.ext.pengutronix.de ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=bjornoya.do.blackshift.org)
+        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1UAMii-000707-Qy; Tue, 26 Feb 2013 16:45:32 +0100
+Received: from [IPv6:2001:6f8:105b:1122:21d:e0ff:fe39:f61b] (hardanger.wlan.blackshift.org [IPv6:2001:6f8:105b:1122:21d:e0ff:fe39:f61b])
+        (using TLSv1 with cipher ECDHE-ECDSA-AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: frogger)
+        by bjornoya.do.blackshift.org (Postfix) with ESMTPSA id BCD3B5EA03;
+        Tue, 26 Feb 2013 16:45:27 +0100 (CET)
+Message-ID: <512CD893.50904@pengutronix.de>
+Date:   Tue, 26 Feb 2013 16:45:23 +0100
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+Organization: Pengutronix e.K.
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130215 Thunderbird/17.0.3
+MIME-Version: 1.0
+To:     Alexander Shishkin <alexander.shishkin@linux.intel.com>
+CC:     Svetoslav Neykov <svetoslav@neykov.name>,
+        'Ralf Baechle' <ralf@linux-mips.org>,
+        'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>,
+        'Gabor Juhos' <juhosg@openwrt.org>,
+        'John Crispin' <blogic@openwrt.org>,
+        'Alan Stern' <stern@rowland.harvard.edu>,
+        "'Luis R. Rodriguez'" <mcgrof@qca.qualcomm.com>,
+        linux-mips@linux-mips.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH 0/5] Chipidea driver support for the AR933x platform
 References: <1360791538-6332-1-git-send-email-svetoslav@neykov.name> <87k3pvxkn8.fsf@ashishki-desk.ger.corp.intel.com> <078801ce142f$0108dea0$031a9be0$@neykov.name> <878v6bxhbd.fsf@ashishki-desk.ger.corp.intel.com>
 In-Reply-To: <878v6bxhbd.fsf@ashishki-desk.ger.corp.intel.com>
-Subject: RE: [PATCH 0/5] Chipidea driver support for the AR933x platform
-Date:   Tue, 26 Feb 2013 16:54:50 +0200
-Message-ID: <078901ce1431$3bcc4980$b364dc80$@neykov.name>
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 14.0
-thread-index: AQGDG6p+wHZ3zGBMHoZ7+PlD69kkYAF6L3a2AO2krxMBvH6/M5kBBuvw
-Content-Language: bg
-X-Gm-Message-State: ALoCoQkqG/eurzN4XAGLO0bnQux8s7ZQkvM7q1kjoYHuiZnVhdQKXWy/ikkMe1r6VbHsVdc9RuDH
-X-archive-position: 35825
+X-Enigmail-Version: 1.5
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="----enig2WVSVJIHALOVQLUUILEHP"
+X-SA-Exim-Connect-IP: 2001:6f8:1178:4:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@linux-mips.org
+X-archive-position: 35826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: svetoslav@neykov.name
+X-original-sender: mkl@pengutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,12 +57,52 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
->Great, thanks!
->Looks like this patchset will need some synchronization with Sacha's
->dr_mode/phy_mode patchset, but I presume you're aware of that.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+------enig2WVSVJIHALOVQLUUILEHP
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Yes, I will base the next patch on the existing changes, thanks for bringing
-that up.
+On 02/26/2013 03:47 PM, Alexander Shishkin wrote:
+> Svetoslav Neykov <svetoslav@neykov.name> writes:
+>=20
+>> Hi Alex,
+>> I am working on the incorporating all received comments - thanks to al=
+l for
+>> taking their time to comment.
+>> Apologies for not replying to the received mails, didn't want to spam =
+with
+>> OK replies to each separately.
+>=20
+> Great, thanks!
+> Looks like this patchset will need some synchronization with Sacha's
+> dr_mode/phy_mode patchset, but I presume you're aware of that.
 
-Regards,
-Svetoslav.
+The current version of Sascha's patches is here:
+
+http://git.pengutronix.de/?p=3Dmgr/linux.git;a=3Dshortlog;h=3Drefs/heads/=
+chipidea-for-v3.10
+
+Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+------enig2WVSVJIHALOVQLUUILEHP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iEYEARECAAYFAlEs2JYACgkQjTAFq1RaXHN2SwCdE8hBKqI+SZFviAk8J0e3QYrs
+5IIAnAyW/+nkXufj/0xm3nITM5btme7L
+=tOL2
+-----END PGP SIGNATURE-----
+
+------enig2WVSVJIHALOVQLUUILEHP--

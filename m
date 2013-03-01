@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Mar 2013 23:19:01 +0100 (CET)
-Received: from mail-ee0-f51.google.com ([74.125.83.51]:40114 "EHLO
-        mail-ee0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827463Ab3CAWTAHIUej (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Mar 2013 23:19:00 +0100
-Received: by mail-ee0-f51.google.com with SMTP id d17so2672214eek.38
-        for <linux-mips@linux-mips.org>; Fri, 01 Mar 2013 14:18:54 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Mar 2013 23:19:20 +0100 (CET)
+Received: from mail-ee0-f45.google.com ([74.125.83.45]:38340 "EHLO
+        mail-ee0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827505Ab3CAWTP7DY2a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Mar 2013 23:19:15 +0100
+Received: by mail-ee0-f45.google.com with SMTP id b57so2666775eek.4
+        for <linux-mips@linux-mips.org>; Fri, 01 Mar 2013 14:19:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
-        h=x-received:from:to:cc:subject:date:message-id:x-mailer
-         :x-gm-message-state;
-        bh=vT/3YtNPORJYwIC2383h9tOZkEGFBqU4bLEkLoNsS4M=;
-        b=djq34popl1tsYqQ/049g5/Ighu/el0H2xrpaSOonx0UEt9acIud/G83dObdiMAvDjs
-         ylxDayPEtKnDRKljAH9tKGgOxeBByDWt3LVynDhiPWAZsnhgWDV9IMUyNNKmcgT3mOZY
-         1fGqy8vBGxz6fY9KwHTvLCBrZHse3mOrTs/fY+Vlr+Z/8y5Jnt4iZNazQmetN/ESYz/h
-         JRHvypNcuhFrpFNpDBC0RZD2lyzweSoahCThlr4vDUUwFIU0I4/e2Smpe5tE0I4tI3qR
-         eyvGVO3l+3i9dqnEffI61UdYCj67SfWg6/kUH8t4rWpCkuoFbN3cOfOjq/sjTb1ZjAAS
-         cBbA==
-X-Received: by 10.14.194.198 with SMTP id m46mr20139488een.8.1362176334247;
-        Fri, 01 Mar 2013 14:18:54 -0800 (PST)
+        h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
+         :references:x-gm-message-state;
+        bh=IRy0o38GOQoeeFJIWQQkUFxOHl+6OiXDwm6mM3sxYQQ=;
+        b=EqcUMdBoXK57jRk3xs4YntnYbI0jkc1rCI8ueMCKiCixTXiL6ocTcb+M4ztPR6pAhq
+         tRl9Rq0aKGLeD3C1tzLPwBBmTZ6ffm9rqeCKzbL3IMW8Q2pIcmUsXaSWnuzRY2itjLfE
+         xWr6J+GohYOm4ZkliFzu1JxpsKuS5kT5vepOWERbF+5N9tM9rlfFkFffm1uIPcPOaF5W
+         au7BmWG6Vnl2tp0mzd+kc4mfR0vQR8eg80RcP8ZjniuYVbIrSoj1k/dyWKTi1GvZmR2O
+         a/NZIjeW5zVvxTaxhZdc0qdS0swMrvjU8m9YhExnLUEkMNDrXA7XcIrX04EhAO72g2YE
+         Oq5w==
+X-Received: by 10.14.200.137 with SMTP id z9mr31905816een.20.1362176350558;
+        Fri, 01 Mar 2013 14:19:10 -0800 (PST)
 Received: from localhost.localdomain ([77.70.100.51])
-        by mx.google.com with ESMTPS id m46sm19282356eeo.16.2013.03.01.14.18.52
+        by mx.google.com with ESMTPS id m46sm19282356eeo.16.2013.03.01.14.19.08
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 01 Mar 2013 14:18:53 -0800 (PST)
+        Fri, 01 Mar 2013 14:19:09 -0800 (PST)
 From:   Svetoslav Neykov <svetoslav@neykov.name>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
@@ -32,12 +32,14 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
         "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>
 Cc:     linux-mips@linux-mips.org, linux-usb@vger.kernel.org,
         Svetoslav Neykov <svetoslav@neykov.name>
-Subject: [PATCH v2 0/2] Chipidea driver support for the AR933x platform
-Date:   Sat,  2 Mar 2013 00:17:35 +0200
-Message-Id: <1362176257-2328-1-git-send-email-svetoslav@neykov.name>
+Subject: [PATCH v2 1/2] usb: chipidea: big-endian support
+Date:   Sat,  2 Mar 2013 00:17:36 +0200
+Message-Id: <1362176257-2328-2-git-send-email-svetoslav@neykov.name>
 X-Mailer: git-send-email 1.7.9.5
-X-Gm-Message-State: ALoCoQnAhudI9pO4Ct2IfEvZVRrk0X9QtuRnHz32IQK+z3sZWUajivZmi4u8zZrJVD9WeDiaTpmZ
-X-archive-position: 35830
+In-Reply-To: <1362176257-2328-1-git-send-email-svetoslav@neykov.name>
+References: <1362176257-2328-1-git-send-email-svetoslav@neykov.name>
+X-Gm-Message-State: ALoCoQkh/g5+DHBljiM+2XUUux6hiG+hDkWt7o3OlQze230vsWvnBQbvGPO/3ze3IDb1zN//d+ze
+X-archive-position: 35831
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,46 +57,171 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add support for the usb controller in AR933x platform.
-The processor is big-endian so all multi-byte values of the usb 
-descriptors must be converted explicitly. Another difference is that
-the controller supports both host and device modes but not OTG.
-The patches are tested on WR703n router running OpenWRT trunk in device mode.
+Convert between big-endian and little-endian format when accessing the usb controller structures which are little-endian by specification.
+Fix cases where the little-endian memory layout is taken for granted.
+The patch doesn't have any effect on the already supported little-endian architectures.
 
-This version of the patch relies on the changes in "[PATCH 0/3] 
-otg-for-v3.10-v2: separate phy code and add DT helper" and is generated from 
-the tree at http://git.pengutronix.de/?p=mgr/linux.git;a=shortlog;h=refs/heads/chipidea-for-v3.10
+(no changes since last version)
 
-The patch "[PATCH 3/5] usb: chipidea: Don't access OTG related registers" from
-the last patchset is not attached because there have been significant
-changes in the chipidea-for-v3.10 repository which make it obsolete. A patch
-based on the latest changes will be provided in a separate patchset.
+Signed-off-by: Svetoslav Neykov <svetoslav@neykov.name>
+---
+ drivers/usb/chipidea/core.c |    2 +-
+ drivers/usb/chipidea/udc.c  |   59 +++++++++++++++++++++++--------------------
+ 2 files changed, 32 insertions(+), 29 deletions(-)
 
-Changes since last version:
-        * conditionally include ci13xxx_ar933x.c for compilation
-        * removed __devinit/__devexit/__devexit_p()
-        * use a dynamically allocated structure for ci13xxx_platform_data
-        * move controller mode check to platform usb registration
-        * pick a different name for the ar933x chipidea driver
-        * use a correct MODE_ALIAS name
-        * use the dr_mode changes in "[PATCH 0/3] otg-for-v3.10-v2:
-          separate phy code and add DT helper"
-
-
-Svetoslav Neykov (2):
-  usb: chipidea: big-endian support
-  usb: chipidea: AR933x platform support for the chipidea driver
-
- arch/mips/ath79/dev-usb.c                          |   50 +++++++++++++
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h     |    3 +
- .../asm/mach-ath79/ar933x_chipidea_platform.h      |   18 +++++
- drivers/usb/chipidea/Makefile                      |    5 ++
- drivers/usb/chipidea/ci13xxx_ar933x.c              |   75 ++++++++++++++++++++
- drivers/usb/chipidea/core.c                        |    2 +-
- drivers/usb/chipidea/udc.c                         |   59 +++++++--------
- 7 files changed, 183 insertions(+), 29 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-ath79/ar933x_chipidea_platform.h
- create mode 100644 drivers/usb/chipidea/ci13xxx_ar933x.c
-
+diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
+index 45fa227..0e012ca 100644
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -184,7 +184,7 @@ static int hw_device_init(struct ci13xxx *ci, void __iomem *base)
+ 
+ 	ci->hw_bank.cap = ci->hw_bank.abs;
+ 	ci->hw_bank.cap += ci->platdata->capoffset;
+-	ci->hw_bank.op = ci->hw_bank.cap + ioread8(ci->hw_bank.cap);
++	ci->hw_bank.op = ci->hw_bank.cap + (ioread32(ci->hw_bank.cap) & 0xFF);
+ 
+ 	hw_alloc_regmap(ci, false);
+ 	reg = hw_read(ci, CAP_HCCPARAMS, HCCPARAMS_LEN) >>
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index e355914..4f5152b 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -413,10 +413,10 @@ static int _hardware_enqueue(struct ci13xxx_ep *mEp, struct ci13xxx_req *mReq)
+ 			return -ENOMEM;
+ 
+ 		memset(mReq->zptr, 0, sizeof(*mReq->zptr));
+-		mReq->zptr->next    = TD_TERMINATE;
+-		mReq->zptr->token   = TD_STATUS_ACTIVE;
++		mReq->zptr->next    = cpu_to_le32(TD_TERMINATE);
++		mReq->zptr->token   = cpu_to_le32(TD_STATUS_ACTIVE);
+ 		if (!mReq->req.no_interrupt)
+-			mReq->zptr->token   |= TD_IOC;
++			mReq->zptr->token   |= cpu_to_le32(TD_IOC);
+ 	}
+ 	ret = usb_gadget_map_request(&ci->gadget, &mReq->req, mEp->dir);
+ 	if (ret)
+@@ -427,32 +427,35 @@ static int _hardware_enqueue(struct ci13xxx_ep *mEp, struct ci13xxx_req *mReq)
+ 	 * TODO - handle requests which spawns into several TDs
+ 	 */
+ 	memset(mReq->ptr, 0, sizeof(*mReq->ptr));
+-	mReq->ptr->token    = length << ffs_nr(TD_TOTAL_BYTES);
+-	mReq->ptr->token   &= TD_TOTAL_BYTES;
+-	mReq->ptr->token   |= TD_STATUS_ACTIVE;
++	mReq->ptr->token    = cpu_to_le32(length << ffs_nr(TD_TOTAL_BYTES));
++	mReq->ptr->token   &= cpu_to_le32(TD_TOTAL_BYTES);
++	mReq->ptr->token   |= cpu_to_le32(TD_STATUS_ACTIVE);
+ 	if (mReq->zptr) {
+-		mReq->ptr->next    = mReq->zdma;
++		mReq->ptr->next    = cpu_to_le32(mReq->zdma);
+ 	} else {
+-		mReq->ptr->next    = TD_TERMINATE;
++		mReq->ptr->next    = cpu_to_le32(TD_TERMINATE);
+ 		if (!mReq->req.no_interrupt)
+-			mReq->ptr->token  |= TD_IOC;
++			mReq->ptr->token  |= cpu_to_le32(TD_IOC);
++	}
++	mReq->ptr->page[0]  = cpu_to_le32(mReq->req.dma);
++	for (i = 1; i < 5; i++) {
++		u32 page = mReq->req.dma + i * CI13XXX_PAGE_SIZE;
++		page &= ~TD_RESERVED_MASK;
++		mReq->ptr->page[i] = cpu_to_le32(page);
+ 	}
+-	mReq->ptr->page[0]  = mReq->req.dma;
+-	for (i = 1; i < 5; i++)
+-		mReq->ptr->page[i] =
+-			(mReq->req.dma + i * CI13XXX_PAGE_SIZE) & ~TD_RESERVED_MASK;
+ 
+ 	if (!list_empty(&mEp->qh.queue)) {
+ 		struct ci13xxx_req *mReqPrev;
+ 		int n = hw_ep_bit(mEp->num, mEp->dir);
+ 		int tmp_stat;
++		u32 next = mReq->dma & TD_ADDR_MASK;
+ 
+ 		mReqPrev = list_entry(mEp->qh.queue.prev,
+ 				struct ci13xxx_req, queue);
+ 		if (mReqPrev->zptr)
+-			mReqPrev->zptr->next = mReq->dma & TD_ADDR_MASK;
++			mReqPrev->zptr->next = cpu_to_le32(next);
+ 		else
+-			mReqPrev->ptr->next = mReq->dma & TD_ADDR_MASK;
++			mReqPrev->ptr->next = cpu_to_le32(next);
+ 		wmb();
+ 		if (hw_read(ci, OP_ENDPTPRIME, BIT(n)))
+ 			goto done;
+@@ -466,9 +469,9 @@ static int _hardware_enqueue(struct ci13xxx_ep *mEp, struct ci13xxx_req *mReq)
+ 	}
+ 
+ 	/*  QH configuration */
+-	mEp->qh.ptr->td.next   = mReq->dma;    /* TERMINATE = 0 */
+-	mEp->qh.ptr->td.token &= ~TD_STATUS;   /* clear status */
+-	mEp->qh.ptr->cap |=  QH_ZLT;
++	mEp->qh.ptr->td.next   = cpu_to_le32(mReq->dma);    /* TERMINATE = 0 */
++	mEp->qh.ptr->td.token &= cpu_to_le32(~TD_STATUS);   /* clear status */
++	mEp->qh.ptr->cap |=  cpu_to_le32(QH_ZLT);
+ 
+ 	wmb();   /* synchronize before ep prime */
+ 
+@@ -490,11 +493,11 @@ static int _hardware_dequeue(struct ci13xxx_ep *mEp, struct ci13xxx_req *mReq)
+ 	if (mReq->req.status != -EALREADY)
+ 		return -EINVAL;
+ 
+-	if ((TD_STATUS_ACTIVE & mReq->ptr->token) != 0)
++	if ((cpu_to_le32(TD_STATUS_ACTIVE) & mReq->ptr->token) != 0)
+ 		return -EBUSY;
+ 
+ 	if (mReq->zptr) {
+-		if ((TD_STATUS_ACTIVE & mReq->zptr->token) != 0)
++		if ((cpu_to_le32(TD_STATUS_ACTIVE) & mReq->zptr->token) != 0)
+ 			return -EBUSY;
+ 		dma_pool_free(mEp->td_pool, mReq->zptr, mReq->zdma);
+ 		mReq->zptr = NULL;
+@@ -504,7 +507,7 @@ static int _hardware_dequeue(struct ci13xxx_ep *mEp, struct ci13xxx_req *mReq)
+ 
+ 	usb_gadget_unmap_request(&mEp->ci->gadget, &mReq->req, mEp->dir);
+ 
+-	mReq->req.status = mReq->ptr->token & TD_STATUS;
++	mReq->req.status = le32_to_cpu(mReq->ptr->token) & TD_STATUS;
+ 	if ((TD_STATUS_HALTED & mReq->req.status) != 0)
+ 		mReq->req.status = -1;
+ 	else if ((TD_STATUS_DT_ERR & mReq->req.status) != 0)
+@@ -512,7 +515,7 @@ static int _hardware_dequeue(struct ci13xxx_ep *mEp, struct ci13xxx_req *mReq)
+ 	else if ((TD_STATUS_TR_ERR & mReq->req.status) != 0)
+ 		mReq->req.status = -1;
+ 
+-	mReq->req.actual   = mReq->ptr->token & TD_TOTAL_BYTES;
++	mReq->req.actual   = le32_to_cpu(mReq->ptr->token) & TD_TOTAL_BYTES;
+ 	mReq->req.actual >>= ffs_nr(TD_TOTAL_BYTES);
+ 	mReq->req.actual   = mReq->req.length - mReq->req.actual;
+ 	mReq->req.actual   = mReq->req.status ? 0 : mReq->req.actual;
+@@ -784,7 +787,7 @@ __acquires(mEp->lock)
+ 		if (retval < 0)
+ 			break;
+ 		list_del_init(&mReq->queue);
+-		dbg_done(_usb_addr(mEp), mReq->ptr->token, retval);
++		dbg_done(_usb_addr(mEp), le32_to_cpu(mReq->ptr->token), retval);
+ 		if (mReq->req.complete != NULL) {
+ 			spin_unlock(mEp->lock);
+ 			if ((mEp->type == USB_ENDPOINT_XFER_CONTROL) &&
+@@ -1028,15 +1031,15 @@ static int ep_enable(struct usb_ep *ep,
+ 	mEp->qh.ptr->cap = 0;
+ 
+ 	if (mEp->type == USB_ENDPOINT_XFER_CONTROL)
+-		mEp->qh.ptr->cap |=  QH_IOS;
++		mEp->qh.ptr->cap |=  cpu_to_le32(QH_IOS);
+ 	else if (mEp->type == USB_ENDPOINT_XFER_ISOC)
+-		mEp->qh.ptr->cap &= ~QH_MULT;
++		mEp->qh.ptr->cap &= cpu_to_le32(~QH_MULT);
+ 	else
+-		mEp->qh.ptr->cap &= ~QH_ZLT;
++		mEp->qh.ptr->cap &= cpu_to_le32(~QH_ZLT);
+ 
+ 	mEp->qh.ptr->cap |=
+-		(mEp->ep.maxpacket << ffs_nr(QH_MAX_PKT)) & QH_MAX_PKT;
+-	mEp->qh.ptr->td.next |= TD_TERMINATE;   /* needed? */
++		cpu_to_le32((mEp->ep.maxpacket << ffs_nr(QH_MAX_PKT)) & QH_MAX_PKT);
++	mEp->qh.ptr->td.next |= cpu_to_le32(TD_TERMINATE);   /* needed? */
+ 
+ 	/*
+ 	 * Enable endpoints in the HW other than ep0 as ep0
 -- 
 1.7.9.5

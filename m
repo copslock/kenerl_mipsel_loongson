@@ -1,44 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Feb 2013 00:23:46 +0100 (CET)
-Received: from mail-da0-f50.google.com ([209.85.210.50]:43881 "EHLO
-        mail-da0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825727Ab3BZXXnjPvYl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Feb 2013 00:23:43 +0100
-Received: by mail-da0-f50.google.com with SMTP id h15so2064725dan.37
-        for <multiple recipients>; Tue, 26 Feb 2013 15:23:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:from:to:cc:subject:date:message-id:x-mailer;
-        bh=HcSQJ/hVUgWLfJmNTO7bw32/1mMD8d+Tl3HN2TUTaGM=;
-        b=K0TFPAPufG96xGweQn0eaWmdvcrA4vhhg/XG1hbVj/nM9jy8CbN2R5a//jUv4aAp9B
-         NjT9e1h6eTfLxUCvOMitCan7gSizHNgbYIXTWfX/O57U6Mhj2SP5+GYnZak+XvTk2Jzi
-         YI8dVnsstiMVa8nS8a3unqJQtzsWxbwNtZl189kUaOygvm27AzGcHuWcbHmh2oDw4bft
-         Kt00F4zjej14ZJ7vKju3vKzqu2jchhLQvnUwz2L1C7loRvclizSOIoZu5GpVEvX4N8AN
-         5f2/nMjU+ji8PfFzUwn7krwDGCyeJW6FsezClBUUmihOKAJjKFBKxf8Qb0OECd1lNONd
-         +nEQ==
-X-Received: by 10.66.217.164 with SMTP id oz4mr4281840pac.132.1361921017156;
-        Tue, 26 Feb 2013 15:23:37 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id jp9sm2358209pbb.7.2013.02.26.15.23.35
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 26 Feb 2013 15:23:36 -0800 (PST)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r1QNMYQM019903;
-        Tue, 26 Feb 2013 15:22:34 -0800
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r1QNMYf9019902;
-        Tue, 26 Feb 2013 15:22:34 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH] MIPS: Remove unneeded volatile from arch/mips/lib/bitops.c
-Date:   Tue, 26 Feb 2013 15:22:33 -0800
-Message-Id: <1361920953-19869-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-X-archive-position: 35829
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Mar 2013 23:19:01 +0100 (CET)
+Received: from mail-ee0-f51.google.com ([74.125.83.51]:40114 "EHLO
+        mail-ee0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827463Ab3CAWTAHIUej (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Mar 2013 23:19:00 +0100
+Received: by mail-ee0-f51.google.com with SMTP id d17so2672214eek.38
+        for <linux-mips@linux-mips.org>; Fri, 01 Mar 2013 14:18:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:from:to:cc:subject:date:message-id:x-mailer
+         :x-gm-message-state;
+        bh=vT/3YtNPORJYwIC2383h9tOZkEGFBqU4bLEkLoNsS4M=;
+        b=djq34popl1tsYqQ/049g5/Ighu/el0H2xrpaSOonx0UEt9acIud/G83dObdiMAvDjs
+         ylxDayPEtKnDRKljAH9tKGgOxeBByDWt3LVynDhiPWAZsnhgWDV9IMUyNNKmcgT3mOZY
+         1fGqy8vBGxz6fY9KwHTvLCBrZHse3mOrTs/fY+Vlr+Z/8y5Jnt4iZNazQmetN/ESYz/h
+         JRHvypNcuhFrpFNpDBC0RZD2lyzweSoahCThlr4vDUUwFIU0I4/e2Smpe5tE0I4tI3qR
+         eyvGVO3l+3i9dqnEffI61UdYCj67SfWg6/kUH8t4rWpCkuoFbN3cOfOjq/sjTb1ZjAAS
+         cBbA==
+X-Received: by 10.14.194.198 with SMTP id m46mr20139488een.8.1362176334247;
+        Fri, 01 Mar 2013 14:18:54 -0800 (PST)
+Received: from localhost.localdomain ([77.70.100.51])
+        by mx.google.com with ESMTPS id m46sm19282356eeo.16.2013.03.01.14.18.52
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Fri, 01 Mar 2013 14:18:53 -0800 (PST)
+From:   Svetoslav Neykov <svetoslav@neykov.name>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Gabor Juhos <juhosg@openwrt.org>,
+        John Crispin <blogic@openwrt.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>
+Cc:     linux-mips@linux-mips.org, linux-usb@vger.kernel.org,
+        Svetoslav Neykov <svetoslav@neykov.name>
+Subject: [PATCH v2 0/2] Chipidea driver support for the AR933x platform
+Date:   Sat,  2 Mar 2013 00:17:35 +0200
+Message-Id: <1362176257-2328-1-git-send-email-svetoslav@neykov.name>
+X-Mailer: git-send-email 1.7.9.5
+X-Gm-Message-State: ALoCoQnAhudI9pO4Ct2IfEvZVRrk0X9QtuRnHz32IQK+z3sZWUajivZmi4u8zZrJVD9WeDiaTpmZ
+X-archive-position: 35830
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: svetoslav@neykov.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,84 +55,46 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: David Daney <david.daney@cavium.com>
+Add support for the usb controller in AR933x platform.
+The processor is big-endian so all multi-byte values of the usb 
+descriptors must be converted explicitly. Another difference is that
+the controller supports both host and device modes but not OTG.
+The patches are tested on WR703n router running OpenWRT trunk in device mode.
 
-The operations on the bitmap pointers are protected by "memory"
-clobbering raw_local_irq_{save,restore}(), so there is no need for
-volatile here.  By removing the volatile we get better code generation
-out of the compiler.
+This version of the patch relies on the changes in "[PATCH 0/3] 
+otg-for-v3.10-v2: separate phy code and add DT helper" and is generated from 
+the tree at http://git.pengutronix.de/?p=mgr/linux.git;a=shortlog;h=refs/heads/chipidea-for-v3.10
 
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- arch/mips/lib/bitops.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+The patch "[PATCH 3/5] usb: chipidea: Don't access OTG related registers" from
+the last patchset is not attached because there have been significant
+changes in the chipidea-for-v3.10 repository which make it obsolete. A patch
+based on the latest changes will be provided in a separate patchset.
 
-diff --git a/arch/mips/lib/bitops.c b/arch/mips/lib/bitops.c
-index f3f7756..485846c 100644
---- a/arch/mips/lib/bitops.c
-+++ b/arch/mips/lib/bitops.c
-@@ -19,7 +19,7 @@
-  */
- void __mips_set_bit(unsigned long nr, volatile unsigned long *addr)
- {
--	volatile unsigned long *a = addr;
-+	unsigned long *a = (unsigned long *)addr;
- 	unsigned bit = nr & SZLONG_MASK;
- 	unsigned long mask;
- 	unsigned long flags;
-@@ -41,7 +41,7 @@ EXPORT_SYMBOL(__mips_set_bit);
-  */
- void __mips_clear_bit(unsigned long nr, volatile unsigned long *addr)
- {
--	volatile unsigned long *a = addr;
-+	unsigned long *a = (unsigned long *)addr;
- 	unsigned bit = nr & SZLONG_MASK;
- 	unsigned long mask;
- 	unsigned long flags;
-@@ -63,7 +63,7 @@ EXPORT_SYMBOL(__mips_clear_bit);
-  */
- void __mips_change_bit(unsigned long nr, volatile unsigned long *addr)
- {
--	volatile unsigned long *a = addr;
-+	unsigned long *a = (unsigned long *)addr;
- 	unsigned bit = nr & SZLONG_MASK;
- 	unsigned long mask;
- 	unsigned long flags;
-@@ -86,7 +86,7 @@ EXPORT_SYMBOL(__mips_change_bit);
- int __mips_test_and_set_bit(unsigned long nr,
- 			    volatile unsigned long *addr)
- {
--	volatile unsigned long *a = addr;
-+	unsigned long *a = (unsigned long *)addr;
- 	unsigned bit = nr & SZLONG_MASK;
- 	unsigned long mask;
- 	unsigned long flags;
-@@ -112,7 +112,7 @@ EXPORT_SYMBOL(__mips_test_and_set_bit);
- int __mips_test_and_set_bit_lock(unsigned long nr,
- 				 volatile unsigned long *addr)
- {
--	volatile unsigned long *a = addr;
-+	unsigned long *a = (unsigned long *)addr;
- 	unsigned bit = nr & SZLONG_MASK;
- 	unsigned long mask;
- 	unsigned long flags;
-@@ -137,7 +137,7 @@ EXPORT_SYMBOL(__mips_test_and_set_bit_lock);
-  */
- int __mips_test_and_clear_bit(unsigned long nr, volatile unsigned long *addr)
- {
--	volatile unsigned long *a = addr;
-+	unsigned long *a = (unsigned long *)addr;
- 	unsigned bit = nr & SZLONG_MASK;
- 	unsigned long mask;
- 	unsigned long flags;
-@@ -162,7 +162,7 @@ EXPORT_SYMBOL(__mips_test_and_clear_bit);
-  */
- int __mips_test_and_change_bit(unsigned long nr, volatile unsigned long *addr)
- {
--	volatile unsigned long *a = addr;
-+	unsigned long *a = (unsigned long *)addr;
- 	unsigned bit = nr & SZLONG_MASK;
- 	unsigned long mask;
- 	unsigned long flags;
+Changes since last version:
+        * conditionally include ci13xxx_ar933x.c for compilation
+        * removed __devinit/__devexit/__devexit_p()
+        * use a dynamically allocated structure for ci13xxx_platform_data
+        * move controller mode check to platform usb registration
+        * pick a different name for the ar933x chipidea driver
+        * use a correct MODE_ALIAS name
+        * use the dr_mode changes in "[PATCH 0/3] otg-for-v3.10-v2:
+          separate phy code and add DT helper"
+
+
+Svetoslav Neykov (2):
+  usb: chipidea: big-endian support
+  usb: chipidea: AR933x platform support for the chipidea driver
+
+ arch/mips/ath79/dev-usb.c                          |   50 +++++++++++++
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h     |    3 +
+ .../asm/mach-ath79/ar933x_chipidea_platform.h      |   18 +++++
+ drivers/usb/chipidea/Makefile                      |    5 ++
+ drivers/usb/chipidea/ci13xxx_ar933x.c              |   75 ++++++++++++++++++++
+ drivers/usb/chipidea/core.c                        |    2 +-
+ drivers/usb/chipidea/udc.c                         |   59 +++++++--------
+ 7 files changed, 183 insertions(+), 29 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-ath79/ar933x_chipidea_platform.h
+ create mode 100644 drivers/usb/chipidea/ci13xxx_ar933x.c
+
 -- 
-1.7.11.7
+1.7.9.5

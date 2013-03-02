@@ -1,56 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Mar 2013 19:48:02 +0100 (CET)
-Received: from mail-pb0-f51.google.com ([209.85.160.51]:56132 "EHLO
-        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827456Ab3CBSsCHVkdP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 2 Mar 2013 19:48:02 +0100
-Received: by mail-pb0-f51.google.com with SMTP id un15so2337082pbc.24
-        for <linux-mips@linux-mips.org>; Sat, 02 Mar 2013 10:47:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=x-received:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent;
-        bh=/dSbBwUWOWf0bqffL/B41ncMCfndSPvxQ3JZiMFKfN8=;
-        b=g+/fe5ly0Oc48yJbYvLRgCVWNVgwmvSDZaoC43HIO847h7N65lXgQDmcCEKhyLdoQH
-         6IKUwMJvI2xew1btYKg5IgT5pPeh9pKkCpvJC90dV4eC4/CycW/+bS9u8aU9WTqZZTXw
-         WSYCrWagxt9ZOaGpHzSjP7SF1JCxcdyi8g7Vs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent:x-gm-message-state;
-        bh=/dSbBwUWOWf0bqffL/B41ncMCfndSPvxQ3JZiMFKfN8=;
-        b=gS++HcWTGV7502gNZf5vtwLG8TSNktmvGKiEWRaXbWKXe/1GrJy2zXsak+Zogq4Elm
-         o55BbXjF/pItBR4ekWoNuWfnyaCIevXvh0tbLR5+8BS/U7h5JnMCxtgYJGXSGjgrsmoN
-         zbL8anZu+Bl7FkHycz/VAIjSZAMMlVgSXcFRN/1achnCfuyHO5hy0cHqCvVgBLCcH+v+
-         aK3svGXktF9SFpHphavwOJoK0K7lFlamn6anhQiKrN/34tW0DfJUVtBurduWPgWAcJBS
-         47gNVx3xjebETdmq52bfoGq0YOMZLKrMYFzhulhoAXlHegpEiWDI4cUPg7l6dti1D0Cs
-         K9Uw==
-X-Received: by 10.66.221.67 with SMTP id qc3mr25269633pac.85.1362250075503;
-        Sat, 02 Mar 2013 10:47:55 -0800 (PST)
-Received: from localhost (67-148-102-249.dia.static.qwest.net. [67.148.102.249])
-        by mx.google.com with ESMTPS id zv5sm15811362pab.2.2013.03.02.10.47.54
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Sat, 02 Mar 2013 10:47:54 -0800 (PST)
-Date:   Sat, 2 Mar 2013 10:48:08 -0800
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     ganesanr@broadcom.com
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] MIPS: Netlogic: Platform changes for XLR/XLS gmac
-Message-ID: <20130302184808.GB2411@kroah.com>
-References: <1362249374-25556-1-git-send-email-ganesanr@broadcom.com>
- <1362249374-25556-2-git-send-email-ganesanr@broadcom.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1362249374-25556-2-git-send-email-ganesanr@broadcom.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Gm-Message-State: ALoCoQm03H6EmU/Dhn6jStcuvJDfjXmPQiRbw2N+DkER+F2VxP2ynY8Dv3RIRKszdS00lZUScGkK
-X-archive-position: 35836
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Mar 2013 21:51:55 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:46313 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827427Ab3CBUvyi0aFe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 2 Mar 2013 21:51:54 +0100
+Received: from [2001:470:1f08:1539:a11:96ff:fec6:70c4] (helo=deadeye.wl.decadent.org.uk)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.72)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1UBtPL-0001KY-Qq; Sat, 02 Mar 2013 20:51:51 +0000
+Received: from ben by deadeye.wl.decadent.org.uk with local (Exim 4.80)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1UBtPK-0004VE-Dc; Sat, 02 Mar 2013 20:51:50 +0000
+Message-ID: <1362257499.3768.141.camel@deadeye.wl.decadent.org.uk>
+Subject: THP broken on MIPS-32 [3.8]
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        linux-mips@linux-mips.org
+Date:   Sat, 02 Mar 2013 20:51:39 +0000
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-1dO0jcHx31CSAKkK9w4Z"
+X-Mailer: Evolution 3.4.4-2 
+Mime-Version: 1.0
+X-SA-Exim-Connect-IP: 2001:470:1f08:1539:a11:96ff:fec6:70c4
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+X-archive-position: 35837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,30 +43,56 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sun, Mar 03, 2013 at 12:06:14AM +0530, ganesanr@broadcom.com wrote:
-> From: Ganesan Ramalingam <ganesanr@broadcom.com>
-> 
-> Add platform code to create network interface (xlr-net) for XLR/XLS
-> boards.
-> 
-> Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
-> ---
->  This patch has be merged via linux-mips tree.
-> 
->  This patch depends on [PATCH 1/2] Staging: Netlogic XLR/XLS GMAC driver.
-> 
->  arch/mips/include/asm/netlogic/xlr/platform_net.h |   46 +++++
->  arch/mips/netlogic/xlr/Makefile                   |    3 +-
->  arch/mips/netlogic/xlr/fmn.c                      |    2 +
->  arch/mips/netlogic/xlr/platform_net.c             |  222 +++++++++++++++++++++
->  4 files changed, 272 insertions(+), 1 deletions(-)
->  create mode 100644 arch/mips/include/asm/netlogic/xlr/platform_net.h
->  create mode 100644 arch/mips/netlogic/xlr/platform_net.c
 
-Staging drivers should be stand-alone, not depending on changes
-elsewhere in the tree.  Why not either merge these into the staging
-driver, or move the driver to the correct place to start with?
+--=-1dO0jcHx31CSAKkK9w4Z
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-thanks,
+You implemented transparent huge pages for MIPS:
 
-greg k-h
+commit 970d032fec3f9687446595ee2569fb70b858a69f
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Thu Oct 18 13:54:15 2012 +0200
+
+    MIPS: Transparent Huge Pages support
+
+but THP also changed in 3.8:
+
+commit fc9fe822f7112db23e51e2be3b886f5d8f0afdb6
+Author: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Date:   Wed Dec 12 13:50:51 2012 -0800
+
+    thp: copy_huge_pmd(): copy huge zero page
+
+This added the requirement for pfn_pmd(), which is only defined if
+CONFIG_64BIT && !CONFIG_CPU_VR41XX.
+
+Ben.
+
+--=20
+Ben Hutchings
+Computers are not intelligent.	They only think they are.
+
+--=-1dO0jcHx31CSAKkK9w4Z
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIVAwUAUTJmW+e/yOyVhhEJAQpjmBAAlUeuC4zER8Q92ihG+j/POv5Wciewew3e
+bW4L/nSA/V4eh1lf6NtOB6asayWnZR0ifBL0VNtbCayE5gZl3n0hRmccvyQzzdDX
+CWxUiLnvREeT3n+Q99t8bEo1mDWy1KSg++RFjnUveSp00wIOAUYO6Oy2TldOK4wj
+91xb8h4j6nF+0KBQrsS3jIwlyPPyzhliJmKSGtfzQdKyYSEYZbzIc2HO649BkeB3
+dX0TbKwHnwdnOiXv6c9EdxvIL5xixaf9/0Kp67TXfIJi2RpsrslPuvB/s5/7g57g
+6LKBwlewijxUSCblJzW9qNbPCt6IpdXezNWTNnu2J4pyerGsVLCdD/SdAXqBwtmZ
+jn8Yexjx/3zhIr86HUvk6NOud5hgLdPaHGZnrXXE96DaT9glDgfwsmIsxzMv+27h
+TYhDjSNAw5RrLhMH37quH9ELfzdbvaf2mP72gF5JFCmxf6oAcB8VyNCAHHLDSK63
+34QJkqLD0scMb4B7thGivon1VSteu6ltehh6CsfcASTPZCOLsmI2xGppbKHmyzZl
++kh1yIUQiPm9wn89dK9l0ChQldmR1NXDrATpWUc7JTCgqG5Ugs+sJiM2GMpnSTrG
+jx5EtzTbYWRrgJkkwbcmDDvj4Ksd6RUuKk11sU+S0Y8bByG8KeitPDIwrP4r6rZF
+c0aBbG8u//4=
+=fSlX
+-----END PGP SIGNATURE-----
+
+--=-1dO0jcHx31CSAKkK9w4Z--

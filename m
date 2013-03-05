@@ -1,37 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Mar 2013 14:06:42 +0100 (CET)
-Received: from cpsmtpb-ews09.kpnxchange.com ([213.75.39.14]:63619 "EHLO
-        cpsmtpb-ews09.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827532Ab3CENGmL5zUR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Mar 2013 14:06:42 +0100
-Received: from cpsps-ews24.kpnxchange.com ([10.94.84.190]) by cpsmtpb-ews09.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Tue, 5 Mar 2013 14:05:11 +0100
-Received: from CPSMTPM-TLF101.kpnxchange.com ([195.121.3.4]) by cpsps-ews24.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Tue, 5 Mar 2013 14:05:10 +0100
-Received: from [192.168.1.103] ([212.123.139.93]) by CPSMTPM-TLF101.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Tue, 5 Mar 2013 14:06:35 +0100
-Message-ID: <1362488795.16460.82.camel@x61.thuisdomein>
-Subject: Re: [PATCH v2] MIPS: Get rid of CONFIG_CPU_HAS_LLSC again
-From:   Paul Bolle <pebolle@tiscali.nl>
-To:     Jonas Gorski <jogo@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Date:   Tue, 05 Mar 2013 14:06:35 +0100
-In-Reply-To: <CAOiHx=nvH-Q+3HCkukM9ZDZXLm=w0bO9LPyosQS7UHOmOvQYOQ@mail.gmail.com>
-References: <1362477800.16460.69.camel@x61.thuisdomein>
-         <CAOiHx=nzNVatEp0nyfZKU2p35+1kjrw6VsvZTP+QPJykWF3JAg@mail.gmail.com>
-         <1362486020.16460.73.camel@x61.thuisdomein>
-         <CAOiHx=nvH-Q+3HCkukM9ZDZXLm=w0bO9LPyosQS7UHOmOvQYOQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.4.4 (3.4.4-2.fc17) 
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Mar 2013 15:14:15 +0100 (CET)
+Received: from mms2.broadcom.com ([216.31.210.18]:1942 "EHLO mms2.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6820301Ab3CEOON62W3D (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Mar 2013 15:14:13 +0100
+Received: from [10.9.208.57] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Tue, 05 Mar 2013 06:10:25 -0800
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Tue, 5 Mar 2013 06:13:55 -0800
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
+ Server id 14.1.438.0; Tue, 5 Mar 2013 06:13:55 -0800
+Received: from lc-blr-152.ban.broadcom.com (lc-blr-152.ban.broadcom.com
+ [10.132.129.187]) by mail-irva-13.broadcom.com (Postfix) with ESMTP id
+ 815B940FE3; Tue, 5 Mar 2013 06:13:55 -0800 (PST)
+Received: by lc-blr-152.ban.broadcom.com (Postfix, from userid 28730) id
+ 46A552056B9; Tue, 5 Mar 2013 19:43:54 +0530 (IST)
+Date:   Tue, 5 Mar 2013 19:43:54 +0530
+From:   "Ganesan Ramalignam" <ganesanr@broadcom.com>
+To:     "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+cc:     "Ralf Baechle" <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Staging: Netlogic XLR/XLS GMAC driver
+Message-ID: <20130305141353.GB29102@ganesanr.netlogicmircro.com>
+References: <1362464958-8722-1-git-send-email-ganesanr@broadcom.com>
+ <20130305065851.GA30028@kroah.com>
+MIME-Version: 1.0
+In-Reply-To: <20130305065851.GA30028@kroah.com>
+User-Agent: Mutt/1.4.2.2i
+X-WSS-ID: 7D2B235B3S47401327-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 05 Mar 2013 13:06:35.0217 (UTC) FILETIME=[43BCDC10:01CE19A2]
-X-RcptDomain: linux-mips.org
-X-archive-position: 35854
+X-archive-position: 35855
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pebolle@tiscali.nl
+X-original-sender: ganesanr@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,34 +51,55 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, 2013-03-05 at 13:55 +0100, Jonas Gorski wrote:
-> On 5 March 2013 13:20, Paul Bolle <pebolle@tiscali.nl> wrote:
-> > diff --git a/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h b/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
-> > index d9c8284..b40f37f 100644
-> > --- a/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
-> > +++ b/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
-> > @@ -28,11 +28,7 @@
-> >  /* #define cpu_has_prefetch    ? */
-> >  #define cpu_has_mcheck         1
-> >  /* #define cpu_has_ejtag       ? */
-> > -#ifdef CONFIG_CPU_HAS_LLSC
-> > -#define cpu_has_llsc           1
-> > -#else
-> >  #define cpu_has_llsc           0
-> > -#endif
+On Tue, Mar 05, 2013 at 02:58:51PM +0800, Greg Kroah-Hartman wrote:
+> On Tue, Mar 05, 2013 at 11:59:18AM +0530, ganesanr@broadcom.com wrote:
+> >  This patch has to be merged via staging tree.
+> > 
+> >  This driver has been submitted to netdev tree and reviewed, the comments 
+> >  are list in TODO list, will be addressed in next cycle of submission, till
+> >  that time I wanted this driver to be in staging tree.
+> > 
+> >  This driver shall be sent to netdev@vger.kernel.org and David Miller <davem@davemloft.net>
+> >  for further review.
 > 
-> Hm, shouldn't you leave cpu_has_llsc set to 1? At least the "old" path
-> SEAD3 => CPU_MIPS32_R1/R2/64_R1 => select CPU_HAS_LLSC for all three
-> would have always caused this to be 1.
+> When is that going to happen?
+> 
 
-That would mean an actual change to the code. See, there's no Kconfig
-symbol CPU_HAS_LLSC since v2.6.32. This means that CONFIG_CPU_HAS_LLSC
-has not been defined ever since and that SEAD3 has been having
-cpu_has_llsc set to 0 for some time now. My patch just removes dead
-code.
+In two months.
 
-Perhaps SEAD3 need cpu_has_llsc set to 1. I wouldn't know. Anyhow, that
-should be done in another patch, with (runtime) testing, etc.
+> > --- /dev/null
+> > +++ b/drivers/staging/netlogic/Kconfig
+> > @@ -0,0 +1,7 @@
+> > +config NETLOGIC_XLR_NET
+> > +	tristate "Netlogic XLR/XLS network device"
+> > +	depends on CPU_XLR
+> 
+> Why will this not build on any other platform?  It should, right?
+> 
+>
 
+This driver is for XLR processor ethernet, which is depend on FMN
+for any communication between packet processing agents, so this driver
+depend on XLR platform.
 
-Paul Bolle
+> > --- /dev/null
+> > +++ b/drivers/staging/netlogic/TODO
+> > @@ -0,0 +1,5 @@
+> > +* Implementing 64bit stat counter in software
+> > +* All memory allocation should be changed to DMA allocations
+> > +* All the netdev should be linked to single pdev as parent
+> > +* Changing comments in to linux standred format
+> > +
+> 
+> I need a name and email address for who is responsible for this driver
+> and will be handling patches for it.
+> 
+
+Will add the emaipl address list and resubmit.
+
+> Please fix this up and resubmit.
+> 
+> thanks,
+> 
+> greg k-h
+> 

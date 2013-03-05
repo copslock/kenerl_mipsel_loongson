@@ -1,44 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Mar 2013 06:51:10 +0100 (CET)
-Received: from mail-we0-f174.google.com ([74.125.82.174]:48462 "EHLO
-        mail-we0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823089Ab3CEFuUqi990 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Mar 2013 06:50:20 +0100
-Received: by mail-we0-f174.google.com with SMTP id r6so5430564wey.33
-        for <multiple recipients>; Mon, 04 Mar 2013 21:50:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:x-received:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
-        bh=6vx2MvdRCumj9cnw57qOhQKD9EKXxsT9eToU3DuOJxM=;
-        b=nAlpQVsPW40DD3Ub2cswIDEHIO4M9rqG+6mpn28O/Nzkkx1rdIuTWvkCUy8vcQDcI+
-         fOMvA4lt9jVZouYAHRPqj+bhMcbccs4SipeFNZmq1MWnvFL7EQk01VbzYLU8dOcDHHfg
-         Y/kxwHwzxVhGEZILLttokKrLk7vOFJP4PhBVDFLNgVrpqDLe6ns++HGqDJT4MQ6a1RQv
-         vADQ++KKoMiVWOZAIKVqWujWAXV7jOmZFaZp5qg+sk55KOePiym2H/oaGq8AOT9tifYI
-         GhU4hoWYrpo/j2A/wf3Gg8Oq/h1DVAfK37Ag+KgSFWr8rDUif3wlaJqUfagcV0V7DFM4
-         LjzA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Mar 2013 07:25:51 +0100 (CET)
+Received: from mms3.broadcom.com ([216.31.210.19]:4690 "EHLO mms3.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817033Ab3CEGZtaDX12 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Mar 2013 07:25:49 +0100
+Received: from [10.9.208.55] by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Mon, 04 Mar 2013 22:19:35 -0800
+X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+ IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Mon, 4 Mar 2013 22:25:34 -0800
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
+ Server id 14.1.438.0; Mon, 4 Mar 2013 22:25:34 -0800
+Received: from lc-blr-152.ban.broadcom.com (lc-blr-152.ban.broadcom.com
+ [10.132.129.187]) by mail-irva-13.broadcom.com (Postfix) with ESMTP id
+ 15D3240FE4; Mon, 4 Mar 2013 22:25:34 -0800 (PST)
+Received: by lc-blr-152.ban.broadcom.com (Postfix, from userid 28730) id
+ D2D1F2056B9; Tue, 5 Mar 2013 11:55:32 +0530 (IST)
+Date:   Tue, 5 Mar 2013 11:55:32 +0530
+From:   "Ganesan Ramalignam" <ganesanr@broadcom.com>
+To:     "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+cc:     "Ralf Baechle" <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] Staging: Netlogic XLR/XLS GMAC driver
+Message-ID: <20130305062531.GA29102@ganesanr.netlogicmircro.com>
+References: <1362249374-25556-1-git-send-email-ganesanr@broadcom.com>
+ <20130302184726.GA2411@kroah.com>
 MIME-Version: 1.0
-X-Received: by 10.204.9.3 with SMTP id j3mr8550732bkj.52.1362462613420; Mon,
- 04 Mar 2013 21:50:13 -0800 (PST)
-Received: by 10.204.24.207 with HTTP; Mon, 4 Mar 2013 21:50:13 -0800 (PST)
-In-Reply-To: <1362401764-31494-1-git-send-email-chenhc@lemote.com>
-References: <1362401764-31494-1-git-send-email-chenhc@lemote.com>
-Date:   Tue, 5 Mar 2013 13:50:13 +0800
-X-Google-Sender-Auth: plltto_efXm31YiD6vexYEIfQCw
-Message-ID: <CAAhV-H5PptFW4S2JLoW=xRZwv7JL2-f1-Q9T_0e1Q=Kcd7eo+g@mail.gmail.com>
-Subject: Re: [PATCH RFC] MIPS: Build uasm-generated code only once to avoid
- CPU Hotplug problem
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>, Hongbing Hu <huhb@lemote.com>
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 35847
+In-Reply-To: <20130302184726.GA2411@kroah.com>
+User-Agent: Mutt/1.4.2.2i
+X-WSS-ID: 7D2B51FD3P46831117-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+X-archive-position: 35848
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: ganesanr@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,148 +51,38 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-I'm sorry, this is the only patch, please ignore [01/14].
+On Sat, Mar 02, 2013 at 10:47:26AM -0800, Greg Kroah-Hartman wrote:
+> On Sun, Mar 03, 2013 at 12:06:13AM +0530, ganesanr@broadcom.com wrote:
+> > From: Ganesan Ramalingam <ganesanr@broadcom.com>
+> > 
+> > Add support for the Network Accelerator Engine on Netlogic XLR/XLS
+> > MIPS SoCs. The XLR/XLS NAE blocks can be configured as one 10G
+> > interface or four 1G interfaces. This driver supports blocks
+> > with 1G ports.
+> > 
+> > Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
+> > ---
+> >  This patch has to be merged via staging tree.
+> 
+> Why is this a staging driver?
+> 
+> I need a TODO file listing the remaining things left to fix up in this
+> driver to get it merged to the "correct" location in the kernel, along
+> with some email addresses and names of who to send the patches to for
+> review, before I can accept this.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-On Mon, Mar 4, 2013 at 8:56 PM, Huacai Chen <chenhc@lemote.com> wrote:
-> Currently, clear_page()/copy_page() are generated by Micro-assembler
-> dynamically. But they are unavailable until uasm_resolve_relocs() has
-> finished because jump labels are illegal before that. Since these
-> functions are shared by every CPU, we only call build_clear_page()/
-> build_copy_page() on CPU#0 at boot time. Without this patch, programs
-> will get random memory corruption (segmentation fault, bus error, etc.)
-> while CPU Hotplug (e.g. one CPU is using clear_page() while another is
-> generating it in cpu_cache_init()).
->
-> For similar reasons we modify build_tlb_refill_handler()'s invocation.
->
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> Signed-off-by: Hongbing Hu <huhb@lemote.com>
-> ---
->  arch/mips/mm/c-octeon.c        |    6 ++++--
->  arch/mips/mm/c-r3k.c           |    6 ++++--
->  arch/mips/mm/c-r4k.c           |    6 ++++--
->  arch/mips/mm/c-tx39.c          |    6 ++++--
->  arch/mips/mm/tlb-r3k.c         |    3 ++-
->  arch/mips/mm/tlb-r4k.c         |    3 ++-
->  arch/mips/mm/tlb-r8k.c         |    3 ++-
->  arch/mips/sgi-ip27/ip27-init.c |    3 ++-
->  8 files changed, 24 insertions(+), 12 deletions(-)
->
-> diff --git a/arch/mips/mm/c-octeon.c b/arch/mips/mm/c-octeon.c
-> index 6ec04da..181a1bc 100644
-> --- a/arch/mips/mm/c-octeon.c
-> +++ b/arch/mips/mm/c-octeon.c
-> @@ -280,8 +280,10 @@ void __cpuinit octeon_cache_init(void)
->
->         __flush_kernel_vmap_range       = octeon_flush_kernel_vmap_range;
->
-> -       build_clear_page();
-> -       build_copy_page();
-> +       if (smp_processor_id() == 0) {
-> +               build_clear_page();
-> +               build_copy_page();
-> +       }
->
->         board_cache_error_setup = octeon_cache_error_setup;
->  }
-> diff --git a/arch/mips/mm/c-r3k.c b/arch/mips/mm/c-r3k.c
-> index 031c4c2..b7b0cfd 100644
-> --- a/arch/mips/mm/c-r3k.c
-> +++ b/arch/mips/mm/c-r3k.c
-> @@ -342,6 +342,8 @@ void __cpuinit r3k_cache_init(void)
->         printk("Primary data cache %ldkB, linesize %ld bytes.\n",
->                 dcache_size >> 10, dcache_lsize);
->
-> -       build_clear_page();
-> -       build_copy_page();
-> +       if (smp_processor_id() == 0) {
-> +               build_clear_page();
-> +               build_copy_page();
-> +       }
->  }
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index 5f9171d..3f671d6 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -1548,8 +1548,10 @@ void __cpuinit r4k_cache_init(void)
->         }
->  #endif
->
-> -       build_clear_page();
-> -       build_copy_page();
-> +       if (smp_processor_id() == 0) {
-> +               build_clear_page();
-> +               build_copy_page();
-> +       }
->  #if !defined(CONFIG_MIPS_CMP)
->         local_r4k___flush_cache_all(NULL);
->  #endif
-> diff --git a/arch/mips/mm/c-tx39.c b/arch/mips/mm/c-tx39.c
-> index 87d23ca..1e42e12 100644
-> --- a/arch/mips/mm/c-tx39.c
-> +++ b/arch/mips/mm/c-tx39.c
-> @@ -434,7 +434,9 @@ void __cpuinit tx39_cache_init(void)
->         printk("Primary data cache %ldkB, linesize %d bytes\n",
->                 dcache_size >> 10, current_cpu_data.dcache.linesz);
->
-> -       build_clear_page();
-> -       build_copy_page();
-> +       if (smp_processor_id() == 0) {
-> +               build_clear_page();
-> +               build_copy_page();
-> +       }
->         tx39h_flush_icache_all();
->  }
-> diff --git a/arch/mips/mm/tlb-r3k.c b/arch/mips/mm/tlb-r3k.c
-> index a63d1ed..86b4a79 100644
-> --- a/arch/mips/mm/tlb-r3k.c
-> +++ b/arch/mips/mm/tlb-r3k.c
-> @@ -280,5 +280,6 @@ void __cpuinit tlb_init(void)
->  {
->         local_flush_tlb_all();
->
-> -       build_tlb_refill_handler();
-> +       if (smp_processor_id() == 0)
-> +               build_tlb_refill_handler();
->  }
-> diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-> index 0113330..db19624 100644
-> --- a/arch/mips/mm/tlb-r4k.c
-> +++ b/arch/mips/mm/tlb-r4k.c
-> @@ -439,5 +439,6 @@ void __cpuinit tlb_init(void)
->                         printk("Ignoring invalid argument ntlb=%d\n", ntlb);
->         }
->
-> -       build_tlb_refill_handler();
-> +       if (smp_processor_id() == 0)
-> +               build_tlb_refill_handler();
->  }
-> diff --git a/arch/mips/mm/tlb-r8k.c b/arch/mips/mm/tlb-r8k.c
-> index 91c2499..43fe634 100644
-> --- a/arch/mips/mm/tlb-r8k.c
-> +++ b/arch/mips/mm/tlb-r8k.c
-> @@ -244,5 +244,6 @@ void __cpuinit tlb_init(void)
->
->         local_flush_tlb_all();
->
-> -       build_tlb_refill_handler();
-> +       if (smp_processor_id() == 0)
-> +               build_tlb_refill_handler();
->  }
-> diff --git a/arch/mips/sgi-ip27/ip27-init.c b/arch/mips/sgi-ip27/ip27-init.c
-> index 923c080..62c41ab 100644
-> --- a/arch/mips/sgi-ip27/ip27-init.c
-> +++ b/arch/mips/sgi-ip27/ip27-init.c
-> @@ -84,7 +84,8 @@ static void __cpuinit per_hub_init(cnodeid_t cnode)
->
->                 memcpy((void *)(CKSEG0 + 0x100), &except_vec2_generic, 0x80);
->                 memcpy((void *)(CKSEG0 + 0x180), &except_vec3_generic, 0x80);
-> -               build_tlb_refill_handler();
-> +               if (smp_processor_id() == 0)
-> +                       build_tlb_refill_handler();
->                 memcpy((void *)(CKSEG0 + 0x100), (void *) CKSEG0, 0x80);
->                 memcpy((void *)(CKSEG0 + 0x180), &except_vec3_generic, 0x100);
->                 __flush_cache_all();
-> --
-> 1.7.7.3
->
+This driver has been submitted to netdev tree and reviewed, there are
+comments and those are listed in TODO list. I will address those TODO
+list in next cycle, till that time I want this driver to be in staging tree.
+
+Will add TODO list and merge the "[PATCH 2/2] MIPS: Netlogic: Platform 
+changes for XLR/XLS gmac" patch with driver patch and submit as a
+stand-alone driver.
+
+Thanks
+Ganesan

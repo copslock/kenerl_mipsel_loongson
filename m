@@ -1,55 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Mar 2013 07:58:41 +0100 (CET)
-Received: from mail-pb0-f53.google.com ([209.85.160.53]:64458 "EHLO
-        mail-pb0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825866Ab3CEG6ii2tSU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Mar 2013 07:58:38 +0100
-Received: by mail-pb0-f53.google.com with SMTP id un1so3982172pbc.40
-        for <linux-mips@linux-mips.org>; Mon, 04 Mar 2013 22:58:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=x-received:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent;
-        bh=tx7Hz+2CXaL0iH79EKHYWfDbFKgUuqCaq8ZZZ9k5tr0=;
-        b=Sjm4Jj6MNuhwc5azxoi3DN+3FIcqFyrFBqIjWzsE51KKAL/iHGNL/fiWGXAxTN2bkc
-         mxcau2utZTbMFFuA4XSXOCRdgTwV7/p6dA9+grAkB/jP66mMwP9WQyg1p1nkeHsBIUhL
-         dK0fGDMZ824c8q5OfYDUw4dK5xOZm6816pcuY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent:x-gm-message-state;
-        bh=tx7Hz+2CXaL0iH79EKHYWfDbFKgUuqCaq8ZZZ9k5tr0=;
-        b=nq93GZr6m2bITFB/GyyiJN0+l+aaxfkSh0wVo9BbMbuUyWHnZMglhGP/P3GXPvQqOl
-         SYl3ckJCfDF2M8i5ergfa4Fxzfz9G3d1+fwNaNTNWLfnhkAUBT8/8mHhTqMut3o5ffBQ
-         ANHmv8GjPLfBXrTL2k6/JIBTK7nAK37dBbitQAv6WYzxh4scpur4U9YZxROpiNUCpa7x
-         0nVpR/gqPzyip+4mrpL8/uii3b1CtOAEMH+su6e5do2N6RCwRhxglbfyC2bLnfAe5Phb
-         9NxMXft3kmrOoBsbKmhOgKvt2T9aynV2gbgRzfYW9nQl3x7mf4rS3daV880jPCkyjedI
-         M9uQ==
-X-Received: by 10.68.48.165 with SMTP id m5mr34603276pbn.40.1362466711273;
-        Mon, 04 Mar 2013 22:58:31 -0800 (PST)
-Received: from localhost ([118.143.64.134])
-        by mx.google.com with ESMTPS id ub1sm25395627pbc.5.2013.03.04.22.58.27
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Mon, 04 Mar 2013 22:58:29 -0800 (PST)
-Date:   Tue, 5 Mar 2013 14:58:51 +0800
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     ganesanr@broadcom.com
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Staging: Netlogic XLR/XLS GMAC driver
-Message-ID: <20130305065851.GA30028@kroah.com>
-References: <1362464958-8722-1-git-send-email-ganesanr@broadcom.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1362464958-8722-1-git-send-email-ganesanr@broadcom.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Gm-Message-State: ALoCoQl2VQrq6pC7Y7jhQtmVmzyPmhFJc6fz9DGJxOXnlG1wflA3D5ZOgneHWqfrZDHPi1IJFtgz
-X-archive-position: 35851
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Mar 2013 11:03:31 +0100 (CET)
+Received: from cpsmtpb-ews02.kpnxchange.com ([213.75.39.5]:63328 "EHLO
+        cpsmtpb-ews02.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6820514Ab3CEKD0sfLAb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Mar 2013 11:03:26 +0100
+Received: from cpsps-ews08.kpnxchange.com ([10.94.84.175]) by cpsmtpb-ews02.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Tue, 5 Mar 2013 11:01:55 +0100
+Received: from CPSMTPM-TLF102.kpnxchange.com ([195.121.3.5]) by cpsps-ews08.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Tue, 5 Mar 2013 11:01:55 +0100
+Received: from [192.168.1.103] ([212.123.139.93]) by CPSMTPM-TLF102.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Tue, 5 Mar 2013 11:03:20 +0100
+Message-ID: <1362477800.16460.69.camel@x61.thuisdomein>
+Subject: [PATCH] MIPS: Get rid of CONFIG_CPU_HAS_LLSC again
+From:   Paul Bolle <pebolle@tiscali.nl>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Date:   Tue, 05 Mar 2013 11:03:20 +0100
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.4.4 (3.4.4-2.fc17) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 05 Mar 2013 10:03:20.0613 (UTC) FILETIME=[AA716D50:01CE1988]
+X-RcptDomain: linux-mips.org
+X-archive-position: 35852
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: pebolle@tiscali.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,42 +39,48 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Mar 05, 2013 at 11:59:18AM +0530, ganesanr@broadcom.com wrote:
->  This patch has to be merged via staging tree.
-> 
->  This driver has been submitted to netdev tree and reviewed, the comments 
->  are list in TODO list, will be addressed in next cycle of submission, till
->  that time I wanted this driver to be in staging tree.
-> 
->  This driver shall be sent to netdev@vger.kernel.org and David Miller <davem@davemloft.net>
->  for further review.
+Commit f7ade3c168e4f437c11f57be012992bbb0e3075c ("MIPS: Get rid of
+CONFIG_CPU_HAS_LLSC") did what it promised to do. But since then that
+macro and its Kconfig symbol popped up again. Get rid of those again.
 
-When is that going to happen?
+Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
+---
+0) Untested.
 
-> --- /dev/null
-> +++ b/drivers/staging/netlogic/Kconfig
-> @@ -0,0 +1,7 @@
-> +config NETLOGIC_XLR_NET
-> +	tristate "Netlogic XLR/XLS network device"
-> +	depends on CPU_XLR
+1) The related commits are 1c773ea4dceff889c2f872343609a87ae0cfbf56
+("MIPS: Netlogic: Add XLP makefiles and config") and
+3070033a16edcc21688d5ea8967c89522f833862 ("MIPS: Add core files for MIPS
+SEAD-3 development platform.").
 
-Why will this not build on any other platform?  It should, right?
+ arch/mips/Kconfig                                        | 1 -
+ arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h | 3 ---
+ 2 files changed, 4 deletions(-)
 
-
-> --- /dev/null
-> +++ b/drivers/staging/netlogic/TODO
-> @@ -0,0 +1,5 @@
-> +* Implementing 64bit stat counter in software
-> +* All memory allocation should be changed to DMA allocations
-> +* All the netdev should be linked to single pdev as parent
-> +* Changing comments in to linux standred format
-> +
-
-I need a name and email address for who is responsible for this driver
-and will be handling patches for it.
-
-Please fix this up and resubmit.
-
-thanks,
-
-greg k-h
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index ae9c716..310f1e6 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1493,7 +1493,6 @@ config CPU_XLP
+ 	select CPU_SUPPORTS_32BIT_KERNEL
+ 	select CPU_SUPPORTS_64BIT_KERNEL
+ 	select CPU_SUPPORTS_HIGHMEM
+-	select CPU_HAS_LLSC
+ 	select WEAK_ORDERING
+ 	select WEAK_REORDERING_BEYOND_LLSC
+ 	select CPU_HAS_PREFETCH
+diff --git a/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h b/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
+index d9c8284..2a945b4 100644
+--- a/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
+@@ -28,9 +28,6 @@
+ /* #define cpu_has_prefetch	? */
+ #define cpu_has_mcheck		1
+ /* #define cpu_has_ejtag	? */
+-#ifdef CONFIG_CPU_HAS_LLSC
+-#define cpu_has_llsc		1
+-#else
+ #define cpu_has_llsc		0
+ #endif
+ /* #define cpu_has_vtag_icache	? */
+-- 
+1.7.11.7

@@ -1,27 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Mar 2013 11:03:31 +0100 (CET)
-Received: from cpsmtpb-ews02.kpnxchange.com ([213.75.39.5]:63328 "EHLO
-        cpsmtpb-ews02.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6820514Ab3CEKD0sfLAb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Mar 2013 11:03:26 +0100
-Received: from cpsps-ews08.kpnxchange.com ([10.94.84.175]) by cpsmtpb-ews02.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Tue, 5 Mar 2013 11:01:55 +0100
-Received: from CPSMTPM-TLF102.kpnxchange.com ([195.121.3.5]) by cpsps-ews08.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Tue, 5 Mar 2013 11:01:55 +0100
-Received: from [192.168.1.103] ([212.123.139.93]) by CPSMTPM-TLF102.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
-         Tue, 5 Mar 2013 11:03:20 +0100
-Message-ID: <1362477800.16460.69.camel@x61.thuisdomein>
-Subject: [PATCH] MIPS: Get rid of CONFIG_CPU_HAS_LLSC again
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Mar 2013 13:20:30 +0100 (CET)
+Received: from cpsmtpb-ews06.kpnxchange.com ([213.75.39.9]:49669 "EHLO
+        cpsmtpb-ews06.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827559Ab3CEMU0o9TIo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Mar 2013 13:20:26 +0100
+Received: from cpsps-ews10.kpnxchange.com ([10.94.84.177]) by cpsmtpb-ews06.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Tue, 5 Mar 2013 13:18:55 +0100
+Received: from CPSMTPM-TLF103.kpnxchange.com ([195.121.3.6]) by cpsps-ews10.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Tue, 5 Mar 2013 13:18:55 +0100
+Received: from [192.168.1.103] ([212.123.139.93]) by CPSMTPM-TLF103.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Tue, 5 Mar 2013 13:20:20 +0100
+Message-ID: <1362486020.16460.73.camel@x61.thuisdomein>
+Subject: [PATCH v2] MIPS: Get rid of CONFIG_CPU_HAS_LLSC again
 From:   Paul Bolle <pebolle@tiscali.nl>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Date:   Tue, 05 Mar 2013 11:03:20 +0100
+Cc:     Jonas Gorski <jogo@openwrt.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 05 Mar 2013 13:20:20 +0100
+In-Reply-To: <CAOiHx=nzNVatEp0nyfZKU2p35+1kjrw6VsvZTP+QPJykWF3JAg@mail.gmail.com>
+References: <1362477800.16460.69.camel@x61.thuisdomein>
+         <CAOiHx=nzNVatEp0nyfZKU2p35+1kjrw6VsvZTP+QPJykWF3JAg@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.4.4 (3.4.4-2.fc17) 
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 05 Mar 2013 10:03:20.0613 (UTC) FILETIME=[AA716D50:01CE1988]
+X-OriginalArrivalTime: 05 Mar 2013 12:20:20.0508 (UTC) FILETIME=[CDE1DDC0:01CE199B]
 X-RcptDomain: linux-mips.org
-X-archive-position: 35852
+X-archive-position: 35853
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,7 +49,8 @@ macro and its Kconfig symbol popped up again. Get rid of those again.
 
 Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
 ---
-0) Untested.
+0) This version fixes an embarrassing dangling "#endif" spotted by
+Jonas. Thanks for that! Still untested.
 
 1) The related commits are 1c773ea4dceff889c2f872343609a87ae0cfbf56
 ("MIPS: Netlogic: Add XLP makefiles and config") and
@@ -53,8 +58,8 @@ Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
 SEAD-3 development platform.").
 
  arch/mips/Kconfig                                        | 1 -
- arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h | 3 ---
- 2 files changed, 4 deletions(-)
+ arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h | 4 ----
+ 2 files changed, 5 deletions(-)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
 index ae9c716..310f1e6 100644
@@ -69,10 +74,10 @@ index ae9c716..310f1e6 100644
  	select WEAK_REORDERING_BEYOND_LLSC
  	select CPU_HAS_PREFETCH
 diff --git a/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h b/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
-index d9c8284..2a945b4 100644
+index d9c8284..b40f37f 100644
 --- a/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
 +++ b/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
-@@ -28,9 +28,6 @@
+@@ -28,11 +28,7 @@
  /* #define cpu_has_prefetch	? */
  #define cpu_has_mcheck		1
  /* #define cpu_has_ejtag	? */
@@ -80,7 +85,9 @@ index d9c8284..2a945b4 100644
 -#define cpu_has_llsc		1
 -#else
  #define cpu_has_llsc		0
- #endif
+-#endif
  /* #define cpu_has_vtag_icache	? */
+ /* #define cpu_has_dc_aliases	? */
+ /* #define cpu_has_ic_fills_f_dc ? */
 -- 
 1.7.11.7

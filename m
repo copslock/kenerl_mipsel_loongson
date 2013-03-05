@@ -1,44 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Mar 2013 07:32:58 +0100 (CET)
-Received: from mail-bk0-f43.google.com ([209.85.214.43]:47912 "EHLO
-        mail-bk0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817033Ab3CEGc4yJ1nZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Mar 2013 07:32:56 +0100
-Received: by mail-bk0-f43.google.com with SMTP id jm19so20107bkc.16
-        for <multiple recipients>; Mon, 04 Mar 2013 22:32:51 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Mar 2013 07:58:41 +0100 (CET)
+Received: from mail-pb0-f53.google.com ([209.85.160.53]:64458 "EHLO
+        mail-pb0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825866Ab3CEG6ii2tSU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Mar 2013 07:58:38 +0100
+Received: by mail-pb0-f53.google.com with SMTP id un1so3982172pbc.40
+        for <linux-mips@linux-mips.org>; Mon, 04 Mar 2013 22:58:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:x-received:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
-        bh=98RqfRj64l2/mcPIfLUf8OgU+9KP+VKxm1lgTRwQe7w=;
-        b=kL7lTr9ej5jSRWAZNp2VCF0rekTGuyvt6YCGM+dQTe42W6M5q/ddR2EzO8hHwFkCpW
-         ZkqrJwUROjBCOU4aRmZIyY4DBYHtKL4g/FBwoFVZ7G+edLUS1BqeQYxg1dBbXM0BSHcy
-         82J/vOJBcRYYymZdmyOyWg7aT0ThUlGOXIjhlBioXsKL/drkv3T+K0rT5h1XC4lv/0vi
-         kWCdkdnLVtw00K+EKZaQlUAZVNtUYT1C/HiDque+/66uAqBtOh6Gnf3yuaNIeuQb2FBY
-         dyuDRNRNrD5YuKYbbcPQNPm4N7gQFMxFNMMuIJjO01IZIGxNT/gxLo1TtYQNmWPUPkhP
-         RsCQ==
+        d=linuxfoundation.org; s=google;
+        h=x-received:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent;
+        bh=tx7Hz+2CXaL0iH79EKHYWfDbFKgUuqCaq8ZZZ9k5tr0=;
+        b=Sjm4Jj6MNuhwc5azxoi3DN+3FIcqFyrFBqIjWzsE51KKAL/iHGNL/fiWGXAxTN2bkc
+         mxcau2utZTbMFFuA4XSXOCRdgTwV7/p6dA9+grAkB/jP66mMwP9WQyg1p1nkeHsBIUhL
+         dK0fGDMZ824c8q5OfYDUw4dK5xOZm6816pcuY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent:x-gm-message-state;
+        bh=tx7Hz+2CXaL0iH79EKHYWfDbFKgUuqCaq8ZZZ9k5tr0=;
+        b=nq93GZr6m2bITFB/GyyiJN0+l+aaxfkSh0wVo9BbMbuUyWHnZMglhGP/P3GXPvQqOl
+         SYl3ckJCfDF2M8i5ergfa4Fxzfz9G3d1+fwNaNTNWLfnhkAUBT8/8mHhTqMut3o5ffBQ
+         ANHmv8GjPLfBXrTL2k6/JIBTK7nAK37dBbitQAv6WYzxh4scpur4U9YZxROpiNUCpa7x
+         0nVpR/gqPzyip+4mrpL8/uii3b1CtOAEMH+su6e5do2N6RCwRhxglbfyC2bLnfAe5Phb
+         9NxMXft3kmrOoBsbKmhOgKvt2T9aynV2gbgRzfYW9nQl3x7mf4rS3daV880jPCkyjedI
+         M9uQ==
+X-Received: by 10.68.48.165 with SMTP id m5mr34603276pbn.40.1362466711273;
+        Mon, 04 Mar 2013 22:58:31 -0800 (PST)
+Received: from localhost ([118.143.64.134])
+        by mx.google.com with ESMTPS id ub1sm25395627pbc.5.2013.03.04.22.58.27
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Mon, 04 Mar 2013 22:58:29 -0800 (PST)
+Date:   Tue, 5 Mar 2013 14:58:51 +0800
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     ganesanr@broadcom.com
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Staging: Netlogic XLR/XLS GMAC driver
+Message-ID: <20130305065851.GA30028@kroah.com>
+References: <1362464958-8722-1-git-send-email-ganesanr@broadcom.com>
 MIME-Version: 1.0
-X-Received: by 10.204.149.81 with SMTP id s17mr8523115bkv.117.1362465171356;
- Mon, 04 Mar 2013 22:32:51 -0800 (PST)
-Received: by 10.204.24.207 with HTTP; Mon, 4 Mar 2013 22:32:51 -0800 (PST)
-In-Reply-To: <1362458256-29711-1-git-send-email-chenhc@lemote.com>
-References: <1362458256-29711-1-git-send-email-chenhc@lemote.com>
-Date:   Tue, 5 Mar 2013 14:32:51 +0800
-X-Google-Sender-Auth: lrHs0G49ec5Wt4OhJ_x_MnXTUB4
-Message-ID: <CAAhV-H6d_7G=S=yW5Hp7aOvdfcr-1KD0Tn8OvzFGcYD3X_-4Sw@mail.gmail.com>
-Subject: Re: [PATCH V2 01/14] MIPS: Build uasm-generated code only once to
- avoid CPU Hotplug problem
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>, Hongbing Hu <huhb@lemote.com>
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 35850
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1362464958-8722-1-git-send-email-ganesanr@broadcom.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Gm-Message-State: ALoCoQl2VQrq6pC7Y7jhQtmVmzyPmhFJc6fz9DGJxOXnlG1wflA3D5ZOgneHWqfrZDHPi1IJFtgz
+X-archive-position: 35851
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,118 +63,42 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-I'm sorry, this is the only patch, please ignore [01/14].
+On Tue, Mar 05, 2013 at 11:59:18AM +0530, ganesanr@broadcom.com wrote:
+>  This patch has to be merged via staging tree.
+> 
+>  This driver has been submitted to netdev tree and reviewed, the comments 
+>  are list in TODO list, will be addressed in next cycle of submission, till
+>  that time I wanted this driver to be in staging tree.
+> 
+>  This driver shall be sent to netdev@vger.kernel.org and David Miller <davem@davemloft.net>
+>  for further review.
 
-On Tue, Mar 5, 2013 at 12:37 PM, Huacai Chen <chenhc@lemote.com> wrote:
-> Currently, clear_page()/copy_page() are generated by Micro-assembler
-> dynamically. But they are unavailable until uasm_resolve_relocs() has
-> finished because jump labels are illegal before that. Since these
-> functions are shared by every CPU, we only call build_clear_page()/
-> build_copy_page() only once at boot time. Without this patch, programs
-> will get random memory corruption (segmentation fault, bus error, etc.)
-> while CPU Hotplug (e.g. one CPU is using clear_page() while another is
-> generating it in cpu_cache_init()).
->
-> For similar reasons we modify build_tlb_refill_handler()'s invocation.
->
-> V2:
-> 1, Rework the code to make CPU#0 can be online/offline.
-> 2, Introduce cpu_has_local_ebase feature since some types of MIPS CPU
-> need a per-CPU tlb_refill_handler().
->
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> Signed-off-by: Hongbing Hu <huhb@lemote.com>
-> ---
->  arch/mips/include/asm/cpu-features.h               |    3 +++
->  .../asm/mach-loongson/cpu-feature-overrides.h      |    1 +
->  arch/mips/mm/page.c                                |   10 ++++++++++
->  arch/mips/mm/tlbex.c                               |   10 ++++++++--
->  4 files changed, 22 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-> index c507b93..1204408 100644
-> --- a/arch/mips/include/asm/cpu-features.h
-> +++ b/arch/mips/include/asm/cpu-features.h
-> @@ -110,6 +110,9 @@
->  #ifndef cpu_has_pindexed_dcache
->  #define cpu_has_pindexed_dcache        (cpu_data[0].dcache.flags & MIPS_CACHE_PINDEX)
->  #endif
-> +#ifndef cpu_has_local_ebase
-> +#define cpu_has_local_ebase    1
-> +#endif
->
->  /*
->   * I-Cache snoops remote store.  This only matters on SMP.  Some multiprocessors
-> diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-> index 1a05d85..8eec8e2 100644
-> --- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-> +++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-> @@ -57,5 +57,6 @@
->  #define cpu_has_vint           0
->  #define cpu_has_vtag_icache    0
->  #define cpu_has_watch          1
-> +#define cpu_has_local_ebase    0
->
->  #endif /* __ASM_MACH_LOONGSON_CPU_FEATURE_OVERRIDES_H */
-> diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
-> index 8e666c5..6a39c01 100644
-> --- a/arch/mips/mm/page.c
-> +++ b/arch/mips/mm/page.c
-> @@ -247,6 +247,11 @@ void __cpuinit build_clear_page(void)
->         struct uasm_label *l = labels;
->         struct uasm_reloc *r = relocs;
->         int i;
-> +       static atomic_t run_once = ATOMIC_INIT(0);
+When is that going to happen?
+
+> --- /dev/null
+> +++ b/drivers/staging/netlogic/Kconfig
+> @@ -0,0 +1,7 @@
+> +config NETLOGIC_XLR_NET
+> +	tristate "Netlogic XLR/XLS network device"
+> +	depends on CPU_XLR
+
+Why will this not build on any other platform?  It should, right?
+
+
+> --- /dev/null
+> +++ b/drivers/staging/netlogic/TODO
+> @@ -0,0 +1,5 @@
+> +* Implementing 64bit stat counter in software
+> +* All memory allocation should be changed to DMA allocations
+> +* All the netdev should be linked to single pdev as parent
+> +* Changing comments in to linux standred format
 > +
-> +       if (atomic_xchg(&run_once, 1)) {
-> +               return;
-> +       }
->
->         memset(labels, 0, sizeof(labels));
->         memset(relocs, 0, sizeof(relocs));
-> @@ -389,6 +394,11 @@ void __cpuinit build_copy_page(void)
->         struct uasm_label *l = labels;
->         struct uasm_reloc *r = relocs;
->         int i;
-> +       static atomic_t run_once = ATOMIC_INIT(0);
-> +
-> +       if (atomic_xchg(&run_once, 1)) {
-> +               return;
-> +       }
->
->         memset(labels, 0, sizeof(labels));
->         memset(relocs, 0, sizeof(relocs));
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index 1c8ac49..4a8b294 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -2161,8 +2161,11 @@ void __cpuinit build_tlb_refill_handler(void)
->         case CPU_TX3922:
->         case CPU_TX3927:
->  #ifndef CONFIG_MIPS_PGD_C0_CONTEXT
-> -               build_r3000_tlb_refill_handler();
-> +               if (cpu_has_local_ebase)
-> +                       build_r3000_tlb_refill_handler();
->                 if (!run_once) {
-> +                       if (!cpu_has_local_ebase)
-> +                               build_r3000_tlb_refill_handler();
->                         build_r3000_tlb_load_handler();
->                         build_r3000_tlb_store_handler();
->                         build_r3000_tlb_modify_handler();
-> @@ -2191,9 +2194,12 @@ void __cpuinit build_tlb_refill_handler(void)
->                         build_r4000_tlb_load_handler();
->                         build_r4000_tlb_store_handler();
->                         build_r4000_tlb_modify_handler();
-> +                       if (!cpu_has_local_ebase)
-> +                               build_r4000_tlb_refill_handler();
->                         run_once++;
->                 }
-> -               build_r4000_tlb_refill_handler();
-> +               if (cpu_has_local_ebase)
-> +                       build_r4000_tlb_refill_handler();
->         }
->  }
->
-> --
-> 1.7.7.3
->
+
+I need a name and email address for who is responsible for this driver
+and will be handling patches for it.
+
+Please fix this up and resubmit.
+
+thanks,
+
+greg k-h

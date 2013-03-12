@@ -1,42 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Mar 2013 14:01:27 +0100 (CET)
-Received: from mail-pb0-f51.google.com ([209.85.160.51]:38141 "EHLO
-        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827485Ab3CLNBWrMn9j (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Mar 2013 14:01:22 +0100
-Received: by mail-pb0-f51.google.com with SMTP id un15so4932535pbc.24
-        for <multiple recipients>; Tue, 12 Mar 2013 06:01:16 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Mar 2013 14:29:03 +0100 (CET)
+Received: from mail-pb0-f46.google.com ([209.85.160.46]:35670 "EHLO
+        mail-pb0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827485Ab3CLN3B6HHak (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Mar 2013 14:29:01 +0100
+Received: by mail-pb0-f46.google.com with SMTP id uo15so4987904pbc.33
+        for <linux-mips@linux-mips.org>; Tue, 12 Mar 2013 06:28:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
-         :references;
-        bh=IvsKNNuhBqDviiLarbNpPJmpdUR81K+zQTjUbHC4+58=;
-        b=SVj6+wHZwnb0I7QVb+q4T8TZzlbuzUEm79nLAQCCwF5rQ7E6tLGWULUA3AwQ+064L6
-         rnmCAmbtGpj9fxTt4uUzkalD+JwPS2h62pgRD3gO16hy5be2gOZBH2eJCF55trnzSCOA
-         huguvaraq0Q9Xc4LfwjPfX0zessntEXnp+avObb57OpKJhM6UwOiOjhLT9NOOsxQfMLk
-         MPlr83bhi9pXh81lx/VWx9nMF/BlGCqDh8gXiCzPDZKy/R8sWDa24LxqqBVh/5FIJrBK
-         NRopHIdfNsWkASKigygBh1NKsO9FMYUJpEFOMC/RHv7BR4k2NUXfuU5Mqxx+2GdxIgSE
-         92IQ==
-X-Received: by 10.68.129.163 with SMTP id nx3mr37644541pbb.13.1363093276098;
-        Tue, 12 Mar 2013 06:01:16 -0700 (PDT)
-Received: from localhost ([123.66.210.251])
-        by mx.google.com with ESMTPS id qb10sm24962369pbb.43.2013.03.12.06.01.13
+        d=linuxfoundation.org; s=google;
+        h=x-received:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent;
+        bh=5bwkHZ+NqKt7xUOz2bwDv3hJBPhxWgGuLNLPdqYhHmc=;
+        b=CJSL22hYJymM1R7tFUF2XowAF6UzuN3xtJSPqEwIPD45/HPRQIPIGXZ/VCukWFEDO9
+         JmLIqZOFeu/KCFyc1tueuHPWNnvu/SLI/w3fS/WwzVB8XWIRXDQOWeig+b3jzx4xrik0
+         SSlOo8WzpFym/NvUp7oGbEg5f8LZ/w2S3WHM8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent:x-gm-message-state;
+        bh=5bwkHZ+NqKt7xUOz2bwDv3hJBPhxWgGuLNLPdqYhHmc=;
+        b=Seh/mSzF6Q3o/XmHZeQ2xVg4tv4LVqkuq6DzXQAikp0W9fiwkWcG3946hu3+3uXxev
+         7TJmQBmBC284vU0SZAWmupGNTz1EnOlXY+k3EKwmx7iap/yxyOJZW+tBcZrbDNjxhMYT
+         3X0J76XIZ/ESKpJ2VynElUnm7S/Z82OLQWBEnWd/brdYYm4ZAEIbhPX5clAHi3a7N1iC
+         rEIKsUjK2fxW2/SryuLgiLF/DPPSO+DvtwAavLglo2idIgHGZRR6OIhMiO6tt9qSCIy2
+         ht+/qtwQIlsDXZ8e8/n60K4PTuO9bm9ru7vOkFKTM3rv2cwxa1ZOELycomWxrupCyIrD
+         3pvQ==
+X-Received: by 10.68.12.103 with SMTP id x7mr37215638pbb.37.1363094935306;
+        Tue, 12 Mar 2013 06:28:55 -0700 (PDT)
+Received: from localhost (c-76-28-172-123.hsd1.wa.comcast.net. [76.28.172.123])
+        by mx.google.com with ESMTPS id ip8sm25058792pbc.39.2013.03.12.06.28.53
         (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Tue, 12 Mar 2013 06:01:15 -0700 (PDT)
-From:   Zhi-zhou Zhang <zhizhou.zh@gmail.com>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Cc:     Zhi-zhou Zhang <zhizhou.zh@gmail.com>
-Subject: [PATCH] mips: lib/bitops.c: fix wrong return type
-Date:   Tue, 12 Mar 2013 21:00:53 +0800
-Message-Id: <1363093253-17595-1-git-send-email-zhizhou.zh@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <n>
-References: <n>
-X-archive-position: 35877
+        Tue, 12 Mar 2013 06:28:54 -0700 (PDT)
+Date:   Tue, 12 Mar 2013 06:29:46 -0700
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
+        David Daney <david.daney@cavium.com>,
+        Jim Quinlan <jim2101024@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Fix logic errors in bitops.c
+Message-ID: <20130312132946.GA3467@kroah.com>
+References: <1361918123-19404-1-git-send-email-ddaney.cavm@gmail.com>
+ <20130312110718.GA6203@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20130312110718.GA6203@linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Gm-Message-State: ALoCoQmDULy+/Brvd9CjrJIUe/LxkU6PbkaT3aRwvQWthbCvX8ON3ahDeOTlUFNz6I1mVwZEXhmm
+X-archive-position: 35878
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zhizhou.zh@gmail.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,78 +66,16 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Here should return 64-bit types rather than 32-bit types. Or we
-may get wrong return value if high 32-bit isn't equal to zero.
+On Tue, Mar 12, 2013 at 12:07:18PM +0100, Ralf Baechle wrote:
+> On Tue, Feb 26, 2013 at 02:35:23PM -0800, David Daney wrote:
+> 
+> Applied.
+> 
+> -stable folks - this patch should be applied to 3.7-stable and 3.8-stable.
 
-Signed-off-by: Zhi-zhou Zhang <zhizhou.zh@gmail.com>
----
- arch/mips/include/asm/bitops.h |    8 ++++----
- arch/mips/lib/bitops.c         |   10 ++++++----
- 2 files changed, 10 insertions(+), 8 deletions(-)
+What patch?  What is the git commit id of it in Linus's tree?
 
-diff --git a/arch/mips/include/asm/bitops.h b/arch/mips/include/asm/bitops.h
-index 71305a8..7502601 100644
---- a/arch/mips/include/asm/bitops.h
-+++ b/arch/mips/include/asm/bitops.h
-@@ -51,13 +51,13 @@
- void __mips_set_bit(unsigned long nr, volatile unsigned long *addr);
- void __mips_clear_bit(unsigned long nr, volatile unsigned long *addr);
- void __mips_change_bit(unsigned long nr, volatile unsigned long *addr);
--int __mips_test_and_set_bit(unsigned long nr,
-+unsigned long __mips_test_and_set_bit(unsigned long nr,
- 			    volatile unsigned long *addr);
--int __mips_test_and_set_bit_lock(unsigned long nr,
-+unsigned long __mips_test_and_set_bit_lock(unsigned long nr,
- 				 volatile unsigned long *addr);
--int __mips_test_and_clear_bit(unsigned long nr,
-+unsigned long __mips_test_and_clear_bit(unsigned long nr,
- 			      volatile unsigned long *addr);
--int __mips_test_and_change_bit(unsigned long nr,
-+unsigned long __mips_test_and_change_bit(unsigned long nr,
- 			       volatile unsigned long *addr);
- 
- 
-diff --git a/arch/mips/lib/bitops.c b/arch/mips/lib/bitops.c
-index 81f1dcf..f8d14fc 100644
---- a/arch/mips/lib/bitops.c
-+++ b/arch/mips/lib/bitops.c
-@@ -83,7 +83,7 @@ EXPORT_SYMBOL(__mips_change_bit);
-  * @nr: Bit to set
-  * @addr: Address to count from
-  */
--int __mips_test_and_set_bit(unsigned long nr,
-+unsigned long __mips_test_and_set_bit(unsigned long nr,
- 			    volatile unsigned long *addr)
- {
- 	volatile unsigned long *a = addr;
-@@ -109,7 +109,7 @@ EXPORT_SYMBOL(__mips_test_and_set_bit);
-  * @nr: Bit to set
-  * @addr: Address to count from
-  */
--int __mips_test_and_set_bit_lock(unsigned long nr,
-+unsigned long __mips_test_and_set_bit_lock(unsigned long nr,
- 				 volatile unsigned long *addr)
- {
- 	volatile unsigned long *a = addr;
-@@ -135,7 +135,8 @@ EXPORT_SYMBOL(__mips_test_and_set_bit_lock);
-  * @nr: Bit to clear
-  * @addr: Address to count from
-  */
--int __mips_test_and_clear_bit(unsigned long nr, volatile unsigned long *addr)
-+unsigned long __mips_test_and_clear_bit(unsigned long nr,
-+				volatile unsigned long *addr)
- {
- 	volatile unsigned long *a = addr;
- 	unsigned bit = nr & SZLONG_MASK;
-@@ -160,7 +161,8 @@ EXPORT_SYMBOL(__mips_test_and_clear_bit);
-  * @nr: Bit to change
-  * @addr: Address to count from
-  */
--int __mips_test_and_change_bit(unsigned long nr, volatile unsigned long *addr)
-+unsigned long __mips_test_and_change_bit(unsigned long nr,
-+				volatile unsigned long *addr)
- {
- 	volatile unsigned long *a = addr;
- 	unsigned bit = nr & SZLONG_MASK;
--- 
-1.7.9.5
+And there is no 3.7-stable tree anymore, sorry, that kernel is
+end-of-life now.
+
+greg k-h

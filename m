@@ -1,44 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Mar 2013 10:54:18 +0100 (CET)
-Received: from mail.lemote.com ([222.92.8.141]:42972 "EHLO lemote.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823002Ab3CEEoHopSwK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 5 Mar 2013 05:44:07 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by lemote.com (Postfix) with ESMTP id 55D2E3404C;
-        Tue,  5 Mar 2013 11:53:02 +0800 (CST)
-X-Virus-Scanned: Debian amavisd-new at lemote.com
-Received: from lemote.com ([127.0.0.1])
-        by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id bnn1GgFnUR0f; Tue,  5 Mar 2013 11:52:46 +0800 (CST)
-Received: from mail.lemote.com (localhost [127.0.0.1])
-        by lemote.com (Postfix) with ESMTP id AB98D31CB59;
-        Tue,  5 Mar 2013 11:52:46 +0800 (CST)
-Received: from 222.92.8.142
-        (SquirrelMail authenticated user chenhc@lemote.com)
-        by mail.lemote.com with HTTP;
-        Tue, 5 Mar 2013 11:52:46 +0800 (CST)
-Message-ID: <17759.222.92.8.142.1362455566.squirrel@mail.lemote.com>
-Date:   Tue, 5 Mar 2013 11:52:46 +0800 (CST)
-Subject: Re: [PATCH V2 01/14] MIPS: Build uasm-generated code only once to 
-     avoid CPU Hotplug problem
-From:   =?gb2312?Q?=B3=C2=BB=AA=B2=C5?= <chenhc@lemote.com>
-To:     "Ralf Baechle" <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        "Fuxin Zhang" <zhangfx@lemote.com>,
-        "Zhangjin Wu" <wuzhangjin@gmail.com>,
-        "Hongbing Hu" <huhb@lemote.com>
-User-Agent: SquirrelMail/1.4.11
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Mar 2013 12:18:19 +0100 (CET)
+Received: from mail-la0-f51.google.com ([209.85.215.51]:33869 "EHLO
+        mail-la0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825737Ab3CLLSSTlce- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Mar 2013 12:18:18 +0100
+Received: by mail-la0-f51.google.com with SMTP id fo13so5068666lab.10
+        for <linux-mips@linux-mips.org>; Tue, 12 Mar 2013 04:18:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:message-id:date:from:organization:user-agent
+         :mime-version:to:cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding:x-gm-message-state;
+        bh=XgChmKg11C+YFy7dSvGjQ87EFKAN8PfPYh/dNFz8p9g=;
+        b=IoANCe7F4Jp+a1pj7JxX8zi02e8bb5YL9k+L9zn2r6EXokmO51XhPhxZH4VIfB6OUs
+         rZRS6ix7mO3e403uzOwO7Ue3eAl+qBFHh3tLkBT7Y5g/qu69ebaj6u/8EEnmdwVQVoI9
+         nAd12Mfa+Pne08gU9Jsdp4mDieVfkrZktabFBRqWftoHJjxeOPi0RBd9DINVzU88XQVc
+         D7DlXjZmp/FrIMpiFis9otF2PiBUb57ZTe+YaaQRypNDVTx8ts5wVOk9kQizCl2tHEGy
+         n+9eo3RGoRDdpSzBEDAHmNBrAzVI6sESO9ZVJqccjeY1Fc11YoxXvvgrGeebZaMed/xm
+         TaxA==
+X-Received: by 10.112.16.106 with SMTP id f10mr5896093lbd.117.1363087092511;
+        Tue, 12 Mar 2013 04:18:12 -0700 (PDT)
+Received: from [192.168.2.2] (ppp91-79-69-164.pppoe.mtu-net.ru. [91.79.69.164])
+        by mx.google.com with ESMTPS id k15sm5574126lbd.6.2013.03.12.04.18.10
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Tue, 12 Mar 2013 04:18:11 -0700 (PDT)
+Message-ID: <513F0EC8.60709@cogentembedded.com>
+Date:   Tue, 12 Mar 2013 15:17:28 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/20130215 Thunderbird/17.0.3
 MIME-Version: 1.0
-Content-Type: text/plain;charset=gb2312
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-X-archive-position: 35871
-X-Approved-By: ralf@linux-mips.org
+To:     Silviu-Mihai Popescu <silviupopescu1990@gmail.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org, juhosg@openwrt.org,
+        blogic@openwrt.org, kaloz@openwrt.org, xsecute@googlemail.com,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] pci: convert to devm_ioremap_resource()
+References: <1363073281-9939-1-git-send-email-silviupopescu1990@gmail.com>
+In-Reply-To: <1363073281-9939-1-git-send-email-silviupopescu1990@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Gm-Message-State: ALoCoQl9Mn7Rsl3Az/tCfEKgm8wzEN/TOoR5yiuYqi9gGQ2PjBuK7Mvn9smXZBR4Oz90+irl78+E
+X-archive-position: 35872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,134 +57,80 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-I'm sorry, this is the only patch, please ignore [01/14].
+Hello.
 
-> Currently, clear_page()/copy_page() are generated by Micro-assembler
-> dynamically. But they are unavailable until uasm_resolve_relocs() has
-> finished because jump labels are illegal before that. Since these
-> functions are shared by every CPU, we only call build_clear_page()/
-> build_copy_page() only once at boot time. Without this patch, programs
-> will get random memory corruption (segmentation fault, bus error, etc.)
-> while CPU Hotplug (e.g. one CPU is using clear_page() while another is
-> generating it in cpu_cache_init()).
->
-> For similar reasons we modify build_tlb_refill_handler()'s invocation.
->
-> V2:
-> 1, Rework the code to make CPU#0 can be online/offline.
-> 2, Introduce cpu_has_local_ebase feature since some types of MIPS CPU
-> need a per-CPU tlb_refill_handler().
->
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> Signed-off-by: Hongbing Hu <huhb@lemote.com>
+On 12-03-2013 11:28, Silviu-Mihai Popescu wrote:
+
+> Convert all uses of devm_request_and_ioremap() to the newly introduced
+> devm_ioremap_resource() which provides more consistent error handling.
+
+> devm_ioremap_resource() provides its own error messages so all explicit
+> error messages can be removed from the failure code paths.
+
+    There were no error messages as far as I could see, so this passage seems 
+superfluous...
+
+> Signed-off-by: Silviu-Mihai Popescu <silviupopescu1990@gmail.com>
 > ---
->  arch/mips/include/asm/cpu-features.h               |    3 +++
->  .../asm/mach-loongson/cpu-feature-overrides.h      |    1 +
->  arch/mips/mm/page.c                                |   10 ++++++++++
->  arch/mips/mm/tlbex.c                               |   10 ++++++++--
->  4 files changed, 22 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/mips/include/asm/cpu-features.h
-> b/arch/mips/include/asm/cpu-features.h
-> index c507b93..1204408 100644
-> --- a/arch/mips/include/asm/cpu-features.h
-> +++ b/arch/mips/include/asm/cpu-features.h
-> @@ -110,6 +110,9 @@
->  #ifndef cpu_has_pindexed_dcache
->  #define cpu_has_pindexed_dcache	(cpu_data[0].dcache.flags &
-> MIPS_CACHE_PINDEX)
->  #endif
-> +#ifndef cpu_has_local_ebase
-> +#define cpu_has_local_ebase	1
-> +#endif
->
->  /*
->   * I-Cache snoops remote store.  This only matters on SMP.  Some
-> multiprocessors
-> diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-> b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-> index 1a05d85..8eec8e2 100644
-> --- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-> +++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-> @@ -57,5 +57,6 @@
->  #define cpu_has_vint		0
->  #define cpu_has_vtag_icache	0
->  #define cpu_has_watch		1
-> +#define cpu_has_local_ebase	0
->
->  #endif /* __ASM_MACH_LOONGSON_CPU_FEATURE_OVERRIDES_H */
-> diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
-> index 8e666c5..6a39c01 100644
-> --- a/arch/mips/mm/page.c
-> +++ b/arch/mips/mm/page.c
-> @@ -247,6 +247,11 @@ void __cpuinit build_clear_page(void)
->  	struct uasm_label *l = labels;
->  	struct uasm_reloc *r = relocs;
->  	int i;
-> +	static atomic_t run_once = ATOMIC_INIT(0);
-> +
-> +	if (atomic_xchg(&run_once, 1)) {
-> +		return;
-> +	}
->
->  	memset(labels, 0, sizeof(labels));
->  	memset(relocs, 0, sizeof(relocs));
-> @@ -389,6 +394,11 @@ void __cpuinit build_copy_page(void)
->  	struct uasm_label *l = labels;
->  	struct uasm_reloc *r = relocs;
->  	int i;
-> +	static atomic_t run_once = ATOMIC_INIT(0);
-> +
-> +	if (atomic_xchg(&run_once, 1)) {
-> +		return;
-> +	}
->
->  	memset(labels, 0, sizeof(labels));
->  	memset(relocs, 0, sizeof(relocs));
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index 1c8ac49..4a8b294 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -2161,8 +2161,11 @@ void __cpuinit build_tlb_refill_handler(void)
->  	case CPU_TX3922:
->  	case CPU_TX3927:
->  #ifndef CONFIG_MIPS_PGD_C0_CONTEXT
-> -		build_r3000_tlb_refill_handler();
-> +		if (cpu_has_local_ebase)
-> +			build_r3000_tlb_refill_handler();
->  		if (!run_once) {
-> +			if (!cpu_has_local_ebase)
-> +				build_r3000_tlb_refill_handler();
->  			build_r3000_tlb_load_handler();
->  			build_r3000_tlb_store_handler();
->  			build_r3000_tlb_modify_handler();
-> @@ -2191,9 +2194,12 @@ void __cpuinit build_tlb_refill_handler(void)
->  			build_r4000_tlb_load_handler();
->  			build_r4000_tlb_store_handler();
->  			build_r4000_tlb_modify_handler();
-> +			if (!cpu_has_local_ebase)
-> +				build_r4000_tlb_refill_handler();
->  			run_once++;
->  		}
-> -		build_r4000_tlb_refill_handler();
-> +		if (cpu_has_local_ebase)
-> +			build_r4000_tlb_refill_handler();
->  	}
->  }
->
-> --
-> 1.7.7.3
->
->
+>   arch/mips/pci/pci-ar71xx.c |    6 +++---
+>   arch/mips/pci/pci-ar724x.c |   18 +++++++++---------
+>   2 files changed, 12 insertions(+), 12 deletions(-)
 
+> diff --git a/arch/mips/pci/pci-ar71xx.c b/arch/mips/pci/pci-ar71xx.c
+> index 412ec02..18517dd 100644
+> --- a/arch/mips/pci/pci-ar71xx.c
+> +++ b/arch/mips/pci/pci-ar71xx.c
+> @@ -366,9 +366,9 @@ static int ar71xx_pci_probe(struct platform_device *pdev)
+>   	if (!res)
+>   		return -EINVAL;
+>
+> -	apc->cfg_base = devm_request_and_ioremap(&pdev->dev, res);
+> -	if (!apc->cfg_base)
+> -		return -ENOMEM;
+> +	apc->cfg_base = devm_ioremap_resource(&pdev->dev, res);
+> +	if (IS_ERR(apc->cfg_base))
+> +		return PTR_ERR(apc->cfg_base);
+>
+>   	apc->irq = platform_get_irq(pdev, 0);
+>   	if (apc->irq < 0)
+> diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
+> index 8a0700d..65ec032 100644
+> --- a/arch/mips/pci/pci-ar724x.c
+> +++ b/arch/mips/pci/pci-ar724x.c
+> @@ -365,25 +365,25 @@ static int ar724x_pci_probe(struct platform_device *pdev)
+>   	if (!res)
+>   		return -EINVAL;
+>
+> -	apc->ctrl_base = devm_request_and_ioremap(&pdev->dev, res);
+> -	if (apc->ctrl_base == NULL)
+> -		return -EBUSY;
+> +	apc->ctrl_base = devm_ioremap_resource(&pdev->dev, res);
+> +	if (IS_ERR(apc->ctrl_base))
+> +		return PTR_ERR(apc->ctrl_base);
+>
+>   	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "cfg_base");
+>   	if (!res)
+>   		return -EINVAL;
+>
+> -	apc->devcfg_base = devm_request_and_ioremap(&pdev->dev, res);
+> -	if (!apc->devcfg_base)
+> -		return -EBUSY;
+> +	apc->devcfg_base = devm_ioremap_resource(&pdev->dev, res);
+> +	if (IS_ERR(apc->devcfg_base))
+> +		return PTR_ERR(apc->devcfg_base);
+>
+>   	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "crp_base");
+>   	if (!res)
+>   		return -EINVAL;
+>
+> -	apc->crp_base = devm_request_and_ioremap(&pdev->dev, res);
+> -	if (apc->crp_base == NULL)
+> -		return -EBUSY;
+> +	apc->crp_base = devm_ioremap_resource(&pdev->dev, res);
+> +	if (IS_ERR(apc->crp_base))
+> +		return PTR_ERR(apc->crp_base);
+>
+>   	apc->irq = platform_get_irq(pdev, 0);
+>   	if (apc->irq < 0)
 
--- 
-江苏中科梦兰电子科技有限公司
-
-软件部 陈华才
-
-E-mail: chenhc@lemote.com
-
-Web: http://www.lemote.com/
-
-Add: 江苏省常熟市虞山镇梦兰工业园
+WBR, Sergei

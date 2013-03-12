@@ -1,42 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Mar 2013 12:31:14 +0100 (CET)
-Received: from mail-ob0-f178.google.com ([209.85.214.178]:49642 "EHLO
-        mail-ob0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825737Ab3CLLbNY0fq0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Mar 2013 12:31:13 +0100
-Received: by mail-ob0-f178.google.com with SMTP id wd20so4281465obb.23
-        for <multiple recipients>; Tue, 12 Mar 2013 04:31:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:x-received:in-reply-to:references:date:message-id
-         :subject:from:to:cc:content-type;
-        bh=XfcYipj6tHYKllWf8R0wqG0zc4LK17rZShT5ZBBA1ww=;
-        b=Lgp6NGr1rvcW7bfJ7uYE67YBTGwtR6cupV2QMPZUKWZyGsVX3QUPhPEDzygEYjxGZ7
-         bcmySqn+lmvKZiLq7aUi31HKlWpKMRZq0uGSLy9VKk/QCXbCwPvBC5MrTFARcytCzmGp
-         4GriH19WFJnsnnP2tCb1IdieIUe63gNXQceStQiZMk5AdB95hDOHMovVHN36OksBlq2w
-         1Rwm2AE1Onx/JTRog/CW3W69MfW/2PRuhWmXaP79tBnJz9guBfUe2W9WTfXIvQNGrStu
-         iar3unDWg590HXl1ghs8IAsZlKyVPbJJsK9Ye27Bp3FJh1CuXmDiFtpcKFmnj8ldTajQ
-         pBuw==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Mar 2013 12:54:15 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:57759 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6827486Ab3CLLyOmGB7k (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 12 Mar 2013 12:54:14 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r2CB7KjJ006531;
+        Tue, 12 Mar 2013 12:07:20 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r2CB7Ifn006530;
+        Tue, 12 Mar 2013 12:07:18 +0100
+Date:   Tue, 12 Mar 2013 12:07:18 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>,
+        Jim Quinlan <jim2101024@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Fix logic errors in bitops.c
+Message-ID: <20130312110718.GA6203@linux-mips.org>
+References: <1361918123-19404-1-git-send-email-ddaney.cavm@gmail.com>
 MIME-Version: 1.0
-X-Received: by 10.60.26.72 with SMTP id j8mr11686604oeg.2.1363087866782; Tue,
- 12 Mar 2013 04:31:06 -0700 (PDT)
-Received: by 10.182.105.164 with HTTP; Tue, 12 Mar 2013 04:31:06 -0700 (PDT)
-In-Reply-To: <513F0EC8.60709@cogentembedded.com>
-References: <1363073281-9939-1-git-send-email-silviupopescu1990@gmail.com>
-        <513F0EC8.60709@cogentembedded.com>
-Date:   Tue, 12 Mar 2013 13:31:06 +0200
-Message-ID: <CAPWTe+JGm07zp62EZCzPYGvorrZHLoS6Nz0WORv-o56zdCfudQ@mail.gmail.com>
-Subject: Re: [PATCH v2] pci: convert to devm_ioremap_resource()
-From:   Silviu Popescu <silviupopescu1990@gmail.com>
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org, juhosg@openwrt.org,
-        blogic@openwrt.org, kaloz@openwrt.org, xsecute@googlemail.com,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 35874
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1361918123-19404-1-git-send-email-ddaney.cavm@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 35875
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: silviupopescu1990@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,25 +40,12 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Mar 12, 2013 at 1:17 PM, Sergei Shtylyov
-<sergei.shtylyov@cogentembedded.com> wrote:
-> Hello.
->
->
-> On 12-03-2013 11:28, Silviu-Mihai Popescu wrote:
->
->> Convert all uses of devm_request_and_ioremap() to the newly introduced
->> devm_ioremap_resource() which provides more consistent error handling.
->
->
->> devm_ioremap_resource() provides its own error messages so all explicit
->> error messages can be removed from the failure code paths.
->
->
->    There were no error messages as far as I could see, so this passage seems
-> superfluous...
+On Tue, Feb 26, 2013 at 02:35:23PM -0800, David Daney wrote:
 
-Sorry for that, I sent a refreshed version of the patch.
+Applied.
+
+-stable folks - this patch should be applied to 3.7-stable and 3.8-stable.
 
 Thanks,
-Silviu
+
+  Ralf

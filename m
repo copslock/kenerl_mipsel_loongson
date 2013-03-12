@@ -1,28 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Mar 2013 12:54:15 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:57759 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Mar 2013 13:59:37 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:57940 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6827486Ab3CLLyOmGB7k (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 12 Mar 2013 12:54:14 +0100
+        id S6827486Ab3CLM7gR4qos (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 12 Mar 2013 13:59:36 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r2CB7KjJ006531;
-        Tue, 12 Mar 2013 12:07:20 +0100
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r2CCxZFm012053;
+        Tue, 12 Mar 2013 13:59:35 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r2CB7Ifn006530;
-        Tue, 12 Mar 2013 12:07:18 +0100
-Date:   Tue, 12 Mar 2013 12:07:18 +0100
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r2CCxZox012052;
+        Tue, 12 Mar 2013 13:59:35 +0100
+Date:   Tue, 12 Mar 2013 13:59:35 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>,
-        Jim Quinlan <jim2101024@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Fix logic errors in bitops.c
-Message-ID: <20130312110718.GA6203@linux-mips.org>
-References: <1361918123-19404-1-git-send-email-ddaney.cavm@gmail.com>
+To:     Yoichi Yuasa <yuasa@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: VR4133: add LL/SC support
+Message-ID: <20130312125935.GB6203@linux-mips.org>
+References: <20130221153819.b3e9b650d87ffea492679a86@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1361918123-19404-1-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <20130221153819.b3e9b650d87ffea492679a86@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35875
+X-archive-position: 35876
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,12 +39,14 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Feb 26, 2013 at 02:35:23PM -0800, David Daney wrote:
+On Thu, Feb 21, 2013 at 03:38:19PM +0900, Yoichi Yuasa wrote:
 
-Applied.
+Patch is looking good, applied.  Thanks, Yoichi-San!
 
--stable folks - this patch should be applied to 3.7-stable and 3.8-stable.
-
-Thanks,
+I noticed that there's no <asm/mach-vr41xx/cpu-feature-overrides.h> file,
+so all CPU features will always be runtime tested.  This is going to be
+rather slow and bloated.  You could also use this to specifically define
+cpu_has_llsc to 0/1 for those platforms that are known to have not have/
+have ll/sc instructions.
 
   Ralf

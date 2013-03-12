@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Mar 2013 14:54:45 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:58146 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Mar 2013 15:07:06 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:58172 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6827485Ab3CLNyoHGzVG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 12 Mar 2013 14:54:44 +0100
+        id S6827500Ab3CLOHF4qkiW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 12 Mar 2013 15:07:05 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r2CDsgGC014744;
-        Tue, 12 Mar 2013 14:54:42 +0100
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r2CE7390015371;
+        Tue, 12 Mar 2013 15:07:03 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r2CDsfCv014743;
-        Tue, 12 Mar 2013 14:54:41 +0100
-Date:   Tue, 12 Mar 2013 14:54:41 +0100
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r2CE71pM015370;
+        Tue, 12 Mar 2013 15:07:01 +0100
+Date:   Tue, 12 Mar 2013 15:07:01 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Zhi-zhou Zhang <zhizhou.zh@gmail.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mips: lib/bitops.c: fix wrong return type
-Message-ID: <20130312135441.GA13792@linux-mips.org>
-References: <n>
- <1363093253-17595-1-git-send-email-zhizhou.zh@gmail.com>
+To:     Ben Hutchings <ben@decadent.org.uk>
+Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
+Subject: Re: MIPS: Add dependencies for HAVE_ARCH_TRANSPARENT_HUGEPAGE
+Message-ID: <20130312140701.GA15090@linux-mips.org>
+References: <1362257499.3768.141.camel@deadeye.wl.decadent.org.uk>
+ <1362370641.3768.291.camel@deadeye.wl.decadent.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1363093253-17595-1-git-send-email-zhizhou.zh@gmail.com>
+In-Reply-To: <1362370641.3768.291.camel@deadeye.wl.decadent.org.uk>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35879
+X-archive-position: 35880
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,15 +40,6 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Mar 12, 2013 at 09:00:53PM +0800, Zhi-zhou Zhang wrote:
-
-> Here should return 64-bit types rather than 32-bit types. Or we
-> may get wrong return value if high 32-bit isn't equal to zero.
-
-David Daney's patch which I've applied not two hours before you posted
-this patch solves the same issue though a different way.  So I'm just
-going to drop this patch.
-
-Thanks anyway!
+Thanks, applied.
 
   Ralf

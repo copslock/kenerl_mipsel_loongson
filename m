@@ -1,31 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Mar 2013 13:59:37 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:57940 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6827486Ab3CLM7gR4qos (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 12 Mar 2013 13:59:36 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r2CCxZFm012053;
-        Tue, 12 Mar 2013 13:59:35 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r2CCxZox012052;
-        Tue, 12 Mar 2013 13:59:35 +0100
-Date:   Tue, 12 Mar 2013 13:59:35 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Yoichi Yuasa <yuasa@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: VR4133: add LL/SC support
-Message-ID: <20130312125935.GB6203@linux-mips.org>
-References: <20130221153819.b3e9b650d87ffea492679a86@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20130221153819.b3e9b650d87ffea492679a86@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35876
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Mar 2013 14:01:27 +0100 (CET)
+Received: from mail-pb0-f51.google.com ([209.85.160.51]:38141 "EHLO
+        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827485Ab3CLNBWrMn9j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Mar 2013 14:01:22 +0100
+Received: by mail-pb0-f51.google.com with SMTP id un15so4932535pbc.24
+        for <multiple recipients>; Tue, 12 Mar 2013 06:01:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
+         :references;
+        bh=IvsKNNuhBqDviiLarbNpPJmpdUR81K+zQTjUbHC4+58=;
+        b=SVj6+wHZwnb0I7QVb+q4T8TZzlbuzUEm79nLAQCCwF5rQ7E6tLGWULUA3AwQ+064L6
+         rnmCAmbtGpj9fxTt4uUzkalD+JwPS2h62pgRD3gO16hy5be2gOZBH2eJCF55trnzSCOA
+         huguvaraq0Q9Xc4LfwjPfX0zessntEXnp+avObb57OpKJhM6UwOiOjhLT9NOOsxQfMLk
+         MPlr83bhi9pXh81lx/VWx9nMF/BlGCqDh8gXiCzPDZKy/R8sWDa24LxqqBVh/5FIJrBK
+         NRopHIdfNsWkASKigygBh1NKsO9FMYUJpEFOMC/RHv7BR4k2NUXfuU5Mqxx+2GdxIgSE
+         92IQ==
+X-Received: by 10.68.129.163 with SMTP id nx3mr37644541pbb.13.1363093276098;
+        Tue, 12 Mar 2013 06:01:16 -0700 (PDT)
+Received: from localhost ([123.66.210.251])
+        by mx.google.com with ESMTPS id qb10sm24962369pbb.43.2013.03.12.06.01.13
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Tue, 12 Mar 2013 06:01:15 -0700 (PDT)
+From:   Zhi-zhou Zhang <zhizhou.zh@gmail.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Cc:     Zhi-zhou Zhang <zhizhou.zh@gmail.com>
+Subject: [PATCH] mips: lib/bitops.c: fix wrong return type
+Date:   Tue, 12 Mar 2013 21:00:53 +0800
+Message-Id: <1363093253-17595-1-git-send-email-zhizhou.zh@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <n>
+References: <n>
+X-archive-position: 35877
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: zhizhou.zh@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,14 +50,78 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Feb 21, 2013 at 03:38:19PM +0900, Yoichi Yuasa wrote:
+Here should return 64-bit types rather than 32-bit types. Or we
+may get wrong return value if high 32-bit isn't equal to zero.
 
-Patch is looking good, applied.  Thanks, Yoichi-San!
+Signed-off-by: Zhi-zhou Zhang <zhizhou.zh@gmail.com>
+---
+ arch/mips/include/asm/bitops.h |    8 ++++----
+ arch/mips/lib/bitops.c         |   10 ++++++----
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
-I noticed that there's no <asm/mach-vr41xx/cpu-feature-overrides.h> file,
-so all CPU features will always be runtime tested.  This is going to be
-rather slow and bloated.  You could also use this to specifically define
-cpu_has_llsc to 0/1 for those platforms that are known to have not have/
-have ll/sc instructions.
-
-  Ralf
+diff --git a/arch/mips/include/asm/bitops.h b/arch/mips/include/asm/bitops.h
+index 71305a8..7502601 100644
+--- a/arch/mips/include/asm/bitops.h
++++ b/arch/mips/include/asm/bitops.h
+@@ -51,13 +51,13 @@
+ void __mips_set_bit(unsigned long nr, volatile unsigned long *addr);
+ void __mips_clear_bit(unsigned long nr, volatile unsigned long *addr);
+ void __mips_change_bit(unsigned long nr, volatile unsigned long *addr);
+-int __mips_test_and_set_bit(unsigned long nr,
++unsigned long __mips_test_and_set_bit(unsigned long nr,
+ 			    volatile unsigned long *addr);
+-int __mips_test_and_set_bit_lock(unsigned long nr,
++unsigned long __mips_test_and_set_bit_lock(unsigned long nr,
+ 				 volatile unsigned long *addr);
+-int __mips_test_and_clear_bit(unsigned long nr,
++unsigned long __mips_test_and_clear_bit(unsigned long nr,
+ 			      volatile unsigned long *addr);
+-int __mips_test_and_change_bit(unsigned long nr,
++unsigned long __mips_test_and_change_bit(unsigned long nr,
+ 			       volatile unsigned long *addr);
+ 
+ 
+diff --git a/arch/mips/lib/bitops.c b/arch/mips/lib/bitops.c
+index 81f1dcf..f8d14fc 100644
+--- a/arch/mips/lib/bitops.c
++++ b/arch/mips/lib/bitops.c
+@@ -83,7 +83,7 @@ EXPORT_SYMBOL(__mips_change_bit);
+  * @nr: Bit to set
+  * @addr: Address to count from
+  */
+-int __mips_test_and_set_bit(unsigned long nr,
++unsigned long __mips_test_and_set_bit(unsigned long nr,
+ 			    volatile unsigned long *addr)
+ {
+ 	volatile unsigned long *a = addr;
+@@ -109,7 +109,7 @@ EXPORT_SYMBOL(__mips_test_and_set_bit);
+  * @nr: Bit to set
+  * @addr: Address to count from
+  */
+-int __mips_test_and_set_bit_lock(unsigned long nr,
++unsigned long __mips_test_and_set_bit_lock(unsigned long nr,
+ 				 volatile unsigned long *addr)
+ {
+ 	volatile unsigned long *a = addr;
+@@ -135,7 +135,8 @@ EXPORT_SYMBOL(__mips_test_and_set_bit_lock);
+  * @nr: Bit to clear
+  * @addr: Address to count from
+  */
+-int __mips_test_and_clear_bit(unsigned long nr, volatile unsigned long *addr)
++unsigned long __mips_test_and_clear_bit(unsigned long nr,
++				volatile unsigned long *addr)
+ {
+ 	volatile unsigned long *a = addr;
+ 	unsigned bit = nr & SZLONG_MASK;
+@@ -160,7 +161,8 @@ EXPORT_SYMBOL(__mips_test_and_clear_bit);
+  * @nr: Bit to change
+  * @addr: Address to count from
+  */
+-int __mips_test_and_change_bit(unsigned long nr, volatile unsigned long *addr)
++unsigned long __mips_test_and_change_bit(unsigned long nr,
++				volatile unsigned long *addr)
+ {
+ 	volatile unsigned long *a = addr;
+ 	unsigned bit = nr & SZLONG_MASK;
+-- 
+1.7.9.5

@@ -1,31 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Mar 2013 17:09:21 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:58509 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Mar 2013 14:41:45 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:33425 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6827515Ab3CLQJS2KSkQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 12 Mar 2013 17:09:18 +0100
+        id S6823033Ab3CMNlka3Chu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 13 Mar 2013 14:41:40 +0100
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r2CG9FZ1023203;
-        Tue, 12 Mar 2013 17:09:15 +0100
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r2DDfcG6024591;
+        Wed, 13 Mar 2013 14:41:38 +0100
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r2CG9Cj6023202;
-        Tue, 12 Mar 2013 17:09:12 +0100
-Date:   Tue, 12 Mar 2013 17:09:12 +0100
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r2DDfbNq024590;
+        Wed, 13 Mar 2013 14:41:37 +0100
+Date:   Wed, 13 Mar 2013 14:41:37 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Paul Bolle <pebolle@tiscali.nl>
-Cc:     Jonas Gorski <jogo@openwrt.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Chris Dearman <chris.dearman@imgtec.com>
-Subject: Re: [PATCH v2] MIPS: Get rid of CONFIG_CPU_HAS_LLSC again
-Message-ID: <20130312160911.GA17165@linux-mips.org>
-References: <1362477800.16460.69.camel@x61.thuisdomein>
- <CAOiHx=nzNVatEp0nyfZKU2p35+1kjrw6VsvZTP+QPJykWF3JAg@mail.gmail.com>
- <1362486020.16460.73.camel@x61.thuisdomein>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: loongson: fix random early boot hang
+Message-ID: <20130313134137.GB17165@linux-mips.org>
+References: <1361232039-12555-1-git-send-email-aaro.koskinen@iki.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1362486020.16460.73.camel@x61.thuisdomein>
+In-Reply-To: <1361232039-12555-1-git-send-email-aaro.koskinen@iki.fi>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35883
+X-archive-position: 35884
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,22 +39,21 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Mar 05, 2013 at 01:20:20PM +0100, Paul Bolle wrote:
+On Tue, Feb 19, 2013 at 02:00:39AM +0200, Aaro Koskinen wrote:
 
-> Commit f7ade3c168e4f437c11f57be012992bbb0e3075c ("MIPS: Get rid of
-> CONFIG_CPU_HAS_LLSC") did what it promised to do. But since then that
-> macro and its Kconfig symbol popped up again. Get rid of those again.
+> Subject: [PATCH] MIPS: loongson: fix random early boot hang
 > 
-> Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
-> ---
-> 0) This version fixes an embarrassing dangling "#endif" spotted by
-> Jonas. Thanks for that! Still untested.
+> Some Loongson boards (e.g. Lemote FuLoong mini-PC) use ISA/southbridge
+> device (CS5536 general purpose timer) for the timer interrupt. It starts
+> running early and is already enabled during the PCI configuration,
+> during which there is a small window in pci_read_base() when the register
+> access is temporarily disabled. If the timer interrupts at this point,
+> the system will hang. Fix this by adding a fixup that keeps the register
+> access always enabled.
 
-Thanks, I've applied your v2 patch.
+Applied, though a bit late.  I really was hoping for one of the Lemote
+folks to chime in.
 
-It's good that your cleanup doesn't change the behaviour of the existing
-code - however the current behaviour doesn't seem to be the intended
-behaviour so I'm going to commit a separate patch to define cpu_has_llsc
-to 1.
+Thanks Aaro,
 
   Ralf

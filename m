@@ -1,31 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Mar 2013 14:41:45 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:33425 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823033Ab3CMNlka3Chu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 13 Mar 2013 14:41:40 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r2DDfcG6024591;
-        Wed, 13 Mar 2013 14:41:38 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r2DDfbNq024590;
-        Wed, 13 Mar 2013 14:41:37 +0100
-Date:   Wed, 13 Mar 2013 14:41:37 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: loongson: fix random early boot hang
-Message-ID: <20130313134137.GB17165@linux-mips.org>
-References: <1361232039-12555-1-git-send-email-aaro.koskinen@iki.fi>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1361232039-12555-1-git-send-email-aaro.koskinen@iki.fi>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35884
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Mar 2013 20:58:10 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:41432 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823112Ab3CMT6IFz68h (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 13 Mar 2013 20:58:08 +0100
+From:   John Crispin <blogic@openwrt.org>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [PATCH] MIPS: fix inconsistent formatting inside /proc/cpuinfo
+Date:   Wed, 13 Mar 2013 20:54:34 +0100
+Message-Id: <1363204474-20924-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+X-archive-position: 35885
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,21 +28,31 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Feb 19, 2013 at 02:00:39AM +0200, Aaro Koskinen wrote:
+There is a missing " " inside /proc/cpuinfo.
 
-> Subject: [PATCH] MIPS: loongson: fix random early boot hang
-> 
-> Some Loongson boards (e.g. Lemote FuLoong mini-PC) use ISA/southbridge
-> device (CS5536 general purpose timer) for the timer interrupt. It starts
-> running early and is already enabled during the PCI configuration,
-> during which there is a small window in pci_read_base() when the register
-> access is temporarily disabled. If the timer interrupts at this point,
-> the system will hang. Fix this by adding a fixup that keeps the register
-> access always enabled.
+The bad commit was:
+commit a96102be700f87283f168942cd09a2b30f86f324
+Author: Steven J. Hill <sjhill@mips.com>
+Date:   Fri Dec 7 04:31:36 2012 +0000
+MIPS: Add printing of ISA version in cpuinfo.
 
-Applied, though a bit late.  I really was hoping for one of the Lemote
-folks to chime in.
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+ arch/mips/kernel/proc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks Aaro,
-
-  Ralf
+diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+index 135c4aa..7a54f74 100644
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -67,7 +67,7 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+ 	if (cpu_has_mips_r) {
+ 		seq_printf(m, "isa\t\t\t:");
+ 		if (cpu_has_mips_1)
+-			seq_printf(m, "%s", "mips1");
++			seq_printf(m, "%s", " mips1");
+ 		if (cpu_has_mips_2)
+ 			seq_printf(m, "%s", " mips2");
+ 		if (cpu_has_mips_3)
+-- 
+1.7.10.4

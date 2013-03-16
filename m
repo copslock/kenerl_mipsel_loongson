@@ -1,30 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Mar 2013 10:56:10 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:41555 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817419Ab3CQJz44Uith (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Mar 2013 10:55:56 +0100
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <sjhill@realitydiluted.com>)
-        id 1UFtfr-00021P-4d; Wed, 13 Mar 2013 16:57:27 -0500
-Message-ID: <5140F62B.2010604@realitydiluted.com>
-Date:   Wed, 13 Mar 2013 16:56:59 -0500
-From:   "Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130221 Thunderbird/17.0.3
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Mar 2013 11:02:14 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:65028 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816154Ab3CPUyBHRU7P convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Mar 2013 21:54:01 +0100
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+To:     Florian Fainelli <florian@openwrt.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>
+CC:     "blogic@openwrt.org" <blogic@openwrt.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH] MIPS: fix code generation for non-DSP capable CPUs
+Thread-Topic: [PATCH] MIPS: fix code generation for non-DSP capable CPUs
+Thread-Index: AQHOILcC+TzF+sBpekS+sLm1UdB6zJiozhcB
+Date:   Sat, 16 Mar 2013 20:52:44 +0000
+Message-ID: <0573B2AE5BBFFC408CC8740092293B5ACBB9B0@bamail02.ba.imgtec.org>
+References: <1363267128-8918-1-git-send-email-florian@openwrt.org>
+In-Reply-To: <1363267128-8918-1-git-send-email-florian@openwrt.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.64.117]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Steven.Hill@imgtec.com, linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/4] Add support for microMIPS instructions
-References: <1360104723-29529-1-git-send-email-sjhill@mips.com> <20130313204806.GA16745@linux-mips.org>
-In-Reply-To: <20130313204806.GA16745@linux-mips.org>
-X-Enigmail-Version: 1.5.1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 35897
+X-SEF-Processed: 7_3_0_01181__2013_03_16_20_53_54
+X-archive-position: 35898
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,17 +43,9 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+Florian,
 
-On 03/13/2013 03:48 PM, Ralf Baechle wrote:
+I just tested this patch with our DSP testsuite and everything works. I also disassembled the vmlinux ELF binary to make sure the instructions were being generated correctly.
 
-And thank you very very much!
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
 
-iEYEARECAAYFAlFA9iAACgkQgyK5H2Ic36cuBACfSMF8BPPoC3V37AN1KczsK40B
-NgIAoK0pma9a2xALHEjrVq2SRxbHMNYI
-=4dZp
------END PGP SIGNATURE-----
+Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>

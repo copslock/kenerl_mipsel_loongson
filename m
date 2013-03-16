@@ -1,35 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Mar 2013 18:43:25 +0100 (CET)
-Received: from mail.nanl.de ([217.115.11.12]:41715 "EHLO mail.nanl.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823059Ab3CRQFSr1jO- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 Mar 2013 17:05:18 +0100
-Received: from mail-ie0-f169.google.com (mail-ie0-f169.google.com [209.85.223.169])
-        by mail.nanl.de (Postfix) with ESMTPSA id 7F90940969;
-        Mon, 18 Mar 2013 16:05:16 +0000 (UTC)
-Received: by mail-ie0-f169.google.com with SMTP id 13so7205297iea.14
-        for <multiple recipients>; Mon, 18 Mar 2013 09:05:12 -0700 (PDT)
-X-Received: by 10.42.145.137 with SMTP id f9mr9148359icv.52.1363622712686;
- Mon, 18 Mar 2013 09:05:12 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Mar 2013 18:45:00 +0100 (CET)
+Received: from mail-wg0-f41.google.com ([74.125.82.41]:64592 "EHLO
+        mail-wg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816859Ab3CPOGYiW8hx convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 16 Mar 2013 15:06:24 +0100
+Received: by mail-wg0-f41.google.com with SMTP id ds1so1348653wgb.4
+        for <multiple recipients>; Sat, 16 Mar 2013 07:06:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:sender:from:organization:to:subject:date:user-agent:cc
+         :references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:message-id;
+        bh=LCJJJxILpnubTQy/uD6B39xlS20WPtkr89WBF6fyWlw=;
+        b=XXFazFpkwI7gZFH1O88zmC8pblsI1JCX3J4GWcN9To0cJXghvZtqS/dvDF+tcCJha5
+         GWpO7yJ5Ma3uCM6ClMFTl15nB8uRaWO/mKhat04nUg8lzdCV6q7Wa8msB8Dg9pDKEg5N
+         wbYF16toaklAT5luVxjPWX7EavzO7qzqPVqXNPDE6dqY2IR55ofcZ+FIW+jrm0CUYq1R
+         CE4vdBUSFcXDIZjNrXtTpS4fHefMMqb1q5MeC43vlLUmM2X3l6rBCy2v+bhofzO10qvH
+         X1N6pyypAFxSf9niw7EyXYAuVae7T+hFjTuQSlQER+1LFYMsiMgpcBoGsAFEnVSaxPCS
+         +WPA==
+X-Received: by 10.194.10.202 with SMTP id k10mr16282580wjb.53.1363442779257;
+        Sat, 16 Mar 2013 07:06:19 -0700 (PDT)
+Received: from lenovo.localnet ([2a01:e35:2f70:4010:21d:7dff:fe45:5399])
+        by mx.google.com with ESMTPS id h10sm3921165wic.8.2013.03.16.07.06.16
+        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sat, 16 Mar 2013 07:06:17 -0700 (PDT)
+From:   Florian Fainelli <florian@openwrt.org>
+Organization: OpenWrt
+To:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: fix code generation for non-DSP capable CPUs
+Date:   Sat, 16 Mar 2013 15:06:14 +0100
+User-Agent: KMail/1.13.7 (Linux/3.7-trunk-amd64; KDE/4.8.4; x86_64; ; )
+Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "blogic@openwrt.org" <blogic@openwrt.org>
+References: <1363267128-8918-1-git-send-email-florian@openwrt.org> <0573B2AE5BBFFC408CC8740092293B5ACBA1F3@bamail02.ba.imgtec.org>
+In-Reply-To: <0573B2AE5BBFFC408CC8740092293B5ACBA1F3@bamail02.ba.imgtec.org>
 MIME-Version: 1.0
-Received: by 10.64.142.193 with HTTP; Mon, 18 Mar 2013 09:04:52 -0700 (PDT)
-In-Reply-To: <1363313356-32435-1-git-send-email-sanjayl@kymasys.com>
-References: <1363313356-32435-1-git-send-email-sanjayl@kymasys.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Mon, 18 Mar 2013 17:04:52 +0100
-Message-ID: <CAOiHx=nSm_bX13YWU0P0NjKkwdEE2cOe4fU+o5H+Z+S3h6LktQ@mail.gmail.com>
-Subject: Re: [PATCH] KVM/MIPS32: Sync up with latest KVM API changes
-To:     Sanjay Lal <sanjayl@kymasys.com>
-Cc:     kvm@vger.kernel.org, linux-mips@linux-mips.org,
-        Gleb Natapov <gleb@redhat.com>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 35908
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <201303161506.14881.florian@openwrt.org>
+X-archive-position: 35909
 X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,20 +59,14 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 15 March 2013 03:09, Sanjay Lal <sanjayl@kymasys.com> wrote:
-> - Rename KVM_MEMORY_SLOTS -> KVM_USER_MEM_SLOTS
-> - Fix kvm_arch_{prepare,commit}_memory_region()
-> - Also remove kvm_arch_set_memory_region which was unused.
+Hey Steven,
 
-I just stumbled upon the build issue caused by the first item and can
-confirm that this patch fixes it.
+Le jeudi 14 mars 2013 15:22:28, Steven J. Hill a écrit :
+> Florian,
+> 
+> Let me test this patch out with our DSP testsuite and then I can give you
+> an ACK or NACK. Thanks!
 
-I guess this is a replacement for "KVM/MIPS32: define
-KVM_USER_MEM_SLOTS" (which doesn't apply anyway because of missing
-spaces)? If yes, then you should mark the old one as superseded in
-http://patchwork.linux-mips.org/. And maybe include here that it fixes
-a build issue.
-
-
-Regards
-Jonas
+Have you been able to give this a try?
+-- 
+Florian

@@ -1,26 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Mar 2013 03:09:27 +0100 (CET)
-Received: from kymasys.com ([64.62.140.43]:34377 "HELO kymasys.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6834842Ab3COCJ0U0NmB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Mar 2013 03:09:26 +0100
-Received: from agni.kymasys.com ([75.40.23.192]) by kymasys.com for <linux-mips@linux-mips.org>; Thu, 14 Mar 2013 19:09:18 -0700
-Received: by agni.kymasys.com (Postfix, from userid 500)
-        id 0B5526300A6; Thu, 14 Mar 2013 19:09:18 -0700 (PDT)
-From:   Sanjay Lal <sanjayl@kymasys.com>
-To:     kvm@vger.kernel.org
-Cc:     linux-mips@linux-mips.org, Gleb Natapov <gleb@redhat.com>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Sanjay Lal <sanjayl@kymasys.com>
-Subject: [PATCH] KVM/MIPS32: Sync up with latest KVM API changes
-Date:   Thu, 14 Mar 2013 19:09:16 -0700
-Message-Id: <1363313356-32435-1-git-send-email-sanjayl@kymasys.com>
-X-Mailer: git-send-email 1.7.11.3
-X-archive-position: 35893
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Mar 2013 18:04:15 +0100 (CET)
+Received: from mail-pb0-f50.google.com ([209.85.160.50]:34335 "EHLO
+        mail-pb0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816154Ab3CPREOR4IGz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Mar 2013 18:04:14 +0100
+Received: by mail-pb0-f50.google.com with SMTP id up1so5091101pbc.9
+        for <multiple recipients>; Sat, 16 Mar 2013 10:04:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
+         :references;
+        bh=RmA8l7civqvdKf/QFO54LzuLldXG+76wNfN0AWrmrQw=;
+        b=trwhQSXpdV5R/FczsEaSIWOOEriFU3VnXlLF5eOcelMHyEz9cpjNamZZS2AjGRoblQ
+         GrD7UBrXXK8q3TpTTcyWiuNHFBs9cg0P3+10HMpLgn7wVO48yom+6EXr3RuIc6Wav3FO
+         Ecwqln/S+Yb77psF3tB1Zxq/XVIl2Z1OvwYDMfoDWYTD6QEa7vGBz2uNqLLGus8CnGHB
+         KqY4xr0tmM8/VrVlOYkRsbZd5gYMuxOpgOuWtbHzjSUMLVOAJ4lYkSR2ZrOwxRdtwym/
+         Hf6Dr8I9X8JJ/WIbhWankj4d0AFNPiWGUrrgPteZOFb2ARbgwmDUPYjV45acBgOjQDe8
+         KmmQ==
+X-Received: by 10.68.242.65 with SMTP id wo1mr25188985pbc.62.1363453447772;
+        Sat, 16 Mar 2013 10:04:07 -0700 (PDT)
+Received: from localhost.localdomain ([120.196.98.116])
+        by mx.google.com with ESMTPS id y13sm14082307pbv.0.2013.03.16.10.04.03
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sat, 16 Mar 2013 10:04:07 -0700 (PDT)
+From:   Jiang Liu <liuj97@gmail.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        David Rientjes <rientjes@google.com>
+Cc:     Jiang Liu <jiang.liu@huawei.com>,
+        Wen Congyang <wency@cn.fujitsu.com>,
+        Mel Gorman <mgorman@suse.de>, Minchan Kim <minchan@kernel.org>,
+        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+        Michal Hocko <mhocko@suse.cz>,
+        Jianguo Wu <wujianguo@huawei.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org
+Subject: [PATCH v2, part3 05/12] mm/powertv: use common help functions to free reserved pages
+Date:   Sun, 17 Mar 2013 01:03:26 +0800
+Message-Id: <1363453413-8139-6-git-send-email-jiang.liu@huawei.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1363453413-8139-1-git-send-email-jiang.liu@huawei.com>
+References: <1363453413-8139-1-git-send-email-jiang.liu@huawei.com>
+X-archive-position: 35894
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sanjayl@kymasys.com
+X-original-sender: liuj97@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -34,64 +57,40 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-- Rename KVM_MEMORY_SLOTS -> KVM_USER_MEM_SLOTS
-- Fix kvm_arch_{prepare,commit}_memory_region()
-- Also remove kvm_arch_set_memory_region which was unused.
+Use common help functions to free reserved pages.
 
-Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
+Signed-off-by: Jiang Liu <jiang.liu@huawei.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Jiang Liu <jiang.liu@huawei.com>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
 ---
- arch/mips/include/asm/kvm_host.h |  2 +-
- arch/mips/kvm/kvm_mips.c         | 12 ++----------
- 2 files changed, 3 insertions(+), 11 deletions(-)
+ arch/mips/powertv/asic/asic_devices.c |   13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index c8cddd1..143875c 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -21,7 +21,7 @@
- 
- 
- #define KVM_MAX_VCPUS		1
--#define KVM_MEMORY_SLOTS	8
-+#define KVM_USER_MEM_SLOTS	8
- /* memory slots that does not exposed to userspace */
- #define KVM_PRIVATE_MEM_SLOTS 	0
- 
-diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
-index 15ee558..2e60b1c 100644
---- a/arch/mips/kvm/kvm_mips.c
-+++ b/arch/mips/kvm/kvm_mips.c
-@@ -198,14 +198,6 @@ kvm_arch_dev_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
- 	return -EINVAL;
- }
- 
--int
--kvm_arch_set_memory_region(struct kvm *kvm,
--			   struct kvm_userspace_memory_region *mem,
--			   struct kvm_memory_slot old, int user_alloc)
--{
--	return 0;
--}
+diff --git a/arch/mips/powertv/asic/asic_devices.c b/arch/mips/powertv/asic/asic_devices.c
+index bce1872..746b06d 100644
+--- a/arch/mips/powertv/asic/asic_devices.c
++++ b/arch/mips/powertv/asic/asic_devices.c
+@@ -529,17 +529,8 @@ EXPORT_SYMBOL(asic_resource_get);
+  */
+ void platform_release_memory(void *ptr, int size)
+ {
+-	unsigned long addr;
+-	unsigned long end;
 -
- void kvm_arch_free_memslot(struct kvm_memory_slot *free,
- 			   struct kvm_memory_slot *dont)
- {
-@@ -220,14 +212,14 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
- 				   struct kvm_memory_slot *memslot,
- 				   struct kvm_memory_slot old,
- 				   struct kvm_userspace_memory_region *mem,
--				   int user_alloc)
-+				   bool user_alloc)
- {
- 	return 0;
+-	addr = ((unsigned long)ptr + (PAGE_SIZE - 1)) & PAGE_MASK;
+-	end = ((unsigned long)ptr + size) & PAGE_MASK;
+-
+-	for (; addr < end; addr += PAGE_SIZE) {
+-		ClearPageReserved(virt_to_page(__va(addr)));
+-		init_page_count(virt_to_page(__va(addr)));
+-		free_page((unsigned long)__va(addr));
+-	}
++	free_reserved_area((unsigned long)ptr, (unsigned long)(ptr + size),
++			   -1, NULL);
  }
+ EXPORT_SYMBOL(platform_release_memory);
  
- void kvm_arch_commit_memory_region(struct kvm *kvm,
- 				   struct kvm_userspace_memory_region *mem,
--				   struct kvm_memory_slot old, int user_alloc)
-+				   struct kvm_memory_slot old, bool user_alloc)
- {
- 	unsigned long npages = 0;
- 	int i, err = 0;
 -- 
-1.7.11.3
+1.7.9.5

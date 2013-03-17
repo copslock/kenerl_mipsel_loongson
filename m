@@ -1,41 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Mar 2013 13:50:41 +0100 (CET)
-Received: from mail-pb0-f42.google.com ([209.85.160.42]:58235 "EHLO
-        mail-pb0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6820116Ab3CQMuh0vCsy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Mar 2013 13:50:37 +0100
-Received: by mail-pb0-f42.google.com with SMTP id xb4so5681326pbc.1
-        for <multiple recipients>; Sun, 17 Mar 2013 05:50:30 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Mar 2013 14:39:25 +0100 (CET)
+Received: from mail-pb0-f51.google.com ([209.85.160.51]:53448 "EHLO
+        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6818014Ab3CQNjYYNcBa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Mar 2013 14:39:24 +0100
+Received: by mail-pb0-f51.google.com with SMTP id un15so5708306pbc.38
+        for <multiple recipients>; Sun, 17 Mar 2013 06:39:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=x-received:sender:from:to:cc:subject:date:message-id:x-mailer;
-        bh=3QMQEsWa2R036gGik8dH4ba7G/3NZjjSQ9FR4k2hK6w=;
-        b=Wc0RGFFgMG6yoqLGWtTlDJ2eWg+lvtZwEunRRWu6xCCu1NtzBc/Zb1nFayczw6qhBb
-         069Ee2uth/MmtO4KKjVvO2iN82Z2/RO4/ZChLOrxoXS5HatY3Bw+Rp57e0bU/DemyacV
-         9gtHwiFDTEbrhkdz9hbEEj3hukmHRMtOsbTJOxnriGIN32naX8KWh3ydVude0JUx/1C/
-         qqNWH0FyZm/KB1uTuRQ4q66mO1hFIDyUkNXSjYbYTI1baS35s/XItD6kcy+EWaGo3hld
-         +/WfvbwAWiArzDFynSymF5Mq2LPkInn2LGJsNmmWpprj3fdqYEM8bh2WrIq88Zqoyyky
-         9/Pg==
-X-Received: by 10.68.116.169 with SMTP id jx9mr27600511pbb.94.1363524630913;
-        Sun, 17 Mar 2013 05:50:30 -0700 (PDT)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id m18sm4365093pad.17.2013.03.17.05.50.26
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Sun, 17 Mar 2013 05:50:29 -0700 (PDT)
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V2 02/02] MIPS: Init new mmu_context for each possible CPU to avoid memory corruption
-Date:   Sun, 17 Mar 2013 20:50:14 +0800
-Message-Id: <1363524614-3823-1-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 1.7.7.3
-X-archive-position: 35900
+        h=x-received:from:to:cc:subject:date:message-id:x-mailer;
+        bh=54H6Am+RUf74NywWVsoPfBli5gVeG1FwgHG4+o237XI=;
+        b=NGBpTswLeyyIuFL7S2FhSRfJc00/K0o6Uk4dMB/eplRKtEsX9miCrAoQylhZEsGsK5
+         SGjEYopZ5dOzCvDfmyfPKARVtY7C26+gOdx8l/ISoVGx48mss4fZC/ApH5o5PYPn9dvl
+         1oNX1HBKlSIT2M+A0IGoHaU7tBToZ+jNKEactJcCgZpEl33yfDq9NcT2b1YJun539xtT
+         34VS5PcAQs8ICnbBlqTxxQSjlZce1e5nWX168ixh0O9grz03M6Tn3DMjCzbArweI4ldV
+         1tfFm1i4RGGL+wB1WK7hHeIx9ZC2Xj+80BdTrLBcZXLv0Vxer9RQg+2i5mQoA/lWcD6J
+         JMrA==
+X-Received: by 10.68.239.194 with SMTP id vu2mr27764296pbc.147.1363527557841;
+        Sun, 17 Mar 2013 06:39:17 -0700 (PDT)
+Received: from localhost.localdomain (softbank126010191003.bbtec.net. [126.10.191.3])
+        by mx.google.com with ESMTPS id xr3sm16722123pbc.46.2013.03.17.06.39.15
+        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sun, 17 Mar 2013 06:39:17 -0700 (PDT)
+From:   Alexandre Courbot <gnurou@gmail.com>
+To:     Mike Frysinger <vapier@gentoo.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     uclinux-dist-devel@blackfin.uclinux.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@linux-mips.org, gnurou@gmail.com,
+        Alexandre Courbot <acourbot@nvidia.com>
+Subject: [RFC 0/3] Removal of GENERIC_GPIO from architecture code
+Date:   Sun, 17 Mar 2013 22:42:00 +0900
+Message-Id: <1363527723-32713-1-git-send-email-acourbot@nvidia.com>
+X-Mailer: git-send-email 1.8.2
+X-archive-position: 35901
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: gnurou@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,37 +51,48 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Currently, init_new_context() only for each online CPU, this may cause
-memory corruption when CPU hotplug and fork() happens at the same time.
-To avoid this, we make init_new_context() cover each possible CPU.
+These three patches are from a larger set that aims at completely removing the 
+GENERIC_GPIO option from platform code and config files as a first step towards 
+his complete removal. After that, the use of the generic GPIO API would be 
+provided through gpiolib. This series has already been discussed (see 
+https://lkml.org/lkml/2013/3/12/167 for details and the rationale between these 
+patches) and approved by most architectures, but before having it rolled on 
+linux-next I'd like to hear from the 3 following architectures which have not 
+replied to the previous patch set and are the most likely to be affected by 
+this (other architectures almost all require gpiolib to start with).
 
-Scenario:
-1, CPU#1 is being offline;
-2, On CPU#0, do_fork() call dup_mm() and copy a mm_struct to the child;
-3, On CPU#0, dup_mm() call init_new_context(), since CPU#1 is offline
-   and init_new_context() only covers the online CPUs, child has the
-   same asid as its parent on CPU#1 (however, child's asid should be 0);
-4, CPU#1 is being online;
-5, Now, if both parent and child run on CPU#1, memory corruption (e.g.
-   segfault, bus error, etc.) will occur.
+mips: pnx833x: used to select GENERIC_GPIO but I'm not sure if it's needed at 
+all. I could not find a GPIO driver implementation that did not depend on 
+gpiolib. Platform code is sometimes subtle though, so it is possible that I 
+just missed it.
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/include/asm/mmu_context.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+m68k: coldfire: turns gpiolib from optional to mandatory. Might increase the 
+kernels size by ~15KB for builds that did not make use of gpiolib (are there 
+still such builds?)
 
-diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-index e81d719..49d220c 100644
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -133,7 +133,7 @@ init_new_context(struct task_struct *tsk, struct mm_struct *mm)
- {
- 	int i;
- 
--	for_each_online_cpu(i)
-+	for_each_possible_cpu(i)
- 		cpu_context(i, mm) = 0;
- 
- 	return 0;
+blackfin: turns gpiolib from optional to mandatory, same side-effect.
+
+Note that all architectures *can* operate with gpiolib, but only the three 
+above leave the option to not do so. Since a new GPIO API is being prepared 
+around gpiolib amongst other features, the option of only supporting 
+GENERIC_GPIO leads to fragmentation and a lot of confusion for both drivers and 
+platform code.
+
+If you have any good reason to not see these changes applied, please let me 
+know shortly - acks are welcome too.
+
+Thanks,
+Alex.
+
+Alexandre Courbot (3):
+  mips: pnx833x: remove requirement for GENERIC_GPIO
+  m68k: coldfire: use gpiolib
+  blackfin: force use of gpiolib
+
+ arch/blackfin/Kconfig | 4 ++--
+ arch/m68k/Kconfig.cpu | 3 +--
+ arch/mips/Kconfig     | 1 -
+ 3 files changed, 3 insertions(+), 5 deletions(-)
+
 -- 
-1.7.7.3
+1.8.2

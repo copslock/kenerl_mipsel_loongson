@@ -1,34 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Mar 2013 18:43:07 +0100 (CET)
-Received: from zmc.proxad.net ([212.27.53.206]:33083 "EHLO zmc.proxad.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Mar 2013 18:43:25 +0100 (CET)
+Received: from mail.nanl.de ([217.115.11.12]:41715 "EHLO mail.nanl.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822830Ab3CRQ7u62dkH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 Mar 2013 17:59:50 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id 61CF4B984D8;
-        Mon, 18 Mar 2013 17:59:49 +0100 (CET)
-X-Virus-Scanned: amavisd-new at localhost
-Received: from zmc.proxad.net ([127.0.0.1])
-        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id lwNQqPEwqsSB; Mon, 18 Mar 2013 17:59:48 +0100 (CET)
-Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 99841B989BD;
-        Mon, 18 Mar 2013 17:59:47 +0100 (CET)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, blogic@openwrt.org,
-        Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH v2] MIPS: fix code generation for non-DSP capable CPUs
-Date:   Mon, 18 Mar 2013 17:56:10 +0100
-Message-Id: <1363625770-11631-1-git-send-email-florian@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1363267128-8918-1-git-send-email-florian@openwrt.org>
-References: <1363267128-8918-1-git-send-email-florian@openwrt.org>
-X-archive-position: 35907
+        id S6823059Ab3CRQFSr1jO- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Mar 2013 17:05:18 +0100
+Received: from mail-ie0-f169.google.com (mail-ie0-f169.google.com [209.85.223.169])
+        by mail.nanl.de (Postfix) with ESMTPSA id 7F90940969;
+        Mon, 18 Mar 2013 16:05:16 +0000 (UTC)
+Received: by mail-ie0-f169.google.com with SMTP id 13so7205297iea.14
+        for <multiple recipients>; Mon, 18 Mar 2013 09:05:12 -0700 (PDT)
+X-Received: by 10.42.145.137 with SMTP id f9mr9148359icv.52.1363622712686;
+ Mon, 18 Mar 2013 09:05:12 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.64.142.193 with HTTP; Mon, 18 Mar 2013 09:04:52 -0700 (PDT)
+In-Reply-To: <1363313356-32435-1-git-send-email-sanjayl@kymasys.com>
+References: <1363313356-32435-1-git-send-email-sanjayl@kymasys.com>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Mon, 18 Mar 2013 17:04:52 +0100
+Message-ID: <CAOiHx=nSm_bX13YWU0P0NjKkwdEE2cOe4fU+o5H+Z+S3h6LktQ@mail.gmail.com>
+Subject: Re: [PATCH] KVM/MIPS32: Sync up with latest KVM API changes
+To:     Sanjay Lal <sanjayl@kymasys.com>
+Cc:     kvm@vger.kernel.org, linux-mips@linux-mips.org,
+        Gleb Natapov <gleb@redhat.com>,
+        Marcelo Tosatti <mtosatti@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 35908
 X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,389 +43,20 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Commit 32a7ede (MIPS: dsp: Add assembler support for DSP ASEs) has
-enabled the use of DSP ASE specific instructions such as rddsp and wrdsp
-under the idea that all code path that will make use of these two
-instructions are properly checking for cpu_has_dsp to ensure that the
-particular CPU we are running on *actually* supports DSP ASE.
+On 15 March 2013 03:09, Sanjay Lal <sanjayl@kymasys.com> wrote:
+> - Rename KVM_MEMORY_SLOTS -> KVM_USER_MEM_SLOTS
+> - Fix kvm_arch_{prepare,commit}_memory_region()
+> - Also remove kvm_arch_set_memory_region which was unused.
 
-This commit actually causes the following oops on QEMU Malta emulating a
-MIPS 24Kc without the DSP ASE implemented:
+I just stumbled upon the build issue caused by the first item and can
+confirm that this patch fixes it.
 
-[    7.960000] Reserved instruction in kernel
-[    7.960000] Cpu 0
-[    7.960000] $ 0   : 00000000 00000000 00000014 00000005
-[    7.960000] $ 4   : 8fc2de48 00000001 00000000 8f59ddb0
-[    7.960000] $ 8   : 8f5ceec4 00000018 00000c00 00800000
-[    7.960000] $12   : 00000100 00000200 00000000 00457b84
-[    7.960000] $16   : 00000000 8fc2ba78 8f4ec980 00000001
-[    7.960000] $20   : 80418f90 00000000 00000000 000002dd
-[    7.960000] $24   : 0000009c 7730d7b8
-[    7.960000] $28   : 8f59c000 8f59dd38 00000001 80104248
-[    7.960000] Hi    : 0000001d
-[    7.960000] Lo    : 0000000b
-[    7.960000] epc   : 801041ec thread_saved_pc+0x2c/0x38
-[    7.960000]     Not tainted
-[    7.960000] ra    : 80104248 get_wchan+0x48/0xac
-[    7.960000] Status: 1000b703    KERNEL EXL IE
-[    7.960000] Cause : 10800028
-[    7.960000] PrId  : 00019300 (MIPS 24Kc)
-[    7.960000] Modules linked in:
-[    7.960000] Process killall (pid: 1574, threadinfo=8f59c000,
-task=8fd14558, tls=773aa440)
-[    7.960000] Stack : 8fc2ba78 8012b008 0000000c 0000001d 00000000
-00000000 8f58a380
-                  8f58a380 8fc2ba78 80202668 8f59de78 8f468600 8f59de28
-801b2a3c 8f59df00 8f98ba20 74696e69
-                  8f468600 8f59de28 801b7308 0081c007 00000000 00000000
-00000000 00000000 00000000 00000000
-                  00000000 8fc2bbb4 00000001 0000001d 0000000b 77f038cc
-7fe80648 ffffffff ffffffff 00000000
-                  00000001 0016e000 00000000 ...
-[    7.960000] Call Trace:
-[    7.960000] [<801041ec>] thread_saved_pc+0x2c/0x38
-[    7.960000] [<80104248>] get_wchan+0x48/0xac
+I guess this is a replacement for "KVM/MIPS32: define
+KVM_USER_MEM_SLOTS" (which doesn't apply anyway because of missing
+spaces)? If yes, then you should mark the old one as superseded in
+http://patchwork.linux-mips.org/. And maybe include here that it fixes
+a build issue.
 
-The disassembly of thread_saved_pc points to the following:
-000006d0 <thread_saved_pc>:
- 6d0:   8c820208        lw      v0,520(a0)
- 6d4:   3c030000        lui     v1,0x0
- 6d8:   24630000        addiu   v1,v1,0
- 6dc:   10430008        beq     v0,v1,700 <thread_saved_pc+0x30>
- 6e0:   00000000        nop
- 6e4:   3c020000        lui     v0,0x0
- 6e8:   8c43000c        lw      v1,12(v0)
- 6ec:   04620004        bltzl   v1,700 <thread_saved_pc+0x30>
- 6f0:   00001021        move    v0,zero
- 6f4:   8c840200        lw      a0,512(a0)
- 6f8:   00031080        sll     v0,v1,0x2
- 6fc:   7c44100a        lwx     v0,a0(v0)   <------------
- 700:   03e00008        jr      ra
- 704:   00000000        nop
 
-If we specifically disable -mdsp/-mdspr2 for arch/mips/kernel/process.o,
-we get the following (non-crashing) assembly:
-
-00000708 <thread_saved_pc>:
- 708:   8c820208        lw      v0,520(a0)
- 70c:   3c030000        lui     v1,0x0
- 710:   24630000        addiu   v1,v1,0
- 714:   10430009        beq     v0,v1,73c <thread_saved_pc+0x34>
- 718:   00000000        nop
- 71c:   3c020000        lui     v0,0x0
- 720:   8c42000c        lw      v0,12(v0)
- 724:   04420005        bltzl   v0,73c <thread_saved_pc+0x34>
- 728:   00001021        move    v0,zero
- 72c:   8c830200        lw      v1,512(a0)
- 730:   00021080        sll     v0,v0,0x2
- 734:   00431021        addu    v0,v0,v1
- 738:   8c420000        lw      v0,0(v0)
- 73c:   03e00008        jr      ra
- 740:   00000000        nop
-
-The specific line that leads a different assembly being produced is:
-
-unsigned long thread_saved_pc(struct task_struct *tsk)
-...
-	return ((unsigned long *)t->reg29)[schedule_mfi.pc_offset]; <---
-
-The problem here is that the compiler was given the right to use DSP
-instructions with the -mdsp / -mdspr2 command-line switches and
-performed some optimization for us and used DSP ASE instructions where
-we are not checking that the running CPU actually supports DSP ASE.
-
-This patch fixes the issue by partially reverting commit 32a7ede for
-arch/mips/kernel/Makefile in order to remove the -mdsp / -mdspr2
-compiler command-line switches such that we are now guaranteed that the
-compiler will not optimize using DSP ASE reserved instructions. We also
-need to fixup the rddsp/wrdsp and m{t,h}{hi,lo}{0,1,2,3} macros in
-arch/mips/include/asm/mipsregs.h to tell the assembler that we are going
-to explicitely use DSP ASE reserved instructions. The comment in
-arch/mips/kernel/Makefile is also updated to reflect that.
-
-Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-Changes since v1:
-- updated comment in arch/mips/kernel/Makefile
-- added Steven's Acked-by tag
-
- arch/mips/include/asm/mipsregs.h |  209 ++++++++++++++++++++++++++++++++++----
- arch/mips/kernel/Makefile        |   25 ++---
- 2 files changed, 196 insertions(+), 38 deletions(-)
-
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 12b70c2..0da44d4 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1166,7 +1166,10 @@ do {									\
- 	unsigned int __dspctl;						\
- 									\
- 	__asm__ __volatile__(						\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
- 	"	rddsp	%0, %x1					\n"	\
-+	"	.set pop					\n"	\
- 	: "=r" (__dspctl)						\
- 	: "i" (mask));							\
- 	__dspctl;							\
-@@ -1175,30 +1178,198 @@ do {									\
- #define wrdsp(val, mask)						\
- do {									\
- 	__asm__ __volatile__(						\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
- 	"	wrdsp	%0, %x1					\n"	\
-+	"	.set pop					\n"	\
- 	:								\
- 	: "r" (val), "i" (mask));					\
- } while (0)
- 
--#define mflo0() ({ long mflo0; __asm__("mflo %0, $ac0" : "=r" (mflo0)); mflo0;})
--#define mflo1() ({ long mflo1; __asm__("mflo %0, $ac1" : "=r" (mflo1)); mflo1;})
--#define mflo2() ({ long mflo2; __asm__("mflo %0, $ac2" : "=r" (mflo2)); mflo2;})
--#define mflo3() ({ long mflo3; __asm__("mflo %0, $ac3" : "=r" (mflo3)); mflo3;})
--
--#define mfhi0() ({ long mfhi0; __asm__("mfhi %0, $ac0" : "=r" (mfhi0)); mfhi0;})
--#define mfhi1() ({ long mfhi1; __asm__("mfhi %0, $ac1" : "=r" (mfhi1)); mfhi1;})
--#define mfhi2() ({ long mfhi2; __asm__("mfhi %0, $ac2" : "=r" (mfhi2)); mfhi2;})
--#define mfhi3() ({ long mfhi3; __asm__("mfhi %0, $ac3" : "=r" (mfhi3)); mfhi3;})
--
--#define mtlo0(x) __asm__("mtlo %0, $ac0" ::"r" (x))
--#define mtlo1(x) __asm__("mtlo %0, $ac1" ::"r" (x))
--#define mtlo2(x) __asm__("mtlo %0, $ac2" ::"r" (x))
--#define mtlo3(x) __asm__("mtlo %0, $ac3" ::"r" (x))
--
--#define mthi0(x) __asm__("mthi %0, $ac0" ::"r" (x))
--#define mthi1(x) __asm__("mthi %0, $ac1" ::"r" (x))
--#define mthi2(x) __asm__("mthi %0, $ac2" ::"r" (x))
--#define mthi3(x) __asm__("mthi %0, $ac3" ::"r" (x))
-+#define mflo0()								\
-+({									\
-+	long mflo0;							\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mflo %0, $ac0					\n"	\
-+	"	.set pop					\n" 	\
-+	: "=r" (mflo0)); 						\
-+	mflo0;								\
-+})
-+
-+#define mflo1()								\
-+({									\
-+	long mflo1;							\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mflo %0, $ac1					\n"	\
-+	"	.set pop					\n" 	\
-+	: "=r" (mflo1)); 						\
-+	mflo1;								\
-+})
-+
-+#define mflo2()								\
-+({									\
-+	long mflo2;							\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mflo %0, $ac2					\n"	\
-+	"	.set pop					\n" 	\
-+	: "=r" (mflo2)); 						\
-+	mflo2;								\
-+})
-+
-+#define mflo3()								\
-+({									\
-+	long mflo3;							\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mflo %0, $ac3					\n"	\
-+	"	.set pop					\n" 	\
-+	: "=r" (mflo3)); 						\
-+	mflo3;								\
-+})
-+
-+#define mfhi0()								\
-+({									\
-+	long mfhi0;							\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mfhi %0, $ac0					\n"	\
-+	"	.set pop					\n" 	\
-+	: "=r" (mfhi0)); 						\
-+	mfhi0;								\
-+})
-+
-+#define mfhi1()								\
-+({									\
-+	long mfhi1;							\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mfhi %0, $ac1					\n"	\
-+	"	.set pop					\n" 	\
-+	: "=r" (mfhi1)); 						\
-+	mfhi1;								\
-+})
-+
-+#define mfhi2()								\
-+({									\
-+	long mfhi2;							\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mfhi %0, $ac2					\n"	\
-+	"	.set pop					\n" 	\
-+	: "=r" (mfhi2)); 						\
-+	mfhi2;								\
-+})
-+
-+#define mfhi3()								\
-+({									\
-+	long mfhi3;							\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mfhi %0, $ac3					\n"	\
-+	"	.set pop					\n" 	\
-+	: "=r" (mfhi3)); 						\
-+	mfhi3;								\
-+})
-+
-+
-+#define mtlo0(x)							\
-+({									\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mtlo %0, $ac0					\n"	\
-+	"	.set pop					\n"	\
-+	:								\
-+	: "r" (x));							\
-+})
-+
-+#define mtlo1(x)							\
-+({									\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mtlo %0, $ac1					\n"	\
-+	"	.set pop					\n"	\
-+	:								\
-+	: "r" (x));							\
-+})
-+
-+#define mtlo2(x)							\
-+({									\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mtlo %0, $ac2					\n"	\
-+	"	.set pop					\n"	\
-+	:								\
-+	: "r" (x));							\
-+})
-+
-+#define mtlo3(x)							\
-+({									\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mtlo %0, $ac3					\n"	\
-+	"	.set pop					\n"	\
-+	:								\
-+	: "r" (x));							\
-+})
-+
-+#define mthi0(x)							\
-+({									\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mthi %0, $ac0					\n"	\
-+	"	.set pop					\n"	\
-+	:								\
-+	: "r" (x));							\
-+})
-+
-+#define mthi1(x)							\
-+({									\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mthi %0, $ac1					\n"	\
-+	"	.set pop					\n"	\
-+	:								\
-+	: "r" (x));							\
-+})
-+
-+#define mthi2(x)							\
-+({									\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mthi %0, $ac2					\n"	\
-+	"	.set pop					\n"	\
-+	:								\
-+	: "r" (x));							\
-+})
-+
-+#define mthi3(x)							\
-+({									\
-+	__asm__(							\
-+	"	.set push					\n"	\
-+	"	.set dsp					\n"	\
-+	"	mthi %0, $ac3					\n"	\
-+	"	.set pop					\n"	\
-+	:								\
-+	: "r" (x));							\
-+})
- 
- #else
- 
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index f81d98f..de75fb5 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -100,29 +100,16 @@ obj-$(CONFIG_HW_PERF_EVENTS)	+= perf_event_mipsxx.o
- obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
- 
- #
--# DSP ASE supported for MIPS32 or MIPS64 Release 2 cores only. It is safe
--# to enable DSP assembler support here even if the MIPS Release 2 CPU we
--# are targetting does not support DSP because all code-paths making use of
--# it properly check that the running CPU *actually does* support these
--# instructions.
-+# DSP ASE supported for MIPS32 or MIPS64 Release 2 cores only. It is not
-+# safe to unconditionnaly use the assembler -mdsp / -mdspr2 switches
-+# here because the compiler may use DSP ASE instructions (such as lwx) in
-+# code paths where we cannot check that the CPU we are running on supports it.
-+# Proper abstraction using HAVE_AS_DSP and macros is done in
-+# arch/mips/include/asm/mipsregs.h.
- #
- ifeq ($(CONFIG_CPU_MIPSR2), y)
- CFLAGS_DSP 			= -DHAVE_AS_DSP
- 
--#
--# Check if assembler supports DSP ASE
--#
--ifeq ($(call cc-option-yn,-mdsp), y)
--CFLAGS_DSP			+= -mdsp
--endif
--
--#
--# Check if assembler supports DSP ASE Rev2
--#
--ifeq ($(call cc-option-yn,-mdspr2), y)
--CFLAGS_DSP			+= -mdspr2
--endif
--
- CFLAGS_signal.o			= $(CFLAGS_DSP)
- CFLAGS_signal32.o		= $(CFLAGS_DSP)
- CFLAGS_process.o		= $(CFLAGS_DSP)
--- 
-1.7.10.4
+Regards
+Jonas

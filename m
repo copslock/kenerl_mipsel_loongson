@@ -1,51 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Mar 2013 18:45:00 +0100 (CET)
-Received: from mail-wg0-f41.google.com ([74.125.82.41]:64592 "EHLO
-        mail-wg0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816859Ab3CPOGYiW8hx convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 16 Mar 2013 15:06:24 +0100
-Received: by mail-wg0-f41.google.com with SMTP id ds1so1348653wgb.4
-        for <multiple recipients>; Sat, 16 Mar 2013 07:06:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:sender:from:organization:to:subject:date:user-agent:cc
-         :references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:message-id;
-        bh=LCJJJxILpnubTQy/uD6B39xlS20WPtkr89WBF6fyWlw=;
-        b=XXFazFpkwI7gZFH1O88zmC8pblsI1JCX3J4GWcN9To0cJXghvZtqS/dvDF+tcCJha5
-         GWpO7yJ5Ma3uCM6ClMFTl15nB8uRaWO/mKhat04nUg8lzdCV6q7Wa8msB8Dg9pDKEg5N
-         wbYF16toaklAT5luVxjPWX7EavzO7qzqPVqXNPDE6dqY2IR55ofcZ+FIW+jrm0CUYq1R
-         CE4vdBUSFcXDIZjNrXtTpS4fHefMMqb1q5MeC43vlLUmM2X3l6rBCy2v+bhofzO10qvH
-         X1N6pyypAFxSf9niw7EyXYAuVae7T+hFjTuQSlQER+1LFYMsiMgpcBoGsAFEnVSaxPCS
-         +WPA==
-X-Received: by 10.194.10.202 with SMTP id k10mr16282580wjb.53.1363442779257;
-        Sat, 16 Mar 2013 07:06:19 -0700 (PDT)
-Received: from lenovo.localnet ([2a01:e35:2f70:4010:21d:7dff:fe45:5399])
-        by mx.google.com with ESMTPS id h10sm3921165wic.8.2013.03.16.07.06.16
-        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sat, 16 Mar 2013 07:06:17 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
-Organization: OpenWrt
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Mar 2013 15:09:30 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:45655 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6834879Ab3CSOJ3jgvJI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Mar 2013 15:09:29 +0100
+Received: from arrakis.dune.hu ([127.0.0.1])
+        by localhost (arrakis.dune.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id hi0yAgl8K17n; Tue, 19 Mar 2013 15:08:57 +0100 (CET)
+Received: from shaker64.lan (dslb-088-073-009-103.pools.arcor-ip.net [88.73.9.103])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id D82B3284479;
+        Tue, 19 Mar 2013 15:08:56 +0100 (CET)
+From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: fix code generation for non-DSP capable CPUs
-Date:   Sat, 16 Mar 2013 15:06:14 +0100
-User-Agent: KMail/1.13.7 (Linux/3.7-trunk-amd64; KDE/4.8.4; x86_64; ; )
-Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "blogic@openwrt.org" <blogic@openwrt.org>
-References: <1363267128-8918-1-git-send-email-florian@openwrt.org> <0573B2AE5BBFFC408CC8740092293B5ACBA1F3@bamail02.ba.imgtec.org>
-In-Reply-To: <0573B2AE5BBFFC408CC8740092293B5ACBA1F3@bamail02.ba.imgtec.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>,
+        Kevin Cernekee <cernekee@gmail.com>
+Subject: [PATCH] MIPS: BCM63XX: make nvram checksum failure non fatal
+Date:   Tue, 19 Mar 2013 15:08:27 +0100
+Message-Id: <1363702108-1013-1-git-send-email-jogo@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Message-Id: <201303161506.14881.florian@openwrt.org>
-X-archive-position: 35909
-X-Approved-By: ralf@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-archive-position: 35910
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,14 +41,77 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hey Steven,
+Some vendors modify the nvram layout moving the checksum to a different
+place or dropping entirely, so reduce the checksum failure to a warning.
 
-Le jeudi 14 mars 2013 15:22:28, Steven J. Hill a �crit :
-> Florian,
-> 
-> Let me test this patch out with our DSP testsuite and then I can give you
-> an ACK or NACK. Thanks!
+Reported-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+---
 
-Have you been able to give this a try?
+I'm not sure if it should be that "loud" (pr_warn) because users can't
+actually do anything to fix it, so maybe pr_debug would be fine, too.
+
+ arch/mips/bcm63xx/boards/board_bcm963xx.c          |    5 +----
+ arch/mips/bcm63xx/nvram.c                          |    7 +++----
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_nvram.h |    4 +---
+ 3 files changed, 5 insertions(+), 11 deletions(-)
+
+diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
+index ed1949c..9aa7d44 100644
+--- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
++++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
+@@ -745,10 +745,7 @@ void __init board_prom_init(void)
+ 		strcpy(cfe_version, "unknown");
+ 	printk(KERN_INFO PFX "CFE version: %s\n", cfe_version);
+ 
+-	if (bcm63xx_nvram_init(boot_addr + BCM963XX_NVRAM_OFFSET)) {
+-		printk(KERN_ERR PFX "invalid nvram checksum\n");
+-		return;
+-	}
++	bcm63xx_nvram_init(boot_addr + BCM963XX_NVRAM_OFFSET);
+ 
+ 	board_name = bcm63xx_nvram_get_name();
+ 	/* find board by name */
+diff --git a/arch/mips/bcm63xx/nvram.c b/arch/mips/bcm63xx/nvram.c
+index 6206116..a4b8864 100644
+--- a/arch/mips/bcm63xx/nvram.c
++++ b/arch/mips/bcm63xx/nvram.c
+@@ -38,7 +38,7 @@ struct bcm963xx_nvram {
+ static struct bcm963xx_nvram nvram;
+ static int mac_addr_used;
+ 
+-int __init bcm63xx_nvram_init(void *addr)
++void __init bcm63xx_nvram_init(void *addr)
+ {
+ 	unsigned int check_len;
+ 	u32 crc, expected_crc;
+@@ -60,9 +60,8 @@ int __init bcm63xx_nvram_init(void *addr)
+ 	crc = crc32_le(~0, (u8 *)&nvram, check_len);
+ 
+ 	if (crc != expected_crc)
+-		return -EINVAL;
+-
+-	return 0;
++		pr_warn("nvram checksum failed, contents may be invalid (expected %08x, got %08x)\n",
++			expected_crc, crc);
+ }
+ 
+ u8 *bcm63xx_nvram_get_name(void)
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_nvram.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_nvram.h
+index 62d6a3b..4e0b6bc 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_nvram.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_nvram.h
+@@ -9,10 +9,8 @@
+  *
+  * Initialized the local nvram copy from the target address and checks
+  * its checksum.
+- *
+- * Returns 0 on success.
+  */
+-int __init bcm63xx_nvram_init(void *nvram);
++void bcm63xx_nvram_init(void *nvram);
+ 
+ /**
+  * bcm63xx_nvram_get_name() - returns the board name according to nvram
 -- 
-Florian
+1.7.10.4

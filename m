@@ -1,45 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Mar 2013 00:15:12 +0100 (CET)
-Received: from mail-pb0-f51.google.com ([209.85.160.51]:50784 "EHLO
-        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834926Ab3CTXPHZ0sOJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Mar 2013 00:15:07 +0100
-Received: by mail-pb0-f51.google.com with SMTP id un15so1722232pbc.24
-        for <multiple recipients>; Wed, 20 Mar 2013 16:15:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Mar 2013 00:16:17 +0100 (CET)
+Received: from mail-pb0-f46.google.com ([209.85.160.46]:40576 "EHLO
+        mail-pb0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6834924Ab3CTXQQpM9B0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Mar 2013 00:16:16 +0100
+Received: by mail-pb0-f46.google.com with SMTP id uo15so1731820pbc.33
+        for <multiple recipients>; Wed, 20 Mar 2013 16:16:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=x-received:message-id:date:from:user-agent:mime-version:to:cc
          :subject:references:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=fb9iupIbp1X07b/7DLHeZ7MIElhi6ehLxvXupiWvsIM=;
-        b=fgdVfJGTeVuUEtZ/wLoiSboU5RWahSDX1WI0QAeZ7q57iMHvXFX7YIFjL7IzTl9lHI
-         cxmOueRtErD7OPn0HJlnzQvz+4+XPcSriKCYHMYcEmNBaqiEJT3cwPgG2b1+rHBQGnT1
-         uBKRDMXjmtj6IzZHwWT30ZLOH/sXY6ZX+esNW5e/VoiEu2qthc4cxbslWLh6otYOyV/a
-         +1z13iLF8Ov4kFkzp8dXXqrL2SWGc/evhl5ZxOVauO58y/+VyuwQLr6hP5WSUGxk18Ci
-         WbiTQBL3NcCffK9dSpjtoErzw0uUWY91FMlwj05pUKArLRDClIyVyzM8RC0YfMxV1dWE
-         wfqA==
-X-Received: by 10.66.230.198 with SMTP id ta6mr11838019pac.126.1363821300827;
-        Wed, 20 Mar 2013 16:15:00 -0700 (PDT)
+        bh=uH5Dh9DzSMsaz/Df9/TX5pKNST6IEVVJ3/t8djdiuYI=;
+        b=meQPlFXEU1WcgruSFnPujKtX9/GdKMDbvAI+sK1Fct75syngZ6lvKz8YYfUDf0Xr5M
+         FUPYEOC3j3PUxxbvEwWV7gSvbfiUpnbdDX4y+7m+JkuudHUoqCOjRN4nEYlwkbMK62Ux
+         3XaPPSLnId1x6IjIfidndz0tBlrLDBL+6S4kEel5EkRjrLVirgMy19HJlKSlg2wkFWv9
+         I3fjZ1E3XzgggSbeHoEPFUMo9E6qJEwbdUnp4X36cHLHo89w1aRexfAle837b3py4U0u
+         6EFdofEPxsfuSDJRR1icUQly4neu1WaPmg3NA6wZW/cIjT4tOgHFAmFlrL3O1X2gq3Ym
+         2csQ==
+X-Received: by 10.67.1.8 with SMTP id bc8mr4637292pad.96.1363821370224;
+        Wed, 20 Mar 2013 16:16:10 -0700 (PDT)
 Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id fh1sm3876984pac.1.2013.03.20.16.14.58
+        by mx.google.com with ESMTPS id is1sm3625205pbc.15.2013.03.20.16.16.08
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 20 Mar 2013 16:14:59 -0700 (PDT)
-Message-ID: <514A42F2.4080501@gmail.com>
-Date:   Wed, 20 Mar 2013 16:14:58 -0700
+        Wed, 20 Mar 2013 16:16:09 -0700 (PDT)
+Message-ID: <514A4337.6080100@gmail.com>
+Date:   Wed, 20 Mar 2013 16:16:07 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130110 Thunderbird/17.0.2
 MIME-Version: 1.0
-To:     Huacai Chen <chenhc@lemote.com>, Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Hongbing Hu <huhb@lemote.com>
-Subject: Re: [PATCH V2 01/02] MIPS: Build uasm-generated code only once to
- avoid CPU Hotplug problem
-References: <1363524578-3765-1-git-send-email-chenhc@lemote.com>
-In-Reply-To: <1363524578-3765-1-git-send-email-chenhc@lemote.com>
+To:     Huacai Chen <chenhc@lemote.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Subject: Re: [PATCH V2 02/02] MIPS: Init new mmu_context for each possible
+ CPU to avoid memory corruption
+References: <1363524614-3823-1-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1363524614-3823-1-git-send-email-chenhc@lemote.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35924
+X-archive-position: 35925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,141 +56,43 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 03/17/2013 05:49 AM, Huacai Chen wrote:
-> This and the next patch resolve memory corruption problems while CPU
-> hotplug. Without these patches, memory corruption can triggered easily
-> as below:
+On 03/17/2013 05:50 AM, Huacai Chen wrote:
+> Currently, init_new_context() only for each online CPU, this may cause
+> memory corruption when CPU hotplug and fork() happens at the same time.
+> To avoid this, we make init_new_context() cover each possible CPU.
 >
-> On a quad-core MIPS platform, use "spawn" of UnixBench-5.1.3 (http://
-> code.google.com/p/byte-unixbench/) and a CPU hotplug script like this
-> (hotplug.sh):
-> while true; do
-> echo 0 >/sys/devices/system/cpu/cpu1/online
-> echo 0 >/sys/devices/system/cpu/cpu2/online
-> echo 0 >/sys/devices/system/cpu/cpu3/online
-> sleep 1
-> echo 1 >/sys/devices/system/cpu/cpu1/online
-> echo 1 >/sys/devices/system/cpu/cpu2/online
-> echo 1 >/sys/devices/system/cpu/cpu3/online
-> sleep 1
-> done
->
-> Run "hotplug.sh" and then run "spawn 10000", spawn will get segfault
-> after a few minutes.
->
-> This patch:
-> Currently, clear_page()/copy_page() are generated by Micro-assembler
-> dynamically. But they are unavailable until uasm_resolve_relocs() has
-> finished because jump labels are illegal before that. Since these
-> functions are shared by every CPU, we only call build_clear_page()/
-> build_copy_page() only once at boot time. Without this patch, programs
-> will get random memory corruption (segmentation fault, bus error, etc.)
-> while CPU Hotplug (e.g. one CPU is using clear_page() while another is
-> generating it in cpu_cache_init()).
->
-> For similar reasons we modify build_tlb_refill_handler()'s invocation.
->
-> V2:
-> 1, Rework the code to make CPU#0 can be online/offline.
-> 2, Introduce cpu_has_local_ebase feature since some types of MIPS CPU
->     need a per-CPU tlb_refill_handler().
+> Scenario:
+> 1, CPU#1 is being offline;
+> 2, On CPU#0, do_fork() call dup_mm() and copy a mm_struct to the child;
+> 3, On CPU#0, dup_mm() call init_new_context(), since CPU#1 is offline
+>     and init_new_context() only covers the online CPUs, child has the
+>     same asid as its parent on CPU#1 (however, child's asid should be 0);
+> 4, CPU#1 is being online;
+> 5, Now, if both parent and child run on CPU#1, memory corruption (e.g.
+>     segfault, bus error, etc.) will occur.
 >
 > Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> Signed-off-by: Hongbing Hu <huhb@lemote.com>
+
 
 We were seeing the same crashes, this patch set seems to fix the problem.
 
 Acked-by: David Daney <david.daney@cavium.com>
 
 > ---
->   arch/mips/include/asm/cpu-features.h               |    3 +++
->   .../asm/mach-loongson/cpu-feature-overrides.h      |    1 +
->   arch/mips/mm/page.c                                |   10 ++++++++++
->   arch/mips/mm/tlbex.c                               |   10 ++++++++--
->   4 files changed, 22 insertions(+), 2 deletions(-)
+>   arch/mips/include/asm/mmu_context.h |    2 +-
+>   1 files changed, 1 insertions(+), 1 deletions(-)
 >
-> diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-> index 1a57e8b..e5ec8fc 100644
-> --- a/arch/mips/include/asm/cpu-features.h
-> +++ b/arch/mips/include/asm/cpu-features.h
-> @@ -113,6 +113,9 @@
->   #ifndef cpu_has_pindexed_dcache
->   #define cpu_has_pindexed_dcache (cpu_data[0].dcache.flags & MIPS_CACHE_PINDEX)
->   #endif
-> +#ifndef cpu_has_local_ebase
-> +#define cpu_has_local_ebase	1
-> +#endif
->
->   /*
->    * I-Cache snoops remote store.	 This only matters on SMP.  Some multiprocessors
-> diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-> index 75fd8c0..c0f3ef4 100644
-> --- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-> +++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-> @@ -57,5 +57,6 @@
->   #define cpu_has_vint		0
->   #define cpu_has_vtag_icache	0
->   #define cpu_has_watch		1
-> +#define cpu_has_local_ebase	0
->
->   #endif /* __ASM_MACH_LOONGSON_CPU_FEATURE_OVERRIDES_H */
-> diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
-> index a29fba5..4eb8dcf 100644
-> --- a/arch/mips/mm/page.c
-> +++ b/arch/mips/mm/page.c
-> @@ -247,6 +247,11 @@ void __cpuinit build_clear_page(void)
->   	struct uasm_label *l = labels;
->   	struct uasm_reloc *r = relocs;
+> diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
+> index e81d719..49d220c 100644
+> --- a/arch/mips/include/asm/mmu_context.h
+> +++ b/arch/mips/include/asm/mmu_context.h
+> @@ -133,7 +133,7 @@ init_new_context(struct task_struct *tsk, struct mm_struct *mm)
+>   {
 >   	int i;
-> +	static atomic_t run_once = ATOMIC_INIT(0);
-> +
-> +	if (atomic_xchg(&run_once, 1)) {
-> +		return;
-> +	}
 >
->   	memset(labels, 0, sizeof(labels));
->   	memset(relocs, 0, sizeof(relocs));
-> @@ -389,6 +394,11 @@ void __cpuinit build_copy_page(void)
->   	struct uasm_label *l = labels;
->   	struct uasm_reloc *r = relocs;
->   	int i;
-> +	static atomic_t run_once = ATOMIC_INIT(0);
-> +
-> +	if (atomic_xchg(&run_once, 1)) {
-> +		return;
-> +	}
+> -	for_each_online_cpu(i)
+> +	for_each_possible_cpu(i)
+>   		cpu_context(i, mm) = 0;
 >
->   	memset(labels, 0, sizeof(labels));
->   	memset(relocs, 0, sizeof(relocs));
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index 820e661..6bc28b4 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -2162,8 +2162,11 @@ void __cpuinit build_tlb_refill_handler(void)
->   	case CPU_TX3922:
->   	case CPU_TX3927:
->   #ifndef CONFIG_MIPS_PGD_C0_CONTEXT
-> -		build_r3000_tlb_refill_handler();
-> +		if (cpu_has_local_ebase)
-> +			build_r3000_tlb_refill_handler();
->   		if (!run_once) {
-> +			if (!cpu_has_local_ebase)
-> +				build_r3000_tlb_refill_handler();
->   			build_r3000_tlb_load_handler();
->   			build_r3000_tlb_store_handler();
->   			build_r3000_tlb_modify_handler();
-> @@ -2192,9 +2195,12 @@ void __cpuinit build_tlb_refill_handler(void)
->   			build_r4000_tlb_load_handler();
->   			build_r4000_tlb_store_handler();
->   			build_r4000_tlb_modify_handler();
-> +			if (!cpu_has_local_ebase)
-> +				build_r4000_tlb_refill_handler();
->   			run_once++;
->   		}
-> -		build_r4000_tlb_refill_handler();
-> +		if (cpu_has_local_ebase)
-> +			build_r4000_tlb_refill_handler();
->   	}
->   }
->
+>   	return 0;
 >

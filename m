@@ -1,33 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Mar 2013 19:19:37 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:50819 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6834890Ab3CSSTcGqUxJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 19 Mar 2013 19:19:32 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r2JIJUv5010666;
-        Tue, 19 Mar 2013 19:19:31 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r2JIJRlS010659;
-        Tue, 19 Mar 2013 19:19:27 +0100
-Date:   Tue, 19 Mar 2013 19:19:27 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Al Viro <viro@ZenIV.linux.org.uk>
-Cc:     David Howells <dhowells@redhat.com>, linux-mips@linux-mips.org,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Fix breakage in MIPS siginfo handling
-Message-ID: <20130319181927.GA10535@linux-mips.org>
-References: <20130319150053.32135.61438.stgit@warthog.procyon.org.uk>
- <20130319150530.GH21522@ZenIV.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Mar 2013 06:50:12 +0100 (CET)
+Received: from [222.92.8.138] ([222.92.8.138]:50339 "EHLO mail.lemote.com"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823116Ab3CTFuKCLcRA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 20 Mar 2013 06:50:10 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by mail.lemote.com (Postfix) with ESMTP id 911F22270D;
+        Wed, 20 Mar 2013 13:50:01 +0800 (CST)
+X-Virus-Scanned: Debian amavisd-new at lemote.com
+Received: from mail.lemote.com ([127.0.0.1])
+        by localhost (mail.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id J6Ny9pxmfxz6; Wed, 20 Mar 2013 13:50:01 +0800 (CST)
+Received: from mail-la0-f49.google.com (mail-la0-f49.google.com [209.85.215.49])
+        (Authenticated sender: chenj@lemote.com)
+        by mail.lemote.com (Postfix) with ESMTPSA id 8B427226B0;
+        Wed, 20 Mar 2013 13:49:55 +0800 (CST)
+Received: by mail-la0-f49.google.com with SMTP id fs13so2432027lab.36
+        for <multiple recipients>; Tue, 19 Mar 2013 22:49:40 -0700 (PDT)
+X-Received: by 10.152.116.45 with SMTP id jt13mr4453637lab.0.1363758580504;
+ Tue, 19 Mar 2013 22:49:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20130319150530.GH21522@ZenIV.linux.org.uk>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 35914
+Received: by 10.114.62.178 with HTTP; Tue, 19 Mar 2013 22:49:20 -0700 (PDT)
+In-Reply-To: <1363524614-3823-1-git-send-email-chenhc@lemote.com>
+References: <1363524614-3823-1-git-send-email-chenhc@lemote.com>
+From:   Chen Jie <chenj@lemote.com>
+Date:   Wed, 20 Mar 2013 13:49:20 +0800
+Message-ID: <CAGXxSxXscpbrFmmxJZZc9tcgdZ5fmrsAZNjLnSRYMApStYxiOg@mail.gmail.com>
+Subject: Re: [PATCH V2 02/02] MIPS: Init new mmu_context for each possible CPU
+ to avoid memory corruption
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 35915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: chenj@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,17 +50,34 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Mar 19, 2013 at 03:05:30PM +0000, Al Viro wrote:
+2013/3/17 Huacai Chen <chenhc@lemote.com>:
+> Currently, init_new_context() only for each online CPU, this may cause
+> memory corruption when CPU hotplug and fork() happens at the same time.
+> To avoid this, we make init_new_context() cover each possible CPU.
+>
+> Scenario:
+> 1, CPU#1 is being offline;
+> 2, On CPU#0, do_fork() call dup_mm() and copy a mm_struct to the child;
+> 3, On CPU#0, dup_mm() call init_new_context(), since CPU#1 is offline
+>    and init_new_context() only covers the online CPUs, child has the
+>    same asid as its parent on CPU#1 (however, child's asid should be 0);
+> 4, CPU#1 is being online;
+> 5, Now, if both parent and child run on CPU#1, memory corruption (e.g.
+>    segfault, bus error, etc.) will occur.
+Adds some further explanations about point 5:
+5.1) The parent process runs on CPU#1, the version field of its
+asid[CPU#1] and CPU#1's asid cache may match, thus the parent
+process's asid[CPU#1] is used in TLB refilling routine.
 
-> ACKed-by: Al Viro <viro@zeniv.linux.org.uk>
-> 
-> but I think it should go via mips tree (or straight to Linus, for that
-> matter).  I can apply it in signal.git and push it to Linus today, though...
+5.2) Then the child process runs on CPU#1 which probably has the same
+asid[CPU#1] as its parent(as pointed by point 3).
 
-I've applied it to my tree.  Since I applied a number of other 3.9 fixes
-I'm going to wait for another day before sending out a pull request to
-Linus.
+5.3) The child process may access address space of its parent.
 
-Thanks,
+It can also be solved by increasing version field of asid cache when
+plugin a CPU,  may be a better way?
 
-  Ralf
+
+
+Regards,
+-- Chen Jie

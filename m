@@ -1,44 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Mar 2013 18:59:37 +0100 (CET)
-Received: from mms3.broadcom.com ([216.31.210.19]:2022 "EHLO mms3.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Mar 2013 23:39:44 +0100 (CET)
+Received: from plane.gmane.org ([80.91.229.3]:45646 "EHLO plane.gmane.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6834901Ab3CTR7fz15U6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 20 Mar 2013 18:59:35 +0100
-Received: from [10.9.208.57] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Wed, 20 Mar 2013 10:52:32 -0700
-X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Wed, 20 Mar 2013 10:59:24 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
- Server id 14.1.438.0; Wed, 20 Mar 2013 10:59:24 -0700
-Received: from jayachandranc.netlogicmicro.com (
- netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 68FAA40FE3; Wed, 20
- Mar 2013 10:59:23 -0700 (PDT)
-Date:   Wed, 20 Mar 2013 23:31:04 +0530
-From:   "Jayachandran C." <jchandra@broadcom.com>
-To:     "David Daney" <ddaney.cavm@gmail.com>
-cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 2/3] MIPS: mm: Use scratch for PGD when
- !CONFIG_MIPS_PGD_C0_CONTEXT
-Message-ID: <20130320180104.GA8100@jayachandranc.netlogicmicro.com>
-References: <cover.1363772750.git.jchandra@broadcom.com>
- <0b28a7e2191bcaab55ecb362042f8c46da186b7c.1363772750.git.jchandra@broadcom.com>
- <5149E7A4.3040906@gmail.com>
-MIME-Version: 1.0
-In-Reply-To: <5149E7A4.3040906@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-WSS-ID: 7D5728EA3YC6394654-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline
+        id S6834917Ab3CTWjnCf7s8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 20 Mar 2013 23:39:43 +0100
+Received: from list by plane.gmane.org with local (Exim 4.69)
+        (envelope-from <sgi-linux-mips@m.gmane.org>)
+        id 1UIRfw-0002y9-3F
+        for linux-mips@linux-mips.org; Wed, 20 Mar 2013 23:40:04 +0100
+Received: from p579bf2b1.dip.t-dialin.net ([87.155.242.177])
+        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Wed, 20 Mar 2013 23:40:04 +0100
+Received: from s.gottschall by p579bf2b1.dip.t-dialin.net with local (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Wed, 20 Mar 2013 23:40:04 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To:     linux-mips@linux-mips.org
+From:   Sebastian Gottschall <s.gottschall@dd-wrt.com>
+Subject: Re: MIPS: Add dependencies for HAVE_ARCH_TRANSPARENT_HUGEPAGE
+Date:   Wed, 20 Mar 2013 23:33:36 +0100
+Message-ID: <kiddfo$82s$1@ger.gmane.org>
+References: <1362257499.3768.141.camel@deadeye.wl.decadent.org.uk> <1362370641.3768.291.camel@deadeye.wl.decadent.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35921
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: p579bf2b1.dip.t-dialin.net
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:17.0) Gecko/20130307 Thunderbird/17.0.4
+In-Reply-To: <1362370641.3768.291.camel@deadeye.wl.decadent.org.uk>
+X-archive-position: 35922
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: s.gottschall@dd-wrt.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,38 +46,36 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, Mar 20, 2013 at 09:45:24AM -0700, David Daney wrote:
-> On 03/20/2013 09:27 AM, Jayachandran C wrote:
-> >Allow usage of scratch register for current pgd even when
-> >MIPS_PGD_C0_CONTEXT is not configured.  MIPS_PGD_C0_CONTEXT is set
-> >for 64r2 platforms to indicate availability of Xcontext for saving
-> >cpuid, thus freeing Context which was used for cpuid to be used for
-> >saving PGD. This option was also tied to using a scratch register for
-> >storing PGD.
-> >
-> >This commit will allow usage of scratch register to store the current
-> >pgd if one can be allocated for the platform, even when
-> >MIPS_PGD_C0_CONTEXT is not set. The cpu id will be kept in the CP0
-> >Context register in this case.
-> 
-> 
-> The point of MIPS_PGD_C0_CONTEXT is really to indicate that the PGD
-> pointer is stored in a register (or portion thereof) and that
-> setting the PGD is done by calling into uasm generated code.
-> 
-> Perhaps we should rename this Kconfig vairable so that its name
-> indicates its function, or remove it altogether if possible, and
-> machine generate the setting of the PGD pointer even when it is
-> stored in the array in memory.
+Am 04.03.2013 05:17, schrieb Ben Hutchings:
+> The MIPS implementation of transparent huge-pages (THP) is 64-bit only,
+> and of course also requires that the CPU supports huge-pages.
+>
+> Currently it's entirely possible to enable THP in other configurations,
+> which then fail to build due to pfn_pmd() not being defined.
+>
+> Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+> Cc: David Daney <david.daney@cavium.com>
+> ---
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -19,7 +19,7 @@ config MIPS
+>   	select HAVE_KRETPROBES
+>   	select HAVE_DEBUG_KMEMLEAK
+>   	select ARCH_BINFMT_ELF_RANDOMIZE_PIE
+> -	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+> +	select HAVE_ARCH_TRANSPARENT_HUGEPAGE if CPU_SUPPORTS_HUGEPAGES && 64BIT
+>   	select RTC_LIB if !MACH_LOONGSON
+>   	select GENERIC_ATOMIC64 if !64BIT
+>   	select ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE
+>
+why? the mips32 74k platform (broadcom bcm4706 for instance) does 
+support huge pages. and some of these devices are also using highmem for 
+accessing more than 128mb ram (which is totally broken in all current 
+kernels too and causing filesystem corruptions)
+i was able to fix the highmem problem using a patch which was submitted 
+but never taken into the mainline, but i just was able to get thb 
+partially to work on mips32. but i think it would be possible to support 
+this on mips32 as well. so why leaving it out?
 
-Removing the MIPS_PGD_C0_CONTEXT Kconfig variable does not look feasible.
-The processor id is used by get_saved_sp macro and it needs to know at
-compile time whether the processor id is in Context or Xcontext. We could
-call it something like MIPS_PROCESSOR_ID_IN_XCONTEXT (if it would not
-affect too many config files).
-
-The second part (generating code for setting PGD pointer in pgd_current) is
-already in the patch. This generated code also saves PGD to the scratch
-register if one was allocated.
-
-JC.
+regards,
+Sebastian Gottschall

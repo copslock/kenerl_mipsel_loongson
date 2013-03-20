@@ -1,41 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Mar 2013 00:12:47 +0100 (CET)
-Received: from mail-da0-f47.google.com ([209.85.210.47]:47763 "EHLO
-        mail-da0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834922Ab3CTXMquW-nr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Mar 2013 00:12:46 +0100
-Received: by mail-da0-f47.google.com with SMTP id s35so1258182dak.6
-        for <linux-mips@linux-mips.org>; Wed, 20 Mar 2013 16:12:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Mar 2013 00:15:12 +0100 (CET)
+Received: from mail-pb0-f51.google.com ([209.85.160.51]:50784 "EHLO
+        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6834926Ab3CTXPHZ0sOJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Mar 2013 00:15:07 +0100
+Received: by mail-pb0-f51.google.com with SMTP id un15so1722232pbc.24
+        for <multiple recipients>; Wed, 20 Mar 2013 16:15:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=x-received:message-id:date:from:user-agent:mime-version:to:cc
          :subject:references:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=WnooAuy1Brv3FVCMkwXeT4cjo78YSo1yaEAWRV9VQMo=;
-        b=bSjTW2UcKj2WyPlD4Oz2gL8BrB03iTzMrlgZQKFbsO2oi6nf+MSFCAViBzAZF7fN+1
-         hqTeGru0j70GAZVK9OfJs9MuFTu3NEq5kQv8Yasx7rgExG4HODsh1B5SAo4EDmZ3XnW7
-         marGAvHAozuRiKGqj7Cd/7o/adQGGcM2xx4vmqztRncKdwyfyMSjS+CmJBZpNrlpoQ7M
-         buGms74uwRIBh+DqFcp2hYGnf5W3RJzFdqEMzmq0Eu3SnMAShN4lNl6KxMB3VjjGc7Wi
-         2FfZzCIrCCKnKtUVolHM5kZ/kDAQYo/lsWJ0e2oNvbwPrR1sbr/d/uBHzipPJGavCkYm
-         CVWQ==
-X-Received: by 10.68.135.136 with SMTP id ps8mr11642161pbb.2.1363821159997;
-        Wed, 20 Mar 2013 16:12:39 -0700 (PDT)
+        bh=fb9iupIbp1X07b/7DLHeZ7MIElhi6ehLxvXupiWvsIM=;
+        b=fgdVfJGTeVuUEtZ/wLoiSboU5RWahSDX1WI0QAeZ7q57iMHvXFX7YIFjL7IzTl9lHI
+         cxmOueRtErD7OPn0HJlnzQvz+4+XPcSriKCYHMYcEmNBaqiEJT3cwPgG2b1+rHBQGnT1
+         uBKRDMXjmtj6IzZHwWT30ZLOH/sXY6ZX+esNW5e/VoiEu2qthc4cxbslWLh6otYOyV/a
+         +1z13iLF8Ov4kFkzp8dXXqrL2SWGc/evhl5ZxOVauO58y/+VyuwQLr6hP5WSUGxk18Ci
+         WbiTQBL3NcCffK9dSpjtoErzw0uUWY91FMlwj05pUKArLRDClIyVyzM8RC0YfMxV1dWE
+         wfqA==
+X-Received: by 10.66.230.198 with SMTP id ta6mr11838019pac.126.1363821300827;
+        Wed, 20 Mar 2013 16:15:00 -0700 (PDT)
 Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id f4sm3625657pbc.6.2013.03.20.16.12.38
+        by mx.google.com with ESMTPS id fh1sm3876984pac.1.2013.03.20.16.14.58
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 20 Mar 2013 16:12:39 -0700 (PDT)
-Message-ID: <514A4265.2080709@gmail.com>
-Date:   Wed, 20 Mar 2013 16:12:37 -0700
+        Wed, 20 Mar 2013 16:14:59 -0700 (PDT)
+Message-ID: <514A42F2.4080501@gmail.com>
+Date:   Wed, 20 Mar 2013 16:14:58 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130110 Thunderbird/17.0.2
 MIME-Version: 1.0
-To:     Sebastian Gottschall <s.gottschall@dd-wrt.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: MIPS: Add dependencies for HAVE_ARCH_TRANSPARENT_HUGEPAGE
-References: <1362257499.3768.141.camel@deadeye.wl.decadent.org.uk> <1362370641.3768.291.camel@deadeye.wl.decadent.org.uk> <kiddfo$82s$1@ger.gmane.org>
-In-Reply-To: <kiddfo$82s$1@ger.gmane.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Huacai Chen <chenhc@lemote.com>, Ralf Baechle <ralf@linux-mips.org>
+CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hongbing Hu <huhb@lemote.com>
+Subject: Re: [PATCH V2 01/02] MIPS: Build uasm-generated code only once to
+ avoid CPU Hotplug problem
+References: <1363524578-3765-1-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1363524578-3765-1-git-send-email-chenhc@lemote.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35923
+X-archive-position: 35924
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,45 +57,141 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 03/20/2013 03:33 PM, Sebastian Gottschall wrote:
-> Am 04.03.2013 05:17, schrieb Ben Hutchings:
->> The MIPS implementation of transparent huge-pages (THP) is 64-bit only,
->> and of course also requires that the CPU supports huge-pages.
->>
->> Currently it's entirely possible to enable THP in other configurations,
->> which then fail to build due to pfn_pmd() not being defined.
->>
->> Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
->> Cc: David Daney <david.daney@cavium.com>
->> ---
->> --- a/arch/mips/Kconfig
->> +++ b/arch/mips/Kconfig
->> @@ -19,7 +19,7 @@ config MIPS
->>       select HAVE_KRETPROBES
->>       select HAVE_DEBUG_KMEMLEAK
->>       select ARCH_BINFMT_ELF_RANDOMIZE_PIE
->> -    select HAVE_ARCH_TRANSPARENT_HUGEPAGE
->> +    select HAVE_ARCH_TRANSPARENT_HUGEPAGE if CPU_SUPPORTS_HUGEPAGES
->> && 64BIT
->>       select RTC_LIB if !MACH_LOONGSON
->>       select GENERIC_ATOMIC64 if !64BIT
->>       select ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE
->>
-> why? the mips32 74k platform (broadcom bcm4706 for instance) does
-> support huge pages.
+On 03/17/2013 05:49 AM, Huacai Chen wrote:
+> This and the next patch resolve memory corruption problems while CPU
+> hotplug. Without these patches, memory corruption can triggered easily
+> as below:
+>
+> On a quad-core MIPS platform, use "spawn" of UnixBench-5.1.3 (http://
+> code.google.com/p/byte-unixbench/) and a CPU hotplug script like this
+> (hotplug.sh):
+> while true; do
+> echo 0 >/sys/devices/system/cpu/cpu1/online
+> echo 0 >/sys/devices/system/cpu/cpu2/online
+> echo 0 >/sys/devices/system/cpu/cpu3/online
+> sleep 1
+> echo 1 >/sys/devices/system/cpu/cpu1/online
+> echo 1 >/sys/devices/system/cpu/cpu2/online
+> echo 1 >/sys/devices/system/cpu/cpu3/online
+> sleep 1
+> done
+>
+> Run "hotplug.sh" and then run "spawn 10000", spawn will get segfault
+> after a few minutes.
+>
+> This patch:
+> Currently, clear_page()/copy_page() are generated by Micro-assembler
+> dynamically. But they are unavailable until uasm_resolve_relocs() has
+> finished because jump labels are illegal before that. Since these
+> functions are shared by every CPU, we only call build_clear_page()/
+> build_copy_page() only once at boot time. Without this patch, programs
+> will get random memory corruption (segmentation fault, bus error, etc.)
+> while CPU Hotplug (e.g. one CPU is using clear_page() while another is
+> generating it in cpu_cache_init()).
+>
+> For similar reasons we modify build_tlb_refill_handler()'s invocation.
+>
+> V2:
+> 1, Rework the code to make CPU#0 can be online/offline.
+> 2, Introduce cpu_has_local_ebase feature since some types of MIPS CPU
+>     need a per-CPU tlb_refill_handler().
+>
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> Signed-off-by: Hongbing Hu <huhb@lemote.com>
 
-The hardware may support pages larger than 64K, but does the Linux 
-kernel?  I think not.
+We were seeing the same crashes, this patch set seems to fix the problem.
 
-> and some of these devices are also using highmem for
-> accessing more than 128mb ram (which is totally broken in all current
-> kernels too and causing filesystem corruptions)
-> i was able to fix the highmem problem using a patch which was submitted
-> but never taken into the mainline, but i just was able to get thb
-> partially to work on mips32. but i think it would be possible to support
-> this on mips32 as well. so why leaving it out?
+Acked-by: David Daney <david.daney@cavium.com>
 
-As they say... Patches are welcome.  If you get Linux HUGE pages working 
-for 32-bit kernels send a patch to enable the transparent variety as well.
-
-David Daney
+> ---
+>   arch/mips/include/asm/cpu-features.h               |    3 +++
+>   .../asm/mach-loongson/cpu-feature-overrides.h      |    1 +
+>   arch/mips/mm/page.c                                |   10 ++++++++++
+>   arch/mips/mm/tlbex.c                               |   10 ++++++++--
+>   4 files changed, 22 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+> index 1a57e8b..e5ec8fc 100644
+> --- a/arch/mips/include/asm/cpu-features.h
+> +++ b/arch/mips/include/asm/cpu-features.h
+> @@ -113,6 +113,9 @@
+>   #ifndef cpu_has_pindexed_dcache
+>   #define cpu_has_pindexed_dcache (cpu_data[0].dcache.flags & MIPS_CACHE_PINDEX)
+>   #endif
+> +#ifndef cpu_has_local_ebase
+> +#define cpu_has_local_ebase	1
+> +#endif
+>
+>   /*
+>    * I-Cache snoops remote store.	 This only matters on SMP.  Some multiprocessors
+> diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+> index 75fd8c0..c0f3ef4 100644
+> --- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+> +++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+> @@ -57,5 +57,6 @@
+>   #define cpu_has_vint		0
+>   #define cpu_has_vtag_icache	0
+>   #define cpu_has_watch		1
+> +#define cpu_has_local_ebase	0
+>
+>   #endif /* __ASM_MACH_LOONGSON_CPU_FEATURE_OVERRIDES_H */
+> diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
+> index a29fba5..4eb8dcf 100644
+> --- a/arch/mips/mm/page.c
+> +++ b/arch/mips/mm/page.c
+> @@ -247,6 +247,11 @@ void __cpuinit build_clear_page(void)
+>   	struct uasm_label *l = labels;
+>   	struct uasm_reloc *r = relocs;
+>   	int i;
+> +	static atomic_t run_once = ATOMIC_INIT(0);
+> +
+> +	if (atomic_xchg(&run_once, 1)) {
+> +		return;
+> +	}
+>
+>   	memset(labels, 0, sizeof(labels));
+>   	memset(relocs, 0, sizeof(relocs));
+> @@ -389,6 +394,11 @@ void __cpuinit build_copy_page(void)
+>   	struct uasm_label *l = labels;
+>   	struct uasm_reloc *r = relocs;
+>   	int i;
+> +	static atomic_t run_once = ATOMIC_INIT(0);
+> +
+> +	if (atomic_xchg(&run_once, 1)) {
+> +		return;
+> +	}
+>
+>   	memset(labels, 0, sizeof(labels));
+>   	memset(relocs, 0, sizeof(relocs));
+> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+> index 820e661..6bc28b4 100644
+> --- a/arch/mips/mm/tlbex.c
+> +++ b/arch/mips/mm/tlbex.c
+> @@ -2162,8 +2162,11 @@ void __cpuinit build_tlb_refill_handler(void)
+>   	case CPU_TX3922:
+>   	case CPU_TX3927:
+>   #ifndef CONFIG_MIPS_PGD_C0_CONTEXT
+> -		build_r3000_tlb_refill_handler();
+> +		if (cpu_has_local_ebase)
+> +			build_r3000_tlb_refill_handler();
+>   		if (!run_once) {
+> +			if (!cpu_has_local_ebase)
+> +				build_r3000_tlb_refill_handler();
+>   			build_r3000_tlb_load_handler();
+>   			build_r3000_tlb_store_handler();
+>   			build_r3000_tlb_modify_handler();
+> @@ -2192,9 +2195,12 @@ void __cpuinit build_tlb_refill_handler(void)
+>   			build_r4000_tlb_load_handler();
+>   			build_r4000_tlb_store_handler();
+>   			build_r4000_tlb_modify_handler();
+> +			if (!cpu_has_local_ebase)
+> +				build_r4000_tlb_refill_handler();
+>   			run_once++;
+>   		}
+> -		build_r4000_tlb_refill_handler();
+> +		if (cpu_has_local_ebase)
+> +			build_r4000_tlb_refill_handler();
+>   	}
+>   }
+>
+>

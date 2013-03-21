@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Mar 2013 16:04:13 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:37245 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Mar 2013 16:04:34 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:37251 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823083Ab3CUPDwm24PO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Mar 2013 16:03:52 +0100
+        id S6827483Ab3CUPDxEPmtN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 Mar 2013 16:03:53 +0100
 Received: from arrakis.dune.hu ([127.0.0.1])
         by localhost (arrakis.dune.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id U8lAJp_x-XXG; Thu, 21 Mar 2013 16:03:19 +0100 (CET)
+        with ESMTP id 7MJVQJv1wbIC; Thu, 21 Mar 2013 16:03:20 +0100 (CET)
 Received: from shaker64.lan (dslb-088-073-029-203.pools.arcor-ip.net [88.73.29.203])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 87CBE2815AD;
-        Thu, 21 Mar 2013 16:03:19 +0100 (CET)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 154EC2815AD;
+        Thu, 21 Mar 2013 16:03:20 +0100 (CET)
 From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -16,14 +16,14 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Maxime Bizon <mbizon@freebox.fr>,
         Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>
-Subject: [PATCH 2/7] MIPS: BCM63XX: fix revision ID width
-Date:   Thu, 21 Mar 2013 16:03:15 +0100
-Message-Id: <1363878200-4523-2-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 3/7] MIPS: BCM63XX: rework chip detection
+Date:   Thu, 21 Mar 2013 16:03:16 +0100
+Message-Id: <1363878200-4523-3-git-send-email-jogo@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1363878200-4523-1-git-send-email-jogo@openwrt.org>
 References: <1363878001-4461-1-git-send-email-jogo@openwrt.org>
  <1363878200-4523-1-git-send-email-jogo@openwrt.org>
-X-archive-position: 35930
+X-archive-position: 35931
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,76 +41,135 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The REVID is only 8 bit wide.
+Instead of trying to use a correlation of cpu prid and chip id and
+hoping they will always be unique, use the cpu prid to determine the
+chip id register location and just read out the chip id.
 
 Signed-off-by: Jonas Gorski <jogo@openwrt.org>
 ---
- arch/mips/bcm63xx/cpu.c                           |    4 ++--
- arch/mips/bcm63xx/setup.c                         |    2 +-
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h  |    2 +-
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h |    2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ arch/mips/bcm63xx/cpu.c |   87 +++++++++++++++++++++++------------------------
+ 1 file changed, 42 insertions(+), 45 deletions(-)
 
 diff --git a/arch/mips/bcm63xx/cpu.c b/arch/mips/bcm63xx/cpu.c
-index a7afb28..ae16626 100644
+index ae16626..fef168d 100644
 --- a/arch/mips/bcm63xx/cpu.c
 +++ b/arch/mips/bcm63xx/cpu.c
-@@ -25,7 +25,7 @@ const int *bcm63xx_irqs;
- EXPORT_SYMBOL(bcm63xx_irqs);
+@@ -240,53 +240,27 @@ static unsigned int detect_memory_size(void)
  
- static u16 bcm63xx_cpu_id;
--static u16 bcm63xx_cpu_rev;
-+static u8 bcm63xx_cpu_rev;
- static unsigned int bcm63xx_cpu_freq;
- static unsigned int bcm63xx_memory_size;
- 
-@@ -87,7 +87,7 @@ u16 __bcm63xx_get_cpu_id(void)
- 
- EXPORT_SYMBOL(__bcm63xx_get_cpu_id);
- 
--u16 bcm63xx_get_cpu_rev(void)
-+u8 bcm63xx_get_cpu_rev(void)
+ void __init bcm63xx_cpu_init(void)
  {
- 	return bcm63xx_cpu_rev;
- }
-diff --git a/arch/mips/bcm63xx/setup.c b/arch/mips/bcm63xx/setup.c
-index 35e18e9..911fd7d 100644
---- a/arch/mips/bcm63xx/setup.c
-+++ b/arch/mips/bcm63xx/setup.c
-@@ -126,7 +126,7 @@ static void __bcm63xx_machine_reboot(char *p)
- const char *get_system_type(void)
- {
- 	static char buf[128];
--	snprintf(buf, sizeof(buf), "bcm63xx/%s (0x%04x/0x%04X)",
-+	snprintf(buf, sizeof(buf), "bcm63xx/%s (0x%04x/0x%02X)",
- 		 board_get_name(),
- 		 bcm63xx_get_cpu_id(), bcm63xx_get_cpu_rev());
- 	return buf;
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
-index cb922b9..19a80ea 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
-@@ -18,7 +18,7 @@
+-	unsigned int tmp, expected_cpu_id;
++	unsigned int tmp;
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+ 	unsigned int cpu = smp_processor_id();
++	u32 chipid_reg;
  
- void __init bcm63xx_cpu_init(void);
- u16 __bcm63xx_get_cpu_id(void);
--u16 bcm63xx_get_cpu_rev(void);
-+u8 bcm63xx_get_cpu_rev(void);
- unsigned int bcm63xx_get_cpu_freq(void);
+ 	/* soc registers location depends on cpu type */
+-	expected_cpu_id = 0;
++	chipid_reg = 0;
  
- #ifdef CONFIG_BCM63XX_CPU_6328
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-index acd1f93..fe3601a 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-@@ -10,7 +10,7 @@
- #define REV_CHIPID_SHIFT		16
- #define REV_CHIPID_MASK			(0xffff << REV_CHIPID_SHIFT)
- #define REV_REVID_SHIFT			0
--#define REV_REVID_MASK			(0xffff << REV_REVID_SHIFT)
-+#define REV_REVID_MASK			(0xff << REV_REVID_SHIFT)
+ 	switch (c->cputype) {
+ 	case CPU_BMIPS3300:
+-		if ((read_c0_prid() & 0xff00) == PRID_IMP_BMIPS3300_ALT) {
+-			expected_cpu_id = BCM6348_CPU_ID;
+-			bcm63xx_regs_base = bcm6348_regs_base;
+-			bcm63xx_irqs = bcm6348_irqs;
+-		} else {
++		if ((read_c0_prid() & 0xff00) != PRID_IMP_BMIPS3300_ALT)
+ 			__cpu_name[cpu] = "Broadcom BCM6338";
+-			expected_cpu_id = BCM6338_CPU_ID;
+-			bcm63xx_regs_base = bcm6338_regs_base;
+-			bcm63xx_irqs = bcm6338_irqs;
+-		}
+-		break;
++		/* fall-through */
+ 	case CPU_BMIPS32:
+-		expected_cpu_id = BCM6345_CPU_ID;
+-		bcm63xx_regs_base = bcm6345_regs_base;
+-		bcm63xx_irqs = bcm6345_irqs;
++		chipid_reg = BCM_6345_PERF_BASE;
+ 		break;
+ 	case CPU_BMIPS4350:
+-		if ((read_c0_prid() & 0xf0) == 0x10) {
+-			expected_cpu_id = BCM6358_CPU_ID;
+-			bcm63xx_regs_base = bcm6358_regs_base;
+-			bcm63xx_irqs = bcm6358_irqs;
+-		} else {
+-			/* all newer chips have the same chip id location */
+-			u16 chip_id = bcm_readw(BCM_6368_PERF_BASE);
+-
+-			switch (chip_id) {
+-			case BCM6328_CPU_ID:
+-				expected_cpu_id = BCM6328_CPU_ID;
+-				bcm63xx_regs_base = bcm6328_regs_base;
+-				bcm63xx_irqs = bcm6328_irqs;
+-				break;
+-			case BCM6368_CPU_ID:
+-				expected_cpu_id = BCM6368_CPU_ID;
+-				bcm63xx_regs_base = bcm6368_regs_base;
+-				bcm63xx_irqs = bcm6368_irqs;
+-				break;
+-			}
+-		}
++		if ((read_c0_prid() & 0xf0) == 0x10)
++			chipid_reg = BCM_6345_PERF_BASE;
++		else
++			chipid_reg = BCM_6368_PERF_BASE;
+ 		break;
+ 	}
  
- /* Clock Control register */
- #define PERF_CKCTL_REG			0x4
+@@ -294,20 +268,43 @@ void __init bcm63xx_cpu_init(void)
+ 	 * really early to panic, but delaying panic would not help since we
+ 	 * will never get any working console
+ 	 */
+-	if (!expected_cpu_id)
++	if (!chipid_reg)
+ 		panic("unsupported Broadcom CPU");
+ 
+-	/*
+-	 * bcm63xx_regs_base is set, we can access soc registers
+-	 */
+-
+-	/* double check CPU type */
+-	tmp = bcm_perf_readl(PERF_REV_REG);
++	/* read out CPU type */
++	tmp = bcm_readl(chipid_reg);
+ 	bcm63xx_cpu_id = (tmp & REV_CHIPID_MASK) >> REV_CHIPID_SHIFT;
+ 	bcm63xx_cpu_rev = (tmp & REV_REVID_MASK) >> REV_REVID_SHIFT;
+ 
+-	if (bcm63xx_cpu_id != expected_cpu_id)
+-		panic("bcm63xx CPU id mismatch");
++	switch (bcm63xx_cpu_id) {
++	case BCM6328_CPU_ID:
++		bcm63xx_regs_base = bcm6328_regs_base;
++		bcm63xx_irqs = bcm6328_irqs;
++		break;
++	case BCM6338_CPU_ID:
++		bcm63xx_regs_base = bcm6338_regs_base;
++		bcm63xx_irqs = bcm6338_irqs;
++		break;
++	case BCM6345_CPU_ID:
++		bcm63xx_regs_base = bcm6345_regs_base;
++		bcm63xx_irqs = bcm6345_irqs;
++		break;
++	case BCM6348_CPU_ID:
++		bcm63xx_regs_base = bcm6348_regs_base;
++		bcm63xx_irqs = bcm6348_irqs;
++		break;
++	case BCM6358_CPU_ID:
++		bcm63xx_regs_base = bcm6358_regs_base;
++		bcm63xx_irqs = bcm6358_irqs;
++		break;
++	case BCM6368_CPU_ID:
++		bcm63xx_regs_base = bcm6368_regs_base;
++		bcm63xx_irqs = bcm6368_irqs;
++		break;
++	default:
++		panic("unsupported broadcom CPU %x", bcm63xx_cpu_id);
++		break;
++	}
+ 
+ 	bcm63xx_cpu_freq = detect_cpu_clock();
+ 	bcm63xx_memory_size = detect_memory_size();
 -- 
 1.7.10.4

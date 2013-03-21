@@ -1,48 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Mar 2013 00:16:17 +0100 (CET)
-Received: from mail-pb0-f46.google.com ([209.85.160.46]:40576 "EHLO
-        mail-pb0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834924Ab3CTXQQpM9B0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Mar 2013 00:16:16 +0100
-Received: by mail-pb0-f46.google.com with SMTP id uo15so1731820pbc.33
-        for <multiple recipients>; Wed, 20 Mar 2013 16:16:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=uH5Dh9DzSMsaz/Df9/TX5pKNST6IEVVJ3/t8djdiuYI=;
-        b=meQPlFXEU1WcgruSFnPujKtX9/GdKMDbvAI+sK1Fct75syngZ6lvKz8YYfUDf0Xr5M
-         FUPYEOC3j3PUxxbvEwWV7gSvbfiUpnbdDX4y+7m+JkuudHUoqCOjRN4nEYlwkbMK62Ux
-         3XaPPSLnId1x6IjIfidndz0tBlrLDBL+6S4kEel5EkRjrLVirgMy19HJlKSlg2wkFWv9
-         I3fjZ1E3XzgggSbeHoEPFUMo9E6qJEwbdUnp4X36cHLHo89w1aRexfAle837b3py4U0u
-         6EFdofEPxsfuSDJRR1icUQly4neu1WaPmg3NA6wZW/cIjT4tOgHFAmFlrL3O1X2gq3Ym
-         2csQ==
-X-Received: by 10.67.1.8 with SMTP id bc8mr4637292pad.96.1363821370224;
-        Wed, 20 Mar 2013 16:16:10 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id is1sm3625205pbc.15.2013.03.20.16.16.08
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 20 Mar 2013 16:16:09 -0700 (PDT)
-Message-ID: <514A4337.6080100@gmail.com>
-Date:   Wed, 20 Mar 2013 16:16:07 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130110 Thunderbird/17.0.2
-MIME-Version: 1.0
-To:     Huacai Chen <chenhc@lemote.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>
-Subject: Re: [PATCH V2 02/02] MIPS: Init new mmu_context for each possible
- CPU to avoid memory corruption
-References: <1363524614-3823-1-git-send-email-chenhc@lemote.com>
-In-Reply-To: <1363524614-3823-1-git-send-email-chenhc@lemote.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Mar 2013 01:16:24 +0100 (CET)
+Received: from plane.gmane.org ([80.91.229.3]:60445 "EHLO plane.gmane.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6834919Ab3CUAQXKHq21 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 Mar 2013 01:16:23 +0100
+Received: from list by plane.gmane.org with local (Exim 4.69)
+        (envelope-from <sgi-linux-mips@m.gmane.org>)
+        id 1UITBT-0008Pd-OL
+        for linux-mips@linux-mips.org; Thu, 21 Mar 2013 01:16:43 +0100
+Received: from p579bf2b1.dip.t-dialin.net ([87.155.242.177])
+        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Thu, 21 Mar 2013 01:16:43 +0100
+Received: from s.gottschall by p579bf2b1.dip.t-dialin.net with local (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Thu, 21 Mar 2013 01:16:43 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To:     linux-mips@linux-mips.org
+From:   Sebastian Gottschall <s.gottschall@dd-wrt.com>
+Subject: Re: MIPS: Add dependencies for HAVE_ARCH_TRANSPARENT_HUGEPAGE
+Date:   Thu, 21 Mar 2013 01:16:08 +0100
+Message-ID: <kidjg0$u10$1@ger.gmane.org>
+References: <1362257499.3768.141.camel@deadeye.wl.decadent.org.uk> <1362370641.3768.291.camel@deadeye.wl.decadent.org.uk> <kiddfo$82s$1@ger.gmane.org> <514A4265.2080709@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35925
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: p579bf2b1.dip.t-dialin.net
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:17.0) Gecko/20130307 Thunderbird/17.0.4
+In-Reply-To: <514A4265.2080709@gmail.com>
+X-archive-position: 35926
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: s.gottschall@dd-wrt.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,43 +46,42 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 03/17/2013 05:50 AM, Huacai Chen wrote:
-> Currently, init_new_context() only for each online CPU, this may cause
-> memory corruption when CPU hotplug and fork() happens at the same time.
-> To avoid this, we make init_new_context() cover each possible CPU.
->
-> Scenario:
-> 1, CPU#1 is being offline;
-> 2, On CPU#0, do_fork() call dup_mm() and copy a mm_struct to the child;
-> 3, On CPU#0, dup_mm() call init_new_context(), since CPU#1 is offline
->     and init_new_context() only covers the online CPUs, child has the
->     same asid as its parent on CPU#1 (however, child's asid should be 0);
-> 4, CPU#1 is being online;
-> 5, Now, if both parent and child run on CPU#1, memory corruption (e.g.
->     segfault, bus error, etc.) will occur.
->
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
 
+>> why? the mips32 74k platform (broadcom bcm4706 for instance) does
+>> support huge pages.
+>
+> The hardware may support pages larger than 64K, but does the Linux
+> kernel?  I think not.
+>
+>> and some of these devices are also using highmem for
+>> accessing more than 128mb ram (which is totally broken in all current
+>> kernels too and causing filesystem corruptions)
+>> i was able to fix the highmem problem using a patch which was submitted
+>> but never taken into the mainline, but i just was able to get thb
+>> partially to work on mips32. but i think it would be possible to support
+>> this on mips32 as well. so why leaving it out?
+>
+> As they say... Patches are welcome.  If you get Linux HUGE pages working
+> for 32-bit kernels send a patch to enable the transparent variety as well.
+>
+> David Daney
 
-We were seeing the same crashes, this patch set seems to fix the problem.
+the first patch would be fix for the HIGHMEM problem. all recent kernels 
+do support HIGHMEM for mips32 based devices, but in fact its not 
+working. all patches i made which is required to get it to work is 
+available at svn://svn.dd-wrt.com/DD-WRT for all recent kernels.
 
-Acked-by: David Daney <david.daney@cavium.com>
+for mips32 HIGHMEM support you need to apply the following patch
 
-> ---
->   arch/mips/include/asm/mmu_context.h |    2 +-
->   1 files changed, 1 insertions(+), 1 deletions(-)
->
-> diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-> index e81d719..49d220c 100644
-> --- a/arch/mips/include/asm/mmu_context.h
-> +++ b/arch/mips/include/asm/mmu_context.h
-> @@ -133,7 +133,7 @@ init_new_context(struct task_struct *tsk, struct mm_struct *mm)
->   {
->   	int i;
->
-> -	for_each_online_cpu(i)
-> +	for_each_possible_cpu(i)
->   		cpu_context(i, mm) = 0;
->
->   	return 0;
->
+http://patchwork.linux-mips.org/patch/3634/
+
+this patch has a small typo, which needs to be fixed but its very easy 
+to merge to all current kernels. without it, highmem enabled devices 
+will cause memory corruptions. especially on filesystems wrong data will 
+be written and so on.
+
+i will try to test my older thb patch with the new highmem fixes 
+together next and i hope it works. in the meantime, please review the 
+patchlink above
+
+Sebastian

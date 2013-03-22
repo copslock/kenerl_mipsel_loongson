@@ -1,49 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Mar 2013 18:26:47 +0100 (CET)
-Received: from mail-ee0-f44.google.com ([74.125.83.44]:34253 "EHLO
-        mail-ee0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834936Ab3CUR0qUORsB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Mar 2013 18:26:46 +0100
-Received: by mail-ee0-f44.google.com with SMTP id l10so1927018eei.3
-        for <multiple recipients>; Thu, 21 Mar 2013 10:26:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Mar 2013 01:56:34 +0100 (CET)
+Received: from mail-bk0-f41.google.com ([209.85.214.41]:37613 "EHLO
+        mail-bk0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6834938Ab3CVA4dDs4VT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Mar 2013 01:56:33 +0100
+Received: by mail-bk0-f41.google.com with SMTP id q16so1655366bkw.14
+        for <multiple recipients>; Thu, 21 Mar 2013 17:56:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=x-received:sender:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=2YaqigO9zcOhaPBPxPHWbCNl+FM+klK6ASvzlrCNnl4=;
-        b=Omo3kxJvBOJMXDfWe0qiy0YqdileoPYFaCOKiTkC8NL/E+m6f7SYLxP4VcLdqzckv1
-         zEPOYZdIEol5mkS7zFGAam+Q1Wj016DM1HrWu2TUT3ImkFyNchlki3RSB6fjsncptXEm
-         EJyX32km1aX5r2NpvaInHfWlKCqp7sq4QVNlUc0aMtdoOSif+6agEVUbsRmHzVdeDANY
-         R3tZ2EOIWX3IDj5rLNRwa+ZQMKb3WAFFI927kR5B762g5zcRDLsrvMB7uUyv/2ry6dmI
-         ehMZea/mIasntM8VmUahaOI0rF9VJKWSeKG5hAoZVHDnHZOzsCTzEnIGahA1RugBZLVJ
-         RLGw==
-X-Received: by 10.14.110.68 with SMTP id t44mr84289608eeg.25.1363886800845;
-        Thu, 21 Mar 2013 10:26:40 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ec0d:4090:21c:f0ff:fe0c:2d8a? ([2a01:e34:ec0d:4090:21c:f0ff:fe0c:2d8a])
-        by mx.google.com with ESMTPS id u44sm9685449eel.7.2013.03.21.10.26.38
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 21 Mar 2013 10:26:39 -0700 (PDT)
-Message-ID: <514B42CB.7020203@openwrt.org>
-Date:   Thu, 21 Mar 2013 18:26:35 +0100
-From:   Florian Fainelli <florian@openwrt.org>
-Organization: OpenWrt
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130308 Thunderbird/17.0.4
+        h=mime-version:x-received:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=m76enff9or/+Prhs4jLj3yMc9xGY2nwffb5lz3ifav8=;
+        b=cux/Ux3N5L1LM7FESsH5X22Uhe9iRN19G6JZ74/A/oKtD+HOyWzr0KRXjX3YqPTd/A
+         p2grfoe3C+BGIws3/3mhqRbOoO53P8Gi889/VIixSXPlth7vtNwn8KIQpUXst4GFQaSe
+         RotNDIwzPovLEBqUiInw2CI458sSb0KHLABXdKBTvYbLWPjrrpQhYKmiERM0t8N/UZsh
+         ZmEHqv9f/vtfY0LmztBG/BUzAthhViXfYHiZc+hzR04pYfbjT0+7/OlGiGYbVOlTHr+W
+         95tMEOO3xgFKgEncHrgAkSH7Hz7JKiJVpx0bB3GA1+8WvknYhftD/bw7xVnSYQ4xN0JZ
+         9u4w==
 MIME-Version: 1.0
-To:     Jonas Gorski <jogo@openwrt.org>
-CC:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Kevin Cernekee <cernekee@gmail.com>
-Subject: Re: [PATCH 0/7] add basic support for BCM6362
-References: <1363878001-4461-1-git-send-email-jogo@openwrt.org>
-In-Reply-To: <1363878001-4461-1-git-send-email-jogo@openwrt.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-archive-position: 35937
+X-Received: by 10.204.244.196 with SMTP id lr4mr14282865bkb.80.1363913787429;
+ Thu, 21 Mar 2013 17:56:27 -0700 (PDT)
+Received: by 10.204.24.207 with HTTP; Thu, 21 Mar 2013 17:56:27 -0700 (PDT)
+In-Reply-To: <514B2D0E.808@gmail.com>
+References: <1363524578-3765-1-git-send-email-chenhc@lemote.com>
+        <514A42F2.4080501@gmail.com>
+        <514B2D0E.808@gmail.com>
+Date:   Fri, 22 Mar 2013 08:56:27 +0800
+X-Google-Sender-Auth: nWpSjPnZbHjZ-HUm4C56n_F91d0
+Message-ID: <CAAhV-H79SGN-R5paROAzJQ+yuFsF7znOSpzEe+=bKJ9UMtajRw@mail.gmail.com>
+Subject: Re: [PATCH V2 01/02] MIPS: Build uasm-generated code only once to
+ avoid CPU Hotplug problem
+From:   Huacai Chen <chenhc@lemote.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hongbing Hu <huhb@lemote.com>
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 35938
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,30 +54,138 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Le 03/21/13 16:00, Jonas Gorski a écrit :
-> This patchset adds basic support for BCM6362. BCM6362 includes a 9 port
-> ethernet switch (4 FE PHYs, 2 RGMII ports), integrated wifi and one PCIe
-> port.
+On Thu, Mar 21, 2013 at 11:53 PM, David Daney <ddaney.cavm@gmail.com> wrote:
+> On 03/20/2013 04:14 PM, David Daney wrote:
+>>
+>> On 03/17/2013 05:49 AM, Huacai Chen wrote:
+>>>
+>>> This and the next patch resolve memory corruption problems while CPU
+>>> hotplug. Without these patches, memory corruption can triggered easily
+>>> as below:
+>>>
+> [...]
 >
-> The first few patches do a bit of clean up first to allow the BCM6362
-> support code to be as small as possible.
+>>
+>> We were seeing the same crashes, this patch set seems to fix the problem.
+>>
+>> Acked-by: David Daney <david.daney@cavium.com>
 >
-> Board definitions were left out as they are not really usable yet, and
-> adding DT support is planned in the future. Most code added here will
-> be also required with DT support.
 >
-> Jonas Gorski (7):
->    MIPS: BCM63XX: remove duplicate spi register definitions
->    MIPS: BCM63XX: fix revision ID width
->    MIPS: BCM63XX: rework chip detection
->    MIPS: BCM63XX: add basic BCM6362 support
->    MIPS: BCM63XX: enable SPI controller for BCM6362
->    MIPS: BCM63XX: enable pcie for BCM6362
->    MIPS: BCM63XX: add flash detection for BCM6362
+> On second thought...
+>
+>
+>
+>>
+>>> ---
+>>>   arch/mips/include/asm/cpu-features.h               |    3 +++
+>>>   .../asm/mach-loongson/cpu-feature-overrides.h      |    1 +
+>>>   arch/mips/mm/page.c                                |   10 ++++++++++
+>>>   arch/mips/mm/tlbex.c                               |   10 ++++++++--
+>>>   4 files changed, 22 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/arch/mips/include/asm/cpu-features.h
+>>> b/arch/mips/include/asm/cpu-features.h
+>>> index 1a57e8b..e5ec8fc 100644
+>>> --- a/arch/mips/include/asm/cpu-features.h
+>>> +++ b/arch/mips/include/asm/cpu-features.h
+>>> @@ -113,6 +113,9 @@
+>>>   #ifndef cpu_has_pindexed_dcache
+>>>   #define cpu_has_pindexed_dcache (cpu_data[0].dcache.flags &
+>>> MIPS_CACHE_PINDEX)
+>>>   #endif
+>>> +#ifndef cpu_has_local_ebase
+>>> +#define cpu_has_local_ebase    1
+>
+>
+>
+> This really should default to 0 and only be set for (??who knows what??).
+The original code before this patch assume all MIPS has a local ebase.
+To minimize the modification, we default it to 1 (but I don't know
+which CPU has local ebase).
 
-For this serie:
-Acked-by: Florian Fainelli <florian@openwrt.org>
-
-Thanks Jonas!
---
-Florian
+>
+> David Daney
+>
+>
+>
+>>> +#endif
+>>>
+>>>   /*
+>>>    * I-Cache snoops remote store.     This only matters on SMP.  Some
+>>> multiprocessors
+>>> diff --git
+>>> a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+>>> b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+>>> index 75fd8c0..c0f3ef4 100644
+>>> --- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+>>> +++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+>>> @@ -57,5 +57,6 @@
+>>>   #define cpu_has_vint        0
+>>>   #define cpu_has_vtag_icache    0
+>>>   #define cpu_has_watch        1
+>>> +#define cpu_has_local_ebase    0
+>>>
+>>>   #endif /* __ASM_MACH_LOONGSON_CPU_FEATURE_OVERRIDES_H */
+>>> diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
+>>> index a29fba5..4eb8dcf 100644
+>>> --- a/arch/mips/mm/page.c
+>>> +++ b/arch/mips/mm/page.c
+>>> @@ -247,6 +247,11 @@ void __cpuinit build_clear_page(void)
+>>>       struct uasm_label *l = labels;
+>>>       struct uasm_reloc *r = relocs;
+>>>       int i;
+>>> +    static atomic_t run_once = ATOMIC_INIT(0);
+>>> +
+>>> +    if (atomic_xchg(&run_once, 1)) {
+>>> +        return;
+>>> +    }
+>>>
+>>>       memset(labels, 0, sizeof(labels));
+>>>       memset(relocs, 0, sizeof(relocs));
+>>> @@ -389,6 +394,11 @@ void __cpuinit build_copy_page(void)
+>>>       struct uasm_label *l = labels;
+>>>       struct uasm_reloc *r = relocs;
+>>>       int i;
+>>> +    static atomic_t run_once = ATOMIC_INIT(0);
+>>> +
+>>> +    if (atomic_xchg(&run_once, 1)) {
+>>> +        return;
+>>> +    }
+>>>
+>>>       memset(labels, 0, sizeof(labels));
+>>>       memset(relocs, 0, sizeof(relocs));
+>>> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+>>> index 820e661..6bc28b4 100644
+>>> --- a/arch/mips/mm/tlbex.c
+>>> +++ b/arch/mips/mm/tlbex.c
+>>> @@ -2162,8 +2162,11 @@ void __cpuinit build_tlb_refill_handler(void)
+>>>       case CPU_TX3922:
+>>>       case CPU_TX3927:
+>>>   #ifndef CONFIG_MIPS_PGD_C0_CONTEXT
+>>> -        build_r3000_tlb_refill_handler();
+>>> +        if (cpu_has_local_ebase)
+>>> +            build_r3000_tlb_refill_handler();
+>>>           if (!run_once) {
+>>> +            if (!cpu_has_local_ebase)
+>>> +                build_r3000_tlb_refill_handler();
+>>>               build_r3000_tlb_load_handler();
+>>>               build_r3000_tlb_store_handler();
+>>>               build_r3000_tlb_modify_handler();
+>>> @@ -2192,9 +2195,12 @@ void __cpuinit build_tlb_refill_handler(void)
+>>>               build_r4000_tlb_load_handler();
+>>>               build_r4000_tlb_store_handler();
+>>>               build_r4000_tlb_modify_handler();
+>>> +            if (!cpu_has_local_ebase)
+>>> +                build_r4000_tlb_refill_handler();
+>>>               run_once++;
+>>>           }
+>>> -        build_r4000_tlb_refill_handler();
+>>> +        if (cpu_has_local_ebase)
+>>> +            build_r4000_tlb_refill_handler();
+>>>       }
+>>>   }
+>>>
+>>>
+>>
+>
+>

@@ -1,39 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Mar 2013 19:29:18 +0100 (CET)
-Received: from mms3.broadcom.com ([216.31.210.19]:2391 "EHLO mms3.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6834956Ab3CWS0nWJr0i (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 23 Mar 2013 19:26:43 +0100
-Received: from [10.9.208.53] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Sat, 23 Mar 2013 11:19:25 -0700
-X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Sat, 23 Mar 2013 11:26:20 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Sat, 23 Mar 2013 11:26:19 -0700
-Received: from netl-snoppy.ban.broadcom.com (
- netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 939303928A; Sat, 23
- Mar 2013 11:26:18 -0700 (PDT)
-From:   "Jayachandran C" <jchandra@broadcom.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-cc:     "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 6/9] MIPS: Netlogic: Remove unused code
-Date:   Sat, 23 Mar 2013 23:57:58 +0530
-Message-ID: <538a3b724e5ded4a1c4004517f9f3cc5f4bd926d.1364062916.git.jchandra@broadcom.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <cover.1364062916.git.jchandra@broadcom.com>
-References: <cover.1364062916.git.jchandra@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Mar 2013 19:32:17 +0100 (CET)
+Received: from mail-la0-f41.google.com ([209.85.215.41]:42315 "EHLO
+        mail-la0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6834955Ab3CWScQ3CSJc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Mar 2013 19:32:16 +0100
+Received: by mail-la0-f41.google.com with SMTP id fo12so9208250lab.14
+        for <linux-mips@linux-mips.org>; Sat, 23 Mar 2013 11:32:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:message-id:date:from:organization:user-agent
+         :mime-version:to:cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding:x-gm-message-state;
+        bh=7wGKlxdkHFLfGfIOIR4qdaP+r6GbBCCmxW5w4f/iJnY=;
+        b=Rhrwxk40hrRtDXsNC8OgblqPHKe2gBKGgjkXSA+3GqEJJyUcqHlXdfYfxoPjP7KBDe
+         +xKamsFOxmDpYouEqKg3XSe3t8S4Sn20Anbzf2+9dIj/Iy+dYXZ7Sq2wIvZpR3CejEFo
+         L5HEMTMlmLgUYKfx1E/GbAkyLdB2JAwxB07QKmMzZlqNe4GqaBw9Mo7fsMum4hDKzZ7b
+         vq1SmS4KwEcrxb1zgqg29umIjydfiCPDOS9rAV2pTPyostohiF/lk4pJMmgzo8y60dMz
+         9JLYfB1OUCEj6OCTjR5jAV5gwX3vPddYOJOIP6iGmd6p4HM7tCOlOO98pAIjn9hxuA+0
+         gnZw==
+X-Received: by 10.112.155.9 with SMTP id vs9mr2933072lbb.6.1364063530756;
+        Sat, 23 Mar 2013 11:32:10 -0700 (PDT)
+Received: from wasted.dev.rtsoft.ru (ppp91-79-81-91.pppoe.mtu-net.ru. [91.79.81.91])
+        by mx.google.com with ESMTPS id c10sm2692073lbu.11.2013.03.23.11.32.09
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sat, 23 Mar 2013 11:32:09 -0700 (PDT)
+Message-ID: <514E038D.50108@cogentembedded.com>
+Date:   Sat, 23 Mar 2013 22:33:33 +0300
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20130307 Thunderbird/17.0.4
 MIME-Version: 1.0
-X-WSS-ID: 7D532DA73YC8064119-01-01
-Content-Type: text/plain
+To:     Jayachandran C <jchandra@broadcom.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH 2/9] MIPS: Netlogic: Remove unused EIMR/EIRR functions
+References: <cover.1364062916.git.jchandra@broadcom.com> <9e189bdc53ac2650d22d18f037df89dd2e412be9.1364062916.git.jchandra@broadcom.com>
+In-Reply-To: <9e189bdc53ac2650d22d18f037df89dd2e412be9.1364062916.git.jchandra@broadcom.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35960
+X-Gm-Message-State: ALoCoQkJ+6RjuBt3e9IN3gE2yDbYIr/7lGPNo2DNXumeyrg32Jg1rbTmtL+nL7Ec28v7O3vGeeoW
+X-archive-position: 35961
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,67 +55,34 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Remove unused functions and redundant comments from
-arch/mips/include/asm/netlogic/haldefs.h
+Hello.
 
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
----
- arch/mips/include/asm/netlogic/haldefs.h |   36 ------------------------------
- 1 file changed, 36 deletions(-)
+On 03/23/2013 09:27 PM, Jayachandran C wrote:
 
-diff --git a/arch/mips/include/asm/netlogic/haldefs.h b/arch/mips/include/asm/netlogic/haldefs.h
-index 61fecb8..79c7ccc 100644
---- a/arch/mips/include/asm/netlogic/haldefs.h
-+++ b/arch/mips/include/asm/netlogic/haldefs.h
-@@ -42,34 +42,6 @@
-  * and will provide a way to read 32/64 bit memory mapped registers in
-  * all ABIs
-  */
--/*
-- * For o32 compilation, we have to disable interrupts and enable KX bit to
-- * access 64 bit addresses or data.
-- *
-- * We need to disable interrupts because we save just the lower 32 bits of
-- * registers in	 interrupt handling. So if we get hit by an interrupt while
-- * using the upper 32 bits of a register, we lose.
-- */
--static inline uint32_t nlm_save_flags_kx(void)
--{
--	return change_c0_status(ST0_KX | ST0_IE, ST0_KX);
--}
--
--static inline uint32_t nlm_save_flags_cop2(void)
--{
--	return change_c0_status(ST0_CU2 | ST0_IE, ST0_CU2);
--}
--
--static inline void nlm_restore_flags(uint32_t sr)
--{
--	write_c0_status(sr);
--}
--
--/*
-- * The n64 implementations are simple, the o32 implementations when they
-- * are added, will have to disable interrupts and enable KX before doing
-- * 64 bit ops.
-- */
- static inline uint32_t
- nlm_read_reg(uint64_t base, uint32_t reg)
- {
-@@ -187,14 +159,6 @@ nlm_pcicfg_base(uint32_t devoffset)
- 	return nlm_io_base + devoffset;
- }
- 
--static inline uint64_t
--nlm_xkphys_map_pcibar0(uint64_t pcibase)
--{
--	uint64_t paddr;
--
--	paddr = nlm_read_reg(pcibase, 0x4) & ~0xfu;
--	return (uint64_t)0x9000000000000000 | paddr;
--}
- #elif defined(CONFIG_CPU_XLR)
- 
- static inline uint64_t
--- 
-1.7.9.5
+> Remove the definitions of {read,write}_c0_{eirr,eimr}. These functions
+> are now unused after the PIC and IRQ code has been updated to use
+> optimized EIMR/EIRR functions which work on both 32-bit and 64-bit.
+>
+> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+> ---
+>   arch/mips/include/asm/netlogic/mips-extns.h |    7 +------
+>   1 file changed, 1 insertion(+), 6 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/netlogic/mips-extns.h b/arch/mips/include/asm/netlogic/mips-extns.h
+> index 69d18a0..f299d31 100644
+> --- a/arch/mips/include/asm/netlogic/mips-extns.h
+> +++ b/arch/mips/include/asm/netlogic/mips-extns.h
+[...]
+> @@ -140,7 +136,6 @@ static inline uint64_t read_c0_eirr_and_eimr(void)
+>   		".set	pop"
+>   		: "=r" (val));
+>   #endif
+> -
+
+    Unrelated whitespace change.
+
+>   	return val;
+>   }
+>
+
+WBR, Sergei

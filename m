@@ -1,36 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Mar 2013 19:28:59 +0100 (CET)
-Received: from mms2.broadcom.com ([216.31.210.18]:1530 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Mar 2013 19:29:18 +0100 (CET)
+Received: from mms3.broadcom.com ([216.31.210.19]:2391 "EHLO mms3.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6834954Ab3CWS0ioNDhQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 23 Mar 2013 19:26:38 +0100
-Received: from [10.9.208.55] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Sat, 23 Mar 2013 11:22:04 -0700
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Sat, 23 Mar 2013 11:26:24 -0700
+        id S6834956Ab3CWS0nWJr0i (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 23 Mar 2013 19:26:43 +0100
+Received: from [10.9.208.53] by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Sat, 23 Mar 2013 11:19:25 -0700
+X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+ IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Sat, 23 Mar 2013 11:26:20 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
- Server id 14.1.438.0; Sat, 23 Mar 2013 11:26:24 -0700
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
+ Server id 14.1.438.0; Sat, 23 Mar 2013 11:26:19 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 604333928A; Sat, 23
- Mar 2013 11:26:23 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 939303928A; Sat, 23
+ Mar 2013 11:26:18 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 cc:     "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 9/9] MIPS: Netlogic: Fix oprofile compile on XLR
- uniprocessor
-Date:   Sat, 23 Mar 2013 23:58:01 +0530
-Message-ID: <f0a97197480a23f447bc5e135c4ffb46eb8ab0ba.1364062916.git.jchandra@broadcom.com>
+Subject: [PATCH 6/9] MIPS: Netlogic: Remove unused code
+Date:   Sat, 23 Mar 2013 23:57:58 +0530
+Message-ID: <538a3b724e5ded4a1c4004517f9f3cc5f4bd926d.1364062916.git.jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <cover.1364062916.git.jchandra@broadcom.com>
 References: <cover.1364062916.git.jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7D532D463A01621517-01-01
+X-WSS-ID: 7D532DA73YC8064119-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 35959
+X-archive-position: 35960
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,26 +47,67 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-cpu_logical_map is only defined if CONFIG_SMP is set, so use it
-only when compiling for SMP.
+Remove unused functions and redundant comments from
+arch/mips/include/asm/netlogic/haldefs.h
 
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/oprofile/op_model_mipsxx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/asm/netlogic/haldefs.h |   36 ------------------------------
+ 1 file changed, 36 deletions(-)
 
-diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-index 1fd3614..e4b1140 100644
---- a/arch/mips/oprofile/op_model_mipsxx.c
-+++ b/arch/mips/oprofile/op_model_mipsxx.c
-@@ -41,7 +41,7 @@ static int (*save_perf_irq)(void);
-  * first hardware thread in the core for setup and init.
-  * Skip CPUs with non-zero hardware thread id (4 hwt per core)
+diff --git a/arch/mips/include/asm/netlogic/haldefs.h b/arch/mips/include/asm/netlogic/haldefs.h
+index 61fecb8..79c7ccc 100644
+--- a/arch/mips/include/asm/netlogic/haldefs.h
++++ b/arch/mips/include/asm/netlogic/haldefs.h
+@@ -42,34 +42,6 @@
+  * and will provide a way to read 32/64 bit memory mapped registers in
+  * all ABIs
   */
--#ifdef CONFIG_CPU_XLR
-+#if defined(CONFIG_CPU_XLR) && defined(CONFIG_SMP)
- #define oprofile_skip_cpu(c)	((cpu_logical_map(c) & 0x3) != 0)
- #else
- #define oprofile_skip_cpu(c)	0
+-/*
+- * For o32 compilation, we have to disable interrupts and enable KX bit to
+- * access 64 bit addresses or data.
+- *
+- * We need to disable interrupts because we save just the lower 32 bits of
+- * registers in	 interrupt handling. So if we get hit by an interrupt while
+- * using the upper 32 bits of a register, we lose.
+- */
+-static inline uint32_t nlm_save_flags_kx(void)
+-{
+-	return change_c0_status(ST0_KX | ST0_IE, ST0_KX);
+-}
+-
+-static inline uint32_t nlm_save_flags_cop2(void)
+-{
+-	return change_c0_status(ST0_CU2 | ST0_IE, ST0_CU2);
+-}
+-
+-static inline void nlm_restore_flags(uint32_t sr)
+-{
+-	write_c0_status(sr);
+-}
+-
+-/*
+- * The n64 implementations are simple, the o32 implementations when they
+- * are added, will have to disable interrupts and enable KX before doing
+- * 64 bit ops.
+- */
+ static inline uint32_t
+ nlm_read_reg(uint64_t base, uint32_t reg)
+ {
+@@ -187,14 +159,6 @@ nlm_pcicfg_base(uint32_t devoffset)
+ 	return nlm_io_base + devoffset;
+ }
+ 
+-static inline uint64_t
+-nlm_xkphys_map_pcibar0(uint64_t pcibase)
+-{
+-	uint64_t paddr;
+-
+-	paddr = nlm_read_reg(pcibase, 0x4) & ~0xfu;
+-	return (uint64_t)0x9000000000000000 | paddr;
+-}
+ #elif defined(CONFIG_CPU_XLR)
+ 
+ static inline uint64_t
 -- 
 1.7.9.5

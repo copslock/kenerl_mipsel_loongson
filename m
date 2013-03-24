@@ -1,47 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Mar 2013 19:32:17 +0100 (CET)
-Received: from mail-la0-f41.google.com ([209.85.215.41]:42315 "EHLO
-        mail-la0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834955Ab3CWScQ3CSJc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Mar 2013 19:32:16 +0100
-Received: by mail-la0-f41.google.com with SMTP id fo12so9208250lab.14
-        for <linux-mips@linux-mips.org>; Sat, 23 Mar 2013 11:32:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding:x-gm-message-state;
-        bh=7wGKlxdkHFLfGfIOIR4qdaP+r6GbBCCmxW5w4f/iJnY=;
-        b=Rhrwxk40hrRtDXsNC8OgblqPHKe2gBKGgjkXSA+3GqEJJyUcqHlXdfYfxoPjP7KBDe
-         +xKamsFOxmDpYouEqKg3XSe3t8S4Sn20Anbzf2+9dIj/Iy+dYXZ7Sq2wIvZpR3CejEFo
-         L5HEMTMlmLgUYKfx1E/GbAkyLdB2JAwxB07QKmMzZlqNe4GqaBw9Mo7fsMum4hDKzZ7b
-         vq1SmS4KwEcrxb1zgqg29umIjydfiCPDOS9rAV2pTPyostohiF/lk4pJMmgzo8y60dMz
-         9JLYfB1OUCEj6OCTjR5jAV5gwX3vPddYOJOIP6iGmd6p4HM7tCOlOO98pAIjn9hxuA+0
-         gnZw==
-X-Received: by 10.112.155.9 with SMTP id vs9mr2933072lbb.6.1364063530756;
-        Sat, 23 Mar 2013 11:32:10 -0700 (PDT)
-Received: from wasted.dev.rtsoft.ru (ppp91-79-81-91.pppoe.mtu-net.ru. [91.79.81.91])
-        by mx.google.com with ESMTPS id c10sm2692073lbu.11.2013.03.23.11.32.09
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sat, 23 Mar 2013 11:32:09 -0700 (PDT)
-Message-ID: <514E038D.50108@cogentembedded.com>
-Date:   Sat, 23 Mar 2013 22:33:33 +0300
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20130307 Thunderbird/17.0.4
-MIME-Version: 1.0
-To:     Jayachandran C <jchandra@broadcom.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 2/9] MIPS: Netlogic: Remove unused EIMR/EIRR functions
-References: <cover.1364062916.git.jchandra@broadcom.com> <9e189bdc53ac2650d22d18f037df89dd2e412be9.1364062916.git.jchandra@broadcom.com>
-In-Reply-To: <9e189bdc53ac2650d22d18f037df89dd2e412be9.1364062916.git.jchandra@broadcom.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQkJ+6RjuBt3e9IN3gE2yDbYIr/7lGPNo2DNXumeyrg32Jg1rbTmtL+nL7Ec28v7O3vGeeoW
-X-archive-position: 35961
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Mar 2013 08:32:04 +0100 (CET)
+Received: from mail-da0-f50.google.com ([209.85.210.50]:56323 "EHLO
+        mail-da0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822998Ab3CXHcArL3u9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Mar 2013 08:32:00 +0100
+Received: by mail-da0-f50.google.com with SMTP id t1so1264473dae.23
+        for <multiple recipients>; Sun, 24 Mar 2013 00:31:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
+         :references;
+        bh=/FlTapNljIg727M2jb8cFlduge2JMGej3FmoiK7wV28=;
+        b=1I1AeAp3QwFOJ0DnpzCKroJRvEE5cSwnxDQ2YGfg05MlU8wFxQ17sHE/7XDcGo8GQ0
+         rxidSd0T8h4j62mV+UXaaPmZct0l52kUmf3cIFKS/wO6Ui72rzQVYgtU+5wyffECb+aG
+         aNILMeQfFRyAcJDUI0OFwhdIrx96E13l3XjRM4sNpPAo7WNjqK8A6Qi87lPwZSRBprIW
+         S+1lNpgmFeZxCdKKM1M0dxAyudRFMxACZ9gFPECn0SrFfNqzoDeQH/0TpirOve+xtpW7
+         v4dSHdRSk/SfBZ9NLcB4QB7uciDVx06isSZKf0l+quMQXKYi301Z1V05buRcmWqdocM4
+         EBYA==
+X-Received: by 10.66.234.101 with SMTP id ud5mr11792686pac.40.1364110313758;
+        Sun, 24 Mar 2013 00:31:53 -0700 (PDT)
+Received: from localhost.localdomain ([114.246.175.231])
+        by mx.google.com with ESMTPS id ce16sm9876553pac.5.2013.03.24.00.31.45
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sun, 24 Mar 2013 00:31:53 -0700 (PDT)
+From:   Jiang Liu <liuj97@gmail.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        David Rientjes <rientjes@google.com>
+Cc:     Jiang Liu <jiang.liu@huawei.com>,
+        Wen Congyang <wency@cn.fujitsu.com>,
+        Mel Gorman <mgorman@suse.de>, Minchan Kim <minchan@kernel.org>,
+        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+        Michal Hocko <mhocko@suse.cz>,
+        Jianguo Wu <wujianguo@huawei.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        Arnd Bergmann <arnd@arndb.de>, Jiri Kosina <jkosina@suse.cz>,
+        John Crispin <blogic@openwrt.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-mips@linux-mips.org
+Subject: [RFC PATCH v2, part4 23/39] mm/MIPS: prepare for removing num_physpages and simplify mem_init()
+Date:   Sun, 24 Mar 2013 15:25:04 +0800
+Message-Id: <1364109934-7851-39-git-send-email-jiang.liu@huawei.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1364109934-7851-1-git-send-email-jiang.liu@huawei.com>
+References: <1364109934-7851-1-git-send-email-jiang.liu@huawei.com>
+X-archive-position: 35962
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: liuj97@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,34 +61,173 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+Prepare for removing num_physpages and simplify mem_init().
 
-On 03/23/2013 09:27 PM, Jayachandran C wrote:
+Signed-off-by: Jiang Liu <jiang.liu@huawei.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: David Daney <david.daney@cavium.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Jiri Kosina <jkosina@suse.cz>
+Cc: John Crispin <blogic@openwrt.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+---
+ arch/mips/mm/init.c              |   57 ++++++++++++--------------------------
+ arch/mips/pci/pci-lantiq.c       |    2 +-
+ arch/mips/sgi-ip27/ip27-memory.c |   21 ++------------
+ 3 files changed, 21 insertions(+), 59 deletions(-)
 
-> Remove the definitions of {read,write}_c0_{eirr,eimr}. These functions
-> are now unused after the PIC and IRQ code has been updated to use
-> optimized EIMR/EIRR functions which work on both 32-bit and 64-bit.
->
-> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
-> ---
->   arch/mips/include/asm/netlogic/mips-extns.h |    7 +------
->   1 file changed, 1 insertion(+), 6 deletions(-)
->
-> diff --git a/arch/mips/include/asm/netlogic/mips-extns.h b/arch/mips/include/asm/netlogic/mips-extns.h
-> index 69d18a0..f299d31 100644
-> --- a/arch/mips/include/asm/netlogic/mips-extns.h
-> +++ b/arch/mips/include/asm/netlogic/mips-extns.h
-[...]
-> @@ -140,7 +136,6 @@ static inline uint64_t read_c0_eirr_and_eimr(void)
->   		".set	pop"
->   		: "=r" (val));
->   #endif
-> -
-
-    Unrelated whitespace change.
-
->   	return val;
->   }
->
-
-WBR, Sergei
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index c1d7b9f..8149946 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -358,11 +358,24 @@ void __init paging_init(void)
+ static struct kcore_list kcore_kseg0;
+ #endif
+ 
+-void __init mem_init(void)
++static inline void mem_init_free_highmem(void)
+ {
+-	unsigned long codesize, reservedpages, datasize, initsize;
+-	unsigned long tmp, ram;
++#ifdef CONFIG_HIGHMEM
++	unsigned long tmp;
+ 
++	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
++		struct page *page = pfn_to_page(tmp);
++
++		if (!page_is_ram(tmp))
++			SetPageReserved(page);
++		else
++			free_highmem_page(page);
++	}
++#endif
++}
++
++void __init mem_init(void)
++{
+ #ifdef CONFIG_HIGHMEM
+ #ifdef CONFIG_DISCONTIGMEM
+ #error "CONFIG_HIGHMEM and CONFIG_DISCONTIGMEM dont work together yet"
+@@ -375,32 +388,8 @@ void __init mem_init(void)
+ 
+ 	free_all_bootmem();
+ 	setup_zero_pages();	/* Setup zeroed pages.  */
+-
+-	reservedpages = ram = 0;
+-	for (tmp = 0; tmp < max_low_pfn; tmp++)
+-		if (page_is_ram(tmp) && pfn_valid(tmp)) {
+-			ram++;
+-			if (PageReserved(pfn_to_page(tmp)))
+-				reservedpages++;
+-		}
+-	num_physpages = ram;
+-
+-#ifdef CONFIG_HIGHMEM
+-	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
+-		struct page *page = pfn_to_page(tmp);
+-
+-		if (!page_is_ram(tmp)) {
+-			SetPageReserved(page);
+-			continue;
+-		}
+-		free_highmem_page(page);
+-	}
+-	num_physpages += totalhigh_pages;
+-#endif
+-
+-	codesize =  (unsigned long) &_etext - (unsigned long) &_text;
+-	datasize =  (unsigned long) &_edata - (unsigned long) &_etext;
+-	initsize =  (unsigned long) &__init_end - (unsigned long) &__init_begin;
++	mem_init_free_highmem();
++	mem_init_print_info(NULL);
+ 
+ #ifdef CONFIG_64BIT
+ 	if ((unsigned long) &_text > (unsigned long) CKSEG0)
+@@ -409,16 +398,6 @@ void __init mem_init(void)
+ 		kclist_add(&kcore_kseg0, (void *) CKSEG0,
+ 				0x80000000 - 4, KCORE_TEXT);
+ #endif
+-
+-	printk(KERN_INFO "Memory: %luk/%luk available (%ldk kernel code, "
+-	       "%ldk reserved, %ldk data, %ldk init, %ldk highmem)\n",
+-	       nr_free_pages() << (PAGE_SHIFT-10),
+-	       ram << (PAGE_SHIFT-10),
+-	       codesize >> 10,
+-	       reservedpages << (PAGE_SHIFT-10),
+-	       datasize >> 10,
+-	       initsize >> 10,
+-	       totalhigh_pages << (PAGE_SHIFT-10));
+ }
+ #endif /* !CONFIG_NEED_MULTIPLE_NODES */
+ 
+diff --git a/arch/mips/pci/pci-lantiq.c b/arch/mips/pci/pci-lantiq.c
+index 9568178..8cc3250 100644
+--- a/arch/mips/pci/pci-lantiq.c
++++ b/arch/mips/pci/pci-lantiq.c
+@@ -89,7 +89,7 @@ static inline u32 ltq_calc_bar11mask(void)
+ 	u32 mem, bar11mask;
+ 
+ 	/* BAR11MASK value depends on available memory on system. */
+-	mem = num_physpages * PAGE_SIZE;
++	mem = get_num_physpages() * PAGE_SIZE;
+ 	bar11mask = (0x0ffffff0 & ~((1 << (fls(mem) - 1)) - 1)) | 8;
+ 
+ 	return bar11mask;
+diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
+index 4042e06..41646d7 100644
+--- a/arch/mips/sgi-ip27/ip27-memory.c
++++ b/arch/mips/sgi-ip27/ip27-memory.c
+@@ -357,8 +357,6 @@ static void __init szmem(void)
+ 	int slot;
+ 	cnodeid_t node;
+ 
+-	num_physpages = 0;
+-
+ 	for_each_online_node(node) {
+ 		nodebytes = 0;
+ 		for (slot = 0; slot < MAX_MEM_SLOTS; slot++) {
+@@ -381,7 +379,6 @@ static void __init szmem(void)
+ 				slot = MAX_MEM_SLOTS;
+ 				continue;
+ 			}
+-			num_physpages += slot_psize;
+ 			memblock_add_node(PFN_PHYS(slot_getbasepfn(node, slot)),
+ 					  PFN_PHYS(slot_psize), node);
+ 		}
+@@ -480,10 +477,9 @@ void __init paging_init(void)
+ 
+ void __init mem_init(void)
+ {
+-	unsigned long codesize, datasize, initsize, tmp;
+ 	unsigned node;
+ 
+-	high_memory = (void *) __va(num_physpages << PAGE_SHIFT);
++	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
+ 
+ 	for_each_online_node(node) {
+ 		/*
+@@ -494,18 +490,5 @@ void __init mem_init(void)
+ 
+ 	setup_zero_pages();	/* This comes from node 0 */
+ 
+-	codesize =  (unsigned long) &_etext - (unsigned long) &_text;
+-	datasize =  (unsigned long) &_edata - (unsigned long) &_etext;
+-	initsize =  (unsigned long) &__init_end - (unsigned long) &__init_begin;
+-
+-	tmp = nr_free_pages();
+-	printk(KERN_INFO "Memory: %luk/%luk available (%ldk kernel code, "
+-	       "%ldk reserved, %ldk data, %ldk init, %ldk highmem)\n",
+-	       tmp << (PAGE_SHIFT-10),
+-	       num_physpages << (PAGE_SHIFT-10),
+-	       codesize >> 10,
+-	       (num_physpages - tmp) << (PAGE_SHIFT-10),
+-	       datasize >> 10,
+-	       initsize >> 10,
+-	       totalhigh_pages << (PAGE_SHIFT-10));
++	mem_init_print_info(NULL);
+ }
+-- 
+1.7.9.5

@@ -1,29 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Mar 2013 15:54:48 +0100 (CET)
-Received: from hydra.sisk.pl ([212.160.235.94]:43455 "EHLO hydra.sisk.pl"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6819780Ab3CXOyrxEbhg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 24 Mar 2013 15:54:47 +0100
-Received: from vostro.rjw.lan (afcg217.neoplus.adsl.tpnet.pl [95.49.58.217])
-        by hydra.sisk.pl (Postfix) with ESMTPSA id AA2D3E52B5;
-        Sun, 24 Mar 2013 15:53:30 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@sisk.pl>
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     Francesco Lavra <francescolavra.fl@gmail.com>, Fengguang Wu <fengguang.wu@intel.com>, linux-mips@linux-mips.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Liviu.Dudau@arm.com, sparclinux@vger.kernel.org, linaro-kernel@lists.linaro.org, Guan Xuetao <gxt@mprc.pku.edu.cn>, arvind.chauhan@arm.com, Hans-Christian Egtvedt <egtvedt@samfundet.no>, Jesper Nilsson <jesper.nilsson@axis.com>, robin.randhawa@arm.com, Stephen Warren <swarren@wwwdotorg.org>, cpufreq@vger.kernel.org, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Haavard Skinnemoen <hskinnemoen@gmail.com>, cbe-oss-dev@lists.ozlabs.org, Fenghua Yu <fenghua.yu@intel.com>, Steve.Bannister@arm.com, Mike Frysinger <vapier@gentoo.org>, linux-pm@vger.kernel.org, Sekhar Nori <nsekhar@ti.com>, Haojian Zhuang <haojian.zhuang@gmail.com>, Mikael Starvik <starvik@axis.com>, Kukjin Kim <kgene.kim@samsung.com>, Borislav Petkov <bp@alien8.de>, Ben Dooks <ben-linux@fluff.org>, Thomas Renninger <trenn@suse.de>, linux-arm-k
- ernel@lists.infradead.org, Tony Luck <tony.luck@intel.com>, Eric Miao <eric.y.miao@gmail.com>, linux-cris-kernel@axis.com, linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>, Paul Mundt <lethal@linux-sh.org>, Sascha Hauer <kernel@pengutronix.de>, charles.garcia-tobin@arm.com, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 1/2] cpufreq: Notify all policy->cpus in cpufreq_notify_transition()
-Date:   Sun, 24 Mar 2013 16:02:05 +0100
-Message-ID: <2484099.i284xF0hri@vostro.rjw.lan>
-User-Agent: KMail/4.9.5 (Linux/3.9.0-rc3+; KDE/4.9.5; x86_64; ; )
-In-Reply-To: <CAKohpomznLtxYZYx31xg+V5FesNiMwOqNDN0QNqOqUw_7g4Uhw@mail.gmail.com>
-References: <981c23bd4b2a14c346820685e1203ab7054378f8.1364132845.git.viresh.kumar@linaro.org> <514F0FB0.8030109@gmail.com> <CAKohpomznLtxYZYx31xg+V5FesNiMwOqNDN0QNqOqUw_7g4Uhw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-archive-position: 35969
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Mar 2013 00:18:47 +0100 (CET)
+Received: from mailout2.samsung.com ([203.254.224.25]:18543 "EHLO
+        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6827543Ab3CXXSp2UHBi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Mar 2013 00:18:45 +0100
+Received: from epcpsbgr1.samsung.com
+ (u141.gpu120.samsung.co.kr [203.254.230.141])
+ by mailout2.samsung.com (Oracle Communications Messaging Server 7u4-24.01
+ (7.0.4.24.0) 64bit (built Nov 17 2011))
+ with ESMTP id <0MK6004BWU2TO310@mailout2.samsung.com> for
+ linux-mips@linux-mips.org; Mon, 25 Mar 2013 08:18:35 +0900 (KST)
+Received: from epcpsbgx3.samsung.com ( [203.254.230.43])
+        by epcpsbgr1.samsung.com (EPCPMTA) with SMTP id EB.37.20872.BC98F415; Mon,
+ 25 Mar 2013 08:18:35 +0900 (KST)
+X-AuditID: cbfee68d-b7f786d000005188-3c-514f89cbe6ab
+Received: from epextmailer01 ( [203.254.219.151])
+        by epcpsbgx3.samsung.com (EPCPMTA) with SMTP id 99.3C.05358.BC98F415; Mon,
+ 25 Mar 2013 08:18:35 +0900 (KST)
+Date:   Sun, 24 Mar 2013 23:18:35 +0000 (GMT)
+From:   =?euc-kr?B?vNvAurrA?= <eunb.song@samsung.com>
+Subject: [PATCH] mips: Fix build error cavium-octeon without CONFIG_SMP
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Reply-to: eunb.song@samsung.com
+MIME-version: 1.0
+X-MTR:  20130324231407936@eunb.song
+Msgkey: 20130324231407936@eunb.song
+X-EPLocale: ko_KR.euc-kr
+X-Priority: 3
+X-EPWebmail-Msg-Type: personal
+X-EPWebmail-Reply-Demand: 0
+X-EPApproval-Locale: 
+X-EPHeader: ML
+X-EPTrCode: 
+X-EPTrName: 
+X-MLAttribute: 
+X-RootMTR: 20130324231407936@eunb.song
+X-ParentMTR: 
+X-ArchiveUser: 
+X-CPGSPASS: N
+Content-transfer-encoding: base64
+Content-type: text/plain; charset=euc-kr
+MIME-version: 1.0
+Message-id: <26870919.16191364167114826.JavaMail.weblogic@epml15>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnleLIzCtJLcpLzFFi42I5/e+Ztu7pTv9Ag08HVSwmTJ3E7sDocXTl
+        WqYAxigum5TUnMyy1CJ9uwSujEtX37IVXGKvaLnSx9TAuIW9i5GTQ0hARaLl/3dGEFtCwETi
+        /Y9jbBC2mMSFe+uBbC6gmmWMEr0vXzDBFL3c/Y8FIjGfUWJW+zPmLkYODhYBVYkTXZ4gNWxA
+        NRt+TABbICzgLjHh0nMWEFtEQEZi6acrYMuYBZIlDv09wQpxhLzE5NOXwep5BQQlTs58wgKx
+        S0ni74mdbBBxZYmm6+3sEHEJiVnTL7BC2LwSM9qfQtXLSUz7uoYZwpaWOD9rAyPMM4u/P4aK
+        80scu72DCeRkkN4n94Nhxuze/AXqdwGJqWcOQrWqS2ze0Qi1lk9izcK3LDBjdp1azgzTe3/L
+        XCaItxQlpnQ/ZIewtSS+/NjHhu4tXgFHiWnH97JPYFSehSQ1C0n7LCTtyGoWMLKsYhRNLUgu
+        KE5KLzLUK07MLS7NS9dLzs/dxAhJDL07GG8fsD7EmAyMkYnMUqLJ+cDEklcSb2hsZmRhamJq
+        bGRuaUaasJI4r1qLdaCQQHpiSWp2ampBalF8UWlOavEhRiYOTqkGxh2hVuvnbZpp+idgY/SF
+        LANO0fo32ZfaLom8eRP1gHlF4dIV7Ps3BNkwLLAVVQk8fVLuHdOq2p8Lt9rXneU3f2nzoGrV
+        Y7EfViy9d1+Hip+V8pnqmf+d7aDhpa+/7bemLBAJ39fFcSXQjk3ZPNrxmWR8d8Mdof83r828
+        uCJtb+DLdu+tYbY2DEosxRmJhlrMRcWJAJKcgIUiAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpik+LIzCtJLcpLzFFi42I5/e/2dN3Tnf6BBm8WKlhMmDqJ3YHR4+jK
+        tUwBjFEZNhmpiSmpRQqpecn5KZl56bZK3sHxzvGmZgaGuoaWFuZKCnmJuam2Si4+AbpumTlA
+        U5UUyhJzSoFCAYnFxUr6djZF+aUlqQoZ+cUltkrRRgbGekamJnpGxgZ6JgaxVoYGBkamQFUJ
+        GRmXrr5lK7jEXtFypY+pgXELexcjJ4eQgIpEy//vjCC2hICJxMvd/1ggbDGJC/fWs3UxcgHV
+        zGeUmNX+jLmLkYODRUBV4kSXJ0gNG1D9hh8TwOYIC7hLTLj0HKxXREBGYumnK2AzmQWSJQ79
+        PcEKsUteYvLpy2D1vAKCEidnPoHapSTx98RONoi4skTT9XZ2iLiExKzpF1ghbF6JGe1Poerl
+        JKZ9XcMMYUtLnJ+1gRHm5sXfH0PF+SWO3d7BBHIySO+T+8EwY3Zv/sIGYQtITD1zEKpVXWLz
+        jkaotXwSaxa+ZYEZs+vUcmaY3vtb5jJBvKUoMaX7ITuErSXx5cc+NnRv8Qo4Skw7vpd9AqPc
+        LCSpWUjaZyFpR1azgJFlFaNoakFyQXFSeoWxXnFibnFpXrpecn7uJkZwinq2eAfj//PWhxgF
+        OBiVeHgFavwDhVgTy4orcw8xSnAwK4nwLvMDCvGmJFZWpRblxxeV5qQWH2JMBsbfRGYp0eR8
+        YPrMK4k3NDYwNjS0NDcwNTSyIE1YSZz3Wat1oJBAemJJanZqakFqEcwWJg5OqQbGspzuCUfc
+        LVhL6tf9fObJouuZd+PbJZvgSWL8X5ic5J7xP9CY9M7l5LX3u8UDjiiuvZF9V7y9Pmf5eZaQ
+        SRtWl2jbrlSrCth/e9UmnZrIxzdE+NWTXrpfvcG2biW3jPnD/zs7uhSVjsRqVYan3mnt8+p8
+        qGV100twUuK2azlqbqHVuUa/TzYpsRRnJBpqMRcVJwIAyziy+ZUDAAA=
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-archive-position: 35970
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rjw@sisk.pl
+X-original-sender: eunb.song@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,76 +89,16 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sunday, March 24, 2013 08:23:27 PM Viresh Kumar wrote:
-> On 24 March 2013 20:07, Francesco Lavra <francescolavra.fl@gmail.com> wrote:
-> > On 03/24/2013 02:48 PM, Viresh Kumar wrote:
-> >> policy->cpus contains all online cpus that have single shared clock line. And
-> >> their frequencies are always updated together.
-> >>
-> >> Many SMP system's cpufreq drivers take care of this in individual drivers but
-> >> the best place for this code is in cpufreq core.
-> >>
-> >> This patch modifies cpufreq_notify_transition() to notify frequency change for
-> >> all cpus in policy->cpus and hence updates all users of this API.
-> 
-> One thing about this work. I compiled it for ARM and Intel. Also this
-> stuff is tested
-> by "Fengguang Wu" <fengguang.wu@intel.com> automated build system.
-> 
-> I am not sure if that builds all architectures or not.
-> I tried to review my patch closely but their can be some minor mistakes.
-> 
-> I thought of adding this in the patch details but forgot at last.
-> 
-> Is their a simple way to compile stuff for all platforms? Sorry i am
-> not aware of
-> it :(
-> 
-> >> diff --git a/arch/blackfin/mach-common/cpufreq.c b/arch/blackfin/mach-common/cpufreq.c
-> >> +     ret = cpu_set_cclk(policy->cpu, freqs.new * 1000);
-> >> +     if (ret != 0) {
-> >> +             WARN_ONCE(ret, "cpufreq set freq failed %d\n", ret);
-> >> +             break;
-> >
-> > This doesn't even compile, as the break statement isn't in the
-> > for_each_online_cpu() loop anymore.
-> 
-> I tried to review it very carefully but this situation was a bit tricky :)
-> Thanks for trying it out.
-> 
-> Following should fix it for you:
-> 
-> commit 942ca8a6bc87e3c42beabc9102755136493e5355
-> Author: Viresh Kumar <viresh.kumar@linaro.org>
-> Date:   Sun Mar 24 20:21:43 2013 +0530
-> 
->     fixup! cpufreq: Notify all policy->cpus in cpufreq_notify_transition()
-> ---
->  arch/blackfin/mach-common/cpufreq.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/blackfin/mach-common/cpufreq.c
-> b/arch/blackfin/mach-common/cpufreq.c
-> index 4e67368..995511e80 100644
-> --- a/arch/blackfin/mach-common/cpufreq.c
-> +++ b/arch/blackfin/mach-common/cpufreq.c
-> @@ -164,7 +164,7 @@ static int bfin_target(struct cpufreq_policy *policy,
->         ret = cpu_set_cclk(policy->cpu, freqs.new * 1000);
->         if (ret != 0) {
->                 WARN_ONCE(ret, "cpufreq set freq failed %d\n", ret);
-> -               break;
-> +               return ret;
->         }
->  #endif
->         on_each_cpu(bfin_adjust_core_timer, &index, 1);
-> 
-> 
-> @Rafael: Let me add fixups for now, i will send final patch later after others
-> also review their part.
-
-OK
-
-
--- 
-I speak only for myself.
-Rafael J. Wysocki, Intel Open Source Technology Center.
+DQpUaGlzIHBhdGNoIGZpeGVzIGJ1aWxkIGVycm9yIGNhdml1bS1vY3Rlb24gd2l0aG91dCBDT05G
+SUdfU01QDQoNClNpbmdlZC1vZmYtYnk6IEV1bkJvbmcgU29uZzxldW5iLnNvbmdAc2Ftc3VuZy5j
+b20+DQoNCi0tLQ0KIGFyY2gvbWlwcy9jYXZpdW0tb2N0ZW9uL3NldHVwLmMgfCAgICA1ICsrKyst
+DQogMSBmaWxlcyBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb25zKC0pDQoNCmRp
+ZmYgLS1naXQgYS9hcmNoL21pcHMvY2F2aXVtLW9jdGVvbi9zZXR1cC5jIGIvYXJjaC9taXBzL2Nh
+dml1bS1vY3Rlb24vc2V0dXAuYw0KaW5kZXggYzU5NGEzZC4uYjBiYWEyOSAxMDA2NDQNCi0tLSBh
+L2FyY2gvbWlwcy9jYXZpdW0tb2N0ZW9uL3NldHVwLmMNCisrKyBiL2FyY2gvbWlwcy9jYXZpdW0t
+b2N0ZW9uL3NldHVwLmMNCkBAIC0xNzQsNyArMTc0LDEwIEBAIHN0YXRpYyBpbnQgb2N0ZW9uX2tl
+eGVjX3ByZXBhcmUoc3RydWN0IGtpbWFnZSAqaW1hZ2UpDQogDQogc3RhdGljIHZvaWQgb2N0ZW9u
+X2dlbmVyaWNfc2h1dGRvd24odm9pZCkNCiB7DQotCWludCBjcHUsIGk7DQorCWludCBpOw0KKyNp
+ZmRlZiBDT05GSUdfU01QDQorCWludCBjcHU7DQorI2VuZGlmDQogCXN0cnVjdCBjdm14X2Jvb3Rt
+ZW1fZGVzYyAqYm9vdG1lbV9kZXNjOw0KIAl2b2lkICpuYW1lZF9ibG9ja19hcnJheV9wdHI7DQog
+DQotLSANCjEuNy4wLjENCg0KVGhhbmtzLg==

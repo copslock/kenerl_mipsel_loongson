@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Mar 2013 08:32:04 +0100 (CET)
-Received: from mail-da0-f50.google.com ([209.85.210.50]:56323 "EHLO
-        mail-da0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822998Ab3CXHcArL3u9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Mar 2013 08:32:00 +0100
-Received: by mail-da0-f50.google.com with SMTP id t1so1264473dae.23
-        for <multiple recipients>; Sun, 24 Mar 2013 00:31:53 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Mar 2013 08:32:25 +0100 (CET)
+Received: from mail-pd0-f172.google.com ([209.85.192.172]:44217 "EHLO
+        mail-pd0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816743Ab3CXHcJ5yeiP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Mar 2013 08:32:09 +0100
+Received: by mail-pd0-f172.google.com with SMTP id w10so2137301pde.3
+        for <multiple recipients>; Sun, 24 Mar 2013 00:32:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
          :references;
         bh=/FlTapNljIg727M2jb8cFlduge2JMGej3FmoiK7wV28=;
-        b=1I1AeAp3QwFOJ0DnpzCKroJRvEE5cSwnxDQ2YGfg05MlU8wFxQ17sHE/7XDcGo8GQ0
-         rxidSd0T8h4j62mV+UXaaPmZct0l52kUmf3cIFKS/wO6Ui72rzQVYgtU+5wyffECb+aG
-         aNILMeQfFRyAcJDUI0OFwhdIrx96E13l3XjRM4sNpPAo7WNjqK8A6Qi87lPwZSRBprIW
-         S+1lNpgmFeZxCdKKM1M0dxAyudRFMxACZ9gFPECn0SrFfNqzoDeQH/0TpirOve+xtpW7
-         v4dSHdRSk/SfBZ9NLcB4QB7uciDVx06isSZKf0l+quMQXKYi301Z1V05buRcmWqdocM4
-         EBYA==
-X-Received: by 10.66.234.101 with SMTP id ud5mr11792686pac.40.1364110313758;
-        Sun, 24 Mar 2013 00:31:53 -0700 (PDT)
+        b=TeL78mMTymz8VsAX0hyMDe+ajsRzQH6f1LvWCwl2sH3KQAPd7nH3vzN+Po4B1zfEF7
+         k6EuNVWlrNlxW/0FmUhdBKHkuhrwTm37lC4evAIZPGb+s5SM3bsFE7ypDSLU5lHA3Su8
+         afLNFP5Uo2/dTy+NvanoEHhpfmubdBU39aFzDAWK73tvmPPRREbRXJFQ2hgYt7o5Jo8n
+         cxxSeB9ymZMwqPgzI4YB+/qedsx4y4+x8lEhCG21Xw7pTNS8BnzKdeKyLVC5sCjVUMxR
+         gGmwRjzul/8aX5yxWBpL2ch9z9WTedef4iExKOWtPVa9F3reESGpmNQj+lWT15hG76cM
+         N0GQ==
+X-Received: by 10.68.228.164 with SMTP id sj4mr10836532pbc.180.1364110323424;
+        Sun, 24 Mar 2013 00:32:03 -0700 (PDT)
 Received: from localhost.localdomain ([114.246.175.231])
-        by mx.google.com with ESMTPS id ce16sm9876553pac.5.2013.03.24.00.31.45
+        by mx.google.com with ESMTPS id ce16sm9876553pac.5.2013.03.24.00.31.54
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sun, 24 Mar 2013 00:31:53 -0700 (PDT)
+        Sun, 24 Mar 2013 00:32:01 -0700 (PDT)
 From:   Jiang Liu <liuj97@gmail.com>
 To:     Andrew Morton <akpm@linux-foundation.org>,
         David Rientjes <rientjes@google.com>
@@ -37,13 +37,13 @@ Cc:     Jiang Liu <jiang.liu@huawei.com>,
         John Crispin <blogic@openwrt.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-mips@linux-mips.org
-Subject: [RFC PATCH v2, part4 23/39] mm/MIPS: prepare for removing num_physpages and simplify mem_init()
-Date:   Sun, 24 Mar 2013 15:25:04 +0800
-Message-Id: <1364109934-7851-39-git-send-email-jiang.liu@huawei.com>
+Subject: [RFC PATCH v2, part4 24/39] mm/MIPS: prepare for removing num_physpages and simplify mem_init()
+Date:   Sun, 24 Mar 2013 15:25:05 +0800
+Message-Id: <1364109934-7851-40-git-send-email-jiang.liu@huawei.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1364109934-7851-1-git-send-email-jiang.liu@huawei.com>
 References: <1364109934-7851-1-git-send-email-jiang.liu@huawei.com>
-X-archive-position: 35962
+X-archive-position: 35963
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

@@ -1,55 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Mar 2013 14:49:28 +0100 (CET)
-Received: from mail-pb0-f51.google.com ([209.85.160.51]:62480 "EHLO
-        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825665Ab3CXNtNMhV0H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Mar 2013 14:49:13 +0100
-Received: by mail-pb0-f51.google.com with SMTP id rr4so1058675pbb.24
-        for <linux-mips@linux-mips.org>; Sun, 24 Mar 2013 06:49:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
-         :references:in-reply-to:references:x-gm-message-state;
-        bh=D7t+RcXzhaO5PJdrFePfSyddF67XFQ+wFJt1kPjgH58=;
-        b=SLk2a7HIAdgi2pxIyFmUxAijXwI6x1cvYwRzvfDTNwl61PyXgFV2nZO8Ap7yO+/Xe5
-         TcEVsW+1yANyS46m+yRooKbA3yuGHq6YlGEW5d9aQ2VB7cZpHUvFiLk0p2NnnZhSB1Jb
-         r5zeBRQmQRU6IiYn54SGakXz0dgOgljfsRxFHNcCqhvWA3Gdx7fY9Q8r8QLbFNdaUjzl
-         I7KDfFhJuAKplnOWjhDCIkO5UE6no5B8sPlZiDO1nT7u4dllm361POBhLIuje7e46/vQ
-         MOO2UQGsFyj85hVgKt/zrvLoEeoWT2jlVw8rcY3Y8uT9XrUbu2SxIBUFofcVTwLbjjG4
-         tjlA==
-X-Received: by 10.66.154.65 with SMTP id vm1mr13010162pab.110.1364132946734;
-        Sun, 24 Mar 2013 06:49:06 -0700 (PDT)
-Received: from localhost ([122.166.179.164])
-        by mx.google.com with ESMTPS id zv3sm10871444pab.0.2013.03.24.06.49.00
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Sun, 24 Mar 2013 06:49:06 -0700 (PDT)
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     rjw@sisk.pl
-Cc:     cpufreq@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, arvind.chauhan@arm.com,
-        robin.randhawa@arm.com, Steve.Bannister@arm.com,
-        Liviu.Dudau@arm.com, charles.garcia-tobin@arm.com,
-        linaro-kernel@lists.linaro.org,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Mar 2013 15:37:56 +0100 (CET)
+Received: from mail-ee0-f48.google.com ([74.125.83.48]:36037 "EHLO
+        mail-ee0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6819780Ab3CXOhueBUoL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Mar 2013 15:37:50 +0100
+Received: by mail-ee0-f48.google.com with SMTP id t10so2922236eei.35
+        for <multiple recipients>; Sun, 24 Mar 2013 07:37:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=JQrGgt+s+3KAUjdKI7JkCDsNpTWo0rMmkdyiir6vkWg=;
+        b=SB6rP+RGiVSOfeNN4/NBEHhk4AZk0OlwPXZ9nyAPtDNDqqfKDJDY31haoACTn/eomy
+         drH1TDxwlFlg+m4TS1HtyNpr9ssMDWPEfA835nh3EkqM5bp2iyEGTD/qQvdxNPerVLkt
+         fTnGQClxDaxJurXF6NGQMmQyt/+CFF7iDYTrht5iJp+vwNRqKTNzrmmmdYscyJRdPWoN
+         xAceiWEXAdDlBg3dEPCmMjL4pvKi8jLuScUjobcF4J2pAmq4SF68VWAEA2t4tjfcauFG
+         MTMmPbg+zkiKkkcolI16iKfmlCu/2ao7kVvSSMFx4iOtFglr95HvpyVLnsh0HW8nuc5Q
+         vk6g==
+X-Received: by 10.14.194.198 with SMTP id m46mr24313012een.8.1364135864844;
+        Sun, 24 Mar 2013 07:37:44 -0700 (PDT)
+Received: from [192.168.56.2] ([164.132.41.128])
+        by mx.google.com with ESMTPS id a1sm13763261eep.2.2013.03.24.07.37.37
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sun, 24 Mar 2013 07:37:43 -0700 (PDT)
+Message-ID: <514F0FB0.8030109@gmail.com>
+Date:   Sun, 24 Mar 2013 15:37:36 +0100
+From:   Francesco Lavra <francescolavra.fl@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:7.0.1) Gecko/20110929 Thunderbird/7.0.1
+MIME-Version: 1.0
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+CC:     rjw@sisk.pl, linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
+        linux-sh@vger.kernel.org, Liviu.Dudau@arm.com,
+        sparclinux@vger.kernel.org, linaro-kernel@lists.linaro.org,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>, arvind.chauhan@arm.com,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        robin.randhawa@arm.com, Stephen Warren <swarren@wwwdotorg.org>,
+        cpufreq@vger.kernel.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        cbe-oss-dev@lists.ozlabs.org, Fenghua Yu <fenghua.yu@intel.com>,
+        Steve.Bannister@arm.com, Mike Frysinger <vapier@gentoo.org>,
+        linux-pm@vger.kernel.org, Sekhar Nori <nsekhar@ti.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Mikael Starvik <starvik@axis.com>,
+        Kukjin Kim <kgene.kim@samsung.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Ben Dooks <ben-linux@fluff.org>,
         Thomas Renninger <trenn@suse.de>,
-        Borislav Petkov <bp@alien8.de>, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: [PATCH 2/2] cpufreq: Don't check if cpu is online/offline for cpufreq callbacks
-Date:   Sun, 24 Mar 2013 19:18:32 +0530
-Message-Id: <ebbe8178fab5739c7322745b3a7ba05955477761.1364132845.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 1.7.12.rc2.18.g61b472e
-In-Reply-To: <981c23bd4b2a14c346820685e1203ab7054378f8.1364132845.git.viresh.kumar@linaro.org>
+        linux-arm-kernel@lists.infradead.org,
+        Tony Luck <tony.luck@intel.com>,
+        Eric Miao <eric.y.miao@gmail.com>, linux-cris-kernel@axis.com,
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        charles.garcia-tobin@arm.com, linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 1/2] cpufreq: Notify all policy->cpus in cpufreq_notify_transition()
 References: <981c23bd4b2a14c346820685e1203ab7054378f8.1364132845.git.viresh.kumar@linaro.org>
 In-Reply-To: <981c23bd4b2a14c346820685e1203ab7054378f8.1364132845.git.viresh.kumar@linaro.org>
-References: <981c23bd4b2a14c346820685e1203ab7054378f8.1364132845.git.viresh.kumar@linaro.org>
-X-Gm-Message-State: ALoCoQnWnHbPqHGJ1Z5defGuQjbpdXPGWfBRh6lxCUD9lFmLsH0NsAV0n5uhj80bH8x7Vd3zHqhi
-X-archive-position: 35966
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 35967
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: viresh.kumar@linaro.org
+X-original-sender: francescolavra.fl@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,169 +79,175 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-cpufreq layer doesn't call cpufreq driver's callback for any offline cpu and so
-checking that isn't useful.
+On 03/24/2013 02:48 PM, Viresh Kumar wrote:
+> policy->cpus contains all online cpus that have single shared clock line. And
+> their frequencies are always updated together.
+> 
+> Many SMP system's cpufreq drivers take care of this in individual drivers but
+> the best place for this code is in cpufreq core.
+> 
+> This patch modifies cpufreq_notify_transition() to notify frequency change for
+> all cpus in policy->cpus and hence updates all users of this API.
+> 
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Cc: Sekhar Nori <nsekhar@ti.com>
+> Cc: Sascha Hauer <kernel@pengutronix.de>
+> Cc: Eric Miao <eric.y.miao@gmail.com>
+> Cc: Haojian Zhuang <haojian.zhuang@gmail.com>
+> Cc: Ben Dooks <ben-linux@fluff.org>
+> Cc: Kukjin Kim <kgene.kim@samsung.com>
+> Cc: Stephen Warren <swarren@wwwdotorg.org>
+> Cc: Haavard Skinnemoen <hskinnemoen@gmail.com>
+> Cc: Hans-Christian Egtvedt <egtvedt@samfundet.no>
+> Cc: Mike Frysinger <vapier@gentoo.org>
+> Cc: Mikael Starvik <starvik@axis.com>
+> Cc: Jesper Nilsson <jesper.nilsson@axis.com>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Fenghua Yu <fenghua.yu@intel.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Paul Mundt <lethal@linux-sh.org>
+> Cc: David S. Miller <davem@davemloft.net>
+> Cc: Thomas Renninger <trenn@suse.de>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Guan Xuetao <gxt@mprc.pku.edu.cn>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-cris-kernel@axis.com
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: cbe-oss-dev@lists.ozlabs.org
+> Cc: linux-mips@linux-mips.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  arch/arm/mach-davinci/cpufreq.c              |  5 +-
+>  arch/arm/mach-imx/cpufreq.c                  |  5 +-
+>  arch/arm/mach-integrator/cpu.c               |  6 +--
+>  arch/arm/mach-pxa/cpufreq-pxa2xx.c           |  5 +-
+>  arch/arm/mach-pxa/cpufreq-pxa3xx.c           |  5 +-
+>  arch/arm/mach-s3c24xx/cpufreq.c              |  8 +--
+>  arch/arm/mach-sa1100/cpu-sa1100.c            |  5 +-
+>  arch/arm/mach-sa1100/cpu-sa1110.c            |  5 +-
+>  arch/arm/mach-tegra/cpu-tegra.c              |  6 +--
+>  arch/avr32/mach-at32ap/cpufreq.c             |  5 +-
+>  arch/blackfin/mach-common/cpufreq.c          | 79 ++++++++++++----------------
+>  arch/cris/arch-v32/mach-a3/cpufreq.c         | 20 +++----
+>  arch/cris/arch-v32/mach-fs/cpufreq.c         | 17 +++---
+>  arch/ia64/kernel/cpufreq/acpi-cpufreq.c      | 22 ++++----
+>  arch/mips/kernel/cpufreq/loongson2_cpufreq.c |  5 +-
+>  arch/powerpc/platforms/cell/cbe_cpufreq.c    |  5 +-
+>  arch/powerpc/platforms/pasemi/cpufreq.c      |  5 +-
+>  arch/powerpc/platforms/powermac/cpufreq_32.c | 14 ++---
+>  arch/powerpc/platforms/powermac/cpufreq_64.c |  5 +-
+>  arch/sh/kernel/cpufreq.c                     |  5 +-
+>  arch/sparc/kernel/us2e_cpufreq.c             | 13 ++---
+>  arch/sparc/kernel/us3_cpufreq.c              | 13 ++---
+>  arch/unicore32/kernel/cpu-ucv2.c             |  5 +-
+>  drivers/cpufreq/acpi-cpufreq.c               | 11 +---
+>  drivers/cpufreq/cpufreq-cpu0.c               | 12 ++---
+>  drivers/cpufreq/cpufreq-nforce2.c            |  5 +-
+>  drivers/cpufreq/cpufreq.c                    | 45 +++++++++-------
+>  drivers/cpufreq/dbx500-cpufreq.c             |  6 +--
+>  drivers/cpufreq/e_powersaver.c               | 11 ++--
+>  drivers/cpufreq/elanfreq.c                   | 10 ++--
+>  drivers/cpufreq/exynos-cpufreq.c             |  7 +--
+>  drivers/cpufreq/gx-suspmod.c                 | 11 ++--
+>  drivers/cpufreq/imx6q-cpufreq.c              | 12 ++---
+>  drivers/cpufreq/kirkwood-cpufreq.c           | 10 ++--
+>  drivers/cpufreq/longhaul.c                   | 18 ++++---
+>  drivers/cpufreq/maple-cpufreq.c              |  5 +-
+>  drivers/cpufreq/omap-cpufreq.c               | 11 +---
+>  drivers/cpufreq/p4-clockmod.c                | 10 +---
+>  drivers/cpufreq/pcc-cpufreq.c                |  5 +-
+>  drivers/cpufreq/powernow-k6.c                | 12 ++---
+>  drivers/cpufreq/powernow-k7.c                | 10 ++--
+>  drivers/cpufreq/powernow-k8.c                | 16 +++---
+>  drivers/cpufreq/s3c2416-cpufreq.c            |  5 +-
+>  drivers/cpufreq/s3c64xx-cpufreq.c            |  7 ++-
+>  drivers/cpufreq/s5pv210-cpufreq.c            |  5 +-
+>  drivers/cpufreq/sc520_freq.c                 | 10 ++--
+>  drivers/cpufreq/spear-cpufreq.c              |  7 +--
+>  drivers/cpufreq/speedstep-centrino.c         | 24 ++-------
+>  drivers/cpufreq/speedstep-ich.c              | 12 +----
+>  drivers/cpufreq/speedstep-smi.c              |  5 +-
+>  include/linux/cpufreq.h                      |  4 +-
+>  51 files changed, 232 insertions(+), 337 deletions(-)
+[...]
+> diff --git a/arch/blackfin/mach-common/cpufreq.c b/arch/blackfin/mach-common/cpufreq.c
+> index d88bd31..4e67368 100644
+> --- a/arch/blackfin/mach-common/cpufreq.c
+> +++ b/arch/blackfin/mach-common/cpufreq.c
+> @@ -127,13 +127,13 @@ unsigned long cpu_set_cclk(int cpu, unsigned long new)
+>  }
+>  #endif
+>  
+> -static int bfin_target(struct cpufreq_policy *poli,
+> +static int bfin_target(struct cpufreq_policy *policy,
+>  			unsigned int target_freq, unsigned int relation)
+>  {
+>  #ifndef CONFIG_BF60x
+>  	unsigned int plldiv;
+>  #endif
+> -	unsigned int index, cpu;
+> +	unsigned int index;
+>  	unsigned long cclk_hz;
+>  	struct cpufreq_freqs freqs;
+>  	static unsigned long lpj_ref;
+> @@ -144,59 +144,48 @@ static int bfin_target(struct cpufreq_policy *poli,
+>  	cycles_t cycles;
+>  #endif
+>  
+> -	for_each_online_cpu(cpu) {
+> -		struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+> +	if (cpufreq_frequency_table_target(policy, bfin_freq_table, target_freq,
+> +				relation, &index))
+> +		return -EINVAL;
+>  
+> -		if (!policy)
+> -			continue;
+> +	cclk_hz = bfin_freq_table[index].frequency;
+>  
+> -		if (cpufreq_frequency_table_target(policy, bfin_freq_table,
+> -				 target_freq, relation, &index))
+> -			return -EINVAL;
+> +	freqs.old = bfin_getfreq_khz(0);
+> +	freqs.new = cclk_hz;
+>  
+> -		cclk_hz = bfin_freq_table[index].frequency;
+> +	pr_debug("cpufreq: changing cclk to %lu; target = %u, oldfreq = %u\n",
+> +			cclk_hz, target_freq, freqs.old);
+>  
+> -		freqs.old = bfin_getfreq_khz(0);
+> -		freqs.new = cclk_hz;
+> -		freqs.cpu = cpu;
+> -
+> -		pr_debug("cpufreq: changing cclk to %lu; target = %u, oldfreq = %u\n",
+> -			 cclk_hz, target_freq, freqs.old);
+> -
+> -		cpufreq_notify_transition(&freqs, CPUFREQ_PRECHANGE);
+> -		if (cpu == CPUFREQ_CPU) {
+> +	cpufreq_notify_transition(policy, &freqs, CPUFREQ_PRECHANGE);
+>  #ifndef CONFIG_BF60x
+> -			plldiv = (bfin_read_PLL_DIV() & SSEL) |
+> -						dpm_state_table[index].csel;
+> -			bfin_write_PLL_DIV(plldiv);
+> +	plldiv = (bfin_read_PLL_DIV() & SSEL) | dpm_state_table[index].csel;
+> +	bfin_write_PLL_DIV(plldiv);
+>  #else
+> -			ret = cpu_set_cclk(cpu, freqs.new * 1000);
+> -			if (ret != 0) {
+> -				WARN_ONCE(ret, "cpufreq set freq failed %d\n", ret);
+> -				break;
+> -			}
+> +	ret = cpu_set_cclk(policy->cpu, freqs.new * 1000);
+> +	if (ret != 0) {
+> +		WARN_ONCE(ret, "cpufreq set freq failed %d\n", ret);
+> +		break;
 
-Lets get rid of it.
+This doesn't even compile, as the break statement isn't in the
+for_each_online_cpu() loop anymore.
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Mundt <lethal@linux-sh.org>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Thomas Renninger <trenn@suse.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: linux-mips@linux-mips.org
-Cc: linux-sh@vger.kernel.org
-Cc: sparclinux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
- arch/mips/kernel/cpufreq/loongson2_cpufreq.c | 6 ------
- arch/sh/kernel/cpufreq.c                     | 6 ------
- arch/sparc/kernel/us2e_cpufreq.c             | 6 ------
- arch/sparc/kernel/us3_cpufreq.c              | 6 ------
- drivers/cpufreq/p4-clockmod.c                | 3 +--
- drivers/cpufreq/powernow-k8.c                | 3 ---
- drivers/cpufreq/speedstep-centrino.c         | 4 ----
- 7 files changed, 1 insertion(+), 33 deletions(-)
-
-diff --git a/arch/mips/kernel/cpufreq/loongson2_cpufreq.c b/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
-index bafda70..8488957 100644
---- a/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
-+++ b/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
-@@ -61,9 +61,6 @@ static int loongson2_cpufreq_target(struct cpufreq_policy *policy,
- 	struct cpufreq_freqs freqs;
- 	unsigned int freq;
- 
--	if (!cpu_online(cpu))
--		return -ENODEV;
--
- 	cpus_allowed = current->cpus_allowed;
- 	set_cpus_allowed_ptr(current, cpumask_of(cpu));
- 
-@@ -109,9 +106,6 @@ static int loongson2_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	unsigned long rate;
- 	int ret;
- 
--	if (!cpu_online(policy->cpu))
--		return -ENODEV;
--
- 	cpuclk = clk_get(NULL, "cpu_clk");
- 	if (IS_ERR(cpuclk)) {
- 		printk(KERN_ERR "cpufreq: couldn't get CPU clk\n");
-diff --git a/arch/sh/kernel/cpufreq.c b/arch/sh/kernel/cpufreq.c
-index 2c7bd94..0fdf64b 100644
---- a/arch/sh/kernel/cpufreq.c
-+++ b/arch/sh/kernel/cpufreq.c
-@@ -51,9 +51,6 @@ static int sh_cpufreq_target(struct cpufreq_policy *policy,
- 	struct device *dev;
- 	long freq;
- 
--	if (!cpu_online(cpu))
--		return -ENODEV;
--
- 	cpus_allowed = current->cpus_allowed;
- 	set_cpus_allowed_ptr(current, cpumask_of(cpu));
- 
-@@ -111,9 +108,6 @@ static int sh_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	struct cpufreq_frequency_table *freq_table;
- 	struct device *dev;
- 
--	if (!cpu_online(cpu))
--		return -ENODEV;
--
- 	dev = get_cpu_device(cpu);
- 
- 	cpuclk = clk_get(dev, "cpu_clk");
-diff --git a/arch/sparc/kernel/us2e_cpufreq.c b/arch/sparc/kernel/us2e_cpufreq.c
-index abe963d..306ae46 100644
---- a/arch/sparc/kernel/us2e_cpufreq.c
-+++ b/arch/sparc/kernel/us2e_cpufreq.c
-@@ -234,9 +234,6 @@ static unsigned int us2e_freq_get(unsigned int cpu)
- 	cpumask_t cpus_allowed;
- 	unsigned long clock_tick, estar;
- 
--	if (!cpu_online(cpu))
--		return 0;
--
- 	cpumask_copy(&cpus_allowed, tsk_cpus_allowed(current));
- 	set_cpus_allowed_ptr(current, cpumask_of(cpu));
- 
-@@ -257,9 +254,6 @@ static void us2e_set_cpu_divider_index(struct cpufreq_policy *policy,
- 	cpumask_t cpus_allowed;
- 	struct cpufreq_freqs freqs;
- 
--	if (!cpu_online(cpu))
--		return;
--
- 	cpumask_copy(&cpus_allowed, tsk_cpus_allowed(current));
- 	set_cpus_allowed_ptr(current, cpumask_of(cpu));
- 
-diff --git a/arch/sparc/kernel/us3_cpufreq.c b/arch/sparc/kernel/us3_cpufreq.c
-index 7ceb9c8..c71ee14 100644
---- a/arch/sparc/kernel/us3_cpufreq.c
-+++ b/arch/sparc/kernel/us3_cpufreq.c
-@@ -82,9 +82,6 @@ static unsigned int us3_freq_get(unsigned int cpu)
- 	unsigned long reg;
- 	unsigned int ret;
- 
--	if (!cpu_online(cpu))
--		return 0;
--
- 	cpumask_copy(&cpus_allowed, tsk_cpus_allowed(current));
- 	set_cpus_allowed_ptr(current, cpumask_of(cpu));
- 
-@@ -104,9 +101,6 @@ static void us3_set_cpu_divider_index(struct cpufreq_policy *policy,
- 	cpumask_t cpus_allowed;
- 	struct cpufreq_freqs freqs;
- 
--	if (!cpu_online(cpu))
--		return;
--
- 	cpumask_copy(&cpus_allowed, tsk_cpus_allowed(current));
- 	set_cpus_allowed_ptr(current, cpumask_of(cpu));
- 
-diff --git a/drivers/cpufreq/p4-clockmod.c b/drivers/cpufreq/p4-clockmod.c
-index 4b2e773..421ef37 100644
---- a/drivers/cpufreq/p4-clockmod.c
-+++ b/drivers/cpufreq/p4-clockmod.c
-@@ -58,8 +58,7 @@ static int cpufreq_p4_setdc(unsigned int cpu, unsigned int newstate)
- {
- 	u32 l, h;
- 
--	if (!cpu_online(cpu) ||
--	    (newstate > DC_DISABLE) || (newstate == DC_RESV))
-+	if ((newstate > DC_DISABLE) || (newstate == DC_RESV))
- 		return -EINVAL;
- 
- 	rdmsr_on_cpu(cpu, MSR_IA32_THERM_STATUS, &l, &h);
-diff --git a/drivers/cpufreq/powernow-k8.c b/drivers/cpufreq/powernow-k8.c
-index 52137a3..b828efe 100644
---- a/drivers/cpufreq/powernow-k8.c
-+++ b/drivers/cpufreq/powernow-k8.c
-@@ -1102,9 +1102,6 @@ static int __cpuinit powernowk8_cpu_init(struct cpufreq_policy *pol)
- 	struct init_on_cpu init_on_cpu;
- 	int rc;
- 
--	if (!cpu_online(pol->cpu))
--		return -ENODEV;
--
- 	smp_call_function_single(pol->cpu, check_supported_cpu, &rc, 1);
- 	if (rc)
- 		return -ENODEV;
-diff --git a/drivers/cpufreq/speedstep-centrino.c b/drivers/cpufreq/speedstep-centrino.c
-index 3dbbcc3..618e6f4 100644
---- a/drivers/cpufreq/speedstep-centrino.c
-+++ b/drivers/cpufreq/speedstep-centrino.c
-@@ -481,10 +481,6 @@ static int centrino_target (struct cpufreq_policy *policy,
- 	for_each_cpu(j, policy->cpus) {
- 		int good_cpu;
- 
--		/* cpufreq holds the hotplug lock, so we are safe here */
--		if (!cpu_online(j))
--			continue;
--
- 		/*
- 		 * Support for SMP systems.
- 		 * Make sure we are running on CPU that wants to change freq
--- 
-1.7.12.rc2.18.g61b472e
+--
+Francesco

@@ -1,66 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Mar 2013 17:50:38 +0100 (CET)
-Received: from mail-ob0-f173.google.com ([209.85.214.173]:62508 "EHLO
-        mail-ob0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6826580Ab3CYQuhT0jQ0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Mar 2013 17:50:37 +0100
-Received: by mail-ob0-f173.google.com with SMTP id dn14so6270684obc.18
-        for <linux-mips@linux-mips.org>; Mon, 25 Mar 2013 09:50:30 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Mar 2013 17:55:55 +0100 (CET)
+Received: from mail-pa0-f44.google.com ([209.85.220.44]:38157 "EHLO
+        mail-pa0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6828015Ab3CYQzxh80jB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Mar 2013 17:55:53 +0100
+Received: by mail-pa0-f44.google.com with SMTP id bi5so1131882pad.17
+        for <linux-mips@linux-mips.org>; Mon, 25 Mar 2013 09:55:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
-        h=mime-version:x-received:in-reply-to:references:date:message-id
-         :subject:from:to:cc:content-type:x-gm-message-state;
-        bh=EHWEI8jXjs6lNzCEIMSxUE8rQgHkiV0ZyaVCKZKOvSA=;
-        b=ks1pMWPmZkk9YP2zyif3jZShlQ945r61pHrpq8KmfRwsiUvyrfDvOMN9WIlSVWB3fg
-         5QddlC1sSIAuMIlhpK6QaDGHIPSOmut3ERsTHCdUyf37kQiCW1bb1sMWtshy6zY+9b8e
-         N1P9Rc5wdCo9d0V9rkPH1nV7gBXXdrfzTS6D+qPHy3rWlQTEdMH4NgMVZbVtfwhLcWE0
-         Y7UvGaQ7h3Fx0Sk4Lpby4xaJB2VVogjgwPN1x4CBk5RxGe88cpIruh+95yc0tGt1xU2J
-         VN7nepOkwdicLtETIG7oBVoU2C2SFYD40hkw7HPo/4yBpjLx8ilVRxvBGq+eYZ//qpit
-         xDLg==
-MIME-Version: 1.0
-X-Received: by 10.60.14.226 with SMTP id s2mr11829600oec.124.1364230230712;
- Mon, 25 Mar 2013 09:50:30 -0700 (PDT)
-Received: by 10.182.52.198 with HTTP; Mon, 25 Mar 2013 09:50:30 -0700 (PDT)
-In-Reply-To: <51507FEA.8040306@wwwdotorg.org>
-References: <981c23bd4b2a14c346820685e1203ab7054378f8.1364132845.git.viresh.kumar@linaro.org>
-        <CAKohpo=JuyVmSRFs1wpqvvmouRpL+d8ms-o4UC74OJqAgFv7Vw@mail.gmail.com>
-        <51507FEA.8040306@wwwdotorg.org>
-Date:   Mon, 25 Mar 2013 22:20:30 +0530
-Message-ID: <CAKohpokSmEYbW0YRasAg3MV16B3Bo8uYDqc0jLJhgR8VfbSVUg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] cpufreq: Notify all policy->cpus in cpufreq_notify_transition()
+        h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
+         :references:in-reply-to:references:x-gm-message-state;
+        bh=+gpr6QCq5S2/BnA61NmTXpFyMBRllOQ18StykcygIUk=;
+        b=mWHev40ejdxIAoSheV+L130OnrfXXkKJqr4LGg/OI6i8scCw7SHzE1Rt0OQ1AdcZDU
+         dM/8ACeWTyOG+fbdTXniNx1ciLd5n0LMYPB/Qt2g7O7utfsnhbOt97QV2TWbhkPJyW62
+         gpMPfdgs0xzrNN2bAwl4h1Hf11sem9nbRtmWbn6HcygSJ5k7ww4lyMI5SwMM02qS89ts
+         2aw8XQNainLmR0l2DiG7hLxjSd1ZAJsmtIvkRMt9Zl8OCielmmZMQB9dgOJ0McTGoH18
+         ERUOkacH1MdsE+zeMP00CmDWNRCbyqRoNQV6ilujDWrWlszbacoIyDykQ+/nh3qKexnX
+         hl7g==
+X-Received: by 10.68.189.163 with SMTP id gj3mr19070204pbc.4.1364230547016;
+        Mon, 25 Mar 2013 09:55:47 -0700 (PDT)
+Received: from localhost ([122.167.78.240])
+        by mx.google.com with ESMTPS id xl10sm15498996pac.15.2013.03.25.09.55.41
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Mon, 25 Mar 2013 09:55:46 -0700 (PDT)
 From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Stephen Warren <swarren@wwwdotorg.org>
-Cc:     rjw@sisk.pl, cpufreq@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, arvind.chauhan@arm.com,
-        robin.randhawa@arm.com, Steve.Bannister@arm.com,
-        Liviu.Dudau@arm.com, charles.garcia-tobin@arm.com,
-        linaro-kernel@lists.linaro.org, Sekhar Nori <nsekhar@ti.com>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Ben Dooks <ben-linux@fluff.org>,
-        Kukjin Kim <kgene.kim@samsung.com>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-        Mike Frysinger <vapier@gentoo.org>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Renninger <trenn@suse.de>,
-        Borislav Petkov <bp@alien8.de>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        linux-arm-kernel@lists.infradead.org, linux-cris-kernel@axis.com,
-        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        cbe-oss-dev@lists.ozlabs.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Content-Type: text/plain; charset=ISO-8859-1
-X-Gm-Message-State: ALoCoQlF09yUqJTuu3Q6+dPEBM6+PvDBQA5WTTG2lWvJ2ipndVzfTNxqax7lXCdHeQogK/OZeAmT
-X-archive-position: 35977
+To:     rjw@sisk.pl
+Cc:     arvind.chauhan@arm.com, robin.randhawa@arm.com,
+        Steve.Bannister@arm.com, Liviu.Dudau@arm.com,
+        charles.garcia-tobin@arm.com, cpufreq@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linaro-kernel@lists.linaro.org, arnd.bergmann@linaro.org,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 5/9] mips: cpufreq:  move cpufreq driver to drivers/cpufreq
+Date:   Mon, 25 Mar 2013 22:24:41 +0530
+Message-Id: <199e0d0a282290544ff562b904a0028a104aad45.1364229828.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 1.7.12.rc2.18.g61b472e
+In-Reply-To: <cover.1364229828.git.viresh.kumar@linaro.org>
+References: <cover.1364229828.git.viresh.kumar@linaro.org>
+In-Reply-To: <cover.1364229828.git.viresh.kumar@linaro.org>
+References: <cover.1364229828.git.viresh.kumar@linaro.org>
+X-Gm-Message-State: ALoCoQkaOtBHS9Fzv9BFfTPHQBGJsfgBH16o15z5TtVzFwDXsDmmmKy5+szodyE9OCfKxJQGZvrn
+X-archive-position: 35978
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,24 +58,156 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 25 March 2013 22:18, Stephen Warren <swarren@wwwdotorg.org> wrote:
-> On 03/24/2013 11:19 PM, Viresh Kumar wrote:
->> On 24 March 2013 19:18, Viresh Kumar <viresh.kumar@linaro.org> wrote:
->>> policy->cpus contains all online cpus that have single shared clock line. And
->>> their frequencies are always updated together.
->>>
->>> Many SMP system's cpufreq drivers take care of this in individual drivers but
->>> the best place for this code is in cpufreq core.
->>>
->>> This patch modifies cpufreq_notify_transition() to notify frequency change for
->>> all cpus in policy->cpus and hence updates all users of this API.
->>
->> Another fixup for tegra:
->
-> This series including this patch (although I had a devil of a time
-> applying this fixup since all the TABs got converted to spaces when it
-> was pasted into email)
+This patch moves cpufreq driver of MIPS architecture to drivers/cpufreq.
 
-So sorry for that, I keep pushing them here:
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ arch/mips/Kconfig                                  |  9 ++++-
+ arch/mips/kernel/Makefile                          |  2 --
+ arch/mips/kernel/cpufreq/Kconfig                   | 41 ----------------------
+ arch/mips/kernel/cpufreq/Makefile                  |  5 ---
+ drivers/cpufreq/Kconfig                            | 18 ++++++++++
+ drivers/cpufreq/Makefile                           |  1 +
+ .../kernel => drivers}/cpufreq/loongson2_cpufreq.c |  0
+ 7 files changed, 27 insertions(+), 49 deletions(-)
+ delete mode 100644 arch/mips/kernel/cpufreq/Kconfig
+ delete mode 100644 arch/mips/kernel/cpufreq/Makefile
+ rename {arch/mips/kernel => drivers}/cpufreq/loongson2_cpufreq.c (100%)
 
-http://git.linaro.org/gitweb?p=people/vireshk/linux.git;a=shortlog;h=refs/heads/cpufreq-fix-notify
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index cd2e21f..22e8417 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2539,7 +2539,14 @@ source "kernel/power/Kconfig"
+ 
+ endmenu
+ 
+-source "arch/mips/kernel/cpufreq/Kconfig"
++config MIPS_EXTERNAL_TIMER
++	bool
++
++if CPU_SUPPORTS_CPUFREQ && MIPS_EXTERNAL_TIMER
++menu "CPU Power Management"
++source "drivers/cpufreq/Kconfig"
++endmenu
++endif
+ 
+ source "net/Kconfig"
+ 
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index f81d98f..c69ca65 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -92,8 +92,6 @@ CFLAGS_cpu-bugs64.o	= $(shell if $(CC) $(KBUILD_CFLAGS) -Wa,-mdaddi -c -o /dev/n
+ 
+ obj-$(CONFIG_HAVE_STD_PC_SERIAL_PORT)	+= 8250-platform.o
+ 
+-obj-$(CONFIG_MIPS_CPUFREQ)	+= cpufreq/
+-
+ obj-$(CONFIG_PERF_EVENTS)	+= perf_event.o
+ obj-$(CONFIG_HW_PERF_EVENTS)	+= perf_event_mipsxx.o
+ 
+diff --git a/arch/mips/kernel/cpufreq/Kconfig b/arch/mips/kernel/cpufreq/Kconfig
+deleted file mode 100644
+index 58c601e..0000000
+--- a/arch/mips/kernel/cpufreq/Kconfig
++++ /dev/null
+@@ -1,41 +0,0 @@
+-#
+-# CPU Frequency scaling
+-#
+-
+-config MIPS_EXTERNAL_TIMER
+-	bool
+-
+-config MIPS_CPUFREQ
+-	bool
+-	default y
+-	depends on CPU_SUPPORTS_CPUFREQ && MIPS_EXTERNAL_TIMER
+-
+-if MIPS_CPUFREQ
+-
+-menu "CPU Frequency scaling"
+-
+-source "drivers/cpufreq/Kconfig"
+-
+-if CPU_FREQ
+-
+-comment "CPUFreq processor drivers"
+-
+-config LOONGSON2_CPUFREQ
+-	tristate "Loongson2 CPUFreq Driver"
+-	select CPU_FREQ_TABLE
+-	depends on MIPS_CPUFREQ
+-	help
+-	  This option adds a CPUFreq driver for loongson processors which
+-	  support software configurable cpu frequency.
+-
+-	  Loongson2F and it's successors support this feature.
+-
+-	  For details, take a look at <file:Documentation/cpu-freq/>.
+-
+-	  If in doubt, say N.
+-
+-endif	# CPU_FREQ
+-
+-endmenu
+-
+-endif	# MIPS_CPUFREQ
+diff --git a/arch/mips/kernel/cpufreq/Makefile b/arch/mips/kernel/cpufreq/Makefile
+deleted file mode 100644
+index 05a5715..0000000
+--- a/arch/mips/kernel/cpufreq/Makefile
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#
+-# Makefile for the Linux/MIPS cpufreq.
+-#
+-
+-obj-$(CONFIG_LOONGSON2_CPUFREQ) += loongson2_cpufreq.o
+diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
+index a2f1600..5030df5 100644
+--- a/drivers/cpufreq/Kconfig
++++ b/drivers/cpufreq/Kconfig
+@@ -235,6 +235,24 @@ config IA64_ACPI_CPUFREQ
+ 
+ endmenu
+ 
++menu "MIPS CPUFreq processor drivers"
++depends on MIPS
++
++config LOONGSON2_CPUFREQ
++	tristate "Loongson2 CPUFreq Driver"
++	select CPU_FREQ_TABLE
++	help
++	  This option adds a CPUFreq driver for loongson processors which
++	  support software configurable cpu frequency.
++
++	  Loongson2F and it's successors support this feature.
++
++	  For details, take a look at <file:Documentation/cpu-freq/>.
++
++	  If in doubt, say N.
++
++endmenu
++
+ menu "PowerPC CPU frequency scaling drivers"
+ depends on PPC32 || PPC64
+ source "drivers/cpufreq/Kconfig.powerpc"
+diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
+index 312141d..a245559 100644
+--- a/drivers/cpufreq/Makefile
++++ b/drivers/cpufreq/Makefile
+@@ -83,3 +83,4 @@ obj-$(CONFIG_BLACKFIN)			+= blackfin-cpufreq.o
+ obj-$(CONFIG_CRIS_MACH_ARTPEC3)		+= cris-artpec3-cpufreq.o
+ obj-$(CONFIG_ETRAXFS)			+= cris-etraxfs-cpufreq.o
+ obj-$(CONFIG_IA64_ACPI_CPUFREQ)		+= ia64-acpi-cpufreq.o
++obj-$(CONFIG_LOONGSON2_CPUFREQ)		+= loongson2_cpufreq.o
+diff --git a/arch/mips/kernel/cpufreq/loongson2_cpufreq.c b/drivers/cpufreq/loongson2_cpufreq.c
+similarity index 100%
+rename from arch/mips/kernel/cpufreq/loongson2_cpufreq.c
+rename to drivers/cpufreq/loongson2_cpufreq.c
+-- 
+1.7.12.rc2.18.g61b472e

@@ -1,58 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Mar 2013 17:01:12 +0100 (CET)
-Received: from mail-pa0-f53.google.com ([209.85.220.53]:53234 "EHLO
-        mail-pa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827437Ab3CZQBJUckR4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Mar 2013 17:01:09 +0100
-Received: by mail-pa0-f53.google.com with SMTP id bh4so1451779pad.26
-        for <multiple recipients>; Tue, 26 Mar 2013 09:01:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
-         :references;
-        bh=dKAFlfSs3P77tD621RWR9gETyAM5a4H3/5Yo1/3KwQ8=;
-        b=oro4TYpVCG3F06vrLLgWQv/GeCCZs99VP3BseH+MurMOh9hf+BXw4hMUC7yXMwG18i
-         Gzue9pKfEj3+Vb+5JKvVJ5tca/9EopU2lMi/+Uqtr8Uz/u6qG3Nh5hUPBkAc7c2s8Uel
-         mRxmDZF/vO0BQfN0SrbDoqdZi2id+t4pnrPP9bPZKfehX+NoSn7eIRv8sRsM8Isd3xlx
-         nnb8YjUxGxIgtTkLVxk7cIf2DatQigZ3sH0Rm6znl+jXMTA9BmV4pW69DpWhX/vRhroF
-         qBdDkmsuea0fq4TrQoi0iljFv2+1szJJMt0pV9OgvxHwDImUHyQihTUSHO1Cl02b9Lea
-         fIWw==
-X-Received: by 10.66.139.133 with SMTP id qy5mr24746056pab.152.1364313659852;
-        Tue, 26 Mar 2013 09:00:59 -0700 (PDT)
-Received: from localhost.localdomain ([114.246.172.130])
-        by mx.google.com with ESMTPS id bs1sm7150356pbc.8.2013.03.26.09.00.47
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 26 Mar 2013 09:00:59 -0700 (PDT)
-From:   Jiang Liu <liuj97@gmail.com>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        David Rientjes <rientjes@google.com>
-Cc:     Jiang Liu <jiang.liu@huawei.com>,
-        Wen Congyang <wency@cn.fujitsu.com>,
-        Mel Gorman <mgorman@suse.de>, Minchan Kim <minchan@kernel.org>,
-        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
-        Michal Hocko <mhocko@suse.cz>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        David Howells <dhowells@redhat.com>,
-        Mark Salter <msalter@redhat.com>,
-        Jianguo Wu <wujianguo@huawei.com>, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Arnd Bergmann <arnd@arndb.de>, Jiri Kosina <jkosina@suse.cz>,
-        John Crispin <blogic@openwrt.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-mips@linux-mips.org
-Subject: [PATCH v3, part4 24/39] mm/MIPS: prepare for removing num_physpages and simplify mem_init()
-Date:   Tue, 26 Mar 2013 23:54:43 +0800
-Message-Id: <1364313298-17336-25-git-send-email-jiang.liu@huawei.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1364313298-17336-1-git-send-email-jiang.liu@huawei.com>
-References: <1364313298-17336-1-git-send-email-jiang.liu@huawei.com>
-X-archive-position: 35980
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Mar 2013 10:26:47 +0100 (CET)
+Received: from mga01.intel.com ([192.55.52.88]:44731 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817032Ab3C0J0pNzQjC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 27 Mar 2013 10:26:45 +0100
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP; 27 Mar 2013 02:26:36 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.84,917,1355126400"; 
+   d="scan'208";a="309071538"
+Received: from unknown (HELO wfg-t420.sh.intel.com) ([10.255.20.128])
+  by fmsmga001.fm.intel.com with ESMTP; 27 Mar 2013 02:26:33 -0700
+Received: from wfg by wfg-t420.sh.intel.com with local (Exim 4.77)
+        (envelope-from <fengguang.wu@intel.com>)
+        id 1UKmcp-0003t2-Sj; Wed, 27 Mar 2013 17:26:31 +0800
+Date:   Wed, 27 Mar 2013 17:26:31 +0800
+From:   Fengguang Wu <fengguang.wu@intel.com>
+To:     Andrea Arcangeli <aarcange@redhat.com>
+Cc:     Johannes Weiner <hannes@cmpxchg.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: mm/huge_memory.c:221:7: error: incompatible types when assigning to
+ type 'pmd_t' from type 'int'
+Message-ID: <20130327092631.GB13351@localhost>
+References: <5152b651.JKLmvRYh1bEEyapp%fengguang.wu@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5152b651.JKLmvRYh1bEEyapp%fengguang.wu@intel.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 35981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: liuj97@gmail.com
+X-original-sender: fengguang.wu@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,182 +46,270 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Prepare for removing num_physpages and simplify mem_init().
+Hi Andrea,
 
-Signed-off-by: Jiang Liu <jiang.liu@huawei.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: David Daney <david.daney@cavium.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Jiri Kosina <jkosina@suse.cz>
-Cc: John Crispin <blogic@openwrt.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
+FYI, kernel build failed on
+
+tree:   git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux master
+head:   a12183c62717ac4579319189a00f5883a18dff08
+commit: 71e3aac0724ffe8918992d76acfe3aad7d8724a5 thp: transparent hugepage core
+date:   2 years, 2 months ago
+config: make ARCH=mips allmodconfig
+
+All error/warnings:
+
+   mm/huge_memory.c:19:15: error: expected identifier or '(' before numeric constant
+   mm/huge_memory.c: In function 'double_flag_show':
+   mm/huge_memory.c:28:24: error: lvalue required as unary '&' operand
+   mm/huge_memory.c:29:3: error: lvalue required as unary '&' operand
+   mm/huge_memory.c:31:32: error: lvalue required as unary '&' operand
+   mm/huge_memory.c: In function 'double_flag_store':
+   mm/huge_memory.c:44:20: error: lvalue required as unary '&' operand
+   mm/huge_memory.c:45:23: error: lvalue required as unary '&' operand
+   mm/huge_memory.c:48:22: error: lvalue required as unary '&' operand
+   mm/huge_memory.c:49:21: error: lvalue required as unary '&' operand
+   mm/huge_memory.c:52:22: error: lvalue required as unary '&' operand
+   mm/huge_memory.c:53:23: error: lvalue required as unary '&' operand
+   mm/huge_memory.c: In function 'single_flag_show':
+   mm/huge_memory.c:82:21: error: lvalue required as unary '&' operand
+   mm/huge_memory.c: In function 'single_flag_store':
+   mm/huge_memory.c:94:17: error: lvalue required as unary '&' operand
+   mm/huge_memory.c:97:19: error: lvalue required as unary '&' operand
+   mm/huge_memory.c: In function 'setup_transparent_hugepage':
+   mm/huge_memory.c:180:4: error: lvalue required as unary '&' operand
+   mm/huge_memory.c:182:6: error: lvalue required as unary '&' operand
+   mm/huge_memory.c:186:6: error: lvalue required as unary '&' operand
+   mm/huge_memory.c:188:4: error: lvalue required as unary '&' operand
+   mm/huge_memory.c:192:6: error: lvalue required as unary '&' operand
+   mm/huge_memory.c:194:6: error: lvalue required as unary '&' operand
+   mm/huge_memory.c: In function 'prepare_pmd_huge_pte':
+   mm/huge_memory.c:211:9: error: 'struct mm_struct' has no member named 'pmd_huge_pte'
+   mm/huge_memory.c:214:30: error: 'struct mm_struct' has no member named 'pmd_huge_pte'
+   mm/huge_memory.c:215:4: error: 'struct mm_struct' has no member named 'pmd_huge_pte'
+   mm/huge_memory.c: In function 'maybe_pmd_mkwrite':
+   mm/huge_memory.c:221:3: error: implicit declaration of function 'pmd_mkwrite' [-Werror=implicit-function-declaration]
+>> mm/huge_memory.c:221:7: error: incompatible types when assigning to type 'pmd_t' from type 'int'
+   mm/huge_memory.c: In function '__do_huge_pmd_anonymous_page':
+   mm/huge_memory.c:240:2: error: implicit declaration of function 'clear_huge_page' [-Werror=implicit-function-declaration]
+   mm/huge_memory.c:240:31: error: 'HPAGE_PMD_NR' undeclared (first use in this function)
+   mm/huge_memory.c:240:31: note: each undeclared identifier is reported only once for each function it appears in
+   mm/huge_memory.c:250:3: error: implicit declaration of function 'mk_pmd' [-Werror=implicit-function-declaration]
+>> mm/huge_memory.c:250:9: error: incompatible types when assigning to type 'pmd_t' from type 'int'
+   mm/huge_memory.c:251:3: error: implicit declaration of function 'pmd_mkdirty' [-Werror=implicit-function-declaration]
+   mm/huge_memory.c:251:3: error: incompatible type for argument 1 of 'maybe_pmd_mkwrite'
+   mm/huge_memory.c:218:21: note: expected 'pmd_t' but argument is of type 'int'
+   mm/huge_memory.c:252:3: error: implicit declaration of function 'pmd_mkhuge' [-Werror=implicit-function-declaration]
+>> mm/huge_memory.c:252:9: error: incompatible types when assigning to type 'pmd_t' from type 'int'
+   mm/huge_memory.c:260:3: error: implicit declaration of function 'set_pmd_at' [-Werror=implicit-function-declaration]
+   mm/huge_memory.c: In function 'alloc_hugepage':
+   mm/huge_memory.c:271:9: error: 'HPAGE_PMD_ORDER' undeclared (first use in this function)
+   mm/huge_memory.c: In function 'do_huge_pmd_anonymous_page':
+   mm/huge_memory.c:286:3: error: implicit declaration of function 'transparent_hugepage_defrag' [-Werror=implicit-function-declaration]
+   mm/huge_memory.c:310:2: error: implicit declaration of function 'handle_pte_fault' [-Werror=implicit-function-declaration]
+   mm/huge_memory.c: In function 'copy_huge_pmd':
+   mm/huge_memory.c:349:39: error: 'HPAGE_PMD_NR' undeclared (first use in this function)
+   mm/huge_memory.c:352:2: error: implicit declaration of function 'pmd_mkold' [-Werror=implicit-function-declaration]
+   mm/huge_memory.c:352:2: error: implicit declaration of function 'pmd_wrprotect' [-Werror=implicit-function-declaration]
+>> mm/huge_memory.c:352:6: error: incompatible types when assigning to type 'pmd_t' from type 'int'
+   mm/huge_memory.c: In function 'get_pmd_huge_pte':
+   mm/huge_memory.c:372:14: error: 'struct mm_struct' has no member named 'pmd_huge_pte'
+   mm/huge_memory.c:374:5: error: 'struct mm_struct' has no member named 'pmd_huge_pte'
+   mm/huge_memory.c:376:5: error: 'struct mm_struct' has no member named 'pmd_huge_pte'
+   mm/huge_memory.c: In function 'do_huge_pmd_wp_page_fallback':
+   mm/huge_memory.c:395:42: error: 'HPAGE_PMD_NR' undeclared (first use in this function)
+   mm/huge_memory.c: In function 'do_huge_pmd_wp_page':
+   mm/huge_memory.c:481:3: error: implicit declaration of function 'pmd_mkyoung' [-Werror=implicit-function-declaration]
+>> mm/huge_memory.c:481:9: error: incompatible types when assigning to type 'pmd_t' from type 'int'
+   mm/huge_memory.c:482:3: error: incompatible type for argument 1 of 'maybe_pmd_mkwrite'
+   mm/huge_memory.c:218:21: note: expected 'pmd_t' but argument is of type 'int'
+   mm/huge_memory.c:484:4: error: incompatible type for argument 3 of 'update_mmu_cache'
+   In file included from include/linux/mm.h:41:0,
+                    from mm/huge_memory.c:8:
+   arch/mips/include/asm/pgtable.h:370:20: note: expected 'struct pte_t *' but argument is of type 'pmd_t'
+   mm/huge_memory.c:492:6: error: implicit declaration of function 'transparent_hugepage_debug_cow' [-Werror=implicit-function-declaration]
+   mm/huge_memory.c:504:2: error: implicit declaration of function 'copy_user_huge_page' [-Werror=implicit-function-declaration]
+   mm/huge_memory.c:504:50: error: 'HPAGE_PMD_NR' undeclared (first use in this function)
+>> mm/huge_memory.c:514:9: error: incompatible types when assigning to type 'pmd_t' from type 'int'
+   mm/huge_memory.c:515:3: error: incompatible type for argument 1 of 'maybe_pmd_mkwrite'
+   mm/huge_memory.c:218:21: note: expected 'pmd_t' but argument is of type 'int'
+>> mm/huge_memory.c:516:9: error: incompatible types when assigning to type 'pmd_t' from type 'int'
+   mm/huge_memory.c:520:3: error: incompatible type for argument 3 of 'update_mmu_cache'
+   In file included from include/linux/mm.h:41:0,
+                    from mm/huge_memory.c:8:
+   arch/mips/include/asm/pgtable.h:370:20: note: expected 'struct pte_t *' but argument is of type 'pmd_t'
+   mm/huge_memory.c: In function 'follow_trans_huge_pmd':
+>> mm/huge_memory.c:555:8: error: incompatible types when assigning to type 'pmd_t' from type 'int'
+   mm/huge_memory.c: In function 'zap_huge_pmd':
+   mm/huge_memory.c:586:43: error: 'HPAGE_PMD_NR' undeclared (first use in this function)
+   mm/huge_memory.c: In function '__split_huge_page_splitting':
+   mm/huge_memory.c:654:3: error: implicit declaration of function 'pmdp_splitting_flush' [-Werror=implicit-function-declaration]
+   mm/huge_memory.c: In function '__split_huge_page_refcount':
+   mm/huge_memory.c:672:18: error: 'HPAGE_PMD_NR' undeclared (first use in this function)
+   mm/huge_memory.c:728:2: error: implicit declaration of function 'ClearPageCompound' [-Werror=implicit-function-declaration]
+   mm/huge_memory.c: In function '__split_huge_page_map':
+   mm/huge_memory.c:769:36: error: 'HPAGE_PMD_NR' undeclared (first use in this function)
+   mm/huge_memory.c:779:4: error: implicit declaration of function 'pmd_young' [-Werror=implicit-function-declaration]
+   mm/huge_memory.c:815:3: error: implicit declaration of function 'pmd_mknotpresent' [-Werror=implicit-function-declaration]
+   mm/huge_memory.c: In function '__split_huge_page':
+   mm/huge_memory.c:838:3: error: implicit declaration of function 'vma_address' [-Werror=implicit-function-declaration]
+   mm/huge_memory.c: At top level:
+   mm/huge_memory.c:860:5: error: redefinition of 'split_huge_page'
+   In file included from include/linux/mm.h:249:0,
+                    from mm/huge_memory.c:8:
+   include/linux/huge_mm.h:108:19: note: previous definition of 'split_huge_page' was here
+   mm/huge_memory.c: In function 'single_flag_show':
+   mm/huge_memory.c:86:1: warning: control reaches end of non-void function [-Wreturn-type]
+   mm/huge_memory.c: In function 'double_flag_show':
+   mm/huge_memory.c:35:1: warning: control reaches end of non-void function [-Wreturn-type]
+   cc1: some warnings being treated as errors
+
+vim +221 mm/huge_memory.c
+
+71e3aac0 Andrea Arcangeli 2011-01-13  212  		INIT_LIST_HEAD(&pgtable->lru);
+71e3aac0 Andrea Arcangeli 2011-01-13  213  	else
+71e3aac0 Andrea Arcangeli 2011-01-13  214  		list_add(&pgtable->lru, &mm->pmd_huge_pte->lru);
+71e3aac0 Andrea Arcangeli 2011-01-13  215  	mm->pmd_huge_pte = pgtable;
+71e3aac0 Andrea Arcangeli 2011-01-13  216  }
+71e3aac0 Andrea Arcangeli 2011-01-13  217  
+71e3aac0 Andrea Arcangeli 2011-01-13 @218  static inline pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
+71e3aac0 Andrea Arcangeli 2011-01-13  219  {
+71e3aac0 Andrea Arcangeli 2011-01-13  220  	if (likely(vma->vm_flags & VM_WRITE))
+71e3aac0 Andrea Arcangeli 2011-01-13 @221  		pmd = pmd_mkwrite(pmd);
+71e3aac0 Andrea Arcangeli 2011-01-13  222  	return pmd;
+71e3aac0 Andrea Arcangeli 2011-01-13  223  }
+71e3aac0 Andrea Arcangeli 2011-01-13  224  
+71e3aac0 Andrea Arcangeli 2011-01-13  225  static int __do_huge_pmd_anonymous_page(struct mm_struct *mm,
+71e3aac0 Andrea Arcangeli 2011-01-13  226  					struct vm_area_struct *vma,
+71e3aac0 Andrea Arcangeli 2011-01-13  227  					unsigned long haddr, pmd_t *pmd,
+71e3aac0 Andrea Arcangeli 2011-01-13  228  					struct page *page)
+71e3aac0 Andrea Arcangeli 2011-01-13  229  {
+71e3aac0 Andrea Arcangeli 2011-01-13  230  	int ret = 0;
+71e3aac0 Andrea Arcangeli 2011-01-13  231  	pgtable_t pgtable;
+71e3aac0 Andrea Arcangeli 2011-01-13  232  
+71e3aac0 Andrea Arcangeli 2011-01-13  233  	VM_BUG_ON(!PageCompound(page));
+71e3aac0 Andrea Arcangeli 2011-01-13  234  	pgtable = pte_alloc_one(mm, haddr);
+71e3aac0 Andrea Arcangeli 2011-01-13  235  	if (unlikely(!pgtable)) {
+71e3aac0 Andrea Arcangeli 2011-01-13  236  		put_page(page);
+71e3aac0 Andrea Arcangeli 2011-01-13  237  		return VM_FAULT_OOM;
+71e3aac0 Andrea Arcangeli 2011-01-13  238  	}
+71e3aac0 Andrea Arcangeli 2011-01-13  239  
+71e3aac0 Andrea Arcangeli 2011-01-13  240  	clear_huge_page(page, haddr, HPAGE_PMD_NR);
+71e3aac0 Andrea Arcangeli 2011-01-13  241  	__SetPageUptodate(page);
+71e3aac0 Andrea Arcangeli 2011-01-13  242  
+71e3aac0 Andrea Arcangeli 2011-01-13  243  	spin_lock(&mm->page_table_lock);
+71e3aac0 Andrea Arcangeli 2011-01-13  244  	if (unlikely(!pmd_none(*pmd))) {
+71e3aac0 Andrea Arcangeli 2011-01-13  245  		spin_unlock(&mm->page_table_lock);
+71e3aac0 Andrea Arcangeli 2011-01-13  246  		put_page(page);
+71e3aac0 Andrea Arcangeli 2011-01-13  247  		pte_free(mm, pgtable);
+71e3aac0 Andrea Arcangeli 2011-01-13  248  	} else {
+71e3aac0 Andrea Arcangeli 2011-01-13  249  		pmd_t entry;
+71e3aac0 Andrea Arcangeli 2011-01-13 @250  		entry = mk_pmd(page, vma->vm_page_prot);
+71e3aac0 Andrea Arcangeli 2011-01-13  251  		entry = maybe_pmd_mkwrite(pmd_mkdirty(entry), vma);
+71e3aac0 Andrea Arcangeli 2011-01-13 @252  		entry = pmd_mkhuge(entry);
+71e3aac0 Andrea Arcangeli 2011-01-13  253  		/*
+71e3aac0 Andrea Arcangeli 2011-01-13  254  		 * The spinlocking to take the lru_lock inside
+71e3aac0 Andrea Arcangeli 2011-01-13  255  		 * page_add_new_anon_rmap() acts as a full memory
+71e3aac0 Andrea Arcangeli 2011-01-13  256  		 * barrier to be sure clear_huge_page writes become
+71e3aac0 Andrea Arcangeli 2011-01-13  257  		 * visible after the set_pmd_at() write.
+71e3aac0 Andrea Arcangeli 2011-01-13  258  		 */
+71e3aac0 Andrea Arcangeli 2011-01-13  259  		page_add_new_anon_rmap(page, vma, haddr);
+71e3aac0 Andrea Arcangeli 2011-01-13  260  		set_pmd_at(mm, haddr, pmd, entry);
+71e3aac0 Andrea Arcangeli 2011-01-13  261  		prepare_pmd_huge_pte(pgtable, mm);
+71e3aac0 Andrea Arcangeli 2011-01-13  262  		add_mm_counter(mm, MM_ANONPAGES, HPAGE_PMD_NR);
+71e3aac0 Andrea Arcangeli 2011-01-13  263  		spin_unlock(&mm->page_table_lock);
+71e3aac0 Andrea Arcangeli 2011-01-13  264  	}
+71e3aac0 Andrea Arcangeli 2011-01-13  265  
+71e3aac0 Andrea Arcangeli 2011-01-13  266  	return ret;
+71e3aac0 Andrea Arcangeli 2011-01-13  267  }
+71e3aac0 Andrea Arcangeli 2011-01-13  268  
+71e3aac0 Andrea Arcangeli 2011-01-13  269  static inline struct page *alloc_hugepage(int defrag)
+71e3aac0 Andrea Arcangeli 2011-01-13  270  {
+71e3aac0 Andrea Arcangeli 2011-01-13  271  	return alloc_pages(GFP_TRANSHUGE & ~(defrag ? 0 : __GFP_WAIT),
+71e3aac0 Andrea Arcangeli 2011-01-13  272  			   HPAGE_PMD_ORDER);
+71e3aac0 Andrea Arcangeli 2011-01-13  273  }
+71e3aac0 Andrea Arcangeli 2011-01-13  274  
+71e3aac0 Andrea Arcangeli 2011-01-13  275  int do_huge_pmd_anonymous_page(struct mm_struct *mm, struct vm_area_struct *vma,
+71e3aac0 Andrea Arcangeli 2011-01-13  276  			       unsigned long address, pmd_t *pmd,
+71e3aac0 Andrea Arcangeli 2011-01-13  277  			       unsigned int flags)
+71e3aac0 Andrea Arcangeli 2011-01-13  278  {
+71e3aac0 Andrea Arcangeli 2011-01-13  279  	struct page *page;
+71e3aac0 Andrea Arcangeli 2011-01-13  280  	unsigned long haddr = address & HPAGE_PMD_MASK;
+71e3aac0 Andrea Arcangeli 2011-01-13  281  	pte_t *pte;
+71e3aac0 Andrea Arcangeli 2011-01-13  282  
+71e3aac0 Andrea Arcangeli 2011-01-13  283  	if (haddr >= vma->vm_start && haddr + HPAGE_PMD_SIZE <= vma->vm_end) {
+71e3aac0 Andrea Arcangeli 2011-01-13  284  		if (unlikely(anon_vma_prepare(vma)))
+71e3aac0 Andrea Arcangeli 2011-01-13  285  			return VM_FAULT_OOM;
+71e3aac0 Andrea Arcangeli 2011-01-13  286  		page = alloc_hugepage(transparent_hugepage_defrag(vma));
+71e3aac0 Andrea Arcangeli 2011-01-13  287  		if (unlikely(!page))
+71e3aac0 Andrea Arcangeli 2011-01-13  288  			goto out;
+71e3aac0 Andrea Arcangeli 2011-01-13  289  
+71e3aac0 Andrea Arcangeli 2011-01-13  290  		return __do_huge_pmd_anonymous_page(mm, vma, haddr, pmd, page);
+71e3aac0 Andrea Arcangeli 2011-01-13  291  	}
+71e3aac0 Andrea Arcangeli 2011-01-13  292  out:
+71e3aac0 Andrea Arcangeli 2011-01-13  293  	/*
+71e3aac0 Andrea Arcangeli 2011-01-13  294  	 * Use __pte_alloc instead of pte_alloc_map, because we can't
+71e3aac0 Andrea Arcangeli 2011-01-13  295  	 * run pte_offset_map on the pmd, if an huge pmd could
+71e3aac0 Andrea Arcangeli 2011-01-13  296  	 * materialize from under us from a different thread.
+71e3aac0 Andrea Arcangeli 2011-01-13  297  	 */
+71e3aac0 Andrea Arcangeli 2011-01-13  298  	if (unlikely(__pte_alloc(mm, vma, pmd, address)))
+71e3aac0 Andrea Arcangeli 2011-01-13  299  		return VM_FAULT_OOM;
+71e3aac0 Andrea Arcangeli 2011-01-13  300  	/* if an huge pmd materialized from under us just retry later */
+71e3aac0 Andrea Arcangeli 2011-01-13  301  	if (unlikely(pmd_trans_huge(*pmd)))
+71e3aac0 Andrea Arcangeli 2011-01-13  302  		return 0;
+71e3aac0 Andrea Arcangeli 2011-01-13  303  	/*
+71e3aac0 Andrea Arcangeli 2011-01-13  304  	 * A regular pmd is established and it can't morph into a huge pmd
+71e3aac0 Andrea Arcangeli 2011-01-13  305  	 * from under us anymore at this point because we hold the mmap_sem
+71e3aac0 Andrea Arcangeli 2011-01-13  306  	 * read mode and khugepaged takes it in write mode. So now it's
+71e3aac0 Andrea Arcangeli 2011-01-13  307  	 * safe to run pte_offset_map().
+71e3aac0 Andrea Arcangeli 2011-01-13  308  	 */
+71e3aac0 Andrea Arcangeli 2011-01-13  309  	pte = pte_offset_map(pmd, address);
+71e3aac0 Andrea Arcangeli 2011-01-13  310  	return handle_pte_fault(mm, vma, address, pte, pmd, flags);
+71e3aac0 Andrea Arcangeli 2011-01-13  311  }
+71e3aac0 Andrea Arcangeli 2011-01-13  312  
+71e3aac0 Andrea Arcangeli 2011-01-13  313  int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+71e3aac0 Andrea Arcangeli 2011-01-13  314  		  pmd_t *dst_pmd, pmd_t *src_pmd, unsigned long addr,
+71e3aac0 Andrea Arcangeli 2011-01-13  315  		  struct vm_area_struct *vma)
+71e3aac0 Andrea Arcangeli 2011-01-13  316  {
+71e3aac0 Andrea Arcangeli 2011-01-13  317  	struct page *src_page;
+71e3aac0 Andrea Arcangeli 2011-01-13  318  	pmd_t pmd;
+71e3aac0 Andrea Arcangeli 2011-01-13  319  	pgtable_t pgtable;
+71e3aac0 Andrea Arcangeli 2011-01-13  320  	int ret;
+71e3aac0 Andrea Arcangeli 2011-01-13  321  
+71e3aac0 Andrea Arcangeli 2011-01-13  322  	ret = -ENOMEM;
+71e3aac0 Andrea Arcangeli 2011-01-13  323  	pgtable = pte_alloc_one(dst_mm, addr);
+71e3aac0 Andrea Arcangeli 2011-01-13  324  	if (unlikely(!pgtable))
+71e3aac0 Andrea Arcangeli 2011-01-13  325  		goto out;
+71e3aac0 Andrea Arcangeli 2011-01-13  326  
+71e3aac0 Andrea Arcangeli 2011-01-13  327  	spin_lock(&dst_mm->page_table_lock);
+71e3aac0 Andrea Arcangeli 2011-01-13  328  	spin_lock_nested(&src_mm->page_table_lock, SINGLE_DEPTH_NESTING);
+71e3aac0 Andrea Arcangeli 2011-01-13  329  
+71e3aac0 Andrea Arcangeli 2011-01-13  330  	ret = -EAGAIN;
+71e3aac0 Andrea Arcangeli 2011-01-13  331  	pmd = *src_pmd;
+71e3aac0 Andrea Arcangeli 2011-01-13  332  	if (unlikely(!pmd_trans_huge(pmd))) {
+71e3aac0 Andrea Arcangeli 2011-01-13  333  		pte_free(dst_mm, pgtable);
+71e3aac0 Andrea Arcangeli 2011-01-13  334  		goto out_unlock;
+71e3aac0 Andrea Arcangeli 2011-01-13  335  	}
+71e3aac0 Andrea Arcangeli 2011-01-13  336  	if (unlikely(pmd_trans_splitting(pmd))) {
+71e3aac0 Andrea Arcangeli 2011-01-13  337  		/* split huge page running from under us */
+71e3aac0 Andrea Arcangeli 2011-01-13  338  		spin_unlock(&src_mm->page_table_lock);
+71e3aac0 Andrea Arcangeli 2011-01-13  339  		spin_unlock(&dst_mm->page_table_lock);
+71e3aac0 Andrea Arcangeli 2011-01-13  340  		pte_free(dst_mm, pgtable);
+71e3aac0 Andrea Arcangeli 2011-01-13  341  
+71e3aac0 Andrea Arcangeli 2011-01-13  342  		wait_split_huge_page(vma->anon_vma, src_pmd); /* src_vma */
+71e3aac0 Andrea Arcangeli 2011-01-13  343  		goto out;
+71e3aac0 Andrea Arcangeli 2011-01-13  344  	}
+71e3aac0 Andrea Arcangeli 2011-01-13  345  	src_page = pmd_page(pmd);
+71e3aac0 Andrea Arcangeli 2011-01-13  346  	VM_BUG_ON(!PageHead(src_page));
+71e3aac0 Andrea Arcangeli 2011-01-13  347  	get_page(src_page);
+71e3aac0 Andrea Arcangeli 2011-01-13  348  	page_dup_rmap(src_page);
+71e3aac0 Andrea Arcangeli 2011-01-13  349  	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+71e3aac0 Andrea Arcangeli 2011-01-13  350  
+71e3aac0 Andrea Arcangeli 2011-01-13  351  	pmdp_set_wrprotect(src_mm, addr, src_pmd);
+71e3aac0 Andrea Arcangeli 2011-01-13 @352  	pmd = pmd_mkold(pmd_wrprotect(pmd));
+71e3aac0 Andrea Arcangeli 2011-01-13  353  	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
+71e3aac0 Andrea Arcangeli 2011-01-13  354  	prepare_pmd_huge_pte(pgtable, dst_mm);
+71e3aac0 Andrea Arcangeli 2011-01-13  355  
+
 ---
-Hi all,
-	Sorry for my mistake that my previous patch series has been screwed up.
-So I regenerate a third version and also set up a git tree at:
-	git://github.com/jiangliu/linux.git mem_init
-	Any help to review and test are welcomed!
-
-	Regards!
-	Gerry
----
- arch/mips/mm/init.c              |   57 ++++++++++++--------------------------
- arch/mips/pci/pci-lantiq.c       |    2 +-
- arch/mips/sgi-ip27/ip27-memory.c |   21 ++------------
- 3 files changed, 21 insertions(+), 59 deletions(-)
-
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index c1d7b9f..8149946 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -358,11 +358,24 @@ void __init paging_init(void)
- static struct kcore_list kcore_kseg0;
- #endif
- 
--void __init mem_init(void)
-+static inline void mem_init_free_highmem(void)
- {
--	unsigned long codesize, reservedpages, datasize, initsize;
--	unsigned long tmp, ram;
-+#ifdef CONFIG_HIGHMEM
-+	unsigned long tmp;
- 
-+	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
-+		struct page *page = pfn_to_page(tmp);
-+
-+		if (!page_is_ram(tmp))
-+			SetPageReserved(page);
-+		else
-+			free_highmem_page(page);
-+	}
-+#endif
-+}
-+
-+void __init mem_init(void)
-+{
- #ifdef CONFIG_HIGHMEM
- #ifdef CONFIG_DISCONTIGMEM
- #error "CONFIG_HIGHMEM and CONFIG_DISCONTIGMEM dont work together yet"
-@@ -375,32 +388,8 @@ void __init mem_init(void)
- 
- 	free_all_bootmem();
- 	setup_zero_pages();	/* Setup zeroed pages.  */
--
--	reservedpages = ram = 0;
--	for (tmp = 0; tmp < max_low_pfn; tmp++)
--		if (page_is_ram(tmp) && pfn_valid(tmp)) {
--			ram++;
--			if (PageReserved(pfn_to_page(tmp)))
--				reservedpages++;
--		}
--	num_physpages = ram;
--
--#ifdef CONFIG_HIGHMEM
--	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
--		struct page *page = pfn_to_page(tmp);
--
--		if (!page_is_ram(tmp)) {
--			SetPageReserved(page);
--			continue;
--		}
--		free_highmem_page(page);
--	}
--	num_physpages += totalhigh_pages;
--#endif
--
--	codesize =  (unsigned long) &_etext - (unsigned long) &_text;
--	datasize =  (unsigned long) &_edata - (unsigned long) &_etext;
--	initsize =  (unsigned long) &__init_end - (unsigned long) &__init_begin;
-+	mem_init_free_highmem();
-+	mem_init_print_info(NULL);
- 
- #ifdef CONFIG_64BIT
- 	if ((unsigned long) &_text > (unsigned long) CKSEG0)
-@@ -409,16 +398,6 @@ void __init mem_init(void)
- 		kclist_add(&kcore_kseg0, (void *) CKSEG0,
- 				0x80000000 - 4, KCORE_TEXT);
- #endif
--
--	printk(KERN_INFO "Memory: %luk/%luk available (%ldk kernel code, "
--	       "%ldk reserved, %ldk data, %ldk init, %ldk highmem)\n",
--	       nr_free_pages() << (PAGE_SHIFT-10),
--	       ram << (PAGE_SHIFT-10),
--	       codesize >> 10,
--	       reservedpages << (PAGE_SHIFT-10),
--	       datasize >> 10,
--	       initsize >> 10,
--	       totalhigh_pages << (PAGE_SHIFT-10));
- }
- #endif /* !CONFIG_NEED_MULTIPLE_NODES */
- 
-diff --git a/arch/mips/pci/pci-lantiq.c b/arch/mips/pci/pci-lantiq.c
-index 9568178..8cc3250 100644
---- a/arch/mips/pci/pci-lantiq.c
-+++ b/arch/mips/pci/pci-lantiq.c
-@@ -89,7 +89,7 @@ static inline u32 ltq_calc_bar11mask(void)
- 	u32 mem, bar11mask;
- 
- 	/* BAR11MASK value depends on available memory on system. */
--	mem = num_physpages * PAGE_SIZE;
-+	mem = get_num_physpages() * PAGE_SIZE;
- 	bar11mask = (0x0ffffff0 & ~((1 << (fls(mem) - 1)) - 1)) | 8;
- 
- 	return bar11mask;
-diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-index 4042e06..41646d7 100644
---- a/arch/mips/sgi-ip27/ip27-memory.c
-+++ b/arch/mips/sgi-ip27/ip27-memory.c
-@@ -357,8 +357,6 @@ static void __init szmem(void)
- 	int slot;
- 	cnodeid_t node;
- 
--	num_physpages = 0;
--
- 	for_each_online_node(node) {
- 		nodebytes = 0;
- 		for (slot = 0; slot < MAX_MEM_SLOTS; slot++) {
-@@ -381,7 +379,6 @@ static void __init szmem(void)
- 				slot = MAX_MEM_SLOTS;
- 				continue;
- 			}
--			num_physpages += slot_psize;
- 			memblock_add_node(PFN_PHYS(slot_getbasepfn(node, slot)),
- 					  PFN_PHYS(slot_psize), node);
- 		}
-@@ -480,10 +477,9 @@ void __init paging_init(void)
- 
- void __init mem_init(void)
- {
--	unsigned long codesize, datasize, initsize, tmp;
- 	unsigned node;
- 
--	high_memory = (void *) __va(num_physpages << PAGE_SHIFT);
-+	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
- 
- 	for_each_online_node(node) {
- 		/*
-@@ -494,18 +490,5 @@ void __init mem_init(void)
- 
- 	setup_zero_pages();	/* This comes from node 0 */
- 
--	codesize =  (unsigned long) &_etext - (unsigned long) &_text;
--	datasize =  (unsigned long) &_edata - (unsigned long) &_etext;
--	initsize =  (unsigned long) &__init_end - (unsigned long) &__init_begin;
--
--	tmp = nr_free_pages();
--	printk(KERN_INFO "Memory: %luk/%luk available (%ldk kernel code, "
--	       "%ldk reserved, %ldk data, %ldk init, %ldk highmem)\n",
--	       tmp << (PAGE_SHIFT-10),
--	       num_physpages << (PAGE_SHIFT-10),
--	       codesize >> 10,
--	       (num_physpages - tmp) << (PAGE_SHIFT-10),
--	       datasize >> 10,
--	       initsize >> 10,
--	       totalhigh_pages << (PAGE_SHIFT-10));
-+	mem_init_print_info(NULL);
- }
--- 
-1.7.9.5
+0-DAY kernel build testing backend              Open Source Technology Center
+http://lists.01.org/mailman/listinfo/kbuild                 Intel Corporation

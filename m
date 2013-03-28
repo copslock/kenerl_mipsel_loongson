@@ -1,26 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Mar 2013 15:15:51 +0100 (CET)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:60765 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823005Ab3C1OPt7BINU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Mar 2013 15:15:49 +0100
-Received: from gallifrey.ext.pengutronix.de ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=bjornoya.do.blackshift.org)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1ULDcG-0000Hb-I7; Thu, 28 Mar 2013 15:15:44 +0100
-Received: from [IPv6:2001:6f8:105b:1122:21d:e0ff:fe39:f61b] (hardanger.wlan.blackshift.org [IPv6:2001:6f8:105b:1122:21d:e0ff:fe39:f61b])
-        (using TLSv1 with cipher ECDHE-ECDSA-AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: frogger)
-        by bjornoya.do.blackshift.org (Postfix) with ESMTPSA id CC6C25E815;
-        Thu, 28 Mar 2013 15:15:43 +0100 (CET)
-Message-ID: <5154508B.6050509@pengutronix.de>
-Date:   Thu, 28 Mar 2013 15:15:39 +0100
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-Organization: Pengutronix e.K.
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130307 Thunderbird/17.0.4
-MIME-Version: 1.0
-To:     Alexander Shishkin <alexander.shishkin@linux.intel.com>
-CC:     Svetoslav Neykov <svetoslav@neykov.name>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Mar 2013 17:05:06 +0100 (CET)
+Received: from mga02.intel.com ([134.134.136.20]:34627 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6834885Ab3C1QFBHajJj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 28 Mar 2013 17:05:01 +0100
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP; 28 Mar 2013 09:04:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.84,927,1355126400"; 
+   d="scan'208";a="285848490"
+Received: from um.fi.intel.com (HELO localhost) ([10.237.72.160])
+  by orsmga001.jf.intel.com with ESMTP; 28 Mar 2013 09:04:49 -0700
+From:   Alexander Shishkin <alexander.shishkin@linux.intel.com>
+To:     Michael Grzeschik <mgr@pengutronix.de>
+Cc:     Svetoslav Neykov <svetoslav@neykov.name>,
         Ralf Baechle <ralf@linux-mips.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Gabor Juhos <juhosg@openwrt.org>,
@@ -29,21 +21,18 @@ CC:     Svetoslav Neykov <svetoslav@neykov.name>,
         "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>,
         linux-mips@linux-mips.org, linux-usb@vger.kernel.org
 Subject: Re: [PATCH v2 1/2] usb: chipidea: big-endian support
-References: <1362176257-2328-1-git-send-email-svetoslav@neykov.name> <1362176257-2328-2-git-send-email-svetoslav@neykov.name> <878v57kh4v.fsf@ashishki-desk.ger.corp.intel.com>
-In-Reply-To: <878v57kh4v.fsf@ashishki-desk.ger.corp.intel.com>
-X-Enigmail-Version: 1.5.1
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="----enig2PXDIPPSMJETHLMEUHWGM"
-X-SA-Exim-Connect-IP: 2001:6f8:1178:4:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-X-archive-position: 35988
+In-Reply-To: <20130328141253.GA5079@pengutronix.de>
+References: <1362176257-2328-1-git-send-email-svetoslav@neykov.name> <1362176257-2328-2-git-send-email-svetoslav@neykov.name> <878v57kh4v.fsf@ashishki-desk.ger.corp.intel.com> <20130328141253.GA5079@pengutronix.de>
+User-Agent: Notmuch/0.12+187~ga2502b0 (http://notmuchmail.org) Emacs/23.4.1 (x86_64-pc-linux-gnu)
+Date:   Thu, 28 Mar 2013 18:06:53 +0200
+Message-ID: <87zjxnik4i.fsf@ashishki-desk.ger.corp.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-archive-position: 35989
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mkl@pengutronix.de
+X-original-sender: alexander.shishkin@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,44 +46,26 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
-------enig2PXDIPPSMJETHLMEUHWGM
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Michael Grzeschik <mgr@pengutronix.de> writes:
 
-On 03/28/2013 10:28 AM, Alexander Shishkin wrote:
-> Svetoslav Neykov <svetoslav@neykov.name> writes:
->=20
->> Convert between big-endian and little-endian format when accessing
->> the usb controller structures which are little-endian by
->> specification. Fix cases where the little-endian memory layout is
->> taken for granted. The patch doesn't have any effect on the already
->> supported little-endian architectures.
+> On Thu, Mar 28, 2013 at 11:28:32AM +0200, Alexander Shishkin wrote:
+>> Svetoslav Neykov <svetoslav@neykov.name> writes:
+>> 
+>> > Convert between big-endian and little-endian format when accessing the usb controller structures which are little-endian by specification.
+>> > Fix cases where the little-endian memory layout is taken for granted.
+>> > The patch doesn't have any effect on the already supported
+>> > little-endian architectures.
+>> 
+>> Applied to my branch of things that are aiming at v3.10. Next time
+>> please make sure that it applies cleanly.
+>
+> I am currently rebasing my fix/cleanup/feature patches against your
+> ci-for-greg and realised that this patch missed to fix debug.c with
+> cpu_le_32 action. Is someone volunteering to cook a patch?
 
-Has anyone tested how the cpu_to_le32 and vice versa effects the
-load/store operations? Does the compiler generate full 32 bit accesses
-on mips (and big endian arm) or is a byte-shift-or pattern used?
+Nice catch. If nobody beats me to it, I'll probably just amend that
+patch in my branch in a couple of hours.
 
-Marc
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
-------enig2PXDIPPSMJETHLMEUHWGM
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
-
-iEYEARECAAYFAlFUUI4ACgkQjTAFq1RaXHP8rwCfZIXW/m4vCQ4N1oJ8xs9DPMgZ
-jFcAn1eMu/b0C0max6cQjbYxb3INTKy1
-=Zsx5
------END PGP SIGNATURE-----
-
-------enig2PXDIPPSMJETHLMEUHWGM--
+Regards,
+--
+Alex

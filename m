@@ -1,37 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Mar 2013 16:07:59 +0100 (CET)
-Received: from mga01.intel.com ([192.55.52.88]:5375 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817088Ab3C2PH5tUXAm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 29 Mar 2013 16:07:57 +0100
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP; 29 Mar 2013 08:07:49 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.87,373,1363158000"; 
-   d="scan'208";a="310308622"
-Received: from um.fi.intel.com (HELO localhost) ([10.237.72.160])
-  by fmsmga001.fm.intel.com with ESMTP; 29 Mar 2013 08:07:46 -0700
-From:   Alexander Shishkin <alexander.shishkin@linux.intel.com>
-To:     Svetoslav Neykov <svetoslav@neykov.name>,
-        'Ralf Baechle' <ralf@linux-mips.org>,
-        'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>,
-        'Gabor Juhos' <juhosg@openwrt.org>,
-        'John Crispin' <blogic@openwrt.org>,
-        'Alan Stern' <stern@rowland.harvard.edu>,
-        "'Luis R. Rodriguez'" <mcgrof@qca.qualcomm.com>
-Cc:     linux-mips@linux-mips.org, linux-usb@vger.kernel.org
-Subject: RE: [PATCH v2 1/2] usb: chipidea: big-endian support
-In-Reply-To: <023c01ce2c03$1886e220$4994a660$@neykov.name>
-References: <1362176257-2328-1-git-send-email-svetoslav@neykov.name> <1362176257-2328-2-git-send-email-svetoslav@neykov.name> <878v57kh4v.fsf@ashishki-desk.ger.corp.intel.com> <023c01ce2c03$1886e220$4994a660$@neykov.name>
-User-Agent: Notmuch/0.12+187~ga2502b0 (http://notmuchmail.org) Emacs/23.4.1 (x86_64-pc-linux-gnu)
-Date:   Fri, 29 Mar 2013 17:09:50 +0200
-Message-ID: <87y5d6p7i9.fsf@ashishki-desk.ger.corp.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Mar 2013 23:49:47 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:4098 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823116Ab3C2Wtp1Orl- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Mar 2013 23:49:45 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B51561afd0000>; Fri, 29 Mar 2013 15:51:41 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 29 Mar 2013 15:49:41 -0700
+Received: from [10.18.104.167] ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 29 Mar 2013 15:49:41 -0700
+Message-ID: <51561A75.4040601@caviumnetworks.com>
+Date:   Fri, 29 Mar 2013 15:49:25 -0700
+From:   Venkat Subbiah <vsubbiah@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-archive-position: 35994
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        ddaney@caviumnetworks.com
+Subject: Re: [PATCH] MIPS: Octeon: Adding driver to measure interrupt latency
+ on Octeon.
+References: <1354413086-25162-1-git-send-email-vsubbiah@caviumnetworks.com>
+In-Reply-To: <1354413086-25162-1-git-send-email-vsubbiah@caviumnetworks.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 29 Mar 2013 22:49:41.0771 (UTC) FILETIME=[B34355B0:01CE2CCF]
+X-archive-position: 35995
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexander.shishkin@linux.intel.com
+X-original-sender: vsubbiah@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,37 +41,265 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Svetoslav Neykov <svetoslav@neykov.name> writes:
+I was wondering whether this patch got accepted upstream. How do you 
+usually got about checking whether a patch made it upstream?
+Thanks,
+Venkat
 
-> Alexander Shishkin wrote:
->> Svetoslav Neykov <svetoslav@neykov.name> writes:
->>
->>> Convert between big-endian and little-endian format when accessing the
-> usb controller structures which are little-endian by specification.
->>> Fix cases where the little-endian memory layout is taken for granted.
->>> The patch doesn't have any effect on the already supported
->>> little-endian architectures.
->>
->>Applied to my branch of things that are aiming at v3.10. Next time
->>please make sure that it applies cleanly.
+
+
+On 12/01/2012 05:51 PM, vsubbiah@caviumnetworks.com wrote:
+> From: Venkat Subbiah <venkat.subbiah@cavium.com>
 >
-> I am a bit confused about the workflow and which repository to base my work
-> on. Should I use github/virtuoso/linux-ci for my future patches? Or
-> linux-next?
-
-It really depends on what your patches change. For chipidea driver
-changes, yes it's that branch. For mips-related bits, it's most probably
-something else. For gadget, otg or phy patches, it's Felipe's tree. If
-you get it wrong, normally it shouldn't be too much work to rebase your
-patches onto a different tree, especially for the author of the
-patches. In some cases I might do it for you, but you should be aware of
-possible penalties [1]. :)
-
-For the coming merge window I'm fixing and rebasing everything for
-everybody anyway, so this time it's no big deal.
-
-[1] http://lwn.net/Articles/536546/
-
-Regards,
---
-Alex
+> Signed-off-by: Venkat Subbiah <venkat.subbiah@cavium.com>
+> [Rewrote timeing calculations]
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> ---
+>   arch/mips/cavium-octeon/Kconfig   |    9 ++
+>   arch/mips/cavium-octeon/Makefile  |    1 +
+>   arch/mips/cavium-octeon/oct_ilm.c |  206 +++++++++++++++++++++++++++++++++++++
+>   3 files changed, 216 insertions(+)
+>   create mode 100644 arch/mips/cavium-octeon/oct_ilm.c
+>
+> diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kconfig
+> index 2f4f6d5..75a6df7 100644
+> --- a/arch/mips/cavium-octeon/Kconfig
+> +++ b/arch/mips/cavium-octeon/Kconfig
+> @@ -94,4 +94,13 @@ config SWIOTLB
+>   	select NEED_SG_DMA_LENGTH
+>   
+>   
+> +config OCTEON_ILM
+> +	tristate "Module to measure interrupt latency using Octeon CIU Timer"
+> +	help
+> +	  This driver is a module to measure interrupt latency using the
+> +	  the CIU Timers on Octeon.
+> +
+> +	  To compile this driver as a module, choose M here.  The module
+> +	  will be called octeon-ilm
+> +
+>   endif # CPU_CAVIUM_OCTEON
+> diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
+> index bc96e29..614db10 100644
+> --- a/arch/mips/cavium-octeon/Makefile
+> +++ b/arch/mips/cavium-octeon/Makefile
+> @@ -18,6 +18,7 @@ obj-y += octeon-memcpy.o
+>   obj-y += executive/
+>   
+>   obj-$(CONFIG_SMP)                     += smp.o
+> +obj-$(CONFIG_OCTEON_ILM)              += oct_ilm.o
+>   
+>   DTS_FILES = octeon_3xxx.dts octeon_68xx.dts
+>   DTB_FILES = $(patsubst %.dts, %.dtb, $(DTS_FILES))
+> diff --git a/arch/mips/cavium-octeon/oct_ilm.c b/arch/mips/cavium-octeon/oct_ilm.c
+> new file mode 100644
+> index 0000000..71b213d
+> --- /dev/null
+> +++ b/arch/mips/cavium-octeon/oct_ilm.c
+> @@ -0,0 +1,206 @@
+> +#include <linux/fs.h>
+> +#include <linux/interrupt.h>
+> +#include <asm/octeon/octeon.h>
+> +#include <asm/octeon/cvmx-ciu-defs.h>
+> +#include <asm/octeon/cvmx.h>
+> +#include <linux/debugfs.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/seq_file.h>
+> +
+> +#define TIMER_NUM 3
+> +
+> +static bool reset_stats;
+> +
+> +struct latency_info {
+> +	u64 io_interval;
+> +	u64 cpu_interval;
+> +	u64 timer_start1;
+> +	u64 timer_start2;
+> +	u64 max_latency;
+> +	u64 min_latency;
+> +	u64 latency_sum;
+> +	u64 average_latency;
+> +	u64 interrupt_cnt;
+> +};
+> +
+> +static struct latency_info li;
+> +static struct dentry *dir;
+> +
+> +static int show_latency(struct seq_file *m, void *v)
+> +{
+> +	u64 cpuclk, avg, max, min;
+> +	struct latency_info curr_li = li;
+> +
+> +	cpuclk = octeon_get_clock_rate();
+> +
+> +	max = (curr_li.max_latency * 1000000000) / cpuclk;
+> +	min = (curr_li.min_latency * 1000000000) / cpuclk;
+> +	avg = (curr_li.latency_sum * 1000000000) / (cpuclk * curr_li.interrupt_cnt);
+> +
+> +	seq_printf(m, "cnt: %10lld, avg: %7lld ns, max: %7lld ns, min: %7lld ns\n",
+> +		   curr_li.interrupt_cnt, avg, max, min);
+> +	return 0;
+> +}
+> +
+> +static int oct_ilm_open(struct inode *inode, struct file *file)
+> +{
+> +	return single_open(file, show_latency, NULL);
+> +}
+> +
+> +static const struct file_operations oct_ilm_ops = {
+> +	.open = oct_ilm_open,
+> +	.read = seq_read,
+> +	.llseek = seq_lseek,
+> +	.release = single_release,
+> +};
+> +
+> +static int reset_statistics(void *data, u64 value)
+> +{
+> +	reset_stats = true;
+> +	return 0;
+> +}
+> +
+> +DEFINE_SIMPLE_ATTRIBUTE(reset_statistics_ops, NULL, reset_statistics, "%llu\n");
+> +
+> +static int init_debufs(void)
+> +{
+> +	struct dentry *show_dentry;
+> +	dir = debugfs_create_dir("oct_ilm", 0);
+> +	if (!dir) {
+> +		pr_err("oct_ilm: failed to create debugfs entry oct_ilm\n");
+> +		return -1;
+> +	}
+> +
+> +	show_dentry = debugfs_create_file("statistics", 0222, dir, NULL,
+> +					  &oct_ilm_ops);
+> +	if (!show_dentry) {
+> +		pr_err("oct_ilm: failed to create debugfs entry oct_ilm/statistics\n");
+> +		return -1;
+> +	}
+> +
+> +	show_dentry = debugfs_create_file("reset", 0222, dir, NULL,
+> +					  &reset_statistics_ops);
+> +	if (!show_dentry) {
+> +		pr_err("oct_ilm: failed to create debugfs entry oct_ilm/reset\n");
+> +		return -1;
+> +	}
+> +
+> +	return 0;
+> +
+> +}
+> +
+> +static void init_latency_info(struct latency_info *li, int startup)
+> +{
+> +	/* interval in milli seconds after which the interrupt will
+> +	 * be triggered
+> +	 */
+> +	int interval = 1;
+> +
+> +	if (startup) {
+> +		/* Calculating by the amounts io clock and cpu clock would
+> +		 *  increment in interval amount of ms
+> +		 */
+> +		li->io_interval = (octeon_get_io_clock_rate() * interval) / 1000;
+> +		li->cpu_interval = (octeon_get_clock_rate() * interval) / 1000;
+> +	}
+> +	li->timer_start1 = 0;
+> +	li->timer_start2 = 0;
+> +	li->max_latency = 0;
+> +	li->min_latency = (u64)-1;
+> +	li->latency_sum = 0;
+> +	li->interrupt_cnt = 0;
+> +}
+> +
+> +
+> +static void start_timer(int timer, u64 interval)
+> +{
+> +	union cvmx_ciu_timx timx;
+> +	unsigned long flags;
+> +
+> +	timx.u64 = 0;
+> +	timx.s.one_shot = 1;
+> +	timx.s.len = interval;
+> +	raw_local_irq_save(flags);
+> +	li.timer_start1 = read_c0_cvmcount();
+> +	cvmx_write_csr(CVMX_CIU_TIMX(timer), timx.u64);
+> +	/* Read it back to force wait until register is written. */
+> +	timx.u64 = cvmx_read_csr(CVMX_CIU_TIMX(timer));
+> +	li.timer_start2 = read_c0_cvmcount();
+> +	raw_local_irq_restore(flags);
+> +}
+> +
+> +
+> +static irqreturn_t cvm_oct_ciu_timer_interrupt(int cpl, void *dev_id)
+> +{
+> +	u64 last_latency;
+> +	u64 last_int_cnt;
+> +
+> +	if (reset_stats) {
+> +		init_latency_info(&li, 0);
+> +		reset_stats = false;
+> +	} else {
+> +		last_int_cnt = read_c0_cvmcount();
+> +		last_latency = last_int_cnt - (li.timer_start1 + li.cpu_interval);
+> +		li.interrupt_cnt++;
+> +		li.latency_sum += last_latency;
+> +		if (last_latency > li.max_latency)
+> +			li.max_latency = last_latency;
+> +		if (last_latency < li.min_latency)
+> +			li.min_latency = last_latency;
+> +	}
+> +	start_timer(TIMER_NUM, li.io_interval);
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static void disable_timer(int timer)
+> +{
+> +	union cvmx_ciu_timx timx;
+> +
+> +	timx.s.one_shot = 0;
+> +	timx.s.len = 0;
+> +	cvmx_write_csr(CVMX_CIU_TIMX(timer), timx.u64);
+> +	/* Read it back to force immediate write of timer register*/
+> +	timx.u64 = cvmx_read_csr(CVMX_CIU_TIMX(timer));
+> +}
+> +
+> +static __init int oct_ilm_module_init(void)
+> +{
+> +	int rc;
+> +	int irq = OCTEON_IRQ_TIMER0 + TIMER_NUM;
+> +
+> +	rc = init_debufs();
+> +	if (rc) {
+> +		WARN(1, "Could not create debugfs entries");
+> +		return rc;
+> +	}
+> +
+> +	rc = request_irq(irq, cvm_oct_ciu_timer_interrupt, IRQF_NO_THREAD,
+> +			 "oct_ilm", 0);
+> +	if (rc) {
+> +		WARN(1, "Could not acquire IRQ %d", irq);
+> +		goto err_irq;
+> +	}
+> +
+> +	init_latency_info(&li, 1);
+> +	start_timer(TIMER_NUM, li.io_interval);
+> +
+> +	return 0;
+> +err_irq:
+> +	debugfs_remove_recursive(dir);
+> +	return rc;
+> +}
+> +
+> +static __exit void oct_ilm_module_exit(void)
+> +{
+> +	disable_timer(TIMER_NUM);
+> +	if (dir)
+> +		debugfs_remove_recursive(dir);
+> +	free_irq(OCTEON_IRQ_TIMER0 + TIMER_NUM, 0);
+> +}
+> +
+> +module_exit(oct_ilm_module_exit);
+> +module_init(oct_ilm_module_init);
+> +MODULE_AUTHOR("Venkat Subbiah, Cavium");
+> +MODULE_DESCRIPTION("Measures interrupt latency on Octeon chips.");
+> +MODULE_LICENSE("GPL");

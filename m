@@ -1,37 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Mar 2013 00:29:58 +0100 (CET)
-Received: from mho-03-ewr.mailhop.org ([204.13.248.66]:33342 "EHLO
-        mho-01-ewr.mailhop.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6823116Ab3C3X3zIwgBv convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 31 Mar 2013 00:29:55 +0100
-Received: from 234.140.79.188.dynamic.jazztel.es ([188.79.140.234] helo=mail.viric.name)
-        by mho-01-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.72)
-        (envelope-from <viric@viric.name>)
-        id 1UM5DZ-000Ep8-0S
-        for linux-mips@linux-mips.org; Sat, 30 Mar 2013 23:29:49 +0000
-Received: by mail.viric.name (Postfix, from userid 1000)
-        id 088AE43FE67F; Sat, 30 Mar 2013 23:29:44 +0000 (Europe)
-X-Mail-Handler: Dyn Standard SMTP by Dyn
-X-Originating-IP: 188.79.140.234
-X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/sendlabs/outbound_abuse.html for abuse reporting information)
-X-MHO-User: U2FsdGVkX19JQIrU6RHCg9QNzv4lv+KT
-Date:   Sun, 31 Mar 2013 00:29:44 +0100
-From:   =?iso-8859-1?Q?Llu=EDs?= Batlle i Rossell <viric@viric.name>
-To:     linux-mips@linux-mips.org
-Subject: FTRACE makes the kernel not boot
-Message-ID: <20130330232944.GR10445@vicerveza.homeunix.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Mar 2013 06:01:15 +0200 (CEST)
+Received: from mail-ob0-f182.google.com ([209.85.214.182]:43166 "EHLO
+        mail-ob0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817030Ab3CaEBNkmQYn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Mar 2013 06:01:13 +0200
+Received: by mail-ob0-f182.google.com with SMTP id ef5so1171215obb.41
+        for <linux-mips@linux-mips.org>; Sat, 30 Mar 2013 21:01:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:x-received:in-reply-to:references:date:message-id
+         :subject:from:to:cc:content-type:x-gm-message-state;
+        bh=Ct/iCRcHDKH7mkZKyGehpLL3i+6r6VIc9+BJjWoFeVI=;
+        b=MkGTHI9M6yc8zER7Y/fHxSwUz5BatEZd/PwHuUSfqkwVhKLPVXVXDSN/sekwOmuyDb
+         +fLX4rhqttpd/1wvyJyqSWXFUkZDqb5fqb3jJEXGUqgrqKn8LiKr+LPQQPpD7Iyo3CPC
+         4KnDjloC3V7TCqkmAoHcY8akpi+Sg/NdWQBrBdx8jlwbVqfdDGDY4RXQd5EtbL7GAiM2
+         pmmeBaNgAXZH2dbkfZ9trN4FMXNOXTUXjCbuV94d87Eisk9fxJ9u71m43vWJV3yAfGX2
+         18rKPdWNQb2bQMJ2rwW6T30jhQVHG+sJh+hxMODbe6al0kYADs53zNVQdqkCz7NJaCQO
+         DSPw==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-X-Accept-Language: ca, es, eo, ru, en, jbo, tokipona
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 35997
+X-Received: by 10.182.164.73 with SMTP id yo9mr2603395obb.28.1364702467175;
+ Sat, 30 Mar 2013 21:01:07 -0700 (PDT)
+Received: by 10.182.52.198 with HTTP; Sat, 30 Mar 2013 21:01:07 -0700 (PDT)
+In-Reply-To: <199e0d0a282290544ff562b904a0028a104aad45.1364229828.git.viresh.kumar@linaro.org>
+References: <cover.1364229828.git.viresh.kumar@linaro.org>
+        <199e0d0a282290544ff562b904a0028a104aad45.1364229828.git.viresh.kumar@linaro.org>
+Date:   Sun, 31 Mar 2013 09:31:07 +0530
+Message-ID: <CAKohpom4sckvmB12=KRX4aMJDJjpT=nN++_xyL=p_0ZY7v6oMQ@mail.gmail.com>
+Subject: Re: [PATCH 5/9] mips: cpufreq: move cpufreq driver to drivers/cpufreq
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:     arvind.chauhan@arm.com, robin.randhawa@arm.com,
+        Steve.Bannister@arm.com, Liviu.Dudau@arm.com,
+        charles.garcia-tobin@arm.com, cpufreq@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linaro-kernel@lists.linaro.org, arnd.bergmann@linaro.org,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        "Rafael J. Wysocki" <rjw@sisk.pl>
+Content-Type: text/plain; charset=ISO-8859-1
+X-Gm-Message-State: ALoCoQnzjwbQ0xKr9cuLis6Ua+hERLnxqAsL/UCTOU9mU7uGCZKYCYE2eRX0V8FnSx32FgXE3MBk
+X-archive-position: 35998
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: viric@viric.name
+X-original-sender: viresh.kumar@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,16 +55,25 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello,
+On 25 March 2013 22:24, Viresh Kumar <viresh.kumar@linaro.org> wrote:
+> This patch moves cpufreq driver of MIPS architecture to drivers/cpufreq.
+>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> ---
+>  arch/mips/Kconfig                                  |  9 ++++-
+>  arch/mips/kernel/Makefile                          |  2 --
+>  arch/mips/kernel/cpufreq/Kconfig                   | 41 ----------------------
+>  arch/mips/kernel/cpufreq/Makefile                  |  5 ---
+>  drivers/cpufreq/Kconfig                            | 18 ++++++++++
+>  drivers/cpufreq/Makefile                           |  1 +
+>  .../kernel => drivers}/cpufreq/loongson2_cpufreq.c |  0
+>  7 files changed, 27 insertions(+), 49 deletions(-)
+>  delete mode 100644 arch/mips/kernel/cpufreq/Kconfig
+>  delete mode 100644 arch/mips/kernel/cpufreq/Makefile
+>  rename {arch/mips/kernel => drivers}/cpufreq/loongson2_cpufreq.c (100%)
 
-For a fuloong (loongson2f) I had two configs, one booted and the other not, on
-a linux 3.8. I narrowed down the difference to enabling CONFIG_FTRACE.
+Ralf or any other mips guy,
 
-Enabling CONFIG_FTRACE makes the kernel not load at all; it even does not print
-any early printk to the serial port.
-
-Do you agree there is a problem with FTRACE? Maybe it is solved already
-in the mips git branch?
-
-Regards,
-Lluís.
+Can i have your ack or comments for this patch?

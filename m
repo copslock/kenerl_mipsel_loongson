@@ -1,47 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Apr 2013 18:48:35 +0200 (CEST)
-Received: from mail-da0-f45.google.com ([209.85.210.45]:40023 "EHLO
-        mail-da0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816822Ab3DAQseMPWp6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Apr 2013 18:48:34 +0200
-Received: by mail-da0-f45.google.com with SMTP id v40so1138048dad.4
-        for <multiple recipients>; Mon, 01 Apr 2013 09:48:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=cqPDnXdzmSMdj5Q0TTdfmqRbnxXJ1bMX76v1ChCja2s=;
-        b=i33ZQdOY9/uFDpOvsDEkZDleAz3YcnhjCWS7HjwVYX2v1LYWLSVUEEMide3B2Jr1FK
-         R2/pkDxvnYSlzy6Goj+F1hJL7AfHwueLaDp3VVujF1JTmbIf68Msb++9XxyCMfbhEJog
-         Ony1H6XBg9QbGUTZqw6eC2mFuNDeroo/ovSLuiEyMPA7UtbbCqNeG3no0Hh/mhSd9awS
-         9wErFjeydnI63k1WwVOWlRQMn1fygVYCDHwYJ870Rxkb7Ms09CGfLsGozIqUCpT/RbGd
-         eIVtqwBuAaKGuIiOTkdcn/aci1nJ5rBH5oiRtccNIsyLVtDxihDWLKZp6nrt5Q6rVfT2
-         MWdQ==
-X-Received: by 10.66.251.231 with SMTP id zn7mr19705481pac.71.1364834906838;
-        Mon, 01 Apr 2013 09:48:26 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id jk1sm14438011pbb.14.2013.04.01.09.48.24
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 01 Apr 2013 09:48:25 -0700 (PDT)
-Message-ID: <5159BA57.5030504@gmail.com>
-Date:   Mon, 01 Apr 2013 09:48:23 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
-MIME-Version: 1.0
-To:     =?ISO-8859-1?Q?Llu=EDs_Batlle_i_Rossell?= <viric@viric.name>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Al Cooper <alcooperx@gmail.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: FTRACE makes the kernel not boot
-References: <20130330232944.GR10445@vicerveza.homeunix.net>
-In-Reply-To: <20130330232944.GR10445@vicerveza.homeunix.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-X-archive-position: 36001
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Apr 2013 18:58:38 +0200 (CEST)
+Received: from shards.monkeyblade.net ([149.20.54.216]:52298 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823030Ab3DAQ6hHFyoE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Apr 2013 18:58:37 +0200
+Received: from localhost (nat-pool-rdu.redhat.com [66.187.233.202])
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id ADF48585393;
+        Mon,  1 Apr 2013 09:58:31 -0700 (PDT)
+Date:   Mon, 01 Apr 2013 12:58:30 -0400 (EDT)
+Message-Id: <20130401.125830.1655034418750471341.davem@davemloft.net>
+To:     viresh.kumar@linaro.org
+Cc:     rjw@sisk.pl, cpufreq@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ralf@linux-mips.org,
+        lethal@linux-sh.org, trenn@suse.de, bp@alien8.de,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH 6/9] cpufreq: Don't check if cpu is online/offline for
+ cpufreq callbacks
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <cd771cb37feb4e79172548ed342ad194ee31a384.1364820620.git.viresh.kumar@linaro.org>
+References: <cover.1364820620.git.viresh.kumar@linaro.org>
+        <cover.1364820620.git.viresh.kumar@linaro.org>
+        <cd771cb37feb4e79172548ed342ad194ee31a384.1364820620.git.viresh.kumar@linaro.org>
+X-Mailer: Mew version 6.5 on Emacs 24.1 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.2.7 (shards.monkeyblade.net [0.0.0.0]); Mon, 01 Apr 2013 09:58:33 -0700 (PDT)
+X-archive-position: 36002
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,29 +45,16 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 03/30/2013 04:29 PM, Lluís Batlle i Rossell wrote:
-> Hello,
->
-> For a fuloong (loongson2f) I had two configs, one booted and the other not, on
-> a linux 3.8. I narrowed down the difference to enabling CONFIG_FTRACE.
->
-> Enabling CONFIG_FTRACE makes the kernel not load at all; it even does not print
-> any early printk to the serial port.
->
-> Do you agree there is a problem with FTRACE? Maybe it is solved already
-> in the mips git branch?
->
+From: Viresh Kumar <viresh.kumar@linaro.org>
+Date: Mon,  1 Apr 2013 18:27:46 +0530
 
-This is caused by 58b69401c797e (MIPS: Function tracer: Fix broken 
-function tracing), which broke ftrace for 64-bit kernels.  The subject 
-of the patch is a bit misleading in this respect, it probably should 
-have been something like 'MIPS: Function tracer: Break function tracing 
-that used to work'
+> cpufreq layer doesn't call cpufreq driver's callback for any offline cpu and so
+> checking that isn't useful.
+> 
+> Lets get rid of it.
+> 
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-David Daney
+For sparc bits:
 
-> Regards,
-> Lluís.
->
->
->
+Acked-by: David S. Miller <davem@davemloft.net>

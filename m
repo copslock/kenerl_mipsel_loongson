@@ -1,23 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Apr 2013 21:16:15 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:18029 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823099Ab3DATQNUERWD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Apr 2013 21:16:13 +0200
-From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
-CC:     <Steven.Hill@imgtec.com>, <dengcheng.zhu@imgtec.com>
-Subject: [PATCH] MIPS: fix ISA level which causes secondary cache init bypassing and more
-Date:   Mon, 1 Apr 2013 12:14:28 -0700
-Message-ID: <1364843668-17707-1-git-send-email-dengcheng.zhu@imgtec.com>
-X-Mailer: git-send-email 1.7.1
-MIME-Version: 1.0
-Content-Type: text/plain
-X-SEF-Processed: 7_3_0_01181__2013_04_01_20_16_07
-X-archive-position: 36003
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Apr 2013 01:59:59 +0200 (CEST)
+Received: from mail-pb0-f52.google.com ([209.85.160.52]:63852 "EHLO
+        mail-pb0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823608Ab3DBX75yiPrd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Apr 2013 01:59:57 +0200
+Received: by mail-pb0-f52.google.com with SMTP id mc8so516956pbc.11
+        for <multiple recipients>; Tue, 02 Apr 2013 16:59:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:from:to:cc:subject:date:message-id:x-mailer;
+        bh=j1d6fDnlHTFk9Fyfu+Z17Xg8mjlzrtNNYTRePUgb+vQ=;
+        b=WmsUBgdQwjBpia+dQ/ges+reBn4pFGM4iwWkhGMFdee5TP3sgn+l6Sp6GtJaGZl1dC
+         aA/GCUCCPEsx7q2tWsDw1Ta+3x0iHKUmO5HiuUn4b5pg9tZgH/pwUpnOIHc6CwOFdh/E
+         fkSHjl4TOevRKfJm5cTiSzvqD5Fq+SoXJXWlsKLO//Qqt+a1sUtfFnTJcYlf67uDx/Kl
+         +SQAF0S+WyEwVkKu0srE+bka/kAF+MHf59h/r7PSVkhKd3WCsRyt2fPFRUsjcvPKHO18
+         xB6irQjmbinLtM+A3tRCZhCSMAq5AVQSMPm8BAs3yhqS4+qxG1aJp6ul6wVVuolVcoJY
+         BE1Q==
+X-Received: by 10.68.116.169 with SMTP id jx9mr26952092pbb.94.1364947190797;
+        Tue, 02 Apr 2013 16:59:50 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id gl9sm2800193pbc.44.2013.04.02.16.59.44
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Tue, 02 Apr 2013 16:59:49 -0700 (PDT)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r32NxcPf025442;
+        Tue, 2 Apr 2013 16:59:38 -0700
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r32NxWbu025441;
+        Tue, 2 Apr 2013 16:59:32 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>,
+        Al Cooper <alcooperx@gmail.com>, viric@viric.name,
+        stable@vger.kernel.org.#.3.8.x
+Subject: [PATCH] MIPS: Unbreak function tracer for 64-bit kernel.
+Date:   Tue,  2 Apr 2013 16:59:29 -0700
+Message-Id: <1364947169-25408-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+X-archive-position: 36004
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@imgtec.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -31,92 +54,51 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+From: David Daney <david.daney@cavium.com>
 
-The commit a96102be70 introduced set_isa() where compatible ISA info is
-also set aside from the one gets passed in. It means, for example, 1004K
-will have MIPS_CPU_ISA_M32R2/M32R1/II/I flags. This leads to things like
-the following inappropriate:
+commit 58b69401c797 (MIPS: Function tracer: Fix broken function
+tracing) completely broke the function tracer for 64-bit kernels.  The
+symptom is a system hang very early in the boot process.
 
-if (c->isa_level == MIPS_CPU_ISA_M32R1 ||
-    c->isa_level == MIPS_CPU_ISA_M32R2 ||
-    c->isa_level == MIPS_CPU_ISA_M64R1 ||
-    c->isa_level == MIPS_CPU_ISA_M64R2)
+The fix: Remove/fix $sp adjustments for 64-bit case.
 
-This patch fixes it.
-
-Cc: Steven J. Hill <Steven.Hill@imgtec.com>
-Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+Signed-off-by: David Daney <david.daney@cavium.com>
+Cc: Al Cooper <alcooperx@gmail.com>
+Cc: viric@viric.name
+Cc: stable@vger.kernel.org # 3.8.x
 ---
- arch/mips/kernel/cpu-probe.c |    6 ++----
- arch/mips/kernel/traps.c     |    2 +-
- arch/mips/mm/c-r4k.c         |    6 ++----
- arch/mips/mm/sc-mips.c       |    6 ++----
- 4 files changed, 7 insertions(+), 13 deletions(-)
+ arch/mips/kernel/mcount.S | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index d069a19..5fe66a0 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1227,10 +1227,8 @@ __cpuinit void cpu_probe(void)
- 	if (c->options & MIPS_CPU_FPU) {
- 		c->fpu_id = cpu_get_fpu_id();
- 
--		if (c->isa_level == MIPS_CPU_ISA_M32R1 ||
--		    c->isa_level == MIPS_CPU_ISA_M32R2 ||
--		    c->isa_level == MIPS_CPU_ISA_M64R1 ||
--		    c->isa_level == MIPS_CPU_ISA_M64R2) {
-+		if (c->isa_level & (MIPS_CPU_ISA_M32R1 | MIPS_CPU_ISA_M32R2 |
-+				    MIPS_CPU_ISA_M64R1 | MIPS_CPU_ISA_M64R2)) {
- 			if (c->fpu_id & MIPS_FPIR_3D)
- 				c->ases |= MIPS_ASE_MIPS3D;
- 		}
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index a200b5b..c3abb88 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1571,7 +1571,7 @@ void __cpuinit per_cpu_trap_init(bool is_boot_cpu)
- #ifdef CONFIG_64BIT
- 	status_set |= ST0_FR|ST0_KX|ST0_SX|ST0_UX;
+diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
+index 1658676..33d0671 100644
+--- a/arch/mips/kernel/mcount.S
++++ b/arch/mips/kernel/mcount.S
+@@ -46,10 +46,9 @@
+ 	PTR_L	a5, PT_R9(sp)
+ 	PTR_L	a6, PT_R10(sp)
+ 	PTR_L	a7, PT_R11(sp)
+-#else
+-	PTR_ADDIU	sp, PT_SIZE
  #endif
--	if (current_cpu_data.isa_level == MIPS_CPU_ISA_IV)
-+	if (current_cpu_data.isa_level & MIPS_CPU_ISA_IV)
- 		status_set |= ST0_XX;
- 	if (cpu_has_dsp)
- 		status_set |= ST0_MX;
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index ecca559..2078915 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1247,10 +1247,8 @@ static void __cpuinit setup_scache(void)
- 		return;
+-.endm
++	PTR_ADDIU	sp, PT_SIZE
++	.endm
  
- 	default:
--		if (c->isa_level == MIPS_CPU_ISA_M32R1 ||
--		    c->isa_level == MIPS_CPU_ISA_M32R2 ||
--		    c->isa_level == MIPS_CPU_ISA_M64R1 ||
--		    c->isa_level == MIPS_CPU_ISA_M64R2) {
-+		if (c->isa_level & (MIPS_CPU_ISA_M32R1 | MIPS_CPU_ISA_M32R2 |
-+				    MIPS_CPU_ISA_M64R1 | MIPS_CPU_ISA_M64R2)) {
- #ifdef CONFIG_MIPS_CPU_SCACHE
- 			if (mips_sc_init ()) {
- 				scache_size = c->scache.ways * c->scache.sets * c->scache.linesz;
-diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
-index 93d937b..df96da7 100644
---- a/arch/mips/mm/sc-mips.c
-+++ b/arch/mips/mm/sc-mips.c
-@@ -98,10 +98,8 @@ static inline int __init mips_sc_probe(void)
- 	c->scache.flags |= MIPS_CACHE_NOT_PRESENT;
+ 	.macro RETURN_BACK
+ 	jr ra
+@@ -68,7 +67,11 @@ NESTED(ftrace_caller, PT_SIZE, ra)
+ 	.globl _mcount
+ _mcount:
+ 	b	ftrace_stub
+-	addiu sp,sp,8
++#ifdef CONFIG_32BIT
++	 addiu sp,sp,8
++#else
++	 nop
++#endif
  
- 	/* Ignore anything but MIPSxx processors */
--	if (c->isa_level != MIPS_CPU_ISA_M32R1 &&
--	    c->isa_level != MIPS_CPU_ISA_M32R2 &&
--	    c->isa_level != MIPS_CPU_ISA_M64R1 &&
--	    c->isa_level != MIPS_CPU_ISA_M64R2)
-+	if (!(c->isa_level & (MIPS_CPU_ISA_M32R1 | MIPS_CPU_ISA_M32R2 |
-+			      MIPS_CPU_ISA_M64R1 | MIPS_CPU_ISA_M64R2)))
- 		return 0;
- 
- 	/* Does this MIPS32/MIPS64 CPU have a config2 register? */
+ 	/* When tracing is activated, it calls ftrace_caller+8 (aka here) */
+ 	lw	t1, function_trace_stop
 -- 
-1.7.1
+1.7.11.7

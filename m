@@ -1,46 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Apr 2013 01:59:59 +0200 (CEST)
-Received: from mail-pb0-f52.google.com ([209.85.160.52]:63852 "EHLO
-        mail-pb0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823608Ab3DBX75yiPrd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Apr 2013 01:59:57 +0200
-Received: by mail-pb0-f52.google.com with SMTP id mc8so516956pbc.11
-        for <multiple recipients>; Tue, 02 Apr 2013 16:59:50 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Apr 2013 06:28:46 +0200 (CEST)
+Received: from mail-pd0-f176.google.com ([209.85.192.176]:55599 "EHLO
+        mail-pd0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816206Ab3DCE2oGYKUm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Apr 2013 06:28:44 +0200
+Received: by mail-pd0-f176.google.com with SMTP id r11so617630pdi.35
+        for <multiple recipients>; Tue, 02 Apr 2013 21:28:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=x-received:from:to:cc:subject:date:message-id:x-mailer;
-        bh=j1d6fDnlHTFk9Fyfu+Z17Xg8mjlzrtNNYTRePUgb+vQ=;
-        b=WmsUBgdQwjBpia+dQ/ges+reBn4pFGM4iwWkhGMFdee5TP3sgn+l6Sp6GtJaGZl1dC
-         aA/GCUCCPEsx7q2tWsDw1Ta+3x0iHKUmO5HiuUn4b5pg9tZgH/pwUpnOIHc6CwOFdh/E
-         fkSHjl4TOevRKfJm5cTiSzvqD5Fq+SoXJXWlsKLO//Qqt+a1sUtfFnTJcYlf67uDx/Kl
-         +SQAF0S+WyEwVkKu0srE+bka/kAF+MHf59h/r7PSVkhKd3WCsRyt2fPFRUsjcvPKHO18
-         xB6irQjmbinLtM+A3tRCZhCSMAq5AVQSMPm8BAs3yhqS4+qxG1aJp6ul6wVVuolVcoJY
-         BE1Q==
-X-Received: by 10.68.116.169 with SMTP id jx9mr26952092pbb.94.1364947190797;
-        Tue, 02 Apr 2013 16:59:50 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id gl9sm2800193pbc.44.2013.04.02.16.59.44
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 02 Apr 2013 16:59:49 -0700 (PDT)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r32NxcPf025442;
-        Tue, 2 Apr 2013 16:59:38 -0700
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r32NxWbu025441;
-        Tue, 2 Apr 2013 16:59:32 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>,
-        Al Cooper <alcooperx@gmail.com>, viric@viric.name,
-        stable@vger.kernel.org.#.3.8.x
-Subject: [PATCH] MIPS: Unbreak function tracer for 64-bit kernel.
-Date:   Tue,  2 Apr 2013 16:59:29 -0700
-Message-Id: <1364947169-25408-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-X-archive-position: 36004
+        h=x-received:date:from:to:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=rHKO/lX9t7+W2f86YbBMY5NB2B4kurHTvjwAmbKgq14=;
+        b=wLnZPsSwxT63WfC+asLl/xttYqz7ma7Xky+Iq/l9ubFpPVu59PEXS9atDjMpEUo7mx
+         WTaVlOcM8ICp/jHimQNfbDWdY23zAgbeakpzzPUh75V2NlsY+cBNhCj48fPlhEgiNIqD
+         NLGuTk6if5CrLCopC7yQbmC6HplPsAwrezErxVH6nhCHepTbuqaLT0PFGrpXRvk8A7+t
+         CyOSnuR+cSW78lCX5CJ4YyyRIg3HlbcpOHFYGKTNfKib0+a85e14MBAPN/8DKo1kP2Ox
+         8Qzh/6+onAG35uxYLaZIaB1CA+b3qbtB9avOutvL2462v6V1UbOVxZ4XDyM3xPtrhVpT
+         SYZw==
+X-Received: by 10.66.162.229 with SMTP id yd5mr1055376pab.4.1364963316798;
+        Tue, 02 Apr 2013 21:28:36 -0700 (PDT)
+Received: from hades.local (60-248-83-130.HINET-IP.hinet.net. [60.248.83.130])
+        by mx.google.com with ESMTPS id kt5sm4280108pbc.30.2013.04.02.21.28.34
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Tue, 02 Apr 2013 21:28:36 -0700 (PDT)
+Date:   Wed, 3 Apr 2013 12:28:19 +0800
+From:   Tony Wu <tung7970@gmail.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: MIPS: Delete definition of SA_RESTORER.
+Message-ID: <20130403042819.GA1013@hades.local>
+References: <S6825888Ab3DBPUspqgO4/20130402152048Z+2639@eddie.linux-mips.org>
+ <CA+zhxNntS-+Di-DRt5gUF7+P6KovOzmeoh741Y06i_d2-ccngw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+zhxNntS-+Di-DRt5gUF7+P6KovOzmeoh741Y06i_d2-ccngw@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 36005
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: tung7970@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,51 +52,103 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: David Daney <david.daney@cavium.com>
+Upstream cdef9602fb [signal: always clear sa_restorer on execve] was
+also applied to v3.0 and v3.4 stable branches. So, the SA_RESTORER patch
+Ralf applied to v3.8 is needed as well.
 
-commit 58b69401c797 (MIPS: Function tracer: Fix broken function
-tracing) completely broke the function tracer for 64-bit kernels.  The
-symptom is a system hang very early in the boot process.
+Here's the original commit message:
+SA_RESTORER used to be defined as 0x04000000 but only the O32 ABI ever
+supported its use and no libc was using it, so the entire sa-restorer
+functionality was removed with lmo commit 39bffc12c3580ab [Zap sa_restorer.]
+for 2.5.48 retaining only the SA_RESTORER definition as a reminder to avoid
+accidental reuse of the mask bit.
 
-The fix: Remove/fix $sp adjustments for 64-bit case.
+Upstream cdef9602fbf1871a43f0f1b5cea10dd0f275167d [signal: always clear
+sa_restorer on execve] adds code that assumes sa_sigaction has an
+sa_restorer field, if SA_RESTORER is defined which would break MIPS.
+So remove the SA_RESTORER definition before the v3.8.4 merge.
 
-Signed-off-by: David Daney <david.daney@cavium.com>
-Cc: Al Cooper <alcooperx@gmail.com>
-Cc: viric@viric.name
-Cc: stable@vger.kernel.org # 3.8.x
----
- arch/mips/kernel/mcount.S | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Tony Wu <tung7970@gmail.com>
 
-diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-index 1658676..33d0671 100644
---- a/arch/mips/kernel/mcount.S
-+++ b/arch/mips/kernel/mcount.S
-@@ -46,10 +46,9 @@
- 	PTR_L	a5, PT_R9(sp)
- 	PTR_L	a6, PT_R10(sp)
- 	PTR_L	a7, PT_R11(sp)
--#else
--	PTR_ADDIU	sp, PT_SIZE
- #endif
--.endm
-+	PTR_ADDIU	sp, PT_SIZE
-+	.endm
+diff --git a/arch/mips/include/asm/signal.h b/arch/mips/include/asm/signal.h
+index c783f36..edfb2b0 100644
+--- a/arch/mips/include/asm/signal.h
++++ b/arch/mips/include/asm/signal.h
+@@ -84,8 +84,6 @@ typedef unsigned long old_sigset_t;		/* at least 32 bits */
+ #define SA_NOMASK	SA_NODEFER
+ #define SA_ONESHOT	SA_RESETHAND
  
- 	.macro RETURN_BACK
- 	jr ra
-@@ -68,7 +67,11 @@ NESTED(ftrace_caller, PT_SIZE, ra)
- 	.globl _mcount
- _mcount:
- 	b	ftrace_stub
--	addiu sp,sp,8
-+#ifdef CONFIG_32BIT
-+	 addiu sp,sp,8
-+#else
-+	 nop
-+#endif
- 
- 	/* When tracing is activated, it calls ftrace_caller+8 (aka here) */
- 	lw	t1, function_trace_stop
--- 
-1.7.11.7
+-#define SA_RESTORER	0x04000000	/* Only for o32 */
+-
+ /*
+  * sigaltstack controls
+  */
+
+On Wed, Apr 03, 2013 at 12:54:30AM +0800, Tony Wu wrote:
+> Hi, Ralf,
+> 
+> Also need to remove SA_RESTORER from arch/mips/include/signal.h for
+> linux-3.0-stable and linux-3.4-stable or it will break compilation.
+> 
+> Thanks,
+> Tony
+> 
+> ---------- Forwarded message ----------
+> From: <linux-mips@linux-mips.org>
+> Date: Tue, Apr 2, 2013 at 11:20 PM
+> Subject: MIPS: Delete definition of SA_RESTORER.
+> To: git-commits@linux-mips.org
+> 
+> 
+> Author: Ralf Baechle <ralf@linux-mips.org> Mon Mar 25 13:43:14 2013 +0100
+> Commit: 17da8d63add23830892ac4dc2cbb3b5d4ffb79a8
+> Gitweb: http://git.linux-mips.org/g/ralf/linux/17da8d63add2
+> Branch: linux-3.8-stable
+> 
+> SA_RESTORER used to be defined as 0x04000000 but only the O32 ABI ever
+> supported its use and no libc was using it, so the entire sa-restorer
+> functionality was removed with lmo commit 39bffc12c3580ab [Zap sa_restorer.]
+> for 2.5.48 retaining only the SA_RESTORER definition as a reminder to avoid
+> accidental reuse of the mask bit.
+> 
+> Upstream cdef9602fbf1871a43f0f1b5cea10dd0f275167d [signal: always clear
+> sa_restorer on execve] adds code that assumes sa_sigaction has an
+> sa_restorer field, if SA_RESTORER is defined which would break MIPS.
+> So remove the SA_RESTORER definition before the v3.8.4 merge.
+> 
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+> 
+> ---
+> 
+>  arch/mips/include/uapi/asm/signal.h |    8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/include/uapi/asm/signal.h
+> b/arch/mips/include/uapi/asm/signal.h
+> index 770732c..dfd6b5e 100644
+> --- a/arch/mips/include/uapi/asm/signal.h
+> +++ b/arch/mips/include/uapi/asm/signal.h
+> @@ -72,6 +72,12 @@ typedef unsigned long old_sigset_t;          /* at least
+> 32 bits */
+>   *
+>   * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single
+>   * Unix names RESETHAND and NODEFER respectively.
+> + *
+> + * SA_RESTORER used to be defined as 0x04000000 but only the O32 ABI ever
+> + * supported its use and no libc was using it, so the entire sa-restorer
+> + * functionality was removed with lmo commit 39bffc12c3580ab for 2.5.48
+> + * retaining only the SA_RESTORER definition as a reminder to avoid
+> + * accidental reuse of the mask bit.
+>   */
+>  #define SA_ONSTACK     0x08000000
+>  #define SA_RESETHAND   0x80000000
+> @@ -84,8 +90,6 @@ typedef unsigned long old_sigset_t;           /* at least
+> 32 bits */
+>  #define SA_NOMASK      SA_NODEFER
+>  #define SA_ONESHOT     SA_RESETHAND
+> 
+> -#define SA_RESTORER    0x04000000      /* Only for o32 */
+> -
+>  #define MINSIGSTKSZ    2048
+>  #define SIGSTKSZ       8192

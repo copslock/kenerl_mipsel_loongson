@@ -1,25 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Apr 2013 12:11:31 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:54540 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816206Ab3DCKLaAk3lk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Apr 2013 12:11:30 +0200
-Message-ID: <515BFF6B.3060000@phrozen.org>
-Date:   Wed, 03 Apr 2013 12:07:39 +0200
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
-MIME-Version: 1.0
-To:     viresh.kumar@linaro.org
-CC:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 5/9] mips: cpufreq: move cpufreq driver to drivers/cpufreq
-References: <cover.1364229828.git.viresh.kumar@linaro.org>        <199e0d0a282290544ff562b904a0028a104aad45.1364229828.git.viresh.kumar@linaro.org>        <CAKohpom4sckvmB12=KRX4aMJDJjpT=nN++_xyL=p_0ZY7v6oMQ@mail.gmail.com> <CAKohpome32G=Nn4Uy3kHJyeJ2cTUOBTwHy9nKo2r6Cb1=KVS7A@mail.gmail.com>
-In-Reply-To: <CAKohpome32G=Nn4Uy3kHJyeJ2cTUOBTwHy9nKo2r6Cb1=KVS7A@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 36007
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Apr 2013 00:05:52 +0200 (CEST)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:47093 "EHLO
+        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6828015Ab3DCWFvI3-xz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Apr 2013 00:05:51 +0200
+Received: by mail-bk0-f49.google.com with SMTP id w12so1131133bku.22
+        for <linux-mips@linux-mips.org>; Wed, 03 Apr 2013 15:05:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:from:to:cc:subject:date:message-id:x-mailer
+         :x-gm-message-state;
+        bh=4XsliBu5LmcjFH0iMPEIW/QjQn8srxztg8vz8oibsMI=;
+        b=kO7GBcl2yonxlpj1jNybTI6DFgJ+SC/+0j1A/l4+0eiiYJRq/88Bjie+ob7NwjIfIz
+         tCvIvaqb7AWdj3DZBMvbaN1o+2ScKfCTLqwnvkJBXBoXlr/ayPwpX8w5PhAjIeqKqsbN
+         VMdgPyIgGhQ4+59weva9hPaq7BPsaUenSR7PGYDsV2fySGM37BkdLGNuvwhoBYGwJNQ7
+         pBnDvXGxH+9Q1owranvOOPz63auJoHZHM1uQ51MUw3T1spWCyfo49kkfg7KDWfAN3MbA
+         8xl1/HJEjt8wQMHVmqYTrwjqgx8kQjSlK/2YjxRrEeh12JQeK0Y+gjTFoy6z5tmlMZKi
+         FQmA==
+X-Received: by 10.205.104.8 with SMTP id dk8mr2570493bkc.34.1365026745360;
+        Wed, 03 Apr 2013 15:05:45 -0700 (PDT)
+Received: from localhost.localdomain ([77.70.100.51])
+        by mx.google.com with ESMTPS id fs20sm4176710bkc.8.2013.04.03.15.05.43
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Wed, 03 Apr 2013 15:05:44 -0700 (PDT)
+From:   Svetoslav Neykov <svetoslav@neykov.name>
+To:     linux-mips@linux-mips.org, linux-usb@vger.kernel.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Gabor Juhos <juhosg@openwrt.org>,
+        John Crispin <blogic@openwrt.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Svetoslav Neykov <svetoslav@neykov.name>
+Subject: [PATCH v3 0/1] Chipidea driver support for the AR933x platform
+Date:   Thu,  4 Apr 2013 01:04:45 +0300
+Message-Id: <1365026686-4131-1-git-send-email-svetoslav@neykov.name>
+X-Mailer: git-send-email 1.7.9.5
+X-Gm-Message-State: ALoCoQkACn0mb/ldkwhkA1AFvzU+PBZK0CpQyZG90E2ZEokvQuA7OQCIP0Q45rCZ4v/QpFLbTteY
+X-archive-position: 36009
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: svetoslav@neykov.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,35 +55,21 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 03/04/13 11:28, Viresh Kumar wrote:
-> On 31 March 2013 09:31, Viresh Kumar<viresh.kumar@linaro.org>  wrote:
->> On 25 March 2013 22:24, Viresh Kumar<viresh.kumar@linaro.org>  wrote:
->>> This patch moves cpufreq driver of MIPS architecture to drivers/cpufreq.
->>>
->>> Cc: Ralf Baechle<ralf@linux-mips.org>
->>> Cc: linux-mips@linux-mips.org
->>> Signed-off-by: Viresh Kumar<viresh.kumar@linaro.org>
->>> ---
->>>   arch/mips/Kconfig                                  |  9 ++++-
->>>   arch/mips/kernel/Makefile                          |  2 --
->>>   arch/mips/kernel/cpufreq/Kconfig                   | 41 ----------------------
->>>   arch/mips/kernel/cpufreq/Makefile                  |  5 ---
->>>   drivers/cpufreq/Kconfig                            | 18 ++++++++++
->>>   drivers/cpufreq/Makefile                           |  1 +
->>>   .../kernel =>  drivers}/cpufreq/loongson2_cpufreq.c |  0
->>>   7 files changed, 27 insertions(+), 49 deletions(-)
->>>   delete mode 100644 arch/mips/kernel/cpufreq/Kconfig
->>>   delete mode 100644 arch/mips/kernel/cpufreq/Makefile
->>>   rename {arch/mips/kernel =>  drivers}/cpufreq/loongson2_cpufreq.c (100%)
->>
->> Ralf or any other mips guy,
->>
->> Can i have your ack or comments for this patch?
->
-> Ping!!
->
->
+Add support for the usb controller in AR933x platform.
+The controller supports both host or device mode (defined at startup) 
+but not OTG. 
+The patches are tested on WR703n router running OpenWRT in device mode.
 
-sorry for the delay ...
+Changes since v2:
+Removed the glue driver, now dev-usb.c directly registers ci_hdrc.
+Changes to follow the style of the existing code.
 
-Acked-by: John Crispin <blogic@openwrt.org>
+Svetoslav Neykov (1):
+  usb: chipidea: AR933x platform support for the chipidea driver
+
+ arch/mips/ath79/dev-usb.c                      |   42 ++++++++++++++++++++++++
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    3 ++
+ 2 files changed, 45 insertions(+)
+
+-- 
+1.7.9.5

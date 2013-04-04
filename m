@@ -1,54 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Apr 2013 14:57:11 +0200 (CEST)
-Received: from mail-pb0-f50.google.com ([209.85.160.50]:37443 "EHLO
-        mail-pb0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834799Ab3DDM5E5-aij (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Apr 2013 14:57:04 +0200
-Received: by mail-pb0-f50.google.com with SMTP id jt11so1398090pbb.23
-        for <linux-mips@linux-mips.org>; Thu, 04 Apr 2013 05:56:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
-         :references:in-reply-to:references:x-gm-message-state;
-        bh=SStXx6KXJhqenewEaQX6j0wlWvwCBn+paeL7XKlhFcg=;
-        b=QHAy+HS+lTJakG1CQyKiooq3IqipskXYOdGiRqwRkHZ7d07RxQwMMZj0oVcDvBANwk
-         dlMKY4/BvgkZnuBxuan+nFiwYUCEVCKPrd0p+ghCJ8LDsOBY+doCQ1ENcyhTsm9x6NDE
-         oe35p+jFUJQ6hLFbxd0BeRiwZ7MXDdcBmyXmSzIaovuw9TEpgroi5Pz6EPWl5dvwqf1C
-         ud35wvLaWeECVSXQSG8+92yk6QJQYYO4xhSATdBmgq08tCenOMVxJAdEJaeP5o851U3+
-         /iyR7fqbW0jId3l7caNiDDszdx5lct8f9FiqLLC1BWBXIlsSWkThI/bRUuL6kQ7qKQOQ
-         cOSQ==
-X-Received: by 10.68.241.132 with SMTP id wi4mr8541134pbc.8.1365080218360;
-        Thu, 04 Apr 2013 05:56:58 -0700 (PDT)
-Received: from localhost ([122.172.193.181])
-        by mx.google.com with ESMTPS id wm3sm10174296pbc.4.2013.04.04.05.56.52
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Thu, 04 Apr 2013 05:56:57 -0700 (PDT)
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     rjw@sisk.pl
-Cc:     robin.randhawa@arm.com, Steve.Bannister@arm.com,
-        Liviu.Dudau@arm.com, charles.garcia-tobin@arm.com,
-        arvind.chauhan@arm.com, cpufreq@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linaro-kernel@lists.linaro.org, patches@linaro.org,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 13/18] cpufreq: mips: move cpufreq driver to drivers/cpufreq
-Date:   Thu,  4 Apr 2013 18:24:21 +0530
-Message-Id: <a4974a6f4ec6c81250aecd58ddd38683b408f8af.1365079581.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 1.7.12.rc2.18.g61b472e
-In-Reply-To: <cover.1365079581.git.viresh.kumar@linaro.org>
-References: <cover.1365079581.git.viresh.kumar@linaro.org>
-In-Reply-To: <cover.1365079581.git.viresh.kumar@linaro.org>
-References: <cover.1365079581.git.viresh.kumar@linaro.org>
-X-Gm-Message-State: ALoCoQmhFB502mzIlie5NpRiwNiiiu7AzHLu6CVvrSZfmEhRP+3aBYOXaAVlfpY3xkOjsh05ux1G
-Return-Path: <viresh.kumar@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Apr 2013 15:47:12 +0200 (CEST)
+Received: from cpsmtpb-ews02.kpnxchange.com ([213.75.39.5]:52499 "EHLO
+        cpsmtpb-ews02.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822444Ab3DDNrHyIBnd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Apr 2013 15:47:07 +0200
+Received: from cpsps-ews09.kpnxchange.com ([10.94.84.176]) by cpsmtpb-ews02.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Thu, 4 Apr 2013 15:47:02 +0200
+Received: from CPSMTPM-TLF102.kpnxchange.com ([195.121.3.5]) by cpsps-ews09.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Thu, 4 Apr 2013 15:47:02 +0200
+Received: from [192.168.1.100] ([212.123.139.93]) by CPSMTPM-TLF102.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Thu, 4 Apr 2013 15:47:01 +0200
+Message-ID: <1365083221.1830.51.camel@x61.thuisdomein>
+Subject: [PATCH v2] MIPS: Alchemy: Fix typo "CONFIG_DEBUG_PCI"
+From:   Paul Bolle <pebolle@tiscali.nl>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Date:   Thu, 04 Apr 2013 15:47:01 +0200
+In-Reply-To: <515D69B6.6040302@cogentembedded.com>
+References: <1365074738.1830.38.camel@x61.thuisdomein>
+         <515D69B6.6040302@cogentembedded.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.4.4 (3.4.4-2.fc17) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 04 Apr 2013 13:47:01.0691 (UTC) FILETIME=[E26BE8B0:01CE313A]
+X-RcptDomain: linux-mips.org
+Return-Path: <pebolle@tiscali.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36015
+X-archive-position: 36016
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: viresh.kumar@linaro.org
+X-original-sender: pebolle@tiscali.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,157 +46,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch moves cpufreq driver of MIPS architecture to drivers/cpufreq.
+Commit 7517de348663b08a808aff44b5300e817157a568 ("MIPS: Alchemy: Redo
+PCI as platform driver") added a reference to CONFIG_DEBUG_PCI. Change
+it to CONFIG_PCI_DEBUG, as that is a valid Kconfig macro.
 
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Acked-by: John Crispin <blogic@openwrt.org>
+Also add a newline to a debugging printk that this fix enables.
+
+Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
 ---
- arch/mips/Kconfig                                  |  9 ++++-
- arch/mips/kernel/Makefile                          |  2 --
- arch/mips/kernel/cpufreq/Kconfig                   | 41 ----------------------
- arch/mips/kernel/cpufreq/Makefile                  |  5 ---
- drivers/cpufreq/Kconfig                            | 18 ++++++++++
- drivers/cpufreq/Makefile                           |  1 +
- .../kernel => drivers}/cpufreq/loongson2_cpufreq.c |  0
- 7 files changed, 27 insertions(+), 49 deletions(-)
- delete mode 100644 arch/mips/kernel/cpufreq/Kconfig
- delete mode 100644 arch/mips/kernel/cpufreq/Makefile
- rename {arch/mips/kernel => drivers}/cpufreq/loongson2_cpufreq.c (100%)
+This version has a verbose commit explanation, as Sergei requested.
+Still entirely untested.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index cd2e21f..22e8417 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2539,7 +2539,14 @@ source "kernel/power/Kconfig"
+ arch/mips/pci/pci-alchemy.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/pci/pci-alchemy.c b/arch/mips/pci/pci-alchemy.c
+index 38a80c8..d1faece 100644
+--- a/arch/mips/pci/pci-alchemy.c
++++ b/arch/mips/pci/pci-alchemy.c
+@@ -19,7 +19,7 @@
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/tlbmisc.h>
  
- endmenu
- 
--source "arch/mips/kernel/cpufreq/Kconfig"
-+config MIPS_EXTERNAL_TIMER
-+	bool
-+
-+if CPU_SUPPORTS_CPUFREQ && MIPS_EXTERNAL_TIMER
-+menu "CPU Power Management"
-+source "drivers/cpufreq/Kconfig"
-+endmenu
-+endif
- 
- source "net/Kconfig"
- 
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index f81d98f..c69ca65 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -92,8 +92,6 @@ CFLAGS_cpu-bugs64.o	= $(shell if $(CC) $(KBUILD_CFLAGS) -Wa,-mdaddi -c -o /dev/n
- 
- obj-$(CONFIG_HAVE_STD_PC_SERIAL_PORT)	+= 8250-platform.o
- 
--obj-$(CONFIG_MIPS_CPUFREQ)	+= cpufreq/
--
- obj-$(CONFIG_PERF_EVENTS)	+= perf_event.o
- obj-$(CONFIG_HW_PERF_EVENTS)	+= perf_event_mipsxx.o
- 
-diff --git a/arch/mips/kernel/cpufreq/Kconfig b/arch/mips/kernel/cpufreq/Kconfig
-deleted file mode 100644
-index 58c601e..0000000
---- a/arch/mips/kernel/cpufreq/Kconfig
-+++ /dev/null
-@@ -1,41 +0,0 @@
--#
--# CPU Frequency scaling
--#
--
--config MIPS_EXTERNAL_TIMER
--	bool
--
--config MIPS_CPUFREQ
--	bool
--	default y
--	depends on CPU_SUPPORTS_CPUFREQ && MIPS_EXTERNAL_TIMER
--
--if MIPS_CPUFREQ
--
--menu "CPU Frequency scaling"
--
--source "drivers/cpufreq/Kconfig"
--
--if CPU_FREQ
--
--comment "CPUFreq processor drivers"
--
--config LOONGSON2_CPUFREQ
--	tristate "Loongson2 CPUFreq Driver"
--	select CPU_FREQ_TABLE
--	depends on MIPS_CPUFREQ
--	help
--	  This option adds a CPUFreq driver for loongson processors which
--	  support software configurable cpu frequency.
--
--	  Loongson2F and it's successors support this feature.
--
--	  For details, take a look at <file:Documentation/cpu-freq/>.
--
--	  If in doubt, say N.
--
--endif	# CPU_FREQ
--
--endmenu
--
--endif	# MIPS_CPUFREQ
-diff --git a/arch/mips/kernel/cpufreq/Makefile b/arch/mips/kernel/cpufreq/Makefile
-deleted file mode 100644
-index 05a5715..0000000
---- a/arch/mips/kernel/cpufreq/Makefile
-+++ /dev/null
-@@ -1,5 +0,0 @@
--#
--# Makefile for the Linux/MIPS cpufreq.
--#
--
--obj-$(CONFIG_LOONGSON2_CPUFREQ) += loongson2_cpufreq.o
-diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
-index a2f1600..5030df5 100644
---- a/drivers/cpufreq/Kconfig
-+++ b/drivers/cpufreq/Kconfig
-@@ -235,6 +235,24 @@ config IA64_ACPI_CPUFREQ
- 
- endmenu
- 
-+menu "MIPS CPUFreq processor drivers"
-+depends on MIPS
-+
-+config LOONGSON2_CPUFREQ
-+	tristate "Loongson2 CPUFreq Driver"
-+	select CPU_FREQ_TABLE
-+	help
-+	  This option adds a CPUFreq driver for loongson processors which
-+	  support software configurable cpu frequency.
-+
-+	  Loongson2F and it's successors support this feature.
-+
-+	  For details, take a look at <file:Documentation/cpu-freq/>.
-+
-+	  If in doubt, say N.
-+
-+endmenu
-+
- menu "PowerPC CPU frequency scaling drivers"
- depends on PPC32 || PPC64
- source "drivers/cpufreq/Kconfig.powerpc"
-diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
-index aaa018c..f6226d1 100644
---- a/drivers/cpufreq/Makefile
-+++ b/drivers/cpufreq/Makefile
-@@ -87,3 +87,4 @@ obj-$(CONFIG_BLACKFIN)			+= blackfin-cpufreq.o
- obj-$(CONFIG_CRIS_MACH_ARTPEC3)		+= cris-artpec3-cpufreq.o
- obj-$(CONFIG_ETRAXFS)			+= cris-etraxfs-cpufreq.o
- obj-$(CONFIG_IA64_ACPI_CPUFREQ)		+= ia64-acpi-cpufreq.o
-+obj-$(CONFIG_LOONGSON2_CPUFREQ)		+= loongson2_cpufreq.o
-diff --git a/arch/mips/kernel/cpufreq/loongson2_cpufreq.c b/drivers/cpufreq/loongson2_cpufreq.c
-similarity index 100%
-rename from arch/mips/kernel/cpufreq/loongson2_cpufreq.c
-rename to drivers/cpufreq/loongson2_cpufreq.c
+-#ifdef CONFIG_DEBUG_PCI
++#ifdef CONFIG_PCI_DEBUG
+ #define DBG(x...) printk(KERN_DEBUG x)
+ #else
+ #define DBG(x...) do {} while (0)
+@@ -162,7 +162,7 @@ static int config_access(unsigned char access_type, struct pci_bus *bus,
+ 	if (status & (1 << 29)) {
+ 		*data = 0xffffffff;
+ 		error = -1;
+-		DBG("alchemy-pci: master abort on cfg access %d bus %d dev %d",
++		DBG("alchemy-pci: master abort on cfg access %d bus %d dev %d\n",
+ 		    access_type, bus->number, device);
+ 	} else if ((status >> 28) & 0xf) {
+ 		DBG("alchemy-pci: PCI ERR detected: dev %d, status %lx\n",
 -- 
-1.7.12.rc2.18.g61b472e
+1.7.11.7

@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Apr 2013 20:01:32 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:42063 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Apr 2013 13:19:26 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:49491 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822678Ab3DDSBLTD6lt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Apr 2013 20:01:11 +0200
+        id S6819313Ab3DFLTZ18aLc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 6 Apr 2013 13:19:25 +0200
 Received: from arrakis.dune.hu ([127.0.0.1])
         by localhost (arrakis.dune.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id khH9TeDhy2-W; Thu,  4 Apr 2013 20:00:29 +0200 (CEST)
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id A064C2800FA;
-        Thu,  4 Apr 2013 20:00:28 +0200 (CEST)
-From:   Gabor Juhos <juhosg@openwrt.org>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 2/2] MIPS: implement pcibios_get_phb_of_node
-Date:   Thu,  4 Apr 2013 20:01:23 +0200
-Message-Id: <1365098483-26821-2-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.10
-In-Reply-To: <1365098483-26821-1-git-send-email-juhosg@openwrt.org>
-References: <1365098483-26821-1-git-send-email-juhosg@openwrt.org>
-Return-Path: <juhosg@openwrt.org>
+        with ESMTP id wVmgJBA2hh9H; Sat,  6 Apr 2013 13:18:42 +0200 (CEST)
+Received: from shaker64.lan (dslb-088-073-140-081.pools.arcor-ip.net [88.73.140.81])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id E1483283D91;
+        Sat,  6 Apr 2013 13:18:41 +0200 (CEST)
+From:   Jonas Gorski <jogo@openwrt.org>
+To:     spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org
+Cc:     Mark Brown <broonie@opensource.wolfsonmicro.com>,
+        Grant Likely <grant.likely@secretlab.ca>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH] spi/bcm63xx: remove unused speed_hz variable
+Date:   Sat,  6 Apr 2013 13:18:57 +0200
+Message-Id: <1365247137-19050-1-git-send-email-jogo@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36018
+X-archive-position: 36020
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,49 +42,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The of_node field of the device assigned to a
-PCI bus is used during scanning of the PCI bus.
-However on MIPS, the of_node field is assigned
-only after the bus has been scanned.
+speed_hz is a write only member, so we can safely remove it and its
+generation. Also fixes the missing clk_put after getting the periph
+clock.
 
-Implement the architecture specific version of
-'pcibios_get_phb_of_node'. Which ensures that the
-PCI driver core will initialize the of_node field
-before starting the scan.
-
-Also remove the local assignment of bus->dev.of_node,
-it is not needed after the patch.
-
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
 ---
- arch/mips/pci/pci.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index 0872f12..594e60d 100644
---- a/arch/mips/pci/pci.c
-+++ b/arch/mips/pci/pci.c
-@@ -115,7 +115,6 @@ static void pcibios_scanbus(struct pci_controller *hose)
- 			pci_bus_assign_resources(bus);
- 			pci_enable_bridges(bus);
- 		}
--		bus->dev.of_node = hose->of_node;
- 	}
- }
+This patch applies cleanly to both spi-next and mips-next, and I don't
+have any preference into which tree it should go. Maybe mips, as it
+"wins" in terms of removed lines ;-).
+
+ arch/mips/bcm63xx/dev-spi.c                          |   11 -----------
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h |    1 -
+ drivers/spi/spi-bcm63xx.c                            |    2 --
+ 3 files changed, 14 deletions(-)
+
+diff --git a/arch/mips/bcm63xx/dev-spi.c b/arch/mips/bcm63xx/dev-spi.c
+index f1c9c3e..e97fd60 100644
+--- a/arch/mips/bcm63xx/dev-spi.c
++++ b/arch/mips/bcm63xx/dev-spi.c
+@@ -85,20 +85,9 @@ static struct platform_device bcm63xx_spi_device = {
  
-@@ -169,6 +168,13 @@ void pci_load_of_ranges(struct pci_controller *hose, struct device_node *node)
- 		}
- 	}
- }
-+
-+struct device_node *pcibios_get_phb_of_node(struct pci_bus *bus)
-+{
-+	struct pci_controller *hose = bus->sysdata;
-+
-+	return of_node_get(hose->of_node);
-+}
- #endif
+ int __init bcm63xx_spi_register(void)
+ {
+-	struct clk *periph_clk;
+-
+ 	if (BCMCPU_IS_6328() || BCMCPU_IS_6345())
+ 		return -ENODEV;
  
- static DEFINE_MUTEX(pci_scan_mutex);
+-	periph_clk = clk_get(NULL, "periph");
+-	if (IS_ERR(periph_clk)) {
+-		pr_err("unable to get periph clock\n");
+-		return -ENODEV;
+-	}
+-
+-	/* Set bus frequency */
+-	spi_pdata.speed_hz = clk_get_rate(periph_clk);
+-
+ 	spi_resources[0].start = bcm63xx_regset_address(RSET_SPI);
+ 	spi_resources[0].end = spi_resources[0].start;
+ 	spi_resources[1].start = bcm63xx_get_irq_number(IRQ_SPI);
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+index c9bae13..b0184cf 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+@@ -13,7 +13,6 @@ struct bcm63xx_spi_pdata {
+ 	unsigned int	msg_ctl_width;
+ 	int		bus_num;
+ 	int		num_chipselect;
+-	u32		speed_hz;
+ };
+ 
+ enum bcm63xx_regs_spi {
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 973099b..a4ec5f4 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -46,7 +46,6 @@ struct bcm63xx_spi {
+ 	int			irq;
+ 
+ 	/* Platform data */
+-	u32			speed_hz;
+ 	unsigned		fifo_size;
+ 	unsigned int		msg_type_shift;
+ 	unsigned int		msg_ctl_width;
+@@ -436,7 +435,6 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 	master->unprepare_transfer_hardware = bcm63xx_spi_unprepare_transfer;
+ 	master->transfer_one_message = bcm63xx_spi_transfer_one;
+ 	master->mode_bits = MODEBITS;
+-	bs->speed_hz = pdata->speed_hz;
+ 	bs->msg_type_shift = pdata->msg_type_shift;
+ 	bs->msg_ctl_width = pdata->msg_ctl_width;
+ 	bs->tx_io = (u8 *)(bs->regs + bcm63xx_spireg(SPI_MSG_DATA));
 -- 
-1.7.10
+1.7.10.4

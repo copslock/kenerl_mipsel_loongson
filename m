@@ -1,62 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Apr 2013 16:46:01 +0200 (CEST)
-Received: from mail-pb0-f42.google.com ([209.85.160.42]:42591 "EHLO
-        mail-pb0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817032Ab3DFOp7S30GV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Apr 2013 16:45:59 +0200
-Received: by mail-pb0-f42.google.com with SMTP id up7so2465479pbc.15
-        for <multiple recipients>; Sat, 06 Apr 2013 07:45:52 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Apr 2013 17:20:56 +0200 (CEST)
+Received: from mail-da0-f43.google.com ([209.85.210.43]:50465 "EHLO
+        mail-da0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6834879Ab3DFPUyrKJln (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Apr 2013 17:20:54 +0200
+Received: by mail-da0-f43.google.com with SMTP id u36so1991728dak.16
+        for <linux-mips@linux-mips.org>; Sat, 06 Apr 2013 08:20:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
-         :references;
-        bh=ia294ZzY12Zfw1VVZz0/1LIpOoLb3HongVasj4JDLxY=;
-        b=ZKr6dFXyiuGuuuQsF4CwQs2hy2Zee4C7VV37eNEoTzOysf0bS2QdYuCI0SFdppK6a9
-         3RyRteu9FDBXVlitKp5eYbvVF30pI/BjCCL8I1kkSfvaDmkmNayFLE1WJ2T6uv+VKQm9
-         qSYNvhxnJNwtZ21RAEAVY5prMfR+r1qoZ6PN76jBq6lXe/ITkbOTfdbB25pGBSYGnB2/
-         gUk3lpI64Bpe1PffR1nZ5g8y9cVjCoiCUPCTCs8s+CPPP/xegGvpzBlPazbUDxiG+03j
-         PsyEFNAFLP0K6esz/xTzbzHdkk3QhUi2tdZJRIn5hVTmGQA1uig2fZafhmGu06IZBgLr
-         ls8g==
-X-Received: by 10.68.129.226 with SMTP id nz2mr12333089pbb.51.1365259552390;
-        Sat, 06 Apr 2013 07:45:52 -0700 (PDT)
-Received: from localhost.localdomain ([114.250.92.211])
-        by mx.google.com with ESMTPS id of1sm4911094pbb.2.2013.04.06.07.45.41
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sat, 06 Apr 2013 07:45:51 -0700 (PDT)
-From:   Jiang Liu <liuj97@gmail.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Jiang Liu <jiang.liu@huawei.com>,
-        David Rientjes <rientjes@google.com>,
-        Wen Congyang <wency@cn.fujitsu.com>,
-        Mel Gorman <mgorman@suse.de>, Minchan Kim <minchan@kernel.org>,
-        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
-        Michal Hocko <mhocko@suse.cz>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        David Howells <dhowells@redhat.com>,
-        Mark Salter <msalter@redhat.com>,
-        Jianguo Wu <wujianguo@huawei.com>, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        d=linuxfoundation.org; s=google;
+        h=x-received:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent;
+        bh=1tJUkqSQ4kalbJBPepNwILXgEkhAGQJvYdXLoEjLQgk=;
+        b=IY7W0PpKt5flwaYFUMA1qof1G/8sB7BO2p7IEGhVqq37WlNTgIDJ3AZVjbS4BxAn3t
+         pUGzQyWTOFKxoEGsvw3BwlDAxouJZTutpoPlMBaW5Kk3uEjeZCXWJroJ0U3sdGNd0ee3
+         gJ9DUN8NSrSn3uVUx02MMijHOYIQX/zmJt1ag=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent:x-gm-message-state;
+        bh=1tJUkqSQ4kalbJBPepNwILXgEkhAGQJvYdXLoEjLQgk=;
+        b=YzGb/D+I5IHdcCGXjGAzX+fJG2pC3qj576eezehxBB3R4qaS8YAaup8SLghx20EJ0L
+         buQP8Uquo+xbFzjazOV+gFsGJp+euFn9ZTUBPalURzBdHANlAuUW8YGdaxgDA9Os4ja7
+         J/ruMFDT9Ospm9aBRItr0mzu4ghSBXu5GyQH6MStV9g4ZY0i4f0X2wth1MsWRF7LPq9F
+         l7FIlu4FMt5yeQR0FfZqhxrIIlrzzkyvP0hH+doF0fcScdcOKjta6TqFcehxvckE/huO
+         SG7qaITs05BfzO69/blg6Xjbse8Kw7lIosoVGg/QEcjSVmyt7/8mhse1dnzM4vps5nbs
+         mzEw==
+X-Received: by 10.68.103.5 with SMTP id fs5mr20683315pbb.32.1365261647730;
+        Sat, 06 Apr 2013 08:20:47 -0700 (PDT)
+Received: from localhost (c-76-28-172-123.hsd1.wa.comcast.net. [76.28.172.123])
+        by mx.google.com with ESMTPS id yp2sm20708741pab.10.2013.04.06.08.20.45
+        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sat, 06 Apr 2013 08:20:46 -0700 (PDT)
+Date:   Sat, 6 Apr 2013 08:20:44 -0700
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Jonas Gorski <jogo@openwrt.org>
+Cc:     linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Arnd Bergmann <arnd@arndb.de>, Jiri Kosina <jkosina@suse.cz>,
         John Crispin <blogic@openwrt.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-mips@linux-mips.org
-Subject: [PATCH v4, part3 27/41] mm/MIPS: prepare for removing num_physpages and simplify mem_init()
-Date:   Sat,  6 Apr 2013 22:32:26 +0800
-Message-Id: <1365258760-30821-28-git-send-email-jiang.liu@huawei.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1365258760-30821-1-git-send-email-jiang.liu@huawei.com>
-References: <1365258760-30821-1-git-send-email-jiang.liu@huawei.com>
-Return-Path: <liuj97@gmail.com>
+        Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>,
+        Kevin Cernekee <cernekee@gmail.com>
+Subject: Re: [PATCH] MIPS: BCM63XX: merge bcm63xx_clk.h into bcm63xx/clk.c
+Message-ID: <20130406152044.GA12202@kroah.com>
+References: <1365247862-19358-1-git-send-email-jogo@openwrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1365247862-19358-1-git-send-email-jogo@openwrt.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Gm-Message-State: ALoCoQltn8pn5doYETjBElYDDTNtlVb2MoQ/4u2pQR+3gklVaiLP7DkHylYaqdpudcOMy0LfBvFO
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36023
+X-archive-position: 36024
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: liuj97@gmail.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,173 +71,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Prepare for removing num_physpages and simplify mem_init().
+On Sat, Apr 06, 2013 at 01:31:02PM +0200, Jonas Gorski wrote:
+> All the header file does is provide the internal structure of clk,
+> which shouldn't be used by anyone except clk.c itself anyway.
+> 
+> Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+> ---
+>  arch/mips/bcm63xx/clk.c                          |    8 +++++++-
+>  arch/mips/include/asm/mach-bcm63xx/bcm63xx_clk.h |   11 -----------
+>  drivers/tty/serial/bcm63xx_uart.c                |    1 -
+>  3 files changed, 7 insertions(+), 13 deletions(-)
+>  delete mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_clk.h
 
-Signed-off-by: Jiang Liu <jiang.liu@huawei.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: David Daney <david.daney@cavium.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Jiri Kosina <jkosina@suse.cz>
-Cc: John Crispin <blogic@openwrt.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
----
- arch/mips/mm/init.c              |   57 ++++++++++++--------------------------
- arch/mips/pci/pci-lantiq.c       |    2 +-
- arch/mips/sgi-ip27/ip27-memory.c |   21 ++------------
- 3 files changed, 21 insertions(+), 59 deletions(-)
-
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index de4ff2f..0392a1a 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -358,11 +358,24 @@ void __init paging_init(void)
- static struct kcore_list kcore_kseg0;
- #endif
- 
--void __init mem_init(void)
-+static inline void mem_init_free_highmem(void)
- {
--	unsigned long codesize, reservedpages, datasize, initsize;
--	unsigned long tmp, ram;
-+#ifdef CONFIG_HIGHMEM
-+	unsigned long tmp;
- 
-+	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
-+		struct page *page = pfn_to_page(tmp);
-+
-+		if (!page_is_ram(tmp))
-+			SetPageReserved(page);
-+		else
-+			free_highmem_page(page);
-+	}
-+#endif
-+}
-+
-+void __init mem_init(void)
-+{
- #ifdef CONFIG_HIGHMEM
- #ifdef CONFIG_DISCONTIGMEM
- #error "CONFIG_HIGHMEM and CONFIG_DISCONTIGMEM dont work together yet"
-@@ -375,32 +388,8 @@ void __init mem_init(void)
- 
- 	free_all_bootmem();
- 	setup_zero_pages();	/* Setup zeroed pages.  */
--
--	reservedpages = ram = 0;
--	for (tmp = 0; tmp < max_low_pfn; tmp++)
--		if (page_is_ram(tmp) && pfn_valid(tmp)) {
--			ram++;
--			if (PageReserved(pfn_to_page(tmp)))
--				reservedpages++;
--		}
--	num_physpages = ram;
--
--#ifdef CONFIG_HIGHMEM
--	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
--		struct page *page = pfn_to_page(tmp);
--
--		if (!page_is_ram(tmp)) {
--			SetPageReserved(page);
--			continue;
--		}
--		free_highmem_page(page);
--	}
--	num_physpages += totalhigh_pages;
--#endif
--
--	codesize =  (unsigned long) &_etext - (unsigned long) &_text;
--	datasize =  (unsigned long) &_edata - (unsigned long) &_etext;
--	initsize =  (unsigned long) &__init_end - (unsigned long) &__init_begin;
-+	mem_init_free_highmem();
-+	mem_init_print_info(NULL);
- 
- #ifdef CONFIG_64BIT
- 	if ((unsigned long) &_text > (unsigned long) CKSEG0)
-@@ -409,16 +398,6 @@ void __init mem_init(void)
- 		kclist_add(&kcore_kseg0, (void *) CKSEG0,
- 				0x80000000 - 4, KCORE_TEXT);
- #endif
--
--	printk(KERN_INFO "Memory: %luk/%luk available (%ldk kernel code, "
--	       "%ldk reserved, %ldk data, %ldk init, %ldk highmem)\n",
--	       nr_free_pages() << (PAGE_SHIFT-10),
--	       ram << (PAGE_SHIFT-10),
--	       codesize >> 10,
--	       reservedpages << (PAGE_SHIFT-10),
--	       datasize >> 10,
--	       initsize >> 10,
--	       totalhigh_pages << (PAGE_SHIFT-10));
- }
- #endif /* !CONFIG_NEED_MULTIPLE_NODES */
- 
-diff --git a/arch/mips/pci/pci-lantiq.c b/arch/mips/pci/pci-lantiq.c
-index 879077b..cb1ef99 100644
---- a/arch/mips/pci/pci-lantiq.c
-+++ b/arch/mips/pci/pci-lantiq.c
-@@ -89,7 +89,7 @@ static inline u32 ltq_calc_bar11mask(void)
- 	u32 mem, bar11mask;
- 
- 	/* BAR11MASK value depends on available memory on system. */
--	mem = num_physpages * PAGE_SIZE;
-+	mem = get_num_physpages() * PAGE_SIZE;
- 	bar11mask = (0x0ffffff0 & ~((1 << (fls(mem) - 1)) - 1)) | 8;
- 
- 	return bar11mask;
-diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-index 936e617..d074680 100644
---- a/arch/mips/sgi-ip27/ip27-memory.c
-+++ b/arch/mips/sgi-ip27/ip27-memory.c
-@@ -357,8 +357,6 @@ static void __init szmem(void)
- 	int slot;
- 	cnodeid_t node;
- 
--	num_physpages = 0;
--
- 	for_each_online_node(node) {
- 		nodebytes = 0;
- 		for (slot = 0; slot < MAX_MEM_SLOTS; slot++) {
-@@ -381,7 +379,6 @@ static void __init szmem(void)
- 				slot = MAX_MEM_SLOTS;
- 				continue;
- 			}
--			num_physpages += slot_psize;
- 			memblock_add_node(PFN_PHYS(slot_getbasepfn(node, slot)),
- 					  PFN_PHYS(slot_psize), node);
- 		}
-@@ -480,10 +477,9 @@ void __init paging_init(void)
- 
- void __init mem_init(void)
- {
--	unsigned long codesize, datasize, initsize, tmp;
- 	unsigned node;
- 
--	high_memory = (void *) __va(num_physpages << PAGE_SHIFT);
-+	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
- 
- 	for_each_online_node(node) {
- 		/*
-@@ -494,18 +490,5 @@ void __init mem_init(void)
- 
- 	setup_zero_pages();	/* This comes from node 0 */
- 
--	codesize =  (unsigned long) &_etext - (unsigned long) &_text;
--	datasize =  (unsigned long) &_edata - (unsigned long) &_etext;
--	initsize =  (unsigned long) &__init_end - (unsigned long) &__init_begin;
--
--	tmp = nr_free_pages();
--	printk(KERN_INFO "Memory: %luk/%luk available (%ldk kernel code, "
--	       "%ldk reserved, %ldk data, %ldk init, %ldk highmem)\n",
--	       tmp << (PAGE_SHIFT-10),
--	       num_physpages << (PAGE_SHIFT-10),
--	       codesize >> 10,
--	       (num_physpages - tmp) << (PAGE_SHIFT-10),
--	       datasize >> 10,
--	       initsize >> 10,
--	       totalhigh_pages << (PAGE_SHIFT-10));
-+	mem_init_print_info(NULL);
- }
--- 
-1.7.9.5
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>

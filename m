@@ -1,42 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Apr 2013 14:42:39 +0200 (CEST)
-Received: from opensource.wolfsonmicro.com ([80.75.67.52]:56396 "EHLO
-        opensource.wolfsonmicro.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817387Ab3DHMmilarma (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Apr 2013 14:42:38 +0200
-Received: from finisterre.wolfsonmicro.main (unknown [87.246.78.26])
-        by opensource.wolfsonmicro.com (Postfix) with ESMTPSA id 7D99911068A;
-        Mon,  8 Apr 2013 13:42:32 +0100 (BST)
-Received: from broonie by finisterre.wolfsonmicro.main with local (Exim 4.80)
-        (envelope-from <broonie@opensource.wolfsonmicro.com>)
-        id 1UPBP5-0003o7-Ts; Mon, 08 Apr 2013 13:42:32 +0100
-Date:   Mon, 8 Apr 2013 13:42:31 +0100
-From:   Mark Brown <broonie@opensource.wolfsonmicro.com>
-To:     Jonas Gorski <jogo@openwrt.org>
-Cc:     spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Florian Fainelli <florian@openwrt.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] spi/bcm63xx: remove unused speed_hz variable
-Message-ID: <20130408124231.GK9243@opensource.wolfsonmicro.com>
-References: <1365247137-19050-1-git-send-email-jogo@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Apr 2013 18:53:21 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:1381 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6822429Ab3DHQxQOMoP3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 8 Apr 2013 18:53:16 +0200
+From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
+        <kevink@paralogos.com>, <macro@linux-mips.org>, <john@phrozen.org>
+CC:     <Steven.Hill@imgtec.com>, <dengcheng.zhu@imgtec.com>
+Subject: [PATCH v4 0/5] MIPS: enable APRP (APSP) and add features - v4
+Date:   Mon, 8 Apr 2013 09:52:57 -0700
+Message-ID: <1365439982-4117-1-git-send-email-dengcheng.zhu@imgtec.com>
+X-Mailer: git-send-email 1.7.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="FnOKg9Ah4tDwTfQS"
-Content-Disposition: inline
-In-Reply-To: <1365247137-19050-1-git-send-email-jogo@openwrt.org>
-X-Cookie: Your love life will be... interesting.
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <broonie@opensource.wolfsonmicro.com>
+Content-Type: text/plain
+X-SEF-Processed: 7_3_0_01181__2013_04_08_17_53_10
+Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36025
+X-archive-position: 36026
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: broonie@opensource.wolfsonmicro.com
+X-original-sender: dengcheng.zhu@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,38 +35,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+The APRP model makes it possible that one or more CPUs run the Linux
+kernel whereas a dedicated CPU runs special real-time or signal processing
+program.
 
---FnOKg9Ah4tDwTfQS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This patchset adds the following to the current APRP support:
+1. Several bug fixes;
+2. Running floating point heavy jobs on the RP side;
+3. Waking up RP side read by interrupt;
+4. CPS multicore APRP support.
 
-On Sat, Apr 06, 2013 at 01:18:57PM +0200, Jonas Gorski wrote:
-> speed_hz is a write only member, so we can safely remove it and its
-> generation. Also fixes the missing clk_put after getting the periph
-> clock.
+A mp3 player program was ported to run in the APRP (APSP exactly) model.
+Considerable performance benefits were observed on the player program.
+CodeSourcery tools instead of the old SDE tools were used to build the
+example.
 
-Applied, thanks.
+Changes:
+v4 - v3:
+o Rebase onto HEAD of master (3.9-rc6 as of now).
+v3 - v2:
+o Split CMP/MT flavors into different files -cmp/-mt.
+o Put Malta needed changes into a separate patch.
+o Code style adjustments in rtlx/vpe files.
+o Remove kspd.h which might have been left out in Ralf's kspd removal.
+v2 - v1:
+o Rebase the patches to the latest kernel, and fix a bunch of warnings and
+  errors reported by the current scripts/checkpatch.pl.
+o Add MIPS_MALTA dependency to Kconfig since modifications of Malta files
+  are needed. But it should be easy to port changes to other platforms.
 
---FnOKg9Ah4tDwTfQS
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Deng-Cheng Zhu (5):
+  MIPS: APRP (APSP): fix/enrich functionality
+  MIPS: APRP (APSP): split vpe-loader and rtlx into cmp/mt flavors
+  MIPS: APRP (APSP): remove kspd.h
+  MIPS: let amon_cpu_start() report results
+  MIPS: APRP (APSP): malta board support
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRYrsqAAoJELSic+t+oim95JkP/iMP5axnqQPTO8x0znaWaPtm
-7MK1rTNX7lHN0mWJbYHNGI0JDw/5SDs5+HE7zn78bx1yI4TI02l1JEOxmwNbmFb0
-C3kTeJgs5Vf5eJT807DKPbK6tjrBCIe56xjUFX1g7KCpiSSR/Kd/2WZDZ2/nuP1y
-ZPS/wks9ANpGLJynKhDMto5pgVVSF+D4WHXJ2wYPL1GiacKiQZqqS/NE3fodOBON
-NzDV0N20hL8xEuJFlroKmZy9/jba8pO6ttsB3CbNNrBNLtvw/bOZhfSLR+JvWHxY
-obB82iXejTgCwQwHuZ9l+I7tG50P9IIuI2a0ENiFN9BP/iDs0SJ4tsHzJqlsgIhE
-lB5hapW88d7MQqRQbvSA/mFs1eeQeqbPohOxUYeLbdHUTDEQyLDcRB9yyefDl+TK
-k9APN9pA2INZnvAERJBE8kv5yCYuemSHC4nKKg76JmfjmEZdjswZM+3nmAd9V4Fs
-rE6YE5VZqM+K447oTj9NJHK68jwtiiksFoKD81xjGPYH1NC3w8fGec5M7bEz/H8z
-UisUyKP9+ryKQiTAmoGKTpOdnpsfevWri4e9/dfNNerd9/C7eHmfCXUk+iAq+zwS
-uxq0JY6tPkSQglLQzRZoDTSFidRZPKgmwrxfnr5v8PNIqUeMGACGS8OwQCMeNxdu
-YRaHQDgpWB7PMRORZBTT
-=ey2Y
------END PGP SIGNATURE-----
-
---FnOKg9Ah4tDwTfQS--
+ arch/mips/Kconfig                                  |    9 +
+ arch/mips/include/asm/amon.h                       |    2 +-
+ arch/mips/include/asm/kspd.h                       |   32 -
+ .../include/asm/mach-malta/cpu-feature-overrides.h |    3 +
+ arch/mips/include/asm/rtlx.h                       |   47 +-
+ arch/mips/include/asm/vpe.h                        |  117 +++-
+ arch/mips/kernel/Makefile                          |    9 +-
+ arch/mips/kernel/rtlx-cmp.c                        |  126 ++++
+ arch/mips/kernel/rtlx-mt.c                         |  161 +++++
+ arch/mips/kernel/rtlx.c                            |  203 ++-----
+ arch/mips/kernel/vpe-cmp.c                         |  203 ++++++
+ arch/mips/kernel/vpe-mt.c                          |  526 ++++++++++++++
+ arch/mips/kernel/vpe.c                             |  732 ++------------------
+ arch/mips/mti-malta/malta-amon.c                   |    8 +-
+ arch/mips/mti-malta/malta-int.c                    |   21 +
+ 15 files changed, 1307 insertions(+), 892 deletions(-)
+ delete mode 100644 arch/mips/include/asm/kspd.h
+ create mode 100644 arch/mips/kernel/rtlx-cmp.c
+ create mode 100644 arch/mips/kernel/rtlx-mt.c
+ create mode 100644 arch/mips/kernel/vpe-cmp.c
+ create mode 100644 arch/mips/kernel/vpe-mt.c

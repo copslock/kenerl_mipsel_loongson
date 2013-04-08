@@ -1,31 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Apr 2013 18:59:09 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:1434 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835010Ab3DHQ7DRBzqS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 8 Apr 2013 18:59:03 +0200
-Message-ID: <5162F74C.8090206@imgtec.com>
-Date:   Mon, 8 Apr 2013 09:58:52 -0700
-From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.28) Gecko/20120313 Lightning/1.0b2 Thunderbird/3.1.20
-MIME-Version: 1.0
-To:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>, <Steven.Hill@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
-        <kevink@paralogos.com>, <macro@linux-mips.org>, <john@phrozen.org>
-Subject: Re: [PATCH v4 0/5] MIPS: enable APRP (APSP) and add features - v4
-References: <1365439982-4117-1-git-send-email-dengcheng.zhu@imgtec.com>
-In-Reply-To: <1365439982-4117-1-git-send-email-dengcheng.zhu@imgtec.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Apr 2013 20:06:42 +0200 (CEST)
+Received: from cpsmtpb-ews01.kpnxchange.com ([213.75.39.4]:64139 "EHLO
+        cpsmtpb-ews01.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827536Ab3DHSGh6ybJu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Apr 2013 20:06:37 +0200
+Received: from cpsps-ews12.kpnxchange.com ([10.94.84.179]) by cpsmtpb-ews01.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Mon, 8 Apr 2013 20:06:32 +0200
+Received: from CPSMTPM-TLF104.kpnxchange.com ([195.121.3.7]) by cpsps-ews12.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Mon, 8 Apr 2013 20:06:32 +0200
+Received: from [192.168.1.103] ([212.123.139.93]) by CPSMTPM-TLF104.kpnxchange.com with Microsoft SMTPSVC(7.5.7601.17514);
+         Mon, 8 Apr 2013 20:06:31 +0200
+Message-ID: <1365444391.1830.125.camel@x61.thuisdomein>
+Subject: [PATCH] MIPS: Kconfig: remove "config MIPS_BOARDS_GEN"
+From:   Paul Bolle <pebolle@tiscali.nl>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Date:   Mon, 08 Apr 2013 20:06:31 +0200
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.4.4 (3.4.4-2.fc17) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-SEF-Processed: 7_3_0_01181__2013_04_08_17_58_58
-Return-Path: <DengCheng.Zhu@imgtec.com>
+X-OriginalArrivalTime: 08 Apr 2013 18:06:32.0141 (UTC) FILETIME=[CCC907D0:01CE3483]
+X-RcptDomain: linux-mips.org
+Return-Path: <pebolle@tiscali.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36032
+X-archive-position: 36033
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@imgtec.com
+X-original-sender: pebolle@tiscali.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,72 +42,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, Steven
+The Kconfig symbol MIPS_BOARDS_GEN is unused since v2.6.27. It should
+now be removed.
 
+Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
+---
+Untested, unsurprisingly.
 
-Your Tested-by is welcome.
+ arch/mips/Kconfig | 5 -----
+ 1 file changed, 5 deletions(-)
 
-
-Thanks,
-
-Deng-Cheng
-
-On 04/08/2013 09:52 AM, Deng-Cheng Zhu wrote:
-> The APRP model makes it possible that one or more CPUs run the Linux
-> kernel whereas a dedicated CPU runs special real-time or signal processing
-> program.
->
-> This patchset adds the following to the current APRP support:
-> 1. Several bug fixes;
-> 2. Running floating point heavy jobs on the RP side;
-> 3. Waking up RP side read by interrupt;
-> 4. CPS multicore APRP support.
->
-> A mp3 player program was ported to run in the APRP (APSP exactly) model.
-> Considerable performance benefits were observed on the player program.
-> CodeSourcery tools instead of the old SDE tools were used to build the
-> example.
->
-> Changes:
-> v4 - v3:
-> o Rebase onto HEAD of master (3.9-rc6 as of now).
-> v3 - v2:
-> o Split CMP/MT flavors into different files -cmp/-mt.
-> o Put Malta needed changes into a separate patch.
-> o Code style adjustments in rtlx/vpe files.
-> o Remove kspd.h which might have been left out in Ralf's kspd removal.
-> v2 - v1:
-> o Rebase the patches to the latest kernel, and fix a bunch of warnings and
->    errors reported by the current scripts/checkpatch.pl.
-> o Add MIPS_MALTA dependency to Kconfig since modifications of Malta files
->    are needed. But it should be easy to port changes to other platforms.
->
-> Deng-Cheng Zhu (5):
->    MIPS: APRP (APSP): fix/enrich functionality
->    MIPS: APRP (APSP): split vpe-loader and rtlx into cmp/mt flavors
->    MIPS: APRP (APSP): remove kspd.h
->    MIPS: let amon_cpu_start() report results
->    MIPS: APRP (APSP): malta board support
->
->   arch/mips/Kconfig                                  |    9 +
->   arch/mips/include/asm/amon.h                       |    2 +-
->   arch/mips/include/asm/kspd.h                       |   32 -
->   .../include/asm/mach-malta/cpu-feature-overrides.h |    3 +
->   arch/mips/include/asm/rtlx.h                       |   47 +-
->   arch/mips/include/asm/vpe.h                        |  117 +++-
->   arch/mips/kernel/Makefile                          |    9 +-
->   arch/mips/kernel/rtlx-cmp.c                        |  126 ++++
->   arch/mips/kernel/rtlx-mt.c                         |  161 +++++
->   arch/mips/kernel/rtlx.c                            |  203 ++-----
->   arch/mips/kernel/vpe-cmp.c                         |  203 ++++++
->   arch/mips/kernel/vpe-mt.c                          |  526 ++++++++++++++
->   arch/mips/kernel/vpe.c                             |  732 ++------------------
->   arch/mips/mti-malta/malta-amon.c                   |    8 +-
->   arch/mips/mti-malta/malta-int.c                    |   21 +
->   15 files changed, 1307 insertions(+), 892 deletions(-)
->   delete mode 100644 arch/mips/include/asm/kspd.h
->   create mode 100644 arch/mips/kernel/rtlx-cmp.c
->   create mode 100644 arch/mips/kernel/rtlx-mt.c
->   create mode 100644 arch/mips/kernel/vpe-cmp.c
->   create mode 100644 arch/mips/kernel/vpe-mt.c
->
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 51244bf..7b38bf8 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -306,7 +306,6 @@ config MIPS_MALTA
+ 	select HW_HAS_PCI
+ 	select I8253
+ 	select I8259
+-	select MIPS_BOARDS_GEN
+ 	select MIPS_BONITO64
+ 	select MIPS_CPU_SCACHE
+ 	select PCI_GT64XXX_PCI0
+@@ -342,7 +341,6 @@ config MIPS_SEAD3
+ 	select DMA_NONCOHERENT
+ 	select IRQ_CPU
+ 	select IRQ_GIC
+-	select MIPS_BOARDS_GEN
+ 	select MIPS_CPU_SCACHE
+ 	select MIPS_MSC
+ 	select SYS_HAS_CPU_MIPS32_R1
+@@ -1079,9 +1077,6 @@ config IRQ_GT641XX
+ config IRQ_GIC
+ 	bool
+ 
+-config MIPS_BOARDS_GEN
+-	bool
+-
+ config PCI_GT64XXX_PCI0
+ 	bool
+ 
+-- 
+1.7.11.7

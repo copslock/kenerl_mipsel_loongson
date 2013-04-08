@@ -1,64 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Apr 2013 17:20:56 +0200 (CEST)
-Received: from mail-da0-f43.google.com ([209.85.210.43]:50465 "EHLO
-        mail-da0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834879Ab3DFPUyrKJln (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Apr 2013 17:20:54 +0200
-Received: by mail-da0-f43.google.com with SMTP id u36so1991728dak.16
-        for <linux-mips@linux-mips.org>; Sat, 06 Apr 2013 08:20:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=x-received:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent;
-        bh=1tJUkqSQ4kalbJBPepNwILXgEkhAGQJvYdXLoEjLQgk=;
-        b=IY7W0PpKt5flwaYFUMA1qof1G/8sB7BO2p7IEGhVqq37WlNTgIDJ3AZVjbS4BxAn3t
-         pUGzQyWTOFKxoEGsvw3BwlDAxouJZTutpoPlMBaW5Kk3uEjeZCXWJroJ0U3sdGNd0ee3
-         gJ9DUN8NSrSn3uVUx02MMijHOYIQX/zmJt1ag=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:date:from:to:cc:subject:message-id:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent:x-gm-message-state;
-        bh=1tJUkqSQ4kalbJBPepNwILXgEkhAGQJvYdXLoEjLQgk=;
-        b=YzGb/D+I5IHdcCGXjGAzX+fJG2pC3qj576eezehxBB3R4qaS8YAaup8SLghx20EJ0L
-         buQP8Uquo+xbFzjazOV+gFsGJp+euFn9ZTUBPalURzBdHANlAuUW8YGdaxgDA9Os4ja7
-         J/ruMFDT9Ospm9aBRItr0mzu4ghSBXu5GyQH6MStV9g4ZY0i4f0X2wth1MsWRF7LPq9F
-         l7FIlu4FMt5yeQR0FfZqhxrIIlrzzkyvP0hH+doF0fcScdcOKjta6TqFcehxvckE/huO
-         SG7qaITs05BfzO69/blg6Xjbse8Kw7lIosoVGg/QEcjSVmyt7/8mhse1dnzM4vps5nbs
-         mzEw==
-X-Received: by 10.68.103.5 with SMTP id fs5mr20683315pbb.32.1365261647730;
-        Sat, 06 Apr 2013 08:20:47 -0700 (PDT)
-Received: from localhost (c-76-28-172-123.hsd1.wa.comcast.net. [76.28.172.123])
-        by mx.google.com with ESMTPS id yp2sm20708741pab.10.2013.04.06.08.20.45
-        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sat, 06 Apr 2013 08:20:46 -0700 (PDT)
-Date:   Sat, 6 Apr 2013 08:20:44 -0700
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Apr 2013 14:42:39 +0200 (CEST)
+Received: from opensource.wolfsonmicro.com ([80.75.67.52]:56396 "EHLO
+        opensource.wolfsonmicro.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817387Ab3DHMmilarma (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Apr 2013 14:42:38 +0200
+Received: from finisterre.wolfsonmicro.main (unknown [87.246.78.26])
+        by opensource.wolfsonmicro.com (Postfix) with ESMTPSA id 7D99911068A;
+        Mon,  8 Apr 2013 13:42:32 +0100 (BST)
+Received: from broonie by finisterre.wolfsonmicro.main with local (Exim 4.80)
+        (envelope-from <broonie@opensource.wolfsonmicro.com>)
+        id 1UPBP5-0003o7-Ts; Mon, 08 Apr 2013 13:42:32 +0100
+Date:   Mon, 8 Apr 2013 13:42:31 +0100
+From:   Mark Brown <broonie@opensource.wolfsonmicro.com>
 To:     Jonas Gorski <jogo@openwrt.org>
-Cc:     linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
+Cc:     spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org,
+        Grant Likely <grant.likely@secretlab.ca>,
         Maxime Bizon <mbizon@freebox.fr>,
         Florian Fainelli <florian@openwrt.org>,
-        Kevin Cernekee <cernekee@gmail.com>
-Subject: Re: [PATCH] MIPS: BCM63XX: merge bcm63xx_clk.h into bcm63xx/clk.c
-Message-ID: <20130406152044.GA12202@kroah.com>
-References: <1365247862-19358-1-git-send-email-jogo@openwrt.org>
+        Kevin Cernekee <cernekee@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] spi/bcm63xx: remove unused speed_hz variable
+Message-ID: <20130408124231.GK9243@opensource.wolfsonmicro.com>
+References: <1365247137-19050-1-git-send-email-jogo@openwrt.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="FnOKg9Ah4tDwTfQS"
 Content-Disposition: inline
-In-Reply-To: <1365247862-19358-1-git-send-email-jogo@openwrt.org>
+In-Reply-To: <1365247137-19050-1-git-send-email-jogo@openwrt.org>
+X-Cookie: Your love life will be... interesting.
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Gm-Message-State: ALoCoQltn8pn5doYETjBElYDDTNtlVb2MoQ/4u2pQR+3gklVaiLP7DkHylYaqdpudcOMy0LfBvFO
-Return-Path: <gregkh@linuxfoundation.org>
+Return-Path: <broonie@opensource.wolfsonmicro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36024
+X-archive-position: 36025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: broonie@opensource.wolfsonmicro.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,16 +49,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Apr 06, 2013 at 01:31:02PM +0200, Jonas Gorski wrote:
-> All the header file does is provide the internal structure of clk,
-> which shouldn't be used by anyone except clk.c itself anyway.
-> 
-> Signed-off-by: Jonas Gorski <jogo@openwrt.org>
-> ---
->  arch/mips/bcm63xx/clk.c                          |    8 +++++++-
->  arch/mips/include/asm/mach-bcm63xx/bcm63xx_clk.h |   11 -----------
->  drivers/tty/serial/bcm63xx_uart.c                |    1 -
->  3 files changed, 7 insertions(+), 13 deletions(-)
->  delete mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_clk.h
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+--FnOKg9Ah4tDwTfQS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Sat, Apr 06, 2013 at 01:18:57PM +0200, Jonas Gorski wrote:
+> speed_hz is a write only member, so we can safely remove it and its
+> generation. Also fixes the missing clk_put after getting the periph
+> clock.
+
+Applied, thanks.
+
+--FnOKg9Ah4tDwTfQS
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRYrsqAAoJELSic+t+oim95JkP/iMP5axnqQPTO8x0znaWaPtm
+7MK1rTNX7lHN0mWJbYHNGI0JDw/5SDs5+HE7zn78bx1yI4TI02l1JEOxmwNbmFb0
+C3kTeJgs5Vf5eJT807DKPbK6tjrBCIe56xjUFX1g7KCpiSSR/Kd/2WZDZ2/nuP1y
+ZPS/wks9ANpGLJynKhDMto5pgVVSF+D4WHXJ2wYPL1GiacKiQZqqS/NE3fodOBON
+NzDV0N20hL8xEuJFlroKmZy9/jba8pO6ttsB3CbNNrBNLtvw/bOZhfSLR+JvWHxY
+obB82iXejTgCwQwHuZ9l+I7tG50P9IIuI2a0ENiFN9BP/iDs0SJ4tsHzJqlsgIhE
+lB5hapW88d7MQqRQbvSA/mFs1eeQeqbPohOxUYeLbdHUTDEQyLDcRB9yyefDl+TK
+k9APN9pA2INZnvAERJBE8kv5yCYuemSHC4nKKg76JmfjmEZdjswZM+3nmAd9V4Fs
+rE6YE5VZqM+K447oTj9NJHK68jwtiiksFoKD81xjGPYH1NC3w8fGec5M7bEz/H8z
+UisUyKP9+ryKQiTAmoGKTpOdnpsfevWri4e9/dfNNerd9/C7eHmfCXUk+iAq+zwS
+uxq0JY6tPkSQglLQzRZoDTSFidRZPKgmwrxfnr5v8PNIqUeMGACGS8OwQCMeNxdu
+YRaHQDgpWB7PMRORZBTT
+=ey2Y
+-----END PGP SIGNATURE-----
+
+--FnOKg9Ah4tDwTfQS--

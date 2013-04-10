@@ -1,52 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 15:50:30 +0200 (CEST)
-Received: from mail-la0-f52.google.com ([209.85.215.52]:49401 "EHLO
-        mail-la0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835012Ab3DJNu2p4t3u (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Apr 2013 15:50:28 +0200
-Received: by mail-la0-f52.google.com with SMTP id ej20so449891lab.25
-        for <linux-mips@linux-mips.org>; Wed, 10 Apr 2013 06:50:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding:x-gm-message-state;
-        bh=hhjc3taNXzbQHEWe0juh5naOWIwkFPV+SW+1jdo1Mw8=;
-        b=fc9BhofehCewpJNdCNIIlPsyYjONgScJUORKthxUO28H4d9MuTAzn6VPB5omGbcqMn
-         Vd8S0ns9V0uNrHBZvnw2QcVarcc8m2XgACtoF1WMgH72aPW+l9sLyyeymEYQOAGMmL2T
-         PdVeNuKL6MxGCgrLy6Crh4weIbqPStFsPd9AQ3WUMWhdU6xVTrJV4tr1cCvU6PRO8nsM
-         bNvw6qTY3tfnAwYEHVDJXoJ8WKwum7fJfH1Drw/IyVtIopvk3YPz9iIE4R4fUpqR6cBw
-         XC2C/Uu5xkd521LPvE0lsjZYr3k1DMutQ3SSletNkzxhJsZYq1UEt1nLZCCsk/MHWDbG
-         a2SA==
-X-Received: by 10.112.156.102 with SMTP id wd6mr1268421lbb.82.1365601822973;
-        Wed, 10 Apr 2013 06:50:22 -0700 (PDT)
-Received: from [192.168.2.2] (ppp91-79-90-157.pppoe.mtu-net.ru. [91.79.90.157])
-        by mx.google.com with ESMTPS id m9sm228659lbm.3.2013.04.10.06.50.20
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Wed, 10 Apr 2013 06:50:21 -0700 (PDT)
-Message-ID: <51656DE2.4000300@cogentembedded.com>
-Date:   Wed, 10 Apr 2013 17:49:22 +0400
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/20130328 Thunderbird/17.0.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 15:51:55 +0200 (CEST)
+Received: from mail.nanl.de ([217.115.11.12]:56977 "EHLO mail.nanl.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6822672Ab3DJNvxse7tZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 10 Apr 2013 15:51:53 +0200
+Received: from mail-vb0-f52.google.com (mail-vb0-f52.google.com [209.85.212.52])
+        by mail.nanl.de (Postfix) with ESMTPSA id 169224031C;
+        Wed, 10 Apr 2013 13:51:43 +0000 (UTC)
+Received: by mail-vb0-f52.google.com with SMTP id w8so364702vbf.39
+        for <multiple recipients>; Wed, 10 Apr 2013 06:51:49 -0700 (PDT)
+X-Received: by 10.52.70.49 with SMTP id j17mr1310628vdu.67.1365601909622; Wed,
+ 10 Apr 2013 06:51:49 -0700 (PDT)
 MIME-Version: 1.0
+Received: by 10.220.31.73 with HTTP; Wed, 10 Apr 2013 06:51:29 -0700 (PDT)
+In-Reply-To: <1365594447-13068-7-git-send-email-blogic@openwrt.org>
+References: <1365594447-13068-1-git-send-email-blogic@openwrt.org> <1365594447-13068-7-git-send-email-blogic@openwrt.org>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Wed, 10 Apr 2013 15:51:29 +0200
+Message-ID: <CAOiHx==gGkztMopkWCF4Td1NtKHiyG0FcL2TA59XWpAsHZtuhA@mail.gmail.com>
+Subject: Re: [PATCH 06/18] MIPS: ralink: add pinmux driver
 To:     John Crispin <blogic@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 02/18] MIPS: ralink: fix RT305x clock setup
-References: <1365594447-13068-1-git-send-email-blogic@openwrt.org> <1365594447-13068-3-git-send-email-blogic@openwrt.org>
-In-Reply-To: <1365594447-13068-3-git-send-email-blogic@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQmtTKgjDS/AY+mqCtU9/HdRGFGWMK/66hLZeYZ/UZDhQFlg0VymIF9jNp/L4uFZZB1va82f
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36059
+X-archive-position: 36060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,33 +43,189 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+On 10 April 2013 13:47, John Crispin <blogic@openwrt.org> wrote:
+> Add code to setup the pinmux on ralonk SoC. The SoC has a single 32 bit register
+> for this functionality with simple on/off bits. Building a full featured pinctrl
+> driver would be overkill.
 
-On 10-04-2013 15:47, John Crispin wrote:
+Bindings documentation, pretty please?
 
-> Add a few missing clocks and remove the unused sys clock.
-
+>
 > Signed-off-by: John Crispin <blogic@openwrt.org>
 > ---
->   arch/mips/ralink/rt305x.c |   14 ++++++++++++++
->   1 file changed, 14 insertions(+)
-
-> diff --git a/arch/mips/ralink/rt305x.c b/arch/mips/ralink/rt305x.c
-> index 0a4bbdc..856ebff 100644
-> --- a/arch/mips/ralink/rt305x.c
-> +++ b/arch/mips/ralink/rt305x.c
-[...]
-> @@ -176,11 +177,24 @@ void __init ralink_clk_init(void)
->   		BUG();
->   	}
+>  arch/mips/ralink/Makefile |    2 +-
+>  arch/mips/ralink/common.h |    8 +++-
+>  arch/mips/ralink/of.c     |    2 +
+>  arch/mips/ralink/pinmux.c |   95 +++++++++++++++++++++++++++++++++++++++++++++
+>  arch/mips/ralink/rt305x.c |    6 +--
+>  5 files changed, 107 insertions(+), 6 deletions(-)
+>  create mode 100644 arch/mips/ralink/pinmux.c
 >
-> +	if (soc_is_rt3352() || soc_is_rt5350()) {
-> +		u32 val = rt_sysc_r32(RT3352_SYSC_REG_SYSCFG0);
+> diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
+> index 939757f..39ef249 100644
+> --- a/arch/mips/ralink/Makefile
+> +++ b/arch/mips/ralink/Makefile
+> @@ -6,7 +6,7 @@
+>  # Copyright (C) 2009-2011 Gabor Juhos <juhosg@openwrt.org>
+>  # Copyright (C) 2013 John Crispin <blogic@openwrt.org>
+>
+> -obj-y := prom.o of.o reset.o clk.o irq.o
+> +obj-y := prom.o of.o reset.o clk.o irq.o pinmux.o
+>
+>  obj-$(CONFIG_SOC_RT305X) += rt305x.o
+>
+> diff --git a/arch/mips/ralink/common.h b/arch/mips/ralink/common.h
+> index 3009903..193c76c 100644
+> --- a/arch/mips/ralink/common.h
+> +++ b/arch/mips/ralink/common.h
+> @@ -22,9 +22,13 @@ struct ralink_pinmux {
+>         struct ralink_pinmux_grp *mode;
+>         struct ralink_pinmux_grp *uart;
+>         int uart_shift;
+> +       u32 uart_mask;
+>         void (*wdt_reset)(void);
+> +       struct ralink_pinmux_grp *pci;
+> +       int pci_shift;
+> +       u32 pci_mask;
+>  };
+> -extern struct ralink_pinmux gpio_pinmux;
+> +extern struct ralink_pinmux rt_pinmux;
+>
+>  struct ralink_soc_info {
+>         unsigned char sys_type[RAMIPS_SYS_TYPE_LEN];
+> @@ -41,4 +45,6 @@ extern void prom_soc_init(struct ralink_soc_info *soc_info);
+>
+>  __iomem void *plat_of_remap_node(const char *node);
+>
+> +void ralink_pinmux(void);
+> +
+>  #endif /* _RALINK_COMMON_H__ */
+> diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
+> index 4165e70..ecf1482 100644
+> --- a/arch/mips/ralink/of.c
+> +++ b/arch/mips/ralink/of.c
+> @@ -101,6 +101,8 @@ static int __init plat_of_setup(void)
+>         if (of_platform_populate(NULL, of_ids, NULL, NULL))
+>                 panic("failed to populate DT\n");
+>
+> +       ralink_pinmux();
+> +
+>         return 0;
+>  }
+>
+> diff --git a/arch/mips/ralink/pinmux.c b/arch/mips/ralink/pinmux.c
+> new file mode 100644
+> index 0000000..c10df50
+> --- /dev/null
+> +++ b/arch/mips/ralink/pinmux.c
+> @@ -0,0 +1,95 @@
+> +/*
+> + *  This program is free software; you can redistribute it and/or modify it
+> + *  under the terms of the GNU General Public License version 2 as published
+> + *  by the Free Software Foundation.
+> + *
+> + *  Copyright (C) 2013 John Crispin <blogic@openwrt.org>
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/of.h>
+> +
+> +#include <asm/mach-ralink/ralink_regs.h>
+> +
+> +#include "common.h"
+> +
+> +#define SYSC_REG_GPIO_MODE     0x60
+> +
+> +static u32 ralink_mux_mask(const char *name, struct ralink_pinmux_grp *grps)
+> +{
+> +       for (; grps->name; grps++)
+> +               if (!strcmp(grps->name, name))
+> +                       return grps->mask;
+> +
+> +       return 0;
+> +}
+> +
+> +void ralink_pinmux(void)
 
-    Empty line wouldn't hurt here...
+Since you are only calling it from init code, couldn't it be also __init?
 
-> +		if ((val & RT3352_CLKCFG0_XTAL_SEL) == 0)
+> +{
+> +       const __be32 *wdt;
+> +       struct device_node *np;
+> +       struct property *prop;
+> +       const char *uart, *pci, *pin;
+> +       u32 mode = 0;
+> +
+> +       np = of_find_compatible_node(NULL, NULL, "ralink,rt3050-sysc");
+> +       if (!np)
+> +               return;
+> +
+> +       of_property_for_each_string(np, "ralink,gpiomux", prop, pin) {
+> +               int m = ralink_mux_mask(pin, rt_pinmux.mode);
 
-    Using ! would make this shorter.
+Missing empty line.
 
-WBR, Sergei
+> +               if (m) {
+> +                       mode |= m;
+> +                       pr_debug("pinmux: registered gpiomux \"%s\"\n", pin);
+> +               } else {
+> +                       pr_err("pinmux: failed to load \"%s\"\n", pin);
+> +               }
+> +       }
+> +
+> +       of_property_for_each_string(np, "ralink,pinmux", prop, pin) {
+> +               int m = ralink_mux_mask(pin, rt_pinmux.mode);
+
+Missing empty line.
+
+> +               if (m) {
+> +                       mode &= ~m;
+> +                       pr_debug("pinmux: registered pinmux \"%s\"\n", pin);
+> +               } else {
+> +                       pr_err("pinmux: failed to load group \"%s\"\n", pin);
+> +               }
+> +       }
+> +
+> +       uart = NULL;
+> +       if (rt_pinmux.uart)
+> +               of_property_read_string(np, "ralink,uartmux", &uart);
+> +
+> +       if (uart) {
+> +               int m = ralink_mux_mask(uart, rt_pinmux.uart);
+> +
+> +               if (m) {
+> +                       mode &= ~(rt_pinmux.uart_mask << rt_pinmux.uart_shift);
+> +                       mode |= m << rt_pinmux.uart_shift;
+> +                       pr_debug("pinmux: registered uartmux \"%s\"\n", uart);
+> +               } else {
+> +                       pr_debug("pinmux: unknown uartmux \"%s\"\n", uart);
+> +               }
+> +       }
+> +
+> +       wdt = of_get_property(np, "ralink,wdtmux", NULL);
+> +       if (wdt && *wdt && rt_pinmux.wdt_reset)
+> +               rt_pinmux.wdt_reset();
+> +
+> +       pci = NULL;
+> +       if (rt_pinmux.pci)
+> +               of_property_read_string(np, "ralink,pcimux", &pci);
+> +
+> +       if (pci) {
+> +               int m = ralink_mux_mask(pci, rt_pinmux.pci);
+
+Missing empty line.
+
+> +               mode &= ~(rt_pinmux.pci_mask << rt_pinmux.pci_shift);
+> +               if (m) {
+> +                       mode |= (m << rt_pinmux.pci_shift);
+> +                       pr_debug("pinmux: registered pcimux \"%s\"\n", pci);
+> +               } else {
+> +                       pr_debug("pinmux: registered pcimux \"gpio\"\n");
+> +               }
+> +       }
+> +
+> +       rt_sysc_w32(mode, SYSC_REG_GPIO_MODE);
+> +}
+
+
+Jonas

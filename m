@@ -1,23 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 13:54:06 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:41816 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 13:54:25 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:41798 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823068Ab3DJLve3fUz7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6823073Ab3DJLve3jJBD (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 10 Apr 2013 13:51:34 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org,
         John Crispin <blogic@openwrt.org>
-Subject: [PATCH 07/18] MIPS: ralink: extend RT3050 dtsi file
-Date:   Wed, 10 Apr 2013 13:47:16 +0200
-Message-Id: <1365594447-13068-8-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 00/18] MIPS: ralink: add several new Ralink SoC
+Date:   Wed, 10 Apr 2013 13:47:09 +0200
+Message-Id: <1365594447-13068-1-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1365594447-13068-1-git-send-email-blogic@openwrt.org>
-References: <1365594447-13068-1-git-send-email-blogic@openwrt.org>
 Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36045
+X-archive-position: 36046
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,175 +32,91 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add some additional properties to the dtsi file for ethernet and wifi.
+This series adds support for the Ralink WiSoCs that we do not support so far.
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
----
- arch/mips/ralink/dts/rt3050.dtsi     |   96 ++++++++++++++++++++++++++++------
- arch/mips/ralink/dts/rt3052_eval.dts |    2 +-
- 2 files changed, 82 insertions(+), 16 deletions(-)
+In parallel to this series we are also pushing spi and gpio drivers.
 
-diff --git a/arch/mips/ralink/dts/rt3050.dtsi b/arch/mips/ralink/dts/rt3050.dtsi
-index 069d066..5aede8d 100644
---- a/arch/mips/ralink/dts/rt3050.dtsi
-+++ b/arch/mips/ralink/dts/rt3050.dtsi
-@@ -1,7 +1,7 @@
- / {
- 	#address-cells = <1>;
- 	#size-cells = <1>;
--	compatible = "ralink,rt3050-soc", "ralink,rt3052-soc";
-+	compatible = "ralink,rt3050-soc", "ralink,rt3052-soc", "ralink,rt3350-soc";
- 
- 	cpus {
- 		cpu@0 {
-@@ -23,7 +23,7 @@
- 	palmbus@10000000 {
- 		compatible = "palmbus";
- 		reg = <0x10000000 0x200000>;
--                ranges = <0x0 0x10000000 0x1FFFFF>;
-+		ranges = <0x0 0x10000000 0x1FFFFF>;
- 
- 		#address-cells = <1>;
- 		#size-cells = <1>;
-@@ -34,8 +34,18 @@
- 		};
- 
- 		timer@100 {
-+			compatible = "ralink,rt3052-timer", "ralink,rt2880-timer";
-+			reg = <0x100 0x20>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <1>;
-+
-+			status = "disabled";
-+		};
-+
-+		watchdog@120 {
- 			compatible = "ralink,rt3052-wdt", "ralink,rt2880-wdt";
--			reg = <0x100 0x100>;
-+			reg = <0x120 0x10>;
- 		};
- 
- 		intc: intc@200 {
-@@ -61,10 +71,12 @@
- 			gpio-controller;
- 			#gpio-cells = <2>;
- 
--			ralink,ngpio = <24>;
--			ralink,regs = [ 00 04 08 0c
--					20 24 28 2c
--					30 34 ];
-+			ralink,num-gpios = <24>;
-+			ralink,register-map = [ 00 04 08 0c
-+						20 24 28 2c
-+						30 34 ];
-+
-+			status = "disabled";
- 		};
- 
- 		gpio1: gpio@638 {
-@@ -74,10 +86,12 @@
- 			gpio-controller;
- 			#gpio-cells = <2>;
- 
--			ralink,ngpio = <16>;
--			ralink,regs = [ 00 04 08 0c
--					10 14 18 1c
--					20 24 ];
-+			ralink,num-gpios = <16>;
-+			ralink,register-map = [ 00 04 08 0c
-+						10 14 18 1c
-+						20 24 ];
-+
-+			status = "disabled";
- 		};
- 
- 		gpio2: gpio@660 {
-@@ -87,10 +101,21 @@
- 			gpio-controller;
- 			#gpio-cells = <2>;
- 
--			ralink,ngpio = <12>;
--			ralink,regs = [ 00 04 08 0c
--					10 14 18 1c
--					20 24 ];
-+			ralink,num-gpios = <12>;
-+			ralink,register-map = [ 00 04 08 0c
-+						10 14 18 1c
-+						20 24 ];
-+
-+			status = "disabled";
-+		};
-+
-+		spi@b00 {
-+			compatible = "ralink,rt3050-spi", "ralink,rt2880-spi";
-+			reg = <0xb00 0x100>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			status = "disabled";
- 		};
- 
- 		uartlite@c00 {
-@@ -102,5 +127,46 @@
- 
- 			reg-shift = <2>;
- 		};
-+
-+	};
-+
-+	ethernet@10100000 {
-+		compatible = "ralink,rt3050-eth";
-+		reg = <0x10100000 10000>;
-+
-+		interrupt-parent = <&cpuintc>;
-+		interrupts = <5>;
-+
-+		status = "disabled";
-+	};
-+
-+	esw@10110000 {
-+		compatible = "ralink,rt3050-esw";
-+		reg = <0x10110000 8000>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <17>;
-+
-+		status = "disabled";
-+	};
-+
-+	wmac@10180000 {
-+		compatible = "ralink,rt3050-wmac", "ralink,rt2880-wmac";
-+		reg = <0x10180000 40000>;
-+
-+		interrupt-parent = <&cpuintc>;
-+		interrupts = <6>;
-+
-+		status = "disabled";
-+	};
-+
-+	otg@101c0000 {
-+		compatible = "ralink,rt3050-otg";
-+		reg = <0x101c0000 40000>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <18>;
-+
-+		status = "disabled";
- 	};
- };
-diff --git a/arch/mips/ralink/dts/rt3052_eval.dts b/arch/mips/ralink/dts/rt3052_eval.dts
-index 148a590..dc56e58 100644
---- a/arch/mips/ralink/dts/rt3052_eval.dts
-+++ b/arch/mips/ralink/dts/rt3052_eval.dts
-@@ -14,7 +14,7 @@
- 
- 	palmbus@10000000 {
- 		sysc@0 {
--			ralink,pinmmux = "uartlite", "spi";
-+			ralink,pinmux = "uartlite", "spi";
- 			ralink,uartmux = "gpio";
- 			ralink,wdtmux = <0>;
- 		};
+If all goes well, v3.10 will have full SoC support.
+(with the exception of Ethernet which still needs a rewrite)
+
+Thanks go to Gabor who has been heavily involved in testing an crunching bugs.
+
+Signed-off-by: John Crispin <blogic@openwrt.org
+
+Gabor Juhos (2):
+  MIPS: ralink: add PCI IRQ handling
+  MIPS: ralink: add cpu-feature-overrides.h
+
+John Crispin (16):
+  MIPS: ralink: fix RT305x clock setup
+  MIPS: ralink: add missing comment in irq driver
+  MIPS: ralink: add RT5350 sdram register defines
+  MIPS: ralink: add RT3352 usb register defines
+  MIPS: ralink: add pinmux driver
+  MIPS: ralink: extend RT3050 dtsi file
+  MIPS: ralink: add RT5350 dtsi file
+  MIPS: ralink: make early_printk work on RT2880
+  MIPS: ralink: adds support for RT2880 SoC family
+  MIPS: ralink: add rt2880 dts files
+  MIPS: ralink: adds support for RT3883 SoC family
+  MIPS: ralink: add rt3883 dts files
+  MIPS: ralink: adds support for MT7620 SoC family
+  MIPS: ralink: add MT7620 dts files
+  MIPS: ralink: add support for periodic timer irq
+  MIPS: ralink: add support for runtime memory detection
+
+ arch/mips/Kconfig                                  |    2 +-
+ arch/mips/include/asm/mach-ralink/mt7620.h         |   66 ++++++
+ arch/mips/include/asm/mach-ralink/rt288x.h         |   49 ++++
+ .../asm/mach-ralink/rt288x/cpu-feature-overrides.h |   56 +++++
+ arch/mips/include/asm/mach-ralink/rt305x.h         |   19 ++
+ .../asm/mach-ralink/rt305x/cpu-feature-overrides.h |   56 +++++
+ arch/mips/include/asm/mach-ralink/rt3883.h         |  247 ++++++++++++++++++++
+ .../asm/mach-ralink/rt3883/cpu-feature-overrides.h |   55 +++++
+ arch/mips/ralink/Kconfig                           |   23 ++
+ arch/mips/ralink/Makefile                          |    5 +-
+ arch/mips/ralink/Platform                          |   18 ++
+ arch/mips/ralink/common.h                          |   11 +-
+ arch/mips/ralink/dts/Makefile                      |    3 +
+ arch/mips/ralink/dts/mt7620.dtsi                   |  138 +++++++++++
+ arch/mips/ralink/dts/mt7620_eval.dts               |   22 ++
+ arch/mips/ralink/dts/rt2880.dtsi                   |  116 +++++++++
+ arch/mips/ralink/dts/rt2880_eval.dts               |   52 +++++
+ arch/mips/ralink/dts/rt3050.dtsi                   |   96 ++++++--
+ arch/mips/ralink/dts/rt3052_eval.dts               |    2 +-
+ arch/mips/ralink/dts/rt3883.dtsi                   |  186 +++++++++++++++
+ arch/mips/ralink/dts/rt3883_eval.dts               |   52 +++++
+ arch/mips/ralink/dts/rt5350.dtsi                   |  181 ++++++++++++++
+ arch/mips/ralink/early_printk.c                    |    4 +
+ arch/mips/ralink/irq.c                             |    5 +
+ arch/mips/ralink/memory.c                          |  119 ++++++++++
+ arch/mips/ralink/mt7620.c                          |  209 +++++++++++++++++
+ arch/mips/ralink/of.c                              |    5 +
+ arch/mips/ralink/pinmux.c                          |   95 ++++++++
+ arch/mips/ralink/rt288x.c                          |  143 ++++++++++++
+ arch/mips/ralink/rt305x.c                          |   20 +-
+ arch/mips/ralink/rt3883.c                          |  244 +++++++++++++++++++
+ arch/mips/ralink/timer.c                           |  192 +++++++++++++++
+ 32 files changed, 2468 insertions(+), 23 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-ralink/mt7620.h
+ create mode 100644 arch/mips/include/asm/mach-ralink/rt288x.h
+ create mode 100644 arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-ralink/rt3883.h
+ create mode 100644 arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h
+ create mode 100644 arch/mips/ralink/dts/mt7620.dtsi
+ create mode 100644 arch/mips/ralink/dts/mt7620_eval.dts
+ create mode 100644 arch/mips/ralink/dts/rt2880.dtsi
+ create mode 100644 arch/mips/ralink/dts/rt2880_eval.dts
+ create mode 100644 arch/mips/ralink/dts/rt3883.dtsi
+ create mode 100644 arch/mips/ralink/dts/rt3883_eval.dts
+ create mode 100644 arch/mips/ralink/dts/rt5350.dtsi
+ create mode 100644 arch/mips/ralink/memory.c
+ create mode 100644 arch/mips/ralink/mt7620.c
+ create mode 100644 arch/mips/ralink/pinmux.c
+ create mode 100644 arch/mips/ralink/rt288x.c
+ create mode 100644 arch/mips/ralink/rt3883.c
+ create mode 100644 arch/mips/ralink/timer.c
+
 -- 
 1.7.10.4

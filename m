@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 14:20:56 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:43174 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 14:21:15 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:43176 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835030Ab3DJMUFscsUw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Apr 2013 14:20:05 +0200
+        id S6834993Ab3DJMUG3BXhi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 10 Apr 2013 14:20:06 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org,
         John Crispin <blogic@openwrt.org>
-Subject: [PATCH 18/18] MIPS: ralink: add support for runtime memory detection
-Date:   Wed, 10 Apr 2013 13:47:27 +0200
-Message-Id: <1365594447-13068-19-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 15/18] MIPS: ralink: add MT7620 dts files
+Date:   Wed, 10 Apr 2013 13:47:24 +0200
+Message-Id: <1365594447-13068-16-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1365594447-13068-1-git-send-email-blogic@openwrt.org>
 References: <1365594447-13068-1-git-send-email-blogic@openwrt.org>
@@ -17,7 +17,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36054
+X-archive-position: 36055
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,184 +34,214 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This allows us to add a device_node called "memorydetect" to the DT with
-information about the memory windoe of the SoC. Based on this the memory is
-detected ar runtime.
+Adds the dtsi file for MT7620 SoC. This is the latest and greatest SoC shipped
+by Mediatek.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/Makefile |    2 +-
- arch/mips/ralink/common.h |    3 ++
- arch/mips/ralink/memory.c |  119 +++++++++++++++++++++++++++++++++++++++++++++
- arch/mips/ralink/of.c     |    3 ++
- 4 files changed, 126 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/ralink/memory.c
+ arch/mips/ralink/Kconfig             |    4 +
+ arch/mips/ralink/dts/Makefile        |    1 +
+ arch/mips/ralink/dts/mt7620.dtsi     |  138 ++++++++++++++++++++++++++++++++++
+ arch/mips/ralink/dts/mt7620_eval.dts |   22 ++++++
+ 4 files changed, 165 insertions(+)
+ create mode 100644 arch/mips/ralink/dts/mt7620.dtsi
+ create mode 100644 arch/mips/ralink/dts/mt7620_eval.dts
 
-diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
-index cae7d88..69101a1 100644
---- a/arch/mips/ralink/Makefile
-+++ b/arch/mips/ralink/Makefile
-@@ -6,7 +6,7 @@
- # Copyright (C) 2009-2011 Gabor Juhos <juhosg@openwrt.org>
- # Copyright (C) 2013 John Crispin <blogic@openwrt.org>
+diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
+index 493411f..8254502 100644
+--- a/arch/mips/ralink/Kconfig
++++ b/arch/mips/ralink/Kconfig
+@@ -46,6 +46,10 @@ choice
+ 		bool "RT3883 eval kit"
+ 		depends on SOC_RT3883
  
--obj-y := prom.o of.o reset.o clk.o irq.o pinmux.o timer.o
-+obj-y := prom.o of.o reset.o clk.o irq.o pinmux.o timer.o memory.o
- 
- obj-$(CONFIG_SOC_RT288X) += rt288x.o
- obj-$(CONFIG_SOC_RT305X) += rt305x.o
-diff --git a/arch/mips/ralink/common.h b/arch/mips/ralink/common.h
-index 193c76c..48d3405 100644
---- a/arch/mips/ralink/common.h
-+++ b/arch/mips/ralink/common.h
-@@ -45,6 +45,9 @@ extern void prom_soc_init(struct ralink_soc_info *soc_info);
- 
- __iomem void *plat_of_remap_node(const char *node);
- 
-+int __init early_init_dt_detect_memory(unsigned long node, const char *uname,
-+					int depth, void *data);
++	config DTB_MT7620_EVAL
++		bool "MT7620 eval kit"
++		depends on SOC_MT7620
 +
- void ralink_pinmux(void);
+ endchoice
  
- #endif /* _RALINK_COMMON_H__ */
-diff --git a/arch/mips/ralink/memory.c b/arch/mips/ralink/memory.c
+ endif
+diff --git a/arch/mips/ralink/dts/Makefile b/arch/mips/ralink/dts/Makefile
+index 040a986..036603a 100644
+--- a/arch/mips/ralink/dts/Makefile
++++ b/arch/mips/ralink/dts/Makefile
+@@ -1,3 +1,4 @@
+ obj-$(CONFIG_DTB_RT2880_EVAL) := rt2880_eval.dtb.o
+ obj-$(CONFIG_DTB_RT305X_EVAL) := rt3052_eval.dtb.o
+ obj-$(CONFIG_DTB_RT3883_EVAL) := rt3883_eval.dtb.o
++obj-$(CONFIG_DTB_MT7620_EVAL) := mt7620_eval.dtb.o
+diff --git a/arch/mips/ralink/dts/mt7620.dtsi b/arch/mips/ralink/dts/mt7620.dtsi
 new file mode 100644
-index 0000000..57f3b83
+index 0000000..59f057f
 --- /dev/null
-+++ b/arch/mips/ralink/memory.c
-@@ -0,0 +1,119 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2009 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2013 John Crispin <blogic@openwrt.org>
-+ */
++++ b/arch/mips/ralink/dts/mt7620.dtsi
+@@ -0,0 +1,138 @@
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	compatible = "ralink,mtk7620n-soc", "ralink,mt7620-soc";
 +
-+#include <linux/string.h>
-+#include <linux/of_fdt.h>
-+#include <linux/of_platform.h>
++	cpus {
++		cpu@0 {
++			compatible = "mips,mips24KEc";
++		};
++	};
 +
-+#include <asm/bootinfo.h>
-+#include <asm/addrspace.h>
++	chosen {
++		bootargs = "console=ttyS0,57600 init=/init";
++	};
 +
-+#include "common.h"
++	cpuintc: cpuintc@0 {
++		#address-cells = <0>;
++		#interrupt-cells = <1>;
++		interrupt-controller;
++		compatible = "mti,cpu-interrupt-controller";
++	};
 +
-+#define MB	(1024 * 1024)
++	palmbus@10000000 {
++		compatible = "palmbus";
++		reg = <0x10000000 0x200000>;
++                ranges = <0x0 0x10000000 0x1FFFFF>;
 +
-+unsigned long ramips_mem_base;
-+unsigned long ramips_mem_size_min;
-+unsigned long ramips_mem_size_max;
++		#address-cells = <1>;
++		#size-cells = <1>;
 +
-+#ifdef CONFIG_SOC_RT305X
++		sysc@0 {
++			compatible = "ralink,mt7620-sysc", "ralink,mt7620n-sysc";
++			reg = <0x0 0x100>;
++		};
 +
-+#include <asm/mach-ralink/rt305x.h>
++		timer@100 {
++			compatible = "ralink,mt7620-timer", "ralink,rt2880-timer";
++			reg = <0x100 0x20>;
 +
-+static unsigned long rt5350_get_mem_size(void)
-+{
-+	void __iomem *sysc = (void __iomem *) KSEG1ADDR(RT305X_SYSC_BASE);
-+	unsigned long ret;
-+	u32 t;
++			interrupt-parent = <&intc>;
++			interrupts = <1>;
 +
-+	t = __raw_readl(sysc + SYSC_REG_SYSTEM_CONFIG);
-+	t = (t >> RT5350_SYSCFG0_DRAM_SIZE_SHIFT) &
-+	RT5350_SYSCFG0_DRAM_SIZE_MASK;
++			status = "disabled";
++		};
 +
-+	switch (t) {
-+	case RT5350_SYSCFG0_DRAM_SIZE_2M:
-+		ret = 2 * 1024 * 1024;
-+		break;
-+	case RT5350_SYSCFG0_DRAM_SIZE_8M:
-+		ret = 8 * 1024 * 1024;
-+		break;
-+	case RT5350_SYSCFG0_DRAM_SIZE_16M:
-+		ret = 16 * 1024 * 1024;
-+		break;
-+	case RT5350_SYSCFG0_DRAM_SIZE_32M:
-+		ret = 32 * 1024 * 1024;
-+		break;
-+	case RT5350_SYSCFG0_DRAM_SIZE_64M:
-+		ret = 64 * 1024 * 1024;
-+		break;
-+	default:
-+		panic("rt5350: invalid DRAM size: %u", t);
-+		break;
-+	}
++		watchdog@120 {
++			compatible = "ralink,mt7620-wdt", "ralink,rt2880-wdt";
++			reg = <0x120 0x10>;
++		};
 +
-+	return ret;
-+}
++		intc: intc@200 {
++			compatible = "ralink,mt7620-intc", "ralink,rt2880-intc";
++			reg = <0x200 0x100>;
 +
-+#endif
++			interrupt-controller;
++			#interrupt-cells = <1>;
 +
-+static void __init detect_mem_size(void)
-+{
-+	unsigned long size;
++			interrupt-parent = <&cpuintc>;
++			interrupts = <2>;
++		};
 +
-+#ifdef CONFIG_SOC_RT305X
-+	if (soc_is_rt5350()) {
-+		size = rt5350_get_mem_size();
-+	} else
-+#endif
-+	{
-+		void *base;
++		memc@300 {
++			compatible = "ralink,mt7620-memc", "ralink,rt3050-memc";
++			reg = <0x300 0x100>;
++		};
 +
-+		base = (void *) KSEG1ADDR(detect_mem_size);
-+		for (size = ramips_mem_size_min;
-+				size < ramips_mem_size_max; size <<= 1) {
-+			if (!memcmp(base, base + size, 1024))
-+				break;
-+		}
-+	}
++		gpio0: gpio@600 {
++			compatible = "ralink,mt7620-gpio", "ralink,rt2880-gpio";
++			reg = <0x600 0x34>;
 +
-+	pr_info("memory detected: %uMB\n", (unsigned int) size / MB);
++			gpio-controller;
++			#gpio-cells = <2>;
 +
-+	add_memory_region(ramips_mem_base, size, BOOT_MEM_RAM);
-+}
++			ralink,num-gpios = <24>;
++			ralink,register-map = [ 00 04 08 0c
++						20 24 28 2c
++						30 34 ];
++		};
 +
-+int __init early_init_dt_detect_memory(unsigned long node, const char *uname,
-+				     int depth, void *data)
-+{
-+	unsigned long l;
-+	__be32 *mem;
++		gpio1: gpio@638 {
++			compatible = "ralink,mt7620-gpio", "ralink,rt2880-gpio";
++			reg = <0x638 0x24>;
 +
-+	/* We are scanning "memorydetect" nodes only */
-+	if (depth != 1 || strcmp(uname, "memorydetect") != 0)
-+		return 0;
++			gpio-controller;
++			#gpio-cells = <2>;
 +
-+	mem = of_get_flat_dt_prop(node, "ralink,memory", &l);
-+	if (mem == NULL)
-+		return 0;
++			ralink,num-gpios = <16>;
++			ralink,register-map = [ 00 04 08 0c
++						10 14 18 1c
++						20 24 ];
++		};
 +
-+	if ((l / sizeof(__be32)) != 3)
-+		panic("invalid memorydetect node\n");
++		gpio2: gpio@660 {
++			compatible = "ralink,mt7620-gpio", "ralink,rt2880-gpio";
++			reg = <0x660 0x24>;
 +
-+	ramips_mem_base = dt_mem_next_cell(dt_root_addr_cells, &mem);
-+	ramips_mem_size_min = dt_mem_next_cell(dt_root_size_cells, &mem);
-+	ramips_mem_size_max = dt_mem_next_cell(dt_root_size_cells, &mem);
++			gpio-controller;
++			#gpio-cells = <2>;
 +
-+	pr_info("memory window: 0x%llx, min: %uMB, max: %uMB\n",
-+		(unsigned long long) ramips_mem_base,
-+		(unsigned int) ramips_mem_size_min / MB,
-+		(unsigned int) ramips_mem_size_max / MB);
++			ralink,num-gpios = <32>;
++			ralink,register-map = [ 00 04 08 0c
++						10 14 18 1c
++						20 24 ];
++		};
 +
-+	detect_mem_size();
++		gpio3: gpio@688 {
++			compatible = "ralink,mt7620-gpio", "ralink,rt2880-gpio";
++			reg = <0x688 0x24>;
 +
-+	return 0;
-+}
-diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
-index ecf1482..90d66ac 100644
---- a/arch/mips/ralink/of.c
-+++ b/arch/mips/ralink/of.c
-@@ -85,6 +85,9 @@ void __init plat_mem_setup(void)
- 	 * parsed resulting in our memory appearing
- 	 */
- 	__dt_setup_arch(&__dtb_start);
++			gpio-controller;
++			#gpio-cells = <2>;
 +
-+	/* try to load the mips machine name */
-+	of_scan_flat_dt(early_init_dt_detect_memory, NULL);
- }
- 
- static int __init plat_of_setup(void)
++			ralink,num-gpios = <1>;
++			ralink,register-map = [ 00 04 08 0c
++						10 14 18 1c
++						20 24 ];
++		};
++
++		spi@b00 {
++			compatible = "ralink,rt3883-spi", "ralink,rt2880-spi";
++			reg = <0xb00 0x100>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			status = "disabled";
++		};
++
++		uartlite@c00 {
++			compatible = "ralink,mt7620-uart", "ralink,rt2880-uart", "ns16550a";
++			reg = <0xc00 0x100>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <12>;
++
++			reg-shift = <2>;
++		};
++	};
++};
+diff --git a/arch/mips/ralink/dts/mt7620_eval.dts b/arch/mips/ralink/dts/mt7620_eval.dts
+new file mode 100644
+index 0000000..ad20d14
+--- /dev/null
++++ b/arch/mips/ralink/dts/mt7620_eval.dts
+@@ -0,0 +1,22 @@
++/dts-v1/;
++
++/include/ "mt7620.dtsi"
++
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	compatible = "ralink,mt7620a-eval-board", "ralink,mt7620a-soc";
++	model = "Ralink MT7620 evaluation board";
++
++	memory@0 {
++		reg = <0x0 0x4000000>;
++	};
++
++	palmbus@10000000 {
++		sysc@0 {
++			ralink,pinmux = "uartlite", "spi";
++			ralink,uartmux = "gpio";
++			ralink,wdtmux = <0>;
++		};
++	};
++};
 -- 
 1.7.10.4

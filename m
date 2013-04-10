@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 13:53:47 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:41813 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 13:54:06 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:41816 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6829888Ab3DJLve3m9KK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6823068Ab3DJLve3fUz7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 10 Apr 2013 13:51:34 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org,
         John Crispin <blogic@openwrt.org>
-Subject: [PATCH 06/18] MIPS: ralink: add pinmux driver
-Date:   Wed, 10 Apr 2013 13:47:15 +0200
-Message-Id: <1365594447-13068-7-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 07/18] MIPS: ralink: extend RT3050 dtsi file
+Date:   Wed, 10 Apr 2013 13:47:16 +0200
+Message-Id: <1365594447-13068-8-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1365594447-13068-1-git-send-email-blogic@openwrt.org>
 References: <1365594447-13068-1-git-send-email-blogic@openwrt.org>
@@ -17,7 +17,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36044
+X-archive-position: 36045
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,199 +34,175 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add code to setup the pinmux on ralonk SoC. The SoC has a single 32 bit register
-for this functionality with simple on/off bits. Building a full featured pinctrl
-driver would be overkill.
+Add some additional properties to the dtsi file for ethernet and wifi.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/Makefile |    2 +-
- arch/mips/ralink/common.h |    8 +++-
- arch/mips/ralink/of.c     |    2 +
- arch/mips/ralink/pinmux.c |   95 +++++++++++++++++++++++++++++++++++++++++++++
- arch/mips/ralink/rt305x.c |    6 +--
- 5 files changed, 107 insertions(+), 6 deletions(-)
- create mode 100644 arch/mips/ralink/pinmux.c
+ arch/mips/ralink/dts/rt3050.dtsi     |   96 ++++++++++++++++++++++++++++------
+ arch/mips/ralink/dts/rt3052_eval.dts |    2 +-
+ 2 files changed, 82 insertions(+), 16 deletions(-)
 
-diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
-index 939757f..39ef249 100644
---- a/arch/mips/ralink/Makefile
-+++ b/arch/mips/ralink/Makefile
-@@ -6,7 +6,7 @@
- # Copyright (C) 2009-2011 Gabor Juhos <juhosg@openwrt.org>
- # Copyright (C) 2013 John Crispin <blogic@openwrt.org>
+diff --git a/arch/mips/ralink/dts/rt3050.dtsi b/arch/mips/ralink/dts/rt3050.dtsi
+index 069d066..5aede8d 100644
+--- a/arch/mips/ralink/dts/rt3050.dtsi
++++ b/arch/mips/ralink/dts/rt3050.dtsi
+@@ -1,7 +1,7 @@
+ / {
+ 	#address-cells = <1>;
+ 	#size-cells = <1>;
+-	compatible = "ralink,rt3050-soc", "ralink,rt3052-soc";
++	compatible = "ralink,rt3050-soc", "ralink,rt3052-soc", "ralink,rt3350-soc";
  
--obj-y := prom.o of.o reset.o clk.o irq.o
-+obj-y := prom.o of.o reset.o clk.o irq.o pinmux.o
+ 	cpus {
+ 		cpu@0 {
+@@ -23,7 +23,7 @@
+ 	palmbus@10000000 {
+ 		compatible = "palmbus";
+ 		reg = <0x10000000 0x200000>;
+-                ranges = <0x0 0x10000000 0x1FFFFF>;
++		ranges = <0x0 0x10000000 0x1FFFFF>;
  
- obj-$(CONFIG_SOC_RT305X) += rt305x.o
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+@@ -34,8 +34,18 @@
+ 		};
  
-diff --git a/arch/mips/ralink/common.h b/arch/mips/ralink/common.h
-index 3009903..193c76c 100644
---- a/arch/mips/ralink/common.h
-+++ b/arch/mips/ralink/common.h
-@@ -22,9 +22,13 @@ struct ralink_pinmux {
- 	struct ralink_pinmux_grp *mode;
- 	struct ralink_pinmux_grp *uart;
- 	int uart_shift;
-+	u32 uart_mask;
- 	void (*wdt_reset)(void);
-+	struct ralink_pinmux_grp *pci;
-+	int pci_shift;
-+	u32 pci_mask;
+ 		timer@100 {
++			compatible = "ralink,rt3052-timer", "ralink,rt2880-timer";
++			reg = <0x100 0x20>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <1>;
++
++			status = "disabled";
++		};
++
++		watchdog@120 {
+ 			compatible = "ralink,rt3052-wdt", "ralink,rt2880-wdt";
+-			reg = <0x100 0x100>;
++			reg = <0x120 0x10>;
+ 		};
+ 
+ 		intc: intc@200 {
+@@ -61,10 +71,12 @@
+ 			gpio-controller;
+ 			#gpio-cells = <2>;
+ 
+-			ralink,ngpio = <24>;
+-			ralink,regs = [ 00 04 08 0c
+-					20 24 28 2c
+-					30 34 ];
++			ralink,num-gpios = <24>;
++			ralink,register-map = [ 00 04 08 0c
++						20 24 28 2c
++						30 34 ];
++
++			status = "disabled";
+ 		};
+ 
+ 		gpio1: gpio@638 {
+@@ -74,10 +86,12 @@
+ 			gpio-controller;
+ 			#gpio-cells = <2>;
+ 
+-			ralink,ngpio = <16>;
+-			ralink,regs = [ 00 04 08 0c
+-					10 14 18 1c
+-					20 24 ];
++			ralink,num-gpios = <16>;
++			ralink,register-map = [ 00 04 08 0c
++						10 14 18 1c
++						20 24 ];
++
++			status = "disabled";
+ 		};
+ 
+ 		gpio2: gpio@660 {
+@@ -87,10 +101,21 @@
+ 			gpio-controller;
+ 			#gpio-cells = <2>;
+ 
+-			ralink,ngpio = <12>;
+-			ralink,regs = [ 00 04 08 0c
+-					10 14 18 1c
+-					20 24 ];
++			ralink,num-gpios = <12>;
++			ralink,register-map = [ 00 04 08 0c
++						10 14 18 1c
++						20 24 ];
++
++			status = "disabled";
++		};
++
++		spi@b00 {
++			compatible = "ralink,rt3050-spi", "ralink,rt2880-spi";
++			reg = <0xb00 0x100>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			status = "disabled";
+ 		};
+ 
+ 		uartlite@c00 {
+@@ -102,5 +127,46 @@
+ 
+ 			reg-shift = <2>;
+ 		};
++
++	};
++
++	ethernet@10100000 {
++		compatible = "ralink,rt3050-eth";
++		reg = <0x10100000 10000>;
++
++		interrupt-parent = <&cpuintc>;
++		interrupts = <5>;
++
++		status = "disabled";
++	};
++
++	esw@10110000 {
++		compatible = "ralink,rt3050-esw";
++		reg = <0x10110000 8000>;
++
++		interrupt-parent = <&intc>;
++		interrupts = <17>;
++
++		status = "disabled";
++	};
++
++	wmac@10180000 {
++		compatible = "ralink,rt3050-wmac", "ralink,rt2880-wmac";
++		reg = <0x10180000 40000>;
++
++		interrupt-parent = <&cpuintc>;
++		interrupts = <6>;
++
++		status = "disabled";
++	};
++
++	otg@101c0000 {
++		compatible = "ralink,rt3050-otg";
++		reg = <0x101c0000 40000>;
++
++		interrupt-parent = <&intc>;
++		interrupts = <18>;
++
++		status = "disabled";
+ 	};
  };
--extern struct ralink_pinmux gpio_pinmux;
-+extern struct ralink_pinmux rt_pinmux;
+diff --git a/arch/mips/ralink/dts/rt3052_eval.dts b/arch/mips/ralink/dts/rt3052_eval.dts
+index 148a590..dc56e58 100644
+--- a/arch/mips/ralink/dts/rt3052_eval.dts
++++ b/arch/mips/ralink/dts/rt3052_eval.dts
+@@ -14,7 +14,7 @@
  
- struct ralink_soc_info {
- 	unsigned char sys_type[RAMIPS_SYS_TYPE_LEN];
-@@ -41,4 +45,6 @@ extern void prom_soc_init(struct ralink_soc_info *soc_info);
- 
- __iomem void *plat_of_remap_node(const char *node);
- 
-+void ralink_pinmux(void);
-+
- #endif /* _RALINK_COMMON_H__ */
-diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
-index 4165e70..ecf1482 100644
---- a/arch/mips/ralink/of.c
-+++ b/arch/mips/ralink/of.c
-@@ -101,6 +101,8 @@ static int __init plat_of_setup(void)
- 	if (of_platform_populate(NULL, of_ids, NULL, NULL))
- 		panic("failed to populate DT\n");
- 
-+	ralink_pinmux();
-+
- 	return 0;
- }
- 
-diff --git a/arch/mips/ralink/pinmux.c b/arch/mips/ralink/pinmux.c
-new file mode 100644
-index 0000000..c10df50
---- /dev/null
-+++ b/arch/mips/ralink/pinmux.c
-@@ -0,0 +1,95 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2013 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/of.h>
-+
-+#include <asm/mach-ralink/ralink_regs.h>
-+
-+#include "common.h"
-+
-+#define SYSC_REG_GPIO_MODE	0x60
-+
-+static u32 ralink_mux_mask(const char *name, struct ralink_pinmux_grp *grps)
-+{
-+	for (; grps->name; grps++)
-+		if (!strcmp(grps->name, name))
-+			return grps->mask;
-+
-+	return 0;
-+}
-+
-+void ralink_pinmux(void)
-+{
-+	const __be32 *wdt;
-+	struct device_node *np;
-+	struct property *prop;
-+	const char *uart, *pci, *pin;
-+	u32 mode = 0;
-+
-+	np = of_find_compatible_node(NULL, NULL, "ralink,rt3050-sysc");
-+	if (!np)
-+		return;
-+
-+	of_property_for_each_string(np, "ralink,gpiomux", prop, pin) {
-+		int m = ralink_mux_mask(pin, rt_pinmux.mode);
-+		if (m) {
-+			mode |= m;
-+			pr_debug("pinmux: registered gpiomux \"%s\"\n", pin);
-+		} else {
-+			pr_err("pinmux: failed to load \"%s\"\n", pin);
-+		}
-+	}
-+
-+	of_property_for_each_string(np, "ralink,pinmux", prop, pin) {
-+		int m = ralink_mux_mask(pin, rt_pinmux.mode);
-+		if (m) {
-+			mode &= ~m;
-+			pr_debug("pinmux: registered pinmux \"%s\"\n", pin);
-+		} else {
-+			pr_err("pinmux: failed to load group \"%s\"\n", pin);
-+		}
-+	}
-+
-+	uart = NULL;
-+	if (rt_pinmux.uart)
-+		of_property_read_string(np, "ralink,uartmux", &uart);
-+
-+	if (uart) {
-+		int m = ralink_mux_mask(uart, rt_pinmux.uart);
-+
-+		if (m) {
-+			mode &= ~(rt_pinmux.uart_mask << rt_pinmux.uart_shift);
-+			mode |= m << rt_pinmux.uart_shift;
-+			pr_debug("pinmux: registered uartmux \"%s\"\n", uart);
-+		} else {
-+			pr_debug("pinmux: unknown uartmux \"%s\"\n", uart);
-+		}
-+	}
-+
-+	wdt = of_get_property(np, "ralink,wdtmux", NULL);
-+	if (wdt && *wdt && rt_pinmux.wdt_reset)
-+		rt_pinmux.wdt_reset();
-+
-+	pci = NULL;
-+	if (rt_pinmux.pci)
-+		of_property_read_string(np, "ralink,pcimux", &pci);
-+
-+	if (pci) {
-+		int m = ralink_mux_mask(pci, rt_pinmux.pci);
-+		mode &= ~(rt_pinmux.pci_mask << rt_pinmux.pci_shift);
-+		if (m) {
-+			mode |= (m << rt_pinmux.pci_shift);
-+			pr_debug("pinmux: registered pcimux \"%s\"\n", pci);
-+		} else {
-+			pr_debug("pinmux: registered pcimux \"gpio\"\n");
-+		}
-+	}
-+
-+	rt_sysc_w32(mode, SYSC_REG_GPIO_MODE);
-+}
-diff --git a/arch/mips/ralink/rt305x.c b/arch/mips/ralink/rt305x.c
-index 856ebff..d9ea53d 100644
---- a/arch/mips/ralink/rt305x.c
-+++ b/arch/mips/ralink/rt305x.c
-@@ -97,9 +97,6 @@ struct ralink_pinmux_grp uart_mux[] = {
- 		.mask = RT305X_GPIO_MODE_GPIO_I2S,
- 		.gpio_first = RT305X_GPIO_7,
- 		.gpio_last = RT305X_GPIO_14,
--	}, {
--		.name = "gpio",
--		.mask = RT305X_GPIO_MODE_GPIO,
- 	}, {0}
- };
- 
-@@ -114,10 +111,11 @@ void rt305x_wdt_reset(void)
- 	rt_sysc_w32(t, SYSC_REG_SYSTEM_CONFIG);
- }
- 
--struct ralink_pinmux gpio_pinmux = {
-+struct ralink_pinmux rt_pinmux = {
- 	.mode = mode_mux,
- 	.uart = uart_mux,
- 	.uart_shift = RT305X_GPIO_MODE_UART0_SHIFT,
-+	.uart_mask = RT305X_GPIO_MODE_GPIO,
- 	.wdt_reset = rt305x_wdt_reset,
- };
- 
+ 	palmbus@10000000 {
+ 		sysc@0 {
+-			ralink,pinmmux = "uartlite", "spi";
++			ralink,pinmux = "uartlite", "spi";
+ 			ralink,uartmux = "gpio";
+ 			ralink,wdtmux = <0>;
+ 		};
 -- 
 1.7.10.4

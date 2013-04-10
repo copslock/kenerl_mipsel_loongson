@@ -1,59 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 18:31:31 +0200 (CEST)
-Received: from mail-ob0-f178.google.com ([209.85.214.178]:57042 "EHLO
-        mail-ob0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816022Ab3DJQb3nI2Q4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Apr 2013 18:31:29 +0200
-Received: by mail-ob0-f178.google.com with SMTP id ni5so600660obc.9
-        for <linux-mips@linux-mips.org>; Wed, 10 Apr 2013 09:31:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 18:37:53 +0200 (CEST)
+Received: from mail-pb0-f47.google.com ([209.85.160.47]:39428 "EHLO
+        mail-pb0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816022Ab3DJQhv1VWf8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Apr 2013 18:37:51 +0200
+Received: by mail-pb0-f47.google.com with SMTP id rq13so363358pbb.34
+        for <multiple recipients>; Wed, 10 Apr 2013 09:37:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:mime-version:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=DNwSDsxcDhqvkErKDq1pmSXAbLFi1cKZXPOIhGMyzKo=;
-        b=R6c5r5akyi510aR1W1Xl0pvLZi1Pgh9Rbm7Jo7G9lpY7/fQk4Oa+QkbpSmTFnt9K5V
-         35Skv7YbvAMJ1voLWdm2sjtdyMrCywOfhuyOouidTZlO5abnFh0tr4f8H25DugBsyyKY
-         offnRWSjcMjEODmYJp1dk1hqlkY0zBPvLL6sOFdd5k8DftMp9FOwt7jWTGtZ1W57TRu0
-         iTQ+2ntirkHzkICG5z3Cw0VPTo/f1ol5qvQ3cq616YN12kNXlDsCxkw6vprp78OSQifG
-         udk5OgvEjVuV2Gu+QuE1XBUnMKPIHDdJA/j4k2CytOeokSiGHRkNvGPfJgXcwkfwmRKE
-         0FDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:mime-version:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type:x-gm-message-state;
-        bh=DNwSDsxcDhqvkErKDq1pmSXAbLFi1cKZXPOIhGMyzKo=;
-        b=SyLhjNeNo8oxotUFiGbSFD4IdedKy9iZUSbk1XwA2LAnuMIMrUXHvNP/7m+03MRIv9
-         dX+iAhBQO4NfsA6MltRqxaPmQi2ukESV0Ys80BwSrF/61LDIPNaZzVaCk7iRmgQi63XV
-         L5i90//ttcbeIgUV76LdHkjPiVp5rOaNXHzNd1pzxY+dsGUnQdz969L7NKbg2LnB8O5G
-         8z1fJ0OgyIR/QFGlaUpE2Pv7VlBcCF37yaWVVhrgPBWxf7uTGgA12FQxTs4SnhKwocJR
-         lJk3Qtk0S+sb94ZHRLbBlUpbpkakP94yo1qX7PfR+8A/XxuBiejwuWnNYb6xvnEwgFn5
-         4aCg==
-X-Received: by 10.60.173.144 with SMTP id bk16mr964218oec.103.1365611483506;
- Wed, 10 Apr 2013 09:31:23 -0700 (PDT)
+        d=gmail.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=UYFUFeAhY0ZTs/gEKDcmOFbiiuenYwcs4OuWq8+FPc8=;
+        b=aiH1eWMQgcW1Nw3fmZaJ53O1tpIPebFA0IBHorMmgOxZVptJhr3ysFZmwbz1zSO/b9
+         XEgJ4mx9jgCaVY+2zyOe8DW5IYGkEw5Q9JkSQdmC44pNoQI/uCP5aAmFjLDFLjLUZxnf
+         SBd7xOp9JTt5ad1avH16I6xRlqbHTT7/SVlKJGsaA68RVALzVeMnChF97TOWrZYeXSCQ
+         5SuC8He1GISzfKG+83mdp4tKpL3UV6aJvMLqx4cgl7e86EdTMqL4BCBTeP/BY3sdY/0w
+         jZMJbRJxeeRWXTixhrMABEDB8CxbGYzkVFMjtU8YPUqJaP8RznniYerGguD/cVB/qTyx
+         pRTg==
+X-Received: by 10.66.171.132 with SMTP id au4mr4612469pac.11.1365611864879;
+        Wed, 10 Apr 2013 09:37:44 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id ef3sm1055132pad.20.2013.04.10.09.37.43
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 10 Apr 2013 09:37:43 -0700 (PDT)
+Message-ID: <51659556.3070502@gmail.com>
+Date:   Wed, 10 Apr 2013 09:37:42 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
 MIME-Version: 1.0
-Received: by 10.182.102.68 with HTTP; Wed, 10 Apr 2013 09:31:02 -0700 (PDT)
-In-Reply-To: <1365098483-26821-2-git-send-email-juhosg@openwrt.org>
-References: <1365098483-26821-1-git-send-email-juhosg@openwrt.org> <1365098483-26821-2-git-send-email-juhosg@openwrt.org>
-From:   Bjorn Helgaas <bhelgaas@google.com>
-Date:   Wed, 10 Apr 2013 10:31:02 -0600
-Message-ID: <CAErSpo4ih-Kgp4LxX1MDodac-eoPo=Mu1d6ex8oNnaEEc_GQnw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] MIPS: implement pcibios_get_phb_of_node
-To:     Gabor Juhos <juhosg@openwrt.org>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-X-Gm-Message-State: ALoCoQlg+gZSePGNuR88p+hTeI51IaS6etWLFu2eVidxEUlh/m5Stv/JCJzPu4ZB1vIBAlvHjvhEOceopzkWuXp+Kt/YB1EjSkKvezxPZpe+vkojnpxmlK59dVwizFviKphW85TRW2MfD2T1W60cNe7V7vGVf+c4EAfeqmfPWbACc6ynsTedsRoXx1wDwIa+MuFe9Ip+c4gv9/beUA0y6TGOIWU+UCgfCQ==
-Return-Path: <bhelgaas@google.com>
+To:     Wladislav Wiebe <wladislav.kw@gmail.com>
+CC:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Makefile: workaround printk recursion bug
+References: <51652CF5.1080009@gmail.com>
+In-Reply-To: <51652CF5.1080009@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36067
+X-archive-position: 36068
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bhelgaas@google.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,63 +57,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Apr 4, 2013 at 12:01 PM, Gabor Juhos <juhosg@openwrt.org> wrote:
-> The of_node field of the device assigned to a
-> PCI bus is used during scanning of the PCI bus.
-> However on MIPS, the of_node field is assigned
-> only after the bus has been scanned.
+On 04/10/2013 02:12 AM, Wladislav Wiebe wrote:
 >
-> Implement the architecture specific version of
-> 'pcibios_get_phb_of_node'. Which ensures that the
-> PCI driver core will initialize the of_node field
-> before starting the scan.
+> From: Wladislav Wiebe <wladislav.kw@gmail.com>
 >
-> Also remove the local assignment of bus->dev.of_node,
-> it is not needed after the patch.
+> Function tracing is broken due to removal of selecting FRAME_POINTER with
+> FUNCTION_TRACER as result of commit: b732d439cb43336cd6d7e804ecb2c81193ef63b0
 >
-> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+> Latest commit ad8c396936e328f5344e1881afde9e28d5f2045f "MIPS: Unbreak
+> function tracer for 64-bit kernel." fixes just the early startup hang,
+> but on MIPS64/CAVIUM_OCTEON2 are still random printk recursion bugs
+> which cause also Kernel hangs, especially on late startup phase when
+> network drivers get loaded. This patch enable for CAVIUM_OCTEON2/64 Bit
+> architecture -fno-omit-frame-pointer cflag when FUNCTION_TRACER get
+> enabled. This will fix random Kernel hangs with "BUG: recent printk
+> recursion!" from linux/kernel/printk.c.
+>
+> Maybe there exist a other solution in mcount handling, since in the
+> commit message from Al Cooper is mentioned that "MIPS frame pointers are
+> generally considered to be useless because they cannot be used to unwind
+> the stack. Unfortunately the MIPS function tracing code has bugs that
+> are masked by the use of frame pointers. This commit fixes the bugs so
+> that MIPS frame pointers don't need to be enabled."
+>
+> But this is just a solution for MIPS32 - on a symmetric multiprocessing
+> @MIPS64/CAVIUM_OCTEON2 it doesn't work properly.
 
-I removed the __weak annotation from include/linux/pci.h and applied
-this patch to my pci/gabor-get-of-node.  Give it a try and make sure
-it solves your problem.  If so, and Ralph approves, I can push both
-for v3.10.  It should appear at
-http://git.kernel.org/cgit/linux/kernel/git/helgaas/pci.git/log/?h=pci/gabor-get-of-node
-soon.
+There are a couple of problems that I see with this patch:
 
-Or if you prefer, you can take them through the MIPS tree.
+1) It doesn't handle non-OCTEON2.  Surely other 64-bit targets are 
+effected as well
 
-Bjorn
+2) You don't say how it is broken or how this fixes it.
 
+3) Function graph tracing on 3.9.0-rc6 compiled with gcc-4.7.0 works 
+fine for me without this.  So I see no need to clog up the make files 
+with a rats nest of ifdef
+
+Without more information about why this  is needed, I would have to say NAK.
+
+David Daney
+
+>
+> Signed-off-by: Wladislav Wiebe <wladislav.kw@gmail.com>
 > ---
->  arch/mips/pci/pci.c |    8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+>   arch/mips/Makefile |    9 +++++++++
+>   1 file changed, 9 insertions(+)
 >
-> diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-> index 0872f12..594e60d 100644
-> --- a/arch/mips/pci/pci.c
-> +++ b/arch/mips/pci/pci.c
-> @@ -115,7 +115,6 @@ static void pcibios_scanbus(struct pci_controller *hose)
->                         pci_bus_assign_resources(bus);
->                         pci_enable_bridges(bus);
->                 }
-> -               bus->dev.of_node = hose->of_node;
->         }
->  }
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> index 6f7978f..8befe31 100644
+> --- a/arch/mips/Makefile
+> +++ b/arch/mips/Makefile
+> @@ -119,6 +119,15 @@ cflags-$(CONFIG_SB1XXX_CORELIS)	+= $(call cc-option,-mno-sched-prolog) \
+>   				   -fno-omit-frame-pointer
 >
-> @@ -169,6 +168,13 @@ void pci_load_of_ranges(struct pci_controller *hose, struct device_node *node)
->                 }
->         }
->  }
+>   #
+> +# FTrace depended compiler options, currently only needed by MIPS64/OCTEON2.
+> +#
+> +ifdef CONFIG_64BIT
+> +ifdef CONFIG_CAVIUM_OCTEON2
+> +cflags-$(CONFIG_FUNCTION_TRACER) += $(call cc-option,-fno-omit-frame-pointer)
+> +endif
+> +endif
 > +
-> +struct device_node *pcibios_get_phb_of_node(struct pci_bus *bus)
-> +{
-> +       struct pci_controller *hose = bus->sysdata;
-> +
-> +       return of_node_get(hose->of_node);
-> +}
->  #endif
->
->  static DEFINE_MUTEX(pci_scan_mutex);
-> --
-> 1.7.10
+> +#
+>   # CPU-dependent compiler/assembler options for optimization.
+>   #
+>   cflags-$(CONFIG_CPU_R3000)	+= -march=r3000
 >

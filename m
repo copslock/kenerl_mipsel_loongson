@@ -1,51 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 18:03:57 +0200 (CEST)
-Received: from mail-pd0-f172.google.com ([209.85.192.172]:47536 "EHLO
-        mail-pd0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835045Ab3DJQDwOO-DV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Apr 2013 18:03:52 +0200
-Received: by mail-pd0-f172.google.com with SMTP id 5so349151pdd.3
-        for <multiple recipients>; Wed, 10 Apr 2013 09:03:45 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 18:31:31 +0200 (CEST)
+Received: from mail-ob0-f178.google.com ([209.85.214.178]:57042 "EHLO
+        mail-ob0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816022Ab3DJQb3nI2Q4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Apr 2013 18:31:29 +0200
+Received: by mail-ob0-f178.google.com with SMTP id ni5so600660obc.9
+        for <linux-mips@linux-mips.org>; Wed, 10 Apr 2013 09:31:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=8Fc9TRsPvebJ+Lz4Uq8jRWRLM+UIGUzXgrwC/hNg7sY=;
-        b=WUVHeK/FbQoXUqOFBolpThocssY4Jnj1hlvjTlUyy2vx2/D9cqfFiU5FgBzIJPCzR6
-         mDKYTvKnlSyhebqakHhcaHYe7RJ44Y8ZHO1DOTNP7AvHPStJMo2KxoVQYrhK+e0zaijG
-         xDNqSAJHE2kMrplnmmNv3JyUlBBryqSO5i0KkM2NjXzYTJzLZaEUjxDcfu4xRhf1fTUL
-         YX0PdqvlHowztHxZ6zb9DFrP1e47He3Y7APak023l0+Xbd0vJ8GqVxCYfmcvAf/RFm4U
-         9Szr3DE+ruIZ3ODVJaXtUW+QBTYvoMB+/W+6ncuNRX4FBb8fTOnfZHWjCk0AF1LJXVfk
-         xUnA==
-X-Received: by 10.68.44.169 with SMTP id f9mr3739378pbm.29.1365609825506;
-        Wed, 10 Apr 2013 09:03:45 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id jk11sm480980pbb.0.2013.04.10.09.03.38
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 10 Apr 2013 09:03:44 -0700 (PDT)
-Message-ID: <51658D59.6070602@gmail.com>
-Date:   Wed, 10 Apr 2013 09:03:37 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
+        d=google.com; s=20120113;
+        h=x-received:mime-version:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=DNwSDsxcDhqvkErKDq1pmSXAbLFi1cKZXPOIhGMyzKo=;
+        b=R6c5r5akyi510aR1W1Xl0pvLZi1Pgh9Rbm7Jo7G9lpY7/fQk4Oa+QkbpSmTFnt9K5V
+         35Skv7YbvAMJ1voLWdm2sjtdyMrCywOfhuyOouidTZlO5abnFh0tr4f8H25DugBsyyKY
+         offnRWSjcMjEODmYJp1dk1hqlkY0zBPvLL6sOFdd5k8DftMp9FOwt7jWTGtZ1W57TRu0
+         iTQ+2ntirkHzkICG5z3Cw0VPTo/f1ol5qvQ3cq616YN12kNXlDsCxkw6vprp78OSQifG
+         udk5OgvEjVuV2Gu+QuE1XBUnMKPIHDdJA/j4k2CytOeokSiGHRkNvGPfJgXcwkfwmRKE
+         0FDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:mime-version:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type:x-gm-message-state;
+        bh=DNwSDsxcDhqvkErKDq1pmSXAbLFi1cKZXPOIhGMyzKo=;
+        b=SyLhjNeNo8oxotUFiGbSFD4IdedKy9iZUSbk1XwA2LAnuMIMrUXHvNP/7m+03MRIv9
+         dX+iAhBQO4NfsA6MltRqxaPmQi2ukESV0Ys80BwSrF/61LDIPNaZzVaCk7iRmgQi63XV
+         L5i90//ttcbeIgUV76LdHkjPiVp5rOaNXHzNd1pzxY+dsGUnQdz969L7NKbg2LnB8O5G
+         8z1fJ0OgyIR/QFGlaUpE2Pv7VlBcCF37yaWVVhrgPBWxf7uTGgA12FQxTs4SnhKwocJR
+         lJk3Qtk0S+sb94ZHRLbBlUpbpkakP94yo1qX7PfR+8A/XxuBiejwuWnNYb6xvnEwgFn5
+         4aCg==
+X-Received: by 10.60.173.144 with SMTP id bk16mr964218oec.103.1365611483506;
+ Wed, 10 Apr 2013 09:31:23 -0700 (PDT)
 MIME-Version: 1.0
-To:     Alexander Sverdlin <alexander.sverdlin.ext@nsn.com>,
+Received: by 10.182.102.68 with HTTP; Wed, 10 Apr 2013 09:31:02 -0700 (PDT)
+In-Reply-To: <1365098483-26821-2-git-send-email-juhosg@openwrt.org>
+References: <1365098483-26821-1-git-send-email-juhosg@openwrt.org> <1365098483-26821-2-git-send-email-juhosg@openwrt.org>
+From:   Bjorn Helgaas <bhelgaas@google.com>
+Date:   Wed, 10 Apr 2013 10:31:02 -0600
+Message-ID: <CAErSpo4ih-Kgp4LxX1MDodac-eoPo=Mu1d6ex8oNnaEEc_GQnw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] MIPS: implement pcibios_get_phb_of_node
+To:     Gabor Juhos <juhosg@openwrt.org>
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>
-CC:     linux-mips@linux-mips.org, david.daney@cavium.com
-Subject: Re: [PATCH] octeon-irq: Fix GPIO number in IRQ chip private data
-References: <5139FA0A.8060908@nsn.com>
-In-Reply-To: <5139FA0A.8060908@nsn.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+X-Gm-Message-State: ALoCoQlg+gZSePGNuR88p+hTeI51IaS6etWLFu2eVidxEUlh/m5Stv/JCJzPu4ZB1vIBAlvHjvhEOceopzkWuXp+Kt/YB1EjSkKvezxPZpe+vkojnpxmlK59dVwizFviKphW85TRW2MfD2T1W60cNe7V7vGVf+c4EAfeqmfPWbACc6ynsTedsRoXx1wDwIa+MuFe9Ip+c4gv9/beUA0y6TGOIWU+UCgfCQ==
+Return-Path: <bhelgaas@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36066
+X-archive-position: 36067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,54 +66,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/08/2013 06:47 AM, Alexander Sverdlin wrote:
-> octeon-irq: Fix GPIO number in IRQ chip private data
+On Thu, Apr 4, 2013 at 12:01 PM, Gabor Juhos <juhosg@openwrt.org> wrote:
+> The of_node field of the device assigned to a
+> PCI bus is used during scanning of the PCI bus.
+> However on MIPS, the of_node field is assigned
+> only after the bus has been scanned.
 >
-> Current GPIO chip implementation in octeon-irq is still broken, even
-> after upstream
-> commit 87161ccdc61862c8b49e75c21209d7f79dc758e9 (MIPS: Octeon: Fix
-> broken interrupt
-> controller code). It works for GPIO IRQs that have reset-default
-> configuration, but
-> not for edge-triggered ones.
+> Implement the architecture specific version of
+> 'pcibios_get_phb_of_node'. Which ensures that the
+> PCI driver core will initialize the of_node field
+> before starting the scan.
 >
-> The problem is in octeon_irq_gpio_map_common(), which passes modified
-> "hw" variable
-> (which has range of possible values 16..31) as "gpio_line" parameter to
-> octeon_irq_set_ciu_mapping(), which saves it in private data of the IRQ
-> chip. Later,
-> neither octeon_irq_gpio_setup() is able to re-configure GPIOs
-> (cvmx_write_csr() is
-> writing to non-existent CVMX_GPIO_BIT_CFGX), nor
-> octeon_irq_ciu_gpio_ack() is able
-> to acknowledge such IRQ, because "mask" is incorrect.
+> Also remove the local assignment of bus->dev.of_node,
+> it is not needed after the patch.
 >
-> Fix is trivial and has been tested on Cavium Octeon II -based board,
-> including
-> both level-triggered and edge-triggered GPIO IRQs.
->
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin.ext@nsn.com>
-> Cc: David Daney <david.daney@cavium.com>
+> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 
-Yes, this patch is needed...
+I removed the __weak annotation from include/linux/pci.h and applied
+this patch to my pci/gabor-get-of-node.  Give it a try and make sure
+it solves your problem.  If so, and Ralph approves, I can push both
+for v3.10.  It should appear at
+http://git.kernel.org/cgit/linux/kernel/git/helgaas/pci.git/log/?h=pci/gabor-get-of-node
+soon.
 
-Acked-by: David Daney <david.daney@cavium.com>
+Or if you prefer, you can take them through the MIPS tree.
+
+Bjorn
 
 > ---
-> --- linux.orig/arch/mips/cavium-octeon/octeon-irq.c
-> +++ linux/arch/mips/cavium-octeon/octeon-irq.c
-> @@ -1034,9 +1034,8 @@ static int octeon_irq_gpio_map_common(st
->       if (!octeon_irq_virq_in_range(virq))
->           return -EINVAL;
+>  arch/mips/pci/pci.c |    8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 >
-> -    hw += gpiod->base_hwirq;
-> -    line = hw >> 6;
-> -    bit = hw & 63;
-> +    line = (hw + gpiod->base_hwirq) >> 6;
-> +    bit = (hw + gpiod->base_hwirq) & 63;
->       if (line > line_limit || octeon_irq_ciu_to_irq[line][bit] != 0)
->           return -EINVAL;
+> diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+> index 0872f12..594e60d 100644
+> --- a/arch/mips/pci/pci.c
+> +++ b/arch/mips/pci/pci.c
+> @@ -115,7 +115,6 @@ static void pcibios_scanbus(struct pci_controller *hose)
+>                         pci_bus_assign_resources(bus);
+>                         pci_enable_bridges(bus);
+>                 }
+> -               bus->dev.of_node = hose->of_node;
+>         }
+>  }
 >
+> @@ -169,6 +168,13 @@ void pci_load_of_ranges(struct pci_controller *hose, struct device_node *node)
+>                 }
+>         }
+>  }
+> +
+> +struct device_node *pcibios_get_phb_of_node(struct pci_bus *bus)
+> +{
+> +       struct pci_controller *hose = bus->sysdata;
+> +
+> +       return of_node_get(hose->of_node);
+> +}
+>  #endif
 >
->
+>  static DEFINE_MUTEX(pci_scan_mutex);
+> --
+> 1.7.10
 >

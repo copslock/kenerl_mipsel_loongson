@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Apr 2013 00:47:22 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:47453 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Apr 2013 00:48:34 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:47534 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835068Ab3DJWrPGKckz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Apr 2013 00:47:15 +0200
+        by eddie.linux-mips.org with ESMTP id S6835062Ab3DJWr2iePjs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Apr 2013 00:47:28 +0200
 Received: from localhost (c-76-28-172-123.hsd1.wa.comcast.net [76.28.172.123])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 08331840;
-        Wed, 10 Apr 2013 22:47:06 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 95C9E945;
+        Wed, 10 Apr 2013 22:47:21 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        Jim Quinlan <jim2101024@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [ 06/64] MIPS: Fix logic errors in bitops.c
-Date:   Wed, 10 Apr 2013 15:46:03 -0700
-Message-Id: <20130410224334.584076940@linuxfoundation.org>
+        Al Cooper <alcooperx@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        viric@viric.name
+Subject: [ 27/64] MIPS: Unbreak function tracer for 64-bit kernel.
+Date:   Wed, 10 Apr 2013 15:46:24 -0700
+Message-Id: <20130410224339.394444541@linuxfoundation.org>
 X-Mailer: git-send-email 1.8.1.rc1.5.g7e0651a
 In-Reply-To: <20130410224333.114387235@linuxfoundation.org>
 References: <20130410224333.114387235@linuxfoundation.org>
@@ -23,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36070
+X-archive-position: 36071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,97 +47,50 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
-commit 0c81157b46c533139d6be721d41617020c59a2c3 upstream.
+commit ad8c396936e328f5344e1881afde9e28d5f2045f upstream.
 
-commit 92d11594f6 (MIPS: Remove irqflags.h dependency from bitops.h)
-factored some of the bitops code out into a separate file
-(arch/mips/lib/bitops.c).  Unfortunately the logic converting a bit
-mask into a boolean result was lost in some of the functions.  We had:
+Commit 58b69401c797 [MIPS: Function tracer: Fix broken function tracing]
+completely broke the function tracer for 64-bit kernels.  The symptom is
+a system hang very early in the boot process.
 
-   int res;
-   unsigned long shifted_result_bit;
-   .
-   .
-   .
-   res = shifted_result_bit;
-   return res;
-
-Which truncates off the high 32 bits (thus yielding an incorrect
-value) on 64-bit systems.
-
-The manifestation of this is that a non-SMP 64-bit kernel will not
-boot as the bitmap operations in bootmem.c are all screwed up.
+The fix: Remove/fix $sp adjustments for 64-bit case.
 
 Signed-off-by: David Daney <david.daney@cavium.com>
-Cc:  linux-mips@linux-mips.org
-Cc: Jim Quinlan <jim2101024@gmail.com>
-Patchwork: https://patchwork.linux-mips.org/patch/4965/
+Cc: linux-mips@linux-mips.org
+Cc: Al Cooper <alcooperx@gmail.com>
+Cc: viric@viric.name
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/lib/bitops.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/mips/kernel/mcount.S |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/arch/mips/lib/bitops.c
-+++ b/arch/mips/lib/bitops.c
-@@ -90,12 +90,12 @@ int __mips_test_and_set_bit(unsigned lon
- 	unsigned bit = nr & SZLONG_MASK;
- 	unsigned long mask;
- 	unsigned long flags;
--	unsigned long res;
-+	int res;
+--- a/arch/mips/kernel/mcount.S
++++ b/arch/mips/kernel/mcount.S
+@@ -46,10 +46,9 @@
+ 	PTR_L	a5, PT_R9(sp)
+ 	PTR_L	a6, PT_R10(sp)
+ 	PTR_L	a7, PT_R11(sp)
+-#else
+-	PTR_ADDIU	sp, PT_SIZE
+ #endif
+-.endm
++	PTR_ADDIU	sp, PT_SIZE
++	.endm
  
- 	a += nr >> SZLONG_LOG;
- 	mask = 1UL << bit;
- 	raw_local_irq_save(flags);
--	res = (mask & *a);
-+	res = (mask & *a) != 0;
- 	*a |= mask;
- 	raw_local_irq_restore(flags);
- 	return res;
-@@ -116,12 +116,12 @@ int __mips_test_and_set_bit_lock(unsigne
- 	unsigned bit = nr & SZLONG_MASK;
- 	unsigned long mask;
- 	unsigned long flags;
--	unsigned long res;
-+	int res;
+ 	.macro RETURN_BACK
+ 	jr ra
+@@ -68,7 +67,11 @@ NESTED(ftrace_caller, PT_SIZE, ra)
+ 	.globl _mcount
+ _mcount:
+ 	b	ftrace_stub
+-	addiu sp,sp,8
++#ifdef CONFIG_32BIT
++	 addiu sp,sp,8
++#else
++	 nop
++#endif
  
- 	a += nr >> SZLONG_LOG;
- 	mask = 1UL << bit;
- 	raw_local_irq_save(flags);
--	res = (mask & *a);
-+	res = (mask & *a) != 0;
- 	*a |= mask;
- 	raw_local_irq_restore(flags);
- 	return res;
-@@ -141,12 +141,12 @@ int __mips_test_and_clear_bit(unsigned l
- 	unsigned bit = nr & SZLONG_MASK;
- 	unsigned long mask;
- 	unsigned long flags;
--	unsigned long res;
-+	int res;
- 
- 	a += nr >> SZLONG_LOG;
- 	mask = 1UL << bit;
- 	raw_local_irq_save(flags);
--	res = (mask & *a);
-+	res = (mask & *a) != 0;
- 	*a &= ~mask;
- 	raw_local_irq_restore(flags);
- 	return res;
-@@ -166,12 +166,12 @@ int __mips_test_and_change_bit(unsigned
- 	unsigned bit = nr & SZLONG_MASK;
- 	unsigned long mask;
- 	unsigned long flags;
--	unsigned long res;
-+	int res;
- 
- 	a += nr >> SZLONG_LOG;
- 	mask = 1UL << bit;
- 	raw_local_irq_save(flags);
--	res = (mask & *a);
-+	res = (mask & *a) != 0;
- 	*a ^= mask;
- 	raw_local_irq_restore(flags);
- 	return res;
+ 	/* When tracing is activated, it calls ftrace_caller+8 (aka here) */
+ 	lw	t1, function_trace_stop

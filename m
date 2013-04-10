@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 14:18:36 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:43097 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Apr 2013 14:19:00 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:43101 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823066Ab3DJMSbUC0Xt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Apr 2013 14:18:31 +0200
+        id S6834990Ab3DJMSczUsgV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 10 Apr 2013 14:18:32 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org,
         John Crispin <blogic@openwrt.org>
-Subject: [PATCH 16/18] MIPS: ralink: add support for periodic timer irq
-Date:   Wed, 10 Apr 2013 13:47:25 +0200
-Message-Id: <1365594447-13068-17-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 10/18] MIPS: ralink: adds support for RT2880 SoC family
+Date:   Wed, 10 Apr 2013 13:47:19 +0200
+Message-Id: <1365594447-13068-11-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1365594447-13068-1-git-send-email-blogic@openwrt.org>
 References: <1365594447-13068-1-git-send-email-blogic@openwrt.org>
@@ -17,7 +17,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36047
+X-archive-position: 36048
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,225 +34,280 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Adds a driver for the periodic timer found on Ralink SoC.
+Add support code for rt2880 SOC.
+
+The code detects the SoC and registers the clk / pinmux settings.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/Makefile |    2 +-
- arch/mips/ralink/timer.c  |  192 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 193 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/ralink/timer.c
+ arch/mips/Kconfig                          |    2 +-
+ arch/mips/include/asm/mach-ralink/rt288x.h |   49 ++++++++++
+ arch/mips/ralink/Kconfig                   |    3 +
+ arch/mips/ralink/Makefile                  |    1 +
+ arch/mips/ralink/Platform                  |    5 +
+ arch/mips/ralink/rt288x.c                  |  143 ++++++++++++++++++++++++++++
+ 6 files changed, 202 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/include/asm/mach-ralink/rt288x.h
+ create mode 100644 arch/mips/ralink/rt288x.c
 
-diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
-index 341b4de..cae7d88 100644
---- a/arch/mips/ralink/Makefile
-+++ b/arch/mips/ralink/Makefile
-@@ -6,7 +6,7 @@
- # Copyright (C) 2009-2011 Gabor Juhos <juhosg@openwrt.org>
- # Copyright (C) 2013 John Crispin <blogic@openwrt.org>
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 51244bf..e4da4f8 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1152,7 +1152,7 @@ config BOOT_ELF32
  
--obj-y := prom.o of.o reset.o clk.o irq.o pinmux.o
-+obj-y := prom.o of.o reset.o clk.o irq.o pinmux.o timer.o
- 
- obj-$(CONFIG_SOC_RT288X) += rt288x.o
- obj-$(CONFIG_SOC_RT305X) += rt305x.o
-diff --git a/arch/mips/ralink/timer.c b/arch/mips/ralink/timer.c
+ config MIPS_L1_CACHE_SHIFT
+ 	int
+-	default "4" if MACH_DECSTATION || MIKROTIK_RB532 || PMC_MSP4200_EVAL
++	default "4" if MACH_DECSTATION || MIKROTIK_RB532 || PMC_MSP4200_EVAL || SOC_RT288X
+ 	default "6" if MIPS_CPU_SCACHE
+ 	default "7" if SGI_IP22 || SGI_IP27 || SGI_IP28 || SNI_RM || CPU_CAVIUM_OCTEON
+ 	default "5"
+diff --git a/arch/mips/include/asm/mach-ralink/rt288x.h b/arch/mips/include/asm/mach-ralink/rt288x.h
 new file mode 100644
-index 0000000..f3bd44d
+index 0000000..ad8b42d
 --- /dev/null
-+++ b/arch/mips/ralink/timer.c
-@@ -0,0 +1,192 @@
++++ b/arch/mips/include/asm/mach-ralink/rt288x.h
+@@ -0,0 +1,49 @@
 +/*
 + * This program is free software; you can redistribute it and/or modify it
 + * under the terms of the GNU General Public License version 2 as published
 + * by the Free Software Foundation.
 + *
++ * Parts of this file are based on Ralink's 2.6.21 BSP
++ *
++ * Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
++ * Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
 + * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
-+*/
++ */
 +
++#ifndef _RT288X_REGS_H_
++#define _RT288X_REGS_H_
++
++#define RT2880_SYSC_BASE		0x00300000
++
++#define SYSC_REG_CHIP_NAME0		0x00
++#define SYSC_REG_CHIP_NAME1		0x04
++#define SYSC_REG_CHIP_ID		0x0c
++#define SYSC_REG_SYSTEM_CONFIG		0x10
++#define SYSC_REG_CLKCFG			0x30
++
++#define RT2880_CHIP_NAME0		0x38325452
++#define RT2880_CHIP_NAME1		0x20203038
++
++#define CHIP_ID_ID_MASK			0xff
++#define CHIP_ID_ID_SHIFT		8
++#define CHIP_ID_REV_MASK		0xff
++
++#define SYSTEM_CONFIG_CPUCLK_SHIFT	20
++#define SYSTEM_CONFIG_CPUCLK_MASK	0x3
++#define SYSTEM_CONFIG_CPUCLK_250	0x0
++#define SYSTEM_CONFIG_CPUCLK_266	0x1
++#define SYSTEM_CONFIG_CPUCLK_280	0x2
++#define SYSTEM_CONFIG_CPUCLK_300	0x3
++
++#define RT2880_GPIO_MODE_I2C		BIT(0)
++#define RT2880_GPIO_MODE_UART0		BIT(1)
++#define RT2880_GPIO_MODE_SPI		BIT(2)
++#define RT2880_GPIO_MODE_UART1		BIT(3)
++#define RT2880_GPIO_MODE_JTAG		BIT(4)
++#define RT2880_GPIO_MODE_MDIO		BIT(5)
++#define RT2880_GPIO_MODE_SDRAM		BIT(6)
++#define RT2880_GPIO_MODE_PCI		BIT(7)
++
++#define CLKCFG_SRAM_CS_N_WDT		BIT(9)
++
++#endif
+diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
+index a0b0197..6723b94 100644
+--- a/arch/mips/ralink/Kconfig
++++ b/arch/mips/ralink/Kconfig
+@@ -6,6 +6,9 @@ choice
+ 	help
+ 	  Select Ralink MIPS SoC type.
+ 
++	config SOC_RT288X
++		bool "RT288x"
++
+ 	config SOC_RT305X
+ 		bool "RT305x"
+ 		select USB_ARCH_HAS_HCD
+diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
+index 39ef249..ce83bfc 100644
+--- a/arch/mips/ralink/Makefile
++++ b/arch/mips/ralink/Makefile
+@@ -8,6 +8,7 @@
+ 
+ obj-y := prom.o of.o reset.o clk.o irq.o pinmux.o
+ 
++obj-$(CONFIG_SOC_RT288X) += rt288x.o
+ obj-$(CONFIG_SOC_RT305X) += rt305x.o
+ 
+ obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+diff --git a/arch/mips/ralink/Platform b/arch/mips/ralink/Platform
+index 6babd65..3f49e51 100644
+--- a/arch/mips/ralink/Platform
++++ b/arch/mips/ralink/Platform
+@@ -5,6 +5,11 @@ core-$(CONFIG_RALINK)		+= arch/mips/ralink/
+ cflags-$(CONFIG_RALINK)		+= -I$(srctree)/arch/mips/include/asm/mach-ralink
+ 
+ #
++# Ralink RT288x
++#
++load-$(CONFIG_SOC_RT288X)	+= 0xffffffff88000000
++
++#
+ # Ralink RT305x
+ #
+ load-$(CONFIG_SOC_RT305X)	+= 0xffffffff80000000
+diff --git a/arch/mips/ralink/rt288x.c b/arch/mips/ralink/rt288x.c
+new file mode 100644
+index 0000000..8f3a0fa
+--- /dev/null
++++ b/arch/mips/ralink/rt288x.c
+@@ -0,0 +1,143 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Parts of this file are based on Ralink's 2.6.21 BSP
++ *
++ * Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
++ * Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/kernel.h>
++#include <linux/init.h>
 +#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/interrupt.h>
-+#include <linux/timer.h>
-+#include <linux/of_gpio.h>
-+#include <linux/clk.h>
 +
++#include <asm/mipsregs.h>
 +#include <asm/mach-ralink/ralink_regs.h>
++#include <asm/mach-ralink/rt288x.h>
 +
-+#define TIMER_REG_TMRSTAT		0x00
-+#define TIMER_REG_TMR0LOAD		0x10
-+#define TIMER_REG_TMR0CTL		0x18
++#include "common.h"
 +
-+#define TMRSTAT_TMR0INT			BIT(0)
-+
-+#define TMR0CTL_ENABLE			BIT(7)
-+#define TMR0CTL_MODE_PERIODIC		BIT(4)
-+#define TMR0CTL_PRESCALER		1
-+#define TMR0CTL_PRESCALE_VAL		(0xf - TMR0CTL_PRESCALER)
-+#define TMR0CTL_PRESCALE_DIV		(65536 / BIT(TMR0CTL_PRESCALER))
-+
-+struct rt_timer {
-+	struct device	*dev;
-+	void __iomem	*membase;
-+	int		irq;
-+	unsigned long	timer_freq;
-+	unsigned long	timer_div;
++struct ralink_pinmux_grp mode_mux[] = {
++	{
++		.name = "i2c",
++		.mask = RT2880_GPIO_MODE_I2C,
++		.gpio_first = 1,
++		.gpio_last = 2,
++	}, {
++		.name = "spi",
++		.mask = RT2880_GPIO_MODE_SPI,
++		.gpio_first = 3,
++		.gpio_last = 6,
++	}, {
++		.name = "uartlite",
++		.mask = RT2880_GPIO_MODE_UART0,
++		.gpio_first = 7,
++		.gpio_last = 14,
++	}, {
++		.name = "jtag",
++		.mask = RT2880_GPIO_MODE_JTAG,
++		.gpio_first = 17,
++		.gpio_last = 21,
++	}, {
++		.name = "mdio",
++		.mask = RT2880_GPIO_MODE_MDIO,
++		.gpio_first = 22,
++		.gpio_last = 23,
++	}, {
++		.name = "sdram",
++		.mask = RT2880_GPIO_MODE_SDRAM,
++		.gpio_first = 24,
++		.gpio_last = 39,
++	}, {
++		.name = "pci",
++		.mask = RT2880_GPIO_MODE_PCI,
++		.gpio_first = 40,
++		.gpio_last = 71,
++	}, {0}
 +};
 +
-+static inline void rt_timer_w32(struct rt_timer *rt, u8 reg, u32 val)
++void rt288x_wdt_reset(void)
 +{
-+	__raw_writel(val, rt->membase + reg);
++	u32 t;
++
++	/* enable WDT reset output on pin SRAM_CS_N */
++	t = rt_sysc_r32(SYSC_REG_CLKCFG);
++	t |= CLKCFG_SRAM_CS_N_WDT;
++	rt_sysc_w32(t, SYSC_REG_CLKCFG);
 +}
 +
-+static inline u32 rt_timer_r32(struct rt_timer *rt, u8 reg)
++struct ralink_pinmux rt_pinmux = {
++	.mode = mode_mux,
++	.wdt_reset = rt288x_wdt_reset,
++};
++
++void ralink_usb_platform(void)
 +{
-+	return __raw_readl(rt->membase + reg);
 +}
 +
-+static irqreturn_t rt_timer_irq(int irq, void *_rt)
++void __init ralink_clk_init(void)
 +{
-+	struct rt_timer *rt =  (struct rt_timer *) _rt;
++	unsigned long cpu_rate;
++	u32 t = rt_sysc_r32(SYSC_REG_SYSTEM_CONFIG);
++	t = ((t >> SYSTEM_CONFIG_CPUCLK_SHIFT) & SYSTEM_CONFIG_CPUCLK_MASK);
 +
-+	rt_timer_w32(rt, TIMER_REG_TMR0LOAD, rt->timer_freq / rt->timer_div);
-+	rt_timer_w32(rt, TIMER_REG_TMRSTAT, TMRSTAT_TMR0INT);
++	switch (t) {
++	case SYSTEM_CONFIG_CPUCLK_250:
++		cpu_rate = 250000000;
++		break;
++	case SYSTEM_CONFIG_CPUCLK_266:
++		cpu_rate = 266666667;
++		break;
++	case SYSTEM_CONFIG_CPUCLK_280:
++		cpu_rate = 280000000;
++		break;
++	case SYSTEM_CONFIG_CPUCLK_300:
++		cpu_rate = 300000000;
++		break;
++	}
 +
-+	return IRQ_HANDLED;
++	ralink_clk_add("cpu", cpu_rate);
++	ralink_clk_add("300100.timer", cpu_rate / 2);
++	ralink_clk_add("300120.watchdog", cpu_rate / 2);
++	ralink_clk_add("300500.uart", cpu_rate / 2);
++	ralink_clk_add("300c00.uartlite", cpu_rate / 2);
++	ralink_clk_add("400000.ethernet", cpu_rate / 2);
 +}
 +
-+
-+static int rt_timer_request(struct rt_timer *rt)
++void __init ralink_of_remap(void)
 +{
-+	int err = request_irq(rt->irq, rt_timer_irq, IRQF_DISABLED,
-+						dev_name(rt->dev), rt);
-+	if (err) {
-+		dev_err(rt->dev, "failed to request irq\n");
++	rt_sysc_membase = plat_of_remap_node("ralink,rt2880-sysc");
++	rt_memc_membase = plat_of_remap_node("ralink,rt2880-memc");
++
++	if (!rt_sysc_membase || !rt_memc_membase)
++		panic("Failed to remap core resources");
++}
++
++void prom_soc_init(struct ralink_soc_info *soc_info)
++{
++	void __iomem *sysc = (void __iomem *) KSEG1ADDR(RT2880_SYSC_BASE);
++	const char *name;
++	u32 n0;
++	u32 n1;
++	u32 id;
++
++	n0 = __raw_readl(sysc + SYSC_REG_CHIP_NAME0);
++	n1 = __raw_readl(sysc + SYSC_REG_CHIP_NAME1);
++	id = __raw_readl(sysc + SYSC_REG_CHIP_ID);
++
++	if (n0 == RT2880_CHIP_NAME0 && n1 == RT2880_CHIP_NAME1) {
++		soc_info->compatible = "ralink,r2880-soc";
++		name = "RT2880";
 +	} else {
-+		u32 t = TMR0CTL_MODE_PERIODIC | TMR0CTL_PRESCALE_VAL;
-+		rt_timer_w32(rt, TIMER_REG_TMR0CTL, t);
-+	}
-+	return err;
-+}
-+
-+static void rt_timer_free(struct rt_timer *rt)
-+{
-+	free_irq(rt->irq, rt);
-+}
-+
-+static int rt_timer_config(struct rt_timer *rt, unsigned long divisor)
-+{
-+	if (rt->timer_freq < divisor)
-+		rt->timer_div = rt->timer_freq;
-+	else
-+		rt->timer_div = divisor;
-+
-+	rt_timer_w32(rt, TIMER_REG_TMR0LOAD, rt->timer_freq / rt->timer_div);
-+
-+	return 0;
-+}
-+
-+static int rt_timer_enable(struct rt_timer *rt)
-+{
-+	u32 t;
-+
-+	rt_timer_w32(rt, TIMER_REG_TMR0LOAD, rt->timer_freq / rt->timer_div);
-+
-+	t = rt_timer_r32(rt, TIMER_REG_TMR0CTL);
-+	t |= TMR0CTL_ENABLE;
-+	rt_timer_w32(rt, TIMER_REG_TMR0CTL, t);
-+
-+	return 0;
-+}
-+
-+static void rt_timer_disable(struct rt_timer *rt)
-+{
-+	u32 t;
-+
-+	t = rt_timer_r32(rt, TIMER_REG_TMR0CTL);
-+	t &= ~TMR0CTL_ENABLE;
-+	rt_timer_w32(rt, TIMER_REG_TMR0CTL, t);
-+}
-+
-+static int rt_timer_probe(struct platform_device *pdev)
-+{
-+	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	struct rt_timer *rt;
-+	struct clk *clk;
-+
-+	if (!res) {
-+		dev_err(&pdev->dev, "no memory resource found\n");
-+		return -EINVAL;
++		panic("rt288x: unknown SoC, n0:%08x n1:%08x", n0, n1);
 +	}
 +
-+	rt = devm_kzalloc(&pdev->dev, sizeof(*rt), GFP_KERNEL);
-+	if (!rt) {
-+		dev_err(&pdev->dev, "failed to allocate memory\n");
-+		return -ENOMEM;
-+	}
-+
-+	rt->irq = platform_get_irq(pdev, 0);
-+	if (!rt->irq) {
-+		dev_err(&pdev->dev, "failed to load irq\n");
-+		return -ENOENT;
-+	}
-+
-+	rt->membase = devm_ioremap_resource(&pdev->dev, res);
-+	if (!rt->membase) {
-+		dev_err(&pdev->dev, "failed to ioremap\n");
-+		return -ENOMEM;
-+	}
-+
-+	clk = devm_clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(clk)) {
-+		dev_err(&pdev->dev, "failed get clock rate\n");
-+		return PTR_ERR(clk);
-+	}
-+
-+	rt->timer_freq = clk_get_rate(clk) / TMR0CTL_PRESCALE_DIV;
-+	if (!rt->timer_freq)
-+		return -EINVAL;
-+
-+	rt->dev = &pdev->dev;
-+	platform_set_drvdata(pdev, rt);
-+
-+	rt_timer_request(rt);
-+	rt_timer_config(rt, 2);
-+	rt_timer_enable(rt);
-+
-+	dev_info(&pdev->dev, "maximum frequency is %luHz\n", rt->timer_freq);
-+
-+	return 0;
++	snprintf(soc_info->sys_type, RAMIPS_SYS_TYPE_LEN,
++		"Ralink %s id:%u rev:%u",
++		name,
++		(id >> CHIP_ID_ID_SHIFT) & CHIP_ID_ID_MASK,
++		(id & CHIP_ID_REV_MASK));
 +}
-+
-+static int rt_timer_remove(struct platform_device *pdev)
-+{
-+	struct rt_timer *rt = platform_get_drvdata(pdev);
-+
-+	rt_timer_disable(rt);
-+	rt_timer_free(rt);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id rt_timer_match[] = {
-+	{ .compatible = "ralink,rt2880-timer" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, rt_timer_match);
-+
-+static struct platform_driver rt_timer_driver = {
-+	.probe = rt_timer_probe,
-+	.remove = rt_timer_remove,
-+	.driver = {
-+		.name		= "rt-timer",
-+		.owner          = THIS_MODULE,
-+		.of_match_table	= rt_timer_match
-+	},
-+};
-+
-+module_platform_driver(rt_timer_driver);
-+
-+MODULE_DESCRIPTION("Ralink RT2880 timer");
-+MODULE_AUTHOR("John Crispin <blogic@openwrt.org");
-+MODULE_LICENSE("GPL");
 -- 
 1.7.10.4

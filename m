@@ -1,25 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Apr 2013 19:25:02 +0200 (CEST)
-Received: from 84-245-11-97.dsl.cambrium.nl ([84.245.11.97]:55573 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Apr 2013 19:25:19 +0200 (CEST)
+Received: from 84-245-11-97.dsl.cambrium.nl ([84.245.11.97]:55576 "EHLO
         grubby.stderr.nl" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S6822682Ab3DKRY6Cb87M (ORCPT
+        with ESMTP id S6823046Ab3DKRY67PgWs (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 11 Apr 2013 19:24:58 +0200
 Received: from matthijs by grubby.stderr.nl with local (Exim 4.80)
         (envelope-from <matthijs@stdin.nl>)
-        id 1UQLF3-0001pD-0A; Thu, 11 Apr 2013 19:24:57 +0200
+        id 1UQLEx-0001p8-Lt; Thu, 11 Apr 2013 19:24:51 +0200
 From:   Matthijs Kooijman <matthijs@stdin.nl>
 To:     John Crispin <blogic@openwrt.org>
 Cc:     linux-mips@linux-mips.org, Matthijs Kooijman <matthijs@stdin.nl>
-Subject: [PATCH 2/2] MIPS: ralink: setup dma_mask for the rt305x dwc2 usb controller
-Date:   Thu, 11 Apr 2013 19:24:50 +0200
-Message-Id: <1365701090-6916-2-git-send-email-matthijs@stdin.nl>
+Subject: [PATCH 1/2] MIPS: ralink: use the dwc2 driver for the rt305x USB controller
+Date:   Thu, 11 Apr 2013 19:24:49 +0200
+Message-Id: <1365701090-6916-1-git-send-email-matthijs@stdin.nl>
 X-Mailer: git-send-email 1.8.0
-In-Reply-To: <1365701090-6916-1-git-send-email-matthijs@stdin.nl>
-References: <1365701090-6916-1-git-send-email-matthijs@stdin.nl>
 Return-Path: <matthijs@stdin.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36078
+X-archive-position: 36079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,29 +35,24 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 ---
- arch/mips/ralink/rt305x-usb.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/mips/ralink/dts/rt3050.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/ralink/rt305x-usb.c b/arch/mips/ralink/rt305x-usb.c
-index 793fc82..7d87740 100644
---- a/arch/mips/ralink/rt305x-usb.c
-+++ b/arch/mips/ralink/rt305x-usb.c
-@@ -108,6 +108,7 @@ error_out:
+The platform bindings needed for this have been submitted to linux-usb:
+http://thread.gmane.org/gmane.linux.usb.general/85088
+
+diff --git a/arch/mips/ralink/dts/rt3050.dtsi b/arch/mips/ralink/dts/rt3050.dtsi
+index 5aede8d..2b7ab42 100644
+--- a/arch/mips/ralink/dts/rt3050.dtsi
++++ b/arch/mips/ralink/dts/rt3050.dtsi
+@@ -161,7 +161,7 @@
+ 	};
  
- static u64 rt3352_ohci_dmamask = DMA_BIT_MASK(32);
- static u64 rt3352_ehci_dmamask = DMA_BIT_MASK(32);
-+static u64 rt3050_dwc2_dmamask = DMA_BIT_MASK(32);
+ 	otg@101c0000 {
+-		compatible = "ralink,rt3050-otg";
++		compatible = "ralink,rt3050-otg", "snps,dwc2";
+ 		reg = <0x101c0000 40000>;
  
- void ralink_usb_platform(void)
- {
-@@ -117,4 +118,8 @@ void ralink_usb_platform(void)
- 		ralink_add_usb("ehci-platform",
- 				&rt3352_ehci_data, &rt3352_ehci_dmamask);
- 	}
-+	if (soc_is_rt305x() || soc_is_rt3350()) {
-+		ralink_add_usb("ralink,rt3050-otg",
-+				NULL, &rt3050_dwc2_dmamask);
-+	}
- }
+ 		interrupt-parent = <&intc>;
 -- 
 1.8.0

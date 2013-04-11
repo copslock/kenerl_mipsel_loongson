@@ -1,50 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Apr 2013 09:48:18 +0200 (CEST)
-Received: from mail-wi0-f178.google.com ([209.85.212.178]:57737 "EHLO
-        mail-wi0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825665Ab3DKHrpZKkgb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Apr 2013 09:47:45 +0200
-Received: by mail-wi0-f178.google.com with SMTP id ez12so241188wid.11
-        for <multiple recipients>; Thu, 11 Apr 2013 00:46:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=rARlaBUCeeLntPlBPMCv/o5nNqVkBxqPTFsb8jE8Dw0=;
-        b=nFdmEC6XLMP3VuY04Nc4EukDfI1XZ7TBFkJUSvIM6bWzURl3QTQRy4TMLONjVtrlKx
-         DaE5nWiNVIEz6Q71heyKukTnk9LYMJAqIOOb8eZuVcnbN1i7t12zPy7HQ5JiSd2bePuQ
-         g+kw9X4UYUbpMHAN04Bov+xj4WeMsKmXViki8YaJWWxJuNk/a1sGpmjL0mn8TI54/hyK
-         dQ6hIc15HssiJHXt6zj+OJ5jIi93BUeKQCZ/ODvzzrcIuoS6GJJ2/DNSeS29aPYBpMbH
-         oKZ9zpKCU41RkXQ8Emr15U3YOoQWWQFl3UxZXJk+OCEgrnOkItZ1BcRc1oz7YYFEPNYM
-         V9OQ==
-X-Received: by 10.180.109.197 with SMTP id hu5mr8104123wib.22.1365666404510;
-        Thu, 11 Apr 2013 00:46:44 -0700 (PDT)
-Received: from [0.0.0.0] ([62.159.77.166])
-        by mx.google.com with ESMTPS id n2sm1395933wiy.6.2013.04.11.00.46.42
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 11 Apr 2013 00:46:43 -0700 (PDT)
-Message-ID: <51666A5F.6030904@gmail.com>
-Date:   Thu, 11 Apr 2013 09:46:39 +0200
-From:   Wladislav Wiebe <wladislav.kw@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20130308 Thunderbird/17.0.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Apr 2013 15:30:34 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:39859 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823906Ab3DKNabknDka (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 11 Apr 2013 15:30:31 +0200
+Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r3BDURQu024203
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Thu, 11 Apr 2013 09:30:28 -0400
+Received: from warthog.procyon.org.uk (ovpn-113-28.phx2.redhat.com [10.3.113.28])
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r3BDUPOo030097;
+        Thu, 11 Apr 2013 09:30:26 -0400
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+ Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+ Kingdom.
+ Registered in England and Wales under Company Registration No. 3798903
+Subject: [PATCH 21/26] mips: Don't use create_proc_read_entry() [RFC]
+To:     linux-kernel@vger.kernel.org
+From:   David Howells <dhowells@redhat.com>
+Cc:     linux-mips@linux-mips.org, viro@ZenIV.linux.org.uk,
+        Ralf Baechle <ralf@linux-mips.org>
+Date:   Thu, 11 Apr 2013 14:30:24 +0100
+Message-ID: <20130411133024.32763.36191.stgit@warthog.procyon.org.uk>
+In-Reply-To: <20130411132739.32763.82609.stgit@warthog.procyon.org.uk>
+References: <20130411132739.32763.82609.stgit@warthog.procyon.org.uk>
+User-Agent: StGit/0.16
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Makefile: workaround printk recursion bug
-References: <51652CF5.1080009@gmail.com> <51659556.3070502@gmail.com>
-In-Reply-To: <51659556.3070502@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Return-Path: <wladislav.kw@gmail.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
+Return-Path: <dhowells@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36074
+X-archive-position: 36076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wladislav.kw@gmail.com
+X-original-sender: dhowells@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,79 +49,409 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Don't use create_proc_read_entry() as that is deprecated, but rather use
+proc_create_data() and seq_file instead.
 
-On 10/04/13 18:37, David Daney wrote:
-> On 04/10/2013 02:12 AM, Wladislav Wiebe wrote:
->>
->> From: Wladislav Wiebe <wladislav.kw@gmail.com>
->>
->> Function tracing is broken due to removal of selecting FRAME_POINTER with
->> FUNCTION_TRACER as result of commit: b732d439cb43336cd6d7e804ecb2c81193ef63b0
->>
->> Latest commit ad8c396936e328f5344e1881afde9e28d5f2045f "MIPS: Unbreak
->> function tracer for 64-bit kernel." fixes just the early startup hang,
->> but on MIPS64/CAVIUM_OCTEON2 are still random printk recursion bugs
->> which cause also Kernel hangs, especially on late startup phase when
->> network drivers get loaded. This patch enable for CAVIUM_OCTEON2/64 Bit
->> architecture -fno-omit-frame-pointer cflag when FUNCTION_TRACER get
->> enabled. This will fix random Kernel hangs with "BUG: recent printk
->> recursion!" from linux/kernel/printk.c.
->>
->> Maybe there exist a other solution in mcount handling, since in the
->> commit message from Al Cooper is mentioned that "MIPS frame pointers are
->> generally considered to be useless because they cannot be used to unwind
->> the stack. Unfortunately the MIPS function tracing code has bugs that
->> are masked by the use of frame pointers. This commit fixes the bugs so
->> that MIPS frame pointers don't need to be enabled."
->>
->> But this is just a solution for MIPS32 - on a symmetric multiprocessing
->> @MIPS64/CAVIUM_OCTEON2 it doesn't work properly.
-> 
-> There are a couple of problems that I see with this patch:
-> 
-> 1) It doesn't handle non-OCTEON2.  Surely other 64-bit targets are effected as well
-> 
-> 2) You don't say how it is broken or how this fixes it.
-> 
-> 3) Function graph tracing on 3.9.0-rc6 compiled with gcc-4.7.0 works fine for me without this.  So I see no need to clog up the make files with a rats nest of ifdef
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Ralf Baechle <ralf@linux-mips.org>
+cc: linux-mips@linux-mips.org
+---
 
-well, didn't cross checked with gcc-4.7.0 (currently using gcc-4.3).
-Will do so and get back if problem still visible.
+ arch/mips/kernel/smtc-proc.c          |   64 +++++++++-------------
+ arch/mips/pci/ops-pmcmsp.c            |   95 ++++++++++++++-------------------
+ arch/mips/sibyte/sb1250/bus_watcher.c |   81 +++++++++++++---------------
+ 3 files changed, 104 insertions(+), 136 deletions(-)
 
-Thanks!
-
-
-> 
-> Without more information about why this  is needed, I would have to say NAK.
-> 
-> David Daney
-> 
->>
->> Signed-off-by: Wladislav Wiebe <wladislav.kw@gmail.com>
->> ---
->>   arch/mips/Makefile |    9 +++++++++
->>   1 file changed, 9 insertions(+)
->>
->> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
->> index 6f7978f..8befe31 100644
->> --- a/arch/mips/Makefile
->> +++ b/arch/mips/Makefile
->> @@ -119,6 +119,15 @@ cflags-$(CONFIG_SB1XXX_CORELIS)    += $(call cc-option,-mno-sched-prolog) \
->>                      -fno-omit-frame-pointer
->>
->>   #
->> +# FTrace depended compiler options, currently only needed by MIPS64/OCTEON2.
->> +#
->> +ifdef CONFIG_64BIT
->> +ifdef CONFIG_CAVIUM_OCTEON2
->> +cflags-$(CONFIG_FUNCTION_TRACER) += $(call cc-option,-fno-omit-frame-pointer)
->> +endif
->> +endif
->> +
->> +#
->>   # CPU-dependent compiler/assembler options for optimization.
->>   #
->>   cflags-$(CONFIG_CPU_R3000)    += -march=r3000
->>
-> 
+diff --git a/arch/mips/kernel/smtc-proc.c b/arch/mips/kernel/smtc-proc.c
+index aee7c81..9fb7144 100644
+--- a/arch/mips/kernel/smtc-proc.c
++++ b/arch/mips/kernel/smtc-proc.c
+@@ -16,6 +16,7 @@
+ #include <asm/mipsregs.h>
+ #include <asm/cacheflush.h>
+ #include <linux/proc_fs.h>
++#include <linux/seq_file.h>
+ 
+ #include <asm/smtc_proc.h>
+ 
+@@ -30,51 +31,39 @@ unsigned long selfipis[NR_CPUS];
+ 
+ struct smtc_cpu_proc smtc_cpu_stats[NR_CPUS];
+ 
+-static struct proc_dir_entry *smtc_stats;
+-
+ atomic_t smtc_fpu_recoveries;
+ 
+-static int proc_read_smtc(char *page, char **start, off_t off,
+-			  int count, int *eof, void *data)
++static int smtc_proc_show(struct seq_file *m, void *v)
+ {
+-	int totalen = 0;
+-	int len;
+ 	int i;
+ 	extern unsigned long ebase;
+ 
+-	len = sprintf(page, "SMTC Status Word: 0x%08x\n", smtc_status);
+-	totalen += len;
+-	page += len;
+-	len = sprintf(page, "Config7: 0x%08x\n", read_c0_config7());
+-	totalen += len;
+-	page += len;
+-	len = sprintf(page, "EBASE: 0x%08lx\n", ebase);
+-	totalen += len;
+-	page += len;
+-	len = sprintf(page, "Counter Interrupts taken per CPU (TC)\n");
+-	totalen += len;
+-	page += len;
+-	for (i=0; i < NR_CPUS; i++) {
+-		len = sprintf(page, "%d: %ld\n", i, smtc_cpu_stats[i].timerints);
+-		totalen += len;
+-		page += len;
+-	}
+-	len = sprintf(page, "Self-IPIs by CPU:\n");
+-	totalen += len;
+-	page += len;
+-	for(i = 0; i < NR_CPUS; i++) {
+-		len = sprintf(page, "%d: %ld\n", i, smtc_cpu_stats[i].selfipis);
+-		totalen += len;
+-		page += len;
+-	}
+-	len = sprintf(page, "%d Recoveries of \"stolen\" FPU\n",
+-		      atomic_read(&smtc_fpu_recoveries));
+-	totalen += len;
+-	page += len;
++	seq_printf(m, "SMTC Status Word: 0x%08x\n", smtc_status);
++	seq_printf(m, "Config7: 0x%08x\n", read_c0_config7());
++	seq_printf(m, "EBASE: 0x%08lx\n", ebase);
++	seq_printf(m, "Counter Interrupts taken per CPU (TC)\n");
++	for (i=0; i < NR_CPUS; i++)
++		seq_printf(m, "%d: %ld\n", i, smtc_cpu_stats[i].timerints);
++	seq_printf(m, "Self-IPIs by CPU:\n");
++	for(i = 0; i < NR_CPUS; i++)
++		seq_printf(m, "%d: %ld\n", i, smtc_cpu_stats[i].selfipis);
++	seq_printf(m, "%d Recoveries of \"stolen\" FPU\n",
++		   atomic_read(&smtc_fpu_recoveries));
++	return 0;
++}
+ 
+-	return totalen;
++static int smtc_proc_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, smtc_proc_show, NULL);
+ }
+ 
++static const struct file_operations smtc_proc_fops = {
++	.open		= smtc_proc_open,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= seq_release,
++};
++
+ void init_smtc_stats(void)
+ {
+ 	int i;
+@@ -86,6 +75,5 @@ void init_smtc_stats(void)
+ 
+ 	atomic_set(&smtc_fpu_recoveries, 0);
+ 
+-	smtc_stats = create_proc_read_entry("smtc", 0444, NULL,
+-					    proc_read_smtc, NULL);
++	proc_create("smtc", 0444, NULL, &smtc_proc_fops);
+ }
+diff --git a/arch/mips/pci/ops-pmcmsp.c b/arch/mips/pci/ops-pmcmsp.c
+index d0b6f83..4eaab63 100644
+--- a/arch/mips/pci/ops-pmcmsp.c
++++ b/arch/mips/pci/ops-pmcmsp.c
+@@ -53,56 +53,51 @@ static void pci_proc_init(void);
+ 
+ /*****************************************************************************
+  *
+- *  FUNCTION: read_msp_pci_counts
++ *  FUNCTION: show_msp_pci_counts
+  *  _________________________________________________________________________
+  *
+  *  DESCRIPTION: Prints the count of how many times each PCI
+  *		 interrupt has asserted. Can be invoked by the
+  *		 /proc filesystem.
+  *
+- *  INPUTS:	 page	 - part of STDOUT calculation
+- *		 off	 - part of STDOUT calculation
+- *		 count	 - part of STDOUT calculation
+- *		 data	 - unused
++ *  INPUTS:	 m	 - synthetic file construction data
++ *		 v	 - iterator
+  *
+- *  OUTPUTS:	 start	 - new start location
+- *		 eof	 - end of file pointer
+- *
+- *  RETURNS:	 len	 - STDOUT length
++ *  RETURNS:	 0 or error
+  *
+  ****************************************************************************/
+-static int read_msp_pci_counts(char *page, char **start, off_t off,
+-				int count, int *eof, void *data)
++static int show_msp_pci_counts(struct seq_file *m, void *v)
+ {
+ 	int i;
+-	int len = 0;
+ 	unsigned int intcount, total = 0;
+ 
+ 	for (i = 0; i < 32; ++i) {
+ 		intcount = pci_int_count[i];
+ 		if (intcount != 0) {
+-			len += sprintf(page + len, "[%d] = %u\n", i, intcount);
++			seq_printf(m, "[%d] = %u\n", i, intcount);
+ 			total += intcount;
+ 		}
+ 	}
+ 
+-	len += sprintf(page + len, "total = %u\n", total);
+-	if (len <= off+count)
+-		*eof = 1;
+-
+-	*start = page + off;
+-	len -= off;
+-	if (len > count)
+-		len = count;
+-	if (len < 0)
+-		len = 0;
++	seq_printf(m, "total = %u\n", total);
++	return 0;
++}
+ 
+-	return len;
++static int msp_pci_rd_cnt_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, show_msp_pci_counts, NULL);
+ }
+ 
++static const struct file_operations msp_pci_rd_cnt_fops = {
++	.open		= msp_pci_rd_cnt_open,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= seq_release,
++};
++
+ /*****************************************************************************
+  *
+- *  FUNCTION: gen_pci_cfg_wr
++ *  FUNCTION: gen_pci_cfg_wr_show
+  *  _________________________________________________________________________
+  *
+  *  DESCRIPTION: Generates a configuration write cycle for debug purposes.
+@@ -112,37 +107,30 @@ static int read_msp_pci_counts(char *page, char **start, off_t off,
+  *		 PCI bus.  Intent is that this function by invocable from
+  *		 the /proc filesystem.
+  *
+- *  INPUTS:	 page	 - part of STDOUT calculation
+- *		 off	 - part of STDOUT calculation
+- *		 count	 - part of STDOUT calculation
+- *		 data	 - unused
++ *  INPUTS:	 m	 - synthetic file construction data
++ *		 v	 - iterator
+  *
+- *  OUTPUTS:	 start	 - new start location
+- *		 eof	 - end of file pointer
+- *
+- *  RETURNS:	 len	 - STDOUT length
++ *  RETURNS:	 0 or error
+  *
+  ****************************************************************************/
+-static int gen_pci_cfg_wr(char *page, char **start, off_t off,
+-				int count, int *eof, void *data)
++static int gen_pci_cfg_wr_show(struct seq_file *m, void *v)
+ {
+ 	unsigned char where = 0; /* Write to static Device/Vendor ID */
+ 	unsigned char bus_num = 0; /* Bus 0 */
+ 	unsigned char dev_fn = 0xF; /* Arbitrary device number */
+ 	u32 wr_data = 0xFF00AA00; /* Arbitrary data */
+ 	struct msp_pci_regs *preg = (void *)PCI_BASE_REG;
+-	int len = 0;
+ 	unsigned long value;
+ 	int intr;
+ 
+-	len += sprintf(page + len, "PMC MSP PCI: Beginning\n");
++	seq_puts(m, "PMC MSP PCI: Beginning\n");
+ 
+ 	if (proc_init == 0) {
+ 		pci_proc_init();
+ 		proc_init = ~0;
+ 	}
+ 
+-	len += sprintf(page + len, "PMC MSP PCI: Before Cfg Wr\n");
++	seq_puts(m, "PMC MSP PCI: Before Cfg Wr\n");
+ 
+ 	/*
+ 	 * Generate PCI Configuration Write Cycle
+@@ -168,21 +156,22 @@ static int gen_pci_cfg_wr(char *page, char **start, off_t off,
+ 	 */
+ 	intr = preg->if_status;
+ 
+-	len += sprintf(page + len, "PMC MSP PCI: After Cfg Wr\n");
+-
+-	/* Handle STDOUT calculations */
+-	if (len <= off+count)
+-		*eof = 1;
+-	*start = page + off;
+-	len -= off;
+-	if (len > count)
+-		len = count;
+-	if (len < 0)
+-		len = 0;
++	seq_puts(m, "PMC MSP PCI: After Cfg Wr\n");
++	return 0;
++}
+ 
+-	return len;
++static int gen_pci_cfg_wr_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, gen_pci_cfg_wr_show, NULL);
+ }
+ 
++static const struct file_operations gen_pci_cfg_wr_fops = {
++	.open		= gen_pci_cfg_wr_open,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= seq_release,
++};
++
+ /*****************************************************************************
+  *
+  *  FUNCTION: pci_proc_init
+@@ -199,10 +188,8 @@ static int gen_pci_cfg_wr(char *page, char **start, off_t off,
+  ****************************************************************************/
+ static void pci_proc_init(void)
+ {
+-	create_proc_read_entry("pmc_msp_pci_rd_cnt", 0, NULL,
+-				read_msp_pci_counts, NULL);
+-	create_proc_read_entry("pmc_msp_pci_cfg_wr", 0, NULL,
+-				gen_pci_cfg_wr, NULL);
++	proc_create("pmc_msp_pci_rd_cnt", 0, NULL, &msp_pci_rd_cnt_fops);
++	proc_create("pmc_msp_pci_cfg_wr", 0, NULL, &gen_pci_cfg_wr_fops);
+ }
+ #endif /* CONFIG_PROC_FS && PCI_COUNTERS */
+ 
+diff --git a/arch/mips/sibyte/sb1250/bus_watcher.c b/arch/mips/sibyte/sb1250/bus_watcher.c
+index e651105..cb1e3cb 100644
+--- a/arch/mips/sibyte/sb1250/bus_watcher.c
++++ b/arch/mips/sibyte/sb1250/bus_watcher.c
+@@ -30,6 +30,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/sched.h>
+ #include <linux/proc_fs.h>
++#include <linux/seq_file.h>
+ #include <asm/io.h>
+ 
+ #include <asm/sibyte/sb1250.h>
+@@ -99,63 +100,60 @@ void check_bus_watcher(void)
+ 		printk("Bus watcher indicates no error\n");
+ }
+ 
+-static int bw_print_buffer(char *page, struct bw_stats_struct *stats)
++#ifdef CONFIG_PROC_FS
++
++/* For simplicity, I want to assume a single read is required each
++   time */
++static int bw_proc_show(struct seq_file *m, void *v)
+ {
+-	int len;
+-
+-	len = sprintf(page, "SiByte Bus Watcher statistics\n");
+-	len += sprintf(page+len, "-----------------------------\n");
+-	len += sprintf(page+len, "L2-d-cor %8ld\nL2-d-bad %8ld\n",
+-		       stats->l2_cor_d, stats->l2_bad_d);
+-	len += sprintf(page+len, "L2-t-cor %8ld\nL2-t-bad %8ld\n",
+-		       stats->l2_cor_t, stats->l2_bad_t);
+-	len += sprintf(page+len, "MC-d-cor %8ld\nMC-d-bad %8ld\n",
+-		       stats->mem_cor_d, stats->mem_bad_d);
+-	len += sprintf(page+len, "IO-err   %8ld\n", stats->bus_error);
+-	len += sprintf(page+len, "\nLast recorded signature:\n");
+-	len += sprintf(page+len, "Request %02x from %d, answered by %d with Dcode %d\n",
+-		       (unsigned int)(G_SCD_BERR_TID(stats->status) & 0x3f),
+-		       (int)(G_SCD_BERR_TID(stats->status) >> 6),
+-		       (int)G_SCD_BERR_RID(stats->status),
+-		       (int)G_SCD_BERR_DCODE(stats->status));
++	struct bw_stats_struct *stats = m->private;
++
++	seq_puts(m, "SiByte Bus Watcher statistics\n");
++	seq_puts(m, "-----------------------------\n");
++	seq_printf(m, "L2-d-cor %8ld\nL2-d-bad %8ld\n",
++		   stats->l2_cor_d, stats->l2_bad_d);
++	seq_printf(m, "L2-t-cor %8ld\nL2-t-bad %8ld\n",
++		   stats->l2_cor_t, stats->l2_bad_t);
++	seq_printf(m, "MC-d-cor %8ld\nMC-d-bad %8ld\n",
++		   stats->mem_cor_d, stats->mem_bad_d);
++	seq_printf(m, "IO-err   %8ld\n", stats->bus_error);
++	seq_puts(m, "\nLast recorded signature:\n");
++	seq_printf(m, "Request %02x from %d, answered by %d with Dcode %d\n",
++		   (unsigned int)(G_SCD_BERR_TID(stats->status) & 0x3f),
++		   (int)(G_SCD_BERR_TID(stats->status) >> 6),
++		   (int)G_SCD_BERR_RID(stats->status),
++		   (int)G_SCD_BERR_DCODE(stats->status));
+ 	/* XXXKW indicate multiple errors between printings, or stats
+ 	   collection (or both)? */
+ 	if (stats->status & M_SCD_BERR_MULTERRS)
+-		len += sprintf(page+len, "Multiple errors observed since last check.\n");
++		seq_puts(m, "Multiple errors observed since last check.\n");
+ 	if (stats->status_printed) {
+-		len += sprintf(page+len, "(no change since last printing)\n");
++		seq_puts(m, "(no change since last printing)\n");
+ 	} else {
+ 		stats->status_printed = 1;
+ 	}
+ 
+-	return len;
++	return 0;
+ }
+ 
+-#ifdef CONFIG_PROC_FS
+-
+-/* For simplicity, I want to assume a single read is required each
+-   time */
+-static int bw_read_proc(char *page, char **start, off_t off,
+-			int count, int *eof, void *data)
++static int bw_proc_open(struct inode *inode, struct file *file)
+ {
+-	int len;
+-
+-	if (off == 0) {
+-		len = bw_print_buffer(page, data);
+-		*start = page;
+-	} else {
+-		len = 0;
+-		*eof = 1;
+-	}
+-	return len;
++	return single_open(file, bw_proc_show, PDE_DATA(inode));
+ }
+ 
++static const struct file_operations bw_proc_fops = {
++	.open		= bw_proc_open,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= seq_release,
++};
++
+ static void create_proc_decoder(struct bw_stats_struct *stats)
+ {
+ 	struct proc_dir_entry *ent;
+ 
+-	ent = create_proc_read_entry("bus_watcher", S_IWUSR | S_IRUGO, NULL,
+-				     bw_read_proc, stats);
++	ent = proc_create_data("bus_watcher", S_IWUSR | S_IRUGO, NULL,
++			       &bw_proc_fops, stats);
+ 	if (!ent) {
+ 		printk(KERN_INFO "Unable to initialize bus_watcher /proc entry\n");
+ 		return;
+@@ -210,11 +208,6 @@ static irqreturn_t sibyte_bw_int(int irq, void *data)
+ 	stats->bus_error += G_SCD_MEM_BUSERR(cntr);
+ 	csr_out32(0, IOADDR(A_BUS_MEM_IO_ERRORS));
+ 
+-#ifndef CONFIG_PROC_FS
+-	bw_print_buffer(bw_buf, stats);
+-	printk(bw_buf);
+-#endif
+-
+ 	return IRQ_HANDLED;
+ }
+ 

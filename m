@@ -1,38 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Apr 2013 19:05:59 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:36515 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6822682Ab3DKRF4Y-zHa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Apr 2013 19:05:56 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <sjhill@realitydiluted.com>)
-        id 1UQKwU-0001LX-Kn; Thu, 11 Apr 2013 12:05:46 -0500
-Message-ID: <5166ED66.7020307@realitydiluted.com>
-Date:   Thu, 11 Apr 2013 12:05:42 -0500
-From:   "Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130308 Thunderbird/17.0.4
-MIME-Version: 1.0
-To:     Huacai Chen <chenhc@lemote.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH V9 03/13] MIPS: Loongson: Introduce and use cpu_has_coherent_cache
- feature
-References: <1359527106-22879-1-git-send-email-chenhc@lemote.com> <1359527106-22879-4-git-send-email-chenhc@lemote.com>
-In-Reply-To: <1359527106-22879-4-git-send-email-chenhc@lemote.com>
-X-Enigmail-Version: 1.5.1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <sjhill@realitydiluted.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Apr 2013 19:25:02 +0200 (CEST)
+Received: from 84-245-11-97.dsl.cambrium.nl ([84.245.11.97]:55573 "EHLO
+        grubby.stderr.nl" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S6822682Ab3DKRY6Cb87M (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Apr 2013 19:24:58 +0200
+Received: from matthijs by grubby.stderr.nl with local (Exim 4.80)
+        (envelope-from <matthijs@stdin.nl>)
+        id 1UQLF3-0001pD-0A; Thu, 11 Apr 2013 19:24:57 +0200
+From:   Matthijs Kooijman <matthijs@stdin.nl>
+To:     John Crispin <blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org, Matthijs Kooijman <matthijs@stdin.nl>
+Subject: [PATCH 2/2] MIPS: ralink: setup dma_mask for the rt305x dwc2 usb controller
+Date:   Thu, 11 Apr 2013 19:24:50 +0200
+Message-Id: <1365701090-6916-2-git-send-email-matthijs@stdin.nl>
+X-Mailer: git-send-email 1.8.0
+In-Reply-To: <1365701090-6916-1-git-send-email-matthijs@stdin.nl>
+References: <1365701090-6916-1-git-send-email-matthijs@stdin.nl>
+Return-Path: <matthijs@stdin.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36077
+X-archive-position: 36078
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: matthijs@stdin.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,46 +36,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+---
+ arch/mips/ralink/rt305x-usb.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-On 01/30/2013 12:24 AM, Huacai Chen wrote:
-> Loongson-3 maintains cache coherency by hardware. So we introduce a cpu 
-> feature named cpu_has_coherent_cache and use it to modify MIPS's cache 
-> flushing functions.
-> 
-> Signed-off-by: Huacai Chen <chenhc@lemote.com> Signed-off-by: Hongliang Tao
-> <taohl@lemote.com> Signed-off-by: Hua Yan <yanh@lemote.com> --- 
-> arch/mips/include/asm/cacheflush.h                 |    6 +++++ 
-> arch/mips/include/asm/cpu-features.h               |    3 ++ 
-> .../asm/mach-loongson/cpu-feature-overrides.h      |    6 +++++ 
-> arch/mips/mm/c-r4k.c                               |   21
-> ++++++++++++++++++- 4 files changed, 34 insertions(+), 2 deletions(-)
-> 
-Hello.
-
-This patch masks the problem that you are not properly probing your L1 caches
-to start with. For some reason in 'probe_pcache()' you reach the default case
-where the primary data cache is marked as having aliases. If your CPU truly is
-HW coherent with no aliases, then MIPS_CACHE_ALIASES should never get set.
-Fixing this would eliminate the 'arch/mips/include/asm/cacheflush.h' and
-'arch/mips/mm/c-r4k.c' changes completely. There is no need to add more CPU
-feature bits for this single platform, thus changes to 'cpu-features.h' and
-'cpu-features-overrides.h' will not be accepted.
-
-Also, please do not copy the <linux-kernel@vger.kernel.org> mailing list
-unless your patch touches files outside of 'arch/mips' in order to cut down
-traffic on an already busy list. Thanks.
-
-Steve
-- -----
-<sjhill@mips.com>
-<Steven.Hill@imgtec.com>
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
-
-iEYEARECAAYFAlFm7WAACgkQgyK5H2Ic36eHuwCeKZjp1+arkoheEpeuzjJkQskN
-/7MAnig14A03hWxRvfqDOMbMFKXpZBO8
-=HRPU
------END PGP SIGNATURE-----
+diff --git a/arch/mips/ralink/rt305x-usb.c b/arch/mips/ralink/rt305x-usb.c
+index 793fc82..7d87740 100644
+--- a/arch/mips/ralink/rt305x-usb.c
++++ b/arch/mips/ralink/rt305x-usb.c
+@@ -108,6 +108,7 @@ error_out:
+ 
+ static u64 rt3352_ohci_dmamask = DMA_BIT_MASK(32);
+ static u64 rt3352_ehci_dmamask = DMA_BIT_MASK(32);
++static u64 rt3050_dwc2_dmamask = DMA_BIT_MASK(32);
+ 
+ void ralink_usb_platform(void)
+ {
+@@ -117,4 +118,8 @@ void ralink_usb_platform(void)
+ 		ralink_add_usb("ehci-platform",
+ 				&rt3352_ehci_data, &rt3352_ehci_dmamask);
+ 	}
++	if (soc_is_rt305x() || soc_is_rt3350()) {
++		ralink_add_usb("ralink,rt3050-otg",
++				NULL, &rt3050_dwc2_dmamask);
++	}
+ }
+-- 
+1.8.0

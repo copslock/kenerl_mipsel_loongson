@@ -1,85 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Apr 2013 06:49:13 +0200 (CEST)
-Received: from mailout3.samsung.com ([203.254.224.33]:57704 "EHLO
-        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6821310Ab3DLEtLgA1cK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Apr 2013 06:49:11 +0200
-Received: from epcpsbgr1.samsung.com
- (u141.gpu120.samsung.co.kr [203.254.230.141])
- by mailout3.samsung.com (Oracle Communications Messaging Server 7u4-24.01
- (7.0.4.24.0) 64bit (built Nov 17 2011))
- with ESMTP id <0ML4003RKLDN3070@mailout3.samsung.com> for
- linux-mips@linux-mips.org; Fri, 12 Apr 2013 13:49:00 +0900 (KST)
-Received: from epcpsbgx1.samsung.com ( [203.254.230.45])
-        by epcpsbgr1.samsung.com (EPCPMTA) with SMTP id 3C.2A.20872.C3297615; Fri,
- 12 Apr 2013 13:49:00 +0900 (KST)
-X-AuditID: cbfee68d-b7f786d000005188-62-5167923c2450
-Received: from epextmailer02 ( [203.254.219.152])
-        by epcpsbgx1.samsung.com (EPCPMTA) with SMTP id C2.30.14546.C3297615; Fri,
- 12 Apr 2013 13:49:00 +0900 (KST)
-Date:   Fri, 12 Apr 2013 04:49:00 +0000 (GMT)
-From:   EUNBONG SONG <eunb.song@samsung.com>
-Subject: [PATCH] mips: Fix typo in cavium-octeon
-To:     ralf@linux-mips.org
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org
-Reply-to: eunb.song@samsung.com
-MIME-version: 1.0
-X-MTR:  20130412044003865@eunb.song
-Msgkey: 20130412044003865@eunb.song
-X-EPLocale: ko_KR.euc-kr
-X-Priority: 3
-X-EPWebmail-Msg-Type: personal
-X-EPWebmail-Reply-Demand: 0
-X-EPApproval-Locale: 
-X-EPHeader: ML
-X-EPTrCode: 
-X-EPTrName: 
-X-MLAttribute: 
-X-RootMTR: 20130412044003865@eunb.song
-X-ParentMTR: 
-X-ArchiveUser: 
-X-CPGSPASS: N
-Content-transfer-encoding: base64
-Content-type: text/plain; charset=euc-kr
-MIME-version: 1.0
-Message-id: <8832811.197761365742139632.JavaMail.weblogic@epml12>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnleLIzCtJLcpLzFFi42I5/e+Zrq7NpPRAg4ffDS0mTJ3E7sDocXTl
-        WqYAxigum5TUnMyy1CJ9uwSujDU3OtkKDvBVzP/RydzA2MPXxcjJISSgItHy/zsjiC0hYCKx
-        9eVOdghbTOLCvfVsXYxcQDXLGCU+Nhxghil69+AlE0RiPqPEg9vfWUESLAKqEpOfzAXrZhPQ
-        lnj75QFYXFjAQGLyluVMILaIgIzE0k9XwLYxCyRL/H97nAniCnmJyacvg/XyCghKnJz5hAVi
-        mZLEs+8nWSDiyhJt++axQcQlJGZNv8AKYfNKzGh/ClUvJzHt6xqoQ6Ulzs/awAjzzeLvj6Hi
-        /BLHbu8A2ssB1vvkfjDMmN2bv0CNF5CYeuYgI0SJukTHciWIMJ/EmoVvWWCm7Dq1nBmm9f6W
-        uUwQXylKTOl+yA5ha0l8+bGPDd1XvAKOEmu3n2ecwKg8C0lqFpL2WUjakdUsYGRZxSiaWpBc
-        UJyUXmSoV5yYW1yal66XnJ+7iRGSGHp3MN4+YH2IMRkYIxOZpUST84GJJa8k3tDYzMjC1MTU
-        2Mjc0ow0YSVxXrUW60AhgfTEktTs1NSC1KL4otKc1OJDjEwcnFINjPPvnkn3/Xrqa8PTI9tP
-        zewT+bHl5KpHrhvqdux0uh2bVrvTqEdlit9/Z5/pDR8Ljhy4dkNJSLAhr7Hxj9D7G2lzdA/e
-        yPR43KLvcDTfddY359tvimULrCZ+eP09PlBPTuKx5rO9676EPstXZV3ys8jtuqnZrN1aTvFF
-        pv8DXBm0sw4mB2dZSyuxFGckGmoxFxUnAgAslYDuIgMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpik+LIzCtJLcpLzFFi42I5/e/2DF2bSemBBt9m6VtMmDqJ3YHR4+jK
-        tUwBjFEZNhmpiSmpRQqpecn5KZl56bZK3sHxzvGmZgaGuoaWFuZKCnmJuam2Si4+AbpumTlA
-        U5UUyhJzSoFCAYnFxUr6djZF+aUlqQoZ+cUltkrRRgbGekamJnpGxgZ6JgaxVoYGBkamQFUJ
-        GRlrbnSyFRzgq5j/o5O5gbGHr4uRk0NIQEWi5f93RhBbQsBE4t2Dl0wQtpjEhXvr2boYuYBq
-        5jNKPLj9nRUkwSKgKjH5yVx2EJtNQFvi7ZcHYHFhAQOJyVuWgzWLCMhILP10BWwos0CyxP+3
-        x5kglslLTD59GayXV0BQ4uTMJywQy5Qknn0/yQIRV5Zo2zePDSIuITFr+gVWCJtXYkb7U6h6
-        OYlpX9cwQ9jSEudnbWCEOXrx98dQcX6JY7d3AO3lAOt9cj8YZszuzV+gxgtITD1zkBGiRF2i
-        Y7kSRJhPYs3CtywwU3adWs4M03p/y1wmiK8UJaZ0P2SHsLUkvvzYx4buK14BR4m1288zTmCU
-        m4UkNQtJ+ywk7chqFjCyrGIUTS1ILihOSq8w1CtOzC0uzUvXS87P3cQITlHPFu5g/HLe+hCj
-        AAejEg/vC+H0QCHWxLLiytxDjBIczEoivDF70wKFeFMSK6tSi/Lji0pzUosPMSYD428is5Ro
-        cj4wfeaVxBsaGxgbGlqaG5gaGlmQJqwkzvu01TpQSCA9sSQ1OzW1ILUIZgsTB6dUA6Ok5bLL
-        L2exnW6V4P06XfhBhCjbnwsfGuznL/u6Ytuy7y92T2QN3GCccWFhIut3t+Z9EcfkTxX4SS53
-        lVzH0NBgV/Dys+yNvYEz1ncpWU6809PpfHTN1ki9z9VLZdK09LnTFzL6OPmFdXByOc48+zA5
-        MLAuIvcaa6fptsvKb/TMdO0vvWDe+VuJpTgj0VCLuag4EQC9OSTolQMAAA==
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-Return-Path: <eunb.song@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Apr 2013 09:19:52 +0200 (CEST)
+Received: from mail.lemote.com ([222.92.8.138]:35773 "EHLO mail.lemote.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816859Ab3DLHTq0DYr0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 12 Apr 2013 09:19:46 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mail.lemote.com (Postfix) with ESMTP id B448422EEF;
+        Fri, 12 Apr 2013 15:19:35 +0800 (CST)
+X-Virus-Scanned: Debian amavisd-new at lemote.com
+Received: from mail.lemote.com ([127.0.0.1])
+        by localhost (mail.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id h8qKohP+y-WY; Fri, 12 Apr 2013 15:19:19 +0800 (CST)
+Received: from mail.lemote.com (localhost [127.0.0.1])
+        (Authenticated sender: chenhc@lemote.com)
+        by mail.lemote.com (Postfix) with ESMTPA id AAF2122D4E;
+        Fri, 12 Apr 2013 15:19:18 +0800 (CST)
+Received: from 172.16.2.208
+        (SquirrelMail authenticated user chenhc)
+        by mail.lemote.com with HTTP;
+        Fri, 12 Apr 2013 15:19:19 +0800
+Message-ID: <f7d8c68416aadfcebe234fa4d6741f0f.squirrel@mail.lemote.com>
+In-Reply-To: <5166ED66.7020307@realitydiluted.com>
+References: <1359527106-22879-1-git-send-email-chenhc@lemote.com>
+    <1359527106-22879-4-git-send-email-chenhc@lemote.com>
+    <5166ED66.7020307@realitydiluted.com>
+Date:   Fri, 12 Apr 2013 15:19:19 +0800
+Subject: Re: [PATCH V9 03/13] MIPS: Loongson: Introduce and use
+ cpu_has_coherent_cache feature
+From:   chenhc@lemote.com
+To:     "Steven J. Hill" <sjhill@realitydiluted.com>
+Cc:     "Ralf Baechle" <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        "Fuxin Zhang" <zhangfx@lemote.com>,
+        "Zhangjin Wu" <wuzhangjin@gmail.com>,
+        "Hongliang Tao" <taohl@lemote.com>, "Hua Yan" <yanh@lemote.com>
+User-Agent: SquirrelMail/1.4.22
+MIME-Version: 1.0
+Content-Type: text/plain;charset=gb2312
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36083
+X-archive-position: 36084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eunb.song@samsung.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -92,27 +59,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-DQpJIHRoaW5rICJDVUkyIiBzaG91bGQgYmUgY2hhbmdlZCB0byAiQ0lVMiIsIGJlY2F1c2UgQ0lV
-IG1lYW5zIENlbnRyYWwgSW50cnJ1cHQgVW5pdC4NCg0KU2luZ2VkLW9mZi1ieTogRXVuQm9uZyBT
-b25nPGV1bmIuc29uZ0BzYW1zdW5nLmNvbT4NCg0KLS0tDQogYXJjaC9taXBzL2Nhdml1bS1vY3Rl
-b24vb2N0ZW9uLWlycS5jICAgICAgICAgICB8ICAgIDIgKy0NCiBhcmNoL21pcHMvaW5jbHVkZS9h
-c20vbWFjaC1jYXZpdW0tb2N0ZW9uL2lycS5oIHwgICAgMiArLQ0KIDIgZmlsZXMgY2hhbmdlZCwg
-MiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvYXJjaC9taXBz
-L2Nhdml1bS1vY3Rlb24vb2N0ZW9uLWlycS5jIGIvYXJjaC9taXBzL2Nhdml1bS1vY3Rlb24vb2N0
-ZW9uLWlycS5jDQppbmRleCAxNTZhYTYxLi41MmFhOWNmIDEwMDY0NA0KLS0tIGEvYXJjaC9taXBz
-L2Nhdml1bS1vY3Rlb24vb2N0ZW9uLWlycS5jDQorKysgYi9hcmNoL21pcHMvY2F2aXVtLW9jdGVv
-bi9vY3Rlb24taXJxLmMNCkBAIC0xNzA5LDcgKzE3MDksNyBAQCBzdGF0aWMgdm9pZCBfX2luaXQg
-b2N0ZW9uX2lycV9pbml0X2NpdTIodm9pZCkNCiAJfSBlbHNlDQogCQlwYW5pYygiQ2Fubm90IGZp
-bmQgZGV2aWNlIG5vZGUgZm9yIGNhdml1bSxvY3Rlb24tNjg4MC1jaXUyLiIpOw0KIA0KLQkvKiBD
-VUkyICovDQorCS8qIENJVTIgKi8NCiAJZm9yIChpID0gMDsgaSA8IDY0OyBpKyspDQogCQlvY3Rl
-b25faXJxX2ZvcmNlX2NpdV9tYXBwaW5nKGNpdV9kb21haW4sIGkgKyBPQ1RFT05fSVJRX1dPUktR
-MCwgMCwgaSk7DQogDQpkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL2luY2x1ZGUvYXNtL21hY2gtY2F2
-aXVtLW9jdGVvbi9pcnEuaCBiL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9tYWNoLWNhdml1bS1vY3Rl
-b24vaXJxLmgNCmluZGV4IDYwZmM0YzMuLjc3ZmI2MTAgMTAwNjQ0DQotLS0gYS9hcmNoL21pcHMv
-aW5jbHVkZS9hc20vbWFjaC1jYXZpdW0tb2N0ZW9uL2lycS5oDQorKysgYi9hcmNoL21pcHMvaW5j
-bHVkZS9hc20vbWFjaC1jYXZpdW0tb2N0ZW9uL2lycS5oDQpAQCAtMTUsNyArMTUsNyBAQCBlbnVt
-IG9jdGVvbl9pcnEgew0KIC8qIDEgLSA4IHJlcHJlc2VudCB0aGUgOCBNSVBTIHN0YW5kYXJkIGlu
-dGVycnVwdCBzb3VyY2VzICovDQogCU9DVEVPTl9JUlFfU1cwID0gMSwNCiAJT0NURU9OX0lSUV9T
-VzEsDQotLyogQ0lVMCwgQ1VJMiwgQ0lVNCBhcmUgMywgNCwgNSAqLw0KKy8qIENJVTAsIENJVTIs
-IENJVTQgYXJlIDMsIDQsIDUgKi8NCiAJT0NURU9OX0lSUV81ID0gNiwNCiAJT0NURU9OX0lSUV9Q
-RVJGLA0KIAlPQ1RFT05fSVJRX1RJTUVSLA0KLS0gDQoxLjcuMC40DQo=
+Hi, Steven,
+
+Maybe you are misunderstand Loongson-3's "hardware-maintained cache".
+Loongson-3's hardware maintain the cache coherency between multi-cores
+(also maintain coherency between CPU-core and DMA), but Loongson-3 can
+*still* has cache alias (Cache alias in Loongson is sovled by 16K
+PageSize).
+
+Meanwhile, I know why you misunderstand, because my code is like this:
+
+
+static inline void local_r4k___flush_cache_all(void * args)
+        if (cpu_has_coherent_cache)
+                return;
+
+This implies that Loongson-3 has no cache alias, but in fact this is wrong
+if Loongson has configured PageSize < 16K.
+
+I think I should make my code in all flush functions like this:
+
+static inline void local_r4k___flush_cache_all(void * args)
+        if (cpu_has_coherent_cache && !cpu_has_dc_aliases)
+                return;
+
+Am I right?
+
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA1
+>
+> On 01/30/2013 12:24 AM, Huacai Chen wrote:
+>> Loongson-3 maintains cache coherency by hardware. So we introduce a cpu
+>> feature named cpu_has_coherent_cache and use it to modify MIPS's cache
+>> flushing functions.
+>>
+>> Signed-off-by: Huacai Chen <chenhc@lemote.com> Signed-off-by: Hongliang
+>> Tao
+>> <taohl@lemote.com> Signed-off-by: Hua Yan <yanh@lemote.com> ---
+>> arch/mips/include/asm/cacheflush.h                 |    6 +++++
+>> arch/mips/include/asm/cpu-features.h               |    3 ++
+>> .../asm/mach-loongson/cpu-feature-overrides.h      |    6 +++++
+>> arch/mips/mm/c-r4k.c                               |   21
+>> ++++++++++++++++++- 4 files changed, 34 insertions(+), 2 deletions(-)
+>>
+> Hello.
+>
+> This patch masks the problem that you are not properly probing your L1
+> caches
+> to start with. For some reason in 'probe_pcache()' you reach the default
+> case
+> where the primary data cache is marked as having aliases. If your CPU
+> truly is
+> HW coherent with no aliases, then MIPS_CACHE_ALIASES should never get set.
+> Fixing this would eliminate the 'arch/mips/include/asm/cacheflush.h' and
+> 'arch/mips/mm/c-r4k.c' changes completely. There is no need to add more
+> CPU
+> feature bits for this single platform, thus changes to 'cpu-features.h'
+> and
+> 'cpu-features-overrides.h' will not be accepted.
+>
+> Also, please do not copy the <linux-kernel@vger.kernel.org> mailing list
+> unless your patch touches files outside of 'arch/mips' in order to cut
+> down
+> traffic on an already busy list. Thanks.
+>
+> Steve
+> - -----
+> <sjhill@mips.com>
+> <Steven.Hill@imgtec.com>
+> -----BEGIN PGP SIGNATURE-----
+> Version: GnuPG v1.4.11 (GNU/Linux)
+> Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+>
+> iEYEARECAAYFAlFm7WAACgkQgyK5H2Ic36eHuwCeKZjp1+arkoheEpeuzjJkQskN
+> /7MAnig14A03hWxRvfqDOMbMFKXpZBO8
+> =HRPU
+> -----END PGP SIGNATURE-----
+>

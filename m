@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Apr 2013 09:34:18 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:55485 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Apr 2013 09:34:46 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:55498 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825888Ab3DLHcC4KsZQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 12 Apr 2013 09:32:02 +0200
+        id S6826582Ab3DLHcFY4Gzt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 12 Apr 2013 09:32:05 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 02/16] MIPS: ralink: fix RT305x clock setup
-Date:   Fri, 12 Apr 2013 09:27:29 +0200
-Message-Id: <1365751663-5725-2-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V2 06/16] MIPS: ralink: extend RT3050 dtsi file
+Date:   Fri, 12 Apr 2013 09:27:33 +0200
+Message-Id: <1365751663-5725-6-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1365751663-5725-1-git-send-email-blogic@openwrt.org>
 References: <1365751663-5725-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36089
+X-archive-position: 36090
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,48 +33,175 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a few missing clocks.
+Add some additional properties to the dtsi file for ethernet and wifi.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/rt305x.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/mips/ralink/dts/rt3050.dtsi     |   96 ++++++++++++++++++++++++++++------
+ arch/mips/ralink/dts/rt3052_eval.dts |    2 +-
+ 2 files changed, 82 insertions(+), 16 deletions(-)
 
-diff --git a/arch/mips/ralink/rt305x.c b/arch/mips/ralink/rt305x.c
-index 0a4bbdc..64a0336 100644
---- a/arch/mips/ralink/rt305x.c
-+++ b/arch/mips/ralink/rt305x.c
-@@ -123,7 +123,8 @@ struct ralink_pinmux gpio_pinmux = {
+diff --git a/arch/mips/ralink/dts/rt3050.dtsi b/arch/mips/ralink/dts/rt3050.dtsi
+index 069d066..5aede8d 100644
+--- a/arch/mips/ralink/dts/rt3050.dtsi
++++ b/arch/mips/ralink/dts/rt3050.dtsi
+@@ -1,7 +1,7 @@
+ / {
+ 	#address-cells = <1>;
+ 	#size-cells = <1>;
+-	compatible = "ralink,rt3050-soc", "ralink,rt3052-soc";
++	compatible = "ralink,rt3050-soc", "ralink,rt3052-soc", "ralink,rt3350-soc";
  
- void __init ralink_clk_init(void)
- {
--	unsigned long cpu_rate, sys_rate, wdt_rate, uart_rate;
-+	unsigned long cpu_rate, sys_rate, wdt_rate,
-+			uart_rate, wmac_rate = 40000000;
- 	u32 t = rt_sysc_r32(SYSC_REG_SYSTEM_CONFIG);
+ 	cpus {
+ 		cpu@0 {
+@@ -23,7 +23,7 @@
+ 	palmbus@10000000 {
+ 		compatible = "palmbus";
+ 		reg = <0x10000000 0x200000>;
+-                ranges = <0x0 0x10000000 0x1FFFFF>;
++		ranges = <0x0 0x10000000 0x1FFFFF>;
  
- 	if (soc_is_rt305x() || soc_is_rt3350()) {
-@@ -176,11 +177,21 @@ void __init ralink_clk_init(void)
- 		BUG();
- 	}
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+@@ -34,8 +34,18 @@
+ 		};
  
-+	if (soc_is_rt3352() || soc_is_rt5350()) {
-+		u32 val = rt_sysc_r32(RT3352_SYSC_REG_SYSCFG0);
+ 		timer@100 {
++			compatible = "ralink,rt3052-timer", "ralink,rt2880-timer";
++			reg = <0x100 0x20>;
 +
-+		if (!(val & RT3352_CLKCFG0_XTAL_SEL))
-+			wmac_rate = 20000000;
-+	}
++			interrupt-parent = <&intc>;
++			interrupts = <1>;
 +
- 	ralink_clk_add("cpu", cpu_rate);
- 	ralink_clk_add("10000b00.spi", sys_rate);
- 	ralink_clk_add("10000100.timer", wdt_rate);
-+	ralink_clk_add("10000120.watchdog", wdt_rate);
- 	ralink_clk_add("10000500.uart", uart_rate);
- 	ralink_clk_add("10000c00.uartlite", uart_rate);
-+	ralink_clk_add("10100000.ethernet", sys_rate);
-+	ralink_clk_add("wmac@10180000", wmac_rate);
- }
++			status = "disabled";
++		};
++
++		watchdog@120 {
+ 			compatible = "ralink,rt3052-wdt", "ralink,rt2880-wdt";
+-			reg = <0x100 0x100>;
++			reg = <0x120 0x10>;
+ 		};
  
- void __init ralink_of_remap(void)
+ 		intc: intc@200 {
+@@ -61,10 +71,12 @@
+ 			gpio-controller;
+ 			#gpio-cells = <2>;
+ 
+-			ralink,ngpio = <24>;
+-			ralink,regs = [ 00 04 08 0c
+-					20 24 28 2c
+-					30 34 ];
++			ralink,num-gpios = <24>;
++			ralink,register-map = [ 00 04 08 0c
++						20 24 28 2c
++						30 34 ];
++
++			status = "disabled";
+ 		};
+ 
+ 		gpio1: gpio@638 {
+@@ -74,10 +86,12 @@
+ 			gpio-controller;
+ 			#gpio-cells = <2>;
+ 
+-			ralink,ngpio = <16>;
+-			ralink,regs = [ 00 04 08 0c
+-					10 14 18 1c
+-					20 24 ];
++			ralink,num-gpios = <16>;
++			ralink,register-map = [ 00 04 08 0c
++						10 14 18 1c
++						20 24 ];
++
++			status = "disabled";
+ 		};
+ 
+ 		gpio2: gpio@660 {
+@@ -87,10 +101,21 @@
+ 			gpio-controller;
+ 			#gpio-cells = <2>;
+ 
+-			ralink,ngpio = <12>;
+-			ralink,regs = [ 00 04 08 0c
+-					10 14 18 1c
+-					20 24 ];
++			ralink,num-gpios = <12>;
++			ralink,register-map = [ 00 04 08 0c
++						10 14 18 1c
++						20 24 ];
++
++			status = "disabled";
++		};
++
++		spi@b00 {
++			compatible = "ralink,rt3050-spi", "ralink,rt2880-spi";
++			reg = <0xb00 0x100>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			status = "disabled";
+ 		};
+ 
+ 		uartlite@c00 {
+@@ -102,5 +127,46 @@
+ 
+ 			reg-shift = <2>;
+ 		};
++
++	};
++
++	ethernet@10100000 {
++		compatible = "ralink,rt3050-eth";
++		reg = <0x10100000 10000>;
++
++		interrupt-parent = <&cpuintc>;
++		interrupts = <5>;
++
++		status = "disabled";
++	};
++
++	esw@10110000 {
++		compatible = "ralink,rt3050-esw";
++		reg = <0x10110000 8000>;
++
++		interrupt-parent = <&intc>;
++		interrupts = <17>;
++
++		status = "disabled";
++	};
++
++	wmac@10180000 {
++		compatible = "ralink,rt3050-wmac", "ralink,rt2880-wmac";
++		reg = <0x10180000 40000>;
++
++		interrupt-parent = <&cpuintc>;
++		interrupts = <6>;
++
++		status = "disabled";
++	};
++
++	otg@101c0000 {
++		compatible = "ralink,rt3050-otg";
++		reg = <0x101c0000 40000>;
++
++		interrupt-parent = <&intc>;
++		interrupts = <18>;
++
++		status = "disabled";
+ 	};
+ };
+diff --git a/arch/mips/ralink/dts/rt3052_eval.dts b/arch/mips/ralink/dts/rt3052_eval.dts
+index 148a590..dc56e58 100644
+--- a/arch/mips/ralink/dts/rt3052_eval.dts
++++ b/arch/mips/ralink/dts/rt3052_eval.dts
+@@ -14,7 +14,7 @@
+ 
+ 	palmbus@10000000 {
+ 		sysc@0 {
+-			ralink,pinmmux = "uartlite", "spi";
++			ralink,pinmux = "uartlite", "spi";
+ 			ralink,uartmux = "gpio";
+ 			ralink,wdtmux = <0>;
+ 		};
 -- 
 1.7.10.4

@@ -1,14 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Apr 2013 09:36:36 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:55510 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Apr 2013 09:48:18 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:56032 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827445Ab3DLHcIf1ZS0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 12 Apr 2013 09:32:08 +0200
+        id S6825888Ab3DLHsLX0h6O (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 12 Apr 2013 09:48:11 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 10/16] MIPS: ralink: add rt2880 dts files
-Date:   Fri, 12 Apr 2013 09:27:37 +0200
-Message-Id: <1365751663-5725-10-git-send-email-blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>,
+        John Crispin <blogic@openwrt.org>
+Subject: [PATCH V2 16/16] MIPS: ralink: add cpu-feature-overrides.h
+Date:   Fri, 12 Apr 2013 09:27:43 +0200
+Message-Id: <1365751663-5725-16-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1365751663-5725-1-git-send-email-blogic@openwrt.org>
 References: <1365751663-5725-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +17,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36094
+X-archive-position: 36095
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,220 +34,230 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a dtsi file for RT2880 SoC and a sample dts file. This SoC is first one that
-was released in this SoC family.
+From: Gabor Juhos <juhosg@openwrt.org>
 
+Add cpu-feature-overrides.h for RT288x, RT305x and RT3883.
+
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/Kconfig             |    4 ++
- arch/mips/ralink/dts/Makefile        |    1 +
- arch/mips/ralink/dts/rt2880.dtsi     |  116 ++++++++++++++++++++++++++++++++++
- arch/mips/ralink/dts/rt2880_eval.dts |   52 +++++++++++++++
- 4 files changed, 173 insertions(+)
- create mode 100644 arch/mips/ralink/dts/rt2880.dtsi
- create mode 100644 arch/mips/ralink/dts/rt2880_eval.dts
+ .../asm/mach-ralink/rt288x/cpu-feature-overrides.h |   56 ++++++++++++++++++++
+ .../asm/mach-ralink/rt305x/cpu-feature-overrides.h |   56 ++++++++++++++++++++
+ .../asm/mach-ralink/rt3883/cpu-feature-overrides.h |   55 +++++++++++++++++++
+ arch/mips/ralink/Platform                          |    3 ++
+ 4 files changed, 170 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h
 
-diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
-index 6723b94..0d312fc 100644
---- a/arch/mips/ralink/Kconfig
-+++ b/arch/mips/ralink/Kconfig
-@@ -26,6 +26,10 @@ choice
- 	config DTB_RT_NONE
- 		bool "None"
+diff --git a/arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h
+new file mode 100644
+index 0000000..72fc106
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h
+@@ -0,0 +1,56 @@
++/*
++ * Ralink RT288x specific CPU feature overrides
++ *
++ * Copyright (C) 2008-2009 Gabor Juhos <juhosg@openwrt.org>
++ * Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *
++ * This file was derived from: include/asm-mips/cpu-features.h
++ *	Copyright (C) 2003, 2004 Ralf Baechle
++ *	Copyright (C) 2004 Maciej W. Rozycki
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ */
++#ifndef _RT288X_CPU_FEATURE_OVERRIDES_H
++#define _RT288X_CPU_FEATURE_OVERRIDES_H
++
++#define cpu_has_tlb		1
++#define cpu_has_4kex		1
++#define cpu_has_3k_cache	0
++#define cpu_has_4k_cache	1
++#define cpu_has_tx39_cache	0
++#define cpu_has_sb1_cache	0
++#define cpu_has_fpu		0
++#define cpu_has_32fpr		0
++#define cpu_has_counter		1
++#define cpu_has_watch		1
++#define cpu_has_divec		1
++
++#define cpu_has_prefetch	1
++#define cpu_has_ejtag		1
++#define cpu_has_llsc		1
++
++#define cpu_has_mips16		1
++#define cpu_has_mdmx		0
++#define cpu_has_mips3d		0
++#define cpu_has_smartmips	0
++
++#define cpu_has_mips32r1	1
++#define cpu_has_mips32r2	1
++#define cpu_has_mips64r1	0
++#define cpu_has_mips64r2	0
++
++#define cpu_has_dsp		0
++#define cpu_has_mipsmt		0
++
++#define cpu_has_64bits		0
++#define cpu_has_64bit_zero_reg	0
++#define cpu_has_64bit_gp_regs	0
++#define cpu_has_64bit_addresses	0
++
++#define cpu_dcache_line_size()	16
++#define cpu_icache_line_size()	16
++
++#endif /* _RT288X_CPU_FEATURE_OVERRIDES_H */
+diff --git a/arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h
+new file mode 100644
+index 0000000..917c286
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h
+@@ -0,0 +1,56 @@
++/*
++ * Ralink RT305x specific CPU feature overrides
++ *
++ * Copyright (C) 2008-2009 Gabor Juhos <juhosg@openwrt.org>
++ * Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *
++ * This file was derived from: include/asm-mips/cpu-features.h
++ *	Copyright (C) 2003, 2004 Ralf Baechle
++ *	Copyright (C) 2004 Maciej W. Rozycki
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ */
++#ifndef _RT305X_CPU_FEATURE_OVERRIDES_H
++#define _RT305X_CPU_FEATURE_OVERRIDES_H
++
++#define cpu_has_tlb		1
++#define cpu_has_4kex		1
++#define cpu_has_3k_cache	0
++#define cpu_has_4k_cache	1
++#define cpu_has_tx39_cache	0
++#define cpu_has_sb1_cache	0
++#define cpu_has_fpu		0
++#define cpu_has_32fpr		0
++#define cpu_has_counter		1
++#define cpu_has_watch		1
++#define cpu_has_divec		1
++
++#define cpu_has_prefetch	1
++#define cpu_has_ejtag		1
++#define cpu_has_llsc		1
++
++#define cpu_has_mips16		1
++#define cpu_has_mdmx		0
++#define cpu_has_mips3d		0
++#define cpu_has_smartmips	0
++
++#define cpu_has_mips32r1	1
++#define cpu_has_mips32r2	1
++#define cpu_has_mips64r1	0
++#define cpu_has_mips64r2	0
++
++#define cpu_has_dsp		1
++#define cpu_has_mipsmt		0
++
++#define cpu_has_64bits		0
++#define cpu_has_64bit_zero_reg	0
++#define cpu_has_64bit_gp_regs	0
++#define cpu_has_64bit_addresses	0
++
++#define cpu_dcache_line_size()	32
++#define cpu_icache_line_size()	32
++
++#endif /* _RT305X_CPU_FEATURE_OVERRIDES_H */
+diff --git a/arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h
+new file mode 100644
+index 0000000..181fbf4
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h
+@@ -0,0 +1,55 @@
++/*
++ * Ralink RT3662/RT3883 specific CPU feature overrides
++ *
++ * Copyright (C) 2011-2013 Gabor Juhos <juhosg@openwrt.org>
++ *
++ * This file was derived from: include/asm-mips/cpu-features.h
++ *	Copyright (C) 2003, 2004 Ralf Baechle
++ *	Copyright (C) 2004 Maciej W. Rozycki
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ */
++#ifndef _RT3883_CPU_FEATURE_OVERRIDES_H
++#define _RT3883_CPU_FEATURE_OVERRIDES_H
++
++#define cpu_has_tlb		1
++#define cpu_has_4kex		1
++#define cpu_has_3k_cache	0
++#define cpu_has_4k_cache	1
++#define cpu_has_tx39_cache	0
++#define cpu_has_sb1_cache	0
++#define cpu_has_fpu		0
++#define cpu_has_32fpr		0
++#define cpu_has_counter		1
++#define cpu_has_watch		1
++#define cpu_has_divec		1
++
++#define cpu_has_prefetch	1
++#define cpu_has_ejtag		1
++#define cpu_has_llsc		1
++
++#define cpu_has_mips16		1
++#define cpu_has_mdmx		0
++#define cpu_has_mips3d		0
++#define cpu_has_smartmips	0
++
++#define cpu_has_mips32r1	1
++#define cpu_has_mips32r2	1
++#define cpu_has_mips64r1	0
++#define cpu_has_mips64r2	0
++
++#define cpu_has_dsp		1
++#define cpu_has_mipsmt		0
++
++#define cpu_has_64bits		0
++#define cpu_has_64bit_zero_reg	0
++#define cpu_has_64bit_gp_regs	0
++#define cpu_has_64bit_addresses	0
++
++#define cpu_dcache_line_size()	32
++#define cpu_icache_line_size()	32
++
++#endif /* _RT3883_CPU_FEATURE_OVERRIDES_H */
+diff --git a/arch/mips/ralink/Platform b/arch/mips/ralink/Platform
+index b2cbf16..cda4b66 100644
+--- a/arch/mips/ralink/Platform
++++ b/arch/mips/ralink/Platform
+@@ -8,16 +8,19 @@ cflags-$(CONFIG_RALINK)		+= -I$(srctree)/arch/mips/include/asm/mach-ralink
+ # Ralink RT288x
+ #
+ load-$(CONFIG_SOC_RT288X)	+= 0xffffffff88000000
++cflags-$(CONFIG_SOC_RT288X)	+= -I$(srctree)/arch/mips/include/asm/mach-ralink/rt288x
  
-+	config DTB_RT2880_EVAL
-+		bool "RT2880 eval kit"
-+		depends on SOC_RT288X
-+
- 	config DTB_RT305X_EVAL
- 		bool "RT305x eval kit"
- 		depends on SOC_RT305X
-diff --git a/arch/mips/ralink/dts/Makefile b/arch/mips/ralink/dts/Makefile
-index 1a69fb3..f635a01 100644
---- a/arch/mips/ralink/dts/Makefile
-+++ b/arch/mips/ralink/dts/Makefile
-@@ -1 +1,2 @@
-+obj-$(CONFIG_DTB_RT2880_EVAL) := rt2880_eval.dtb.o
- obj-$(CONFIG_DTB_RT305X_EVAL) := rt3052_eval.dtb.o
-diff --git a/arch/mips/ralink/dts/rt2880.dtsi b/arch/mips/ralink/dts/rt2880.dtsi
-new file mode 100644
-index 0000000..b57b2bd
---- /dev/null
-+++ b/arch/mips/ralink/dts/rt2880.dtsi
-@@ -0,0 +1,116 @@
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "ralink,rt2880-soc";
-+
-+	cpus {
-+		cpu@0 {
-+			compatible = "mips,mips4KEc";
-+		};
-+	};
-+
-+	chosen {
-+		bootargs = "console=ttyS0,57600 init=/init";
-+	};
-+
-+	cpuintc: cpuintc@0 {
-+		#address-cells = <0>;
-+		#interrupt-cells = <1>;
-+		interrupt-controller;
-+		compatible = "mti,cpu-interrupt-controller";
-+	};
-+
-+	palmbus@10000000 {
-+		compatible = "palmbus";
-+		reg = <0x10000000 0x200000>;
-+                ranges = <0x0 0x10000000 0x1FFFFF>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		sysc@300000 {
-+			compatible = "ralink,rt2880-sysc";
-+			reg = <0x300000 0x100>;
-+		};
-+
-+		timer@300100 {
-+			compatible = "ralink,rt2880-timer";
-+			reg = <0x300100 0x20>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <1>;
-+
-+			status = "disabled";
-+		};
-+
-+		watchdog@300120 {
-+			compatible = "ralink,rt2880-wdt";
-+			reg = <0x300120 0x10>;
-+		};
-+
-+		intc: intc@300200 {
-+			compatible = "ralink,rt2880-intc";
-+			reg = <0x300200 0x100>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+
-+			interrupt-parent = <&cpuintc>;
-+			interrupts = <2>;
-+		};
-+
-+		memc@300300 {
-+			compatible = "ralink,rt2880-memc";
-+			reg = <0x300300 0x100>;
-+		};
-+
-+		gpio0: gpio@300600 {
-+			compatible = "ralink,rt2880-gpio";
-+			reg = <0x300600 0x34>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+
-+			ralink,num-gpios = <24>;
-+			ralink,register-map = [ 00 04 08 0c
-+						20 24 28 2c
-+						30 34 ];
-+		};
-+
-+		gpio1: gpio@300638 {
-+			compatible = "ralink,rt2880-gpio";
-+			reg = <0x300638 0x24>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+
-+			ralink,num-gpios = <16>;
-+			ralink,register-map = [ 00 04 08 0c
-+						10 14 18 1c
-+						20 24 ];
-+		};
-+
-+		gpio2: gpio@300660 {
-+			compatible = "ralink,rt2880-gpio";
-+			reg = <0x300660 0x24>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+
-+			ralink,num-gpios = <32>;
-+			ralink,register-map = [ 00 04 08 0c
-+						10 14 18 1c
-+						20 24 ];
-+		};
-+
-+		uartlite@300c00 {
-+			compatible = "ralink,rt2880-uart", "ns16550a";
-+			reg = <0x300c00 0x100>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <8>;
-+
-+			reg-shift = <2>;
-+		};
-+	};
-+};
-diff --git a/arch/mips/ralink/dts/rt2880_eval.dts b/arch/mips/ralink/dts/rt2880_eval.dts
-new file mode 100644
-index 0000000..c2710c1
---- /dev/null
-+++ b/arch/mips/ralink/dts/rt2880_eval.dts
-@@ -0,0 +1,52 @@
-+/dts-v1/;
-+
-+/include/ "rt2880.dtsi"
-+
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "ralink,rt2880-eval-board", "ralink,rt2880-soc";
-+	model = "Ralink RT2880 evaluation board";
-+
-+	memory@8000000 {
-+		reg = <0x0 0x2000000>;
-+	};
-+
-+	palmbus@10000000 {
-+		sysc@300000 {
-+			ralink,pinmux = "uartlite", "spi";
-+			ralink,uartmux = "gpio";
-+			ralink,wdtmux = <0>;
-+		};
-+	};
-+
-+	cfi@1f000000 {
-+		compatible = "cfi-flash";
-+		reg = <0x1f000000 0x800000>;
-+
-+		bank-width = <2>;
-+		device-width = <2>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		partition@0 {
-+			label = "uboot";
-+			reg = <0x0 0x30000>;
-+			read-only;
-+		};
-+		partition@30000 {
-+			label = "uboot-env";
-+			reg = <0x30000 0x10000>;
-+			read-only;
-+		};
-+		partition@40000 {
-+			label = "calibration";
-+			reg = <0x40000 0x10000>;
-+			read-only;
-+		};
-+		partition@50000 {
-+			label = "linux";
-+			reg = <0x50000 0x7b0000>;
-+		};
-+	};
-+};
+ #
+ # Ralink RT305x
+ #
+ load-$(CONFIG_SOC_RT305X)	+= 0xffffffff80000000
++cflags-$(CONFIG_SOC_RT305X)	+= -I$(srctree)/arch/mips/include/asm/mach-ralink/rt305x
+ 
+ #
+ # Ralink RT3883
+ #
+ load-$(CONFIG_SOC_RT3883)	+= 0xffffffff80000000
++cflags-$(CONFIG_SOC_RT3883)	+= -I$(srctree)/arch/mips/include/asm/mach-ralink/rt3883
+ 
+ #
+ # Ralink MT7620
 -- 
 1.7.10.4

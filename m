@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Apr 2013 09:48:36 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:56037 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Apr 2013 09:49:03 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:56039 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827443Ab3DLHsOIAVJG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6827444Ab3DLHsOmRvCX (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Fri, 12 Apr 2013 09:48:14 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 14/16] MIPS: ralink: add MT7620 dts files
-Date:   Fri, 12 Apr 2013 09:27:41 +0200
-Message-Id: <1365751663-5725-14-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V2 15/16] MIPS: ralink: add support for periodic timer irq
+Date:   Fri, 12 Apr 2013 09:27:42 +0200
+Message-Id: <1365751663-5725-15-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1365751663-5725-1-git-send-email-blogic@openwrt.org>
 References: <1365751663-5725-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36096
+X-archive-position: 36097
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,214 +33,226 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Adds the dtsi file for MT7620 SoC. This is the latest and greatest SoC shipped
-by Mediatek.
+Adds a driver for the periodic timer found on Ralink SoC.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/Kconfig             |    4 +
- arch/mips/ralink/dts/Makefile        |    1 +
- arch/mips/ralink/dts/mt7620.dtsi     |  138 ++++++++++++++++++++++++++++++++++
- arch/mips/ralink/dts/mt7620_eval.dts |   22 ++++++
- 4 files changed, 165 insertions(+)
- create mode 100644 arch/mips/ralink/dts/mt7620.dtsi
- create mode 100644 arch/mips/ralink/dts/mt7620_eval.dts
+ arch/mips/ralink/Makefile |    2 +-
+ arch/mips/ralink/timer.c  |  193 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 194 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/ralink/timer.c
 
-diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
-index 493411f..8254502 100644
---- a/arch/mips/ralink/Kconfig
-+++ b/arch/mips/ralink/Kconfig
-@@ -46,6 +46,10 @@ choice
- 		bool "RT3883 eval kit"
- 		depends on SOC_RT3883
+diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
+index 38cf1a8..e37e0ec 100644
+--- a/arch/mips/ralink/Makefile
++++ b/arch/mips/ralink/Makefile
+@@ -6,7 +6,7 @@
+ # Copyright (C) 2009-2011 Gabor Juhos <juhosg@openwrt.org>
+ # Copyright (C) 2013 John Crispin <blogic@openwrt.org>
  
-+	config DTB_MT7620_EVAL
-+		bool "MT7620 eval kit"
-+		depends on SOC_MT7620
-+
- endchoice
+-obj-y := prom.o of.o reset.o clk.o irq.o
++obj-y := prom.o of.o reset.o clk.o irq.o timer.o
  
- endif
-diff --git a/arch/mips/ralink/dts/Makefile b/arch/mips/ralink/dts/Makefile
-index 040a986..036603a 100644
---- a/arch/mips/ralink/dts/Makefile
-+++ b/arch/mips/ralink/dts/Makefile
-@@ -1,3 +1,4 @@
- obj-$(CONFIG_DTB_RT2880_EVAL) := rt2880_eval.dtb.o
- obj-$(CONFIG_DTB_RT305X_EVAL) := rt3052_eval.dtb.o
- obj-$(CONFIG_DTB_RT3883_EVAL) := rt3883_eval.dtb.o
-+obj-$(CONFIG_DTB_MT7620_EVAL) := mt7620_eval.dtb.o
-diff --git a/arch/mips/ralink/dts/mt7620.dtsi b/arch/mips/ralink/dts/mt7620.dtsi
+ obj-$(CONFIG_SOC_RT288X) += rt288x.o
+ obj-$(CONFIG_SOC_RT305X) += rt305x.o
+diff --git a/arch/mips/ralink/timer.c b/arch/mips/ralink/timer.c
 new file mode 100644
-index 0000000..59f057f
+index 0000000..55b4f9c
 --- /dev/null
-+++ b/arch/mips/ralink/dts/mt7620.dtsi
-@@ -0,0 +1,138 @@
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "ralink,mtk7620n-soc", "ralink,mt7620-soc";
++++ b/arch/mips/ralink/timer.c
+@@ -0,0 +1,193 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
++*/
 +
-+	cpus {
-+		cpu@0 {
-+			compatible = "mips,mips24KEc";
-+		};
-+	};
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/interrupt.h>
++#include <linux/timer.h>
++#include <linux/of_gpio.h>
++#include <linux/clk.h>
 +
-+	chosen {
-+		bootargs = "console=ttyS0,57600 init=/init";
-+	};
++#include <asm/mach-ralink/ralink_regs.h>
 +
-+	cpuintc: cpuintc@0 {
-+		#address-cells = <0>;
-+		#interrupt-cells = <1>;
-+		interrupt-controller;
-+		compatible = "mti,cpu-interrupt-controller";
-+	};
++#define TIMER_REG_TMRSTAT		0x00
++#define TIMER_REG_TMR0LOAD		0x10
++#define TIMER_REG_TMR0CTL		0x18
 +
-+	palmbus@10000000 {
-+		compatible = "palmbus";
-+		reg = <0x10000000 0x200000>;
-+                ranges = <0x0 0x10000000 0x1FFFFF>;
++#define TMRSTAT_TMR0INT			BIT(0)
 +
-+		#address-cells = <1>;
-+		#size-cells = <1>;
++#define TMR0CTL_ENABLE			BIT(7)
++#define TMR0CTL_MODE_PERIODIC		BIT(4)
++#define TMR0CTL_PRESCALER		1
++#define TMR0CTL_PRESCALE_VAL		(0xf - TMR0CTL_PRESCALER)
++#define TMR0CTL_PRESCALE_DIV		(65536 / BIT(TMR0CTL_PRESCALER))
 +
-+		sysc@0 {
-+			compatible = "ralink,mt7620-sysc", "ralink,mt7620n-sysc";
-+			reg = <0x0 0x100>;
-+		};
-+
-+		timer@100 {
-+			compatible = "ralink,mt7620-timer", "ralink,rt2880-timer";
-+			reg = <0x100 0x20>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <1>;
-+
-+			status = "disabled";
-+		};
-+
-+		watchdog@120 {
-+			compatible = "ralink,mt7620-wdt", "ralink,rt2880-wdt";
-+			reg = <0x120 0x10>;
-+		};
-+
-+		intc: intc@200 {
-+			compatible = "ralink,mt7620-intc", "ralink,rt2880-intc";
-+			reg = <0x200 0x100>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+
-+			interrupt-parent = <&cpuintc>;
-+			interrupts = <2>;
-+		};
-+
-+		memc@300 {
-+			compatible = "ralink,mt7620-memc", "ralink,rt3050-memc";
-+			reg = <0x300 0x100>;
-+		};
-+
-+		gpio0: gpio@600 {
-+			compatible = "ralink,mt7620-gpio", "ralink,rt2880-gpio";
-+			reg = <0x600 0x34>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+
-+			ralink,num-gpios = <24>;
-+			ralink,register-map = [ 00 04 08 0c
-+						20 24 28 2c
-+						30 34 ];
-+		};
-+
-+		gpio1: gpio@638 {
-+			compatible = "ralink,mt7620-gpio", "ralink,rt2880-gpio";
-+			reg = <0x638 0x24>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+
-+			ralink,num-gpios = <16>;
-+			ralink,register-map = [ 00 04 08 0c
-+						10 14 18 1c
-+						20 24 ];
-+		};
-+
-+		gpio2: gpio@660 {
-+			compatible = "ralink,mt7620-gpio", "ralink,rt2880-gpio";
-+			reg = <0x660 0x24>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+
-+			ralink,num-gpios = <32>;
-+			ralink,register-map = [ 00 04 08 0c
-+						10 14 18 1c
-+						20 24 ];
-+		};
-+
-+		gpio3: gpio@688 {
-+			compatible = "ralink,mt7620-gpio", "ralink,rt2880-gpio";
-+			reg = <0x688 0x24>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+
-+			ralink,num-gpios = <1>;
-+			ralink,register-map = [ 00 04 08 0c
-+						10 14 18 1c
-+						20 24 ];
-+		};
-+
-+		spi@b00 {
-+			compatible = "ralink,rt3883-spi", "ralink,rt2880-spi";
-+			reg = <0xb00 0x100>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			status = "disabled";
-+		};
-+
-+		uartlite@c00 {
-+			compatible = "ralink,mt7620-uart", "ralink,rt2880-uart", "ns16550a";
-+			reg = <0xc00 0x100>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <12>;
-+
-+			reg-shift = <2>;
-+		};
-+	};
++struct rt_timer {
++	struct device	*dev;
++	void __iomem	*membase;
++	int		irq;
++	unsigned long	timer_freq;
++	unsigned long	timer_div;
 +};
-diff --git a/arch/mips/ralink/dts/mt7620_eval.dts b/arch/mips/ralink/dts/mt7620_eval.dts
-new file mode 100644
-index 0000000..ad20d14
---- /dev/null
-+++ b/arch/mips/ralink/dts/mt7620_eval.dts
-@@ -0,0 +1,22 @@
-+/dts-v1/;
 +
-+/include/ "mt7620.dtsi"
++static inline void rt_timer_w32(struct rt_timer *rt, u8 reg, u32 val)
++{
++	__raw_writel(val, rt->membase + reg);
++}
 +
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "ralink,mt7620a-eval-board", "ralink,mt7620a-soc";
-+	model = "Ralink MT7620 evaluation board";
++static inline u32 rt_timer_r32(struct rt_timer *rt, u8 reg)
++{
++	return __raw_readl(rt->membase + reg);
++}
 +
-+	memory@0 {
-+		reg = <0x0 0x4000000>;
-+	};
++static irqreturn_t rt_timer_irq(int irq, void *_rt)
++{
++	struct rt_timer *rt =  (struct rt_timer *) _rt;
 +
-+	palmbus@10000000 {
-+		sysc@0 {
-+			ralink,pinmux = "uartlite", "spi";
-+			ralink,uartmux = "gpio";
-+			ralink,wdtmux = <0>;
-+		};
-+	};
++	rt_timer_w32(rt, TIMER_REG_TMR0LOAD, rt->timer_freq / rt->timer_div);
++	rt_timer_w32(rt, TIMER_REG_TMRSTAT, TMRSTAT_TMR0INT);
++
++	return IRQ_HANDLED;
++}
++
++
++static int rt_timer_request(struct rt_timer *rt)
++{
++	int err = devm_request_irq(rt->dev, rt->irq, rt_timer_irq,
++					0, dev_name(rt->dev), rt);
++
++	if (err) {
++		dev_err(rt->dev, "failed to request irq\n");
++	} else {
++		u32 t = TMR0CTL_MODE_PERIODIC | TMR0CTL_PRESCALE_VAL;
++		rt_timer_w32(rt, TIMER_REG_TMR0CTL, t);
++	}
++	return err;
++}
++
++static void rt_timer_free(struct rt_timer *rt)
++{
++	free_irq(rt->irq, rt);
++}
++
++static int rt_timer_config(struct rt_timer *rt, unsigned long divisor)
++{
++	if (rt->timer_freq < divisor)
++		rt->timer_div = rt->timer_freq;
++	else
++		rt->timer_div = divisor;
++
++	rt_timer_w32(rt, TIMER_REG_TMR0LOAD, rt->timer_freq / rt->timer_div);
++
++	return 0;
++}
++
++static int rt_timer_enable(struct rt_timer *rt)
++{
++	u32 t;
++
++	rt_timer_w32(rt, TIMER_REG_TMR0LOAD, rt->timer_freq / rt->timer_div);
++
++	t = rt_timer_r32(rt, TIMER_REG_TMR0CTL);
++	t |= TMR0CTL_ENABLE;
++	rt_timer_w32(rt, TIMER_REG_TMR0CTL, t);
++
++	return 0;
++}
++
++static void rt_timer_disable(struct rt_timer *rt)
++{
++	u32 t;
++
++	t = rt_timer_r32(rt, TIMER_REG_TMR0CTL);
++	t &= ~TMR0CTL_ENABLE;
++	rt_timer_w32(rt, TIMER_REG_TMR0CTL, t);
++}
++
++static int rt_timer_probe(struct platform_device *pdev)
++{
++	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	struct rt_timer *rt;
++	struct clk *clk;
++
++	if (!res) {
++		dev_err(&pdev->dev, "no memory resource found\n");
++		return -EINVAL;
++	}
++
++	rt = devm_kzalloc(&pdev->dev, sizeof(*rt), GFP_KERNEL);
++	if (!rt) {
++		dev_err(&pdev->dev, "failed to allocate memory\n");
++		return -ENOMEM;
++	}
++
++	rt->irq = platform_get_irq(pdev, 0);
++	if (!rt->irq) {
++		dev_err(&pdev->dev, "failed to load irq\n");
++		return -ENOENT;
++	}
++
++	rt->membase = devm_ioremap_resource(&pdev->dev, res);
++	if (!rt->membase) {
++		dev_err(&pdev->dev, "failed to ioremap\n");
++		return -ENOMEM;
++	}
++
++	clk = devm_clk_get(&pdev->dev, NULL);
++	if (IS_ERR(clk)) {
++		dev_err(&pdev->dev, "failed get clock rate\n");
++		return PTR_ERR(clk);
++	}
++
++	rt->timer_freq = clk_get_rate(clk) / TMR0CTL_PRESCALE_DIV;
++	if (!rt->timer_freq)
++		return -EINVAL;
++
++	rt->dev = &pdev->dev;
++	platform_set_drvdata(pdev, rt);
++
++	rt_timer_request(rt);
++	rt_timer_config(rt, 2);
++	rt_timer_enable(rt);
++
++	dev_info(&pdev->dev, "maximum frequency is %luHz\n", rt->timer_freq);
++
++	return 0;
++}
++
++static int rt_timer_remove(struct platform_device *pdev)
++{
++	struct rt_timer *rt = platform_get_drvdata(pdev);
++
++	rt_timer_disable(rt);
++	rt_timer_free(rt);
++
++	return 0;
++}
++
++static const struct of_device_id rt_timer_match[] = {
++	{ .compatible = "ralink,rt2880-timer" },
++	{},
 +};
++MODULE_DEVICE_TABLE(of, rt_timer_match);
++
++static struct platform_driver rt_timer_driver = {
++	.probe = rt_timer_probe,
++	.remove = rt_timer_remove,
++	.driver = {
++		.name		= "rt-timer",
++		.owner          = THIS_MODULE,
++		.of_match_table	= rt_timer_match
++	},
++};
++
++module_platform_driver(rt_timer_driver);
++
++MODULE_DESCRIPTION("Ralink RT2880 timer");
++MODULE_AUTHOR("John Crispin <blogic@openwrt.org");
++MODULE_LICENSE("GPL");
 -- 
 1.7.10.4

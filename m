@@ -1,21 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Apr 2013 11:43:36 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:56524 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Apr 2013 11:43:54 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:56528 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6818006Ab3DMJnfpUeQN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 13 Apr 2013 11:43:35 +0200
+        id S6823690Ab3DMJngBRavW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 13 Apr 2013 11:43:36 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
         John Crispin <blogic@openwrt.org>
-Subject: [PATCH 1/2] tty: serial: ralink: fix SERIAL_8250_RT288X dependency
-Date:   Sat, 13 Apr 2013 11:39:32 +0200
-Message-Id: <1365845973-16164-1-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 2/2] tty: serial: ralink: select SERIAL_8250_RT288X when ralink kernel is built
+Date:   Sat, 13 Apr 2013 11:39:33 +0200
+Message-Id: <1365845973-16164-2-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1365845973-16164-1-git-send-email-blogic@openwrt.org>
+References: <1365845973-16164-1-git-send-email-blogic@openwrt.org>
 Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36146
+X-archive-position: 36147
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,33 +34,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-With every Ralink SoC that we add, we would need to extend the dependency. In
-order to make life easier we make the symbol depend on MIPS & RALINK and then
-select it from within arch/mips/ralink/.
+We need to select SERIAL_8250_RT288X to make the uart work on ralink SoC.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
+ arch/mips/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-These 2 patches in this series should be merged via the mips tree. Patch 1/2
-requires an Ack from the tty maintainer.
-
- drivers/tty/serial/8250/Kconfig |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/tty/serial/8250/Kconfig b/drivers/tty/serial/8250/Kconfig
-index 80fe91e..24ea3c8 100644
---- a/drivers/tty/serial/8250/Kconfig
-+++ b/drivers/tty/serial/8250/Kconfig
-@@ -295,8 +295,8 @@ config SERIAL_8250_EM
- 	  If unsure, say N.
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b237c50..da9fd66 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -444,6 +444,7 @@ config RALINK
+ 	select HAVE_MACH_CLKDEV
+ 	select CLKDEV_LOOKUP
+ 	select ARCH_REQUIRE_GPIOLIB
++	select SERIAL_8250_RT288X
  
- config SERIAL_8250_RT288X
--	bool "Ralink RT288x/RT305x/RT3662/RT3883 serial port support"
--	depends on SERIAL_8250 && (SOC_RT288X || SOC_RT305X || SOC_RT3883)
-+	bool
-+	depends on SERIAL_8250 && MIPS && RALINK
- 	help
- 	  If you have a Ralink RT288x/RT305x SoC based board and want to use the
- 	  serial port, say Y to this option. The driver can handle up to 2 serial
+ config SGI_IP22
+ 	bool "SGI IP22 (Indy/Indigo2)"
 -- 
 1.7.10.4

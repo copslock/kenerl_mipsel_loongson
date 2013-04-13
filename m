@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Apr 2013 10:54:17 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:54331 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Apr 2013 10:54:35 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:54340 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823043Ab3DMIw3pCtSv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6823044Ab3DMIw3pONqI (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sat, 13 Apr 2013 10:52:29 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V3 05/14] MIPS: ralink: add RT5350 sdram register defines
-Date:   Sat, 13 Apr 2013 10:48:16 +0200
-Message-Id: <1365842905-10906-5-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V3 08/14] MIPS: ralink: make the rt305x pinmuxing structure static
+Date:   Sat, 13 Apr 2013 10:48:19 +0200
+Message-Id: <1365842905-10906-8-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1365842905-10906-1-git-send-email-blogic@openwrt.org>
 References: <1365842905-10906-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36128
+X-archive-position: 36129
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,33 +33,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a few missing defines that are needed to make memory detection work on the
-RT5350.
+These structures are exported via struct ralink_pinmux rt_gpio_pinmux and can
+hence be static.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
-Acked-by: Gabor Juhos <juhosg@openwrt.org>
 ---
- arch/mips/include/asm/mach-ralink/rt305x.h |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/mips/ralink/rt305x.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-ralink/rt305x.h b/arch/mips/include/asm/mach-ralink/rt305x.h
-index e36c3c5..80cda8a 100644
---- a/arch/mips/include/asm/mach-ralink/rt305x.h
-+++ b/arch/mips/include/asm/mach-ralink/rt305x.h
-@@ -97,6 +97,14 @@ static inline int soc_is_rt5350(void)
- #define RT5350_SYSCFG0_CPUCLK_320	0x2
- #define RT5350_SYSCFG0_CPUCLK_300	0x3
+diff --git a/arch/mips/ralink/rt305x.c b/arch/mips/ralink/rt305x.c
+index f1a6c33..5b42078 100644
+--- a/arch/mips/ralink/rt305x.c
++++ b/arch/mips/ralink/rt305x.c
+@@ -22,7 +22,7 @@
  
-+#define RT5350_SYSCFG0_DRAM_SIZE_SHIFT  12
-+#define RT5350_SYSCFG0_DRAM_SIZE_MASK   7
-+#define RT5350_SYSCFG0_DRAM_SIZE_2M     0
-+#define RT5350_SYSCFG0_DRAM_SIZE_8M     1
-+#define RT5350_SYSCFG0_DRAM_SIZE_16M    2
-+#define RT5350_SYSCFG0_DRAM_SIZE_32M    3
-+#define RT5350_SYSCFG0_DRAM_SIZE_64M    4
-+
- /* multi function gpio pins */
- #define RT305X_GPIO_I2C_SD		1
- #define RT305X_GPIO_I2C_SCLK		2
+ enum rt305x_soc_type rt305x_soc;
+ 
+-struct ralink_pinmux_grp mode_mux[] = {
++static struct ralink_pinmux_grp mode_mux[] = {
+ 	{
+ 		.name = "i2c",
+ 		.mask = RT305X_GPIO_MODE_I2C,
+@@ -61,7 +61,7 @@ struct ralink_pinmux_grp mode_mux[] = {
+ 	}, {0}
+ };
+ 
+-struct ralink_pinmux_grp uart_mux[] = {
++static struct ralink_pinmux_grp uart_mux[] = {
+ 	{
+ 		.name = "uartf",
+ 		.mask = RT305X_GPIO_MODE_UARTF,
+@@ -103,7 +103,7 @@ struct ralink_pinmux_grp uart_mux[] = {
+ 	}, {0}
+ };
+ 
+-void rt305x_wdt_reset(void)
++static void rt305x_wdt_reset(void)
+ {
+ 	u32 t;
+ 
 -- 
 1.7.10.4

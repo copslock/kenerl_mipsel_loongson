@@ -1,22 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Apr 2013 10:55:12 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:54346 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Apr 2013 10:55:30 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:54422 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823690Ab3DMIwacDMBz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 13 Apr 2013 10:52:30 +0200
+        id S6823038Ab3DMIyc67NKz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 13 Apr 2013 10:54:32 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V3 10/14] MIPS: ralink: add uart mask to struct ralink_pinmux
-Date:   Sat, 13 Apr 2013 10:48:21 +0200
-Message-Id: <1365842905-10906-10-git-send-email-blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
+        John Crispin <blogic@openwrt.org>
+Subject: [PATCH 1/6] DT: add vendor prefixes for Ralink
+Date:   Sat, 13 Apr 2013 10:50:21 +0200
+Message-Id: <1365843026-11015-1-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1365842905-10906-1-git-send-email-blogic@openwrt.org>
-References: <1365842905-10906-1-git-send-email-blogic@openwrt.org>
 Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36131
+X-archive-position: 36132
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,37 +32,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a field for the uart muxing mask and set it inside the rt305x setup code.
-
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/common.h |    1 +
- arch/mips/ralink/rt305x.c |    1 +
- 2 files changed, 2 insertions(+)
+ Documentation/devicetree/bindings/vendor-prefixes.txt |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/ralink/common.h b/arch/mips/ralink/common.h
-index bebd149..299119b 100644
---- a/arch/mips/ralink/common.h
-+++ b/arch/mips/ralink/common.h
-@@ -22,6 +22,7 @@ struct ralink_pinmux {
- 	struct ralink_pinmux_grp *mode;
- 	struct ralink_pinmux_grp *uart;
- 	int uart_shift;
-+	u32 uart_mask;
- 	void (*wdt_reset)(void);
- 	struct ralink_pinmux_grp *pci;
- 	int pci_shift;
-diff --git a/arch/mips/ralink/rt305x.c b/arch/mips/ralink/rt305x.c
-index 5b42078..e9dbf8c 100644
---- a/arch/mips/ralink/rt305x.c
-+++ b/arch/mips/ralink/rt305x.c
-@@ -118,6 +118,7 @@ struct ralink_pinmux rt_gpio_pinmux = {
- 	.mode = mode_mux,
- 	.uart = uart_mux,
- 	.uart_shift = RT305X_GPIO_MODE_UART0_SHIFT,
-+	.uart_mask = RT305X_GPIO_MODE_GPIO,
- 	.wdt_reset = rt305x_wdt_reset,
- };
- 
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+index 19e1ef7..6527412 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.txt
++++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+@@ -41,6 +41,7 @@ onnn	ON Semiconductor Corp.
+ picochip	Picochip Ltd
+ powervr	PowerVR (deprecated, use img)
+ qcom	Qualcomm, Inc.
++ralink	Mediatek/Ralink Technology Corp.
+ ramtron	Ramtron International
+ realtek Realtek Semiconductor Corp.
+ renesas	Renesas Electronics Corporation
 -- 
 1.7.10.4

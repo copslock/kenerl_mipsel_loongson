@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Apr 2013 10:54:54 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:54343 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Apr 2013 10:55:12 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:54346 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823124Ab3DMIw3zWp7c (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 13 Apr 2013 10:52:29 +0200
+        id S6823690Ab3DMIwacDMBz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 13 Apr 2013 10:52:30 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH V3 09/14] MIPS: ralink: add pci group to struct ralink_pinmux
-Date:   Sat, 13 Apr 2013 10:48:20 +0200
-Message-Id: <1365842905-10906-9-git-send-email-blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [PATCH V3 10/14] MIPS: ralink: add uart mask to struct ralink_pinmux
+Date:   Sat, 13 Apr 2013 10:48:21 +0200
+Message-Id: <1365842905-10906-10-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1365842905-10906-1-git-send-email-blogic@openwrt.org>
 References: <1365842905-10906-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36130
+X-archive-position: 36131
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,29 +33,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Gabor Juhos <juhosg@openwrt.org>
+Add a field for the uart muxing mask and set it inside the rt305x setup code.
 
-This will be used for RT3662/RT3883.
-
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-Acked-by: John Crispin <blogic@openwrt.org>
+Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/common.h |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/mips/ralink/common.h |    1 +
+ arch/mips/ralink/rt305x.c |    1 +
+ 2 files changed, 2 insertions(+)
 
 diff --git a/arch/mips/ralink/common.h b/arch/mips/ralink/common.h
-index f4b19c6..bebd149 100644
+index bebd149..299119b 100644
 --- a/arch/mips/ralink/common.h
 +++ b/arch/mips/ralink/common.h
-@@ -23,6 +23,9 @@ struct ralink_pinmux {
+@@ -22,6 +22,7 @@ struct ralink_pinmux {
+ 	struct ralink_pinmux_grp *mode;
  	struct ralink_pinmux_grp *uart;
  	int uart_shift;
++	u32 uart_mask;
  	void (*wdt_reset)(void);
-+	struct ralink_pinmux_grp *pci;
-+	int pci_shift;
-+	u32 pci_mask;
+ 	struct ralink_pinmux_grp *pci;
+ 	int pci_shift;
+diff --git a/arch/mips/ralink/rt305x.c b/arch/mips/ralink/rt305x.c
+index 5b42078..e9dbf8c 100644
+--- a/arch/mips/ralink/rt305x.c
++++ b/arch/mips/ralink/rt305x.c
+@@ -118,6 +118,7 @@ struct ralink_pinmux rt_gpio_pinmux = {
+ 	.mode = mode_mux,
+ 	.uart = uart_mux,
+ 	.uart_shift = RT305X_GPIO_MODE_UART0_SHIFT,
++	.uart_mask = RT305X_GPIO_MODE_GPIO,
+ 	.wdt_reset = rt305x_wdt_reset,
  };
- extern struct ralink_pinmux rt_gpio_pinmux;
  
 -- 
 1.7.10.4

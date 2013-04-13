@@ -1,23 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Apr 2013 11:43:54 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:56528 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Apr 2013 13:46:24 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:33155 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823690Ab3DMJngBRavW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 13 Apr 2013 11:43:36 +0200
+        id S6817043Ab3DMLqYMRfXi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 13 Apr 2013 13:46:24 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
         John Crispin <blogic@openwrt.org>
-Subject: [PATCH 2/2] tty: serial: ralink: select SERIAL_8250_RT288X when ralink kernel is built
-Date:   Sat, 13 Apr 2013 11:39:33 +0200
-Message-Id: <1365845973-16164-2-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V2 2/2] tty: serial: ralink: select SERIAL_8250_RT288X when ralink kernel is built
+Date:   Sat, 13 Apr 2013 13:42:16 +0200
+Message-Id: <1365853336-11241-1-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1365845973-16164-1-git-send-email-blogic@openwrt.org>
-References: <1365845973-16164-1-git-send-email-blogic@openwrt.org>
 Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36147
+X-archive-position: 36148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,17 +36,20 @@ We need to select SERIAL_8250_RT288X to make the uart work on ralink SoC.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
+Changes in V2
+* a bogus rebase broke the patch and added the extra select to the wrong platform
+
  arch/mips/Kconfig |    1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index b237c50..da9fd66 100644
+index c1997db..2e8939f 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -444,6 +444,7 @@ config RALINK
+@@ -441,6 +441,7 @@ config RALINK
+ 	select SYS_HAS_EARLY_PRINTK
  	select HAVE_MACH_CLKDEV
  	select CLKDEV_LOOKUP
- 	select ARCH_REQUIRE_GPIOLIB
 +	select SERIAL_8250_RT288X
  
  config SGI_IP22

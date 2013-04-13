@@ -1,25 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Apr 2013 13:46:24 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:33155 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Apr 2013 14:19:20 +0200 (CEST)
+Received: from mail.nanl.de ([217.115.11.12]:57142 "EHLO mail.nanl.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817043Ab3DMLqYMRfXi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 13 Apr 2013 13:46:24 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
-        John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 2/2] tty: serial: ralink: select SERIAL_8250_RT288X when ralink kernel is built
-Date:   Sat, 13 Apr 2013 13:42:16 +0200
-Message-Id: <1365853336-11241-1-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <blogic@openwrt.org>
+        id S6835101Ab3DMMTTQ1lBz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 13 Apr 2013 14:19:19 +0200
+Received: from mail-vc0-f181.google.com (mail-vc0-f181.google.com [209.85.220.181])
+        by mail.nanl.de (Postfix) with ESMTPSA id 22FFE40965;
+        Sat, 13 Apr 2013 12:19:06 +0000 (UTC)
+Received: by mail-vc0-f181.google.com with SMTP id ia10so2824173vcb.40
+        for <multiple recipients>; Sat, 13 Apr 2013 05:19:13 -0700 (PDT)
+X-Received: by 10.52.91.212 with SMTP id cg20mr9859731vdb.63.1365855553816;
+ Sat, 13 Apr 2013 05:19:13 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.220.31.73 with HTTP; Sat, 13 Apr 2013 05:18:53 -0700 (PDT)
+In-Reply-To: <1365842829-10768-1-git-send-email-blogic@openwrt.org>
+References: <1365842829-10768-1-git-send-email-blogic@openwrt.org>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Sat, 13 Apr 2013 14:18:53 +0200
+Message-ID: <CAOiHx==BPyjX55mjr=c91j-cAUAaZitijneqak7CXo63JgNw-Q@mail.gmail.com>
+Subject: Re: [PATCH V2] MIPS: move mips_{set,get}_machine_name() to a more
+ generic place
+To:     John Crispin <blogic@openwrt.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36148
+X-archive-position: 36149
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -32,27 +43,145 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We need to select SERIAL_8250_RT288X to make the uart work on ralink SoC.
+On 13 April 2013 10:47, John Crispin <blogic@openwrt.org> wrote:
+> Previously this functionality was only available to users of the mips_machine
+> api. Moving the code to prom.c allows us to also add a OF wrapper.
+>
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+> ---
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
----
-Changes in V2
-* a bogus rebase broke the patch and added the extra select to the wrong platform
+(snip)
 
- arch/mips/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+> diff --git a/arch/mips/kernel/mips_machine.c b/arch/mips/kernel/mips_machine.c
+> index 411a058..6dc5866 100644
+> --- a/arch/mips/kernel/mips_machine.c
+> +++ b/arch/mips/kernel/mips_machine.c
+> @@ -13,7 +13,6 @@
+>  #include <asm/mips_machine.h>
+>
+>  static struct mips_machine *mips_machine __initdata;
+> -static char *mips_machine_name = "Unknown";
+>
+>  #define for_each_machine(mach) \
+>         for ((mach) = (struct mips_machine *)&__mips_machines_start; \
+> @@ -21,25 +20,6 @@ static char *mips_machine_name = "Unknown";
+>              (unsigned long)(mach) < (unsigned long)&__mips_machines_end; \
+>              (mach)++)
+>
+> -__init void mips_set_machine_name(const char *name)
+> -{
+> -       char *p;
+> -
+> -       if (name == NULL)
+> -               return;
+> -
+> -       p = kstrdup(name, GFP_KERNEL);
+> -       if (!p)
+> -               pr_err("MIPS: no memory for machine_name\n");
+> -
+> -       mips_machine_name = p;
+> -}
+> -
+> -char *mips_get_machine_name(void)
+> -{
+> -       return mips_machine_name;
+> -}
+> -
+>  __init int mips_machtype_setup(char *id)
+>  {
+>         struct mips_machine *mach;
+> @@ -79,7 +59,6 @@ __init void mips_machine_setup(void)
+>                 return;
+>
+>         mips_set_machine_name(mips_machine->mach_name);
+> -       pr_info("MIPS: machine is %s\n", mips_machine_name);
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index c1997db..2e8939f 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -441,6 +441,7 @@ config RALINK
- 	select SYS_HAS_EARLY_PRINTK
- 	select HAVE_MACH_CLKDEV
- 	select CLKDEV_LOOKUP
-+	select SERIAL_8250_RT288X
- 
- config SGI_IP22
- 	bool "SGI IP22 (Indy/Indigo2)"
--- 
-1.7.10.4
+Why remove the printk and not just adapt it?
+
+>
+>         if (mips_machine->mach_setup)
+>                 mips_machine->mach_setup();
+> diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+> index 7a54f74..1dd137b 100644
+> --- a/arch/mips/kernel/proc.c
+> +++ b/arch/mips/kernel/proc.c
+> @@ -12,7 +12,7 @@
+>  #include <asm/cpu-features.h>
+>  #include <asm/mipsregs.h>
+>  #include <asm/processor.h>
+> -#include <asm/mips_machine.h>
+> +#include <asm/prom.h>
+>
+>  unsigned int vced_count, vcei_count;
+>
+> diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
+> index 028f6f8..a5731c2 100644
+> --- a/arch/mips/kernel/prom.c
+> +++ b/arch/mips/kernel/prom.c
+> @@ -23,6 +23,21 @@
+>  #include <asm/page.h>
+>  #include <asm/prom.h>
+>
+> +static char mips_machine_name[64] = "Unknown";
+> +
+> +__init void mips_set_machine_name(const char *name)
+> +{
+> +       if (name == NULL)
+> +               return;
+> +
+> +       strncpy(mips_machine_name, name, sizeof(mips_machine_name));
+> +}
+> +
+> +char *mips_get_machine_name(void)
+> +{
+> +       return mips_machine_name;
+> +}
+> +
+>  int __init early_init_dt_scan_memory_arch(unsigned long node,
+>                                           const char *uname, int depth,
+>                                           void *data)
+> @@ -50,6 +65,21 @@ void __init early_init_dt_setup_initrd_arch(unsigned long start,
+>  }
+>  #endif
+>
+> +int __init early_init_dt_scan_model(unsigned long node,
+> +       const char *uname, int depth,
+> +       void *data)
+
+Indentation level is wrong.
+
+> +{
+> +       if (!depth) {
+> +               char *model = of_get_flat_dt_prop(node, "model", NULL);
+
+Missing empty line.
+
+> +               if (model) {
+> +                       mips_set_machine_name(model);
+> +                       pr_info("MIPS: machine is %s\n",
+> +                                       mips_get_machine_name());
+
+Indentation level is wrong.
+
+> +               }
+> +       }
+> +       return 0;
+> +}
+> +
+>  void __init early_init_devtree(void *params)
+>  {
+>         /* Setup flat device-tree pointer */
+> @@ -65,6 +95,9 @@ void __init early_init_devtree(void *params)
+>         /* Scan memory nodes */
+>         of_scan_flat_dt(early_init_dt_scan_root, NULL);
+>         of_scan_flat_dt(early_init_dt_scan_memory_arch, NULL);
+> +
+> +       /* try to load the mips machine name */
+> +       of_scan_flat_dt(early_init_dt_scan_model, NULL);
+>  }
+>
+>  void __init __dt_setup_arch(struct boot_param_header *bph)
+> --
+> 1.7.10.4
+>
+>

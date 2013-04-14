@@ -1,28 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Apr 2013 19:59:20 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:47233 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Apr 2013 09:27:07 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:44641 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6834815Ab3DMR7QkaoWp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 13 Apr 2013 19:59:16 +0200
-Message-ID: <51699CEB.9000806@phrozen.org>
-Date:   Sat, 13 Apr 2013 19:59:07 +0200
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
+        id S6817419Ab3DNH1GpDQW- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 14 Apr 2013 09:27:06 +0200
+Received: from arrakis.dune.hu ([127.0.0.1])
+        by localhost (arrakis.dune.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id jiKhefv8QFXw; Sun, 14 Apr 2013 09:26:17 +0200 (CEST)
+Received: from [192.168.254.50] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 3A5DC2802C2;
+        Sun, 14 Apr 2013 09:26:17 +0200 (CEST)
+Message-ID: <516A5A70.4000703@openwrt.org>
+Date:   Sun, 14 Apr 2013 09:27:44 +0200
+From:   Gabor Juhos <juhosg@openwrt.org>
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/6] DT: MIPS: ralink: extend RT3050 dtsi and dts file
-References: <1365843026-11015-1-git-send-email-blogic@openwrt.org> <1365843026-11015-3-git-send-email-blogic@openwrt.org> <5169708C.6040209@cogentembedded.com>
-In-Reply-To: <5169708C.6040209@cogentembedded.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <john@phrozen.org>
+To:     John Crispin <blogic@openwrt.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH V3 02/14] MIPS: ralink: add RT3352 register defines
+References: <1365842905-10906-1-git-send-email-blogic@openwrt.org> <1365842905-10906-2-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1365842905-10906-2-git-send-email-blogic@openwrt.org>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-2
+Content-Transfer-Encoding: 8bit
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36152
+X-archive-position: 36153
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,10 +42,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+2013.04.13. 10:48 keltezéssel, John Crispin írta:
+> Add a few missing defines that are needed to make USB and clock detection work
+> on the RT3352.
+> 
+> Signed-off-by: John Crispin <blogic@openwrt.org>
 
->> * remove nodes for cores whose drivers are not upstream yet
->
->    And you call that "extend"? :-)
-
-
-ermm yes, lets change it to "clean up"  :)
+Acked-by: Gabor Juhos <juhosg@openwrt.org>

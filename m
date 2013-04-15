@@ -1,27 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Apr 2013 12:28:08 +0200 (CEST)
-Received: from 84-245-11-97.dsl.cambrium.nl ([84.245.11.97]:37735 "EHLO
-        grubby.stderr.nl" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S6835120Ab3DOK12nfTsI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Apr 2013 12:27:28 +0200
-Received: from matthijs by grubby.stderr.nl with local (Exim 4.80)
-        (envelope-from <matthijs@stdin.nl>)
-        id 1URgdD-0002BH-0y; Mon, 15 Apr 2013 12:27:27 +0200
-From:   Matthijs Kooijman <matthijs@stdin.nl>
-To:     John Crispin <blogic@openwrt.org>
-Cc:     linux-mips@linux-mips.org, Matthijs Kooijman <matthijs@stdin.nl>
-Subject: [PATCH 1/3] MIPS: ralink: use the dwc2 driver for the rt305x USB controller
-Date:   Mon, 15 Apr 2013 12:27:22 +0200
-Message-Id: <1366021644-8353-1-git-send-email-matthijs@stdin.nl>
-X-Mailer: git-send-email 1.8.0
-Return-Path: <matthijs@stdin.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Apr 2013 12:32:40 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:52139 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6835117Ab3DOKcjGx4Zf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Apr 2013 12:32:39 +0200
+Message-ID: <516BD656.6090709@phrozen.org>
+Date:   Mon, 15 Apr 2013 12:28:38 +0200
+From:   John Crispin <john@phrozen.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
+MIME-Version: 1.0
+To:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 3/3] owrt: MIPS: ralink: add usb platform support
+References: <1366021644-8353-1-git-send-email-matthijs@stdin.nl> <1366021644-8353-3-git-send-email-matthijs@stdin.nl>
+In-Reply-To: <1366021644-8353-3-git-send-email-matthijs@stdin.nl>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36167
+X-archive-position: 36168
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matthijs@stdin.nl
+X-original-sender: john@phrozen.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -34,46 +35,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This sets up the devicetree file for the rt3050 chip series and rt3052
-eval board to use the right compatible string for the dwc2 driver.
----
- arch/mips/ralink/dts/rt3050.dtsi     | 10 ++++++++++
- arch/mips/ralink/dts/rt3052_eval.dts |  4 ++++
- 2 files changed, 14 insertions(+)
+On 15/04/13 12:27, Matthijs Kooijman wrote:
+> From: John Crispin<blogic@openwrt.org>
+>
+> Add code to load the platform ehci/ohci driver on Ralink SoC. For the usb core
+> to work we need to populate the platform_data during boot, prior to the usb
+> driver being loaded.
+>
+> Signed-off-by: John Crispin<blogic@openwrt.org>
+> [matthijs@stdin.nl: Extracted non-ohci/ehci 3052 code into separate patch]
+> Signed-off-by: Matthijs Kooijman<matthijs@stdin.nl>
 
-v2: Rebased on top of mips-next-3.10
-    Renamed device from "otg" to "usb"
-diff --git a/arch/mips/ralink/dts/rt3050.dtsi b/arch/mips/ralink/dts/rt3050.dtsi
-index ef7da1e..e3203d4 100644
---- a/arch/mips/ralink/dts/rt3050.dtsi
-+++ b/arch/mips/ralink/dts/rt3050.dtsi
-@@ -55,4 +55,14 @@
- 			reg-shift = <2>;
- 		};
- 	};
-+
-+	usb@101c0000 {
-+		compatible = "ralink,rt3050-usb", "snps,dwc2";
-+		reg = <0x101c0000 40000>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <18>;
-+
-+		status = "disabled";
-+	};
- };
-diff --git a/arch/mips/ralink/dts/rt3052_eval.dts b/arch/mips/ralink/dts/rt3052_eval.dts
-index a2341c1..93061ff 100644
---- a/arch/mips/ralink/dts/rt3052_eval.dts
-+++ b/arch/mips/ralink/dts/rt3052_eval.dts
-@@ -45,4 +45,8 @@
- 			reg = <0x50000 0x7b0000>;
- 		};
- 	};
-+
-+	usb@101c0000 {
-+		status = "ok";
-+	};
- };
--- 
-1.8.0
+Hi,
+
+this patch sits ontop of a patch from openwrt that adds a OF binding for 
+ohci/ehci so it wont go upstream until the usb people decided how to 
+expose ohci-platform and ehci-platform in OF
+
+	John

@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Apr 2013 14:50:20 +0200 (CEST)
-Received: from mail-pd0-f181.google.com ([209.85.192.181]:55996 "EHLO
-        mail-pd0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835136Ab3DOMsHNQXZ2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Apr 2013 14:48:07 +0200
-Received: by mail-pd0-f181.google.com with SMTP id y10so2471385pdj.40
-        for <multiple recipients>; Mon, 15 Apr 2013 05:48:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Apr 2013 14:50:38 +0200 (CEST)
+Received: from mail-pa0-f41.google.com ([209.85.220.41]:61637 "EHLO
+        mail-pa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835138Ab3DOMsLBgtvV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Apr 2013 14:48:11 +0200
+Received: by mail-pa0-f41.google.com with SMTP id kx1so2544465pab.0
+        for <multiple recipients>; Mon, 15 Apr 2013 05:48:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=x-received:sender:from:to:cc:subject:date:message-id:x-mailer
          :in-reply-to:references;
-        bh=qfLJb6BJjCPeMoGHp6bA2AdLdqCt/9ZlP178SDXqDBI=;
-        b=dznMQ5oEkCV7SJbV22zHfUKd071O5gvs3PcyyeAkDZUMiekGLTjv27pwIrZYgVnpm3
-         I01cM/dJ3ILyO4c+7IBAKFSFr/lm9A5UQBirXezUjCr4Hj+KkZWLL688geOu1n/KSWxs
-         tQXK+NKs9woPjQ/FNaoehJGqY6M6Of3wm/qqSlQLbMHqJfbtaZP0QAQa6FL649gUPMP4
-         0pfLF9Zrp//ot1Y4q+oBoETzxFt+oxIv6wIcV8HGgS3zg/ycOTr/UUAVOcgWND6TgQep
-         c1hhf0cNZaAqYm2DrKqoN6v2DbC1PdfTzeYC4TaTjpatfDp6UP7fy+zNjQApeFbT9xQo
-         ODxA==
-X-Received: by 10.67.2.68 with SMTP id bm4mr29743078pad.9.1366030080404;
-        Mon, 15 Apr 2013 05:48:00 -0700 (PDT)
+        bh=C7SPd9k7u5uTgZKgmadJC2ygLxKRKBSRThq+3blRL1o=;
+        b=WQgUWfZp32zqjQT9qDUTmLIKevcjuh4H0I3+iACMB8AOkSEbhwmERmN+jyv2fjVgnQ
+         CD90A4beHYWtV/cK5Lk4FBodIOOyHDRwnO1gvQ+9GEuGIr3+/rqdQf9iaVkfWwEU5qXx
+         /bXj0vaBUmEKCuneFvhQVpFxMyXwFowgURjZcXnY7jcqCRHbZBE72b+LkW801h4iChC0
+         NYLdUAyfpwwJAWsm0BFkNt8rtkzO2vMeav4iKgwXnHjIsuS+S/cF5ShSeDIph4rvtbUE
+         1C3lsQ5rk3AI/TIETtkcvBTCmoW+9e2WkPcMADRNZl8iiWcXaN/QYfFDlo0BBxYijkaj
+         viaA==
+X-Received: by 10.68.130.7 with SMTP id oa7mr29254132pbb.132.1366030084470;
+        Mon, 15 Apr 2013 05:48:04 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id xz4sm20242580pbb.18.2013.04.15.05.47.56
+        by mx.google.com with ESMTPS id xz4sm20242580pbb.18.2013.04.15.05.48.00
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 15 Apr 2013 05:47:59 -0700 (PDT)
+        Mon, 15 Apr 2013 05:48:03 -0700 (PDT)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
@@ -29,9 +29,9 @@ Cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH V10 09/13] MIPS: Loongson: Add swiotlb to support big memory (>4GB)
-Date:   Mon, 15 Apr 2013 20:47:04 +0800
-Message-Id: <1366030028-5084-10-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V10 10/13] MIPS: Loongson: Add Loongson-3 Kconfig options
+Date:   Mon, 15 Apr 2013 20:47:05 +0800
+Message-Id: <1366030028-5084-11-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1366030028-5084-1-git-send-email-chenhc@lemote.com>
 References: <1366030028-5084-1-git-send-email-chenhc@lemote.com>
@@ -39,7 +39,7 @@ Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36190
+X-archive-position: 36191
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,287 +56,150 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is probably a workaround because Loongson doesn't support DMA
-address above 4GB. If memory is more than 4GB, CONFIG_SWIOTLB and
-ZONE_DMA32 should be selected. In this way, DMA pages are allocated
-below 4GB preferably.
-
-However, CONFIG_SWIOTLB+ZONE_DMA32 is not enough, so, we provide a
-platform-specific dma_map_ops::set_dma_mask() to make sure each
-driver's dma_mask and coherent_dma_mask is below 32-bit.
+Added Kconfig options include: Loongson-3 CPU and machine definition,
+CPU cache features, UEFI-like firmware interface, HT-linked PCI, and
+big memory support.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Hongliang Tao <taohl@lemote.com>
 Signed-off-by: Hua Yan <yanh@lemote.com>
 ---
- arch/mips/include/asm/dma-mapping.h                |    5 +
- .../mips/include/asm/mach-loongson/dma-coherence.h |   23 +++
- arch/mips/loongson/common/Makefile                 |    5 +
- arch/mips/loongson/common/dma-swiotlb.c            |  163 ++++++++++++++++++++
- 4 files changed, 196 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/loongson/common/dma-swiotlb.c
+ arch/mips/Kconfig          |   29 ++++++++++++++++++++++++
+ arch/mips/loongson/Kconfig |   52 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 81 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
-index f8fc74b..bf6eb83 100644
---- a/arch/mips/include/asm/dma-mapping.h
-+++ b/arch/mips/include/asm/dma-mapping.h
-@@ -48,9 +48,14 @@ static inline int dma_mapping_error(struct device *dev, u64 mask)
- static inline int
- dma_set_mask(struct device *dev, u64 mask)
- {
-+	struct dma_map_ops *ops = get_dma_ops(dev);
-+
- 	if(!dev->dma_mask || !dma_supported(dev, mask))
- 		return -EIO;
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index a6fdd16..da0bad2 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1546,6 +1546,19 @@ config CPU_LOONGSON2
+ 	select CPU_SUPPORTS_HIGHMEM
+ 	select CPU_SUPPORTS_HUGEPAGES
  
-+	if (ops->set_dma_mask)
-+		return ops->set_dma_mask(dev, mask);
++config CPU_LOONGSON3
++	bool "Loongson 3 CPU"
++	depends on SYS_HAS_CPU_LOONGSON3
++	select CPU_SUPPORTS_32BIT_KERNEL
++	select CPU_SUPPORTS_64BIT_KERNEL
++	select CPU_SUPPORTS_HIGHMEM
++	select CPU_SUPPORTS_HUGEPAGES
++	select WEAK_ORDERING
++	select WEAK_REORDERING_BEYOND_LLSC
++	help
++		The Loongson 3 processor implements the MIPS III instruction set
++		with many extensions.
 +
- 	*dev->dma_mask = mask;
+ config CPU_LOONGSON1
+ 	bool
+ 	select CPU_MIPS32
+@@ -1572,6 +1585,11 @@ config SYS_HAS_CPU_LOONGSON2F
+ 	select CPU_SUPPORTS_ADDRWINCFG if 64BIT
+ 	select CPU_SUPPORTS_UNCACHED_ACCELERATED
  
- 	return 0;
-diff --git a/arch/mips/include/asm/mach-loongson/dma-coherence.h b/arch/mips/include/asm/mach-loongson/dma-coherence.h
-index e143305..3d752e8 100644
---- a/arch/mips/include/asm/mach-loongson/dma-coherence.h
-+++ b/arch/mips/include/asm/mach-loongson/dma-coherence.h
-@@ -11,18 +11,34 @@
- #ifndef __ASM_MACH_LOONGSON_DMA_COHERENCE_H
- #define __ASM_MACH_LOONGSON_DMA_COHERENCE_H
++config SYS_HAS_CPU_LOONGSON3
++	bool
++	select CPU_SUPPORTS_CPUFREQ
++	select CPU_SUPPORTS_COHERENT_CACHE
++
+ config SYS_HAS_CPU_LOONGSON1B
+ 	bool
  
-+#ifdef CONFIG_SWIOTLB
-+#include <linux/swiotlb.h>
-+#endif
-+
- struct device;
+@@ -1706,6 +1724,8 @@ config CPU_SUPPORTS_HUGEPAGES
+ 	bool
+ config CPU_SUPPORTS_UNCACHED_ACCELERATED
+ 	bool
++config CPU_SUPPORTS_COHERENT_CACHE
++	bool
+ config MIPS_PGD_C0_CONTEXT
+ 	bool
+ 	default y if 64BIT && CPU_MIPSR2 && !CPU_XLP
+@@ -2394,6 +2414,15 @@ config PCI
+ 	  your box. Other bus systems are ISA, EISA, or VESA. If you have PCI,
+ 	  say Y, otherwise N.
  
-+extern dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr);
-+extern phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr);
- static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
- 					  size_t size)
- {
-+#ifdef CONFIG_CPU_LOONGSON3
-+	return virt_to_phys(addr) < 0x10000000 ?
-+			(virt_to_phys(addr) | 0x0000000080000000) : virt_to_phys(addr);
-+#else
- 	return virt_to_phys(addr) | 0x80000000;
-+#endif
- }
++config HT_PCI
++	bool "Support for HT-linked PCI"
++	select PCI_DOMAINS
++	help
++	  Loongson family machines use Hyper-Transport bus for inter-core
++	  connection and device connection. The PCI bus is a subordinate
++	  linked at HT. Choose Y unless you are using Loongson 2E/2F based
++	  machines.
++
+ config PCI_DOMAINS
+ 	bool
  
- static inline dma_addr_t plat_map_dma_mem_page(struct device *dev,
- 					       struct page *page)
- {
-+#ifdef CONFIG_CPU_LOONGSON3
-+	return page_to_phys(page) < 0x10000000 ?
-+			(page_to_phys(page) | 0x0000000080000000) : page_to_phys(page);
-+#else
- 	return page_to_phys(page) | 0x80000000;
-+#endif
- }
+diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+index 263beb9..dd951b8 100644
+--- a/arch/mips/loongson/Kconfig
++++ b/arch/mips/loongson/Kconfig
+@@ -59,6 +59,33 @@ config LEMOTE_MACH2F
  
- static inline unsigned long plat_dma_addr_to_phys(struct device *dev,
-@@ -30,6 +46,9 @@ static inline unsigned long plat_dma_addr_to_phys(struct device *dev,
- {
- #if defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
- 	return (dma_addr > 0x8fffffff) ? dma_addr : (dma_addr & 0x0fffffff);
-+#elif defined(CONFIG_CPU_LOONGSON3) && defined(CONFIG_64BIT)
-+	return (dma_addr < 0x90000000 && dma_addr >= 0x80000000) ?
-+			(dma_addr & 0x0fffffff) : dma_addr;
- #else
- 	return dma_addr & 0x7fffffff;
- #endif
-@@ -65,7 +84,11 @@ static inline int plat_dma_mapping_error(struct device *dev,
+ 	  These family machines include fuloong2f mini PC, yeeloong2f notebook,
+ 	  LingLoong allinone PC and so forth.
++
++config LEMOTE_MACH3A
++	bool "Lemote Loongson 3A family machines"
++	select ARCH_SPARSEMEM_ENABLE
++	select GENERIC_ISA_DMA_SUPPORT_BROKEN
++	select GENERIC_HARDIRQS_NO__DO_IRQ
++	select BOOT_ELF32
++	select BOARD_SCACHE
++	select CSRC_R4K
++	select CEVT_R4K
++	select CPU_HAS_WB
++	select HW_HAS_PCI
++	select ISA
++	select I8259
++	select IRQ_CPU
++	select SYS_HAS_CPU_LOONGSON3
++	select SYS_HAS_EARLY_PRINTK
++	select SYS_SUPPORTS_SMP
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_64BIT_KERNEL
++	select SYS_SUPPORTS_HIGHMEM
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select LOONGSON_MC146818
++	select UEFI_FIRMWARE_INTERFACE
++	help
++		Lemote Loongson 3A family machines utilize the 3A revision of
++		Loongson processor and RS780/SBX00 chipset.
+ endchoice
  
- static inline int plat_device_is_coherent(struct device *dev)
- {
-+#ifdef CONFIG_DMA_NONCOHERENT
- 	return 0;
-+#else
-+	return 1;
-+#endif /* CONFIG_DMA_NONCOHERENT */
- }
+ config CS5536
+@@ -86,8 +113,33 @@ config LOONGSON_UART_BASE
+ 	default y
+ 	depends on EARLY_PRINTK || SERIAL_8250
  
- #endif /* __ASM_MACH_LOONGSON_DMA_COHERENCE_H */
-diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
-index e526488..3a26109 100644
---- a/arch/mips/loongson/common/Makefile
-+++ b/arch/mips/loongson/common/Makefile
-@@ -25,3 +25,8 @@ obj-$(CONFIG_CS5536) += cs5536/
- #
++config LOONGSON_BIGMEM
++	bool "Soft IOMMU Support for Big Memory (>4GB)"
++	depends on CPU_LOONGSON3
++	select SWIOTLB
++	select ZONE_DMA32
++
++config IOMMU_HELPER
++	bool
++
++config NEED_SG_DMA_LENGTH
++	bool
++
++config SWIOTLB
++	bool
++	select IOMMU_HELPER
++	select NEED_SG_DMA_LENGTH
++	select NEED_DMA_MAP_STATE
++
+ config LOONGSON_MC146818
+ 	bool
+ 	default n
  
- obj-$(CONFIG_LOONGSON_SUSPEND) += pm.o
++config ARCH_SPARSEMEM_ENABLE
++	bool
++	select SPARSEMEM_STATIC
 +
-+#
-+# Big Memory Support
-+#
-+obj-$(CONFIG_LOONGSON_BIGMEM) += dma-swiotlb.o
-diff --git a/arch/mips/loongson/common/dma-swiotlb.c b/arch/mips/loongson/common/dma-swiotlb.c
-new file mode 100644
-index 0000000..6741f1b
---- /dev/null
-+++ b/arch/mips/loongson/common/dma-swiotlb.c
-@@ -0,0 +1,163 @@
-+#include <linux/mm.h>
-+#include <linux/init.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/scatterlist.h>
-+#include <linux/swiotlb.h>
-+#include <linux/bootmem.h>
++config UEFI_FIRMWARE_INTERFACE
++	bool
 +
-+#include <asm/bootinfo.h>
-+#include <dma-coherence.h>
-+
-+static void *loongson_dma_alloc_coherent(struct device *dev, size_t size,
-+				dma_addr_t *dma_handle, gfp_t gfp, struct dma_attrs *attrs)
-+{
-+	void *ret;
-+
-+	if (dma_alloc_from_coherent(dev, size, dma_handle, &ret))
-+		return ret;
-+
-+	/* ignore region specifiers */
-+	gfp &= ~(__GFP_DMA | __GFP_DMA32 | __GFP_HIGHMEM);
-+
-+#ifdef CONFIG_ZONE_DMA
-+	if (dev == NULL)
-+		gfp |= __GFP_DMA;
-+	else if (dev->coherent_dma_mask <= DMA_BIT_MASK(24))
-+		gfp |= __GFP_DMA;
-+	else
-+#endif
-+#ifdef CONFIG_ZONE_DMA32
-+	if (dev == NULL)
-+		gfp |= __GFP_DMA32;
-+	else if (dev->coherent_dma_mask <= DMA_BIT_MASK(32))
-+		gfp |= __GFP_DMA32;
-+	else
-+#endif
-+	;
-+	gfp |= __GFP_NORETRY;
-+
-+	ret = swiotlb_alloc_coherent(dev, size, dma_handle, gfp);
-+	mb();
-+	return ret;
-+}
-+
-+static void loongson_dma_free_coherent(struct device *dev, size_t size,
-+				void *vaddr, dma_addr_t dma_handle, struct dma_attrs *attrs)
-+{
-+	int order = get_order(size);
-+
-+	if (dma_release_from_coherent(dev, order, vaddr))
-+		return;
-+
-+	swiotlb_free_coherent(dev, size, vaddr, dma_handle);
-+}
-+
-+static dma_addr_t loongson_dma_map_page(struct device *dev, struct page *page,
-+				unsigned long offset, size_t size,
-+				enum dma_data_direction dir,
-+				struct dma_attrs *attrs)
-+{
-+	dma_addr_t daddr = swiotlb_map_page(dev, page, offset, size,
-+					dir, attrs);
-+	mb();
-+	return daddr;
-+}
-+
-+static int loongson_dma_map_sg(struct device *dev, struct scatterlist *sg,
-+				int nents, enum dma_data_direction dir,
-+				struct dma_attrs *attrs)
-+{
-+	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, NULL);
-+	mb();
-+
-+	return r;
-+}
-+
-+static void loongson_dma_sync_single_for_device(struct device *dev,
-+				dma_addr_t dma_handle, size_t size,
-+				enum dma_data_direction dir)
-+{
-+	swiotlb_sync_single_for_device(dev, dma_handle, size, dir);
-+	mb();
-+}
-+
-+static void loongson_dma_sync_sg_for_device(struct device *dev,
-+				struct scatterlist *sg, int nents,
-+				enum dma_data_direction dir)
-+{
-+	swiotlb_sync_sg_for_device(dev, sg, nents, dir);
-+	mb();
-+}
-+
-+static dma_addr_t loongson_unity_phys_to_dma(struct device *dev, phys_addr_t paddr)
-+{
-+	return (paddr < 0x10000000) ?
-+			(paddr | 0x0000000080000000) : paddr;
-+}
-+
-+static phys_addr_t loongson_unity_dma_to_phys(struct device *dev, dma_addr_t daddr)
-+{
-+	return (daddr < 0x90000000 && daddr >= 0x80000000) ?
-+			(daddr & 0x0fffffff) : daddr;
-+}
-+
-+struct loongson_dma_map_ops {
-+	struct dma_map_ops dma_map_ops;
-+	dma_addr_t (*phys_to_dma)(struct device *dev, phys_addr_t paddr);
-+	phys_addr_t (*dma_to_phys)(struct device *dev, dma_addr_t daddr);
-+};
-+
-+dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr)
-+{
-+	struct loongson_dma_map_ops *ops = container_of(get_dma_ops(dev),
-+					struct loongson_dma_map_ops, dma_map_ops);
-+
-+	return ops->phys_to_dma(dev, paddr);
-+}
-+
-+phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
-+{
-+	struct loongson_dma_map_ops *ops = container_of(get_dma_ops(dev),
-+					struct loongson_dma_map_ops, dma_map_ops);
-+
-+	return ops->dma_to_phys(dev, daddr);
-+}
-+
-+static int loongson_dma_set_mask(struct device *dev, u64 mask)
-+{
-+	/* Loongson doesn't support DMA above 32-bit */
-+	if (mask > DMA_BIT_MASK(32)) {
-+		*dev->dma_mask = DMA_BIT_MASK(32);
-+		return -EIO;
-+	}
-+
-+	*dev->dma_mask = mask;
-+
-+	return 0;
-+}
-+
-+static struct loongson_dma_map_ops loongson_linear_dma_map_ops = {
-+	.dma_map_ops = {
-+		.alloc = loongson_dma_alloc_coherent,
-+		.free = loongson_dma_free_coherent,
-+		.map_page = loongson_dma_map_page,
-+		.unmap_page = swiotlb_unmap_page,
-+		.map_sg = loongson_dma_map_sg,
-+		.unmap_sg = swiotlb_unmap_sg_attrs,
-+		.sync_single_for_cpu = swiotlb_sync_single_for_cpu,
-+		.sync_single_for_device = loongson_dma_sync_single_for_device,
-+		.sync_sg_for_cpu = swiotlb_sync_sg_for_cpu,
-+		.sync_sg_for_device = loongson_dma_sync_sg_for_device,
-+		.mapping_error = swiotlb_dma_mapping_error,
-+		.dma_supported = swiotlb_dma_supported,
-+		.set_dma_mask = loongson_dma_set_mask
-+	},
-+	.phys_to_dma = loongson_unity_phys_to_dma,
-+	.dma_to_phys = loongson_unity_dma_to_phys
-+};
-+
-+void __init plat_swiotlb_setup(void)
-+{
-+	swiotlb_init(1);
-+	mips_dma_map_ops = &loongson_linear_dma_map_ops.dma_map_ops;
-+}
+ endif # MACH_LOONGSON
 -- 
 1.7.7.3

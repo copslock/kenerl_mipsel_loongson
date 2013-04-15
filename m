@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Apr 2013 12:46:00 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:52558 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Apr 2013 12:46:21 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:52560 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835120Ab3DOKpjVlRYN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6835123Ab3DOKpjlnBKb (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 15 Apr 2013 12:45:39 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH 2/7] MIPS: ralink: add memory definition to struct ralink_soc_info
-Date:   Mon, 15 Apr 2013 12:41:29 +0200
-Message-Id: <1366022494-8355-2-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 3/7] MIPS: ralink: add memory definition for RT305x
+Date:   Mon, 15 Apr 2013 12:41:30 +0200
+Message-Id: <1366022494-8355-3-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1366022494-8355-1-git-send-email-blogic@openwrt.org>
 References: <1366022494-8355-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36170
+X-archive-position: 36171
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,29 +33,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Depending on the actual SoC we have a different base address as well as minimum
-and maximum size for RAM. Add these fields to the per SoC structure.
+Populate struct soc_info with the data that describes our RAM window.
+
+As memory detection fails on RT5350 we read the amount of available memory
+from the system controller.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/ralink/common.h |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/mips/include/asm/mach-ralink/rt305x.h |    6 ++++
+ arch/mips/ralink/rt305x.c                  |   45 ++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+)
 
-diff --git a/arch/mips/ralink/common.h b/arch/mips/ralink/common.h
-index 299119b..83144c3 100644
---- a/arch/mips/ralink/common.h
-+++ b/arch/mips/ralink/common.h
-@@ -33,6 +33,11 @@ extern struct ralink_pinmux rt_gpio_pinmux;
- struct ralink_soc_info {
- 	unsigned char sys_type[RAMIPS_SYS_TYPE_LEN];
- 	unsigned char *compatible;
-+
-+	unsigned long mem_base;
-+	unsigned long mem_size;
-+	unsigned long mem_size_min;
-+	unsigned long mem_size_max;
- };
- extern struct ralink_soc_info soc_info;
+diff --git a/arch/mips/include/asm/mach-ralink/rt305x.h b/arch/mips/include/asm/mach-ralink/rt305x.h
+index 80cda8a..e68afef 100644
+--- a/arch/mips/include/asm/mach-ralink/rt305x.h
++++ b/arch/mips/include/asm/mach-ralink/rt305x.h
+@@ -157,4 +157,10 @@ static inline int soc_is_rt5350(void)
+ #define RT3352_RSTCTRL_UDEV		BIT(25)
+ #define RT3352_SYSCFG1_USB0_HOST_MODE	BIT(10)
  
++#define RT305X_SDRAM_BASE		0x00000000
++#define RT305X_MEM_SIZE_MIN		(2 * 1024 * 1024)
++#define RT305X_MEM_SIZE_MAX		(64 * 1024 * 1024)
++#define RT3352_MEM_SIZE_MIN		(2 * 1024 * 1024)
++#define RT3352_MEM_SIZE_MAX		(256 * 1024 * 1024)
++
+ #endif
+diff --git a/arch/mips/ralink/rt305x.c b/arch/mips/ralink/rt305x.c
+index e9dbf8c..da85f10 100644
+--- a/arch/mips/ralink/rt305x.c
++++ b/arch/mips/ralink/rt305x.c
+@@ -122,6 +122,40 @@ struct ralink_pinmux rt_gpio_pinmux = {
+ 	.wdt_reset = rt305x_wdt_reset,
+ };
+ 
++static unsigned long rt5350_get_mem_size(void)
++{
++	void __iomem *sysc = (void __iomem *) KSEG1ADDR(RT305X_SYSC_BASE);
++	unsigned long ret;
++	u32 t;
++
++	t = __raw_readl(sysc + SYSC_REG_SYSTEM_CONFIG);
++	t = (t >> RT5350_SYSCFG0_DRAM_SIZE_SHIFT) &
++		RT5350_SYSCFG0_DRAM_SIZE_MASK;
++
++	switch (t) {
++	case RT5350_SYSCFG0_DRAM_SIZE_2M:
++		ret = 2 * 1024 * 1024;
++		break;
++	case RT5350_SYSCFG0_DRAM_SIZE_8M:
++		ret = 8 * 1024 * 1024;
++		break;
++	case RT5350_SYSCFG0_DRAM_SIZE_16M:
++		ret = 16 * 1024 * 1024;
++		break;
++	case RT5350_SYSCFG0_DRAM_SIZE_32M:
++		ret = 32 * 1024 * 1024;
++		break;
++	case RT5350_SYSCFG0_DRAM_SIZE_64M:
++		ret = 64 * 1024 * 1024;
++		break;
++	default:
++		panic("rt5350: invalid DRAM size: %u", t);
++		break;
++	}
++
++	return ret;
++}
++
+ void __init ralink_clk_init(void)
+ {
+ 	unsigned long cpu_rate, sys_rate, wdt_rate, uart_rate;
+@@ -252,4 +286,15 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
+ 		name,
+ 		(id >> CHIP_ID_ID_SHIFT) & CHIP_ID_ID_MASK,
+ 		(id & CHIP_ID_REV_MASK));
++
++	soc_info->mem_base = RT305X_SDRAM_BASE;
++	if (soc_is_rt5350()) {
++		soc_info->mem_size = rt5350_get_mem_size();
++	} else if (soc_is_rt305x() || soc_is_rt3350()) {
++		soc_info->mem_size_min = RT305X_MEM_SIZE_MIN;
++		soc_info->mem_size_max = RT305X_MEM_SIZE_MAX;
++	} else if (soc_is_rt3352()) {
++		soc_info->mem_size_min = RT3352_MEM_SIZE_MIN;
++		soc_info->mem_size_max = RT3352_MEM_SIZE_MAX;
++	}
+ }
 -- 
 1.7.10.4

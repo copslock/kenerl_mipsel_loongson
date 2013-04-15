@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Apr 2013 12:46:39 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:52562 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Apr 2013 12:47:00 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:52566 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835127Ab3DOKpkF1oSb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6835128Ab3DOKpkRlp20 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 15 Apr 2013 12:45:40 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH 4/7] MIPS: ralink: add memory definition for RT2880
-Date:   Mon, 15 Apr 2013 12:41:31 +0200
-Message-Id: <1366022494-8355-4-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 5/7] MIPS: ralink: add memory definition for RT3883
+Date:   Mon, 15 Apr 2013 12:41:32 +0200
+Message-Id: <1366022494-8355-5-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1366022494-8355-1-git-send-email-blogic@openwrt.org>
 References: <1366022494-8355-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36172
+X-archive-position: 36173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,35 +37,35 @@ Populate struct soc_info with the data that describes our RAM window.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/include/asm/mach-ralink/rt288x.h |    4 ++++
- arch/mips/ralink/rt288x.c                  |    4 ++++
+ arch/mips/include/asm/mach-ralink/rt3883.h |    4 ++++
+ arch/mips/ralink/rt3883.c                  |    4 ++++
  2 files changed, 8 insertions(+)
 
-diff --git a/arch/mips/include/asm/mach-ralink/rt288x.h b/arch/mips/include/asm/mach-ralink/rt288x.h
-index ad8b42d..459059b 100644
---- a/arch/mips/include/asm/mach-ralink/rt288x.h
-+++ b/arch/mips/include/asm/mach-ralink/rt288x.h
-@@ -46,4 +46,8 @@
+diff --git a/arch/mips/include/asm/mach-ralink/rt3883.h b/arch/mips/include/asm/mach-ralink/rt3883.h
+index b91c6c1..7336cb6 100644
+--- a/arch/mips/include/asm/mach-ralink/rt3883.h
++++ b/arch/mips/include/asm/mach-ralink/rt3883.h
+@@ -244,4 +244,8 @@
+ #define RT3883_FLASH_CFG_WIDTH_16BIT	0x1
+ #define RT3883_FLASH_CFG_WIDTH_32BIT	0x2
  
- #define CLKCFG_SRAM_CS_N_WDT		BIT(9)
- 
-+#define RT2880_SDRAM_BASE		0x08000000
-+#define RT2880_MEM_SIZE_MIN		(2 * 1024 * 1024)
-+#define RT2880_MEM_SIZE_MAX		(128 * 1024 * 1024)
++#define RT3883_SDRAM_BASE		0x00000000
++#define RT3883_MEM_SIZE_MIN		(2 * 1024 * 1024)
++#define RT3883_MEM_SIZE_MAX		(256 * 1024 * 1024)
 +
- #endif
-diff --git a/arch/mips/ralink/rt288x.c b/arch/mips/ralink/rt288x.c
-index 1e0788e..f87de1a 100644
---- a/arch/mips/ralink/rt288x.c
-+++ b/arch/mips/ralink/rt288x.c
-@@ -136,4 +136,8 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
+ #endif /* _RT3883_REGS_H_ */
+diff --git a/arch/mips/ralink/rt3883.c b/arch/mips/ralink/rt3883.c
+index 2d90aa9..afbf2ce 100644
+--- a/arch/mips/ralink/rt3883.c
++++ b/arch/mips/ralink/rt3883.c
+@@ -239,4 +239,8 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
  		name,
- 		(id >> CHIP_ID_ID_SHIFT) & CHIP_ID_ID_MASK,
- 		(id & CHIP_ID_REV_MASK));
+ 		(id >> RT3883_REVID_VER_ID_SHIFT) & RT3883_REVID_VER_ID_MASK,
+ 		(id & RT3883_REVID_ECO_ID_MASK));
 +
-+	soc_info->mem_base = RT2880_SDRAM_BASE;
-+	soc_info->mem_size_min = RT2880_MEM_SIZE_MIN;
-+	soc_info->mem_size_max = RT2880_MEM_SIZE_MAX;
++	soc_info->mem_base = RT3883_SDRAM_BASE;
++	soc_info->mem_size_min = RT3883_MEM_SIZE_MIN;
++	soc_info->mem_size_max = RT3883_MEM_SIZE_MAX;
  }
 -- 
 1.7.10.4

@@ -1,24 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Apr 2013 12:49:15 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:52689 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Apr 2013 13:08:20 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:53449 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835123Ab3DOKtOj98VK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Apr 2013 12:49:14 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Gabor Juhos <juhosg@openwrt.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [RFC] MIPS: ath79: make use of the new memory detection code
-Date:   Mon, 15 Apr 2013 12:45:09 +0200
-Message-Id: <1366022709-8485-1-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <blogic@openwrt.org>
+        id S6835132Ab3DOLITqJED0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Apr 2013 13:08:19 +0200
+Message-ID: <516BDEB2.5020908@phrozen.org>
+Date:   Mon, 15 Apr 2013 13:04:18 +0200
+From:   John Crispin <john@phrozen.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
+MIME-Version: 1.0
+To:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/3] MIPS: ralink: setup dma_mask for the rt305x dwc2
+ usb controller
+References: <1366021644-8353-1-git-send-email-matthijs@stdin.nl> <1366021644-8353-2-git-send-email-matthijs@stdin.nl>
+In-Reply-To: <1366021644-8353-2-git-send-email-matthijs@stdin.nl>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36176
+X-archive-position: 36177
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: john@phrozen.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -31,51 +36,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There is now a generic function for detecting memory size. Use this instead of
-the one found in the ath79 support.
+On 15/04/13 12:27, Matthijs Kooijman wrote:
+> diff --git a/arch/mips/ralink/mt7620.c b/arch/mips/ralink/mt7620.c
+> index 3740826..220dc69 100644
+> --- a/arch/mips/ralink/mt7620.c
+> +++ b/arch/mips/ralink/mt7620.c
+> @@ -137,6 +137,11 @@ struct ralink_pinmux rt_gpio_pinmux = {
+>   	.uart_mask = MT7620_GPIO_MODE_GPIO,
+>   };
+>
+> +void ralink_usb_init(void)
+> +{
+> +
+> +}
+> +
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
----
-Hi Gabor,
+Hi,
 
-I only compile tested this one inside a openwrt tree.
+i'll post a different patch later that eliminates the need for these 
+empty stubs.
 
- arch/mips/ath79/setup.c |   16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
-
-diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-index d5b3c90..a0233a2 100644
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -51,20 +51,6 @@ static void ath79_halt(void)
- 		cpu_wait();
- }
- 
--static void __init ath79_detect_mem_size(void)
--{
--	unsigned long size;
--
--	for (size = ATH79_MEM_SIZE_MIN; size < ATH79_MEM_SIZE_MAX;
--	     size <<= 1) {
--		if (!memcmp(ath79_detect_mem_size,
--			    ath79_detect_mem_size + size, 1024))
--			break;
--	}
--
--	add_memory_region(0, size, BOOT_MEM_RAM);
--}
--
- static void __init ath79_detect_sys_type(void)
- {
- 	char *chip = "????";
-@@ -212,7 +198,7 @@ void __init plat_mem_setup(void)
- 					 AR71XX_DDR_CTRL_SIZE);
- 
- 	ath79_detect_sys_type();
--	ath79_detect_mem_size();
-+	detect_memory_region(0, ATH79_MEM_SIZE_MIN, ATH79_MEM_SIZE_MAX);
- 	ath79_clocks_init();
- 
- 	_machine_restart = ath79_restart;
--- 
-1.7.10.4
+	John

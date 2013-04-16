@@ -1,27 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 11:18:13 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:42056 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835169Ab3DPJQvi1Ika (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 16 Apr 2013 11:16:51 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
-        John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 6/6] DT: MIPS: ralink: add MT7620A dts files
-Date:   Tue, 16 Apr 2013 11:12:42 +0200
-Message-Id: <1366103562-21463-6-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1366103562-21463-1-git-send-email-blogic@openwrt.org>
-References: <1366103562-21463-1-git-send-email-blogic@openwrt.org>
-Return-Path: <blogic@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 12:19:20 +0200 (CEST)
+Received: from fw-tnat.cambridge.arm.com ([217.140.96.21]:35756 "EHLO
+        cam-smtp0.cambridge.arm.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6820514Ab3DPKTPcF1Hw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Apr 2013 12:19:15 +0200
+Received: from localhost.localdomain (e106165-lin.cambridge.arm.com [10.1.197.23])
+        by cam-smtp0.cambridge.arm.com (8.13.8/8.13.8) with ESMTP id r3GAIh8B000318;
+        Tue, 16 Apr 2013 11:18:59 +0100
+From:   Andrew Murray <Andrew.Murray@arm.com>
+To:     linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org
+Cc:     rob.herring@calxeda.com, jgunthorpe@obsidianresearch.com,
+        linux@arm.linux.org.uk, siva.kallam@samsung.com,
+        linux-pci@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
+        jg1.han@samsung.com, Liviu.Dudau@arm.com,
+        linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        kgene.kim@samsung.com, bhelgaas@google.com,
+        suren.reddy@samsung.com, linux-arm-kernel@lists.infradead.org,
+        monstr@monstr.eu, benh@kernel.crashing.org, paulus@samba.org,
+        grant.likely@secretlab.ca, thomas.petazzoni@free-electrons.com,
+        thierry.reding@avionic-design.de, thomas.abraham@linaro.org,
+        arnd@arndb.de, linus.walleij@linaro.org,
+        Andrew Murray <Andrew.Murray@arm.com>
+Subject: [PATCH v7 2/3] of/pci: Provide support for parsing PCI DT ranges property
+Date:   Tue, 16 Apr 2013 11:18:27 +0100
+Message-Id: <1366107508-12672-3-git-send-email-Andrew.Murray@arm.com>
+X-Mailer: git-send-email 1.7.0.4
+In-Reply-To: <1366107508-12672-1-git-send-email-Andrew.Murray@arm.com>
+References: <1366107508-12672-1-git-send-email-Andrew.Murray@arm.com>
+Return-Path: <Andrew.Murray@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36234
+X-archive-position: 36235
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: Andrew.Murray@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -34,127 +47,393 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a dtsi file for MT7620A SoC and a sample dts file.
+This patch factors out common implementation patterns to reduce overall kernel
+code and provide a means for host bridge drivers to directly obtain struct
+resources from the DT's ranges property without relying on architecture specific
+DT handling. This will make it easier to write archiecture independent host bridge
+drivers and mitigate against further duplication of DT parsing code.
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
+This patch can be used in the following way:
+
+	struct of_pci_range_parser parser;
+	struct of_pci_range range;
+
+	if (of_pci_range_parser(&parser, np))
+		; //no ranges property
+
+	for_each_of_pci_range(&parser, &range) {
+
+		/*
+			directly access properties of the address range, e.g.:
+			range.pci_space, range.pci_addr, range.cpu_addr,
+			range.size, range.flags
+
+			alternatively obtain a struct resource, e.g.:
+			struct resource res;
+			of_pci_range_to_resource(&range, np, &res);
+		*/
+	}
+
+Additionally the implementation takes care of adjacent ranges and merges them
+into a single range (as was the case with powerpc and microblaze).
+
+Signed-off-by: Andrew Murray <Andrew.Murray@arm.com>
+Signed-off-by: Liviu Dudau <Liviu.Dudau@arm.com>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Reviewed-by: Rob Herring <rob.herring@calxeda.com>
+Tested-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Tested-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- arch/mips/ralink/Kconfig              |    4 +++
- arch/mips/ralink/dts/Makefile         |    1 +
- arch/mips/ralink/dts/mt7620a.dtsi     |   58 +++++++++++++++++++++++++++++++++
- arch/mips/ralink/dts/mt7620a_eval.dts |   16 +++++++++
- 4 files changed, 79 insertions(+)
- create mode 100644 arch/mips/ralink/dts/mt7620a.dtsi
- create mode 100644 arch/mips/ralink/dts/mt7620a_eval.dts
+ drivers/of/address.c       |   67 ++++++++++++++++++++++++++
+ drivers/of/of_pci.c        |  113 ++++++++++++++++----------------------------
+ include/linux/of_address.h |   46 ++++++++++++++++++
+ 3 files changed, 154 insertions(+), 72 deletions(-)
 
-diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
-index 493411f..026e823 100644
---- a/arch/mips/ralink/Kconfig
-+++ b/arch/mips/ralink/Kconfig
-@@ -46,6 +46,10 @@ choice
- 		bool "RT3883 eval kit"
- 		depends on SOC_RT3883
+diff --git a/drivers/of/address.c b/drivers/of/address.c
+index 04da786..6eec70c 100644
+--- a/drivers/of/address.c
++++ b/drivers/of/address.c
+@@ -227,6 +227,73 @@ int of_pci_address_to_resource(struct device_node *dev, int bar,
+ 	return __of_address_to_resource(dev, addrp, size, flags, NULL, r);
+ }
+ EXPORT_SYMBOL_GPL(of_pci_address_to_resource);
++
++int of_pci_range_parser(struct of_pci_range_parser *parser,
++			struct device_node *node)
++{
++	const int na = 3, ns = 2;
++	int rlen;
++
++	parser->node = node;
++	parser->pna = of_n_addr_cells(node);
++	parser->np = parser->pna + na + ns;
++
++	parser->range = of_get_property(node, "ranges", &rlen);
++	if (parser->range == NULL)
++		return -ENOENT;
++
++	parser->end = parser->range + rlen / sizeof(__be32);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(of_pci_range_parser);
++
++struct of_pci_range *of_pci_process_ranges(struct of_pci_range_parser *parser,
++						struct of_pci_range *range)
++{
++	const int na = 3, ns = 2;
++
++	if (!range)
++		return NULL;
++
++	if (!parser->range || parser->range + parser->np > parser->end)
++		return NULL;
++
++	range->pci_space = parser->range[0];
++	range->flags = of_bus_pci_get_flags(parser->range);
++	range->pci_addr = of_read_number(parser->range + 1, ns);
++	range->cpu_addr = of_translate_address(parser->node,
++				parser->range + na);
++	range->size = of_read_number(parser->range + parser->pna + na, ns);
++
++	parser->range += parser->np;
++
++	/* Now consume following elements while they are contiguous */
++	while (parser->range + parser->np <= parser->end) {
++		u32 flags, pci_space;
++		u64 pci_addr, cpu_addr, size;
++
++		pci_space = be32_to_cpup(parser->range);
++		flags = of_bus_pci_get_flags(parser->range);
++		pci_addr = of_read_number(parser->range + 1, ns);
++		cpu_addr = of_translate_address(parser->node,
++				parser->range + na);
++		size = of_read_number(parser->range + parser->pna + na, ns);
++
++		if (flags != range->flags)
++			break;
++		if (pci_addr != range->pci_addr + range->size ||
++		    cpu_addr != range->cpu_addr + range->size)
++			break;
++
++		range->size += size;
++		parser->range += parser->np;
++	}
++
++	return range;
++}
++EXPORT_SYMBOL_GPL(of_pci_process_ranges);
++
+ #endif /* CONFIG_PCI */
  
-+	config DTB_MT7620A_EVAL
-+		bool "MT7620A eval kit"
-+		depends on SOC_MT7620
-+
- endchoice
+ /*
+diff --git a/drivers/of/of_pci.c b/drivers/of/of_pci.c
+index 1626172..e5ab604 100644
+--- a/drivers/of/of_pci.c
++++ b/drivers/of/of_pci.c
+@@ -2,6 +2,7 @@
+ #include <linux/export.h>
+ #include <linux/of.h>
+ #include <linux/of_pci.h>
++#include <linux/of_address.h>
+ #include <asm/prom.h>
  
- endif
-diff --git a/arch/mips/ralink/dts/Makefile b/arch/mips/ralink/dts/Makefile
-index 040a986..18194fa 100644
---- a/arch/mips/ralink/dts/Makefile
-+++ b/arch/mips/ralink/dts/Makefile
-@@ -1,3 +1,4 @@
- obj-$(CONFIG_DTB_RT2880_EVAL) := rt2880_eval.dtb.o
- obj-$(CONFIG_DTB_RT305X_EVAL) := rt3052_eval.dtb.o
- obj-$(CONFIG_DTB_RT3883_EVAL) := rt3883_eval.dtb.o
-+obj-$(CONFIG_DTB_MT7620A_EVAL) := mt7620a_eval.dtb.o
-diff --git a/arch/mips/ralink/dts/mt7620a.dtsi b/arch/mips/ralink/dts/mt7620a.dtsi
-new file mode 100644
-index 0000000..08bf24f
---- /dev/null
-+++ b/arch/mips/ralink/dts/mt7620a.dtsi
-@@ -0,0 +1,58 @@
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "ralink,mtk7620a-soc";
-+
-+	cpus {
-+		cpu@0 {
-+			compatible = "mips,mips24KEc";
-+		};
-+	};
-+
-+	cpuintc: cpuintc@0 {
-+		#address-cells = <0>;
-+		#interrupt-cells = <1>;
-+		interrupt-controller;
-+		compatible = "mti,cpu-interrupt-controller";
-+	};
-+
-+	palmbus@10000000 {
-+		compatible = "palmbus";
-+		reg = <0x10000000 0x200000>;
-+                ranges = <0x0 0x10000000 0x1FFFFF>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		sysc@0 {
-+			compatible = "ralink,mt7620a-sysc";
-+			reg = <0x0 0x100>;
-+		};
-+
-+		intc: intc@200 {
-+			compatible = "ralink,mt7620a-intc", "ralink,rt2880-intc";
-+			reg = <0x200 0x100>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+
-+			interrupt-parent = <&cpuintc>;
-+			interrupts = <2>;
-+		};
-+
-+		memc@300 {
-+			compatible = "ralink,mt7620a-memc", "ralink,rt3050-memc";
-+			reg = <0x300 0x100>;
-+		};
-+
-+		uartlite@c00 {
-+			compatible = "ralink,mt7620a-uart", "ralink,rt2880-uart", "ns16550a";
-+			reg = <0xc00 0x100>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <12>;
-+
-+			reg-shift = <2>;
-+		};
-+	};
+ #if defined(CONFIG_PPC32) || defined(CONFIG_PPC64) || defined(CONFIG_MICROBLAZE)
+@@ -82,67 +83,43 @@ EXPORT_SYMBOL_GPL(of_pci_find_child_device);
+ void pci_process_bridge_OF_ranges(struct pci_controller *hose,
+ 				  struct device_node *dev, int primary)
+ {
+-	const u32 *ranges;
+-	int rlen;
+-	int pna = of_n_addr_cells(dev);
+-	int np = pna + 5;
+ 	int memno = 0, isa_hole = -1;
+-	u32 pci_space;
+-	unsigned long long pci_addr, cpu_addr, pci_next, cpu_next, size;
+ 	unsigned long long isa_mb = 0;
+ 	struct resource *res;
++	struct of_pci_range range;
++	struct of_pci_range_parser parser;
++	u32 res_type;
+ 
+ 	pr_info("PCI host bridge %s %s ranges:\n",
+ 	       dev->full_name, primary ? "(primary)" : "");
+ 
+-	/* Get ranges property */
+-	ranges = of_get_property(dev, "ranges", &rlen);
+-	if (ranges == NULL)
++	/* Check for ranges property */
++	if (of_pci_range_parser(&parser, dev))
+ 		return;
+ 
+-	/* Parse it */
+ 	pr_debug("Parsing ranges property...\n");
+-	while ((rlen -= np * 4) >= 0) {
++	for_each_of_pci_range(&parser, &range) {
+ 		/* Read next ranges element */
+-		pci_space = ranges[0];
+-		pci_addr = of_read_number(ranges + 1, 2);
+-		cpu_addr = of_translate_address(dev, ranges + 3);
+-		size = of_read_number(ranges + pna + 3, 2);
+-
+-		pr_debug("pci_space: 0x%08x pci_addr:0x%016llx ",
+-				pci_space, pci_addr);
+-		pr_debug("cpu_addr:0x%016llx size:0x%016llx\n",
+-					cpu_addr, size);
+-
+-		ranges += np;
++		pr_debug("pci_space: 0x%08x pci_addr: 0x%016llx ",
++				range.pci_space, range.pci_addr);
++		pr_debug("cpu_addr: 0x%016llx size: 0x%016llx\n",
++				range.cpu_addr, range.size);
+ 
+ 		/* If we failed translation or got a zero-sized region
+ 		 * (some FW try to feed us with non sensical zero sized regions
+ 		 * such as power3 which look like some kind of attempt
+ 		 * at exposing the VGA memory hole)
+ 		 */
+-		if (cpu_addr == OF_BAD_ADDR || size == 0)
++		if (range.cpu_addr == OF_BAD_ADDR || range.size == 0)
+ 			continue;
+ 
+-		/* Now consume following elements while they are contiguous */
+-		for (; rlen >= np * sizeof(u32);
+-		     ranges += np, rlen -= np * 4) {
+-			if (ranges[0] != pci_space)
+-				break;
+-			pci_next = of_read_number(ranges + 1, 2);
+-			cpu_next = of_translate_address(dev, ranges + 3);
+-			if (pci_next != pci_addr + size ||
+-			    cpu_next != cpu_addr + size)
+-				break;
+-			size += of_read_number(ranges + pna + 3, 2);
+-		}
+-
+ 		/* Act based on address space type */
+ 		res = NULL;
+-		switch ((pci_space >> 24) & 0x3) {
+-		case 1:		/* PCI IO space */
++		res_type = range.flags & IORESOURCE_TYPE_BITS;
++		if (res_type == IORESOURCE_IO) {
+ 			pr_info("  IO 0x%016llx..0x%016llx -> 0x%016llx\n",
+-			       cpu_addr, cpu_addr + size - 1, pci_addr);
++				range.cpu_addr, range.cpu_addr + range.size - 1,
++				range.pci_addr);
+ 
+ 			/* We support only one IO range */
+ 			if (hose->pci_io_size) {
+@@ -151,11 +128,12 @@ void pci_process_bridge_OF_ranges(struct pci_controller *hose,
+ 			}
+ #if (!IS_ENABLED(CONFIG_64BIT))
+ 			/* On 32 bits, limit I/O space to 16MB */
+-			if (size > 0x01000000)
+-				size = 0x01000000;
++			if (range.size > 0x01000000)
++				range.size = 0x01000000;
+ 
+ 			/* 32 bits needs to map IOs here */
+-			hose->io_base_virt = ioremap(cpu_addr, size);
++			hose->io_base_virt = ioremap(range.cpu_addr,
++						range.size);
+ 
+ 			/* Expect trouble if pci_addr is not 0 */
+ 			if (primary)
+@@ -165,19 +143,18 @@ void pci_process_bridge_OF_ranges(struct pci_controller *hose,
+ 			/* pci_io_size and io_base_phys always represent IO
+ 			 * space starting at 0 so we factor in pci_addr
+ 			 */
+-			hose->pci_io_size = pci_addr + size;
+-			hose->io_base_phys = cpu_addr - pci_addr;
++			hose->pci_io_size = range.pci_addr + range.size;
++			hose->io_base_phys = range.cpu_addr - range.pci_addr;
+ 
+ 			/* Build resource */
+ 			res = &hose->io_resource;
+-			res->flags = IORESOURCE_IO;
+-			res->start = pci_addr;
+-			break;
+-		case 2:		/* PCI Memory space */
+-		case 3:		/* PCI 64 bits Memory space */
++			range.cpu_addr = range.pci_addr;
++		} else if (res_type == IORESOURCE_MEM) {
+ 			pr_info(" MEM 0x%016llx..0x%016llx -> 0x%016llx %s\n",
+-			       cpu_addr, cpu_addr + size - 1, pci_addr,
+-			       (pci_space & 0x40000000) ? "Prefetch" : "");
++				range.cpu_addr, range.cpu_addr + range.size - 1,
++				range.pci_addr,
++				(range.pci_space & 0x40000000) ?
++				"Prefetch" : "");
+ 
+ 			/* We support only 3 memory ranges */
+ 			if (memno >= 3) {
+@@ -185,13 +162,13 @@ void pci_process_bridge_OF_ranges(struct pci_controller *hose,
+ 				continue;
+ 			}
+ 			/* Handles ISA memory hole space here */
+-			if (pci_addr == 0) {
+-				isa_mb = cpu_addr;
++			if (range.pci_addr == 0) {
++				isa_mb = range.cpu_addr;
+ 				isa_hole = memno;
+ 				if (primary || isa_mem_base == 0)
+-					isa_mem_base = cpu_addr;
+-				hose->isa_mem_phys = cpu_addr;
+-				hose->isa_mem_size = size;
++					isa_mem_base = range.cpu_addr;
++				hose->isa_mem_phys = range.cpu_addr;
++				hose->isa_mem_size = range.size;
+ 			}
+ 
+ 			/* We get the PCI/Mem offset from the first range or
+@@ -199,30 +176,22 @@ void pci_process_bridge_OF_ranges(struct pci_controller *hose,
+ 			 * hole. If they don't match, bugger.
+ 			 */
+ 			if (memno == 0 ||
+-			    (isa_hole >= 0 && pci_addr != 0 &&
++			(isa_hole >= 0 && range.pci_addr != 0 &&
+ 			     hose->pci_mem_offset == isa_mb))
+-				hose->pci_mem_offset = cpu_addr - pci_addr;
+-			else if (pci_addr != 0 &&
+-				 hose->pci_mem_offset != cpu_addr - pci_addr) {
++				hose->pci_mem_offset = range.cpu_addr -
++							range.pci_addr;
++			else if (range.pci_addr != 0 &&
++				hose->pci_mem_offset != range.cpu_addr -
++							range.pci_addr) {
+ 				pr_info(" \\--> Skipped (offset mismatch) !\n");
+ 				continue;
+ 			}
+ 
+ 			/* Build resource */
+ 			res = &hose->mem_resources[memno++];
+-			res->flags = IORESOURCE_MEM;
+-			if (pci_space & 0x40000000)
+-				res->flags |= IORESOURCE_PREFETCH;
+-			res->start = cpu_addr;
+-			break;
+-		}
+-		if (res != NULL) {
+-			res->name = dev->full_name;
+-			res->end = res->start + size - 1;
+-			res->parent = NULL;
+-			res->sibling = NULL;
+-			res->child = NULL;
+ 		}
++		if (res != NULL)
++			of_pci_range_to_resource(&range, dev, res);
+ 	}
+ 
+ 	/* If there's an ISA hole and the pci_mem_offset is -not- matching
+diff --git a/include/linux/of_address.h b/include/linux/of_address.h
+index 0506eb5..1cfb779 100644
+--- a/include/linux/of_address.h
++++ b/include/linux/of_address.h
+@@ -4,6 +4,36 @@
+ #include <linux/errno.h>
+ #include <linux/of.h>
+ 
++struct of_pci_range_parser {
++	struct device_node *node;
++	const __be32 *range;
++	const __be32 *end;
++	int np;
++	int pna;
 +};
-diff --git a/arch/mips/ralink/dts/mt7620a_eval.dts b/arch/mips/ralink/dts/mt7620a_eval.dts
-new file mode 100644
-index 0000000..35eb874
---- /dev/null
-+++ b/arch/mips/ralink/dts/mt7620a_eval.dts
-@@ -0,0 +1,16 @@
-+/dts-v1/;
 +
-+/include/ "mt7620a.dtsi"
-+
-+/ {
-+	compatible = "ralink,mt7620a-eval-board", "ralink,mt7620a-soc";
-+	model = "Ralink MT7620A evaluation board";
-+
-+	memory@0 {
-+		reg = <0x0 0x2000000>;
-+	};
-+
-+	chosen {
-+		bootargs = "console=ttyS0,57600";
-+	};
++struct of_pci_range {
++	u32 pci_space;
++	u64 pci_addr;
++	u64 cpu_addr;
++	u64 size;
++	u32 flags;
 +};
++
++#define for_each_of_pci_range(parser, range) \
++	for (; of_pci_process_ranges(parser, range);)
++
++static inline void of_pci_range_to_resource(struct of_pci_range *range,
++					    struct device_node *np,
++					    struct resource *res)
++{
++	res->flags = range->flags;
++	res->start = range->cpu_addr;
++	res->end = range->cpu_addr + range->size - 1;
++	res->parent = res->child = res->sibling = NULL;
++	res->name = np->full_name;
++}
++
+ #ifdef CONFIG_OF_ADDRESS
+ extern u64 of_translate_address(struct device_node *np, const __be32 *addr);
+ extern bool of_can_translate_address(struct device_node *dev);
+@@ -27,6 +57,10 @@ static inline unsigned long pci_address_to_pio(phys_addr_t addr) { return -1; }
+ #define pci_address_to_pio pci_address_to_pio
+ #endif
+ 
++extern int of_pci_range_parser(struct of_pci_range_parser *parser,
++			struct device_node *node);
++extern struct of_pci_range *of_pci_process_ranges(struct of_pci_range_parser *parser,
++						struct of_pci_range *range);
+ #else /* CONFIG_OF_ADDRESS */
+ #ifndef of_address_to_resource
+ static inline int of_address_to_resource(struct device_node *dev, int index,
+@@ -53,6 +87,18 @@ static inline const __be32 *of_get_address(struct device_node *dev, int index,
+ {
+ 	return NULL;
+ }
++
++static inline int of_pci_range_parser(struct of_pci_range_parser *parser,
++			struct device_node *node)
++{
++	return -1;
++}
++
++static inline struct of_pci_range *of_pci_process_ranges(struct of_pci_range_parser *parser,
++						struct of_pci_range *range)
++{
++	return NULL;
++}
+ #endif /* CONFIG_OF_ADDRESS */
+ 
+ 
 -- 
-1.7.10.4
+1.7.0.4

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 10:33:31 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:40319 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 10:33:51 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:40322 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835139Ab3DPIcTQv6Cx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6835146Ab3DPIcTnNxI4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 16 Apr 2013 10:32:19 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V4 05/14] MIPS: ralink: add RT5350 sdram register defines
-Date:   Tue, 16 Apr 2013 10:28:00 +0200
-Message-Id: <1366100889-21072-5-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V4 06/14] MIPS: ralink: make early_printk work on RT2880
+Date:   Tue, 16 Apr 2013 10:28:01 +0200
+Message-Id: <1366100889-21072-6-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1366100889-21072-1-git-send-email-blogic@openwrt.org>
 References: <1366100889-21072-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36213
+X-archive-position: 36214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,33 +33,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a few missing defines that are needed to make memory detection work on the
-RT5350.
+RT2880 has a different location for the early serial port.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Acked-by: Gabor Juhos <juhosg@openwrt.org>
 ---
- arch/mips/include/asm/mach-ralink/rt305x.h |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/mips/ralink/early_printk.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/mips/include/asm/mach-ralink/rt305x.h b/arch/mips/include/asm/mach-ralink/rt305x.h
-index e36c3c5..80cda8a 100644
---- a/arch/mips/include/asm/mach-ralink/rt305x.h
-+++ b/arch/mips/include/asm/mach-ralink/rt305x.h
-@@ -97,6 +97,14 @@ static inline int soc_is_rt5350(void)
- #define RT5350_SYSCFG0_CPUCLK_320	0x2
- #define RT5350_SYSCFG0_CPUCLK_300	0x3
+diff --git a/arch/mips/ralink/early_printk.c b/arch/mips/ralink/early_printk.c
+index c4ae47e..b46d041 100644
+--- a/arch/mips/ralink/early_printk.c
++++ b/arch/mips/ralink/early_printk.c
+@@ -11,7 +11,11 @@
  
-+#define RT5350_SYSCFG0_DRAM_SIZE_SHIFT  12
-+#define RT5350_SYSCFG0_DRAM_SIZE_MASK   7
-+#define RT5350_SYSCFG0_DRAM_SIZE_2M     0
-+#define RT5350_SYSCFG0_DRAM_SIZE_8M     1
-+#define RT5350_SYSCFG0_DRAM_SIZE_16M    2
-+#define RT5350_SYSCFG0_DRAM_SIZE_32M    3
-+#define RT5350_SYSCFG0_DRAM_SIZE_64M    4
-+
- /* multi function gpio pins */
- #define RT305X_GPIO_I2C_SD		1
- #define RT305X_GPIO_I2C_SCLK		2
+ #include <asm/addrspace.h>
+ 
++#ifdef CONFIG_SOC_RT288X
++#define EARLY_UART_BASE         0x300c00
++#else
+ #define EARLY_UART_BASE         0x10000c00
++#endif
+ 
+ #define UART_REG_RX             0x00
+ #define UART_REG_TX             0x04
 -- 
 1.7.10.4

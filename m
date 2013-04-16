@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 10:53:28 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:41055 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 10:53:46 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:41056 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822674Ab3DPIxYHhwAg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6835149Ab3DPIxY12H1e (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 16 Apr 2013 10:53:24 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 1/7] MIPS: add detect_memory_region()
-Date:   Tue, 16 Apr 2013 10:49:10 +0200
-Message-Id: <1366102156-21281-1-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V2 2/7] MIPS: ralink: add memory definition to struct ralink_soc_info
+Date:   Tue, 16 Apr 2013 10:49:11 +0200
+Message-Id: <1366102156-21281-2-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1366102156-21281-1-git-send-email-blogic@openwrt.org>
+References: <1366102156-21281-1-git-send-email-blogic@openwrt.org>
 Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36222
+X-archive-position: 36223
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,64 +33,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a generic way of detecting the available RAM. This function is based on the
-implementation already used by ath79.
+Depending on the actual SoC we have a different base address as well as minimum
+and maximum size for RAM. Add these fields to the per SoC structure.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/include/asm/bootinfo.h |    1 +
- arch/mips/kernel/setup.c         |   20 ++++++++++++++++++++
- 2 files changed, 21 insertions(+)
+ arch/mips/ralink/common.h |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/mips/include/asm/bootinfo.h b/arch/mips/include/asm/bootinfo.h
-index b71dd5b..4d2cdea 100644
---- a/arch/mips/include/asm/bootinfo.h
-+++ b/arch/mips/include/asm/bootinfo.h
-@@ -104,6 +104,7 @@ struct boot_mem_map {
- extern struct boot_mem_map boot_mem_map;
- 
- extern void add_memory_region(phys_t start, phys_t size, long type);
-+extern void detect_memory_region(phys_t start, phys_t sz_min,  phys_t sz_max);
- 
- extern void prom_init(void);
- extern void prom_free_prom_memory(void);
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 4c774d5..7325793 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -23,6 +23,7 @@
- #include <linux/pfn.h>
- #include <linux/debugfs.h>
- #include <linux/kexec.h>
-+#include <linux/sizes.h>
- 
- #include <asm/addrspace.h>
- #include <asm/bootinfo.h>
-@@ -122,6 +123,25 @@ void __init add_memory_region(phys_t start, phys_t size, long type)
- 	boot_mem_map.nr_map++;
- }
- 
-+void __init detect_memory_region(phys_t start, phys_t sz_min, phys_t sz_max)
-+{
-+	phys_t size;
+diff --git a/arch/mips/ralink/common.h b/arch/mips/ralink/common.h
+index 299119b..83144c3 100644
+--- a/arch/mips/ralink/common.h
++++ b/arch/mips/ralink/common.h
+@@ -33,6 +33,11 @@ extern struct ralink_pinmux rt_gpio_pinmux;
+ struct ralink_soc_info {
+ 	unsigned char sys_type[RAMIPS_SYS_TYPE_LEN];
+ 	unsigned char *compatible;
 +
-+	for (size = sz_min; size < sz_max; size <<= 1) {
-+		if (!memcmp(detect_memory_region,
-+				detect_memory_region + size, 1024))
-+			break;
-+	}
-+
-+	pr_debug("Memory: %lluMB of RAM detected at 0x%llx (min: %lluMB, max: %lluMB)\n",
-+		((unsigned long long) size) / SZ_1M,
-+		(unsigned long long) start,
-+		((unsigned long long) sz_min) / SZ_1M,
-+		((unsigned long long) sz_max) / SZ_1M);
-+
-+	add_memory_region(start, size, BOOT_MEM_RAM);
-+}
-+
- static void __init print_memory_map(void)
- {
- 	int i;
++	unsigned long mem_base;
++	unsigned long mem_size;
++	unsigned long mem_size_min;
++	unsigned long mem_size_max;
+ };
+ extern struct ralink_soc_info soc_info;
+ 
 -- 
 1.7.10.4

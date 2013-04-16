@@ -1,48 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 15:01:58 +0200 (CEST)
-Received: from mail-lb0-f174.google.com ([209.85.217.174]:63515 "EHLO
-        mail-lb0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835174Ab3DPNB4Ti1xg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Apr 2013 15:01:56 +0200
-Received: by mail-lb0-f174.google.com with SMTP id s10so524022lbi.33
-        for <linux-mips@linux-mips.org>; Tue, 16 Apr 2013 06:01:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding:x-gm-message-state;
-        bh=i8vy/pNWttW8/sxDAIkk98xxfAGOR8opEfLbT0T+JoI=;
-        b=DNs+lEqZVHle9fEV55oBOUPxP4d+Fag2IEPq7k0YEe+R2fxXRgwje1Y8MiIkr6CR0c
-         MTqa/LX6uvdZoY/QgGSdRcbd/kBRP79vQtsHQG6+a9SVnKM0k8/oAX2S/NqB9tbIXtzN
-         rMNIaLoVyiP3Hqm/kiZaSH8QCOakZtw25jmdOxJ1KOwr4SbBOTmTRsmxHAUbSdpGzeIH
-         aPzoZ6/1T4yYR1yUrWiP4IM6fJbNyrT2XII+jD6qqWwUUc5x8nROYhpKRA1MA2mhBMsg
-         tsTZ3KxFIewBY+4Dd/4KO/JgBxohssccvaEX7DtUf1+BJstog98XohPlfPWvurvQ6ykB
-         m98Q==
-X-Received: by 10.152.109.208 with SMTP id hu16mr1148773lab.45.1366117310541;
-        Tue, 16 Apr 2013 06:01:50 -0700 (PDT)
-Received: from [192.168.2.2] (ppp91-79-67-213.pppoe.mtu-net.ru. [91.79.67.213])
-        by mx.google.com with ESMTPS id xw14sm815970lab.6.2013.04.16.06.01.48
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 16 Apr 2013 06:01:49 -0700 (PDT)
-Message-ID: <516D4B7D.1030302@cogentembedded.com>
-Date:   Tue, 16 Apr 2013 17:00:45 +0400
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/20130328 Thunderbird/17.0.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 17:06:05 +0200 (CEST)
+Received: from mho-02-ewr.mailhop.org ([204.13.248.72]:63951 "EHLO
+        mho-02-ewr.mailhop.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816521Ab3DPPGCRW8A4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Apr 2013 17:06:02 +0200
+Received: from pool-72-84-113-162.nrflva.fios.verizon.net ([72.84.113.162] helo=titan)
+        by mho-02-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.72)
+        (envelope-from <jason@lakedaemon.net>)
+        id 1US7S5-000D7r-9e; Tue, 16 Apr 2013 15:05:45 +0000
+Received: from titan.lakedaemon.net (localhost [127.0.0.1])
+        by titan (Postfix) with ESMTP id 042934185BB;
+        Tue, 16 Apr 2013 11:05:38 -0400 (EDT)
+X-Mail-Handler: Dyn Standard SMTP by Dyn
+X-Originating-IP: 72.84.113.162
+X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/sendlabs/outbound_abuse.html for abuse reporting information)
+X-MHO-User: U2FsdGVkX1/zokz6lJWJc0G02lHodharM8/EtD22ldg=
+Date:   Tue, 16 Apr 2013 11:05:37 -0400
+From:   Jason Cooper <jason@lakedaemon.net>
+To:     Andrew Murray <Andrew.Murray@arm.com>
+Cc:     linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        siva.kallam@samsung.com, linux-pci@vger.kernel.org,
+        linus.walleij@linaro.org, thierry.reding@avionic-design.de,
+        Liviu.Dudau@arm.com, grant.likely@secretlab.ca, paulus@samba.org,
+        linux-samsung-soc@vger.kernel.org, linux@arm.linux.org.uk,
+        jg1.han@samsung.com, jgunthorpe@obsidianresearch.com,
+        thomas.abraham@linaro.org, benh@kernel.crashing.org, arnd@arndb.de,
+        devicetree-discuss@lists.ozlabs.org, rob.herring@calxeda.com,
+        kgene.kim@samsung.com, bhelgaas@google.com,
+        linux-arm-kernel@lists.infradead.org,
+        thomas.petazzoni@free-electrons.com, monstr@monstr.eu,
+        linux-kernel@vger.kernel.org, suren.reddy@samsung.com
+Subject: Re: [PATCH v7 0/3] of/pci: Provide common support for PCI DT
+ parsing
+Message-ID: <20130416150537.GC28693@titan.lakedaemon.net>
+References: <1366107508-12672-1-git-send-email-Andrew.Murray@arm.com>
 MIME-Version: 1.0
-To:     John Crispin <blogic@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org
-Subject: Re: [PATCH V2 5/6] DT: MIPS: ralink: add RT3883 dts files
-References: <1366103562-21463-1-git-send-email-blogic@openwrt.org> <1366103562-21463-5-git-send-email-blogic@openwrt.org>
-In-Reply-To: <1366103562-21463-5-git-send-email-blogic@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQn55HN/CWj5Ur9rC0zEPS5MNCLSg5wrmOUrb+0zsZ+XkH8R/QmuSt/HurhHJGkhFwlkswlX
-X-archive-position: 36242
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1366107508-12672-1-git-send-email-Andrew.Murray@arm.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <jason@lakedaemon.net>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 36243
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: jason@lakedaemon.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,39 +59,40 @@ List-owner: <mailto:ralf@linux-mips.org>
 List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
-Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+On Tue, Apr 16, 2013 at 11:18:25AM +0100, Andrew Murray wrote:
+> This patchset factors out duplicated code associated with parsing PCI
+> DT "ranges" properties across the architectures and introduces a
+> "ranges" parser. This parser "of_pci_range_parser" can be used directly
+> by ARM host bridge drivers enabling them to obtain ranges from device
+> trees.
+> 
+> I've included the Reviewed-by and Tested-by's received from v5/v6 in this
+> patchset, earlier versions of this patchset (v3) have been tested-by:
+> 
+> Thierry Reding <thierry.reding@avionic-design.de>
+> Jingoo Han <jg1.han@samsung.com>
+> 
+> I've tested that this patchset builds and runs on ARM and that it builds on
+> PowerPC and x86_64.
 
-On 16-04-2013 13:12, John Crispin wrote:
+Series replaces v6 in mvebu/drivers
 
-> Add a dtsi file for RT3883 SoC and a sample dts file.
+thx,
 
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-[...]
+Jason.
 
-> diff --git a/arch/mips/ralink/dts/rt3883.dtsi b/arch/mips/ralink/dts/rt3883.dtsi
-> new file mode 100644
-> index 0000000..3b131dd
-> --- /dev/null
-> +++ b/arch/mips/ralink/dts/rt3883.dtsi
-> @@ -0,0 +1,58 @@
-[...]
-> +	cpuintc: cpuintc@0 {
-> +		#address-cells = <0>;
-
-    There's no subnodes?
-
-> +		#interrupt-cells = <1>;
-> +		interrupt-controller;
-> +		compatible = "mti,cpu-interrupt-controller";
-> +	};
-> +
-> +	palmbus@10000000 {
-> +		compatible = "palmbus";
-> +		reg = <0x10000000 0x200000>;
-> +		ranges = <0x0 0x10000000 0x1FFFFF>;
-
-    Why the last cell is not 0x200000?
-
-WBR, Sergei
+> 
+> Compared to the v6 sent by Andrew Murray, the following changes have
+> been made in response to build errors/warnings:
+> 
+>  * Inclusion of linux/of_address.h in of_pci.c as suggested by Michal
+>    Simek to prevent compilation failures on Microblaze (and others) and his
+>    ack.
+> 
+>  * Use of externs, static inlines and a typo in linux/of_address.h in response
+>    to linker errors (multiple defination) on x86_64 as spotted by a kbuild test
+>    robot on (jcooper/linux.git mvebu/drivers)
+> 
+>  * Add EXPORT_SYMBOL_GPL to of_pci_range_parser function to be consistent
+>    with of_pci_process_ranges function

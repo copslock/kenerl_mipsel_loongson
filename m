@@ -1,28 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 05:58:40 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:60581 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 05:59:41 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:60613 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817088Ab3DPD6fGkX0N (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 16 Apr 2013 05:58:35 +0200
-Message-ID: <516CCB6D.2020506@phrozen.org>
-Date:   Tue, 16 Apr 2013 05:54:21 +0200
-From:   John Crispin <john@phrozen.org>
+        id S6817088Ab3DPD7k3ms0m (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 16 Apr 2013 05:59:40 +0200
+Message-ID: <516CCBBA.8000103@openwrt.org>
+Date:   Tue, 16 Apr 2013 05:55:38 +0200
+From:   John Crispin <blogic@openwrt.org>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     linux-mips@linux-mips.org, linux-serial@vger.kernel.org
 Subject: Re: [PATCH 1/3] tty: of_serial: allow rt288x-uart to load from OF
 References: <1365845618-16040-1-git-send-email-blogic@openwrt.org> <1365845618-16040-2-git-send-email-blogic@openwrt.org> <20130415181402.GA25194@kroah.com>
 In-Reply-To: <20130415181402.GA25194@kroah.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <john@phrozen.org>
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36200
+X-archive-position: 36201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,16 +59,15 @@ On 15/04/13 20:14, Greg Kroah-Hartman wrote:
 >> +		port->iotype = UPIO_AU;
 >> +	else
 >> +		port->iotype = UPIO_MEM;
->
 > Why are you putting device-specific things into a generic driver?
 > Shouldn't this be able to be described in device tree without relying on
 > an vendor-specific test in this driver?
 >
 > greg k-h
-
-
+>
+>
 Hi Greg,
 
 would 'reg-io-type = "au";' sound better to you ?
 
-	John
+     John

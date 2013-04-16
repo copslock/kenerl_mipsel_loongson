@@ -1,61 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 12:30:20 +0200 (CEST)
-Received: from fw-tnat.cambridge.arm.com ([217.140.96.21]:33258 "EHLO
-        cam-smtp0.cambridge.arm.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6835166Ab3DPKaT56lfO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Apr 2013 12:30:19 +0200
-Received: from arm.com (e106165-lin.cambridge.arm.com [10.1.197.23])
-        by cam-smtp0.cambridge.arm.com (8.13.8/8.13.8) with ESMTP id r3GAU6PJ012078;
-        Tue, 16 Apr 2013 11:30:06 +0100
-Date:   Tue, 16 Apr 2013 11:30:06 +0100
-From:   Andrew Murray <andrew.murray@arm.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Cc:     "rob.herring@calxeda.com" <rob.herring@calxeda.com>,
-        "jgunthorpe@obsidianresearch.com" <jgunthorpe@obsidianresearch.com>,
-        "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
-        "siva.kallam@samsung.com" <siva.kallam@samsung.com>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "devicetree-discuss@lists.ozlabs.org" 
-        <devicetree-discuss@lists.ozlabs.org>,
-        "jg1.han@samsung.com" <jg1.han@samsung.com>,
-        Liviu Dudau <Liviu.Dudau@arm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-samsung-soc@vger.kernel.org" 
-        <linux-samsung-soc@vger.kernel.org>,
-        "kgene.kim@samsung.com" <kgene.kim@samsung.com>,
-        "bhelgaas@google.com" <bhelgaas@google.com>,
-        "suren.reddy@samsung.com" <suren.reddy@samsung.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "monstr@monstr.eu" <monstr@monstr.eu>,
-        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
-        "paulus@samba.org" <paulus@samba.org>,
-        "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-        "thomas.petazzoni@free-electrons.com" 
-        <thomas.petazzoni@free-electrons.com>,
-        "thierry.reding@avionic-design.de" <thierry.reding@avionic-design.de>,
-        "thomas.abraham@linaro.org" <thomas.abraham@linaro.org>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>
-Subject: Re: [PATCH v7 1/3] of/pci: Unify pci_process_bridge_OF_ranges from
- Microblaze and PowerPC
-Message-ID: <20130416103005.GB12726@arm.com>
-References: <1366107508-12672-1-git-send-email-Andrew.Murray@arm.com>
- <1366107508-12672-2-git-send-email-Andrew.Murray@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 13:32:24 +0200 (CEST)
+Received: from mail.nanl.de ([217.115.11.12]:43447 "EHLO mail.nanl.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6835171Ab3DPLcXFD7ER (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 16 Apr 2013 13:32:23 +0200
+Received: from mail-vc0-f170.google.com (mail-vc0-f170.google.com [209.85.220.170])
+        by mail.nanl.de (Postfix) with ESMTPSA id 438EE45F5D
+        for <linux-mips@linux-mips.org>; Tue, 16 Apr 2013 11:32:20 +0000 (UTC)
+Received: by mail-vc0-f170.google.com with SMTP id lf10so283404vcb.15
+        for <linux-mips@linux-mips.org>; Tue, 16 Apr 2013 04:32:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:mime-version:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=/g5VmxpK3yjgplePKr5LsIZZWaTCc+yMLY/gXORYF+g=;
+        b=LI38uSHCe6PNO9MGO5i1i7bDtVrj1m/YtuWceXulb/ejvoY6nbEdJm0DSh+qEQRkHO
+         0gDjw9P5T47YLEkrgir4IRChA85CFZYhEvg02kAF9xJFMc0athGxECLJWefxeMX8Hu7s
+         EsRk5ksLoZSK1qdKFt2hwRmSIPHZx58pWic/tbly4cM81jKFzQIH6HlHWFMoqW1VRvC1
+         oQizQrC2drHuvIrefXIAcwKtDy37tOlOWOD0u0OMxGLrO2is4lQ1hrzV7OSE4RZrP7wx
+         fU4Bw0/inee9CPrImAGhnVQXIE6LQjoCDgWncS8NpjQCXWHv8ZGD6HuKEE6KUfcDnIXi
+         UQMQ==
+X-Received: by 10.52.237.137 with SMTP id vc9mr996528vdc.102.1366111938276;
+ Tue, 16 Apr 2013 04:32:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1366107508-12672-2-git-send-email-Andrew.Murray@arm.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <andrew.murray@arm.com>
+Received: by 10.220.31.73 with HTTP; Tue, 16 Apr 2013 04:31:58 -0700 (PDT)
+In-Reply-To: <1366093125-19352-1-git-send-email-blogic@openwrt.org>
+References: <1366093125-19352-1-git-send-email-blogic@openwrt.org>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Tue, 16 Apr 2013 13:31:58 +0200
+Message-ID: <CAOiHx=npmzXe8yk1NLwzK0dQ-XsM-0bbT+L5Yg5LL05n0a3BKA@mail.gmail.com>
+Subject: Re: [PATCH V2] tty: serial: ralink: fix SERIAL_8250_RT288X dependency
+To:     John Crispin <blogic@openwrt.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-serial@vger.kernel.org, linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36239
+X-archive-position: 36240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andrew.murray@arm.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,33 +54,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Apr 16, 2013 at 11:18:26AM +0100, Andrew Murray wrote:
-> The pci_process_bridge_OF_ranges function, used to parse the "ranges"
-> property of a PCI host device, is found in both Microblaze and PowerPC
-> architectures. These implementations are nearly identical. This patch
-> moves this common code to a common place.
-> 
-> Signed-off-by: Andrew Murray <Andrew.Murray@arm.com>
-> Signed-off-by: Liviu Dudau <Liviu.Dudau@arm.com>
-> Reviewed-by: Rob Herring <rob.herring@calxeda.com>
-> Tested-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-> Tested-by: Linus Walleij <linus.walleij@linaro.org>
-> Acked-by: Michal Simek <monstr@monstr.eu>
+On 16 April 2013 08:18, John Crispin <blogic@openwrt.org> wrote:
+> With every Ralink SoC that we add, we would need to extend the dependency. In
+> order to make life easier we make the symbol depend on MIPS & RALINK and then
+> select it from within arch/mips/ralink/.
+>
+> Signed-off-by: John Crispin <blogic@openwrt.org>
 > ---
->  arch/microblaze/include/asm/pci-bridge.h |    5 +-
->  arch/microblaze/pci/pci-common.c         |  192 ----------------------------
->  arch/powerpc/include/asm/pci-bridge.h    |    5 +-
->  arch/powerpc/kernel/pci-common.c         |  192 ----------------------------
+> Hi Greg,
+>
+> this patch should go upstream via the mips tree to avoid merge conflicts.
+> The tty part however requires your Ack.
+>
+>         John
+>
+>  arch/mips/Kconfig               |    1 +
+>  drivers/tty/serial/8250/Kconfig |    4 ++--
+>  2 files changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index c1997db..2e8939f 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -441,6 +441,7 @@ config RALINK
+>         select SYS_HAS_EARLY_PRINTK
+>         select HAVE_MACH_CLKDEV
+>         select CLKDEV_LOOKUP
+> +       select SERIAL_8250_RT288X
+>
+>  config SGI_IP22
+>         bool "SGI IP22 (Indy/Indigo2)"
+> diff --git a/drivers/tty/serial/8250/Kconfig b/drivers/tty/serial/8250/Kconfig
+> index 80fe91e..24ea3c8 100644
+> --- a/drivers/tty/serial/8250/Kconfig
+> +++ b/drivers/tty/serial/8250/Kconfig
+> @@ -295,8 +295,8 @@ config SERIAL_8250_EM
+>           If unsure, say N.
+>
+>  config SERIAL_8250_RT288X
+> -       bool "Ralink RT288x/RT305x/RT3662/RT3883 serial port support"
+> -       depends on SERIAL_8250 && (SOC_RT288X || SOC_RT305X || SOC_RT3883)
+> +       bool
+> +       depends on SERIAL_8250 && MIPS && RALINK
 
-Is there anyone on linuxppc-dev/linux-mips that can help test this patchset?
+This won't work, Having RALINK=y, but SERIAL_8250=n will still result
+in SERIAL_8250_RT288X=y, as select ignores dependencies. What could
+work is removing the select from RALINK, and changing the depends from
+this one to "default y if SERIAL_8250 && MIPS && RALINK".
 
-I've tested that it builds on powerpc with a variety of configs (some which
-include fsl_pci.c implementation). Though I don't have hardware to verify that
-it works.
+>         help
+>           If you have a Ralink RT288x/RT305x SoC based board and want to use the
+>           serial port, say Y to this option. The driver can handle up to 2 serial
+> --
+> 1.7.10.4
+>
+>
 
-I haven't tested this builds or runs on MIPS.
-
-You shouldn't see any difference in behaviour or new warnings and PCI devices
-should continue to operate as before.
-
-Andrew Murray
+Jonas

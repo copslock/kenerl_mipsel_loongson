@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 10:32:57 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:40313 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 10:33:14 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:40317 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6834991Ab3DPIcSL2f1R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6835070Ab3DPIcS4cbGX (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 16 Apr 2013 10:32:18 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V4 03/14] MIPS: ralink: fix RT305x clock setup
-Date:   Tue, 16 Apr 2013 10:27:58 +0200
-Message-Id: <1366100889-21072-3-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V4 04/14] MIPS: ralink: add missing comment in irq driver
+Date:   Tue, 16 Apr 2013 10:27:59 +0200
+Message-Id: <1366100889-21072-4-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1366100889-21072-1-git-send-email-blogic@openwrt.org>
 References: <1366100889-21072-1-git-send-email-blogic@openwrt.org>
@@ -16,7 +16,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36211
+X-archive-position: 36212
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,48 +33,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a few missing clocks.
+Trivial patch that adds a comment that makes the code more readable.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Acked-by: Gabor Juhos <juhosg@openwrt.org>
 ---
- arch/mips/ralink/rt305x.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/mips/ralink/irq.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/ralink/rt305x.c b/arch/mips/ralink/rt305x.c
-index 0a4bbdc..5d49a54 100644
---- a/arch/mips/ralink/rt305x.c
-+++ b/arch/mips/ralink/rt305x.c
-@@ -124,6 +124,8 @@ struct ralink_pinmux gpio_pinmux = {
- void __init ralink_clk_init(void)
- {
- 	unsigned long cpu_rate, sys_rate, wdt_rate, uart_rate;
-+	unsigned long wmac_rate = 40000000;
-+
- 	u32 t = rt_sysc_r32(SYSC_REG_SYSTEM_CONFIG);
+diff --git a/arch/mips/ralink/irq.c b/arch/mips/ralink/irq.c
+index d9807d0..320b1f1 100644
+--- a/arch/mips/ralink/irq.c
++++ b/arch/mips/ralink/irq.c
+@@ -166,6 +166,7 @@ static int __init intc_of_init(struct device_node *node,
+ 	irq_set_chained_handler(irq, ralink_intc_irq_handler);
+ 	irq_set_handler_data(irq, domain);
  
- 	if (soc_is_rt305x() || soc_is_rt3350()) {
-@@ -176,11 +178,21 @@ void __init ralink_clk_init(void)
- 		BUG();
- 	}
++	/* tell the kernel which irq is used for performance monitoring */
+ 	cp0_perfcount_irq = irq_create_mapping(domain, 9);
  
-+	if (soc_is_rt3352() || soc_is_rt5350()) {
-+		u32 val = rt_sysc_r32(RT3352_SYSC_REG_SYSCFG0);
-+
-+		if (!(val & RT3352_CLKCFG0_XTAL_SEL))
-+			wmac_rate = 20000000;
-+	}
-+
- 	ralink_clk_add("cpu", cpu_rate);
- 	ralink_clk_add("10000b00.spi", sys_rate);
- 	ralink_clk_add("10000100.timer", wdt_rate);
-+	ralink_clk_add("10000120.watchdog", wdt_rate);
- 	ralink_clk_add("10000500.uart", uart_rate);
- 	ralink_clk_add("10000c00.uartlite", uart_rate);
-+	ralink_clk_add("10100000.ethernet", sys_rate);
-+	ralink_clk_add("10180000.wmac", wmac_rate);
- }
- 
- void __init ralink_of_remap(void)
+ 	return 0;
 -- 
 1.7.10.4

@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 08:22:58 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:35952 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 10:30:37 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:40262 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816831Ab3DPGW531jBK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 16 Apr 2013 08:22:57 +0200
+        id S6822674Ab3DPIafhVEE0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 16 Apr 2013 10:30:35 +0200
 From:   John Crispin <blogic@openwrt.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-serial@vger.kernel.org, linux-mips@linux-mips.org,
-        John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2] tty: serial: ralink: fix SERIAL_8250_RT288X dependency
-Date:   Tue, 16 Apr 2013 08:18:45 +0200
-Message-Id: <1366093125-19352-1-git-send-email-blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [PATCH V3] MIPS: move mips_{set,get}_machine_name() to a more generic place
+Date:   Tue, 16 Apr 2013 10:26:27 +0200
+Message-Id: <1366100787-20926-1-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36207
+X-archive-position: 36208
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,49 +31,162 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-With every Ralink SoC that we add, we would need to extend the dependency. In
-order to make life easier we make the symbol depend on MIPS & RALINK and then
-select it from within arch/mips/ralink/.
+Previously this functionality was only available to users of the mips_machine
+api. Moving the code to prom.c allows us to also add a OF wrapper.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
-Hi Greg,
+ arch/mips/include/asm/mips_machine.h |    4 ----
+ arch/mips/include/asm/prom.h         |    3 +++
+ arch/mips/kernel/mips_machine.c      |   21 ---------------------
+ arch/mips/kernel/proc.c              |    2 +-
+ arch/mips/kernel/prom.c              |   31 +++++++++++++++++++++++++++++++
+ 5 files changed, 35 insertions(+), 26 deletions(-)
 
-this patch should go upstream via the mips tree to avoid merge conflicts.
-The tty part however requires your Ack.
-
-	John
-
- arch/mips/Kconfig               |    1 +
- drivers/tty/serial/8250/Kconfig |    4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index c1997db..2e8939f 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -441,6 +441,7 @@ config RALINK
- 	select SYS_HAS_EARLY_PRINTK
- 	select HAVE_MACH_CLKDEV
- 	select CLKDEV_LOOKUP
-+	select SERIAL_8250_RT288X
+diff --git a/arch/mips/include/asm/mips_machine.h b/arch/mips/include/asm/mips_machine.h
+index 363bb35..9d00aeb 100644
+--- a/arch/mips/include/asm/mips_machine.h
++++ b/arch/mips/include/asm/mips_machine.h
+@@ -42,13 +42,9 @@ extern long __mips_machines_end;
+ #ifdef CONFIG_MIPS_MACHINE
+ int  mips_machtype_setup(char *id) __init;
+ void mips_machine_setup(void) __init;
+-void mips_set_machine_name(const char *name) __init;
+-char *mips_get_machine_name(void);
+ #else
+ static inline int mips_machtype_setup(char *id) { return 1; }
+ static inline void mips_machine_setup(void) { }
+-static inline void mips_set_machine_name(const char *name) { }
+-static inline char *mips_get_machine_name(void) { return NULL; }
+ #endif /* CONFIG_MIPS_MACHINE */
  
- config SGI_IP22
- 	bool "SGI IP22 (Indy/Indigo2)"
-diff --git a/drivers/tty/serial/8250/Kconfig b/drivers/tty/serial/8250/Kconfig
-index 80fe91e..24ea3c8 100644
---- a/drivers/tty/serial/8250/Kconfig
-+++ b/drivers/tty/serial/8250/Kconfig
-@@ -295,8 +295,8 @@ config SERIAL_8250_EM
- 	  If unsure, say N.
+ #endif /* __ASM_MIPS_MACHINE_H */
+diff --git a/arch/mips/include/asm/prom.h b/arch/mips/include/asm/prom.h
+index 8808bf5..1e7e096 100644
+--- a/arch/mips/include/asm/prom.h
++++ b/arch/mips/include/asm/prom.h
+@@ -48,4 +48,7 @@ extern void __dt_setup_arch(struct boot_param_header *bph);
+ static inline void device_tree_init(void) { }
+ #endif /* CONFIG_OF */
  
- config SERIAL_8250_RT288X
--	bool "Ralink RT288x/RT305x/RT3662/RT3883 serial port support"
--	depends on SERIAL_8250 && (SOC_RT288X || SOC_RT305X || SOC_RT3883)
-+	bool
-+	depends on SERIAL_8250 && MIPS && RALINK
- 	help
- 	  If you have a Ralink RT288x/RT305x SoC based board and want to use the
- 	  serial port, say Y to this option. The driver can handle up to 2 serial
++extern char *mips_get_machine_name(void);
++extern void mips_set_machine_name(const char *name);
++
+ #endif /* __ASM_PROM_H */
+diff --git a/arch/mips/kernel/mips_machine.c b/arch/mips/kernel/mips_machine.c
+index 411a058..6dc5866 100644
+--- a/arch/mips/kernel/mips_machine.c
++++ b/arch/mips/kernel/mips_machine.c
+@@ -13,7 +13,6 @@
+ #include <asm/mips_machine.h>
+ 
+ static struct mips_machine *mips_machine __initdata;
+-static char *mips_machine_name = "Unknown";
+ 
+ #define for_each_machine(mach) \
+ 	for ((mach) = (struct mips_machine *)&__mips_machines_start; \
+@@ -21,25 +20,6 @@ static char *mips_machine_name = "Unknown";
+ 	     (unsigned long)(mach) < (unsigned long)&__mips_machines_end; \
+ 	     (mach)++)
+ 
+-__init void mips_set_machine_name(const char *name)
+-{
+-	char *p;
+-
+-	if (name == NULL)
+-		return;
+-
+-	p = kstrdup(name, GFP_KERNEL);
+-	if (!p)
+-		pr_err("MIPS: no memory for machine_name\n");
+-
+-	mips_machine_name = p;
+-}
+-
+-char *mips_get_machine_name(void)
+-{
+-	return mips_machine_name;
+-}
+-
+ __init int mips_machtype_setup(char *id)
+ {
+ 	struct mips_machine *mach;
+@@ -79,7 +59,6 @@ __init void mips_machine_setup(void)
+ 		return;
+ 
+ 	mips_set_machine_name(mips_machine->mach_name);
+-	pr_info("MIPS: machine is %s\n", mips_machine_name);
+ 
+ 	if (mips_machine->mach_setup)
+ 		mips_machine->mach_setup();
+diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+index 7a54f74..1dd137b 100644
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -12,7 +12,7 @@
+ #include <asm/cpu-features.h>
+ #include <asm/mipsregs.h>
+ #include <asm/processor.h>
+-#include <asm/mips_machine.h>
++#include <asm/prom.h>
+ 
+ unsigned int vced_count, vcei_count;
+ 
+diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
+index 028f6f8..b68e53b 100644
+--- a/arch/mips/kernel/prom.c
++++ b/arch/mips/kernel/prom.c
+@@ -23,6 +23,22 @@
+ #include <asm/page.h>
+ #include <asm/prom.h>
+ 
++static char mips_machine_name[64] = "Unknown";
++
++__init void mips_set_machine_name(const char *name)
++{
++	if (name == NULL)
++		return;
++
++	strncpy(mips_machine_name, name, sizeof(mips_machine_name));
++	pr_info("MIPS: machine is %s\n", mips_get_machine_name());
++}
++
++char *mips_get_machine_name(void)
++{
++	return mips_machine_name;
++}
++
+ int __init early_init_dt_scan_memory_arch(unsigned long node,
+ 					  const char *uname, int depth,
+ 					  void *data)
+@@ -50,6 +66,18 @@ void __init early_init_dt_setup_initrd_arch(unsigned long start,
+ }
+ #endif
+ 
++int __init early_init_dt_scan_model(unsigned long node,	const char *uname,
++				    int depth, void *data)
++{
++	if (!depth) {
++		char *model = of_get_flat_dt_prop(node, "model", NULL);
++
++		if (model)
++			mips_set_machine_name(model);
++	}
++	return 0;
++}
++
+ void __init early_init_devtree(void *params)
+ {
+ 	/* Setup flat device-tree pointer */
+@@ -65,6 +93,9 @@ void __init early_init_devtree(void *params)
+ 	/* Scan memory nodes */
+ 	of_scan_flat_dt(early_init_dt_scan_root, NULL);
+ 	of_scan_flat_dt(early_init_dt_scan_memory_arch, NULL);
++
++	/* try to load the mips machine name */
++	of_scan_flat_dt(early_init_dt_scan_model, NULL);
+ }
+ 
+ void __init __dt_setup_arch(struct boot_param_header *bph)
 -- 
 1.7.10.4

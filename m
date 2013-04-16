@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 11:17:13 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:42031 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 11:17:32 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:42040 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835165Ab3DPJQuWY8eL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6835168Ab3DPJQup-g7d (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 16 Apr 2013 11:16:50 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH V2 2/6] DT: add documentation for the Ralink MIPS SoCs
-Date:   Tue, 16 Apr 2013 11:12:38 +0200
-Message-Id: <1366103562-21463-2-git-send-email-blogic@openwrt.org>
+        John Crispin <blogic@openwrt.org>
+Subject: [PATCH V2 4/6] DT: MIPS: ralink: add RT2880 dts files
+Date:   Tue, 16 Apr 2013 11:12:40 +0200
+Message-Id: <1366103562-21463-4-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1366103562-21463-1-git-send-email-blogic@openwrt.org>
 References: <1366103562-21463-1-git-send-email-blogic@openwrt.org>
@@ -17,7 +17,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36231
+X-archive-position: 36232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,40 +34,155 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Gabor Juhos <juhosg@openwrt.org>
+Add a dtsi file for RT2880 SoC and a sample dts file.
 
-This patch adds binding documentation for the
-compatible values of the Ralink MIPS SoCs.
-
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- Documentation/devicetree/bindings/mips/ralink.txt |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mips/ralink.txt
+ arch/mips/ralink/Kconfig             |    4 +++
+ arch/mips/ralink/dts/Makefile        |    1 +
+ arch/mips/ralink/dts/rt2880.dtsi     |   58 ++++++++++++++++++++++++++++++++++
+ arch/mips/ralink/dts/rt2880_eval.dts |   46 +++++++++++++++++++++++++++
+ 4 files changed, 109 insertions(+)
+ create mode 100644 arch/mips/ralink/dts/rt2880.dtsi
+ create mode 100644 arch/mips/ralink/dts/rt2880_eval.dts
 
-diff --git a/Documentation/devicetree/bindings/mips/ralink.txt b/Documentation/devicetree/bindings/mips/ralink.txt
+diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
+index 86f6c77..2f6fbb8 100644
+--- a/arch/mips/ralink/Kconfig
++++ b/arch/mips/ralink/Kconfig
+@@ -34,6 +34,10 @@ choice
+ 	config DTB_RT_NONE
+ 		bool "None"
+ 
++	config DTB_RT2880_EVAL
++		bool "RT2880 eval kit"
++		depends on SOC_RT288X
++
+ 	config DTB_RT305X_EVAL
+ 		bool "RT305x eval kit"
+ 		depends on SOC_RT305X
+diff --git a/arch/mips/ralink/dts/Makefile b/arch/mips/ralink/dts/Makefile
+index 1a69fb3..f635a01 100644
+--- a/arch/mips/ralink/dts/Makefile
++++ b/arch/mips/ralink/dts/Makefile
+@@ -1 +1,2 @@
++obj-$(CONFIG_DTB_RT2880_EVAL) := rt2880_eval.dtb.o
+ obj-$(CONFIG_DTB_RT305X_EVAL) := rt3052_eval.dtb.o
+diff --git a/arch/mips/ralink/dts/rt2880.dtsi b/arch/mips/ralink/dts/rt2880.dtsi
 new file mode 100644
-index 0000000..59b6a35
+index 0000000..182afde
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/mips/ralink.txt
-@@ -0,0 +1,18 @@
-+Ralink MIPS SoC device tree bindings
++++ b/arch/mips/ralink/dts/rt2880.dtsi
+@@ -0,0 +1,58 @@
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	compatible = "ralink,rt2880-soc";
 +
-+1. SoCs
++	cpus {
++		cpu@0 {
++			compatible = "mips,mips4KEc";
++		};
++	};
 +
-+Each device tree must specify a compatible value for the Ralink SoC
-+it uses in the compatible property of the root node. The compatible
-+value must be one of the following values:
++	cpuintc: cpuintc@0 {
++		#address-cells = <0>;
++		#interrupt-cells = <1>;
++		interrupt-controller;
++		compatible = "mti,cpu-interrupt-controller";
++	};
 +
-+  ralink,rt2880-soc
-+  ralink,rt3050-soc
-+  ralink,rt3052-soc
-+  ralink,rt3350-soc
-+  ralink,rt3352-soc
-+  ralink,rt3883-soc
-+  ralink,rt5350-soc
-+  ralink,mt7620a-soc
-+  ralink,mt7620n-soc
++	palmbus@300000 {
++		compatible = "palmbus";
++		reg = <0x300000 0x200000>;
++                ranges = <0x0 0x300000 0x1FFFFF>;
 +
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		sysc@0 {
++			compatible = "ralink,rt2880-sysc";
++			reg = <0x0 0x100>;
++		};
++
++		intc: intc@200 {
++			compatible = "ralink,rt2880-intc";
++			reg = <0x200 0x100>;
++
++			interrupt-controller;
++			#interrupt-cells = <1>;
++
++			interrupt-parent = <&cpuintc>;
++			interrupts = <2>;
++		};
++
++		memc@300 {
++			compatible = "ralink,rt2880-memc";
++			reg = <0x300 0x100>;
++		};
++
++		uartlite@c00 {
++			compatible = "ralink,rt2880-uart", "ns16550a";
++			reg = <0xc00 0x100>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <8>;
++
++			reg-shift = <2>;
++		};
++	};
++};
+diff --git a/arch/mips/ralink/dts/rt2880_eval.dts b/arch/mips/ralink/dts/rt2880_eval.dts
+new file mode 100644
+index 0000000..322d700
+--- /dev/null
++++ b/arch/mips/ralink/dts/rt2880_eval.dts
+@@ -0,0 +1,46 @@
++/dts-v1/;
++
++/include/ "rt2880.dtsi"
++
++/ {
++	compatible = "ralink,rt2880-eval-board", "ralink,rt2880-soc";
++	model = "Ralink RT2880 evaluation board";
++
++	memory@0 {
++		reg = <0x8000000 0x2000000>;
++	};
++
++	chosen {
++		bootargs = "console=ttyS0,57600";
++	};
++
++	cfi@1f000000 {
++		compatible = "cfi-flash";
++		reg = <0x1f000000 0x400000>;
++
++		bank-width = <2>;
++		device-width = <2>;
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		partition@0 {
++			label = "uboot";
++			reg = <0x0 0x30000>;
++			read-only;
++		};
++		partition@30000 {
++			label = "uboot-env";
++			reg = <0x30000 0x10000>;
++			read-only;
++		};
++		partition@40000 {
++			label = "calibration";
++			reg = <0x40000 0x10000>;
++			read-only;
++		};
++		partition@50000 {
++			label = "linux";
++			reg = <0x50000 0x3b0000>;
++		};
++	};
++};
 -- 
 1.7.10.4

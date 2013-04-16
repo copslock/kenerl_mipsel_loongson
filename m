@@ -1,53 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 17:06:05 +0200 (CEST)
-Received: from mho-02-ewr.mailhop.org ([204.13.248.72]:63951 "EHLO
-        mho-02-ewr.mailhop.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816521Ab3DPPGCRW8A4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Apr 2013 17:06:02 +0200
-Received: from pool-72-84-113-162.nrflva.fios.verizon.net ([72.84.113.162] helo=titan)
-        by mho-02-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.72)
-        (envelope-from <jason@lakedaemon.net>)
-        id 1US7S5-000D7r-9e; Tue, 16 Apr 2013 15:05:45 +0000
-Received: from titan.lakedaemon.net (localhost [127.0.0.1])
-        by titan (Postfix) with ESMTP id 042934185BB;
-        Tue, 16 Apr 2013 11:05:38 -0400 (EDT)
-X-Mail-Handler: Dyn Standard SMTP by Dyn
-X-Originating-IP: 72.84.113.162
-X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/sendlabs/outbound_abuse.html for abuse reporting information)
-X-MHO-User: U2FsdGVkX1/zokz6lJWJc0G02lHodharM8/EtD22ldg=
-Date:   Tue, 16 Apr 2013 11:05:37 -0400
-From:   Jason Cooper <jason@lakedaemon.net>
-To:     Andrew Murray <Andrew.Murray@arm.com>
-Cc:     linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        siva.kallam@samsung.com, linux-pci@vger.kernel.org,
-        linus.walleij@linaro.org, thierry.reding@avionic-design.de,
-        Liviu.Dudau@arm.com, grant.likely@secretlab.ca, paulus@samba.org,
-        linux-samsung-soc@vger.kernel.org, linux@arm.linux.org.uk,
-        jg1.han@samsung.com, jgunthorpe@obsidianresearch.com,
-        thomas.abraham@linaro.org, benh@kernel.crashing.org, arnd@arndb.de,
-        devicetree-discuss@lists.ozlabs.org, rob.herring@calxeda.com,
-        kgene.kim@samsung.com, bhelgaas@google.com,
-        linux-arm-kernel@lists.infradead.org,
-        thomas.petazzoni@free-electrons.com, monstr@monstr.eu,
-        linux-kernel@vger.kernel.org, suren.reddy@samsung.com
-Subject: Re: [PATCH v7 0/3] of/pci: Provide common support for PCI DT
- parsing
-Message-ID: <20130416150537.GC28693@titan.lakedaemon.net>
-References: <1366107508-12672-1-git-send-email-Andrew.Murray@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Apr 2013 18:15:22 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:59970 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816521Ab3DPQPSVQWW8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 16 Apr 2013 18:15:18 +0200
+Message-ID: <516D781C.8010206@openwrt.org>
+Date:   Tue, 16 Apr 2013 18:11:08 +0200
+From:   John Crispin <blogic@openwrt.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1366107508-12672-1-git-send-email-Andrew.Murray@arm.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <jason@lakedaemon.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Jonas Gorski <jogo@openwrt.org>, linux-serial@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH V2] tty: serial: ralink: fix SERIAL_8250_RT288X dependency
+References: <1366093125-19352-1-git-send-email-blogic@openwrt.org> <CAOiHx=npmzXe8yk1NLwzK0dQ-XsM-0bbT+L5Yg5LL05n0a3BKA@mail.gmail.com>
+In-Reply-To: <CAOiHx=npmzXe8yk1NLwzK0dQ-XsM-0bbT+L5Yg5LL05n0a3BKA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36243
+X-archive-position: 36244
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jason@lakedaemon.net
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,39 +37,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Apr 16, 2013 at 11:18:25AM +0100, Andrew Murray wrote:
-> This patchset factors out duplicated code associated with parsing PCI
-> DT "ranges" properties across the architectures and introduces a
-> "ranges" parser. This parser "of_pci_range_parser" can be used directly
-> by ARM host bridge drivers enabling them to obtain ranges from device
-> trees.
-> 
-> I've included the Reviewed-by and Tested-by's received from v5/v6 in this
-> patchset, earlier versions of this patchset (v3) have been tested-by:
-> 
-> Thierry Reding <thierry.reding@avionic-design.de>
-> Jingoo Han <jg1.han@samsung.com>
-> 
-> I've tested that this patchset builds and runs on ARM and that it builds on
-> PowerPC and x86_64.
+> This won't work, Having RALINK=y, but SERIAL_8250=n will still result
+> in SERIAL_8250_RT288X=y, as select ignores dependencies. What could
+> work is removing the select from RALINK, and changing the depends from
+> this one to "default y if SERIAL_8250&&  MIPS&&  RALINK".
+>
+>
 
-Series replaces v6 in mvebu/drivers
+ok, these tty patches were rushed too much. i think trying to get them 
+ready quickly for 3.10 was a bad bad idea, that already wasted too much 
+of other peoples time. instead of making even more of a fool of myself 
+and wasting yet more time we should just drop it and i will try again 
+with more time for 3.11.
 
-thx,
-
-Jason.
-
-> 
-> Compared to the v6 sent by Andrew Murray, the following changes have
-> been made in response to build errors/warnings:
-> 
->  * Inclusion of linux/of_address.h in of_pci.c as suggested by Michal
->    Simek to prevent compilation failures on Microblaze (and others) and his
->    ack.
-> 
->  * Use of externs, static inlines and a typo in linux/of_address.h in response
->    to linker errors (multiple defination) on x86_64 as spotted by a kbuild test
->    robot on (jcooper/linux.git mvebu/drivers)
-> 
->  * Add EXPORT_SYMBOL_GPL to of_pci_range_parser function to be consistent
->    with of_pci_process_ranges function
+Sorry for the noise :-)
+     John

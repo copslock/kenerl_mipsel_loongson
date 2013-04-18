@@ -1,42 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Apr 2013 09:57:58 +0200 (CEST)
-Received: from mail-lb0-f179.google.com ([209.85.217.179]:40507 "EHLO
-        mail-lb0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823908Ab3DRH54jI9tB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Apr 2013 09:57:56 +0200
-Received: by mail-lb0-f179.google.com with SMTP id t1so2428784lbd.38
-        for <linux-mips@linux-mips.org>; Thu, 18 Apr 2013 00:57:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:x-received:in-reply-to:references:date:message-id
-         :subject:from:to:content-type;
-        bh=ePIFjrKKmIlIUXbavIf25T7o/3ZvT2Uufb+Cr3gpES8=;
-        b=m47ZSW3EOJRf8kICvhWS7nuhlqPfybJHRhe2fMybHzo8XRBkO75Wa6y6YuvFLUw0fm
-         vtcW24xOoqUNY1ArV61+iKdyKNtRF+Nj0qO0/EF45kiZLz0G9Nx65syL6ynPjV+O8n7V
-         k54sIjfrpPP3yuxz6uMvrf9W1FexBqHiV5pnDV8sBld+OQPSZYoQj4C6a6qWGk/kLHhT
-         lXJKeh1GbpU9FiKizKzTtwDN8kKtKllfpIgk8zCAirtVgE2aYR/oiK72VKycrOepHG3z
-         40eBwXru1WLBx+5nkggoit1iLWw9OhkccIVL3F6EADu9Qjigba/rp9FG3TGNnLL8R2ha
-         I0zQ==
-MIME-Version: 1.0
-X-Received: by 10.112.159.65 with SMTP id xa1mr5334429lbb.35.1366271870880;
- Thu, 18 Apr 2013 00:57:50 -0700 (PDT)
-Received: by 10.152.8.227 with HTTP; Thu, 18 Apr 2013 00:57:50 -0700 (PDT)
-In-Reply-To: <CAF1ivSZXGY0dUSTVan-VuMVaQrtUOEZuRqhqmnNe-euCj03XAA@mail.gmail.com>
-References: <CAF1ivSZXGY0dUSTVan-VuMVaQrtUOEZuRqhqmnNe-euCj03XAA@mail.gmail.com>
-Date:   Thu, 18 Apr 2013 15:57:50 +0800
-Message-ID: <CAF1ivSYfBU9EqMoV0Y6+aJ--PoWAoZMGjpMUCDA4q4aEtCt1BQ@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Apr 2013 14:45:03 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:38675 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6825888Ab3DRMo6n07RQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 18 Apr 2013 14:44:58 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r3ICiu17017228;
+        Thu, 18 Apr 2013 14:44:56 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r3ICitNE017220;
+        Thu, 18 Apr 2013 14:44:55 +0200
+Date:   Thu, 18 Apr 2013 14:44:55 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Lin Ming <minggr@gmail.com>
+Cc:     linux-mips@linux-mips.org
 Subject: Re: hard lockup problem
-From:   Lin Ming <minggr@gmail.com>
-To:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <minggr@gmail.com>
+Message-ID: <20130418124455.GA16655@linux-mips.org>
+References: <CAF1ivSZXGY0dUSTVan-VuMVaQrtUOEZuRqhqmnNe-euCj03XAA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAF1ivSZXGY0dUSTVan-VuMVaQrtUOEZuRqhqmnNe-euCj03XAA@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36255
+X-archive-position: 36256
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: minggr@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,18 +42,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Apr 18, 2013 at 3:13 PM, Lin Ming <minggr@gmail.com> wrote:
-> Hi list,
->
+On Thu, Apr 18, 2013 at 03:13:55PM +0800, Lin Ming wrote:
+
 > I encounter a problem that cpu stuck with irq disabled, which is known
 > as hard lockup.
 > I know there is NMI hard lockup detector for x86, which can dump the
 > back trace of the hard lockup.
->
+> 
 > Is there any similar feature for MIPS?
 
-And it's MIPS32 4K cpu running 2.6.30 kernel.
+No, there isn't, unfortunately.
 
->
-> Thanks,
-> Lin Ming
+This is because on MIPS an NMI is very different from for example x86.
+An NMI goes straight to a firmware address and most firmware implementations
+don't provided a suitable hook for an OS to gain control back from an NMI.
+
+Generally on MIPS NMIs are used to signal catastrophic problems, things
+like a machine check exception but external to the CPU.
+
+One of the notable exceptions is Octeon where (see the Octeon watchdog
+driver) an OS can regain control after an NMI.  Malta and SGI IP27 also
+have somewhat useful NMIs.
+
+  Ralf

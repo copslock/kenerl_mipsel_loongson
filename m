@@ -1,28 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Apr 2013 09:14:04 +0200 (CEST)
-Received: from mail-lb0-f179.google.com ([209.85.217.179]:45183 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Apr 2013 09:57:58 +0200 (CEST)
+Received: from mail-lb0-f179.google.com ([209.85.217.179]:40507 "EHLO
         mail-lb0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6819996Ab3DRHOCnCGsR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Apr 2013 09:14:02 +0200
-Received: by mail-lb0-f179.google.com with SMTP id t1so2388320lbd.10
-        for <linux-mips@linux-mips.org>; Thu, 18 Apr 2013 00:13:55 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S6823908Ab3DRH54jI9tB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Apr 2013 09:57:56 +0200
+Received: by mail-lb0-f179.google.com with SMTP id t1so2428784lbd.38
+        for <linux-mips@linux-mips.org>; Thu, 18 Apr 2013 00:57:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:x-received:date:message-id:subject:from:to
-         :content-type;
-        bh=f/o5I8+GQScxFKhqge/mn+PYyNvJ0XR+8cAA6TbRHIc=;
-        b=UQhcIEn1gSlJ72PGaQ/YHlSq0rzK4fMo504QLzKVD+/1ADyaj3ESNxazvThfJyH4P6
-         aC7f6G3tcIGHAjYUgngvdgaPKp7lzbAImrcTZWJP9Yy8Nf30VO9u6Oy/VGpoPRDSXJP5
-         stlR5c/G0INTG238rg7dir8JD/3BM8W6P6pRfQ0NtDI2GXjKHnPPrhioYTgivWJQnMGU
-         06JBw9nmAKJk3t7LnUW3+hzOG7PybL+cV35XX3LvVHsoYGkkNT+LljCxDqd7yZvfTRsF
-         RFNUHGh1DlhPxs/1XKDzTe+ZWVmxnMnLMXTHr4Fz//KvuPbttOgK7tnsxJpffp/FrKfk
-         I1jQ==
+        h=mime-version:x-received:in-reply-to:references:date:message-id
+         :subject:from:to:content-type;
+        bh=ePIFjrKKmIlIUXbavIf25T7o/3ZvT2Uufb+Cr3gpES8=;
+        b=m47ZSW3EOJRf8kICvhWS7nuhlqPfybJHRhe2fMybHzo8XRBkO75Wa6y6YuvFLUw0fm
+         vtcW24xOoqUNY1ArV61+iKdyKNtRF+Nj0qO0/EF45kiZLz0G9Nx65syL6ynPjV+O8n7V
+         k54sIjfrpPP3yuxz6uMvrf9W1FexBqHiV5pnDV8sBld+OQPSZYoQj4C6a6qWGk/kLHhT
+         lXJKeh1GbpU9FiKizKzTtwDN8kKtKllfpIgk8zCAirtVgE2aYR/oiK72VKycrOepHG3z
+         40eBwXru1WLBx+5nkggoit1iLWw9OhkccIVL3F6EADu9Qjigba/rp9FG3TGNnLL8R2ha
+         I0zQ==
 MIME-Version: 1.0
-X-Received: by 10.152.6.10 with SMTP id w10mr5139284law.30.1366269235306; Thu,
- 18 Apr 2013 00:13:55 -0700 (PDT)
-Received: by 10.152.8.227 with HTTP; Thu, 18 Apr 2013 00:13:55 -0700 (PDT)
-Date:   Thu, 18 Apr 2013 15:13:55 +0800
-Message-ID: <CAF1ivSZXGY0dUSTVan-VuMVaQrtUOEZuRqhqmnNe-euCj03XAA@mail.gmail.com>
-Subject: hard lockup problem
+X-Received: by 10.112.159.65 with SMTP id xa1mr5334429lbb.35.1366271870880;
+ Thu, 18 Apr 2013 00:57:50 -0700 (PDT)
+Received: by 10.152.8.227 with HTTP; Thu, 18 Apr 2013 00:57:50 -0700 (PDT)
+In-Reply-To: <CAF1ivSZXGY0dUSTVan-VuMVaQrtUOEZuRqhqmnNe-euCj03XAA@mail.gmail.com>
+References: <CAF1ivSZXGY0dUSTVan-VuMVaQrtUOEZuRqhqmnNe-euCj03XAA@mail.gmail.com>
+Date:   Thu, 18 Apr 2013 15:57:50 +0800
+Message-ID: <CAF1ivSYfBU9EqMoV0Y6+aJ--PoWAoZMGjpMUCDA4q4aEtCt1BQ@mail.gmail.com>
+Subject: Re: hard lockup problem
 From:   Lin Ming <minggr@gmail.com>
 To:     linux-mips@linux-mips.org
 Content-Type: text/plain; charset=ISO-8859-1
@@ -30,7 +32,7 @@ Return-Path: <minggr@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36254
+X-archive-position: 36255
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,14 +49,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi list,
+On Thu, Apr 18, 2013 at 3:13 PM, Lin Ming <minggr@gmail.com> wrote:
+> Hi list,
+>
+> I encounter a problem that cpu stuck with irq disabled, which is known
+> as hard lockup.
+> I know there is NMI hard lockup detector for x86, which can dump the
+> back trace of the hard lockup.
+>
+> Is there any similar feature for MIPS?
 
-I encounter a problem that cpu stuck with irq disabled, which is known
-as hard lockup.
-I know there is NMI hard lockup detector for x86, which can dump the
-back trace of the hard lockup.
+And it's MIPS32 4K cpu running 2.6.30 kernel.
 
-Is there any similar feature for MIPS?
-
-Thanks,
-Lin Ming
+>
+> Thanks,
+> Lin Ming

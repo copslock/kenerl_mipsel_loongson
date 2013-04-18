@@ -1,71 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Apr 2013 15:09:38 +0200 (CEST)
-Received: from mho-02-ewr.mailhop.org ([204.13.248.72]:30257 "EHLO
-        mho-02-ewr.mailhop.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822444Ab3DRNJh1XKVb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Apr 2013 15:09:37 +0200
-Received: from pool-72-84-113-162.nrflva.fios.verizon.net ([72.84.113.162] helo=titan)
-        by mho-02-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.72)
-        (envelope-from <jason@lakedaemon.net>)
-        id 1USoac-000Oqu-Nm; Thu, 18 Apr 2013 13:09:26 +0000
-Received: from titan.lakedaemon.net (localhost [127.0.0.1])
-        by titan (Postfix) with ESMTP id 45757419B53;
-        Thu, 18 Apr 2013 09:09:19 -0400 (EDT)
-X-Mail-Handler: Dyn Standard SMTP by Dyn
-X-Originating-IP: 72.84.113.162
-X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/sendlabs/outbound_abuse.html for abuse reporting information)
-X-MHO-User: U2FsdGVkX18tkj7t3/jbiok1kHs2krz8shGQEMiTaQ8=
-Date:   Thu, 18 Apr 2013 09:09:19 -0400
-From:   Jason Cooper <jason@lakedaemon.net>
-To:     Andrew Murray <andrew.murray@arm.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linuxppc-dev@lists.ozlabs.org list" <linuxppc-dev@lists.ozlabs.org>,
-        "rob.herring@calxeda.com" <rob.herring@calxeda.com>,
-        Jason Gunthorpe <jgunthorpe@obsidianresearch.com>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        "siva.kallam@samsung.com" <siva.kallam@samsung.com>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "devicetree-discuss@lists.ozlabs.org" 
-        <devicetree-discuss@lists.ozlabs.org>,
-        Jingoo Han <jg1.han@samsung.com>,
-        Liviu Dudau <Liviu.Dudau@arm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
-        Kukjin Kim <kgene.kim@samsung.com>,
-        "bhelgaas@google.com" <bhelgaas@google.com>,
-        "suren.reddy@samsung.com" <suren.reddy@samsung.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        Thierry Reding <thierry.reding@avionic-design.de>,
-        Thomas Abraham <thomas.abraham@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v7 3/3] of/pci: mips: convert to common
- of_pci_range_parser
-Message-ID: <20130418130919.GI27197@titan.lakedaemon.net>
-References: <1366107508-12672-1-git-send-email-Andrew.Murray@arm.com>
- <1366107508-12672-4-git-send-email-Andrew.Murray@arm.com>
- <CACRpkdbBaT1OKr5t8HW4+8y_wSDmGxmewAyVMekx8S-K9s3K8Q@mail.gmail.com>
- <20130418125910.GA17128@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20130418125910.GA17128@arm.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <jason@lakedaemon.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Apr 2013 15:44:12 +0200 (CEST)
+Received: from mail-wi0-f178.google.com ([209.85.212.178]:63431 "EHLO
+        mail-wi0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822444Ab3DRNoLTptqd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Apr 2013 15:44:11 +0200
+Received: by mail-wi0-f178.google.com with SMTP id hq17so3004307wib.5
+        for <linux-mips@linux-mips.org>; Thu, 18 Apr 2013 06:44:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:sender:from:subject:to:cc:in-reply-to:references:date
+         :message-id:x-gm-message-state;
+        bh=UHXuaYNqqwnVjC6414b/JJMo1SGeXRmy/Q1L8UGb2dY=;
+        b=Rdwc5OYXeoB0yhBi7hdB95s2e9MEETSNLr+TRxLSvyx+FBjj5vOc0GIhw3LbgxjPeV
+         8Q/KBQGnSOjyaSLMVkTDW0WsucXJ/hyMYn6GdZgVL2cxPc/0IzASJ8UgtfRl61B3xPeJ
+         TKgSQ8ZfGoaOZc1P/HjbjsikPoTl90hFE8wL/Z9BgwbWOaGuc6u60DoBHCf0nmPddhqu
+         6jQh5Q9o/yiYLMJGiPtzjOjMopaz4Ow83NcntvJk4ra9T3X/77hZa5plzKgQTMphUhSy
+         h6Gjg47Q21qbGO2PLcKbRb7CccaO9K8nPdQlxfyqi4xW1rKwrhLaB4rCx7ouRGxPRtj7
+         hxAA==
+X-Received: by 10.180.88.33 with SMTP id bd1mr21372412wib.18.1366292645407;
+        Thu, 18 Apr 2013 06:44:05 -0700 (PDT)
+Received: from localhost (host31-53-18-197.range31-53.btcentralplus.com. [31.53.18.197])
+        by mx.google.com with ESMTPS id fz3sm16269346wib.0.2013.04.18.06.44.02
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Thu, 18 Apr 2013 06:44:04 -0700 (PDT)
+Received: by localhost (Postfix, from userid 1000)
+        id 84AEE3E1319; Thu, 18 Apr 2013 14:44:01 +0100 (BST)
+From:   Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH v7 2/3] of/pci: Provide support for parsing PCI DT ranges property
+To:     Andrew Murray <Andrew.Murray@arm.com>, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org
+Cc:     rob.herring@calxeda.com, jgunthorpe@obsidianresearch.com,
+        linux@arm.linux.org.uk, siva.kallam@samsung.com,
+        linux-pci@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
+        jg1.han@samsung.com, Liviu.Dudau@arm.com,
+        linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        kgene.kim@samsung.com, bhelgaas@google.com,
+        suren.reddy@samsung.com, linux-arm-kernel@lists.infradead.org,
+        monstr@monstr.eu, benh@kernel.crashing.org, paulus@samba.org,
+        thomas.petazzoni@free-electrons.com,
+        thierry.reding@avionic-design.de, thomas.abraham@linaro.org,
+        arnd@arndb.de, linus.walleij@linaro.org,
+        Andrew Murray <Andrew.Murray@arm.com>
+In-Reply-To: <1366107508-12672-3-git-send-email-Andrew.Murray@arm.com>
+References: <1366107508-12672-1-git-send-email-Andrew.Murray@arm.com> <1366107508-12672-3-git-send-email-Andrew.Murray@arm.com>
+Date:   Thu, 18 Apr 2013 14:44:01 +0100
+Message-Id: <20130418134401.84AEE3E1319@localhost>
+X-Gm-Message-State: ALoCoQmR1herqGS2VFHfyUPDDGNrjHEpCq+ZELnVUEa4P3MP1J76W46yma12eZ9rd+xpXjLHKrHv
+Return-Path: <grant.likely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36261
+X-archive-position: 36262
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jason@lakedaemon.net
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,25 +66,244 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Apr 18, 2013 at 01:59:10PM +0100, Andrew Murray wrote:
-> On Wed, Apr 17, 2013 at 04:42:48PM +0100, Linus Walleij wrote:
-> > On Tue, Apr 16, 2013 at 12:18 PM, Andrew Murray <Andrew.Murray@arm.com> wrote:
-> > 
-> > > This patch converts the pci_load_of_ranges function to use the new common
-> > > of_pci_range_parser.
-> > >
-> > > Signed-off-by: Andrew Murray <Andrew.Murray@arm.com>
-> > > Signed-off-by: Liviu Dudau <Liviu.Dudau@arm.com>
-> > > Reviewed-by: Rob Herring <rob.herring@calxeda.com>
-> > 
-> > Tested-by: Linus Walleij <linus.walleij@linaro.org>
+On Tue, 16 Apr 2013 11:18:27 +0100, Andrew Murray <Andrew.Murray@arm.com> wrote:
+> This patch factors out common implementation patterns to reduce overall kernel
+> code and provide a means for host bridge drivers to directly obtain struct
+> resources from the DT's ranges property without relying on architecture specific
+> DT handling. This will make it easier to write archiecture independent host bridge
+> drivers and mitigate against further duplication of DT parsing code.
 > 
-> Jason - you may not have seen this, but here (Linus Walleij) is another Tested-by
-> to add to this patch in your tree (if you can).
+> This patch can be used in the following way:
+> 
+> 	struct of_pci_range_parser parser;
+> 	struct of_pci_range range;
+> 
+> 	if (of_pci_range_parser(&parser, np))
+> 		; //no ranges property
+> 
+> 	for_each_of_pci_range(&parser, &range) {
+> 
+> 		/*
+> 			directly access properties of the address range, e.g.:
+> 			range.pci_space, range.pci_addr, range.cpu_addr,
+> 			range.size, range.flags
+> 
+> 			alternatively obtain a struct resource, e.g.:
+> 			struct resource res;
+> 			of_pci_range_to_resource(&range, np, &res);
+> 		*/
+> 	}
+> 
+> Additionally the implementation takes care of adjacent ranges and merges them
+> into a single range (as was the case with powerpc and microblaze).
+> 
+> Signed-off-by: Andrew Murray <Andrew.Murray@arm.com>
+> Signed-off-by: Liviu Dudau <Liviu.Dudau@arm.com>
+> Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+> Reviewed-by: Rob Herring <rob.herring@calxeda.com>
+> Tested-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+> Tested-by: Linus Walleij <linus.walleij@linaro.org>
 
-Thanks, I saw it.  Unfortunately, the PR was already sent, and the branch
-is now pulled into arm-soc.
+Acked-by: Grant Likely <grant.likely@secretlab.ca>
 
-thx,
+But comments below...
 
-Jason.
+> ---
+>  drivers/of/address.c       |   67 ++++++++++++++++++++++++++
+>  drivers/of/of_pci.c        |  113 ++++++++++++++++----------------------------
+>  include/linux/of_address.h |   46 ++++++++++++++++++
+>  3 files changed, 154 insertions(+), 72 deletions(-)
+> 
+> diff --git a/drivers/of/address.c b/drivers/of/address.c
+> index 04da786..6eec70c 100644
+> --- a/drivers/of/address.c
+> +++ b/drivers/of/address.c
+> @@ -227,6 +227,73 @@ int of_pci_address_to_resource(struct device_node *dev, int bar,
+>  	return __of_address_to_resource(dev, addrp, size, flags, NULL, r);
+>  }
+>  EXPORT_SYMBOL_GPL(of_pci_address_to_resource);
+> +
+> +int of_pci_range_parser(struct of_pci_range_parser *parser,
+> +			struct device_node *node)
+> +{
+> +	const int na = 3, ns = 2;
+> +	int rlen;
+> +
+> +	parser->node = node;
+> +	parser->pna = of_n_addr_cells(node);
+> +	parser->np = parser->pna + na + ns;
+> +
+> +	parser->range = of_get_property(node, "ranges", &rlen);
+> +	if (parser->range == NULL)
+> +		return -ENOENT;
+> +
+> +	parser->end = parser->range + rlen / sizeof(__be32);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(of_pci_range_parser);
+
+"of_pci_range_parser_init" would be a clearer name
+
+> +struct of_pci_range *of_pci_process_ranges(struct of_pci_range_parser *parser,
+> +						struct of_pci_range *range)
+
+Similarly, "of_pci_range_parser_one" would be more consistent.
+
+> +{
+> +	const int na = 3, ns = 2;
+> +
+> +	if (!range)
+> +		return NULL;
+> +
+> +	if (!parser->range || parser->range + parser->np > parser->end)
+> +		return NULL;
+> +
+> +	range->pci_space = parser->range[0];
+> +	range->flags = of_bus_pci_get_flags(parser->range);
+> +	range->pci_addr = of_read_number(parser->range + 1, ns);
+> +	range->cpu_addr = of_translate_address(parser->node,
+> +				parser->range + na);
+> +	range->size = of_read_number(parser->range + parser->pna + na, ns);
+> +
+> +	parser->range += parser->np;
+> +
+> +	/* Now consume following elements while they are contiguous */
+> +	while (parser->range + parser->np <= parser->end) {
+> +		u32 flags, pci_space;
+> +		u64 pci_addr, cpu_addr, size;
+> +
+> +		pci_space = be32_to_cpup(parser->range);
+> +		flags = of_bus_pci_get_flags(parser->range);
+> +		pci_addr = of_read_number(parser->range + 1, ns);
+> +		cpu_addr = of_translate_address(parser->node,
+> +				parser->range + na);
+> +		size = of_read_number(parser->range + parser->pna + na, ns);
+> +
+> +		if (flags != range->flags)
+> +			break;
+> +		if (pci_addr != range->pci_addr + range->size ||
+> +		    cpu_addr != range->cpu_addr + range->size)
+> +			break;
+> +
+> +		range->size += size;
+> +		parser->range += parser->np;
+> +	}
+> +
+> +	return range;
+> +}
+> +EXPORT_SYMBOL_GPL(of_pci_process_ranges);
+> +
+>  #endif /* CONFIG_PCI */
+>  
+>  /*
+> diff --git a/drivers/of/of_pci.c b/drivers/of/of_pci.c
+> index 1626172..e5ab604 100644
+> --- a/drivers/of/of_pci.c
+> +++ b/drivers/of/of_pci.c
+> @@ -2,6 +2,7 @@
+>  #include <linux/export.h>
+>  #include <linux/of.h>
+>  #include <linux/of_pci.h>
+> +#include <linux/of_address.h>
+>  #include <asm/prom.h>
+>  
+>  #if defined(CONFIG_PPC32) || defined(CONFIG_PPC64) || defined(CONFIG_MICROBLAZE)
+> @@ -82,67 +83,43 @@ EXPORT_SYMBOL_GPL(of_pci_find_child_device);
+>  void pci_process_bridge_OF_ranges(struct pci_controller *hose,
+>  				  struct device_node *dev, int primary)
+>  {
+> -	const u32 *ranges;
+> -	int rlen;
+> -	int pna = of_n_addr_cells(dev);
+> -	int np = pna + 5;
+>  	int memno = 0, isa_hole = -1;
+> -	u32 pci_space;
+> -	unsigned long long pci_addr, cpu_addr, pci_next, cpu_next, size;
+>  	unsigned long long isa_mb = 0;
+>  	struct resource *res;
+> +	struct of_pci_range range;
+> +	struct of_pci_range_parser parser;
+> +	u32 res_type;
+>  
+>  	pr_info("PCI host bridge %s %s ranges:\n",
+>  	       dev->full_name, primary ? "(primary)" : "");
+>  
+> -	/* Get ranges property */
+> -	ranges = of_get_property(dev, "ranges", &rlen);
+> -	if (ranges == NULL)
+> +	/* Check for ranges property */
+> +	if (of_pci_range_parser(&parser, dev))
+>  		return;
+>  
+> -	/* Parse it */
+>  	pr_debug("Parsing ranges property...\n");
+> -	while ((rlen -= np * 4) >= 0) {
+> +	for_each_of_pci_range(&parser, &range) {
+>  		/* Read next ranges element */
+> -		pci_space = ranges[0];
+> -		pci_addr = of_read_number(ranges + 1, 2);
+> -		cpu_addr = of_translate_address(dev, ranges + 3);
+> -		size = of_read_number(ranges + pna + 3, 2);
+
+Tip: the diff on this function would be a whole lot simpler if the
+above locals were kept, but updated from the ranges structure. Not at
+all a big problem, but it is something that makes changes like this
+easier to review. The removal of the locals could also be split into a
+separate patch to end up with the same result.
+
+> -
+> -		pr_debug("pci_space: 0x%08x pci_addr:0x%016llx ",
+> -				pci_space, pci_addr);
+> -		pr_debug("cpu_addr:0x%016llx size:0x%016llx\n",
+> -					cpu_addr, size);
+> -
+> -		ranges += np;
+> +		pr_debug("pci_space: 0x%08x pci_addr: 0x%016llx ",
+> +				range.pci_space, range.pci_addr);
+> +		pr_debug("cpu_addr: 0x%016llx size: 0x%016llx\n",
+> +				range.cpu_addr, range.size);
+
+Nit: the patch changed whitespace on the pr_debug() statements, so even
+though the first line of each is identical, they look different in the
+patch.
+
+>  
+>  		/* If we failed translation or got a zero-sized region
+>  		 * (some FW try to feed us with non sensical zero sized regions
+>  		 * such as power3 which look like some kind of attempt
+>  		 * at exposing the VGA memory hole)
+>  		 */
+> -		if (cpu_addr == OF_BAD_ADDR || size == 0)
+> +		if (range.cpu_addr == OF_BAD_ADDR || range.size == 0)
+>  			continue;
+
+Can this also be rolled into the parsing iterator?
+
+>  
+> -		/* Now consume following elements while they are contiguous */
+> -		for (; rlen >= np * sizeof(u32);
+> -		     ranges += np, rlen -= np * 4) {
+> -			if (ranges[0] != pci_space)
+> -				break;
+> -			pci_next = of_read_number(ranges + 1, 2);
+> -			cpu_next = of_translate_address(dev, ranges + 3);
+> -			if (pci_next != pci_addr + size ||
+> -			    cpu_next != cpu_addr + size)
+> -				break;
+> -			size += of_read_number(ranges + pna + 3, 2);
+> -		}
+> -
+>  		/* Act based on address space type */
+>  		res = NULL;
+> -		switch ((pci_space >> 24) & 0x3) {
+> -		case 1:		/* PCI IO space */
+> +		res_type = range.flags & IORESOURCE_TYPE_BITS;
+> +		if (res_type == IORESOURCE_IO) {
+
+Why the change from switch() to an if/else if sequence?
+
+But those are mostly nitpicks. If this is deferred to v3.10 then I would
+suggest fixing them up and posting for another round of review.
+
+g.

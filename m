@@ -1,34 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Apr 2013 13:57:40 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:41916 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823073Ab3DVL5ihz3S5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 22 Apr 2013 13:57:38 +0200
-Received: from arrakis.dune.hu ([127.0.0.1])
-        by localhost (arrakis.dune.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id ICXs77meCUyv; Mon, 22 Apr 2013 13:56:44 +0200 (CEST)
-Received: from shaker64.lan (dslb-088-073-012-093.pools.arcor-ip.net [88.73.12.93])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id DED5128013C;
-        Mon, 22 Apr 2013 13:56:43 +0200 (CEST)
-From:   Jonas Gorski <jogo@openwrt.org>
-To:     linux-mips@linux-mips.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Florian Fainelli <florian@openwrt.org>,
-        Kevin Cernekee <cernekee@gmail.com>
-Subject: [PATCH] MIPS: BCM63XX: add missing clocks for BCM6328 and BCM6362
-Date:   Mon, 22 Apr 2013 13:57:06 +0200
-Message-Id: <1366631826-14998-1-git-send-email-jogo@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <jogo@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Apr 2013 15:22:15 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:50019 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6835051Ab3DVNWJuqQ4b (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 22 Apr 2013 15:22:09 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r3MDM7Vx006925;
+        Mon, 22 Apr 2013 15:22:07 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r3MDM3hC006924;
+        Mon, 22 Apr 2013 15:22:03 +0200
+Date:   Mon, 22 Apr 2013 15:22:03 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     EUNBONG SONG <eunb.song@samsung.com>,
+        David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mips: Fix invalid interrupt name in cavium-octeon
+Message-ID: <20130422132203.GB31642@linux-mips.org>
+References: <2202498.1401366325451851.JavaMail.weblogic@epv6ml11>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2202498.1401366325451851.JavaMail.weblogic@epv6ml11>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36283
+X-archive-position: 36284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,94 +43,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add some mosty unused, but missing clocks for BCM6328 and BCM6362.
-This also fixes PCIe init on BCM6362.
+On Thu, Apr 18, 2013 at 10:50:52PM +0000, EUNBONG SONG wrote:
 
-Signed-off-by: Jonas Gorski <jogo@openwrt.org>
----
- arch/mips/bcm63xx/clk.c |   33 +++++++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 8 deletions(-)
+> Change interrupt name from "RML/RSL" to "RMLRSL".
+> This fixes following warning message.
+> 
+> [   24.938793] WARNING: at fs/proc/generic.c:307 __xlate_proc_name+0x124/0x160()
+> [   24.945926] name 'RML/RSL'
+> [   24.948642] Modules linked in:
+> [   24.951707] Call Trace:
+> [   24.954157] [<ffffffff8069fe18>] dump_stack+0x8/0x34
+> [   24.959136] [<ffffffff80290d90>] warn_slowpath_common+0x78/0xa8
+> [   24.965056] [<ffffffff80290e60>] warn_slowpath_fmt+0x38/0x48
+> [   24.970723] [<ffffffff803cbc8c>] __xlate_proc_name+0x124/0x160
+> [   24.976556] [<ffffffff803cbe78>] __proc_create+0x78/0x128
+> [   24.981963] [<ffffffff803cd044>] proc_mkdir_mode+0x2c/0x70
+> [   24.987451] [<ffffffff80302418>] register_handler_proc+0x108/0x130
+> [   24.993642] [<ffffffff802fd078>] __setup_irq+0x210/0x540
+> [   24.998963] [<ffffffff802fd67c>] request_threaded_irq+0x114/0x1a0
+> [   25.005060] [<ffffffff80262e0c>] prom_free_prom_memory+0xd4/0x588
+> [   25.011164] [<ffffffff80691820>] free_initmem+0x10/0xc0
+> [   25.016390] [<ffffffff80691720>] kernel_init+0x20/0x100
+> [   25.021624] [<ffffffff8026c7e0>] ret_from_kernel_thread+0x10/0x18
+> 
+> Signed-off-by: Eunbong Song <eunb.song@samsung.com>
+> ---
+>  arch/mips/cavium-octeon/setup.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
+> index b0baa29..92c3150 100644
+> --- a/arch/mips/cavium-octeon/setup.c
+> +++ b/arch/mips/cavium-octeon/setup.c
+> @@ -1066,7 +1066,7 @@ void prom_free_prom_memory(void)
+>  
+>  	/* Add an interrupt handler for general failures. */
+>  	if (request_irq(OCTEON_IRQ_RML, octeon_rlm_interrupt, IRQF_SHARED,
+> -			"RML/RSL", octeon_rlm_interrupt)) {
+> +			"RMLRSL", octeon_rlm_interrupt)) {
+>  		panic("Unable to request_irq(OCTEON_IRQ_RML)");
+>  	}
+>  #endif
 
-diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
-index 6601214..c726a97 100644
---- a/arch/mips/bcm63xx/clk.c
-+++ b/arch/mips/bcm63xx/clk.c
-@@ -125,11 +125,18 @@ static struct clk clk_ephy = {
-  */
- static void enetsw_set(struct clk *clk, int enable)
- {
--	if (!BCMCPU_IS_6368())
-+	if (BCMCPU_IS_6328())
-+		bcm_hwclock_set(CKCTL_6328_ROBOSW_EN, enable);
-+	else if (BCMCPU_IS_6362())
-+		bcm_hwclock_set(CKCTL_6362_ROBOSW_EN, enable);
-+	else if (BCMCPU_IS_6368())
-+		bcm_hwclock_set(CKCTL_6368_ROBOSW_EN |
-+				CKCTL_6368_SWPKT_USB_EN |
-+				CKCTL_6368_SWPKT_SAR_EN,
-+				enable);
-+	else
- 		return;
--	bcm_hwclock_set(CKCTL_6368_ROBOSW_EN |
--			CKCTL_6368_SWPKT_USB_EN |
--			CKCTL_6368_SWPKT_SAR_EN, enable);
-+
- 	if (enable) {
- 		/* reset switch core afer clock change */
- 		bcm63xx_core_set_reset(BCM63XX_RESET_ENETSW, 1);
-@@ -166,6 +173,8 @@ static void usbh_set(struct clk *clk, int enable)
- 		bcm_hwclock_set(CKCTL_6328_USBH_EN, enable);
- 	else if (BCMCPU_IS_6348())
- 		bcm_hwclock_set(CKCTL_6348_USBH_EN, enable);
-+	else if (BCMCPU_IS_6362())
-+		bcm_hwclock_set(CKCTL_6362_USBH_EN, enable);
- 	else if (BCMCPU_IS_6368())
- 		bcm_hwclock_set(CKCTL_6368_USBH_EN, enable);
- }
-@@ -181,6 +190,8 @@ static void usbd_set(struct clk *clk, int enable)
- {
- 	if (BCMCPU_IS_6328())
- 		bcm_hwclock_set(CKCTL_6328_USBD_EN, enable);
-+	else if (BCMCPU_IS_6362())
-+		bcm_hwclock_set(CKCTL_6362_USBD_EN, enable);
- 	else if (BCMCPU_IS_6368())
- 		bcm_hwclock_set(CKCTL_6368_USBD_EN, enable);
- }
-@@ -244,7 +255,10 @@ static struct clk clk_xtm = {
-  */
- static void ipsec_set(struct clk *clk, int enable)
- {
--	bcm_hwclock_set(CKCTL_6368_IPSEC_EN, enable);
-+	if (BCMCPU_IS_6362())
-+		bcm_hwclock_set(CKCTL_6362_IPSEC_EN, enable);
-+	else if (BCMCPU_IS_6368())
-+		bcm_hwclock_set(CKCTL_6368_IPSEC_EN, enable);
- }
- 
- static struct clk clk_ipsec = {
-@@ -257,7 +271,10 @@ static struct clk clk_ipsec = {
- 
- static void pcie_set(struct clk *clk, int enable)
- {
--	bcm_hwclock_set(CKCTL_6328_PCIE_EN, enable);
-+	if (BCMCPU_IS_6328())
-+		bcm_hwclock_set(CKCTL_6328_PCIE_EN, enable);
-+	else if (BCMCPU_IS_6362())
-+		bcm_hwclock_set(CKCTL_6362_PCIE_EN, enable);
- }
- 
- static struct clk clk_pcie = {
-@@ -323,9 +340,9 @@ struct clk *clk_get(struct device *dev, const char *id)
- 		return &clk_periph;
- 	if (BCMCPU_IS_6358() && !strcmp(id, "pcm"))
- 		return &clk_pcm;
--	if (BCMCPU_IS_6368() && !strcmp(id, "ipsec"))
-+	if ((BCMCPU_IS_6362() || BCMCPU_IS_6368()) && !strcmp(id, "ipsec"))
- 		return &clk_ipsec;
--	if (BCMCPU_IS_6328() && !strcmp(id, "pcie"))
-+	if ((BCMCPU_IS_6328() || BCMCPU_IS_6362()) && !strcmp(id, "pcie"))
- 		return &clk_pcie;
- 	return ERR_PTR(-ENOENT);
- }
--- 
-1.7.10.4
+Interesting.  While your patch certainly is correct, you seem to have
+further modifications in your tree.
+
+David, Above code is wrapped by #ifdef CONFIG_CAVIUM_DECODE_RSL but doesn't
+seem to get defined anywhere.  What shall we do about this?
+
+  Ralf

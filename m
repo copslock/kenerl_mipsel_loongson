@@ -1,62 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Apr 2013 09:26:54 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:46143 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823080Ab3DUH0yC5hh5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 21 Apr 2013 09:26:54 +0200
-Received: from arrakis.dune.hu ([127.0.0.1])
-        by localhost (arrakis.dune.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 5stvpxTWajpO; Sun, 21 Apr 2013 09:26:00 +0200 (CEST)
-Received: from [192.168.254.50] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 297B32800D3;
-        Sun, 21 Apr 2013 09:26:00 +0200 (CEST)
-Message-ID: <517394C6.2060407@openwrt.org>
-Date:   Sun, 21 Apr 2013 09:27:02 +0200
-From:   Gabor Juhos <juhosg@openwrt.org>
-MIME-Version: 1.0
-To:     Jason Cooper <jason@lakedaemon.net>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "siva.kallam@samsung.com" <siva.kallam@samsung.com>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Thierry Reding <thierry.reding@avionic-design.de>,
-        Liviu Dudau <Liviu.Dudau@arm.com>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Paul Mackerras <paulus@samba.org>,
-        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        Jingoo Han <jg1.han@samsung.com>,
-        Jason Gunthorpe <jgunthorpe@obsidianresearch.com>,
-        Thomas Abraham <thomas.abraham@linaro.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "devicetree-discuss@lists.ozlabs.org" 
-        <devicetree-discuss@lists.ozlabs.org>,
-        "rob.herring@calxeda.com" <rob.herring@calxeda.com>,
-        Kukjin Kim <kgene.kim@samsung.com>,
-        "bhelgaas@google.com" <bhelgaas@google.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        Michal Simek <monstr@monstr.eu>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "suren.reddy@samsung.com" <suren.reddy@samsung.com>,
-        Andrew Murray <andrew.murray@arm.com>,
-        "linuxppc-dev@lists.ozlabs.org list" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH v7 3/3] of/pci: mips: convert to common of_pci_range_parser
-References: <1366107508-12672-1-git-send-email-Andrew.Murray@arm.com> <1366107508-12672-4-git-send-email-Andrew.Murray@arm.com> <CACRpkdbBaT1OKr5t8HW4+8y_wSDmGxmewAyVMekx8S-K9s3K8Q@mail.gmail.com> <20130418125910.GA17128@arm.com> <20130418130919.GI27197@titan.lakedaemon.net> <5170F016.6050502@openwrt.org> <20130420223343.GB25724@titan.lakedaemon.net>
-In-Reply-To: <20130420223343.GB25724@titan.lakedaemon.net>
-X-Enigmail-Version: 1.5.1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Apr 2013 12:42:34 +0200 (CEST)
+Received: from fw-tnat.cambridge.arm.com ([217.140.96.21]:30273 "EHLO
+        cam-smtp0.cambridge.arm.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6835041Ab3DVKm2lt3k9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Apr 2013 12:42:28 +0200
+Received: from localhost.localdomain (e106165-lin.cambridge.arm.com [10.1.197.23])
+        by cam-smtp0.cambridge.arm.com (8.13.8/8.13.8) with ESMTP id r3MAg5Ms013026;
+        Mon, 22 Apr 2013 11:42:12 +0100
+From:   Andrew Murray <Andrew.Murray@arm.com>
+To:     linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org
+Cc:     rob.herring@calxeda.com, jgunthorpe@obsidianresearch.com,
+        linux@arm.linux.org.uk, siva.kallam@samsung.com,
+        linux-pci@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
+        jg1.han@samsung.com, Liviu.Dudau@arm.com,
+        linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        kgene.kim@samsung.com, bhelgaas@google.com,
+        suren.reddy@samsung.com, linux-arm-kernel@lists.infradead.org,
+        monstr@monstr.eu, benh@kernel.crashing.org, paulus@samba.org,
+        grant.likely@secretlab.ca, thomas.petazzoni@free-electrons.com,
+        thierry.reding@avionic-design.de, thomas.abraham@linaro.org,
+        arnd@arndb.de, linus.walleij@linaro.org, juhosg@openwrt.org,
+        Andrew Murray <Andrew.Murray@arm.com>
+Subject: [PATCH v8 3/3] of/pci: mips: convert to common of_pci_range_parser
+Date:   Mon, 22 Apr 2013 11:41:35 +0100
+Message-Id: <1366627295-16964-4-git-send-email-Andrew.Murray@arm.com>
+X-Mailer: git-send-email 1.7.0.4
+In-Reply-To: <1366627295-16964-1-git-send-email-Andrew.Murray@arm.com>
+References: <1366627295-16964-1-git-send-email-Andrew.Murray@arm.com>
+Return-Path: <Andrew.Murray@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36275
+X-archive-position: 36277
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: Andrew.Murray@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,20 +47,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Jason,
+This patch converts the pci_load_of_ranges function to use the new common
+of_pci_range_parser.
 
->> Sorry I had no time earlier, but I have tested this now on MIPS. The patch
->> causes build errors unfortunately. Given the fact that this has been merged
->> already, I will send a fixup patch.
-> 
-> Olof has dropped this branch from arm-soc, plase post the build error
-> and fix here so that it can be included in this series.
+Signed-off-by: Andrew Murray <Andrew.Murray@arm.com>
+Signed-off-by: Liviu Dudau <Liviu.Dudau@arm.com>
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Reviewed-by: Rob Herring <rob.herring@calxeda.com>
+Reviewed-by: Grant Likely <grant.likely@secretlab.ca>
+Tested-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ arch/mips/pci/pci.c |   51 +++++++++++++++++++--------------------------------
+ 1 files changed, 19 insertions(+), 32 deletions(-)
 
-I have posted the patch to Olof two days ago. It has been CC'd to you as well
-but In case that it does not exists in your mailbox the patch can be found here:
-
-https://patchwork.linux-mips.org/patch/5196/
-
-However I can re-post the patch as a reply to this thread if you prefer that.
-
--Gabor
+diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+index 0872f12..4b09ca8 100644
+--- a/arch/mips/pci/pci.c
++++ b/arch/mips/pci/pci.c
+@@ -122,51 +122,38 @@ static void pcibios_scanbus(struct pci_controller *hose)
+ #ifdef CONFIG_OF
+ void pci_load_of_ranges(struct pci_controller *hose, struct device_node *node)
+ {
+-	const __be32 *ranges;
+-	int rlen;
+-	int pna = of_n_addr_cells(node);
+-	int np = pna + 5;
++	struct of_pci_range range;
++	struct of_pci_range_parser parser;
++	u32 res_type;
+ 
+ 	pr_info("PCI host bridge %s ranges:\n", node->full_name);
+-	ranges = of_get_property(node, "ranges", &rlen);
+-	if (ranges == NULL)
+-		return;
+ 	hose->of_node = node;
+ 
+-	while ((rlen -= np * 4) >= 0) {
+-		u32 pci_space;
++	if (of_pci_range_parser_init(&parser, node))
++		return;
++
++	for_each_of_pci_range(&parser, &range) {
+ 		struct resource *res = NULL;
+-		u64 addr, size;
+-
+-		pci_space = be32_to_cpup(&ranges[0]);
+-		addr = of_translate_address(node, ranges + 3);
+-		size = of_read_number(ranges + pna + 3, 2);
+-		ranges += np;
+-		switch ((pci_space >> 24) & 0x3) {
+-		case 1:		/* PCI IO space */
++
++		switch (range.flags & IORESOURCE_TYPE_BITS) {
++		case IORESOURCE_IO:
+ 			pr_info("  IO 0x%016llx..0x%016llx\n",
+-					addr, addr + size - 1);
++				range.cpu_addr,
++				range.cpu_addr + range.size - 1);
+ 			hose->io_map_base =
+-				(unsigned long)ioremap(addr, size);
++				(unsigned long)ioremap(range.cpu_addr,
++						       range.size);
+ 			res = hose->io_resource;
+-			res->flags = IORESOURCE_IO;
+ 			break;
+-		case 2:		/* PCI Memory space */
+-		case 3:		/* PCI 64 bits Memory space */
++		case IORESOURCE_MEM:
+ 			pr_info(" MEM 0x%016llx..0x%016llx\n",
+-					addr, addr + size - 1);
++				range.cpu_addr,
++				range.cpu_addr + range.size - 1);
+ 			res = hose->mem_resource;
+-			res->flags = IORESOURCE_MEM;
+ 			break;
+ 		}
+-		if (res != NULL) {
+-			res->start = addr;
+-			res->name = node->full_name;
+-			res->end = res->start + size - 1;
+-			res->parent = NULL;
+-			res->sibling = NULL;
+-			res->child = NULL;
+-		}
++		if (res != NULL)
++			of_pci_range_to_resource(&range, node, res);
+ 	}
+ }
+ #endif
+-- 
+1.7.0.4

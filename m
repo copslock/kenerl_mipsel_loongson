@@ -1,62 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Apr 2013 12:57:40 +0200 (CEST)
-Received: from fw-tnat.cambridge.arm.com ([217.140.96.21]:33620 "EHLO
-        cam-smtp0.cambridge.arm.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6835024Ab3DVK5jmZFNt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Apr 2013 12:57:39 +0200
-Received: from arm.com (e106165-lin.cambridge.arm.com [10.1.197.23])
-        by cam-smtp0.cambridge.arm.com (8.13.8/8.13.8) with ESMTP id r3MAvOVs029000;
-        Mon, 22 Apr 2013 11:57:24 +0100
-Date:   Mon, 22 Apr 2013 11:57:24 +0100
-From:   Andrew Murray <andrew.murray@arm.com>
-To:     Grant Likely <grant.likely@secretlab.ca>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "rob.herring@calxeda.com" <rob.herring@calxeda.com>,
-        "jgunthorpe@obsidianresearch.com" <jgunthorpe@obsidianresearch.com>,
-        "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
-        "siva.kallam@samsung.com" <siva.kallam@samsung.com>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "devicetree-discuss@lists.ozlabs.org" 
-        <devicetree-discuss@lists.ozlabs.org>,
-        "jg1.han@samsung.com" <jg1.han@samsung.com>,
-        Liviu Dudau <Liviu.Dudau@arm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-samsung-soc@vger.kernel.org" 
-        <linux-samsung-soc@vger.kernel.org>,
-        "kgene.kim@samsung.com" <kgene.kim@samsung.com>,
-        "bhelgaas@google.com" <bhelgaas@google.com>,
-        "suren.reddy@samsung.com" <suren.reddy@samsung.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "monstr@monstr.eu" <monstr@monstr.eu>,
-        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
-        "paulus@samba.org" <paulus@samba.org>,
-        "thomas.petazzoni@free-electrons.com" 
-        <thomas.petazzoni@free-electrons.com>,
-        "thierry.reding@avionic-design.de" <thierry.reding@avionic-design.de>,
-        "thomas.abraham@linaro.org" <thomas.abraham@linaro.org>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>
-Subject: Re: [PATCH v7 2/3] of/pci: Provide support for parsing PCI DT
- ranges property
-Message-ID: <20130422105724.GB17007@arm.com>
-References: <1366107508-12672-1-git-send-email-Andrew.Murray@arm.com>
- <1366107508-12672-3-git-send-email-Andrew.Murray@arm.com>
- <20130418134401.84AEE3E1319@localhost>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20130418134401.84AEE3E1319@localhost>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <andrew.murray@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Apr 2013 13:57:40 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:41916 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823073Ab3DVL5ihz3S5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 22 Apr 2013 13:57:38 +0200
+Received: from arrakis.dune.hu ([127.0.0.1])
+        by localhost (arrakis.dune.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id ICXs77meCUyv; Mon, 22 Apr 2013 13:56:44 +0200 (CEST)
+Received: from shaker64.lan (dslb-088-073-012-093.pools.arcor-ip.net [88.73.12.93])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id DED5128013C;
+        Mon, 22 Apr 2013 13:56:43 +0200 (CEST)
+From:   Jonas Gorski <jogo@openwrt.org>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>,
+        Kevin Cernekee <cernekee@gmail.com>
+Subject: [PATCH] MIPS: BCM63XX: add missing clocks for BCM6328 and BCM6362
+Date:   Mon, 22 Apr 2013 13:57:06 +0200
+Message-Id: <1366631826-14998-1-git-send-email-jogo@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36282
+X-archive-position: 36283
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andrew.murray@arm.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,85 +41,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Apr 18, 2013 at 02:44:01PM +0100, Grant Likely wrote:
-> On Tue, 16 Apr 2013 11:18:27 +0100, Andrew Murray <Andrew.Murray@arm.com> wrote:
+Add some mosty unused, but missing clocks for BCM6328 and BCM6362.
+This also fixes PCIe init on BCM6362.
 
-> 
-> Acked-by: Grant Likely <grant.likely@secretlab.ca>
-> 
-> But comments below...
-> 
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+---
+ arch/mips/bcm63xx/clk.c |   33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
-I've updated the patchset (now v8) to reflect your feedback, after a closer
-look...
-
-> > -
-> > -		pr_debug("pci_space: 0x%08x pci_addr:0x%016llx ",
-> > -				pci_space, pci_addr);
-> > -		pr_debug("cpu_addr:0x%016llx size:0x%016llx\n",
-> > -					cpu_addr, size);
-> > -
-> > -		ranges += np;
-> > +		pr_debug("pci_space: 0x%08x pci_addr: 0x%016llx ",
-> > +				range.pci_space, range.pci_addr);
-> > +		pr_debug("cpu_addr: 0x%016llx size: 0x%016llx\n",
-> > +				range.cpu_addr, range.size);
-> 
-> Nit: the patch changed whitespace on the pr_debug() statements, so even
-> though the first line of each is identical, they look different in the
-> patch.
-> 
-
-Actually the first line isn't identical, the original file was inconsistent
-with its use of spaces between ':' and '0x%0' - my patch ensured that there
-was always a space. I guess this could have been done as a separate patch.
-
-> >  
-> >  		/* If we failed translation or got a zero-sized region
-> >  		 * (some FW try to feed us with non sensical zero sized regions
-> >  		 * such as power3 which look like some kind of attempt
-> >  		 * at exposing the VGA memory hole)
-> >  		 */
-> > -		if (cpu_addr == OF_BAD_ADDR || size == 0)
-> > +		if (range.cpu_addr == OF_BAD_ADDR || range.size == 0)
-> >  			continue;
-> 
-> Can this also be rolled into the parsing iterator?
-> 
-
-I decided not to do this. Mainly because ARM drivers use the parser directly
-(instead of pci_process_bridge_OF_ranges function) and it seemed perfectly
-valid for the parser to return a range of size 0 if that is what was present in
-the DT.
-
-> >  
-> > -		/* Now consume following elements while they are contiguous */
-> > -		for (; rlen >= np * sizeof(u32);
-> > -		     ranges += np, rlen -= np * 4) {
-> > -			if (ranges[0] != pci_space)
-> > -				break;
-> > -			pci_next = of_read_number(ranges + 1, 2);
-> > -			cpu_next = of_translate_address(dev, ranges + 3);
-> > -			if (pci_next != pci_addr + size ||
-> > -			    cpu_next != cpu_addr + size)
-> > -				break;
-> > -			size += of_read_number(ranges + pna + 3, 2);
-> > -		}
-> > -
-> >  		/* Act based on address space type */
-> >  		res = NULL;
-> > -		switch ((pci_space >> 24) & 0x3) {
-> > -		case 1:		/* PCI IO space */
-> > +		res_type = range.flags & IORESOURCE_TYPE_BITS;
-> > +		if (res_type == IORESOURCE_IO) {
-> 
-> Why the change from switch() to an if/else if sequence?
-
-I think this was an artifact of the patches evolution, I've reverted back to
-the switch.
-
-> 
-> But those are mostly nitpicks. If this is deferred to v3.10 then I would
-> suggest fixing them up and posting for another round of review.
-
-Andrew Murray
+diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
+index 6601214..c726a97 100644
+--- a/arch/mips/bcm63xx/clk.c
++++ b/arch/mips/bcm63xx/clk.c
+@@ -125,11 +125,18 @@ static struct clk clk_ephy = {
+  */
+ static void enetsw_set(struct clk *clk, int enable)
+ {
+-	if (!BCMCPU_IS_6368())
++	if (BCMCPU_IS_6328())
++		bcm_hwclock_set(CKCTL_6328_ROBOSW_EN, enable);
++	else if (BCMCPU_IS_6362())
++		bcm_hwclock_set(CKCTL_6362_ROBOSW_EN, enable);
++	else if (BCMCPU_IS_6368())
++		bcm_hwclock_set(CKCTL_6368_ROBOSW_EN |
++				CKCTL_6368_SWPKT_USB_EN |
++				CKCTL_6368_SWPKT_SAR_EN,
++				enable);
++	else
+ 		return;
+-	bcm_hwclock_set(CKCTL_6368_ROBOSW_EN |
+-			CKCTL_6368_SWPKT_USB_EN |
+-			CKCTL_6368_SWPKT_SAR_EN, enable);
++
+ 	if (enable) {
+ 		/* reset switch core afer clock change */
+ 		bcm63xx_core_set_reset(BCM63XX_RESET_ENETSW, 1);
+@@ -166,6 +173,8 @@ static void usbh_set(struct clk *clk, int enable)
+ 		bcm_hwclock_set(CKCTL_6328_USBH_EN, enable);
+ 	else if (BCMCPU_IS_6348())
+ 		bcm_hwclock_set(CKCTL_6348_USBH_EN, enable);
++	else if (BCMCPU_IS_6362())
++		bcm_hwclock_set(CKCTL_6362_USBH_EN, enable);
+ 	else if (BCMCPU_IS_6368())
+ 		bcm_hwclock_set(CKCTL_6368_USBH_EN, enable);
+ }
+@@ -181,6 +190,8 @@ static void usbd_set(struct clk *clk, int enable)
+ {
+ 	if (BCMCPU_IS_6328())
+ 		bcm_hwclock_set(CKCTL_6328_USBD_EN, enable);
++	else if (BCMCPU_IS_6362())
++		bcm_hwclock_set(CKCTL_6362_USBD_EN, enable);
+ 	else if (BCMCPU_IS_6368())
+ 		bcm_hwclock_set(CKCTL_6368_USBD_EN, enable);
+ }
+@@ -244,7 +255,10 @@ static struct clk clk_xtm = {
+  */
+ static void ipsec_set(struct clk *clk, int enable)
+ {
+-	bcm_hwclock_set(CKCTL_6368_IPSEC_EN, enable);
++	if (BCMCPU_IS_6362())
++		bcm_hwclock_set(CKCTL_6362_IPSEC_EN, enable);
++	else if (BCMCPU_IS_6368())
++		bcm_hwclock_set(CKCTL_6368_IPSEC_EN, enable);
+ }
+ 
+ static struct clk clk_ipsec = {
+@@ -257,7 +271,10 @@ static struct clk clk_ipsec = {
+ 
+ static void pcie_set(struct clk *clk, int enable)
+ {
+-	bcm_hwclock_set(CKCTL_6328_PCIE_EN, enable);
++	if (BCMCPU_IS_6328())
++		bcm_hwclock_set(CKCTL_6328_PCIE_EN, enable);
++	else if (BCMCPU_IS_6362())
++		bcm_hwclock_set(CKCTL_6362_PCIE_EN, enable);
+ }
+ 
+ static struct clk clk_pcie = {
+@@ -323,9 +340,9 @@ struct clk *clk_get(struct device *dev, const char *id)
+ 		return &clk_periph;
+ 	if (BCMCPU_IS_6358() && !strcmp(id, "pcm"))
+ 		return &clk_pcm;
+-	if (BCMCPU_IS_6368() && !strcmp(id, "ipsec"))
++	if ((BCMCPU_IS_6362() || BCMCPU_IS_6368()) && !strcmp(id, "ipsec"))
+ 		return &clk_ipsec;
+-	if (BCMCPU_IS_6328() && !strcmp(id, "pcie"))
++	if ((BCMCPU_IS_6328() || BCMCPU_IS_6362()) && !strcmp(id, "pcie"))
+ 		return &clk_pcie;
+ 	return ERR_PTR(-ENOENT);
+ }
+-- 
+1.7.10.4

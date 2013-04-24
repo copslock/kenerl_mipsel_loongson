@@ -1,45 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Apr 2013 17:14:28 +0200 (CEST)
-Received: from mail-ie0-f177.google.com ([209.85.223.177]:36422 "EHLO
-        mail-ie0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835120Ab3DWPOXvFDoz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Apr 2013 17:14:23 +0200
-Received: by mail-ie0-f177.google.com with SMTP id 9so797062iec.36
-        for <multiple recipients>; Tue, 23 Apr 2013 08:14:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:x-received:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
-        bh=zMlRVKNQAuIJFAdRndSyw3mQT5SUX82fq8Ft4GR3U6I=;
-        b=vMsRZ5clA+BEBjs8RVtEpXqQWklJ9gtU/uuaBsqF32IOF18N8Y0jOnB5QNS2JYWLAK
-         eJ7Fidcg6e8e6z3ZCnGxx27TzjPIgVtQDiwnDNHJ0MMbGeLngbElNCNi3zzriECqWtWi
-         wkYbrnEiuF0lQvKuW6EgmiaBSOZEaBcSs19Hlo2QRRipv8gkBSwYmdzirYOGwXV6Af8v
-         d6Ujq913aZR2F6o9bDYzeFuysKfiHchXGjjk2YdLiFJy4yjucc/a54NfChUztuojmxmU
-         dp7tUs6Taz3iva/3N11tYnp8ciUZ++QiXJKSkzohxRxjHC9yqxELJxl6cveFyS2QF1tv
-         M2LQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Apr 2013 13:19:10 +0200 (CEST)
+Received: from smtp.eu.citrix.com ([46.33.159.39]:49779 "EHLO
+        SMTP.EU.CITRIX.COM" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6835154Ab3DXKsyQ8xI8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Apr 2013 12:48:54 +0200
+X-IronPort-AV: E=Sophos;i="4.87,542,1363132800"; 
+   d="scan'208";a="3876059"
+Received: from lonpmailmx01.citrite.net ([10.30.203.162])
+  by LONPIPO01.EU.CITRIX.COM with ESMTP/TLS/RC4-MD5; 24 Apr 2013 10:48:47 +0000
+Received: from [10.80.2.42] (10.80.2.42) by LONPMAILMX01.citrite.net
+ (10.30.203.162) with Microsoft SMTP Server id 8.3.298.1; Wed, 24 Apr 2013
+ 11:48:47 +0100
+Message-ID: <1366800525.20256.266.camel@zakaz.uk.xensource.com>
+Subject: [RFC] device-tree.git automatic sync from linux.git
+From:   Ian Campbell <Ian.Campbell@citrix.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     Grant Likely <grant.likely@secretlab.ca>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-c6x-dev@linux-c6x.org>, <microblaze-uclinux@itee.uq.edu.au>,
+        <linux-mips@linux-mips.org>, <linux@lists.openrisc.net>,
+        <linuxppc-dev@lists.ozlabs.org>, <x86@kernel.org>,
+        <linux-xtensa@linux-xtensa.org>
+Date:   Wed, 24 Apr 2013 11:48:45 +0100
+Organization: Citrix Systems, Inc.
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.4.4-1 
 MIME-Version: 1.0
-X-Received: by 10.50.15.166 with SMTP id y6mr18915621igc.83.1366730057079;
- Tue, 23 Apr 2013 08:14:17 -0700 (PDT)
-Received: by 10.64.48.231 with HTTP; Tue, 23 Apr 2013 08:14:16 -0700 (PDT)
-In-Reply-To: <516EE5E4.1010605@corelatus.se>
-References: <516EE5E4.1010605@corelatus.se>
-Date:   Tue, 23 Apr 2013 17:14:16 +0200
-X-Google-Sender-Auth: EX9KmP7CkgGGICJv6pzoKuSIAC0
-Message-ID: <CAMuHMdU4EE2jOtud+YQ6-o08VVWyMsqQRYNZzOntV0+xHxkUzA@mail.gmail.com>
-Subject: Re: c17a6554 broke 64BIT_PHYS_ADDR for 32 bit systems
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Thomas Lange <thomas@corelatus.se>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Transfer-Encoding: 7bit
+Return-Path: <Ian.Campbell@citrix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36287
+X-archive-position: 36288
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: Ian.Campbell@citrix.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,36 +48,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Apr 17, 2013 at 8:11 PM, Thomas Lange <thomas@corelatus.se> wrote:
-> commit c17a6554 unintentionally(?) modified the PAGE_MASK type
-> from (int) to (long unsigned int).
->
-> This breaks ioremap (and possibly more) when using 64BIT_PHYS_ADDR on
-> 32 bit systems.
-> Example of failing code from ioremap.c:
->
->         phys_addr &= PAGE_MASK;
->
-> Since phys_addr is 64 bit (unsigned long long) when 64BIT_PHYS_ADDR and
-> PAGE_MASK is 32bit (long unsigned int), the upper 32 bits will always
-> be zeroed which is not what we want/expect.
->
-> The code above works if PAGE_MASK is a _signed_ 32bit int though.
->
-> Some possible fixes:
->
-> A) Simply revert the commit. Makes ioremap work again, but then PAGE_MASK
->    is a signed int. Do we really want a mask that is 'signed'?
+Hi,
 
-Already fixed, cfr. https://lkml.org/lkml/2013/4/22/518
+First off apologies for the large CC list -- I think this catches the
+arch list for all the arches with device tree source in the tree.
 
-Gr{oetje,eeting}s,
+Various folks have expressed an interest in eventually splitting the
+device tree bindings out of the Linux git repository into a separate
+tree. This should help reduce the cross talk between the code and the
+bindings and to make it difficult to accidentally "co-evolve" the
+bindings and the code (i.e. break compatibility) etc. There are also
+other projects (such as Xen) which would also like to use device-tree as
+an OS agnostic description of the hardware.
 
-                        Geert
+I was talking to Grant about this at this Spring's LinaroConnect in Hong
+Kong and as a first step he was interested in a device-tree.git
+repository which is automatically kept insync with the main Linux tree.
+Somehow I found myself volunteering to set up that tree.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+An RFC repository can be found at:
+        http://xenbits.xen.org/gitweb/?p=people/ianc/device-tree-rebasing.git
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+This is created using git filter-branch and retains the full history for
+the device tree source files up to v3.9-rc8.
+
+The master branch contains everything including the required build
+infrastructure while upstream/master and upstream/dts contain the most
+recently converted upstream master branch and the pristine converted
+version respectively. Each upstream tag T is paired with a tag T-dts
+which is the converted version of that tag.
+
+Note that the tree will be potentially rebasing (hence the name) for the
+time being while I'm still smoothing out the conversion process.
+
+The paths to include in the conversion are described in
+scripts/rewrite-paths.sed. The generic cases are:
+        arch/ARCH/boot/dts/*.dts and *.dts? (for dtsi and dtsp etc)
+	arch/ARCH/boot/*.dts and *.dts?
+        arch/ARCH/include/dts/* (currently unused?)
+which become src/ARCH/*.dts and *.dts? plus src/ARCH/include/*
+
+There are also some special cases for some arches which don't follow
+this pattern and for older versions of the kernel which were less
+consistent. The paths were gleaned from git ls-tree + grep on every tag
+in the tree, so if a file was added and moved between two rcs then the
+original path may not be covered (so the move will look like it just
+adds the files).
+
+In principal this supports the new .dtsp files and includes the required
+include paths in the conversion but none of them seem to be in mainline
+yet, so we'll have to see!
+
+The initial conversion took in excess of 40 hours (running out of a
+ramdisk) so even if the result is stable in terms of commit ids etc a
+fresh conversion every time isn't an option for a ~daily sync so I had
+to create a slightly hacked around git-filter-branch (found in
+scripts/git-filter-branch) to support incremental filtering, which I
+intend to send to the git folks soon. 
+
+Please let me know what you think.
+
+Ian.
+
+[0] real    2533m32.142s
+    user    2393m35.039s
+    sys     343m44.385s

@@ -1,36 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Apr 2013 15:56:01 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:39126 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6826582Ab3D0Nz6jCz0g (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 27 Apr 2013 15:55:58 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r3RDtuli016469;
-        Sat, 27 Apr 2013 15:55:56 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r3RDttjx016468;
-        Sat, 27 Apr 2013 15:55:55 +0200
-Date:   Sat, 27 Apr 2013 15:55:54 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [ADMIN] Mailing list archives
-Message-ID: <20130427135554.GA11376@linux-mips.org>
-References: <20130415140548.GA11548@linux-mips.org>
- <20130416202728.GB31681@blackmetal.musicnaut.iki.fi>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20130416202728.GB31681@blackmetal.musicnaut.iki.fi>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Apr 2013 20:20:46 +0200 (CEST)
+Received: from jacques.telenet-ops.be ([195.130.132.50]:37623 "EHLO
+        jacques.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835174Ab3D0SUnx-GDH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Apr 2013 20:20:43 +0200
+Received: from ayla.of.borg ([84.193.72.141])
+        by jacques.telenet-ops.be with bizsmtp
+        id V6Li1l00X32ts5g0J6LiGS; Sat, 27 Apr 2013 20:20:43 +0200
+Received: from geert by ayla.of.borg with local (Exim 4.71)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1UW9jm-0002nh-5g; Sat, 27 Apr 2013 20:20:42 +0200
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Sanjay Lal <sanjayl@kymasys.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     kvm@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-ia64@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH -next] ia64, metag: Do not export min_low_pfn in arch-specific code
+Date:   Sat, 27 Apr 2013 20:20:31 +0200
+Message-Id: <1367086831-10740-1-git-send-email-geert@linux-m68k.org>
+X-Mailer: git-send-email 1.7.0.4
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36299
+X-archive-position: 36300
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,50 +41,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Apr 16, 2013 at 11:27:28PM +0300, Aaro Koskinen wrote:
+As of commit 787dcbe6984b3638e94f60d807dcb51bb8a07211 ("MIPS: Export
+symbols used by KVM/MIPS module"), min_low_pfn is already exported by
+the generic mm/bootmem.c, causing:
 
-> On Mon, Apr 15, 2013 at 04:05:48PM +0200, Ralf Baechle wrote:
-> > The raw mailing list archives, that is the original mbox data of the
-> > mailing list have been lost.  I've restored some from ancient backups
-> > and pieces others together from other copies of list email.  However
-> > this is a tedious process and I'd highly appreciately if anybody
-> > should have copies of these mbox files.
-> > 
-> > http://www.linux-mips.org/archives/mbox/linux-mips/2010-01
-> [...]
-> > http://www.linux-mips.org/archives/mbox/linux-mips/2012-11
-> > http://www.linux-mips.org/archives/mbox/linux-mips/2012-12
-> 
-> At least these three were in The Wayback Machine
-> (http://archive.org/web/web.php). Probably the rest as well...
+WARNING: vmlinux: 'min_low_pfn' exported twice. Previous export was in vmlinux
 
-Archive.org has a tendency to be fairly unreliable and when I tried just
-before my actual posting also appeared not to have crawled the mbox files
-of the past two years.
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+---
+ arch/ia64/kernel/ia64_ksyms.c   |    1 -
+ arch/metag/kernel/metag_ksyms.c |    1 -
+ 2 files changed, 0 insertions(+), 2 deletions(-)
 
-Another issue was that downloads of some of the mbox files that it appeared
-to have, stall at some point.
-
-Then archive.org's search engine.  Suffice to say the relation between
-what it finds and what archive.org actually has available appears to be
-weak.  That is some files are archived but won't get found by a search
-or get found by a search but are actually downloadable.
-
-I ended up piecing archives together from various other sources.  Fortunately
-Ecartis inserts an X-archive-position: header into postings which was very
-helpful to ensure I found all postings.
-
-Writing this reply I just tried archive.org again and it seems seems to have
-crawled linux-mips.org on the 14th or 15th of April (so it claims) but it
-took a while until the result actually came online - and they include many
-of the previously missing files.
-
-However the search engine still is rubbish and many of the URLs such as
-http://web.archive.org/web/20130414090942/http://www.linux-mips.org/arch-
-ives/mbox/linux-mips/2013-02 are returning "403 Forbidden".
-
-I'm afraid to say if archiving at archive.org is what is meant to prevent
-an internet digital dark age then this age is as black like a blind man's
-night in a coal mine ...
-
-  Ralf
+diff --git a/arch/ia64/kernel/ia64_ksyms.c b/arch/ia64/kernel/ia64_ksyms.c
+index 5b7791d..ca95c8b 100644
+--- a/arch/ia64/kernel/ia64_ksyms.c
++++ b/arch/ia64/kernel/ia64_ksyms.c
+@@ -25,7 +25,6 @@ EXPORT_SYMBOL(copy_page);
+ 
+ #ifdef CONFIG_VIRTUAL_MEM_MAP
+ #include <linux/bootmem.h>
+-EXPORT_SYMBOL(min_low_pfn);	/* defined by bootmem.c, but not exported by generic code */
+ EXPORT_SYMBOL(max_low_pfn);	/* defined by bootmem.c, but not exported by generic code */
+ #endif
+ 
+diff --git a/arch/metag/kernel/metag_ksyms.c b/arch/metag/kernel/metag_ksyms.c
+index ec872ef..08e9b6f 100644
+--- a/arch/metag/kernel/metag_ksyms.c
++++ b/arch/metag/kernel/metag_ksyms.c
+@@ -12,7 +12,6 @@ EXPORT_SYMBOL(copy_page);
+ #ifdef CONFIG_FLATMEM
+ /* needed for the pfn_valid macro */
+ EXPORT_SYMBOL(max_pfn);
+-EXPORT_SYMBOL(min_low_pfn);
+ #endif
+ 
+ /* TBI symbols */
+-- 
+1.7.0.4

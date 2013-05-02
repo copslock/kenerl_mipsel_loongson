@@ -1,51 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 May 2013 11:58:03 +0200 (CEST)
-Received: from mail.nanl.de ([217.115.11.12]:43763 "EHLO mail.nanl.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6834999Ab3EBJ6BvwVG7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 2 May 2013 11:58:01 +0200
-Received: from mail-ve0-f175.google.com (mail-ve0-f175.google.com [209.85.128.175])
-        by mail.nanl.de (Postfix) with ESMTPSA id 0AF2C45F79;
-        Thu,  2 May 2013 09:57:46 +0000 (UTC)
-Received: by mail-ve0-f175.google.com with SMTP id m1so312759ves.6
-        for <multiple recipients>; Thu, 02 May 2013 02:57:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-received:mime-version:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-type;
-        bh=q9+281XQMLltY3DJAdhxyUb2+zO2TJv6Vz6inGkQhX4=;
-        b=Klg7GorurwcCYUL41/9E13G6ylTaF6vSLAhPOONQ5UKLlwFSe3fvlTl6Yl0qWkvjhq
-         kCrf1UdEOPFWp8nXyQmya9dae9Lp4j5FlPkousPNsRbxXy8V4qN5Ehd4j1lVAktZiNjT
-         ToZAc5+90M1ixKKtXG3ss4cjTLoq5GUg1ZiRRtV2HUV//X5H8U8Yzdxnjk8sR7TfZKbT
-         2oE/bYtvT21KkIg30Fa8QCD73Wd/vf20Z4lbSK/3aoqKkFlRRDVTRhtlLsHHn53XQfNp
-         JB42+7cE5S7MxiZBKy87ikSPzK4X3TsMnI/yUk+waDMzJc32MPC+H1+Vk8G002cBc8yM
-         28FQ==
-X-Received: by 10.220.202.138 with SMTP id fe10mr1906179vcb.26.1367488676071;
- Thu, 02 May 2013 02:57:56 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.220.31.73 with HTTP; Thu, 2 May 2013 02:57:35 -0700 (PDT)
-In-Reply-To: <6623143.198271367486832742.JavaMail.weblogic@epml20>
-References: <6623143.198271367486832742.JavaMail.weblogic@epml20>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Thu, 2 May 2013 11:57:35 +0200
-Message-ID: <CAOiHx==2EGhRU9AwvkK_+9FpWpCDSHLsfwBnoK8_9UgWkLAXZA@mail.gmail.com>
-Subject: Re: Re: [PATCH] MIPS: remove USB_EHCI_BIG_ENDIAN_{DESC,MMIO} depends
- on architecture symbol
-To:     eunb.song@samsung.com
-Cc:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 May 2013 12:42:13 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:40263 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6818472Ab3EBKmLVWngo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 May 2013 12:42:11 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <tglx@linutronix.de>)
+        id 1UXqxl-0003nL-JA; Thu, 02 May 2013 12:42:09 +0200
+Date:   Thu, 2 May 2013 12:42:08 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Jonas Gorski <jogo@openwrt.org>
+cc:     eunb.song@samsung.com, "ralf@linux-mips.org" <ralf@linux-mips.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "florian@openwrt.org" <florian@openwrt.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: mips; boot fail after merge 3.9+
+In-Reply-To: <CAOiHx=mBPHmDse4EwL-+Fgmpz0=XhcgF_0nWdyvErFO4NU7E0Q@mail.gmail.com>
+Message-ID: <alpine.LFD.2.02.1305021241040.3972@ionos>
+References: <20522420.158691367384219315.JavaMail.weblogic@epml17> <CAOiHx=mBPHmDse4EwL-+Fgmpz0=XhcgF_0nWdyvErFO4NU7E0Q@mail.gmail.com>
+User-Agent: Alpine 2.02 (LFD 1266 2009-07-14)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36311
+X-archive-position: 36312
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,32 +45,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, May 2, 2013 at 11:27 AM, EUNBONG SONG <eunb.song@samsung.com> wrote:
->
->>These are selects and don't prevent anyone else from also selecting
->> them. If you look at your referenced commit, you see it removed the
->>/depends/, not the selects. It actually added selects to several
->> platforms. Platforms are supposed to select them if they need them.
->
-> Hello.
-> Every time i config with arch/mips/configs/cavium_octeon_defconfig, the following warning messages
-> are showed.
-> warning: (MIPS_SEAD3 && PMC_MSP && CPU_CAVIUM_OCTEON) selects USB_EHCI_BIG_ENDIAN_MMIO which has unmet direct dependencies (USB_SUPPORT && USB && USB_EHCI_HCD)
-> warning: (MIPS_SEAD3 && PMC_MSP && CPU_CAVIUM_OCTEON) selects USB_EHCI_BIG_ENDIAN_MMIO which has unmet direct dependencies (USB_SUPPORT && USB && USB_EHCI_HCD)
->
-> And after applying this patch, the warning messages were disappeared.
+On Thu, 2 May 2013, Jonas Gorski wrote:
 
-But after this patch likely EHCI is also broken on these platforms.
-The solution is to either guard the USB_EHCI_BIG_ENDIAN_MMIO/DESC
-selects with if USB_EHCI_HCD etc, or make
-USB_EHCI_BIG_ENDIAN_MMIO/DESC not depend on USB_EHCI_HCD etc.
+> On Wed, May 1, 2013 at 6:57 AM, EUNBONG SONG <eunb.song@samsung.com> wrote:
+> >
+> > Hello.
+> > After merge cavium board boots fail, boot log messages are as follows.
+> > I enabled initcall_debug for debugging.
+> 
+> I can confirm that MIPS does not seem to finish to boot after using
+> the generic idle loop, I have the same problem on a different platform
+> (bcm63xx), and bisecting showed the same commit.
+> 
+> (snip)
+> 
+> > I found this issue after cdbedc61c8d0122ad682815936f0d11df1fe5f57.
+> > And i found something strange. I ran the git show for this commit.
+> > As below "select GENERIC_IDLE_LOOP" is added for CONFIG_MIPS.
+> > but the latest arch/mips/Kconfig file has not this one. I have tried to find when this is gone. but i can't find.
+> > Is there any problem with this?
+> 
+> No, after all architectures were converted to use the generic idle
+> loop the config symbol was removed, so it's now always on. The problem
+> is rather that the generic idle loop does not seem to work on MIPS.
+> Unfortunately due to limited knowledge in this area I can't really
+> tell which part broke it.
 
-As far as I can tell, USB_EHCI_BIG_ENDIAN_MMIO/DESC only have any
-effect on the ehci_hcd code anyway, so removing the dependencies of
-these symbols should be fine and without any side effects, thus allow
-platforms/drivers to select them unconditionally.
+Does the patch below fix your issue ?
 
-Greg, what do you think?
+Thanks,
 
+	tglx
 
-Jonas
+diff --git a/kernel/cpu/idle.c b/kernel/cpu/idle.c
+index 8b86c0c..a8972fe 100644
+--- a/kernel/cpu/idle.c
++++ b/kernel/cpu/idle.c
+@@ -70,8 +70,10 @@ static void cpu_idle_loop(void)
+ 			check_pgt_cache();
+ 			rmb();
+ 
+-			if (cpu_is_offline(smp_processor_id()))
++			if (cpu_is_offline(smp_processor_id())) {
+ 				arch_cpu_idle_dead();
++				continue;
++			}
+ 
+ 			local_irq_disable();
+ 			arch_cpu_idle_enter();

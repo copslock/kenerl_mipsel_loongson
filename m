@@ -1,88 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 May 2013 11:27:27 +0200 (CEST)
-Received: from mailout3.samsung.com ([203.254.224.33]:35037 "EHLO
-        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6835017Ab3EBJ10Fbe-l (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 May 2013 11:27:26 +0200
-Received: from epcpsbgr2.samsung.com
- (u142.gpu120.samsung.co.kr [203.254.230.142])
- by mailout3.samsung.com (Oracle Communications Messaging Server 7u4-24.01
- (7.0.4.24.0) 64bit (built Nov 17 2011))
- with ESMTP id <0MM5009BVZLE2PR0@mailout3.samsung.com> for
- linux-mips@linux-mips.org; Thu, 02 May 2013 18:27:16 +0900 (KST)
-Received: from epcpsbgx4.samsung.com ( [203.254.230.41])
-        by epcpsbgr2.samsung.com (EPCPMTA) with SMTP id AB.F1.19730.47132815; Thu,
- 02 May 2013 18:27:16 +0900 (KST)
-X-AuditID: cbfee68e-b7efa6d000004d12-67-518231741e79
-Received: from epextmailer01 ( [203.254.219.151])
-        by epcpsbgx4.samsung.com (EPCPMTA) with SMTP id AB.D7.30241.17132815; Thu,
- 02 May 2013 18:27:14 +0900 (KST)
-Date:   Thu, 02 May 2013 09:27:13 +0000 (GMT)
-From:   EUNBONG SONG <eunb.song@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 May 2013 11:58:03 +0200 (CEST)
+Received: from mail.nanl.de ([217.115.11.12]:43763 "EHLO mail.nanl.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6834999Ab3EBJ6BvwVG7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 2 May 2013 11:58:01 +0200
+Received: from mail-ve0-f175.google.com (mail-ve0-f175.google.com [209.85.128.175])
+        by mail.nanl.de (Postfix) with ESMTPSA id 0AF2C45F79;
+        Thu,  2 May 2013 09:57:46 +0000 (UTC)
+Received: by mail-ve0-f175.google.com with SMTP id m1so312759ves.6
+        for <multiple recipients>; Thu, 02 May 2013 02:57:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:mime-version:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=q9+281XQMLltY3DJAdhxyUb2+zO2TJv6Vz6inGkQhX4=;
+        b=Klg7GorurwcCYUL41/9E13G6ylTaF6vSLAhPOONQ5UKLlwFSe3fvlTl6Yl0qWkvjhq
+         kCrf1UdEOPFWp8nXyQmya9dae9Lp4j5FlPkousPNsRbxXy8V4qN5Ehd4j1lVAktZiNjT
+         ToZAc5+90M1ixKKtXG3ss4cjTLoq5GUg1ZiRRtV2HUV//X5H8U8Yzdxnjk8sR7TfZKbT
+         2oE/bYtvT21KkIg30Fa8QCD73Wd/vf20Z4lbSK/3aoqKkFlRRDVTRhtlLsHHn53XQfNp
+         JB42+7cE5S7MxiZBKy87ikSPzK4X3TsMnI/yUk+waDMzJc32MPC+H1+Vk8G002cBc8yM
+         28FQ==
+X-Received: by 10.220.202.138 with SMTP id fe10mr1906179vcb.26.1367488676071;
+ Thu, 02 May 2013 02:57:56 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.220.31.73 with HTTP; Thu, 2 May 2013 02:57:35 -0700 (PDT)
+In-Reply-To: <6623143.198271367486832742.JavaMail.weblogic@epml20>
+References: <6623143.198271367486832742.JavaMail.weblogic@epml20>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Thu, 2 May 2013 11:57:35 +0200
+Message-ID: <CAOiHx==2EGhRU9AwvkK_+9FpWpCDSHLsfwBnoK8_9UgWkLAXZA@mail.gmail.com>
 Subject: Re: Re: [PATCH] MIPS: remove USB_EHCI_BIG_ENDIAN_{DESC,MMIO} depends
  on architecture symbol
-To:     Jonas Gorski <jogo@openwrt.org>
+To:     eunb.song@samsung.com
 Cc:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         "florian@openwrt.org" <florian@openwrt.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Reply-to: eunb.song@samsung.com
-MIME-version: 1.0
-X-MTR:  20130502092239095@eunb.song
-Msgkey: 20130502092239095@eunb.song
-X-EPLocale: ko_KR.euc-kr
-X-Priority: 3
-X-EPWebmail-Msg-Type: personal
-X-EPWebmail-Reply-Demand: 0
-X-EPApproval-Locale: 
-X-EPHeader: ML
-X-EPTrCode: 
-X-EPTrName: 
-X-MLAttribute: 
-X-RootMTR: 20130502092239095@eunb.song
-X-ParentMTR: 
-X-ArchiveUser: 
-X-CPGSPASS: N
-Content-transfer-encoding: base64
-Content-type: text/plain; charset=euc-kr
-MIME-version: 1.0
-Message-id: <6623143.198271367486832742.JavaMail.weblogic@epml20>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprIKsWRmVeSWpSXmKPExsVy+t8zTd0Sw6ZAg1tHpC0mTJ3E7sDocXTl
-        WqYAxigum5TUnMyy1CJ9uwSujC2Lm5gK7nFUbO44y9zAuIeji5GTQ0hARaLl/3dGEFtCwERi
-        ydx7LBC2mMSFe+vZuhi5gGqWMUocm7aXGaZo7oOjUIn5jBI7Tj5iAkmwAE3qn74PbBKbgLbE
-        2y8PWEFsYYEUiVWfV4PViAioSnzasYoJpJlZ4BajxIsNB5ghzpCXmHz6MjuIzSsgKHFy5hOo
-        M5Qkrl//zgYRV5bY/KmNDSIuITFr+gVWCJtXYkb7U6h6OYlpX9dAXSotcX7WBkaYdxZ/fwwV
-        55c4dnsH0BEcYL1P7gfDjNm9+QvUeAGJqWcOQrWqS/QuOgs1nk9izcK3LDBjdp1azgzTe3/L
-        XLAfmQUUJaZ0P2SHsLUkvvzYx4buLV4BR4n2/atYJjAqz0KSmoWkfRaSdmQ1CxhZVjGKphYk
-        FxQnpRcZ6RUn5haX5qXrJefnbmKEJIe+HYw3D1gfYkwGxslEZinR5HxgcskriTc0NjOyMDUx
-        NTYytzQjTVhJnFetxTpQSCA9sSQ1OzW1ILUovqg0J7X4ECMTB6dUA6Pf3y3vPxw9IJJ89fCi
-        /rBpMRz+wS9avOVr/mcmiMWsDYjmnLJR7PSWDWe2/Vm3V0gvmlvdQMbgLUtRPWPcIeOXrjuu
-        67DF9Dqp3jrovET9UN2NDb51d2ZWvXUpnHXSpuXaKb+3vy9MPbpn78k9Z+0F32cszSvhvP1I
-        b2flIf097+6r+HKo2W9VYinOSDTUYi4qTgQAAo1rryQDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmphk+LIzCtJLcpLzFFi42I5/e/2dN0Sw6ZAgzMPhSwmTJ3E7sDocXTl
-        WqYAxqgMm4zUxJTUIoXUvOT8lMy8dFsl7+B453hTMwNDXUNLC3MlhbzE3FRbJRefAF23zByg
-        qUoKZYk5pUChgMTiYiV9O5ui/NKSVIWM/OISW6VoIwNjPSNTEz0jYwM9E4NYK0MDAyNToKqE
-        jIwti5uYCu5xVGzuOMvcwLiHo4uRk0NIQEWi5f93RhBbQsBEYu6Do2wQtpjEhXvrgWwuoJr5
-        jBI7Tj5iAkmwADX0T98H1sAmoC3x9ssDVhBbWCBFYtXn1WA1IgKqEp92rGICaWYWuMUo8WLD
-        AWaIbfISk09fZgexeQUEJU7OfMICsU1J4vr172wQcWWJzZ/aoK6QkJg1/QIrhM0rMaP9KVS9
-        nMS0r2uYIWxpifOzNjDCXL34+2OoOL/Esds7gI7gAOt9cj8YZszuzV+gxgtITD1zEKpVXaJ3
-        0Vmo8XwSaxa+ZYEZs+vUcmaY3vtb5oL9yCygKDGl+yE7hK0l8eXHPjZ0b/EKOEq071/FMoFR
-        bhaS1Cwk7bOQtCOrWcDIsopRNLUguaA4Kb3CRK84Mbe4NC9dLzk/dxMjOE09W7KDseGC9SFG
-        AQ5GJR7eD7qNgUKsiWXFlbmHGCU4mJVEeJPkmwKFeFMSK6tSi/Lji0pzUosPMSYDY3Ais5Ro
-        cj4wheaVxBsaGxgbGlqaG5gaGlmQJqwkzvus1TpQSCA9sSQ1OzW1ILUIZgsTB6dUA2O9xax/
-        XF0br2Vkm9+apb99od2XWZzfHlkVr+W3sX7q8vRKiOPkCwY/X/+ZIvS55G7PoaRnl4xUw5fY
-        vzz207jgwOKJS487Cc+eVC6jNbHmgYtNTf5fu1N/n1Xnutr2TZm/4OlmG/X6Ja7/3JP+9wjU
-        hBZWTg7UzEm2PGrI9ovfU/pEHp94QYwSS3FGoqEWc1FxIgAU7VV8lwMAAA==
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-Return-Path: <eunb.song@samsung.com>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36310
+X-archive-position: 36311
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eunb.song@samsung.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -95,18 +58,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-DQo+VGhlc2UgYXJlIHNlbGVjdHMgYW5kIGRvbid0IHByZXZlbnQgYW55b25lIGVsc2UgZnJvbSBh
-bHNvIHNlbGVjdGluZw0KPiB0aGVtLiBJZiB5b3UgbG9vayBhdCB5b3VyIHJlZmVyZW5jZWQgY29t
-bWl0LCB5b3Ugc2VlIGl0IHJlbW92ZWQgdGhlDQo+L2RlcGVuZHMvLCBub3QgdGhlIHNlbGVjdHMu
-IEl0IGFjdHVhbGx5IGFkZGVkIHNlbGVjdHMgdG8gc2V2ZXJhbA0KPiBwbGF0Zm9ybXMuIFBsYXRm
-b3JtcyBhcmUgc3VwcG9zZWQgdG8gc2VsZWN0IHRoZW0gaWYgdGhleSBuZWVkIHRoZW0uDQoNCkhl
-bGxvLiANCkV2ZXJ5IHRpbWUgaSBjb25maWcgd2l0aCBhcmNoL21pcHMvY29uZmlncy9jYXZpdW1f
-b2N0ZW9uX2RlZmNvbmZpZywgdGhlIGZvbGxvd2luZyB3YXJuaW5nIG1lc3NhZ2VzIA0KYXJlIHNo
-b3dlZC4NCndhcm5pbmc6IChNSVBTX1NFQUQzICYmIFBNQ19NU1AgJiYgQ1BVX0NBVklVTV9PQ1RF
-T04pIHNlbGVjdHMgVVNCX0VIQ0lfQklHX0VORElBTl9NTUlPIHdoaWNoIGhhcyB1bm1ldCBkaXJl
-Y3QgZGVwZW5kZW5jaWVzIChVU0JfU1VQUE9SVCAmJiBVU0IgJiYgVVNCX0VIQ0lfSENEKQ0Kd2Fy
-bmluZzogKE1JUFNfU0VBRDMgJiYgUE1DX01TUCAmJiBDUFVfQ0FWSVVNX09DVEVPTikgc2VsZWN0
-cyBVU0JfRUhDSV9CSUdfRU5ESUFOX01NSU8gd2hpY2ggaGFzIHVubWV0IGRpcmVjdCBkZXBlbmRl
-bmNpZXMgKFVTQl9TVVBQT1JUICYmIFVTQiAmJiBVU0JfRUhDSV9IQ0QpDQoNCkFuZCBhZnRlciBh
-cHBseWluZyB0aGlzIHBhdGNoLCB0aGUgd2FybmluZyBtZXNzYWdlcyB3ZXJlIGRpc2FwcGVhcmVk
-LiANCg0KDQo+IEpvbmFz
+On Thu, May 2, 2013 at 11:27 AM, EUNBONG SONG <eunb.song@samsung.com> wrote:
+>
+>>These are selects and don't prevent anyone else from also selecting
+>> them. If you look at your referenced commit, you see it removed the
+>>/depends/, not the selects. It actually added selects to several
+>> platforms. Platforms are supposed to select them if they need them.
+>
+> Hello.
+> Every time i config with arch/mips/configs/cavium_octeon_defconfig, the following warning messages
+> are showed.
+> warning: (MIPS_SEAD3 && PMC_MSP && CPU_CAVIUM_OCTEON) selects USB_EHCI_BIG_ENDIAN_MMIO which has unmet direct dependencies (USB_SUPPORT && USB && USB_EHCI_HCD)
+> warning: (MIPS_SEAD3 && PMC_MSP && CPU_CAVIUM_OCTEON) selects USB_EHCI_BIG_ENDIAN_MMIO which has unmet direct dependencies (USB_SUPPORT && USB && USB_EHCI_HCD)
+>
+> And after applying this patch, the warning messages were disappeared.
+
+But after this patch likely EHCI is also broken on these platforms.
+The solution is to either guard the USB_EHCI_BIG_ENDIAN_MMIO/DESC
+selects with if USB_EHCI_HCD etc, or make
+USB_EHCI_BIG_ENDIAN_MMIO/DESC not depend on USB_EHCI_HCD etc.
+
+As far as I can tell, USB_EHCI_BIG_ENDIAN_MMIO/DESC only have any
+effect on the ehci_hcd code anyway, so removing the dependencies of
+these symbols should be fine and without any side effects, thus allow
+platforms/drivers to select them unconditionally.
+
+Greg, what do you think?
+
+
+Jonas

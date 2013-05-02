@@ -1,126 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Apr 2013 10:45:52 +0200 (CEST)
-Received: from blu0-omc4-s28.blu0.hotmail.com ([65.55.111.167]:7120 "EHLO
-        blu0-omc4-s28.blu0.hotmail.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6821703Ab3D2IpudRe10 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 29 Apr 2013 10:45:50 +0200
-Received: from BLU176-W15 ([65.55.111.136]) by blu0-omc4-s28.blu0.hotmail.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 29 Apr 2013 01:45:45 -0700
-X-EIP:  [eoL/k0M2aTHsWDBMH0ctmIgYxLfD9qlb]
-X-Originating-Email: [programassem@hotmail.com]
-Message-ID: <BLU176-W15FDDC553391B906C42E1AD2B20@phx.gbl>
-From:   shawn Bai <programassem@hotmail.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:     "baixy_009@163.com" <baixy_009@163.com>,
-        "programassem@gmail.com" <programassem@gmail.com>
-Subject: Confused on cache_op(op,addr) definition in r4kcache.h in linux
- source code v3.3.5
-Date:   Mon, 29 Apr 2013 08:45:44 +0000
-Importance: Normal
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-OriginalArrivalTime: 29 Apr 2013 08:45:45.0083 (UTC) FILETIME=[F0402CB0:01CE44B5]
-Return-Path: <programassem@hotmail.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36302
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: programassem@hotmail.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
-
-Hello, everyone,
-
-    I'm very glag to have chance to communicate with you in this maling list.
-
-    I'm involved in a SOC project making use of MIPS24K core.
-    While learning the CACHE aspects in Linux kernel source code v3.3.5,  I found the macro definition for cache operations.
-
-     It goes as:
-
-#define cache_op(op,addr)                        \
-    __asm__ __volatile__(                        \
-    "    .set    push                    \n"    \
-    "    .set    noreorder                \n"    \
-    "    .set    mips3\n\t                \n"    \
-    "    cache    %0, %1                    \n"    \
-    "    .set    pop                    \n"    \
-    :                                \
-    : "i" (op), "R" (*(unsigned char *)(addr)))
-
-
-  "i" (op)   as argument 0 in CACHE instruction,
-  "R" (*(unsigned char *)(addr))   as argument 1 in CACHE instruction
-
-
-  Further, on the other hand, the CACHE instruction in MIPS ISA is like this:
-
-Format:      CACHE op, offset(base)
-
-Purpose: Perform Cache Operation
-
-To perform the cache operation specified by op.
-
-  And as know,  depending on the  op field,   the offset(base) coud be understood accordingly for different meanings.
-
-Well, after the context, here below is what makes me confused.
-
-In the cache_op inline assembly,   
-why "R" (*(unsigned char *)(addr))   is used as the argument 1 of CACHE instruction, instead of   "R" ((unsigned char *)(addr)) ?
-
-the argument 1 numbered from 0  in CACHE instruction in MIPS ISA  should be a address with a offset,  but from the code,  it seems that the value in that address  is passed to CACHE instruction.
-
-Could someone give some help on this?  
-I really appreciate that.
-Thanks in advance.
-
-
-
-
-Best regards,
-Shawn Bai 		 	   		  
-From eunb.song@samsung.com Wed May  1 06:57:09 2013
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 May 2013 06:57:15 +0200 (CEST)
-Received: from mailout3.samsung.com ([203.254.224.33]:27598 "EHLO
-        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823043Ab3EAE5J2qPHG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 May 2013 06:57:09 +0200
-Received: from epcpsbgr2.samsung.com
- (u142.gpu120.samsung.co.kr [203.254.230.142])
- by mailout3.samsung.com (Oracle Communications Messaging Server 7u4-24.01
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 May 2013 09:39:28 +0200 (CEST)
+Received: from mailout2.samsung.com ([203.254.224.25]:31990 "EHLO
+        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6825653Ab3EBHjYIUE90 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 May 2013 09:39:24 +0200
+Received: from epcpsbgr5.samsung.com
+ (u145.gpu120.samsung.co.kr [203.254.230.145])
+ by mailout2.samsung.com (Oracle Communications Messaging Server 7u4-24.01
  (7.0.4.24.0) 64bit (built Nov 17 2011))
- with ESMTP id <0MM3005JISERTKA0@mailout3.samsung.com> for
- linux-mips@linux-mips.org; Wed, 01 May 2013 13:57:00 +0900 (KST)
-Received: from epcpsbgx3.samsung.com ( [203.254.230.43])
-        by epcpsbgr2.samsung.com (EPCPMTA) with SMTP id 3C.FA.19730.C90A0815; Wed,
- 01 May 2013 13:57:00 +0900 (KST)
-X-AuditID: cbfee68e-b7efa6d000004d12-5e-5180a09cbba1
+ with ESMTP id <0MM500JMZUL6S0M0@mailout2.samsung.com> for
+ linux-mips@linux-mips.org; Thu, 02 May 2013 16:39:14 +0900 (KST)
+Received: from epcpsbgx4.samsung.com ( [203.254.230.46])
+        by epcpsbgr5.samsung.com (EPCPMTA) with SMTP id E5.02.19350.12812815; Thu,
+ 02 May 2013 16:39:13 +0900 (KST)
+X-AuditID: cbfee691-b7fe56d000004b96-c1-51821821fc77
 Received: from epextmailer03 ( [203.254.219.153])
-        by epcpsbgx3.samsung.com (EPCPMTA) with SMTP id 97.88.30122.C90A0815; Wed,
- 01 May 2013 13:57:00 +0900 (KST)
-Date:   Wed, 01 May 2013 04:57:00 +0000 (GMT)
+        by epcpsbgx4.samsung.com (EPCPMTA) with SMTP id 38.09.30241.12812815; Thu,
+ 02 May 2013 16:39:13 +0900 (KST)
+Date:   Thu, 02 May 2013 07:39:13 +0000 (GMT)
 From:   EUNBONG SONG <eunb.song@samsung.com>
-Subject: mips; boot fail after merge 3.9+
-To:     "ralf@linux-mips.org" <ralf@linux-mips.org>, tglx@linutronix.de,
+Subject: [PATCH] MIPS: remove USB_EHCI_BIG_ENDIAN_{DESC,MMIO} depends on
+ architecture symbol
+To:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc:     florian@openwrt.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Reply-to: eunb.song@samsung.com
 MIME-version: 1.0
-X-MTR:  20130501041444208@eunb.song
-Msgkey: 20130501041444208@eunb.song
+X-MTR:  20130502073528604@eunb.song
+Msgkey: 20130502073528604@eunb.song
 X-EPLocale: ko_KR.euc-kr
 X-Priority: 3
 X-EPWebmail-Msg-Type: personal
@@ -130,47 +37,47 @@ X-EPHeader: ML
 X-EPTrCode: 
 X-EPTrName: 
 X-MLAttribute: 
-X-RootMTR: 20130501041444208@eunb.song
+X-RootMTR: 20130502073528604@eunb.song
 X-ParentMTR: 
 X-ArchiveUser: 
 X-CPGSPASS: N
 Content-transfer-encoding: base64
 Content-type: text/plain; charset=euc-kr
 MIME-version: 1.0
-Message-id: <20522420.158691367384219315.JavaMail.weblogic@epml17>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnleLIzCtJLcpLzFFi42I5/e+Ztu6cBQ2BBjM+ylpMmDqJ3YHR4+jK
-        tUwBjFFcNimpOZllqUX6dglcGSsu7GEueGJWMXnmZdYGxjWmXYycHEICKhIt/78zgtgSAiYS
-        je1H2SFsMYkL99azQdQsY5RobDWHqVk8/TRQnAsoPp9RouPEE7BmFqBBK3t6wWw2AW2Jt18e
-        sILYwgKaEnceHWIGaRARaGWUWH3mBlgRs4CjxKPLd5ghNshLTD59GWwzr4CgxMmZT1ggtilJ
-        vNi9kBUirizx49NpJoi4hMSs6RdYIWxeiRntT6Hq5SSmfV3DDGFLS5yftYER5pvF3x9Dxfkl
-        jt3eATSHA6z3yf1gmDG7N39hg7AFJKaeOQjVqi7RsmE6lM0nsWbhWxaYMbtOLWeG6b2/ZS4T
-        xFuKElO6H7JD2FoSX37sY0P1FgeQ7STxY7nOBEblWUgys5B0z0LSjaxmASPLKkbR1ILkguKk
-        9CIjveLE3OLSvHS95PzcTYyQxNC3g/HmAetDjMnAKJnILCWanA9MLHkl8YbGZkYWpiamxkbm
-        lmakCSuJ86q1WAcKCaQnlqRmp6YWpBbFF5XmpBYfYmTi4JRqYLQKSm82F3g890Ldqb2N8pOn
-        CH541rrmSVlYQ992m2297aHdxrrBaq8SN0xyijUrzDmqyqY5R1Aiwv+n8sylagv+vzdQM5/G
-        ceuS9kGh7JU3VazVF4vIH2Bt1LT7aPCsYFfctvt67X5F+u85JDTVwxXtlR+Z5Zab+c1mUm1c
-        727mcXQLazyXEktxRqKhFnNRcSIAccQFkSIDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpmk+LIzCtJLcpLzFFi42I5/e/2TN05CxoCDS6ek7KYMHUSuwOjx9GV
-        a5kCGKMybDJSE1NSixRS85LzUzLz0m2VvIPjneNNzQwMdQ0tLcyVFPISc1NtlVx8AnTdMnOA
-        pioplCXmlAKFAhKLi5X07WyK8ktLUhUy8otLbJWijQyM9YxMTfSMjA30TAxirQwNDIxMgaoS
-        MjJWXNjDXPDErGLyzMusDYxrTLsYOTmEBFQkWv5/ZwSxJQRMJBZPP80GYYtJXLi3HsjmAqqZ
-        zyjRceIJWBELUMPKnl4wm01AW+LtlwesILawgKbEnUeHmEEaRARaGSVWn7kBVsQs4Cjx6PId
-        Zoht8hKTT19mB7F5BQQlTs58wgKxTUnixe6FrBBxZYkfn04zQcQlJGZNv8AKYfNKzGh/ClUv
-        JzHt6xpmCFta4vysDYwwVy/+/hgqzi9x7PYOoDkcYL1P7gfDjNm9+QvUkwISU88chGpVl2jZ
-        MB3K5pNYs/AtC8yYXaeWM8P03t8ylwniLUWJKd0P2SFsLYkvP/axoXqLA8h2kvixXGcCo9ws
-        JJlZSLpnIelGVrOAkWUVo2hqQXJBcVJ6hbFecWJucWleul5yfu4mRnCSerZ4B+P/89aHGAU4
-        GJV4eHdcqA8UYk0sK67MPcQowcGsJMLLMaUhUIg3JbGyKrUoP76oNCe1+BBjMjACJzJLiSbn
-        AxNoXkm8obGBsaGhpbmBqaGRBWnCSuK8z1qtA4UE0hNLUrNTUwtSi2C2MHFwSjUwFmsdWWkx
-        u+tMUuHmmrzDPdOePHycn/h7K4dZuIqt67qjGx0drhwvtL0prlxqceo8G9+So1vi7BkYTr7h
-        PRz8QMbJOFTrstHES3ZWrU8Z3NtmBNTk2LKXJoVwfi7/f3ZD3FqnammXPZ5VQcfC9rF27Hxb
-        u8ZnYft/hyzDhsYHc0JPi20qNHJWYinOSDTUYi4qTgQAwjjfcJYDAAA=
+Message-id: <26714880.190151367480353110.JavaMail.weblogic@epv6ml12>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprAKsWRmVeSWpSXmKPExsVy+t8zPV1FiaZAg96jJhYTpk5id2D0OLpy
+        LVMAYxSXTUpqTmZZapG+XQJXxquPM9kLNvBXdB55x97A+IOvi5GTQ0hARaLl/3dGEFtCwERi
+        xdxFbBC2mMSFe+uBbC6gmmWMEsve7mSHKfr4dC4jRGI+o8Th27+YQRIsQJMOv/oM1s0moC3x
+        9ssDVhBbWCBG4uyiHrBmEYEsib1bFoHVMwvEShz93MEEcYW8xOTTl8FqeAUEJU7OfMICsUxJ
+        4veVoywQcWWJ1g0/oI6QkJg1/QIrhM0rMaP9KVS9nMS0r2uYIWxpifOzNjDCfLP4+2OoOL/E
+        sds7gPZygPU+uR8MM2b35i9QzwtITD1zEKpVXeLT3IdQNp/EmoVvWWDG7Dq1nBmm9/6WuUwQ
+        bylKTOl+yA5ha0l8+bGPDd1bvAIuEs2n1rNOYFSehSQ1C0n7LCTtyGoWMLKsYhRNLUguKE5K
+        LzLVK07MLS7NS9dLzs/dxAhJDRN3MN4/YH2IMRkYJROZpUST84GpJa8k3tDYzMjC1MTU2Mjc
+        0ow0YSVxXvUW60AhgfTEktTs1NSC1KL4otKc1OJDjEwcnFINjDmvl6zcy1kjmf6zffs6dkv9
+        SfYT5iRrrdtzg+1J1895HqdmpSQkbux2entU4cqWdZ4Wcgf0XhxJULrH/ax/0+WkI8pbdgTx
+        znbfPjNUXWrjnu2Schf3LFzHUGKS6PPBcHp7hWty54obt350RjjOuWV3aomOofR94dLTfxyK
+        2W+Es/Mu2NS66YsSS3FGoqEWc1FxIgAPXUkBIwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpmk+LIzCtJLcpLzFFi42I5/e/2TF1FiaZAg7V9RhYTpk5id2D0OLpy
+        LVMAY1SGTUZqYkpqkUJqXnJ+SmZeuq2Sd3C8c7ypmYGhrqGlhbmSQl5ibqqtkotPgK5bZg7Q
+        VCWFssScUqBQQGJxsZK+nU1RfmlJqkJGfnGJrVK0kYGxnpGpiZ6RsYGeiUGslaGBgZEpUFVC
+        RsarjzPZCzbwV3QeecfewPiDr4uRk0NIQEWi5f93RhBbQsBE4uPTuVC2mMSFe+vZuhi5gGrm
+        M0ocvv2LGSTBAtRw+NVnNhCbTUBb4u2XB6wgtrBAjMTZRT3sILaIQJbE3i2LwOqZBWIljn7u
+        YIJYJi8x+fRlsBpeAUGJkzOfsEAsU5L4feUoC0RcWaJ1ww92iLiExKzpF1ghbF6JGe1Poerl
+        JKZ9XcMMYUtLnJ+1Ae7oxd8fQ8X5JY7d3gG0lwOs98n9YJgxuzd/YYOwBSSmnjkI1aou8Wnu
+        QyibT2LNwrcsMGN2nVrODNN7f8tcJoi3FCWmdD9kh7C1JL782MeG7i1eAReJ5lPrWScwys1C
+        kpqFpH0WknZkNQsYWVYxiqYWJBcUJ6VXmOgVJ+YWl+al6yXn525iBCepZ0t2MDZcsD7EKMDB
+        qMTD+0G3MVCINbGsuDL3EKMEB7OSCO+C10Ah3pTEyqrUovz4otKc1OJDjMnACJzILCWanA9M
+        oHkl8YbGBsaGhpbmBqaGRhakCSuJ8z5rtQ4UEkhPLEnNTk0tSC2C2cLEwSnVwLigLHnmI77Z
+        ErosHVc/Ps3e4Gy80PBe2j6xoPUnfs141FirKHKS4VBM6eQ7rx+vLpL/sGvO1Wesmznddonf
+        70i+J+zAlFGcf72X8bTR3aA2ixbN43mZmgkcSSL5BfOTjRR0L9+4udiNZ6bM86vn7lvsWn2u
+        OUrXWetGTUTba9U/v0sOcR4+e1SJpTgj0VCLuag4EQCz1VIClgMAAA==
 DLP-Filter: Pass
 X-CFilter-Loop: Reflected
 Return-Path: <eunb.song@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36303
+X-archive-position: 36304
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -187,93 +94,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-DQpIZWxsby4gDQpBZnRlciBtZXJnZSBjYXZpdW0gYm9hcmQgYm9vdHMgZmFpbCwgYm9vdCBsb2cg
-bWVzc2FnZXMgYXJlIGFzIGZvbGxvd3MuDQpJIGVuYWJsZWQgaW5pdGNhbGxfZGVidWcgZm9yIGRl
-YnVnZ2luZy4gDQoNClsgICAgMC4wMDAwMDBdIEluaXRpYWxpemluZyBjZ3JvdXAgc3Vic3lzIGNw
-dXNldA0KWyAgICAwLjAwMDAwMF0gSW5pdGlhbGl6aW5nIGNncm91cCBzdWJzeXMgY3B1YWNjdA0K
-WyAgICAwLjAwMDAwMF0gTGludXggdmVyc2lvbiAzLjkuMCsgKGVic29uZ0B1YmkpIChnY2MgdmVy
-c2lvbiA0LjQuMSAoTW9udGFWaXN0YSBMaW51eCBHKysgNC40LTEzMDIwMTIxMzgpICkgIzIzIFNN
-UCBQUkVFTVBUIFdlZCBNYXkgMSAxMzo0NzoyNSBLU1QgMjAxMw0KWyAgICAwLjAwMDAwMF0gb2N0
-ZW9uX2Jvb3RpbmZvLT5kcmFtX3NpemU6IDQwMDANClsgICAgMC4wMDAwMDBdIEVuYWJsaW5nIHRh
-ZDEgZXJyb3IgaW50ZXJydXB0DQpbICAgIDAuMDAwMDAwXSBFbmFibGluZyB0YWQyIGVycm9yIGlu
-dGVycnVwdA0KWyAgICAwLjAwMDAwMF0gRW5hYmxpbmcgdGFkMyBlcnJvciBpbnRlcnJ1cHQNClsg
-ICAgMC4wMDAwMDBdIENWTVNFRyBzaXplOiAyIGNhY2hlIGxpbmVzICgyNTYgYnl0ZXMpDQpbICAg
-IDAuMDAwMDAwXSBDYXZpdW0gTmV0d29ya3MgU0RLLTIuMS4wLXA3IGJ1aWxkIDQ0Mg0KWyAgICAw
-LjAwMDAwMF0gYm9vdGNvbnNvbGUgW2Vhcmx5MF0gZW5hYmxlZA0KWyAgICAwLjAwMDAwMF0gQ1BV
-IHJldmlzaW9uIGlzOiAwMDBkOTEwMSAoQ2F2aXVtIE9jdGVvbiBJSSkNClsgICAgMC4wMDAwMDBd
-IENoZWNraW5nIGZvciB0aGUgbXVsdGlwbHkvc2hpZnQgYnVnLi4uIG5vLg0KWyAgICAwLjAwMDAw
-MF0gQ2hlY2tpbmcgZm9yIHRoZSBkYWRkaXUgYnVnLi4uIG5vLg0KWyAgICAwLjAwMDAwMF0gRGV0
-ZXJtaW5lZCBwaHlzaWNhbCBSQU0gbWFwOg0KWyAgICAwLjAwMDAwMF0gIG1lbW9yeTogMDAwMDAw
-MDAwNmMwMDAwMCBAIDAwMDAwMDAwMDExMDAwMDAgKHVzYWJsZSkNClsgICAgMC4wMDAwMDBdICBt
-ZW1vcnk6IDAwMDAwMDAwMDdjMDAwMDAgQCAwMDAwMDAwMDA4MjAwMDAwICh1c2FibGUpDQpbICAg
-IDAuMDAwMDAwXSAgbWVtb3J5OiAwMDAwMDAwMDExODAwMDAwIEAgMDAwMDAwMDAzMDAwMDAwMCAo
-dXNhYmxlKQ0KWyAgICAwLjAwMDAwMF0gIG1lbW9yeTogMDAwMDAwMDAwMGY4NTc0MCBAIDAwMDAw
-MDAwMDAxMDAwMDAgKHVzYWJsZSkNClsgICAgMC4wMDAwMDBdIFdhc3RpbmcgMTQzMzYgYnl0ZXMg
-Zm9yIHRyYWNraW5nIDI1NiB1bnVzZWQgcGFnZXMNClsgICAgMC4wMDAwMDBdIEluaXRyZCBub3Qg
-Zm91bmQgb3IgZW1wdHkgLSBkaXNhYmxpbmcgaW5pdHJkDQpbICAgIDAuMDAwMDAwXSBzb2Z0d2Fy
-ZSBJTyBUTEIgW21lbSAweDAxYjhhMDAwLTB4MDFiY2EwMDBdICgwTUIpIG1hcHBlZCBhdCBbYTgw
-MDAwMDAwMWI4YTAwMC1hODAwMDAwMDAxYmM5ZmZmXQ0KWyAgICAwLjAwMDAwMF0gWm9uZSByYW5n
-ZXM6DQpbICAgIDAuMDAwMDAwXSAgIERNQTMyICAgIFttZW0gMHgwMDEwMDAwMC0weGVmZmZmZmZm
-XQ0KWyAgICAwLjAwMDAwMF0gICBOb3JtYWwgICBlbXB0eQ0KWyAgICAwLjAwMDAwMF0gTW92YWJs
-ZSB6b25lIHN0YXJ0IGZvciBlYWNoIG5vZGUNClsgICAgMC4wMDAwMDBdIEVhcmx5IG1lbW9yeSBu
-b2RlIHJhbmdlcw0KWyAgICAwLjAwMDAwMF0gICBub2RlICAgMDogW21lbSAweDAwMTAwMDAwLTB4
-MDEwODRmZmZdDQpbICAgIDAuMDAwMDAwXSAgIG5vZGUgICAwOiBbbWVtIDB4MDExMDAwMDAtMHgw
-N2NmZmZmZl0NClsgICAgMC4wMDAwMDBdICAgbm9kZSAgIDA6IFttZW0gMHgwODIwMDAwMC0weDBm
-ZGZmZmZmXQ0KWyAgICAwLjAwMDAwMF0gICBub2RlICAgMDogW21lbSAweDMwMDAwMDAwLTB4NDE3
-ZmZmZmZdDQpbICAgIDAuMDAwMDAwXSBDYXZpdW0gSG90cGx1ZzogQXZhaWxhYmxlIGNvcmVtYXNr
-IDB4ZmZmZmZmMDANClsgICAgMC4wMDAwMDBdIFByaW1hcnkgaW5zdHJ1Y3Rpb24gY2FjaGUgMzdr
-QiwgdmlydHVhbGx5IHRhZ2dlZCwgMzcgd2F5LCA4IHNldHMsIGxpbmVzaXplIDEyOCBieXRlcy4N
-ClsgICAgMC4wMDAwMDBdIFByaW1hcnkgZGF0YSBjYWNoZSAzMmtCLCAzMi13YXksIDggc2V0cywg
-bGluZXNpemUgMTI4IGJ5dGVzLg0KWyAgICAwLjAwMDAwMF0gUEVSQ1BVOiBFbWJlZGRlZCAxMSBw
-YWdlcy9jcHUgQGE4MDAwMDAwMDFiZWIwMDAgczEyODAwIHI4MTkyIGQyNDA2NCB1NDUwNTYNClsg
-ICAgMC4wMDAwMDBdIEJ1aWx0IDEgem9uZWxpc3RzIGluIFpvbmUgb3JkZXIsIG1vYmlsaXR5IGdy
-b3VwaW5nIG9uLiAgVG90YWwgcGFnZXM6IDEzMzE5OA0KWyAgICAwLjAwMDAwMF0gS2VybmVsIGNv
-bW1hbmQgbGluZTogIHJvb3Q9L2Rldi9uZnMgcncgbmZzcm9vdD0xNjUuMjEzLjE3Ni4xNDU6L2hv
-bWUvZWJzb25nL3Byb2plY3QvcHJlc21iL2FwYy9Qa2cvbmZzcm9vdC93ZWM4NTAwIGlwPTE2NS4y
-MTMuMTc2LjEwODoxNjUuMjEzLjE3Ni4xNDU6MTY1LjIxMy4xNzYuMToyNTUuMjU1LjI1NS4wOjpt
-Z210MCBjb25zb2xlPXR0eVMwLDExNTIwMA0KWyAgICAwLjAwMDAwMF0gUElEIGhhc2ggdGFibGUg
-ZW50cmllczogNDA5NiAob3JkZXI6IDMsIDMyNzY4IGJ5dGVzKQ0KWyAgICAwLjAwMDAwMF0gRGVu
-dHJ5IGNhY2hlIGhhc2ggdGFibGUgZW50cmllczogMTMxMDcyIChvcmRlcjogOCwgMTA0ODU3NiBi
-eXRlcykNClsgICAgMC4wMDAwMDBdIElub2RlLWNhY2hlIGhhc2ggdGFibGUgZW50cmllczogNjU1
-MzYgKG9yZGVyOiA3LCA1MjQyODggYnl0ZXMpDQpbICAgIDAuMDAwMDAwXSBNZW1vcnk6IDUxMDE2
-MGsvNTQwMTgwayBhdmFpbGFibGUgKDU4MTFrIGtlcm5lbCBjb2RlLCAzMDAyMGsgcmVzZXJ2ZWQs
-IDg5MzNrIGRhdGEsIDI5MmsgaW5pdCwgMGsgaGlnaG1lbSkNClsgICAgMC4wMDAwMDBdIFByZWVt
-cHRpYmxlIGhpZXJhcmNoaWNhbCBSQ1UgaW1wbGVtZW50YXRpb24uDQpbICAgIDAuMDAwMDAwXSBO
-Ul9JUlFTOjQ1Mw0KWyAgICAwLjAwMDAwMF0gQ29uc29sZTogY29sb3VyIGR1bW15IGRldmljZSA4
-MHgyNQ0KWyAgIDI2LjcwMTE2N10gQ2FsaWJyYXRpbmcgZGVsYXkgbG9vcCAoc2tpcHBlZCkgcHJl
-c2V0IHZhbHVlLi4gMjQwMC4wMCBCb2dvTUlQUyAobHBqPTEyMDAwMDAwKQ0KWyAgIDI2LjcwOTUw
-N10gcGlkX21heDogZGVmYXVsdDogMzI3NjggbWluaW11bTogMzAxDQpbICAgMjYuNzE0MTYyXSBT
-ZWN1cml0eSBGcmFtZXdvcmsgaW5pdGlhbGl6ZWQNClsgICAyNi43MTgyMThdIE1vdW50LWNhY2hl
-IGhhc2ggdGFibGUgZW50cmllczogMjU2DQpbICAgMjYuNzIzMzk4XSBJbml0aWFsaXppbmcgY2dy
-b3VwIHN1YnN5cyBkZXZpY2VzDQpbICAgMjYuNzI3NjY5XSBJbml0aWFsaXppbmcgY2dyb3VwIHN1
-YnN5cyBmcmVlemVyDQpbICAgMjYuNzMyMTMxXSBDaGVja2luZyBmb3IgdGhlIGRhZGRpIGJ1Zy4u
-LiBuby4NClsgICAyNi43MzY2MDddIGNhbGxpbmcgIGNubWlwc19jdTJfc2V0dXArMHgwLzB4YyBA
-IDENClsgICAyNi43NDExMzldIGluaXRjYWxsIGNubWlwc19jdTJfc2V0dXArMHgwLzB4YyByZXR1
-cm5lZCAwIGFmdGVyIDAgdXNlY3MNClsgICAyNi43NDc2NTldIGNhbGxpbmcgIHNwYXduX2tzb2Z0
-aXJxZCsweDAvMHgzNCBAIDENCg0KSSBmb3VuZCB0aGlzIGlzc3VlIGFmdGVyIGNkYmVkYzYxYzhk
-MDEyMmFkNjgyODE1OTM2ZjBkMTFkZjFmZTVmNTcuIA0KQW5kIGkgZm91bmQgc29tZXRoaW5nIHN0
-cmFuZ2UuIEkgcmFuIHRoZSBnaXQgc2hvdyBmb3IgdGhpcyBjb21taXQuDQpBcyBiZWxvdyAic2Vs
-ZWN0IEdFTkVSSUNfSURMRV9MT09QIiBpcyBhZGRlZCBmb3IgQ09ORklHX01JUFMuIA0KYnV0IHRo
-ZSBsYXRlc3QgYXJjaC9taXBzL0tjb25maWcgZmlsZSBoYXMgbm90IHRoaXMgb25lLiBJIGhhdmUg
-dHJpZWQgdG8gZmluZCB3aGVuIHRoaXMgaXMgZ29uZS4gYnV0IGkgY2FuJ3QgZmluZC4NCklzIHRo
-ZXJlIGFueSBwcm9ibGVtIHdpdGggdGhpcz8gDQoNCg0KY29tbWl0IGNkYmVkYzYxYzhkMDEyMmFk
-NjgyODE1OTM2ZjBkMTFkZjFmZTVmNTcNCkF1dGhvcjogVGhvbWFzIEdsZWl4bmVyIDx0Z2x4QGxp
-bnV0cm9uaXguZGU+DQpEYXRlOiAgIFRodSBNYXIgMjEgMjI6NDk6NTIgMjAxMyArMDEwMA0KDQog
-ICAgbWlwczogVXNlIGdlbmVyaWMgaWRsZSBsb29wDQoNCiAgICBTaWduZWQtb2ZmLWJ5OiBUaG9t
-YXMgR2xlaXhuZXIgPHRnbHhAbGludXRyb25peC5kZT4NCiAgICBDYzogTGludXMgVG9ydmFsZHMg
-PHRvcnZhbGRzQGxpbnV4LWZvdW5kYXRpb24ub3JnPg0KICAgIENjOiBSdXN0eSBSdXNzZWxsIDxy
-dXN0eUBydXN0Y29ycC5jb20uYXU+DQogICAgQ2M6IFBhdWwgTWNLZW5uZXkgPHBhdWxtY2tAbGlu
-dXgudm5ldC5pYm0uY29tPg0KICAgIENjOiBQZXRlciBaaWpsc3RyYSA8cGV0ZXJ6QGluZnJhZGVh
-ZC5vcmc+DQogICAgUmV2aWV3ZWQtYnk6IENjOiBTcml2YXRzYSBTLiBCaGF0IDxzcml2YXRzYS5i
-aGF0QGxpbnV4LnZuZXQuaWJtLmNvbT4NCiAgICBDYzogTWFnbnVzIERhbW0gPG1hZ251cy5kYW1t
-QGdtYWlsLmNvbT4NCiAgICBDYzogUmFsZiBCYWVjaGxlIDxyYWxmQGxpbnV4LW1pcHMub3JnPg0K
-ICAgIExpbms6IGh0dHA6Ly9sa21sLmtlcm5lbC5vcmcvci8yMDEzMDMyMTIxNTIzNC43NTQ5NTQ4
-NzFAbGludXRyb25peC5kZQ0KICAgIFNpZ25lZC1vZmYtYnk6IFRob21hcyBHbGVpeG5lciA8dGds
-eEBsaW51dHJvbml4LmRlPg0KDQpkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL0tjb25maWcgYi9hcmNo
-L21pcHMvS2NvbmZpZw0KaW5kZXggNTEyNDRiZi4uZTFhM2QwMiAxMDA2NDQNCi0tLSBhL2FyY2gv
-bWlwcy9LY29uZmlnDQorKysgYi9hcmNoL21pcHMvS2NvbmZpZw0KQEAgLTM0LDYgKzM0LDcgQEAg
-Y29uZmlnIE1JUFMNCiAgICAgICAgc2VsZWN0IEhBVkVfTUVNQkxPQ0tfTk9ERV9NQVANCiAgICAg
-ICAgc2VsZWN0IEFSQ0hfRElTQ0FSRF9NRU1CTE9DSw0KICAgICAgICBzZWxlY3QgR0VORVJJQ19T
-TVBfSURMRV9USFJFQUQNCisgICAgICAgc2VsZWN0IEdFTkVSSUNfSURMRV9MT09QDQogICAgICAg
-IHNlbGVjdCBCVUlMRFRJTUVfRVhUQUJMRV9TT1JUDQogICAgICAgIHNlbGVjdCBHRU5FUklDX0NM
-T0NLRVZFTlRTDQogICAgICAgIHNlbGVjdCBHRU5FUklDX0NNT1NfVVBEQVRFDQo=
+DQpUaGlzIHBhdGNoIHJlbW92ZXMgdGhlIGFyY2hpdGVjdHVyZSBzcGVjaWZpYyBzeW1ib2xzIHdo
+aWNoIHByZXZlbnQgdGhlc2UNCmNvbmZpZ3VyYXRpb24gc3ltYm9scyBmcm9tIGJlaW5nIHNlbGVj
+dGVkIGJ5IHBsYXRmb3Jtcy9hcmNoaXRlY3R1cmVzIHJlcXVpcmluZyBpdC4NCkkgcmVmZXJlbmNl
+IGNvbW1pdCA5Mjk2ZDk0ZDgzNjQ5ZTFjMmYyNWM4N2RjNGVhZDljMmFiMDczMzA1Lg0KDQpTaWdu
+ZWQtb2ZmLWJ5OiBFdW5ib25nIFNvbmcgPGV1bmIuc29uZ0BzYW1zdW5nLmNvbT4NCi0tLQ0KIGFy
+Y2gvbWlwcy9LY29uZmlnIHwgICAgNSAtLS0tLQ0KIDEgZmlsZXMgY2hhbmdlZCwgMCBpbnNlcnRp
+b25zKCspLCA1IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL0tjb25maWcg
+Yi9hcmNoL21pcHMvS2NvbmZpZw0KaW5kZXggZTVmMzc5NC4uN2RkM2I2NSAxMDA2NDQNCi0tLSBh
+L2FyY2gvbWlwcy9LY29uZmlnDQorKysgYi9hcmNoL21pcHMvS2NvbmZpZw0KQEAgLTM1NSw4ICsz
+NTUsNiBAQCBjb25maWcgTUlQU19TRUFEMw0KIAlzZWxlY3QgU1lTX1NVUFBPUlRTX0xJVFRMRV9F
+TkRJQU4NCiAJc2VsZWN0IFNZU19TVVBQT1JUU19TTUFSVE1JUFMNCiAJc2VsZWN0IFVTQl9BUkNI
+X0hBU19FSENJDQotCXNlbGVjdCBVU0JfRUhDSV9CSUdfRU5ESUFOX0RFU0MNCi0Jc2VsZWN0IFVT
+Ql9FSENJX0JJR19FTkRJQU5fTU1JTw0KIAlzZWxlY3QgVVNFX09GDQogCWhlbHANCiAJICBUaGlz
+IGVuYWJsZXMgc3VwcG9ydCBmb3IgdGhlIE1JUFMgVGVjaG5vbG9naWVzIFNFQUQzIGV2YWx1YXRp
+b24NCkBAIC00MDQsOCArNDAyLDYgQEAgY29uZmlnIFBNQ19NU1ANCiAJc2VsZWN0IElSUV9DUFUN
+CiAJc2VsZWN0IFNFUklBTF84MjUwDQogCXNlbGVjdCBTRVJJQUxfODI1MF9DT05TT0xFDQotCXNl
+bGVjdCBVU0JfRUhDSV9CSUdfRU5ESUFOX01NSU8NCi0Jc2VsZWN0IFVTQl9FSENJX0JJR19FTkRJ
+QU5fREVTQw0KIAloZWxwDQogCSAgVGhpcyBhZGRzIHN1cHBvcnQgZm9yIHRoZSBQTUMtU2llcnJh
+IGZhbWlseSBvZiBNdWx0aS1TZXJ2aWNlDQogCSAgUHJvY2Vzc29yIFN5c3RlbS1Pbi1BLUNoaXBz
+LiAgVGhlc2UgcGFydHMgaW5jbHVkZSBhIG51bWJlcg0KQEAgLTE0MzUsNyArMTQzMSw2IEBAIGNv
+bmZpZyBDUFVfQ0FWSVVNX09DVEVPTg0KIAlzZWxlY3QgQ1BVX1NVUFBPUlRTX0hVR0VQQUdFUw0K
+IAlzZWxlY3QgTElCRkRUDQogCXNlbGVjdCBVU0VfT0YNCi0Jc2VsZWN0IFVTQl9FSENJX0JJR19F
+TkRJQU5fTU1JTw0KIAloZWxwDQogCSAgVGhlIENhdml1bSBPY3Rlb24gcHJvY2Vzc29yIGlzIGEg
+aGlnaGx5IGludGVncmF0ZWQgY2hpcCBjb250YWluaW5nDQogCSAgbWFueSBldGhlcm5ldCBoYXJk
+d2FyZSB3aWRnZXRzIGZvciBuZXR3b3JraW5nIHRhc2tzLiBUaGUgcHJvY2Vzc29yDQotLSANCjEu
+Ny4wLjQNCg==

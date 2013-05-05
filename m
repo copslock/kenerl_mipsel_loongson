@@ -1,36 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 May 2013 07:48:00 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:10260 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 May 2013 04:42:50 +0200 (CEST)
+Received: from gate.crashing.org ([63.228.1.57]:35374 "EHLO gate.crashing.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817088Ab3EDFr6KK247 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 4 May 2013 07:47:58 +0200
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "blogic@openwrt.org" <blogic@openwrt.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>
-Subject: Test fix patches for multiple platforms.
-Thread-Topic: Test fix patches for multiple platforms.
-Thread-Index: AQHOSIro/F+xNrVOOUGhryRVKuOe5A==
-Date:   Sat, 4 May 2013 05:47:47 +0000
-Message-ID: <0573B2AE5BBFFC408CC8740092293B5ACCE73E@bamail02.ba.imgtec.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.64.117]
-Content-Type: multipart/mixed;
-        boundary="_004_0573B2AE5BBFFC408CC8740092293B5ACCE73Ebamail02baimgteco_"
-MIME-Version: 1.0
-X-SEF-Processed: 7_3_0_01181__2013_05_04_06_47_52
-Return-Path: <Steven.Hill@imgtec.com>
+        id S6816285Ab3EECmrapBNW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 5 May 2013 04:42:47 +0200
+Received: from [127.0.0.1] (localhost.localdomain [127.0.0.1])
+        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id r452fnu1012510;
+        Sat, 4 May 2013 21:41:50 -0500
+Message-ID: <1367721709.11982.37.camel@pasglop>
+Subject: Re: [PATCH v8 1/3] of/pci: Unify pci_process_bridge_OF_ranges from
+ Microblaze and PowerPC
+From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To:     Andrew Murray <Andrew.Murray@arm.com>
+Cc:     linux-mips@linux-mips.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        jgunthorpe@obsidianresearch.com, linux@arm.linux.org.uk,
+        siva.kallam@samsung.com, linux-pci@vger.kernel.org,
+        devicetree-discuss@lists.ozlabs.org, jg1.han@samsung.com,
+        Liviu.Dudau@arm.com, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, kgene.kim@samsung.com,
+        bhelgaas@google.com, suren.reddy@samsung.com,
+        linux-arm-kernel@lists.infradead.org, monstr@monstr.eu,
+        paulus@samba.org, thomas.petazzoni@free-electrons.com,
+        thierry.reding@avionic-design.de, thomas.abraham@linaro.org,
+        arnd@arndb.de, linus.walleij@linaro.org, juhosg@openwrt.org,
+        grant.likely@linaro.org, Rob Herring <robherring2@gmail.com>
+Date:   Sun, 05 May 2013 12:41:49 +1000
+In-Reply-To: <1366627295-16964-2-git-send-email-Andrew.Murray@arm.com>
+References: <1366627295-16964-1-git-send-email-Andrew.Murray@arm.com>
+         <1366627295-16964-2-git-send-email-Andrew.Murray@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.6.2-0ubuntu0.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <benh@kernel.crashing.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36323
+X-archive-position: 36324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: benh@kernel.crashing.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,206 +53,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---_004_0573B2AE5BBFFC408CC8740092293B5ACCE73Ebamail02baimgteco_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+On Mon, 2013-04-22 at 11:41 +0100, Andrew Murray wrote:
+> The pci_process_bridge_OF_ranges function, used to parse the "ranges"
+> property of a PCI host device, is found in both Microblaze and PowerPC
+> architectures. These implementations are nearly identical. This patch
+> moves this common code to a common place.
 
-I wanted to just post these patches real quick before I amble off to bed. B=
-ased upon the errors I saw yesterday, I broke Decstation, KVM, AR7, and a s=
-ome modules not linking. I have attached three patches that fix all of the =
-build errors people saw for the 3.10 merge thus far. Please give me feedbac=
-k and let me know if anything else is broken. Thanks.=0A=
-=0A=
--Steve=
+What's happening with this ? I'd like to avoid that patch for now
+as I'm doing some changes to pci_process_bridge_OF_ranges
+which are fairly urgent (I might even stick them in the current
+merge window) to deal with memory windows having separate offsets.
 
---_004_0573B2AE5BBFFC408CC8740092293B5ACCE73Ebamail02baimgteco_
-Content-Type: text/x-patch; name="ar7-fix.patch"
-Content-Description: ar7-fix.patch
-Content-Disposition: attachment; filename="ar7-fix.patch"; size=300;
-	creation-date="Sat, 04 May 2013 05:43:59 GMT";
-	modification-date="Sat, 04 May 2013 05:43:59 GMT"
-Content-Transfer-Encoding: base64
+There's also a few hacks in there that are really ppc specific...
 
-ZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9hcjcvbWVtb3J5LmMgYi9hcmNoL21pcHMvYXI3L21lbW9y
-eS5jCmluZGV4IDI4YWJmZWUuLjkyZGZhNDggMTAwNjQ0Ci0tLSBhL2FyY2gvbWlwcy9hcjcvbWVt
-b3J5LmMKKysrIGIvYXJjaC9taXBzL2FyNy9tZW1vcnkuYwpAQCAtMzAsNyArMzAsNiBAQAogI2lu
-Y2x1ZGUgPGFzbS9zZWN0aW9ucy5oPgogCiAjaW5jbHVkZSA8YXNtL21hY2gtYXI3L2FyNy5oPgot
-I2luY2x1ZGUgPGFzbS9taXBzLWJvYXJkcy9wcm9tLmg+CiAKIHN0YXRpYyBpbnQgX19pbml0IG1l
-bXNpemUodm9pZCkKIHsK
+I think the right long term approach is to change the way powerpc
+(and microblaze ?) initializes PCI host bridges. Move it away from
+setup_arch() (which is a PITA anyway since it's way too early) to
+an early init call of some sort, and encapsulate the new struct
+pci_host_bridge.
 
---_004_0573B2AE5BBFFC408CC8740092293B5ACCE73Ebamail02baimgteco_
-Content-Type: text/x-patch; name="coherentio-fix.patch"
-Content-Description: coherentio-fix.patch
-Content-Disposition: attachment; filename="coherentio-fix.patch"; size=930;
-	creation-date="Sat, 04 May 2013 05:43:59 GMT";
-	modification-date="Sat, 04 May 2013 05:43:59 GMT"
-Content-Transfer-Encoding: base64
+We can then directly configure the host bridge windows rather
+than having this "intermediary" set of resources in our pci_controller
+and in fact move most of the fields from pci_controller to
+pci_host_bridge to the point where the former can remain as a
+simple platform specific wrapper if needed.
 
-ZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9tbS9jLXI0ay5jIGIvYXJjaC9taXBzL21tL2MtcjRrLmMK
-aW5kZXggYjZjMzFjNC4uNzI5NjE1YSAxMDA2NDQKLS0tIGEvYXJjaC9taXBzL21tL2MtcjRrLmMK
-KysrIGIvYXJjaC9taXBzL21tL2MtcjRrLmMKQEAgLTEzNzksOCArMTM3OSw3IEBAIHN0YXRpYyB2
-b2lkIF9fY3B1aW5pdCBjb2hlcmVuY3lfc2V0dXAodm9pZCkKIAl9CiB9CiAKLWludCBjb2hlcmVu
-dGlvID0gMDsJLyogVXNlciBkZWZpbmVkIERNQSBjb2hlcmVuY3kgZnJvbSBjb21tYW5kIGxpbmUu
-ICovCi1pbnQgaHdfY29oZXJlbnRpbyA9IDA7CS8qIEFjdHVhbCBoYXJkd2FyZSBzdXBwb3J0ZWQg
-RE1BIGNvaGVyZW5jeSBzZXR0aW5nLiAqLworZXh0ZXJuIGludCBjb2hlcmVudGlvOwogCiBzdGF0
-aWMgaW50IF9faW5pdCBzZXRjb2hlcmVudGlvKGNoYXIgKnN0cikKIHsKZGlmZiAtLWdpdCBhL2Fy
-Y2gvbWlwcy9tbS9kbWEtZGVmYXVsdC5jIGIvYXJjaC9taXBzL21tL2RtYS1kZWZhdWx0LmMKaW5k
-ZXggNzJlZTRmZS4uZDZhYmQyNyAxMDA2NDQKLS0tIGEvYXJjaC9taXBzL21tL2RtYS1kZWZhdWx0
-LmMKKysrIGIvYXJjaC9taXBzL21tL2RtYS1kZWZhdWx0LmMKQEAgLTIyLDYgKzIyLDEwIEBACiAK
-ICNpbmNsdWRlIDxkbWEtY29oZXJlbmNlLmg+CiAKK2ludCBod19jb2hlcmVudGlvID0gMDsJLyog
-QWN0dWFsIGhhcmR3YXJlIHN1cHBvcnRlZCBETUEgY29oZXJlbmN5IHNldHRpbmcuICovCitpbnQg
-Y29oZXJlbnRpbyA9IDA7CS8qIFVzZXIgZGVmaW5lZCBETUEgY29oZXJlbmN5IGZyb20gY29tbWFu
-ZCBsaW5lLiAqLworRVhQT1JUX1NZTUJPTChjb2hlcmVudGlvKTsKKwogc3RhdGljIGlubGluZSBz
-dHJ1Y3QgcGFnZSAqZG1hX2FkZHJfdG9fcGFnZShzdHJ1Y3QgZGV2aWNlICpkZXYsCiAJZG1hX2Fk
-ZHJfdCBkbWFfYWRkcikKIHsK
+So for new stuff (hint: DT based ARM PCI) or stuff that has to deal with
+a lot less archaic platforms (hint: Microblaze), I'd recommend going
+straight for that approach rather than perpetuating the PowerPC code
+which I'll try to deal with in the next few monthes.
 
---_004_0573B2AE5BBFFC408CC8740092293B5ACCE73Ebamail02baimgteco_
-Content-Type: text/x-patch; name="dynamic-asid.patch"
-Content-Description: dynamic-asid.patch
-Content-Disposition: attachment; filename="dynamic-asid.patch"; size=7977;
-	creation-date="Sat, 04 May 2013 05:43:59 GMT";
-	modification-date="Sat, 04 May 2013 05:43:59 GMT"
-Content-Transfer-Encoding: base64
-
-ZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9rdm1faG9zdC5oIGIvYXJjaC9taXBz
-L2luY2x1ZGUvYXNtL2t2bV9ob3N0LmgKaW5kZXggMTQzODc1Yy4uZTY4NzgxZSAxMDA2NDQKLS0t
-IGEvYXJjaC9taXBzL2luY2x1ZGUvYXNtL2t2bV9ob3N0LmgKKysrIGIvYXJjaC9taXBzL2luY2x1
-ZGUvYXNtL2t2bV9ob3N0LmgKQEAgLTMzNiw3ICszMzYsNyBAQCBlbnVtIGVtdWxhdGlvbl9yZXN1
-bHQgewogI2RlZmluZSBWUE4yX01BU0sgICAgICAgICAgIDB4ZmZmZmUwMDAKICNkZWZpbmUgVExC
-X0lTX0dMT0JBTCh4KSAgICAoKCh4KS50bGJfbG8wICYgTUlQUzNfUEdfRykgJiYgKCh4KS50bGJf
-bG8xICYgTUlQUzNfUEdfRykpCiAjZGVmaW5lIFRMQl9WUE4yKHgpICAgICAgICAgKCh4KS50bGJf
-aGkgJiBWUE4yX01BU0spCi0jZGVmaW5lIFRMQl9BU0lEKHgpICAgICAgICAgKCh4KS50bGJfaGkg
-JiBBU0lEX01BU0spCisjZGVmaW5lIFRMQl9BU0lEKHgpICAgICAgICAgKEFTSURfTUFTSygoeCku
-dGxiX2hpKSkKICNkZWZpbmUgVExCX0lTX1ZBTElEKHgsIHZhKSAoKCh2YSkgJiAoMSA8PCBQQUdF
-X1NISUZUKSkgPyAoKHgpLnRsYl9sbzEgJiBNSVBTM19QR19WKSA6ICgoeCkudGxiX2xvMCAmIE1J
-UFMzX1BHX1YpKQogCiBzdHJ1Y3Qga3ZtX21pcHNfdGxiIHsKZGlmZiAtLWdpdCBhL2FyY2gvbWlw
-cy9rdm0va3ZtX21pcHNfZW11bC5jIGIvYXJjaC9taXBzL2t2bS9rdm1fbWlwc19lbXVsLmMKaW5k
-ZXggNGI2Mjc0Yi4uMmIyYmFjOSAxMDA2NDQKLS0tIGEvYXJjaC9taXBzL2t2bS9rdm1fbWlwc19l
-bXVsLmMKKysrIGIvYXJjaC9taXBzL2t2bS9rdm1fbWlwc19lbXVsLmMKQEAgLTUyNSwxOCArNTI1
-LDE2IEBAIGt2bV9taXBzX2VtdWxhdGVfQ1AwKHVpbnQzMl90IGluc3QsIHVpbnQzMl90ICpvcGMs
-IHVpbnQzMl90IGNhdXNlLAogCQkJCXByaW50aygiTVRDeiwgY29wMC0+cmVnW0VCQVNFXTogJSNs
-eFxuIiwKIAkJCQkgICAgICAga3ZtX3JlYWRfYzBfZ3Vlc3RfZWJhc2UoY29wMCkpOwogCQkJfSBl
-bHNlIGlmIChyZCA9PSBNSVBTX0NQMF9UTEJfSEkgJiYgc2VsID09IDApIHsKLQkJCQl1aW50MzJf
-dCBuYXNpZCA9Ci0JCQkJICAgIHZjcHUtPmFyY2guZ3Byc1tydF0gJiBBU0lEX01BU0s7CisJCQkJ
-dWludDMyX3QgbmFzaWQgPSBBU0lEX01BU0sodmNwdS0+YXJjaC5ncHJzW3J0XSk7CiAJCQkJaWYg
-KChLU0VHWCh2Y3B1LT5hcmNoLmdwcnNbcnRdKSAhPSBDS1NFRzApCiAJCQkJICAgICYmCi0JCQkJ
-ICAgICgoa3ZtX3JlYWRfYzBfZ3Vlc3RfZW50cnloaShjb3AwKSAmCi0JCQkJICAgICAgQVNJRF9N
-QVNLKSAhPSBuYXNpZCkpIHsKKwkJCQkgICAgKEFTSURfTUFTSyhrdm1fcmVhZF9jMF9ndWVzdF9l
-bnRyeWhpKGNvcDApKQorCQkJCSAgICAgICE9IG5hc2lkKSkgewogCiAJCQkJCWt2bV9kZWJ1Zwog
-CQkJCQkgICAgKCJNVEN6LCBjaGFuZ2UgQVNJRCBmcm9tICUjbHggdG8gJSNseFxuIiwKLQkJCQkJ
-ICAgICBrdm1fcmVhZF9jMF9ndWVzdF9lbnRyeWhpKGNvcDApICYKLQkJCQkJICAgICBBU0lEX01B
-U0ssCi0JCQkJCSAgICAgdmNwdS0+YXJjaC5ncHJzW3J0XSAmIEFTSURfTUFTSyk7CisJCQkJCSAg
-ICAgQVNJRF9NQVNLKGt2bV9yZWFkX2MwX2d1ZXN0X2VudHJ5aGkoY29wMCkpLAorCQkJCQkgICAg
-IEFTSURfTUFTSyh2Y3B1LT5hcmNoLmdwcnNbcnRdKSk7CiAKIAkJCQkJLyogQmxvdyBhd2F5IHRo
-ZSBzaGFkb3cgaG9zdCBUTEJzICovCiAJCQkJCWt2bV9taXBzX2ZsdXNoX2hvc3RfdGxiKDEpOwpA
-QCAtOTg4LDggKzk4Niw3IEBAIGt2bV9taXBzX2VtdWxhdGVfY2FjaGUodWludDMyX3QgaW5zdCwg
-dWludDMyX3QgKm9wYywgdWludDMyX3QgY2F1c2UsCiAJCSAqIHJlc3VsdGluZyBoYW5kbGVyIHdp
-bGwgZG8gdGhlIHJpZ2h0IHRoaW5nCiAJCSAqLwogCQlpbmRleCA9IGt2bV9taXBzX2d1ZXN0X3Rs
-Yl9sb29rdXAodmNwdSwgKHZhICYgVlBOMl9NQVNLKSB8Ci0JCQkJCQkgIChrdm1fcmVhZF9jMF9n
-dWVzdF9lbnRyeWhpCi0JCQkJCQkgICAoY29wMCkgJiBBU0lEX01BU0spKTsKKwkJCQkJCSAgQVNJ
-RF9NQVNLKGt2bV9yZWFkX2MwX2d1ZXN0X2VudHJ5aGkoY29wMCkpKTsKIAogCQlpZiAoaW5kZXgg
-PCAwKSB7CiAJCQl2Y3B1LT5hcmNoLmhvc3RfY3AwX2VudHJ5aGkgPSAodmEgJiBWUE4yX01BU0sp
-OwpAQCAtMTE1NCw3ICsxMTUxLDcgQEAga3ZtX21pcHNfZW11bGF0ZV90bGJtaXNzX2xkKHVuc2ln
-bmVkIGxvbmcgY2F1c2UsIHVpbnQzMl90ICpvcGMsCiAJc3RydWN0IGt2bV92Y3B1X2FyY2ggKmFy
-Y2ggPSAmdmNwdS0+YXJjaDsKIAllbnVtIGVtdWxhdGlvbl9yZXN1bHQgZXIgPSBFTVVMQVRFX0RP
-TkU7CiAJdW5zaWduZWQgbG9uZyBlbnRyeWhpID0gKHZjcHUtPmFyY2guICBob3N0X2NwMF9iYWR2
-YWRkciAmIFZQTjJfTUFTSykgfAotCQkJCShrdm1fcmVhZF9jMF9ndWVzdF9lbnRyeWhpKGNvcDAp
-ICYgQVNJRF9NQVNLKTsKKwkJCQlBU0lEX01BU0soa3ZtX3JlYWRfYzBfZ3Vlc3RfZW50cnloaShj
-b3AwKSk7CiAKIAlpZiAoKGt2bV9yZWFkX2MwX2d1ZXN0X3N0YXR1cyhjb3AwKSAmIFNUMF9FWEwp
-ID09IDApIHsKIAkJLyogc2F2ZSBvbGQgcGMgKi8KQEAgLTEyMDEsNyArMTE5OCw3IEBAIGt2bV9t
-aXBzX2VtdWxhdGVfdGxiaW52X2xkKHVuc2lnbmVkIGxvbmcgY2F1c2UsIHVpbnQzMl90ICpvcGMs
-CiAJZW51bSBlbXVsYXRpb25fcmVzdWx0IGVyID0gRU1VTEFURV9ET05FOwogCXVuc2lnbmVkIGxv
-bmcgZW50cnloaSA9CiAJCSh2Y3B1LT5hcmNoLmhvc3RfY3AwX2JhZHZhZGRyICYgVlBOMl9NQVNL
-KSB8Ci0JCShrdm1fcmVhZF9jMF9ndWVzdF9lbnRyeWhpKGNvcDApICYgQVNJRF9NQVNLKTsKKwkJ
-QVNJRF9NQVNLKGt2bV9yZWFkX2MwX2d1ZXN0X2VudHJ5aGkoY29wMCkpOwogCiAJaWYgKChrdm1f
-cmVhZF9jMF9ndWVzdF9zdGF0dXMoY29wMCkgJiBTVDBfRVhMKSA9PSAwKSB7CiAJCS8qIHNhdmUg
-b2xkIHBjICovCkBAIC0xMjQ2LDcgKzEyNDMsNyBAQCBrdm1fbWlwc19lbXVsYXRlX3RsYm1pc3Nf
-c3QodW5zaWduZWQgbG9uZyBjYXVzZSwgdWludDMyX3QgKm9wYywKIAlzdHJ1Y3Qga3ZtX3ZjcHVf
-YXJjaCAqYXJjaCA9ICZ2Y3B1LT5hcmNoOwogCWVudW0gZW11bGF0aW9uX3Jlc3VsdCBlciA9IEVN
-VUxBVEVfRE9ORTsKIAl1bnNpZ25lZCBsb25nIGVudHJ5aGkgPSAodmNwdS0+YXJjaC5ob3N0X2Nw
-MF9iYWR2YWRkciAmIFZQTjJfTUFTSykgfAotCQkJCShrdm1fcmVhZF9jMF9ndWVzdF9lbnRyeWhp
-KGNvcDApICYgQVNJRF9NQVNLKTsKKwkJCQlBU0lEX01BU0soa3ZtX3JlYWRfYzBfZ3Vlc3RfZW50
-cnloaShjb3AwKSk7CiAKIAlpZiAoKGt2bV9yZWFkX2MwX2d1ZXN0X3N0YXR1cyhjb3AwKSAmIFNU
-MF9FWEwpID09IDApIHsKIAkJLyogc2F2ZSBvbGQgcGMgKi8KQEAgLTEyOTAsNyArMTI4Nyw3IEBA
-IGt2bV9taXBzX2VtdWxhdGVfdGxiaW52X3N0KHVuc2lnbmVkIGxvbmcgY2F1c2UsIHVpbnQzMl90
-ICpvcGMsCiAJc3RydWN0IGt2bV92Y3B1X2FyY2ggKmFyY2ggPSAmdmNwdS0+YXJjaDsKIAllbnVt
-IGVtdWxhdGlvbl9yZXN1bHQgZXIgPSBFTVVMQVRFX0RPTkU7CiAJdW5zaWduZWQgbG9uZyBlbnRy
-eWhpID0gKHZjcHUtPmFyY2guaG9zdF9jcDBfYmFkdmFkZHIgJiBWUE4yX01BU0spIHwKLQkJKGt2
-bV9yZWFkX2MwX2d1ZXN0X2VudHJ5aGkoY29wMCkgJiBBU0lEX01BU0spOworCQlBU0lEX01BU0so
-a3ZtX3JlYWRfYzBfZ3Vlc3RfZW50cnloaShjb3AwKSk7CiAKIAlpZiAoKGt2bV9yZWFkX2MwX2d1
-ZXN0X3N0YXR1cyhjb3AwKSAmIFNUMF9FWEwpID09IDApIHsKIAkJLyogc2F2ZSBvbGQgcGMgKi8K
-QEAgLTEzNTksNyArMTM1Niw3IEBAIGt2bV9taXBzX2VtdWxhdGVfdGxibW9kKHVuc2lnbmVkIGxv
-bmcgY2F1c2UsIHVpbnQzMl90ICpvcGMsCiB7CiAJc3RydWN0IG1pcHNfY29wcm9jICpjb3AwID0g
-dmNwdS0+YXJjaC5jb3AwOwogCXVuc2lnbmVkIGxvbmcgZW50cnloaSA9ICh2Y3B1LT5hcmNoLmhv
-c3RfY3AwX2JhZHZhZGRyICYgVlBOMl9NQVNLKSB8Ci0JCQkJKGt2bV9yZWFkX2MwX2d1ZXN0X2Vu
-dHJ5aGkoY29wMCkgJiBBU0lEX01BU0spOworCQkJCUFTSURfTUFTSyhrdm1fcmVhZF9jMF9ndWVz
-dF9lbnRyeWhpKGNvcDApKTsKIAlzdHJ1Y3Qga3ZtX3ZjcHVfYXJjaCAqYXJjaCA9ICZ2Y3B1LT5h
-cmNoOwogCWVudW0gZW11bGF0aW9uX3Jlc3VsdCBlciA9IEVNVUxBVEVfRE9ORTsKIApAQCAtMTc4
-Niw4ICsxNzgzLDggQEAga3ZtX21pcHNfaGFuZGxlX3RsYm1pc3ModW5zaWduZWQgbG9uZyBjYXVz
-ZSwgdWludDMyX3QgKm9wYywKIAkgKi8KIAlpbmRleCA9IGt2bV9taXBzX2d1ZXN0X3RsYl9sb29r
-dXAodmNwdSwKIAkJCQkJICAodmEgJiBWUE4yX01BU0spIHwKLQkJCQkJICAoa3ZtX3JlYWRfYzBf
-Z3Vlc3RfZW50cnloaQotCQkJCQkgICAodmNwdS0+YXJjaC5jb3AwKSAmIEFTSURfTUFTSykpOwor
-CQkJCQkgIEFTSURfTUFTSyhrdm1fcmVhZF9jMF9ndWVzdF9lbnRyeWhpCisJCQkJCSAgICh2Y3B1
-LT5hcmNoLmNvcDApKSk7CiAJaWYgKGluZGV4IDwgMCkgewogCQlpZiAoZXhjY29kZSA9PSBUX1RM
-Ql9MRF9NSVNTKSB7CiAJCQllciA9IGt2bV9taXBzX2VtdWxhdGVfdGxibWlzc19sZChjYXVzZSwg
-b3BjLCBydW4sIHZjcHUpOwpkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL2t2bS9rdm1fdGxiLmMgYi9h
-cmNoL21pcHMva3ZtL2t2bV90bGIuYwppbmRleCBlM2YwZDliLi44OTUxMWE5IDEwMDY0NAotLS0g
-YS9hcmNoL21pcHMva3ZtL2t2bV90bGIuYworKysgYi9hcmNoL21pcHMva3ZtL2t2bV90bGIuYwpA
-QCAtNTEsMTMgKzUxLDEzIEBAIEVYUE9SVF9TWU1CT0woa3ZtX21pcHNfaXNfZXJyb3JfcGZuKTsK
-IAogdWludDMyX3Qga3ZtX21pcHNfZ2V0X2tlcm5lbF9hc2lkKHN0cnVjdCBrdm1fdmNwdSAqdmNw
-dSkKIHsKLQlyZXR1cm4gdmNwdS0+YXJjaC5ndWVzdF9rZXJuZWxfYXNpZFtzbXBfcHJvY2Vzc29y
-X2lkKCldICYgQVNJRF9NQVNLOworCXJldHVybiBBU0lEX01BU0sodmNwdS0+YXJjaC5ndWVzdF9r
-ZXJuZWxfYXNpZFtzbXBfcHJvY2Vzc29yX2lkKCldKTsKIH0KIAogCiB1aW50MzJfdCBrdm1fbWlw
-c19nZXRfdXNlcl9hc2lkKHN0cnVjdCBrdm1fdmNwdSAqdmNwdSkKIHsKLQlyZXR1cm4gdmNwdS0+
-YXJjaC5ndWVzdF91c2VyX2FzaWRbc21wX3Byb2Nlc3Nvcl9pZCgpXSAmIEFTSURfTUFTSzsKKwly
-ZXR1cm4gQVNJRF9NQVNLKHZjcHUtPmFyY2guZ3Vlc3RfdXNlcl9hc2lkW3NtcF9wcm9jZXNzb3Jf
-aWQoKV0pOwogfQogCiBpbmxpbmUgdWludDMyX3Qga3ZtX21pcHNfZ2V0X2NvbW1wYWdlX2FzaWQg
-KHN0cnVjdCBrdm1fdmNwdSAqdmNwdSkKQEAgLTg0LDcgKzg0LDcgQEAgdm9pZCBrdm1fbWlwc19k
-dW1wX2hvc3RfdGxicyh2b2lkKQogCW9sZF9wYWdlbWFzayA9IHJlYWRfYzBfcGFnZW1hc2soKTsK
-IAogCXByaW50aygiSE9TVCBUTEJzOlxuIik7Ci0JcHJpbnRrKCJBU0lEOiAlI2x4XG4iLCByZWFk
-X2MwX2VudHJ5aGkoKSAmIEFTSURfTUFTSyk7CisJcHJpbnRrKCJBU0lEOiAlI2x4XG4iLCBBU0lE
-X01BU0socmVhZF9jMF9lbnRyeWhpKCkpKTsKIAogCWZvciAoaSA9IDA7IGkgPCBjdXJyZW50X2Nw
-dV9kYXRhLnRsYnNpemU7IGkrKykgewogCQl3cml0ZV9jMF9pbmRleChpKTsKQEAgLTQyOCw3ICs0
-MjgsNyBAQCBpbnQga3ZtX21pcHNfZ3Vlc3RfdGxiX2xvb2t1cChzdHJ1Y3Qga3ZtX3ZjcHUgKnZj
-cHUsIHVuc2lnbmVkIGxvbmcgZW50cnloaSkKIAogCWZvciAoaSA9IDA7IGkgPCBLVk1fTUlQU19H
-VUVTVF9UTEJfU0laRTsgaSsrKSB7CiAJCWlmICgoKFRMQl9WUE4yKHRsYltpXSkgJiB+dGxiW2ld
-LnRsYl9tYXNrKSA9PSAoKGVudHJ5aGkgJiBWUE4yX01BU0spICYgfnRsYltpXS50bGJfbWFzaykp
-ICYmCi0JCQkoVExCX0lTX0dMT0JBTCh0bGJbaV0pIHx8IChUTEJfQVNJRCh0bGJbaV0pID09IChl
-bnRyeWhpICYgQVNJRF9NQVNLKSkpKSB7CisJCQkoVExCX0lTX0dMT0JBTCh0bGJbaV0pIHx8IChU
-TEJfQVNJRCh0bGJbaV0pID09IEFTSURfTUFTSyhlbnRyeWhpKSkpKSB7CiAJCQlpbmRleCA9IGk7
-CiAJCQlicmVhazsKIAkJfQpAQCAtNjI2LDcgKzYyNiw3IEBAIGt2bV9nZXRfbmV3X21tdV9jb250
-ZXh0KHN0cnVjdCBtbV9zdHJ1Y3QgKm1tLCB1bnNpZ25lZCBsb25nIGNwdSwKIHsKIAl1bnNpZ25l
-ZCBsb25nIGFzaWQgPSBhc2lkX2NhY2hlKGNwdSk7CiAKLQlpZiAoISgoYXNpZCArPSBBU0lEX0lO
-QykgJiBBU0lEX01BU0spKSB7CisJaWYgKCEoQVNJRF9NQVNLKEFTSURfSU5DKGFzaWQpKSkpIHsK
-IAkJaWYgKGNwdV9oYXNfdnRhZ19pY2FjaGUpIHsKIAkJCWZsdXNoX2ljYWNoZV9hbGwoKTsKIAkJ
-fQpAQCAtODA0LDggKzgwNCw3IEBAIHZvaWQga3ZtX2FyY2hfdmNwdV9sb2FkKHN0cnVjdCBrdm1f
-dmNwdSAqdmNwdSwgaW50IGNwdSkKIAlpZiAoIW5ld2FzaWQpIHsKIAkJLyogSWYgd2UgcHJlZW1w
-dGVkIHdoaWxlIHRoZSBndWVzdCB3YXMgZXhlY3V0aW5nLCB0aGVuIHJlbG9hZCB0aGUgcHJlLWVt
-cHRlZCBBU0lEICovCiAJCWlmIChjdXJyZW50LT5mbGFncyAmIFBGX1ZDUFUpIHsKLQkJCXdyaXRl
-X2MwX2VudHJ5aGkodmNwdS0+YXJjaC4KLQkJCQkJIHByZWVtcHRfZW50cnloaSAmIEFTSURfTUFT
-Syk7CisJCQl3cml0ZV9jMF9lbnRyeWhpKEFTSURfTUFTSyh2Y3B1LT5hcmNoLnByZWVtcHRfZW50
-cnloaSkpOwogCQkJZWhiKCk7CiAJCX0KIAl9IGVsc2UgewpAQCAtODE3LDEzICs4MTYsMTEgQEAg
-dm9pZCBrdm1fYXJjaF92Y3B1X2xvYWQoc3RydWN0IGt2bV92Y3B1ICp2Y3B1LCBpbnQgY3B1KQog
-CQkgKi8KIAkJaWYgKGN1cnJlbnQtPmZsYWdzICYgUEZfVkNQVSkgewogCQkJaWYgKEtWTV9HVUVT
-VF9LRVJORUxfTU9ERSh2Y3B1KSkKLQkJCQl3cml0ZV9jMF9lbnRyeWhpKHZjcHUtPmFyY2guCi0J
-CQkJCQkgZ3Vlc3Rfa2VybmVsX2FzaWRbY3B1XSAmCi0JCQkJCQkgQVNJRF9NQVNLKTsKKwkJCQl3
-cml0ZV9jMF9lbnRyeWhpKEFTSURfTUFTSyh2Y3B1LT5hcmNoLgorCQkJCQkJIGd1ZXN0X2tlcm5l
-bF9hc2lkW2NwdV0pKTsKIAkJCWVsc2UKLQkJCQl3cml0ZV9jMF9lbnRyeWhpKHZjcHUtPmFyY2gu
-Ci0JCQkJCQkgZ3Vlc3RfdXNlcl9hc2lkW2NwdV0gJgotCQkJCQkJIEFTSURfTUFTSyk7CisJCQkJ
-d3JpdGVfYzBfZW50cnloaShBU0lEX01BU0sodmNwdS0+YXJjaC4KKwkJCQkJCSBndWVzdF91c2Vy
-X2FzaWRbY3B1XSkpOwogCQkJZWhiKCk7CiAJCX0KIAl9CkBAIC04ODIsOCArODc5LDcgQEAgdWlu
-dDMyX3Qga3ZtX2dldF9pbnN0KHVpbnQzMl90ICpvcGMsIHN0cnVjdCBrdm1fdmNwdSAqdmNwdSkK
-IAkJCSAgICBrdm1fbWlwc19ndWVzdF90bGJfbG9va3VwKHZjcHUsCiAJCQkJCQkgICAgICAoKHVu
-c2lnbmVkIGxvbmcpIG9wYyAmIFZQTjJfTUFTSykKIAkJCQkJCSAgICAgIHwKLQkJCQkJCSAgICAg
-IChrdm1fcmVhZF9jMF9ndWVzdF9lbnRyeWhpCi0JCQkJCQkgICAgICAgKGNvcDApICYgQVNJRF9N
-QVNLKSk7CisJCQkJCQkgICAgICBBU0lEX01BU0soa3ZtX3JlYWRfYzBfZ3Vlc3RfZW50cnloaShj
-b3AwKSkpOwogCQkJaWYgKGluZGV4IDwgMCkgewogCQkJCWt2bV9lcnIKIAkJCQkgICAgKCIlczog
-Z2V0X3VzZXJfZmFpbGVkIGZvciAlcCwgdmNwdTogJXAsIEFTSUQ6ICUjbHhcbiIsCmRpZmYgLS1n
-aXQgYS9hcmNoL21pcHMvbGliL3Iza19kdW1wX3RsYi5jIGIvYXJjaC9taXBzL2xpYi9yM2tfZHVt
-cF90bGIuYwppbmRleCBlYzE5YTg0Li44MzI3Njk4IDEwMDY0NAotLS0gYS9hcmNoL21pcHMvbGli
-L3Iza19kdW1wX3RsYi5jCisrKyBiL2FyY2gvbWlwcy9saWIvcjNrX2R1bXBfdGxiLmMKQEAgLTks
-NiArOSw3IEBACiAjaW5jbHVkZSA8bGludXgvbW0uaD4KIAogI2luY2x1ZGUgPGFzbS9taXBzcmVn
-cy5oPgorI2luY2x1ZGUgPGFzbS9tbXVfY29udGV4dC5oPgogI2luY2x1ZGUgPGFzbS9wYWdlLmg+
-CiAjaW5jbHVkZSA8YXNtL3BndGFibGUuaD4KICNpbmNsdWRlIDxhc20vdGxiZGVidWcuaD4K
-
---_004_0573B2AE5BBFFC408CC8740092293B5ACCE73Ebamail02baimgteco_--
+Cheers,
+Ben.
+ 

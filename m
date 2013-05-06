@@ -1,88 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 May 2013 00:39:55 +0200 (CEST)
-Received: from mailout4.samsung.com ([203.254.224.34]:41527 "EHLO
-        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6824793Ab3EEWjxyVnvz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 May 2013 00:39:53 +0200
-Received: from epcpsbgr5.samsung.com
- (u145.gpu120.samsung.co.kr [203.254.230.145])
- by mailout4.samsung.com (Oracle Communications Messaging Server 7u4-24.01
- (7.0.4.24.0) 64bit (built Nov 17 2011))
- with ESMTP id <0MMC00B5JKA7FCC0@mailout4.samsung.com> for
- linux-mips@linux-mips.org; Mon, 06 May 2013 07:39:44 +0900 (KST)
-Received: from epcpsbgx1.samsung.com ( [203.254.230.45])
-        by epcpsbgr5.samsung.com (EPCPMTA) with SMTP id 22.04.19350.0BFD6815; Mon,
- 06 May 2013 07:39:44 +0900 (KST)
-X-AuditID: cbfee691-b7fe56d000004b96-0b-5186dfb0298b
-Received: from epextmailer02 ( [203.254.219.152])
-        by epcpsbgx1.samsung.com (EPCPMTA) with SMTP id 49.AD.25608.FAFD6815; Mon,
- 06 May 2013 07:39:43 +0900 (KST)
-Date:   Sun, 05 May 2013 22:39:43 +0000 (GMT)
-From:   EUNBONG SONG <eunb.song@samsung.com>
-Subject: Re: Re: MIPS : die at free_initmem() function 3.9+
-To:     Jiang Liu <liuj97@gmail.com>
-Cc:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jogo@openwrt.org" <jogo@openwrt.org>,
-        "david.daney@cavium.com" <david.daney@cavium.com>
-Reply-to: eunb.song@samsung.com
-MIME-version: 1.0
-X-MTR:  20130505223519122@eunb.song
-Msgkey: 20130505223519122@eunb.song
-X-EPLocale: ko_KR.euc-kr
-X-Priority: 3
-X-EPWebmail-Msg-Type: personal
-X-EPWebmail-Reply-Demand: 0
-X-EPApproval-Locale: 
-X-EPHeader: ML
-X-EPTrCode: 
-X-EPTrName: 
-X-MLAttribute: 
-X-RootMTR: 20130505223519122@eunb.song
-X-ParentMTR: 
-X-ArchiveUser: 
-X-CPGSPASS: N
-Content-transfer-encoding: base64
-Content-type: text/plain; charset=euc-kr
-MIME-version: 1.0
-Message-id: <21534601.395241367793582818.JavaMail.weblogic@epv6ml08>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnleLIzCtJLcpLzFFi42I5/e+Zru6G+22BBk9+M1pMmDqJ3YHR4+jK
-        tUwBjFFcNimpOZllqUX6dglcGef/3mMpaGCvaN+7nKWB8QlbFyMnh5CAikTL/++MILaEgInE
-        hSuT2SFsMYkL99YD1XAB1SxjlHhyvZ0Fpuhq0wpGiMR8RolnN44xgyRYgCb1THzNBGKzCWhL
-        vP3ygBXEFhawlth4cwNYjYiAksSMe0eYQJqZBTqZJF6f+8AKcYa8xOTTl8FW8woISpyc+QRq
-        m5LEo9d72CDiyhLzHrawQsQlJGZNvwBl80rMaH8KVS8nMe3rGmYIW1ri/KwNjDDvLP7+GCrO
-        L3Hs9g6gIzjAep/cD4YZs3vzFzYIW0Bi6pmDjBAl6hLHvuVBhPkk1ix8ywIzZdep5cwwrfe3
-        zAV7nVlAUWJK90N2CFtL4suPfWyovuIAsl0kpp5WmMCoPAtJZhaS7llIupHVLGBkWcUomlqQ
-        XFCclF5kqlecmFtcmpeul5yfu4kRkhgm7mC8f8D6EGMyMEYmMkuJJucDE0teSbyhsZmRhamJ
-        qbGRuaUZacJK4rzqLdaBQgLpiSWp2ampBalF8UWlOanFhxiZODilGhgvLFYJKnUzTPQx6rpx
-        qWeZwDJP5omfFI3vnlo6+R3fX92dbOfs/DZWGDk3Cly6Ps/L+99UxhrJVaxs6lornSaHPtrf
-        YsPLq/Jl2a1rU/ok9HK2LHnieyFozt3933eebNwlfjWTz3W+x6FEzZci95Mtdi7dxf70Z7cY
-        93ypExfPBgQn/LjJs+uKEktxRqKhFnNRcSIAFqAsAyIDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpik+LIzCtJLcpLzFFi42I5/e/2DN3199sCDdbvsbGYMHUSuwOjx9GV
-        a5kCGKMybDJSE1NSixRS85LzUzLz0m2VvIPjneNNzQwMdQ0tLcyVFPISc1NtlVx8AnTdMnOA
-        pioplCXmlAKFAhKLi5X07WyK8ktLUhUy8otLbJWijQyM9YxMTfSMjA30TAxirQwNDIxMgaoS
-        MjLO/73HUtDAXtG+dzlLA+MTti5GTg4hARWJlv/fGUFsCQETiatNK6BsMYkL99YD1XAB1cxn
-        lHh24xgzSIIFqKFn4msmEJtNQFvi7ZcHrCC2sIC1xMabG8BqRASUJGbcO8IE0sws0Mkk8frc
-        B1aIbfISk09fZgexeQUEJU7OfMICsU1J4tHrPWwQcWWJeQ9bWCHiEhKzpl+AsnklZrQ/haqX
-        k5j2dQ0zhC0tcX7WBrirF39/DBXnlzh2ewfQERxgvU/uB8OM2b35CxuELSAx9cxBRogSdYlj
-        3/IgwnwSaxa+ZYGZsuvUcmaY1vtb5oK9ziygKDGl+yE7hK0l8eXHPjZUX3EA2S4SU08rTGCU
-        m4UkMwtJ9ywk3chqFjCyrGIUTS1ILihOSq8w1CtOzC0uzUvXS87P3cQITlHPFu5g/HLe+hCj
-        AAejEg/vjdrWQCHWxLLiytxDjBIczEoivD572wKFeFMSK6tSi/Lji0pzUosPMSYD428is5Ro
-        cj4wfeaVxBsaGxgbGlqaG5gaGlmQJqwkzvu01TpQSCA9sSQ1OzW1ILUIZgsTB6dUA6PkLL2j
-        BXXS+w1X7HI18JEPzbgyN4957d35u7Z0X9Ppsn2x2uHvzDnXE+5e2hZilqL0tlbtxedFk9Mn
-        rNond01Ixfqq9R/BfJ/VRZsO7vwW88x35e/CY4/vvbdpPGlx9FuL6GHJ1hk78h6wZqzP3VJ6
-        wOimyh9BvsXXpV8acTr/NXpr2F/y7YesEktxRqKhFnNRcSIAc58l1JUDAAA=
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-Return-Path: <eunb.song@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 May 2013 16:27:44 +0200 (CEST)
+Received: from mail-wi0-f175.google.com ([209.85.212.175]:49410 "EHLO
+        mail-wi0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817318Ab3EFO1h4VtLR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 May 2013 16:27:37 +0200
+Received: by mail-wi0-f175.google.com with SMTP id h11so2605280wiv.14
+        for <multiple recipients>; Mon, 06 May 2013 07:27:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:mime-version:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type;
+        bh=SVYs2UeHd0NvgFmu2Iv6ev0XSB67xfbktOlgAbgU8g0=;
+        b=yjNIhV3hw19KTScRZOgHddom/V1n/vTB9kXKLyxche0ETEoWnTBZ0v6xerpokM3Ayq
+         1bgJqvtb8rcgMkm73Khyjm+2hLTaGvBdp4qtCFLLjtytEmxrFDgY1neCyaXccFctQZZF
+         /93/Pr2acOPs03P+UJSqhCUczNC1nHBR4Sv1nYHSp89Sex3a84kKlz0WKGwMXXQKKhvm
+         VRaY/4z1Ktef2BnJ+sRAD4Tnrb+MgiYw0iFo25DBhNTUDz+tM0UAR8m0PyDvC9uyrcSJ
+         1WD5IV0LGOjKvCG+kK2Uz2n/TvDtmI9Kuf3nR8Rb8OHO+Jk1jiY78glGHI8+O8Oa4ddV
+         IjUw==
+X-Received: by 10.180.198.49 with SMTP id iz17mr9119025wic.19.1367850452501;
+ Mon, 06 May 2013 07:27:32 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.217.62.137 with HTTP; Mon, 6 May 2013 07:26:52 -0700 (PDT)
+In-Reply-To: <1367527692-25809-1-git-send-email-ddaney.cavm@gmail.com>
+References: <CA+55aFwDGyHOzu=Qh7SJOBK6QvAwAh7pMDL6LfMUE=AW_kapAw@mail.gmail.com>
+ <1367527692-25809-1-git-send-email-ddaney.cavm@gmail.com>
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+Date:   Mon, 6 May 2013 16:26:52 +0200
+Message-ID: <CAOLZvyFo8OWD4qXDCQwJOWn0Hgs35XEF2pDppSbPt3Fnb3j9GQ@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Enable interrupts before WAIT instruction.
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        David Daney <david.daney@cavium.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jonas Gorski <jogo@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36325
+X-archive-position: 36326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eunb.song@samsung.com
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -95,15 +57,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-DQo+U28gb24gNjRiaXRzIE1JUFMgcGxhdGZvcm1zLCBfX3ZhKF9fcGEoeCkpIG1heSBub3QgZXF1
-YWwgdG8geCwgdGhhdCBtYXkgY2F1c2UNCj50cm91YmxlIHRvIGZyZWVfaW5pdG1lbV9kZWZhdWx0
-KCkuIENvdWxkIHlvdSBwbGVhc2UgaGVscCB0byBkbyBhbm90aGVyIHRlc3QNCj5ieSBjaGFuZ2lu
-Zw0KPmZyZWVfaW5pdG1lbV9kZWZhdWx0KFBPSVNPTl9GUkVFX0lOSVRNRU0pOw0KPnRvDQo+ZnJl
-ZV9pbml0bWVtX2RlZmF1bHQoMCk7DQoNCj5UaGlzIHRlc3QgY291bGQgaGVscCB0byBpZGVudGlm
-eSB3aGV0aGVyIHRoaXMgcGFuaWMgaXMgY2F1c2VkIGJ5DQo+bWVtc2V0KCh2b2lkICopcG9zLCBw
-b2lzb24sIFBBR0VfU0laRSk7DQo+aW4gZnVuY3Rpb24gZnJlZV9yZXNlcnZlZF9hcmVhKCkuDQoN
-CkhlbGxvLCBhcyB5b3Ugc2FpZCBpIGNoYW5nZWQgICJmcmVlX2luaXRtZW1fZGVmYXVsdChQT0lT
-T05fRlJFRV9JTklUTUVNKTsiIHRvDQoiZnJlZV9pbml0bWVtX2RlZmF1bHQoMCk7Ii4gUGFuaWMg
-c3RpbGwgb2NjdXJyZWQuIA0KQWN0dWFsbHksIGkgcHV0IHRoZSBzb21lIGRlYnVnIG1lc3NhZ2Vz
-LiBhbmQgaSBjb25maXJtZWQgcGFuaWMgb2NjdXJzIGluIF9fZnJlZV9yZXNlcnZlZF9wYWdlKCkg
-ZnVuY3Rpb24uDQpUaGFua3MhDQoNCg==
+Hi David,
+
+On Thu, May 2, 2013 at 10:48 PM, David Daney <ddaney.cavm@gmail.com> wrote:
+> From: David Daney <david.daney@cavium.com>
+>
+> As noted by Thomas Gleixner:
+>
+>    commit cdbedc61c8 (mips: Use generic idle loop) broke MIPS as I did
+>    not realize that MIPS wants to invoke the wait instructions with
+>    interrupts enabled.
+>
+> Instead of enabling interrupts in arch_cpu_idle() as Thomas' initial
+> patch does, we follow Linus' suggestion of doing it in the assembly
+> code to prevent the compiler from rearranging things.
+>
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> Reported-by: EunBong Song <eunb.song@samsung.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Jonas Gorski <jogo@openwrt.org>
+> ---
+>
+> This is only very lightly tested, we need more testing before
+> declaring it the definitive fix.
+>
+>  arch/mips/kernel/genex.S | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+
+Unfortunately this patch doesn't work for me, system just hangs at
+certain points
+during kernel startup.  Reverting the patch above fixes it, but with
+this warning:
+
+ehci-platform ehci-platform.0: irq 98, io mem 0x14020000
+------------[ cut here ]------------
+WARNING: at /home/mano/db1200/kernel/linux/kernel/cpu/idle.c:96
+cpu_startup_entry+0x138/0x184()
+CPU: 0 PID: 0 Comm: swapper Not tainted 3.9.0-db1235-10522-g6295a89 #2
+Stack : 00000000 00000000 809b4462 00000046 80929c20 00000000 808c6504 00000000
+          808c3428 80929b27 80929dc8 00000000 809b3c04 00000000
+00000000 00000000
+          80093348 807d1000 2cb41780 8011f458 00000000 00000000
+808c4a28 8091fe24
+          00000000 00000000 00000000 00000000 00000000 00000000
+00000000 00000000
+          00000000 00000000 00000000 00000000 00000000 00000000
+00000000 8091fdb0
+          ...
+Call Trace:
+[<8010a1fc>] show_stack+0x64/0x7c
+[<8011f614>] warn_slowpath_common+0x70/0xa0
+[<8011f700>] warn_slowpath_null+0x18/0x28
+[<80150464>] cpu_startup_entry+0x138/0x184
+[<809658f0>] start_kernel+0x360/0x378
+
+---[ end trace 19427144468f733d ]---
+ehci-platform ehci-platform.0: USB 2.0 started, EHCI 1.00
+hub 1-0:1.0: USB hub found
+
+
+Thanks,
+      Manuel

@@ -1,52 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 May 2013 01:28:22 +0200 (CEST)
-Received: from mail-da0-f48.google.com ([209.85.210.48]:35754 "EHLO
-        mail-da0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823127Ab3EFX2RXJJ4T (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 May 2013 01:28:17 +0200
-Received: by mail-da0-f48.google.com with SMTP id h32so2049133dak.35
-        for <multiple recipients>; Mon, 06 May 2013 16:28:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=RDp6cgaximA/YJP/RYDF15AuYJGIGCuLAvNlze/WXeE=;
-        b=tsJn8NyJfpGigeNuKVrzzPH2/uUEIbKtP+8Tydvp/9VOW0C0eAvPuregHgTb4FHDwG
-         0lSBqwDbFIFnH22MfpcBAGgkYadq9wVNwtX4ObdyW6zzDwTjGBTreFV6sERNiafgPPuC
-         oG1jKlxlEO5/7dY5xpN5eYeLZWXH1IoOHYNpgYuLxvKr9iSikXdtCCQ6L8spqFptTlNs
-         iU3dAqMKZyAlGItxw6vvjLyCm/2k2gIO4F+yOTZJb+LF6yXExkb1bRGiVXKK6baNctEA
-         LvCtPt40l59k1LoKk2NfRNSOhmanGNQinalzNAvjuwIVunoMSrNc0vnBPGbF5b2TttmX
-         Xang==
-X-Received: by 10.68.238.38 with SMTP id vh6mr28101059pbc.63.1367882890434;
-        Mon, 06 May 2013 16:28:10 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id v5sm25627078pbz.4.2013.05.06.16.28.08
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 06 May 2013 16:28:09 -0700 (PDT)
-Message-ID: <51883C87.7010501@gmail.com>
-Date:   Mon, 06 May 2013 16:28:07 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
-MIME-Version: 1.0
-To:     Sanjay Lal <sanjayl@kymasys.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH] mips/kvm: Fix ABI for compatibility with 64-bit guests.
-References: <1367879980-2440-1-git-send-email-ddaney.cavm@gmail.com> <1069B54B-C9CD-4333-B56F-B0E1D740CADB@kymasys.com>
-In-Reply-To: <1069B54B-C9CD-4333-B56F-B0E1D740CADB@kymasys.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 May 2013 08:31:12 +0200 (CEST)
+Received: from mailout3.samsung.com ([203.254.224.33]:9813 "EHLO
+        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6816022Ab3EGGbDnpHXs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 May 2013 08:31:03 +0200
+Received: from epcpsbgr4.samsung.com
+ (u144.gpu120.samsung.co.kr [203.254.230.144])
+ by mailout3.samsung.com (Oracle Communications Messaging Server 7u4-24.01
+ (7.0.4.24.0) 64bit (built Nov 17 2011))
+ with ESMTP id <0MMF00DP70QM5VA0@mailout3.samsung.com> for
+ linux-mips@linux-mips.org; Tue, 07 May 2013 15:30:54 +0900 (KST)
+Received: from epcpsbgx1.samsung.com ( [203.254.230.45])
+        by epcpsbgr4.samsung.com (EPCPMTA) with SMTP id DB.3D.04074.E9F98815; Tue,
+ 07 May 2013 15:30:54 +0900 (KST)
+X-AuditID: cbfee690-b7f136d000000fea-35-51889f9e9536
+Received: from epextmailer02 ( [203.254.219.152])
+        by epcpsbgx1.samsung.com (EPCPMTA) with SMTP id EC.11.25608.E9F98815; Tue,
+ 07 May 2013 15:30:54 +0900 (KST)
+Date:   Tue, 07 May 2013 06:30:54 +0000 (GMT)
+From:   EUNBONG SONG <eunb.song@samsung.com>
+Subject: MIPS: Test reault for  enable interrupts before WAIT instruction patch
+To:     "david.daney@cavium.com" <david.daney@cavium.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "jogo@openwrt.org" <jogo@openwrt.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>, manuel.lauss@gmail.com
+Reply-to: eunb.song@samsung.com
+MIME-version: 1.0
+X-MTR:  20130507061510134@eunb.song
+Msgkey: 20130507061510134@eunb.song
+X-EPLocale: ko_KR.euc-kr
+X-Priority: 3
+X-EPWebmail-Msg-Type: personal
+X-EPWebmail-Reply-Demand: 0
+X-EPApproval-Locale: 
+X-EPHeader: ML
+X-EPTrCode: 
+X-EPTrName: 
+X-MLAttribute: 
+X-RootMTR: 20130507061510134@eunb.song
+X-ParentMTR: 
+X-ArchiveUser: 
+X-CPGSPASS: N
+Content-transfer-encoding: base64
+Content-type: text/plain; charset=euc-kr
+MIME-version: 1.0
+Message-id: <15709790.301941367908253064.JavaMail.weblogic@epml12>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprAKsWRmVeSWpSXmKPExsVy+t8zXd158zsCDY7+NbaYMHUSuwOjx9GV
+        a5kCGKO4bFJSczLLUov07RK4Mv61rGMsOKBf0bblHXMD4wK9LkZODiEBFYmW/98ZQWwJAROJ
+        Kzv6mSBsMYkL99azdTFyAdUsY5To+beaGaboQdtMRojEfEaJDfP2sYMkWIAmbfp+mBXEZhPQ
+        lnj75QGYLSzgLzF/cxcLSIOIwFUmiSuXFrBDrJaXmHz6MpjNKyAocXLmExaIDUoSt24dBFrN
+        ARRXlrh63QoiLCExa/oFVgibV2JG+1OocjmJaV/XQB0nLXF+1gZGmA8Wf38MFeeXOHZ7BxPI
+        SJDeJ/eDYcbs3vyFDcIWkJh65iBUq7rEgT9roWw+iTUL37LAjNl1ajkzTO/9LXPBgcUsoCgx
+        pfshO4StJfHlxz42dF/xCjhJnP3TBzVzKofErSm6ExiVZiEpm4Vk1Cwko5DVLGBkWcUomlqQ
+        XFCclF5kolecmFtcmpeul5yfu4kRkhom7GC8d8D6EGMyMEomMkuJJucDU0teSbyhsZmRhamJ
+        qbGRuaUZacJK4rzqLdaBQgLpiSWp2ampBalF8UWlOanFhxiZODilGhjTL2b725od1tjSqnp4
+        QdA+waN5X+Ukhe9YbFD/4Wgh0uO3n8VAIk5rRtmMz6cCty7hn1Gw1ir5bMS6G3P5X8/sOHal
+        f1vXUke7b5peS3V5FOwvS3akhPy3tBT8eTFvly2Pr8mOeYriEtvCNtxbLxvDsJ1r7cV97XbX
+        4qumbO/nFrFfekT2Wq8SS3FGoqEWc1FxIgAFsvpCIwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrOKsWRmVeSWpSXmKPExsVy+t/tGbrz5ncEGqy4YmAxYeokdgdGj6Mr
+        1zIFMEZl2GSkJqakFimk5iXnp2TmpdsqeQfHO8ebmhkY6hpaWpgrKeQl5qbaKrn4BOi6ZeYA
+        TVVSKEvMKQUKBSQWFyvp29kU5ZeWpCpk5BeX2CpFGxkY6xmZmugZGRvomRjEWhkaGBiZAlUl
+        ZGT8a1nHWHBAv6JtyzvmBsYFel2MnBxCAioSLf+/M4LYEgImEg/aZkLZYhIX7q1n62LkAqqZ
+        zyixYd4+dpAEC1DDpu+HWUFsNgFtibdfHoDZwgL+EvM3d7GANIgIXGWSuHJpATvEBnmJyacv
+        g9m8AoISJ2c+YYHYoCRx69ZBoA0cQHFliavXrSDCEhKzpl9ghbB5JWa0P4Uql5OY9nUNM4Qt
+        LXF+1ga4Qxd/fwwV55c4dnsHE8hIkN4n94Nhxuze/IUNwhaQmHrmIFSrusSBP2uhbD6JNQvf
+        ssCM2XVqOTNM7/0tc5lAbGYBRYkp3Q/ZIWwtiS8/9rGh+4pXwEni7J8+xgmMsrOQpGYhaZ+F
+        pB1ZzQJGllWMoqkFyQXFSekVhnrFibnFpXnpesn5uZsYwcno2cIdjF/OWx9iFOBgVOLhVTjV
+        HijEmlhWXJl7iFGCg1lJhFdauyNQiDclsbIqtSg/vqg0J7X4EGMyMNImMkuJJucDE2VeSbyh
+        sYGxoaGluYGpoZEFacJK4rxPW60DhQTSE0tSs1NTC1KLYLYwcXBKNTAa3maYuPX7o7bDV7f4
+        z/xW+lJe/nUpd9u5RQ5RRrMP3nzrc1jfscR4n3HHTadYaU8DtzfsLG80mriW30t/16BisXTO
+        HofdK6783a4U1MjL/+CE5aR3qwKmff2pPIGl5e+tO7bMB+p+l/NwrTh9Y/H9lcknfCfOm7v5
+        V9+2QzXuB2M3Ofdvlt58VomlOCPRUIu5qDgRAE6Z2MaKAwAA
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+Return-Path: <eunb.song@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36332
+X-archive-position: 36334
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: eunb.song@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,45 +95,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/06/2013 04:11 PM, Sanjay Lal wrote:
->
-> On May 6, 2013, at 3:39 PM, David Daney wrote:
->
->>
->> /* for KVM_GET_REGS and KVM_SET_REGS */
->> +/*
->> + * If Config[AT] is zero (32-bit CPU), the register contents are
->> + * stored in the lower 32-bits of the struct kvm_regs fields and sign
->> + * extended to 64-bits.
->> + */
->> struct kvm_regs {
->> -	__u32 gprs[32];
->> -	__u32 hi;
->> -	__u32 lo;
->> -	__u32 pc;
->> +	/* out (KVM_GET_REGS) / in (KVM_SET_REGS) */
->> +	__u64 gpr[32];
->> +	__u64 hi, lo;
->> +	__u64 pc;
->> +};
->>
->> -	__u32 cp0reg[N_MIPS_COPROC_REGS][N_MIPS_COPROC_SEL];
->
-> Hi David, I'll try out the diff with QEMU and confirm that it works as expected. Could you just leave the GPR field in kvm_regs as "gprs". Its a minor change but avoids diffs that just replace "gprs" with "gpr".
->
-
-Well, there were two changes with respect to 'gprs' vs. 'gpr'.
-
-The change you show above only results in a small handful of diff lines.
-
-My argument for the change is that it will be part of a public ABI, and 
-should be short and concise, so I changed it to 'gpr'.
-
-I also changed the field with the same name in struct kvm_vcpu_arch to 
-match, which causes the changes in asm-offsets.c and quite a few other 
-places as well.  One could argue that this one was gratuitous, but I 
-thought it would be nice for them to match.  Since it is an internal 
-implementation detail, it is not that important, so I could revert this 
-part if there are strong objections.
-
-David Daney
+DQpIZWxsby4gSSAgdGVzdGVkIHdpdGggdHdvIHBhdGNoZXMuDQpUaGUgZmlyc3Qgb25lIGlzIHRo
+b21hcyBnbGVpeG5lcidzIHBhdGNoLiBUaGUgcGF0Y2ggaXMgYXMgZm9sbG93Lg0KVGhpcyBwYXRj
+aCB3b3JrcyB3ZWxsIHdpdGhvdXQgYW55IHByb2JsZW0uDQoNCkluZGV4OiBsaW51eC0yLjYvYXJj
+aC9taXBzL2tlcm5lbC9wcm9jZXNzLmMNCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0NCi0tLSBsaW51eC0yLjYub3JpZy9h
+cmNoL21pcHMva2VybmVsL3Byb2Nlc3MuYw0KKysrIGxpbnV4LTIuNi9hcmNoL21pcHMva2VybmVs
+L3Byb2Nlc3MuYw0KQEAgLTUwLDEzICs1MCwxOCBAQCB2b2lkIGFyY2hfY3B1X2lkbGVfZGVhZCh2
+b2lkKQ0KIH0NCiAjZW5kaWYNCg0KLXZvaWQgYXJjaF9jcHVfaWRsZSh2b2lkKQ0KK3N0YXRpYyB2
+b2lkIHNtdGNfaWRsZV9ob29rKHZvaWQpDQogew0KICNpZmRlZiBDT05GSUdfTUlQU19NVF9TTVRD
+DQogICAgICAgIGV4dGVybiB2b2lkIHNtdGNfaWRsZV9sb29wX2hvb2sodm9pZCk7DQotDQogICAg
+ICAgIHNtdGNfaWRsZV9sb29wX2hvb2soKTsNCiAjZW5kaWYNCit9DQorDQordm9pZCBhcmNoX2Nw
+dV9pZGxlKHZvaWQpDQorew0KKyAgICAgICBsb2NhbF9pcnFfZW5hYmxlKCk7DQorICAgICAgIHNt
+dGNfaWRsZV9ob29rKCk7DQogICAgICAgIGlmIChjcHVfd2FpdCkNCiAgICAgICAgICAgICAgICAo
+KmNwdV93YWl0KSgpOw0KICAgICAgICBlbHNlDQotLQ0KDQpUaGUgc2Vjb25kIG9uZSBpcyBkYXZp
+ZCBkYW5leSdzIHBhdGNoLiAgVGhlIHBhdGNoIGlzIGFzIGZvbGxvdy4gDQphcmNoL21pcHMva2Vy
+bmVsL2dlbmV4LlMgfCA3ICsrKystLS0NCiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCsp
+LCAzIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL2tlcm5lbC9nZW5leC5T
+IGIvYXJjaC9taXBzL2tlcm5lbC9nZW5leC5TDQppbmRleCBlY2IzNDdjLi41N2NkYTlhIDEwMDY0
+NA0KLS0tIGEvYXJjaC9taXBzL2tlcm5lbC9nZW5leC5TDQorKysgYi9hcmNoL21pcHMva2VybmVs
+L2dlbmV4LlMNCkBAIC0xMzIsMTIgKzEzMiwxMyBAQCBMRUFGKHI0a193YWl0KQ0KICAgICAgICAu
+c2V0ICAgIG5vcmVvcmRlcg0KICAgICAgICAvKiBzdGFydCBvZiByb2xsYmFjayByZWdpb24gKi8N
+CiAgICAgICAgTE9OR19MICB0MCwgVElfRkxBR1MoJDI4KQ0KLSAgICAgICBub3ANCiAgICAgICAg
+YW5kaSAgICB0MCwgX1RJRl9ORUVEX1JFU0NIRUQNCiAgICAgICAgYm5leiAgICB0MCwgMWYNCiAg
+ICAgICAgIG5vcA0KLSAgICAgICBub3ANCi0gICAgICAgbm9wDQorICAgICAgIC8qIEVuYWJsZSBp
+bnRlcnJ1cHRzIHNvIFdBSVQgd2lsbCBjb21wbGV0ZSAqLw0KKyAgICAgICBtZmMwICAgIHQwLCBD
+UDBfU1RBVFVTDQorICAgICAgIG9yaSAgICAgdDAsIFNUMF9JRQ0KKyAgICAgICBtdGMwICAgIHQw
+LCBDUDBfU1RBVFVTDQogICAgICAgIC5zZXQgICAgbWlwczMNCiAgICAgICAgd2FpdA0KICAgICAg
+ICAvKiBlbmQgb2Ygcm9sbGJhY2sgcmVnaW9uICh0aGUgcmVnaW9uIHNpemUgbXVzdCBiZSBwb3dl
+ciBvZiB0d28pICovDQoNCkFmdGVyIGFwcGx5IHRoaXMgcGF0Y2guIEkgZ290IHR3byBlcnJvciBt
+ZXNzYWdlLiANClRoZSBmaXJzdCBvbmUgaXMgYXMgZm9sbG93DQpbICAxMjQuNjYxMjExXSBDaGVj
+a2luZyBmb3IgdGhlIGRhZGRpIGJ1Zy4uLiBuby4NClsgIDEyNC42NjU3MzddIC0tLS0tLS0tLS0t
+LVsgY3V0IGhlcmUgXS0tLS0tLS0tLS0tLQ0KWyAgMTI0LjY3MDE4N10gV0FSTklORzogYXQga2Vy
+bmVsL2NwdS9pZGxlLmM6OTYgY3B1X3N0YXJ0dXBfZW50cnkrMHgxNTAvMHgxNzgoKQ0KWyAgMTI0
+LjY3NzIwOV0gTW9kdWxlcyBsaW5rZWQgaW46DQpbICAxMjQuNjgwMjUxXSBDUFU6IDAgUElEOiAw
+IENvbW06IHN3YXBwZXIvMCBOb3QgdGFpbnRlZCAzLjkuMCsgIzQwDQpbICAxMjQuNjg2MjM3XSBT
+dGFjayA6IDAwMDAwMDAwMDAwMDAwMDQgMDAwMDAwMDAwMDAwMDAzNCBmZmZmZmZmZjgwZmEwMDAw
+IGZmZmZmZmZmODAyOTI1NTgNCiAgICAgICAgICAwMDAwMDAwMDAwMDAwMDAwIGZmZmZmZmZmODBm
+YTAwMDAgMDAwMDAwMDAwMDAwMDAwMSBmZmZmZmZmZjgwMjkzODEwDQogICAgICAgICAgMDAwMDAw
+MDAwMDAwMDAwMCAwMDAwMDAwMDAwMDAwMDAwIGZmZmZmZmZmODEwODAwMDAgZmZmZmZmZmY4MTA4
+MDAwMA0KICAgICAgICAgIGZmZmZmZmZmODBlMmFjZjAgZmZmZmZmZmY4MGY4Zjk3NyBmZmZmZmZm
+ZjgwZjhmYTgwIGZmZmZmZmZmODBlMzE3MzANCiAgICAgICAgICAwMDAwMDAwMDAwMDAwMDAxIDAw
+MDAwMDAwMDAwMDAwMDQgZmZmZmZmZmYwMDAwMDAwMCAwMDAwMDAwMDAwMDAwMDA0DQogICAgICAg
+ICAgZmZmZmZmZmZjMDU2MzNmMCBmZmZmZmZmZjgwNmVmNzI4IGZmZmZmZmZmODBmNTdkMDggZmZm
+ZmZmZmY4MDI5MGE3NA0KICAgICAgICAgIGZmZmZmZmZmYzA1NjMzZjAgZmZmZmZmZmY4MDI5M2M0
+MCAwMDAwMDAwMDAwMDAwMDNlIGZmZmZmZmZmODBlMmFjZjANCiAgICAgICAgICAwMDAwMDAwMDAw
+MDAwMDAwIGZmZmZmZmZmODBmNTdjMzAgMDBmZmZmZmY4MGY4ZmRjMCBmZmZmZmZmZjgwMjkwOGMw
+DQogICAgICAgICAgMDAwMDAwMDAwMDAwMDAwMCAwMDAwMDAwMDAwMDAwMDAwIDAwMDAwMDAwMDAw
+MDAwMDAgMDAwMDAwMDAwMDAwMDAwMA0KICAgICAgICAgIDAwMDAwMDAwMDAwMDAwMDAgZmZmZmZm
+ZmY4MDI3MjQ5OCAwMDAwMDAwMDAwMDAwMDAwIDAwMDAwMDAwMDAwMDAwMDANCiAgICAgICAgICAu
+Li4NClsgIDEyNC43NTExNjNdIENhbGwgVHJhY2U6DQpbICAxMjQuNzUzNTk5XSBbPGZmZmZmZmZm
+ODAyNzI0OTg+XSBzaG93X3N0YWNrKzB4NjgvMHg4MA0KWyAgMTI0Ljc1ODYzNF0gWzxmZmZmZmZm
+ZjgwMjkwOGMwPl0gd2Fybl9zbG93cGF0aF9jb21tb24rMHg3OC8weGE4DQpbICAxMjQuNzY0NTMz
+XSBbPGZmZmZmZmZmODAyZDQ0NDg+XSBjcHVfc3RhcnR1cF9lbnRyeSsweDE1MC8weDE3OA0KWyAg
+MTI0Ljc3MDM1MV0gWzxmZmZmZmZmZjgwZmQ2YjA0Pl0gc3RhcnRfa2VybmVsKzB4NDQwLzB4NDVj
+DQpbICAxMjQuNzc1NzI4XQ0KWyAgMTI0Ljc3NzIxOV0gLS0tWyBlbmQgdHJhY2UgOTE3OWU2NTRl
+NTY5M2U3MiBdLS0tDQoNCkFmdGVyIGJvb3QgcHJvY2VzcyBpcyBkb25lIHRoZSBmb2xsb3cgZXJy
+b3IgbWVzc2FnZSBpcyBwcmludGVkIHBlcmlvZGljYWxseS4NCg0KWyAgMjg0Ljc1MTAwN10gSU5G
+TzogcmN1X3ByZWVtcHQgZGV0ZWN0ZWQgc3RhbGxzIG9uIENQVXMvdGFza3M6IHsgNn0gKGRldGVj
+dGVkIGJ5IDEsIHQ9MTQ3MTIgamlmZmllcywgZz0xODQ0Njc0NDA3MzcwOTU1MTM0NCwgYz0xODQ0
+Njc0NDA3MzcwOTU1MTM0MywgcT0yNDM3KQ0KWyAgMjg0Ljc2NDg3OF0gVGFzayBkdW1wIGZvciBD
+UFUgNjoNClsgIDI4NC43NjgxMDVdIHN3YXBwZXIvNiAgICAgICBSICBydW5uaW5nIHRhc2sgICAg
+ICAgIDAgICAgIDAgICAgICAxIDB4MDAxMDAwMDANClsgIDI4NC43NzUxNzRdIFN0YWNrIDogMDAw
+MDAwNTMxMTExMjAwMCBmZmZmZmZmZjgwZjYwMDAwIGZmZmZmZmZmODBmNjAwMDAgYTgwMDAwMDAw
+MWQyZDk1MA0KICAgICAgICAgIDAwMDAwMDAwMDAwMDAwMTggZmZmZmZmZmY4MTA4MDAwMCBmZmZm
+ZmZmZjgxMDgwMDAwIDAwMDAwMDAwMDAwMDAwMDANCiAgICAgICAgICBmZmZmZmZmZjgxMDEwMDAw
+IGZmZmZmZmZmODAzMDg5M2MgNDI1NmU1NzE1ZGE2MDgzZCA4MDAwMDAwNDBmODAwMDAwDQogICAg
+ICAgICAgMDAwMDAwMDAwMDAwMDAxOCBmZmZmZmZmZjgxMDgwMDAwIGZmZmZmZmZmODEwODAwMDAg
+ZmZmZmZmZmY4MDI2NGYzYw0KICAgICAgICAgIGZmZmZmZmZmODBlMzE3MzAgMDAwMDAwMDAwMDAw
+MDAwMCBmZmZmZmZmZjgwZTMxNzMwIGZmZmZmZmZmODBmOTAwMDANCiAgICAgICAgICBmZmZmZmZm
+ZjgwZmQwMDAwIGZmZmZmZmZmODAyNmM3NjAgMDAwMDAwMDAwMDAwMDAwMCAwMDAwMDAwMDEwMDA4
+Y2UxDQogICAgICAgICAgMDAwMDAwMDAwMDEwMDAwMCBhODAwMDAwMDQxNGU0MDEwIGZmZmZmZmZm
+ODBmOGJiMTggMDAwMDAwMDAwMDAwMDAwMA0KICAgICAgICAgIDAwMDAwMDUzMTExMTIwMDAgMDAw
+MDAwMDAwMDAwMDAwMSAwMDAwMDAwMDAwMDAwMDAxIDAwMDAwMDAwMDAwMDAwMDANCiAgICAgICAg
+ICBmZmZmZmZmZjgwZjhiYzU4IGE4MDAwMDAwMDFkMzJjNjAgYTgwMDAwMDA0MTRlN2ZlMCAwMDAw
+MDAwMDAwMDA4YzAwDQogICAgICAgICAgYTgwMDAwMDAzZjdkODAwMCAwMDAwMDAwMDAwMDAwMDAw
+IGZmZmZmZmZmODBmZDAwMDAgZmZmZmZmZmY4MGUzMTczMA0KICAgICAgICAgIC4uLg0KWyAgMjg0
+Ljg0MDcwNF0gQ2FsbCBUcmFjZToNClsgIDI4NC44NDMxNTNdIFs8ZmZmZmZmZmY4MDZmMWE0OD5d
+IF9fc2NoZWR1bGUrMHgzYjAvMHg5MzgNClsgIDI4NC44NDgzNzddDQoNCg0KVGhhbmtz

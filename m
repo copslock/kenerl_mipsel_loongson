@@ -1,54 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 May 2013 18:47:02 +0200 (CEST)
-Received: from mail-pd0-f177.google.com ([209.85.192.177]:50507 "EHLO
-        mail-pd0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825883Ab3EGQq5edbnI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 May 2013 18:46:57 +0200
-Received: by mail-pd0-f177.google.com with SMTP id g10so538251pdj.8
-        for <multiple recipients>; Tue, 07 May 2013 09:46:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=OpjYFQjrY8CKx0LYIKu+thsF29sCDCQ5++7N+ocFEOM=;
-        b=pPF8DAaFa7bGrNwCD87tsVeNj2CGDONXbXELuRMoiXC67h7P7kX5ypOpHbjqj2USak
-         3TF+k4gHUHNH4N50UdL8E8OT86UkDbZcWFHLf6ixC37MrU83btmDqJwGXBy1uEVLSJnW
-         6eMZnQ2gUB7b8Kd8GiYOoEl/uEo/FIgbUMLj/dahqDklKWCQ/TqJpty+sOd5MMiG4Rnc
-         lw6k/9qEk189Cv5H49X1D1df968Ek8jy8Z2ZQ8U3nBVi5IDPJ4MgMx+nCxoKEzz102O5
-         J5cQHyBE6SJ1cufnMFMqkTSpM2atbYR1lQ33KzcwDz4xXQySZulzOQ7ctisR1gn+Ibjx
-         7KZg==
-X-Received: by 10.66.150.226 with SMTP id ul2mr3899017pab.17.1367945210641;
-        Tue, 07 May 2013 09:46:50 -0700 (PDT)
-Received: from [192.168.1.104] ([114.246.179.148])
-        by mx.google.com with ESMTPSA id ov2sm28861713pbc.34.2013.05.07.09.46.47
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 07 May 2013 09:46:49 -0700 (PDT)
-Message-ID: <51892FF5.9020607@gmail.com>
-Date:   Wed, 08 May 2013 00:46:45 +0800
-From:   Jiang Liu <liuj97@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130308 Thunderbird/17.0.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 May 2013 19:07:46 +0200 (CEST)
+Received: from co1ehsobe004.messaging.microsoft.com ([216.32.180.187]:40353
+        "EHLO co1outboundpool.messaging.microsoft.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825736Ab3EGRHj2jHxX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 May 2013 19:07:39 +0200
+Received: from mail89-co1-R.bigfish.com (10.243.78.234) by
+ CO1EHSOBE010.bigfish.com (10.243.66.73) with Microsoft SMTP Server id
+ 14.1.225.23; Tue, 7 May 2013 17:07:31 +0000
+Received: from mail89-co1 (localhost [127.0.0.1])       by mail89-co1-R.bigfish.com
+ (Postfix) with ESMTP id C3949680080;   Tue,  7 May 2013 17:07:30 +0000 (UTC)
+X-Forefront-Antispam-Report: CIP:132.245.1.197;KIP:(null);UIP:(null);IPV:NLI;H:BLUPRD0712HT002.namprd07.prod.outlook.com;RD:none;EFVD:NLI
+X-SpamScore: -4
+X-BigFish: PS-4(zzbb2dI98dI9371I1432Izz1f42h1fc6h1ee6h1de0h1fdah1202h1e76h1d1ah1d2ahzzz2dh2a8h668h839h942hd25he5bhf0ah1288h12a5h12a9h12bdh137ah13b6h1441h14ddh1504h1537h153bh162dh1631h1758h1765h18e1h190ch1946h19b4h19c3h19ceh1ad9h1b0ah1d0ch1d2eh1d3fh1155h)
+Received: from mail89-co1 (localhost.localdomain [127.0.0.1]) by mail89-co1
+ (MessageSwitch) id 1367946449295618_9198; Tue,  7 May 2013 17:07:29 +0000
+ (UTC)
+Received: from CO1EHSMHS024.bigfish.com (unknown [10.243.78.236])       by
+ mail89-co1.bigfish.com (Postfix) with ESMTP id 3798D2C008B;    Tue,  7 May 2013
+ 17:07:29 +0000 (UTC)
+Received: from BLUPRD0712HT002.namprd07.prod.outlook.com (132.245.1.197) by
+ CO1EHSMHS024.bigfish.com (10.243.66.34) with Microsoft SMTP Server (TLS) id
+ 14.1.225.23; Tue, 7 May 2013 17:07:27 +0000
+Received: from dl.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
+ (10.255.218.163) with Microsoft SMTP Server (TLS) id 14.16.305.3; Tue, 7 May
+ 2013 17:07:27 +0000
+Message-ID: <518934CC.8050600@caviumnetworks.com>
+Date:   Tue, 7 May 2013 10:07:24 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
 MIME-Version: 1.0
-To:     eunb.song@samsung.com
-CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+To:     <eunb.song@samsung.com>
+CC:     "david.daney@cavium.com" <david.daney@cavium.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         "jogo@openwrt.org" <jogo@openwrt.org>,
-        "david.daney@cavium.com" <david.daney@cavium.com>
-Subject: Re: MIPS : die at free_initmem() function 3.9+
-References: <21534601.395241367793582818.JavaMail.weblogic@epv6ml08>
-In-Reply-To: <21534601.395241367793582818.JavaMail.weblogic@epv6ml08>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <liuj97@gmail.com>
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        <manuel.lauss@gmail.com>
+Subject: Re: MIPS: Test reault for  enable interrupts before WAIT instruction
+ patch
+References: <15709790.301941367908253064.JavaMail.weblogic@epml12>
+In-Reply-To: <15709790.301941367908253064.JavaMail.weblogic@epml12>
+Content-Type: text/plain; charset="EUC-KR"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [64.2.3.195]
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36345
+X-archive-position: 36346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: liuj97@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,62 +65,125 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Eunsong,
-	Thanks for your help. I have done some code inspection and have 
-found a possible reason for this issue. It seems that virt_to_page()
-can't be used to handle address in compatible segments due to following
-definitions.
-
-#define virt_to_page(kaddr)     pfn_to_page(PFN_DOWN(virt_to_phys(kaddr)))
-static inline unsigned long virt_to_phys(volatile const void *address)
-{
-        return (unsigned long)address - PAGE_OFFSET + PHYS_OFFSET;
-}
-#define __va(x)         ((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
-#define __pa_symbol(x)  __pa(RELOC_HIDE((unsigned long)(x), 0))
-#define __pa(x)                                                         \
-({                                                                      \
-    unsigned long __x = (unsigned long)(x);                             \
-    __x < CKSEG0 ? XPHYSADDR(__x) : CPHYSADDR(__x);                     \
-})
-
-#define CPHYSADDR(a)            ((_ACAST32_(a)) & 0x1fffffff)
-#define XPHYSADDR(a)            ((_ACAST64_(a)) &                       \
-                                 _CONST64_(0x000000ffffffffff))
-
-#define XKUSEG                  _CONST64_(0x0000000000000000)
-#define XKSSEG                  _CONST64_(0x4000000000000000)
-#define XKPHYS                  _CONST64_(0x8000000000000000)
-#define XKSEG                   _CONST64_(0xc000000000000000)
-#define CKSEG0                  _CONST64_(0xffffffff80000000)
-#define CKSEG1                  _CONST64_(0xffffffffa0000000)
-#define CKSSEG                  _CONST64_(0xffffffffc0000000)
-#define CKSEG3                  _CONST64_(0xffffffffe0000000)
-
-So could you please help to prepare a formal patch for this bug and send
-it to Andrew Morton for v3.10-rc1? Otherwise I could help to it too.
-
-Regards!
-Gerry
-
-
-=On 05/06/2013 06:39 AM, EUNBONG SONG wrote:
+On 05/06/2013 11:30 PM, EUNBONG SONG wrote:
 > 
->> So on 64bits MIPS platforms, __va(__pa(x)) may not equal to x, that may cause
->> trouble to free_initmem_default(). Could you please help to do another test
->> by changing
->> free_initmem_default(POISON_FREE_INITMEM);
->> to
->> free_initmem_default(0);
+> Hello. I  tested with two patches.
+> The first one is thomas gleixner's patch. The patch is as follow.
+> This patch works well without any problem.
+
+You don't need them both.  When we fix it, it will be one or the other,
+not both.
+
+
 > 
->> This test could help to identify whether this panic is caused by
->> memset((void *)pos, poison, PAGE_SIZE);
->> in function free_reserved_area().
+> Index: linux-2.6/arch/mips/kernel/process.c
+> ===================================================================
+> --- linux-2.6.orig/arch/mips/kernel/process.c
+> +++ linux-2.6/arch/mips/kernel/process.c
+> @@ -50,13 +50,18 @@ void arch_cpu_idle_dead(void)
+>   }
+>   #endif
 > 
-> Hello, as you said i changed  "free_initmem_default(POISON_FREE_INITMEM);" to
-> "free_initmem_default(0);". Panic still occurred. 
-> Actually, i put the some debug messages. and i confirmed panic occurs in __free_reserved_page() function.
-> Thanks!
+> -void arch_cpu_idle(void)
+> +static void smtc_idle_hook(void)
+>   {
+>   #ifdef CONFIG_MIPS_MT_SMTC
+>          extern void smtc_idle_loop_hook(void);
+> -
+>          smtc_idle_loop_hook();
+>   #endif
+> +}
+> +
+> +void arch_cpu_idle(void)
+> +{
+> +       local_irq_enable();
+> +       smtc_idle_hook();
+>          if (cpu_wait)
+>                  (*cpu_wait)();
+>          else
+
+Although I wrote the other patch, I now think that Thomas Gleixner's
+patch (above), is the best option.
+
+There are many cpu_wait() implementations.  Fixing a bunch of different
+assembly implementations, most of which I cannot test, is a recipe for
+disaster.
+
+
+> --
 > 
-> N떑꿩�r툤y鉉싕b쾊Ф푤v�^�)頻{.n�+돴쪐{콗喩zX㎍썳變}찠꼿쟺�&j:+v돣�쳭喩zZ+�+zf＂톒쉱�~넮녬i�鎬z�췿ⅱ�?솳鈺�&�)刪f뷌^j푹y쬶끷@A첺뛴��0띠h��i�
+> The second one is david daney's patch.  The patch is as follow.
+> arch/mips/kernel/genex.S | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+> index ecb347c..57cda9a 100644
+> --- a/arch/mips/kernel/genex.S
+> +++ b/arch/mips/kernel/genex.S
+> @@ -132,12 +132,13 @@ LEAF(r4k_wait)
+>          .set    noreorder
+>          /* start of rollback region */
+>          LONG_L  t0, TI_FLAGS($28)
+> -       nop
+>          andi    t0, _TIF_NEED_RESCHED
+>          bnez    t0, 1f
+>           nop
+> -       nop
+> -       nop
+> +       /* Enable interrupts so WAIT will complete */
+> +       mfc0    t0, CP0_STATUS
+> +       ori     t0, ST0_IE
+> +       mtc0    t0, CP0_STATUS
+>          .set    mips3
+>          wait
+>          /* end of rollback region (the region size must be power of two) */
+> 
+> After apply this patch. I got two error message.
+> The first one is as follow
+> [  124.661211] Checking for the daddi bug... no.
+> [  124.665737] ------------[ cut here ]------------
+> [  124.670187] WARNING: at kernel/cpu/idle.c:96 cpu_startup_entry+0x150/0x178()
+> [  124.677209] Modules linked in:
+> [  124.680251] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 3.9.0+ #40
+> [  124.686237] Stack : 0000000000000004 0000000000000034 ffffffff80fa0000 ffffffff80292558
+>            0000000000000000 ffffffff80fa0000 0000000000000001 ffffffff80293810
+>            0000000000000000 0000000000000000 ffffffff81080000 ffffffff81080000
+>            ffffffff80e2acf0 ffffffff80f8f977 ffffffff80f8fa80 ffffffff80e31730
+>            0000000000000001 0000000000000004 ffffffff00000000 0000000000000004
+>            ffffffffc05633f0 ffffffff806ef728 ffffffff80f57d08 ffffffff80290a74
+>            ffffffffc05633f0 ffffffff80293c40 000000000000003e ffffffff80e2acf0
+>            0000000000000000 ffffffff80f57c30 00ffffff80f8fdc0 ffffffff802908c0
+>            0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>            0000000000000000 ffffffff80272498 0000000000000000 0000000000000000
+>            ...
+> [  124.751163] Call Trace:
+> [  124.753599] [<ffffffff80272498>] show_stack+0x68/0x80
+> [  124.758634] [<ffffffff802908c0>] warn_slowpath_common+0x78/0xa8
+> [  124.764533] [<ffffffff802d4448>] cpu_startup_entry+0x150/0x178
+> [  124.770351] [<ffffffff80fd6b04>] start_kernel+0x440/0x45c
+> [  124.775728]
+> [  124.777219] ---[ end trace 9179e654e5693e72 ]---
+> 
+> After boot process is done the follow error message is printed periodically.
+> 
+> [  284.751007] INFO: rcu_preempt detected stalls on CPUs/tasks: { 6} (detected by 1, t=14712 jiffies, g=18446744073709551344, c=18446744073709551343, q=2437)
+> [  284.764878] Task dump for CPU 6:
+> [  284.768105] swapper/6       R  running task        0     0      1 0x00100000
+> [  284.775174] Stack : 0000005311112000 ffffffff80f60000 ffffffff80f60000 a800000001d2d950
+>            0000000000000018 ffffffff81080000 ffffffff81080000 0000000000000000
+>            ffffffff81010000 ffffffff8030893c 4256e5715da6083d 800000040f800000
+>            0000000000000018 ffffffff81080000 ffffffff81080000 ffffffff80264f3c
+>            ffffffff80e31730 0000000000000000 ffffffff80e31730 ffffffff80f90000
+>            ffffffff80fd0000 ffffffff8026c760 0000000000000000 0000000010008ce1
+>            0000000000100000 a8000000414e4010 ffffffff80f8bb18 0000000000000000
+>            0000005311112000 0000000000000001 0000000000000001 0000000000000000
+>            ffffffff80f8bc58 a800000001d32c60 a8000000414e7fe0 0000000000008c00
+>            a80000003f7d8000 0000000000000000 ffffffff80fd0000 ffffffff80e31730
+>            ...
+> [  284.840704] Call Trace:
+> [  284.843153] [<ffffffff806f1a48>] __schedule+0x3b0/0x938
+> [  284.848377]
+> 
+> 
+> Thanks
 > 

@@ -1,51 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 May 2013 14:21:03 +0200 (CEST)
-Received: from mail-ie0-f171.google.com ([209.85.223.171]:54047 "EHLO
-        mail-ie0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6815753Ab3EGMU4ixA5l (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 May 2013 14:20:56 +0200
-Received: by mail-ie0-f171.google.com with SMTP id e11so784367iej.16
-        for <multiple recipients>; Tue, 07 May 2013 05:20:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:x-received:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
-        bh=SYZyWKvxb+JG9ARqEqMeGZu5i7U71Him3NPX6v85MYI=;
-        b=toX55Ox7S2SvL2UMBtRgMEx1riGu6smoGEdSAmdQZSvBngY5t0QnxTXtbVFgux5ILF
-         Z+3VPijuhcRBH2GRKi7xMe8m4M+Jy5XcP1ErmYtXdoDe59tf9rDIiI5Tux0r+HzRd4zD
-         /MppEuwSXUlnnd0za2Sd22UeSqszrswKiW0cj6ZJHfvWhfMVchaZfO2LGbw1pXbUjn08
-         Msiu/uGkZQI2ykvdMWD1WK1YsazmBJWjc4xtvWHVK5ARfuiXZWhO2l2A41HSorg/jW5C
-         K67BARjn9J0R2u22N0Z4nI1uv9+ZjBQrZb2BKTzjFng26JOV85Uw2SFLNFXfbIi9UfDG
-         0JOw==
-MIME-Version: 1.0
-X-Received: by 10.50.127.212 with SMTP id ni20mr644622igb.27.1367929250399;
- Tue, 07 May 2013 05:20:50 -0700 (PDT)
-Received: by 10.64.58.34 with HTTP; Tue, 7 May 2013 05:20:50 -0700 (PDT)
-In-Reply-To: <CAMuHMdWiQdUFREBMjQMmxrMa0LAOA2d3GqqeydyF5TK334ZwRw@mail.gmail.com>
-References: <20130506160253.GA27181@linux-mips.org>
-        <87mws8m3eu.fsf@hase.home>
-        <20130507100447.GA15044@linux-mips.org>
-        <CAMuHMdWiQdUFREBMjQMmxrMa0LAOA2d3GqqeydyF5TK334ZwRw@mail.gmail.com>
-Date:   Tue, 7 May 2013 14:20:50 +0200
-X-Google-Sender-Auth: XIdk-TxU-m6d4PV6CVw80U9atVY
-Message-ID: <CAMuHMdWRJrvWw35yC4AHcC7o-DrTLz9kT9ipQs9XP=55oSNNYQ@mail.gmail.com>
-Subject: Re: Build errors caused by modalias generation patch
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Andreas Schwab <schwab@linux-m68k.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 May 2013 17:31:33 +0200 (CEST)
+Received: from fw-tnat.cambridge.arm.com ([217.140.96.21]:42988 "EHLO
+        cam-smtp0.cambridge.arm.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6823015Ab3EGPbbLyXgi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 May 2013 17:31:31 +0200
+Received: from localhost.localdomain (e106165-lin.cambridge.arm.com [10.1.197.23])
+        by cam-smtp0.cambridge.arm.com (8.13.8/8.13.8) with ESMTP id r47FVHcc017241;
+        Tue, 7 May 2013 16:31:21 +0100
+From:   Andrew Murray <Andrew.Murray@arm.com>
+To:     robherring2@gmail.com
+Cc:     benh@kernel.crashing.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, jgunthorpe@obsidianresearch.com,
+        linux@arm.linux.org.uk, siva.kallam@samsung.com,
+        linux-pci@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
+        jg1.han@samsung.com, Liviu.Dudau@arm.com,
+        linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        kgene.kim@samsung.com, bhelgaas@google.com,
+        suren.reddy@samsung.com, linux-arm-kernel@lists.infradead.org,
+        monstr@monstr.eu, paulus@samba.org,
+        thomas.petazzoni@free-electrons.com,
+        thierry.reding@avionic-design.de, thomas.abraham@linaro.org,
+        arnd@arndb.de, linus.walleij@linaro.org, juhosg@openwrt.org,
+        grant.likely@linaro.org, Andrew Murray <Andrew.Murray@arm.com>
+Subject: [PATCH v9 3/3] of/pci: microblaze: convert to common of_pci_range_parser
+Date:   Tue,  7 May 2013 16:31:14 +0100
+Message-Id: <1367940674-11987-4-git-send-email-Andrew.Murray@arm.com>
+X-Mailer: git-send-email 1.7.0.4
+In-Reply-To: <1367940674-11987-1-git-send-email-Andrew.Murray@arm.com>
+References: <1367940674-11987-1-git-send-email-Andrew.Murray@arm.com>
+Return-Path: <Andrew.Murray@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36339
+X-archive-position: 36340
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: Andrew.Murray@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,53 +48,201 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, May 7, 2013 at 12:58 PM, Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
-> On Tue, May 7, 2013 at 12:04 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
->> On Mon, May 06, 2013 at 07:19:53PM +0200, Andreas Schwab wrote:
->>> Please try the patch in
->>> <http://marc.info/?l=linux-kbuild&m=136767800809256&w=2>.
->>
->> No change in observed behaviour.  I did all my builds in empty object
->> directories so I don't see why this patch would make any difference.
->
-> I'm getting this in an ia64 build (don't ask me why I build for itanic ;-):
->
-> FATAL: drivers/acpi/button: sizeof(struct acpi_device_id)=14 is not a
-> modulo of the size of section __mod_acpi_device_table=144.
-> Fix definition of struct acpi_device_id in mod_devicetable.h
->
-> This is next-20130501, with or without Andreas' fix.
->
-> It works in my development tree based on yesterday's mainline
-> (d7ab7302f970a254997687a1cdede421a5635c68).
->
-> I'll try today's linux-next, and will bisect if I find time...
+This patch converts the pci_load_of_ranges function to use the new common
+of_pci_range_parser.
 
-This was also caused by a leftover scripts/mod/devicetable-offsets.h in the
-source tree.
+Signed-off-by: Andrew Murray <Andrew.Murray@arm.com>
+Signed-off-by: Liviu Dudau <Liviu.Dudau@arm.com>
+---
+ arch/microblaze/pci/pci-common.c |  106 ++++++++++++++------------------------
+ 1 files changed, 38 insertions(+), 68 deletions(-)
 
-Andreas' fix works (sort of, read on), but only if you run "make mrproper"
-_after_ applying it.
-
-Still, if you have other leftovers from a previous build in the source tree,
-you get:
-
-  Using /scratch/geert/linux/linux-next as source for kernel
-  /scratch/geert/linux/linux-next is not clean, please run 'make mrproper'
-  in the '/scratch/geert/linux/linux-next' directory.
-
-However, you don't get that message if there's still a stale
-scripts/mod/devicetable-offsets.h in the source tree.
-Any idea how to fix that?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+diff --git a/arch/microblaze/pci/pci-common.c b/arch/microblaze/pci/pci-common.c
+index 9ea521e..ba9e4a1 100644
+--- a/arch/microblaze/pci/pci-common.c
++++ b/arch/microblaze/pci/pci-common.c
+@@ -658,67 +658,42 @@ void pci_resource_to_user(const struct pci_dev *dev, int bar,
+ void pci_process_bridge_OF_ranges(struct pci_controller *hose,
+ 				  struct device_node *dev, int primary)
+ {
+-	const u32 *ranges;
+-	int rlen;
+-	int pna = of_n_addr_cells(dev);
+-	int np = pna + 5;
+ 	int memno = 0, isa_hole = -1;
+-	u32 pci_space;
+-	unsigned long long pci_addr, cpu_addr, pci_next, cpu_next, size;
+ 	unsigned long long isa_mb = 0;
+ 	struct resource *res;
++	struct of_pci_range range;
++	struct of_pci_range_parser parser;
+ 
+ 	pr_info("PCI host bridge %s %s ranges:\n",
+ 	       dev->full_name, primary ? "(primary)" : "");
+ 
+-	/* Get ranges property */
+-	ranges = of_get_property(dev, "ranges", &rlen);
+-	if (ranges == NULL)
++	/* Check for ranges property */
++	if (of_pci_range_parser_init(&parser, dev))
+ 		return;
+ 
+-	/* Parse it */
+ 	pr_debug("Parsing ranges property...\n");
+-	while ((rlen -= np * 4) >= 0) {
++	for_each_of_pci_range(&parser, &range) {
+ 		/* Read next ranges element */
+-		pci_space = ranges[0];
+-		pci_addr = of_read_number(ranges + 1, 2);
+-		cpu_addr = of_translate_address(dev, ranges + 3);
+-		size = of_read_number(ranges + pna + 3, 2);
+-
+ 		pr_debug("pci_space: 0x%08x pci_addr:0x%016llx ",
+-				pci_space, pci_addr);
++				range.pci_space, range.pci_addr);
+ 		pr_debug("cpu_addr:0x%016llx size:0x%016llx\n",
+-					cpu_addr, size);
+-
+-		ranges += np;
++					range.cpu_addr, range.size);
+ 
+ 		/* If we failed translation or got a zero-sized region
+ 		 * (some FW try to feed us with non sensical zero sized regions
+ 		 * such as power3 which look like some kind of attempt
+ 		 * at exposing the VGA memory hole)
+ 		 */
+-		if (cpu_addr == OF_BAD_ADDR || size == 0)
++		if (range.cpu_addr == OF_BAD_ADDR || range.size == 0)
+ 			continue;
+ 
+-		/* Now consume following elements while they are contiguous */
+-		for (; rlen >= np * sizeof(u32);
+-		     ranges += np, rlen -= np * 4) {
+-			if (ranges[0] != pci_space)
+-				break;
+-			pci_next = of_read_number(ranges + 1, 2);
+-			cpu_next = of_translate_address(dev, ranges + 3);
+-			if (pci_next != pci_addr + size ||
+-			    cpu_next != cpu_addr + size)
+-				break;
+-			size += of_read_number(ranges + pna + 3, 2);
+-		}
+-
+ 		/* Act based on address space type */
+ 		res = NULL;
+-		switch ((pci_space >> 24) & 0x3) {
+-		case 1:		/* PCI IO space */
++		switch (range.flags & IORESOURCE_TYPE_BITS) {
++		case IORESOURCE_IO:
+ 			pr_info("  IO 0x%016llx..0x%016llx -> 0x%016llx\n",
+-			       cpu_addr, cpu_addr + size - 1, pci_addr);
++				range.cpu_addr, range.cpu_addr + range.size - 1,
++				range.pci_addr);
+ 
+ 			/* We support only one IO range */
+ 			if (hose->pci_io_size) {
+@@ -726,11 +701,12 @@ void pci_process_bridge_OF_ranges(struct pci_controller *hose,
+ 				continue;
+ 			}
+ 			/* On 32 bits, limit I/O space to 16MB */
+-			if (size > 0x01000000)
+-				size = 0x01000000;
++			if (range.size > 0x01000000)
++				range.size = 0x01000000;
+ 
+ 			/* 32 bits needs to map IOs here */
+-			hose->io_base_virt = ioremap(cpu_addr, size);
++			hose->io_base_virt = ioremap(range.cpu_addr,
++						range.size);
+ 
+ 			/* Expect trouble if pci_addr is not 0 */
+ 			if (primary)
+@@ -739,19 +715,20 @@ void pci_process_bridge_OF_ranges(struct pci_controller *hose,
+ 			/* pci_io_size and io_base_phys always represent IO
+ 			 * space starting at 0 so we factor in pci_addr
+ 			 */
+-			hose->pci_io_size = pci_addr + size;
+-			hose->io_base_phys = cpu_addr - pci_addr;
++			hose->pci_io_size = range.pci_addr + range.size;
++			hose->io_base_phys = range.cpu_addr - range.pci_addr;
+ 
+ 			/* Build resource */
+ 			res = &hose->io_resource;
+-			res->flags = IORESOURCE_IO;
+-			res->start = pci_addr;
++			range.cpu_addr = range.pci_addr;
++
+ 			break;
+-		case 2:		/* PCI Memory space */
+-		case 3:		/* PCI 64 bits Memory space */
++		case IORESOURCE_MEM:
+ 			pr_info(" MEM 0x%016llx..0x%016llx -> 0x%016llx %s\n",
+-			       cpu_addr, cpu_addr + size - 1, pci_addr,
+-			       (pci_space & 0x40000000) ? "Prefetch" : "");
++				range.cpu_addr, range.cpu_addr + range.size - 1,
++				range.pci_addr,
++				(range.pci_space & 0x40000000) ?
++				"Prefetch" : "");
+ 
+ 			/* We support only 3 memory ranges */
+ 			if (memno >= 3) {
+@@ -759,13 +736,13 @@ void pci_process_bridge_OF_ranges(struct pci_controller *hose,
+ 				continue;
+ 			}
+ 			/* Handles ISA memory hole space here */
+-			if (pci_addr == 0) {
+-				isa_mb = cpu_addr;
++			if (range.pci_addr == 0) {
++				isa_mb = range.cpu_addr;
+ 				isa_hole = memno;
+ 				if (primary || isa_mem_base == 0)
+-					isa_mem_base = cpu_addr;
+-				hose->isa_mem_phys = cpu_addr;
+-				hose->isa_mem_size = size;
++					isa_mem_base = range.cpu_addr;
++				hose->isa_mem_phys = range.cpu_addr;
++				hose->isa_mem_size = range.size;
+ 			}
+ 
+ 			/* We get the PCI/Mem offset from the first range or
+@@ -773,30 +750,23 @@ void pci_process_bridge_OF_ranges(struct pci_controller *hose,
+ 			 * hole. If they don't match, bugger.
+ 			 */
+ 			if (memno == 0 ||
+-			    (isa_hole >= 0 && pci_addr != 0 &&
++			    (isa_hole >= 0 && range.pci_addr != 0 &&
+ 			     hose->pci_mem_offset == isa_mb))
+-				hose->pci_mem_offset = cpu_addr - pci_addr;
+-			else if (pci_addr != 0 &&
+-				 hose->pci_mem_offset != cpu_addr - pci_addr) {
++				hose->pci_mem_offset = range.cpu_addr -
++							range.pci_addr;
++			else if (range.pci_addr != 0 &&
++				 hose->pci_mem_offset != range.cpu_addr -
++							range.pci_addr) {
+ 				pr_info(" \\--> Skipped (offset mismatch) !\n");
+ 				continue;
+ 			}
+ 
+ 			/* Build resource */
+ 			res = &hose->mem_resources[memno++];
+-			res->flags = IORESOURCE_MEM;
+-			if (pci_space & 0x40000000)
+-				res->flags |= IORESOURCE_PREFETCH;
+-			res->start = cpu_addr;
+ 			break;
+ 		}
+-		if (res != NULL) {
+-			res->name = dev->full_name;
+-			res->end = res->start + size - 1;
+-			res->parent = NULL;
+-			res->sibling = NULL;
+-			res->child = NULL;
+-		}
++		if (res != NULL)
++			of_pci_range_to_resource(&range, dev, res);
+ 	}
+ 
+ 	/* If there's an ISA hole and the pci_mem_offset is -not- matching
+-- 
+1.7.0.4

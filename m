@@ -1,63 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 May 2013 12:20:17 +0200 (CEST)
-Received: from gate.crashing.org ([63.228.1.57]:59831 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822675Ab3EGKUN0oNE9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 May 2013 12:20:13 +0200
-Received: from [127.0.0.1] (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id r47AJIJ0028838;
-        Tue, 7 May 2013 05:19:19 -0500
-Message-ID: <1367921958.25488.8.camel@pasglop>
-Subject: Re: [PATCH v8 1/3] of/pci: Unify pci_process_bridge_OF_ranges from
- Microblaze and PowerPC
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Andrew Murray <andrew.murray@arm.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "jgunthorpe@obsidianresearch.com" <jgunthorpe@obsidianresearch.com>,
-        "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
-        "siva.kallam@samsung.com" <siva.kallam@samsung.com>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "devicetree-discuss@lists.ozlabs.org" 
-        <devicetree-discuss@lists.ozlabs.org>,
-        "jg1.han@samsung.com" <jg1.han@samsung.com>,
-        Liviu Dudau <Liviu.Dudau@arm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 May 2013 12:58:50 +0200 (CEST)
+Received: from mail-ia0-f176.google.com ([209.85.210.176]:49330 "EHLO
+        mail-ia0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823763Ab3EGK6rM9o0N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 May 2013 12:58:47 +0200
+Received: by mail-ia0-f176.google.com with SMTP id j38so282286iad.7
+        for <multiple recipients>; Tue, 07 May 2013 03:58:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:x-received:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=OcrbXUUS3/SDsXYlFL0ABusj6ObdSalOY93rlUFCDwU=;
+        b=NnZMX94sL8sjIOAwIxTEgoC37UHP+ernA7VmhMLyiE8h5WaY9s/TZlFCZVYNe+PVXP
+         EO+IeRwDsqFztS4pKvhJYUWRX/ADad9UTvaFqrL56sNFhtvurAgnSDLuKksR3HvQQmNn
+         WmY8zYYIIJGVYfG+GkotVe75Zv02L9h3bc32b3xWyMmQof4lzdTkxyHOsCgrCkSub2At
+         e1+qDUkUNM8cjlv4wosvDr92w8fT4KLxWp5T5dBEsXcUhDo8xPStoCDE4L+9fQp2D0mM
+         JvnXHHvC03VjgETgu+kY61/LZQZiuqeI2toQx5U7qdGYDiioGFHZOfTAaTLy7jQ5aiSK
+         iKoA==
+MIME-Version: 1.0
+X-Received: by 10.50.15.166 with SMTP id y6mr512287igc.83.1367924320771; Tue,
+ 07 May 2013 03:58:40 -0700 (PDT)
+Received: by 10.64.58.34 with HTTP; Tue, 7 May 2013 03:58:40 -0700 (PDT)
+In-Reply-To: <20130507100447.GA15044@linux-mips.org>
+References: <20130506160253.GA27181@linux-mips.org>
+        <87mws8m3eu.fsf@hase.home>
+        <20130507100447.GA15044@linux-mips.org>
+Date:   Tue, 7 May 2013 12:58:40 +0200
+X-Google-Sender-Auth: 5rb3r5HzS3VcYu4i40ysGnFGpBw
+Message-ID: <CAMuHMdWiQdUFREBMjQMmxrMa0LAOA2d3GqqeydyF5TK334ZwRw@mail.gmail.com>
+Subject: Re: Build errors caused by modalias generation patch
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Andreas Schwab <schwab@linux-m68k.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-samsung-soc@vger.kernel.org" 
-        <linux-samsung-soc@vger.kernel.org>,
-        "kgene.kim@samsung.com" <kgene.kim@samsung.com>,
-        "bhelgaas@google.com" <bhelgaas@google.com>,
-        "suren.reddy@samsung.com" <suren.reddy@samsung.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "monstr@monstr.eu" <monstr@monstr.eu>,
-        "paulus@samba.org" <paulus@samba.org>,
-        "thomas.petazzoni@free-electrons.com" 
-        <thomas.petazzoni@free-electrons.com>,
-        "thierry.reding@avionic-design.de" <thierry.reding@avionic-design.de>,
-        "thomas.abraham@linaro.org" <thomas.abraham@linaro.org>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "juhosg@openwrt.org" <juhosg@openwrt.org>,
-        "grant.likely@linaro.org" <grant.likely@linaro.org>,
-        Rob Herring <robherring2@gmail.com>
-Date:   Tue, 07 May 2013 20:19:18 +1000
-In-Reply-To: <20130507080142.GA8808@arm.com>
-References: <1366627295-16964-1-git-send-email-Andrew.Murray@arm.com>
-         <1366627295-16964-2-git-send-email-Andrew.Murray@arm.com>
-         <1367721709.11982.37.camel@pasglop> <20130507080142.GA8808@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.6.4-0ubuntu1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <benh@kernel.crashing.org>
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36337
+X-archive-position: 36338
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: benh@kernel.crashing.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,48 +56,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 2013-05-07 at 09:01 +0100, Andrew Murray wrote:
-> 
-> There were no objections to this latest revision until now and it is
-> currently sitting with Jason Cooper (mvebu-next/pcie). [1]
+On Tue, May 7, 2013 at 12:04 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Mon, May 06, 2013 at 07:19:53PM +0200, Andreas Schwab wrote:
+>> Please try the patch in
+>> <http://marc.info/?l=linux-kbuild&m=136767800809256&w=2>.
+>
+> No change in observed behaviour.  I did all my builds in empty object
+> directories so I don't see why this patch would make any difference.
 
-Ok, well I've just sent Linus a pull request for my changes so at least
-drop the powerpc changes from your tree for the time being.
+I'm getting this in an ia64 build (don't ask me why I build for itanic ;-):
 
-> This is a view that was also shared by Bjorn [2] when I attempted to
-> submit a patchset which moves struct pci_controller to asm-generic.
+FATAL: drivers/acpi/button: sizeof(struct acpi_device_id)=14 is not a
+modulo of the size of section __mod_acpi_device_table=144.
+Fix definition of struct acpi_device_id in mod_devicetable.h
 
-Right, it's the logical way to go
+This is next-20130501, with or without Andreas' fix.
 
-> The motativation for my patchsets were to give a way for ARM PCI host
-> bridge drivers to parse the DT ranges property, but this snow-balled
-> into unifying pci_process_bridge_OF_ranges.
+It works in my development tree based on yesterday's mainline
+(d7ab7302f970a254997687a1cdede421a5635c68).
 
-Which I understand, I would probably have done the same thing in your
-shoes :-)
+I'll try today's linux-next, and will bisect if I find time...
 
-> My v8 patchset provides a of_pci_range_parser which is used directly
-> by a few ARM PCI DT host bridge drivers, this has been generally
-> accepted and tested. I don't see why this can't remain and so I'd
-> really like to keep this around. 
+Gr{oetje,eeting}s,
 
-Sure, no objection, in fact I should/could probably update my new code
-to use it as well.
+                        Geert
 
-> Grant, Benjamin would you be happy for me to resubmit this series
-> which provides the of_pci_range_parser which will be used by the
-> separate implementations of pci_process_bridge_OF_ranges in
-> PowerPC/Microblaze?
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Sure, in fact feel free to update my new code if you have more bandwidth
-than I do, it should hit Linus tree soon hopefully unless he objects to
-me having a second pull request this merge window...
-
-> Benjamin are you able to still use of_pci_range_parser in your
-> 'Support per-aperture memory offset' patch?
-
-I see no reason why not. I just haven't looked into it much, I admit,
-being bogged down with a pile of new HW bringup in the lab etc...
-
-Cheers,
-Ben.
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

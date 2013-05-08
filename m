@@ -1,35 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 May 2013 05:19:04 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:33161 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816822Ab3EHDTChBtk8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 May 2013 05:19:02 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <sjhill@realitydiluted.com>)
-        id 1UZuu7-0002oO-4r
-        for linux-mips@linux-mips.org; Tue, 07 May 2013 22:18:55 -0500
-Message-ID: <5189C41D.3000005@realitydiluted.com>
-Date:   Tue, 07 May 2013 22:18:53 -0500
-From:   "Steven J. Hill" <sjhill@realitydiluted.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130329 Thunderbird/17.0.5
-MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH v99,11/13] MIPS: microMIPS: Optimise 'strncpy' core library
- function.
-References: <1354856737-28678-1-git-send-email-sjhill@mips.com> <1354856737-28678-12-git-send-email-sjhill@mips.com> <518987BD.7030900@gmail.com>
-In-Reply-To: <518987BD.7030900@gmail.com>
-X-Enigmail-Version: 1.5.1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <sjhill@realitydiluted.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 May 2013 13:14:28 +0200 (CEST)
+Received: from 84-245-11-97.dsl.cambrium.nl ([84.245.11.97]:33209 "EHLO
+        grubby.stderr.nl" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S6823054Ab3EHLOYMcPrr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 May 2013 13:14:24 +0200
+Received: from matthijs by grubby.stderr.nl with local (Exim 4.80)
+        (envelope-from <matthijs@stdin.nl>)
+        id 1Ua2Jx-0002xu-Sc; Wed, 08 May 2013 13:14:05 +0200
+From:   Matthijs Kooijman <matthijs@stdin.nl>
+To:     Michal Marek <mmarek@suse.cz>,
+        Grant Likely <grant.likely@linaro.org>,
+        Rob Herring <rob.herring@calxeda.com>
+Cc:     linux-kbuild@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Stephen Warren <swarren@nvidia.com>,
+        Matthijs Kooijman <matthijs@stdin.nl>
+Subject: [PATCH] kbuild: Don't assume dts files live in arch/*/boot/dts
+Date:   Wed,  8 May 2013 12:59:04 +0200
+Message-Id: <1368010744-11281-1-git-send-email-matthijs@stdin.nl>
+X-Mailer: git-send-email 1.8.0
+Return-Path: <matthijs@stdin.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36354
+X-archive-position: 36355
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@realitydiluted.com
+X-original-sender: matthijs@stdin.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,35 +39,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+In commit b40b25ff (kbuild: always run gcc -E on *.dts, remove cmd_dtc_cpp),
+dts building was changed to always use the C preprocessor. This meant
+that the .dts file passed to dtc is not the original, but the
+preprocessed one.
 
-On 05/07/2013 06:01 PM, David Daney wrote:
-> On 12/06/2012 09:05 PM, Steven J. Hill wrote:
->> From: "Steven J. Hill" <sjhill@mips.com>
->> 
->> Optimise 'strncpy' to use microMIPS instructions and/or optimisations for
->> binary size reduction. When the microMIPS ISA is not being used, the
->> library function compiles to the original binary code.
-> 
-> This is an untrue statement.  Why mislead us by saying the original binary
-> code is obtained?
-> 
-I you are building a classic MIPS kernel, the instructions generated will be
-the same even with this patch. The changes only make a difference when
-building a pure microMIPS kernel.
+When compiling with a separate build directory (i.e., with O=), this
+preprocessed file will not live in the same directory as the original.
+When the .dts file includes .dtsi files, dtc will look for them in the
+build directory, not in the source directory and compilation will fail.
 
-> You don't really explain how the change helps optimization either.
-> 
-The exercise is left to the reader. Build a microMIPS kernel yourself and
-figure it out.
+The commit referenced above tried to fix this by passing arch/*/boot/dts
+as an include path to dtc. However, for mips, the .dts files are not in
+this directory, so dts compilation on mips breaks for some targets.
 
-- -Steve
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+Instead of hardcoding this particular include path, this commit just
+uses the directory of the .dts file that is being compiled, which
+effectively restores the previous behaviour wrt includes. For most .dts
+files, this path is just the same as the previous hardcoded
+arch/*/boot/dts path.
 
-iEYEARECAAYFAlGJxBcACgkQgyK5H2Ic36c4hQCeLGI8MI2rr6KgOv7G15lnBdok
-bbcAoKY+BvVyTCzG033Bc+pJ07xCtGMq
-=xJmM
------END PGP SIGNATURE-----
+This was tested on a mips (rt3052) and an arm (bcm2835) target.
+
+Signed-off-by: Matthijs Kooijman <matthijs@stdin.nl>
+---
+ scripts/Makefile.lib | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 51bb3de..8337663 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -264,7 +264,7 @@ $(obj)/%.dtb.S: $(obj)/%.dtb
+ quiet_cmd_dtc = DTC     $@
+ cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
+ 	$(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
+-		-i $(srctree)/arch/$(SRCARCH)/boot/dts $(DTC_FLAGS) \
++		-i $(dir $<) $(DTC_FLAGS) \
+ 		-d $(depfile).dtc $(dtc-tmp) ; \
+ 	cat $(depfile).pre $(depfile).dtc > $(depfile)
+ 
+-- 
+1.8.0

@@ -1,63 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 May 2013 17:56:24 +0200 (CEST)
-Received: from mail-pa0-f53.google.com ([209.85.220.53]:52204 "EHLO
-        mail-pa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827468Ab3EHP4Wp0fg0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 May 2013 17:56:22 +0200
-Received: by mail-pa0-f53.google.com with SMTP id kq12so1417347pab.40
-        for <multiple recipients>; Wed, 08 May 2013 08:56:16 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 May 2013 18:29:00 +0200 (CEST)
+Received: from mail-pd0-f172.google.com ([209.85.192.172]:50474 "EHLO
+        mail-pd0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827468Ab3EHQ25uRTtP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 May 2013 18:28:57 +0200
+Received: by mail-pd0-f172.google.com with SMTP id 6so1316394pdd.31
+        for <linux-mips@linux-mips.org>; Wed, 08 May 2013 09:28:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=x-received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
-         :references;
-        bh=ia294ZzY12Zfw1VVZz0/1LIpOoLb3HongVasj4JDLxY=;
-        b=Sv/xDY66SpQ1l/dx+93T+s1k47uqGEy/mOY4ZUKJBZiPFYMbuaZD18plPkBPd2+JYj
-         f2Z4XyTlry9wxqaBGEP9Vv5Icv9ZPNdmThcr77wyroMTh0KtadYCLaFnHQL73klE7pSO
-         z++iwQYTCbQyzkOW2Z5bOG1UeUpki0DOi7yApv4GmggjS/WXFuj5DHMvTWvIfFVSxOWn
-         8T5yIOqzEGcOui+Ohe4usdVkhnAXN5iPO703DGrYdm3m09FTYZgV3hd3fLnYAdZVXu1O
-         f8cpTsnauiHxpIiVoqWFiGFZ2FZ74+ybbSTnwDQqUMaAR8E0izRXaqogqrW/zFZaV5QZ
-         HAEw==
-X-Received: by 10.68.176.37 with SMTP id cf5mr8152967pbc.173.1368028576243;
-        Wed, 08 May 2013 08:56:16 -0700 (PDT)
-Received: from localhost.localdomain ([114.250.96.136])
-        by mx.google.com with ESMTPSA id uv1sm1782030pbc.16.2013.05.08.08.56.09
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=CVPJXwYMbEp//EWiawWKp3SyJ/ssCWfEvhwDFiutW6w=;
+        b=MDzZP9ckxWM/jXp+UOP/2fxNNTbbGr5W0fUZaxfFfoF0lq5nuUaBGQvYOHrazvIayF
+         f84OnBUnPSexDHCA5k7mHuUJJN/0m6EdDCn+YNsMqiE+uMUb7WilPJ1EPSxhfHRB0s10
+         n7tPd3fS/S3nnijsmKuvDXAVv4Jr8pRL9vPgYyVtUQe9yP4uYdnsfw7uYb2fQuMT9yEQ
+         7VKYPqRuhifsmfW/sXFvTuhdUqa0M6C4RVwPCKnd63O5DdD5F9Jpsdxpkls9qEzVPh4h
+         VMERZMK/A+XyEn4dhJgczsvHhCHEiq9dJM9ngYNPDPO5EG6qSFWIJ7cDET0UA9Ca+Uce
+         YStQ==
+X-Received: by 10.66.230.164 with SMTP id sz4mr8843605pac.124.1368030531246;
+        Wed, 08 May 2013 09:28:51 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id uq10sm15037000pbc.5.2013.05.08.09.28.49
         for <multiple recipients>
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Wed, 08 May 2013 08:56:15 -0700 (PDT)
-From:   Jiang Liu <liuj97@gmail.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Jiang Liu <jiang.liu@huawei.com>,
-        David Rientjes <rientjes@google.com>,
-        Wen Congyang <wency@cn.fujitsu.com>,
-        Mel Gorman <mgorman@suse.de>, Minchan Kim <minchan@kernel.org>,
-        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
-        Michal Hocko <mhocko@suse.cz>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        David Howells <dhowells@redhat.com>,
-        Mark Salter <msalter@redhat.com>,
-        Jianguo Wu <wujianguo@huawei.com>, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Arnd Bergmann <arnd@arndb.de>, Jiri Kosina <jkosina@suse.cz>,
-        John Crispin <blogic@openwrt.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-mips@linux-mips.org
-Subject: [PATCH v5, part4 27/41] mm/MIPS: prepare for removing num_physpages and simplify mem_init()
-Date:   Wed,  8 May 2013 23:51:24 +0800
-Message-Id: <1368028298-7401-28-git-send-email-jiang.liu@huawei.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1368028298-7401-1-git-send-email-jiang.liu@huawei.com>
-References: <1368028298-7401-1-git-send-email-jiang.liu@huawei.com>
-Return-Path: <liuj97@gmail.com>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 08 May 2013 09:28:50 -0700 (PDT)
+Message-ID: <518A7D40.1060502@gmail.com>
+Date:   Wed, 08 May 2013 09:28:48 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
+MIME-Version: 1.0
+To:     "Steven J. Hill" <sjhill@realitydiluted.com>
+CC:     linux-mips@linux-mips.org
+Subject: Re: [PATCH v99,11/13] MIPS: microMIPS: Optimise 'strncpy' core library
+ function.
+References: <1354856737-28678-1-git-send-email-sjhill@mips.com> <1354856737-28678-12-git-send-email-sjhill@mips.com> <518987BD.7030900@gmail.com> <5189C41D.3000005@realitydiluted.com>
+In-Reply-To: <5189C41D.3000005@realitydiluted.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36359
+X-archive-position: 36360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: liuj97@gmail.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,173 +58,118 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Prepare for removing num_physpages and simplify mem_init().
+On 05/07/2013 08:18 PM, Steven J. Hill wrote:
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA1
+>
+> On 05/07/2013 06:01 PM, David Daney wrote:
+>> On 12/06/2012 09:05 PM, Steven J. Hill wrote:
+>>> From: "Steven J. Hill" <sjhill@mips.com>
+>>>
+>>> Optimise 'strncpy' to use microMIPS instructions and/or optimisations for
+>>> binary size reduction. When the microMIPS ISA is not being used, the
+>>> library function compiles to the original binary code.
+>>
+>> This is an untrue statement.  Why mislead us by saying the original binary
+>> code is obtained?
+>>
+> I you are building a classic MIPS kernel, the instructions generated will be
+> the same even with this patch. The changes only make a difference when
+> building a pure microMIPS kernel.
 
-Signed-off-by: Jiang Liu <jiang.liu@huawei.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: David Daney <david.daney@cavium.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Jiri Kosina <jkosina@suse.cz>
-Cc: John Crispin <blogic@openwrt.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
----
- arch/mips/mm/init.c              |   57 ++++++++++++--------------------------
- arch/mips/pci/pci-lantiq.c       |    2 +-
- arch/mips/sgi-ip27/ip27-memory.c |   21 ++------------
- 3 files changed, 21 insertions(+), 59 deletions(-)
+You are wrong:
 
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index de4ff2f..0392a1a 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -358,11 +358,24 @@ void __init paging_init(void)
- static struct kcore_list kcore_kseg0;
- #endif
- 
--void __init mem_init(void)
-+static inline void mem_init_free_highmem(void)
- {
--	unsigned long codesize, reservedpages, datasize, initsize;
--	unsigned long tmp, ram;
-+#ifdef CONFIG_HIGHMEM
-+	unsigned long tmp;
- 
-+	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
-+		struct page *page = pfn_to_page(tmp);
-+
-+		if (!page_is_ram(tmp))
-+			SetPageReserved(page);
-+		else
-+			free_highmem_page(page);
-+	}
-+#endif
-+}
-+
-+void __init mem_init(void)
-+{
- #ifdef CONFIG_HIGHMEM
- #ifdef CONFIG_DISCONTIGMEM
- #error "CONFIG_HIGHMEM and CONFIG_DISCONTIGMEM dont work together yet"
-@@ -375,32 +388,8 @@ void __init mem_init(void)
- 
- 	free_all_bootmem();
- 	setup_zero_pages();	/* Setup zeroed pages.  */
--
--	reservedpages = ram = 0;
--	for (tmp = 0; tmp < max_low_pfn; tmp++)
--		if (page_is_ram(tmp) && pfn_valid(tmp)) {
--			ram++;
--			if (PageReserved(pfn_to_page(tmp)))
--				reservedpages++;
--		}
--	num_physpages = ram;
--
--#ifdef CONFIG_HIGHMEM
--	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
--		struct page *page = pfn_to_page(tmp);
--
--		if (!page_is_ram(tmp)) {
--			SetPageReserved(page);
--			continue;
--		}
--		free_highmem_page(page);
--	}
--	num_physpages += totalhigh_pages;
--#endif
--
--	codesize =  (unsigned long) &_etext - (unsigned long) &_text;
--	datasize =  (unsigned long) &_edata - (unsigned long) &_etext;
--	initsize =  (unsigned long) &__init_end - (unsigned long) &__init_begin;
-+	mem_init_free_highmem();
-+	mem_init_print_info(NULL);
- 
- #ifdef CONFIG_64BIT
- 	if ((unsigned long) &_text > (unsigned long) CKSEG0)
-@@ -409,16 +398,6 @@ void __init mem_init(void)
- 		kclist_add(&kcore_kseg0, (void *) CKSEG0,
- 				0x80000000 - 4, KCORE_TEXT);
- #endif
--
--	printk(KERN_INFO "Memory: %luk/%luk available (%ldk kernel code, "
--	       "%ldk reserved, %ldk data, %ldk init, %ldk highmem)\n",
--	       nr_free_pages() << (PAGE_SHIFT-10),
--	       ram << (PAGE_SHIFT-10),
--	       codesize >> 10,
--	       reservedpages << (PAGE_SHIFT-10),
--	       datasize >> 10,
--	       initsize >> 10,
--	       totalhigh_pages << (PAGE_SHIFT-10));
- }
- #endif /* !CONFIG_NEED_MULTIPLE_NODES */
- 
-diff --git a/arch/mips/pci/pci-lantiq.c b/arch/mips/pci/pci-lantiq.c
-index 879077b..cb1ef99 100644
---- a/arch/mips/pci/pci-lantiq.c
-+++ b/arch/mips/pci/pci-lantiq.c
-@@ -89,7 +89,7 @@ static inline u32 ltq_calc_bar11mask(void)
- 	u32 mem, bar11mask;
- 
- 	/* BAR11MASK value depends on available memory on system. */
--	mem = num_physpages * PAGE_SIZE;
-+	mem = get_num_physpages() * PAGE_SIZE;
- 	bar11mask = (0x0ffffff0 & ~((1 << (fls(mem) - 1)) - 1)) | 8;
- 
- 	return bar11mask;
-diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-index 936e617..d074680 100644
---- a/arch/mips/sgi-ip27/ip27-memory.c
-+++ b/arch/mips/sgi-ip27/ip27-memory.c
-@@ -357,8 +357,6 @@ static void __init szmem(void)
- 	int slot;
- 	cnodeid_t node;
- 
--	num_physpages = 0;
--
- 	for_each_online_node(node) {
- 		nodebytes = 0;
- 		for (slot = 0; slot < MAX_MEM_SLOTS; slot++) {
-@@ -381,7 +379,6 @@ static void __init szmem(void)
- 				slot = MAX_MEM_SLOTS;
- 				continue;
- 			}
--			num_physpages += slot_psize;
- 			memblock_add_node(PFN_PHYS(slot_getbasepfn(node, slot)),
- 					  PFN_PHYS(slot_psize), node);
- 		}
-@@ -480,10 +477,9 @@ void __init paging_init(void)
- 
- void __init mem_init(void)
- {
--	unsigned long codesize, datasize, initsize, tmp;
- 	unsigned node;
- 
--	high_memory = (void *) __va(num_physpages << PAGE_SHIFT);
-+	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
- 
- 	for_each_online_node(node) {
- 		/*
-@@ -494,18 +490,5 @@ void __init mem_init(void)
- 
- 	setup_zero_pages();	/* This comes from node 0 */
- 
--	codesize =  (unsigned long) &_etext - (unsigned long) &_text;
--	datasize =  (unsigned long) &_edata - (unsigned long) &_etext;
--	initsize =  (unsigned long) &__init_end - (unsigned long) &__init_begin;
--
--	tmp = nr_free_pages();
--	printk(KERN_INFO "Memory: %luk/%luk available (%ldk kernel code, "
--	       "%ldk reserved, %ldk data, %ldk init, %ldk highmem)\n",
--	       tmp << (PAGE_SHIFT-10),
--	       num_physpages << (PAGE_SHIFT-10),
--	       codesize >> 10,
--	       (num_physpages - tmp) << (PAGE_SHIFT-10),
--	       datasize >> 10,
--	       initsize >> 10,
--	       totalhigh_pages << (PAGE_SHIFT-10));
-+	mem_init_print_info(NULL);
- }
--- 
-1.7.9.5
+--- strncpy_user.o.before.dis	2013-05-08 09:14:35.895555668 -0700
++++ strncpy_user.o.after.dis	2013-05-08 09:14:12.870485085 -0700
+@@ -1,5 +1,5 @@
+
+-strncpy_user.o.before:     file format elf64-tradbigmips
++strncpy_user.o.after:     file format elf64-tradbigmips
+
+
+  Disassembly of section .text:
+@@ -7,27 +7,26 @@
+  0000000000000000 <__strncpy_from_user_asm>:
+     0:	df820028 	ld	v0,40(gp)
+     4:	00451024 	and	v0,v0,a1
+-   8:	14400011 	bnez	v0,50 <__strncpy_from_user_nocheck_asm+0x40>
++   8:	14400010 	bnez	v0,4c <__strncpy_from_user_nocheck_asm+0x3c>
+     c:	00000000 	nop
+
+  0000000000000010 <__strncpy_from_user_nocheck_asm>:
+-  10:	0000102d 	move	v0,zero
++  10:	0000602d 	move	t0,zero
+    14:	00a0182d 	move	v1,a1
+-  18:	906c0000 	lbu	t0,0(v1)
++  18:	90620000 	lbu	v0,0(v1)
+    1c:	64630001 	daddiu	v1,v1,1
+-  20:	11800005 	beqz	t0,38 <__strncpy_from_user_nocheck_asm+0x28>
+-  24:	a08c0000 	sb	t0,0(a0)
+-  28:	64420001 	daddiu	v0,v0,1
+-  2c:	64840001 	daddiu	a0,a0,1
+-  30:	1446fff9 	bne	v0,a2,18 <__strncpy_from_user_nocheck_asm+0x8>
+-  34:	00000000 	nop
+-  38:	00a2602d 	daddu	t0,a1,v0
+-  3c:	01856026 	xor	t0,t0,a1
+-  40:	05800003 	bltz	t0,50 <__strncpy_from_user_nocheck_asm+0x40>
+-  44:	00000000 	nop
+-  48:	03e00008 	jr	ra
+-  4c:	00000000 	nop
+-  50:	2402fff2 	li	v0,-14
+-  54:	03e00008 	jr	ra
+-  58:	00000000 	nop
+-  5c:	00000000 	nop
++  20:	10400004 	beqz	v0,34 <__strncpy_from_user_nocheck_asm+0x24>
++  24:	a0820000 	sb	v0,0(a0)
++  28:	658c0001 	daddiu	t0,t0,1
++  2c:	1586fffa 	bne	t0,a2,18 <__strncpy_from_user_nocheck_asm+0x8>
++  30:	64840001 	daddiu	a0,a0,1
++  34:	00ac102d 	daddu	v0,a1,t0
++  38:	00451026 	xor	v0,v0,a1
++  3c:	04400003 	bltz	v0,4c <__strncpy_from_user_nocheck_asm+0x3c>
++  40:	00000000 	nop
++  44:	03e00008 	jr	ra
++  48:	0180102d 	move	v0,t0
++  4c:	2402fff2 	li	v0,-14
++  50:	03e00008 	jr	ra
++  54:	00000000 	nop
++	...
+
+They are different, and you said they would be the same.
+
+I am fine if you want to change things.  Just don't say that your patch 
+makes no change when it in fact does.
+
+
+>
+>> You don't really explain how the change helps optimization either.
+>>
+> The exercise is left to the reader. Build a microMIPS kernel yourself and
+> figure it out.
+
+This isn't some sort of programming text book.  Your job in the change 
+log (and the mailing list) isn't to force us to learn by doing a lot of 
+independent analysis of the code.  Instead I would prefer a concise 
+explanation of why the change is beneficial.
+
+You are dumping a lot of new code into the kernel.  That is fine, but 
+you could consider making the process easier by improving the quality of 
+the changelogs  that accompany it.
+
+David Daney
+
+
+
+>
+> - -Steve
+> -----BEGIN PGP SIGNATURE-----
+> Version: GnuPG v1.4.11 (GNU/Linux)
+> Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+>
+> iEYEARECAAYFAlGJxBcACgkQgyK5H2Ic36c4hQCeLGI8MI2rr6KgOv7G15lnBdok
+> bbcAoKY+BvVyTCzG033Bc+pJ07xCtGMq
+> =xJmM
+> -----END PGP SIGNATURE-----
+>
+>
+>

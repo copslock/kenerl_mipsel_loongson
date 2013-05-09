@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 May 2013 16:44:52 +0200 (CEST)
-Received: from mail-pd0-f176.google.com ([209.85.192.176]:44686 "EHLO
-        mail-pd0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823763Ab3EIOooh3IL5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 May 2013 16:44:44 +0200
-Received: by mail-pd0-f176.google.com with SMTP id x10so2050926pdj.21
-        for <multiple recipients>; Thu, 09 May 2013 07:44:37 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 May 2013 16:48:23 +0200 (CEST)
+Received: from mail-pa0-f50.google.com ([209.85.220.50]:39202 "EHLO
+        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6824769Ab3EIOsOXL6wS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 May 2013 16:48:14 +0200
+Received: by mail-pa0-f50.google.com with SMTP id fb10so2145888pad.23
+        for <multiple recipients>; Thu, 09 May 2013 07:48:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=x-received:date:from:to:subject:message-id:mime-version
          :content-type:content-disposition:user-agent;
-        bh=CE5oU9GM7Dm8dD3117JUKQdSmYnbkg2ztSlu930IHRM=;
-        b=VX55/170EVXL4lOIcjRJ8F/5YoYVG7iHnKXmwzU6MG5YcccwFU81521m+wi+t6Kulx
-         WLJgBwK2CvKE8vEYAg2WNed1Hb8cOHLjdEWSIzodkldEMrIFfdpQ+iDeC+UptnRtR+S6
-         r19lUrp5EPrVgaxTwpsXXXOfr8nGMR0cUUeUTCUjNDY0ZRrMFyNDrM+GUKo+po4uLCob
-         vqz0vGR1TOMNCdZfVqhiTofNqzjDMCQc12jNutkv5q5N4OfbZljocGp6HNGZhO6Lj+Ee
-         X1vqlfmERYmLtD6qXWX0DFUkQSFxXSfxUBP1VSOFAqueIwYmQPlLdLG2+NKs0Jbj/wWu
-         kR2A==
-X-Received: by 10.68.196.1 with SMTP id ii1mr12970747pbc.200.1368110677339;
-        Thu, 09 May 2013 07:44:37 -0700 (PDT)
+        bh=4wocrIPDSxNbfSIDpjqo1TpUfg5qobs+70dXgUdqTlI=;
+        b=mi+BsVjpsHlfaUuOtbA6CEkEcdFv+a6LVuW91MulrmtHut5QSnkViUmxFYkQVZOvEU
+         ffC6TpbhUJQhvLfEa8Ocmh2E5FtEyD5lcZj2ct9EubL1ygbow5sqQXxZ7f6RgxItvMTs
+         xaaq4LuX9zUbY7u+zWNAKdfNhDnBfer8mKyG4nQiJzp7mRAPk0YQBlAYcWpj5uIzU9wt
+         3q1sQJCOi3iF24cOst2MBnmgdPmmMOrG0f6u9D4FNPR4xwKbrwWAOxm+150TS1yaugYV
+         2Ni96Z8j9OWdGy6qvZWuAj8DtRgsvaLyi4pMYbX65Rz/sXfjXAQlh4pYcrrjulYgZjui
+         IkIg==
+X-Received: by 10.66.122.163 with SMTP id lt3mr3788018pab.219.1368110887601;
+        Thu, 09 May 2013 07:48:07 -0700 (PDT)
 Received: from hades (114-25-190-57.dynamic.hinet.net. [114.25.190.57])
-        by mx.google.com with ESMTPSA id al2sm3323424pbc.25.2013.05.09.07.44.22
+        by mx.google.com with ESMTPSA id uv1sm3348755pbc.16.2013.05.09.07.48.02
         for <multiple recipients>
         (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 09 May 2013 07:44:36 -0700 (PDT)
-Date:   Thu, 9 May 2013 22:44:06 +0800
+        Thu, 09 May 2013 07:48:06 -0700 (PDT)
+Date:   Thu, 9 May 2013 22:47:53 +0800
 From:   Tony Wu <tung7970@gmail.com>
 To:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: [PATCH 0/2] MIPS: fix get_frame_info and frame_info_init
-Message-ID: <20130509144406.GB3562@hades>
+Subject: [PATCH 1/2] MIPS: detect sibling call in get_frame_info
+Message-ID: <20130509144753.GC3562@hades>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -36,7 +36,7 @@ Return-Path: <tung7970@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36364
+X-archive-position: 36365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,80 +53,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Given a function, get_frame_info() analyzes its instructions
+to figure out frame size and return address. get_frame_info()
+works as follows:
 
-There are a couple of issues with the current frame_info_init and
-get_frame_info implementation. get_frame_info cannot detect sibling
-call and the result stored in schedule_mfi is wrong.
+1. analyze up to 128 instructions if the function size is unknown
+2. search for 'addiu/daddiu sp,sp,-immed' for frame size
+3. search for 'sw ra,offset(sp)' for return address
+4. end search when it sees jr/jal/jalr
 
-1. get_frame_info and sibling call
+This leads to an issue when the given function is a sibling
+call, example given as follows.
 
-The first issue is that get_frame_info() did not consider sibling call
-case. When a sibling call function is given, it may come across 
-function boundary and return wrong frame info instead.
+801ca110 <schedule>:
+801ca110:       8f820000        lw      v0,0(gp)
+801ca114:       8c420000        lw      v0,0(v0)
+801ca118:       080726f0        j       801c9bc0 <__schedule>
+801ca11c:       00000000        nop
 
-For example, in frame_info_init(), schedule is passed to
-get_frame_info() and io_schedule's info is returned instead of
-schedule's.
+801ca120 <io_schedule>:
+801ca120:       27bdffe8        addiu   sp,sp,-24
+801ca124:       3c028022        lui     v0,0x8022
+801ca128:       afbf0014        sw      ra,20(sp)
 
-801de7b4 <schedule>:
-801de7b4:       8f820000        lw      v0,0(gp)
-801de7b8:       8c420000        lw      v0,0(v0)
-801de7bc:       080778ab        j       801de2ac <__schedule>
-801de7c0:       00000000        nop
+In this case, get_frame_info() cannot properly detect schedule's
+frame info, and eventually returns io_schedule's info instead.
 
-801de7c4 <io_schedule>:
-801de7c4:       27bdffe8        addiu   sp,sp,-24
-801de7c8:       afbf0014        sw      ra,20(sp)
-801de7cc:       3c028021        lui     v0,0x8021
-801de7d0:       24425a60        addiu   v0,v0,23136
-801de7d4:       c04303f8        lwc0    $3,1016(v0)
-801de7d8:       24630001        addiu   v1,v1,1
-801de7dc:       e04303f8        swc0    $3,1016(v0)
-801de7e0:       1060fffc        beqz    v1,801de7d4 <io_schedule+0x10>
-801de7e4:       00000000        nop
-          ......
+This patch adds sibling call check by detecting out of range jump.
 
-2. schedule_mfi
+Signed-off-by: Tony Wu <tung7970@gmail.com>
+---
+ arch/mips/kernel/process.c |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-After compiler compilation, schedule() is reduced to a sibling call
-stub to __schedule(), and due to issue 1, frame_info_init()
-is actually extracting wrong info from the function that follows
-schedule(), i.e. schedule_io().
-
-Current optimization
-801de7b4 <schedule>:
-801de7b4:       8f820000        lw      v0,0(gp)
-801de7b8:       8c420000        lw      v0,0(v0)
-801de7bc:       080778ab        j       801de2ac <__schedule>
-801de7c0:       00000000        nop
-
-One solution is to compile schedule() in kernel/sched/core.c using
--fno-omit-frame-pointer and -fno-optimize-sibling-calls, but this
-will incur performance degradation.
-
-With -fno-omit-frame-pointer -fno-optimize-sibling-calls
-801dee64 <schedule>:
-801dee64:       27bdfff8        addiu   sp,sp,-8
-801dee68:       afbe0004        sw      s8,4(sp)
-801dee6c:       03a0f021        move    s8,sp
-801dee70:       8f820000        lw      v0,0(gp)
-801dee74:       03c0e821        move    sp,s8
-801dee78:       8fbe0004        lw      s8,4(sp)
-801dee7c:       8c420000        lw      v0,0(v0)
-801dee80:       08077a4f        j       801de93c <__schedule>
-801dee84:       27bd0008        addiu   sp,sp,8
-
-Another solution is to extract schedule_mfi from the real scheduler
-__schedule.
-
-I am sending two patches, one to fix get_frame_info sibling call
-issue, the other to extract schedule_mfi from __schedule. Please
-help review their validity.
-
-Tony Wu (2):
-  MIPS: detect sibling call in get_frame_info
-  MIPS: get schedule_mfi info from __schedule
-
- arch/mips/kernel/process.c |   28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index cfc742d..a794eb5 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -223,6 +223,9 @@ struct mips_frame_info {
+ 	int		pc_offset;
+ };
+ 
++#define J_TARGET(pc,target)	\
++		(((unsigned long)(pc) & 0xf0000000) | ((target) << 2))
++
+ static inline int is_ra_save_ins(union mips_instruction *ip)
+ {
+ 	/* sw / sd $ra, offset($sp) */
+@@ -250,11 +253,25 @@ static inline int is_sp_move_ins(union mips_instruction *ip)
+ 	return 0;
+ }
+ 
++static inline int is_sibling_j_ins(union mips_instruction *ip,
++				   unsigned long func_begin, unsigned long func_end)
++{
++	if (ip->j_format.opcode == j_op) {
++		unsigned long addr;
++
++		addr = J_TARGET(ip, ip->j_format.target);
++		if (addr < func_begin || addr > func_end)
++			return 1;
++	}
++	return 0;
++}
++
+ static int get_frame_info(struct mips_frame_info *info)
+ {
+ 	union mips_instruction *ip = info->func;
+ 	unsigned max_insns = info->func_size / sizeof(union mips_instruction);
+ 	unsigned i;
++	unsigned long func_begin, func_end;
+ 
+ 	info->pc_offset = -1;
+ 	info->frame_size = 0;
+@@ -266,10 +283,15 @@ static int get_frame_info(struct mips_frame_info *info)
+ 		max_insns = 128U;	/* unknown function size */
+ 	max_insns = min(128U, max_insns);
+ 
++	func_begin = (unsigned long) info->func;
++	func_end = func_begin + max_insns * sizeof(union mips_instruction);
++
+ 	for (i = 0; i < max_insns; i++, ip++) {
+ 
+ 		if (is_jal_jalr_jr_ins(ip))
+ 			break;
++		if (is_sibling_j_ins(ip, func_begin, func_end))
++			break;
+ 		if (!info->frame_size) {
+ 			if (is_sp_move_ins(ip))
+ 				info->frame_size = - ip->i_format.simmediate;
+-- 
+1.7.10.2 (Apple Git-33)

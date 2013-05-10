@@ -1,46 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 May 2013 13:15:10 +0200 (CEST)
-Received: from mail-pd0-f174.google.com ([209.85.192.174]:50664 "EHLO
-        mail-pd0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816354Ab3EJLLiFGogf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 May 2013 13:11:38 +0200
-Received: by mail-pd0-f174.google.com with SMTP id u10so2702325pdi.5
-        for <multiple recipients>; Fri, 10 May 2013 04:09:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:date:from:to:subject:message-id:mime-version
-         :content-type:content-disposition:user-agent;
-        bh=utaJ8+PGiD6g+f6LF4yLuqqkdHXujMsR+q9a6PDYg4k=;
-        b=zYTQOBorKXg+1Km4lSkEaow0bewCLBpAxkTdeJtoh0RdZMY/wKfMsF411tofQzh4Bb
-         OcSQmxv0Mv4+q3mAghnLC35haCBdRkFqjcFWBZym/GATSaCYs2mj86bC64gFwH5Rs1cp
-         aT/pxtL5FTs3sCYpUWKMfJhikYU9cFzK67CFDxgab1jVgAo/fguT9M6/GbmfguXNn1b8
-         qqsawt+sonXoivPLC2Kpq4uXzJRE10pIa0vcQanp5T+XHYXwlr0M5wzDqAHY7hcWTH0n
-         H/OzFxVVOdym/JgjK0cBbvRlfto3q44fbKDmZqXAAWbxjLl9hUnN77v6yPqjK/HpFKro
-         684g==
-X-Received: by 10.68.36.197 with SMTP id s5mr16934683pbj.23.1368184161164;
-        Fri, 10 May 2013 04:09:21 -0700 (PDT)
-Received: from hades (1-169-131-150.dynamic.hinet.net. [1.169.131.150])
-        by mx.google.com with ESMTPSA id do4sm2338612pbc.8.2013.05.10.04.09.19
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 10 May 2013 04:09:20 -0700 (PDT)
-Date:   Fri, 10 May 2013 19:09:15 +0800
-From:   Tony Wu <tung7970@gmail.com>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: [PATCH v2 2/2] MIPS: get schedule_mfi info from __schedule
-Message-ID: <20130510110915.GB7499@hades>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <tung7970@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 May 2013 14:32:54 +0200 (CEST)
+Received: from mga09.intel.com ([134.134.136.24]:33673 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6822517Ab3EJMcuc1JUj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 10 May 2013 14:32:50 +0200
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga102.jf.intel.com with ESMTP; 10 May 2013 05:30:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.87,647,1363158000"; 
+   d="scan'208";a="334828866"
+Received: from linux.jf.intel.com (HELO linux.intel.com) ([10.23.219.25])
+  by orsmga002.jf.intel.com with ESMTP; 10 May 2013 05:32:42 -0700
+Received: from [10.237.72.153] (sauron.fi.intel.com [10.237.72.153])
+        by linux.intel.com (Postfix) with ESMTP id 905796A4087;
+        Fri, 10 May 2013 05:32:31 -0700 (PDT)
+Message-ID: <1368189329.26780.157.camel@sauron.fi.intel.com>
+Subject: Re: [PATCH 0/3] fix NVRAM partition size if larger than expected
+From:   Artem Bityutskiy <dedekind1@gmail.com>
+Reply-To: dedekind1@gmail.com
+To:     Jonas Gorski <jogo@openwrt.org>
+Cc:     linux-mtd@lists.infradead.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>,
+        Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org
+Date:   Fri, 10 May 2013 15:35:29 +0300
+In-Reply-To: <1364044070-10486-1-git-send-email-jogo@openwrt.org>
+References: <1364044070-10486-1-git-send-email-jogo@openwrt.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.6.4 (3.6.4-3.fc18) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <dedekind1@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36378
+X-archive-position: 36379
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tung7970@gmail.com
+X-original-sender: dedekind1@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,76 +51,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-schedule_mfi is supposed to be extracted from schedule(), and
-is used in thread_saved_pc and get_wchan.
+On Sat, 2013-03-23 at 14:07 +0100, Jonas Gorski wrote:
+> Some device vendors use a larger nvram size than expected. While Broadcom
+> has defined it as 64K max, devices with 128K have been seen in the wild.
+> Luckily they properly set the nvram's PSI size to the correct value, so
+> we can use that to size the nvram partion.
+> 
+> Yes it's a bit confusing as there are two nvrams, one with a fixed layout
+> with in the bootloader, with the size information about the other.
+> 
+> Since 2 of 3 patches are for the mtd tree, this patchset should go there
+> (but it applies to both l2-mtd and mips-next fine).
 
-But, after optimization, schedule() is reduced to a sibling
-call to __schedule(), and no real frame info can be extracted.
+Pushed all 3 to l2-mtd.git, thanks!
 
-One solution is to compile schedule() with -fno-omit-frame-pointer
-and -fno-optimize-sibling-calls, but that will incur performance
-degradation.
-
-Another solution is to extract info from the real scheduler,
-__schedule, and this is the approache adopted here.
-
-This patch follows the sibling call and extracts the schedule_mfi
-from the __schedule with and without KALLSYMS enabled. It also fixes
-the "Can't analyze schedule() prologue" warning at boot time.
-
-Signed-off-by: Tony Wu <tung7970@gmail.com>
----
- arch/mips/kernel/process.c |   31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index a794eb5..a01b523 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -314,15 +314,42 @@ err:
- 
- static struct mips_frame_info schedule_mfi __read_mostly;
- 
-+#ifdef CONFIG_KALLSYMS
-+static unsigned long get___schedule_addr(void)
-+{
-+	return kallsyms_lookup_name("__schedule");
-+}
-+#else
-+static unsigned long get___schedule_addr(void)
-+{
-+	union mips_instruction *ip = (void *)schedule;
-+	int max_insns = 8;
-+	int i;
-+
-+	for (i = 0; i < max_insns; i++, ip++) {
-+		if (ip->j_format.opcode == j_op)
-+			return J_TARGET(ip, ip->j_format.target);
-+	}
-+	return 0;
-+}
-+#endif
-+
- static int __init frame_info_init(void)
- {
- 	unsigned long size = 0;
- #ifdef CONFIG_KALLSYMS
- 	unsigned long ofs;
-+#endif
-+	unsigned long addr;
- 
--	kallsyms_lookup_size_offset((unsigned long)schedule, &size, &ofs);
-+	addr = get___schedule_addr();
-+	if (!addr)
-+		addr = (unsigned long)schedule;
-+
-+#ifdef CONFIG_KALLSYMS
-+	kallsyms_lookup_size_offset(addr, &size, &ofs);
- #endif
--	schedule_mfi.func = schedule;
-+	schedule_mfi.func = (void *)addr;
- 	schedule_mfi.func_size = size;
- 
- 	get_frame_info(&schedule_mfi);
 -- 
-1.7.10.2 (Apple Git-33)
+Best Regards,
+Artem Bityutskiy

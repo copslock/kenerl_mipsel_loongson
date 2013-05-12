@@ -1,54 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 May 2013 16:52:57 +0200 (CEST)
-Received: from mail-wi0-f180.google.com ([209.85.212.180]:48488 "EHLO
-        mail-wi0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6819313Ab3ELOwy2JpgC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 12 May 2013 16:52:54 +0200
-Received: by mail-wi0-f180.google.com with SMTP id h11so2098606wiv.1
-        for <linux-mips@linux-mips.org>; Sun, 12 May 2013 07:52:49 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 May 2013 18:04:44 +0200 (CEST)
+Received: from mail-pa0-f47.google.com ([209.85.220.47]:34874 "EHLO
+        mail-pa0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822679Ab3ELQEmkeVXk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 12 May 2013 18:04:42 +0200
+Received: by mail-pa0-f47.google.com with SMTP id kl13so4028691pab.20
+        for <multiple recipients>; Sun, 12 May 2013 09:04:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=x-received:sender:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=rsfAjQaIDHVhSVOeFTO1uKKUVcYFjuNE1Hbrl3nqgpg=;
-        b=w26iu/gBTXHBtXs9wFFkRgGeYObJwod4OF7Xmht6pUGt5P95Rr0LTJavhT+5VniD06
-         NJQY0ZhbyBwlyM03ycRP6aBcWk/GSuQ3/R0j7N+XYqioAjjmqLU0Sa+oZCw3nlyGWRLm
-         9JXJdh/DdevTVJRIydTpXPnLwWNL27XyKJuugEB+Vx+xy0EvmRmoiV0hFjkdT59cb9qr
-         h1xXypzr4Bohthu72bqHCpk2W67PjAq79SCg45pzT093TMCESdoMKBKSijHmNr+MfUSX
-         Wussf9bVMmnSLUU5QH0+aJF7A6w0A1282sDi4hcs1sdW8bukuMTvs3pYT1+CEfIn255c
-         kSfQ==
-X-Received: by 10.180.74.172 with SMTP id u12mr13845591wiv.0.1368370369009;
-        Sun, 12 May 2013 07:52:49 -0700 (PDT)
-Received: from ?IPv6:2a01:e35:2f70:4010:a807:d8d1:bb90:9ecf? ([2a01:e35:2f70:4010:a807:d8d1:bb90:9ecf])
-        by mx.google.com with ESMTPSA id s1sm9805879wiz.2.2013.05.12.07.52.45
+        h=x-received:date:from:to:subject:message-id:mime-version
+         :content-type:content-disposition:user-agent;
+        bh=On+WnFxDgn79/IeTgSNcAjmHiQXN1R99VixZuV9dNKY=;
+        b=Ua2OJ/u4oFmnDo4fk1L6igy5xdmCrr1TKWq9mqG8DYpx6D86XxWbBcvxeqB54Ve65L
+         OOFFzoKOio/bQRgILqmgb7Oyr6jQMp77dy/rE3CIA3TVQd9HyTQCU+7XzBIJib978xma
+         uEkbZ00D9E2cpe62iwHv0STD2vSZTShHrCmdEP/vfDQcA2iY/ZaCB685+FRs3L6dD0su
+         kxS4/02wj+EicLXB94Die9huGydhSii6BWPzjMLQaaWibQ5WiCHlm0tUm+GvhnOSFG2o
+         O2oNBeKDbAfmXe+TXvfzS6OCmKaBtY/GL5S1cCiWmXqJaGl/heGPXyfkr05C685lN8zq
+         +MxA==
+X-Received: by 10.68.172.97 with SMTP id bb1mr25008621pbc.198.1368374675943;
+        Sun, 12 May 2013 09:04:35 -0700 (PDT)
+Received: from hades (1-169-142-186.dynamic.hinet.net. [1.169.142.186])
+        by mx.google.com with ESMTPSA id vv6sm11304580pab.6.2013.05.12.09.04.33
         for <multiple recipients>
         (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sun, 12 May 2013 07:52:46 -0700 (PDT)
-Message-ID: <518FACBF.4040606@openwrt.org>
-Date:   Sun, 12 May 2013 16:52:47 +0200
-From:   Florian Fainelli <florian@openwrt.org>
-Organization: OpenWrt
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/20130328 Thunderbird/17.0.5
+        Sun, 12 May 2013 09:04:35 -0700 (PDT)
+Date:   Mon, 13 May 2013 00:04:29 +0800
+From:   Tony Wu <tung7970@gmail.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH v3 1/2] MIPS: fix sibling call handling in get_frame_info
+Message-ID: <20130512160429.GA982@hades>
 MIME-Version: 1.0
-To:     Jonas Gorski <jogo@openwrt.org>
-CC:     dedekind1@gmail.com, linux-mtd@lists.infradead.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/3] MIPS: BCM63XX: export PSI size from nvram
-References: <1364044070-10486-1-git-send-email-jogo@openwrt.org> <1364044070-10486-3-git-send-email-jogo@openwrt.org> <1368189407.26780.159.camel@sauron.fi.intel.com> <CAOiHx=m+ZuBcj=qmTtytWouCbtbj+_OX3dS8x_0=kHEBFZ+TmA@mail.gmail.com>
-In-Reply-To: <CAOiHx=m+ZuBcj=qmTtytWouCbtbj+_OX3dS8x_0=kHEBFZ+TmA@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <tung7970@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36385
+X-archive-position: 36386
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: tung7970@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,29 +53,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 12/05/2013 12:48, Jonas Gorski a écrit :
-> On Fri, May 10, 2013 at 2:36 PM, Artem Bityutskiy <dedekind1@gmail.com> wrote:
->> On Sat, 2013-03-23 at 14:07 +0100, Jonas Gorski wrote:
->>> Signed-off-by: Jonas Gorski <jogo@openwrt.org>
->>> ---
->>>   arch/mips/bcm63xx/nvram.c                          |   11 +++++++++++
->>>   arch/mips/include/asm/mach-bcm63xx/bcm63xx_nvram.h |    2 ++
->>>   2 files changed, 13 insertions(+)
->>
->> Acks from MIPS folks would be nice to have, but I pushed this patch to
->> the l2-mtd.git tree, thanks!
->
-> I had expected Florian's valid comment from preventing this series
-> from going in, but if you pushed it already then I will fix the return
-> type problem  that Florian pointed out in a separate patch (or rather
-> add add some range check for nvram.psi_size). Luckily it is a
-> theoretical issue only, as I haven't seen a device yet with an invalid
-> value.
+Given a function, get_frame_info() analyzes its instructions
+to figure out frame size and return address. get_frame_info()
+works as follows:
 
-Right, but this is no blocker from my perspective. As about the MIPS 
-folks, Maxime, Kevin, Jonas and myself have been the "historical" 
-contributors to the MIPS BCM63XX port, so I would consider Jonas to be 
-authoritave here for these paches. John and Ralf usually do not comment 
-unless the see something bad.
---
-Florian
+1. analyze up to 128 instructions if the function size is unknown
+2. search for 'addiu/daddiu sp,sp,-immed' for frame size
+3. search for 'sw ra,offset(sp)' for return address
+4. end search when it sees jr/jal/jalr
+
+This leads to an issue when the given function is a sibling
+call, example shown as follows.
+
+801ca110 <schedule>:
+801ca110:       8f820000        lw      v0,0(gp)
+801ca114:       8c420000        lw      v0,0(v0)
+801ca118:       080726f0        j       801c9bc0 <__schedule>
+801ca11c:       00000000        nop
+
+801ca120 <io_schedule>:
+801ca120:       27bdffe8        addiu   sp,sp,-24
+801ca124:       3c028022        lui     v0,0x8022
+801ca128:       afbf0014        sw      ra,20(sp)
+
+In this case, get_frame_info() cannot properly detect schedule's
+frame info, and eventually returns io_schedule's instead.
+
+This patch adds 'j' to the end search condition to workaround
+sibling call cases.
+
+Signed-off-by: Tony Wu <tung7970@gmail.com>
+---
+ arch/mips/kernel/process.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index cfc742d..d66b04d 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -231,8 +231,10 @@ static inline int is_ra_save_ins(union mips_instruction *ip)
+ 		ip->i_format.rt == 31;
+ }
+ 
+-static inline int is_jal_jalr_jr_ins(union mips_instruction *ip)
++static inline int is_jump_ins(union mips_instruction *ip)
+ {
++	if (ip->j_format.opcode == j_op)
++		return 1;
+ 	if (ip->j_format.opcode == jal_op)
+ 		return 1;
+ 	if (ip->r_format.opcode != spec_op)
+@@ -268,7 +270,7 @@ static int get_frame_info(struct mips_frame_info *info)
+ 
+ 	for (i = 0; i < max_insns; i++, ip++) {
+ 
+-		if (is_jal_jalr_jr_ins(ip))
++		if (is_jump_ins(ip))
+ 			break;
+ 		if (!info->frame_size) {
+ 			if (is_sp_move_ins(ip))
+-- 
+1.7.10.2 (Apple Git-33)

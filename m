@@ -1,50 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 May 2013 23:03:19 +0200 (CEST)
-Received: from ch1ehsobe002.messaging.microsoft.com ([216.32.181.182]:31757
-        "EHLO ch1outboundpool.messaging.microsoft.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823114Ab3EMVDRQ3Kdv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 May 2013 23:03:17 +0200
-Received: from mail131-ch1-R.bigfish.com (10.43.68.249) by
- CH1EHSOBE002.bigfish.com (10.43.70.52) with Microsoft SMTP Server id
- 14.1.225.23; Mon, 13 May 2013 21:03:10 +0000
-Received: from mail131-ch1 (localhost [127.0.0.1])      by
- mail131-ch1-R.bigfish.com (Postfix) with ESMTP id C5829410A3;  Mon, 13 May
- 2013 21:03:10 +0000 (UTC)
-X-Forefront-Antispam-Report: CIP:132.245.1.197;KIP:(null);UIP:(null);IPV:NLI;H:BLUPRD0712HT002.namprd07.prod.outlook.com;RD:none;EFVD:NLI
-X-SpamScore: 0
-X-BigFish: PS0(zz936eIzz1f42h1ee6h1de0h1fdah1202h1e76h1d1ah1d2ah1fc6hzz8275dhz2dh2a8h668h839h947he5bhf0ah1288h12a5h12a9h12bdh137ah13b6h1441h14ddh1504h1537h153bh162dh1631h1758h1765h18e1h190ch1946h19b4h19c3h19ceh1ad9h1b0ah1d0ch1d2eh1d3fh1889i1155h)
-Received: from mail131-ch1 (localhost.localdomain [127.0.0.1]) by mail131-ch1
- (MessageSwitch) id 1368478988310061_21717; Mon, 13 May 2013 21:03:08 +0000
- (UTC)
-Received: from CH1EHSMHS004.bigfish.com (snatpool1.int.messaging.microsoft.com
- [10.43.68.240])        by mail131-ch1.bigfish.com (Postfix) with ESMTP id
- 4930926005F;   Mon, 13 May 2013 21:03:07 +0000 (UTC)
-Received: from BLUPRD0712HT002.namprd07.prod.outlook.com (132.245.1.197) by
- CH1EHSMHS004.bigfish.com (10.43.70.4) with Microsoft SMTP Server (TLS) id
- 14.1.225.23; Mon, 13 May 2013 21:03:06 +0000
-Received: from dl.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
- (10.255.218.163) with Microsoft SMTP Server (TLS) id 14.16.305.3; Mon, 13 May
- 2013 21:03:06 +0000
-Message-ID: <51915508.7080205@caviumnetworks.com>
-Date:   Mon, 13 May 2013 14:03:04 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 May 2013 23:07:59 +0200 (CEST)
+Received: from mail-oa0-f52.google.com ([209.85.219.52]:35322 "EHLO
+        mail-oa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827465Ab3EMVH6V7fGc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 May 2013 23:07:58 +0200
+Received: by mail-oa0-f52.google.com with SMTP id h1so8277608oag.11
+        for <multiple recipients>; Mon, 13 May 2013 14:07:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=xlcaDKOT+vKvai60lkOax1IXhQmSviCZrcHgOmSxXYw=;
+        b=S4zThYEwOG/o6GyAro5fWzvEwazSnyuyZxBZsF/DgZmGdWYNiQOl2Pkfh0hDUX+cau
+         eWZHoNnWJgzo6hNg1+KB0KKnV/J/sjUoE7S37SAIpP/PCxsmLNEA7/LyHgoDlV7Bam3V
+         z61njwMC8r2Iw3+TK/BH+L53kFkUrugWHH92E9393fm3U2wSTnlhqeEnM4DnD0EdZFzb
+         Qic1u/5jQpWNLKs/oYYxUqFySXFeY2JoTjAQpcxtrm2258j2Y+O3u8hATkm69tnzlkWi
+         T+NffQKvjM3HaUUpen+ZUUA4C3NczKsJKzQUCj+i18AWK3r/CU+GaP3ZbrmGChVBDbFi
+         je5g==
+X-Received: by 10.60.33.167 with SMTP id s7mr2949522oei.86.1368479272016;
+        Mon, 13 May 2013 14:07:52 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id nt17sm18102328obb.13.2013.05.13.14.07.50
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 13 May 2013 14:07:51 -0700 (PDT)
+Message-ID: <51915624.4010104@gmail.com>
+Date:   Mon, 13 May 2013 14:07:48 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips <linux-mips@linux-mips.org>
-Subject: Pull request for MIPS v3.10-rc1 fixes.
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+To:     Sanjay Lal <sanjayl@kymasys.com>
+CC:     kvm@vger.kernel.org, linux-mips@linux-mips.org, gleb@redhat.com,
+        mtosatti@redhat.com, ralf@linux-mips.org
+Subject: Re: [PATCH 0/2] KVM/MIPS32: Fixes for Linux 3.10
+References: <n> <1368476500-20031-1-git-send-email-sanjayl@kymasys.com>
+In-Reply-To: <1368476500-20031-1-git-send-email-sanjayl@kymasys.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36398
+X-archive-position: 36399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,49 +58,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The following changes since commit 1f638766ffcd9f08209afcabb3e2df961552fe18:
+On 05/13/2013 01:21 PM, Sanjay Lal wrote:
+> The following patch set fixes a couple of issues with KVM/MIPS32 in Linux 3.10.
+>
+> - As suggested by Gleb, wrap calls to gfn_to_pfn() with srcu_read_lock/unlock().
+> - kvm_mips_map_page() now returns an error code to it's callers, instead of calling panic()
+>    if it cannot find a mapping for a particular gfn.
+> - Follow the latest convention and move the kvm.h API file under uapi/...
+>
 
-   Merge tag 'spi-v3.10-rc1' of 
-git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi (2013-05-13 
-08:12:18 -0700)
+Sanjay,
 
-are available in the git repository at:
+Have you looked at:
 
+http://www.linux-mips.org/archives/linux-mips/2013-05/msg00049.html
 
-   git://git.linux-mips.org/pub/scm/daney/upstream-daney.git dd-3.10-rc1
+We should start working toward unifying the KVM interface.
 
-for you to fetch changes up to aea277b5753da8346147912eac2b21c09f1246f6:
-
-   MIPS: Make virt_to_phys() work for all unmapped addresses. 
-(2013-05-13 13:38:15 -0700)
+David Daney.
 
 
-These are four patches that are on the mailing list and are required
-to boot on OCTEON.  All packaged for a hopefully easy pull.
-
-David Daney
-
-----------------------------------------------------------------
-David Daney (3):
-       Revert "MIPS: microMIPS: Support dynamic ASID sizing."
-       Revert "MIPS: Allow ASID size to be determined at boot time."
-       MIPS: Make virt_to_phys() work for all unmapped addresses.
-
-Thomas Gleixner (1):
-       MIPS: Enable interrupts in arch_cpu_idle()
-
-  arch/mips/include/asm/io.h          |  2 +-
-  arch/mips/include/asm/mmu_context.h | 95 
-++++++++++++++-----------------------
-  arch/mips/include/asm/page.h        |  2 +-
-  arch/mips/kernel/genex.S            |  2 +-
-  arch/mips/kernel/process.c          | 13 +++--
-  arch/mips/kernel/smtc.c             | 10 ++--
-  arch/mips/kernel/traps.c            |  6 +--
-  arch/mips/lib/dump_tlb.c            |  5 +-
-  arch/mips/lib/r3k_dump_tlb.c        |  7 ++-
-  arch/mips/mm/tlb-r3k.c              | 20 ++++----
-  arch/mips/mm/tlb-r4k.c              |  2 +-
-  arch/mips/mm/tlb-r8k.c              |  2 +-
-  arch/mips/mm/tlbex.c                | 79 ------------------------------
-  13 files changed, 71 insertions(+), 174 deletions(-)
+> --
+> Sanjay Lal (2):
+>    KVM/MIPS32: Move include/asm/kvm.h => include/uapi/asm/kvm.h since it
+>      is a user visible API.
+>    KVM/MIPS32: Wrap calls to gfn_to_pfn() with srcu_read_lock/unlock()
+>
+>   arch/mips/include/asm/kvm.h      | 55 ----------------------------------------
+>   arch/mips/include/uapi/asm/kvm.h | 55 ++++++++++++++++++++++++++++++++++++++++
+>   arch/mips/kvm/kvm_tlb.c          | 38 ++++++++++++++++++++-------
+>   3 files changed, 84 insertions(+), 64 deletions(-)
+>   delete mode 100644 arch/mips/include/asm/kvm.h
+>   create mode 100644 arch/mips/include/uapi/asm/kvm.h
+>

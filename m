@@ -1,52 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 May 2013 16:29:58 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:48915 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817128Ab3EOO34oif0m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 May 2013 16:29:56 +0200
-Received: from gallifrey.ext.pengutronix.de ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=bjornoya.do.blackshift.org)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1UcciE-0001KH-Ts; Wed, 15 May 2013 16:29:50 +0200
-Received: from [IPv6:2001:6f8:105b:1122:21d:e0ff:fe39:f61b] (hardanger.wlan.blackshift.org [IPv6:2001:6f8:105b:1122:21d:e0ff:fe39:f61b])
-        (using TLSv1 with cipher ECDHE-ECDSA-AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: frogger)
-        by bjornoya.do.blackshift.org (Postfix) with ESMTPSA id 35AA85E9AA;
-        Wed, 15 May 2013 16:29:47 +0200 (CEST)
-Message-ID: <51939BDA.2080601@pengutronix.de>
-Date:   Wed, 15 May 2013 16:29:46 +0200
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130509 Thunderbird/17.0.6
-MIME-Version: 1.0
-To:     Svetoslav Neykov <svetoslav@neykov.name>
-CC:     'Alexander Shishkin' <alexander.shishkin@linux.intel.com>,
-        'Ralf Baechle' <ralf@linux-mips.org>,
-        'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>,
-        'Gabor Juhos' <juhosg@openwrt.org>,
-        'John Crispin' <blogic@openwrt.org>,
-        'Alan Stern' <stern@rowland.harvard.edu>,
-        "'Luis R. Rodriguez'" <mcgrof@qca.qualcomm.com>,
-        linux-mips@linux-mips.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] usb: chipidea: big-endian support
-References: <1362176257-2328-1-git-send-email-svetoslav@neykov.name> <1362176257-2328-2-git-send-email-svetoslav@neykov.name> <878v57kh4v.fsf@ashishki-desk.ger.corp.intel.com> <5154508B.6050509@pengutronix.de> <013d01ce4cfb$5830ab90$089202b0$@neykov.name>
-In-Reply-To: <013d01ce4cfb$5830ab90$089202b0$@neykov.name>
-X-Enigmail-Version: 1.5.1
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="----enig2FGNDSKJDAHUGURRPPQKE"
-X-SA-Exim-Connect-IP: 2001:6f8:1178:4:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <mkl@pengutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 May 2013 17:55:02 +0200 (CEST)
+Received: from kymasys.com ([64.62.140.43]:33215 "HELO kymasys.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S6824793Ab3EOPy4Q99jO convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 May 2013 17:54:56 +0200
+Received: from ::ffff:75.40.23.192 ([75.40.23.192]) by kymasys.com for <linux-mips@linux-mips.org>; Wed, 15 May 2013 08:54:45 -0700
+Subject: Re: [PATCH 2/2] KVM/MIPS32: Wrap calls to gfn_to_pfn() with srcu_read_lock/unlock()
+Mime-Version: 1.0 (Apple Message framework v1283)
+Content-Type: text/plain; charset=us-ascii
+From:   Sanjay Lal <sanjayl@kymasys.com>
+In-Reply-To: <20130514092705.GD20995@redhat.com>
+Date:   Wed, 15 May 2013 08:54:45 -0700
+Cc:     kvm@vger.kernel.org, linux-mips@linux-mips.org,
+        mtosatti@redhat.com, ralf@linux-mips.org
+Content-Transfer-Encoding: 8BIT
+Message-Id: <63B7D172-E75E-4AB4-8515-9A18360B66A2@kymasys.com>
+References: <n> <1368476500-20031-1-git-send-email-sanjayl@kymasys.com> <1368476500-20031-3-git-send-email-sanjayl@kymasys.com> <20130514092705.GD20995@redhat.com>
+To:     Gleb Natapov <gleb@redhat.com>
+X-Mailer: Apple Mail (2.1283)
+Return-Path: <sanjayl@kymasys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36405
+X-archive-position: 36406
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mkl@pengutronix.de
+X-original-sender: sanjayl@kymasys.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,58 +38,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
-------enig2FGNDSKJDAHUGURRPPQKE
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: quoted-printable
 
-On 05/09/2013 11:22 PM, Svetoslav Neykov wrote:
-> Hi Marc,
->=20
-> Marc Kleine-Budde [mailto:mkl@pengutronix.de] (On Thursday, March 28, 2=
-013
-> 4:16 PM)
->> On 03/28/2013 10:28 AM, Alexander Shishkin wrote:
->>> Svetoslav Neykov <svetoslav@neykov.name> writes:
->>>
->>>> Convert between big-endian and little-endian format when accessing
->>>> the usb controller structures which are little-endian by
->>>> specification. Fix cases where the little-endian memory layout is
->>>> taken for granted. The patch doesn't have any effect on the already
->>>> supported little-endian architectures.
->>
->> Has anyone tested how the cpu_to_le32 and vice versa effects the
->> load/store operations? Does the compiler generate full 32 bit accesses=
+On May 14, 2013, at 2:27 AM, Gleb Natapov wrote:
 
->> on mips (and big endian arm) or is a byte-shift-or pattern used?
->=20
-> Better late than never... I have checked your question, the value is lo=
-aded
-> in a register and then swapped, so the read is performed only once.
+>> 
+>> 
+>> +EXPORT_SYMBOL(min_low_pfn);     /* defined by bootmem.c, but not exported by generic code */
+>> +
+> What you need this for? It is not used anywhere in this patch and by
+> mips/kvm code in general.
 
-Thanks for checking this.
-
-Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+I did some digging around myself, since the linker keeps complaining that it can't find min_low_pfn when compiling the KVM module.  It seems that it is indirectly pulled in by the cache management functions.
 
 
-------enig2FGNDSKJDAHUGURRPPQKE
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
-
-iEYEARECAAYFAlGTm9oACgkQjTAFq1RaXHPfugCcDWk+CIelDL3h5+Bfb4D7s6ma
-vEYAn1xw7uxYIXI3x6B7P4gccfOBvHK/
-=dUAW
------END PGP SIGNATURE-----
-
-------enig2FGNDSKJDAHUGURRPPQKE--
+Regards
+Sanjay

@@ -1,41 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 May 2013 03:35:48 +0200 (CEST)
-Received: from szxga01-in.huawei.com ([119.145.14.64]:17742 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-FAIL-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827452Ab3EOBfo69GwV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 May 2013 03:35:44 +0200
-Received: from 172.24.2.119 (EHLO szxeml212-edg.china.huawei.com) ([172.24.2.119])
-        by szxrg01-dlp.huawei.com (MOS 4.3.4-GA FastPath queued)
-        with ESMTP id BCD46289;
-        Wed, 15 May 2013 09:35:24 +0800 (CST)
-Received: from SZXEML402-HUB.china.huawei.com (10.82.67.32) by
- szxeml212-edg.china.huawei.com (172.24.2.181) with Microsoft SMTP Server
- (TLS) id 14.1.323.7; Wed, 15 May 2013 09:35:20 +0800
-Received: from [127.0.0.1] (10.135.72.158) by szxeml402-hub.china.huawei.com
- (10.82.67.32) with Microsoft SMTP Server id 14.1.323.7; Wed, 15 May 2013
- 09:35:18 +0800
-Message-ID: <5192E650.3070303@huawei.com>
-Date:   Wed, 15 May 2013 09:35:12 +0800
-From:   Libo Chen <clbchenlibo.chen@huawei.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:17.0) Gecko/20130328 Thunderbird/17.0.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 May 2013 13:55:55 +0200 (CEST)
+Received: from mail-lb0-f182.google.com ([209.85.217.182]:46750 "EHLO
+        mail-lb0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816671Ab3EOLzxnIJPN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 May 2013 13:55:53 +0200
+Received: by mail-lb0-f182.google.com with SMTP id r11so1765344lbv.13
+        for <linux-mips@linux-mips.org>; Wed, 15 May 2013 04:55:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding:x-gm-message-state;
+        bh=gDlC9WkfhGx1bztq+fIV8/3wf2zWuObWFYKRInkH/Ew=;
+        b=IoQ1flsq0w9xVAErKQ0EekXp9Dq8b+C8LwozRHFuZpI7kUyhvUeszZA67y76F20sSe
+         vD4oH5X9obPbihWm/xqNrOZpYUxWRBaujdeYQw3TKc5d0yIfrO6qWSpqAF2V62Yub+Fw
+         lw2mhiCdt+cBpBLYw08l3eTj7r9oiR7mMikVmroFhrKUGy5c/iShtTeiM2WaJaJexwiC
+         Ui+4Qx5v1IHPyYmDE9PmUcmubJbvnlqFo+3vDOKfDo3N7K0T+RF8ptXUK2FpgRB2mNzR
+         OAr/Gr3PzQO2DmjipKeJzFtbuVwVcqCotZx4BbLibWYU/7+HzXtybB4ERhcrD6h6VkmL
+         cmKw==
+X-Received: by 10.112.120.170 with SMTP id ld10mr17375425lbb.31.1368618948011;
+        Wed, 15 May 2013 04:55:48 -0700 (PDT)
+Received: from [192.168.2.4] (ppp91-76-84-82.pppoe.mtu-net.ru. [91.76.84.82])
+        by mx.google.com with ESMTPSA id ay3sm1070400lab.1.2013.05.15.04.55.45
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Wed, 15 May 2013 04:55:46 -0700 (PDT)
+Message-ID: <519377C4.1040800@cogentembedded.com>
+Date:   Wed, 15 May 2013 15:55:48 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130328 Thunderbird/17.0.5
 MIME-Version: 1.0
-To:     <grant.likely@linaro.org>, <rob.herring@calxeda.com>
-CC:     <linux-mips@linux-mips.org>, LKML <linux-kernel@vger.kernel.org>,
-        <devicetree-discuss@lists.ozlabs.org>,
+To:     Libo Chen <clbchenlibo.chen@huawei.com>
+CC:     grant.likely@linaro.org, rob.herring@calxeda.com,
+        linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>,
+        devicetree-discuss@lists.ozlabs.org,
         Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH] usb: omap2430: fix memleak in err case
-Content-Type: text/plain; charset="ISO-8859-1"
+Subject: Re: [PATCH] usb: omap2430: fix memleak in err case
+References: <5192E650.3070303@huawei.com>
+In-Reply-To: <5192E650.3070303@huawei.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.135.72.158]
-X-CFilter-Loop: Reflected
-Return-Path: <libo.chen@huawei.com>
+X-Gm-Message-State: ALoCoQleGLbyh6YU1CqkW+wJvO3QV9JNi1fJ/mLOhYbtGxwyNxR/MXCCVBZpvSfcT4uXHQmAfQol
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36402
+X-archive-position: 36404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clbchenlibo.chen@huawei.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,27 +61,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hello.
 
-when omap_get_control_dev fail, we should release relational platform_device
+On 15-05-2013 5:35, Libo Chen wrote:
 
-Signed-off-by: Libo Chen <libo.chen@huawei.com>
----
- drivers/usb/musb/omap2430.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
+> when omap_get_control_dev fail, we should release relational platform_device
 
-diff --git a/drivers/usb/musb/omap2430.c b/drivers/usb/musb/omap2430.c
-index 3551f1a..b626f19 100644
---- a/drivers/usb/musb/omap2430.c
-+++ b/drivers/usb/musb/omap2430.c
-@@ -549,7 +549,8 @@ static int omap2430_probe(struct platform_device *pdev)
- 		glue->control_otghs = omap_get_control_dev();
- 		if (IS_ERR(glue->control_otghs)) {
- 			dev_vdbg(&pdev->dev, "Failed to get control device\n");
--			return -ENODEV;
-+			ret = -ENODEV;
-+			goto err2;
- 		}
- 	} else {
- 		glue->control_otghs = ERR_PTR(-ENODEV);
--- 
-1.7.1
+    s/fail/fails/, s/relational/related/?
+
+> Signed-off-by: Libo Chen <libo.chen@huawei.com>
+
+    You've posted this to the wrong mailing list, linux-mips; 
+devicetree-discuss also seems hardly related.
+
+WBR, Sergei

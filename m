@@ -1,41 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 May 2013 20:29:11 +0200 (CEST)
-Received: from filtteri2.pp.htv.fi ([213.243.153.185]:40110 "EHLO
-        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817318Ab3EOS2VoO8-4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 May 2013 20:28:21 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 915A819BE7D;
-        Wed, 15 May 2013 21:27:40 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp5.welho.com ([213.243.153.39])
-        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
-        with ESMTP id 5c7Vx0AnYfGj; Wed, 15 May 2013 21:27:35 +0300 (EEST)
-Received: from musicnaut.iki.fi (cs181064211.pp.htv.fi [82.181.64.211])
-        by smtp5.welho.com (Postfix) with SMTP id A897B5BC009;
-        Wed, 15 May 2013 21:27:34 +0300 (EEST)
-Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Wed, 15 May 2013 21:27:34 +0300
-Date:   Wed, 15 May 2013 21:27:34 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: loongson: fix random early boot hang
-Message-ID: <20130515182734.GC3157@blackmetal.musicnaut.iki.fi>
-References: <1361232039-12555-1-git-send-email-aaro.koskinen@iki.fi>
- <20130313134137.GB17165@linux-mips.org>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 May 2013 20:36:35 +0200 (CEST)
+Received: from kymasys.com ([64.62.140.43]:57291 "HELO kymasys.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S6824758Ab3EOSgMtFI0G convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 May 2013 20:36:12 +0200
+Received: from ::ffff:75.40.23.192 ([75.40.23.192]) by kymasys.com for <linux-mips@linux-mips.org>; Wed, 15 May 2013 11:36:04 -0700
+Subject: Re: [PATCH 2/2] KVM/MIPS32: Wrap calls to gfn_to_pfn() with srcu_read_lock/unlock()
+Mime-Version: 1.0 (Apple Message framework v1283)
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20130313134137.GB17165@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <aaro.koskinen@iki.fi>
+From:   Sanjay Lal <sanjayl@kymasys.com>
+In-Reply-To: <20130515173039.GC24814@redhat.com>
+Date:   Wed, 15 May 2013 11:36:02 -0700
+Cc:     David Daney <ddaney.cavm@gmail.com>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org, Marcelo Tosatti <mtosatti@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <057877F0-D213-4D46-963D-9600735844A4@kymasys.com>
+References: <n> <1368476500-20031-1-git-send-email-sanjayl@kymasys.com> <1368476500-20031-3-git-send-email-sanjayl@kymasys.com> <20130514092705.GD20995@redhat.com> <63B7D172-E75E-4AB4-8515-9A18360B66A2@kymasys.com> <5193BDC0.6090103@gmail.com> <20130515173039.GC24814@redhat.com>
+To:     Gleb Natapov <gleb@redhat.com>
+X-Mailer: Apple Mail (2.1283)
+Return-Path: <sanjayl@kymasys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36409
+X-archive-position: 36410
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: sanjayl@kymasys.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,24 +41,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
 
-On Wed, Mar 13, 2013 at 02:41:37PM +0100, Ralf Baechle wrote:
-> On Tue, Feb 19, 2013 at 02:00:39AM +0200, Aaro Koskinen wrote:
-> > Subject: [PATCH] MIPS: loongson: fix random early boot hang
-> > 
-> > Some Loongson boards (e.g. Lemote FuLoong mini-PC) use ISA/southbridge
-> > device (CS5536 general purpose timer) for the timer interrupt. It starts
-> > running early and is already enabled during the PCI configuration,
-> > during which there is a small window in pci_read_base() when the register
-> > access is temporarily disabled. If the timer interrupts at this point,
-> > the system will hang. Fix this by adding a fixup that keeps the register
-> > access always enabled.
+On May 15, 2013, at 10:30 AM, Gleb Natapov wrote:
+
+> On Wed, May 15, 2013 at 09:54:24AM -0700, David Daney wrote:
+>> On 05/15/2013 08:54 AM, Sanjay Lal wrote:
+>>> 
+>>> On May 14, 2013, at 2:27 AM, Gleb Natapov wrote:
+>>> 
+>>>>> 
+>>>>> 
+>>>>> +EXPORT_SYMBOL(min_low_pfn);     /* defined by bootmem.c, but not exported by generic code */
+>>>>> +
+>>>> What you need this for? It is not used anywhere in this patch and by
+>>>> mips/kvm code in general.
+>>> 
+>>> I did some digging around myself, since the linker keeps complaining that it can't find min_low_pfn when compiling the KVM module.  It seems that it is indirectly pulled in by the cache management functions.
+>>> 
+>> 
+>> If it is really needed, then the export should probably be done at
+>> the site of the min_low_pfn definition, not in some random
+>> architecture file.
+>> 
+> Definitely. We cannot snick it here like that. Please drop it from this
+> patch.
 > 
-> Applied, though a bit late.  I really was hoping for one of the Lemote
-> folks to chime in.
 
-I wonder if this patch is going to the mainline kernel? I don't see it
-in 3.10-rc1...
+I did export min_low_pfn where it was defined (in .../mm/bootmem.c) as part of the original patch set. It conflicted with the ia64/metag ports.  min_low_pfn is exported in arch/ia64/kernel/ia64_ksyms.c and in arch/metag/kernel/metag_ksyms.c.
 
-A.
+There was some chatter about this when the KVM/MIPS code ended up in linux-next.  From what I can gather, the maintainers for the other architectures agreed that exporting this symbol in bootmem.c was fine and should flow from the MIPS tree.  I'll do that as part of v2 of the patch set.
+
+Regards
+Sanjay

@@ -1,93 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 May 2013 20:30:20 +0200 (CEST)
-Received: from avon.wwwdotorg.org ([70.85.31.133]:34410 "EHLO
-        avon.wwwdotorg.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6825732Ab3EPS3wF4VNO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 May 2013 20:29:52 +0200
-Received: from severn.wwwdotorg.org (unknown [192.168.65.5])
-        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by avon.wwwdotorg.org (Postfix) with ESMTPS id 2BFA8644F;
-        Thu, 16 May 2013 12:35:14 -0600 (MDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by severn.wwwdotorg.org (Postfix) with ESMTPSA id 45A97E45FB;
-        Thu, 16 May 2013 12:29:22 -0600 (MDT)
-Message-ID: <5195257F.3060309@wwwdotorg.org>
-Date:   Thu, 16 May 2013 12:29:19 -0600
-From:   Stephen Warren <swarren@wwwdotorg.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
-MIME-Version: 1.0
-To:     Wolfram Sang <wsa@the-dreams.de>
-CC:     linux-kernel@vger.kernel.org, ac100@lists.launchpad.net,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        alsa-devel@alsa-project.org, Arnd Bergmann <arnd@arndb.de>,
-        Barry Song <baohua.song@csr.com>,
-        Ben Dooks <ben-linux@fluff.org>, cpufreq@vger.kernel.org,
-        Dan Williams <djbw@fb.com>, David Airlie <airlied@linux.ie>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Deepak Saxena <dsaxena@plexity.net>,
-        devel@driverdev.osuosl.org, dri-devel@lists.freedesktop.org,
-        Eduardo Valentin <eduardo.valentin@ti.com>,
-        Evgeniy Polyakov <zbr@ioremap.net>,
-        Felipe Balbi <balbi@ti.com>,
-        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
-        Grant Likely <grant.likely@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Inki Dae <inki.dae@samsung.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Joonyoung Shim <jy0922.shim@samsung.com>,
-        Julian Andres Klode <jak@jak-linux.org>,
-        Kukjin Kim <kgene.kim@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        Marc Dietrich <marvin24@gmx.de>,
-        Mark Brown <broonie@kernel.org>,
-        Matt Mackall <mpm@selenic.com>, netdev@vger.kernel.org,
-        Paul Zimmerman <paulz@synopsys.com>,
-        "Rafael J. Wysocki" <rjw@sisk.pl>,
-        Ralf Baechle <ralf@linux-mips.org>, rtc-linux@googlegroups.com,
-        Russell King <linux@arm.linux.org.uk>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        spi-devel-general@lists.sourceforge.net,
-        Takashi Iwai <tiwai@suse.de>, Tejun Heo <tj@kernel.org>,
-        Thierry Reding <thierry.reding@avionic-design.de>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Tony Prisk <linux@prisktech.co.nz>,
-        Vinod Koul <vinod.koul@intel.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Wan ZongShun <mcuos.com@gmail.com>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        Zhang Rui <rui.zhang@intel.com>
-Subject: Re: [PATCH 00/33] devm improvement series, part 1, take 2
-References: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
-In-Reply-To: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
-X-Enigmail-Version: 1.4.6
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.97.7 at avon.wwwdotorg.org
-X-Virus-Status: Clean
-Return-Path: <swarren@wwwdotorg.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 May 2013 21:07:59 +0200 (CEST)
+Received: from mail-pb0-f47.google.com ([209.85.160.47]:42954 "EHLO
+        mail-pb0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825732Ab3EPTHu6F4vM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 May 2013 21:07:50 +0200
+Received: by mail-pb0-f47.google.com with SMTP id rr4so2599587pbb.34
+        for <multiple recipients>; Thu, 16 May 2013 12:07:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:from:to:cc:subject:date:message-id:x-mailer;
+        bh=UYkv85iaE3Zps2sqNV3cNL6IZeBXgb0ZjkQzMP7yH54=;
+        b=tx7kYb9suCfX5+d9a863g6tpJ6K+icPlvluWxXZYhP8uvS9n22xZp0a2I8nwiZuQa/
+         JkYr9vS3fCO2GtSwoTd+Q+y8OEwy/eO8OfALPuAOlTboVbqsGZy5ABDXZPD9SfbEXLee
+         8yS/Ss/9HyUK4Rg+d4OJDzukkESUUDEp9R2IpeNQkJ6jq2K0hKzKRbaVfYFRXXtxJp0J
+         oUDQg7KJXTrtqN8mzinr5livPGU8j8sy1/E8AU6KfVAdEM0StTCV3itNGpEYAO0n2E0a
+         rCbUqoLLnr3iIzi7DyNbm0ah0g0DZ9xZfs7ZCDCBAkiXe7XsWJqsorod6SIOSS5aZjDO
+         3KCA==
+X-Received: by 10.66.164.3 with SMTP id ym3mr45282228pab.106.1368731262318;
+        Thu, 16 May 2013 12:07:42 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id cq1sm7833835pbc.13.2013.05.16.12.07.40
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 16 May 2013 12:07:41 -0700 (PDT)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r4GJ7dSJ019138;
+        Thu, 16 May 2013 12:07:39 -0700
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r4GJ7aSX019137;
+        Thu, 16 May 2013 12:07:36 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Paul Mackerras <paulus@samba.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@ghostprotocols.net>,
+        David Daney <david.daney@cavium.com>
+Subject: [PATCH] MIPS: Add user stack and registers to perf.
+Date:   Thu, 16 May 2013 12:07:33 -0700
+Message-Id: <1368731253-19102-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36425
+X-archive-position: 36426
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: swarren@wwwdotorg.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -100,12 +61,159 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/16/2013 05:15 AM, Wolfram Sang wrote:
-> Lately, I have been experimenting how to improve the devm interface to make
-> writing device drivers easier and less error prone while also getting rid of
-> its subtle issues. I think it has more potential but still needs work and
-> definately conistency, especiall in its usage.
-...
+From: David Daney <david.daney@cavium.com>
 
-The Tegra parts in patches 4, 5, 8, 15, 16, 17, 29 all,
-Acked-by: Stephen Warren <swarren@nvidia.com>
+This allows for extracting off-line stack traces from user-space code
+in the perf tool.
+
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/Kconfig                      |  2 ++
+ arch/mips/include/uapi/asm/perf_regs.h | 41 +++++++++++++++++++++++
+ arch/mips/kernel/Makefile              |  2 +-
+ arch/mips/kernel/perf_regs.c           | 60 ++++++++++++++++++++++++++++++++++
+ 4 files changed, 104 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/include/uapi/asm/perf_regs.h
+ create mode 100644 arch/mips/kernel/perf_regs.c
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 7a58ab9..2ae8e1d 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -5,6 +5,8 @@ config MIPS
+ 	select HAVE_IDE
+ 	select HAVE_OPROFILE
+ 	select HAVE_PERF_EVENTS
++	select HAVE_PERF_REGS
++	select HAVE_PERF_USER_STACK_DUMP
+ 	select PERF_USE_VMALLOC
+ 	select HAVE_ARCH_KGDB
+ 	select ARCH_HAVE_CUSTOM_GPIO_H
+diff --git a/arch/mips/include/uapi/asm/perf_regs.h b/arch/mips/include/uapi/asm/perf_regs.h
+new file mode 100644
+index 0000000..9577af5
+--- /dev/null
++++ b/arch/mips/include/uapi/asm/perf_regs.h
+@@ -0,0 +1,41 @@
++#ifndef _ASM_MIPS_PERF_REGS_H
++#define _ASM_MIPS_PERF_REGS_H
++
++enum perf_event_mips_regs {
++	PERF_REG_MIPS_PC,
++	PERF_REG_MIPS_R1,
++	PERF_REG_MIPS_R2,
++	PERF_REG_MIPS_R3,
++	PERF_REG_MIPS_R4,
++	PERF_REG_MIPS_R5,
++	PERF_REG_MIPS_R6,
++	PERF_REG_MIPS_R7,
++	PERF_REG_MIPS_R8,
++	PERF_REG_MIPS_R9,
++	PERF_REG_MIPS_R10,
++	PERF_REG_MIPS_R11,
++	PERF_REG_MIPS_R12,
++	PERF_REG_MIPS_R13,
++	PERF_REG_MIPS_R14,
++	PERF_REG_MIPS_R15,
++	PERF_REG_MIPS_R16,
++	PERF_REG_MIPS_R17,
++	PERF_REG_MIPS_R18,
++	PERF_REG_MIPS_R19,
++	PERF_REG_MIPS_R20,
++	PERF_REG_MIPS_R21,
++	PERF_REG_MIPS_R22,
++	PERF_REG_MIPS_R23,
++	PERF_REG_MIPS_R24,
++	PERF_REG_MIPS_R25,
++	/*
++	 * 26 and 27 are k0 and k1, they are always clobbered thus not
++	 * stored.
++	 */
++	PERF_REG_MIPS_R28,
++	PERF_REG_MIPS_R29,
++	PERF_REG_MIPS_R30,
++	PERF_REG_MIPS_R31,
++	PERF_REG_MIPS_MAX = PERF_REG_MIPS_R31 + 1,
++};
++#endif /* _ASM_MIPS_PERF_REGS_H */
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index 6ad9e04..17c99d7 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -91,7 +91,7 @@ CFLAGS_cpu-bugs64.o	= $(shell if $(CC) $(KBUILD_CFLAGS) -Wa,-mdaddi -c -o /dev/n
+ 
+ obj-$(CONFIG_HAVE_STD_PC_SERIAL_PORT)	+= 8250-platform.o
+ 
+-obj-$(CONFIG_PERF_EVENTS)	+= perf_event.o
++obj-$(CONFIG_PERF_EVENTS)	+= perf_event.o perf_regs.o
+ obj-$(CONFIG_HW_PERF_EVENTS)	+= perf_event_mipsxx.o
+ 
+ obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
+diff --git a/arch/mips/kernel/perf_regs.c b/arch/mips/kernel/perf_regs.c
+new file mode 100644
+index 0000000..0451c4b
+--- /dev/null
++++ b/arch/mips/kernel/perf_regs.c
+@@ -0,0 +1,60 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Some parts derived from x86 version of this file.
++ *
++ * Copyright (C) 2013 Cavium, Inc.
++ */
++
++#include <linux/perf_event.h>
++
++#include <asm/ptrace.h>
++
++#ifdef CONFIG_32BIT
++u64 perf_reg_abi(struct task_struct *tsk)
++{
++	return PERF_SAMPLE_REGS_ABI_32;
++}
++#else /* Must be CONFIG_64BIT */
++u64 perf_reg_abi(struct task_struct *tsk)
++{
++	if (test_tsk_thread_flag(tsk, TIF_32BIT_REGS))
++		return PERF_SAMPLE_REGS_ABI_32;
++	else
++		return PERF_SAMPLE_REGS_ABI_64;
++}
++#endif /* CONFIG_32BIT */
++
++int perf_reg_validate(u64 mask)
++{
++	if (!mask)
++		return -EINVAL;
++	if (mask & ~((1ull << PERF_REG_MIPS_MAX) - 1))
++		return -EINVAL;
++	return 0;
++}
++
++u64 perf_reg_value(struct pt_regs *regs, int idx)
++{
++	long v;
++
++	switch (idx) {
++	case PERF_REG_MIPS_PC:
++		v = regs->cp0_epc;
++		break;
++	case PERF_REG_MIPS_R1 ... PERF_REG_MIPS_R25:
++		v = regs->regs[idx - PERF_REG_MIPS_R1 + 1];
++		break;
++	case PERF_REG_MIPS_R28 ... PERF_REG_MIPS_R31:
++		v = regs->regs[idx - PERF_REG_MIPS_R28 + 28];
++		break;
++
++	default:
++		WARN_ON_ONCE(1);
++		return 0;
++	}
++
++	return (s64)v; /* Sign extend if 32-bit. */
++}
+-- 
+1.7.11.7

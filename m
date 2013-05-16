@@ -1,27 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 May 2013 13:55:16 +0200 (CEST)
-Received: from mga02.intel.com ([134.134.136.20]:10254 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823124Ab3EPLzLPwqJQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 May 2013 13:55:11 +0200
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP; 16 May 2013 04:55:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.87,683,1363158000"; 
-   d="scan'208";a="335050358"
-Received: from linux.jf.intel.com (HELO linux.intel.com) ([10.23.219.25])
-  by fmsmga001.fm.intel.com with ESMTP; 16 May 2013 04:55:02 -0700
-Received: from [10.237.72.52] (sauron.fi.intel.com [10.237.72.52])
-        by linux.intel.com (Postfix) with ESMTP id E89F46A408D;
-        Thu, 16 May 2013 04:54:36 -0700 (PDT)
-Message-ID: <1368705452.15764.217.camel@sauron.fi.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 May 2013 14:55:49 +0200 (CEST)
+Received: from mail-oa0-f48.google.com ([209.85.219.48]:58651 "EHLO
+        mail-oa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825660Ab3EPMzsZq4u1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 May 2013 14:55:48 +0200
+Received: by mail-oa0-f48.google.com with SMTP id i4so3648373oah.21
+        for <linux-mips@linux-mips.org>; Thu, 16 May 2013 05:55:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:x-received:in-reply-to:references:date:message-id
+         :subject:from:to:cc:content-type:x-gm-message-state;
+        bh=f3J7yM0YvzRjqCO3qQLyOGON0vhG88JXdgWnx9+IkGg=;
+        b=ceFWvGk2JrtlMWoWeyECpi0oTtt0ADQjJoONLMDDvQoxkm+yMUmDB1sMR9xd8Q94Rc
+         90jGHaVtR97oTre+4RXoVwTX+RhIp2dmgdtH72kT+UMcwQQwnTT2fnUlakFBmUbJKNLK
+         EsjAPLlkpPDTyjAkoDvkqQKze0U+44MIWWE+Cl2zThZdMDIbcBWNKLBfO4jMf9qdzydV
+         VcXpKAh7N9H/tGpiCGt8H54IgHgib+Wsj7CdbHVFqm8ZNDj0QZF2GnmOXQIIJQdrULoR
+         r5lV3RnnAqvoyYLuoowAA6lcwFPtuQTrJY/PrJcVj9X80wQvSR0X3EAxQ1zGbibWJpM0
+         tPjg==
+MIME-Version: 1.0
+X-Received: by 10.60.58.99 with SMTP id p3mr21592352oeq.23.1368708942194; Thu,
+ 16 May 2013 05:55:42 -0700 (PDT)
+Received: by 10.182.180.16 with HTTP; Thu, 16 May 2013 05:55:42 -0700 (PDT)
+In-Reply-To: <1368705452.15764.217.camel@sauron.fi.intel.com>
+References: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
+        <1368705452.15764.217.camel@sauron.fi.intel.com>
+Date:   Thu, 16 May 2013 18:25:42 +0530
+Message-ID: <CAKohpokUy7QfvKkzGH025Zs5VkUhr8zRLeo3caG3LAnLfptzww@mail.gmail.com>
 Subject: Re: [PATCH 00/33] devm improvement series, part 1, take 2
-From:   Artem Bityutskiy <dedekind1@gmail.com>
-Reply-To: dedekind1@gmail.com
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        alsa-devel@alsa-project.org, linux-usb@vger.kernel.org,
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     dedekind1@gmail.com
+Cc:     Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
+        linux-usb@vger.kernel.org,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
         Linus Walleij <linus.walleij@linaro.org>,
         Matt Mackall <mpm@selenic.com>, linux-fbdev@vger.kernel.org,
         dri-devel@lists.freedesktop.org, Jaroslav Kysela <perex@perex.cz>,
@@ -68,22 +78,17 @@ Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Samuel Ortiz <sameo@linux.intel.com>,
         David Woodhouse <dwmw2@infradead.org>,
         Paul Zimmerman <paulz@synopsys.com>
-Date:   Thu, 16 May 2013 14:57:32 +0300
-In-Reply-To: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
-References: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.6.4 (3.6.4-3.fc18) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <dedekind1@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+X-Gm-Message-State: ALoCoQlxiwFE5lYPkfKIZJDTLzLGk9qdvRGIWx9ojIpBlxMOTp3IIAJUj+I/RlmsnNdXAIF6gz+8
+Return-Path: <viresh.kumar@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36419
+X-archive-position: 36420
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dedekind1@gmail.com
+X-original-sender: viresh.kumar@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -96,17 +101,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 2013-05-16 at 13:15 +0200, Wolfram Sang wrote:
-> Despite various architectures and platform dependencies, I managed to
-> compile
-> test 45 out of 57 modified files locally using heuristics and
-> defconfigs.
-> If somebody knows how to create a minimal .config with a certain
-> kconfig symbol
-> (and its dependencies) set, I'd love to hear about it.
+On 16 May 2013 17:27, Artem Bityutskiy <dedekind1@gmail.com> wrote:
+> On Thu, 2013-05-16 at 13:15 +0200, Wolfram Sang wrote:
+>> Despite various architectures and platform dependencies, I managed to
+>> compile
+>> test 45 out of 57 modified files locally using heuristics and
+>> defconfigs.
+>> If somebody knows how to create a minimal .config with a certain
+>> kconfig symbol
+>> (and its dependencies) set, I'd love to hear about it.
+>
+> If you find this out, please, share!
 
-If you find this out, please, share!
-
--- 
-Best Regards,
-Artem Bityutskiy
+Are you guys looking for "make savedefconfig" ??

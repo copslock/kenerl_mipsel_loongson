@@ -1,39 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 May 2013 22:28:58 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:41219 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6825883Ab3EPU2zrMBdY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 May 2013 22:28:55 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r4GKSpgR002651;
-        Thu, 16 May 2013 22:28:51 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r4GKSkN3002650;
-        Thu, 16 May 2013 22:28:46 +0200
-Date:   Thu, 16 May 2013 22:28:46 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 2/2] Revert "MIPS: Allow ASID size to be determined at
- boot time."
-Message-ID: <20130516202846.GA24568@linux-mips.org>
-References: <1368478604-14732-1-git-send-email-ddaney.cavm@gmail.com>
- <1368478604-14732-2-git-send-email-ddaney.cavm@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1368478604-14732-2-git-send-email-ddaney.cavm@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 May 2013 04:47:51 +0200 (CEST)
+Received: from kymasys.com ([64.62.140.43]:59451 "HELO kymasys.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S6816823Ab3EQCrvNoJsS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 May 2013 04:47:51 +0200
+Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Thu, 16 May 2013 19:47:39 -0700
+From:   Sanjay Lal <sanjayl@kymasys.com>
+Content-Type: multipart/signed; boundary="Apple-Mail=_0949687D-AADF-4235-9978-BBD1CF5267F0"; protocol="application/pgp-signature"; micalg=pgp-sha1
+Subject: KVM and run-time determination of ASID parameters
+Date:   Thu, 16 May 2013 22:47:37 -0400
+Message-Id: <5AD586CC-1A8B-4039-8FF7-313143A8A43B@kymasys.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org
+Mime-Version: 1.0 (Apple Message framework v1283)
+X-Mailer: Apple Mail (2.1283)
+Return-Path: <sanjayl@kymasys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36427
+X-archive-position: 36428
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sanjayl@kymasys.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,9 +35,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, May 13, 2013 at 01:56:44PM -0700, David Daney wrote:
 
-I've applied both your patches.  This should buy Steven some time to come
-up with a fix.
+--Apple-Mail=_0949687D-AADF-4235-9978-BBD1CF5267F0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=us-ascii
 
-  Ralf
+Commit d532f3d26716a39dfd4b88d687bd344fbe77e390 allowed ASID parameters =
+like mask and increment to be determined @ runtime. Unfortunately this =
+breaks KVM.  I think it has to do with the fact that KVM is a module and =
+ends up with the default mask of 0xfc0. =20
+
+Could we make these parameters globals that are exported so that modules =
+end up with the correct patched values?
+
+Regards
+Sanjay
+
+
+--Apple-Mail=_0949687D-AADF-4235-9978-BBD1CF5267F0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename=signature.asc
+Content-Type: application/pgp-signature;
+	name=signature.asc
+Content-Description: Message signed with OpenPGP using GPGMail
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG/MacGPG2 v2.0.19 (Darwin)
+
+iQIcBAEBAgAGBQJRlZpJAAoJECnL5VT5f2RtL2EP/2TdWsMACUrd9cXPqBNoa6EQ
+N82yvHT0hafCHj5caABYqchRqq3X4Uv88B5FukxTmnYaM44WGtCYr0pEDotbUDNC
+vrxw8rO0EB+tT9v2pPXfWB1eDmNmRdIQ0h3dZqtivKQiJeKOvESE9oU+pr4o1MZn
+/fy+sJY5OLKQKeKLKSa2sBhYIXxqtyka3EXI24PtqB2tfCTSRalHuhk82DhSMp0a
+EISIEBlxpMM30Pk0IyPCp2Pv77zq1tZPaOTaPaYU8PFPkY9Ogn9ya3NnurV69tYV
+0noKdLioulHljLgVhN/U2hkQrTLimJBFFyiva+8Ay5BfcFEW+ol+X1jj248hv0Gi
+qtbI9aEKeEvsJN7JXrCgY4y1QMBN0F1IUuHiwPmIt2RKXPWk7TuRVEb5EuB0Ud+1
+ycigzCciwxG5jn9/3MUxoazCiY2SpIH5zfvCLsUxiZwf0T/45QZeYAaM8MNZrIqg
+3o2pAOnimELe58N5s+IlBeorn7dOf3xFj8O8o7+O2aObAxWCv1VrT44iRZ0J0Ebr
+CEH6utsy6Xk48vrajjCtXaR+dIZNOSRCTzsyDe6GNMgO8U8VRRJPS1N1exFwwM6t
+qIzPNkKoOGisusKwO6ryiEKspqnE7aAKDnRpfT5iN+QCgZ/GfFECyF9secWH+Nsu
+vB+KMal+y6lfmRgg9K6p
+=11FC
+-----END PGP SIGNATURE-----
+
+--Apple-Mail=_0949687D-AADF-4235-9978-BBD1CF5267F0--

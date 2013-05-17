@@ -1,51 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 May 2013 23:43:02 +0200 (CEST)
-Received: from mail-pd0-f181.google.com ([209.85.192.181]:59397 "EHLO
-        mail-pd0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835012Ab3EQVm55-Fyb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 May 2013 23:42:57 +0200
-Received: by mail-pd0-f181.google.com with SMTP id p11so3724448pdj.12
-        for <multiple recipients>; Fri, 17 May 2013 14:42:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=mP14dtb7TCg9Wwd3NzfVNCMK8SL2/ZoRv1rQOJXTzmc=;
-        b=Jryd3sdy7Our78Wzv49RLd8P2mWwqBfU5Ef29+y1x94yxm4EXAWX2uXySpRdZXjkU5
-         keQOdkF5DJovt18qbqbfgh5QXERSCvkj9bf0BM/TiBo4IJicM5X4TvTNWAPylMZJHZ5g
-         7KBdC7gAA3iaK4fdW7znVBs8IKvzlhVCa7uhN/iQh4aA81OO8QkOvKkDY1VI2BZtt9/c
-         XNn98Lv7+I43vC6mbdDcaPGmFpOs8f58Y9bRNWzE9jt5V6PEbtkn6MrKJZI33hoIV8t6
-         jC5E+5EtLJFcvdmzNPRTuFEDasDtFHh3wsIzknskVkBF/biGtOpfL+G9SfqP0yLfP/6a
-         +TJg==
-X-Received: by 10.66.159.6 with SMTP id wy6mr50638532pab.206.1368826971155;
-        Fri, 17 May 2013 14:42:51 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id fn9sm13785547pab.2.2013.05.17.14.42.49
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 17 May 2013 14:42:49 -0700 (PDT)
-Message-ID: <5196A458.7080400@gmail.com>
-Date:   Fri, 17 May 2013 14:42:48 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 May 2013 01:56:14 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:45778 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6835006Ab3EQX4KQjpVx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 18 May 2013 01:56:10 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r4HNu8aF004739;
+        Sat, 18 May 2013 01:56:08 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r4HNu8eG004738;
+        Sat, 18 May 2013 01:56:08 +0200
+Date:   Sat, 18 May 2013 01:56:08 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Tony Wu <tung7970@gmail.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH v3 1/2] MIPS: fix sibling call handling in get_frame_info
+Message-ID: <20130517235608.GB24568@linux-mips.org>
+References: <20130512160429.GA982@hades>
 MIME-Version: 1.0
-To:     Sanjay Lal <sanjayl@kymasys.com>
-CC:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
-        ralf@linux-mips.org, gleb@redhat.com, mtosatti@redhat.com
-Subject: Re: [PATCH] KVM/MIPS32: Export min_low_pfn.
-References: <n> <1368824818-22503-1-git-send-email-sanjayl@kymasys.com>
-In-Reply-To: <1368824818-22503-1-git-send-email-sanjayl@kymasys.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20130512160429.GA982@hades>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36442
+X-archive-position: 36443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,49 +42,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/17/2013 02:06 PM, Sanjay Lal wrote:
-> The KVM module uses the standard MIPS cache management routines, which use min_low_pfn.
-> This creates and indirect dependency, requiring min_low_pfn to be exported.
->
-> Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
-> ---
->   arch/mips/kernel/mips_ksyms.c | 6 ++++++
->   1 file changed, 6 insertions(+)
->
-> diff --git a/arch/mips/kernel/mips_ksyms.c b/arch/mips/kernel/mips_ksyms.c
-> index 6e58e97..0299472 100644
-> --- a/arch/mips/kernel/mips_ksyms.c
-> +++ b/arch/mips/kernel/mips_ksyms.c
-> @@ -14,6 +14,7 @@
->   #include <linux/mm.h>
->   #include <asm/uaccess.h>
->   #include <asm/ftrace.h>
-> +#include <linux/bootmem.h>
->
->   extern void *__bzero(void *__s, size_t __count);
->   extern long __strncpy_from_user_nocheck_asm(char *__to,
-> @@ -60,3 +61,8 @@ EXPORT_SYMBOL(invalid_pte_table);
->   /* _mcount is defined in arch/mips/kernel/mcount.S */
->   EXPORT_SYMBOL(_mcount);
->   #endif
-> +
-> +/* The KVM module uses the standard MIPS cache functions which use
-> + * min_low_pfn, requiring it to be exported.
-> + */
-> +EXPORT_SYMBOL(min_low_pfn);
+On Mon, May 13, 2013 at 12:04:29AM +0800, Tony Wu wrote:
+> Date:   Mon, 13 May 2013 00:04:29 +0800
+> From: Tony Wu <tung7970@gmail.com>
+> To: ralf@linux-mips.org, linux-mips@linux-mips.org
+> Subject: [PATCH v3 1/2] MIPS: fix sibling call handling in get_frame_info
+> Content-Type: text/plain; charset=us-ascii
 
-I think I asked this before, but I don't remember the answer:
+I've applied both your patches but both did apply with fuzz so you may
+want to verify everything is working fine.
 
-Why not put EXPORT_SYMBOL(min_low_pfn) in mm/bootmem.c adjacent to where 
-the symbol is defined?
+Thanks,
 
-Cluttering up the kernel with multiple architectures all doing 
-architecture specific exports of the same symbol is not a clean way of 
-doing things.
-
-The second time something needs to be done, it should be factored out 
-into common code.
-
-David Daney
-
->
+  Ralf

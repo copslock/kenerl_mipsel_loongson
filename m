@@ -1,28 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 May 2013 04:47:51 +0200 (CEST)
-Received: from kymasys.com ([64.62.140.43]:59451 "HELO kymasys.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6816823Ab3EQCrvNoJsS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 17 May 2013 04:47:51 +0200
-Received: from ::ffff:173.33.185.184 ([173.33.185.184]) by kymasys.com for <linux-mips@linux-mips.org>; Thu, 16 May 2013 19:47:39 -0700
-From:   Sanjay Lal <sanjayl@kymasys.com>
-Content-Type: multipart/signed; boundary="Apple-Mail=_0949687D-AADF-4235-9978-BBD1CF5267F0"; protocol="application/pgp-signature"; micalg=pgp-sha1
-Subject: KVM and run-time determination of ASID parameters
-Date:   Thu, 16 May 2013 22:47:37 -0400
-Message-Id: <5AD586CC-1A8B-4039-8FF7-313143A8A43B@kymasys.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "Steven J. Hill" <sjhill@mips.com>
-To:     linux-mips@linux-mips.org
-Mime-Version: 1.0 (Apple Message framework v1283)
-X-Mailer: Apple Mail (2.1283)
-Return-Path: <sanjayl@kymasys.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 May 2013 06:50:27 +0200 (CEST)
+Received: from szxga02-in.huawei.com ([119.145.14.65]:17467 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816906Ab3EQEuWN-Ul3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 May 2013 06:50:22 +0200
+Received: from 172.24.2.119 (EHLO szxeml212-edg.china.huawei.com) ([172.24.2.119])
+        by szxrg02-dlp.huawei.com (MOS 4.3.4-GA FastPath queued)
+        with ESMTP id BBR93798;
+        Fri, 17 May 2013 12:50:09 +0800 (CST)
+Received: from SZXEML415-HUB.china.huawei.com (10.82.67.154) by
+ szxeml212-edg.china.huawei.com (172.24.2.181) with Microsoft SMTP Server
+ (TLS) id 14.1.323.7; Fri, 17 May 2013 12:49:32 +0800
+Received: from [127.0.0.1] (10.135.72.158) by szxeml415-hub.china.huawei.com
+ (10.82.67.154) with Microsoft SMTP Server id 14.1.323.7; Fri, 17 May 2013
+ 12:49:31 +0800
+Message-ID: <5195B6D6.7030504@huawei.com>
+Date:   Fri, 17 May 2013 12:49:26 +0800
+From:   Libo Chen <clbchenlibo.chen@huawei.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:17.0) Gecko/20130328 Thunderbird/17.0.5
+MIME-Version: 1.0
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+CC:     <grant.likely@linaro.org>, <rob.herring@calxeda.com>,
+        <linux-mips@linux-mips.org>, LKML <linux-kernel@vger.kernel.org>,
+        <devicetree-discuss@lists.ozlabs.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH] usb: omap2430: fix memleak in err case
+References: <5192E650.3070303@huawei.com> <519377C4.1040800@cogentembedded.com>
+In-Reply-To: <519377C4.1040800@cogentembedded.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.135.72.158]
+X-CFilter-Loop: Reflected
+Return-Path: <libo.chen@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36428
+X-archive-position: 36429
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sanjayl@kymasys.com
+X-original-sender: clbchenlibo.chen@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,48 +51,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 2013/5/15 19:55, Sergei Shtylyov wrote:
+> Hello.
+> 
+> On 15-05-2013 5:35, Libo Chen wrote:
+> 
+>> when omap_get_control_dev fail, we should release relational platform_device
+> 
+>    s/fail/fails/, s/relational/related/?
+> 
+>> Signed-off-by: Libo Chen <libo.chen@huawei.com>
+> 
+>    You've posted this to the wrong mailing list, linux-mips; devicetree-discuss also seems hardly related.
+> 
+> WBR, Sergei
+> 
+> 
+> 
 
---Apple-Mail=_0949687D-AADF-4235-9978-BBD1CF5267F0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=us-ascii
+Hi Sergei,
 
-Commit d532f3d26716a39dfd4b88d687bd344fbe77e390 allowed ASID parameters =
-like mask and increment to be determined @ runtime. Unfortunately this =
-breaks KVM.  I think it has to do with the fact that KVM is a module and =
-ends up with the default mask of 0xfc0. =20
-
-Could we make these parameters globals that are exported so that modules =
-end up with the correct patched values?
-
-Regards
-Sanjay
-
-
---Apple-Mail=_0949687D-AADF-4235-9978-BBD1CF5267F0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename=signature.asc
-Content-Type: application/pgp-signature;
-	name=signature.asc
-Content-Description: Message signed with OpenPGP using GPGMail
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG/MacGPG2 v2.0.19 (Darwin)
-
-iQIcBAEBAgAGBQJRlZpJAAoJECnL5VT5f2RtL2EP/2TdWsMACUrd9cXPqBNoa6EQ
-N82yvHT0hafCHj5caABYqchRqq3X4Uv88B5FukxTmnYaM44WGtCYr0pEDotbUDNC
-vrxw8rO0EB+tT9v2pPXfWB1eDmNmRdIQ0h3dZqtivKQiJeKOvESE9oU+pr4o1MZn
-/fy+sJY5OLKQKeKLKSa2sBhYIXxqtyka3EXI24PtqB2tfCTSRalHuhk82DhSMp0a
-EISIEBlxpMM30Pk0IyPCp2Pv77zq1tZPaOTaPaYU8PFPkY9Ogn9ya3NnurV69tYV
-0noKdLioulHljLgVhN/U2hkQrTLimJBFFyiva+8Ay5BfcFEW+ol+X1jj248hv0Gi
-qtbI9aEKeEvsJN7JXrCgY4y1QMBN0F1IUuHiwPmIt2RKXPWk7TuRVEb5EuB0Ud+1
-ycigzCciwxG5jn9/3MUxoazCiY2SpIH5zfvCLsUxiZwf0T/45QZeYAaM8MNZrIqg
-3o2pAOnimELe58N5s+IlBeorn7dOf3xFj8O8o7+O2aObAxWCv1VrT44iRZ0J0Ebr
-CEH6utsy6Xk48vrajjCtXaR+dIZNOSRCTzsyDe6GNMgO8U8VRRJPS1N1exFwwM6t
-qIzPNkKoOGisusKwO6ryiEKspqnE7aAKDnRpfT5iN+QCgZ/GfFECyF9secWH+Nsu
-vB+KMal+y6lfmRgg9K6p
-=11FC
------END PGP SIGNATURE-----
-
---Apple-Mail=_0949687D-AADF-4235-9978-BBD1CF5267F0--
+Thank you for your remind.

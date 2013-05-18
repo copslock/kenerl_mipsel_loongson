@@ -1,32 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 May 2013 15:57:07 +0200 (CEST)
-Received: from kymasys.com ([64.62.140.43]:36241 "HELO kymasys.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6816521Ab3ERNzO39-S8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 18 May 2013 15:55:14 +0200
-Received: from agni.kymasys.com ([75.40.23.192]) by kymasys.com for <linux-mips@linux-mips.org>; Sat, 18 May 2013 06:54:55 -0700
-Received: by agni.kymasys.com (Postfix, from userid 500)
-        id 5BAAD630053; Sat, 18 May 2013 06:54:28 -0700 (PDT)
-From:   Sanjay Lal <sanjayl@kymasys.com>
-To:     linux-mips@linux-mips.org
-Cc:     kvm@vger.kernel.org, ralf@linux-mips.org, gleb@redhat.com,
-        mtosatti@redhat.com, Sanjay Lal <sanjayl@kymasys.com>,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH 4/4] KVM/MIPS32: Bring in patch from David Daney with new 64 bit compatible ABI.
-Date:   Sat, 18 May 2013 06:54:26 -0700
-Message-Id: <1368885266-8619-5-git-send-email-sanjayl@kymasys.com>
-X-Mailer: git-send-email 1.7.11.3
-In-Reply-To: <1368885266-8619-1-git-send-email-sanjayl@kymasys.com>
-References: <n>
- <1368885266-8619-1-git-send-email-sanjayl@kymasys.com>
-Return-Path: <sanjayl@kymasys.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 May 2013 20:41:27 +0200 (CEST)
+Received: from drsnuggles.stderr.nl ([94.142.244.14]:48532 "EHLO
+        drsnuggles.stderr.nl" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6822830Ab3ERSlWU-1Jq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 18 May 2013 20:41:22 +0200
+Received: from login.drsnuggles.stderr.nl ([10.42.0.9] ident=mail)
+        by mail.drsnuggles.stderr.nl with smtp (Exim 4.69)
+        (envelope-from <matthijs@stdin.nl>)
+        id 1Udm3x-00027y-RF; Sat, 18 May 2013 20:41:02 +0200
+Received: (nullmailer pid 8180 invoked by uid 1000);
+        Sat, 18 May 2013 18:41:01 -0000
+Date:   Sat, 18 May 2013 20:41:01 +0200
+From:   Matthijs Kooijman <matthijs@stdin.nl>
+To:     Stephen Warren <swarren@wwwdotorg.org>
+Cc:     Michal Marek <mmarek@suse.cz>,
+        Grant Likely <grant.likely@linaro.org>,
+        Rob Herring <rob.herring@calxeda.com>,
+        linux-kbuild@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Stephen Warren <swarren@nvidia.com>
+Subject: Re: [PATCH] kbuild: Don't assume dts files live in arch/*/boot/dts
+Message-ID: <20130518184101.GS25742@login.drsnuggles.stderr.nl>
+Mail-Followup-To: Stephen Warren <swarren@wwwdotorg.org>,
+        Michal Marek <mmarek@suse.cz>,
+        Grant Likely <grant.likely@linaro.org>,
+        Rob Herring <rob.herring@calxeda.com>, linux-kbuild@vger.kernel.org,
+        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, Stephen Warren <swarren@nvidia.com>
+References: <1368010744-11281-1-git-send-email-matthijs@stdin.nl>
+ <518A6649.1020501@wwwdotorg.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <518A6649.1020501@wwwdotorg.org>
+X-PGP-Fingerprint: 7F6A 9F44 2820 18E2 18DE  24AA CF49 D0E6 8A2F AFBC
+X-PGP-Key: http://www.stderr.nl/static/files/gpg_pubkey.asc
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <matthijs@stdin.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36452
+X-archive-position: 36453
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sanjayl@kymasys.com
+X-original-sender: matthijs@stdin.nl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,716 +56,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+Hi Michal,
 
-There are several parts to this:
+On Wed, May 08, 2013 at 08:50:49AM -0600, Stephen Warren wrote:
+> On 05/08/2013 04:59 AM, Matthijs Kooijman wrote:
+> > In commit b40b25ff (kbuild: always run gcc -E on *.dts, remove cmd_dtc_cpp),
+> > dts building was changed to always use the C preprocessor. This meant
+> > that the .dts file passed to dtc is not the original, but the
+> > preprocessed one.
+> > 
+> > When compiling with a separate build directory (i.e., with O=), this
+> > preprocessed file will not live in the same directory as the original.
+> > When the .dts file includes .dtsi files, dtc will look for them in the
+> > build directory, not in the source directory and compilation will fail.
+> > 
+> > The commit referenced above tried to fix this by passing arch/*/boot/dts
+> > as an include path to dtc. However, for mips, the .dts files are not in
+> > this directory, so dts compilation on mips breaks for some targets.
+> > 
+> > Instead of hardcoding this particular include path, this commit just
+> > uses the directory of the .dts file that is being compiled, which
+> > effectively restores the previous behaviour wrt includes. For most .dts
+> > files, this path is just the same as the previous hardcoded
+> > arch/*/boot/dts path.
+> > 
+> > This was tested on a mips (rt3052) and an arm (bcm2835) target.
+> 
+> Reviewed-by: Stephen Warren <swarren@nvidia.com>
 
-o All registers are 64-bits wide, 32-bit guests use the least
-  significant portion of the register storage fields.
+Did this patch look ok to you? If so, could you pick it up and send it
+over to Linus for 3.10 (or should I send it directly)?
 
-o FPU register formats are defined.
+Gr.
 
-o CP0 Registers are manipulated via the KVM_GET_MSRS/KVM_SET_MSRS
-  mechanism.
-
-The vcpu_ioctl_get_regs and vcpu_ioctl_set_regs function pointers
-become unused so they were removed.
-
-Some IOCTL functions were moved to kvm_trap_emul because the
-implementations are only for that flavor of KVM host.  In the future, if
-hardware based virtualization is added, they can be hidden behind
-function pointers as appropriate.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
-Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
----
- arch/mips/include/asm/kvm_host.h |   4 -
- arch/mips/include/uapi/asm/kvm.h | 106 ++++++++++---
- arch/mips/kvm/kvm_mips.c         | 102 +-----------
- arch/mips/kvm/kvm_trap_emul.c    | 330 ++++++++++++++++++++++++++++++++++-----
- 4 files changed, 382 insertions(+), 160 deletions(-)
-
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index e68781e..e3d49ec 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -496,10 +496,6 @@ struct kvm_mips_callbacks {
- 			    uint32_t cause);
- 	int (*irq_clear) (struct kvm_vcpu *vcpu, unsigned int priority,
- 			  uint32_t cause);
--	int (*vcpu_ioctl_get_regs) (struct kvm_vcpu *vcpu,
--				    struct kvm_regs *regs);
--	int (*vcpu_ioctl_set_regs) (struct kvm_vcpu *vcpu,
--				    struct kvm_regs *regs);
- };
- extern struct kvm_mips_callbacks *kvm_mips_callbacks;
- int kvm_mips_emulation_init(struct kvm_mips_callbacks **install_callbacks);
-diff --git a/arch/mips/include/uapi/asm/kvm.h b/arch/mips/include/uapi/asm/kvm.h
-index 85789ea..83c44d8 100644
---- a/arch/mips/include/uapi/asm/kvm.h
-+++ b/arch/mips/include/uapi/asm/kvm.h
-@@ -1,55 +1,113 @@
- /*
--* This file is subject to the terms and conditions of the GNU General Public
--* License.  See the file "COPYING" in the main directory of this archive
--* for more details.
--*
--* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
--* Authors: Sanjay Lal <sanjayl@kymasys.com>
--*/
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
-+ * Copyright (C) 2013 Cavium, Inc.
-+ * Authors: Sanjay Lal <sanjayl@kymasys.com>
-+ */
- 
- #ifndef __LINUX_KVM_MIPS_H
- #define __LINUX_KVM_MIPS_H
- 
- #include <linux/types.h>
- 
--#define __KVM_MIPS
--
--#define N_MIPS_COPROC_REGS      32
--#define N_MIPS_COPROC_SEL   	8
-+/*
-+ * KVM MIPS specific structures and definitions.
-+ *
-+ * Some parts derived from the x86 version of this file.
-+ */
- 
- /* for KVM_GET_REGS and KVM_SET_REGS */
-+/*
-+ * If Config[AT] is zero (32-bit CPU), the register contents are
-+ * stored in the lower 32-bits of the struct kvm_regs fields and sign
-+ * extended to 64-bits.
-+ */
- struct kvm_regs {
--	__u32 gprs[32];
--	__u32 hi;
--	__u32 lo;
--	__u32 pc;
-+	/* out (KVM_GET_REGS) / in (KVM_SET_REGS) */
-+	__u64 gpr[32];
-+	__u64 hi, lo;
-+	__u64 pc;
-+};
- 
--	__u32 cp0reg[N_MIPS_COPROC_REGS][N_MIPS_COPROC_SEL];
-+/* for KVM_GET_FPU and KVM_SET_FPU */
-+/*
-+ * If Status[FR] is zero (32-bit FPU), the upper 32-bits of the FPRs
-+ * are zero filled.
-+ */
-+struct kvm_fpu {
-+	__u64 fpr[32];
-+	__u32 fir;
-+	__u32 fccr;
-+	__u32 fexr;
-+	__u32 fenr;
-+	__u32 fcsr;
-+	__u32 pad;
- };
- 
--/* for KVM_GET_SREGS and KVM_SET_SREGS */
--struct kvm_sregs {
-+
-+/*
-+ * For MIPS, we use the same APIs as x86, where 'msr' corresponds to a
-+ * CP0 register.  The index field is broken down as follows:
-+ *
-+ *  bits[2..0]   - Register 'sel' index.
-+ *  bits[7..3]   - Register 'rd'  index.
-+ *  bits[15..8]  - Must be zero.
-+ *  bits[31..16] - 0 -> CP0 registers.
-+ *
-+ * Other sets registers may be added in the future.  Each set would
-+ * have its own identifier in bits[31..16].
-+ *
-+ * For MSRs that are narrower than 64-bits, the value is stored in the
-+ * low order bits of the data field, and sign extended to 64-bits.
-+ */
-+#define KVM_MIPS_MSR_CP0 0
-+struct kvm_msr_entry {
-+	__u32 index;
-+	__u32 reserved;
-+	__u64 data;
- };
- 
--/* for KVM_GET_FPU and KVM_SET_FPU */
--struct kvm_fpu {
-+/* for KVM_GET_MSRS and KVM_SET_MSRS */
-+struct kvm_msrs {
-+	__u32 nmsrs; /* number of msrs in entries */
-+	__u32 pad;
-+
-+	struct kvm_msr_entry entries[0];
- };
- 
-+/* for KVM_GET_MSR_INDEX_LIST */
-+struct kvm_msr_list {
-+	__u32 nmsrs; /* number of msrs in entries */
-+	__u32 indices[0];
-+};
-+
-+/*
-+ * KVM MIPS specific structures and definitions
-+ *
-+ */
- struct kvm_debug_exit_arch {
-+	__u64 epc;
- };
- 
- /* for KVM_SET_GUEST_DEBUG */
- struct kvm_guest_debug_arch {
- };
- 
-+/* definition of registers in kvm_run */
-+struct kvm_sync_regs {
-+};
-+
-+/* dummy definition */
-+struct kvm_sregs {
-+};
-+
- struct kvm_mips_interrupt {
- 	/* in */
- 	__u32 cpu;
- 	__u32 irq;
- };
- 
--/* definition of registers in kvm_run */
--struct kvm_sync_regs {
--};
--
- #endif /* __LINUX_KVM_MIPS_H */
-diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
-index e0dad02..26a40e3 100644
---- a/arch/mips/kvm/kvm_mips.c
-+++ b/arch/mips/kvm/kvm_mips.c
-@@ -51,16 +51,6 @@ struct kvm_stats_debugfs_item debugfs_entries[] = {
- 	{NULL}
- };
- 
--static int kvm_mips_reset_vcpu(struct kvm_vcpu *vcpu)
--{
--	int i;
--	for_each_possible_cpu(i) {
--		vcpu->arch.guest_kernel_asid[i] = 0;
--		vcpu->arch.guest_user_asid[i] = 0;
--	}
--	return 0;
--}
--
- gfn_t unalias_gfn(struct kvm *kvm, gfn_t gfn)
- {
- 	return gfn;
-@@ -192,12 +182,6 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
- 	}
- }
- 
--long
--kvm_arch_dev_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
--{
--	return -EINVAL;
--}
--
- void kvm_arch_free_memslot(struct kvm_memory_slot *free,
- 			   struct kvm_memory_slot *dont)
- {
-@@ -435,42 +419,6 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
- 
- 	return r;
- }
--
--int
--kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq)
--{
--	int intr = (int)irq->irq;
--	struct kvm_vcpu *dvcpu = NULL;
--
--	if (intr == 3 || intr == -3 || intr == 4 || intr == -4)
--		kvm_debug("%s: CPU: %d, INTR: %d\n", __func__, irq->cpu,
--			  (int)intr);
--
--	if (irq->cpu == -1)
--		dvcpu = vcpu;
--	else
--		dvcpu = vcpu->kvm->vcpus[irq->cpu];
--
--	if (intr == 2 || intr == 3 || intr == 4) {
--		kvm_mips_callbacks->queue_io_int(dvcpu, irq);
--
--	} else if (intr == -2 || intr == -3 || intr == -4) {
--		kvm_mips_callbacks->dequeue_io_int(dvcpu, irq);
--	} else {
--		kvm_err("%s: invalid interrupt ioctl (%d:%d)\n", __func__,
--			irq->cpu, irq->irq);
--		return -EINVAL;
--	}
--
--	dvcpu->arch.wait = 0;
--
--	if (waitqueue_active(&dvcpu->wq)) {
--		wake_up_interruptible(&dvcpu->wq);
--	}
--
--	return 0;
--}
--
- int
- kvm_arch_vcpu_ioctl_get_mpstate(struct kvm_vcpu *vcpu,
- 				struct kvm_mp_state *mp_state)
-@@ -485,42 +433,6 @@ kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
- 	return -EINVAL;
- }
- 
--long
--kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
--{
--	struct kvm_vcpu *vcpu = filp->private_data;
--	void __user *argp = (void __user *)arg;
--	long r;
--	int intr;
--
--	switch (ioctl) {
--	case KVM_NMI:
--		/* Treat the NMI as a CPU reset */
--		r = kvm_mips_reset_vcpu(vcpu);
--		break;
--	case KVM_INTERRUPT:
--		{
--			struct kvm_mips_interrupt irq;
--			r = -EFAULT;
--			if (copy_from_user(&irq, argp, sizeof(irq)))
--				goto out;
--
--			intr = (int)irq.irq;
--
--			kvm_debug("[%d] %s: irq: %d\n", vcpu->vcpu_id, __func__,
--				  irq.irq);
--
--			r = kvm_vcpu_ioctl_interrupt(vcpu, &irq);
--			break;
--		}
--	default:
--		r = -EINVAL;
--	}
--
--out:
--	return r;
--}
--
- /*
-  * Get (and clear) the dirty memory log for a memory slot.
-  */
-@@ -677,28 +589,28 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
- {
- 	int i;
- 
--	for (i = 0; i < 32; i++)
--		vcpu->arch.gprs[i] = regs->gprs[i];
--
-+	for (i = 1; i < ARRAY_SIZE(vcpu->arch.gprs); i++)
-+		vcpu->arch.gprs[i] = regs->gpr[i];
-+	vcpu->arch.gprs[0] = 0; /* zero is special, and cannot be set. */
- 	vcpu->arch.hi = regs->hi;
- 	vcpu->arch.lo = regs->lo;
- 	vcpu->arch.pc = regs->pc;
- 
--	return kvm_mips_callbacks->vcpu_ioctl_set_regs(vcpu, regs);
-+	return 0;
- }
- 
- int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
- {
- 	int i;
- 
--	for (i = 0; i < 32; i++)
--		regs->gprs[i] = vcpu->arch.gprs[i];
-+	for (i = 0; i < ARRAY_SIZE(vcpu->arch.gprs); i++)
-+		regs->gpr[i] = vcpu->arch.gprs[i];
- 
- 	regs->hi = vcpu->arch.hi;
- 	regs->lo = vcpu->arch.lo;
- 	regs->pc = vcpu->arch.pc;
- 
--	return kvm_mips_callbacks->vcpu_ioctl_get_regs(vcpu, regs);
-+	return 0;
- }
- 
- void kvm_mips_comparecount_func(unsigned long data)
-diff --git a/arch/mips/kvm/kvm_trap_emul.c b/arch/mips/kvm/kvm_trap_emul.c
-index 466aeef..df98dcb 100644
---- a/arch/mips/kvm/kvm_trap_emul.c
-+++ b/arch/mips/kvm/kvm_trap_emul.c
-@@ -13,7 +13,7 @@
- #include <linux/err.h>
- #include <linux/module.h>
- #include <linux/vmalloc.h>
--
-+#include <linux/fs.h>
- #include <linux/kvm_host.h>
- 
- #include "kvm_mips_opcode.h"
-@@ -345,54 +345,312 @@ static int kvm_trap_emul_handle_break(struct kvm_vcpu *vcpu)
- 	return ret;
- }
- 
--static int
--kvm_trap_emul_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
-+#define MSR_MIPS_CP0_INDEX (8 * 0 + 0)
-+#define MSR_MIPS_CP0_ENTRYLO0 (8 * 2 + 0)
-+#define MSR_MIPS_CP0_ENTRYLO1 (8 * 3 + 0)
-+#define MSR_MIPS_CP0_CONTEXT (8 * 4 + 0)
-+#define MSR_MIPS_CP0_USERLOCAL (8 * 4 + 2)
-+#define MSR_MIPS_CP0_PAGEMASK (8 * 5 + 0)
-+#define MSR_MIPS_CP0_PAGEGRAIN (8 * 5 + 1)
-+#define MSR_MIPS_CP0_WIRED (8 * 6 + 0)
-+#define MSR_MIPS_CP0_HWRENA (8 * 7 + 0)
-+#define MSR_MIPS_CP0_BADVADDR (8 * 8 + 0)
-+#define MSR_MIPS_CP0_COUNT (8 * 9 + 0)
-+#define MSR_MIPS_CP0_ENTRYHI (8 * 10 + 0)
-+#define MSR_MIPS_CP0_COMPARE (8 * 11 + 0)
-+#define MSR_MIPS_CP0_STATUS (8 * 12 + 0)
-+#define MSR_MIPS_CP0_CAUSE (8 * 13 + 0)
-+#define MSR_MIPS_CP0_EBASE (8 * 15 + 1)
-+#define MSR_MIPS_CP0_CONFIG (8 * 16 + 0)
-+#define MSR_MIPS_CP0_CONFIG1 (8 * 16 + 1)
-+#define MSR_MIPS_CP0_CONFIG2 (8 * 16 + 2)
-+#define MSR_MIPS_CP0_CONFIG3 (8 * 16 + 3)
-+#define MSR_MIPS_CP0_CONFIG7 (8 * 16 + 7)
-+#define MSR_MIPS_CP0_XCONTEXT (8 * 20 + 0)
-+#define MSR_MIPS_CP0_ERROREPC (8 * 30 + 0)
-+
-+static u32 msrs_to_save[] = {
-+	MSR_MIPS_CP0_INDEX,
-+	MSR_MIPS_CP0_CONTEXT,
-+	MSR_MIPS_CP0_PAGEMASK,
-+	MSR_MIPS_CP0_WIRED,
-+	MSR_MIPS_CP0_BADVADDR,
-+	MSR_MIPS_CP0_ENTRYHI,
-+	MSR_MIPS_CP0_STATUS,
-+	MSR_MIPS_CP0_CAUSE,
-+	/* EPC set via kvm_regs, et al. */
-+	MSR_MIPS_CP0_CONFIG,
-+	MSR_MIPS_CP0_CONFIG1,
-+	MSR_MIPS_CP0_CONFIG2,
-+	MSR_MIPS_CP0_CONFIG3,
-+	MSR_MIPS_CP0_CONFIG7,
-+	MSR_MIPS_CP0_XCONTEXT,
-+	MSR_MIPS_CP0_ERROREPC
-+};
-+
-+#define MAX_IO_MSRS 128
-+
-+static int mipsvz_get_msr(struct kvm_vcpu *vcpu, unsigned index, u64 *data)
- {
- 	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	s64 v;
- 
--	kvm_write_c0_guest_index(cop0, regs->cp0reg[MIPS_CP0_TLB_INDEX][0]);
--	kvm_write_c0_guest_context(cop0, regs->cp0reg[MIPS_CP0_TLB_CONTEXT][0]);
--	kvm_write_c0_guest_badvaddr(cop0, regs->cp0reg[MIPS_CP0_BAD_VADDR][0]);
--	kvm_write_c0_guest_entryhi(cop0, regs->cp0reg[MIPS_CP0_TLB_HI][0]);
--	kvm_write_c0_guest_epc(cop0, regs->cp0reg[MIPS_CP0_EXC_PC][0]);
-+	switch (index) {
-+	case MSR_MIPS_CP0_INDEX:
-+		v = (long)kvm_read_c0_guest_index(cop0);
-+		break;
-+	case MSR_MIPS_CP0_CONTEXT:
-+		v = (long)kvm_read_c0_guest_context(cop0);
-+		break;
-+	case MSR_MIPS_CP0_PAGEMASK:
-+		v = (long)kvm_read_c0_guest_pagemask(cop0);
-+		break;
-+	case MSR_MIPS_CP0_WIRED:
-+		v = (long)kvm_read_c0_guest_wired(cop0);
-+		break;
-+	case MSR_MIPS_CP0_BADVADDR:
-+		v = (long)kvm_read_c0_guest_badvaddr(cop0);
-+		break;
-+	case MSR_MIPS_CP0_ENTRYHI:
-+		v = (long)kvm_read_c0_guest_entryhi(cop0);
-+		break;
-+	case MSR_MIPS_CP0_STATUS:
-+		v = (long)kvm_read_c0_guest_status(cop0);
-+		break;
-+	case MSR_MIPS_CP0_CAUSE:
-+		v = (long)kvm_read_c0_guest_cause(cop0);
-+		break;
-+	case MSR_MIPS_CP0_ERROREPC:
-+		v = (long)kvm_read_c0_guest_errorepc(cop0);
-+		break;
-+	case MSR_MIPS_CP0_CONFIG:
-+		v = (long)kvm_read_c0_guest_config(cop0);
-+		break;
-+	case MSR_MIPS_CP0_CONFIG1:
-+		v = (long)kvm_read_c0_guest_config1(cop0);
-+		break;
-+	case MSR_MIPS_CP0_CONFIG2:
-+		v = (long)kvm_read_c0_guest_config2(cop0);
-+		break;
-+	case MSR_MIPS_CP0_CONFIG3:
-+		v = (long)kvm_read_c0_guest_config3(cop0);
-+		break;
-+	case MSR_MIPS_CP0_CONFIG7:
-+		v = (long)kvm_read_c0_guest_config7(cop0);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	*data = v;
-+	return 0;
-+}
- 
--	kvm_write_c0_guest_status(cop0, regs->cp0reg[MIPS_CP0_STATUS][0]);
--	kvm_write_c0_guest_cause(cop0, regs->cp0reg[MIPS_CP0_CAUSE][0]);
--	kvm_write_c0_guest_pagemask(cop0,
--				    regs->cp0reg[MIPS_CP0_TLB_PG_MASK][0]);
--	kvm_write_c0_guest_wired(cop0, regs->cp0reg[MIPS_CP0_TLB_WIRED][0]);
--	kvm_write_c0_guest_errorepc(cop0, regs->cp0reg[MIPS_CP0_ERROR_PC][0]);
-+static int mipsvz_set_msr(struct kvm_vcpu *vcpu, unsigned index, u64 *data)
-+{
-+	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	u64 v = *data;
- 
-+	switch (index) {
-+	case MSR_MIPS_CP0_INDEX:
-+		kvm_write_c0_guest_index(cop0, v);
-+		break;
-+	case MSR_MIPS_CP0_CONTEXT:
-+		kvm_write_c0_guest_context(cop0, v);
-+		break;
-+	case MSR_MIPS_CP0_PAGEMASK:
-+		kvm_write_c0_guest_pagemask(cop0, v);
-+		break;
-+	case MSR_MIPS_CP0_WIRED:
-+		kvm_write_c0_guest_wired(cop0, v);
-+		break;
-+	case MSR_MIPS_CP0_BADVADDR:
-+		kvm_write_c0_guest_badvaddr(cop0, v);
-+		break;
-+	case MSR_MIPS_CP0_ENTRYHI:
-+		kvm_write_c0_guest_entryhi(cop0, v);
-+		break;
-+	case MSR_MIPS_CP0_STATUS:
-+		kvm_write_c0_guest_status(cop0, v);
-+		break;
-+	case MSR_MIPS_CP0_CAUSE:
-+		kvm_write_c0_guest_cause(cop0, v);
-+		break;
-+	case MSR_MIPS_CP0_ERROREPC:
-+		kvm_write_c0_guest_errorepc(cop0, v);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
- 	return 0;
- }
- 
--static int
--kvm_trap_emul_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
-+/*
-+ * Read or write a bunch of msrs. Parameters are user addresses.
-+ *
-+ * @return number of msrs set successfully.
-+ */
-+static int msr_io(struct kvm_vcpu *vcpu, struct kvm_msrs __user *user_msrs,
-+		  int (*do_msr)(struct kvm_vcpu *vcpu,
-+				unsigned index, u64 *data),
-+		  bool writeback)
- {
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	struct kvm_msrs msrs;
-+	struct kvm_msr_entry *entries;
-+	int r, n;
-+	unsigned size;
-+
-+	r = -EFAULT;
-+	if (copy_from_user(&msrs, user_msrs, sizeof(msrs)))
-+		goto out;
-+
-+	r = -E2BIG;
-+	if (msrs.nmsrs >= MAX_IO_MSRS)
-+		goto out;
-+
-+	size = sizeof(struct kvm_msr_entry) * msrs.nmsrs;
-+	entries = memdup_user(user_msrs->entries, size);
-+	if (IS_ERR(entries)) {
-+		r = PTR_ERR(entries);
-+		goto out;
-+	}
- 
--	regs->cp0reg[MIPS_CP0_TLB_INDEX][0] = kvm_read_c0_guest_index(cop0);
--	regs->cp0reg[MIPS_CP0_TLB_CONTEXT][0] = kvm_read_c0_guest_context(cop0);
--	regs->cp0reg[MIPS_CP0_BAD_VADDR][0] = kvm_read_c0_guest_badvaddr(cop0);
--	regs->cp0reg[MIPS_CP0_TLB_HI][0] = kvm_read_c0_guest_entryhi(cop0);
--	regs->cp0reg[MIPS_CP0_EXC_PC][0] = kvm_read_c0_guest_epc(cop0);
--
--	regs->cp0reg[MIPS_CP0_STATUS][0] = kvm_read_c0_guest_status(cop0);
--	regs->cp0reg[MIPS_CP0_CAUSE][0] = kvm_read_c0_guest_cause(cop0);
--	regs->cp0reg[MIPS_CP0_TLB_PG_MASK][0] =
--	    kvm_read_c0_guest_pagemask(cop0);
--	regs->cp0reg[MIPS_CP0_TLB_WIRED][0] = kvm_read_c0_guest_wired(cop0);
--	regs->cp0reg[MIPS_CP0_ERROR_PC][0] = kvm_read_c0_guest_errorepc(cop0);
--
--	regs->cp0reg[MIPS_CP0_CONFIG][0] = kvm_read_c0_guest_config(cop0);
--	regs->cp0reg[MIPS_CP0_CONFIG][1] = kvm_read_c0_guest_config1(cop0);
--	regs->cp0reg[MIPS_CP0_CONFIG][2] = kvm_read_c0_guest_config2(cop0);
--	regs->cp0reg[MIPS_CP0_CONFIG][3] = kvm_read_c0_guest_config3(cop0);
--	regs->cp0reg[MIPS_CP0_CONFIG][7] = kvm_read_c0_guest_config7(cop0);
-+	for (n = 0; n < msrs.nmsrs; ++n)
-+		if (do_msr(vcpu, entries[n].index, &entries[n].data))
-+			break;
-+
-+	r = -EFAULT;
-+	if (writeback && copy_to_user(user_msrs->entries, entries, size))
-+		goto out_free;
-+
-+	r = n;
-+
-+out_free:
-+	kfree(entries);
-+out:
-+	return r;
-+}
-+
-+static int kvm_mips_reset_vcpu(struct kvm_vcpu *vcpu)
-+{
-+	int i;
-+	for_each_possible_cpu(i) {
-+		vcpu->arch.guest_kernel_asid[i] = 0;
-+		vcpu->arch.guest_user_asid[i] = 0;
-+	}
-+	return 0;
-+}
-+
-+int
-+kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq)
-+{
-+	int intr = (int)irq->irq;
-+	struct kvm_vcpu *dvcpu = NULL;
-+
-+	if (intr == 3 || intr == -3 || intr == 4 || intr == -4)
-+		kvm_debug("%s: CPU: %d, INTR: %d\n", __func__, irq->cpu,
-+			  (int)intr);
-+
-+	if (irq->cpu == -1)
-+		dvcpu = vcpu;
-+	else
-+		dvcpu = vcpu->kvm->vcpus[irq->cpu];
-+
-+	if (intr == 2 || intr == 3 || intr == 4) {
-+		kvm_mips_callbacks->queue_io_int(dvcpu, irq);
-+
-+	} else if (intr == -2 || intr == -3 || intr == -4) {
-+		kvm_mips_callbacks->dequeue_io_int(dvcpu, irq);
-+	} else {
-+		kvm_err("%s: invalid interrupt ioctl (%d:%d)\n", __func__,
-+			irq->cpu, irq->irq);
-+		return -EINVAL;
-+	}
-+
-+	dvcpu->arch.wait = 0;
-+
-+	if (waitqueue_active(&dvcpu->wq))
-+		wake_up_interruptible(&dvcpu->wq);
- 
- 	return 0;
- }
- 
-+long
-+kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
-+{
-+	struct kvm_vcpu *vcpu = filp->private_data;
-+	void __user *argp = (void __user *)arg;
-+	long r;
-+
-+	switch (ioctl) {
-+	case KVM_GET_MSRS:
-+		r = msr_io(vcpu, argp, mipsvz_get_msr, true);
-+		break;
-+	case KVM_SET_MSRS:
-+		r = msr_io(vcpu, argp, mipsvz_set_msr, false);
-+		break;
-+	case KVM_NMI:
-+		/* Treat the NMI as a CPU reset */
-+		r = kvm_mips_reset_vcpu(vcpu);
-+		break;
-+	case KVM_INTERRUPT:
-+		{
-+			struct kvm_mips_interrupt irq;
-+			r = -EFAULT;
-+			if (copy_from_user(&irq, argp, sizeof(irq)))
-+				goto out;
-+
-+			kvm_debug("[%d] %s: irq: %d\n", vcpu->vcpu_id, __func__,
-+				  irq.irq);
-+
-+			r = kvm_vcpu_ioctl_interrupt(vcpu, &irq);
-+			break;
-+		}
-+	default:
-+		r = -ENOIOCTLCMD;
-+	}
-+
-+out:
-+	return r;
-+}
-+
-+long kvm_arch_dev_ioctl(struct file *filp,
-+			unsigned int ioctl, unsigned long arg)
-+{
-+	long r;
-+	void __user *argp = (void __user *)arg;
-+
-+	switch (ioctl) {
-+	case KVM_GET_MSR_INDEX_LIST: {
-+		struct kvm_msr_list __user *user_msr_list = argp;
-+		struct kvm_msr_list msr_list;
-+		unsigned n;
-+		unsigned num_msrs_to_save;
-+
-+		r = -EFAULT;
-+		if (copy_from_user(&msr_list, user_msr_list, sizeof(msr_list)))
-+			goto out;
-+		n = msr_list.nmsrs;
-+		msr_list.nmsrs = ARRAY_SIZE(msrs_to_save);
-+		num_msrs_to_save = min(n, msr_list.nmsrs);
-+		if (copy_to_user(user_msr_list, &msr_list, sizeof(msr_list)))
-+			goto out;
-+		r = -E2BIG;
-+		if (n < msr_list.nmsrs)
-+			goto out;
-+		r = -EFAULT;
-+		if (copy_to_user(user_msr_list->indices, &msrs_to_save,
-+				 num_msrs_to_save * sizeof(u32)))
-+			goto out;
-+		r = 0;
-+		break;
-+	}
-+	default:
-+		r = -ENOIOCTLCMD;
-+	}
-+out:
-+	return r;
-+}
-+
- static int kvm_trap_emul_vm_init(struct kvm *kvm)
- {
- 	return 0;
-@@ -471,8 +729,6 @@ static struct kvm_mips_callbacks kvm_trap_emul_callbacks = {
- 	.dequeue_io_int = kvm_mips_dequeue_io_int_cb,
- 	.irq_deliver = kvm_mips_irq_deliver_cb,
- 	.irq_clear = kvm_mips_irq_clear_cb,
--	.vcpu_ioctl_get_regs = kvm_trap_emul_ioctl_get_regs,
--	.vcpu_ioctl_set_regs = kvm_trap_emul_ioctl_set_regs,
- };
- 
- int kvm_mips_emulation_init(struct kvm_mips_callbacks **install_callbacks)
--- 
-1.7.11.3
+Matthijs

@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 May 2013 15:55:19 +0200 (CEST)
-Received: from kymasys.com ([64.62.140.43]:52008 "HELO kymasys.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 May 2013 15:55:57 +0200 (CEST)
+Received: from kymasys.com ([64.62.140.43]:50208 "HELO kymasys.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6822996Ab3ERNyiIIZ0l (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 18 May 2013 15:54:38 +0200
-Received: from agni.kymasys.com ([75.40.23.192]) by kymasys.com for <linux-mips@linux-mips.org>; Sat, 18 May 2013 06:54:28 -0700
+        id S6823080Ab3ERNynhsc-y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 18 May 2013 15:54:43 +0200
+Received: from agni.kymasys.com ([75.40.23.192]) by kymasys.com for <linux-mips@linux-mips.org>; Sat, 18 May 2013 06:54:36 -0700
 Received: by agni.kymasys.com (Postfix, from userid 500)
-        id 4E37363003E; Sat, 18 May 2013 06:54:28 -0700 (PDT)
+        id 52228630051; Sat, 18 May 2013 06:54:28 -0700 (PDT)
 From:   Sanjay Lal <sanjayl@kymasys.com>
 To:     linux-mips@linux-mips.org
 Cc:     kvm@vger.kernel.org, ralf@linux-mips.org, gleb@redhat.com,
         mtosatti@redhat.com, Sanjay Lal <sanjayl@kymasys.com>
-Subject: [PATCH 1/4] KVM/MIPS32: Move include/asm/kvm.h => include/uapi/asm/kvm.h since it is a user visible API.
-Date:   Sat, 18 May 2013 06:54:23 -0700
-Message-Id: <1368885266-8619-2-git-send-email-sanjayl@kymasys.com>
+Subject: [PATCH 2/4] KVM/MIPS32: Wrap calls to gfn_to_pfn() with srcu_read_lock/unlock()
+Date:   Sat, 18 May 2013 06:54:24 -0700
+Message-Id: <1368885266-8619-3-git-send-email-sanjayl@kymasys.com>
 X-Mailer: git-send-email 1.7.11.3
 In-Reply-To: <1368885266-8619-1-git-send-email-sanjayl@kymasys.com>
 References: <n>
@@ -21,7 +21,7 @@ Return-Path: <sanjayl@kymasys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36449
+X-archive-position: 36450
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,136 +38,102 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+- As suggested by Gleb, wrap calls to gfn_to_pfn() with srcu_read_lock/unlock().
+  Memory slots should be acccessed from a SRCU read section.
+- kvm_mips_map_page() now returns an error code to it's callers, instead of calling panic()
+ if it cannot find a mapping for a particular gfn.
 
 Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
 ---
- arch/mips/include/asm/kvm.h      | 55 ----------------------------------------
- arch/mips/include/uapi/asm/kvm.h | 55 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 55 insertions(+), 55 deletions(-)
- delete mode 100644 arch/mips/include/asm/kvm.h
- create mode 100644 arch/mips/include/uapi/asm/kvm.h
+ arch/mips/kvm/kvm_tlb.c | 36 +++++++++++++++++++++++++++---------
+ 1 file changed, 27 insertions(+), 9 deletions(-)
 
-diff --git a/arch/mips/include/asm/kvm.h b/arch/mips/include/asm/kvm.h
-deleted file mode 100644
-index 85789ea..0000000
---- a/arch/mips/include/asm/kvm.h
-+++ /dev/null
-@@ -1,55 +0,0 @@
--/*
--* This file is subject to the terms and conditions of the GNU General Public
--* License.  See the file "COPYING" in the main directory of this archive
--* for more details.
--*
--* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
--* Authors: Sanjay Lal <sanjayl@kymasys.com>
--*/
--
--#ifndef __LINUX_KVM_MIPS_H
--#define __LINUX_KVM_MIPS_H
--
--#include <linux/types.h>
--
--#define __KVM_MIPS
--
--#define N_MIPS_COPROC_REGS      32
--#define N_MIPS_COPROC_SEL   	8
--
--/* for KVM_GET_REGS and KVM_SET_REGS */
--struct kvm_regs {
--	__u32 gprs[32];
--	__u32 hi;
--	__u32 lo;
--	__u32 pc;
--
--	__u32 cp0reg[N_MIPS_COPROC_REGS][N_MIPS_COPROC_SEL];
--};
--
--/* for KVM_GET_SREGS and KVM_SET_SREGS */
--struct kvm_sregs {
--};
--
--/* for KVM_GET_FPU and KVM_SET_FPU */
--struct kvm_fpu {
--};
--
--struct kvm_debug_exit_arch {
--};
--
--/* for KVM_SET_GUEST_DEBUG */
--struct kvm_guest_debug_arch {
--};
--
--struct kvm_mips_interrupt {
--	/* in */
--	__u32 cpu;
--	__u32 irq;
--};
--
--/* definition of registers in kvm_run */
--struct kvm_sync_regs {
--};
--
--#endif /* __LINUX_KVM_MIPS_H */
-diff --git a/arch/mips/include/uapi/asm/kvm.h b/arch/mips/include/uapi/asm/kvm.h
-new file mode 100644
-index 0000000..85789ea
---- /dev/null
-+++ b/arch/mips/include/uapi/asm/kvm.h
-@@ -0,0 +1,55 @@
-+/*
-+* This file is subject to the terms and conditions of the GNU General Public
-+* License.  See the file "COPYING" in the main directory of this archive
-+* for more details.
-+*
-+* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
-+* Authors: Sanjay Lal <sanjayl@kymasys.com>
-+*/
+diff --git a/arch/mips/kvm/kvm_tlb.c b/arch/mips/kvm/kvm_tlb.c
+index 89511a9..ab2e9b0 100644
+--- a/arch/mips/kvm/kvm_tlb.c
++++ b/arch/mips/kvm/kvm_tlb.c
+@@ -16,7 +16,10 @@
+ #include <linux/mm.h>
+ #include <linux/delay.h>
+ #include <linux/module.h>
++#include <linux/bootmem.h>
+ #include <linux/kvm_host.h>
++#include <linux/srcu.h>
 +
-+#ifndef __LINUX_KVM_MIPS_H
-+#define __LINUX_KVM_MIPS_H
+ 
+ #include <asm/cpu.h>
+ #include <asm/bootinfo.h>
+@@ -169,21 +172,27 @@ void kvm_mips_dump_shadow_tlbs(struct kvm_vcpu *vcpu)
+ 	}
+ }
+ 
+-static void kvm_mips_map_page(struct kvm *kvm, gfn_t gfn)
++static int kvm_mips_map_page(struct kvm *kvm, gfn_t gfn)
+ {
++	int srcu_idx, err = 0;
+ 	pfn_t pfn;
+ 
+ 	if (kvm->arch.guest_pmap[gfn] != KVM_INVALID_PAGE)
+-		return;
++		return 0;
+ 
++        srcu_idx = srcu_read_lock(&kvm->srcu);
+ 	pfn = kvm_mips_gfn_to_pfn(kvm, gfn);
+ 
+ 	if (kvm_mips_is_error_pfn(pfn)) {
+-		panic("Couldn't get pfn for gfn %#" PRIx64 "!\n", gfn);
++		kvm_err("Couldn't get pfn for gfn %#" PRIx64 "!\n", gfn);
++		err = -EFAULT;
++		goto out;
+ 	}
+ 
+ 	kvm->arch.guest_pmap[gfn] = pfn;
+-	return;
++out:
++	srcu_read_unlock(&kvm->srcu, srcu_idx);
++	return err;
+ }
+ 
+ /* Translate guest KSEG0 addresses to Host PA */
+@@ -207,7 +216,10 @@ unsigned long kvm_mips_translate_guest_kseg0_to_hpa(struct kvm_vcpu *vcpu,
+ 			gva);
+ 		return KVM_INVALID_PAGE;
+ 	}
+-	kvm_mips_map_page(vcpu->kvm, gfn);
 +
-+#include <linux/types.h>
++	if (kvm_mips_map_page(vcpu->kvm, gfn) < 0)
++		return KVM_INVALID_ADDR;
 +
-+#define __KVM_MIPS
+ 	return (kvm->arch.guest_pmap[gfn] << PAGE_SHIFT) + offset;
+ }
+ 
+@@ -310,8 +322,11 @@ int kvm_mips_handle_kseg0_tlb_fault(unsigned long badvaddr,
+ 	even = !(gfn & 0x1);
+ 	vaddr = badvaddr & (PAGE_MASK << 1);
+ 
+-	kvm_mips_map_page(vcpu->kvm, gfn);
+-	kvm_mips_map_page(vcpu->kvm, gfn ^ 0x1);
++	if (kvm_mips_map_page(vcpu->kvm, gfn) < 0)
++		return -1;
 +
-+#define N_MIPS_COPROC_REGS      32
-+#define N_MIPS_COPROC_SEL   	8
++	if (kvm_mips_map_page(vcpu->kvm, gfn ^ 0x1) < 0)
++		return -1;
+ 
+ 	if (even) {
+ 		pfn0 = kvm->arch.guest_pmap[gfn];
+@@ -389,8 +404,11 @@ kvm_mips_handle_mapped_seg_tlb_fault(struct kvm_vcpu *vcpu,
+ 		pfn0 = 0;
+ 		pfn1 = 0;
+ 	} else {
+-		kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo0) >> PAGE_SHIFT);
+-		kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo1) >> PAGE_SHIFT);
++		if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo0) >> PAGE_SHIFT) < 0)
++			return -1;
 +
-+/* for KVM_GET_REGS and KVM_SET_REGS */
-+struct kvm_regs {
-+	__u32 gprs[32];
-+	__u32 hi;
-+	__u32 lo;
-+	__u32 pc;
-+
-+	__u32 cp0reg[N_MIPS_COPROC_REGS][N_MIPS_COPROC_SEL];
-+};
-+
-+/* for KVM_GET_SREGS and KVM_SET_SREGS */
-+struct kvm_sregs {
-+};
-+
-+/* for KVM_GET_FPU and KVM_SET_FPU */
-+struct kvm_fpu {
-+};
-+
-+struct kvm_debug_exit_arch {
-+};
-+
-+/* for KVM_SET_GUEST_DEBUG */
-+struct kvm_guest_debug_arch {
-+};
-+
-+struct kvm_mips_interrupt {
-+	/* in */
-+	__u32 cpu;
-+	__u32 irq;
-+};
-+
-+/* definition of registers in kvm_run */
-+struct kvm_sync_regs {
-+};
-+
-+#endif /* __LINUX_KVM_MIPS_H */
++		if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo1) >> PAGE_SHIFT) < 0)
++			return -1;
+ 
+ 		pfn0 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb->tlb_lo0) >> PAGE_SHIFT];
+ 		pfn1 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb->tlb_lo1) >> PAGE_SHIFT];
 -- 
 1.7.11.3

@@ -1,48 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 May 2013 11:22:45 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:49192 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6835038Ab3ESJWndDJKA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 19 May 2013 11:22:43 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r4J9MX3K005227;
-        Sun, 19 May 2013 11:22:33 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r4J9MMFt005226;
-        Sun, 19 May 2013 11:22:22 +0200
-Date:   Sun, 19 May 2013 11:22:21 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>,
-        David Howells <dhowells@redhat.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        James Hogan <james.hogan@imgtec.com>,
-        Michal Simek <monstr@monstr.eu>,
-        microblaze-uclinux@itee.uq.edu.au,
-        Chen Liqin <liqin.chen@sunplusct.com>,
-        Paul Mundt <lethal@linux-sh.org>, linux-sh@vger.kernel.org,
-        linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org
-Cc:     Sanjay Lal <sanjayl@kymasys.com>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org, gleb@redhat.com, mtosatti@redhat.com
-Subject: Re: [PATCH] KVM/MIPS32: Export min_low_pfn.
-Message-ID: <20130519092221.GD24568@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 May 2013 14:52:23 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:63031 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6835042Ab3ESMwVLki7B (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 19 May 2013 14:52:21 +0200
+Received: from int-mx12.intmail.prod.int.phx2.redhat.com (int-mx12.intmail.prod.int.phx2.redhat.com [10.5.11.25])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r4JCqDFi018379
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Sun, 19 May 2013 08:52:13 -0400
+Received: from dhcp-1-237.tlv.redhat.com (dhcp-4-26.tlv.redhat.com [10.35.4.26])
+        by int-mx12.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r4JCqBrP023485;
+        Sun, 19 May 2013 08:52:11 -0400
+Received: by dhcp-1-237.tlv.redhat.com (Postfix, from userid 13519)
+        id 02D4A18D3DE; Sun, 19 May 2013 15:52:10 +0300 (IDT)
+Date:   Sun, 19 May 2013 15:52:10 +0300
+From:   Gleb Natapov <gleb@redhat.com>
+To:     Sanjay Lal <sanjayl@kymasys.com>
+Cc:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
+        ralf@linux-mips.org, mtosatti@redhat.com
+Subject: Re: [PATCH 2/4] KVM/MIPS32: Wrap calls to gfn_to_pfn() with
+ srcu_read_lock/unlock()
+Message-ID: <20130519125210.GI4725@redhat.com>
 References: <n>
- <1368824818-22503-1-git-send-email-sanjayl@kymasys.com>
- <5196A458.7080400@gmail.com>
+ <1368885266-8619-1-git-send-email-sanjayl@kymasys.com>
+ <1368885266-8619-3-git-send-email-sanjayl@kymasys.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5196A458.7080400@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <1368885266-8619-3-git-send-email-sanjayl@kymasys.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.25
+Return-Path: <gleb@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36474
+X-archive-position: 36475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: gleb@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,77 +49,110 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, May 17, 2013 at 02:42:48PM -0700, David Daney wrote:
-
-> On 05/17/2013 02:06 PM, Sanjay Lal wrote:
-> >The KVM module uses the standard MIPS cache management routines, which use min_low_pfn.
-> >This creates and indirect dependency, requiring min_low_pfn to be exported.
-> >
-> >Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
-> >---
-> >  arch/mips/kernel/mips_ksyms.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> >
-> >diff --git a/arch/mips/kernel/mips_ksyms.c b/arch/mips/kernel/mips_ksyms.c
-> >index 6e58e97..0299472 100644
-> >--- a/arch/mips/kernel/mips_ksyms.c
-> >+++ b/arch/mips/kernel/mips_ksyms.c
-> >@@ -14,6 +14,7 @@
-> >  #include <linux/mm.h>
-> >  #include <asm/uaccess.h>
-> >  #include <asm/ftrace.h>
-> >+#include <linux/bootmem.h>
-> >
-> >  extern void *__bzero(void *__s, size_t __count);
-> >  extern long __strncpy_from_user_nocheck_asm(char *__to,
-> >@@ -60,3 +61,8 @@ EXPORT_SYMBOL(invalid_pte_table);
-> >  /* _mcount is defined in arch/mips/kernel/mcount.S */
-> >  EXPORT_SYMBOL(_mcount);
-> >  #endif
-> >+
-> >+/* The KVM module uses the standard MIPS cache functions which use
-> >+ * min_low_pfn, requiring it to be exported.
-
-The comment is wrong.  min_low_pfn is being referenced by pfn_valid() which
-is implemented (simplified for purposes of this discussion) like:
-
-int pfn_valid(unsigned long pfn)
-{
-	return pfn >= min_low_pfn && pfn < max_mapnr;
-}
-
-> >+ */
-> >+EXPORT_SYMBOL(min_low_pfn);
+On Sat, May 18, 2013 at 06:54:24AM -0700, Sanjay Lal wrote:
+> - As suggested by Gleb, wrap calls to gfn_to_pfn() with srcu_read_lock/unlock().
+>   Memory slots should be acccessed from a SRCU read section.
+> - kvm_mips_map_page() now returns an error code to it's callers, instead of calling panic()
+>  if it cannot find a mapping for a particular gfn.
 > 
-> I think I asked this before, but I don't remember the answer:
+> Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
+> ---
+>  arch/mips/kvm/kvm_tlb.c | 36 +++++++++++++++++++++++++++---------
+>  1 file changed, 27 insertions(+), 9 deletions(-)
 > 
-> Why not put EXPORT_SYMBOL(min_low_pfn) in mm/bootmem.c adjacent to
-> where the symbol is defined?
-> 
-> Cluttering up the kernel with multiple architectures all doing
-> architecture specific exports of the same symbol is not a clean way
-> of doing things.
-> 
-> The second time something needs to be done, it should be factored
-> out into common code.
+> diff --git a/arch/mips/kvm/kvm_tlb.c b/arch/mips/kvm/kvm_tlb.c
+> index 89511a9..ab2e9b0 100644
+> --- a/arch/mips/kvm/kvm_tlb.c
+> +++ b/arch/mips/kvm/kvm_tlb.c
+> @@ -16,7 +16,10 @@
+>  #include <linux/mm.h>
+>  #include <linux/delay.h>
+>  #include <linux/module.h>
+> +#include <linux/bootmem.h>
+You haven't answered it when I asked it on v2:
+Is this include still needed now when export of min_low_pfn is not
+longer here?
 
-pfn_valid() should return 1 if for the pfn passed as the argment a struct
-page exists in mem_map[] - this only affects the flatmem case.  However
-it is possible that min_low_pfn is bigger than ARCH_PFN_OFFSET in which
-case pfn_valid might return 0 even though it should have returned 1.
+>  #include <linux/kvm_host.h>
+> +#include <linux/srcu.h>
+> +
+>  
+>  #include <asm/cpu.h>
+>  #include <asm/bootinfo.h>
+> @@ -169,21 +172,27 @@ void kvm_mips_dump_shadow_tlbs(struct kvm_vcpu *vcpu)
+>  	}
+>  }
+>  
+> -static void kvm_mips_map_page(struct kvm *kvm, gfn_t gfn)
+> +static int kvm_mips_map_page(struct kvm *kvm, gfn_t gfn)
+>  {
+> +	int srcu_idx, err = 0;
+>  	pfn_t pfn;
+>  
+>  	if (kvm->arch.guest_pmap[gfn] != KVM_INVALID_PAGE)
+> -		return;
+> +		return 0;
+>  
+> +        srcu_idx = srcu_read_lock(&kvm->srcu);
+>  	pfn = kvm_mips_gfn_to_pfn(kvm, gfn);
+>  
+>  	if (kvm_mips_is_error_pfn(pfn)) {
+> -		panic("Couldn't get pfn for gfn %#" PRIx64 "!\n", gfn);
+> +		kvm_err("Couldn't get pfn for gfn %#" PRIx64 "!\n", gfn);
+> +		err = -EFAULT;
+> +		goto out;
+>  	}
+>  
+>  	kvm->arch.guest_pmap[gfn] = pfn;
+> -	return;
+> +out:
+> +	srcu_read_unlock(&kvm->srcu, srcu_idx);
+> +	return err;
+>  }
+>  
+>  /* Translate guest KSEG0 addresses to Host PA */
+> @@ -207,7 +216,10 @@ unsigned long kvm_mips_translate_guest_kseg0_to_hpa(struct kvm_vcpu *vcpu,
+>  			gva);
+>  		return KVM_INVALID_PAGE;
+>  	}
+> -	kvm_mips_map_page(vcpu->kvm, gfn);
+> +
+> +	if (kvm_mips_map_page(vcpu->kvm, gfn) < 0)
+> +		return KVM_INVALID_ADDR;
+> +
+>  	return (kvm->arch.guest_pmap[gfn] << PAGE_SHIFT) + offset;
+>  }
+>  
+> @@ -310,8 +322,11 @@ int kvm_mips_handle_kseg0_tlb_fault(unsigned long badvaddr,
+>  	even = !(gfn & 0x1);
+>  	vaddr = badvaddr & (PAGE_MASK << 1);
+>  
+> -	kvm_mips_map_page(vcpu->kvm, gfn);
+> -	kvm_mips_map_page(vcpu->kvm, gfn ^ 0x1);
+> +	if (kvm_mips_map_page(vcpu->kvm, gfn) < 0)
+> +		return -1;
+> +
+> +	if (kvm_mips_map_page(vcpu->kvm, gfn ^ 0x1) < 0)
+> +		return -1;
+>  
+>  	if (even) {
+>  		pfn0 = kvm->arch.guest_pmap[gfn];
+> @@ -389,8 +404,11 @@ kvm_mips_handle_mapped_seg_tlb_fault(struct kvm_vcpu *vcpu,
+>  		pfn0 = 0;
+>  		pfn1 = 0;
+>  	} else {
+> -		kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo0) >> PAGE_SHIFT);
+> -		kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo1) >> PAGE_SHIFT);
+> +		if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo0) >> PAGE_SHIFT) < 0)
+> +			return -1;
+> +
+> +		if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo1) >> PAGE_SHIFT) < 0)
+> +			return -1;
+>  
+>  		pfn0 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb->tlb_lo0) >> PAGE_SHIFT];
+>  		pfn1 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb->tlb_lo1) >> PAGE_SHIFT];
+> -- 
+> 1.7.11.3
 
-So I fixed the issue like:
-
-static inline int pfn_valid(unsigned long pfn)
-{
-	return pfn >= ARCH_PFN_OFFSET && pfn < max_mapnr;
-}
-
-frv, ia64, metag, microblaze, score and sh are also implementing pfn_valid
-referencing min_low_pfn.
-
-Time to move pfn_valid() to asm-generic, fix the min_low_pfn /
-ARCH_PFN_OFFSET issue and while at it, harden it against multiple
-evaluation of its arguments?
-
-  Ralf
+--
+			Gleb.

@@ -1,33 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 May 2013 19:34:37 +0200 (CEST)
-Received: from kymasys.com ([64.62.140.43]:36672 "HELO kymasys.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6824104Ab3ETRec57SnU convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 May 2013 19:34:32 +0200
-Received: from ::ffff:75.40.23.192 ([75.40.23.192]) by kymasys.com for <linux-mips@linux-mips.org>; Mon, 20 May 2013 10:34:24 -0700
-Subject: Re: [PATCH 00/18] KVM/MIPS32: Support for the new Virtualization ASE (VZ-ASE)
-Mime-Version: 1.0 (Apple Message framework v1283)
-Content-Type: text/plain; charset=iso-8859-1
-From:   Sanjay Lal <sanjayl@kymasys.com>
-In-Reply-To: <519A5D69.3070909@gmail.com>
-Date:   Mon, 20 May 2013 10:34:24 -0700
-Cc:     kvm@vger.kernel.org, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 May 2013 20:36:24 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:53996 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823019Ab3ETSgXqB6yN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 May 2013 20:36:23 +0200
+Date:   Mon, 20 May 2013 19:36:23 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Sanjay Lal <sanjayl@kymasys.com>
+cc:     David Daney <ddaney.cavm@gmail.com>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Gleb Natapov <gleb@redhat.com>,
         Marcelo Tosatti <mtosatti@redhat.com>
-Content-Transfer-Encoding: 8BIT
-Message-Id: <8E54512A-C6CE-488D-B2F9-86DF2DBB943F@kymasys.com>
-References: <n> <1368942460-15577-1-git-send-email-sanjayl@kymasys.com> <519A4640.6060202@gmail.com> <456B70C6-A896-4B94-B8EF-DE6ED26CE859@kymasys.com> <519A5D69.3070909@gmail.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-X-Mailer: Apple Mail (2.1283)
-Return-Path: <sanjayl@kymasys.com>
+Subject: Re: [PATCH 00/18] KVM/MIPS32: Support for the new Virtualization
+ ASE (VZ-ASE)
+In-Reply-To: <456B70C6-A896-4B94-B8EF-DE6ED26CE859@kymasys.com>
+Message-ID: <alpine.LFD.2.03.1305201930570.10753@linux-mips.org>
+References: <n> <1368942460-15577-1-git-send-email-sanjayl@kymasys.com> <519A4640.6060202@gmail.com> <456B70C6-A896-4B94-B8EF-DE6ED26CE859@kymasys.com>
+User-Agent: Alpine 2.03 (LFD 1266 2009-07-14)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36486
+X-archive-position: 36487
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sanjayl@kymasys.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,51 +39,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Mon, 20 May 2013, Sanjay Lal wrote:
 
-On May 20, 2013, at 10:29 AM, David Daney wrote:
+> (1) Newer versions of the MIPS architecture define scratch registers for 
+> just this purpose, but since we have to support standard MIPS32R2 
+> processors, we use the DDataLo Register (CP0 Register 28, Select 3) as a 
+> scratch register to save k0 and save k1 @ a known offset from EBASE.
 
-> On 05/20/2013 09:58 AM, Sanjay Lal wrote:
->> 
->> On May 20, 2013, at 8:50 AM, David Daney wrote:
->> 
->>> On 05/18/2013 10:47 PM, Sanjay Lal wrote:
->>>> The following patch set adds support for the recently announced virtualization
->>>> extensions for the MIPS32 architecture and allows running unmodified kernels in
->>>> Guest Mode.
->>>> 
->>>> For more info please refer to :
->>>> 	MIPS Document #: MD00846
->>>> 	Volume IV-i: Virtualization Module of the MIPS32 Architecture
->>>> 
->>>> which can be accessed @: http://www.mips.com/auth/MD00846-2B-VZMIPS32-AFP-01.03.pdf
->>>> 
->>>> The patch is agains Linux-3.10-rc1.
->>>> 
->>>> KVM/MIPS now supports 2 modes of operation:
->>>> 
->>>> (1) VZ mode: Unmodified kernels running in Guest Mode.  The processor now provides
->>>>     an almost complete COP0 context in Guest mode. This greatly reduces VM exits.
->>> 
->>> Two questions:
->>> 
->>> 1) How are you handling not clobbering the Guest K0/K1 registers when a Root exception occurs?  It is not obvious to me from inspecting the code.
->>> 
->>> 2) What environment are you using to test this stuff?
->>> 
->>> David Daney
->>> 
->> 
->> (1) Newer versions of the MIPS architecture define scratch registers for just this purpose, but since we have to support standard MIPS32R2 processors, we use the DDataLo Register (CP0 Register 28, Select 3) as a scratch register to save k0 and save k1 @ a known offset from EBASE.
->> 
-> 
-> Right, I understand that.  But I am looking at arch/mips/mm/tlbex.c, and I don't see the code that does that for TLBRefill exceptions.
-> 
-> Where is it done for interrupts?  I would expect code in arch/mips/kernel/genex.S and/or stackframe.h would handle this.  But I don't see where it is.
-> 
-> Am I missing something?
-> 
-> David Daney
-> 
+ That's rather risky as the implementation of this register (and its 
+presence in the first place) is processor-specific.  Do you maintain a 
+list of PRId values the use of this register is safe with?
 
-
-arch/mips/kvm/kvm_locore.S
+  Maciej

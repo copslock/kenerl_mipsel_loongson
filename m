@@ -1,45 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 May 2013 08:02:31 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:54574 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6818472Ab3ETGC2L9-9H (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 20 May 2013 08:02:28 +0200
-Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r4K62G3i024976
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Mon, 20 May 2013 02:02:16 -0400
-Received: from dhcp-1-237.tlv.redhat.com (dhcp-4-26.tlv.redhat.com [10.35.4.26])
-        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r4K62EbQ013581;
-        Mon, 20 May 2013 02:02:14 -0400
-Received: by dhcp-1-237.tlv.redhat.com (Postfix, from userid 13519)
-        id 9AE1A18D3DE; Mon, 20 May 2013 09:02:13 +0300 (IDT)
-Date:   Mon, 20 May 2013 09:02:13 +0300
-From:   Gleb Natapov <gleb@redhat.com>
-To:     David Daney <david.s.daney@gmail.com>
-Cc:     Sanjay Lal <sanjayl@kymasys.com>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org, ralf@linux-mips.org, mtosatti@redhat.com,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 4/4] KVM/MIPS32: Bring in patch from David Daney with new
- 64 bit compatible ABI.
-Message-ID: <20130520060213.GN4725@redhat.com>
-References: <n>
- <1368885266-8619-1-git-send-email-sanjayl@kymasys.com>
- <1368885266-8619-5-git-send-email-sanjayl@kymasys.com>
- <20130519141712.GL4725@redhat.com>
- <5199416D.1010200@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5199416D.1010200@gmail.com>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
-Return-Path: <gleb@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 May 2013 11:59:22 +0200 (CEST)
+Received: from mailout2.samsung.com ([203.254.224.25]:60342 "EHLO
+        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6819780Ab3ETJ7SME5QJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 May 2013 11:59:18 +0200
+Received: from epcpsbgr4.samsung.com
+ (u144.gpu120.samsung.co.kr [203.254.230.144])
+ by mailout2.samsung.com (Oracle Communications Messaging Server 7u4-24.01
+ (7.0.4.24.0) 64bit (built Nov 17 2011))
+ with ESMTP id <0MN300CO5CXNN4A0@mailout2.samsung.com> for
+ linux-mips@linux-mips.org; Mon, 20 May 2013 18:59:08 +0900 (KST)
+Received: from epcpsbgx4.samsung.com ( [203.254.230.41])
+        by epcpsbgr4.samsung.com (EPCPMTA) with SMTP id 83.E3.29708.1D3F9915; Mon,
+ 20 May 2013 18:58:41 +0900 (KST)
+X-AuditID: cbfee690-b7f6f6d00000740c-3b-5199f3d18850
+Received: from epextmailer03 ( [203.254.219.153])
+        by epcpsbgx4.samsung.com (EPCPMTA) with SMTP id 68.86.30241.A80F9915; Mon,
+ 20 May 2013 18:44:42 +0900 (KST)
+Date:   Mon, 20 May 2013 09:44:42 +0000 (GMT)
+From:   EUNBONG SONG <eunb.song@samsung.com>
+Subject: [PATCH] mips: Fix compilation warning
+To:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "david.daney@cavium.com" <david.daney@cavium.com>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Reply-to: eunb.song@samsung.com
+MIME-version: 1.0
+X-MTR:  20130520093721431@eunb.song
+Msgkey: 20130520093721431@eunb.song
+X-EPLocale: ko_KR.euc-kr
+X-Priority: 3
+X-EPWebmail-Msg-Type: personal
+X-EPWebmail-Reply-Demand: 0
+X-EPApproval-Locale: 
+X-EPHeader: ML
+X-EPTrCode: 
+X-EPTrName: 
+X-MLAttribute: 
+X-RootMTR: 20130520093721431@eunb.song
+X-ParentMTR: 
+X-ArchiveUser: 
+X-CPGSPASS: N
+Content-transfer-encoding: base64
+Content-type: text/plain; charset=euc-kr
+MIME-version: 1.0
+Message-id: <151291.150571369043081270.JavaMail.weblogic@epml03>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprAKsWRmVeSWpSXmKPExsVy+t8zTd03n2cGGkx+JmUxYeokdgdGj6Mr
+        1zIFMEZx2aSk5mSWpRbp2yVwZdz4+pq94A1XRe/5T8wNjEe4uhg5OYQEVCRa/n9nBLElBEwk
+        bk+YB2WLSVy4t56ti5ELqGYZo8ShV1PYYIom3PnJCJGYzyixa856sASLgKrEv8t7wLrZBLQl
+        3n55wApiCwvoSbxfPxUsLiKQIrFz2UFmEJtZoEai++9iRogr5CUmn77MDmLzCghKnJz5hAVi
+        mZLEs1srGSHiyhLf3kxlhYhLSMyafgHK5pWY0f4Uql5OYtrXNcwQtrTE+Vkb4L5Z/P0xVJxf
+        4tjtHUxdjBxgvU/uB8OM2b35C9SPAhJTzxyEalWX2NY8G2o8n8SahW9ZYMbsOrWcGab3/pa5
+        TBBvKUpM6X7IDmFrSXz5sY8N3Vu8Ag4SG5sWMk9gVJ6FJDULSfssJO3IahYwsqxiFE0tSC4o
+        TkovMtErTswtLs1L10vOz93ECEkNE3Yw3jtgfYgxGRglE5mlRJPzgaklryTe0NjMyMLUxNTY
+        yNzSjDRhJXFe9RbrQCGB9MSS1OzU1ILUovii0pzU4kOMTBycUg2MWTtXsor+cXg2WYLhzKee
+        zcK+opf2sZ/sfrppn+7zgqvV4n8/BOXXavrcXL63KW1D06U+zoT1h3lvtggYyDju2Gybaa3F
+        OlNOJP/B589Wk+Q73cWuzd06z3zl4z6G3PIeg7X9vhnJwep31m1q2XIny3n/iZCdm8Nv8PUG
+        5Z9Tfvre49Rkpg07lViKMxINtZiLihMBsQirGSMDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpmk+LIzCtJLcpLzFFi42I5/e/2TN2Ln2cGGrz6xGIxYeokdgdGj6Mr
+        1zIFMEZl2GSkJqakFimk5iXnp2TmpdsqeQfHO8ebmhkY6hpaWpgrKeQl5qbaKrn4BOi6ZeYA
+        TVVSKEvMKQUKBSQWFyvp29kU5ZeWpCpk5BeX2CpFGxkY6xmZmugZGRvomRjEWhkaGBiZAlUl
+        ZGTc+PqaveANV0Xv+U/MDYxHuLoYOTmEBFQkWv5/ZwSxJQRMJCbc+Qlli0lcuLeerYuRC6hm
+        PqPErjkgDicHi4CqxL/Le8CK2AS0Jd5+ecAKYgsL6Em8Xz8VLC4ikCKxc9lBZhCbWaBGovvv
+        YkaIZfISk09fZgexeQUEJU7OfMICsUxJ4tmtlYwQcWWJb2+mskLEJSRmTb8AZfNKzGh/ClUv
+        JzHt6xpmCFta4vysDXBHL/7+GCrOL3Hs9g6mLkYOsN4n94Nhxuze/IUNwhaQmHrmIFSrusS2
+        5tlQ4/kk1ix8ywIzZtep5cwwvfe3zGWCeEtRYkr3Q3YIW0viy499bOje4hVwkNjYtJB5AqPc
+        LCSpWUjaZyFpR1azgJFlFaNoakFyQXFSeoWJXnFibnFpXrpecn7uJkZwknq2ZAdjwwXrQ4wC
+        HIxKPLwCATMDhVgTy4orcw8xSnAwK4nwRncDhXhTEiurUovy44tKc1KLDzEmAyNwIrOUaHI+
+        MIHmlcQbGhsYGxpamhuYGhpZkCasJM77rNU6UEggPbEkNTs1tSC1CGYLEwenVAMjg3CXNYf9
+        CtZ7iRXyav++H9s6ZaoUe/CBHS5cYX57hSdaGp2eqvRAZKPfu4QZ/rErvZhOMM31LThwYMck
+        4a+/GycH3DPZFMG3NFJvQ4ap2/GUqa9Xrqzuc05cc7to1ewpWWe1S9uUP/9QqNcMYz3p4XuT
+        203HOfLo++jicF212Qc7i2J8oi4osRRnJBpqMRcVJwIAJZN80JYDAAA=
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+Return-Path: <eunb.song@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36480
+X-archive-position: 36481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gleb@redhat.com
+X-original-sender: eunb.song@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,62 +93,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, May 19, 2013 at 02:17:33PM -0700, David Daney wrote:
-> On 05/19/2013 07:17 AM, Gleb Natapov wrote:
-> >On Sat, May 18, 2013 at 06:54:26AM -0700, Sanjay Lal wrote:
-> >>From: David Daney <david.daney@cavium.com>
-> >>
-> >>There are several parts to this:
-> >>
-> >>o All registers are 64-bits wide, 32-bit guests use the least
-> >>   significant portion of the register storage fields.
-> >>
-> >>o FPU register formats are defined.
-> >>
-> >>o CP0 Registers are manipulated via the KVM_GET_MSRS/KVM_SET_MSRS
-> >>   mechanism.
-> >>
-> >>The vcpu_ioctl_get_regs and vcpu_ioctl_set_regs function pointers
-> >>become unused so they were removed.
-> >>
-> >>Some IOCTL functions were moved to kvm_trap_emul because the
-> >>implementations are only for that flavor of KVM host.  In the future, if
-> >>hardware based virtualization is added, they can be hidden behind
-> >>function pointers as appropriate.
-> >>
-> >David, can you please divide this one big patch to smaller patches
-> >with each one having only one of the changes listed above?
-> 
-> Expanding the registers to 64 bits changes only four lines. Defining
-> the FPU registers is an additional seven lines.  The rest really has
-> to be an atomic change.
-> 
-It does not matter. If you have 10 logically unrelated one-liners (even
-if they are all part of one big goal) I expect to get 10 patches.
-
-> The point here is that we change the ABI.  Any userspace tools have
-> to change too.  So is it better to have a multi-part patch set where
-> the interface is unusable in the intermediate patches?  Or is it
-> preferable to do an 'atomic' switch?
-Are "The vcpu_ioctl_get_regs and vcpu_ioctl_set_regs function pointers
-become unused so they were removed." and "Some IOCTL functions were
-moved to kvm_trap_emul..." also changes ABI? Unlikely, and then I expect
-to have two series: first one only have patches that change ABI and
-another rearrange the code. First one will go into 3.10 second in 3.11.
-
-> 
-> It wasn't out of laziness that I chose to do it this way, it was
-> because I thought it was cleaner.
-> 
-> So to directly answer your question:  I prefer not to split this up,
-> and would want to have a better reason than an orthodox
-> interpretation of SubmittingPatches sec. 3.
-> 
-It may seams orthodox interpretation if you are on a sender side, from
-a reviewer point of view it is the interpretation that saves a lot of
-time. I did looked into the patch before asking for split, not just
-asked for it based on the description. And, in addition, in this case,
-I want to have minimal set of changes that will go into 3.10.
-
---
-			Gleb.
+DQpGaXggdGhlIGZvbGxvd2luZyBjb21waWxhdGlvbiB3YXJuaW5nOg0KDQptbS9wYWdlX2FsbG9j
+LmM6IEluIGZ1bmN0aW9uICdmcmVlX3Jlc2VydmVkX2FyZWEnOg0KbW0vcGFnZV9hbGxvYy5jOjUx
+NjI6IHdhcm5pbmc6IHBhc3NpbmcgYXJndW1lbnQgMSBvZiAndmlydF90b19waHlzJyBtYWtlcyBw
+b2ludGVyIGZyb20gaW50ZWdlciB3aXRob3V0IGEgY2FzdA0KL2hvbWUvZWJzb25nL2JhY2t1cC9s
+aW51eF9naXQvbGludXgvYXJjaC9taXBzL2luY2x1ZGUvYXNtL2lvLmg6MTE5OiBub3RlOiBleHBl
+Y3RlZCAnY29uc3Qgdm9sYXRpbGUgdm9pZCAqJyBidXQgYXJndW1lbnQgaXMNCm9mIHR5cGUgJ2xv
+bmcgdW5zaWduZWQgaW50Jw0KLS0tDQogYXJjaC9taXBzL2luY2x1ZGUvYXNtL3BhZ2UuaCB8ICAg
+IDIgKy0NCiAxIGZpbGVzIGNoYW5nZWQsIDEgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbnMoLSkN
+Cg0KZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9wYWdlLmggYi9hcmNoL21pcHMv
+aW5jbHVkZS9hc20vcGFnZS5oDQppbmRleCBlYzFjYTUzLi40MTY0MGYxIDEwMDY0NA0KLS0tIGEv
+YXJjaC9taXBzL2luY2x1ZGUvYXNtL3BhZ2UuaA0KKysrIGIvYXJjaC9taXBzL2luY2x1ZGUvYXNt
+L3BhZ2UuaA0KQEAgLTE5Nyw3ICsxOTcsNyBAQCB0eXBlZGVmIHN0cnVjdCB7IHVuc2lnbmVkIGxv
+bmcgcGdwcm90OyB9IHBncHJvdF90Ow0KIA0KICNlbmRpZg0KIA0KLSNkZWZpbmUgdmlydF90b19w
+YWdlKGthZGRyKQlwZm5fdG9fcGFnZShQRk5fRE9XTih2aXJ0X3RvX3BoeXMoa2FkZHIpKSkNCisj
+ZGVmaW5lIHZpcnRfdG9fcGFnZShrYWRkcikJcGZuX3RvX3BhZ2UoUEZOX0RPV04odmlydF90b19w
+aHlzKChjb25zdCB2b2xhdGlsZSB2b2lkICopKGthZGRyKSkpKQ0KIA0KIGV4dGVybiBpbnQgX192
+aXJ0X2FkZHJfdmFsaWQoY29uc3Qgdm9sYXRpbGUgdm9pZCAqa2FkZHIpOw0KICNkZWZpbmUgdmly
+dF9hZGRyX3ZhbGlkKGthZGRyKQkJCQkJCVwNCi0tIA0KMS43LjAuNA0K

@@ -1,43 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 May 2013 12:25:48 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:37743 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823073Ab3EUKZmwV2LT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 21 May 2013 12:25:42 +0200
-Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r4LAPbHf021917
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Tue, 21 May 2013 06:25:37 -0400
-Received: from localhost.localdomain (vpn1-4-204.gru2.redhat.com [10.97.4.204])
-        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id r4LAPS2T009343
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
-        Tue, 21 May 2013 06:25:32 -0400
-Date:   Tue, 21 May 2013 07:25:21 -0300
-From:   Mauro Carvalho Chehab <mchehab@redhat.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        David Daney <david.daney@cavium.com>,
-        linux-ide@vger.kernel.org, linux-edac@vger.kernel.org,
-        linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
-        spi-devel-general@lists.sourceforge.net,
-        devel@driverdev.osuosl.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH] MIPS: OCTEON: Rename Kconfig
- CAVIUM_OCTEON_REFERENCE_BOARD to CAVIUM_OCTEON_SOC
-Message-ID: <20130521072521.0a296a67@redhat.com>
-In-Reply-To: <1369088378-13957-1-git-send-email-ddaney.cavm@gmail.com>
-References: <1369088378-13957-1-git-send-email-ddaney.cavm@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
-Return-Path: <mchehab@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 May 2013 16:22:59 +0200 (CEST)
+Received: from kymasys.com ([64.62.140.43]:41683 "HELO kymasys.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S6823608Ab3EUOW433lwm convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 May 2013 16:22:56 +0200
+Received: from ::ffff:75.40.23.192 ([75.40.23.192]) by kymasys.com for <linux-mips@linux-mips.org>; Tue, 21 May 2013 07:22:46 -0700
+Subject: Re: [PATCH 2/4] KVM/MIPS32: Wrap calls to gfn_to_pfn() with srcu_read_lock/unlock()
+Mime-Version: 1.0 (Apple Message framework v1283)
+Content-Type: text/plain; charset=us-ascii
+From:   Sanjay Lal <sanjayl@kymasys.com>
+In-Reply-To: <20130521080047.GV4725@redhat.com>
+Date:   Tue, 21 May 2013 07:22:47 -0700
+Cc:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
+        ralf@linux-mips.org, mtosatti@redhat.com
+Content-Transfer-Encoding: 8BIT
+Message-Id: <174A9E72-D709-46A2-AE38-003B2E389A16@kymasys.com>
+References: <n> <1368885266-8619-1-git-send-email-sanjayl@kymasys.com> <1368885266-8619-3-git-send-email-sanjayl@kymasys.com> <20130519125210.GI4725@redhat.com> <AB98FD4C-123F-4C64-B6CF-0F86E4EBD554@kymasys.com> <20130521080047.GV4725@redhat.com>
+To:     Gleb Natapov <gleb@redhat.com>
+X-Mailer: Apple Mail (2.1283)
+Return-Path: <sanjayl@kymasys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36499
+X-archive-position: 36500
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mchehab@redhat.com
+X-original-sender: sanjayl@kymasys.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,28 +38,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Em Mon, 20 May 2013 15:19:38 -0700
-David Daney <ddaney.cavm@gmail.com> escreveu:
 
-> From: David Daney <david.daney@cavium.com>
+On May 21, 2013, at 1:00 AM, Gleb Natapov wrote:
+
+> On Sun, May 19, 2013 at 10:36:32AM -0400, Sanjay Lal wrote:
+>> 
+>> On May 19, 2013, at 8:52 AM, Gleb Natapov wrote:
+>> 
+>>> On Sat, May 18, 2013 at 06:54:24AM -0700, Sanjay Lal wrote:
+>>>> - As suggested by Gleb, wrap calls to gfn_to_pfn() with srcu_read_lock/unlock().
+>>>> Memory slots should be acccessed from a SRCU read section.
+>>>> - kvm_mips_map_page() now returns an error code to it's callers, instead of calling panic()
+>>>> if it cannot find a mapping for a particular gfn.
+>>>> 
+>>>> Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
+>>>> ---
+>>>> arch/mips/kvm/kvm_tlb.c | 36 +++++++++++++++++++++++++++---------
+>>>> 1 file changed, 27 insertions(+), 9 deletions(-)
+>>>> 
+>>>> diff --git a/arch/mips/kvm/kvm_tlb.c b/arch/mips/kvm/kvm_tlb.c
+>>>> index 89511a9..ab2e9b0 100644
+>>>> --- a/arch/mips/kvm/kvm_tlb.c
+>>>> +++ b/arch/mips/kvm/kvm_tlb.c
+>>>> @@ -16,7 +16,10 @@
+>>>> #include <linux/mm.h>
+>>>> #include <linux/delay.h>
+>>>> #include <linux/module.h>
+>>>> +#include <linux/bootmem.h>
+>>> You haven't answered it when I asked it on v2:
+>>> Is this include still needed now when export of min_low_pfn is not
+>>> longer here?
+>>> 
+>> 
+>> Sorry about that, juggling too many patches, bootmem.h is no longer needed in kvm_tlb.c.  Actually, I thought I had removed it before posting v3.
+>> 
+> Should I expect new version, or can I just drop this include from the
+> patch and apply?
 > 
-> CAVIUM_OCTEON_SOC most place we used to use CPU_CAVIUM_OCTEON.  This
-> allows us to CPU_CAVIUM_OCTEON in places where we have no OCTEON SOC.
-> 
-> Remove CAVIUM_OCTEON_SIMULATOR as it doesn't really do anything, we can
-> get the same configuration with CAVIUM_OCTEON_SOC.
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> Cc: linux-ide@vger.kernel.org
-> Cc: linux-edac@vger.kernel.org
+Please drop the include.
 
-Acked-by: Mauro Carvalho Chehab <mchehab@redhat.com>
-
-> Cc: linux-i2c@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Cc: spi-devel-general@lists.sourceforge.net
-> Cc: devel@driverdev.osuosl.org
-> Cc: linux-usb@vger.kernel.org
-
-Regards,
-Mauro
+Regards
+Sanjay

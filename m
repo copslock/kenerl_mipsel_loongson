@@ -1,57 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 May 2013 18:34:47 +0200 (CEST)
-Received: from ch1ehsobe002.messaging.microsoft.com ([216.32.181.182]:59284
-        "EHLO ch1outboundpool.messaging.microsoft.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834958Ab3EUQefksqUD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 May 2013 18:34:35 +0200
-Received: from mail190-ch1-R.bigfish.com (10.43.68.253) by
- CH1EHSOBE002.bigfish.com (10.43.70.52) with Microsoft SMTP Server id
- 14.1.225.23; Tue, 21 May 2013 16:34:29 +0000
-Received: from mail190-ch1 (localhost [127.0.0.1])      by
- mail190-ch1-R.bigfish.com (Postfix) with ESMTP id 0F15B380703; Tue, 21 May
- 2013 16:34:29 +0000 (UTC)
-X-Forefront-Antispam-Report: CIP:132.245.1.197;KIP:(null);UIP:(null);IPV:NLI;H:BLUPRD0712HT003.namprd07.prod.outlook.com;RD:none;EFVD:NLI
-X-SpamScore: -3
-X-BigFish: PS-3(z37d5kzbb2dI98dI9371I1432I168aJzz1f42h1ee6h1de0h1fdah1202h1e76h1d1ah1d2ah1fc6hzz8275bhz2dh2a8h668h839h947hd25he5bhf0ah1288h12a5h12a9h12bdh137ah13b6h1441h14ddh1504h1537h153bh162dh1631h1758h1765h18e1h190ch1946h19b4h19c3h19ceh1ad9h1b0ah1d0ch1d2eh1d3fh1155h)
-Received: from mail190-ch1 (localhost.localdomain [127.0.0.1]) by mail190-ch1
- (MessageSwitch) id 1369154067461013_10202; Tue, 21 May 2013 16:34:27 +0000
- (UTC)
-Received: from CH1EHSMHS038.bigfish.com (snatpool3.int.messaging.microsoft.com
- [10.43.68.229])        by mail190-ch1.bigfish.com (Postfix) with ESMTP id
- 6B8393200CE;   Tue, 21 May 2013 16:34:27 +0000 (UTC)
-Received: from BLUPRD0712HT003.namprd07.prod.outlook.com (132.245.1.197) by
- CH1EHSMHS038.bigfish.com (10.43.69.247) with Microsoft SMTP Server (TLS) id
- 14.1.225.23; Tue, 21 May 2013 16:34:26 +0000
-Received: from dl.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
- (10.255.218.164) with Microsoft SMTP Server (TLS) id 14.16.311.1; Tue, 21 May
- 2013 16:34:25 +0000
-Message-ID: <519BA20E.6080101@caviumnetworks.com>
-Date:   Tue, 21 May 2013 09:34:22 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 May 2013 20:55:57 +0200 (CEST)
+Received: from mail-pb0-f52.google.com ([209.85.160.52]:45267 "EHLO
+        mail-pb0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823043Ab3EUSzwCldj5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 May 2013 20:55:52 +0200
+Received: by mail-pb0-f52.google.com with SMTP id um15so903343pbc.25
+        for <multiple recipients>; Tue, 21 May 2013 11:55:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=wCdv19wq10RT3Stk+EFj6WsaGA97Fv7o9xaIRtKUqX0=;
+        b=D3tgPdzQLm+Yv/Cd6MjQKPItJPSXc4spD206YPD4DTQMZi54avSoOeFa/uQTqUa3SN
+         b71MorvBbZkonUjIQTizKEtdAd9gNWuzkspbWpUubynwN/MFd3TS6R1KS5xQ01XCyRqz
+         skx9/XuVUAUx6QbsOrOBxES9a1ylfa4mn83g2Vt4m4mMcfkZdsNQdrUMRVHINwzC9PFX
+         wODXzXGzzHiVZ5dPxlYB5ZWtYlehIs+9sCZG5gSJXJkqbjE/BpsLttE4pl2J+lY0vF0b
+         qAZ/TMD0uVGTfuY8LEaBAROXrTSA6K2gMZ6HADJHlgR3o7fBxn6Bemihwuz13oqL/OXS
+         Io/Q==
+X-Received: by 10.66.163.99 with SMTP id yh3mr4666265pab.22.1369162545286;
+        Tue, 21 May 2013 11:55:45 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id do4sm3746017pbc.8.2013.05.21.11.55.43
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Tue, 21 May 2013 11:55:44 -0700 (PDT)
+Message-ID: <519BC32E.2080405@gmail.com>
+Date:   Tue, 21 May 2013 11:55:42 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
 MIME-Version: 1.0
-To:     Gleb Natapov <gleb@redhat.com>
-CC:     David Daney <ddaney.cavm@gmail.com>, <linux-mips@linux-mips.org>,
-        <ralf@linux-mips.org>, <kvm@vger.kernel.org>,
-        Sanjay Lal <sanjayl@kymasys.com>,
-        <linux-kernel@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH v3 5/5] mips/kvm: Fix ABI by moving manipulation of CP0
- registers to KVM_{G,S}ET_MSRS
-References: <1369083686-27524-1-git-send-email-ddaney.cavm@gmail.com> <1369083686-27524-6-git-send-email-ddaney.cavm@gmail.com> <20130521153752.GD14287@redhat.com> <519B9EF2.8020107@caviumnetworks.com> <20130521162811.GE14287@redhat.com>
-In-Reply-To: <20130521162811.GE14287@redhat.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+To:     Aron Xu <aron@debian.org>, Ralf Baechle <ralf@linux-mips.org>
+CC:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: N64: Define getdents64
+References: <1369147026-23033-1-git-send-email-aron@debian.org>
+In-Reply-To: <1369147026-23033-1-git-send-email-aron@debian.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-OriginatorOrg: caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36505
+X-archive-position: 36506
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,53 +56,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/21/2013 09:28 AM, Gleb Natapov wrote:
-> On Tue, May 21, 2013 at 09:21:06AM -0700, David Daney wrote:
->> On 05/21/2013 08:37 AM, Gleb Natapov wrote:
->>> On Mon, May 20, 2013 at 02:01:26PM -0700, David Daney wrote:
->>>> From: David Daney <david.daney@cavium.com>
->>>>
->>>> Because not all 256 CP0 registers are ever implemented, we need a
->>>> different method of manipulating them.  Use the
->>>> KVM_GET_MSRS/KVM_SET_MSRS mechanism as x86 does for its MSRs.
->>>>
->>> Have you looked at KVM_(GET|SET)_ONE_REG interface (not used by x86, but is
->>> used bu arm/ppc/s390). It looks like it is more suitable for your case.
->>> Actually you can use it instead of KVM_(GET|SET)_REGS for all registers.
->>
->> Yes, I suppose it could be used.  One problem it has is that there
->> is no way to query the set of supported registers.
-> KVM_GET_REG_LIST
-
-OK, I guess we can switch to KVM_GET_REG_LIST/KVM_(GET|SET)_ONE_REG.
-
-I will revise this patch.
-
-Thanks.
-
+On 05/21/2013 07:37 AM, Aron Xu wrote:
+> As a relatively new ABI, N64 only had getdents syscall while other modern
+> architectures have getdents64.
 >
->>                                                      Also you have to
->> make multiple calls to set multiple registers, which involves
->> vcpu_{load,put} for each register.
->>
-> How often this happens on the fast path on mips?
-
-Rarely, if ever once, the VCPU is running.
-
-Only when initializing the VCPU do we need to set a bunch of registers.
-
-
-> On x86 this never
-> happens on the fast path so it uses KVM_(GET|SET)_REGS mostly for
-> historical reasons.
+> This was noticed when Python 3.3 shifted to the latter one for aarch64.
 >
->> We will definitely implement it for all the FP and General Purpose
->> registers.
->>
->>>
->>>> Code related to implementing KVM_GET_MSRS/KVM_SET_MSRS is consolidated
->>
+> Signed-off-by: Aron Xu <aron@debian.org>
+
+This looks correct to me.  The getdents64 call returns more information 
+than getdents (it adds a field for the file type).  So, although in n64 
+the widths of the d_ino and d_off fields are the same for getdents64 and 
+getdents, we still need to add this syscall.
+
+Acked-by: David Daney <david.daney@cavium.com>
+
+> ---
+>   arch/mips/include/uapi/asm/unistd.h |    5 +++--
+>   arch/mips/kernel/scall64-64.S       |    1 +
+>   2 files changed, 4 insertions(+), 2 deletions(-)
 >
-> --
-> 			Gleb.
+> diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
+> index 16338b8..1dee279 100644
+> --- a/arch/mips/include/uapi/asm/unistd.h
+> +++ b/arch/mips/include/uapi/asm/unistd.h
+> @@ -694,16 +694,17 @@
+>   #define __NR_process_vm_writev		(__NR_Linux + 305)
+>   #define __NR_kcmp			(__NR_Linux + 306)
+>   #define __NR_finit_module		(__NR_Linux + 307)
+> +#define __NR_getdents64			(__NR_Linux + 308)
+>
+>   /*
+>    * Offset of the last Linux 64-bit flavoured syscall
+>    */
+> -#define __NR_Linux_syscalls		307
+> +#define __NR_Linux_syscalls		308
+>
+>   #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
+>
+>   #define __NR_64_Linux			5000
+> -#define __NR_64_Linux_syscalls		307
+> +#define __NR_64_Linux_syscalls		308
+>
+>   #if _MIPS_SIM == _MIPS_SIM_NABI32
+>
+> diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
+> index 36cfd40..97a5909 100644
+> --- a/arch/mips/kernel/scall64-64.S
+> +++ b/arch/mips/kernel/scall64-64.S
+> @@ -423,4 +423,5 @@ sys_call_table:
+>   	PTR	sys_process_vm_writev		/* 5305 */
+>   	PTR	sys_kcmp
+>   	PTR	sys_finit_module
+> +	PTR	sys_getdents64
+>   	.size	sys_call_table,.-sys_call_table
 >

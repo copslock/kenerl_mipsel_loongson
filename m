@@ -1,15 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 May 2013 11:25:10 +0200 (CEST)
-Received: from sauhun.de ([89.238.76.85]:59024 "EHLO pokefinder.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 May 2013 12:25:48 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:37743 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822345Ab3EUJZJIs4V0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 21 May 2013 11:25:09 +0200
-Received: from p5b386bb1.dip0.t-ipconnect.de ([91.56.107.177]:8821 helo=localhost)
-        by pokefinder.org with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.69)
-        (envelope-from <wsa@the-dreams.de>)
-        id 1Ueiob-0005qC-4L; Tue, 21 May 2013 11:25:05 +0200
-Date:   Tue, 21 May 2013 11:26:40 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
+        id S6823073Ab3EUKZmwV2LT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 21 May 2013 12:25:42 +0200
+Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r4LAPbHf021917
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Tue, 21 May 2013 06:25:37 -0400
+Received: from localhost.localdomain (vpn1-4-204.gru2.redhat.com [10.97.4.204])
+        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id r4LAPS2T009343
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
+        Tue, 21 May 2013 06:25:32 -0400
+Date:   Tue, 21 May 2013 07:25:21 -0300
+From:   Mauro Carvalho Chehab <mchehab@redhat.com>
 To:     David Daney <ddaney.cavm@gmail.com>
 Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         David Daney <david.daney@cavium.com>,
@@ -19,22 +22,22 @@ Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         devel@driverdev.osuosl.org, linux-usb@vger.kernel.org
 Subject: Re: [PATCH] MIPS: OCTEON: Rename Kconfig
  CAVIUM_OCTEON_REFERENCE_BOARD to CAVIUM_OCTEON_SOC
-Message-ID: <20130521092637.GA2975@katana>
-References: <1369088378-13957-1-git-send-email-ddaney.cavm@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Message-ID: <20130521072521.0a296a67@redhat.com>
 In-Reply-To: <1369088378-13957-1-git-send-email-ddaney.cavm@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <wsa@the-dreams.de>
+References: <1369088378-13957-1-git-send-email-ddaney.cavm@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
+Return-Path: <mchehab@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36498
+X-archive-position: 36499
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wsa@the-dreams.de
+X-original-sender: mchehab@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,7 +50,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, May 20, 2013 at 03:19:38PM -0700, David Daney wrote:
+Em Mon, 20 May 2013 15:19:38 -0700
+David Daney <ddaney.cavm@gmail.com> escreveu:
+
 > From: David Daney <david.daney@cavium.com>
 > 
 > CAVIUM_OCTEON_SOC most place we used to use CPU_CAVIUM_OCTEON.  This
@@ -57,7 +62,16 @@ On Mon, May 20, 2013 at 03:19:38PM -0700, David Daney wrote:
 > get the same configuration with CAVIUM_OCTEON_SOC.
 > 
 > Signed-off-by: David Daney <david.daney@cavium.com>
+> Cc: linux-ide@vger.kernel.org
+> Cc: linux-edac@vger.kernel.org
 
-For I2C:
+Acked-by: Mauro Carvalho Chehab <mchehab@redhat.com>
 
-Acked-by: Wolfram Sang <wsa@the-dreams.de>
+> Cc: linux-i2c@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Cc: spi-devel-general@lists.sourceforge.net
+> Cc: devel@driverdev.osuosl.org
+> Cc: linux-usb@vger.kernel.org
+
+Regards,
+Mauro

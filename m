@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 May 2013 22:56:19 +0200 (CEST)
-Received: from mail-pd0-f181.google.com ([209.85.192.181]:50720 "EHLO
-        mail-pd0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835043Ab3EUUzLIALeP (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 May 2013 22:56:40 +0200 (CEST)
+Received: from mail-da0-f43.google.com ([209.85.210.43]:42391 "EHLO
+        mail-da0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835045Ab3EUUzLaPEgU (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 21 May 2013 22:55:11 +0200
-Received: by mail-pd0-f181.google.com with SMTP id p11so1008448pdj.12
-        for <multiple recipients>; Tue, 21 May 2013 13:55:04 -0700 (PDT)
+Received: by mail-da0-f43.google.com with SMTP id u7so672691dae.2
+        for <multiple recipients>; Tue, 21 May 2013 13:55:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=3S3jqyZefuF+me5XGTGvkSRBH8Tk1ehaJ4J7UJW8LB0=;
-        b=Ca0bQFu0hYnwsr86KqbiSr49Airf/0Rk6+LK3tz4K/1T96Yul2SDQ313D7j4LEfdfv
-         AiEeI0AWrdoaH+bfzqR3N/RmgcGZObqQF9lsVxauzBr2Cp81Z1k+CKuH8HqlTiLfWjlF
-         PnqtPffElIO2STOKcWhp9dXP3pSdp56ekKB7oxWNwPmFfEKolenevdJFNhCoOF77PM+k
-         KIwm9FN8se/7ZHAqANBo3Akg/WVSImh5TfnbmIJqt4gtD4UzZ9NVLn8LXF17eh0D7/Xu
-         dnzwgjbMQWCuFo4VbVVVoDXu5FpzzqixGZDKakk7h3y/xnkxkkom9gSZUYX+xYRfgH5K
-         otqg==
-X-Received: by 10.68.78.37 with SMTP id y5mr4558752pbw.28.1369169704596;
+        bh=c9BSCB1NujibP7eUFGiq2gccKrGQoppYXygvsMvfjNA=;
+        b=FivCqQ/VqOA/rMq8o5TWjRmF/QypFQ3N5jpuV+zHT4sqkHHlGH880cP30ee3D4jApv
+         jSf8JbUxCaAbFfjHii29ikU1bJLFia61G/DLvlzqbjeNro0VIgM6riB/RjUgl4QtrjFn
+         FMPPf/oZx8qqnSpJ9cKgjSGe9dj19e/jYRe6yAiAWr/s+5eoP8inLDgH8+LZzd7b0XLg
+         hOWms/xJe5NliC8ldGcVVflT0l64Y+74PFhnNjnPyzgE78TpJeBw4kER4yx0eP//yLRq
+         GpC3w2aK/wvahrPYp6vYQ9zoqbALDUV86vHMBo2penb3s264DZ+44FSjeeYwKd0QS5I/
+         k3yw==
+X-Received: by 10.68.197.66 with SMTP id is2mr4477109pbc.175.1369169704954;
         Tue, 21 May 2013 13:55:04 -0700 (PDT)
 Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id q18sm4767856pao.4.2013.05.21.13.55.00
+        by mx.google.com with ESMTPSA id qi1sm4710859pac.21.2013.05.21.13.55.00
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
         Tue, 21 May 2013 13:55:03 -0700 (PDT)
 Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r4LKsxFV010495;
-        Tue, 21 May 2013 13:54:59 -0700
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r4LKt020010499;
+        Tue, 21 May 2013 13:55:00 -0700
 Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r4LKsxK7010494;
-        Tue, 21 May 2013 13:54:59 -0700
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r4LKt0YV010498;
+        Tue, 21 May 2013 13:55:00 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         kvm@vger.kernel.org, Sanjay Lal <sanjayl@kymasys.com>,
         Gleb Natapov <gleb@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: [PATCH v4 3/6] mips/kvm: Fix name of gpr field in struct kvm_regs.
-Date:   Tue, 21 May 2013 13:54:52 -0700
-Message-Id: <1369169695-10444-4-git-send-email-ddaney.cavm@gmail.com>
+Subject: [PATCH v4 4/6] mips/kvm: Use ARRAY_SIZE() instead of hardcoded constants in kvm_arch_vcpu_ioctl_{s,g}et_regs
+Date:   Tue, 21 May 2013 13:54:53 -0700
+Message-Id: <1369169695-10444-5-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.11.7
 In-Reply-To: <1369169695-10444-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1369169695-10444-1-git-send-email-ddaney.cavm@gmail.com>
@@ -43,7 +43,7 @@ Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36510
+X-archive-position: 36511
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,47 +62,37 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
+Also we cannot set special zero register, so force it to zero.
+
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/include/asm/kvm.h | 3 ++-
- arch/mips/kvm/kvm_mips.c    | 4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ arch/mips/kvm/kvm_mips.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/kvm.h b/arch/mips/include/asm/kvm.h
-index 86812fb..d145ead 100644
---- a/arch/mips/include/asm/kvm.h
-+++ b/arch/mips/include/asm/kvm.h
-@@ -26,7 +26,8 @@
-  * extended to 64-bits.
-  */
- struct kvm_regs {
--	__u64 gprs[32];
-+	/* out (KVM_GET_REGS) / in (KVM_SET_REGS) */
-+	__u64 gpr[32];
- 	__u64 hi;
- 	__u64 lo;
- 	__u64 pc;
 diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
-index e0dad02..93da750 100644
+index 93da750..71a1fc1 100644
 --- a/arch/mips/kvm/kvm_mips.c
 +++ b/arch/mips/kvm/kvm_mips.c
-@@ -678,7 +678,7 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+@@ -677,9 +677,9 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+ {
  	int i;
  
- 	for (i = 0; i < 32; i++)
--		vcpu->arch.gprs[i] = regs->gprs[i];
-+		vcpu->arch.gprs[i] = regs->gpr[i];
- 
+-	for (i = 0; i < 32; i++)
++	for (i = 1; i < ARRAY_SIZE(vcpu->arch.gprs); i++)
+ 		vcpu->arch.gprs[i] = regs->gpr[i];
+-
++	vcpu->arch.gprs[0] = 0; /* zero is special, and cannot be set. */
  	vcpu->arch.hi = regs->hi;
  	vcpu->arch.lo = regs->lo;
-@@ -692,7 +692,7 @@ int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+ 	vcpu->arch.pc = regs->pc;
+@@ -691,7 +691,7 @@ int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+ {
  	int i;
  
- 	for (i = 0; i < 32; i++)
--		regs->gprs[i] = vcpu->arch.gprs[i];
-+		regs->gpr[i] = vcpu->arch.gprs[i];
+-	for (i = 0; i < 32; i++)
++	for (i = 0; i < ARRAY_SIZE(vcpu->arch.gprs); i++)
+ 		regs->gpr[i] = vcpu->arch.gprs[i];
  
  	regs->hi = vcpu->arch.hi;
- 	regs->lo = vcpu->arch.lo;
 -- 
 1.7.11.7

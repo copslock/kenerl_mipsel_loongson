@@ -1,31 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 May 2013 16:22:59 +0200 (CEST)
-Received: from kymasys.com ([64.62.140.43]:41683 "HELO kymasys.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6823608Ab3EUOW433lwm convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 May 2013 16:22:56 +0200
-Received: from ::ffff:75.40.23.192 ([75.40.23.192]) by kymasys.com for <linux-mips@linux-mips.org>; Tue, 21 May 2013 07:22:46 -0700
-Subject: Re: [PATCH 2/4] KVM/MIPS32: Wrap calls to gfn_to_pfn() with srcu_read_lock/unlock()
-Mime-Version: 1.0 (Apple Message framework v1283)
-Content-Type: text/plain; charset=us-ascii
-From:   Sanjay Lal <sanjayl@kymasys.com>
-In-Reply-To: <20130521080047.GV4725@redhat.com>
-Date:   Tue, 21 May 2013 07:22:47 -0700
-Cc:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
-        ralf@linux-mips.org, mtosatti@redhat.com
-Content-Transfer-Encoding: 8BIT
-Message-Id: <174A9E72-D709-46A2-AE38-003B2E389A16@kymasys.com>
-References: <n> <1368885266-8619-1-git-send-email-sanjayl@kymasys.com> <1368885266-8619-3-git-send-email-sanjayl@kymasys.com> <20130519125210.GI4725@redhat.com> <AB98FD4C-123F-4C64-B6CF-0F86E4EBD554@kymasys.com> <20130521080047.GV4725@redhat.com>
-To:     Gleb Natapov <gleb@redhat.com>
-X-Mailer: Apple Mail (2.1283)
-Return-Path: <sanjayl@kymasys.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 May 2013 16:37:45 +0200 (CEST)
+Received: from mail-pb0-f45.google.com ([209.85.160.45]:49842 "EHLO
+        mail-pb0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823073Ab3EUOhjky--j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 May 2013 16:37:39 +0200
+Received: by mail-pb0-f45.google.com with SMTP id mc17so687826pbc.4
+        for <multiple recipients>; Tue, 21 May 2013 07:37:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id:x-mailer;
+        bh=weD/RO24HWWf7T4F7uYNOlQu9Wr03yy3DoaFa/LQ5yw=;
+        b=Kc89XRm4/DkBIMyGcvV2QdKI1lfG/j3lb8ODA1OlQKyEiD/qQvT3v+82Ug5+vkFXur
+         fXpeUAChRzPuTeeLfVkgl+2Is+rG5+SzFW8oWXsZzUODw4VagSA7lc0OTQi3BI4VIyKk
+         g+YEVCGu8tlgwofXWun6YKATjJU5aLmxAiqHn8AFINqVbOlpCC5v2O6k68X8xiM6PPmg
+         EdcFrX4WruhO/isyBJSJE38WTOq/cW2JvZ4wFG5M81G9udBTky/QkIfgpkLI2WDs0FNM
+         WBd5EI49meeZ+0xoWDHU22gOC4NLff4t2mpp4kK3jvG/T8vqHbQ837Z0/bWaxsomNWsk
+         W8mQ==
+X-Received: by 10.66.228.233 with SMTP id sl9mr3592194pac.38.1369147052874;
+        Tue, 21 May 2013 07:37:32 -0700 (PDT)
+Received: from localhost ([2001:da8:20f:2789:9e4e:36ff:fe98:8aac])
+        by mx.google.com with ESMTPSA id 3sm2929493pbj.46.2013.05.21.07.37.30
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Tue, 21 May 2013 07:37:32 -0700 (PDT)
+From:   Aron Xu <aron@debian.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Aron Xu <aron@debian.org>
+Subject: [PATCH] MIPS: N64: Define getdents64
+Date:   Tue, 21 May 2013 22:37:06 +0800
+Message-Id: <1369147026-23033-1-git-send-email-aron@debian.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <happyaron.xu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36500
+X-archive-position: 36501
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sanjayl@kymasys.com
+X-original-sender: aron@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,44 +50,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+As a relatively new ABI, N64 only had getdents syscall while other modern
+architectures have getdents64.
 
-On May 21, 2013, at 1:00 AM, Gleb Natapov wrote:
+This was noticed when Python 3.3 shifted to the latter one for aarch64.
 
-> On Sun, May 19, 2013 at 10:36:32AM -0400, Sanjay Lal wrote:
->> 
->> On May 19, 2013, at 8:52 AM, Gleb Natapov wrote:
->> 
->>> On Sat, May 18, 2013 at 06:54:24AM -0700, Sanjay Lal wrote:
->>>> - As suggested by Gleb, wrap calls to gfn_to_pfn() with srcu_read_lock/unlock().
->>>> Memory slots should be acccessed from a SRCU read section.
->>>> - kvm_mips_map_page() now returns an error code to it's callers, instead of calling panic()
->>>> if it cannot find a mapping for a particular gfn.
->>>> 
->>>> Signed-off-by: Sanjay Lal <sanjayl@kymasys.com>
->>>> ---
->>>> arch/mips/kvm/kvm_tlb.c | 36 +++++++++++++++++++++++++++---------
->>>> 1 file changed, 27 insertions(+), 9 deletions(-)
->>>> 
->>>> diff --git a/arch/mips/kvm/kvm_tlb.c b/arch/mips/kvm/kvm_tlb.c
->>>> index 89511a9..ab2e9b0 100644
->>>> --- a/arch/mips/kvm/kvm_tlb.c
->>>> +++ b/arch/mips/kvm/kvm_tlb.c
->>>> @@ -16,7 +16,10 @@
->>>> #include <linux/mm.h>
->>>> #include <linux/delay.h>
->>>> #include <linux/module.h>
->>>> +#include <linux/bootmem.h>
->>> You haven't answered it when I asked it on v2:
->>> Is this include still needed now when export of min_low_pfn is not
->>> longer here?
->>> 
->> 
->> Sorry about that, juggling too many patches, bootmem.h is no longer needed in kvm_tlb.c.  Actually, I thought I had removed it before posting v3.
->> 
-> Should I expect new version, or can I just drop this include from the
-> patch and apply?
-> 
-Please drop the include.
+Signed-off-by: Aron Xu <aron@debian.org>
+---
+ arch/mips/include/uapi/asm/unistd.h |    5 +++--
+ arch/mips/kernel/scall64-64.S       |    1 +
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-Regards
-Sanjay
+diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
+index 16338b8..1dee279 100644
+--- a/arch/mips/include/uapi/asm/unistd.h
++++ b/arch/mips/include/uapi/asm/unistd.h
+@@ -694,16 +694,17 @@
+ #define __NR_process_vm_writev		(__NR_Linux + 305)
+ #define __NR_kcmp			(__NR_Linux + 306)
+ #define __NR_finit_module		(__NR_Linux + 307)
++#define __NR_getdents64			(__NR_Linux + 308)
+ 
+ /*
+  * Offset of the last Linux 64-bit flavoured syscall
+  */
+-#define __NR_Linux_syscalls		307
++#define __NR_Linux_syscalls		308
+ 
+ #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
+ 
+ #define __NR_64_Linux			5000
+-#define __NR_64_Linux_syscalls		307
++#define __NR_64_Linux_syscalls		308
+ 
+ #if _MIPS_SIM == _MIPS_SIM_NABI32
+ 
+diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
+index 36cfd40..97a5909 100644
+--- a/arch/mips/kernel/scall64-64.S
++++ b/arch/mips/kernel/scall64-64.S
+@@ -423,4 +423,5 @@ sys_call_table:
+ 	PTR	sys_process_vm_writev		/* 5305 */
+ 	PTR	sys_kcmp
+ 	PTR	sys_finit_module
++	PTR	sys_getdents64
+ 	.size	sys_call_table,.-sys_call_table
+-- 
+1.7.10.4

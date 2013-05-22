@@ -1,41 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 May 2013 14:55:09 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:23120 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822969Ab3EVMzGyPx6Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 22 May 2013 14:55:06 +0200
-Received: from int-mx02.intmail.prod.int.phx2.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r4MCstFk018394
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 22 May 2013 08:54:55 -0400
-Received: from dhcp-1-237.tlv.redhat.com (dhcp-4-26.tlv.redhat.com [10.35.4.26])
-        by int-mx02.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id r4MCss7b012682;
-        Wed, 22 May 2013 08:54:54 -0400
-Received: by dhcp-1-237.tlv.redhat.com (Postfix, from userid 13519)
-        id 10EE518D3DE; Wed, 22 May 2013 15:54:54 +0300 (IDT)
-Date:   Wed, 22 May 2013 15:54:53 +0300
-From:   Gleb Natapov <gleb@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 May 2013 15:42:13 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:33632 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6823426Ab3EVNly1F5YT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 May 2013 15:41:54 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r4MDfo2h006870;
+        Wed, 22 May 2013 15:41:50 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r4MDfn8Q006836;
+        Wed, 22 May 2013 15:41:49 +0200
+Date:   Wed, 22 May 2013 15:41:48 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
 To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        kvm@vger.kernel.org, Sanjay Lal <sanjayl@kymasys.com>,
-        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH v4 0/6] mips/kvm: Fix ABI for compatibility with 64-bit
- guests.
-Message-ID: <20130522125453.GN14287@redhat.com>
-References: <1369169695-10444-1-git-send-email-ddaney.cavm@gmail.com>
+Cc:     Aron Xu <aron@debian.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: N64: Define getdents64
+Message-ID: <20130522134148.GE10769@linux-mips.org>
+References: <1369147026-23033-1-git-send-email-aron@debian.org>
+ <519BC32E.2080405@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1369169695-10444-1-git-send-email-ddaney.cavm@gmail.com>
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.12
-Return-Path: <gleb@redhat.com>
+In-Reply-To: <519BC32E.2080405@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36522
+X-archive-position: 36523
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gleb@redhat.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,41 +43,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, May 21, 2013 at 01:54:49PM -0700, David Daney wrote:
-> From: David Daney <david.daney@cavium.com>
-> 
-> The initial patch set implementing MIPS KVM does not handle 64-bit
-> guests or use of the FPU.  This patch set corrects these ABI issues,
-> and does some very minor clean up.
-> 
-Sanjay, is this looks good to you. 
+On Tue, May 21, 2013 at 11:55:42AM -0700, David Daney wrote:
 
-What userspace MIPS is using for machine emulation? Is there corresponding
-patches to the userspace?
+> On 05/21/2013 07:37 AM, Aron Xu wrote:
+> >As a relatively new ABI, N64 only had getdents syscall while other modern
+> >architectures have getdents64.
+> >
+> >This was noticed when Python 3.3 shifted to the latter one for aarch64.
+> >
+> >Signed-off-by: Aron Xu <aron@debian.org>
+> 
+> This looks correct to me.  The getdents64 call returns more
+> information than getdents (it adds a field for the file type).  So,
+> although in n64 the widths of the d_ino and d_off fields are the
+> same for getdents64 and getdents, we still need to add this syscall.
+> 
+> Acked-by: David Daney <david.daney@cavium.com>
 
-> Chandes from v3: Use KVM_SET_ONE_REG instead of KVM_SET_MSRS.  Added
->                  ENOIOCTLCMD patch.
-> 
-> Changes from v2: Split into five parts, no code change.
-> 
-> David Daney (6):
->   mips/kvm: Fix ABI for use of FPU.
->   mips/kvm: Fix ABI for use of 64-bit registers.
->   mips/kvm: Fix name of gpr field in struct kvm_regs.
->   mips/kvm: Use ARRAY_SIZE() instead of hardcoded constants in
->     kvm_arch_vcpu_ioctl_{s,g}et_regs
->   mips/kvm: Fix ABI by moving manipulation of CP0 registers to
->     KVM_{G,S}ET_ONE_REG
->   mips/kvm: Use ENOIOCTLCMD to indicate unimplemented ioctls.
-> 
->  arch/mips/include/asm/kvm.h      | 137 ++++++++++++----
->  arch/mips/include/asm/kvm_host.h |   4 -
->  arch/mips/kvm/kvm_mips.c         | 118 +++-----------
->  arch/mips/kvm/kvm_trap_emul.c    | 338 ++++++++++++++++++++++++++++++++++-----
->  4 files changed, 430 insertions(+), 167 deletions(-)
-> 
-> -- 
-> 1.7.11.7
+Yes, the patch is looking good but I was really wondering why the other
+ABIs had getdents64 wired up but not the native N64, so I started
+digging.
 
---
-			Gleb.
+Commit 1a1d77dd589de5a567fa95e36aa6999c704ceca4 [Merge with 2.4.0-test7.]
+added N64 getdents(2) to arch/mips64/kernel/scall_64.S as syscall 5213,
+then dropped again in 578720675c44e54e8aa7c68f6dce59ed37ce3d3b [Overhaul
+of the 64-bit syscall interface.  Now heritage free.] for 2.5.18 in 2002.
+
+It took a while to be noticed ;)
+
+Thanks a lot!
+
+  Ralf

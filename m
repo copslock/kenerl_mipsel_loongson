@@ -1,32 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 May 2013 18:33:31 +0200 (CEST)
-Received: from kymasys.com ([64.62.140.43]:60809 "HELO kymasys.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S6827470Ab3EVQd0My2d- convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 May 2013 18:33:26 +0200
-Received: from ::ffff:75.40.23.192 ([75.40.23.192]) by kymasys.com for <linux-mips@linux-mips.org>; Wed, 22 May 2013 09:33:16 -0700
-Subject: Re: [PATCH v4 0/6] mips/kvm: Fix ABI for compatibility with 64-bit guests.
-Mime-Version: 1.0 (Apple Message framework v1283)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 May 2013 19:15:11 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:34377 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6835040Ab3EVRPFuzZkE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 May 2013 19:15:05 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r4MHEndk018769;
+        Wed, 22 May 2013 19:14:49 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r4MHEkAQ018766;
+        Wed, 22 May 2013 19:14:46 +0200
+Date:   Wed, 22 May 2013 19:14:46 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
+        David Daney <david.daney@cavium.com>,
+        linux-ide@vger.kernel.org, linux-edac@vger.kernel.org,
+        linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
+        spi-devel-general@lists.sourceforge.net,
+        devel@driverdev.osuosl.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH] MIPS: OCTEON: Rename Kconfig
+ CAVIUM_OCTEON_REFERENCE_BOARD to CAVIUM_OCTEON_SOC
+Message-ID: <20130522171446.GF10769@linux-mips.org>
+References: <1369088378-13957-1-git-send-email-ddaney.cavm@gmail.com>
+ <20130521220457.GF31836@blackmetal.musicnaut.iki.fi>
+ <519BF01B.1010600@caviumnetworks.com>
+ <20130522122232.GD10769@linux-mips.org>
+ <519CEEBE.5020403@caviumnetworks.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-From:   Sanjay Lal <sanjayl@kymasys.com>
-In-Reply-To: <20130522125453.GN14287@redhat.com>
-Date:   Wed, 22 May 2013 09:33:17 -0700
-Cc:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Content-Transfer-Encoding: 8BIT
-Message-Id: <88128283-D1AD-4D69-B5B5-0579F346087C@kymasys.com>
-References: <1369169695-10444-1-git-send-email-ddaney.cavm@gmail.com> <20130522125453.GN14287@redhat.com>
-To:     Gleb Natapov <gleb@redhat.com>
-X-Mailer: Apple Mail (2.1283)
-Return-Path: <sanjayl@kymasys.com>
+Content-Disposition: inline
+In-Reply-To: <519CEEBE.5020403@caviumnetworks.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36526
+X-archive-position: 36527
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sanjayl@kymasys.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,22 +53,11 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Wed, May 22, 2013 at 09:13:50AM -0700, David Daney wrote:
 
-On May 22, 2013, at 5:54 AM, Gleb Natapov wrote:
+> Can you take v2 instead?  It has the missing watchdog adjustment
+> that is not in v1.
 
-> On Tue, May 21, 2013 at 01:54:49PM -0700, David Daney wrote:
->> From: David Daney <david.daney@cavium.com>
->> 
->> The initial patch set implementing MIPS KVM does not handle 64-bit
->> guests or use of the FPU.  This patch set corrects these ABI issues,
->> and does some very minor clean up.
->> 
-> Sanjay, is this looks good to you. 
-> 
-> What userspace MIPS is using for machine emulation? Is there corresponding
-> patches to the userspace?
+Done.
 
-Gleb, I'll post some comments on the patches later in the day.  We use QEMu for the machine emulation. I am in the process of integrating with the new ABI, and will post the QEMU patches shortly.
-
-Regards
-Sanjay
+  Ralf

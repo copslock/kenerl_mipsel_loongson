@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 May 2013 20:44:38 +0200 (CEST)
-Received: from mail-da0-f42.google.com ([209.85.210.42]:62511 "EHLO
-        mail-da0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835056Ab3EVSoNXXeRV (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 May 2013 20:44:57 +0200 (CEST)
+Received: from mail-pb0-f53.google.com ([209.85.160.53]:53105 "EHLO
+        mail-pb0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835057Ab3EVSoNzIuGn (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 22 May 2013 20:44:13 +0200
-Received: by mail-da0-f42.google.com with SMTP id r6so1271593dad.29
-        for <multiple recipients>; Wed, 22 May 2013 11:44:06 -0700 (PDT)
+Received: by mail-pb0-f53.google.com with SMTP id un4so1990915pbc.26
+        for <multiple recipients>; Wed, 22 May 2013 11:44:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=0R16bW0lbSIsswX9ItZDifatSI+Hxzx7fnGKYx4ks9I=;
-        b=hStigbX/HdVWcBmPqPm6pL72Mn03d3XO6+zHH750ZOiOscUY6xW0y8mpZgYrTwg8+f
-         HJIppzgHvo7+A6UQL7hHDy3r8N3kCIq+GOuvfLSDpiWn83J9VEXL0O76lH1OACOAEpwK
-         FyFDKQWSyvuOQzGfBYBMfMg8l0QfCkTF/c7rZc5Pyo6Uh9CagkhkMlLEoXkTzPp54JSZ
-         nMBgPTp7Vh09koqY3G3Ta/1Z9lLKEIM8tXPnpz2vMnmp4DXDHTCSqLG2qCos6164OkMC
-         xGlZWMErIssYeaFDtAeMnGVNjhAibopkAq/D7AVzzUchkgHvvz7So+yoRtepNLTMQprL
-         10fA==
-X-Received: by 10.66.232.129 with SMTP id to1mr9550581pac.144.1369248246625;
-        Wed, 22 May 2013 11:44:06 -0700 (PDT)
+        bh=LcX/8NieWEnH8Pi2mGMtZ4MKTZnFoS2kiqPdCX9bNyg=;
+        b=Jc4R1prNoeefnfuXv0KdEUWoH/yQU9tanrJ/X50h8X0OLe0Olw+gkEAsqoAdwwzP+9
+         4xg42qhmmbZGEUNW7Jp4ldb2TI1YkPTfTuptzG9frUDz9TAYG9LEuzjFy87TlkodCIut
+         CYkb8JnDuAEheis6WlowVHVzXeb3S2oFOyMuU/RlYh+eb0XzEKFySMYbNQIL8/5q9pwA
+         YTr/B9BAgzieQ8eXOrHa3FU1jesxOn6VmsgqrvsPOfFXeaqvjjSIgMynQIr/P5XKE8gN
+         k46FI5ELoKrWcEffp8Vsoq39ve3P5FkTEvNhMoQgU60FmfZOfECoKLvEcI09A+UQ4UTE
+         vh3g==
+X-Received: by 10.66.123.72 with SMTP id ly8mr9526483pab.159.1369248247126;
+        Wed, 22 May 2013 11:44:07 -0700 (PDT)
 Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id at1sm8256001pbc.10.2013.05.22.11.44.05
+        by mx.google.com with ESMTPSA id v7sm8214352pbq.32.2013.05.22.11.44.05
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 22 May 2013 11:44:05 -0700 (PDT)
+        Wed, 22 May 2013 11:44:06 -0700 (PDT)
 Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r4MIi4hs027281;
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r4MIi4ss027285;
         Wed, 22 May 2013 11:44:04 -0700
 Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r4MIi3Jx027280;
-        Wed, 22 May 2013 11:44:03 -0700
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r4MIi4wY027284;
+        Wed, 22 May 2013 11:44:04 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         kvm@vger.kernel.org, Sanjay Lal <sanjayl@kymasys.com>,
         Gleb Natapov <gleb@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: [PATCH v5 1/6] mips/kvm: Fix ABI for use of FPU.
-Date:   Wed, 22 May 2013 11:43:51 -0700
-Message-Id: <1369248236-27237-2-git-send-email-ddaney.cavm@gmail.com>
+Subject: [PATCH v5 2/6] mips/kvm: Fix ABI for use of 64-bit registers.
+Date:   Wed, 22 May 2013 11:43:52 -0700
+Message-Id: <1369248236-27237-3-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.11.7
 In-Reply-To: <1369248236-27237-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1369248236-27237-1-git-send-email-ddaney.cavm@gmail.com>
@@ -43,7 +43,7 @@ Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36532
+X-archive-position: 36533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,58 +62,41 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
-Define a non-empty struct kvm_fpu.
+All registers are 64-bits wide, 32-bit guests use the least
+significant portion of the register storage fields.
 
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/include/asm/kvm.h | 29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+ arch/mips/include/asm/kvm.h | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/arch/mips/include/asm/kvm.h b/arch/mips/include/asm/kvm.h
-index 85789ea..0e8f565 100644
+index 0e8f565..86812fb 100644
 --- a/arch/mips/include/asm/kvm.h
 +++ b/arch/mips/include/asm/kvm.h
-@@ -1,11 +1,12 @@
- /*
--* This file is subject to the terms and conditions of the GNU General Public
--* License.  See the file "COPYING" in the main directory of this archive
--* for more details.
--*
--* Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
--* Authors: Sanjay Lal <sanjayl@kymasys.com>
--*/
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
-+ * Copyright (C) 2013 Cavium, Inc.
-+ * Authors: Sanjay Lal <sanjayl@kymasys.com>
-+ */
+@@ -18,12 +18,18 @@
+ #define N_MIPS_COPROC_REGS      32
+ #define N_MIPS_COPROC_SEL   	8
  
- #ifndef __LINUX_KVM_MIPS_H
- #define __LINUX_KVM_MIPS_H
-@@ -31,8 +32,20 @@ struct kvm_regs {
- struct kvm_sregs {
- };
- 
--/* for KVM_GET_FPU and KVM_SET_FPU */
+-/* for KVM_GET_REGS and KVM_SET_REGS */
 +/*
-+ * for KVM_GET_FPU and KVM_SET_FPU
++ * for KVM_GET_REGS and KVM_SET_REGS
 + *
-+ * If Status[FR] is zero (32-bit FPU), the upper 32-bits of the FPRs
-+ * are zero filled.
++ * If Config[AT] is zero (32-bit CPU), the register contents are
++ * stored in the lower 32-bits of the struct kvm_regs fields and sign
++ * extended to 64-bits.
 + */
- struct kvm_fpu {
-+	__u64 fpr[32];
-+	__u32 fir;
-+	__u32 fccr;
-+	__u32 fexr;
-+	__u32 fenr;
-+	__u32 fcsr;
-+	__u32 pad;
- };
+ struct kvm_regs {
+-	__u32 gprs[32];
+-	__u32 hi;
+-	__u32 lo;
+-	__u32 pc;
++	__u64 gprs[32];
++	__u64 hi;
++	__u64 lo;
++	__u64 pc;
  
- struct kvm_debug_exit_arch {
+ 	__u32 cp0reg[N_MIPS_COPROC_REGS][N_MIPS_COPROC_SEL];
+ };
 -- 
 1.7.11.7

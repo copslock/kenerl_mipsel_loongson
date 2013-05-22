@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 May 2013 20:46:17 +0200 (CEST)
-Received: from mail-pb0-f43.google.com ([209.85.160.43]:50310 "EHLO
-        mail-pb0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835061Ab3EVSoO4NaUU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 May 2013 20:44:14 +0200
-Received: by mail-pb0-f43.google.com with SMTP id ma3so2010609pbc.30
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 May 2013 20:46:36 +0200 (CEST)
+Received: from mail-da0-f41.google.com ([209.85.210.41]:58920 "EHLO
+        mail-da0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835060Ab3EVSoPJmMya (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 May 2013 20:44:15 +0200
+Received: by mail-da0-f41.google.com with SMTP id y19so1283464dan.14
         for <multiple recipients>; Wed, 22 May 2013 11:44:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=13ArJzjZgtdEqheOaNg7Ya91DVYxnO9gLa0Y3AXFcew=;
-        b=Qccb2boHRboKrMGXCaDtnSWrJ+WtsazI1gMMIJK9tj/UcDXvlkt8lXrWuQJR3pKfUp
-         qUnn7lBOGO1GNNQLVQ3ndoxmEq1XZLUGpsYkZvESBZYdlkoQZthmL0TKGzGgEca57UGd
-         FV8TQ1Gf/VahM+Cm2J6aPa6H+DpjvS/zzvA1VVprYBBf0oYjaj/sWxJxtwzA6OdwKOko
-         zKdYFV1lSUr49hCyddjjzQ7QBqcit/gFxuSh7t3J6DmYA2C2uRCLsGs87tZBavlN4SU2
-         2gfztKv2S80YPf7dcHUyVywSWu0jB0U8tDQFcpMEQge8to6WzZW2v1fiFmCRUKmi7Swq
-         L33w==
-X-Received: by 10.66.164.195 with SMTP id ys3mr9645908pab.30.1369248248171;
+        bh=KG55Qcw8yf1ebMK52M/0Zv0s4R326nTxfJ511nDkXyg=;
+        b=tHAVHr40mfcEPcANBWZFq1znJiaY3n+o9F9FNOhVFm3s1xrXJi8KdWaEoli8l+YRgo
+         GVZudHJ4yX4ECqQUDGxJgYjMf/lwvr+qBCcxr95PvZqGVA/Rv/bGJcGED1/RaLBho9dM
+         Swar4jUp1HYKUibb56i1GGzNI8jTWYhBbkAbd796pZOQS6qb80L9ebdF6xHWXpw6yHVy
+         cSViS5kYHzCZiPLfCbC1TWfpWYK6aaxNW/oN0ZIfXWVJyDFQBTlNI6s3m9VdVrFgU3eu
+         u0jHpp92tikryYjMdPJQGsRgs191grtSFuTcchhJPvdXPOhwq6/pLbPWw1vyBBOJA528
+         5Qww==
+X-Received: by 10.68.100.98 with SMTP id ex2mr9410054pbb.19.1369248248515;
         Wed, 22 May 2013 11:44:08 -0700 (PDT)
 Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id kr16sm9093585pab.23.2013.05.22.11.44.06
+        by mx.google.com with ESMTPSA id xl10sm9123446pac.15.2013.05.22.11.44.07
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
         Wed, 22 May 2013 11:44:07 -0700 (PDT)
 Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r4MIi5B8027297;
-        Wed, 22 May 2013 11:44:05 -0700
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r4MIi6cw027301;
+        Wed, 22 May 2013 11:44:06 -0700
 Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r4MIi5rp027296;
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r4MIi5aJ027300;
         Wed, 22 May 2013 11:44:05 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         kvm@vger.kernel.org, Sanjay Lal <sanjayl@kymasys.com>,
         Gleb Natapov <gleb@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: [PATCH v5 5/6] mips/kvm: Fix ABI by moving manipulation of CP0 registers to KVM_{G,S}ET_ONE_REG
-Date:   Wed, 22 May 2013 11:43:55 -0700
-Message-Id: <1369248236-27237-6-git-send-email-ddaney.cavm@gmail.com>
+Subject: [PATCH v5 6/6] mips/kvm: Use ENOIOCTLCMD to indicate unimplemented ioctls.
+Date:   Wed, 22 May 2013 11:43:56 -0700
+Message-Id: <1369248236-27237-7-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.11.7
 In-Reply-To: <1369248236-27237-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1369248236-27237-1-git-send-email-ddaney.cavm@gmail.com>
@@ -43,7 +43,7 @@ Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36536
+X-archive-position: 36537
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,540 +62,93 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
-Because not all 256 CP0 registers are ever implemented, we need a
-different method of manipulating them.  Use the
-KVM_SET_ONE_REG/KVM_GET_ONE_REG mechanism.
-
-Now unused code and definitions are removed.
+The Linux Way is to return -ENOIOCTLCMD to the vfs when an
+unimplemented ioctl is requested.  Do this in kvm_mips instead of a
+random mixture of -ENOTSUPP and -EINVAL.
 
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/include/asm/kvm.h      |  91 +++++++++++---
- arch/mips/include/asm/kvm_host.h |   4 -
- arch/mips/kvm/kvm_mips.c         | 250 +++++++++++++++++++++++++++++++++++++--
- arch/mips/kvm/kvm_trap_emul.c    |  50 --------
- 4 files changed, 320 insertions(+), 75 deletions(-)
+ arch/mips/kvm/kvm_mips.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/mips/include/asm/kvm.h b/arch/mips/include/asm/kvm.h
-index d145ead..3f424f5 100644
---- a/arch/mips/include/asm/kvm.h
-+++ b/arch/mips/include/asm/kvm.h
-@@ -13,10 +13,11 @@
- 
- #include <linux/types.h>
- 
--#define __KVM_MIPS
--
--#define N_MIPS_COPROC_REGS      32
--#define N_MIPS_COPROC_SEL   	8
-+/*
-+ * KVM MIPS specific structures and definitions.
-+ *
-+ * Some parts derived from the x86 version of this file.
-+ */
- 
- /*
-  * for KVM_GET_REGS and KVM_SET_REGS
-@@ -31,12 +32,6 @@ struct kvm_regs {
- 	__u64 hi;
- 	__u64 lo;
- 	__u64 pc;
--
--	__u32 cp0reg[N_MIPS_COPROC_REGS][N_MIPS_COPROC_SEL];
--};
--
--/* for KVM_GET_SREGS and KVM_SET_SREGS */
--struct kvm_sregs {
- };
- 
- /*
-@@ -55,21 +50,89 @@ struct kvm_fpu {
- 	__u32 pad;
- };
- 
-+
-+/*
-+ * For MIPS, we use KVM_SET_ONE_REG and KVM_GET_ONE_REG to access CP0
-+ * registers.  The id field is broken down as follows:
-+ *
-+ *  bits[2..0]   - Register 'sel' index.
-+ *  bits[7..3]   - Register 'rd'  index.
-+ *  bits[15..8]  - Must be zero.
-+ *  bits[63..16] - 1 -> CP0 registers.
-+ *
-+ * Other sets registers may be added in the future.  Each set would
-+ * have its own identifier in bits[63..16].
-+ *
-+ * The addr field of struct kvm_one_reg must point to an aligned
-+ * 64-bit wide location.  For registers that are narrower than
-+ * 64-bits, the value is stored in the low order bits of the location,
-+ * and sign extended to 64-bits.
-+ *
-+ * The registers defined in struct kvm_regs are also accessible, the
-+ * id values for these are below.
-+ */
-+
-+#define KVM_REG_MIPS_R0 0
-+#define KVM_REG_MIPS_R1 1
-+#define KVM_REG_MIPS_R2 2
-+#define KVM_REG_MIPS_R3 3
-+#define KVM_REG_MIPS_R4 4
-+#define KVM_REG_MIPS_R5 5
-+#define KVM_REG_MIPS_R6 6
-+#define KVM_REG_MIPS_R7 7
-+#define KVM_REG_MIPS_R8 8
-+#define KVM_REG_MIPS_R9 9
-+#define KVM_REG_MIPS_R10 10
-+#define KVM_REG_MIPS_R11 11
-+#define KVM_REG_MIPS_R12 12
-+#define KVM_REG_MIPS_R13 13
-+#define KVM_REG_MIPS_R14 14
-+#define KVM_REG_MIPS_R15 15
-+#define KVM_REG_MIPS_R16 16
-+#define KVM_REG_MIPS_R17 17
-+#define KVM_REG_MIPS_R18 18
-+#define KVM_REG_MIPS_R19 19
-+#define KVM_REG_MIPS_R20 20
-+#define KVM_REG_MIPS_R21 21
-+#define KVM_REG_MIPS_R22 22
-+#define KVM_REG_MIPS_R23 23
-+#define KVM_REG_MIPS_R24 24
-+#define KVM_REG_MIPS_R25 25
-+#define KVM_REG_MIPS_R26 26
-+#define KVM_REG_MIPS_R27 27
-+#define KVM_REG_MIPS_R28 28
-+#define KVM_REG_MIPS_R29 29
-+#define KVM_REG_MIPS_R30 30
-+#define KVM_REG_MIPS_R31 31
-+
-+#define KVM_REG_MIPS_HI 32
-+#define KVM_REG_MIPS_LO 33
-+#define KVM_REG_MIPS_PC 34
-+
-+/*
-+ * KVM MIPS specific structures and definitions
-+ *
-+ */
- struct kvm_debug_exit_arch {
-+	__u64 epc;
- };
- 
- /* for KVM_SET_GUEST_DEBUG */
- struct kvm_guest_debug_arch {
- };
- 
-+/* definition of registers in kvm_run */
-+struct kvm_sync_regs {
-+};
-+
-+/* dummy definition */
-+struct kvm_sregs {
-+};
-+
- struct kvm_mips_interrupt {
- 	/* in */
- 	__u32 cpu;
- 	__u32 irq;
- };
- 
--/* definition of registers in kvm_run */
--struct kvm_sync_regs {
--};
--
- #endif /* __LINUX_KVM_MIPS_H */
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 143875c..4d6fa0b 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -496,10 +496,6 @@ struct kvm_mips_callbacks {
- 			    uint32_t cause);
- 	int (*irq_clear) (struct kvm_vcpu *vcpu, unsigned int priority,
- 			  uint32_t cause);
--	int (*vcpu_ioctl_get_regs) (struct kvm_vcpu *vcpu,
--				    struct kvm_regs *regs);
--	int (*vcpu_ioctl_set_regs) (struct kvm_vcpu *vcpu,
--				    struct kvm_regs *regs);
- };
- extern struct kvm_mips_callbacks *kvm_mips_callbacks;
- int kvm_mips_emulation_init(struct kvm_mips_callbacks **install_callbacks);
 diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
-index 71a1fc1..5aec4f4 100644
+index 5aec4f4..13e9438 100644
 --- a/arch/mips/kvm/kvm_mips.c
 +++ b/arch/mips/kvm/kvm_mips.c
-@@ -485,15 +485,251 @@ kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
- 	return -EINVAL;
+@@ -195,7 +195,7 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+ long
+ kvm_arch_dev_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+ {
+-	return -EINVAL;
++	return -ENOIOCTLCMD;
  }
  
-+#define KVM_REG_MIPS_CP0_INDEX (0x10000 + 8 * 0 + 0)
-+#define KVM_REG_MIPS_CP0_ENTRYLO0 (0x10000 + 8 * 2 + 0)
-+#define KVM_REG_MIPS_CP0_ENTRYLO1 (0x10000 + 8 * 3 + 0)
-+#define KVM_REG_MIPS_CP0_CONTEXT (0x10000 + 8 * 4 + 0)
-+#define KVM_REG_MIPS_CP0_USERLOCAL (0x10000 + 8 * 4 + 2)
-+#define KVM_REG_MIPS_CP0_PAGEMASK (0x10000 + 8 * 5 + 0)
-+#define KVM_REG_MIPS_CP0_PAGEGRAIN (0x10000 + 8 * 5 + 1)
-+#define KVM_REG_MIPS_CP0_WIRED (0x10000 + 8 * 6 + 0)
-+#define KVM_REG_MIPS_CP0_HWRENA (0x10000 + 8 * 7 + 0)
-+#define KVM_REG_MIPS_CP0_BADVADDR (0x10000 + 8 * 8 + 0)
-+#define KVM_REG_MIPS_CP0_COUNT (0x10000 + 8 * 9 + 0)
-+#define KVM_REG_MIPS_CP0_ENTRYHI (0x10000 + 8 * 10 + 0)
-+#define KVM_REG_MIPS_CP0_COMPARE (0x10000 + 8 * 11 + 0)
-+#define KVM_REG_MIPS_CP0_STATUS (0x10000 + 8 * 12 + 0)
-+#define KVM_REG_MIPS_CP0_CAUSE (0x10000 + 8 * 13 + 0)
-+#define KVM_REG_MIPS_CP0_EBASE (0x10000 + 8 * 15 + 1)
-+#define KVM_REG_MIPS_CP0_CONFIG (0x10000 + 8 * 16 + 0)
-+#define KVM_REG_MIPS_CP0_CONFIG1 (0x10000 + 8 * 16 + 1)
-+#define KVM_REG_MIPS_CP0_CONFIG2 (0x10000 + 8 * 16 + 2)
-+#define KVM_REG_MIPS_CP0_CONFIG3 (0x10000 + 8 * 16 + 3)
-+#define KVM_REG_MIPS_CP0_CONFIG7 (0x10000 + 8 * 16 + 7)
-+#define KVM_REG_MIPS_CP0_XCONTEXT (0x10000 + 8 * 20 + 0)
-+#define KVM_REG_MIPS_CP0_ERROREPC (0x10000 + 8 * 30 + 0)
-+
-+static u64 kvm_mips_get_one_regs[] = {
-+	KVM_REG_MIPS_R0,
-+	KVM_REG_MIPS_R1,
-+	KVM_REG_MIPS_R2,
-+	KVM_REG_MIPS_R3,
-+	KVM_REG_MIPS_R4,
-+	KVM_REG_MIPS_R5,
-+	KVM_REG_MIPS_R6,
-+	KVM_REG_MIPS_R7,
-+	KVM_REG_MIPS_R8,
-+	KVM_REG_MIPS_R9,
-+	KVM_REG_MIPS_R10,
-+	KVM_REG_MIPS_R11,
-+	KVM_REG_MIPS_R12,
-+	KVM_REG_MIPS_R13,
-+	KVM_REG_MIPS_R14,
-+	KVM_REG_MIPS_R15,
-+	KVM_REG_MIPS_R16,
-+	KVM_REG_MIPS_R17,
-+	KVM_REG_MIPS_R18,
-+	KVM_REG_MIPS_R19,
-+	KVM_REG_MIPS_R20,
-+	KVM_REG_MIPS_R21,
-+	KVM_REG_MIPS_R22,
-+	KVM_REG_MIPS_R23,
-+	KVM_REG_MIPS_R24,
-+	KVM_REG_MIPS_R25,
-+	KVM_REG_MIPS_R26,
-+	KVM_REG_MIPS_R27,
-+	KVM_REG_MIPS_R28,
-+	KVM_REG_MIPS_R29,
-+	KVM_REG_MIPS_R30,
-+	KVM_REG_MIPS_R31,
-+
-+	KVM_REG_MIPS_HI,
-+	KVM_REG_MIPS_LO,
-+	KVM_REG_MIPS_PC,
-+
-+	KVM_REG_MIPS_CP0_INDEX,
-+	KVM_REG_MIPS_CP0_CONTEXT,
-+	KVM_REG_MIPS_CP0_PAGEMASK,
-+	KVM_REG_MIPS_CP0_WIRED,
-+	KVM_REG_MIPS_CP0_BADVADDR,
-+	KVM_REG_MIPS_CP0_ENTRYHI,
-+	KVM_REG_MIPS_CP0_STATUS,
-+	KVM_REG_MIPS_CP0_CAUSE,
-+	/* EPC set via kvm_regs, et al. */
-+	KVM_REG_MIPS_CP0_CONFIG,
-+	KVM_REG_MIPS_CP0_CONFIG1,
-+	KVM_REG_MIPS_CP0_CONFIG2,
-+	KVM_REG_MIPS_CP0_CONFIG3,
-+	KVM_REG_MIPS_CP0_CONFIG7,
-+	KVM_REG_MIPS_CP0_ERROREPC
-+};
-+
-+static int kvm_mips_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
-+{
-+	u64 __user *uaddr = (u64 __user *)(long)reg->addr;
-+
-+	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	s64 v;
-+
-+	switch (reg->id) {
-+	case KVM_REG_MIPS_R0 ... KVM_REG_MIPS_R31:
-+		v = (long)vcpu->arch.gprs[reg->id - KVM_REG_MIPS_R0];
-+		break;
-+	case KVM_REG_MIPS_HI:
-+		v = (long)vcpu->arch.hi;
-+		break;
-+	case KVM_REG_MIPS_LO:
-+		v = (long)vcpu->arch.lo;
-+		break;
-+	case KVM_REG_MIPS_PC:
-+		v = (long)vcpu->arch.pc;
-+		break;
-+
-+	case KVM_REG_MIPS_CP0_INDEX:
-+		v = (long)kvm_read_c0_guest_index(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONTEXT:
-+		v = (long)kvm_read_c0_guest_context(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_PAGEMASK:
-+		v = (long)kvm_read_c0_guest_pagemask(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_WIRED:
-+		v = (long)kvm_read_c0_guest_wired(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_BADVADDR:
-+		v = (long)kvm_read_c0_guest_badvaddr(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_ENTRYHI:
-+		v = (long)kvm_read_c0_guest_entryhi(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_STATUS:
-+		v = (long)kvm_read_c0_guest_status(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CAUSE:
-+		v = (long)kvm_read_c0_guest_cause(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_ERROREPC:
-+		v = (long)kvm_read_c0_guest_errorepc(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG:
-+		v = (long)kvm_read_c0_guest_config(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG1:
-+		v = (long)kvm_read_c0_guest_config1(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG2:
-+		v = (long)kvm_read_c0_guest_config2(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG3:
-+		v = (long)kvm_read_c0_guest_config3(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG7:
-+		v = (long)kvm_read_c0_guest_config7(cop0);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	return put_user(v, uaddr);
-+}
-+
-+static int kvm_mips_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
-+{
-+	u64 __user *uaddr = (u64 __user *)(long)reg->addr;
-+	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	u64 v;
-+
-+	if (get_user(v, uaddr) != 0)
-+		return -EFAULT;
-+
-+	switch (reg->id) {
-+	case KVM_REG_MIPS_R0:
-+		/* Silently ignore requests to set $0 */
-+		break;
-+	case KVM_REG_MIPS_R1 ... KVM_REG_MIPS_R31:
-+		vcpu->arch.gprs[reg->id - KVM_REG_MIPS_R0] = v;
-+		break;
-+	case KVM_REG_MIPS_HI:
-+		vcpu->arch.hi = v;
-+		break;
-+	case KVM_REG_MIPS_LO:
-+		vcpu->arch.lo = v;
-+		break;
-+	case KVM_REG_MIPS_PC:
-+		vcpu->arch.pc = v;
-+		break;
-+
-+	case KVM_REG_MIPS_CP0_INDEX:
-+		kvm_write_c0_guest_index(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONTEXT:
-+		kvm_write_c0_guest_context(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_PAGEMASK:
-+		kvm_write_c0_guest_pagemask(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_WIRED:
-+		kvm_write_c0_guest_wired(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_BADVADDR:
-+		kvm_write_c0_guest_badvaddr(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_ENTRYHI:
-+		kvm_write_c0_guest_entryhi(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_STATUS:
-+		kvm_write_c0_guest_status(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_CAUSE:
-+		kvm_write_c0_guest_cause(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_ERROREPC:
-+		kvm_write_c0_guest_errorepc(cop0, v);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- long
- kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+ void kvm_arch_free_memslot(struct kvm_memory_slot *free,
+@@ -401,7 +401,7 @@ int
+ kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
+ 				    struct kvm_guest_debug *dbg)
  {
- 	struct kvm_vcpu *vcpu = filp->private_data;
- 	void __user *argp = (void __user *)arg;
- 	long r;
--	int intr;
+-	return -EINVAL;
++	return -ENOIOCTLCMD;
+ }
+ 
+ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
+@@ -475,14 +475,14 @@ int
+ kvm_arch_vcpu_ioctl_get_mpstate(struct kvm_vcpu *vcpu,
+ 				struct kvm_mp_state *mp_state)
+ {
+-	return -EINVAL;
++	return -ENOIOCTLCMD;
+ }
+ 
+ int
+ kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
+ 				struct kvm_mp_state *mp_state)
+ {
+-	return -EINVAL;
++	return -ENOIOCTLCMD;
+ }
+ 
+ #define KVM_REG_MIPS_CP0_INDEX (0x10000 + 8 * 0 + 0)
+@@ -799,7 +799,7 @@ long kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
  
  	switch (ioctl) {
-+	case KVM_SET_ONE_REG:
-+	case KVM_GET_ONE_REG: {
-+		struct kvm_one_reg reg;
-+		if (copy_from_user(&reg, argp, sizeof(reg)))
-+			return -EFAULT;
-+		if (ioctl == KVM_SET_ONE_REG)
-+			return kvm_mips_set_reg(vcpu, &reg);
-+		else
-+			return kvm_mips_get_reg(vcpu, &reg);
-+	}
-+	case KVM_GET_REG_LIST: {
-+		struct kvm_reg_list __user *user_list = argp;
-+		u64 __user *reg_dest;
-+		struct kvm_reg_list reg_list;
-+		unsigned n;
-+
-+		if (copy_from_user(&reg_list, user_list, sizeof(reg_list)))
-+			return -EFAULT;
-+		n = reg_list.n;
-+		reg_list.n = ARRAY_SIZE(kvm_mips_get_one_regs);
-+		if (copy_to_user(user_list, &reg_list, sizeof(reg_list)))
-+			return -EFAULT;
-+		if (n < reg_list.n)
-+			return -E2BIG;
-+		reg_dest = user_list->reg;
-+		if (copy_to_user(reg_dest, kvm_mips_get_one_regs,
-+				 sizeof(kvm_mips_get_one_regs)))
-+			return -EFAULT;
-+		return 0;
-+	}
- 	case KVM_NMI:
- 		/* Treat the NMI as a CPU reset */
- 		r = kvm_mips_reset_vcpu(vcpu);
-@@ -505,8 +741,6 @@ kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
- 			if (copy_from_user(&irq, argp, sizeof(irq)))
- 				goto out;
- 
--			intr = (int)irq.irq;
--
- 			kvm_debug("[%d] %s: irq: %d\n", vcpu->vcpu_id, __func__,
- 				  irq.irq);
- 
-@@ -514,7 +748,7 @@ kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
- 			break;
- 		}
  	default:
 -		r = -EINVAL;
 +		r = -ENOIOCTLCMD;
  	}
  
- out:
-@@ -627,6 +861,9 @@ int kvm_dev_ioctl_check_extension(long ext)
- 	int r;
- 
- 	switch (ext) {
-+	case KVM_CAP_ONE_REG:
-+		r = 1;
-+		break;
- 	case KVM_CAP_COALESCED_MMIO:
- 		r = KVM_COALESCED_MMIO_PAGE_OFFSET;
- 		break;
-@@ -635,7 +872,6 @@ int kvm_dev_ioctl_check_extension(long ext)
- 		break;
- 	}
  	return r;
--
- }
- 
- int kvm_cpu_has_pending_timer(struct kvm_vcpu *vcpu)
-@@ -684,7 +920,7 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
- 	vcpu->arch.lo = regs->lo;
- 	vcpu->arch.pc = regs->pc;
- 
--	return kvm_mips_callbacks->vcpu_ioctl_set_regs(vcpu, regs);
-+	return 0;
- }
- 
- int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
-@@ -698,7 +934,7 @@ int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
- 	regs->lo = vcpu->arch.lo;
- 	regs->pc = vcpu->arch.pc;
- 
--	return kvm_mips_callbacks->vcpu_ioctl_get_regs(vcpu, regs);
-+	return 0;
- }
- 
- void kvm_mips_comparecount_func(unsigned long data)
-diff --git a/arch/mips/kvm/kvm_trap_emul.c b/arch/mips/kvm/kvm_trap_emul.c
-index 466aeef..30d7253 100644
---- a/arch/mips/kvm/kvm_trap_emul.c
-+++ b/arch/mips/kvm/kvm_trap_emul.c
-@@ -345,54 +345,6 @@ static int kvm_trap_emul_handle_break(struct kvm_vcpu *vcpu)
- 	return ret;
- }
- 
--static int
--kvm_trap_emul_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
--{
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
--
--	kvm_write_c0_guest_index(cop0, regs->cp0reg[MIPS_CP0_TLB_INDEX][0]);
--	kvm_write_c0_guest_context(cop0, regs->cp0reg[MIPS_CP0_TLB_CONTEXT][0]);
--	kvm_write_c0_guest_badvaddr(cop0, regs->cp0reg[MIPS_CP0_BAD_VADDR][0]);
--	kvm_write_c0_guest_entryhi(cop0, regs->cp0reg[MIPS_CP0_TLB_HI][0]);
--	kvm_write_c0_guest_epc(cop0, regs->cp0reg[MIPS_CP0_EXC_PC][0]);
--
--	kvm_write_c0_guest_status(cop0, regs->cp0reg[MIPS_CP0_STATUS][0]);
--	kvm_write_c0_guest_cause(cop0, regs->cp0reg[MIPS_CP0_CAUSE][0]);
--	kvm_write_c0_guest_pagemask(cop0,
--				    regs->cp0reg[MIPS_CP0_TLB_PG_MASK][0]);
--	kvm_write_c0_guest_wired(cop0, regs->cp0reg[MIPS_CP0_TLB_WIRED][0]);
--	kvm_write_c0_guest_errorepc(cop0, regs->cp0reg[MIPS_CP0_ERROR_PC][0]);
--
--	return 0;
--}
--
--static int
--kvm_trap_emul_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
--{
--	struct mips_coproc *cop0 = vcpu->arch.cop0;
--
--	regs->cp0reg[MIPS_CP0_TLB_INDEX][0] = kvm_read_c0_guest_index(cop0);
--	regs->cp0reg[MIPS_CP0_TLB_CONTEXT][0] = kvm_read_c0_guest_context(cop0);
--	regs->cp0reg[MIPS_CP0_BAD_VADDR][0] = kvm_read_c0_guest_badvaddr(cop0);
--	regs->cp0reg[MIPS_CP0_TLB_HI][0] = kvm_read_c0_guest_entryhi(cop0);
--	regs->cp0reg[MIPS_CP0_EXC_PC][0] = kvm_read_c0_guest_epc(cop0);
--
--	regs->cp0reg[MIPS_CP0_STATUS][0] = kvm_read_c0_guest_status(cop0);
--	regs->cp0reg[MIPS_CP0_CAUSE][0] = kvm_read_c0_guest_cause(cop0);
--	regs->cp0reg[MIPS_CP0_TLB_PG_MASK][0] =
--	    kvm_read_c0_guest_pagemask(cop0);
--	regs->cp0reg[MIPS_CP0_TLB_WIRED][0] = kvm_read_c0_guest_wired(cop0);
--	regs->cp0reg[MIPS_CP0_ERROR_PC][0] = kvm_read_c0_guest_errorepc(cop0);
--
--	regs->cp0reg[MIPS_CP0_CONFIG][0] = kvm_read_c0_guest_config(cop0);
--	regs->cp0reg[MIPS_CP0_CONFIG][1] = kvm_read_c0_guest_config1(cop0);
--	regs->cp0reg[MIPS_CP0_CONFIG][2] = kvm_read_c0_guest_config2(cop0);
--	regs->cp0reg[MIPS_CP0_CONFIG][3] = kvm_read_c0_guest_config3(cop0);
--	regs->cp0reg[MIPS_CP0_CONFIG][7] = kvm_read_c0_guest_config7(cop0);
--
--	return 0;
--}
--
- static int kvm_trap_emul_vm_init(struct kvm *kvm)
+@@ -827,13 +827,13 @@ void kvm_arch_exit(void)
+ int
+ kvm_arch_vcpu_ioctl_get_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
  {
- 	return 0;
-@@ -471,8 +423,6 @@ static struct kvm_mips_callbacks kvm_trap_emul_callbacks = {
- 	.dequeue_io_int = kvm_mips_dequeue_io_int_cb,
- 	.irq_deliver = kvm_mips_irq_deliver_cb,
- 	.irq_clear = kvm_mips_irq_clear_cb,
--	.vcpu_ioctl_get_regs = kvm_trap_emul_ioctl_get_regs,
--	.vcpu_ioctl_set_regs = kvm_trap_emul_ioctl_set_regs,
- };
+-	return -ENOTSUPP;
++	return -ENOIOCTLCMD;
+ }
  
- int kvm_mips_emulation_init(struct kvm_mips_callbacks **install_callbacks)
+ int
+ kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
+ {
+-	return -ENOTSUPP;
++	return -ENOIOCTLCMD;
+ }
+ 
+ int kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
+@@ -843,12 +843,12 @@ int kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
+ 
+ int kvm_arch_vcpu_ioctl_get_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
+ {
+-	return -ENOTSUPP;
++	return -ENOIOCTLCMD;
+ }
+ 
+ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
+ {
+-	return -ENOTSUPP;
++	return -ENOIOCTLCMD;
+ }
+ 
+ int kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
 -- 
 1.7.11.7

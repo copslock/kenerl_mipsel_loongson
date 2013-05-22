@@ -1,31 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 May 2013 12:19:00 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:32880 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 May 2013 12:37:47 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:32947 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823426Ab3EVKS5SFN-j (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 22 May 2013 12:18:57 +0200
+        id S6823426Ab3EVKhlArSPR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 May 2013 12:37:41 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r4MAIp5m019776;
-        Wed, 22 May 2013 12:18:51 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r4MAbYGM020662;
+        Wed, 22 May 2013 12:37:34 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r4MAIlKI019775;
-        Wed, 22 May 2013 12:18:47 +0200
-Date:   Wed, 22 May 2013 12:18:47 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r4MAbUlq020661;
+        Wed, 22 May 2013 12:37:30 +0200
+Date:   Wed, 22 May 2013 12:37:30 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-mips@linux-mips.org, Eunbong Song <eunb.song@samsung.com>
-Subject: [PATCH] mm: Fix warning
-Message-ID: <20130522101847.GB10769@linux-mips.org>
+To:     Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>
+Cc:     Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, Victor Kamensky <kamensky@cisco.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        Maneesh Soni <manesoni@cisco.com>,
+        yrl.pp-manager.tt@hitachi.com, systemtap@sourceware.org
+Subject: Re: [PATCH 2/2] [BUGFIX] kprobes/mips: Fix to check double free of
+ insn slot
+Message-ID: <20130522103730.GC10769@linux-mips.org>
+References: <20130522093409.9084.63554.stgit@mhiramat-M0-7522>
+ <20130522093413.9084.33395.stgit@mhiramat-M0-7522>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20130522093413.9084.33395.stgit@mhiramat-M0-7522>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36519
+X-archive-position: 36520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,43 +48,6 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-virt_to_page() is typically implemented as a macro containing a cast so
-it'll accept both pointers and unsigned long without causing a warning.
-MIPS virt_to_page() uses virt_to_phys which is a function so passing an
-unsigned long will cause a warning:
+Thanks, applied.
 
-  CC      mm/page_alloc.o
-/home/ralf/src/linux/linux-mips/mm/page_alloc.c: In function ‘free_reserved_area’:
-/home/ralf/src/linux/linux-mips/mm/page_alloc.c:5161:3: warning: passing argument 1 of ‘virt_to_phys’ makes pointer from integer without a cast [enabled by default]
-In file included from /home/ralf/src/linux/linux-mips/arch/mips/include/asm/page.h:153:0,
-                 from /home/ralf/src/linux/linux-mips/include/linux/mmzone.h:20,
-                 from /home/ralf/src/linux/linux-mips/include/linux/gfp.h:4,
-                 from /home/ralf/src/linux/linux-mips/include/linux/mm.h:8,
-                 from /home/ralf/src/linux/linux-mips/mm/page_alloc.c:18:
-/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h:119:100: note: expected ‘const volatile void *’ but argument is of type ‘long unsigned int’
-
-All others users of virt_to_page() in mm/ are passing a void *.
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Reported-by: Eunbong Song <eunb.song@samsung.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: linux-mips@linux-mips.org
----
- mm/page_alloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 98cbdf6..378a15b 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5158,7 +5158,7 @@ unsigned long free_reserved_area(unsigned long start, unsigned long end,
- 	for (pages = 0; pos < end; pos += PAGE_SIZE, pages++) {
- 		if (poison)
- 			memset((void *)pos, poison, PAGE_SIZE);
--		free_reserved_page(virt_to_page(pos));
-+		free_reserved_page(virt_to_page((void *)pos));
- 	}
- 
- 	if (pages && s)
+  Ralf

@@ -1,107 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 May 2013 22:36:35 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.17.10]:63788 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6824795Ab3EWUe6OyNuJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 May 2013 22:34:58 +0200
-Received: from mailbox.adnet.avionic-design.de (mailbox.avionic-design.de [109.75.18.3])
-        by mrelayeu.kundenserver.de (node=mrbap2) with ESMTP (Nemesis)
-        id 0MBIsH-1UnYGg3GOj-00A1Pi; Thu, 23 May 2013 22:32:49 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTP id 7BC7B2A28209;
-        Thu, 23 May 2013 22:32:46 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at avionic-design.de
-Received: from mailbox.adnet.avionic-design.de ([127.0.0.1])
-        by localhost (mailbox.avionic-design.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id QBPLSRTmRFWT; Thu, 23 May 2013 22:32:45 +0200 (CEST)
-Received: from mailman.adnet.avionic-design.de (mailman.adnet.avionic-design.de [172.20.31.172])
-        by mailbox.adnet.avionic-design.de (Postfix) with ESMTP id C52EE2A281DB;
-        Thu, 23 May 2013 22:32:43 +0200 (CEST)
-Received: from localhost (avionic-0098.adnet.avionic-design.de [172.20.31.233])
-        by mailman.adnet.avionic-design.de (Postfix) with ESMTP id A48B91000E6;
-        Thu, 23 May 2013 22:32:40 +0200 (CEST)
-Date:   Thu, 23 May 2013 22:32:43 +0200
-From:   Thierry Reding <thierry.reding@avionic-design.de>
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     linux-kernel@vger.kernel.org, ac100@lists.launchpad.net,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        alsa-devel@alsa-project.org, Arnd Bergmann <arnd@arndb.de>,
-        Barry Song <baohua.song@csr.com>,
-        Ben Dooks <ben-linux@fluff.org>, cpufreq@vger.kernel.org,
-        Dan Williams <djbw@fb.com>, David Airlie <airlied@linux.ie>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Deepak Saxena <dsaxena@plexity.net>,
-        devel@driverdev.osuosl.org, dri-devel@lists.freedesktop.org,
-        Eduardo Valentin <eduardo.valentin@ti.com>,
-        Evgeniy Polyakov <zbr@ioremap.net>,
-        Felipe Balbi <balbi@ti.com>,
-        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
-        Grant Likely <grant.likely@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Inki Dae <inki.dae@samsung.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Joonyoung Shim <jy0922.shim@samsung.com>,
-        Julian Andres Klode <jak@jak-linux.org>,
-        Kukjin Kim <kgene.kim@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        Marc Dietrich <marvin24@gmx.de>,
-        Mark Brown <broonie@kernel.org>,
-        Matt Mackall <mpm@selenic.com>, netdev@vger.kernel.org,
-        Paul Zimmerman <paulz@synopsys.com>,
-        "Rafael J. Wysocki" <rjw@sisk.pl>,
-        Ralf Baechle <ralf@linux-mips.org>, rtc-linux@googlegroups.com,
-        Russell King <linux@arm.linux.org.uk>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        spi-devel-general@lists.sourceforge.net,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Takashi Iwai <tiwai@suse.de>, Tejun Heo <tj@kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Tony Prisk <linux@prisktech.co.nz>,
-        Vinod Koul <vinod.koul@intel.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Wan ZongShun <mcuos.com@gmail.com>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        Zhang Rui <rui.zhang@intel.com>
-Subject: Re: [PATCH 00/33] devm improvement series, part 1, take 2
-Message-ID: <20130523203243.GA18069@avionic-0098.adnet.avionic-design.de>
-References: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="cWoXeonUoKmBZSoM"
-Content-Disposition: inline
-In-Reply-To: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Provags-ID: V02:K0:g6QKos/qRDaujPH58X4yK9jLOGUSH+lS1kjy6Q3/Y2I
- Is1DZc/cG4N5oPrg7Gs1DXfbKhD88haaeX6Gl9ouxGUqKwFmx9
- AUl4qSEEnX8eHjYs9T8H764kDd734GC944RLBOuxms9o0Pkgkj
- jT+DvoveSCD6n7KCOXjpcDUVEUuwZ4BV7RDLABcLJ+AQLiv62d
- Qw75atyA1B+UIAT8uN+Gse9RGkcOM1WcwkaCxQPM13LZcxQUZu
- +zZ3U9veERtGjbMJDU9G2IBk/vcW4ownpCH3vLqdCwDJ28tRgg
- 4vA/DY4jVy9MiIaxBBO/6JwX43TnRY7RjgABo6M2hAFwdJlAOE
- 1f9OEokXUZ3iS5eS+DX1HNvoSu2Ipm9PVF57e5j4lr6rQq9qUD
- MHsBLHXluFKhHxs4rTB5LSSz60B4grQqW4wUpY56z31kH03byv
- KImP8
-Return-Path: <thierry.reding@avionic-design.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 May 2013 23:44:14 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:59479 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823056Ab3EWVoHQUqNw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 23 May 2013 23:44:07 +0200
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from shaker64.lan (dslb-088-073-012-093.pools.arcor-ip.net [88.73.12.93])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 0890E2802DD;
+        Thu, 23 May 2013 23:42:52 +0200 (CEST)
+From:   Jonas Gorski <jogo@openwrt.org>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Gabor Juhos <juhosg@openwrt.org>,
+        "Steven J. Hill" <sjhill@mips.com>,
+        David Daney <david.daney@cavium.com>,
+        John Crispin <blogic@openwrt.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Manuel Lauss <manuel.lauss@googlemail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Jayachandran C <jchandra@broadcom.com>,
+        Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH] MIPS: define cpu_has_mmips where appropriate
+Date:   Thu, 23 May 2013 23:42:14 +0200
+Message-Id: <1369345335-28062-1-git-send-email-jogo@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36576
+X-archive-position: 36577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@avionic-design.de
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -114,61 +44,293 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Disable cpu_has_mmips for everything but SEAD3 and MALTA. Most of these
+platforms are from before the micromips introduction, so they are very
+unlikely to implement it.
 
---cWoXeonUoKmBZSoM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reduces an -Os compiled, uncompressed kernel image by 8KiB for BCM63XX.
 
-On Thu, May 16, 2013 at 01:15:28PM +0200, Wolfram Sang wrote:
-> Lately, I have been experimenting how to improve the devm interface to ma=
-ke
-> writing device drivers easier and less error prone while also getting rid=
- of
-> its subtle issues. I think it has more potential but still needs work and
-> definately conistency, especiall in its usage.
->=20
-> The first thing I come up with is a low hanging fruit regarding
-> devm_ioremap_resouce(). This function already checks if the passed resour=
-ce is
-> valid and gives an error message if not. So, we can remove similar checks=
- from
-> the drivers and get rid of a bit of code and a number of inconsistent err=
-or
-> strings.
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+---
 
-Sorry for jumping in so late. I generally like the idea. One small
-inconvenience is that devm_ioremap_resource() returns -EINVAL if
-res =3D=3D NULL, which means that drivers will now also return -EINVAL
-in cases where no resource was returned. Typically drivers handle
-this by returning something like -ENODEV, -ENXIO, -ENOENT. Some do
-return -EINVAL but perhaps having a separate error code (and maybe
-error message as well) for a missing resource would be helpful.
+Position chosen is based on asm/cpu-features.h. Missing hardware and/or
+data sheets for most platforms I obviously couldn't verify its
+non-existence, so maintainer acks are appreciated.
 
-Doing this would be rather easy now that you've paved the way by
-making devm_ioremap_resource() usage consistent across drivers.
+ arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h         |    1 +
+ arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h        |    1 +
+ arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h       |    1 +
+ arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h |    1 +
+ arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h        |    1 +
+ arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h          |    1 +
+ arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h          |    1 +
+ arch/mips/include/asm/mach-ip28/cpu-feature-overrides.h          |    1 +
+ arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h          |    1 +
+ arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h        |    1 +
+ arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h      |    1 +
+ arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h      |    1 +
+ arch/mips/include/asm/mach-pmcs-msp71xx/cpu-feature-overrides.h  |    1 +
+ arch/mips/include/asm/mach-powertv/cpu-feature-overrides.h       |    1 +
+ arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h |    1 +
+ arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h |    1 +
+ arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h |    1 +
+ arch/mips/include/asm/mach-rc32434/cpu-feature-overrides.h       |    1 +
+ arch/mips/include/asm/mach-rm/cpu-feature-overrides.h            |    1 +
+ arch/mips/include/asm/mach-sibyte/cpu-feature-overrides.h        |    1 +
+ arch/mips/include/asm/mach-tx49xx/cpu-feature-overrides.h        |    1 +
+ 21 files changed, 21 insertions(+)
 
-Thierry
-
---cWoXeonUoKmBZSoM
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.19 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRnnzqAAoJEN0jrNd/PrOh7SQP/0805wibt2DFxkTSFnZBxDGZ
-hU1p6eTzQ5Nh3uDq449RqWs8GsB+f2osxomSH71KMqGJmlKi0jc0gtcINotD6FH+
-F8ABG95AKXi5TmG9hEcdIv6eAzfI0AUAgx1izHLxQWLHIcVoca5GpptWPrkOlW6U
-NujE+Lz3rYYtbNMoK8jexasO9uQzo/V6fB3IMVdnEx80CE5o6TbTYBQz5fInVcs8
-QlA0w37qFEcmOq1BsEJNdlcm0JUJ+3sXoFUdnN9jPGcrTgiOg8jXx6GpKLMRJyA3
-cToFc9kVXqgOOtYPw08CUkrzkqF/E0i11IaBOtlvXG489AbvlUOeF95JQEZvLgu9
-ScBNy/PqNN9Z3jZhoiqsTd//QGBb5kNUKEs5v30o4zHpy+3buWpOSiUgJLvX18la
-o8Krom/w4KEH01JRqLSCJLHwZXvyOj6DWW/ogPPMpirX+TTdyDLt4XbGP5GU6iVh
-um0drkT9bUruG2pQVDeNkVwpTMedd5xa96kTXLu0D3MB7Lvfp43mVDVAuYG/FjhU
-m4NkG0SY8N07Upidbb2LZSvAEydzHVJcF7kobEMRnQwH99VYyRUmviKHhoP469T0
-VyKKbTxfTlSWkLQqvgS3eVraylffA8O6eV4RHpAYZyZlsoa+5JulahO69B0yebx2
-atBr1eUuDOTwTR9IUz59
-=pYVl
------END PGP SIGNATURE-----
-
---cWoXeonUoKmBZSoM--
+diff --git a/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
+index ddb947e..d7d2b91 100644
+--- a/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
+@@ -36,6 +36,7 @@
+ #define cpu_has_mdmx		0
+ #define cpu_has_mips3d		0
+ #define cpu_has_smartmips	0
++#define cpu_has_mmips		0
+ 
+ #define cpu_has_mips32r1	1
+ #define cpu_has_mips32r2	1
+diff --git a/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
+index 09f45e6..2c33b1f 100644
+--- a/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
+@@ -28,6 +28,7 @@
+ #define cpu_has_mdmx			0
+ #define cpu_has_mips3d			0
+ #define cpu_has_smartmips		0
++#define cpu_has_mmips			0
+ #define cpu_has_vtag_icache		0
+ #define cpu_has_dc_aliases		0
+ #define cpu_has_ic_fills_f_dc		1
+diff --git a/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h b/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h
+index e9c408e..91d76fa 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h
+@@ -22,6 +22,7 @@
+ #define cpu_has_mdmx			0
+ #define cpu_has_mips3d			0
+ #define cpu_has_smartmips		0
++#define cpu_has_mmips			0
+ #define cpu_has_vtag_icache		0
+ 
+ #if !defined(BCMCPU_RUNTIME_DETECT) && (defined(CONFIG_BCM63XX_CPU_6348) || defined(CONFIG_BCM63XX_CPU_6345) || defined(CONFIG_BCM63XX_CPU_6338))
+diff --git a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
+index 94ed063..862fb99 100644
+--- a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
+@@ -55,6 +55,7 @@
+ #define cpu_has_dsp		0
+ #define cpu_has_dsp2		0
+ #define cpu_has_mipsmt		0
++#define cpu_has_mmips		0
+ #define cpu_has_vint		0
+ #define cpu_has_veic		0
+ #define cpu_hwrena_impl_bits	0xc0000000
+diff --git a/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h b/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h
+index 71d4bfa..89ca55c 100644
+--- a/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h
+@@ -41,6 +41,7 @@
+ #define cpu_has_mdmx		0
+ #define cpu_has_mips3d		0
+ #define cpu_has_smartmips	0
++#define cpu_has_mmips		0
+ #define cpu_has_vtag_icache	0
+ #define cpu_has_ic_fills_f_dc	0
+ #define cpu_icache_snoops_remote_store	0
+diff --git a/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h
+index f4caacd..704cc54 100644
+--- a/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h
+@@ -23,6 +23,7 @@
+ #define cpu_has_prefetch	0
+ #define cpu_has_mcheck		0
+ #define cpu_has_ejtag		0
++#define cpu_has_mmips		0
+ 
+ #define cpu_has_llsc		1
+ #define cpu_has_vtag_icache	0		/* Needs to change for R8000 */
+diff --git a/arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h
+index 1d2b6ff..156e4d4 100644
+--- a/arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h
+@@ -20,6 +20,7 @@
+ #define cpu_has_prefetch	1
+ #define cpu_has_mcheck		0
+ #define cpu_has_ejtag		0
++#define cpu_has_mmips		0
+ 
+ #define cpu_has_llsc		1
+ #define cpu_has_vtag_icache	0
+diff --git a/arch/mips/include/asm/mach-ip28/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ip28/cpu-feature-overrides.h
+index 65e9c85..7cc6593 100644
+--- a/arch/mips/include/asm/mach-ip28/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-ip28/cpu-feature-overrides.h
+@@ -21,6 +21,7 @@
+ #define cpu_has_prefetch	1
+ #define cpu_has_mcheck		0
+ #define cpu_has_ejtag		0
++#define cpu_has_mmips		0
+ 
+ #define cpu_has_llsc		1
+ #define cpu_has_vtag_icache	0
+diff --git a/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h
+index 2e1ec6c..0c7b7a0 100644
+--- a/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h
+@@ -34,6 +34,7 @@
+ #define cpu_has_cache_cdex_s	0
+ #define cpu_has_mcheck		0
+ #define cpu_has_ejtag		0
++#define cpu_has_mmips		0
+ #define cpu_has_vtag_icache	0
+ #define cpu_has_ic_fills_f_dc	0
+ #define cpu_has_dsp		0
+diff --git a/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h b/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
+index a225baa..4da0711 100644
+--- a/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
+@@ -28,6 +28,7 @@
+ #define cpu_has_mdmx 0
+ #define cpu_has_mips3d 0
+ #define cpu_has_smartmips 0
++#define cpu_has_mmips		0
+ #define kernel_uses_llsc	1
+ #define cpu_has_vtag_icache	1
+ #define cpu_has_dc_aliases	0
+diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+index c0f3ef4..ca34d19 100644
+--- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+@@ -49,6 +49,7 @@
+ #define cpu_has_mipsmt		0
+ #define cpu_has_prefetch	0
+ #define cpu_has_smartmips	0
++#define cpu_has_mmips		0
+ #define cpu_has_tlb		1
+ #define cpu_has_tx39_cache	0
+ #define cpu_has_userlocal	0
+diff --git a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
+index 091deb17..49d58ee 100644
+--- a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
+@@ -21,6 +21,7 @@
+ #define cpu_has_prefetch	1
+ #define cpu_has_mcheck		1
+ #define cpu_has_ejtag		1
++#define cpu_has_mmips		0
+ 
+ #define cpu_has_llsc		1
+ #define cpu_has_vtag_icache	0
+diff --git a/arch/mips/include/asm/mach-pmcs-msp71xx/cpu-feature-overrides.h b/arch/mips/include/asm/mach-pmcs-msp71xx/cpu-feature-overrides.h
+index 016fa94..3a6805a 100644
+--- a/arch/mips/include/asm/mach-pmcs-msp71xx/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-pmcs-msp71xx/cpu-feature-overrides.h
+@@ -13,6 +13,7 @@
+ /* #define cpu_has_dsp2		??? - do runtime detection */
+ #define cpu_has_mipsmt		1
+ #define cpu_has_fpu		0
++#define cpu_has_mmips		0
+ 
+ #define cpu_has_mips32r1	0
+ #define cpu_has_mips32r2	1
+diff --git a/arch/mips/include/asm/mach-powertv/cpu-feature-overrides.h b/arch/mips/include/asm/mach-powertv/cpu-feature-overrides.h
+index 58c76ec..fdfcb57 100644
+--- a/arch/mips/include/asm/mach-powertv/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-powertv/cpu-feature-overrides.h
+@@ -37,6 +37,7 @@
+ #define cpu_has_mdmx			0
+ #define cpu_has_mips3d			0
+ #define cpu_has_smartmips		0
++#define cpu_has_mmips			0
+ #define cpu_has_vtag_icache		0
+ #define cpu_has_dc_aliases		0
+ #define cpu_has_ic_fills_f_dc		0
+diff --git a/arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h
+index 72fc106..ac98538 100644
+--- a/arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h
+@@ -36,6 +36,7 @@
+ #define cpu_has_mdmx		0
+ #define cpu_has_mips3d		0
+ #define cpu_has_smartmips	0
++#define cpu_has_mmips		0
+ 
+ #define cpu_has_mips32r1	1
+ #define cpu_has_mips32r2	1
+diff --git a/arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h
+index 917c286..a1f1c29 100644
+--- a/arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h
+@@ -36,6 +36,7 @@
+ #define cpu_has_mdmx		0
+ #define cpu_has_mips3d		0
+ #define cpu_has_smartmips	0
++#define cpu_has_mmips		0
+ 
+ #define cpu_has_mips32r1	1
+ #define cpu_has_mips32r2	1
+diff --git a/arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h
+index 181fbf4..9c88896 100644
+--- a/arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h
+@@ -35,6 +35,7 @@
+ #define cpu_has_mdmx		0
+ #define cpu_has_mips3d		0
+ #define cpu_has_smartmips	0
++#define cpu_has_mmips		0
+ 
+ #define cpu_has_mips32r1	1
+ #define cpu_has_mips32r2	1
+diff --git a/arch/mips/include/asm/mach-rc32434/cpu-feature-overrides.h b/arch/mips/include/asm/mach-rc32434/cpu-feature-overrides.h
+index b153075..2801166 100644
+--- a/arch/mips/include/asm/mach-rc32434/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-rc32434/cpu-feature-overrides.h
+@@ -51,6 +51,7 @@
+ #define cpu_has_mdmx			0
+ #define cpu_has_mips3d			0
+ #define cpu_has_smartmips		0
++#define cpu_has_mmips			0
+ 
+ #define cpu_has_vtag_icache		0
+ 
+diff --git a/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h b/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h
+index f095c52..44d0daf 100644
+--- a/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h
+@@ -25,6 +25,7 @@
+ #define cpu_has_prefetch	0
+ #define cpu_has_mcheck		0
+ #define cpu_has_ejtag		0
++#define cpu_has_mmips		0
+ #define cpu_has_llsc		1
+ #define cpu_has_vtag_icache	0
+ #define cpu_has_dc_aliases	(PAGE_SIZE < 0x4000)
+diff --git a/arch/mips/include/asm/mach-sibyte/cpu-feature-overrides.h b/arch/mips/include/asm/mach-sibyte/cpu-feature-overrides.h
+index 92927b6..152c9a6 100644
+--- a/arch/mips/include/asm/mach-sibyte/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-sibyte/cpu-feature-overrides.h
+@@ -20,6 +20,7 @@
+ #define cpu_has_prefetch	1
+ #define cpu_has_mcheck		1
+ #define cpu_has_ejtag		1
++#define cpu_has_mmips		0
+ 
+ #define cpu_has_llsc		1
+ #define cpu_has_vtag_icache	1
+diff --git a/arch/mips/include/asm/mach-tx49xx/cpu-feature-overrides.h b/arch/mips/include/asm/mach-tx49xx/cpu-feature-overrides.h
+index 7f5144c..6913da4 100644
+--- a/arch/mips/include/asm/mach-tx49xx/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-tx49xx/cpu-feature-overrides.h
+@@ -9,6 +9,7 @@
+ #define cpu_has_mdmx		0
+ #define cpu_has_mips3d		0
+ #define cpu_has_smartmips	0
++#define cpu_has_mmips		0
+ #define cpu_has_vtag_icache	0
+ #define cpu_has_ic_fills_f_dc	0
+ #define cpu_has_dsp	0
+-- 
+1.7.10.4

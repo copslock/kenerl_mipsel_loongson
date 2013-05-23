@@ -1,44 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 May 2013 15:28:54 +0200 (CEST)
-Received: from mail-we0-f170.google.com ([74.125.82.170]:61700 "EHLO
-        mail-we0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827461Ab3EWN2s1Hdtj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 May 2013 15:28:48 +0200
-Received: by mail-we0-f170.google.com with SMTP id u59so1464455wes.15
-        for <multiple recipients>; Thu, 23 May 2013 06:28:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=I4kCzT+ZNhM4RaxzbZTyb8QS6SKbwZye4fOqQ+iuEmE=;
-        b=ICTfK77Ox2G6hTtZN453CNgZj6AB+mqQZKJSMjlfH5g7E/SsBA8+89D/jDfUu/9SaY
-         j8ITd89vvKUBLlpYIgTpF4FYLO3z2HBEzhCtfP3a3cdUvSLoKgwwDLxMba4X5rfgaoWg
-         D8CAUwo3c1ItjrBsRc8HfR/627jpkiQtPz45LegcMq9d5Ajndwg5Ws4Vvj6xD/vzvW8/
-         rW9/rGQvJ1CaGppTSej9QfoFLerpRLci/3vwsjGLh9NJB9NteqNLuwmJmOyGJtAM1HV7
-         ukhIrwVaJkFQRgLyzJbDRev6O346nyfSbiNhVX8aUTjoZ4sgD6kZfN3hh/JgD92RSosw
-         /3MQ==
-X-Received: by 10.180.189.41 with SMTP id gf9mr24495041wic.32.1369315723050;
-        Thu, 23 May 2013 06:28:43 -0700 (PDT)
-Received: from flagship.roarinelk.net (62-47-62-116.adsl.highway.telekom.at. [62.47.62.116])
-        by mx.google.com with ESMTPSA id ff10sm17642106wib.10.2013.05.23.06.28.41
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 23 May 2013 06:28:42 -0700 (PDT)
-From:   Manuel Lauss <manuel.lauss@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 May 2013 17:31:41 +0200 (CEST)
+Received: from relay1.mentorg.com ([192.94.38.131]:51584 "EHLO
+        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6817975Ab3EWPbjLNWQu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 May 2013 17:31:39 +0200
+Received: from svr-orw-fem-01.mgc.mentorg.com ([147.34.98.93])
+        by relay1.mentorg.com with esmtp 
+        id 1UfXUJ-00042U-DO from Maciej_Rozycki@mentor.com ; Thu, 23 May 2013 08:31:31 -0700
+Received: from SVR-IES-FEM-01.mgc.mentorg.com ([137.202.0.104]) by svr-orw-fem-01.mgc.mentorg.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 23 May 2013 08:31:31 -0700
+Received: from [172.30.64.76] (137.202.0.76) by SVR-IES-FEM-01.mgc.mentorg.com
+ (137.202.0.104) with Microsoft SMTP Server id 14.2.247.3; Thu, 23 May 2013
+ 16:31:28 +0100
+Date:   Thu, 23 May 2013 16:31:23 +0100
+From:   "Maciej W. Rozycki" <macro@codesourcery.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH v2] MIPS: Alchemy: fix wait function
-Date:   Thu, 23 May 2013 15:28:36 +0200
-Message-Id: <1369315716-7408-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 1.8.2.1
-Return-Path: <manuel.lauss@gmail.com>
+CC:     <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: Trap exception handling fixes
+Message-ID: <alpine.DEB.1.10.1305230253140.26443@tp.orcam.me.uk>
+User-Agent: Alpine 1.10 (DEB 962 2008-03-14)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-OriginalArrivalTime: 23 May 2013 15:31:31.0218 (UTC) FILETIME=[99978F20:01CE57CA]
+Return-Path: <Maciej_Rozycki@mentor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36552
+X-archive-position: 36553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: macro@codesourcery.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,56 +42,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Only an interrupt can wake the core from 'wait', enable interrupts
-locally before executing 'wait'.
+2a0b24f56c2492b932f1aed617ae80fb23500d21 broke Trap exception handling in 
+the standard MIPS mode.  Additionally the microMIPS-mode trap code mask is 
+wrong, as it's a 4-bit field.  Here's a fix.
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
 ---
-Ralf made me aware of the race in between enabling interrupts and
-entering wait.  While this patch does not eliminate it, it shrinks it
-to 1 instruction.  It's not perfect, but lets Alchemy boot until a
-more sophisticated solution (like __r4k_wait) can be implemented
-without having to duplicate the interrupt exception handler.
+Ralf, please apply.  Also the mention of: "A few NOP instructions are used 
+to maintain the correct alignment[...]" in the commit referred makes me 
+feel scared -- there is that .align pseudo-op, you know...  Maciej
 
- arch/mips/kernel/idle.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+linux-mips-do-tr.diff
 
-diff --git a/arch/mips/kernel/idle.c b/arch/mips/kernel/idle.c
-index 3b09b88..1d37b4b 100644
---- a/arch/mips/kernel/idle.c
-+++ b/arch/mips/kernel/idle.c
-@@ -93,9 +93,9 @@ static void rm7k_wait_irqoff(void)
- }
+ arch/mips/kernel/traps.c |   28 +++++++++++++++-------------
+ 1 files changed, 15 insertions(+), 13 deletions(-)
+
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index e3be670..a75ae40 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -897,22 +897,24 @@ out_sigsegv:
  
- /*
-- * The Au1xxx wait is available only if using 32khz counter or
-- * external timer source, but specifically not CP0 Counter.
-- * alchemy/common/time.c may override cpu_wait!
-+ * Au1 'wait' is only useful when the 32kHz counter is used as timer,
-+ * since coreclock (and the cp0 counter) stops upon executing it. Only an
-+ * interrupt can wake it, so they must be enabled before entering idle modes.
-  */
- static void au1k_wait(void)
+ asmlinkage void do_tr(struct pt_regs *regs)
  {
-@@ -103,8 +103,10 @@ static void au1k_wait(void)
- 	"	.set	mips3			\n"
- 	"	cache	0x14, 0(%0)		\n"
- 	"	cache	0x14, 32(%0)		\n"
-+	"	mfc0	$8, $12			\n"
-+	"	ori	$8, $8, 1		\n"
- 	"	sync				\n"
--	"	nop				\n"
-+	"	mtc0	$8, $12			\n"	/* enable irqs */
- 	"	wait				\n"
- 	"	nop				\n"
- 	"	nop				\n"
-@@ -112,7 +114,6 @@ static void au1k_wait(void)
- 	"	nop				\n"
- 	"	.set	mips0			\n"
- 	: : "r" (au1k_wait));
--	local_irq_enable();
- }
+-	unsigned int opcode, tcode = 0;
++	u32 opcode, tcode = 0;
+ 	u16 instr[2];
+-	unsigned long epc = exception_epc(regs);
++	unsigned long epc = msk_isa16_mode(exception_epc(regs));
  
- static int __initdata nowait;
--- 
-1.8.2.1
+-	if ((__get_user(instr[0], (u16 __user *)msk_isa16_mode(epc))) ||
+-		(__get_user(instr[1], (u16 __user *)msk_isa16_mode(epc + 2))))
++	if (get_isa16_mode(regs->cp0_epc)) {
++		if (__get_user(instr[0], (u16 __user *)(epc + 0)) ||
++		    __get_user(instr[1], (u16 __user *)(epc + 2)))
+ 			goto out_sigsegv;
+-	opcode = (instr[0] << 16) | instr[1];
+-
+-	/* Immediate versions don't provide a code.  */
+-	if (!(opcode & OPCODE)) {
+-		if (get_isa16_mode(regs->cp0_epc))
+-			/* microMIPS */
+-			tcode = (opcode >> 12) & 0x1f;
+-		else
+-			tcode = ((opcode >> 6) & ((1 << 10) - 1));
++		opcode = (instr[0] << 16) | instr[1];
++		/* Immediate versions don't provide a code.  */
++		if (!(opcode & OPCODE))
++			tcode = (opcode >> 12) & ((1 << 4) - 1);
++	} else {
++		if (__get_user(opcode, (u32 __user *)epc))
++			goto out_sigsegv;
++		/* Immediate versions don't provide a code.  */
++		if (!(opcode & OPCODE))
++			tcode = (opcode >> 6) & ((1 << 10) - 1);
+ 	}
+ 
+ 	do_trap_or_bp(regs, tcode, "Trap");

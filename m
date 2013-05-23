@@ -1,52 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 May 2013 19:05:14 +0200 (CEST)
-Received: from mail-pa0-f50.google.com ([209.85.220.50]:60611 "EHLO
-        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835067Ab3EWRFJtauGJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 May 2013 19:05:09 +0200
-Received: by mail-pa0-f50.google.com with SMTP id fb11so1824200pad.23
-        for <multiple recipients>; Thu, 23 May 2013 10:05:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=HGoZHkErC6WiTA5GWcHVOx3Y0/+puCLEa74J2vShXVA=;
-        b=TsVL59GpleyY8NGJevAdecxpoED4fvjKfqPhi0ZpghGAHhL5g2IhLg0Ka4ZGl6xJXU
-         h1hwaGt9tgrOqq4KEdJ0ut4CeLWiLy3G3B4Tph+TDpwyMdJLMlzKJp88nPJ+R1jW7fyT
-         rPSnPENJzMR05u0N4778kJ1uqyDS/IXvw8tiqQ7OO/4a/NZ+qwDWRlggwNjL6YV4SDwl
-         WNwqL19Nh48N32Z7rXvzjyANk40SLubCbXh1cBZM9Xms8w6kR83gJBLSK0ZbBkQy2qqq
-         sV86CDQa3k2DweZWUKlSRxdaezfi6fkokjPJHBdNEDKvBbOwmecZjWp6w9Ab0r70jZp5
-         SHaA==
-X-Received: by 10.68.254.225 with SMTP id al1mr14157420pbd.69.1369328703248;
-        Thu, 23 May 2013 10:05:03 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id if5sm12407698pbb.31.2013.05.23.10.05.01
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 23 May 2013 10:05:01 -0700 (PDT)
-Message-ID: <519E4C3C.7010400@gmail.com>
-Date:   Thu, 23 May 2013 10:05:00 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 May 2013 19:09:44 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:4337 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6835087Ab3EWRJiOXvL4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 23 May 2013 19:09:38 +0200
+Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r4NH9Snt017991
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Thu, 23 May 2013 13:09:28 -0400
+Received: from dhcp-1-237.tlv.redhat.com (dhcp-4-26.tlv.redhat.com [10.35.4.26])
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r4NH9SCW004997;
+        Thu, 23 May 2013 13:09:28 -0400
+Received: by dhcp-1-237.tlv.redhat.com (Postfix, from userid 13519)
+        id 842EE18D3DE; Thu, 23 May 2013 20:09:27 +0300 (IDT)
+Date:   Thu, 23 May 2013 20:09:27 +0300
+From:   Gleb Natapov <gleb@redhat.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, kvm@vger.kernel.org,
+        Sanjay Lal <sanjayl@kymasys.com>, linux-kernel@vger.kernel.org,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH v5 0/6] mips/kvm: Fix ABI for compatibility with 64-bit
+ guests.
+Message-ID: <20130523170927.GM26157@redhat.com>
+References: <1369248236-27237-1-git-send-email-ddaney.cavm@gmail.com>
+ <20130523102834.GN4725@redhat.com>
+ <519E4A98.7020903@caviumnetworks.com>
 MIME-Version: 1.0
-To:     Wladislav Wiebe <wladislav.kw@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, david.daney@cavium.com,
-        Maxim Uvarov <muvarov@gmail.com>, davem@davemloft.net,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] MIPS: Octeon: fix for held reboot_mutex lock at
- task exit time
-References: <519DDF8D.70700@gmail.com>
-In-Reply-To: <519DDF8D.70700@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <519E4A98.7020903@caviumnetworks.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
+Return-Path: <gleb@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36566
+X-archive-position: 36567
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: gleb@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,57 +51,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/23/2013 02:21 AM, Wladislav Wiebe wrote:
-> When kernel halt's will reboot_mutex lock still hold at exit.
-> It will issue with 'halt' command:
-> $ halt
-> ..
-> Sent SIGKILL to all processes
-> Requesting system halt
-> [66.729373] System halted.
-> [66.733244]
-> [66.734761] =====================================
-> [66.739473] [ BUG: lock held at task exit time! ]
-> [66.744188] 3.8.7-0-sampleversion-fct #49 Tainted: G           O
-> [66.750202] -------------------------------------
-> [66.754913] init/21479 is exiting with locks still held!
-> [66.760234] 1 lock held by init/21479:
-> [66.763990]  #0:  (reboot_mutex){+.+...}, at: [<ffffffff801776c8>] SyS_reboot+0xe0/0x218
-> [66.772165]
-> [66.772165] stack backtrace:
-> [66.776532] Call Trace:
-> [66.778992] [<ffffffff805780a8>] dump_stack+0x8/0x34
-> [66.783972] [<ffffffff801618b0>] do_exit+0x610/0xa70
-> [66.788948] [<ffffffff801777a8>] SyS_reboot+0x1c0/0x218
-> [66.794186] [<ffffffff8013d6a4>] handle_sys64+0x44/0x64
->
->
-[...]
->
-> Acked-by: Maxim Uvarov <muvarov@gmail.com>
-> Signed-off-by: Wladislav Wiebe <wladislav.kw@gmail.com>
-> ---
->   arch/mips/cavium-octeon/setup.c |    4 ++++
->   1 file changed, 4 insertions(+)
->
-> diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-> index b0baa29..04ce396 100644
-> --- a/arch/mips/cavium-octeon/setup.c
-> +++ b/arch/mips/cavium-octeon/setup.c
-> @@ -457,6 +457,10 @@ static void octeon_halt(void)
->   	}
->
->   	octeon_kill_core(NULL);
-> +
-> +	/* We stop here */
-> +	while (1)
-> +		;
+On Thu, May 23, 2013 at 09:58:00AM -0700, David Daney wrote:
+> On 05/23/2013 03:28 AM, Gleb Natapov wrote:
+> >On Wed, May 22, 2013 at 11:43:50AM -0700, David Daney wrote:
+> >>From: David Daney <david.daney@cavium.com>
+> >>
+> >Please regenerate against master. arch/mips/include/asm/kvm.h does not
+> >exists any more.
+> 
+> New patch sent.  I gather from this message, that you want to merge
+> this particular set via your tree instead of Ralf's MIPS tree.
+> That's fine with me.  However, we were hoping to have these ABI
+> fixing patches pushed to Linus before 3.10 releases, so that there
+> don't exist kernel versions with the defective ABI.
+> 
+I do plan to push them to 3.10 that is why I asked to generate them
+against master ("next" branch is for next merge window)
 
-I want to put a WAIT here so we don't burn so much power.
+> Future patch sets may affect core MIPS architecture files, and
+> therefore may not be so amenable to merging via the KVM tree.  We
+> will have to figure out how to handle that.
+> 
+Are you talking about initial MIPS HW vitalization support? Lets see
+the patch series. If core changes are to big for for Ralf to ack them
+and push through kvm.git then we can push them via MPIS tree.
 
-I will send a patch to do that instead.
-
->   }
->
->   /**
->
+--
+			Gleb.

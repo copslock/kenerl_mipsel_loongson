@@ -1,47 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 May 2013 18:49:56 +0200 (CEST)
-Received: from mail-pa0-f53.google.com ([209.85.220.53]:37632 "EHLO
-        mail-pa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835061Ab3EWQtYyEss7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 May 2013 18:49:24 +0200
-Received: by mail-pa0-f53.google.com with SMTP id kq12so3185994pab.26
-        for <multiple recipients>; Thu, 23 May 2013 09:49:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 May 2013 18:50:18 +0200 (CEST)
+Received: from mail-pb0-f53.google.com ([209.85.160.53]:56220 "EHLO
+        mail-pb0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835067Ab3EWQtZFUWDo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 May 2013 18:49:25 +0200
+Received: by mail-pb0-f53.google.com with SMTP id un4so3107272pbc.26
+        for <multiple recipients>; Thu, 23 May 2013 09:49:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=NEr7ZixmRAAyQviwuTjhfz51CxLFDLZdNLIOTUIYSg4=;
-        b=sYBH3du30jH2zK79EtmZYvwf/vEllbQnsTsiW2oK5LHzY+kmCRkjPlBilIPEa0Ebt3
-         LjS4BNC832MCumhXQpG6oIxLLYqJBMFId0ckQfbvAfKPMVC4vcpiyp/yd4XRN3iqevUy
-         tNV4ovDeOQaSHcoEXgKS8pGs8heGedxlGi6jVry2TtnfxYHcws0VBBdBx/6NbhRqxbfY
-         5oG7CtqBV46EkQ1B6UoizuHdPwfhY/2sdPWyvnf38JzZVccB36UL0NAC1kxVLoPrB5rh
-         7NMsiYzTsohRU3agaHwnNNHWQ0DRFRfaoBfxtLj4rqADNwBUKrY59jxwDtxxsmwb/fcQ
-         49XA==
-X-Received: by 10.68.171.196 with SMTP id aw4mr13659116pbc.78.1369327756723;
-        Thu, 23 May 2013 09:49:16 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=vAgK6L8ALXYpkeW0UZmTLmrIhRHNbRQXnt0c6dS3Ydc=;
+        b=IWbFdX1dcUHBTc5dxw6hsS0tAQ2P1Dw14yth3bIF/QfvdCKp5tThrpF9UN28JVM3RU
+         wYLxAgE00sIonWiJScCMFnAIB20nCbvYE0GzMJY9sy0/7GZSop3MPp9K27s1DKxi0ptl
+         AXty3Fv5KavowmGFcaNgeLUUVkZLg3jdMZYp9CpMQhgpFRk0kJg6SBP64FJwmA1TkmlA
+         wmDbaqdFtP2gLbZEo51afZ+7qJy4VRRNO/szXD1TXojyOCfEjpKjceOl3X/nzDMGgoMX
+         6Yhn3q6wcLHQcIhqo4v7NBdQrx9uU6p7/9rnmKuGwsLjpnYkKrGMTtx2vSs7QEjPJTLJ
+         RN3w==
+X-Received: by 10.66.163.5 with SMTP id ye5mr14160528pab.60.1369327758343;
+        Thu, 23 May 2013 09:49:18 -0700 (PDT)
 Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id qb1sm12360507pbb.33.2013.05.23.09.49.14
+        by mx.google.com with ESMTPSA id ri8sm12416648pbc.3.2013.05.23.09.49.15
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 23 May 2013 09:49:15 -0700 (PDT)
+        Thu, 23 May 2013 09:49:16 -0700 (PDT)
 Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r4NGnD8g028619;
-        Thu, 23 May 2013 09:49:13 -0700
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r4NGnEVE028627;
+        Thu, 23 May 2013 09:49:14 -0700
 Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r4NGnCdT028618;
-        Thu, 23 May 2013 09:49:12 -0700
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r4NGnEAv028626;
+        Thu, 23 May 2013 09:49:14 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         kvm@vger.kernel.org, Sanjay Lal <sanjayl@kymasys.com>,
         Gleb Natapov <gleb@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: [PATCH v6 0/6] mips/kvm: Fix ABI for compatibility with 64-bit guests.
-Date:   Thu, 23 May 2013 09:49:04 -0700
-Message-Id: <1369327750-28580-1-git-send-email-ddaney.cavm@gmail.com>
+Subject: [PATCH v6 2/6] mips/kvm: Fix ABI for use of 64-bit registers.
+Date:   Thu, 23 May 2013 09:49:06 -0700
+Message-Id: <1369327750-28580-3-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.11.7
+In-Reply-To: <1369327750-28580-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1369327750-28580-1-git-send-email-ddaney.cavm@gmail.com>
 Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36557
+X-archive-position: 36558
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,36 +62,42 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
-The initial patch set implementing MIPS KVM does not handle 64-bit
-guests or use of the FPU.  This patch set corrects these ABI issues,
-and does some very minor clean up.
+All registers are 64-bits wide, 32-bit guests use the least
+significant portion of the register storage fields.
 
-Changes from v5: Adjust for kvm.h moving to uapi/asm.  Code formatting
-                 to achieve line lengths <= 80.
+Signed-off-by: David Daney <david.daney@cavium.com>
+Acked-by: Sanjay Lal <sanjayl@kymasys.com>
+---
+ arch/mips/include/uapi/asm/kvm.h | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-Changes from v4: No code change, just keep more of the code in
-                 kvm_mips.c rather than kvm_trap_emul.c
-
-Changes from v3: Use KVM_SET_ONE_REG instead of KVM_SET_MSRS.  Added
-                 ENOIOCTLCMD patch.
-
-Changes from v2: Split into five parts, no code change.
-
-David Daney (6):
-  mips/kvm: Fix ABI for use of FPU.
-  mips/kvm: Fix ABI for use of 64-bit registers.
-  mips/kvm: Fix name of gpr field in struct kvm_regs.
-  mips/kvm: Use ARRAY_SIZE() instead of hardcoded constants in
-    kvm_arch_vcpu_ioctl_{s,g}et_regs
-  mips/kvm: Fix ABI by moving manipulation of CP0 registers to
-    KVM_{G,S}ET_ONE_REG
-  mips/kvm: Use ENOIOCTLCMD to indicate unimplemented ioctls.
-
- arch/mips/include/asm/kvm_host.h |   4 -
- arch/mips/include/uapi/asm/kvm.h | 137 +++++++++++++++----
- arch/mips/kvm/kvm_mips.c         | 280 ++++++++++++++++++++++++++++++++++++---
- arch/mips/kvm/kvm_trap_emul.c    |  50 -------
- 4 files changed, 369 insertions(+), 102 deletions(-)
-
+diff --git a/arch/mips/include/uapi/asm/kvm.h b/arch/mips/include/uapi/asm/kvm.h
+index 0e8f565..86812fb 100644
+--- a/arch/mips/include/uapi/asm/kvm.h
++++ b/arch/mips/include/uapi/asm/kvm.h
+@@ -18,12 +18,18 @@
+ #define N_MIPS_COPROC_REGS      32
+ #define N_MIPS_COPROC_SEL   	8
+ 
+-/* for KVM_GET_REGS and KVM_SET_REGS */
++/*
++ * for KVM_GET_REGS and KVM_SET_REGS
++ *
++ * If Config[AT] is zero (32-bit CPU), the register contents are
++ * stored in the lower 32-bits of the struct kvm_regs fields and sign
++ * extended to 64-bits.
++ */
+ struct kvm_regs {
+-	__u32 gprs[32];
+-	__u32 hi;
+-	__u32 lo;
+-	__u32 pc;
++	__u64 gprs[32];
++	__u64 hi;
++	__u64 lo;
++	__u64 pc;
+ 
+ 	__u32 cp0reg[N_MIPS_COPROC_REGS][N_MIPS_COPROC_SEL];
+ };
 -- 
 1.7.11.7

@@ -1,44 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 May 2013 19:09:44 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:4337 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835087Ab3EWRJiOXvL4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 May 2013 19:09:38 +0200
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r4NH9Snt017991
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 23 May 2013 13:09:28 -0400
-Received: from dhcp-1-237.tlv.redhat.com (dhcp-4-26.tlv.redhat.com [10.35.4.26])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r4NH9SCW004997;
-        Thu, 23 May 2013 13:09:28 -0400
-Received: by dhcp-1-237.tlv.redhat.com (Postfix, from userid 13519)
-        id 842EE18D3DE; Thu, 23 May 2013 20:09:27 +0300 (IDT)
-Date:   Thu, 23 May 2013 20:09:27 +0300
-From:   Gleb Natapov <gleb@redhat.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, kvm@vger.kernel.org,
-        Sanjay Lal <sanjayl@kymasys.com>, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH v5 0/6] mips/kvm: Fix ABI for compatibility with 64-bit
- guests.
-Message-ID: <20130523170927.GM26157@redhat.com>
-References: <1369248236-27237-1-git-send-email-ddaney.cavm@gmail.com>
- <20130523102834.GN4725@redhat.com>
- <519E4A98.7020903@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 May 2013 22:28:28 +0200 (CEST)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:33076 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6822972Ab3EWU2TGnxOi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 May 2013 22:28:19 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 7FEBB21BA34;
+        Thu, 23 May 2013 23:28:18 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id SZQybIrJYKAL; Thu, 23 May 2013 23:28:14 +0300 (EEST)
+Received: from musicnaut.iki.fi (cs181064211.pp.htv.fi [82.181.64.211])
+        by smtp4.welho.com (Postfix) with SMTP id 7F3295BC011;
+        Thu, 23 May 2013 23:28:13 +0300 (EEST)
+Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Thu, 23 May 2013 23:28:12 +0300
+Date:   Thu, 23 May 2013 23:28:12 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: Loongson2 cpu_wait function
+Message-ID: <20130523202812.GJ31836@blackmetal.musicnaut.iki.fi>
+References: <20130523122737.GA12530@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <519E4A98.7020903@caviumnetworks.com>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
-Return-Path: <gleb@redhat.com>
+In-Reply-To: <20130523122737.GA12530@linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36567
+X-archive-position: 36568
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gleb@redhat.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,30 +47,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, May 23, 2013 at 09:58:00AM -0700, David Daney wrote:
-> On 05/23/2013 03:28 AM, Gleb Natapov wrote:
-> >On Wed, May 22, 2013 at 11:43:50AM -0700, David Daney wrote:
-> >>From: David Daney <david.daney@cavium.com>
-> >>
-> >Please regenerate against master. arch/mips/include/asm/kvm.h does not
-> >exists any more.
-> 
-> New patch sent.  I gather from this message, that you want to merge
-> this particular set via your tree instead of Ralf's MIPS tree.
-> That's fine with me.  However, we were hoping to have these ABI
-> fixing patches pushed to Linus before 3.10 releases, so that there
-> don't exist kernel versions with the defective ABI.
-> 
-I do plan to push them to 3.10 that is why I asked to generate them
-against master ("next" branch is for next merge window)
+Hi,
 
-> Future patch sets may affect core MIPS architecture files, and
-> therefore may not be so amenable to merging via the KVM tree.  We
-> will have to figure out how to handle that.
+On Thu, May 23, 2013 at 02:27:37PM +0200, Ralf Baechle wrote:
+> During the 3.10 merge cycle many MIPS platforms were broken by the
+> generic idle loop patches.  A patch series to fix this has already been
+> merged but I'm wondering if fb40bc3e94933007d3e42e96daf1ec8044821cb8
+> [MIPS: Idle: Re-enable irqs at the end of r3081, au1k and loongson2
+> cpu_wait.] is sufficient and correct for Loongson 2.
 > 
-Are you talking about initial MIPS HW vitalization support? Lets see
-the patch series. If core changes are to big for for Ralf to ack them
-and push through kvm.git then we can push them via MPIS tree.
+> In particular:
+> 
+>  o drivers/cpufreq/loongson2_cpufreq.c protects accesses to LOONGSON_CHIPCFG0
+>    in loongson2_cpu_wait with a spinlock.  This spinlock is not used anywhere
+>    else in the kernel so it would appear there is still a race with other
+>    accesses to LOONGSON_CHIPCFG0.
+>  o It's not SMPly correct - even if cpufreq_exit restores the old value of
+>    cpu_wait on a SMP system another processor might still be executing
+>    loongson2_cpu_wait().
 
---
-			Gleb.
+I think Loongson2 is UP-only?
+
+>  o I'd appreciate if at least some basic power saving would be used even if
+>    CONFIG_LOONGSON2_CPUFREQ was disabled, that is loongson2_cpu_wait should
+>    go back to arch/mips/kernel/idle.c.
+>  o Could somebody test if Loongson 2 is working?  Thanks!
+
+It works (tested d97955625710b57f24427e403f150126078273c2), but cpufreq
+seems to be broken for some reason:
+
+[    6.136000] calling  cpufreq_init+0x0/0x8c @ 1
+[    6.140000] cpufreq: Loongson-2F CPU frequency driver.
+[    6.144000] initcall cpufreq_init+0x0/0x8c returned -19 after 4000 usecs
+
+I would also like to remind that the boot is still unreliable without
+this patch: http://patchwork.linux-mips.org/patch/4958/
+
+A.

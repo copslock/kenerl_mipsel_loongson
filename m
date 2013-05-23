@@ -1,35 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 May 2013 17:50:14 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:38836 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6835061Ab3EWPuNIknH0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 May 2013 17:50:13 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r4NFoAK7023843;
-        Thu, 23 May 2013 17:50:10 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r4NFo9iO023842;
-        Thu, 23 May 2013 17:50:09 +0200
-Date:   Thu, 23 May 2013 17:50:09 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Maciej W. Rozycki" <macro@codesourcery.com>
-Cc:     linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 May 2013 18:07:49 +0200 (CEST)
+Received: from relay1.mentorg.com ([192.94.38.131]:57232 "EHLO
+        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6835061Ab3EWQHoTYp1o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 May 2013 18:07:44 +0200
+Received: from svr-orw-fem-01.mgc.mentorg.com ([147.34.98.93])
+        by relay1.mentorg.com with esmtp 
+        id 1UfY3K-0001qO-CY from Maciej_Rozycki@mentor.com ; Thu, 23 May 2013 09:07:42 -0700
+Received: from SVR-IES-FEM-01.mgc.mentorg.com ([137.202.0.104]) by svr-orw-fem-01.mgc.mentorg.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 23 May 2013 09:07:42 -0700
+Received: from [172.30.64.76] (137.202.0.76) by SVR-IES-FEM-01.mgc.mentorg.com
+ (137.202.0.104) with Microsoft SMTP Server id 14.2.247.3; Thu, 23 May 2013
+ 17:07:40 +0100
+Date:   Thu, 23 May 2013 17:07:35 +0100
+From:   "Maciej W. Rozycki" <macro@codesourcery.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>
 Subject: Re: [PATCH] MIPS: Trap exception handling fixes
-Message-ID: <20130523155009.GA5598@linux-mips.org>
-References: <alpine.DEB.1.10.1305230253140.26443@tp.orcam.me.uk>
+In-Reply-To: <20130523155009.GA5598@linux-mips.org>
+Message-ID: <alpine.DEB.1.10.1305231656020.26443@tp.orcam.me.uk>
+References: <alpine.DEB.1.10.1305230253140.26443@tp.orcam.me.uk> <20130523155009.GA5598@linux-mips.org>
+User-Agent: Alpine 1.10 (DEB 962 2008-03-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.1.10.1305230253140.26443@tp.orcam.me.uk>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset="US-ASCII"
+X-OriginalArrivalTime: 23 May 2013 16:07:42.0147 (UTC) FILETIME=[A7910930:01CE57CF]
+Return-Path: <Maciej_Rozycki@mentor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36554
+X-archive-position: 36555
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@codesourcery.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,20 +44,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, May 23, 2013 at 04:31:23PM +0100, Maciej W. Rozycki wrote:
+On Thu, 23 May 2013, Ralf Baechle wrote:
 
-> 2a0b24f56c2492b932f1aed617ae80fb23500d21 broke Trap exception handling in 
-> the standard MIPS mode.  Additionally the microMIPS-mode trap code mask is 
-> wrong, as it's a 4-bit field.  Here's a fix.
-> 
-> Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
-> ---
-> Ralf, please apply.  Also the mention of: "A few NOP instructions are used 
-> to maintain the correct alignment[...]" in the commit referred makes me 
-> feel scared -- there is that .align pseudo-op, you know...  Maciej
+> Seems that whole bloody patchset was painfully unripe :-(
 
-Thanks, applied.
+ Sigh, I meant to at least skim over the patches to review them, but these 
+days I can hardly find time for smaller changes even.  This particular 
+issue was found in GCC regression testing.  I think at least running the 
+GCC and glibc test suites across the three ABIs and both endiannesses each 
+to make sure MIPS16/microMIPS support didn't regress standard MIPS support 
+was due.  This would have avoided this problem.  It looks to me do_bp 
+would benefit from some polishing too.
 
-Seems that whole bloody patchset was painfully unripe :-(
-
-  Ralf
+  Maciej

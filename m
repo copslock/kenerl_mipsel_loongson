@@ -1,37 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 May 2013 23:44:14 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:59479 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 May 2013 07:36:49 +0200 (CEST)
+Received: from mga02.intel.com ([134.134.136.20]:51275 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823056Ab3EWVoHQUqNw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 May 2013 23:44:07 +0200
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from shaker64.lan (dslb-088-073-012-093.pools.arcor-ip.net [88.73.12.93])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 0890E2802DD;
-        Thu, 23 May 2013 23:42:52 +0200 (CEST)
-From:   Jonas Gorski <jogo@openwrt.org>
-To:     linux-mips@linux-mips.org
+        id S6815748Ab3EXFgmgGFla (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 24 May 2013 07:36:42 +0200
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga101.jf.intel.com with ESMTP; 23 May 2013 22:36:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.87,732,1363158000"; 
+   d="scan'208";a="342435060"
+Received: from vkoul-udesk3.iind.intel.com ([10.223.84.41])
+  by orsmga002.jf.intel.com with ESMTP; 23 May 2013 22:36:17 -0700
+Received: from vkoul-udesk3.iind.intel.com (localhost [127.0.0.1])
+        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id r4O4xjBF032708;
+        Fri, 24 May 2013 10:29:45 +0530
+Received: (from vkoul@localhost)
+        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Submit) id r4O4xZCg032706;
+        Fri, 24 May 2013 10:29:35 +0530
+X-Authentication-Warning: vkoul-udesk3.iind.intel.com: vkoul set sender to vinod.koul@intel.com using -f
+Date:   Fri, 24 May 2013 10:29:35 +0530
+From:   Vinod Koul <vinod.koul@intel.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Gabor Juhos <juhosg@openwrt.org>,
-        "Steven J. Hill" <sjhill@mips.com>,
-        David Daney <david.daney@cavium.com>,
-        John Crispin <blogic@openwrt.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Manuel Lauss <manuel.lauss@googlemail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Jayachandran C <jchandra@broadcom.com>,
-        Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH] MIPS: define cpu_has_mmips where appropriate
-Date:   Thu, 23 May 2013 23:42:14 +0200
-Message-Id: <1369345335-28062-1-git-send-email-jogo@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <jogo@openwrt.org>
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH 3/6] dma: Add a jz4740 dmaengine driver
+Message-ID: <20130524045935.GM30200@intel.com>
+References: <1369341387-19147-1-git-send-email-lars@metafoo.de>
+ <1369341387-19147-4-git-send-email-lars@metafoo.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1369341387-19147-4-git-send-email-lars@metafoo.de>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <vinod.koul@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36577
+X-archive-position: 36578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: vinod.koul@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,293 +56,212 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Disable cpu_has_mmips for everything but SEAD3 and MALTA. Most of these
-platforms are from before the micromips introduction, so they are very
-unlikely to implement it.
+On Thu, May 23, 2013 at 10:36:24PM +0200, Lars-Peter Clausen wrote:
+> This patch adds dmaengine support for the JZ4740 DMA controller. For now the
+> driver will be a wrapper around the custom JZ4740 DMA API. Once all users of the
+> custom JZ4740 DMA API have been converted to the dmaengine API the custom API
+> will be removed and direct hardware access will be added to the dmaengine
+> driver.
+> 
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> ---
 
-Reduces an -Os compiled, uncompressed kernel image by 8KiB for BCM63XX.
+> +static enum jz4740_dma_width jz4740_dma_width(enum dma_slave_buswidth width)
+> +{
+> +	switch (width) {
+> +	case DMA_SLAVE_BUSWIDTH_1_BYTE:
+> +		return JZ4740_DMA_WIDTH_8BIT;
+> +	case DMA_SLAVE_BUSWIDTH_2_BYTES:
+> +		return JZ4740_DMA_WIDTH_16BIT;
+> +	case DMA_SLAVE_BUSWIDTH_4_BYTES:
+> +		return JZ4740_DMA_WIDTH_32BIT;
+> +	default:
+> +		return JZ4740_DMA_WIDTH_32BIT;
+> +	}
+Only diff between the values here and dmaengien values is JZ4740_DMA_WIDTH_32BIT
+as 0. But the header tells me taht its default and SIZE one has values in that
+pattern too. If that is the case you maybe able to get rid on conversion and use
+dmaengine values directly.
 
-Signed-off-by: Jonas Gorski <jogo@openwrt.org>
----
+> +}
+> +
+> +static enum jz4740_dma_transfer_size jz4740_dma_maxburst(u32 maxburst)
+> +{
+> +	if (maxburst <= 1)
+> +		return JZ4740_DMA_TRANSFER_SIZE_1BYTE;
+> +	else if (maxburst <= 3)
+> +		return JZ4740_DMA_TRANSFER_SIZE_2BYTE;
+> +	else if (maxburst <= 15)
+> +		return JZ4740_DMA_TRANSFER_SIZE_4BYTE;
+> +	else if (maxburst <= 31)
+> +		return JZ4740_DMA_TRANSFER_SIZE_16BYTE;
+> +
+> +	return JZ4740_DMA_TRANSFER_SIZE_32BYTE;
+> +}
+> +
+> +static int jz4740_dma_slave_config(struct dma_chan *c,
+> +	const struct dma_slave_config *config)
+> +{
+> +	struct jz4740_dmaengine_chan *chan = to_jz4740_dma_chan(c);
+> +	struct jz4740_dma_config jzcfg;
+> +
+> +	switch (config->direction) {
+> +	case DMA_MEM_TO_DEV:
+> +		jzcfg.flags = JZ4740_DMA_SRC_AUTOINC;
+> +		jzcfg.transfer_size = jz4740_dma_maxburst(config->dst_maxburst);
+> +		break;
+> +	case DMA_DEV_TO_MEM:
+> +		jzcfg.flags = JZ4740_DMA_DST_AUTOINC;
+> +		jzcfg.transfer_size = jz4740_dma_maxburst(config->src_maxburst);
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +
+> +	jzcfg.src_width = jz4740_dma_width(config->src_addr_width);
+> +	jzcfg.dst_width = jz4740_dma_width(config->dst_addr_width);
+this should be direction based, typically DMA engines have only one width to be
+programmed.
+> +	jzcfg.mode = JZ4740_DMA_MODE_SINGLE;
+> +	jzcfg.request_type = config->slave_id;
+> +
+> +	chan->config = *config;
+> +
+> +	jz4740_dma_configure(chan->jz_chan, &jzcfg);
+> +
+> +	return 0;
+You are NOT use src_addr/dstn_addr? How else are you passing the periphral
+address?
 
-Position chosen is based on asm/cpu-features.h. Missing hardware and/or
-data sheets for most platforms I obviously couldn't verify its
-non-existence, so maintainer acks are appreciated.
+> +}
+> +
+> +static int jz4740_dma_terminate_all(struct dma_chan *c)
+> +{
+> +	struct jz4740_dmaengine_chan *chan = to_jz4740_dma_chan(c);
+> +	unsigned long flags;
+> +	LIST_HEAD(head);
+> +
+> +	spin_lock_irqsave(&chan->vchan.lock, flags);
+> +	jz4740_dma_disable(chan->jz_chan);
+> +	chan->desc = NULL;
+> +	vchan_get_all_descriptors(&chan->vchan, &head);
+> +	spin_unlock_irqrestore(&chan->vchan.lock, flags);
+> +
+> +	vchan_dma_desc_free_list(&chan->vchan, &head);
+> +
+> +	return 0;
+> +}
+> +
+> +static int jz4740_dma_control(struct dma_chan *chan, enum dma_ctrl_cmd cmd,
+> +	unsigned long arg)
+> +{
+> +	struct dma_slave_config *config = (struct dma_slave_config *)arg;
+> +
+> +	switch (cmd) {
+> +	case DMA_SLAVE_CONFIG:
+> +		return jz4740_dma_slave_config(chan, config);
+> +	case DMA_TERMINATE_ALL:
+> +		return jz4740_dma_terminate_all(chan);
+> +	default:
+> +		return -EINVAL;
+ENXIO/ENOSYS perhaps?
+> +	}
+> +}
+> +
 
- arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h         |    1 +
- arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h        |    1 +
- arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h       |    1 +
- arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h |    1 +
- arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h        |    1 +
- arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h          |    1 +
- arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h          |    1 +
- arch/mips/include/asm/mach-ip28/cpu-feature-overrides.h          |    1 +
- arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h          |    1 +
- arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h        |    1 +
- arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h      |    1 +
- arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h      |    1 +
- arch/mips/include/asm/mach-pmcs-msp71xx/cpu-feature-overrides.h  |    1 +
- arch/mips/include/asm/mach-powertv/cpu-feature-overrides.h       |    1 +
- arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h |    1 +
- arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h |    1 +
- arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h |    1 +
- arch/mips/include/asm/mach-rc32434/cpu-feature-overrides.h       |    1 +
- arch/mips/include/asm/mach-rm/cpu-feature-overrides.h            |    1 +
- arch/mips/include/asm/mach-sibyte/cpu-feature-overrides.h        |    1 +
- arch/mips/include/asm/mach-tx49xx/cpu-feature-overrides.h        |    1 +
- 21 files changed, 21 insertions(+)
+> +static int jz4740_dma_alloc_chan_resources(struct dma_chan *c)
+> +{
+> +	struct jz4740_dmaengine_chan *chan = to_jz4740_dma_chan(c);
+> +
+> +	chan->jz_chan = jz4740_dma_request(chan, NULL);
+> +	if (!chan->jz_chan)
+> +		return -EBUSY;
+> +
+> +	jz4740_dma_set_complete_cb(chan->jz_chan, jz4740_dma_complete_cb);
+> +
+> +	return 0;
+Zero is not expected value, you need to return the descriptors allocated
+sucessfully.
+> +}
+> +
+> +static void jz4740_dma_free_chan_resources(struct dma_chan *c)
+> +{
+> +	struct jz4740_dmaengine_chan *chan = to_jz4740_dma_chan(c);
+> +
+> +	vchan_free_chan_resources(&chan->vchan);
+> +	jz4740_dma_free(chan->jz_chan);
+> +	chan->jz_chan = NULL;
+> +}
+> +
+> +static void jz4740_dma_desc_free(struct virt_dma_desc *vdesc)
+> +{
+> +	kfree(container_of(vdesc, struct jz4740_dma_desc, vdesc));
+> +}
+> +
+> +static int jz4740_dma_probe(struct platform_device *pdev)
+> +{
+> +	struct jz4740_dmaengine_chan *chan;
+> +	struct jz4740_dma_dev *dmadev;
+> +	struct dma_device *dd;
+> +	unsigned int i;
+> +	int ret;
+> +
+> +	dmadev = devm_kzalloc(&pdev->dev, sizeof(*dmadev), GFP_KERNEL);
+> +	if (!dmadev)
+> +		return -EINVAL;
+> +
+> +	dd = &dmadev->ddev;
+> +
+> +	dma_cap_set(DMA_SLAVE, dd->cap_mask);
+> +	dma_cap_set(DMA_CYCLIC, dd->cap_mask);
+> +	dd->device_alloc_chan_resources = jz4740_dma_alloc_chan_resources;
+> +	dd->device_free_chan_resources = jz4740_dma_free_chan_resources;
+> +	dd->device_tx_status = jz4740_dma_tx_status;
+> +	dd->device_issue_pending = jz4740_dma_issue_pending;
+> +	dd->device_prep_slave_sg = jz4740_dma_prep_slave_sg;
+> +	dd->device_prep_dma_cyclic = jz4740_dma_prep_dma_cyclic;
+> +	dd->device_control = jz4740_dma_control;
+> +	dd->dev = &pdev->dev;
+> +	dd->chancnt = 6;
+hard coding is not advised
+> +	INIT_LIST_HEAD(&dd->channels);
+> +
+> +	for (i = 0; i < dd->chancnt; i++) {
+> +		chan = &dmadev->chan[i];
+> +		chan->vchan.desc_free = jz4740_dma_desc_free;
+> +		vchan_init(&chan->vchan, dd);
+> +	}
+> +
+> +	ret = dma_async_device_register(dd);
+> +	if (ret)
+> +		return ret;
+> +
+> +	platform_set_drvdata(pdev, dmadev);
+> +
+> +	return 0;
+> +}
+> +
+> +static int jz4740_dma_remove(struct platform_device *pdev)
+> +{
+> +	struct jz4740_dma_dev *dmadev = platform_get_drvdata(pdev);
+> +
+> +	dma_async_device_unregister(&dmadev->ddev);
+> +
+> +	return 0;
+> +}
+> +
+> +static struct platform_driver jz4740_dma_driver = {
+> +	.probe = jz4740_dma_probe,
+> +	.remove = jz4740_dma_remove,
+> +	.driver = {
+> +		.name = "jz4740-dma",
+> +		.owner = THIS_MODULE,
+> +	},
+> +};
+> +module_platform_driver(jz4740_dma_driver);
+typically lot of dma driver like to be higher up in the module order. The reason
+is to have device initialized before clients, pls check if you need that
 
-diff --git a/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
-index ddb947e..d7d2b91 100644
---- a/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
-@@ -36,6 +36,7 @@
- #define cpu_has_mdmx		0
- #define cpu_has_mips3d		0
- #define cpu_has_smartmips	0
-+#define cpu_has_mmips		0
- 
- #define cpu_has_mips32r1	1
- #define cpu_has_mips32r2	1
-diff --git a/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
-index 09f45e6..2c33b1f 100644
---- a/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
-@@ -28,6 +28,7 @@
- #define cpu_has_mdmx			0
- #define cpu_has_mips3d			0
- #define cpu_has_smartmips		0
-+#define cpu_has_mmips			0
- #define cpu_has_vtag_icache		0
- #define cpu_has_dc_aliases		0
- #define cpu_has_ic_fills_f_dc		1
-diff --git a/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h b/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h
-index e9c408e..91d76fa 100644
---- a/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h
-@@ -22,6 +22,7 @@
- #define cpu_has_mdmx			0
- #define cpu_has_mips3d			0
- #define cpu_has_smartmips		0
-+#define cpu_has_mmips			0
- #define cpu_has_vtag_icache		0
- 
- #if !defined(BCMCPU_RUNTIME_DETECT) && (defined(CONFIG_BCM63XX_CPU_6348) || defined(CONFIG_BCM63XX_CPU_6345) || defined(CONFIG_BCM63XX_CPU_6338))
-diff --git a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-index 94ed063..862fb99 100644
---- a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-@@ -55,6 +55,7 @@
- #define cpu_has_dsp		0
- #define cpu_has_dsp2		0
- #define cpu_has_mipsmt		0
-+#define cpu_has_mmips		0
- #define cpu_has_vint		0
- #define cpu_has_veic		0
- #define cpu_hwrena_impl_bits	0xc0000000
-diff --git a/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h b/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h
-index 71d4bfa..89ca55c 100644
---- a/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h
-@@ -41,6 +41,7 @@
- #define cpu_has_mdmx		0
- #define cpu_has_mips3d		0
- #define cpu_has_smartmips	0
-+#define cpu_has_mmips		0
- #define cpu_has_vtag_icache	0
- #define cpu_has_ic_fills_f_dc	0
- #define cpu_icache_snoops_remote_store	0
-diff --git a/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h
-index f4caacd..704cc54 100644
---- a/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h
-@@ -23,6 +23,7 @@
- #define cpu_has_prefetch	0
- #define cpu_has_mcheck		0
- #define cpu_has_ejtag		0
-+#define cpu_has_mmips		0
- 
- #define cpu_has_llsc		1
- #define cpu_has_vtag_icache	0		/* Needs to change for R8000 */
-diff --git a/arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h
-index 1d2b6ff..156e4d4 100644
---- a/arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h
-@@ -20,6 +20,7 @@
- #define cpu_has_prefetch	1
- #define cpu_has_mcheck		0
- #define cpu_has_ejtag		0
-+#define cpu_has_mmips		0
- 
- #define cpu_has_llsc		1
- #define cpu_has_vtag_icache	0
-diff --git a/arch/mips/include/asm/mach-ip28/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ip28/cpu-feature-overrides.h
-index 65e9c85..7cc6593 100644
---- a/arch/mips/include/asm/mach-ip28/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-ip28/cpu-feature-overrides.h
-@@ -21,6 +21,7 @@
- #define cpu_has_prefetch	1
- #define cpu_has_mcheck		0
- #define cpu_has_ejtag		0
-+#define cpu_has_mmips		0
- 
- #define cpu_has_llsc		1
- #define cpu_has_vtag_icache	0
-diff --git a/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h
-index 2e1ec6c..0c7b7a0 100644
---- a/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h
-@@ -34,6 +34,7 @@
- #define cpu_has_cache_cdex_s	0
- #define cpu_has_mcheck		0
- #define cpu_has_ejtag		0
-+#define cpu_has_mmips		0
- #define cpu_has_vtag_icache	0
- #define cpu_has_ic_fills_f_dc	0
- #define cpu_has_dsp		0
-diff --git a/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h b/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
-index a225baa..4da0711 100644
---- a/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
-@@ -28,6 +28,7 @@
- #define cpu_has_mdmx 0
- #define cpu_has_mips3d 0
- #define cpu_has_smartmips 0
-+#define cpu_has_mmips		0
- #define kernel_uses_llsc	1
- #define cpu_has_vtag_icache	1
- #define cpu_has_dc_aliases	0
-diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-index c0f3ef4..ca34d19 100644
---- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-@@ -49,6 +49,7 @@
- #define cpu_has_mipsmt		0
- #define cpu_has_prefetch	0
- #define cpu_has_smartmips	0
-+#define cpu_has_mmips		0
- #define cpu_has_tlb		1
- #define cpu_has_tx39_cache	0
- #define cpu_has_userlocal	0
-diff --git a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
-index 091deb17..49d58ee 100644
---- a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
-@@ -21,6 +21,7 @@
- #define cpu_has_prefetch	1
- #define cpu_has_mcheck		1
- #define cpu_has_ejtag		1
-+#define cpu_has_mmips		0
- 
- #define cpu_has_llsc		1
- #define cpu_has_vtag_icache	0
-diff --git a/arch/mips/include/asm/mach-pmcs-msp71xx/cpu-feature-overrides.h b/arch/mips/include/asm/mach-pmcs-msp71xx/cpu-feature-overrides.h
-index 016fa94..3a6805a 100644
---- a/arch/mips/include/asm/mach-pmcs-msp71xx/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-pmcs-msp71xx/cpu-feature-overrides.h
-@@ -13,6 +13,7 @@
- /* #define cpu_has_dsp2		??? - do runtime detection */
- #define cpu_has_mipsmt		1
- #define cpu_has_fpu		0
-+#define cpu_has_mmips		0
- 
- #define cpu_has_mips32r1	0
- #define cpu_has_mips32r2	1
-diff --git a/arch/mips/include/asm/mach-powertv/cpu-feature-overrides.h b/arch/mips/include/asm/mach-powertv/cpu-feature-overrides.h
-index 58c76ec..fdfcb57 100644
---- a/arch/mips/include/asm/mach-powertv/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-powertv/cpu-feature-overrides.h
-@@ -37,6 +37,7 @@
- #define cpu_has_mdmx			0
- #define cpu_has_mips3d			0
- #define cpu_has_smartmips		0
-+#define cpu_has_mmips			0
- #define cpu_has_vtag_icache		0
- #define cpu_has_dc_aliases		0
- #define cpu_has_ic_fills_f_dc		0
-diff --git a/arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h
-index 72fc106..ac98538 100644
---- a/arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-ralink/rt288x/cpu-feature-overrides.h
-@@ -36,6 +36,7 @@
- #define cpu_has_mdmx		0
- #define cpu_has_mips3d		0
- #define cpu_has_smartmips	0
-+#define cpu_has_mmips		0
- 
- #define cpu_has_mips32r1	1
- #define cpu_has_mips32r2	1
-diff --git a/arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h
-index 917c286..a1f1c29 100644
---- a/arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-ralink/rt305x/cpu-feature-overrides.h
-@@ -36,6 +36,7 @@
- #define cpu_has_mdmx		0
- #define cpu_has_mips3d		0
- #define cpu_has_smartmips	0
-+#define cpu_has_mmips		0
- 
- #define cpu_has_mips32r1	1
- #define cpu_has_mips32r2	1
-diff --git a/arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h b/arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h
-index 181fbf4..9c88896 100644
---- a/arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-ralink/rt3883/cpu-feature-overrides.h
-@@ -35,6 +35,7 @@
- #define cpu_has_mdmx		0
- #define cpu_has_mips3d		0
- #define cpu_has_smartmips	0
-+#define cpu_has_mmips		0
- 
- #define cpu_has_mips32r1	1
- #define cpu_has_mips32r2	1
-diff --git a/arch/mips/include/asm/mach-rc32434/cpu-feature-overrides.h b/arch/mips/include/asm/mach-rc32434/cpu-feature-overrides.h
-index b153075..2801166 100644
---- a/arch/mips/include/asm/mach-rc32434/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-rc32434/cpu-feature-overrides.h
-@@ -51,6 +51,7 @@
- #define cpu_has_mdmx			0
- #define cpu_has_mips3d			0
- #define cpu_has_smartmips		0
-+#define cpu_has_mmips			0
- 
- #define cpu_has_vtag_icache		0
- 
-diff --git a/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h b/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h
-index f095c52..44d0daf 100644
---- a/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h
-@@ -25,6 +25,7 @@
- #define cpu_has_prefetch	0
- #define cpu_has_mcheck		0
- #define cpu_has_ejtag		0
-+#define cpu_has_mmips		0
- #define cpu_has_llsc		1
- #define cpu_has_vtag_icache	0
- #define cpu_has_dc_aliases	(PAGE_SIZE < 0x4000)
-diff --git a/arch/mips/include/asm/mach-sibyte/cpu-feature-overrides.h b/arch/mips/include/asm/mach-sibyte/cpu-feature-overrides.h
-index 92927b6..152c9a6 100644
---- a/arch/mips/include/asm/mach-sibyte/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-sibyte/cpu-feature-overrides.h
-@@ -20,6 +20,7 @@
- #define cpu_has_prefetch	1
- #define cpu_has_mcheck		1
- #define cpu_has_ejtag		1
-+#define cpu_has_mmips		0
- 
- #define cpu_has_llsc		1
- #define cpu_has_vtag_icache	1
-diff --git a/arch/mips/include/asm/mach-tx49xx/cpu-feature-overrides.h b/arch/mips/include/asm/mach-tx49xx/cpu-feature-overrides.h
-index 7f5144c..6913da4 100644
---- a/arch/mips/include/asm/mach-tx49xx/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-tx49xx/cpu-feature-overrides.h
-@@ -9,6 +9,7 @@
- #define cpu_has_mdmx		0
- #define cpu_has_mips3d		0
- #define cpu_has_smartmips	0
-+#define cpu_has_mmips		0
- #define cpu_has_vtag_icache	0
- #define cpu_has_ic_fills_f_dc	0
- #define cpu_has_dsp	0
--- 
-1.7.10.4
+--
+~Vinod

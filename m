@@ -1,53 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 May 2013 23:55:23 +0200 (CEST)
-Received: from mail-pa0-f44.google.com ([209.85.220.44]:51285 "EHLO
-        mail-pa0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835045Ab3EXVyXbbNxO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 May 2013 23:54:23 +0200
-Received: by mail-pa0-f44.google.com with SMTP id wp1so2183092pac.17
-        for <multiple recipients>; Fri, 24 May 2013 14:54:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=mddbPFGJeCnmstOI6k3iAwmS7tUTi3E5AWcsZpKG54I=;
-        b=Ea+mXqRO8goxN9xR6pOhLZ0PPxA/86SF4ydRb3NuGDpmKAyqlyfnWMoimfIXOrjENm
-         w5cyD84TVA/3qq2WbdbieLCU5qYHONGsJOlmU6eDUBd6/tvPOaNBJH7KDejbd+vAbmpP
-         WDESgD2e5v/+ukYaunDw03GA8dcAb3Fy7hkJvHMIyvN553rwhJvhlMHs1XUCNPqr/wqk
-         a1xYsUGLPgfbhWVrL4WjVwR6eEE3zNiGCkBQqZv6wIDYz3haZMoIOD+BvzrBHnpPHA1h
-         iY/JDxJB5r1+kS28uyDmRt31lLVM3vZg6DXpfpz+vQjZIW+/XYMn1KtBEv9MwQblcdEu
-         fwag==
-X-Received: by 10.66.159.234 with SMTP id xf10mr20137582pab.203.1369432456988;
-        Fri, 24 May 2013 14:54:16 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id ea15sm19002020pad.16.2013.05.24.14.54.15
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 24 May 2013 14:54:16 -0700 (PDT)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r4OLsElo013632;
-        Fri, 24 May 2013 14:54:14 -0700
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r4OLsEeh013631;
-        Fri, 24 May 2013 14:54:14 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>,
-        Jonas Gorski <jogo@openwrt.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>
-Subject: [PATCH 3/3] MIPS: Only set cpu_has_mmips if SYS_SUPPORTS_MICROMIPS
-Date:   Fri, 24 May 2013 14:54:10 -0700
-Message-Id: <1369432450-13583-4-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-In-Reply-To: <1369432450-13583-1-git-send-email-ddaney.cavm@gmail.com>
-References: <1369432450-13583-1-git-send-email-ddaney.cavm@gmail.com>
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 May 2013 17:17:00 +0200 (CEST)
+Received: from cassiel.sirena.org.uk ([80.68.93.111]:58345 "EHLO
+        cassiel.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827526Ab3EYPQ6fdfZh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 25 May 2013 17:16:58 +0200
+Received: from dhcp107-18-111-72.hil-torhi.det.wayport.net ([107.18.111.72] helo=finisterre)
+        by cassiel.sirena.org.uk with esmtpsa (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1UgGD8-0007Nl-JJ; Sat, 25 May 2013 16:16:50 +0100
+Received: from broonie by finisterre with local (Exim 4.80)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1UgGD5-0007vc-NB; Sat, 25 May 2013 11:16:43 -0400
+Date:   Sat, 25 May 2013 11:16:43 -0400
+From:   Mark Brown <broonie@kernel.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Vinod Koul <vinod.koul@intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Message-ID: <20130525151643.GI7660@sirena.org.uk>
+References: <1369341387-19147-1-git-send-email-lars@metafoo.de>
+ <1369341387-19147-6-git-send-email-lars@metafoo.de>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="fmvA4kSBHQVZhkR6"
+Content-Disposition: inline
+In-Reply-To: <1369341387-19147-6-git-send-email-lars@metafoo.de>
+X-Cookie: If you can read this, you're too close.
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-SA-Exim-Connect-IP: 107.18.111.72
+X-SA-Exim-Mail-From: broonie@sirena.org.uk
+Subject: Re: [PATCH 5/6] ASoC: jz4740: Use the generic dmaengine PCM driver
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:57:07 +0000)
+X-SA-Exim-Scanned: Yes (on cassiel.sirena.org.uk)
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36594
+X-archive-position: 36595
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: broonie@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,43 +56,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
 
-As Jonas Gorske said in his patch:
+--fmvA4kSBHQVZhkR6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-   Disable cpu_has_mmips for everything but SEAD3 and MALTA. Most of
-   these platforms are from before the micromips introduction, so they
-   are very unlikely to implement it.
+On Thu, May 23, 2013 at 10:36:26PM +0200, Lars-Peter Clausen wrote:
+> Since there is a dmaengine driver for the jz4740 DMA controller now we can use
+> the generic dmaengine PCM driver instead of a custom one.
 
-   Reduces an -Os compiled, uncompressed kernel image by 8KiB for
-   BCM63XX.
+Acked-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
 
-This patch taks a different approach than his, we gate the runtime
-test for microMIPS by the config symbol SYS_SUPPORTS_MICROMIPS.
+--fmvA4kSBHQVZhkR6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Signed-off-by: David Daney <david.daney@cavium.com>
-Cc: Jonas Gorski <jogo@openwrt.org>
-Cc: Steven J. Hill <Steven.Hill@imgtec.com>
----
- arch/mips/include/asm/cpu-features.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index e5ec8fc..2cdfd24 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -99,7 +99,11 @@
- #define cpu_has_rixi		(cpu_data[0].options & MIPS_CPU_RIXI)
- #endif
- #ifndef cpu_has_mmips
--#define cpu_has_mmips		(cpu_data[0].options & MIPS_CPU_MICROMIPS)
-+# ifdef CONFIG_SYS_SUPPORTS_MICROMIPS
-+#  define cpu_has_mmips		(cpu_data[0].options & MIPS_CPU_MICROMIPS)
-+# else
-+#  define cpu_has_mmips		0
-+# endif
- #endif
- #ifndef cpu_has_vtag_icache
- #define cpu_has_vtag_icache	(cpu_data[0].icache.flags & MIPS_CACHE_VTAG)
--- 
-1.7.11.7
+iQIcBAEBAgAGBQJRoNXYAAoJELSic+t+oim9VGsP/RwD3GHud0wg1TAOTr4i0QN1
+CRJuK0puIfPvHg6RIhjj6q6PJ5BIwPxL4Ci50vVPeJ6WVsgvXpdqFVV0omxhSEY0
+zsXdLabYw8FlsnyHfCQ9GnPBqS4uvoghpYma5/8/HNLFc6JoDHKU6k+DaoHudq1q
+8Agkl13iaC3Q3qWBb/k5a+fvb9IdPCxEhEtW51WydsNvr5LWZ6ENYTN2wSYg/Hbu
+LUX3479GOUMJpAdIwvbsJ7/P43PoTqIF5iQL1MB/IupnUwCRMNoRAUwmW2tY2WzF
+8eS5VQLB5S9qEuMpoUiH0NAXlrKqTtugPUU24EQRLuCUR1b7XyOq3FDsFO6aimq+
+ge1VbeILlw8kAUzM/9avNULZf6HnfOckOzoqXcfJvetw6Wjwk0bbooTlAUYPSHk1
+OdLHuxkAQMubaldN+msRANImpomGkPsmzkwHid07IWBB9BhBodG2H0agxEk/Y03W
+1gvmPfpvGAnrR2xVYBf0An27DxkH+/7BGkqV5jFinOjDlEbolp/inVNS8c6Ifj1J
+KwRkXZdlvifk71WyXAlW3eefUODYrnIaaN24dKzru9xKi4J/YfEY6oy23RtUVgIc
+VFKx5rikxnz6Gf4ZqLlUeG0R7rSnDIvV8iuZfaWMDuiFdpwkgHEo5a1b8U1DeQzd
+bY5n8pdykGomdZ+epJNt
+=L8pi
+-----END PGP SIGNATURE-----
+
+--fmvA4kSBHQVZhkR6--

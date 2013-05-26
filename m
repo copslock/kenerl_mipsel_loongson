@@ -1,30 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 May 2013 10:02:50 +0200 (CEST)
-Received: from intranet.asianux.com ([58.214.24.6]:41538 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 May 2013 10:07:05 +0200 (CEST)
+Received: from intranet.asianux.com ([58.214.24.6]:41550 "EHLO
         intranet.asianux.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6822998Ab3EZICnaIxCW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 26 May 2013 10:02:43 +0200
+        with ESMTP id S6817030Ab3EZIHDNy3H3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 26 May 2013 10:07:03 +0200
 Received: by intranet.asianux.com (Postfix, from userid 103)
-        id 69D6618402AB; Sun, 26 May 2013 16:02:36 +0800 (CST)
+        id 862C818402C6; Sun, 26 May 2013 16:06:56 +0800 (CST)
 Received: from [10.1.0.143] (unknown [219.143.36.82])
         (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by intranet.asianux.com (Postfix) with ESMTP id 1B9BB1840257;
-        Sun, 26 May 2013 16:02:36 +0800 (CST)
-Message-ID: <51A1C16A.6050808@asianux.com>
-Date:   Sun, 26 May 2013 16:01:46 +0800
+        by intranet.asianux.com (Postfix) with ESMTP id 308151840257;
+        Sun, 26 May 2013 16:06:56 +0800 (CST)
+Message-ID: <51A1C26E.5000609@asianux.com>
+Date:   Sun, 26 May 2013 16:06:06 +0800
 From:   Chen Gang <gang.chen@asianux.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130110 Thunderbird/17.0.2
 MIME-Version: 1.0
-To:     ralf@linux-mips.org, blogic@openwrt.org, juhosg@openwrt.org
-CC:     linux-mips@linux-mips.org, Linux-Arch <linux-arch@vger.kernel.org>
-Subject: [PATCH] arch: mips: ralink: using strlcpy() instead of strncpy()
+To:     ralf@linux-mips.org, blogic@openwrt.org, david.daney@cavium.com
+CC:     linux-mips@linux-mips.org, Linux-Arch <linux-arch@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: [PATCH] arch: mips: kernel: using strlcpy() instead of strncpy()
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Return-Path: <gang.chen@asianux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36599
+X-archive-position: 36600
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,31 +43,28 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
-'compatible' is used by strlen() in __of_device_is_compatible().
+For NUL terminated string, need always be sure of ended by zero.
 
-So for NUL terminated string, need always be sure of ended by zero.
-
-'of_ids' is not a structure in "include/uapi/*", so not need initialize
-all bytes, just use strlcpy() instead of strncpy().
+Or the next pr_info() will cause issue.
 
 
 Signed-off-by: Chen Gang <gang.chen@asianux.com>
 ---
- arch/mips/ralink/of.c |    2 +-
+ arch/mips/kernel/prom.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
-index fb15695..508f28f 100644
---- a/arch/mips/ralink/of.c
-+++ b/arch/mips/ralink/of.c
-@@ -104,7 +104,7 @@ static int __init plat_of_setup(void)
- 	if (!of_have_populated_dt())
- 		panic("device tree not present");
+diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
+index 5712bb5..7e95404 100644
+--- a/arch/mips/kernel/prom.c
++++ b/arch/mips/kernel/prom.c
+@@ -30,7 +30,7 @@ __init void mips_set_machine_name(const char *name)
+ 	if (name == NULL)
+ 		return;
  
--	strncpy(of_ids[0].compatible, soc_info.compatible, len);
-+	strlcpy(of_ids[0].compatible, soc_info.compatible, len);
- 	strncpy(of_ids[1].compatible, "palmbus", len);
+-	strncpy(mips_machine_name, name, sizeof(mips_machine_name));
++	strlcpy(mips_machine_name, name, sizeof(mips_machine_name));
+ 	pr_info("MIPS: machine is %s\n", mips_get_machine_name());
+ }
  
- 	if (of_platform_populate(NULL, of_ids, NULL, NULL))
 -- 
 1.7.7.6

@@ -1,33 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 May 2013 22:35:59 +0200 (CEST)
-Received: from filtteri2.pp.htv.fi ([213.243.153.185]:39470 "EHLO
-        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6824758Ab3EZUfyq3FW5 (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 May 2013 22:36:20 +0200 (CEST)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:45086 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6824793Ab3EZUfyqsKEc (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 26 May 2013 22:35:54 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by filtteri2.pp.htv.fi (Postfix) with ESMTP id EF35019BEDB;
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id D112A21B931;
         Sun, 26 May 2013 23:35:53 +0300 (EEST)
 X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
 Received: from smtp4.welho.com ([213.243.153.38])
-        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
-        with ESMTP id 8lz5BapaKNeZ; Sun, 26 May 2013 23:35:49 +0300 (EEST)
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id WzjpEC-Q5fCY; Sun, 26 May 2013 23:35:48 +0300 (EEST)
 Received: from blackmetal.pp.htv.fi (cs181064211.pp.htv.fi [82.181.64.211])
-        by smtp4.welho.com (Postfix) with ESMTP id 028195BC015;
+        by smtp4.welho.com (Postfix) with ESMTP id D87DF5BC005;
         Sun, 26 May 2013 23:35:48 +0300 (EEST)
 From:   Aaro Koskinen <aaro.koskinen@iki.fi>
 To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
 Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 2/2] MIPS: cavium-octeon: enable interfaces on EdgeRouter Lite
-Date:   Sun, 26 May 2013 23:35:43 +0300
-Message-Id: <1369600543-21558-2-git-send-email-aaro.koskinen@iki.fi>
+Subject: [PATCH 1/2] MIPS: cavium-octeon: cvmx-helper-board: print unknown board warning only once
+Date:   Sun, 26 May 2013 23:35:42 +0300
+Message-Id: <1369600543-21558-1-git-send-email-aaro.koskinen@iki.fi>
 X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1369600543-21558-1-git-send-email-aaro.koskinen@iki.fi>
-References: <1369600543-21558-1-git-send-email-aaro.koskinen@iki.fi>
 Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36602
+X-archive-position: 36603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,68 +42,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Enable interfaces on EdgeRouter Lite. Tested with cavium_octeon_defconfig
-and busybox shell. DHCP & ping works with eth0, eth1 and eth2.
-
-The board type "UBNT_E100" is taken from the sources of the vendor kernel
-shipped with the product.
+When booting a new board for the first time, the console is flooded with
+"Unknown board" messages. This is not really helpful. Board type is not
+going to change after the boot, so it's sufficient to print the warning
+only once.
 
 Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 ---
- arch/mips/cavium-octeon/executive/cvmx-helper-board.c |   13 +++++++++++++
- arch/mips/include/asm/octeon/cvmx-bootinfo.h          |    2 ++
- 2 files changed, 15 insertions(+)
+ arch/mips/cavium-octeon/executive/cvmx-helper-board.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-index e0451a0..f489667 100644
+index 7c64977..e0451a0 100644
 --- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
 +++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-@@ -183,6 +183,11 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
- 			return ipd_port - 16 + 4;
- 		else
- 			return -1;
-+	case CVMX_BOARD_TYPE_UBNT_E100:
-+		if (ipd_port >= 0 && ipd_port <= 2)
-+			return 7 - ipd_port;
-+		else
-+			return -1;
+@@ -31,6 +31,8 @@
+  * network ports from the rest of the cvmx-helper files.
+  */
+ 
++#include <linux/printk.h>
++
+ #include <asm/octeon/octeon.h>
+ #include <asm/octeon/cvmx-bootinfo.h>
+ 
+@@ -184,8 +186,7 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
  	}
  
  	/* Some unknown board. Somebody forgot to update this function... */
-@@ -707,6 +712,14 @@ int __cvmx_helper_board_hardware_enable(int interface)
- 				}
- 			}
- 		}
-+	} else if (cvmx_sysinfo_get()->board_type ==
-+			CVMX_BOARD_TYPE_UBNT_E100) {
-+		cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX(0, interface), 0);
-+		cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX(0, interface), 0x10);
-+		cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX(1, interface), 0);
-+		cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX(1, interface), 0x10);
-+		cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX(2, interface), 0);
-+		cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX(2, interface), 0x10);
- 	}
- 	return 0;
+-	cvmx_dprintf
+-	    ("cvmx_helper_board_get_mii_address: Unknown board type %d\n",
++	pr_warn_once("%s: Unknown board type %d\n", __func__,
+ 	     cvmx_sysinfo_get()->board_type);
+ 	return -1;
  }
-diff --git a/arch/mips/include/asm/octeon/cvmx-bootinfo.h b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-index 284fa8d..7b7818d 100644
---- a/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-+++ b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-@@ -227,6 +227,7 @@ enum cvmx_board_types_enum {
- 	 * use any numbers in this range.
- 	 */
- 	CVMX_BOARD_TYPE_CUST_PRIVATE_MIN = 20001,
-+	CVMX_BOARD_TYPE_UBNT_E100 = 20002,
- 	CVMX_BOARD_TYPE_CUST_PRIVATE_MAX = 30000,
- 
- 	/* The remaining range is reserved for future use. */
-@@ -325,6 +326,7 @@ static inline const char *cvmx_board_type_to_string(enum
- 
- 		    /* Customer private range */
- 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_PRIVATE_MIN)
-+		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_UBNT_E100)
- 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_PRIVATE_MAX)
- 	}
- 	return "Unsupported Board";
 -- 
 1.7.10.4

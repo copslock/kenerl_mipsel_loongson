@@ -1,53 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 May 2013 19:17:44 +0200 (CEST)
-Received: from mail-la0-f48.google.com ([209.85.215.48]:35828 "EHLO
-        mail-la0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827529Ab3E0RRlfKoBb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 May 2013 19:17:41 +0200
-Received: by mail-la0-f48.google.com with SMTP id fs12so6561857lab.7
-        for <linux-mips@linux-mips.org>; Mon, 27 May 2013 10:17:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding
-         :x-gm-message-state;
-        bh=A/UCqS+MLW3tfrb4MPQnoA3ND56V/BVmsn6D/J5oY0w=;
-        b=KjD5fRbJ8RVuHPbJM4Lhp10e2tOyNlgZ11vbGM4ZUhHjCVdOabGmNrxFpE0k6sjwl7
-         yrt2nuIVz1xmDaVS0ZB7CMd5kOkFRC08yXNxfw/4NQmzWwehQUQe5ELfE+lM6qt89EqO
-         4VEnSHaF6K9XtrBqvrkJK90nlTggunyuGndKxrWnWCt5pRK9jnOuftCaKbHqG8Shb7ww
-         YN+O1bfLLfwo4sNDFSHCSHpk2qDo0MlriAj4z7DO+QaUtgP3/XwqLc9JSEFRCcqEYYE9
-         +nEQBVWf9hWAY9L5y8HY+9TNln9iEUxWQKxpQgLGiLsX5C18qjHgjbgeUV84P5ixThXD
-         wKFg==
-X-Received: by 10.112.5.7 with SMTP id o7mr14705210lbo.64.1369675055646;
-        Mon, 27 May 2013 10:17:35 -0700 (PDT)
-Received: from [192.168.2.4] (ppp91-76-145-214.pppoe.mtu-net.ru. [91.76.145.214])
-        by mx.google.com with ESMTPSA id g10sm12319756lag.10.2013.05.27.10.17.33
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Mon, 27 May 2013 10:17:34 -0700 (PDT)
-Message-ID: <51A3952C.3060006@cogentembedded.com>
-Date:   Mon, 27 May 2013 21:17:32 +0400
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130509 Thunderbird/17.0.6
-MIME-Version: 1.0
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] MIPS: cavium-octeon: cvmx-helper-board: print unknown
- board warning only once
-References: <1369600543-21558-1-git-send-email-aaro.koskinen@iki.fi> <51A33317.2060202@cogentembedded.com>
-In-Reply-To: <51A33317.2060202@cogentembedded.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 May 2013 04:23:35 +0200 (CEST)
+Received: from mo11.iij4u.or.jp ([210.138.174.79]:55034 "EHLO mo.iij4u.or.jp"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6822517Ab3E1CX3t9-gp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 May 2013 04:23:29 +0200
+Received: by mo.iij4u.or.jp (mo11) id r4S2NPYf000464; Tue, 28 May 2013 11:23:25 +0900
+Received: from delta (sannin29190.nirai.ne.jp [203.160.29.190])
+        by mbox.iij4u.or.jp (mbox11) id r4S2NMF1024373
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Tue, 28 May 2013 11:23:24 +0900
+Date:   Tue, 28 May 2013 11:23:22 +0900
+From:   Yoichi Yuasa <yuasa@linux-mips.org>
+To:     ralf@linux-mips.org
+Cc:     yuasa@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: fix implicit declaration of function set_vi_handler()
+Message-Id: <20130528112322.6d71ac0db2ed1b23f908dc40@linux-mips.org>
+X-Mailer: Sylpheed 3.2.0beta5 (GTK+ 2.24.10; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQkVh2u0u+dbcxLCq0mgqJlr8ww47yoLVrxLOkZXriPj3lUIvRKFbsj9zo31u+7yb20Dc+/9
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Return-Path: <yuasa@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36617
+X-archive-position: 36618
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,36 +39,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 27-05-2013 14:19, Sergei Shtylyov wrote:
+arch/mips/kernel/rtlx.c: In function 'rtlx_module_init':
+arch/mips/kernel/rtlx.c:523:3: error: implicit declaration of function 'set_vi_handler' [-Werror=implicit-function-declaration]
 
->> When booting a new board for the first time, the console is flooded with
->> "Unknown board" messages. This is not really helpful. Board type is not
->> going to change after the boot, so it's sufficient to print the warning
->> only once.
+Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+---
+ arch/mips/kernel/rtlx.c |    1 +
+ 1 file changed, 1 insertion(+)
 
->> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
->> ---
->>   arch/mips/cavium-octeon/executive/cvmx-helper-board.c |    5 +++--
->>   1 file changed, 3 insertions(+), 2 deletions(-)
-
->> diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
->> b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
->> index 7c64977..e0451a0 100644
->> --- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
->> +++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-> [...]
->> @@ -184,8 +186,7 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
->>       }
->>
->>       /* Some unknown board. Somebody forgot to update this
->> function... */
->> -    cvmx_dprintf
->> -        ("cvmx_helper_board_get_mii_address: Unknown board type %d\n",
->> +    pr_warn_once("%s: Unknown board type %d\n", __func__,
->>            cvmx_sysinfo_get()->board_type);
-
->     Please align this line under the next char under (.
-
-     s/under (/after (/, of course.
-
-WBR, Sergei
+diff --git a/arch/mips/kernel/rtlx.c b/arch/mips/kernel/rtlx.c
+index dd8e542..d763f11 100644
+--- a/arch/mips/kernel/rtlx.c
++++ b/arch/mips/kernel/rtlx.c
+@@ -40,6 +40,7 @@
+ #include <asm/processor.h>
+ #include <asm/vpe.h>
+ #include <asm/rtlx.h>
++#include <asm/setup.h>
+ 
+ static struct rtlx_info *rtlx;
+ static int major;
+-- 
+1.7.9.5

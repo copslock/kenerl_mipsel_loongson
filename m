@@ -1,57 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 May 2013 16:45:53 +0200 (CEST)
-Received: from mail-pa0-f54.google.com ([209.85.220.54]:53260 "EHLO
-        mail-pa0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6833452Ab3E2OpoqHIvo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 May 2013 16:45:44 +0200
-Received: by mail-pa0-f54.google.com with SMTP id kx1so9388967pab.13
-        for <multiple recipients>; Wed, 29 May 2013 07:45:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=67QLURp4GXI2jVi1/7rB4zwgCt17VGSGVBlAW7fBA5A=;
-        b=BiHRJTbJB+gMjRph6PuN8JE6vpbCq7O1WOPrNwLuZvQhp7BKCfeyu50S3a+SoGcq/d
-         NYbTQ8QQQmygDRZL6WRShgOL8m7JSBzDBRyhhbOd9pjKJKjl2Q4/eVMKhAuTTRjXUhdl
-         NFOsMsUbE2Qglp7pAxNZSPahf8f7glq1LlyyQHt9a5UZVVlIsA2rJU30hY4AzmPTLJ8r
-         rTZ8mSNoxiCctpOiaikFhTcrLxBWITvgkKHk1gn73LmV5xy7a8R6laZejL59DvsyvS6P
-         CA6LZ5TukPq49LoLecWgd5BFXrfFerB6vhUZGtawAJnHcD8EwwGrNpD8jvgKFIqRJcFS
-         SrDw==
-X-Received: by 10.68.94.5 with SMTP id cy5mr3207791pbb.62.1369838738201;
-        Wed, 29 May 2013 07:45:38 -0700 (PDT)
-Received: from localhost.localdomain (pppoe146.47.east.tokyo.dcn.ne.jp. [219.105.47.146])
-        by mx.google.com with ESMTPSA id zs12sm40209652pab.0.2013.05.29.07.45.35
-        for <multiple recipients>
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Wed, 29 May 2013 07:45:37 -0700 (PDT)
-From:   Jiang Liu <liuj97@gmail.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Jiang Liu <jiang.liu@huawei.com>,
-        David Rientjes <rientjes@google.com>,
-        Wen Congyang <wency@cn.fujitsu.com>,
-        Mel Gorman <mgorman@suse.de>, Minchan Kim <minchan@kernel.org>,
-        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
-        Michal Hocko <mhocko@suse.cz>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        David Howells <dhowells@redhat.com>,
-        Mark Salter <msalter@redhat.com>,
-        Jianguo Wu <wujianguo@huawei.com>, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH, v2 07/13] mm/MIPS: prepare for killing free_all_bootmem_node()
-Date:   Wed, 29 May 2013 22:44:46 +0800
-Message-Id: <1369838692-26860-8-git-send-email-jiang.liu@huawei.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 May 2013 19:02:36 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:29382 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6834882Ab3E2RCSeLbpP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 29 May 2013 19:02:18 +0200
+From:   James Hogan <james.hogan@imgtec.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     <linux-mips@linux-mips.org>, James Hogan <james.hogan@imgtec.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        "Andrew Morton" <akpm@linux-foundation.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        "Kees Cook" <keescook@chromium.org>
+Subject: [RFC PATCH] kernel/signal.c: avoid BUG_ON with SIG128 (MIPS)
+Date:   Wed, 29 May 2013 18:01:56 +0100
+Message-ID: <1369846916-13202-1-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 1.8.1.2
-In-Reply-To: <1369838692-26860-1-git-send-email-jiang.liu@huawei.com>
-References: <1369838692-26860-1-git-send-email-jiang.liu@huawei.com>
-Return-Path: <liuj97@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-SEF-Processed: 7_3_0_01192__2013_05_29_18_02_11
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36631
+X-archive-position: 36632
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: liuj97@gmail.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,41 +39,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Prepare for killing free_all_bootmem_node() by using
-free_all_bootmem().
+MIPS has 128 signals, the highest of which has the number 128. The
+following command causes get_signal_to_deliver() to pass this signal
+number straight through to do_group_exit() as the exit code:
 
-Signed-off-by: Jiang Liu <jiang.liu@huawei.com>
+  strace sleep 10 & sleep 1 && kill -128 `pidof sleep`
+
+However do_group_exit() checks for the core dump bit (0x80) in the exit
+code which matches in this particular case and the kernel panics:
+
+  BUG_ON(exit_code & 0x80); /* core dumps don't get here */
+
+This is worked around by changing get_signal_to_deliver() to pass
+min(info->si_signo, 127) instead of info->si_signo, so that this highest
+of signal numbers get rounded down to 127. This makes the exit code
+technically incorrect, but it's better than killing the whole kernel.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Kees Cook <keescook@chromium.org>
 ---
- arch/mips/sgi-ip27/ip27-memory.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-index a0c9e34..a95c00f 100644
---- a/arch/mips/sgi-ip27/ip27-memory.c
-+++ b/arch/mips/sgi-ip27/ip27-memory.c
-@@ -477,18 +477,8 @@ void __init paging_init(void)
+This is based on v3.10-rc3.
+
+It's a little hacky, but aside from reducing the number of signals to
+127 to avoid this case (which isn't backwards compatible) I'm not sure
+what else can be done. Any comments?
+
+ kernel/signal.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/signal.c b/kernel/signal.c
+index 113411b..69bc00f 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -2366,8 +2366,12 @@ relock:
  
- void __init mem_init(void)
- {
--	unsigned node;
--
- 	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
--
--	for_each_online_node(node) {
--		/*
--		 * This will free up the bootmem, ie, slot 0 memory.
--		 */
--		free_all_bootmem_node(NODE_DATA(node));
--	}
--
-+	free_all_bootmem();
- 	setup_zero_pages();	/* This comes from node 0 */
--
- 	mem_init_print_info(NULL);
- }
+ 		/*
+ 		 * Death signals, no core dump.
++		 *
++		 * MIPS has a signal number 128 which clashes with the core dump
++		 * bit. If this was the signal we still want to report a valid
++		 * exit code, so round it down to 127.
+ 		 */
+-		do_group_exit(info->si_signo);
++		do_group_exit(min(info->si_signo, 127));
+ 		/* NOTREACHED */
+ 	}
+ 	spin_unlock_irq(&sighand->siglock);
 -- 
 1.8.1.2

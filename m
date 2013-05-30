@@ -1,58 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 May 2013 19:24:28 +0200 (CEST)
-Received: from mail-la0-f49.google.com ([209.85.215.49]:59230 "EHLO
-        mail-la0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825726Ab3E3RYXWSc1A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 May 2013 19:24:23 +0200
-Received: by mail-la0-f49.google.com with SMTP id fp13so513576lab.22
-        for <linux-mips@linux-mips.org>; Thu, 30 May 2013 10:24:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:organization:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding:x-gm-message-state;
-        bh=CdoPEMUV7ftPJDM4Ka6/ICcCiHS/q4o5+LGzS9tHb0s=;
-        b=HFw58HFbGRxNVRJq8oqY0HObpNpwV2q5QbUD4vv0PH9KZkXf59jxsoIwCygnX65jpF
-         ZrdnFzHhuDPkLqW1ddFKh/DULyE2AlvCPdKXbNc91walC1r2j4ZrI3PFU+KsFwrUaVMI
-         TCvCfxatqyk103Akxx8eiojdEj80MypSZD6N7CfTL/Xm9PsYZ+A8fTBdWFOPAsuM8wBn
-         Jmso5OaPG0yy7KWjw/kQjX8hIlUVMq0jfJIlARCUbVhlZxEzGR4N6Dn3yJtCmLOh75/A
-         aYvzX2jvke+TUcv2xOQEMrjZfOKfwdJhftQBAR4MIBv4Bs/Nf4uTREhSNe7a7dMsTPFz
-         vLqw==
-X-Received: by 10.152.121.73 with SMTP id li9mr4031743lab.18.1369934657474;
-        Thu, 30 May 2013 10:24:17 -0700 (PDT)
-Received: from wasted.dev.rtsoft.ru (ppp91-76-91-192.pppoe.mtu-net.ru. [91.76.91.192])
-        by mx.google.com with ESMTPSA id e9sm16374884lbj.3.2013.05.30.10.24.15
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 30 May 2013 10:24:16 -0700 (PDT)
-Message-ID: <51A78B45.1060604@cogentembedded.com>
-Date:   Thu, 30 May 2013 21:24:21 +0400
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20130509 Thunderbird/17.0.6
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 May 2013 19:51:00 +0200 (CEST)
+Received: from mga03.intel.com ([143.182.124.21]:31766 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823098Ab3E3RuxVgVch (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 May 2013 19:50:53 +0200
+Received: from azsmga002.ch.intel.com ([10.2.17.35])
+  by azsmga101.ch.intel.com with ESMTP; 30 May 2013 10:50:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.87,772,1363158000"; 
+   d="scan'208";a="248760869"
+Received: from vkoul-udesk3.iind.intel.com ([10.223.84.41])
+  by AZSMGA002.ch.intel.com with ESMTP; 30 May 2013 10:50:37 -0700
+Received: from vkoul-udesk3.iind.intel.com (localhost [127.0.0.1])
+        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id r4UHCo2e012326;
+        Thu, 30 May 2013 22:42:51 +0530
+Received: (from vkoul@localhost)
+        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Submit) id r4UHCQuk012310;
+        Thu, 30 May 2013 22:42:26 +0530
+X-Authentication-Warning: vkoul-udesk3.iind.intel.com: vkoul set sender to vinod.koul@intel.com using -f
+Date:   Thu, 30 May 2013 22:42:26 +0530
+From:   Vinod Koul <vinod.koul@intel.com>
 To:     Lars-Peter Clausen <lars@metafoo.de>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Vinod Koul <vinod.koul@intel.com>,
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Maarten ter Huurne <maarten@treewalker.org>,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         alsa-devel@alsa-project.org
-Subject: Re: [PATCH v2 4/6] MIPS: jz4740: Register jz4740 DMA device
-References: <1369931105-28065-1-git-send-email-lars@metafoo.de> <1369931105-28065-5-git-send-email-lars@metafoo.de>
-In-Reply-To: <1369931105-28065-5-git-send-email-lars@metafoo.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQkfgastGnhYkGn+3b/7ZNqzSP1Pu2obpviUIICNRmbNKZipx+MxSUa9yXgndYYFrPkAw3Fl
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v2 3/6] dma: Add a jz4740 dmaengine driver
+Message-ID: <20130530171225.GA3767@intel.com>
+References: <1369931105-28065-1-git-send-email-lars@metafoo.de>
+ <1369931105-28065-4-git-send-email-lars@metafoo.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1369931105-28065-4-git-send-email-lars@metafoo.de>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <vinod.koul@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36646
+X-archive-position: 36647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: vinod.koul@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,28 +56,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+On Thu, May 30, 2013 at 06:25:02PM +0200, Lars-Peter Clausen wrote:
+> This patch adds dmaengine support for the JZ4740 DMA controller. For now the
+> driver will be a wrapper around the custom JZ4740 DMA API. Once all users of the
+> custom JZ4740 DMA API have been converted to the dmaengine API the custom API
+> will be removed and direct hardware access will be added to the dmaengine
+> driver.
+> 
+> +
+> +#include <asm/mach-jz4740/dma.h>
+Am bit worried about having header in arch. Why cant we have this drivers header
+in linux/. That way same IP block cna be reused across archs.
+I was hoping that you would have move it in 6th patch, but that isnt the case
 
-On 05/30/2013 08:25 PM, Lars-Peter Clausen wrote:
 
-> Register a device for the newly added jz4740 dmaengine driver.
->
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> Acked-by: Ralf Baechle <ralf@linux-mips.org>
-[...]
->   3 files changed, 23 insertions(+)
-> diff --git a/arch/mips/jz4740/platform.c b/arch/mips/jz4740/platform.c
-> index e9348fd..35a9d8c 100644
-> --- a/arch/mips/jz4740/platform.c
-> +++ b/arch/mips/jz4740/platform.c
-> @@ -329,3 +329,24 @@ struct platform_device jz4740_pwm_device = {
-[...]
-> +struct platform_device jz4740_dma_device = {
-> +	.name	= "jz4740-dma",
-> +	.id	= -1,
+> +static int jz4740_dma_alloc_chan_resources(struct dma_chan *c)
+> +{
+> +	struct jz4740_dmaengine_chan *chan = to_jz4740_dma_chan(c);
+> +
+> +	chan->jz_chan = jz4740_dma_request(chan, NULL);
+> +	if (!chan->jz_chan)
+> +		return -EBUSY;
+> +
+> +	jz4740_dma_set_complete_cb(chan->jz_chan, jz4740_dma_complete_cb);
+> +
+> +	return 0;
+Sorry, I didnt reply on this one. The API expects you to allocate a pool of
+descriptors. These descriptors are to be used in .device_prep_xxx calls later.
 
-    Why not align all = in this structure?
-
-> +	.num_resources = ARRAY_SIZE(jz4740_dma_resources),
-> +	.resource      = jz4740_dma_resources,
-> +};
+--
+~Vinod

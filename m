@@ -1,41 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 May 2013 19:51:47 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:58340 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 May 2013 19:59:42 +0200 (CEST)
+Received: from mga01.intel.com ([192.55.52.88]:10674 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823608Ab3E3RviIh59V (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 May 2013 19:51:38 +0200
-Received: from int-mx12.intmail.prod.int.phx2.redhat.com (int-mx12.intmail.prod.int.phx2.redhat.com [10.5.11.25])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r4UHpST8006557
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 30 May 2013 13:51:28 -0400
-Received: from yakj.usersys.redhat.com (ovpn-112-38.ams2.redhat.com [10.36.112.38])
-        by int-mx12.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r4UHpO3O017472;
-        Thu, 30 May 2013 13:51:25 -0400
-Message-ID: <51A79193.6080908@redhat.com>
-Date:   Thu, 30 May 2013 19:51:15 +0200
-From:   Paolo Bonzini <pbonzini@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
+        id S6823064Ab3E3R7hEnPVq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 May 2013 19:59:37 +0200
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP; 30 May 2013 10:59:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.87,772,1363158000"; 
+   d="scan'208";a="345797016"
+Received: from vkoul-udesk3.iind.intel.com ([10.223.84.41])
+  by fmsmga002.fm.intel.com with ESMTP; 30 May 2013 10:59:16 -0700
+Received: from vkoul-udesk3.iind.intel.com (localhost [127.0.0.1])
+        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id r4UHLN4E012679;
+        Thu, 30 May 2013 22:51:26 +0530
+Received: (from vkoul@localhost)
+        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Submit) id r4UHKoY9012655;
+        Thu, 30 May 2013 22:50:50 +0530
+X-Authentication-Warning: vkoul-udesk3.iind.intel.com: vkoul set sender to vinod.koul@intel.com using -f
+Date:   Thu, 30 May 2013 22:50:50 +0530
+From:   Vinod Koul <vinod.koul@intel.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH v2 6/6] MIPS: jz4740: Remove custom DMA API
+Message-ID: <20130530172050.GB3767@intel.com>
+References: <1369931105-28065-1-git-send-email-lars@metafoo.de>
+ <1369931105-28065-7-git-send-email-lars@metafoo.de>
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     Sanjay Lal <sanjayl@kymasys.com>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Gleb Natapov <gleb@redhat.com>,
-        Marcelo Tosatti <mtosatti@redhat.com>
-Subject: Re: [PATCH 10/18] KVM/MIPS32-VZ: Add API for VZ-ASE Capability
-References: <n> <1368942460-15577-1-git-send-email-sanjayl@kymasys.com> <1368942460-15577-11-git-send-email-sanjayl@kymasys.com> <51A4DC99.7040706@redhat.com> <51A7875F.4080606@gmail.com>
-In-Reply-To: <51A7875F.4080606@gmail.com>
-X-Enigmail-Version: 1.5.1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.25
-Return-Path: <pbonzini@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1369931105-28065-7-git-send-email-lars@metafoo.de>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <vinod.koul@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36648
+X-archive-position: 36649
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: vinod.koul@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,35 +56,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Il 30/05/2013 19:07, David Daney ha scritto:
-> On 05/28/2013 09:34 AM, Paolo Bonzini wrote:
->> Il 19/05/2013 07:47, Sanjay Lal ha scritto:
->>> - Add API to allow clients (QEMU etc.) to check whether the H/W
->>>    supports the MIPS VZ-ASE.
->>
->> Why does this matter to userspace?  Do the userspace have some way to
->> detect if the kernel is unmodified or minimally-modified?
->>
+On Thu, May 30, 2013 at 06:25:05PM +0200, Lars-Peter Clausen wrote:
+> Now that all users of the custom jz4740 DMA API have been converted to use
+> the dmaengine API instead we can remove the custom API and move all the code
+> talking to the hardware to the dmaengine driver.
 > 
-> There are (will be) two types of VM presented by MIPS KVM:
-> 
-> 1) That provided by the initial patch where a faux-MIPS is emulated and
-> all kernel code must be in the USEG address space.
-> 
-> 2) Real MIPS, addressing works as per the architecture specification.
-> 
-> Presumably the user-space client would like to know which of these are
-> supported, as well as be able to select the desired model.
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
+> ---
+> No changes since v1
+> ---
+>  arch/mips/include/asm/mach-jz4740/dma.h |  56 ------
+>  arch/mips/jz4740/Makefile               |   2 +-
+>  arch/mips/jz4740/dma.c                  | 307 --------------------------------
+>  drivers/dma/dma-jz4740.c                | 258 +++++++++++++++++++++++----
+>  4 files changed, 222 insertions(+), 401 deletions(-)
+>  delete mode 100644 arch/mips/jz4740/dma.c
+only dma.c, you should remove the dma.h or relocate it to linux/
 
-Understood.  It's really two different machine types.
 
-> I don't know the best way to do this, but I agree that
-> KVM_CAP_MIPS_VZ_ASE is probably not the best name for it.
-> 
-> My idea was to have the arg of the KVM_CREATE_VM ioctl specify the
-> desired style
+rest of the series looks fine, and once we have acks from repsective subsystem
+mainatiners, we should be good to merge
 
-Ok.  How complex is it?  Do you plan to do this when the patches are
-"really ready" for Linus' tree?
-
-Paolo
+--
+~Vinod

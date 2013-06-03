@@ -1,33 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jun 2013 21:45:13 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41281 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827503Ab3FCTpHWyGcl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jun 2013 21:45:07 +0200
-Received: from localhost (c-76-28-172-123.hsd1.wa.comcast.net [76.28.172.123])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B01B86EF;
-        Mon,  3 Jun 2013 19:44:59 +0000 (UTC)
-Date:   Mon, 3 Jun 2013 12:44:59 -0700
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     devel@driverdev.osuosl.org, linux-mips@linux-mips.org,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH] staging: MIPS: add Octeon USB HCD support
-Message-ID: <20130603194459.GA11914@kroah.com>
-References: <1370112178-16430-1-git-send-email-aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jun 2013 23:13:21 +0200 (CEST)
+Received: from mail-wi0-f176.google.com ([209.85.212.176]:53298 "EHLO
+        mail-wi0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827511Ab3FCVNT46d5a convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 3 Jun 2013 23:13:19 +0200
+Received: by mail-wi0-f176.google.com with SMTP id hr14so3131896wib.15
+        for <multiple recipients>; Mon, 03 Jun 2013 14:13:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:organization:to:subject:date:user-agent:cc:references
+         :in-reply-to:mime-version:content-type:content-transfer-encoding
+         :message-id;
+        bh=FSWBnsgfQMuNm7XWJPdBDKgjF4vlq7ZfxoqdjToRNng=;
+        b=xdE8MOi2eicfKxny/QnJ0I3FBqySdyTVgvWDjAWey3M2ufb8l9RM1zjLljo1bDko5G
+         q3OupztMXvHuFniomIPF5hqqj2SdlBh1Na3DPqhrkmranZqG7HIfZQaUV4qNnJXAGAGr
+         /jwye1mOwblePq5IUoAeqvefD1KhJyymHiaWr+7wlgauv1NDIKnSbkXtv9BYWGdi/YFu
+         h+dzLZmk9Cyyt4QZ1kFTjpVNCZZH6908TUZcfMkKztEVYhWcaezhzqqsibuE52tQCTNI
+         lvvDyfgy+sH3UHVB89vU4TPKHjrolsuAlN8pQVPnVVhYBkDHZFRIBjoUw2olDwA83tFv
+         MqQA==
+X-Received: by 10.194.243.129 with SMTP id wy1mr10356700wjc.47.1370293994487;
+        Mon, 03 Jun 2013 14:13:14 -0700 (PDT)
+Received: from lenovo.localnet (cpc24-aztw25-2-0-cust938.aztw.cable.virginmedia.com. [92.233.35.171])
+        by mx.google.com with ESMTPSA id d5sm26249729wic.1.2013.06.03.14.13.12
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Mon, 03 Jun 2013 14:13:13 -0700 (PDT)
+From:   Florian Fainelli <florian@openwrt.org>
+Organization: OpenWrt
+To:     Jonas Gorski <jogo@openwrt.org>
+Subject: Re: [PATCH 0/3] MIPS: BCM63XX: add SMP support
+Date:   Mon, 3 Jun 2013 22:13:02 +0100
+User-Agent: KMail/1.13.7 (Linux/3.8-2-amd64; KDE/4.8.4; x86_64; ; )
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Kevin Cernekee <cernekee@gmail.com>
+References: <1370273975-12373-1-git-send-email-jogo@openwrt.org>
+In-Reply-To: <1370273975-12373-1-git-send-email-jogo@openwrt.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1370112178-16430-1-git-send-email-aaro.koskinen@iki.fi>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: Text/Plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <201306032213.03552.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36668
+X-archive-position: 36669
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,53 +63,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Jun 01, 2013 at 09:42:58PM +0300, Aaro Koskinen wrote:
-> Add support for Octeon USB HCD. Tested on EdgeRouter Lite with USB
-> mass storage.
+Le lundi 03 juin 2013 16:39:32, Jonas Gorski a écrit :
+> Most newer BCM63XX SoCs after BCM6358 use a BMIPS4350 CPU with SMP
+> support. This patchset allows BCM6368 and BCM6362 to boot a SMP kernel
+> (both tested, as well as (not yet upstreamed) BCM63268).
 > 
-> The driver has been extracted from GPL sources of EdgeRouter Lite firmware
-> (based on Linux 2.6.32.13). Some minor fixes and cleanups have been done
-> to make it work with 3.10-rc3.
+> BCM6328 is skipped because the only SMP versions will be rejected by
+> current code (they are BCM6329, which is treated as a totally
+> unsupported chip).
 > 
-> $ uname -a
-> Linux (none) 3.10.0-rc3-edge-00005-g86cb5bc #41 SMP PREEMPT Sat Jun 1 20:41:46 EEST 2013 mips64 GNU/Linux
-> $ modprobe octeon-usb
-> [   37.971683] octeon_usb: module is from the staging directory, the quality is unknown, you have been warned.
-> [   37.983649] OcteonUSB: Detected 1 ports
-> [   37.999360] OcteonUSB OcteonUSB.0: Octeon Host Controller
-> [   38.004847] OcteonUSB OcteonUSB.0: new USB bus registered, assigned bus number 1
-> [   38.012332] OcteonUSB OcteonUSB.0: irq 122, io mem 0x00000000
-> [   38.019970] hub 1-0:1.0: USB hub found
-> [   38.023851] hub 1-0:1.0: 1 port detected
-> [   38.028101] OcteonUSB: Registered HCD for port 0 on irq 122
-> [   38.391443] usb 1-1: new high-speed USB device number 2 using OcteonUSB
-> [   38.586922] usb-storage 1-1:1.0: USB Mass Storage device detected
-> [   38.597375] scsi0 : usb-storage 1-1:1.0
-> [   39.604111] scsi 0:0:0:0: Direct-Access              USB DISK 2.0     PMAP PQ: 0 ANSI: 4
-> [   39.619113] sd 0:0:0:0: [sda] 7579008 512-byte logical blocks: (3.88 GB/3.61 GiB)
-> [   39.630696] sd 0:0:0:0: [sda] Write Protect is off
-> [   39.635945] sd 0:0:0:0: [sda] No Caching mode page present
-> [   39.641464] sd 0:0:0:0: [sda] Assuming drive cache: write through
-> [   39.651341] sd 0:0:0:0: [sda] No Caching mode page present
-> [   39.656917] sd 0:0:0:0: [sda] Assuming drive cache: write through
-> [   39.664296]  sda: sda1 sda2
-> [   39.675574] sd 0:0:0:0: [sda] No Caching mode page present
-> [   39.681093] sd 0:0:0:0: [sda] Assuming drive cache: write through
-> [   39.687223] sd 0:0:0:0: [sda] Attached SCSI removable disk
+> BCM6358 is intentionally skipped because it shares a single TLB for
+> both cores/threads, which requires implementing locking for TLB accesses,
+> and ain't nobody got time for that.
 > 
-> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> The internal interrupt controller supports routing IRQs to both CPUs,
+> and support will be added in a later patchset. For now all hardware
+> interrupts will go to CPU0.
+> 
+> Totally unscientific OpenSSL benchmarking shows a nice ~90% speed
+> increase when enabling the second core.
+> 
+> No idea about the FIXME in 1/3, never had a problem with it so I left it
+> in place as to have it documented.
 
-checkpatch.pl output:
-	total: 4870 errors, 4611 warnings, 10004 lines checked
+I successfully tested these on BCM6361 (6362-like) on top of the current mips-
+for-linux-next, feel free to add my:
 
-You have almost one error/warning per line of code you added.  That
-means you will end up replacing all of the driver by the time you are
-done.
+Tested-by: Florian Fainelli <florian@openwrt.org>
 
-Are you really going to do that?  It's fine with me, but I better start
-get cleanup patches from you and others real soon, or I will drop this
-driver from the tree.
-
-thanks,
-
-greg k-h
+Thanks Jonas!
+-- 
+Florian

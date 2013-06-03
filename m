@@ -1,36 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jun 2013 18:52:46 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:39598 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6831597Ab3FCQwo53uDX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jun 2013 18:52:44 +0200
-Received: from localhost (c-76-28-172-123.hsd1.wa.comcast.net [76.28.172.123])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C5F4A6EF;
-        Mon,  3 Jun 2013 16:52:36 +0000 (UTC)
-Date:   Mon, 3 Jun 2013 09:52:35 -0700
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jun 2013 19:16:56 +0200 (CEST)
+Received: from mail-ie0-f178.google.com ([209.85.223.178]:44693 "EHLO
+        mail-ie0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6826484Ab3FCRQvQMHtc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Jun 2013 19:16:51 +0200
+Received: by mail-ie0-f178.google.com with SMTP id f4so11146561iea.37
+        for <linux-mips@linux-mips.org>; Mon, 03 Jun 2013 10:16:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=NQGfGs2qYbPv1G/SA8kKpx/j7UDBoSNFTcFyjB3++68=;
+        b=zayacvZuEfx5Xn/e+djqfnB2+Eq0CeX/OuK98YyyNQkFxQ4Qd+X4DQ+ioADvnsWLu3
+         EbMZ+ZE01mGQ2uOHGcru3pKgmcIsnzAengmUdAAtOaqDyPjX1WKoRHjdY/rzl67q7Yfs
+         SsYO4Pd1SxZr+XSGEZm31qCN5WIKS2U1UMpJEAJqi4lqoJIYqWl9xU2OXWKe2nJKFpsp
+         Yx8ic4Z39wJMSe0WV6s6M8zdllOhdjNCA65iKQKmrZ5SOoUXsIZG2C2CAjsAzn6bUQ4t
+         +yyYD+IzKiabrmYAhCQQKWdePsQqpHbXJ/rWiUFc147MLDILEPeayWhOr8tp6eXi6tfV
+         j5kg==
+X-Received: by 10.50.80.70 with SMTP id p6mr8594938igx.67.1370279804070;
+        Mon, 03 Jun 2013 10:16:44 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id vc15sm20348929igb.7.2013.06.03.10.16.42
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 03 Jun 2013 10:16:43 -0700 (PDT)
+Message-ID: <51ACCF79.7020505@gmail.com>
+Date:   Mon, 03 Jun 2013 10:16:41 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
+MIME-Version: 1.0
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Aaro Koskinen <aaro.koskinen@iki.fi>,
         Chad Reese <kreese@caviumnetworks.com>,
         devel@driverdev.osuosl.org, linux-usb@vger.kernel.org,
         linux-mips@linux-mips.org
 Subject: Re: [PATCH] staging: MIPS: add Octeon USB HCD support
-Message-ID: <20130603165235.GA20278@kroah.com>
-References: <1370112178-16430-1-git-send-email-aaro.koskinen@iki.fi>
- <51ACC5E1.5040906@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <51ACC5E1.5040906@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <gregkh@linuxfoundation.org>
+References: <1370112178-16430-1-git-send-email-aaro.koskinen@iki.fi> <51ACC5E1.5040906@gmail.com> <20130603165235.GA20278@kroah.com>
+In-Reply-To: <20130603165235.GA20278@kroah.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36666
+X-archive-position: 36667
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,77 +59,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jun 03, 2013 at 09:35:45AM -0700, David Daney wrote:
-> On 06/01/2013 11:42 AM, Aaro Koskinen wrote:
-> >Add support for Octeon USB HCD. Tested on EdgeRouter Lite with USB
-> >mass storage.
-> >
-> >The driver has been extracted from GPL sources of EdgeRouter Lite firmware
-> >(based on Linux 2.6.32.13). Some minor fixes and cleanups have been done
-> >to make it work with 3.10-rc3.
-> >
-> >$ uname -a
-> >Linux (none) 3.10.0-rc3-edge-00005-g86cb5bc #41 SMP PREEMPT Sat Jun 1 20:41:46 EEST 2013 mips64 GNU/Linux
-> >$ modprobe octeon-usb
-> >[   37.971683] octeon_usb: module is from the staging directory, the quality is unknown, you have been warned.
-> >[   37.983649] OcteonUSB: Detected 1 ports
-> >[   37.999360] OcteonUSB OcteonUSB.0: Octeon Host Controller
-> >[   38.004847] OcteonUSB OcteonUSB.0: new USB bus registered, assigned bus number 1
-> >[   38.012332] OcteonUSB OcteonUSB.0: irq 122, io mem 0x00000000
-> >[   38.019970] hub 1-0:1.0: USB hub found
-> >[   38.023851] hub 1-0:1.0: 1 port detected
-> >[   38.028101] OcteonUSB: Registered HCD for port 0 on irq 122
-> >[   38.391443] usb 1-1: new high-speed USB device number 2 using OcteonUSB
-> >[   38.586922] usb-storage 1-1:1.0: USB Mass Storage device detected
-> >[   38.597375] scsi0 : usb-storage 1-1:1.0
-> >[   39.604111] scsi 0:0:0:0: Direct-Access              USB DISK 2.0     PMAP PQ: 0 ANSI: 4
-> >[   39.619113] sd 0:0:0:0: [sda] 7579008 512-byte logical blocks: (3.88 GB/3.61 GiB)
-> >[   39.630696] sd 0:0:0:0: [sda] Write Protect is off
-> >[   39.635945] sd 0:0:0:0: [sda] No Caching mode page present
-> >[   39.641464] sd 0:0:0:0: [sda] Assuming drive cache: write through
-> >[   39.651341] sd 0:0:0:0: [sda] No Caching mode page present
-> >[   39.656917] sd 0:0:0:0: [sda] Assuming drive cache: write through
-> >[   39.664296]  sda: sda1 sda2
-> >[   39.675574] sd 0:0:0:0: [sda] No Caching mode page present
-> >[   39.681093] sd 0:0:0:0: [sda] Assuming drive cache: write through
-> >[   39.687223] sd 0:0:0:0: [sda] Attached SCSI removable disk
-> >
-> >Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> >---
-> >  drivers/staging/Kconfig                      |    2 +
-> >  drivers/staging/Makefile                     |    1 +
-> >  drivers/staging/octeon-usb/Kconfig           |   10 +
-> >  drivers/staging/octeon-usb/Makefile          |    3 +
-> >  drivers/staging/octeon-usb/TODO              |   11 +
-> >  drivers/staging/octeon-usb/cvmx-usb.c        | 3344 ++++++++++++++++++++++++++
-> >  drivers/staging/octeon-usb/cvmx-usb.h        | 1085 +++++++++
-> >  drivers/staging/octeon-usb/cvmx-usbcx-defs.h | 3086 ++++++++++++++++++++++++
-> >  drivers/staging/octeon-usb/cvmx-usbnx-defs.h | 1596 ++++++++++++
-> >  drivers/staging/octeon-usb/octeon-hcd.c      |  854 +++++++
-> >  10 files changed, 9992 insertions(+)
-> >  create mode 100644 drivers/staging/octeon-usb/Kconfig
-> >  create mode 100644 drivers/staging/octeon-usb/Makefile
-> >  create mode 100644 drivers/staging/octeon-usb/TODO
-> >  create mode 100644 drivers/staging/octeon-usb/cvmx-usb.c
-> >  create mode 100644 drivers/staging/octeon-usb/cvmx-usb.h
-> >  create mode 100644 drivers/staging/octeon-usb/cvmx-usbcx-defs.h
-> >  create mode 100644 drivers/staging/octeon-usb/cvmx-usbnx-defs.h
-> >  create mode 100644 drivers/staging/octeon-usb/octeon-hcd.c
-> >
-> 
-> 
-> FYI: This is an alternate, host only, driver for the DesignWare USB2
-> controller as found on some OCTEON SoCs.  drivers/staging/dwc2
-> contains the code supplied by Synopsys for the same controller.
-> 
-> One might ask why an alternate driver was ever written.  The answer
-> to this question is:  The octeon-hcd driver is much better than the
-> dwc2 driver when running the hardware in host mode.
+On 06/03/2013 09:52 AM, Greg Kroah-Hartman wrote:
+> On Mon, Jun 03, 2013 at 09:35:45AM -0700, David Daney wrote:
+>> On 06/01/2013 11:42 AM, Aaro Koskinen wrote:
+>>> Add support for Octeon USB HCD. Tested on EdgeRouter Lite with USB
+>>> mass storage.
+>>>
+>>> The driver has been extracted from GPL sources of EdgeRouter Lite firmware
+>>> (based on Linux 2.6.32.13). Some minor fixes and cleanups have been done
+>>> to make it work with 3.10-rc3.
+>>>
+>>> $ uname -a
+>>> Linux (none) 3.10.0-rc3-edge-00005-g86cb5bc #41 SMP PREEMPT Sat Jun 1 20:41:46 EEST 2013 mips64 GNU/Linux
+>>> $ modprobe octeon-usb
+>>> [   37.971683] octeon_usb: module is from the staging directory, the quality is unknown, you have been warned.
+>>> [   37.983649] OcteonUSB: Detected 1 ports
+>>> [   37.999360] OcteonUSB OcteonUSB.0: Octeon Host Controller
+>>> [   38.004847] OcteonUSB OcteonUSB.0: new USB bus registered, assigned bus number 1
+>>> [   38.012332] OcteonUSB OcteonUSB.0: irq 122, io mem 0x00000000
+>>> [   38.019970] hub 1-0:1.0: USB hub found
+>>> [   38.023851] hub 1-0:1.0: 1 port detected
+>>> [   38.028101] OcteonUSB: Registered HCD for port 0 on irq 122
+>>> [   38.391443] usb 1-1: new high-speed USB device number 2 using OcteonUSB
+>>> [   38.586922] usb-storage 1-1:1.0: USB Mass Storage device detected
+>>> [   38.597375] scsi0 : usb-storage 1-1:1.0
+>>> [   39.604111] scsi 0:0:0:0: Direct-Access              USB DISK 2.0     PMAP PQ: 0 ANSI: 4
+>>> [   39.619113] sd 0:0:0:0: [sda] 7579008 512-byte logical blocks: (3.88 GB/3.61 GiB)
+>>> [   39.630696] sd 0:0:0:0: [sda] Write Protect is off
+>>> [   39.635945] sd 0:0:0:0: [sda] No Caching mode page present
+>>> [   39.641464] sd 0:0:0:0: [sda] Assuming drive cache: write through
+>>> [   39.651341] sd 0:0:0:0: [sda] No Caching mode page present
+>>> [   39.656917] sd 0:0:0:0: [sda] Assuming drive cache: write through
+>>> [   39.664296]  sda: sda1 sda2
+>>> [   39.675574] sd 0:0:0:0: [sda] No Caching mode page present
+>>> [   39.681093] sd 0:0:0:0: [sda] Assuming drive cache: write through
+>>> [   39.687223] sd 0:0:0:0: [sda] Attached SCSI removable disk
+>>>
+>>> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+>>> ---
+>>>   drivers/staging/Kconfig                      |    2 +
+>>>   drivers/staging/Makefile                     |    1 +
+>>>   drivers/staging/octeon-usb/Kconfig           |   10 +
+>>>   drivers/staging/octeon-usb/Makefile          |    3 +
+>>>   drivers/staging/octeon-usb/TODO              |   11 +
+>>>   drivers/staging/octeon-usb/cvmx-usb.c        | 3344 ++++++++++++++++++++++++++
+>>>   drivers/staging/octeon-usb/cvmx-usb.h        | 1085 +++++++++
+>>>   drivers/staging/octeon-usb/cvmx-usbcx-defs.h | 3086 ++++++++++++++++++++++++
+>>>   drivers/staging/octeon-usb/cvmx-usbnx-defs.h | 1596 ++++++++++++
+>>>   drivers/staging/octeon-usb/octeon-hcd.c      |  854 +++++++
+>>>   10 files changed, 9992 insertions(+)
+>>>   create mode 100644 drivers/staging/octeon-usb/Kconfig
+>>>   create mode 100644 drivers/staging/octeon-usb/Makefile
+>>>   create mode 100644 drivers/staging/octeon-usb/TODO
+>>>   create mode 100644 drivers/staging/octeon-usb/cvmx-usb.c
+>>>   create mode 100644 drivers/staging/octeon-usb/cvmx-usb.h
+>>>   create mode 100644 drivers/staging/octeon-usb/cvmx-usbcx-defs.h
+>>>   create mode 100644 drivers/staging/octeon-usb/cvmx-usbnx-defs.h
+>>>   create mode 100644 drivers/staging/octeon-usb/octeon-hcd.c
+>>>
+>>
+>>
+>> FYI: This is an alternate, host only, driver for the DesignWare USB2
+>> controller as found on some OCTEON SoCs.  drivers/staging/dwc2
+>> contains the code supplied by Synopsys for the same controller.
+>>
+>> One might ask why an alternate driver was ever written.  The answer
+>> to this question is:  The octeon-hcd driver is much better than the
+>> dwc2 driver when running the hardware in host mode.
+>
+> So, should we not accept this driver because dwc2 is in the tree now and
+> we will have two conflicting drivers for the same hardware?  Or accept
+> this, and blacklist dwc2 for this hardware?
+>
 
-So, should we not accept this driver because dwc2 is in the tree now and
-we will have two conflicting drivers for the same hardware?  Or accept
-this, and blacklist dwc2 for this hardware?
+I don't know the answer to these questions.  I will say this though:
 
-thanks,
+o In USB2 mode, the octeon-hcd driver generates far fewer interrupts 
+than dwc2.
 
-greg k-h
+o octeon-hcd was written because we couldn't figure out how to fix the 
+dwc2 driver so that it wouldn't crash.
+
+o I think Raspberry Pi uses the DWC2 block, and there are said to be 
+many complaints about the dwc2 driver crashing there.
+
+I would defer to the judgment of the USB maintainers and other users of 
+the DWC2 block.  If you think the code is useful, take it.  If it is 
+merged, we will probably supply some bug fixes and cleanups we have 
+accumulated.
+
+David Daney

@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jun 2013 17:41:02 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:40384 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jun 2013 17:41:21 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:40417 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825883Ab3FCPkiMKKnm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6827511Ab3FCPkikhuxw (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 3 Jun 2013 17:40:38 +0200
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from shaker64.lan (dslb-088-073-012-093.pools.arcor-ip.net [88.73.12.93])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 9B94128016C;
-        Mon,  3 Jun 2013 17:39:17 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 439E428165C;
+        Mon,  3 Jun 2013 17:39:19 +0200 (CEST)
 From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -14,15 +14,17 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Maxime Bizon <mbizon@freebox.fr>,
         Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>
-Subject: [PATCH 0/3] MIPS: BCM63XX: add SMP support
-Date:   Mon,  3 Jun 2013 17:39:32 +0200
-Message-Id: <1370273975-12373-1-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 3/3] MIPS: BCM63XX: select BMIPS4350 and default to 2 CPUs for supported SoCs
+Date:   Mon,  3 Jun 2013 17:39:35 +0200
+Message-Id: <1370273975-12373-4-git-send-email-jogo@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1370273975-12373-1-git-send-email-jogo@openwrt.org>
+References: <1370273975-12373-1-git-send-email-jogo@openwrt.org>
 Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36662
+X-archive-position: 36663
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,40 +41,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Most newer BCM63XX SoCs after BCM6358 use a BMIPS4350 CPU with SMP
-support. This patchset allows BCM6368 and BCM6362 to boot a SMP kernel
-(both tested, as well as (not yet upstreamed) BCM63268).
+All BCM63XX SoCs starting with BCM6358 have a BMIPS4350 instead of a
+BMIPS3300, so select it unless support for any of the older SoCs is
+selected.
+All BMIPS4350 have only two CPUs, so select the appropriate default.
 
-BCM6328 is skipped because the only SMP versions will be rejected by
-current code (they are BCM6329, which is treated as a totally
-unsupported chip).
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+---
+ arch/mips/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
-BCM6358 is intentionally skipped because it shares a single TLB for
-both cores/threads, which requires implementing locking for TLB accesses,
-and ain't nobody got time for that.
-
-The internal interrupt controller supports routing IRQs to both CPUs,
-and support will be added in a later patchset. For now all hardware
-interrupts will go to CPU0.
-
-Totally unscientific OpenSSL benchmarking shows a nice ~90% speed
-increase when enabling the second core.
-
-No idea about the FIXME in 1/3, never had a problem with it so I left it
-in place as to have it documented.
-
-Jonas Gorski (1):
-  MIPS: BCM63XX: select BMIPS4350 and default to 2 CPUs for supported
-    SoCs
-
-Kevin Cernekee (2):
-  MIPS: BCM63XX: Add SMP support to prom.c
-  MIPS: BCM63XX: Handle SW IRQs 0-1
-
- arch/mips/Kconfig        |    2 ++
- arch/mips/bcm63xx/irq.c  |    4 ++++
- arch/mips/bcm63xx/prom.c |   33 +++++++++++++++++++++++++++++++++
- 3 files changed, 39 insertions(+)
-
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index ade9973..dc535be 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -128,6 +128,8 @@ config BCM63XX
+ 	select DMA_NONCOHERENT
+ 	select IRQ_CPU
+ 	select SYS_HAS_CPU_MIPS32_R1
++	select SYS_HAS_CPU_BMIPS4350 if !BCM63XX_CPU_6338 && !BCM63XX_CPU_6345 && !BCM63XX_CPU_6348
++	select NR_CPUS_DEFAULT_2
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_HAS_EARLY_PRINTK
 -- 
 1.7.10.4

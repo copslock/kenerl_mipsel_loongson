@@ -1,41 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jun 2013 23:41:48 +0200 (CEST)
-Received: from mail-wi0-f169.google.com ([209.85.212.169]:61105 "EHLO
-        mail-wi0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835128Ab3FDVlpPFH4g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Jun 2013 23:41:45 +0200
-Received: by mail-wi0-f169.google.com with SMTP id hn14so4334226wib.0
-        for <multiple recipients>; Tue, 04 Jun 2013 14:41:39 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jun 2013 23:42:05 +0200 (CEST)
+Received: from mail-we0-f176.google.com ([74.125.82.176]:58023 "EHLO
+        mail-we0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835132Ab3FDVlrNLGpR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Jun 2013 23:41:47 +0200
+Received: by mail-we0-f176.google.com with SMTP id t56so676578wes.21
+        for <multiple recipients>; Tue, 04 Jun 2013 14:41:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:x-mailer;
-        bh=VEvCTvsavXlXNGsNRlSbVu3IihZyreokJ4EcAWO52C4=;
-        b=JRGdZbBPhjc0K04O8JBabZV7wMqaz8JfEDPxydl1uiD012DesUwa+kKx+k4YAHhAab
-         IT1Q0rIFxZCbmT8XlObJVYTeJN50XfCglZIRjJtCzaFmlcjYJD/vw2VFFYCLrlOJOJZU
-         5hS+qkmKMckZYq8N5a2giG+a3ynHcW87QbYz7KR8qQpfwm/sw4PS+zTg5rbrcZlGb4+p
-         /lKd4/igSlwqhjUFK0gcK+RqQqT3/X9CJx3HjB/0HBHsfQOq/b4aL6VHSv5efPQzpXt3
-         g6yp9dEF5r1gLkNSC7F10tPfgHw8fMZITdSlmVAby58Oj7fyAZWTAyR0wRkqfxHoqZPh
-         aVAA==
-X-Received: by 10.194.220.72 with SMTP id pu8mr25959749wjc.2.1370382098968;
-        Tue, 04 Jun 2013 14:41:38 -0700 (PDT)
+        h=sender:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
+         :references;
+        bh=D4MmHFLhcdsn2dKRJ6FUpkfK/yRoIFQxLm56JgTlP7Y=;
+        b=bsNo095iGJuPD+OR39nM7GfjFuLoIsTysm9adqqfvaWkq1hDtSfU7V451OlGGDp3mn
+         8m2IbfEw9EBeNFC7s5TrrrNii/dJ5kNvSRgcaZNq1cWc0sbhTehajFLkHTp6Is3ExBSS
+         c0R32NjJDCZzuTpRnrROViOaKAJPqMACo9HWrwmkD7MGjcZEhn99TqJweKaj57/n8ecT
+         c1M88DegWuuCt9cDRvLONp5hhQoLDTLiGmZnqp6G3C7v9MthlvvwzezVHq74S0tlarYQ
+         yLj5QyY51o+KRgN/xqOtuyfaa35nUigct8JdQVPSYTp820Vz8GehkDQTH3MQInfKEIqb
+         Z6Rg==
+X-Received: by 10.180.185.225 with SMTP id ff1mr3422759wic.36.1370382101706;
+        Tue, 04 Jun 2013 14:41:41 -0700 (PDT)
 Received: from localhost.localdomain (cpc24-aztw25-2-0-cust938.aztw.cable.virginmedia.com. [92.233.35.171])
-        by mx.google.com with ESMTPSA id w8sm6473724wiz.0.2013.06.04.14.41.36
+        by mx.google.com with ESMTPSA id w8sm6473724wiz.0.2013.06.04.14.41.39
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 04 Jun 2013 14:41:37 -0700 (PDT)
+        Tue, 04 Jun 2013 14:41:40 -0700 (PDT)
 From:   Florian Fainelli <florian@openwrt.org>
 To:     davem@davemloft.net
 Cc:     ralf@linux-mips.org, blogic@openwrt.org, linux-mips@linux-mips.org,
-        cernekee@gmail.com, mbizon@freebox.fr, jogo@openwrt.org,
-        Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH 0/3 net-next] bcm63xx_enet: add support for BCM63xx gigabit integrated switch
-Date:   Tue,  4 Jun 2013 22:41:31 +0100
-Message-Id: <1370382094-17821-1-git-send-email-florian@openwrt.org>
+        cernekee@gmail.com, mbizon@freebox.fr, jogo@openwrt.org
+Subject: [PATCH 1/3 net-next] bcm63xx_enet: implement reset autoneg ethtool callback
+Date:   Tue,  4 Jun 2013 22:41:32 +0100
+Message-Id: <1370382094-17821-2-git-send-email-florian@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1370382094-17821-1-git-send-email-florian@openwrt.org>
+References: <1370382094-17821-1-git-send-email-florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36683
+X-archive-position: 36684
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,30 +54,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-David, Ralf,
+From: Maxime Bizon <mbizon@freebox.fr>
 
-This patchset contains changes to enable the BCM63xx gitabit integrated switch
-found on BCM6328, BCM6362 and BCM6368 SoCs. It contains changes both to
-arch/mips/bcm63xx and drivers/net/ethernet/bcm63xx_enet.c. The changes are
-pretty difficult to split so I would rather see these merged via the net-tree.
+Implement the rset_nway ethtool callback which uses libphy generic
+autonegotiation restart function.
 
-Thanks!
+Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+---
+ drivers/net/ethernet/broadcom/bcm63xx_enet.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-Maxime Bizon (3):
-  bcm63xx_enet: implement reset autoneg ethtool callback
-  bcm63xx_enet: split DMA channel register accesses
-  bcm63xx_enet: add support for Broadcom BCM63xx integrated gigabit
-    switch
-
- arch/mips/bcm63xx/boards/board_bcm963xx.c          |    4 +
- arch/mips/bcm63xx/dev-enet.c                       |  118 +-
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h   |    4 +-
- .../include/asm/mach-bcm63xx/bcm63xx_dev_enet.h    |   28 +
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h  |   63 ++
- .../mips/include/asm/mach-bcm63xx/board_bcm963xx.h |    2 +
- drivers/net/ethernet/broadcom/bcm63xx_enet.c       | 1135 ++++++++++++++++++--
- drivers/net/ethernet/broadcom/bcm63xx_enet.h       |   75 ++
- 8 files changed, 1331 insertions(+), 98 deletions(-)
-
+diff --git a/drivers/net/ethernet/broadcom/bcm63xx_enet.c b/drivers/net/ethernet/broadcom/bcm63xx_enet.c
+index e46466c..bc1a994 100644
+--- a/drivers/net/ethernet/broadcom/bcm63xx_enet.c
++++ b/drivers/net/ethernet/broadcom/bcm63xx_enet.c
+@@ -1328,6 +1328,20 @@ static void bcm_enet_get_ethtool_stats(struct net_device *netdev,
+ 	mutex_unlock(&priv->mib_update_lock);
+ }
+ 
++static int bcm_enet_nway_reset(struct net_device *dev)
++{
++	struct bcm_enet_priv *priv;
++
++	priv = netdev_priv(dev);
++	if (priv->has_phy) {
++		if (!priv->phydev)
++			return -ENODEV;
++		return genphy_restart_aneg(priv->phydev);
++	}
++
++	return -EOPNOTSUPP;
++}
++
+ static int bcm_enet_get_settings(struct net_device *dev,
+ 				 struct ethtool_cmd *cmd)
+ {
+@@ -1470,6 +1484,7 @@ static const struct ethtool_ops bcm_enet_ethtool_ops = {
+ 	.get_strings		= bcm_enet_get_strings,
+ 	.get_sset_count		= bcm_enet_get_sset_count,
+ 	.get_ethtool_stats      = bcm_enet_get_ethtool_stats,
++	.nway_reset		= bcm_enet_nway_reset,
+ 	.get_settings		= bcm_enet_get_settings,
+ 	.set_settings		= bcm_enet_set_settings,
+ 	.get_drvinfo		= bcm_enet_get_drvinfo,
 -- 
 1.7.10.4

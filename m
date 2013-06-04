@@ -1,44 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jun 2013 11:38:40 +0200 (CEST)
-Received: from mail-pd0-f174.google.com ([209.85.192.174]:50291 "EHLO
-        mail-pd0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823034Ab3FDJigPjalH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Jun 2013 11:38:36 +0200
-Received: by mail-pd0-f174.google.com with SMTP id 3so6920201pdj.5
-        for <linux-mips@linux-mips.org>; Tue, 04 Jun 2013 02:38:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date
-         :x-google-sender-auth:message-id:subject:to:cc:content-type;
-        bh=X33kMKGBr80Q8dqFpMg/zCJEsvAXjVxQYQT+hlNMEpY=;
-        b=qIHrdV/jglkFjHdfCdtajSvPr/aaqrpBHdfobOIL9kOK8gu5SZEkfykysLAABVPayQ
-         MQOh9HoVt7PBTnMAz95beImpo2bHb0NEs4G1axOWg10NiR09LthHVYjPXpMJgJyPGy+d
-         AleZvoS1zpobDwciifN0TC+fngGdtc5bGBRNnR9nmKrfvoNgpvacMbvGf2PmuIEgF2Xg
-         UA5jvP4cjygLEv5Y6c13Pf+HrxlT2vCoS1522GSEHHL6zSWqFbzxWdva9xaFtePfGnnf
-         xM13OJq8do2basbokdc6CUknJxtYFCHmfqcCs6BzOhB08NmuM0YP+roZtD/B/i6d5mC7
-         E7yw==
-X-Received: by 10.68.231.37 with SMTP id td5mr27827355pbc.52.1370338709431;
- Tue, 04 Jun 2013 02:38:29 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.68.222.65 with HTTP; Tue, 4 Jun 2013 02:37:49 -0700 (PDT)
-In-Reply-To: <51A8B753.4090900@phrozen.org>
-References: <1370009264-22018-1-git-send-email-f.fainelli@gmail.com> <51A8B753.4090900@phrozen.org>
-From:   Florian Fainelli <florian@openwrt.org>
-Date:   Tue, 4 Jun 2013 10:37:49 +0100
-X-Google-Sender-Auth: Pa6vq_V628GUpzy572o5ZGk41RE
-Message-ID: <CAGVrzcYuQxbWrc58RG=iiwOzvs7QdwifzswEAfiQ--S22CD7zA@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: define write{b,w,l,q}_relaxed
-To:     John Crispin <john@phrozen.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <f.fainelli@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jun 2013 20:22:23 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:36394 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6815746Ab3FDSWV25xS0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Jun 2013 20:22:21 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <Steven.Hill@imgtec.com>)
+        id 1Ujvs5-0006II-Cw; Tue, 04 Jun 2013 13:22:13 -0500
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+To:     linux-mips@linux-mips.org
+Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>, ralf@linux-mips.org
+Subject: [PATCH] MIPS: micromips: Fix improper definition of ISA exception bit.
+Date:   Tue,  4 Jun 2013 13:22:07 -0500
+Message-Id: <1370370127-19681-1-git-send-email-Steven.Hill@imgtec.com>
+X-Mailer: git-send-email 1.7.9.5
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36670
+X-archive-position: 36671
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,18 +35,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2013/5/31 John Crispin <john@phrozen.org>:
-> On 31/05/13 16:07, Florian Fainelli wrote:
->>
->> MIPS does define read{b,w,l,q}_relaxed but does not define their write
->> counterparts: write{b,w,l,q}_relaxed. This patch adds the missing
->> definitions for the write*_relaxed I/O accessors.
->>
->> Signed-off-by: Florian Fainelli<f.fainelli@gmail.com>
->
->
-> Acked-by: John Crispin <blogic@openwrt.org>
+The ISA exception bit selects whether exceptions are taken in classic
+MIPS or microMIPS mode. This bit is Config3.ISAOnExc and is bit 16. It
+It was improperly defined as bits 16 and 17. Fortunately, bit 17 is
+read-only and did not effect microMIPS operation. However, detecting
+a classic or microMIPS kernel when examining the /proc/cpuinfo file,
+the result always showed a microMIPS kernel.
 
-This probably needs consolidation at the include/asm-generic/io.h
-level, quite a lot of architectures have the same definition as MIPS
-here.
+Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+---
+ arch/mips/include/asm/mipsregs.h |    2 +-
+ arch/mips/kernel/cpu-probe.c     |   11 ++++++-----
+ 2 files changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 87e6207..fed1c3e 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -596,7 +596,7 @@
+ #define MIPS_CONF3_RXI		(_ULCAST_(1) << 12)
+ #define MIPS_CONF3_ULRI		(_ULCAST_(1) << 13)
+ #define MIPS_CONF3_ISA		(_ULCAST_(3) << 14)
+-#define MIPS_CONF3_ISA_OE	(_ULCAST_(3) << 16)
++#define MIPS_CONF3_ISA_OE	(_ULCAST_(1) << 16)
+ #define MIPS_CONF3_VZ		(_ULCAST_(1) << 23)
+ 
+ #define MIPS_CONF4_MMUSIZEEXT	(_ULCAST_(255) << 0)
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index c6568bf..822bfe4 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -256,6 +256,12 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
+ 		c->ases |= MIPS_ASE_SMARTMIPS;
+ 		c->options |= MIPS_CPU_RIXI;
+ 	}
++	if (config3 & MIPS_CONF3_ISA) {
++		c->options |= MIPS_CPU_MICROMIPS;
++#ifdef CONFIG_CPU_MICROMIPS
++		write_c0_config3(config3 | MIPS_CONF3_ISA_OE);
++#endif
++	}
+ 	if (config3 & MIPS_CONF3_RXI)
+ 		c->options |= MIPS_CPU_RIXI;
+ 	if (config3 & MIPS_CONF3_DSP)
+@@ -270,11 +276,6 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
+ 		c->ases |= MIPS_ASE_MIPSMT;
+ 	if (config3 & MIPS_CONF3_ULRI)
+ 		c->options |= MIPS_CPU_ULRI;
+-	if (config3 & MIPS_CONF3_ISA)
+-		c->options |= MIPS_CPU_MICROMIPS;
+-#ifdef CONFIG_CPU_MICROMIPS
+-	write_c0_config3(read_c0_config3() | MIPS_CONF3_ISA_OE);
+-#endif
+ 	if (config3 & MIPS_CONF3_VZ)
+ 		c->ases |= MIPS_ASE_VZ;
+ 
+-- 
+1.7.2.5

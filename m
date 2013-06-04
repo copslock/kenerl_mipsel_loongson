@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jun 2013 21:07:56 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:36542 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jun 2013 21:09:50 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:36547 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6827511Ab3FDTHzkV4FI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Jun 2013 21:07:55 +0200
+        with ESMTP id S6835041Ab3FDTJtc6fMI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Jun 2013 21:09:49 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <Steven.Hill@imgtec.com>)
-        id 1UjwaB-0006Or-L2; Tue, 04 Jun 2013 14:07:47 -0500
+        id 1Ujwc2-0006PH-T6; Tue, 04 Jun 2013 14:09:42 -0500
 From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>, ralf@linux-mips.org,
         ddaney.cavm@gmail.com
-Subject: [PATCH v2] MIPS: micromips: Fix improper definition of ISA exception bit.
-Date:   Tue,  4 Jun 2013 14:07:42 -0500
-Message-Id: <1370372862-20498-1-git-send-email-Steven.Hill@imgtec.com>
+Subject: [PATCH v3] MIPS: micromips: Fix improper definition of ISA exception bit.
+Date:   Tue,  4 Jun 2013 14:09:39 -0500
+Message-Id: <1370372979-20634-1-git-send-email-Steven.Hill@imgtec.com>
 X-Mailer: git-send-email 1.7.9.5
 Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36674
+X-archive-position: 36675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,10 +46,10 @@ the result always showed a microMIPS kernel.
 Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
 ---
  arch/mips/include/asm/mipsregs.h |    2 +-
- arch/mips/kernel/cpu-probe.c     |   11 ++++++-----
+ arch/mips/kernel/cpu-probe.c     |    7 ++-----
  arch/mips/mti-malta/malta-init.c |    7 +++++++
  arch/mips/mti-sead3/sead3-init.c |    7 +++++++
- 4 files changed, 21 insertions(+), 6 deletions(-)
+ 4 files changed, 17 insertions(+), 6 deletions(-)
 
 diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
 index 87e6207..fed1c3e 100644
@@ -65,23 +65,19 @@ index 87e6207..fed1c3e 100644
  
  #define MIPS_CONF4_MMUSIZEEXT	(_ULCAST_(255) << 0)
 diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index c6568bf..822bfe4 100644
+index c6568bf..d6c5230 100644
 --- a/arch/mips/kernel/cpu-probe.c
 +++ b/arch/mips/kernel/cpu-probe.c
-@@ -256,6 +256,12 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
+@@ -256,6 +256,8 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
  		c->ases |= MIPS_ASE_SMARTMIPS;
  		c->options |= MIPS_CPU_RIXI;
  	}
-+	if (config3 & MIPS_CONF3_ISA) {
++	if (config3 & MIPS_CONF3_ISA)
 +		c->options |= MIPS_CPU_MICROMIPS;
-+#ifdef CONFIG_CPU_MICROMIPS
-+		write_c0_config3(config3 | MIPS_CONF3_ISA_OE);
-+#endif
-+	}
  	if (config3 & MIPS_CONF3_RXI)
  		c->options |= MIPS_CPU_RIXI;
  	if (config3 & MIPS_CONF3_DSP)
-@@ -270,11 +276,6 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
+@@ -270,11 +272,6 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
  		c->ases |= MIPS_ASE_MIPSMT;
  	if (config3 & MIPS_CONF3_ULRI)
  		c->options |= MIPS_CPU_ULRI;

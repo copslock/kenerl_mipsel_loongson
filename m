@@ -1,48 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jun 2013 23:24:33 +0200 (CEST)
-Received: from mail.nanl.de ([217.115.11.12]:44253 "EHLO mail.nanl.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827572Ab3FEVY2B7UYZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 5 Jun 2013 23:24:28 +0200
-Received: from mail-vc0-f177.google.com (mail-vc0-f177.google.com [209.85.220.177])
-        by mail.nanl.de (Postfix) with ESMTPSA id A93B445F9E
-        for <linux-mips@linux-mips.org>; Wed,  5 Jun 2013 21:23:42 +0000 (UTC)
-Received: by mail-vc0-f177.google.com with SMTP id hv10so1508648vcb.36
-        for <linux-mips@linux-mips.org>; Wed, 05 Jun 2013 14:24:18 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jun 2013 23:27:06 +0200 (CEST)
+Received: from mail-la0-f41.google.com ([209.85.215.41]:57927 "EHLO
+        mail-la0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835047Ab3FEV1FPslZ9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Jun 2013 23:27:05 +0200
+Received: by mail-la0-f41.google.com with SMTP id fn20so1929939lab.28
+        for <linux-mips@linux-mips.org>; Wed, 05 Jun 2013 14:26:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=ZHLC7r1CyBHhqBxyiYOTzq1NBK6gM3Wws115Pd1zvLE=;
-        b=FManW4UHO4RQUlAd/og6gRTCTzfGRYuGulAX3U7s7InqwgsVxsfXljH/ddmjBrFxdz
-         u31SOfpV1lnh0zA5klw6AvUru7Pkv8vMha+fjAI2rg136LX7/yUxE/64tUsI6R+fp4Tb
-         F9xQVtT6zgsH4Gdla/pmYMsuaRZbFifd7dWFYcN1i1+tGz/ZS1Oanxgtsej257d4V15m
-         I4/MRABTAdnozvlI+Z0EaOX+99c5pQd6JGRZEGthSZiABurS+nQyE6VkjvCUnfndXR5q
-         w3WTYiKiBoCZa9caVLwF5eQ1N/w7AvulEzLNfmn6jlO7YXQ/bbGCDgDmJYpXIYJtGVTW
-         z6Pw==
-X-Received: by 10.52.164.98 with SMTP id yp2mr4551551vdb.111.1370467458065;
- Wed, 05 Jun 2013 14:24:18 -0700 (PDT)
+        h=message-id:date:from:organization:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding:x-gm-message-state;
+        bh=OQalkzcYinn+tr2WW2BmoVUjFuG4NSJ2MEeqdPeMu/k=;
+        b=A92EQa3D7f5e6/CBI8EpZNk/pTuqeA1D5kx8G3VMwAb94kTJCFOXxa4tVSYCo6w9oa
+         FSf3X9pCEbNdzwLoMf3ii7A3ofnpYYPnUJGDSiDQpxRwAOuEYqTStKcMdhNdnJbFI3kI
+         hCC7ns5xHv/qssYDVn+9peMBZm98CdEf9yz8FrKUVXABhjCprB3RKE7JkGnyhUg2DpLx
+         allN2F/NHH1L+zoD+zyKqmrMTd8qtgm/ilw8kXu7RKJu5pPNjoFbXGQkwSR+WHTDyRuO
+         PcsgLARFVNEqyhb+/GQPVTvbtdXg2BFs0ftZSTjxwyEQlaKGBSiUdT5mQ0CMmvadJ7uu
+         pHPw==
+X-Received: by 10.112.188.231 with SMTP id gd7mr3214712lbc.26.1370467619537;
+        Wed, 05 Jun 2013 14:26:59 -0700 (PDT)
+Received: from wasted.dev.rtsoft.ru (ppp91-76-88-205.pppoe.mtu-net.ru. [91.76.88.205])
+        by mx.google.com with ESMTPSA id f9sm27664055lbf.4.2013.06.05.14.26.57
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Wed, 05 Jun 2013 14:26:58 -0700 (PDT)
+Message-ID: <51AFAD28.1010608@cogentembedded.com>
+Date:   Thu, 06 Jun 2013 01:27:04 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20130509 Thunderbird/17.0.6
 MIME-Version: 1.0
-Received: by 10.220.109.203 with HTTP; Wed, 5 Jun 2013 14:23:58 -0700 (PDT)
-In-Reply-To: <51AFAA8C.6080002@imgtec.com>
-References: <1370461798-20296-1-git-send-email-Steven.Hill@imgtec.com>
- <51AFA540.5010207@gmail.com> <51AFAA8C.6080002@imgtec.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Wed, 5 Jun 2013 23:23:58 +0200
-Message-ID: <CAOiHx=mFqC=GN0jmb9PXpt+JapfWoP3Pu5NM0sp=F_uAZuwUEA@mail.gmail.com>
-Subject: Re: [PATCH v6] MIPS: micromips: Fix improper definition of ISA
- exception bit.
 To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
-Cc:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH v7] MIPS: micromips: Fix improper definition of ISA exception
+ bit.
+References: <1370466783-21288-1-git-send-email-Steven.Hill@imgtec.com>
+In-Reply-To: <1370466783-21288-1-git-send-email-Steven.Hill@imgtec.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Gm-Message-State: ALoCoQlu2ZTurVbp3r8EiUPXpbj2e+iyjyPNm5JkK9p+ihK6TGuaBbHjfxbWSLNbH/Gqx/W7n5pa
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36710
+X-archive-position: 36711
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,32 +60,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 5, 2013 at 11:15 PM, Steven J. Hill <Steven.Hill@imgtec.com> wrote:
-> On 06/05/2013 03:53 PM, David Daney wrote:
->>
->>
->> You can only manipulate this bit if you know microMIPS is supported.  So
->> I think you should either not touch it for the non-microMIPS case, or
->> make the write conditional on the presence of microMIPS support in the
->> CPU.
->>
-> I decided to surround with SYS_SUPPORTS_MICROMIPS so the function could be
-> optimized out in v7 of the patch.
+On 06/06/2013 01:13 AM, Steven J. Hill wrote:
+> The ISA exception bit selects whether exceptions are taken in classic
+> or microMIPS mode. This bit is Config3.ISAOnExc and was improperly
+> defined as bits 16 and 17 instead of just bit 16. A new function was
+> added so that platforms could set this bit when running a kernel
+> compiled with only microMIPS instructions.
+>
+> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+> Acked-by: David Daney <david.daney@cavium.com>
+> ---
+> Changes from v6:
+> * Add '#ifdef SYS_SUPPORTS_MICROMIPS' around body of
+>    'set_micromips_exception_mode' function. Platforms that
+>    do not support microMIPS will optimize it out.
+>
+>   arch/mips/include/asm/mipsregs.h |   20 +++++++++++++++++++-
+>   arch/mips/kernel/cpu-probe.c     |    3 ---
+>   arch/mips/kernel/traps.c         |    5 +++++
+>   3 files changed, 24 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+> index 87e6207..0a9544a 100644
+> --- a/arch/mips/include/asm/mipsregs.h
+> +++ b/arch/mips/include/asm/mipsregs.h
+> @@ -596,7 +596,7 @@
+>   #define MIPS_CONF3_RXI		(_ULCAST_(1) << 12)
+>   #define MIPS_CONF3_ULRI		(_ULCAST_(1) << 13)
+>   #define MIPS_CONF3_ISA		(_ULCAST_(3) << 14)
+> -#define MIPS_CONF3_ISA_OE	(_ULCAST_(3) << 16)
+> +#define MIPS_CONF3_ISA_OE	(_ULCAST_(1) << 16)
+>   #define MIPS_CONF3_VZ		(_ULCAST_(1) << 23)
+>   
+>   #define MIPS_CONF4_MMUSIZEEXT	(_ULCAST_(255) << 0)
+> @@ -1161,6 +1161,24 @@ do {									\
+>   #define write_c0_brcm_sleepcount(val)	__write_32bit_c0_register($22, 7, val)
+>   
+>   /*
+> + * Set exceptions to be taken in microMIPS mode only, otherwise
+> + * set for classic exceptions.
+> + */
+> +static inline void set_micromips_exception_mode(void)
+> +{
+> +#ifdef SYS_SUPPORTS_MICROMIPS
+> +	unsigned int config3 = read_c0_config3();
+> +
+> +#ifdef CONFIG_CPU_MICROMIPS
+> +	if (config3 & MIPS_CONF3_ISA)
+> +		write_c0_config3(config3 | MIPS_CONF3_ISA_OE);
+> +	else
+> +#endif
+> +		write_c0_config3(config3 & ~MIPS_CONF3_ISA_OE);
+> +#endif
 
-Since this is (AFAICT) run after cpu_probe, and cpu probe sets
-MIPS_CPU_MICROMIPS in options[0] if config3 has  MIPS_CONF3_ISA set
-(as seen in the context), couldn't you do just the following in
-cpu_trap:
+    Let me remind that #ifdef's inside the function body are considered 
+ugly and
+should be avoided if at all possible (by defining an empty 
+implementation in the
+#else branch).
 
-	if (cpu_has_mmips) {
-		unsigned int config3 = read_c0_config3();
-
-		if (IS_ENABLED(CONFIG_CPU_MICROMIPS))
-			write_c0_config3(config3 | MIPS_CONF3_ISA_OE);
-		else
-			write_c0_config3(config3 & ~MIPS_CONF3_ISA_OE);
-	}
-
-
-Regards
-Jonas
+WBR, Sergei

@@ -1,52 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jun 2013 01:15:09 +0200 (CEST)
-Received: from mail-ie0-f177.google.com ([209.85.223.177]:48500 "EHLO
-        mail-ie0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835250Ab3FGXEB7Ci2i (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Jun 2013 01:04:01 +0200
-Received: by mail-ie0-f177.google.com with SMTP id u16so11429912iet.8
-        for <multiple recipients>; Fri, 07 Jun 2013 16:03:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=1tpdypQdBsOOxSUEJbpytd1J3vyFnBk8p7KjDIlI8hI=;
-        b=H8NPEWGjumk9Te3ljmYdTYqmMGiHlHCkSXV7n43CbqqOfx4TDET7WKWwOdt2kojbBQ
-         YcnBQT5xqyNoQSwJthWAwghf3ciPMiJMepIv+fvxp+bIXtVvofeINXe2iBMT+ZyYOkKM
-         Pbr6B96L0E9XB3e3IflarOdkBUsCq/WY1B8SG9/OWzS36FrZOiFYxgA1/NYCgh4/oHFU
-         gVOQW+o3dZI5dUZ3QH5hl3Gt0nTo4+jhKSFTcYkcC5MlyqRDh3kGdTbptHIKlTfp1Dwz
-         HUn7/NEhopCOL0XIoV5faUkHtVTx3EC3VXIY/CpkBgSxF3vaO0cwChOrmbUT9tK/cDF5
-         6Vtg==
-X-Received: by 10.50.29.73 with SMTP id i9mr362196igh.105.1370646235908;
-        Fri, 07 Jun 2013 16:03:55 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id j3sm1193754igv.4.2013.06.07.16.03.54
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 07 Jun 2013 16:03:55 -0700 (PDT)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r57N3rxN006735;
-        Fri, 7 Jun 2013 16:03:53 -0700
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r57N3rl1006734;
-        Fri, 7 Jun 2013 16:03:53 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        kvm@vger.kernel.org, Sanjay Lal <sanjayl@kymasys.com>
-Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: [PATCH 31/31] mips/kvm: Allow for upto 8 KVM vcpus per vm.
-Date:   Fri,  7 Jun 2013 16:03:35 -0700
-Message-Id: <1370646215-6543-32-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-In-Reply-To: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jun 2013 01:15:47 +0200 (CEST)
+Received: from co1ehsobe002.messaging.microsoft.com ([216.32.180.185]:42422
+        "EHLO co1outboundpool.messaging.microsoft.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835254Ab3FGXPKyxrnc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Jun 2013 01:15:10 +0200
+Received: from mail8-co1-R.bigfish.com (10.243.78.234) by
+ CO1EHSOBE039.bigfish.com (10.243.66.104) with Microsoft SMTP Server id
+ 14.1.225.23; Fri, 7 Jun 2013 23:15:04 +0000
+Received: from mail8-co1 (localhost [127.0.0.1])        by mail8-co1-R.bigfish.com
+ (Postfix) with ESMTP id 10C70540284;   Fri,  7 Jun 2013 23:15:04 +0000 (UTC)
+X-Forefront-Antispam-Report: CIP:157.56.238.53;KIP:(null);UIP:(null);IPV:NLI;H:BY2PRD0712HT002.namprd07.prod.outlook.com;RD:none;EFVD:NLI
+X-SpamScore: -4
+X-BigFish: PS-4(zzbb2dI98dI9371I1432Izz1f42h1ee6h1de0h1fdah1202h1e76h1d1ah1d2ah1fc6hzz8275bhz2dh2a8h668h839h947hd25he5bhf0ah1288h12a5h12a9h12bdh137ah13b6h1441h14ddh1504h1537h153bh162dh1631h1758h1765h18e1h190ch1946h19b4h19c3h19ceh1ad9h1b0ah1d0ch1d2eh1d3fh1dfeh1dffh1e1dh1155h)
+Received: from mail8-co1 (localhost.localdomain [127.0.0.1]) by mail8-co1
+ (MessageSwitch) id 1370646902375035_9370; Fri,  7 Jun 2013 23:15:02 +0000
+ (UTC)
+Received: from CO1EHSMHS013.bigfish.com (unknown [10.243.78.226])       by
+ mail8-co1.bigfish.com (Postfix) with ESMTP id 4E706AA0069;     Fri,  7 Jun 2013
+ 23:15:02 +0000 (UTC)
+Received: from BY2PRD0712HT002.namprd07.prod.outlook.com (157.56.238.53) by
+ CO1EHSMHS013.bigfish.com (10.243.66.23) with Microsoft SMTP Server (TLS) id
+ 14.1.225.23; Fri, 7 Jun 2013 23:15:02 +0000
+Received: from dl.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
+ (10.255.246.35) with Microsoft SMTP Server (TLS) id 14.16.293.5; Fri, 7 Jun
+ 2013 23:15:01 +0000
+Message-ID: <51B26974.5000306@caviumnetworks.com>
+Date:   Fri, 7 Jun 2013 16:15:00 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
+MIME-Version: 1.0
+To:     David Daney <ddaney.cavm@gmail.com>, <kvm@vger.kernel.org>
+CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
+        Sanjay Lal <sanjayl@kymasys.com>,
+        <linux-kernel@vger.kernel.org>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 00/31] KVM/MIPS: Implement hardware virtualization via
+ the MIPS-VZ extensions.
 References: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com>
-Return-Path: <ddaney.cavm@gmail.com>
+In-Reply-To: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [64.2.3.195]
+X-OriginatorOrg: caviumnetworks.com
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36748
+X-archive-position: 36749
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,28 +62,127 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+I should also add that I will shortly send patches for the kvm tool 
+required to drive this VM as well as a small set of patches that create 
+a para-virtualized MIPS/Linux guest kernel.
 
-The mipsvz implementation allows for SMP, so let's be able to create
-all those vcpus.
+The idea is that because there is no standard SMP linux system, we 
+create a standard para-virtualized system that uses a handful of 
+hypercalls, but mostly just uses virtio devices.  It has no emulated 
+real hardware (no 8250 UART, no emulated legacy anything...)
 
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- arch/mips/include/asm/kvm_host.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+David Daney
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 9f209e1..0a5e218 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -20,7 +20,7 @@
- #include <linux/spinlock.h>
- 
- 
--#define KVM_MAX_VCPUS		1
-+#define KVM_MAX_VCPUS		8
- #define KVM_USER_MEM_SLOTS	8
- /* memory slots that does not exposed to userspace */
- #define KVM_PRIVATE_MEM_SLOTS 	0
--- 
-1.7.11.7
+
+On 06/07/2013 04:03 PM, David Daney wrote:
+> From: David Daney <david.daney@cavium.com>
+>
+> These patches take a somewhat different approach to MIPS
+> virtualization via the MIPS-VZ extensions than the patches previously
+> sent by Sanjay Lal.
+>
+> Several facts about the code:
+>
+> o Existing exception handlers are modified to hook in to KVM instead
+>    of intercepting all exceptions via the EBase register, and then
+>    chaining to real exception handlers.
+>
+> o Able to boot 64-bit SMP guests that use the FPU (I have booted 4-way
+>    SMP 64-bit MIPS/Linux).
+>
+> o Additional overhead on every exception even when *no* vCPU is running.
+>
+> o Lower interrupt overhead, than the EBase interception method, when
+>    vCPU *is* running.
+>
+> o This code is somewhat smaller than the existing trap/emulate
+>    implementation (about 2100 lines vs. about 5300 lines)
+>
+> o Currently probably only usable on the OCTEON III CPU model, as some
+>    MIPS-VZ implementation-defined behaviors were assumed to have the
+>    OCTEON III behavior.
+>
+> Note: I think Ralf already has the 17/31 (MIPS: Quit exposing Kconfig
+> symbols in uapi headers.) queued, but I also include it here.
+>
+> David Daney (31):
+>    MIPS: Move allocate_kscratch to cpu-probe.c and make it public.
+>    MIPS: Save and restore K0/K1 when CONFIG_KVM_MIPSVZ
+>    mips/kvm: Fix 32-bitisms in kvm_locore.S
+>    mips/kvm: Add casts to avoid pointer width mismatch build failures.
+>    mips/kvm: Use generic cache flushing functions.
+>    mips/kvm: Rename kvm_vcpu_arch.pc to  kvm_vcpu_arch.epc
+>    mips/kvm: Rename VCPU_registername to KVM_VCPU_ARCH_registername
+>    mips/kvm: Fix code formatting in arch/mips/kvm/kvm_locore.S
+>    mips/kvm: Factor trap-and-emulate support into a pluggable
+>      implementation.
+>    mips/kvm: Implement ioctls to get and set FPU registers.
+>    MIPS: Rearrange branch.c so it can be used by kvm code.
+>    MIPS: Add instruction format information for WAIT, MTC0, MFC0, et al.
+>    mips/kvm: Add accessors for MIPS VZ registers.
+>    mips/kvm: Add thread_info flag to indicate operation in MIPS VZ Guest
+>      Mode.
+>    mips/kvm: Exception handling to leave and reenter guest mode.
+>    mips/kvm: Add exception handler for MIPSVZ Guest exceptions.
+>    MIPS: Quit exposing Kconfig symbols in uapi headers.
+>    mips/kvm: Add pt_regs slots for BadInstr and BadInstrP
+>    mips/kvm: Add host definitions for MIPS VZ based host.
+>    mips/kvm: Hook into TLB fault handlers.
+>    mips/kvm: Allow set_except_vector() to be used from MIPSVZ code.
+>    mips/kvm: Split get_new_mmu_context into two parts.
+>    mips/kvm: Hook into CP unusable exception handler.
+>    mips/kvm: Add thread_struct fields used by MIPSVZ hosts.
+>    mips/kvm: Add some asm-offsets constants used by MIPSVZ.
+>    mips/kvm: Split up Kconfig and Makefile definitions in preperation
+>      for MIPSVZ.
+>    mips/kvm: Gate the use of kvm_local_flush_tlb_all() by KVM_MIPSTE
+>    mips/kvm: Only use KVM_COALESCED_MMIO_PAGE_OFFSET with KVM_MIPSTE
+>    mips/kvm: Add MIPSVZ support.
+>    mips/kvm: Enable MIPSVZ in Kconfig/Makefile
+>    mips/kvm: Allow for upto 8 KVM vcpus per vm.
+>
+>   arch/mips/Kconfig                   |    1 +
+>   arch/mips/include/asm/branch.h      |    7 +
+>   arch/mips/include/asm/kvm_host.h    |  622 +-----------
+>   arch/mips/include/asm/kvm_mips_te.h |  589 +++++++++++
+>   arch/mips/include/asm/kvm_mips_vz.h |   29 +
+>   arch/mips/include/asm/mipsregs.h    |  264 +++++
+>   arch/mips/include/asm/mmu_context.h |   12 +-
+>   arch/mips/include/asm/processor.h   |    6 +
+>   arch/mips/include/asm/ptrace.h      |   36 +
+>   arch/mips/include/asm/stackframe.h  |  150 ++-
+>   arch/mips/include/asm/thread_info.h |    2 +
+>   arch/mips/include/asm/uasm.h        |    2 +-
+>   arch/mips/include/uapi/asm/inst.h   |   23 +-
+>   arch/mips/include/uapi/asm/ptrace.h |   17 +-
+>   arch/mips/kernel/asm-offsets.c      |  124 ++-
+>   arch/mips/kernel/branch.c           |   63 +-
+>   arch/mips/kernel/cpu-probe.c        |   34 +
+>   arch/mips/kernel/genex.S            |    8 +
+>   arch/mips/kernel/scall64-64.S       |   12 +
+>   arch/mips/kernel/scall64-n32.S      |   12 +
+>   arch/mips/kernel/traps.c            |   15 +-
+>   arch/mips/kvm/Kconfig               |   23 +-
+>   arch/mips/kvm/Makefile              |   15 +-
+>   arch/mips/kvm/kvm_locore.S          |  980 +++++++++---------
+>   arch/mips/kvm/kvm_mips.c            |  768 ++------------
+>   arch/mips/kvm/kvm_mips_comm.h       |    1 +
+>   arch/mips/kvm/kvm_mips_commpage.c   |    9 +-
+>   arch/mips/kvm/kvm_mips_dyntrans.c   |    4 +-
+>   arch/mips/kvm/kvm_mips_emul.c       |  312 +++---
+>   arch/mips/kvm/kvm_mips_int.c        |   53 +-
+>   arch/mips/kvm/kvm_mips_int.h        |    2 -
+>   arch/mips/kvm/kvm_mips_stats.c      |    6 +-
+>   arch/mips/kvm/kvm_mipsvz.c          | 1894 +++++++++++++++++++++++++++++++++++
+>   arch/mips/kvm/kvm_mipsvz_guest.S    |  234 +++++
+>   arch/mips/kvm/kvm_tlb.c             |  140 +--
+>   arch/mips/kvm/kvm_trap_emul.c       |  932 +++++++++++++++--
+>   arch/mips/mm/fault.c                |    8 +
+>   arch/mips/mm/tlbex-fault.S          |    6 +
+>   arch/mips/mm/tlbex.c                |   45 +-
+>   39 files changed, 5299 insertions(+), 2161 deletions(-)
+>   create mode 100644 arch/mips/include/asm/kvm_mips_te.h
+>   create mode 100644 arch/mips/include/asm/kvm_mips_vz.h
+>   create mode 100644 arch/mips/kvm/kvm_mipsvz.c
+>   create mode 100644 arch/mips/kvm/kvm_mipsvz_guest.S
+>

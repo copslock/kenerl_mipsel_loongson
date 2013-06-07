@@ -1,41 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jun 2013 01:04:07 +0200 (CEST)
-Received: from mail-ie0-f175.google.com ([209.85.223.175]:59191 "EHLO
-        mail-ie0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834882Ab3FGXDwBwO4E (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jun 2013 01:04:35 +0200 (CEST)
+Received: from mail-ie0-f182.google.com ([209.85.223.182]:54483 "EHLO
+        mail-ie0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835022Ab3FGXDwoX8aA (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sat, 8 Jun 2013 01:03:52 +0200
-Received: by mail-ie0-f175.google.com with SMTP id a14so1753396iee.34
-        for <multiple recipients>; Fri, 07 Jun 2013 16:03:45 -0700 (PDT)
+Received: by mail-ie0-f182.google.com with SMTP id 9so12059186iec.41
+        for <multiple recipients>; Fri, 07 Jun 2013 16:03:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=Ojfb0CTMFfob0/+ZR6EuIZLnV0cZIkwaz7rWXwiA8tg=;
-        b=zf5HWhrMsR99+G7T8PBMHREGraSpn1qoLlkwi6AwMdp+ydhPbhZKgHIY+eQ1GNuzT/
-         CF359ZUQuSS52DQxc6x5U0sssOb1PglAAPojEl4CWQI30upzx7NBRI0v1dssm5x8QYVV
-         Qf4C3tHs7P03QqL7sdlrgjU+xyd20n062BXAv0Fh9MHHgS4gNYVKqLNuMGfnESggPJtd
-         pRqR0dvGU8ZeV2Dt6b4Jskv6LrGkJ0FIBKizzG5LKdOyDwEKle1aQOT7ON3xm3xqFLYE
-         vNRATnp9YLVLzOuG+ovSnwYShy5+8kT464prRj54jL7iYMpd+od8Z+ImEmlpkcJEHNqa
-         p75A==
-X-Received: by 10.50.115.67 with SMTP id jm3mr2254772igb.65.1370646225730;
-        Fri, 07 Jun 2013 16:03:45 -0700 (PDT)
+        bh=ch+pGPmG2SsXl/nYVYbYSdwF2ejA46SAHo0b5SS+JwI=;
+        b=QMlB/3rN0OMnSmaPAYldWHoQPrExIAxlP7ZGePgheafrs12C0jiWo2HuPdpeUfHqHb
+         dTFUgQoZ6R4L0iGYofaeOmGWMgn9yGCx3HS4DR+BIcVSD50lJbgB/7X6GW4W/s/qfIrW
+         3vGpks+nGbSvOxbA9xCbmXVuXHtH5Rrzqb0US665VaMn+Pl4UKxCtMn89BMyYtrAQix1
+         LFIpg1AlN51imB3xEU9uCmhAQ6Vx8XXfEH75cKEGlOjZQI0wbigjchqE1yurwIiyV/6B
+         cqPcR9oCqbdSNPshhbWDMnGOaDBe5UlLbvHJvte7rUkfaVVSRS9afTClHTvUV4APXV+J
+         s+jg==
+X-Received: by 10.50.114.161 with SMTP id jh1mr368179igb.112.1370646226459;
+        Fri, 07 Jun 2013 16:03:46 -0700 (PDT)
 Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id wn10sm214761igb.2.2013.06.07.16.03.44
+        by mx.google.com with ESMTPSA id d9sm194172igr.4.2013.06.07.16.03.45
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
         Fri, 07 Jun 2013 16:03:45 -0700 (PDT)
 Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r57N3gF8006614;
-        Fri, 7 Jun 2013 16:03:42 -0700
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r57N3hCM006622;
+        Fri, 7 Jun 2013 16:03:43 -0700
 Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r57N3g5Z006613;
-        Fri, 7 Jun 2013 16:03:42 -0700
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r57N3hKn006621;
+        Fri, 7 Jun 2013 16:03:43 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         kvm@vger.kernel.org, Sanjay Lal <sanjayl@kymasys.com>
-Cc:     linux-kernel@vger.kernel.org,
-        David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 01/31] MIPS: Move allocate_kscratch to cpu-probe.c and make it public.
-Date:   Fri,  7 Jun 2013 16:03:05 -0700
-Message-Id: <1370646215-6543-2-git-send-email-ddaney.cavm@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
+Subject: [PATCH 03/31] mips/kvm: Fix 32-bitisms in kvm_locore.S
+Date:   Fri,  7 Jun 2013 16:03:07 -0700
+Message-Id: <1370646215-6543-4-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.11.7
 In-Reply-To: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com>
@@ -43,7 +42,7 @@ Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36720
+X-archive-position: 36721
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,102 +59,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <ddaney@caviumnetworks.com>
+From: David Daney <david.daney@cavium.com>
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+For a warning free compile, we need to use the width aware PTR_LI and
+PTR_LA macros.  Use LI variant for immediate data and LA variant for
+addresses.
+
+Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/include/asm/mipsregs.h |  2 ++
- arch/mips/kernel/cpu-probe.c     | 29 +++++++++++++++++++++++++++++
- arch/mips/mm/tlbex.c             | 20 +-------------------
- 3 files changed, 32 insertions(+), 19 deletions(-)
+ arch/mips/kvm/kvm_locore.S | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 87e6207..6e0da5aa 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1806,6 +1806,8 @@ __BUILD_SET_C0(brcm_cmt_ctrl)
- __BUILD_SET_C0(brcm_config)
- __BUILD_SET_C0(brcm_mode)
+diff --git a/arch/mips/kvm/kvm_locore.S b/arch/mips/kvm/kvm_locore.S
+index dca2aa6..e86fa2a 100644
+--- a/arch/mips/kvm/kvm_locore.S
++++ b/arch/mips/kvm/kvm_locore.S
+@@ -310,7 +310,7 @@ NESTED (MIPSX(GuestException), CALLFRAME_SIZ, ra)
+     LONG_S  t0, VCPU_R26(k1)
  
-+int allocate_kscratch(void);
-+
- #endif /* !__ASSEMBLY__ */
+     /* Get GUEST k1 and save it in VCPU */
+-    la      t1, ~0x2ff
++	PTR_LI	t1, ~0x2ff
+     mfc0    t0, CP0_EBASE
+     and     t0, t0, t1
+     LONG_L  t0, 0x3000(t0)
+@@ -384,14 +384,14 @@ NESTED (MIPSX(GuestException), CALLFRAME_SIZ, ra)
+     mtc0        k0, CP0_DDATA_LO
  
- #endif /* _ASM_MIPSREGS_H */
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index c6568bf..ee1014e 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1064,3 +1064,32 @@ __cpuinit void cpu_report(void)
- 	if (c->options & MIPS_CPU_FPU)
- 		printk(KERN_INFO "FPU revision is: %08x\n", c->fpu_id);
- }
-+
-+static DEFINE_SPINLOCK(kscratch_used_lock);
-+
-+static unsigned int kscratch_used_mask;
-+
-+int allocate_kscratch(void)
-+{
-+	int r;
-+	unsigned int a;
-+
-+	spin_lock(&kscratch_used_lock);
-+
-+	a = cpu_data[0].kscratch_mask & ~kscratch_used_mask;
-+
-+	r = ffs(a);
-+
-+	if (r == 0) {
-+		r = -1;
-+		goto out;
-+	}
-+
-+	r--; /* make it zero based */
-+
-+	kscratch_used_mask |= (1 << r);
-+out:
-+	spin_unlock(&kscratch_used_lock);
-+
-+	return r;
-+}
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index ce9818e..001b87c 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -30,6 +30,7 @@
- #include <linux/cache.h>
+     /* Restore RDHWR access */
+-    la      k0, 0x2000000F
++	PTR_LI	k0, 0x2000000F
+     mtc0    k0,  CP0_HWRENA
  
- #include <asm/cacheflush.h>
-+#include <asm/mipsregs.h>
- #include <asm/pgtable.h>
- #include <asm/war.h>
- #include <asm/uasm.h>
-@@ -307,25 +308,6 @@ static int check_for_high_segbits __cpuinitdata;
+     /* Jump to handler */
+ FEXPORT(__kvm_mips_jump_to_handler)
+     /* XXXKYMA: not sure if this is safe, how large is the stack?? */
+     /* Now jump to the kvm_mips_handle_exit() to see if we can deal with this in the kernel */
+-    la          t9,kvm_mips_handle_exit
++	PTR_LA	t9, kvm_mips_handle_exit
+     jalr.hb     t9
+     addiu       sp,sp, -CALLFRAME_SIZ           /* BD Slot */
  
- static int check_for_high_segbits __cpuinitdata;
+@@ -566,7 +566,7 @@ __kvm_mips_return_to_host:
+     mtlo    k0
  
--static unsigned int kscratch_used_mask __cpuinitdata;
--
--static int __cpuinit allocate_kscratch(void)
--{
--	int r;
--	unsigned int a = cpu_data[0].kscratch_mask & ~kscratch_used_mask;
--
--	r = ffs(a);
--
--	if (r == 0)
--		return -1;
--
--	r--; /* make it zero based */
--
--	kscratch_used_mask |= (1 << r);
--
--	return r;
--}
--
- static int scratch_reg __cpuinitdata;
- static int pgd_reg __cpuinitdata;
- enum vmalloc64_mode {not_refill, refill_scratch, refill_noscratch};
+     /* Restore RDHWR access */
+-    la      k0, 0x2000000F
++	PTR_LI	k0, 0x2000000F
+     mtc0    k0,  CP0_HWRENA
+ 
+ 
 -- 
 1.7.11.7

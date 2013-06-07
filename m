@@ -1,45 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 13:17:04 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:44080 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6818476Ab3FJLQwqGVAi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Jun 2013 13:16:52 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5ABGl0U031388;
-        Mon, 10 Jun 2013 13:16:47 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5ABGg4B031387;
-        Mon, 10 Jun 2013 13:16:42 +0200
-Date:   Mon, 10 Jun 2013 13:16:42 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     David Daney <david.s.daney@gmail.com>,
-        Gleb Natapov <gleb@redhat.com>,
-        David Daney <ddaney@caviumnetworks.com>,
-        David Daney <ddaney.cavm@gmail.com>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, Sanjay Lal <sanjayl@kymasys.com>,
-        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 00/31] KVM/MIPS: Implement hardware virtualization via
- the MIPS-VZ extensions.
-Message-ID: <20130610111642.GF28380@linux-mips.org>
-References: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com>
- <51B26974.5000306@caviumnetworks.com>
- <20130609073115.GE4725@redhat.com>
- <51B50E87.2060501@gmail.com>
- <alpine.LFD.2.03.1306100030210.18329@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 13:17:33 +0200 (CEST)
+Received: from mail-pb0-f51.google.com ([209.85.160.51]:57274 "EHLO
+        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6824790Ab3FGQZT2M6X3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Jun 2013 18:25:19 +0200
+Received: by mail-pb0-f51.google.com with SMTP id um15so4840252pbc.24
+        for <linux-mips@linux-mips.org>; Fri, 07 Jun 2013 09:25:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=N+6iEO6mW5FK9wuvWdzHV0nhtl5hQFSKxrNjpuS3wrY=;
+        b=k6k1p8/jLhED0BzDSgzaV2e1+GMttTro8IBVvCCay0kvldEYZVJ5GTTji7dXIsGkAV
+         4V8PuVuRxN2Q+NemPFCF8fK0O9oG6ICsX3/xUfVhgs7B1SUXvzBsB1oVhseUm2AeZ1TT
+         GGkL/91t5K/4/TsCdwVeqK8Zk7JeUkvQZaJlNfAvH+44NTLZUeB/rBkfMi+GuzPjm6YH
+         1JRI/aeqpzKxXRIDQ7E+ZroujfGM6YOZUYah4/QOAl6tEVwn3EClBJgrArLbJLNh/2Ob
+         4oXa9Bj2K2IIJ5ZSh5cF6THGIe7TwAmSwRYhdSo7Gf7LMQoLTHzP0gdmK/ERX+hbztrf
+         Ypmw==
+X-Received: by 10.68.233.98 with SMTP id tv2mr43872018pbc.146.1370622312432;
+        Fri, 07 Jun 2013 09:25:12 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id kv2sm78200478pbc.28.2013.06.07.09.25.10
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 07 Jun 2013 09:25:11 -0700 (PDT)
+Message-ID: <51B20965.3060903@gmail.com>
+Date:   Fri, 07 Jun 2013 09:25:09 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.03.1306100030210.18329@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+To:     Alexis BRENON <abrenon@wyplay.com>
+CC:     linux-mips@linux-mips.org
+Subject: Re: Immediate branch offset
+References: <51B1B739.7080104@wyplay.com>
+In-Reply-To: <51B1B739.7080104@wyplay.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36796
+X-archive-position: 36797
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,24 +57,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jun 10, 2013 at 12:40:42AM +0100, Maciej W. Rozycki wrote:
+On 06/07/2013 03:34 AM, Alexis BRENON wrote:
+> Hi everyone,
+>
+> I'm new on the list, so I'll make a short introduction of me.
+> First of all, I'm french, so, please, be indulgent for my english
+> mistakes...
+> I'm working on the Pypy project, to create a MIPS backend (a MIPS JIT).
+>
+> To create the JIT, I have to load some MIPS instruction directly in
+> memory without passing through a .asm file or else. So, I cannot set
+> some labels. So to make some branches, I try to load the equivalent
+> instruction of :
+>      bne $t0, $t1, -8
+> to go back, just before the bne instruction, if $t0 and $t1 are equals.
+> But when it run, I've got an illegal instruction error.
+> To debug, I write a small program in the MARS MIPS simulator with this
+> instruction. But when compiling, assembler says me that -8 is an operand
+> of incorrect type.
 
-> > >   How different MIPS SMP systems are?
-> > 
-> > o Old SGI heavy metal (several different system architectures).
-> > 
-> > o Cavium OCTEON SMP SoCs.
-> > 
-> > o Broadcom (several flavors) SoCs
-> > 
-> > o Loongson
-> 
-> o Old DEC hardware (DECsystem 58x0, R3000-based).
-> 
-> o Malta-based MIPS Technologies CMP solutions (1004K, 1074K, interAptiv).
 
-And more.  It's fairly accurate that MIPS SMP system tend to have little
-of their system architecture in common beyond the underlying processor
-architecture and everything else should be treated as a lucky coincidence.
+Dump out your program so you can disassemble it with objdump -d (or 
+dissassemble it with gdb)  And verify that the code looks good.
 
-  Ralf
+David Daney
+
+
+> I would like to know if it's possible to make a branch, with an
+> immediate offset, or have I to always provide a label ?
+>
+> I hope my question is clear.
+> Thanks for your attention, and for your answer :-p
+>
+> Alexis BRENON
+>
+> P.S. I try to go to the IRC channel, but I receive '#mipslinux :Cannot
+> send to channel' every time  I send message. Is there any particular
+> process to join the channel ?
+>
+>
+>

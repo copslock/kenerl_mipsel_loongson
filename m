@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jun 2013 01:10:29 +0200 (CEST)
-Received: from mail-ie0-f173.google.com ([209.85.223.173]:54683 "EHLO
-        mail-ie0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835169Ab3FGXD6SrtRW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Jun 2013 01:03:58 +0200
-Received: by mail-ie0-f173.google.com with SMTP id k5so5443944iea.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jun 2013 01:10:58 +0200 (CEST)
+Received: from mail-ie0-f182.google.com ([209.85.223.182]:57638 "EHLO
+        mail-ie0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835170Ab3FGXD7Ct2vS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Jun 2013 01:03:59 +0200
+Received: by mail-ie0-f182.google.com with SMTP id 9so12101373iec.13
         for <multiple recipients>; Fri, 07 Jun 2013 16:03:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=bqbios0qAPVIJFNg+qjSdx1UGzUEs/W9K2uF+KtLf9s=;
-        b=eQkx0lSBkrUR/YCzTtE18Np8SJKx8yQmSXXVGfErFbpRp8Q9rvB97lBysHoFgwnOL8
-         F/rHz6tuhaVaM9Or7KF7exSBCN1hQUIgHX3g2rAy5h4vmMdqdzTYlgF7dyI5bJop3/wB
-         NTKBSkde7F2j2+VFHCfEseGFxmgxPTktnnciDqeOAExS9xW8F+WOnAdr4ygoutSf+sto
-         1I+wItRdT/lfkeQHMir1MZfPK/8UvKTVuGra481aSS7ynqUhqjdxqq8gG9qIKF1T4Yh6
-         f743C0r5MJ9P5VkG6L9IjFZ/v30MwqQ7E4pA9tQLSSBMVZm5yZLahUmTDG/BbKgfWEKc
-         DreA==
-X-Received: by 10.50.87.4 with SMTP id t4mr399521igz.76.1370646232254;
+        bh=mx23w+vrmCLgT0cbXWmdHcohMpXBQwMGGsJZJhaJqqA=;
+        b=tG7KjEZtFrc6IaG5N61Pv45002tSzUhuNG19sqLJUFxG1D+eI0smNSQ8cEU6SYJuaj
+         yJmMNuRvmKxdtGpWVSWT7g+evPk0cPYv3HEjgC9IwXxaqKg23FihdsU/dFnwBVz93yJI
+         iaqKnPJorEPJPOx3Ln9nFWJ9oA7He+WFaquNzZGjEGvN0oHdTmA0z0TL6mFTCHPSvkru
+         xy3naoH8bTjM3f4nQIslV0Fuw7q+zOccK8GdOBJ2yKLrorrNMofzpMb5FgrNGTSZGPs7
+         6bucm7ZuCT7Fda1snDhsY9q+F0YawuMK+gPA5bA9qJ+PMuqHX3N107fa0HpOMU522pwA
+         EFbA==
+X-Received: by 10.50.25.194 with SMTP id e2mr360226igg.111.1370646232911;
         Fri, 07 Jun 2013 16:03:52 -0700 (PDT)
 Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id h3sm1221753igv.1.2013.06.07.16.03.50
+        by mx.google.com with ESMTPSA id vc15sm163475igb.7.2013.06.07.16.03.51
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 07 Jun 2013 16:03:51 -0700 (PDT)
+        Fri, 07 Jun 2013 16:03:52 -0700 (PDT)
 Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r57N3nNd006682;
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r57N3nqt006690;
         Fri, 7 Jun 2013 16:03:49 -0700
 Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r57N3n33006681;
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r57N3nDA006689;
         Fri, 7 Jun 2013 16:03:49 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         kvm@vger.kernel.org, Sanjay Lal <sanjayl@kymasys.com>
 Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: [PATCH 18/31] mips/kvm: Add pt_regs slots for BadInstr and BadInstrP
-Date:   Fri,  7 Jun 2013 16:03:22 -0700
-Message-Id: <1370646215-6543-19-git-send-email-ddaney.cavm@gmail.com>
+Subject: [PATCH 20/31] mips/kvm: Hook into TLB fault handlers.
+Date:   Fri,  7 Jun 2013 16:03:24 -0700
+Message-Id: <1370646215-6543-21-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.11.7
 In-Reply-To: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com>
@@ -42,7 +42,7 @@ Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36736
+X-archive-position: 36737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,44 +61,57 @@ X-list: linux-mips
 
 From: David Daney <david.daney@cavium.com>
 
-These save the instruction word to be used by MIPSVZ code for
-instruction emulation.
+If the CPU is operating in guest mode when a TLB related excpetion
+occurs, give KVM a chance to do emulation.
 
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/include/asm/ptrace.h | 4 ++++
- arch/mips/kernel/asm-offsets.c | 4 ++++
- 2 files changed, 8 insertions(+)
+ arch/mips/mm/fault.c       | 8 ++++++++
+ arch/mips/mm/tlbex-fault.S | 6 ++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
-index 5e6cd09..d080716 100644
---- a/arch/mips/include/asm/ptrace.h
-+++ b/arch/mips/include/asm/ptrace.h
-@@ -46,6 +46,10 @@ struct pt_regs {
- 	unsigned long long mpl[3];	  /* MTM{0,1,2} */
- 	unsigned long long mtp[3];	  /* MTP{0,1,2} */
- #endif
-+#ifdef CONFIG_KVM_MIPSVZ
-+	unsigned int cp0_badinstr;	/* Only populated on do_page_fault_{0,1} */
-+	unsigned int cp0_badinstrp;	/* Only populated on do_page_fault_{0,1} */
-+#endif
- } __aligned(8);
+diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
+index 0fead53..9391da49 100644
+--- a/arch/mips/mm/fault.c
++++ b/arch/mips/mm/fault.c
+@@ -26,6 +26,7 @@
+ #include <asm/ptrace.h>
+ #include <asm/highmem.h>		/* For VMALLOC_END */
+ #include <linux/kdebug.h>
++#include <asm/kvm_mips_vz.h>
  
- struct task_struct;
-diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
-index 03bf363..c5cc28f 100644
---- a/arch/mips/kernel/asm-offsets.c
-+++ b/arch/mips/kernel/asm-offsets.c
-@@ -71,6 +71,10 @@ void output_ptreg_defines(void)
- 	OFFSET(PT_MPL, pt_regs, mpl);
- 	OFFSET(PT_MTP, pt_regs, mtp);
- #endif /* CONFIG_CPU_CAVIUM_OCTEON */
+ /*
+  * This routine handles page faults.  It determines the address,
+@@ -50,6 +51,13 @@ asmlinkage void __kprobes do_page_fault(struct pt_regs *regs, unsigned long writ
+ 	       field, regs->cp0_epc);
+ #endif
+ 
 +#ifdef CONFIG_KVM_MIPSVZ
-+	OFFSET(PT_BADINSTR, pt_regs, cp0_badinstr);
-+	OFFSET(PT_BADINSTRP, pt_regs, cp0_badinstrp);
++	if (test_tsk_thread_flag(current, TIF_GUESTMODE)) {
++		if (mipsvz_page_fault(regs, write, address))
++			return;
++	}
 +#endif
- 	DEFINE(PT_SIZE, sizeof(struct pt_regs));
- 	BLANK();
- }
++
+ #ifdef CONFIG_KPROBES
+ 	/*
+ 	 * This is to notify the fault handler of the kprobes.	The
+diff --git a/arch/mips/mm/tlbex-fault.S b/arch/mips/mm/tlbex-fault.S
+index 318855e..df0f70b 100644
+--- a/arch/mips/mm/tlbex-fault.S
++++ b/arch/mips/mm/tlbex-fault.S
+@@ -14,6 +14,12 @@
+ 	NESTED(tlb_do_page_fault_\write, PT_SIZE, sp)
+ 	SAVE_ALL
+ 	MFC0	a2, CP0_BADVADDR
++#ifdef CONFIG_KVM_MIPSVZ
++	mfc0	v0, CP0_BADINSTR
++	mfc0	v1, CP0_BADINSTRP
++	sw	v0, PT_BADINSTR(sp)
++	sw	v1, PT_BADINSTRP(sp)
++#endif
+ 	KMODE
+ 	move	a0, sp
+ 	REG_S	a2, PT_BVADDR(sp)
 -- 
 1.7.11.7

@@ -1,41 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jun 2013 22:16:02 +0200 (CEST)
-Received: from mail-ea0-f180.google.com ([209.85.215.180]:58191 "EHLO
-        mail-ea0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825726Ab3FHUPv1npgc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Jun 2013 22:15:51 +0200
-Received: by mail-ea0-f180.google.com with SMTP id k10so4519705eaj.11
-        for <multiple recipients>; Sat, 08 Jun 2013 13:15:45 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jun 2013 22:16:34 +0200 (CEST)
+Received: from mail-we0-f180.google.com ([74.125.82.180]:57262 "EHLO
+        mail-we0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825887Ab3FHUQdHBF1J (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Jun 2013 22:16:33 +0200
+Received: by mail-we0-f180.google.com with SMTP id w56so3863765wes.39
+        for <multiple recipients>; Sat, 08 Jun 2013 13:16:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=MllJeR3SJxmYl82U4rnBYJ4pm+vhfH3Rsam9Hc55m3o=;
-        b=tRR3AOBvFxfa4RVt48uFfOI4WLy6piCEBKhO1lBmrebgjamP+VNsXEaYL2U4Dd1H4X
-         wKd9W2cZ6mJALQfWZ3p616YmiQyzlhNDeXTzqapnppCu8hGzQK0JALyjlMMo+o2fTx4T
-         3w4XxpxzoumsS5ZeuGYUNzJ5IHM2pc+HauNEuKFjGefwKb869YLaD1XNDRmqJd457w8d
-         FNwHSUdUolNAK32soxlD1lTUYI5IEApbbPE8Y2iq4qhEtpOzV6nbRmAN5SO8MPScFDNl
-         IWzkMDxymq/KS97CKt/ZEP+HsANo65nIg2iC4d+24o2qeG2UPgwdWj5p6BrV30eN9z4r
-         MpHg==
-X-Received: by 10.15.54.4 with SMTP id s4mr4308396eew.49.1370722545086;
-        Sat, 08 Jun 2013 13:15:45 -0700 (PDT)
-Received: from dargo.roarinelk.net (62-47-61-241.adsl.highway.telekom.at. [62.47.61.241])
-        by mx.google.com with ESMTPSA id y2sm9247655eeu.2.2013.06.08.13.15.43
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sat, 08 Jun 2013 13:15:44 -0700 (PDT)
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=giLbHgVXgJhMqVPMQE+7Tdb/gH9iT0SSVs3Itw7fr24=;
+        b=cKM3rmWEEsMI+QrOOLmB+0rrZHPM0WyDCeO5dGy03z/0z+cwoNxKpklrQC4sk9JZGf
+         Dkd5ibUhOnu2X2jsErF1yj+gHYZmSzDOl7MPvX9EYyflIcU7Dgil3ShWlh4mxxrI4FRx
+         8E5TFPjkgXVCzbJuJbt+OFZdezFA3K2AJKefL9CwrYc/csF0T+jMQ3pCcvCLZ71OVPKs
+         qwd4PBPnI91qTCr6/UqQ1bEe6TMYPWYStavWVy42PGxdOXxsR+CEk/pd/8miwkdvuimb
+         4umMipxi57F0DF1CsGapZT0TpzPH8ApkPu0B7LuNEdguVsuSfWSiagbTATADEVocMfcP
+         YiuQ==
+X-Received: by 10.180.126.101 with SMTP id mx5mr1477536wib.48.1370722587431;
+ Sat, 08 Jun 2013 13:16:27 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.216.70.146 with HTTP; Sat, 8 Jun 2013 13:15:47 -0700 (PDT)
+In-Reply-To: <alpine.LFD.2.03.1306081907130.21418@linux-mips.org>
+References: <1369315716-7408-1-git-send-email-manuel.lauss@gmail.com> <alpine.LFD.2.03.1306081907130.21418@linux-mips.org>
 From:   Manuel Lauss <manuel.lauss@gmail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
+Date:   Sat, 8 Jun 2013 22:15:47 +0200
+Message-ID: <CAOLZvyG+eVq_6QQL=vo21oK9kkADaThWVAE4=3b4usaPuZNFFQ@mail.gmail.com>
+Subject: Re: [PATCH v2] MIPS: Alchemy: fix wait function
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH v3] MIPS: Alchemy: fix wait function
-Date:   Sat,  8 Jun 2013 22:15:41 +0200
-Message-Id: <1370722541-25407-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 1.8.2.1
+        Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
 Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36755
+X-archive-position: 36756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,56 +51,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Only an interrupt can wake the core from 'wait', enable interrupts
-locally before executing 'wait'.
+On Sat, Jun 8, 2013 at 8:18 PM, Maciej W. Rozycki <macro@linux-mips.org> wrote:
+> On Thu, 23 May 2013, Manuel Lauss wrote:
+>
+>> Only an interrupt can wake the core from 'wait', enable interrupts
+>> locally before executing 'wait'.
+>>
+>> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+>> ---
+>> Ralf made me aware of the race in between enabling interrupts and
+>> entering wait.  While this patch does not eliminate it, it shrinks it
+>> to 1 instruction.  It's not perfect, but lets Alchemy boot until a
+>> more sophisticated solution (like __r4k_wait) can be implemented
+>> without having to duplicate the interrupt exception handler.
+>
+>  I suggest double-checking with Alchemy documentation, but I doubt there
+> is a race here, the write-back pipeline stage of MTC0 should overlap with
+> the execution stage of WAIT, so assuming interrupts were previously
+> disabled there should be no window between setting CP0.Status.IE and
+> executing WAIT that would permit an interrrupt exception to be taken.
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
-v3: add constraint for additional register used, as per Maciej's feedback
-v2: enable interrupts immediately before executing 'wait', to minimize chance
-    of interrupts occurring.
+That was my thinking as well.  The Alchemy manuals (at least the ones I have)
+don't specify the stage where c0 writes complete or 'wait' executes, but the
+wording on how and when exceptions are raised makes me believe the
+scheme above is race-free.
 
 
- arch/mips/kernel/idle.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+>  There is a bug in your change however.
+[...]
+>  You can't just take $8 away under the feet of GCC without telling the
+> compiler, it may be storing some data there across the asm.  Rather than
+> picking an arbitrary register as a clobber I suggest using an output
+> register constraint associated with a scratch variable (depending on
+> register usage GCC may possibly be able to reuse the same register both
+> for input and for output).
 
-diff --git a/arch/mips/kernel/idle.c b/arch/mips/kernel/idle.c
-index 3b09b88..0c655de 100644
---- a/arch/mips/kernel/idle.c
-+++ b/arch/mips/kernel/idle.c
-@@ -93,26 +93,27 @@ static void rm7k_wait_irqoff(void)
- }
- 
- /*
-- * The Au1xxx wait is available only if using 32khz counter or
-- * external timer source, but specifically not CP0 Counter.
-- * alchemy/common/time.c may override cpu_wait!
-+ * Au1 'wait' is only useful when the 32kHz counter is used as timer,
-+ * since coreclock (and the cp0 counter) stops upon executing it. Only an
-+ * interrupt can wake it, so they must be enabled before entering idle modes.
-  */
- static void au1k_wait(void)
- {
-+	unsigned long c0status = read_c0_status() | 1;	/* irqs on */
-+
- 	__asm__(
- 	"	.set	mips3			\n"
- 	"	cache	0x14, 0(%0)		\n"
- 	"	cache	0x14, 32(%0)		\n"
- 	"	sync				\n"
--	"	nop				\n"
-+	"	mtc0	%1, $12			\n" /* wr c0status */
- 	"	wait				\n"
- 	"	nop				\n"
- 	"	nop				\n"
- 	"	nop				\n"
- 	"	nop				\n"
- 	"	.set	mips0			\n"
--	: : "r" (au1k_wait));
--	local_irq_enable();
-+	: : "r" (au1k_wait), "r" (c0status));
- }
- 
- static int __initdata nowait;
--- 
-1.8.2.1
+I've fixed that, and sent out a new patch.
+
+Thank you very much!
+        Manuel

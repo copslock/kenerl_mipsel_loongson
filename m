@@ -1,28 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Jun 2013 16:43:30 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:40693 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835040Ab3FIOn37Qi-T (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 9 Jun 2013 16:43:29 +0200
-Date:   Sun, 9 Jun 2013 15:43:29 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Alexis BRENON <abrenon@wyplay.com>
-cc:     linux-mips@linux-mips.org
-Subject: Re: Immediate branch offset
-In-Reply-To: <51B1B739.7080104@wyplay.com>
-Message-ID: <alpine.LFD.2.03.1306082206540.18329@linux-mips.org>
-References: <51B1B739.7080104@wyplay.com>
-User-Agent: Alpine 2.03 (LFD 1266 2009-07-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 00:58:08 +0200 (CEST)
+Received: from mail-pd0-f180.google.com ([209.85.192.180]:64066 "EHLO
+        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835051Ab3FIW6HAagQ5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Jun 2013 00:58:07 +0200
+Received: by mail-pd0-f180.google.com with SMTP id 10so6731676pdi.39
+        for <multiple recipients>; Sun, 09 Jun 2013 15:58:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=w3QGc1fGqhcrmVrG7DoW2msDaRZ8H839dHk+tu3kOiI=;
+        b=XuLIpRiUpzq7k7UD812x9EvMANDyP3JelkQu9FdOcOoXaesUP8xzhKkwVc+d3m9+y8
+         XTZRzsTf9BwP5U3jy2daX1dfpTB/mkmHqorHkJf41fyjpYA0ks7qkUGSluWdBV+S10Vo
+         3Z5JbpMT4iWL7y44j9fS+u8D9T0GNR5a/fvSDWj2555nbLk9zbo6VeN98v/se8ei+cf4
+         ZYW37CJB0qX3fOIhSUWDwfp7SPnaKIzhr5ajAyEbSQQ8GBMzyk7XKdxhjgop7t1CuCv7
+         3q5r8GdG2Ge0AerR5V/h15ATD6et54IQQ1vg9FLaLpi2f+U7BOJuiRU4VQG+AAx+dNt5
+         aDgQ==
+X-Received: by 10.66.155.138 with SMTP id vw10mr11500651pab.91.1370818680434;
+        Sun, 09 Jun 2013 15:58:00 -0700 (PDT)
+Received: from dd_xps.caveonetworks.com (adsl-67-124-149-174.dsl.pltn13.pacbell.net. [67.124.149.174])
+        by mx.google.com with ESMTPSA id vv6sm12891000pab.6.2013.06.09.15.57.57
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Sun, 09 Jun 2013 15:57:59 -0700 (PDT)
+Message-ID: <51B50873.8010104@gmail.com>
+Date:   Sun, 09 Jun 2013 15:57:55 -0700
+From:   David Daney <david.s.daney@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130311 Thunderbird/17.0.4
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:     Gleb Natapov <gleb@redhat.com>
+CC:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, kvm@vger.kernel.org,
+        Sanjay Lal <sanjayl@kymasys.com>, linux-kernel@vger.kernel.org,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH v5 5/6] mips/kvm: Fix ABI by moving manipulation of CP0
+ registers to KVM_{G,S}ET_ONE_REG
+References: <1369248236-27237-1-git-send-email-ddaney.cavm@gmail.com> <1369248236-27237-6-git-send-email-ddaney.cavm@gmail.com> <20130608110503.GF15299@redhat.com>
+In-Reply-To: <20130608110503.GF15299@redhat.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <david.s.daney@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36758
+X-archive-position: 36759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: david.s.daney@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,65 +60,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 7 Jun 2013, Alexis BRENON wrote:
+On 06/08/2013 04:05 AM, Gleb Natapov wrote:
+> On Wed, May 22, 2013 at 11:43:55AM -0700, David Daney wrote:
+>> From: David Daney <david.daney@cavium.com>
+>>
+>> Because not all 256 CP0 registers are ever implemented, we need a
+>> different method of manipulating them.  Use the
+>> KVM_SET_ONE_REG/KVM_GET_ONE_REG mechanism.
+>>
+>> Now unused code and definitions are removed.
+>>
+> Just noticed that KVM_REG_MIPS_ definitions are wrong. You need to
+> define KVM_REG_MIPS in include/uapi/linux/kvm.h (please use
+> 0x7000000000000000ULL as 0x6000000000000000ULL is reserved for ARM64)
+> and define all KVM_REG_MIPS_ values as "KVM_REG_MIPS | value". Can you
+> send a patch to do that ASAP?
 
-> To create the JIT, I have to load some MIPS instruction directly in memory
-> without passing through a .asm file or else. So, I cannot set some labels. So
-> to make some branches, I try to load the equivalent instruction of :
->     bne $t0, $t1, -8
-> to go back, just before the bne instruction, if $t0 and $t1 are equals. But
-> when it run, I've got an illegal instruction error.
+It will have to be tomorrow, I cannot test anything today.
 
- Please note that BNE means Branch-if-Not-Equal, your quoted instruction
-will jump backwards if $t0 and $t1 are *not* equal.
-
-> To debug, I write a small program in the MARS MIPS simulator with this
-> instruction. But when compiling, assembler says me that -8 is an operand of
-> incorrect type.
-
- The instruction you quoted assembles for me successfully, what version of 
-binutils do you use and what exact error message do you get?
-
- Please note however that this instruction is not what I understand you 
-need -- it is treated as a branch to the absolute address -8 (0xfffffff8 
-in the o32 ABI), rather than 8 bytes back (there's an off-by-four bug in 
-GAS here too making it jump to -4 instead, and some other issues; I'll see 
-if I can get them fixed sometime -- see the discussion around 
-http://sourceware.org/ml/binutils/2012-09/msg00288.html if interested in 
-the gory details).
-
- If you want to jump to the instruction immediately preceding the branch 
-and avoid a label (assuming the standard MIPS ISA), use:
-
-	bne	$t0, $t1, . - 4
-
--- "." is a special "the address of this instruction" designator (see the 
-GAS manual for further information), so this produces the machine 
-instruction you require (the jump is calculated as relative to the next 
-instruction -- that is (. + 4) -- so the ultimate effective (i.e. shifted 
-rather than as encoded in the instruction's 16-bit immediate operand 
-field) offset is -8).
-
-$ cat foo.s
-	bne	$t0, $t1, . - 4
-$ mips-linux-as -o foo.o foo.s
-$ mips-linux-objdump -dr foo.o
-
-foo.o:     file format elf32-tradbigmips
-
-
-Disassembly of section .text:
-
-00000000 <.text>:
-   0:	1509fffe 	bne	t0,t1,0xfffffffc
-   4:	00000000 	nop
-	...
-$ mips-linux-as --version
-GNU assembler (GNU Binutils) 2.23.2
-[...]
-
-Likewise with the current binutils trunk.
-
- I hope this helps.
-
-  Maciej
+Thanks,
+David Daney

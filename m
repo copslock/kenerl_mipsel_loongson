@@ -1,40 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 09:30:45 +0200 (CEST)
-Received: from mms3.broadcom.com ([216.31.210.19]:2698 "EHLO mms3.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 09:32:27 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:1843 "EHLO mms1.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822451Ab3FJH3FX0lw5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Jun 2013 09:29:05 +0200
-Received: from [10.9.208.55] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Mon, 10 Jun 2013 00:19:46 -0700
-X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Mon, 10 Jun 2013 00:28:45 -0700
+        id S6818476Ab3FJHcQPAZ0F (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 10 Jun 2013 09:32:16 +0200
+Received: from [10.9.208.57] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Mon, 10 Jun 2013 00:28:24 -0700
+X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Mon, 10 Jun 2013 00:32:03 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Mon, 10 Jun 2013 00:28:45 -0700
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
+ Server id 14.1.438.0; Mon, 10 Jun 2013 00:32:03 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 1CB82F2D74; Mon, 10
- Jun 2013 00:28:43 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 8CD58F2D88; Mon, 10
+ Jun 2013 00:32:02 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        ddaney.cavm@gmail.com
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 cc:     "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 2/5] MIPS: Allow kernel to use coprocessor 2
-Date:   Mon, 10 Jun 2013 13:00:01 +0530
-Message-ID: <1370849404-4918-3-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH 1/2] MIPS: boot: Fixes for compressed/uart-16550.c
+Date:   Mon, 10 Jun 2013 13:03:25 +0530
+Message-ID: <1370849606-5025-2-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1370849404-4918-1-git-send-email-jchandra@broadcom.com>
-References: <1370849404-4918-1-git-send-email-jchandra@broadcom.com>
+In-Reply-To: <1370849606-5025-1-git-send-email-jchandra@broadcom.com>
+References: <1370849606-5025-1-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7DABA1982L830675768-01-01
+X-WSS-ID: 7DAB5F9231W33900575-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36772
+X-archive-position: 36773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,51 +50,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Kernel threads should be able to use COP2 if the platform needs it.
-Do not call die_if_kernel() for a coprocessor unusable exception if
-the exception due to COP2 usage.  Instead, the default notifier for
-COP2 exceptions is updated to call die_if_kernel.
+Fix uart-16550.c for adding XLR/XLP support, changes are:
+* Make register read/write use volatile pointers
+* Support 32 bit IO read/write
+* Increase timeout in waiting for UART LSR
 
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/kernel/traps.c |   15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ arch/mips/boot/compressed/uart-16550.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index beba1e6..142d2be 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1056,15 +1056,9 @@ static int default_cu2_call(struct notifier_block *nfb, unsigned long action,
- {
- 	struct pt_regs *regs = data;
+diff --git a/arch/mips/boot/compressed/uart-16550.c b/arch/mips/boot/compressed/uart-16550.c
+index 1c7b739..90ae440 100644
+--- a/arch/mips/boot/compressed/uart-16550.c
++++ b/arch/mips/boot/compressed/uart-16550.c
+@@ -23,23 +23,27 @@
+ #define PORT(offset) (UART0_BASE + (4 * offset))
+ #endif
  
--	switch (action) {
--	default:
--		die_if_kernel("Unhandled kernel unaligned access or invalid "
-+	die_if_kernel("COP2: Unhandled kernel unaligned access or invalid "
- 			      "instruction", regs);
--		/* Fall through	 */
--
--	case CU2_EXCEPTION:
--		force_sig(SIGILL, current);
--	}
-+	force_sig(SIGILL, current);
- 
- 	return NOTIFY_OK;
- }
-@@ -1080,10 +1074,11 @@ asmlinkage void do_cpu(struct pt_regs *regs)
- 	unsigned long __maybe_unused flags;
- 
- 	prev_state = exception_enter();
--	die_if_kernel("do_cpu invoked from kernel context!", regs);
--
- 	cpid = (regs->cp0_cause >> CAUSEB_CE) & 3;
- 
-+	if (cpid != 2)
-+		die_if_kernel("do_cpu invoked from kernel context!", regs);
++#ifndef IOTYPE
++#define IOTYPE char
++#endif
 +
- 	switch (cpid) {
- 	case 0:
- 		epc = (unsigned int __user *)exception_epc(regs);
+ #ifndef PORT
+ #error please define the serial port address for your own machine
+ #endif
+ 
+ static inline unsigned int serial_in(int offset)
+ {
+-	return *((char *)PORT(offset));
++	return *((volatile IOTYPE *)PORT(offset)) & 0xFF;
+ }
+ 
+ static inline void serial_out(int offset, int value)
+ {
+-	*((char *)PORT(offset)) = value;
++	*((volatile IOTYPE *)PORT(offset)) = value & 0xFF;
+ }
+ 
+ void putc(char c)
+ {
+-	int timeout = 1024;
++	int timeout = 1000000;
+ 
+ 	while (((serial_in(UART_LSR) & UART_LSR_THRE) == 0) && (timeout-- > 0))
+ 		;
 -- 
 1.7.9.5

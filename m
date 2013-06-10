@@ -1,28 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 15:16:56 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:13359 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827461Ab3FJNQbFMASk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Jun 2013 15:16:31 +0200
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>
-Subject: [PATCH v2] MIPS: include: mmu_context.h: Replace VIRTUALIZATION with KVM
-Date:   Mon, 10 Jun 2013 14:16:16 +0100
-Message-ID: <1370870176-4033-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 17:49:50 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:45042 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6827461Ab3FJPtrWJIrp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 10 Jun 2013 17:49:47 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5AFnj3n011468;
+        Mon, 10 Jun 2013 17:49:45 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5AFniqg011467;
+        Mon, 10 Jun 2013 17:49:44 +0200
+Date:   Mon, 10 Jun 2013 17:49:44 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Manuel Lauss <manuel.lauss@gmail.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2] MIPS: Alchemy: fix wait function
+Message-ID: <20130610154944.GB5303@linux-mips.org>
+References: <1369315716-7408-1-git-send-email-manuel.lauss@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SEF-Processed: 7_3_0_01192__2013_06_10_14_16_21
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1369315716-7408-1-git-send-email-manuel.lauss@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36804
+X-archive-position: 36805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,43 +42,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The kvm_* symbols are only available if KVM is selected.
+On Thu, May 23, 2013 at 03:28:36PM +0200, Manuel Lauss wrote:
 
-Fixes the following linking problem on a randconfig:
+> Only an interrupt can wake the core from 'wait', enable interrupts
+> locally before executing 'wait'.
+> 
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+> ---
+> Ralf made me aware of the race in between enabling interrupts and
+> entering wait.  While this patch does not eliminate it, it shrinks it
+> to 1 instruction.  It's not perfect, but lets Alchemy boot until a
+> more sophisticated solution (like __r4k_wait) can be implemented
+> without having to duplicate the interrupt exception handler.
 
-arch/mips/built-in.o: In function `local_flush_tlb_mm':
-(.text+0x18a94): undefined reference to `kvm_local_flush_tlb_all'
-arch/mips/built-in.o: In function `local_flush_tlb_range':
-(.text+0x18d0c): undefined reference to `kvm_local_flush_tlb_all'
-kernel/built-in.o: In function `__schedule':
-core.c:(.sched.text+0x2a00): undefined reference to `kvm_local_flush_tlb_all'
-mm/built-in.o: In function `use_mm':
-(.text+0x30214): undefined reference to `kvm_local_flush_tlb_all'
-fs/built-in.o: In function `flush_old_exec':
-(.text+0xf0a0): undefined reference to `kvm_local_flush_tlb_all'
-make: *** [vmlinux] Error 1
+It doesn't shrink it - interrupts will be pending from the time they
+were disabled to the point where they get re-enabled.  That can be quite
+a few cycles and so the likelyhood for hitting the race is not that low.
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
----
-Changes since v1:
-- Drop #ifdef from function declaration
----
- arch/mips/include/asm/mmu_context.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-index 8201160..516e6e9 100644
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -117,7 +117,7 @@ get_new_mmu_context(struct mm_struct *mm, unsigned long cpu)
- 	if (! ((asid += ASID_INC) & ASID_MASK) ) {
- 		if (cpu_has_vtag_icache)
- 			flush_icache_all();
--#ifdef CONFIG_VIRTUALIZATION
-+#ifdef CONFIG_KVM
- 		kvm_local_flush_tlb_all();      /* start new asid cycle */
- #else
- 		local_flush_tlb_all();	/* start new asid cycle */
--- 
-1.8.2.1
+  Ralf

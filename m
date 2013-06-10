@@ -1,29 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 19:17:25 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:45447 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835114Ab3FJRRYIoYDs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Jun 2013 19:17:24 +0200
-Date:   Mon, 10 Jun 2013 18:17:24 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Manuel Lauss <manuel.lauss@gmail.com>
-cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH v3] MIPS: Alchemy: fix wait function
-In-Reply-To: <1370722541-25407-1-git-send-email-manuel.lauss@gmail.com>
-Message-ID: <alpine.LFD.2.03.1306101816150.18329@linux-mips.org>
-References: <1370722541-25407-1-git-send-email-manuel.lauss@gmail.com>
-User-Agent: Alpine 2.03 (LFD 1266 2009-07-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 19:29:50 +0200 (CEST)
+Received: from smtp-out-079.synserver.de ([212.40.185.79]:1064 "EHLO
+        smtp-out-079.synserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835108Ab3FJR3jdPvCw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Jun 2013 19:29:39 +0200
+Received: (qmail 22769 invoked by uid 0); 10 Jun 2013 17:29:38 -0000
+X-SynServer-TrustedSrc: 1
+X-SynServer-AuthUser: lars@metafoo.de
+X-SynServer-PPID: 22742
+Received: from ppp-93-104-174-180.dynamic.mnet-online.de (HELO ?192.168.178.26?) [93.104.174.180]
+  by 217.119.54.87 with AES256-SHA encrypted SMTP; 10 Jun 2013 17:29:38 -0000
+Message-ID: <51B60D0A.7040307@metafoo.de>
+Date:   Mon, 10 Jun 2013 19:29:46 +0200
+From:   Lars-Peter Clausen <lars@metafoo.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:     Vinod Koul <vinod.koul@intel.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH v2 3/6] dma: Add a jz4740 dmaengine driver
+References: <1369931105-28065-1-git-send-email-lars@metafoo.de> <1369931105-28065-4-git-send-email-lars@metafoo.de> <20130530171225.GA3767@intel.com> <51A79E8F.4070209@metafoo.de>
+In-Reply-To: <51A79E8F.4070209@metafoo.de>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <lars@metafoo.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36812
+X-archive-position: 36813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,49 +47,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 8 Jun 2013, Manuel Lauss wrote:
+On 05/30/2013 08:46 PM, Lars-Peter Clausen wrote:
+>>> +static int jz4740_dma_alloc_chan_resources(struct dma_chan *c)
+>>> +{
+>>> +	struct jz4740_dmaengine_chan *chan = to_jz4740_dma_chan(c);
+>>> +
+>>> +	chan->jz_chan = jz4740_dma_request(chan, NULL);
+>>> +	if (!chan->jz_chan)
+>>> +		return -EBUSY;
+>>> +
+>>> +	jz4740_dma_set_complete_cb(chan->jz_chan, jz4740_dma_complete_cb);
+>>> +
+>>> +	return 0;
+>> Sorry, I didnt reply on this one. The API expects you to allocate a pool of
+>> descriptors. These descriptors are to be used in .device_prep_xxx calls later.
+> 
+> The size of the descriptor is not fixed, so they can not be pre-allocated. And
+> this is nothing new either, most of the more recently added dmaengine drivers
+> allocate their descriptors on demand.
 
-> diff --git a/arch/mips/kernel/idle.c b/arch/mips/kernel/idle.c
-> index 3b09b88..0c655de 100644
-> --- a/arch/mips/kernel/idle.c
-> +++ b/arch/mips/kernel/idle.c
-> @@ -93,26 +93,27 @@ static void rm7k_wait_irqoff(void)
->  }
->  
->  /*
-> - * The Au1xxx wait is available only if using 32khz counter or
-> - * external timer source, but specifically not CP0 Counter.
-> - * alchemy/common/time.c may override cpu_wait!
-> + * Au1 'wait' is only useful when the 32kHz counter is used as timer,
-> + * since coreclock (and the cp0 counter) stops upon executing it. Only an
-> + * interrupt can wake it, so they must be enabled before entering idle modes.
->   */
->  static void au1k_wait(void)
->  {
-> +	unsigned long c0status = read_c0_status() | 1;	/* irqs on */
-> +
->  	__asm__(
->  	"	.set	mips3			\n"
->  	"	cache	0x14, 0(%0)		\n"
->  	"	cache	0x14, 32(%0)		\n"
->  	"	sync				\n"
-> -	"	nop				\n"
-> +	"	mtc0	%1, $12			\n" /* wr c0status */
->  	"	wait				\n"
->  	"	nop				\n"
->  	"	nop				\n"
->  	"	nop				\n"
->  	"	nop				\n"
->  	"	.set	mips0			\n"
-> -	: : "r" (au1k_wait));
-> -	local_irq_enable();
-> +	: : "r" (au1k_wait), "r" (c0status));
->  }
->  
->  static int __initdata nowait;
+Vinod, are you ok with this explanation?
 
- Not exacly what I had in mind, but this looks good to me too. :)
-
-Acked-by: Maciej W. Rozycki <macro@linux-mips.org>
-
-  Maciej
+- Lars

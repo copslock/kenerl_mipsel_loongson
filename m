@@ -1,52 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 13:31:29 +0200 (CEST)
-Received: from mail-lb0-f174.google.com ([209.85.217.174]:61826 "EHLO
-        mail-lb0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823009Ab3FJLbVgn8UH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Jun 2013 13:31:21 +0200
-Received: by mail-lb0-f174.google.com with SMTP id x10so4078113lbi.5
-        for <linux-mips@linux-mips.org>; Mon, 10 Jun 2013 04:31:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding
-         :x-gm-message-state;
-        bh=Q0P+wUFs8kANINCh/jfIbyreAspD81HOqsP2HlavJYo=;
-        b=guCeYN4IULRdYuERuz6hu2TUtIkKpnH0uTySGj+mqEE0u9bwV7CmeBaulIDaCEul6v
-         8BgmJQUNXdPEHs9mtmhJhNCc5j+cw/dQywpgZrgLDvqhEZbApMe3QMf/E/1AZWTZqC1n
-         0Bo34tCy+HFQkyG2lEUAE1kaZV6Arq5W3GnoIBM6aGa5PWPrxcqGGtXzmHkzlJ9VE+ci
-         CMnTJBEBKCbVHrpbRBBmhWQ200q0I7gyg+gnRjTjNUMh4P1aqyqO9i3JU15P/LzqYBfG
-         zBvv82oDV4uUXBNQRN7aBhhP+3hvJz7sCSdqGszCiUu5Mi62Nludfyu60S+GyyF2t7Wv
-         5DBA==
-X-Received: by 10.152.3.7 with SMTP id 7mr4776280lay.66.1370863875029;
-        Mon, 10 Jun 2013 04:31:15 -0700 (PDT)
-Received: from [192.168.2.4] (ppp91-76-148-11.pppoe.mtu-net.ru. [91.76.148.11])
-        by mx.google.com with ESMTPSA id p16sm5497159lbi.13.2013.06.10.04.31.13
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Mon, 10 Jun 2013 04:31:14 -0700 (PDT)
-Message-ID: <51B5B900.4010007@cogentembedded.com>
-Date:   Mon, 10 Jun 2013 15:31:12 +0400
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130509 Thunderbird/17.0.6
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 13:36:59 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:64787 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816553Ab3FJLgz4OHVH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 10 Jun 2013 13:36:55 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>
+Subject: [PATCH] MIPS: ftrace: Add missing CONFIG_DYNAMIC_FTRACE
+Date:   Mon, 10 Jun 2013 12:35:26 +0100
+Message-ID: <1370864126-24931-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.2.1
 MIME-Version: 1.0
-To:     Jayachandran C <jchandra@broadcom.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        ddaney.cavm@gmail.com
-Subject: Re: [PATCH 2/5] MIPS: Allow kernel to use coprocessor 2
-References: <1370849404-4918-1-git-send-email-jchandra@broadcom.com> <1370849404-4918-3-git-send-email-jchandra@broadcom.com>
-In-Reply-To: <1370849404-4918-3-git-send-email-jchandra@broadcom.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQm8cfLoF8pIkuAGcYvlUswndCAqyn1Ivb0CQhEgwydJSikUnOEAgnH0Vznci2aLh/4MTNBS
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain
+X-SEF-Processed: 7_3_0_01192__2013_06_10_12_36_50
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36798
+X-archive-position: 36799
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,33 +35,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10.06.2013 11:30, Jayachandran C wrote:
+arch_ftrace_update_code and ftrace_modify_all_code are only
+available if CONFIG_DYNAMIC_FTRACE is selected.
 
-> Kernel threads should be able to use COP2 if the platform needs it.
-> Do not call die_if_kernel() for a coprocessor unusable exception if
-> the exception due to COP2 usage.  Instead, the default notifier for
-> COP2 exceptions is updated to call die_if_kernel.
+Fixes the following build problem on MIPS randconfig:
 
-> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
-> ---
->   arch/mips/kernel/traps.c |   15 +++++----------
->   1 file changed, 5 insertions(+), 10 deletions(-)
+arch/mips/kernel/ftrace.c: In function 'arch_ftrace_update_code':
+arch/mips/kernel/ftrace.c:31:2: error: implicit declaration of function
+'ftrace_modify_all_code' [-Werror=implicit-function-declaration]
 
-> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> index beba1e6..142d2be 100644
-> --- a/arch/mips/kernel/traps.c
-> +++ b/arch/mips/kernel/traps.c
-> @@ -1056,15 +1056,9 @@ static int default_cu2_call(struct notifier_block *nfb, unsigned long action,
->   {
->   	struct pt_regs *regs = data;
->
-> -	switch (action) {
-> -	default:
-> -		die_if_kernel("Unhandled kernel unaligned access or invalid "
-> +	die_if_kernel("COP2: Unhandled kernel unaligned access or invalid "
->   			      "instruction", regs);
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+---
+ arch/mips/kernel/ftrace.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-    Do not wrap the message please -- it's useful for grepping. 
-checkpatch.pl shouldn't complain about the line length.
-
-WBR, Sergei
+diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
+index cf5509f..dba90ec 100644
+--- a/arch/mips/kernel/ftrace.c
++++ b/arch/mips/kernel/ftrace.c
+@@ -25,12 +25,16 @@
+ #define MCOUNT_OFFSET_INSNS 4
+ #endif
+ 
++#ifdef CONFIG_DYNAMIC_FTRACE
++
+ /* Arch override because MIPS doesn't need to run this from stop_machine() */
+ void arch_ftrace_update_code(int command)
+ {
+ 	ftrace_modify_all_code(command);
+ }
+ 
++#endif
++
+ /*
+  * Check if the address is in kernel space
+  *
+-- 
+1.8.2.1

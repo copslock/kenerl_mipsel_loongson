@@ -1,37 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 09:28:01 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:4030 "EHLO mms1.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 09:28:57 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:4305 "EHLO mms1.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817975Ab3FJH1Kb10vF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Jun 2013 09:27:10 +0200
+        id S6817975Ab3FJH2ykPsGV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 10 Jun 2013 09:28:54 +0200
 Received: from [10.9.208.57] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Mon, 10 Jun 2013 00:23:16 -0700
+ SMTP Relay (Email Firewall v6.5)); Mon, 10 Jun 2013 00:25:02 -0700
 X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
 Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
  IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Mon, 10 Jun 2013 00:26:55 -0700
+ Server (TLS) id 14.1.438.0; Mon, 10 Jun 2013 00:28:41 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
  IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
- Server id 14.1.438.0; Mon, 10 Jun 2013 00:26:55 -0700
+ Server id 14.1.438.0; Mon, 10 Jun 2013 00:28:41 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 03F24F2D72; Mon, 10
- Jun 2013 00:26:53 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 28C53F2D73; Mon, 10
+ Jun 2013 00:28:39 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        ddaney.cavm@gmail.com
 cc:     "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 0/2] SWIOTLB support for Netlogic XLP
-Date:   Mon, 10 Jun 2013 12:58:07 +0530
-Message-ID: <1370849289-4877-1-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH 0/5 v2] Cop2 save and restore for Netlogic XLP
+Date:   Mon, 10 Jun 2013 12:59:59 +0530
+Message-ID: <1370849404-4918-1-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-X-WSS-ID: 7DABA16E31W33899119-01-01
+X-WSS-ID: 7DABA0C431W33899644-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36766
+X-archive-position: 36767
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,33 +49,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Two patches for using the SWIOTLB lib in Netlogic XLP code.
+This patchset is to generalize the COP2 save/restore implemented for
+Octeon and to use it for Netlogic XLP.
 
-The first one adds support for SWIOTLB in generic MIPS operations.
-Without this platforms cannot use generic MIPS dma ops when SWIOTLB
-is enabled.  The second adds SWIOTLB based dma ops for Netlogic XLP,
-which will be used by a few drivers which cannot do 64-bit DMA.
+Patch 1 and 2 of the series affects the Octeon platform as well, please
+let me know if there are any suggestions/comments.
 
-Comments welcome.
-
-Regards,
+Thanks,
 JC.
 
+---
 
-Ganesan Ramalingam (1):
-  MIPS: Netlogic: SWIOTLB dma ops for 32-bit DMA
+Changes in v2:
+ - XLR support dropped, status register is readonly in XLR and cannot
+   be restored
+ - fix naming of COP2 registers
 
-Jayachandran C (1):
-  MIPS: Support SWIOTLB in default dma operations
+Jayachandran C (5):
+  MIPS: Move cop2 save/restore to switch_to()
+  MIPS: Allow kernel to use coprocessor 2
+  MIPS: Netlogic: Fix nlm_read_c2_status() definition
+  MIPS: Netlogic: rename nlm_cop2_save/restore
+  MIPS: Netlogic: COP2 save/restore code
 
- arch/mips/include/asm/mach-generic/dma-coherence.h |   12 +++
- arch/mips/include/asm/netlogic/common.h            |    3 +
- arch/mips/mm/dma-default.c                         |    3 +
- arch/mips/netlogic/Kconfig                         |   11 ++
- arch/mips/netlogic/common/Makefile                 |    1 +
- arch/mips/netlogic/common/nlm-dma.c                |  107 ++++++++++++++++++++
- 6 files changed, 137 insertions(+)
- create mode 100644 arch/mips/netlogic/common/nlm-dma.c
+ arch/mips/include/asm/cop2.h             |   29 ++++++++
+ arch/mips/include/asm/netlogic/xlr/fmn.h |   12 ++-
+ arch/mips/include/asm/processor.h        |   31 +++++---
+ arch/mips/include/asm/switch_to.h        |   19 ++++-
+ arch/mips/kernel/octeon_switch.S         |   27 -------
+ arch/mips/kernel/traps.c                 |   15 ++--
+ arch/mips/netlogic/xlp/Makefile          |    2 +-
+ arch/mips/netlogic/xlp/cop2-ex.c         |  118 ++++++++++++++++++++++++++++++
+ arch/mips/netlogic/xlr/fmn.c             |   18 ++---
+ 9 files changed, 208 insertions(+), 63 deletions(-)
+ create mode 100644 arch/mips/netlogic/xlp/cop2-ex.c
 
 -- 
 1.7.9.5

@@ -1,36 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 14:42:36 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:44438 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6822451Ab3FJMmecYQLc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Jun 2013 14:42:34 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5ACgVQO003107;
-        Mon, 10 Jun 2013 14:42:31 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5ACgTG3003106;
-        Mon, 10 Jun 2013 14:42:29 +0200
-Date:   Mon, 10 Jun 2013 14:42:29 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jayachandran C <jchandra@broadcom.com>
-Cc:     linux-mips@linux-mips.org, ddaney.cavm@gmail.com
-Subject: Re: [PATCH 2/5] MIPS: Allow kernel to use coprocessor 2
-Message-ID: <20130610124229.GH28380@linux-mips.org>
-References: <1370849404-4918-1-git-send-email-jchandra@broadcom.com>
- <1370849404-4918-3-git-send-email-jchandra@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 14:52:06 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:11939 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6818702Ab3FJMwDkqKdX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 10 Jun 2013 14:52:03 +0200
+Message-ID: <51B5CBEF.7040202@imgtec.com>
+Date:   Mon, 10 Jun 2013 13:51:59 +0100
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130509 Thunderbird/17.0.6
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1370849404-4918-3-git-send-email-jchandra@broadcom.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+CC:     <linux-mips@linux-mips.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>
+Subject: Re: [PATCH] MIPS: include: mmu_context.h: Replace VIRTUALIZATION
+ with KVM
+References: <1370864548-19647-1-git-send-email-markos.chandras@imgtec.com> <51B5BD5F.8090604@cogentembedded.com>
+In-Reply-To: <51B5BD5F.8090604@cogentembedded.com>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.58]
+X-SEF-Processed: 7_3_0_01192__2013_06_10_13_51_58
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36802
+X-archive-position: 36803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,62 +40,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jun 10, 2013 at 01:00:01PM +0530, Jayachandran C wrote:
+On 06/10/13 12:49, Sergei Shtylyov wrote:
+> hello.
+>
+> On 10-06-2013 15:42, Markos Chandras wrote:
+>
+>> The kvm_* symbols are only available if KVM is selected.
+>
+>> Fixes the following linking problem on a randconfig:
+>
+>> arch/mips/built-in.o: In function `local_flush_tlb_mm':
+>> (.text+0x18a94): undefined reference to `kvm_local_flush_tlb_all'
+>> arch/mips/built-in.o: In function `local_flush_tlb_range':
+>> (.text+0x18d0c): undefined reference to `kvm_local_flush_tlb_all'
+>> kernel/built-in.o: In function `__schedule':
+>> core.c:(.sched.text+0x2a00): undefined reference to
+>> `kvm_local_flush_tlb_all'
+>> mm/built-in.o: In function `use_mm':
+>> (.text+0x30214): undefined reference to `kvm_local_flush_tlb_all'
+>> fs/built-in.o: In function `flush_old_exec':
+>> (.text+0xf0a0): undefined reference to `kvm_local_flush_tlb_all'
+>> make: *** [vmlinux] Error 1
+>
+>> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+>> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+>> ---
+>>   arch/mips/include/asm/mmu_context.h | 4 +++-
+>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>
+>> diff --git a/arch/mips/include/asm/mmu_context.h
+>> b/arch/mips/include/asm/mmu_context.h
+>> index 8201160..ee5a93b 100644
+>> --- a/arch/mips/include/asm/mmu_context.h
+>> +++ b/arch/mips/include/asm/mmu_context.h
+>> @@ -111,13 +111,15 @@ static inline void enter_lazy_tlb(struct
+>> mm_struct *mm, struct task_struct *tsk)
+>>   static inline void
+>>   get_new_mmu_context(struct mm_struct *mm, unsigned long cpu)
+>>   {
+>> +#ifdef CONFIG_KVM
+>>       extern void kvm_local_flush_tlb_all(void);
+>> +#endif
+>
+>     #ifdef should not be needed around declaration.
+>
+> WBR, Sergei
+>
+Hi Sergei,
 
-> Kernel threads should be able to use COP2 if the platform needs it.
-> Do not call die_if_kernel() for a coprocessor unusable exception if
-> the exception due to COP2 usage.  Instead, the default notifier for
-> COP2 exceptions is updated to call die_if_kernel.
-> 
-> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
-> ---
->  arch/mips/kernel/traps.c |   15 +++++----------
->  1 file changed, 5 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> index beba1e6..142d2be 100644
-> --- a/arch/mips/kernel/traps.c
-> +++ b/arch/mips/kernel/traps.c
-> @@ -1056,15 +1056,9 @@ static int default_cu2_call(struct notifier_block *nfb, unsigned long action,
->  {
->  	struct pt_regs *regs = data;
->  
-> -	switch (action) {
-> -	default:
-> -		die_if_kernel("Unhandled kernel unaligned access or invalid "
-> +	die_if_kernel("COP2: Unhandled kernel unaligned access or invalid "
->  			      "instruction", regs);
-> -		/* Fall through	 */
-> -
-> -	case CU2_EXCEPTION:
-> -		force_sig(SIGILL, current);
-> -	}
-> +	force_sig(SIGILL, current);
->  
->  	return NOTIFY_OK;
->  }
+You are right. I will send a new version of this patch.
 
-The idea for cu2_chain notifiers is that they should return a value with
-NOTIFY_STOP_MASK set.  That would prevent further calls to other notifiers.
-The default_cu2_call() notifier is installed with the lowest possible
-priority and is meant to only be called if there is no other notifier was
-installed, that is on a bog standard MIPS core with no CP2.
-
-> @@ -1080,10 +1074,11 @@ asmlinkage void do_cpu(struct pt_regs *regs)
->  	unsigned long __maybe_unused flags;
->  
->  	prev_state = exception_enter();
-> -	die_if_kernel("do_cpu invoked from kernel context!", regs);
-> -
->  	cpid = (regs->cp0_cause >> CAUSEB_CE) & 3;
->  
-> +	if (cpid != 2)
-> +		die_if_kernel("do_cpu invoked from kernel context!", regs);
-> +
->  	switch (cpid) {
->  	case 0:
->  		epc = (unsigned int __user *)exception_epc(regs);
-
-I'm ok with this segment.
-
-  Ralf
+-- 
+markos

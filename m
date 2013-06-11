@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jun 2013 11:49:57 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:55182 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jun 2013 11:52:28 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:56268 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827516Ab3FKJtyT7fc9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 11 Jun 2013 11:49:54 +0200
+        id S6823001Ab3FKJwYQl9E8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 11 Jun 2013 11:52:24 +0200
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH] lib/Kconfig.debug: Restrict FRAME_POINTER for MIPS
-Date:   Tue, 11 Jun 2013 10:49:50 +0100
-Message-ID: <1370944190-13553-1-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: Kconfig: Set default value for the "Kernel code model"
+Date:   Tue, 11 Jun 2013 10:52:16 +0100
+Message-ID: <1370944336-13703-1-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 1.8.2.1
 MIME-Version: 1.0
 Content-Type: text/plain
-X-SEF-Processed: 7_3_0_01192__2013_06_11_10_49_48
+X-SEF-Processed: 7_3_0_01192__2013_06_11_10_52_18
 Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36824
+X-archive-position: 36825
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,35 +34,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-FAULT_INJECTION_STACKTRACE_FILTER selects FRAME_POINTER but
-that symbol is not available for MIPS.
+Certain randconfigs may not select neither CONFIG_32BIT nor
+CONFIG_64BIT which can lead to build problems and to the following
+Kbuild warning:
 
-Fixes the following problem on a randconfig:
-warning: (LOCKDEP && FAULT_INJECTION_STACKTRACE_FILTER && LATENCYTOP &&
- KMEMCHECK) selects FRAME_POINTER which has unmet direct dependencies
-(DEBUG_KERNEL && (CRIS || M68K || FRV || UML || AVR32 || SUPERH || BLACKFIN ||
-MN10300 || METAG) || ARCH_WANT_FRAME_POINTERS)
+.config:154:warning: symbol value '' invalid for PHYSICAL_START
 
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
 ---
 This patch is for the upstream-sfr/mips-for-linux-next tree
 ---
- lib/Kconfig.debug | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 566cf2b..74fdc5c 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1272,7 +1272,7 @@ config FAULT_INJECTION_STACKTRACE_FILTER
- 	depends on FAULT_INJECTION_DEBUG_FS && STACKTRACE_SUPPORT
- 	depends on !X86_64
- 	select STACKTRACE
--	select FRAME_POINTER if !PPC && !S390 && !MICROBLAZE && !ARM_UNWIND
-+	select FRAME_POINTER if !MIPS && !PPC && !S390 && !MICROBLAZE && !ARM_UNWIND
- 	help
- 	  Provide stacktrace filter for fault-injection capabilities
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 7a58ab9..dffab77 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1714,6 +1714,7 @@ menu "Kernel type"
  
+ choice
+ 	prompt "Kernel code model"
++	default 32BIT
+ 	help
+ 	  You should only select this option if you have a workload that
+ 	  actually benefits from 64-bit processing or if your machine has
 -- 
 1.8.2.1

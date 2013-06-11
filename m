@@ -1,47 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jun 2013 06:12:30 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:4789 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jun 2013 11:03:09 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:48537 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817318Ab3FKEM24Vgzz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 11 Jun 2013 06:12:28 +0200
-Received: from [10.9.208.55] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Mon, 10 Jun 2013 21:06:30 -0700
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Mon, 10 Jun 2013 21:11:25 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
- Server id 14.1.438.0; Mon, 10 Jun 2013 21:11:25 -0700
-Received: from jayachandranc.netlogicmicro.com (
- netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 7EC9BF2D75; Mon, 10
- Jun 2013 21:11:24 -0700 (PDT)
-Date:   Tue, 11 Jun 2013 09:42:54 +0530
-From:   "Jayachandran C." <jchandra@broadcom.com>
-To:     "Ralf Baechle" <ralf@linux-mips.org>
-cc:     linux-mips@linux-mips.org, ddaney.cavm@gmail.com
-Subject: Re: [PATCH 2/5] MIPS: Allow kernel to use coprocessor 2
-Message-ID: <20130611041253.GA5011@jayachandranc.netlogicmicro.com>
-References: <1370849404-4918-1-git-send-email-jchandra@broadcom.com>
- <1370849404-4918-3-git-send-email-jchandra@broadcom.com>
- <20130610124229.GH28380@linux-mips.org>
+        id S6820512Ab3FKJDEEhQ7Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 11 Jun 2013 11:03:04 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: kernel: mcount.S: Drop FRAME_POINTER codepath
+Date:   Tue, 11 Jun 2013 10:02:55 +0100
+Message-ID: <1370941375-12195-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.2.1
 MIME-Version: 1.0
-In-Reply-To: <20130610124229.GH28380@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-WSS-ID: 7DA87DCF1R029591925-16-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-Return-Path: <jchandra@broadcom.com>
+Content-Type: text/plain
+X-SEF-Processed: 7_3_0_01192__2013_06_11_10_02_57
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36822
+X-archive-position: 36823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,73 +34,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jun 10, 2013 at 02:42:29PM +0200, Ralf Baechle wrote:
-> On Mon, Jun 10, 2013 at 01:00:01PM +0530, Jayachandran C wrote:
-> 
-> > Kernel threads should be able to use COP2 if the platform needs it.
-> > Do not call die_if_kernel() for a coprocessor unusable exception if
-> > the exception due to COP2 usage.  Instead, the default notifier for
-> > COP2 exceptions is updated to call die_if_kernel.
-> > 
-> > Signed-off-by: Jayachandran C <jchandra@broadcom.com>
-> > ---
-> >  arch/mips/kernel/traps.c |   15 +++++----------
-> >  1 file changed, 5 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> > index beba1e6..142d2be 100644
-> > --- a/arch/mips/kernel/traps.c
-> > +++ b/arch/mips/kernel/traps.c
-> > @@ -1056,15 +1056,9 @@ static int default_cu2_call(struct notifier_block *nfb, unsigned long action,
-> >  {
-> >  	struct pt_regs *regs = data;
-> >  
-> > -	switch (action) {
-> > -	default:
-> > -		die_if_kernel("Unhandled kernel unaligned access or invalid "
-> > +	die_if_kernel("COP2: Unhandled kernel unaligned access or invalid "
-> >  			      "instruction", regs);
-> > -		/* Fall through	 */
-> > -
-> > -	case CU2_EXCEPTION:
-> > -		force_sig(SIGILL, current);
-> > -	}
-> > +	force_sig(SIGILL, current);
-> >  
-> >  	return NOTIFY_OK;
-> >  }
-> 
-> The idea for cu2_chain notifiers is that they should return a value with
-> NOTIFY_STOP_MASK set.  That would prevent further calls to other notifiers.
-> The default_cu2_call() notifier is installed with the lowest possible
-> priority and is meant to only be called if there is no other notifier was
-> installed, that is on a bog standard MIPS core with no CP2.
+CONFIG_FRAME_POINTER is not selectable for MIPS so this
+codepath was never executed.
 
-I am trying to move the die_if_kernel from do_cpu() to here for COP2
-exceptions. In the existing code, COP2 unusable exception calls
-die_if_kernel in do_cpu() itself, so COP2 unusable generated by kernel
-threads will not make it to the notifiers.  With this change (and the
-one below), die_if_kernel() is called only if the all the notifiers
-pass it thru.
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+---
+This patch is for the upstream-sfr/mips-for-linux-next tree
+---
+ arch/mips/kernel/mcount.S | 4 ----
+ 1 file changed, 4 deletions(-)
 
-> 
-> > @@ -1080,10 +1074,11 @@ asmlinkage void do_cpu(struct pt_regs *regs)
-> >  	unsigned long __maybe_unused flags;
-> >  
-> >  	prev_state = exception_enter();
-> > -	die_if_kernel("do_cpu invoked from kernel context!", regs);
-> > -
-> >  	cpid = (regs->cp0_cause >> CAUSEB_CE) & 3;
-> >  
-> > +	if (cpid != 2)
-> > +		die_if_kernel("do_cpu invoked from kernel context!", regs);
-> > +
-> >  	switch (cpid) {
-> >  	case 0:
-> >  		epc = (unsigned int __user *)exception_epc(regs);
-> 
-> I'm ok with this segment.
-> 
->   Ralf
-
-JC.
+diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
+index 33d0671..a03e93c 100644
+--- a/arch/mips/kernel/mcount.S
++++ b/arch/mips/kernel/mcount.S
+@@ -168,15 +168,11 @@ NESTED(ftrace_graph_caller, PT_SIZE, ra)
+ #endif
+ 
+ 	/* arg3: Get frame pointer of current stack */
+-#ifdef CONFIG_FRAME_POINTER
+-	move	a2, fp
+-#else /* ! CONFIG_FRAME_POINTER */
+ #ifdef CONFIG_64BIT
+ 	PTR_LA	a2, PT_SIZE(sp)
+ #else
+ 	PTR_LA	a2, (PT_SIZE+8)(sp)
+ #endif
+-#endif
+ 
+ 	jal	prepare_ftrace_return
+ 	 nop
+-- 
+1.8.2.1

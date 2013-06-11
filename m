@@ -1,39 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jun 2013 17:41:30 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:2506 "EHLO mms1.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jun 2013 17:42:01 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:2715 "EHLO mms3.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835173Ab3FKPkdHG4AN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6835179Ab3FKPkdaHW9N (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 11 Jun 2013 17:40:33 +0200
-Received: from [10.9.208.53] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Tue, 11 Jun 2013 08:36:33 -0700
-X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
+Received: from [10.9.208.53] by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Tue, 11 Jun 2013 08:31:16 -0700
+X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
  IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Tue, 11 Jun 2013 08:40:12 -0700
+ Server (TLS) id 14.1.438.0; Tue, 11 Jun 2013 08:40:16 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
- Server id 14.1.438.0; Tue, 11 Jun 2013 08:40:12 -0700
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
+ Server id 14.1.438.0; Tue, 11 Jun 2013 08:40:16 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 13989F2D81; Tue, 11
- Jun 2013 08:40:09 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 1099CF2D72; Tue, 11
+ Jun 2013 08:40:12 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 cc:     "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 1/4] MIPS: Allow platform specific scratch registers
-Date:   Tue, 11 Jun 2013 21:11:35 +0530
-Message-ID: <1370965298-29210-2-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH 3/4] MIPS: mm: Use scratch for PGD when
+ !CONFIG_MIPS_PGD_C0_CONTEXT
+Date:   Tue, 11 Jun 2013 21:11:37 +0530
+Message-ID: <1370965298-29210-4-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1370965298-29210-1-git-send-email-jchandra@broadcom.com>
 References: <1370965298-29210-1-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7DA99B8B31W34760061-01-01
+X-WSS-ID: 7DA99D4E2L831448183-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36833
+X-archive-position: 36834
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,161 +51,293 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-XLR/XLP COP0 scratch is register 22, sel 0-7. Add a function
-c0_kscratch() which returns the scratch register for the platform,
-and use the return value while generating TLB handlers.
+Allow usage of scratch register for current pgd even when
+MIPS_PGD_C0_CONTEXT is not configured. MIPS_PGD_C0_CONTEXT is set
+for 64r2 platforms to indicate availability of Xcontext for saving
+cpuid, thus freeing Context to be used for saving PGD. This option
+was also tied to using a scratch register for storing PGD.
 
-Setup kscratch_mask to 0xf for XLR/XLP since the config4 register
-does not exist. This allows the kernel to allocate scratch registers
-0-3 if needed.
+This commit will allow usage of scratch register to store the current
+pgd if one can be allocated for the platform, even when
+MIPS_PGD_C0_CONTEXT is not set. The cpuid will be kept in the CP0
+Context register in this case.
+
+The code to store the current pgd for the TLB miss handler is now
+generated in all cases. When scratch register is available, the PGD
+is also stored in the scratch register.
 
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/kernel/cpu-probe.c |    1 +
- arch/mips/mm/tlbex.c         |   41 ++++++++++++++++++++++++++---------------
- 2 files changed, 27 insertions(+), 15 deletions(-)
+ arch/mips/include/asm/mmu_context.h |    7 +-
+ arch/mips/mm/tlbex.c                |  142 ++++++++++++++++++++++-------------
+ 2 files changed, 92 insertions(+), 57 deletions(-)
 
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index c6568bf..265c97d 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -959,6 +959,7 @@ static inline void cpu_probe_netlogic(struct cpuinfo_mips *c, int cpu)
- 		set_isa(c, MIPS_CPU_ISA_M64R1);
- 		c->tlbsize = ((read_c0_config1() >> 25) & 0x3f) + 1;
- 	}
-+	c->kscratch_mask = 0xf;
- }
+diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
+index 8201160..3e20577 100644
+--- a/arch/mips/include/asm/mmu_context.h
++++ b/arch/mips/include/asm/mmu_context.h
+@@ -24,8 +24,6 @@
+ #endif /* SMTC */
+ #include <asm-generic/mm_hooks.h>
  
- #ifdef CONFIG_64BIT
+-#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
+-
+ #define TLBMISS_HANDLER_SETUP_PGD(pgd)					\
+ do {									\
+ 	void (*tlbmiss_handler_setup_pgd)(unsigned long);		\
+@@ -36,6 +34,8 @@ do {									\
+ 	tlbmiss_handler_setup_pgd((unsigned long)(pgd));		\
+ } while (0)
+ 
++
++#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
+ #define TLBMISS_HANDLER_SETUP()						\
+ 	do {								\
+ 		TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir);		\
+@@ -51,9 +51,6 @@ do {									\
+  */
+ extern unsigned long pgd_current[];
+ 
+-#define TLBMISS_HANDLER_SETUP_PGD(pgd) \
+-	pgd_current[smp_processor_id()] = (unsigned long)(pgd)
+-
+ #ifdef CONFIG_32BIT
+ #define TLBMISS_HANDLER_SETUP()						\
+ 	write_c0_context((unsigned long) smp_processor_id() << 25);	\
 diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index ce9818e..b2eaa1c 100644
+index 4a6817c..1b372b7 100644
 --- a/arch/mips/mm/tlbex.c
 +++ b/arch/mips/mm/tlbex.c
-@@ -309,6 +309,17 @@ static int check_for_high_segbits __cpuinitdata;
- 
- static unsigned int kscratch_used_mask __cpuinitdata;
- 
-+static inline int __maybe_unused c0_kscratch(void)
-+{
-+	switch (current_cpu_type()) {
-+	case CPU_XLP:
-+	case CPU_XLR:
-+		return 22;
-+	default:
-+		return 31;
-+	}
-+}
-+
- static int __cpuinit allocate_kscratch(void)
- {
- 	int r;
-@@ -340,7 +351,7 @@ static struct work_registers __cpuinit build_get_work_registers(u32 **p)
- 
- 	if (scratch_reg > 0) {
- 		/* Save in CPU local C0_KScratch? */
--		UASM_i_MTC0(p, 1, 31, scratch_reg);
-+		UASM_i_MTC0(p, 1, c0_kscratch(), scratch_reg);
- 		r.r1 = K0;
- 		r.r2 = K1;
- 		r.r3 = 1;
-@@ -389,7 +400,7 @@ static struct work_registers __cpuinit build_get_work_registers(u32 **p)
- static void __cpuinit build_restore_work_registers(u32 **p)
- {
- 	if (scratch_reg > 0) {
--		UASM_i_MFC0(p, 1, 31, scratch_reg);
-+		UASM_i_MFC0(p, 1, c0_kscratch(), scratch_reg);
- 		return;
+@@ -829,11 +829,11 @@ build_get_pmde64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
  	}
- 	/* K0 already points to save area, restore $1 and $2  */
-@@ -678,7 +689,7 @@ static __cpuinit void build_restore_pagemask(u32 **p,
- 			uasm_il_b(p, r, lid);
- 		}
- 		if (scratch_reg > 0)
--			UASM_i_MFC0(p, 1, 31, scratch_reg);
-+			UASM_i_MFC0(p, 1, c0_kscratch(), scratch_reg);
- 		else
- 			UASM_i_LW(p, 1, scratchpad_offset(0), 0);
- 	} else {
-@@ -821,7 +832,7 @@ build_get_pmde64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
- #ifdef CONFIG_MIPS_PGD_C0_CONTEXT
+ 	/* No uasm_i_nop needed here, since the next insn doesn't touch TMP. */
+ 
+-#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
  	if (pgd_reg != -1) {
  		/* pgd is in pgd_reg */
--		UASM_i_MFC0(p, ptr, 31, pgd_reg);
-+		UASM_i_MFC0(p, ptr, c0_kscratch(), pgd_reg);
+ 		UASM_i_MFC0(p, ptr, c0_kscratch(), pgd_reg);
  	} else {
++#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
  		/*
  		 * &pgd << 11 stored in CONTEXT [23..63].
-@@ -934,7 +945,7 @@ build_get_pgd_vmalloc64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
+ 		 */
+@@ -845,30 +845,30 @@ build_get_pmde64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
+ 		/* 1 0	1 0 1  << 6  xkphys cached */
+ 		uasm_i_ori(p, ptr, ptr, 0x540);
+ 		uasm_i_drotr(p, ptr, ptr, 11);
+-	}
+ #elif defined(CONFIG_SMP)
+-# ifdef	 CONFIG_MIPS_MT_SMTC
+-	/*
+-	 * SMTC uses TCBind value as "CPU" index
+-	 */
+-	uasm_i_mfc0(p, ptr, C0_TCBIND);
+-	uasm_i_dsrl_safe(p, ptr, ptr, 19);
++# ifdef CONFIG_MIPS_MT_SMTC
++		/*
++		 * SMTC uses TCBind value as "CPU" index
++		 */
++		uasm_i_mfc0(p, ptr, C0_TCBIND);
++		uasm_i_dsrl_safe(p, ptr, ptr, 19);
+ # else
+-	/*
+-	 * 64 bit SMP running in XKPHYS has smp_processor_id() << 3
+-	 * stored in CONTEXT.
+-	 */
+-	uasm_i_dmfc0(p, ptr, C0_CONTEXT);
+-	uasm_i_dsrl_safe(p, ptr, ptr, 23);
++		/*
++		 * 64 bit SMP running in XKPHYS has smp_processor_id() << 3
++		 * stored in CONTEXT.
++		 */
++		uasm_i_dmfc0(p, ptr, C0_CONTEXT);
++		uasm_i_dsrl_safe(p, ptr, ptr, 23);
+ # endif
+-	UASM_i_LA_mostly(p, tmp, pgdc);
+-	uasm_i_daddu(p, ptr, ptr, tmp);
+-	uasm_i_dmfc0(p, tmp, C0_BADVADDR);
+-	uasm_i_ld(p, ptr, uasm_rel_lo(pgdc), ptr);
++		UASM_i_LA_mostly(p, tmp, pgdc);
++		uasm_i_daddu(p, ptr, ptr, tmp);
++		uasm_i_dmfc0(p, tmp, C0_BADVADDR);
++		uasm_i_ld(p, ptr, uasm_rel_lo(pgdc), ptr);
+ #else
+-	UASM_i_LA_mostly(p, ptr, pgdc);
+-	uasm_i_ld(p, ptr, uasm_rel_lo(pgdc), ptr);
++		UASM_i_LA_mostly(p, ptr, pgdc);
++		uasm_i_ld(p, ptr, uasm_rel_lo(pgdc), ptr);
+ #endif
++	}
  
- 		if (mode == refill_scratch) {
- 			if (scratch_reg > 0)
--				UASM_i_MFC0(p, 1, 31, scratch_reg);
-+				UASM_i_MFC0(p, 1, c0_kscratch(), scratch_reg);
- 			else
- 				UASM_i_LW(p, 1, scratchpad_offset(0), 0);
- 		} else {
-@@ -1100,7 +1111,7 @@ struct mips_huge_tlb_info {
- static struct mips_huge_tlb_info __cpuinit
- build_fast_tlb_refill_handler (u32 **p, struct uasm_label **l,
- 			       struct uasm_reloc **r, unsigned int tmp,
--			       unsigned int ptr, int c0_scratch)
-+			       unsigned int ptr, int c0_scratch_reg)
+ 	uasm_l_vmalloc_done(l, *p);
+ 
+@@ -963,31 +963,37 @@ build_get_pgd_vmalloc64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
+ static void __cpuinit __maybe_unused
+ build_get_pgde32(u32 **p, unsigned int tmp, unsigned int ptr)
  {
- 	struct mips_huge_tlb_info rv;
- 	unsigned int even, odd;
-@@ -1114,12 +1125,12 @@ build_fast_tlb_refill_handler (u32 **p, struct uasm_label **l,
- 		UASM_i_MFC0(p, tmp, C0_BADVADDR);
+-	long pgdc = (long)pgd_current;
++	if (pgd_reg != -1) {
++		/* pgd is in pgd_reg */
++		uasm_i_mfc0(p, ptr, c0_kscratch(), pgd_reg);
++		uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
++	} else {
++		long pgdc = (long)pgd_current;
  
- 		if (pgd_reg != -1)
--			UASM_i_MFC0(p, ptr, 31, pgd_reg);
-+			UASM_i_MFC0(p, ptr, c0_kscratch(), pgd_reg);
- 		else
- 			UASM_i_MFC0(p, ptr, C0_CONTEXT);
+-	/* 32 bit SMP has smp_processor_id() stored in CONTEXT. */
++		/* 32 bit SMP has smp_processor_id() stored in CONTEXT. */
+ #ifdef CONFIG_SMP
+-#ifdef	CONFIG_MIPS_MT_SMTC
+-	/*
+-	 * SMTC uses TCBind value as "CPU" index
+-	 */
+-	uasm_i_mfc0(p, ptr, C0_TCBIND);
+-	UASM_i_LA_mostly(p, tmp, pgdc);
+-	uasm_i_srl(p, ptr, ptr, 19);
+-#else
+-	/*
+-	 * smp_processor_id() << 3 is stored in CONTEXT.
+-	 */
+-	uasm_i_mfc0(p, ptr, C0_CONTEXT);
+-	UASM_i_LA_mostly(p, tmp, pgdc);
+-	uasm_i_srl(p, ptr, ptr, 23);
+-#endif
+-	uasm_i_addu(p, ptr, tmp, ptr);
++# ifdef CONFIG_MIPS_MT_SMTC
++		/*
++		 * SMTC uses TCBind value as "CPU" index
++		 */
++		uasm_i_mfc0(p, ptr, C0_TCBIND);
++		UASM_i_LA_mostly(p, tmp, pgdc);
++		uasm_i_srl(p, ptr, ptr, 19);
++# else
++		/*
++		 * smp_processor_id() << 3 is stored in CONTEXT.
++		 */
++		uasm_i_mfc0(p, ptr, C0_CONTEXT);
++		UASM_i_LA_mostly(p, tmp, pgdc);
++		uasm_i_srl(p, ptr, ptr, 23);
++# endif
++		uasm_i_addu(p, ptr, tmp, ptr);
+ #else
+-	UASM_i_LA_mostly(p, ptr, pgdc);
++		UASM_i_LA_mostly(p, ptr, pgdc);
+ #endif
+-	uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
+-	uasm_i_lw(p, ptr, uasm_rel_lo(pgdc), ptr);
++		uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
++		uasm_i_lw(p, ptr, uasm_rel_lo(pgdc), ptr);
++	}
+ 	uasm_i_srl(p, tmp, tmp, PGDIR_SHIFT); /* get pgd only bits */
+ 	uasm_i_sll(p, tmp, tmp, PGD_T_LOG2);
+ 	uasm_i_addu(p, ptr, ptr, tmp); /* add in pgd offset */
+@@ -1468,16 +1474,17 @@ static void __cpuinit build_r4000_tlb_refill_handler(void)
+ u32 handle_tlbl[FASTPATH_SIZE] __cacheline_aligned;
+ u32 handle_tlbs[FASTPATH_SIZE] __cacheline_aligned;
+ u32 handle_tlbm[FASTPATH_SIZE] __cacheline_aligned;
+-#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
+ u32 tlbmiss_handler_setup_pgd_array[16] __cacheline_aligned;
  
--		if (c0_scratch >= 0)
--			UASM_i_MTC0(p, scratch, 31, c0_scratch);
-+		if (c0_scratch_reg >= 0)
-+			UASM_i_MTC0(p, scratch, c0_kscratch(), c0_scratch_reg);
- 		else
- 			UASM_i_SW(p, scratch, scratchpad_offset(0), 0);
+-static void __cpuinit build_r4000_setup_pgd(void)
++static void __cpuinit build_setup_pgd(void)
+ {
+ 	const int a0 = 4;
+-	const int a1 = 5;
++	const int __maybe_unused a1 = 5;
++	const int __maybe_unused a2 = 6;
+ 	u32 *p = tlbmiss_handler_setup_pgd_array;
+-	struct uasm_label *l = labels;
+-	struct uasm_reloc *r = relocs;
++#ifndef CONFIG_MIPS_PGD_C0_CONTEXT
++	long pgdc = (long)pgd_current;
++#endif
  
-@@ -1134,14 +1145,14 @@ build_fast_tlb_refill_handler (u32 **p, struct uasm_label **l,
- 		}
- 	} else {
- 		if (pgd_reg != -1)
--			UASM_i_MFC0(p, ptr, 31, pgd_reg);
-+			UASM_i_MFC0(p, ptr, c0_kscratch(), pgd_reg);
- 		else
- 			UASM_i_MFC0(p, ptr, C0_CONTEXT);
+ 	memset(tlbmiss_handler_setup_pgd_array, 0, sizeof(tlbmiss_handler_setup_pgd_array));
+ 	memset(labels, 0, sizeof(labels));
+@@ -1485,7 +1492,11 @@ static void __cpuinit build_r4000_setup_pgd(void)
  
- 		UASM_i_MFC0(p, tmp, C0_BADVADDR);
+ 	pgd_reg = allocate_kscratch();
  
--		if (c0_scratch >= 0)
--			UASM_i_MTC0(p, scratch, 31, c0_scratch);
-+		if (c0_scratch_reg >= 0)
-+			UASM_i_MTC0(p, scratch, c0_kscratch(), c0_scratch_reg);
- 		else
- 			UASM_i_SW(p, scratch, scratchpad_offset(0), 0);
- 
-@@ -1246,8 +1257,8 @@ build_fast_tlb_refill_handler (u32 **p, struct uasm_label **l,
- 	}
- 	UASM_i_MTC0(p, odd, C0_ENTRYLO1); /* load it */
- 
--	if (c0_scratch >= 0) {
--		UASM_i_MFC0(p, scratch, 31, c0_scratch);
-+	if (c0_scratch_reg >= 0) {
-+		UASM_i_MFC0(p, scratch, c0_kscratch(), c0_scratch_reg);
- 		build_tlb_write_entry(p, l, r, tlb_random);
- 		uasm_l_leave(l, *p);
- 		rv.restore_scratch = 1;
-@@ -1494,7 +1505,7 @@ static void __cpuinit build_r4000_setup_pgd(void)
- 	} else {
- 		/* PGD in c0_KScratch */
++#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
+ 	if (pgd_reg == -1) {
++		struct uasm_label *l = labels;
++		struct uasm_reloc *r = relocs;
++
+ 		/* PGD << 11 in c0_Context */
+ 		/*
+ 		 * If it is a ckseg0 address, convert to a physical
+@@ -1507,6 +1518,37 @@ static void __cpuinit build_r4000_setup_pgd(void)
  		uasm_i_jr(&p, 31);
--		UASM_i_MTC0(&p, a0, 31, pgd_reg);
-+		UASM_i_MTC0(&p, a0, c0_kscratch(), pgd_reg);
+ 		UASM_i_MTC0(&p, a0, c0_kscratch(), pgd_reg);
  	}
++#else
++	/* Save PGD to pgd_current[smp_processor_id()] */
++#if defined(CONFIG_SMP)
++# ifdef CONFIG_MIPS_MT_SMTC
++	/*
++	 * SMTC uses TCBind value as "CPU" index
++	 */
++	uasm_i_mfc0(&p, a1, C0_TCBIND);
++	uasm_i_dsrl_safe(&p, a1, a1, 19);
++# else
++	/*
++	 * smp_processor_id() is in CONTEXT
++	 */
++	UASM_i_MFC0(&p, a1, C0_CONTEXT);
++	uasm_i_dsrl_safe(&p, a1, a1, 23);
++# endif
++	UASM_i_LA_mostly(&p, a2, pgdc);
++	UASM_i_ADDU(&p, a2, a2, a1);
++	UASM_i_SW(&p, a0, uasm_rel_lo(pgdc), a2);
++#else
++	UASM_i_LA_mostly(&p, a2, pgdc);
++	UASM_i_SW(&p, a0, uasm_rel_lo(pgdc), a2);
++#endif /* SMP */
++	uasm_i_jr(&p, 31);
++
++	/* if pgd_reg is allocated, save PGD also to scratch register */
++	if (pgd_reg != -1)
++		UASM_i_MTC0(&p, a0, c0_kscratch(), pgd_reg);
++	else
++		uasm_i_nop(&p);
++#endif
  	if (p - tlbmiss_handler_setup_pgd_array > ARRAY_SIZE(tlbmiss_handler_setup_pgd_array))
  		panic("tlbmiss_handler_setup_pgd_array space exceeded");
+ 	uasm_resolve_relocs(relocs, labels);
+@@ -1517,7 +1559,6 @@ static void __cpuinit build_r4000_setup_pgd(void)
+ 		     tlbmiss_handler_setup_pgd_array,
+ 		     ARRAY_SIZE(tlbmiss_handler_setup_pgd_array));
+ }
+-#endif
+ 
+ static void __cpuinit
+ iPTE_LW(u32 **p, unsigned int pte, unsigned int ptr)
+@@ -2199,6 +2240,7 @@ void __cpuinit build_tlb_refill_handler(void)
+ 		if (!run_once) {
+ 			if (!cpu_has_local_ebase)
+ 				build_r3000_tlb_refill_handler();
++			build_setup_pgd();
+ 			build_r3000_tlb_load_handler();
+ 			build_r3000_tlb_store_handler();
+ 			build_r3000_tlb_modify_handler();
+@@ -2221,9 +2263,7 @@ void __cpuinit build_tlb_refill_handler(void)
+ 	default:
+ 		if (!run_once) {
+ 			scratch_reg = allocate_kscratch();
+-#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
+-			build_r4000_setup_pgd();
+-#endif
++			build_setup_pgd();
+ 			build_r4000_tlb_load_handler();
+ 			build_r4000_tlb_store_handler();
+ 			build_r4000_tlb_modify_handler();
+@@ -2244,8 +2284,6 @@ void __cpuinit flush_tlb_handlers(void)
+ 			   (unsigned long)handle_tlbs + sizeof(handle_tlbs));
+ 	local_flush_icache_range((unsigned long)handle_tlbm,
+ 			   (unsigned long)handle_tlbm + sizeof(handle_tlbm));
+-#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
+ 	local_flush_icache_range((unsigned long)tlbmiss_handler_setup_pgd_array,
+ 			   (unsigned long)tlbmiss_handler_setup_pgd_array + sizeof(handle_tlbm));
+-#endif
+ }
 -- 
 1.7.9.5

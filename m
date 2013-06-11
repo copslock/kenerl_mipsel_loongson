@@ -1,35 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Jun 2013 23:28:46 +0200 (CEST)
-Received: from shards.monkeyblade.net ([149.20.54.216]:54942 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835129Ab3FJV2pMU2J0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Jun 2013 23:28:45 +0200
-Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 2DE03595212;
-        Mon, 10 Jun 2013 14:28:42 -0700 (PDT)
-Date:   Mon, 10 Jun 2013 14:28:41 -0700 (PDT)
-Message-Id: <20130610.142841.1096307411403059978.davem@davemloft.net>
-To:     florian@openwrt.org
-Cc:     ralf@linux-mips.org, blogic@openwrt.org, linux-mips@linux-mips.org,
-        cernekee@gmail.com, mbizon@freebox.fr, jogo@openwrt.org
-Subject: Re: [PATCH 0/3 net-next] bcm63xx_enet: add support for BCM63xx
- gigabit integrated switch
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <1370382094-17821-1-git-send-email-florian@openwrt.org>
-References: <1370382094-17821-1-git-send-email-florian@openwrt.org>
-X-Mailer: Mew version 6.5 on Emacs 24.1 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jun 2013 06:12:30 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:4789 "EHLO mms2.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817318Ab3FKEM24Vgzz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 11 Jun 2013 06:12:28 +0200
+Received: from [10.9.208.55] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Mon, 10 Jun 2013 21:06:30 -0700
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
+ IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Mon, 10 Jun 2013 21:11:25 -0700
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
+ Server id 14.1.438.0; Mon, 10 Jun 2013 21:11:25 -0700
+Received: from jayachandranc.netlogicmicro.com (
+ netl-snoppy.ban.broadcom.com [10.132.128.129]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 7EC9BF2D75; Mon, 10
+ Jun 2013 21:11:24 -0700 (PDT)
+Date:   Tue, 11 Jun 2013 09:42:54 +0530
+From:   "Jayachandran C." <jchandra@broadcom.com>
+To:     "Ralf Baechle" <ralf@linux-mips.org>
+cc:     linux-mips@linux-mips.org, ddaney.cavm@gmail.com
+Subject: Re: [PATCH 2/5] MIPS: Allow kernel to use coprocessor 2
+Message-ID: <20130611041253.GA5011@jayachandranc.netlogicmicro.com>
+References: <1370849404-4918-1-git-send-email-jchandra@broadcom.com>
+ <1370849404-4918-3-git-send-email-jchandra@broadcom.com>
+ <20130610124229.GH28380@linux-mips.org>
+MIME-Version: 1.0
+In-Reply-To: <20130610124229.GH28380@linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-WSS-ID: 7DA87DCF1R029591925-16-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: 7bit
-Return-Path: <davem@davemloft.net>
+Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36820
+X-archive-position: 36822
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,12 +54,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Florian Fainelli <florian@openwrt.org>
-Date: Tue,  4 Jun 2013 22:41:31 +0100
+On Mon, Jun 10, 2013 at 02:42:29PM +0200, Ralf Baechle wrote:
+> On Mon, Jun 10, 2013 at 01:00:01PM +0530, Jayachandran C wrote:
+> 
+> > Kernel threads should be able to use COP2 if the platform needs it.
+> > Do not call die_if_kernel() for a coprocessor unusable exception if
+> > the exception due to COP2 usage.  Instead, the default notifier for
+> > COP2 exceptions is updated to call die_if_kernel.
+> > 
+> > Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+> > ---
+> >  arch/mips/kernel/traps.c |   15 +++++----------
+> >  1 file changed, 5 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+> > index beba1e6..142d2be 100644
+> > --- a/arch/mips/kernel/traps.c
+> > +++ b/arch/mips/kernel/traps.c
+> > @@ -1056,15 +1056,9 @@ static int default_cu2_call(struct notifier_block *nfb, unsigned long action,
+> >  {
+> >  	struct pt_regs *regs = data;
+> >  
+> > -	switch (action) {
+> > -	default:
+> > -		die_if_kernel("Unhandled kernel unaligned access or invalid "
+> > +	die_if_kernel("COP2: Unhandled kernel unaligned access or invalid "
+> >  			      "instruction", regs);
+> > -		/* Fall through	 */
+> > -
+> > -	case CU2_EXCEPTION:
+> > -		force_sig(SIGILL, current);
+> > -	}
+> > +	force_sig(SIGILL, current);
+> >  
+> >  	return NOTIFY_OK;
+> >  }
+> 
+> The idea for cu2_chain notifiers is that they should return a value with
+> NOTIFY_STOP_MASK set.  That would prevent further calls to other notifiers.
+> The default_cu2_call() notifier is installed with the lowest possible
+> priority and is meant to only be called if there is no other notifier was
+> installed, that is on a bog standard MIPS core with no CP2.
 
-> This patchset contains changes to enable the BCM63xx gitabit integrated switch
-> found on BCM6328, BCM6362 and BCM6368 SoCs. It contains changes both to
-> arch/mips/bcm63xx and drivers/net/ethernet/bcm63xx_enet.c. The changes are
-> pretty difficult to split so I would rather see these merged via the net-tree.
+I am trying to move the die_if_kernel from do_cpu() to here for COP2
+exceptions. In the existing code, COP2 unusable exception calls
+die_if_kernel in do_cpu() itself, so COP2 unusable generated by kernel
+threads will not make it to the notifiers.  With this change (and the
+one below), die_if_kernel() is called only if the all the notifiers
+pass it thru.
 
-Applied to net-next.
+> 
+> > @@ -1080,10 +1074,11 @@ asmlinkage void do_cpu(struct pt_regs *regs)
+> >  	unsigned long __maybe_unused flags;
+> >  
+> >  	prev_state = exception_enter();
+> > -	die_if_kernel("do_cpu invoked from kernel context!", regs);
+> > -
+> >  	cpid = (regs->cp0_cause >> CAUSEB_CE) & 3;
+> >  
+> > +	if (cpid != 2)
+> > +		die_if_kernel("do_cpu invoked from kernel context!", regs);
+> > +
+> >  	switch (cpid) {
+> >  	case 0:
+> >  		epc = (unsigned int __user *)exception_epc(regs);
+> 
+> I'm ok with this segment.
+> 
+>   Ralf
+
+JC.

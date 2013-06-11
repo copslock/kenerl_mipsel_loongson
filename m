@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jun 2013 16:56:08 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:49053 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jun 2013 16:56:30 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:49058 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6835175Ab3FKOz4AQGm8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 11 Jun 2013 16:55:56 +0200
+        id S6835216Ab3FKO4HNbRPb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 11 Jun 2013 16:56:07 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5BEtsa3013142;
-        Tue, 11 Jun 2013 16:55:54 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5BEu5oG013155;
+        Tue, 11 Jun 2013 16:56:05 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5BEtseN013141;
-        Tue, 11 Jun 2013 16:55:54 +0200
-Date:   Tue, 11 Jun 2013 16:55:54 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5BEu5S2013154;
+        Tue, 11 Jun 2013 16:56:05 +0200
+Date:   Tue, 11 Jun 2013 16:56:05 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Markos Chandras <markos.chandras@imgtec.com>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] lib/Kconfig.debug: Restrict FRAME_POINTER for MIPS
-Message-ID: <20130611145554.GB13126@linux-mips.org>
-References: <1370944190-13553-1-git-send-email-markos.chandras@imgtec.com>
+Subject: Re: [PATCH] MIPS: kvm: Kconfig: Drop HAVE_KVM dependency from
+ VIRTUALIZATION
+Message-ID: <20130611145605.GC13126@linux-mips.org>
+References: <1370944953-14171-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1370944190-13553-1-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1370944953-14171-1-git-send-email-markos.chandras@imgtec.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36829
+X-archive-position: 36830
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

@@ -1,44 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Jun 2013 20:12:06 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:4859 "EHLO mms1.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6826578Ab3FLSMD4EMUn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 12 Jun 2013 20:12:03 +0200
-Received: from [10.9.208.57] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Wed, 12 Jun 2013 11:08:09 -0700
-X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Wed, 12 Jun 2013 11:09:13 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
- Server id 14.1.438.0; Wed, 12 Jun 2013 11:09:13 -0700
-Received: from dhcp-10-12-153-184.broadcom.com (gregory-irv-00
- [10.12.152.56]) by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- 60BC2F2D73; Wed, 12 Jun 2013 11:09:13 -0700 (PDT)
-Received: by dhcp-10-12-153-184.broadcom.com (Postfix, from userid 1000)
- id 276F52E231B; Wed, 12 Jun 2013 11:09:13 -0700 (PDT)
-From:   "Gregory Fong" <gregory.0xf0@gmail.com>
-To:     linux-mips@linux-mips.org
-cc:     "Filippo Arcidiacono" <filippo.arcidiacono@st.com>,
-        "Carmelo Amoroso" <carmelo.amoroso@st.com>,
-        "Gregory Fong" <gregory.0xf0@gmail.com>
-Subject: [PATCH] MIPS: initial stack protector support
-Date:   Wed, 12 Jun 2013 11:08:54 -0700
-Message-ID: <1371060534-9912-1-git-send-email-gregory.0xf0@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
-MIME-Version: 1.0
-X-WSS-ID: 7DA6668331W35398740-05-01
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Return-Path: <gregory@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Jun 2013 20:28:51 +0200 (CEST)
+Received: from mail-pd0-f176.google.com ([209.85.192.176]:39913 "EHLO
+        mail-pd0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827897Ab3FLS2taEALf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Jun 2013 20:28:49 +0200
+Received: by mail-pd0-f176.google.com with SMTP id t12so5530232pdi.7
+        for <multiple recipients>; Wed, 12 Jun 2013 11:28:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=LLB6xyAynAI6jhZjiOPSgZyPcIc1bfok44u+VmNUfPU=;
+        b=H+c8k9huxFKIYI4LEjItxLRQkhx7IXFrShPPzqxK+jpYV5yT1sjjoh4y8OQ/SW8gqW
+         i4E7U9bMwUrhg187l3uCBJfTuy4x1+SNQ/Id8ulWVaT0epM+ThN6oeDb9CpEGEiD6kTN
+         D9qSE+L8QBYyAiBpd79CxlzPYYalW/3yhYV2eE2vtCk+YRTUueOL/HZHSBZjB19C3vYS
+         nWHTQ/SV0asx/mSnSuRps1ZHq4a2p+b//pwI4czCqpbU+TWsoD23IDOxnoGn/PiXjAZi
+         Ev4nnbbRBqVrjU96wfYWBUacLnybDtB5gwpMBma6hV2tCYJmuZ3Bttnym8UeRvxMLX15
+         eREA==
+X-Received: by 10.68.89.226 with SMTP id br2mr21392424pbb.101.1371061722996;
+        Wed, 12 Jun 2013 11:28:42 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id ag4sm20022124pbc.20.2013.06.12.11.28.41
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 12 Jun 2013 11:28:42 -0700 (PDT)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r5CISdeG029064;
+        Wed, 12 Jun 2013 11:28:39 -0700
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r5CISZYI029062;
+        Wed, 12 Jun 2013 11:28:35 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>, <stable@vger.kernel.org>
+Subject: [PATCH] MIPS: OCTEON: Don't clobber bootloader data structures.
+Date:   Wed, 12 Jun 2013 11:28:33 -0700
+Message-Id: <1371061713-29028-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36841
+X-archive-position: 36842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregory.0xf0@gmail.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,123 +56,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Implements basic stack protector support based on ARM version in
-c743f38013aeff58ef6252601e397b5ba281c633 , with Kconfig option,
-constant canary value set at boot time, and script to check if
-compiler actually supports stack protector.
+From: David Daney <david.daney@cavium.com>
 
-Tested by creating a kernel module that writes past end of char[].
+Commit abe77f90dc (MIPS: Octeon: Add kexec and kdump support) added a
+bootmem region for the kernel image itself.  The problem is that this
+is rounded up to a 0x100000 boundary, which is memory that may not be
+owned by the kernel.  Depending on the kernel's configuration based
+size, this 'extra' memory may contain data passed from the bootloader
+to the kernel itself, which if clobbered makes the kernel crash in
+various ways.
 
-Signed-off-by: Gregory Fong <gregory.0xf0@gmail.com>
+The fix: Quit rounding the size up, so that we only use memory
+assigned to the kernel.
+
+Can be applied to v3.8 and later.
+
+Signed-off-by: David Daney <david.daney@cavium.com>
+Cc: <stable@vger.kernel.org>
 ---
- arch/mips/Kconfig                      |   13 +++++++++++
- arch/mips/Makefile                     |    4 ++++
- arch/mips/include/asm/stackprotector.h |   40 ++++++++++++++++++++++++++++++++
- arch/mips/kernel/process.c             |    6 +++++
- 4 files changed, 63 insertions(+)
- create mode 100644 arch/mips/include/asm/stackprotector.h
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 7a58ab9..a241588 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2381,6 +2381,19 @@ config SECCOMP
+This should probably go into 3.10
+
+ arch/mips/cavium-octeon/setup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
+index 01b1b3f..1e1e18c 100644
+--- a/arch/mips/cavium-octeon/setup.c
++++ b/arch/mips/cavium-octeon/setup.c
+@@ -996,7 +996,7 @@ void __init plat_mem_setup(void)
+ 	cvmx_bootmem_unlock();
+ 	/* Add the memory region for the kernel. */
+ 	kernel_start = (unsigned long) _text;
+-	kernel_size = ALIGN(_end - _text, 0x100000);
++	kernel_size = _end - _text;
  
- 	  If unsure, say Y. Only embedded should say N here.
- 
-+config CC_STACKPROTECTOR
-+	bool "Enable -fstack-protector buffer overflow detection (EXPERIMENTAL)"
-+	help
-+	  This option turns on the -fstack-protector GCC feature. This
-+	  feature puts, at the beginning of functions, a canary value on
-+	  the stack just before the return address, and validates
-+	  the value just before actually returning.  Stack based buffer
-+	  overflows (that need to overwrite this return address) now also
-+	  overwrite the canary, which gets detected and the attack is then
-+	  neutralized via a kernel panic.
-+
-+	  This feature requires gcc version 4.2 or above.
-+
- config USE_OF
- 	bool
- 	select OF
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index dd58a04..37f9ef3 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -227,6 +227,10 @@ KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
- 
- LDFLAGS			+= -m $(ld-emul)
- 
-+ifdef CONFIG_CC_STACKPROTECTOR
-+  KBUILD_CFLAGS += -fstack-protector
-+endif
-+
- ifdef CONFIG_MIPS
- CHECKFLAGS += $(shell $(CC) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
- 	egrep -vw '__GNUC_(|MINOR_|PATCHLEVEL_)_' | \
-diff --git a/arch/mips/include/asm/stackprotector.h b/arch/mips/include/asm/stackprotector.h
-new file mode 100644
-index 0000000..eb9b103
---- /dev/null
-+++ b/arch/mips/include/asm/stackprotector.h
-@@ -0,0 +1,40 @@
-+/*
-+ * GCC stack protector support.
-+ *
-+ * (This is directly adopted from the ARM implementation)
-+ *
-+ * Stack protector works by putting predefined pattern at the start of
-+ * the stack frame and verifying that it hasn't been overwritten when
-+ * returning from the function.  The pattern is called stack canary
-+ * and gcc expects it to be defined by a global variable called
-+ * "__stack_chk_guard" on MIPS.  This unfortunately means that on SMP
-+ * we cannot have a different canary value per task.
-+ */
-+
-+#ifndef _ASM_STACKPROTECTOR_H
-+#define _ASM_STACKPROTECTOR_H 1
-+
-+#include <linux/random.h>
-+#include <linux/version.h>
-+
-+extern unsigned long __stack_chk_guard;
-+
-+/*
-+ * Initialize the stackprotector canary value.
-+ *
-+ * NOTE: this must only be called from functions that never return,
-+ * and it must always be inlined.
-+ */
-+static __always_inline void boot_init_stack_canary(void)
-+{
-+	unsigned long canary;
-+
-+	/* Try to get a semi random initial value. */
-+	get_random_bytes(&canary, sizeof(canary));
-+	canary ^= LINUX_VERSION_CODE;
-+
-+	current->stack_canary = canary;
-+	__stack_chk_guard = current->stack_canary;
-+}
-+
-+#endif	/* _ASM_STACKPROTECTOR_H */
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index c6a041d..7d62894 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -201,6 +201,12 @@ int dump_task_fpu(struct task_struct *t, elf_fpregset_t *fpr)
- 	return 1;
- }
- 
-+#ifdef CONFIG_CC_STACKPROTECTOR
-+#include <linux/stackprotector.h>
-+unsigned long __stack_chk_guard __read_mostly;
-+EXPORT_SYMBOL(__stack_chk_guard);
-+#endif
-+
- /*
-  *
-  */
+ 	/* Adjust for physical offset. */
+ 	kernel_start &= ~0xffffffff80000000ULL;
 -- 
-1.7.9.5
+1.7.11.7

@@ -1,52 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Jun 2013 08:18:20 +0200 (CEST)
-Received: from mga03.intel.com ([143.182.124.21]:11244 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6815753Ab3FLGSR6iBeu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 12 Jun 2013 08:18:17 +0200
-Received: from azsmga002.ch.intel.com ([10.2.17.35])
-  by azsmga101.ch.intel.com with ESMTP; 11 Jun 2013 23:18:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.87,848,1363158000"; 
-   d="scan'208";a="253827868"
-Received: from vkoul-udesk3.iind.intel.com ([10.223.84.41])
-  by AZSMGA002.ch.intel.com with ESMTP; 11 Jun 2013 23:18:04 -0700
-Received: from vkoul-udesk3.iind.intel.com (localhost [127.0.0.1])
-        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id r5C5cG0b013629;
-        Wed, 12 Jun 2013 11:08:16 +0530
-Received: (from vkoul@localhost)
-        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Submit) id r5C5cAmp013627;
-        Wed, 12 Jun 2013 11:08:10 +0530
-X-Authentication-Warning: vkoul-udesk3.iind.intel.com: vkoul set sender to vinod.koul@intel.com using -f
-Date:   Wed, 12 Jun 2013 11:08:10 +0530
-From:   Vinod Koul <vinod.koul@intel.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH v2 3/6] dma: Add a jz4740 dmaengine driver
-Message-ID: <20130612053810.GF4107@intel.com>
-References: <1369931105-28065-1-git-send-email-lars@metafoo.de>
- <1369931105-28065-4-git-send-email-lars@metafoo.de>
- <20130530171225.GA3767@intel.com>
- <51A79E8F.4070209@metafoo.de>
- <51B60D0A.7040307@metafoo.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Jun 2013 13:20:20 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52204 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6823690Ab3FLLUOtbrxy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 12 Jun 2013 13:20:14 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5CBKCQ5007866;
+        Wed, 12 Jun 2013 13:20:12 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5CBKAKL007859;
+        Wed, 12 Jun 2013 13:20:10 +0200
+Date:   Wed, 12 Jun 2013 13:20:09 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Michal Marek <mmarek@suse.cz>,
+        linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Kconfig: Set default value for the "Kernel code
+ model"
+Message-ID: <20130612112009.GA7422@linux-mips.org>
+References: <1370944336-13703-1-git-send-email-markos.chandras@imgtec.com>
+ <20130611154129.GD13126@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <51B60D0A.7040307@metafoo.de>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <vinod.koul@intel.com>
+In-Reply-To: <20130611154129.GD13126@linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36837
+X-archive-position: 36838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vinod.koul@intel.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,35 +45,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jun 10, 2013 at 07:29:46PM +0200, Lars-Peter Clausen wrote:
-> On 05/30/2013 08:46 PM, Lars-Peter Clausen wrote:
-> >>> +static int jz4740_dma_alloc_chan_resources(struct dma_chan *c)
-> >>> +{
-> >>> +	struct jz4740_dmaengine_chan *chan = to_jz4740_dma_chan(c);
-> >>> +
-> >>> +	chan->jz_chan = jz4740_dma_request(chan, NULL);
-> >>> +	if (!chan->jz_chan)
-> >>> +		return -EBUSY;
-> >>> +
-> >>> +	jz4740_dma_set_complete_cb(chan->jz_chan, jz4740_dma_complete_cb);
-> >>> +
-> >>> +	return 0;
-> >> Sorry, I didnt reply on this one. The API expects you to allocate a pool of
-> >> descriptors. These descriptors are to be used in .device_prep_xxx calls later.
-> > 
-> > The size of the descriptor is not fixed, so they can not be pre-allocated. And
-> > this is nothing new either, most of the more recently added dmaengine drivers
-> > allocate their descriptors on demand.
-> 
-> Vinod, are you ok with this explanation?
-Sorry, I was travelling...
+Here's a simplified test case:
 
-Can you explain more of a bit when you say size is not fixed. Why would it be
-issue if we allocate descriptors at the alloc_chan. The idea is that you 
-preallocated pool at alloc_chan and since the .device_prep_xxx calls can be
-called from atomic context as well, you dont need to do this later. You can use use
-these descriptors at that time. The idea is keep rotating the descriptors from
-free poll to used one
+< --------- bite here --------- >
+choice
+	prompt "choice 1"
 
---
-~Vinod
+config FOO1
+	bool "foo 1"
+
+config FOO2
+	bool "foo 2"
+endchoice
+
+choice
+	prompt "frob"
+
+config BAR
+	bool "bar"
+	depends on FOO2
+
+endchoice
+< --------- bite here --------- >
+
+Save this to a file, then run:
+
+  scripts/kconfig/conf --randconfig /tmp/xxx && cat .config
+
+There will be two possible variants for generated .config files:
+
+< --------- Variant 1 --------- >
+CONFIG_FOO1=y
+# CONFIG_FOO2 is not set
+< --------- Variant 2 --------- >
+# CONFIG_FOO1 is not set
+# CONFIG_FOO2 is not set
+< --------- End       --------- >
+
+The intended third outcome which would be
+< --------- doesn't happen ---- >
+# CONFIG_FOO1 is not set
+CONFIG_FOO2=y
+< --------- End --------------- >
+
+never gets generated.
+
+Pretty much any tempering with this test case will change the behaviour.
+For example removing the "depends on FOO2" line will result in the
+behaviour of either CONFIG_FOO1 or CONFIG_FOO2 being set to y but never
+none or both.  Other minor changes might result in both symbols getting
+set.
+
+  Ralf

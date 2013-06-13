@@ -1,52 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jun 2013 18:41:36 +0200 (CEST)
-Received: from mail-pa0-f45.google.com ([209.85.220.45]:54225 "EHLO
-        mail-pa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817030Ab3FMQleyS6dF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Jun 2013 18:41:34 +0200
-Received: by mail-pa0-f45.google.com with SMTP id bi5so8247919pad.18
-        for <multiple recipients>; Thu, 13 Jun 2013 09:41:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=qVdQd5l7s17yw9HbGBtWn57VO2SXKCT4Eyqb/DPNDXo=;
-        b=g/oUZCGNqPrBqifwmh2dIK6ltADyBkq7o1zm0wGPFR/D4gUGKlrXmYTlvWL0Dg7ED3
-         p24/3XldaWmdw13aqXnP9jsDyMYhO7764OTQxC5Q8it9HRdx2ijhZKPXxH+++4e6+5N2
-         qvjKsDOl/ESp1oKgREBjn37a9RuoCIeQhY0hVSHWDumDYI1+dW2loNYZ2fiLHTXtTTt/
-         spd+4KoSCqX/k7RdYSqmrBL3IAzXY+9JrJE23AcfzOQuoaG8ZGQ6r5eLtocpSZext5jL
-         76dJBCxzS7mNE9EGcMnMgNCYDH01NW+RfnbmfNdFDtNV6FpalcD4Jbk9dtnsZXZsqI+V
-         Gv3w==
-X-Received: by 10.68.196.196 with SMTP id io4mr1613788pbc.166.1371141687819;
-        Thu, 13 Jun 2013 09:41:27 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id pq5sm20049835pbc.7.2013.06.13.09.41.25
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 13 Jun 2013 09:41:26 -0700 (PDT)
-Message-ID: <51B9F634.30506@gmail.com>
-Date:   Thu, 13 Jun 2013 09:41:24 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
-MIME-Version: 1.0
-To:     Markos Chandras <markos.chandras@imgtec.com>,
-        USB list <linux-usb@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Kconfig: Select USB_EHCI_HCD if USB_SUPPORt is
- enabled
-References: <1371138134-21216-1-git-send-email-markos.chandras@imgtec.com>
-In-Reply-To: <1371138134-21216-1-git-send-email-markos.chandras@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jun 2013 22:29:56 +0200 (CEST)
+Received: from filtteri2.pp.htv.fi ([213.243.153.185]:47116 "EHLO
+        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6835141Ab3FMU3wDed9c (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Jun 2013 22:29:52 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 3F6E519BFD2;
+        Thu, 13 Jun 2013 23:29:50 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
+        with ESMTP id 3IYwOpBcTMxm; Thu, 13 Jun 2013 23:29:45 +0300 (EEST)
+Received: from blackmetal.pp.htv.fi (cs181064211.pp.htv.fi [82.181.64.211])
+        by smtp4.welho.com (Postfix) with ESMTP id 3482F5BC015;
+        Thu, 13 Jun 2013 23:29:45 +0300 (EEST)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>, stable@vger.kernel.org
+Subject: [PATCH RESEND] MIPS: loongson: fix random early boot hang
+Date:   Thu, 13 Jun 2013 23:29:24 +0300
+Message-Id: <1371155364-725-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36857
+X-archive-position: 36858
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,49 +41,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/13/2013 08:42 AM, Markos Chandras wrote:
-> Commit 94d83649e1c2f25c87dc4ead9c2ab073305
-> "USB: remove USB_EHCI_BIG_ENDIAN_{DESC,MMIO} depends on architecture symbol"
->
-> caused the following regression in cavium_octeon_defconfig:
->
-> warning: (MIPS_SEAD3 && PMC_MSP && CPU_CAVIUM_OCTEON) selects
-> USB_EHCI_BIG_ENDIAN_MMIO which has unmet direct dependencies
-> (USB_SUPPORT && USB && USB_EHCI_HCD)
->
-> We fix this problem by selecting the USB_EHCI_HCD missing dependency
-> if USB_SUPPORT is enabled.
->
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+Some Loongson boards (e.g. Lemote FuLoong mini-PC) use ISA/southbridge
+device (CS5536 general purpose timer) for the timer interrupt. It starts
+running early and is already enabled during the PCI configuration,
+during which there is a small window in pci_read_base() when the register
+access is temporarily disabled. If the timer interrupts at this point,
+the system will hang. Fix this by adding a fixup that keeps the register
+access always enabled.
 
-NAK.  This is incorrect.
+The hang the patch fixes usually looks like this:
 
-It is completely backwards and forces us to have EHCI unconditionally.
+[    0.844000] pci 0000:00:0e.0: [1022:2090] type 00 class 0x060100
+[    0.848000] pci 0000:00:0e.0: reg 10: [io  0xb410-0xb417]
+[    0.852000] pci 0000:00:0e.0: reg 14: [io  0xb000-0xb0ff]
+[    0.856000] pci 0000:00:0e.0: reg 18: [io  0xb380-0xb3bf]
+[   28.140000] BUG: soft lockup - CPU#0 stuck for 23s! [swapper:1]
+[   28.140000] Modules linked in:
+[   28.140000] irq event stamp: 37965
+[   28.140000] hardirqs last  enabled at (37964): [<ffffffff80204c0c>] restore_partial+0x6c/0x13c
+[   28.140000] hardirqs last disabled at (37965): [<ffffffff80204f8c>] handle_int+0x144/0x15c
+[   28.140000] softirqs last  enabled at (24316): [<ffffffff802381f4>] __do_softirq+0x1cc/0x258
+[   28.140000] softirqs last disabled at (24327): [<ffffffff80238420>] do_softirq+0xc8/0xd0
+[   28.140000] Cpu 0
+[   28.140000] $ 0   : 0000000000000000 00000000140044e1 980000009f090000 0000000000000001
+[   28.140000] $ 4   : 980000009f090000 0000000000000000 0000000000000100 03b7fff87fbde011
+[   28.140000] $ 8   : ffffffff812b1928 000000000001e000 043ffff87fbde011 fffffff87fbde011
+[   28.140000] $12   : 000000000000000e ffffffff807a0000 0000000000000698 0000000000000000
+[   28.140000] $16   : 0000000000000002 ffffffff81055e20 ffffffff80786810 0000000000000000
+[   28.140000] $20   : 000000000000000a ffffffff807bc244 ffffffff807e6350 ffffffff80770000
+[   28.140000] $24   : 0000000000000d80 00000000fffedbe0
+[   28.140000] $28   : 980000009f07c000 980000009f07fa10 ffffffff81050000 ffffffff802380f8
+[   28.140000] Hi    : 0000000000d0fc00
+[   28.140000] Lo    : 0000000000f82b40
+[   28.140000] epc   : ffffffff8023810c __do_softirq+0xe4/0x258
+[   28.140000]     Not tainted
+[   28.140000] ra    : ffffffff802380f8 __do_softirq+0xd0/0x258
+[   28.140000] Status: 140044e3    KX SX UX KERNEL EXL IE
+[   28.140000] Cause : 10008400
+[   28.140000] PrId  : 00006303 (ICT Loongson-2)
 
-The proper fix is to move USB_EHCI_BIG_ENDIAN_MMIO (and similar other 
-Kconifg variables) out of the conditional section and make them 
-universally visible/usable.
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: stable@vger.kernel.org
+---
+ arch/mips/loongson/common/cs5536/cs5536_isa.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-David Daney
-
-
-> ---
-> This patch is for the upstream-sfr/mips-for-linux-next
-> ---
->   arch/mips/Kconfig | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 87ddac9..a058ba8 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -1411,6 +1411,7 @@ config CPU_CAVIUM_OCTEON
->   	select CPU_SUPPORTS_HUGEPAGES
->   	select LIBFDT
->   	select USE_OF
-> +	select USB_EHCI_HCD if USB_SUPPORT
->   	select USB_EHCI_BIG_ENDIAN_MMIO
->   	help
->   	  The Cavium Octeon processor is a highly integrated chip containing
->
+diff --git a/arch/mips/loongson/common/cs5536/cs5536_isa.c b/arch/mips/loongson/common/cs5536/cs5536_isa.c
+index a6eb2e8..924be39 100644
+--- a/arch/mips/loongson/common/cs5536/cs5536_isa.c
++++ b/arch/mips/loongson/common/cs5536/cs5536_isa.c
+@@ -13,6 +13,7 @@
+  * option) any later version.
+  */
+ 
++#include <linux/pci.h>
+ #include <cs5536/cs5536.h>
+ #include <cs5536/cs5536_pci.h>
+ 
+@@ -314,3 +315,16 @@ u32 pci_isa_read_reg(int reg)
+ 
+ 	return conf_data;
+ }
++
++/*
++ * The mfgpt timer interrupt is running early, so we must keep the south bridge
++ * mmio always enabled. Otherwise we may race with the PCI configuration which
++ * may temporarily disable it. When that happens and the timer interrupt fires,
++ * we are not able to clear it and the system will hang.
++ */
++static void cs5536_isa_mmio_always_on(struct pci_dev *dev)
++{
++	dev->mmio_always_on = 1;
++}
++DECLARE_PCI_FIXUP_CLASS_EARLY(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CS5536_ISA,
++	PCI_CLASS_BRIDGE_ISA, 8, cs5536_isa_mmio_always_on);
+-- 
+1.7.10.4

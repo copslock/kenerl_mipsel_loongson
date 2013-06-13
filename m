@@ -1,46 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jun 2013 16:24:34 +0200 (CEST)
-Received: from ns.iliad.fr ([212.27.33.1]:54437 "EHLO ns.iliad.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835141Ab3FMOYIrqNlq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Jun 2013 16:24:08 +0200
-Received: from ns.iliad.fr (localhost [127.0.0.1])
-        by ns.iliad.fr (Postfix) with ESMTP id 4785D4F8EF;
-        Thu, 13 Jun 2013 16:24:07 +0200 (CEST)
-Received: from [192.168.108.17] (freebox.vlq16.iliad.fr [213.36.7.13])
-        by ns.iliad.fr (Postfix) with ESMTP id 314214F8E8;
-        Thu, 13 Jun 2013 16:24:07 +0200 (CEST)
-Message-ID: <1371133447.3032.37.camel@sakura.staff.proxad.net>
-Subject: Re: [PATCH net-next] bcm63xx_enet: add support Broadcom BCM6345
- Ethernet
-From:   Maxime Bizon <mbizon@freebox.fr>
-Reply-To: mbizon@freebox.fr
-To:     Florian Fainelli <florian@openwrt.org>
-Cc:     David Miller <davem@davemloft.net>, netdev@vger.kernel.org,
-        ralf@linux-mips.org, John Crispin <blogic@openwrt.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>, jogo@openwrt.org,
-        Kevin Cernekee <cernekee@gmail.com>
-Date:   Thu, 13 Jun 2013 16:24:07 +0200
-In-Reply-To: <CAGVrzcaqbdLPcuL0m56aBLuG9ruaQ1p4JfTWZV9DJ4zSrNcXtg@mail.gmail.com>
-References: <1371066785-17168-1-git-send-email-florian@openwrt.org>
-         <20130613.014450.1434692343011842828.davem@davemloft.net>
-         <CAGVrzcYE4VDWtL_Uj1DrkZ6GqX6ghqPAXPpyLptc6PGwReixSQ@mail.gmail.com>
-         <20130613.022524.568792627006552244.davem@davemloft.net>
-         <CAGVrzcaqbdLPcuL0m56aBLuG9ruaQ1p4JfTWZV9DJ4zSrNcXtg@mail.gmail.com>
-Organization: Freebox
-Content-Type: text/plain; charset="ANSI_X3.4-1968"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
-Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0
-X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ; Thu Jun 13 16:24:07 2013 +0200 (CEST)
-Return-Path: <mbizon@freebox.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jun 2013 16:35:55 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:57064 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6834874Ab3FMOfecqd5p (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 Jun 2013 16:35:34 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5DEZUZC025180;
+        Thu, 13 Jun 2013 16:35:30 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5DEZSdA025179;
+        Thu, 13 Jun 2013 16:35:28 +0200
+Date:   Thu, 13 Jun 2013 16:35:28 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] MIPS: OCTEON: Don't clobber bootloader data structures.
+Message-ID: <20130613143528.GC22906@linux-mips.org>
+References: <1371061713-29028-1-git-send-email-ddaney.cavm@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1371061713-29028-1-git-send-email-ddaney.cavm@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36854
+X-archive-position: 36855
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mbizon@freebox.fr
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,25 +43,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Wed, Jun 12, 2013 at 11:28:33AM -0700, David Daney wrote:
 
-On Thu, 2013-06-13 at 10:49 +0100, Florian Fainelli wrote:
+> Commit abe77f90dc (MIPS: Octeon: Add kexec and kdump support) added a
+> bootmem region for the kernel image itself.  The problem is that this
+> is rounded up to a 0x100000 boundary, which is memory that may not be
+> owned by the kernel.  Depending on the kernel's configuration based
+> size, this 'extra' memory may contain data passed from the bootloader
+> to the kernel itself, which if clobbered makes the kernel crash in
+> various ways.
+> 
+> The fix: Quit rounding the size up, so that we only use memory
+> assigned to the kernel.
+> 
+> Can be applied to v3.8 and later.
 
-> We are in the slow process to switch to Device Tree to precisely
-> eliminate all of this (although not everyone agrees yet on the
-> details). Hopefully you should not see such things in the future.
+Thanks, applied.  Will send to Linus with the next pull request.
 
-I don't see how DT help here (hint: it never does)
-
-if the driver knows at compile time how registers are shuffled, it can
-remove the indirection
-
-if you use runtime cpu detection or DT, it cannot
-
-in fact, this patch already adds another layer of indirection with that
-"dma_chan_width" thing that the compiler has no way to optimize out,
-defeating the purpose of single SOC optimization.
-
-so we might as well force multi SOC support
-
--- 
-Maxime
+  Ralf

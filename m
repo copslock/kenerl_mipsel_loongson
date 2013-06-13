@@ -1,35 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jun 2013 23:25:27 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:58434 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6835271Ab3FMVZ1OBX9M (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Jun 2013 23:25:27 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5DL1sHN011220;
-        Thu, 13 Jun 2013 23:01:54 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5DL1pro011219;
-        Thu, 13 Jun 2013 23:01:51 +0200
-Date:   Thu, 13 Jun 2013 23:01:50 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     linux-mips@linux-mips.org, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND] MIPS: loongson: fix random early boot hang
-Message-ID: <20130613210150.GA11137@linux-mips.org>
-References: <1371155364-725-1-git-send-email-aaro.koskinen@iki.fi>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1371155364-725-1-git-send-email-aaro.koskinen@iki.fi>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 01:19:58 +0200 (CEST)
+Received: from mail-ea0-f176.google.com ([209.85.215.176]:41618 "EHLO
+        mail-ea0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6834988Ab3FMXT4p3KFU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 01:19:56 +0200
+Received: by mail-ea0-f176.google.com with SMTP id z15so5078694ead.7
+        for <linux-mips@linux-mips.org>; Thu, 13 Jun 2013 16:19:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id:x-mailer
+         :x-gm-message-state;
+        bh=2VW5kVPVm9rU6Wi08nuMmVRkQUhwL4iD4zQsHF+gjbI=;
+        b=Td7MHwKQbgxffWHUJRKxi8IEJbkqehYBLBZ3QG9DUNoDbOjQSTA2Wnrd6Fg2Czwkqz
+         YbUffb2fyYq9R4wOoRJvVkaN9kV9SQSPrpOzRS24LtD4972gXSoUBJRnhO9WjAfz1hOw
+         TAxLo+WwzgIsbSenbSKGD4YxLEthP87MxNX3xSh+x0Nm/fTT/AinAKNgK/CMyzt8Tsx6
+         HA3F9IxePv6eHXmnJUvOmtbotYmTXGGsSmWkys3T5GDBruptqK/ycY9/k88hX+WSaqyR
+         xiQD/ZxItuCv8eSEfHbjD7wAsPJv5b3Dkz/3T5zD2F0MYcupqPZCPNSeXe4gVAVXbg3s
+         rIWQ==
+X-Received: by 10.15.86.74 with SMTP id h50mr3528789eez.97.1371165590547;
+        Thu, 13 Jun 2013 16:19:50 -0700 (PDT)
+Received: from localhost (host86-139-128-71.range86-139.btcentralplus.com. [86.139.128.71])
+        by mx.google.com with ESMTPSA id s8sm46841227eeo.4.2013.06.13.16.19.48
+        for <multiple recipients>
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Thu, 13 Jun 2013 16:19:49 -0700 (PDT)
+Received: by localhost (Postfix, from userid 1000)
+        id 9F3243E078E; Fri, 14 Jun 2013 00:19:47 +0100 (BST)
+From:   Grant Likely <grant.likely@linaro.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Grant Likely <grant.likely@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH] irqdomain: Remove temporary MIPS workaround code
+Date:   Fri, 14 Jun 2013 00:19:43 +0100
+Message-Id: <1371165583-21907-1-git-send-email-grant.likely@linaro.org>
+X-Mailer: git-send-email 1.8.1.2
+X-Gm-Message-State: ALoCoQmqcn/KvSpnKThBiI15uIBYp58Qthn6WfoAXqKXWoN4s0VQIA0KaUGq8ryy11XPWReLaw39
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36865
+X-archive-position: 36866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: grant.likely@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,19 +55,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jun 13, 2013 at 11:29:24PM +0300, Aaro Koskinen wrote:
+The MIPS interrupt controllers are all registering their own irq_domains
+now. Drop the MIPS specific code because it is no longer needed.
 
-> Some Loongson boards (e.g. Lemote FuLoong mini-PC) use ISA/southbridge
-> device (CS5536 general purpose timer) for the timer interrupt. It starts
-> running early and is already enabled during the PCI configuration,
-> during which there is a small window in pci_read_base() when the register
-> access is temporarily disabled. If the timer interrupts at this point,
-> the system will hang. Fix this by adding a fixup that keeps the register
-> access always enabled.
+Signed-off-by: Grant Likely <grant.likely@linaro.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+---
 
-Sorry, I had already applied your patch but then accidentally dropped it
-from my patch queue.  Will send it upstream for 3.10.
+Ralf, this should be okay to pull out now. I'll be submitting it for
+v3.11 unless someone yells. Even if so, all the irqdomain infrastructure
+is in place to make it trivial to add an irqdomain where missing.
 
-Thanks!
+g.
 
-  Ralf
+ kernel/irq/irqdomain.c | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index 13f2654..e0c3366 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -475,18 +475,6 @@ unsigned int irq_create_of_mapping(struct device_node *controller,
+ 
+ 	domain = controller ? irq_find_host(controller) : irq_default_domain;
+ 	if (!domain) {
+-#ifdef CONFIG_MIPS
+-		/*
+-		 * Workaround to avoid breaking interrupt controller drivers
+-		 * that don't yet register an irq_domain.  This is temporary
+-		 * code. ~~~gcl, Feb 24, 2012
+-		 *
+-		 * Scheduled for removal in Linux v3.6.  That should be enough
+-		 * time.
+-		 */
+-		if (intsize > 0)
+-			return intspec[0];
+-#endif
+ 		pr_warn("no irq domain found for %s !\n",
+ 			of_node_full_name(controller));
+ 		return 0;
+-- 
+1.8.1.2

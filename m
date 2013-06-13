@@ -1,36 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jun 2013 16:35:55 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:57064 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6834874Ab3FMOfecqd5p (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Jun 2013 16:35:34 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5DEZUZC025180;
-        Thu, 13 Jun 2013 16:35:30 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5DEZSdA025179;
-        Thu, 13 Jun 2013 16:35:28 +0200
-Date:   Thu, 13 Jun 2013 16:35:28 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: OCTEON: Don't clobber bootloader data structures.
-Message-ID: <20130613143528.GC22906@linux-mips.org>
-References: <1371061713-29028-1-git-send-email-ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jun 2013 17:43:54 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:60417 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6835266Ab3FMPnoiT0bO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 Jun 2013 17:43:44 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: Kconfig: Select USB_EHCI_HCD if USB_SUPPORt is enabled
+Date:   Thu, 13 Jun 2013 16:42:14 +0100
+Message-ID: <1371138134-21216-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.2.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1371061713-29028-1-git-send-email-ddaney.cavm@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain
+X-SEF-Processed: 7_3_0_01192__2013_06_13_16_43_38
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36855
+X-archive-position: 36856
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,21 +34,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 12, 2013 at 11:28:33AM -0700, David Daney wrote:
+Commit 94d83649e1c2f25c87dc4ead9c2ab073305
+"USB: remove USB_EHCI_BIG_ENDIAN_{DESC,MMIO} depends on architecture symbol"
 
-> Commit abe77f90dc (MIPS: Octeon: Add kexec and kdump support) added a
-> bootmem region for the kernel image itself.  The problem is that this
-> is rounded up to a 0x100000 boundary, which is memory that may not be
-> owned by the kernel.  Depending on the kernel's configuration based
-> size, this 'extra' memory may contain data passed from the bootloader
-> to the kernel itself, which if clobbered makes the kernel crash in
-> various ways.
-> 
-> The fix: Quit rounding the size up, so that we only use memory
-> assigned to the kernel.
-> 
-> Can be applied to v3.8 and later.
+caused the following regression in cavium_octeon_defconfig:
 
-Thanks, applied.  Will send to Linus with the next pull request.
+warning: (MIPS_SEAD3 && PMC_MSP && CPU_CAVIUM_OCTEON) selects
+USB_EHCI_BIG_ENDIAN_MMIO which has unmet direct dependencies
+(USB_SUPPORT && USB && USB_EHCI_HCD)
 
-  Ralf
+We fix this problem by selecting the USB_EHCI_HCD missing dependency
+if USB_SUPPORT is enabled.
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Acked-by: Steven J. Hill <Steven.Hill@imgtec.com> 
+---
+This patch is for the upstream-sfr/mips-for-linux-next
+---
+ arch/mips/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 87ddac9..a058ba8 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1411,6 +1411,7 @@ config CPU_CAVIUM_OCTEON
+ 	select CPU_SUPPORTS_HUGEPAGES
+ 	select LIBFDT
+ 	select USE_OF
++	select USB_EHCI_HCD if USB_SUPPORT
+ 	select USB_EHCI_BIG_ENDIAN_MMIO
+ 	help
+ 	  The Cavium Octeon processor is a highly integrated chip containing
+-- 
+1.8.2.1

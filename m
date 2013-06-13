@@ -1,37 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jun 2013 11:00:18 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:55741 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6827526Ab3FMJAMvU00p (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Jun 2013 11:00:12 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5D907mf008989;
-        Thu, 13 Jun 2013 11:00:07 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5D903VH008987;
-        Thu, 13 Jun 2013 11:00:03 +0200
-Date:   Thu, 13 Jun 2013 11:00:02 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Rob Landley <rob@landley.net>
-Cc:     linux-kernel@vger.kernel.org, sanjayl@kymasys.com,
-        kvm@vger.kernel.org, linux-mips@linux-mips.org,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: Re: Commit f9afbd45b0d0 broke mips r4k.
-Message-ID: <20130613090002.GD7422@linux-mips.org>
-References: <1371090916.2776.104@driftwood>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1371090916.2776.104@driftwood>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jun 2013 11:25:33 +0200 (CEST)
+Received: from shards.monkeyblade.net ([149.20.54.216]:33243 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816822Ab3FMJZ3pd3ns (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Jun 2013 11:25:29 +0200
+Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id D8A1A581F4C;
+        Thu, 13 Jun 2013 02:25:26 -0700 (PDT)
+Date:   Thu, 13 Jun 2013 02:25:24 -0700 (PDT)
+Message-Id: <20130613.022524.568792627006552244.davem@davemloft.net>
+To:     florian@openwrt.org
+Cc:     netdev@vger.kernel.org, ralf@linux-mips.org, blogic@openwrt.org,
+        linux-mips@linux-mips.org, mbizon@freebox.fr, jogo@openwrt.org,
+        cernekee@gmail.com
+Subject: Re: [PATCH net-next] bcm63xx_enet: add support Broadcom BCM6345
+ Ethernet
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <CAGVrzcYE4VDWtL_Uj1DrkZ6GqX6ghqPAXPpyLptc6PGwReixSQ@mail.gmail.com>
+References: <1371066785-17168-1-git-send-email-florian@openwrt.org>
+        <20130613.014450.1434692343011842828.davem@davemloft.net>
+        <CAGVrzcYE4VDWtL_Uj1DrkZ6GqX6ghqPAXPpyLptc6PGwReixSQ@mail.gmail.com>
+X-Mailer: Mew version 6.5 on Emacs 24.1 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36847
+X-archive-position: 36848
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,62 +45,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 12, 2013 at 09:35:16PM -0500, Rob Landley wrote:
+From: Florian Fainelli <florian@openwrt.org>
+Date: Thu, 13 Jun 2013 09:58:34 +0100
 
-> My aboriginal linux project builds tiny linux systems to run under
-> qemu, producing as close to the same system as possible across a
-> bunch of different architectures. The above change broke the mips
-> r4k build I've been running under qemu.
+> 2013/6/13 David Miller <davem@davemloft.net>:
+>> From: Florian Fainelli <florian@openwrt.org>
+>> Date: Wed, 12 Jun 2013 20:53:05 +0100
+>>
+>>> +#ifdef BCMCPU_RUNTIME_DETECT
+>>
+>> I want the MIPS folks to fix this brain damange.
+>>
+>> This runtime detect thing is just a big mess in a header file
+>> using hundreds of lines of CPP stuff to express what is fundamentally
+>> a simple (albeit sizable) Kconfig dependency.
 > 
-> Here's a toolchain and reproduction sequence:
-> 
->   wget http://landley.net/aboriginal/bin/cross-compiler-mips.tar.bz2
->   tar xvjf cross-compiler-mips.tar.bz2
->   export PATH=$PWD/cross-compiler-mips/bin:$PATH
->   make ARCH=mips allnoconfig KCONFIG_ALLCONFIG=miniconfig.mips
->   make CROSS_COMPILE=mips- ARCH=mips
-> 
-> (The file miniconfig.mips is attached.)
-> 
-> It ends:
-> 
->   CC      init/version.o
->   LD      init/built-in.o
-> arch/mips/built-in.o: In function `local_r4k_flush_cache_page':
-> c-r4k.c:(.text+0xe278): undefined reference to `kvm_local_flush_tlb_all'
-> c-r4k.c:(.text+0xe278): relocation truncated to fit: R_MIPS_26
-> against `kvm_local_flush_tlb_all'
-> arch/mips/built-in.o: In function `local_flush_tlb_range':
-> (.text+0xe938): undefined reference to `kvm_local_flush_tlb_all'
-> arch/mips/built-in.o: In function `local_flush_tlb_range':
-> (.text+0xe938): relocation truncated to fit: R_MIPS_26 against
-> `kvm_local_flush_tlb_all'
-> arch/mips/built-in.o: In function `local_flush_tlb_mm':
-> (.text+0xed38): undefined reference to `kvm_local_flush_tlb_all'
-> arch/mips/built-in.o: In function `local_flush_tlb_mm':
-> (.text+0xed38): relocation truncated to fit: R_MIPS_26 against
-> `kvm_local_flush_tlb_all'
-> kernel/built-in.o: In function `__schedule':
-> core.c:(.sched.text+0x16a0): undefined reference to
-> `kvm_local_flush_tlb_all'
-> core.c:(.sched.text+0x16a0): relocation truncated to fit: R_MIPS_26
-> against `kvm_local_flush_tlb_all'
-> mm/built-in.o: In function `use_mm':
-> (.text+0x182c8): undefined reference to `kvm_local_flush_tlb_all'
-> mm/built-in.o: In function `use_mm':
-> (.text+0x182c8): relocation truncated to fit: R_MIPS_26 against
-> `kvm_local_flush_tlb_all'
-> fs/built-in.o:(.text+0x7b50): more undefined references to
-> `kvm_local_flush_tlb_all' follow
-> fs/built-in.o: In function `flush_old_exec':
-> (.text+0x7b50): relocation truncated to fit: R_MIPS_26 against
-> `kvm_local_flush_tlb_all'
-> 
-> Revert the above commit and it builds to the end.
+> The codebase supporting the Broadcom BCM63xx SoC supports about 6-7
 
-Commit d414976d1ca721456f7b7c603a8699d117c2ec07 [MIPS: include:
-mmu_context.h: Replace VIRTUALIZATION with KVM] fixes the issue and
-was pulled by Linus only yesterday.  I cannot reproduce the error
-following your receipe using the latest Linux/MIPS tree.
+You don't need to explain it to me, I read the code and understand
+what it's trying to accomplish.
 
-  Ralf
+I reject the implementation of it, only.
+
+> No, the ifdefs are kept in the arch/mips/bcm63xx portions of the code
+> specifically for that reason. The driver just needs to take into account a
+> new set of platform_data properties to deal with this.
+
+Fine, it's still terrible.

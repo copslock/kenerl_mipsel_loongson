@@ -1,37 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jun 2013 15:59:32 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:56897 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jun 2013 16:18:23 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:56994 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6834961Ab3FMN7acA287 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Jun 2013 15:59:30 +0200
+        id S6832092Ab3FMOSW04K14 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 Jun 2013 16:18:22 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5DDxQcN023372;
-        Thu, 13 Jun 2013 15:59:26 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5DEILMi024347;
+        Thu, 13 Jun 2013 16:18:21 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5DDxMkd023371;
-        Thu, 13 Jun 2013 15:59:22 +0200
-Date:   Thu, 13 Jun 2013 15:59:21 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5DEIKH2024346;
+        Thu, 13 Jun 2013 16:18:20 +0200
+Date:   Thu, 13 Jun 2013 16:18:20 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Miller <davem@davemloft.net>
-Cc:     florian@openwrt.org, netdev@vger.kernel.org, blogic@openwrt.org,
-        linux-mips@linux-mips.org, mbizon@freebox.fr, jogo@openwrt.org,
-        cernekee@gmail.com
-Subject: Re: [PATCH net-next] bcm63xx_enet: add support Broadcom BCM6345
- Ethernet
-Message-ID: <20130613135921.GA22906@linux-mips.org>
-References: <CAGVrzcYE4VDWtL_Uj1DrkZ6GqX6ghqPAXPpyLptc6PGwReixSQ@mail.gmail.com>
- <20130613.022524.568792627006552244.davem@davemloft.net>
- <CAGVrzcaqbdLPcuL0m56aBLuG9ruaQ1p4JfTWZV9DJ4zSrNcXtg@mail.gmail.com>
- <20130613.025619.2170890039313059326.davem@davemloft.net>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: sead3: Fix incorrect values for soft reset.
+Message-ID: <20130613141820.GB22906@linux-mips.org>
+References: <1371075656-21374-1-git-send-email-Steven.Hill@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20130613.025619.2170890039313059326.davem@davemloft.net>
+In-Reply-To: <1371075656-21374-1-git-send-email-Steven.Hill@imgtec.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36852
+X-archive-position: 36853
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,23 +42,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jun 13, 2013 at 02:56:19AM -0700, David Miller wrote:
+On Wed, Jun 12, 2013 at 05:20:56PM -0500, Steven J. Hill wrote:
 
-> From: Florian Fainelli <florian@openwrt.org>
-> Date: Thu, 13 Jun 2013 10:49:18 +0100
-> 
-> > We are in the slow process to switch to Device Tree to precisely
-> > eliminate all of this (although not everyone agrees yet on the
-> > details). Hopefully you should not see such things in the future.
-> 
-> Fair enough, I'll put this patch back into my TODO queue.
+>   * Reset register.
+>   */
+> -#define SOFTRES_REG	  0x1f000500
+> -#define GORESET		  0x42
+> +#define SOFTRES_REG	  0x1f000050
+> +#define GORESET		  0x4d
 
-David is right, one pair of welding goggles isn't enough to cope with the
-uglyness of this but as a temporary thing I can live with it, so
+I think this is going to break Malta.  We used to have:
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+    #define SOFTRES_REG       0x1e800050
+    #define GORESET           0x4d
 
-Dave, feel free to merge this through next-next.  I'm going to drop
-this patch from the MIPS patchwork then.
+for SEAD and
+
+    #define SOFTRES_REG       0x1f000500
+    #define GORESET           0x42
+
+for Atlas (no longer supported) and Malta.
 
   Ralf

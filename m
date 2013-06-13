@@ -1,31 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jun 2013 23:00:31 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:60254 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835275Ab3FMVA3kYc0S (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Jun 2013 23:00:29 +0200
-Message-ID: <51BA32E3.7090006@imgtec.com>
-Date:   Thu, 13 Jun 2013 16:00:19 -0500
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130510 Thunderbird/17.0.6
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: sead3: Fix incorrect values for soft reset.
-References: <1371075656-21374-1-git-send-email-Steven.Hill@imgtec.com> <20130613141820.GB22906@linux-mips.org>
-In-Reply-To: <20130613141820.GB22906@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.150.87]
-X-SEF-Processed: 7_3_0_01192__2013_06_13_22_00_23
-Return-Path: <Steven.Hill@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jun 2013 23:11:08 +0200 (CEST)
+Received: from mail-pb0-f48.google.com ([209.85.160.48]:37554 "EHLO
+        mail-pb0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835278Ab3FMVLGgmowA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Jun 2013 23:11:06 +0200
+Received: by mail-pb0-f48.google.com with SMTP id ma3so5297542pbc.21
+        for <multiple recipients>; Thu, 13 Jun 2013 14:10:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=la+k1k+NlRo+AlU3ynj7ZZgqAnfcLLA1gvyRqdfeJz0=;
+        b=U3J5jP5cYO0dfcQNETZcpq8RhqHy7dlyVftBfIj8hbmUqHgfWBkG+QmTLFKyGENev1
+         b+z5YA15dXoUm8puZge80HzfWosM24W6lhQO1FbzDUbi5Wiv0VAB5geGmnv7oPAwU5EM
+         p8cMvyig74oBb30Arq0RLhDd1B69U66LrQiowbUXfEdRbit2zSuNOxPeOqE2vwEorf4w
+         2f2AD4OR9Q+7UEcPNW2oDR0MDv/x1F6N7sSVkKgAwNjTls5KG0xj0isPpIm9ZPtYjdl4
+         vVRtDCzZNwmpioRpNq4SWcGQ39/cGVL98LZeW+wHhlCwqh0xuFNqy89GQ3hB1tkCZ5/U
+         eIJw==
+X-Received: by 10.68.198.69 with SMTP id ja5mr2589680pbc.183.1371157859656;
+        Thu, 13 Jun 2013 14:10:59 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id at1sm24713552pbc.10.2013.06.13.14.10.58
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 13 Jun 2013 14:10:58 -0700 (PDT)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r5DLAuqt017100;
+        Thu, 13 Jun 2013 14:10:56 -0700
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r5DLAtKt017099;
+        Thu, 13 Jun 2013 14:10:55 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH] MIPS/OCTEON: Override default address space layout.
+Date:   Thu, 13 Jun 2013 14:10:47 -0700
+Message-Id: <1371157847-17066-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36863
+X-archive-position: 36864
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,21 +56,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/13/2013 09:18 AM, Ralf Baechle wrote:
-> On Wed, Jun 12, 2013 at 05:20:56PM -0500, Steven J. Hill wrote:
->
-> I think this is going to break Malta.  We used to have:
->
->      #define SOFTRES_REG       0x1e800050
->      #define GORESET           0x4d
->
-> for SEAD
->
-Yes, it does break Malta. The #define values are defined in two places 
-and I missed one of them. I have submitted a patchset to these cleaned 
-up. Both platforms can now perform soft resets. Also, the 0x1e800050 is 
-not correct. I check all the way back in our 2.6.32.15 tree and that 
-value does not show up anywhere. The value in the patchset for SEAD-3 is 
-the correct one.
+From: David Daney <david.daney@cavium.com>
 
--Steve
+OCTEON II cannot execute code in the default CAC_BASE space, so we
+supply a value (0x8000000000000000) that does work.
+
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/include/asm/mach-cavium-octeon/spaces.h | 24 +++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-cavium-octeon/spaces.h
+
+diff --git a/arch/mips/include/asm/mach-cavium-octeon/spaces.h b/arch/mips/include/asm/mach-cavium-octeon/spaces.h
+new file mode 100644
+index 0000000..daa91ac
+--- /dev/null
++++ b/arch/mips/include/asm/mach-cavium-octeon/spaces.h
+@@ -0,0 +1,24 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2012 Cavium, Inc.
++ */
++#ifndef _ASM_MACH_CAVIUM_OCTEON_SPACES_H
++#define _ASM_MACH_CAVIUM_OCTEON_SPACES_H
++
++#include <linux/const.h>
++
++#ifdef CONFIG_64BIT
++/* They are all the same and some OCTEON II cores cannot handle 0xa8.. */
++#define CAC_BASE		_AC(0x8000000000000000, UL)
++#define UNCAC_BASE		_AC(0x8000000000000000, UL)
++#define IO_BASE			_AC(0x8000000000000000, UL)
++
++
++#endif /* CONFIG_64BIT */
++
++#include <asm/mach-generic/spaces.h>
++
++#endif /* _ASM_MACH_CAVIUM_OCTEON_SPACES_H */
+-- 
+1.7.11.7

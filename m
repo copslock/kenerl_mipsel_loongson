@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 18:41:44 +0200 (CEST)
-Received: from bhuna.collabora.co.uk ([93.93.135.160]:39151 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 18:42:14 +0200 (CEST)
+Received: from bhuna.collabora.co.uk ([93.93.135.160]:39161 "EHLO
         bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825698Ab3FNQlDJflRy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 18:41:03 +0200
+        by eddie.linux-mips.org with ESMTP id S6822508Ab3FNQlHA6kX0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 18:41:07 +0200
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: javier)
-        with ESMTPSA id F0E991E8800A
+        with ESMTPSA id 98AE71E8800D
 From:   Javier Martinez Canillas <javier.martinez@collabora.co.uk>
 To:     Thomas Gleixner <tglx@linutronix.de>
 Cc:     Ingo Molnar <mingo@kernel.org>,
@@ -20,9 +20,9 @@ Cc:     Ingo Molnar <mingo@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org,
         Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Subject: [PATCH 2/7] gpio: mvebu: use irq_get_trigger_type() to get IRQ flags
-Date:   Fri, 14 Jun 2013 18:40:44 +0200
-Message-Id: <1371228049-27080-3-git-send-email-javier.martinez@collabora.co.uk>
+Subject: [PATCH 3/7] mfd: twl4030-irq: use irq_get_trigger_type() to get IRQ flags
+Date:   Fri, 14 Jun 2013 18:40:45 +0200
+Message-Id: <1371228049-27080-4-git-send-email-javier.martinez@collabora.co.uk>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <1371228049-27080-1-git-send-email-javier.martinez@collabora.co.uk>
 References: <1371228049-27080-1-git-send-email-javier.martinez@collabora.co.uk>
@@ -30,7 +30,7 @@ Return-Path: <javier.martinez@collabora.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36897
+X-archive-position: 36898
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,21 +52,30 @@ instead calling irqd_get_trigger_type(irq_get_irq_data(irq))
 
 Signed-off-by: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
 ---
- drivers/gpio/gpio-mvebu.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/mfd/twl4030-irq.c |    5 +----
+ 1 files changed, 1 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpio-mvebu.c b/drivers/gpio/gpio-mvebu.c
-index 3a4816a..80ad35e 100644
---- a/drivers/gpio/gpio-mvebu.c
-+++ b/drivers/gpio/gpio-mvebu.c
-@@ -457,7 +457,7 @@ static void mvebu_gpio_irq_handler(unsigned int irq, struct irq_desc *desc)
- 		if (!(cause & (1 << i)))
- 			continue;
+diff --git a/drivers/mfd/twl4030-irq.c b/drivers/mfd/twl4030-irq.c
+index a5f9888..9d2d1ba 100644
+--- a/drivers/mfd/twl4030-irq.c
++++ b/drivers/mfd/twl4030-irq.c
+@@ -537,16 +537,13 @@ static void twl4030_sih_bus_sync_unlock(struct irq_data *data)
+ 		/* Modify only the bits we know must change */
+ 		while (edge_change) {
+ 			int		i = fls(edge_change) - 1;
+-			struct irq_data	*idata;
+ 			int		byte = i >> 2;
+ 			int		off = (i & 0x3) * 2;
+ 			unsigned int	type;
  
--		type = irqd_get_trigger_type(irq_get_irq_data(irq));
-+		type = irq_get_trigger_type(irq);
- 		if ((type & IRQ_TYPE_SENSE_MASK) == IRQ_TYPE_EDGE_BOTH) {
- 			/* Swap polarity (race with GPIO line) */
- 			u32 polarity;
+-			idata = irq_get_irq_data(i + agent->irq_base);
+-
+ 			bytes[byte] &= ~(0x03 << off);
+ 
+-			type = irqd_get_trigger_type(idata);
++			type = irq_get_trigger_type(i + agent->irq_base);
+ 			if (type & IRQ_TYPE_EDGE_RISING)
+ 				bytes[byte] |= BIT(off + 1);
+ 			if (type & IRQ_TYPE_EDGE_FALLING)
 -- 
 1.7.7.6

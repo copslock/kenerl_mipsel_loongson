@@ -1,30 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 04:38:53 +0200 (CEST)
-Received: from perches-mx.perches.com ([206.117.179.246]:35961 "EHLO
-        labridge.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S6817667Ab3FNCivFK4B2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 04:38:51 +0200
-Received: from [173.51.221.202] (account joe@perches.com HELO localhost.localdomain)
-  by labridge.com (CommuniGate Pro SMTP 5.0.14)
-  with ESMTPA id 21083983; Thu, 13 Jun 2013 19:38:48 -0700
-From:   Joe Perches <joe@perches.com>
-To:     Jiri Kosina <trivial@kernel.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [Trivial PATCH 04/33] mips: lasat: sysctl: Convert use of typedef ctl_table to struct ctl_table
-Date:   Thu, 13 Jun 2013 19:37:29 -0700
-Message-Id: <ac945517c9abcd71f312ea07693526bab1a912c2.1371177118.git.joe@perches.com>
-X-Mailer: git-send-email 1.8.1.2.459.gbcd45b4.dirty
-In-Reply-To: <cover.1371177118.git.joe@perches.com>
-References: <cover.1371177118.git.joe@perches.com>
-Return-Path: <joe@perches.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 07:46:20 +0200 (CEST)
+Received: from mail-vb0-f52.google.com ([209.85.212.52]:54223 "EHLO
+        mail-vb0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822830Ab3FNFqJM6kxG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 07:46:09 +0200
+Received: by mail-vb0-f52.google.com with SMTP id f12so128289vbg.25
+        for <multiple recipients>; Thu, 13 Jun 2013 22:46:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=Zu1tN0sLAb4AW4SwAvXRfThnUiF+DiqzsxML8l5Nr2k=;
+        b=rg6u53OwieZnb4CGnTkLObgRNyjWAx/LTQh220HLWAHgRftw2Rl5F1dvQtqPUEi0X9
+         SW6RK3IwZNaRpuJ9xLAfFhllU9nykSfweTQlAzuOP9fK3mPTN5pnIaO6FGsNCOtmTmMW
+         7qotvKeXMuJiWWR3b9R+I+iKLpzPoE2s2FZks/G71IPFZMmST9Aja1i9GcEJgAnJD5Lf
+         k8TALNCYBIVz/5pLd5k+YwvRMiR0rOrKFV0SO+evJDuxxCZWPvg2xDfrLQmK4Am80FTT
+         oQ5xur14FnUcJhbYjKY+7ddbKBgRL1dE/CAyo5ffCE2Q6trNBu0RkEru9yD+q+AAC7M/
+         fUCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=Zu1tN0sLAb4AW4SwAvXRfThnUiF+DiqzsxML8l5Nr2k=;
+        b=Jn9IzOzx/j87ZcA/BO4P0UBrmWIg5Ce9T2KdU4BHEtRBOMj2WtRDdEUTU4qBgqx80f
+         fa1Uxd44eVXYdRJv49bem37cBtXWZP/th4a7KVqstm7qxqidCipGq/jjdK5yg1KQZAC3
+         kufEZL7VqPigXfNqe/IzwwNbKwyW2OS6wYeos=
+MIME-Version: 1.0
+X-Received: by 10.58.187.4 with SMTP id fo4mr340504vec.55.1371188762419; Thu,
+ 13 Jun 2013 22:46:02 -0700 (PDT)
+Received: by 10.220.8.71 with HTTP; Thu, 13 Jun 2013 22:46:02 -0700 (PDT)
+In-Reply-To: <1371172023-16004-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1371172023-16004-1-git-send-email-ddaney.cavm@gmail.com>
+Date:   Thu, 13 Jun 2013 22:46:02 -0700
+X-Google-Sender-Auth: tWEb3uaffCgVTxnwnpixhXtPFjE
+Message-ID: <CA+55aFziBGnSgLimDe7WBRPQ+f3RVAsrdbo212oj85c-XSz4oA@mail.gmail.com>
+Subject: Re: [PATCH] smp.h: Use local_irq_{save,restore}() in !SMP version of on_each_cpu().
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        David Daney <david.daney@cavium.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus971@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36870
+X-archive-position: 36871
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joe@perches.com
+X-original-sender: torvalds@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,79 +63,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This typedef is unnecessary and should just be removed.
+On Thu, Jun 13, 2013 at 6:07 PM, David Daney <ddaney.cavm@gmail.com> wrote:
+>
+> Suggested fix: Do what we already do in the SMP version of
+> on_each_cpu(), and use local_irq_save/local_irq_restore.
 
-Signed-off-by: Joe Perches <joe@perches.com>
----
- arch/mips/lasat/sysctl.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+I was going to apply this, but started looking a bit more.
 
-diff --git a/arch/mips/lasat/sysctl.c b/arch/mips/lasat/sysctl.c
-index f27694f..3b7f65c 100644
---- a/arch/mips/lasat/sysctl.c
-+++ b/arch/mips/lasat/sysctl.c
-@@ -39,7 +39,7 @@
- 
- 
- /* And the same for proc */
--int proc_dolasatstring(ctl_table *table, int write,
-+int proc_dolasatstring(struct ctl_table *table, int write,
- 		       void *buffer, size_t *lenp, loff_t *ppos)
- {
- 	int r;
-@@ -54,7 +54,7 @@ int proc_dolasatstring(ctl_table *table, int write,
- }
- 
- /* proc function to write EEPROM after changing int entry */
--int proc_dolasatint(ctl_table *table, int write,
-+int proc_dolasatint(struct ctl_table *table, int write,
- 		       void *buffer, size_t *lenp, loff_t *ppos)
- {
- 	int r;
-@@ -72,7 +72,7 @@ int proc_dolasatint(ctl_table *table, int write,
- static int rtctmp;
- 
- /* proc function to read/write RealTime Clock */
--int proc_dolasatrtc(ctl_table *table, int write,
-+int proc_dolasatrtc(struct ctl_table *table, int write,
- 		       void *buffer, size_t *lenp, loff_t *ppos)
- {
- 	struct timespec ts;
-@@ -97,7 +97,7 @@ int proc_dolasatrtc(ctl_table *table, int write,
- #endif
- 
- #ifdef CONFIG_INET
--int proc_lasat_ip(ctl_table *table, int write,
-+int proc_lasat_ip(struct ctl_table *table, int write,
- 		       void *buffer, size_t *lenp, loff_t *ppos)
- {
- 	unsigned int ip;
-@@ -157,7 +157,7 @@ int proc_lasat_ip(ctl_table *table, int write,
- }
- #endif
- 
--int proc_lasat_prid(ctl_table *table, int write,
-+int proc_lasat_prid(struct ctl_table *table, int write,
- 		       void *buffer, size_t *lenp, loff_t *ppos)
- {
- 	int r;
-@@ -176,7 +176,7 @@ int proc_lasat_prid(ctl_table *table, int write,
- 
- extern int lasat_boot_to_service;
- 
--static ctl_table lasat_table[] = {
-+static struct ctl_table lasat_table[] = {
- 	{
- 		.procname	= "cpu-hz",
- 		.data		= &lasat_board_info.li_cpu_hz,
-@@ -262,7 +262,7 @@ static ctl_table lasat_table[] = {
- 	{}
- };
- 
--static ctl_table lasat_root_table[] = {
-+static struct ctl_table lasat_root_table[] = {
- 	{
- 		.procname	= "lasat",
- 		.mode		=  0555,
--- 
-1.8.1.2.459.gbcd45b4.dirty
+Using "flags" as a variable name inside a macro like this is a
+*really* bad idea.
+
+Lookie here:
+
+    [torvalds@pixel linux]$ git grep on_each_cpu.*flags
+    arch/s390/kernel/perf_cpum_cf.c:        on_each_cpu(setup_pmc_cpu,
+&flags, 1);
+    arch/s390/kernel/perf_cpum_cf.c:        on_each_cpu(setup_pmc_cpu,
+&flags, 1);
+
+and ask yourself what happens when the "info" argument expands to
+"&flags", and it all compiles perfectly fine, but the "&flags" takes
+the address of the new _inner_ variable called "flags" from the macro
+expansion. Not the one that the caller actually intends..
+
+Oops.
+
+Not a good idea.
+
+So I would suggest trivially renaming "flags" as "__flags" or
+something, or perhaps even just making it a real function and avoiding
+the whole namespace issue.
+
+And rather than doing that blindly by editing the patch at after -rc5,
+I'm just going to ask you to re-send a tested patch. Ok?
+
+                    Linus

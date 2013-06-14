@@ -1,33 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 10:26:26 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:19078 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822998Ab3FNI0Ywnz7X (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 14 Jun 2013 10:26:24 +0200
-Message-ID: <51BAD3B0.9060605@imgtec.com>
-Date:   Fri, 14 Jun 2013 09:26:24 +0100
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130509 Thunderbird/17.0.6
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 10:36:01 +0200 (CEST)
+Received: from mail-ie0-f182.google.com ([209.85.223.182]:40179 "EHLO
+        mail-ie0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822998Ab3FNIf5CiNcu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 10:35:57 +0200
+Received: by mail-ie0-f182.google.com with SMTP id s9so747465iec.27
+        for <linux-mips@linux-mips.org>; Fri, 14 Jun 2013 01:35:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date
+         :x-google-sender-auth:message-id:subject:to:cc:content-type
+         :x-gm-message-state;
+        bh=nkj2dHsIXDvQdcDxcAHRtVQT8Lf9axTATKl89LXxKm4=;
+        b=ZRLBiqIYEh3Qa/BXni3j/bKBo8ILe9bvwLDfCxBpNSDua27FfVNAIgN9R7Rmrj29id
+         wUIWFlh4NxGyYUfGfeXpougM8kc8FqLddGfsSHIyXCZiQHt6Rzi63K0cbFXsUO0qVLO3
+         5E17T3qx0FK7yvziX+aTZ8S6j/kl7c81Lk3liVqE5qa3NEji9G5yvscR2kwx/Q6RspNv
+         GUREPRmLus/A9RmXfCi1fXnuL0xEu/gRwKMXELG9jlRXZrZipJ/ANKKTbovGxUrTxOd/
+         siyJ1XWSR3KNNaUI0HeOMGngjWJoNc6rmxaeTbxJPCOX3Ilh5tsfyPxDVu2NSPDeY56R
+         kRtg==
+X-Received: by 10.42.102.211 with SMTP id j19mr474891ico.0.1371198950699; Fri,
+ 14 Jun 2013 01:35:50 -0700 (PDT)
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     USB list <linux-usb@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Kconfig: Select USB_EHCI_HCD if USB_SUPPORt is
- enabled
-References: <1371138134-21216-1-git-send-email-markos.chandras@imgtec.com> <51B9F634.30506@gmail.com>
-In-Reply-To: <51B9F634.30506@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.58]
-X-SEF-Processed: 7_3_0_01192__2013_06_14_09_26_19
-Return-Path: <Markos.Chandras@imgtec.com>
+Received: by 10.64.133.16 with HTTP; Fri, 14 Jun 2013 01:35:30 -0700 (PDT)
+In-Reply-To: <20130614082220.GC22589@linux-mips.org>
+References: <1371165583-21907-1-git-send-email-grant.likely@linaro.org> <20130614082220.GC22589@linux-mips.org>
+From:   Grant Likely <grant.likely@linaro.org>
+Date:   Fri, 14 Jun 2013 09:35:30 +0100
+X-Google-Sender-Auth: mDY_rcVxrCnNYutWmuF4b_-VGbo
+Message-ID: <CACxGe6snY7zjhx=UfO3Z_zUp1m25H69Fev7uvswoTbE1hRP7CA@mail.gmail.com>
+Subject: Re: [PATCH] irqdomain: Remove temporary MIPS workaround code
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+X-Gm-Message-State: ALoCoQmxcWfuvdFxmNG9vQ/xbQ8P/9nO3i0u9yIZNpf6i+gIvkSOvmsvwlUWjAKWXBa2pddmpIq6
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36873
+X-archive-position: 36874
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: grant.likely@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,39 +54,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/13/13 17:41, David Daney wrote:
-> On 06/13/2013 08:42 AM, Markos Chandras wrote:
->> Commit 94d83649e1c2f25c87dc4ead9c2ab073305
->> "USB: remove USB_EHCI_BIG_ENDIAN_{DESC,MMIO} depends on architecture
->> symbol"
+On Fri, Jun 14, 2013 at 9:22 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Fri, Jun 14, 2013 at 12:19:43AM +0100, Grant Likely wrote:
+>
+>> The MIPS interrupt controllers are all registering their own irq_domains
+>> now. Drop the MIPS specific code because it is no longer needed.
 >>
->> caused the following regression in cavium_octeon_defconfig:
+>> Signed-off-by: Grant Likely <grant.likely@linaro.org>
+>> Cc: Ralf Baechle <ralf@linux-mips.org>
+>> Cc: linux-mips@linux-mips.org
+>> ---
 >>
->> warning: (MIPS_SEAD3 && PMC_MSP && CPU_CAVIUM_OCTEON) selects
->> USB_EHCI_BIG_ENDIAN_MMIO which has unmet direct dependencies
->> (USB_SUPPORT && USB && USB_EHCI_HCD)
->>
->> We fix this problem by selecting the USB_EHCI_HCD missing dependency
->> if USB_SUPPORT is enabled.
->>
->> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
->> Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+>> Ralf, this should be okay to pull out now. I'll be submitting it for
+>> v3.11 unless someone yells. Even if so, all the irqdomain infrastructure
+>> is in place to make it trivial to add an irqdomain where missing.
 >
-> NAK.  This is incorrect.
->
-> It is completely backwards and forces us to have EHCI unconditionally.
->
-> The proper fix is to move USB_EHCI_BIG_ENDIAN_MMIO (and similar other
-> Kconifg variables) out of the conditional section and make them
-> universally visible/usable.
->
-> David Daney
->
->
+> I would like to merge this through the MIPS tree so it'll receive
+> maximum testing, just in case, ok?
 
-Hi David,
+okay. I'll keep it out of my -next branch.
 
-Thanks. I will prepare a new patch.
-
--- 
-markos
+g.

@@ -1,39 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 18:12:12 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:33576 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823020Ab3FNQMHS2e6F (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 14 Jun 2013 18:12:07 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5EGBpre001605;
-        Fri, 14 Jun 2013 18:11:51 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5EGBmtf001604;
-        Fri, 14 Jun 2013 18:11:48 +0200
-Date:   Fri, 14 Jun 2013 18:11:48 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
-        Sanjay Lal <sanjayl@kymasys.com>, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 10/31] mips/kvm: Implement ioctls to get and set FPU
- registers.
-Message-ID: <20130614161148.GM15775@linux-mips.org>
-References: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com>
- <1370646215-6543-11-git-send-email-ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 18:27:00 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:44669 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823018Ab3FNQ04x0heB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 14 Jun 2013 18:26:56 +0200
+Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r5EGQpSj006401
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Fri, 14 Jun 2013 12:26:51 -0400
+Received: from tranklukator.brq.redhat.com (dhcp-1-192.brq.redhat.com [10.34.1.192])
+        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id r5EGQlMb029063;
+        Fri, 14 Jun 2013 12:26:47 -0400
+Received: by tranklukator.brq.redhat.com (nbSMTP-1.00) for uid 500
+        oleg@redhat.com; Fri, 14 Jun 2013 18:22:48 +0200 (CEST)
+Date:   Fri, 14 Jun 2013 18:22:44 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Dave Jones <davej@redhat.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH v2] MIPS: Reduce _NSIG from 128 to 127 to avoid BUG_ON
+Message-ID: <20130614162244.GA15754@redhat.com>
+References: <1371225825-8225-1-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1370646215-6543-11-git-send-email-ddaney.cavm@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <1371225825-8225-1-git-send-email-james.hogan@imgtec.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
+Return-Path: <oleg@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36891
+X-archive-position: 36892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: oleg@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,15 +51,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 07, 2013 at 04:03:14PM -0700, David Daney wrote:
+On 06/14, James Hogan wrote:
+>
+> However do_group_exit() checks for the core dump bit (0x80) in the exit
+> code which matches in this particular case and the kernel panics:
+>
+>   BUG_ON(exit_code & 0x80); /* core dumps don't get here */
+>
+> Lets avoid this by changing the ABI by reducing the number of signals to
+> 127 (so that the maximum signal number is 127).
 
-> From: David Daney <david.daney@cavium.com>
-> 
-> The current implementation does nothing with them, but future MIPSVZ
-> work need them.  Also add the asm-offsets accessors for the fields.
+Agreed.
 
-Just as a note, older MIPS FPUs only have fcr0 and fcr31.
+Of course I can't ack the change in arch/mips, but to me this looks
+like a best solution.
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
-
-  Ralf
+Oleg.

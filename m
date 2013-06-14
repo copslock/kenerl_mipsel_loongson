@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 18:41:00 +0200 (CEST)
-Received: from bhuna.collabora.co.uk ([93.93.135.160]:39126 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 18:41:19 +0200 (CEST)
+Received: from bhuna.collabora.co.uk ([93.93.135.160]:39136 "EHLO
         bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825866Ab3FNQlACGpk6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 18:41:00 +0200
+        by eddie.linux-mips.org with ESMTP id S6827470Ab3FNQlBGz600 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 18:41:01 +0200
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: javier)
-        with ESMTPSA id 278271708682
+        with ESMTPSA id 0232A1708684
 From:   Javier Martinez Canillas <javier.martinez@collabora.co.uk>
 To:     Thomas Gleixner <tglx@linutronix.de>
 Cc:     Ingo Molnar <mingo@kernel.org>,
@@ -20,15 +20,17 @@ Cc:     Ingo Molnar <mingo@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org,
         Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Subject: [PATCH 0/7] genirq: add irq_get_trigger_type() to get IRQ flags
-Date:   Fri, 14 Jun 2013 18:40:42 +0200
-Message-Id: <1371228049-27080-1-git-send-email-javier.martinez@collabora.co.uk>
+Subject: [PATCH 1/7] genirq: add irq_get_trigger_type() to get IRQ flags
+Date:   Fri, 14 Jun 2013 18:40:43 +0200
+Message-Id: <1371228049-27080-2-git-send-email-javier.martinez@collabora.co.uk>
 X-Mailer: git-send-email 1.7.7.6
+In-Reply-To: <1371228049-27080-1-git-send-email-javier.martinez@collabora.co.uk>
+References: <1371228049-27080-1-git-send-email-javier.martinez@collabora.co.uk>
 Return-Path: <javier.martinez@collabora.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36895
+X-archive-position: 36896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,29 +53,32 @@ the struct irq_data and then irqd_get_trigger_type(irq_data) to
 obtain the IRQ flags.
 
 This is not only error prone but also unnecessary exposes the
-struct irq_data to callers. This patch-set adds a new function
-irq_get_trigger_type() to obtain the edge/level flags for an IRQ
-and updates the places where irq_get_irq_data(irq) was called
-just to obtain the flags from the struct irq_data.
+struct irq_data to callers.
 
-The patch-set is composed of the following patches:
+It's better to have an irq_get_trigger_type() function to obtain
+the edge/level flags for an IRQ.
 
-[PATCH 1/7] genirq: add irq_get_trigger_type() to get IRQ flags
-[PATCH 2/7] gpio: mvebu: use irq_get_trigger_type() to get IRQ flags
-[PATCH 3/7] mfd: twl4030-irq: use irq_get_trigger_type() to get IRQ flags
-[PATCH 4/7] mfd: stmpe: use irq_get_trigger_type() to get IRQ flags
-[PATCH 5/7] arm: orion: use irq_get_trigger_type() to get IRQ flags
-[PATCH 6/7] MIPS: octeon: use irq_get_trigger_type() to get IRQ flags
-[PATCH 7/7] irqdomain: use irq_get_trigger_type() to get IRQ flags
+Signed-off-by: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
+---
+ include/linux/irq.h |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
 
- arch/arm/plat-orion/gpio.c           |    2 +-
- arch/mips/cavium-octeon/octeon-irq.c |    2 +-
- drivers/gpio/gpio-mvebu.c            |    2 +-
- drivers/mfd/stmpe.c                  |    3 +--
- drivers/mfd/twl4030-irq.c            |    5 +----
- include/linux/irq.h                  |    6 ++++++
- kernel/irq/irqdomain.c               |    2 +-
- 7 files changed, 12 insertions(+), 10 deletions(-)
-
-Best regards,
-Javier
+diff --git a/include/linux/irq.h b/include/linux/irq.h
+index bc4e066..0e8e3a6 100644
+--- a/include/linux/irq.h
++++ b/include/linux/irq.h
+@@ -579,6 +579,12 @@ static inline struct msi_desc *irq_data_get_msi(struct irq_data *d)
+ 	return d->msi_desc;
+ }
+ 
++static inline u32 irq_get_trigger_type(unsigned int irq)
++{
++	struct irq_data *d = irq_get_irq_data(irq);
++	return d ? irqd_get_trigger_type(d) : 0;
++}
++
+ int __irq_alloc_descs(int irq, unsigned int from, unsigned int cnt, int node,
+ 		struct module *owner);
+ 
+-- 
+1.7.7.6

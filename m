@@ -1,34 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 15:09:41 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:32773 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 15:11:41 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:32790 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823020Ab3FNNJjnkTd1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 14 Jun 2013 15:09:39 +0200
+        id S6823015Ab3FNNLgzqSII (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 14 Jun 2013 15:11:36 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5ED9ZbW025048;
-        Fri, 14 Jun 2013 15:09:35 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5EDBYoJ025177;
+        Fri, 14 Jun 2013 15:11:34 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5ED9XpV025047;
-        Fri, 14 Jun 2013 15:09:33 +0200
-Date:   Fri, 14 Jun 2013 15:09:33 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5EDBXEb025176;
+        Fri, 14 Jun 2013 15:11:33 +0200
+Date:   Fri, 14 Jun 2013 15:11:33 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
+To:     James Hogan <james.hogan@imgtec.com>
 Cc:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
         Sanjay Lal <sanjayl@kymasys.com>, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 03/31] mips/kvm: Fix 32-bitisms in kvm_locore.S
-Message-ID: <20130614130933.GE15775@linux-mips.org>
+        David Daney <ddaney@caviumnetworks.com>
+Subject: Re: [PATCH 01/31] MIPS: Move allocate_kscratch to cpu-probe.c and
+ make it public.
+Message-ID: <20130614131133.GA21005@linux-mips.org>
 References: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com>
- <1370646215-6543-4-git-send-email-ddaney.cavm@gmail.com>
+ <1370646215-6543-2-git-send-email-ddaney.cavm@gmail.com>
+ <20130614114118.GD15775@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1370646215-6543-4-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <20130614114118.GD15775@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36881
+X-archive-position: 36882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,52 +47,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 07, 2013 at 04:03:07PM -0700, David Daney wrote:
+On Fri, Jun 14, 2013 at 01:41:18PM +0200, Ralf Baechle wrote:
+> Date:   Fri, 14 Jun 2013 13:41:18 +0200
+> From: Ralf Baechle <ralf@linux-mips.org>
+> To: James Hogan <james.hogan@imgtec.com>
+> Cc: linux-mips@linux-mips.org, kvm@vger.kernel.org, Sanjay Lal
+>  <sanjayl@kymasys.com>, linux-kernel@vger.kernel.org, David Daney
+>  <ddaney@caviumnetworks.com>
+> Subject: Re: [PATCH 01/31] MIPS: Move allocate_kscratch to cpu-probe.c and
+>  make it public.
+> Content-Type: text/plain; charset=us-ascii
+> 
+> On Fri, Jun 07, 2013 at 04:03:05PM -0700, David Daney wrote:
+> > Date:   Fri,  7 Jun 2013 16:03:05 -0700
+> > From: David Daney <ddaney.cavm@gmail.com>
+> > To: linux-mips@linux-mips.org, ralf@linux-mips.org, kvm@vger.kernel.org,
+> >  Sanjay Lal <sanjayl@kymasys.com>
+> > Cc: linux-kernel@vger.kernel.org, David Daney <ddaney@caviumnetworks.com>
+> > Subject: [PATCH 01/31] MIPS: Move allocate_kscratch to cpu-probe.c and make
+> >  it public.
+> > 
+> > From: David Daney <ddaney@caviumnetworks.com>
+> 
+> I'd just like to add a note about compatibility.  Code optimized for
+> LL/SC-less CPUs has made use of the fact that exception handlers will
+> clobber k0/k1 to a non-zero value.  On a MIPS II or better CPU a branch
+> likely instruction could be used to atomically test k0/k1 and depending
+> on the test, execute a store instruction like:
+> 
+> 	.set	noreorder
+> 	beqzl	$k0, ok
+> 	sw	$reg, offset($reg)
+> 	/* if we get here, our SC emulation has failed  */
+> ok:	...
+> 
+> In particular Sony had elected to do this for the R5900 (after I explained
+> the concept to somebody and told it'd be a _bad_ idea for compatibility
+> reasons).  Bad ideas are infectious so I'm sure others have used it, too.
+> 
+> I don't think this should stop your patch nor should we unless this turns
+> out to be an actual problem add any kludges to support such cowboy style
+> hacks.  But I wanted to mention and document the issue; maybe this should
+> be mentioned in the log message of the next version of this patch.
+> 
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-> diff --git a/arch/mips/kvm/kvm_locore.S b/arch/mips/kvm/kvm_locore.S
-> index dca2aa6..e86fa2a 100644
-> --- a/arch/mips/kvm/kvm_locore.S
-> +++ b/arch/mips/kvm/kvm_locore.S
-> @@ -310,7 +310,7 @@ NESTED (MIPSX(GuestException), CALLFRAME_SIZ, ra)
->      LONG_S  t0, VCPU_R26(k1)
->  
->      /* Get GUEST k1 and save it in VCPU */
-> -    la      t1, ~0x2ff
-> +	PTR_LI	t1, ~0x2ff
->      mfc0    t0, CP0_EBASE
->      and     t0, t0, t1
->      LONG_L  t0, 0x3000(t0)
-> @@ -384,14 +384,14 @@ NESTED (MIPSX(GuestException), CALLFRAME_SIZ, ra)
->      mtc0        k0, CP0_DDATA_LO
->  
->      /* Restore RDHWR access */
-> -    la      k0, 0x2000000F
-> +	PTR_LI	k0, 0x2000000F
->      mtc0    k0,  CP0_HWRENA
->  
->      /* Jump to handler */
->  FEXPORT(__kvm_mips_jump_to_handler)
->      /* XXXKYMA: not sure if this is safe, how large is the stack?? */
->      /* Now jump to the kvm_mips_handle_exit() to see if we can deal with this in the kernel */
-> -    la          t9,kvm_mips_handle_exit
-> +	PTR_LA	t9, kvm_mips_handle_exit
->      jalr.hb     t9
->      addiu       sp,sp, -CALLFRAME_SIZ           /* BD Slot */
->  
-> @@ -566,7 +566,7 @@ __kvm_mips_return_to_host:
->      mtlo    k0
->  
->      /* Restore RDHWR access */
-> -    la      k0, 0x2000000F
-> +	PTR_LI	k0, 0x2000000F
->      mtc0    k0,  CP0_HWRENA
+Bleh.  I fatfingered mutt.  This of course was the reply intended for
+"[PATCH 02/31] MIPS: Save and restore K0/K1 when CONFIG_KVM_MIPSVZ".
 
-Technically ok, there's only a formatting issue because you indent the
-changed lines with tabs while the existing file uses tab characters.
-I suggest you insert an extra cleanup patch to properly re-indent the
-entire file into the series before this one?
-
-So with that sorted:
+As for 1/31:
 
 Acked-by: Ralf Baechle <ralf@linux-mips.org>
 

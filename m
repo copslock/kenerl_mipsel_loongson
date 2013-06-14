@@ -1,51 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 03:07:19 +0200 (CEST)
-Received: from mail-pd0-f177.google.com ([209.85.192.177]:36738 "EHLO
-        mail-pd0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835278Ab3FNBHPnofS4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 03:07:15 +0200
-Received: by mail-pd0-f177.google.com with SMTP id p10so16102pdj.22
-        for <multiple recipients>; Thu, 13 Jun 2013 18:07:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=lCvWIyPmiZwhIFJP7hdcdwPDybLnJuzP2n1Y0v/1os0=;
-        b=ktZiPsqY2tfuj2iyWapB929I0LHrcX7zNlbFCWHHQ134w5u278FwYfsSPY5AV00OQy
-         YDxmGa6HGlFQmbUaLiUI6BJUBKt9fScC7xsK9NYREo7x7bTgbxgAPIInE+gSd4kjVA8B
-         v7SHafACNLddBNqdK2ndMY+a1UkWMIJZqtCUjqcqleWAiittt0JXqdYh/Fq4Hahyi9Zq
-         532OU5tVVl12Bm/wNQzA+4nCVdp1UFqoHyKzR+DNmegxBGnxRn5qIadwrh+aOx5xe06o
-         9mSBkauX/TImcOWE2QAkMS7kJyxloZM/Zc5X6GOA9QpvNUsPdCpUv6slPX7Qpn7+tIWM
-         V9dg==
-X-Received: by 10.66.145.201 with SMTP id sw9mr72249pab.63.1371172029224;
-        Thu, 13 Jun 2013 18:07:09 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id al2sm34745pbc.25.2013.06.13.18.07.07
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 13 Jun 2013 18:07:08 -0700 (PDT)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r5E175li016037;
-        Thu, 13 Jun 2013 18:07:06 -0700
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r5E1741E016036;
-        Thu, 13 Jun 2013 18:07:04 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     ralf@linux-mips.org, Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH] smp.h: Use local_irq_{save,restore}() in !SMP version of on_each_cpu().
-Date:   Thu, 13 Jun 2013 18:07:03 -0700
-Message-Id: <1371172023-16004-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 04:38:19 +0200 (CEST)
+Received: from perches-mx.perches.com ([206.117.179.246]:56414 "EHLO
+        labridge.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S6820116Ab3FNCiQb6v4j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 04:38:16 +0200
+Received: from [173.51.221.202] (account joe@perches.com HELO localhost.localdomain)
+  by labridge.com (CommuniGate Pro SMTP 5.0.14)
+  with ESMTPA id 21083974; Thu, 13 Jun 2013 19:38:12 -0700
+From:   Joe Perches <joe@perches.com>
+To:     Jiri Kosina <trivial@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-rdma@vger.kernel.org, linux-raid@vger.kernel.org,
+        linux-scsi@vger.kernel.org, codalist@coda.cs.cmu.edu,
+        linux-fsdevel@vger.kernel.org, linux-cachefs@redhat.com,
+        linux-nfs@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net,
+        ocfs2-devel@oss.oracle.com, xfs@oss.sgi.com,
+        keyrings@linux-nfs.org, netdev@vger.kernel.org, linux-mm@kvack.org,
+        linux-security-module@vger.kernel.org
+Subject: [Trivial PATCH 00/33] Remove uses of typedef ctl_table
+Date:   Thu, 13 Jun 2013 19:37:25 -0700
+Message-Id: <cover.1371177118.git.joe@perches.com>
+X-Mailer: git-send-email 1.8.1.2.459.gbcd45b4.dirty
+Return-Path: <joe@perches.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36868
+X-archive-position: 36869
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: joe@perches.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,64 +44,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+It's clearer to use struct ctl_table instead
 
-Thanks to commit f91eb62f71b (init: scream bloody murder if interrupts
-are enabled too early), "bloody murder" is now being screamed.
+Joe Perches (33):
+  arm: kernel: isa: Convert use of typedef ctl_table to struct ctl_table
+  frv: Convert use of typedef ctl_table to struct ctl_table
+  ia64: crash: Convert use of typedef ctl_table to struct ctl_table
+  mips: lasat: sysctl: Convert use of typedef ctl_table to struct ctl_table
+  powerpc: idle: Convert use of typedef ctl_table to struct ctl_table
+  s390: Convert use of typedef ctl_table to struct ctl_table
+  tile: proc: Convert use of typedef ctl_table to struct ctl_table
+  x86: vdso: Convert use of typedef ctl_table to struct ctl_table
+  cdrom: Convert use of typedef ctl_table to struct ctl_table
+  char: Convert use of typedef ctl_table to struct ctl_table
+  infiniband: Convert use of typedef ctl_table to struct ctl_table
+  macintosh: Convert use of typedef ctl_table to struct ctl_table
+  md: Convert use of typedef ctl_table to struct ctl_table
+  sgi: xpc: Convert use of typedef ctl_table to struct ctl_table
+  parport: Convert use of typedef ctl_table to struct ctl_table
+  scsi_sysctl: Convert use of typedef ctl_table to struct ctl_table
+  coda: Convert use of typedef ctl_table to struct ctl_table
+  fscache: Convert use of typedef ctl_table to struct ctl_table
+  lockd: Convert use of typedef ctl_table to struct ctl_table
+  nfs: Convert use of typedef ctl_table to struct ctl_table
+  inotify: Convert use of typedef ctl_table to struct ctl_table
+  ntfs: Convert use of typedef ctl_table to struct ctl_table
+  ocfs2: Convert use of typedef ctl_table to struct ctl_table
+  quota: Convert use of typedef ctl_table to struct ctl_table
+  xfs: Convert use of typedef ctl_table to struct ctl_table
+  fs: Convert use of typedef ctl_table to struct ctl_table
+  key: Convert use of typedef ctl_table to struct ctl_table
+  ipv6: Convert use of typedef ctl_table to struct ctl_table
+  ndisc: Convert use of typedef ctl_table to struct ctl_table
+  ipc: Convert use of typedef ctl_table to struct ctl_table
+  sysctl: Convert use of typedef ctl_table to struct ctl_table
+  mm: Convert use of typedef ctl_table to struct ctl_table
+  security: keys: Convert use of typedef ctl_table to struct ctl_table
 
-With a MIPS OCTEON config, we use on_each_cpu() in our
-irq_chip.irq_bus_sync_unlock() function.  This gets called in early as
-a result of the time_init() call.  Because the !SMP version of
-on_each_cpu() unconditionally enables irqs, we get:
+ arch/arm/kernel/isa.c              |  6 ++--
+ arch/frv/kernel/pm.c               |  8 +++---
+ arch/frv/kernel/sysctl.c           |  4 +--
+ arch/ia64/kernel/crash.c           |  4 +--
+ arch/ia64/kernel/perfmon.c         |  6 ++--
+ arch/mips/lasat/sysctl.c           | 14 ++++-----
+ arch/powerpc/kernel/idle.c         |  4 +--
+ arch/s390/appldata/appldata_base.c | 16 +++++------
+ arch/s390/kernel/debug.c           |  4 +--
+ arch/s390/mm/cmm.c                 |  6 ++--
+ arch/tile/kernel/proc.c            |  4 +--
+ arch/x86/vdso/vdso32-setup.c       |  4 +--
+ drivers/cdrom/cdrom.c              | 10 +++----
+ drivers/char/hpet.c                |  6 ++--
+ drivers/char/ipmi/ipmi_poweroff.c  |  6 ++--
+ drivers/char/random.c              |  8 +++---
+ drivers/char/rtc.c                 |  6 ++--
+ drivers/infiniband/core/ucma.c     |  2 +-
+ drivers/macintosh/mac_hid.c        |  8 +++---
+ drivers/md/md.c                    |  6 ++--
+ drivers/misc/sgi-xp/xpc_main.c     |  6 ++--
+ drivers/parport/procfs.c           | 58 +++++++++++++++++++-------------------
+ drivers/scsi/scsi_sysctl.c         |  6 ++--
+ fs/coda/sysctl.c                   |  4 +--
+ fs/dcache.c                        |  2 +-
+ fs/drop_caches.c                   |  2 +-
+ fs/eventpoll.c                     |  2 +-
+ fs/file_table.c                    |  4 +--
+ fs/fscache/main.c                  |  4 +--
+ fs/inode.c                         |  2 +-
+ fs/lockd/svc.c                     |  6 ++--
+ fs/nfs/nfs4sysctl.c                |  6 ++--
+ fs/nfs/sysctl.c                    |  6 ++--
+ fs/notify/inotify/inotify_user.c   |  2 +-
+ fs/ntfs/sysctl.c                   |  4 +--
+ fs/ocfs2/stackglue.c               |  8 +++---
+ fs/quota/dquot.c                   |  6 ++--
+ fs/xfs/xfs_sysctl.c                | 26 ++++++++---------
+ include/linux/key.h                |  2 +-
+ include/net/ipv6.h                 |  4 +--
+ include/net/ndisc.h                |  2 +-
+ ipc/ipc_sysctl.c                   | 14 ++++-----
+ ipc/mq_sysctl.c                    | 10 +++----
+ kernel/sysctl.c                    |  2 +-
+ kernel/utsname_sysctl.c            |  6 ++--
+ mm/page-writeback.c                |  2 +-
+ mm/page_alloc.c                    | 15 +++++-----
+ security/keys/sysctl.c             |  2 +-
+ 48 files changed, 174 insertions(+), 171 deletions(-)
 
-------------[ cut here ]------------
-WARNING: at init/main.c:560 start_kernel+0x250/0x410()
-Interrupts were enabled early
-Modules linked in:
-CPU: 0 PID: 0 Comm: swapper Not tainted 3.10.0-rc5-Cavium-Octeon+ #801
-Stack : 0000000000000046 ffffffff808e0000 0000000000000006 0000000000000004
-	  0000000000000001 0000000000000000 0000000000000046 0000000000000000
-	  ffffffff80a90000 ffffffff8015c020 0000000000000000 ffffffff8015c020
-	  ffffffff80a79f70 ffffffff80a80000 ffffffff8072b9c0 ffffffff808a7d77
-	  ffffffff80a79f70 ffffffff808a8168 0000000000000000 00000004178a9948
-	  0000000417801230 ffffffff805f7610 0000000010000078 ffffffff805fa01c
-	  ffffffff8089bd18 ffffffff801595fc ffffffff8089bd28 ffffffff8015d384
-	  ffffffff808a7e80 ffffffff8089bc30 0000000000000000 ffffffff80159710
-	  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-	  0000000000000000 ffffffff80139520 0000000000000000 0000000000000009
-	  ...
-Call Trace:
-[<ffffffff80139520>] show_stack+0x68/0x80
-[<ffffffff80159710>] warn_slowpath_common+0x78/0xb0
-[<ffffffff801597e8>] warn_slowpath_fmt+0x38/0x48
-[<ffffffff8092b768>] start_kernel+0x250/0x410
-
----[ end trace 139ce121c98e96c9 ]---
-
-Suggested fix: Do what we already do in the SMP version of
-on_each_cpu(), and use local_irq_save/local_irq_restore.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- include/linux/smp.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/smp.h b/include/linux/smp.h
-index e6564c1..d8fb04b 100644
---- a/include/linux/smp.h
-+++ b/include/linux/smp.h
-@@ -141,9 +141,10 @@ static inline int up_smp_call_function(smp_call_func_t func, void *info)
- 			(up_smp_call_function(func, info))
- #define on_each_cpu(func,info,wait)		\
- 	({					\
--		local_irq_disable();		\
-+		unsigned long flags;		\
-+		local_irq_save(flags);		\
- 		func(info);			\
--		local_irq_enable();		\
-+		local_irq_restore(flags);	\
- 		0;				\
- 	})
- /*
 -- 
-1.7.11.7
+1.8.1.2.459.gbcd45b4.dirty

@@ -1,40 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 19:51:09 +0200 (CEST)
-Received: from mail-bl2lp0206.outbound.protection.outlook.com ([207.46.163.206]:9668
-        "EHLO na01-bl2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6825866Ab3FNRvIDAl2C (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 14 Jun 2013 19:51:08 +0200
-Received: from BL2PRD0712HT001.namprd07.prod.outlook.com (10.255.236.34) by
- CO1PR07MB111.namprd07.prod.outlook.com (10.242.167.17) with Microsoft SMTP
- Server (TLS) id 15.0.702.21; Fri, 14 Jun 2013 17:50:48 +0000
-Received: from dl.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
- (10.255.236.34) with Microsoft SMTP Server (TLS) id 14.16.324.0; Fri, 14 Jun
- 2013 17:50:47 +0000
-Message-ID: <51BB57F4.9000106@caviumnetworks.com>
-Date:   Fri, 14 Jun 2013 10:50:44 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 20:11:03 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:1603 "EHLO mms3.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6827499Ab3FNSLCjkXRN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 14 Jun 2013 20:11:02 +0200
+Received: from [10.9.208.55] by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Fri, 14 Jun 2013 11:01:40 -0700
+X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+ IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Fri, 14 Jun 2013 11:10:43 -0700
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
+ Server id 14.1.438.0; Fri, 14 Jun 2013 11:10:43 -0700
+Received: from LTMHT-KDASU (dhcp-mhtb-7-118.and.broadcom.com
+ [10.28.7.118]) by mail-irva-13.broadcom.com (Postfix) with ESMTP id
+ 63C8BF2D74; Fri, 14 Jun 2013 11:10:28 -0700 (PDT)
+Received: from kdasu-ltmht-linux.and.broadcom.com by LTMHT-KDASU (PGP
+ Universal service); Fri, 14 Jun 2013 14:10:44 -0500
+X-PGP-Universal: processed; by LTMHT-KDASU on Fri, 14 Jun 2013 14:10:44
+ -0500
+From:   "Kamal Dasu" <kdasu.kdev@gmail.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+cc:     "Kamal Dasu" <kdasu.kdev@gmail.com>
+Subject: [PATCH] MIPS: Fix get_user_page_fast() for mips with cache
+ alias
+Date:   Fri, 14 Jun 2013 14:10:03 -0400
+Message-ID: <1371233403-30153-1-git-send-email-kdasu.kdev@gmail.com>
+X-Mailer: git-send-email 1.8.2.3
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     David Daney <ddaney.cavm@gmail.com>, <linux-mips@linux-mips.org>,
-        "David Daney" <david.daney@cavium.com>
-Subject: Re: [PATCH] MIPS/OCTEON: Override default address space layout.
-References: <1371157847-17066-1-git-send-email-ddaney.cavm@gmail.com> <20130614084125.GA11911@linux-mips.org>
-In-Reply-To: <20130614084125.GA11911@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+X-WSS-ID: 7DA5850E2L833386520-01-01
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-Forefront-Antispam-Report: SFV:SKI;SFS:;DIR:OUT;SFP:;SCL:0;SRVR:CO1PR07MB111;H:BL2PRD0712HT001.namprd07.prod.outlook.com;LANG:en;
-X-OriginatorOrg: DuplicateDomain-a3ec847f-e37f-4d9a-9900-9d9d96f75f58.caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+Return-Path: <kdasu.kdev@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36904
+X-archive-position: 36905
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: kdasu.kdev@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,22 +52,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/14/2013 01:41 AM, Ralf Baechle wrote:
-> On Thu, Jun 13, 2013 at 02:10:47PM -0700, David Daney wrote:
->
->> From: David Daney <david.daney@cavium.com>
->>
->> OCTEON II cannot execute code in the default CAC_BASE space, so we
->> supply a value (0x8000000000000000) that does work.
->>
->> Signed-off-by: David Daney <david.daney@cavium.com>
->
-> Thanks, applied.
->
-> I assume this also should be applied to all -stable branches?
->
+get_user_pages_fast() is missing cache flushes for MIPS platforms
+with cache alias. Filesystem failures observed with DirectIO
+operations due to missing flush_anon_page() that use page coloring
+logic to work with cache aliases. This fix falls through to take
+slow_irqon path that calls get_user_pages() that has required
+logic for platforms where cpu_has_dc_aliases is true.
 
-It is really only needed in conjunction with kexec, and that is somewhat 
-broken at the moment
+Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
+---
+ arch/mips/mm/gup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-David.
+diff --git a/arch/mips/mm/gup.c b/arch/mips/mm/gup.c
+index d4ea5c9..346fb7e 100644
+--- a/arch/mips/mm/gup.c
++++ b/arch/mips/mm/gup.c
+@@ -273,7 +273,7 @@ int get_user_pages_fast(unsigned long start, int nr_pages, int write,
+ 	len = (unsigned long) nr_pages << PAGE_SHIFT;
+ 
+ 	end = start + len;
+-	if (end < start)
++	if (end < start || cpu_has_dc_aliases)
+ 		goto slow_irqon;
+ 
+ 	/* XXX: batch / limit 'nr' */
+-- 
+1.8.2.3

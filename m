@@ -1,51 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 20:14:12 +0200 (CEST)
-Received: from mail-pd0-f177.google.com ([209.85.192.177]:45936 "EHLO
-        mail-pd0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6824758Ab3FNSOLpFY2C (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 20:14:11 +0200
-Received: by mail-pd0-f177.google.com with SMTP id p10so812782pdj.22
-        for <multiple recipients>; Fri, 14 Jun 2013 11:14:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=1YlE3CuHlCkS73Qkc4g4gbzx6zJgARz3X8tKR8gEKm8=;
-        b=khzWZ/ndBH5Tm3E21XMPLuBj0q7Dsm9+OjFUDTtU+NBdsQqFH9DZFAHXbZ22KBU4/H
-         r/4eRXtTuWjSoyz5t4K0Z044BvmEj/I2Ij2bE2TUo+prEc3xjQf776eHUI0V4wnkZTbx
-         SLDD8aDOTxsedo41I5FEFDs9aJMdrTiQek/+oma/yAeSeWEwiB8g4UX4dMjQOaXH2WoX
-         kANxPaUcZYxvcTnuBGE8U1tMqC8j1bgwXcgNUSOUM2XnRCTjtignpztp7kSLFjJ/V0uP
-         rv0UpjcASe9KSlTUxAqJ3qJKeA4z2jUJ5GXibqil5Na8L2Bpa964SNrltr+BJJI+G/Ku
-         8ZeQ==
-X-Received: by 10.66.159.168 with SMTP id xd8mr3639967pab.146.1371233645257;
-        Fri, 14 Jun 2013 11:14:05 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id i16sm3299101pag.18.2013.06.14.11.14.03
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 14 Jun 2013 11:14:04 -0700 (PDT)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r5EIE1vx009277;
-        Fri, 14 Jun 2013 11:14:02 -0700
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r5EIE0ZU009276;
-        Fri, 14 Jun 2013 11:14:00 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     ralf@linux-mips.org, Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH v2] smp.h: Use local_irq_{save,restore}() in !SMP version of on_each_cpu().
-Date:   Fri, 14 Jun 2013 11:13:59 -0700
-Message-Id: <1371233639-9244-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 20:37:30 +0200 (CEST)
+Received: from mho-03-ewr.mailhop.org ([204.13.248.66]:19041 "EHLO
+        mho-01-ewr.mailhop.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6823763Ab3FNSh3m6nYU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 20:37:29 +0200
+Received: from pool-72-84-113-162.nrflva.fios.verizon.net ([72.84.113.162] helo=titan)
+        by mho-01-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.72)
+        (envelope-from <jason@lakedaemon.net>)
+        id 1UnYs2-000GfS-9u; Fri, 14 Jun 2013 18:37:10 +0000
+Received: from titan.lakedaemon.net (localhost [127.0.0.1])
+        by titan (Postfix) with ESMTP id 2E2F844AA9F;
+        Fri, 14 Jun 2013 14:37:05 -0400 (EDT)
+X-Mail-Handler: Dyn Standard SMTP by Dyn
+X-Originating-IP: 72.84.113.162
+X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/sendlabs/outbound_abuse.html for abuse reporting information)
+X-MHO-User: U2FsdGVkX1+FSeCoQtkfwRyLHsHjY9uqdRR5yoP6jiw=
+Date:   Fri, 14 Jun 2013 14:37:05 -0400
+From:   Jason Cooper <jason@lakedaemon.net>
+To:     Javier Martinez Canillas <javier.martinez@collabora.co.uk>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Grant Likely <grant.likely@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Samuel Ortiz <sameo@linux.intel.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Russell King <linux@arm.linux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/7] gpio: mvebu: use irq_get_trigger_type() to get IRQ
+ flags
+Message-ID: <20130614183705.GI31667@titan.lakedaemon.net>
+References: <1371228049-27080-1-git-send-email-javier.martinez@collabora.co.uk>
+ <1371228049-27080-3-git-send-email-javier.martinez@collabora.co.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1371228049-27080-3-git-send-email-javier.martinez@collabora.co.uk>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <jason@lakedaemon.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36906
+X-archive-position: 36907
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: jason@lakedaemon.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,97 +60,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+On Fri, Jun 14, 2013 at 06:40:44PM +0200, Javier Martinez Canillas wrote:
+> Use irq_get_trigger_type() to get the IRQ trigger type flags
+> instead calling irqd_get_trigger_type(irq_get_irq_data(irq))
+> 
+> Signed-off-by: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
+> ---
+>  drivers/gpio/gpio-mvebu.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
 
-Thanks to commit f91eb62f71b (init: scream bloody murder if interrupts
-are enabled too early), "bloody murder" is now being screamed.
+Acked-by: Jason Cooper <jason@lakedaemon.net>
 
-With a MIPS OCTEON config, we use on_each_cpu() in our
-irq_chip.irq_bus_sync_unlock() function.  This gets called in early as
-a result of the time_init() call.  Because the !SMP version of
-on_each_cpu() unconditionally enables irqs, we get:
+thx,
 
-------------[ cut here ]------------
-WARNING: at init/main.c:560 start_kernel+0x250/0x410()
-Interrupts were enabled early
-Modules linked in:
-CPU: 0 PID: 0 Comm: swapper Not tainted 3.10.0-rc5-Cavium-Octeon+ #801
-Stack : 0000000000000046 ffffffff808e0000 0000000000000006 0000000000000004
-	  0000000000000001 0000000000000000 0000000000000046 0000000000000000
-	  ffffffff80a90000 ffffffff8015c020 0000000000000000 ffffffff8015c020
-	  ffffffff80a79f70 ffffffff80a80000 ffffffff8072b9c0 ffffffff808a7d77
-	  ffffffff80a79f70 ffffffff808a8168 0000000000000000 00000004178a9948
-	  0000000417801230 ffffffff805f7610 0000000010000078 ffffffff805fa01c
-	  ffffffff8089bd18 ffffffff801595fc ffffffff8089bd28 ffffffff8015d384
-	  ffffffff808a7e80 ffffffff8089bc30 0000000000000000 ffffffff80159710
-	  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-	  0000000000000000 ffffffff80139520 0000000000000000 0000000000000009
-	  ...
-Call Trace:
-[<ffffffff80139520>] show_stack+0x68/0x80
-[<ffffffff80159710>] warn_slowpath_common+0x78/0xb0
-[<ffffffff801597e8>] warn_slowpath_fmt+0x38/0x48
-[<ffffffff8092b768>] start_kernel+0x250/0x410
-
----[ end trace 139ce121c98e96c9 ]---
-
-Suggested fix: Do what we already do in the SMP version of
-on_each_cpu(), and use local_irq_save/local_irq_restore.  Because we
-need a flags variable, make it a static inline to avoid name space
-issues.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
----
-
-Change from v1: Convert on_each_cpu to a static inline function, add
-#include <linux/irqflags.h> to avoid build breakage on some files.
-
-on_each_cpu_mask() and on_each_cpu_cond() suffer the same problem as
-on_each_cpu(), but they are not causing !SMP bugs for me, so I will
-defer changing them to a less urgent patch.
-
-Thanks,
-David Daney
-
- include/linux/smp.h | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
-
-diff --git a/include/linux/smp.h b/include/linux/smp.h
-index e6564c1..c848876 100644
---- a/include/linux/smp.h
-+++ b/include/linux/smp.h
-@@ -11,6 +11,7 @@
- #include <linux/list.h>
- #include <linux/cpumask.h>
- #include <linux/init.h>
-+#include <linux/irqflags.h>
- 
- extern void cpu_idle(void);
- 
-@@ -139,13 +140,17 @@ static inline int up_smp_call_function(smp_call_func_t func, void *info)
- }
- #define smp_call_function(func, info, wait) \
- 			(up_smp_call_function(func, info))
--#define on_each_cpu(func,info,wait)		\
--	({					\
--		local_irq_disable();		\
--		func(info);			\
--		local_irq_enable();		\
--		0;				\
--	})
-+
-+static inline int on_each_cpu(smp_call_func_t func, void *info, int wait)
-+{
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+	func(info);
-+	local_irq_restore(flags);
-+	return 0;
-+}
-+
- /*
-  * Note we still need to test the mask even for UP
-  * because we actually can get an empty mask from
--- 
-1.7.11.7
+Jason.

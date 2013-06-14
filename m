@@ -1,36 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Jun 2013 00:07:38 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:34594 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Jun 2013 00:10:21 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:34623 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6827525Ab3FNWHhEo0uE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 15 Jun 2013 00:07:37 +0200
+        id S6827523Ab3FNWKU4y1kG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 15 Jun 2013 00:10:20 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5EM7YSD019654;
-        Sat, 15 Jun 2013 00:07:34 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5EMAHvn019790;
+        Sat, 15 Jun 2013 00:10:17 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5EM7XZF019653;
-        Sat, 15 Jun 2013 00:07:33 +0200
-Date:   Sat, 15 Jun 2013 00:07:33 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5EMAG7c019789;
+        Sat, 15 Jun 2013 00:10:16 +0200
+Date:   Sat, 15 Jun 2013 00:10:16 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     David Daney <ddaney.cavm@gmail.com>
 Cc:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
         Sanjay Lal <sanjayl@kymasys.com>, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>,
-        "Steven J. Hill" <sjhill@realitydiluted.com>
-Subject: Re: [PATCH 12/31] MIPS: Add instruction format information for WAIT,
- MTC0, MFC0, et al.
-Message-ID: <20130614220733.GB18936@linux-mips.org>
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 13/31] mips/kvm: Add accessors for MIPS VZ registers.
+Message-ID: <20130614221016.GC18936@linux-mips.org>
 References: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com>
- <1370646215-6543-13-git-send-email-ddaney.cavm@gmail.com>
+ <1370646215-6543-14-git-send-email-ddaney.cavm@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1370646215-6543-13-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <1370646215-6543-14-git-send-email-ddaney.cavm@gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36910
+X-archive-position: 36911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,18 +45,6 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 07, 2013 at 04:03:16PM -0700, David Daney wrote:
-
-> To: linux-mips@linux-mips.org, ralf@linux-mips.org, kvm@vger.kernel.org,
->  Sanjay Lal <sanjayl@kymasys.com>
-> Cc: linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-> Subject: [PATCH 12/31] MIPS: Add instruction format information for WAIT,
->  MTC0, MFC0, et al.
-
-Looks good.
-
 Acked-by: Ralf Baechle <ralf@linux-mips.org>
-
-I wonder if somebody could throw in microMIPS equivalent to this patch?
 
   Ralf

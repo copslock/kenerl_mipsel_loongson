@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 18:41:19 +0200 (CEST)
-Received: from bhuna.collabora.co.uk ([93.93.135.160]:39136 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jun 2013 18:41:44 +0200 (CEST)
+Received: from bhuna.collabora.co.uk ([93.93.135.160]:39151 "EHLO
         bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827470Ab3FNQlBGz600 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 18:41:01 +0200
+        by eddie.linux-mips.org with ESMTP id S6825698Ab3FNQlDJflRy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jun 2013 18:41:03 +0200
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: javier)
-        with ESMTPSA id 0232A1708684
+        with ESMTPSA id F0E991E8800A
 From:   Javier Martinez Canillas <javier.martinez@collabora.co.uk>
 To:     Thomas Gleixner <tglx@linutronix.de>
 Cc:     Ingo Molnar <mingo@kernel.org>,
@@ -20,9 +20,9 @@ Cc:     Ingo Molnar <mingo@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org,
         Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Subject: [PATCH 1/7] genirq: add irq_get_trigger_type() to get IRQ flags
-Date:   Fri, 14 Jun 2013 18:40:43 +0200
-Message-Id: <1371228049-27080-2-git-send-email-javier.martinez@collabora.co.uk>
+Subject: [PATCH 2/7] gpio: mvebu: use irq_get_trigger_type() to get IRQ flags
+Date:   Fri, 14 Jun 2013 18:40:44 +0200
+Message-Id: <1371228049-27080-3-git-send-email-javier.martinez@collabora.co.uk>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <1371228049-27080-1-git-send-email-javier.martinez@collabora.co.uk>
 References: <1371228049-27080-1-git-send-email-javier.martinez@collabora.co.uk>
@@ -30,7 +30,7 @@ Return-Path: <javier.martinez@collabora.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36896
+X-archive-position: 36897
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,38 +47,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Drivers that want to get the trigger edge/level type flags for a
-given interrupt have to first call irq_get_irq_data(irq) to get
-the struct irq_data and then irqd_get_trigger_type(irq_data) to
-obtain the IRQ flags.
-
-This is not only error prone but also unnecessary exposes the
-struct irq_data to callers.
-
-It's better to have an irq_get_trigger_type() function to obtain
-the edge/level flags for an IRQ.
+Use irq_get_trigger_type() to get the IRQ trigger type flags
+instead calling irqd_get_trigger_type(irq_get_irq_data(irq))
 
 Signed-off-by: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
 ---
- include/linux/irq.h |    6 ++++++
- 1 files changed, 6 insertions(+), 0 deletions(-)
+ drivers/gpio/gpio-mvebu.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index bc4e066..0e8e3a6 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -579,6 +579,12 @@ static inline struct msi_desc *irq_data_get_msi(struct irq_data *d)
- 	return d->msi_desc;
- }
+diff --git a/drivers/gpio/gpio-mvebu.c b/drivers/gpio/gpio-mvebu.c
+index 3a4816a..80ad35e 100644
+--- a/drivers/gpio/gpio-mvebu.c
++++ b/drivers/gpio/gpio-mvebu.c
+@@ -457,7 +457,7 @@ static void mvebu_gpio_irq_handler(unsigned int irq, struct irq_desc *desc)
+ 		if (!(cause & (1 << i)))
+ 			continue;
  
-+static inline u32 irq_get_trigger_type(unsigned int irq)
-+{
-+	struct irq_data *d = irq_get_irq_data(irq);
-+	return d ? irqd_get_trigger_type(d) : 0;
-+}
-+
- int __irq_alloc_descs(int irq, unsigned int from, unsigned int cnt, int node,
- 		struct module *owner);
- 
+-		type = irqd_get_trigger_type(irq_get_irq_data(irq));
++		type = irq_get_trigger_type(irq);
+ 		if ((type & IRQ_TYPE_SENSE_MASK) == IRQ_TYPE_EDGE_BOTH) {
+ 			/* Swap polarity (race with GPIO line) */
+ 			u32 polarity;
 -- 
 1.7.7.6

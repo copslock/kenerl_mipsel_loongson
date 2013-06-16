@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Jun 2013 13:44:53 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:38137 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Jun 2013 13:47:28 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:38159 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6824788Ab3FPLow7Nksw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 16 Jun 2013 13:44:52 +0200
+        id S6824776Ab3FPLr168rxw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 16 Jun 2013 13:47:27 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5GBioXr029532;
-        Sun, 16 Jun 2013 13:44:50 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5GBlNJ2029662;
+        Sun, 16 Jun 2013 13:47:23 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5GBinfk029531;
-        Sun, 16 Jun 2013 13:44:49 +0200
-Date:   Sun, 16 Jun 2013 13:44:49 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5GBlNFQ029661;
+        Sun, 16 Jun 2013 13:47:23 +0200
+Date:   Sun, 16 Jun 2013 13:47:23 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     David Daney <ddaney.cavm@gmail.com>
 Cc:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
         Sanjay Lal <sanjayl@kymasys.com>, linux-kernel@vger.kernel.org,
         David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 30/31] mips/kvm: Enable MIPSVZ in Kconfig/Makefile
-Message-ID: <20130616114449.GK20046@linux-mips.org>
+Subject: Re: [PATCH 29/31] mips/kvm: Add MIPSVZ support.
+Message-ID: <20130616114723.GL20046@linux-mips.org>
 References: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com>
- <1370646215-6543-31-git-send-email-ddaney.cavm@gmail.com>
+ <1370646215-6543-30-git-send-email-ddaney.cavm@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1370646215-6543-31-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <1370646215-6543-30-git-send-email-ddaney.cavm@gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36933
+X-archive-position: 36934
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

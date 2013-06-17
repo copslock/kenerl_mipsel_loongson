@@ -1,61 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Aug 2013 11:38:08 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:48931 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822451Ab3HWJiAbTBuG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Aug 2013 11:38:00 +0200
-Received: from bl20-128-223.dsl.telepac.pt ([2.81.128.223] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1VCnod-0002uz-GH; Fri, 23 Aug 2013 09:37:59 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Luis Henriques <luis.henriques@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [ 3.5.y.z extended stable ] Patch "MIPS: Expose missing pci_io{map,unmap} declarations" has been added to staging queue
-Date:   Fri, 23 Aug 2013 10:37:58 +0100
-Message-Id: <1377250678-15312-1-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 1.8.3.2
-X-Extended-Stable: 3.5
-Return-Path: <luis.henriques@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37655
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Markos Chandras <markos.chandras@imgtec.com>
+Date: Mon, 17 Jun 2013 08:09:00 +0000
+Subject: [PATCH] MIPS: Expose missing pci_io{map,unmap} declarations
+Message-ID: <20130617080900.nuO1mJQJOfeopaIx6GTTONStt_bC-GtQGR53PVfwSU4@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 78857614104a26cdada4c53eea104752042bf5a1 upstream.
 
-    MIPS: Expose missing pci_io{map,unmap} declarations
+The GENERIC_PCI_IOMAP does not depend on CONFIG_PCI so move
+it to the CONFIG_MIPS symbol so it's always selected for MIPS.
+This fixes the missing pci_iomap declaration for MIPS.
+Moreover, the pci_iounmap function was not defined in the
+io.h header file if the CONFIG_PCI symbol is not set,
+but it should since MIPS is not using CONFIG_GENERIC_IOMAP.
 
-to the linux-3.5.y-queue branch of the 3.5.y.z extended stable tree 
-which can be found at:
+This fixes the following problem on a allyesconfig:
 
- http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.5.y-queue
+drivers/net/ethernet/3com/3c59x.c:1031:2: error: implicit declaration of
+function 'pci_iomap' [-Werror=implicit-function-declaration]
+drivers/net/ethernet/3com/3c59x.c:1044:3: error: implicit declaration of
+function 'pci_iounmap' [-Werror=implicit-function-declaration]
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/5478/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/Kconfig          | 2 +-
+ arch/mips/include/asm/io.h | 5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-For more information about the 3.5.y.z tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b3e10fd..3811c84 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -25,6 +25,7 @@ config MIPS
+ 	select HAVE_GENERIC_HARDIRQS
+ 	select GENERIC_IRQ_PROBE
+ 	select GENERIC_IRQ_SHOW
++	select GENERIC_PCI_IOMAP
+ 	select HAVE_ARCH_JUMP_LABEL
+ 	select IRQ_FORCED_THREADING
+ 	select HAVE_MEMBLOCK
+@@ -2353,7 +2354,6 @@ config PCI
+ 	bool "Support for PCI controller"
+ 	depends on HW_HAS_PCI
+ 	select PCI_DOMAINS
+-	select GENERIC_PCI_IOMAP
+ 	select NO_GENERIC_PCI_IOPORT_MAP
+ 	help
+ 	  Find out whether you have a PCI motherboard. PCI is the name of a
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 29d9c23..98ca652 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -169,6 +169,11 @@ static inline void * isa_bus_to_virt(unsigned long address)
+ extern void __iomem * __ioremap(phys_t offset, phys_t size, unsigned long flags);
+ extern void __iounmap(const volatile void __iomem *addr);
 
-Thanks.
--Luis
-
-------
++#ifndef CONFIG_PCI
++struct pci_dev;
++static inline void pci_iounmap(struct pci_dev *dev, void __iomem *addr) {}
++#endif
++
+ static inline void __iomem * __ioremap_mode(phys_t offset, unsigned long size,
+ 	unsigned long flags)
+ {
+--
+1.8.3.2

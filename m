@@ -1,43 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jun 2013 11:00:24 +0200 (CEST)
-Received: from mail-wi0-f171.google.com ([209.85.212.171]:61101 "EHLO
-        mail-wi0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823098Ab3FQJAMfKRBh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Jun 2013 11:00:12 +0200
-Received: by mail-wi0-f171.google.com with SMTP id hj3so2028016wib.16
-        for <multiple recipients>; Mon, 17 Jun 2013 02:00:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=LRFVyf2BoajjG0XiVLgRECVKilToUwdWc4lvZp4quic=;
-        b=COGs/e3MrAmnduJjk0rDQGND8RUgcb6o5z7Qphgrv2dDTcfI05R5otDSFVQxjox4sn
-         RgPwqNZMDqA3u3Q0hWJjh4ojv1Hkxgbs6K82qnpuJ3MaVn3/cwtoZ+6LpCAGPxnxG9tu
-         eGAbOTnIe4EpqE0MQ1ytzWw69bFhcCZz8/6LTBp9sd/J+1OnW64QIKRKsknAGkLzBNwS
-         q89evfXDDhgF7URjTB3dtEhKedRfhfSrc/4kcJlrOAn/TFFtwaJuXdN4vcH4dtmlHDyB
-         0ZnFeJBtUvhxeyeVDY+R1KBlk8V5vZvdh8xSjCvZsaYYrQyI+LrdfNvjw/amYaajcff/
-         Y0Bw==
-X-Received: by 10.180.198.10 with SMTP id iy10mr4356124wic.29.1371459606272;
- Mon, 17 Jun 2013 02:00:06 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jun 2013 11:09:49 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:56852 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6824782Ab3FQJJlnK-Sb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 Jun 2013 11:09:41 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: Expose missing pci_io{map,unmap} declarations
+Date:   Mon, 17 Jun 2013 10:09:00 +0100
+Message-ID: <1371460140-5626-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.2.1
 MIME-Version: 1.0
-Received: by 10.194.136.115 with HTTP; Mon, 17 Jun 2013 01:59:26 -0700 (PDT)
-In-Reply-To: <1371328124-29926-1-git-send-email-jchandra@broadcom.com>
-References: <1371328124-29926-1-git-send-email-jchandra@broadcom.com>
-From:   Markos Chandras <markos.chandras@gmail.com>
-Date:   Mon, 17 Jun 2013 09:59:26 +0100
-Message-ID: <CAG2jQ8gEfkQ2bahnH-iAedUatA5=CB3_L2sX-OGO+nF+BqkiPg@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Fix include guard macro in uapi/asm/fcntl.h
-To:     Jayachandran C <jchandra@broadcom.com>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <markos.chandras@gmail.com>
+Content-Type: text/plain
+X-SEF-Processed: 7_3_0_01192__2013_06_17_10_09_35
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36940
+X-archive-position: 36941
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@gmail.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,59 +34,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 15 June 2013 21:28, Jayachandran C <jchandra@broadcom.com> wrote:
-> The commit d7f15bb42274a12ac95c237d6d9cb46b691881fa
-> "MIPS: <uapi/asm/fcntl.h>: Don't reference CONFIG_* symbols."
-> in linux-mips.org master, causes userspace to break:
->
-> udevd[324]: error getting socket: Invalid argument
-> udevd[324]: error initializing udev control socket
->
-> This is because the include guard in asm/fcntl.h is the same as the one
-> in uapi/asm/fcntl.h Fix the issue by using _UAPI_ASM_FCNTL_H as include
-> guard in the uapi file.
->
-> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
-> ---
-> [ I don't see the same commit in kernel.org git. If the patch are not
->  yet sent upstream - then this change can be merged to the commit
->  d7f15bb]
->
->
->  arch/mips/include/uapi/asm/fcntl.h |    6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/mips/include/uapi/asm/fcntl.h b/arch/mips/include/uapi/asm/fcntl.h
-> index 898b953..97e56a5 100644
-> --- a/arch/mips/include/uapi/asm/fcntl.h
-> +++ b/arch/mips/include/uapi/asm/fcntl.h
-> @@ -5,8 +5,8 @@
->   *
->   * Copyright (C) 1995, 96, 97, 98, 99, 2003, 05 Ralf Baechle
->   */
-> -#ifndef _ASM_FCNTL_H
-> -#define _ASM_FCNTL_H
-> +#ifndef _UAPI_ASM_FCNTL_H
-> +#define _UAPI_ASM_FCNTL_H
->
->
->  #define O_APPEND       0x0008
-> @@ -50,4 +50,4 @@
->
->  #include <asm-generic/fcntl.h>
->
-> -#endif /* _ASM_FCNTL_H */
-> +#endif /* _UAPI_ASM_FCNTL_H */
-> --
-> 1.7.9.5
->
->
->
+The GENERIC_PCI_IOMAP does not depend on CONFIG_PCI so move
+it to the CONFIG_MIPS symbol so it's always selected for MIPS.
+This fixes the missing pci_iomap declaration for MIPS.
+Moreover, the pci_iounmap function was not defined in the
+io.h header file if the CONFIG_PCI symbol is not set,
+but it should since MIPS is not using CONFIG_GENERIC_IOMAP.
 
-Looks good to me
+This fixes the following problem on a allyesconfig:
 
-Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>
+drivers/net/ethernet/3com/3c59x.c:1031:2: error: implicit declaration of
+function 'pci_iomap' [-Werror=implicit-function-declaration]
+drivers/net/ethernet/3com/3c59x.c:1044:3: error: implicit declaration of
+function 'pci_iounmap' [-Werror=implicit-function-declaration]
 
---
-Regards,
-Markos Chandras
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Acked-by: Steven J. Hill <Steven.Hill@imgtec.com> 
+---
+This patch is for the upstream-sfr/mips-for-linux-next tree
+---
+ arch/mips/Kconfig          | 2 +-
+ arch/mips/include/asm/io.h | 5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 7a58ab9..e53e2b4 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -27,6 +27,7 @@ config MIPS
+ 	select HAVE_GENERIC_HARDIRQS
+ 	select GENERIC_IRQ_PROBE
+ 	select GENERIC_IRQ_SHOW
++	select GENERIC_PCI_IOMAP
+ 	select HAVE_ARCH_JUMP_LABEL
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select IRQ_FORCED_THREADING
+@@ -2412,7 +2413,6 @@ config PCI
+ 	bool "Support for PCI controller"
+ 	depends on HW_HAS_PCI
+ 	select PCI_DOMAINS
+-	select GENERIC_PCI_IOMAP
+ 	select NO_GENERIC_PCI_IOPORT_MAP
+ 	help
+ 	  Find out whether you have a PCI motherboard. PCI is the name of a
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index b7e5985..b84e1fb 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -170,6 +170,11 @@ static inline void * isa_bus_to_virt(unsigned long address)
+ extern void __iomem * __ioremap(phys_t offset, phys_t size, unsigned long flags);
+ extern void __iounmap(const volatile void __iomem *addr);
+ 
++#ifndef CONFIG_PCI
++struct pci_dev;
++static inline void pci_iounmap(struct pci_dev *dev, void __iomem *addr) {}
++#endif
++
+ static inline void __iomem * __ioremap_mode(phys_t offset, unsigned long size,
+ 	unsigned long flags)
+ {
+-- 
+1.8.2.1

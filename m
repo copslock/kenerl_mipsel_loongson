@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jun 2013 19:03:13 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:42346 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6835849Ab3FQRDKnzQgD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 17 Jun 2013 19:03:10 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5HH35Bk019187;
-        Mon, 17 Jun 2013 19:03:06 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5HH34Dc019186;
-        Mon, 17 Jun 2013 19:03:04 +0200
-Date:   Mon, 17 Jun 2013 19:03:04 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org, sibyte-users@bitmover.com,
-        Wim Van Sebroeck <wim@iguana.be>
-Subject: Re: [PATCH 5/7] drivers: watchdog: sb_wdog: Fix 32bit linking
- problems
-Message-ID: <20130617170304.GF10408@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jun 2013 20:33:43 +0200 (CEST)
+Received: from merlin.infradead.org ([205.233.59.134]:54616 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6835843Ab3FQSdlLMFev (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Jun 2013 20:33:41 +0200
+Received: from dhcp-089-099-019-018.chello.nl ([89.99.19.18] helo=twins)
+        by merlin.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
+        id 1UoeFF-0001J0-4x; Mon, 17 Jun 2013 18:33:37 +0000
+Received: by twins (Postfix, from userid 1000)
+        id DDA2C8278340; Mon, 17 Jun 2013 20:33:34 +0200 (CEST)
+Date:   Mon, 17 Jun 2013 20:33:34 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, sibyte-users@bitmover.com,
+        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>
+Subject: Re: [PATCH 3/7] MIPS: sibyte: Add missing sched.h header
+Message-ID: <20130617183334.GC3204@twins.programming.kicks-ass.net>
 References: <1371477641-7989-1-git-send-email-markos.chandras@imgtec.com>
- <1371477641-7989-6-git-send-email-markos.chandras@imgtec.com>
+ <1371477641-7989-4-git-send-email-markos.chandras@imgtec.com>
+ <20130617164427.GE10408@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1371477641-7989-6-git-send-email-markos.chandras@imgtec.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20130617164427.GE10408@linux-mips.org>
+User-Agent: Mutt/1.5.21 (2012-12-30)
+Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36955
+X-archive-position: 36956
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: peterz@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,61 +45,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jun 17, 2013 at 03:00:39PM +0100, Markos Chandras wrote:
-
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
-> Cc: sibyte-users@bitmover.com
-> Cc: Wim Van Sebroeck <wim@iguana.be>
-> ---
->  drivers/watchdog/sb_wdog.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+On Mon, Jun 17, 2013 at 06:44:27PM +0200, Ralf Baechle wrote:
+> On Mon, Jun 17, 2013 at 03:00:37PM +0100, Markos Chandras wrote:
 > 
-> diff --git a/drivers/watchdog/sb_wdog.c b/drivers/watchdog/sb_wdog.c
-> index 25c7a3f..2ea0427 100644
-> --- a/drivers/watchdog/sb_wdog.c
-> +++ b/drivers/watchdog/sb_wdog.c
-> @@ -170,6 +170,7 @@ static long sbwdog_ioctl(struct file *file, unsigned int cmd,
->  						unsigned long arg)
->  {
->  	int ret = -ENOTTY;
-> +	u64 tmp_user_dog;
->  	unsigned long time;
->  	void __user *argp = (void __user *)arg;
->  	int __user *p = argp;
-> @@ -208,7 +209,9 @@ static long sbwdog_ioctl(struct file *file, unsigned int cmd,
->  		 * get the remaining count from the ... count register
->  		 * which is 1*8 before the config register
->  		 */
-> -		ret = put_user(__raw_readq(user_dog - 8) / 1000000, p);
-> +		tmp_user_dog = __raw_readq(user_dog - 8);
-> +		tmp_user_dog = do_div(tmp_user_dog, 1000000);
-> +		ret = put_user(tmp_user_dog, p);
+> > It's needed for the TASK_INTERRUPTIBLE definition.
+> > 
+> > Fixes the following build problem:
+> > arch/mips/sibyte/common/sb_tbprof.c:235:4: error: 'TASK_INTERRUPTIBLE'
+> > undeclared (first use in this function)
+> 
+> Ideally sched.h should be included into the actual user of
+> TASK_INTERRUPTIBLE, the wake_up_interruptible macro in <linux/wait.h> but
+> that seems way too risky that close to a release.
 
-In effect the code with your change now does:
-
-		ret = put_user(__raw_readq(user_dog - 8) % 1000000, p);
-
-No good.
-
-		tmp_user_dog = __raw_readq(user_dog - 8);
-		do_div(tmp_user_dog, 1000000);
-		ret = put_user(tmp_user_dog, p);
-
-Should to the right thing.
-
-I'm not surprised you're finding bugs in 32 bit Sibyte kernel.  At heart,
-the Sibyte SOCs are 64 bit and their architecture limits them to support
-256MB memory with a 32 bit kernel without highmem.  Highmem though
-supported is stupid and leaves as the only sane option 64 bit kernels
-and virtually every user has done that, not last to get full fp performance
-which is only available with the N32 / N64 ABIs.  Oh, and of course many
-registers need to be accessed 64 bit wide, which on a 32 bit kernel
-requires a local_irq_disable ...  local_irq_enable around the actual
-access.
-
-In short, nobody but a few diehard backward folks have ever been using
-32 bit kernels on Sibyte hardware, so finding such an issue is not really
-a surprise.
-
-  Ralf
+Oh man, there's include recursion hell waiting for you ;-)

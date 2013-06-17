@@ -1,27 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jun 2013 11:09:49 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:56852 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824782Ab3FQJJlnK-Sb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 17 Jun 2013 11:09:41 +0200
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH] MIPS: Expose missing pci_io{map,unmap} declarations
-Date:   Mon, 17 Jun 2013 10:09:00 +0100
-Message-ID: <1371460140-5626-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jun 2013 11:21:10 +0200 (CEST)
+Received: from mail-ob0-f172.google.com ([209.85.214.172]:62035 "EHLO
+        mail-ob0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835136Ab3FQJVFjfGA3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Jun 2013 11:21:05 +0200
+Received: by mail-ob0-f172.google.com with SMTP id wo10so2904766obc.3
+        for <linux-mips@linux-mips.org>; Mon, 17 Jun 2013 02:20:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:x-gm-message-state;
+        bh=gOGpMNSZV5r++ZD0hIMNkPA08LAgafD/fVlDTKKf1kM=;
+        b=IYXMrJ0WYERJrp1UIZhxrDI7M4XIvwB1zhq4T/RZH2qDp9ewMtYG0/0TDDUAUkQTiM
+         b2oS7rIuJrrZFcqQMOjPmtiJLmithwU+NFnLH+dKb29V9S7d5RuAef6j9vA8hkSnBUwo
+         vkpz5cLgAxLjAhi6w/h3jdG0cgyMX0NKXiSVbfY9ik4PT0QpvfISEs03wzosmkDF6qJe
+         WGxlALEdL2AaczCSEjn+2b23rPgal59SDX0eZMcsVszI3Q4OrvWAjbg6dXt92+f/p60v
+         4CDAjVLzRhF2XvikaOncldA8rBSyfV830cHMLMxhWeCykCzJqkvDwl1ininuu2PzQ9RO
+         1kFQ==
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SEF-Processed: 7_3_0_01192__2013_06_17_10_09_35
-Return-Path: <Markos.Chandras@imgtec.com>
+X-Received: by 10.182.40.202 with SMTP id z10mr8274056obk.74.1371460857813;
+ Mon, 17 Jun 2013 02:20:57 -0700 (PDT)
+Received: by 10.182.120.7 with HTTP; Mon, 17 Jun 2013 02:20:57 -0700 (PDT)
+In-Reply-To: <1371228049-27080-5-git-send-email-javier.martinez@collabora.co.uk>
+References: <1371228049-27080-1-git-send-email-javier.martinez@collabora.co.uk>
+        <1371228049-27080-5-git-send-email-javier.martinez@collabora.co.uk>
+Date:   Mon, 17 Jun 2013 11:20:57 +0200
+Message-ID: <CACRpkdafxpwuaUHLb3uHiPNrKLsmcekqG1ATQKj8fgz+ekXmDg@mail.gmail.com>
+Subject: Re: [PATCH 4/7] mfd: stmpe: use irq_get_trigger_type() to get IRQ flags
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Javier Martinez Canillas <javier.martinez@collabora.co.uk>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Grant Likely <grant.likely@linaro.org>,
+        Samuel Ortiz <sameo@linux.intel.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Russell King <linux@arm.linux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+X-Gm-Message-State: ALoCoQnFRmTMV24f9JX3br2LVWvGe08woS7NXIGNm26uqFZf5mf4vjzkACZenhJEvCcufNtmZVGE
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36941
+X-archive-position: 36942
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -34,64 +64,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The GENERIC_PCI_IOMAP does not depend on CONFIG_PCI so move
-it to the CONFIG_MIPS symbol so it's always selected for MIPS.
-This fixes the missing pci_iomap declaration for MIPS.
-Moreover, the pci_iounmap function was not defined in the
-io.h header file if the CONFIG_PCI symbol is not set,
-but it should since MIPS is not using CONFIG_GENERIC_IOMAP.
+On Fri, Jun 14, 2013 at 6:40 PM, Javier Martinez Canillas
+<javier.martinez@collabora.co.uk> wrote:
 
-This fixes the following problem on a allyesconfig:
+> Use irq_get_trigger_type() to get the IRQ trigger type flags
+> instead calling irqd_get_trigger_type(irq_get_irq_data(irq))
+>
+> Signed-off-by: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
 
-drivers/net/ethernet/3com/3c59x.c:1031:2: error: implicit declaration of
-function 'pci_iomap' [-Werror=implicit-function-declaration]
-drivers/net/ethernet/3com/3c59x.c:1044:3: error: implicit declaration of
-function 'pci_iounmap' [-Werror=implicit-function-declaration]
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Acked-by: Steven J. Hill <Steven.Hill@imgtec.com> 
----
-This patch is for the upstream-sfr/mips-for-linux-next tree
----
- arch/mips/Kconfig          | 2 +-
- arch/mips/include/asm/io.h | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+If you get the other patches ACKed.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 7a58ab9..e53e2b4 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -27,6 +27,7 @@ config MIPS
- 	select HAVE_GENERIC_HARDIRQS
- 	select GENERIC_IRQ_PROBE
- 	select GENERIC_IRQ_SHOW
-+	select GENERIC_PCI_IOMAP
- 	select HAVE_ARCH_JUMP_LABEL
- 	select ARCH_WANT_IPC_PARSE_VERSION
- 	select IRQ_FORCED_THREADING
-@@ -2412,7 +2413,6 @@ config PCI
- 	bool "Support for PCI controller"
- 	depends on HW_HAS_PCI
- 	select PCI_DOMAINS
--	select GENERIC_PCI_IOMAP
- 	select NO_GENERIC_PCI_IOPORT_MAP
- 	help
- 	  Find out whether you have a PCI motherboard. PCI is the name of a
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index b7e5985..b84e1fb 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -170,6 +170,11 @@ static inline void * isa_bus_to_virt(unsigned long address)
- extern void __iomem * __ioremap(phys_t offset, phys_t size, unsigned long flags);
- extern void __iounmap(const volatile void __iomem *addr);
- 
-+#ifndef CONFIG_PCI
-+struct pci_dev;
-+static inline void pci_iounmap(struct pci_dev *dev, void __iomem *addr) {}
-+#endif
-+
- static inline void __iomem * __ioremap_mode(phys_t offset, unsigned long size,
- 	unsigned long flags)
- {
--- 
-1.8.2.1
+Yours,
+Linus Walleij

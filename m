@@ -1,39 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Jun 2013 14:03:42 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:38204 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6815747Ab3FPMDkUfti- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 16 Jun 2013 14:03:40 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5GC3a4c030455;
-        Sun, 16 Jun 2013 14:03:36 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5GC3aWX030454;
-        Sun, 16 Jun 2013 14:03:36 +0200
-Date:   Sun, 16 Jun 2013 14:03:36 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
-        Sanjay Lal <sanjayl@kymasys.com>, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 28/31] mips/kvm: Only use KVM_COALESCED_MMIO_PAGE_OFFSET
- with KVM_MIPSTE
-Message-ID: <20130616120336.GN20046@linux-mips.org>
-References: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com>
- <1370646215-6543-29-git-send-email-ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jun 2013 10:42:15 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:49756 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823098Ab3FQImMZCKnU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 Jun 2013 10:42:12 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: ath79: Fix argument for the ap136_pc_init function
+Date:   Mon, 17 Jun 2013 09:42:11 +0100
+Message-ID: <1371458531-4988-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.2.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1370646215-6543-29-git-send-email-ddaney.cavm@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain
+X-SEF-Processed: 7_3_0_01192__2013_06_17_09_42_06
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36936
+X-archive-position: 36937
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,30 +34,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 07, 2013 at 04:03:32PM -0700, David Daney wrote:
+ap136_pci_init expects a u8 pointer as an argument.
 
-> From: David Daney <david.daney@cavium.com>
-> 
-> The forthcoming MIPSVZ code doesn't currently use this, so it must
-> only be enabled for KVM_MIPSTE.
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> ---
->  arch/mips/include/asm/kvm_host.h | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-> index 505b804..9f209e1 100644
-> --- a/arch/mips/include/asm/kvm_host.h
-> +++ b/arch/mips/include/asm/kvm_host.h
-> @@ -25,7 +25,9 @@
->  /* memory slots that does not exposed to userspace */
->  #define KVM_PRIVATE_MEM_SLOTS 	0
->  
-> +#ifdef CONFIG_KVM_MIPSTE
->  #define KVM_COALESCED_MMIO_PAGE_OFFSET 1
-> +#endif
+Fixes the following build problem on a randconfig:
+arch/mips/ath79/mach-ap136.c:151:2: error:
+too many arguments to function 'ap136_pci_init'
 
-What if KVM_MIPSTE and KVM_MIPSVZ both get enabled?
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+This patch is for the upstream-sfr/mips-for-linux-next tree
+---
+ arch/mips/ath79/mach-ap136.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  Ralf
+diff --git a/arch/mips/ath79/mach-ap136.c b/arch/mips/ath79/mach-ap136.c
+index 479dd4b..07eac58 100644
+--- a/arch/mips/ath79/mach-ap136.c
++++ b/arch/mips/ath79/mach-ap136.c
+@@ -132,7 +132,7 @@ static void __init ap136_pci_init(u8 *eeprom)
+ 	ath79_register_pci();
+ }
+ #else
+-static inline void ap136_pci_init(void) {}
++static inline void ap136_pci_init(u8 *eeprom) {}
+ #endif /* CONFIG_PCI */
+ 
+ static void __init ap136_setup(void)
+-- 
+1.8.2.1

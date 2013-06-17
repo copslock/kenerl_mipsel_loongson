@@ -1,54 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jun 2013 17:26:17 +0200 (CEST)
-Received: from mail-we0-f173.google.com ([74.125.82.173]:42875 "EHLO
-        mail-we0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835182Ab3FQP0PfRHfk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Jun 2013 17:26:15 +0200
-Received: by mail-we0-f173.google.com with SMTP id x54so2474005wes.4
-        for <multiple recipients>; Mon, 17 Jun 2013 08:26:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:x-enigmail-version:content-type
-         :content-transfer-encoding;
-        bh=nQjAPr3neGo3q3lX4WwSS1cGopw33utwLu+w78UNLiQ=;
-        b=okn5OFH2BNhn0aisZ3TXS0tzErRYYVDxYGiNj85Viy2Lmjx/gA0yFR45Q6JsbJQwd0
-         Nuo+OeUucgDZ899icjY29prQXuf1pt3P6qo91NM6PIoD00Kig31xdxtg0VQHJOGvHrkT
-         XFdXiL8ny+KLfiGWucC+kyTbos+qLiGcUiK1WRyZc63L9oAGr8MBH7HICucUjMhOhkXA
-         hse9g0ymz/+zYgSrY4mKTI9j23xla/M/PxytBZGv+WpQCjCDgFpaFezMipP2u/R4ObbN
-         vFVBwCbTrE1K65O7ulH+jfZSE4w4hwXh37b5YldqrgmhH2wfeZfeN0F/l8QmIvqyWzOx
-         SQuw==
-X-Received: by 10.180.188.141 with SMTP id ga13mr5271453wic.9.1371482770110;
-        Mon, 17 Jun 2013 08:26:10 -0700 (PDT)
-Received: from yakj.usersys.redhat.com (net-37-116-217-184.cust.dsl.vodafone.it. [37.116.217.184])
-        by mx.google.com with ESMTPSA id fv11sm22772352wic.11.2013.06.17.08.26.06
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 17 Jun 2013 08:26:08 -0700 (PDT)
-Message-ID: <51BF2A8C.5020903@redhat.com>
-Date:   Mon, 17 Jun 2013 17:26:04 +0200
-From:   Paolo Bonzini <pbonzini@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jun 2013 18:44:40 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:42296 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6835182Ab3FQQohz0qWO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 Jun 2013 18:44:37 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5HGiXcg018293;
+        Mon, 17 Jun 2013 18:44:33 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5HGiSRi018292;
+        Mon, 17 Jun 2013 18:44:28 +0200
+Date:   Mon, 17 Jun 2013 18:44:27 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org, sibyte-users@bitmover.com,
+        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 3/7] MIPS: sibyte: Add missing sched.h header
+Message-ID: <20130617164427.GE10408@linux-mips.org>
+References: <1371477641-7989-1-git-send-email-markos.chandras@imgtec.com>
+ <1371477641-7989-4-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        kvm@vger.kernel.org, Sanjay Lal <sanjayl@kymasys.com>,
-        Gleb Natapov <gleb@redhat.com>, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 0/2] kvm/mips: ABI fix for 3.10
-References: <1370892828-21676-1-git-send-email-ddaney.cavm@gmail.com>
-In-Reply-To: <1370892828-21676-1-git-send-email-ddaney.cavm@gmail.com>
-X-Enigmail-Version: 1.5.1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <paolo.bonzini@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1371477641-7989-4-git-send-email-markos.chandras@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36953
+X-archive-position: 36954
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,25 +45,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Il 10/06/2013 21:33, David Daney ha scritto:
-> From: David Daney <david.daney@cavium.com>
-> 
-> As requested by Gleb Natapov, we need to define and use KVM_REG_MIPS
-> when using the GET_ONE_REG/SET_ONE_REG ioctl.  Since this is part of
-> the MIPS kvm support that is new in 3.10, it should be merged before a
-> bad ABI leaks out into an 'official' kernel release.
-> 
-> David Daney (2):
->   kvm: Add definition of KVM_REG_MIPS
->   mips/kvm: Use KVM_REG_MIPS and proper size indicators for *_ONE_REG
-> 
->  arch/mips/include/uapi/asm/kvm.h | 81 +++++++++++++++++++--------------------
->  arch/mips/kvm/kvm_mips.c         | 83 ++++++++++++++++++++++++++--------------
->  include/uapi/linux/kvm.h         |  1 +
->  3 files changed, 94 insertions(+), 71 deletions(-)
-> 
+On Mon, Jun 17, 2013 at 03:00:37PM +0100, Markos Chandras wrote:
 
-CCed people probably already know, but anyway: this is already in
-Linus's tree (commit af180b81a3f4ea925fae88878f367e676e99bf73).
+> It's needed for the TASK_INTERRUPTIBLE definition.
+> 
+> Fixes the following build problem:
+> arch/mips/sibyte/common/sb_tbprof.c:235:4: error: 'TASK_INTERRUPTIBLE'
+> undeclared (first use in this function)
 
-Paolo
+Ideally sched.h should be included into the actual user of
+TASK_INTERRUPTIBLE, the wake_up_interruptible macro in <linux/wait.h> but
+that seems way too risky that close to a release.
+
+  Ralf

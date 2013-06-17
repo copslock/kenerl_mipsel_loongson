@@ -1,30 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jun 2013 16:04:10 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:32323 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835843Ab3FQOBeSiz4m (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 17 Jun 2013 16:01:34 +0200
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>,
-        <sibyte-users@bitmover.com>
-Subject: [PATCH 2/7] MIPS: sibyte: Declare the cfe_write() buffer as constant
-Date:   Mon, 17 Jun 2013 15:00:36 +0100
-Message-ID: <1371477641-7989-3-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.2.1
-In-Reply-To: <1371477641-7989-1-git-send-email-markos.chandras@imgtec.com>
-References: <1371477641-7989-1-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jun 2013 17:26:17 +0200 (CEST)
+Received: from mail-we0-f173.google.com ([74.125.82.173]:42875 "EHLO
+        mail-we0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835182Ab3FQP0PfRHfk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Jun 2013 17:26:15 +0200
+Received: by mail-we0-f173.google.com with SMTP id x54so2474005wes.4
+        for <multiple recipients>; Mon, 17 Jun 2013 08:26:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:x-enigmail-version:content-type
+         :content-transfer-encoding;
+        bh=nQjAPr3neGo3q3lX4WwSS1cGopw33utwLu+w78UNLiQ=;
+        b=okn5OFH2BNhn0aisZ3TXS0tzErRYYVDxYGiNj85Viy2Lmjx/gA0yFR45Q6JsbJQwd0
+         Nuo+OeUucgDZ899icjY29prQXuf1pt3P6qo91NM6PIoD00Kig31xdxtg0VQHJOGvHrkT
+         XFdXiL8ny+KLfiGWucC+kyTbos+qLiGcUiK1WRyZc63L9oAGr8MBH7HICucUjMhOhkXA
+         hse9g0ymz/+zYgSrY4mKTI9j23xla/M/PxytBZGv+WpQCjCDgFpaFezMipP2u/R4ObbN
+         vFVBwCbTrE1K65O7ulH+jfZSE4w4hwXh37b5YldqrgmhH2wfeZfeN0F/l8QmIvqyWzOx
+         SQuw==
+X-Received: by 10.180.188.141 with SMTP id ga13mr5271453wic.9.1371482770110;
+        Mon, 17 Jun 2013 08:26:10 -0700 (PDT)
+Received: from yakj.usersys.redhat.com (net-37-116-217-184.cust.dsl.vodafone.it. [37.116.217.184])
+        by mx.google.com with ESMTPSA id fv11sm22772352wic.11.2013.06.17.08.26.06
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 17 Jun 2013 08:26:08 -0700 (PDT)
+Message-ID: <51BF2A8C.5020903@redhat.com>
+Date:   Mon, 17 Jun 2013 17:26:04 +0200
+From:   Paolo Bonzini <pbonzini@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SEF-Processed: 7_3_0_01192__2013_06_17_15_01_27
-Return-Path: <Markos.Chandras@imgtec.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        kvm@vger.kernel.org, Sanjay Lal <sanjayl@kymasys.com>,
+        Gleb Natapov <gleb@redhat.com>, linux-kernel@vger.kernel.org,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 0/2] kvm/mips: ABI fix for 3.10
+References: <1370892828-21676-1-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <1370892828-21676-1-git-send-email-ddaney.cavm@gmail.com>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <paolo.bonzini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36952
+X-archive-position: 36953
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,57 +61,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The write() prototype expects a const char * as argument so declare
-it as such.
+Il 10/06/2013 21:33, David Daney ha scritto:
+> From: David Daney <david.daney@cavium.com>
+> 
+> As requested by Gleb Natapov, we need to define and use KVM_REG_MIPS
+> when using the GET_ONE_REG/SET_ONE_REG ioctl.  Since this is part of
+> the MIPS kvm support that is new in 3.10, it should be merged before a
+> bad ABI leaks out into an 'official' kernel release.
+> 
+> David Daney (2):
+>   kvm: Add definition of KVM_REG_MIPS
+>   mips/kvm: Use KVM_REG_MIPS and proper size indicators for *_ONE_REG
+> 
+>  arch/mips/include/uapi/asm/kvm.h | 81 +++++++++++++++++++--------------------
+>  arch/mips/kvm/kvm_mips.c         | 83 ++++++++++++++++++++++++++--------------
+>  include/uapi/linux/kvm.h         |  1 +
+>  3 files changed, 94 insertions(+), 71 deletions(-)
+> 
 
-Fixes the following build problem:
+CCed people probably already know, but anyway: this is already in
+Linus's tree (commit af180b81a3f4ea925fae88878f367e676e99bf73).
 
-arch/mips/sibyte/common/cfe_console.c:23:5: error: passing argument 2 of
-'cfe_write' discards 'const' qualifier from pointer target type [-Werror]
-arch/mips/sibyte/common/cfe_console.c:34:4: error: passing argument 2 of
-'cfe_write' makes pointer from integer without a cast [-Werror]
-
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
-Cc: sibyte-users@bitmover.com
----
- arch/mips/fw/cfe/cfe_api.c             | 4 ++--
- arch/mips/include/asm/fw/cfe/cfe_api.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/fw/cfe/cfe_api.c b/arch/mips/fw/cfe/cfe_api.c
-index d06dc5a6..cf84f01 100644
---- a/arch/mips/fw/cfe/cfe_api.c
-+++ b/arch/mips/fw/cfe/cfe_api.c
-@@ -406,12 +406,12 @@ int cfe_setenv(char *name, char *val)
- 	return xiocb.xiocb_status;
- }
- 
--int cfe_write(int handle, unsigned char *buffer, int length)
-+int cfe_write(int handle, const char *buffer, int length)
- {
- 	return cfe_writeblk(handle, 0, buffer, length);
- }
- 
--int cfe_writeblk(int handle, s64 offset, unsigned char *buffer, int length)
-+int cfe_writeblk(int handle, s64 offset, const char *buffer, int length)
- {
- 	struct cfe_xiocb xiocb;
- 
-diff --git a/arch/mips/include/asm/fw/cfe/cfe_api.h b/arch/mips/include/asm/fw/cfe/cfe_api.h
-index 1734755..a0ea69e 100644
---- a/arch/mips/include/asm/fw/cfe/cfe_api.h
-+++ b/arch/mips/include/asm/fw/cfe/cfe_api.h
-@@ -115,8 +115,8 @@ int cfe_read(int handle, unsigned char *buffer, int length);
- int cfe_readblk(int handle, int64_t offset, unsigned char *buffer,
- 		int length);
- int cfe_setenv(char *name, char *val);
--int cfe_write(int handle, unsigned char *buffer, int length);
--int cfe_writeblk(int handle, int64_t offset, unsigned char *buffer,
-+int cfe_write(int handle, const char *buffer, int length);
-+int cfe_writeblk(int handle, int64_t offset, const char *buffer,
- 		 int length);
- 
- #endif				/* CFE_API_H */
--- 
-1.8.2.1
+Paolo

@@ -1,45 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jun 2013 14:44:09 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:1805 "EHLO mms2.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823114Ab3FRMnnhTDkp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 18 Jun 2013 14:43:43 +0200
-Received: from [10.9.208.57] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Tue, 18 Jun 2013 05:37:42 -0700
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Tue, 18 Jun 2013 05:43:26 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
- Server id 14.1.438.0; Tue, 18 Jun 2013 05:43:26 -0700
-Received: from netl-snoppy.ban.broadcom.com (
- netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 83104F2D73; Tue, 18
- Jun 2013 05:43:25 -0700 (PDT)
-From:   "Jayachandran C" <jchandra@broadcom.com>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org
-cc:     "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH UPDATED 4/4] MIPS: Move definition of SMP processor id
- register to header file
-Date:   Tue, 18 Jun 2013 18:15:16 +0530
-Message-ID: <1371559516-4862-2-git-send-email-jchandra@broadcom.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1371559516-4862-1-git-send-email-jchandra@broadcom.com>
-References: <1370965298-29210-4-git-send-email-jchandra@broadcom.com>
- <1371559516-4862-1-git-send-email-jchandra@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jun 2013 15:19:04 +0200 (CEST)
+Received: from mail-wi0-f182.google.com ([209.85.212.182]:60646 "EHLO
+        mail-wi0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6824790Ab3FRNSkdpx6T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Jun 2013 15:18:40 +0200
+Received: by mail-wi0-f182.google.com with SMTP id m6so3211503wiv.15
+        for <multiple recipients>; Tue, 18 Jun 2013 06:18:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=pkdFcgZfYXUpk+zAPdfpGSutqs9PPHlsHH0tCEHOwnI=;
+        b=w49vVX+UP4yBO9L1k6sk9MmuSwjgOQodAX9ovDgyFXGzJ7aD/o37ZgO7ZgS/9GTDGI
+         eBPq6H48BbgejMSgZ/63sKkRT0qBCo9trJkegVLwTqzTRPg3o/EGxpiquep2AWT5CXxp
+         e/2nGVREfMUHBDw1um/6+vsRYj0WySN8jMmbpnubsov42CGlHd/ffQVnA2oD8we/aozx
+         oGEtvDwA2N76xBCdMopMva2JZ+8dpM0Js3LQ19xsOfYbnJ4nwraJqvRykM9PM7SFHVyj
+         V1X/CToBqmfMNANC2b2cXgnT9mUb0u3v5qCtSEdHXYcfrMHlgZr8MdZ5MKuOFA+t+9Eo
+         001A==
+X-Received: by 10.180.211.202 with SMTP id ne10mr3690660wic.39.1371561514863;
+ Tue, 18 Jun 2013 06:18:34 -0700 (PDT)
 MIME-Version: 1.0
-X-WSS-ID: 7DDE8B1C1R033303954-01-01
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Return-Path: <jchandra@broadcom.com>
+Received: by 10.194.136.115 with HTTP; Tue, 18 Jun 2013 06:17:54 -0700 (PDT)
+In-Reply-To: <20130617170304.GF10408@linux-mips.org>
+References: <1371477641-7989-1-git-send-email-markos.chandras@imgtec.com>
+ <1371477641-7989-6-git-send-email-markos.chandras@imgtec.com> <20130617170304.GF10408@linux-mips.org>
+From:   Markos Chandras <markos.chandras@gmail.com>
+Date:   Tue, 18 Jun 2013 14:17:54 +0100
+Message-ID: <CAG2jQ8j8vbeNK9YD2C0WgDOxS5PNxz88M1er543VRCf=zongxA@mail.gmail.com>
+Subject: Re: [PATCH 5/7] drivers: watchdog: sb_wdog: Fix 32bit linking problems
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, sibyte-users@bitmover.com,
+        Wim Van Sebroeck <wim@iguana.be>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <markos.chandras@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36970
+X-archive-position: 36971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: markos.chandras@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,284 +53,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The definition of the CP0 register used to save the smp processor
-id is repicated in many files, move them all to thread_info.h.
+On 17 June 2013 18:03, Ralf Baechle <ralf@linux-mips.org> wrote:
+>> @@ -208,7 +209,9 @@ static long sbwdog_ioctl(struct file *file, unsigned int cmd,
+>>                * get the remaining count from the ... count register
+>>                * which is 1*8 before the config register
+>>                */
+>> -             ret = put_user(__raw_readq(user_dog - 8) / 1000000, p);
+>> +             tmp_user_dog = __raw_readq(user_dog - 8);
+>> +             tmp_user_dog = do_div(tmp_user_dog, 1000000);
+>> +             ret = put_user(tmp_user_dog, p);
+>
+> In effect the code with your change now does:
+>
+>                 ret = put_user(__raw_readq(user_dog - 8) % 1000000, p);
+>
+> No good.
+>
+>                 tmp_user_dog = __raw_readq(user_dog - 8);
+>                 do_div(tmp_user_dog, 1000000);
+>                 ret = put_user(tmp_user_dog, p);
+>
+> Should to the right thing.
+>
 
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
----
+Hi Ralf,
 
-[ Updated to apply cleanly on the new 3/4 patch ]
+Yes you are right. I will submit a new patch.
 
- arch/mips/include/asm/mmu_context.h |   17 +++-----
- arch/mips/include/asm/stackframe.h  |   24 +++--------
- arch/mips/include/asm/thread_info.h |   30 +++++++++++++-
- arch/mips/mm/tlbex.c                |   75 +++++------------------------------
- 4 files changed, 50 insertions(+), 96 deletions(-)
-
-diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-index fc282ef..aa59e31 100644
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -34,15 +34,15 @@ do {									\
- 	tlbmiss_handler_setup_pgd((unsigned long)(pgd));		\
- } while (0)
- 
--
- #ifdef CONFIG_MIPS_PGD_C0_CONTEXT
- #define TLBMISS_HANDLER_SETUP()						\
- 	do {								\
- 		TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir);		\
--		write_c0_xcontext((unsigned long) smp_processor_id() << 51); \
-+		write_c0_xcontext((unsigned long) smp_processor_id() <<	\
-+						SMP_CPUID_REGSHIFT);	\
- 	} while (0)
- 
--#else /* CONFIG_MIPS_PGD_C0_CONTEXT: using  pgd_current*/
-+#else /* !CONFIG_MIPS_PGD_C0_CONTEXT: using  pgd_current*/
- 
- /*
-  * For the fast tlb miss handlers, we keep a per cpu array of pointers
-@@ -51,18 +51,11 @@ do {									\
-  */
- extern unsigned long pgd_current[];
- 
--#ifdef CONFIG_32BIT
--#define TLBMISS_HANDLER_SETUP()						\
--	write_c0_context((unsigned long) smp_processor_id() << 25);	\
--	back_to_back_c0_hazard();					\
--	TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
--#endif
--#ifdef CONFIG_64BIT
- #define TLBMISS_HANDLER_SETUP()						\
--	write_c0_context((unsigned long) smp_processor_id() << 26);	\
-+	write_c0_context((unsigned long) smp_processor_id() <<		\
-+						SMP_CPUID_REGSHIFT);	\
- 	back_to_back_c0_hazard();					\
- 	TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
--#endif
- #endif /* CONFIG_MIPS_PGD_C0_CONTEXT*/
- #if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
- 
-diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-index a89d1b1..faefe31 100644
---- a/arch/mips/include/asm/stackframe.h
-+++ b/arch/mips/include/asm/stackframe.h
-@@ -17,6 +17,7 @@
- #include <asm/asmmacro.h>
- #include <asm/mipsregs.h>
- #include <asm/asm-offsets.h>
-+#include <asm/thread_info.h>
- 
- /*
-  * For SMTC kernel, global IE should be left set, and interrupts
-@@ -85,21 +86,8 @@
- 		.endm
- 
- #ifdef CONFIG_SMP
--#ifdef CONFIG_MIPS_MT_SMTC
--#define PTEBASE_SHIFT	19	/* TCBIND */
--#define CPU_ID_REG CP0_TCBIND
--#define CPU_ID_MFC0 mfc0
--#elif defined(CONFIG_MIPS_PGD_C0_CONTEXT)
--#define PTEBASE_SHIFT	48	/* XCONTEXT */
--#define CPU_ID_REG CP0_XCONTEXT
--#define CPU_ID_MFC0 MFC0
--#else
--#define PTEBASE_SHIFT	23	/* CONTEXT */
--#define CPU_ID_REG CP0_CONTEXT
--#define CPU_ID_MFC0 MFC0
--#endif
- 		.macro	get_saved_sp	/* SMP variation */
--		CPU_ID_MFC0	k0, CPU_ID_REG
-+		ASM_CPUID_MFC0	k0, $SMP_CPUID_REG
- #if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
- 		lui	k1, %hi(kernelsp)
- #else
-@@ -109,17 +97,17 @@
- 		daddiu	k1, %hi(kernelsp)
- 		dsll	k1, 16
- #endif
--		LONG_SRL	k0, PTEBASE_SHIFT
-+		LONG_SRL	k0, SMP_CPUID_PTRSHIFT
- 		LONG_ADDU	k1, k0
- 		LONG_L	k1, %lo(kernelsp)(k1)
- 		.endm
- 
- 		.macro	set_saved_sp stackp temp temp2
--		CPU_ID_MFC0	\temp, CPU_ID_REG
--		LONG_SRL	\temp, PTEBASE_SHIFT
-+		ASM_CPUID_MFC0	\temp, $SMP_CPUID_REG
-+		LONG_SRL	\temp, SMP_CPUID_PTRSHIFT
- 		LONG_S	\stackp, kernelsp(\temp)
- 		.endm
--#else
-+#else /* !CONFIG_SMP */
- 		.macro	get_saved_sp	/* Uniprocessor variation */
- #ifdef CONFIG_CPU_JUMP_WORKAROUNDS
- 		/*
-diff --git a/arch/mips/include/asm/thread_info.h b/arch/mips/include/asm/thread_info.h
-index 61215a3..ddff267 100644
---- a/arch/mips/include/asm/thread_info.h
-+++ b/arch/mips/include/asm/thread_info.h
-@@ -147,6 +147,34 @@ static inline struct thread_info *current_thread_info(void)
- #define _TIF_ALLWORK_MASK	(_TIF_NOHZ | _TIF_WORK_MASK |		\
- 				 _TIF_WORK_SYSCALL_EXIT)
- 
--#endif /* __KERNEL__ */
-+/*
-+ * We stash processor id into a COP0 register to retrieve it fast
-+ * at kernel exception entry.
-+ */
-+#if defined(CONFIG_MIPS_MT_SMTC)
-+#define SMP_CPUID_REG		2, 2	/* TCBIND */
-+#define SMP_CPUID_PTRSHIFT	19
-+#elif defined(CONFIG_MIPS_PGD_C0_CONTEXT)
-+#define SMP_CPUID_REG		20, 0	/* XCONTEXT */
-+#define SMP_CPUID_PTRSHIFT	48
-+#else
-+#define SMP_CPUID_REG		4, 0	/* CONTEXT */
-+#define SMP_CPUID_PTRSHIFT	23
-+#endif
- 
-+#ifdef CONFIG_64BIT
-+#define SMP_CPUID_REGSHIFT	(SMP_CPUID_PTRSHIFT + 3)
-+#else
-+#define SMP_CPUID_REGSHIFT	(SMP_CPUID_PTRSHIFT + 2)
-+#endif
-+
-+#ifdef CONFIG_MIPS_MT_SMTC
-+#define ASM_CPUID_MFC0		mfc0
-+#define UASM_i_CPUID_MFC0	uasm_i_mfc0
-+#else
-+#define ASM_CPUID_MFC0		MFC0
-+#define UASM_i_CPUID_MFC0	UASM_i_MFC0
-+#endif
-+
-+#endif /* __KERNEL__ */
- #endif /* _ASM_THREAD_INFO_H */
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index b23c744..bfff8fe 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -341,10 +341,6 @@ static struct work_registers __cpuinit build_get_work_registers(u32 **p)
- {
- 	struct work_registers r;
- 
--	int smp_processor_id_reg;
--	int smp_processor_id_sel;
--	int smp_processor_id_shift;
--
- 	if (scratch_reg >= 0) {
- 		/* Save in CPU local C0_KScratch? */
- 		UASM_i_MTC0(p, 1, c0_kscratch(), scratch_reg);
-@@ -355,25 +351,9 @@ static struct work_registers __cpuinit build_get_work_registers(u32 **p)
- 	}
- 
- 	if (num_possible_cpus() > 1) {
--#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
--		smp_processor_id_shift = 51;
--		smp_processor_id_reg = 20; /* XContext */
--		smp_processor_id_sel = 0;
--#else
--# ifdef CONFIG_32BIT
--		smp_processor_id_shift = 25;
--		smp_processor_id_reg = 4; /* Context */
--		smp_processor_id_sel = 0;
--# endif
--# ifdef CONFIG_64BIT
--		smp_processor_id_shift = 26;
--		smp_processor_id_reg = 4; /* Context */
--		smp_processor_id_sel = 0;
--# endif
--#endif
- 		/* Get smp_processor_id */
--		UASM_i_MFC0(p, K0, smp_processor_id_reg, smp_processor_id_sel);
--		UASM_i_SRL_SAFE(p, K0, K0, smp_processor_id_shift);
-+		UASM_i_CPUID_MFC0(p, K0, SMP_CPUID_REG);
-+		UASM_i_SRL_SAFE(p, K0, K0, SMP_CPUID_REGSHIFT);
- 
- 		/* handler_reg_save index in K0 */
- 		UASM_i_SLL(p, K0, K0, ilog2(sizeof(struct tlb_reg_save)));
-@@ -829,7 +809,7 @@ build_get_pmde64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
- 		/* pgd is in pgd_reg */
- 		UASM_i_MFC0(p, ptr, c0_kscratch(), pgd_reg);
- 	} else {
--#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
-+#if defined(CONFIG_MIPS_PGD_C0_CONTEXT)
- 		/*
- 		 * &pgd << 11 stored in CONTEXT [23..63].
- 		 */
-@@ -842,20 +822,8 @@ build_get_pmde64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
- 		uasm_i_ori(p, ptr, ptr, 0x540);
- 		uasm_i_drotr(p, ptr, ptr, 11);
- #elif defined(CONFIG_SMP)
--# ifdef CONFIG_MIPS_MT_SMTC
--		/*
--		 * SMTC uses TCBind value as "CPU" index
--		 */
--		uasm_i_mfc0(p, ptr, C0_TCBIND);
--		uasm_i_dsrl_safe(p, ptr, ptr, 19);
--# else
--		/*
--		 * 64 bit SMP running in XKPHYS has smp_processor_id() << 3
--		 * stored in CONTEXT.
--		 */
--		uasm_i_dmfc0(p, ptr, C0_CONTEXT);
--		uasm_i_dsrl_safe(p, ptr, ptr, 23);
--# endif
-+		UASM_i_CPUID_MFC0(p, ptr, SMP_CPUID_REG);
-+		uasm_i_dsrl_safe(p, ptr, ptr, SMP_CPUID_PTRSHIFT);
- 		UASM_i_LA_mostly(p, tmp, pgdc);
- 		uasm_i_daddu(p, ptr, ptr, tmp);
- 		uasm_i_dmfc0(p, tmp, C0_BADVADDR);
-@@ -968,21 +936,9 @@ build_get_pgde32(u32 **p, unsigned int tmp, unsigned int ptr)
- 
- 		/* 32 bit SMP has smp_processor_id() stored in CONTEXT. */
- #ifdef CONFIG_SMP
--# ifdef CONFIG_MIPS_MT_SMTC
--		/*
--		 * SMTC uses TCBind value as "CPU" index
--		 */
--		uasm_i_mfc0(p, ptr, C0_TCBIND);
-+		uasm_i_mfc0(p, ptr, SMP_CPUID_REG);
- 		UASM_i_LA_mostly(p, tmp, pgdc);
--		uasm_i_srl(p, ptr, ptr, 19);
--# else
--		/*
--		 * smp_processor_id() << 3 is stored in CONTEXT.
--		 */
--		uasm_i_mfc0(p, ptr, C0_CONTEXT);
--		UASM_i_LA_mostly(p, tmp, pgdc);
--		uasm_i_srl(p, ptr, ptr, 23);
--# endif
-+		uasm_i_srl(p, ptr, ptr, SMP_CPUID_PTRSHIFT);
- 		uasm_i_addu(p, ptr, tmp, ptr);
- #else
- 		UASM_i_LA_mostly(p, ptr, pgdc);
-@@ -1515,21 +1471,10 @@ static void __cpuinit build_setup_pgd(void)
- 		UASM_i_MTC0(&p, a0, c0_kscratch(), pgd_reg);
- 	}
- #else
-+#ifdef CONFIG_SMP
- 	/* Save PGD to pgd_current[smp_processor_id()] */
--#if defined(CONFIG_SMP)
--# ifdef CONFIG_MIPS_MT_SMTC
--	/*
--	 * SMTC uses TCBind value as "CPU" index
--	 */
--	uasm_i_mfc0(&p, a1, C0_TCBIND);
--	UASM_i_SRL_SAFE(&p, a1, a1, 19);
--# else
--	/*
--	 * smp_processor_id() is in CONTEXT
--	 */
--	UASM_i_MFC0(&p, a1, C0_CONTEXT);
--	UASM_i_SRL_SAFE(&p, a1, a1, 23);
--# endif
-+	UASM_i_CPUID_MFC0(&p, a1, SMP_CPUID_REG);
-+	UASM_i_SRL_SAFE(&p, a1, a1, SMP_CPUID_PTRSHIFT);
- 	UASM_i_LA_mostly(&p, a2, pgdc);
- 	UASM_i_ADDU(&p, a2, a2, a1);
- 	UASM_i_SW(&p, a0, uasm_rel_lo(pgdc), a2);
--- 
-1.7.9.5
+--
+Regards,
+Markos Chandras

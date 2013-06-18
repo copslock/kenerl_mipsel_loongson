@@ -1,34 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jun 2013 17:41:01 +0200 (CEST)
-Received: from mail1.windriver.com ([147.11.146.13]:51952 "EHLO
-        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823064Ab3FRPk5WlOGk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Jun 2013 17:40:57 +0200
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
-        by mail1.windriver.com (8.14.5/8.14.3) with ESMTP id r5IFeoi6013745
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Tue, 18 Jun 2013 08:40:50 -0700 (PDT)
-Received: from yow-lpgnfs-02.corp.ad.wrs.com (128.224.149.8) by
- ALA-HCA.corp.ad.wrs.com (147.11.189.40) with Microsoft SMTP Server id
- 14.2.342.3; Tue, 18 Jun 2013 08:40:49 -0700
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>
-Subject: [PATCH] mips: delete floating ".previous" section statements
-Date:   Tue, 18 Jun 2013 11:40:47 -0400
-Message-ID: <1371570047-32492-1-git-send-email-paul.gortmaker@windriver.com>
-X-Mailer: git-send-email 1.8.1.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jun 2013 18:47:48 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:47129 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6824786Ab3FRQrrXv7Z8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 18 Jun 2013 18:47:47 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5IGliM6025803;
+        Tue, 18 Jun 2013 18:47:44 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5IGliuE025802;
+        Tue, 18 Jun 2013 18:47:44 +0200
+Date:   Tue, 18 Jun 2013 18:47:44 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Kamal Dasu <kdasu.kdev@gmail.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Fix get_user_page_fast() for mips with cache alias
+Message-ID: <20130618164744.GA21210@linux-mips.org>
+References: <1371233403-30153-1-git-send-email-kdasu.kdev@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <Paul.Gortmaker@windriver.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1371233403-30153-1-git-send-email-kdasu.kdev@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36977
+X-archive-position: 36978
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,37 +42,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit "mips: delete __cpuinit/__CPUINIT usage from MIPS code"
-deleted the __CPUINIT instances, however there were two instances
-of ".previous" that were being used in paring with the __CPUINIT
-(i.e. section ".cpuinit.text").
+On Fri, Jun 14, 2013 at 02:10:03PM -0400, Kamal Dasu wrote:
 
-Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
----
+> get_user_pages_fast() is missing cache flushes for MIPS platforms
+> with cache alias. Filesystem failures observed with DirectIO
+> operations due to missing flush_anon_page() that use page coloring
+> logic to work with cache aliases. This fix falls through to take
+> slow_irqon path that calls get_user_pages() that has required
+> logic for platforms where cpu_has_dc_aliases is true.
 
-[Feel free to squash this into the larger commit; sorry I didn't
- notice it 15m earlier...  :(  Oh well.]
+A bit unsatisfying to always fall back to the slow variant yet I like
+the patch because of it's simplicity but I wonder if there's not a
+better solution.
 
- arch/mips/kernel/bmips_vec.S | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/arch/mips/kernel/bmips_vec.S b/arch/mips/kernel/bmips_vec.S
-index f739aed..596bf2f 100644
---- a/arch/mips/kernel/bmips_vec.S
-+++ b/arch/mips/kernel/bmips_vec.S
-@@ -186,7 +186,6 @@ bmips_reset_nmi_vec_end:
- END(bmips_reset_nmi_vec)
- 
- 	.set	pop
--	.previous
- 
- /***********************************************************************
-  * CPU1 warm restart vector (used for second and subsequent boots).
-@@ -247,5 +246,3 @@ LEAF(bmips_enable_xks01)
- 	jr	ra
- 
- END(bmips_enable_xks01)
--
--	.previous
--- 
-1.8.1.2
+  Ralf

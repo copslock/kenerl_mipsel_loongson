@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jun 2013 11:34:55 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:39638 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jun 2013 11:35:22 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:39639 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822429Ab3FRJexPh6AC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6822837Ab3FRJexPlqJM (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 18 Jun 2013 11:34:53 +0200
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from shaker64.lan (dslb-088-073-012-093.pools.arcor-ip.net [88.73.12.93])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 8D1DA280F38;
-        Tue, 18 Jun 2013 11:33:22 +0200 (CEST)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id E6AB02803E8;
+        Tue, 18 Jun 2013 11:33:21 +0200 (CEST)
 From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -14,17 +14,15 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Maxime Bizon <mbizon@freebox.fr>,
         Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>
-Subject: [PATCH V2 1/2] MIPS: BCM63XX: Add SMP support to prom.c
-Date:   Tue, 18 Jun 2013 11:34:31 +0200
-Message-Id: <1371548072-6247-2-git-send-email-jogo@openwrt.org>
+Subject: [PATCH V2 0/2] MIPS: BCM63XX: add SMP support
+Date:   Tue, 18 Jun 2013 11:34:30 +0200
+Message-Id: <1371548072-6247-1-git-send-email-jogo@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1371548072-6247-1-git-send-email-jogo@openwrt.org>
-References: <1371548072-6247-1-git-send-email-jogo@openwrt.org>
 Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36964
+X-archive-position: 36965
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,86 +39,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Kevin Cernekee <cernekee@gmail.com>
+Most newer BCM63XX SoCs after BCM6358 use a BMIPS4350 CPU with SMP
+support. This patchset allows BCM6368 and BCM6362 to boot a SMP kernel
+(both tested, as well as (not yet upstreamed) BCM63268).
 
-This involves two changes to the BSP code:
+BCM6328 has its second core only in a few variants enabled, but this can
+be probed at runtime.
 
-1) register_smp_ops() for BMIPS SMP
+BCM6358 is intentionally skipped because it shares a single TLB for
+both cores/threads, which requires implementing locking for TLB accesses,
+and ain't nobody got time for that.
 
-2) The CPU1 boot vector on some of the BCM63xx platforms conflicts with
-the special interrupt vector (IV).  Move it to 0x8000_0380 at boot time,
-to resolve the conflict.
+The internal interrupt controller supports routing IRQs to both CPUs,
+and support will be added in a later patchset. For now all hardware
+interrupts will go to CPU0.
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-[jogo@openwrt.org: moved SMP ops registration into ifdef guard,
- changed ifdef guards to if (IS_ENABLED())]
-Signed-off-by: Jonas Gorski <jogo@openwrt.org>
----
-V1 -> V2:
- * changed ifdef guards to if (IS_ENABLED())
+Totally unscientific OpenSSL benchmarking shows a nice ~90% speed
+increase when enabling the second core.
 
- arch/mips/bcm63xx/prom.c |   41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+No idea about the FIXME in 1/2, never had a problem with it so I left it
+in place as to have it documented.
 
-diff --git a/arch/mips/bcm63xx/prom.c b/arch/mips/bcm63xx/prom.c
-index fd69808..33ddc78 100644
---- a/arch/mips/bcm63xx/prom.c
-+++ b/arch/mips/bcm63xx/prom.c
-@@ -8,7 +8,11 @@
- 
- #include <linux/init.h>
- #include <linux/bootmem.h>
-+#include <linux/smp.h>
- #include <asm/bootinfo.h>
-+#include <asm/bmips.h>
-+#include <asm/smp-ops.h>
-+#include <asm/mipsregs.h>
- #include <bcm63xx_board.h>
- #include <bcm63xx_cpu.h>
- #include <bcm63xx_io.h>
-@@ -52,6 +56,43 @@ void __init prom_init(void)
- 
- 	/* do low level board init */
- 	board_prom_init();
-+
-+	if (IS_ENABLED(CONFIG_CPU_BMIPS4350) && IS_ENABLED(CONFIG_SMP)) {
-+		/* set up SMP */
-+		register_smp_ops(&bmips_smp_ops);
-+
-+		/*
-+		 * BCM6328 might not have its second CPU enabled, while BCM6358
-+		 * needs special handling for its shared TLB, so disable SMP
-+		 * for now.
-+		 */
-+		if (BCMCPU_IS_6328()) {
-+			bmips_smp_enabled = 0;
-+		} else if (BCMCPU_IS_6358()) {
-+			bmips_smp_enabled = 0;
-+		}
-+
-+		if (!bmips_smp_enabled)
-+			return;
-+
-+		/*
-+		 * The bootloader has set up the CPU1 reset vector at
-+		 * 0xa000_0200.
-+		 * This conflicts with the special interrupt vector (IV).
-+		 * The bootloader has also set up CPU1 to respond to the wrong
-+		 * IPI interrupt.
-+		 * Here we will start up CPU1 in the background and ask it to
-+		 * reconfigure itself then go back to sleep.
-+		 */
-+		memcpy((void *)0xa0000200, &bmips_smp_movevec, 0x20);
-+		__sync();
-+		set_c0_cause(C_SW0);
-+		cpumask_set_cpu(1, &bmips_booted_mask);
-+
-+		/*
-+		 * FIXME: we really should have some sort of hazard barrier here
-+		 */
-+	}
- }
- 
- void __init prom_free_prom_memory(void)
+Changes V1 -> V2:
+ * removed already applied patches
+ * added a check for SMP availability on BCM6328
+ * changed #ifdef FOO to if (IS_ENABLED(FOO))
+
+Jonas Gorski (1):
+  MIPS: BCM63XX: Enable second core SMP on BCM6328 if available
+
+Kevin Cernekee (1):
+  MIPS: BCM63XX: Add SMP support to prom.c
+
+ arch/mips/bcm63xx/prom.c                          |   45 +++++++++++++++++++++
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h  |    2 +
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h |    7 ++++
+ 3 files changed, 54 insertions(+)
+
 -- 
 1.7.10.4

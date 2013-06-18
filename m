@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jun 2013 10:46:55 +0200 (CEST)
-Received: from mga03.intel.com ([143.182.124.21]:24540 "EHLO mga03.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jun 2013 10:47:29 +0200 (CEST)
+Received: from mga09.intel.com ([134.134.136.24]:45105 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823114Ab3FRIquEFAc3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 18 Jun 2013 10:46:50 +0200
-Received: from azsmga001.ch.intel.com ([10.2.17.19])
-  by azsmga101.ch.intel.com with ESMTP; 18 Jun 2013 01:46:41 -0700
+        id S6823064Ab3FRIrVZMXD0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 18 Jun 2013 10:47:21 +0200
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga102.jf.intel.com with ESMTP; 18 Jun 2013 01:44:55 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="4.87,887,1363158000"; 
-   d="scan'208";a="318695983"
+   d="scan'208";a="355365494"
 Received: from unknown (HELO zurbaran) ([10.252.122.14])
-  by azsmga001.ch.intel.com with ESMTP; 18 Jun 2013 01:46:37 -0700
-Date:   Tue, 18 Jun 2013 10:45:54 +0200
+  by orsmga002.jf.intel.com with ESMTP; 18 Jun 2013 01:47:08 -0700
+Date:   Tue, 18 Jun 2013 10:46:25 +0200
 From:   Samuel Ortiz <sameo@linux.intel.com>
 To:     Javier Martinez Canillas <javier.martinez@collabora.co.uk>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
@@ -24,21 +24,21 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
-Subject: Re: [PATCH 4/7] mfd: stmpe: use irq_get_trigger_type() to get IRQ
- flags
-Message-ID: <20130618084554.GB7161@zurbaran>
+Subject: Re: [PATCH 3/7] mfd: twl4030-irq: use irq_get_trigger_type() to get
+ IRQ flags
+Message-ID: <20130618084625.GC7161@zurbaran>
 References: <1371228049-27080-1-git-send-email-javier.martinez@collabora.co.uk>
- <1371228049-27080-5-git-send-email-javier.martinez@collabora.co.uk>
+ <1371228049-27080-4-git-send-email-javier.martinez@collabora.co.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1371228049-27080-5-git-send-email-javier.martinez@collabora.co.uk>
+In-Reply-To: <1371228049-27080-4-git-send-email-javier.martinez@collabora.co.uk>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <sameo@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36962
+X-archive-position: 36963
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,7 +55,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 14, 2013 at 06:40:46PM +0200, Javier Martinez Canillas wrote:
+On Fri, Jun 14, 2013 at 06:40:45PM +0200, Javier Martinez Canillas wrote:
 > Use irq_get_trigger_type() to get the IRQ trigger type flags
 > instead calling irqd_get_trigger_type(irq_get_irq_data(irq))
 > 

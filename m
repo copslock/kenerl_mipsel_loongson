@@ -1,48 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jun 2013 10:47:29 +0200 (CEST)
-Received: from mga09.intel.com ([134.134.136.24]:45105 "EHLO mga09.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jun 2013 11:34:55 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:39638 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823064Ab3FRIrVZMXD0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 18 Jun 2013 10:47:21 +0200
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga102.jf.intel.com with ESMTP; 18 Jun 2013 01:44:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.87,887,1363158000"; 
-   d="scan'208";a="355365494"
-Received: from unknown (HELO zurbaran) ([10.252.122.14])
-  by orsmga002.jf.intel.com with ESMTP; 18 Jun 2013 01:47:08 -0700
-Date:   Tue, 18 Jun 2013 10:46:25 +0200
-From:   Samuel Ortiz <sameo@linux.intel.com>
-To:     Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        Grant Likely <grant.likely@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Russell King <linux@arm.linux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/7] mfd: twl4030-irq: use irq_get_trigger_type() to get
- IRQ flags
-Message-ID: <20130618084625.GC7161@zurbaran>
-References: <1371228049-27080-1-git-send-email-javier.martinez@collabora.co.uk>
- <1371228049-27080-4-git-send-email-javier.martinez@collabora.co.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1371228049-27080-4-git-send-email-javier.martinez@collabora.co.uk>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <sameo@linux.intel.com>
+        id S6822429Ab3FRJexPh6AC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 18 Jun 2013 11:34:53 +0200
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from shaker64.lan (dslb-088-073-012-093.pools.arcor-ip.net [88.73.12.93])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 8D1DA280F38;
+        Tue, 18 Jun 2013 11:33:22 +0200 (CEST)
+From:   Jonas Gorski <jogo@openwrt.org>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>,
+        Kevin Cernekee <cernekee@gmail.com>
+Subject: [PATCH V2 1/2] MIPS: BCM63XX: Add SMP support to prom.c
+Date:   Tue, 18 Jun 2013 11:34:31 +0200
+Message-Id: <1371548072-6247-2-git-send-email-jogo@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1371548072-6247-1-git-send-email-jogo@openwrt.org>
+References: <1371548072-6247-1-git-send-email-jogo@openwrt.org>
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 36963
+X-archive-position: 36964
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sameo@linux.intel.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,16 +41,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 14, 2013 at 06:40:45PM +0200, Javier Martinez Canillas wrote:
-> Use irq_get_trigger_type() to get the IRQ trigger type flags
-> instead calling irqd_get_trigger_type(irq_get_irq_data(irq))
-> 
-> Signed-off-by: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Acked-by: Samuel Ortiz <sameo@linux.intel.com>
+From: Kevin Cernekee <cernekee@gmail.com>
 
-Cheers,
-Samuel.
+This involves two changes to the BSP code:
 
+1) register_smp_ops() for BMIPS SMP
+
+2) The CPU1 boot vector on some of the BCM63xx platforms conflicts with
+the special interrupt vector (IV).  Move it to 0x8000_0380 at boot time,
+to resolve the conflict.
+
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+[jogo@openwrt.org: moved SMP ops registration into ifdef guard,
+ changed ifdef guards to if (IS_ENABLED())]
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+---
+V1 -> V2:
+ * changed ifdef guards to if (IS_ENABLED())
+
+ arch/mips/bcm63xx/prom.c |   41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+
+diff --git a/arch/mips/bcm63xx/prom.c b/arch/mips/bcm63xx/prom.c
+index fd69808..33ddc78 100644
+--- a/arch/mips/bcm63xx/prom.c
++++ b/arch/mips/bcm63xx/prom.c
+@@ -8,7 +8,11 @@
+ 
+ #include <linux/init.h>
+ #include <linux/bootmem.h>
++#include <linux/smp.h>
+ #include <asm/bootinfo.h>
++#include <asm/bmips.h>
++#include <asm/smp-ops.h>
++#include <asm/mipsregs.h>
+ #include <bcm63xx_board.h>
+ #include <bcm63xx_cpu.h>
+ #include <bcm63xx_io.h>
+@@ -52,6 +56,43 @@ void __init prom_init(void)
+ 
+ 	/* do low level board init */
+ 	board_prom_init();
++
++	if (IS_ENABLED(CONFIG_CPU_BMIPS4350) && IS_ENABLED(CONFIG_SMP)) {
++		/* set up SMP */
++		register_smp_ops(&bmips_smp_ops);
++
++		/*
++		 * BCM6328 might not have its second CPU enabled, while BCM6358
++		 * needs special handling for its shared TLB, so disable SMP
++		 * for now.
++		 */
++		if (BCMCPU_IS_6328()) {
++			bmips_smp_enabled = 0;
++		} else if (BCMCPU_IS_6358()) {
++			bmips_smp_enabled = 0;
++		}
++
++		if (!bmips_smp_enabled)
++			return;
++
++		/*
++		 * The bootloader has set up the CPU1 reset vector at
++		 * 0xa000_0200.
++		 * This conflicts with the special interrupt vector (IV).
++		 * The bootloader has also set up CPU1 to respond to the wrong
++		 * IPI interrupt.
++		 * Here we will start up CPU1 in the background and ask it to
++		 * reconfigure itself then go back to sleep.
++		 */
++		memcpy((void *)0xa0000200, &bmips_smp_movevec, 0x20);
++		__sync();
++		set_c0_cause(C_SW0);
++		cpumask_set_cpu(1, &bmips_booted_mask);
++
++		/*
++		 * FIXME: we really should have some sort of hazard barrier here
++		 */
++	}
+ }
+ 
+ void __init prom_free_prom_memory(void)
 -- 
-Intel Open Source Technology Centre
-http://oss.intel.com/
+1.7.10.4

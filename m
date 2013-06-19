@@ -1,31 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jun 2013 19:41:40 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:42837 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6835025Ab3FSRkqu8oEi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Jun 2013 19:40:46 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <Steven.Hill@imgtec.com>)
-        id 1UpMN5-0001b5-E2; Wed, 19 Jun 2013 12:40:39 -0500
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-To:     linux-mips@linux-mips.org
-Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>, ralf@linux-mips.org,
-        Jayachandran C <jchandra@broadcom.com>
-Subject: [PATCH 1/2] Revert "MIPS: Move definition of SMP processor id register to header file"
-Date:   Wed, 19 Jun 2013 12:40:31 -0500
-Message-Id: <1371663632-30252-2-git-send-email-Steven.Hill@imgtec.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1371663632-30252-1-git-send-email-Steven.Hill@imgtec.com>
-References: <1371663632-30252-1-git-send-email-Steven.Hill@imgtec.com>
-Return-Path: <Steven.Hill@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jun 2013 20:27:39 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:51941 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6835025Ab3FSS1gw1czG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 19 Jun 2013 20:27:36 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5JIRUsZ003797;
+        Wed, 19 Jun 2013 20:27:30 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5JIRUCX003796;
+        Wed, 19 Jun 2013 20:27:30 +0200
+Date:   Wed, 19 Jun 2013 20:27:29 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org, sibyte-users@bitmover.com
+Subject: Re: [PATCH 4/7] MIPS: sibyte: Amend dependencies for
+ SIBYTE_BUS_WATCHER
+Message-ID: <20130619182729.GA3622@linux-mips.org>
+References: <1371477641-7989-1-git-send-email-markos.chandras@imgtec.com>
+ <1371477641-7989-5-git-send-email-markos.chandras@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1371477641-7989-5-git-send-email-markos.chandras@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37016
+X-archive-position: 37017
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,282 +45,579 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This reverts commit 59ff6f198e4944348547cfad905b414c05573f9a.
+On Mon, Jun 17, 2013 at 03:00:38PM +0100, Markos Chandras wrote:
 
-This prevents all MTI platforms and bcm63xx from booting.
+> SIBYTE_BUS_WATCHER is only visible if CONFIG_SIBYTE_BCM112X
+> or CONFIG_SIBYTE_SB1250 is selected according to the
+> arch/mips/sibyte/Makefile.
+> This fixes the following build problem:
+> 
+> arch/mips/mm/cerr-sb1.c:254: undefined reference to `check_bus_watcher'
 
-Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+I originally had applied this patch but now I'm removing it again.  The
+real culprit is that the Sibyte bus watcher code is hidden in the
+sb1250/ subdirectory where builds for the later BCM 1x55 and 1x80 SOC
+generations won't pick it up, thus this errors.
+
+Below patch moves the code to the generic directory and does minor
+modifications to actually get the code to work.
+
+Thanks anyway!
+
+  Ralf
+
+  CC      arch/mips/sibyte/bcm1480/bus_watcher.o
+  CHK     kernel/config_data.h
+arch/mips/sibyte/bcm1480/bus_watcher.c: In function ‘check_bus_watcher’:
+arch/mips/sibyte/bcm1480/bus_watcher.c:86:82: error: ‘A_SCD_BUS_ERR_STATUS_DEBUG’ undeclared (first use in this function)
+arch/mips/sibyte/bcm1480/bus_watcher.c:86:82: note: each undeclared identifier is reported only once for each function it appears in
+make[3]: *** [arch/mips/sibyte/bcm1480/bus_watcher.o] Error 1
+make[2]: *** [arch/mips/sibyte/bcm1480] Error 2
+make[1]: *** [arch/mips/sibyte] Error 2
+make: *** [arch/mips] Error 2
+
+The register moved around though it's otherwise the same but because of
+the changed address it now also has a different name.
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Reported-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/include/asm/mmu_context.h |   17 ++++++--
- arch/mips/include/asm/stackframe.h  |   24 ++++++++---
- arch/mips/include/asm/thread_info.h |   30 +-------------
- arch/mips/mm/tlbex.c                |   75 ++++++++++++++++++++++++++++++-----
- 4 files changed, 96 insertions(+), 50 deletions(-)
+ arch/mips/sibyte/common/Makefile      |   1 +
+ arch/mips/sibyte/common/bus_watcher.c | 256 ++++++++++++++++++++++++++++++++++
+ arch/mips/sibyte/sb1250/Makefile      |   1 -
+ arch/mips/sibyte/sb1250/bus_watcher.c | 247 --------------------------------
+ 4 files changed, 257 insertions(+), 248 deletions(-)
 
-diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-index aa59e31..fc282ef 100644
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -34,15 +34,15 @@ do {									\
- 	tlbmiss_handler_setup_pgd((unsigned long)(pgd));		\
- } while (0)
- 
+diff --git a/arch/mips/sibyte/common/Makefile b/arch/mips/sibyte/common/Makefile
+index 36aa700..b3d6bf2 100644
+--- a/arch/mips/sibyte/common/Makefile
++++ b/arch/mips/sibyte/common/Makefile
+@@ -1,3 +1,4 @@
+ obj-y := cfe.o
++obj-$(CONFIG_SIBYTE_BUS_WATCHER)	+= bus_watcher.o
+ obj-$(CONFIG_SIBYTE_CFE_CONSOLE)	+= cfe_console.o
+ obj-$(CONFIG_SIBYTE_TBPROF)		+= sb_tbprof.o
+diff --git a/arch/mips/sibyte/common/bus_watcher.c b/arch/mips/sibyte/common/bus_watcher.c
+new file mode 100644
+index 0000000..5581844
+--- /dev/null
++++ b/arch/mips/sibyte/common/bus_watcher.c
+@@ -0,0 +1,256 @@
++/*
++ * Copyright (C) 2002,2003 Broadcom Corporation
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
++ */
 +
- #ifdef CONFIG_MIPS_PGD_C0_CONTEXT
- #define TLBMISS_HANDLER_SETUP()						\
- 	do {								\
- 		TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir);		\
--		write_c0_xcontext((unsigned long) smp_processor_id() <<	\
--						SMP_CPUID_REGSHIFT);	\
-+		write_c0_xcontext((unsigned long) smp_processor_id() << 51); \
- 	} while (0)
- 
--#else /* !CONFIG_MIPS_PGD_C0_CONTEXT: using  pgd_current*/
-+#else /* CONFIG_MIPS_PGD_C0_CONTEXT: using  pgd_current*/
- 
- /*
-  * For the fast tlb miss handlers, we keep a per cpu array of pointers
-@@ -51,11 +51,18 @@ do {									\
-  */
- extern unsigned long pgd_current[];
- 
-+#ifdef CONFIG_32BIT
-+#define TLBMISS_HANDLER_SETUP()						\
-+	write_c0_context((unsigned long) smp_processor_id() << 25);	\
-+	back_to_back_c0_hazard();					\
-+	TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
++/*
++ * The Bus Watcher monitors internal bus transactions and maintains
++ * counts of transactions with error status, logging details and
++ * causing one of several interrupts.  This driver provides a handler
++ * for those interrupts which aggregates the counts (to avoid
++ * saturating the 8-bit counters) and provides a presence in
++ * /proc/bus_watcher if PROC_FS is on.
++ */
++
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/interrupt.h>
++#include <linux/sched.h>
++#include <linux/proc_fs.h>
++#include <linux/seq_file.h>
++#include <asm/io.h>
++
++#include <asm/sibyte/sb1250.h>
++#include <asm/sibyte/sb1250_regs.h>
++#include <asm/sibyte/sb1250_int.h>
++#include <asm/sibyte/sb1250_scd.h>
++#if defined(CONFIG_SIBYTE_BCM1x55) || defined(CONFIG_SIBYTE_BCM1x80)
++#include <asm/sibyte/bcm1480_regs.h>
 +#endif
-+#ifdef CONFIG_64BIT
- #define TLBMISS_HANDLER_SETUP()						\
--	write_c0_context((unsigned long) smp_processor_id() <<		\
--						SMP_CPUID_REGSHIFT);	\
-+	write_c0_context((unsigned long) smp_processor_id() << 26);	\
- 	back_to_back_c0_hazard();					\
- 	TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
-+#endif
- #endif /* CONFIG_MIPS_PGD_C0_CONTEXT*/
- #if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
- 
-diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-index faefe31..a89d1b1 100644
---- a/arch/mips/include/asm/stackframe.h
-+++ b/arch/mips/include/asm/stackframe.h
-@@ -17,7 +17,6 @@
- #include <asm/asmmacro.h>
- #include <asm/mipsregs.h>
- #include <asm/asm-offsets.h>
--#include <asm/thread_info.h>
- 
- /*
-  * For SMTC kernel, global IE should be left set, and interrupts
-@@ -86,8 +85,21 @@
- 		.endm
- 
- #ifdef CONFIG_SMP
-+#ifdef CONFIG_MIPS_MT_SMTC
-+#define PTEBASE_SHIFT	19	/* TCBIND */
-+#define CPU_ID_REG CP0_TCBIND
-+#define CPU_ID_MFC0 mfc0
-+#elif defined(CONFIG_MIPS_PGD_C0_CONTEXT)
-+#define PTEBASE_SHIFT	48	/* XCONTEXT */
-+#define CPU_ID_REG CP0_XCONTEXT
-+#define CPU_ID_MFC0 MFC0
++
++
++struct bw_stats_struct {
++	uint64_t status;
++	uint32_t l2_err;
++	uint32_t memio_err;
++	int status_printed;
++	unsigned long l2_cor_d;
++	unsigned long l2_bad_d;
++	unsigned long l2_cor_t;
++	unsigned long l2_bad_t;
++	unsigned long mem_cor_d;
++	unsigned long mem_bad_d;
++	unsigned long bus_error;
++} bw_stats;
++
++
++static void print_summary(uint32_t status, uint32_t l2_err,
++			  uint32_t memio_err)
++{
++	printk("Bus watcher error counters: %08x %08x\n", l2_err, memio_err);
++	printk("\nLast recorded signature:\n");
++	printk("Request %02x from %d, answered by %d with Dcode %d\n",
++	       (unsigned int)(G_SCD_BERR_TID(status) & 0x3f),
++	       (int)(G_SCD_BERR_TID(status) >> 6),
++	       (int)G_SCD_BERR_RID(status),
++	       (int)G_SCD_BERR_DCODE(status));
++}
++
++/*
++ * check_bus_watcher is exported for use in situations where we want
++ * to see the most recent status of the bus watcher, which might have
++ * already been destructively read out of the registers.
++ *
++ * notes: this is currently used by the cache error handler
++ *	  should provide locking against the interrupt handler
++ */
++void check_bus_watcher(void)
++{
++	u32 status, l2_err, memio_err;
++
++#ifdef CONFIG_SB1_PASS_1_WORKAROUNDS
++	/* Destructive read, clears register and interrupt */
++	status = csr_in32(IOADDR(A_SCD_BUS_ERR_STATUS));
++#elif defined(CONFIG_SIBYTE_BCM112X) || defined(CONFIG_SIBYTE_SB1250)
++	/* Use non-destructive register */
++	status = csr_in32(IOADDR(A_SCD_BUS_ERR_STATUS_DEBUG));
++#elif defined(CONFIG_SIBYTE_BCM1x55) || defined(CONFIG_SIBYTE_BCM1x80)
++	/* Use non-destructive register */
++	/* Same as 1250 except BUS_ERR_STATUS_DEBUG is in a different place. */
++	status = csr_in32(IOADDR(A_BCM1480_BUS_ERR_STATUS_DEBUG));
 +#else
-+#define PTEBASE_SHIFT	23	/* CONTEXT */
-+#define CPU_ID_REG CP0_CONTEXT
-+#define CPU_ID_MFC0 MFC0
++#error bus watcher being built for unknown Sibyte SOC!
 +#endif
- 		.macro	get_saved_sp	/* SMP variation */
--		ASM_CPUID_MFC0	k0, $SMP_CPUID_REG
-+		CPU_ID_MFC0	k0, CPU_ID_REG
- #if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
- 		lui	k1, %hi(kernelsp)
- #else
-@@ -97,17 +109,17 @@
- 		daddiu	k1, %hi(kernelsp)
- 		dsll	k1, 16
- #endif
--		LONG_SRL	k0, SMP_CPUID_PTRSHIFT
-+		LONG_SRL	k0, PTEBASE_SHIFT
- 		LONG_ADDU	k1, k0
- 		LONG_L	k1, %lo(kernelsp)(k1)
- 		.endm
++	if (!(status & 0x7fffffff)) {
++		printk("Using last values reaped by bus watcher driver\n");
++		status = bw_stats.status;
++		l2_err = bw_stats.l2_err;
++		memio_err = bw_stats.memio_err;
++	} else {
++		l2_err = csr_in32(IOADDR(A_BUS_L2_ERRORS));
++		memio_err = csr_in32(IOADDR(A_BUS_MEM_IO_ERRORS));
++	}
++	if (status & ~(1UL << 31))
++		print_summary(status, l2_err, memio_err);
++	else
++		printk("Bus watcher indicates no error\n");
++}
++
++#ifdef CONFIG_PROC_FS
++
++/* For simplicity, I want to assume a single read is required each
++   time */
++static int bw_proc_show(struct seq_file *m, void *v)
++{
++	struct bw_stats_struct *stats = m->private;
++
++	seq_puts(m, "SiByte Bus Watcher statistics\n");
++	seq_puts(m, "-----------------------------\n");
++	seq_printf(m, "L2-d-cor %8ld\nL2-d-bad %8ld\n",
++		   stats->l2_cor_d, stats->l2_bad_d);
++	seq_printf(m, "L2-t-cor %8ld\nL2-t-bad %8ld\n",
++		   stats->l2_cor_t, stats->l2_bad_t);
++	seq_printf(m, "MC-d-cor %8ld\nMC-d-bad %8ld\n",
++		   stats->mem_cor_d, stats->mem_bad_d);
++	seq_printf(m, "IO-err   %8ld\n", stats->bus_error);
++	seq_puts(m, "\nLast recorded signature:\n");
++	seq_printf(m, "Request %02x from %d, answered by %d with Dcode %d\n",
++		   (unsigned int)(G_SCD_BERR_TID(stats->status) & 0x3f),
++		   (int)(G_SCD_BERR_TID(stats->status) >> 6),
++		   (int)G_SCD_BERR_RID(stats->status),
++		   (int)G_SCD_BERR_DCODE(stats->status));
++	/* XXXKW indicate multiple errors between printings, or stats
++	   collection (or both)? */
++	if (stats->status & M_SCD_BERR_MULTERRS)
++		seq_puts(m, "Multiple errors observed since last check.\n");
++	if (stats->status_printed) {
++		seq_puts(m, "(no change since last printing)\n");
++	} else {
++		stats->status_printed = 1;
++	}
++
++	return 0;
++}
++
++static int bw_proc_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, bw_proc_show, PDE_DATA(inode));
++}
++
++static const struct file_operations bw_proc_fops = {
++	.open		= bw_proc_open,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= single_release,
++};
++
++static void create_proc_decoder(struct bw_stats_struct *stats)
++{
++	struct proc_dir_entry *ent;
++
++	ent = proc_create_data("bus_watcher", S_IWUSR | S_IRUGO, NULL,
++			       &bw_proc_fops, stats);
++	if (!ent) {
++		printk(KERN_INFO "Unable to initialize bus_watcher /proc entry\n");
++		return;
++	}
++}
++
++#endif /* CONFIG_PROC_FS */
++
++/*
++ * sibyte_bw_int - handle bus watcher interrupts and accumulate counts
++ *
++ * notes: possible re-entry due to multiple sources
++ *	  should check/indicate saturation
++ */
++static irqreturn_t sibyte_bw_int(int irq, void *data)
++{
++	struct bw_stats_struct *stats = data;
++	unsigned long cntr;
++#ifdef CONFIG_SIBYTE_BW_TRACE
++	int i;
++#endif
++
++#ifdef CONFIG_SIBYTE_BW_TRACE
++	csr_out32(M_SCD_TRACE_CFG_FREEZE, IOADDR(A_SCD_TRACE_CFG));
++	csr_out32(M_SCD_TRACE_CFG_START_READ, IOADDR(A_SCD_TRACE_CFG));
++
++	for (i=0; i<256*6; i++)
++		printk("%016llx\n",
++		       (long long)__raw_readq(IOADDR(A_SCD_TRACE_READ)));
++
++	csr_out32(M_SCD_TRACE_CFG_RESET, IOADDR(A_SCD_TRACE_CFG));
++	csr_out32(M_SCD_TRACE_CFG_START, IOADDR(A_SCD_TRACE_CFG));
++#endif
++
++	/* Destructive read, clears register and interrupt */
++	stats->status = csr_in32(IOADDR(A_SCD_BUS_ERR_STATUS));
++	stats->status_printed = 0;
++
++	stats->l2_err = cntr = csr_in32(IOADDR(A_BUS_L2_ERRORS));
++	stats->l2_cor_d += G_SCD_L2ECC_CORR_D(cntr);
++	stats->l2_bad_d += G_SCD_L2ECC_BAD_D(cntr);
++	stats->l2_cor_t += G_SCD_L2ECC_CORR_T(cntr);
++	stats->l2_bad_t += G_SCD_L2ECC_BAD_T(cntr);
++	csr_out32(0, IOADDR(A_BUS_L2_ERRORS));
++
++	stats->memio_err = cntr = csr_in32(IOADDR(A_BUS_MEM_IO_ERRORS));
++	stats->mem_cor_d += G_SCD_MEM_ECC_CORR(cntr);
++	stats->mem_bad_d += G_SCD_MEM_ECC_BAD(cntr);
++	stats->bus_error += G_SCD_MEM_BUSERR(cntr);
++	csr_out32(0, IOADDR(A_BUS_MEM_IO_ERRORS));
++
++	return IRQ_HANDLED;
++}
++
++int __init sibyte_bus_watcher(void)
++{
++	memset(&bw_stats, 0, sizeof(struct bw_stats_struct));
++	bw_stats.status_printed = 1;
++
++	if (request_irq(K_INT_BAD_ECC, sibyte_bw_int, 0, "Bus watcher", &bw_stats)) {
++		printk("Failed to register bus watcher BAD_ECC irq\n");
++		return -1;
++	}
++	if (request_irq(K_INT_COR_ECC, sibyte_bw_int, 0, "Bus watcher", &bw_stats)) {
++		free_irq(K_INT_BAD_ECC, &bw_stats);
++		printk("Failed to register bus watcher COR_ECC irq\n");
++		return -1;
++	}
++	if (request_irq(K_INT_IO_BUS, sibyte_bw_int, 0, "Bus watcher", &bw_stats)) {
++		free_irq(K_INT_BAD_ECC, &bw_stats);
++		free_irq(K_INT_COR_ECC, &bw_stats);
++		printk("Failed to register bus watcher IO_BUS irq\n");
++		return -1;
++	}
++
++#ifdef CONFIG_PROC_FS
++	create_proc_decoder(&bw_stats);
++#endif
++
++#ifdef CONFIG_SIBYTE_BW_TRACE
++	csr_out32((M_SCD_TRSEQ_ASAMPLE | M_SCD_TRSEQ_DSAMPLE |
++		   K_SCD_TRSEQ_TRIGGER_ALL),
++		  IOADDR(A_SCD_TRACE_SEQUENCE_0));
++	csr_out32(M_SCD_TRACE_CFG_RESET, IOADDR(A_SCD_TRACE_CFG));
++	csr_out32(M_SCD_TRACE_CFG_START, IOADDR(A_SCD_TRACE_CFG));
++#endif
++
++	return 0;
++}
++
++__initcall(sibyte_bus_watcher);
+diff --git a/arch/mips/sibyte/sb1250/Makefile b/arch/mips/sibyte/sb1250/Makefile
+index d3d969d..cdc4c56 100644
+--- a/arch/mips/sibyte/sb1250/Makefile
++++ b/arch/mips/sibyte/sb1250/Makefile
+@@ -1,4 +1,3 @@
+ obj-y := setup.o irq.o time.o
  
- 		.macro	set_saved_sp stackp temp temp2
--		ASM_CPUID_MFC0	\temp, $SMP_CPUID_REG
--		LONG_SRL	\temp, SMP_CPUID_PTRSHIFT
-+		CPU_ID_MFC0	\temp, CPU_ID_REG
-+		LONG_SRL	\temp, PTEBASE_SHIFT
- 		LONG_S	\stackp, kernelsp(\temp)
- 		.endm
--#else /* !CONFIG_SMP */
-+#else
- 		.macro	get_saved_sp	/* Uniprocessor variation */
- #ifdef CONFIG_CPU_JUMP_WORKAROUNDS
- 		/*
-diff --git a/arch/mips/include/asm/thread_info.h b/arch/mips/include/asm/thread_info.h
-index ddff267..61215a3 100644
---- a/arch/mips/include/asm/thread_info.h
-+++ b/arch/mips/include/asm/thread_info.h
-@@ -147,34 +147,6 @@ static inline struct thread_info *current_thread_info(void)
- #define _TIF_ALLWORK_MASK	(_TIF_NOHZ | _TIF_WORK_MASK |		\
- 				 _TIF_WORK_SYSCALL_EXIT)
- 
+ obj-$(CONFIG_SMP)			+= smp.o
+-obj-$(CONFIG_SIBYTE_BUS_WATCHER)	+= bus_watcher.o
+diff --git a/arch/mips/sibyte/sb1250/bus_watcher.c b/arch/mips/sibyte/sb1250/bus_watcher.c
+deleted file mode 100644
+index d0ca7b9..0000000
+--- a/arch/mips/sibyte/sb1250/bus_watcher.c
++++ /dev/null
+@@ -1,247 +0,0 @@
 -/*
-- * We stash processor id into a COP0 register to retrieve it fast
-- * at kernel exception entry.
+- * Copyright (C) 2002,2003 Broadcom Corporation
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * as published by the Free Software Foundation; either version 2
+- * of the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 - */
--#if defined(CONFIG_MIPS_MT_SMTC)
--#define SMP_CPUID_REG		2, 2	/* TCBIND */
--#define SMP_CPUID_PTRSHIFT	19
--#elif defined(CONFIG_MIPS_PGD_C0_CONTEXT)
--#define SMP_CPUID_REG		20, 0	/* XCONTEXT */
--#define SMP_CPUID_PTRSHIFT	48
+-
+-/*
+- * The Bus Watcher monitors internal bus transactions and maintains
+- * counts of transactions with error status, logging details and
+- * causing one of several interrupts.  This driver provides a handler
+- * for those interrupts which aggregates the counts (to avoid
+- * saturating the 8-bit counters) and provides a presence in
+- * /proc/bus_watcher if PROC_FS is on.
+- */
+-
+-#include <linux/init.h>
+-#include <linux/kernel.h>
+-#include <linux/interrupt.h>
+-#include <linux/sched.h>
+-#include <linux/proc_fs.h>
+-#include <linux/seq_file.h>
+-#include <asm/io.h>
+-
+-#include <asm/sibyte/sb1250.h>
+-#include <asm/sibyte/sb1250_regs.h>
+-#include <asm/sibyte/sb1250_int.h>
+-#include <asm/sibyte/sb1250_scd.h>
+-
+-
+-struct bw_stats_struct {
+-	uint64_t status;
+-	uint32_t l2_err;
+-	uint32_t memio_err;
+-	int status_printed;
+-	unsigned long l2_cor_d;
+-	unsigned long l2_bad_d;
+-	unsigned long l2_cor_t;
+-	unsigned long l2_bad_t;
+-	unsigned long mem_cor_d;
+-	unsigned long mem_bad_d;
+-	unsigned long bus_error;
+-} bw_stats;
+-
+-
+-static void print_summary(uint32_t status, uint32_t l2_err,
+-			  uint32_t memio_err)
+-{
+-	printk("Bus watcher error counters: %08x %08x\n", l2_err, memio_err);
+-	printk("\nLast recorded signature:\n");
+-	printk("Request %02x from %d, answered by %d with Dcode %d\n",
+-	       (unsigned int)(G_SCD_BERR_TID(status) & 0x3f),
+-	       (int)(G_SCD_BERR_TID(status) >> 6),
+-	       (int)G_SCD_BERR_RID(status),
+-	       (int)G_SCD_BERR_DCODE(status));
+-}
+-
+-/*
+- * check_bus_watcher is exported for use in situations where we want
+- * to see the most recent status of the bus watcher, which might have
+- * already been destructively read out of the registers.
+- *
+- * notes: this is currently used by the cache error handler
+- *	  should provide locking against the interrupt handler
+- */
+-void check_bus_watcher(void)
+-{
+-	u32 status, l2_err, memio_err;
+-
+-#ifdef CONFIG_SB1_PASS_1_WORKAROUNDS
+-	/* Destructive read, clears register and interrupt */
+-	status = csr_in32(IOADDR(A_SCD_BUS_ERR_STATUS));
 -#else
--#define SMP_CPUID_REG		4, 0	/* CONTEXT */
--#define SMP_CPUID_PTRSHIFT	23
+-	/* Use non-destructive register */
+-	status = csr_in32(IOADDR(A_SCD_BUS_ERR_STATUS_DEBUG));
+-#endif
+-	if (!(status & 0x7fffffff)) {
+-		printk("Using last values reaped by bus watcher driver\n");
+-		status = bw_stats.status;
+-		l2_err = bw_stats.l2_err;
+-		memio_err = bw_stats.memio_err;
+-	} else {
+-		l2_err = csr_in32(IOADDR(A_BUS_L2_ERRORS));
+-		memio_err = csr_in32(IOADDR(A_BUS_MEM_IO_ERRORS));
+-	}
+-	if (status & ~(1UL << 31))
+-		print_summary(status, l2_err, memio_err);
+-	else
+-		printk("Bus watcher indicates no error\n");
+-}
+-
+-#ifdef CONFIG_PROC_FS
+-
+-/* For simplicity, I want to assume a single read is required each
+-   time */
+-static int bw_proc_show(struct seq_file *m, void *v)
+-{
+-	struct bw_stats_struct *stats = m->private;
+-
+-	seq_puts(m, "SiByte Bus Watcher statistics\n");
+-	seq_puts(m, "-----------------------------\n");
+-	seq_printf(m, "L2-d-cor %8ld\nL2-d-bad %8ld\n",
+-		   stats->l2_cor_d, stats->l2_bad_d);
+-	seq_printf(m, "L2-t-cor %8ld\nL2-t-bad %8ld\n",
+-		   stats->l2_cor_t, stats->l2_bad_t);
+-	seq_printf(m, "MC-d-cor %8ld\nMC-d-bad %8ld\n",
+-		   stats->mem_cor_d, stats->mem_bad_d);
+-	seq_printf(m, "IO-err   %8ld\n", stats->bus_error);
+-	seq_puts(m, "\nLast recorded signature:\n");
+-	seq_printf(m, "Request %02x from %d, answered by %d with Dcode %d\n",
+-		   (unsigned int)(G_SCD_BERR_TID(stats->status) & 0x3f),
+-		   (int)(G_SCD_BERR_TID(stats->status) >> 6),
+-		   (int)G_SCD_BERR_RID(stats->status),
+-		   (int)G_SCD_BERR_DCODE(stats->status));
+-	/* XXXKW indicate multiple errors between printings, or stats
+-	   collection (or both)? */
+-	if (stats->status & M_SCD_BERR_MULTERRS)
+-		seq_puts(m, "Multiple errors observed since last check.\n");
+-	if (stats->status_printed) {
+-		seq_puts(m, "(no change since last printing)\n");
+-	} else {
+-		stats->status_printed = 1;
+-	}
+-
+-	return 0;
+-}
+-
+-static int bw_proc_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, bw_proc_show, PDE_DATA(inode));
+-}
+-
+-static const struct file_operations bw_proc_fops = {
+-	.open		= bw_proc_open,
+-	.read		= seq_read,
+-	.llseek		= seq_lseek,
+-	.release	= single_release,
+-};
+-
+-static void create_proc_decoder(struct bw_stats_struct *stats)
+-{
+-	struct proc_dir_entry *ent;
+-
+-	ent = proc_create_data("bus_watcher", S_IWUSR | S_IRUGO, NULL,
+-			       &bw_proc_fops, stats);
+-	if (!ent) {
+-		printk(KERN_INFO "Unable to initialize bus_watcher /proc entry\n");
+-		return;
+-	}
+-}
+-
+-#endif /* CONFIG_PROC_FS */
+-
+-/*
+- * sibyte_bw_int - handle bus watcher interrupts and accumulate counts
+- *
+- * notes: possible re-entry due to multiple sources
+- *	  should check/indicate saturation
+- */
+-static irqreturn_t sibyte_bw_int(int irq, void *data)
+-{
+-	struct bw_stats_struct *stats = data;
+-	unsigned long cntr;
+-#ifdef CONFIG_SIBYTE_BW_TRACE
+-	int i;
 -#endif
 -
--#ifdef CONFIG_64BIT
--#define SMP_CPUID_REGSHIFT	(SMP_CPUID_PTRSHIFT + 3)
--#else
--#define SMP_CPUID_REGSHIFT	(SMP_CPUID_PTRSHIFT + 2)
+-#ifdef CONFIG_SIBYTE_BW_TRACE
+-	csr_out32(M_SCD_TRACE_CFG_FREEZE, IOADDR(A_SCD_TRACE_CFG));
+-	csr_out32(M_SCD_TRACE_CFG_START_READ, IOADDR(A_SCD_TRACE_CFG));
+-
+-	for (i=0; i<256*6; i++)
+-		printk("%016llx\n",
+-		       (long long)__raw_readq(IOADDR(A_SCD_TRACE_READ)));
+-
+-	csr_out32(M_SCD_TRACE_CFG_RESET, IOADDR(A_SCD_TRACE_CFG));
+-	csr_out32(M_SCD_TRACE_CFG_START, IOADDR(A_SCD_TRACE_CFG));
 -#endif
 -
--#ifdef CONFIG_MIPS_MT_SMTC
--#define ASM_CPUID_MFC0		mfc0
--#define UASM_i_CPUID_MFC0	uasm_i_mfc0
--#else
--#define ASM_CPUID_MFC0		MFC0
--#define UASM_i_CPUID_MFC0	UASM_i_MFC0
+-	/* Destructive read, clears register and interrupt */
+-	stats->status = csr_in32(IOADDR(A_SCD_BUS_ERR_STATUS));
+-	stats->status_printed = 0;
+-
+-	stats->l2_err = cntr = csr_in32(IOADDR(A_BUS_L2_ERRORS));
+-	stats->l2_cor_d += G_SCD_L2ECC_CORR_D(cntr);
+-	stats->l2_bad_d += G_SCD_L2ECC_BAD_D(cntr);
+-	stats->l2_cor_t += G_SCD_L2ECC_CORR_T(cntr);
+-	stats->l2_bad_t += G_SCD_L2ECC_BAD_T(cntr);
+-	csr_out32(0, IOADDR(A_BUS_L2_ERRORS));
+-
+-	stats->memio_err = cntr = csr_in32(IOADDR(A_BUS_MEM_IO_ERRORS));
+-	stats->mem_cor_d += G_SCD_MEM_ECC_CORR(cntr);
+-	stats->mem_bad_d += G_SCD_MEM_ECC_BAD(cntr);
+-	stats->bus_error += G_SCD_MEM_BUSERR(cntr);
+-	csr_out32(0, IOADDR(A_BUS_MEM_IO_ERRORS));
+-
+-	return IRQ_HANDLED;
+-}
+-
+-int __init sibyte_bus_watcher(void)
+-{
+-	memset(&bw_stats, 0, sizeof(struct bw_stats_struct));
+-	bw_stats.status_printed = 1;
+-
+-	if (request_irq(K_INT_BAD_ECC, sibyte_bw_int, 0, "Bus watcher", &bw_stats)) {
+-		printk("Failed to register bus watcher BAD_ECC irq\n");
+-		return -1;
+-	}
+-	if (request_irq(K_INT_COR_ECC, sibyte_bw_int, 0, "Bus watcher", &bw_stats)) {
+-		free_irq(K_INT_BAD_ECC, &bw_stats);
+-		printk("Failed to register bus watcher COR_ECC irq\n");
+-		return -1;
+-	}
+-	if (request_irq(K_INT_IO_BUS, sibyte_bw_int, 0, "Bus watcher", &bw_stats)) {
+-		free_irq(K_INT_BAD_ECC, &bw_stats);
+-		free_irq(K_INT_COR_ECC, &bw_stats);
+-		printk("Failed to register bus watcher IO_BUS irq\n");
+-		return -1;
+-	}
+-
+-#ifdef CONFIG_PROC_FS
+-	create_proc_decoder(&bw_stats);
 -#endif
 -
- #endif /* __KERNEL__ */
-+
- #endif /* _ASM_THREAD_INFO_H */
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index d9969d2..0f04692 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -337,6 +337,10 @@ static struct work_registers build_get_work_registers(u32 **p)
- {
- 	struct work_registers r;
- 
-+	int smp_processor_id_reg;
-+	int smp_processor_id_sel;
-+	int smp_processor_id_shift;
-+
- 	if (scratch_reg >= 0) {
- 		/* Save in CPU local C0_KScratch? */
- 		UASM_i_MTC0(p, 1, c0_kscratch(), scratch_reg);
-@@ -347,9 +351,25 @@ static struct work_registers build_get_work_registers(u32 **p)
- 	}
- 
- 	if (num_possible_cpus() > 1) {
-+#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
-+		smp_processor_id_shift = 51;
-+		smp_processor_id_reg = 20; /* XContext */
-+		smp_processor_id_sel = 0;
-+#else
-+# ifdef CONFIG_32BIT
-+		smp_processor_id_shift = 25;
-+		smp_processor_id_reg = 4; /* Context */
-+		smp_processor_id_sel = 0;
-+# endif
-+# ifdef CONFIG_64BIT
-+		smp_processor_id_shift = 26;
-+		smp_processor_id_reg = 4; /* Context */
-+		smp_processor_id_sel = 0;
-+# endif
-+#endif
- 		/* Get smp_processor_id */
--		UASM_i_CPUID_MFC0(p, K0, SMP_CPUID_REG);
--		UASM_i_SRL_SAFE(p, K0, K0, SMP_CPUID_REGSHIFT);
-+		UASM_i_MFC0(p, K0, smp_processor_id_reg, smp_processor_id_sel);
-+		UASM_i_SRL_SAFE(p, K0, K0, smp_processor_id_shift);
- 
- 		/* handler_reg_save index in K0 */
- 		UASM_i_SLL(p, K0, K0, ilog2(sizeof(struct tlb_reg_save)));
-@@ -800,7 +820,7 @@ build_get_pmde64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
- 		/* pgd is in pgd_reg */
- 		UASM_i_MFC0(p, ptr, c0_kscratch(), pgd_reg);
- 	} else {
--#if defined(CONFIG_MIPS_PGD_C0_CONTEXT)
-+#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
- 		/*
- 		 * &pgd << 11 stored in CONTEXT [23..63].
- 		 */
-@@ -813,8 +833,20 @@ build_get_pmde64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
- 		uasm_i_ori(p, ptr, ptr, 0x540);
- 		uasm_i_drotr(p, ptr, ptr, 11);
- #elif defined(CONFIG_SMP)
--		UASM_i_CPUID_MFC0(p, ptr, SMP_CPUID_REG);
--		uasm_i_dsrl_safe(p, ptr, ptr, SMP_CPUID_PTRSHIFT);
-+# ifdef CONFIG_MIPS_MT_SMTC
-+		/*
-+		 * SMTC uses TCBind value as "CPU" index
-+		 */
-+		uasm_i_mfc0(p, ptr, C0_TCBIND);
-+		uasm_i_dsrl_safe(p, ptr, ptr, 19);
-+# else
-+		/*
-+		 * 64 bit SMP running in XKPHYS has smp_processor_id() << 3
-+		 * stored in CONTEXT.
-+		 */
-+		uasm_i_dmfc0(p, ptr, C0_CONTEXT);
-+		uasm_i_dsrl_safe(p, ptr, ptr, 23);
-+# endif
- 		UASM_i_LA_mostly(p, tmp, pgdc);
- 		uasm_i_daddu(p, ptr, ptr, tmp);
- 		uasm_i_dmfc0(p, tmp, C0_BADVADDR);
-@@ -927,9 +959,21 @@ build_get_pgde32(u32 **p, unsigned int tmp, unsigned int ptr)
- 
- 		/* 32 bit SMP has smp_processor_id() stored in CONTEXT. */
- #ifdef CONFIG_SMP
--		uasm_i_mfc0(p, ptr, SMP_CPUID_REG);
-+# ifdef CONFIG_MIPS_MT_SMTC
-+		/*
-+		 * SMTC uses TCBind value as "CPU" index
-+		 */
-+		uasm_i_mfc0(p, ptr, C0_TCBIND);
- 		UASM_i_LA_mostly(p, tmp, pgdc);
--		uasm_i_srl(p, ptr, ptr, SMP_CPUID_PTRSHIFT);
-+		uasm_i_srl(p, ptr, ptr, 19);
-+# else
-+		/*
-+		 * smp_processor_id() << 3 is stored in CONTEXT.
-+		 */
-+		uasm_i_mfc0(p, ptr, C0_CONTEXT);
-+		UASM_i_LA_mostly(p, tmp, pgdc);
-+		uasm_i_srl(p, ptr, ptr, 23);
-+# endif
- 		uasm_i_addu(p, ptr, tmp, ptr);
- #else
- 		UASM_i_LA_mostly(p, ptr, pgdc);
-@@ -1461,10 +1505,21 @@ static void build_setup_pgd(void)
- 		UASM_i_MTC0(&p, a0, c0_kscratch(), pgd_reg);
- 	}
- #else
--#ifdef CONFIG_SMP
- 	/* Save PGD to pgd_current[smp_processor_id()] */
--	UASM_i_CPUID_MFC0(&p, a1, SMP_CPUID_REG);
--	UASM_i_SRL_SAFE(&p, a1, a1, SMP_CPUID_PTRSHIFT);
-+#if defined(CONFIG_SMP)
-+# ifdef CONFIG_MIPS_MT_SMTC
-+	/*
-+	 * SMTC uses TCBind value as "CPU" index
-+	 */
-+	uasm_i_mfc0(&p, a1, C0_TCBIND);
-+	UASM_i_SRL_SAFE(&p, a1, a1, 19);
-+# else
-+	/*
-+	 * smp_processor_id() is in CONTEXT
-+	 */
-+	UASM_i_MFC0(&p, a1, C0_CONTEXT);
-+	UASM_i_SRL_SAFE(&p, a1, a1, 23);
-+# endif
- 	UASM_i_LA_mostly(&p, a2, pgdc);
- 	UASM_i_ADDU(&p, a2, a2, a1);
- 	UASM_i_SW(&p, a0, uasm_rel_lo(pgdc), a2);
--- 
-1.7.2.5
+-#ifdef CONFIG_SIBYTE_BW_TRACE
+-	csr_out32((M_SCD_TRSEQ_ASAMPLE | M_SCD_TRSEQ_DSAMPLE |
+-		   K_SCD_TRSEQ_TRIGGER_ALL),
+-		  IOADDR(A_SCD_TRACE_SEQUENCE_0));
+-	csr_out32(M_SCD_TRACE_CFG_RESET, IOADDR(A_SCD_TRACE_CFG));
+-	csr_out32(M_SCD_TRACE_CFG_START, IOADDR(A_SCD_TRACE_CFG));
+-#endif
+-
+-	return 0;
+-}
+-
+-__initcall(sibyte_bus_watcher);

@@ -1,53 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jun 2013 18:47:19 +0200 (CEST)
-Received: from mail-pd0-f177.google.com ([209.85.192.177]:40982 "EHLO
-        mail-pd0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6835001Ab3FSQrS228Ih (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Jun 2013 18:47:18 +0200
-Received: by mail-pd0-f177.google.com with SMTP id p10so5192509pdj.8
-        for <multiple recipients>; Wed, 19 Jun 2013 09:47:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=uJmellDy5B27WaPUjs6tQsNxG1GdVAPGUnPeT7gtf0s=;
-        b=cwBY5R5EmnBhe1a1pYvhFUvpPNWDD0L/gpzWf1EfA1602amnjQihxjAAHFFr/Ck+rh
-         HMfgr7lqBfMTt1LPsPhIeI08ASQ/F1dmoOF0OuV5o/Lju8TArXKxRbkxoeqKvC7UqtpI
-         SKAuPdoA55mxo5ciKUzJ60vWtpcPUNtUD/xiBlIoGA59m1U6qVc7lb8vm5+dTAJ27InO
-         VfVUpHyXmFZwRQqUGb44fmxqoKVuWVz7KB6rtJ7kf5S1xzk6bq7bRT/eMxUg0kj7r8Es
-         yXP5vOEKWyBk9KN+c9MA1U3kzrOmUf4fDDbZM9A8ZivufNjv4OXRoOpVVo7IsoHfXsh3
-         KoYg==
-X-Received: by 10.68.28.232 with SMTP id e8mr3608124pbh.94.1371660432053;
-        Wed, 19 Jun 2013 09:47:12 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id bg3sm23767429pbb.44.2013.06.19.09.47.09
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 19 Jun 2013 09:47:10 -0700 (PDT)
-Message-ID: <51C1E08C.9040900@gmail.com>
-Date:   Wed, 19 Jun 2013 09:47:08 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jun 2013 19:32:16 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:51698 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6835004Ab3FSRcOgDwWP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 19 Jun 2013 19:32:14 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5JHW9rD000954;
+        Wed, 19 Jun 2013 19:32:09 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5JHW8ia000953;
+        Wed, 19 Jun 2013 19:32:08 +0200
+Date:   Wed, 19 Jun 2013 19:32:07 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org, sibyte-users@bitmover.com
+Subject: Re: [PATCH 1/7] MIPS: sibyte: Fix build for SIBYTE_BW_TRACE
+Message-ID: <20130619173207.GA741@linux-mips.org>
+References: <1371477641-7989-1-git-send-email-markos.chandras@imgtec.com>
+ <1371477641-7989-2-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        Jamie Iles <jamie@jamieiles.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.cz>, linux-serial@vger.kernel.org,
-        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 3/5] tty/8250_dw: Add support for OCTEON UARTS.
-References: <1371582775-12141-1-git-send-email-ddaney.cavm@gmail.com> <1371582775-12141-4-git-send-email-ddaney.cavm@gmail.com> <20130619141008.GA32331@xps8300>
-In-Reply-To: <20130619141008.GA32331@xps8300>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1371477641-7989-2-git-send-email-markos.chandras@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37012
+X-archive-position: 37013
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,49 +44,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/19/2013 07:10 AM, Heikki Krogerus wrote:
-> On Tue, Jun 18, 2013 at 12:12:53PM -0700, David Daney wrote:
->> A few differences needed by OCTEON:
->>
->> o These are DWC UARTS, but have USR at a different offset.
->>
->> o OCTEON must have 64-bit wide register accesses, so we have OCTEON
->>    specific register accessors.
->>
->> o No UCV register, so we hard code some properties.
->>
->> Signed-off-by: David Daney <david.daney@cavium.com>
->
-> <snip>
->
->> @@ -270,10 +301,8 @@ static int dw8250_probe(struct platform_device *pdev)
->>   	uart.port.serial_out = dw8250_serial_out;
->>   	uart.port.private_data = data;
->>
->> -	dw8250_setup_port(&uart);
->> -
->>   	if (pdev->dev.of_node) {
->> -		err = dw8250_probe_of(&uart.port);
->> +		err = dw8250_probe_of(&uart.port, data);
->>   		if (err)
->>   			return err;
->>   	} else if (ACPI_HANDLE(&pdev->dev)) {
->> @@ -284,6 +313,9 @@ static int dw8250_probe(struct platform_device *pdev)
->>   		return -ENODEV;
->>   	}
->>
->> +	if (!data->no_ucv)
->> +		dw8250_setup_port(&uart);
->
-> Moving the dw8250_setup_port() call here breaks dw8250_probe_acpi(). It
-> expects values from the CPR register for the DMA burst size calculation.
->
-> The DMA support can be moved to a separate function. This way it can
-> be called after this point, and it will then be available for both DT
-> and ACPI. I can make a patch tomorrow. That should solve this issue.
->
+On Mon, Jun 17, 2013 at 03:00:35PM +0100, Markos Chandras wrote:
 
-I am reworking the patch because other problems were found.  I will try 
-to get this part right in the next version.
+> The M_BCM1480_SCD_TRACE_CFG_FREEZE macro removed in
+> 8deab1144b553548fb2f1b51affdd36dcd652aaa
+> "[MIPS] Updated Sibyte headers"
+> 
+> This broke the build for the sibyte platfrom when
+> SIBYTE_BW_TRACE is enabled:
+> arch/mips/mm/cerr-sb1.c:186:2: error: 'M_BCM1480_SCD_TRACE_CFG_FREEZE'
+> undeclared (first use in this function)
+> 
+> We fix this by replacing it with the M_BCM1480_SYS_RESERVED4 macro
+> 
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+> Cc: sibyte-users@bitmover.com
+> ---
+>  arch/mips/mm/cerr-sb1.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/mm/cerr-sb1.c b/arch/mips/mm/cerr-sb1.c
+> index 576add3..1a24534 100644
+> --- a/arch/mips/mm/cerr-sb1.c
+> +++ b/arch/mips/mm/cerr-sb1.c
+> @@ -183,7 +183,7 @@ asmlinkage void sb1_cache_error(void)
+>  #ifdef CONFIG_SIBYTE_BW_TRACE
+>  	/* Freeze the trace buffer now */
+>  #if defined(CONFIG_SIBYTE_BCM1x55) || defined(CONFIG_SIBYTE_BCM1x80)
+> -	csr_out32(M_BCM1480_SCD_TRACE_CFG_FREEZE, IOADDR(A_SCD_TRACE_CFG));
+> +	csr_out32(M_BCM1480_SYS_RESERVED4, IOADDR(A_SCD_TRACE_CFG));
+>  #else
+>  	csr_out32(M_SCD_TRACE_CFG_FREEZE, IOADDR(A_SCD_TRACE_CFG));
+>  #endif
 
-David Daney
+I think this is the correct solution.
+
+Unfortunately nobody at Broadcom seems to care about the Sibyte SOCs
+these days though they're still very important for a bunch of Linux
+distributions.
+
+  Ralf
+
+  CC      arch/mips/mm/cerr-sb1.o
+arch/mips/mm/cerr-sb1.c: In function ‘sb1_cache_error’:
+arch/mips/mm/cerr-sb1.c:186:98: error: ‘M_BCM1480_SCD_TRACE_CFG_FREEZE’ undeclared (first use in this function)
+arch/mips/mm/cerr-sb1.c:186:98: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [arch/mips/mm/cerr-sb1.o] Error 1
+
+This happens because 8deab1144b553548fb2f1b51affdd36dcd652aaa [[MIPS]
+Updated Sibyte headers] changed the headers but not all the users.
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Reported-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/mm/cerr-sb1.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/arch/mips/mm/cerr-sb1.c b/arch/mips/mm/cerr-sb1.c
+index 576add3..ee5c1ff 100644
+--- a/arch/mips/mm/cerr-sb1.c
++++ b/arch/mips/mm/cerr-sb1.c
+@@ -182,11 +182,7 @@ asmlinkage void sb1_cache_error(void)
+ 
+ #ifdef CONFIG_SIBYTE_BW_TRACE
+ 	/* Freeze the trace buffer now */
+-#if defined(CONFIG_SIBYTE_BCM1x55) || defined(CONFIG_SIBYTE_BCM1x80)
+-	csr_out32(M_BCM1480_SCD_TRACE_CFG_FREEZE, IOADDR(A_SCD_TRACE_CFG));
+-#else
+ 	csr_out32(M_SCD_TRACE_CFG_FREEZE, IOADDR(A_SCD_TRACE_CFG));
+-#endif
+ 	printk("Trace buffer frozen\n");
+ #endif
+ 

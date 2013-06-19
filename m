@@ -1,47 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jun 2013 09:48:24 +0200 (CEST)
-Received: from mail-bk0-f54.google.com ([209.85.214.54]:47846 "EHLO
-        mail-bk0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822451Ab3FSHsWf9fGo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Jun 2013 09:48:22 +0200
-Received: by mail-bk0-f54.google.com with SMTP id it16so2144856bkc.41
-        for <multiple recipients>; Wed, 19 Jun 2013 00:48:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=rxotdEDrXE5I2DryIs9o43RNaTzYhcds+AdrtcIcrI8=;
-        b=zKUn6SSchWEJY68yR7rruYEUUA4FAfRpNS9CIZSfBBpPOrv8IrNbaOoUJYjUYs+Pc1
-         O3z2wkyTrP/dr4dHzP31LZsU4XZr+lDEdHDTTtcScp4Zxikz/zYtL72GRFXUPxauMo7M
-         Igf1Uf5S4FkIwaDc0u7IQOi0y4hhm4RnfhbE1EfvbgMHZAP1AKtC2bG9dEwRa/tsmaee
-         5b7XwJmNYPNLIM0DtzaPYD5I0YW+O1iBEquh6hAvandgoQv02xIYlqmJLPPRCz51K+MC
-         aE70Khr5mXnBh+tFDGYkcGQjMYv7Ui+wB06kK4Da7ldbPUdVc8reqL2kYykDhOkinfKi
-         it8w==
-MIME-Version: 1.0
-X-Received: by 10.204.191.132 with SMTP id dm4mr220617bkb.66.1371628096822;
- Wed, 19 Jun 2013 00:48:16 -0700 (PDT)
-Received: by 10.204.174.8 with HTTP; Wed, 19 Jun 2013 00:48:16 -0700 (PDT)
-In-Reply-To: <CAECwjAhzJUO4GFmnu3jX8e-UEj2wiVrB8xA3Hu_0iSaf1L1v5w@mail.gmail.com>
-References: <1371564006-31805-1-git-send-email-markos.chandras@imgtec.com>
-        <20130618141420.GA15141@linux-mips.org>
-        <CAECwjAhzJUO4GFmnu3jX8e-UEj2wiVrB8xA3Hu_0iSaf1L1v5w@mail.gmail.com>
-Date:   Wed, 19 Jun 2013 15:48:16 +0800
-Message-ID: <CAECwjAg+3ec5hf4etmypA1mqp9+BUOcOCgFAcq=cA5kQAqx3+A@mail.gmail.com>
-Subject: Re: [PATCH v2 5/7] drivers: watchdog: sb_wdog: Fix 32bit linking problems
-From:   Yousong Zhou <yszhou4tech@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jun 2013 10:55:20 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:49834 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6822451Ab3FSIzSAdfdt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 19 Jun 2013 10:55:18 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5J8tCa1008405;
+        Wed, 19 Jun 2013 10:55:13 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5J8t9UI008404;
+        Wed, 19 Jun 2013 10:55:09 +0200
+Date:   Wed, 19 Jun 2013 10:55:09 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Yousong Zhou <yszhou4tech@gmail.com>
 Cc:     Markos Chandras <markos.chandras@imgtec.com>,
         linux-mips@linux-mips.org, sibyte-users@bitmover.com,
         Wim Van Sebroeck <wim@iguana.be>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <yszhou4tech@gmail.com>
+Subject: Re: [PATCH v2 5/7] drivers: watchdog: sb_wdog: Fix 32bit linking
+ problems
+Message-ID: <20130619085509.GA11687@linux-mips.org>
+References: <1371564006-31805-1-git-send-email-markos.chandras@imgtec.com>
+ <20130618141420.GA15141@linux-mips.org>
+ <CAECwjAhzJUO4GFmnu3jX8e-UEj2wiVrB8xA3Hu_0iSaf1L1v5w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAECwjAhzJUO4GFmnu3jX8e-UEj2wiVrB8xA3Hu_0iSaf1L1v5w@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37003
+X-archive-position: 37004
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yszhou4tech@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,15 +47,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 19 June 2013 15:45, Yousong Zhou <yszhou4tech@gmail.com> wrote:
+On Wed, Jun 19, 2013 at 03:45:07PM +0800, Yousong Zhou wrote:
+
 > I am not quite sure on this. I just digged this[1] out and thought that Linus
 >  may not be happy about the operation `tmp_user_dog/1000000`.
-
-Only realized that it's a decimal integer after I clicked the Send button.
-Sorry for the noise...
-
->
+> 
 > Correct me if I am wrong, please.
->
+> 
 > [1] http://lwn.net/Articles/456241/
->
+
+Well, Linus' posting is about a division by a power of two.  Doing that
+by do_div() is not terribly smart.  Now, reading some manuals it turned
+out that the register (like most registers on Sibyte SOCs) is 64 bit
+but only the lower 23 bits are being used; bits 23..64 always read as
+zero.
+
+So the best fix is to truncate the value down to 32 bit then use the plain
+old `/' division.
+
+  Ralf
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ drivers/watchdog/sb_wdog.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/watchdog/sb_wdog.c b/drivers/watchdog/sb_wdog.c
+index 25c7a3f..ea5d84a 100644
+--- a/drivers/watchdog/sb_wdog.c
++++ b/drivers/watchdog/sb_wdog.c
+@@ -208,7 +208,7 @@ static long sbwdog_ioctl(struct file *file, unsigned int cmd,
+ 		 * get the remaining count from the ... count register
+ 		 * which is 1*8 before the config register
+ 		 */
+-		ret = put_user(__raw_readq(user_dog - 8) / 1000000, p);
++		ret = put_user((u32)__raw_readq(user_dog - 8) / 1000000, p);
+ 		break;
+ 	}
+ 	return ret;

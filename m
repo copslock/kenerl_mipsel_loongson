@@ -1,44 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jun 2013 21:12:24 +0200 (CEST)
-Received: from mail-by2lp0244.outbound.protection.outlook.com ([207.46.163.244]:18442
-        "EHLO na01-by2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6835027Ab3FSTMVABpmJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 19 Jun 2013 21:12:21 +0200
-Received: from BL2PRD0712HT001.namprd07.prod.outlook.com (10.255.236.34) by
- SN2PR07MB016.namprd07.prod.outlook.com (10.255.174.38) with Microsoft SMTP
- Server (TLS) id 15.0.702.21; Wed, 19 Jun 2013 19:12:12 +0000
-Received: from dl.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
- (10.255.236.34) with Microsoft SMTP Server (TLS) id 14.16.324.0; Wed, 19 Jun
- 2013 19:12:11 +0000
-Message-ID: <51C20289.1060303@caviumnetworks.com>
-Date:   Wed, 19 Jun 2013 12:12:09 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
-MIME-Version: 1.0
-To:     Arnd Bergmann <arnd@arndb.de>
-CC:     David Daney <ddaney.cavm@gmail.com>, <linux-mips@linux-mips.org>,
-        <ralf@linux-mips.org>, Jamie Iles <jamie@jamieiles.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jun 2013 23:37:44 +0200 (CEST)
+Received: from mail-pd0-f180.google.com ([209.85.192.180]:58581 "EHLO
+        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835001Ab3FSVhnAKV8i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Jun 2013 23:37:43 +0200
+Received: by mail-pd0-f180.google.com with SMTP id 10so5508062pdi.11
+        for <multiple recipients>; Wed, 19 Jun 2013 14:37:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=wH9492+sEusJY3bo61Glki+BeziV16+AQyAzwQFmuuU=;
+        b=yTUcoTxw9X4iSqcna5q1fbUFZzVUvVWzEmaGrt2wNjcBIiQe0e1MHw/vf9sZqfzSU0
+         GOEqoC6kTmAAsS5eGPkFsFrqrtq2OuVvuqiqUGFFfSuNO0SOJdLg/XpuwRY2EnNIHcvl
+         uqWdJFtJ2g9QvQl7ToEicEGa3LjimbnT2lTldp+77yxS66tKD5pT2mg+vvGn74d0STq0
+         WkOxHPwMCPJYHo8B+1vuEXFDlNQJbUdOCVCMC5iCdlOGTDzGhKQhmXsJMgzDVaywkJ92
+         RjVa47NT7IAlmwFJKCK8CICfclYSk1WQ8lTlcQPiVig0mdhzgBjwJFp47zq2ZJZJoPWA
+         MIRQ==
+X-Received: by 10.68.197.33 with SMTP id ir1mr4521485pbc.197.1371677856460;
+        Wed, 19 Jun 2013 14:37:36 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id fm2sm26392749pab.13.2013.06.19.14.37.34
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 19 Jun 2013 14:37:35 -0700 (PDT)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r5JLbXeQ023951;
+        Wed, 19 Jun 2013 14:37:33 -0700
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r5JLbUsZ023948;
+        Wed, 19 Jun 2013 14:37:30 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        Jamie Iles <jamie@jamieiles.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.cz>, <linux-serial@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 3/5] tty/8250_dw: Add support for OCTEON UARTS.
-References: <1371582775-12141-1-git-send-email-ddaney.cavm@gmail.com> <2302882.NVjP8DdXWY@wuerfel> <51C1E028.2040700@caviumnetworks.com> <201306192052.09575.arnd@arndb.de>
-In-Reply-To: <201306192052.09575.arnd@arndb.de>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-Forefront-Antispam-Report: SFV:SKI;SFS:;DIR:OUT;SFP:;SCL:0;SRVR:SN2PR07MB016;H:BL2PRD0712HT001.namprd07.prod.outlook.com;LANG:en;
-X-OriginatorOrg: DuplicateDomain-a3ec847f-e37f-4d9a-9900-9d9d96f75f58.caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+        Jiri Slaby <jslaby@suse.cz>, linux-serial@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
+Subject: [PATCH v2 0/4] MIPS/tty/8250: Use standard 8250 drivers for OCTEON
+Date:   Wed, 19 Jun 2013 14:37:25 -0700
+Message-Id: <1371677849-23912-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37019
+X-archive-position: 37020
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,45 +59,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/19/2013 11:52 AM, Arnd Bergmann wrote:
-> On Wednesday 19 June 2013, David Daney wrote:
->> On 06/19/2013 03:01 AM, Arnd Bergmann wrote:
->
->>> It's also wrong to use the
->>> __raw_* variant, which is not guaranteed to be atomic and is not
->>> endian-safe.
->>
->> We do runtime probing and only use this function on platforms where it
->> is appropriate, so atomicity is not an issue.  As for endianess, I used
->> the __raw_ variant precisely because it is correct for both big and
->> little endian kernels.
->
-> You don't know what the compiler turns a __raw_writeq into, it could
-> always to eight byte wise stores, that's why typically writeq is
-> an inline assembly while __raw_writeq is just a pointer dereference.
+From: David Daney <david.daney@cavium.com>
 
-Well, I do know that for the cases of interest, it will be a single load 
-or store, but it is moot, as I rewrote that part.
+Changes from v1: Fix breakage in non-OCTEON builds of 8250_dw.c
 
->
-> __raw_* never do endian swaps,
+1) Fix OCTEON's UART clock rate.
 
-Yes, I know that.
+2) Make minor patches to 8250_dw so it can be used by OCTEON
 
-> so it will be wrong on either big-endian
-> CPUs or on little-endian CPUs, depending on what the MMIO register
-> needs.
+3) Rip out the OCTEON serial code.
 
-Please see the instruction set reference manual 
-(MD00087-2B-MIPS64BIS-AFP-03.51 or similar) available at:
+4) Update defconfig so we default to having a usable serial port.
 
-http://www.mips.com/products/architectures/mips64/#specifications
+Since the patches are all interdependent, we might want to merge them
+via a single tree (perhaps Ralf's MIPS tree as OKed by Greg K-H).
 
-... for why you are mistaken.  Pay particular attention to the low order 
-address bit scrambling on narrow loads and stores and how this results 
-in uniform (not affected by processor endian mode) load and store 
-results for aligned 64-bit accesses.  In effect, it is magic, and 
-__raw_writeq yields correct results in both big and little endian modes 
-of operation.
+David Daney (4):
+  MIPS: OCTEON: Set proper UART clock in internal device trees.
+  tty/8250_dw: Add support for OCTEON UARTS.
+  MIPS: OCTEON: Remove custom serial setup code.
+  MIPS: Update cavium_octeon_defconfig
 
-David Daney.
+ arch/mips/cavium-octeon/Makefile          |   2 +-
+ arch/mips/cavium-octeon/octeon-platform.c |   9 ++-
+ arch/mips/cavium-octeon/serial.c          | 109 ------------------------------
+ arch/mips/configs/cavium_octeon_defconfig |   4 +-
+ drivers/tty/serial/8250/8250_dw.c         | 108 ++++++++++++++++++-----------
+ 5 files changed, 79 insertions(+), 153 deletions(-)
+ delete mode 100644 arch/mips/cavium-octeon/serial.c
+
+-- 
+1.7.11.7

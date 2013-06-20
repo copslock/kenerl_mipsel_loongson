@@ -1,46 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 12:01:56 +0200 (CEST)
-Received: from mail-bk0-f51.google.com ([209.85.214.51]:50133 "EHLO
-        mail-bk0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6818476Ab3FSHT5E0BUe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Jun 2013 09:19:57 +0200
-Received: by mail-bk0-f51.google.com with SMTP id ji1so2166558bkc.24
-        for <multiple recipients>; Wed, 19 Jun 2013 00:19:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 12:02:20 +0200 (CEST)
+Received: from mail-pd0-f175.google.com ([209.85.192.175]:53621 "EHLO
+        mail-pd0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823001Ab3FTSKVgCI5A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jun 2013 20:10:21 +0200
+Received: by mail-pd0-f175.google.com with SMTP id 4so6463990pdd.6
+        for <multiple recipients>; Thu, 20 Jun 2013 11:10:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
-        bh=AhDfLFMW8Ub9NwkPB8k2mA9ub9SowFWzP9fmtfQWMcs=;
-        b=KgPJwkdrNbK+ILsNqePvXcOMG1j1ykrrdx57DjuTmtXtVQ2WToGALQlJaROVsIGpV5
-         LaJbnVymye00N1ddwqRlpSyCNbUrsHB3t50fdoMDwNSWwbBlOkvVx7VkvYdi28KaVhNr
-         xZ7Nu87hdDkD8mPCe52zMo/Q4K00TBaZX6pTQCqnsFN4DrfTIgNfy0hIWfUPupitELwL
-         J94L/3E4tc6E2fVKB3SI9fLqIfO0Dv9u6VucjinqY9zmVB2KSLQVoMJ7wU2fUgyzDQuf
-         wpOKD+nb2o25Z2LDOZCJRZ8Hl6GbALIcjEOctb0k1lui62iK+UuXZeJopDexw84h8OP+
-         e5CQ==
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=Q9LqeAOxLpoh4tYYxZ2io5/fKQz9sLa+TTPWCQuozMk=;
+        b=RXeU5kjkW0abmOsnooTGnECdDXZM3DyKgbP2OH4wjG4xIIGjEFTdH307DGZYSi2F/R
+         OMZOmvNHrbX5B8n0OR14Icx8hYHqlNsIt2bKy+7CHFaFVoQedDRErHID8Kj4VGQFmWgi
+         DsbOOsCk/rJlPNKcxMHa1CEDRlOZOaUBFmeqt42zkjnHE8wrKufCVKyOMDGfvmN1xmdJ
+         Xus6xQSG3rAcm/KL1AQxUPUYPnZsy9rL3EYQytby2MRIvLIfX2h2ADVYBBcBRgOEEhn1
+         y160ulGob1e7VT+HaL0/QtKRM6orAM4TS1R3pGAd9MPSIck043IElWsT0rtMueazsFUX
+         7eFQ==
+X-Received: by 10.66.122.67 with SMTP id lq3mr10897197pab.147.1371751814853;
+        Thu, 20 Jun 2013 11:10:14 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id u6sm1094456pbb.46.2013.06.20.11.10.12
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 20 Jun 2013 11:10:13 -0700 (PDT)
+Message-ID: <51C34584.8070301@gmail.com>
+Date:   Thu, 20 Jun 2013 11:10:12 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
 MIME-Version: 1.0
-X-Received: by 10.204.166.197 with SMTP id n5mr203111bky.102.1371626390638;
- Wed, 19 Jun 2013 00:19:50 -0700 (PDT)
-Received: by 10.204.30.210 with HTTP; Wed, 19 Jun 2013 00:19:50 -0700 (PDT)
-In-Reply-To: <CAAhV-H42-6W4gYLkAF=O6pAQv1VZymRLE0MxPbTCKGsEthJMMw@mail.gmail.com>
-References: <CAAhV-H42-6W4gYLkAF=O6pAQv1VZymRLE0MxPbTCKGsEthJMMw@mail.gmail.com>
-Date:   Wed, 19 Jun 2013 15:19:50 +0800
-X-Google-Sender-Auth: QiiZUrdCbZ9yqoQjh9SuSr3ygXE
-Message-ID: <CAAhV-H7MCEyrPjK6Onzgk7vKF8e+u_7u9rX7OE4CLRsjnUi8JA@mail.gmail.com>
-Subject: Re: [RFD] Something wrong with commit "MIPS: Use inline function to
- access current thread pointer"?
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <chenhuacai@gmail.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+CC:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Grant Likely <grant.likely@linaro.org>,
+        Rob Herring <rob.herring@calxeda.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree-discuss@lists.ozlabs.org" 
+        <devicetree-discuss@lists.ozlabs.org>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: Re: [PATCH] gpio MIPS/OCTEON: Add a driver for OCTEON's on-chip
+ GPIO pins.
+References: <1371251915-18271-1-git-send-email-ddaney.cavm@gmail.com> <CACRpkdYHzBBbPNujYRGkMFGuQRzeYKs9jgfc3e3HWyxQFahvRQ@mail.gmail.com>
+In-Reply-To: <CACRpkdYHzBBbPNujYRGkMFGuQRzeYKs9jgfc3e3HWyxQFahvRQ@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37196
+X-archive-position: 37197
 X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,120 +64,183 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Seems like a compiler issue. When I upgrade my GCC-4.5.2 to GCC-4.6.0,
-everything is OK.
-Sorry for my noise.
+Sorry for not responding earlier, but my e-mail system seems to have 
+malfunctioned with respect to this message...
 
-Huacai Chen
 
-On Mon, Jun 17, 2013 at 9:10 PM, Huacai Chen <chenhc@lemote.com> wrote:
-> Hi, ralf and all,
+On 06/17/2013 01:51 AM, Linus Walleij wrote:
+> On Sat, Jun 15, 2013 at 1:18 AM, David Daney <ddaney.cavm@gmail.com> wrote:
 >
-> I found that the latest upstream kernel has some problems on
-> Loongson-3, I want to know whether other MIPS has similar problems.
+>> From: David Daney <david.daney@cavium.com>
+>>
+>> The SOCs in the OCTEON family have 16 (or in some cases 20) on-chip
+>> GPIO pins, this driver handles them all.  Configuring the pins as
+>> interrupt sources is handled elsewhere (OCTEON's irq handling code).
+>>
+>> Signed-off-by: David Daney <david.daney@cavium.com>
 >
-> 1, When configure with SMP but no NUMA, it complaims "schedule while atomic":
-> [    0.000000] allocated 2097152 bytes of page_cgroup
-> [    0.000000] please try 'cgroup_disable=memory' option if you don't
-> want memory cgroups
-> [    0.023437] Calibrating delay loop... 717.28 BogoMIPS (lpj=1400832)
-> [    0.054687] pid_max: default: 32768 minimum: 301
-> [    0.058593] Mount-cache hash table entries: 1024
-> [    0.062500] Initializing cgroup subsys memory
-> [    0.066406] ------------[ cut here ]------------
-> [    0.070312] WARNING: at lib/idr.c:423 idr_preload+0x5c/0x174()
-> [    0.074218] Modules linked in:
-> [    0.078125] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 3.10.0-rc6+ #1271
-> [    0.082031] Stack : 0000000000000800 ffffffff80428ec4
-> ffffffff8095fcb8 ffffffff8120d348
->           ffffffff81210000 ffffffff81210000 ffffffff808c7608 ffffffff809771f7
->           00000000000001a7 ffffffff808e30c0 00000000000000d0 0000000000000000
->           0000000000000000 0000000000000000 0000000000000000 ffffffff80759bc8
->           ffffffff8095fcb8 ffffffff8022b8e4 0000000000000000 ffffffff8022f17c
->           ffffffff80977660 ffffffff808c7608 0000000000000000 0000000000000000
->           ffffffff80977600 0000000000000000 0000000000000000 0000000000000000
->           0000000000000000 ffffffff8095fc10 0000000000000000 ffffffff8022b9dc
->           0000000000000000 0000000000000000 00000000000001a7 0000000000000009
->           ffffffff8041e0b4 ffffffff8020977c ffffffff808e30c0 ffffffff8022b9dc
->           ...
-> [    0.152343] Call Trace:
-> [    0.152343] [<ffffffff8020977c>] show_stack+0x48/0x70
-> [    0.156250] [<ffffffff8022b9dc>] warn_slowpath_common+0x78/0xa4
-> [    0.160156] [<ffffffff8041e0b4>] idr_preload+0x5c/0x174
-> [    0.164062] [<ffffffff8028632c>] get_new_cssid+0x50/0xec
-> [    0.167968] [<ffffffff80288788>] cgroup_init_idr+0x30/0x6c
-> [    0.171875] [<ffffffff811c7954>] cgroup_init+0x90/0x1dc
-> [    0.175781] [<ffffffff811bca40>] start_kernel+0x4f4/0x554
-> [    0.179687]
-> [    0.179687] ---[ end trace 554a547e6319cb64 ]---
-> [    0.183593] Initializing cgroup subsys blkio
-> [    0.187500] Checking for the daddi bug... no.
-> [    0.191406] BUG: scheduling while atomic: swapper/0/0/0xffc60201
-> [    0.195312] Modules linked in:
-> [    0.195312] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W
-> 3.10.0-rc6+ #1271
-> [    0.199218] Stack : 0000000000000800 ffffffff80428ec4
-> ffffffff8095fcc8 ffffffff8120d348
->           ffffffff81210000 ffffffff81210000 ffffffff808c7608 ffffffff809771f7
->           0000000000000001 ffffffff811c0000 0000000000000001 ffffffff808cc820
->           ffffffff811c0000 ffffffff811fa420 98000000059c6420 ffffffff80759bc8
->           ffffffff8095fcc8 ffffffff8022b85c 0000000000000000 ffffffff8022f17c
->           ffffffff80977660 ffffffff808c7608 0000000000000000 0000000000000000
->           ffffffff80977600 0000000000000000 0000000000000000 0000000000000000
->           0000000000000000 ffffffff8095fc20 0000000000000000 ffffffff80256010
->           0000000000000000 0000000000000000 000000001400cce3 ffffffff811fa420
->           ffffffff80972fe8 ffffffff8020977c ffffffff811c0000 ffffffff80256010
->           ...
-> [    0.269531] Call Trace:
-> [    0.269531] [<ffffffff8020977c>] show_stack+0x48/0x70
-> [    0.273437] [<ffffffff80256010>] __schedule_bug+0x44/0x64
-> [    0.277343] [<ffffffff8075b7d0>] __schedule+0xb8/0x6dc
-> [    0.281250] [<ffffffff8075c248>] schedule_preempt_disabled+0x18/0x30
-> [    0.285156] [<ffffffff80749e98>] rest_init+0x7c/0x8c
-> [    0.289062] [<ffffffff811bca84>] start_kernel+0x538/0x554
+>> This patch depends somewhat on patches in Ralf's MIPS/Linux -next tree
+>> where we have patches that enable the Kconfig CAVIUM_OCTEON_SOC and
+>> ARCH_REQUIRE_GPIOLIB symbols.  Apart from that it is stand-alone and
+>> is probably suitable for merging via the GPIO tree.
 >
-> 2, when both SMP and NUMA configured, it complaims "early out of memory":
-> [    0.000000] CPU revision is: 00006305 (ICT Loongson-3A)
-> [    0.000000] FPU revision is: 00770501
-> [    0.000000] Checking for the multiply/shift bug... no.
-> [    0.000000] Checking for the daddiu bug... no.
-> [    0.000000] Determined physical RAM map:
-> [    0.000000]  memory: 000000000fe00000 @ 0000000000200000 (usable)
-> [    0.000000]  memory: 0000000070000000 @ 0000000110000000 (usable)
-> [    0.000000] Initrd not found or empty - disabling initrd
-> [    0.000000] software IO TLB [mem 0x03a60000-0x07a60000] (64MB)
-> mapped at [9800000003a60000-9800000007a5ffff]
-> [    0.000000] Zone ranges:
-> [    0.000000]   DMA32    [mem 0x01000000-0xffffffff]
-> [    0.000000]   Normal   [mem 0x100000000-0x17fffffff]
-> [    0.000000] Movable zone start for each node
-> [    0.000000] Early memory node ranges
-> [    0.000000]   node   0: [mem 0x01000000-0x0fffffff]
-> [    0.000000]   node   0: [mem 0x110000000-0x17fffffff]
-> [    0.000000] Detected 3 available secondary CPU(s)
-> [    0.000000] Primary instruction cache 64kB, VIPT, 4-way, linesize 32 bytes.
-> [    0.000000] Primary data cache 64kB, 4-way, VIPT, no aliases,
-> linesize 32 bytes
-> [    0.000000] Unified secondary cache 4096kB 4-way, linesize 32 bytes.
-> [    0.000000] PERCPU: Embedded 3 pages/cpu @9800000007adc000 s11968
-> r8192 d28992 u49152
-> [    0.000000] Built 1 zonelists in Zone order, mobility grouping on.
-> Total pages: 129603
-> [    0.000000] Policy zone: Normal
-> [    0.000000] Kernel command line: console=tty console=ttyS0,115200
-> root=/dev/sda5 PMON_VER=A1101-3.1.8 EC_VER=undefined
-> machtype=lemote-3a-itx-a1101  autoplug=off
-> [    0.000000] PID hash table entries: 4096 (order: 1, 32768 bytes)
-> [    0.000000] total ram pages initialed 0
-> [    0.000000] total ram pages are 123261
-> [    0.000000] Kernel panic - not syncing: Oh boy, that early out of memory?
+> Really? You're using this:
 >
-> 3, If I revert the commit ad04c2e9 (MIPS: Use inline function to
-> access current thread pointer), everything is OK.
+> +#include <asm/octeon/octeon.h>
+> +#include <asm/octeon/cvmx-gpio-defs.h>
 >
-> If other MIPS have no problem, could anyone give me some suggestions?
-> Kernel code of Loongson-3 is here:
-> http://dev.lemote.com/cgit/linux-official.git/
+> I cannot find this in my tree.
+
+Weird, I see them here:
+
+https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/arch/mips/include/asm/octeon/cvmx-gpio-defs.h
+https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/arch/mips/include/asm/octeon/octeon.h
+
+Do you not have these?
+
 >
-> Thanks,
-> Huacai Chen
+> Further I ask why that second file is not part of *this* patch?
+> It surely seems GPIO-related, and would probably need to
+> go into include/linux/platform_data/gpio-octeon.h or something
+> rather than such platform dirs.
+>
+> (...)
+>> +config GPIO_OCTEON
+>> +       tristate "Cavium OCTEON GPIO"
+>> +       depends on GPIOLIB && CAVIUM_OCTEON_SOC
+>
+> depend on OF as well right? Or does the CAVIUM_OCTEON_SOC already
+> imply that?
+
+We already have 'select USE_OF', so I think adding OF here would be 
+redundant.
+
+
+>
+> (...)
+>> +++ b/drivers/gpio/gpio-octeon.c
+>
+>
+>> +#define RX_DAT 0x80
+>> +#define TX_SET 0x88
+>> +#define TX_CLEAR 0x90
+>
+>
+>> +/*
+>> + * The address offset of the GPIO configuration register for a given
+>> + * line.
+>> + */
+>> +static unsigned int bit_cfg_reg(unsigned int gpio)
+
+>
+> Maybe the passed variable shall be named "offset" here, as it is named
+> offset on all call sites, and it surely local for this instance?
+
+Well it is the gpio line, so perhaps it should universally be change to 
+"line" or "pin"
+
+
+>
+>> +{
+>> +       if (gpio < 16)
+>> +               return 8 * gpio;
+>> +       else
+>> +               return 8 * (gpio - 16) + 0x100;
+>
+> Put this 0x100 in the #defines above with the name something like
+> STRIDE.
+
+But it is not a 'STRIDE', it is a discontinuity compensation and used in 
+exactly one place.
+
+
+>
+>> +struct octeon_gpio {
+>> +       struct gpio_chip chip;
+>> +       u64 register_base;
+>> +};
+>
+> OMG everything is 64 bit. Well has to come to this I guess.
+
+Not everything.  This is custom logic in an SoC with 64-bit wide 
+internal address buses, what would you suggest?
+
+
+>
+>> +static void octeon_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
+>> +{
+>> +       struct octeon_gpio *gpio = container_of(chip, struct octeon_gpio, chip);
+>> +       u64 mask = 1ull << offset;
+>
+> And now BIT(offset) does not work anymore because it is defined as
+> #define BIT(nr)                 (1UL << (nr))
+> OK we will have to live with this FTM I guess.
+>
+>> +static int octeon_gpio_dir_out(struct gpio_chip *chip, unsigned offset,
+>> +                              int value)
+>> +{
+>> +       struct octeon_gpio *gpio = container_of(chip, struct octeon_gpio, chip);
+>> +       union cvmx_gpio_bit_cfgx cfgx;
+>> +
+>> +       octeon_gpio_set(chip, offset, value);
+>> +
+>> +       cfgx.u64 = 0;
+>> +       cfgx.s.tx_oe = 1;
+>
+> This makes me want to review that magic header file of yours,
+> I guess this comes from <asm/octeon/cvmx-gpio-defs.h>?
+
+Not really magic, but yes that is where it comes from.
+
+>
+> Should not this latter variable be a bool?
+
+I don't think so, it is not the result of a comparison operator.
+
+>
+> I'm not a fan of packed bitfields like this, I prefer if you just
+> OR | and AND & the bits together in the driver.
+>
+>> +static int octeon_gpio_get(struct gpio_chip *chip, unsigned offset)
+>> +{
+>> +       struct octeon_gpio *gpio = container_of(chip, struct octeon_gpio, chip);
+>> +       u64 read_bits = cvmx_read_csr(gpio->register_base + RX_DAT);
+>> +
+>> +       return ((1ull << offset) & read_bits) != 0;
+>
+> A common idiom we use for this is:
+>
+> return !!(read_bits & (1ull << offset));
+
+I hate that idiom, but if its use is a condition of accepting the patch, 
+I will change it.
+
+>
+>> +       pdev->dev.platform_data = chip;
+>> +       chip->label = "octeon-gpio";
+>> +       chip->dev = &pdev->dev;
+>> +       chip->owner = THIS_MODULE;
+>> +       chip->base = 0;
+>> +       chip->can_sleep = 0;
+>> +       chip->ngpio = 20;
+>> +       chip->direction_input = octeon_gpio_dir_in;
+>> +       chip->get = octeon_gpio_get;
+>> +       chip->direction_output = octeon_gpio_dir_out;
+>> +       chip->set = octeon_gpio_set;
+>> +       err = gpiochip_add(chip);
+>> +       if (err)
+>> +               goto out;
+>> +
+>> +       dev_info(&pdev->dev, "OCTEON GPIO\n");
+>
+> This is like shouting "REAL MADRID!" in the bootlog, be a bit more
+> precise: "octeon GPIO driver probed\n" or something so we know what
+> is happening.
+
+No, more akin to 'Real Madrid', as 'OCTEON' is the correct spelling of 
+its given name.
+
+I will happily add "driver probed", and grudgingly switch to lower case 
+if it is a necessary condition of patch acceptance.
+
+David Daney

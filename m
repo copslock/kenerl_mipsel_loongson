@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 17:54:52 +0200 (CEST)
-Received: from mail-ie0-f171.google.com ([209.85.223.171]:55944 "EHLO
-        mail-ie0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6820510Ab3FTJumSNqOu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jun 2013 11:50:42 +0200
-Received: by mail-ie0-f171.google.com with SMTP id qd12so16026629ieb.2
-        for <multiple recipients>; Thu, 20 Jun 2013 02:50:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 17:55:09 +0200 (CEST)
+Received: from mail-pd0-f179.google.com ([209.85.192.179]:60661 "EHLO
+        mail-pd0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6819547Ab3FTNfWX3d2u (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jun 2013 15:35:22 +0200
+Received: by mail-pd0-f179.google.com with SMTP id q10so6236729pdj.38
+        for <multiple recipients>; Thu, 20 Jun 2013 06:35:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=E9W0oZMcs2PH09NC7CYGtJnuOx7sB5cu7mN2QTtoH0M=;
-        b=maoTThYUiLqYug+4V78BivHDaovP56rEMaxWqt+nETIQpXRLKzfR2nLt7yrSZ4FzYI
-         Tee7YQN3suQexdMMg9f3Wf/PsahI4IioGfDWfb6CBKXXiOJeRu8CB1M4umFeCuEsJ3mT
-         k5VgpcSwfUWut0lMGQgR7Yw+5orOE+ZNykgWg+kBK0R61oBiP01wRZkB2nk7lQaapB+i
-         BdoNS/pd8B+8wX0kb780VL9YDFZJX0dUFH4Rq2tNfAfXFmeIkDMY5NR936oE0o1UHN2X
-         M1FckHPY4AoT7k6Y9Y+N6YUMQwXtzJnu8lbO0gcngs+wDPk5XxB2qD7wUKqmWSyjcOxT
-         UAnw==
-MIME-Version: 1.0
-X-Received: by 10.50.23.108 with SMTP id l12mr11782484igf.45.1371721835196;
- Thu, 20 Jun 2013 02:50:35 -0700 (PDT)
-Received: by 10.50.164.227 with HTTP; Thu, 20 Jun 2013 02:50:35 -0700 (PDT)
-In-Reply-To: <51C22901.7050709@imgtec.com>
-References: <20130527124421.GA32322@hades>
-        <20130527124557.GB32322@hades>
-        <51A36EE6.3040901@cogentembedded.com>
-        <51C22901.7050709@imgtec.com>
-Date:   Thu, 20 Jun 2013 17:50:35 +0800
-Message-ID: <CA+zhxNk+KguZYbHFOEU2xXU5E7zuc7RbHGzRHG_W1q3=3=RL=g@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] MIPS: microMIPS: Add kernel_uses_mmips in cpu-features.h
+        h=date:from:to:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=UJ9momD+21sE0dJjKw88dnPJRTy/XkZOhqNpHSD9L94=;
+        b=UOt9pay5e9IZUwbcF4diUW/Bv4kPGFohpshcXe/a2B12smFfTBuxAdb+cEamxC1lb7
+         ZUE4H0I3GDK4U4O9Ts/Q45RgvP/qVg2JjE5TrW2v2pJdnEPo8+my1FWIfGvsG8ZybiYH
+         a3VuYTfUhXZ+2YRlz2gwtOxw6QKU/QdRAWuA01DaPfqDTwRvUumnbLE2VomT/serEHuL
+         uoJLVFXk9NoiJialMZw6BgxEDBkPYn/5CNY8iIsoATCXDdyivVCMYwx5JiSS8pukan7c
+         t7gPwTnQQOZ9AuQhY3sn4gYmv7C+gKimGWidfUn9eu/B2F7C3NOg3/0uR86rNKe9sb1A
+         T7dg==
+X-Received: by 10.66.7.100 with SMTP id i4mr11179937paa.210.1371735315333;
+        Thu, 20 Jun 2013 06:35:15 -0700 (PDT)
+Received: from hades (111-251-227-40.dynamic.hinet.net. [111.251.227.40])
+        by mx.google.com with ESMTPSA id xj9sm314369pbc.16.2013.06.20.06.35.08
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Thu, 20 Jun 2013 06:35:14 -0700 (PDT)
+Date:   Thu, 20 Jun 2013 21:35:04 +0800
 From:   Tony Wu <tung7970@gmail.com>
-To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
-Cc:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>, david.daney@cavium.com,
-        linux-mips@linux-mips.org
-Content-Type: multipart/alternative; boundary=089e0149cbe8b7b81b04df92e07e
+To:     ralf@linux-mips.org, macro@linux-mips.org, Steven.Hill@imgtec.com,
+        david.daney@cavium.com, linux-mips@linux-mips.org
+Subject: [PATCH v5 2/2] MIPS: microMIPS: Refactor get_frame_info support
+Message-ID: <20130620133504.GB84495@hades>
+References: <20130620133230.GA84495@hades>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20130620133230.GA84495@hades>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <tung7970@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37064
+X-archive-position: 37065
 X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
@@ -57,105 +57,451 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---089e0149cbe8b7b81b04df92e07e
-Content-Type: text/plain; charset=ISO-8859-1
+Current get_frame_info implementation works on word boundary, this
+can lead to alignment and endian issues in microMIPS mode,
+due to:
 
-On Thu, Jun 20, 2013 at 5:56 AM, Steven J. Hill <Steven.Hill@imgtec.com>wrote:
+1. microMIPS instructions are sequence of halfwords
+2. microMIPS instructions can be one or two halfwords
+3. microMIPS instructions are placed in 32-bit memory element,
+   in endian-dependent order.
 
-> On 05/27/2013 09:34 AM, Sergei Shtylyov wrote:
->
->> Hello.
->>
->> On 27-05-2013 16:45, Tony Wu wrote:
->>
->>  Add kernel_uses_mmips to denote whether CONFIG_CPU_MICROMIPS
->>> is set or not. This variable can help cut down #ifdef usage.
->>>
->>
->>     You can avoid #ifdef usage with using IS_BUILTIN() macro, not
->> defining extra macros.
->>
->>  Signed-off-by: Tony Wu <tung7970@gmail.com>
->>> Cc: David Daney <david.daney@cavium.com>
->>> Cc: Steven J. Hill <Steven.Hill@imgtec.com>
->>>
->>
->> WBR, Sergei
->>
->>
->>  I think this patch is not needed with <http://patchwork.linux-mips.**
-> org/patch/5327/ <http://patchwork.linux-mips.org/patch/5327/>> being used
-> instead?
->
-> -Steve
->
->
-I think cpu_has_mmips does not necessary mean kernel is compiled using
-microMIPS ISA, so I added kernel_uses_mmips for that purpose. We can remove
-this patch, but the third patch of this patch set will need some
-modifications. I will send new patches later.
+Example:
+    insn1 = one halfword  => word1, hword[0]
+    insn2 = two halfwords => word1, hword[1], word2, hword[0]
+    insn3 = one halfword  => word2, hword[1]
 
-Thanks,
-Tony
+       Big Endian
+            hword[0]     hword[1]      hword[0]     hword[1]
+       +-------------+-------------+-------------+-------------+
+       |    insn1    |    insn2    |    insn2'   |    insn3    |
+       +-------------+-------------+-------------+-------------+
+       31          word1          0 31         word2           0
 
---089e0149cbe8b7b81b04df92e07e
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+       Little Endian
+            hword[1]     hword[0]      hword[1]     hword[0]
+       +-------------+-------------+-------------+-------------+
+       |    insn2    |    insn1    |    insn3    |    insn2'   |
+       +-------------+-------------+-------------+-------------+
+       31          word1          0 31         word2           0
 
-<div dir=3D"ltr">On Thu, Jun 20, 2013 at 5:56 AM, Steven J. Hill <span dir=
-=3D"ltr">&lt;<a href=3D"mailto:Steven.Hill@imgtec.com" target=3D"_blank">St=
-even.Hill@imgtec.com</a>&gt;</span> wrote:<br><div class=3D"gmail_extra"><d=
-iv class=3D"gmail_quote">
-<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
-left-width:1px;border-left-color:rgb(204,204,204);border-left-style:solid;p=
-adding-left:1ex"><div class=3D""><div class=3D"h5">On 05/27/2013 09:34 AM, =
-Sergei Shtylyov wrote:<br>
+This patch refactors microMIPS get_frame_info by implementing
+fetch_instruction() to fetch words on word boundary, and
+mmips_fetch_halfword() to assemble one or two halfwords into
+microMIPS instructions for further processing.
 
-<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
-left-width:1px;border-left-color:rgb(204,204,204);border-left-style:solid;p=
-adding-left:1ex">
-Hello.<br>
-<br>
-On 27-05-2013 16:45, Tony Wu wrote:<br>
-<br>
-<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
-left-width:1px;border-left-color:rgb(204,204,204);border-left-style:solid;p=
-adding-left:1ex">
-Add kernel_uses_mmips to denote whether CONFIG_CPU_MICROMIPS<br>
-is set or not. This variable can help cut down #ifdef usage.<br>
-</blockquote>
-<br>
-=A0 =A0 You can avoid #ifdef usage with using IS_BUILTIN() macro, not<br>
-defining extra macros.<br>
-<br>
-<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
-left-width:1px;border-left-color:rgb(204,204,204);border-left-style:solid;p=
-adding-left:1ex">
-Signed-off-by: Tony Wu &lt;<a href=3D"mailto:tung7970@gmail.com" target=3D"=
-_blank">tung7970@gmail.com</a>&gt;<br>
-Cc: David Daney &lt;<a href=3D"mailto:david.daney@cavium.com" target=3D"_bl=
-ank">david.daney@cavium.com</a>&gt;<br>
-Cc: Steven J. Hill &lt;<a href=3D"mailto:Steven.Hill@imgtec.com" target=3D"=
-_blank">Steven.Hill@imgtec.com</a>&gt;<br>
-</blockquote>
-<br>
-WBR, Sergei<br>
-<br>
-<br>
-</blockquote></div></div>
-I think this patch is not needed with &lt;<a href=3D"http://patchwork.linux=
--mips.org/patch/5327/" target=3D"_blank">http://patchwork.linux-mips.<u></u=
->org/patch/5327/</a>&gt; being used instead?<br>
-<br>
--Steve<br>
-<br>
-</blockquote></div><br></div><div class=3D"gmail_extra" style>I think cpu_h=
-as_mmips does not necessary mean kernel is compiled using microMIPS ISA, so=
- I added kernel_uses_mmips for that purpose. We can remove this patch, but =
-the third patch of this patch set will need some modifications. I will send=
- new patches later.</div>
-<div class=3D"gmail_extra" style><br></div><div class=3D"gmail_extra"><div =
-class=3D"gmail_extra" style>Thanks,</div><div class=3D"gmail_extra" style>T=
-ony</div></div></div>
+This patch also fixes sibling call handling and schedule_mfi
+initialization for microMIPS.
 
---089e0149cbe8b7b81b04df92e07e--
+Signed-off-by: Tony Wu <tung7970@gmail.com>
+Cc: Maciej W. Rozycki <macro@linux-mips.org>
+Cc: David Daney <david.daney@cavium.com>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
+---
+ arch/mips/kernel/process.c |  339 ++++++++++++++++++++++++++++----------------
+ 1 file changed, 214 insertions(+), 125 deletions(-)
+
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index c6a041d..706bda8 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -211,124 +211,211 @@ struct mips_frame_info {
+ 	int		pc_offset;
+ };
+ 
+-#define J_TARGET(pc,target)	\
+-		(((unsigned long)(pc) & 0xf0000000) | ((target) << 2))
+-
+ static inline int is_ra_save_ins(union mips_instruction *ip)
+ {
+-#ifdef CONFIG_CPU_MICROMIPS
+-	union mips_instruction mmi;
++	if (cpu_has_mmips) {
++		/*
++		 * swsp ra,offset
++		 * swm16 reglist,offset(sp)
++		 *
++		 * microMIPS is way more fun...
++		 */
++		if ((ip->mm16_r5_format.opcode == mm_swsp16_op &&
++		     ip->mm16_r5_format.rt == 31) ||
++		    (ip->mm16_m_format.opcode == mm_pool16c_op &&
++		     ip->mm16_m_format.func == mm_swm16_op))
++			return 1;
+ 
+-	/*
+-	 * swsp ra,offset
+-	 * swm16 reglist,offset(sp)
+-	 * swm32 reglist,offset(sp)
+-	 * sw32 ra,offset(sp)
+-	 * jradiussp - NOT SUPPORTED
+-	 *
+-	 * microMIPS is way more fun...
+-	 */
+-	if (mm_insn_16bit(ip->halfword[0])) {
+-		mmi.word = (ip->halfword[0] << 16);
+-		return ((mmi.mm16_r5_format.opcode == mm_swsp16_op &&
+-			 mmi.mm16_r5_format.rt == 31) ||
+-			(mmi.mm16_m_format.opcode == mm_pool16c_op &&
+-			 mmi.mm16_m_format.func == mm_swm16_op));
+-	}
+-	else {
+-		mmi.halfword[0] = ip->halfword[1];
+-		mmi.halfword[1] = ip->halfword[0];
+-		return ((mmi.mm_m_format.opcode == mm_pool32b_op &&
+-			 mmi.mm_m_format.rd > 9 &&
+-			 mmi.mm_m_format.base == 29 &&
+-			 mmi.mm_m_format.func == mm_swm32_func) ||
+-			(mmi.i_format.opcode == mm_sw32_op &&
+-			 mmi.i_format.rs == 29 &&
+-			 mmi.i_format.rt == 31));
++		/*
++		 * two-halfword instructions
++		 *
++		 * swm32 reglist,offset(sp)
++		 * sw32 ra,offset(sp)
++		 */
++		if ((ip->mm_m_format.opcode == mm_pool32b_op &&
++		     ip->mm_m_format.rd >= 16 &&
++		     ip->mm_m_format.base == 29 &&
++		     ip->mm_m_format.func == mm_swm32_func) ||
++		    (ip->mm_i_format.opcode == mm_sw32_op &&
++		     ip->mm_i_format.rs == 29 &&
++		     ip->mm_i_format.rt == 31))
++			return 1;
+ 	}
+-#else
++
+ 	/* sw / sd $ra, offset($sp) */
+-	return (ip->i_format.opcode == sw_op || ip->i_format.opcode == sd_op) &&
++	return (ip->i_format.opcode == sw_op ||
++		ip->i_format.opcode == sd_op) &&
+ 		ip->i_format.rs == 29 &&
+ 		ip->i_format.rt == 31;
+-#endif
+ }
+ 
+ static inline int is_jump_ins(union mips_instruction *ip)
+ {
+-#ifdef CONFIG_CPU_MICROMIPS
+-	/*
+-	 * jr16,jrc,jalr16,jalr16
+-	 * jal
+-	 * jalr/jr,jalr.hb/jr.hb,jalrs,jalrs.hb
+-	 * jraddiusp - NOT SUPPORTED
+-	 *
+-	 * microMIPS is kind of more fun...
+-	 */
+-	union mips_instruction mmi;
+-
+-	mmi.word = (ip->halfword[0] << 16);
++	if (cpu_has_mmips) {
++		/*
++		 * jr16,jrc,jalr16,jalr16
++		 * jal
++		 * jalr/jr,jalr.hb/jr.hb,jalrs,jalrs.hb
++		 * jraddiusp
++		 *
++		 * microMIPS is kind of more fun...
++		 */
++		if ((ip->mm16_r5_format.opcode == mm_pool16c_op &&
++		     ((ip->mm16_r5_format.rt & ~0x3) == mm_jr16_op ||
++		      ip->mm16_r5_format.rt == mm_jraddiusp_op)))
++			return 1;
++
++		/* two-halfword instructions */
++		if (ip->j_format.opcode == mm_jal32_op ||
++		    ip->j_format.opcode == mm_jals32_op ||
++		    ip->j_format.opcode == mm_j32_op ||
++		    (ip->r_format.opcode == mm_pool32a_op &&
++		     ip->r_format.func == mm_pool32axf_op &&
++		     ((ip->u_format.uimmediate >> 6) & ~0x140) == mm_jalr_op))
++			return 1;
++	}
+ 
+-	if ((mmi.mm16_r5_format.opcode == mm_pool16c_op &&
+-	    (mmi.mm16_r5_format.rt & mm_jr16_op) == mm_jr16_op) ||
+-	    ip->j_format.opcode == mm_jal32_op)
+-		return 1;
+-	if (ip->r_format.opcode != mm_pool32a_op ||
+-			ip->r_format.func != mm_pool32axf_op)
+-		return 0;
+-	return (((ip->u_format.uimmediate >> 6) & mm_jalr_op) == mm_jalr_op);
+-#else
+-	if (ip->j_format.opcode == j_op)
+-		return 1;
+-	if (ip->j_format.opcode == jal_op)
+-		return 1;
+-	if (ip->r_format.opcode != spec_op)
+-		return 0;
+-	return ip->r_format.func == jalr_op || ip->r_format.func == jr_op;
+-#endif
++	return (ip->j_format.opcode == j_op ||
++		ip->j_format.opcode == jal_op ||
++		(ip->r_format.opcode == spec_op &&
++		 (ip->r_format.func == jalr_op ||
++		  ip->r_format.func == jr_op)));
+ }
+ 
+ static inline int is_sp_move_ins(union mips_instruction *ip)
+ {
+-#ifdef CONFIG_CPU_MICROMIPS
+-	/*
+-	 * addiusp -imm
+-	 * addius5 sp,-imm
+-	 * addiu32 sp,sp,-imm
+-	 * jradiussp - NOT SUPPORTED
+-	 *
+-	 * microMIPS is not more fun...
+-	 */
+-	if (mm_insn_16bit(ip->halfword[0])) {
+-		union mips_instruction mmi;
+-
+-		mmi.word = (ip->halfword[0] << 16);
+-		return ((mmi.mm16_r3_format.opcode == mm_pool16d_op &&
+-			 mmi.mm16_r3_format.simmediate && mm_addiusp_func) ||
+-			(mmi.mm16_r5_format.opcode == mm_pool16d_op &&
+-			 mmi.mm16_r5_format.rt == 29));
++	if (cpu_has_mmips) {
++		/*
++		 * addiusp -imm
++		 * addius5 sp,-imm
++		 * addiu32 sp,sp,-imm
++		 *
++		 * microMIPS is not more fun...
++		 */
++		if (ip->mm16_r5_format.opcode == mm_pool16d_op &&
++		    ((ip->mm16_r5_format.simmediate & mm_addiusp_func) ||
++		     (ip->mm16_r5_format.rt == 29)))
++			return 1;
++
++		/* two-halfword instructions */
++		if (ip->mm_i_format.opcode == mm_addiu32_op &&
++		    ip->mm_i_format.rt == 29 &&
++		    ip->mm_i_format.rs == 29)
++			return 1;
+ 	}
+-	return (ip->mm_i_format.opcode == mm_addiu32_op &&
+-		 ip->mm_i_format.rt == 29 && ip->mm_i_format.rs == 29);
+-#else
++
+ 	/* addiu/daddiu sp,sp,-imm */
+-	if (ip->i_format.rs != 29 || ip->i_format.rt != 29)
+-		return 0;
+-	if (ip->i_format.opcode == addiu_op || ip->i_format.opcode == daddiu_op)
+-		return 1;
+-#endif
+-	return 0;
++	return (ip->i_format.rs == 29 &&
++		ip->i_format.rt == 29 &&
++		(ip->i_format.opcode == addiu_op ||
++		 ip->i_format.opcode == daddiu_op));
++}
++
++/*
++ * A few fun facts on microMIPS (MIPS32)
++ *
++ * 1. microMIPS instructions are sequence of halfwords
++ * 2. microMIPS instructions may contain one to two halfwords
++ * 3. microMIPS instructions are placed in 32-bit memory element,
++ *    in endian-dependent order.
++ *
++ * Example:
++ *  insn1 = one halfword  => word1, hword[0]
++ *  insn2 = two halfwords => word1, hword[1], word2, hword[0]
++ *  insn3 = one halfword  => word2, hword[1]
++ *
++ * Big Endian
++ *      hword[0]     hword[1]      hword[0]     hword[1]
++ * +-------------+-------------+-------------+-------------+
++ * |    insn1    |    insn2    |    insn2'   |    insn3    |
++ * +-------------+-------------+-------------+-------------+
++ * 31          word1          0 31         word2           0
++ *
++ * Little Endian
++ *      hword[1]     hword[0]      hword[1]     hword[0]
++ * +-------------+-------------+-------------+-------------+
++ * |    insn2    |    insn1    |    insn3    |    insn2'   |
++ * +-------------+-------------+-------------+-------------+
++ * 31          word1         0 31          word2           0
++ *
++ * mmips_fetch_halfword does the followings:
++ *
++ * 1. fetch word from word-aligned address
++ * 2. access the fetched word using halfword (defeat endian issue)
++ * 3. assemble microMIPS instruction with one or two halfwords
++ */
++static void mmips_fetch_halfword(union mips_instruction **ip,
++				 unsigned short *this_halfword,
++				 unsigned short *prev_halfword)
++{
++	if (*prev_halfword) {
++		*this_halfword = *prev_halfword;
++		*prev_halfword = 0;
++	} else {
++		/* advance pointer to next word */
++		*this_halfword = (*ip)->halfword[0];
++		*prev_halfword = (*ip)->halfword[1];
++		*ip += 1;
++	}
++}
++
++static void fetch_instruction(union mips_instruction **ip,
++			      union mips_instruction *mi,
++			      unsigned short *prev_halfword)
++{
++	if (cpu_has_mmips) {
++		/* fetch the first microMIPS instruction */
++		mmips_fetch_halfword(ip, &mi->halfword[0], prev_halfword);
++
++		/* fetch the second half if it is a 32bit one */
++		if (mm_insn_16bit(mi->halfword[0]))
++			mi->halfword[1] = 0;
++		else
++			mmips_fetch_halfword(ip, &mi->halfword[1],
++					     prev_halfword);
++	} else {
++		/* do simple assignment for mips32 mode */
++		*mi = **ip;
++		*ip += 1;
++	}
++}
++
++static int get_frame_size(union mips_instruction *ip)
++{
++	unsigned short tmp;
++	int size = 0;
++
++	if (cpu_has_mmips &&
++	    mm_insn_16bit(ip->halfword[0])) {
++		/*
++		 * addiusp -imm
++		 * addius5 sp,-imm
++		 */
++		if (ip->halfword[0] & mm_addiusp_func) {
++			tmp = (((ip->halfword[0] >> 1) & 0x1ff) << 2);
++			size = -(signed short)(tmp |
++					       ((tmp & 0x100) ? 0xfe00 : 0));
++		} else {
++			tmp = (ip->halfword[0] >> 1);
++			size = -(signed short)(tmp & 0xf);
++		}
++	} else {
++		/*
++		 * addiu32 sp,sp,-imm
++		 * addiu/daddiu sp,sp,-imm
++		 */
++		size = - ip->i_format.simmediate;
++	}
++
++	return size;
+ }
+ 
+ static int get_frame_info(struct mips_frame_info *info)
+ {
+-#ifdef CONFIG_CPU_MICROMIPS
+-	union mips_instruction *ip = (void *) (((char *) info->func) - 1);
+-#else
+ 	union mips_instruction *ip = info->func;
+-#endif
++	union mips_instruction inst, *max_ip;
+ 	unsigned max_insns = info->func_size / sizeof(union mips_instruction);
+-	unsigned i;
++	unsigned short halfword = 0;
+ 
+ 	info->pc_offset = -1;
+ 	info->frame_size = 0;
+@@ -340,37 +427,25 @@ static int get_frame_info(struct mips_frame_info *info)
+ 		max_insns = 128U;	/* unknown function size */
+ 	max_insns = min(128U, max_insns);
+ 
+-	for (i = 0; i < max_insns; i++, ip++) {
++	if (cpu_has_mmips) {
++		/* align start address to word boundary, lose mode bit. */
++		ip = (union mips_instruction *)((unsigned long)ip & ~0x3);
++	}
++	max_ip = ip + max_insns * sizeof(union mips_instruction);
++
++	while (ip < max_ip) {
++		fetch_instruction(&ip, &inst, &halfword);
+ 
+-		if (is_jump_ins(ip))
++		if (is_jump_ins(&inst))
+ 			break;
+ 		if (!info->frame_size) {
+-			if (is_sp_move_ins(ip))
+-			{
+-#ifdef CONFIG_CPU_MICROMIPS
+-				if (mm_insn_16bit(ip->halfword[0]))
+-				{
+-					unsigned short tmp;
+-
+-					if (ip->halfword[0] & mm_addiusp_func)
+-					{
+-						tmp = (((ip->halfword[0] >> 1) & 0x1ff) << 2);
+-						info->frame_size = -(signed short)(tmp | ((tmp & 0x100) ? 0xfe00 : 0));
+-					} else {
+-						tmp = (ip->halfword[0] >> 1);
+-						info->frame_size = -(signed short)(tmp & 0xf);
+-					}
+-					ip = (void *) &ip->halfword[1];
+-					ip--;
+-				} else
+-#endif
+-				info->frame_size = - ip->i_format.simmediate;
+-			}
++			if (is_sp_move_ins(&inst))
++				info->frame_size = get_frame_size(&inst);
+ 			continue;
+ 		}
+-		if (info->pc_offset == -1 && is_ra_save_ins(ip)) {
++		if (info->pc_offset == -1 && is_ra_save_ins(&inst)) {
+ 			info->pc_offset =
+-				ip->i_format.simmediate / sizeof(long);
++				inst.i_format.simmediate / sizeof(long);
+ 			break;
+ 		}
+ 	}
+@@ -390,20 +465,34 @@ static unsigned long get___schedule_addr(void)
+ {
+ 	return kallsyms_lookup_name("__schedule");
+ }
+-#else
++#else /* CONFIG_KALLSYMS */
+ static unsigned long get___schedule_addr(void)
+ {
+ 	union mips_instruction *ip = (void *)schedule;
++	union mips_instruction inst;
++	union mips_instruction *max_ip;
+ 	int max_insns = 8;
+-	int i;
++	unsigned short halfword = 0;
+ 
+-	for (i = 0; i < max_insns; i++, ip++) {
+-		if (ip->j_format.opcode == j_op)
+-			return J_TARGET(ip, ip->j_format.target);
++	if (cpu_has_mmips) {
++		/* align start address to word boundary, lose mode bit */
++		ip = (union mips_instruction *)((unsigned long)ip & ~0x3);
++	}
++	max_ip = ip + max_insns * sizeof(union mips_instruction);
++
++	while (ip < max_ip) {
++		fetch_instruction(&ip, &inst, &halfword);
++		if (cpu_has_mmips &&
++		    inst.j_format.opcode == mm_j32_op)
++			return (((unsigned long)(ip+1) & 0xf8000000) |
++					(inst.j_format.target << 1));
++		else if (inst.j_format.opcode == j_op)
++			return (((unsigned long)(ip) & 0xf0000000) |
++					(inst.j_format.target << 2));
+ 	}
+ 	return 0;
+ }
+-#endif
++#endif /* !CONFIG_KALLSYMS */
+ 
+ static int __init frame_info_init(void)
+ {
+-- 
+1.7.10.2

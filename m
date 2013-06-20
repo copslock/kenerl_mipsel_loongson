@@ -1,37 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 17:19:56 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:56183 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6819540Ab3FTPTwCNx1f (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 20 Jun 2013 17:19:52 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5KFJnMA000445;
-        Thu, 20 Jun 2013 17:19:49 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5KFJn3n000444;
-        Thu, 20 Jun 2013 17:19:49 +0200
-Date:   Thu, 20 Jun 2013 17:19:49 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jayachandran C <jchandra@broadcom.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH UPDATED 3/4] MIPS: mm: Use scratch for PGD when
- !CONFIG_MIPS_PGD_C0_CONTEXT
-Message-ID: <20130620151949.GA337@linux-mips.org>
-References: <1370965298-29210-4-git-send-email-jchandra@broadcom.com>
- <1371559516-4862-1-git-send-email-jchandra@broadcom.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1371559516-4862-1-git-send-email-jchandra@broadcom.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 17:36:52 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:44870 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6822969Ab3FTPgqkq0Na (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jun 2013 17:36:46 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <Steven.Hill@imgtec.com>)
+        id 1UpguX-0004Kz-O5; Thu, 20 Jun 2013 10:36:33 -0500
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+To:     linux-mips@linux-mips.org
+Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>, ralf@linux-mips.org,
+        Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH v2] Revert "MIPS: make CAC_ADDR and UNCAC_ADDR account for PHYS_OFFSET"
+Date:   Thu, 20 Jun 2013 10:36:30 -0500
+Message-Id: <1371742590-10138-1-git-send-email-Steven.Hill@imgtec.com>
+X-Mailer: git-send-email 1.7.9.5
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37060
+X-archive-position: 37061
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,23 +36,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 18, 2013 at 06:15:15PM +0530, Jayachandran C wrote:
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-> Allow usage of scratch register for current pgd even when
-> MIPS_PGD_C0_CONTEXT is not configured. MIPS_PGD_C0_CONTEXT is set
-> for 64r2 platforms to indicate availability of Xcontext for saving
-> cpuid, thus freeing Context to be used for saving PGD. This option
-> was also tied to using a scratch register for storing PGD.
-> 
-> This commit will allow usage of scratch register to store the current
-> pgd if one can be allocated for the platform, even when
-> MIPS_PGD_C0_CONTEXT is not set. The cpuid will be kept in the CP0
-> Context register in this case.
-> 
-> The code to store the current pgd for the TLB miss handler is now
-> generated in all cases. When scratch register is available, the PGD
-> is also stored in the scratch register.
+This reverts commit 3f4579252aa166641861a64f1c2883365ca126c2. It is
+invalid because the macros CAC_ADDR and UNCAC_ADDR have a kernel
+virtual address as an argument and also returns a kernel virtual
+address. Using and physical address PHYS_OFFSET is blatantly wrong
+for a macro common to multiple platforms.
 
-I also pulled this one again as it was causing to others.
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+---
+Changes in v2: Remove internal gerrit ID from commit message.
 
-  Ralf
+ arch/mips/include/asm/mach-ar7/spaces.h  |    7 +++++--
+ arch/mips/include/asm/mach-ip28/spaces.h |    9 ++++++---
+ arch/mips/include/asm/page.h             |    6 ++----
+ 3 files changed, 13 insertions(+), 9 deletions(-)
+
+diff --git a/arch/mips/include/asm/mach-ar7/spaces.h b/arch/mips/include/asm/mach-ar7/spaces.h
+index ac28f27..660ab64 100644
+--- a/arch/mips/include/asm/mach-ar7/spaces.h
++++ b/arch/mips/include/asm/mach-ar7/spaces.h
+@@ -14,8 +14,11 @@
+  * This handles the memory map.
+  * We handle pages at KSEG0 for kernels with 32 bit address space.
+  */
+-#define PAGE_OFFSET		0x94000000UL
+-#define PHYS_OFFSET		0x14000000UL
++#define PAGE_OFFSET	_AC(0x94000000, UL)
++#define PHYS_OFFSET	_AC(0x14000000, UL)
++
++#define UNCAC_BASE	_AC(0xb4000000, UL)	/* 0xa0000000 + PHYS_OFFSET */
++#define IO_BASE		UNCAC_BASE
+ 
+ #include <asm/mach-generic/spaces.h>
+ 
+diff --git a/arch/mips/include/asm/mach-ip28/spaces.h b/arch/mips/include/asm/mach-ip28/spaces.h
+index 5edf05d..5d6a764 100644
+--- a/arch/mips/include/asm/mach-ip28/spaces.h
++++ b/arch/mips/include/asm/mach-ip28/spaces.h
+@@ -11,11 +11,14 @@
+ #ifndef _ASM_MACH_IP28_SPACES_H
+ #define _ASM_MACH_IP28_SPACES_H
+ 
+-#define CAC_BASE		0xa800000000000000
++#define CAC_BASE	_AC(0xa800000000000000, UL)
+ 
+-#define HIGHMEM_START		(~0UL)
++#define HIGHMEM_START	(~0UL)
+ 
+-#define PHYS_OFFSET		_AC(0x20000000, UL)
++#define PHYS_OFFSET	_AC(0x20000000, UL)
++
++#define UNCAC_BASE	_AC(0xc0000000, UL)     /* 0xa0000000 + PHYS_OFFSET */
++#define IO_BASE		UNCAC_BASE
+ 
+ #include <asm/mach-generic/spaces.h>
+ 
+diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+index f59552f..f6be474 100644
+--- a/arch/mips/include/asm/page.h
++++ b/arch/mips/include/asm/page.h
+@@ -205,10 +205,8 @@ extern int __virt_addr_valid(const volatile void *kaddr);
+ #define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
+ 				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+ 
+-#define UNCAC_ADDR(addr)	((addr) - PAGE_OFFSET + UNCAC_BASE +	\
+-								PHYS_OFFSET)
+-#define CAC_ADDR(addr)		((addr) - UNCAC_BASE + PAGE_OFFSET -	\
+-								PHYS_OFFSET)
++#define UNCAC_ADDR(addr)	((addr) - PAGE_OFFSET + UNCAC_BASE)
++#define CAC_ADDR(addr)		((addr) - UNCAC_BASE + PAGE_OFFSET)
+ 
+ #include <asm-generic/memory_model.h>
+ #include <asm-generic/getorder.h>
+-- 
+1.7.2.5

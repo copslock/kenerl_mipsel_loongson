@@ -1,32 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 18:29:12 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:1827 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823001Ab3FTQ3LGUvJ0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 20 Jun 2013 18:29:11 +0200
-Message-ID: <51C32DCC.5020100@imgtec.com>
-Date:   Thu, 20 Jun 2013 11:29:00 -0500
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130510 Thunderbird/17.0.6
-MIME-Version: 1.0
-To:     Tony Wu <tung7970@gmail.com>
-CC:     <macro@linux-mips.org>, <david.daney@cavium.com>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v5 2/2] MIPS: microMIPS: Refactor get_frame_info support
-References: <20130620133230.GA84495@hades> <20130620133504.GB84495@hades>
-In-Reply-To: <20130620133504.GB84495@hades>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 20:18:49 +0200 (CEST)
+Received: from perches-mx.perches.com ([206.117.179.246]:56938 "EHLO
+        labridge.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S6818712Ab3FTSSrgaMFf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jun 2013 20:18:47 +0200
+Received: from [173.51.221.202] (account joe@perches.com HELO [192.168.1.152])
+  by labridge.com (CommuniGate Pro SMTP 5.0.14)
+  with ESMTPA id 21100994; Thu, 20 Jun 2013 11:18:44 -0700
+Message-ID: <1371752324.2146.25.camel@joe-AO722>
+Subject: Re: Re: [PATCH] gpio MIPS/OCTEON: Add a driver for OCTEON's on-chip
+ GPIO pins.
+From:   Joe Perches <joe@perches.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Grant Likely <grant.likely@linaro.org>,
+        Rob Herring <rob.herring@calxeda.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree-discuss@lists.ozlabs.org" 
+        <devicetree-discuss@lists.ozlabs.org>,
+        David Daney <david.daney@cavium.com>
+Date:   Thu, 20 Jun 2013 11:18:44 -0700
+In-Reply-To: <51C34584.8070301@gmail.com>
+References: <1371251915-18271-1-git-send-email-ddaney.cavm@gmail.com>
+         <CACRpkdYHzBBbPNujYRGkMFGuQRzeYKs9jgfc3e3HWyxQFahvRQ@mail.gmail.com>
+         <51C34584.8070301@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+X-Mailer: Evolution 3.6.4-0ubuntu1 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.150.172]
-X-SEF-Processed: 7_3_0_01192__2013_06_20_17_29_04
-Return-Path: <Steven.Hill@imgtec.com>
+Return-Path: <joe@perches.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37067
+X-archive-position: 37069
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: joe@perches.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,16 +49,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/20/2013 08:35 AM, Tony Wu wrote:
-> Current get_frame_info implementation works on word boundary, this
-> can lead to alignment and endian issues in microMIPS mode,
-> due to:
->
-[...]
->
-> Signed-off-by: Tony Wu <tung7970@gmail.com>
-> Cc: Maciej W. Rozycki <macro@linux-mips.org>
-> Cc: David Daney <david.daney@cavium.com>
-> Cc: Steven J. Hill <Steven.Hill@imgtec.com>
->
-Acked-by: Steven J. Hill <Steven.Hill@imgte.com>
+On Thu, 2013-06-20 at 11:10 -0700, David Daney wrote:
+> Sorry for not responding earlier, but my e-mail system seems to have 
+> malfunctioned with respect to this message...
+[]
+> On 06/17/2013 01:51 AM, Linus Walleij wrote:
+> >> +static int octeon_gpio_get(struct gpio_chip *chip, unsigned offset)
+> >> +{
+> >> +       struct octeon_gpio *gpio = container_of(chip, struct octeon_gpio, chip);
+> >> +       u64 read_bits = cvmx_read_csr(gpio->register_base + RX_DAT);
+> >> +
+> >> +       return ((1ull << offset) & read_bits) != 0;
+> >
+> > A common idiom we use for this is:
+> >
+> > return !!(read_bits & (1ull << offset));
+> 
+> I hate that idiom, but if its use is a condition of accepting the patch, 
+> I will change it.
+
+Or use an even more common idiom and change the
+function to return bool and let the compiler do it.

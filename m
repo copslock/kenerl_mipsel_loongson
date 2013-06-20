@@ -1,43 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 10:29:28 +0200 (CEST)
-Received: from mga09.intel.com ([134.134.136.24]:40540 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6815748Ab3FTI3ZVdGzg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 20 Jun 2013 10:29:25 +0200
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga102.jf.intel.com with ESMTP; 20 Jun 2013 01:26:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.87,903,1363158000"; 
-   d="scan'208";a="356630216"
-Received: from kuha.fi.intel.com (HELO hk) ([10.237.72.54])
-  by orsmga002.jf.intel.com with SMTP; 20 Jun 2013 01:29:00 -0700
-Received: by hk (sSMTP sendmail emulation); Thu, 20 Jun 2013 11:29:00 +0300
-Date:   Thu, 20 Jun 2013 11:29:00 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        Jamie Iles <jamie@jamieiles.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.cz>, linux-serial@vger.kernel.org,
-        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v2 2/4] tty/8250_dw: Add support for OCTEON UARTS.
-Message-ID: <20130620082900.GB32331@xps8300>
-References: <1371677849-23912-1-git-send-email-ddaney.cavm@gmail.com>
- <1371677849-23912-3-git-send-email-ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 13:07:42 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:55071 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6823083Ab3FTLHklDzSq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Jun 2013 13:07:40 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5KB7ddZ020215;
+        Thu, 20 Jun 2013 13:07:39 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5KB7cKW020214;
+        Thu, 20 Jun 2013 13:07:38 +0200
+Date:   Thu, 20 Jun 2013 13:07:38 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+Cc:     linux-mips@linux-mips.org,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Subject: Re: [PATCH] MIPS: Add missing hazard barrier in TLB load handler.
+Message-ID: <20130620110738.GB17009@linux-mips.org>
+References: <1371707874-6632-1-git-send-email-Steven.Hill@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1371677849-23912-3-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <1371707874-6632-1-git-send-email-Steven.Hill@imgtec.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <heikki.krogerus@linux.intel.com>
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37047
+X-archive-position: 37048
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: heikki.krogerus@linux.intel.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,33 +43,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 19, 2013 at 02:37:27PM -0700, David Daney wrote:
-> From: David Daney <david.daney@cavium.com>
-> 
-> A few differences needed by OCTEON:
-> 
-> o These are DWC UARTS, but have USR at a different offset.
-> 
-> o Internal SoC buses require reading back from registers to maintain
->   write ordering.
-> 
-> o 8250 on OCTEON appears with 64-bit wide registers, so when using
->   readb/writeb in big endian mode we have to adjust the membase to hit
->   the proper part of the register.
-> 
-> o No UCV register, so we hard code some properties.
-> 
-> Because OCTEON doesn't have a UCV register, I change where
-> dw8250_setup_port(), which reads the UCV, is called by pushing it in
-> to the OF and ACPI probe functions, and move unchanged
-> dw8250_setup_port() earlier in the file.
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+On Thu, Jun 20, 2013 at 12:57:54AM -0500, Steven J. Hill wrote:
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> MIPS R2 documents state that an execution hazard barrier is needed
+> after a TLBR before reading EntryLo.
+> 
+> Change-Id: Idef3b6abbb63a1bbd5e153c6110a979fa7bd5896
+> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+> ---
+>  arch/mips/mm/tlbex.c |   10 ++++++++++
+>  1 files changed, 10 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+> index d9969d2..5ef426c 100644
+> --- a/arch/mips/mm/tlbex.c
+> +++ b/arch/mips/mm/tlbex.c
+> @@ -1922,6 +1922,11 @@ static void build_r4000_tlb_load_handler(void)
+>  		uasm_i_nop(&p);
+>  
+>  		uasm_i_tlbr(&p);
+> +#if !defined(CONFIG_CPU_CAVIUM_OCTEON)
+> +		/* hazard barrier after TLBR but before read EntryLo */
+> +		if (cpu_has_mips_r2)
+> +			uasm_i_ehb(&p);
+> +#endif
+>  		/* Examine  entrylo 0 or 1 based on ptr. */
+>  		if (use_bbit_insns()) {
+>  			uasm_i_bbit0(&p, wr.r2, ilog2(sizeof(pte_t)), 8);
+> @@ -1976,6 +1981,11 @@ static void build_r4000_tlb_load_handler(void)
+>  		uasm_i_nop(&p);
+>  
+>  		uasm_i_tlbr(&p);
+> +#if !defined(CONFIG_CPU_CAVIUM_OCTEON)
+> +		/* hazard barrier after TLBR but before read EntryLo */
+> +		if (cpu_has_mips_r2)
+> +			uasm_i_ehb(&p);
+> +#endif
+>  		/* Examine  entrylo 0 or 1 based on ptr. */
+>  		if (use_bbit_insns()) {
+>  			uasm_i_bbit0(&p, wr.r2, ilog2(sizeof(pte_t)), 8);
 
--- 
-heikki
+And guess which lines the sulphur smell in this patch is coming from.
+
+  Ralf

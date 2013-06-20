@@ -1,46 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 09:22:54 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:3671 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 10:29:28 +0200 (CEST)
+Received: from mga09.intel.com ([134.134.136.24]:40540 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817128Ab3FTHWwJ3M90 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 20 Jun 2013 09:22:52 +0200
-Received: from [10.9.208.57] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Thu, 20 Jun 2013 00:16:53 -0700
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Thu, 20 Jun 2013 00:22:10 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Thu, 20 Jun 2013 00:22:10 -0700
-Received: from jayachandranc.netlogicmicro.com (
- netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 55CB6F2D72; Thu, 20
- Jun 2013 00:22:09 -0700 (PDT)
-Date:   Thu, 20 Jun 2013 12:52:11 +0530
-From:   "Jayachandran C." <jchandra@broadcom.com>
-To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
-cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 0/2] Revert commits preventing platforms from
- booting.
-Message-ID: <20130620072210.GB21634@jayachandranc.netlogicmicro.com>
-References: <1371663632-30252-1-git-send-email-Steven.Hill@imgtec.com>
+        id S6815748Ab3FTI3ZVdGzg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Jun 2013 10:29:25 +0200
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga102.jf.intel.com with ESMTP; 20 Jun 2013 01:26:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.87,903,1363158000"; 
+   d="scan'208";a="356630216"
+Received: from kuha.fi.intel.com (HELO hk) ([10.237.72.54])
+  by orsmga002.jf.intel.com with SMTP; 20 Jun 2013 01:29:00 -0700
+Received: by hk (sSMTP sendmail emulation); Thu, 20 Jun 2013 11:29:00 +0300
+Date:   Thu, 20 Jun 2013 11:29:00 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        Jamie Iles <jamie@jamieiles.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.cz>, linux-serial@vger.kernel.org,
+        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v2 2/4] tty/8250_dw: Add support for OCTEON UARTS.
+Message-ID: <20130620082900.GB32331@xps8300>
+References: <1371677849-23912-1-git-send-email-ddaney.cavm@gmail.com>
+ <1371677849-23912-3-git-send-email-ddaney.cavm@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1371663632-30252-1-git-send-email-Steven.Hill@imgtec.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-WSS-ID: 7DDC73EE1R034228502-08-01
-Content-Type: text/plain;
- charset=us-ascii
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-Return-Path: <jchandra@broadcom.com>
+In-Reply-To: <1371677849-23912-3-git-send-email-ddaney.cavm@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <heikki.krogerus@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37046
+X-archive-position: 37047
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: heikki.krogerus@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,17 +50,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 19, 2013 at 12:40:30PM -0500, Steven J. Hill wrote:
-> These revert two patches that prevent all MTI and bcm63xx platforms
-> from booting. The kernel boot quietly hangs and gives not indication
-> of what happened.
+On Wed, Jun 19, 2013 at 02:37:27PM -0700, David Daney wrote:
+> From: David Daney <david.daney@cavium.com>
+> 
+> A few differences needed by OCTEON:
+> 
+> o These are DWC UARTS, but have USR at a different offset.
+> 
+> o Internal SoC buses require reading back from registers to maintain
+>   write ordering.
+> 
+> o 8250 on OCTEON appears with 64-bit wide registers, so when using
+>   readb/writeb in big endian mode we have to adjust the membase to hit
+>   the proper part of the register.
+> 
+> o No UCV register, so we hard code some properties.
+> 
+> Because OCTEON doesn't have a UCV register, I change where
+> dw8250_setup_port(), which reads the UCV, is called by pushing it in
+> to the OF and ACPI probe functions, and move unchanged
+> dw8250_setup_port() earlier in the file.
+> 
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-One issue which could cause this was fixed in the latest upstream-sfr.git,
-but if this is happening again, can you please send me a .config which
-shows the problem?
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-I have tested different malta configurations on qemu and none of them
-show the issue.
-
-Thanks,
-JC.
+-- 
+heikki

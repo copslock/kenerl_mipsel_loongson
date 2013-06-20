@@ -1,35 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 16:48:27 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:56021 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 17:19:56 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:56183 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823001Ab3FTOsZQLCxT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 20 Jun 2013 16:48:25 +0200
+        id S6819540Ab3FTPTwCNx1f (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Jun 2013 17:19:52 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5KEmMkH031398;
-        Thu, 20 Jun 2013 16:48:23 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5KFJnMA000445;
+        Thu, 20 Jun 2013 17:19:49 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5KEmLtN031397;
-        Thu, 20 Jun 2013 16:48:21 +0200
-Date:   Thu, 20 Jun 2013 16:48:21 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5KFJn3n000444;
+        Thu, 20 Jun 2013 17:19:49 +0200
+Date:   Thu, 20 Jun 2013 17:19:49 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jayachandran C <jchandra@broadcom.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Jayachandran C <jchandra@broadcom.com>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH UPDATED 4/4] MIPS: Move definition of SMP processor id
- register to header file
-Message-ID: <20130620144821.GB30061@linux-mips.org>
+Subject: Re: [PATCH UPDATED 3/4] MIPS: mm: Use scratch for PGD when
+ !CONFIG_MIPS_PGD_C0_CONTEXT
+Message-ID: <20130620151949.GA337@linux-mips.org>
 References: <1370965298-29210-4-git-send-email-jchandra@broadcom.com>
  <1371559516-4862-1-git-send-email-jchandra@broadcom.com>
- <1371559516-4862-2-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1371559516-4862-2-git-send-email-jchandra@broadcom.com>
+In-Reply-To: <1371559516-4862-1-git-send-email-jchandra@broadcom.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37059
+X-archive-position: 37060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,51 +44,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 18, 2013 at 06:15:16PM +0530, Jayachandran C wrote:
+On Tue, Jun 18, 2013 at 06:15:15PM +0530, Jayachandran C wrote:
 
-> The definition of the CP0 register used to save the smp processor
-> id is repicated in many files, move them all to thread_info.h.
+> Allow usage of scratch register for current pgd even when
+> MIPS_PGD_C0_CONTEXT is not configured. MIPS_PGD_C0_CONTEXT is set
+> for 64r2 platforms to indicate availability of Xcontext for saving
+> cpuid, thus freeing Context to be used for saving PGD. This option
+> was also tied to using a scratch register for storing PGD.
 > 
-> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+> This commit will allow usage of scratch register to store the current
+> pgd if one can be allocated for the platform, even when
+> MIPS_PGD_C0_CONTEXT is not set. The cpuid will be kept in the CP0
+> Context register in this case.
+> 
+> The code to store the current pgd for the TLB miss handler is now
+> generated in all cases. When scratch register is available, the PGD
+> is also stored in the scratch register.
 
-This breaks the ip27_defconfig build:
-
-  AS      arch/mips/kernel/genex.o
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S: Assembler messages:
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:199: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:250: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:334: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:377: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:461: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:462: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:463: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:464: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:465: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:466: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:467: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:468: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:469: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:470: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:471: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:479: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:481: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:482: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:483: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:484: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:546: Error: Illegal operands `dmfc0 $26,$4,0'
-/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:581: Error: Illegal operands `dmfc0 $26,$4,0'
-make[4]: *** [arch/mips/kernel/genex.o] Error 1
-
-So I've removed it again for now.
-
-Maciej, I wonder why does gas in MIPS III/IV mode accept
-
-	dmfc0	$reg1, $cp0reg
-
-but not
-
-	dmfc0	$reg1, $cp0reg, 0
-
-The generated code is the same after all.  Same for MIPS I/II mode and mfc0.
+I also pulled this one again as it was causing to others.
 
   Ralf

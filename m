@@ -1,39 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 02:27:36 +0200 (CEST)
-Received: from mail.windriver.com ([147.11.1.11]:42962 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6835001Ab3FTA1ecmEVv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jun 2013 02:27:34 +0200
-Received: from ALA-HCB.corp.ad.wrs.com (ala-hcb.corp.ad.wrs.com [147.11.189.41])
-        by mail.windriver.com (8.14.5/8.14.3) with ESMTP id r5K0RPad012199
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Wed, 19 Jun 2013 17:27:26 -0700 (PDT)
-Received: from yow-pgortmak-d1 (128.224.146.65) by ALA-HCB.corp.ad.wrs.com
- (147.11.189.41) with Microsoft SMTP Server id 14.2.342.3; Wed, 19 Jun 2013
- 17:27:25 -0700
-Received: by yow-pgortmak-d1 (Postfix, from userid 1000)        id 2F2C7E1D342; Wed,
- 19 Jun 2013 20:28:07 -0400 (EDT)
-Date:   Wed, 19 Jun 2013 20:28:07 -0400
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2] mips: delete __cpuinit/__CPUINIT usage from MIPS code
-Message-ID: <20130620002806.GA15693@windriver.com>
-References: <1371566339-18336-1-git-send-email-paul.gortmaker@windriver.com>
- <51C22E75.3020001@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <51C22E75.3020001@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <Paul.Gortmaker@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 02:40:47 +0200 (CEST)
+Received: from mail-pb0-f45.google.com ([209.85.160.45]:52506 "EHLO
+        mail-pb0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835028Ab3FTAkhMnSWk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jun 2013 02:40:37 +0200
+Received: by mail-pb0-f45.google.com with SMTP id mc8so5629070pbc.18
+        for <linux-mips@linux-mips.org>; Wed, 19 Jun 2013 17:40:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=uPMI3GMiVmNw8PtCAkuXd5fJRxer1LDyCPQIZ3IDIQQ=;
+        b=iWAZeAeqs8+1bLfCD89+M1QpHRiXs5h9vq6WRnw8J6q15QSLmsZFtsJmUhgm8Thzrg
+         iXkNbDT08lHqy3ktr4D4dK2fy9vvNyTbu9NwiCk0wWXzdlJRn7MvksSZl6o4JzNO/Sbj
+         +yoNNkaUoajvmYOhDb785oZYe07/sQNQQvTpfJQiriswAVzPIKLfwI7aaSEUP5aoTZuh
+         Z7+2LejNsd/jug9M52sZpvfjpm68ZCIuz1+pVXETgITxWXerbMX7dSIl48OfeRtQdcIh
+         TE6PF2nIV755H3pXiQtv3TW3s2C4zrbw4XPeeNLE4S11MJ5ovBKPVCq/q2P4MtMvyF+7
+         +CRA==
+X-Received: by 10.68.164.226 with SMTP id yt2mr5079187pbb.203.1371688830744;
+        Wed, 19 Jun 2013 17:40:30 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id pm7sm25173251pbb.31.2013.06.19.17.40.29
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 19 Jun 2013 17:40:29 -0700 (PDT)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r5K0eRDt004620;
+        Wed, 19 Jun 2013 17:40:27 -0700
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r5K0eLah004619;
+        Wed, 19 Jun 2013 17:40:21 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>
+Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
+Subject: [PATCH 0/2] netdev: octeon_mgmt minor fixes.
+Date:   Wed, 19 Jun 2013 17:40:18 -0700
+Message-Id: <1371688820-4585-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37033
+X-archive-position: 37034
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,112 +56,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-[Re: [PATCH v2] mips: delete __cpuinit/__CPUINIT usage from MIPS code] On 19/06/2013 (Wed 15:19) David Daney wrote:
+From: David Daney <david.daney@cavium.com>
 
-> On 06/18/2013 07:38 AM, Paul Gortmaker wrote:
-> >The __cpuinit type of throwaway sections might have made sense
-> >some time ago when RAM was more constrained, but now the savings
-> >do not offset the cost and complications.  For example, the fix in
-> >commit 5e427ec2d0 ("x86: Fix bit corruption at CPU resume time")
-> >is a good example of the nasty type of bugs that can be created
-> >with improper use of the various __init prefixes.
-> >
-> >After a discussion on LKML[1] it was decided that cpuinit should go
-> >the way of devinit and be phased out.  Once all the users are gone,
-> >we can then finally remove the macros themselves from linux/init.h.
-> >
-> >Note that some harmless section mismatch warnings may result, since
-> >notify_cpu_starting() and cpu_up() are arch independent (kernel/cpu.c)
-> >and are flagged as __cpuinit  -- so if we remove the __cpuinit from
-> >the arch specific callers, we will also get section mismatch warnings.
-> >As an intermediate step, we intend to turn the linux/init.h cpuinit
-> >related content into no-ops as early as possible, since that will get
-> >rid of these warnings.  In any case, they are temporary and harmless.
-> >
-> >Here, we remove all the MIPS __cpuinit from C code and __CPUINIT
-> >from asm files.  MIPS is interesting in this respect, because there
-> >are also uasm users hiding behind their own renamed versions of the
-> >__cpuinit macros.
-> >
-> >[1] https://lkml.org/lkml/2013/5/20/589
-> >
-> >Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
-> 
-> I get:
-> 
-> 
-> WARNING: vmlinux.o(.text+0x18640): Section mismatch in reference
-> from the function register_cavium_notifier() to the variable
-> .cpuinit.data:octeon_cpu_callback_nb.37045
-> The function register_cavium_notifier() references
-> the variable __cpuinitdata octeon_cpu_callback_nb.37045.
-> This is often because register_cavium_notifier lacks a __cpuinitdata
-> annotation or the annotation of octeon_cpu_callback_nb.37045 is wrong.
-> 
-> WARNING: vmlinux.o(.text+0x18650): Section mismatch in reference
-> from the function register_cavium_notifier() to the variable
-> .cpuinit.data:octeon_cpu_callback_nb.37045
-> The function register_cavium_notifier() references
-> the variable __cpuinitdata octeon_cpu_callback_nb.37045.
-> This is often because register_cavium_notifier lacks a __cpuinitdata
-> annotation or the annotation of octeon_cpu_callback_nb.37045 is wrong.
-> 
-> WARNING: vmlinux.o(.text+0x24778): Section mismatch in reference
-> from the function start_secondary() to the function
-> .cpuinit.text:calibrate_delay()
-> The function start_secondary() references
-> the function __cpuinit calibrate_delay().
-> This is often because start_secondary lacks a __cpuinit
-> annotation or the annotation of calibrate_delay is wrong.
-> 
-> WARNING: vmlinux.o(.text+0x247b4): Section mismatch in reference
-> from the function start_secondary() to the function
-> .cpuinit.text:notify_cpu_starting()
-> The function start_secondary() references
-> the function __cpuinit notify_cpu_starting().
-> This is often because start_secondary lacks a __cpuinit
-> annotation or the annotation of notify_cpu_starting is wrong.
+I have two small change here for 3.11 (I hope).
 
-Yes, see above commit log reference....
+David Daney (2):
+  netdev: octeon_mgmt: Correct tx IFG workaround.
+  netdev: octeon_mgmt: Fix structure layout for little-endian.
 
-> 
-> 
-> 
-> So I think an alternate approach is required.
-> 
-> Really I think we need to leave all existing __cpuinitdata and
-> __cpuinit annotations in place.
-> 
-> Instead we would first change the definitions of these two to be empyt:
-> 
-> #define __cpuinit
-> #define __cpuinitdata
+ drivers/net/ethernet/octeon/octeon_mgmt.c | 31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
-Again, see above commit log; specifically:
-
-   As an intermediate step, we intend to turn the linux/init.h cpuinit
-   related content into no-ops as early as possible, since that will get
-   rid of these warnings.  
-
-I am literally in the middle of typing up a mail to linux-arch that
-explains this, and that the no-op step comes in at the beginning of the
-merge window, and that the big purge comes at the end.
-
-However, I do not want that process to be set in stone ; as Ralf indicated,
-he expected some changes to the mips tree and wanted to deal with the
-conflicts himself (which is fine by me!) and so we can do that at the
-expense of some temporary section warnings.  This is why I explicitly
-called them out in the above commit log.
-
-> Once that is working, we would make a second pass and remove the
-> symbols themselves.
-
-Yep, thanks for looking at things; it sounds like we are in alignment
-with how to proceed here -- only that I wasn't quick enough in getting
-the steps published and the no-op phase into linux-next.
-
-Paul.
---
-
-> 
-> David Daney
+-- 
+1.7.11.7

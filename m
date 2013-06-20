@@ -1,32 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 16:26:34 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:55906 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jun 2013 16:48:27 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:56021 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823009Ab3FTO0aBp0FC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 20 Jun 2013 16:26:30 +0200
+        id S6823001Ab3FTOsZQLCxT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Jun 2013 16:48:25 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5KEQRNK030320;
-        Thu, 20 Jun 2013 16:26:27 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5KEmMkH031398;
+        Thu, 20 Jun 2013 16:48:23 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5KEQPaj030319;
-        Thu, 20 Jun 2013 16:26:25 +0200
-Date:   Thu, 20 Jun 2013 16:26:25 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5KEmLtN031397;
+        Thu, 20 Jun 2013 16:48:21 +0200
+Date:   Thu, 20 Jun 2013 16:48:21 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Fix OCTEON BUG() warnings a different way.
-Message-ID: <20130620142625.GA30061@linux-mips.org>
-References: <1371679468-29479-1-git-send-email-ddaney.cavm@gmail.com>
+To:     Jayachandran C <jchandra@broadcom.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH UPDATED 4/4] MIPS: Move definition of SMP processor id
+ register to header file
+Message-ID: <20130620144821.GB30061@linux-mips.org>
+References: <1370965298-29210-4-git-send-email-jchandra@broadcom.com>
+ <1371559516-4862-1-git-send-email-jchandra@broadcom.com>
+ <1371559516-4862-2-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1371679468-29479-1-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <1371559516-4862-2-git-send-email-jchandra@broadcom.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37058
+X-archive-position: 37059
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,18 +46,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 19, 2013 at 03:04:28PM -0700, David Daney wrote:
+On Tue, Jun 18, 2013 at 06:15:16PM +0530, Jayachandran C wrote:
 
-> Signed-off-by: David Daney <david.daney@cavium.com>
+> The definition of the CP0 register used to save the smp processor
+> id is repicated in many files, move them all to thread_info.h.
+> 
+> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 
-I replaced my fix with your fix but left he direct inclusion of
-<linux/bug.h>.
+This breaks the ip27_defconfig build:
 
-Let as homework for a later point: make BUG() invoke unreachable() if
-CONFIG_BUG is diabled, something like that.  This will improve code
-generation for GCC 4.5+ but for older compilers unreachable() is
-defined as do { } while (1) so will emit extra code.
+  AS      arch/mips/kernel/genex.o
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S: Assembler messages:
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:199: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:250: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:334: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:377: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:461: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:462: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:463: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:464: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:465: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:466: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:467: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:468: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:469: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:470: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:471: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:479: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:481: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:482: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:483: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:484: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:546: Error: Illegal operands `dmfc0 $26,$4,0'
+/home/ralf/src/linux/upstream-sfr/arch/mips/kernel/genex.S:581: Error: Illegal operands `dmfc0 $26,$4,0'
+make[4]: *** [arch/mips/kernel/genex.o] Error 1
 
-Thanks,
+So I've removed it again for now.
+
+Maciej, I wonder why does gas in MIPS III/IV mode accept
+
+	dmfc0	$reg1, $cp0reg
+
+but not
+
+	dmfc0	$reg1, $cp0reg, 0
+
+The generated code is the same after all.  Same for MIPS I/II mode and mfc0.
 
   Ralf

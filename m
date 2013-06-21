@@ -1,53 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jun 2013 13:31:30 +0200 (CEST)
-Received: from mga02.intel.com ([134.134.136.20]:9632 "EHLO mga02.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jun 2013 15:39:49 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:45336 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816831Ab3FULb2tSJTI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 21 Jun 2013 13:31:28 +0200
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP; 21 Jun 2013 04:31:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.87,912,1363158000"; 
-   d="scan'208";a="333308664"
-Received: from vkoul-udesk3.iind.intel.com ([10.223.84.41])
-  by orsmga001.jf.intel.com with ESMTP; 21 Jun 2013 04:31:18 -0700
-Received: from vkoul-udesk3.iind.intel.com (localhost [127.0.0.1])
-        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id r5LAplQn032751;
-        Fri, 21 Jun 2013 16:21:48 +0530
-Received: (from vkoul@localhost)
-        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Submit) id r5LApdBP032749;
-        Fri, 21 Jun 2013 16:21:39 +0530
-X-Authentication-Warning: vkoul-udesk3.iind.intel.com: vkoul set sender to vinod.koul@intel.com using -f
-Date:   Fri, 21 Jun 2013 16:21:39 +0530
-From:   Vinod Koul <vinod.koul@intel.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
+        id S6823056Ab3FUNjo00iiY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 21 Jun 2013 15:39:44 +0200
+From:   James Hogan <james.hogan@imgtec.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Maarten ter Huurne <maarten@treewalker.org>
-Subject: Re: [alsa-devel] [PATCH v2 3/6] dma: Add a jz4740 dmaengine driver
-Message-ID: <20130621105139.GJ23141@intel.com>
-References: <1369931105-28065-1-git-send-email-lars@metafoo.de>
- <1369931105-28065-4-git-send-email-lars@metafoo.de>
- <20130530171225.GA3767@intel.com>
- <51A79E8F.4070209@metafoo.de>
- <51B60D0A.7040307@metafoo.de>
- <20130612053810.GF4107@intel.com>
- <51B8646E.5040907@metafoo.de>
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        "David Daney" <david.daney@cavium.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Dave Jones <davej@redhat.com>, <linux-mips@linux-mips.org>
+Subject: [PATCH v3] kernel/signal.c: fix BUG_ON with SIG128 (MIPS)
+Date:   Fri, 21 Jun 2013 14:39:22 +0100
+Message-ID: <1371821962-9151-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 1.8.1.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <51B8646E.5040907@metafoo.de>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <vinod.koul@intel.com>
+Content-Type: text/plain
+X-SEF-Processed: 7_3_0_01192__2013_06_21_14_39_38
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37084
+X-archive-position: 37085
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vinod.koul@intel.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,57 +43,117 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 12, 2013 at 02:07:10PM +0200, Lars-Peter Clausen wrote:
-> On 06/12/2013 07:38 AM, Vinod Koul wrote:
-> > On Mon, Jun 10, 2013 at 07:29:46PM +0200, Lars-Peter Clausen wrote:
-> >> On 05/30/2013 08:46 PM, Lars-Peter Clausen wrote:
-> >>>>> +static int jz4740_dma_alloc_chan_resources(struct dma_chan *c)
-> >>>>> +{
-> >>>>> +	struct jz4740_dmaengine_chan *chan = to_jz4740_dma_chan(c);
-> >>>>> +
-> >>>>> +	chan->jz_chan = jz4740_dma_request(chan, NULL);
-> >>>>> +	if (!chan->jz_chan)
-> >>>>> +		return -EBUSY;
-> >>>>> +
-> >>>>> +	jz4740_dma_set_complete_cb(chan->jz_chan, jz4740_dma_complete_cb);
-> >>>>> +
-> >>>>> +	return 0;
-> >>>> Sorry, I didnt reply on this one. The API expects you to allocate a pool of
-> >>>> descriptors. These descriptors are to be used in .device_prep_xxx calls later.
-> >>>
-> >>> The size of the descriptor is not fixed, so they can not be pre-allocated. And
-> >>> this is nothing new either, most of the more recently added dmaengine drivers
-> >>> allocate their descriptors on demand.
-> >>
-> >> Vinod, are you ok with this explanation?
-> > Sorry, I was travelling...
-> > 
-> > Can you explain more of a bit when you say size is not fixed.
-> 
-> This is the function that allocates the descriptor:
-> 
-> static struct jz4740_dma_desc *jz4740_dma_alloc_desc(unsigned int num_sgs)
-> {
-> 	return kzalloc(sizeof(struct jz4740_dma_desc) +
-> 		sizeof(struct jz4740_dma_sg) * num_sgs, GFP_ATOMIC);
-> }
-> 
-> So the size depends on the entries in the sg list.
-> 
-> 
-> > Why would it be
-> > issue if we allocate descriptors at the alloc_chan. The idea is that you 
-> > preallocated pool at alloc_chan and since the .device_prep_xxx calls can be
-> > called from atomic context as well, you dont need to do this later. You can use use
-> > these descriptors at that time. The idea is keep rotating the descriptors from
-> > free poll to used one
-> 
-> Yes, I know all that. And it makes sense to use a pool in certain
-> situations, e.g. if the hardware only supports a limited set of physical
-> descriptors. But in this case the descriptors are completely virtual.
-> Forcing the driver to use a pool would make it more complex, use more memory
-> and also a bit slower (although probably not noticeable).
-Okay, I am going to try applying these now
+MIPS has 128 signals, the highest of which has the number 128 (they
+start from 1). The following command causes get_signal_to_deliver() to
+pass this signal number straight through to do_group_exit() as the exit
+code:
 
---
-~Vinod
+  strace sleep 10 & sleep 1 && kill -128 `pidof sleep`
+
+However do_group_exit() checks for the core dump bit (0x80) in the exit
+code which matches in this particular case and the kernel panics:
+
+  BUG_ON(exit_code & 0x80); /* core dumps don't get here */
+
+Fundamentally the exit / wait status code cannot represent SIG128. In
+fact it cannot represent SIG127 either as 0x7f represents a stopped
+child.
+
+Therefore add sig_to_exitcode() and exitcode_to_sig() functions which
+map signal numbers > 126 to exit code 126 and puts the remainder (i.e.
+sig - 126) in higher bits. This allows WIFSIGNALED() to return true for
+both SIG127 and SIG128, and allows WTERMSIG to be later updated to read
+the correct signal number for SIG127 and SIG128.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: David Daney <david.daney@cavium.com>
+Cc: "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Dave Jones <davej@redhat.com>
+Cc: linux-mips@linux-mips.org
+---
+v3:
+
+A slightly different approach this time, closer to the original patch I
+sent. This is because reducing _NSIG to 127 (like v2) still leaves
+incorrect exit status codes for SIG127. The only ABI this changes is the
+wait/waitpid status code, and it's in such a way that old binaries, as
+long as they use the macros defined in the wait manpage, should see a
+process terminated by signal 126 for SIG127 and SIG128 rather than
+!WIFSIGNALED(). Software rebuilt with updated libc wait status macros
+would see the correct terminating signal number.
+
+ kernel/signal.c | 32 +++++++++++++++++++++++++++++---
+ 1 file changed, 29 insertions(+), 3 deletions(-)
+
+diff --git a/kernel/signal.c b/kernel/signal.c
+index 113411b..212598c 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -941,6 +941,32 @@ static inline int wants_signal(int sig, struct task_struct *p)
+ 	return task_curr(p) || !signal_pending(p);
+ }
+ 
++/*
++ * MIPS has 128 signals which doesn't play nicely with the wait status code.
++ * There are 7 bits to store the terminating signal number, with 0 and 127
++ * having special meanings (normal termination and stopped).
++ *
++ * Since signals 127 and 128 cannot be directly represented, cap the signal
++ * number to 126 (so WIFSIGNALED works) and store remainder in some higher bits.
++ */
++
++static inline int exitcode_to_sig(int exit_code)
++{
++#if _NSIG > 126
++	exit_code = (exit_code & 0x7f) + ((exit_code >> 16) & 0xff);
++#endif
++	return exit_code;
++}
++
++static inline int sig_to_exitcode(int sig)
++{
++#if _NSIG > 126
++	if (sig > 126)
++		sig = 126 | (sig - 126) << 16;
++#endif
++	return sig;
++}
++
+ static void complete_signal(int sig, struct task_struct *p, int group)
+ {
+ 	struct signal_struct *signal = p->signal;
+@@ -997,7 +1023,7 @@ static void complete_signal(int sig, struct task_struct *p, int group)
+ 			 * thread has the fatal signal pending.
+ 			 */
+ 			signal->flags = SIGNAL_GROUP_EXIT;
+-			signal->group_exit_code = sig;
++			signal->group_exit_code = sig_to_exitcode(sig);
+ 			signal->group_stop_count = 0;
+ 			t = p;
+ 			do {
+@@ -1770,7 +1796,7 @@ static void do_notify_parent_cldstop(struct task_struct *tsk,
+  		info.si_status = SIGCONT;
+  		break;
+  	case CLD_STOPPED:
+- 		info.si_status = tsk->signal->group_exit_code & 0x7f;
++		info.si_status = exitcode_to_sig(tsk->signal->group_exit_code);
+  		break;
+  	case CLD_TRAPPED:
+  		info.si_status = tsk->exit_code & 0x7f;
+@@ -2367,7 +2393,7 @@ relock:
+ 		/*
+ 		 * Death signals, no core dump.
+ 		 */
+-		do_group_exit(info->si_signo);
++		do_group_exit(sig_to_exitcode(info->si_signo));
+ 		/* NOTREACHED */
+ 	}
+ 	spin_unlock_irq(&sighand->siglock);
+-- 
+1.8.1.2

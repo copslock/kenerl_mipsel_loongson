@@ -1,36 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jun 2013 15:39:49 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:45336 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jun 2013 16:53:21 +0200 (CEST)
+Received: from mga02.intel.com ([134.134.136.20]:39548 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823056Ab3FUNjo00iiY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 21 Jun 2013 15:39:44 +0200
-From:   James Hogan <james.hogan@imgtec.com>
-To:     <linux-kernel@vger.kernel.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        "David Daney" <david.daney@cavium.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Dave Jones <davej@redhat.com>, <linux-mips@linux-mips.org>
-Subject: [PATCH v3] kernel/signal.c: fix BUG_ON with SIG128 (MIPS)
-Date:   Fri, 21 Jun 2013 14:39:22 +0100
-Message-ID: <1371821962-9151-1-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 1.8.1.2
+        id S6823009Ab3FUOxR1qksU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 21 Jun 2013 16:53:17 +0200
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP; 21 Jun 2013 07:53:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.87,913,1363158000"; 
+   d="scan'208";a="333394996"
+Received: from vkoul-udesk3.iind.intel.com ([10.223.84.41])
+  by orsmga001.jf.intel.com with ESMTP; 21 Jun 2013 07:53:07 -0700
+Received: from vkoul-udesk3.iind.intel.com (localhost [127.0.0.1])
+        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id r5LEDcmB002881;
+        Fri, 21 Jun 2013 19:43:38 +0530
+Received: (from vkoul@localhost)
+        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Submit) id r5LEDUYM002879;
+        Fri, 21 Jun 2013 19:43:30 +0530
+X-Authentication-Warning: vkoul-udesk3.iind.intel.com: vkoul set sender to vinod.koul@intel.com using -f
+Date:   Fri, 21 Jun 2013 19:43:30 +0530
+From:   Vinod Koul <vinod.koul@intel.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH 0/6] Convert JZ4740 to dmaengine
+Message-ID: <20130621141330.GK23141@intel.com>
+References: <1369931105-28065-1-git-send-email-lars@metafoo.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SEF-Processed: 7_3_0_01192__2013_06_21_14_39_38
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1369931105-28065-1-git-send-email-lars@metafoo.de>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <vinod.koul@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37085
+X-archive-position: 37086
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: vinod.koul@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,117 +55,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS has 128 signals, the highest of which has the number 128 (they
-start from 1). The following command causes get_signal_to_deliver() to
-pass this signal number straight through to do_group_exit() as the exit
-code:
+On Thu, May 30, 2013 at 06:24:59PM +0200, Lars-Peter Clausen wrote:
+> Hi,
+> 
+> This series replaces the custom JZ4740 DMA API with a dmaengine driver. This is
+> done in 3 steps:
+> 	1) Add a dmaengine driver which wraps the custom JZ4740 DMA API
+> 	2) Update all users of the JZ4740 DMA API to use dmaengine instead
+> 	3) Remove the custom API and move all direct hardware access to the
+> 	   dmaengine driver.
+> 
+> The first two patches in the series also make sure that the clock of the DMA
+> core is enabled.
+> 
+> Since the patches in this series depend on each other I'd prefer if they could
+> all go through the DMA tree.
+> 
+> There are a few minor changes to the patch 3 in v2 of this series, all other
+> patches are identical to v1.
 
-  strace sleep 10 & sleep 1 && kill -128 `pidof sleep`
+Applied all expect the "ASoC: jz4740: Use the generic dmaengine PCM driver". Can
+you rebase that on slave dma-next and resend
 
-However do_group_exit() checks for the core dump bit (0x80) in the exit
-code which matches in this particular case and the kernel panics:
+Fixed up struct alignment manually in 4th one
 
-  BUG_ON(exit_code & 0x80); /* core dumps don't get here */
+--
+~Vinod
+> 
+> - Lars
+> 
+> Lars-Peter Clausen (4):
+>   dma: Add a jz4740 dmaengine driver
+>   MIPS: jz4740: Register jz4740 DMA device
+>   ASoC: jz4740: Use the generic dmaengine PCM driver
+>   MIPS: jz4740: Remove custom DMA API
+> 
+> Maarten ter Huurne (2):
+>   MIPS: jz4740: Correct clock gate bit for DMA controller
+>   MIPS: jz4740: Acquire and enable DMA controller clock
+> 
+>  arch/mips/include/asm/mach-jz4740/dma.h      |  56 ---
+>  arch/mips/include/asm/mach-jz4740/platform.h |   1 +
+>  arch/mips/jz4740/Makefile                    |   2 +-
+>  arch/mips/jz4740/board-qi_lb60.c             |   1 +
+>  arch/mips/jz4740/clock.c                     |   2 +-
+>  arch/mips/jz4740/dma.c                       | 287 -------------
+>  arch/mips/jz4740/platform.c                  |  21 +
+>  drivers/dma/Kconfig                          |   6 +
+>  drivers/dma/Makefile                         |   1 +
+>  drivers/dma/dma-jz4740.c                     | 617 +++++++++++++++++++++++++++
+>  sound/soc/jz4740/Kconfig                     |   1 +
+>  sound/soc/jz4740/jz4740-i2s.c                |  48 +--
+>  sound/soc/jz4740/jz4740-pcm.c                | 310 +-------------
+>  sound/soc/jz4740/jz4740-pcm.h                |  20 -
+>  14 files changed, 676 insertions(+), 697 deletions(-)
+>  delete mode 100644 arch/mips/jz4740/dma.c
+>  create mode 100644 drivers/dma/dma-jz4740.c
+>  delete mode 100644 sound/soc/jz4740/jz4740-pcm.h
+> 
+> -- 
+> 1.8.2.1
+> 
 
-Fundamentally the exit / wait status code cannot represent SIG128. In
-fact it cannot represent SIG127 either as 0x7f represents a stopped
-child.
-
-Therefore add sig_to_exitcode() and exitcode_to_sig() functions which
-map signal numbers > 126 to exit code 126 and puts the remainder (i.e.
-sig - 126) in higher bits. This allows WIFSIGNALED() to return true for
-both SIG127 and SIG128, and allows WTERMSIG to be later updated to read
-the correct signal number for SIG127 and SIG128.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: David Daney <david.daney@cavium.com>
-Cc: "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Dave Jones <davej@redhat.com>
-Cc: linux-mips@linux-mips.org
----
-v3:
-
-A slightly different approach this time, closer to the original patch I
-sent. This is because reducing _NSIG to 127 (like v2) still leaves
-incorrect exit status codes for SIG127. The only ABI this changes is the
-wait/waitpid status code, and it's in such a way that old binaries, as
-long as they use the macros defined in the wait manpage, should see a
-process terminated by signal 126 for SIG127 and SIG128 rather than
-!WIFSIGNALED(). Software rebuilt with updated libc wait status macros
-would see the correct terminating signal number.
-
- kernel/signal.c | 32 +++++++++++++++++++++++++++++---
- 1 file changed, 29 insertions(+), 3 deletions(-)
-
-diff --git a/kernel/signal.c b/kernel/signal.c
-index 113411b..212598c 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -941,6 +941,32 @@ static inline int wants_signal(int sig, struct task_struct *p)
- 	return task_curr(p) || !signal_pending(p);
- }
- 
-+/*
-+ * MIPS has 128 signals which doesn't play nicely with the wait status code.
-+ * There are 7 bits to store the terminating signal number, with 0 and 127
-+ * having special meanings (normal termination and stopped).
-+ *
-+ * Since signals 127 and 128 cannot be directly represented, cap the signal
-+ * number to 126 (so WIFSIGNALED works) and store remainder in some higher bits.
-+ */
-+
-+static inline int exitcode_to_sig(int exit_code)
-+{
-+#if _NSIG > 126
-+	exit_code = (exit_code & 0x7f) + ((exit_code >> 16) & 0xff);
-+#endif
-+	return exit_code;
-+}
-+
-+static inline int sig_to_exitcode(int sig)
-+{
-+#if _NSIG > 126
-+	if (sig > 126)
-+		sig = 126 | (sig - 126) << 16;
-+#endif
-+	return sig;
-+}
-+
- static void complete_signal(int sig, struct task_struct *p, int group)
- {
- 	struct signal_struct *signal = p->signal;
-@@ -997,7 +1023,7 @@ static void complete_signal(int sig, struct task_struct *p, int group)
- 			 * thread has the fatal signal pending.
- 			 */
- 			signal->flags = SIGNAL_GROUP_EXIT;
--			signal->group_exit_code = sig;
-+			signal->group_exit_code = sig_to_exitcode(sig);
- 			signal->group_stop_count = 0;
- 			t = p;
- 			do {
-@@ -1770,7 +1796,7 @@ static void do_notify_parent_cldstop(struct task_struct *tsk,
-  		info.si_status = SIGCONT;
-  		break;
-  	case CLD_STOPPED:
-- 		info.si_status = tsk->signal->group_exit_code & 0x7f;
-+		info.si_status = exitcode_to_sig(tsk->signal->group_exit_code);
-  		break;
-  	case CLD_TRAPPED:
-  		info.si_status = tsk->exit_code & 0x7f;
-@@ -2367,7 +2393,7 @@ relock:
- 		/*
- 		 * Death signals, no core dump.
- 		 */
--		do_group_exit(info->si_signo);
-+		do_group_exit(sig_to_exitcode(info->si_signo));
- 		/* NOTREACHED */
- 	}
- 	spin_unlock_irq(&sighand->siglock);
 -- 
-1.8.1.2

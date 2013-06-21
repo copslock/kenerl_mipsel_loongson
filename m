@@ -1,48 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jun 2013 22:46:15 +0200 (CEST)
-Received: from mail-by2lp0238.outbound.protection.outlook.com ([207.46.163.238]:1218
-        "EHLO na01-by2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6835001Ab3FUUqKqWNNd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 21 Jun 2013 22:46:10 +0200
-Received: from BN1PRD0712HT002.namprd07.prod.outlook.com (10.255.196.35) by
- SN2PR07MB016.namprd07.prod.outlook.com (10.255.174.38) with Microsoft SMTP
- Server (TLS) id 15.0.702.21; Fri, 21 Jun 2013 20:46:02 +0000
-Received: from dl.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
- (10.255.196.35) with Microsoft SMTP Server (TLS) id 14.16.324.0; Fri, 21 Jun
- 2013 20:46:01 +0000
-Message-ID: <51C4BB86.1020004@caviumnetworks.com>
-Date:   Fri, 21 Jun 2013 13:45:58 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
-MIME-Version: 1.0
-To:     Oleg Nesterov <oleg@redhat.com>
-CC:     David Daney <ddaney.cavm@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        <linux-kernel@vger.kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Kees Cook" <keescook@chromium.org>,
-        David Daney <david.daney@cavium.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Dave Jones <davej@redhat.com>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v3] kernel/signal.c: fix BUG_ON with SIG128 (MIPS)
-References: <1371821962-9151-1-git-send-email-james.hogan@imgtec.com> <51C47864.9030200@gmail.com> <20130621202244.GA16610@redhat.com>
-In-Reply-To: <20130621202244.GA16610@redhat.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-Forefront-Antispam-Report: SFV:SKI;SFS:;DIR:OUT;SFP:;SCL:0;SRVR:SN2PR07MB016;H:BN1PRD0712HT002.namprd07.prod.outlook.com;LANG:en;
-X-OriginatorOrg: DuplicateDomain-a3ec847f-e37f-4d9a-9900-9d9d96f75f58.caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Jun 2013 00:15:07 +0200 (CEST)
+Received: from mail-pa0-f51.google.com ([209.85.220.51]:59588 "EHLO
+        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6834875Ab3FUWPG0beYy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Jun 2013 00:15:06 +0200
+Received: by mail-pa0-f51.google.com with SMTP id lf11so8411268pab.10
+        for <multiple recipients>; Fri, 21 Jun 2013 15:14:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=POBqs4hRAsljDWD2H9IKJ7+n7PF/8HO5Mz8/ylTioFQ=;
+        b=D7NxXn5M10atQYzc9UHp0/nk+w3ovzw8i2I2y/sBeS8lLk+k5y/u0A6I4a1LZexEvo
+         1XaaNIP5+w0/1Nf2Ersx8a4JGqvONiuomyHcTNDH/KEez9kGm+SEjUrlEaJ5kBZxUukB
+         uXZZ0MM2Z1+cZqnkhFiogPtZl2pZPM8PIW44fmhSRveOlz+dWHxA9zseR9XLX4P2KJGC
+         0NMvKIvGL6yZbJ+h5xnG/50JDoZi+SMLP6A1j1x8ttns5eIyu1axRMe9U63rl3N/DRkG
+         6WnSymixPpGw4I/XXysEMJa1wmLwz2UZPuEmUHCKK7RnvkBuclIV02dHZ+oPd7sBGmDi
+         f8BA==
+X-Received: by 10.66.164.232 with SMTP id yt8mr18120030pab.21.1371852899351;
+        Fri, 21 Jun 2013 15:14:59 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id kq2sm7347480pab.19.2013.06.21.15.14.57
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 21 Jun 2013 15:14:58 -0700 (PDT)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r5LMEuTV004064;
+        Fri, 21 Jun 2013 15:14:56 -0700
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r5LMEsis004063;
+        Fri, 21 Jun 2013 15:14:54 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH] MIPS: Don't save/restore OCTEON wide multiplier state on syscalls.
+Date:   Fri, 21 Jun 2013 15:14:53 -0700
+Message-Id: <1371852893-4029-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37096
+X-archive-position: 37097
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,41 +56,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/21/2013 01:22 PM, Oleg Nesterov wrote:
-> On 06/21, David Daney wrote:
->>
->> On 06/21/2013 06:39 AM, James Hogan wrote:
->>> Therefore add sig_to_exitcode() and exitcode_to_sig() functions which
->>> map signal numbers > 126 to exit code 126 and puts the remainder (i.e.
->>> sig - 126) in higher bits. This allows WIFSIGNALED() to return true for
->>> both SIG127 and SIG128, and allows WTERMSIG to be later updated to read
->>> the correct signal number for SIG127 and SIG128.
->>
->> I really hate this approach.
->>
->> Can we just change the ABI to reduce the number of signals so that all
->> the standard C library wait related macros don't have to be changed?
->>
->> Think about it, any user space program using signal numbers 127 and 128
->> doesn't work correctly as things exist today, so removing those two will
->> be no great loss.
->
-> Oh, I agree.
->
-> Besides, this changes ABI anyway. And if we change it we can do this in
-> a more clean way, afaics. MIPS should simply use 2 bytes in exit_code for
-> signal number.
+From: David Daney <david.daney@cavium.com>
 
-Wouldn't that break *all* existing programs that use signals?  Perhaps I 
-misunderstand what you are suggesting.
+The ABI allows these to be clobbered on syscalls, so only save and
+restore the multiplier state when the temporary registers need to be
+preserved.
 
-I am proposing that we just reduce the number of usable signals such 
-that existing libc status checking macros/functions don't change in any way.
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/include/asm/stackframe.h | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
-  Yes, this means we need replace 0x80/0x7f in exit.c by
-> ifdef'ed numbers. And yes, this means that WIFSIGNALED/etc should be
-> updated too, but this is also true with this patch.
->
-> Oleg.
->
->
+diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
+index a89d1b1..23fc95e 100644
+--- a/arch/mips/include/asm/stackframe.h
++++ b/arch/mips/include/asm/stackframe.h
+@@ -70,6 +70,14 @@
+ #ifndef CONFIG_CPU_HAS_SMARTMIPS
+ 		LONG_S	v1, PT_LO(sp)
+ #endif
++#ifdef CONFIG_CPU_CAVIUM_OCTEON
++		/*
++		 * The Octeon multiplier state is affected by general
++		 * multiply instructions. It must be saved before and
++		 * kernel code might corrupt it
++		 */
++		jal     octeon_mult_save
++#endif
+ 		.endm
+ 
+ 		.macro	SAVE_STATIC
+@@ -218,17 +226,8 @@
+ 		ori	$28, sp, _THREAD_MASK
+ 		xori	$28, _THREAD_MASK
+ #ifdef CONFIG_CPU_CAVIUM_OCTEON
+-		.set	mips64
+-		pref	0, 0($28)	/* Prefetch the current pointer */
+-		pref	0, PT_R31(sp)	/* Prefetch the $31(ra) */
+-		/* The Octeon multiplier state is affected by general multiply
+-		    instructions. It must be saved before and kernel code might
+-		    corrupt it */
+-		jal	octeon_mult_save
+-		LONG_L	v1, 0($28)  /* Load the current pointer */
+-			 /* Restore $31(ra) that was changed by the jal */
+-		LONG_L	ra, PT_R31(sp)
+-		pref	0, 0(v1)    /* Prefetch the current thread */
++		.set    mips64
++		pref    0, 0($28)       /* Prefetch the current pointer */
+ #endif
+ 		.set	pop
+ 		.endm
+@@ -248,6 +247,10 @@
+ 		.endm
+ 
+ 		.macro	RESTORE_TEMP
++#ifdef CONFIG_CPU_CAVIUM_OCTEON
++		/* Restore the Octeon multiplier state */
++		jal	octeon_mult_restore
++#endif
+ #ifdef CONFIG_CPU_HAS_SMARTMIPS
+ 		LONG_L	$24, PT_ACX(sp)
+ 		mtlhx	$24
+@@ -360,10 +363,6 @@
+ 		DVPE	5				# dvpe a1
+ 		jal	mips_ihb
+ #endif /* CONFIG_MIPS_MT_SMTC */
+-#ifdef CONFIG_CPU_CAVIUM_OCTEON
+-		/* Restore the Octeon multiplier state */
+-		jal	octeon_mult_restore
+-#endif
+ 		mfc0	a0, CP0_STATUS
+ 		ori	a0, STATMASK
+ 		xori	a0, STATMASK
+-- 
+1.7.11.7

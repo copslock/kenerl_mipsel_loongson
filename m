@@ -1,62 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jun 2013 19:20:59 +0200 (CEST)
-Received: from devils.ext.ti.com ([198.47.26.153]:53496 "EHLO
-        devils.ext.ti.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6827465Ab3FURUynRvOx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Jun 2013 19:20:54 +0200
-Received: from dlelxv90.itg.ti.com ([172.17.2.17])
-        by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id r5LHKSmm013142;
-        Fri, 21 Jun 2013 12:20:28 -0500
-Received: from DLEE70.ent.ti.com (dlee70.ent.ti.com [157.170.170.113])
-        by dlelxv90.itg.ti.com (8.14.3/8.13.8) with ESMTP id r5LHKRjR030630;
-        Fri, 21 Jun 2013 12:20:27 -0500
-Received: from dlelxv22.itg.ti.com (172.17.1.197) by DLEE70.ent.ti.com
- (157.170.170.113) with Microsoft SMTP Server id 14.2.342.3; Fri, 21 Jun 2013
- 12:20:27 -0500
-Received: from [158.218.103.117] (ula0393909.am.dhcp.ti.com [158.218.103.117])
-        by dlelxv22.itg.ti.com (8.13.8/8.13.8) with ESMTP id r5LHKQ9D027789;    Fri, 21
- Jun 2013 12:20:26 -0500
-Message-ID: <51C48B5A.2040404@ti.com>
-Date:   Fri, 21 Jun 2013 13:20:26 -0400
-From:   Santosh Shilimkar <santosh.shilimkar@ti.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
-MIME-Version: 1.0
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        <robherring2@gmail.com>
-CC:     <linux-kernel@vger.kernel.org>, Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <a-jacquiot@ti.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>, <x86@kernel.org>,
-        <arm@kernel.org>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Grant Likely <grant.likely@linaro.org>,
-        Rob Herring <rob.herring@calxeda.com>,
-        Nicolas Pitre <nicolas.pitre@linaro.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-c6x-dev@linux-c6x.org>, <linux-mips@linux-mips.org>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-xtensa@linux-xtensa.org>,
-        <devicetree-discuss@lists.ozlabs.org>
-Subject: Re: [PATCH] of: Specify initrd location using 64-bit
-References: <1371775956-16453-1-git-send-email-santosh.shilimkar@ti.com> <51C4171C.9050908@linutronix.de>
-In-Reply-To: <51C4171C.9050908@linutronix.de>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-Return-Path: <santosh.shilimkar@ti.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jun 2013 20:49:01 +0200 (CEST)
+Received: from mail.nanl.de ([217.115.11.12]:44429 "EHLO mail.nanl.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6827503Ab3FUSs6jnOa1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 21 Jun 2013 20:48:58 +0200
+Received: from ixxyvirt.lan (unknown [IPv6:2001:470:1f0b:1abf:a00:27ff:fe5b:45fa])
+        by mail.nanl.de (Postfix) with ESMTPSA id 9B18A40544;
+        Fri, 21 Jun 2013 18:48:53 +0000 (UTC)
+From:   Jonas Gorski <jogo@openwrt.org>
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Jayachandran C <jchandra@broadcom.com>,
+        David Daney <david.daney@cavium.com>
+Subject: [PATCH V3] MIPS: flush TLB handlers directly after writing them
+Date:   Fri, 21 Jun 2013 20:48:48 +0200
+Message-Id: <1371840528-5207-1-git-send-email-jogo@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37091
+X-archive-position: 37092
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: santosh.shilimkar@ti.com
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,41 +36,119 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Friday 21 June 2013 05:04 AM, Sebastian Andrzej Siewior wrote:
-> On 06/21/2013 02:52 AM, Santosh Shilimkar wrote:
->> diff --git a/arch/microblaze/kernel/prom.c b/arch/microblaze/kernel/prom.c
->> index 0a2c68f..62e2e8f 100644
->> --- a/arch/microblaze/kernel/prom.c
->> +++ b/arch/microblaze/kernel/prom.c
->> @@ -136,8 +136,7 @@ void __init early_init_devtree(void *params)
->>  }
->>  
->>  #ifdef CONFIG_BLK_DEV_INITRD
->> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
->> -		unsigned long end)
->> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->>  {
->>  	initrd_start = (unsigned long)__va(start);
->>  	initrd_end = (unsigned long)__va(end);
-> 
-> I think it would better to go here for phys_addr_t instead of u64. This
-> would force you in of_flat_dt_match() to check if the value passed from
-> DT specifies a memory address outside of 32bit address space and the
-> kernel can't deal with this because its phys_addr_t is 32bit only due
-> to a Kconfig switch.
-> 
-> For x86, the initrd has to remain in the 32bit address space so passing
-> the initrd in the upper range would violate the ABI. Not sure if this
-> is true for other archs as well (ARM obviously not).
-> 
-That pretty much means phys_addr_t. It will work for me as well but
-in last thread from consistency with memory and reserved node, Rob
-insisted to keep it as u64. So before I re-spin another version,
-would like to here what Rob has to say considering the x86 requirement.
+When having enabled MIPS_PGD_C0_CONTEXT, trap_init() might call the
+generated tlbmiss_handler_setup_pgd before it was committed to memory,
+causing boot failures:
 
-Rob,
-Are you ok with phys_addr_t since your concern was about rest
-of the memory specific bits of the device-tree code use u64 ?
+  trap_init()
+   |- per_cpu_trap_init()
+   |   |- TLBMISS_HANDLER_SETUP()
+   |       |- tlbmiss_handler_setup_pgd()
+   |- flush_tlb_handlers()
 
-Regards,
-Santosh
+To avoid this, move flush_tlb_handlers() into build_tlb_refill_handler()
+right after they were generated. We can do this as the cache handling is
+initialized just before creating the tlb handlers.
+
+This issue was introduced in 3d8bfdd0307223de678962f1c1907a7cec549136
+("MIPS: Use C0_KScratch (if present) to hold PGD pointer.").
+
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+---
+@Ralf, this is a direct replacement for V2.
+
+V2 -> V3:
+ * Move flush_tlb_handlers() call into build_tlb_refill_handler() as
+   suggested by Jayachandran C.
+ * Make it static as now doesn't need to be called from external anymore.
+ * Move it on top of build_tlb_refill_handler() to avoid having to add a
+   prototype for it.
+
+V1 -> V2:
+ * Move flush_tlb_handlers into per_cpu_trap_init() to also fix it for
+   !boot_cpu.
+
+ arch/mips/kernel/traps.c |    2 --
+ arch/mips/mm/tlbex.c     |   30 ++++++++++++++++--------------
+ 2 files changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 142d2be..f44366d 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1668,7 +1668,6 @@ void *set_vi_handler(int n, vi_handler_t addr)
+ }
+ 
+ extern void tlb_init(void);
+-extern void flush_tlb_handlers(void);
+ 
+ /*
+  * Timer interrupt
+@@ -1997,7 +1996,6 @@ void __init trap_init(void)
+ 		set_handler(0x080, &except_vec3_generic, 0x80);
+ 
+ 	local_flush_icache_range(ebase, ebase + 0x400);
+-	flush_tlb_handlers();
+ 
+ 	sort_extable(__start___dbe_table, __stop___dbe_table);
+ 
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index f1eabe7..02b1b22 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -2192,6 +2192,20 @@ static void __cpuinit build_r4000_tlb_modify_handler(void)
+ 	dump_handler("r4000_tlb_modify", handle_tlbm, ARRAY_SIZE(handle_tlbm));
+ }
+ 
++static void __cpuinit flush_tlb_handlers(void)
++{
++	local_flush_icache_range((unsigned long)handle_tlbl,
++			   (unsigned long)handle_tlbl + sizeof(handle_tlbl));
++	local_flush_icache_range((unsigned long)handle_tlbs,
++			   (unsigned long)handle_tlbs + sizeof(handle_tlbs));
++	local_flush_icache_range((unsigned long)handle_tlbm,
++			   (unsigned long)handle_tlbm + sizeof(handle_tlbm));
++#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
++	local_flush_icache_range((unsigned long)tlbmiss_handler_setup_pgd_array,
++			   (unsigned long)tlbmiss_handler_setup_pgd_array + sizeof(handle_tlbm));
++#endif
++}
++
+ void __cpuinit build_tlb_refill_handler(void)
+ {
+ 	/*
+@@ -2224,6 +2238,7 @@ void __cpuinit build_tlb_refill_handler(void)
+ 			build_r3000_tlb_load_handler();
+ 			build_r3000_tlb_store_handler();
+ 			build_r3000_tlb_modify_handler();
++			flush_tlb_handlers();
+ 			run_once++;
+ 		}
+ #else
+@@ -2251,23 +2266,10 @@ void __cpuinit build_tlb_refill_handler(void)
+ 			build_r4000_tlb_modify_handler();
+ 			if (!cpu_has_local_ebase)
+ 				build_r4000_tlb_refill_handler();
++			flush_tlb_handlers();
+ 			run_once++;
+ 		}
+ 		if (cpu_has_local_ebase)
+ 			build_r4000_tlb_refill_handler();
+ 	}
+ }
+-
+-void __cpuinit flush_tlb_handlers(void)
+-{
+-	local_flush_icache_range((unsigned long)handle_tlbl,
+-			   (unsigned long)handle_tlbl + sizeof(handle_tlbl));
+-	local_flush_icache_range((unsigned long)handle_tlbs,
+-			   (unsigned long)handle_tlbs + sizeof(handle_tlbs));
+-	local_flush_icache_range((unsigned long)handle_tlbm,
+-			   (unsigned long)handle_tlbm + sizeof(handle_tlbm));
+-#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
+-	local_flush_icache_range((unsigned long)tlbmiss_handler_setup_pgd_array,
+-			   (unsigned long)tlbmiss_handler_setup_pgd_array + sizeof(handle_tlbm));
+-#endif
+-}
+-- 
+1.7.10.4

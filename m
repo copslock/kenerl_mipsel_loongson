@@ -1,33 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jun 2013 19:13:24 +0200 (CEST)
-Received: from bear.ext.ti.com ([192.94.94.41]:40620 "EHLO bear.ext.ti.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827503Ab3FURNKKerPV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 21 Jun 2013 19:13:10 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jun 2013 19:20:59 +0200 (CEST)
+Received: from devils.ext.ti.com ([198.47.26.153]:53496 "EHLO
+        devils.ext.ti.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6827465Ab3FURUynRvOx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Jun 2013 19:20:54 +0200
 Received: from dlelxv90.itg.ti.com ([172.17.2.17])
-        by bear.ext.ti.com (8.13.7/8.13.7) with ESMTP id r5LHCjK7023851;
-        Fri, 21 Jun 2013 12:12:45 -0500
-Received: from DFLE72.ent.ti.com (dfle72.ent.ti.com [128.247.5.109])
-        by dlelxv90.itg.ti.com (8.14.3/8.13.8) with ESMTP id r5LHCj2h021023;
-        Fri, 21 Jun 2013 12:12:45 -0500
-Received: from dlelxv22.itg.ti.com (172.17.1.197) by DFLE72.ent.ti.com
- (128.247.5.109) with Microsoft SMTP Server id 14.2.342.3; Fri, 21 Jun 2013
- 12:12:45 -0500
+        by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id r5LHKSmm013142;
+        Fri, 21 Jun 2013 12:20:28 -0500
+Received: from DLEE70.ent.ti.com (dlee70.ent.ti.com [157.170.170.113])
+        by dlelxv90.itg.ti.com (8.14.3/8.13.8) with ESMTP id r5LHKRjR030630;
+        Fri, 21 Jun 2013 12:20:27 -0500
+Received: from dlelxv22.itg.ti.com (172.17.1.197) by DLEE70.ent.ti.com
+ (157.170.170.113) with Microsoft SMTP Server id 14.2.342.3; Fri, 21 Jun 2013
+ 12:20:27 -0500
 Received: from [158.218.103.117] (ula0393909.am.dhcp.ti.com [158.218.103.117])
-        by dlelxv22.itg.ti.com (8.13.8/8.13.8) with ESMTP id r5LHCcQn022333;    Fri, 21
- Jun 2013 12:12:39 -0500
-Message-ID: <51C48986.6080602@ti.com>
-Date:   Fri, 21 Jun 2013 13:12:38 -0400
+        by dlelxv22.itg.ti.com (8.13.8/8.13.8) with ESMTP id r5LHKQ9D027789;    Fri, 21
+ Jun 2013 12:20:26 -0500
+Message-ID: <51C48B5A.2040404@ti.com>
+Date:   Fri, 21 Jun 2013 13:20:26 -0400
 From:   Santosh Shilimkar <santosh.shilimkar@ti.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
 MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>,
-        Vineet Gupta <Vineet.Gupta1@synopsys.com>
-CC:     <linux-kernel@vger.kernel.org>,
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        <robherring2@gmail.com>
+CC:     <linux-kernel@vger.kernel.org>, Vineet Gupta <vgupta@synopsys.com>,
         Russell King <linux@arm.linux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
         Mark Salter <msalter@redhat.com>,
         Aurelien Jacquiot <a-jacquiot@ti.com>,
+        James Hogan <james.hogan@imgtec.com>,
         Michal Simek <monstr@monstr.eu>,
         Ralf Baechle <ralf@linux-mips.org>,
         Jonas Bonn <jonas@southpole.se>,
@@ -36,22 +37,22 @@ CC:     <linux-kernel@vger.kernel.org>,
         <arm@kernel.org>, Chris Zankel <chris@zankel.net>,
         Max Filippov <jcmvbkbc@gmail.com>,
         Grant Likely <grant.likely@linaro.org>,
-        Rob Herring <rob.herring@calxeda.com>, <bigeasy@linutronix.de>,
-        <robherring2@gmail.com>, Nicolas Pitre <nicolas.pitre@linaro.org>,
+        Rob Herring <rob.herring@calxeda.com>,
+        Nicolas Pitre <nicolas.pitre@linaro.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-c6x-dev@linux-c6x.org>, <linux-mips@linux-mips.org>,
         <linuxppc-dev@lists.ozlabs.org>, <linux-xtensa@linux-xtensa.org>,
         <devicetree-discuss@lists.ozlabs.org>
 Subject: Re: [PATCH] of: Specify initrd location using 64-bit
-References: <1371775956-16453-1-git-send-email-santosh.shilimkar@ti.com> <51C3D8E7.5030601@synopsys.com> <51C40D78.4040603@imgtec.com>
-In-Reply-To: <51C40D78.4040603@imgtec.com>
+References: <1371775956-16453-1-git-send-email-santosh.shilimkar@ti.com> <51C4171C.9050908@linutronix.de>
+In-Reply-To: <51C4171C.9050908@linutronix.de>
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
 Return-Path: <santosh.shilimkar@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37090
+X-archive-position: 37091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,82 +69,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Vineet, James,
-
-On Friday 21 June 2013 04:23 AM, James Hogan wrote:
-> On 21/06/13 05:39, Vineet Gupta wrote:
->> Hi Santosh,
->>
->> On 06/21/2013 06:22 AM, Santosh Shilimkar wrote:
->>> Cc: Vineet Gupta <vgupta@synopsys.com>
->>> Cc: Russell King <linux@arm.linux.org.uk>
->>> Cc: Catalin Marinas <catalin.marinas@arm.com>
->>> Cc: Will Deacon <will.deacon@arm.com>
->>> Cc: Mark Salter <msalter@redhat.com>
->>> Cc: Aurelien Jacquiot <a-jacquiot@ti.com>
->>> Cc: James Hogan <james.hogan@imgtec.com>
->>> Cc: Michal Simek <monstr@monstr.eu>
->>> Cc: Ralf Baechle <ralf@linux-mips.org>
->>> Cc: Jonas Bonn <jonas@southpole.se>
->>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->>> Cc: Paul Mackerras <paulus@samba.org>
->>> Cc: x86@kernel.org
->>> Cc: arm@kernel.org
->>> Cc: Chris Zankel <chris@zankel.net>
->>> Cc: Max Filippov <jcmvbkbc@gmail.com>
->>> Cc: Grant Likely <grant.likely@linaro.org>
->>> Cc: Rob Herring <rob.herring@calxeda.com>
->>> Cc: bigeasy@linutronix.de
->>> Cc: robherring2@gmail.com
->>> Cc: Nicolas Pitre <nicolas.pitre@linaro.org>
->>>
->>> Cc: linux-arm-kernel@lists.infradead.org
->>> Cc: linux-c6x-dev@linux-c6x.org
->>> Cc: linux-mips@linux-mips.org
->>> Cc: linuxppc-dev@lists.ozlabs.org
->>> Cc: linux-xtensa@linux-xtensa.org
->>> Cc: devicetree-discuss@lists.ozlabs.org
->>>
->>> Signed-off-by: Santosh Shilimkar <santosh.shilimkar@ti.com>
->>> ---
->>>  arch/arc/mm/init.c            |    3 +--
->>>  arch/arm/mm/init.c            |    2 +-
->>>  arch/arm64/mm/init.c          |    3 +--
->>>  arch/c6x/kernel/devicetree.c  |    3 +--
->>>  arch/metag/mm/init.c          |    3 +--
->>>  arch/microblaze/kernel/prom.c |    3 +--
->>>  arch/mips/kernel/prom.c       |    3 +--
->>>  arch/openrisc/kernel/prom.c   |    3 +--
->>>  arch/powerpc/kernel/prom.c    |    3 +--
->>>  arch/x86/kernel/devicetree.c  |    3 +--
->>>  arch/xtensa/kernel/setup.c    |    3 +--
->>>  drivers/of/fdt.c              |   10 ++++++----
->>>  include/linux/of_fdt.h        |    3 +--
->>>  13 files changed, 18 insertions(+), 27 deletions(-)
->>>
->>> diff --git a/arch/arc/mm/init.c b/arch/arc/mm/init.c
->>> index 4a17736..3640c74 100644
->>> --- a/arch/arc/mm/init.c
->>> +++ b/arch/arc/mm/init.c
->>> @@ -157,8 +157,7 @@ void __init free_initrd_mem(unsigned long start, unsigned long end)
->>>  #endif
->>>  
->>>  #ifdef CONFIG_OF_FLATTREE
->>> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
->>> -					    unsigned long end)
->>> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->>>  {
->>>  	pr_err("%s(%lx, %lx)\n", __func__, start, end);
->>>  }
->>
->> To avoid gcc warnings, you need to fix the print format specifiers too.
+On Friday 21 June 2013 05:04 AM, Sebastian Andrzej Siewior wrote:
+> On 06/21/2013 02:52 AM, Santosh Shilimkar wrote:
+>> diff --git a/arch/microblaze/kernel/prom.c b/arch/microblaze/kernel/prom.c
+>> index 0a2c68f..62e2e8f 100644
+>> --- a/arch/microblaze/kernel/prom.c
+>> +++ b/arch/microblaze/kernel/prom.c
+>> @@ -136,8 +136,7 @@ void __init early_init_devtree(void *params)
+>>  }
+>>  
+>>  #ifdef CONFIG_BLK_DEV_INITRD
+>> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
+>> -		unsigned long end)
+>> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+>>  {
+>>  	initrd_start = (unsigned long)__va(start);
+>>  	initrd_end = (unsigned long)__va(end);
 > 
-> The same thing goes for arch/metag too.
+> I think it would better to go here for phys_addr_t instead of u64. This
+> would force you in of_flat_dt_match() to check if the value passed from
+> DT specifies a memory address outside of 32bit address space and the
+> kernel can't deal with this because its phys_addr_t is 32bit only due
+> to a Kconfig switch.
 > 
-Will update that in next version based on what we will end
-after the dicussion. i.e u64 or phys_addr_t
+> For x86, the initrd has to remain in the 32bit address space so passing
+> the initrd in the upper range would violate the ABI. Not sure if this
+> is true for other archs as well (ARM obviously not).
+> 
+That pretty much means phys_addr_t. It will work for me as well but
+in last thread from consistency with memory and reserved node, Rob
+insisted to keep it as u64. So before I re-spin another version,
+would like to here what Rob has to say considering the x86 requirement.
 
-Thanks for comments.
+Rob,
+Are you ok with phys_addr_t since your concern was about rest
+of the memory specific bits of the device-tree code use u64 ?
 
 Regards,
 Santosh

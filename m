@@ -1,47 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jun 2013 13:13:27 +0200 (CEST)
-Received: from mail-pb0-f51.google.com ([209.85.160.51]:51152 "EHLO
-        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6819546Ab3FULNUADhC- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Jun 2013 13:13:20 +0200
-Received: by mail-pb0-f51.google.com with SMTP id um15so7616718pbc.38
-        for <multiple recipients>; Fri, 21 Jun 2013 04:13:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:subject:message-id:mime-version:content-type
-         :content-disposition:user-agent;
-        bh=q8mYNbUZg0JP5Zim7LzXhREyuqz93kAU8F/gbI+6wIE=;
-        b=pcUEHnXijdL2FIs//S9cRgP7RtESiIVJBeh+44S/+89lJfg2qkWUPcEPJDoUDwfEFR
-         cl5Vq6cCH39YD68JxoGY8Zso++8OXHuu+UTWHtDSCBabmSaJolEyX25K9rXK1u7ZObDI
-         zaJa4cvP/Gc5cYGzY0XefQvwuVHZKE/YU7/K0r6rRXH8AVZAK1i1jePORwbGbVbBBJJS
-         3aT5pSeSwEh9GCKOPr8jrDR7rNCkAul+ShKjydcJ1rsTfWwE3PwYe/wRUxGkKjsrDFXb
-         1hrhncu4hWwIB9ikwqXX+IBLsHzw5DbQGfy4pDQjpbVSe7ta3lvkURyEWpd5pjy2LtjE
-         oHfQ==
-X-Received: by 10.66.159.234 with SMTP id xf10mr15781866pab.203.1371813193518;
-        Fri, 21 Jun 2013 04:13:13 -0700 (PDT)
-Received: from hades.local (111-243-154-157.dynamic.hinet.net. [111.243.154.157])
-        by mx.google.com with ESMTPSA id p2sm5235048pag.22.2013.06.21.04.13.11
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 21 Jun 2013 04:13:12 -0700 (PDT)
-Date:   Fri, 21 Jun 2013 19:13:08 +0800
-From:   Tony Wu <tung7970@gmail.com>
-To:     ralf@linux-mips.org, Steven.Hill@imgtec.com,
-        linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Fix gic_set_affinity infinite loop
-Message-ID: <20130621111308.GC23231@hades.local>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jun 2013 13:31:30 +0200 (CEST)
+Received: from mga02.intel.com ([134.134.136.20]:9632 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816831Ab3FULb2tSJTI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 21 Jun 2013 13:31:28 +0200
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP; 21 Jun 2013 04:31:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.87,912,1363158000"; 
+   d="scan'208";a="333308664"
+Received: from vkoul-udesk3.iind.intel.com ([10.223.84.41])
+  by orsmga001.jf.intel.com with ESMTP; 21 Jun 2013 04:31:18 -0700
+Received: from vkoul-udesk3.iind.intel.com (localhost [127.0.0.1])
+        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id r5LAplQn032751;
+        Fri, 21 Jun 2013 16:21:48 +0530
+Received: (from vkoul@localhost)
+        by vkoul-udesk3.iind.intel.com (8.14.3/8.14.3/Submit) id r5LApdBP032749;
+        Fri, 21 Jun 2013 16:21:39 +0530
+X-Authentication-Warning: vkoul-udesk3.iind.intel.com: vkoul set sender to vinod.koul@intel.com using -f
+Date:   Fri, 21 Jun 2013 16:21:39 +0530
+From:   Vinod Koul <vinod.koul@intel.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Maarten ter Huurne <maarten@treewalker.org>
+Subject: Re: [alsa-devel] [PATCH v2 3/6] dma: Add a jz4740 dmaengine driver
+Message-ID: <20130621105139.GJ23141@intel.com>
+References: <1369931105-28065-1-git-send-email-lars@metafoo.de>
+ <1369931105-28065-4-git-send-email-lars@metafoo.de>
+ <20130530171225.GA3767@intel.com>
+ <51A79E8F.4070209@metafoo.de>
+ <51B60D0A.7040307@metafoo.de>
+ <20130612053810.GF4107@intel.com>
+ <51B8646E.5040907@metafoo.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <tung7970@gmail.com>
+In-Reply-To: <51B8646E.5040907@metafoo.de>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <vinod.koul@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37083
+X-archive-position: 37084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tung7970@gmail.com
+X-original-sender: vinod.koul@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,42 +60,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There is an infinite loop in gic_set_affinity. When irq_set_affinity
-gets called on gic controller, it blocks forever.
+On Wed, Jun 12, 2013 at 02:07:10PM +0200, Lars-Peter Clausen wrote:
+> On 06/12/2013 07:38 AM, Vinod Koul wrote:
+> > On Mon, Jun 10, 2013 at 07:29:46PM +0200, Lars-Peter Clausen wrote:
+> >> On 05/30/2013 08:46 PM, Lars-Peter Clausen wrote:
+> >>>>> +static int jz4740_dma_alloc_chan_resources(struct dma_chan *c)
+> >>>>> +{
+> >>>>> +	struct jz4740_dmaengine_chan *chan = to_jz4740_dma_chan(c);
+> >>>>> +
+> >>>>> +	chan->jz_chan = jz4740_dma_request(chan, NULL);
+> >>>>> +	if (!chan->jz_chan)
+> >>>>> +		return -EBUSY;
+> >>>>> +
+> >>>>> +	jz4740_dma_set_complete_cb(chan->jz_chan, jz4740_dma_complete_cb);
+> >>>>> +
+> >>>>> +	return 0;
+> >>>> Sorry, I didnt reply on this one. The API expects you to allocate a pool of
+> >>>> descriptors. These descriptors are to be used in .device_prep_xxx calls later.
+> >>>
+> >>> The size of the descriptor is not fixed, so they can not be pre-allocated. And
+> >>> this is nothing new either, most of the more recently added dmaengine drivers
+> >>> allocate their descriptors on demand.
+> >>
+> >> Vinod, are you ok with this explanation?
+> > Sorry, I was travelling...
+> > 
+> > Can you explain more of a bit when you say size is not fixed.
+> 
+> This is the function that allocates the descriptor:
+> 
+> static struct jz4740_dma_desc *jz4740_dma_alloc_desc(unsigned int num_sgs)
+> {
+> 	return kzalloc(sizeof(struct jz4740_dma_desc) +
+> 		sizeof(struct jz4740_dma_sg) * num_sgs, GFP_ATOMIC);
+> }
+> 
+> So the size depends on the entries in the sg list.
+> 
+> 
+> > Why would it be
+> > issue if we allocate descriptors at the alloc_chan. The idea is that you 
+> > preallocated pool at alloc_chan and since the .device_prep_xxx calls can be
+> > called from atomic context as well, you dont need to do this later. You can use use
+> > these descriptors at that time. The idea is keep rotating the descriptors from
+> > free poll to used one
+> 
+> Yes, I know all that. And it makes sense to use a pool in certain
+> situations, e.g. if the hardware only supports a limited set of physical
+> descriptors. But in this case the descriptors are completely virtual.
+> Forcing the driver to use a pool would make it more complex, use more memory
+> and also a bit slower (although probably not noticeable).
+Okay, I am going to try applying these now
 
-Signed-off-by: Tony Wu <tung7970@gmail.com>
-Cc: Steven J. Hill <Steven.Hill@imgtec.com>
----
- arch/mips/kernel/irq-gic.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
-
-diff --git a/arch/mips/kernel/irq-gic.c b/arch/mips/kernel/irq-gic.c
-index c01b307..5b5ddb2 100644
---- a/arch/mips/kernel/irq-gic.c
-+++ b/arch/mips/kernel/irq-gic.c
-@@ -219,16 +219,15 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
- 
- 	/* Assumption : cpumask refers to a single CPU */
- 	spin_lock_irqsave(&gic_lock, flags);
--	for (;;) {
--		/* Re-route this IRQ */
--		GIC_SH_MAP_TO_VPE_SMASK(irq, first_cpu(tmp));
- 
--		/* Update the pcpu_masks */
--		for (i = 0; i < NR_CPUS; i++)
--			clear_bit(irq, pcpu_masks[i].pcpu_mask);
--		set_bit(irq, pcpu_masks[first_cpu(tmp)].pcpu_mask);
-+	/* Re-route this IRQ */
-+	GIC_SH_MAP_TO_VPE_SMASK(irq, first_cpu(tmp));
-+
-+	/* Update the pcpu_masks */
-+	for (i = 0; i < NR_CPUS; i++)
-+		clear_bit(irq, pcpu_masks[i].pcpu_mask);
-+	set_bit(irq, pcpu_masks[first_cpu(tmp)].pcpu_mask);
- 
--	}
- 	cpumask_copy(d->affinity, cpumask);
- 	spin_unlock_irqrestore(&gic_lock, flags);
- 
--- 
-1.7.10.2
+--
+~Vinod

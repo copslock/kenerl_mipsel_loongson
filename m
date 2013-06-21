@@ -1,56 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jun 2013 11:04:59 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:38922 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817318Ab3FUJE4QfHfn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Jun 2013 11:04:56 +0200
-Received: from localhost ([127.0.0.1] helo=[172.123.10.21])
-        by Galois.linutronix.de with esmtp (Exim 4.72)
-        (envelope-from <bigeasy@linutronix.de>)
-        id 1UpxGh-0004t7-0N; Fri, 21 Jun 2013 11:04:31 +0200
-Message-ID: <51C4171C.9050908@linutronix.de>
-Date:   Fri, 21 Jun 2013 11:04:28 +0200
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130518 Icedove/17.0.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jun 2013 13:03:26 +0200 (CEST)
+Received: from mail-pb0-f42.google.com ([209.85.160.42]:49003 "EHLO
+        mail-pb0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6818323Ab3FULDPJ3JQJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Jun 2013 13:03:15 +0200
+Received: by mail-pb0-f42.google.com with SMTP id un1so7612239pbc.29
+        for <multiple recipients>; Fri, 21 Jun 2013 04:03:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:subject:message-id:mime-version:content-type
+         :content-disposition:user-agent;
+        bh=Vxh3lDjYNxW91+FWhLTaIvCibZrHWUbCy1z3O/zoFZc=;
+        b=RFq4jRd9A3IMk69larmFmEvxMvB6Enn85R9gannZ4DJxfxrscmAOqhgGHaw6jmyXjQ
+         TcriEzZn/6wCHsA43mx8PMxIcyJuTkLNhY9uJatlwngk9U/1QC6pG21bzg0f+yijl1+R
+         I3GUffwzrDAb4y2ELAfu6l1+N4iACGPA9+XQtk/a+4D9O1uBppq77vhYXsVuobXmibMS
+         TfCfosFRUI+c1u1iMYp0uP4tCFiaw+es4HM06ZfAvLfEXc0A2Arp/y3NImBEpoocTk++
+         hMMcBFFEkVf1pC2t8ct2iWOiiodNM5F/JkYWrBohSwgayZLhbN8E87KO0CNw9wJ14YKu
+         QGWw==
+X-Received: by 10.68.35.3 with SMTP id d3mr11837430pbj.155.1371812588007;
+        Fri, 21 Jun 2013 04:03:08 -0700 (PDT)
+Received: from hades.local (111-243-154-157.dynamic.hinet.net. [111.243.154.157])
+        by mx.google.com with ESMTPSA id iq2sm4446758pbb.19.2013.06.21.04.03.06
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Fri, 21 Jun 2013 04:03:07 -0700 (PDT)
+Date:   Fri, 21 Jun 2013 19:03:01 +0800
+From:   Tony Wu <tung7970@gmail.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: Add missing cpu_has_mips_1 guardian
+Message-ID: <20130621110301.GA23195@hades.local>
 MIME-Version: 1.0
-To:     Santosh Shilimkar <santosh.shilimkar@ti.com>
-CC:     linux-kernel@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <a-jacquiot@ti.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>, x86@kernel.org,
-        arm@kernel.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Grant Likely <grant.likely@linaro.org>,
-        Rob Herring <rob.herring@calxeda.com>, robherring2@gmail.com,
-        Nicolas Pitre <nicolas.pitre@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        linux-xtensa@linux-xtensa.org, devicetree-discuss@lists.ozlabs.org
-Subject: Re: [PATCH] of: Specify initrd location using 64-bit
-References: <1371775956-16453-1-git-send-email-santosh.shilimkar@ti.com>
-In-Reply-To: <1371775956-16453-1-git-send-email-santosh.shilimkar@ti.com>
-X-Enigmail-Version: 1.5.1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <bigeasy@linutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <tung7970@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37079
+X-archive-position: 37080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bigeasy@linutronix.de
+X-original-sender: tung7970@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,30 +53,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/21/2013 02:52 AM, Santosh Shilimkar wrote:
-> diff --git a/arch/microblaze/kernel/prom.c b/arch/microblaze/kernel/prom.c
-> index 0a2c68f..62e2e8f 100644
-> --- a/arch/microblaze/kernel/prom.c
-> +++ b/arch/microblaze/kernel/prom.c
-> @@ -136,8 +136,7 @@ void __init early_init_devtree(void *params)
->  }
->  
->  #ifdef CONFIG_BLK_DEV_INITRD
-> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
-> -		unsigned long end)
-> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->  {
->  	initrd_start = (unsigned long)__va(start);
->  	initrd_end = (unsigned long)__va(end);
+Signed-off-by: Tony Wu <tung7970@gmail.com>
+---
+ arch/mips/include/asm/cpu-features.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
-I think it would better to go here for phys_addr_t instead of u64. This
-would force you in of_flat_dt_match() to check if the value passed from
-DT specifies a memory address outside of 32bit address space and the
-kernel can't deal with this because its phys_addr_t is 32bit only due
-to a Kconfig switch.
-
-For x86, the initrd has to remain in the 32bit address space so passing
-the initrd in the upper range would violate the ABI. Not sure if this
-is true for other archs as well (ARM obviously not).
-
-Sebastian
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index e5ec8fc..df5e523 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -136,7 +136,9 @@
+ #endif
+ #endif
+ 
++#ifndef cpu_has_mips_1
+ # define cpu_has_mips_1		(cpu_data[0].isa_level & MIPS_CPU_ISA_I)
++#endif
+ #ifndef cpu_has_mips_2
+ # define cpu_has_mips_2		(cpu_data[0].isa_level & MIPS_CPU_ISA_II)
+ #endif
+-- 
+1.7.10.2

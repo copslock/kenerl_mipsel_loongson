@@ -1,49 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Jun 2013 00:15:07 +0200 (CEST)
-Received: from mail-pa0-f51.google.com ([209.85.220.51]:59588 "EHLO
-        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6834875Ab3FUWPG0beYy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Jun 2013 00:15:06 +0200
-Received: by mail-pa0-f51.google.com with SMTP id lf11so8411268pab.10
-        for <multiple recipients>; Fri, 21 Jun 2013 15:14:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=POBqs4hRAsljDWD2H9IKJ7+n7PF/8HO5Mz8/ylTioFQ=;
-        b=D7NxXn5M10atQYzc9UHp0/nk+w3ovzw8i2I2y/sBeS8lLk+k5y/u0A6I4a1LZexEvo
-         1XaaNIP5+w0/1Nf2Ersx8a4JGqvONiuomyHcTNDH/KEez9kGm+SEjUrlEaJ5kBZxUukB
-         uXZZ0MM2Z1+cZqnkhFiogPtZl2pZPM8PIW44fmhSRveOlz+dWHxA9zseR9XLX4P2KJGC
-         0NMvKIvGL6yZbJ+h5xnG/50JDoZi+SMLP6A1j1x8ttns5eIyu1axRMe9U63rl3N/DRkG
-         6WnSymixPpGw4I/XXysEMJa1wmLwz2UZPuEmUHCKK7RnvkBuclIV02dHZ+oPd7sBGmDi
-         f8BA==
-X-Received: by 10.66.164.232 with SMTP id yt8mr18120030pab.21.1371852899351;
-        Fri, 21 Jun 2013 15:14:59 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id kq2sm7347480pab.19.2013.06.21.15.14.57
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 21 Jun 2013 15:14:58 -0700 (PDT)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r5LMEuTV004064;
-        Fri, 21 Jun 2013 15:14:56 -0700
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r5LMEsis004063;
-        Fri, 21 Jun 2013 15:14:54 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH] MIPS: Don't save/restore OCTEON wide multiplier state on syscalls.
-Date:   Fri, 21 Jun 2013 15:14:53 -0700
-Message-Id: <1371852893-4029-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Jun 2013 14:48:23 +0200 (CEST)
+Received: from alius.ayous.org ([89.238.89.44]:56784 "EHLO alius.ayous.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816022Ab3FVMsUpThy0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 22 Jun 2013 14:48:20 +0200
+Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
+        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <aba@ayous.org>)
+        id 1UqNEm-0000PP-TJ; Sat, 22 Jun 2013 12:48:17 +0000
+Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
+        (envelope-from <aba@ayous.org>)
+        id 1UqNEh-00050b-8I; Sat, 22 Jun 2013 14:48:11 +0200
+Date:   Sat, 22 Jun 2013 14:48:11 +0200
+From:   Andreas Barth <aba@ayous.org>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Subject: Re: [PATCH V10 01/13] MIPS: Loongson: Add basic Loongson-3
+        definition
+Message-ID: <20130622124811.GA19237@mails.so.argh.org>
+References: <1366030028-5084-1-git-send-email-chenhc@lemote.com> <1366030028-5084-2-git-send-email-chenhc@lemote.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1366030028-5084-2-git-send-email-chenhc@lemote.com>
+X-Editor: Vim http://www.vim.org/
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <aba@ayous.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37097
+X-archive-position: 37098
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: aba@ayous.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,77 +50,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+Hi,
 
-The ABI allows these to be clobbered on syscalls, so only save and
-restore the multiplier state when the temporary registers need to be
-preserved.
+* Huacai Chen (chenhc@lemote.com) [130415 14:47]:
+> diff --git a/arch/mips/loongson/Platform b/arch/mips/loongson/Platform
+> index 29692e5..6205372 100644
+> --- a/arch/mips/loongson/Platform
+> +++ b/arch/mips/loongson/Platform
+> @@ -30,3 +30,4 @@ platform-$(CONFIG_MACH_LOONGSON) += loongson/
+>  cflags-$(CONFIG_MACH_LOONGSON) += -I$(srctree)/arch/mips/include/asm/mach-loongson -mno-branch-likely
+>  load-$(CONFIG_LEMOTE_FULOONG2E) += 0xffffffff80100000
+>  load-$(CONFIG_LEMOTE_MACH2F) += 0xffffffff80200000
+> +load-$(CONFIG_CPU_LOONGSON3) += 0xffffffff80200000
 
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- arch/mips/include/asm/stackframe.h | 29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+According to my observations Fuloong 2e can also work with
+0xffffffff80200000, so I'm proposing to change this to:
 
-diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-index a89d1b1..23fc95e 100644
---- a/arch/mips/include/asm/stackframe.h
-+++ b/arch/mips/include/asm/stackframe.h
-@@ -70,6 +70,14 @@
- #ifndef CONFIG_CPU_HAS_SMARTMIPS
- 		LONG_S	v1, PT_LO(sp)
- #endif
-+#ifdef CONFIG_CPU_CAVIUM_OCTEON
-+		/*
-+		 * The Octeon multiplier state is affected by general
-+		 * multiply instructions. It must be saved before and
-+		 * kernel code might corrupt it
-+		 */
-+		jal     octeon_mult_save
-+#endif
- 		.endm
- 
- 		.macro	SAVE_STATIC
-@@ -218,17 +226,8 @@
- 		ori	$28, sp, _THREAD_MASK
- 		xori	$28, _THREAD_MASK
- #ifdef CONFIG_CPU_CAVIUM_OCTEON
--		.set	mips64
--		pref	0, 0($28)	/* Prefetch the current pointer */
--		pref	0, PT_R31(sp)	/* Prefetch the $31(ra) */
--		/* The Octeon multiplier state is affected by general multiply
--		    instructions. It must be saved before and kernel code might
--		    corrupt it */
--		jal	octeon_mult_save
--		LONG_L	v1, 0($28)  /* Load the current pointer */
--			 /* Restore $31(ra) that was changed by the jal */
--		LONG_L	ra, PT_R31(sp)
--		pref	0, 0(v1)    /* Prefetch the current thread */
-+		.set    mips64
-+		pref    0, 0($28)       /* Prefetch the current pointer */
- #endif
- 		.set	pop
- 		.endm
-@@ -248,6 +247,10 @@
- 		.endm
- 
- 		.macro	RESTORE_TEMP
-+#ifdef CONFIG_CPU_CAVIUM_OCTEON
-+		/* Restore the Octeon multiplier state */
-+		jal	octeon_mult_restore
-+#endif
- #ifdef CONFIG_CPU_HAS_SMARTMIPS
- 		LONG_L	$24, PT_ACX(sp)
- 		mtlhx	$24
-@@ -360,10 +363,6 @@
- 		DVPE	5				# dvpe a1
- 		jal	mips_ihb
- #endif /* CONFIG_MIPS_MT_SMTC */
--#ifdef CONFIG_CPU_CAVIUM_OCTEON
--		/* Restore the Octeon multiplier state */
--		jal	octeon_mult_restore
--#endif
- 		mfc0	a0, CP0_STATUS
- 		ori	a0, STATMASK
- 		xori	a0, STATMASK
--- 
-1.7.11.7
+@@ -28,5 +36,4 @@ endif
+
+ platform-$(CONFIG_MACH_LOONGSON) += loongson/
+ cflags-$(CONFIG_MACH_LOONGSON) += -I$(srctree)/arch/mips/include/asm/mach-loongson -mno-branch-likely
+-load-$(CONFIG_LEMOTE_FULOONG2E) += 0xffffffff80100000
+-load-$(CONFIG_LEMOTE_MACH2F) += 0xffffffff80200000
++load-$(CONFIG_MACH_LOONGSON) += 0xffffffff80200000
+
+
+
+Andi

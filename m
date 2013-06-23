@@ -1,48 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Jun 2013 21:14:13 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:48643 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Jun 2013 04:03:09 +0200 (CEST)
+Received: from mail.lemote.com ([222.92.8.138]:44399 "EHLO mail.lemote.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816209Ab3FVTOLLEBK- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 22 Jun 2013 21:14:11 +0200
-Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r5MJE2Gw021433
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Sat, 22 Jun 2013 15:14:02 -0400
-Received: from tranklukator.brq.redhat.com (dhcp-1-192.brq.redhat.com [10.34.1.192])
-        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id r5MJDtFF018739;
-        Sat, 22 Jun 2013 15:13:56 -0400
-Received: by tranklukator.brq.redhat.com (nbSMTP-1.00) for uid 500
-        oleg@redhat.com; Sat, 22 Jun 2013 21:09:47 +0200 (CEST)
-Date:   Sat, 22 Jun 2013 21:09:40 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     David Daney <ddaney.cavm@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        David Daney <david.daney@cavium.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Dave Jones <davej@redhat.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH v3] kernel/signal.c: fix BUG_ON with SIG128 (MIPS)
-Message-ID: <20130622190940.GA14150@redhat.com>
-References: <1371821962-9151-1-git-send-email-james.hogan@imgtec.com> <51C47864.9030200@gmail.com> <20130621202244.GA16610@redhat.com> <51C4BB86.1020004@caviumnetworks.com>
+        id S6816022Ab3FWCDHwX3JM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 23 Jun 2013 04:03:07 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mail.lemote.com (Postfix) with ESMTP id C6575228CE;
+        Sun, 23 Jun 2013 10:02:58 +0800 (CST)
+X-Virus-Scanned: Debian amavisd-new at lemote.com
+Received: from mail.lemote.com ([127.0.0.1])
+        by localhost (mail.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id mXVnBC789nkU; Sun, 23 Jun 2013 10:02:47 +0800 (CST)
+Received: from mail.lemote.com (localhost [127.0.0.1])
+        (Authenticated sender: chenhc@lemote.com)
+        by mail.lemote.com (Postfix) with ESMTPA id D8DF122744;
+        Sun, 23 Jun 2013 10:02:46 +0800 (CST)
+Received: from 172.16.2.208
+        (SquirrelMail authenticated user chenhc)
+        by mail.lemote.com with HTTP;
+        Sun, 23 Jun 2013 10:02:47 +0800
+Message-ID: <5292c3e3e092b848dcafbbaf9a80fbee.squirrel@mail.lemote.com>
+In-Reply-To: <20130622125950.GB19237@mails.so.argh.org>
+References: <1366030028-5084-1-git-send-email-chenhc@lemote.com>
+    <1366030028-5084-6-git-send-email-chenhc@lemote.com>
+    <20130622125950.GB19237@mails.so.argh.org>
+Date:   Sun, 23 Jun 2013 10:02:47 +0800
+Subject: Re: [PATCH V10 05/13] MIPS: Loongson: Add UEFI-like firmware
+ interface support
+From:   chenhc@lemote.com
+To:     "Andreas Barth" <aba@ayous.org>
+Cc:     "Ralf Baechle" <ralf@linux-mips.org>,
+        "John Crispin" <john@phrozen.org>, linux-mips@linux-mips.org,
+        "Fuxin Zhang" <zhangfx@lemote.com>,
+        "Zhangjin Wu" <wuzhangjin@gmail.com>,
+        "Hongliang Tao" <taohl@lemote.com>, "Hua Yan" <yanh@lemote.com>
+User-Agent: SquirrelMail/1.4.22
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <51C4BB86.1020004@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
-Return-Path: <oleg@redhat.com>
+Content-Type: text/plain;charset=gb2312
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37101
+X-archive-position: 37102
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,51 +60,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/21, David Daney wrote:
->
-> On 06/21/2013 01:22 PM, Oleg Nesterov wrote:
->> On 06/21, David Daney wrote:
->>>
->>> On 06/21/2013 06:39 AM, James Hogan wrote:
->>>> Therefore add sig_to_exitcode() and exitcode_to_sig() functions which
->>>> map signal numbers > 126 to exit code 126 and puts the remainder (i.e.
->>>> sig - 126) in higher bits. This allows WIFSIGNALED() to return true for
->>>> both SIG127 and SIG128, and allows WTERMSIG to be later updated to read
->>>> the correct signal number for SIG127 and SIG128.
->>>
->>> I really hate this approach.
->>>
->>> Can we just change the ABI to reduce the number of signals so that all
->>> the standard C library wait related macros don't have to be changed?
->>>
->>> Think about it, any user space program using signal numbers 127 and 128
->>> doesn't work correctly as things exist today, so removing those two will
->>> be no great loss.
+> * Huacai Chen (chenhc@lemote.com) [130415 14:49]:
+>> The new UEFI-like firmware interface has 3 advantages:
 >>
->> Oh, I agree.
+>> 1, Firmware export a physical memory map which is similar to X86's
+>>    E820 map, so prom_init_memory() will be more elegant that #ifdef
+>>    clauses can be removed.
+>> 2, Firmware export a pci irq routing table, we no longer need pci
+>>    irq routing fixup in kernel's code.
+>> 3, Firmware has a built-in vga bios, and its address is exported,
+>>    the linux kernel no longer need an embedded blob.
 >>
->> Besides, this changes ABI anyway. And if we change it we can do this in
->> a more clean way, afaics. MIPS should simply use 2 bytes in exit_code for
->> signal number.
+>> With the new interface, Loongson-3A/2G and all their successors can use
+>> a unified kernel. All Loongson-based machines support this new interface
+>> except 2E/2F series.
 >
-> Wouldn't that break *all* existing programs that use signals?  Perhaps I
-> misunderstand what you are suggesting.
+> Can't we auto-detect whether there is an UEFI-like interface? That
+> would allow to reduce the number of #ifdefs a bit.
+Cannot be detected at present. In future, all non-UEFI interface will
+be replaced and non-UEFI-related code will be removed.
 
-Of course this will break the userspace more than the original patch,
-that is why I said "And yes, this means that WIFSIGNALED/etc should
-be updated".
+>
+>
+>> --- a/arch/mips/loongson/common/env.c
+>> +++ b/arch/mips/loongson/common/env.c
+>>  	while (l != 0) {
+>> -		parse_even_earlier(bus_clock, "busclock", l);
+>>  		parse_even_earlier(cpu_clock_freq, "cpuclock", l);
+>>  		parse_even_earlier(memsize, "memsize", l);
+>>  		parse_even_earlier(highmemsize, "highmemsize", l);
+>> @@ -57,8 +73,32 @@ void __init prom_init_env(void)
+>>  	}
+>>  	if (memsize == 0)
+>>  		memsize = 256;
+>> -	if (bus_clock == 0)
+>> -		bus_clock = 66000000;
+>> +#else
+>
+> why are we not interested anymore in busclock in non-UEFI-like
+> machines (and shouldn't this be documented in the summary)?
+busclock are not used in any place in the kernel, so remove it.
 
-> I am proposing that we just reduce the number of usable signals such
-> that existing libc status checking macros/functions don't change in any
-> way.
-
-And I fully agree! Absolutely, sorry for confusion.
-
-
-What I tried to say, _if_ we change the ABI instead, lets make this
-change sane.
-
-To me this hack is not sane. And btw, the patch doesn't look complete.
-Say, wait_task_zombie() should do exitcode_to_sig() for ->si_status.
-
-Oleg.
+>
+>
+>
+> Andi
+>>
+>

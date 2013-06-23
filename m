@@ -1,69 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Jun 2013 15:50:16 +0200 (CEST)
-Received: from e28smtp08.in.ibm.com ([122.248.162.8]:57335 "EHLO
-        e28smtp08.in.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816671Ab3FWNuJ4OCUo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 23 Jun 2013 15:50:09 +0200
-Received: from /spool/local
-        by e28smtp08.in.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <srivatsa.bhat@linux.vnet.ibm.com>;
-        Sun, 23 Jun 2013 19:11:19 +0530
-Received: from d28dlp02.in.ibm.com (9.184.220.127)
-        by e28smtp08.in.ibm.com (192.168.1.138) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Sun, 23 Jun 2013 19:11:17 +0530
-Received: from d28relay05.in.ibm.com (d28relay05.in.ibm.com [9.184.220.62])
-        by d28dlp02.in.ibm.com (Postfix) with ESMTP id C083D3940053;
-        Sun, 23 Jun 2013 19:19:50 +0530 (IST)
-Received: from d28av03.in.ibm.com (d28av03.in.ibm.com [9.184.220.65])
-        by d28relay05.in.ibm.com (8.13.8/8.13.8/NCO v10.0) with ESMTP id r5NDnkVM28573846;
-        Sun, 23 Jun 2013 19:19:47 +0530
-Received: from d28av03.in.ibm.com (loopback [127.0.0.1])
-        by d28av03.in.ibm.com (8.14.4/8.13.1/NCO v10.0 AVout) with ESMTP id r5NDnmQB007859;
-        Sun, 23 Jun 2013 23:49:50 +1000
-Received: from srivatsabhat.in.ibm.com ([9.79.195.141])
-        by d28av03.in.ibm.com (8.14.4/8.13.1/NCO v10.0 AVin) with ESMTP id r5NDnkOJ007812;
-        Sun, 23 Jun 2013 23:49:47 +1000
-From:   "Srivatsa S. Bhat" <srivatsa.bhat@linux.vnet.ibm.com>
-Subject: [PATCH 38/45] MIPS: Use get/put_online_cpus_atomic() to prevent CPU
- offline
-To:     tglx@linutronix.de, peterz@infradead.org, tj@kernel.org,
-        oleg@redhat.com, paulmck@linux.vnet.ibm.com, rusty@rustcorp.com.au,
-        mingo@kernel.org, akpm@linux-foundation.org, namhyung@kernel.org,
-        walken@google.com, vincent.guittot@linaro.org, laijs@cn.fujitsu.com
-Cc:     rostedt@goodmis.org, wangyun@linux.vnet.ibm.com,
-        xiaoguangrong@linux.vnet.ibm.com, sbw@mit.edu, fweisbec@gmail.com,
-        zhong@linux.vnet.ibm.com, nikunj@linux.vnet.ibm.com,
-        srivatsa.bhat@linux.vnet.ibm.com, linux-pm@vger.kernel.org,
-        linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Yong Zhang <yong.zhang0@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sanjay Lal <sanjayl@kymasys.com>,
-        "Steven J. Hill" <sjhill@mips.com>,
-        John Crispin <blogic@openwrt.org>,
-        Florian Fainelli <florian@openwrt.org>,
-        linux-mips@linux-mips.org
-Date:   Sun, 23 Jun 2013 19:16:35 +0530
-Message-ID: <20130623134630.19094.24735.stgit@srivatsabhat.in.ibm.com>
-In-Reply-To: <20130623133642.19094.16038.stgit@srivatsabhat.in.ibm.com>
-References: <20130623133642.19094.16038.stgit@srivatsabhat.in.ibm.com>
-User-Agent: StGIT/0.14.3
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Jun 2013 20:16:43 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:1173 "EHLO mms3.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816022Ab3FWSQgmgBE9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 23 Jun 2013 20:16:36 +0200
+Received: from [10.9.208.57] by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Sun, 23 Jun 2013 11:07:08 -0700
+X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Sun, 23 Jun 2013 11:16:21 -0700
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
+ Server id 14.1.438.0; Sun, 23 Jun 2013 11:16:21 -0700
+Received: from netl-snoppy.ban.broadcom.com (
+ netl-snoppy.ban.broadcom.com [10.132.128.129]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id BE952F2D76; Sun, 23
+ Jun 2013 11:16:19 -0700 (PDT)
+From:   "Jayachandran C" <jchandra@broadcom.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+cc:     "Jayachandran C" <jchandra@broadcom.com>
+Subject: [PATCH 1/3] MIPS: Move generated code to .text for microMIPS
+Date:   Sun, 23 Jun 2013 23:46:19 +0530
+Message-ID: <1372011381-18600-2-git-send-email-jchandra@broadcom.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1372011381-18600-1-git-send-email-jchandra@broadcom.com>
+References: <1372011381-18600-1-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+X-WSS-ID: 7DD9E6C62L837159477-01-01
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-TM-AS-MML: No
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 13062313-2000-0000-0000-00000C9A1D97
-Return-Path: <srivatsa.bhat@linux.vnet.ibm.com>
+Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37105
+X-archive-position: 37106
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: srivatsa.bhat@linux.vnet.ibm.com
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,246 +50,352 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Once stop_machine() is gone from the CPU offline path, we won't be able
-to depend on disabling preemption to prevent CPUs from going offline
-from under us.
+Prepare of a next patch which will call tlbmiss_handler_setup_pgd on
+microMIPS. MicroMIPS complains if the called code s not in the .text
+section. To fix this we generate code into space reserved in
+arch/mips/mm/tlb-funcs.S
 
-Use the get/put_online_cpus_atomic() APIs to prevent CPUs from going
-offline, while invoking from atomic context.
+While there, move the rest of the generated functions (handle_tlbl,
+handle_tlbs, handle_tlbm) to the same file.
 
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: David Daney <david.daney@cavium.com>
-Cc: Yong Zhang <yong.zhang0@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Sanjay Lal <sanjayl@kymasys.com>
-Cc: "Steven J. Hill" <sjhill@mips.com>
-Cc: John Crispin <blogic@openwrt.org>
-Cc: Florian Fainelli <florian@openwrt.org>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Srivatsa S. Bhat <srivatsa.bhat@linux.vnet.ibm.com>
+Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
+ arch/mips/include/asm/mmu_context.h |    6 +--
+ arch/mips/mm/Makefile               |    2 +-
+ arch/mips/mm/tlb-funcs.S            |   37 +++++++++++++++
+ arch/mips/mm/tlbex.c                |   84 ++++++++++++++++++-----------------
+ 4 files changed, 83 insertions(+), 46 deletions(-)
+ create mode 100644 arch/mips/mm/tlb-funcs.S
 
- arch/mips/kernel/cevt-smtc.c |    7 +++++++
- arch/mips/kernel/smp.c       |   16 ++++++++--------
- arch/mips/kernel/smtc.c      |   12 ++++++++++++
- arch/mips/mm/c-octeon.c      |    4 ++--
- 4 files changed, 29 insertions(+), 10 deletions(-)
-
-diff --git a/arch/mips/kernel/cevt-smtc.c b/arch/mips/kernel/cevt-smtc.c
-index 9de5ed7..2e6c0cd 100644
---- a/arch/mips/kernel/cevt-smtc.c
-+++ b/arch/mips/kernel/cevt-smtc.c
-@@ -11,6 +11,7 @@
- #include <linux/interrupt.h>
- #include <linux/percpu.h>
- #include <linux/smp.h>
-+#include <linux/cpu.h>
- #include <linux/irq.h>
+diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
+index 516e6e9..3b29079 100644
+--- a/arch/mips/include/asm/mmu_context.h
++++ b/arch/mips/include/asm/mmu_context.h
+@@ -28,11 +28,7 @@
  
- #include <asm/smtc_ipi.h>
-@@ -84,6 +85,8 @@ static int mips_next_event(unsigned long delta,
- 	unsigned long nextcomp = 0L;
- 	int vpe = current_cpu_data.vpe_id;
- 	int cpu = smp_processor_id();
+ #define TLBMISS_HANDLER_SETUP_PGD(pgd)					\
+ do {									\
+-	void (*tlbmiss_handler_setup_pgd)(unsigned long);		\
+-	extern u32 tlbmiss_handler_setup_pgd_array[16];			\
+-									\
+-	tlbmiss_handler_setup_pgd =					\
+-		(__typeof__(tlbmiss_handler_setup_pgd)) tlbmiss_handler_setup_pgd_array; \
++	extern void tlbmiss_handler_setup_pgd(unsigned long);		\
+ 	tlbmiss_handler_setup_pgd((unsigned long)(pgd));		\
+ } while (0)
+ 
+diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
+index e87aae1..7f4f93a 100644
+--- a/arch/mips/mm/Makefile
++++ b/arch/mips/mm/Makefile
+@@ -4,7 +4,7 @@
+ 
+ obj-y				+= cache.o dma-default.o extable.o fault.o \
+ 				   gup.o init.o mmap.o page.o page-funcs.o \
+-				   tlbex.o tlbex-fault.o uasm-mips.o
++				   tlbex.o tlbex-fault.o tlb-funcs.o uasm-mips.o
+ 
+ obj-$(CONFIG_32BIT)		+= ioremap.o pgtable-32.o
+ obj-$(CONFIG_64BIT)		+= pgtable-64.o
+diff --git a/arch/mips/mm/tlb-funcs.S b/arch/mips/mm/tlb-funcs.S
+new file mode 100644
+index 0000000..30a494d
+--- /dev/null
++++ b/arch/mips/mm/tlb-funcs.S
+@@ -0,0 +1,37 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Micro-assembler generated tlb handler functions.
++ *
++ * Copyright (C) 2013  Broadcom Corporation.
++ *
++ * Based on mm/page-funcs.c
++ * Copyright (C) 2012  MIPS Technologies, Inc.
++ * Copyright (C) 2012  Ralf Baechle <ralf@linux-mips.org>
++ */
++#include <asm/asm.h>
++#include <asm/regdef.h>
 +
-+	get_online_cpus_atomic();
- 	local_irq_save(flags);
- 	mtflags = dmt();
- 
-@@ -164,6 +167,7 @@ static int mips_next_event(unsigned long delta,
- 	}
- 	emt(mtflags);
- 	local_irq_restore(flags);
-+	put_online_cpus_atomic();
- 	return 0;
- }
- 
-@@ -177,6 +181,7 @@ void smtc_distribute_timer(int vpe)
- 	unsigned long nextstamp;
- 	unsigned long reference;
- 
-+	get_online_cpus_atomic();
- 
- repeat:
- 	nextstamp = 0L;
-@@ -229,6 +234,8 @@ repeat:
- 			> (unsigned long)LONG_MAX)
- 				goto repeat;
- 	}
++#define FASTPATH_SIZE	128
 +
-+	put_online_cpus_atomic();
- }
- 
- 
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index 6e7862a..be152b6 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -250,12 +250,12 @@ static inline void smp_on_other_tlbs(void (*func) (void *info), void *info)
- 
- static inline void smp_on_each_tlb(void (*func) (void *info), void *info)
- {
--	preempt_disable();
-+	get_online_cpus_atomic();
- 
- 	smp_on_other_tlbs(func, info);
- 	func(info);
- 
--	preempt_enable();
-+	put_online_cpus_atomic();
- }
- 
- /*
-@@ -273,7 +273,7 @@ static inline void smp_on_each_tlb(void (*func) (void *info), void *info)
- 
- void flush_tlb_mm(struct mm_struct *mm)
- {
--	preempt_disable();
-+	get_online_cpus_atomic();
- 
- 	if ((atomic_read(&mm->mm_users) != 1) || (current->mm != mm)) {
- 		smp_on_other_tlbs(flush_tlb_mm_ipi, mm);
-@@ -287,7 +287,7 @@ void flush_tlb_mm(struct mm_struct *mm)
- 	}
- 	local_flush_tlb_mm(mm);
- 
--	preempt_enable();
-+	put_online_cpus_atomic();
- }
- 
- struct flush_tlb_data {
-@@ -307,7 +307,7 @@ void flush_tlb_range(struct vm_area_struct *vma, unsigned long start, unsigned l
- {
- 	struct mm_struct *mm = vma->vm_mm;
- 
--	preempt_disable();
-+	get_online_cpus_atomic();
- 	if ((atomic_read(&mm->mm_users) != 1) || (current->mm != mm)) {
- 		struct flush_tlb_data fd = {
- 			.vma = vma,
-@@ -325,7 +325,7 @@ void flush_tlb_range(struct vm_area_struct *vma, unsigned long start, unsigned l
- 		}
- 	}
- 	local_flush_tlb_range(vma, start, end);
--	preempt_enable();
-+	put_online_cpus_atomic();
- }
- 
- static void flush_tlb_kernel_range_ipi(void *info)
-@@ -354,7 +354,7 @@ static void flush_tlb_page_ipi(void *info)
- 
- void flush_tlb_page(struct vm_area_struct *vma, unsigned long page)
- {
--	preempt_disable();
-+	get_online_cpus_atomic();
- 	if ((atomic_read(&vma->vm_mm->mm_users) != 1) || (current->mm != vma->vm_mm)) {
- 		struct flush_tlb_data fd = {
- 			.vma = vma,
-@@ -371,7 +371,7 @@ void flush_tlb_page(struct vm_area_struct *vma, unsigned long page)
- 		}
- 	}
- 	local_flush_tlb_page(vma, page);
--	preempt_enable();
-+	put_online_cpus_atomic();
- }
- 
- static void flush_tlb_one_ipi(void *info)
-diff --git a/arch/mips/kernel/smtc.c b/arch/mips/kernel/smtc.c
-index 75a4fd7..3cda8eb 100644
---- a/arch/mips/kernel/smtc.c
-+++ b/arch/mips/kernel/smtc.c
-@@ -21,6 +21,7 @@
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
-+#include <linux/cpu.h>
- #include <linux/cpumask.h>
- #include <linux/interrupt.h>
- #include <linux/kernel_stat.h>
-@@ -1143,6 +1144,8 @@ static irqreturn_t ipi_interrupt(int irq, void *dev_idm)
- 	 * for the current TC, so we ought not to have to do it explicitly here.
- 	 */
- 
-+	get_online_cpus_atomic();
++LEAF(tlbmiss_handler_setup_pgd)
++	.space		16 * 4
++END(tlbmiss_handler_setup_pgd)
++EXPORT(tlbmiss_handler_setup_pgd_end)
 +
- 	for_each_online_cpu(cpu) {
- 		if (cpu_data[cpu].vpe_id != my_vpe)
- 			continue;
-@@ -1180,6 +1183,8 @@ static irqreturn_t ipi_interrupt(int irq, void *dev_idm)
- 		}
- 	}
- 
-+	put_online_cpus_atomic();
++LEAF(handle_tlbm)
++	.space		FASTPATH_SIZE * 4
++END(handle_tlbm)
++EXPORT(handle_tlbm_end)
 +
- 	return IRQ_HANDLED;
- }
- 
-@@ -1383,6 +1388,7 @@ void smtc_get_new_mmu_context(struct mm_struct *mm, unsigned long cpu)
- 	 * them, let's be really careful...
- 	 */
- 
-+	get_online_cpus_atomic();
- 	local_irq_save(flags);
- 	if (smtc_status & SMTC_TLB_SHARED) {
- 		mtflags = dvpe();
-@@ -1438,6 +1444,7 @@ void smtc_get_new_mmu_context(struct mm_struct *mm, unsigned long cpu)
- 	else
- 		emt(mtflags);
- 	local_irq_restore(flags);
-+	put_online_cpus_atomic();
- }
- 
- /*
-@@ -1496,6 +1503,7 @@ void smtc_cflush_lockdown(void)
- {
- 	int cpu;
- 
-+	get_online_cpus_atomic();
- 	for_each_online_cpu(cpu) {
- 		if (cpu != smp_processor_id()) {
- 			settc(cpu_data[cpu].tc_id);
-@@ -1504,6 +1512,7 @@ void smtc_cflush_lockdown(void)
- 		}
- 	}
- 	mips_ihb();
-+	put_online_cpus_atomic();
- }
- 
- /* It would be cheating to change the cpu_online states during a flush! */
-@@ -1512,6 +1521,8 @@ void smtc_cflush_release(void)
- {
- 	int cpu;
- 
-+	get_online_cpus_atomic();
++LEAF(handle_tlbs)
++	.space		FASTPATH_SIZE * 4
++END(handle_tlbs)
++EXPORT(handle_tlbs_end)
 +
- 	/*
- 	 * Start with a hazard barrier to ensure
- 	 * that all CACHE ops have played through.
-@@ -1525,4 +1536,5 @@ void smtc_cflush_release(void)
- 		}
- 	}
- 	mips_ihb();
-+	put_online_cpus_atomic();
++LEAF(handle_tlbl)
++	.space		FASTPATH_SIZE * 4
++END(handle_tlbl)
++EXPORT(handle_tlbl_end)
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index f1eabe7..b5e9363 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -1455,27 +1455,25 @@ static void __cpuinit build_r4000_tlb_refill_handler(void)
+ 	dump_handler("r4000_tlb_refill", (u32 *)ebase, 64);
  }
-diff --git a/arch/mips/mm/c-octeon.c b/arch/mips/mm/c-octeon.c
-index 8557fb5..8e1bcf6 100644
---- a/arch/mips/mm/c-octeon.c
-+++ b/arch/mips/mm/c-octeon.c
-@@ -73,7 +73,7 @@ static void octeon_flush_icache_all_cores(struct vm_area_struct *vma)
- 	mb();
- 	octeon_local_flush_icache();
- #ifdef CONFIG_SMP
--	preempt_disable();
-+	get_online_cpus_atomic();
- 	cpu = smp_processor_id();
  
- 	/*
-@@ -88,7 +88,7 @@ static void octeon_flush_icache_all_cores(struct vm_area_struct *vma)
- 	for_each_cpu(cpu, &mask)
- 		octeon_send_ipi_single(cpu, SMP_ICACHE_FLUSH);
+-/*
+- * 128 instructions for the fastpath handler is generous and should
+- * never be exceeded.
+- */
+-#define FASTPATH_SIZE 128
++extern u32 handle_tlbl[], handle_tlbl_end[];
++extern u32 handle_tlbs[], handle_tlbs_end[];
++extern u32 handle_tlbm[], handle_tlbm_end[];
  
--	preempt_enable();
-+	put_online_cpus_atomic();
+-u32 handle_tlbl[FASTPATH_SIZE] __cacheline_aligned;
+-u32 handle_tlbs[FASTPATH_SIZE] __cacheline_aligned;
+-u32 handle_tlbm[FASTPATH_SIZE] __cacheline_aligned;
+ #ifdef CONFIG_MIPS_PGD_C0_CONTEXT
+-u32 tlbmiss_handler_setup_pgd_array[16] __cacheline_aligned;
++extern u32 tlbmiss_handler_setup_pgd[], tlbmiss_handler_setup_pgd_end[];
+ 
+ static void __cpuinit build_r4000_setup_pgd(void)
+ {
+ 	const int a0 = 4;
+ 	const int a1 = 5;
+ 	u32 *p = tlbmiss_handler_setup_pgd_array;
++	const int tlbmiss_handler_setup_pgd_size =
++		tlbmiss_handler_setup_pgd_end - tlbmiss_handler_setup_pgd;
+ 	struct uasm_label *l = labels;
+ 	struct uasm_reloc *r = relocs;
+ 
+-	memset(tlbmiss_handler_setup_pgd_array, 0, sizeof(tlbmiss_handler_setup_pgd_array));
++	memset(tlbmiss_handler_setup_pgd, 0, tlbmiss_handler_setup_pgd_size *
++					sizeof(tlbmiss_handler_setup_pgd[0]));
+ 	memset(labels, 0, sizeof(labels));
+ 	memset(relocs, 0, sizeof(relocs));
+ 
+@@ -1503,15 +1501,15 @@ static void __cpuinit build_r4000_setup_pgd(void)
+ 		uasm_i_jr(&p, 31);
+ 		UASM_i_MTC0(&p, a0, c0_kscratch(), pgd_reg);
+ 	}
+-	if (p - tlbmiss_handler_setup_pgd_array > ARRAY_SIZE(tlbmiss_handler_setup_pgd_array))
+-		panic("tlbmiss_handler_setup_pgd_array space exceeded");
++	if (p >= tlbmiss_handler_setup_pgd_end)
++		panic("tlbmiss_handler_setup_pgd space exceeded");
++
+ 	uasm_resolve_relocs(relocs, labels);
+-	pr_debug("Wrote tlbmiss_handler_setup_pgd_array (%u instructions).\n",
+-		 (unsigned int)(p - tlbmiss_handler_setup_pgd_array));
++	pr_debug("Wrote tlbmiss_handler_setup_pgd (%u instructions).\n",
++		 (unsigned int)(p - tlbmiss_handler_setup_pgd));
+ 
+-	dump_handler("tlbmiss_handler",
+-		     tlbmiss_handler_setup_pgd_array,
+-		     ARRAY_SIZE(tlbmiss_handler_setup_pgd_array));
++	dump_handler("tlbmiss_handler", tlbmiss_handler_setup_pgd,
++					tlbmiss_handler_setup_pgd_size);
+ }
+ #endif
+ 
+@@ -1756,10 +1754,11 @@ build_r3000_tlbchange_handler_head(u32 **p, unsigned int pte,
+ static void __cpuinit build_r3000_tlb_load_handler(void)
+ {
+ 	u32 *p = handle_tlbl;
++	const int handle_tlbl_size = handle_tlbl_end - handle_tlbl;
+ 	struct uasm_label *l = labels;
+ 	struct uasm_reloc *r = relocs;
+ 
+-	memset(handle_tlbl, 0, sizeof(handle_tlbl));
++	memset(handle_tlbl, 0, handle_tlbl_size * sizeof(handle_tlbl[0]));
+ 	memset(labels, 0, sizeof(labels));
+ 	memset(relocs, 0, sizeof(relocs));
+ 
+@@ -1773,23 +1772,24 @@ static void __cpuinit build_r3000_tlb_load_handler(void)
+ 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_0 & 0x0fffffff);
+ 	uasm_i_nop(&p);
+ 
+-	if ((p - handle_tlbl) > FASTPATH_SIZE)
++	if (p >= handle_tlbl_end)
+ 		panic("TLB load handler fastpath space exceeded");
+ 
+ 	uasm_resolve_relocs(relocs, labels);
+ 	pr_debug("Wrote TLB load handler fastpath (%u instructions).\n",
+ 		 (unsigned int)(p - handle_tlbl));
+ 
+-	dump_handler("r3000_tlb_load", handle_tlbl, ARRAY_SIZE(handle_tlbl));
++	dump_handler("r3000_tlb_load", handle_tlbl, handle_tlbl_size);
+ }
+ 
+ static void __cpuinit build_r3000_tlb_store_handler(void)
+ {
+ 	u32 *p = handle_tlbs;
++	const int handle_tlbs_size = handle_tlbs_end - handle_tlbs;
+ 	struct uasm_label *l = labels;
+ 	struct uasm_reloc *r = relocs;
+ 
+-	memset(handle_tlbs, 0, sizeof(handle_tlbs));
++	memset(handle_tlbs, 0, handle_tlbs_size * sizeof(handle_tlbs[0]));
+ 	memset(labels, 0, sizeof(labels));
+ 	memset(relocs, 0, sizeof(relocs));
+ 
+@@ -1803,23 +1803,24 @@ static void __cpuinit build_r3000_tlb_store_handler(void)
+ 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_1 & 0x0fffffff);
+ 	uasm_i_nop(&p);
+ 
+-	if ((p - handle_tlbs) > FASTPATH_SIZE)
++	if (p >= handle_tlbs)
+ 		panic("TLB store handler fastpath space exceeded");
+ 
+ 	uasm_resolve_relocs(relocs, labels);
+ 	pr_debug("Wrote TLB store handler fastpath (%u instructions).\n",
+ 		 (unsigned int)(p - handle_tlbs));
+ 
+-	dump_handler("r3000_tlb_store", handle_tlbs, ARRAY_SIZE(handle_tlbs));
++	dump_handler("r3000_tlb_store", handle_tlbs, handle_tlbs_size);
+ }
+ 
+ static void __cpuinit build_r3000_tlb_modify_handler(void)
+ {
+ 	u32 *p = handle_tlbm;
++	const int handle_tlbm_size = handle_tlbm_end - handle_tlbm;
+ 	struct uasm_label *l = labels;
+ 	struct uasm_reloc *r = relocs;
+ 
+-	memset(handle_tlbm, 0, sizeof(handle_tlbm));
++	memset(handle_tlbm, 0, handle_tlbm_size * sizeof(handle_tlbm[0]));
+ 	memset(labels, 0, sizeof(labels));
+ 	memset(relocs, 0, sizeof(relocs));
+ 
+@@ -1833,14 +1834,14 @@ static void __cpuinit build_r3000_tlb_modify_handler(void)
+ 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_1 & 0x0fffffff);
+ 	uasm_i_nop(&p);
+ 
+-	if ((p - handle_tlbm) > FASTPATH_SIZE)
++	if (p >= handle_tlbm_end)
+ 		panic("TLB modify handler fastpath space exceeded");
+ 
+ 	uasm_resolve_relocs(relocs, labels);
+ 	pr_debug("Wrote TLB modify handler fastpath (%u instructions).\n",
+ 		 (unsigned int)(p - handle_tlbm));
+ 
+-	dump_handler("r3000_tlb_modify", handle_tlbm, ARRAY_SIZE(handle_tlbm));
++	dump_handler("r3000_tlb_modify", handle_tlbm, handle_tlbm_size);
+ }
+ #endif /* CONFIG_MIPS_PGD_C0_CONTEXT */
+ 
+@@ -1904,11 +1905,12 @@ build_r4000_tlbchange_handler_tail(u32 **p, struct uasm_label **l,
+ static void __cpuinit build_r4000_tlb_load_handler(void)
+ {
+ 	u32 *p = handle_tlbl;
++	const int handle_tlbl_size = handle_tlbl_end - handle_tlbl;
+ 	struct uasm_label *l = labels;
+ 	struct uasm_reloc *r = relocs;
+ 	struct work_registers wr;
+ 
+-	memset(handle_tlbl, 0, sizeof(handle_tlbl));
++	memset(handle_tlbl, 0, handle_tlbl_size * sizeof(handle_tlbl[0]));
+ 	memset(labels, 0, sizeof(labels));
+ 	memset(relocs, 0, sizeof(relocs));
+ 
+@@ -2073,24 +2075,25 @@ static void __cpuinit build_r4000_tlb_load_handler(void)
+ 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_0 & 0x0fffffff);
+ 	uasm_i_nop(&p);
+ 
+-	if ((p - handle_tlbl) > FASTPATH_SIZE)
++	if (p >= handle_tlbl_end)
+ 		panic("TLB load handler fastpath space exceeded");
+ 
+ 	uasm_resolve_relocs(relocs, labels);
+ 	pr_debug("Wrote TLB load handler fastpath (%u instructions).\n",
+ 		 (unsigned int)(p - handle_tlbl));
+ 
+-	dump_handler("r4000_tlb_load", handle_tlbl, ARRAY_SIZE(handle_tlbl));
++	dump_handler("r4000_tlb_load", handle_tlbl, handle_tlbl_size);
+ }
+ 
+ static void __cpuinit build_r4000_tlb_store_handler(void)
+ {
+ 	u32 *p = handle_tlbs;
++	const int handle_tlbs_size = handle_tlbs_end - handle_tlbs;
+ 	struct uasm_label *l = labels;
+ 	struct uasm_reloc *r = relocs;
+ 	struct work_registers wr;
+ 
+-	memset(handle_tlbs, 0, sizeof(handle_tlbs));
++	memset(handle_tlbs, 0, handle_tlbs_size * sizeof(handle_tlbs[0]));
+ 	memset(labels, 0, sizeof(labels));
+ 	memset(relocs, 0, sizeof(relocs));
+ 
+@@ -2127,24 +2130,25 @@ static void __cpuinit build_r4000_tlb_store_handler(void)
+ 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_1 & 0x0fffffff);
+ 	uasm_i_nop(&p);
+ 
+-	if ((p - handle_tlbs) > FASTPATH_SIZE)
++	if (p >= handle_tlbs_end)
+ 		panic("TLB store handler fastpath space exceeded");
+ 
+ 	uasm_resolve_relocs(relocs, labels);
+ 	pr_debug("Wrote TLB store handler fastpath (%u instructions).\n",
+ 		 (unsigned int)(p - handle_tlbs));
+ 
+-	dump_handler("r4000_tlb_store", handle_tlbs, ARRAY_SIZE(handle_tlbs));
++	dump_handler("r4000_tlb_store", handle_tlbs, handle_tlbs_size);
+ }
+ 
+ static void __cpuinit build_r4000_tlb_modify_handler(void)
+ {
+ 	u32 *p = handle_tlbm;
++	const int handle_tlbm_size = handle_tlbm_end - handle_tlbm;
+ 	struct uasm_label *l = labels;
+ 	struct uasm_reloc *r = relocs;
+ 	struct work_registers wr;
+ 
+-	memset(handle_tlbm, 0, sizeof(handle_tlbm));
++	memset(handle_tlbm, 0, handle_tlbm_size * sizeof(handle_tlbm[0]));
+ 	memset(labels, 0, sizeof(labels));
+ 	memset(relocs, 0, sizeof(relocs));
+ 
+@@ -2182,14 +2186,14 @@ static void __cpuinit build_r4000_tlb_modify_handler(void)
+ 	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_1 & 0x0fffffff);
+ 	uasm_i_nop(&p);
+ 
+-	if ((p - handle_tlbm) > FASTPATH_SIZE)
++	if (p >= handle_tlbm_end)
+ 		panic("TLB modify handler fastpath space exceeded");
+ 
+ 	uasm_resolve_relocs(relocs, labels);
+ 	pr_debug("Wrote TLB modify handler fastpath (%u instructions).\n",
+ 		 (unsigned int)(p - handle_tlbm));
+ 
+-	dump_handler("r4000_tlb_modify", handle_tlbm, ARRAY_SIZE(handle_tlbm));
++	dump_handler("r4000_tlb_modify", handle_tlbm, handle_tlbm_size);
+ }
+ 
+ void __cpuinit build_tlb_refill_handler(void)
+@@ -2261,13 +2265,13 @@ void __cpuinit build_tlb_refill_handler(void)
+ void __cpuinit flush_tlb_handlers(void)
+ {
+ 	local_flush_icache_range((unsigned long)handle_tlbl,
+-			   (unsigned long)handle_tlbl + sizeof(handle_tlbl));
++			   (unsigned long)handle_tlbl_end);
+ 	local_flush_icache_range((unsigned long)handle_tlbs,
+-			   (unsigned long)handle_tlbs + sizeof(handle_tlbs));
++			   (unsigned long)handle_tlbs_end);
+ 	local_flush_icache_range((unsigned long)handle_tlbm,
+-			   (unsigned long)handle_tlbm + sizeof(handle_tlbm));
++			   (unsigned long)handle_tlbm_end);
+ #ifdef CONFIG_MIPS_PGD_C0_CONTEXT
+-	local_flush_icache_range((unsigned long)tlbmiss_handler_setup_pgd_array,
+-			   (unsigned long)tlbmiss_handler_setup_pgd_array + sizeof(handle_tlbm));
++	local_flush_icache_range((unsigned long)tlbmiss_handler_setup_pgd,
++			   (unsigned long)tlbmiss_handler_setup_pgd_end);
  #endif
  }
- 
+-- 
+1.7.9.5

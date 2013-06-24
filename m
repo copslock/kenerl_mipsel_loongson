@@ -1,47 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jun 2013 20:49:20 +0200 (CEST)
-Received: from mail-pa0-f44.google.com ([209.85.220.44]:52171 "EHLO
-        mail-pa0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825885Ab3FXStIr3uC4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Jun 2013 20:49:08 +0200
-Received: by mail-pa0-f44.google.com with SMTP id lj1so11459572pab.17
-        for <multiple recipients>; Mon, 24 Jun 2013 11:48:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jun 2013 20:52:43 +0200 (CEST)
+Received: from mail-pa0-f50.google.com ([209.85.220.50]:38402 "EHLO
+        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825885Ab3FXSwczaxb9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Jun 2013 20:52:32 +0200
+Received: by mail-pa0-f50.google.com with SMTP id fb1so11303414pad.23
+        for <multiple recipients>; Mon, 24 Jun 2013 11:52:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=message-id:date:from:user-agent:mime-version:to:cc:subject
          :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=b8CqfMvkgxoLPUJ4YyoAJwEFUYk1KyN4frItbBBUKMI=;
-        b=hru0a5Tsholgh//Q1PrRoVclvA3QXKu2CnJPUnGUZu+CAVcUCbh+9X5vIulj7JSbCc
-         sJPFrS36oaMBvBwJacMbwzpcwIoEeRI9w8g4W0jAkluhNDrLgRAMtGstznZdAyb+4WUh
-         mv/Kv4hmpkWYbLGLPpuMTHwZBP0hG7DlE6X4wt+Hks6FG0bKNc0nqLaMo7PnyXl1usIK
-         eHY3w5vmVV9+pcDKqWt2RlgnnSBI9J6Dr2OVTJq9we6QP00ermidTf5Ws70MvKECY+Ak
-         2STYpyUSZbrvAnX+DLzoTwYTFWU/2nVkGzxrfg50ZtS+BHBiAhCnfu2sNP+6hIvXgPZB
-         na6g==
-X-Received: by 10.68.75.110 with SMTP id b14mr25107485pbw.89.1372099731340;
-        Mon, 24 Jun 2013 11:48:51 -0700 (PDT)
+        bh=pDwYjQS/lqzn2+6M7jsBAAk+ShHuiDGmOZ45Dh8EBkk=;
+        b=BRKpH+9Nw9Kp2pDlRRJNpgxDI+JKgQZn/6i9FhJrRycL3T6Ql+m4+iApW3yN0M0j1A
+         prsZ1b/8fZiW89ZG/6wBhX/rynS1S41/KjSYaoZqC+41c3qyRXWJUGzkYYRr47mC76/+
+         iFhMApC1LOdj94XHVOZMl6A6zLwdt/Mv6vsyylNlRkvYcdeGXMiSC5is8ghll8L1+T2d
+         4I1wqEVBE2rYI5UFeXa9HQsJ/v4f2r0lOt0t5h2Gg3I4yEw7JsQu6mCDwcUliD96P8Tn
+         6w3PWvPDX/iyfDGWjfn42pNBIqGqPrK9qqtSWmFvlNjMuXozMFCRhVB4qjSYKXD5m+td
+         87lg==
+X-Received: by 10.68.232.225 with SMTP id tr1mr24720431pbc.143.1372099946411;
+        Mon, 24 Jun 2013 11:52:26 -0700 (PDT)
 Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id sq5sm21104219pab.11.2013.06.24.11.48.49
+        by mx.google.com with ESMTPSA id pm7sm19306375pbb.31.2013.06.24.11.52.24
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 24 Jun 2013 11:48:50 -0700 (PDT)
-Message-ID: <51C89490.2060307@gmail.com>
-Date:   Mon, 24 Jun 2013 11:48:48 -0700
+        Mon, 24 Jun 2013 11:52:25 -0700 (PDT)
+Message-ID: <51C89567.3000108@gmail.com>
+Date:   Mon, 24 Jun 2013 11:52:23 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
 MIME-Version: 1.0
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH v2 2/2] MIPS: cavium-octeon: enable interfaces on EdgeRouter
- Lite
-References: <1372023524-17333-1-git-send-email-aaro.koskinen@iki.fi> <1372023524-17333-2-git-send-email-aaro.koskinen@iki.fi>
-In-Reply-To: <1372023524-17333-2-git-send-email-aaro.koskinen@iki.fi>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH v2 1/2] MIPS: cavium-octeon: cvmx-helper-board: print
+ unknown board warning only once
+References: <1372023524-17333-1-git-send-email-aaro.koskinen@iki.fi>
+In-Reply-To: <1372023524-17333-1-git-send-email-aaro.koskinen@iki.fi>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37116
+X-archive-position: 37117
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,73 +58,53 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 06/23/2013 02:38 PM, Aaro Koskinen wrote:
-> Enable interfaces on EdgeRouter Lite. Tested with cavium_octeon_defconfig
-> and busybox shell. DHCP & ping works with eth0, eth1 and eth2.
->
-> The board type "UBNT_E100" is taken from the sources of the vendor kernel
-> shipped with the product.
+> When booting a new board for the first time, the console is flooded with
+> "Unknown board" messages. This is not really helpful. Board type is not
+> going to change after the boot, so it's sufficient to print the warning
+> only once.
 >
 > Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-I don't have a board to verify any of this, but...
+I don't think we need this patch.  In 2/2 you add the board type for the 
+board you have, so you shouldn't be getting any messages, and this is 
+unneeded.
 
-Acked-by: David Daney <david.daney@cavium.com>
+I don't mind spamming people with all the messages,  if people see these 
+messages, they have bigger problems than too many messages.
+
+David Daney
 
 
 > ---
->   arch/mips/cavium-octeon/executive/cvmx-helper-board.c | 13 +++++++++++++
->   arch/mips/include/asm/octeon/cvmx-bootinfo.h          |  2 ++
->   2 files changed, 15 insertions(+)
+>
+> 	v2: Adjust indentation.
+>
+>   arch/mips/cavium-octeon/executive/cvmx-helper-board.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
 >
 > diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-> index 9838c0e..2fcf030 100644
+> index 7c64977..9838c0e 100644
 > --- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
 > +++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-> @@ -183,6 +183,11 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
->   			return ipd_port - 16 + 4;
->   		else
->   			return -1;
-> +	case CVMX_BOARD_TYPE_UBNT_E100:
-> +		if (ipd_port >= 0 && ipd_port <= 2)
-> +			return 7 - ipd_port;
-> +		else
-> +			return -1;
+> @@ -31,6 +31,8 @@
+>    * network ports from the rest of the cvmx-helper files.
+>    */
+>
+> +#include <linux/printk.h>
+> +
+>   #include <asm/octeon/octeon.h>
+>   #include <asm/octeon/cvmx-bootinfo.h>
+>
+> @@ -184,9 +186,8 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
 >   	}
 >
 >   	/* Some unknown board. Somebody forgot to update this function... */
-> @@ -707,6 +712,14 @@ int __cvmx_helper_board_hardware_enable(int interface)
->   				}
->   			}
->   		}
-> +	} else if (cvmx_sysinfo_get()->board_type ==
-> +			CVMX_BOARD_TYPE_UBNT_E100) {
-> +		cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX(0, interface), 0);
-> +		cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX(0, interface), 0x10);
-> +		cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX(1, interface), 0);
-> +		cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX(1, interface), 0x10);
-> +		cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX(2, interface), 0);
-> +		cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX(2, interface), 0x10);
->   	}
->   	return 0;
+> -	cvmx_dprintf
+> -	    ("cvmx_helper_board_get_mii_address: Unknown board type %d\n",
+> -	     cvmx_sysinfo_get()->board_type);
+> +	pr_warn_once("%s: Unknown board type %d\n", __func__,
+> +		     cvmx_sysinfo_get()->board_type);
+>   	return -1;
 >   }
-> diff --git a/arch/mips/include/asm/octeon/cvmx-bootinfo.h b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-> index 284fa8d..7b7818d 100644
-> --- a/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-> +++ b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-> @@ -227,6 +227,7 @@ enum cvmx_board_types_enum {
->   	 * use any numbers in this range.
->   	 */
->   	CVMX_BOARD_TYPE_CUST_PRIVATE_MIN = 20001,
-> +	CVMX_BOARD_TYPE_UBNT_E100 = 20002,
->   	CVMX_BOARD_TYPE_CUST_PRIVATE_MAX = 30000,
 >
->   	/* The remaining range is reserved for future use. */
-> @@ -325,6 +326,7 @@ static inline const char *cvmx_board_type_to_string(enum
->
->   		    /* Customer private range */
->   		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_PRIVATE_MIN)
-> +		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_UBNT_E100)
->   		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_PRIVATE_MAX)
->   	}
->   	return "Unsupported Board";
 >

@@ -1,53 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jun 2013 00:06:31 +0200 (CEST)
-Received: from mail-ob0-f175.google.com ([209.85.214.175]:42194 "EHLO
-        mail-ob0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827479Ab3FXWGa0U1e0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jun 2013 00:06:30 +0200
-Received: by mail-ob0-f175.google.com with SMTP id xn12so11251227obc.20
-        for <linux-mips@linux-mips.org>; Mon, 24 Jun 2013 15:06:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:x-gm-message-state;
-        bh=1UI+e/6HrnbDRn5AX/AfuXp2XQL4opaHc4fGJXmRFJU=;
-        b=JmkqHa/MvZ7Ny7zxUk3qndaAW4BA7HPhwWddikt6QaFEOyAuVxed3jIQaPnQzy1FOw
-         m4g978bBs+YzQnX1+4QtSkdb4GJYeIHOIt+kswRqZbuiZDkEQbLQEmKAa5uhVjexOXz1
-         kTHPNWsf+0M5Jpy7/QMBq327nigleXPm/KPVgPvwrwvCWFpDJxg6HjrPsQ0hiYFrny9D
-         6SQ3jGRLvpB210wtbQCMfYv2WFaACuNSViyKF9W0YFif35XkuRQ9HImUfjrZX/VQSkNV
-         UgpSm1B/V6xGvfMw+s41zKOtx1HU0c0O0PllywzE/Y+9z/eoSoujye+BsCYBmAJI96Yc
-         MEmw==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jun 2013 00:33:46 +0200 (CEST)
+Received: from mail-pa0-f52.google.com ([209.85.220.52]:49230 "EHLO
+        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827575Ab3FXWdpbHIKM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jun 2013 00:33:45 +0200
+Received: by mail-pa0-f52.google.com with SMTP id kq13so11689197pab.11
+        for <multiple recipients>; Mon, 24 Jun 2013 15:33:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=TGqCh+Vo8VIIp0hWB/n+VVAHD4NuvTg1XJMKvUGhoIs=;
+        b=ZO3Xxu/pOC66NyktZpxR4I/40elIPMlnIRV+qA/zvHCWykeYMNzDPwkDMG19kjehkI
+         M7x5mOucdeTj/Msv/0Qc+5hGM7OyOd/I+FvYJXHtgZv8xiZexs0X2LXTC+c0fvIubndM
+         pIPSr+opcA1Q0LWnXFTZFz2GEX/udFPi11hK93/Ei81aFks5hnMa7T++AtN00q6PKE6v
+         hsKyiQSBDGz2AjaJCDPTUaOXZ4oGHm3nJ6TOcqEbNxp151m0G367MKzI1XK1+IHNhqRH
+         tILJASAdEU7Gey61ktXOB96kBBE2HGA6dTiF5G9kcc1qCovkRVXRIOXJ7Q2f92k7ftuk
+         h6ew==
+X-Received: by 10.68.249.162 with SMTP id yv2mr6411161pbc.153.1372113218581;
+        Mon, 24 Jun 2013 15:33:38 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id iq6sm19997181pbc.1.2013.06.24.15.33.36
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 24 Jun 2013 15:33:37 -0700 (PDT)
+Message-ID: <51C8C940.7080106@gmail.com>
+Date:   Mon, 24 Jun 2013 15:33:36 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
 MIME-Version: 1.0
-X-Received: by 10.182.199.72 with SMTP id ji8mr8899995obc.18.1372111583864;
- Mon, 24 Jun 2013 15:06:23 -0700 (PDT)
-Received: by 10.182.120.7 with HTTP; Mon, 24 Jun 2013 15:06:23 -0700 (PDT)
-In-Reply-To: <51C34584.8070301@gmail.com>
-References: <1371251915-18271-1-git-send-email-ddaney.cavm@gmail.com>
-        <CACRpkdYHzBBbPNujYRGkMFGuQRzeYKs9jgfc3e3HWyxQFahvRQ@mail.gmail.com>
-        <51C34584.8070301@gmail.com>
-Date:   Tue, 25 Jun 2013 00:06:23 +0200
-Message-ID: <CACRpkdYmPuyrDYU1n+UpgW-if9-JS-vXJgLVCJ2zrx-4oKBtHw@mail.gmail.com>
-Subject: Re: Re: [PATCH] gpio MIPS/OCTEON: Add a driver for OCTEON's on-chip
- GPIO pins.
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Grant Likely <grant.likely@linaro.org>,
-        Rob Herring <rob.herring@calxeda.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree-discuss@lists.ozlabs.org" 
-        <devicetree-discuss@lists.ozlabs.org>,
-        David Daney <david.daney@cavium.com>
-Content-Type: text/plain; charset=ISO-8859-1
-X-Gm-Message-State: ALoCoQmeohoF6vLGLBlL96qGGnylsdd6lSGxqz7ZffFQlj0+67bLrJFwLp0mVp9223SggcxghtmJ
-Return-Path: <linus.walleij@linaro.org>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH v2 1/2] MIPS: cavium-octeon: cvmx-helper-board: print
+ unknown board warning only once
+References: <1372023524-17333-1-git-send-email-aaro.koskinen@iki.fi> <51C89567.3000108@gmail.com> <20130624220429.GB20703@blackmetal.musicnaut.iki.fi>
+In-Reply-To: <20130624220429.GB20703@blackmetal.musicnaut.iki.fi>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37119
+X-archive-position: 37120
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,124 +57,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jun 20, 2013 at 8:10 PM, David Daney <ddaney.cavm@gmail.com> wrote:
-> On 06/17/2013 01:51 AM, Linus Walleij wrote:
-
->> +#include <asm/octeon/octeon.h>
->> +#include <asm/octeon/cvmx-gpio-defs.h>
+On 06/24/2013 03:04 PM, Aaro Koskinen wrote:
+> On Mon, Jun 24, 2013 at 11:52:23AM -0700, David Daney wrote:
+>> On 06/23/2013 02:38 PM, Aaro Koskinen wrote:
+>>> When booting a new board for the first time, the console is flooded with
+>>> "Unknown board" messages. This is not really helpful. Board type is not
+>>> going to change after the boot, so it's sufficient to print the warning
+>>> only once.
+>>>
+>>> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 >>
->> I cannot find this in my tree.
->
-> Weird, I see them here:
->
-> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/arch/mips/include/asm/octeon/cvmx-gpio-defs.h
-> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/arch/mips/include/asm/octeon/octeon.h
->
-> Do you not have these?
-
-Yeah no problem, I must have misgrepped.
-Sorry for the fuzz...
-
->> depend on OF as well right? Or does the CAVIUM_OCTEON_SOC already
->> imply that?
->
-> We already have 'select USE_OF', so I think adding OF here would be
-> redundant.
-
-OK.
-
->>> +/*
->>> + * The address offset of the GPIO configuration register for a given
->>> + * line.
->>> + */
->>> +static unsigned int bit_cfg_reg(unsigned int gpio)
+>> I don't think we need this patch.  In 2/2 you add the board type for
+>> the board you have, so you shouldn't be getting any messages, and
+>> this is unneeded.
 >>
->> Maybe the passed variable shall be named "offset" here, as it is named
->> offset on all call sites, and it surely local for this instance?
+>> I don't mind spamming people with all the messages,  if people see
+>> these messages, they have bigger problems than too many messages.
 >
-> Well it is the gpio line, so perhaps it should universally be change to
-> "line" or "pin"
+> I guess this patch can be dropped, but whoever tries to improve the
+> support for the next new Octeon board will get annoyed by these same
+> messages...
 
-We use "offset" to signify line enumerators in drivers/gpio/*
-well atleaste if they are local to a piece of hardware.
-(Check the GPIO siblings.)
+I would hope that the "next new Octeon board" would have a bootloader 
+that supplies a device tree.  That way most of this would never be used, 
+and there would be no messages.
 
->>> +{
->>> +       if (gpio < 16)
->>> +               return 8 * gpio;
->>> +       else
->>> +               return 8 * (gpio - 16) + 0x100;
->>
->>
->> Put this 0x100 in the #defines above with the name something like
->> STRIDE.
->
-> But it is not a 'STRIDE', it is a discontinuity compensation and used in
-> exactly one place.
-
-OK what about a comment or something, because it isn't
-exactly intuitive right?
-
->>> +struct octeon_gpio {
->>> +       struct gpio_chip chip;
->>> +       u64 register_base;
->>> +};
->>
->> OMG everything is 64 bit. Well has to come to this I guess.
->
-> Not everything.  This is custom logic in an SoC with 64-bit wide internal
-> address buses, what would you suggest?
-
-Yep that's what I meant, no big deal. Just first time
-I really see it in driver bases.
-
->> I'm not a fan of packed bitfields like this, I prefer if you just
->> OR | and AND & the bits together in the driver.
-
-I see you disregarded this comment, and looking at the header
-files it seems the MIPS arch is a big fan if packed bitfields so
-will live with it for this arch...
-
->>> +static int octeon_gpio_get(struct gpio_chip *chip, unsigned offset)
->>> +{
->>> +       struct octeon_gpio *gpio = container_of(chip, struct octeon_gpio,
->>> chip);
->>> +       u64 read_bits = cvmx_read_csr(gpio->register_base + RX_DAT);
->>> +
->>> +       return ((1ull << offset) & read_bits) != 0;
->>
->> A common idiom we use for this is:
->>
->> return !!(read_bits & (1ull << offset));
->
-> I hate that idiom, but if its use is a condition of accepting the patch, I
-> will change it.
-
-Nah. If a good rational reason like "hate" is given for not using a coding
-idiom I will accept it as it stands ;-)
-
->>> +       dev_info(&pdev->dev, "OCTEON GPIO\n");
->>
->>
->> This is like shouting "REAL MADRID!" in the bootlog, be a bit more
->> precise: "octeon GPIO driver probed\n" or something so we know what
->> is happening.
->
-> No, more akin to 'Real Madrid', as 'OCTEON' is the correct spelling of its
-> given name.
->
-> I will happily add "driver probed", and grudgingly switch to lower case if
-> it is a necessary condition of patch acceptance.
-
-I don't know, does this rest of the MIPS drivers emit similar messages
-such that the bootlog will say
-
-OCTEON clocks
-OCTEON irqchip
-OCTEON I2C
-OCTEON GPIO
-
-then I guess it's convention and it can stay like this.
-
-Yours,
-Linus Walleij
+David Daney

@@ -1,36 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Jun 2013 23:39:19 +0200 (CEST)
-Received: from filtteri1.pp.htv.fi ([213.243.153.184]:49645 "EHLO
-        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6821310Ab3FWVjCk0NOc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 23 Jun 2013 23:39:02 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 109D521B87A;
-        Mon, 24 Jun 2013 00:38:59 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp4.welho.com ([213.243.153.38])
-        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
-        with ESMTP id hkHcmcBBHHvE; Mon, 24 Jun 2013 00:38:54 +0300 (EEST)
-Received: from blackmetal.pp.htv.fi (cs181064211.pp.htv.fi [82.181.64.211])
-        by smtp4.welho.com (Postfix) with ESMTP id 198E15BC011;
-        Mon, 24 Jun 2013 00:38:54 +0300 (EEST)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH v2 2/2] MIPS: cavium-octeon: enable interfaces on EdgeRouter Lite
-Date:   Mon, 24 Jun 2013 00:38:44 +0300
-Message-Id: <1372023524-17333-2-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1372023524-17333-1-git-send-email-aaro.koskinen@iki.fi>
-References: <1372023524-17333-1-git-send-email-aaro.koskinen@iki.fi>
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jun 2013 11:10:21 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:34579 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6815757Ab3FXJKQ0fy55 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 24 Jun 2013 11:10:16 +0200
+Message-ID: <51C80CF0.4070608@imgtec.com>
+Date:   Mon, 24 Jun 2013 10:10:08 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
+MIME-Version: 1.0
+To:     Oleg Nesterov <oleg@redhat.com>,
+        David Daney <ddaney@caviumnetworks.com>
+CC:     David Daney <ddaney.cavm@gmail.com>,
+        <linux-kernel@vger.kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kees Cook <keescook@chromium.org>,
+        David Daney <david.daney@cavium.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Dave Jones <davej@redhat.com>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v3] kernel/signal.c: fix BUG_ON with SIG128 (MIPS)
+References: <1371821962-9151-1-git-send-email-james.hogan@imgtec.com> <51C47864.9030200@gmail.com> <20130621202244.GA16610@redhat.com> <51C4BB86.1020004@caviumnetworks.com> <20130622190940.GA14150@redhat.com>
+In-Reply-To: <20130622190940.GA14150@redhat.com>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.65]
+X-SEF-Processed: 7_3_0_01192__2013_06_24_10_10_10
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37111
+X-archive-position: 37112
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,68 +48,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Enable interfaces on EdgeRouter Lite. Tested with cavium_octeon_defconfig
-and busybox shell. DHCP & ping works with eth0, eth1 and eth2.
+On 22/06/13 20:09, Oleg Nesterov wrote:
+> On 06/21, David Daney wrote:
+>> I am proposing that we just reduce the number of usable signals such
+>> that existing libc status checking macros/functions don't change in any
+>> way.
+> 
+> And I fully agree! Absolutely, sorry for confusion.
+> 
+> 
+> What I tried to say, _if_ we change the ABI instead, lets make this
+> change sane.
 
-The board type "UBNT_E100" is taken from the sources of the vendor kernel
-shipped with the product.
+I agree that this approach isn't very nice (I was really just trying to
+explore the options) and reducing the number of signals is nicer. But is
+anybody here confident enough that the number of signals changing under
+the feet of existing binaries/libc won't actually break anything real?
+I.e. anything trying to use SIGRTMAX() to get a lower priority signal.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
----
- arch/mips/cavium-octeon/executive/cvmx-helper-board.c | 13 +++++++++++++
- arch/mips/include/asm/octeon/cvmx-bootinfo.h          |  2 ++
- 2 files changed, 15 insertions(+)
+> 
+> To me this hack is not sane. And btw, the patch doesn't look complete.
+> Say, wait_task_zombie() should do exitcode_to_sig() for ->si_status.
 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-index 9838c0e..2fcf030 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-@@ -183,6 +183,11 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
- 			return ipd_port - 16 + 4;
- 		else
- 			return -1;
-+	case CVMX_BOARD_TYPE_UBNT_E100:
-+		if (ipd_port >= 0 && ipd_port <= 2)
-+			return 7 - ipd_port;
-+		else
-+			return -1;
- 	}
- 
- 	/* Some unknown board. Somebody forgot to update this function... */
-@@ -707,6 +712,14 @@ int __cvmx_helper_board_hardware_enable(int interface)
- 				}
- 			}
- 		}
-+	} else if (cvmx_sysinfo_get()->board_type ==
-+			CVMX_BOARD_TYPE_UBNT_E100) {
-+		cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX(0, interface), 0);
-+		cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX(0, interface), 0x10);
-+		cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX(1, interface), 0);
-+		cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX(1, interface), 0x10);
-+		cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX(2, interface), 0);
-+		cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX(2, interface), 0x10);
- 	}
- 	return 0;
- }
-diff --git a/arch/mips/include/asm/octeon/cvmx-bootinfo.h b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-index 284fa8d..7b7818d 100644
---- a/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-+++ b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
-@@ -227,6 +227,7 @@ enum cvmx_board_types_enum {
- 	 * use any numbers in this range.
- 	 */
- 	CVMX_BOARD_TYPE_CUST_PRIVATE_MIN = 20001,
-+	CVMX_BOARD_TYPE_UBNT_E100 = 20002,
- 	CVMX_BOARD_TYPE_CUST_PRIVATE_MAX = 30000,
- 
- 	/* The remaining range is reserved for future use. */
-@@ -325,6 +326,7 @@ static inline const char *cvmx_board_type_to_string(enum
- 
- 		    /* Customer private range */
- 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_PRIVATE_MIN)
-+		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_UBNT_E100)
- 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_PRIVATE_MAX)
- 	}
- 	return "Unsupported Board";
--- 
-1.8.3.1
+Ah yes, I didn't seen that.
+
+Cheers
+James

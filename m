@@ -1,37 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jun 2013 00:40:08 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:26623 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827575Ab3FXWkHn0rq0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 25 Jun 2013 00:40:07 +0200
-Message-ID: <51C8CA95.80008@imgtec.com>
-Date:   Mon, 24 Jun 2013 17:39:17 -0500
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130510 Thunderbird/17.0.6
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jun 2013 01:06:48 +0200 (CEST)
+Received: from filtteri6.pp.htv.fi ([213.243.153.189]:39349 "EHLO
+        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6831610Ab3FXXGrJShDh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jun 2013 01:06:47 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri6.pp.htv.fi (Postfix) with ESMTP id 2DB5356F4CC;
+        Tue, 25 Jun 2013 02:06:46 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp5.welho.com ([213.243.153.39])
+        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
+        with ESMTP id LTxbeovq+BOK; Tue, 25 Jun 2013 02:06:41 +0300 (EEST)
+Received: from musicnaut.iki.fi (cs181064211.pp.htv.fi [82.181.64.211])
+        by smtp5.welho.com (Postfix) with SMTP id 3FE775BC004;
+        Tue, 25 Jun 2013 02:06:40 +0300 (EEST)
+Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Tue, 25 Jun 2013 02:06:39 +0300
+Date:   Tue, 25 Jun 2013 02:06:39 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     David Daney <ddaney.cavm@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH v2 1/2] MIPS: cavium-octeon: cvmx-helper-board: print
+ unknown board warning only once
+Message-ID: <20130624230639.GC20703@blackmetal.musicnaut.iki.fi>
+References: <1372023524-17333-1-git-send-email-aaro.koskinen@iki.fi>
+ <51C89567.3000108@gmail.com>
+ <20130624220429.GB20703@blackmetal.musicnaut.iki.fi>
+ <51C8C940.7080106@gmail.com>
 MIME-Version: 1.0
-To:     Huacai Chen <chenhc@lemote.com>
-CC:     "Steven J. Hill" <sjhill@realitydiluted.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH V9 03/13] MIPS: Loongson: Introduce and use cpu_has_coherent_cache
- feature
-References: <1359527106-22879-1-git-send-email-chenhc@lemote.com>        <1359527106-22879-4-git-send-email-chenhc@lemote.com>        <5166ED66.7020307@realitydiluted.com>        <CAAhV-H6s47NUHzbEX5UKYtkei7=s08PPXCMw39_fP_SV7Hv5Vg@mail.gmail.com> <CAAhV-H58Y_Rd8thj8MWXGCqqGtYJekDKrO-nXYjdp3214jnQ0A@mail.gmail.com>
-In-Reply-To: <CAAhV-H58Y_Rd8thj8MWXGCqqGtYJekDKrO-nXYjdp3214jnQ0A@mail.gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.150.47]
-X-SEF-Processed: 7_3_0_01192__2013_06_24_23_40_01
-Return-Path: <Steven.Hill@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <51C8C940.7080106@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37121
+X-archive-position: 37122
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,13 +52,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/22/2013 09:10 PM, Huacai Chen wrote:
->
-> Is the 3rd patch of V10 is OK to be accepted now? If so, could the
-> patchset of V10 be merged into 3.11?
->
-The merge window for 3.11 is closed at this point. You should get it 
-prepared for 3.12, so start tracking the 'mips-for-linux-next' branch 
-with your patches.
+On Mon, Jun 24, 2013 at 03:33:36PM -0700, David Daney wrote:
+> On 06/24/2013 03:04 PM, Aaro Koskinen wrote:
+> >On Mon, Jun 24, 2013 at 11:52:23AM -0700, David Daney wrote:
+> >>On 06/23/2013 02:38 PM, Aaro Koskinen wrote:
+> >>>When booting a new board for the first time, the console is flooded with
+> >>>"Unknown board" messages. This is not really helpful. Board type is not
+> >>>going to change after the boot, so it's sufficient to print the warning
+> >>>only once.
+> >>>
+> >>>Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> >>
+> >>I don't think we need this patch.  In 2/2 you add the board type for
+> >>the board you have, so you shouldn't be getting any messages, and
+> >>this is unneeded.
+> >>
+> >>I don't mind spamming people with all the messages,  if people see
+> >>these messages, they have bigger problems than too many messages.
+> >
+> >I guess this patch can be dropped, but whoever tries to improve the
+> >support for the next new Octeon board will get annoyed by these same
+> >messages...
+> 
+> I would hope that the "next new Octeon board" would have a
+> bootloader that supplies a device tree.  That way most of this would
+> never be used, and there would be no messages.
 
-Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+Yes, actually I was wondering if MIPS kernel could offer something
+similar to ARM's APPENDED_DTB, i.e. provide some mechanism to pass the
+dtb if the bootloader support is missing.
+
+A.

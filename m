@@ -1,34 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jun 2013 21:03:43 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:56359 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827473Ab3FZTDmpYTka (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 26 Jun 2013 21:03:42 +0200
-Message-ID: <51CB3B04.1070903@imgtec.com>
-Date:   Wed, 26 Jun 2013 12:03:32 -0700
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jun 2013 21:05:51 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:49425 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6834871Ab3FZTFu0iESt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 26 Jun 2013 21:05:50 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5QJ5mAh023199;
+        Wed, 26 Jun 2013 21:05:48 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5QJ5lvZ023198;
+        Wed, 26 Jun 2013 21:05:47 +0200
+Date:   Wed, 26 Jun 2013 21:05:47 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+Cc:     Tony Wu <tung7970@gmail.com>, linux-mips@linux-mips.org,
+        Chris Dearman <chris.dearman@imgtec.com>
+Subject: Re: [PATCH] MIPS: Fix gic_set_affinity infinite loop
+Message-ID: <20130626190547.GK7171@linux-mips.org>
+References: <20130621111308.GC23231@hades.local>
+ <51C486DF.4020303@imgtec.com>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Florian Fainelli <florian@openwrt.org>
-Subject: Re: [PATCH v2] Revert "MIPS: make CAC_ADDR and UNCAC_ADDR account
- for PHYS_OFFSET"
-References: <1371742590-10138-1-git-send-email-Steven.Hill@imgtec.com> <20130626145234.GB7171@linux-mips.org> <gjxqcs1k6ixh0k608l2d5c4p.1372261412004@email.android.com> <20130626162302.GE7171@linux-mips.org> <nh7ue18fnbn1tbs2wsphlis9.1372265400519@email.android.com> <20130626175015.GH7171@linux-mips.org>
-In-Reply-To: <20130626175015.GH7171@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.65.146]
-X-SEF-Processed: 7_3_0_01192__2013_06_26_20_03_36
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <51C486DF.4020303@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37149
+X-archive-position: 37150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,63 +44,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ralf,
+On Fri, Jun 21, 2013 at 12:01:19PM -0500, Steven J. Hill wrote:
 
-On 06/26/2013 10:50 AM, Ralf Baechle wrote:
-> On Wed, Jun 26, 2013 at 04:50:03PM +0000, Leonid Yegoshin wrote:
->
->> EVA has actually INCREASE in user address space - I right now run system with 2GB phys memory and 3GB of user virtual memory address space. Work in progress is to verify that GLIBC accepts addresses above 2GB.
-> I took the 0x40000000 for a KSEG0-equivalent because you previously
-> mentioned the value of 0x80000000.
+> On 06/21/2013 06:13 AM, Tony Wu wrote:
+> >There is an infinite loop in gic_set_affinity. When irq_set_affinity
+> >gets called on gic controller, it blocks forever.
+> >
+> Tony,
+> 
+> What hardware platform is this on and how do you trigger the call to
+> 'gic_set_affinity' such that you get stuck? Thanks.
 
-I wrote about kernel address layout. With EVA a user address layout is a 
-different beast.
-In EVA, user may have access, say [0x00000000 - 0xBFFFFFFF] through TLB and
-kernel may have access, say [0x00000000 - 0xDFFFFFFF] unmapped. But 
-segment shifts are applied to each KSEG.
+I assume on a SMP GIC configuration he must have tried something like
 
->
->> Yes, it is all about increasing phys and user memory and avoiding 64bits. Many solutions dont justify 64bit chip (chip space increase, performance degradation and increase in DMA addresses for devices).
-> Fair enough - but in the end the increasing size of metadata and pagetables
-> which has to reside in lowmem will become the next bottleneck and highmem
-> I/O performance has never been great, is on most kernel developers shit list
-> and performance optimizations for highmem are getting killed whenever they
-> are getting into the way.
+  echo 1 > /proc/irq/2/smp_affinity
 
-EVA doesn't use HIGHMEM. Kernel has a direct access to all memory in, 
-say 3GB (3.5GB?).
-Malta model gives only 2GB because of PCI bridge loop problem.
+Where 1 is a CPU bit mask and 2 the number of a GIC interrupt of which
+to change the affinity.
 
->
-> So I'd say EVA gives you something like 1.5GB of memory at most with good
-> performance and a 2GB userspace and something like 0.5GB, maybe 0.75GB
-> with a 3GB userspace.  Beyond that you need highmem and that's where things,
-> especially kernel programming get more complicated and slower.
+This is a hillarious bug, this obviously has never been working.
 
-Ralf, PTE and page table sizes depends from page size and HUGE page 
-table implementation.
-With EVA the ratio of usable and service (PTE + page table) memory is 
-the same as legacy MIPS
-and independs from used user space size. Right now I am running SOAK 
-tests + additional
-"thrash" instance for 1500MB on 2GB physical Malta memory and see:
+I'm not sure if anything else would need fixing or if the loop had any
+sane purpose but as of now I can't see one so I'm queueing the patch
+for linux-next.
 
-...
-Thrash v0.3 thrashing over 1500 megabytes
-...
-vmstat
-procs -----------memory---------- ---swap-- -----io---- --system-- 
-----cpu----
-  r  b   swpd   free   buff  cache   si   so    bi    bo in    cs us sy 
-id wa
-10  0      0 950480 252384 107856    0    0     1    18 166   132 75 25  
-0  0
-
-See: swap si/so == 0.
-
-I use 16KB pages.
-
->
->    Ralf
-
-- Leonid.
+  Ralf

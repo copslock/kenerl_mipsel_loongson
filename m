@@ -1,39 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jun 2013 17:43:47 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:12877 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823098Ab3FZPnoC2aSI convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Jun 2013 17:43:44 +0200
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Florian Fainelli <florian@openwrt.org>
-Subject: Re: [PATCH v2] Revert "MIPS: make CAC_ADDR and UNCAC_ADDR account
- for PHYS_OFFSET"
-Thread-Topic: [PATCH v2] Revert "MIPS: make CAC_ADDR and UNCAC_ADDR account
- for PHYS_OFFSET"
-Thread-Index: AQHObcv38iGve3vzvUORHZK08vTPDplIk1UA//+Y6Yw=
-Date:   Wed, 26 Jun 2013 15:43:35 +0000
-Message-ID: <gjxqcs1k6ixh0k608l2d5c4p.1372261412004@email.android.com>
-References: <1371742590-10138-1-git-send-email-Steven.Hill@imgtec.com>,<20130626145234.GB7171@linux-mips.org>
-In-Reply-To: <20130626145234.GB7171@linux-mips.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jun 2013 18:02:13 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:48706 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6819313Ab3FZQCDynUjy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 26 Jun 2013 18:02:03 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5QG1IBG012690;
+        Wed, 26 Jun 2013 18:01:18 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5QG1C4F012686;
+        Wed, 26 Jun 2013 18:01:12 +0200
+Date:   Wed, 26 Jun 2013 18:01:12 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        David Daney <ddaney.cavm@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Kees Cook <keescook@chromium.org>,
+        David Daney <david.daney@cavium.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Dave Jones <davej@redhat.com>, linux-mips@linux-mips.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v3] kernel/signal.c: fix BUG_ON with SIG128 (MIPS)
+Message-ID: <20130626160112.GD7171@linux-mips.org>
+References: <1371821962-9151-1-git-send-email-james.hogan@imgtec.com>
+ <51C47864.9030200@gmail.com>
+ <20130621202244.GA16610@redhat.com>
+ <51C4BB86.1020004@caviumnetworks.com>
+ <20130622190940.GA14150@redhat.com>
+ <51C80CF0.4070608@imgtec.com>
+ <20130625144015.1e4e70a0ac888f4ccf5c6a8f@linux-foundation.org>
+ <CAAG0J9-5J6=c=1VxEW6FevMHKsjShtbjM8G6Q1vu1P+LurQqoQ@mail.gmail.com>
+ <51CACB80.5020706@imgtec.com>
 MIME-Version: 1.0
-X-SEF-Processed: 7_3_0_01192__2013_06_26_16_43_38
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <51CACB80.5020706@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37137
+X-archive-position: 37138
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,27 +61,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is a precursor for EVA specs implementation on Aptiv cores.
+On Wed, Jun 26, 2013 at 12:07:44PM +0100, James Hogan wrote:
 
-EVA has different virtual address sets for kernel and user space and it can use memory on different physical address location. For exam, on Malta it can use a natural 0x80000000, one our customer put memory into 0x40000000 etc.
+> > IMO changing the ABI by reducing _NSIG to 127 or 126 isn't appropriate
+> > for stable.
+> 
+> How does this look for a nasty/stable fix?
 
-- Leonid.
+> diff --git a/kernel/signal.c b/kernel/signal.c
+> index 113411b..9ea8f4f 100644
+> --- a/kernel/signal.c
+> +++ b/kernel/signal.c
+> @@ -2366,8 +2366,14 @@ relock:
+>  
+>  		/*
+>  		 * Death signals, no core dump.
+> +		 *
+> +		 * Some architectures (MIPS) have 128 signals which doesn't play
+> +		 * nicely with the exit code since there are only 7 bits to
+> +		 * store the terminating signal number. Mask out higher bits to
+> +		 * avoid overflowing into the core dump bit and triggering
+> +		 * BUG_ON in do_group_exit.
+>  		 */
+> -		do_group_exit(info->si_signo);
+> +		do_group_exit(info->si_signo & 0x7f);
+>  		/* NOTREACHED */
+>  	}
+>  	spin_unlock_irq(&sighand->siglock);
 
+Looks like something which I think we could live with.
 
-Ralf Baechle <ralf@linux-mips.org> wrote:
-
-
-On Thu, Jun 20, 2013 at 10:36:30AM -0500, Steven J. Hill wrote:
-
-> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
->
-> This reverts commit 3f4579252aa166641861a64f1c2883365ca126c2. It is
-> invalid because the macros CAC_ADDR and UNCAC_ADDR have a kernel
-> virtual address as an argument and also returns a kernel virtual
-> address. Using and physical address PHYS_OFFSET is blatantly wrong
-> for a macro common to multiple platforms.
-
-While the patch itself is looking sane at a glance, I'm wondering if this
-is fixing any actual bug or is just the result of a code review?
+Clearly it also scores in the "nasty" category, so fits the bill ;)
 
   Ralf

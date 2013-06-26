@@ -1,35 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 01:48:56 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:40171 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835008Ab3FZXsfkxpr8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jun 2013 01:48:35 +0200
-Message-ID: <51CB7D83.4030904@imgtec.com>
-Date:   Wed, 26 Jun 2013 16:47:15 -0700
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 01:55:57 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:50352 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6835001Ab3FZXzuDCCyu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jun 2013 01:55:50 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5QNtaCF004828;
+        Thu, 27 Jun 2013 01:55:36 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5QNtZnb004827;
+        Thu, 27 Jun 2013 01:55:35 +0200
+Date:   Thu, 27 Jun 2013 01:55:35 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>,
+        Jonas Gorski <jogo@openwrt.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>
+Subject: Re: [PATCH 3/3] MIPS: Only set cpu_has_mmips if
+ SYS_SUPPORTS_MICROMIPS
+Message-ID: <20130626235535.GO7171@linux-mips.org>
+References: <1369432450-13583-1-git-send-email-ddaney.cavm@gmail.com>
+ <1369432450-13583-4-git-send-email-ddaney.cavm@gmail.com>
 MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Florian Fainelli <florian@openwrt.org>
-Subject: Re: [PATCH v2] Revert "MIPS: make CAC_ADDR and UNCAC_ADDR account
- for PHYS_OFFSET"
-References: <1371742590-10138-1-git-send-email-Steven.Hill@imgtec.com> <20130626145234.GB7171@linux-mips.org> <gjxqcs1k6ixh0k608l2d5c4p.1372261412004@email.android.com> <20130626162302.GE7171@linux-mips.org> <nh7ue18fnbn1tbs2wsphlis9.1372265400519@email.android.com> <20130626175015.GH7171@linux-mips.org> <51CB3B04.1070903@imgtec.com> <alpine.LFD.2.03.1306262233250.32101@linux-mips.org>
-In-Reply-To: <alpine.LFD.2.03.1306262233250.32101@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.65.146]
-X-SEF-Processed: 7_3_0_01192__2013_06_27_00_48_21
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1369432450-13583-4-git-send-email-ddaney.cavm@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37158
+X-archive-position: 37159
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,23 +46,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/26/2013 02:41 PM, Maciej W. Rozycki wrote:
-> Ralf,
->   To complete the image, there is a set of new memory access instructions
-> added (including but not limited to CACHE) that in the kernel mode
-> separates accesses to the user space from accesses to the kernel space,
-> i.e. the same virtual address can map differently depending on which
-> instruction set it is used with.  I encourage you to have at least a skim
-> over the most recent set of MIPS architecture manuals publicly available
-> where it all is documented.
->
->    Maciej
+On Fri, May 24, 2013 at 02:54:10PM -0700, David Daney wrote:
 
-Look into http://www.mips.com/auth/MD00091-2B-MIPS64PRA-AFP-03.52.pdf
-(registration required). Read sections 4.13, 4.12 and 9.13-9.15.
-Ignore anything for 64bit core.
+> From: David Daney <david.daney@cavium.com>
+> 
+> As Jonas Gorske said in his patch:
+> 
+>    Disable cpu_has_mmips for everything but SEAD3 and MALTA. Most of
+>    these platforms are from before the micromips introduction, so they
+>    are very unlikely to implement it.
+> 
+>    Reduces an -Os compiled, uncompressed kernel image by 8KiB for
+>    BCM63XX.
+> 
+> This patch taks a different approach than his, we gate the runtime
+> test for microMIPS by the config symbol SYS_SUPPORTS_MICROMIPS.
 
-Sorry, I asked David Lau to update MIPS32 actual docs but it can take time.
-Right now it is from 2011 year.
+Sounds like a good approach also for other ASEs.
 
-- Leonid.
+Applied.
+
+  Ralf

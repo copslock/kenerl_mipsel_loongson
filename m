@@ -1,41 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jun 2013 18:50:51 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:26116 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823081Ab3FZQuuGfVtk convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Jun 2013 18:50:50 +0200
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Florian Fainelli <florian@openwrt.org>
-Subject: Re: [PATCH v2] Revert "MIPS: make CAC_ADDR and UNCAC_ADDR account
- for PHYS_OFFSET"
-Thread-Topic: [PATCH v2] Revert "MIPS: make CAC_ADDR and UNCAC_ADDR account
- for PHYS_OFFSET"
-Thread-Index: AQHObcv38iGve3vzvUORHZK08vTPDplIk1UA//+Y6YyAAIBeAP//kjTX
-Date:   Wed, 26 Jun 2013 16:50:03 +0000
-Message-ID: <nh7ue18fnbn1tbs2wsphlis9.1372265400519@email.android.com>
-References: <1371742590-10138-1-git-send-email-Steven.Hill@imgtec.com>
- <20130626145234.GB7171@linux-mips.org>
- <gjxqcs1k6ixh0k608l2d5c4p.1372261412004@email.android.com>,<20130626162302.GE7171@linux-mips.org>
-In-Reply-To: <20130626162302.GE7171@linux-mips.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jun 2013 18:59:09 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:48989 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6823081Ab3FZQ7H5Ws-t (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 26 Jun 2013 18:59:07 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5QGx2jC016525;
+        Wed, 26 Jun 2013 18:59:02 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5QGx0bL016524;
+        Wed, 26 Jun 2013 18:59:00 +0200
+Date:   Wed, 26 Jun 2013 18:59:00 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Oleg Nesterov <oleg@redhat.com>
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Daney <ddaney@caviumnetworks.com>,
+        David Daney <ddaney.cavm@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Kees Cook <keescook@chromium.org>,
+        David Daney <david.daney@cavium.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Dave Jones <davej@redhat.com>, linux-mips@linux-mips.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v3] kernel/signal.c: fix BUG_ON with SIG128 (MIPS)
+Message-ID: <20130626165900.GF7171@linux-mips.org>
+References: <1371821962-9151-1-git-send-email-james.hogan@imgtec.com>
+ <51C47864.9030200@gmail.com>
+ <20130621202244.GA16610@redhat.com>
+ <51C4BB86.1020004@caviumnetworks.com>
+ <20130622190940.GA14150@redhat.com>
+ <51C80CF0.4070608@imgtec.com>
+ <20130625144015.1e4e70a0ac888f4ccf5c6a8f@linux-foundation.org>
+ <CAAG0J9-5J6=c=1VxEW6FevMHKsjShtbjM8G6Q1vu1P+LurQqoQ@mail.gmail.com>
+ <51CACB80.5020706@imgtec.com>
+ <20130626161452.GA2888@redhat.com>
 MIME-Version: 1.0
-X-SEF-Processed: 7_3_0_01192__2013_06_26_17_50_44
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20130626161452.GA2888@redhat.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37142
+X-archive-position: 37143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,28 +62,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ralf,
+On Wed, Jun 26, 2013 at 06:14:52PM +0200, Oleg Nesterov wrote:
 
-EVA has actually INCREASE in user address space - I right now run system with 2GB phys memory and 3GB of user virtual memory address space. Work in progress is to verify that GLIBC accepts addresses above 2GB.
+> Or simply remove the BUG_ON(), this can equally confuse wait(status).
+> 128 & 0x7f == 0.
+> 
+> Still I think it would be better to change _NSIG on mips.
 
-Yes, it is all about increasing phys and user memory and avoiding 64bits. Many solutions dont justify 64bit chip (chip space increase, performance degradation and increase in DMA addresses for devices).
+If it was that easy.  That's going to outright break binary compatibility,
+see kernel/signal.c:
 
-- Leonid.
+SYSCALL_DEFINE4(rt_sigprocmask, int, how, sigset_t __user *, nset,
+                sigset_t __user *, oset, size_t, sigsetsize)
+{
+        sigset_t old_set, new_set;
+        int error;
 
+        /* XXX: Don't preclude handling different sized sigset_t's.  */
+        if (sigsetsize != sizeof(sigset_t))
+                return -EINVAL;
 
-Ralf Baechle <ralf@linux-mips.org> wrote:
+There are several more more syscalls performing tests like the above.
 
-
-On Wed, Jun 26, 2013 at 03:43:35PM +0000, Leonid Yegoshin wrote:
-
-> This is a precursor for EVA specs implementation on Aptiv cores.
->
-> EVA has different virtual address sets for kernel and user space and it can use memory on different physical address location. For exam, on Malta it can use a natural 0x80000000, one our customer put memory into 0x40000000 etc.
-
-Hmm...  Any significant reduction below 2GB sounds like opening a can of
-worms with address space layout assumption in some application code.
-
-I guess they were desperately looking to increase kernel memory, highmem
-didn't fit the bill nor going 64 bit so this was the solution?
+So at least the kernel sigset_t will have to remain constant, maybe something
+like below, totally untested patch which I'm sure is going to open a few
+20 foot containers full of worms such as NSIG being defined by glibc to 128
+and fixing the kernel won't magically change installed libc headers or
+binaries incorporating NSIG.
 
   Ralf
+
+ arch/mips/include/uapi/asm/signal.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/include/uapi/asm/signal.h b/arch/mips/include/uapi/asm/signal.h
+index addb9f5..8bba323 100644
+--- a/arch/mips/include/uapi/asm/signal.h
++++ b/arch/mips/include/uapi/asm/signal.h
+@@ -11,12 +11,13 @@
+ 
+ #include <linux/types.h>
+ 
+-#define _NSIG		128
++#define _NSIG		64
+ #define _NSIG_BPW	(sizeof(unsigned long) * 8)
+ #define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
+ 
+ typedef struct {
+ 	unsigned long sig[_NSIG_WORDS];
++	unsigned long __fill[_NSIG_WORDS];
+ } sigset_t;
+ 
+ typedef unsigned long old_sigset_t;		/* at least 32 bits */

@@ -1,51 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jun 2013 18:59:09 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:48989 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jun 2013 19:00:38 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:49010 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823081Ab3FZQ7H5Ws-t (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 26 Jun 2013 18:59:07 +0200
+        id S6831903Ab3FZRAginOF9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 26 Jun 2013 19:00:36 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5QGx2jC016525;
-        Wed, 26 Jun 2013 18:59:02 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5QH0YhH016646;
+        Wed, 26 Jun 2013 19:00:34 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5QGx0bL016524;
-        Wed, 26 Jun 2013 18:59:00 +0200
-Date:   Wed, 26 Jun 2013 18:59:00 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5QH0Xwr016645;
+        Wed, 26 Jun 2013 19:00:33 +0200
+Date:   Wed, 26 Jun 2013 19:00:33 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Daney <ddaney@caviumnetworks.com>,
-        David Daney <ddaney.cavm@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Kees Cook <keescook@chromium.org>,
-        David Daney <david.daney@cavium.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Dave Jones <davej@redhat.com>, linux-mips@linux-mips.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v3] kernel/signal.c: fix BUG_ON with SIG128 (MIPS)
-Message-ID: <20130626165900.GF7171@linux-mips.org>
-References: <1371821962-9151-1-git-send-email-james.hogan@imgtec.com>
- <51C47864.9030200@gmail.com>
- <20130621202244.GA16610@redhat.com>
- <51C4BB86.1020004@caviumnetworks.com>
- <20130622190940.GA14150@redhat.com>
- <51C80CF0.4070608@imgtec.com>
- <20130625144015.1e4e70a0ac888f4ccf5c6a8f@linux-foundation.org>
- <CAAG0J9-5J6=c=1VxEW6FevMHKsjShtbjM8G6Q1vu1P+LurQqoQ@mail.gmail.com>
- <51CACB80.5020706@imgtec.com>
- <20130626161452.GA2888@redhat.com>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Tony Wu <tung7970@gmail.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Add missing cpu_has_mips_1 guardian
+Message-ID: <20130626170033.GG7171@linux-mips.org>
+References: <20130621110301.GA23195@hades.local>
+ <20130626143115.GA7171@linux-mips.org>
+ <20130626151854.GC7171@linux-mips.org>
+ <CAMuHMdWVTu2fzfOuxwsuvP9COKvuhMA+aNaWVESQZhBh9um9bA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20130626161452.GA2888@redhat.com>
+In-Reply-To: <CAMuHMdWVTu2fzfOuxwsuvP9COKvuhMA+aNaWVESQZhBh9um9bA@mail.gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37143
+X-archive-position: 37144
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,55 +46,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jun 26, 2013 at 06:14:52PM +0200, Oleg Nesterov wrote:
+On Wed, Jun 26, 2013 at 06:07:22PM +0200, Geert Uytterhoeven wrote:
 
-> Or simply remove the BUG_ON(), this can equally confuse wait(status).
-> 128 & 0x7f == 0.
+> On Wed, Jun 26, 2013 at 5:18 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > If it's running Linus, that is.
 > 
-> Still I think it would be better to change _NSIG on mips.
+> Hmm, didn't know Linus is MIPS-based...
 
-If it was that easy.  That's going to outright break binary compatibility,
-see kernel/signal.c:
+Neither does he!
 
-SYSCALL_DEFINE4(rt_sigprocmask, int, how, sigset_t __user *, nset,
-                sigset_t __user *, oset, size_t, sigsetsize)
-{
-        sigset_t old_set, new_set;
-        int error;
+> > Little complication: traps.c: was using a test for a pure MIPS I ISA as
+> 
+> Stray colon right after "traps.c".
 
-        /* XXX: Don't preclude handling different sized sigset_t's.  */
-        if (sigsetsize != sizeof(sigset_t))
-                return -EINVAL;
-
-There are several more more syscalls performing tests like the above.
-
-So at least the kernel sigset_t will have to remain constant, maybe something
-like below, totally untested patch which I'm sure is going to open a few
-20 foot containers full of worms such as NSIG being defined by glibc to 128
-and fixing the kernel won't magically change installed libc headers or
-binaries incorporating NSIG.
+Fixed, thanks,
 
   Ralf
-
- arch/mips/include/uapi/asm/signal.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/include/uapi/asm/signal.h b/arch/mips/include/uapi/asm/signal.h
-index addb9f5..8bba323 100644
---- a/arch/mips/include/uapi/asm/signal.h
-+++ b/arch/mips/include/uapi/asm/signal.h
-@@ -11,12 +11,13 @@
- 
- #include <linux/types.h>
- 
--#define _NSIG		128
-+#define _NSIG		64
- #define _NSIG_BPW	(sizeof(unsigned long) * 8)
- #define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
- 
- typedef struct {
- 	unsigned long sig[_NSIG_WORDS];
-+	unsigned long __fill[_NSIG_WORDS];
- } sigset_t;
- 
- typedef unsigned long old_sigset_t;		/* at least 32 bits */

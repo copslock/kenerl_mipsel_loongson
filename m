@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jun 2013 20:32:18 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:49341 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jun 2013 20:47:36 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:49388 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6834871Ab3FZScQz1GAM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 26 Jun 2013 20:32:16 +0200
+        id S6834828Ab3FZSrd3Quvs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 26 Jun 2013 20:47:33 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5QIWFSK021552;
-        Wed, 26 Jun 2013 20:32:15 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5QIlSbT022296;
+        Wed, 26 Jun 2013 20:47:28 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5QIWEvA021551;
-        Wed, 26 Jun 2013 20:32:14 +0200
-Date:   Wed, 26 Jun 2013 20:32:14 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5QIlRAn022295;
+        Wed, 26 Jun 2013 20:47:27 +0200
+Date:   Wed, 26 Jun 2013 20:47:27 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jayachandran C <jchandra@broadcom.com>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/3] Use scratch registers when MIPS_PGD_C0_CONTEXT is
- not set
-Message-ID: <20130626183213.GI7171@linux-mips.org>
-References: <1372011381-18600-1-git-send-email-jchandra@broadcom.com>
+Subject: Re: [PATCH v2 1/2] MIPS: cavium-octeon: cvmx-helper-board: print
+ unknown board warning only once
+Message-ID: <20130626184727.GJ7171@linux-mips.org>
+References: <1372023524-17333-1-git-send-email-aaro.koskinen@iki.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1372011381-18600-1-git-send-email-jchandra@broadcom.com>
+In-Reply-To: <1372023524-17333-1-git-send-email-aaro.koskinen@iki.fi>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37147
+X-archive-position: 37148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,8 +43,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Jun 23, 2013 at 11:46:18PM +0530, Jayachandran C wrote:
+On Mon, Jun 24, 2013 at 12:38:43AM +0300, Aaro Koskinen wrote:
 
-Applied.  Thanks,
+> When booting a new board for the first time, the console is flooded with
+> "Unknown board" messages. This is not really helpful. Board type is not
+> going to change after the boot, so it's sufficient to print the warning
+> only once.
+> 
+> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> ---
+> 
+> 	v2: Adjust indentation.
+> 
+>  arch/mips/cavium-octeon/executive/cvmx-helper-board.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+> index 7c64977..9838c0e 100644
+> --- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+> +++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+> @@ -31,6 +31,8 @@
+>   * network ports from the rest of the cvmx-helper files.
+>   */
+>  
+> +#include <linux/printk.h>
+> +
+>  #include <asm/octeon/octeon.h>
+>  #include <asm/octeon/cvmx-bootinfo.h>
+>  
+> @@ -184,9 +186,8 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
+>  	}
+>  
+>  	/* Some unknown board. Somebody forgot to update this function... */
+> -	cvmx_dprintf
+> -	    ("cvmx_helper_board_get_mii_address: Unknown board type %d\n",
+> -	     cvmx_sysinfo_get()->board_type);
+> +	pr_warn_once("%s: Unknown board type %d\n", __func__,
+> +		     cvmx_sysinfo_get()->board_type);
+
+David,
+
+cvmx_dprintf() is a function frequently invoked from the OCTEON code.
+I'm wondering.  Right now it's defined as:
+
+#if CVMX_ENABLE_DEBUG_PRINTS
+#define cvmx_dprintf        printk
+#else
+#define cvmx_dprintf(...)   {}
+#endif
+
+That is, there isn't even a severity level being used and the define
+CVMX_ENABLE_DEBUG_PRINTS to control cvmx_dprintf is way to similar to
+what CONFIG_DYNAMIC_DEBUG rsp. a simple #define DEBUG do.  And the
+no-debug variant of cvmx_dprintf isn't correct in presence of side
+effects of arguments.
+
+So I propose to just replace cvmx_dprintf with pr_debug.  What do you
+think?
 
   Ralf

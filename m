@@ -1,46 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 01:24:51 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:50261 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6834875Ab3FZXYsjePnb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jun 2013 01:24:48 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5QNOguG003421;
-        Thu, 27 Jun 2013 01:24:42 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5QNOcYH003417;
-        Thu, 27 Jun 2013 01:24:38 +0200
-Date:   Thu, 27 Jun 2013 01:24:38 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Jonas Gorski <jogo@openwrt.org>, linux-mips@linux-mips.org,
-        Gabor Juhos <juhosg@openwrt.org>,
-        "Steven J. Hill" <sjhill@mips.com>,
-        David Daney <david.daney@cavium.com>,
-        John Crispin <blogic@openwrt.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Manuel Lauss <manuel.lauss@googlemail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Jayachandran C <jchandra@broadcom.com>,
-        Florian Fainelli <florian@openwrt.org>
-Subject: Re: [PATCH] MIPS: define cpu_has_mmips where appropriate
-Message-ID: <20130626232438.GM7171@linux-mips.org>
-References: <1369345335-28062-1-git-send-email-jogo@openwrt.org>
- <519F933A.6020407@gmail.com>
- <519FDF9A.6080204@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 01:32:04 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:37159 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6827473Ab3FZXcAvnN3s (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jun 2013 01:32:00 +0200
+Message-ID: <51CB79BB.9090905@imgtec.com>
+Date:   Wed, 26 Jun 2013 18:31:07 -0500
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130510 Thunderbird/17.0.6
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <519FDF9A.6080204@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+To:     Jayachandran C <jchandra@broadcom.com>
+CC:     <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 0/3] Use scratch registers when MIPS_PGD_C0_CONTEXT is
+ not set
+References: <1372011381-18600-1-git-send-email-jchandra@broadcom.com>
+In-Reply-To: <1372011381-18600-1-git-send-email-jchandra@broadcom.com>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.159.62]
+X-SEF-Processed: 7_3_0_01192__2013_06_27_00_31_54
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37155
+X-archive-position: 37156
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,14 +39,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, May 24, 2013 at 02:46:02PM -0700, David Daney wrote:
+On 06/23/2013 01:16 PM, Jayachandran C wrote:
+>
+> Jayachandran C (3):
+>    MIPS: Move generated code to .text for microMIPS
+>    MIPS: mm: Use scratch for PGD when !CONFIG_MIPS_PGD_C0_CONTEXT
+>    MIPS: Move definition of SMP processor id register to header file
+>
+>   arch/mips/include/asm/mmu_context.h |   28 ++---
+>   arch/mips/include/asm/stackframe.h  |   24 +---
+>   arch/mips/include/asm/thread_info.h |   33 +++++-
+>   arch/mips/mm/Makefile               |    2 +-
+>   arch/mips/mm/tlb-funcs.S            |   37 ++++++
+>   arch/mips/mm/tlbex.c                |  224 ++++++++++++++++-------------------
+>   6 files changed, 187 insertions(+), 161 deletions(-)
+>   create mode 100644 arch/mips/mm/tlb-funcs.S
+>
+The microMIPS kernel compiles, but fails to boot. It stops at:
 
-> >Acked-by: David Daney <david.daney@cavium.com>
-> 
-> I changed my mind:  NAK.
-> 
-> I will send a smaller, but equivalent patch.
+    Inode-cache hash table entries: 8192 (order: 3, 32768 bytes)
 
-Fair enough - until then I'm going to apply this patch.
+and does not go any further. I will look at this later this evening.
 
-  Ralf
+-Steve

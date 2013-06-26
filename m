@@ -1,31 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jun 2013 16:31:23 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:48328 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jun 2013 16:52:42 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:48410 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823098Ab3FZObSQWi7Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 26 Jun 2013 16:31:18 +0200
+        id S6827823Ab3FZOwhyhQS9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 26 Jun 2013 16:52:37 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5QEVG8a008283;
-        Wed, 26 Jun 2013 16:31:16 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5QEqaXb009341;
+        Wed, 26 Jun 2013 16:52:36 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5QEVGt6008282;
-        Wed, 26 Jun 2013 16:31:16 +0200
-Date:   Wed, 26 Jun 2013 16:31:16 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5QEqYIY009340;
+        Wed, 26 Jun 2013 16:52:34 +0200
+Date:   Wed, 26 Jun 2013 16:52:34 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Tony Wu <tung7970@gmail.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Add missing cpu_has_mips_1 guardian
-Message-ID: <20130626143115.GA7171@linux-mips.org>
-References: <20130621110301.GA23195@hades.local>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+Cc:     linux-mips@linux-mips.org,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Florian Fainelli <florian@openwrt.org>
+Subject: Re: [PATCH v2] Revert "MIPS: make CAC_ADDR and UNCAC_ADDR account
+ for PHYS_OFFSET"
+Message-ID: <20130626145234.GB7171@linux-mips.org>
+References: <1371742590-10138-1-git-send-email-Steven.Hill@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20130621110301.GA23195@hades.local>
+In-Reply-To: <1371742590-10138-1-git-send-email-Steven.Hill@imgtec.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37133
+X-archive-position: 37134
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,28 +45,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 21, 2013 at 07:03:01PM +0800, Tony Wu wrote:
+On Thu, Jun 20, 2013 at 10:36:30AM -0500, Steven J. Hill wrote:
 
->  arch/mips/include/asm/cpu-features.h |    2 ++
->  1 file changed, 2 insertions(+)
+> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 > 
-> diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-> index e5ec8fc..df5e523 100644
-> --- a/arch/mips/include/asm/cpu-features.h
-> +++ b/arch/mips/include/asm/cpu-features.h
-> @@ -136,7 +136,9 @@
->  #endif
->  #endif
->  
-> +#ifndef cpu_has_mips_1
->  # define cpu_has_mips_1		(cpu_data[0].isa_level & MIPS_CPU_ISA_I)
-> +#endif
+> This reverts commit 3f4579252aa166641861a64f1c2883365ca126c2. It is
+> invalid because the macros CAC_ADDR and UNCAC_ADDR have a kernel
+> virtual address as an argument and also returns a kernel virtual
+> address. Using and physical address PHYS_OFFSET is blatantly wrong
+> for a macro common to multiple platforms.
 
-cpu_has_mips_1 will always evaluate as MIPS I because later ISA revisions
-always contain MIPS I as a subset.  So maybe we should rather remove
-cpu_has_mips_1 and MIPS_CPU_ISA_I entirely.  The sole user of cpu_has_mips_1,
-proc.c could easily be cleaned up, the sole test for MIPS_CPU_ISA_I in
-traps.c is slightly more work to clean up because it really is a test for
-the cp0 architecture.
+While the patch itself is looking sane at a glance, I'm wondering if this
+is fixing any actual bug or is just the result of a code review?
 
   Ralf

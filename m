@@ -1,32 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 00:23:50 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:24717 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827473Ab3FZWXrbCF6L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jun 2013 00:23:47 +0200
-Message-ID: <51CB69E4.1070900@imgtec.com>
-Date:   Wed, 26 Jun 2013 17:23:32 -0500
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130510 Thunderbird/17.0.6
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 01:24:51 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:50261 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6834875Ab3FZXYsjePnb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jun 2013 01:24:48 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5QNOguG003421;
+        Thu, 27 Jun 2013 01:24:42 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5QNOcYH003417;
+        Thu, 27 Jun 2013 01:24:38 +0200
+Date:   Thu, 27 Jun 2013 01:24:38 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     Jonas Gorski <jogo@openwrt.org>, linux-mips@linux-mips.org,
+        Gabor Juhos <juhosg@openwrt.org>,
+        "Steven J. Hill" <sjhill@mips.com>,
+        David Daney <david.daney@cavium.com>,
+        John Crispin <blogic@openwrt.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Manuel Lauss <manuel.lauss@googlemail.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Jayachandran C <jchandra@broadcom.com>,
+        Florian Fainelli <florian@openwrt.org>
+Subject: Re: [PATCH] MIPS: define cpu_has_mmips where appropriate
+Message-ID: <20130626232438.GM7171@linux-mips.org>
+References: <1369345335-28062-1-git-send-email-jogo@openwrt.org>
+ <519F933A.6020407@gmail.com>
+ <519FDF9A.6080204@gmail.com>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Tony Wu <tung7970@gmail.com>, <linux-mips@linux-mips.org>,
-        Chris Dearman <chris.dearman@imgtec.com>
-Subject: Re: [PATCH] MIPS: Fix gic_set_affinity infinite loop
-References: <20130621111308.GC23231@hades.local> <51C486DF.4020303@imgtec.com> <20130626190547.GK7171@linux-mips.org>
-In-Reply-To: <20130626190547.GK7171@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.159.62]
-X-SEF-Processed: 7_3_0_01192__2013_06_26_23_23_40
-Return-Path: <Steven.Hill@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <519FDF9A.6080204@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37154
+X-archive-position: 37155
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,16 +53,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/26/2013 02:05 PM, Ralf Baechle wrote:
->
-> I assume on a SMP GIC configuration he must have tried something like
->
->    echo 1 > /proc/irq/2/smp_affinity
->
-> Where 1 is a CPU bit mask and 2 the number of a GIC interrupt of which
-> to change the affinity.
->
-I confirmed the hang on the Malta board. Tony's patch fixes this. Thank 
-you Tony.
+On Fri, May 24, 2013 at 02:46:02PM -0700, David Daney wrote:
 
-Steve
+> >Acked-by: David Daney <david.daney@cavium.com>
+> 
+> I changed my mind:  NAK.
+> 
+> I will send a smaller, but equivalent patch.
+
+Fair enough - until then I'm going to apply this patch.
+
+  Ralf

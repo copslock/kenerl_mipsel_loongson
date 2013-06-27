@@ -1,39 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 11:39:36 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:51816 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 12:41:00 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52031 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6824769Ab3F0JjehpwIj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jun 2013 11:39:34 +0200
+        id S6824769Ab3F0Kk7AT1yF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jun 2013 12:40:59 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5R9dORn000547;
-        Thu, 27 Jun 2013 11:39:24 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5RAeqpH003726;
+        Thu, 27 Jun 2013 12:40:52 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5R9dH9S000546;
-        Thu, 27 Jun 2013 11:39:17 +0200
-Date:   Thu, 27 Jun 2013 11:39:17 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5RAemHF003725;
+        Thu, 27 Jun 2013 12:40:48 +0200
+Date:   Thu, 27 Jun 2013 12:40:48 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Veli-Pekka Peltola <veli-pekka.peltola@bluegiga.com>
-Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, Russell King <linux@arm.linux.org.uk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Rusty Russell <rusty@rustcorp.com.au>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2] mm: module_alloc: check if size is 0
-Message-ID: <20130627093917.GQ7171@linux-mips.org>
-References: <1330631119-10059-1-git-send-email-veli-pekka.peltola@bluegiga.com>
- <1331125768-25454-1-git-send-email-veli-pekka.peltola@bluegiga.com>
+To:     David Laight <David.Laight@ACULAB.COM>
+Cc:     David Daney <ddaney.cavm@gmail.com>, netdev@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>, linux-mips@linux-mips.org,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 2/2] netdev: octeon_mgmt: Fix structure layout for
+ little-endian.
+Message-ID: <20130627104048.GR7171@linux-mips.org>
+References: <1371688820-4585-1-git-send-email-ddaney.cavm@gmail.com>
+ <1371688820-4585-3-git-send-email-ddaney.cavm@gmail.com>
+ <AE90C24D6B3A694183C094C60CF0A2F6026B729B@saturn3.aculab.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1331125768-25454-1-git-send-email-veli-pekka.peltola@bluegiga.com>
+In-Reply-To: <AE90C24D6B3A694183C094C60CF0A2F6026B729B@saturn3.aculab.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37164
+X-archive-position: 37165
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,76 +47,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Warming up an ancient thread because the discussion seems to have just
-stalled at some point and I still have this patch bitrotting in patchwork.
+On Thu, Jun 20, 2013 at 10:47:57AM +0100, David Laight wrote:
 
-The original thread can be found at:
-
-  http://www.linux-mips.org/archives/linux-mips/2012-03/msg00006.html
-  http://www.linux-mips.org/archives/linux-mips/2012-03/msg00028.html
-
-On Wed, Mar 07, 2012 at 03:09:28PM +0200, Veli-Pekka Peltola wrote:
-
-> After commit de7d2b567d040e3b67fe7121945982f14343213d (mm/vmalloc.c: report
-> more vmalloc failures) users will get a warning if vmalloc_node_range() is
-> called with size 0. This happens if module's init size equals to 0. This
-> patch changes ARM, MIPS and x86 module_alloc() to return NULL before calling
-> vmalloc_node_range() that would also return NULL and print a warning.
+> > The C ABI reverses the bitfield fill order when compiled as
+> > little-endian.
 > 
-> Signed-off-by: Veli-Pekka Peltola <veli-pekka.peltola@bluegiga.com>
-> Cc: Russell King <linux@arm.linux.org.uk>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: x86@kernel.org
-> ---
-> I found this with ARM but after checking out various implementations of
-> module_alloc() I thought it would be better to fix all at once.
-> 
-> One way to replicate the warning:
-> compile kernel with CONFIG_KALLSYMS=n
-> insmod a module without init, I used usb-common.ko
+> No - it is completely implementation defined.
+> The general concensus is not to use bitfields if you
+> care at all about the bit assignments.
 
-I didn't try to reproduce the issue but the code in question doesn't seem
-to have changed so the issue should still persist.
+FWIW, bitfields often alow things to be expressed more nicely.  Just the
+endian-dependent definition suck, so I came up with this little hack
+for arch/mips/include/uapi/asm/inst.h:
 
-Imho de7d2b567d040e3b67fe7121945982f14343213d [mm/vmalloc.c: report more
-vmalloc failures] is overly strict in that it also reports zero-sized
-allocations.  I consider such allocations stupid but legitimiate and often
-better preferrable over having to scatter checks for zero size all over
-place.  So maybe something like below patch?
+#ifdef __MIPSEB__
+#define BITFIELD_FIELD(field, more)                                     \
+        field;                                                          \
+        more
 
-Thanks,
+#elif defined(__MIPSEL__)
+
+#define BITFIELD_FIELD(field, more)                                     \
+        more                                                            \
+        field;
+#endif
+
+struct i_format {                       /* signed immediate format */
+        BITFIELD_FIELD(unsigned int opcode : 6,
+        BITFIELD_FIELD(unsigned int rs : 5,
+        BITFIELD_FIELD(unsigned int rt : 5,
+        BITFIELD_FIELD(signed int simmediate : 16,
+        ;))))
+};
 
   Ralf
----
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
- mm/vmalloc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index d365724..e58ca10 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -1679,7 +1679,10 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
- 	unsigned long real_size = size;
- 
- 	size = PAGE_ALIGN(size);
--	if (!size || (size >> PAGE_SHIFT) > totalram_pages)
-+	if (unlikely(!size))
-+		return NULL;
-+
-+	if ((size >> PAGE_SHIFT) > totalram_pages)
- 		goto fail;
- 
- 	area = __get_vm_area_node(size, align, VM_ALLOC | VM_UNLIST,
-@@ -1711,6 +1714,7 @@ fail:
- 	warn_alloc_failed(gfp_mask, 0,
- 			  "vmalloc: allocation failure: %lu bytes\n",
- 			  real_size);
-+
- 	return NULL;
- }
- 

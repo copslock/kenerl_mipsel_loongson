@@ -1,37 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 16:47:12 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:52841 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6824104Ab3F0OrLSI2TL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jun 2013 16:47:11 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5REl8DJ016792;
-        Thu, 27 Jun 2013 16:47:08 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5REl7gB016791;
-        Thu, 27 Jun 2013 16:47:07 +0200
-Date:   Thu, 27 Jun 2013 16:47:07 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org
-Cc:     Shane McDonald <mcdonald.shane@gmail.com>,
-        Adam Kiepul <Adam_Kiepul@pmc-sierra.com>,
-        "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
-Subject: Pending PMC-Sierra MSP patches
-Message-ID: <20130627144707.GE10727@linux-mips.org>
-References: <20130627143439.GD10727@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 17:40:48 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:51860 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6835031Ab3F0PkqnHF9u (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jun 2013 17:40:46 +0200
+Message-ID: <51CC5CED.10708@imgtec.com>
+Date:   Thu, 27 Jun 2013 10:40:29 -0500
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130510 Thunderbird/17.0.6
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20130627143439.GD10727@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@codesourcery.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <ddaney.cavm@gmail.com>
+Subject: Re: [PATCH] MIPS: micromips: Add 16-bit instruction floating point
+ breakpoints.
+References: <1370370146-19716-1-git-send-email-Steven.Hill@imgtec.com> <20130627110449.GS7171@linux-mips.org> <alpine.DEB.1.10.1306271322370.16287@tp.orcam.me.uk>
+In-Reply-To: <alpine.DEB.1.10.1306271322370.16287@tp.orcam.me.uk>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.159.62]
+X-SEF-Processed: 7_3_0_01192__2013_06_27_16_40_40
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37177
+X-archive-position: 37178
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,23 +40,4 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Resendig with a few people who might be interested (or know somebody
-who might be) added to cc.
-
-On Thu, Jun 27, 2013 at 04:34:39PM +0200, Ralf Baechle wrote:
-> Date:   Thu, 27 Jun 2013 16:34:39 +0200
-> From: Ralf Baechle <ralf@linux-mips.org>
-> To: linux-mips@linux-mips.org
-> Subject: Pending PMC-Sierra MSP patches
-> Content-Type: text/plain; charset=us-ascii
-> 
-> There is still a fair number of patches for the PMC-Sierra MSP series
-> of platforms pending.  Those patches being over two years old are
-> fairly stale by now so I wonder if somebody with interest in the
-> platform could review, respin and test the patches?
-> 
-> The patches in question are can be found in patchwork at
-> 
->    http://patchwork.linux-mips.org/project/linux-mips/list/?submitter=413&archive=true
-
-  Ralf
+I will work on another version of the patch.

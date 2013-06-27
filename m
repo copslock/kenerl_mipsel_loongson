@@ -1,35 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 01:55:57 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:50352 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 02:01:35 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:50375 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6835001Ab3FZXzuDCCyu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jun 2013 01:55:50 +0200
+        id S6835016Ab3F0AAE2sVmP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jun 2013 02:00:04 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5QNtaCF004828;
-        Thu, 27 Jun 2013 01:55:36 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5R001Up005031;
+        Thu, 27 Jun 2013 02:00:01 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5QNtZnb004827;
-        Thu, 27 Jun 2013 01:55:35 +0200
-Date:   Thu, 27 Jun 2013 01:55:35 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5R001DB005030;
+        Thu, 27 Jun 2013 02:00:01 +0200
+Date:   Thu, 27 Jun 2013 02:00:01 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>,
-        Jonas Gorski <jogo@openwrt.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>
-Subject: Re: [PATCH 3/3] MIPS: Only set cpu_has_mmips if
- SYS_SUPPORTS_MICROMIPS
-Message-ID: <20130626235535.GO7171@linux-mips.org>
-References: <1369432450-13583-1-git-send-email-ddaney.cavm@gmail.com>
- <1369432450-13583-4-git-send-email-ddaney.cavm@gmail.com>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+Cc:     Jayachandran C <jchandra@broadcom.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 0/3] Use scratch registers when MIPS_PGD_C0_CONTEXT is
+ not set
+Message-ID: <20130627000001.GP7171@linux-mips.org>
+References: <1372011381-18600-1-git-send-email-jchandra@broadcom.com>
+ <51CB79BB.9090905@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1369432450-13583-4-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <51CB79BB.9090905@imgtec.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37159
+X-archive-position: 37160
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,24 +44,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, May 24, 2013 at 02:54:10PM -0700, David Daney wrote:
+On Wed, Jun 26, 2013 at 06:31:07PM -0500, Steven J. Hill wrote:
 
-> From: David Daney <david.daney@cavium.com>
+> >Jayachandran C (3):
+> >   MIPS: Move generated code to .text for microMIPS
+> >   MIPS: mm: Use scratch for PGD when !CONFIG_MIPS_PGD_C0_CONTEXT
+> >   MIPS: Move definition of SMP processor id register to header file
+> >
+> >  arch/mips/include/asm/mmu_context.h |   28 ++---
+> >  arch/mips/include/asm/stackframe.h  |   24 +---
+> >  arch/mips/include/asm/thread_info.h |   33 +++++-
+> >  arch/mips/mm/Makefile               |    2 +-
+> >  arch/mips/mm/tlb-funcs.S            |   37 ++++++
+> >  arch/mips/mm/tlbex.c                |  224 ++++++++++++++++-------------------
+> >  6 files changed, 187 insertions(+), 161 deletions(-)
+> >  create mode 100644 arch/mips/mm/tlb-funcs.S
+> >
+> The microMIPS kernel compiles, but fails to boot. It stops at:
 > 
-> As Jonas Gorske said in his patch:
+>    Inode-cache hash table entries: 8192 (order: 3, 32768 bytes)
 > 
->    Disable cpu_has_mmips for everything but SEAD3 and MALTA. Most of
->    these platforms are from before the micromips introduction, so they
->    are very unlikely to implement it.
-> 
->    Reduces an -Os compiled, uncompressed kernel image by 8KiB for
->    BCM63XX.
-> 
-> This patch taks a different approach than his, we gate the runtime
-> test for microMIPS by the config symbol SYS_SUPPORTS_MICROMIPS.
+> and does not go any further. I will look at this later this evening.
 
-Sounds like a good approach also for other ASEs.
-
-Applied.
+I'll leave the series applied for now then.
 
   Ralf

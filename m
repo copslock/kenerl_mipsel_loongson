@@ -1,39 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 15:14:10 +0200 (CEST)
-Received: from relay1.mentorg.com ([192.94.38.131]:61000 "EHLO
-        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6824780Ab3F0NOIxe6-0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Jun 2013 15:14:08 +0200
-Received: from svr-orw-fem-01.mgc.mentorg.com ([147.34.98.93])
-        by relay1.mentorg.com with esmtp 
-        id 1UsC1Q-00032T-Ly from Maciej_Rozycki@mentor.com ; Thu, 27 Jun 2013 06:14:00 -0700
-Received: from SVR-IES-FEM-01.mgc.mentorg.com ([137.202.0.104]) by svr-orw-fem-01.mgc.mentorg.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 27 Jun 2013 06:14:00 -0700
-Received: from [172.30.64.155] (137.202.0.76) by
- SVR-IES-FEM-01.mgc.mentorg.com (137.202.0.104) with Microsoft SMTP Server id
- 14.2.247.3; Thu, 27 Jun 2013 14:13:58 +0100
-Date:   Thu, 27 Jun 2013 14:13:51 +0100
-From:   "Maciej W. Rozycki" <macro@codesourcery.com>
-To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <ddaney.cavm@gmail.com>
-Subject: Re: [PATCH] MIPS: micromips: Add 16-bit instruction floating point
- breakpoints.
-In-Reply-To: <20130627110449.GS7171@linux-mips.org>
-Message-ID: <alpine.DEB.1.10.1306271322370.16287@tp.orcam.me.uk>
-References: <1370370146-19716-1-git-send-email-Steven.Hill@imgtec.com> <20130627110449.GS7171@linux-mips.org>
-User-Agent: Alpine 1.10 (DEB 962 2008-03-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 15:58:44 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52681 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6826484Ab3F0N6mjUnBg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jun 2013 15:58:42 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5RDwfG7014000;
+        Thu, 27 Jun 2013 15:58:41 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5RDweKP013999;
+        Thu, 27 Jun 2013 15:58:40 +0200
+Date:   Thu, 27 Jun 2013 15:58:40 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Expose missing pci_io{map,unmap} declarations
+Message-ID: <20130627135840.GA10727@linux-mips.org>
+References: <1371460140-5626-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-OriginalArrivalTime: 27 Jun 2013 13:14:00.0444 (UTC) FILETIME=[30349BC0:01CE7338]
-Return-Path: <Maciej_Rozycki@mentor.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1371460140-5626-1-git-send-email-markos.chandras@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37172
+X-archive-position: 37173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@codesourcery.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,31 +42,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 27 Jun 2013, Ralf Baechle wrote:
+On Mon, Jun 17, 2013 at 10:09:00AM +0100, Markos Chandras wrote:
 
-> > This patch adds explicit support for 16-bit instruction breakpoints
-> > for floating point exceptions.
+> The GENERIC_PCI_IOMAP does not depend on CONFIG_PCI so move
+> it to the CONFIG_MIPS symbol so it's always selected for MIPS.
+> This fixes the missing pci_iomap declaration for MIPS.
+> Moreover, the pci_iounmap function was not defined in the
+> io.h header file if the CONFIG_PCI symbol is not set,
+> but it should since MIPS is not using CONFIG_GENERIC_IOMAP.
 > 
-> This patch has gone stale with a conflict in traps.c.  Can you resubmit
-> an updated patch?  Thanks!
+> This fixes the following problem on a allyesconfig:
+> 
+> drivers/net/ethernet/3com/3c59x.c:1031:2: error: implicit declaration of
+> function 'pci_iomap' [-Werror=implicit-function-declaration]
+> drivers/net/ethernet/3com/3c59x.c:1044:3: error: implicit declaration of
+> function 'pci_iounmap' [-Werror=implicit-function-declaration]
+> 
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> Acked-by: Steven J. Hill <Steven.Hill@imgtec.com> 
 
- Also I reckon we used to have an instruction fetch helper here -- where 
-has it gone?  Without it code gets horribly cluttered.  I'd envisage one 
-that returns both the full instruction word and an ISA specifier, one of 
-MIPS, MIPS16 or microMIPS, an enum preferably so that `switch' handles it 
-without hassle.  The instruction word would have the second half-word 
-already retrieved if applicable, with the endianness already adjusted, 
-i.e. the major-opcode half-word always in the high word.
+Hmm...  Looking at the code I find that it appears that GENERIC_PCI_IOMAP
+was never really meant to be enabled with PCI (though some architectures
+are using that) so I was wondering if maybe something like below would
+have been better.  Either way, you sent the first patch, so I'm applying
+that one.
 
- With such a helper in place you could reduce the decoding of the 
-instruction and retrieval of the break code to a simple switch statement, 
-immediately obvious to a casual reader.  This might result in a small 
-performance loss here, but this is not a critical execution path and I 
-think the reduction of the long-term maintenance cost of this code 
-outweighs any such loss.
+Thanks!
 
- Finally, in the FP emulator I think the comment needs updating to match 
-reality (as a separate change).  Also I think struct emuframe should use 
-unions for instruction accesses to avoid the horrible casts.
+  Ralf
 
-  Maciej
+ arch/mips/include/asm/io.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index b7e5985..dc81131 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -620,4 +620,17 @@ extern void (*_dma_cache_inv)(unsigned long start, unsigned long size);
+  */
+ #define xlate_dev_kmem_ptr(p)	p
+ 
++#ifndef CONFIG_PCI
++struct pci_dev;
++
++static inline void __iomem *pci_iomap(struct pci_dev *dev, int bar,
++	unsigned long max)
++{
++	return NULL;
++}
++
++static inline void pci_iounmap(struct pci_dev *dev, void __iomem *addr) {}
++
++#endif /* CONFIG_PCI */
++
+ #endif /* _ASM_IO_H */

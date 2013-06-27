@@ -1,42 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 12:45:36 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:1338 "EHLO mms1.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6818020Ab3F0KpfPQ237 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jun 2013 12:45:35 +0200
-Received: from [10.9.208.53] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Thu, 27 Jun 2013 03:41:37 -0700
-X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Thu, 27 Jun 2013 03:45:20 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Thu, 27 Jun 2013 03:45:20 -0700
-Received: from fainelli-desktop.broadcom.com (
- dhcp-lab-brsb-10.bri.broadcom.com [10.178.7.10]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id EC02DF2D72; Thu, 27
- Jun 2013 03:45:18 -0700 (PDT)
-From:   "Florian Fainelli" <florian@openwrt.org>
-To:     linux-mips@linux-mips.org
-cc:     ralf@linux-mips.org, blogic@openwrt.org, jogo@openwrt.org,
-        cernekee@gmail.com, "Florian Fainelli" <florian@openwrt.org>
-Subject: [PATCH] MIPS: BMIPS: fix warnings for non BMIPS43xx builds
-Date:   Thu, 27 Jun 2013 11:45:15 +0100
-Message-ID: <1372329915-17944-1-git-send-email-florian@openwrt.org>
-X-Mailer: git-send-email 1.8.1.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 13:04:56 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52144 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6824104Ab3F0LEzZu90G (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jun 2013 13:04:55 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5RB4pD0005396;
+        Thu, 27 Jun 2013 13:04:51 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5RB4nrK005393;
+        Thu, 27 Jun 2013 13:04:49 +0200
+Date:   Thu, 27 Jun 2013 13:04:49 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+Cc:     linux-mips@linux-mips.org, ddaney.cavm@gmail.com,
+        macro@codesourcery.com
+Subject: Re: [PATCH] MIPS: micromips: Add 16-bit instruction floating point
+ breakpoints.
+Message-ID: <20130627110449.GS7171@linux-mips.org>
+References: <1370370146-19716-1-git-send-email-Steven.Hill@imgtec.com>
 MIME-Version: 1.0
-X-WSS-ID: 7DD2C96B31W42651295-01-01
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Return-Path: <florian@openwrt.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1370370146-19716-1-git-send-email-Steven.Hill@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37166
+X-archive-position: 37167
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,48 +44,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit dccfb4c4 ("MIPS: BMIPS: support booting from physical CPU other
-than 0") introduces the following warning when building for non
-BMIPS43xx builds:
+On Tue, Jun 04, 2013 at 01:22:26PM -0500, Steven J. Hill wrote:
 
-arch/mips/kernel/smp-bmips.c:150:6: error: unused variable 'tpid'
-[-Werror=unused-variable]
+> This patch adds explicit support for 16-bit instruction breakpoints
+> for floating point exceptions.
 
-Fix this by getting rid of this variable and directly using
-cpu_logical_map(cpu).
+This patch has gone stale with a conflict in traps.c.  Can you resubmit
+an updated patch?  Thanks!
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-Ralf,
-
-You might want to fold this into the commit that actually introduced the
-build warning.
-
-Thanks!
-
- arch/mips/kernel/smp-bmips.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index 62c5c7c..aea6c08 100644
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -147,7 +147,6 @@ static void bmips_prepare_cpus(unsigned int max_cpus)
-  */
- static void bmips_boot_secondary(int cpu, struct task_struct *idle)
- {
--	int tpid = cpu_logical_map(cpu);
- 	bmips_smp_boot_sp = __KSTK_TOS(idle);
- 	bmips_smp_boot_gp = (unsigned long)task_thread_info(idle);
- 	mb();
-@@ -174,7 +173,7 @@ static void bmips_boot_secondary(int cpu, struct task_struct *idle)
- 	else {
- #if defined(CONFIG_CPU_BMIPS4350) || defined(CONFIG_CPU_BMIPS4380)
- 		/* Reset slave TP1 if booting from TP0 */
--		if (tpid == 0)
-+		if (cpu_logical_map(cpu) == 0)
- 			set_c0_brcm_cmt_ctrl(0x01);
- #elif defined(CONFIG_CPU_BMIPS5000)
- 		if (cpu & 0x01)
--- 
-1.8.1.2
+  Ralf

@@ -1,28 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 18:28:14 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:53249 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6835024Ab3F0Q2MzTyn8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Jun 2013 18:28:12 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <Steven.Hill@imgtec.com>)
-        id 1UsF3F-0005wa-3D; Thu, 27 Jun 2013 11:28:05 -0500
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-To:     linux-mips@linux-mips.org
-Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>, ralf@linux-mips.org
-Subject: [PATCH] MIPS: sead3: Disable L2 cache on SEAD-3.
-Date:   Thu, 27 Jun 2013 11:27:59 -0500
-Message-Id: <1372350479-509-1-git-send-email-Steven.Hill@imgtec.com>
-X-Mailer: git-send-email 1.7.9.5
-Return-Path: <Steven.Hill@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 21:59:35 +0200 (CEST)
+Received: from ns1.pc-advies.be ([83.149.101.17]:52763 "EHLO
+        spo001.leaseweb.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6835048Ab3F0T7dkdbya (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Jun 2013 21:59:33 +0200
+Received: from wimvs by spo001.leaseweb.com with local (Exim 4.50)
+        id 1UsILr-0007xW-UR; Thu, 27 Jun 2013 21:59:31 +0200
+Date:   Thu, 27 Jun 2013 21:59:31 +0200
+From:   Wim Van Sebroeck <wim@iguana.be>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, sibyte-users@bitmover.com
+Subject: Re: [PATCH v2 5/7] drivers: watchdog: sb_wdog: Fix 32bit linking problems
+Message-ID: <20130627195931.GD30433@spo001.leaseweb.com>
+References: <1371564006-31805-1-git-send-email-markos.chandras@imgtec.com> <20130618141420.GA15141@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20130618141420.GA15141@linux-mips.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <wimvs@spo001.leaseweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37181
+X-archive-position: 37182
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: wim@iguana.be
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,29 +39,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Steven J. Hill" <Steven.Hill@imgtec.com>
+Hi Ralf,
 
-The cores used on the SEAD-3 platform do not have L2 caches, so
-this option should not be turned on. Originally fixed on public
-'linux-mti-3.8' release branch.
+> > Fixes the following linking problem:
+> > drivers/watchdog/sb_wdog.c:211: undefined reference to `__udivdi3'
+> > 
+> > Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> > Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+> > Cc: sibyte-users@bitmover.com
+> > Cc: Wim Van Sebroeck <wim@iguana.be>
+> > ---
+> > This patch is for the upstream-sfr/mips-for-linux-next tree
+> 
+> That looks ok.
+> 
+> Wim, are going to merge this or shall I carry it?  If you take it,
+> feel free to add my Acked-by.
 
-Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
-(cherry picked from commit deb520377f74b352cc606099ca640c329a73bacb)
----
- arch/mips/Kconfig |    1 -
- 1 file changed, 1 deletion(-)
+I'll take it and add your Acked-by.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 8f5e646..d45fd99 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -342,7 +342,6 @@ config MIPS_SEAD3
- 	select DMA_NONCOHERENT
- 	select IRQ_CPU
- 	select IRQ_GIC
--	select MIPS_CPU_SCACHE
- 	select MIPS_MSC
- 	select SYS_HAS_CPU_MIPS32_R1
- 	select SYS_HAS_CPU_MIPS32_R2
--- 
-1.7.9.5
+Kind regards,
+Wim.

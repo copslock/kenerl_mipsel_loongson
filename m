@@ -1,40 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 12:41:00 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:52031 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6824769Ab3F0Kk7AT1yF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jun 2013 12:40:59 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5RAeqpH003726;
-        Thu, 27 Jun 2013 12:40:52 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5RAemHF003725;
-        Thu, 27 Jun 2013 12:40:48 +0200
-Date:   Thu, 27 Jun 2013 12:40:48 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Laight <David.Laight@ACULAB.COM>
-Cc:     David Daney <ddaney.cavm@gmail.com>, netdev@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>, linux-mips@linux-mips.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 2/2] netdev: octeon_mgmt: Fix structure layout for
- little-endian.
-Message-ID: <20130627104048.GR7171@linux-mips.org>
-References: <1371688820-4585-1-git-send-email-ddaney.cavm@gmail.com>
- <1371688820-4585-3-git-send-email-ddaney.cavm@gmail.com>
- <AE90C24D6B3A694183C094C60CF0A2F6026B729B@saturn3.aculab.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 12:45:36 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:1338 "EHLO mms1.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6818020Ab3F0KpfPQ237 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jun 2013 12:45:35 +0200
+Received: from [10.9.208.53] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Thu, 27 Jun 2013 03:41:37 -0700
+X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+ IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Thu, 27 Jun 2013 03:45:20 -0700
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
+ Server id 14.1.438.0; Thu, 27 Jun 2013 03:45:20 -0700
+Received: from fainelli-desktop.broadcom.com (
+ dhcp-lab-brsb-10.bri.broadcom.com [10.178.7.10]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id EC02DF2D72; Thu, 27
+ Jun 2013 03:45:18 -0700 (PDT)
+From:   "Florian Fainelli" <florian@openwrt.org>
+To:     linux-mips@linux-mips.org
+cc:     ralf@linux-mips.org, blogic@openwrt.org, jogo@openwrt.org,
+        cernekee@gmail.com, "Florian Fainelli" <florian@openwrt.org>
+Subject: [PATCH] MIPS: BMIPS: fix warnings for non BMIPS43xx builds
+Date:   Thu, 27 Jun 2013 11:45:15 +0100
+Message-ID: <1372329915-17944-1-git-send-email-florian@openwrt.org>
+X-Mailer: git-send-email 1.8.1.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AE90C24D6B3A694183C094C60CF0A2F6026B729B@saturn3.aculab.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+X-WSS-ID: 7DD2C96B31W42651295-01-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Return-Path: <florian@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37165
+X-archive-position: 37166
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,37 +49,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jun 20, 2013 at 10:47:57AM +0100, David Laight wrote:
+Commit dccfb4c4 ("MIPS: BMIPS: support booting from physical CPU other
+than 0") introduces the following warning when building for non
+BMIPS43xx builds:
 
-> > The C ABI reverses the bitfield fill order when compiled as
-> > little-endian.
-> 
-> No - it is completely implementation defined.
-> The general concensus is not to use bitfields if you
-> care at all about the bit assignments.
+arch/mips/kernel/smp-bmips.c:150:6: error: unused variable 'tpid'
+[-Werror=unused-variable]
 
-FWIW, bitfields often alow things to be expressed more nicely.  Just the
-endian-dependent definition suck, so I came up with this little hack
-for arch/mips/include/uapi/asm/inst.h:
+Fix this by getting rid of this variable and directly using
+cpu_logical_map(cpu).
 
-#ifdef __MIPSEB__
-#define BITFIELD_FIELD(field, more)                                     \
-        field;                                                          \
-        more
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+Ralf,
 
-#elif defined(__MIPSEL__)
+You might want to fold this into the commit that actually introduced the
+build warning.
 
-#define BITFIELD_FIELD(field, more)                                     \
-        more                                                            \
-        field;
-#endif
+Thanks!
 
-struct i_format {                       /* signed immediate format */
-        BITFIELD_FIELD(unsigned int opcode : 6,
-        BITFIELD_FIELD(unsigned int rs : 5,
-        BITFIELD_FIELD(unsigned int rt : 5,
-        BITFIELD_FIELD(signed int simmediate : 16,
-        ;))))
-};
+ arch/mips/kernel/smp-bmips.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-  Ralf
+diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
+index 62c5c7c..aea6c08 100644
+--- a/arch/mips/kernel/smp-bmips.c
++++ b/arch/mips/kernel/smp-bmips.c
+@@ -147,7 +147,6 @@ static void bmips_prepare_cpus(unsigned int max_cpus)
+  */
+ static void bmips_boot_secondary(int cpu, struct task_struct *idle)
+ {
+-	int tpid = cpu_logical_map(cpu);
+ 	bmips_smp_boot_sp = __KSTK_TOS(idle);
+ 	bmips_smp_boot_gp = (unsigned long)task_thread_info(idle);
+ 	mb();
+@@ -174,7 +173,7 @@ static void bmips_boot_secondary(int cpu, struct task_struct *idle)
+ 	else {
+ #if defined(CONFIG_CPU_BMIPS4350) || defined(CONFIG_CPU_BMIPS4380)
+ 		/* Reset slave TP1 if booting from TP0 */
+-		if (tpid == 0)
++		if (cpu_logical_map(cpu) == 0)
+ 			set_c0_brcm_cmt_ctrl(0x01);
+ #elif defined(CONFIG_CPU_BMIPS5000)
+ 		if (cpu & 0x01)
+-- 
+1.8.1.2

@@ -1,31 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 15:58:44 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:52681 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jun 2013 16:05:42 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52701 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6826484Ab3F0N6mjUnBg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jun 2013 15:58:42 +0200
+        id S6826484Ab3F0OFiMX00C (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Jun 2013 16:05:38 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5RDwfG7014000;
-        Thu, 27 Jun 2013 15:58:41 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5RE5Zv2014467;
+        Thu, 27 Jun 2013 16:05:35 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5RDweKP013999;
-        Thu, 27 Jun 2013 15:58:40 +0200
-Date:   Thu, 27 Jun 2013 15:58:40 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5RE5XwP014458;
+        Thu, 27 Jun 2013 16:05:33 +0200
+Date:   Thu, 27 Jun 2013 16:05:33 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Expose missing pci_io{map,unmap} declarations
-Message-ID: <20130627135840.GA10727@linux-mips.org>
-References: <1371460140-5626-1-git-send-email-markos.chandras@imgtec.com>
+To:     Jonas Gorski <jogo@openwrt.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>,
+        Kevin Cernekee <cernekee@gmail.com>
+Subject: Re: [PATCH V2 2/2] MIPS: BCM63XX: Enable second core SMP on BCM6328
+ if available
+Message-ID: <20130627140533.GB10727@linux-mips.org>
+References: <1371548072-6247-1-git-send-email-jogo@openwrt.org>
+ <1371548072-6247-3-git-send-email-jogo@openwrt.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1371460140-5626-1-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1371548072-6247-3-git-send-email-jogo@openwrt.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37173
+X-archive-position: 37174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,57 +47,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jun 17, 2013 at 10:09:00AM +0100, Markos Chandras wrote:
+On Tue, Jun 18, 2013 at 11:34:32AM +0200, Jonas Gorski wrote:
 
-> The GENERIC_PCI_IOMAP does not depend on CONFIG_PCI so move
-> it to the CONFIG_MIPS symbol so it's always selected for MIPS.
-> This fixes the missing pci_iomap declaration for MIPS.
-> Moreover, the pci_iounmap function was not defined in the
-> io.h header file if the CONFIG_PCI symbol is not set,
-> but it should since MIPS is not using CONFIG_GENERIC_IOMAP.
-> 
-> This fixes the following problem on a allyesconfig:
-> 
-> drivers/net/ethernet/3com/3c59x.c:1031:2: error: implicit declaration of
-> function 'pci_iomap' [-Werror=implicit-function-declaration]
-> drivers/net/ethernet/3com/3c59x.c:1044:3: error: implicit declaration of
-> function 'pci_iounmap' [-Werror=implicit-function-declaration]
-> 
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> Acked-by: Steven J. Hill <Steven.Hill@imgtec.com> 
+> BCM6328 has a OTP which tells us if the second core is available.
 
-Hmm...  Looking at the code I find that it appears that GENERIC_PCI_IOMAP
-was never really meant to be enabled with PCI (though some architectures
-are using that) so I was wondering if maybe something like below would
-have been better.  Either way, you sent the first patch, so I'm applying
-that one.
+Patch doesn't apply on top of my latest tree (more exactly, commit
+426fe4812d09283a53b8294ae38c5a239eeee8ef) any more.  Can you respin?
 
-Thanks!
+Thanks,
 
   Ralf
-
- arch/mips/include/asm/io.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index b7e5985..dc81131 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -620,4 +620,17 @@ extern void (*_dma_cache_inv)(unsigned long start, unsigned long size);
-  */
- #define xlate_dev_kmem_ptr(p)	p
- 
-+#ifndef CONFIG_PCI
-+struct pci_dev;
-+
-+static inline void __iomem *pci_iomap(struct pci_dev *dev, int bar,
-+	unsigned long max)
-+{
-+	return NULL;
-+}
-+
-+static inline void pci_iounmap(struct pci_dev *dev, void __iomem *addr) {}
-+
-+#endif /* CONFIG_PCI */
-+
- #endif /* _ASM_IO_H */

@@ -1,39 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 16:21:14 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:56500 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823043Ab3F1OVNinjTG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 28 Jun 2013 16:21:13 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5SELCY0021216;
-        Fri, 28 Jun 2013 16:21:12 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5SELATG021215;
-        Fri, 28 Jun 2013 16:21:10 +0200
-Date:   Fri, 28 Jun 2013 16:21:10 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Florian Fainelli <florian@openwrt.org>
-Cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Kconfig: Add missing MODULES dependency to
- VPE_LOADER
-Message-ID: <20130628142110.GO10727@linux-mips.org>
-References: <1372422327-21814-1-git-send-email-markos.chandras@imgtec.com>
- <20130628133111.GN10727@linux-mips.org>
- <CAGVrzcbyzgM8fnmO31eKMqDokV2gjS6Ds=Qd84Mz71ipvEDtqg@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 20:00:55 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:63094 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6816384Ab3F1SAxaeK7Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 28 Jun 2013 20:00:53 +0200
+Received: from int-mx02.intmail.prod.int.phx2.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r5SI0gUY026021
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Fri, 28 Jun 2013 14:00:42 -0400
+Received: from tranklukator.brq.redhat.com (dhcp-1-192.brq.redhat.com [10.34.1.192])
+        by int-mx02.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with SMTP id r5SI0NKO024029;
+        Fri, 28 Jun 2013 14:00:23 -0400
+Received: by tranklukator.brq.redhat.com (nbSMTP-1.00) for uid 500
+        oleg@redhat.com; Fri, 28 Jun 2013 19:56:11 +0200 (CEST)
+Date:   Fri, 28 Jun 2013 19:55:59 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Daney <ddaney@caviumnetworks.com>,
+        David Daney <ddaney.cavm@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Kees Cook <keescook@chromium.org>,
+        David Daney <david.daney@cavium.com>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Dave Jones <davej@redhat.com>, linux-mips@linux-mips.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v3] kernel/signal.c: fix BUG_ON with SIG128 (MIPS)
+Message-ID: <20130628175559.GA30445@redhat.com>
+References: <51C4BB86.1020004@caviumnetworks.com> <20130622190940.GA14150@redhat.com> <51C80CF0.4070608@imgtec.com> <20130625144015.1e4e70a0ac888f4ccf5c6a8f@linux-foundation.org> <CAAG0J9-5J6=c=1VxEW6FevMHKsjShtbjM8G6Q1vu1P+LurQqoQ@mail.gmail.com> <51CACB80.5020706@imgtec.com> <20130626161452.GA2888@redhat.com> <20130626165900.GF7171@linux-mips.org> <20130626171551.GA5830@redhat.com> <51CD7C8C.4050807@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAGVrzcbyzgM8fnmO31eKMqDokV2gjS6Ds=Qd84Mz71ipvEDtqg@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <51CD7C8C.4050807@imgtec.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-Scanned-By: MIMEDefang 2.67 on 10.5.11.12
+Return-Path: <oleg@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37207
+X-archive-position: 37208
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: oleg@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,45 +57,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 28, 2013 at 02:40:17PM +0100, Florian Fainelli wrote:
+On 06/28, James Hogan wrote:
+>
+> On 26/06/13 18:15, Oleg Nesterov wrote:
+> >
+> > I meant the minimal hack like
+> >
+> > 	--- x/arch/mips/include/uapi/asm/signal.h
+> > 	+++ x/arch/mips/include/uapi/asm/signal.h
+> > 	@@ -11,9 +11,9 @@
+> >
+> > 	 #include <linux/types.h>
+> >
+> > 	-#define _NSIG		128
+> > 	+#define _NSIG		127
+> > 	 #define _NSIG_BPW	(sizeof(unsigned long) * 8)
+> > 	-#define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
+> > 	+#define _NSIG_WORDS	DIV_ROUND_UP(_NSIG / _NSIG_BPW)
+> >
+> > 	 typedef struct {
+> > 		unsigned long sig[_NSIG_WORDS];
+> >
+> > just to avoid BUG_ON().
+> >
+> > I agree that _NSIG == 126 or 64 needs more discussion. Although personally
+> > I think this is the only choice in the long term, or we should change ABI
+> > and break user-space completely.
+> >
+> > And, just in case, the hack above doesn't kill SIG_128 completely.
+> > Say, the task can block/unblock it.
+>
+> Well it prevents a handler being added or the signal being sent, so it
+> pretty much does kill it (patch v2 did this).
 
-> 2013/6/28 Ralf Baechle <ralf@linux-mips.org>:
-> > On Fri, Jun 28, 2013 at 01:25:27PM +0100, Markos Chandras wrote:
-> >
-> >> The vpe.c code uses the 'struct module' which is only available if
-> >> CONFIG_MODULES is selected.
-> >>
-> >> Also fixes the following build problem on a lantiq allmodconfig:
-> >> In file included from arch/mips/kernel/vpe.c:41:0:
-> >> include/linux/moduleloader.h: In function 'apply_relocate':
-> >> include/linux/moduleloader.h:48:63: error: dereferencing pointer
-> >> to incomplete type
-> >> include/linux/moduleloader.h: In function 'apply_relocate_add':
-> >> include/linux/moduleloader.h:70:63: error: dereferencing pointer
-> >> to incomplete type
-> >>
-> >> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> >> Reviewed-by: James Hogan <james.hogan@imgtec.com>
-> >
-> > Sigh.  One more bug in the thing.  It first of all shouldn't have been
-> > designed recycling so much code from the module loader in inapropriate
-> > ways.
-> >
-> > I'm going to apply the patch - but as usual whenver I have to touch the
-> > VPE loader, kspd or rtlx I feel like a blunt chainsaw would be the right
-> > way to fix this code.
-> >
-> > SPUFS is a special filesystem which was designed to use the Playstation 3's
-> > synergetic elements.  The code is in arch/powerpc/platforms/cell/spufs
-> > and it's a far, cleaner interface to other processing thingies, be they
-> > synergetic elements, or other cores, VPEs and TCs running bare metal
-> > code or strage things like custom processors.
-> 
-> Would not remoteproc be a simpler interface these days to load
-> bare-metal ELF code into one of these things?
+Yes, iirc you already sent something like the hack above.
 
-Once upon a time long before remoteproc was invented there was agreement
-that SPUFS would be the way to go.  Yes, remoteproc might be worth a
-closer look.
+> but it looks like it may be safe to
+> reduce _NSIG to 127 for a stable fix
 
-  Ralf
+This was my point.
+
+Sure, this change can break something anyway, we can't know if nobody
+ever uses 128 anyway. But this is better than the ability to crash the
+kernel. No need to use strace, just block(128) + kill(128) + unblock().
+
+So perhaps you can resend your patch? Just I think it makes sense to
+update the changelog to explain that this is not the "final" solution
+but the minimal fix.
+
+Oleg.

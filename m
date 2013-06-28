@@ -1,50 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 20:00:55 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:63094 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816384Ab3F1SAxaeK7Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 28 Jun 2013 20:00:53 +0200
-Received: from int-mx02.intmail.prod.int.phx2.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r5SI0gUY026021
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 28 Jun 2013 14:00:42 -0400
-Received: from tranklukator.brq.redhat.com (dhcp-1-192.brq.redhat.com [10.34.1.192])
-        by int-mx02.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with SMTP id r5SI0NKO024029;
-        Fri, 28 Jun 2013 14:00:23 -0400
-Received: by tranklukator.brq.redhat.com (nbSMTP-1.00) for uid 500
-        oleg@redhat.com; Fri, 28 Jun 2013 19:56:11 +0200 (CEST)
-Date:   Fri, 28 Jun 2013 19:55:59 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 22:04:07 +0200 (CEST)
+Received: from mail-ee0-f51.google.com ([74.125.83.51]:42975 "EHLO
+        mail-ee0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823114Ab3F1UEG3cZgg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Jun 2013 22:04:06 +0200
+Received: by mail-ee0-f51.google.com with SMTP id e52so1248583eek.10
+        for <multiple recipients>; Fri, 28 Jun 2013 13:04:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20120113;
+        h=from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        bh=zVL5iOfCiXMdd+7orZP4DEPAihhrwefGtV1OMvBSw6s=;
+        b=DwT4mUJPDHYUCBz64YqnCN2S5hcsz0LiG2QNciP04BMTCyfUj8+R+JGtizvB14lqj+
+         BFFru1HhalkqcgDOI7QGVBfJSXwNEJCpntBngjYQw+TUrhycAYObdUp9G18qldW2uGo1
+         xZVQ6ycgiDukH0Uj+RNd57961RAlR6b9J8wVcgb63AniQwrpgd8Y6jMAtNl0Mi3RRFif
+         VtQf5SR6dzVgIVevONgk9ufmg4FhIjUQ1n1l8Jlc5gmAkFZRg3LpL4Jr3MYMsSLOmmzK
+         I5o5OhVdDAJUAvgYF8fTK0acWwJkhyt6RTvcLW2fKJJS/O+ggsyfXCFyDu1vlgDxcsO8
+         jIkw==
+X-Received: by 10.14.219.2 with SMTP id l2mr15161282eep.109.1372449841120;
+        Fri, 28 Jun 2013 13:04:01 -0700 (PDT)
+Received: from shadow (161.196.broadband4.iol.cz. [85.71.196.161])
+        by mx.google.com with ESMTPSA id m1sm12552325eex.17.2013.06.28.13.03.57
+        for <multiple recipients>
+        (version=SSLv3 cipher=RC4-SHA bits=128/128);
+        Fri, 28 Jun 2013 13:04:00 -0700 (PDT)
+From:   Denys Vlasenko <vda.linux@googlemail.com>
 To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Daney <ddaney@caviumnetworks.com>,
+Subject: Re: [RFC PATCH] kernel/signal.c: avoid BUG_ON with SIG128 (MIPS)
+Date:   Fri, 28 Jun 2013 22:03:56 +0200
+User-Agent: KMail/1.8.2
+Cc:     Oleg Nesterov <oleg@redhat.com>,
         David Daney <ddaney.cavm@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
         Al Viro <viro@zeniv.linux.org.uk>,
-        Kees Cook <keescook@chromium.org>,
-        David Daney <david.daney@cavium.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Dave Jones <davej@redhat.com>, linux-mips@linux-mips.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v3] kernel/signal.c: fix BUG_ON with SIG128 (MIPS)
-Message-ID: <20130628175559.GA30445@redhat.com>
-References: <51C4BB86.1020004@caviumnetworks.com> <20130622190940.GA14150@redhat.com> <51C80CF0.4070608@imgtec.com> <20130625144015.1e4e70a0ac888f4ccf5c6a8f@linux-foundation.org> <CAAG0J9-5J6=c=1VxEW6FevMHKsjShtbjM8G6Q1vu1P+LurQqoQ@mail.gmail.com> <51CACB80.5020706@imgtec.com> <20130626161452.GA2888@redhat.com> <20130626165900.GF7171@linux-mips.org> <20130626171551.GA5830@redhat.com> <51CD7C8C.4050807@imgtec.com>
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kees Cook <keescook@chromium.org>
+References: <1369846916-13202-1-git-send-email-james.hogan@imgtec.com> <20130529173634.GA2020@redhat.com> <CAAG0J9_yJd5mf0t7whnKDYtf0AdZDnErjOgUga7t0p3TEL_9YQ@mail.gmail.com>
+In-Reply-To: <CAAG0J9_yJd5mf0t7whnKDYtf0AdZDnErjOgUga7t0p3TEL_9YQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <51CD7C8C.4050807@imgtec.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.12
-Return-Path: <oleg@redhat.com>
+Message-Id: <201306282203.56255.vda.linux@googlemail.com>
+Return-Path: <vda.linux@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37208
+X-archive-position: 37209
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: vda.linux@googlemail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,52 +65,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/28, James Hogan wrote:
->
-> On 26/06/13 18:15, Oleg Nesterov wrote:
+On Wednesday 29 May 2013 23:56, James Hogan wrote:
+> On 29 May 2013 18:36, Oleg Nesterov <oleg@redhat.com> wrote:
+> > On 05/29, David Daney wrote:
+> >>
+> >> On 05/29/2013 10:01 AM, James Hogan wrote:
+> >>> MIPS has 128 signals, the highest of which has the number 128. The
+> >>
+> >> I wonder if we should change the ABI and reduce the number of signals to
+> >> 127 instead of this patch.
 > >
-> > I meant the minimal hack like
-> >
-> > 	--- x/arch/mips/include/uapi/asm/signal.h
-> > 	+++ x/arch/mips/include/uapi/asm/signal.h
-> > 	@@ -11,9 +11,9 @@
-> >
-> > 	 #include <linux/types.h>
-> >
-> > 	-#define _NSIG		128
-> > 	+#define _NSIG		127
-> > 	 #define _NSIG_BPW	(sizeof(unsigned long) * 8)
-> > 	-#define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
-> > 	+#define _NSIG_WORDS	DIV_ROUND_UP(_NSIG / _NSIG_BPW)
-> >
-> > 	 typedef struct {
-> > 		unsigned long sig[_NSIG_WORDS];
-> >
-> > just to avoid BUG_ON().
-> >
-> > I agree that _NSIG == 126 or 64 needs more discussion. Although personally
-> > I think this is the only choice in the long term, or we should change ABI
-> > and break user-space completely.
-> >
-> > And, just in case, the hack above doesn't kill SIG_128 completely.
-> > Say, the task can block/unblock it.
->
-> Well it prevents a handler being added or the signal being sent, so it
-> pretty much does kill it (patch v2 did this).
+> > Same thoughts...
+> 
+> I'll give it a try. I wouldn't have thought it'd break anything, but
+> you never know. glibc (incorrectly) sets [__]SIGRTMAX to 127 already.
+> On the other hand uClibc sets it to 128, so anything built against
+> uClibc that uses signals SIGRTMAX-n (where n may be 0) or uses an
+> excessive number of rt signals starting from SIGRTMIN (sounds
+> unlikely) could well need an updated uClibc (or a full rebuild if it's
+> crazy enough to use __SIGRTMAX).
 
-Yes, iirc you already sent something like the hack above.
+Fixed in uclibc git: _NSIG is 128, __SIGRTMAX is 127
+(_NSIG in libc is not the same as in kernel, but +1).
 
-> but it looks like it may be safe to
-> reduce _NSIG to 127 for a stable fix
-
-This was my point.
-
-Sure, this change can break something anyway, we can't know if nobody
-ever uses 128 anyway. But this is better than the ability to crash the
-kernel. No need to use strace, just block(128) + kill(128) + unblock().
-
-So perhaps you can resend your patch? Just I think it makes sense to
-update the changelog to explain that this is not the "final" solution
-but the minimal fix.
-
-Oleg.
+While at it, added extensive comment why it is so.

@@ -1,45 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 15:41:16 +0200 (CEST)
-Received: from mail-pa0-f50.google.com ([209.85.220.50]:33913 "EHLO
-        mail-pa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817387Ab3F1NlE2PWED (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Jun 2013 15:41:04 +0200
-Received: by mail-pa0-f50.google.com with SMTP id fb1so2421732pad.23
-        for <multiple recipients>; Fri, 28 Jun 2013 06:40:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date
-         :x-google-sender-auth:message-id:subject:to:cc:content-type;
-        bh=HfyUjYMIEuvRhric117STtezZK3wfYPleUkoxdJKQvQ=;
-        b=CwhFGTHnEYg2xMI0h6RjFcOj6BKQaR82qJNPBW+8hW6h7xvCJZ4SoYoISvHTei9yjR
-         zgVg5TZWSSDjzS9sD5qwVdfx5vztDWMmlrgf76/WrHZt1vmvRgDeg1ocQzmoEE7l99HO
-         vcCihOlZB/1JMH+CXV1CKlPlBhTNrf0GSWdUNwQvu8RJxVRNQUvHJ09C4iBLg9mIBB5F
-         3w7WhjBfVOFKSpFCWPO8bTCum054BM3aHSlOnNpi4oHnuw2sQCvJHhv/fV3ICx7BZHKw
-         vFr8PTXGR0iQejlT88o1svRjxQRme3XAO3tuTfVMLnPF+jscom/XcLQHDStcwWMGwxO2
-         9y1w==
-X-Received: by 10.66.37.43 with SMTP id v11mr11549337paj.108.1372426857777;
- Fri, 28 Jun 2013 06:40:57 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 15:56:15 +0200 (CEST)
+Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]:47010 "EHLO
+        mo1.mail-out.ovh.net" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6817387Ab3F1N4OLA0j0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Jun 2013 15:56:14 +0200
+Received: from mail405.ha.ovh.net (b6.ovh.net [213.186.33.56])
+        by mo1.mail-out.ovh.net (Postfix) with SMTP id 62E9EFFA9C5
+        for <linux-mips@linux-mips.org>; Fri, 28 Jun 2013 15:56:13 +0200 (CEST)
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+        by b0.ovh.net with SMTP; 28 Jun 2013 15:56:37 +0200
+Received: from ns32433.ovh.net (HELO localhost) (plagnioj%jcrosoft.com@213.251.161.87)
+  by ns0.ovh.net with SMTP; 28 Jun 2013 15:56:35 +0200
+Date:   Fri, 28 Jun 2013 15:49:31 +0200
+From:   Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To:     Grant Likely <grant.likely@linaro.org>
+Cc:     Rob Herring <robherring2@gmail.com>,
+        Nicolas Pitre <nicolas.pitre@linaro.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Aurelien Jacquiot <a-jacquiot@ti.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Will Deacon <will.deacon@arm.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Russell King <linux@arm.linux.org.uk>,
+        linux-c6x-dev@linux-c6x.org, x86@kernel.org, arm@kernel.org,
+        linux-xtensa@linux-xtensa.org,
+        James Hogan <james.hogan@imgtec.com>,
+        devicetree-discuss <devicetree-discuss@lists.ozlabs.org>,
+        Rob Herring <rob.herring@calxeda.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Chris Zankel <chris@zankel.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Santosh Shilimkar <santosh.shilimkar@ti.com>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+X-Ovh-Mailout: 178.32.228.1 (mo1.mail-out.ovh.net)
+Subject: Re: [PATCH] of: Specify initrd location using 64-bit
+Message-ID: <20130628134931.GD21034@game.jcrosoft.org>
+References: <1371775956-16453-1-git-send-email-santosh.shilimkar@ti.com>
+ <51C4171C.9050908@linutronix.de>
+ <51C48B5A.2040404@ti.com>
+ <51CCA67C.2010803@gmail.com>
+ <CACxGe6vOH0sCFVVXrYqD3dbYdOvithVu7-d1cvy5885i8x_Myw@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 10.69.17.33 with HTTP; Fri, 28 Jun 2013 06:40:17 -0700 (PDT)
-In-Reply-To: <20130628133111.GN10727@linux-mips.org>
-References: <1372422327-21814-1-git-send-email-markos.chandras@imgtec.com> <20130628133111.GN10727@linux-mips.org>
-From:   Florian Fainelli <florian@openwrt.org>
-Date:   Fri, 28 Jun 2013 14:40:17 +0100
-X-Google-Sender-Auth: -yk24WJ5Cr9iKCt-eENbBY2X-iI
-Message-ID: <CAGVrzcbyzgM8fnmO31eKMqDokV2gjS6Ds=Qd84Mz71ipvEDtqg@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Kconfig: Add missing MODULES dependency to VPE_LOADER
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Markos Chandras <markos.chandras@imgtec.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACxGe6vOH0sCFVVXrYqD3dbYdOvithVu7-d1cvy5885i8x_Myw@mail.gmail.com>
+X-PGP-Key: http://uboot.jcrosoft.org/plagnioj.asc
+X-PGP-key-fingerprint: 6309 2BBA 16C8 3A07 1772 CC24 DEFC FFA3 279C CE7C
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-Ovh-Tracer-Id: 10766136384433990448
+X-Ovh-Remote: 213.251.161.87 (ns32433.ovh.net)
+X-Ovh-Local: 213.186.33.20 (ns0.ovh.net)
+X-OVH-SPAMSTATE: OK
+X-OVH-SPAMSCORE: -100
+X-OVH-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrfeeiiedrleduucetufdoteggodetrfcurfhrohhfihhlvgemucfqggfjnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrfeeiiedrleduucetufdoteggodetrfcurfhrohhfihhlvgemucfqggfjnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+Return-Path: <plagnioj@jcrosoft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37204
+X-archive-position: 37205
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: plagnioj@jcrosoft.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,39 +82,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2013/6/28 Ralf Baechle <ralf@linux-mips.org>:
-> On Fri, Jun 28, 2013 at 01:25:27PM +0100, Markos Chandras wrote:
->
->> The vpe.c code uses the 'struct module' which is only available if
->> CONFIG_MODULES is selected.
->>
->> Also fixes the following build problem on a lantiq allmodconfig:
->> In file included from arch/mips/kernel/vpe.c:41:0:
->> include/linux/moduleloader.h: In function 'apply_relocate':
->> include/linux/moduleloader.h:48:63: error: dereferencing pointer
->> to incomplete type
->> include/linux/moduleloader.h: In function 'apply_relocate_add':
->> include/linux/moduleloader.h:70:63: error: dereferencing pointer
->> to incomplete type
->>
->> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
->> Reviewed-by: James Hogan <james.hogan@imgtec.com>
->
-> Sigh.  One more bug in the thing.  It first of all shouldn't have been
-> designed recycling so much code from the module loader in inapropriate
-> ways.
->
-> I'm going to apply the patch - but as usual whenver I have to touch the
-> VPE loader, kspd or rtlx I feel like a blunt chainsaw would be the right
-> way to fix this code.
->
-> SPUFS is a special filesystem which was designed to use the Playstation 3's
-> synergetic elements.  The code is in arch/powerpc/platforms/cell/spufs
-> and it's a far, cleaner interface to other processing thingies, be they
-> synergetic elements, or other cores, VPEs and TCs running bare metal
-> code or strage things like custom processors.
+On 10:59 Fri 28 Jun     , Grant Likely wrote:
+> On Thu, Jun 27, 2013 at 9:54 PM, Rob Herring <robherring2@gmail.com> wrote:
+> > On 06/21/2013 12:20 PM, Santosh Shilimkar wrote:
+> >> On Friday 21 June 2013 05:04 AM, Sebastian Andrzej Siewior wrote:
+> >>> On 06/21/2013 02:52 AM, Santosh Shilimkar wrote:
+> >>>> diff --git a/arch/microblaze/kernel/prom.c b/arch/microblaze/kernel/prom.c
+> >>>> index 0a2c68f..62e2e8f 100644
+> >>>> --- a/arch/microblaze/kernel/prom.c
+> >>>> +++ b/arch/microblaze/kernel/prom.c
+> >>>> @@ -136,8 +136,7 @@ void __init early_init_devtree(void *params)
+> >>>>  }
+> >>>>
+> >>>>  #ifdef CONFIG_BLK_DEV_INITRD
+> >>>> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
+> >>>> -           unsigned long end)
+> >>>> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+> >>>>  {
+> >>>>     initrd_start = (unsigned long)__va(start);
+> >>>>     initrd_end = (unsigned long)__va(end);
+> >>>
+> >>> I think it would better to go here for phys_addr_t instead of u64. This
+> >>> would force you in of_flat_dt_match() to check if the value passed from
+> >>> DT specifies a memory address outside of 32bit address space and the
+> >>> kernel can't deal with this because its phys_addr_t is 32bit only due
+> >>> to a Kconfig switch.
+> >>>
+> >>> For x86, the initrd has to remain in the 32bit address space so passing
+> >>> the initrd in the upper range would violate the ABI. Not sure if this
+> >>> is true for other archs as well (ARM obviously not).
+> >>>
+> >> That pretty much means phys_addr_t. It will work for me as well but
+> >> in last thread from consistency with memory and reserved node, Rob
+> >> insisted to keep it as u64. So before I re-spin another version,
+> >> would like to here what Rob has to say considering the x86 requirement.
+> >>
+> >> Rob,
+> >> Are you ok with phys_addr_t since your concern was about rest
+> >> of the memory specific bits of the device-tree code use u64 ?
+> >
+> > No. I still think it should be u64 for same reasons I said originally.
+> 
+> +1
+> 
++1
 
-Would not remoteproc be a simpler interface these days to load
-bare-metal ELF code into one of these things?
---
-Florian
+fix type
+
+Best Regards,
+J.

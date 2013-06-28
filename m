@@ -1,27 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 14:25:47 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:20771 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823608Ab3F1MZfKULMV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 28 Jun 2013 14:25:35 +0200
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH] MIPS: Kconfig: Add missing MODULES dependency to VPE_LOADER
-Date:   Fri, 28 Jun 2013 13:25:27 +0100
-Message-ID: <1372422327-21814-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 15:31:19 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:56286 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6823043Ab3F1NbOezh7B (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 28 Jun 2013 15:31:14 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5SDVCnR018771;
+        Fri, 28 Jun 2013 15:31:12 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5SDVBFG018770;
+        Fri, 28 Jun 2013 15:31:11 +0200
+Date:   Fri, 28 Jun 2013 15:31:11 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Kconfig: Add missing MODULES dependency to
+ VPE_LOADER
+Message-ID: <20130628133111.GN10727@linux-mips.org>
+References: <1372422327-21814-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SEF-Processed: 7_3_0_01192__2013_06_28_13_25_29
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1372422327-21814-1-git-send-email-markos.chandras@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37201
+X-archive-position: 37202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -34,36 +43,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The vpe.c code uses the 'struct module' which is only available if
-CONFIG_MODULES is selected.
+On Fri, Jun 28, 2013 at 01:25:27PM +0100, Markos Chandras wrote:
 
-Also fixes the following build problem on a lantiq allmodconfig:
-In file included from arch/mips/kernel/vpe.c:41:0:
-include/linux/moduleloader.h: In function 'apply_relocate':
-include/linux/moduleloader.h:48:63: error: dereferencing pointer
-to incomplete type
-include/linux/moduleloader.h: In function 'apply_relocate_add':
-include/linux/moduleloader.h:70:63: error: dereferencing pointer
-to incomplete type
+> The vpe.c code uses the 'struct module' which is only available if
+> CONFIG_MODULES is selected.
+> 
+> Also fixes the following build problem on a lantiq allmodconfig:
+> In file included from arch/mips/kernel/vpe.c:41:0:
+> include/linux/moduleloader.h: In function 'apply_relocate':
+> include/linux/moduleloader.h:48:63: error: dereferencing pointer
+> to incomplete type
+> include/linux/moduleloader.h: In function 'apply_relocate_add':
+> include/linux/moduleloader.h:70:63: error: dereferencing pointer
+> to incomplete type
+> 
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> Reviewed-by: James Hogan <james.hogan@imgtec.com>
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
----
- arch/mips/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sigh.  One more bug in the thing.  It first of all shouldn't have been
+designed recycling so much code from the module loader in inapropriate
+ways.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 8f5e646..77a6598 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1929,7 +1929,7 @@ config MIPS_MT_FPAFF
- 
- config MIPS_VPE_LOADER
- 	bool "VPE loader support."
--	depends on SYS_SUPPORTS_MULTITHREADING
-+	depends on SYS_SUPPORTS_MULTITHREADING && MODULES
- 	select CPU_MIPSR2_IRQ_VI
- 	select CPU_MIPSR2_IRQ_EI
- 	select MIPS_MT
--- 
-1.8.2.1
+I'm going to apply the patch - but as usual whenver I have to touch the
+VPE loader, kspd or rtlx I feel like a blunt chainsaw would be the right
+way to fix this code.
+
+SPUFS is a special filesystem which was designed to use the Playstation 3's
+synergetic elements.  The code is in arch/powerpc/platforms/cell/spufs
+and it's a far, cleaner interface to other processing thingies, be they
+synergetic elements, or other cores, VPEs and TCs running bare metal
+code or strage things like custom processors.
+
+See also Documentation/filesystems/spufs.txt in the kernel code or the
+spufs(7) man page.
+
+I'm not suggesting to strictly use the same interface as SPUFS but rather
+as a template.
+
+Doing things spufs style will also mean relocation will have to be
+performed in userspace again.  That code exists in modutils for the
+2.4 kernel.
+
+  Ralf

@@ -1,32 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 23:31:10 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:34173 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823114Ab3F1VbJLqe6R (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 28 Jun 2013 23:31:09 +0200
-Message-ID: <51CE003A.5040902@imgtec.com>
-Date:   Fri, 28 Jun 2013 16:29:30 -0500
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130510 Thunderbird/17.0.6
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 23:42:07 +0200 (CEST)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:58212 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6827424Ab3F1VmDHdbe0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Jun 2013 23:42:03 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 0DFAD21B89D;
+        Sat, 29 Jun 2013 00:42:02 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp6.welho.com ([213.243.153.40])
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id s4m5bHj6MozF; Sat, 29 Jun 2013 00:41:57 +0300 (EEST)
+Received: from musicnaut.iki.fi (cs181064211.pp.htv.fi [82.181.64.211])
+        by smtp6.welho.com (Postfix) with SMTP id 146AC5BC003;
+        Sat, 29 Jun 2013 00:41:56 +0300 (EEST)
+Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Sat, 29 Jun 2013 00:41:53 +0300
+Date:   Sat, 29 Jun 2013 00:41:53 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:     David Daney <ddaney.cavm@gmail.com>
+Subject: Re: [PATCH v2 2/2] MIPS: cavium-octeon: enable interfaces on
+ EdgeRouter Lite
+Message-ID: <20130628214153.GA3923@blackmetal.musicnaut.iki.fi>
+References: <1372023524-17333-1-git-send-email-aaro.koskinen@iki.fi>
+ <1372023524-17333-2-git-send-email-aaro.koskinen@iki.fi>
+ <51C89490.2060307@gmail.com>
 MIME-Version: 1.0
-To:     <linux-mips@linux-mips.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        "Maciej W . Rozycki" <macro@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Reduce kernel binary size.
-References: <1372454107-7784-1-git-send-email-Steven.Hill@imgtec.com>
-In-Reply-To: <1372454107-7784-1-git-send-email-Steven.Hill@imgtec.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.159.67]
-X-SEF-Processed: 7_3_0_01192__2013_06_28_22_31_03
-Return-Path: <Steven.Hill@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <51C89490.2060307@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37213
+X-archive-position: 37214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,21 +50,88 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ralf,
+Hi,
 
-Take note of the addition of '#ifdef CONFIG_SYS_HAS_CPU_R10000' around 
-the 'cpu_is_noncoherent_r10000' and empty inline function if we're not 
-one of the SGI platforms. Without the the empty inline function, I get 
-an internal compiler compiler error. It results from the new 
-'current_cpu_type()' function you added. Essentially two functions are 
-going to get optimized out. The compiler does not seem to complete that 
-successfully. Here is the message:
+On Mon, Jun 24, 2013 at 11:48:48AM -0700, David Daney wrote:
+> On 06/23/2013 02:38 PM, Aaro Koskinen wrote:
+> >Enable interfaces on EdgeRouter Lite. Tested with cavium_octeon_defconfig
+> >and busybox shell. DHCP & ping works with eth0, eth1 and eth2.
+> >
+> >The board type "UBNT_E100" is taken from the sources of the vendor kernel
+> >shipped with the product.
+> >
+> >Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> 
+> I don't have a board to verify any of this, but...
+> 
+> Acked-by: David Daney <david.daney@cavium.com>
 
-   CC      arch/mips/mm/dma-default.o
-arch/mips/mm/dma-default.c: In function 'mips_dma_sync_sg_for_cpu':
-arch/mips/mm/dma-default.c:320:1: internal compiler error: in 
-add_insn_before, at emit-rtl.c:3852
+Ralf, would it be still possible to get this patch into 3.11 merge window?
 
-Maciej, what are we dealing with here? Thanks.
+3.10-rc has been working well with this board. With this patch, we can
+enable ethernet, and also there will be USB driver in staging in 3.11, so
+this board would be already pretty much usable (at least for development
+purposes) with the mainline kernel.
 
--Steve
+A.
+
+> 
+> >---
+> >  arch/mips/cavium-octeon/executive/cvmx-helper-board.c | 13 +++++++++++++
+> >  arch/mips/include/asm/octeon/cvmx-bootinfo.h          |  2 ++
+> >  2 files changed, 15 insertions(+)
+> >
+> >diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+> >index 9838c0e..2fcf030 100644
+> >--- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+> >+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+> >@@ -183,6 +183,11 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
+> >  			return ipd_port - 16 + 4;
+> >  		else
+> >  			return -1;
+> >+	case CVMX_BOARD_TYPE_UBNT_E100:
+> >+		if (ipd_port >= 0 && ipd_port <= 2)
+> >+			return 7 - ipd_port;
+> >+		else
+> >+			return -1;
+> >  	}
+> >
+> >  	/* Some unknown board. Somebody forgot to update this function... */
+> >@@ -707,6 +712,14 @@ int __cvmx_helper_board_hardware_enable(int interface)
+> >  				}
+> >  			}
+> >  		}
+> >+	} else if (cvmx_sysinfo_get()->board_type ==
+> >+			CVMX_BOARD_TYPE_UBNT_E100) {
+> >+		cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX(0, interface), 0);
+> >+		cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX(0, interface), 0x10);
+> >+		cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX(1, interface), 0);
+> >+		cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX(1, interface), 0x10);
+> >+		cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX(2, interface), 0);
+> >+		cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX(2, interface), 0x10);
+> >  	}
+> >  	return 0;
+> >  }
+> >diff --git a/arch/mips/include/asm/octeon/cvmx-bootinfo.h b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
+> >index 284fa8d..7b7818d 100644
+> >--- a/arch/mips/include/asm/octeon/cvmx-bootinfo.h
+> >+++ b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
+> >@@ -227,6 +227,7 @@ enum cvmx_board_types_enum {
+> >  	 * use any numbers in this range.
+> >  	 */
+> >  	CVMX_BOARD_TYPE_CUST_PRIVATE_MIN = 20001,
+> >+	CVMX_BOARD_TYPE_UBNT_E100 = 20002,
+> >  	CVMX_BOARD_TYPE_CUST_PRIVATE_MAX = 30000,
+> >
+> >  	/* The remaining range is reserved for future use. */
+> >@@ -325,6 +326,7 @@ static inline const char *cvmx_board_type_to_string(enum
+> >
+> >  		    /* Customer private range */
+> >  		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_PRIVATE_MIN)
+> >+		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_UBNT_E100)
+> >  		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_PRIVATE_MAX)
+> >  	}
+> >  	return "Unsupported Board";
+> >
+> 
+> 

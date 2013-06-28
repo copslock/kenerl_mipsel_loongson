@@ -1,43 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 14:07:55 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:19540 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 14:25:47 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:20771 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823013Ab3F1MHtYzTdg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 28 Jun 2013 14:07:49 +0200
-Message-ID: <51CD7C8C.4050807@imgtec.com>
-Date:   Fri, 28 Jun 2013 13:07:40 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
+        id S6823608Ab3F1MZfKULMV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 28 Jun 2013 14:25:35 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: Kconfig: Add missing MODULES dependency to VPE_LOADER
+Date:   Fri, 28 Jun 2013 13:25:27 +0100
+Message-ID: <1372422327-21814-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.2.1
 MIME-Version: 1.0
-To:     Oleg Nesterov <oleg@redhat.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Daney <ddaney@caviumnetworks.com>,
-        "David Daney" <ddaney.cavm@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Kees Cook <keescook@chromium.org>,
-        David Daney <david.daney@cavium.com>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Dave Jones <davej@redhat.com>, <linux-mips@linux-mips.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] kernel/signal.c: fix BUG_ON with SIG128 (MIPS)
-References: <51C47864.9030200@gmail.com> <20130621202244.GA16610@redhat.com> <51C4BB86.1020004@caviumnetworks.com> <20130622190940.GA14150@redhat.com> <51C80CF0.4070608@imgtec.com> <20130625144015.1e4e70a0ac888f4ccf5c6a8f@linux-foundation.org> <CAAG0J9-5J6=c=1VxEW6FevMHKsjShtbjM8G6Q1vu1P+LurQqoQ@mail.gmail.com> <51CACB80.5020706@imgtec.com> <20130626161452.GA2888@redhat.com> <20130626165900.GF7171@linux-mips.org> <20130626171551.GA5830@redhat.com>
-In-Reply-To: <20130626171551.GA5830@redhat.com>
-X-Enigmail-Version: 1.5.1
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.65]
-X-SEF-Processed: 7_3_0_01192__2013_06_28_13_07_42
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain
+X-SEF-Processed: 7_3_0_01192__2013_06_28_13_25_29
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37200
+X-archive-position: 37201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,90 +34,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 26/06/13 18:15, Oleg Nesterov wrote:
-> On 06/26, Ralf Baechle wrote:
->>
->> On Wed, Jun 26, 2013 at 06:14:52PM +0200, Oleg Nesterov wrote:
->>
->>> Or simply remove the BUG_ON(), this can equally confuse wait(status).
->>> 128 & 0x7f == 0.
->>>
->>> Still I think it would be better to change _NSIG on mips.
->>
->> If it was that easy.  That's going to outright break binary compatibility,
->> see kernel/signal.c:
->>
->> SYSCALL_DEFINE4(rt_sigprocmask, int, how, sigset_t __user *, nset,
->>                 sigset_t __user *, oset, size_t, sigsetsize)
->> {
->>         sigset_t old_set, new_set;
->>         int error;
->>
->>         /* XXX: Don't preclude handling different sized sigset_t's.  */
->>         if (sigsetsize != sizeof(sigset_t))
->>                 return -EINVAL;
-> 
-> I meant the minimal hack like
-> 
-> 	--- x/arch/mips/include/uapi/asm/signal.h
-> 	+++ x/arch/mips/include/uapi/asm/signal.h
-> 	@@ -11,9 +11,9 @@
-> 	 
-> 	 #include <linux/types.h>
-> 	 
-> 	-#define _NSIG		128
-> 	+#define _NSIG		127
-> 	 #define _NSIG_BPW	(sizeof(unsigned long) * 8)
-> 	-#define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
-> 	+#define _NSIG_WORDS	DIV_ROUND_UP(_NSIG / _NSIG_BPW)
-> 	 
-> 	 typedef struct {
-> 		unsigned long sig[_NSIG_WORDS];
-> 
-> just to avoid BUG_ON().
-> 
-> I agree that _NSIG == 126 or 64 needs more discussion. Although personally
-> I think this is the only choice in the long term, or we should change ABI
-> and break user-space completely.
-> 
-> And, just in case, the hack above doesn't kill SIG_128 completely.
-> Say, the task can block/unblock it.
+The vpe.c code uses the 'struct module' which is only available if
+CONFIG_MODULES is selected.
 
-Well it prevents a handler being added or the signal being sent, so it
-pretty much does kill it (patch v2 did this). Since glibc already has
-SIGRTMAX=127, nothing running glibc should be affected unless it's being
-really stupid (uClibc and bionic is a different matter).
+Also fixes the following build problem on a lantiq allmodconfig:
+In file included from arch/mips/kernel/vpe.c:41:0:
+include/linux/moduleloader.h: In function 'apply_relocate':
+include/linux/moduleloader.h:48:63: error: dereferencing pointer
+to incomplete type
+include/linux/moduleloader.h: In function 'apply_relocate_add':
+include/linux/moduleloader.h:70:63: error: dereferencing pointer
+to incomplete type
 
-I've booted debian with only 64 signals and an appropriate printk in
-do_sigaction, and although various things try and set all the handlers,
-I didn't found anything that breaks because of them being missing.
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+---
+ arch/mips/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I've also audited all the binaries installed on my desktop (Fedora 17)
-which contain libc_current_sigrtmax to see if I can find anything
-problematic. Various things iterate all the signals (which doesn't do
-any harm if a bunch are missing, especially when EINVAL is often
-expected for SIGRTMIN..SIGRTMIN+2 because of libc using them). High
-level language bindings open up some potential for breakage since
-SIGRTMAX etc can be exposed to higher levels. The only real problem I've
-found though is openjdk:
-
-http://hg.openjdk.java.net/jdk7/jsn/jdk/file/tip/src/solaris/native/java/net/linux_close.c
-57 /*
-58  * Signal to unblock thread
-59  */
-60 static int sigWakeup = (__SIGRTMAX - 2);
-
-It sets up a signal handler when the library is loaded (without any
-error checking), and tries to send the signal to all threads blocked on
-a file descriptor to wake them up (again without error checking), called
-from NET_Dup2 and NET_SocketClose. Clearly this could easily break
-backwards compatibility if SIGRTMAX is reduced any lower than 126.
-
-Obviously this isn't exhaustive (I haven't tried android etc or actually
-running many applications, and open source software probably isn't the
-best example of badly written code), but it looks like it may be safe to
-reduce _NSIG to 127 for a stable fix if nobody objects, and possibly to
-126 in the future to avoid the wait exit status problem.
-
-Cheers
-James
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 8f5e646..77a6598 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1929,7 +1929,7 @@ config MIPS_MT_FPAFF
+ 
+ config MIPS_VPE_LOADER
+ 	bool "VPE loader support."
+-	depends on SYS_SUPPORTS_MULTITHREADING
++	depends on SYS_SUPPORTS_MULTITHREADING && MODULES
+ 	select CPU_MIPSR2_IRQ_VI
+ 	select CPU_MIPSR2_IRQ_EI
+ 	select MIPS_MT
+-- 
+1.8.2.1

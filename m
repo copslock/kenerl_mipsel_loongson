@@ -1,36 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 15:31:19 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:56286 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823043Ab3F1NbOezh7B (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 28 Jun 2013 15:31:14 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5SDVCnR018771;
-        Fri, 28 Jun 2013 15:31:12 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5SDVBFG018770;
-        Fri, 28 Jun 2013 15:31:11 +0200
-Date:   Fri, 28 Jun 2013 15:31:11 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Markos Chandras <markos.chandras@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Kconfig: Add missing MODULES dependency to
- VPE_LOADER
-Message-ID: <20130628133111.GN10727@linux-mips.org>
-References: <1372422327-21814-1-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 15:38:37 +0200 (CEST)
+Received: from hall.aurel32.net ([88.191.116.210]:54544 "EHLO hall.aurel32.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817387Ab3F1Nigfb7x3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 28 Jun 2013 15:38:36 +0200
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1UsYsl-0006NL-T4
+        for linux-mips@linux-mips.org; Fri, 28 Jun 2013 15:38:35 +0200
+Date:   Fri, 28 Jun 2013 15:38:35 +0200
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     linux-mips@linux-mips.org
+Subject: prlimit64: inconsistencies between kernel and userland
+Message-ID: <20130628133835.GA21839@hall.aurel32.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="M9NhX3UHpAaciwkO"
 Content-Disposition: inline
-In-Reply-To: <1372422327-21814-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: Mutt 1.5.21 (2010-09-15)
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37202
+X-archive-position: 37203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,45 +39,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 28, 2013 at 01:25:27PM +0100, Markos Chandras wrote:
 
-> The vpe.c code uses the 'struct module' which is only available if
-> CONFIG_MODULES is selected.
-> 
-> Also fixes the following build problem on a lantiq allmodconfig:
-> In file included from arch/mips/kernel/vpe.c:41:0:
-> include/linux/moduleloader.h: In function 'apply_relocate':
-> include/linux/moduleloader.h:48:63: error: dereferencing pointer
-> to incomplete type
-> include/linux/moduleloader.h: In function 'apply_relocate_add':
-> include/linux/moduleloader.h:70:63: error: dereferencing pointer
-> to incomplete type
-> 
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> Reviewed-by: James Hogan <james.hogan@imgtec.com>
+--M9NhX3UHpAaciwkO
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sigh.  One more bug in the thing.  It first of all shouldn't have been
-designed recycling so much code from the module loader in inapropriate
-ways.
+Hi,
 
-I'm going to apply the patch - but as usual whenver I have to touch the
-VPE loader, kspd or rtlx I feel like a blunt chainsaw would be the right
-way to fix this code.
+There is an inconsistency in the definition of RLIM64_INFINITY between
+kernel and userland for the O32 and N32 ABI:
 
-SPUFS is a special filesystem which was designed to use the Playstation 3's
-synergetic elements.  The code is in arch/powerpc/platforms/cell/spufs
-and it's a far, cleaner interface to other processing thingies, be they
-synergetic elements, or other cores, VPEs and TCs running bare metal
-code or strage things like custom processors.
+On the kernel side, the value is defined for all architectures as
+include/uapi/linux/resource.h:
 
-See also Documentation/filesystems/spufs.txt in the kernel code or the
-spufs(7) man page.
+| #define RLIM64_INFINITY           (~0ULL)
 
-I'm not suggesting to strictly use the same interface as SPUFS but rather
-as a template.
+On the GNU libc side, the value is defined in
+ports/sysdeps/unix/sysv/linux/mips/bits/resource.h:
 
-Doing things spufs style will also mean relocation will have to be
-performed in userspace again.  That code exists in modutils for the
-2.4 kernel.
+For the O32 and N32 ABI:
 
-  Ralf
+| #  define RLIM64_INFINITY 0x7fffffffffffffffULL
+
+and for the N64 ABI:
+
+|=A0#  define RLIM64_INFINITY 0xffffffffffffffffUL
+
+This was not a problem until the prlimit64 syscall was wired in the
+2.6.36 kernel. Since then, on a 64-bit kernel and an O32 or N32
+userland, but not on a 32-bit kernel, this causes some issues for
+example it's not possible to set "ulimit -c unlimited" using dash as a
+non-priviledged user.
+
+This is due to the fact that when available the glibc uses the prlimit64
+syscall to implement setrlimit64, which is called from called from
+pam_limits.so. Instead of setting the limit to infinity (according to
+the userland), it is set to a very big value but still lower than
+infinity (according to the kernel). When later the setrlimit syscall is
+used to set the value to infinity, it gets an EPERM value as the kernel
+consider that as an increase of the limit (from a big value to
+infinity).
+
+I don't know where the issue should be fixed. The GNU libc has this
+value for more than 7 years, and as it is defined in a header file, it
+means a lot of binaries are broken when used with a 2.6.36+ kernel.
+Fixing that on the kernel side means that MIPS would have a different
+value than other architectures.
+
+How do you think the issue should be fixed?
+
+Regards,
+Aurelien
+
+--=20
+Aurelien Jarno	                        GPG: 1024D/F1BCDB73
+aurelien@aurel32.net                 http://www.aurel32.net
+
+--M9NhX3UHpAaciwkO
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iD8DBQFRzZHbw3ao2vG823MRAjhnAJ4+wH+LcVC/NHF8VmGqLwHZ5NzRlgCeKDSV
+lsWlIshZDsye2rGGPPZ5Yjs=
+=J+Uc
+-----END PGP SIGNATURE-----
+
+--M9NhX3UHpAaciwkO--

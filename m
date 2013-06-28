@@ -1,43 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 00:46:57 +0200 (CEST)
-Received: from perches-mx.perches.com ([206.117.179.246]:34726 "EHLO
-        labridge.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S6835055Ab3F0WqeIHNSg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Jun 2013 00:46:34 +0200
-Received: from [173.51.221.202] (account joe@perches.com HELO [192.168.1.152])
-  by labridge.com (CommuniGate Pro SMTP 5.0.14)
-  with ESMTPA id 21120111; Thu, 27 Jun 2013 15:46:29 -0700
-Message-ID: <1372373188.2060.32.camel@joe-AO722>
-Subject: Re: [PATCH v2] mm: module_alloc: check if size is 0
-From:   Joe Perches <joe@perches.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Veli-Pekka Peltola <veli-pekka.peltola@bluegiga.com>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, Russell King <linux@arm.linux.org.uk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Rusty Russell <rusty@rustcorp.com.au>
-Date:   Thu, 27 Jun 2013 15:46:28 -0700
-In-Reply-To: <20130627152335.c3a4c9f4c647cf4a2b263479@linux-foundation.org>
-References: <1330631119-10059-1-git-send-email-veli-pekka.peltola@bluegiga.com>
-         <1331125768-25454-1-git-send-email-veli-pekka.peltola@bluegiga.com>
-         <20130627093917.GQ7171@linux-mips.org>
-         <20130627152335.c3a4c9f4c647cf4a2b263479@linux-foundation.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-X-Mailer: Evolution 3.6.4-0ubuntu1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <joe@perches.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 08:06:56 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:55062 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6817177Ab3F1GGz00RDh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 28 Jun 2013 08:06:55 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5S66rpM028981;
+        Fri, 28 Jun 2013 08:06:53 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5S66rsb028980;
+        Fri, 28 Jun 2013 08:06:53 +0200
+Date:   Fri, 28 Jun 2013 08:06:53 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: sead3: Disable L2 cache on SEAD-3.
+Message-ID: <20130628060653.GH10727@linux-mips.org>
+References: <1372350479-509-1-git-send-email-Steven.Hill@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1372350479-509-1-git-send-email-Steven.Hill@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37187
+X-archive-position: 37188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joe@perches.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,15 +42,8 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 2013-06-27 at 15:23 -0700, Andrew Morton wrote:
-> On Thu, 27 Jun 2013 11:39:17 +0200 Ralf Baechle <ralf@linux-mips.org> wrote:
-[]
-> Veli-Pekka's original patch would be neater if we were to add a new
-> 
-> void *__vmalloc_node_range_zero_size_ok(<args>)
-> {
-> 	if (size == 0)
-> 		return NULL;
+On Thu, Jun 27, 2013 at 11:27:59AM -0500, Steven J. Hill wrote:
 
-I believe you mean
-		return ZERO_SIZE_PTR;
+Applied.  Thanks,
+
+  Ralf

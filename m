@@ -1,75 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 15:56:15 +0200 (CEST)
-Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]:47010 "EHLO
-        mo1.mail-out.ovh.net" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6817387Ab3F1N4OLA0j0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Jun 2013 15:56:14 +0200
-Received: from mail405.ha.ovh.net (b6.ovh.net [213.186.33.56])
-        by mo1.mail-out.ovh.net (Postfix) with SMTP id 62E9EFFA9C5
-        for <linux-mips@linux-mips.org>; Fri, 28 Jun 2013 15:56:13 +0200 (CEST)
-Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
-        by b0.ovh.net with SMTP; 28 Jun 2013 15:56:37 +0200
-Received: from ns32433.ovh.net (HELO localhost) (plagnioj%jcrosoft.com@213.251.161.87)
-  by ns0.ovh.net with SMTP; 28 Jun 2013 15:56:35 +0200
-Date:   Fri, 28 Jun 2013 15:49:31 +0200
-From:   Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-To:     Grant Likely <grant.likely@linaro.org>
-Cc:     Rob Herring <robherring2@gmail.com>,
-        Nicolas Pitre <nicolas.pitre@linaro.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Aurelien Jacquiot <a-jacquiot@ti.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Will Deacon <will.deacon@arm.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-c6x-dev@linux-c6x.org, x86@kernel.org, arm@kernel.org,
-        linux-xtensa@linux-xtensa.org,
-        James Hogan <james.hogan@imgtec.com>,
-        devicetree-discuss <devicetree-discuss@lists.ozlabs.org>,
-        Rob Herring <rob.herring@calxeda.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Santosh Shilimkar <santosh.shilimkar@ti.com>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-X-Ovh-Mailout: 178.32.228.1 (mo1.mail-out.ovh.net)
-Subject: Re: [PATCH] of: Specify initrd location using 64-bit
-Message-ID: <20130628134931.GD21034@game.jcrosoft.org>
-References: <1371775956-16453-1-git-send-email-santosh.shilimkar@ti.com>
- <51C4171C.9050908@linutronix.de>
- <51C48B5A.2040404@ti.com>
- <51CCA67C.2010803@gmail.com>
- <CACxGe6vOH0sCFVVXrYqD3dbYdOvithVu7-d1cvy5885i8x_Myw@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 16:11:23 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:56460 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823013Ab3F1OLWMyU9p (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Jun 2013 16:11:22 +0200
+Date:   Fri, 28 Jun 2013 15:11:22 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
+Subject: Re: pmag-aa-fb
+In-Reply-To: <CAMuHMdUfXUJTZ3fjMPicE1Z9D1mT4h-OzCfmCwBtppcK-3z01g@mail.gmail.com>
+Message-ID: <alpine.LFD.2.03.1306281507480.11253@linux-mips.org>
+References: <CAMuHMdUfXUJTZ3fjMPicE1Z9D1mT4h-OzCfmCwBtppcK-3z01g@mail.gmail.com>
+User-Agent: Alpine 2.03 (LFD 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACxGe6vOH0sCFVVXrYqD3dbYdOvithVu7-d1cvy5885i8x_Myw@mail.gmail.com>
-X-PGP-Key: http://uboot.jcrosoft.org/plagnioj.asc
-X-PGP-key-fingerprint: 6309 2BBA 16C8 3A07 1772 CC24 DEFC FFA3 279C CE7C
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-Ovh-Tracer-Id: 10766136384433990448
-X-Ovh-Remote: 213.251.161.87 (ns32433.ovh.net)
-X-Ovh-Local: 213.186.33.20 (ns0.ovh.net)
-X-OVH-SPAMSTATE: OK
-X-OVH-SPAMSCORE: -100
-X-OVH-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrfeeiiedrleduucetufdoteggodetrfcurfhrohhfihhlvgemucfqggfjnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrfeeiiedrleduucetufdoteggodetrfcurfhrohhfihhlvgemucfqggfjnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-Return-Path: <plagnioj@jcrosoft.com>
+Content-Type: TEXT/PLAIN; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37205
+X-archive-position: 37206
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: plagnioj@jcrosoft.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,52 +37,199 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10:59 Fri 28 Jun     , Grant Likely wrote:
-> On Thu, Jun 27, 2013 at 9:54 PM, Rob Herring <robherring2@gmail.com> wrote:
-> > On 06/21/2013 12:20 PM, Santosh Shilimkar wrote:
-> >> On Friday 21 June 2013 05:04 AM, Sebastian Andrzej Siewior wrote:
-> >>> On 06/21/2013 02:52 AM, Santosh Shilimkar wrote:
-> >>>> diff --git a/arch/microblaze/kernel/prom.c b/arch/microblaze/kernel/prom.c
-> >>>> index 0a2c68f..62e2e8f 100644
-> >>>> --- a/arch/microblaze/kernel/prom.c
-> >>>> +++ b/arch/microblaze/kernel/prom.c
-> >>>> @@ -136,8 +136,7 @@ void __init early_init_devtree(void *params)
-> >>>>  }
-> >>>>
-> >>>>  #ifdef CONFIG_BLK_DEV_INITRD
-> >>>> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
-> >>>> -           unsigned long end)
-> >>>> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
-> >>>>  {
-> >>>>     initrd_start = (unsigned long)__va(start);
-> >>>>     initrd_end = (unsigned long)__va(end);
-> >>>
-> >>> I think it would better to go here for phys_addr_t instead of u64. This
-> >>> would force you in of_flat_dt_match() to check if the value passed from
-> >>> DT specifies a memory address outside of 32bit address space and the
-> >>> kernel can't deal with this because its phys_addr_t is 32bit only due
-> >>> to a Kconfig switch.
-> >>>
-> >>> For x86, the initrd has to remain in the 32bit address space so passing
-> >>> the initrd in the upper range would violate the ABI. Not sure if this
-> >>> is true for other archs as well (ARM obviously not).
-> >>>
-> >> That pretty much means phys_addr_t. It will work for me as well but
-> >> in last thread from consistency with memory and reserved node, Rob
-> >> insisted to keep it as u64. So before I re-spin another version,
-> >> would like to here what Rob has to say considering the x86 requirement.
-> >>
-> >> Rob,
-> >> Are you ok with phys_addr_t since your concern was about rest
-> >> of the memory specific bits of the device-tree code use u64 ?
-> >
-> > No. I still think it should be u64 for same reasons I said originally.
-> 
-> +1
-> 
-+1
+On Wed, 26 Jun 2013, Geert Uytterhoeven wrote:
 
-fix type
+> While investigating the users of (now static) fb_display, I noticed
+> the DECstation
+> PMAG AA frame buffer driver suffers from serious bit rot:
+> 
+> drivers/video/pmag-aa-fb.c:38:24: error: asm/dec/tc.h: No such file or directory
+> drivers/video/pmag-aa-fb.c:40:25: error: video/fbcon.h: No such file
+> or directory
+> drivers/video/pmag-aa-fb.c:41:30: error: video/fbcon-cfb8.h: No such
+> file or directory
+> drivers/video/pmag-aa-fb.c:86: error: field ‘disp’ has incomplete type
+> drivers/video/pmag-aa-fb.c: In function ‘aafbcon_cursor’:
+> drivers/video/pmag-aa-fb.c:118: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:121: error: implicit declaration of
+> function ‘fontwidth’
+> drivers/video/pmag-aa-fb.c:122: error: implicit declaration of
+> function ‘fontheight’
+> drivers/video/pmag-aa-fb.c:130: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:131: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c: In function ‘aafbcon_set_font’:
+> drivers/video/pmag-aa-fb.c:150: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:152: error: implicit declaration of
+> function ‘attr_bgcol_ec’
+> drivers/video/pmag-aa-fb.c:152: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c: At top level:
+> drivers/video/pmag-aa-fb.c:208: error: variable ‘aafb_switch8’ has
+> initializer but incomplete type
+> drivers/video/pmag-aa-fb.c:209: error: unknown field ‘setup’ specified
+> in initializer
+> drivers/video/pmag-aa-fb.c:209: error: ‘fbcon_cfb8_setup’ undeclared
+> here (not in a function)
+> drivers/video/pmag-aa-fb.c:209: warning: excess elements in struct initializer
+> drivers/video/pmag-aa-fb.c:209: warning: (near initialization for
+> ‘aafb_switch8’)
+> drivers/video/pmag-aa-fb.c:210: error: unknown field ‘bmove’ specified
+> in initializer
+> drivers/video/pmag-aa-fb.c:210: error: ‘fbcon_cfb8_bmove’ undeclared
+> here (not in a function)
+> drivers/video/pmag-aa-fb.c:210: warning: excess elements in struct initializer
+> drivers/video/pmag-aa-fb.c:210: warning: (near initialization for
+> ‘aafb_switch8’)
+> drivers/video/pmag-aa-fb.c:211: error: unknown field ‘clear’ specified
+> in initializer
+> drivers/video/pmag-aa-fb.c:211: error: ‘fbcon_cfb8_clear’ undeclared
+> here (not in a function)
+> drivers/video/pmag-aa-fb.c:211: warning: excess elements in struct initializer
+> drivers/video/pmag-aa-fb.c:211: warning: (near initialization for
+> ‘aafb_switch8’)
+> drivers/video/pmag-aa-fb.c:212: error: unknown field ‘putc’ specified
+> in initializer
+> drivers/video/pmag-aa-fb.c:212: error: ‘fbcon_cfb8_putc’ undeclared
+> here (not in a function)
+> drivers/video/pmag-aa-fb.c:212: warning: excess elements in struct initializer
+> drivers/video/pmag-aa-fb.c:212: warning: (near initialization for
+> ‘aafb_switch8’)
+> drivers/video/pmag-aa-fb.c:213: error: unknown field ‘putcs’ specified
+> in initializer
+> drivers/video/pmag-aa-fb.c:213: error: ‘fbcon_cfb8_putcs’ undeclared
+> here (not in a function)
+> drivers/video/pmag-aa-fb.c:213: warning: excess elements in struct initializer
+> drivers/video/pmag-aa-fb.c:213: warning: (near initialization for
+> ‘aafb_switch8’)
+> drivers/video/pmag-aa-fb.c:214: error: unknown field ‘revc’ specified
+> in initializer
+> drivers/video/pmag-aa-fb.c:214: error: ‘fbcon_cfb8_revc’ undeclared
+> here (not in a function)
+> drivers/video/pmag-aa-fb.c:214: warning: excess elements in struct initializer
+> drivers/video/pmag-aa-fb.c:214: warning: (near initialization for
+> ‘aafb_switch8’)
+> drivers/video/pmag-aa-fb.c:215: error: unknown field ‘cursor’
+> specified in initializer
+> drivers/video/pmag-aa-fb.c:215: warning: excess elements in struct initializer
+> drivers/video/pmag-aa-fb.c:215: warning: (near initialization for
+> ‘aafb_switch8’)
+> drivers/video/pmag-aa-fb.c:216: error: unknown field ‘set_font’
+> specified in initializer
+> drivers/video/pmag-aa-fb.c:216: warning: excess elements in struct initializer
+> drivers/video/pmag-aa-fb.c:216: warning: (near initialization for
+> ‘aafb_switch8’)
+> drivers/video/pmag-aa-fb.c:217: error: unknown field ‘clear_margins’
+> specified in initializer
+> drivers/video/pmag-aa-fb.c:217: error: ‘fbcon_cfb8_clear_margins’
+> undeclared here (not in a function)
+> drivers/video/pmag-aa-fb.c:217: warning: excess elements in struct initializer
+> drivers/video/pmag-aa-fb.c:217: warning: (near initialization for
+> ‘aafb_switch8’)
+> drivers/video/pmag-aa-fb.c:218: error: unknown field ‘fontwidthmask’
+> specified in initializer
+> drivers/video/pmag-aa-fb.c:218: error: implicit declaration of
+> function ‘FONTWIDTH’
+> drivers/video/pmag-aa-fb.c:219: warning: excess elements in struct initializer
+> drivers/video/pmag-aa-fb.c:219: warning: (near initialization for
+> ‘aafb_switch8’)
+> drivers/video/pmag-aa-fb.c: In function ‘aafb_set_disp’:
+> drivers/video/pmag-aa-fb.c:250: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:251: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:252: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:252: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:252: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:253: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:253: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:254: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:255: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:258: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:259: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:260: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:261: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:262: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:263: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:264: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:265: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:266: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:267: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:268: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:268: error: ‘SCROLL_YREDRAW’ undeclared
+> (first use in this function)
+> drivers/video/pmag-aa-fb.c:268: error: (Each undeclared identifier is
+> reported only once
+> drivers/video/pmag-aa-fb.c:268: error: for each function it appears in.)
+> drivers/video/pmag-aa-fb.c: In function ‘aafb_get_cmap’:
+> drivers/video/pmag-aa-fb.c:279: error: too many arguments to function
+> ‘fb_copy_cmap’
+> drivers/video/pmag-aa-fb.c: In function ‘aafb_switch’:
+> drivers/video/pmag-aa-fb.c:308: error: ‘fb_display’ undeclared (first
+> use in this function)
+> drivers/video/pmag-aa-fb.c:311: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:311: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:311: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:312: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c:312: error: dereferencing pointer to incomplete type
+> drivers/video/pmag-aa-fb.c: In function ‘aafb_update_var’:
+> drivers/video/pmag-aa-fb.c:381: error: ‘fb_display’ undeclared (first
+> use in this function)
+> drivers/video/pmag-aa-fb.c: At top level:
+> drivers/video/pmag-aa-fb.c:402: error: unknown field ‘fb_get_fix’
+> specified in initializer
+> drivers/video/pmag-aa-fb.c:402: warning: initialization from
+> incompatible pointer type
+> drivers/video/pmag-aa-fb.c:403: error: unknown field ‘fb_get_var’
+> specified in initializer
+> drivers/video/pmag-aa-fb.c:403: warning: initialization from
+> incompatible pointer type
+> drivers/video/pmag-aa-fb.c:404: error: unknown field ‘fb_set_var’
+> specified in initializer
+> drivers/video/pmag-aa-fb.c:404: warning: initialization from
+> incompatible pointer type
+> drivers/video/pmag-aa-fb.c:405: error: unknown field ‘fb_get_cmap’
+> specified in initializer
+> drivers/video/pmag-aa-fb.c:405: warning: initialization from
+> incompatible pointer type
+> drivers/video/pmag-aa-fb.c:406: error: unknown field ‘fb_set_cmap’
+> specified in initializer
+> drivers/video/pmag-aa-fb.c:406: warning: initialization from
+> incompatible pointer type
+> drivers/video/pmag-aa-fb.c: In function ‘init_one’:
+> drivers/video/pmag-aa-fb.c:412: error: implicit declaration of
+> function ‘get_tc_base_addr’
+> drivers/video/pmag-aa-fb.c:430: error: ‘struct fb_info’ has no member
+> named ‘modename’
+> drivers/video/pmag-aa-fb.c:434: error: ‘struct fb_info’ has no member
+> named ‘disp’
+> drivers/video/pmag-aa-fb.c:435: error: ‘struct fb_info’ has no member
+> named ‘changevar’
+> drivers/video/pmag-aa-fb.c:436: error: ‘struct fb_info’ has no member
+> named ‘switch_con’
+> drivers/video/pmag-aa-fb.c:437: error: ‘struct fb_info’ has no member
+> named ‘updatevar’
+> drivers/video/pmag-aa-fb.c:438: error: ‘struct fb_info’ has no member
+> named ‘blank’
+> drivers/video/pmag-aa-fb.c:462: error: implicit declaration of
+> function ‘GET_FB_IDX’
+> drivers/video/pmag-aa-fb.c:462: error: ‘struct fb_info’ has no member
+> named ‘modename’
+> drivers/video/pmag-aa-fb.c: In function ‘pmagaafb_init’:
+> drivers/video/pmag-aa-fb.c:485: error: implicit declaration of
+> function ‘search_tc_card’
+> drivers/video/pmag-aa-fb.c:487: error: implicit declaration of
+> function ‘claim_tc_card’
+> drivers/video/pmag-aa-fb.c: In function ‘pmagaafb_exit’:
+> drivers/video/pmag-aa-fb.c:500: error: implicit declaration of
+> function ‘release_tc_card’
+> 
+> search_tc_card() was removed in in 2007 in commit
+> b454cc6636d254fbf6049b73e9560aee76fb04a3 ("[TC] MIPS: TURBOchannel
+> update to the driver model").
+> 
+> include/video/fbcon.h was moved to drivers/video/console/fbcon.h in ... 2002.
+> 
+> Anyone who cares to resurrect it? If not, we should just remove it.
 
-Best Regards,
-J.
+ I'll have a look, thanks for the heads-up.  Not a card I usually use -- I 
+wonder if I've got a patch somewhere that I forgot to post while rewriting 
+TURBOchannel support though.
+
+  Maciej

@@ -1,40 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 09:08:32 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:55180 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6818702Ab3F1HIcNijmD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 28 Jun 2013 09:08:32 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r5S78TCB031947;
-        Fri, 28 Jun 2013 09:08:29 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r5S78TP5031946;
-        Fri, 28 Jun 2013 09:08:29 +0200
-Date:   Fri, 28 Jun 2013 09:08:29 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH V10 12/13] MIPS: Loongson 3: Add CPU hotplug support
-Message-ID: <20130628070829.GJ10727@linux-mips.org>
-References: <1366030028-5084-1-git-send-email-chenhc@lemote.com>
- <1366030028-5084-13-git-send-email-chenhc@lemote.com>
- <20130628070553.GI10727@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jun 2013 09:54:43 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:45888 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6817387Ab3F1HymecFPz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Jun 2013 09:54:42 +0200
+Received: from localhost ([127.0.0.1] helo=[172.123.10.21])
+        by Galois.linutronix.de with esmtp (Exim 4.72)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1UsTVX-0003A9-Ly; Fri, 28 Jun 2013 09:54:15 +0200
+Message-ID: <51CD4125.5060305@linutronix.de>
+Date:   Fri, 28 Jun 2013 09:54:13 +0200
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130518 Icedove/17.0.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20130628070553.GI10727@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+To:     Rob Herring <robherring2@gmail.com>
+CC:     Santosh Shilimkar <santosh.shilimkar@ti.com>,
+        linux-kernel@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <a-jacquiot@ti.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>, x86@kernel.org,
+        arm@kernel.org, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Grant Likely <grant.likely@linaro.org>,
+        Rob Herring <rob.herring@calxeda.com>,
+        Nicolas Pitre <nicolas.pitre@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux-xtensa@linux-xtensa.org, devicetree-discuss@lists.ozlabs.org
+Subject: Re: [PATCH] of: Specify initrd location using 64-bit
+References: <1371775956-16453-1-git-send-email-santosh.shilimkar@ti.com> <51C4171C.9050908@linutronix.de> <51C48B5A.2040404@ti.com> <51CCA67C.2010803@gmail.com>
+In-Reply-To: <51CCA67C.2010803@gmail.com>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <bigeasy@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37190
+X-archive-position: 37191
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: bigeasy@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,13 +64,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 28, 2013 at 09:05:53AM +0200, Ralf Baechle wrote:
+On 06/27/2013 10:54 PM, Rob Herring wrote:
 
-> > +		"flush_loop:                             \n" /* flush L1 */
+>> Rob,
+>> Are you ok with phys_addr_t since your concern was about rest
+>> of the memory specific bits of the device-tree code use u64 ?
 > 
-> Please don't use normale in inline assembler.  This might result in build
-> errors.  it's horrible to read but number local labels like:
+> No. I still think it should be u64 for same reasons I said originally.
 
-That was meant to read "Please don't use normal labels" in inline assembler.
+The physical address space is represented by phys_addr_t and not u64
+within the kernel. If you go for u64 you may waste 32bit and you need
+to check if the running kernel can deal with this.
+Why was u64 such a good thing?
 
-  Ralf
+> Rob
+
+Sebastian

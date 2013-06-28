@@ -1,42 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Jun 2013 00:58:54 +0200 (CEST)
-Received: from filtteri1.pp.htv.fi ([213.243.153.184]:55859 "EHLO
-        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6827443Ab3F1W6wgDX-8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 29 Jun 2013 00:58:52 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri1.pp.htv.fi (Postfix) with ESMTP id F112D21B89C;
-        Sat, 29 Jun 2013 01:58:50 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp5.welho.com ([213.243.153.39])
-        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
-        with ESMTP id Jvll2CRSzqmy; Sat, 29 Jun 2013 01:58:46 +0300 (EEST)
-Received: from musicnaut.iki.fi (cs181064211.pp.htv.fi [82.181.64.211])
-        by smtp5.welho.com (Postfix) with SMTP id 1137E5BC002;
-        Sat, 29 Jun 2013 01:58:45 +0300 (EEST)
-Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Sat, 29 Jun 2013 01:58:42 +0300
-Date:   Sat, 29 Jun 2013 01:58:42 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH v2 1/2] MIPS: cavium-octeon: cvmx-helper-board: print
- unknown board warning only once
-Message-ID: <20130628225842.GB3923@blackmetal.musicnaut.iki.fi>
-References: <1372023524-17333-1-git-send-email-aaro.koskinen@iki.fi>
- <20130626184727.GJ7171@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Jun 2013 01:43:59 +0200 (CEST)
+Received: from arroyo.ext.ti.com ([192.94.94.40]:51863 "EHLO arroyo.ext.ti.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6824104Ab3F1XnzRcAV0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 29 Jun 2013 01:43:55 +0200
+Received: from dlelxv90.itg.ti.com ([172.17.2.17])
+        by arroyo.ext.ti.com (8.13.7/8.13.7) with ESMTP id r5SNhGxq013054;
+        Fri, 28 Jun 2013 18:43:16 -0500
+Received: from DFLE73.ent.ti.com (dfle73.ent.ti.com [128.247.5.110])
+        by dlelxv90.itg.ti.com (8.14.3/8.13.8) with ESMTP id r5SNhGga007518;
+        Fri, 28 Jun 2013 18:43:16 -0500
+Received: from dlelxv22.itg.ti.com (172.17.1.197) by DFLE73.ent.ti.com
+ (128.247.5.110) with Microsoft SMTP Server id 14.2.342.3; Fri, 28 Jun 2013
+ 18:43:15 -0500
+Received: from [158.218.103.117] (ula0393909.am.dhcp.ti.com [158.218.103.117])
+        by dlelxv22.itg.ti.com (8.13.8/8.13.8) with ESMTP id r5SNhEhb007523;    Fri, 28
+ Jun 2013 18:43:14 -0500
+Message-ID: <51CE1F92.3070802@ti.com>
+Date:   Fri, 28 Jun 2013 19:43:14 -0400
+From:   Santosh Shilimkar <santosh.shilimkar@ti.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20130626184727.GJ7171@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <aaro.koskinen@iki.fi>
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+CC:     Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>,
+        Grant Likely <grant.likely@linaro.org>,
+        Rob Herring <robherring2@gmail.com>,
+        Nicolas Pitre <nicolas.pitre@linaro.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Aurelien Jacquiot <a-jacquiot@ti.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Russell King <linux@arm.linux.org.uk>,
+        <linux-c6x-dev@linux-c6x.org>, <x86@kernel.org>, <arm@kernel.org>,
+        <linux-xtensa@linux-xtensa.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        devicetree-discuss <devicetree-discuss@lists.ozlabs.org>,
+        Rob Herring <rob.herring@calxeda.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Chris Zankel <chris@zankel.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH] of: Specify initrd location using 64-bit
+References: <1371775956-16453-1-git-send-email-santosh.shilimkar@ti.com> <51C4171C.9050908@linutronix.de> <51C48B5A.2040404@ti.com> <51CCA67C.2010803@gmail.com> <CACxGe6vOH0sCFVVXrYqD3dbYdOvithVu7-d1cvy5885i8x_Myw@mail.gmail.com> <20130628134931.GD21034@game.jcrosoft.org>
+In-Reply-To: <20130628134931.GD21034@game.jcrosoft.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+Return-Path: <santosh.shilimkar@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37217
+X-archive-position: 37218
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: santosh.shilimkar@ti.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,67 +71,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
 
-On Wed, Jun 26, 2013 at 08:47:27PM +0200, Ralf Baechle wrote:
-> On Mon, Jun 24, 2013 at 12:38:43AM +0300, Aaro Koskinen wrote:
-> > When booting a new board for the first time, the console is flooded with
-> > "Unknown board" messages. This is not really helpful. Board type is not
-> > going to change after the boot, so it's sufficient to print the warning
-> > only once.
-> > 
-> > Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> > ---
-> > 
-> > 	v2: Adjust indentation.
-> > 
-> >  arch/mips/cavium-octeon/executive/cvmx-helper-board.c | 7 ++++---
-> >  1 file changed, 4 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-> > index 7c64977..9838c0e 100644
-> > --- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-> > +++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-> > @@ -31,6 +31,8 @@
-> >   * network ports from the rest of the cvmx-helper files.
-> >   */
-> >  
-> > +#include <linux/printk.h>
-> > +
-> >  #include <asm/octeon/octeon.h>
-> >  #include <asm/octeon/cvmx-bootinfo.h>
-> >  
-> > @@ -184,9 +186,8 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
-> >  	}
-> >  
-> >  	/* Some unknown board. Somebody forgot to update this function... */
-> > -	cvmx_dprintf
-> > -	    ("cvmx_helper_board_get_mii_address: Unknown board type %d\n",
-> > -	     cvmx_sysinfo_get()->board_type);
-> > +	pr_warn_once("%s: Unknown board type %d\n", __func__,
-> > +		     cvmx_sysinfo_get()->board_type);
-> 
-> David,
-> 
-> cvmx_dprintf() is a function frequently invoked from the OCTEON code.
-> I'm wondering.  Right now it's defined as:
-> 
-> #if CVMX_ENABLE_DEBUG_PRINTS
-> #define cvmx_dprintf        printk
-> #else
-> #define cvmx_dprintf(...)   {}
-> #endif
-> 
-> That is, there isn't even a severity level being used and the define
-> CVMX_ENABLE_DEBUG_PRINTS to control cvmx_dprintf is way to similar to
-> what CONFIG_DYNAMIC_DEBUG rsp. a simple #define DEBUG do.  And the
-> no-debug variant of cvmx_dprintf isn't correct in presence of side
-> effects of arguments.
-> 
-> So I propose to just replace cvmx_dprintf with pr_debug.  What do you
-> think?
+Sebastian,
 
-There are logs with prefix "WARNING:" and "ERROR:". So those could be
-converted to pr_warn/err, and remaining to pr_debug.
+On Friday 28 June 2013 09:49 AM, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 10:59 Fri 28 Jun     , Grant Likely wrote:
+>> On Thu, Jun 27, 2013 at 9:54 PM, Rob Herring <robherring2@gmail.com> wrote:
+>>> On 06/21/2013 12:20 PM, Santosh Shilimkar wrote:
+>>>> On Friday 21 June 2013 05:04 AM, Sebastian Andrzej Siewior wrote:
+>>>>> On 06/21/2013 02:52 AM, Santosh Shilimkar wrote:
+>>>>>> diff --git a/arch/microblaze/kernel/prom.c b/arch/microblaze/kernel/prom.c
+>>>>>> index 0a2c68f..62e2e8f 100644
+>>>>>> --- a/arch/microblaze/kernel/prom.c
+>>>>>> +++ b/arch/microblaze/kernel/prom.c
+>>>>>> @@ -136,8 +136,7 @@ void __init early_init_devtree(void *params)
+>>>>>>  }
+>>>>>>
+>>>>>>  #ifdef CONFIG_BLK_DEV_INITRD
+>>>>>> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
+>>>>>> -           unsigned long end)
+>>>>>> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+>>>>>>  {
+>>>>>>     initrd_start = (unsigned long)__va(start);
+>>>>>>     initrd_end = (unsigned long)__va(end);
+>>>>>
+>>>>> I think it would better to go here for phys_addr_t instead of u64. This
+>>>>> would force you in of_flat_dt_match() to check if the value passed from
+>>>>> DT specifies a memory address outside of 32bit address space and the
+>>>>> kernel can't deal with this because its phys_addr_t is 32bit only due
+>>>>> to a Kconfig switch.
+>>>>>
+>>>>> For x86, the initrd has to remain in the 32bit address space so passing
+>>>>> the initrd in the upper range would violate the ABI. Not sure if this
+>>>>> is true for other archs as well (ARM obviously not).
+>>>>>
+>>>> That pretty much means phys_addr_t. It will work for me as well but
+>>>> in last thread from consistency with memory and reserved node, Rob
+>>>> insisted to keep it as u64. So before I re-spin another version,
+>>>> would like to here what Rob has to say considering the x86 requirement.
+>>>>
+>>>> Rob,
+>>>> Are you ok with phys_addr_t since your concern was about rest
+>>>> of the memory specific bits of the device-tree code use u64 ?
+>>>
+>>> No. I still think it should be u64 for same reasons I said originally.
+>>
+>> +1
+>>
+> +1
+> 
+> fix type
+> 
+Apart from waste of 32bit, what is the other concern you
+have ? I really want to converge on this patch because it
+has been a open ended discussion for quite some time. Does
+that really break any thing on x86 or your concern is more
+from semantics of the physical address.
 
-A.
+Thanks for help.
+
+Regards,
+Santosh

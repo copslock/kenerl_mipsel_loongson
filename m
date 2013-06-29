@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Jun 2013 22:20:50 +0200 (CEST)
-Received: from mail.nanl.de ([217.115.11.12]:44553 "EHLO mail.nanl.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Jun 2013 22:21:08 +0200 (CEST)
+Received: from mail.nanl.de ([217.115.11.12]:44558 "EHLO mail.nanl.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824789Ab3F2USZbeTD8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 29 Jun 2013 22:18:25 +0200
+        id S6827514Ab3F2US00w9eI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 29 Jun 2013 22:18:26 +0200
 Received: from shaker64.lan (unknown [IPv6:2001:470:9e39:0:a00:27ff:fee0:c7df])
-        by mail.nanl.de (Postfix) with ESMTPSA id 4863E402E2;
-        Sat, 29 Jun 2013 20:18:15 +0000 (UTC)
+        by mail.nanl.de (Postfix) with ESMTPSA id 1C98645FC0;
+        Sat, 29 Jun 2013 20:18:16 +0000 (UTC)
 From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -13,9 +13,9 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Maxime Bizon <mbizon@freebox.fr>,
         Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>
-Subject: [PATCH 08/10] MIPS: BCM63XX: always register bmips smp ops
-Date:   Sat, 29 Jun 2013 22:17:50 +0200
-Message-Id: <1372537073-27370-9-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 09/10] MIPS: BCM63XX: change the guard to a BMIPS4350 check
+Date:   Sat, 29 Jun 2013 22:17:51 +0200
+Message-Id: <1372537073-27370-10-git-send-email-jogo@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1372537073-27370-1-git-send-email-jogo@openwrt.org>
 References: <1372537073-27370-1-git-send-email-jogo@openwrt.org>
@@ -23,7 +23,7 @@ Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37230
+X-archive-position: 37231
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,24 +42,19 @@ X-list: linux-mips
 
 Signed-off-by: Jonas Gorski <jogo@openwrt.org>
 ---
- arch/mips/bcm63xx/prom.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/bcm63xx/prom.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/mips/bcm63xx/prom.c b/arch/mips/bcm63xx/prom.c
-index 8ac4e09..191936c 100644
+index 191936c..1f01b84 100644
 --- a/arch/mips/bcm63xx/prom.c
 +++ b/arch/mips/bcm63xx/prom.c
-@@ -59,10 +59,10 @@ void __init prom_init(void)
- 	/* do low level board init */
- 	board_prom_init();
+@@ -62,7 +62,7 @@ void __init prom_init(void)
+ 	/* set up SMP */
+ 	register_bmips_smp_ops();
  
 -	if (IS_ENABLED(CONFIG_CPU_BMIPS4350) && IS_ENABLED(CONFIG_SMP)) {
--		/* set up SMP */
--		register_smp_ops(&bmips_smp_ops);
-+	/* set up SMP */
-+	register_bmips_smp_ops();
- 
-+	if (IS_ENABLED(CONFIG_CPU_BMIPS4350) && IS_ENABLED(CONFIG_SMP)) {
++	if (cpu_is_bmips4350()) {
  		/*
  		 * BCM6328 might not have its second CPU enabled, while BCM6358
  		 * needs special handling for its shared TLB, so disable SMP

@@ -1,64 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jul 2013 15:59:22 +0200 (CEST)
-Received: from comal.ext.ti.com ([198.47.26.152]:54286 "EHLO comal.ext.ti.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jul 2013 20:21:37 +0200 (CEST)
+Received: from bear.ext.ti.com ([192.94.94.41]:38364 "EHLO bear.ext.ti.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825731Ab3GAN7Rd-0b- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Jul 2013 15:59:17 +0200
+        id S6835054Ab3GASV3TcHus (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 1 Jul 2013 20:21:29 +0200
 Received: from dlelxv90.itg.ti.com ([172.17.2.17])
-        by comal.ext.ti.com (8.13.7/8.13.7) with ESMTP id r61Dwbm7028271;
-        Mon, 1 Jul 2013 08:58:37 -0500
-Received: from DFLE73.ent.ti.com (dfle73.ent.ti.com [128.247.5.110])
-        by dlelxv90.itg.ti.com (8.14.3/8.13.8) with ESMTP id r61DwbuI024380;
-        Mon, 1 Jul 2013 08:58:37 -0500
-Received: from dlelxv22.itg.ti.com (172.17.1.197) by DFLE73.ent.ti.com
- (128.247.5.110) with Microsoft SMTP Server id 14.2.342.3; Mon, 1 Jul 2013
- 08:58:36 -0500
-Received: from [158.218.103.117] (ula0393909.am.dhcp.ti.com [158.218.103.117])
-        by dlelxv22.itg.ti.com (8.13.8/8.13.8) with ESMTP id r61DwZ1o017673;    Mon, 1
- Jul 2013 08:58:35 -0500
-Message-ID: <51D18B0B.1060906@ti.com>
-Date:   Mon, 1 Jul 2013 09:58:35 -0400
+        by bear.ext.ti.com (8.13.7/8.13.7) with ESMTP id r61IKeOS022182;
+        Mon, 1 Jul 2013 13:20:40 -0500
+Received: from DLEE71.ent.ti.com (dlee71.ent.ti.com [157.170.170.114])
+        by dlelxv90.itg.ti.com (8.14.3/8.13.8) with ESMTP id r61IKe0i016233;
+        Mon, 1 Jul 2013 13:20:40 -0500
+Received: from dlelxv22.itg.ti.com (172.17.1.197) by DLEE71.ent.ti.com
+ (157.170.170.114) with Microsoft SMTP Server id 14.2.342.3; Mon, 1 Jul 2013
+ 13:20:39 -0500
+Received: from ula0393909.am.dhcp.ti.com (ula0393909.am.dhcp.ti.com
+ [158.218.103.117])     by dlelxv22.itg.ti.com (8.13.8/8.13.8) with ESMTP id
+ r61IKcs0010608;        Mon, 1 Jul 2013 13:20:38 -0500
 From:   Santosh Shilimkar <santosh.shilimkar@ti.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
-MIME-Version: 1.0
-CC:     Geert Uytterhoeven <geert@linux-m68k.org>,
+To:     <grant.likely@linaro.org>
+CC:     Santosh Shilimkar <santosh.shilimkar@ti.com>,
+        Rob Herring <rob.herring@calxeda.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Nicolas Pitre <nicolas.pitre@linaro.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Aurelien Jacquiot <a-jacquiot@ti.com>,
+        Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@arm.linux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Russell King <linux@arm.linux.org.uk>,
-        <linux-c6x-dev@linux-c6x.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        "arm@kernel.org" <arm@kernel.org>,
-        Rob Herring <robherring2@gmail.com>,
-        Grant Likely <grant.likely@linaro.org>,
-        Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>,
-        <linux-xtensa@linux-xtensa.org>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <a-jacquiot@ti.com>,
         James Hogan <james.hogan@imgtec.com>,
-        devicetree-discuss <devicetree-discuss@lists.ozlabs.org>,
-        Rob Herring <rob.herring@calxeda.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Michal Simek <monstr@monstr.eu>,
         Ralf Baechle <ralf@linux-mips.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH] of: Specify initrd location using 64-bit
-References: <1371775956-16453-1-git-send-email-santosh.shilimkar@ti.com> <51C4171C.9050908@linutronix.de> <51C48B5A.2040404@ti.com> <51CCA67C.2010803@gmail.com> <CACxGe6vOH0sCFVVXrYqD3dbYdOvithVu7-d1cvy5885i8x_Myw@mail.gmail.com> <20130628134931.GD21034@game.jcrosoft.org> <51CE1F92.3070802@ti.com> <51D1345B.8020509@linutronix.de> <CAMuHMdV6YM3-hASqjxkguEukZjnjK80gBjDNiabxjfQtC=c8ag@mail.gmail.com>
-In-Reply-To: <CAMuHMdV6YM3-hASqjxkguEukZjnjK80gBjDNiabxjfQtC=c8ag@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
+        Jonas Bonn <jonas@southpole.se>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>, <x86@kernel.org>,
+        <arm@kernel.org>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, <robherring2@gmail.com>,
+        Nicolas Pitre <nicolas.pitre@linaro.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-c6x-dev@linux-c6x.org>, <linux-mips@linux-mips.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-xtensa@linux-xtensa.org>,
+        <devicetree-discuss@lists.ozlabs.org>
+Subject: [PATCH v2] of: Specify initrd location using 64-bit
+Date:   Mon, 1 Jul 2013 14:20:35 -0400
+Message-ID: <1372702835-5333-1-git-send-email-santosh.shilimkar@ti.com>
+X-Mailer: git-send-email 1.7.9.5
+MIME-Version: 1.0
+Content-Type: text/plain
 Return-Path: <santosh.shilimkar@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37246
+X-archive-position: 37247
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,42 +68,277 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday 01 July 2013 03:59 AM, Geert Uytterhoeven wrote:
-> On Mon, Jul 1, 2013 at 9:48 AM, Sebastian Andrzej Siewior
-> <bigeasy@linutronix.de> wrote:
->> On 06/29/2013 01:43 AM, Santosh Shilimkar wrote:
->>> Apart from waste of 32bit, what is the other concern you
->>> have ?
->>
->> You pass a u64 as a physical address which is represented in other
->> parts of the kernel (for a good reason) by phys_addr_t.
->>
->>> I really want to converge on this patch because it
->>> has been a open ended discussion for quite some time. Does
->>> that really break any thing on x86 or your concern is more
->>> from semantics of the physical address.
->> You want to have your code in so you can continue with your work, that
->> is okay. The other two arguments why u64 here is a good thing was "due
->> to what I said earlier" and "+1" and I don't have the time to look
->> that up.
->>
->> There should be no problems on x86 if this goes in as it is now.
->>
->> But think about this: What happens if you boot your ARM device without
->> PAE and your initrd is in the upper region? If you are lucky the kernel
->> looks at a different place where it also has a read permission, notices
->> nothing sane is there, writes a message and continues. And if it is not
->> allowed to read? It is clearly the user's fault for booting a non-PAE
->> kernel.
-> 
-> That's actual the original reason: DT has it as 64 bit, and passes it to a
-> 32 bit kernel when running in 32 bit mode without PAE.
-> 
-Thanks all for comments and useful discussion. I will resubmit the
-patch with update to fix the printk warnings reported by Vineet and
-James post the $subject change.
+On some PAE architectures, the entire range of physical memory could reside
+outside the 32-bit limit.  These systems need the ability to specify the
+initrd location using 64-bit numbers.
 
-Am assuming the patch will go via Grant Likely's tree.
+This patch globally modifies the early_init_dt_setup_initrd_arch() function to
+use 64-bit numbers instead of the current unsigned long.
 
-Regards,
-Santosh
+There has been quite a bit of debate about whether to use u64 or phys_addr_t.
+It was concluded to stick to u64 to be consistent with rest of the device
+tree code. As summarized by Geert, "The address to load the initrd is decided
+by the bootloader/user and set at that point later in time. The dtb should not
+be tied to the kernel you are booting"
+
+More details on the discussion can be found here:
+https://lkml.org/lkml/2013/6/20/690
+https://lkml.org/lkml/2012/9/13/544
+
+Cc: Grant Likely <grant.likely@linaro.org>
+Cc: Rob Herring <rob.herring@calxeda.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Vineet Gupta <vgupta@synopsys.com>
+Cc: Russell King <linux@arm.linux.org.uk>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will.deacon@arm.com>
+Cc: Mark Salter <msalter@redhat.com>
+Cc: Aurelien Jacquiot <a-jacquiot@ti.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Michal Simek <monstr@monstr.eu>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Jonas Bonn <jonas@southpole.se>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: x86@kernel.org
+Cc: arm@kernel.org
+Cc: Chris Zankel <chris@zankel.net>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+Cc: bigeasy@linutronix.de
+Cc: robherring2@gmail.com
+Cc: Nicolas Pitre <nicolas.pitre@linaro.org>
+
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-c6x-dev@linux-c6x.org
+Cc: linux-mips@linux-mips.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: devicetree-discuss@lists.ozlabs.org
+
+Signed-off-by: Santosh Shilimkar <santosh.shilimkar@ti.com>
+---
+ arch/arc/mm/init.c            |    5 ++---
+ arch/arm/mm/init.c            |    2 +-
+ arch/arm64/mm/init.c          |    3 +--
+ arch/c6x/kernel/devicetree.c  |    3 +--
+ arch/metag/mm/init.c          |    5 ++---
+ arch/microblaze/kernel/prom.c |    3 +--
+ arch/mips/kernel/prom.c       |    3 +--
+ arch/openrisc/kernel/prom.c   |    3 +--
+ arch/powerpc/kernel/prom.c    |    3 +--
+ arch/x86/kernel/devicetree.c  |    3 +--
+ arch/xtensa/kernel/setup.c    |    3 +--
+ drivers/of/fdt.c              |   10 ++++++----
+ include/linux/of_fdt.h        |    3 +--
+ 13 files changed, 20 insertions(+), 29 deletions(-)
+
+diff --git a/arch/arc/mm/init.c b/arch/arc/mm/init.c
+index 4a17736..7991e08 100644
+--- a/arch/arc/mm/init.c
++++ b/arch/arc/mm/init.c
+@@ -157,9 +157,8 @@ void __init free_initrd_mem(unsigned long start, unsigned long end)
+ #endif
+ 
+ #ifdef CONFIG_OF_FLATTREE
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-					    unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+-	pr_err("%s(%lx, %lx)\n", __func__, start, end);
++	pr_err("%s(%llx, %llx)\n", __func__, start, end);
+ }
+ #endif /* CONFIG_OF_FLATTREE */
+diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
+index 9a5cdc0..afeaef7 100644
+--- a/arch/arm/mm/init.c
++++ b/arch/arm/mm/init.c
+@@ -76,7 +76,7 @@ static int __init parse_tag_initrd2(const struct tag *tag)
+ __tagtable(ATAG_INITRD2, parse_tag_initrd2);
+ 
+ #ifdef CONFIG_OF_FLATTREE
+-void __init early_init_dt_setup_initrd_arch(unsigned long start, unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	phys_initrd_start = start;
+ 	phys_initrd_size = end - start;
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index f497ca7..7047708 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -44,8 +44,7 @@ static unsigned long phys_initrd_size __initdata = 0;
+ 
+ phys_addr_t memstart_addr __read_mostly = 0;
+ 
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-					    unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	phys_initrd_start = start;
+ 	phys_initrd_size = end - start;
+diff --git a/arch/c6x/kernel/devicetree.c b/arch/c6x/kernel/devicetree.c
+index bdb56f0..287d0e6 100644
+--- a/arch/c6x/kernel/devicetree.c
++++ b/arch/c6x/kernel/devicetree.c
+@@ -33,8 +33,7 @@ void __init early_init_devtree(void *params)
+ 
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-		unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	initrd_start = (unsigned long)__va(start);
+ 	initrd_end = (unsigned long)__va(end);
+diff --git a/arch/metag/mm/init.c b/arch/metag/mm/init.c
+index d05b845..bdc4811 100644
+--- a/arch/metag/mm/init.c
++++ b/arch/metag/mm/init.c
+@@ -419,10 +419,9 @@ void free_initrd_mem(unsigned long start, unsigned long end)
+ #endif
+ 
+ #ifdef CONFIG_OF_FLATTREE
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-					    unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+-	pr_err("%s(%lx, %lx)\n",
++	pr_err("%s(%llx, %llx)\n",
+ 	       __func__, start, end);
+ }
+ #endif /* CONFIG_OF_FLATTREE */
+diff --git a/arch/microblaze/kernel/prom.c b/arch/microblaze/kernel/prom.c
+index 0a2c68f..62e2e8f 100644
+--- a/arch/microblaze/kernel/prom.c
++++ b/arch/microblaze/kernel/prom.c
+@@ -136,8 +136,7 @@ void __init early_init_devtree(void *params)
+ }
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-		unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	initrd_start = (unsigned long)__va(start);
+ 	initrd_end = (unsigned long)__va(end);
+diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
+index 5712bb5..32b8788 100644
+--- a/arch/mips/kernel/prom.c
++++ b/arch/mips/kernel/prom.c
+@@ -58,8 +58,7 @@ void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
+ }
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-					    unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	initrd_start = (unsigned long)__va(start);
+ 	initrd_end = (unsigned long)__va(end);
+diff --git a/arch/openrisc/kernel/prom.c b/arch/openrisc/kernel/prom.c
+index 5869e3f..150215a 100644
+--- a/arch/openrisc/kernel/prom.c
++++ b/arch/openrisc/kernel/prom.c
+@@ -96,8 +96,7 @@ void __init early_init_devtree(void *params)
+ }
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-		unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	initrd_start = (unsigned long)__va(start);
+ 	initrd_end = (unsigned long)__va(end);
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 8b6f7a9..2f3e252 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -550,8 +550,7 @@ void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
+ }
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-		unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	initrd_start = (unsigned long)__va(start);
+ 	initrd_end = (unsigned long)__va(end);
+diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
+index b158152..2fbad6b 100644
+--- a/arch/x86/kernel/devicetree.c
++++ b/arch/x86/kernel/devicetree.c
+@@ -52,8 +52,7 @@ void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
+ }
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-					    unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	initrd_start = (unsigned long)__va(start);
+ 	initrd_end = (unsigned long)__va(end);
+diff --git a/arch/xtensa/kernel/setup.c b/arch/xtensa/kernel/setup.c
+index 6dd25ec..d45e602 100644
+--- a/arch/xtensa/kernel/setup.c
++++ b/arch/xtensa/kernel/setup.c
+@@ -170,8 +170,7 @@ static int __init parse_tag_fdt(const bp_tag_t *tag)
+ 
+ __tagtable(BP_TAG_FDT, parse_tag_fdt);
+ 
+-void __init early_init_dt_setup_initrd_arch(unsigned long start,
+-		unsigned long end)
++void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
+ {
+ 	initrd_start = (void *)__va(start);
+ 	initrd_end = (void *)__va(end);
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 808be06..21123b8 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -550,7 +550,8 @@ int __init of_flat_dt_match(unsigned long node, const char *const *compat)
+  */
+ void __init early_init_dt_check_for_initrd(unsigned long node)
+ {
+-	unsigned long start, end, len;
++	u64 start, end;
++	unsigned long len;
+ 	__be32 *prop;
+ 
+ 	pr_debug("Looking for initrd properties... ");
+@@ -558,15 +559,16 @@ void __init early_init_dt_check_for_initrd(unsigned long node)
+ 	prop = of_get_flat_dt_prop(node, "linux,initrd-start", &len);
+ 	if (!prop)
+ 		return;
+-	start = of_read_ulong(prop, len/4);
++	start = of_read_number(prop, len/4);
+ 
+ 	prop = of_get_flat_dt_prop(node, "linux,initrd-end", &len);
+ 	if (!prop)
+ 		return;
+-	end = of_read_ulong(prop, len/4);
++	end = of_read_number(prop, len/4);
+ 
+ 	early_init_dt_setup_initrd_arch(start, end);
+-	pr_debug("initrd_start=0x%lx  initrd_end=0x%lx\n", start, end);
++	pr_debug("initrd_start=0x%llx  initrd_end=0x%llx\n",
++		 (unsigned long long)start, (unsigned long long)end);
+ }
+ #else
+ inline void early_init_dt_check_for_initrd(unsigned long node)
+diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
+index ed136ad..4a17939 100644
+--- a/include/linux/of_fdt.h
++++ b/include/linux/of_fdt.h
+@@ -106,8 +106,7 @@ extern u64 dt_mem_next_cell(int s, __be32 **cellp);
+  * physical addresses.
+  */
+ #ifdef CONFIG_BLK_DEV_INITRD
+-extern void early_init_dt_setup_initrd_arch(unsigned long start,
+-					    unsigned long end);
++extern void early_init_dt_setup_initrd_arch(u64 start, u64 end);
+ #endif
+ 
+ /* Early flat tree scan hooks */
+-- 
+1.7.9.5

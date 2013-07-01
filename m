@@ -1,38 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jul 2013 10:53:08 +0200 (CEST)
-Received: from ozlabs.org ([203.10.76.45]:44589 "EHLO ozlabs.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jul 2013 12:38:42 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:28067 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822972Ab3GAIxE70RXh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Jul 2013 10:53:04 +0200
-Received: by ozlabs.org (Postfix, from userid 1011)
-        id 2D1D42C0209; Mon,  1 Jul 2013 18:53:00 +1000 (EST)
-From:   Rusty Russell <rusty@rustcorp.com.au>
-To:     Joe Perches <joe@perches.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Veli-Pekka Peltola <veli-pekka.peltola@bluegiga.com>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, Russell King <linux@arm.linux.org.uk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2] mm: module_alloc: check if size is 0
-In-Reply-To: <1372373188.2060.32.camel@joe-AO722>
-References: <1330631119-10059-1-git-send-email-veli-pekka.peltola@bluegiga.com> <1331125768-25454-1-git-send-email-veli-pekka.peltola@bluegiga.com> <20130627093917.GQ7171@linux-mips.org> <20130627152335.c3a4c9f4c647cf4a2b263479@linux-foundation.org> <1372373188.2060.32.camel@joe-AO722>
-User-Agent: Notmuch/0.15.2+81~gd2c8818 (http://notmuchmail.org) Emacs/23.4.1 (i686-pc-linux-gnu)
-Date:   Mon, 01 Jul 2013 12:48:28 +0930
-Message-ID: <87sizzrmrf.fsf@rustcorp.com.au>
+        id S6822972Ab3GAKik4alwT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 1 Jul 2013 12:38:40 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: boot: compressed: Remove -fstack-protector from CFLAGS
+Date:   Mon, 1 Jul 2013 11:38:30 +0100
+Message-ID: <1372675110-1301-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.2.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <rusty@ozlabs.org>
+Content-Type: text/plain
+X-SEF-Processed: 7_3_0_01192__2013_07_01_11_38_34
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37237
+X-archive-position: 37238
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rusty@rustcorp.com.au
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,21 +34,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Joe Perches <joe@perches.com> writes:
-> On Thu, 2013-06-27 at 15:23 -0700, Andrew Morton wrote:
->> On Thu, 27 Jun 2013 11:39:17 +0200 Ralf Baechle <ralf@linux-mips.org> wrote:
-> []
->> Veli-Pekka's original patch would be neater if we were to add a new
->> 
->> void *__vmalloc_node_range_zero_size_ok(<args>)
->> {
->> 	if (size == 0)
->> 		return NULL;
->
-> I believe you mean
-> 		return ZERO_SIZE_PTR;
+When building with -fstack-protector, gcc emits the
+__stack_chk_guard and __stack_chk_fail symbols to check for
+stack stability. These symbols are defined in vmlinux but
+the generated vmlinux.bin that is used to create the
+compressed vmlinuz image has no symbol table so the linker
+can't find these symbols during the final linking phase.
+As a result of which, we need either to redefine these symbols
+just for the compressed image or drop the -fstack-protector
+option when building the compressed image. This patch implements
+the latter of two options.
 
-Yes, this is the Right Fix.
+Fixes the following linking problem:
 
-Thanks,
-Rusty.
+dbg.c:(.text+0x7c): undefined reference to `__stack_chk_guard'
+dbg.c:(.text+0x80): undefined reference to `__stack_chk_guard'
+dbg.c:(.text+0xd4): undefined reference to `__stack_chk_guard'
+dbg.c:(.text+0xec): undefined reference to `__stack_chk_fail'
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+This patch is for the upstream-sfr/mips-for-linux-next tree
+---
+ arch/mips/boot/compressed/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index bbaa1d4..bb1dbf4 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -18,6 +18,8 @@ BOOT_HEAP_SIZE := 0x400000
+ # Disable Function Tracer
+ KBUILD_CFLAGS := $(shell echo $(KBUILD_CFLAGS) | sed -e "s/-pg//")
+ 
++KBUILD_CFLAGS := $(filter-out -fstack-protector, $(KBUILD_CFLAGS))
++
+ KBUILD_CFLAGS := $(LINUXINCLUDE) $(KBUILD_CFLAGS) -D__KERNEL__ \
+ 	-DBOOT_HEAP_SIZE=$(BOOT_HEAP_SIZE) -D"VMLINUX_LOAD_ADDRESS_ULL=$(VMLINUX_LOAD_ADDRESS)ull"
+ 
+-- 
+1.8.2.1

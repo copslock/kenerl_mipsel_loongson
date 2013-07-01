@@ -1,63 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jul 2013 10:09:55 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:54602 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817030Ab3GAIJx4ulAh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Jul 2013 10:09:53 +0200
-Received: from localhost ([127.0.0.1] helo=[172.123.10.21])
-        by Galois.linutronix.de with esmtp (Exim 4.72)
-        (envelope-from <bigeasy@linutronix.de>)
-        id 1UtZB3-0000gR-68; Mon, 01 Jul 2013 10:09:37 +0200
-Message-ID: <51D1393E.6060001@linutronix.de>
-Date:   Mon, 01 Jul 2013 10:09:34 +0200
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130518 Icedove/17.0.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jul 2013 10:53:08 +0200 (CEST)
+Received: from ozlabs.org ([203.10.76.45]:44589 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6822972Ab3GAIxE70RXh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 1 Jul 2013 10:53:04 +0200
+Received: by ozlabs.org (Postfix, from userid 1011)
+        id 2D1D42C0209; Mon,  1 Jul 2013 18:53:00 +1000 (EST)
+From:   Rusty Russell <rusty@rustcorp.com.au>
+To:     Joe Perches <joe@perches.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Veli-Pekka Peltola <veli-pekka.peltola@bluegiga.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mips@linux-mips.org, Russell King <linux@arm.linux.org.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v2] mm: module_alloc: check if size is 0
+In-Reply-To: <1372373188.2060.32.camel@joe-AO722>
+References: <1330631119-10059-1-git-send-email-veli-pekka.peltola@bluegiga.com> <1331125768-25454-1-git-send-email-veli-pekka.peltola@bluegiga.com> <20130627093917.GQ7171@linux-mips.org> <20130627152335.c3a4c9f4c647cf4a2b263479@linux-foundation.org> <1372373188.2060.32.camel@joe-AO722>
+User-Agent: Notmuch/0.15.2+81~gd2c8818 (http://notmuchmail.org) Emacs/23.4.1 (i686-pc-linux-gnu)
+Date:   Mon, 01 Jul 2013 12:48:28 +0930
+Message-ID: <87sizzrmrf.fsf@rustcorp.com.au>
 MIME-Version: 1.0
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-CC:     Santosh Shilimkar <santosh.shilimkar@ti.com>,
-        Nicolas Pitre <nicolas.pitre@linaro.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Aurelien Jacquiot <a-jacquiot@ti.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-c6x-dev@linux-c6x.org,
-        the arch/x86 maintainers <x86@kernel.org>,
-        "arm@kernel.org" <arm@kernel.org>,
-        Rob Herring <robherring2@gmail.com>,
-        Grant Likely <grant.likely@linaro.org>,
-        Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>,
-        linux-xtensa@linux-xtensa.org,
-        James Hogan <james.hogan@imgtec.com>,
-        devicetree-discuss <devicetree-discuss@lists.ozlabs.org>,
-        Rob Herring <rob.herring@calxeda.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH] of: Specify initrd location using 64-bit
-References: <1371775956-16453-1-git-send-email-santosh.shilimkar@ti.com> <51C4171C.9050908@linutronix.de> <51C48B5A.2040404@ti.com> <51CCA67C.2010803@gmail.com> <CACxGe6vOH0sCFVVXrYqD3dbYdOvithVu7-d1cvy5885i8x_Myw@mail.gmail.com> <20130628134931.GD21034@game.jcrosoft.org> <51CE1F92.3070802@ti.com> <51D1345B.8020509@linutronix.de> <CAMuHMdV6YM3-hASqjxkguEukZjnjK80gBjDNiabxjfQtC=c8ag@mail.gmail.com>
-In-Reply-To: <CAMuHMdV6YM3-hASqjxkguEukZjnjK80gBjDNiabxjfQtC=c8ag@mail.gmail.com>
-X-Enigmail-Version: 1.5.1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <bigeasy@linutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <rusty@ozlabs.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37236
+X-archive-position: 37237
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bigeasy@linutronix.de
+X-original-sender: rusty@rustcorp.com.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,18 +45,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/01/2013 09:59 AM, Geert Uytterhoeven wrote:
-> That's actual the original reason: DT has it as 64 bit, and passes it to a
-> 32 bit kernel when running in 32 bit mode without PAE.
+Joe Perches <joe@perches.com> writes:
+> On Thu, 2013-06-27 at 15:23 -0700, Andrew Morton wrote:
+>> On Thu, 27 Jun 2013 11:39:17 +0200 Ralf Baechle <ralf@linux-mips.org> wrote:
+> []
+>> Veli-Pekka's original patch would be neater if we were to add a new
+>> 
+>> void *__vmalloc_node_range_zero_size_ok(<args>)
+>> {
+>> 	if (size == 0)
+>> 		return NULL;
+>
+> I believe you mean
+> 		return ZERO_SIZE_PTR;
 
-And I think the DT code should check if the u64 fits in phys_addr_t and
-if does not it should write an error message and act like no initrd was
-specified (instead of passing "something" to the architecture).
+Yes, this is the Right Fix.
 
-> 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
-
-Sebastian
+Thanks,
+Rusty.

@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jul 2013 07:30:49 +0200 (CEST)
-Received: from mail.free-electrons.com ([94.23.35.102]:35288 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817667Ab3GBFaq0N6y1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Jul 2013 07:30:46 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 106)
-        id C38DC753; Tue,  2 Jul 2013 07:30:41 +0200 (CEST)
-Received: from skate (AToulouse-651-1-103-169.w109-222.abo.wanadoo.fr [109.222.70.169])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 772AA753;
-        Tue,  2 Jul 2013 07:30:40 +0200 (CEST)
-Date:   Tue, 2 Jul 2013 07:30:37 +0200
-From:   Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-To:     Michael Ellerman <michael@ellerman.id.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jul 2013 08:52:30 +0200 (CEST)
+Received: from ozlabs.org ([203.10.76.45]:59309 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817545Ab3GBGw2jfg0Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 2 Jul 2013 08:52:28 +0200
+Received: from concordia (ibmaus65.lnk.telstra.net [165.228.126.9])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (Client did not present a certificate)
+        by ozlabs.org (Postfix) with ESMTPSA id A542A2C009F;
+        Tue,  2 Jul 2013 16:52:22 +1000 (EST)
+Date:   Tue, 2 Jul 2013 16:52:20 +1000
+From:   Michael Ellerman <michael@ellerman.id.au>
+To:     Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
         Russell King <linux@arm.linux.org.uk>,
         Grant Likely <grant.likely@secretlab.ca>,
@@ -39,25 +39,25 @@ Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>
 Subject: Re: [PATCHv4 02/11] pci: use weak functions for MSI arch-specific
  functions
-Message-ID: <20130702073037.55a53642@skate>
-In-Reply-To: <1372726396.17904.1.camel@concordia>
+Message-ID: <20130702065220.GA20521@concordia>
 References: <1372686136-1370-1-git-send-email-thomas.petazzoni@free-electrons.com>
-        <1372686136-1370-3-git-send-email-thomas.petazzoni@free-electrons.com>
-        <1372726396.17904.1.camel@concordia>
-Organization: Free Electrons
-X-Mailer: Claws Mail 3.9.1 (GTK+ 2.24.17; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <thomas.petazzoni@free-electrons.com>
+ <1372686136-1370-3-git-send-email-thomas.petazzoni@free-electrons.com>
+ <1372726396.17904.1.camel@concordia>
+ <20130702073037.55a53642@skate>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20130702073037.55a53642@skate>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <michael@ellerman.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37251
+X-archive-position: 37252
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@free-electrons.com
+X-original-sender: michael@ellerman.id.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,34 +70,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Dear Michael Ellerman,
-
-On Tue, 02 Jul 2013 10:53:16 +1000, Michael Ellerman wrote:
-> On Mon, 2013-07-01 at 15:42 +0200, Thomas Petazzoni wrote:
-> > Until now, the MSI architecture-specific functions could be overloaded
-> > using a fairly complex set of #define and compile-time
-> > conditionals. In order to prepare for the introduction of the msi_chip
-> > infrastructure, it is desirable to switch all those functions to use
-> > the 'weak' mechanism. This commit converts all the architectures that
-> > were overidding those MSI functions to use the new strategy.
+On Tue, Jul 02, 2013 at 07:30:37AM +0200, Thomas Petazzoni wrote:
+> Dear Michael Ellerman,
 > 
-> The MSI code used to use weak functions, until we discovered they were
-> being miscompiled on some toolchains (11df1f0). I assume these days
-> we're confident they work correctly.
+> On Tue, 02 Jul 2013 10:53:16 +1000, Michael Ellerman wrote:
+> > On Mon, 2013-07-01 at 15:42 +0200, Thomas Petazzoni wrote:
+> > > Until now, the MSI architecture-specific functions could be overloaded
+> > > using a fairly complex set of #define and compile-time
+> > > conditionals. In order to prepare for the introduction of the msi_chip
+> > > infrastructure, it is desirable to switch all those functions to use
+> > > the 'weak' mechanism. This commit converts all the architectures that
+> > > were overidding those MSI functions to use the new strategy.
+> > 
+> > The MSI code used to use weak functions, until we discovered they were
+> > being miscompiled on some toolchains (11df1f0). I assume these days
+> > we're confident they work correctly.
+> 
+> Hum, interesting. I see from your commit that gcc 4.3.2 was apparently
+> affected, and gcc 4.3.x is not /that/ old. Bjorn, what's your point of
+> view on this?
 
-Hum, interesting. I see from your commit that gcc 4.3.2 was apparently
-affected, and gcc 4.3.x is not /that/ old. Bjorn, what's your point of
-view on this?
+Stop press.
 
-Another option would be to have architecture register some msi_arch_ops
-structure, with a set of operations, which I believe is a pattern that
-is more widespread in the kernel than weak functions.
+I went back and found the old threads on this, it's been a while. It
+looks like it was only gcc 4.1.[01] that miscompiled. The reference to
+gcc 4.3.2 was WRT ellision of the unused code, which is a separate
+issue.
 
-Thoughts?
+The kernel blacklists gcc 4.1.[01] (see f9d1425), so weak should be
+safe to use.
 
-Thomas
--- 
-Thomas Petazzoni, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
+We merged the change to the PCI code anyway because we thought it was
+nicer and it also avoided any problems with weak.
+
+So pretend I never said anything :)
+
+cheers

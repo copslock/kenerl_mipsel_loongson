@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jul 2013 20:26:00 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:37613 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jul 2013 20:28:35 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:37623 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6827447Ab3GCSZ7E4n2w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Jul 2013 20:25:59 +0200
+        with ESMTP id S6816859Ab3GCS2dPYcB0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Jul 2013 20:28:33 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <Steven.Hill@imgtec.com>)
-        id 1UuRkU-0006FW-TR; Wed, 03 Jul 2013 13:25:50 -0500
+        id 1UuRn0-0006Fx-SN; Wed, 03 Jul 2013 13:28:26 -0500
 From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>, ralf@linux-mips.org
-Subject: [PATCH v3] MIPS: Fix multiple definitions of UNCAC_BASE.
-Date:   Wed,  3 Jul 2013 13:25:46 -0500
-Message-Id: <1372875946-17311-1-git-send-email-Steven.Hill@imgtec.com>
+Subject: [PATCH] MIPS: Fix multiple definitions of UNCAC_BASE.
+Date:   Wed,  3 Jul 2013 13:28:22 -0500
+Message-Id: <1372876102-17372-1-git-send-email-Steven.Hill@imgtec.com>
 X-Mailer: git-send-email 1.7.9.5
 Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37263
+X-archive-position: 37264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,7 +56,6 @@ location of the previous definition
 
 Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
 ---
-Changes in v3: Fix up multiple definiition errors for 32-bit.
 
  arch/mips/include/asm/mach-generic/spaces.h |    4 ++++
  1 file changed, 4 insertions(+)

@@ -1,28 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jul 2013 20:28:35 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:37623 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816859Ab3GCS2dPYcB0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Jul 2013 20:28:33 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <Steven.Hill@imgtec.com>)
-        id 1UuRn0-0006Fx-SN; Wed, 03 Jul 2013 13:28:26 -0500
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-To:     linux-mips@linux-mips.org
-Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>, ralf@linux-mips.org
-Subject: [PATCH] MIPS: Fix multiple definitions of UNCAC_BASE.
-Date:   Wed,  3 Jul 2013 13:28:22 -0500
-Message-Id: <1372876102-17372-1-git-send-email-Steven.Hill@imgtec.com>
-X-Mailer: git-send-email 1.7.9.5
-Return-Path: <Steven.Hill@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jul 2013 10:38:40 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:10499 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6819996Ab3GDIiiwgQKk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 4 Jul 2013 10:38:38 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: loongson: Hide the pci code behind CONFIG_PCI
+Date:   Thu, 4 Jul 2013 09:38:29 +0100
+Message-ID: <1372927109-21498-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.2.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-SEF-Processed: 7_3_0_01192__2013_07_04_09_38_33
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37264
+X-archive-position: 37265
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,47 +34,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Steven J. Hill" <Steven.Hill@imgtec.com>
+The pci.c code depends on symbols which are only visible
+if CONFIG_PCI is selected.
 
-Fix build error below:
+Also fixes the following problem on loongson allnoconfig:
+arch/mips/built-in.o: In function `pcibios_init':
+pci.c:(.init.text+0x528):
+undefined reference to `register_pci_controller'
+arch/mips/built-in.o:(.data+0xc):
+undefined reference to `loongson_pci_ops'
 
-arch/mips/include/asm/mach-generic/spaces.h:29:0: warning:
-"UNCAC_BASE" redefined [enabled by default]
-In file included from arch/mips/include/asm/addrspace.h:13:0,
-                 from arch/mips/include/asm/barrier.h:11,
-                 from arch/mips/include/asm/bitops.h:18,
-                 from include/linux/bitops.h:22,
-                 from include/linux/kernel.h:10,
-                 from include/asm-generic/bug.h:13,
-                 from arch/mips/include/asm/bug.h:41,
-                 from include/linux/bug.h:4,
-                 from include/linux/page-flags.h:9,
-                 from kernel/bounds.c:9:
-arch/mips/include/asm/mach-ar7/spaces.h:20:0: note: this is the
-location of the previous definition
-
-Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Acked-by: Steven J. Hill <Steven.Hill@imgtec.com> 
 ---
+This patch is for the upstream-sfr/mips-for-linux-next tree
+---
+ arch/mips/loongson/common/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- arch/mips/include/asm/mach-generic/spaces.h |    4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/mips/include/asm/mach-generic/spaces.h b/arch/mips/include/asm/mach-generic/spaces.h
-index 5b2f2e6..9488fa5 100644
---- a/arch/mips/include/asm/mach-generic/spaces.h
-+++ b/arch/mips/include/asm/mach-generic/spaces.h
-@@ -25,8 +25,12 @@
- #else
- #define CAC_BASE		_AC(0x80000000, UL)
- #endif
-+#ifndef IO_BASE
- #define IO_BASE			_AC(0xa0000000, UL)
-+#endif
-+#ifndef UNCAC_BASE
- #define UNCAC_BASE		_AC(0xa0000000, UL)
-+#endif
+diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
+index 4c57b3e..9e4484c 100644
+--- a/arch/mips/loongson/common/Makefile
++++ b/arch/mips/loongson/common/Makefile
+@@ -3,8 +3,9 @@
+ #
  
- #ifndef MAP_BASE
- #ifdef CONFIG_KVM_GUEST
+ obj-y += setup.o init.o cmdline.o env.o time.o reset.o irq.o \
+-    pci.o bonito-irq.o mem.o machtype.o platform.o
++    bonito-irq.o mem.o machtype.o platform.o
+ obj-$(CONFIG_GPIOLIB) += gpio.o
++obj-$(CONFIG_PCI) += pci.o
+ 
+ #
+ # Serial port support
 -- 
-1.7.9.5
+1.8.2.1

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jul 2013 23:41:03 +0200 (CEST)
-Received: from mail.free-electrons.com ([94.23.35.102]:33453 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jul 2013 23:45:17 +0200 (CEST)
+Received: from mail.free-electrons.com ([94.23.35.102]:33662 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6831921Ab3GEVkm4MdQI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jul 2013 23:40:42 +0200
+        by eddie.linux-mips.org with ESMTP id S6835018Ab3GEVpJRMC8M (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 Jul 2013 23:45:09 +0200
 Received: by mail.free-electrons.com (Postfix, from userid 106)
-        id 81C89BAB; Fri,  5 Jul 2013 23:40:35 +0200 (CEST)
+        id 2E2397D2; Fri,  5 Jul 2013 23:45:02 +0200 (CEST)
 Received: from skate (AToulouse-651-1-103-169.w109-222.abo.wanadoo.fr [109.222.70.169])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 1B1B07B6;
-        Fri,  5 Jul 2013 23:40:34 +0200 (CEST)
-Date:   Fri, 5 Jul 2013 23:40:34 +0200
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 002037BF;
+        Fri,  5 Jul 2013 23:45:00 +0200 (CEST)
+Date:   Fri, 5 Jul 2013 23:45:01 +0200
 From:   Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 To:     Bjorn Helgaas <bhelgaas@google.com>
 Cc:     "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
@@ -39,14 +39,12 @@ Cc:     "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         "David S. Miller" <davem@davemloft.net>,
         sparclinux@vger.kernel.org, Chris Metcalf <cmetcalf@tilera.com>
-Subject: Re: [PATCHv4 02/11] pci: use weak functions for MSI arch-specific
- functions
-Message-ID: <20130705234034.6c57cd43@skate>
-In-Reply-To: <CAErSpo4HoofGhN8VumRnN0sN_+gWJ9gVQJVMiePnDBUKwh74ag@mail.gmail.com>
+Subject: Re: [PATCHv4 03/11] pci: remove ARCH_SUPPORTS_MSI kconfig option
+Message-ID: <20130705234501.1341f52e@skate>
+In-Reply-To: <CAErSpo73iSBg+SYwZLea0qdXD1uVc3+Vacd8Tg4CU92vLG=2AQ@mail.gmail.com>
 References: <1372686136-1370-1-git-send-email-thomas.petazzoni@free-electrons.com>
-        <1372686136-1370-3-git-send-email-thomas.petazzoni@free-electrons.com>
-        <CAErSpo5uCpQftDmsMYEsFMtt_LP3kZPQ3Y4zz4VT7GdpcFq+1w@mail.gmail.com>
-        <CAErSpo4HoofGhN8VumRnN0sN_+gWJ9gVQJVMiePnDBUKwh74ag@mail.gmail.com>
+        <1372686136-1370-4-git-send-email-thomas.petazzoni@free-electrons.com>
+        <CAErSpo73iSBg+SYwZLea0qdXD1uVc3+Vacd8Tg4CU92vLG=2AQ@mail.gmail.com>
 Organization: Free Electrons
 X-Mailer: Claws Mail 3.9.1 (GTK+ 2.24.17; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
@@ -56,7 +54,7 @@ Return-Path: <thomas.petazzoni@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37272
+X-archive-position: 37273
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,20 +73,20 @@ X-list: linux-mips
 
 Dear Bjorn Helgaas,
 
-On Fri, 5 Jul 2013 15:34:10 -0600, Bjorn Helgaas wrote:
-> On Fri, Jul 5, 2013 at 3:32 PM, Bjorn Helgaas <bhelgaas@google.com> wrote:
-> 
-> > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> But please update your subject line to use consistent capitalization, e.g.,
-> 
-> PCI: Use weak ...
+On Fri, 5 Jul 2013 15:37:33 -0600, Bjorn Helgaas wrote:
 
-Sure, will do.
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> 
+> Again, please update the subject line to "PCI: Remove ..."
+> 
+> I doubt that you'll get explicit acks from all the arches you touched,
+> but I think it's reasonable to put at least patches 2 & 3 in -next
+> soon after v3.11-rc1, so we should have time to shake out issues.
 
-Would it be possible to get Tested-by and/or Acked-by from the
-different architecture maintainers affected by PATCH 02/11 and PATCH
-03/11 ?
+Sure. Which merge strategy do you suggest for this patch series, which
+touches a number of different areas, and has some build-time
+dependencies between the patches (if needed, I can detail those build
+time dependencies to help figuring out the best strategy).
 
 Thanks,
 

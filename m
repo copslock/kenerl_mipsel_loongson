@@ -1,67 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Jul 2013 18:33:53 +0200 (CEST)
-Received: from mail.free-electrons.com ([94.23.35.102]:35920 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823081Ab3GFQduherT8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Jul 2013 18:33:50 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 106)
-        id 150047D2; Sat,  6 Jul 2013 18:33:43 +0200 (CEST)
-Received: from skate (AToulouse-651-1-103-169.w109-222.abo.wanadoo.fr [109.222.70.169])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id C0ED57A6;
-        Sat,  6 Jul 2013 18:33:41 +0200 (CEST)
-Date:   Sat, 6 Jul 2013 18:33:41 +0200
-From:   Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-To:     Jason Cooper <jason@lakedaemon.net>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Lior Amsalem <alior@marvell.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
-        linux-s390@vger.kernel.org, Russell King <linux@arm.linux.org.uk>,
-        "x86@kernel.org" <x86@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Chris Metcalf <cmetcalf@tilera.com>,
-        Rob Herring <rob.herring@calxeda.com>,
-        Gregory Clement <gregory.clement@free-electrons.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-arm <linux-arm-kernel@lists.infradead.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Maen Suleiman <maen@marvell.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        linux390@de.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCHv4 03/11] pci: remove ARCH_SUPPORTS_MSI kconfig option
-Message-ID: <20130706183341.379d2fea@skate>
-In-Reply-To: <20130706161743.GM2569@titan.lakedaemon.net>
-References: <1372686136-1370-1-git-send-email-thomas.petazzoni@free-electrons.com>
-        <1372686136-1370-4-git-send-email-thomas.petazzoni@free-electrons.com>
-        <CAErSpo73iSBg+SYwZLea0qdXD1uVc3+Vacd8Tg4CU92vLG=2AQ@mail.gmail.com>
-        <20130705234501.1341f52e@skate>
-        <20130706135433.GL2569@titan.lakedaemon.net>
-        <CAErSpo4uN2MifYHbFiUfQ+6TE-hBkbWYdnAvabj8jCTOd5g+1A@mail.gmail.com>
-        <20130706161743.GM2569@titan.lakedaemon.net>
-Organization: Free Electrons
-X-Mailer: Claws Mail 3.9.1 (GTK+ 2.24.17; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <thomas.petazzoni@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jul 2013 10:21:56 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:33660 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6835021Ab3GIIVzPPDe0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 9 Jul 2013 10:21:55 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: pnx833x: PNX8335_PCI_ETHERNET_INT depends on CONFIG_SOC_PNX8335
+Date:   Tue, 9 Jul 2013 09:21:35 +0100
+Message-ID: <1373358095-14213-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.2.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.58]
+X-SEF-Processed: 7_3_0_01192__2013_07_09_09_21_49
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37277
+X-archive-position: 37279
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@free-electrons.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,32 +35,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Dear Jason Cooper,
+The PNX8335_PCI_ETHERNET_INT macro is defined in
+arch/mips/include/asm/mach-pnx833x/irq-mapping.h
+only if CONFIG_SOC_PNX8335 is selected.
 
-On Sat, 6 Jul 2013 12:17:43 -0400, Jason Cooper wrote:
+Fixes the following randconfig problem:
+arch/mips/pnx833x/common/platform.c:210:12:
+error: 'PNX8335_PIC_ETHERNET_INT' undeclared here
+(not in a function)
 
-> > > If we end up handling this the same as the of/pci & mvebu-pcie series
-> > > (whole series through mvebu -> arm-soc) I can have it up in -next within
-> > > a few days of -rc1.  Just let me know.
-> > 
-> > That sounds fine with me.  I don't think it's worth trying to split
-> > out the drivers/pci stuff and trying to coordinate it going through
-> > different trees.
-> 
-> Ok, will do.
-> 
-> Thomas, I assume there will be one more version to address Bjorn's last
-> comments?
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+---
+ arch/mips/pnx833x/common/platform.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Yes, indeed. I was waiting to see if Thierry Redding would give some
-additional feedback on Bjorn's comment, but if he doesn't, I'll resend
-an updated version, most likely next week.
-
-Thanks!
-
-Thomas
+diff --git a/arch/mips/pnx833x/common/platform.c b/arch/mips/pnx833x/common/platform.c
+index d22dc0d..2b7e837 100644
+--- a/arch/mips/pnx833x/common/platform.c
++++ b/arch/mips/pnx833x/common/platform.c
+@@ -206,11 +206,13 @@ static struct resource pnx833x_ethernet_resources[] = {
+ 		.end   = PNX8335_IP3902_PORTS_END,
+ 		.flags = IORESOURCE_MEM,
+ 	},
++#ifdef CONFIG_SOC_PNX8335
+ 	[1] = {
+ 		.start = PNX8335_PIC_ETHERNET_INT,
+ 		.end   = PNX8335_PIC_ETHERNET_INT,
+ 		.flags = IORESOURCE_IRQ,
+ 	},
++#endif
+ };
+ 
+ static struct platform_device pnx833x_ethernet_device = {
 -- 
-Thomas Petazzoni, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
+1.8.2.1

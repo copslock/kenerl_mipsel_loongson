@@ -1,28 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jul 2013 10:21:56 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:33660 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835021Ab3GIIVzPPDe0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 9 Jul 2013 10:21:55 +0200
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH] MIPS: pnx833x: PNX8335_PCI_ETHERNET_INT depends on CONFIG_SOC_PNX8335
-Date:   Tue, 9 Jul 2013 09:21:35 +0100
-Message-ID: <1373358095-14213-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jul 2013 18:00:51 +0200 (CEST)
+Received: from mail-we0-f177.google.com ([74.125.82.177]:39639 "EHLO
+        mail-we0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835062Ab3GIP50qCLe8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Jul 2013 17:57:26 +0200
+Received: by mail-we0-f177.google.com with SMTP id m19so4882509wev.36
+        for <multiple recipients>; Tue, 09 Jul 2013 08:57:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=q0ZrjRVC7hPJCfYOMoGy8oJxB+9d3t5ADCJ5Kzc+j1k=;
+        b=Kqjctxjfm7Cf/ykFmlalqpNPpbf/81OGydJzGhm+vMsWa9bY/cYKBoA/2ZG+cctxwF
+         We17WLVag/uVTXPffNxZq7HBxEsNJvSj8okWdXb0fiCfeYfSUE6oN97KIPLiGWBZNUop
+         RUs8yykS7stHsStPyRw2VcJWr25Zvuv5mF0+iKYigX7DdLTRggER40Tr0cHgFyC6atd2
+         ftJsmNqDWGoHHeCkxcwZm4juv6aU8hwDnzPBldHJhhlb2nzU3V37v9C6GRmESmtjtu2t
+         E1BEjFWses0Ho8F67R0BGv6QwLHamlamSf3n5hIGv0s9gvVi4z8ID6/0TH7X43VYPkUg
+         28Ig==
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.58]
-X-SEF-Processed: 7_3_0_01192__2013_07_09_09_21_49
-Return-Path: <Markos.Chandras@imgtec.com>
+X-Received: by 10.194.119.228 with SMTP id kx4mr15311696wjb.33.1373385441392;
+ Tue, 09 Jul 2013 08:57:21 -0700 (PDT)
+Received: by 10.194.1.131 with HTTP; Tue, 9 Jul 2013 08:57:21 -0700 (PDT)
+In-Reply-To: <20130627144707.GE10727@linux-mips.org>
+References: <20130627143439.GD10727@linux-mips.org>
+        <20130627144707.GE10727@linux-mips.org>
+Date:   Tue, 9 Jul 2013 09:57:21 -0600
+Message-ID: <CACoURw6Z7_SdXUfnqqmxur9mQHoVmD8bD1ut7eGAtGafBCujUA@mail.gmail.com>
+Subject: Re: Pending PMC-Sierra MSP patches
+From:   Shane McDonald <mcdonald.shane@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Adam Kiepul <Adam_Kiepul@pmc-sierra.com>,
+        "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
+Content-Type: multipart/alternative; boundary=089e012292e25fc4ed04e1163719
+Return-Path: <mcdonald.shane@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37279
+X-archive-position: 37280
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: mcdonald.shane@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,38 +54,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The PNX8335_PCI_ETHERNET_INT macro is defined in
-arch/mips/include/asm/mach-pnx833x/irq-mapping.h
-only if CONFIG_SOC_PNX8335 is selected.
+--089e012292e25fc4ed04e1163719
+Content-Type: text/plain; charset=ISO-8859-1
 
-Fixes the following randconfig problem:
-arch/mips/pnx833x/common/platform.c:210:12:
-error: 'PNX8335_PIC_ETHERNET_INT' undeclared here
-(not in a function)
+On Thursday, June 27, 2013, Ralf Baechle wrote:
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
----
- arch/mips/pnx833x/common/platform.c | 2 ++
- 1 file changed, 2 insertions(+)
+> Resendig with a few people who might be interested (or know somebody
+> who might be) added to cc.
+>
+> On Thu, Jun 27, 2013 at 04:34:39PM +0200, Ralf Baechle wrote:
+> > There is still a fair number of patches for the PMC-Sierra MSP series
+> > of platforms pending.  Those patches being over two years old are
+> > fairly stale by now so I wonder if somebody with interest in the
+> > platform could review, respin and test the patches?
+> >
+> > The patches in question are can be found in patchwork at
+> >
+> >
+> http://patchwork.linux-mips.org/project/linux-mips/list/?submitter=413&archive=true
+>
+>   Ralf
+>
 
-diff --git a/arch/mips/pnx833x/common/platform.c b/arch/mips/pnx833x/common/platform.c
-index d22dc0d..2b7e837 100644
---- a/arch/mips/pnx833x/common/platform.c
-+++ b/arch/mips/pnx833x/common/platform.c
-@@ -206,11 +206,13 @@ static struct resource pnx833x_ethernet_resources[] = {
- 		.end   = PNX8335_IP3902_PORTS_END,
- 		.flags = IORESOURCE_MEM,
- 	},
-+#ifdef CONFIG_SOC_PNX8335
- 	[1] = {
- 		.start = PNX8335_PIC_ETHERNET_INT,
- 		.end   = PNX8335_PIC_ETHERNET_INT,
- 		.flags = IORESOURCE_IRQ,
- 	},
-+#endif
- };
- 
- static struct platform_device pnx833x_ethernet_device = {
--- 
-1.8.2.1
+I've forwarded this email on to internal contacts at PMC-Sierra, but it
+appears there is little PMC activity on this platform. Feel free to drop
+the patches; if I find a need for them, I can respin and resubmit.
+
+Shane
+
+--089e012292e25fc4ed04e1163719
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<br><div><br>On Thursday, June 27, 2013, Ralf Baechle  wrote:<br><blockquot=
+e class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc sol=
+id;padding-left:1ex">Resendig with a few people who might be interested (or=
+ know somebody<br>
+
+who might be) added to cc.<br>
+<br>
+On Thu, Jun 27, 2013 at 04:34:39PM +0200, Ralf Baechle wrote:<br>
+&gt; There is still a fair number of patches for the PMC-Sierra MSP series<=
+br>
+&gt; of platforms pending. =A0Those patches being over two years old are<br=
+>
+&gt; fairly stale by now so I wonder if somebody with interest in the<br>
+&gt; platform could review, respin and test the patches?<br>
+&gt;<br>
+&gt; The patches in question are can be found in patchwork at<br>
+&gt;<br>
+&gt; =A0 =A0<a href=3D"http://patchwork.linux-mips.org/project/linux-mips/l=
+ist/?submitter=3D413&amp;archive=3Dtrue" target=3D"_blank">http://patchwork=
+.linux-mips.org/project/linux-mips/list/?submitter=3D413&amp;archive=3Dtrue=
+</a><br>
+<br>
+=A0 Ralf<br>
+</blockquote><div><br></div><div>I&#39;ve forwarded this email on to intern=
+al contacts at PMC-Sierra, but it appears there is little PMC<span></span>=
+=A0activity on this platform. Feel free to drop the patches; if I find a ne=
+ed for them, I can respin and resubmit.</div>
+<div><br></div><div>Shane=A0</div></div>
+
+--089e012292e25fc4ed04e1163719--

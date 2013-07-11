@@ -1,38 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jul 2013 21:36:44 +0200 (CEST)
-Received: from filtteri1.pp.htv.fi ([213.243.153.184]:36694 "EHLO
-        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6835038Ab3GKTgkCnRmB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Jul 2013 21:36:40 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 3F2BD21B877;
-        Thu, 11 Jul 2013 22:36:38 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp6.welho.com ([213.243.153.40])
-        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
-        with ESMTP id kptgRwwqJk8u; Thu, 11 Jul 2013 22:36:33 +0300 (EEST)
-Received: from blackmetal.pp.htv.fi (cs181064211.pp.htv.fi [82.181.64.211])
-        by smtp6.welho.com (Postfix) with ESMTP id 410895BC003;
-        Thu, 11 Jul 2013 22:36:33 +0300 (EEST)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     "Rafael J. Wysocki" <rjw@sisk.pl>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>, cpufreq@vger.kernel.org,
-        Julia Lawall <Julia.Lawall@lip6.fr>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>, stable@vger.kernel.org
-Subject: [PATCH] MIPS: loongson2: cpufreq: fix broken cpufreq
-Date:   Thu, 11 Jul 2013 22:34:41 +0300
-Message-Id: <1373571281-4457-1-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 1.8.3.1
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jul 2013 00:08:14 +0200 (CEST)
+Received: from scrooge.tty.gr ([62.217.125.135]:43270 "EHLO mail.tty.gr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6835038Ab3GKWIMeXiFH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 12 Jul 2013 00:08:12 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tty.gr; s=x;
+        h=Message-Id:Date:Subject:Cc:To:From; bh=nuAbwwn3ILsUvVp3T/u3UQ7ahsbqvjmL0UDqkennPQM=;
+        b=NWldSZTu7+g+SmnvxWuQYjqL7yMSeT7i2PWP9TdP+pPEftWCD9LYni3ezovxUxRvJvKt+DoU13ge2/1tLtWk9LaavE1YnWQQqnauRiSqTcoqYkCq/lhtqZH7qCvoFW5/;
+Received: from [2001:648:2001:f000:223:aeff:fe91:b5f4] (helo=serenity.void.home)
+        by mail.tty.gr (envelope-from <paravoid@tty.gr>)
+        with esmtpsa (tls_cipher TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80 (Debian GNU/Linux))
+        id 1UxP21-000545-J0; Fri, 12 Jul 2013 01:08:09 +0300
+Received: from paravoid by serenity.void.home with local (Exim 4.80)
+        (envelope-from <paravoid@tty.gr>)
+        id 1UxP21-00061i-3g; Fri, 12 Jul 2013 01:08:09 +0300
+From:   Faidon Liambotis <paravoid@debian.org>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH] MIPS: octeon: fix DT pruning bug with pip ports
+Date:   Fri, 12 Jul 2013 01:08:09 +0300
+Message-Id: <1373580489-23142-1-git-send-email-paravoid@debian.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <paravoid@tty.gr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37284
+X-archive-position: 37285
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: paravoid@debian.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,48 +42,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 42913c799 (MIPS: Loongson2: Use clk API instead of direct
-dereferences) broke the cpufreq functionality on Loongson2 boards:
-clk_set_rate() is called before the CPU frequency table is initialized,
-and therefore will always fail.
+During the pruning of the device tree octeon_fdt_pip_iface() is called
+for each PIP interface and every port up to the port count is removed
+from the device tree. However, the count was set to the return value of
+cvmx_helper_interface_enumerate() which doesn't actually return the
+count but just returns zero on success. This effectively removed *all*
+ports from the tree.
 
-Fix by moving the clk_set_rate() after the table initialization.
-Tested on Lemote FuLoong mini-PC.
+Use cvmx_helper_ports_on_interface() instead to fix this. This
+successfully restores the 3 ports of my ERLite-3 and fixes the "kernel
+assigns random MAC addresses" issue.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: stable@vger.kernel.org
+Signed-off-by: Faidon Liambotis <paravoid@debian.org>
 ---
- drivers/cpufreq/loongson2_cpufreq.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/mips/cavium-octeon/octeon-platform.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/loongson2_cpufreq.c b/drivers/cpufreq/loongson2_cpufreq.c
-index d539127..f92b02a 100644
---- a/drivers/cpufreq/loongson2_cpufreq.c
-+++ b/drivers/cpufreq/loongson2_cpufreq.c
-@@ -118,11 +118,6 @@ static int loongson2_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 		clk_put(cpuclk);
- 		return -EINVAL;
- 	}
--	ret = clk_set_rate(cpuclk, rate);
--	if (ret) {
--		clk_put(cpuclk);
--		return ret;
--	}
+diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+index 389512e..250eb20 100644
+--- a/arch/mips/cavium-octeon/octeon-platform.c
++++ b/arch/mips/cavium-octeon/octeon-platform.c
+@@ -334,9 +334,10 @@ static void __init octeon_fdt_pip_iface(int pip, int idx, u64 *pmac)
+ 	char name_buffer[20];
+ 	int iface;
+ 	int p;
+-	int count;
++	int count = 0;
  
- 	/* clock table init */
- 	for (i = 2;
-@@ -130,6 +125,12 @@ static int loongson2_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	     i++)
- 		loongson2_clockmod_table[i].frequency = (rate * i) / 8;
+-	count = cvmx_helper_interface_enumerate(idx);
++	if (cvmx_helper_interface_enumerate(idx) == 0)
++		count = cvmx_helper_ports_on_interface(idx);
  
-+	ret = clk_set_rate(cpuclk, rate);
-+	if (ret) {
-+		clk_put(cpuclk);
-+		return ret;
-+	}
-+
- 	policy->cur = loongson2_cpufreq_get(policy->cpu);
- 
- 	cpufreq_frequency_table_get_attr(&loongson2_clockmod_table[0],
+ 	snprintf(name_buffer, sizeof(name_buffer), "interface@%d", idx);
+ 	iface = fdt_subnode_offset(initial_boot_params, pip, name_buffer);
 -- 
-1.8.3.1
+1.8.3.2

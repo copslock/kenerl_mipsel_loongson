@@ -1,39 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Jul 2013 18:29:45 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:59526 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6835076Ab3GIQ3lYs80T (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 9 Jul 2013 18:29:41 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r69GTaYX026466;
-        Tue, 9 Jul 2013 18:29:36 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r69GTZWI026465;
-        Tue, 9 Jul 2013 18:29:35 +0200
-Date:   Tue, 9 Jul 2013 18:29:35 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Shane McDonald <mcdonald.shane@gmail.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Adam Kiepul <Adam_Kiepul@pmc-sierra.com>,
-        "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
-Subject: Re: Pending PMC-Sierra MSP patches
-Message-ID: <20130709162935.GD24481@linux-mips.org>
-References: <20130627143439.GD10727@linux-mips.org>
- <20130627144707.GE10727@linux-mips.org>
- <CACoURw6Z7_SdXUfnqqmxur9mQHoVmD8bD1ut7eGAtGafBCujUA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jul 2013 11:32:16 +0200 (CEST)
+Received: from mail-bk0-f42.google.com ([209.85.214.42]:56660 "EHLO
+        mail-bk0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816671Ab3GKJcDiPWO0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Jul 2013 11:32:03 +0200
+Received: by mail-bk0-f42.google.com with SMTP id jk13so3248911bkc.1
+        for <multiple recipients>; Thu, 11 Jul 2013 02:31:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=B8+9cOeZ1wAZ5i59esQ3jDFF4jPQvUMXkv/lLEewQAc=;
+        b=Kb2WLPZGFoYLBU/r7JyUiEZaeaxcECVreg7O7Ze3nrXSf8SEC0n3Q4ni+Q08UqOBqC
+         SxP3iSvIhxcB95fPxqpMV5tgdQCU19s1OfelaDHEseksvTxSis8kisGNYbOqp5hdMiEc
+         4rYZE5FumLTKes0hBBiYLdMHVbJ5dUUtiSCiSGeQ4j90IoZ60UTe3Ua0SRfyCmj9McC2
+         6GAB6PwBH3tTJHJjETPdi1lbfSSb+GvRtmu9xZIUggqG9x6hJ/6H2eQSbkU8B7eSq70R
+         oSihE+wI2Pahu+PmwLPz6UkQEmSE9d0XsYkDXGSsPHXTXnSMwETnXqxRUr6BtydXYLyd
+         FUEQ==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACoURw6Z7_SdXUfnqqmxur9mQHoVmD8bD1ut7eGAtGafBCujUA@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+X-Received: by 10.205.9.129 with SMTP id ow1mr5437355bkb.43.1373535118076;
+ Thu, 11 Jul 2013 02:31:58 -0700 (PDT)
+Received: by 10.204.73.1 with HTTP; Thu, 11 Jul 2013 02:31:58 -0700 (PDT)
+In-Reply-To: <20130628070829.GJ10727@linux-mips.org>
+References: <1366030028-5084-1-git-send-email-chenhc@lemote.com>
+        <1366030028-5084-13-git-send-email-chenhc@lemote.com>
+        <20130628070553.GI10727@linux-mips.org>
+        <20130628070829.GJ10727@linux-mips.org>
+Date:   Thu, 11 Jul 2013 17:31:58 +0800
+X-Google-Sender-Auth: 7v7trgsqTHccDaak4it5ztL9IZU
+Message-ID: <CAAhV-H4m5c++fFTtr9kd294MXtRH-DwTMmXP2Ds7w+6S==jorw@mail.gmail.com>
+Subject: Re: [PATCH V10 12/13] MIPS: Loongson 3: Add CPU hotplug support
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37281
+X-archive-position: 37282
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,34 +57,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jul 09, 2013 at 09:57:21AM -0600, Shane McDonald wrote:
+Normal labels and nops can be removed, but loongson3_play_dead()
+should be run at CKSEG0, I'm afraid that it will have a wrong behavior
+if I write it with C.
 
-> On Thursday, June 27, 2013, Ralf Baechle wrote:
-> 
-> > Resendig with a few people who might be interested (or know somebody
-> > who might be) added to cc.
-> >
-> > On Thu, Jun 27, 2013 at 04:34:39PM +0200, Ralf Baechle wrote:
-> > > There is still a fair number of patches for the PMC-Sierra MSP series
-> > > of platforms pending.  Those patches being over two years old are
-> > > fairly stale by now so I wonder if somebody with interest in the
-> > > platform could review, respin and test the patches?
-> > >
-> > > The patches in question are can be found in patchwork at
-> > >
-> > >
-> > http://patchwork.linux-mips.org/project/linux-mips/list/?submitter=413&archive=true
-> >
-> >   Ralf
-> >
-> 
-> I've forwarded this email on to internal contacts at PMC-Sierra, but it
-> appears there is little PMC activity on this platform. Feel free to drop
-> the patches; if I find a need for them, I can respin and resubmit.
-
-Ok, I'm going to drop the patches then.  The patches will remain accessible
-under
-
-   http://patchwork.linux-mips.org/user/bundle/130/?state=*&archive=both
-
-  Ralf
+On Fri, Jun 28, 2013 at 3:08 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Fri, Jun 28, 2013 at 09:05:53AM +0200, Ralf Baechle wrote:
+>
+>> > +           "flush_loop:                             \n" /* flush L1 */
+>>
+>> Please don't use normale in inline assembler.  This might result in build
+>> errors.  it's horrible to read but number local labels like:
+>
+> That was meant to read "Please don't use normal labels" in inline assembler.
+>
+>   Ralf
+>

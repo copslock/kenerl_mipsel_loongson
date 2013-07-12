@@ -1,35 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jul 2013 00:08:14 +0200 (CEST)
-Received: from scrooge.tty.gr ([62.217.125.135]:43270 "EHLO mail.tty.gr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6835038Ab3GKWIMeXiFH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 12 Jul 2013 00:08:12 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tty.gr; s=x;
-        h=Message-Id:Date:Subject:Cc:To:From; bh=nuAbwwn3ILsUvVp3T/u3UQ7ahsbqvjmL0UDqkennPQM=;
-        b=NWldSZTu7+g+SmnvxWuQYjqL7yMSeT7i2PWP9TdP+pPEftWCD9LYni3ezovxUxRvJvKt+DoU13ge2/1tLtWk9LaavE1YnWQQqnauRiSqTcoqYkCq/lhtqZH7qCvoFW5/;
-Received: from [2001:648:2001:f000:223:aeff:fe91:b5f4] (helo=serenity.void.home)
-        by mail.tty.gr (envelope-from <paravoid@tty.gr>)
-        with esmtpsa (tls_cipher TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80 (Debian GNU/Linux))
-        id 1UxP21-000545-J0; Fri, 12 Jul 2013 01:08:09 +0300
-Received: from paravoid by serenity.void.home with local (Exim 4.80)
-        (envelope-from <paravoid@tty.gr>)
-        id 1UxP21-00061i-3g; Fri, 12 Jul 2013 01:08:09 +0300
-From:   Faidon Liambotis <paravoid@debian.org>
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH] MIPS: octeon: fix DT pruning bug with pip ports
-Date:   Fri, 12 Jul 2013 01:08:09 +0300
-Message-Id: <1373580489-23142-1-git-send-email-paravoid@debian.org>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <paravoid@tty.gr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jul 2013 08:05:23 +0200 (CEST)
+Received: from mail-vc0-f174.google.com ([209.85.220.174]:51297 "EHLO
+        mail-vc0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816288Ab3GLGFMFGx9b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Jul 2013 08:05:12 +0200
+Received: by mail-vc0-f174.google.com with SMTP id kw10so7304214vcb.5
+        for <multiple recipients>; Thu, 11 Jul 2013 23:05:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=ZWn18pqkOq4g5qF9/TC6EvJ/G6TRlxEWcGTkw/EB3Y0=;
+        b=Cty3svmtcpUeO+KECMECX7Euql331grpSVu6wIxtW1oVBRfR9DedkbFRSbWd8R6Kn/
+         aDBmbmiVuJMNPFh73hSaBrlDaMq0mCULKrkYH8eK9LUaBnPFG/t2FFWTKG1EVJXtI9Xo
+         tqCg5irjvnuk8g5vXzm1bgOOx/45SGcK3zCWCPczZi1xaCrQiUahv/CkD/3OXGqnJ2X2
+         vWihKLj1Z3q28dJQ4kTcMaFcJh/JTBWek2bwKhKkow1y9/uWXvL8/S+j/NfX9jSlmv92
+         tNuu8qVQ9OhAVFlaX6V1tdS8O6aOlfYMVGjn/b+M7h3D+2Pohik8EQEihO3vEC1wlwdN
+         dDeQ==
+MIME-Version: 1.0
+X-Received: by 10.58.46.48 with SMTP id s16mr23842879vem.52.1373609105388;
+ Thu, 11 Jul 2013 23:05:05 -0700 (PDT)
+Received: by 10.52.231.4 with HTTP; Thu, 11 Jul 2013 23:05:05 -0700 (PDT)
+In-Reply-To: <1373571281-4457-1-git-send-email-aaro.koskinen@iki.fi>
+References: <1373571281-4457-1-git-send-email-aaro.koskinen@iki.fi>
+Date:   Fri, 12 Jul 2013 11:35:05 +0530
+X-Google-Sender-Auth: UXFwICWKPs-OPNYVJbIrfI0anDQ
+Message-ID: <CAOh2x==snAt8UfdG+d_FvA6m9Pqnp_BmonOB=u7UX1MLH8O89A@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: loongson2: cpufreq: fix broken cpufreq
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc:     "Rafael J. Wysocki" <rjw@sisk.pl>,
+        Ralf Baechle <ralf@linux-mips.org>, cpufreq@vger.kernel.org,
+        Julia Lawall <Julia.Lawall@lip6.fr>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <viresh.linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37285
+X-archive-position: 37286
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paravoid@debian.org
+X-original-sender: viresh.kumar@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,38 +54,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-During the pruning of the device tree octeon_fdt_pip_iface() is called
-for each PIP interface and every port up to the port count is removed
-from the device tree. However, the count was set to the return value of
-cvmx_helper_interface_enumerate() which doesn't actually return the
-count but just returns zero on success. This effectively removed *all*
-ports from the tree.
+On Fri, Jul 12, 2013 at 1:04 AM, Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
+> Commit 42913c799 (MIPS: Loongson2: Use clk API instead of direct
+> dereferences) broke the cpufreq functionality on Loongson2 boards:
+> clk_set_rate() is called before the CPU frequency table is initialized,
+> and therefore will always fail.
+>
+> Fix by moving the clk_set_rate() after the table initialization.
+> Tested on Lemote FuLoong mini-PC.
+>
+> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/cpufreq/loongson2_cpufreq.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
 
-Use cvmx_helper_ports_on_interface() instead to fix this. This
-successfully restores the 3 ports of my ERLite-3 and fixes the "kernel
-assigns random MAC addresses" issue.
-
-Signed-off-by: Faidon Liambotis <paravoid@debian.org>
----
- arch/mips/cavium-octeon/octeon-platform.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index 389512e..250eb20 100644
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -334,9 +334,10 @@ static void __init octeon_fdt_pip_iface(int pip, int idx, u64 *pmac)
- 	char name_buffer[20];
- 	int iface;
- 	int p;
--	int count;
-+	int count = 0;
- 
--	count = cvmx_helper_interface_enumerate(idx);
-+	if (cvmx_helper_interface_enumerate(idx) == 0)
-+		count = cvmx_helper_ports_on_interface(idx);
- 
- 	snprintf(name_buffer, sizeof(name_buffer), "interface@%d", idx);
- 	iface = fdt_subnode_offset(initial_boot_params, pip, name_buffer);
--- 
-1.8.3.2
+Ackec-by: Viresh Kumar <viresh.kumar@linaro.org>

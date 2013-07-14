@@ -1,32 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jul 2013 13:27:03 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:30016 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822508Ab3GLL1BC4Crz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 12 Jul 2013 13:27:01 +0200
-Message-ID: <51DFE7D3.3090002@imgtec.com>
-Date:   Fri, 12 Jul 2013 12:26:11 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Jul 2013 21:10:06 +0200 (CEST)
+Received: from filtteri5.pp.htv.fi ([213.243.153.188]:39407 "EHLO
+        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6816847Ab3GNTKEe5IqM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Jul 2013 21:10:04 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri5.pp.htv.fi (Postfix) with ESMTP id 58C135A7218;
+        Sun, 14 Jul 2013 22:10:01 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp5.welho.com ([213.243.153.39])
+        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
+        with ESMTP id 9iUIh+dyHYAv; Sun, 14 Jul 2013 22:09:56 +0300 (EEST)
+Received: from musicnaut.iki.fi (cs181064211.pp.htv.fi [82.181.64.211])
+        by smtp5.welho.com (Postfix) with SMTP id 6534C5BC003;
+        Sun, 14 Jul 2013 22:09:55 +0300 (EEST)
+Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Sun, 14 Jul 2013 22:09:57 +0300
+Date:   Sun, 14 Jul 2013 22:09:57 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Faidon Liambotis <paravoid@debian.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: octeon: fix DT pruning bug with pip ports
+Message-ID: <20130714190957.GA3296@blackmetal.musicnaut.iki.fi>
+References: <1373580489-23142-1-git-send-email-paravoid@debian.org>
 MIME-Version: 1.0
-To:     linux-mips <linux-mips@linux-mips.org>,
-        Sanjay Lal <sanjayl@kymasys.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     David Daney <david.daney@cavium.com>, kvm <kvm@vger.kernel.org>
-Subject: [PATCH] MIPS: mark KVM_GUEST (T&E KVM) as BROKEN_ON_SMP
-X-Enigmail-Version: 1.5.1
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.65]
-X-SEF-Processed: 7_3_0_01192__2013_07_12_12_26_54
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1373580489-23142-1-git-send-email-paravoid@debian.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37287
+X-archive-position: 37289
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,36 +47,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Make KVM_GUEST depend on BROKEN_ON_SMP so that it cannot be enabled with
-SMP.
+On Fri, Jul 12, 2013 at 01:08:09AM +0300, Faidon Liambotis wrote:
+> During the pruning of the device tree octeon_fdt_pip_iface() is called
+> for each PIP interface and every port up to the port count is removed
+> from the device tree. However, the count was set to the return value of
+> cvmx_helper_interface_enumerate() which doesn't actually return the
+> count but just returns zero on success. This effectively removed *all*
+> ports from the tree.
+> 
+> Use cvmx_helper_ports_on_interface() instead to fix this. This
+> successfully restores the 3 ports of my ERLite-3 and fixes the "kernel
+> assigns random MAC addresses" issue.
+> 
+> Signed-off-by: Faidon Liambotis <paravoid@debian.org>
 
-SMP kernels use ll/sc instructions for an atomic section in the tlb fill
-handler, with a tlbp instruction contained in the middle. This cannot be
-emulated with trap & emulate KVM because the tlbp instruction traps and
-the eret to return to the guest code clears the LLbit which makes the sc
-instruction always fail.
+Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Sanjay Lal <sanjayl@kymasys.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: David Daney <david.daney@cavium.com>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
----
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Thanks,
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 7a58ab9..6a6a096 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1736,6 +1736,7 @@ endchoice
- 
- config KVM_GUEST
- 	bool "KVM Guest Kernel"
-+	depends on BROKEN_ON_SMP
- 	help
- 	  Select this option if building a guest kernel for KVM (Trap & Emulate) mode
- 
--- 
-1.8.1.2
+A.
+
+> ---
+>  arch/mips/cavium-octeon/octeon-platform.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+> index 389512e..250eb20 100644
+> --- a/arch/mips/cavium-octeon/octeon-platform.c
+> +++ b/arch/mips/cavium-octeon/octeon-platform.c
+> @@ -334,9 +334,10 @@ static void __init octeon_fdt_pip_iface(int pip, int idx, u64 *pmac)
+>  	char name_buffer[20];
+>  	int iface;
+>  	int p;
+> -	int count;
+> +	int count = 0;
+>  
+> -	count = cvmx_helper_interface_enumerate(idx);
+> +	if (cvmx_helper_interface_enumerate(idx) == 0)
+> +		count = cvmx_helper_ports_on_interface(idx);
+>  
+>  	snprintf(name_buffer, sizeof(name_buffer), "interface@%d", idx);
+>  	iface = fdt_subnode_offset(initial_boot_params, pip, name_buffer);
+> -- 
+> 1.8.3.2
+> 
+> 

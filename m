@@ -1,55 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jul 2013 13:53:24 +0200 (CEST)
-Received: from mail.free-electrons.com ([94.23.35.102]:37693 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827499Ab3GOLxAwPTcw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Jul 2013 13:53:00 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 106)
-        id DAAAB7FB; Mon, 15 Jul 2013 13:52:53 +0200 (CEST)
-Received: from localhost (col31-4-88-188-83-94.fbx.proxad.net [88.188.83.94])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 0493E7AD;
-        Mon, 15 Jul 2013 13:52:53 +0200 (CEST)
-From:   Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        Russell King <linux@arm.linux.org.uk>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Rob Herring <rob.herring@calxeda.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@free-electrons.com>
-Cc:     Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Maen Suleiman <maen@marvell.com>,
-        Lior Amsalem <alior@marvell.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, linux-s390@vger.kernel.org,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Chris Metcalf <cmetcalf@tilera.com>
-Subject: [PATCHv5 03/11] PCI: remove ARCH_SUPPORTS_MSI kconfig option
-Date:   Mon, 15 Jul 2013 13:52:39 +0200
-Message-Id: <1373889167-27878-4-git-send-email-thomas.petazzoni@free-electrons.com>
-X-Mailer: git-send-email 1.8.1.2
-In-Reply-To: <1373889167-27878-1-git-send-email-thomas.petazzoni@free-electrons.com>
-References: <1373889167-27878-1-git-send-email-thomas.petazzoni@free-electrons.com>
-Return-Path: <thomas.petazzoni@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jul 2013 00:17:34 +0200 (CEST)
+Received: from mail-pb0-f54.google.com ([209.85.160.54]:34990 "EHLO
+        mail-pb0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827451Ab3GOWRdYD5uK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Jul 2013 00:17:33 +0200
+Received: by mail-pb0-f54.google.com with SMTP id ro2so11740610pbb.41
+        for <multiple recipients>; Mon, 15 Jul 2013 15:17:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=GXVTnnwx1yOF7MV9q5uX3SuNj8MEe1hO7mc87Hj39Do=;
+        b=aj++0CEFDeiHcTzocnD6xlPVVr5x6Ib5/9b8L1p7VkN3jkUlK+5UjoWVZ7jj58FKl2
+         zADjzv578Om87dT4/kexHvmCpU2NW2UV6iZ8s66FXCQZW8UFhxptO+oYdkVyYkdQy6Gd
+         0g1ZPMlr1SH9b5B3BfVfGYYpt9S6xBGQAOtfXkRNZjORorb3w4wcxgQoIwMwXR5MNzuP
+         6PpL+ujgvnt9LIF90NszJkkVOfu/ZHR9nu1S+pgGb2stB5s9VIeWwmE6zst2ZwVV9Jxi
+         bqQzm1bTzKar8xtWs1oX+HGZWGDpGDXFFKeWIpCMrsHoXymkbmD//rImAYuw5rlLJBK7
+         ylnw==
+X-Received: by 10.66.193.166 with SMTP id hp6mr57635497pac.118.1373926646887;
+        Mon, 15 Jul 2013 15:17:26 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id mr3sm62883049pbb.27.2013.07.15.15.17.25
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 15 Jul 2013 15:17:25 -0700 (PDT)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r6FMHOa8024660;
+        Mon, 15 Jul 2013 15:17:24 -0700
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r6FMHNHR024659;
+        Mon, 15 Jul 2013 15:17:23 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     Corey Minyard <cminyard@mvista.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        David Daney <david.daney@cavium.com>
+Subject: [PATCH] mips/ftrace: Fix function tracing return address to match
+Date:   Mon, 15 Jul 2013 15:17:17 -0700
+Message-Id: <1373926637-24627-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37294
+X-archive-position: 37295
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.petazzoni@free-electrons.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,166 +58,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Now that we have weak versions for each of the PCI MSI architecture
-functions, we can actually build the MSI support for all platforms,
-regardless of whether they provide or not architecture-specific
-versions of those functions. For this reason, the ARCH_SUPPORTS_MSI
-hidden kconfig boolean becomes useless, and this patch gets rid of it.
+From: Corey Minyard <cminyard@mvista.com>
 
-Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: linux390@de.ibm.com
-Cc: linux-s390@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: x86@kernel.org
-Cc: Russell King <linux@arm.linux.org.uk>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: linux-ia64@vger.kernel.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: David S. Miller <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Chris Metcalf <cmetcalf@tilera.com>
+Dynamic function tracing was not working on MIPS.  When doing dynamic
+tracing, the tracer attempts to match up the passed in address with
+the one the compiler creates in the mcount tables.  The MIPS code was
+passing in the return address from the tracing function call, but the
+compiler tables were the address of the function call.  So they
+wouldn't match.
+
+Just subtracting 8 from the return address will give the address of
+the function call.  Easy enough.
+
+Signed-off-by: Corey Minyard <cminyard@mvista.com>
+[david.daney@cavium.com: Adjusted code comment and patch Subject.]
+Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/arm/Kconfig     | 1 -
- arch/ia64/Kconfig    | 1 -
- arch/mips/Kconfig    | 2 --
- arch/powerpc/Kconfig | 1 -
- arch/s390/Kconfig    | 1 -
- arch/sparc/Kconfig   | 1 -
- arch/tile/Kconfig    | 1 -
- arch/x86/Kconfig     | 1 -
- drivers/pci/Kconfig  | 4 ----
- 9 files changed, 13 deletions(-)
+ arch/mips/kernel/mcount.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index ba412e0..b173c1d 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -441,7 +441,6 @@ config ARCH_NETX
- config ARCH_IOP13XX
- 	bool "IOP13xx-based"
- 	depends on MMU
--	select ARCH_SUPPORTS_MSI
- 	select CPU_XSC3
- 	select NEED_MACH_MEMORY_H
- 	select NEED_RET_TO_USER
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index 5a768ad..098602b 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -9,7 +9,6 @@ config IA64
- 	select PCI if (!IA64_HP_SIM)
- 	select ACPI if (!IA64_HP_SIM)
- 	select PM if (!IA64_HP_SIM)
--	select ARCH_SUPPORTS_MSI
- 	select HAVE_UNSTABLE_SCHED_CLOCK
- 	select HAVE_IDE
- 	select HAVE_OPROFILE
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 4758a8f..00b2698 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -726,7 +726,6 @@ config CAVIUM_OCTEON_SOC
- 	select SYS_HAS_CPU_CAVIUM_OCTEON
- 	select SWAP_IO_SPACE
- 	select HW_HAS_PCI
--	select ARCH_SUPPORTS_MSI
- 	select ZONE_DMA32
- 	select USB_ARCH_HAS_OHCI
- 	select USB_ARCH_HAS_EHCI
-@@ -762,7 +761,6 @@ config NLM_XLR_BOARD
- 	select CEVT_R4K
- 	select CSRC_R4K
- 	select IRQ_CPU
--	select ARCH_SUPPORTS_MSI
- 	select ZONE_DMA32 if 64BIT
- 	select SYNC_R4K
- 	select SYS_HAS_EARLY_PRINTK
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 3bf72cd..183a165 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -727,7 +727,6 @@ config PCI
- 	default y if !40x && !CPM2 && !8xx && !PPC_83xx \
- 		&& !PPC_85xx && !PPC_86xx && !GAMECUBE_COMMON
- 	default PCI_QSPAN if !4xx && !CPM2 && 8xx
--	select ARCH_SUPPORTS_MSI
- 	select GENERIC_PCI_IOMAP
- 	help
- 	  Find out whether your system includes a PCI bus. PCI is the name of
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 22f75b5..e9982a3 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -428,7 +428,6 @@ menuconfig PCI
- 	bool "PCI support"
- 	default n
- 	depends on 64BIT
--	select ARCH_SUPPORTS_MSI
- 	select PCI_MSI
- 	help
- 	  Enable PCI support.
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index a00cbd3..1570ad2 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -52,7 +52,6 @@ config SPARC32
+diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
+index a03e93c..539b629 100644
+--- a/arch/mips/kernel/mcount.S
++++ b/arch/mips/kernel/mcount.S
+@@ -83,7 +83,7 @@ _mcount:
+ 	PTR_S	MCOUNT_RA_ADDRESS_REG, PT_R12(sp)
+ #endif
  
- config SPARC64
- 	def_bool 64BIT
--	select ARCH_SUPPORTS_MSI
- 	select HAVE_FUNCTION_TRACER
- 	select HAVE_FUNCTION_GRAPH_TRACER
- 	select HAVE_FUNCTION_GRAPH_FP_TEST
-diff --git a/arch/tile/Kconfig b/arch/tile/Kconfig
-index 24565a7..74dff90 100644
---- a/arch/tile/Kconfig
-+++ b/arch/tile/Kconfig
-@@ -380,7 +380,6 @@ config PCI
- 	select PCI_DOMAINS
- 	select GENERIC_PCI_IOMAP
- 	select TILE_GXIO_TRIO if TILEGX
--	select ARCH_SUPPORTS_MSI if TILEGX
- 	select PCI_MSI if TILEGX
- 	---help---
- 	  Enable PCI root complex support, so PCIe endpoint devices can
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index b32ebf9..5db62ef 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2014,7 +2014,6 @@ menu "Bus options (PCI etc.)"
- config PCI
- 	bool "PCI support"
- 	default y
--	select ARCH_SUPPORTS_MSI if (X86_LOCAL_APIC && X86_IO_APIC)
- 	---help---
- 	  Find out whether you have a PCI motherboard. PCI is the name of a
- 	  bus system, i.e. the way the CPU talks to the other stuff inside
-diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-index 81944fb..b6a99f7 100644
---- a/drivers/pci/Kconfig
-+++ b/drivers/pci/Kconfig
-@@ -1,13 +1,9 @@
- #
- # PCI configuration
- #
--config ARCH_SUPPORTS_MSI
--	bool
--
- config PCI_MSI
- 	bool "Message Signaled Interrupts (MSI and MSI-X)"
- 	depends on PCI
--	depends on ARCH_SUPPORTS_MSI
- 	help
- 	   This allows device drivers to enable MSI (Message Signaled
- 	   Interrupts).  Message Signaled Interrupts enable a device to
+-	move	a0, ra		/* arg1: self return address */
++	PTR_SUBU a0, ra, 8	/* arg1: self address */
+ 	.globl ftrace_call
+ ftrace_call:
+ 	nop	/* a placeholder for the call to a real tracing function */
 -- 
-1.8.1.2
+1.7.11.7

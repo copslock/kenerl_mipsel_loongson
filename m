@@ -1,38 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jul 2013 17:05:46 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:42481 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6836457Ab3GQWxoix67i (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Jul 2013 00:53:44 +0200
-Received: from c-67-160-231-162.hsd1.ca.comcast.net ([67.160.231.162] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <kamal@canonical.com>)
-        id 1UzaWf-0008FP-IL; Wed, 17 Jul 2013 22:48:49 +0000
-Received: from kamal by fourier with local (Exim 4.80)
-        (envelope-from <kamal@whence.com>)
-        id 1UzaWd-0002SH-Dx; Wed, 17 Jul 2013 15:48:47 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 102/145] MIPS: Octeon: Don't clobber bootloader data structures.
-Date:   Wed, 17 Jul 2013 15:47:14 -0700
-Message-Id: <1374101277-7915-103-git-send-email-kamal@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jul 2013 17:07:41 +0200 (CEST)
+Received: from mail-ee0-f49.google.com ([74.125.83.49]:48603 "EHLO
+        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6835808Ab3GQS4rJKWof (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Jul 2013 20:56:47 +0200
+Received: by mail-ee0-f49.google.com with SMTP id b57so1225555eek.8
+        for <multiple recipients>; Wed, 17 Jul 2013 11:56:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id:x-mailer;
+        bh=WJebr6rXe2cWpkT4TEWRmSDqt7VPPcHLErP5p19RWDw=;
+        b=LjdTGHZdHCNKkGd8VFiWHGxSzEODW1Tk2W8N81RXgfomNYJ3KnnJ5EADTNQuGfdkVF
+         h4zmPthmMVvr5BrE9RsHsOQNRXRVREhpFYASpCQxshQUxR4Uv3rLSpsLwnl1yeKQ7EnN
+         m59Yb+wabh1M5kQ8y9mVsIVv3sB9YjFu/QSgXsXdT3Mzl/gH+yYMRGZPMKC2EBy+dFEL
+         vmMmnHGsh+yv0xut2XC4Yv3K4pimyWEtvXKz6uf730QfEnYpf5m4t80WXtWp6366KvEJ
+         DzsPh5CKleKbbpRtsWuexlJ5Ho+p9SKfbVv6a86K6MQVYgKSjzJL+mapTY/MNkzbsLhu
+         3mEQ==
+X-Received: by 10.14.204.137 with SMTP id h9mr7801456eeo.13.1374087401308;
+        Wed, 17 Jul 2013 11:56:41 -0700 (PDT)
+Received: from localhost.localdomain (cpc24-aztw25-2-0-cust938.aztw.cable.virginmedia.com. [92.233.35.171])
+        by mx.google.com with ESMTPSA id n5sm12995504eed.9.2013.07.17.11.56.39
+        for <multiple recipients>
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Wed, 17 Jul 2013 11:56:40 -0700 (PDT)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, blogic@openwrt.org, jogo@openwrt.org,
+        cernekee@gmail.com, Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH 3.11-rc2] MIPS: BMIPS: fix thinko to release slave TP from reset
+Date:   Wed, 17 Jul 2013 19:56:31 +0100
+Message-Id: <1374087391-5650-1-git-send-email-florian@openwrt.org>
 X-Mailer: git-send-email 1.8.1.2
-In-Reply-To: <1374101277-7915-1-git-send-email-kamal@canonical.com>
-References: <1374101277-7915-1-git-send-email-kamal@canonical.com>
-X-Extended-Stable: 3.8
-Return-Path: <kamal@canonical.com>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37316
+X-archive-position: 37317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,46 +51,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.8.13.5 -stable review patch.  If anyone has any objections, please let me know.
+Commit 4df715aa ("MIPS: BMIPS: support booting from physical CPU other
+than 0") introduced a thinko which will prevents slave CPUs from being
+released from reset on systems where we boot from TP0. The problem is
+that we are checking whether the slave CPU logical CPU map is 0, which
+is never true for systems booting from TP0, so we do not release the
+slave TP from reset and we are just stuck. Fix this by properly checking
+that the CPU we intend to boot really is the physical slave CPU (logical
+and physical value being 1).
 
-------------------
-
-From: David Daney <david.daney@cavium.com>
-
-commit d949b4fe6d23dd92b5fa48cbf7af90ca32beed2e upstream.
-
-Commit abe77f90dc (MIPS: Octeon: Add kexec and kdump support) added a
-bootmem region for the kernel image itself.  The problem is that this
-is rounded up to a 0x100000 boundary, which is memory that may not be
-owned by the kernel.  Depending on the kernel's configuration based
-size, this 'extra' memory may contain data passed from the bootloader
-to the kernel itself, which if clobbered makes the kernel crash in
-various ways.
-
-The fix: Quit rounding the size up, so that we only use memory
-assigned to the kernel.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/5449/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
- arch/mips/cavium-octeon/setup.c | 2 +-
+Ralf, John,
+
+This 3.11-rc2 material since the offending commit is in 3.11-rc1. Thanks!
+
+ arch/mips/kernel/smp-bmips.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index d7e0a09..1271047 100644
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -990,7 +990,7 @@ void __init plat_mem_setup(void)
- 	cvmx_bootmem_unlock();
- 	/* Add the memory region for the kernel. */
- 	kernel_start = (unsigned long) _text;
--	kernel_size = ALIGN(_end - _text, 0x100000);
-+	kernel_size = _end - _text;
- 
- 	/* Adjust for physical offset. */
- 	kernel_start &= ~0xffffffff80000000ULL;
+diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
+index aea6c08..6744537 100644
+--- a/arch/mips/kernel/smp-bmips.c
++++ b/arch/mips/kernel/smp-bmips.c
+@@ -173,7 +173,7 @@ static void bmips_boot_secondary(int cpu, struct task_struct *idle)
+ 	else {
+ #if defined(CONFIG_CPU_BMIPS4350) || defined(CONFIG_CPU_BMIPS4380)
+ 		/* Reset slave TP1 if booting from TP0 */
+-		if (cpu_logical_map(cpu) == 0)
++		if (cpu_logical_map(cpu) == 1)
+ 			set_c0_brcm_cmt_ctrl(0x01);
+ #elif defined(CONFIG_CPU_BMIPS5000)
+ 		if (cpu & 0x01)
 -- 
 1.8.1.2

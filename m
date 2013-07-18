@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jul 2013 17:00:23 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:4529 "EHLO mms1.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jul 2013 17:01:25 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:1534 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6837379Ab3GRGv0JdgTv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 18 Jul 2013 08:51:26 +0200
-Received: from [10.9.208.57] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Wed, 17 Jul 2013 23:47:25 -0700
-X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Wed, 17 Jul 2013 23:51:12 -0700
+        id S6837315Ab3GRGjHQ0wc5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 18 Jul 2013 08:39:07 +0200
+Received: from [10.9.208.53] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Wed, 17 Jul 2013 23:32:50 -0700
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
+ IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Wed, 17 Jul 2013 23:38:48 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Wed, 17 Jul 2013 23:51:12 -0700
+ IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
+ Server id 14.1.438.0; Wed, 17 Jul 2013 23:38:48 -0700
 Received: from jayachandranc.netlogicmicro.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 2FD69F2D74; Wed, 17
- Jul 2013 23:51:10 -0700 (PDT)
-Date:   Thu, 18 Jul 2013 12:23:30 +0530
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id ADFACF2D73; Wed, 17
+ Jul 2013 23:38:47 -0700 (PDT)
+Date:   Thu, 18 Jul 2013 12:11:07 +0530
 From:   "Jayachandran C." <jchandra@broadcom.com>
 To:     "Tony Wu" <tung7970@gmail.com>
 cc:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] MIPS: tlbex: Guard tlbmiss_handler_setup_pgd
-Message-ID: <20130718065329.GB24373@jayachandranc.netlogicmicro.com>
+Subject: Re: [PATCH 1/2] MIPS: tlbex: Fix typo in r3000 tlb store
+ handler
+Message-ID: <20130718064106.GA24373@jayachandranc.netlogicmicro.com>
 References: <20130717175840-tung7970@googlemail.com>
- <20130717180052-tung7970@googlemail.com>
 MIME-Version: 1.0
-In-Reply-To: <20130717180052-tung7970@googlemail.com>
+In-Reply-To: <20130717175840-tung7970@googlemail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-WSS-ID: 7DF950F731W53208328-01-01
+X-WSS-ID: 7DF953981R045497355-01-01
 Content-Type: text/plain;
  charset=us-ascii
 Content-Disposition: inline
@@ -36,7 +36,7 @@ Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37314
+X-archive-position: 37315
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,38 +53,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jul 17, 2013 at 06:01:29PM +0800, Tony Wu wrote:
-> tlbmiss_handler_setup_pgd* are only referenced when
-> CONFIG_MIPS_PGD_C0_CONTEXT is defined.
+On Wed, Jul 17, 2013 at 05:59:47PM +0800, Tony Wu wrote:
+> Should test against handle_tlbs_end, not handle_tlbs.
 > 
 > Signed-off-by: Tony Wu <tung7970@gmail.com>
 > Cc: Jayachandran C <jchandra@broadcom.com>
 > ---
->  arch/mips/mm/tlb-funcs.S |    2 ++
->  1 file changed, 2 insertions(+)
+>  arch/mips/mm/tlbex.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/mips/mm/tlb-funcs.S b/arch/mips/mm/tlb-funcs.S
-> index 30a494d..79bca31 100644
-> --- a/arch/mips/mm/tlb-funcs.S
-> +++ b/arch/mips/mm/tlb-funcs.S
-> @@ -16,10 +16,12 @@
+> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+> index 9ab0f90..605b6fc 100644
+> --- a/arch/mips/mm/tlbex.c
+> +++ b/arch/mips/mm/tlbex.c
+> @@ -1803,7 +1803,7 @@ static void __cpuinit build_r3000_tlb_store_handler(void)
+>  	uasm_i_j(&p, (unsigned long)tlb_do_page_fault_1 & 0x0fffffff);
+>  	uasm_i_nop(&p);
 >  
->  #define FASTPATH_SIZE	128
+> -	if (p >= handle_tlbs)
+> +	if (p >= handle_tlbs_end)
+>  		panic("TLB store handler fastpath space exceeded");
 >  
-> +#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
->  LEAF(tlbmiss_handler_setup_pgd)
->  	.space		16 * 4
->  END(tlbmiss_handler_setup_pgd)
->  EXPORT(tlbmiss_handler_setup_pgd_end)
-> +#endif
->  
->  LEAF(handle_tlbm)
->  	.space		FASTPATH_SIZE * 4
+>  	uasm_resolve_relocs(relocs, labels);
 
-There is a patchset planned which uses tlbmiss_handler_setup_pgd when
-CONFIG_MIPS_PGD_C0_CONTEXT is not defined, but it did not make it into 3.11.
+Thanks for fixing this.
 
-This change can be applied - but if it goes in, I will need to undo this
-as part of the scratch patchset.
+Acked-by: Jayachandran C. <jchandra@broadcom.com>
+
+You should add the commit which caused the trouble to the commit message,
+like:
+
+commit 6ba045f (MIPS: Move generated code to .text for microMIPS) causes
+a panic at boot.
 
 JC.

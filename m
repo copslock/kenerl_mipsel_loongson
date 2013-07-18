@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jul 2013 22:27:13 +0200 (CEST)
-Received: from hrndva-omtalb.mail.rr.com ([71.74.56.122]:31855 "EHLO
-        hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823114Ab3GRU1JQg4FQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Jul 2013 22:27:09 +0200
-X-Authority-Analysis: v=2.0 cv=P6i4d18u c=1 sm=0 a=Sro2XwOs0tJUSHxCKfOySw==:17 a=Drc5e87SC40A:10 a=m81s-13gt9IA:10 a=5SG0PmZfjMsA:10 a=IkcTkHD0fZMA:10 a=meVymXHHAAAA:8 a=KGjhK52YXX0A:10 a=DHlrDtQkiHoA:10 a=VwQbUJbxAAAA:8 a=18CPOQ8VckTwq7bigWQA:9 a=QEXdDO2ut3YA:10 a=sdKmmMAnKywA:10 a=k6k8nn4gJnwA:10 a=Sro2XwOs0tJUSHxCKfOySw==:117
-X-Cloudmark-Score: 0
-X-Authenticated-User: 
-X-Originating-IP: 67.255.60.225
-Received: from [67.255.60.225] ([67.255.60.225:51146] helo=[192.168.23.10])
-        by hrndva-oedge02.mail.rr.com (envelope-from <rostedt@goodmis.org>)
-        (ecelerity 2.2.3.46 r()) with ESMTP
-        id 70/67-18468-59F48E15; Thu, 18 Jul 2013 20:27:02 +0000
-Message-ID: <1374179221.6458.270.camel@gandalf.local.home>
-Subject: Re: [PATCH] mips/ftrace: Fix function tracing return address to
- match
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        Corey Minyard <cminyard@mvista.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jul 2013 22:37:51 +0200 (CEST)
+Received: from mail-bn1lp0156.outbound.protection.outlook.com ([207.46.163.156]:51782
+        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6827417Ab3GRUhpUq-7F (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 18 Jul 2013 22:37:45 +0200
+Received: from BY2PRD0712HT001.namprd07.prod.outlook.com (10.255.246.34) by
+ BLUPR07MB113.namprd07.prod.outlook.com (10.242.200.28) with Microsoft SMTP
+ Server (TLS) id 15.0.731.12; Thu, 18 Jul 2013 20:37:37 +0000
+Received: from dl.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
+ (10.255.246.34) with Microsoft SMTP Server (TLS) id 14.16.329.3; Thu, 18 Jul
+ 2013 20:37:34 +0000
+Message-ID: <51E8520E.2050604@caviumnetworks.com>
+Date:   Thu, 18 Jul 2013 13:37:34 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130514 Thunderbird/17.0.6
+MIME-Version: 1.0
+To:     Steven Rostedt <rostedt@goodmis.org>
+CC:     David Daney <ddaney.cavm@gmail.com>, <linux-mips@linux-mips.org>,
+        <ralf@linux-mips.org>, Corey Minyard <cminyard@mvista.com>,
         David Daney <david.daney@cavium.com>
-Date:   Thu, 18 Jul 2013 16:27:01 -0400
+Subject: Re: [PATCH] mips/ftrace: Fix function tracing return address to match
+References: <1373926637-24627-1-git-send-email-ddaney.cavm@gmail.com>  <1374178262.6458.266.camel@gandalf.local.home> <51E84CBC.80206@gmail.com> <1374179160.6458.269.camel@gandalf.local.home>
 In-Reply-To: <1374179160.6458.269.camel@gandalf.local.home>
-References: <1373926637-24627-1-git-send-email-ddaney.cavm@gmail.com>
-         <1374178262.6458.266.camel@gandalf.local.home> <51E84CBC.80206@gmail.com>
-         <1374179160.6458.269.camel@gandalf.local.home>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.4.4-3 
-Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <rostedt@goodmis.org>
+X-Originating-IP: [64.2.3.195]
+X-Forefront-PRVS: 0911D5CE78
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(479174003)(377424004)(24454002)(51704005)(189002)(199002)(377454003)(56776001)(83072001)(49866001)(53416003)(46102001)(80316001)(74706001)(47776003)(76786001)(81542001)(47736001)(59896001)(74366001)(74502001)(56816003)(83322001)(79102001)(47976001)(76796001)(53806001)(65956001)(51856001)(65806001)(81342001)(33656001)(47446002)(54356001)(80022001)(64126003)(77096001)(31966008)(36756003)(16406001)(4396001)(50986001)(59766001)(66066001)(76482001)(74662001)(69226001)(23676002)(74876001)(50466002)(77982001)(19580385001)(54316002)(63696002)(19580395003);DIR:OUT;SFP:;SCL:1;SRVR:BLUPR07MB113;H:BY2PRD0712HT001.namprd07.prod.outlook.com;CLIP:64.2.3.195;RD:InfoNoRecords;MX:1;A:1;LANG:en;
+X-OriginatorOrg: DuplicateDomain-a3ec847f-e37f-4d9a-9900-9d9d96f75f58.caviumnetworks.com
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37328
+X-archive-position: 37329
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,11 +49,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 2013-07-18 at 16:26 -0400, Steven Rostedt wrote:
+On 07/18/2013 01:26 PM, Steven Rostedt wrote:
+> On Thu, 2013-07-18 at 13:14 -0700, David Daney wrote:
+>
+>> There is an mcount ABI difference based on which GCC version you are
+>> using, although I wouldn't think it would effect this bit.
+>>
+>> We are using GCC-4.7 FWIW.
+>>
+>> David Daney
+>
+> I'm using 4.6.3 which I downloaded from
+> https://www.kernel.org/pub/tools/crosstool/files/bin/x86_64/4.6.3/
+
+I would expect that version to be fine too.  The option in question is 
+-mmcount-ra-address, which I added to GCC-4.5
+
+>
 > I can down load the 4.7 version and see if that makes a difference.
-
-I guess I can't. There is no 4.7 version for MIPS :-p
-
-https://www.kernel.org/pub/tools/crosstool/files/bin/x86_64/4.7.3/
-
--- Steve
+>
+> -- Steve
+>
+>
+>

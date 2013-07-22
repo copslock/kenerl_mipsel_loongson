@@ -1,37 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Jul 2013 19:39:34 +0200 (CEST)
-Received: from filtteri1.pp.htv.fi ([213.243.153.184]:50244 "EHLO
-        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6815746Ab3GTRjb0Ppn9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Jul 2013 19:39:31 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 70F8C21B80F;
-        Sat, 20 Jul 2013 20:39:27 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp5.welho.com ([213.243.153.39])
-        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
-        with ESMTP id CUcsIlYAM3zf; Sat, 20 Jul 2013 20:39:22 +0300 (EEST)
-Received: from blackmetal.pp.htv.fi (cs181064211.pp.htv.fi [82.181.64.211])
-        by smtp5.welho.com (Postfix) with ESMTP id 7A7535BC006;
-        Sat, 20 Jul 2013 20:39:17 +0300 (EEST)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Faidon Liambotis <paravoid@debian.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Jul 2013 07:05:02 +0200 (CEST)
+Received: from mo10.iij4u.or.jp ([210.138.174.78]:35613 "EHLO mo.iij4u.or.jp"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6815757Ab3GVFE4GKxOe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 22 Jul 2013 07:04:56 +0200
+Received: by mo.iij4u.or.jp (mo10) id r6M54bUe016120; Mon, 22 Jul 2013 14:04:37 +0900
+Received: from delta (sannin29190.nirai.ne.jp [203.160.29.190])
+        by mbox.iij4u.or.jp (mbox10) id r6M54YGb008000
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Mon, 22 Jul 2013 14:04:36 +0900
+Date:   Mon, 22 Jul 2013 14:04:33 +0900
+From:   Yoichi Yuasa <yuasa@linux-mips.org>
+To:     Markos Chandras <hwoarang@gentoo.org>
+Cc:     yuasa@linux-mips.org, ralf@linux-mips.org,
         linux-mips@linux-mips.org
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH] MIPS: cavium-octeon: fix I/O space setup on non-PCI systems
-Date:   Sat, 20 Jul 2013 20:38:51 +0300
-Message-Id: <1374341931-10591-1-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 1.8.3.2
-Return-Path: <aaro.koskinen@iki.fi>
+Subject: Re: [PATCH] MIPS: ar7: fix redefined UNCAC_BASE and IO_BASE
+Message-Id: <20130722140433.b905a6248b414c9f43e64b0c@linux-mips.org>
+In-Reply-To: <CAG2jQ8hCwqtrw=Av6ZG2h19Z_HRuDmPn+LqpSJyQGhUSM=8=Pg@mail.gmail.com>
+References: <20130719182611.41aeb79b5711b3c9f849d594@linux-mips.org>
+        <CAG2jQ8hCwqtrw=Av6ZG2h19Z_HRuDmPn+LqpSJyQGhUSM=8=Pg@mail.gmail.com>
+X-Mailer: Sylpheed 3.2.0beta5 (GTK+ 2.24.10; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37338
+X-archive-position: 37339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,51 +43,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Fix I/O space setup, so that on non-PCI systems using inb()/outb()
-won't crash the system. Some drivers may try to probe I/O space and for
-that purpose we can just allocate some normal memory. Drivers trying to
-reserve a region will fail early as we set the size to 0.
+Hi,
 
-Tested with EdgeRouter Lite by enabling CONFIG_SERIO_I8042 that caused
-the originally reported crash.
+On Fri, 19 Jul 2013 12:35:36 +0100
+Markos Chandras <hwoarang@gentoo.org> wrote:
 
-Reported-by: Faidon Liambotis <paravoid@debian.org>
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
----
- arch/mips/pci/pci-octeon.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> Hi,
+> 
+> Isn't this similar to http://patchwork.linux-mips.org/patch/5583/ ?
 
-diff --git a/arch/mips/pci/pci-octeon.c b/arch/mips/pci/pci-octeon.c
-index 95c2ea8..1bfdcc8c 100644
---- a/arch/mips/pci/pci-octeon.c
-+++ b/arch/mips/pci/pci-octeon.c
-@@ -8,6 +8,7 @@
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/pci.h>
-+#include <linux/vmalloc.h>
- #include <linux/interrupt.h>
- #include <linux/time.h>
- #include <linux/delay.h>
-@@ -587,13 +588,16 @@ static int __init octeon_pci_setup(void)
- 		octeon_dma_bar_type = OCTEON_DMA_BAR_TYPE_BIG;
- 
- 	/* PCI I/O and PCI MEM values */
--	set_io_port_base(OCTEON_PCI_IOSPACE_BASE);
--	ioport_resource.start = 0;
--	ioport_resource.end = OCTEON_PCI_IOSPACE_SIZE - 1;
- 	if (!octeon_is_pci_host()) {
- 		pr_notice("Not in host mode, PCI Controller not initialized\n");
-+		set_io_port_base((unsigned long)vzalloc(IO_SPACE_LIMIT));
-+		ioport_resource.start = MAX_RESOURCE;
-+		ioport_resource.end = 0;
- 		return 0;
- 	}
-+	set_io_port_base(OCTEON_PCI_IOSPACE_BASE);
-+	ioport_resource.start = 0;
-+	ioport_resource.end = OCTEON_PCI_IOSPACE_SIZE - 1;
- 
- 	pr_notice("%s Octeon big bar support\n",
- 		  (octeon_dma_bar_type ==
--- 
-1.8.3.2
+Sure, thank you for pointing out.
+
+I think that it is better to also include CAC_BASE.
+
+Yoichi

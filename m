@@ -1,68 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Jul 2013 17:04:53 +0200 (CEST)
-Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]:59623 "EHLO
-        mo2.mail-out.ovh.net" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6825727Ab3GVPEn4oBvL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Jul 2013 17:04:43 +0200
-Received: from mail95.ha.ovh.net (gw6.ovh.net [213.251.189.206])
-        by mo2.mail-out.ovh.net (Postfix) with SMTP id 81C0FDC42C2
-        for <linux-mips@linux-mips.org>; Mon, 22 Jul 2013 17:04:40 +0200 (CEST)
-Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
-        by b0.ovh.net with SMTP; 22 Jul 2013 17:04:40 +0200
-Received: from ns203013.ovh.net (HELO localhost) (plagnioj%jcrosoft.com@91.121.171.124)
-  by ns0.ovh.net with SMTP; 22 Jul 2013 17:04:38 +0200
-Date:   Mon, 22 Jul 2013 17:01:35 +0200
-From:   Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-To:     Santosh Shilimkar <santosh.shilimkar@ti.com>
-Cc:     grant.likely@linaro.org, Rob Herring <rob.herring@calxeda.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Mark Salter <msalter@redhat.com>,
-        Aurelien Jacquiot <a-jacquiot@ti.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>, x86@kernel.org,
-        arm@kernel.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, robherring2@gmail.com,
-        Nicolas Pitre <nicolas.pitre@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        linux-xtensa@linux-xtensa.org, devicetree-discuss@lists.ozlabs.org
-X-Ovh-Mailout: 178.32.228.2 (mo2.mail-out.ovh.net)
-Subject: Re: [PATCH v2] of: Specify initrd location using 64-bit
-Message-ID: <20130722150135.GI16015@ns203013.ovh.net>
-References: <1372702835-5333-1-git-send-email-santosh.shilimkar@ti.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Jul 2013 19:14:31 +0200 (CEST)
+Received: from mail-pb0-f52.google.com ([209.85.160.52]:44830 "EHLO
+        mail-pb0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6824793Ab3GVROZmJwPt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Jul 2013 19:14:25 +0200
+Received: by mail-pb0-f52.google.com with SMTP id xa12so7266814pbc.25
+        for <multiple recipients>; Mon, 22 Jul 2013 10:14:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=F/SeiZsMDudGY0KK63pAj9pDh7ExM904xMMAQRw1KEg=;
+        b=Z+WsL4rDhHNEmFiHp+F0uTdjzHPe6W7RdCMPjRwJSH9iZ0+TfkbunFvnXiY0jNv/rC
+         eQT+NLXGyW5hNL/U5GlB4XF0z1n2zLB7OJUNNOxvmu4lTIKGWBuitHZ2hB2udYCSe+he
+         DdkEB8EgdVVH93l6LxQ25aUbgtR+zF/R+4JQsE9JM5H6dzdpToj849uEGsgE7emdYmTz
+         kO6P4lnFKHRhTZwz3GKaFNGEEM2TSqijRYGfy2OKGXTjXcH38pmZcStXyOkY9I+Z5XIi
+         MIgaBHM0dSsoX+doLZtlzWRXRViwzExidlZLCiMqoNRrsrOmVK9yBfYchHM+cja5eVc+
+         +LNw==
+X-Received: by 10.66.253.40 with SMTP id zx8mr33376174pac.71.1374513257951;
+        Mon, 22 Jul 2013 10:14:17 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id td5sm7866069pac.16.2013.07.22.10.14.15
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 22 Jul 2013 10:14:16 -0700 (PDT)
+Message-ID: <51ED6866.1020702@gmail.com>
+Date:   Mon, 22 Jul 2013 10:14:14 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1372702835-5333-1-git-send-email-santosh.shilimkar@ti.com>
-X-PGP-Key: http://uboot.jcrosoft.org/plagnioj.asc
-X-PGP-key-fingerprint: 6309 2BBA 16C8 3A07 1772 CC24 DEFC FFA3 279C CE7C
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Ovh-Tracer-Id: 5277655814110751709
-X-Ovh-Remote: 91.121.171.124 (ns203013.ovh.net)
-X-Ovh-Local: 213.186.33.20 (ns0.ovh.net)
-X-OVH-SPAMSTATE: OK
-X-OVH-SPAMSCORE: -100
-X-OVH-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrfeeijedrfedvucetufdoteggodetrfcurfhrohhfihhlvgemucfqggfjnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrfeeijedrfedvucetufdoteggodetrfcurfhrohhfihhlvgemucfqggfjnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-Return-Path: <plagnioj@jcrosoft.com>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     David Daney <david.daney@cavium.com>,
+        Faidon Liambotis <paravoid@debian.org>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: cavium-octeon: fix I/O space setup on non-PCI systems
+References: <1374341931-10591-1-git-send-email-aaro.koskinen@iki.fi>
+In-Reply-To: <1374341931-10591-1-git-send-email-aaro.koskinen@iki.fi>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37341
+X-archive-position: 37342
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: plagnioj@jcrosoft.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,282 +59,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 14:20 Mon 01 Jul     , Santosh Shilimkar wrote:
-> On some PAE architectures, the entire range of physical memory could reside
-> outside the 32-bit limit.  These systems need the ability to specify the
-> initrd location using 64-bit numbers.
-> 
-> This patch globally modifies the early_init_dt_setup_initrd_arch() function to
-> use 64-bit numbers instead of the current unsigned long.
-> 
-> There has been quite a bit of debate about whether to use u64 or phys_addr_t.
-> It was concluded to stick to u64 to be consistent with rest of the device
-> tree code. As summarized by Geert, "The address to load the initrd is decided
-> by the bootloader/user and set at that point later in time. The dtb should not
-> be tied to the kernel you are booting"
-> 
-> More details on the discussion can be found here:
-> https://lkml.org/lkml/2013/6/20/690
-> https://lkml.org/lkml/2012/9/13/544
-> 
-> Cc: Grant Likely <grant.likely@linaro.org>
-> Cc: Rob Herring <rob.herring@calxeda.com>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> Cc: Vineet Gupta <vgupta@synopsys.com>
-> Cc: Russell King <linux@arm.linux.org.uk>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will.deacon@arm.com>
-> Cc: Mark Salter <msalter@redhat.com>
-> Cc: Aurelien Jacquiot <a-jacquiot@ti.com>
-> Cc: James Hogan <james.hogan@imgtec.com>
-> Cc: Michal Simek <monstr@monstr.eu>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Jonas Bonn <jonas@southpole.se>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: x86@kernel.org
-> Cc: arm@kernel.org
-> Cc: Chris Zankel <chris@zankel.net>
-> Cc: Max Filippov <jcmvbkbc@gmail.com>
-> Cc: bigeasy@linutronix.de
-> Cc: robherring2@gmail.com
-> Cc: Nicolas Pitre <nicolas.pitre@linaro.org>
+On 07/20/2013 10:38 AM, Aaro Koskinen wrote:
+> Fix I/O space setup, so that on non-PCI systems using inb()/outb()
+> won't crash the system. Some drivers may try to probe I/O space and for
+> that purpose we can just allocate some normal memory. Drivers trying to
+> reserve a region will fail early as we set the size to 0.
+>
+> Tested with EdgeRouter Lite by enabling CONFIG_SERIO_I8042 that caused
+> the originally reported crash.
+>
+> Reported-by: Faidon Liambotis <paravoid@debian.org>
+> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+NACK.
 
-> 
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-c6x-dev@linux-c6x.org
-> Cc: linux-mips@linux-mips.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-xtensa@linux-xtensa.org
-> Cc: devicetree-discuss@lists.ozlabs.org
-> 
-> Signed-off-by: Santosh Shilimkar <santosh.shilimkar@ti.com>
+This doesn't handle the following cases:
+
+1) CONFIG_PCI=n
+
+2) SoCs with PCIe
+
+
+I think we need to move the 'if (!octeon_is_pci_host())' block to a 
+place where it will always run.
+
+David Daney
+
 > ---
->  arch/arc/mm/init.c            |    5 ++---
->  arch/arm/mm/init.c            |    2 +-
->  arch/arm64/mm/init.c          |    3 +--
->  arch/c6x/kernel/devicetree.c  |    3 +--
->  arch/metag/mm/init.c          |    5 ++---
->  arch/microblaze/kernel/prom.c |    3 +--
->  arch/mips/kernel/prom.c       |    3 +--
->  arch/openrisc/kernel/prom.c   |    3 +--
->  arch/powerpc/kernel/prom.c    |    3 +--
->  arch/x86/kernel/devicetree.c  |    3 +--
->  arch/xtensa/kernel/setup.c    |    3 +--
->  drivers/of/fdt.c              |   10 ++++++----
->  include/linux/of_fdt.h        |    3 +--
->  13 files changed, 20 insertions(+), 29 deletions(-)
-> 
-> diff --git a/arch/arc/mm/init.c b/arch/arc/mm/init.c
-> index 4a17736..7991e08 100644
-> --- a/arch/arc/mm/init.c
-> +++ b/arch/arc/mm/init.c
-> @@ -157,9 +157,8 @@ void __init free_initrd_mem(unsigned long start, unsigned long end)
->  #endif
->  
->  #ifdef CONFIG_OF_FLATTREE
-> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
-> -					    unsigned long end)
-> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->  {
-> -	pr_err("%s(%lx, %lx)\n", __func__, start, end);
-> +	pr_err("%s(%llx, %llx)\n", __func__, start, end);
->  }
->  #endif /* CONFIG_OF_FLATTREE */
-> diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
-> index 9a5cdc0..afeaef7 100644
-> --- a/arch/arm/mm/init.c
-> +++ b/arch/arm/mm/init.c
-> @@ -76,7 +76,7 @@ static int __init parse_tag_initrd2(const struct tag *tag)
->  __tagtable(ATAG_INITRD2, parse_tag_initrd2);
->  
->  #ifdef CONFIG_OF_FLATTREE
-> -void __init early_init_dt_setup_initrd_arch(unsigned long start, unsigned long end)
-> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->  {
->  	phys_initrd_start = start;
->  	phys_initrd_size = end - start;
-> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> index f497ca7..7047708 100644
-> --- a/arch/arm64/mm/init.c
-> +++ b/arch/arm64/mm/init.c
-> @@ -44,8 +44,7 @@ static unsigned long phys_initrd_size __initdata = 0;
->  
->  phys_addr_t memstart_addr __read_mostly = 0;
->  
-> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
-> -					    unsigned long end)
-> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->  {
->  	phys_initrd_start = start;
->  	phys_initrd_size = end - start;
-> diff --git a/arch/c6x/kernel/devicetree.c b/arch/c6x/kernel/devicetree.c
-> index bdb56f0..287d0e6 100644
-> --- a/arch/c6x/kernel/devicetree.c
-> +++ b/arch/c6x/kernel/devicetree.c
-> @@ -33,8 +33,7 @@ void __init early_init_devtree(void *params)
->  
->  
->  #ifdef CONFIG_BLK_DEV_INITRD
-> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
-> -		unsigned long end)
-> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->  {
->  	initrd_start = (unsigned long)__va(start);
->  	initrd_end = (unsigned long)__va(end);
-> diff --git a/arch/metag/mm/init.c b/arch/metag/mm/init.c
-> index d05b845..bdc4811 100644
-> --- a/arch/metag/mm/init.c
-> +++ b/arch/metag/mm/init.c
-> @@ -419,10 +419,9 @@ void free_initrd_mem(unsigned long start, unsigned long end)
->  #endif
->  
->  #ifdef CONFIG_OF_FLATTREE
-> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
-> -					    unsigned long end)
-> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->  {
-> -	pr_err("%s(%lx, %lx)\n",
-> +	pr_err("%s(%llx, %llx)\n",
->  	       __func__, start, end);
->  }
->  #endif /* CONFIG_OF_FLATTREE */
-> diff --git a/arch/microblaze/kernel/prom.c b/arch/microblaze/kernel/prom.c
-> index 0a2c68f..62e2e8f 100644
-> --- a/arch/microblaze/kernel/prom.c
-> +++ b/arch/microblaze/kernel/prom.c
-> @@ -136,8 +136,7 @@ void __init early_init_devtree(void *params)
->  }
->  
->  #ifdef CONFIG_BLK_DEV_INITRD
-> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
-> -		unsigned long end)
-> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->  {
->  	initrd_start = (unsigned long)__va(start);
->  	initrd_end = (unsigned long)__va(end);
-> diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
-> index 5712bb5..32b8788 100644
-> --- a/arch/mips/kernel/prom.c
-> +++ b/arch/mips/kernel/prom.c
-> @@ -58,8 +58,7 @@ void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
->  }
->  
->  #ifdef CONFIG_BLK_DEV_INITRD
-> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
-> -					    unsigned long end)
-> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->  {
->  	initrd_start = (unsigned long)__va(start);
->  	initrd_end = (unsigned long)__va(end);
-> diff --git a/arch/openrisc/kernel/prom.c b/arch/openrisc/kernel/prom.c
-> index 5869e3f..150215a 100644
-> --- a/arch/openrisc/kernel/prom.c
-> +++ b/arch/openrisc/kernel/prom.c
-> @@ -96,8 +96,7 @@ void __init early_init_devtree(void *params)
->  }
->  
->  #ifdef CONFIG_BLK_DEV_INITRD
-> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
-> -		unsigned long end)
-> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->  {
->  	initrd_start = (unsigned long)__va(start);
->  	initrd_end = (unsigned long)__va(end);
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index 8b6f7a9..2f3e252 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -550,8 +550,7 @@ void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
->  }
->  
->  #ifdef CONFIG_BLK_DEV_INITRD
-> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
-> -		unsigned long end)
-> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->  {
->  	initrd_start = (unsigned long)__va(start);
->  	initrd_end = (unsigned long)__va(end);
-> diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
-> index b158152..2fbad6b 100644
-> --- a/arch/x86/kernel/devicetree.c
-> +++ b/arch/x86/kernel/devicetree.c
-> @@ -52,8 +52,7 @@ void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
->  }
->  
->  #ifdef CONFIG_BLK_DEV_INITRD
-> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
-> -					    unsigned long end)
-> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->  {
->  	initrd_start = (unsigned long)__va(start);
->  	initrd_end = (unsigned long)__va(end);
-> diff --git a/arch/xtensa/kernel/setup.c b/arch/xtensa/kernel/setup.c
-> index 6dd25ec..d45e602 100644
-> --- a/arch/xtensa/kernel/setup.c
-> +++ b/arch/xtensa/kernel/setup.c
-> @@ -170,8 +170,7 @@ static int __init parse_tag_fdt(const bp_tag_t *tag)
->  
->  __tagtable(BP_TAG_FDT, parse_tag_fdt);
->  
-> -void __init early_init_dt_setup_initrd_arch(unsigned long start,
-> -		unsigned long end)
-> +void __init early_init_dt_setup_initrd_arch(u64 start, u64 end)
->  {
->  	initrd_start = (void *)__va(start);
->  	initrd_end = (void *)__va(end);
-> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-> index 808be06..21123b8 100644
-> --- a/drivers/of/fdt.c
-> +++ b/drivers/of/fdt.c
-> @@ -550,7 +550,8 @@ int __init of_flat_dt_match(unsigned long node, const char *const *compat)
->   */
->  void __init early_init_dt_check_for_initrd(unsigned long node)
->  {
-> -	unsigned long start, end, len;
-> +	u64 start, end;
-> +	unsigned long len;
->  	__be32 *prop;
->  
->  	pr_debug("Looking for initrd properties... ");
-> @@ -558,15 +559,16 @@ void __init early_init_dt_check_for_initrd(unsigned long node)
->  	prop = of_get_flat_dt_prop(node, "linux,initrd-start", &len);
->  	if (!prop)
->  		return;
-> -	start = of_read_ulong(prop, len/4);
-> +	start = of_read_number(prop, len/4);
->  
->  	prop = of_get_flat_dt_prop(node, "linux,initrd-end", &len);
->  	if (!prop)
->  		return;
-> -	end = of_read_ulong(prop, len/4);
-> +	end = of_read_number(prop, len/4);
->  
->  	early_init_dt_setup_initrd_arch(start, end);
-> -	pr_debug("initrd_start=0x%lx  initrd_end=0x%lx\n", start, end);
-> +	pr_debug("initrd_start=0x%llx  initrd_end=0x%llx\n",
-> +		 (unsigned long long)start, (unsigned long long)end);
->  }
->  #else
->  inline void early_init_dt_check_for_initrd(unsigned long node)
-> diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
-> index ed136ad..4a17939 100644
-> --- a/include/linux/of_fdt.h
-> +++ b/include/linux/of_fdt.h
-> @@ -106,8 +106,7 @@ extern u64 dt_mem_next_cell(int s, __be32 **cellp);
->   * physical addresses.
->   */
->  #ifdef CONFIG_BLK_DEV_INITRD
-> -extern void early_init_dt_setup_initrd_arch(unsigned long start,
-> -					    unsigned long end);
-> +extern void early_init_dt_setup_initrd_arch(u64 start, u64 end);
->  #endif
->  
->  /* Early flat tree scan hooks */
-> -- 
-> 1.7.9.5
-> 
+>   arch/mips/pci/pci-octeon.c | 10 +++++++---
+>   1 file changed, 7 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/mips/pci/pci-octeon.c b/arch/mips/pci/pci-octeon.c
+> index 95c2ea8..1bfdcc8c 100644
+> --- a/arch/mips/pci/pci-octeon.c
+> +++ b/arch/mips/pci/pci-octeon.c
+> @@ -8,6 +8,7 @@
+>   #include <linux/kernel.h>
+>   #include <linux/init.h>
+>   #include <linux/pci.h>
+> +#include <linux/vmalloc.h>
+>   #include <linux/interrupt.h>
+>   #include <linux/time.h>
+>   #include <linux/delay.h>
+> @@ -587,13 +588,16 @@ static int __init octeon_pci_setup(void)
+>   		octeon_dma_bar_type = OCTEON_DMA_BAR_TYPE_BIG;
+>
+>   	/* PCI I/O and PCI MEM values */
+> -	set_io_port_base(OCTEON_PCI_IOSPACE_BASE);
+> -	ioport_resource.start = 0;
+> -	ioport_resource.end = OCTEON_PCI_IOSPACE_SIZE - 1;
+>   	if (!octeon_is_pci_host()) {
+>   		pr_notice("Not in host mode, PCI Controller not initialized\n");
+> +		set_io_port_base((unsigned long)vzalloc(IO_SPACE_LIMIT));
+> +		ioport_resource.start = MAX_RESOURCE;
+> +		ioport_resource.end = 0;
+>   		return 0;
+>   	}
+> +	set_io_port_base(OCTEON_PCI_IOSPACE_BASE);
+> +	ioport_resource.start = 0;
+> +	ioport_resource.end = OCTEON_PCI_IOSPACE_SIZE - 1;
+>
+>   	pr_notice("%s Octeon big bar support\n",
+>   		  (octeon_dma_bar_type ==
+>

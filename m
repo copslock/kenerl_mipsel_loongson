@@ -1,28 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jul 2013 16:41:17 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:13398 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jul 2013 20:02:27 +0200 (CEST)
+Received: from sauhun.de ([89.238.76.85]:44804 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824793Ab3GWOlOImp-I (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 23 Jul 2013 16:41:14 +0200
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH] MIPS: Set default CPU type for BCM47XX platforms
-Date:   Tue, 23 Jul 2013 15:40:37 +0100
-Message-ID: <1374590437-18150-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.3.2
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.58]
-X-SEF-Processed: 7_3_0_01192__2013_07_23_15_41_08
-Return-Path: <Markos.Chandras@imgtec.com>
+        id S6827461Ab3GWSCXDMVy0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 23 Jul 2013 20:02:23 +0200
+Received: from p5b387ff2.dip0.t-ipconnect.de ([91.56.127.242]:10490 helo=localhost)
+        by pokefinder.org with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.69)
+        (envelope-from <wsa@the-dreams.de>)
+        id 1V1guk-0001Q8-38; Tue, 23 Jul 2013 20:02:22 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     linux-kernel@vger.kernel.org
+Cc:     Wolfram Sang <wsa@the-dreams.de>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 01/27] arch/mips/lantiq/xway: don't check resource with devm_ioremap_resource
+Date:   Tue, 23 Jul 2013 20:01:34 +0200
+Message-Id: <1374602524-3398-2-git-send-email-wsa@the-dreams.de>
+X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1374602524-3398-1-git-send-email-wsa@the-dreams.de>
+References: <1374602524-3398-1-git-send-email-wsa@the-dreams.de>
+Return-Path: <wsa@the-dreams.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37362
+X-archive-position: 37363
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: wsa@the-dreams.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,43 +39,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If neither BCM47XX_SSD nor BCM47XX_BCMA is selected, then no
-CPU type is available leading to build problems. We fix
-this problem by using MIPS32r1 as the default CPU type for
-the BCM47XX platform.
+devm_ioremap_resource does sanity checks on the given resource. No need to
+duplicate this in the driver.
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
 ---
-This patch is for the upstream-sfr/mips-for-linux-next tree
----
- arch/mips/Kconfig         | 1 +
- arch/mips/bcm47xx/Kconfig | 1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+Please apply via the subsystem-tree.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index c3abed3..e12764c 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -114,6 +114,7 @@ config BCM47XX
- 	select FW_CFE
- 	select HW_HAS_PCI
- 	select IRQ_CPU
-+	select SYS_HAS_CPU_MIPS32_R1
- 	select NO_EXCEPT_FILL
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-diff --git a/arch/mips/bcm47xx/Kconfig b/arch/mips/bcm47xx/Kconfig
-index ba61192..2b8b118 100644
---- a/arch/mips/bcm47xx/Kconfig
-+++ b/arch/mips/bcm47xx/Kconfig
-@@ -2,7 +2,6 @@ if BCM47XX
+ arch/mips/lantiq/xway/dma.c |    4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
+index 08f7ebd..78a91fa 100644
+--- a/arch/mips/lantiq/xway/dma.c
++++ b/arch/mips/lantiq/xway/dma.c
+@@ -220,10 +220,6 @@ ltq_dma_init(struct platform_device *pdev)
+ 	int i;
  
- config BCM47XX_SSB
- 	bool "SSB Support for Broadcom BCM47XX"
--	select SYS_HAS_CPU_MIPS32_R1
- 	select SSB
- 	select SSB_DRIVER_MIPS
- 	select SSB_DRIVER_EXTIF
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res)
+-		panic("Failed to get dma resource");
+-
+-	/* remap dma register range */
+ 	ltq_dma_membase = devm_ioremap_resource(&pdev->dev, res);
+ 	if (IS_ERR(ltq_dma_membase))
+ 		panic("Failed to remap dma resource");
 -- 
-1.8.3.2
+1.7.10.4

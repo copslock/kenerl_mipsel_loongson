@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jul 2013 09:36:36 +0200 (CEST)
-Received: from mail-pb0-f51.google.com ([209.85.160.51]:60968 "EHLO
-        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822995Ab3GWHfY0YfCe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Jul 2013 09:35:24 +0200
-Received: by mail-pb0-f51.google.com with SMTP id um15so8109162pbc.10
-        for <multiple recipients>; Tue, 23 Jul 2013 00:35:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jul 2013 09:37:15 +0200 (CEST)
+Received: from mail-pa0-f48.google.com ([209.85.220.48]:59948 "EHLO
+        mail-pa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6824793Ab3GWHfbJZgIP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Jul 2013 09:35:31 +0200
+Received: by mail-pa0-f48.google.com with SMTP id kp1so3724921pab.21
+        for <multiple recipients>; Tue, 23 Jul 2013 00:35:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
          :references;
-        bh=KsP1B5UKB/i0UVuGIoXMenj82g8qUm2pL3JNdxnMZNU=;
-        b=SDKp5vuDrHfD2MDpaB88oAz9QvBbiTCEHE0T7CQp0U2pUliIHUMyKobO1T44WP5XYT
-         a61yJyhqDCU9GuTJZqX2pIeU3lwtcX5DlMffEgaNwkuJuLd5dxIS7i+uFWoXKYLrEpAd
-         1jrceuU4gS5aFVMQabvJXpc5Y0bRuTIrV7E12zg/xLLuTo4lHPBrrsUmBHHiHMpZc/fL
-         SNHox57irKfmrO7yQizE4cqeY95LYySmvxadMumMzicTIQqM8Mc+o75uaUHoHBf4z8db
-         EKN6xztEzIiAN1wrV0272quUnG3MOsO2a5HSCs/cdayLkzTUea9D6Hd829gIDFQ/xPp3
-         2DWA==
-X-Received: by 10.68.171.194 with SMTP id aw2mr35049381pbc.197.1374564917898;
-        Tue, 23 Jul 2013 00:35:17 -0700 (PDT)
+        bh=uuxvCSWnUMLRTdHYW/hpuf6/tCnu8e4mW+RHPI/TmcU=;
+        b=mwKKYQoAwVcMMqLG1YPKy4n3MdKtmQt7huoajuXAXulVvzGXkaq9yzFierG8/Nrhyz
+         BvRsLya0eTRE85iUY/ZkF17+44zjH5F6v6oNVNKq2crL03ie+ECG8/0KyIbDe7orIa/r
+         INjWIkoEgRsOeTlpPRq5m05WC8uDZow/+migOoVFW9v7raIdpRbQaZJOko2y6gf467GI
+         VpOBqEOLkUQ9fzOJ6cVCBLqnO5d9GXHOkoZYloiTZ+cDbUHki8wig4QYwIx5nYQgjf3I
+         30DHOCTJ9zbLVoN+7uVB1JqCSj77LvwXXFFuXrDmHEnJlOUqyAX6yjPonjCgu4fmZblm
+         bYIw==
+X-Received: by 10.68.60.132 with SMTP id h4mr34971652pbr.177.1374564923444;
+        Tue, 23 Jul 2013 00:35:23 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id bb1sm30359772pbc.10.2013.07.23.00.35.12
+        by mx.google.com with ESMTPSA id bb1sm30359772pbc.10.2013.07.23.00.35.18
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 23 Jul 2013 00:35:16 -0700 (PDT)
+        Tue, 23 Jul 2013 00:35:22 -0700 (PDT)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
@@ -30,9 +30,9 @@ Cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH V11 03/13] MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature
-Date:   Tue, 23 Jul 2013 15:34:03 +0800
-Message-Id: <1374564853-10762-4-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V11 04/13] MIPS: Loongson 3: Add Lemote-3A machtypes definition
+Date:   Tue, 23 Jul 2013 15:34:04 +0800
+Message-Id: <1374564853-10762-5-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1374564853-10762-1-git-send-email-chenhc@lemote.com>
 References: <1374564853-10762-1-git-send-email-chenhc@lemote.com>
@@ -40,7 +40,7 @@ Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37351
+X-archive-position: 37352
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,104 +57,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson-3 maintains cache coherency by hardware. So we introduce a cpu
-feature named cpu_has_coherent_cache and use it to modify MIPS's cache
-flushing functions.
+Add four Loongson-3 based machine types:
+MACH_LEMOTE_A1004/MACH_LEMOTE_A1201 are laptops;
+MACH_LEMOTE_A1101 is mini-itx;
+MACH_LEMOTE_A1205 is all-in-one machine.
+
+The most significant differrent between A1004/A1201 and A1101/A1205 is
+the laptops have EC but others don't.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Hongliang Tao <taohl@lemote.com>
 Signed-off-by: Hua Yan <yanh@lemote.com>
 ---
- arch/mips/include/asm/cpu-features.h               |    3 +++
- .../asm/mach-loongson/cpu-feature-overrides.h      |    6 ++++++
- arch/mips/mm/c-r4k.c                               |   17 ++++++++++++++++-
- 3 files changed, 25 insertions(+), 1 deletions(-)
+ arch/mips/include/asm/bootinfo.h              |   24 +++++++++++++++---------
+ arch/mips/include/asm/mach-loongson/machine.h |    6 ++++++
+ arch/mips/loongson/common/machtype.c          |    4 ++++
+ 3 files changed, 25 insertions(+), 9 deletions(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 1dc0860..75f3577 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -127,6 +127,9 @@
- #ifndef cpu_has_pindexed_dcache
- #define cpu_has_pindexed_dcache	(cpu_data[0].dcache.flags & MIPS_CACHE_PINDEX)
+diff --git a/arch/mips/include/asm/bootinfo.h b/arch/mips/include/asm/bootinfo.h
+index 4d2cdea..09956a0 100644
+--- a/arch/mips/include/asm/bootinfo.h
++++ b/arch/mips/include/asm/bootinfo.h
+@@ -61,15 +61,21 @@
+ /*
+  * Valid machtype for Loongson family
+  */
+-#define MACH_LOONGSON_UNKNOWN  0
+-#define MACH_LEMOTE_FL2E       1
+-#define MACH_LEMOTE_FL2F       2
+-#define MACH_LEMOTE_ML2F7      3
+-#define MACH_LEMOTE_YL2F89     4
+-#define MACH_DEXXON_GDIUM2F10  5
+-#define MACH_LEMOTE_NAS	       6
+-#define MACH_LEMOTE_LL2F       7
+-#define MACH_LOONGSON_END      8
++enum loongson_machine_type {
++	MACH_LOONGSON_UNKNOWN,
++	MACH_LEMOTE_FL2E,
++	MACH_LEMOTE_FL2F,
++	MACH_LEMOTE_ML2F7,
++	MACH_LEMOTE_YL2F89,
++	MACH_DEXXON_GDIUM2F10,
++	MACH_LEMOTE_NAS,
++	MACH_LEMOTE_LL2F,
++	MACH_LEMOTE_A1004,
++	MACH_LEMOTE_A1101,
++	MACH_LEMOTE_A1201,
++	MACH_LEMOTE_A1205,
++	MACH_LOONGSON_END
++};
+ 
+ /*
+  * Valid machtype for group INGENIC
+diff --git a/arch/mips/include/asm/mach-loongson/machine.h b/arch/mips/include/asm/mach-loongson/machine.h
+index 3810d5c..1b1f592 100644
+--- a/arch/mips/include/asm/mach-loongson/machine.h
++++ b/arch/mips/include/asm/mach-loongson/machine.h
+@@ -24,4 +24,10 @@
+ 
  #endif
-+#ifndef cpu_has_coherent_cache
-+#define cpu_has_coherent_cache	0
-+#endif
- #ifndef cpu_has_local_ebase
- #define cpu_has_local_ebase	1
- #endif
-diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-index c0f3ef4..1b03d31 100644
---- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-@@ -58,5 +58,11 @@
- #define cpu_has_vtag_icache	0
- #define cpu_has_watch		1
- #define cpu_has_local_ebase	0
-+#ifdef CONFIG_CPU_SUPPORTS_COHERENT_CACHE
-+#define cpu_has_coherent_cache	1
-+#else
-+#define cpu_has_coherent_cache	0
-+#endif
+ 
++#ifdef CONFIG_LEMOTE_MACH3A
 +
- 
- #endif /* __ASM_MACH_LOONGSON_CPU_FEATURE_OVERRIDES_H */
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 10d1846..8a972e8 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -344,7 +344,10 @@ static void __cpuinit r4k_blast_scache_setup(void)
- 
- static inline void local_r4k___flush_cache_all(void * args)
- {
--#if defined(CONFIG_CPU_LOONGSON2)
-+	if (cpu_has_coherent_cache && !cpu_has_dc_aliases)
-+		return;
++#define LOONGSON_MACHTYPE MACH_LEMOTE_A1101
 +
-+#if defined(CONFIG_CPU_LOONGSON2) || defined(CONFIG_CPU_LOONGSON3)
- 	r4k_blast_scache();
- 	return;
- #endif
-@@ -398,6 +401,9 @@ static inline void local_r4k_flush_cache_range(void * args)
- 	struct vm_area_struct *vma = args;
- 	int exec = vma->vm_flags & VM_EXEC;
- 
-+	if (cpu_has_coherent_cache && !cpu_has_dc_aliases)
-+		return;
++#endif /* CONFIG_LEMOTE_MACH3A */
 +
- 	if (!(has_valid_asid(vma->vm_mm)))
- 		return;
+ #endif /* __ASM_MACH_LOONGSON_MACHINE_H */
+diff --git a/arch/mips/loongson/common/machtype.c b/arch/mips/loongson/common/machtype.c
+index 4becd4f..1a47979 100644
+--- a/arch/mips/loongson/common/machtype.c
++++ b/arch/mips/loongson/common/machtype.c
+@@ -27,6 +27,10 @@ static const char *system_types[] = {
+ 	[MACH_DEXXON_GDIUM2F10]		"dexxon-gdium-2f",
+ 	[MACH_LEMOTE_NAS]		"lemote-nas-2f",
+ 	[MACH_LEMOTE_LL2F]		"lemote-lynloong-2f",
++	[MACH_LEMOTE_A1004]		"lemote-3a-notebook-a1004",
++	[MACH_LEMOTE_A1101]		"lemote-3a-itx-a1101",
++	[MACH_LEMOTE_A1201]		"lemote-2gq-notebook-a1201",
++	[MACH_LEMOTE_A1205]		"lemote-2gq-aio-a1205",
+ 	[MACH_LOONGSON_END]		NULL,
+ };
  
-@@ -468,6 +474,9 @@ static inline void local_r4k_flush_cache_page(void *args)
- 	pte_t *ptep;
- 	void *vaddr;
- 
-+	if (cpu_has_coherent_cache && !cpu_has_dc_aliases)
-+		return;
-+
- 	/*
- 	 * If ownes no valid ASID yet, cannot possibly have gotten
- 	 * this page into the cache.
-@@ -541,6 +550,9 @@ static void r4k_flush_cache_page(struct vm_area_struct *vma,
- 
- static inline void local_r4k_flush_data_cache_page(void * addr)
- {
-+	if (cpu_has_coherent_cache && !cpu_has_dc_aliases)
-+		return;
-+
- 	r4k_blast_dcache_page((unsigned long) addr);
- }
- 
-@@ -673,6 +685,9 @@ static void local_r4k_flush_cache_sigtramp(void * arg)
- 	unsigned long sc_lsize = cpu_scache_line_size();
- 	unsigned long addr = (unsigned long) arg;
- 
-+	if (cpu_has_coherent_cache && !cpu_has_dc_aliases)
-+		return;
-+
- 	R4600_HIT_CACHEOP_WAR_IMPL;
- 	if (dc_lsize)
- 		protected_writeback_dcache_line(addr & ~(dc_lsize - 1));
 -- 
 1.7.7.3

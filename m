@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jul 2013 09:36:11 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:36622 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827432Ab3GWHfUpRoZU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Jul 2013 09:35:20 +0200
-Received: by mail-pb0-f49.google.com with SMTP id jt11so8019790pbb.36
-        for <multiple recipients>; Tue, 23 Jul 2013 00:35:12 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jul 2013 09:36:36 +0200 (CEST)
+Received: from mail-pb0-f51.google.com ([209.85.160.51]:60968 "EHLO
+        mail-pb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822995Ab3GWHfY0YfCe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Jul 2013 09:35:24 +0200
+Received: by mail-pb0-f51.google.com with SMTP id um15so8109162pbc.10
+        for <multiple recipients>; Tue, 23 Jul 2013 00:35:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
          :references;
-        bh=6X0GUBJb5SNKttHZNdOymjI/kJ2PXMT9I+YfC/ApMps=;
-        b=nVniTJ3BTXCKcsze4pPwFvOujgP3TV3yQBUnOKhrjxqS4pqC24IC8uNxrCiBv0WPKi
-         6mWZB6MFcQoBb+4yAQ37wJ82H8Zv4O2ZAFPgR25pLRaXgE6p2PymLIuQvYssf8SI9zIu
-         LEV83ermWMVJtdnFI65y6gvwuGCy9eXyN/4jU+0QYxXbOM28XkO9kmCHkSW4hWqMSUVg
-         m5/7Oz2zAQsx3vkJkqs80qYFIqtwF5cZvXjhMJ9+ul1xfIHe9SsFYE0ZGHzFQa2RqUBI
-         RTgbUNgVr8Yj6af9DMYxQxELgaHZgj924mZOPTD2EMErNQ+S1QvPpVmhn+ZT4f6bZOU5
-         AMxA==
-X-Received: by 10.66.5.195 with SMTP id u3mr35435175pau.79.1374564912287;
-        Tue, 23 Jul 2013 00:35:12 -0700 (PDT)
+        bh=KsP1B5UKB/i0UVuGIoXMenj82g8qUm2pL3JNdxnMZNU=;
+        b=SDKp5vuDrHfD2MDpaB88oAz9QvBbiTCEHE0T7CQp0U2pUliIHUMyKobO1T44WP5XYT
+         a61yJyhqDCU9GuTJZqX2pIeU3lwtcX5DlMffEgaNwkuJuLd5dxIS7i+uFWoXKYLrEpAd
+         1jrceuU4gS5aFVMQabvJXpc5Y0bRuTIrV7E12zg/xLLuTo4lHPBrrsUmBHHiHMpZc/fL
+         SNHox57irKfmrO7yQizE4cqeY95LYySmvxadMumMzicTIQqM8Mc+o75uaUHoHBf4z8db
+         EKN6xztEzIiAN1wrV0272quUnG3MOsO2a5HSCs/cdayLkzTUea9D6Hd829gIDFQ/xPp3
+         2DWA==
+X-Received: by 10.68.171.194 with SMTP id aw2mr35049381pbc.197.1374564917898;
+        Tue, 23 Jul 2013 00:35:17 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id bb1sm30359772pbc.10.2013.07.23.00.35.02
+        by mx.google.com with ESMTPSA id bb1sm30359772pbc.10.2013.07.23.00.35.12
         for <multiple recipients>
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 23 Jul 2013 00:35:11 -0700 (PDT)
+        Tue, 23 Jul 2013 00:35:16 -0700 (PDT)
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
@@ -30,9 +30,9 @@ Cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH V11 02/13] MIPS: Loongson: Add basic Loongson-3 CPU support
-Date:   Tue, 23 Jul 2013 15:34:02 +0800
-Message-Id: <1374564853-10762-3-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V11 03/13] MIPS: Loongson: Introduce and use cpu_has_coherent_cache feature
+Date:   Tue, 23 Jul 2013 15:34:03 +0800
+Message-Id: <1374564853-10762-4-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 1.7.7.3
 In-Reply-To: <1374564853-10762-1-git-send-email-chenhc@lemote.com>
 References: <1374564853-10762-1-git-send-email-chenhc@lemote.com>
@@ -40,7 +40,7 @@ Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37350
+X-archive-position: 37351
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,166 +57,104 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Basic Loongson-3 CPU support include CPU probing and TLB/cache
-initializing.
+Loongson-3 maintains cache coherency by hardware. So we introduce a cpu
+feature named cpu_has_coherent_cache and use it to modify MIPS's cache
+flushing functions.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Hongliang Tao <taohl@lemote.com>
 Signed-off-by: Hua Yan <yanh@lemote.com>
 ---
- arch/mips/kernel/cpu-probe.c |   14 +++++++---
- arch/mips/mm/c-r4k.c         |   62 +++++++++++++++++++++++++++++++++++++++++-
- arch/mips/mm/tlb-r4k.c       |    2 +-
- arch/mips/mm/tlbex.c         |    1 +
- 4 files changed, 73 insertions(+), 6 deletions(-)
+ arch/mips/include/asm/cpu-features.h               |    3 +++
+ .../asm/mach-loongson/cpu-feature-overrides.h      |    6 ++++++
+ arch/mips/mm/c-r4k.c                               |   17 ++++++++++++++++-
+ 3 files changed, 25 insertions(+), 1 deletions(-)
 
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index c7b1b3c..e38dc86 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -603,17 +603,23 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 			     MIPS_CPU_LLSC;
- 		c->tlbsize = 64;
- 		break;
--	case PRID_IMP_LOONGSON2:
--		c->cputype = CPU_LOONGSON2;
--		__cpu_name[cpu] = "ICT Loongson-2";
--
-+	case PRID_IMP_LOONGSON2: /* Loongson-2/3 have the same PRID_IMP field */
- 		switch (c->processor_id & PRID_REV_MASK) {
- 		case PRID_REV_LOONGSON2E:
-+			c->cputype = CPU_LOONGSON2;
-+			__cpu_name[cpu] = "ICT Loongson-2E";
- 			set_elf_platform(cpu, "loongson2e");
- 			break;
- 		case PRID_REV_LOONGSON2F:
-+			c->cputype = CPU_LOONGSON2;
-+			__cpu_name[cpu] = "ICT Loongson-2F";
- 			set_elf_platform(cpu, "loongson2f");
- 			break;
-+		case PRID_REV_LOONGSON3A:
-+			c->cputype = CPU_LOONGSON3;
-+			__cpu_name[cpu] = "ICT Loongson-3A";
-+			set_elf_platform(cpu, "loongson3a");
-+			break;
- 		}
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index 1dc0860..75f3577 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -127,6 +127,9 @@
+ #ifndef cpu_has_pindexed_dcache
+ #define cpu_has_pindexed_dcache	(cpu_data[0].dcache.flags & MIPS_CACHE_PINDEX)
+ #endif
++#ifndef cpu_has_coherent_cache
++#define cpu_has_coherent_cache	0
++#endif
+ #ifndef cpu_has_local_ebase
+ #define cpu_has_local_ebase	1
+ #endif
+diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+index c0f3ef4..1b03d31 100644
+--- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+@@ -58,5 +58,11 @@
+ #define cpu_has_vtag_icache	0
+ #define cpu_has_watch		1
+ #define cpu_has_local_ebase	0
++#ifdef CONFIG_CPU_SUPPORTS_COHERENT_CACHE
++#define cpu_has_coherent_cache	1
++#else
++#define cpu_has_coherent_cache	0
++#endif
++
  
- 		set_isa(c, MIPS_CPU_ISA_III);
+ #endif /* __ASM_MACH_LOONGSON_CPU_FEATURE_OVERRIDES_H */
 diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 21813be..10d1846 100644
+index 10d1846..8a972e8 100644
 --- a/arch/mips/mm/c-r4k.c
 +++ b/arch/mips/mm/c-r4k.c
-@@ -971,6 +971,31 @@ static void __cpuinit probe_pcache(void)
- 		c->dcache.waybit = 0;
- 		break;
+@@ -344,7 +344,10 @@ static void __cpuinit r4k_blast_scache_setup(void)
  
-+	case CPU_LOONGSON3:
-+		config1 = read_c0_config1();
-+		if ((lsize = ((config1 >> 19) & 7)))
-+			c->icache.linesz = 2 << lsize;
-+		else
-+			c->icache.linesz = lsize;
-+		c->icache.sets = 64 << ((config1 >> 22) & 7);
-+		c->icache.ways = 1 + ((config1 >> 16) & 7);
-+		icache_size = c->icache.sets *
-+					  c->icache.ways *
-+					  c->icache.linesz;
-+		c->icache.waybit = 0;
-+
-+		if ((lsize = ((config1 >> 10) & 7)))
-+			c->dcache.linesz = 2 << lsize;
-+		else
-+			c->dcache.linesz = lsize;
-+		c->dcache.sets = 64 << ((config1 >> 13) & 7);
-+		c->dcache.ways = 1 + ((config1 >> 7) & 7);
-+		dcache_size = c->dcache.sets *
-+					  c->dcache.ways *
-+					  c->dcache.linesz;
-+		c->dcache.waybit = 0;
-+		break;
-+
- 	default:
- 		if (!(config & MIPS_CONF_M))
- 			panic("Don't know how to probe P-caches on this cpu.");
-@@ -1192,6 +1217,34 @@ static void __init loongson2_sc_init(void)
- }
- #endif
- 
-+#if defined(CONFIG_CPU_LOONGSON3)
-+static void __init loongson3_sc_init(void)
-+{
-+	struct cpuinfo_mips *c = &current_cpu_data;
-+	unsigned int config2, lsize;
-+
-+	config2 = read_c0_config2();
-+	if ((lsize = ((config2 >> 4) & 15)))
-+		c->scache.linesz = 2 << lsize;
-+	else
-+		c->scache.linesz = lsize;
-+	c->scache.sets = 64 << ((config2 >> 8) & 15);
-+	c->scache.ways = 1 + (config2 & 15);
-+
-+	scache_size = c->scache.sets *
-+				  c->scache.ways *
-+				  c->scache.linesz;
-+	/* Loongson-3 has 4 cores, 1MB scache for each. scaches are shared */
-+	scache_size *= 4;
-+	c->scache.waybit = 0;
-+	pr_info("Unified secondary cache %ldkB %s, linesize %d bytes.\n",
-+	       scache_size >> 10, way_string[c->scache.ways], c->scache.linesz);
-+	if (scache_size)
-+		c->options |= MIPS_CPU_INCLUSIVE_CACHES;
-+	return;
-+}
-+#endif
-+
- extern int r5k_sc_init(void);
- extern int rm7k_sc_init(void);
- extern int mips_sc_init(void);
-@@ -1240,11 +1293,18 @@ static void __cpuinit setup_scache(void)
- #endif
- 		return;
- 
+ static inline void local_r4k___flush_cache_all(void * args)
+ {
 -#if defined(CONFIG_CPU_LOONGSON2)
- 	case CPU_LOONGSON2:
-+#if defined(CONFIG_CPU_LOONGSON2)
- 		loongson2_sc_init();
-+#endif
- 		return;
-+
-+	case CPU_LOONGSON3:
-+#if defined(CONFIG_CPU_LOONGSON3)
-+		loongson3_sc_init();
- #endif
++	if (cpu_has_coherent_cache && !cpu_has_dc_aliases)
 +		return;
 +
- 	case CPU_XLP:
- 		/* don't need to worry about L2, fully coherent */
- 		return;
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index c643de4..d3e9326 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -51,7 +51,7 @@ extern void build_tlb_refill_handler(void);
- 
- #endif /* CONFIG_MIPS_MT_SMTC */
- 
--#if defined(CONFIG_CPU_LOONGSON2)
 +#if defined(CONFIG_CPU_LOONGSON2) || defined(CONFIG_CPU_LOONGSON3)
- /*
-  * LOONGSON2 has a 4 entry itlb which is a subset of dtlb,
-  * unfortrunately, itlb is not totally transparent to software.
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 9ab0f90..9360854 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -600,6 +600,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
- 	case CPU_BMIPS4380:
- 	case CPU_BMIPS5000:
- 	case CPU_LOONGSON2:
-+	case CPU_LOONGSON3:
- 	case CPU_R5500:
- 		if (m4kc_tlbp_war())
- 			uasm_i_nop(p);
+ 	r4k_blast_scache();
+ 	return;
+ #endif
+@@ -398,6 +401,9 @@ static inline void local_r4k_flush_cache_range(void * args)
+ 	struct vm_area_struct *vma = args;
+ 	int exec = vma->vm_flags & VM_EXEC;
+ 
++	if (cpu_has_coherent_cache && !cpu_has_dc_aliases)
++		return;
++
+ 	if (!(has_valid_asid(vma->vm_mm)))
+ 		return;
+ 
+@@ -468,6 +474,9 @@ static inline void local_r4k_flush_cache_page(void *args)
+ 	pte_t *ptep;
+ 	void *vaddr;
+ 
++	if (cpu_has_coherent_cache && !cpu_has_dc_aliases)
++		return;
++
+ 	/*
+ 	 * If ownes no valid ASID yet, cannot possibly have gotten
+ 	 * this page into the cache.
+@@ -541,6 +550,9 @@ static void r4k_flush_cache_page(struct vm_area_struct *vma,
+ 
+ static inline void local_r4k_flush_data_cache_page(void * addr)
+ {
++	if (cpu_has_coherent_cache && !cpu_has_dc_aliases)
++		return;
++
+ 	r4k_blast_dcache_page((unsigned long) addr);
+ }
+ 
+@@ -673,6 +685,9 @@ static void local_r4k_flush_cache_sigtramp(void * arg)
+ 	unsigned long sc_lsize = cpu_scache_line_size();
+ 	unsigned long addr = (unsigned long) arg;
+ 
++	if (cpu_has_coherent_cache && !cpu_has_dc_aliases)
++		return;
++
+ 	R4600_HIT_CACHEOP_WAR_IMPL;
+ 	if (dc_lsize)
+ 		protected_writeback_dcache_line(addr & ~(dc_lsize - 1));
 -- 
 1.7.7.3

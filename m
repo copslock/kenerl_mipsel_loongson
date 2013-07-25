@@ -1,30 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Jul 2013 07:40:37 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:58689 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816841Ab3GYFkeud9ca (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Jul 2013 07:40:34 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <Steven.Hill@imgtec.com>)
-        id 1V2EHp-0006wS-WF; Thu, 25 Jul 2013 00:40:26 -0500
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-To:     linux-mips@linux-mips.org
-Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH] MIPS: Octeon: Move declaration of 'fixup_irqs' to common header.
-Date:   Thu, 25 Jul 2013 00:40:17 -0500
-Message-Id: <1374730817-9040-1-git-send-email-Steven.Hill@imgtec.com>
-X-Mailer: git-send-email 1.7.9.5
-Return-Path: <Steven.Hill@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Jul 2013 17:11:44 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:48097 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823013Ab3GYPLiFfUfc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 25 Jul 2013 17:11:38 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: powertv: Fix arguments for free_reserved_area()
+Date:   Thu, 25 Jul 2013 16:11:28 +0100
+Message-ID: <1374765088-27101-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.3.2
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.58]
+X-SEF-Processed: 7_3_0_01192__2013_07_25_16_11_32
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37370
+X-archive-position: 37371
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,38 +35,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-To prepare for CPU hotplug of CM-based platforms.
+Commit 6e7582bf35b8a5a330fd08b398ae445bac86917a
+"MIPS: PowerTV: use free_reserved_area() to simplify code"
 
-Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+merged in 3.11-rc1, broke the build for the powertv defconfig with
+the following build error:
+
+arch/mips/powertv/asic/asic_devices.c: In function 'platform_release_memory':
+arch/mips/powertv/asic/asic_devices.c:533:7: error: passing argument 1 of
+'free_reserved_area' makes pointer from integer without a cast [-Werror]
+
+The free_reserved_area() function expects a void * pointer for the start
+address and a void * pointer for the end one.
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/cavium-octeon/smp.c |    2 --
- arch/mips/include/asm/irq.h   |    1 +
- 2 files changed, 1 insertions(+), 2 deletions(-)
+This patch is for the upstream-sfr/mips-for-linux-next tree
+---
+ arch/mips/powertv/asic/asic_devices.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-index 138cc80..a63dbc0 100644
---- a/arch/mips/cavium-octeon/smp.c
-+++ b/arch/mips/cavium-octeon/smp.c
-@@ -255,8 +255,6 @@ static void octeon_cpus_done(void)
- /* State of each CPU. */
- DEFINE_PER_CPU(int, cpu_state);
- 
--extern void fixup_irqs(void);
--
- static int octeon_cpu_disable(void)
+diff --git a/arch/mips/powertv/asic/asic_devices.c b/arch/mips/powertv/asic/asic_devices.c
+index 9f64c23..0238af1 100644
+--- a/arch/mips/powertv/asic/asic_devices.c
++++ b/arch/mips/powertv/asic/asic_devices.c
+@@ -529,8 +529,7 @@ EXPORT_SYMBOL(asic_resource_get);
+  */
+ void platform_release_memory(void *ptr, int size)
  {
- 	unsigned int cpu = smp_processor_id();
-diff --git a/arch/mips/include/asm/irq.h b/arch/mips/include/asm/irq.h
-index 7bc2cdb..8994ca8 100644
---- a/arch/mips/include/asm/irq.h
-+++ b/arch/mips/include/asm/irq.h
-@@ -126,6 +126,7 @@ extern void do_IRQ_no_affinity(unsigned int irq);
+-	free_reserved_area((unsigned long)ptr, (unsigned long)(ptr + size),
+-			   -1, NULL);
++	free_reserved_area(ptr, ptr + size, -1, NULL);
+ }
+ EXPORT_SYMBOL(platform_release_memory);
  
- extern void arch_init_irq(void);
- extern void spurious_interrupt(void);
-+extern void fixup_irqs(void);
- 
- extern int allocate_irqno(void);
- extern void alloc_legacy_irqno(void);
 -- 
-1.7.2.5
+1.8.3.2

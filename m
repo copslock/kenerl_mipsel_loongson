@@ -1,51 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Jul 2013 19:05:24 +0200 (CEST)
-Received: from mail-pa0-f48.google.com ([209.85.220.48]:46789 "EHLO
-        mail-pa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825732Ab3GYRFMAl0X4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Jul 2013 19:05:12 +0200
-Received: by mail-pa0-f48.google.com with SMTP id kp13so993340pab.7
-        for <multiple recipients>; Thu, 25 Jul 2013 10:05:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=ycuKg9S4Zo/L1723qFFoJUsuxGdm18LebFBb/3oQbsU=;
-        b=HQRL7T8Dld40JJNO24OGQ0ZXqd3mtYDHv0zLl5/BGAD0xjVGExCXQ5JyqNoZV5VvOT
-         UxKOyXmEhM9LXEDPSv1p5qfiO5Yvqr85KlEsev/Ln4A3vYZW4REIY0WVd9ujqzTxv4KS
-         yhhGuE60YXc4/sJJpvDBqCYA8SbQaZdYyFUA5KESlQnAzStfeAKUFBsO7ZpwTuD//vTp
-         AhwIg6DIDcwK7Wt476xb0IYa1ppiw9m5aTO4A6bvxblb9EFXKzuNatpjUAeXiUYVt+Yj
-         Sm1TBiTq8O0E8zUymAwzPMpiy9B4aleEHKPNUF0nh+GBr4mcfYgvFvwYYqtOyLWMezrA
-         /FJw==
-X-Received: by 10.66.182.166 with SMTP id ef6mr49308419pac.35.1374771904965;
-        Thu, 25 Jul 2013 10:05:04 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id nm10sm55061839pbc.28.2013.07.25.10.05.02
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 25 Jul 2013 10:05:03 -0700 (PDT)
-Message-ID: <51F15ABD.4010404@gmail.com>
-Date:   Thu, 25 Jul 2013 10:05:01 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
-To:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH] MIPS: Octeon: Move declaration of 'fixup_irqs' to common
- header.
-References: <1374730817-9040-1-git-send-email-Steven.Hill@imgtec.com>
-In-Reply-To: <1374730817-9040-1-git-send-email-Steven.Hill@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Jul 2013 19:29:26 +0200 (CEST)
+Received: from filtteri5.pp.htv.fi ([213.243.153.188]:35020 "EHLO
+        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6827441Ab3GYR3XmjtYR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Jul 2013 19:29:23 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri5.pp.htv.fi (Postfix) with ESMTP id D6E525A6DAF;
+        Thu, 25 Jul 2013 20:29:22 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
+        with ESMTP id Aor6W0LK5Te3; Thu, 25 Jul 2013 20:29:18 +0300 (EEST)
+Received: from blackmetal.pp.htv.fi (cs181064211.pp.htv.fi [82.181.64.211])
+        by smtp4.welho.com (Postfix) with ESMTP id 8E8195BC012;
+        Thu, 25 Jul 2013 20:29:18 +0300 (EEST)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        Faidon Liambotis <paravoid@debian.org>,
+        linux-mips@linux-mips.org
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH v3] MIPS: cavium-octeon: fix I/O space setup on non-PCI systems
+Date:   Thu, 25 Jul 2013 20:26:48 +0300
+Message-Id: <1374773208-2827-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 1.8.3.2
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37373
+X-archive-position: 37374
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,43 +44,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/24/2013 10:40 PM, Steven J. Hill wrote:
-> To prepare for CPU hotplug of CM-based platforms.
->
-> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+Fix I/O space setup, so that on non-PCI systems using inb()/outb()
+won't crash the system. Some drivers may try to probe I/O space and for
+that purpose we can just allocate some normal memory initially. Drivers
+trying to reserve a region will fail early as we set the size to 0. If
+a real I/O space is present, the PCI/PCIe support code will re-adjust
+the values accordingly.
 
-It still builds after this, so...
+Tested with EdgeRouter Lite by enabling CONFIG_SERIO_I8042 that caused
+the originally reported crash.
 
+Reported-by: Faidon Liambotis <paravoid@debian.org>
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 Acked-by: David Daney <david.daney@cavium.com>
+---
 
-> ---
->   arch/mips/cavium-octeon/smp.c |    2 --
->   arch/mips/include/asm/irq.h   |    1 +
->   2 files changed, 1 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-> index 138cc80..a63dbc0 100644
-> --- a/arch/mips/cavium-octeon/smp.c
-> +++ b/arch/mips/cavium-octeon/smp.c
-> @@ -255,8 +255,6 @@ static void octeon_cpus_done(void)
->   /* State of each CPU. */
->   DEFINE_PER_CPU(int, cpu_state);
->
-> -extern void fixup_irqs(void);
-> -
->   static int octeon_cpu_disable(void)
->   {
->   	unsigned int cpu = smp_processor_id();
-> diff --git a/arch/mips/include/asm/irq.h b/arch/mips/include/asm/irq.h
-> index 7bc2cdb..8994ca8 100644
-> --- a/arch/mips/include/asm/irq.h
-> +++ b/arch/mips/include/asm/irq.h
-> @@ -126,6 +126,7 @@ extern void do_IRQ_no_affinity(unsigned int irq);
->
->   extern void arch_init_irq(void);
->   extern void spurious_interrupt(void);
-> +extern void fixup_irqs(void);
->
->   extern int allocate_irqno(void);
->   extern void alloc_legacy_irqno(void);
->
+	v3: Move octeon_no_pci_init() to core_initcall
+	    (http://marc.info/?t=137452306500001&r=1&w=2).
+
+	v2: Address the issues found from the first version of the patch
+	    (http://marc.info/?t=137434204000002&r=1&w=2).
+
+ arch/mips/cavium-octeon/setup.c | 28 ++++++++++++++++++++++++++++
+ arch/mips/pci/pci-octeon.c      |  9 +++++----
+ 2 files changed, 33 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
+index 48b08eb..b212ae1 100644
+--- a/arch/mips/cavium-octeon/setup.c
++++ b/arch/mips/cavium-octeon/setup.c
+@@ -8,6 +8,7 @@
+  *   written by Ralf Baechle <ralf@linux-mips.org>
+  */
+ #include <linux/compiler.h>
++#include <linux/vmalloc.h>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/console.h>
+@@ -1139,3 +1140,30 @@ static int __init edac_devinit(void)
+ 	return err;
+ }
+ device_initcall(edac_devinit);
++
++static void __initdata *octeon_dummy_iospace;
++
++static int __init octeon_no_pci_init(void)
++{
++	/*
++	 * Initially assume there is no PCI. The PCI/PCIe platform code will
++	 * later re-initialize these to correct values if they are present.
++	 */
++	octeon_dummy_iospace = vzalloc(IO_SPACE_LIMIT);
++	set_io_port_base((unsigned long)octeon_dummy_iospace);
++	ioport_resource.start = MAX_RESOURCE;
++	ioport_resource.end = 0;
++	return 0;
++}
++core_initcall(octeon_no_pci_init);
++
++static int __init octeon_no_pci_release(void)
++{
++	/*
++	 * Release the allocated memory if a real IO space is there.
++	 */
++	if ((unsigned long)octeon_dummy_iospace != mips_io_port_base)
++		vfree(octeon_dummy_iospace);
++	return 0;
++}
++late_initcall(octeon_no_pci_release);
+diff --git a/arch/mips/pci/pci-octeon.c b/arch/mips/pci/pci-octeon.c
+index 95c2ea8..59cccd9 100644
+--- a/arch/mips/pci/pci-octeon.c
++++ b/arch/mips/pci/pci-octeon.c
+@@ -586,15 +586,16 @@ static int __init octeon_pci_setup(void)
+ 	else
+ 		octeon_dma_bar_type = OCTEON_DMA_BAR_TYPE_BIG;
+ 
+-	/* PCI I/O and PCI MEM values */
+-	set_io_port_base(OCTEON_PCI_IOSPACE_BASE);
+-	ioport_resource.start = 0;
+-	ioport_resource.end = OCTEON_PCI_IOSPACE_SIZE - 1;
+ 	if (!octeon_is_pci_host()) {
+ 		pr_notice("Not in host mode, PCI Controller not initialized\n");
+ 		return 0;
+ 	}
+ 
++	/* PCI I/O and PCI MEM values */
++	set_io_port_base(OCTEON_PCI_IOSPACE_BASE);
++	ioport_resource.start = 0;
++	ioport_resource.end = OCTEON_PCI_IOSPACE_SIZE - 1;
++
+ 	pr_notice("%s Octeon big bar support\n",
+ 		  (octeon_dma_bar_type ==
+ 		  OCTEON_DMA_BAR_TYPE_BIG) ? "Enabling" : "Disabling");
+-- 
+1.8.3.2

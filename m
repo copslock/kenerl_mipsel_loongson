@@ -1,42 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jul 2013 23:32:38 +0200 (CEST)
-Received: from mail-by2lp0242.outbound.protection.outlook.com ([207.46.163.242]:27522
-        "EHLO na01-by2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6830610Ab3G2Vcfofgm1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 29 Jul 2013 23:32:35 +0200
-Received: from BN1PRD0712HT002.namprd07.prod.outlook.com (10.255.196.35) by
- SN2PR07MB032.namprd07.prod.outlook.com (10.255.174.42) with Microsoft SMTP
- Server (TLS) id 15.0.731.12; Mon, 29 Jul 2013 21:32:25 +0000
-Received: from dl.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
- (10.255.196.35) with Microsoft SMTP Server (TLS) id 14.16.341.1; Mon, 29 Jul
- 2013 21:32:24 +0000
-Message-ID: <51F6DF65.9050301@caviumnetworks.com>
-Date:   Mon, 29 Jul 2013 14:32:21 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
-To:     <ralf@linux-mips.org>, Linus Walleij <linus.walleij@linaro.org>
-CC:     David Daney <ddaney.cavm@gmail.com>, <linux-gpio@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH v2 0/2] OCTEON GPIO support.
-References: <1375133350-18828-1-git-send-email-ddaney.cavm@gmail.com>
-In-Reply-To: <1375133350-18828-1-git-send-email-ddaney.cavm@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-Forefront-PRVS: 09222B39F5
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(377454003)(479174003)(51704005)(24454002)(199002)(189002)(74366001)(79102001)(16406001)(74662001)(23756003)(51856001)(74876001)(65806001)(76796001)(76786001)(65956001)(69226001)(80976001)(80022001)(63696002)(66066001)(64126003)(81542001)(47776003)(81342001)(83072001)(53416003)(31966008)(74706001)(74502001)(47446002)(56776001)(76482001)(33656001)(49866001)(80316001)(50986001)(4396001)(59766001)(47736001)(47976001)(77982001)(50466002)(19580405001)(54356001)(36756003)(53806001)(83322001)(56816003)(19580395003)(46102001)(59896001)(54316002)(77096001)(217873001);DIR:OUT;SFP:;SCL:1;SRVR:SN2PR07MB032;H:BN1PRD0712HT002.namprd07.prod.outlook.com;CLIP:64.2.3.195;RD:InfoNoRecords;A:1;MX:1;LANG:en;
-X-OriginatorOrg: DuplicateDomain-a3ec847f-e37f-4d9a-9900-9d9d96f75f58.caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Jul 2013 00:07:28 +0200 (CEST)
+Received: from mail-pd0-f180.google.com ([209.85.192.180]:39191 "EHLO
+        mail-pd0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6831311Ab3G2WHQthjcF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Jul 2013 00:07:16 +0200
+Received: by mail-pd0-f180.google.com with SMTP id 10so5918547pdi.25
+        for <multiple recipients>; Mon, 29 Jul 2013 15:07:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=ozO4/Zf2XfLznYeMDf8q+a4n5jlDKihVzw2fn5DNFhQ=;
+        b=mb22FlpcLnrwarn33fngazxROouqauwlKjuUIFK75Q8HN55Z/p6Qpmr7eR+0/O8iXS
+         hswJxnqJSdnrjKrA1Y95dW7EEwMXyFHFFpt+vEzPs9jNeSKXkxxe1/gYI6e6AHIXpT+n
+         cpsT3LEIXykEXR54i5SZN6nFotOLgOtHO84lyB38vxFM5LykbFG9j+DLCHN7mwp9vYBw
+         H7YMk1qG5YYS49Klkh0tMEl4GzBVaEBQUJwcM8qqChf9IOsNCUlSCirJ+3mJNXvAXW1j
+         SBPaY2j8mng7NIryuWtWtS/lspptV5oIJEMK9QqVF/SQjiIn4lN6lcxsw8Qxsx3FSLga
+         ZySA==
+X-Received: by 10.68.189.36 with SMTP id gf4mr70658389pbc.27.1375135630032;
+        Mon, 29 Jul 2013 15:07:10 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id xl3sm79014951pbb.17.2013.07.29.15.07.08
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 29 Jul 2013 15:07:09 -0700 (PDT)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r6TM76FX030989;
+        Mon, 29 Jul 2013 15:07:07 -0700
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r6TM76o2030988;
+        Mon, 29 Jul 2013 15:07:06 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH 0/5] MIPS: Add support for OCTEON III based SoCs.
+Date:   Mon, 29 Jul 2013 15:06:59 -0700
+Message-Id: <1375135624-30950-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37393
+X-archive-position: 37394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,36 +56,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/29/2013 02:29 PM, David Daney wrote:
-> From: David Daney <david.daney@cavium.com>
->
-> The Cavium, OCTEON is a MIPS based SoC.  Here we add support for its
-> on-chip GPIO lines.
->
-> Changes from v1: Cleaned up variable names, messages and added some
-> comments as suggested by Linus Walleij.
->
-> The second patch depends on the first, but is in code maintained by
-> Ralf.  It may be best to mrege both of these together, perhaps from
-> the GPIO tree, with Ralf's Acked-by.
+From: David Daney <david.daney@cavium.com>
 
-Really I meant to say that the first patch is in the MIPS tree, and 
-should be Acked-by Ralf, if that wasn't clear.
+These patches add minimal support for SoCs in the OCTEON III family.
+In many respects, they are similar to OCTEON II, but with larger cache
+and FPU.  FPU support comes later...
 
-David Daney
+David Daney (5):
+  MIPS: Add CPU identifiers for more OCTEON family members.
+  MIPS: Probe for new OCTEON CPU/SoC types.
+  MIPS: Use r4k_wait for OCTEON3 CPUs.
+  MIPS: Generate OCTEON3 TLB handlers with the same features as
+    OCTEON2.
+  MIPS: OCTEON: Set L1 cache parameters for OCTEON3 CPUs.
 
+ arch/mips/include/asm/cpu.h  |  5 ++++-
+ arch/mips/kernel/cpu-probe.c |  7 +++++++
+ arch/mips/kernel/idle.c      |  1 +
+ arch/mips/mm/c-octeon.c      | 14 ++++++++++++++
+ arch/mips/mm/tlbex.c         |  2 ++
+ 5 files changed, 28 insertions(+), 1 deletion(-)
 
->
-> David Daney (2):
->    MIPS: OCTEON: Select ARCH_REQUIRE_GPIOLIB
->    gpio MIPS/OCTEON: Add a driver for OCTEON's on-chip GPIO pins.
->
->   arch/mips/Kconfig                               |   1 +
->   arch/mips/include/asm/mach-cavium-octeon/gpio.h |  21 ++++
->   drivers/gpio/Kconfig                            |   8 ++
->   drivers/gpio/Makefile                           |   1 +
->   drivers/gpio/gpio-octeon.c                      | 157 ++++++++++++++++++++++++
->   5 files changed, 188 insertions(+)
->   create mode 100644 arch/mips/include/asm/mach-cavium-octeon/gpio.h
->   create mode 100644 drivers/gpio/gpio-octeon.c
->
+-- 
+1.7.11.7

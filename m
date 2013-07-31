@@ -1,45 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Jul 2013 11:07:15 +0200 (CEST)
-Received: from cassiel.sirena.org.uk ([80.68.93.111]:36757 "EHLO
-        cassiel.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822674Ab3GaJHJooJm6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Jul 2013 11:07:09 +0200
-Received: from cpc11-sgyl31-2-0-cust68.sgyl.cable.virginmedia.com ([94.175.92.69] helo=finisterre)
-        by cassiel.sirena.org.uk with esmtpsa (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1V4SMy-0007O5-2G; Wed, 31 Jul 2013 10:06:57 +0100
-Received: from broonie by finisterre with local (Exim 4.80)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1V4SMx-0007Ka-Iw; Wed, 31 Jul 2013 10:06:55 +0100
-Date:   Wed, 31 Jul 2013 10:06:55 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>, alsa-devel@alsa-project.org,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        linux-mips@linux-mips.org
-Message-ID: <20130731090655.GE9858@sirena.org.uk>
-References: <20130731081519.GA18756@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Jul 2013 18:25:39 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:35653 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6827293Ab3GaQZ1bEOnb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 31 Jul 2013 18:25:27 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r6VGPPfi010898;
+        Wed, 31 Jul 2013 18:25:25 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r6VGPMLU010897;
+        Wed, 31 Jul 2013 18:25:22 +0200
+Date:   Wed, 31 Jul 2013 18:25:22 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     Stuart Longland <redhatter@gentoo.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Michal Marek <mmarek@suse.cz>,
+        linux-kbuild@vger.kernel.org
+Subject: Re: [RFC MIPS] Update buildtar for MIPS
+Message-ID: <20130731162521.GA10570@linux-mips.org>
+References: <1286502337-23882-1-git-send-email-redhatter@gentoo.org>
+ <alpine.LFD.2.00.1010160716270.15889@eddie.linux-mips.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="FIYk/R+LCB1TX+kR"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20130731081519.GA18756@linux-mips.org>
-X-Cookie: You will be awarded some great honor.
+In-Reply-To: <alpine.LFD.2.00.1010160716270.15889@eddie.linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-SA-Exim-Connect-IP: 94.175.92.69
-X-SA-Exim-Mail-From: broonie@sirena.org.uk
-Subject: Re: [PATCH] SOUND: au1x: Fix build
-X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:57:07 +0000)
-X-SA-Exim-Scanned: Yes (on cassiel.sirena.org.uk)
-Return-Path: <broonie@sirena.org.uk>
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37406
+X-archive-position: 37407
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: broonie@kernel.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,38 +45,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Sat, Oct 16, 2010 at 07:17:45AM +0100, Maciej W. Rozycki wrote:
 
---FIYk/R+LCB1TX+kR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> > This updates buildtar to support MIPS targets.  MIPS may use 'vmlinux'
+> > or 'vmlinux.32' depending on the target system.
+> 
+>  Or vmlinux.64 -- why don't you handle that too?
 
-On Wed, Jul 31, 2013 at 10:15:19AM +0200, Ralf Baechle wrote:
-> d8b51c11ff5a70244753ba60abfd47088cf4dcd4 [ASoC: ac97c: Use
-> module_platform_driver()] broke the build:
+Patchwork is patient, nothing gets lost :-)  I've updated Stuart's original
+patch http://patchwork.linux-mips.org/patch/1673/ to also handle compressed
+kernel images, how about below patch.
 
-Applied.  Please do try to use subject lines appropriate for the
-subsystem.
+Michal, when testing this by building "make targz-pkg" for a particular MIPS
+platform I get
 
---FIYk/R+LCB1TX+kR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+  tar: lib/*: Cannot stat: No such file or directory
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
+and I assume that's because CONFIG_MODULES is not enabled for my test
+configuration.
 
-iQIcBAEBAgAGBQJR+NOsAAoJELSic+t+oim92FsP/0DWKlYmPmIs+JEDPqSkX4Mm
-WUk1oPAiIpWjeOH/hIt22UWFmGWTTDojuLCrigpvfcchLiLet1GchnmylYWQg59Z
-FVgLY/nO7VivXbiPfzoORgxC92fFHnlOn9yYjUtLwTO2ZhjhHDOC5UXQGHmb55lp
-jOrtFFjq46pWIpyDGIX3fH6Of1H7lNOvUT/CHkXA5oX39oJkGM8JpNQz/H+JH+qc
-4m6UTiEfk3s9D5Pp2VjpHV3YVTNLjMIxYrNy9jTUSPeyweQj97CFZdI6F+sd/ZGz
-R4nV1vUMDf1bb4o7KPSYg/F3fcAo/2Jk+FYa+tiCI9T0KB0PVb/M4S+ADZWB78hE
-Ap0SvKnEoolERoj2sZSvTROeEl2eRli8FJ4j9cqiCKx5RSpix4rziuuiL0OWl/Aj
-dZQFYZXwho0zWl1ADJovfsgEappfANGEzLkTZXNbO30NkojnpC6v8/5wq58yqjQx
-dfE1B7lB/dLW7M37qPhJKHg5NlbHhxJesvHq1iVViMUsw2d1CVs3TEQnlME/VdRf
-2RMz3zc2CGYzpQ4sSImQ0W5n9gVv/BAlbaVUf8cIyru+RNYcno6+jrdWyPx39Z+I
-2Il83YrtfaBHhODrfbbjKYTfLSFMhfdrBMt6DnbNGoCcEQsd5xcK52Zu12Lv6XGk
-FWxgqUBmpkj9mFSuMMEr
-=w5Dy
------END PGP SIGNATURE-----
+  Ralf
 
---FIYk/R+LCB1TX+kR--
+kbuild: Add MIPS specific files to generated package.
+
+A lot of 64-bit systems supported by Linux/MIPS have boot firmware or
+bootloaders that only understand 32-bit ELF files, and as such, the vmlinux.32
+target exists to support these systems.  Therefore, it'd be nice if the tar-pkg
+target recognised this, and included the right version when packaging up a
+binary of the kernel.
+
+This updates buildtar to support MIPS targets.  MIPS may use 'vmlinux'
+or 'vmlinux.32' depending on the target system.  This uses 'vmlinux.32'
+in preference to 'vmlinux' where present (although I should check which
+is newer), including either file as /boot/vmlinux-${version}.
+
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+---
+ scripts/package/buildtar | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/scripts/package/buildtar b/scripts/package/buildtar
+index cdd9bb9..aa22f94 100644
+--- a/scripts/package/buildtar
++++ b/scripts/package/buildtar
+@@ -87,6 +87,27 @@ case "${ARCH}" in
+ 		[ -f "${objtree}/vmlinux.SYS" ] && cp -v -- "${objtree}/vmlinux.SYS" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}.SYS"
+ 		[ -f "${objtree}/vmlinux.dsk" ] && cp -v -- "${objtree}/vmlinux.dsk" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}.dsk"
+ 		;;
++	mips)
++		if [ -f "${objtree}/arch/mips/boot/compressed/vmlinux.bin" ]; then
++			cp -v -- "${objtree}/arch/mips/boot/compressed/vmlinux.bin" "${tmpdir}/boot/vmlinuz-${KERNELRELEASE}"
++		elif [ -f "${objtree}/arch/mips/boot/compressed/vmlinux.ecoff" ]; then
++			cp -v -- "${objtree}/arch/mips/boot/compressed/vmlinux.ecoff" "${tmpdir}/boot/vmlinuz-${KERNELRELEASE}"
++		elif [ -f "${objtree}/arch/mips/boot/compressed/vmlinux.srec" ]; then
++			cp -v -- "${objtree}/arch/mips/boot/compressed/vmlinux.srec" "${tmpdir}/boot/vmlinuz-${KERNELRELEASE}"
++		elif [ -f "${objtree}/vmlinux.32" ]; then
++			cp -v -- "${objtree}/vmlinux.32" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}"
++		elif [ -f "${objtree}/vmlinux.64" ]; then
++			cp -v -- "${objtree}/vmlinux.64" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}"
++		elif [ -f "${objtree}/arch/mips/boot/vmlinux.bin" ]; then
++			cp -v -- "${objtree}/arch/mips/boot/vmlinux.bin" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}"
++		elif [ -f "${objtree}/arch/mips/boot/vmlinux.ecoff" ]; then
++			cp -v -- "${objtree}/arch/mips/boot/vmlinux.ecoff" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}"
++		elif [ -f "${objtree}/arch/mips/boot/vmlinux.srec" ]; then
++			cp -v -- "${objtree}/arch/mips/boot/vmlinux.srec" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}"
++		elif [ -f "${objtree}/vmlinux" ]; then
++			cp -v -- "${objtree}/vmlinux" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}"
++		fi
++		;;
+ 	*)
+ 		[ -f "${KBUILD_IMAGE}" ] && cp -v -- "${KBUILD_IMAGE}" "${tmpdir}/boot/vmlinux-kbuild-${KERNELRELEASE}"
+ 		echo "" >&2

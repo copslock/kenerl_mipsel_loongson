@@ -1,38 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Jul 2013 18:25:39 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:35653 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6827293Ab3GaQZ1bEOnb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 31 Jul 2013 18:25:27 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r6VGPPfi010898;
-        Wed, 31 Jul 2013 18:25:25 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r6VGPMLU010897;
-        Wed, 31 Jul 2013 18:25:22 +0200
-Date:   Wed, 31 Jul 2013 18:25:22 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     Stuart Longland <redhatter@gentoo.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Michal Marek <mmarek@suse.cz>,
-        linux-kbuild@vger.kernel.org
-Subject: Re: [RFC MIPS] Update buildtar for MIPS
-Message-ID: <20130731162521.GA10570@linux-mips.org>
-References: <1286502337-23882-1-git-send-email-redhatter@gentoo.org>
- <alpine.LFD.2.00.1010160716270.15889@eddie.linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Jul 2013 21:22:37 +0200 (CEST)
+Received: from mail-pd0-f169.google.com ([209.85.192.169]:63714 "EHLO
+        mail-pd0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827280Ab3GaTWYmOsx6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Jul 2013 21:22:24 +0200
+Received: by mail-pd0-f169.google.com with SMTP id y11so1117951pdj.14
+        for <linux-mips@linux-mips.org>; Wed, 31 Jul 2013 12:22:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=/LsFLiozx6360zatOgzF73MkInT4FcrZfMgBxH8VIhg=;
+        b=Jh1W1cXOYdZuH0c8bOuC/VwAhRd0o8Igs3vbVioA8xskA6Uyp2riqc+J7jTrfvXkCk
+         up8H7XMpR08DqLtDzBxxziXxS3pBGZvFqzqVKhF0DJ0vjOQ8k3azp/hc7oxWn9UM5cah
+         BnG/1A6oW74zxmW6u7vvJ7EJhjSgns8zb4vmQMWKhmcYw+QlZl5Qg0x2pSmOyf0SXpVU
+         cPQGJT9EFXjLjZVofglJoWe27fHAIhQmnpJcVRzR1sAtoNS9x4cs/9M5zLsVhTELFM14
+         iASCfCl1YAEandeTxY4RKcJyqWJYD+ioRzopOKTf4KAXP9OT7fcEF5d2QTUpel/0Sm0a
+         AAaw==
+X-Received: by 10.66.2.164 with SMTP id 4mr83617820pav.55.1375298538069;
+        Wed, 31 Jul 2013 12:22:18 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id bg3sm3716084pbb.44.2013.07.31.12.22.16
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 31 Jul 2013 12:22:17 -0700 (PDT)
+Message-ID: <51F963E7.50407@gmail.com>
+Date:   Wed, 31 Jul 2013 12:22:15 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.00.1010160716270.15889@eddie.linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+CC:     John Crispin <john@phrozen.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: add proper set_mode() to cevt-r4k
+References: <1375091743-20608-1-git-send-email-blogic@openwrt.org> <CAGVrzcYXyWB1bwoKyEFrSO7YEJx9Q_v2vOnnPnqVrFVKiigFrA@mail.gmail.com> <51F6495D.9000008@phrozen.org> <CAGVrzcYcP8kUueLkDtL+fT9g+HFUKGgdw_hTRXkhA8P+4LbL8A@mail.gmail.com>
+In-Reply-To: <CAGVrzcYcP8kUueLkDtL+fT9g+HFUKGgdw_hTRXkhA8P+4LbL8A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37407
+X-archive-position: 37408
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,76 +57,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Oct 16, 2010 at 07:17:45AM +0100, Maciej W. Rozycki wrote:
+On 07/29/2013 04:14 AM, Florian Fainelli wrote:
+> 2013/7/29 John Crispin <john@phrozen.org>:
+[...]
+>>
+>>> It looks to me like you are moving the irq setup later just to ensure
+>>> that your ralink clockevent device has been registered before and has
+>>> set cp0_timer_irq_installed when the set_mode() r4k clockevent device
+>>> runs, such that it won't register the same IRQ that your platforms
+>>> uses. If that it the case, cannot you just ensure that you run your
+>>> cevt device registration before mips_clockevent_init() is called?
+>>
+>>
+>> i dont like relying on the order in which the modules get loaded.
+>
+> plat_time_init() runs before mips_clockevent_init() and the ordering
+> is explicit, would not that work for what you are trying to do?
+>
+>>
+>> the actual problem is not the irq sharing but that the cevt-r4k registers
+>> the irq when the cevt is registered and not when it is activated. i believe
+>> that the patch fixes this problem
+>
+> Your patch certainly does what you say it does, but that is kind of an
+> abuse of the set_mode() callback.
+>
 
-> > This updates buildtar to support MIPS targets.  MIPS may use 'vmlinux'
-> > or 'vmlinux.32' depending on the target system.
-> 
->  Or vmlinux.64 -- why don't you handle that too?
+I might as add my $0.02...
 
-Patchwork is patient, nothing gets lost :-)  I've updated Stuart's original
-patch http://patchwork.linux-mips.org/patch/1673/ to also handle compressed
-kernel images, how about below patch.
+There are many other clockevent drivers that do this type of thing 
+aren't there?  The clockevent framework uses this to 
+install/remove/switch drivers, so why should cevt-r4k not be made to 
+work like this?
 
-Michal, when testing this by building "make targz-pkg" for a particular MIPS
-platform I get
-
-  tar: lib/*: Cannot stat: No such file or directory
-
-and I assume that's because CONFIG_MODULES is not enabled for my test
-configuration.
-
-  Ralf
-
-kbuild: Add MIPS specific files to generated package.
-
-A lot of 64-bit systems supported by Linux/MIPS have boot firmware or
-bootloaders that only understand 32-bit ELF files, and as such, the vmlinux.32
-target exists to support these systems.  Therefore, it'd be nice if the tar-pkg
-target recognised this, and included the right version when packaging up a
-binary of the kernel.
-
-This updates buildtar to support MIPS targets.  MIPS may use 'vmlinux'
-or 'vmlinux.32' depending on the target system.  This uses 'vmlinux.32'
-in preference to 'vmlinux' where present (although I should check which
-is newer), including either file as /boot/vmlinux-${version}.
-
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
----
- scripts/package/buildtar | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
-
-diff --git a/scripts/package/buildtar b/scripts/package/buildtar
-index cdd9bb9..aa22f94 100644
---- a/scripts/package/buildtar
-+++ b/scripts/package/buildtar
-@@ -87,6 +87,27 @@ case "${ARCH}" in
- 		[ -f "${objtree}/vmlinux.SYS" ] && cp -v -- "${objtree}/vmlinux.SYS" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}.SYS"
- 		[ -f "${objtree}/vmlinux.dsk" ] && cp -v -- "${objtree}/vmlinux.dsk" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}.dsk"
- 		;;
-+	mips)
-+		if [ -f "${objtree}/arch/mips/boot/compressed/vmlinux.bin" ]; then
-+			cp -v -- "${objtree}/arch/mips/boot/compressed/vmlinux.bin" "${tmpdir}/boot/vmlinuz-${KERNELRELEASE}"
-+		elif [ -f "${objtree}/arch/mips/boot/compressed/vmlinux.ecoff" ]; then
-+			cp -v -- "${objtree}/arch/mips/boot/compressed/vmlinux.ecoff" "${tmpdir}/boot/vmlinuz-${KERNELRELEASE}"
-+		elif [ -f "${objtree}/arch/mips/boot/compressed/vmlinux.srec" ]; then
-+			cp -v -- "${objtree}/arch/mips/boot/compressed/vmlinux.srec" "${tmpdir}/boot/vmlinuz-${KERNELRELEASE}"
-+		elif [ -f "${objtree}/vmlinux.32" ]; then
-+			cp -v -- "${objtree}/vmlinux.32" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}"
-+		elif [ -f "${objtree}/vmlinux.64" ]; then
-+			cp -v -- "${objtree}/vmlinux.64" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}"
-+		elif [ -f "${objtree}/arch/mips/boot/vmlinux.bin" ]; then
-+			cp -v -- "${objtree}/arch/mips/boot/vmlinux.bin" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}"
-+		elif [ -f "${objtree}/arch/mips/boot/vmlinux.ecoff" ]; then
-+			cp -v -- "${objtree}/arch/mips/boot/vmlinux.ecoff" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}"
-+		elif [ -f "${objtree}/arch/mips/boot/vmlinux.srec" ]; then
-+			cp -v -- "${objtree}/arch/mips/boot/vmlinux.srec" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}"
-+		elif [ -f "${objtree}/vmlinux" ]; then
-+			cp -v -- "${objtree}/vmlinux" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}"
-+		fi
-+		;;
- 	*)
- 		[ -f "${KBUILD_IMAGE}" ] && cp -v -- "${KBUILD_IMAGE}" "${tmpdir}/boot/vmlinux-kbuild-${KERNELRELEASE}"
- 		echo "" >&2
+David Daney

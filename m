@@ -1,28 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Aug 2013 08:22:37 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:51035 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Aug 2013 11:55:43 +0200 (CEST)
+Received: from mail.nanl.de ([217.115.11.12]:45204 "EHLO mail.nanl.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816354Ab3HAGWdpEaO0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 1 Aug 2013 08:22:33 +0200
-Message-ID: <51F9FD16.4030706@phrozen.org>
-Date:   Thu, 01 Aug 2013 08:15:50 +0200
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
-MIME-Version: 1.0
-To:     linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
-Subject: Re: [PATCH] MIPS: add proper set_mode() to cevt-r4k
-References: <1375091743-20608-1-git-send-email-blogic@openwrt.org> <CAGVrzcYcP8kUueLkDtL+fT9g+HFUKGgdw_hTRXkhA8P+4LbL8A@mail.gmail.com> <51F963E7.50407@gmail.com> <1687511.8JA8mPPmNW@lenovo>
-In-Reply-To: <1687511.8JA8mPPmNW@lenovo>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <john@phrozen.org>
+        id S6816521Ab3HAJzkI9SlY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 1 Aug 2013 11:55:40 +0200
+Received: from shaker64.lan (unknown [IPv6:2001:470:9e39:0:a00:27ff:fee0:c7df])
+        by mail.nanl.de (Postfix) with ESMTPSA id 5575C45FB3;
+        Thu,  1 Aug 2013 09:55:02 +0000 (UTC)
+From:   Jonas Gorski <jogo@openwrt.org>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        Florian Fainelli <florian@openwrt.org>,
+        Kevin Cernekee <cernekee@gmail.com>
+Subject: [PATCH V2] MIPS: BMIPS: fix compilation for BMIPS5000
+Date:   Thu,  1 Aug 2013 11:55:38 +0200
+Message-Id: <1375350938-16554-1-git-send-email-jogo@openwrt.org>
+X-Mailer: git-send-email 1.8.3.2
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37410
+X-archive-position: 37412
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,58 +37,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 31/07/13 21:26, Florian Fainelli wrote:
-> Le mercredi 31 juillet 2013 12:22:15 David Daney a écrit :
->> On 07/29/2013 04:14 AM, Florian Fainelli wrote:
->>> 2013/7/29 John Crispin<john@phrozen.org>:
->> [...]
->>
->>>>> It looks to me like you are moving the irq setup later just to ensure
->>>>> that your ralink clockevent device has been registered before and has
->>>>> set cp0_timer_irq_installed when the set_mode() r4k clockevent device
->>>>> runs, such that it won't register the same IRQ that your platforms
->>>>> uses. If that it the case, cannot you just ensure that you run your
->>>>> cevt device registration before mips_clockevent_init() is called?
->>>>
->>>> i dont like relying on the order in which the modules get loaded.
->>>
->>> plat_time_init() runs before mips_clockevent_init() and the ordering
->>> is explicit, would not that work for what you are trying to do?
->>>
->>>> the actual problem is not the irq sharing but that the cevt-r4k registers
->>>> the irq when the cevt is registered and not when it is activated. i
->>>> believe
->>>> that the patch fixes this problem
->>>
->>> Your patch certainly does what you say it does, but that is kind of an
->>> abuse of the set_mode() callback.
->>
->> I might as add my $0.02...
->>
->> There are many other clockevent drivers that do this type of thing
->> aren't there?  The clockevent framework uses this to
->> install/remove/switch drivers, so why should cevt-r4k not be made to
->> work like this?
->
-> Whatever works for you. I still would like to understand why plat_time_init()
-> is not suitable for John's specific use case.
+Commit 02b849f7613003fe5f9e58bf233d49b0ebd4a5e8 ("MIPS: Get rid of the
+use of .macro in C code.") replaced the macro usage but missed
+the accessors in bmips.h, causing the following build error:
 
-Hi Florian,
+  CC      arch/mips/kernel/smp-bmips.o
+{standard input}: Assembler messages:
+{standard input}:951: Error: Unrecognized opcode `_ssnop'
+{standard input}:952: Error: Unrecognized opcode `_ssnop'
+(...)
+make[6]: *** [arch/mips/kernel/smp-bmips.o] Error 1
 
-the reason is that fixing it in plat_time_init() works around the real 
-problem. the double request of the irq is a symptom of the actual 
-problem, which is, that the cevt-r4k sets up the timer during init and 
-not during setup. additionally, plat_time_init is used to probe the cevt 
-drivers from OF already. currently the mips code just assumes that on a 
-r4k we always have and want to run the cevt-r4k. this assumption is 
-wrong and can quickly be fixed by making the cevt-r4k use the correct api.
+Fix this by also replacing the macros here, fixing the last occurrence
+in mips.
 
-also fixing it this way allows the user to control the clocksource and 
-change it at runtime via sysfs, a feature als not working currently on 
-r4k as the cevt driver did not implement the set_mode() handler 
-correctly. to be quite honest, i cannot think of a single way in which 
-this can be fixed cleanly in the ralink plat_time_init() without using 
-some weird heuristic. also if i fix this inside ralink plat_time_init() 
-it is fixed only on ralink SoC and not on any other platform.
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+---
+* V1 -> V2
+  Reworded and split out of patchset after finding the commmit
+  introducing the build failure.
 
-	John
+While this is technically a regression introduced in 3.10, the code requires
+OOT arch code to get compiled, so I'm not sure if that is critical enough to
+warrant a stable tag.
+
+ arch/mips/include/asm/bmips.h | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/arch/mips/include/asm/bmips.h b/arch/mips/include/asm/bmips.h
+index 552a65a..87a253d 100644
+--- a/arch/mips/include/asm/bmips.h
++++ b/arch/mips/include/asm/bmips.h
+@@ -70,15 +70,15 @@ static inline unsigned long bmips_read_zscm_reg(unsigned int offset)
+ 		".set noreorder\n"
+ 		"cache %1, 0(%2)\n"
+ 		"sync\n"
+-		"_ssnop\n"
+-		"_ssnop\n"
+-		"_ssnop\n"
+-		"_ssnop\n"
+-		"_ssnop\n"
+-		"_ssnop\n"
+-		"_ssnop\n"
++		__stringify(___ssnop) "\n"
++		__stringify(___ssnop) "\n"
++		__stringify(___ssnop) "\n"
++		__stringify(___ssnop) "\n"
++		__stringify(___ssnop) "\n"
++		__stringify(___ssnop) "\n"
++		__stringify(___ssnop) "\n"
+ 		"mfc0 %0, $28, 3\n"
+-		"_ssnop\n"
++		__stringify(___ssnop) "\n"
+ 		".set pop\n"
+ 		: "=&r" (ret)
+ 		: "i" (Index_Load_Tag_S), "r" (ZSCM_REG_BASE + offset)
+@@ -92,13 +92,13 @@ static inline void bmips_write_zscm_reg(unsigned int offset, unsigned long data)
+ 		".set push\n"
+ 		".set noreorder\n"
+ 		"mtc0 %0, $28, 3\n"
+-		"_ssnop\n"
+-		"_ssnop\n"
+-		"_ssnop\n"
++		__stringify(___ssnop) "\n"
++		__stringify(___ssnop) "\n"
++		__stringify(___ssnop) "\n"
+ 		"cache %1, 0(%2)\n"
+-		"_ssnop\n"
+-		"_ssnop\n"
+-		"_ssnop\n"
++		__stringify(___ssnop) "\n"
++		__stringify(___ssnop) "\n"
++		__stringify(___ssnop) "\n"
+ 		: /* no outputs */
+ 		: "r" (data),
+ 		  "i" (Index_Store_Tag_S), "r" (ZSCM_REG_BASE + offset)
+-- 
+1.8.3.2

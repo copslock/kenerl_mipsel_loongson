@@ -1,39 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Aug 2013 16:14:08 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:39094 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6822678Ab3HAOOA3v057 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 1 Aug 2013 16:14:00 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r71EDxPp004568;
-        Thu, 1 Aug 2013 16:13:59 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r71EDw1B004567;
-        Thu, 1 Aug 2013 16:13:58 +0200
-Date:   Thu, 1 Aug 2013 16:13:58 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     John Crispin <john@phrozen.org>
-Cc:     linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
-Subject: Re: [PATCH] MIPS: add proper set_mode() to cevt-r4k
-Message-ID: <20130801141358.GB3466@linux-mips.org>
-References: <1375091743-20608-1-git-send-email-blogic@openwrt.org>
- <CAGVrzcYcP8kUueLkDtL+fT9g+HFUKGgdw_hTRXkhA8P+4LbL8A@mail.gmail.com>
- <51F963E7.50407@gmail.com>
- <1687511.8JA8mPPmNW@lenovo>
- <51F9FD16.4030706@phrozen.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Aug 2013 16:15:18 +0200 (CEST)
+Received: from mail.nanl.de ([217.115.11.12]:45219 "EHLO mail.nanl.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6822678Ab3HAOPIoC0GS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 1 Aug 2013 16:15:08 +0200
+Received: from mail-vb0-x22c.google.com (mail-vb0-x22c.google.com [IPv6:2607:f8b0:400c:c02::22c])
+        by mail.nanl.de (Postfix) with ESMTPSA id 09D6C402DE;
+        Thu,  1 Aug 2013 14:14:32 +0000 (UTC)
+Received: by mail-vb0-f44.google.com with SMTP id e13so2144613vbg.17
+        for <multiple recipients>; Thu, 01 Aug 2013 07:15:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=Ed2GfZFr5bhEYQK+AGL2Tc9yvPBj+Pz+NoeNI+oGmL4=;
+        b=nDEV9kS/qhSEvgKcRE7HMdQPU3OW0C48NS1zry1J7WXduGd3wVgNOWnViCVsDR0sBT
+         PftEdOwpnMdXsIqN3XAHpLWVu+Ue8v2sWzfdIfjMQ1Z3ofYRN8LCIKzs0AmTt5bAZ+D6
+         3i0ZqDa9ttWwuqfvm7l7Nznqwc7oEtbKsrC8X1fpWQbakCqVuGFAELcMhbvMf8vybb3v
+         0UtQfdIk9d4EjwPFqmc7ntHWdef3DyRnEcalPFmO+aH+BlNK2NsuKQPGkED563KUVCB9
+         ZFU7ORNgajHFb7LYhNex57zYhd/o5MaqioMkBxG6tJnYaJoQFgIg3wkkApqe3enSYtmU
+         tctA==
+X-Received: by 10.52.116.209 with SMTP id jy17mr409620vdb.113.1375366503507;
+ Thu, 01 Aug 2013 07:15:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <51F9FD16.4030706@phrozen.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: by 10.220.177.193 with HTTP; Thu, 1 Aug 2013 07:14:43 -0700 (PDT)
+In-Reply-To: <20130801135505.GA3466@linux-mips.org>
+References: <1375350938-16554-1-git-send-email-jogo@openwrt.org> <20130801135505.GA3466@linux-mips.org>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Thu, 1 Aug 2013 16:14:43 +0200
+Message-ID: <CAOiHx=kZuzVu=ung9suwuoYr7F5LP-ghNFzwVSM_Zrc3i+=Q-g@mail.gmail.com>
+Subject: Re: [PATCH V2] MIPS: BMIPS: fix compilation for BMIPS5000
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
+        Florian Fainelli <florian@openwrt.org>,
+        Kevin Cernekee <cernekee@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37416
+X-archive-position: 37417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,38 +55,117 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 01, 2013 at 08:15:50AM +0200, John Crispin wrote:
+On Thu, Aug 1, 2013 at 3:55 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Thu, Aug 01, 2013 at 11:55:38AM +0200, Jonas Gorski wrote:
+>
+>> Commit 02b849f7613003fe5f9e58bf233d49b0ebd4a5e8 ("MIPS: Get rid of the
+>> use of .macro in C code.") replaced the macro usage but missed
+>> the accessors in bmips.h, causing the following build error:
+>>
+>>   CC      arch/mips/kernel/smp-bmips.o
+>> {standard input}: Assembler messages:
+>> {standard input}:951: Error: Unrecognized opcode `_ssnop'
+>> {standard input}:952: Error: Unrecognized opcode `_ssnop'
+>> (...)
+>> make[6]: *** [arch/mips/kernel/smp-bmips.o] Error 1
+>>
+>> Fix this by also replacing the macros here, fixing the last occurrence
+>> in mips.
+>
+> How about getting rid of the entire inline assembler code by something
+> like below patch?
 
-> >Whatever works for you. I still would like to understand why plat_time_init()
-> >is not suitable for John's specific use case.
-> 
-> Hi Florian,
-> 
-> the reason is that fixing it in plat_time_init() works around the
-> real problem. the double request of the irq is a symptom of the
-> actual problem, which is, that the cevt-r4k sets up the timer during
-> init and not during setup. additionally, plat_time_init is used to
-> probe the cevt drivers from OF already. currently the mips code just
-> assumes that on a r4k we always have and want to run the cevt-r4k.
-> this assumption is wrong and can quickly be fixed by making the
-> cevt-r4k use the correct api.
-> 
-> also fixing it this way allows the user to control the clocksource
-> and change it at runtime via sysfs, a feature als not working
-> currently on r4k as the cevt driver did not implement the set_mode()
-> handler correctly. to be quite honest, i cannot think of a single
-> way in which this can be fixed cleanly in the ralink
-> plat_time_init() without using some weird heuristic. also if i fix
-> this inside ralink plat_time_init() it is fixed only on ralink SoC
-> and not on any other platform.
+It certainly does look neater. One small issue though ...
 
-setup_irq() may fail but set_mode doesn't have a way to communicate an
-error - other than leaving back a half-wrecked system so set_mode is not
-a good place to do that kind of job.
+>  arch/mips/include/asm/bmips.h | 56 ++++++++++++++++++-------------------------
+>  1 file changed, 23 insertions(+), 33 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/bmips.h b/arch/mips/include/asm/bmips.h
+> index 552a65a..6483d26 100644
+> --- a/arch/mips/include/asm/bmips.h
+> +++ b/arch/mips/include/asm/bmips.h
+> @@ -13,6 +13,7 @@
+>  #include <linux/compiler.h>
+>  #include <linux/linkage.h>
+>  #include <asm/addrspace.h>
+> +#include <asm/r4kcache.h>
+>  #include <asm/mipsregs.h>
+>  #include <asm/hazards.h>
+>
+> @@ -65,44 +66,33 @@ static inline unsigned long bmips_read_zscm_reg(unsigned int offset)
+>  {
+>         unsigned long ret;
+>
+> -       __asm__ __volatile__(
+> -               ".set push\n"
+> -               ".set noreorder\n"
+> -               "cache %1, 0(%2)\n"
+> -               "sync\n"
+> -               "_ssnop\n"
+> -               "_ssnop\n"
+> -               "_ssnop\n"
+> -               "_ssnop\n"
+> -               "_ssnop\n"
+> -               "_ssnop\n"
+> -               "_ssnop\n"
+> -               "mfc0 %0, $28, 3\n"
+> -               "_ssnop\n"
+> -               ".set pop\n"
+> -               : "=&r" (ret)
+> -               : "i" (Index_Load_Tag_S), "r" (ZSCM_REG_BASE + offset)
+> -               : "memory");
+> +       barrier();
+> +       cache_op(Index_Load_Tag_S, ZSCM_REG_BASE + offset);
+> +       __sync();
+> +       __ssnop();
+> +       __ssnop();
+> +       __ssnop();
+> +       __ssnop();
+> +       __ssnop();
+> +       __ssnop();
+> +       __ssnop();
+> +       ret = read_c0_ddatalo();
+> +       __ssnop();
+> +
+>         return ret;
+>  }
+>
+>  static inline void bmips_write_zscm_reg(unsigned int offset, unsigned long data)
+>  {
+> -       __asm__ __volatile__(
+> -               ".set push\n"
+> -               ".set noreorder\n"
+> -               "mtc0 %0, $28, 3\n"
+> -               "_ssnop\n"
+> -               "_ssnop\n"
+> -               "_ssnop\n"
+> -               "cache %1, 0(%2)\n"
+> -               "_ssnop\n"
+> -               "_ssnop\n"
+> -               "_ssnop\n"
+> -               : /* no outputs */
+> -               : "r" (data),
+> -                 "i" (Index_Store_Tag_S), "r" (ZSCM_REG_BASE + offset)
+> -               : "memory");
+> +       write_c0_ddatalo(3);
 
-How about using get_c0_compare_int() for a solution?  Currently
-get_c0_compare_int() can not return an error.  If it could return a
-negative value to indicate the unavailability of an interrupt for
-cevt-r4k's use, that interrupt would be available for alternative use.
+I guess this needs to be write_c0_ddatalo(data);
 
-  Ralf
+> +       __ssnop();
+> +       __ssnop();
+> +       __ssnop();
+> +       cache_op(Index_Store_Tag_S, ZSCM_REG_BASE + offset);
+> +       __ssnop();
+> +       __ssnop();
+> +       __ssnop();
+> +       barrier();
+>  }
+>
+>  #endif /* !defined(__ASSEMBLY__) */
+>
+
+Kevin or Florian, can you comment on this?
+
+
+Regards
+Jonas

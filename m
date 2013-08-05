@@ -1,43 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Aug 2013 12:51:06 +0200 (CEST)
-Received: from mms3.broadcom.com ([216.31.210.19]:1839 "EHLO mms3.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Aug 2013 15:18:35 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:15563 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6819547Ab3HEKu5CivTt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 5 Aug 2013 12:50:57 +0200
-Received: from [10.9.208.53] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Mon, 05 Aug 2013 03:40:47 -0700
-X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Mon, 5 Aug 2013 03:50:41 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Mon, 5 Aug 2013 03:50:41 -0700
-Received: from fainelli-desktop.broadcom.com (
- dhcp-lab-brsb-10.bri.broadcom.com [10.178.7.10]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 3F4F0F2D73; Mon, 5
- Aug 2013 03:50:40 -0700 (PDT)
-From:   "Florian Fainelli" <f.fainelli@gmail.com>
-To:     ralf@linux-mips.org
-cc:     linux-mips@linux-mips.org, blogic@openwrt.org, jogo@openwrt.org,
-        cernekee@gmail.com, "Florian Fainelli" <florian@openwrt.org>
-Subject: [PATCH] MIPS: BMIPS: fix hardware interrupt routing for boot
- CPU != 0
-Date:   Mon, 5 Aug 2013 11:50:25 +0100
-Message-ID: <1375699825-17576-1-git-send-email-f.fainelli@gmail.com>
-X-Mailer: git-send-email 1.8.1.2
+        id S6823064Ab3HENSUGW5cT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 5 Aug 2013 15:18:20 +0200
+Message-ID: <51FFA5CD.3010406@imgtec.com>
+Date:   Mon, 5 Aug 2013 14:17:01 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-X-WSS-ID: 7DE15EA52L870790655-01-01
-Content-Type: text/plain
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
+        <kvm@vger.kernel.org>, Sanjay Lal <sanjayl@kymasys.com>,
+        Gleb Natapov <gleb@redhat.com>, <linux-kernel@vger.kernel.org>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 1/3] mips/kvm: Improve code formatting in arch/mips/kvm/kvm_locore.S
+References: <1375388555-4045-1-git-send-email-ddaney.cavm@gmail.com> <1375388555-4045-2-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <1375388555-4045-2-git-send-email-ddaney.cavm@gmail.com>
+X-Enigmail-Version: 1.5.2
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+X-Originating-IP: [192.168.154.65]
+X-SEF-Processed: 7_3_0_01192__2013_08_05_14_18_14
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37427
+X-archive-position: 37428
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,50 +42,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Florian Fainelli <florian@openwrt.org>
+Hi David,
 
-The hardware interrupt routing for boot CPU != 0 is wrong because it
-will route all the hardware interrupts to TP0 which is not the one we
-booted from. Fix this by properly checking which boot CPU we are booting
-from and updating the right interrupt mask for the boot CPU. This fixes
-booting on BCM3368 with bmips_smp_emabled = 0.
+On 01/08/13 21:22, David Daney wrote:
+> From: David Daney <david.daney@cavium.com>
+> 
+> No code changes, just reflowing some comments and consistently using
+> tabs and spaces.  Object code is verified to be unchanged.
+> 
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-Ralf,
 
-This is the last fix the BMIPS SMP changes, targetted a 3.11-rc4.
+> +   	 /* Put the saved pointer to vcpu (s1) back into the DDATA_LO Register */
 
- arch/mips/kernel/smp-bmips.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+git am detects a whitespace error here ("space before tab in indent").
+It's got spaces before and after the tab actually.
 
-diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index 159abc8..126da74 100644
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -66,6 +66,8 @@ static void __init bmips_smp_setup(void)
- 	int i, cpu = 1, boot_cpu = 0;
- 
- #if defined(CONFIG_CPU_BMIPS4350) || defined(CONFIG_CPU_BMIPS4380)
-+	int cpu_hw_intr;
-+
- 	/* arbitration priority */
- 	clear_c0_brcm_cmt_ctrl(0x30);
- 
-@@ -80,8 +82,12 @@ static void __init bmips_smp_setup(void)
- 	 * MIPS interrupt 2 (HW INT 0) is the CPU0 L1 controller output
- 	 * MIPS interrupt 3 (HW INT 1) is the CPU1 L1 controller output
- 	 */
--	change_c0_brcm_cmt_intr(0xf8018000,
--					(0x02 << 27) | (0x03 << 15));
-+	if (boot_cpu == 0)
-+		cpu_hw_intr = 0x02;
-+	else
-+		cpu_hw_intr = 0x1d;
-+
-+	change_c0_brcm_cmt_intr(0xf8018000, (cpu_hw_intr << 27) | (0x03 << 15));
- 
- 	/* single core, 2 threads (2 pipelines) */
- 	max_cpus = 2;
--- 
-1.8.1.2
+>      /* load the guest context from VCPU and return */
+
+this comment could have it's indentation fixed too
+
+Otherwise, for all 3 patches:
+
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+
+Thanks
+James

@@ -1,52 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Aug 2013 19:24:05 +0200 (CEST)
-Received: from mail-oa0-f44.google.com ([209.85.219.44]:48829 "EHLO
-        mail-oa0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6865173Ab3HFRX6kCZuY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Aug 2013 19:23:58 +0200
-Received: by mail-oa0-f44.google.com with SMTP id l20so1344570oag.3
-        for <multiple recipients>; Tue, 06 Aug 2013 10:23:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=3LYkHB4OXTayhA/49R3gTrlCOAXSPJCe7pUJK7oY7YU=;
-        b=04I/I8nlnwA/CnC7el1Q+ciIsdkca7VjI2vUzD/+HNG1bI41PKwNfLnSAcVeQoZydR
-         oZLeml6yszt8gERWfaY867rEZNbHQ/40LkwsXXPpLhChbYziLpKG6B57ByXJ7EKdTYJs
-         nOhJYRSYQDHgjKAu/yV1WzfVA9eRYnbQJlqz4T5YPX6e2ybdzDFqz2jT/loIdeVB5Cu9
-         dAViz0fOpy7Esiwtu0wc0wbHd2Nj3RluTvFgxazEosjkEsefPjphFygyDEl5CN1E+crn
-         Wedx0McNm3pbOvrF+TuaF92S9k+kIGK9WZ4pis7rrc2r/hriJnOxu+GGXa8CCjTEbyV6
-         3UCg==
-X-Received: by 10.42.83.84 with SMTP id g20mr130025icl.10.1375809831689;
-        Tue, 06 Aug 2013 10:23:51 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id y2sm356592igl.10.2013.08.06.10.23.49
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 06 Aug 2013 10:23:50 -0700 (PDT)
-Message-ID: <52013124.3010701@gmail.com>
-Date:   Tue, 06 Aug 2013 10:23:48 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Aug 2013 00:32:47 +0200 (CEST)
+Received: from hydra.sisk.pl ([212.160.235.94]:34981 "EHLO hydra.sisk.pl"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6865173Ab3HFWcp3tsrr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 7 Aug 2013 00:32:45 +0200
+Received: from vostro.rjw.lan (aftv187.neoplus.adsl.tpnet.pl [178.42.255.187])
+        by hydra.sisk.pl (Postfix) with ESMTPSA id D80DFE3DC1;
+        Wed,  7 Aug 2013 00:27:45 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@sisk.pl>
 To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
-        Sanjay Lal <sanjayl@kymasys.com>, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 25/31] mips/kvm: Add some asm-offsets constants used by
- MIPSVZ.
-References: <1370646215-6543-1-git-send-email-ddaney.cavm@gmail.com> <1370646215-6543-26-git-send-email-ddaney.cavm@gmail.com> <20130616113102.GG20046@linux-mips.org>
-In-Reply-To: <20130616113102.GG20046@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        cpufreq@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Julia Lawall <Julia.Lawall@lip6.fr>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] cpufreq: loongson2: fix broken cpufreq
+Date:   Wed, 07 Aug 2013 00:43:02 +0200
+Message-ID: <11577373.HKpXOatP90@vostro.rjw.lan>
+User-Agent: KMail/4.9.5 (Linux/3.11.0-rc4+; KDE/4.9.5; x86_64; ; )
+In-Reply-To: <20130806144012.GB17633@linux-mips.org>
+References: <1375727232-17796-1-git-send-email-aaro.koskinen@iki.fi> <20130806144012.GB17633@linux-mips.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+Return-Path: <rjw@sisk.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37440
+X-archive-position: 37441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: rjw@sisk.pl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,17 +43,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/16/2013 04:31 AM, Ralf Baechle wrote:
-> Patch looks ok but why not combine this patch with the previous one?
->
+On Tuesday, August 06, 2013 04:40:12 PM Ralf Baechle wrote:
+> On Mon, Aug 05, 2013 at 09:27:12PM +0300, Aaro Koskinen wrote:
+> 
+> > Commit 42913c799 (MIPS: Loongson2: Use clk API instead of direct
+> > dereferences) broke the cpufreq functionality on Loongson2 boards:
+> > clk_set_rate() is called before the CPU frequency table is initialized,
+> > and therefore will always fail.
+> > 
+> > Fix by moving the clk_set_rate() after the table initialization.
+> > Tested on Lemote FuLoong mini-PC.
+> 
+> Seems to make sense.
+> 
+> Rafael or Virish, this should go to Linus for 3.11.  Do you want to funnel
+> this through the cpufreq tree or shall I send this to Linus with the
+> next batch of MIPS stuff?
 
-Because even though they both touch asm-offsets.c, they are offsets for 
-unrelated structures.  I could try distributing these changes across 
-several other patches, but getting the patch dependencies/ordering 
-correct can be tricky.
+I've taken it already.
 
-David Daney
-
-
->    Ralf
->
+Thanks,
+Rafael

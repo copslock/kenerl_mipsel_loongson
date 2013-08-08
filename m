@@ -1,24 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 19:32:59 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:38775 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824815Ab3HHRc4NbU5J (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Aug 2013 19:32:56 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2] MIPS: ralink: add support for periodic timer irq
-Date:   Thu,  8 Aug 2013 19:25:15 +0200
-Message-Id: <1375982715-8789-1-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <blogic@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 20:37:10 +0200 (CEST)
+Received: from mail-ie0-f170.google.com ([209.85.223.170]:56032 "EHLO
+        mail-ie0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822308Ab3HHShG3eglo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Aug 2013 20:37:06 +0200
+Received: by mail-ie0-f170.google.com with SMTP id e14so2527947iej.15
+        for <multiple recipients>; Thu, 08 Aug 2013 11:36:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=lTLfgd1NK99V87PBKA4VbJ16GZpBF6snrpuVu+YWGhQ=;
+        b=WPNe90vtksX0CvvwjtPqI43y2WGfzejNZw5uCWkJFFo/J4NXFIXaEcHjWzAthgOchZ
+         2lLVi54tdJcVK2jVU+s9w9q8lG1XV1Tj/mXT+SPIYz8PnW9Ylzk7zX25CV5k3kCGeTiC
+         rQTSKD/lQICnWBpCls7YbIfdPbKrcPFo28S/+jHSoU/FCJYKGM/Dw5YBE6o+2luPnfuB
+         SDhkJR728ilyt2ujGDotvmk20Z0uHxdSnsZnHbsadigIi3rxbbBZT5oyJ7CD2GpF8Ctq
+         RZb2jaA4EViPdcAJ8cYzwfIRlIb3MU/W9znj0iSQIURV3qY4etZsz5uds1e5zKCVZEyS
+         1V9A==
+X-Received: by 10.43.67.73 with SMTP id xt9mr2744409icb.99.1375987019801;
+        Thu, 08 Aug 2013 11:36:59 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id io8sm8254056igb.7.2013.08.08.11.36.58
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 08 Aug 2013 11:36:59 -0700 (PDT)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r78IauKT003633;
+        Thu, 8 Aug 2013 11:36:56 -0700
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r78IatXf003632;
+        Thu, 8 Aug 2013 11:36:55 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH] MIPS: Discard .eh_frame sections in linker script.
+Date:   Thu,  8 Aug 2013 11:36:53 -0700
+Message-Id: <1375987013-3599-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37485
+X-archive-position: 37486
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -31,221 +56,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Adds a driver for the periodic timer found on Ralink SoC.
+From: David Daney <david.daney@cavium.com>
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
+Some toolchains (including Cavimu OCTEON SDK) are emitting .eh_frame
+sections by default.  Discard them as they are useless in the kernel.
+
+Signed-off-by: David Daney <david.daney@cavium.com>
 ---
-Changes in V2:
-* remove superflous error reporting
+ arch/mips/kernel/vmlinux.lds.S | 1 +
+ 1 file changed, 1 insertion(+)
 
- arch/mips/ralink/Makefile |    2 +-
- arch/mips/ralink/timer.c  |  185 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 186 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/ralink/timer.c
-
-diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
-index 38cf1a8..e37e0ec 100644
---- a/arch/mips/ralink/Makefile
-+++ b/arch/mips/ralink/Makefile
-@@ -6,7 +6,7 @@
- # Copyright (C) 2009-2011 Gabor Juhos <juhosg@openwrt.org>
- # Copyright (C) 2013 John Crispin <blogic@openwrt.org>
- 
--obj-y := prom.o of.o reset.o clk.o irq.o
-+obj-y := prom.o of.o reset.o clk.o irq.o timer.o
- 
- obj-$(CONFIG_SOC_RT288X) += rt288x.o
- obj-$(CONFIG_SOC_RT305X) += rt305x.o
-diff --git a/arch/mips/ralink/timer.c b/arch/mips/ralink/timer.c
-new file mode 100644
-index 0000000..e49241a
---- /dev/null
-+++ b/arch/mips/ralink/timer.c
-@@ -0,0 +1,185 @@
-+/*
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published
-+ * by the Free Software Foundation.
-+ *
-+ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
-+*/
-+
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/interrupt.h>
-+#include <linux/timer.h>
-+#include <linux/of_gpio.h>
-+#include <linux/clk.h>
-+
-+#include <asm/mach-ralink/ralink_regs.h>
-+
-+#define TIMER_REG_TMRSTAT		0x00
-+#define TIMER_REG_TMR0LOAD		0x10
-+#define TIMER_REG_TMR0CTL		0x18
-+
-+#define TMRSTAT_TMR0INT			BIT(0)
-+
-+#define TMR0CTL_ENABLE			BIT(7)
-+#define TMR0CTL_MODE_PERIODIC		BIT(4)
-+#define TMR0CTL_PRESCALER		1
-+#define TMR0CTL_PRESCALE_VAL		(0xf - TMR0CTL_PRESCALER)
-+#define TMR0CTL_PRESCALE_DIV		(65536 / BIT(TMR0CTL_PRESCALER))
-+
-+struct rt_timer {
-+	struct device	*dev;
-+	void __iomem	*membase;
-+	int		irq;
-+	unsigned long	timer_freq;
-+	unsigned long	timer_div;
-+};
-+
-+static inline void rt_timer_w32(struct rt_timer *rt, u8 reg, u32 val)
-+{
-+	__raw_writel(val, rt->membase + reg);
-+}
-+
-+static inline u32 rt_timer_r32(struct rt_timer *rt, u8 reg)
-+{
-+	return __raw_readl(rt->membase + reg);
-+}
-+
-+static irqreturn_t rt_timer_irq(int irq, void *_rt)
-+{
-+	struct rt_timer *rt =  (struct rt_timer *) _rt;
-+
-+	rt_timer_w32(rt, TIMER_REG_TMR0LOAD, rt->timer_freq / rt->timer_div);
-+	rt_timer_w32(rt, TIMER_REG_TMRSTAT, TMRSTAT_TMR0INT);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+
-+static int rt_timer_request(struct rt_timer *rt)
-+{
-+	int err = request_irq(rt->irq, rt_timer_irq, IRQF_DISABLED,
-+						dev_name(rt->dev), rt);
-+	if (err) {
-+		dev_err(rt->dev, "failed to request irq\n");
-+	} else {
-+		u32 t = TMR0CTL_MODE_PERIODIC | TMR0CTL_PRESCALE_VAL;
-+		rt_timer_w32(rt, TIMER_REG_TMR0CTL, t);
-+	}
-+	return err;
-+}
-+
-+static void rt_timer_free(struct rt_timer *rt)
-+{
-+	free_irq(rt->irq, rt);
-+}
-+
-+static int rt_timer_config(struct rt_timer *rt, unsigned long divisor)
-+{
-+	if (rt->timer_freq < divisor)
-+		rt->timer_div = rt->timer_freq;
-+	else
-+		rt->timer_div = divisor;
-+
-+	rt_timer_w32(rt, TIMER_REG_TMR0LOAD, rt->timer_freq / rt->timer_div);
-+
-+	return 0;
-+}
-+
-+static int rt_timer_enable(struct rt_timer *rt)
-+{
-+	u32 t;
-+
-+	rt_timer_w32(rt, TIMER_REG_TMR0LOAD, rt->timer_freq / rt->timer_div);
-+
-+	t = rt_timer_r32(rt, TIMER_REG_TMR0CTL);
-+	t |= TMR0CTL_ENABLE;
-+	rt_timer_w32(rt, TIMER_REG_TMR0CTL, t);
-+
-+	return 0;
-+}
-+
-+static void rt_timer_disable(struct rt_timer *rt)
-+{
-+	u32 t;
-+
-+	t = rt_timer_r32(rt, TIMER_REG_TMR0CTL);
-+	t &= ~TMR0CTL_ENABLE;
-+	rt_timer_w32(rt, TIMER_REG_TMR0CTL, t);
-+}
-+
-+static int rt_timer_probe(struct platform_device *pdev)
-+{
-+	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	struct rt_timer *rt;
-+	struct clk *clk;
-+
-+	rt = devm_kzalloc(&pdev->dev, sizeof(*rt), GFP_KERNEL);
-+	if (!rt) {
-+		dev_err(&pdev->dev, "failed to allocate memory\n");
-+		return -ENOMEM;
-+	}
-+
-+	rt->irq = platform_get_irq(pdev, 0);
-+	if (!rt->irq) {
-+		dev_err(&pdev->dev, "failed to load irq\n");
-+		return -ENOENT;
-+	}
-+
-+	rt->membase = devm_request_and_ioremap(&pdev->dev, res);
-+	if (IS_ERR(rt->membase))
-+		return PTR_ERR(rt->membase);
-+
-+	clk = devm_clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(clk)) {
-+		dev_err(&pdev->dev, "failed get clock rate\n");
-+		return PTR_ERR(clk);
-+	}
-+
-+	rt->timer_freq = clk_get_rate(clk) / TMR0CTL_PRESCALE_DIV;
-+	if (!rt->timer_freq)
-+		return -EINVAL;
-+
-+	rt->dev = &pdev->dev;
-+	platform_set_drvdata(pdev, rt);
-+
-+	rt_timer_request(rt);
-+	rt_timer_config(rt, 2);
-+	rt_timer_enable(rt);
-+
-+	dev_info(&pdev->dev, "maximum frequncy is %luHz\n", rt->timer_freq);
-+
-+	return 0;
-+}
-+
-+static int rt_timer_remove(struct platform_device *pdev)
-+{
-+	struct rt_timer *rt = platform_get_drvdata(pdev);
-+
-+	rt_timer_disable(rt);
-+	rt_timer_free(rt);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id rt_timer_match[] = {
-+	{ .compatible = "ralink,rt2880-timer" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, rt_timer_match);
-+
-+static struct platform_driver rt_timer_driver = {
-+	.probe = rt_timer_probe,
-+	.remove = rt_timer_remove,
-+	.driver = {
-+		.name		= "rt-timer",
-+		.owner          = THIS_MODULE,
-+		.of_match_table	= rt_timer_match
-+	},
-+};
-+
-+module_platform_driver(rt_timer_driver);
-+
-+MODULE_DESCRIPTION("Ralink RT2880 timer");
-+MODULE_AUTHOR("John Crispin <blogic@openwrt.org");
-+MODULE_LICENSE("GPL");
+diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+index 05826d2..3b46f7c 100644
+--- a/arch/mips/kernel/vmlinux.lds.S
++++ b/arch/mips/kernel/vmlinux.lds.S
+@@ -179,5 +179,6 @@ SECTIONS
+ 		*(.options)
+ 		*(.pdr)
+ 		*(.reginfo)
++		*(.eh_frame)
+ 	}
+ }
 -- 
-1.7.10.4
+1.7.11.7

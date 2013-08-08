@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 17:04:03 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:34281 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823121Ab3HHPD4MVA00 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Aug 2013 17:03:56 +0200
-Message-ID: <5203B1B3.3010304@openwrt.org>
-Date:   Thu, 08 Aug 2013 16:56:51 +0200
-From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 17:06:19 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:32832 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6823002Ab3HHPGROkHiS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Aug 2013 17:06:17 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r78F6GbJ021530
+        for <linux-mips@linux-mips.org>; Thu, 8 Aug 2013 17:06:16 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r78F6GsT021529
+        for linux-mips@linux-mips.org; Thu, 8 Aug 2013 17:06:16 +0200
+Date:   Thu, 8 Aug 2013 17:06:15 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     linux-mips@linux-mips.org
+Subject: [ADMIN] spam filter of linux-mips
+Message-ID: <20130808150615.GD2172@linux-mips.org>
 MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-serial@vger.kernel.org, linux-mips@linux-mips.org,
-        Thomas Langer <thomas.langer@lantiq.com>
-Subject: Re: [PATCH 1/2] serial: MIPS: lantiq: add clk_enable() call to driver
-References: <1375968687-8704-1-git-send-email-blogic@openwrt.org> <5203AF83.30101@imgtec.com>
-In-Reply-To: <5203AF83.30101@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <blogic@openwrt.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37481
+X-archive-position: 37482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,34 +39,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/08/13 16:47, James Hogan wrote:
-> On 08/08/13 14:31, John Crispin wrote:
->> From: Thomas Langer<thomas.langer@lantiq.com>
->>
->> Enable the clock if one is present when setting up the console.
->>
->> Signed-off-by: Thomas Langer<thomas.langer@lantiq.com>
->> Acked-by: John Crispin<blogic@openwrt.org>
->> ---
->>   drivers/tty/serial/lantiq.c |    3 +++
->>   1 file changed, 3 insertions(+)
->>
->> diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
->> index 15733da..ce1ea35 100644
->> --- a/drivers/tty/serial/lantiq.c
->> +++ b/drivers/tty/serial/lantiq.c
->> @@ -636,6 +636,9 @@ lqasc_console_setup(struct console *co, char *options)
->>
->>   	port =&ltq_port->port;
->>
->> +	if (ltq_port->clk)
-> I think that should be !IS_ERR(ltq_port->clk)? The same problem appears
-> to be elsewhere in that file too.
->
-> Cheers
-> James
->
->
+As you (hopefully have not) noticed the spam filter of the linux-mips
+mailing list (and it appears also user accounts, depending on configuration)
+has become a bit triggerhappy lately causing false positives - and the
+recent update of that machine has changd that only marginally, if at all.
 
+I feel that short of becoming a spamfilter developer I'm running out of
+toggles and buttons to tune the filter to avoid false positives / negatives.
+So if one your postings doesn't make it to the list contact me and I'll
+approve the posting.
 
-Thanks, i will send an updated series
+Loud rant at certain email providers, in particular Yahoo.  If your email
+bounces during SMTP transfer there is no way for the list software to know
+if that was because an email address got stale or because for some reason
+the contest was inacceptable or maybe just too large.  Whatever the issue,
+if the list robot sees more than a paricular number of bounces within a
+certain time frame, it will unsubscribe users.  So for your spam filter
+setup this just means if you don't like a posting, discard it locally,
+don't bounce it.
+
+  Ralf

@@ -1,34 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 11:50:11 +0200 (CEST)
-Received: from elvis.franken.de ([193.175.24.41]:38421 "EHLO elvis.franken.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 11:55:36 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:51922 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823002Ab3HHJuEkadQb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Aug 2013 11:50:04 +0200
-Received: from uucp (helo=solo.franken.de)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1V7Mr6-0002hz-00; Thu, 08 Aug 2013 11:50:04 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-        id 3F2EA1D440; Thu,  8 Aug 2013 11:49:42 +0200 (CEST)
-Date:   Thu, 8 Aug 2013 11:49:42 +0200
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     John Crispin <blogic@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/4] MIPS: lantiq: adds 4dword burst length for dma
-Message-ID: <20130808094942.GA21442@alpha.franken.de>
-References: <1375952846-25812-1-git-send-email-blogic@openwrt.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1375952846-25812-1-git-send-email-blogic@openwrt.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <tsbogend@alpha.franken.de>
+        id S6823002Ab3HHJzalWuLe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Aug 2013 11:55:30 +0200
+From:   John Crispin <blogic@openwrt.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Thomas Langer <thomas.langer@lantiq.com>
+Subject: [PATCH 1/2] pinctrl/lantiq: add missing pin definition to falocn pinctrl driver
+Date:   Thu,  8 Aug 2013 11:48:19 +0200
+Message-Id: <1375955300-31682-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37453
+X-archive-position: 37454
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,34 +32,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 08, 2013 at 11:07:23AM +0200, John Crispin wrote:
-> Comparing the upstream code with the Lantiq UGW kernel we see that burst length
-> should be set to 4 bytes.
-> 
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> ---
->  arch/mips/lantiq/xway/dma.c |    4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
-> index 08f7ebd..ccf1451 100644
-> --- a/arch/mips/lantiq/xway/dma.c
-> +++ b/arch/mips/lantiq/xway/dma.c
-> @@ -48,6 +48,7 @@
->  #define DMA_IRQ_ACK		0x7e		/* IRQ status register */
->  #define DMA_POLL		BIT(31)		/* turn on channel polling */
->  #define DMA_CLK_DIV4		BIT(6)		/* polling clock divider */
-> +#define DMA_4W_BURST		BIT(2)		/* 4 word burst length */
->  #define DMA_2W_BURST		BIT(1)		/* 2 word burst length */
+From: Thomas Langer <thomas.langer@lantiq.com>
 
-that's wrong, it's not BIT(x), but x itself.
+Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
+Acked-by: John Crispin <blogic@openwrt.org>
+---
+ drivers/pinctrl/pinctrl-falcon.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-1 means 2 word burst
-2 means 4 word burst
-3 means 8 word burst
-
-Thomas.
-
+diff --git a/drivers/pinctrl/pinctrl-falcon.c b/drivers/pinctrl/pinctrl-falcon.c
+index f9b2a1d..4e731f2 100644
+--- a/drivers/pinctrl/pinctrl-falcon.c
++++ b/drivers/pinctrl/pinctrl-falcon.c
+@@ -75,6 +75,7 @@ enum falcon_mux {
+ 	FALCON_MUX_GPIO = 0,
+ 	FALCON_MUX_RST,
+ 	FALCON_MUX_NTR,
++	FALCON_MUX_PPS,
+ 	FALCON_MUX_MDIO,
+ 	FALCON_MUX_LED,
+ 	FALCON_MUX_SPI,
+@@ -114,7 +115,7 @@ static struct ltq_mfp_pin falcon_mfp[] = {
+ 	MFP_FALCON(GPIO2,	GPIO,	GPIO,   NONE,   NONE),
+ 	MFP_FALCON(GPIO3,	GPIO,	GPIO,   NONE,   NONE),
+ 	MFP_FALCON(GPIO4,	NTR,	GPIO,   NONE,   NONE),
+-	MFP_FALCON(GPIO5,	NTR,	GPIO,   NONE,   NONE),
++	MFP_FALCON(GPIO5,	NTR,	GPIO,   PPS,    NONE),
+ 	MFP_FALCON(GPIO6,	RST,	GPIO,   NONE,   NONE),
+ 	MFP_FALCON(GPIO7,	MDIO,	GPIO,   NONE,   NONE),
+ 	MFP_FALCON(GPIO8,	MDIO,	GPIO,   NONE,   NONE),
+@@ -168,6 +169,7 @@ static struct ltq_mfp_pin falcon_mfp[] = {
+ static const unsigned pins_por[] = {GPIO0};
+ static const unsigned pins_ntr[] = {GPIO4};
+ static const unsigned pins_ntr8k[] = {GPIO5};
++static const unsigned pins_pps[] = {GPIO5};
+ static const unsigned pins_hrst[] = {GPIO6};
+ static const unsigned pins_mdio[] = {GPIO7, GPIO8};
+ static const unsigned pins_bled[] = {GPIO9, GPIO10, GPIO11,
+@@ -186,6 +188,7 @@ static struct ltq_pin_group falcon_grps[] = {
+ 	GRP_MUX("por", RST, pins_por),
+ 	GRP_MUX("ntr", NTR, pins_ntr),
+ 	GRP_MUX("ntr8k", NTR, pins_ntr8k),
++	GRP_MUX("pps", PPS, pins_pps),
+ 	GRP_MUX("hrst", RST, pins_hrst),
+ 	GRP_MUX("mdio", MDIO, pins_mdio),
+ 	GRP_MUX("bootled", LED, pins_bled),
+@@ -201,7 +204,7 @@ static struct ltq_pin_group falcon_grps[] = {
+ };
+ 
+ static const char * const ltq_rst_grps[] = {"por", "hrst"};
+-static const char * const ltq_ntr_grps[] = {"ntr", "ntr8k"};
++static const char * const ltq_ntr_grps[] = {"ntr", "ntr8k", "pps"};
+ static const char * const ltq_mdio_grps[] = {"mdio"};
+ static const char * const ltq_bled_grps[] = {"bootled"};
+ static const char * const ltq_asc_grps[] = {"asc0", "asc1"};
 -- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+1.7.10.4

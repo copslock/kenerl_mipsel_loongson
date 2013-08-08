@@ -1,22 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 13:13:34 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:54686 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 13:15:20 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:54738 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6865306Ab3HHLNH7Tlgh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Aug 2013 13:13:07 +0200
+        id S6865305Ab3HHLPPJFfSu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Aug 2013 13:15:15 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH] MIPS: ralink: add support for reset-controller API
-Date:   Thu,  8 Aug 2013 13:05:50 +0200
-Message-Id: <1375959950-31024-2-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 1/2] MIPS: ralink: add support for systick timer found on newer ralink SoC
+Date:   Thu,  8 Aug 2013 13:08:06 +0200
+Message-Id: <1375960087-31084-1-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1375959950-31024-1-git-send-email-blogic@openwrt.org>
-References: <1375959950-31024-1-git-send-email-blogic@openwrt.org>
 Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37458
+X-archive-position: 37459
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,134 +31,198 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a helper for reseting different devices on the SoC.
+Newer Ralink SoC (MT7620x and RT5350) have a 50KHz clock that runs independent
+of the SoC master clock. If we want to automatic frequency scaling to work we
+need to use the systick timer as the clock source.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/Kconfig         |    1 +
- arch/mips/ralink/common.h |    2 ++
- arch/mips/ralink/of.c     |    3 +++
- arch/mips/ralink/reset.c  |   62 +++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 68 insertions(+)
+ arch/mips/ralink/Kconfig       |    7 ++
+ arch/mips/ralink/Makefile      |    2 +
+ arch/mips/ralink/cevt-rt3352.c |  145 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 154 insertions(+)
+ create mode 100644 arch/mips/ralink/cevt-rt3352.c
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 45b4356..bb69e12 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -375,6 +375,7 @@ config MACH_VR41XX
- 	select CSRC_R4K
- 	select SYS_HAS_CPU_VR41XX
- 	select ARCH_REQUIRE_GPIOLIB
-+	select ARCH_HAS_RESET_CONTROLLER
+diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
+index 026e823..c528d0c 100644
+--- a/arch/mips/ralink/Kconfig
++++ b/arch/mips/ralink/Kconfig
+@@ -1,5 +1,12 @@
+ if RALINK
  
- config NXP_STB220
- 	bool "NXP STB220 board"
-diff --git a/arch/mips/ralink/common.h b/arch/mips/ralink/common.h
-index 83144c3..42dfd61 100644
---- a/arch/mips/ralink/common.h
-+++ b/arch/mips/ralink/common.h
-@@ -46,6 +46,8 @@ extern void ralink_of_remap(void);
- extern void ralink_clk_init(void);
- extern void ralink_clk_add(const char *dev, unsigned long rate);
- 
-+extern void ralink_rst_init(void);
++config CLKEVT_RT3352
++	bool
++	depends on SOC_RT305X || SOC_MT7620
++	default y
++	select CLKSRC_OF
++	select CLKSRC_MMIO
 +
- extern void prom_soc_init(struct ralink_soc_info *soc_info);
+ choice
+ 	prompt "Ralink SoC selection"
+ 	default SOC_RT305X
+diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
+index e37e0ec..98ae349 100644
+--- a/arch/mips/ralink/Makefile
++++ b/arch/mips/ralink/Makefile
+@@ -8,6 +8,8 @@
  
- __iomem void *plat_of_remap_node(const char *node);
-diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
-index f25ea5b..ce38d11 100644
---- a/arch/mips/ralink/of.c
-+++ b/arch/mips/ralink/of.c
-@@ -110,6 +110,9 @@ static int __init plat_of_setup(void)
- 	if (of_platform_populate(NULL, of_ids, NULL, NULL))
- 		panic("failed to populate DT\n");
+ obj-y := prom.o of.o reset.o clk.o irq.o timer.o
  
-+	/* make sure ithat the reset controller is setup early */
-+	ralink_rst_init();
++obj-$(CONFIG_CLKEVT_RT3352) += cevt-rt3352.o
 +
- 	return 0;
- }
- 
-diff --git a/arch/mips/ralink/reset.c b/arch/mips/ralink/reset.c
-index 22120e5..55c7ec5 100644
---- a/arch/mips/ralink/reset.c
-+++ b/arch/mips/ralink/reset.c
-@@ -10,6 +10,8 @@
- 
- #include <linux/pm.h>
- #include <linux/io.h>
+ obj-$(CONFIG_SOC_RT288X) += rt288x.o
+ obj-$(CONFIG_SOC_RT305X) += rt305x.o
+ obj-$(CONFIG_SOC_RT3883) += rt3883.o
+diff --git a/arch/mips/ralink/cevt-rt3352.c b/arch/mips/ralink/cevt-rt3352.c
+new file mode 100644
+index 0000000..cc17566
+--- /dev/null
++++ b/arch/mips/ralink/cevt-rt3352.c
+@@ -0,0 +1,145 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2013 by John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/clockchips.h>
++#include <linux/clocksource.h>
++#include <linux/interrupt.h>
++#include <linux/reset.h>
++#include <linux/init.h>
++#include <linux/time.h>
 +#include <linux/of.h>
-+#include <linux/reset-controller.h>
- 
- #include <asm/reboot.h>
- 
-@@ -19,6 +21,66 @@
- #define SYSC_REG_RESET_CTRL     0x034
- #define RSTCTL_RESET_SYSTEM     BIT(0)
- 
-+static int ralink_assert_device(struct reset_controller_dev *rcdev,
-+				unsigned long id)
++#include <linux/of_irq.h>
++#include <linux/of_address.h>
++
++#include <asm/mach-ralink/ralink_regs.h>
++
++#define SYSTICK_FREQ		(50 * 1000)
++
++#define SYSTICK_CONFIG		0x00
++#define SYSTICK_COMPARE		0x04
++#define SYSTICK_COUNT		0x08
++
++/* route systick irq to mips irq 7 instead of the r4k-timer */
++#define CFG_EXT_STK_EN		0x2
++/* enable the counter */
++#define CFG_CNT_EN		0x1
++
++struct systick_device {
++	void __iomem *membase;
++	struct clock_event_device dev;
++	int irq_requested;
++	int freq_scale;
++};
++
++static void systick_set_clock_mode(enum clock_event_mode mode,
++				struct clock_event_device *evt);
++
++static int systick_next_event(unsigned long delta,
++				struct clock_event_device *evt)
 +{
-+	u32 val;
++	struct systick_device *sdev;
++	u32 count;
 +
-+	if (id < 8)
-+		return -1;
-+
-+	val = rt_sysc_r32(SYSC_REG_RESET_CTRL);
-+	val |= BIT(id);
-+	rt_sysc_w32(val, SYSC_REG_RESET_CTRL);
++	sdev = container_of(evt, struct systick_device, dev);
++	count = ioread32(sdev->membase + SYSTICK_COUNT);
++	count = (count + delta) % SYSTICK_FREQ;
++	iowrite32(count + delta, sdev->membase + SYSTICK_COMPARE);
 +
 +	return 0;
 +}
 +
-+static int ralink_deassert_device(struct reset_controller_dev *rcdev,
-+				  unsigned long id)
++static void systick_event_handler(struct clock_event_device *dev)
 +{
-+	u32 val;
-+
-+	if (id < 8)
-+		return -1;
-+
-+	val = rt_sysc_r32(SYSC_REG_RESET_CTRL);
-+	val &= ~BIT(id);
-+	rt_sysc_w32(val, SYSC_REG_RESET_CTRL);
-+
-+	return 0;
++	/* noting to do here */
 +}
 +
-+static int ralink_reset_device(struct reset_controller_dev *rcdev,
-+			       unsigned long id)
++static irqreturn_t systick_interrupt(int irq, void *dev_id)
 +{
-+	ralink_assert_device(rcdev, id);
-+	return ralink_deassert_device(rcdev, id);
++	struct clock_event_device *dev = (struct clock_event_device *) dev_id;
++
++	dev->event_handler(dev);
++
++	return IRQ_HANDLED;
 +}
 +
-+static struct reset_control_ops reset_ops = {
-+	.reset = ralink_reset_device,
-+	.assert = ralink_assert_device,
-+	.deassert = ralink_deassert_device,
++static struct systick_device systick = {
++	.dev = {
++		/*
++		 * cevt-r4k uses 300, make sure systick
++		 * gets used if available
++		 */
++		.rating		= 310,
++		.features	= CLOCK_EVT_FEAT_ONESHOT,
++		.set_next_event	= systick_next_event,
++		.set_mode	= systick_set_clock_mode,
++		.event_handler	= systick_event_handler,
++	},
 +};
 +
-+static struct reset_controller_dev reset_dev = {
-+	.ops			= &reset_ops,
-+	.owner			= THIS_MODULE,
-+	.nr_resets		= 32,
-+	.of_reset_n_cells	= 1,
++static struct irqaction systick_irqaction = {
++	.handler = systick_interrupt,
++	.flags = IRQF_PERCPU | IRQF_TIMER,
++	.dev_id = &systick.dev,
 +};
 +
-+void ralink_rst_init(void)
++static void systick_set_clock_mode(enum clock_event_mode mode,
++				struct clock_event_device *evt)
 +{
-+	reset_dev.of_node = of_find_compatible_node(NULL, NULL,
-+						"ralink,rt2880-reset");
-+	if (!reset_dev.of_node)
-+		pr_err("Failed to find reset controller node");
-+	else
-+		reset_controller_register(&reset_dev);
++	struct systick_device *sdev;
++
++	sdev = container_of(evt, struct systick_device, dev);
++
++	switch (mode) {
++	case CLOCK_EVT_MODE_ONESHOT:
++		if (!sdev->irq_requested)
++			setup_irq(systick.dev.irq, &systick_irqaction);
++		sdev->irq_requested = 1;
++		iowrite32(CFG_EXT_STK_EN | CFG_CNT_EN,
++				systick.membase + SYSTICK_CONFIG);
++		break;
++
++	case CLOCK_EVT_MODE_SHUTDOWN:
++		if (sdev->irq_requested)
++			free_irq(systick.dev.irq, &systick_irqaction);
++		sdev->irq_requested = 0;
++		iowrite32(0, systick.membase + SYSTICK_CONFIG);
++		break;
++
++	default:
++		pr_err("%s: Unhandeled mips clock_mode\n", systick.dev.name);
++		break;
++	}
 +}
 +
- static void ralink_restart(char *command)
- {
- 	local_irq_disable();
++static void __init ralink_systick_init(struct device_node *np)
++{
++	systick.membase = of_iomap(np, 0);
++	if (!systick.membase)
++		return;
++
++	systick_irqaction.name = np->name;
++	systick.dev.name = np->name;
++	clockevents_calc_mult_shift(&systick.dev, SYSTICK_FREQ, 60);
++	systick.dev.max_delta_ns = clockevent_delta2ns(0x7fff, &systick.dev);
++	systick.dev.min_delta_ns = clockevent_delta2ns(0x3, &systick.dev);
++	systick.dev.irq = irq_of_parse_and_map(np, 0);
++	if (!systick.dev.irq) {
++		pr_err("%s: request_irq failed", np->name);
++		return;
++	}
++
++	clocksource_mmio_init(systick.membase + SYSTICK_COUNT, np->name,
++			SYSTICK_FREQ, 301, 16, clocksource_mmio_readl_up);
++
++	clockevents_register_device(&systick.dev);
++
++	pr_info("%s: runing - mult: %d, shift: %d\n",
++			np->name, systick.dev.mult, systick.dev.shift);
++}
++
++CLOCKSOURCE_OF_DECLARE(systick, "ralink,cevt-systick", ralink_systick_init);
 -- 
 1.7.10.4

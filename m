@@ -1,27 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 11:55:58 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:51928 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824821Ab3HHJzceYfAr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Aug 2013 11:55:32 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        John Crispin <blogic@openwrt.org>
-Subject: [PATCH 2/2] pinctrl/lantiq: add missing gphy led setup
-Date:   Thu,  8 Aug 2013 11:48:20 +0200
-Message-Id: <1375955300-31682-2-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1375955300-31682-1-git-send-email-blogic@openwrt.org>
-References: <1375955300-31682-1-git-send-email-blogic@openwrt.org>
-Return-Path: <blogic@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 12:58:38 +0200 (CEST)
+Received: from mail-la0-f44.google.com ([209.85.215.44]:47235 "EHLO
+        mail-la0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6865306Ab3HHK6aEPBGk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Aug 2013 12:58:30 +0200
+Received: by mail-la0-f44.google.com with SMTP id fo12so2008762lab.17
+        for <linux-mips@linux-mips.org>; Thu, 08 Aug 2013 03:58:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=aihUncchjRxSk7viXVWDwS/SFwmF0EPeEZjCDwXHZQQ=;
+        b=efnI1Xl2ueCGoR05D1PS36pzCuBI95VCeZNBF3wYnQeyanNluuJ0TE/6wC2bOnN+RI
+         9HCYFwhBKODn63EAVlUlH/1TO7AK4B3y3JUi1e3peGc2yQVhzMlZJ4Cwgj0VIlowmSBW
+         9hikhcT+zrGTNcOdJtREHyRwb6E7UAkY3ZvP2Ji0rE6kvkn2cY3PqSX6FPVDD1hnPauf
+         U4GYxsuSyq+YJ+1OUqulaTvQFA86nr2nwWGPQQAZQjLIMGuAiZCyP9dAXEI5Yizx9bcI
+         zP6cEV6hhW/VT2u4hEZjgLho3uVL7cM/Q+aiOWi8P9aBncye6cdfPsO3+xBWMYnHJ/Cn
+         Ne4g==
+X-Gm-Message-State: ALoCoQl0WPV8OglptlKPctU9XSEkmr4sQPguHzg8fVTZJsCXJ8ZsLzv/aW69JYKr0dHITldMvPOs
+X-Received: by 10.112.97.132 with SMTP id ea4mr2013395lbb.80.1375959504375;
+        Thu, 08 Aug 2013 03:58:24 -0700 (PDT)
+Received: from [192.168.2.4] (ppp91-76-149-206.pppoe.mtu-net.ru. [91.76.149.206])
+        by mx.google.com with ESMTPSA id p17sm4835857lbv.11.2013.08.08.03.58.22
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Thu, 08 Aug 2013 03:58:23 -0700 (PDT)
+Message-ID: <520379D4.9040903@cogentembedded.com>
+Date:   Thu, 08 Aug 2013 14:58:28 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130620 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     John Crispin <blogic@openwrt.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/4] MIPS: lantiq: adds minimal dcdc driver
+References: <1375952846-25812-1-git-send-email-blogic@openwrt.org> <1375952846-25812-2-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1375952846-25812-2-git-send-email-blogic@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37455
+X-archive-position: 37456
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -34,97 +58,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
----
- drivers/pinctrl/pinctrl-xway.c |   30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+Hello.
 
-diff --git a/drivers/pinctrl/pinctrl-xway.c b/drivers/pinctrl/pinctrl-xway.c
-index e92132c..86c8cf8 100644
---- a/drivers/pinctrl/pinctrl-xway.c
-+++ b/drivers/pinctrl/pinctrl-xway.c
-@@ -102,6 +102,7 @@ enum xway_mux {
- 	XWAY_MUX_EPHY,
- 	XWAY_MUX_DFE,
- 	XWAY_MUX_SDIO,
-+	XWAY_MUX_GPHY,
- 	XWAY_MUX_NONE = 0xffff,
- };
- 
-@@ -109,12 +110,12 @@ static const struct ltq_mfp_pin xway_mfp[] = {
- 	/*       pin    f0	f1	f2	f3   */
- 	MFP_XWAY(GPIO0, GPIO,	EXIN,	NONE,	TDM),
- 	MFP_XWAY(GPIO1, GPIO,	EXIN,	NONE,	NONE),
--	MFP_XWAY(GPIO2, GPIO,	CGU,	EXIN,	NONE),
-+	MFP_XWAY(GPIO2, GPIO,	CGU,	EXIN,	GPHY),
- 	MFP_XWAY(GPIO3, GPIO,	CGU,	NONE,	PCI),
- 	MFP_XWAY(GPIO4, GPIO,	STP,	NONE,	ASC),
--	MFP_XWAY(GPIO5, GPIO,	STP,	NONE,	NONE),
-+	MFP_XWAY(GPIO5, GPIO,	STP,	NONE,	GPHY),
- 	MFP_XWAY(GPIO6, GPIO,	STP,	GPT,	ASC),
--	MFP_XWAY(GPIO7, GPIO,	CGU,	PCI,	NONE),
-+	MFP_XWAY(GPIO7, GPIO,	CGU,	PCI,	GPHY),
- 	MFP_XWAY(GPIO8, GPIO,	CGU,	NMI,	NONE),
- 	MFP_XWAY(GPIO9, GPIO,	ASC,	SPI,	EXIN),
- 	MFP_XWAY(GPIO10, GPIO,	ASC,	SPI,	NONE),
-@@ -151,10 +152,10 @@ static const struct ltq_mfp_pin xway_mfp[] = {
- 	MFP_XWAY(GPIO41, GPIO,	NONE,	NONE,	NONE),
- 	MFP_XWAY(GPIO42, GPIO,	MDIO,	NONE,	NONE),
- 	MFP_XWAY(GPIO43, GPIO,	MDIO,	NONE,	NONE),
--	MFP_XWAY(GPIO44, GPIO,	NONE,	NONE,	SIN),
--	MFP_XWAY(GPIO45, GPIO,	NONE,	NONE,	SIN),
-+	MFP_XWAY(GPIO44, GPIO,	NONE,	GPHY,	SIN),
-+	MFP_XWAY(GPIO45, GPIO,	NONE,	GPHY,	SIN),
- 	MFP_XWAY(GPIO46, GPIO,	NONE,	NONE,	EXIN),
--	MFP_XWAY(GPIO47, GPIO,	NONE,	NONE,	SIN),
-+	MFP_XWAY(GPIO47, GPIO,	NONE,	GPHY,	SIN),
- 	MFP_XWAY(GPIO48, GPIO,	EBU,	NONE,	NONE),
- 	MFP_XWAY(GPIO49, GPIO,	EBU,	NONE,	NONE),
- 	MFP_XWAY(GPIO50, GPIO,	NONE,	NONE,	NONE),
-@@ -208,6 +209,13 @@ static const unsigned pins_stp[] = {GPIO4, GPIO5, GPIO6};
- static const unsigned pins_nmi[] = {GPIO8};
- static const unsigned pins_mdio[] = {GPIO42, GPIO43};
- 
-+static const unsigned pins_gphy0_led0[] = {GPIO5};
-+static const unsigned pins_gphy0_led1[] = {GPIO7};
-+static const unsigned pins_gphy0_led2[] = {GPIO2};
-+static const unsigned pins_gphy1_led0[] = {GPIO44};
-+static const unsigned pins_gphy1_led1[] = {GPIO45};
-+static const unsigned pins_gphy1_led2[] = {GPIO47};
-+
- static const unsigned pins_ebu_a24[] = {GPIO13};
- static const unsigned pins_ebu_clk[] = {GPIO21};
- static const unsigned pins_ebu_cs1[] = {GPIO23};
-@@ -322,6 +330,12 @@ static const struct ltq_pin_group xway_grps[] = {
- 	GRP_MUX("gnt4", PCI, pins_pci_gnt4),
- 	GRP_MUX("req4", PCI, pins_pci_gnt4),
- 	GRP_MUX("mdio", MDIO, pins_mdio),
-+	GRP_MUX("gphy0 led0", GPHY, pins_gphy0_led0),
-+	GRP_MUX("gphy0 led1", GPHY, pins_gphy0_led1),
-+	GRP_MUX("gphy0 lde2", GPHY, pins_gphy0_led2),
-+	GRP_MUX("gphy1 led0", GPHY, pins_gphy1_led0),
-+	GRP_MUX("gphy1 led1", GPHY, pins_gphy1_led1),
-+	GRP_MUX("gphy1 lde2", GPHY, pins_gphy1_led2),
- };
- 
- static const struct ltq_pin_group ase_grps[] = {
-@@ -365,6 +379,9 @@ static const char * const xway_nmi_grps[] = {"nmi"};
- 
- /* ar9/vr9/gr9 */
- static const char * const xrx_mdio_grps[] = {"mdio"};
-+static const char * const xrx_gphy_grps[] = {"gphy0 led0", "gphy0 led1",
-+						"gphy0 led2", "gphy1 led0",
-+						"gphy1 led1", "gphy1 led2"};
- static const char * const xrx_ebu_grps[] = {"ebu a23", "ebu a24",
- 						"ebu a25", "ebu cs1",
- 						"ebu wait", "ebu clk",
-@@ -414,6 +431,7 @@ static const struct ltq_pmx_func xrx_funcs[] = {
- 	{"pci",		ARRAY_AND_SIZE(xrx_pci_grps)},
- 	{"ebu",		ARRAY_AND_SIZE(xrx_ebu_grps)},
- 	{"mdio",	ARRAY_AND_SIZE(xrx_mdio_grps)},
-+	{"gphy",	ARRAY_AND_SIZE(xrx_gphy_grps)},
- };
- 
- static const struct ltq_pmx_func ase_funcs[] = {
--- 
-1.7.10.4
+On 08-08-2013 13:07, John Crispin wrote:
+
+> This driver so far only reads the core voltage.
+
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+[...]
+
+> diff --git a/arch/mips/lantiq/xway/dcdc.c b/arch/mips/lantiq/xway/dcdc.c
+> new file mode 100644
+> index 0000000..6361c30
+> --- /dev/null
+> +++ b/arch/mips/lantiq/xway/dcdc.c
+> @@ -0,0 +1,75 @@
+[...]
+> +static int dcdc_probe(struct platform_device *pdev)
+> +{
+> +	struct resource *res;
+> +
+> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	if (!res) {
+> +		dev_err(&pdev->dev, "Failed to get resource\n");
+> +		return -ENOMEM;
+> +	}
+
+    You do not need to check this with devm_request_and_ioremap() or
+devm_ioremap_resource().
+
+> +
+> +	/* remap dcdc register range */
+> +	dcdc_membase = devm_request_and_ioremap(&pdev->dev, res);
+
+    Use devm_ioremap_resource().
+
+> +	if (!dcdc_membase) {
+> +		dev_err(&pdev->dev, "Failed to remap resource\n");
+
+    Error messages are already printed by devm_request_and_ioremap() 
+ordevm_ioremap_resource().
+
+> +		return -ENOMEM;
+
+    -EADDRNOTAVAIL is the right code for devm_request_and_ioremap().
+
+WBR, Sergei

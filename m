@@ -1,24 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 14:09:36 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:56781 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816642Ab3HHMJeWzsht (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Aug 2013 14:09:34 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 2/4] MIPS: lantiq: adds minimal dcdc driver
-Date:   Thu,  8 Aug 2013 14:02:23 +0200
-Message-Id: <1375963343-25208-1-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <blogic@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 14:42:40 +0200 (CEST)
+Received: from mail.active-venture.com ([67.228.131.205]:63534 "EHLO
+        mail.active-venture.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817904Ab3HHMmhULCjO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Aug 2013 14:42:37 +0200
+Received: (qmail 83875 invoked by uid 399); 8 Aug 2013 12:42:28 -0000
+Received: from unknown (HELO server.roeck-us.net) (linux@roeck-us.net@108.223.40.66)
+  by mail.active-venture.com with ESMTPAM; 8 Aug 2013 12:42:28 -0000
+X-Originating-IP: 108.223.40.66
+X-Sender: linux@roeck-us.net
+Message-ID: <5203923B.7030304@roeck-us.net>
+Date:   Thu, 08 Aug 2013 05:42:35 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130623 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     John Crispin <blogic@openwrt.org>
+CC:     Wim Van Sebroeck <wim@iguana.be>, linux-watchdog@vger.kernel.org,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH V2 1/2] DT: Add documentation for ralink-wdt
+References: <1375954919-30737-1-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1375954919-30737-1-git-send-email-blogic@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37471
+X-archive-position: 37472
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -31,95 +42,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This driver so far only reads the core voltage.
+On 08/08/2013 02:41 AM, John Crispin wrote:
+> Describe ralink-wdt binding.
+>
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+> Cc: linux-watchdog@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> Cc: devicetree@vger.kernel.org
+> ---
+> V1 used the old devicetree list as Cc.
+>
+>   .../devicetree/bindings/watchdog/ralink-wdt.txt     |   19 +++++++++++++++++++
+>   1 file changed, 19 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/watchdog/ralink-wdt.txt
+>
+> diff --git a/Documentation/devicetree/bindings/watchdog/ralink-wdt.txt b/Documentation/devicetree/bindings/watchdog/ralink-wdt.txt
+> new file mode 100644
+> index 0000000..a70f0e8
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/watchdog/ralink-wdt.txt
+> @@ -0,0 +1,19 @@
+> +Ralink Watchdog Timers
+> +
+> +Required properties :
+> +- compatible: must be "ralink,rt2880-wdt"
+> +- reg: physical base address of the controller and length of the register range
+> +
+> +Optional properties :
+> +- interrupt-parent: phandle to the INTC device node
+> +- interrupts : Specify the INTC interrupt number
+> +
+> +Example:
+> +
+> +	watchdog@120 {
+> +		compatible = "ralink,mt7620a-wdt", "ralink,rt2880-wdt";
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
----
-Changes in V2:
-* clean up the probe code and includes
+Just wondering ... what is the "ralink,mt7620a-wdt" supposed to be used for ?
 
- arch/mips/lantiq/xway/Makefile |    2 +-
- arch/mips/lantiq/xway/dcdc.c   |   63 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 64 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/lantiq/xway/dcdc.c
+Thanks,
+Guenter
 
-diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
-index 7a13660..087497d 100644
---- a/arch/mips/lantiq/xway/Makefile
-+++ b/arch/mips/lantiq/xway/Makefile
-@@ -1,3 +1,3 @@
--obj-y := prom.o sysctrl.o clk.o reset.o dma.o gptu.o
-+obj-y := prom.o sysctrl.o clk.o reset.o dma.o gptu.o dcdc.o
- 
- obj-$(CONFIG_XRX200_PHY_FW) += xrx200_phy_fw.o
-diff --git a/arch/mips/lantiq/xway/dcdc.c b/arch/mips/lantiq/xway/dcdc.c
-new file mode 100644
-index 0000000..7688ac0
---- /dev/null
-+++ b/arch/mips/lantiq/xway/dcdc.c
-@@ -0,0 +1,63 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2012 John Crispin <blogic@openwrt.org>
-+ *  Copyright (C) 2010 Sameer Ahmad, Lantiq GmbH
-+ */
-+
-+#include <linux/ioport.h>
-+#include <linux/of_platform.h>
-+
-+#include <lantiq_soc.h>
-+
-+/* Bias and regulator Setup Register */
-+#define DCDC_BIAS_VREG0	0xa
-+/* Bias and regulator Setup Register */
-+#define DCDC_BIAS_VREG1	0xb
-+
-+#define dcdc_w8(x, y)	ltq_w8((x), dcdc_membase + (y))
-+#define dcdc_r8(x)	ltq_r8(dcdc_membase + (x))
-+
-+static void __iomem *dcdc_membase;
-+
-+static int dcdc_probe(struct platform_device *pdev)
-+{
-+	struct resource *res;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	dcdc_membase = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(dcdc_membase))
-+		return PTR_ERR(dcdc_membase);
-+
-+	dev_info(&pdev->dev, "Core Voltage : %d mV\n",
-+		dcdc_r8(DCDC_BIAS_VREG1) * 8);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id dcdc_match[] = {
-+	{ .compatible = "lantiq,dcdc-xrx200" },
-+	{},
-+};
-+
-+static struct platform_driver dcdc_driver = {
-+	.probe = dcdc_probe,
-+	.driver = {
-+		.name = "dcdc-xrx200",
-+		.owner = THIS_MODULE,
-+		.of_match_table = dcdc_match,
-+	},
-+};
-+
-+int __init dcdc_init(void)
-+{
-+	int ret = platform_driver_register(&dcdc_driver);
-+
-+	if (ret)
-+		pr_info("dcdc: Error registering platform driver\n");
-+	return ret;
-+}
-+
-+arch_initcall(dcdc_init);
--- 
-1.7.10.4
+> +		reg = <0x120 0x10>;
+> +
+> +		interrupt-parent = <&intc>;
+> +		interrupts = <1>;
+> +	};
+>

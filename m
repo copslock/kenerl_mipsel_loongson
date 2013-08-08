@@ -1,42 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 17:55:33 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.11.231]:42509 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6865297Ab3HHPz0iTEtf convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Aug 2013 17:55:26 +0200
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 0118D13EF6B;
-        Thu,  8 Aug 2013 15:55:19 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 486)
-        id E71F513EF93; Thu,  8 Aug 2013 15:55:18 +0000 (UTC)
-Received: from [192.168.1.103] (99-51-185-173.lightspeed.austtx.sbcglobal.net [99.51.185.173])
-        (using TLSv1 with cipher AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: galak@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 089D413EF89;
-        Thu,  8 Aug 2013 15:55:17 +0000 (UTC)
-Subject: Re: [PATCH V2 1/2] DT: Add documentation for ralink-wdt
-Mime-Version: 1.0 (Apple Message framework v1283)
-Content-Type: text/plain; charset=us-ascii
-From:   Kumar Gala <galak@codeaurora.org>
-In-Reply-To: <1375954919-30737-1-git-send-email-blogic@openwrt.org>
-Date:   Thu, 8 Aug 2013 10:55:15 -0500
-Cc:     Wim Van Sebroeck <wim@iguana.be>, linux-watchdog@vger.kernel.org,
-        linux-mips@linux-mips.org, devicetree@vger.kernel.org
-Content-Transfer-Encoding: 8BIT
-Message-Id: <0631E84C-AC6E-4B75-9073-D6A2BFD9EB02@codeaurora.org>
-References: <1375954919-30737-1-git-send-email-blogic@openwrt.org>
-To:     John Crispin <blogic@openwrt.org>
-X-Mailer: Apple Mail (2.1283)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <galak@codeaurora.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Aug 2013 19:32:59 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:38775 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6824815Ab3HHRc4NbU5J (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Aug 2013 19:32:56 +0200
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [PATCH V2] MIPS: ralink: add support for periodic timer irq
+Date:   Thu,  8 Aug 2013 19:25:15 +0200
+Message-Id: <1375982715-8789-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37484
+X-archive-position: 37485
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: galak@codeaurora.org
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,67 +31,221 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Adds a driver for the periodic timer found on Ralink SoC.
 
-On Aug 8, 2013, at 4:41 AM, John Crispin wrote:
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+Changes in V2:
+* remove superflous error reporting
 
-> Describe ralink-wdt binding.
-> 
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> Cc: linux-watchdog@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
-> Cc: devicetree@vger.kernel.org
-> ---
-> V1 used the old devicetree list as Cc.
-> 
-> .../devicetree/bindings/watchdog/ralink-wdt.txt     |   19 +++++++++++++++++++
-> 1 file changed, 19 insertions(+)
-> create mode 100644 Documentation/devicetree/bindings/watchdog/ralink-wdt.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/watchdog/ralink-wdt.txt b/Documentation/devicetree/bindings/watchdog/ralink-wdt.txt
-> new file mode 100644
-> index 0000000..a70f0e8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/watchdog/ralink-wdt.txt
+ arch/mips/ralink/Makefile |    2 +-
+ arch/mips/ralink/timer.c  |  185 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 186 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/ralink/timer.c
 
-Seems like this should be ralink-rt2880-wdt.txt (I'm guessing there are other ralink watchdog timers).
-
-> @@ -0,0 +1,19 @@
-> +Ralink Watchdog Timers
-
-Should probably be Ralink RT2880 Watchdog Timer
-
-> +
-> +Required properties :
-> +- compatible: must be "ralink,rt2880-wdt"
-> +- reg: physical base address of the controller and length of the register range
-> +
-> +Optional properties :
-> +- interrupt-parent: phandle to the INTC device node
-> +- interrupts : Specify the INTC interrupt number
-
-Since you'll be updating this to drop 'ralink,mt7620a-wdt' how about cleaning up the whitespace around ' :'
-
-> +
-> +Example:
-> +
-> +	watchdog@120 {
-> +		compatible = "ralink,mt7620a-wdt", "ralink,rt2880-wdt";
-> +		reg = <0x120 0x10>;
-> +
-> +		interrupt-parent = <&intc>;
-> +		interrupts = <1>;
-> +	};
-> -- 
-> 1.7.10.4
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-
-
-- k
-
---
-Employee of Qualcomm Innovation Center, Inc.
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation
+diff --git a/arch/mips/ralink/Makefile b/arch/mips/ralink/Makefile
+index 38cf1a8..e37e0ec 100644
+--- a/arch/mips/ralink/Makefile
++++ b/arch/mips/ralink/Makefile
+@@ -6,7 +6,7 @@
+ # Copyright (C) 2009-2011 Gabor Juhos <juhosg@openwrt.org>
+ # Copyright (C) 2013 John Crispin <blogic@openwrt.org>
+ 
+-obj-y := prom.o of.o reset.o clk.o irq.o
++obj-y := prom.o of.o reset.o clk.o irq.o timer.o
+ 
+ obj-$(CONFIG_SOC_RT288X) += rt288x.o
+ obj-$(CONFIG_SOC_RT305X) += rt305x.o
+diff --git a/arch/mips/ralink/timer.c b/arch/mips/ralink/timer.c
+new file mode 100644
+index 0000000..e49241a
+--- /dev/null
++++ b/arch/mips/ralink/timer.c
+@@ -0,0 +1,185 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Copyright (C) 2013 John Crispin <blogic@openwrt.org>
++*/
++
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/interrupt.h>
++#include <linux/timer.h>
++#include <linux/of_gpio.h>
++#include <linux/clk.h>
++
++#include <asm/mach-ralink/ralink_regs.h>
++
++#define TIMER_REG_TMRSTAT		0x00
++#define TIMER_REG_TMR0LOAD		0x10
++#define TIMER_REG_TMR0CTL		0x18
++
++#define TMRSTAT_TMR0INT			BIT(0)
++
++#define TMR0CTL_ENABLE			BIT(7)
++#define TMR0CTL_MODE_PERIODIC		BIT(4)
++#define TMR0CTL_PRESCALER		1
++#define TMR0CTL_PRESCALE_VAL		(0xf - TMR0CTL_PRESCALER)
++#define TMR0CTL_PRESCALE_DIV		(65536 / BIT(TMR0CTL_PRESCALER))
++
++struct rt_timer {
++	struct device	*dev;
++	void __iomem	*membase;
++	int		irq;
++	unsigned long	timer_freq;
++	unsigned long	timer_div;
++};
++
++static inline void rt_timer_w32(struct rt_timer *rt, u8 reg, u32 val)
++{
++	__raw_writel(val, rt->membase + reg);
++}
++
++static inline u32 rt_timer_r32(struct rt_timer *rt, u8 reg)
++{
++	return __raw_readl(rt->membase + reg);
++}
++
++static irqreturn_t rt_timer_irq(int irq, void *_rt)
++{
++	struct rt_timer *rt =  (struct rt_timer *) _rt;
++
++	rt_timer_w32(rt, TIMER_REG_TMR0LOAD, rt->timer_freq / rt->timer_div);
++	rt_timer_w32(rt, TIMER_REG_TMRSTAT, TMRSTAT_TMR0INT);
++
++	return IRQ_HANDLED;
++}
++
++
++static int rt_timer_request(struct rt_timer *rt)
++{
++	int err = request_irq(rt->irq, rt_timer_irq, IRQF_DISABLED,
++						dev_name(rt->dev), rt);
++	if (err) {
++		dev_err(rt->dev, "failed to request irq\n");
++	} else {
++		u32 t = TMR0CTL_MODE_PERIODIC | TMR0CTL_PRESCALE_VAL;
++		rt_timer_w32(rt, TIMER_REG_TMR0CTL, t);
++	}
++	return err;
++}
++
++static void rt_timer_free(struct rt_timer *rt)
++{
++	free_irq(rt->irq, rt);
++}
++
++static int rt_timer_config(struct rt_timer *rt, unsigned long divisor)
++{
++	if (rt->timer_freq < divisor)
++		rt->timer_div = rt->timer_freq;
++	else
++		rt->timer_div = divisor;
++
++	rt_timer_w32(rt, TIMER_REG_TMR0LOAD, rt->timer_freq / rt->timer_div);
++
++	return 0;
++}
++
++static int rt_timer_enable(struct rt_timer *rt)
++{
++	u32 t;
++
++	rt_timer_w32(rt, TIMER_REG_TMR0LOAD, rt->timer_freq / rt->timer_div);
++
++	t = rt_timer_r32(rt, TIMER_REG_TMR0CTL);
++	t |= TMR0CTL_ENABLE;
++	rt_timer_w32(rt, TIMER_REG_TMR0CTL, t);
++
++	return 0;
++}
++
++static void rt_timer_disable(struct rt_timer *rt)
++{
++	u32 t;
++
++	t = rt_timer_r32(rt, TIMER_REG_TMR0CTL);
++	t &= ~TMR0CTL_ENABLE;
++	rt_timer_w32(rt, TIMER_REG_TMR0CTL, t);
++}
++
++static int rt_timer_probe(struct platform_device *pdev)
++{
++	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	struct rt_timer *rt;
++	struct clk *clk;
++
++	rt = devm_kzalloc(&pdev->dev, sizeof(*rt), GFP_KERNEL);
++	if (!rt) {
++		dev_err(&pdev->dev, "failed to allocate memory\n");
++		return -ENOMEM;
++	}
++
++	rt->irq = platform_get_irq(pdev, 0);
++	if (!rt->irq) {
++		dev_err(&pdev->dev, "failed to load irq\n");
++		return -ENOENT;
++	}
++
++	rt->membase = devm_request_and_ioremap(&pdev->dev, res);
++	if (IS_ERR(rt->membase))
++		return PTR_ERR(rt->membase);
++
++	clk = devm_clk_get(&pdev->dev, NULL);
++	if (IS_ERR(clk)) {
++		dev_err(&pdev->dev, "failed get clock rate\n");
++		return PTR_ERR(clk);
++	}
++
++	rt->timer_freq = clk_get_rate(clk) / TMR0CTL_PRESCALE_DIV;
++	if (!rt->timer_freq)
++		return -EINVAL;
++
++	rt->dev = &pdev->dev;
++	platform_set_drvdata(pdev, rt);
++
++	rt_timer_request(rt);
++	rt_timer_config(rt, 2);
++	rt_timer_enable(rt);
++
++	dev_info(&pdev->dev, "maximum frequncy is %luHz\n", rt->timer_freq);
++
++	return 0;
++}
++
++static int rt_timer_remove(struct platform_device *pdev)
++{
++	struct rt_timer *rt = platform_get_drvdata(pdev);
++
++	rt_timer_disable(rt);
++	rt_timer_free(rt);
++
++	return 0;
++}
++
++static const struct of_device_id rt_timer_match[] = {
++	{ .compatible = "ralink,rt2880-timer" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, rt_timer_match);
++
++static struct platform_driver rt_timer_driver = {
++	.probe = rt_timer_probe,
++	.remove = rt_timer_remove,
++	.driver = {
++		.name		= "rt-timer",
++		.owner          = THIS_MODULE,
++		.of_match_table	= rt_timer_match
++	},
++};
++
++module_platform_driver(rt_timer_driver);
++
++MODULE_DESCRIPTION("Ralink RT2880 timer");
++MODULE_AUTHOR("John Crispin <blogic@openwrt.org");
++MODULE_LICENSE("GPL");
+-- 
+1.7.10.4

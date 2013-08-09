@@ -1,42 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Aug 2013 12:43:52 +0200 (CEST)
-Received: from mail-vb0-f51.google.com ([209.85.212.51]:46616 "EHLO
-        mail-vb0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6815858Ab3HIKnqrVm8l (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Aug 2013 12:43:46 +0200
-Received: by mail-vb0-f51.google.com with SMTP id x16so3927763vbf.24
-        for <linux-mips@linux-mips.org>; Fri, 09 Aug 2013 03:43:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to
-         :content-type;
-        bh=LoHdTNtnPGynKScB9poIXfxPCNDsE/J3ua37SbCGXWU=;
-        b=Ip5owo+V9hfSGp/du1FIU+jlMnE9FFEqLtX8LFSbDu+eK1UMf9rUvZZqPbXrlyQpXg
-         nnSAosCtoLp04akRF/wyMrieECvR0OuGVONJS9gq7kTHiycg7j65IVeklkO4qmQWfm3W
-         7NdHKbp7X0h5Q73AN2hlqWG/iSlxyZfG4e+gT/xaOlkJfHhm+m2GaTeC88o3bksKHXrl
-         F9GZAh50v6bm0n2TXYNoeDfVsFvE/m9nxg00VHYlXGhf84Z3ndY3NJO5vcqSo0yajBFl
-         joQh3xCc6lrfsdO4xL2UOk6RDdmiB9G5yoSoVBX2RNyzvh+h99CimEzzgNctT3SP9sg7
-         d1OQ==
-X-Gm-Message-State: ALoCoQk0QikhBNZxNglAEgh8ec3Nq2Ldw7I7ldzJm7GVWag2WcsZ1k+AnTCOpdFM34zBjJteIktI
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Aug 2013 13:51:09 +0200 (CEST)
+Received: from mail-ee0-f48.google.com ([74.125.83.48]:53104 "EHLO
+        mail-ee0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822461Ab3HILuwViVwI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Aug 2013 13:50:52 +0200
+Received: by mail-ee0-f48.google.com with SMTP id l10so2041486eei.21
+        for <multiple recipients>; Fri, 09 Aug 2013 04:50:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=bFij5y2RJ1QUw0sKXy9EBLUJMXVxd6Sbp829rgxyf2I=;
+        b=U5nDOiuSibamcIeJCGqq7e3ZDBoubnwOxqx+YFt7azthsMSrh5XnhJFTpWwLUgfG8+
+         HRL1G/8JoZq4FzbNxOiZdxx7hZY0fAXU21GgFQerfkZqKv1HoUv0iUoZbF4VQM5puO3G
+         o3fIEv/BKZ+h20c383nQ6XLmWlGokiaUt2FHSxEs/lAKdGJ5UgJLB3MGn+4jbQQII0H8
+         f/XHdzqnBZbOPkk7DvBB68ToZMWf/SzUH81DREyM/wIzjGRT9AWIWJvUn/GiIK0+21CO
+         n6EB5dQm6Y7xhZQa4c3OUFUXdY+JDM4eJB3gXkVGY5u+97xcH5M0WFTK1wqL3NR7GHhW
+         9gpg==
+X-Received: by 10.14.200.132 with SMTP id z4mr12842774een.14.1376049046937;
+        Fri, 09 Aug 2013 04:50:46 -0700 (PDT)
+Received: from yakj.usersys.redhat.com (nat-pool-mxp-t.redhat.com. [209.132.186.18])
+        by mx.google.com with ESMTPSA id m54sm28036307eex.2.2013.08.09.04.50.44
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 09 Aug 2013 04:50:45 -0700 (PDT)
+Message-ID: <5204D776.6040903@redhat.com>
+Date:   Fri, 09 Aug 2013 13:50:14 +0200
+From:   Paolo Bonzini <pbonzini@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-X-Received: by 10.220.74.69 with SMTP id t5mr37575vcj.18.1376045020066; Fri,
- 09 Aug 2013 03:43:40 -0700 (PDT)
-Received: by 10.58.249.145 with HTTP; Fri, 9 Aug 2013 03:43:40 -0700 (PDT)
-X-Originating-IP: [92.28.210.78]
-Date:   Fri, 9 Aug 2013 11:43:40 +0100
-Message-ID: <CAPcvp5HYxPeBp9HAQ4hNFrpWMc_ADkfbvZnYeWXvOaACt5VSAg@mail.gmail.com>
-Subject: Status of mips 'of/pci: Use of_pci_range_parser' patch
-From:   Andrew Murray <amurray@embedded-bits.co.uk>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        kvm@vger.kernel.org, Sanjay Lal <sanjayl@kymasys.com>,
+        Gleb Natapov <gleb@redhat.com>, linux-kernel@vger.kernel.org,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 0/3] mips/kvm: Code cleanups for kvm_locore.S
+References: <1375388555-4045-1-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <1375388555-4045-1-git-send-email-ddaney.cavm@gmail.com>
+X-Enigmail-Version: 1.5.2
 Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <amurray@embedded-bits.co.uk>
+Content-Transfer-Encoding: 7bit
+Return-Path: <paolo.bonzini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37493
+X-archive-position: 37494
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: amurray@embedded-bits.co.uk
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,12 +60,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ralf,
+Il 01/08/2013 22:22, David Daney ha scritto:
+> From: David Daney <david.daney@cavium.com>
+> 
+> These shouldn't be too controversial, they just clean things up
+> without changing the generated code.
+> 
+> More substantial patches will follow, but it seemed like a good idea
+> to clean this up first.
+> 
+> David Daney (3):
+>   mips/kvm: Improve code formatting in arch/mips/kvm/kvm_locore.S
+>   mips/kvm: Cleanup .push/.pop directives in kvm_locore.S
+>   mips/kvm: Make kvm_locore.S 64-bit buildable/safe.
+> 
+>  arch/mips/kvm/kvm_locore.S | 965 ++++++++++++++++++++++-----------------------
+>  1 file changed, 480 insertions(+), 485 deletions(-)
+> 
 
-What is the status of this patch?  http://patchwork.linux-mips.org/patch/5625/
-
-I'm not sure if you've missed this. Are you able to apply this to your tree?
-
-Thanks,
-
-Andrew Murray
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>

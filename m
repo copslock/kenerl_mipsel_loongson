@@ -1,21 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Aug 2013 21:00:24 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:50212 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Aug 2013 21:01:45 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:50275 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6865311Ab3HIS7JGshhL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 9 Aug 2013 20:59:09 +0200
+        id S6865311Ab3HITBlp58G8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 9 Aug 2013 21:01:41 +0200
 From:   John Crispin <blogic@openwrt.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     John Crispin <blogic@openwrt.org>, devicetree@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH 1/2] DT: Add documentation for spi-rt2880
-Date:   Fri,  9 Aug 2013 20:51:26 +0200
-Message-Id: <1376074288-29302-1-git-send-email-blogic@openwrt.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-serial@vger.kernel.org, linux-mips@linux-mips.org,
+        John Crispin <blogic@openwrt.org>
+Subject: [PATCH V2 2/2] serial: MIPS: lantiq: fix clock error check
+Date:   Fri,  9 Aug 2013 20:54:31 +0200
+Message-Id: <1376074471-29404-2-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1376074471-29404-1-git-send-email-blogic@openwrt.org>
+References: <1376074471-29404-1-git-send-email-blogic@openwrt.org>
 Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37501
+X-archive-position: 37502
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,48 +34,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Describe the SPI master found on the MIPS based Ralink SoC.
+The clock should be checked with the proper IS_ERR() api before using it.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
-Cc: devicetree@vger.kernel.org
-Cc: linux-spi@vger.kernel.org
-Cc: linux-mips@linux-mips.org
 ---
- .../devicetree/bindings/spi/spi-rt2880.txt         |   26 ++++++++++++++++++++
- 1 file changed, 26 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-rt2880.txt
+ drivers/tty/serial/lantiq.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-rt2880.txt b/Documentation/devicetree/bindings/spi/spi-rt2880.txt
-new file mode 100644
-index 0000000..d946626
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-rt2880.txt
-@@ -0,0 +1,26 @@
-+Ralink SoC RT2880 and famile SPI master controller.
-+
-+Required properties:
-+- compatible : "ralink,rt2880-spi"
-+- reg : The register base for the controller.
-+- #address-cells : <1>, as required by generic SPI binding.
-+- #size-cells : <0>, also as required by generic SPI binding.
-+
-+Child nodes as per the generic SPI binding.
-+
-+Example:
-+
-+	spi@b00 {
-+		compatible = "ralink,rt2880-spi";
-+		reg = <0xb00 0x100>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		m25p80@0 {
-+			compatible = "m25p80";
-+			reg = <0>;
-+			spi-max-frequency = <10000000>;
-+		};
-+	};
-+
+diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
+index 93ac046..88d01e0 100644
+--- a/drivers/tty/serial/lantiq.c
++++ b/drivers/tty/serial/lantiq.c
+@@ -318,7 +318,7 @@ lqasc_startup(struct uart_port *port)
+ 	struct ltq_uart_port *ltq_port = to_ltq_uart_port(port);
+ 	int retval;
+ 
+-	if (ltq_port->clk)
++	if (!IS_ERR(ltq_port->clk))
+ 		clk_enable(ltq_port->clk);
+ 	port->uartclk = clk_get_rate(ltq_port->fpiclk);
+ 
+@@ -386,7 +386,7 @@ lqasc_shutdown(struct uart_port *port)
+ 		port->membase + LTQ_ASC_RXFCON);
+ 	ltq_w32_mask(ASCTXFCON_TXFEN, ASCTXFCON_TXFFLU,
+ 		port->membase + LTQ_ASC_TXFCON);
+-	if (ltq_port->clk)
++	if (!IS_ERR(ltq_port->clk))
+ 		clk_disable(ltq_port->clk);
+ }
+ 
 -- 
 1.7.10.4

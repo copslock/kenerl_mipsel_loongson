@@ -1,53 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Aug 2013 13:51:09 +0200 (CEST)
-Received: from mail-ee0-f48.google.com ([74.125.83.48]:53104 "EHLO
-        mail-ee0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822461Ab3HILuwViVwI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Aug 2013 13:50:52 +0200
-Received: by mail-ee0-f48.google.com with SMTP id l10so2041486eei.21
-        for <multiple recipients>; Fri, 09 Aug 2013 04:50:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=bFij5y2RJ1QUw0sKXy9EBLUJMXVxd6Sbp829rgxyf2I=;
-        b=U5nDOiuSibamcIeJCGqq7e3ZDBoubnwOxqx+YFt7azthsMSrh5XnhJFTpWwLUgfG8+
-         HRL1G/8JoZq4FzbNxOiZdxx7hZY0fAXU21GgFQerfkZqKv1HoUv0iUoZbF4VQM5puO3G
-         o3fIEv/BKZ+h20c383nQ6XLmWlGokiaUt2FHSxEs/lAKdGJ5UgJLB3MGn+4jbQQII0H8
-         f/XHdzqnBZbOPkk7DvBB68ToZMWf/SzUH81DREyM/wIzjGRT9AWIWJvUn/GiIK0+21CO
-         n6EB5dQm6Y7xhZQa4c3OUFUXdY+JDM4eJB3gXkVGY5u+97xcH5M0WFTK1wqL3NR7GHhW
-         9gpg==
-X-Received: by 10.14.200.132 with SMTP id z4mr12842774een.14.1376049046937;
-        Fri, 09 Aug 2013 04:50:46 -0700 (PDT)
-Received: from yakj.usersys.redhat.com (nat-pool-mxp-t.redhat.com. [209.132.186.18])
-        by mx.google.com with ESMTPSA id m54sm28036307eex.2.2013.08.09.04.50.44
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 09 Aug 2013 04:50:45 -0700 (PDT)
-Message-ID: <5204D776.6040903@redhat.com>
-Date:   Fri, 09 Aug 2013 13:50:14 +0200
-From:   Paolo Bonzini <pbonzini@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Aug 2013 17:08:03 +0200 (CEST)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:43952 "EHLO
+        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6815858Ab3HIPH7oJTqb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Aug 2013 17:07:59 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 7284542192D;
+        Fri,  9 Aug 2013 17:07:53 +0200 (CEST)
+Received: from mail.szarvasnet.hu ([127.0.0.1])
+        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id PfJ1-vTidfKO; Fri,  9 Aug 2013 17:07:53 +0200 (CEST)
+Received: from [192.168.254.50] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 6909142192C;
+        Fri,  9 Aug 2013 17:07:51 +0200 (CEST)
+Message-ID: <520505E6.3070204@openwrt.org>
+Date:   Fri, 09 Aug 2013 17:08:22 +0200
+From:   Gabor Juhos <juhosg@openwrt.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130509 Thunderbird/17.0.6
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        kvm@vger.kernel.org, Sanjay Lal <sanjayl@kymasys.com>,
-        Gleb Natapov <gleb@redhat.com>, linux-kernel@vger.kernel.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 0/3] mips/kvm: Code cleanups for kvm_locore.S
-References: <1375388555-4045-1-git-send-email-ddaney.cavm@gmail.com>
-In-Reply-To: <1375388555-4045-1-git-send-email-ddaney.cavm@gmail.com>
-X-Enigmail-Version: 1.5.2
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <paolo.bonzini@gmail.com>
+To:     John Crispin <blogic@openwrt.org>
+CC:     Wim Van Sebroeck <wim@iguana.be>, linux-watchdog@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/2] watchdog: MIPS: add ralink watchdog driver
+References: <1375954303-28830-1-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1375954303-28830-1-git-send-email-blogic@openwrt.org>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-2
+Content-Transfer-Encoding: 8bit
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37494
+X-archive-position: 37495
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,22 +47,11 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Il 01/08/2013 22:22, David Daney ha scritto:
-> From: David Daney <david.daney@cavium.com>
+2013.08.08. 11:31 keltezéssel, John Crispin írta:
+> Add a driver for the watchdog timer found on Ralink SoC
 > 
-> These shouldn't be too controversial, they just clean things up
-> without changing the generated code.
-> 
-> More substantial patches will follow, but it seemed like a good idea
-> to clean this up first.
-> 
-> David Daney (3):
->   mips/kvm: Improve code formatting in arch/mips/kvm/kvm_locore.S
->   mips/kvm: Cleanup .push/.pop directives in kvm_locore.S
->   mips/kvm: Make kvm_locore.S 64-bit buildable/safe.
-> 
->  arch/mips/kvm/kvm_locore.S | 965 ++++++++++++++++++++++-----------------------
->  1 file changed, 480 insertions(+), 485 deletions(-)
-> 
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+> Cc: linux-watchdog@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
 
-Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>

@@ -1,44 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Aug 2013 13:41:59 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:2821 "EHLO mms2.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822995Ab3HKLjrB9py0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 11 Aug 2013 13:39:47 +0200
-Received: from [10.9.208.57] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Sun, 11 Aug 2013 04:33:19 -0700
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Sun, 11 Aug 2013 04:39:28 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Sun, 11 Aug 2013 04:39:28 -0700
-Received: from netl-snoppy.ban.broadcom.com (
- netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 7BDEEF2D72; Sun, 11
- Aug 2013 04:39:27 -0700 (PDT)
-From:   "Jayachandran C" <jchandra@broadcom.com>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org
-cc:     "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 2/2] MIPS: mm: Use scratch for PGD when
- !CONFIG_MIPS_PGD_C0_CONTEXT
-Date:   Sun, 11 Aug 2013 17:10:17 +0530
-Message-ID: <1376221217-9335-3-git-send-email-jchandra@broadcom.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1376221217-9335-1-git-send-email-jchandra@broadcom.com>
-References: <1376221217-9335-1-git-send-email-jchandra@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Aug 2013 15:27:06 +0200 (CEST)
+Received: from cassiel.sirena.org.uk ([80.68.93.111]:35311 "EHLO
+        cassiel.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6820116Ab3HKN0uXRmQs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Aug 2013 15:26:50 +0200
+Received: from cpc11-sgyl31-2-0-cust68.sgyl.cable.virginmedia.com ([94.175.92.69] helo=finisterre)
+        by cassiel.sirena.org.uk with esmtpsa (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.80)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1V8VfP-0000ta-5R; Sun, 11 Aug 2013 14:26:44 +0100
+Received: from broonie by finisterre with local (Exim 4.80)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1V8VfO-00085s-E1; Sun, 11 Aug 2013 14:26:42 +0100
+Date:   Sun, 11 Aug 2013 14:26:42 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     John Crispin <blogic@openwrt.org>
+Cc:     Gabor Juhos <juhosg@openwrt.org>, linux-spi@vger.kernel.org,
+        linux-mips@linux-mips.org
+Message-ID: <20130811132642.GB6427@sirena.org.uk>
+References: <1376074288-29302-1-git-send-email-blogic@openwrt.org>
+ <1376074288-29302-2-git-send-email-blogic@openwrt.org>
 MIME-Version: 1.0
-X-WSS-ID: 7E19A9F51R079389872-01-01
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Return-Path: <jchandra@broadcom.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="/DKyarNrjr/gdwox"
+Content-Disposition: inline
+In-Reply-To: <1376074288-29302-2-git-send-email-blogic@openwrt.org>
+X-Cookie: Many pages make a thick book.
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-SA-Exim-Connect-IP: 94.175.92.69
+X-SA-Exim-Mail-From: broonie@sirena.org.uk
+Subject: Re: [PATCH 2/2] SPI: ralink: add Ralink SoC spi driver
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:57:07 +0000)
+X-SA-Exim-Scanned: Yes (on cassiel.sirena.org.uk)
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37525
+X-archive-position: 37526
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: broonie@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,229 +52,168 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allow usage of scratch register for current pgd even when
-MIPS_PGD_C0_CONTEXT is not configured. MIPS_PGD_C0_CONTEXT is set
-for 64r2 platforms to indicate availability of Xcontext for saving
-cpuid, thus freeing Context to be used for saving PGD. This option
-was also tied to using a scratch register for storing PGD.
 
-This commit will allow usage of scratch register to store the current
-pgd if one can be allocated for the platform, even when
-MIPS_PGD_C0_CONTEXT is not set. The cpuid will be kept in the CP0
-Context register in this case.
+--/DKyarNrjr/gdwox
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The code to store the current pgd for the TLB miss handler is now
-generated in all cases. When scratch register is available, the PGD
-is also stored in the scratch register.
+On Fri, Aug 09, 2013 at 08:51:27PM +0200, John Crispin wrote:
 
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
----
- arch/mips/include/asm/mmu_context.h |    6 +--
- arch/mips/mm/tlbex.c                |   88 +++++++++++++++++++++++------------
- 2 files changed, 58 insertions(+), 36 deletions(-)
+Looks fairly good, a few things below but most of them are just using
+the core to do things instead of open coding them in the driver rather
+than anything substantial.
 
-diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-index ab8e260..e277bba 100644
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -24,14 +24,13 @@
- #endif /* SMTC */
- #include <asm-generic/mm_hooks.h>
- 
--#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
--
- #define TLBMISS_HANDLER_SETUP_PGD(pgd)					\
- do {									\
- 	extern void tlbmiss_handler_setup_pgd(unsigned long);		\
- 	tlbmiss_handler_setup_pgd((unsigned long)(pgd));		\
- } while (0)
- 
-+#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
- #define TLBMISS_HANDLER_SETUP()						\
- 	do {								\
- 		TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir);		\
-@@ -48,9 +47,6 @@ do {									\
-  */
- extern unsigned long pgd_current[];
- 
--#define TLBMISS_HANDLER_SETUP_PGD(pgd) \
--	pgd_current[smp_processor_id()] = (unsigned long)(pgd)
--
- #define TLBMISS_HANDLER_SETUP()						\
- 	write_c0_context((unsigned long) smp_processor_id() <<		\
- 						SMP_CPUID_REGSHIFT);	\
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 54f3270..40efded 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -796,11 +796,11 @@ build_get_pmde64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
- 	}
- 	/* No uasm_i_nop needed here, since the next insn doesn't touch TMP. */
- 
--#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
- 	if (pgd_reg != -1) {
- 		/* pgd is in pgd_reg */
- 		UASM_i_MFC0(p, ptr, c0_kscratch(), pgd_reg);
- 	} else {
-+#if defined(CONFIG_MIPS_PGD_C0_CONTEXT)
- 		/*
- 		 * &pgd << 11 stored in CONTEXT [23..63].
- 		 */
-@@ -812,18 +812,18 @@ build_get_pmde64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
- 		/* 1 0	1 0 1  << 6  xkphys cached */
- 		uasm_i_ori(p, ptr, ptr, 0x540);
- 		uasm_i_drotr(p, ptr, ptr, 11);
--	}
- #elif defined(CONFIG_SMP)
--	UASM_i_CPUID_MFC0(p, ptr, SMP_CPUID_REG);
--	uasm_i_dsrl_safe(p, ptr, ptr, SMP_CPUID_PTRSHIFT);
--	UASM_i_LA_mostly(p, tmp, pgdc);
--	uasm_i_daddu(p, ptr, ptr, tmp);
--	uasm_i_dmfc0(p, tmp, C0_BADVADDR);
--	uasm_i_ld(p, ptr, uasm_rel_lo(pgdc), ptr);
-+		UASM_i_CPUID_MFC0(p, ptr, SMP_CPUID_REG);
-+		uasm_i_dsrl_safe(p, ptr, ptr, SMP_CPUID_PTRSHIFT);
-+		UASM_i_LA_mostly(p, tmp, pgdc);
-+		uasm_i_daddu(p, ptr, ptr, tmp);
-+		uasm_i_dmfc0(p, tmp, C0_BADVADDR);
-+		uasm_i_ld(p, ptr, uasm_rel_lo(pgdc), ptr);
- #else
--	UASM_i_LA_mostly(p, ptr, pgdc);
--	uasm_i_ld(p, ptr, uasm_rel_lo(pgdc), ptr);
-+		UASM_i_LA_mostly(p, ptr, pgdc);
-+		uasm_i_ld(p, ptr, uasm_rel_lo(pgdc), ptr);
- #endif
-+	}
- 
- 	uasm_l_vmalloc_done(l, *p);
- 
-@@ -918,19 +918,25 @@ build_get_pgd_vmalloc64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
- static void __maybe_unused
- build_get_pgde32(u32 **p, unsigned int tmp, unsigned int ptr)
- {
--	long pgdc = (long)pgd_current;
-+	if (pgd_reg != -1) {
-+		/* pgd is in pgd_reg */
-+		uasm_i_mfc0(p, ptr, c0_kscratch(), pgd_reg);
-+		uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
-+	} else {
-+		long pgdc = (long)pgd_current;
- 
--	/* 32 bit SMP has smp_processor_id() stored in CONTEXT. */
-+		/* 32 bit SMP has smp_processor_id() stored in CONTEXT. */
- #ifdef CONFIG_SMP
--	uasm_i_mfc0(p, ptr, SMP_CPUID_REG);
--	UASM_i_LA_mostly(p, tmp, pgdc);
--	uasm_i_srl(p, ptr, ptr, SMP_CPUID_PTRSHIFT);
--	uasm_i_addu(p, ptr, tmp, ptr);
-+		uasm_i_mfc0(p, ptr, SMP_CPUID_REG);
-+		UASM_i_LA_mostly(p, tmp, pgdc);
-+		uasm_i_srl(p, ptr, ptr, SMP_CPUID_PTRSHIFT);
-+		uasm_i_addu(p, ptr, tmp, ptr);
- #else
--	UASM_i_LA_mostly(p, ptr, pgdc);
-+		UASM_i_LA_mostly(p, ptr, pgdc);
- #endif
--	uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
--	uasm_i_lw(p, ptr, uasm_rel_lo(pgdc), ptr);
-+		uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
-+		uasm_i_lw(p, ptr, uasm_rel_lo(pgdc), ptr);
-+	}
- 	uasm_i_srl(p, tmp, tmp, PGDIR_SHIFT); /* get pgd only bits */
- 	uasm_i_sll(p, tmp, tmp, PGD_T_LOG2);
- 	uasm_i_addu(p, ptr, ptr, tmp); /* add in pgd offset */
-@@ -1404,28 +1410,30 @@ static void build_r4000_tlb_refill_handler(void)
- extern u32 handle_tlbl[], handle_tlbl_end[];
- extern u32 handle_tlbs[], handle_tlbs_end[];
- extern u32 handle_tlbm[], handle_tlbm_end[];
--
--#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
- extern u32 tlbmiss_handler_setup_pgd[], tlbmiss_handler_setup_pgd_end[];
- 
--static void build_r4000_setup_pgd(void)
-+static void build_setup_pgd(void)
- {
- 	const int a0 = 4;
--	const int a1 = 5;
-+	const int __maybe_unused a1 = 5;
-+	const int __maybe_unused a2 = 6;
- 	u32 *p = tlbmiss_handler_setup_pgd;
- 	const int tlbmiss_handler_setup_pgd_size =
- 		tlbmiss_handler_setup_pgd_end - tlbmiss_handler_setup_pgd;
--	struct uasm_label *l = labels;
--	struct uasm_reloc *r = relocs;
-+#ifndef CONFIG_MIPS_PGD_C0_CONTEXT
-+	long pgdc = (long)pgd_current;
-+#endif
- 
- 	memset(tlbmiss_handler_setup_pgd, 0, tlbmiss_handler_setup_pgd_size *
- 					sizeof(tlbmiss_handler_setup_pgd[0]));
- 	memset(labels, 0, sizeof(labels));
- 	memset(relocs, 0, sizeof(relocs));
--
- 	pgd_reg = allocate_kscratch();
--
-+#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
- 	if (pgd_reg == -1) {
-+		struct uasm_label *l = labels;
-+		struct uasm_reloc *r = relocs;
-+
- 		/* PGD << 11 in c0_Context */
- 		/*
- 		 * If it is a ckseg0 address, convert to a physical
-@@ -1447,6 +1455,26 @@ static void build_r4000_setup_pgd(void)
- 		uasm_i_jr(&p, 31);
- 		UASM_i_MTC0(&p, a0, c0_kscratch(), pgd_reg);
- 	}
-+#else
-+#ifdef CONFIG_SMP
-+	/* Save PGD to pgd_current[smp_processor_id()] */
-+	UASM_i_CPUID_MFC0(&p, a1, SMP_CPUID_REG);
-+	UASM_i_SRL_SAFE(&p, a1, a1, SMP_CPUID_PTRSHIFT);
-+	UASM_i_LA_mostly(&p, a2, pgdc);
-+	UASM_i_ADDU(&p, a2, a2, a1);
-+	UASM_i_SW(&p, a0, uasm_rel_lo(pgdc), a2);
-+#else
-+	UASM_i_LA_mostly(&p, a2, pgdc);
-+	UASM_i_SW(&p, a0, uasm_rel_lo(pgdc), a2);
-+#endif /* SMP */
-+	uasm_i_jr(&p, 31);
-+
-+	/* if pgd_reg is allocated, save PGD also to scratch register */
-+	if (pgd_reg != -1)
-+		UASM_i_MTC0(&p, a0, c0_kscratch(), pgd_reg);
-+	else
-+		uasm_i_nop(&p);
-+#endif
- 	if (p >= tlbmiss_handler_setup_pgd_end)
- 		panic("tlbmiss_handler_setup_pgd space exceeded");
- 
-@@ -1457,7 +1485,6 @@ static void build_r4000_setup_pgd(void)
- 	dump_handler("tlbmiss_handler", tlbmiss_handler_setup_pgd,
- 					tlbmiss_handler_setup_pgd_size);
- }
--#endif
- 
- static void
- iPTE_LW(u32 **p, unsigned int pte, unsigned int ptr)
-@@ -2185,6 +2212,7 @@ void build_tlb_refill_handler(void)
- 		if (!run_once) {
- 			if (!cpu_has_local_ebase)
- 				build_r3000_tlb_refill_handler();
-+			build_setup_pgd();
- 			build_r3000_tlb_load_handler();
- 			build_r3000_tlb_store_handler();
- 			build_r3000_tlb_modify_handler();
-@@ -2208,9 +2236,7 @@ void build_tlb_refill_handler(void)
- 	default:
- 		if (!run_once) {
- 			scratch_reg = allocate_kscratch();
--#ifdef CONFIG_MIPS_PGD_C0_CONTEXT
--			build_r4000_setup_pgd();
--#endif
-+			build_setup_pgd();
- 			build_r4000_tlb_load_handler();
- 			build_r4000_tlb_store_handler();
- 			build_r4000_tlb_modify_handler();
--- 
-1.7.9.5
+> +#ifdef DEBUG
+> +#define spi_debug(args...) printk(args)
+> +#else
+> +#define spi_debug(args...)
+> +#endif
+
+This shouldn't be driver specific if it's useful, though really it looks
+like the driver should just be using dev_dbg() and friends.
+
+> +static inline void rt2880_spi_setbits(struct rt2880_spi *rs, u32 reg, u32 mask)
+> +{
+> +	void __iomem *addr = rs->base + reg;
+> +	u32 val;
+> +
+> +	val = ioread32(addr);
+> +	val |= mask;
+> +	iowrite32(val, addr);
+> +}
+
+Is this always called with a suitable lock held?
+
+> +	if (bits_per_word != 8) {
+
+You should be setting bits_per_word_mask in the master structure, then
+you don't need to check for this.
+
+> +static inline int rt2880_spi_wait_till_ready(struct rt2880_spi *rs)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < RALINK_SPI_WAIT_RDY_MAX_LOOP; i++) {
+> +		u32 status;
+> +
+> +		status = rt2880_spi_read(rs, RAMIPS_SPI_STAT);
+> +		if ((status & SPISTAT_BUSY) == 0)
+> +			return 0;
+> +
+> +		udelay(1);
+> +	}
+
+A cpu_relax() here would be nice.
+
+> +static unsigned int
+> +rt2880_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+> +{
+> +	struct rt2880_spi *rs = spidev_to_rt2880_spi(spi);
+> +	unsigned count = 0;
+> +	u8 *rx = xfer->rx_buf;
+> +	const u8 *tx = xfer->tx_buf;
+> +	int err;
+> +
+> +	spi_debug("%s(%d): %s %s\n", __func__, xfer->len,
+> +		  (tx != NULL) ? "tx" : "  ",
+> +		  (rx != NULL) ? "rx" : "  ");
+> +
+> +	if (tx) {
+> +		for (count = 0; count < xfer->len; count++) {
+> +			rt2880_spi_write(rs, RAMIPS_SPI_DATA, tx[count]);
+> +			rt2880_spi_setbits(rs, RAMIPS_SPI_CTL, SPICTL_STARTWR);
+> +			err = rt2880_spi_wait_till_ready(rs);
+> +			if (err) {
+> +				dev_err(&spi->dev, "TX failed, err=%d\n", err);
+> +				goto out;
+> +			}
+> +		}
+> +	}
+> +
+> +	if (rx) {
+
+There is presumably a maximum transfer size here from the FIFO that is
+holding the data?
+
+> +		if (bits_per_word != 8) {
+> +			dev_err(&spi->dev,
+> +				"message rejected: invalid transfer bits_per_word (%d bits)\n",
+> +				bits_per_word);
+
+Like I say set bits_per_word_mask...
+
+> +		if (t->speed_hz && t->speed_hz < (rs->sys_freq / 128)) {
+> +			dev_err(&spi->dev,
+> +				"message rejected: device min speed (%d Hz) exceeds required transfer speed (%d Hz)\n",
+> +				(rs->sys_freq / 128), t->speed_hz);
+> +			status = -EIO;
+> +			goto msg_done;
+> +		}
+
+Set min_speed_hz in the spi_master and the core will check this for you.
+
+> +	if (spi->max_speed_hz < (rs->sys_freq / 128)) {
+> +		dev_err(&spi->dev, "setup: requested speed is too low %d Hz\n",
+> +			spi->max_speed_hz);
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (spi->bits_per_word != 0 && spi->bits_per_word != 8) {
+> +		dev_err(&spi->dev,
+> +			"setup: requested bits per words - os wrong %d bpw\n",
+> +			spi->bits_per_word);
+> +		return -EINVAL;
+> +	}
+
+Again the core can do this for you.
+
+> +	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	base = devm_request_and_ioremap(&pdev->dev, r);
+> +	if (IS_ERR(base))
+> +		return PTR_ERR(base);
+
+devm_ioremap_resource().
+
+> +	status = clk_enable(clk);
+> +	if (status)
+> +		return status;
+
+clk_prepare_enable(), and it'd be nice to use runtime PM and enable the
+clock only when doing transfers though that's not essential.
+
+> +static int rt2880_spi_remove(struct platform_device *pdev)
+> +{
+> +	struct spi_master *master;
+> +	struct rt2880_spi *rs;
+> +
+> +	master = dev_get_drvdata(&pdev->dev);
+> +	rs = spi_master_get_devdata(master);
+> +
+> +	clk_disable(rs->clk);
+> +	clk_put(rs->clk);
+
+No clk_put if you've used devm_clk_get().
+
+--/DKyarNrjr/gdwox
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSB5EPAAoJELSic+t+oim9CO4P/1bCI9kHq/QwZLVScJalWj88
+2WsyXhPqNLndFWOqU3fKhjR0VO2KdShUQCBKEOdSXNC1Tz2f5m0lDZa+yYL+sJbV
+gxiLgNaHamPOYq4I6RSs2OBi4jmrJhZR2+cjACZRTkbHzD4zfCQqq9wst1PzqIpZ
+ApXDRJgf7BebxAAlBzbvXZ9llUtBL7v/mIRruNiT4grE1wUpXpjCt+feFyJS6pVt
+FdEr8DtpPgi3sIk4TTJJiVgXOB1I44dm1TLURvk7mdtfvh6xS7aXeiGDoGZv8BiV
+05N7jAN97Na7As+eRp/mXAt5Q3UPShKTR5J3O9bsx6fBYs+wqjR4QGOX4vBA/61y
+MZdSzZ6Cz162qxjoHvnqpUeCo1C6jiI2+uRiBsgx7U6HAV/UUuRbmatrn5rwxtog
+M5R3Z4Yx5VnJEGs4HmM6xZRMgfnQvtcCUysv/JZVSRnwg0ytoNlyMql8J/s5fxX8
+Nkugwfuvel3QqlrhzGirxVpvw9KqO3DeXd3yvL/rzG7g2/t3JvpJDp+R/VCMudsd
+De0D/kFHSRZqxvAZdIwEgY69HkjrYr0QgXZTdQ0ik8X8W1hVNGsRAt2gTWMsWd1d
+jq3bGR0Gz2WsulZOCqlEGpXuz3Ko8Mc0UmfbuJuFdfV6JHhOviyYSMmC8wb5bATG
+yPZwEvN4w/KYyGtThSO6
+=snqH
+-----END PGP SIGNATURE-----
+
+--/DKyarNrjr/gdwox--

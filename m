@@ -1,40 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Aug 2013 11:20:42 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:4033 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Aug 2013 13:39:45 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:4094 "EHLO mms1.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825118Ab3HKJNkRbnsL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 11 Aug 2013 11:13:40 +0200
-Received: from [10.9.208.55] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Sun, 11 Aug 2013 02:07:11 -0700
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Sun, 11 Aug 2013 02:13:20 -0700
+        id S6820116Ab3HKLjlnj7xO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 11 Aug 2013 13:39:41 +0200
+Received: from [10.9.208.57] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Sun, 11 Aug 2013 04:35:34 -0700
+X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
+Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Sun, 11 Aug 2013 04:39:25 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
- Server id 14.1.438.0; Sun, 11 Aug 2013 02:13:20 -0700
+ IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
+ Server id 14.1.438.0; Sun, 11 Aug 2013 04:39:25 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id E8A67F2D74; Sun, 11
- Aug 2013 02:13:18 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 7D632F2D72; Sun, 11
+ Aug 2013 04:39:24 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-cc:     "Ganesan Ramalingam" <ganesanr@broadcom.com>,
-        "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 08/10] MIPS: Netlogic: XLP2xx update for I2C controller
-Date:   Sun, 11 Aug 2013 14:43:58 +0530
-Message-ID: <1376212440-21038-9-git-send-email-jchandra@broadcom.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+cc:     "Jayachandran C" <jchandra@broadcom.com>
+Subject: [PATCH 0/2] Use scratch register for PGD when
+ MIPS_PGD_C0_CONTEXT is not set
+Date:   Sun, 11 Aug 2013 17:10:15 +0530
+Message-ID: <1376221217-9335-1-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1376212440-21038-1-git-send-email-jchandra@broadcom.com>
-References: <1376212440-21038-1-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7E198BB51R079371343-01-01
+X-WSS-ID: 7E19A88C31W83127545-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37522
+X-archive-position: 37523
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,87 +49,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Ganesan Ramalingam <ganesanr@broadcom.com>
+These are the two pending patches in this series. I have reordered the
+changes so that the cleanup patch can be applied first.
 
-XLP2xx has a new I2C controller which has 4 buses connected to
-it. Update the IO offset and IRQ mapping code to reflect this.
+The second patch has the changes to use scratch registers when
+MIPS_PGD_C0_CONTEXT is not defined - this has not changed.
 
-Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
----
- arch/mips/include/asm/netlogic/xlp-hal/iomap.h |    3 +++
- arch/mips/include/asm/netlogic/xlp-hal/xlp.h   |    2 ++
- arch/mips/netlogic/xlp/nlm_hal.c               |   23 ++++++++++++++++-------
- 3 files changed, 21 insertions(+), 7 deletions(-)
+JC.
 
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
-index 9fac46f..61c84de 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
-@@ -88,6 +88,9 @@
- #define XLP_IO_I2C0_OFFSET(node)	XLP_HDR_OFFSET(node, 0, 6, 2)
- #define XLP_IO_I2C1_OFFSET(node)	XLP_HDR_OFFSET(node, 0, 6, 3)
- #define XLP_IO_GPIO_OFFSET(node)	XLP_HDR_OFFSET(node, 0, 6, 4)
-+/* on 2XX, all I2C busses are on the same block */
-+#define XLP2XX_IO_I2C_OFFSET(node)	XLP_HDR_OFFSET(node, 0, 6, 7)
-+
- /* system management */
- #define XLP_IO_SYS_OFFSET(node)		XLP_HDR_OFFSET(node, 0, 6, 5)
- #define XLP_IO_JTAG_OFFSET(node)	XLP_HDR_OFFSET(node, 0, 6, 6)
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-index 7a4a514..4950ea5 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-@@ -50,6 +50,8 @@
- #define PIC_MMC_IRQ			29
- #define PIC_I2C_0_IRQ			30
- #define PIC_I2C_1_IRQ			31
-+#define PIC_I2C_2_IRQ			32
-+#define PIC_I2C_3_IRQ			33
- 
- #ifndef __ASSEMBLY__
- 
-diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
-index 22e2e02..04adb75 100644
---- a/arch/mips/netlogic/xlp/nlm_hal.c
-+++ b/arch/mips/netlogic/xlp/nlm_hal.c
-@@ -93,11 +93,14 @@ int nlm_irq_to_irt(int irq)
- 	case PIC_MMC_IRQ:
- 		devoff = XLP_IO_SD_OFFSET(0);
- 		break;
--	case PIC_I2C_0_IRQ:
--		devoff = XLP_IO_I2C0_OFFSET(0);
--		break;
-+	case PIC_I2C_0_IRQ:	/* I2C will be fixed up */
- 	case PIC_I2C_1_IRQ:
--		devoff = XLP_IO_I2C1_OFFSET(0);
-+	case PIC_I2C_2_IRQ:
-+	case PIC_I2C_3_IRQ:
-+		if (cpu_is_xlpii())
-+			devoff = XLP2XX_IO_I2C_OFFSET(0);
-+		else
-+			devoff = XLP_IO_I2C0_OFFSET(0);
- 		break;
- 	default:
- 		devoff = 0;
-@@ -107,9 +110,15 @@ int nlm_irq_to_irt(int irq)
- 	if (devoff != 0) {
- 		pcibase = nlm_pcicfg_base(devoff);
- 		irt = nlm_read_reg(pcibase, XLP_PCI_IRTINFO_REG) & 0xffff;
--		/* HW bug, I2C 1 irt entry is off by one */
--		if (irq == PIC_I2C_1_IRQ)
--			irt = irt + 1;
-+		/* HW weirdness, I2C IRT entry has to be fixed up */
-+		switch (irq) {
-+		case PIC_I2C_1_IRQ:
-+			irt = irt + 1; break;
-+		case PIC_I2C_2_IRQ:
-+			irt = irt + 2; break;
-+		case PIC_I2C_3_IRQ:
-+			irt = irt + 3; break;
-+		}
- 	} else if (irq >= PIC_PCIE_LINK_0_IRQ && irq <= PIC_PCIE_LINK_3_IRQ) {
- 		/* HW bug, PCI IRT entries are bad on early silicon, fix */
- 		irt = PIC_IRT_PCIE_LINK_INDEX(irq - PIC_PCIE_LINK_0_IRQ);
+Jayachandran C (2):
+  MIPS: Move definition of SMP processor id register to header file
+  MIPS: mm: Use scratch for PGD when !CONFIG_MIPS_PGD_C0_CONTEXT
+
+ arch/mips/include/asm/mmu_context.h |   22 ++----
+ arch/mips/include/asm/stackframe.h  |   24 ++-----
+ arch/mips/include/asm/thread_info.h |   33 ++++++++-
+ arch/mips/mm/tlbex.c                |  136 +++++++++++++++--------------------
+ 4 files changed, 103 insertions(+), 112 deletions(-)
+
 -- 
 1.7.9.5

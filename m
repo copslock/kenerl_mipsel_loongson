@@ -1,31 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Aug 2013 17:44:01 +0200 (CEST)
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:43830
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6828015Ab3HMPn4m9jzF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Aug 2013 17:43:56 +0200
-X-IronPort-AV: E=Sophos;i="4.89,870,1367964000"; 
-   d="scan'208";a="23862017"
-Received: from vaio-julia.rsr.lip6.fr ([132.227.76.33])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-SHA; 13 Aug 2013 17:43:50 +0200
-Date:   Tue, 13 Aug 2013 17:43:32 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@lip6.fr>
-X-X-Sender: jll@hadrien
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        netdev@vger.kernel.org
-Subject: question about drivers/net/ethernet/sgi
-Message-ID: <alpine.DEB.2.02.1308131742100.2263@hadrien>
-User-Agent: Alpine 2.02 (DEB 1266 2009-07-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Aug 2013 20:51:06 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:48871 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6828015Ab3HMSuzqCXN0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Aug 2013 20:50:55 +0200
+Message-ID: <520A7E67.1060604@openwrt.org>
+Date:   Tue, 13 Aug 2013 20:43:51 +0200
+From:   John Crispin <blogic@openwrt.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <julia.lawall@lip6.fr>
+To:     Mark Brown <broonie@kernel.org>
+CC:     Gabor Juhos <juhosg@openwrt.org>, linux-spi@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/2] SPI: ralink: add Ralink SoC spi driver
+References: <1376074288-29302-1-git-send-email-blogic@openwrt.org> <1376074288-29302-2-git-send-email-blogic@openwrt.org> <20130811132642.GB6427@sirena.org.uk>
+In-Reply-To: <20130811132642.GB6427@sirena.org.uk>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37537
+X-archive-position: 37538
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: julia.lawall@lip6.fr
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,9 +37,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The files in drivers/net/ethernet/sgi (meth.c and ioc3-eth.c) both use
-alloc_skb.  Is there a reason why they do not use netdev_alloc_skb, like
-most other ethernet drivers?
+Hi Mark,
 
-thanks,
-julia
+Thanks for the review, I will send a V2 tomorrow, I want to verify my 
+changes on real HW first.
+
+a few comments inline ...
+
+> There is presumably a maximum transfer size here from the FIFO that is
+> holding the data?
+The hardware is not running in DMA/IRQ mode and hence it can only 
+read/write 1 byte at a time.
+
+> Set min_speed_hz in the spi_master and the core will check this for you.
+
+it seems that min_speed is not handled by the core yet. I saw several 
+drivers do minimum speed testing. I am leaving this code in the driver 
+until there is a generic minimum speed check
+> clk_prepare_enable(), and it'd be nice to use runtime PM and enable the
+> clock only when doing transfers though that's not essential.
+>
+
+The clock is free running and always running.
+
+     John

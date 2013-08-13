@@ -1,30 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Aug 2013 19:23:27 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:49952 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Aug 2013 11:02:53 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:57287 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6826530Ab3HLRW5xiz0l (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 12 Aug 2013 19:22:57 +0200
-Message-ID: <520919F0.5090209@openwrt.org>
-Date:   Mon, 12 Aug 2013 19:22:56 +0200
-From:   Felix Fietkau <nbd@openwrt.org>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:17.0) Gecko/20130801 Thunderbird/17.0.8
+        id S6824782Ab3HMJCujGzyD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Aug 2013 11:02:50 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: ath79: Avoid using unitialized 'reg' variable
+Date:   Tue, 13 Aug 2013 10:01:18 +0100
+Message-ID: <1376384478-27424-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.3.2
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] MIPS: partially inline dma ops
-References: <1376306569-83278-1-git-send-email-nbd@openwrt.org> <1376306569-83278-2-git-send-email-nbd@openwrt.org> <5209169F.5070709@gmail.com>
-In-Reply-To: <5209169F.5070709@gmail.com>
-X-Enigmail-Version: 1.5.2
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <nbd@openwrt.org>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.130]
+X-SEF-Processed: 7_3_0_01192__2013_08_13_10_02_45
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37535
+X-archive-position: 37536
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nbd@openwrt.org
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,33 +35,87 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2013-08-12 7:08 PM, David Daney wrote:
-> On 08/12/2013 04:22 AM, Felix Fietkau wrote:
->> Several DMA ops are no-op on many platforms, and the indirection through
->> the mips_dma_map_ops function table is causing the compiler to emit
->> unnecessary code.
->>
->> Inlining visibly improves network performance in my tests (on a 24Kc
->> based system), and also slightly reduces code size of a few drivers.
->>
->> Signed-off-by: Felix Fietkau <nbd@openwrt.org>
->> ---
->>   arch/mips/Kconfig                   |   4 +
->>   arch/mips/include/asm/dma-mapping.h | 360 +++++++++++++++++++++++++++++++++++-
->>   arch/mips/mm/dma-default.c          | 161 ++--------------
->>   3 files changed, 372 insertions(+), 153 deletions(-)
-> That is not a very pleasing diffstat.
-I know. But altering the generic include (of which I duplicated the
-inlined code here) would make things even worse. I believe the
-improvement in the generated code is worth it though.
-I just did some fresh performance tests with an 400 MHz AR7242 system
-(MIPS 24Kc), bridging packets from one Ethernet port to another. I'm
-running TCP iperf through this device.
-Without this patch, I get 710-760 MBit/s with heavy fluctuation.
-With this patch, I get 780-790 MBit/s with little fluctuation.
-Most other MIPS systems will probably see similar improvements in DMA
-heavy drivers.
-For Octeon, I don't expect any visible performance change, and the
-change shouldn't make it any worse either.
+Fixes the following build error:
+arch/mips/include/asm/mach-ath79/ath79.h:139:20: error: 'reg' may be used
+uninitialized in this function [-Werror=maybe-uninitialized]
+arch/mips/ath79/common.c:62:6: note: 'reg' was declared here
+In file included from arch/mips/ath79/common.c:20:0:
+arch/mips/ath79/common.c: In function 'ath79_device_reset_clear':
+arch/mips/include/asm/mach-ath79/ath79.h:139:20:
+error: 'reg' may be used uninitialized in this function
+[-Werror=maybe-uninitialized]
+arch/mips/ath79/common.c:90:6: note: 'reg' was declared here
 
-- Felix
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+This patch is for the upstream-sfr/mips-for-linux-next tree
+---
+ arch/mips/ath79/common.c | 32 ++++++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 14 deletions(-)
+
+diff --git a/arch/mips/ath79/common.c b/arch/mips/ath79/common.c
+index eb3966c..6a8c00f 100644
+--- a/arch/mips/ath79/common.c
++++ b/arch/mips/ath79/common.c
+@@ -62,20 +62,22 @@ void ath79_device_reset_set(u32 mask)
+ 	u32 reg;
+ 	u32 t;
+ 
+-	if (soc_is_ar71xx())
++	if (soc_is_ar71xx()) {
+ 		reg = AR71XX_RESET_REG_RESET_MODULE;
+-	else if (soc_is_ar724x())
++	} else if (soc_is_ar724x()) {
+ 		reg = AR724X_RESET_REG_RESET_MODULE;
+-	else if (soc_is_ar913x())
++	} else if (soc_is_ar913x()) {
+ 		reg = AR913X_RESET_REG_RESET_MODULE;
+-	else if (soc_is_ar933x())
++	} else if (soc_is_ar933x()) {
+ 		reg = AR933X_RESET_REG_RESET_MODULE;
+-	else if (soc_is_ar934x())
++	} else if (soc_is_ar934x()) {
+ 		reg = AR934X_RESET_REG_RESET_MODULE;
+-	else if (soc_is_qca955x())
++	} else if (soc_is_qca955x()) {
+ 		reg = QCA955X_RESET_REG_RESET_MODULE;
+-	else
++	} else {
+ 		BUG();
++		panic("Unknown SOC!");
++	}
+ 
+ 	spin_lock_irqsave(&ath79_device_reset_lock, flags);
+ 	t = ath79_reset_rr(reg);
+@@ -90,20 +92,22 @@ void ath79_device_reset_clear(u32 mask)
+ 	u32 reg;
+ 	u32 t;
+ 
+-	if (soc_is_ar71xx())
++	if (soc_is_ar71xx()) {
+ 		reg = AR71XX_RESET_REG_RESET_MODULE;
+-	else if (soc_is_ar724x())
++	} else if (soc_is_ar724x()) {
+ 		reg = AR724X_RESET_REG_RESET_MODULE;
+-	else if (soc_is_ar913x())
++	} else if (soc_is_ar913x()) {
+ 		reg = AR913X_RESET_REG_RESET_MODULE;
+-	else if (soc_is_ar933x())
++	} else if (soc_is_ar933x()) {
+ 		reg = AR933X_RESET_REG_RESET_MODULE;
+-	else if (soc_is_ar934x())
++	} else if (soc_is_ar934x()) {
+ 		reg = AR934X_RESET_REG_RESET_MODULE;
+-	else if (soc_is_qca955x())
++	} else if (soc_is_qca955x()) {
+ 		reg = QCA955X_RESET_REG_RESET_MODULE;
+-	else
++	} else {
+ 		BUG();
++		panic("Unknown SOC!");
++	}
+ 
+ 	spin_lock_irqsave(&ath79_device_reset_lock, flags);
+ 	t = ath79_reset_rr(reg);
+-- 
+1.8.3.2

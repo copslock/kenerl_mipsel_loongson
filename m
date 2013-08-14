@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Aug 2013 21:40:36 +0200 (CEST)
-Received: from mail-oa0-f53.google.com ([209.85.219.53]:58733 "EHLO
-        mail-oa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827311Ab3HNTkcRs5wk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Aug 2013 21:40:32 +0200
-Received: by mail-oa0-f53.google.com with SMTP id k18so13844436oag.12
-        for <linux-mips@linux-mips.org>; Wed, 14 Aug 2013 12:40:26 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Aug 2013 21:41:33 +0200 (CEST)
+Received: from mail-ob0-f178.google.com ([209.85.214.178]:56019 "EHLO
+        mail-ob0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6865331Ab3HNTl3eX6af (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Aug 2013 21:41:29 +0200
+Received: by mail-ob0-f178.google.com with SMTP id ef5so9408326obb.9
+        for <linux-mips@linux-mips.org>; Wed, 14 Aug 2013 12:41:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
         h=x-gm-message-state:mime-version:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=FAdavmvmMfP3xoPVlCV/FK++q7Ev4oSmnTCjRFdATAA=;
-        b=ZyiA6Xix4hX9y1vZLh0xDEHyWdS52ko9WlqCIW1FM/2Uwaevwne+FzkH+il3hKb94v
-         2Tx9UF38rErFajEvTBfk864pzUdevDFCVPhar5QhCcgrZfnBcfOFi99CuUKaQtSNTnpi
-         rn1wyAi/xPf6lbUayXzqCQRcN3wHwIRkprMGO2dx116djssJ3emfvZ/47Qh/A374RDfu
-         Vjyu3GOG254sGxRXHLa1IL7DgI9LUF0abeHEJBBdkDN8sjAQZ8ypT1wKZQSXe2qdEDVn
-         GQHseCm1f5gyqQ9HqZCL93XnejfCYA9/pAQpMXpoucZc2ZRc+iEIgFdH+RccaBB2pagP
-         Vuew==
-X-Gm-Message-State: ALoCoQnoo8VZ7CGeO47No24BlPc2Zt7tAU+IpstAuqH0ZTGOyaVjq5Dl7YNkSV9owOB1oRxWGXTt
+        bh=vabB7YzlEJXdvxuPSMompnr46SZKTca4Rgd8b87szg0=;
+        b=C6eaJD5NDGQEIwo2j6P2FP148bHniVSgZhw1QwbGdylKXbp9DgYGAW2yvL54atgetE
+         Q/dBv6OSDgkvr+cBMHn7FBSuLbdWeop5Mps1iXo0JqYLo5koo5gpKGPObK37QSxPqgwh
+         pQZ2rU1lZgFPoh8vSvdLXTmAHas+Ks+D6SNu6I109Hj4OaCI7T0q90VrKJL52GhiXCst
+         pIW67Hh/Wc0KEfYO47xhgpi6FESOn1fmzuKCvRPIJxITyyd6gwz0Qqzx4qg2z2Z2qgCe
+         HG9naJasnkUiOJZASD1LTkpPjDMpkLI5VtS/PcARgwCEREcFkts2QlZAgDOWVMLVMv3o
+         1VBw==
+X-Gm-Message-State: ALoCoQkT4zt68A8CIkIZH+hgwvVEGgfxUVk3ol0u/IIFDwT4EKbiKFsMOIGoula5j1R8RBKBa1Qf
 MIME-Version: 1.0
-X-Received: by 10.60.44.240 with SMTP id h16mr10813426oem.2.1376509226205;
- Wed, 14 Aug 2013 12:40:26 -0700 (PDT)
-Received: by 10.182.120.7 with HTTP; Wed, 14 Aug 2013 12:40:26 -0700 (PDT)
-In-Reply-To: <1376073495-28730-1-git-send-email-blogic@openwrt.org>
+X-Received: by 10.182.250.163 with SMTP id zd3mr22478957obc.20.1376509283393;
+ Wed, 14 Aug 2013 12:41:23 -0700 (PDT)
+Received: by 10.182.120.7 with HTTP; Wed, 14 Aug 2013 12:41:23 -0700 (PDT)
+In-Reply-To: <1376073495-28730-2-git-send-email-blogic@openwrt.org>
 References: <1376073495-28730-1-git-send-email-blogic@openwrt.org>
-Date:   Wed, 14 Aug 2013 21:40:26 +0200
-Message-ID: <CACRpkdYAG=qc-iOYWpFF+_Jk5fQwo2prex63vqGOiguEVg5PNA@mail.gmail.com>
-Subject: Re: [PATCH V2 1/2] pinctrl/lantiq: add missing pin definition to
- falcon pinctrl driver
+        <1376073495-28730-2-git-send-email-blogic@openwrt.org>
+Date:   Wed, 14 Aug 2013 21:41:23 +0200
+Message-ID: <CACRpkdb-+0hq20fVCuh-itgAZ_G4BhEhvJzL2gKKKhDEP7PD3A@mail.gmail.com>
+Subject: Re: [PATCH V2 2/2] pinctrl/lantiq: add missing gphy led setup
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     John Crispin <blogic@openwrt.org>
 Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org, Thomas Langer <thomas.langer@lantiq.com>
+        linux-mips@linux-mips.org
 Content-Type: text/plain; charset=ISO-8859-1
 Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37548
+X-archive-position: 37549
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,16 +55,11 @@ X-list: linux-mips
 
 On Fri, Aug 9, 2013 at 8:38 PM, John Crispin <blogic@openwrt.org> wrote:
 
-> From: Thomas Langer <thomas.langer@lantiq.com>
+> We found out how to set the gphy led pinmuxing.
 >
-> The pps pin definition is missing in the current code.
->
-> Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
-> Acked-by: John Crispin <blogic@openwrt.org>
-> ---
-> Sorry i just noticed that i sent the 2 wrong files yesterday
+> Signed-off-by: John Crispin <blogic@openwrt.org>
 
-OK applied this instead then.
+Applied this instead.
 
 Yours,
 Linus Walleij

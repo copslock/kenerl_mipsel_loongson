@@ -1,28 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Aug 2013 10:57:58 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:1668 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817128Ab3HNI5vxTv46 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Aug 2013 10:57:51 +0200
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH] MIPS: txx9: Fix build error if CONFIG_TOSHIBA_JMR3927 is not selected
-Date:   Wed, 14 Aug 2013 09:57:16 +0100
-Message-ID: <1376470636-18534-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.3.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Aug 2013 12:42:05 +0200 (CEST)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:47377 "EHLO
+        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6819547Ab3HNKmCCJ0v8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Aug 2013 12:42:02 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id AA788521C9D;
+        Wed, 14 Aug 2013 12:41:55 +0200 (CEST)
+Received: from mail.szarvasnet.hu ([127.0.0.1])
+        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id WLxAi9J5rTNf; Wed, 14 Aug 2013 12:41:55 +0200 (CEST)
+Received: from [192.168.254.50] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 7B383521C72;
+        Wed, 14 Aug 2013 12:41:55 +0200 (CEST)
+Message-ID: <520B5F01.5090108@openwrt.org>
+Date:   Wed, 14 Aug 2013 12:42:09 +0200
+From:   Gabor Juhos <juhosg@openwrt.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130509 Thunderbird/17.0.6
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.130]
-X-SEF-Processed: 7_3_0_01192__2013_08_14_09_57_47
-Return-Path: <Markos.Chandras@imgtec.com>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+CC:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: ath79: Avoid using unitialized 'reg' variable
+References: <1376384478-27424-1-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1376384478-27424-1-git-send-email-markos.chandras@imgtec.com>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-2
+Content-Transfer-Encoding: 8bit
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37541
+X-archive-position: 37542
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,36 +46,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The jmr3927_vec txx9_board_vec struct is defined in
-txx9/jmr3927/setup.c which is only built if
-CONFIG_TOSHIBA_JMR3927 is selected. This patch fixes the following
-build problem:
+2013.08.13. 11:01 keltezéssel, Markos Chandras írta:
+> Fixes the following build error:
+> arch/mips/include/asm/mach-ath79/ath79.h:139:20: error: 'reg' may be used
+> uninitialized in this function [-Werror=maybe-uninitialized]
+> arch/mips/ath79/common.c:62:6: note: 'reg' was declared here
+> In file included from arch/mips/ath79/common.c:20:0:
+> arch/mips/ath79/common.c: In function 'ath79_device_reset_clear':
+> arch/mips/include/asm/mach-ath79/ath79.h:139:20:
+> error: 'reg' may be used uninitialized in this function
+> [-Werror=maybe-uninitialized]
+> arch/mips/ath79/common.c:90:6: note: 'reg' was declared here
+> 
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 
-arch/mips/txx9/generic/setup.c: In function 'select_board':
-arch/mips/txx9/generic/setup.c:354:20: error:
-'jmr3927_vec' undeclared (first use in this function)
-arch/mips/txx9/generic/setup.c:354:20: note: each undeclared
-identifier is reported only once for each function it appears in
-make[3]: *** [arch/mips/txx9/generic/setup.o] Error 1
+Acked-by: Gabor Juhos <juhosg@openwrt.org>
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
----
- arch/mips/txx9/generic/setup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index 681e7f8..2b0b83c 100644
---- a/arch/mips/txx9/generic/setup.c
-+++ b/arch/mips/txx9/generic/setup.c
-@@ -350,7 +350,7 @@ static void __init select_board(void)
- 	}
- 
- 	/* select "default" board */
--#ifdef CONFIG_CPU_TX39XX
-+#ifdef CONFIG_TOSHIBA_JMR3927
- 	txx9_board_vec = &jmr3927_vec;
- #endif
- #ifdef CONFIG_CPU_TX49XX
--- 
-1.8.3.2
+Thanks,
+Gabor

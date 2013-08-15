@@ -1,39 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Aug 2013 10:05:21 +0200 (CEST)
-Received: from mail.active-venture.com ([67.228.131.205]:54970 "EHLO
-        mail.active-venture.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827312Ab3HOIFMQuCjl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Aug 2013 10:05:12 +0200
-Received: (qmail 96476 invoked by uid 399); 15 Aug 2013 08:05:03 -0000
-Received: from unknown (HELO server.roeck-us.net) (linux@roeck-us.net@108.223.40.66)
-  by mail.active-venture.com with ESMTPAM; 15 Aug 2013 08:05:03 -0000
-X-Originating-IP: 108.223.40.66
-X-Sender: linux@roeck-us.net
-Message-ID: <520C8BB0.8030500@roeck-us.net>
-Date:   Thu, 15 Aug 2013 01:05:04 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130803 Thunderbird/17.0.8
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Aug 2013 10:28:36 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:48044 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6825906Ab3HOI22nSUSL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 15 Aug 2013 10:28:28 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: netlogic: xlr: Serial support depends on CONFIG_SERIAL_8250
+Date:   Thu, 15 Aug 2013 09:27:47 +0100
+Message-ID: <1376555267-1633-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.3.2
 MIME-Version: 1.0
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        stable <stable@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: [ 00/17] 3.4.58-stable review
-References: <20130813063501.728847844@linuxfoundation.org> <520A1D56.2050507@roeck-us.net> <20130813175858.GC7336@kroah.com> <20130813201936.GA18358@roeck-us.net> <20130815063158.GB25754@kroah.com> <520C86BD.2020903@roeck-us.net> <CAMuHMdU+EOC_etihOzUC6N0cqc2qHaGm3_L+gyTRxESCGhOzEg@mail.gmail.com>
-In-Reply-To: <CAMuHMdU+EOC_etihOzUC6N0cqc2qHaGm3_L+gyTRxESCGhOzEg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <linux@roeck-us.net>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.130]
+X-SEF-Processed: 7_3_0_01192__2013_08_15_09_28_20
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37551
+X-archive-position: 37552
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,38 +35,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/15/2013 12:55 AM, Geert Uytterhoeven wrote:
-> On Thu, Aug 15, 2013 at 9:43 AM, Guenter Roeck <linux@roeck-us.net> wrote:
->> I screwed up my stable repo clone again :(, so the full build will take a
->> bit.
->>
->> mips builds on on 3.4 with all patches applied now fail with:
->> arch/mips/include/asm/page.h: Assembler messages:
->> arch/mips/include/asm/page.h:178: Error: Unrecognized opcode `static inline
->> int pfn_valid(unsigned long pfn)'
->> arch/mips/include/asm/page.h:179: Error: junk at end of line, first
->> unrecognized character is `{'
->> arch/mips/include/asm/page.h:181: Error: Unrecognized opcode `extern
->> unsigned long max_mapnr'
->> arch/mips/include/asm/page.h:183: Error: Unrecognized opcode `return
->> pfn>=ARCH_PFN_OFFSET&&pfn<max_mapnr'
->> arch/mips/include/asm/page.h:184: Error: junk at end of line, first
->> unrecognized character is `}'
->>
->> This is the error I referred to above. Reverting above pfn rework patch
->> fixes that problem,
->> so you might want to remove that patch from the patch queue for now.
->
-> Perhaps this one got applied too soon?
->
->   commit 730b8dfe016dd1e91f73d8d3e6724da91397171c
-> Author: Ralf Baechle <ralf@linux-mips.org>
-> Date:   Fri Dec 28 15:18:02 2012 +0100
->
->      MIPS: page.h: Remove now unnecessary #ifndef __ASSEMBLY__ wrapper.
->
-I applied it on top of the other patches, but that did not help.
-On the contrary, I get even more errors. Must be something else,
-or it needs even more patches.
+The nlm_early_serial_setup code needs the early_serial_setup symbol
+which is only available if CONFIG_SERIAL_8250 is selected.
+Fixes the following build problem:
 
-Guenter
+arch/mips/built-in.o: In function `nlm_early_serial_setup':
+setup.c:(.init.text+0x274): undefined reference to `early_serial_setup'
+make: *** [vmlinux] Error 1
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+This patch is for the upstream-sfr/mips-for-linux-next tree
+---
+ arch/mips/netlogic/xlr/setup.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/netlogic/xlr/setup.c b/arch/mips/netlogic/xlr/setup.c
+index 214d123..60769f7 100644
+--- a/arch/mips/netlogic/xlr/setup.c
++++ b/arch/mips/netlogic/xlr/setup.c
+@@ -60,6 +60,7 @@ unsigned int  nlm_threads_per_core = 1;
+ struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
+ cpumask_t nlm_cpumask = CPU_MASK_CPU0;
+ 
++#ifdef CONFIG_SERIAL_8250
+ static void __init nlm_early_serial_setup(void)
+ {
+ 	struct uart_port s;
+@@ -78,6 +79,7 @@ static void __init nlm_early_serial_setup(void)
+ 	s.membase	= (unsigned char __iomem *)uart_base;
+ 	early_serial_setup(&s);
+ }
++#endif
+ 
+ static void nlm_linux_exit(void)
+ {
+@@ -214,8 +216,9 @@ void __init prom_init(void)
+ 	memset(reset_vec, 0, RESET_VEC_SIZE);
+ 	memcpy(reset_vec, (void *)nlm_reset_entry,
+ 			(nlm_reset_entry_end - nlm_reset_entry));
+-
++#ifdef CONFIG_SERIAL_8250
+ 	nlm_early_serial_setup();
++#endif
+ 	build_arcs_cmdline(argv);
+ 	prom_add_memory();
+ 
+-- 
+1.8.3.2

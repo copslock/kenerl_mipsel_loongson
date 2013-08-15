@@ -1,43 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Aug 2013 13:52:49 +0200 (CEST)
-Received: from mail-we0-f175.google.com ([74.125.82.175]:39626 "EHLO
-        mail-we0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816122Ab3HOLwlAGB4W (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Aug 2013 13:52:41 +0200
-Received: by mail-we0-f175.google.com with SMTP id q58so483060wes.34
-        for <linux-mips@linux-mips.org>; Thu, 15 Aug 2013 04:52:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=VVTcedpdEHj26rJzkba0v33Bld+RZr+PiPFrRT1Mj38=;
-        b=vvFHkHusgx1Nf90Un/shaXS/ucuVkPth8BKJ9QT/ljp4DYdPcRk75G1gE+aZn8iYci
-         E85x1lPag9imHqThUOfRKN1mBJ9nakSly2pSrzJwAq6kCYxNCqTOTFWtO0GaFYJnv36s
-         kNZNihX9KRUbACBC+3RNApKW57jfot2k4RbhiITSZwMhCMc2yKxIsA1YXfYZQ5HjCjW0
-         5dmswxq8ZVslES/GD7VFvnvdh8SvBJhANX5jy2cbjbx2uaYu25TxYtkDcHvTtVrm+0zm
-         Y69IG3h1BzpxytK2pGZZ7HzHghX0l76JvafNpwea2Wh4UICIiyZdOZ6poYAMqnqgi91R
-         LAIA==
-X-Received: by 10.180.75.239 with SMTP id f15mr1572753wiw.42.1376567555680;
- Thu, 15 Aug 2013 04:52:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Aug 2013 14:59:52 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:48889 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6865342Ab3HOM7qaRbT- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 15 Aug 2013 14:59:46 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH v2] MIPS: netlogic: xlr: Serial support depends on CONFIG_SERIAL_8250
+Date:   Thu, 15 Aug 2013 13:59:35 +0100
+Message-ID: <1376571575-29037-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.3.2
 MIME-Version: 1.0
-Received: by 10.194.162.168 with HTTP; Thu, 15 Aug 2013 04:51:55 -0700 (PDT)
-In-Reply-To: <520CB905.1000700@cogentembedded.com>
-References: <1376555267-1633-1-git-send-email-markos.chandras@imgtec.com> <520CB905.1000700@cogentembedded.com>
-From:   Markos Chandras <markos.chandras@gmail.com>
-Date:   Thu, 15 Aug 2013 12:51:55 +0100
-Message-ID: <CAG2jQ8hDNprNa6D1R-VwyyN_b_uaHpKUvb6bmchDkp4SOxpB2Q@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: netlogic: xlr: Serial support depends on CONFIG_SERIAL_8250
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <markos.chandras@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.130]
+X-SEF-Processed: 7_3_0_01192__2013_08_15_13_59_40
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37560
+X-archive-position: 37561
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@gmail.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,25 +35,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Sergei,
+The nlm_early_serial_setup code needs the early_serial_setup symbol
+which is only available if CONFIG_SERIAL_8250 is selected.
+Fixes the following build problem:
 
-On 15 August 2013 12:18, Sergei Shtylyov
-<sergei.shtylyov@cogentembedded.com> wrote:
-> Hello.
->
->
->
->    It's better to follow what Documentation/Submitting patches suggest and
-> add:
->
-> #else
-> static inline void nlm_early_serial_setup(void) {}
->
->> +#endif
->>
+arch/mips/built-in.o: In function `nlm_early_serial_setup':
+setup.c:(.init.text+0x274): undefined reference to `early_serial_setup'
+make: *** [vmlinux] Error 1
 
-Thank you for the review. I will submit a new patch.
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/netlogic/xlr/setup.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/arch/mips/netlogic/xlr/setup.c b/arch/mips/netlogic/xlr/setup.c
+index 214d123..6d7d75e 100644
+--- a/arch/mips/netlogic/xlr/setup.c
++++ b/arch/mips/netlogic/xlr/setup.c
+@@ -60,6 +60,7 @@ unsigned int  nlm_threads_per_core = 1;
+ struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
+ cpumask_t nlm_cpumask = CPU_MASK_CPU0;
+ 
++#ifdef CONFIG_SERIAL_8250
+ static void __init nlm_early_serial_setup(void)
+ {
+ 	struct uart_port s;
+@@ -78,6 +79,9 @@ static void __init nlm_early_serial_setup(void)
+ 	s.membase	= (unsigned char __iomem *)uart_base;
+ 	early_serial_setup(&s);
+ }
++#else
++static inline void nlm_early_serial_setup(void) {}
++#endif
+ 
+ static void nlm_linux_exit(void)
+ {
 -- 
-Regards,
-Markos Chandras
+1.8.3.2

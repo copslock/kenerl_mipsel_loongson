@@ -1,51 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Aug 2013 13:18:36 +0200 (CEST)
-Received: from mail-lb0-f171.google.com ([209.85.217.171]:38783 "EHLO
-        mail-lb0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6865291Ab3HOLS2Ij8yi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Aug 2013 13:18:28 +0200
-Received: by mail-lb0-f171.google.com with SMTP id t13so538331lbd.16
-        for <linux-mips@linux-mips.org>; Thu, 15 Aug 2013 04:18:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=dquJdF0eacVIWv1Fo6NyCu0b0MRtbZ1Gt5CjcSisFGI=;
-        b=CPA0tuHKWniEnfWJbzCJR5WrrWgjzGRT7V+ro+hXiG1Zqp+VzMSGVUBnlMFElAfo+s
-         zN6SM4lM3yyDY+XTp1SVgT3Jq4WuvmV+MBnQUnfwx/yoVyVFDh5N7sqm5WvyTWKkqteN
-         B2kW4Ib2X9pgGkL6qDQIYFlW49AyqQmHer/ZPIFG+/CkhThxg7P77ewQMQkn5qZbOTBM
-         NhGxSe1X09/ydFapDr0laZNRxFTnhikZqpIa8QPjpDxYS0G5+AwIxyFpGV3zFA1qpDVr
-         T6LBj5LUEqfKSRICGUzS5YEZowLSG7yXHox2Rvnrxmy4yR53vMEdtyw317VtfZ6t07lY
-         NvOA==
-X-Gm-Message-State: ALoCoQkxEXP15vJwNBUgy2GbSn5JB+CzfgnK5sWyQompVZ94BBhRQpTF+THdJUHpCm44aBT8Kdxo
-X-Received: by 10.112.200.228 with SMTP id jv4mr869036lbc.44.1376565502416;
-        Thu, 15 Aug 2013 04:18:22 -0700 (PDT)
-Received: from [192.168.2.4] (ppp91-76-94-3.pppoe.mtu-net.ru. [91.76.94.3])
-        by mx.google.com with ESMTPSA id u18sm201823lbp.4.2013.08.15.04.18.20
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 15 Aug 2013 04:18:21 -0700 (PDT)
-Message-ID: <520CB905.1000700@cogentembedded.com>
-Date:   Thu, 15 Aug 2013 15:18:29 +0400
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130801 Thunderbird/17.0.8
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Aug 2013 13:52:49 +0200 (CEST)
+Received: from mail-we0-f175.google.com ([74.125.82.175]:39626 "EHLO
+        mail-we0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816122Ab3HOLwlAGB4W (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Aug 2013 13:52:41 +0200
+Received: by mail-we0-f175.google.com with SMTP id q58so483060wes.34
+        for <linux-mips@linux-mips.org>; Thu, 15 Aug 2013 04:52:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=VVTcedpdEHj26rJzkba0v33Bld+RZr+PiPFrRT1Mj38=;
+        b=vvFHkHusgx1Nf90Un/shaXS/ucuVkPth8BKJ9QT/ljp4DYdPcRk75G1gE+aZn8iYci
+         E85x1lPag9imHqThUOfRKN1mBJ9nakSly2pSrzJwAq6kCYxNCqTOTFWtO0GaFYJnv36s
+         kNZNihX9KRUbACBC+3RNApKW57jfot2k4RbhiITSZwMhCMc2yKxIsA1YXfYZQ5HjCjW0
+         5dmswxq8ZVslES/GD7VFvnvdh8SvBJhANX5jy2cbjbx2uaYu25TxYtkDcHvTtVrm+0zm
+         Y69IG3h1BzpxytK2pGZZ7HzHghX0l76JvafNpwea2Wh4UICIiyZdOZ6poYAMqnqgi91R
+         LAIA==
+X-Received: by 10.180.75.239 with SMTP id f15mr1572753wiw.42.1376567555680;
+ Thu, 15 Aug 2013 04:52:35 -0700 (PDT)
 MIME-Version: 1.0
-To:     Markos Chandras <markos.chandras@imgtec.com>
-CC:     linux-mips@linux-mips.org
+Received: by 10.194.162.168 with HTTP; Thu, 15 Aug 2013 04:51:55 -0700 (PDT)
+In-Reply-To: <520CB905.1000700@cogentembedded.com>
+References: <1376555267-1633-1-git-send-email-markos.chandras@imgtec.com> <520CB905.1000700@cogentembedded.com>
+From:   Markos Chandras <markos.chandras@gmail.com>
+Date:   Thu, 15 Aug 2013 12:51:55 +0100
+Message-ID: <CAG2jQ8hDNprNa6D1R-VwyyN_b_uaHpKUvb6bmchDkp4SOxpB2Q@mail.gmail.com>
 Subject: Re: [PATCH] MIPS: netlogic: xlr: Serial support depends on CONFIG_SERIAL_8250
-References: <1376555267-1633-1-git-send-email-markos.chandras@imgtec.com>
-In-Reply-To: <1376555267-1633-1-git-send-email-markos.chandras@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Cc:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <markos.chandras@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37559
+X-archive-position: 37560
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: markos.chandras@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,59 +50,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+Hi Sergei,
 
-On 15-08-2013 12:27, Markos Chandras wrote:
-
-> The nlm_early_serial_setup code needs the early_serial_setup symbol
-> which is only available if CONFIG_SERIAL_8250 is selected.
-> Fixes the following build problem:
-
-> arch/mips/built-in.o: In function `nlm_early_serial_setup':
-> setup.c:(.init.text+0x274): undefined reference to `early_serial_setup'
-> make: *** [vmlinux] Error 1
-
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> ---
-> This patch is for the upstream-sfr/mips-for-linux-next tree
-> ---
->   arch/mips/netlogic/xlr/setup.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
-
-> diff --git a/arch/mips/netlogic/xlr/setup.c b/arch/mips/netlogic/xlr/setup.c
-> index 214d123..60769f7 100644
-> --- a/arch/mips/netlogic/xlr/setup.c
-> +++ b/arch/mips/netlogic/xlr/setup.c
-> @@ -60,6 +60,7 @@ unsigned int  nlm_threads_per_core = 1;
->   struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
->   cpumask_t nlm_cpumask = CPU_MASK_CPU0;
+On 15 August 2013 12:18, Sergei Shtylyov
+<sergei.shtylyov@cogentembedded.com> wrote:
+> Hello.
 >
-> +#ifdef CONFIG_SERIAL_8250
->   static void __init nlm_early_serial_setup(void)
->   {
->   	struct uart_port s;
-> @@ -78,6 +79,7 @@ static void __init nlm_early_serial_setup(void)
->   	s.membase	= (unsigned char __iomem *)uart_base;
->   	early_serial_setup(&s);
->   }
-
-    It's better to follow what Documentation/Submitting patches suggest and add:
-
-#else
-static inline void nlm_early_serial_setup(void) {}
-> +#endif
 >
->   static void nlm_linux_exit(void)
->   {
-> @@ -214,8 +216,9 @@ void __init prom_init(void)
->   	memset(reset_vec, 0, RESET_VEC_SIZE);
->   	memcpy(reset_vec, (void *)nlm_reset_entry,
->   			(nlm_reset_entry_end - nlm_reset_entry));
-> -
-> +#ifdef CONFIG_SERIAL_8250
->   	nlm_early_serial_setup();
-> +#endif
+>
+>    It's better to follow what Documentation/Submitting patches suggest and
+> add:
+>
+> #else
+> static inline void nlm_early_serial_setup(void) {}
+>
+>> +#endif
+>>
 
-    ... and avoid #ifdef here.
+Thank you for the review. I will submit a new patch.
 
-WBR, Sergei
+-- 
+Regards,
+Markos Chandras

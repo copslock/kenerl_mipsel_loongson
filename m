@@ -1,25 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Aug 2013 11:29:20 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:56690 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6865281Ab3HOJ2eFr1lK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 15 Aug 2013 11:28:34 +0200
-Received: by nf.lan (Postfix, from userid 501)
-        id 7A9AA4FF4DFC; Thu, 15 Aug 2013 11:28:32 +0200 (CEST)
-From:   Felix Fietkau <nbd@openwrt.org>
-To:     linux-mips@linux-mips.org
-Subject: [PATCH v3 1/3] MIPS: remove unnecessary platform dma helper functions
-Date:   Thu, 15 Aug 2013 11:28:30 +0200
-Message-Id: <1376558912-41050-1-git-send-email-nbd@openwrt.org>
-X-Mailer: git-send-email 1.8.0.2
-Return-Path: <nbd@nbd.name>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Aug 2013 13:18:36 +0200 (CEST)
+Received: from mail-lb0-f171.google.com ([209.85.217.171]:38783 "EHLO
+        mail-lb0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6865291Ab3HOLS2Ij8yi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Aug 2013 13:18:28 +0200
+Received: by mail-lb0-f171.google.com with SMTP id t13so538331lbd.16
+        for <linux-mips@linux-mips.org>; Thu, 15 Aug 2013 04:18:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=dquJdF0eacVIWv1Fo6NyCu0b0MRtbZ1Gt5CjcSisFGI=;
+        b=CPA0tuHKWniEnfWJbzCJR5WrrWgjzGRT7V+ro+hXiG1Zqp+VzMSGVUBnlMFElAfo+s
+         zN6SM4lM3yyDY+XTp1SVgT3Jq4WuvmV+MBnQUnfwx/yoVyVFDh5N7sqm5WvyTWKkqteN
+         B2kW4Ib2X9pgGkL6qDQIYFlW49AyqQmHer/ZPIFG+/CkhThxg7P77ewQMQkn5qZbOTBM
+         NhGxSe1X09/ydFapDr0laZNRxFTnhikZqpIa8QPjpDxYS0G5+AwIxyFpGV3zFA1qpDVr
+         T6LBj5LUEqfKSRICGUzS5YEZowLSG7yXHox2Rvnrxmy4yR53vMEdtyw317VtfZ6t07lY
+         NvOA==
+X-Gm-Message-State: ALoCoQkxEXP15vJwNBUgy2GbSn5JB+CzfgnK5sWyQompVZ94BBhRQpTF+THdJUHpCm44aBT8Kdxo
+X-Received: by 10.112.200.228 with SMTP id jv4mr869036lbc.44.1376565502416;
+        Thu, 15 Aug 2013 04:18:22 -0700 (PDT)
+Received: from [192.168.2.4] (ppp91-76-94-3.pppoe.mtu-net.ru. [91.76.94.3])
+        by mx.google.com with ESMTPSA id u18sm201823lbp.4.2013.08.15.04.18.20
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Thu, 15 Aug 2013 04:18:21 -0700 (PDT)
+Message-ID: <520CB905.1000700@cogentembedded.com>
+Date:   Thu, 15 Aug 2013 15:18:29 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130801 Thunderbird/17.0.8
+MIME-Version: 1.0
+To:     Markos Chandras <markos.chandras@imgtec.com>
+CC:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: netlogic: xlr: Serial support depends on CONFIG_SERIAL_8250
+References: <1376555267-1633-1-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1376555267-1633-1-git-send-email-markos.chandras@imgtec.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37558
+X-archive-position: 37559
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nbd@openwrt.org
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -32,205 +58,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The semantics stay the same - on Cavium Octeon the functions were dead
-code (it overrides the MIPS DMA ops) - on other platforms they contained
-no code at all.
+Hello.
 
-Signed-off-by: Felix Fietkau <nbd@openwrt.org>
----
- arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h | 12 ------------
- arch/mips/include/asm/mach-generic/dma-coherence.h       | 10 ----------
- arch/mips/include/asm/mach-ip27/dma-coherence.h          | 10 ----------
- arch/mips/include/asm/mach-ip32/dma-coherence.h          | 11 -----------
- arch/mips/include/asm/mach-jazz/dma-coherence.h          | 10 ----------
- arch/mips/include/asm/mach-loongson/dma-coherence.h      | 10 ----------
- arch/mips/include/asm/mach-powertv/dma-coherence.h       | 10 ----------
- arch/mips/mm/dma-default.c                               |  4 +---
- 8 files changed, 1 insertion(+), 76 deletions(-)
+On 15-08-2013 12:27, Markos Chandras wrote:
 
-diff --git a/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h b/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
-index 47fb247..f9f4486 100644
---- a/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
-+++ b/arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
-@@ -52,23 +52,11 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
- 	return 0;
- }
- 
--static inline void plat_extra_sync_for_device(struct device *dev)
--{
--	BUG();
--}
--
- static inline int plat_device_is_coherent(struct device *dev)
- {
- 	return 1;
- }
- 
--static inline int plat_dma_mapping_error(struct device *dev,
--					 dma_addr_t dma_addr)
--{
--	BUG();
--	return 0;
--}
--
- dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr);
- phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr);
- 
-diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
-index 74cb992..a9e8f6b 100644
---- a/arch/mips/include/asm/mach-generic/dma-coherence.h
-+++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
-@@ -47,16 +47,6 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
- 	return 1;
- }
- 
--static inline void plat_extra_sync_for_device(struct device *dev)
--{
--}
--
--static inline int plat_dma_mapping_error(struct device *dev,
--					 dma_addr_t dma_addr)
--{
--	return 0;
--}
--
- static inline int plat_device_is_coherent(struct device *dev)
- {
- #ifdef CONFIG_DMA_COHERENT
-diff --git a/arch/mips/include/asm/mach-ip27/dma-coherence.h b/arch/mips/include/asm/mach-ip27/dma-coherence.h
-index 06c4419..4ffddfd 100644
---- a/arch/mips/include/asm/mach-ip27/dma-coherence.h
-+++ b/arch/mips/include/asm/mach-ip27/dma-coherence.h
-@@ -58,16 +58,6 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
- 	return 1;
- }
- 
--static inline void plat_extra_sync_for_device(struct device *dev)
--{
--}
--
--static inline int plat_dma_mapping_error(struct device *dev,
--					 dma_addr_t dma_addr)
--{
--	return 0;
--}
--
- static inline int plat_device_is_coherent(struct device *dev)
- {
- 	return 1;		/* IP27 non-cohernet mode is unsupported */
-diff --git a/arch/mips/include/asm/mach-ip32/dma-coherence.h b/arch/mips/include/asm/mach-ip32/dma-coherence.h
-index 073f0c4..104cfbc 100644
---- a/arch/mips/include/asm/mach-ip32/dma-coherence.h
-+++ b/arch/mips/include/asm/mach-ip32/dma-coherence.h
-@@ -80,17 +80,6 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
- 	return 1;
- }
- 
--static inline void plat_extra_sync_for_device(struct device *dev)
--{
--	return;
--}
--
--static inline int plat_dma_mapping_error(struct device *dev,
--					 dma_addr_t dma_addr)
--{
--	return 0;
--}
--
- static inline int plat_device_is_coherent(struct device *dev)
- {
- 	return 0;		/* IP32 is non-cohernet */
-diff --git a/arch/mips/include/asm/mach-jazz/dma-coherence.h b/arch/mips/include/asm/mach-jazz/dma-coherence.h
-index 9fc1e9a..949003e 100644
---- a/arch/mips/include/asm/mach-jazz/dma-coherence.h
-+++ b/arch/mips/include/asm/mach-jazz/dma-coherence.h
-@@ -48,16 +48,6 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
- 	return 1;
- }
- 
--static inline void plat_extra_sync_for_device(struct device *dev)
--{
--}
--
--static inline int plat_dma_mapping_error(struct device *dev,
--					 dma_addr_t dma_addr)
--{
--	return 0;
--}
--
- static inline int plat_device_is_coherent(struct device *dev)
- {
- 	return 0;
-diff --git a/arch/mips/include/asm/mach-loongson/dma-coherence.h b/arch/mips/include/asm/mach-loongson/dma-coherence.h
-index e143305..aeb2c05 100644
---- a/arch/mips/include/asm/mach-loongson/dma-coherence.h
-+++ b/arch/mips/include/asm/mach-loongson/dma-coherence.h
-@@ -53,16 +53,6 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
- 	return 1;
- }
- 
--static inline void plat_extra_sync_for_device(struct device *dev)
--{
--}
--
--static inline int plat_dma_mapping_error(struct device *dev,
--					 dma_addr_t dma_addr)
--{
--	return 0;
--}
--
- static inline int plat_device_is_coherent(struct device *dev)
- {
- 	return 0;
-diff --git a/arch/mips/include/asm/mach-powertv/dma-coherence.h b/arch/mips/include/asm/mach-powertv/dma-coherence.h
-index f831672..5d4c3fe 100644
---- a/arch/mips/include/asm/mach-powertv/dma-coherence.h
-+++ b/arch/mips/include/asm/mach-powertv/dma-coherence.h
-@@ -99,16 +99,6 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
- 	return 1;
- }
- 
--static inline void plat_extra_sync_for_device(struct device *dev)
--{
--}
--
--static inline int plat_dma_mapping_error(struct device *dev,
--					 dma_addr_t dma_addr)
--{
--	return 0;
--}
--
- static inline int plat_device_is_coherent(struct device *dev)
- {
- 	return 0;
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index aaccf1c..63e45d6 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -292,7 +292,6 @@ static void mips_dma_sync_single_for_cpu(struct device *dev,
- static void mips_dma_sync_single_for_device(struct device *dev,
- 	dma_addr_t dma_handle, size_t size, enum dma_data_direction direction)
- {
--	plat_extra_sync_for_device(dev);
- 	if (!plat_device_is_coherent(dev))
- 		__dma_sync(dma_addr_to_page(dev, dma_handle),
- 			   dma_handle & ~PAGE_MASK, size, direction);
-@@ -326,7 +325,7 @@ static void mips_dma_sync_sg_for_device(struct device *dev,
- 
- int mips_dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
- {
--	return plat_dma_mapping_error(dev, dma_addr);
-+	return 0;
- }
- 
- int mips_dma_supported(struct device *dev, u64 mask)
-@@ -339,7 +338,6 @@ void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
- {
- 	BUG_ON(direction == DMA_NONE);
- 
--	plat_extra_sync_for_device(dev);
- 	if (!plat_device_is_coherent(dev))
- 		__dma_sync_virtual(vaddr, size, direction);
- }
--- 
-1.8.0.2
+> The nlm_early_serial_setup code needs the early_serial_setup symbol
+> which is only available if CONFIG_SERIAL_8250 is selected.
+> Fixes the following build problem:
+
+> arch/mips/built-in.o: In function `nlm_early_serial_setup':
+> setup.c:(.init.text+0x274): undefined reference to `early_serial_setup'
+> make: *** [vmlinux] Error 1
+
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> ---
+> This patch is for the upstream-sfr/mips-for-linux-next tree
+> ---
+>   arch/mips/netlogic/xlr/setup.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+
+> diff --git a/arch/mips/netlogic/xlr/setup.c b/arch/mips/netlogic/xlr/setup.c
+> index 214d123..60769f7 100644
+> --- a/arch/mips/netlogic/xlr/setup.c
+> +++ b/arch/mips/netlogic/xlr/setup.c
+> @@ -60,6 +60,7 @@ unsigned int  nlm_threads_per_core = 1;
+>   struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
+>   cpumask_t nlm_cpumask = CPU_MASK_CPU0;
+>
+> +#ifdef CONFIG_SERIAL_8250
+>   static void __init nlm_early_serial_setup(void)
+>   {
+>   	struct uart_port s;
+> @@ -78,6 +79,7 @@ static void __init nlm_early_serial_setup(void)
+>   	s.membase	= (unsigned char __iomem *)uart_base;
+>   	early_serial_setup(&s);
+>   }
+
+    It's better to follow what Documentation/Submitting patches suggest and add:
+
+#else
+static inline void nlm_early_serial_setup(void) {}
+> +#endif
+>
+>   static void nlm_linux_exit(void)
+>   {
+> @@ -214,8 +216,9 @@ void __init prom_init(void)
+>   	memset(reset_vec, 0, RESET_VEC_SIZE);
+>   	memcpy(reset_vec, (void *)nlm_reset_entry,
+>   			(nlm_reset_entry_end - nlm_reset_entry));
+> -
+> +#ifdef CONFIG_SERIAL_8250
+>   	nlm_early_serial_setup();
+> +#endif
+
+    ... and avoid #ifdef here.
+
+WBR, Sergei

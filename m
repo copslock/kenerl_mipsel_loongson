@@ -1,50 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Aug 2013 15:16:34 +0200 (CEST)
-Received: from mail-oa0-f51.google.com ([209.85.219.51]:39203 "EHLO
-        mail-oa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6831597Ab3HPNQ3DLyse (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Aug 2013 15:16:29 +0200
-Received: by mail-oa0-f51.google.com with SMTP id h1so2212608oag.38
-        for <linux-mips@linux-mips.org>; Fri, 16 Aug 2013 06:16:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=Eup4L+azEA8Wpg71D/hUZTgpQS97uHIVdvdVXNe2vR8=;
-        b=X2rVb/3Lw8gF68kzWDp7Cgz9JpX+JgBtSIKRRvdrtARGysBradt1U3TXCbdJv54VJA
-         U/1ZSFMJjJuLnN7NivDl8dqQRNSe29Wn2wUitAbp7b3rxt3MtHWF4PBWWXJtOkuXXcCO
-         2ROSGmty99yCh+loMS/tCMmzmgA3TyDx4qBDByhIBrdEiXh1skkvnobY97mx9D8tyuiT
-         l3d/uV7XCI3TnWx7B2uVx+Dh3BaEuK7d9tumcEdwxco7JmYFGPOFi7mS1krgsXR9B9e3
-         SZunHKKVi5dvJlLDSuoNtUC6gdXo06CIleObS+e2AW4JQ9Ee0248g+9IQkYBS6PEvtps
-         oGLw==
-X-Gm-Message-State: ALoCoQmD7iaeCwdaQqOKP8krslT25zjFUf96MQ0B0onGkF38oJUdOiVQ1g2rlAGDKCYw/I8sEbeo
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Aug 2013 15:57:11 +0200 (CEST)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:53006 "EHLO
+        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6831315Ab3HPN5HT8QNE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Aug 2013 15:57:07 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 05E67260AE8;
+        Fri, 16 Aug 2013 15:57:01 +0200 (CEST)
+Received: from mail.szarvasnet.hu ([127.0.0.1])
+        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id YWkxsScUW9gu; Fri, 16 Aug 2013 15:57:00 +0200 (CEST)
+Received: from [192.168.254.50] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id A6157260A99;
+        Fri, 16 Aug 2013 15:57:00 +0200 (CEST)
+Message-ID: <520E2FC9.1040603@openwrt.org>
+Date:   Fri, 16 Aug 2013 15:57:29 +0200
+From:   Gabor Juhos <juhosg@openwrt.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130509 Thunderbird/17.0.6
 MIME-Version: 1.0
-X-Received: by 10.182.176.34 with SMTP id cf2mr1278989obc.45.1376658980492;
- Fri, 16 Aug 2013 06:16:20 -0700 (PDT)
-Received: by 10.182.120.7 with HTTP; Fri, 16 Aug 2013 06:16:20 -0700 (PDT)
-In-Reply-To: <1375133350-18828-3-git-send-email-ddaney.cavm@gmail.com>
-References: <1375133350-18828-1-git-send-email-ddaney.cavm@gmail.com>
-        <1375133350-18828-3-git-send-email-ddaney.cavm@gmail.com>
-Date:   Fri, 16 Aug 2013 15:16:20 +0200
-Message-ID: <CACRpkdaM=hqwHhNxCLCEZudRNYsyW-bZMXzZyvuW4qs2fGaREw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] gpio MIPS/OCTEON: Add a driver for OCTEON's
- on-chip GPIO pins.
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        linux-mips@linux-mips.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <linus.walleij@linaro.org>
+To:     Markos Chandras <markos.chandras@gmail.com>
+CC:     Jonas Gorski <jogo@openwrt.org>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: ath79: Avoid using unitialized 'reg' variable
+References: <1376384478-27424-1-git-send-email-markos.chandras@imgtec.com> <CAOiHx==9E9m5Ds0trutySyaxM0VLJfh1+LKcxYfWFWFt-8dx1A@mail.gmail.com> <CAG2jQ8iUWU83xWqfYF=ev9Gfxsx6ocBK-0wLaQs8QE=d2+5NmA@mail.gmail.com> <CAG2jQ8gkQgGYcsz4x7wgnhq18EzyK5qe64CLR3+iefqb8hGEvQ@mail.gmail.com>
+In-Reply-To: <CAG2jQ8gkQgGYcsz4x7wgnhq18EzyK5qe64CLR3+iefqb8hGEvQ@mail.gmail.com>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37573
+X-archive-position: 37574
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,25 +48,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jul 29, 2013 at 11:29 PM, David Daney <ddaney.cavm@gmail.com> wrote:
+Hi Markos,
+> On 15 August 2013 14:42, Markos Chandras <markos.chandras@gmail.com> wrote:
+>> On 14 August 2013 12:12, Jonas Gorski <jogo@openwrt.org> wrote:
+>>> Hi,
+>>>
+>>> On Tue, Aug 13, 2013 at 11:01 AM, Markos Chandras
+>>> <markos.chandras@imgtec.com> wrote:
+>>>> Fixes the following build error:
+>>>> arch/mips/include/asm/mach-ath79/ath79.h:139:20: error: 'reg' may be used
+>>>> uninitialized in this function [-Werror=maybe-uninitialized]
+>>>> arch/mips/ath79/common.c:62:6: note: 'reg' was declared here
+>>>> In file included from arch/mips/ath79/common.c:20:0:
+>>>> arch/mips/ath79/common.c: In function 'ath79_device_reset_clear':
+>>>> arch/mips/include/asm/mach-ath79/ath79.h:139:20:
+>>>> error: 'reg' may be used uninitialized in this function
+>>>> [-Werror=maybe-uninitialized]
+>>>> arch/mips/ath79/common.c:90:6: note: 'reg' was declared here
+>>>>
+>>>> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+>>>> ---
 
-> From: David Daney <david.daney@cavium.com>
->
-> The SOCs in the OCTEON family have 16 (or in some cases 20) on-chip
-> GPIO pins, this driver handles them all.  Configuring the pins as
-> interrupt sources is handled elsewhere (OCTEON's irq handling code).
->
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> ---
->
-> Device tree binding defintions already exist for this device in
-> Documentation/devicetree/bindings/gpio/cavium-octeon-gpio.txt
+<snip>
 
-I like this.
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>>>> +       } else {
+>>>>                 BUG();
+>>>> +               panic("Unknown SOC!");
+>>>
+>>> Both BUG() and panic() seems to be a bit overkill, especially since
+>>> the panic won't be reached unless BUG is disabled - just the panic()
+>>> should be enough.
+>>>
+>>> Also the panic message isn't very helpful, maybe print the raw id of
+>>> the SoC here?
+>>>
+>>>
+>>
+>> Hi Jonas,
+>>
+>> Thank you for the review. I will submit a new patch.
+>>
+>> --
+>> Regards,
+>> Markos Chandras
+> 
+> Hi Jonas,
+> 
+> I had a look at the code again and it seems that reporting the 'id' is
+> not needed since an unknown SOC will cause a panic
+> earlier in the boot process. Look at arch/mips/ath79/setup.c, in the
+> plat_mem_setup function.
+> This one calls ath79_detect_sys_type which causes the following panic
+> if an unknown SOC is detected.
+> 
+> panic("ath79: unknown SoC, id:0x%08x", id);
+> 
+> This makes me think that ath79_device_reset_set and
+> ath79_device_reset_clear should not care about an unknown SOC at all.
+> 
 
-I guess you will merge both patches through the MIPS arch
-tree?
+The BUG() call helps to ensure that the ath79_device_reset{clear,set} functions
+will be modified when someone adds support for a new SoC. So I prefer to have a
+panic() or at least a WARN()+return here. However, instead of the 'Unknown SoC!'
+message, a 'reset register is not defined for the SoC' text would be more
+meaningful given the actual context.
 
-Yours,
-Linus Walleij
+-Gabor

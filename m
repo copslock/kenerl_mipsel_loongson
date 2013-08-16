@@ -1,44 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Aug 2013 10:44:05 +0200 (CEST)
-Received: from mail-wi0-f174.google.com ([209.85.212.174]:50594 "EHLO
-        mail-wi0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822956Ab3HPIn75LSjq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Aug 2013 10:43:59 +0200
-Received: by mail-wi0-f174.google.com with SMTP id j17so554294wiw.13
-        for <multiple recipients>; Fri, 16 Aug 2013 01:43:52 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Aug 2013 14:35:40 +0200 (CEST)
+Received: from mail-wi0-f177.google.com ([209.85.212.177]:54234 "EHLO
+        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822956Ab3HPMfhaHSX2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Aug 2013 14:35:37 +0200
+Received: by mail-wi0-f177.google.com with SMTP id hq12so759028wib.10
+        for <linux-mips@linux-mips.org>; Fri, 16 Aug 2013 05:35:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type;
-        bh=E0lTJxS6Pkw48db6Zur8pEr/HGxJFHAorO9/ks+rz8k=;
-        b=HXPZt0vAcyOykoD25RVq6EY7Mp5h2Q56jz4YNqcehwwURDcAHuobcbuCJVaCpAAzzJ
-         +2JKyJmM076kUlARJHCQWutSBXokE73wYdP+7L5PDBzNQxGAKB9lTqa/doJ6WxBpun8L
-         ZFxtdSBaoDnGCnb1P2q5gBjco/VAPKppkuzDIECzNRRXrVhoRHO7eGD/8XqMSNQOJdeU
-         3UmnM4QdRcMm+HoPMUmw7BB0rcsiJryjkLzxt0Q7X5x7cweSB3C6/+/dHHp/xqdzODqA
-         1JhrkZNr1dsikwPf1RoIZwnvsgSgQuvgBUhZEcjpGNwiH1mWhPEN8a1HIwwArsUHtZEY
-         9eaA==
+        bh=/4vrondiS4BSd0mNOA0ZHT23Y3pEWB0mYMnaHGSoIio=;
+        b=xEJFub7ka8cadyE2/v4QaREVToU+cHSaUQTX5bIN5jlK4FC///NCq548sAliJc1rqo
+         8cCO6gtlMbN+FlmUYRDicE6Rb28RSs2Rsy1y9MTs1fpElyzaDhR3JMK26SbYx5E0/kQE
+         p27LX2SD83zrDBKpqGRVrgDlHvNtf+zElWOxV7+T4cC6lx+NPcuYHg/QTd0Ge61OZ/zQ
+         AblFgDdE5j3MygvvKQPFFEMLIVcGEjODPbH0DX+fd5VMu72+0G0wK16sBTUE3ZxFlmUg
+         vXKqjB1cziKqtUmEl2Z1Jcm3nWzWZK2thVigQiwPKbg9LKBOU2Yqi5mjkjciG2MuWNcn
+         NPww==
+X-Received: by 10.194.120.68 with SMTP id la4mr944974wjb.33.1376656532111;
+ Fri, 16 Aug 2013 05:35:32 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 10.180.85.133 with SMTP id h5mr4471678wiz.1.1376642632286; Fri,
- 16 Aug 2013 01:43:52 -0700 (PDT)
-Received: by 10.180.163.168 with HTTP; Fri, 16 Aug 2013 01:43:52 -0700 (PDT)
-In-Reply-To: <20120815104812.GB4035@linux-mips.org>
-References: <1344971541-22465-1-git-send-email-juhosg@openwrt.org>
-        <20120815104812.GB4035@linux-mips.org>
-Date:   Fri, 16 Aug 2013 10:43:52 +0200
-Message-ID: <CAGXE3d8Povc1aLh6EAwrkBmvvceES+w9Ztbk20bHU7tN=43NUw@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: ath79: don't hardcode the unavailability of the DSP ASE
-From:   Helmut Schaa <helmut.schaa@googlemail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <helmut.schaa@googlemail.com>
+Received: by 10.194.162.168 with HTTP; Fri, 16 Aug 2013 05:34:51 -0700 (PDT)
+In-Reply-To: <CAG2jQ8iUWU83xWqfYF=ev9Gfxsx6ocBK-0wLaQs8QE=d2+5NmA@mail.gmail.com>
+References: <1376384478-27424-1-git-send-email-markos.chandras@imgtec.com>
+ <CAOiHx==9E9m5Ds0trutySyaxM0VLJfh1+LKcxYfWFWFt-8dx1A@mail.gmail.com> <CAG2jQ8iUWU83xWqfYF=ev9Gfxsx6ocBK-0wLaQs8QE=d2+5NmA@mail.gmail.com>
+From:   Markos Chandras <markos.chandras@gmail.com>
+Date:   Fri, 16 Aug 2013 13:34:51 +0100
+Message-ID: <CAG2jQ8gkQgGYcsz4x7wgnhq18EzyK5qe64CLR3+iefqb8hGEvQ@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: ath79: Avoid using unitialized 'reg' variable
+To:     Jonas Gorski <jogo@openwrt.org>
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <markos.chandras@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37569
+X-archive-position: 37570
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: helmut.schaa@googlemail.com
+X-original-sender: markos.chandras@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,41 +52,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ralf,
-
-On Wed, Aug 15, 2012 at 12:48 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Tue, Aug 14, 2012 at 09:12:21PM +0200, Gabor Juhos wrote:
+On 15 August 2013 14:42, Markos Chandras <markos.chandras@gmail.com> wrote:
+> On 14 August 2013 12:12, Jonas Gorski <jogo@openwrt.org> wrote:
+>> Hi,
+>>
+>> On Tue, Aug 13, 2013 at 11:01 AM, Markos Chandras
+>> <markos.chandras@imgtec.com> wrote:
+>>> Fixes the following build error:
+>>> arch/mips/include/asm/mach-ath79/ath79.h:139:20: error: 'reg' may be used
+>>> uninitialized in this function [-Werror=maybe-uninitialized]
+>>> arch/mips/ath79/common.c:62:6: note: 'reg' was declared here
+>>> In file included from arch/mips/ath79/common.c:20:0:
+>>> arch/mips/ath79/common.c: In function 'ath79_device_reset_clear':
+>>> arch/mips/include/asm/mach-ath79/ath79.h:139:20:
+>>> error: 'reg' may be used uninitialized in this function
+>>> [-Werror=maybe-uninitialized]
+>>> arch/mips/ath79/common.c:90:6: note: 'reg' was declared here
+>>>
+>>> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+>>> ---
+>>> This patch is for the upstream-sfr/mips-for-linux-next tree
+>>> ---
+>>>  arch/mips/ath79/common.c | 32 ++++++++++++++++++--------------
+>>>  1 file changed, 18 insertions(+), 14 deletions(-)
+>>>
+>>> diff --git a/arch/mips/ath79/common.c b/arch/mips/ath79/common.c
+>>> index eb3966c..6a8c00f 100644
+>>> --- a/arch/mips/ath79/common.c
+>>> +++ b/arch/mips/ath79/common.c
+>>> @@ -62,20 +62,22 @@ void ath79_device_reset_set(u32 mask)
+>>>         u32 reg;
+>>>         u32 t;
+>>>
+>>> -       if (soc_is_ar71xx())
+>>> +       if (soc_is_ar71xx()) {
+>>>                 reg = AR71XX_RESET_REG_RESET_MODULE;
+>>> -       else if (soc_is_ar724x())
+>>> +       } else if (soc_is_ar724x()) {
+>>>                 reg = AR724X_RESET_REG_RESET_MODULE;
+>>> -       else if (soc_is_ar913x())
+>>> +       } else if (soc_is_ar913x()) {
+>>>                 reg = AR913X_RESET_REG_RESET_MODULE;
+>>> -       else if (soc_is_ar933x())
+>>> +       } else if (soc_is_ar933x()) {
+>>>                 reg = AR933X_RESET_REG_RESET_MODULE;
+>>> -       else if (soc_is_ar934x())
+>>> +       } else if (soc_is_ar934x()) {
+>>>                 reg = AR934X_RESET_REG_RESET_MODULE;
+>>> -       else if (soc_is_qca955x())
+>>> +       } else if (soc_is_qca955x()) {
+>>>                 reg = QCA955X_RESET_REG_RESET_MODULE;
+>>> -       else
+>>> +       } else {
+>>>                 BUG();
+>>> +               panic("Unknown SOC!");
+>>
+>> Both BUG() and panic() seems to be a bit overkill, especially since
+>> the panic won't be reached unless BUG is disabled - just the panic()
+>> should be enough.
+>>
+>> Also the panic message isn't very helpful, maybe print the raw id of
+>> the SoC here?
+>>
+>>
 >
->> The ath79 platform code allows to run a single kernel image
->> on various SoCs which are based on the 24Kc and 74Kc cores.
->> The current code explicitely disables the DSP ASE, but that
->> is available in the 74Kc core.
->>
->> Remove the override in order to let the kernel to detect the
->> availability of the DSP ASE at runtime.
->>
->> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
->>
->> ---
->> This is a replacement of the 'MIPS: ath79: don't override CPU ASE features'
->> patch: https://patchwork.linux-mips.org/patch/4169/
->>
->> I don't think that the issue is critical enough to include that in
->> the stable trees.
+> Hi Jonas,
 >
-> But it's also trivial.  Anyway, the effect of this "bug" is that the DSP
-> ASE is not available and apparently this has not yet shown up on anybody's
-> radar.
+> Thank you for the review. I will submit a new patch.
 >
-> Anyway, applied!  Thanks!
+> --
+> Regards,
+> Markos Chandras
 
-This change somehow didn't make it into the offical kernel releases due to
-"MIPS: Hardwire detection of DSP ASE Rev 2 for systems, as required."
-which basically reverted this change again.
+Hi Jonas,
 
-Was this intentional?
+I had a look at the code again and it seems that reporting the 'id' is
+not needed since an unknown SOC will cause a panic
+earlier in the boot process. Look at arch/mips/ath79/setup.c, in the
+plat_mem_setup function.
+This one calls ath79_detect_sys_type which causes the following panic
+if an unknown SOC is detected.
 
-Just noticed while booting 3.10 on a AR9344 SoC ...
+panic("ath79: unknown SoC, id:0x%08x", id);
 
-Thanks,
-Helmut
+This makes me think that ath79_device_reset_set and
+ath79_device_reset_clear should not care about an unknown SOC at all.
+
+-- 
+Regards,
+Markos Chandras

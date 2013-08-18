@@ -1,47 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Aug 2013 01:08:42 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:58229 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6865383Ab3HPXIjekytg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Aug 2013 01:08:39 +0200
-Received: from localhost (c-76-28-172-123.hsd1.wa.comcast.net [76.28.172.123])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BA5B8ABC;
-        Fri, 16 Aug 2013 23:08:31 +0000 (UTC)
-Date:   Fri, 16 Aug 2013 16:08:31 -0700
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        stable <stable@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: [ 00/17] 3.4.58-stable review
-Message-ID: <20130816230831.GB2325@kroah.com>
-References: <20130815063158.GB25754@kroah.com>
- <520C86BD.2020903@roeck-us.net>
- <CAMuHMdU+EOC_etihOzUC6N0cqc2qHaGm3_L+gyTRxESCGhOzEg@mail.gmail.com>
- <520DB045.7000309@roeck-us.net>
- <20130816051041.GA23784@kroah.com>
- <520DE21D.8000905@roeck-us.net>
- <20130816124140.GD24550@kroah.com>
- <20130816202702.GD4568@roeck-us.net>
- <CAMuHMdW6Ji7ibMeQj5FBQsJS3B-WWx=Lbhmjx4CCFEGg_uobHQ@mail.gmail.com>
- <20130816223950.GA9152@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Aug 2013 12:07:45 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:2082 "EHLO mms1.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6815858Ab3HRKHm1ZmeS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 18 Aug 2013 12:07:42 +0200
+Received: from [10.9.208.53] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Sun, 18 Aug 2013 03:03:31 -0700
+X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
+Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
+ IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Sun, 18 Aug 2013 03:07:24 -0700
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
+ Server id 14.1.438.0; Sun, 18 Aug 2013 03:07:23 -0700
+Received: from jayachandranc.netlogicmicro.com (
+ netl-snoppy.ban.broadcom.com [10.132.128.129]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 28136F2D72; Sun, 18
+ Aug 2013 03:07:22 -0700 (PDT)
+Date:   Sun, 18 Aug 2013 15:38:54 +0530
+From:   "Jayachandran C." <jchandra@broadcom.com>
+To:     linux-mips@linux-mips.org
+cc:     "Markos Chandras" <markos.chandras@imgtec.com>
+Subject: Re: [PATCH v2] MIPS: netlogic: xlr: Serial support depends on
+ CONFIG_SERIAL_8250
+Message-ID: <20130818100852.GB1712@jayachandranc.netlogicmicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20130816223950.GA9152@roeck-us.net>
+In-Reply-To: <1376571575-29037-1-git-send-email-markos.chandras@imgtec.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <gregkh@linuxfoundation.org>
+X-WSS-ID: 7E0E447931W85396060-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37580
+X-archive-position: 37581
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,63 +52,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Aug 16, 2013 at 03:39:50PM -0700, Guenter Roeck wrote:
-> On Fri, Aug 16, 2013 at 11:55:02PM +0200, Geert Uytterhoeven wrote:
-> > On Fri, Aug 16, 2013 at 10:27 PM, Guenter Roeck <linux@roeck-us.net> wrote:
-> > > Still failing:
-> > >         sparc64:allmodconfig
-> > > /opt/buildbot/slave/stable-queue-3_4/build/usr/include/linux/types.h:27:1: error: unknown type name ‘__u16’
-> > 
-> > According to my log collection, this same error message was fixed in v3.3-rc2,
-> > but I couldn't easily find a matching commit.
-> > But this is v3.4-stable, which is after v3.3-rc2, so it got reintroduced?
-> > 
-> It was fixed recently with
+> The nlm_early_serial_setup code needs the early_serial_setup symbol
+> which is only available if CONFIG_SERIAL_8250 is selected.
+> Fixes the following build problem:
 > 
-> commit cbf1ef6b3345d2cc7e62407eec6a6f72a8b1346f
-> Author: Sam Ravnborg <sam@ravnborg.org>
-> Date:   Sun Mar 31 07:01:47 2013 +0000
+> arch/mips/built-in.o: In function `nlm_early_serial_setup':
+> setup.c:(.init.text+0x274): undefined reference to `early_serial_setup'
+> make: *** [vmlinux] Error 1
 > 
->     sparc: use asm-generic version of types.h
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> ---
+>  arch/mips/netlogic/xlr/setup.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> and
+> diff --git a/arch/mips/netlogic/xlr/setup.c b/arch/mips/netlogic/xlr/setup.c
+> index 214d123..6d7d75e 100644
+> --- a/arch/mips/netlogic/xlr/setup.c
+> +++ b/arch/mips/netlogic/xlr/setup.c
+> @@ -60,6 +60,7 @@ unsigned int  nlm_threads_per_core = 1;
+>  struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
+>  cpumask_t nlm_cpumask = CPU_MASK_CPU0;
 > 
-> commit a2d34dd41212032c03e77bc30c2023725def841a
-> Author: Sam Ravnborg <sam@ravnborg.org>
-> Date:   Sat Mar 30 11:44:22 2013 +0000
+> +#ifdef CONFIG_SERIAL_8250
+>  static void __init nlm_early_serial_setup(void)
+>  {
+>         struct uart_port s;
+> @@ -78,6 +79,9 @@ static void __init nlm_early_serial_setup(void)
+>         s.membase       = (unsigned char __iomem *)uart_base;
+>         early_serial_setup(&s);
+>  }
+> +#else
+> +static inline void nlm_early_serial_setup(void) {}
+> +#endif
 > 
->     sparc: use generic headers
-> 
-> I tried to apply those patches, but it failed miserably due to the
-> userspace/kernel header separation. Given that, I figured that
-> it would be too invasive to fix, at least for me.
-> 
-> > >         xtensa:defconfig
-> > > dev.c:(.text.unlikely+0x3): dangerous relocation: l32r: literal placed after use: .literal.unlikely
-> > 
-> > Fixed in v3.7-rc1:
-> > 
-> > commit f6a03a12ecdbe0dd80a55f6df3b7206c5a403a49
-> > Author: Max Filippov <jcmvbkbc@gmail.com>
-> > Date:   Mon Sep 17 05:44:31 2012 +0400
-> > 
-> >     xtensa: fix linker script transformation for .text.unlikely
-> > 
-> Yes, that fixes this problem, except now we get another known error:
-> 
-> kernel/built-in.o:(.text+0x8c8): undefined reference to `_sdata'
-> 
-> which you had fixed with
-> 
-> commit 5e7b6ed8e9bf3c8e3bb579fd0aec64f6526f8c81
-> Author: Geert Uytterhoeven <geert@linux-m68k.org>
-> Date:   Wed Jun 20 12:52:58 2012 -0700
-> 
->     xtensa: replace xtensa-specific _f{data,text} by _s{data,text}
-> 
-> After applying both patches to the 3.4-stable queue, xtensa:defconfig builds
-> successfully.
 
-Thanks, both now applied.
+The UART device is on the SoC, so adding 'select SERIAL_8250' to the Kconfig
+for NLM_XLP_BOARD may be a better option.
 
-greg k-h
+JC.

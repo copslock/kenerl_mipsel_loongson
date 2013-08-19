@@ -1,50 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Aug 2013 21:11:16 +0200 (CEST)
-Received: from mail-ob0-f170.google.com ([209.85.214.170]:49545 "EHLO
-        mail-ob0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825891Ab3HSTKsRGtf5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Aug 2013 21:10:48 +0200
-Received: by mail-ob0-f170.google.com with SMTP id eh20so6084905obb.1
-        for <multiple recipients>; Mon, 19 Aug 2013 12:10:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=C2GVw3lbpYxKDsMBbb8PeuKhiMWVYAu+90I85A7W2iQ=;
-        b=PyHlLqJpTSj2RctATEP8QqT4dKtzCwykITzFyXgjex9AhzYIZe9Op8xGj21absVHxZ
-         jNMjeFwhLW71TeUz6BjOfY3U5FDDuaSei4yvPMawy1UnuKfAk8YD/bJ2OrQoII9zvMS2
-         UDzly1K/VU+UDsq5PeoeGqTBaOorwFOMjga9a4Oh1DQ8UgTn5eFyzhJaSepRqw1cMCaD
-         FG+/E8LAf574t+bkz63EFrXcLb16OQe5o/dB1Coha9UOI1jkIKnTMCovCZtYJR3o003d
-         LyCh/rl0g0MS+o0qH41exvmHS4gUCgmgdDAcIHvXCPEOfYWX7LBaRC8ea11u94ZwWocf
-         wL4g==
-X-Received: by 10.60.141.131 with SMTP id ro3mr7889904oeb.54.1376939442053;
-        Mon, 19 Aug 2013 12:10:42 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id z5sm18668531obg.13.1969.12.31.16.00.00
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 19 Aug 2013 12:10:41 -0700 (PDT)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id r7JJAdFi019805;
-        Mon, 19 Aug 2013 12:10:39 -0700
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id r7JJAdKW019804;
-        Mon, 19 Aug 2013 12:10:39 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH 2/2] MIPS: Remove unreachable break statements from cp1emu.c
-Date:   Mon, 19 Aug 2013 12:10:35 -0700
-Message-Id: <1376939435-19761-3-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-In-Reply-To: <1376939435-19761-1-git-send-email-ddaney.cavm@gmail.com>
-References: <1376939435-19761-1-git-send-email-ddaney.cavm@gmail.com>
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Aug 2013 21:19:43 +0200 (CEST)
+Received: from mail-pd0-f179.google.com ([209.85.192.179]:59685 "EHLO
+        mail-pd0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6824758Ab3HSTTkvdJz0 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 19 Aug 2013 21:19:40 +0200
+Received: by mail-pd0-f179.google.com with SMTP id v10so5690405pde.10
+        for <linux-mips@linux-mips.org>; Mon, 19 Aug 2013 12:19:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-gm-message-state:content-type:mime-version
+         :content-transfer-encoding:to:from:in-reply-to:cc:references
+         :message-id:user-agent:subject:date;
+        bh=aZu7JaxaV2j7dv4opwu9d4i0SBbFqW1TpINUZWfSmxQ=;
+        b=IucyZ8ip3tMf/uTvPVKXGu8KsBDtw1fm5y7f4hPjpnjsl1i9dcLd3ADiQT+pjb5ZcI
+         sUQ/04K0PA/yEfhivKbrLi0J9T5OCXSdVmBifnK39DnfGaZrz7l/5yZkWfRKxl487zIh
+         yZCLCcDl3xx/z8i8XmWzG8If6TkW+jwIsU/v7mgRpUzXyUkC5VyKADE+8XJsGKhkigD4
+         wxw/7bxAjM74Km1tu0BSWeZybjrPF9ZBuA/BGwYEErGKgNVnzz2+ZCqmtvLdhYKwK8Mu
+         8CdRZ4+v4ASApe1W/893YFJO5+afLmriVWGZUPKIrsFWQA91dNld262ss+n0YU7KCk8z
+         vNPw==
+X-Gm-Message-State: ALoCoQm5X3EdjvzCYti+DdrJP1g/8f4CQK24HxtjN1GWEF5E/NieEvazuTcnmCwm3PYgZwnYM6SH
+X-Received: by 10.66.227.39 with SMTP id rx7mr15031645pac.44.1376939974521;
+        Mon, 19 Aug 2013 12:19:34 -0700 (PDT)
+Received: from localhost ([2601:9:5b00:11d:ca60:ff:fe0a:8a36])
+        by mx.google.com with ESMTPSA id sz3sm16717781pbc.5.1969.12.31.16.00.00
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Mon, 19 Aug 2013 12:19:33 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+To:     Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+From:   Mike Turquette <mturquette@linaro.org>
+In-Reply-To: <52125E31.6090207@samsung.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux@arm.linux.org.uk,
+        jiada_wang@mentor.com, broonie@kernel.org, vapier@gentoo.org,
+        ralf@linux-mips.org, lethal@linux-sh.org,
+        kyungmin.park@samsung.com, shawn.guo@linaro.org,
+        sebastian.hesselbarth@gmail.com, LW@KARO-electronics.de,
+        t.figa@samsung.com, g.liakhovetski@gmx.de,
+        laurent.pinchart@ideasonboard.com, linux-kernel@vger.kernel.org,
+        uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org
+References: <1375804317-10576-1-git-send-email-s.nawrocki@samsung.com>
+ <1375804317-10576-3-git-send-email-s.nawrocki@samsung.com>
+ <20130816214841.4443.10515@quantum> <52125E31.6090207@samsung.com>
+Message-ID: <20130819191928.4443.47862@quantum>
+User-Agent: alot/0.3.4
+Subject: Re: [PATCH RFC 2/2] clk: implement clk_unregister
+Date:   Mon, 19 Aug 2013 12:19:28 -0700
+Return-Path: <mturquette@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37588
+X-archive-position: 37589
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: mturquette@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,233 +68,178 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+Quoting Sylwester Nawrocki (2013-08-19 11:04:33)
+> On 08/16/2013 11:48 PM, Mike Turquette wrote:
+> > Quoting Sylwester Nawrocki (2013-08-06 08:51:57)
+> >> +/*
+> >> + * Empty clk_ops for unregistered clocks. These are used temporarily
+> >> + * after clk_unregister() was called on a clock and until last clock
+> >> + * consumer calls clk_put() and the struct clk object is freed.
+> >> + */
+> >> +static int clk_dummy_prepare_enable(struct clk_hw *hw)
+> >> +{
+> >> +       return -ENXIO;
+> >> +}
+> >> +
+> >> +static void clk_dummy_disable_unprepare(struct clk_hw *hw)
+> >> +{
+> >> +       WARN_ON(1);
+> >> +}
+> >> +
+> >> +static int clk_dummy_set_rate(struct clk_hw *hw, unsigned long rate,
+> >> +                                       unsigned long parent_rate)
+> >> +{
+> >> +       return -ENXIO;
+> >> +}
+> >> +
+> >> +static int clk_dummy_set_parent(struct clk_hw *hw, u8 index)
+> >> +{
+> >> +       return -ENXIO;
+> >> +}
+> >> +
+> >> +static const struct clk_ops clk_dummy_ops = {
+> >> +       .enable         = clk_dummy_prepare_enable,
+> >> +       .disable        = clk_dummy_disable_unprepare,
+> >> +       .prepare        = clk_dummy_prepare_enable,
+> >> +       .unprepare      = clk_dummy_disable_unprepare,
+> >> +       .set_rate       = clk_dummy_set_rate,
+> >> +       .set_parent     = clk_dummy_set_parent,
+> >> +};
+> > 
+> > Don't use "clk_dummy_*" here. The use of dummy often implies that
+> > operations will return success in the absence of actual hardware but
+> > these return an error, and rightly so. So maybe rename the functions and
+> > clk_ops instance to something like "clk_nodev_*" or "clk_missing_*"?
+> 
+> Hmm, this is more about a driver being removed rather than the device.
+> Then perhaps we could make it __clk_nodrv_* or clk_nodrv_* ?
 
-There were many cases of:
+clk_nodrv_* sounds good.
 
-   return something;
-   break;
+> 
+> >>  /**
+> >>   * clk_unregister - unregister a currently registered clock
+> >>   * @clk: clock to unregister
+> >> - *
+> >> - * Currently unimplemented.
+> >>   */
+> >> -void clk_unregister(struct clk *clk) {}
+> >> +void clk_unregister(struct clk *clk)
+> >> +{
+> >> +       unsigned long flags;
+> >> +
+> >> +       clk_prepare_lock();
+> >> +
+> >> +       if (!clk || IS_ERR(clk)) {
+> >> +               pr_err("%s: invalid clock: %p\n", __func__, clk);
+> >> +               goto out;
+> >> +       }
+> >> +
+> >> +       if (clk->ops == &clk_dummy_ops) {
+> >> +               pr_err("%s: unregistered clock: %s\n", __func__, clk->name);
+> >> +               goto out;
+> >> +       }
+> >> +       /*
+> >> +        * Assign dummy clock ops for consumers that might still hold
+> >> +        * a reference to this clock.
+> >> +        */
+> >> +       flags = clk_enable_lock();
+> >> +       clk->ops = &clk_dummy_ops;
+> >> +       clk_enable_unlock(flags);
+> >> +
+> >> +       if (!hlist_empty(&clk->children)) {
+> >> +               struct clk *child;
+> >> +
+> >> +               /* Reparent all children to the orphan list. */
+> >> +               hlist_for_each_entry(child, &clk->children, child_node)
+> >> +                       clk_set_parent(child, NULL);
+> >> +       }
+> > 
+> > This looks pretty good. A remaining problem is re-loading the clock
+> > provider module will have string name conflicts with the old
+> > unregistered clocks (but not yet released) clocks during calls to
+> > __clk_lookup.
+> 
+> But the clock is being dropped from the clock tree immediately in this
+> function. After the hlist_del_init() call below the clock is not present
+> on any clocks list. Upon clock release only the memory allocated for
+> the clock is freed.
 
-All those break statements are unreachable and thus redundant.
+You are correct. Not sure why I thought that the clock being
+unregistered was also getting pushed to the orphan list.
 
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- arch/mips/math-emu/cp1emu.c | 27 ---------------------------
- 1 file changed, 27 deletions(-)
+> 
+> > The best solution would be to refactor clk.c to not use string name
+> > lookups but that is probably too big of an issue for the purpose of this
+> > series (but it will happen some day).
+> > 
+> > A short term solution would be to poison the clock's string name here.
+> > Reallocate the clk->name string with some poison data so that name
+> > conflicts don't occur. What do you think?
+> 
+> This shouldn't be necessary, for the reason described above. I've tested
+> multiple registrations when a clock was being referenced by a consumer
+> driver and it worked well.
+> 
+> I'm still a bit unsure about the kref reference counting, but I'd would
+> assume it is good to have. It prevents the kernel to crash in some
+> situations. Many other subsystems/drivers crash miserably when a driver
+> gets unbound using the sysfs "unbind" attribute. However, if it is assumed
+> that user space needs to keep track of respective resource references
+> and should know what it does when unbinding drivers, then we could probably
+> do without the kref. I'm seriously sceptical though about letting user
+> space to crash the kernel in fairly simple steps, it just doesn't sound
+> right.
 
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 46048d2..efe0088 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -436,7 +436,6 @@ static int microMIPS32_to_MIPS32(union mips_instruction *insn_ptr)
- 				break;
- 			default:
- 				return SIGILL;
--				break;
- 			}
- 			break;
- 		case mm_32f_74_op:	/* c.cond.fmt */
-@@ -451,12 +450,10 @@ static int microMIPS32_to_MIPS32(union mips_instruction *insn_ptr)
- 			break;
- 		default:
- 			return SIGILL;
--			break;
- 		}
- 		break;
- 	default:
- 		return SIGILL;
--		break;
- 	}
- 
- 	*insn_ptr = mips32_insn;
-@@ -491,7 +488,6 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 						dec_insn.next_pc_inc;
- 				*contpc = regs->regs[insn.mm_i_format.rs];
- 				return 1;
--				break;
- 			}
- 		}
- 		break;
-@@ -513,7 +509,6 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 					dec_insn.pc_inc +
- 					dec_insn.next_pc_inc;
- 			return 1;
--			break;
- 		case mm_bgezals_op:
- 		case mm_bgezal_op:
- 			regs->regs[31] = regs->cp0_epc +
-@@ -530,7 +525,6 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 					dec_insn.pc_inc +
- 					dec_insn.next_pc_inc;
- 			return 1;
--			break;
- 		case mm_blez_op:
- 			if ((long)regs->regs[insn.mm_i_format.rs] <= 0)
- 				*contpc = regs->cp0_epc +
-@@ -541,7 +535,6 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 					dec_insn.pc_inc +
- 					dec_insn.next_pc_inc;
- 			return 1;
--			break;
- 		case mm_bgtz_op:
- 			if ((long)regs->regs[insn.mm_i_format.rs] <= 0)
- 				*contpc = regs->cp0_epc +
-@@ -552,7 +545,6 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 					dec_insn.pc_inc +
- 					dec_insn.next_pc_inc;
- 			return 1;
--			break;
- 		case mm_bc2f_op:
- 		case mm_bc1f_op:
- 			bc_false = 1;
-@@ -580,7 +572,6 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 				*contpc = regs->cp0_epc +
- 					dec_insn.pc_inc + dec_insn.next_pc_inc;
- 			return 1;
--			break;
- 		}
- 		break;
- 	case mm_pool16c_op:
-@@ -593,7 +584,6 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 		case mm_jr16_op:
- 			*contpc = regs->regs[insn.mm_i_format.rs];
- 			return 1;
--			break;
- 		}
- 		break;
- 	case mm_beqz16_op:
-@@ -605,7 +595,6 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 			*contpc = regs->cp0_epc +
- 				dec_insn.pc_inc + dec_insn.next_pc_inc;
- 		return 1;
--		break;
- 	case mm_bnez16_op:
- 		if ((long)regs->regs[reg16to32map[insn.mm_b1_format.rs]] != 0)
- 			*contpc = regs->cp0_epc +
-@@ -615,12 +604,10 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 			*contpc = regs->cp0_epc +
- 				dec_insn.pc_inc + dec_insn.next_pc_inc;
- 		return 1;
--		break;
- 	case mm_b16_op:
- 		*contpc = regs->cp0_epc + dec_insn.pc_inc +
- 			 (insn.mm_b0_format.simmediate << 1);
- 		return 1;
--		break;
- 	case mm_beq32_op:
- 		if (regs->regs[insn.mm_i_format.rs] ==
- 		    regs->regs[insn.mm_i_format.rt])
-@@ -632,7 +619,6 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 				dec_insn.pc_inc +
- 				dec_insn.next_pc_inc;
- 		return 1;
--		break;
- 	case mm_bne32_op:
- 		if (regs->regs[insn.mm_i_format.rs] !=
- 		    regs->regs[insn.mm_i_format.rt])
-@@ -643,7 +629,6 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 			*contpc = regs->cp0_epc +
- 				dec_insn.pc_inc + dec_insn.next_pc_inc;
- 		return 1;
--		break;
- 	case mm_jalx32_op:
- 		regs->regs[31] = regs->cp0_epc +
- 			dec_insn.pc_inc + dec_insn.next_pc_inc;
-@@ -652,7 +637,6 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 		*contpc <<= 28;
- 		*contpc |= (insn.j_format.target << 2);
- 		return 1;
--		break;
- 	case mm_jals32_op:
- 	case mm_jal32_op:
- 		regs->regs[31] = regs->cp0_epc +
-@@ -665,7 +649,6 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 		*contpc |= (insn.j_format.target << 1);
- 		set_isa16_mode(*contpc);
- 		return 1;
--		break;
- 	}
- 	return 0;
- }
-@@ -694,7 +677,6 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 		case jr_op:
- 			*contpc = regs->regs[insn.r_format.rs];
- 			return 1;
--			break;
- 		}
- 		break;
- 	case bcond_op:
-@@ -716,7 +698,6 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 					dec_insn.pc_inc +
- 					dec_insn.next_pc_inc;
- 			return 1;
--			break;
- 		case bgezal_op:
- 		case bgezall_op:
- 			regs->regs[31] = regs->cp0_epc +
-@@ -734,7 +715,6 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 					dec_insn.pc_inc +
- 					dec_insn.next_pc_inc;
- 			return 1;
--			break;
- 		}
- 		break;
- 	case jalx_op:
-@@ -752,7 +732,6 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 		/* Set microMIPS mode bit: XOR for jalx. */
- 		*contpc ^= bit;
- 		return 1;
--		break;
- 	case beq_op:
- 	case beql_op:
- 		if (regs->regs[insn.i_format.rs] ==
-@@ -765,7 +744,6 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 				dec_insn.pc_inc +
- 				dec_insn.next_pc_inc;
- 		return 1;
--		break;
- 	case bne_op:
- 	case bnel_op:
- 		if (regs->regs[insn.i_format.rs] !=
-@@ -778,7 +756,6 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 				dec_insn.pc_inc +
- 				dec_insn.next_pc_inc;
- 		return 1;
--		break;
- 	case blez_op:
- 	case blezl_op:
- 		if ((long)regs->regs[insn.i_format.rs] <= 0)
-@@ -790,7 +767,6 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 				dec_insn.pc_inc +
- 				dec_insn.next_pc_inc;
- 		return 1;
--		break;
- 	case bgtz_op:
- 	case bgtzl_op:
- 		if ((long)regs->regs[insn.i_format.rs] > 0)
-@@ -802,7 +778,6 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 				dec_insn.pc_inc +
- 				dec_insn.next_pc_inc;
- 		return 1;
--		break;
- #ifdef CONFIG_CPU_CAVIUM_OCTEON
- 	case lwc2_op: /* This is bbit0 on Octeon */
- 		if ((regs->regs[insn.i_format.rs] & (1ull<<insn.i_format.rt)) == 0)
-@@ -856,7 +831,6 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 						dec_insn.pc_inc +
- 						dec_insn.next_pc_inc;
- 				return 1;
--				break;
- 			case 1:	/* bc1t */
- 			case 3:	/* bc1tl */
- 				if (fcr31 & (1 << bit))
-@@ -868,7 +842,6 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 						dec_insn.pc_inc +
- 						dec_insn.next_pc_inc;
- 				return 1;
--				break;
- 			}
- 		}
- 		break;
--- 
-1.7.11.7
+Let's leave the kref bits in. If we can prove that they are unnecessary
+in the future then they can always be removed.
+
+This series looks good, barring the s/dummy/no_drv/ rename.  Russell's
+ACK is needed for patch #1.
+
+Regards,
+Mike
+
+> 
+> > Regards,
+> > Mike
+> > 
+> >> +
+> >> +       clk_debug_unregister(clk);
+> >> +
+> >> +       hlist_del_init(&clk->child_node);
+> >> +
+> >> +       if (clk->prepare_count)
+> >> +               pr_warn("%s: unregistering prepared clock: %s\n",
+> >> +                                       __func__, clk->name);
+> >> +
+> >> +       kref_put(&clk->ref, __clk_release);
+> >> +out:
+> >> +       clk_prepare_unlock();
+> >> +}
+> >>  EXPORT_SYMBOL_GPL(clk_unregister);
+> >>
+> >>  static void devm_clk_release(struct device *dev, void *res)
+> >> @@ -1861,6 +1973,7 @@ int __clk_get(struct clk *clk)
+> >>         if (!try_module_get(clk->owner))
+> >>                 return 0;
+> >>
+> >> +       kref_get(&clk->ref);
+> >>         return 1;
+> >>  }
+> >>  EXPORT_SYMBOL(__clk_get);
+> >> @@ -1870,6 +1983,10 @@ void __clk_put(struct clk *clk)
+> >>         if (!clk || IS_ERR(clk))
+> >>                 return;
+> >>
+> >> +       clk_prepare_lock();
+> >> +       kref_put(&clk->ref, __clk_release);
+> >> +       clk_prepare_unlock();
+> >> +
+> >>         module_put(clk->owner);
+> >>  }
+> >>  EXPORT_SYMBOL(__clk_put);
+> 
+> --
+> Regards,
+> Sylwester

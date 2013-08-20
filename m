@@ -1,35 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Aug 2013 21:39:01 +0200 (CEST)
-Received: from gerard.telenet-ops.be ([195.130.132.48]:51654 "EHLO
-        gerard.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6828766Ab3HTTi6jIYTN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Aug 2013 21:38:58 +0200
-Received: from ayla.of.borg ([84.193.72.141])
-        by gerard.telenet-ops.be with bizsmtp
-        id F7eg1m01G32ts5g0H7egjx; Tue, 20 Aug 2013 21:38:56 +0200
-Received: from geert by ayla.of.borg with local (Exim 4.76)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1VBrkm-0004R7-Ql; Tue, 20 Aug 2013 21:38:08 +0200
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH] Kconfig: Remove hotplug enable hints in CONFIG_KEXEC help texts
-Date:   Tue, 20 Aug 2013 21:38:03 +0200
-Message-Id: <1377027483-17025-1-git-send-email-geert@linux-m68k.org>
-X-Mailer: git-send-email 1.7.9.5
-Return-Path: <geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Aug 2013 22:34:08 +0200 (CEST)
+Received: from caramon.arm.linux.org.uk ([78.32.30.218]:47040 "EHLO
+        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816493Ab3HTUeFxw9Hj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Aug 2013 22:34:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
+        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=bjVc4yo6BM6uMHNygd7YGYJLqhO4nH/xUeh7+7UXT88=;
+        b=bnou8vjBeM/UZwyvd577zM+gWbltMJesJ3+tM72kQvu1eL7jAxKs/ZPYV/VnqNNOP/LjybvNukr9ubbRVtIH/IidV7oX9+ucWKeG4AOOSpr+3yQCUt+Px4+fW1lsYFNHwTHTYqwssT0QQdbKIrJqeUGXpYDFaGQsrwdXnuLrBew=;
+Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:58582)
+        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.76)
+        (envelope-from <linux@arm.linux.org.uk>)
+        id 1VBsZZ-0004Ov-Ma; Tue, 20 Aug 2013 21:30:37 +0100
+Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
+        (envelope-from <linux@n2100.arm.linux.org.uk>)
+        id 1VBsZX-0000rN-JT; Tue, 20 Aug 2013 21:30:35 +0100
+Date:   Tue, 20 Aug 2013 21:30:34 +0100
+From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
+To:     Sylwester Nawrocki <s.nawrocki@samsung.com>
+Cc:     linux-arm-kernel@lists.infradead.org, mturquette@linaro.org,
+        jiada_wang@mentor.com, robherring2@gmail.com,
+        grant.likely@linaro.org, broonie@kernel.org, vapier@gentoo.org,
+        ralf@linux-mips.org, kyungmin.park@samsung.com,
+        shawn.guo@linaro.org, sebastian.hesselbarth@gmail.com,
+        LW@KARO-electronics.de, t.figa@samsung.com, g.liakhovetski@gmx.de,
+        laurent.pinchart@ideasonboard.com, linux-kernel@vger.kernel.org,
+        uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] clk: add common __clk_get(), __clk_put()
+        implementations
+Message-ID: <20130820203034.GC17845@n2100.arm.linux.org.uk>
+References: <1377020063-30213-1-git-send-email-s.nawrocki@samsung.com> <1377020063-30213-2-git-send-email-s.nawrocki@samsung.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1377020063-30213-2-git-send-email-s.nawrocki@samsung.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37599
+X-archive-position: 37600
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: linux@arm.linux.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,120 +56,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-commit 40b313608ad4ea655addd2ec6cdd106477ae8e15 ("Finally eradicate
-CONFIG_HOTPLUG") removed remaining references to CONFIG_HOTPLUG, but missed
-a few plain English references in the CONFIG_KEXEC help texts.
+On Tue, Aug 20, 2013 at 07:34:20PM +0200, Sylwester Nawrocki wrote:
+> +int __clk_get(struct clk *clk)
+> +{
+> +	if (WARN_ON((!clk)))
+> +		return 0;
 
-Remove them, too.
+This changes the behaviour of clk_get()
 
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
- arch/arm/Kconfig     |    3 +--
- arch/ia64/Kconfig    |    6 +++---
- arch/mips/Kconfig    |    6 +++---
- arch/powerpc/Kconfig |    6 +++---
- arch/sh/Kconfig      |    6 +++---
- arch/x86/Kconfig     |    6 +++---
- 6 files changed, 16 insertions(+), 17 deletions(-)
+> +
+> +	if (!try_module_get(clk->owner))
+> +		return 0;
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 43594d5..cd5c1c9 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -2064,8 +2064,7 @@ config KEXEC
- 
- 	  It is an ongoing process to be certain the hardware in a machine
- 	  is properly shutdown, so do not be surprised if this code does not
--	  initially work for you.  It may help to enable device hotplugging
--	  support.
-+	  initially work for you.
- 
- config ATAGS_PROC
- 	bool "Export atags in procfs"
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index 5a768ad..b36370d 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -565,9 +565,9 @@ config KEXEC
- 
- 	  It is an ongoing process to be certain the hardware in a machine
- 	  is properly shutdown, so do not be surprised if this code does not
--	  initially work for you.  It may help to enable device hotplugging
--	  support.  As of this writing the exact hardware interface is
--	  strongly in flux, so no good recommendation can be made.
-+	  initially work for you.  As of this writing the exact hardware
-+	  interface is strongly in flux, so no good recommendation can be
-+	  made.
- 
- config CRASH_DUMP
- 	  bool "kernel crash dumps"
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index e12764c..dccd7ce 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2305,9 +2305,9 @@ config KEXEC
- 
- 	  It is an ongoing process to be certain the hardware in a machine
- 	  is properly shutdown, so do not be surprised if this code does not
--	  initially work for you.  It may help to enable device hotplugging
--	  support.  As of this writing the exact hardware interface is
--	  strongly in flux, so no good recommendation can be made.
-+	  initially work for you.  As of this writing the exact hardware
-+	  interface is strongly in flux, so no good recommendation can be
-+	  made.
- 
- config CRASH_DUMP
- 	  bool "Kernel crash dumps"
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index dbd9d3c..cc61418 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -369,9 +369,9 @@ config KEXEC
- 
- 	  It is an ongoing process to be certain the hardware in a machine
- 	  is properly shutdown, so do not be surprised if this code does not
--	  initially work for you.  It may help to enable device hotplugging
--	  support.  As of this writing the exact hardware interface is
--	  strongly in flux, so no good recommendation can be made.
-+	  initially work for you.  As of this writing the exact hardware
-+	  interface is strongly in flux, so no good recommendation can be
-+	  made.
- 
- config CRASH_DUMP
- 	bool "Build a kdump crash kernel"
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 1020dd8..1018ed3 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -643,9 +643,9 @@ config KEXEC
- 
- 	  It is an ongoing process to be certain the hardware in a machine
- 	  is properly shutdown, so do not be surprised if this code does not
--	  initially work for you.  It may help to enable device hotplugging
--	  support.  As of this writing the exact hardware interface is
--	  strongly in flux, so no good recommendation can be made.
-+	  initially work for you.  As of this writing the exact hardware
-+	  interface is strongly in flux, so no good recommendation can be
-+	  made.
- 
- config CRASH_DUMP
- 	bool "kernel crash dumps (EXPERIMENTAL)"
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index b32ebf9..6ace5de 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1627,9 +1627,9 @@ config KEXEC
- 
- 	  It is an ongoing process to be certain the hardware in a machine
- 	  is properly shutdown, so do not be surprised if this code does not
--	  initially work for you.  It may help to enable device hotplugging
--	  support.  As of this writing the exact hardware interface is
--	  strongly in flux, so no good recommendation can be made.
-+	  initially work for you.  As of this writing the exact hardware
-+	  interface is strongly in flux, so no good recommendation can be
-+	  made.
- 
- config CRASH_DUMP
- 	bool "kernel crash dumps"
--- 
-1.7.9.5
+If you want this to be safe against NULL pointers, just do this:
+
+	if (clk && !try_module_get(clk->owner))
+		return 0;
+
+> +
+> +	return 1;
+> +}
+> +EXPORT_SYMBOL(__clk_get);
+> +
+> +void __clk_put(struct clk *clk)
+> +{
+> +	if (!clk || IS_ERR(clk))
+> +		return;
+> +
+> +	module_put(clk->owner);
+
+Calling clk_put() with an error-pointer should be a Bad Thing and something
+that shouldn't be encouraged, so trapping it is probably unwise.  So, just
+do here:
+
+	if (clk)
+		module_put(clk->owner);
+
+If we do have some callers of this with ERR pointers, then we could add:
+
+	if (WARN_ON_ONCE(IS_ERR(clk)))
+		return;
+
+and remove it after a full kernel cycle or so.

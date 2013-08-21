@@ -1,42 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Aug 2013 14:58:49 +0200 (CEST)
-Received: from terminus.zytor.com ([198.137.202.10]:37897 "EHLO mail.zytor.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Aug 2013 16:00:23 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:1140 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827299Ab3HUM6rlKqzw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 21 Aug 2013 14:58:47 +0200
-Received: from [10.18.106.34] (c-5eeaaa2e-74736162.cust.telenor.se [94.234.170.46])
-        (authenticated bits=0)
-        by mail.zytor.com (8.14.5/8.14.5) with ESMTP id r7LCwFSu025914
-        (version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO);
-        Wed, 21 Aug 2013 05:58:18 -0700
-User-Agent: K-9 Mail for Android
-In-Reply-To: <alpine.DEB.2.10.1308211452260.31430@tglase.lan.tarent.de>
-References: <1377073172-3662-1-git-send-email-richard@nod.at> <alpine.DEB.2.10.1308211452260.31430@tglase.lan.tarent.de>
+        id S6816493Ab3HUOAPext0Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 Aug 2013 16:00:15 +0200
+Received: from [10.9.208.53] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Wed, 21 Aug 2013 06:53:45 -0700
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
+ IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Wed, 21 Aug 2013 06:59:58 -0700
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
+ Server id 14.1.438.0; Wed, 21 Aug 2013 06:59:58 -0700
+Received: from netl-snoppy.ban.broadcom.com (
+ netl-snoppy.ban.broadcom.com [10.132.128.129]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id A12A8F2D72; Wed, 21
+ Aug 2013 06:59:57 -0700 (PDT)
+From:   "Jayachandran C" <jchandra@broadcom.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+cc:     "Jayachandran C" <jchandra@broadcom.com>
+Subject: [PATCH 01/10 v2] MIPS: Netlogic: Read memory from DRAM BARs
+Date:   Wed, 21 Aug 2013 19:31:29 +0530
+Message-ID: <1377093689-8002-1-git-send-email-jchandra@broadcom.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1376212440-21038-2-git-send-email-jchandra@broadcom.com>
+References: <1376212440-21038-2-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: Re: [RFC] Get rid of SUBARCH
-From:   "H. Peter Anvin" <hpa@zytor.com>
-Date:   Wed, 21 Aug 2013 14:58:04 +0200
-To:     Thorsten Glaser <t.glaser@tarent.de>,
-        Richard Weinberger <richard@nod.at>
-CC:     linux-arch@vger.kernel.org, mmarek@suse.cz, geert@linux-m68k.org,
-        ralf@linux-mips.org, lethal@linux-sh.org, jdike@addtoit.com,
-        gxt@mprc.pku.edu.cn, tglx@linutronix.de, mingo@redhat.com,
-        x86@kernel.org, linux-kbuild@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net
-Message-ID: <7813eeb3-8f96-4d3d-87ec-f2a880122804@email.android.com>
-Return-Path: <hpa@zytor.com>
+X-WSS-ID: 7E0A19E31R082836302-01-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37622
+X-archive-position: 37623
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hpa@zytor.com
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,27 +50,153 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If ARCH doesn't match uname for some definition of match?
+Read the memory from the Bridge DRAM BARs, if it is not passed in
+from the device tree. This will allow us to remove memory configuration
+from built in device trees.
 
-Thorsten Glaser <t.glaser@tarent.de> wrote:
->On Wed, 21 Aug 2013, Richard Weinberger wrote:
->
->> The series touches also m68k, sh, mips and unicore32.
->> These architectures magically select a cross compiler if ARCH !=
->SUBARCH.
->> Do really need that behavior?
->
->Not precisely that, but it’s very common in m68k land
->to just cross-build kernels with
->
->$ make ARCH=m68k menuconfig
->$ make ARCH=m68k
->
->Maybe a generalising of that feature, and making it
->independent of SUBARCH (which can then die)?
->
->bye,
->//mirabilos
+Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+---
+[Updated to fix a deleted character in the patch, which caused a compile error]
 
+ arch/mips/include/asm/netlogic/xlp-hal/bridge.h |    4 +++
+ arch/mips/include/asm/netlogic/xlp-hal/xlp.h    |    3 ++
+ arch/mips/netlogic/xlp/nlm_hal.c                |   35 +++++++++++++++++++++++
+ arch/mips/netlogic/xlp/setup.c                  |   23 +++++++++++++++
+ 4 files changed, 65 insertions(+)
+
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/bridge.h b/arch/mips/include/asm/netlogic/xlp-hal/bridge.h
+index 790f0f1..4e8eacb 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/bridge.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/bridge.h
+@@ -88,6 +88,7 @@
+ #define BRIDGE_DRAM_LIMIT6		0x22
+ #define BRIDGE_DRAM_LIMIT7		0x23
+ 
++#define BRIDGE_DRAM_NODE_TRANSLN(i)	(0x24 + (i))
+ #define BRIDGE_DRAM_NODE_TRANSLN0	0x24
+ #define BRIDGE_DRAM_NODE_TRANSLN1	0x25
+ #define BRIDGE_DRAM_NODE_TRANSLN2	0x26
+@@ -96,6 +97,8 @@
+ #define BRIDGE_DRAM_NODE_TRANSLN5	0x29
+ #define BRIDGE_DRAM_NODE_TRANSLN6	0x2a
+ #define BRIDGE_DRAM_NODE_TRANSLN7	0x2b
++
++#define BRIDGE_DRAM_CHNL_TRANSLN(i)	(0x2c + (i))
+ #define BRIDGE_DRAM_CHNL_TRANSLN0	0x2c
+ #define BRIDGE_DRAM_CHNL_TRANSLN1	0x2d
+ #define BRIDGE_DRAM_CHNL_TRANSLN2	0x2e
+@@ -104,6 +107,7 @@
+ #define BRIDGE_DRAM_CHNL_TRANSLN5	0x31
+ #define BRIDGE_DRAM_CHNL_TRANSLN6	0x32
+ #define BRIDGE_DRAM_CHNL_TRANSLN7	0x33
++
+ #define BRIDGE_PCIEMEM_BASE0		0x34
+ #define BRIDGE_PCIEMEM_BASE1		0x35
+ #define BRIDGE_PCIEMEM_BASE2		0x36
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
+index f4ea0f7..d59cdd6 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
+@@ -59,6 +59,9 @@ void xlp_wakeup_secondary_cpus(void);
+ 
+ void xlp_mmu_init(void);
+ void nlm_hal_init(void);
++int xlp_get_dram_map(int n, uint64_t *dram_map);
++
++/* Device tree related */
+ void *xlp_dt_init(void *fdtp);
+ 
+ #endif /* !__ASSEMBLY__ */
+diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
+index 87560e4..6f2c210 100644
+--- a/arch/mips/netlogic/xlp/nlm_hal.c
++++ b/arch/mips/netlogic/xlp/nlm_hal.c
+@@ -44,6 +44,7 @@
+ #include <asm/netlogic/haldefs.h>
+ #include <asm/netlogic/xlp-hal/iomap.h>
+ #include <asm/netlogic/xlp-hal/xlp.h>
++#include <asm/netlogic/xlp-hal/bridge.h>
+ #include <asm/netlogic/xlp-hal/pic.h>
+ #include <asm/netlogic/xlp-hal/sys.h>
+ 
+@@ -142,3 +143,37 @@ unsigned int nlm_get_cpu_frequency(void)
+ {
+ 	return nlm_get_core_frequency(0, 0);
+ }
++
++/*
++ * Fills upto 8 pairs of entries containing the DRAM map of a node
++ * if n < 0, get dram map for all nodes
++ */
++int xlp_get_dram_map(int n, uint64_t *dram_map)
++{
++	uint64_t bridgebase, base, lim;
++	uint32_t val;
++	int i, node, rv;
++
++	/* Look only at mapping on Node 0, we don't handle crazy configs */
++	bridgebase = nlm_get_bridge_regbase(0);
++	rv = 0;
++	for (i = 0; i < 8; i++) {
++		val = nlm_read_bridge_reg(bridgebase,
++					BRIDGE_DRAM_NODE_TRANSLN(i));
++		node = (val >> 1) & 0x3;
++		if (n >= 0 && n != node)
++			continue;
++		val = nlm_read_bridge_reg(bridgebase, BRIDGE_DRAM_BAR(i));
++		val = (val >>  12) & 0xfffff;
++		base = (uint64_t) val << 20;
++		val = nlm_read_bridge_reg(bridgebase, BRIDGE_DRAM_LIMIT(i));
++		val = (val >>  12) & 0xfffff;
++		if (val == 0)   /* BAR not used */
++			continue;
++		lim = ((uint64_t)val + 1) << 20;
++		dram_map[rv] = base;
++		dram_map[rv + 1] = lim;
++		rv += 2;
++	}
++	return rv;
++}
+diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
+index 7b638f7..7718368 100644
+--- a/arch/mips/netlogic/xlp/setup.c
++++ b/arch/mips/netlogic/xlp/setup.c
+@@ -73,6 +73,23 @@ static void nlm_fixup_mem(void)
+ 	}
+ }
+ 
++static void __init xlp_init_mem_from_bars(void)
++{
++	uint64_t map[16];
++	int i, n;
++
++	n = xlp_get_dram_map(-1, map);	/* -1: info for all nodes */
++	for (i = 0; i < n; i += 2) {
++		/* exclude 0x1000_0000-0x2000_0000, u-boot device */
++		if (map[i] <= 0x10000000 && map[i+1] > 0x10000000)
++			map[i+1] = 0x10000000;
++		if (map[i] > 0x10000000 && map[i] < 0x20000000)
++			map[i] = 0x20000000;
++
++		add_memory_region(map[i], map[i+1] - map[i], BOOT_MEM_RAM);
++	}
++}
++
+ void __init plat_mem_setup(void)
+ {
+ 	panic_timeout	= 5;
+@@ -82,6 +99,12 @@ void __init plat_mem_setup(void)
+ 
+ 	/* memory and bootargs from DT */
+ 	early_init_devtree(initial_boot_params);
++
++	if (boot_mem_map.nr_map == 0) {
++		pr_info("Using DRAM BARs for memory map.\n");
++		xlp_init_mem_from_bars();
++	}
++	/* Calculate and setup wired entries for mapped kernel */
+ 	nlm_fixup_mem();
+ }
+ 
 -- 
-Sent from my mobile phone. Please excuse brevity and lack of formatting.
+1.7.9.5

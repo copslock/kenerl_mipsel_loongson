@@ -1,38 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Aug 2013 10:22:04 +0200 (CEST)
-Received: from b.ns.miles-group.at ([95.130.255.144]:9078 "EHLO radon.swed.at"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6822344Ab3HUIUAyBH2U (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 21 Aug 2013 10:20:00 +0200
-Received: (qmail 11784 invoked by uid 89); 21 Aug 2013 08:19:58 -0000
-Received: by simscan 1.3.1 ppid: 11570, pid: 11781, t: 0.1418s
-         scanners: attach: 1.3.1 clamav: 0.96.5/m:
-Received: from unknown (HELO azrael.ibk.sigmapriv.at) (richard@nod.at@212.186.22.124)
-  by radon.swed.at with ESMTPA; 21 Aug 2013 08:19:58 -0000
-From:   Richard Weinberger <richard@nod.at>
-To:     linux-arch@vger.kernel.org
-Cc:     mmarek@suse.cz, geert@linux-m68k.org, ralf@linux-mips.org,
-        lethal@linux-sh.org, jdike@addtoit.com, gxt@mprc.pku.edu.cn,
-        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
-        x86@kernel.org, linux-kbuild@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        Richard Weinberger <richard@nod.at>
-Subject: [PATCH 8/8] Makefile: Remove SUBARCH
-Date:   Wed, 21 Aug 2013 10:19:32 +0200
-Message-Id: <1377073172-3662-9-git-send-email-richard@nod.at>
-X-Mailer: git-send-email 1.8.1.4
-In-Reply-To: <1377073172-3662-1-git-send-email-richard@nod.at>
-References: <1377073172-3662-1-git-send-email-richard@nod.at>
-Return-Path: <richard@nod.at>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Aug 2013 10:53:57 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:52810 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817419Ab3HUIxzFWILt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 Aug 2013 10:53:55 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: powertv: Drop BOOTLOADER_DRIVER Kconfig symbol
+Date:   Wed, 21 Aug 2013 09:53:33 +0100
+Message-ID: <1377075213-22398-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.3.2
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.130]
+X-SEF-Processed: 7_3_0_01192__2013_08_21_09_53_38
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37614
+X-archive-position: 37615
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: richard@nod.at
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,65 +35,126 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-As all users of SUBARCH have been removed we can finally get
-rid of it.
+The kbldr.h header file required for this was neither committed in the
+original submission in a3a0f8c8ed2e2470f4dcd6da95020d41fed84747
+"MIPS: PowerTV: Base files for Cisco PowerTV platform"
+nor it was ever present in the git tree so this option never worked.
+Fixes the following build problem:
+arch/mips/powertv/reset.c:25:36: fatal error: asm/mach-powertv/kbldr.h: No such
+file or directory
+compilation terminated.
 
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Acked-by: Steven J. Hill <Steven.Hill@imgtec.com> 
 ---
- Makefile         | 15 +++------------
- arch/um/Makefile |  2 +-
- 2 files changed, 4 insertions(+), 13 deletions(-)
+This patch is for the upstream-sfr/mips-for-linux-next tree
+---
+ arch/mips/Kconfig                     |  1 +
+ arch/mips/powertv/Kconfig             |  9 +--------
+ arch/mips/powertv/asic/asic_devices.c | 15 +++------------
+ arch/mips/powertv/init.c              |  4 ----
+ arch/mips/powertv/reset.c             | 12 ------------
+ 5 files changed, 5 insertions(+), 36 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index a5a55f4..48bd8fe 100644
---- a/Makefile
-+++ b/Makefile
-@@ -159,13 +159,7 @@ VPATH		:= $(srctree)$(if $(KBUILD_EXTMOD),:$(KBUILD_EXTMOD))
- export srctree objtree VPATH
- 
- 
--# SUBARCH tells the usermode build what the underlying arch is.  That is set
--# first, and if a usermode build is happening, the "ARCH=um" on the command
--# line overrides the setting of ARCH below.  If a native build is happening,
--# then ARCH is assigned, getting whatever value it gets normally, and 
--# SUBARCH is subsequently ignored.
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index e12764c..d08a3a6 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -416,6 +416,7 @@ config PMC_MSP
+ config POWERTV
+ 	bool "Cisco PowerTV"
+ 	select BOOT_ELF32
++	select BOOTLOADER_FAMILY
+ 	select CEVT_R4K
+ 	select CPU_MIPSR2_IRQ_VI
+ 	select CPU_MIPSR2_IRQ_EI
+diff --git a/arch/mips/powertv/Kconfig b/arch/mips/powertv/Kconfig
+index 1a1b03e..dd91fba 100644
+--- a/arch/mips/powertv/Kconfig
++++ b/arch/mips/powertv/Kconfig
+@@ -1,14 +1,7 @@
+-config BOOTLOADER_DRIVER
+-	bool "PowerTV Bootloader Driver Support"
+-	default n
+-	depends on POWERTV
+-	help
+-	  Use this option if you want to load bootloader driver.
 -
--SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
-+ARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
- 				  -e s/sun4u/sparc64/ \
- 				  -e s/arm.*/arm/ -e s/sa110/arm/ \
- 				  -e s/s390x/s390/ -e s/parisc64/parisc/ \
-@@ -192,7 +186,6 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
- # "make" in the configured kernel build directory always uses that.
- # Default value for CROSS_COMPILE is not to prefix executables
- # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
--ARCH		?= $(SUBARCH)
- CROSS_COMPILE	?= $(CONFIG_CROSS_COMPILE:"%"=%)
+ config BOOTLOADER_FAMILY
+ 	string "POWERTV Bootloader Family string"
+ 	default "85"
+-	depends on POWERTV && !BOOTLOADER_DRIVER
++	depends on POWERTV
+ 	help
+ 	  This value should be specified when the bootloader driver is disabled
+ 	  and must be exactly two characters long. Families supported are:
+diff --git a/arch/mips/powertv/asic/asic_devices.c b/arch/mips/powertv/asic/asic_devices.c
+index 0238af1..a548c50 100644
+--- a/arch/mips/powertv/asic/asic_devices.c
++++ b/arch/mips/powertv/asic/asic_devices.c
+@@ -149,18 +149,9 @@ static __init noinline void platform_set_family(void)
+ 			forced_family[1]);
+ 	else {
  
- # Architecture as present in compile.h
-@@ -1314,11 +1307,9 @@ endif #ifeq ($(mixed-targets),1)
- PHONY += checkstack kernelrelease kernelversion image_name
+-#ifdef CONFIG_BOOTLOADER_DRIVER
+-		bootldr_family = (unsigned short) kbldr_GetSWFamily();
+-#else
+-#if defined(CONFIG_BOOTLOADER_FAMILY)
+-		bootldr_family = (unsigned short) BOOTLDRFAMILY(
+-			CONFIG_BOOTLOADER_FAMILY[0],
+-			CONFIG_BOOTLOADER_FAMILY[1]);
+-#else
+-#error "Unknown Bootloader Family"
+-#endif
+-#endif
+-	}
++	bootldr_family = (unsigned short) BOOTLDRFAMILY(
++		CONFIG_BOOTLOADER_FAMILY[0],
++		CONFIG_BOOTLOADER_FAMILY[1]);
  
- # UML needs a little special treatment here.  It wants to use the host
--# toolchain, so needs $(SUBARCH) passed to checkstack.pl.  Everyone
--# else wants $(ARCH), including people doing cross-builds, which means
--# that $(SUBARCH) doesn't work here.
-+# toolchain, so needs $(OS_ARCH) passed to checkstack.pl.
- ifeq ($(ARCH), um)
--CHECKSTACK_ARCH := $(SUBARCH)
-+CHECKSTACK_ARCH := $(OS_ARCH)
- else
- CHECKSTACK_ARCH := $(ARCH)
- endif
-diff --git a/arch/um/Makefile b/arch/um/Makefile
-index 5bc7892..c1b6a9b 100644
---- a/arch/um/Makefile
-+++ b/arch/um/Makefile
-@@ -156,4 +156,4 @@ endef
- include/generated/user_constants.h: $(HOST_DIR)/um/user-offsets.s
- 	$(call filechk,gen-asm-offsets)
+ 	pr_info("Bootloader Family = 0x%04X\n", bootldr_family);
  
--export USER_CFLAGS CFLAGS_NO_HARDENING OS DEV_NULL_PATH
-+export USER_CFLAGS CFLAGS_NO_HARDENING OS OS_ARCH DEV_NULL_PATH
+diff --git a/arch/mips/powertv/init.c b/arch/mips/powertv/init.c
+index a01baff..4989263 100644
+--- a/arch/mips/powertv/init.c
++++ b/arch/mips/powertv/init.c
+@@ -87,8 +87,4 @@ void __init prom_init(void)
+ 
+ 	configure_platform();
+ 	prom_meminit();
+-
+-#ifndef CONFIG_BOOTLOADER_DRIVER
+-	pr_info("\nBootloader driver isn't loaded...\n");
+-#endif
+ }
+diff --git a/arch/mips/powertv/reset.c b/arch/mips/powertv/reset.c
+index 0007652..11c32fb 100644
+--- a/arch/mips/powertv/reset.c
++++ b/arch/mips/powertv/reset.c
+@@ -21,24 +21,12 @@
+ #include <linux/io.h>
+ #include <asm/reboot.h>			/* Not included by linux/reboot.h */
+ 
+-#ifdef CONFIG_BOOTLOADER_DRIVER
+-#include <asm/mach-powertv/kbldr.h>
+-#endif
+-
+ #include <asm/mach-powertv/asic_regs.h>
+ #include "reset.h"
+ 
+ static void mips_machine_restart(char *command)
+ {
+-#ifdef CONFIG_BOOTLOADER_DRIVER
+-	/*
+-	 * Call the bootloader's reset function to ensure
+-	 * that persistent data is flushed before hard reset
+-	 */
+-	kbldr_SetCauseAndReset();
+-#else
+ 	writel(0x1, asic_reg_addr(watchdog));
+-#endif
+ }
+ 
+ void mips_reboot_setup(void)
 -- 
-1.8.1.4
+1.8.3.2

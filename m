@@ -1,49 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Aug 2013 23:54:39 +0200 (CEST)
-Received: from caramon.arm.linux.org.uk ([78.32.30.218]:47099 "EHLO
-        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6828740Ab3HTVyhhrUMP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Aug 2013 23:54:37 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
-        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=IFrpuCr5G3S4u6Oit70LdvzHu9JeB9sM1Vtl963ZzWo=;
-        b=AGiS7Smd8/9WxGNpbkkeAs/UaClS0/Y9PGqre94P/sd06nSovj4XLuVldg/ZEUoicZocCYLPI2Llc7236ypz5Lhw9N7CEPXIBjRNi23Hs9cozL4KFBgu7SIc3MMFzQF/R25xT7cI+mQD7DjoucqyI9Lm/DAzdZK9RZTQeTlwTo4=;
-Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:58668)
-        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.76)
-        (envelope-from <linux@arm.linux.org.uk>)
-        id 1VBtpk-0004SH-9O; Tue, 20 Aug 2013 22:51:24 +0100
-Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
-        (envelope-from <linux@n2100.arm.linux.org.uk>)
-        id 1VBtpi-0001hF-8e; Tue, 20 Aug 2013 22:51:22 +0100
-Date:   Tue, 20 Aug 2013 22:51:21 +0100
-From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
-To:     Sylwester Nawrocki <s.nawrocki@samsung.com>
-Cc:     linux-arm-kernel@lists.infradead.org, mturquette@linaro.org,
-        jiada_wang@mentor.com, robherring2@gmail.com,
-        grant.likely@linaro.org, broonie@kernel.org, vapier@gentoo.org,
-        ralf@linux-mips.org, kyungmin.park@samsung.com,
-        shawn.guo@linaro.org, sebastian.hesselbarth@gmail.com,
-        LW@KARO-electronics.de, t.figa@samsung.com, g.liakhovetski@gmx.de,
-        laurent.pinchart@ideasonboard.com, linux-kernel@vger.kernel.org,
-        uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] clk: Provide not locked variant of
-        of_clk_get_from_provider()
-Message-ID: <20130820215121.GG17845@n2100.arm.linux.org.uk>
-References: <1377020063-30213-1-git-send-email-s.nawrocki@samsung.com> <1377020063-30213-4-git-send-email-s.nawrocki@samsung.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1377020063-30213-4-git-send-email-s.nawrocki@samsung.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Aug 2013 03:13:53 +0200 (CEST)
+Received: from haggis.pcug.org.au ([203.10.76.10]:53699 "EHLO
+        members.tip.net.au" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6853519Ab3HUBNocQz0t (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Aug 2013 03:13:44 +0200
+Received: from canb.auug.org.au (ibmaus65.lnk.telstra.net [165.228.126.9])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by members.tip.net.au (Postfix) with ESMTPSA id 9078416413E;
+        Wed, 21 Aug 2013 11:13:29 +1000 (EST)
+Date:   Wed, 21 Aug 2013 11:13:23 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Kconfig: Remove hotplug enable hints in CONFIG_KEXEC
+ help texts
+Message-Id: <20130821111323.1325e3f37faf2f54f3549832@canb.auug.org.au>
+In-Reply-To: <1377027483-17025-1-git-send-email-geert@linux-m68k.org>
+References: <1377027483-17025-1-git-send-email-geert@linux-m68k.org>
+X-Mailer: Sylpheed 3.4.0beta4 (GTK+ 2.24.20; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA256";
+ boundary="Signature=_Wed__21_Aug_2013_11_13_23_+1000_GADke1ldKgHjpl8v"
+Return-Path: <sfr@canb.auug.org.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37602
+X-archive-position: 37603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@arm.linux.org.uk
+X-original-sender: sfr@canb.auug.org.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,18 +47,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Aug 20, 2013 at 07:34:22PM +0200, Sylwester Nawrocki wrote:
-> Add helper functions for the of_clk_providers list locking and
-> an unlocked variant of of_clk_get_from_provider().
-> These functions are intended to be used in the clkdev to avoid
-> race condition in the device tree based clock look up in clk_get().
-> 
-> Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-> Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
-> ---
-> Changes since v1:
->  - moved the function declaractions to a local header.
+--Signature=_Wed__21_Aug_2013_11_13_23_+1000_GADke1ldKgHjpl8v
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Yes, this is a much better solution, thanks.
+Hi Geert,
 
-Acked-by: Russell King <rmk+kernel@arm.linux.org.uk>
+On Tue, 20 Aug 2013 21:38:03 +0200 Geert Uytterhoeven <geert@linux-m68k.org=
+> wrote:
+>
+> commit 40b313608ad4ea655addd2ec6cdd106477ae8e15 ("Finally eradicate
+> CONFIG_HOTPLUG") removed remaining references to CONFIG_HOTPLUG, but miss=
+ed
+> a few plain English references in the CONFIG_KEXEC help texts.
+>=20
+> Remove them, too.
+>=20
+> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+
+Looks good to me.  Thanks.
+
+Acked-by: Stephen Rothwell <sfr@canb.auug.org.au>
+
+--=20
+Cheers,
+Stephen Rothwell                    sfr@canb.auug.org.au
+
+--Signature=_Wed__21_Aug_2013_11_13_23_+1000_GADke1ldKgHjpl8v
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBCAAGBQJSFBQ4AAoJEECxmPOUX5FETsMP/3VZR2oZGvtk3dTQaWWzB2dD
+EkosPsIrqso9g4eHsEBYlDjZ8v45CKoTbp6kbV05x8YWsE+76NWWs6ey8jjoi9Cn
+sSUvUjJ+PuNWGEjM2lsNDIAOfEdcudUVCfTv6aImxGcgCNz4KI0sbxtbWsi9yhlY
+qwQJYtIjxv9gwb3f/gmdEfiyIsTMZPeBslrvWZLhM8yqi1iIFUntRFW8faX4UWAm
+VP9WC92xExfClmaA+jb9iv7bwIB0wsyLMC9v2PipkaWIl5DxAi1f9O1TqlWQUCAE
+FSzsvHl2iwB0vwPRzBSeB+VbJZxVtH9VHqVu3vrZWvPmFMZH00P4l6jkxgH/yUiK
+EBNVKCOUpZyOpBaZ7DYVd6IR8V32LUFysQQijbE81YM+8d/D5JAOUlMu10I8Bzsq
+sWZAe0Yn+tn7uhjIjG/HImewVnxwNjKwWqB258Wo7uvb0ku9+FPstFocAkNtKp3B
+R9wt/F22neliAI5JwuBsd8YE0mJG/MUJNjkJ6Whq+CDzsTZnqGAcvlMin2Tazc3J
+IjCz7Yjn63Pjv9spNvtTdotrzMalNRM7SSG/u7IvR505KYB1VcxL51AYCDnyAtUl
+gLOzWvSxyeq6c1XTr/vO+SKs98Sn0ONl+tlMMgaX04XkWx79qYBKOVlmpqfoiZgK
+ppDQ3M3O70TzO+fk5hNp
+=3DQN
+-----END PGP SIGNATURE-----
+
+--Signature=_Wed__21_Aug_2013_11_13_23_+1000_GADke1ldKgHjpl8v--

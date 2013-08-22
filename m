@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Aug 2013 03:17:03 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:2529 "EHLO mms1.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Aug 2013 03:20:59 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:4055 "EHLO mms1.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6853185Ab3HVBQxguzYU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 Aug 2013 03:16:53 +0200
-Received: from [10.9.208.53] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Wed, 21 Aug 2013 18:12:42 -0700
+        id S6853185Ab3HVBUs47L82 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 22 Aug 2013 03:20:48 +0200
+Received: from [10.9.208.57] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Wed, 21 Aug 2013 18:16:35 -0700
 X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Wed, 21 Aug 2013 18:16:35 -0700
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Wed, 21 Aug 2013 18:20:28 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Wed, 21 Aug 2013 18:16:35 -0700
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
+ Server id 14.1.438.0; Wed, 21 Aug 2013 18:20:28 -0700
 Received: from ltrmn-lnxub75-vm (testboard-syin2.ric.broadcom.com
  [10.136.4.120]) by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- EF846F2D77; Wed, 21 Aug 2013 18:16:34 -0700 (PDT)
+ F4029F2D7F; Wed, 21 Aug 2013 18:20:27 -0700 (PDT)
 Received: by ltrmn-lnxub75-vm (Postfix, from userid 35077) id
- 21D5B6095C; Wed, 21 Aug 2013 18:16:07 -0700 (PDT)
-From:   syin@broadcom.com
+ 325126095C; Wed, 21 Aug 2013 18:20:00 -0700 (PDT)
+From:   "Sherman Yin" <syin@broadcom.com>
 To:     linus.walleij@linaro.org
 cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mips@linux-mips.org, matt.porter@linaro.org,
         "Sherman Yin" <syin@broadcom.com>
 Subject: [PATCH v2] pinctrl: Pass all configs to driver on
  pin_config_set()
-Date:   Wed, 21 Aug 2013 18:14:26 -0700
-Message-ID: <1377134067-25413-1-git-send-email-syin@broadcom.com>
+Date:   Wed, 21 Aug 2013 18:18:20 -0700
+Message-ID: <1377134300-25480-1-git-send-email-syin@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1376606573-15093-1-git-send-email-syin@broadcom.com>
 References: <1376606573-15093-1-git-send-email-syin@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7E0BBA0031W86687825-01-01
+X-WSS-ID: 7E0BB9F931W86689201-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 Return-Path: <syin@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37638
+X-archive-position: 37639
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,8 +53,6 @@ List-owner: <mailto:ralf@linux-mips.org>
 List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
-
-From: Sherman Yin <syin@broadcom.com>
 
 When setting pin configuration in the pinctrl framework, pin_config_set() or
 pin_config_group_set() is called in a loop to set one configuration at a time

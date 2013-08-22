@@ -1,35 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Aug 2013 15:16:25 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:46281 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6831921Ab3HVNQTjl2Px (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 Aug 2013 15:16:19 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r7MDGIOg011595;
-        Thu, 22 Aug 2013 15:16:18 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r7MDGH5t011594;
-        Thu, 22 Aug 2013 15:16:17 +0200
-Date:   Thu, 22 Aug 2013 15:16:17 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Julia Lawall <julia.lawall@lip6.fr>
-Cc:     linux-mips@linux-mips.org, netdev@vger.kernel.org
-Subject: Re: question about drivers/net/ethernet/sgi
-Message-ID: <20130822131617.GZ2163@linux-mips.org>
-References: <alpine.DEB.2.02.1308131742100.2263@hadrien>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1308131742100.2263@hadrien>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Aug 2013 19:46:53 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:42540 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6831921Ab3HVRqpSouiK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 22 Aug 2013 19:46:45 +0200
+Received: from arrakis.dune.hu (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 05E55280826;
+        Thu, 22 Aug 2013 19:46:17 +0200 (CEST)
+Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by arrakis.dune.hu (Postfix) with ESMTPSA;
+        Thu, 22 Aug 2013 19:46:17 +0200 (CEST)
+From:   Gabor Juhos <juhosg@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
+        Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH 2/3] MIPS: ralink: mt7620: add wdt clock definition
+Date:   Thu, 22 Aug 2013 19:46:40 +0200
+Message-Id: <1377193601-18677-2-git-send-email-juhosg@openwrt.org>
+X-Mailer: git-send-email 1.7.10
+In-Reply-To: <1377193601-18677-1-git-send-email-juhosg@openwrt.org>
+References: <1377193601-18677-1-git-send-email-juhosg@openwrt.org>
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37644
+X-archive-position: 37645
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,14 +40,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Aug 13, 2013 at 05:43:32PM +0200, Julia Lawall wrote:
+From: John Crispin <blogic@openwrt.org>
 
-> The files in drivers/net/ethernet/sgi (meth.c and ioc3-eth.c) both use
-> alloc_skb.  Is there a reason why they do not use netdev_alloc_skb, like
-> most other ethernet drivers?
+The watchdog driver of the SoC uses the clk API to
+get the clock associated with the watchdog device.
+However the MT7620 specific setup code does not
+register a clock for the watchdog device yet which
+leads to the following error:
 
-netdev_alloc_skb is such newfangled (2.6.19) interface - and both of these
-drivers date back to the 2.3 days.  So the answer is, nobody bothered so
-far.
+  rt2880_wdt: probe of 10000120.watchdog failed with error -2
 
-  Ralf
+Register a clock device for the watchdog in order to
+avoid the error and make the watchdog usable.
+
+Signed-off-by: John Crispin <blogic@openwrt.org>
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+---
+This makes the following patch obsolete:
+  https://patchwork.linux-mips.org/patch/5673/
+---
+ arch/mips/ralink/mt7620.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/mips/ralink/mt7620.c b/arch/mips/ralink/mt7620.c
+index 0ff9244..1be3b0a 100644
+--- a/arch/mips/ralink/mt7620.c
++++ b/arch/mips/ralink/mt7620.c
+@@ -321,6 +321,7 @@ void __init ralink_clk_init(void)
+ 
+ 	ralink_clk_add("cpu", cpu_rate);
+ 	ralink_clk_add("10000100.timer", periph_rate);
++	ralink_clk_add("10000120.watchdog", periph_rate);
+ 	ralink_clk_add("10000500.uart", periph_rate);
+ 	ralink_clk_add("10000c00.uartlite", periph_rate);
+ }
+-- 
+1.7.10

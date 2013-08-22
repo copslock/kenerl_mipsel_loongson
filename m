@@ -1,62 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Aug 2013 14:58:40 +0200 (CEST)
-Received: from mail-pb0-f54.google.com ([209.85.160.54]:59658 "EHLO
-        mail-pb0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6852083Ab3HVM6dV60C4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Aug 2013 14:58:33 +0200
-Received: by mail-pb0-f54.google.com with SMTP id ro12so1744613pbb.27
-        for <multiple recipients>; Thu, 22 Aug 2013 05:58:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=Hd3ZWeSO3/h2wYrAhVkpXIuKn5pyqCiksb9+3plKf+o=;
-        b=WjWO3mG6RO7+QyXfRn4QC/QEW5DDFPdMNhSJnt7auD3AWj53ETCnm6vfJYj5fczMhK
-         VMbyonzUbtrs7vyR5tSoW3ZhI96SsrGvTLciaDfthDWzcJ01ntq06P2FDX9uUSv/ocG0
-         rx+MnRNfMaKeSgZtvHQWXfZ6rPCCJq+cPI3OPI0zVTaHXy8BqVz2EA312FQzzE1WTd2/
-         OQNyTXllYF7yeBnGMu6QxZNORe2DkP/v7dxx/T1JxWORKsYTTu0cL5j5xoHHNuvfG9tj
-         F9MRU0RwpNBH0X4Y+uMF8DFXls7Q3e1LcEZe8R4Qpg7W4NtP06Aj7ySE+KoJyyht7054
-         X5HA==
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Aug 2013 15:16:25 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:46281 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6831921Ab3HVNQTjl2Px (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 22 Aug 2013 15:16:19 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r7MDGIOg011595;
+        Thu, 22 Aug 2013 15:16:18 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r7MDGH5t011594;
+        Thu, 22 Aug 2013 15:16:17 +0200
+Date:   Thu, 22 Aug 2013 15:16:17 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Julia Lawall <julia.lawall@lip6.fr>
+Cc:     linux-mips@linux-mips.org, netdev@vger.kernel.org
+Subject: Re: question about drivers/net/ethernet/sgi
+Message-ID: <20130822131617.GZ2163@linux-mips.org>
+References: <alpine.DEB.2.02.1308131742100.2263@hadrien>
 MIME-Version: 1.0
-X-Received: by 10.66.192.132 with SMTP id hg4mr5405323pac.84.1377176306237;
- Thu, 22 Aug 2013 05:58:26 -0700 (PDT)
-Received: by 10.70.18.229 with HTTP; Thu, 22 Aug 2013 05:58:26 -0700 (PDT)
-In-Reply-To: <20130821195157.GA18191@merkur.ravnborg.org>
-References: <1377073172-3662-1-git-send-email-richard@nod.at>
-        <CAMuHMdWk-EPTNmPB1O1+F7YVQLjhQsFJznYwA3t6UCGUU1T9PQ@mail.gmail.com>
-        <20130821195157.GA18191@merkur.ravnborg.org>
-Date:   Thu, 22 Aug 2013 14:58:26 +0200
-X-Google-Sender-Auth: DQd6oaOmPgxqVsLie5zKrdlpX8o
-Message-ID: <CAMuHMdWqwQxxky7UDnh-oxN13C-sxfnxKVBuBz1GU_RtJvbf3A@mail.gmail.com>
-Subject: Re: [RFC] Get rid of SUBARCH
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Richard Weinberger <richard@nod.at>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Michal Marek <mmarek@suse.cz>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        Jeff Dike <jdike@addtoit.com>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        uml-devel <user-mode-linux-devel@lists.sourceforge.net>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.02.1308131742100.2263@hadrien>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37643
+X-archive-position: 37644
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,31 +42,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Aug 21, 2013 at 9:51 PM, Sam Ravnborg <sam@ravnborg.org> wrote:
->> > The series touches also m68k, sh, mips and unicore32.
->> > These architectures magically select a cross compiler if ARCH != SUBARCH.
->> > Do really need that behavior?
->>
->> This does remove functionality.
->> It allows to build a kernel using e.g. "make ARCH=m68k".
->>
->> Perhaps this can be moved to generic code? Most (not all!) cross-toolchains
->> are called $ARCH-{unknown-,}linux{,-gnu}.
->> Exceptions are e.g. am33_2.0-linux and bfin-uclinux.
->
-> Today you can specify CROSS_COMPILE in Kconfig.
-> With this we should be able to remove these hacks.
+On Tue, Aug 13, 2013 at 05:43:32PM +0200, Julia Lawall wrote:
 
-The correct CROSS_COMPILE value depends on the host environment, not
-on the target configuration.
+> The files in drivers/net/ethernet/sgi (meth.c and ioc3-eth.c) both use
+> alloc_skb.  Is there a reason why they do not use netdev_alloc_skb, like
+> most other ethernet drivers?
 
-Gr{oetje,eeting}s,
+netdev_alloc_skb is such newfangled (2.6.19) interface - and both of these
+drivers date back to the 2.3 days.  So the answer is, nobody bothered so
+far.
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+  Ralf

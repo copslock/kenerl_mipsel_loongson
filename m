@@ -1,66 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Aug 2013 17:22:15 +0200 (CEST)
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:49596 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822345Ab3HWPWL0FyGV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Aug 2013 17:22:11 +0200
-Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
- by mailout2.w1.samsung.com
- (Oracle Communications Messaging Server 7u4-24.01(7.0.4.24.0) 64bit (built Nov
- 17 2011)) with ESMTP id <0MRZ0040PPCD27B0@mailout2.w1.samsung.com>; Fri,
- 23 Aug 2013 16:22:03 +0100 (BST)
-X-AuditID: cbfec7f5-b7ef66d00000795a-f2-52177e1bde11
-Received: from eusync3.samsung.com ( [203.254.199.213])
-        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id BD.F5.31066.B1E77125; Fri,
- 23 Aug 2013 16:22:03 +0100 (BST)
-Received: from [106.116.147.32] by eusync3.samsung.com
- (Oracle Communications Messaging Server 7u4-23.01(7.0.4.23.0) 64bit (built Aug
- 10 2011)) with ESMTPA id <0MRZ00BQTPCQLJ70@eusync3.samsung.com>; Fri,
- 23 Aug 2013 16:22:03 +0100 (BST)
-Message-id: <52177E19.3080106@samsung.com>
-Date:   Fri, 23 Aug 2013 17:22:01 +0200
-From:   Sylwester Nawrocki <s.nawrocki@samsung.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
-MIME-version: 1.0
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        linux@arm.linux.org.uk, mturquette@linaro.org,
-        jiada_wang@mentor.com, broonie@kernel.org, vapier@gentoo.org,
-        ralf@linux-mips.org, kyungmin.park@samsung.com,
-        myungjoo.ham@samsung.com, shawn.guo@linaro.org,
-        sebastian.hesselbarth@gmail.com, LW@KARO-electronics.de,
-        t.figa@samsung.com, g.liakhovetski@gmx.de,
-        laurent.pinchart@ideasonboard.com, linux-kernel@vger.kernel.org,
-        uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org
-Subject: Re: [PATCH v3 2/5] clkdev: Fix race condition in clock lookup from
- device tree
-References: <1377270227-1030-1-git-send-email-s.nawrocki@samsung.com>
- <1377270227-1030-3-git-send-email-s.nawrocki@samsung.com>
-In-reply-to: <1377270227-1030-3-git-send-email-s.nawrocki@samsung.com>
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMIsWRmVeSWpSXmKPExsVy+t/xq7rSdeJBBi2bRSymPnzCZvF+4zwm
-        i54/lRZnm96wW3ROXMJusenxNVaLy7vmsFlMmDqJ3WLOnynMFrcv81oceLKczeLphItsFrcb
-        V7BZXNqjYnH4TTurxfufjhZP1y1htlg/4zWLxcKGL+wWNyf8YHYQ8Whp7mHzWDnd2+Py9zfM
-        Hjtn3WX3+PAxzmN2x0xWj/nTHzF7bFrVyeZx59oeNo+jK9cyeWxeUu+x+2sTo0ffllWMHp83
-        yQXwRXHZpKTmZJalFunbJXBlHN/zn73gG3vF3pu/WBoYz7F1MXJySAiYSHzof8QCYYtJXLi3
-        HiwuJLCUUWLuH1YI+xOjxL4dziA2r4CWxOa+h2D1LAKqEp/vfWQHsdkEDCV6j/YxgtiiAgES
-        i5ecY4eoF5T4MfkeWL2IgIbElK7HYHFmgV4WiUOLjbsYOTiEBSIlZmwACnMBrWpklFjcPx/s
-        Bk4BN4lrzfOYIep1JPa3TmODsOUlNq95yzyBUWAWkhWzkJTNQlK2gJF5FaNoamlyQXFSeq6R
-        XnFibnFpXrpecn7uJkZIxH7dwbj0mNUhRgEORiUe3gnOYkFCrIllxZW5hxglOJiVRHifVosH
-        CfGmJFZWpRblxxeV5qQWH2Jk4uCUamA89Z1jp1H5jYQnTTvYEzp8Kzh/v5tve/Uei8j+n3df
-        SujeNJFWq78T/sHoWunS/byBl4J7Tjr6zfjyX2ejj+xrjnWXf7DquS+Vb2fQzlPUNwl0mDw5
-        QtrVe3qlt8jXxScWRUid5O8y0WhI2Tn9Wotq7sxTt4SOb3bxLXkdt14ze8Xjw52uFcpKLMUZ
-        iYZazEXFiQAP3jeLtgIAAA==
-Return-Path: <s.nawrocki@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Aug 2013 19:42:55 +0200 (CEST)
+Received: from mail-oa0-f47.google.com ([209.85.219.47]:47127 "EHLO
+        mail-oa0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827302Ab3HWRmilBsSo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Aug 2013 19:42:38 +0200
+Received: by mail-oa0-f47.google.com with SMTP id g12so1100532oah.20
+        for <linux-mips@linux-mips.org>; Fri, 23 Aug 2013 10:42:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=lwYj3eVZ1IQANVXVNs6tJRkg/8OpMPmK+5vii7fNcyg=;
+        b=UwlMAOUKt63YnS4ZYFjaD3kBPrI7V7Ds8ifUT/pkqfbS45tDoYJ858+Y2MKcrS2uRE
+         VLKLskO6OL81+nhpH/2so7PeCwoI+Rz++Fp47nMNlsmtmY7h6ygseesbzorF02RC0EZ2
+         Yyq7SeuticvPj6/TlXMcN4Bawh0CxkK76zRe1OnxdMzXhq9WrclZVDDyjYV6NfdkqzQ2
+         L56a9mlBgFCWwT1+CP6eDcAwS/rAat88FDtc1e4F7LQwzX57FZzic7hK5S4KaGu+s0Wm
+         4vHOXaq3Rle62gzMd/ghKcJGmAuCHiij3e/b+Avr1C5JKAsO0uIt5sCKl7e/OFoBe/Au
+         Dt5Q==
+X-Gm-Message-State: ALoCoQkAwzIrZUA5Xh17T/dSA+FlAy2zE0SIEdWfcQmmNH9IUlzy1flK30QWO3rW3zhxDIwQjid0
+MIME-Version: 1.0
+X-Received: by 10.182.48.230 with SMTP id p6mr800346obn.1.1377279752356; Fri,
+ 23 Aug 2013 10:42:32 -0700 (PDT)
+Received: by 10.182.120.7 with HTTP; Fri, 23 Aug 2013 10:42:32 -0700 (PDT)
+In-Reply-To: <1377134300-25480-1-git-send-email-syin@broadcom.com>
+References: <1376606573-15093-1-git-send-email-syin@broadcom.com>
+        <1377134300-25480-1-git-send-email-syin@broadcom.com>
+Date:   Fri, 23 Aug 2013 19:42:32 +0200
+Message-ID: <CACRpkdZeET601+jOsjQxu-VAhi1owgtMX60Fij=uU489eGVFXg@mail.gmail.com>
+Subject: Re: [PATCH v2] pinctrl: Pass all configs to driver on pin_config_set()
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Sherman Yin <syin@broadcom.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>, linux-mips@linux-mips.org,
+        Matt Porter <matt.porter@linaro.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37665
+X-archive-position: 37666
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: s.nawrocki@samsung.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,25 +55,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/23/2013 05:03 PM, Sylwester Nawrocki wrote:
-> There is currently a race condition in the device tree part of clk_get()
-> function, since the pointer returned from of_clk_get_by_name() may become
-> invalid before __clk_get() call. I.e. due to the clock provider driver
-> remove() callback being called in between of_clk_get_by_name() and
-> __clk_get().
-> 
-> Fix this by doing both the look up and __clk_get() operations with the
-> clock providers list mutex held. This ensures that the clock pointer
-> returned from __of_clk_get_from_provider() call and passed to __clk_get()
-> is valid, as long as the clock supplier module first removes its clock
-> provider instance and then does clk_unregister() on the corresponding
-> clocks.
-> 
-> Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-> Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
+On Thu, Aug 22, 2013 at 3:18 AM, Sherman Yin <syin@broadcom.com> wrote:
 
-Oops, I missed to add:
+> When setting pin configuration in the pinctrl framework, pin_config_set() or
+> pin_config_group_set() is called in a loop to set one configuration at a time
+> for the specified pin or group.
+>
+> This patch 1) removes the loop and 2) changes the API to pass the whole pin
+> config array to the driver.  It is now up to the driver to loop through the
+> configs.  This allows the driver to potentially combine configs and reduce the
+> number of writes to pin config registers.
+>
+> All c files changed have been build-tested to verify the change compiles and
+> that the corresponding .o is successfully generated.
+>
+> Signed-off-by: Sherman Yin <syin@broadcom.com>
+> Reviewed-by: Christian Daudt <csd@broadcom.com>
+> Reviewed-by: Matt Porter <matt.porter@linaro.org>
 
-Reviewed-by: Mike Turquette <mturquette@linaro.org>
+Didn't you get review from Stephen Warren?
 
-> Acked-by: Russell King <rmk+kernel@arm.linux.org.uk>
+> ---
+> Please refer to the discussion with Linus W. "[PATCH] ARM: Adds pin config API
+> to set all configs in one function" here:
+>
+> http://lists.infradead.org/pipermail/linux-arm-kernel/2013-May/166567.html
+>
+> All c files changed have been build-tested to verify the change compiles and
+> that the corresponding .o are successfully generated.
+>
+> [v2]    rebased on LinusW's linux-pinctrl.git "devel" branch.  Fixed and build-
+>         tested pinctrl-sunxi.c
+> ---
+>  drivers/pinctrl/mvebu/pinctrl-mvebu.c |   26 +++--
+>  drivers/pinctrl/pinconf.c             |   42 ++++----
+>  drivers/pinctrl/pinctrl-abx500.c      |  187 ++++++++++++++++++---------------
+>  drivers/pinctrl/pinctrl-at91.c        |   48 +++++----
+>  drivers/pinctrl/pinctrl-bcm2835.c     |   43 ++++----
+>  drivers/pinctrl/pinctrl-exynos5440.c  |  113 +++++++++++---------
+>  drivers/pinctrl/pinctrl-falcon.c      |   63 ++++++-----
+>  drivers/pinctrl/pinctrl-imx.c         |   28 ++---
+>  drivers/pinctrl/pinctrl-mxs.c         |   91 ++++++++--------
+>  drivers/pinctrl/pinctrl-nomadik.c     |  125 ++++++++++++----------
+>  drivers/pinctrl/pinctrl-rockchip.c    |   57 ++++++----
+>  drivers/pinctrl/pinctrl-samsung.c     |   17 ++-
+>  drivers/pinctrl/pinctrl-single.c      |   33 ++++--
+>  drivers/pinctrl/pinctrl-st.c          |   11 +-
+>  drivers/pinctrl/pinctrl-sunxi.c       |   95 +++++++++--------
+>  drivers/pinctrl/pinctrl-tegra.c       |   69 ++++++------
+>  drivers/pinctrl/pinctrl-tz1090-pdc.c  |  135 ++++++++++++++----------
+>  drivers/pinctrl/pinctrl-tz1090.c      |  140 +++++++++++++-----------
+>  drivers/pinctrl/pinctrl-u300.c        |   18 ++--
+>  drivers/pinctrl/pinctrl-xway.c        |  119 +++++++++++++--------
+>  drivers/pinctrl/sh-pfc/pinctrl.c      |   42 ++++----
+>  drivers/pinctrl/vt8500/pinctrl-wmt.c  |   54 +++++-----
+>  include/linux/pinctrl/pinconf.h       |    6 +-
+>  23 files changed, 889 insertions(+), 673 deletions(-)
+
+Please try to put all the maintainers for the above files on the To: line
+so they get a chance to review/ack the patch.
+
+Yours,
+Linus Walleij

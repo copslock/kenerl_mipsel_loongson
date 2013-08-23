@@ -1,48 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Aug 2013 19:42:55 +0200 (CEST)
-Received: from mail-oa0-f47.google.com ([209.85.219.47]:47127 "EHLO
-        mail-oa0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827302Ab3HWRmilBsSo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Aug 2013 19:42:38 +0200
-Received: by mail-oa0-f47.google.com with SMTP id g12so1100532oah.20
-        for <linux-mips@linux-mips.org>; Fri, 23 Aug 2013 10:42:32 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Aug 2013 20:34:17 +0200 (CEST)
+Received: from mail-la0-f42.google.com ([209.85.215.42]:44855 "EHLO
+        mail-la0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822345Ab3HWSeMpsFbJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Aug 2013 20:34:12 +0200
+Received: by mail-la0-f42.google.com with SMTP id ep20so749552lab.15
+        for <linux-mips@linux-mips.org>; Fri, 23 Aug 2013 11:34:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=lwYj3eVZ1IQANVXVNs6tJRkg/8OpMPmK+5vii7fNcyg=;
-        b=UwlMAOUKt63YnS4ZYFjaD3kBPrI7V7Ds8ifUT/pkqfbS45tDoYJ858+Y2MKcrS2uRE
-         VLKLskO6OL81+nhpH/2so7PeCwoI+Rz++Fp47nMNlsmtmY7h6ygseesbzorF02RC0EZ2
-         Yyq7SeuticvPj6/TlXMcN4Bawh0CxkK76zRe1OnxdMzXhq9WrclZVDDyjYV6NfdkqzQ2
-         L56a9mlBgFCWwT1+CP6eDcAwS/rAat88FDtc1e4F7LQwzX57FZzic7hK5S4KaGu+s0Wm
-         4vHOXaq3Rle62gzMd/ghKcJGmAuCHiij3e/b+Avr1C5JKAsO0uIt5sCKl7e/OFoBe/Au
-         Dt5Q==
-X-Gm-Message-State: ALoCoQkAwzIrZUA5Xh17T/dSA+FlAy2zE0SIEdWfcQmmNH9IUlzy1flK30QWO3rW3zhxDIwQjid0
+        h=x-gm-message-state:message-id:date:from:organization:user-agent
+         :mime-version:to:cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=CFRzLRqxIglSdFXTxHmOFeCPUXG4FGyxjjO9iMbMsl8=;
+        b=DudOXfCbL7t8S329lTE4tntj9t1SFsy0K+REbtbIx4wUHWVt0HDqyTQkS90VN6nHBQ
+         4HUy/xrxFrqVFT4WLyp6TdeQve7gydjGS+lJsfjvurBSaY0fiZVXbgN06OTYYS2OBdRY
+         a9jb530WHldUa5OhHbqvlYbL8cm5LCS/jElhPXdX36n9ZH2/TMcuBmN7FpjunTi1aZg1
+         5sXkWfZzMq3lSOax22c/LdpOSaEpY8mi7n5HOHtANkCGjuANRFBo/qw8LKQBKzw4Bhxx
+         +gGZfnwO8VXt5+VO0rW7xxNTuhfFa5HNQIz2Sctca8Z8JJtvU38kkokp6bhB7gKsjdTH
+         nnxw==
+X-Gm-Message-State: ALoCoQnRHjFTRlHLzdKLkIE23l9kJc8MiZjBqgNeqpmFTx8XIDivbampX/TFWotaYX+pkkBmyGNL
+X-Received: by 10.152.21.225 with SMTP id y1mr642544lae.18.1377282846825;
+        Fri, 23 Aug 2013 11:34:06 -0700 (PDT)
+Received: from wasted.dev.rtsoft.ru (ppp91-76-147-116.pppoe.mtu-net.ru. [91.76.147.116])
+        by mx.google.com with ESMTPSA id l1sm767772lbj.14.1969.12.31.16.00.00
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Fri, 23 Aug 2013 11:34:05 -0700 (PDT)
+Message-ID: <5217AB25.3050106@cogentembedded.com>
+Date:   Fri, 23 Aug 2013 22:34:13 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20130801 Thunderbird/17.0.8
 MIME-Version: 1.0
-X-Received: by 10.182.48.230 with SMTP id p6mr800346obn.1.1377279752356; Fri,
- 23 Aug 2013 10:42:32 -0700 (PDT)
-Received: by 10.182.120.7 with HTTP; Fri, 23 Aug 2013 10:42:32 -0700 (PDT)
-In-Reply-To: <1377134300-25480-1-git-send-email-syin@broadcom.com>
-References: <1376606573-15093-1-git-send-email-syin@broadcom.com>
-        <1377134300-25480-1-git-send-email-syin@broadcom.com>
-Date:   Fri, 23 Aug 2013 19:42:32 +0200
-Message-ID: <CACRpkdZeET601+jOsjQxu-VAhi1owgtMX60Fij=uU489eGVFXg@mail.gmail.com>
-Subject: Re: [PATCH v2] pinctrl: Pass all configs to driver on pin_config_set()
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Sherman Yin <syin@broadcom.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>, linux-mips@linux-mips.org,
-        Matt Porter <matt.porter@linaro.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <linus.walleij@linaro.org>
+To:     John Crispin <blogic@openwrt.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        devicetree-discuss@lists.ozlabs.org
+Subject: Re: [PATCH 4/6] DT: MIPS: ralink: add RT2880 dts files
+References: <1365843026-11015-1-git-send-email-blogic@openwrt.org> <1365843026-11015-4-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1365843026-11015-4-git-send-email-blogic@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37666
+X-archive-position: 37667
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,65 +59,112 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Aug 22, 2013 at 3:18 AM, Sherman Yin <syin@broadcom.com> wrote:
+On 04/13/2013 12:50 PM, John Crispin wrote:
 
-> When setting pin configuration in the pinctrl framework, pin_config_set() or
-> pin_config_group_set() is called in a loop to set one configuration at a time
-> for the specified pin or group.
->
-> This patch 1) removes the loop and 2) changes the API to pass the whole pin
-> config array to the driver.  It is now up to the driver to loop through the
-> configs.  This allows the driver to potentially combine configs and reduce the
-> number of writes to pin config registers.
->
-> All c files changed have been build-tested to verify the change compiles and
-> that the corresponding .o is successfully generated.
->
-> Signed-off-by: Sherman Yin <syin@broadcom.com>
-> Reviewed-by: Christian Daudt <csd@broadcom.com>
-> Reviewed-by: Matt Porter <matt.porter@linaro.org>
+> Add a dtsi file for RT2880 SoC and a sample dts file.
 
-Didn't you get review from Stephen Warren?
+    You forgot to mention Kconfig entry...
 
-> ---
-> Please refer to the discussion with Linus W. "[PATCH] ARM: Adds pin config API
-> to set all configs in one function" here:
->
-> http://lists.infradead.org/pipermail/linux-arm-kernel/2013-May/166567.html
->
-> All c files changed have been build-tested to verify the change compiles and
-> that the corresponding .o are successfully generated.
->
-> [v2]    rebased on LinusW's linux-pinctrl.git "devel" branch.  Fixed and build-
->         tested pinctrl-sunxi.c
-> ---
->  drivers/pinctrl/mvebu/pinctrl-mvebu.c |   26 +++--
->  drivers/pinctrl/pinconf.c             |   42 ++++----
->  drivers/pinctrl/pinctrl-abx500.c      |  187 ++++++++++++++++++---------------
->  drivers/pinctrl/pinctrl-at91.c        |   48 +++++----
->  drivers/pinctrl/pinctrl-bcm2835.c     |   43 ++++----
->  drivers/pinctrl/pinctrl-exynos5440.c  |  113 +++++++++++---------
->  drivers/pinctrl/pinctrl-falcon.c      |   63 ++++++-----
->  drivers/pinctrl/pinctrl-imx.c         |   28 ++---
->  drivers/pinctrl/pinctrl-mxs.c         |   91 ++++++++--------
->  drivers/pinctrl/pinctrl-nomadik.c     |  125 ++++++++++++----------
->  drivers/pinctrl/pinctrl-rockchip.c    |   57 ++++++----
->  drivers/pinctrl/pinctrl-samsung.c     |   17 ++-
->  drivers/pinctrl/pinctrl-single.c      |   33 ++++--
->  drivers/pinctrl/pinctrl-st.c          |   11 +-
->  drivers/pinctrl/pinctrl-sunxi.c       |   95 +++++++++--------
->  drivers/pinctrl/pinctrl-tegra.c       |   69 ++++++------
->  drivers/pinctrl/pinctrl-tz1090-pdc.c  |  135 ++++++++++++++----------
->  drivers/pinctrl/pinctrl-tz1090.c      |  140 +++++++++++++-----------
->  drivers/pinctrl/pinctrl-u300.c        |   18 ++--
->  drivers/pinctrl/pinctrl-xway.c        |  119 +++++++++++++--------
->  drivers/pinctrl/sh-pfc/pinctrl.c      |   42 ++++----
->  drivers/pinctrl/vt8500/pinctrl-wmt.c  |   54 +++++-----
->  include/linux/pinctrl/pinconf.h       |    6 +-
->  23 files changed, 889 insertions(+), 673 deletions(-)
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+[...]
 
-Please try to put all the maintainers for the above files on the To: line
-so they get a chance to review/ack the patch.
+> diff --git a/arch/mips/ralink/dts/Makefile b/arch/mips/ralink/dts/Makefile
+> index 1a69fb3..f635a01 100644
+> --- a/arch/mips/ralink/dts/Makefile
+> +++ b/arch/mips/ralink/dts/Makefile
+> @@ -1 +1,2 @@
+> +obj-$(CONFIG_DTB_RT2880_EVAL) := rt2880_eval.dtb.o
+>   obj-$(CONFIG_DTB_RT305X_EVAL) := rt3052_eval.dtb.o
+> diff --git a/arch/mips/ralink/dts/rt2880.dtsi b/arch/mips/ralink/dts/rt2880.dtsi
+> new file mode 100644
+> index 0000000..182afde
+> --- /dev/null
+> +++ b/arch/mips/ralink/dts/rt2880.dtsi
+> @@ -0,0 +1,58 @@
+> +/ {
+> +	#address-cells = <1>;
+> +	#size-cells = <1>;
+> +	compatible = "ralink,rt2880-soc";
+> +
+> +	cpus {
+> +		cpu@0 {
+> +			compatible = "mips,mips4KEc";
+> +		};
+> +	};
+> +
+> +	cpuintc: cpuintc@0 {
 
-Yours,
-Linus Walleij
+    According to ePAPR spec [1], the node name should be "interrupt-controller".
+
+> +		#address-cells = <0>;
+> +		#interrupt-cells = <1>;
+> +		interrupt-controller;
+> +		compatible = "mti,cpu-interrupt-controller";
+
+    So, it's "mips" or "mti"?
+
+> +	};
+> +
+> +	palmbus@300000 {
+> +		compatible = "palmbus";
+> +		reg = <0x300000 0x200000>;
+> +                ranges = <0x0 0x300000 0x1FFFFF>;
+> +
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +
+> +		sysc@0 {
+
+    Perhaps "system-controller" to be in the same vein with other correct 
+naming I'm saying about?
+
+> +			compatible = "ralink,rt2880-sysc";
+> +			reg = <0x0 0x100>;
+> +		};
+> +
+> +		intc: intc@200 {
+
+    According to ePAPR spec [1], the node name should be "interrupt-controller".
+
+> +			compatible = "ralink,rt2880-intc";
+> +			reg = <0x200 0x100>;
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <1>;
+> +
+> +			interrupt-parent = <&cpuintc>;
+> +			interrupts = <2>;
+> +		};
+> +
+> +		memc@300 {
+
+    According to ePAPR spec [1], the node name should be "memory-controller".
+
+> +			compatible = "ralink,rt2880-memc";
+> +			reg = <0x300 0x100>;
+> +		};
+> +
+> +		uartlite@c00 {
+
+    According to ePAPR spec [1], the node name should be "serial".
+
+[...]
+> diff --git a/arch/mips/ralink/dts/rt2880_eval.dts b/arch/mips/ralink/dts/rt2880_eval.dts
+> new file mode 100644
+> index 0000000..e967b43
+> --- /dev/null
+> +++ b/arch/mips/ralink/dts/rt2880_eval.dts
+> @@ -0,0 +1,48 @@
+> +/dts-v1/;
+> +
+> +/include/ "rt2880.dtsi"
+> +
+> +/ {
+[...]
+> +	cfi@1f000000 {
+
+    According to ePAPR spec [1], the node name should be "flash".
+
+[1] http://www.power.org/resources/downloads/Power_ePAPR_APPROVED_v1.0.pdf
+
+WBR, Sergei

@@ -1,57 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Aug 2013 01:01:08 +0200 (CEST)
-Received: from mail-bk0-f47.google.com ([209.85.214.47]:61674 "EHLO
-        mail-bk0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822345Ab3HWXBGQxfQZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Aug 2013 01:01:06 +0200
-Received: by mail-bk0-f47.google.com with SMTP id mx12so437730bkb.6
-        for <multiple recipients>; Fri, 23 Aug 2013 16:01:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=6dLE+8S4cohL+yB4BrFuQfjhYrT02HvkR9t66DVsRWk=;
-        b=ryXdN5mf09wA90vSHsWXf1snzoGiKYLVp7kYzP4TW8+t1I+v2Q1+i65vucQBGttcfy
-         vJsh/YDclcOR/P6AbVpciNu7m5GgtATiFmNL66CgIcXlLre7gy81pTIiE+4AxZ8gTPVu
-         LTGcQNhuKf+j5YULXrAjyVPFMTFSYH6Q3RswBRt/SAgxt0+vjZ8guY9HXhw/pM9H8LyE
-         4QP09I9lK1yvogDzt/jGjxTpm+PGXpT3R3iyaD5LgYUZKgrA53Dq7n8PTAZene66xqkB
-         du+ZFek0YqZh6QrnqaqGside4vyTbQoNkLwl+6z3hvRdX+MyIH95cah5knFhM6LuQPBB
-         BppA==
-X-Received: by 10.204.162.10 with SMTP id t10mr1163597bkx.26.1377298860578;
-        Fri, 23 Aug 2013 16:01:00 -0700 (PDT)
-Received: from [192.168.1.110] (093105185086.warszawa.vectranet.pl. [93.105.185.86])
-        by mx.google.com with ESMTPSA id pk7sm453323bkb.2.1969.12.31.16.00.00
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 23 Aug 2013 16:00:59 -0700 (PDT)
-Message-ID: <5217E9A5.8030503@gmail.com>
-Date:   Sat, 24 Aug 2013 01:00:53 +0200
-From:   Sylwester Nawrocki <sylvester.nawrocki@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:11.0) Gecko/20120412 Thunderbird/11.0.1
-MIME-Version: 1.0
-To:     Mike Turquette <mturquette@linaro.org>
-CC:     Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        linux-arm-kernel@lists.infradead.org, linux@arm.linux.org.uk,
-        jiada_wang@mentor.com, robherring2@gmail.com,
-        grant.likely@linaro.org, broonie@kernel.org, vapier@gentoo.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Aug 2013 01:20:31 +0200 (CEST)
+Received: from caramon.arm.linux.org.uk ([78.32.30.218]:41254 "EHLO
+        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827311Ab3HWXUYEpQFW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Aug 2013 01:20:24 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
+        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=9jGuYhhxqr0gIq8bvJtq9Yv6nE2qBR399z3OhypT7e8=;
+        b=mH3anHHvsjF/o+nQ9zMM1UtfJR1blrqiNKxMjdTeL2eiz76FKuF1JhK+OsK3g7JnvDP1VXfD7iEutxW8qlMOAGbDJaUzAO+c12CDCQfjjqfgbTajPy3gwdyzgBnGG100NFTKasGKHXMS9af2z+1SxY0uWEOhsNvzRK4EeymYsiQ=;
+Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:34018)
+        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.76)
+        (envelope-from <linux@arm.linux.org.uk>)
+        id 1VD0Xd-0001NA-8o; Sat, 24 Aug 2013 00:13:17 +0100
+Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
+        (envelope-from <linux@n2100.arm.linux.org.uk>)
+        id 1VD0Xb-0001Ln-HI; Sat, 24 Aug 2013 00:13:15 +0100
+Date:   Sat, 24 Aug 2013 00:13:15 +0100
+From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
+To:     Sylwester Nawrocki <s.nawrocki@samsung.com>
+Cc:     linux-arm-kernel@lists.infradead.org, mturquette@linaro.org,
+        jiada_wang@mentor.com, broonie@kernel.org, vapier@gentoo.org,
         ralf@linux-mips.org, kyungmin.park@samsung.com,
-        shawn.guo@linaro.org, sebastian.hesselbarth@gmail.com,
-        LW@KARO-electronics.de, t.figa@samsung.com, g.liakhovetski@gmx.de,
+        myungjoo.ham@samsung.com, shawn.guo@linaro.org,
+        sebastian.hesselbarth@gmail.com, LW@KARO-electronics.de,
+        t.figa@samsung.com, g.liakhovetski@gmx.de,
         laurent.pinchart@ideasonboard.com, linux-kernel@vger.kernel.org,
         uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
         linux-sh@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] clk: implement clk_unregister
-References: <1377020063-30213-1-git-send-email-s.nawrocki@samsung.com> <1377020063-30213-3-git-send-email-s.nawrocki@samsung.com> <20130823215838.8231.21635@quantum>
-In-Reply-To: <20130823215838.8231.21635@quantum>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sylvester.nawrocki@gmail.com>
+Subject: Re: [PATCH v3 3/5] clk: Add common __clk_get(), __clk_put()
+        implementations
+Message-ID: <20130823231314.GR6617@n2100.arm.linux.org.uk>
+References: <1377270227-1030-1-git-send-email-s.nawrocki@samsung.com> <1377270227-1030-4-git-send-email-s.nawrocki@samsung.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1377270227-1030-4-git-send-email-s.nawrocki@samsung.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37671
+X-archive-position: 37672
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sylvester.nawrocki@gmail.com
+X-original-sender: linux@arm.linux.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,25 +56,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/23/2013 11:58 PM, Mike Turquette wrote:
->> +static void clk_nodrv_disable_unprepare(struct clk_hw *hw)
->> >  +{
->> >  +       WARN_ON(1);
->
-> Ideally we shouldn't get here, but if we do I guess it could be very
-> noisy. How about WARN_ONCE?
+On Fri, Aug 23, 2013 at 05:03:45PM +0200, Sylwester Nawrocki wrote:
+> This patch adds common __clk_get(), __clk_put() clkdev helpers which
+> replace their platform specific counterparts when the common clock
+> API is enabled.
+> 
+> The owner module pointer field is added to struct clk so a reference
+> to the clock supplier module can be taken by the clock consumers.
+> 
+> Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+> Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
 
-Yes, I guess that would be much better. I could resend it tomorrow if 
-needed.
+I'm mostly happy with this now.
 
-> After you address Russell's comments in patch #1 I will be happy to take
-> this series.
+> +int __clk_get(struct clk *clk)
+> +{
+> +	if (clk && !try_module_get(clk->owner))
+> +		return 0;
+> +
+> +	return 1;
+> +}
+> +EXPORT_SYMBOL(__clk_get);
+> +
+> +void __clk_put(struct clk *clk)
+> +{
+> +	if (WARN_ON_ONCE(IS_ERR(clk)))
+> +		return;
+> +
+> +	if (clk)
+> +		module_put(clk->owner);
+> +}
+> +EXPORT_SYMBOL(__clk_put);
 
-I have posted today v3 addressing Russell's comments. Hopefully patch #3
-(the patches got reordered) looks OK now. v3 includes actual assigning
-of clk->owner I somehow managed to miss in previous series :/ Please have
-a look at it.
-
---
-Regards,
-Sylwester
+Why are these exported?  clkdev can only be built into the kernel, as can
+the common clk framework - they can't be modular.  So why would a module
+wish to access these directly?

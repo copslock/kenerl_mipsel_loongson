@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Aug 2013 17:21:14 +0200 (CEST)
-Received: from mail-ea0-f169.google.com ([209.85.215.169]:40575 "EHLO
-        mail-ea0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816122Ab3HXPVLV0eXV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Aug 2013 17:21:11 +0200
-Received: by mail-ea0-f169.google.com with SMTP id k11so806646eaj.14
-        for <multiple recipients>; Sat, 24 Aug 2013 08:21:06 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Aug 2013 17:21:38 +0200 (CEST)
+Received: from mail-ea0-f179.google.com ([209.85.215.179]:34050 "EHLO
+        mail-ea0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6826017Ab3HXPVPxR3NM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Aug 2013 17:21:15 +0200
+Received: by mail-ea0-f179.google.com with SMTP id b10so806998eae.10
+        for <multiple recipients>; Sat, 24 Aug 2013 08:21:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=J5S7P41X70UuN1Rfy0Zef7vnTwHZ9o5DIJHfHr2+p40=;
-        b=tuLDMIt6VHxildAQLpnwT6xakPNzfgF9js8XM+6tVrDCpwUEi0Jo7Zxk2BTRcwMQLc
-         OkzU8YhwUtUirjymyXs+fV7B8FLO36Lbe4godd7up3pTrJeURSfQ0qg1LDYfD767YwD8
-         0S7S/K0uFpfhn2k371U9bTEi3NzpoWcidfJYrlF2NenxldpIH37VFA2VQrVC2vGYckkK
-         Iaq9KvcxziKGBxPtrE5W+s0Wlcar3Zt1rDPus1foHmXar2b58cTmDvDo/57MVWjc4oAL
-         l0kA1QrjhX5S4vCnSLUuJaDKc6QWsVhIf1RtlocEb66sw3f3d9pVrH0VfrnV/xSQKgCJ
-         gQ6g==
-X-Received: by 10.15.27.133 with SMTP id p5mr519893eeu.65.1377357665995;
-        Sat, 24 Aug 2013 08:21:05 -0700 (PDT)
+        bh=NgGX+zY00StOYWBr1davkK2MYMmqt7vTY/i6a56VFyU=;
+        b=YCLnIzfB5PwvPe0sGI6NjhO1QERVZpJsoD13mK8YOrhY8PkPh6xlV5z8aPUxykFJKo
+         klc9ljXJ5vdqnWMSHG7x578mQTKEw6g0c4X/xiGX6w7eszW1XlsyZJIqvkpKdu/cTt9e
+         xxE4Thz1Y/6SDu0aF+wQR+5ewtQrJylZU5BlvXot/LxM9P8zmIhxNnueoTV3NLO3NTX8
+         obCJN8p3MifN64moYObysNz1DfCyKc6jZml2Ew+te+azKNzLRmMp0EpVowcFlc22yHoV
+         YHF78Ruxsbi4I6LuGdy9fuS1pj3j9cNH9rBosVWIw4Dq15fs5eh1s/L3f22ppdCXCRyH
+         xANw==
+X-Received: by 10.15.48.67 with SMTP id g43mr8766311eew.17.1377357670531;
+        Sat, 24 Aug 2013 08:21:10 -0700 (PDT)
 Received: from localhost.localdomain (093105185086.warszawa.vectranet.pl. [93.105.185.86])
         by mx.google.com with ESMTPSA id x47sm7415825eea.16.1969.12.31.16.00.00
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Sat, 24 Aug 2013 08:21:05 -0700 (PDT)
+        Sat, 24 Aug 2013 08:21:09 -0700 (PDT)
 From:   Sylwester Nawrocki <sylvester.nawrocki@gmail.com>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     linux@arm.linux.org.uk, mturquette@linaro.org,
@@ -32,9 +32,9 @@ Cc:     linux@arm.linux.org.uk, mturquette@linaro.org,
         laurent.pinchart@ideasonboard.com, linux-kernel@vger.kernel.org,
         uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
         linux-sh@vger.kernel.org, s.nawrocki@samsung.com
-Subject: [PATCH v4 1/5] clk: Provide not locked variant of of_clk_get_from_provider()
-Date:   Sat, 24 Aug 2013 17:19:45 +0200
-Message-Id: <1377357589-13242-2-git-send-email-s.nawrocki@samsung.com>
+Subject: [PATCH v4 2/5] clkdev: Fix race condition in clock lookup from device tree
+Date:   Sat, 24 Aug 2013 17:19:46 +0200
+Message-Id: <1377357589-13242-3-git-send-email-s.nawrocki@samsung.com>
 X-Mailer: git-send-email 1.7.4.1
 In-Reply-To: <1377357589-13242-1-git-send-email-s.nawrocki@samsung.com>
 References: <1377357589-13242-1-git-send-email-s.nawrocki@samsung.com>
@@ -42,7 +42,7 @@ Return-Path: <sylvester.nawrocki@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37675
+X-archive-position: 37676
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,142 +59,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add helper functions for the of_clk_providers list locking and
-an unlocked variant of of_clk_get_from_provider().
-These functions are intended to be used in the clkdev to avoid
-race condition in the device tree based clock look up in clk_get().
+There is currently a race condition in the device tree part of clk_get()
+function, since the pointer returned from of_clk_get_by_name() may become
+invalid before __clk_get() call. E.g. due to the clock provider driver
+remove() callback being called in between of_clk_get_by_name() and
+__clk_get().
+
+Fix this by doing both the look up and __clk_get() operations with the
+clock providers list mutex held. This ensures that the clock pointer
+returned from __of_clk_get_from_provider() call and passed to __clk_get()
+is valid, as long as the clock supplier module first removes its clock
+provider instance and then does clk_unregister() on the corresponding
+clocks.
 
 Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
 Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
+Reviewed-by: Mike Turquette <mturquette@linaro.org>
 Acked-by: Russell King <rmk+kernel@arm.linux.org.uk>
 ---
-Changes since v3:
- - none.
 
 Changes since v2:
- - fixed typo in clk.h.
+ - none.
 
 Changes since v1:
- - moved the function declaractions to a local header.
+ - include "clk.h".
 ---
- drivers/clk/clk.c |   38 ++++++++++++++++++++++++++++++--------
- drivers/clk/clk.h |   16 ++++++++++++++++
- 2 files changed, 46 insertions(+), 8 deletions(-)
- create mode 100644 drivers/clk/clk.h
+ drivers/clk/clkdev.c |   12 ++++++++++--
+ 1 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index bc02037..f46444f 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
+diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
+index 442a313..48f6721 100644
+--- a/drivers/clk/clkdev.c
++++ b/drivers/clk/clkdev.c
 @@ -21,6 +21,8 @@
- #include <linux/init.h>
- #include <linux/sched.h>
+ #include <linux/clkdev.h>
+ #include <linux/of.h>
  
 +#include "clk.h"
 +
- static DEFINE_SPINLOCK(enable_lock);
- static DEFINE_MUTEX(prepare_lock);
+ static LIST_HEAD(clocks);
+ static DEFINE_MUTEX(clocks_mutex);
  
-@@ -2097,7 +2099,18 @@ static const struct of_device_id __clk_of_table_sentinel
- 	__used __section(__clk_of_table_end);
+@@ -39,7 +41,13 @@ struct clk *of_clk_get(struct device_node *np, int index)
+ 	if (rc)
+ 		return ERR_PTR(rc);
  
- static LIST_HEAD(of_clk_providers);
--static DEFINE_MUTEX(of_clk_lock);
-+static DEFINE_MUTEX(of_clk_mutex);
+-	clk = of_clk_get_from_provider(&clkspec);
++	of_clk_lock();
++	clk = __of_clk_get_from_provider(&clkspec);
 +
-+/* of_clk_provider list locking helpers */
-+void of_clk_lock(void)
-+{
-+	mutex_lock(&of_clk_mutex);
-+}
++	if (!IS_ERR(clk) && !__clk_get(clk))
++		clk = ERR_PTR(-ENOENT);
 +
-+void of_clk_unlock(void)
-+{
-+	mutex_unlock(&of_clk_mutex);
-+}
- 
- struct clk *of_clk_src_simple_get(struct of_phandle_args *clkspec,
- 				     void *data)
-@@ -2141,9 +2154,9 @@ int of_clk_add_provider(struct device_node *np,
- 	cp->data = data;
- 	cp->get = clk_src_get;
- 
--	mutex_lock(&of_clk_lock);
-+	mutex_lock(&of_clk_mutex);
- 	list_add(&cp->link, &of_clk_providers);
--	mutex_unlock(&of_clk_lock);
-+	mutex_unlock(&of_clk_mutex);
- 	pr_debug("Added clock from %s\n", np->full_name);
- 
- 	return 0;
-@@ -2158,7 +2171,7 @@ void of_clk_del_provider(struct device_node *np)
- {
- 	struct of_clk_provider *cp;
- 
--	mutex_lock(&of_clk_lock);
-+	mutex_lock(&of_clk_mutex);
- 	list_for_each_entry(cp, &of_clk_providers, link) {
- 		if (cp->node == np) {
- 			list_del(&cp->link);
-@@ -2167,24 +2180,33 @@ void of_clk_del_provider(struct device_node *np)
- 			break;
- 		}
- 	}
--	mutex_unlock(&of_clk_lock);
-+	mutex_unlock(&of_clk_mutex);
- }
- EXPORT_SYMBOL_GPL(of_clk_del_provider);
- 
--struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
-+struct clk *__of_clk_get_from_provider(struct of_phandle_args *clkspec)
- {
- 	struct of_clk_provider *provider;
- 	struct clk *clk = ERR_PTR(-ENOENT);
- 
- 	/* Check if we have such a provider in our array */
--	mutex_lock(&of_clk_lock);
- 	list_for_each_entry(provider, &of_clk_providers, link) {
- 		if (provider->node == clkspec->np)
- 			clk = provider->get(clkspec, provider->data);
- 		if (!IS_ERR(clk))
- 			break;
- 	}
--	mutex_unlock(&of_clk_lock);
-+
-+	return clk;
-+}
-+
-+struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
-+{
-+	struct clk *clk;
-+
-+	mutex_lock(&of_clk_mutex);
-+	clk = __of_clk_get_from_provider(clkspec);
-+	mutex_unlock(&of_clk_mutex);
- 
++	of_clk_unlock();
+ 	of_node_put(clkspec.np);
  	return clk;
  }
-diff --git a/drivers/clk/clk.h b/drivers/clk/clk.h
-new file mode 100644
-index 0000000..795cc9f
---- /dev/null
-+++ b/drivers/clk/clk.h
-@@ -0,0 +1,16 @@
-+/*
-+ * linux/drivers/clk/clk.h
-+ *
-+ * Copyright (C) 2013 Samsung Electronics Co., Ltd.
-+ * Sylwester Nawrocki <s.nawrocki@samsung.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+#if defined(CONFIG_OF) && defined(CONFIG_COMMON_CLK)
-+struct clk *__of_clk_get_from_provider(struct of_phandle_args *clkspec);
-+void of_clk_lock(void);
-+void of_clk_unlock(void);
-+#endif
+@@ -157,7 +165,7 @@ struct clk *clk_get(struct device *dev, const char *con_id)
+ 
+ 	if (dev) {
+ 		clk = of_clk_get_by_name(dev->of_node, con_id);
+-		if (!IS_ERR(clk) && __clk_get(clk))
++		if (!IS_ERR(clk))
+ 			return clk;
+ 	}
+ 
 -- 
 1.7.4.1

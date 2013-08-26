@@ -1,48 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Aug 2013 20:30:49 +0200 (CEST)
-Received: from mail-ea0-f169.google.com ([209.85.215.169]:38100 "EHLO
-        mail-ea0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6826039Ab3HXS2sGHcGg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Aug 2013 20:28:48 +0200
-Received: by mail-ea0-f169.google.com with SMTP id k11so864739eaj.0
-        for <linux-mips@linux-mips.org>; Sat, 24 Aug 2013 11:28:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=FrF+/Gvh0BQPYXr0dqIxdRsSjC44IJSPp3Ap1Tg9fEA=;
-        b=ZcgCjSYT8oWuKZnZczPWwOB6u9thdVLuloebNHZamN/xeCGAO9X5arPzOgZA03MLiU
-         VjvrvGKzCRsmEMXaX6PFPqNu/DXFAvE9EYdAf0lLDnJd+w+MrmZg3iSn32ZCfOASm6+F
-         7tkw8MUbn1z7J+VMNzNXgiCDCjNQjESXvrxsRkxZzGpPl+HvMz//giZYXr1JHRTlqadD
-         kfoJijJld0DYu0/2zlwr4yU5BGdB5nfcytK9epKkDgxENh+Z5bStwJ/S4S1YCUQL6Lf8
-         d9cXFhqhSBt9W5jFnnltT8yte0pcGHJNbMTZex2hx6GImVPfYAta6vjlTeLHAPv7JktO
-         AzIQ==
-X-Received: by 10.14.113.137 with SMTP id a9mr9893556eeh.3.1377368922796;
-        Sat, 24 Aug 2013 11:28:42 -0700 (PDT)
-Received: from localhost.localdomain (093105185086.warszawa.vectranet.pl. [93.105.185.86])
-        by mx.google.com with ESMTPSA id b45sm8446922eef.4.1969.12.31.16.00.00
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Sat, 24 Aug 2013 11:28:41 -0700 (PDT)
-From:   Sylwester Nawrocki <sylvester.nawrocki@gmail.com>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     linux@arm.linux.org.uk, mturquette@linaro.org,
-        jiada_wang@mentor.com, linux-kernel@vger.kernel.org,
-        uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, s.nawrocki@samsung.com,
-        Kyungmin Park <kyungmin.park@samsung.com>
-Subject: [PATCH v5 5/5] clk: Implement clk_unregister
-Date:   Sat, 24 Aug 2013 20:27:05 +0200
-Message-Id: <1377368825-30715-6-git-send-email-s.nawrocki@samsung.com>
-X-Mailer: git-send-email 1.7.4.1
-In-Reply-To: <1377368825-30715-1-git-send-email-s.nawrocki@samsung.com>
-References: <1377368825-30715-1-git-send-email-s.nawrocki@samsung.com>
-Return-Path: <sylvester.nawrocki@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Aug 2013 04:47:24 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:2184 "EHLO mms1.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817537Ab3HZCrRx02I1 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Aug 2013 04:47:17 +0200
+Received: from [10.9.208.55] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Sun, 25 Aug 2013 19:43:07 -0700
+X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
+Received: from SJEXCHCAS05.corp.ad.broadcom.com (10.16.203.12) by
+ IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Sun, 25 Aug 2013 19:47:00 -0700
+Received: from SJEXCHMB12.corp.ad.broadcom.com (
+ [fe80::bc15:c1e1:c29a:36f7]) by SJEXCHCAS05.corp.ad.broadcom.com (
+ [::1]) with mapi id 14.01.0438.000; Sun, 25 Aug 2013 19:46:56 -0700
+From:   "Sherman Yin" <syin@broadcom.com>
+To:     "Linus Walleij" <linus.walleij@linaro.org>
+cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "Matt Porter" <matt.porter@linaro.org>,
+        "Stephen Warren (swarren@wwwdotorg.org)" <swarren@wwwdotorg.org>
+Subject: RE: [PATCH v2] pinctrl: Pass all configs to driver on
+ pin_config_set()
+Thread-Topic: [PATCH v2] pinctrl: Pass all configs to driver on
+ pin_config_set()
+Thread-Index: AQHOntXJmgdj0T+r5kuSCtgUWAQalJmjh/cAgANGgmA=
+Date:   Mon, 26 Aug 2013 02:46:56 +0000
+Message-ID: <051069C10411E24D9749790C498526FA1BDDCD3B@SJEXCHMB12.corp.ad.broadcom.com>
+References: <1376606573-15093-1-git-send-email-syin@broadcom.com>
+ <1377134300-25480-1-git-send-email-syin@broadcom.com>
+ <CACRpkdZeET601+jOsjQxu-VAhi1owgtMX60Fij=uU489eGVFXg@mail.gmail.com>
+In-Reply-To: <CACRpkdZeET601+jOsjQxu-VAhi1owgtMX60Fij=uU489eGVFXg@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.16.203.100]
+MIME-Version: 1.0
+X-WSS-ID: 7E041F310UO442618-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Return-Path: <syin@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37685
+X-archive-position: 37691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sylvester.nawrocki@gmail.com
+X-original-sender: syin@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,232 +62,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-clk_unregister() is currently not implemented and it is required when
-a clock provider module needs to be unloaded.
+Hi Linus,
 
-Normally the clock supplier module is prevented to be unloaded by
-taking reference on the module in clk_get().
+>Didn't you get review from Stephen Warren?
 
-For cases when the clock supplier module deinitializes despite the
-consumers of its clocks holding a reference on the module, e.g. when
-the driver is unbound through "unbind" sysfs attribute, there are
-empty clock ops added. These ops are assigned temporarily to struct
-clk and used until all consumers release the clock, to avoid invoking
-callbacks from the module which just got removed.
+Yes, just wasn't sure when those tags should be added.  They have been 
+added to v3 now.
 
-Signed-off-by: Jiada Wang <jiada_wang@mentor.com>
-Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
----
-Changes since v4:
- - none.
+>Please try to put all the maintainers for the above files on the To: line
+>so they get a chance to review/ack the patch.
 
-Changes since v3:
- - Use WARN_ON_ONCE() rather than WARN_ON() in clk_nodrv_disable_unprepare()
-   callback.
+Ok.  I've added the emails from get_maintainer.pl for each of the files.
+v3 has been rebased today and I also applied the API changes to 
+pinctrl-palmas.c
 
-Changes since v2:
- - none.
-
-Changes since RFC v1:
- - renamed clk_dummy_* to clk_nodrv_*.
----
- drivers/clk/clk.c           |  123 +++++++++++++++++++++++++++++++++++++++++-
- include/linux/clk-private.h |    2 +
- 2 files changed, 122 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index cf5765a..df41052 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -344,6 +344,21 @@ out:
- 	return ret;
- }
- 
-+ /**
-+ * clk_debug_unregister - remove a clk node from the debugfs clk tree
-+ * @clk: the clk being removed from the debugfs clk tree
-+ *
-+ * Dynamically removes a clk and all it's children clk nodes from the
-+ * debugfs clk tree if clk->dentry points to debugfs created by
-+ * clk_debug_register in __clk_init.
-+ *
-+ * Caller must hold prepare_lock.
-+ */
-+static void clk_debug_unregister(struct clk *clk)
-+{
-+	debugfs_remove_recursive(clk->dentry);
-+}
-+
- /**
-  * clk_debug_reparent - reparent clk node in the debugfs clk tree
-  * @clk: the clk being reparented
-@@ -434,6 +449,9 @@ static inline int clk_debug_register(struct clk *clk) { return 0; }
- static inline void clk_debug_reparent(struct clk *clk, struct clk *new_parent)
- {
- }
-+static inline void clk_debug_unregister(struct clk *clk)
-+{
-+}
- #endif
- 
- /* caller must hold prepare_lock */
-@@ -1764,6 +1782,7 @@ int __clk_init(struct device *dev, struct clk *clk)
- 
- 	clk_debug_register(clk);
- 
-+	kref_init(&clk->ref);
- out:
- 	clk_prepare_unlock();
- 
-@@ -1899,13 +1918,106 @@ fail_out:
- }
- EXPORT_SYMBOL_GPL(clk_register);
- 
-+/*
-+ * Free memory allocated for a clock.
-+ * Caller must hold prepare_lock.
-+ */
-+static void __clk_release(struct kref *ref)
-+{
-+	struct clk *clk = container_of(ref, struct clk, ref);
-+	int i = clk->num_parents;
-+
-+	kfree(clk->parents);
-+	while (--i >= 0)
-+		kfree(clk->parent_names[i]);
-+
-+	kfree(clk->parent_names);
-+	kfree(clk->name);
-+	kfree(clk);
-+}
-+
-+/*
-+ * Empty clk_ops for unregistered clocks. These are used temporarily
-+ * after clk_unregister() was called on a clock and until last clock
-+ * consumer calls clk_put() and the struct clk object is freed.
-+ */
-+static int clk_nodrv_prepare_enable(struct clk_hw *hw)
-+{
-+	return -ENXIO;
-+}
-+
-+static void clk_nodrv_disable_unprepare(struct clk_hw *hw)
-+{
-+	WARN_ON_ONCE(1);
-+}
-+
-+static int clk_nodrv_set_rate(struct clk_hw *hw, unsigned long rate,
-+					unsigned long parent_rate)
-+{
-+	return -ENXIO;
-+}
-+
-+static int clk_nodrv_set_parent(struct clk_hw *hw, u8 index)
-+{
-+	return -ENXIO;
-+}
-+
-+static const struct clk_ops clk_nodrv_ops = {
-+	.enable		= clk_nodrv_prepare_enable,
-+	.disable	= clk_nodrv_disable_unprepare,
-+	.prepare	= clk_nodrv_prepare_enable,
-+	.unprepare	= clk_nodrv_disable_unprepare,
-+	.set_rate	= clk_nodrv_set_rate,
-+	.set_parent	= clk_nodrv_set_parent,
-+};
-+
- /**
-  * clk_unregister - unregister a currently registered clock
-  * @clk: clock to unregister
-- *
-- * Currently unimplemented.
-  */
--void clk_unregister(struct clk *clk) {}
-+void clk_unregister(struct clk *clk)
-+{
-+	unsigned long flags;
-+
-+	clk_prepare_lock();
-+
-+	if (!clk || IS_ERR(clk)) {
-+		pr_err("%s: invalid clock: %p\n", __func__, clk);
-+		goto out;
-+	}
-+
-+	if (clk->ops == &clk_nodrv_ops) {
-+		pr_err("%s: unregistered clock: %s\n", __func__, clk->name);
-+		goto out;
-+	}
-+	/*
-+	 * Assign empty clock ops for consumers that might still hold
-+	 * a reference to this clock.
-+	 */
-+	flags = clk_enable_lock();
-+	clk->ops = &clk_nodrv_ops;
-+	clk_enable_unlock(flags);
-+
-+	if (!hlist_empty(&clk->children)) {
-+		struct clk *child;
-+
-+		/* Reparent all children to the orphan list. */
-+		hlist_for_each_entry(child, &clk->children, child_node)
-+			clk_set_parent(child, NULL);
-+	}
-+
-+	clk_debug_unregister(clk);
-+
-+	hlist_del_init(&clk->child_node);
-+
-+	if (clk->prepare_count)
-+		pr_warn("%s: unregistering prepared clock: %s\n",
-+					__func__, clk->name);
-+
-+	kref_put(&clk->ref, __clk_release);
-+out:
-+	clk_prepare_unlock();
-+}
- EXPORT_SYMBOL_GPL(clk_unregister);
- 
- static void devm_clk_release(struct device *dev, void *res)
-@@ -1973,6 +2085,7 @@ int __clk_get(struct clk *clk)
- 	if (clk && !try_module_get(clk->owner))
- 		return 0;
- 
-+	kref_get(&clk->ref);
- 	return 1;
- }
- 
-@@ -1981,6 +2094,10 @@ void __clk_put(struct clk *clk)
- 	if (WARN_ON_ONCE(IS_ERR(clk)))
- 		return;
- 
-+	clk_prepare_lock();
-+	kref_put(&clk->ref, __clk_release);
-+	clk_prepare_unlock();
-+
- 	if (clk)
- 		module_put(clk->owner);
- }
-diff --git a/include/linux/clk-private.h b/include/linux/clk-private.h
-index 8cb1865..72c65e0 100644
---- a/include/linux/clk-private.h
-+++ b/include/linux/clk-private.h
-@@ -12,6 +12,7 @@
- #define __LINUX_CLK_PRIVATE_H
- 
- #include <linux/clk-provider.h>
-+#include <linux/kref.h>
- #include <linux/list.h>
- 
- /*
-@@ -50,6 +51,7 @@ struct clk {
- #ifdef CONFIG_COMMON_CLK_DEBUG
- 	struct dentry		*dentry;
- #endif
-+	struct kref		ref;
- };
- 
- /*
--- 
-1.7.4.1
+Regards,
+Sherman

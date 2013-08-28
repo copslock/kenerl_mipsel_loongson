@@ -1,66 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Sep 2013 02:36:32 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:49800 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827391Ab3ITAg1oaijy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Sep 2013 02:36:27 +0200
-Received: from c-67-160-231-162.hsd1.ca.comcast.net ([67.160.231.162] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <kamal@canonical.com>)
-        id 1VMohu-0003Z2-P8; Fri, 20 Sep 2013 00:36:27 +0000
-Received: from kamal by fourier with local (Exim 4.80)
-        (envelope-from <kamal@whence.com>)
-        id 1VMohs-0003lS-Fd; Thu, 19 Sep 2013 17:36:24 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     Felix Fietkau <nbd@openwrt.org>
-Cc:     Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [ 3.8.y.z extended stable ] Patch "MIPS: ath79: Fix ar933x watchdog clock" has been added to staging queue
-Date:   Thu, 19 Sep 2013 17:36:24 -0700
-Message-Id: <1379637384-14440-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 1.8.1.2
-X-Extended-Stable: 3.8
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37900
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Wed, 28 Aug 2013 10:41:42 +0200
+Subject: MIPS: ath79: Fix ar933x watchdog clock
+Message-ID: <20130828084142.gkmPo2XDod6oA_mpWd_eg4nxupZ4xpnf42eN0M4Dalc@z>
 
-This is a note to let you know that I have just added a patch titled
+commit a1191927ace7e6f827132aa9e062779eb3f11fa5 upstream.
 
-    MIPS: ath79: Fix ar933x watchdog clock
+The watchdog device on the AR933x is connected to
+the AHB clock, however the current code uses the
+reference clock. Due to the wrong rate, the watchdog
+driver can't calculate correct register values for
+a given timeout value and the watchdog unexpectedly
+restarts the system.
 
-to the linux-3.8.y-queue branch of the 3.8.y.z extended stable tree 
-which can be found at:
+The code uses the wrong value since the initial
+commit 04225e1d227c8e68d685936ecf42ac175fec0e54
+(MIPS: ath79: add AR933X specific clock init)
 
- http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.8.y-queue
+The patch fixes the code to use the correct clock
+rate to avoid the problem.
 
-This patch is scheduled to be released in version 3.8.13.10.
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/5777/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/ath79/clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
+index 579f452..300d7d3 100644
+--- a/arch/mips/ath79/clock.c
++++ b/arch/mips/ath79/clock.c
+@@ -164,7 +164,7 @@ static void __init ar933x_clocks_init(void)
+ 		ath79_ahb_clk.rate = freq / t;
+ 	}
 
-For more information about the 3.8.y.z tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+-	ath79_wdt_clk.rate = ath79_ref_clk.rate;
++	ath79_wdt_clk.rate = ath79_ahb_clk.rate;
+ 	ath79_uart_clk.rate = ath79_ref_clk.rate;
+ }
 
-Thanks.
--Kamal
-
-------
+--
+1.8.1.2

@@ -1,32 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Aug 2013 10:44:00 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:55249 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Aug 2013 17:43:30 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:4021 "EHLO mms3.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817986Ab3H1IlxbqNN2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Aug 2013 10:41:53 +0200
-Received: from arrakis.dune.hu (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 25B29280822;
-        Wed, 28 Aug 2013 10:41:19 +0200 (CEST)
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA;
-        Wed, 28 Aug 2013 10:41:19 +0200 (CEST)
-From:   Gabor Juhos <juhosg@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 4/6] MIPS: ath79: use ath79_get_sys_clk_rate to get basic clock rates
-Date:   Wed, 28 Aug 2013 10:41:45 +0200
-Message-Id: <1377679307-429-5-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.10
-In-Reply-To: <1377679307-429-1-git-send-email-juhosg@openwrt.org>
-References: <1377679307-429-1-git-send-email-juhosg@openwrt.org>
-Return-Path: <juhosg@openwrt.org>
+        id S6818712Ab3H1PnRv1auf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Aug 2013 17:43:17 +0200
+Received: from [10.9.208.57] by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Wed, 28 Aug 2013 08:32:39 -0700
+X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Wed, 28 Aug 2013 08:42:54 -0700
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
+ Server id 14.1.438.0; Wed, 28 Aug 2013 08:42:54 -0700
+Received: from fainelli-desktop.broadcom.com (
+ dhcp-10-9-247-38.broadcom.com [10.9.247.38]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 7BBFEF2D73; Wed, 28
+ Aug 2013 08:42:52 -0700 (PDT)
+From:   "Florian Fainelli" <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+cc:     ralf@linux-mips.org, blogic@openwrt.org, richard@nod.at,
+        james.hogan@imgtec.com, "Florian Fainelli" <f.fainelli@gmail.com>
+Subject: [PATCH] MIPS: do not allow building vmlinuz when !ZBOOT
+Date:   Wed, 28 Aug 2013 16:42:49 +0100
+Message-ID: <1377704569-21331-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 1.8.1.2
+MIME-Version: 1.0
+X-WSS-ID: 7E00C79D2L879022892-01-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37702
+X-archive-position: 37704
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,71 +49,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Instead of accessing the rate field of the static
-clock devices directly, use the recently introduced
-helper function to get the rate of the basic clocks.
+When CONFIG_SYS_SUPPORTS_ZBOOT is not enabled, we will still try to
+build the decompressor code in arch/mips/boot/compressed as a
+dependency for producing the vmlinuz target and this will result in
+the following build failure:
 
-The static ath79_{ahb,cpu,ddr,ref}_clk variables
-will be removed by a subsequent patch. The actual
-change is in preparation of that.
+  OBJCOPY arch/mips/boot/compressed/vmlinux.bin
+arch/mips/boot/compressed/decompress.c: In function 'decompress_kernel':
+arch/mips/boot/compressed/decompress.c:105:2: error: implicit
+declaration of function 'decompress'
+make[1]: *** [arch/mips/boot/compressed/decompress.o] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make: *** [vmlinuz] Error 2
 
-Also move the clock frequency printing code into
-the plat_time_init function. We are getting the
-cpu clock rate there already so we can save an
-extra call of the helper.
+This is a genuine build failure because we have no implementation for
+the decompress() function body since no kernel compression method
+defined in CONFIG_KERNEL_(GZIP,BZIP2...) has been enabled.
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+arch/mips/Makefile already guards the install target for the "vmlinuz"
+binary with a proper ifdef CONFIG_SYS_SUPPORTS_ZBOOT, we now also do the
+same if we attempt to do a "make vmlinuz" and show that
+CONFIG_SYS_SUPPORTS_ZBOOT is not enabled.
+
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- arch/mips/ath79/clock.c |   11 -----------
- arch/mips/ath79/setup.c |   12 ++++++++++++
- 2 files changed, 12 insertions(+), 11 deletions(-)
+ arch/mips/Makefile | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index c8351b4..ebd4340 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -387,17 +387,6 @@ void __init ath79_clocks_init(void)
- 		qca955x_clocks_init();
- 	else
- 		BUG();
--
--	pr_info("Clocks: CPU:%lu.%03luMHz, DDR:%lu.%03luMHz, AHB:%lu.%03luMHz, "
--		"Ref:%lu.%03luMHz",
--		ath79_cpu_clk.rate / 1000000,
--		(ath79_cpu_clk.rate / 1000) % 1000,
--		ath79_ddr_clk.rate / 1000000,
--		(ath79_ddr_clk.rate / 1000) % 1000,
--		ath79_ahb_clk.rate / 1000000,
--		(ath79_ahb_clk.rate / 1000) % 1000,
--		ath79_ref_clk.rate / 1000000,
--		(ath79_ref_clk.rate / 1000) % 1000);
- }
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 37f9ef3..8e67a32 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -283,10 +283,15 @@ all:	$(all-y)
+ vmlinux.bin vmlinux.ecoff vmlinux.srec: $(vmlinux-32) FORCE
+ 	$(Q)$(MAKE) $(build)=arch/mips/boot VMLINUX=$(vmlinux-32) arch/mips/boot/$@
  
- unsigned long __init
-diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-index e3b8345..c02d345 100644
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -210,8 +210,20 @@ void __init plat_mem_setup(void)
- void __init plat_time_init(void)
- {
- 	unsigned long cpu_clk_rate;
-+	unsigned long ahb_clk_rate;
-+	unsigned long ddr_clk_rate;
-+	unsigned long ref_clk_rate;
++ifdef CONFIG_SYS_SUPPORTS_ZBOOT
+ # boot/compressed
+ vmlinuz vmlinuz.bin vmlinuz.ecoff vmlinuz.srec: $(vmlinux-32) FORCE
+ 	$(Q)$(MAKE) $(build)=arch/mips/boot/compressed \
+ 	   VMLINUX_LOAD_ADDRESS=$(load-y) 32bit-bfd=$(32bit-bfd) $@
++else
++vmlinuz:
++	@echo '   CONFIG_SYS_SUPPORTS_ZBOOT is not enabled'
++endif
  
- 	cpu_clk_rate = ath79_get_sys_clk_rate("cpu");
-+	ahb_clk_rate = ath79_get_sys_clk_rate("ahb");
-+	ddr_clk_rate = ath79_get_sys_clk_rate("ddr");
-+	ref_clk_rate = ath79_get_sys_clk_rate("ref");
-+
-+	pr_info("Clocks: CPU:%lu.%03luMHz, DDR:%lu.%03luMHz, AHB:%lu.%03luMHz, Ref:%lu.%03luMHz",
-+		cpu_clk_rate / 1000000, (cpu_clk_rate / 1000) % 1000,
-+		ddr_clk_rate / 1000000, (ddr_clk_rate / 1000) % 1000,
-+		ahb_clk_rate / 1000000, (ahb_clk_rate / 1000) % 1000,
-+		ref_clk_rate / 1000000, (ref_clk_rate / 1000) % 1000);
  
- 	mips_hpt_frequency = cpu_clk_rate / 2;
- }
+ CLEAN_FILES += vmlinux.32 vmlinux.64
 -- 
-1.7.10
+1.8.1.2

@@ -1,30 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Aug 2013 10:10:03 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:47428 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6818014Ab3HaIJ4apEDK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 31 Aug 2013 10:09:56 +0200
-Message-ID: <5221A4C1.90703@phrozen.org>
-Date:   Sat, 31 Aug 2013 10:09:37 +0200
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Aug 2013 11:40:36 +0200 (CEST)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:51581 "EHLO
+        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6816503Ab3HaJkd5542G (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 31 Aug 2013 11:40:33 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id E99DA26144F;
+        Sat, 31 Aug 2013 11:40:26 +0200 (CEST)
+Received: from mail.szarvasnet.hu ([127.0.0.1])
+        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id PpOQ2uWbtsDt; Sat, 31 Aug 2013 11:40:26 +0200 (CEST)
+Received: from [192.168.254.50] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 7DC0B26143E;
+        Sat, 31 Aug 2013 11:40:26 +0200 (CEST)
+Message-ID: <5221BA2E.6020002@openwrt.org>
+Date:   Sat, 31 Aug 2013 11:41:02 +0200
+From:   Gabor Juhos <juhosg@openwrt.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130620 Thunderbird/17.0.7
 MIME-Version: 1.0
-To:     Julia Lawall <Julia.Lawall@lip6.fr>
-CC:     Gabor Juhos <juhosg@openwrt.org>,
+To:     John Crispin <john@phrozen.org>
+CC:     Julia Lawall <Julia.Lawall@lip6.fr>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Subject: Re: [PATCH 6/6] MIPS: ath79: simplify platform_get_resource_byname/devm_ioremap_resource
-References: <1376902316-18520-1-git-send-email-Julia.Lawall@lip6.fr> <1376902316-18520-7-git-send-email-Julia.Lawall@lip6.fr> <52164F54.2070209@openwrt.org>
-In-Reply-To: <52164F54.2070209@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-2; format=flowed
+References: <1376902316-18520-1-git-send-email-Julia.Lawall@lip6.fr> <1376902316-18520-7-git-send-email-Julia.Lawall@lip6.fr> <52164F54.2070209@openwrt.org> <5221A4C1.90703@phrozen.org>
+In-Reply-To: <5221A4C1.90703@phrozen.org>
+X-Enigmail-Version: 1.5.2
+Content-Type: text/plain; charset=ISO-8859-2
 Content-Transfer-Encoding: 8bit
-Return-Path: <john@phrozen.org>
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37724
+X-archive-position: 37725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,38 +47,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 22/08/13 19:50, Gabor Juhos wrote:
-> 2013.08.19. 10:51 keltezéssel, Julia Lawall írta:
->> From: Julia Lawall<Julia.Lawall@lip6.fr>
->>
->> Remove unneeded error handling on the result of a call to
->> platform_get_resource_byname when the value is passed to devm_ioremap_resource.
->>
->> A simplified version of the semantic patch that makes this change is as
->> follows: (http://coccinelle.lip6.fr/)
->>
->> //<smpl>
->> @@
->> expression pdev,res,e,e1;
->> expression ret != 0;
->> identifier l;
->> @@
->>
->>    res = platform_get_resource_byname(...);
->> - if (res == NULL) { ... \(goto l;\|return ret;\) }
->>    e = devm_ioremap_resource(e1, res);
->> //</smpl>
->>
->> Signed-off-by: Julia Lawall<Julia.Lawall@lip6.fr>
->
-> Acked-by: Gabor Juhos<juhosg@openwrt.org>
->
-> Thanks!
->
-> -Gabor
+2013.08.31. 10:09 keltezéssel, John Crispin írta:
 
-Hi,
+<snip>
 
-should this patch go upstream via the lmo tree ?
+> should this patch go upstream via the lmo tree ?
 
-	John
+Yes, I think.
+
+-Gabor

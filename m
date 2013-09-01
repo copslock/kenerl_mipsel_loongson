@@ -1,47 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Aug 2013 19:57:35 +0200 (CEST)
-Received: from mail-pa0-f52.google.com ([209.85.220.52]:34369 "EHLO
-        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6818999Ab3HaR52zN0-E (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 31 Aug 2013 19:57:28 +0200
-Received: by mail-pa0-f52.google.com with SMTP id kq13so3557466pab.25
-        for <linux-mips@linux-mips.org>; Sat, 31 Aug 2013 10:57:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=G7G2qb3LaY7B8JdglXAH0q9nFAmpauXTuEbWBhboAHM=;
-        b=yMDTAV/9UpzPbgandv0oIfrntCZ+yhdu99bAr/S2CSJbpe/O+BKiQSzUp0pEBAQR+E
-         ghGKoXGrbnw3/MrLb5uyorZFnBnY3CjAVDsVFn7N0nxkracV710fckFpAANMyTgQxgg+
-         DA9BRJWDkB7+3VpuQJq0asxiM+G8NbOmuFsKNh4et9AulgnvbED6oE92IDS7qnJN4WA+
-         Usgi8RP92FB+k4ygw7Nz+iFr7Yd2NY276QucuEsNnDeBr1qlsT13TFA4LXGhJMYT7vrH
-         ajoPwtlexpM8IHcrVe8V+eYARQE01n5HKWFQ4/3KduOplZyrybzAMJ8Ti/3wCV0NMZo/
-         TVmQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Sep 2013 18:31:58 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:60842 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6819547Ab3IAQbzY2oxf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 1 Sep 2013 18:31:55 +0200
+Message-ID: <52236BED.9090207@phrozen.org>
+Date:   Sun, 01 Sep 2013 18:31:41 +0200
+From:   John Crispin <john@phrozen.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
 MIME-Version: 1.0
-X-Received: by 10.66.159.132 with SMTP id xc4mr17588548pab.27.1377971841956;
- Sat, 31 Aug 2013 10:57:21 -0700 (PDT)
-Received: by 10.68.28.232 with HTTP; Sat, 31 Aug 2013 10:57:21 -0700 (PDT)
-In-Reply-To: <5221C3FC.7090608@phrozen.org>
-References: <1375350938-16554-1-git-send-email-jogo@openwrt.org>
-        <20130801135505.GA3466@linux-mips.org>
-        <CAOiHx=kZuzVu=ung9suwuoYr7F5LP-ghNFzwVSM_Zrc3i+=Q-g@mail.gmail.com>
-        <5221C3FC.7090608@phrozen.org>
-Date:   Sat, 31 Aug 2013 10:57:21 -0700
-Message-ID: <CAJiQ=7DKZkAWB2H5xPhL0aEXB5ggzkO8266-GHYHOVrJR6kXPw@mail.gmail.com>
-Subject: Re: [PATCH V2] MIPS: BMIPS: fix compilation for BMIPS5000
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     John Crispin <john@phrozen.org>
-Cc:     Florian Fainelli <florian@openwrt.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+To:     Prem Mallappa <prem.mallappa@gmail.com>
+CC:     linux-mips <linux-mips@linux-mips.org>,
+        Prem Mallappa <pmallappa@caviumnetworks.com>
+Subject: Re: [PATCH 2/2] MIPS: KEXEC: Fixes Random crashes while loading crashkernel
+References: <1377857111-15493-1-git-send-email-pmallappa@caviumnetworks.com> <1377857111-15493-2-git-send-email-pmallappa@caviumnetworks.com>
+In-Reply-To: <1377857111-15493-2-git-send-email-pmallappa@caviumnetworks.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37727
+X-archive-position: 37728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: john@phrozen.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,17 +37,141 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Aug 31, 2013 at 3:22 AM, John Crispin <john@phrozen.org> wrote:
-> Hi Kevin,
-> Hi Florian,
+On 30/08/13 12:05, Prem Mallappa wrote:
+> MIPS: KEXEC: Fixes Random crashes while loading crashkernel
 >
+> Rearranging code so that crashk_res gets updated.
+> - crashk_res is updated after mips_parse_crashkernel(),
+>     after resource_init(), which is after arch_mem_init().
+> - The reserved memory is actually treated as Usable memory,
+>     Unless we load the crash kernel, everything works.
 >
->>> +       write_c0_ddatalo(3);
->>
->> I guess this needs to be write_c0_ddatalo(data);
+> Signed-off-by: Prem Mallappa<pmallappa@caviumnetworks.com>
+> ---
+>   arch/mips/kernel/setup.c | 99 +++++++++++++++++++++++-------------------------
+>   1 file changed, 48 insertions(+), 51 deletions(-)
 >
-> any comments on this ?
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index c7f9051..e98a256 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
 
-Commit 43d309390349010cd384ab5a0feebf16b03b9a94 from the
-mips-for-linux-next branch has this fix (and the __ssnop -> _ssnop
-renaming).  From comparing the assembly output it looks OK to me.
+<snip>
+
+> +static void __init request_crashkernel(struct resource *res)
+> +{
+> +	int ret;
+> +
+> +	ret = request_resource(res,&crashk_res);
+> +	if (!ret)
+> +		pr_info("Reserving %ldMB of memory at %ldMB for crashkernel\n",
+> +			(unsigned long)((crashk_res.end -
+> +					 crashk_res.start + 1)>>  20),
+> +			(unsigned long)(crashk_res.start>>  20));
+> +}
+> +#else /* !defined(CONFIG_KEXEC)		*/
+> +static void __init mips_parse_crashkernel(void)
+> +{
+> +}
+> +
+
+Hi,
+
+the function is not used and causes the following error.
+
+arch/mips/kernel/setup.c:592:20: error: 'mips_parse_crashkernel' defined 
+but not used [-Werror=unused-function]
+cc1: all warnings being treated as errors
+
+make[2]: *** [arch/mips/kernel/setup.o] Error 1
+make[1]: *** [arch/mips/kernel] Error 2
+
+	John
+
+
+
+
+
+
+> +static void __init request_crashkernel(struct resource *res)
+> +{
+> +}
+> +#endif /* !defined(CONFIG_KEXEC)  */
+> +
+>   static void __init arch_mem_init(char **cmdline_p)
+>   {
+>   	extern void plat_mem_setup(void);
+> @@ -609,6 +655,8 @@ static void __init arch_mem_init(char **cmdline_p)
+>   	}
+>   #endif
+>   #ifdef CONFIG_KEXEC
+> +	mips_parse_crashkernel();
+> +
+>   	if (crashk_res.start != crashk_res.end)
+>   		reserve_bootmem(crashk_res.start,
+>   				crashk_res.end - crashk_res.start + 1,
+> @@ -620,52 +668,6 @@ static void __init arch_mem_init(char **cmdline_p)
+>   	paging_init();
+>   }
+>
+> -#ifdef CONFIG_KEXEC
+> -static inline unsigned long long get_total_mem(void)
+> -{
+> -	unsigned long long total;
+> -
+> -	total = max_pfn - min_low_pfn;
+> -	return total<<  PAGE_SHIFT;
+> -}
+> -
+> -static void __init mips_parse_crashkernel(void)
+> -{
+> -	unsigned long long total_mem;
+> -	unsigned long long crash_size, crash_base;
+> -	int ret;
+> -
+> -	total_mem = get_total_mem();
+> -	ret = parse_crashkernel(boot_command_line, total_mem,
+> -				&crash_size,&crash_base);
+> -	if (ret != 0 || crash_size<= 0)
+> -		return;
+> -
+> -	crashk_res.start = crash_base;
+> -	crashk_res.end	 = crash_base + crash_size - 1;
+> -}
+> -
+> -static void __init request_crashkernel(struct resource *res)
+> -{
+> -	int ret;
+> -
+> -	ret = request_resource(res,&crashk_res);
+> -	if (!ret)
+> -		pr_info("Reserving %ldMB of memory at %ldMB for crashkernel\n",
+> -			(unsigned long)((crashk_res.end -
+> -				crashk_res.start + 1)>>  20),
+> -			(unsigned long)(crashk_res.start>>  20));
+> -}
+> -#else /* !defined(CONFIG_KEXEC)	 */
+> -static void __init mips_parse_crashkernel(void)
+> -{
+> -}
+> -
+> -static void __init request_crashkernel(struct resource *res)
+> -{
+> -}
+> -#endif /* !defined(CONFIG_KEXEC)  */
+> -
+>   static void __init resource_init(void)
+>   {
+>   	int i;
+> @@ -678,11 +680,6 @@ static void __init resource_init(void)
+>   	data_resource.start = __pa_symbol(&_etext);
+>   	data_resource.end = __pa_symbol(&_edata) - 1;
+>
+> -	/*
+> -	 * Request address space for all standard RAM.
+> -	 */
+> -	mips_parse_crashkernel();
+> -
+>   	for (i = 0; i<  boot_mem_map.nr_map; i++) {
+>   		struct resource *res;
+>   		unsigned long start, end;

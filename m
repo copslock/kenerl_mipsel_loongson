@@ -1,24 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Sep 2013 19:39:09 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:37152 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Sep 2013 19:42:28 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:37375 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6815748Ab3IARjHl8T-f (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 1 Sep 2013 19:39:07 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH] MIPS: ralink: add RESET_CONTROLLER to the defconfig
-Date:   Sun,  1 Sep 2013 19:38:47 +0200
-Message-Id: <1378057127-21984-1-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <blogic@openwrt.org>
+        id S6815748Ab3IARm0R-xzW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 1 Sep 2013 19:42:26 +0200
+Message-ID: <52237C76.4010608@phrozen.org>
+Date:   Sun, 01 Sep 2013 19:42:14 +0200
+From:   John Crispin <john@phrozen.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
+MIME-Version: 1.0
+To:     Markos Chandras <markos.chandras@imgtec.com>
+CC:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: powertv: Drop BOOTLOADER_DRIVER Kconfig symbol
+References: <1377075213-22398-1-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <1377075213-22398-1-git-send-email-markos.chandras@imgtec.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37730
+X-archive-position: 37731
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: john@phrozen.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -31,24 +36,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Without this symbol being set, we get an undefined symbol compile error.
+On 21/08/13 10:53, Markos Chandras wrote:
+> The kbldr.h header file required for this was neither committed in the
+> original submission in a3a0f8c8ed2e2470f4dcd6da95020d41fed84747
+> "MIPS: PowerTV: Base files for Cisco PowerTV platform"
+> nor it was ever present in the git tree so this option never worked.
+> Fixes the following build problem:
+> arch/mips/powertv/reset.c:25:36: fatal error: asm/mach-powertv/kbldr.h: No such
+> file or directory
+> compilation terminated.
+>
+> Signed-off-by: Markos Chandras<markos.chandras@imgtec.com>
+> Acked-by: Steven J. Hill<Steven.Hill@imgtec.com>
+> ---
+> This patch is for the upstream-sfr/mips-for-linux-next tree
+> ---
+>   arch/mips/Kconfig                     |  1 +
+>   arch/mips/powertv/Kconfig             |  9 +--------
+>   arch/mips/powertv/asic/asic_devices.c | 15 +++------------
+>   arch/mips/powertv/init.c              |  4 ----
+>   arch/mips/powertv/reset.c             | 12 ------------
+>   5 files changed, 5 insertions(+), 36 deletions(-)
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index e12764c..d08a3a6 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -416,6 +416,7 @@ config PMC_MSP
+>   config POWERTV
+>   	bool "Cisco PowerTV"
+>   	select BOOT_ELF32
+> +	select BOOTLOADER_FAMILY
+>   	select CEVT_R4K
+>   	select CPU_MIPSR2_IRQ_VI
+>   	select CPU_MIPSR2_IRQ_EI
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
----
- arch/mips/configs/rt305x_defconfig |    1 +
- 1 file changed, 1 insertion(+)
+Hi,
 
-diff --git a/arch/mips/configs/rt305x_defconfig b/arch/mips/configs/rt305x_defconfig
-index d1741bc..a222319 100644
---- a/arch/mips/configs/rt305x_defconfig
-+++ b/arch/mips/configs/rt305x_defconfig
-@@ -131,6 +131,7 @@ CONFIG_LEDS_TRIGGER_TIMER=y
- CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
- CONFIG_STAGING=y
- # CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_RESET_CONTROLLER=y
- # CONFIG_DNOTIFY is not set
- # CONFIG_PROC_PAGE_MONITOR is not set
- CONFIG_TMPFS=y
--- 
-1.7.10.4
+BOOTLOADER_FAMILY is a string causing the select to spew this error
+
+-> arch/mips/Kconfig:420:warning: 'BOOTLOADER_FAMILY' has wrong type. 
+'select' only accept arguments of boolean and tristate type
+
+	John

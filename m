@@ -1,29 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Sep 2013 19:42:28 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:37375 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6815748Ab3IARm0R-xzW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 1 Sep 2013 19:42:26 +0200
-Message-ID: <52237C76.4010608@phrozen.org>
-Date:   Sun, 01 Sep 2013 19:42:14 +0200
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Sep 2013 20:43:49 +0200 (CEST)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:49573 "EHLO
+        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823068Ab3IASnqqO48W (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 1 Sep 2013 20:43:46 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 19085440265;
+        Sun,  1 Sep 2013 20:43:41 +0200 (CEST)
+Received: from mail.szarvasnet.hu ([127.0.0.1])
+        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id yKOnpSUPpxqF; Sun,  1 Sep 2013 20:43:41 +0200 (CEST)
+Received: from [192.168.254.50] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id CB2594401F8;
+        Sun,  1 Sep 2013 20:43:39 +0200 (CEST)
+Message-ID: <52238B08.3020408@openwrt.org>
+Date:   Sun, 01 Sep 2013 20:44:24 +0200
+From:   Gabor Juhos <juhosg@openwrt.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130620 Thunderbird/17.0.7
 MIME-Version: 1.0
-To:     Markos Chandras <markos.chandras@imgtec.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: powertv: Drop BOOTLOADER_DRIVER Kconfig symbol
-References: <1377075213-22398-1-git-send-email-markos.chandras@imgtec.com>
-In-Reply-To: <1377075213-22398-1-git-send-email-markos.chandras@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <john@phrozen.org>
+To:     John Crispin <blogic@openwrt.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: ralink: add RESET_CONTROLLER to the defconfig
+References: <1378057127-21984-1-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1378057127-21984-1-git-send-email-blogic@openwrt.org>
+X-Enigmail-Version: 1.5.2
+Content-Type: text/plain; charset=ISO-8859-2
+Content-Transfer-Encoding: 8bit
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37731
+X-archive-position: 37732
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,46 +46,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 21/08/13 10:53, Markos Chandras wrote:
-> The kbldr.h header file required for this was neither committed in the
-> original submission in a3a0f8c8ed2e2470f4dcd6da95020d41fed84747
-> "MIPS: PowerTV: Base files for Cisco PowerTV platform"
-> nor it was ever present in the git tree so this option never worked.
-> Fixes the following build problem:
-> arch/mips/powertv/reset.c:25:36: fatal error: asm/mach-powertv/kbldr.h: No such
-> file or directory
-> compilation terminated.
->
-> Signed-off-by: Markos Chandras<markos.chandras@imgtec.com>
-> Acked-by: Steven J. Hill<Steven.Hill@imgtec.com>
-> ---
-> This patch is for the upstream-sfr/mips-for-linux-next tree
-> ---
->   arch/mips/Kconfig                     |  1 +
->   arch/mips/powertv/Kconfig             |  9 +--------
->   arch/mips/powertv/asic/asic_devices.c | 15 +++------------
->   arch/mips/powertv/init.c              |  4 ----
->   arch/mips/powertv/reset.c             | 12 ------------
->   5 files changed, 5 insertions(+), 36 deletions(-)
->
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index e12764c..d08a3a6 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -416,6 +416,7 @@ config PMC_MSP
->   config POWERTV
->   	bool "Cisco PowerTV"
->   	select BOOT_ELF32
-> +	select BOOTLOADER_FAMILY
->   	select CEVT_R4K
->   	select CPU_MIPSR2_IRQ_VI
->   	select CPU_MIPSR2_IRQ_EI
+2013.09.01. 19:38 keltezéssel, John Crispin írta:
+> Without this symbol being set, we get an undefined symbol compile error.
 
-Hi,
+The reset framework is unconditionally used by the ralink platform code. So I
+assume that the compile error is also present on rt288x, rt3883 and mt7620.
 
-BOOTLOADER_FAMILY is a string causing the select to spew this error
+Maybe it would be better to add a 'select RESET_CONTROLLER' for the RALINK
+symbol in 'arch/mips/Kconfig'?
 
--> arch/mips/Kconfig:420:warning: 'BOOTLOADER_FAMILY' has wrong type. 
-'select' only accept arguments of boolean and tristate type
+BTW, I have looked into your 'MIPS: ralink: add support for reset-controller
+API' patch [1] again. That adds a 'select ARCH_HAS_RESET_CONTROLLER' to the
+MACH_VR41XX symbol instead of RALINK.
 
-	John
+-Gabor
+
+1. https://patchwork.linux-mips.org/patch/5668/

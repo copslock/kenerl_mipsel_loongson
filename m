@@ -1,46 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Sep 2013 11:51:36 +0200 (CEST)
-Received: from Smtp1.Lantiq.com ([195.219.66.200]:57217 "EHLO smtp1.lantiq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Sep 2013 12:11:53 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:35266 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817237Ab3IBJvbwe5yl convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Sep 2013 11:51:31 +0200
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: AqAEANteJFIKQLW9/2dsb2JhbABahA3AdIE4dIIlAQEEOj8QAgEIDRUUEDIlAgQBDQ3BG49OMQeDHYEAA55IjjOCKg
-X-IronPort-AV: E=McAfee;i="5400,1158,7185"; a="2257965"
-Received: from unknown (HELO MUCSVECH044.lantiq.com) ([10.64.181.189])
-  by smtp1.lantiq.com with ESMTP; 02 Sep 2013 11:51:25 +0200
-Received: from MUCSE039.lantiq.com ([169.254.3.108]) by MUCSVECH044.lantiq.com
- ([10.64.181.189]) with mapi id 14.02.0247.003; Mon, 2 Sep 2013 11:51:25 +0200
-From:   <thomas.langer@lantiq.com>
-To:     <blogic@openwrt.org>, <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: RE: [PATCH] MIPS: lantiq: add defconfig for xway SoC
-Thread-Topic: [PATCH] MIPS: lantiq: add defconfig for xway SoC
-Thread-Index: AQHOpzORPfxaeaxWk0S7uKVopF9vJpmyNJNQ
-Date:   Mon, 2 Sep 2013 09:51:24 +0000
-Message-ID: <593AEF6C47F46446852B067021A273D6D983C8C9@MUCSE039.lantiq.com>
-References: <1378054268-4722-1-git-send-email-blogic@openwrt.org>
-In-Reply-To: <1378054268-4722-1-git-send-email-blogic@openwrt.org>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.64.175.92]
-x-tm-as-product-ver: SMEX-10.0.0.1412-7.000.1014-20122.006
-x-tm-as-result: No--35.484400-0.000000-31
-x-tm-as-user-approved-sender: Yes
-x-tm-as-user-blocked-sender: No
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S6817237Ab3IBKLuXjW8Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 2 Sep 2013 12:11:50 +0200
+Message-ID: <52246461.1010808@imgtec.com>
+Date:   Mon, 2 Sep 2013 11:11:45 +0100
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130801 Thunderbird/17.0.8
 MIME-Version: 1.0
-Return-Path: <thomas.langer@lantiq.com>
+To:     John Crispin <john@phrozen.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: powertv: Drop BOOTLOADER_DRIVER Kconfig symbol
+References: <1377075213-22398-1-git-send-email-markos.chandras@imgtec.com> <52237C76.4010608@phrozen.org>
+In-Reply-To: <52237C76.4010608@phrozen.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.130]
+X-SEF-Processed: 7_3_0_01192__2013_09_02_11_11_44
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37736
+X-archive-position: 37737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.langer@lantiq.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,14 +38,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello John,
+On 09/01/13 18:42, John Crispin wrote:
+> On 21/08/13 10:53, Markos Chandras wrote:
+>> The kbldr.h header file required for this was neither committed in the
+>> original submission in a3a0f8c8ed2e2470f4dcd6da95020d41fed84747
+>> "MIPS: PowerTV: Base files for Cisco PowerTV platform"
+>> nor it was ever present in the git tree so this option never worked.
+>> Fixes the following build problem:
+>> arch/mips/powertv/reset.c:25:36: fatal error:
+>> asm/mach-powertv/kbldr.h: No such
+>> file or directory
+>> compilation terminated.
+>>
+>> Signed-off-by: Markos Chandras<markos.chandras@imgtec.com>
+>> Acked-by: Steven J. Hill<Steven.Hill@imgtec.com>
+>> ---
+>> This patch is for the upstream-sfr/mips-for-linux-next tree
+>> ---
+>>   arch/mips/Kconfig                     |  1 +
+>>   arch/mips/powertv/Kconfig             |  9 +--------
+>>   arch/mips/powertv/asic/asic_devices.c | 15 +++------------
+>>   arch/mips/powertv/init.c              |  4 ----
+>>   arch/mips/powertv/reset.c             | 12 ------------
+>>   5 files changed, 5 insertions(+), 36 deletions(-)
+>>
+>> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+>> index e12764c..d08a3a6 100644
+>> --- a/arch/mips/Kconfig
+>> +++ b/arch/mips/Kconfig
+>> @@ -416,6 +416,7 @@ config PMC_MSP
+>>   config POWERTV
+>>       bool "Cisco PowerTV"
+>>       select BOOT_ELF32
+>> +    select BOOTLOADER_FAMILY
+>>       select CEVT_R4K
+>>       select CPU_MIPSR2_IRQ_VI
+>>       select CPU_MIPSR2_IRQ_EI
+>
+> Hi,
+>
+> BOOTLOADER_FAMILY is a string causing the select to spew this error
+>
+> -> arch/mips/Kconfig:420:warning: 'BOOTLOADER_FAMILY' has wrong type.
+> 'select' only accept arguments of boolean and tristate type
+>
+>      John
 
-> +CONFIG_SERIAL_8250=y
-> +CONFIG_SERIAL_8250_CONSOLE=y
-> +CONFIG_SERIAL_8250_RUNTIME_UARTS=2
+Hi John,
 
-I think this is wrong. Instead I would expect CONFIG_SERIAL_LANTIQ=y somewhere.
-
-
-Best Regards,
-Thomas
+Hmm strange I haven't seen this problem when I tested this patch. I will 
+double check and submit a new patch.

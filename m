@@ -1,31 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Sep 2013 16:03:56 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:33423 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Sep 2013 16:22:15 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:33531 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824004Ab3ICODpZdWXu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Sep 2013 16:03:45 +0200
-Message-ID: <5225EC3B.1070701@imgtec.com>
-Date:   Tue, 3 Sep 2013 15:03:39 +0100
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130801 Thunderbird/17.0.8
+        id S6824771Ab3ICOWKsDHww (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Sep 2013 16:22:10 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>,
+        David VomLehn <dvomlehn@cisco.com>
+Subject: [PATCH v2] MIPS: powertv: Drop BOOTLOADER_DRIVER Kconfig symbol
+Date:   Tue, 3 Sep 2013 15:21:59 +0100
+Message-ID: <1378218119-19770-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.3.2
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2] MIPS: ath79: Avoid using unitialized 'reg' variable
-References: <1377082042-4219-1-git-send-email-markos.chandras@imgtec.com> <20130903133839.GA10563@linux-mips.org>
-In-Reply-To: <20130903133839.GA10563@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-Originating-IP: [192.168.154.31]
-X-SEF-Processed: 7_3_0_01192__2013_09_03_15_03_39
+X-SEF-Processed: 7_3_0_01192__2013_09_03_15_22_05
 Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37744
+X-archive-position: 37745
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,63 +36,119 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/03/13 14:38, Ralf Baechle wrote:
-> On Wed, Aug 21, 2013 at 11:47:22AM +0100, Markos Chandras wrote:
->
->> Fixes the following build error:
->> arch/mips/include/asm/mach-ath79/ath79.h:139:20: error: 'reg' may be used
->> uninitialized in this function [-Werror=maybe-uninitialized]
->> arch/mips/ath79/common.c:62:6: note: 'reg' was declared here
->> In file included from arch/mips/ath79/common.c:20:0:
->> arch/mips/ath79/common.c: In function 'ath79_device_reset_clear':
->> arch/mips/include/asm/mach-ath79/ath79.h:139:20:
->> error: 'reg' may be used uninitialized in this function
->> [-Werror=maybe-uninitialized]
->> arch/mips/ath79/common.c:90:6: note: 'reg' was declared here
->>
->> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
->> ---
->> Changes since v1:
->> http://www.linux-mips.org/archives/linux-mips/2013-08/msg00126.html
->> - Remove BUG(). panic() is enough.
->> http://www.linux-mips.org/archives/linux-mips/2013-08/msg00133.html
->> - Change panic() message to be more accurate.
->> http://www.linux-mips.org/archives/linux-mips/2013-08/msg00164.html
->> ---
->>   arch/mips/ath79/common.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/mips/ath79/common.c b/arch/mips/ath79/common.c
->> index eb3966c..6d7a9d4 100644
->> --- a/arch/mips/ath79/common.c
->> +++ b/arch/mips/ath79/common.c
->> @@ -75,7 +75,7 @@ void ath79_device_reset_set(u32 mask)
->>   	else if (soc_is_qca955x())
->>   		reg = QCA955X_RESET_REG_RESET_MODULE;
->>   	else
->> -		BUG();
->> +		panic("Reset register not defined for this SOC");
->>
->>   	spin_lock_irqsave(&ath79_device_reset_lock, flags);
->>   	t = ath79_reset_rr(reg);
->> @@ -103,7 +103,7 @@ void ath79_device_reset_clear(u32 mask)
->>   	else if (soc_is_qca955x())
->>   		reg = QCA955X_RESET_REG_RESET_MODULE;
->>   	else
->> -		BUG();
->> +		panic("Reset register not defined for this SOC");
->>
->>   	spin_lock_irqsave(&ath79_device_reset_lock, flags);
->>   	t = ath79_reset_rr(reg);
->
-> Looks more like the implementation of BUG() is wrong and gcc doesn't
-> notice that BUG() won't return.
->
-> Was this triggered by CONFIG_BUG=n?
->
->    Ralf
->
+The kbldr.h header file required for this was neither committed in the
+original submission in a3a0f8c8ed2e2470f4dcd6da95020d41fed84747
+"MIPS: PowerTV: Base files for Cisco PowerTV platform"
+nor was it ever present in the git tree so this option never worked.
+Fixes the following build problem:
+arch/mips/powertv/reset.c:25:36: fatal error: asm/mach-powertv/kbldr.h: No such
+file or directory
+compilation terminated.
 
-Hi Ralf,
+Cc: David VomLehn <dvomlehn@cisco.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+---
+This patch is for the upstream-sfr/mips-for-linux-next tree
 
-Yes it was triggered by CONFIG_BUG=n
+Changes since v1:
+- Do not 'select BOOTLOADER_FAMILY'. It's automatically enabled
+for the powertv platform.
+http://www.linux-mips.org/archives/linux-mips/2013-09/msg00003.html
+---
+ arch/mips/powertv/Kconfig             |  9 +--------
+ arch/mips/powertv/asic/asic_devices.c | 12 +-----------
+ arch/mips/powertv/init.c              |  4 ----
+ arch/mips/powertv/reset.c             | 12 ------------
+ 4 files changed, 2 insertions(+), 35 deletions(-)
+
+diff --git a/arch/mips/powertv/Kconfig b/arch/mips/powertv/Kconfig
+index 1a1b03e..dd91fba 100644
+--- a/arch/mips/powertv/Kconfig
++++ b/arch/mips/powertv/Kconfig
+@@ -1,14 +1,7 @@
+-config BOOTLOADER_DRIVER
+-	bool "PowerTV Bootloader Driver Support"
+-	default n
+-	depends on POWERTV
+-	help
+-	  Use this option if you want to load bootloader driver.
+-
+ config BOOTLOADER_FAMILY
+ 	string "POWERTV Bootloader Family string"
+ 	default "85"
+-	depends on POWERTV && !BOOTLOADER_DRIVER
++	depends on POWERTV
+ 	help
+ 	  This value should be specified when the bootloader driver is disabled
+ 	  and must be exactly two characters long. Families supported are:
+diff --git a/arch/mips/powertv/asic/asic_devices.c b/arch/mips/powertv/asic/asic_devices.c
+index 0238af1..8380605 100644
+--- a/arch/mips/powertv/asic/asic_devices.c
++++ b/arch/mips/powertv/asic/asic_devices.c
+@@ -147,20 +147,10 @@ static __init noinline void platform_set_family(void)
+ 	if (check_forcefamily(forced_family) == 0)
+ 		bootldr_family = BOOTLDRFAMILY(forced_family[0],
+ 			forced_family[1]);
+-	else {
+-
+-#ifdef CONFIG_BOOTLOADER_DRIVER
+-		bootldr_family = (unsigned short) kbldr_GetSWFamily();
+-#else
+-#if defined(CONFIG_BOOTLOADER_FAMILY)
++	else
+ 		bootldr_family = (unsigned short) BOOTLDRFAMILY(
+ 			CONFIG_BOOTLOADER_FAMILY[0],
+ 			CONFIG_BOOTLOADER_FAMILY[1]);
+-#else
+-#error "Unknown Bootloader Family"
+-#endif
+-#endif
+-	}
+ 
+ 	pr_info("Bootloader Family = 0x%04X\n", bootldr_family);
+ 
+diff --git a/arch/mips/powertv/init.c b/arch/mips/powertv/init.c
+index a01baff..4989263 100644
+--- a/arch/mips/powertv/init.c
++++ b/arch/mips/powertv/init.c
+@@ -87,8 +87,4 @@ void __init prom_init(void)
+ 
+ 	configure_platform();
+ 	prom_meminit();
+-
+-#ifndef CONFIG_BOOTLOADER_DRIVER
+-	pr_info("\nBootloader driver isn't loaded...\n");
+-#endif
+ }
+diff --git a/arch/mips/powertv/reset.c b/arch/mips/powertv/reset.c
+index 0007652..11c32fb 100644
+--- a/arch/mips/powertv/reset.c
++++ b/arch/mips/powertv/reset.c
+@@ -21,24 +21,12 @@
+ #include <linux/io.h>
+ #include <asm/reboot.h>			/* Not included by linux/reboot.h */
+ 
+-#ifdef CONFIG_BOOTLOADER_DRIVER
+-#include <asm/mach-powertv/kbldr.h>
+-#endif
+-
+ #include <asm/mach-powertv/asic_regs.h>
+ #include "reset.h"
+ 
+ static void mips_machine_restart(char *command)
+ {
+-#ifdef CONFIG_BOOTLOADER_DRIVER
+-	/*
+-	 * Call the bootloader's reset function to ensure
+-	 * that persistent data is flushed before hard reset
+-	 */
+-	kbldr_SetCauseAndReset();
+-#else
+ 	writel(0x1, asic_reg_addr(watchdog));
+-#endif
+ }
+ 
+ void mips_reboot_setup(void)
+-- 
+1.8.3.2

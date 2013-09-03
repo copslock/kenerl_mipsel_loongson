@@ -1,34 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Sep 2013 16:58:49 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:59029 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Sep 2013 17:12:13 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:59109 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6825704Ab3ICO6qafc0B (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Sep 2013 16:58:46 +0200
+        id S6827343Ab3ICPMLIlnus (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Sep 2013 17:12:11 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r83Ewhfa014523;
-        Tue, 3 Sep 2013 16:58:43 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r83FC5S4015167;
+        Tue, 3 Sep 2013 17:12:05 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r83EwdwW014522;
-        Tue, 3 Sep 2013 16:58:39 +0200
-Date:   Tue, 3 Sep 2013 16:58:39 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r83FBw0h015166;
+        Tue, 3 Sep 2013 17:11:58 +0200
+Date:   Tue, 3 Sep 2013 17:11:58 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Markos Chandras <markos.chandras@imgtec.com>,
-        Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org,
-        Bryan Wu <cooloney@gmail.com>,
-        Richard Purdie <rpurdie@rpsys.net>, linux-leds@vger.kernel.org
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: sead3: Select NEW_LEDS, LEDS_CLASS and I2C symbols
-Message-ID: <20130903145839.GA14258@linux-mips.org>
-References: <1378218420-28011-1-git-send-email-markos.chandras@imgtec.com>
+To:     Stephen Warren <swarren@wwwdotorg.org>
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Stephen Warren <swarren@nvidia.com>,
+        Michal Marek <mmarek@suse.cz>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Ian Campbell <ian.campbell@citrix.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Rob Herring <rob.herring@calxeda.com>,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH] MIPS: add <dt-bindings/> symlink
+Message-ID: <20130903151158.GB14258@linux-mips.org>
+References: <1377095762-18926-1-git-send-email-james.hogan@imgtec.com>
+ <521505E2.3050308@wwwdotorg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1378218420-28011-1-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <521505E2.3050308@wwwdotorg.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37748
+X-archive-position: 37749
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,24 +52,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Sep 03, 2013 at 03:27:00PM +0100, Markos Chandras wrote:
+On Wed, Aug 21, 2013 at 12:24:34PM -0600, Stephen Warren wrote:
 
-> Select NEW_LEDS and LEDS_CLASS since they export symbols
-> needed by leds-sead3.c. Fixes the following build problem:
+> On 08/21/2013 08:36 AM, James Hogan wrote:
+> > Add symlink to include/dt-bindings from arch/mips/boot/dts/include/ to
+> > match the ones in ARM and Meta architectures so that preprocessed device
+> > tree files can include various useful constant definitions.
+> > 
+> > See commit c58299a (kbuild: create an "include chroot" for DT bindings)
+> > merged in v3.10-rc1 for details.
+> > 
+> > MIPS structures it's dts files a little differently to other
+> > architectures, having a separate dts directory for each SoC/platform,
+> > but most of the definitions in the dt-bindings/ directory are common so
+> > for now lets just have a single "include chroot" for all MIPS platforms.
 > 
-> leds-sead3.c:(.text+0xf0c): undefined
-> reference to `led_classdev_unregister'
-> leds-sead3.c:(.text+0xf18): undefined
-> reference to `led_classdev_unregister'
-> 
-> Also select I2C since it's needed by sead3-pic32-i2c-drv.c
-> Fixes the following build problem:
-> arch/mips/mti-sead3/sead3-pic32-i2c-drv.c:350:2: error:
-> implicit declaration of
-> function 'i2c_add_numbered_adapter'
+> Acked-by: Stephen Warren <swarren@nvidia.com>
 
-You probably should setup a bus like all the other callers of
-i2c_add_numbered_adapter() in drivers/i2c/busses/; similar for the LED
-issue.
+Applied - but I'd be happier if there was a way of achiving the same thing
+without symlinks.
 
   Ralf

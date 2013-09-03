@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Sep 2013 20:22:37 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:54830 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2013 00:17:25 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:42595 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816823Ab3ICSWdthVmB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Sep 2013 20:22:33 +0200
+        id S6824771Ab3ICWRWcTk6z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 4 Sep 2013 00:17:22 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2] MIPS: ralink: add support for reset-controller API
-Date:   Tue,  3 Sep 2013 20:22:08 +0200
-Message-Id: <1378232528-31360-1-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V3] MIPS: ralink: add support for reset-controller API
+Date:   Wed,  4 Sep 2013 00:16:59 +0200
+Message-Id: <1378246619-16568-1-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.10.4
 Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37752
+X-archive-position: 37753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,21 +35,26 @@ Add a helper for reseting different devices on the SoC.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/Kconfig         |    1 +
+Changes in V3:
+* rebase on upstream-sfr
+* add select RESET_CONTROLLER
+
+ arch/mips/Kconfig         |    2 ++
  arch/mips/ralink/common.h |    2 ++
  arch/mips/ralink/of.c     |    3 +++
  arch/mips/ralink/reset.c  |   62 +++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 68 insertions(+)
+ 4 files changed, 69 insertions(+)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 45b4356..e59da94 100644
+index 24727a0..a1a088b 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -445,6 +445,7 @@ config RALINK
+@@ -446,6 +446,8 @@ config RALINK
+ 	select SYS_HAS_EARLY_PRINTK
  	select HAVE_MACH_CLKDEV
  	select CLKDEV_LOOKUP
- 	select ARCH_REQUIRE_GPIOLIB
 +	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
  
  config SGI_IP22
  	bool "SGI IP22 (Indy/Indigo2)"

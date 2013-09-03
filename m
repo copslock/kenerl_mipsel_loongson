@@ -1,40 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Sep 2013 22:28:40 +0200 (CEST)
-Received: from filtteri5.pp.htv.fi ([213.243.153.188]:39882 "EHLO
-        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6826007Ab3IBU2fsDDdZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Sep 2013 22:28:35 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri5.pp.htv.fi (Postfix) with ESMTP id D7C995A6F1A;
-        Mon,  2 Sep 2013 23:28:34 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp5.welho.com ([213.243.153.39])
-        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
-        with ESMTP id PbR3X4603S-J; Mon,  2 Sep 2013 23:28:29 +0300 (EEST)
-Received: from musicnaut.iki.fi (cs181064211.pp.htv.fi [82.181.64.211])
-        by smtp5.welho.com (Postfix) with SMTP id F3A8A5BC003;
-        Mon,  2 Sep 2013 23:28:28 +0300 (EEST)
-Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Mon, 02 Sep 2013 23:28:24 +0300
-Date:   Mon, 2 Sep 2013 23:28:24 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
-Subject: Re: irq 117 on ubiquiti edge router lite
-Message-ID: <20130902202824.GA29249@blackmetal.musicnaut.iki.fi>
-References: <CAHmME9ppVfYd6u+9iMFeTO1s11okAJ7Jm=hp+iE3FdLTTcCNJA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Sep 2013 02:30:01 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:56495 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827349Ab3ICA360Zllo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Sep 2013 02:29:58 +0200
+Date:   Tue, 3 Sep 2013 01:29:58 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: R4k clock source initialization bug fix
+Message-ID: <alpine.LFD.2.03.1309022215530.3579@linux-mips.org>
+User-Agent: Alpine 2.03 (LFD 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHmME9ppVfYd6u+9iMFeTO1s11okAJ7Jm=hp+iE3FdLTTcCNJA@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <aaro.koskinen@iki.fi>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37739
+X-archive-position: 37740
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,18 +33,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Sep 02, 2013 at 05:12:49PM +0200, Jason A. Donenfeld wrote:
-> [83817.191824] irq 117: nobody cared (try booting with the "irqpoll" option)
-[...]
-> [83817.192109] handlers:
-> [83817.192115] [<ffffffff815a88d8>] 0xffffffff815a88d8
-> [83817.192120] Disabling IRQ #117
+This is a fix for a bug introduced with commit 
+447cdf2628b59aa513a42785450b348dced26d8a, submitted as archived here: 
+http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20080312235002.c717dde3.yoichi_yuasa%40tripeaks.co.jp 
+regrettably with no further explanation.
 
-Confirmed. The handler is cvm_oct_rgmii_rml_interrupt(). This happens
-with fast network cable unplug/replug/unplug/replug. It seems there's
-some kind of race and the interrupt won't get acked properly and there
-is a huge flood of them:
+The issue is with the CP0 Count register read erratum present on R4000 and 
+some R4400 processors.  If this erratum is present, then a read from this 
+register that happens around the time it reaches the value stored in the 
+CP0 Compare register causes a CP0 timer interrupt that is supposed to 
+happen when the values in the two registers match to be missed.  The 
+implication for the chips affected is the CP0 timer can be used either as 
+a source of a timer interrupt (a clock event) or as a source of a 
+high-resolution counter (a clock source), but not both at a time.
 
-117:     100000          0       CIU  46  RGMII
+The erratum does not affect timer interrupt operation itself, because in 
+this case the CP0 Count register is only read while the timer interrupt 
+has already been raised, while high-resolution counter references happen 
+at random times.
 
-A.
+Additionally some systems apparently have issues with the timer interrupt 
+line being routed externally and not following the usual CP0 Count/Compare 
+semantics.  In this case we don't want to use the R4k clock event.
+
+We've meant to address the erratum and the timer interrupt routing issue 
+in time_init, however the commit referred to above broke our solution.  
+What we currently have is we enable the R4k clock source if the R4k clock 
+event initialization has succeeded (the timer is present and has no timer 
+interrupt routing issue) or there is no CP0 Count register read erratum.  
+Which gives the following boolean matrix:
+
+clock event | count erratum => clock source
+------------+---------------+--------------
+     0      |       0       |      1 (OK)
+     0      |       1       |      0 (bug!) -> no interference, could use
+     1      |       0       |      1 (OK)
+     1      |       1       |      1 (bug!) -> can't use, interference
+
+What we want instead is to enable the R4k clock source if there is no CP0 
+Count register read erratum (obviously) or the R4k clock event 
+initialization has *failed* -- because in the latter case we won't be 
+using the timer interrupt anyway, so we don't care about any interference 
+CP0 Count reads might cause with the interrupt.  This corresponds to the 
+following boolean matrix:
+
+clock event | count erratum => clock source
+------------+---------------+--------------
+     0      |       0       |      1
+     0      |       1       |      1
+     1      |       0       |      1
+     1      |       1       |      0
+
+This is implemented here, effectively reverting the problematic commit, 
+and a short explanation is given next to code modified so that the 
+rationale is known to future readers and confusion is prevented from 
+happening here again.
+
+It is worth noting that mips_clockevent_init returns 0 upon success while 
+cpu_has_mfc0_count_bug returns 0 upon failure.  This is because the former 
+function returns an error code while the latter returns a boolean value.  
+To signify the difference I have therefore chosen to compare the result of 
+the former call explicitly against 0.
+
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+Ralf,
+
+ Please apply.  Additionally I think mips_clockevent_init shouldn't be 
+calling gic_clockevent_init as GIC has no relevance to the CP0 Count 
+register or any errata it may have.  I think gic_clockevent_init should 
+probably be called just from time_init directly.  But that's a separate 
+patch material.
+
+  Maciej
+
+linux-mips-time.patch
+Index: linux/arch/mips/kernel/time.c
+===================================================================
+--- linux.orig/arch/mips/kernel/time.c
++++ linux/arch/mips/kernel/time.c
+@@ -121,6 +121,14 @@ void __init time_init(void)
+ {
+ 	plat_time_init();
+ 
+-	if (!mips_clockevent_init() || !cpu_has_mfc0_count_bug())
++	/*
++	 * The use of the R4k timer as a clock event takes precedence;
++	 * if reading the Count register might interfere with the timer
++	 * interrupt, then we don't use the timer as a clock source.
++	 * We may still use the timer as a clock source though if the
++	 * timer interrupt isn't reliable; the interference doesn't
++	 * matter then, because we don't use the interrupt.
++	 */
++	if (mips_clockevent_init() != 0 || !cpu_has_mfc0_count_bug())
+ 		init_mips_clocksource();
+ }

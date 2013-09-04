@@ -1,60 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2013 17:43:34 +0200 (CEST)
-Received: from mailout3.w1.samsung.com ([210.118.77.13]:13922 "EHLO
-        mailout3.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825118Ab3IDPn3doLJB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Sep 2013 17:43:29 +0200
-Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
- by mailout3.w1.samsung.com
- (Oracle Communications Messaging Server 7u4-24.01(7.0.4.24.0) 64bit (built Nov
- 17 2011)) with ESMTP id <0MSL006CLYBZX680@mailout3.w1.samsung.com> for
- linux-mips@linux-mips.org; Wed, 04 Sep 2013 16:43:21 +0100 (BST)
-X-AuditID: cbfec7f5-b7ef66d00000795a-22-52275518bbea
-Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 3C.DC.31066.81557225; Wed,
- 04 Sep 2013 16:43:21 +0100 (BST)
-Received: from [106.116.147.32] by eusync1.samsung.com
- (Oracle Communications Messaging Server 7u4-23.01(7.0.4.23.0) 64bit (built Aug
- 10 2011)) with ESMTPA id <0MSL00BWWYC8YP20@eusync1.samsung.com>; Wed,
- 04 Sep 2013 16:43:20 +0100 (BST)
-Message-id: <52275517.2090906@samsung.com>
-Date:   Wed, 04 Sep 2013 17:43:19 +0200
-From:   Sylwester Nawrocki <s.nawrocki@samsung.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
-MIME-version: 1.0
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     linux@arm.linux.org.uk, mturquette@linaro.org,
-        jiada_wang@mentor.com, kyungmin.park@samsung.com,
-        myungjoo.ham@samsung.com, t.figa@samsung.com,
-        g.liakhovetski@gmx.de, laurent.pinchart@ideasonboard.com,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org
-Subject: Re: [PATCH v6 5/5] clk: Implement clk_unregister
-References: <1377874402-2944-1-git-send-email-s.nawrocki@samsung.com>
- <1377874402-2944-6-git-send-email-s.nawrocki@samsung.com>
-In-reply-to: <1377874402-2944-6-git-send-email-s.nawrocki@samsung.com>
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrBLMWRmVeSWpSXmKPExsVy+t/xy7qSoepBBu02Fu83zmOy6PlTaXG2
-        6Q27RefEJewWmx5fY7W4vGsOm8WEqZPYLeb8mcJscfsyr8XTCRfZLG43rmCzWD/jNYsDj0dL
-        cw+bx4ePcR6zO2ayety5tofN4+jKtUwem5fUe+z+2sTo0bdlFaPH501yAZxRXDYpqTmZZalF
-        +nYJXBmvdt1gLLgsXDFj1Sb2BsbD/F2MnBwSAiYSF/vns0LYYhIX7q1n62Lk4hASWMoo0fb0
-        IZTziVFi6ryn7CBVvAJaErd3NDKB2CwCqhITnu1gA7HZBAwleo/2MYLYogIBEouXnIOqF5T4
-        MfkeC4gtIqAhMaXrMTvIUGaBZUwSVz8dAWsWFrCUeLfhKdS2RkaJ9yueMoMkOAXcJE5ebgLb
-        xiygI7G/dRobhC0vsXnNW+YJjAKzkCyZhaRsFpKyBYzMqxhFU0uTC4qT0nON9IoTc4tL89L1
-        kvNzNzFCYufrDsalx6wOMQpwMCrx8GoYqgcJsSaWFVfmHmKU4GBWEuGV8wYK8aYkVlalFuXH
-        F5XmpBYfYmTi4JRqYJQVvL57z8Q8oYyJSVeyCo+oy8+tXNd/hi3X1Gj/g5ytbz4ffbF7Q2Sd
-        1i7DXhfrDKf3ARcSK/ep/AzkOP1SfIF1/x821ds31TR+HWOTXFAyw3nmzmud7VfM3rboVy1/
-        qrnqSMNtdZ/bxy490TDrV9tx9OiavL8JyasNfKpCzZl+L9i5wO3RRkYlluKMREMt5qLiRADW
-        ZwQOewIAAA==
-Return-Path: <s.nawrocki@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2013 18:54:08 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:35534 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6827351Ab3IDQyBG5Z0h (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 4 Sep 2013 18:54:01 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r84GrxOf028105;
+        Wed, 4 Sep 2013 18:53:59 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r84Grwah028104;
+        Wed, 4 Sep 2013 18:53:58 +0200
+Date:   Wed, 4 Sep 2013 18:53:58 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Jim Quinlan <jim2101024@gmail.com>
+Cc:     linux-mips@linux-mips.org, cernekee@gmail.com
+Subject: Re: [PATCH] MIPS: dma: if BMIPS5000, flush region just like r10000
+Message-ID: <20130904165358.GA27447@linux-mips.org>
+References: <y>
+ <1377637071-32740-1-git-send-email-jim2101024@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1377637071-32740-1-git-send-email-jim2101024@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37755
+X-archive-position: 37756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: s.nawrocki@samsung.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,82 +43,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/30/2013 04:53 PM, Sylwester Nawrocki wrote:
-> clk_unregister() is currently not implemented and it is required when
-> a clock provider module needs to be unloaded.
+Dan,
+
+On Tue, Aug 27, 2013 at 04:57:51PM -0400, Jim Quinlan wrote:
+> Date:   Tue, 27 Aug 2013 16:57:51 -0400
+> From: Jim Quinlan <jim2101024@gmail.com>
+> To: ralf@linux-mips.org, linux-mips@linux-mips.org
+> cc: cernekee@gmail.com, Jim Quinlan <jim2101024@gmail.com>
+> Subject: [PATCH] MIPS: dma: if BMIPS5000, flush region just like r10000
+> Content-Type: text/plain
 > 
-> Normally the clock supplier module is prevented to be unloaded by
-> taking reference on the module in clk_get().
+> The BMIPS5000 (Zephyr) processor utilizes instruction speculation. A
+> stale misprediction address in either the JTB or the CRS may trigger
+> a prefetch inside a region that is currently being used by a DMA
+> engine, which is not IO-coherent.  This prefetch will fetch a line
+> into the scache, and that line will soon become stale (ie wrong)
+> during/after the DMA.  Mayhem ensues.
 > 
-> For cases when the clock supplier module deinitializes despite the
-> consumers of its clocks holding a reference on the module, e.g. when
-> the driver is unbound through "unbind" sysfs attribute, there are
-> empty clock ops added. These ops are assigned temporarily to struct
-> clk and used until all consumers release the clock, to avoid invoking
-> callbacks from the module which just got removed.
-> 
-> Signed-off-by: Jiada Wang <jiada_wang@mentor.com>
-> Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-> Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
-> ---
-[...]
->  /**
->   * clk_unregister - unregister a currently registered clock
->   * @clk: clock to unregister
-> - *
-> - * Currently unimplemented.
->   */
-> -void clk_unregister(struct clk *clk) {}
-> +void clk_unregister(struct clk *clk)
-> +{
-> +	unsigned long flags;
-> +
-> +	clk_prepare_lock();
-> +
-> +	if (!clk || IS_ERR(clk)) {
-> +		pr_err("%s: invalid clock: %p\n", __func__, clk);
-> +		goto out;
-> +	}
+> In dma-default.c, the r10000 is handled as a special case in the
+> same way that we want to handle Zephyr.  So we generalize the
+> exception cases into a function, and include Zephyr as one
+> of the processors that needs this special care.
 
-Actually this check could be done before taking the mutex. And to handle
-NULL clocks properly it should be something like:
+Is this a processor erratum or just documented, undesireable behaviour?
 
-       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-               return;
+In case of the R10000 family it's the later and it also only affects
+systems without cache coherency.  In such systems it is also possible
+that cachelines in speculative-dirty state will be created by a
+speculativly executed store instruction.  This is normal - but on a
+cache coherent system the coherency logic would prevent such speculativly
+dirty lines from being written back to memory.
 
-I will hold on with posting a corrected version until there are any
-further comments.
+To avoid this from happening non-coherent R10000 systems also require their
+kernel to be built with a special compiler option that inserts cache barrier
+operations wherever a speculativly dirty line otherwise might be created.
 
-> +	if (clk->ops == &clk_nodrv_ops) {
-> +		pr_err("%s: unregistered clock: %s\n", __func__, clk->name);
-> +		goto out;
-> +	}
-> +	/*
-> +	 * Assign empty clock ops for consumers that might still hold
-> +	 * a reference to this clock.
-> +	 */
-> +	flags = clk_enable_lock();
-> +	clk->ops = &clk_nodrv_ops;
-> +	clk_enable_unlock(flags);
-> +
-> +	if (!hlist_empty(&clk->children)) {
-> +		struct clk *child;
-> +
-> +		/* Reparent all children to the orphan list. */
-> +		hlist_for_each_entry(child, &clk->children, child_node)
-> +			clk_set_parent(child, NULL);
-> +	}
-> +
-> +	clk_debug_unregister(clk);
-> +
-> +	hlist_del_init(&clk->child_node);
-> +
-> +	if (clk->prepare_count)
-> +		pr_warn("%s: unregistering prepared clock: %s\n",
-> +					__func__, clk->name);
-> +
-> +	kref_put(&clk->ref, __clk_release);
-> +out:
-> +	clk_prepare_unlock();
-> +}
->  EXPORT_SYMBOL_GPL(clk_unregister);
+Patch is looking good.
+
+  Ralf

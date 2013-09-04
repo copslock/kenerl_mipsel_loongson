@@ -1,42 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2013 06:41:22 +0200 (CEST)
-Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:42339 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816671Ab3IDElTtIUzv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Sep 2013 06:41:19 +0200
-Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
-        id 1VH4tw-0000xj-00; Wed, 04 Sep 2013 04:41:08 +0000
-Date:   Wed, 4 Sep 2013 00:41:08 -0400
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Denys Vlasenko <vda.linux@googlemail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Oleg Nesterov <oleg@redhat.com>, linux-mips@linux-mips.org,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Dave Jones <davej@redhat.com>
-Subject: Re: [PATCH v2] MIPS: Reduce _NSIG from 128 to 127 to avoid BUG_ON
-Message-ID: <20130904044108.GP20515@brightrain.aerifal.cx>
-References: <1371225825-8225-1-git-send-email-james.hogan@imgtec.com>
- <51BEE6A8.2050307@imgtec.com>
- <201306282128.27266.vda.linux@googlemail.com>
- <CAAG0J9-d4BfEhbQovFqUAJ3QoOuXScrpsY1y95PrEPxA5DWedQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAG0J9-d4BfEhbQovFqUAJ3QoOuXScrpsY1y95PrEPxA5DWedQ@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-From:   Rich Felker <dalias@aerifal.cx>
-Return-Path: <dalias@aerifal.cx>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2013 17:43:34 +0200 (CEST)
+Received: from mailout3.w1.samsung.com ([210.118.77.13]:13922 "EHLO
+        mailout3.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825118Ab3IDPn3doLJB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Sep 2013 17:43:29 +0200
+Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
+ by mailout3.w1.samsung.com
+ (Oracle Communications Messaging Server 7u4-24.01(7.0.4.24.0) 64bit (built Nov
+ 17 2011)) with ESMTP id <0MSL006CLYBZX680@mailout3.w1.samsung.com> for
+ linux-mips@linux-mips.org; Wed, 04 Sep 2013 16:43:21 +0100 (BST)
+X-AuditID: cbfec7f5-b7ef66d00000795a-22-52275518bbea
+Received: from eusync1.samsung.com ( [203.254.199.211])
+        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 3C.DC.31066.81557225; Wed,
+ 04 Sep 2013 16:43:21 +0100 (BST)
+Received: from [106.116.147.32] by eusync1.samsung.com
+ (Oracle Communications Messaging Server 7u4-23.01(7.0.4.23.0) 64bit (built Aug
+ 10 2011)) with ESMTPA id <0MSL00BWWYC8YP20@eusync1.samsung.com>; Wed,
+ 04 Sep 2013 16:43:20 +0100 (BST)
+Message-id: <52275517.2090906@samsung.com>
+Date:   Wed, 04 Sep 2013 17:43:19 +0200
+From:   Sylwester Nawrocki <s.nawrocki@samsung.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/17.0 Thunderbird/17.0
+MIME-version: 1.0
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     linux@arm.linux.org.uk, mturquette@linaro.org,
+        jiada_wang@mentor.com, kyungmin.park@samsung.com,
+        myungjoo.ham@samsung.com, t.figa@samsung.com,
+        g.liakhovetski@gmx.de, laurent.pinchart@ideasonboard.com,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org
+Subject: Re: [PATCH v6 5/5] clk: Implement clk_unregister
+References: <1377874402-2944-1-git-send-email-s.nawrocki@samsung.com>
+ <1377874402-2944-6-git-send-email-s.nawrocki@samsung.com>
+In-reply-to: <1377874402-2944-6-git-send-email-s.nawrocki@samsung.com>
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrBLMWRmVeSWpSXmKPExsVy+t/xy7qSoepBBu02Fu83zmOy6PlTaXG2
+        6Q27RefEJewWmx5fY7W4vGsOm8WEqZPYLeb8mcJscfsyr8XTCRfZLG43rmCzWD/jNYsDj0dL
+        cw+bx4ePcR6zO2ayety5tofN4+jKtUwem5fUe+z+2sTo0bdlFaPH501yAZxRXDYpqTmZZalF
+        +nYJXBmvdt1gLLgsXDFj1Sb2BsbD/F2MnBwSAiYSF/vns0LYYhIX7q1n62Lk4hASWMoo0fb0
+        IZTziVFi6ryn7CBVvAJaErd3NDKB2CwCqhITnu1gA7HZBAwleo/2MYLYogIBEouXnIOqF5T4
+        MfkeC4gtIqAhMaXrMTvIUGaBZUwSVz8dAWsWFrCUeLfhKdS2RkaJ9yueMoMkOAXcJE5ebgLb
+        xiygI7G/dRobhC0vsXnNW+YJjAKzkCyZhaRsFpKyBYzMqxhFU0uTC4qT0nON9IoTc4tL89L1
+        kvNzNzFCYufrDsalx6wOMQpwMCrx8GoYqgcJsSaWFVfmHmKU4GBWEuGV8wYK8aYkVlalFuXH
+        F5XmpBYfYmTi4JRqYJQVvL57z8Q8oYyJSVeyCo+oy8+tXNd/hi3X1Gj/g5ytbz4ffbF7Q2Sd
+        1i7DXhfrDKf3ARcSK/ep/AzkOP1SfIF1/x821ds31TR+HWOTXFAyw3nmzmud7VfM3rboVy1/
+        qrnqSMNtdZ/bxy490TDrV9tx9OiavL8JyasNfKpCzZl+L9i5wO3RRkYlluKMREMt5qLiRADW
+        ZwQOewIAAA==
+Return-Path: <s.nawrocki@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37754
+X-archive-position: 37755
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dalias@aerifal.cx
+X-original-sender: s.nawrocki@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,112 +67,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 28, 2013 at 11:03:33PM +0100, James Hogan wrote:
-> On 28 June 2013 20:28, Denys Vlasenko <vda.linux@googlemail.com> wrote:
-> > On Monday 17 June 2013 12:36, James Hogan wrote:
-> >> On 14/06/13 17:03, James Hogan wrote:
-> >> > MIPS has 128 signals, the highest of which has the number 128 (they
-> >> > start from 1). The following command causes get_signal_to_deliver() to
-> >> > pass this signal number straight through to do_group_exit() as the exit
-> >> > code:
-> >> >
-> >> >   strace sleep 10 & sleep 1 && kill -128 `pidof sleep`
-> >> >
-> >> > However do_group_exit() checks for the core dump bit (0x80) in the exit
-> >> > code which matches in this particular case and the kernel panics:
-> >> >
-> >> >   BUG_ON(exit_code & 0x80); /* core dumps don't get here */
-> >> >
-> >> > Lets avoid this by changing the ABI by reducing the number of signals to
-> >> > 127 (so that the maximum signal number is 127). Glibc incorrectly sets
-> >> > [__]SIGRTMAX to 127 already. uClibc sets it to 128 so it's conceivable
-> >> > that programs built against uClibc which intentionally uses RT signals
-> >> > from the top (SIGRTMAX-n, n>=0) would need an updated uClibc (and a
-> >> > rebuild if it's crazy enough to use __SIGRTMAX).
-> >>
-> >> Hmm, although this works around the BUG_ON, this doesn't actually seem
-> >> to be sufficient to behave correctly.
-> >>
-> >> So it appears the exit status is constructed like this:
-> >> bits  purpose
-> >> 0x007f        signal number (0-127)
-> >> 0x0080        core dump
-> >> 0xff00        exit status
-> >>
-> >> but the macros in waitstatus.h and wait.h in libc
-> >> (see also "man 2 wait"):
-> >> WIFEXITED:   status & 0x7f == 0
-> >> WIFSIGNALED: status & 0x7f in [1..126] (i.e. not 0 or 127)
-> >> WIFSTOPPED:  status & 0xff == 127
-> >>
-> >> So termination due to SIG127 looks like it's been stopped instead of
-> >> terminated via a signal, unless a core dump occurs in which case none of
-> >> the above match.
-> >>
-> >> (And termination due to SIG128 hits BUG_ON, otherwise would appear to
-> >> have exited normally with core dump).
-> >>
-> >>
-> >> Reducing number of signals to 126 to avoid this will change the glibc
-> >> ABI too, in which case we may as well reduce to 64 to match other
-> >> arches, which is more likely to break something (I'm not really
-> >> comfortable making that change).
-> >>
-> >> Reducing to 127 (this patch) still leaves incorrect exit status codes
-> >> for SIG127 ...
-> >>
-> >> Any further thoughts/opinions?
-> >
-> > Strictly speaking, exit status of 0x007f isn't ambiguous.
-> >
-> > Currently userspace uses the following rules
-> > (assuming that status is 16-bit (IOW, dropping PTRACE_EVENT bits)):
-> >
-> > WIFEXITED(status)    = (status & 0x7f) == 0
-> > WIFSIGNALED(status)  = (status & 0x7f) != 0 && (status & 0x7f) < 0x7f
-> > WIFSTOPPED(status)   = (status & 0xff) == 0x7f
-> > WIFCONTINUED(status) = (status == 0xffff)
-> >
-> > WEXITSTATUS(status)  = status >> 8
-> > WSTOPSIG(status)     = status >> 8
-> > WCOREDUMP(status)    = status & 0x80
-> > WTERMSIG(status)     = status & 0x7f
-> >
-> > When process dies from signal 127, status is 0x007f and it is not a valid
-> > "stopped by signal" indicator, since WSTOPSIG == 0 is an impossibility.
-> >
-> > Status 0x007f get misinterpreted by the rules above, namely,
-> > WIFSTOPPED is true, WIFSIGNALED is false.
-> >
-> > But an alternative definition exists which works correctly with
-> > all previous status codes, treats 0x007f as "killed by signal 127"
-> > and isn't more convoluted.
-> > In fact, while WIFSTOPPED needs one additional check,
-> > WIFSIGNALED gets simpler (loses one AND'ing operation):
-> >
-> > WIFSTOPPED(status)   = (status & 0xff) == 0x7f && (status >> 8) != 0
-> > WIFSIGNALED(status)  = status != 0 && status <= 0xff
-> >
-> > All other rules need no change.
-> >
-> > I think it's feasible to ask {g,uc}libc to change their defines
-> > (on MIPS as a minimum), and live with 127 signals.
+On 08/30/2013 04:53 PM, Sylwester Nawrocki wrote:
+> clk_unregister() is currently not implemented and it is required when
+> a clock provider module needs to be unloaded.
 > 
-> Thanks for the explanation. This makes a lot of sense and if I
-> understand correctly it already describes the current behaviour of the
-> kernel up to SIG127 (I hadn't twigged WIFSTOPPED should imply
-> WSTOPSIG!=0 for some reason). I like it.
+> Normally the clock supplier module is prevented to be unloaded by
+> taking reference on the module in clk_get().
+> 
+> For cases when the clock supplier module deinitializes despite the
+> consumers of its clocks holding a reference on the module, e.g. when
+> the driver is unbound through "unbind" sysfs attribute, there are
+> empty clock ops added. These ops are assigned temporarily to struct
+> clk and used until all consumers release the clock, to avoid invoking
+> callbacks from the module which just got removed.
+> 
+> Signed-off-by: Jiada Wang <jiada_wang@mentor.com>
+> Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+> Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
+> ---
+[...]
+>  /**
+>   * clk_unregister - unregister a currently registered clock
+>   * @clk: clock to unregister
+> - *
+> - * Currently unimplemented.
+>   */
+> -void clk_unregister(struct clk *clk) {}
+> +void clk_unregister(struct clk *clk)
+> +{
+> +	unsigned long flags;
+> +
+> +	clk_prepare_lock();
+> +
+> +	if (!clk || IS_ERR(clk)) {
+> +		pr_err("%s: invalid clock: %p\n", __func__, clk);
+> +		goto out;
+> +	}
 
-One other note on this issue: SIG128 also aliases CLONE_VM, and it
-would be very bad if a program requesting SIG128 as its exit signal
-when calling clone instead ended up with the effects of CLONE_VM...
+Actually this check could be done before taking the mutex. And to handle
+NULL clocks properly it should be something like:
 
-Also, I have some improved macros for WIFSTOPPED and WIFSIGNALED which
-avoid multiple evaluation of their arguments:
+       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
+               return;
 
-#define WIFSTOPPED(s) ((short)((((s)&0xffff)*0x10001)>>8) > 0x7f00)
-#define WIFSIGNALED(s) (((s)&0xffff)-1 < 0xffu)
+I will hold on with posting a corrected version until there are any
+further comments.
 
-These are what we are using in musl libc now.
-
-Rich
+> +	if (clk->ops == &clk_nodrv_ops) {
+> +		pr_err("%s: unregistered clock: %s\n", __func__, clk->name);
+> +		goto out;
+> +	}
+> +	/*
+> +	 * Assign empty clock ops for consumers that might still hold
+> +	 * a reference to this clock.
+> +	 */
+> +	flags = clk_enable_lock();
+> +	clk->ops = &clk_nodrv_ops;
+> +	clk_enable_unlock(flags);
+> +
+> +	if (!hlist_empty(&clk->children)) {
+> +		struct clk *child;
+> +
+> +		/* Reparent all children to the orphan list. */
+> +		hlist_for_each_entry(child, &clk->children, child_node)
+> +			clk_set_parent(child, NULL);
+> +	}
+> +
+> +	clk_debug_unregister(clk);
+> +
+> +	hlist_del_init(&clk->child_node);
+> +
+> +	if (clk->prepare_count)
+> +		pr_warn("%s: unregistering prepared clock: %s\n",
+> +					__func__, clk->name);
+> +
+> +	kref_put(&clk->ref, __clk_release);
+> +out:
+> +	clk_prepare_unlock();
+> +}
+>  EXPORT_SYMBOL_GPL(clk_unregister);

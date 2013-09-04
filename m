@@ -1,43 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2013 19:58:09 +0200 (CEST)
-Received: from mms3.broadcom.com ([216.31.210.19]:3245 "EHLO mms3.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827461Ab3IDR5DSnwkK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Sep 2013 19:57:03 +0200
-Received: from [10.9.208.55] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Wed, 04 Sep 2013 10:46:25 -0700
-X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Wed, 4 Sep 2013 10:56:47 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Wed, 4 Sep 2013 10:56:47 -0700
-Received: from stbsrv-and-2.and.broadcom.com (
- stbsrv-and-2.and.broadcom.com [10.32.128.96]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id C85091A46; Wed, 4 Sep
- 2013 10:56:46 -0700 (PDT)
-From:   "Jim Quinlan" <jim2101024@gmail.com>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org
-cc:     cernekee@gmail.com, "Jim Quinlan" <jim2101024@gmail.com>
-Subject: [PATCH] MIPS: dma: if BMIPS5000, flush region just like r10000
-Date:   Wed, 4 Sep 2013 13:55:46 -0400
-Message-ID: <1378317346-8607-1-git-send-email-jim2101024@gmail.com>
-X-Mailer: git-send-email 1.7.6
-In-Reply-To: <n>
-References: <n>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2013 00:47:54 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:36433 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827458Ab3IDWrpyj6M9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Sep 2013 00:47:45 +0200
+Date:   Wed, 4 Sep 2013 23:47:45 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: DECstation HRT calibration bug fixes
+Message-ID: <alpine.LFD.2.03.1309041410160.11570@linux-mips.org>
+User-Agent: Alpine 2.03 (LFD 1266 2009-07-14)
 MIME-Version: 1.0
-X-WSS-ID: 7E39AE7B2L881324109-01-01
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Return-Path: <jim2101024@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37758
+X-archive-position: 37759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jim2101024@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,77 +33,119 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The BMIPS5000 (Zephyr) processor utilizes instruction speculation. A
-stale misprediction address in either the JTB or the CRS may trigger
-a prefetch inside a region that is currently being used by a DMA
-engine, which is not IO-coherent.  This prefetch will fetch a line
-into the scache, and that line will soon become stale (ie wrong)
-during/after the DMA.  Mayhem ensues.
+This change corrects DECstation HRT calibration, by removing the following 
+bugs:
 
-In dma-default.c, the r10000 is handled as a special case in the
-same way that we want to handle Zephyr.  So we generalize the
-exception cases into a function, and include Zephyr as one
-of the processors that needs this special care.
+1. Calibration period selection -- HZ / 10 has been chosen, however on 
+   DECstation computers, HZ never divides by 10, as the choice for HZ is 
+   among 128, 256 and 1024.  The choice therefore results in a systematic
+   calibration error, e.g. 6.25% for the usual choice of 128 for HZ:
 
-Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+   128 / 10 * 10 = 120
+
+   (128 - 120) / 128 -> 6.25%
+
+   The change therefore makes calibration use HZ / 8 that is always 
+   accurate for the HZ values available, getting rid of the systematic
+   error.
+
+2. Calibration starting point synchronisation -- the duration of a number 
+   of intervals between DS1287A periodic interrupt assertions is measured,
+   however code does not ensure at the beginning that the interrupt has 
+   not been previously asserted.  This results in a variable error of e.g. 
+   up to another 6.25% for the period of HZ / 8 (8.(3)% with the original 
+   HZ / 10 period) and the usual choice of 128 for HZ:
+
+   1 / 16 -> 6.25%
+
+   1 / 12 -> 8.(3)%
+
+   The change therefore adds an initial call to ds1287_timer_state that 
+   clears any previous periodic interrupt pending.
+
+The same issue applies to both I/O ASIC counter and R4k CP0 timer 
+calibration on DECstation systems as similar code is used in both cases 
+and both pieces of code are covered by this fix.
+
+On an R3400 test system used this fix results in a change of the I/O ASIC 
+clock frequency reported from values like:
+
+I/O ASIC clock frequency 23185830Hz
+
+to:
+
+I/O ASIC clock frequency 24999288Hz
+
+removing the miscalculation by 6.25% from the systematic error and (for 
+the individual sample provided) a further 1.00% from the variable error, 
+accordingly.  The nominal I/O ASIC clock frequency is 25MHz on this 
+system.
+
+Here's another result, with the fix applied, from a system that has both 
+HRTs available (using an R4400 at 60MHz nominal):
+
+MIPS counter frequency 59999328Hz
+I/O ASIC clock frequency 24999432Hz
+
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
- arch/mips/mm/dma-default.c |   16 ++++++++++------
- 1 files changed, 10 insertions(+), 6 deletions(-)
+Ralf,
 
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index aaccf1c..468f7f9 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -50,16 +50,20 @@ static inline struct page *dma_addr_to_page(struct device *dev,
- }
+ Please apply.
+
+  Maciej
+
+linux-csrc-dec-fix.patch
+Index: linux/arch/mips/dec/time.c
+===================================================================
+--- linux.orig/arch/mips/dec/time.c
++++ linux/arch/mips/dec/time.c
+@@ -126,12 +126,13 @@ int rtc_mips_set_mmss(unsigned long nowt
+ void __init plat_time_init(void)
+ {
+ 	u32 start, end;
+-	int i = HZ / 10;
++	int i = HZ / 8;
  
- /*
-+ * The affected CPUs below in 'cpu_needs_post_dma_flush()' can
-+ * speculatively fill random cachelines with stale data at any time,
-+ * requiring an extra flush post-DMA.
-+ *
-  * Warning on the terminology - Linux calls an uncached area coherent;
-  * MIPS terminology calls memory areas with hardware maintained coherency
-  * coherent.
-  */
+ 	/* Set up the rate of periodic DS1287 interrupts. */
+ 	ds1287_set_base_clock(HZ);
+ 
+ 	if (cpu_has_counter) {
++		ds1287_timer_state();
+ 		while (!ds1287_timer_state())
+ 			;
+ 
+@@ -143,7 +144,7 @@ void __init plat_time_init(void)
+ 
+ 		end = read_c0_count();
+ 
+-		mips_hpt_frequency = (end - start) * 10;
++		mips_hpt_frequency = (end - start) * 8;
+ 		printk(KERN_INFO "MIPS counter frequency %dHz\n",
+ 			mips_hpt_frequency);
+ 	} else if (IOASIC)
+Index: linux/arch/mips/kernel/csrc-ioasic.c
+===================================================================
+--- linux.orig/arch/mips/kernel/csrc-ioasic.c
++++ linux/arch/mips/kernel/csrc-ioasic.c
+@@ -41,9 +41,9 @@ void __init dec_ioasic_clocksource_init(
+ {
+ 	unsigned int freq;
+ 	u32 start, end;
+-	int i = HZ / 10;
 -
--static inline int cpu_is_noncoherent_r10000(struct device *dev)
-+static inline int cpu_needs_post_dma_flush(struct device *dev)
- {
- 	return !plat_device_is_coherent(dev) &&
- 	       (current_cpu_type() == CPU_R10000 ||
--	       current_cpu_type() == CPU_R12000);
-+		current_cpu_type() == CPU_R12000 ||
-+		current_cpu_type() == CPU_BMIPS5000);
- }
++	int i = HZ / 8;
  
- static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
-@@ -230,7 +234,7 @@ static inline void __dma_sync(struct page *page,
- static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
- 	size_t size, enum dma_data_direction direction, struct dma_attrs *attrs)
- {
--	if (cpu_is_noncoherent_r10000(dev))
-+	if (cpu_needs_post_dma_flush(dev))
- 		__dma_sync(dma_addr_to_page(dev, dma_addr),
- 			   dma_addr & ~PAGE_MASK, size, direction);
++	ds1287_timer_state();
+ 	while (!ds1287_timer_state())
+ 		;
  
-@@ -284,7 +288,7 @@ static void mips_dma_unmap_sg(struct device *dev, struct scatterlist *sg,
- static void mips_dma_sync_single_for_cpu(struct device *dev,
- 	dma_addr_t dma_handle, size_t size, enum dma_data_direction direction)
- {
--	if (cpu_is_noncoherent_r10000(dev))
-+	if (cpu_needs_post_dma_flush(dev))
- 		__dma_sync(dma_addr_to_page(dev, dma_handle),
- 			   dma_handle & ~PAGE_MASK, size, direction);
- }
-@@ -305,7 +309,7 @@ static void mips_dma_sync_sg_for_cpu(struct device *dev,
+@@ -55,7 +55,7 @@ void __init dec_ioasic_clocksource_init(
  
- 	/* Make sure that gcc doesn't leave the empty loop body.  */
- 	for (i = 0; i < nelems; i++, sg++) {
--		if (cpu_is_noncoherent_r10000(dev))
-+		if (cpu_needs_post_dma_flush(dev))
- 			__dma_sync(sg_page(sg), sg->offset, sg->length,
- 				   direction);
- 	}
--- 
-1.7.6
+ 	end = dec_ioasic_hpt_read(&clocksource_dec);
+ 
+-	freq = (end - start) * 10;
++	freq = (end - start) * 8;
+ 	printk(KERN_INFO "I/O ASIC clock frequency %dHz\n", freq);
+ 
+ 	clocksource_dec.rating = 200 + freq / 10000000;

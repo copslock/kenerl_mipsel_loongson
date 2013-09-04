@@ -1,42 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2013 19:57:12 +0200 (CEST)
-Received: from mail-pd0-f177.google.com ([209.85.192.177]:60748 "EHLO
-        mail-pd0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825118Ab3IDR4p6yNCW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Sep 2013 19:56:45 +0200
-Received: by mail-pd0-f177.google.com with SMTP id y10so640646pdj.8
-        for <linux-mips@linux-mips.org>; Wed, 04 Sep 2013 10:56:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=3F3DdT1MFFQcXGdY7OByugAu2NVAramtyV8liiMYcOE=;
-        b=dX38Dx67RBAAsL6eTs42DFE1qJhpRoAE/HW+x05X92waQFBidnSyrqLxfy6Naz6Q+m
-         gdc9kFtX7W60APMNwFue23HcugbAZ4crYOnz7TLfDhIbGSFoUamMkFbSINCj+L8kqLGc
-         2WsP7FsC+FXD7+/+hPc+rwmjagufVOoVU1qx/v0o4AkT3zzkEcVg2Z9om865q7W5SR0S
-         87550Q8Lj24STdlZN1CS9tiKxDQN3smOv2c2C/zq8gLbJ0dM+iZYV2h9duzksFN1vPxG
-         HkB5eaUULqQ+kwkku9PACV+mWb09fF13fKYupN5vBmfyATqMBNgeQIdR2z+rOjKG8JEa
-         Qb/g==
-X-Received: by 10.68.167.132 with SMTP id zo4mr4580158pbb.129.1378317399068;
-        Wed, 04 Sep 2013 10:56:39 -0700 (PDT)
-Received: from localhost ([115.115.74.130])
-        by mx.google.com with ESMTPSA id fk4sm32189997pab.23.1969.12.31.16.00.00
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Wed, 04 Sep 2013 10:56:37 -0700 (PDT)
-From:   Prem Mallappa <prem.mallappa@gmail.com>
-To:     linux-mips <linux-mips@linux-mips.org>
-Cc:     Prem Mallappa <pmallappa@caviumnetworks.com>
-Subject: [PATCH v2 2/2] MIPS: KEXEC: Fixes Random crashes while loading crashkernel
-Date:   Wed,  4 Sep 2013 23:26:24 +0530
-Message-Id: <1378317384-9923-1-git-send-email-pmallappa@caviumnetworks.com>
-X-Mailer: git-send-email 1.8.4
-Return-Path: <prem.mallappa@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2013 19:58:09 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:3245 "EHLO mms3.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6827461Ab3IDR5DSnwkK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 4 Sep 2013 19:57:03 +0200
+Received: from [10.9.208.55] by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Wed, 04 Sep 2013 10:46:25 -0700
+X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+ IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Wed, 4 Sep 2013 10:56:47 -0700
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
+ Server id 14.1.438.0; Wed, 4 Sep 2013 10:56:47 -0700
+Received: from stbsrv-and-2.and.broadcom.com (
+ stbsrv-and-2.and.broadcom.com [10.32.128.96]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id C85091A46; Wed, 4 Sep
+ 2013 10:56:46 -0700 (PDT)
+From:   "Jim Quinlan" <jim2101024@gmail.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org
+cc:     cernekee@gmail.com, "Jim Quinlan" <jim2101024@gmail.com>
+Subject: [PATCH] MIPS: dma: if BMIPS5000, flush region just like r10000
+Date:   Wed, 4 Sep 2013 13:55:46 -0400
+Message-ID: <1378317346-8607-1-git-send-email-jim2101024@gmail.com>
+X-Mailer: git-send-email 1.7.6
+In-Reply-To: <n>
+References: <n>
+MIME-Version: 1.0
+X-WSS-ID: 7E39AE7B2L881324109-01-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Return-Path: <jim2101024@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37757
+X-archive-position: 37758
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: prem.mallappa@gmail.com
+X-original-sender: jim2101024@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,148 +50,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Fixed compilation errors in case of non-KEXEC kernel
-Rearranging code so that crashk_res gets updated.
-- crashk_res is updated after mips_parse_crashkernel(),
-   after resource_init(), which is after arch_mem_init().
-- The reserved memory is actually treated as Usable memory,
-   Unless we load the crash kernel, everything works.
+The BMIPS5000 (Zephyr) processor utilizes instruction speculation. A
+stale misprediction address in either the JTB or the CRS may trigger
+a prefetch inside a region that is currently being used by a DMA
+engine, which is not IO-coherent.  This prefetch will fetch a line
+into the scache, and that line will soon become stale (ie wrong)
+during/after the DMA.  Mayhem ensues.
 
-Signed-off-by: Prem Mallappa <pmallappa@caviumnetworks.com>
+In dma-default.c, the r10000 is handled as a special case in the
+same way that we want to handle Zephyr.  So we generalize the
+exception cases into a function, and include Zephyr as one
+of the processors that needs this special care.
+
+Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
 ---
- arch/mips/kernel/setup.c | 99 +++++++++++++++++++++++-------------------------
- 1 file changed, 48 insertions(+), 51 deletions(-)
+ arch/mips/mm/dma-default.c |   16 ++++++++++------
+ 1 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index c7f9051..c538d6e 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -552,6 +552,52 @@ static void __init arch_mem_addpart(phys_t mem, phys_t end, int type)
- 	add_memory_region(mem, size, type);
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index aaccf1c..468f7f9 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -50,16 +50,20 @@ static inline struct page *dma_addr_to_page(struct device *dev,
  }
  
-+#ifdef CONFIG_KEXEC
-+static inline unsigned long long get_total_mem(void)
-+{
-+	unsigned long long total;
-+
-+	total = max_pfn - min_low_pfn;
-+	return total << PAGE_SHIFT;
-+}
-+
-+static void __init mips_parse_crashkernel(void)
-+{
-+	unsigned long long total_mem;
-+	unsigned long long crash_size, crash_base;
-+	int ret;
-+
-+	total_mem = get_total_mem();
-+	ret = parse_crashkernel(boot_command_line, total_mem,
-+				&crash_size, &crash_base);
-+	if (ret != 0 || crash_size <= 0)
-+		return;
-+
-+	crashk_res.start = crash_base;
-+	crashk_res.end	 = crash_base + crash_size - 1;
-+}
-+
-+static void __init request_crashkernel(struct resource *res)
-+{
-+	int ret;
-+
-+	ret = request_resource(res, &crashk_res);
-+	if (!ret)
-+		pr_info("Reserving %ldMB of memory at %ldMB for crashkernel\n",
-+			(unsigned long)((crashk_res.end -
-+					 crashk_res.start + 1) >> 20),
-+			(unsigned long)(crashk_res.start  >> 20));
-+}
-+#else /* !defined(CONFIG_KEXEC)		*/
-+static void __init mips_parse_crashkernel(void)
-+{
-+}
-+
-+static void __init request_crashkernel(struct resource *res)
-+{
-+}
-+#endif /* !defined(CONFIG_KEXEC)  */
-+
- static void __init arch_mem_init(char **cmdline_p)
+ /*
++ * The affected CPUs below in 'cpu_needs_post_dma_flush()' can
++ * speculatively fill random cachelines with stale data at any time,
++ * requiring an extra flush post-DMA.
++ *
+  * Warning on the terminology - Linux calls an uncached area coherent;
+  * MIPS terminology calls memory areas with hardware maintained coherency
+  * coherent.
+  */
+-
+-static inline int cpu_is_noncoherent_r10000(struct device *dev)
++static inline int cpu_needs_post_dma_flush(struct device *dev)
  {
- 	extern void plat_mem_setup(void);
-@@ -608,6 +654,8 @@ static void __init arch_mem_init(char **cmdline_p)
- 				BOOTMEM_DEFAULT);
+ 	return !plat_device_is_coherent(dev) &&
+ 	       (current_cpu_type() == CPU_R10000 ||
+-	       current_cpu_type() == CPU_R12000);
++		current_cpu_type() == CPU_R12000 ||
++		current_cpu_type() == CPU_BMIPS5000);
+ }
+ 
+ static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
+@@ -230,7 +234,7 @@ static inline void __dma_sync(struct page *page,
+ static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
+ 	size_t size, enum dma_data_direction direction, struct dma_attrs *attrs)
+ {
+-	if (cpu_is_noncoherent_r10000(dev))
++	if (cpu_needs_post_dma_flush(dev))
+ 		__dma_sync(dma_addr_to_page(dev, dma_addr),
+ 			   dma_addr & ~PAGE_MASK, size, direction);
+ 
+@@ -284,7 +288,7 @@ static void mips_dma_unmap_sg(struct device *dev, struct scatterlist *sg,
+ static void mips_dma_sync_single_for_cpu(struct device *dev,
+ 	dma_addr_t dma_handle, size_t size, enum dma_data_direction direction)
+ {
+-	if (cpu_is_noncoherent_r10000(dev))
++	if (cpu_needs_post_dma_flush(dev))
+ 		__dma_sync(dma_addr_to_page(dev, dma_handle),
+ 			   dma_handle & ~PAGE_MASK, size, direction);
+ }
+@@ -305,7 +309,7 @@ static void mips_dma_sync_sg_for_cpu(struct device *dev,
+ 
+ 	/* Make sure that gcc doesn't leave the empty loop body.  */
+ 	for (i = 0; i < nelems; i++, sg++) {
+-		if (cpu_is_noncoherent_r10000(dev))
++		if (cpu_needs_post_dma_flush(dev))
+ 			__dma_sync(sg_page(sg), sg->offset, sg->length,
+ 				   direction);
  	}
- #endif
-+
-+	mips_parse_crashkernel();
- #ifdef CONFIG_KEXEC
- 	if (crashk_res.start != crashk_res.end)
- 		reserve_bootmem(crashk_res.start,
-@@ -620,52 +668,6 @@ static void __init arch_mem_init(char **cmdline_p)
- 	paging_init();
- }
- 
--#ifdef CONFIG_KEXEC
--static inline unsigned long long get_total_mem(void)
--{
--	unsigned long long total;
--
--	total = max_pfn - min_low_pfn;
--	return total << PAGE_SHIFT;
--}
--
--static void __init mips_parse_crashkernel(void)
--{
--	unsigned long long total_mem;
--	unsigned long long crash_size, crash_base;
--	int ret;
--
--	total_mem = get_total_mem();
--	ret = parse_crashkernel(boot_command_line, total_mem,
--				&crash_size, &crash_base);
--	if (ret != 0 || crash_size <= 0)
--		return;
--
--	crashk_res.start = crash_base;
--	crashk_res.end	 = crash_base + crash_size - 1;
--}
--
--static void __init request_crashkernel(struct resource *res)
--{
--	int ret;
--
--	ret = request_resource(res, &crashk_res);
--	if (!ret)
--		pr_info("Reserving %ldMB of memory at %ldMB for crashkernel\n",
--			(unsigned long)((crashk_res.end -
--				crashk_res.start + 1) >> 20),
--			(unsigned long)(crashk_res.start  >> 20));
--}
--#else /* !defined(CONFIG_KEXEC)	 */
--static void __init mips_parse_crashkernel(void)
--{
--}
--
--static void __init request_crashkernel(struct resource *res)
--{
--}
--#endif /* !defined(CONFIG_KEXEC)  */
--
- static void __init resource_init(void)
- {
- 	int i;
-@@ -678,11 +680,6 @@ static void __init resource_init(void)
- 	data_resource.start = __pa_symbol(&_etext);
- 	data_resource.end = __pa_symbol(&_edata) - 1;
- 
--	/*
--	 * Request address space for all standard RAM.
--	 */
--	mips_parse_crashkernel();
--
- 	for (i = 0; i < boot_mem_map.nr_map; i++) {
- 		struct resource *res;
- 		unsigned long start, end;
 -- 
-1.8.4
+1.7.6

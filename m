@@ -1,24 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2013 00:17:25 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:42595 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824771Ab3ICWRWcTk6z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Sep 2013 00:17:22 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V3] MIPS: ralink: add support for reset-controller API
-Date:   Wed,  4 Sep 2013 00:16:59 +0200
-Message-Id: <1378246619-16568-1-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <blogic@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Sep 2013 06:41:22 +0200 (CEST)
+Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:42339 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816671Ab3IDElTtIUzv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Sep 2013 06:41:19 +0200
+Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
+        id 1VH4tw-0000xj-00; Wed, 04 Sep 2013 04:41:08 +0000
+Date:   Wed, 4 Sep 2013 00:41:08 -0400
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Denys Vlasenko <vda.linux@googlemail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        Oleg Nesterov <oleg@redhat.com>, linux-mips@linux-mips.org,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Dave Jones <davej@redhat.com>
+Subject: Re: [PATCH v2] MIPS: Reduce _NSIG from 128 to 127 to avoid BUG_ON
+Message-ID: <20130904044108.GP20515@brightrain.aerifal.cx>
+References: <1371225825-8225-1-git-send-email-james.hogan@imgtec.com>
+ <51BEE6A8.2050307@imgtec.com>
+ <201306282128.27266.vda.linux@googlemail.com>
+ <CAAG0J9-d4BfEhbQovFqUAJ3QoOuXScrpsY1y95PrEPxA5DWedQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAAG0J9-d4BfEhbQovFqUAJ3QoOuXScrpsY1y95PrEPxA5DWedQ@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+From:   Rich Felker <dalias@aerifal.cx>
+Return-Path: <dalias@aerifal.cx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37753
+X-archive-position: 37754
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: dalias@aerifal.cx
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -31,139 +49,112 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a helper for reseting different devices on the SoC.
+On Fri, Jun 28, 2013 at 11:03:33PM +0100, James Hogan wrote:
+> On 28 June 2013 20:28, Denys Vlasenko <vda.linux@googlemail.com> wrote:
+> > On Monday 17 June 2013 12:36, James Hogan wrote:
+> >> On 14/06/13 17:03, James Hogan wrote:
+> >> > MIPS has 128 signals, the highest of which has the number 128 (they
+> >> > start from 1). The following command causes get_signal_to_deliver() to
+> >> > pass this signal number straight through to do_group_exit() as the exit
+> >> > code:
+> >> >
+> >> >   strace sleep 10 & sleep 1 && kill -128 `pidof sleep`
+> >> >
+> >> > However do_group_exit() checks for the core dump bit (0x80) in the exit
+> >> > code which matches in this particular case and the kernel panics:
+> >> >
+> >> >   BUG_ON(exit_code & 0x80); /* core dumps don't get here */
+> >> >
+> >> > Lets avoid this by changing the ABI by reducing the number of signals to
+> >> > 127 (so that the maximum signal number is 127). Glibc incorrectly sets
+> >> > [__]SIGRTMAX to 127 already. uClibc sets it to 128 so it's conceivable
+> >> > that programs built against uClibc which intentionally uses RT signals
+> >> > from the top (SIGRTMAX-n, n>=0) would need an updated uClibc (and a
+> >> > rebuild if it's crazy enough to use __SIGRTMAX).
+> >>
+> >> Hmm, although this works around the BUG_ON, this doesn't actually seem
+> >> to be sufficient to behave correctly.
+> >>
+> >> So it appears the exit status is constructed like this:
+> >> bits  purpose
+> >> 0x007f        signal number (0-127)
+> >> 0x0080        core dump
+> >> 0xff00        exit status
+> >>
+> >> but the macros in waitstatus.h and wait.h in libc
+> >> (see also "man 2 wait"):
+> >> WIFEXITED:   status & 0x7f == 0
+> >> WIFSIGNALED: status & 0x7f in [1..126] (i.e. not 0 or 127)
+> >> WIFSTOPPED:  status & 0xff == 127
+> >>
+> >> So termination due to SIG127 looks like it's been stopped instead of
+> >> terminated via a signal, unless a core dump occurs in which case none of
+> >> the above match.
+> >>
+> >> (And termination due to SIG128 hits BUG_ON, otherwise would appear to
+> >> have exited normally with core dump).
+> >>
+> >>
+> >> Reducing number of signals to 126 to avoid this will change the glibc
+> >> ABI too, in which case we may as well reduce to 64 to match other
+> >> arches, which is more likely to break something (I'm not really
+> >> comfortable making that change).
+> >>
+> >> Reducing to 127 (this patch) still leaves incorrect exit status codes
+> >> for SIG127 ...
+> >>
+> >> Any further thoughts/opinions?
+> >
+> > Strictly speaking, exit status of 0x007f isn't ambiguous.
+> >
+> > Currently userspace uses the following rules
+> > (assuming that status is 16-bit (IOW, dropping PTRACE_EVENT bits)):
+> >
+> > WIFEXITED(status)    = (status & 0x7f) == 0
+> > WIFSIGNALED(status)  = (status & 0x7f) != 0 && (status & 0x7f) < 0x7f
+> > WIFSTOPPED(status)   = (status & 0xff) == 0x7f
+> > WIFCONTINUED(status) = (status == 0xffff)
+> >
+> > WEXITSTATUS(status)  = status >> 8
+> > WSTOPSIG(status)     = status >> 8
+> > WCOREDUMP(status)    = status & 0x80
+> > WTERMSIG(status)     = status & 0x7f
+> >
+> > When process dies from signal 127, status is 0x007f and it is not a valid
+> > "stopped by signal" indicator, since WSTOPSIG == 0 is an impossibility.
+> >
+> > Status 0x007f get misinterpreted by the rules above, namely,
+> > WIFSTOPPED is true, WIFSIGNALED is false.
+> >
+> > But an alternative definition exists which works correctly with
+> > all previous status codes, treats 0x007f as "killed by signal 127"
+> > and isn't more convoluted.
+> > In fact, while WIFSTOPPED needs one additional check,
+> > WIFSIGNALED gets simpler (loses one AND'ing operation):
+> >
+> > WIFSTOPPED(status)   = (status & 0xff) == 0x7f && (status >> 8) != 0
+> > WIFSIGNALED(status)  = status != 0 && status <= 0xff
+> >
+> > All other rules need no change.
+> >
+> > I think it's feasible to ask {g,uc}libc to change their defines
+> > (on MIPS as a minimum), and live with 127 signals.
+> 
+> Thanks for the explanation. This makes a lot of sense and if I
+> understand correctly it already describes the current behaviour of the
+> kernel up to SIG127 (I hadn't twigged WIFSTOPPED should imply
+> WSTOPSIG!=0 for some reason). I like it.
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
----
-Changes in V3:
-* rebase on upstream-sfr
-* add select RESET_CONTROLLER
+One other note on this issue: SIG128 also aliases CLONE_VM, and it
+would be very bad if a program requesting SIG128 as its exit signal
+when calling clone instead ended up with the effects of CLONE_VM...
 
- arch/mips/Kconfig         |    2 ++
- arch/mips/ralink/common.h |    2 ++
- arch/mips/ralink/of.c     |    3 +++
- arch/mips/ralink/reset.c  |   62 +++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 69 insertions(+)
+Also, I have some improved macros for WIFSTOPPED and WIFSIGNALED which
+avoid multiple evaluation of their arguments:
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 24727a0..a1a088b 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -446,6 +446,8 @@ config RALINK
- 	select SYS_HAS_EARLY_PRINTK
- 	select HAVE_MACH_CLKDEV
- 	select CLKDEV_LOOKUP
-+	select ARCH_HAS_RESET_CONTROLLER
-+	select RESET_CONTROLLER
- 
- config SGI_IP22
- 	bool "SGI IP22 (Indy/Indigo2)"
-diff --git a/arch/mips/ralink/common.h b/arch/mips/ralink/common.h
-index 83144c3..42dfd61 100644
---- a/arch/mips/ralink/common.h
-+++ b/arch/mips/ralink/common.h
-@@ -46,6 +46,8 @@ extern void ralink_of_remap(void);
- extern void ralink_clk_init(void);
- extern void ralink_clk_add(const char *dev, unsigned long rate);
- 
-+extern void ralink_rst_init(void);
-+
- extern void prom_soc_init(struct ralink_soc_info *soc_info);
- 
- __iomem void *plat_of_remap_node(const char *node);
-diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
-index f25ea5b..ce38d11 100644
---- a/arch/mips/ralink/of.c
-+++ b/arch/mips/ralink/of.c
-@@ -110,6 +110,9 @@ static int __init plat_of_setup(void)
- 	if (of_platform_populate(NULL, of_ids, NULL, NULL))
- 		panic("failed to populate DT\n");
- 
-+	/* make sure ithat the reset controller is setup early */
-+	ralink_rst_init();
-+
- 	return 0;
- }
- 
-diff --git a/arch/mips/ralink/reset.c b/arch/mips/ralink/reset.c
-index 22120e5..55c7ec5 100644
---- a/arch/mips/ralink/reset.c
-+++ b/arch/mips/ralink/reset.c
-@@ -10,6 +10,8 @@
- 
- #include <linux/pm.h>
- #include <linux/io.h>
-+#include <linux/of.h>
-+#include <linux/reset-controller.h>
- 
- #include <asm/reboot.h>
- 
-@@ -19,6 +21,66 @@
- #define SYSC_REG_RESET_CTRL     0x034
- #define RSTCTL_RESET_SYSTEM     BIT(0)
- 
-+static int ralink_assert_device(struct reset_controller_dev *rcdev,
-+				unsigned long id)
-+{
-+	u32 val;
-+
-+	if (id < 8)
-+		return -1;
-+
-+	val = rt_sysc_r32(SYSC_REG_RESET_CTRL);
-+	val |= BIT(id);
-+	rt_sysc_w32(val, SYSC_REG_RESET_CTRL);
-+
-+	return 0;
-+}
-+
-+static int ralink_deassert_device(struct reset_controller_dev *rcdev,
-+				  unsigned long id)
-+{
-+	u32 val;
-+
-+	if (id < 8)
-+		return -1;
-+
-+	val = rt_sysc_r32(SYSC_REG_RESET_CTRL);
-+	val &= ~BIT(id);
-+	rt_sysc_w32(val, SYSC_REG_RESET_CTRL);
-+
-+	return 0;
-+}
-+
-+static int ralink_reset_device(struct reset_controller_dev *rcdev,
-+			       unsigned long id)
-+{
-+	ralink_assert_device(rcdev, id);
-+	return ralink_deassert_device(rcdev, id);
-+}
-+
-+static struct reset_control_ops reset_ops = {
-+	.reset = ralink_reset_device,
-+	.assert = ralink_assert_device,
-+	.deassert = ralink_deassert_device,
-+};
-+
-+static struct reset_controller_dev reset_dev = {
-+	.ops			= &reset_ops,
-+	.owner			= THIS_MODULE,
-+	.nr_resets		= 32,
-+	.of_reset_n_cells	= 1,
-+};
-+
-+void ralink_rst_init(void)
-+{
-+	reset_dev.of_node = of_find_compatible_node(NULL, NULL,
-+						"ralink,rt2880-reset");
-+	if (!reset_dev.of_node)
-+		pr_err("Failed to find reset controller node");
-+	else
-+		reset_controller_register(&reset_dev);
-+}
-+
- static void ralink_restart(char *command)
- {
- 	local_irq_disable();
--- 
-1.7.10.4
+#define WIFSTOPPED(s) ((short)((((s)&0xffff)*0x10001)>>8) > 0x7f00)
+#define WIFSIGNALED(s) (((s)&0xffff)-1 < 0xffu)
+
+These are what we are using in musl libc now.
+
+Rich

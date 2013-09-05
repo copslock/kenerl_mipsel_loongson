@@ -1,51 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2013 20:31:21 +0200 (CEST)
-Received: from mail-ob0-f178.google.com ([209.85.214.178]:47821 "EHLO
-        mail-ob0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822664Ab3IESbTiSVAw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Sep 2013 20:31:19 +0200
-Received: by mail-ob0-f178.google.com with SMTP id ef5so2392854obb.23
-        for <multiple recipients>; Thu, 05 Sep 2013 11:31:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=+jETaPyGYJB8kYZOPiBPhCdzmg6xrskZJ/Te40pZ7zY=;
-        b=RKYskwa9xNTsZVqpk50dBK/9daf45RtDsRlOsOOFORrG+mvLIbIV+YcF3vsIYtFxKq
-         Hk8hCghbg5sbx/qm1H87EMJ0t2yVAIKvr42PgiwBkLdWfYz3npn2B0Pr5GjrR6iH8vxw
-         6WCT5z/y1vHuiHtWJgvDkqokipIJ5qINkCz139Vk5pbbVslV4bkaJPxJ4oGs7Jie8UxH
-         0njUAbUrSx7VeQ44MGgoxH0Vj8JPvCw58FlecNcbjuDdYK2fkCCTvaFS/bpgMiBHBOc8
-         ESoN2Mcg5bBn1u7tQgQ+WFVUpDJ/9I+YBOwAImRCwzXTnO5rKFcRC0nsIrWPni/NKD16
-         K5Zw==
-X-Received: by 10.60.42.3 with SMTP id j3mr1711790oel.70.1378405873413;
-        Thu, 05 Sep 2013 11:31:13 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id d8sm32234404oeu.6.1969.12.31.16.00.00
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 05 Sep 2013 11:31:12 -0700 (PDT)
-Message-ID: <5228CDEF.4010609@gmail.com>
-Date:   Thu, 05 Sep 2013 11:31:11 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Prem Mallappa <prem.mallappa@gmail.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Prem Mallappa <pmallappa@caviumnetworks.com>
-Subject: Re: [PATCH v2 2/2] MIPS: KEXEC: Fixes Random crashes while loading
- crashkernel
-References: <1378317384-9923-1-git-send-email-pmallappa@caviumnetworks.com> <20130905181222.GC11592@linux-mips.org>
-In-Reply-To: <20130905181222.GC11592@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2013 20:45:44 +0200 (CEST)
+Received: from filtteri5.pp.htv.fi ([213.243.153.188]:37640 "EHLO
+        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6822664Ab3IESpmXIjDP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Sep 2013 20:45:42 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri5.pp.htv.fi (Postfix) with ESMTP id 723995A6D43;
+        Thu,  5 Sep 2013 21:45:41 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp6.welho.com ([213.243.153.40])
+        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
+        with ESMTP id UlVLQSt4kFWe; Thu,  5 Sep 2013 21:45:36 +0300 (EEST)
+Received: from blackmetal.pp.htv.fi (cs181064211.pp.htv.fi [82.181.64.211])
+        by smtp6.welho.com (Postfix) with ESMTP id 858205BC008;
+        Thu,  5 Sep 2013 21:45:36 +0300 (EEST)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org, linux-mips@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>, richard@nod.at,
+        Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH 1/3] staging: octeon-ethernet: make dropped packets to consume NAPI budget
+Date:   Thu,  5 Sep 2013 21:43:59 +0300
+Message-Id: <1378406641-16530-2-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 1.8.3.2
+In-Reply-To: <1378406641-16530-1-git-send-email-aaro.koskinen@iki.fi>
+References: <1378406641-16530-1-git-send-email-aaro.koskinen@iki.fi>
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37764
+X-archive-position: 37765
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,29 +46,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/05/2013 11:12 AM, Ralf Baechle wrote:
-> On Wed, Sep 04, 2013 at 11:26:24PM +0530, Prem Mallappa wrote:
->> Date:   Wed,  4 Sep 2013 23:26:24 +0530
->> From: Prem Mallappa <prem.mallappa@gmail.com>
->> To: linux-mips <linux-mips@linux-mips.org>
->> Cc: Prem Mallappa <pmallappa@caviumnetworks.com>
->> Subject: [PATCH v2 2/2] MIPS: KEXEC: Fixes Random crashes while loading
->
-> Prem,
->
-> I only see patch 2/2.  I wonder, has 1/2 been lost in transit or is there
-> only the 2/2 patch?
->
+We should count also dropped packets, otherwise the NAPI handler may
+end up running too long.
 
-V1 of 1/2 didn't need revision, so it can be applied as is:
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ drivers/staging/octeon/ethernet-rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-http://patchwork.linux-mips.org/patch/5786/
-
-David.
-
-> Thanks,
->
->    Ralf
->
->
->
+diff --git a/drivers/staging/octeon/ethernet-rx.c b/drivers/staging/octeon/ethernet-rx.c
+index 34afc16..10e5416 100644
+--- a/drivers/staging/octeon/ethernet-rx.c
++++ b/drivers/staging/octeon/ethernet-rx.c
+@@ -303,6 +303,7 @@ static int cvm_oct_napi_poll(struct napi_struct *napi, int budget)
+ 			if (backlog > budget * cores_in_use && napi != NULL)
+ 				cvm_oct_enable_one_cpu();
+ 		}
++		rx_count++;
+ 
+ 		skb_in_hw = USE_SKBUFFS_IN_HW && work->word2.s.bufs == 1;
+ 		if (likely(skb_in_hw)) {
+@@ -429,7 +430,6 @@ static int cvm_oct_napi_poll(struct napi_struct *napi, int budget)
+ #endif
+ 				}
+ 				netif_receive_skb(skb);
+-				rx_count++;
+ 			} else {
+ 				/* Drop any packet received for a device that isn't up */
+ 				/*
+-- 
+1.8.3.2

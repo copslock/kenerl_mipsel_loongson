@@ -1,31 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2013 11:23:02 +0200 (CEST)
-Received: from jacques.telenet-ops.be ([195.130.132.50]:41201 "EHLO
-        jacques.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822451Ab3IEJXAXeEU3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Sep 2013 11:23:00 +0200
-Received: from ayla.of.borg ([84.193.72.141])
-        by jacques.telenet-ops.be with bizsmtp
-        id MMNw1m01X32ts5g0JMNwz8; Thu, 05 Sep 2013 11:22:59 +0200
-Received: from geert by ayla.of.borg with local (Exim 4.76)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1VHVm7-0007AX-W3; Thu, 05 Sep 2013 11:22:52 +0200
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH] MIPS: Export copy_from_user_page() (needed by lustre)
-Date:   Thu,  5 Sep 2013 11:22:45 +0200
-Message-Id: <1378372965-27213-1-git-send-email-geert@linux-m68k.org>
-X-Mailer: git-send-email 1.7.9.5
-Return-Path: <geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2013 20:01:43 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:39792 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6837144Ab3IESBk2f0Dw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Sep 2013 20:01:40 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r85I1clp013284;
+        Thu, 5 Sep 2013 20:01:38 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r85I1aaM013281;
+        Thu, 5 Sep 2013 20:01:36 +0200
+Date:   Thu, 5 Sep 2013 20:01:36 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Export copy_from_user_page() (needed by lustre)
+Message-ID: <20130905180136.GA11592@linux-mips.org>
+References: <1378372965-27213-1-git-send-email-geert@linux-m68k.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1378372965-27213-1-git-send-email-geert@linux-m68k.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37760
+X-archive-position: 37761
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,24 +42,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-ERROR: "copy_from_user_page" [drivers/staging/lustre/lustre/libcfs/libcfs.ko] undefined!
+On Thu, Sep 05, 2013 at 11:22:45AM +0200, Geert Uytterhoeven wrote:
 
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
- arch/mips/mm/init.c |    1 +
- 1 file changed, 1 insertion(+)
+> ERROR: "copy_from_user_page" [drivers/staging/lustre/lustre/libcfs/libcfs.ko] undefined!
 
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 4e73f10..e205ef5 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -254,6 +254,7 @@ void copy_from_user_page(struct vm_area_struct *vma,
- 			SetPageDcacheDirty(page);
- 	}
- }
-+EXPORT_SYMBOL_GPL(copy_from_user_page);
- 
- void __init fixrange_init(unsigned long start, unsigned long end,
- 	pgd_t *pgd_base)
--- 
-1.7.9.5
+Thanks, applied!
+
+But I'm sort surprised to see somebody testing Lustre on MIPS :-)
+
+  Ralf

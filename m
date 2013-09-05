@@ -1,31 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2013 20:08:28 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:39818 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2013 20:12:35 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:39829 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6837142Ab3IESI0H0BcN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Sep 2013 20:08:26 +0200
+        id S6837142Ab3IESM2L8tO0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Sep 2013 20:12:28 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r85I8PC1013871;
-        Thu, 5 Sep 2013 20:08:25 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r85ICNqJ014219;
+        Thu, 5 Sep 2013 20:12:23 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r85I8PSM013870;
-        Thu, 5 Sep 2013 20:08:25 +0200
-Date:   Thu, 5 Sep 2013 20:08:25 +0200
+        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r85ICMM2014216;
+        Thu, 5 Sep 2013 20:12:22 +0200
+Date:   Thu, 5 Sep 2013 20:12:22 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: DECstation HRT calibration bug fixes
-Message-ID: <20130905180825.GB11592@linux-mips.org>
-References: <alpine.LFD.2.03.1309041410160.11570@linux-mips.org>
+To:     Prem Mallappa <prem.mallappa@gmail.com>
+Cc:     linux-mips <linux-mips@linux-mips.org>,
+        Prem Mallappa <pmallappa@caviumnetworks.com>
+Subject: Re: [PATCH v2 2/2] MIPS: KEXEC: Fixes Random crashes while loading
+ crashkernel
+Message-ID: <20130905181222.GC11592@linux-mips.org>
+References: <1378317384-9923-1-git-send-email-pmallappa@caviumnetworks.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.03.1309041410160.11570@linux-mips.org>
+In-Reply-To: <1378317384-9923-1-git-send-email-pmallappa@caviumnetworks.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37762
+X-archive-position: 37763
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,14 +44,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Sep 04, 2013 at 11:47:45PM +0100, Maciej W. Rozycki wrote:
+On Wed, Sep 04, 2013 at 11:26:24PM +0530, Prem Mallappa wrote:
+> Date:   Wed,  4 Sep 2013 23:26:24 +0530
+> From: Prem Mallappa <prem.mallappa@gmail.com>
+> To: linux-mips <linux-mips@linux-mips.org>
+> Cc: Prem Mallappa <pmallappa@caviumnetworks.com>
+> Subject: [PATCH v2 2/2] MIPS: KEXEC: Fixes Random crashes while loading
 
-> This change corrects DECstation HRT calibration, by removing the following 
-> bugs:
+Prem,
 
-Hmm...  Seems this needs to be applied to virtually every older kernel
-as well almost back to the dawn?
+I only see patch 2/2.  I wonder, has 1/2 been lost in transit or is there
+only the 2/2 patch?
 
-Great to see you backon the DECstations!
+Thanks,
 
   Ralf

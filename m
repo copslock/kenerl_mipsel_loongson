@@ -1,44 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2013 20:56:41 +0200 (CEST)
-Received: from mail-bn1lp0154.outbound.protection.outlook.com ([207.46.163.154]:58616
-        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6837145Ab3IES4iJCF3q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Sep 2013 20:56:38 +0200
-Received: from BN1PRD0712HT003.namprd07.prod.outlook.com (10.255.196.36) by
- BN1PR07MB022.namprd07.prod.outlook.com (10.255.225.40) with Microsoft SMTP
- Server (TLS) id 15.0.745.25; Thu, 5 Sep 2013 18:56:29 +0000
-Received: from dl.caveonetworks.com (64.2.3.195) by pod51018.outlook.com
- (10.255.196.36) with Microsoft SMTP Server (TLS) id 14.16.353.4; Thu, 5 Sep
- 2013 18:55:53 +0000
-Message-ID: <5228D3B7.505@caviumnetworks.com>
-Date:   Thu, 5 Sep 2013 11:55:51 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Sep 2013 20:57:29 +0200 (CEST)
+Received: from mail-oa0-f45.google.com ([209.85.219.45]:64350 "EHLO
+        mail-oa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6837145Ab3IES51YNHrH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Sep 2013 20:57:27 +0200
+Received: by mail-oa0-f45.google.com with SMTP id m6so2718668oag.4
+        for <linux-mips@linux-mips.org>; Thu, 05 Sep 2013 11:57:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=5g1iMOhPZMcYCU9IBJyvhBxEB4IdUvsLG+lPkF3bT+g=;
+        b=PiERm8W4MMQfrjPs9Se7mIo0TyQ+A4c4YgOedhvQv9/K32P9Wmmnytep30LS0zuW31
+         x++pRBLeZQ3D1plhyh5WvEYSZZc9M4/K2taBEbLaU+VrpxiQQD2IQIfcbqjsVOi/mjTO
+         /GfOwmOMeiri6J90MUEaP1zGnYXACpFspsp0RzVNmdj93fI+e8POJi04+grzZA0X1OFF
+         2oUdr0FKFlABTuhlIv/VkDrmNXT3DPvS8sFsQ5mHzsydlL9orep8g1fcBp+gH+CePDqo
+         lVf0WO1NCYRBBi0ottYL59il9OmdId9nvUrzEgkKxxyrZ6iYHV0IZ6ER9/pUuuTBCaHB
+         l5Nw==
+X-Received: by 10.182.214.98 with SMTP id nz2mr7652932obc.37.1378407441312;
+        Thu, 05 Sep 2013 11:57:21 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id d8sm32372404oeu.6.1969.12.31.16.00.00
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 05 Sep 2013 11:57:20 -0700 (PDT)
+Message-ID: <5228D40E.3010208@gmail.com>
+Date:   Thu, 05 Sep 2013 11:57:18 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
 To:     Aaro Koskinen <aaro.koskinen@iki.fi>
 CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <devel@driverdev.osuosl.org>, <linux-mips@linux-mips.org>,
+        devel@driverdev.osuosl.org, linux-mips@linux-mips.org,
         David Daney <david.daney@cavium.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>, <richard@nod.at>
-Subject: Re: [PATCH 1/3] staging: octeon-ethernet: make dropped packets to
- consume NAPI budget
-References: <1378406641-16530-1-git-send-email-aaro.koskinen@iki.fi> <1378406641-16530-2-git-send-email-aaro.koskinen@iki.fi>
-In-Reply-To: <1378406641-16530-2-git-send-email-aaro.koskinen@iki.fi>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+        "Jason A. Donenfeld" <Jason@zx2c4.com>, richard@nod.at
+Subject: Re: [PATCH 2/3] staging: octeon-ethernet: remove skb alloc failure
+ warnings
+References: <1378406641-16530-1-git-send-email-aaro.koskinen@iki.fi> <1378406641-16530-3-git-send-email-aaro.koskinen@iki.fi>
+In-Reply-To: <1378406641-16530-3-git-send-email-aaro.koskinen@iki.fi>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.195]
-X-Forefront-PRVS: 096029FF66
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(199002)(189002)(24454002)(51704005)(377454003)(479174003)(77982001)(54316002)(74876001)(4396001)(59766001)(74366001)(56776001)(76482001)(33656001)(76786001)(76796001)(81542001)(80976001)(81686001)(47736001)(47976001)(64126003)(49866001)(50986001)(74662001)(50466002)(53806001)(74502001)(47446002)(77096001)(56816003)(54356001)(83072001)(53416003)(31966008)(83506001)(79102001)(19580405001)(83322001)(74706001)(19580395003)(46102001)(36756003)(69226001)(66066001)(65956001)(80022001)(23756003)(65806001)(51856001)(63696002)(47776003)(81342001)(81816001);DIR:OUT;SFP:;SCL:1;SRVR:BN1PR07MB022;H:BN1PRD0712HT003.namprd07.prod.outlook.com;CLIP:64.2.3.195;RD:InfoNoRecords;A:1;MX:1;LANG:en;
-X-OriginatorOrg: DuplicateDomain-a3ec847f-e37f-4d9a-9900-9d9d96f75f58.caviumnetworks.com
-Return-Path: <David.Daney@caviumnetworks.com>
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37769
+X-archive-position: 37770
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,38 +59,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/05/2013 11:43 AM, Aaro Koskinen wrote:
-> We should count also dropped packets, otherwise the NAPI handler may
-> end up running too long.
-
-Is this actually a problem?
-
-If so ... the patch looks sane and you and add Acked-by me.
-
+On 09/05/2013 11:44 AM, Aaro Koskinen wrote:
+> Remove skb allocation failure warnings. They will trigger a page
+> allocation warning already. Also, one of the warnings was not ratelimited,
+> causing the box to lock up under heavy traffic & low memory.
 >
 > Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+
+This seems fine.
+
+Acked-by: David Daney <david.daney@cavium.com>
+
 > ---
->   drivers/staging/octeon/ethernet-rx.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   drivers/staging/octeon/ethernet-mem.c | 7 +------
+>   drivers/staging/octeon/ethernet-rx.c  | 3 ---
+>   2 files changed, 1 insertion(+), 9 deletions(-)
 >
+> diff --git a/drivers/staging/octeon/ethernet-mem.c b/drivers/staging/octeon/ethernet-mem.c
+> index 78b6cb7..199059d 100644
+> --- a/drivers/staging/octeon/ethernet-mem.c
+> +++ b/drivers/staging/octeon/ethernet-mem.c
+> @@ -48,13 +48,8 @@ static int cvm_oct_fill_hw_skbuff(int pool, int size, int elements)
+>   	while (freed) {
+>
+>   		struct sk_buff *skb = dev_alloc_skb(size + 256);
+> -		if (unlikely(skb == NULL)) {
+> -			pr_warning
+> -			    ("Failed to allocate skb for hardware pool %d\n",
+> -			     pool);
+> +		if (unlikely(skb == NULL))
+>   			break;
+> -		}
+> -
+>   		skb_reserve(skb, 256 - (((unsigned long)skb->data) & 0x7f));
+>   		*(struct sk_buff **)(skb->data - sizeof(void *)) = skb;
+>   		cvmx_fpa_free(skb->data, pool, DONT_WRITEBACK(size / 128));
 > diff --git a/drivers/staging/octeon/ethernet-rx.c b/drivers/staging/octeon/ethernet-rx.c
-> index 34afc16..10e5416 100644
+> index 10e5416..e14a1bb 100644
 > --- a/drivers/staging/octeon/ethernet-rx.c
 > +++ b/drivers/staging/octeon/ethernet-rx.c
-> @@ -303,6 +303,7 @@ static int cvm_oct_napi_poll(struct napi_struct *napi, int budget)
->   			if (backlog > budget * cores_in_use && napi != NULL)
->   				cvm_oct_enable_one_cpu();
->   		}
-> +		rx_count++;
->
->   		skb_in_hw = USE_SKBUFFS_IN_HW && work->word2.s.bufs == 1;
->   		if (likely(skb_in_hw)) {
-> @@ -429,7 +430,6 @@ static int cvm_oct_napi_poll(struct napi_struct *napi, int budget)
->   #endif
->   				}
->   				netif_receive_skb(skb);
-> -				rx_count++;
->   			} else {
->   				/* Drop any packet received for a device that isn't up */
->   				/*
+> @@ -337,9 +337,6 @@ static int cvm_oct_napi_poll(struct napi_struct *napi, int budget)
+>   			 */
+>   			skb = dev_alloc_skb(work->len);
+>   			if (!skb) {
+> -				printk_ratelimited("Port %d failed to allocate "
+> -						   "skbuff, packet dropped\n",
+> -						   work->ipprt);
+>   				cvm_oct_free_work(work);
+>   				continue;
+>   			}
 >

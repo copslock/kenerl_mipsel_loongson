@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Sep 2013 11:48:54 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:14241 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6815989Ab3IFJswLU11G (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 6 Sep 2013 11:48:52 +0200
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH] MIPS: Kconfig: CMP support needs to select SMP as well
-Date:   Fri, 6 Sep 2013 10:47:26 +0100
-Message-ID: <1378460846-961-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.3.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Sep 2013 23:47:55 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:44446 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822195Ab3IFVrjcVOyQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Sep 2013 23:47:39 +0200
+Date:   Fri, 6 Sep 2013 22:47:39 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: DECstation HRT calibration bug fixes
+In-Reply-To: <20130905180825.GB11592@linux-mips.org>
+Message-ID: <alpine.LFD.2.03.1309052118560.11570@linux-mips.org>
+References: <alpine.LFD.2.03.1309041410160.11570@linux-mips.org> <20130905180825.GB11592@linux-mips.org>
+User-Agent: Alpine 2.03 (LFD 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.31]
-X-SEF-Processed: 7_3_0_01192__2013_09_06_10_48_46
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37773
+X-archive-position: 37774
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,51 +35,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The CMP code is only designed to work with SMP configurations.
-Fixes multiple build problems on certain randconfigs:
+On Thu, 5 Sep 2013, Ralf Baechle wrote:
 
-In file included from arch/mips/kernel/smp-cmp.c:34:0:
-arch/mips/include/asm/smp.h:28:0:
-error: "raw_smp_processor_id" redefined [-Werror]
+> > This change corrects DECstation HRT calibration, by removing the following 
+> > bugs:
+> 
+> Hmm...  Seems this needs to be applied to virtually every older kernel
+> as well almost back to the dawn?
 
-In file included from include/linux/sched.h:30:0,
-from arch/mips/kernel/smp-cmp.c:22:
-include/linux/smp.h:135:0: note: this is the location of the
-previous definition
+ Yeah, any version that's still considered maintained; regrettably I've 
+lost track of what the current practices are.  What about the R4k timer 
+erratum workaround fix I sent the other day?  I'll have another small fix 
+in this area yet, for a hopefully better decision on what to select from 
+the timers available on various DECstation systems that have small 
+differences among them.
 
-In file included from arch/mips/kernel/smp-cmp.c:34:0:
-arch/mips/include/asm/smp.h:57:20:
-error: redefinition of 'smp_send_reschedule'
+> Great to see you backon the DECstations!
 
-In file included from include/linux/sched.h:30:0,
-from arch/mips/kernel/smp-cmp.c:22:
-include/linux/smp.h:179:20: note: previous
-definition of 'smp_send_reschedule' was here
+ I'm glad to have some time to have a look.
 
-In file included from arch/mips/kernel/smp-cmp.c:34:0:
-arch/mips/include/asm/smp.h: In function 'smp_send_reschedule':
-arch/mips/include/asm/smp.h:61:8:
-error: dereferencing pointer to incomplete type
-[...]
+ The platform seems to suffer from surprisingly little bitrot, there are 
+some issues with the system clock as handled with these patches and with 
+the RTC -- regrettably drivers/char/rtc.c isn't selectable anymore (any 
+particular reason for that?) and the potential rtclib drivers 
+(drivers/rtc/rtc-cmos.c or drivers/rtc/rtc-m48t86.c) refuse to cooperate 
+with hardware.  Also the IRQ handling latency has become high enough now 
+for the serial driver to lose characters received at 115200bps on the 
+R3400 system (the R4400 one is fast enough to cope).  Other than these I 
+haven't noticed any issues with the 32-bit kernel -- that in a proper 
+classic style netboots smoothly albeit a bit slowly via MOP over FDDI and 
+fully cooperates with the userland.
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
-This patch is for the upstream-sfr/mips-for-linux-next tree
----
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ Unfortunately that can't be said of the 64-bit kernel that hangs solidly 
+(reset does not help, need to power-cycle) early on, after:
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 04bdd82..6d8082d 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1985,6 +1985,7 @@ config MIPS_VPE_APSP_API
- config MIPS_CMP
- 	bool "MIPS CMP framework support"
- 	depends on SYS_SUPPORTS_MIPS_CMP
-+	select SMP
- 	select SYNC_R4K
- 	select SYS_SUPPORTS_SMP
- 	select SYS_SUPPORTS_SCHED_SMT if SMP
--- 
-1.8.3.2
+Linux version 3.11.0-rc2 (macro@tp) (gcc version 4.1.2) #1 Sun Sep 1 18:06:20 BST 2013
+bootconsole [prom0] enabled
+
+has been printed.  The next line should be:
+
+This is a DECstation 5000/2x0
+
+So the hang happens somewhere between register_prom_console and 
+prom_identify_arch, both called from prom_init, very early indeed.  I'll 
+have a look into it next; hopefully it's something silly rather than my 
+old trusty compiler getting confused with something added somewhere 
+meanwhile.  This is an R4400SC BTW, initial revision (PRId: 00000440).
+
+ I'm not sure what to do about the RTC yet, and the Zilog SCC@115200bps 
+case is probably lost even though the chip has been wired for DMA in the 
+DECstation.
+
+  Maciej

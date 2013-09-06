@@ -1,40 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Sep 2013 10:00:32 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:42312 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6817548Ab3IFIA3xDU89 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 6 Sep 2013 10:00:29 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.5/8.14.4) with ESMTP id r8680QcW026782;
-        Fri, 6 Sep 2013 10:00:26 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.5/8.14.5/Submit) id r8680OMP026781;
-        Fri, 6 Sep 2013 10:00:24 +0200
-Date:   Fri, 6 Sep 2013 10:00:24 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Prem Mallappa <prem.mallappa@gmail.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Prem Mallappa <pmallappa@caviumnetworks.com>
-Subject: Re: [PATCH v2 2/2] MIPS: KEXEC: Fixes Random crashes while loading
- crashkernel
-Message-ID: <20130906080023.GD11592@linux-mips.org>
-References: <1378317384-9923-1-git-send-email-pmallappa@caviumnetworks.com>
- <20130905181222.GC11592@linux-mips.org>
- <5228CDEF.4010609@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Sep 2013 11:48:54 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:14241 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6815989Ab3IFJswLU11G (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 6 Sep 2013 11:48:52 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: Kconfig: CMP support needs to select SMP as well
+Date:   Fri, 6 Sep 2013 10:47:26 +0100
+Message-ID: <1378460846-961-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.3.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5228CDEF.4010609@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.31]
+X-SEF-Processed: 7_3_0_01192__2013_09_06_10_48_46
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37772
+X-archive-position: 37773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,32 +35,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Sep 05, 2013 at 11:31:11AM -0700, David Daney wrote:
+The CMP code is only designed to work with SMP configurations.
+Fixes multiple build problems on certain randconfigs:
 
-> >Prem,
-> >
-> >I only see patch 2/2.  I wonder, has 1/2 been lost in transit or is there
-> >only the 2/2 patch?
-> >
-> 
-> V1 of 1/2 didn't need revision, so it can be applied as is:
-> 
-> http://patchwork.linux-mips.org/patch/5786/
+In file included from arch/mips/kernel/smp-cmp.c:34:0:
+arch/mips/include/asm/smp.h:28:0:
+error: "raw_smp_processor_id" redefined [-Werror]
 
-I've done some cosmetic changes.  Formatting with tabs, as per CodingStyle
-use
+In file included from include/linux/sched.h:30:0,
+from arch/mips/kernel/smp-cmp.c:22:
+include/linux/smp.h:135:0: note: this is the location of the
+previous definition
 
-	/*
-	 *
-	 */
+In file included from arch/mips/kernel/smp-cmp.c:34:0:
+arch/mips/include/asm/smp.h:57:20:
+error: redefinition of 'smp_send_reschedule'
 
-style comments, not
+In file included from include/linux/sched.h:30:0,
+from arch/mips/kernel/smp-cmp.c:22:
+include/linux/smp.h:179:20: note: previous
+definition of 'smp_send_reschedule' was here
 
-	/*
-	*
-	*/
+In file included from arch/mips/kernel/smp-cmp.c:34:0:
+arch/mips/include/asm/smp.h: In function 'smp_send_reschedule':
+arch/mips/include/asm/smp.h:61:8:
+error: dereferencing pointer to incomplete type
+[...]
 
-And finally use beqz rather than beq $reg, zero.  Anyway, Prem, thanks
-for debugging this & patch applied!
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+This patch is for the upstream-sfr/mips-for-linux-next tree
+---
+ arch/mips/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-  Ralf
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 04bdd82..6d8082d 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1985,6 +1985,7 @@ config MIPS_VPE_APSP_API
+ config MIPS_CMP
+ 	bool "MIPS CMP framework support"
+ 	depends on SYS_SUPPORTS_MIPS_CMP
++	select SMP
+ 	select SYNC_R4K
+ 	select SYS_SUPPORTS_SMP
+ 	select SYS_SUPPORTS_SCHED_SMT if SMP
+-- 
+1.8.3.2

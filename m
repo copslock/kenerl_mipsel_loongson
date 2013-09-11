@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Sep 2013 12:35:38 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:3454 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Sep 2013 12:52:14 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:4252 "EHLO mms3.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822429Ab3IKKfaV535S (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Sep 2013 12:35:30 +0200
-Received: from [10.9.208.57] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Wed, 11 Sep 2013 03:28:40 -0700
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Wed, 11 Sep 2013 03:35:02 -0700
+        id S6822429Ab3IKKwLFrozF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 Sep 2013 12:52:11 +0200
+Received: from [10.9.208.55] by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Wed, 11 Sep 2013 03:41:25 -0700
+X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+ IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Wed, 11 Sep 2013 03:51:53 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
- Server id 14.1.438.0; Wed, 11 Sep 2013 03:35:01 -0700
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
+ Server id 14.1.438.0; Wed, 11 Sep 2013 03:51:53 -0700
 Received: from fainelli-desktop.broadcom.com (
  dhcp-lab-brsb-10.bri.broadcom.com [10.178.7.10]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 7176B1A4B; Wed, 11
- Sep 2013 03:35:00 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 96F771A49; Wed, 11
+ Sep 2013 03:51:52 -0700 (PDT)
 From:   "Florian Fainelli" <f.fainelli@gmail.com>
 To:     linux-mips@linux-mips.org
 cc:     ralf@linux-mips.org, blogic@openwrt.org, james.hogan@imgtec.com,
-        richard@nod.at, "Florian Fainelli" <f.fainelli@gmail.com>
-Subject: [PATCH v2] MIPS: do not allow building vmlinuz when !ZBOOT
-Date:   Wed, 11 Sep 2013 11:34:48 +0100
-Message-ID: <1378895688-16641-1-git-send-email-f.fainelli@gmail.com>
+        "Florian Fainelli" <f.fainelli@gmail.com>
+Subject: [PATCH] MIPS: ZBOOT: support XZ compression scheme
+Date:   Wed, 11 Sep 2013 11:51:41 +0100
+Message-ID: <1378896701-28166-1-git-send-email-f.fainelli@gmail.com>
 X-Mailer: git-send-email 1.8.1.2
 MIME-Version: 1.0
-X-WSS-ID: 7E2E9A521R089625723-01-01
+X-WSS-ID: 7E2E975F2L883481142-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37782
+X-archive-position: 37783
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,58 +49,89 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When CONFIG_SYS_SUPPORTS_ZBOOT is not enabled, we will still try to
-build the decompressor code in arch/mips/boot/compressed as a
-dependency for producing the vmlinuz target and this will result in
-the following build failure:
+Add support for the XZ compression scheme in the ZBOOT decompression
+stub, in order to support it we need to:
 
-  OBJCOPY arch/mips/boot/compressed/vmlinux.bin
-arch/mips/boot/compressed/decompress.c: In function 'decompress_kernel':
-arch/mips/boot/compressed/decompress.c:105:2: error: implicit
-declaration of function 'decompress'
-make[1]: *** [arch/mips/boot/compressed/decompress.o] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [vmlinuz] Error 2
-
-This is a genuine build failure because we have no implementation for
-the decompress() function body since no kernel compression method
-defined in CONFIG_KERNEL_(GZIP,BZIP2...) has been enabled.
-
-arch/mips/Makefile already guards the install target for the "vmlinuz"
-binary with a proper ifdef CONFIG_SYS_SUPPORTS_ZBOOT, we now also do the
-same if we attempt to do a "make vmlinuz" and show that
-CONFIG_SYS_SUPPORTS_ZBOOT is not enabled.
+- select the "xzkern" compression tool to compress the vmlinux.bin
+  payload
+- link with ashldi3.o for xz_dec_run() to work
+- memcpy() is also required for decompress_unxz.c so we share the
+  implementation between GZIP and XZ
 
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
-Changes since v1:
-- rebased on top of James Hogan changes in mips-for-linux-next
-- ensure that vmlinuz depends on FORCE
-- use /bin/false to properly report an error
+ arch/mips/Kconfig                      | 1 +
+ arch/mips/boot/compressed/Makefile     | 5 +++++
+ arch/mips/boot/compressed/decompress.c | 8 +++++++-
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
- arch/mips/Makefile | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 75a36ad..55af9d7 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -305,10 +305,16 @@ $(boot-y): $(vmlinux-32) FORCE
- 	$(Q)$(MAKE) $(build)=arch/mips/boot VMLINUX=$(vmlinux-32) \
- 		$(bootvars-y) arch/mips/boot/$@
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index c291790..a6ac9a9 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1494,6 +1494,7 @@ config SYS_SUPPORTS_ZBOOT
+ 	select HAVE_KERNEL_BZIP2
+ 	select HAVE_KERNEL_LZMA
+ 	select HAVE_KERNEL_LZO
++	select HAVE_KERNEL_XZ
  
-+ifdef CONFIG_SYS_SUPPORTS_ZBOOT
- # boot/compressed
- $(bootz-y): $(vmlinux-32) FORCE
- 	$(Q)$(MAKE) $(build)=arch/mips/boot/compressed \
- 		$(bootvars-y) 32bit-bfd=$(32bit-bfd) $@
-+else
-+vmlinuz: FORCE
-+	@echo '   CONFIG_SYS_SUPPORTS_ZBOOT is not enabled'; \
-+	/bin/false
+ config SYS_SUPPORTS_ZBOOT_UART16550
+ 	bool
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index 0048c08..c1f8f07 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -37,6 +37,10 @@ vmlinuzobjs-$(CONFIG_SYS_SUPPORTS_ZBOOT_UART16550) += $(obj)/uart-16550.o
+ vmlinuzobjs-$(CONFIG_MIPS_ALCHEMY)		   += $(obj)/uart-alchemy.o
+ endif
+ 
++ifdef CONFIG_KERNEL_XZ
++vmlinuzobjs-y += $(obj)/../../lib/ashldi3.o
 +endif
++
+ targets += vmlinux.bin
+ OBJCOPYFLAGS_vmlinux.bin := $(OBJCOPYFLAGS) -O binary -R .comment -S
+ $(obj)/vmlinux.bin: $(KBUILD_IMAGE) FORCE
+@@ -46,6 +50,7 @@ tool_$(CONFIG_KERNEL_GZIP)    = gzip
+ tool_$(CONFIG_KERNEL_BZIP2)   = bzip2
+ tool_$(CONFIG_KERNEL_LZMA)    = lzma
+ tool_$(CONFIG_KERNEL_LZO)     = lzo
++tool_$(CONFIG_KERNEL_XZ)      = xzkern
  
+ targets += vmlinux.bin.z
+ $(obj)/vmlinux.bin.z: $(obj)/vmlinux.bin FORCE
+diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
+index 2c95730..cff7b7d 100644
+--- a/arch/mips/boot/compressed/decompress.c
++++ b/arch/mips/boot/compressed/decompress.c
+@@ -43,7 +43,7 @@ void error(char *x)
+ /* activate the code for pre-boot environment */
+ #define STATIC static
  
- CLEAN_FILES += vmlinux.32 vmlinux.64
+-#ifdef CONFIG_KERNEL_GZIP
++#if defined(CONFIG_KERNEL_GZIP) || defined(CONFIG_KERNEL_XZ)
+ void *memcpy(void *dest, const void *src, size_t n)
+ {
+ 	int i;
+@@ -54,6 +54,8 @@ void *memcpy(void *dest, const void *src, size_t n)
+ 		d[i] = s[i];
+ 	return dest;
+ }
++#endif
++#ifdef CONFIG_KERNEL_GZIP
+ #include "../../../../lib/decompress_inflate.c"
+ #endif
+ 
+@@ -78,6 +80,10 @@ void *memset(void *s, int c, size_t n)
+ #include "../../../../lib/decompress_unlzo.c"
+ #endif
+ 
++#ifdef CONFIG_KERNEL_XZ
++#include "../../../../lib/decompress_unxz.c"
++#endif
++
+ void decompress_kernel(unsigned long boot_heap_start)
+ {
+ 	unsigned long zimage_start, zimage_size;
 -- 
 1.8.1.2

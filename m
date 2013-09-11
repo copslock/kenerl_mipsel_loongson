@@ -1,32 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Sep 2013 13:33:37 +0200 (CEST)
-Received: from merlin.infradead.org ([205.233.59.134]:34263 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6827301Ab3IJLd3kXctP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Sep 2013 13:33:29 +0200
-Received: from dhcp-077-248-225-117.chello.nl ([77.248.225.117] helo=twins)
-        by merlin.infradead.org with esmtpsa (Exim 4.80.1 #2 (Red Hat Linux))
-        id 1VJMCF-0000zx-6a; Tue, 10 Sep 2013 11:33:27 +0000
-Received: by twins (Postfix, from userid 1000)
-        id D478C841A696; Tue, 10 Sep 2013 13:33:22 +0200 (CEST)
-Date:   Tue, 10 Sep 2013 13:33:22 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     ralf@linux-mips.org
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [RFC][PATCH] MIPS: Use pagefault_{dis,en}able for k{,un}map_coherent
-Message-ID: <20130910113322.GE31370@twins.programming.kicks-ass.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2012-12-30)
-Return-Path: <peterz@infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Sep 2013 02:36:21 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:51195 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6831312Ab3IKAgSnHpn4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Sep 2013 02:36:18 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <Steven.Hill@imgtec.com>)
+        id 1VJYPi-00006i-Am; Tue, 10 Sep 2013 19:36:10 -0500
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+To:     linux-mips@linux-mips.org
+Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>, ralf@linux-mips.org,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>
+Subject: [PATCH] MIPS: Fix VGA_MAP_MEM macro.
+Date:   Tue, 10 Sep 2013 19:36:04 -0500
+Message-Id: <1378859764-17544-1-git-send-email-Steven.Hill@imgtec.com>
+X-Mailer: git-send-email 1.7.9.5
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37778
+X-archive-position: 37779
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,30 +36,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Ralf,
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-I was poking about the preempt_count muck and stumbled upon this..
+Use the CKSEG1ADDR macro when calculating VGA_MAP_MEM.
 
-Should you be using the pagefault_*() methods here?
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+---
+ arch/mips/include/asm/vga.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -124,7 +124,7 @@ void *kmap_coherent(struct page *page, u
+diff --git a/arch/mips/include/asm/vga.h b/arch/mips/include/asm/vga.h
+index f4cff7e..4795206 100644
+--- a/arch/mips/include/asm/vga.h
++++ b/arch/mips/include/asm/vga.h
+@@ -13,7 +13,7 @@
+  *	access the videoram directly without any black magic.
+  */
  
- 	BUG_ON(Page_dcache_dirty(page));
+-#define VGA_MAP_MEM(x, s)	(0xb0000000L + (unsigned long)(x))
++#define VGA_MAP_MEM(x, s)	CKSEG1ADDR(0x10000000L + (unsigned long)(x))
  
--	inc_preempt_count();
-+	pagefault_disable();
- 	idx = (addr >> PAGE_SHIFT) & (FIX_N_COLOURS - 1);
- #ifdef CONFIG_MIPS_MT_SMTC
- 	idx += FIX_N_COLOURS * smp_processor_id() +
-@@ -193,8 +193,7 @@ void kunmap_coherent(void)
- 	write_c0_entryhi(old_ctx);
- 	EXIT_CRITICAL(flags);
- #endif
--	dec_preempt_count();
--	preempt_check_resched();
-+	pagefault_enable();
- }
- 
- void copy_user_highpage(struct page *to, struct page *from,
+ #define vga_readb(x)	(*(x))
+ #define vga_writeb(x, y)	(*(y) = (x))
+-- 
+1.7.9.5

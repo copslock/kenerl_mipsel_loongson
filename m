@@ -1,43 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Sep 2013 16:42:35 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:3476 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Sep 2013 16:57:49 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:61199 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6818323Ab3ILOmdEXOna (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 12 Sep 2013 16:42:33 +0200
-Received: from [10.9.208.55] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Thu, 12 Sep 2013 07:35:57 -0700
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Thu, 12 Sep 2013 07:42:19 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Thu, 12 Sep 2013 07:42:19 -0700
-Received: from fainelli-desktop.broadcom.com (
- dhcp-lab-brsb-10.bri.broadcom.com [10.178.7.10]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id A799D1A48; Thu, 12
- Sep 2013 07:42:18 -0700 (PDT)
-From:   "Florian Fainelli" <f.fainelli@gmail.com>
-To:     linux-mips@linux-mips.org
-cc:     ralf@linux-mips.org, blogic@openwrt.org, james.hogan@imgtec.com,
-        "Florian Fainelli" <f.fainelli@gmail.com>
-Subject: [PATCH] MIPS: ZBOOT: define program header for text loadable
- segment
-Date:   Thu, 12 Sep 2013 15:42:05 +0100
-Message-ID: <1378996925-6338-1-git-send-email-f.fainelli@gmail.com>
-X-Mailer: git-send-email 1.8.1.2
+        id S6817315Ab3ILO5q7M0GU convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Sep 2013 16:57:46 +0200
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+To:     Paul Burton <Paul.Burton@imgtec.com>
+CC:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Fix errata for some 1074K cores.
+Thread-Topic: [PATCH] MIPS: Fix errata for some 1074K cores.
+Thread-Index: AQHOrynF0sZcYE/SBUSzvM9JZ+mYmJnCTuwA///jmEE=
+Date:   Thu, 12 Sep 2013 14:57:37 +0000
+Message-ID: <j0d17e3bxlvp3famj4e32xv9.1378997855738@email.android.com>
+References: <1378929708-7253-1-git-send-email-Steven.Hill@imgtec.com>,<52318BC6.7030903@imgtec.com>
+In-Reply-To: <52318BC6.7030903@imgtec.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-X-WSS-ID: 7E2F0EC71R090098692-01-01
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+X-SEF-Processed: 7_3_0_01192__2013_09_12_15_57_41
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37803
+X-archive-position: 37804
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,40 +44,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There is currently no corresponding ELF program header for the "text"
-loadable segment which is confusing for some bootloader out there such
-as CFE because it expects to find a program header matching the segment
-it is trying to load. The Linux kernel ELF binary "vmlinux" has a
-similar program header for the text segment so we just mimic this here
-too.
+Treat it as is.
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- arch/mips/boot/compressed/ld.script | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+It is a dirty laundry of HW engineers and you may need to communicate with them or read Errata docs on CPU.
 
-diff --git a/arch/mips/boot/compressed/ld.script b/arch/mips/boot/compressed/ld.script
-index 8e6b07c..5a33409 100644
---- a/arch/mips/boot/compressed/ld.script
-+++ b/arch/mips/boot/compressed/ld.script
-@@ -8,6 +8,9 @@
- 
- OUTPUT_ARCH(mips)
- ENTRY(start)
-+PHDRS {
-+	text PT_LOAD FLAGS(7); /* RWX */
-+}
- SECTIONS
- {
- 	/* Text and read-only data */
-@@ -15,7 +18,7 @@ SECTIONS
- 	.text : {
- 		*(.text)
- 		*(.rodata)
--	}
-+	}: text
- 	/* End of text section */
- 
- 	/* Writable data */
--- 
-1.8.1.2
+If it is about a way how it is written - ask Steven, initially it was in mainland probe code but he think it should be a separate function. I just corrected him, pointing that erratas on 74K and 1074K are different. But because he insist on having the same CPU_74K for both, so...
+
+- Leonid.
+
+PS. If you think the code is bad, please be specific beyond broad blame.
+
+
+Paul Burton <Paul.Burton@imgtec.com> wrote:
+
+
+Could you expand on that please? What is errata E16, what are "some
+problems" and how does this fix those problems? The commit message is
+somewhat lacking...
+
+Paul
+
+On 11/09/13 21:01, Steven J. Hill wrote:
+> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>
+> Fixes errata E16 for some problems on 1074K cores.
+>
+> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+> ---
+>   arch/mips/mm/c-r4k.c |   12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+> index f749f68..8d3ed32 100644
+> --- a/arch/mips/mm/c-r4k.c
+> +++ b/arch/mips/mm/c-r4k.c
+> @@ -786,12 +786,12 @@ static inline void alias_74k_erratum(struct cpuinfo_mips *c)
+>        * aliases. In this case it is better to treat the cache as always
+>        * having aliases.
+>        */
+> -     if ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(2, 4, 0))
+> -             c->dcache.flags |= MIPS_CACHE_VTAG;
+> -     if ((c->processor_id & 0xff) == PRID_REV_ENCODE_332(2, 4, 0))
+> -             write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
+> -     if (((c->processor_id & 0xff00) == PRID_IMP_1074K) &&
+> -         ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(1, 1, 0))) {
+> +     if ((c->processor_id & 0xff00) != PRID_IMP_1074K) {
+> +             if ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(2, 4, 0))
+> +                     c->dcache.flags |= MIPS_CACHE_VTAG;
+> +             if ((c->processor_id & 0xff) == PRID_REV_ENCODE_332(2, 4, 0))
+> +                     write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
+> +     } else if ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(1, 1, 0)) {
+>               c->dcache.flags |= MIPS_CACHE_VTAG;
+>               write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
+>       }

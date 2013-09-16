@@ -1,42 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Sep 2013 17:56:01 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:4491 "EHLO mms2.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822318Ab3IPPzzVCCCL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 Sep 2013 17:55:55 +0200
-Received: from [10.9.208.57] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Mon, 16 Sep 2013 08:49:16 -0700
-X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Mon, 16 Sep 2013 08:55:40 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
- Server id 14.1.438.0; Mon, 16 Sep 2013 08:55:40 -0700
-Received: from fainelli-desktop.broadcom.com (
- dhcp-lab-brsb-10.bri.broadcom.com [10.178.7.10]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 03FA21A48; Mon, 16
- Sep 2013 08:55:38 -0700 (PDT)
-From:   "Florian Fainelli" <f.fainelli@gmail.com>
-To:     linux-mips@linux-mips.org
-cc:     ralf@linux-mips.org, blogic@openwrt.org, james.hogan@imgtec.com,
-        "Florian Fainelli" <f.fainelli@gmail.com>
-Subject: [PATCH v2] MIPS: ZBOOT: support LZ4 compression scheme
-Date:   Mon, 16 Sep 2013 16:55:20 +0100
-Message-ID: <1379346920-8569-1-git-send-email-f.fainelli@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2013 01:09:56 +0200 (CEST)
+Received: from mail-ob0-f181.google.com ([209.85.214.181]:57441 "EHLO
+        mail-ob0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822674Ab3IPXJvX4mKQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Sep 2013 01:09:51 +0200
+Received: by mail-ob0-f181.google.com with SMTP id gq1so4365441obb.26
+        for <multiple recipients>; Mon, 16 Sep 2013 16:09:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=FopL+BwdhGjle+Jth83DOJWsXFdAkldvkazcdyxuSK4=;
+        b=zIy48u/aY77LyQ5vHWe0V8og2bYtuWW09IvRXK4/g8l+zU4X1NclwhdFAY2ociuri2
+         NWjpy6jkX+7BZYtNMmP0c/nmJmXxeTqyJSy583J9znJVu7LWdLdDS67ClQFSba2jXxXw
+         3gFchn2LMlq/nebX4VDRJwQwGGIZeG8x8g+0jEUJ+4xy+qmaA/CqYOOGD/bxLR5RVjMi
+         hS/9q5/QUJZQK841p5WtwiAgLNUNdxRJEqcUs5qdYG51MXhwNAF46WPj1/ZfvjF4y71A
+         QJx/FXH8s9YsCIMzfJPozdGKLujWhpf72fAreObb6xGC2orXjtBm9Mfc6fR5O0XC3uaA
+         lbJg==
+X-Received: by 10.60.60.71 with SMTP id f7mr1012687oer.82.1379372985161;
+        Mon, 16 Sep 2013 16:09:45 -0700 (PDT)
+Received: from rob-laptop.calxeda.com ([173.226.190.126])
+        by mx.google.com with ESMTPSA id s14sm34574615oeo.1.1969.12.31.16.00.00
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Mon, 16 Sep 2013 16:09:44 -0700 (PDT)
+From:   Rob Herring <robherring2@gmail.com>
+To:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     Grant Likely <grant.likely@linaro.org>,
+        Rob Herring <rob.herring@calxeda.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 15/28] mips: use early_init_dt_scan
+Date:   Mon, 16 Sep 2013 18:09:11 -0500
+Message-Id: <1379372965-22359-16-git-send-email-robherring2@gmail.com>
 X-Mailer: git-send-email 1.8.1.2
-MIME-Version: 1.0
-X-WSS-ID: 7E29F7F61R091350747-01-01
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+In-Reply-To: <1379372965-22359-1-git-send-email-robherring2@gmail.com>
+References: <1379372965-22359-1-git-send-email-robherring2@gmail.com>
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37818
+X-archive-position: 37819
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: robherring2@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,75 +53,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add support for the LZ4 compression scheme in the ZBOOT decompression
-stub, in order to support it we need to:
+From: Rob Herring <rob.herring@calxeda.com>
 
-- select the "lz4" compression tool to compress the vmlinux.bin
-  payload
-- memcpy() is also required for decompress_unlz4.c so we share the
-  implementation between GZIP, XZ and now LZ4
+Convert mips to use new early_init_dt_scan function.
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Remove early_init_dt_scan_memory_arch
+
+Signed-off-by: Rob Herring <rob.herring@calxeda.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
 ---
-Ralf, John,
+ arch/mips/include/asm/prom.h |  3 ---
+ arch/mips/kernel/prom.c      | 39 +++------------------------------------
+ 2 files changed, 3 insertions(+), 39 deletions(-)
 
-This applied to the previous patch that I sent for XZ.
-Changes since v1:
-- s/XZ/LZ4/ in the commit message
-
- arch/mips/Kconfig                      | 1 +
- arch/mips/boot/compressed/Makefile     | 1 +
- arch/mips/boot/compressed/decompress.c | 7 ++++++-
- 3 files changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index a6ac9a9..ddf4fb0 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1492,6 +1492,7 @@ config SYS_SUPPORTS_ZBOOT
- 	bool
- 	select HAVE_KERNEL_GZIP
- 	select HAVE_KERNEL_BZIP2
-+	select HAVE_KERNEL_LZ4
- 	select HAVE_KERNEL_LZMA
- 	select HAVE_KERNEL_LZO
- 	select HAVE_KERNEL_XZ
-diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index c1f8f07..ca0c343 100644
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -48,6 +48,7 @@ $(obj)/vmlinux.bin: $(KBUILD_IMAGE) FORCE
+diff --git a/arch/mips/include/asm/prom.h b/arch/mips/include/asm/prom.h
+index 1e7e096..e3dbd0e 100644
+--- a/arch/mips/include/asm/prom.h
++++ b/arch/mips/include/asm/prom.h
+@@ -17,9 +17,6 @@
+ #include <linux/types.h>
+ #include <asm/bootinfo.h>
  
- tool_$(CONFIG_KERNEL_GZIP)    = gzip
- tool_$(CONFIG_KERNEL_BZIP2)   = bzip2
-+tool_$(CONFIG_KERNEL_LZ4)     = lz4
- tool_$(CONFIG_KERNEL_LZMA)    = lzma
- tool_$(CONFIG_KERNEL_LZO)     = lzo
- tool_$(CONFIG_KERNEL_XZ)      = xzkern
-diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
-index cff7b7d..a8c6fd6 100644
---- a/arch/mips/boot/compressed/decompress.c
-+++ b/arch/mips/boot/compressed/decompress.c
-@@ -43,7 +43,8 @@ void error(char *x)
- /* activate the code for pre-boot environment */
- #define STATIC static
+-extern int early_init_dt_scan_memory_arch(unsigned long node,
+-	const char *uname, int depth, void *data);
+-
+ extern void device_tree_init(void);
  
--#if defined(CONFIG_KERNEL_GZIP) || defined(CONFIG_KERNEL_XZ)
-+#if defined(CONFIG_KERNEL_GZIP) || defined(CONFIG_KERNEL_XZ) || \
-+	defined(CONFIG_KERNEL_LZ4)
- void *memcpy(void *dest, const void *src, size_t n)
+ static inline unsigned long pci_address_to_pio(phys_addr_t address)
+diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
+index 0fa0b69..67a4c53 100644
+--- a/arch/mips/kernel/prom.c
++++ b/arch/mips/kernel/prom.c
+@@ -17,8 +17,6 @@
+ #include <linux/debugfs.h>
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
+-#include <linux/of_irq.h>
+-#include <linux/of_platform.h>
+ 
+ #include <asm/page.h>
+ #include <asm/prom.h>
+@@ -40,13 +38,6 @@ char *mips_get_machine_name(void)
+ }
+ 
+ #ifdef CONFIG_OF
+-int __init early_init_dt_scan_memory_arch(unsigned long node,
+-					  const char *uname, int depth,
+-					  void *data)
+-{
+-	return early_init_dt_scan_memory(node, uname, depth, data);
+-}
+-
+ void __init early_init_dt_add_memory_arch(u64 base, u64 size)
  {
- 	int i;
-@@ -72,6 +73,10 @@ void *memset(void *s, int c, size_t n)
- #include "../../../../lib/decompress_bunzip2.c"
- #endif
+ 	return add_memory_region(base, size, BOOT_MEM_RAM);
+@@ -78,36 +69,12 @@ int __init early_init_dt_scan_model(unsigned long node,	const char *uname,
+ 	return 0;
+ }
  
-+#ifdef CONFIG_KERNEL_LZ4
-+#include "../../../../lib/decompress_unlz4.c"
-+#endif
-+
- #ifdef CONFIG_KERNEL_LZMA
- #include "../../../../lib/decompress_unlzma.c"
+-void __init early_init_devtree(void *params)
+-{
+-	/* Setup flat device-tree pointer */
+-	initial_boot_params = params;
+-
+-	/* Retrieve various informations from the /chosen node of the
+-	 * device-tree, including the platform type, initrd location and
+-	 * size, and more ...
+-	 */
+-	of_scan_flat_dt(early_init_dt_scan_chosen, arcs_cmdline);
+-
+-
+-	/* Scan memory nodes */
+-	of_scan_flat_dt(early_init_dt_scan_root, NULL);
+-	of_scan_flat_dt(early_init_dt_scan_memory_arch, NULL);
+-
+-	/* try to load the mips machine name */
+-	of_scan_flat_dt(early_init_dt_scan_model, NULL);
+-}
+-
+ void __init __dt_setup_arch(struct boot_param_header *bph)
+ {
+-	if (be32_to_cpu(bph->magic) != OF_DT_HEADER) {
+-		pr_err("DTB has bad magic, ignoring builtin OF DTB\n");
+-
++	if (!early_init_dt_scan(bph))
+ 		return;
+-	}
+-
+-	initial_boot_params = bph;
+ 
+-	early_init_devtree(initial_boot_params);
++	/* try to load the mips machine name */
++	of_scan_flat_dt(early_init_dt_scan_model, NULL);
+ }
  #endif
 -- 
 1.8.1.2

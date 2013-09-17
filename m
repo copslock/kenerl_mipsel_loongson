@@ -1,32 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2013 06:33:26 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:46053 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2013 10:13:43 +0200 (CEST)
+Received: from arrakis.dune.hu ([78.24.191.176]:59284 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827363Ab3IQEcy73Acr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Sep 2013 06:32:54 +0200
-Message-ID: <5237DB64.1020805@phrozen.org>
-Date:   Tue, 17 Sep 2013 06:32:36 +0200
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
-MIME-Version: 1.0
-To:     Rob Herring <robherring2@gmail.com>
-CC:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Grant Likely <grant.likely@linaro.org>,
-        Rob Herring <rob.herring@calxeda.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 15/28] mips: use early_init_dt_scan
-References: <1379372965-22359-1-git-send-email-robherring2@gmail.com> <1379372965-22359-16-git-send-email-robherring2@gmail.com>
-In-Reply-To: <1379372965-22359-16-git-send-email-robherring2@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <john@phrozen.org>
+        id S6827363Ab3IQINjfXBev (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Sep 2013 10:13:39 +0200
+Received: from arrakis.dune.hu (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 9404E28161B;
+        Tue, 17 Sep 2013 10:12:45 +0200 (CEST)
+Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by arrakis.dune.hu (Postfix) with ESMTPSA;
+        Tue, 17 Sep 2013 10:12:45 +0200 (CEST)
+From:   Gabor Juhos <juhosg@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH] MIPS: ath79: remove ar933x_uart_platform.h header
+Date:   Tue, 17 Sep 2013 10:13:29 +0200
+Message-Id: <1379405609-1861-1-git-send-email-juhosg@openwrt.org>
+X-Mailer: git-send-email 1.7.10
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37822
+X-archive-position: 37823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,111 +37,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 17/09/13 01:09, Rob Herring wrote:
-> From: Rob Herring<rob.herring@calxeda.com>
->
-> Convert mips to use new early_init_dt_scan function.
->
-> Remove early_init_dt_scan_memory_arch
->
-> Signed-off-by: Rob Herring<rob.herring@calxeda.com>
-> Cc: Ralf Baechle<ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> ---
+In commit 15ef17f622033455dcf03ae96256e474073a7b11
+(tty: ar933x_uart: use the clk API to get the uart
+clock), the AR933x UART driver for has been converted
+to get the uart clock rate via the clock API and it
+does not use the platform data anymore.
 
-Acked-by: John Crispin <blogic@openwrt.org>
+Remove the ar933x_uart_platform.h header file and get
+rid of the superfluous variable and initialization code
+in platform setup.
 
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+---
+ arch/mips/ath79/dev-common.c                         |    6 ------
+ .../include/asm/mach-ath79/ar933x_uart_platform.h    |   18 ------------------
+ 2 files changed, 24 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mach-ath79/ar933x_uart_platform.h
 
-Thanks for this series ...
-
-
-
-
-
-
-
->   arch/mips/include/asm/prom.h |  3 ---
->   arch/mips/kernel/prom.c      | 39 +++------------------------------------
->   2 files changed, 3 insertions(+), 39 deletions(-)
->
-> diff --git a/arch/mips/include/asm/prom.h b/arch/mips/include/asm/prom.h
-> index 1e7e096..e3dbd0e 100644
-> --- a/arch/mips/include/asm/prom.h
-> +++ b/arch/mips/include/asm/prom.h
-> @@ -17,9 +17,6 @@
->   #include<linux/types.h>
->   #include<asm/bootinfo.h>
->
-> -extern int early_init_dt_scan_memory_arch(unsigned long node,
-> -	const char *uname, int depth, void *data);
-> -
->   extern void device_tree_init(void);
->
->   static inline unsigned long pci_address_to_pio(phys_addr_t address)
-> diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
-> index 0fa0b69..67a4c53 100644
-> --- a/arch/mips/kernel/prom.c
-> +++ b/arch/mips/kernel/prom.c
-> @@ -17,8 +17,6 @@
->   #include<linux/debugfs.h>
->   #include<linux/of.h>
->   #include<linux/of_fdt.h>
-> -#include<linux/of_irq.h>
-> -#include<linux/of_platform.h>
->
->   #include<asm/page.h>
->   #include<asm/prom.h>
-> @@ -40,13 +38,6 @@ char *mips_get_machine_name(void)
->   }
->
->   #ifdef CONFIG_OF
-> -int __init early_init_dt_scan_memory_arch(unsigned long node,
-> -					  const char *uname, int depth,
-> -					  void *data)
-> -{
-> -	return early_init_dt_scan_memory(node, uname, depth, data);
-> -}
-> -
->   void __init early_init_dt_add_memory_arch(u64 base, u64 size)
->   {
->   	return add_memory_region(base, size, BOOT_MEM_RAM);
-> @@ -78,36 +69,12 @@ int __init early_init_dt_scan_model(unsigned long node,	const char *uname,
->   	return 0;
->   }
->
-> -void __init early_init_devtree(void *params)
-> -{
-> -	/* Setup flat device-tree pointer */
-> -	initial_boot_params = params;
-> -
-> -	/* Retrieve various informations from the /chosen node of the
-> -	 * device-tree, including the platform type, initrd location and
-> -	 * size, and more ...
-> -	 */
-> -	of_scan_flat_dt(early_init_dt_scan_chosen, arcs_cmdline);
-> -
-> -
-> -	/* Scan memory nodes */
-> -	of_scan_flat_dt(early_init_dt_scan_root, NULL);
-> -	of_scan_flat_dt(early_init_dt_scan_memory_arch, NULL);
-> -
-> -	/* try to load the mips machine name */
-> -	of_scan_flat_dt(early_init_dt_scan_model, NULL);
-> -}
-> -
->   void __init __dt_setup_arch(struct boot_param_header *bph)
->   {
-> -	if (be32_to_cpu(bph->magic) != OF_DT_HEADER) {
-> -		pr_err("DTB has bad magic, ignoring builtin OF DTB\n");
-> -
-> +	if (!early_init_dt_scan(bph))
->   		return;
-> -	}
-> -
-> -	initial_boot_params = bph;
->
-> -	early_init_devtree(initial_boot_params);
-> +	/* try to load the mips machine name */
-> +	of_scan_flat_dt(early_init_dt_scan_model, NULL);
->   }
->   #endif
+diff --git a/arch/mips/ath79/dev-common.c b/arch/mips/ath79/dev-common.c
+index c3b04c9..516225d 100644
+--- a/arch/mips/ath79/dev-common.c
++++ b/arch/mips/ath79/dev-common.c
+@@ -20,7 +20,6 @@
+ 
+ #include <asm/mach-ath79/ath79.h>
+ #include <asm/mach-ath79/ar71xx_regs.h>
+-#include <asm/mach-ath79/ar933x_uart_platform.h>
+ #include "common.h"
+ #include "dev-common.h"
+ 
+@@ -68,15 +67,11 @@ static struct resource ar933x_uart_resources[] = {
+ 	},
+ };
+ 
+-static struct ar933x_uart_platform_data ar933x_uart_data;
+ static struct platform_device ar933x_uart_device = {
+ 	.name		= "ar933x-uart",
+ 	.id		= -1,
+ 	.resource	= ar933x_uart_resources,
+ 	.num_resources	= ARRAY_SIZE(ar933x_uart_resources),
+-	.dev = {
+-		.platform_data	= &ar933x_uart_data,
+-	},
+ };
+ 
+ void __init ath79_register_uart(void)
+@@ -93,7 +88,6 @@ void __init ath79_register_uart(void)
+ 		ath79_uart_data[0].uartclk = uart_clk_rate;
+ 		platform_device_register(&ath79_uart_device);
+ 	} else if (soc_is_ar933x()) {
+-		ar933x_uart_data.uartclk = uart_clk_rate;
+ 		platform_device_register(&ar933x_uart_device);
+ 	} else {
+ 		BUG();
+diff --git a/arch/mips/include/asm/mach-ath79/ar933x_uart_platform.h b/arch/mips/include/asm/mach-ath79/ar933x_uart_platform.h
+deleted file mode 100644
+index 6cb30f2..0000000
+--- a/arch/mips/include/asm/mach-ath79/ar933x_uart_platform.h
++++ /dev/null
+@@ -1,18 +0,0 @@
+-/*
+- *  Platform data definition for Atheros AR933X UART
+- *
+- *  Copyright (C) 2011 Gabor Juhos <juhosg@openwrt.org>
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#ifndef _AR933X_UART_PLATFORM_H
+-#define _AR933X_UART_PLATFORM_H
+-
+-struct ar933x_uart_platform_data {
+-	unsigned	uartclk;
+-};
+-
+-#endif /* _AR933X_UART_PLATFORM_H */
+-- 
+1.7.10

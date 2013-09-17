@@ -1,35 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2013 18:02:24 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:46973 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2013 18:13:30 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:46996 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6861528Ab3IQQCWJhBI- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Sep 2013 18:02:22 +0200
+        id S6824764Ab3IQQN2TksFd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Sep 2013 18:13:28 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r8HG2Kbo001174;
-        Tue, 17 Sep 2013 18:02:20 +0200
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r8HGDR2t001575;
+        Tue, 17 Sep 2013 18:13:27 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r8HG2JZX001173;
-        Tue, 17 Sep 2013 18:02:19 +0200
-Date:   Tue, 17 Sep 2013 18:02:19 +0200
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r8HGDR5i001574;
+        Tue, 17 Sep 2013 18:13:27 +0200
+Date:   Tue, 17 Sep 2013 18:13:27 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Markos Chandras <Markos.Chandras@imgtec.com>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Fix accessing to per-cpu data when flushing the
- cache
-Message-ID: <20130917160219.GF22468@linux-mips.org>
-References: <1379411005-20829-1-git-send-email-markos.chandras@imgtec.com>
- <20130917104431.GB22468@linux-mips.org>
- <5238353B.9050001@imgtec.com>
- <20130917114356.GE22468@linux-mips.org>
+Subject: Re: [PATCH v2] MIPS: DECstation I/O ASIC DMA interrupt handling fix
+Message-ID: <20130917161327.GG22468@linux-mips.org>
+References: <alpine.LFD.2.03.1309171613160.5967@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20130917114356.GE22468@linux-mips.org>
+In-Reply-To: <alpine.LFD.2.03.1309171613160.5967@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37834
+X-archive-position: 37835
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,25 +42,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Sep 17, 2013 at 01:43:56PM +0200, Ralf Baechle wrote:
+On Tue, Sep 17, 2013 at 04:40:39PM +0100, Maciej W. Rozycki wrote:
 
-> > >I'd prefer if we change the caller otherwise depending on the platform
-> > >a single cache flush might involve several preempt_disable/-enable
-> > >invocations.  Something like below.
-> > >
-> > >And it also keeps the header file more usable outside the core kernel
-> > >which Florian's recent zboot a little easier.
-> > >
-> > 
-> > Hi Ralf,
-> > 
-> > Changing the caller instead of the function in the header file looks
-> > good to me. Thanks for fixing it.
-> 
-> I think in the end the patch below is the better way of fixing it.
+>  I see you have applied the original change after all; I'd prefer it to be 
+> dropped to avoid cluttering the history, but please let me know if you 
+> need an incremental change instead.
 
-No, it's not.  Most systems have identical caches for all processors
-in a system but there are exceptions, so my first patch is the right
-one.
+The first patch is already upstream in 3.12-rc1, so I will need an
+incremental patch.
+
+Thanks,
 
   Ralf

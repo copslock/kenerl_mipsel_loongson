@@ -1,30 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2013 10:13:43 +0200 (CEST)
-Received: from arrakis.dune.hu ([78.24.191.176]:59284 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827363Ab3IQINjfXBev (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Sep 2013 10:13:39 +0200
-Received: from arrakis.dune.hu (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 9404E28161B;
-        Tue, 17 Sep 2013 10:12:45 +0200 (CEST)
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA;
-        Tue, 17 Sep 2013 10:12:45 +0200 (CEST)
-From:   Gabor Juhos <juhosg@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH] MIPS: ath79: remove ar933x_uart_platform.h header
-Date:   Tue, 17 Sep 2013 10:13:29 +0200
-Message-Id: <1379405609-1861-1-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.10
-Return-Path: <juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2013 10:25:59 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:45535 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6860907Ab3IQIZxoUIcQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Sep 2013 10:25:53 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r8H8PmhU022538;
+        Tue, 17 Sep 2013 10:25:48 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r8H8Pl2o022537;
+        Tue, 17 Sep 2013 10:25:47 +0200
+Date:   Tue, 17 Sep 2013 10:25:47 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Reduce code size for MIPS32R2 platforms.
+Message-ID: <20130917082547.GA22468@linux-mips.org>
+References: <1354857289-28828-1-git-send-email-sjhill@mips.com>
+ <20121207150946.GA27226@linux-mips.org>
+ <20130627155816.GF10727@linux-mips.org>
+ <51CC63E1.3080407@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <51CC63E1.3080407@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37823
+X-archive-position: 37824
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,82 +45,8 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In commit 15ef17f622033455dcf03ae96256e474073a7b11
-(tty: ar933x_uart: use the clk API to get the uart
-clock), the AR933x UART driver for has been converted
-to get the uart clock rate via the clock API and it
-does not use the platform data anymore.
+Here's another, hopefully final iteration of this patch.  I now have
+another patch, the fix for the get_cycles() issue that depends on this
+so would like to push this into 2.12, if still possible.
 
-Remove the ar933x_uart_platform.h header file and get
-rid of the superfluous variable and initialization code
-in platform setup.
-
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
----
- arch/mips/ath79/dev-common.c                         |    6 ------
- .../include/asm/mach-ath79/ar933x_uart_platform.h    |   18 ------------------
- 2 files changed, 24 deletions(-)
- delete mode 100644 arch/mips/include/asm/mach-ath79/ar933x_uart_platform.h
-
-diff --git a/arch/mips/ath79/dev-common.c b/arch/mips/ath79/dev-common.c
-index c3b04c9..516225d 100644
---- a/arch/mips/ath79/dev-common.c
-+++ b/arch/mips/ath79/dev-common.c
-@@ -20,7 +20,6 @@
- 
- #include <asm/mach-ath79/ath79.h>
- #include <asm/mach-ath79/ar71xx_regs.h>
--#include <asm/mach-ath79/ar933x_uart_platform.h>
- #include "common.h"
- #include "dev-common.h"
- 
-@@ -68,15 +67,11 @@ static struct resource ar933x_uart_resources[] = {
- 	},
- };
- 
--static struct ar933x_uart_platform_data ar933x_uart_data;
- static struct platform_device ar933x_uart_device = {
- 	.name		= "ar933x-uart",
- 	.id		= -1,
- 	.resource	= ar933x_uart_resources,
- 	.num_resources	= ARRAY_SIZE(ar933x_uart_resources),
--	.dev = {
--		.platform_data	= &ar933x_uart_data,
--	},
- };
- 
- void __init ath79_register_uart(void)
-@@ -93,7 +88,6 @@ void __init ath79_register_uart(void)
- 		ath79_uart_data[0].uartclk = uart_clk_rate;
- 		platform_device_register(&ath79_uart_device);
- 	} else if (soc_is_ar933x()) {
--		ar933x_uart_data.uartclk = uart_clk_rate;
- 		platform_device_register(&ar933x_uart_device);
- 	} else {
- 		BUG();
-diff --git a/arch/mips/include/asm/mach-ath79/ar933x_uart_platform.h b/arch/mips/include/asm/mach-ath79/ar933x_uart_platform.h
-deleted file mode 100644
-index 6cb30f2..0000000
---- a/arch/mips/include/asm/mach-ath79/ar933x_uart_platform.h
-+++ /dev/null
-@@ -1,18 +0,0 @@
--/*
-- *  Platform data definition for Atheros AR933X UART
-- *
-- *  Copyright (C) 2011 Gabor Juhos <juhosg@openwrt.org>
-- *
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under the terms of the GNU General Public License version 2 as published
-- *  by the Free Software Foundation.
-- */
--
--#ifndef _AR933X_UART_PLATFORM_H
--#define _AR933X_UART_PLATFORM_H
--
--struct ar933x_uart_platform_data {
--	unsigned	uartclk;
--};
--
--#endif /* _AR933X_UART_PLATFORM_H */
--- 
-1.7.10
+  Ralf

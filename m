@@ -1,28 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2013 11:43:39 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:13480 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822664Ab3IQJnhYBTns (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Sep 2013 11:43:37 +0200
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH] MIPS: Fix accessing to per-cpu data when flushing the cache
-Date:   Tue, 17 Sep 2013 10:43:25 +0100
-Message-ID: <1379411005-20829-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.3.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Sep 2013 12:44:35 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:45995 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6827678Ab3IQKodkbt72 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Sep 2013 12:44:33 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r8HAiW6U025496;
+        Tue, 17 Sep 2013 12:44:32 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r8HAiVKU025495;
+        Tue, 17 Sep 2013 12:44:31 +0200
+Date:   Tue, 17 Sep 2013 12:44:31 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Fix accessing to per-cpu data when flushing the
+ cache
+Message-ID: <20130917104431.GB22468@linux-mips.org>
+References: <1379411005-20829-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.31]
-X-SEF-Processed: 7_3_0_01192__2013_09_17_10_43_31
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1379411005-20829-1-git-send-email-markos.chandras@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37826
+X-archive-position: 37827
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,103 +43,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The cache flushing code uses the current_cpu_data macro which
-may cause problems in preemptive kernels because it relies on
-smp_processor_id() to get the current cpu number. Per cpu-data
-needs to be protected so we disable preemption around the flush
-caching code. We enable it back when we are about to return.
+On Tue, Sep 17, 2013 at 10:43:25AM +0100, Markos Chandras wrote:
 
-Fixes the following problem:
+> The cache flushing code uses the current_cpu_data macro which
+> may cause problems in preemptive kernels because it relies on
+> smp_processor_id() to get the current cpu number. Per cpu-data
+> needs to be protected so we disable preemption around the flush
+> caching code. We enable it back when we are about to return.
+> 
+> Fixes the following problem:
+> 
+> BUG: using smp_processor_id() in preemptible [00000000] code: kjournald/1761
+> caller is blast_dcache32+0x30/0x254
 
-BUG: using smp_processor_id() in preemptible [00000000] code: kjournald/1761
-caller is blast_dcache32+0x30/0x254
-Call Trace:
-[<8047f02c>] dump_stack+0x8/0x34
-[<802e7e40>] debug_smp_processor_id+0xe0/0xf0
-[<80114d94>] blast_dcache32+0x30/0x254
-[<80118484>] r4k_dma_cache_wback_inv+0x200/0x288
-[<80110ff0>] mips_dma_map_sg+0x108/0x180
-[<80355098>] ide_dma_prepare+0xf0/0x1b8
-[<8034eaa4>] do_rw_taskfile+0x1e8/0x33c
-[<8035951c>] ide_do_rw_disk+0x298/0x3e4
-[<8034a3c4>] do_ide_request+0x2e0/0x704
-[<802bb0dc>] __blk_run_queue+0x44/0x64
-[<802be000>] queue_unplugged.isra.36+0x1c/0x54
-[<802beb94>] blk_flush_plug_list+0x18c/0x24c
-[<802bec6c>] blk_finish_plug+0x18/0x48
-[<8026554c>] journal_commit_transaction+0x3b8/0x151c
-[<80269648>] kjournald+0xec/0x238
-[<8014ac00>] kthread+0xb8/0xc0
-[<8010268c>] ret_from_kernel_thread+0x14/0x1c
+Just what I feared - these messages popping out from all over the tree.
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
-This patch is for the upstream-sfr/mips-for-linux-next tree
----
- arch/mips/include/asm/r4kcache.h | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+I'd prefer if we change the caller otherwise depending on the platform
+a single cache flush might involve several preempt_disable/-enable
+invocations.  Something like below.
 
-diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
-index a0b2650..8f1a6a1 100644
---- a/arch/mips/include/asm/r4kcache.h
-+++ b/arch/mips/include/asm/r4kcache.h
-@@ -344,18 +344,21 @@ static inline void invalidate_tcache_page(unsigned long addr)
- static inline void blast_##pfx##cache##lsize(void)			\
- {									\
- 	unsigned long start = INDEX_BASE;				\
--	unsigned long end = start + current_cpu_data.desc.waysize;	\
--	unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
--	unsigned long ws_end = current_cpu_data.desc.ways <<		\
--			       current_cpu_data.desc.waybit;		\
--	unsigned long ws, addr;						\
-+	unsigned long end, ws_inc, ws_end, ws, addr;			\
- 									\
- 	__##pfx##flush_prologue						\
-+	preempt_disable();						\
-+									\
-+	end = start + current_cpu_data.desc.waysize;			\
-+	ws_inc = 1UL << current_cpu_data.desc.waybit;			\
-+	ws_end = current_cpu_data.desc.ways <<				\
-+		 current_cpu_data.desc.waybit;				\
- 									\
- 	for (ws = 0; ws < ws_end; ws += ws_inc)				\
- 		for (addr = start; addr < end; addr += lsize * 32)	\
- 			cache##lsize##_unroll32(addr|ws, indexop);	\
- 									\
-+	preempt_enable();						\
- 	__##pfx##flush_epilogue						\
- }									\
- 									\
-@@ -376,20 +379,23 @@ static inline void blast_##pfx##cache##lsize##_page(unsigned long page) \
- 									\
- static inline void blast_##pfx##cache##lsize##_page_indexed(unsigned long page) \
- {									\
--	unsigned long indexmask = current_cpu_data.desc.waysize - 1;	\
--	unsigned long start = INDEX_BASE + (page & indexmask);		\
--	unsigned long end = start + PAGE_SIZE;				\
--	unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
--	unsigned long ws_end = current_cpu_data.desc.ways <<		\
--			       current_cpu_data.desc.waybit;		\
--	unsigned long ws, addr;						\
-+	unsigned long indexmask, end, start, ws_inc, ws_end, ws, addr;	\
- 									\
- 	__##pfx##flush_prologue						\
-+	preempt_disable();						\
-+									\
-+	indexmask = current_cpu_data.desc.waysize - 1;			\
-+	start = INDEX_BASE + (page & indexmask);			\
-+	end = start + PAGE_SIZE;					\
-+	ws_inc = 1UL << current_cpu_data.desc.waybit;			\
-+	ws_end = current_cpu_data.desc.ways <<				\
-+		 current_cpu_data.desc.waybit;				\
- 									\
- 	for (ws = 0; ws < ws_end; ws += ws_inc)				\
- 		for (addr = start; addr < end; addr += lsize * 32)	\
- 			cache##lsize##_unroll32(addr|ws, indexop);	\
- 									\
-+	preempt_enable();						\
- 	__##pfx##flush_epilogue						\
- }
+And it also keeps the header file more usable outside the core kernel
+which Florian's recent zboot a little easier.
+
+However maybe we'd be even better off to just switch to boot_cpu_data.
+That should be fine since r4k_dma_cache_* are only being used on
+uniprocessor systems anyway.
+
+  Ralf
+
+ arch/mips/mm/c-r4k.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 3ff2f74..73ca8c5 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -12,6 +12,7 @@
+ #include <linux/highmem.h>
+ #include <linux/kernel.h>
+ #include <linux/linkage.h>
++#include <linux/preempt.h>
+ #include <linux/sched.h>
+ #include <linux/smp.h>
+ #include <linux/mm.h>
+@@ -602,6 +603,7 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+ 	/* Catch bad driver code */
+ 	BUG_ON(size == 0);
  
--- 
-1.8.3.2
++	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {
+ 		if (size >= scache_size)
+ 			r4k_blast_scache();
+@@ -622,6 +624,7 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+ 		R4600_HIT_CACHEOP_WAR_IMPL;
+ 		blast_dcache_range(addr, addr + size);
+ 	}
++	preempt_enable();
+ 
+ 	bc_wback_inv(addr, size);
+ 	__sync();
+@@ -632,6 +635,7 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ 	/* Catch bad driver code */
+ 	BUG_ON(size == 0);
+ 
++	preempt_disable();
+ 	if (cpu_has_inclusive_pcaches) {
+ 		if (size >= scache_size)
+ 			r4k_blast_scache();
+@@ -656,6 +660,7 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ 		R4600_HIT_CACHEOP_WAR_IMPL;
+ 		blast_inv_dcache_range(addr, addr + size);
+ 	}
++	preempt_enable();
+ 
+ 	bc_inv(addr, size);
+ 	__sync();

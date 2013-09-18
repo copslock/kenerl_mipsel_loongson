@@ -1,41 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Sep 2013 16:56:32 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:46436 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817537Ab3IRO41P7LNO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Sep 2013 16:56:27 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 0B2E1857F;
-        Wed, 18 Sep 2013 16:56:27 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id IH4zpev31xIY; Wed, 18 Sep 2013 16:56:23 +0200 (CEST)
-Received: from [IPv6:2001:470:1f0b:447:4ca:e75d:fb06:9711] (unknown [IPv6:2001:470:1f0b:447:4ca:e75d:fb06:9711])
-        by hauke-m.de (Postfix) with ESMTPSA id 0075E8F62;
-        Wed, 18 Sep 2013 16:56:18 +0200 (CEST)
-Message-ID: <5239BF12.7060907@hauke-m.de>
-Date:   Wed, 18 Sep 2013 16:56:18 +0200
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130803 Thunderbird/17.0.8
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Sep 2013 17:20:55 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:51688 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6825760Ab3IRPUuNMS9I (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 18 Sep 2013 17:20:50 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r8IFKm6T000319;
+        Wed, 18 Sep 2013 17:20:48 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r8IFKlxI000316;
+        Wed, 18 Sep 2013 17:20:47 +0200
+Date:   Wed, 18 Sep 2013 17:20:47 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+Cc:     linux-mips@linux-mips.org,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Subject: Re: [PATCH] MIPS: Fix VGA_MAP_MEM macro.
+Message-ID: <20130918152047.GR22468@linux-mips.org>
+References: <1378859764-17544-1-git-send-email-Steven.Hill@imgtec.com>
 MIME-Version: 1.0
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: BCM47XX: put board detention data into init section
-References: <1379515235-29161-1-git-send-email-hauke@hauke-m.de> <CAMuHMdUKHEBBCio2ixu04i8dc-mBvK3fD8VuXr2y1GSV5zrh3A@mail.gmail.com>
-In-Reply-To: <CAMuHMdUKHEBBCio2ixu04i8dc-mBvK3fD8VuXr2y1GSV5zrh3A@mail.gmail.com>
-X-Enigmail-Version: 1.4.6
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <hauke@hauke-m.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1378859764-17544-1-git-send-email-Steven.Hill@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37872
+X-archive-position: 37873
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,13 +43,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/18/2013 04:43 PM, Geert Uytterhoeven wrote:
-> On Wed, Sep 18, 2013 at 4:40 PM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
->> +       strncpy(bcm47xx_board.name, board_detected->name, BCM47XX_BOARD_MAX_NAME);
->> +       bcm47xx_board.name[BCM47XX_BOARD_MAX_NAME - 1] = 0;
-> 
-> You can use strlcpy() instead.
-> 
-Thanks, I haven't know of this function.
+On Tue, Sep 10, 2013 at 07:36:04PM -0500, Steven J. Hill wrote:
 
-Hauke
+> diff --git a/arch/mips/include/asm/vga.h b/arch/mips/include/asm/vga.h
+> index f4cff7e..4795206 100644
+> --- a/arch/mips/include/asm/vga.h
+> +++ b/arch/mips/include/asm/vga.h
+> @@ -13,7 +13,7 @@
+>   *	access the videoram directly without any black magic.
+>   */
+>  
+> -#define VGA_MAP_MEM(x, s)	(0xb0000000L + (unsigned long)(x))
+> +#define VGA_MAP_MEM(x, s)	CKSEG1ADDR(0x10000000L + (unsigned long)(x))
+
+If using an addrspace.h macro better include that header file!  I've
+fixed that.
+
+Applied.  Thanks!
+
+  Ralf

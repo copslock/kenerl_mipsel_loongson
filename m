@@ -1,34 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Sep 2013 14:09:23 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:50625 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Sep 2013 14:17:18 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:50661 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6825727Ab3IRMJULE8os (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 18 Sep 2013 14:09:20 +0200
+        id S6818020Ab3IRMRNAlE9n (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 18 Sep 2013 14:17:13 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r8IC9G8M027659;
-        Wed, 18 Sep 2013 14:09:16 +0200
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r8ICH0v5027864;
+        Wed, 18 Sep 2013 14:17:00 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r8IC9Ein027658;
-        Wed, 18 Sep 2013 14:09:14 +0200
-Date:   Wed, 18 Sep 2013 14:09:14 +0200
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r8ICGxLS027863;
+        Wed, 18 Sep 2013 14:16:59 +0200
+Date:   Wed, 18 Sep 2013 14:16:59 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 1/2] MIPS: BCM47XX: add board detection
-Message-ID: <20130918120914.GM22468@linux-mips.org>
-References: <1379503798-9014-1-git-send-email-hauke@hauke-m.de>
- <CAMuHMdU8V=96fEb9Vrpb2+TEWiD5L2Gh+3xzY9SBDotP2NaQ=g@mail.gmail.com>
- <52399641.4090901@hauke-m.de>
+To:     Andrew Murray <amurray@embedded-bits.co.uk>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: Status of mips 'of/pci: Use of_pci_range_parser' patch
+Message-ID: <20130918121658.GB23804@linux-mips.org>
+References: <CAPcvp5HYxPeBp9HAQ4hNFrpWMc_ADkfbvZnYeWXvOaACt5VSAg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <52399641.4090901@hauke-m.de>
+In-Reply-To: <CAPcvp5HYxPeBp9HAQ4hNFrpWMc_ADkfbvZnYeWXvOaACt5VSAg@mail.gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37852
+X-archive-position: 37853
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,28 +42,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Sep 18, 2013 at 02:02:09PM +0200, Hauke Mehrtens wrote:
+On Fri, Aug 09, 2013 at 11:43:40AM +0100, Andrew Murray wrote:
 
-> On 09/18/2013 01:41 PM, Geert Uytterhoeven wrote:
-> > On Wed, Sep 18, 2013 at 1:29 PM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
-> >> Detect on which board this code is running based on some nvram
-> >> settings. This is needed to start board specific workarounds and
-> >> configure the leds and buttons which are on different gpios on every board.
-> >>
-> >> This patches add some boards we have seen, but there are many more.
-> > 
-> > Can you please make the board database __initconst, and only retain in memory
-> > a copy of the detected board info?
-> > 
-> > Gr{oetje,eeting}s,
-> > 
-> >                         Geert
-> > 
-> I will change this in a next version of this patch.
+> Hi Ralf,
+> 
+> What is the status of this patch?  http://patchwork.linux-mips.org/patch/5625/
+> 
+> I'm not sure if you've missed this. Are you able to apply this to your tree?
 
-I've already queued the first version of the patch so an incremental
-patch would be handy.
+I didn't get around to apply it in time so it had to wait for another
+release.  Sorry about that.  But I finally queued it up for 2.13.
 
-Thanks,
+Thanks!
 
   Ralf

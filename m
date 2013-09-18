@@ -1,36 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Sep 2013 17:20:55 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:51688 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6825760Ab3IRPUuNMS9I (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 18 Sep 2013 17:20:50 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r8IFKm6T000319;
-        Wed, 18 Sep 2013 17:20:48 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r8IFKlxI000316;
-        Wed, 18 Sep 2013 17:20:47 +0200
-Date:   Wed, 18 Sep 2013 17:20:47 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
-Cc:     linux-mips@linux-mips.org,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Subject: Re: [PATCH] MIPS: Fix VGA_MAP_MEM macro.
-Message-ID: <20130918152047.GR22468@linux-mips.org>
-References: <1378859764-17544-1-git-send-email-Steven.Hill@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Sep 2013 20:08:21 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52339 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825760Ab3IRSIPdqM9J (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Sep 2013 20:08:15 +0200
+Date:   Wed, 18 Sep 2013 19:08:15 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        linux-mips@linux-mips.org
+Subject: [MIPS] Correct 74K/1074K erratum workaround
+Message-ID: <alpine.LFD.2.03.1309171725580.5967@linux-mips.org>
+User-Agent: Alpine 2.03 (LFD 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1378859764-17544-1-git-send-email-Steven.Hill@imgtec.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37873
+X-archive-position: 37874
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,22 +35,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Sep 10, 2013 at 07:36:04PM -0500, Steven J. Hill wrote:
+Make sure 74K revision numbers are not applied to the 1074K.  Also catch 
+invalid usage.
 
-> diff --git a/arch/mips/include/asm/vga.h b/arch/mips/include/asm/vga.h
-> index f4cff7e..4795206 100644
-> --- a/arch/mips/include/asm/vga.h
-> +++ b/arch/mips/include/asm/vga.h
-> @@ -13,7 +13,7 @@
->   *	access the videoram directly without any black magic.
->   */
->  
-> -#define VGA_MAP_MEM(x, s)	(0xb0000000L + (unsigned long)(x))
-> +#define VGA_MAP_MEM(x, s)	CKSEG1ADDR(0x10000000L + (unsigned long)(x))
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+Ralf,
 
-If using an addrspace.h macro better include that header file!  I've
-fixed that.
+ Please apply.  I saw a similar change fly by, but it lacked the necessary 
+readability and the safety guard, to say nothing of the change explanation 
+chosen.
 
-Applied.  Thanks!
+  Maciej
 
-  Ralf
+linux-mips-74k-erratum.patch
+Index: linux-mips-3.12.0-rc1-20130917-4maxp/arch/mips/mm/c-r4k.c
+===================================================================
+--- linux-mips-3.12.0-rc1-20130917-4maxp.orig/arch/mips/mm/c-r4k.c
++++ linux-mips-3.12.0-rc1-20130917-4maxp/arch/mips/mm/c-r4k.c
+@@ -780,20 +780,30 @@ static inline void rm7k_erratum31(void)
+ 
+ static inline void alias_74k_erratum(struct cpuinfo_mips *c)
+ {
++	unsigned int imp = c->processor_id & PRID_IMP_MASK;
++	unsigned int rev = c->processor_id & PRID_REV_MASK;
++
+ 	/*
+ 	 * Early versions of the 74K do not update the cache tags on a
+ 	 * vtag miss/ptag hit which can occur in the case of KSEG0/KUSEG
+ 	 * aliases. In this case it is better to treat the cache as always
+ 	 * having aliases.
+ 	 */
+-	if ((c->processor_id & PRID_REV_MASK) <= PRID_REV_ENCODE_332(2, 4, 0))
+-		c->dcache.flags |= MIPS_CACHE_VTAG;
+-	if ((c->processor_id & PRID_REV_MASK) == PRID_REV_ENCODE_332(2, 4, 0))
+-		write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
+-	if ((c->processor_id & PRID_IMP_MASK) == PRID_IMP_1074K &&
+-	    (c->processor_id & PRID_REV_MASK) <= PRID_REV_ENCODE_332(1, 1, 0)) {
+-		c->dcache.flags |= MIPS_CACHE_VTAG;
+-		write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
++	switch (imp) {
++	case PRID_IMP_74K:
++		if (rev <= PRID_REV_ENCODE_332(2, 4, 0))
++			c->dcache.flags |= MIPS_CACHE_VTAG;
++		if (rev == PRID_REV_ENCODE_332(2, 4, 0))
++			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
++		break;
++	case PRID_IMP_1074K:
++		if (rev <= PRID_REV_ENCODE_332(1, 1, 0)) {
++			c->dcache.flags |= MIPS_CACHE_VTAG;
++			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
++		}
++		break;
++	default:
++		BUG();
+ 	}
+ }
+ 

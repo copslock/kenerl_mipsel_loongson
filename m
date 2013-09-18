@@ -1,52 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Sep 2013 15:29:51 +0200 (CEST)
-Received: from mail-bk0-f52.google.com ([209.85.214.52]:53859 "EHLO
-        mail-bk0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6862584Ab3IRN0kPkdRY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Sep 2013 15:26:40 +0200
-Received: by mail-bk0-f52.google.com with SMTP id e11so2755194bkh.39
-        for <multiple recipients>; Wed, 18 Sep 2013 06:26:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=h6bl6yvZ7oJIepvBlzf0smC8VMW56IknXD6yTxYLTes=;
-        b=S/q4L+7aMnCyVuD3Ullm+8xb0JvPrn5KvWmYo12/De51i36EL0PiG+Zk+zRNoC9Wph
-         uENQgo7hdo+lP9SOKpPiIWrgdv09H/QCqmGFYUUUOl5Gltkwlj8i2K4IGP1+56Va4jEE
-         iI8BXVQQVI7BbYxHQBnylD0PYOYLSlHEHEVcGEPq7wSoFLELtQyK3Uz6zEF1r1ek3at2
-         PZ1IGgLZQAGbP2uGZoiQnD2pfjiskyaQ2SrvxcleeCPpE9Dh+9aOb54T7PdSOtbZp93K
-         oG4nYvejLX4rrkjnLLlQtPYyWZoYIkGPlXzuMilEoebnDsKWHl4bHeiBReJ7W+X9yEm2
-         JHKQ==
-X-Received: by 10.205.76.133 with SMTP id ze5mr1713079bkb.37.1379510794807;
-        Wed, 18 Sep 2013 06:26:34 -0700 (PDT)
-Received: from localhost (port-55509.pppoe.wtnet.de. [46.59.217.135])
-        by mx.google.com with ESMTPSA id on10sm899081bkb.13.1969.12.31.16.00.00
-        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
-        Wed, 18 Sep 2013 06:26:34 -0700 (PDT)
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Rob Herring <rob.herring@calxeda.com>,
-        Grant Likely <grant.likely@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 10/10] gpio: tegra: Use module_platform_driver()
-Date:   Wed, 18 Sep 2013 15:24:52 +0200
-Message-Id: <1379510692-32435-11-git-send-email-treding@nvidia.com>
-X-Mailer: git-send-email 1.8.4
-In-Reply-To: <1379510692-32435-1-git-send-email-treding@nvidia.com>
-References: <1379510692-32435-1-git-send-email-treding@nvidia.com>
-Return-Path: <thierry.reding@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Sep 2013 15:45:44 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:51194 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6826582Ab3IRNpjVwV2G (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 18 Sep 2013 15:45:39 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r8IDja8b030107;
+        Wed, 18 Sep 2013 15:45:36 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r8IDjXf8030106;
+        Wed, 18 Sep 2013 15:45:33 +0200
+Date:   Wed, 18 Sep 2013 15:45:33 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Markos Chandras <Markos.Chandras@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH v2] MIPS: ath79: Avoid using unitialized 'reg' variable
+Message-ID: <20130918134533.GN22468@linux-mips.org>
+References: <1377082042-4219-1-git-send-email-markos.chandras@imgtec.com>
+ <20130903133839.GA10563@linux-mips.org>
+ <5225EC3B.1070701@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5225EC3B.1070701@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37864
+X-archive-position: 37865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,37 +47,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-With the driver core now resolving interrupt references at probe time,
-it is no longer necessary to force explicit probe ordering using
-initcalls.
+On Tue, Sep 03, 2013 at 03:03:39PM +0100, Markos Chandras wrote:
 
-Signed-off-by: Thierry Reding <treding@nvidia.com>
----
-Note that there are potentially many more drivers that can be switched
-to the generic module_*_driver() interfaces now that interrupts can be
-resolved later and deferred probe should be able to handle all the
-ordering issues.
+> >Was this triggered by CONFIG_BUG=n?
+> >
+> >   Ralf
+> >
+> 
+> Hi Ralf,
+> 
+> Yes it was triggered by CONFIG_BUG=n
 
- drivers/gpio/gpio-tegra.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+So here's a small test case to demonstrate the issue:
 
-diff --git a/drivers/gpio/gpio-tegra.c b/drivers/gpio/gpio-tegra.c
-index 9a62672..766e6ef 100644
---- a/drivers/gpio/gpio-tegra.c
-+++ b/drivers/gpio/gpio-tegra.c
-@@ -513,12 +513,7 @@ static struct platform_driver tegra_gpio_driver = {
- 	},
- 	.probe		= tegra_gpio_probe,
- };
--
--static int __init tegra_gpio_init(void)
--{
--	return platform_driver_register(&tegra_gpio_driver);
--}
--postcore_initcall(tegra_gpio_init);
-+module_platform_driver(tegra_gpio_driver);
+/*
+ * Definition of BUG taken from asm-generic/bug.h for the CONFIG_BUG=n case
+ */
+#define BUG() 	do {} while(0)
+
+int foo(int arg)
+{
+	int res;
+
+	if (arg == 1)
+		res = 23;
+	else if (arg -= 2)
+		res = 42;
+	else
+		BUG();
+
+	return res;
+}
+
+[ralf@h7 linux-mips]$ gcc -O2 -Wall -c bug.c 
+bug.c: In function ‘foo’:
+bug.c:17:2: warning: ‘res’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+  return res;
+  ^
+
+It's fairly obvious to see what's happening here - GCC doesn't know that
+the else case can not be reached, thus razorsharply concludes that res
+may be used uninitialized.
+
+I think the definition of BUG should be changed to something like
+
+#define BUG()	unreachable()
+
+This has the disadvantage of of expanding into a while (1) loop for older
+compilers - but that's only for older compilers, relativly minor in
+bloat and last I checked BUG() wasn't performance critical ;-)
+
+  Ralf
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ include/asm-generic/bug.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/asm-generic/bug.h b/include/asm-generic/bug.h
+index 7d10f96..6f78771 100644
+--- a/include/asm-generic/bug.h
++++ b/include/asm-generic/bug.h
+@@ -108,7 +108,7 @@ extern void warn_slowpath_null(const char *file, const int line);
  
- #ifdef	CONFIG_DEBUG_FS
+ #else /* !CONFIG_BUG */
+ #ifndef HAVE_ARCH_BUG
+-#define BUG() do {} while(0)
++#define BUG() unreachable()
+ #endif
  
--- 
-1.8.4
+ #ifndef HAVE_ARCH_BUG_ON

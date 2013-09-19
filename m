@@ -1,37 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2013 17:07:25 +0200 (CEST)
-Received: from pax.zz.de ([88.198.69.77]:54605 "EHLO pax.zz.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6832659Ab3ISPHX3ycTx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 19 Sep 2013 17:07:23 +0200
-Received: by pax.zz.de (Postfix, from userid 1000)
-        id EC633415F; Thu, 19 Sep 2013 17:07:22 +0200 (CEST)
-Date:   Thu, 19 Sep 2013 17:07:22 +0200
-From:   Florian Lohoff <f@zz.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2013 18:37:59 +0200 (CEST)
+Received: from b-pb-sasl-quonix.pobox.com ([208.72.237.35]:59800 "EHLO
+        smtp.pobox.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6832656Ab3ISQhxoHzoe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Sep 2013 18:37:53 +0200
+Received: from smtp.pobox.com (unknown [127.0.0.1])
+        by b-sasl-quonix.pobox.com (Postfix) with ESMTP id 9642F42B53;
+        Thu, 19 Sep 2013 16:37:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=from:to:cc
+        :subject:references:date:in-reply-to:message-id:mime-version
+        :content-type; s=sasl; bh=AuHW/s+tAUyCoTXvCK6pvXSMNKI=; b=VtrFl2
+        1M3lSYfV0N9XMdNnr3AP8pXcp0N0gILzaE2YsvLZ2BM0vpK9xJECTm1jTPgrYpwI
+        w51KFeN0XUajb+SoDRdiQVvgdSemCt2w0vuaSEAzuHTaPAO8Wy7Ul8vKhs9nFMCr
+        1uUIRh1YZey82fnj2P26vXxv8Tteu2V6wbtmo=
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=pobox.com; h=from:to:cc
+        :subject:references:date:in-reply-to:message-id:mime-version
+        :content-type; q=dns; s=sasl; b=vQSBaCat86G2GvYT6Q6VVwSgvHkNSpoc
+        KiYHzoXMP5p77DieMfInR1e+1+hEgY2S+P2CqHIf1XONQqImE8+sWyhEZXn/cslu
+        3g4EN5ZyqPMQQGo8KahwTVeggrUNX+EEuEXjSb9QKuD2vmmtdpsHBYFIFKi7qFip
+        yCPpUhR3vf8=
+Received: from b-pb-sasl-quonix.pobox.com (unknown [127.0.0.1])
+        by b-sasl-quonix.pobox.com (Postfix) with ESMTP id 8A0D642B52;
+        Thu, 19 Sep 2013 16:37:44 +0000 (UTC)
+Received: from pobox.com (unknown [72.14.226.9])
+        (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by b-sasl-quonix.pobox.com (Postfix) with ESMTPSA id D393C42B50;
+        Thu, 19 Sep 2013 16:37:43 +0000 (UTC)
+From:   Junio C Hamano <gitster@pobox.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: Roll call for porters of architectures in sid and testing
- (Status update)
-Message-ID: <20130919150722.GC28967@pax.zz.de>
-References: <20130919103158.GB7476@pax.zz.de>
- <20130919135852.GB22468@linux-mips.org>
- <20130919141006.GB9062@pax.zz.de>
- <20130919145451.GE22468@linux-mips.org>
+Cc:     Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+        Grant Likely <grant.likely@linaro.org>,
+        Rob Herring <rob.herring@calxeda.com>,
+        devicetree@vger.kernel.org, git@vger.kernel.org,
+        steven.hill@imgtec.com, mmarek@suse.cz, swarren@nvidia.com,
+        linux-mips@linux-mips.org, linux-kbuild@vger.kernel.org,
+        james.hogan@imgtec.com
+Subject: Re: git issue / [PATCH] MIPS: fix invalid symbolic link file
+References: <1379596148-32520-1-git-send-email-maddy@linux.vnet.ibm.com>
+        <20130919133920.GA22468@linux-mips.org>
+Date:   Thu, 19 Sep 2013 09:37:41 -0700
+In-Reply-To: <20130919133920.GA22468@linux-mips.org> (Ralf Baechle's message
+        of "Thu, 19 Sep 2013 15:39:20 +0200")
+Message-ID: <xmqqsix0u5re.fsf@gitster.dls.corp.google.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="GZVR6ND4mMseVXL/"
-Content-Disposition: inline
-In-Reply-To: <20130919145451.GE22468@linux-mips.org>
-Organization: rfc822 - pure communication
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <flo@pax.zz.de>
+Content-Type: text/plain; charset=us-ascii
+X-Pobox-Relay-ID: CEF1B71A-2149-11E3-9DD3-CA9B8506CD1E-77302942!b-pb-sasl-quonix.pobox.com
+Return-Path: <jch@b-sasl-quonix.pobox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37887
+X-archive-position: 37888
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f@zz.de
+X-original-sender: gitster@pobox.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,78 +67,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Ralf Baechle <ralf@linux-mips.org> writes:
 
---GZVR6ND4mMseVXL/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>> diff --git a/arch/mips/boot/dts/include/dt-bindings b/arch/mips/boot/dts/include/dt-bindings
+>> index 68ae388..08c00e4 120000
+>> --- a/arch/mips/boot/dts/include/dt-bindings
+>> +++ b/arch/mips/boot/dts/include/dt-bindings
+>> @@ -1 +1 @@
+>> -../../../../../include/dt-bindings
+>> +../../../../../include/dt-bindings
+>> \ No newline at end of file
+>> -- 
+>> 1.7.10.4
+>
+> I applied your patch - but now git-show shows it as an empty commit and
+>
+>   ls -lb arch/mips/boot/dts/include/dt-bindings
+>
+> still shows the \n at the end of the link target.
+> ...
+> So, I wonder if this is a git bug.
 
-On Thu, Sep 19, 2013 at 04:54:51PM +0200, Ralf Baechle wrote:
-> On Thu, Sep 19, 2013 at 04:10:06PM +0200, Florian Lohoff wrote:
-> > On Thu, Sep 19, 2013 at 03:58:52PM +0200, Ralf Baechle wrote:
-> > > On Thu, Sep 19, 2013 at 12:31:58PM +0200, Florian Lohoff wrote:
-> > >=20
-> > > > just a heads up that Mips and Mipsel are 2 architectures in danger
-> > > > of beeing dropped by Debian if no one steps up as a porter beeing
-> > > > reachable for addressing architecture specific bugs.=20
-> > >=20
-> > > What components and packages are we talking about?  Are we talking ab=
-out
-> > > a fulltime job for a small army of geeks or?
-> >=20
-> > Its about dealing with architecture specific problems. Looking after
-> > ICEs, userspace asm stuff for debian packages where they break etc.
-> >=20
-> > A typical Debian Developer wont know about the mips specifics and=20
-> > needs someone to adress stuff to if the build breaks for architecture
-> > specific problems.
-> >=20
-> > Debian has formalizes the release criterias for their architectures
-> > concerning build architecture, availabibility of hardware and=20
-> > manpower to fix those problems. This is why there needs to be some
-> > names on the list.
-> >=20
-> > All the Debian architectures are depending on one another. So if a
-> > gcc build fails for parisc the new gcc cant propagate to stable/testing.
-> > So the release managers are keen on quickly fixing those bugs to not
-> > hold up all architectures progressing.
->=20
-> Sounds like this is really a job for a number of specialists in various
-> fields.
->=20
-> You also mentioned the availability of hardware.  How's the situation
-> there wrt. to MIPS?
+Sounds as if "git am" is losing the important bit of information
+that new content ends with an incomplete line.
 
-Its not about current availability but the possibility to buy new
-hardware for whatever reason:
+However, it does not reproduce for me.
 
-http://lwn.net/Articles/152600/
+    $ rm -fr /var/tmp/x && mkdir /var/tmp/x && cd /var/tmp/x
+    $ git init
+    $ ln -s 'a
+    ' b
+    $ git add b
+    $ git commit -m initial
+    $ ln -f -s a b
+    $ git add b
+    $ git commit -m fix
+    $ git format-patch -1
+    $ git checkout HEAD^
+    $ git am 0001-*
+    $ git diff HEAD^ HEAD
+    diff --git a/b b/b
+    index 7898192..2e65efe 120000
+    --- a/b
+    +++ b/b
+    @@ -1 +1 @@
+    -a
+    +a
+    \ No newline at end of file
 
-Flo
---=20
-Florian Lohoff                                                 f@zz.de
+I see the same with v1.7.10 (which may not match your version;
+v1.7.10.4 is what was used by the patch submitter to prepare the
+patch, and you did not say how you are applying the patches in your
+message) and with more recent Git.  There is no such breakage.
 
---GZVR6ND4mMseVXL/
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+I briefly suspected that you might be passing "--whitespace=fix" to
+"am" and that may be incorrectly "fixing" the incomplete line, but
+that is not the case.  I get the same result if I add the option to
+"am" in the above transcript.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iQIVAwUBUjsTKpDdQSDLCfIvAQh7hQ/5AUrWm7vb8XERY/rL0E5fuovVKgyzyIBt
-6GXdczZq0xgfeU23F/3Z37pfLCWCeabclZJJiYn59Jig14zfpTUvvU+igugEgDyI
-yKOHUWmbZWE9Jc+T/u5HCdKBWjtRbPBTx14gJY8rxJMtXsBBac2vwTYHXt4PNEdh
-P+xg7PJYfBH5yXnFQOrPFxjZDKkThVS/9BD0YhCCO7vUrN3eMg11b8hGDzxgRTyc
-mhCUN/p+4CzDZU5n9OlZRBUI32G044PJHfCedbCTu3kD1J+c3iXx3uM1CUjrZ+O2
-9q96fiN1WLo8JzhNrLOUL7zzZxw9orzwIM+tVdvzAdjrjlCYJ8z9i0OAVbxcP1sw
-9KOCADzeXb15rXLO9++7sgZFDi+zuVgXt0ZqVaGvVPKHsKhj/Nf2H1+ronQKeXHU
-AKvzMpoEYoJEpcZDszsUyR1vBJH7UmWoQiyVyEGixLvC4P+JYXnq6/yOrLGzzzTL
-abYQFUVhiwGow1Fi3KP7ZLGRwNVKTwHYkyJpAN9sCGCQAGyvBBgJIvxFG2AQiyJE
-FGMMGbbUoiWIZ6+lEViOEAKQhXA0Rm/3XzCXaEWav+DwvkyGDotCQA+x5Re+CNOe
-FmATw/C3kCDyNTYiWJkXyjaGjtMViuR0vYQtxLQDgI17gt2gWqjlv+FP3SpzIixP
-BsdtEsrD/3w=
-=V+Ky
------END PGP SIGNATURE-----
-
---GZVR6ND4mMseVXL/--
+How are you applying the patch?  What is your Git version?

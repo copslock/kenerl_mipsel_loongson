@@ -1,28 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2013 19:19:49 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:47918 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817546Ab3ISRTqpryxL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 19 Sep 2013 19:19:46 +0200
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH] MIPS: mm: c-r4k: Panic if IL or DL fields have a reserved value
-Date:   Thu, 19 Sep 2013 18:18:41 +0100
-Message-ID: <1379611121-12977-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.3.2
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.31]
-X-SEF-Processed: 7_3_0_01192__2013_09_19_18_19_38
-Return-Path: <Markos.Chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2013 21:10:31 +0200 (CEST)
+Received: from www17.your-server.de ([213.133.104.17]:32782 "EHLO
+        www17.your-server.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6817546Ab3ISTK3Lx7We (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Sep 2013 21:10:29 +0200
+Received: from [146.60.53.248] (helo=[192.168.2.108])
+        by www17.your-server.de with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.74)
+        (envelope-from <thomas@m3y3r.de>)
+        id 1VMjcL-0004y6-V2; Thu, 19 Sep 2013 21:10:22 +0200
+Subject: [PATCH 1/10] MIPS: BCM47XX: Cocci spatch "noderef"
+From:   thomas@m3y3r.de Thu Sep 19 17:31:10 2013
+To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Message-ID: <1379604755851-1504037195-1-diffsplit-thomas@m3y3r.de>
+References: <1379604755850-858421494-0-diffsplit-thomas@m3y3r.de>
+In-Reply-To: <1379604755850-858421494-0-diffsplit-thomas@m3y3r.de>
+Date:   Thu, 19 Sep 2013 20:38:21 +0200
+X-Mailer: Evolution 3.8.5 (3.8.5-2.fc19) 
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: thomas@m3y3r.de
+X-Virus-Scanned: Clear (ClamAV 0.97.6/17870/Tue Sep 17 17:11:27 2013)
+Return-Path: <thomas@m3y3r.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37890
+X-archive-position: 37891
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: thomas@m3y3r.de Thu Sep 19 17:31:10 2013
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,59 +42,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-According to MIPS32 and MIPS64 PRA documents,
-a value of 7 in IL and DL fields is marked as "Reserved"
-so panic if the core uses this value in the config1 register.
-Also simplify the code a little bit.
+sizeof when applied to a pointer typed expression gives the size of the
+pointer.
+Found by coccinelle spatch "misc/noderef.cocci"
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+Signed-off-by: Thomas Meyer <thomas@m3y3r.de>
 ---
-This patch is for the upstream-sfr/mips-for-linux-next tree
----
- arch/mips/mm/c-r4k.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 73ca8c5..618994e 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -987,10 +987,14 @@ static void probe_pcache(void)
- 		 */
- 		config1 = read_c0_config1();
+diff -u -p a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
+--- a/arch/mips/bcm47xx/sprom.c
++++ b/arch/mips/bcm47xx/sprom.c
+@@ -162,7 +162,7 @@ static void nvram_read_alpha2(const char
+ 		pr_warn("alpha2 is too long %s\n", buf);
+ 		return;
+ 	}
+-	memcpy(val, buf, sizeof(val));
++	memcpy(val, buf, sizeof(*val));
+ }
  
--		if ((lsize = ((config1 >> 19) & 7)))
--			c->icache.linesz = 2 << lsize;
--		else
--			c->icache.linesz = lsize;
-+		lsize = (config1 >> 19) & 7;
-+
-+		/* IL == 7 is reserved */
-+		if (lsize == 7)
-+			panic("Invalid icache line size");
-+
-+		c->icache.linesz = lsize ? 2 << lsize : 0;
-+
- 		c->icache.sets = 32 << (((config1 >> 22) + 1) & 7);
- 		c->icache.ways = 1 + ((config1 >> 16) & 7);
- 
-@@ -1007,10 +1011,14 @@ static void probe_pcache(void)
- 		 */
- 		c->dcache.flags = 0;
- 
--		if ((lsize = ((config1 >> 10) & 7)))
--			c->dcache.linesz = 2 << lsize;
--		else
--			c->dcache.linesz= lsize;
-+		lsize = (config1 >> 10) & 7;
-+
-+		/* DL == 7 is reserved */
-+		if (lsize == 7)
-+			panic("Invalid dcache line size");
-+
-+		c->dcache.linesz = lsize ? 2 << lsize : 0;
-+
- 		c->dcache.sets = 32 << (((config1 >> 13) + 1) & 7);
- 		c->dcache.ways = 1 + ((config1 >> 7) & 7);
- 
--- 
-1.8.3.2
+ static void bcm47xx_fill_sprom_r1234589(struct ssb_sprom *sprom,

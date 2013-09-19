@@ -1,53 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2013 16:21:42 +0200 (CEST)
-Received: from mail-la0-f52.google.com ([209.85.215.52]:64670 "EHLO
-        mail-la0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6832656Ab3ISOVgxfVAL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Sep 2013 16:21:36 +0200
-Received: by mail-la0-f52.google.com with SMTP id ev20so6725252lab.25
-        for <linux-mips@linux-mips.org>; Thu, 19 Sep 2013 07:21:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=G9U+9OJb1ki+CtGWPiaDJ//HfmFQkBHqCQ88d4euAs4=;
-        b=erIgtiuzhYpBZZkHs9lkoq7Ti/DEUGQIRmSp2rbsyNsGYSm7YXYLW5uiokcO/w9EUK
-         HJfqyOm23lxdHYDFZ/eAsDXsJI1OM8uLDy5+RiFl3vauwt3n4CYclP4ijirSvllwtSQ7
-         6vz8ahTcYcM/bacB6JPuoKpFNXnqUD2jHAWoPYuv2GDHHN7Mrds0UJCuCnpIBiDQNUtf
-         +68f5XgbA9u283VLnw98s1V6IrDb1hXSbMRdvpdfPyW3xi6zBopFk2YvQ91wO9ugUnqB
-         kGUr+r1RBIhbm3x38hnwcvymHJgPflUqCx7FxkeCVLQi7YdZagMmC8saz2QYapDLj4vx
-         4vlA==
-X-Gm-Message-State: ALoCoQnJilxz137qPvRNpe1XnXMEyJnFT1NpAnJ411fEfQQB72PVnmOzxu4ZOXG7LBEVOj4x5VsP
-X-Received: by 10.112.189.162 with SMTP id gj2mr292649lbc.53.1379600491135;
-        Thu, 19 Sep 2013 07:21:31 -0700 (PDT)
-Received: from wasted.dev.rtsoft.ru (ppp91-76-86-6.pppoe.mtu-net.ru. [91.76.86.6])
-        by mx.google.com with ESMTPSA id l10sm4035299lbh.13.1969.12.31.16.00.00
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 19 Sep 2013 07:21:30 -0700 (PDT)
-Message-ID: <523B086B.3040206@cogentembedded.com>
-Date:   Thu, 19 Sep 2013 18:21:31 +0400
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20130801 Thunderbird/17.0.8
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2013 16:54:55 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:55968 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6827391Ab3ISOywwyT8b (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 19 Sep 2013 16:54:52 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r8JEspgG027225;
+        Thu, 19 Sep 2013 16:54:51 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r8JEspAn027224;
+        Thu, 19 Sep 2013 16:54:51 +0200
+Date:   Thu, 19 Sep 2013 16:54:51 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Florian Lohoff <f@zz.de>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: Roll call for porters of architectures in sid and testing
+ (Status update)
+Message-ID: <20130919145451.GE22468@linux-mips.org>
+References: <20130919103158.GB7476@pax.zz.de>
+ <20130919135852.GB22468@linux-mips.org>
+ <20130919141006.GB9062@pax.zz.de>
 MIME-Version: 1.0
-To:     Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-CC:     ralf@linux-mips.org, steven.hill@imgtec.com, mmarek@suse.cz,
-        swarren@nvidia.com, linux-mips@linux-mips.org,
-        linux-kbuild@vger.kernel.org, james.hogan@imgtec.com
-Subject: Re: [PATCH] MIPS: fix invalid symbolic link file
-References: <1379596148-32520-1-git-send-email-maddy@linux.vnet.ibm.com>
-In-Reply-To: <1379596148-32520-1-git-send-email-maddy@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20130919141006.GB9062@pax.zz.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37885
+X-archive-position: 37886
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,22 +45,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+On Thu, Sep 19, 2013 at 04:10:06PM +0200, Florian Lohoff wrote:
 
-On 09/19/2013 05:09 PM, Madhavan Srinivasan wrote:
+> On Thu, Sep 19, 2013 at 03:58:52PM +0200, Ralf Baechle wrote:
+> > On Thu, Sep 19, 2013 at 12:31:58PM +0200, Florian Lohoff wrote:
+> > 
+> > > just a heads up that Mips and Mipsel are 2 architectures in danger
+> > > of beeing dropped by Debian if no one steps up as a porter beeing
+> > > reachable for addressing architecture specific bugs. 
+> > 
+> > What components and packages are we talking about?  Are we talking about
+> > a fulltime job for a small army of geeks or?
+> 
+> Its about dealing with architecture specific problems. Looking after
+> ICEs, userspace asm stuff for debian packages where they break etc.
+> 
+> A typical Debian Developer wont know about the mips specifics and 
+> needs someone to adress stuff to if the build breaks for architecture
+> specific problems.
+> 
+> Debian has formalizes the release criterias for their architectures
+> concerning build architecture, availabibility of hardware and 
+> manpower to fix those problems. This is why there needs to be some
+> names on the list.
+> 
+> All the Debian architectures are depending on one another. So if a
+> gcc build fails for parisc the new gcc cant propagate to stable/testing.
+> So the release managers are keen on quickly fixing those bugs to not
+> hold up all architectures progressing.
 
->     Commit 3b29aa5ba204c created a symlink file in include/dt-bindings.
+Sounds like this is really a job for a number of specialists in various
+fields.
 
-    Please also specify that commit's summary line in parens.
+You also mentioned the availability of hardware.  How's the situation
+there wrt. to MIPS?
 
->     Even though commit diff is fine, symlink is invalid.
->     ls -lb shows a newline character at the end of the filename.
-
-    Don't indent the changelog please.
-
-> lrwxrwxrwx 1 maddy maddy 35 Sep 19 18:11 dt-bindings ->
-> ../../../../../include/dt-bindings\n
-
-> Signed-off-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-
-WBR, Sergei
+  Ralf

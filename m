@@ -1,49 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2013 22:37:01 +0200 (CEST)
-Received: from avon.wwwdotorg.org ([70.85.31.133]:35734 "EHLO
-        avon.wwwdotorg.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6832656Ab3ISUgz53rHb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Sep 2013 22:36:55 +0200
-Received: from severn.wwwdotorg.org (unknown [192.168.65.5])
-        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by avon.wwwdotorg.org (Postfix) with ESMTPS id 25BE52200C;
-        Thu, 19 Sep 2013 14:36:52 -0600 (MDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by severn.wwwdotorg.org (Postfix) with ESMTPSA id 3BDEEE461B;
-        Thu, 19 Sep 2013 14:36:49 -0600 (MDT)
-Message-ID: <523B605F.8090402@wwwdotorg.org>
-Date:   Thu, 19 Sep 2013 14:36:47 -0600
-From:   Stephen Warren <swarren@wwwdotorg.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130803 Thunderbird/17.0.8
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2013 23:08:18 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:53030 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6822668Ab3ISVIQFTs80 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Sep 2013 23:08:16 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 4A9578F61;
+        Thu, 19 Sep 2013 23:08:15 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id EbsqpsEgKlHh; Thu, 19 Sep 2013 23:08:11 +0200 (CEST)
+Received: from [IPv6:2001:470:1f0b:447:9087:4f7f:af1b:18b] (unknown [IPv6:2001:470:1f0b:447:9087:4f7f:af1b:18b])
+        by hauke-m.de (Postfix) with ESMTPSA id E74C9857F;
+        Thu, 19 Sep 2013 23:08:10 +0200 (CEST)
+Message-ID: <523B67B8.2060706@hauke-m.de>
+Date:   Thu, 19 Sep 2013 23:08:08 +0200
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.0
 MIME-Version: 1.0
-To:     Johannes Sixt <j6t@kdbg.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
-        Grant Likely <grant.likely@linaro.org>,
-        Rob Herring <rob.herring@calxeda.com>,
-        devicetree@vger.kernel.org, git@vger.kernel.org,
-        steven.hill@imgtec.com, mmarek@suse.cz, swarren@nvidia.com,
-        linux-mips@linux-mips.org, linux-kbuild@vger.kernel.org,
-        james.hogan@imgtec.com
-Subject: Re: git issue / [PATCH] MIPS: fix invalid symbolic link file
-References: <1379596148-32520-1-git-send-email-maddy@linux.vnet.ibm.com> <20130919133920.GA22468@linux-mips.org> <523B555E.2070508@kdbg.org>
-In-Reply-To: <523B555E.2070508@kdbg.org>
-X-Enigmail-Version: 1.4.6
-Content-Type: text/plain; charset=ISO-8859-1
+To:     thomas@m3y3r.de, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/10] MIPS: BCM47XX: Cocci spatch "noderef"
+References: <1379604755850-858421494-0-diffsplit-thomas@m3y3r.de> <1379604755851-1504037195-1-diffsplit-thomas@m3y3r.de>
+In-Reply-To: <1379604755851-1504037195-1-diffsplit-thomas@m3y3r.de>
+X-Enigmail-Version: 1.5.2
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.97.8 at avon.wwwdotorg.org
-X-Virus-Status: Clean
-Return-Path: <swarren@wwwdotorg.org>
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37893
+X-archive-position: 37894
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: swarren@wwwdotorg.org
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,21 +47,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/19/2013 01:49 PM, Johannes Sixt wrote:
-> Am 19.09.2013 15:39, schrieb Ralf Baechle:
->> The original patch that introduced the symlink with the \n is kernel
->> commit 3b29aa5ba204c62b3ec8f9f5b1ebd6e5d74f75d3 and is archived in
->> patchwork at http://patchwork.linux-mips.org/patch/5745/  The patch
->> file contains a \n at the end - but one would expect that from a
->> patch file that has been transfered via email, so I'm not sure how this
->> is supposed to work with emailed patches?!?
-> 
-> The mbox file I downloaded from this link looks like this:
-...
-> but it should look like this:
-...
-> Whoever or whatever moved the '\ No newline at end of file' line above
-> the patch text is to blame.
+On 09/19/2013 08:38 PM, thomas@m3y3r.de wrote:
+> sizeof when applied to a pointer typed expression gives the size of the
+> pointer.
+> Found by coccinelle spatch "misc/noderef.cocci"
 
-That sounds like a patchwork problem; the original copy of the message I
-received looks correct.
+Thanks for spotting this.
+
+Is this a new rule or has just nobody checked that part of the kernel?
+
+
+The from field in the mail is broken.
+
+> Signed-off-by: Thomas Meyer <thomas@m3y3r.de>
+Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
+
+> diff -u -p a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
+> --- a/arch/mips/bcm47xx/sprom.c
+> +++ b/arch/mips/bcm47xx/sprom.c
+> @@ -162,7 +162,7 @@ static void nvram_read_alpha2(const char
+>  		pr_warn("alpha2 is too long %s\n", buf);
+>  		return;
+>  	}
+> -	memcpy(val, buf, sizeof(val));
+> +	memcpy(val, buf, sizeof(*val));
+>  }
+>  
+>  static void bcm47xx_fill_sprom_r1234589(struct ssb_sprom *sprom,
+> 

@@ -1,35 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2013 21:10:31 +0200 (CEST)
-Received: from www17.your-server.de ([213.133.104.17]:32782 "EHLO
-        www17.your-server.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817546Ab3ISTK3Lx7We (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Sep 2013 21:10:29 +0200
-Received: from [146.60.53.248] (helo=[192.168.2.108])
-        by www17.your-server.de with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.74)
-        (envelope-from <thomas@m3y3r.de>)
-        id 1VMjcL-0004y6-V2; Thu, 19 Sep 2013 21:10:22 +0200
-Subject: [PATCH 1/10] MIPS: BCM47XX: Cocci spatch "noderef"
-From:   thomas@m3y3r.de Thu Sep 19 17:31:10 2013
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Mime-Version: 1.0
-Message-ID: <1379604755851-1504037195-1-diffsplit-thomas@m3y3r.de>
-References: <1379604755850-858421494-0-diffsplit-thomas@m3y3r.de>
-In-Reply-To: <1379604755850-858421494-0-diffsplit-thomas@m3y3r.de>
-Date:   Thu, 19 Sep 2013 20:38:21 +0200
-X-Mailer: Evolution 3.8.5 (3.8.5-2.fc19) 
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2013 21:50:02 +0200 (CEST)
+Received: from bsmtp.bon.at ([213.33.87.14]:20206 "EHLO bsmtp.bon.at"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6827331Ab3ISTt57b9uQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 19 Sep 2013 21:49:57 +0200
+Received: from dx.sixt.local (unknown [93.83.142.38])
+        by bsmtp.bon.at (Postfix) with ESMTP id E9564CDF8B;
+        Thu, 19 Sep 2013 21:49:50 +0200 (CEST)
+Received: from [IPv6:::1] (localhost [IPv6:::1])
+        by dx.sixt.local (Postfix) with ESMTP id 4F8D019F3F7;
+        Thu, 19 Sep 2013 21:49:50 +0200 (CEST)
+Message-ID: <523B555E.2070508@kdbg.org>
+Date:   Thu, 19 Sep 2013 21:49:50 +0200
+From:   Johannes Sixt <j6t@kdbg.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130329 Thunderbird/17.0.5
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+        Grant Likely <grant.likely@linaro.org>,
+        Rob Herring <rob.herring@calxeda.com>,
+        devicetree@vger.kernel.org, git@vger.kernel.org,
+        steven.hill@imgtec.com, mmarek@suse.cz, swarren@nvidia.com,
+        linux-mips@linux-mips.org, linux-kbuild@vger.kernel.org,
+        james.hogan@imgtec.com
+Subject: Re: git issue / [PATCH] MIPS: fix invalid symbolic link file
+References: <1379596148-32520-1-git-send-email-maddy@linux.vnet.ibm.com> <20130919133920.GA22468@linux-mips.org>
+In-Reply-To: <20130919133920.GA22468@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: thomas@m3y3r.de
-X-Virus-Scanned: Clear (ClamAV 0.97.6/17870/Tue Sep 17 17:11:27 2013)
-Return-Path: <thomas@m3y3r.de>
+Return-Path: <j6t@kdbg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37891
+X-archive-position: 37892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas@m3y3r.de Thu Sep 19 17:31:10 2013
+X-original-sender: j6t@kdbg.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,22 +48,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-sizeof when applied to a pointer typed expression gives the size of the
-pointer.
-Found by coccinelle spatch "misc/noderef.cocci"
+Am 19.09.2013 15:39, schrieb Ralf Baechle:
+> The original patch that introduced the symlink with the \n is kernel
+> commit 3b29aa5ba204c62b3ec8f9f5b1ebd6e5d74f75d3 and is archived in
+> patchwork at http://patchwork.linux-mips.org/patch/5745/  The patch
+> file contains a \n at the end - but one would expect that from a
+> patch file that has been transfered via email, so I'm not sure how this
+> is supposed to work with emailed patches?!?
 
-Signed-off-by: Thomas Meyer <thomas@m3y3r.de>
----
+The mbox file I downloaded from this link looks like this:
 
-diff -u -p a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
---- a/arch/mips/bcm47xx/sprom.c
-+++ b/arch/mips/bcm47xx/sprom.c
-@@ -162,7 +162,7 @@ static void nvram_read_alpha2(const char
- 		pr_warn("alpha2 is too long %s\n", buf);
- 		return;
- 	}
--	memcpy(val, buf, sizeof(val));
-+	memcpy(val, buf, sizeof(*val));
- }
- 
- static void bcm47xx_fill_sprom_r1234589(struct ssb_sprom *sprom,
+
+arch/mips/boot/dts/include/dt-bindings | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 120000 arch/mips/boot/dts/include/dt-bindings
+
+\ No newline at end of file
+
+diff --git a/.../include/dt-bindings b/.../include/dt-bindings
+new file mode 120000
+index 0000000..08c00e4
+--- /dev/null
++++ b/arch/mips/boot/dts/include/dt-bindings
+@@ -0,0 +1 @@
++../../../../../include/dt-bindings
+
+
+but it should look like this:
+
+
+arch/mips/boot/dts/include/dt-bindings | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 120000 arch/mips/boot/dts/include/dt-bindings
+
+diff --git a/.../include/dt-bindings b/.../include/dt-bindings
+new file mode 120000
+index 0000000..08c00e4
+--- /dev/null
++++ b/arch/mips/boot/dts/include/dt-bindings
+@@ -0,0 +1 @@
++../../../../../include/dt-bindings
+\ No newline at end of file
+
+
+Whoever or whatever moved the '\ No newline at end of file' line above
+the patch text is to blame.
+
+-- Hannes

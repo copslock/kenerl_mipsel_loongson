@@ -1,34 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2013 23:45:25 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:53681 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6832656Ab3ISVpCHDfcy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Sep 2013 23:45:02 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id C25B98F61;
-        Thu, 19 Sep 2013 23:45:01 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 7cZTjA+EiZZz; Thu, 19 Sep 2013 23:44:54 +0200 (CEST)
-Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id D0D51857F;
-        Thu, 19 Sep 2013 23:44:53 +0200 (CEST)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 1/2] MIPS: BCM47XX: Remove CFE support
-Date:   Thu, 19 Sep 2013 23:44:50 +0200
-Message-Id: <1379627091-30769-1-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.7.10.4
-Return-Path: <hauke@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Sep 2013 00:08:20 +0200 (CEST)
+Received: from mail-lb0-f174.google.com ([209.85.217.174]:35702 "EHLO
+        mail-lb0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827331Ab3ISWIS60Wew (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Sep 2013 00:08:18 +0200
+Received: by mail-lb0-f174.google.com with SMTP id w6so8223794lbh.5
+        for <linux-mips@linux-mips.org>; Thu, 19 Sep 2013 15:08:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:organization:user-agent
+         :mime-version:to:cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=KAnRo3ZCCPDWwFLVThzWjjkoyyiJkCnsVrx8TxOxUgI=;
+        b=RYmDHsfEY3TGDpVUkdiWeO02lET21eShb5ZGvhk6EZafTim9+q9q3oFtKK8IkMDhKC
+         CGXQPkq7sY0YSsQRLuR+WbNOf3tu6lKyakf/rnY260iU8RooH50wfHUw4HuYL4zQl70X
+         H/MX8+yIcnC/mQWwHLMvOxjhCuDdjWd5b8vTfJZCQcarI2VcFidx69AN/hHX3CBtxODR
+         N8GJIksoGyYih0UvwxkinN5MCwIassAxFFU1U9oFBj5SXrnkfWn7y+GTNRpNdmQ4LVpg
+         K1exBPC/W+bsKlEy2j2jTDNoWdCSGw8F5MzWQRaEHZLrg1fq/1O+qflnlmOUi/3vE2JJ
+         rK+g==
+X-Gm-Message-State: ALoCoQnkCbiye/WnRxL93cWm5R0efouenpoSW8ghcka1eaRCAhP05Z73ZqT+ui4tjLo8BCBx7yKe
+X-Received: by 10.152.8.12 with SMTP id n12mr3135329laa.10.1379628493380;
+        Thu, 19 Sep 2013 15:08:13 -0700 (PDT)
+Received: from wasted.dev.rtsoft.ru (ppp91-76-92-54.pppoe.mtu-net.ru. [91.76.92.54])
+        by mx.google.com with ESMTPSA id l10sm4802293lbh.13.1969.12.31.16.00.00
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Thu, 19 Sep 2013 15:08:12 -0700 (PDT)
+Message-ID: <523B75D0.7090709@cogentembedded.com>
+Date:   Fri, 20 Sep 2013 02:08:16 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20130801 Thunderbird/17.0.8
+MIME-Version: 1.0
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+CC:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/2] MIPS: BCM47XX: add EARLY_PRINTK_8250 support
+References: <1379627091-30769-1-git-send-email-hauke@hauke-m.de> <1379627091-30769-2-git-send-email-hauke@hauke-m.de>
+In-Reply-To: <1379627091-30769-2-git-send-email-hauke@hauke-m.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37898
+X-archive-position: 37899
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,159 +58,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-bcm47xx only uses the CFE code for early print to a console, but that
-is also possible with a early print serial 8250 driver.
+Hello.
 
-The CFE api init causes hangs somewhere in prom_init_cfe() on some
-devices like the Buffalo WHR-HP-G54 and the Asus WL-520GU.
-This was reported in https://dev.openwrt.org/ticket/4061 and
-https://forum.openwrt.org/viewtopic.php?id=17063
+On 09/20/2013 01:44 AM, Hauke Mehrtens wrote:
 
-This will remove all the CFE handling code from bcm47xx.
+> The BCM47xx SoCs have a 8250 serial compatible console at address
+> 0xb8000300 and an other at 0xb8000400. On most devices 0xb8000300 is
+> wired to some pins on the board, we should use that.
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- arch/mips/Kconfig        |    2 -
- arch/mips/bcm47xx/prom.c |   91 ----------------------------------------------
- 2 files changed, 93 deletions(-)
+    I think these are KSEG1 virtual addresses, not physical.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index e70cf31..f73cb81 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -111,14 +111,12 @@ config BCM47XX
- 	select CEVT_R4K
- 	select CSRC_R4K
- 	select DMA_NONCOHERENT
--	select FW_CFE
- 	select HW_HAS_PCI
- 	select IRQ_CPU
- 	select SYS_HAS_CPU_MIPS32_R1
- 	select NO_EXCEPT_FILL
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
--	select SYS_HAS_EARLY_PRINTK
- 	help
- 	 Support for BCM47XX based boards
- 
-diff --git a/arch/mips/bcm47xx/prom.c b/arch/mips/bcm47xx/prom.c
-index 53b9a3fb..99c3ce2 100644
---- a/arch/mips/bcm47xx/prom.c
-+++ b/arch/mips/bcm47xx/prom.c
-@@ -30,12 +30,9 @@
- #include <linux/spinlock.h>
- #include <linux/smp.h>
- #include <asm/bootinfo.h>
--#include <asm/fw/cfe/cfe_api.h>
--#include <asm/fw/cfe/cfe_error.h>
- #include <bcm47xx.h>
- #include <bcm47xx_board.h>
- 
--static int cfe_cons_handle;
- 
- static char bcm47xx_system_type[20] = "Broadcom BCM47XX";
- 
-@@ -52,91 +49,6 @@ __init void bcm47xx_set_system_type(u16 chip_id)
- 		 chip_id);
- }
- 
--void prom_putchar(char c)
--{
--	while (cfe_write(cfe_cons_handle, &c, 1) == 0)
--		;
--}
--
--static __init void prom_init_cfe(void)
--{
--	uint32_t cfe_ept;
--	uint32_t cfe_handle;
--	uint32_t cfe_eptseal;
--	int argc = fw_arg0;
--	char **envp = (char **) fw_arg2;
--	int *prom_vec = (int *) fw_arg3;
--
--	/*
--	 * Check if a loader was used; if NOT, the 4 arguments are
--	 * what CFE gives us (handle, 0, EPT and EPTSEAL)
--	 */
--	if (argc < 0) {
--		cfe_handle = (uint32_t)argc;
--		cfe_ept = (uint32_t)envp;
--		cfe_eptseal = (uint32_t)prom_vec;
--	} else {
--		if ((int)prom_vec < 0) {
--			/*
--			 * Old loader; all it gives us is the handle,
--			 * so use the "known" entrypoint and assume
--			 * the seal.
--			 */
--			cfe_handle = (uint32_t)prom_vec;
--			cfe_ept = 0xBFC00500;
--			cfe_eptseal = CFE_EPTSEAL;
--		} else {
--			/*
--			 * Newer loaders bundle the handle/ept/eptseal
--			 * Note: prom_vec is in the loader's useg
--			 * which is still alive in the TLB.
--			 */
--			cfe_handle = prom_vec[0];
--			cfe_ept = prom_vec[2];
--			cfe_eptseal = prom_vec[3];
--		}
--	}
--
--	if (cfe_eptseal != CFE_EPTSEAL) {
--		/* too early for panic to do any good */
--		printk(KERN_ERR "CFE's entrypoint seal doesn't match.");
--		while (1) ;
--	}
--
--	cfe_init(cfe_handle, cfe_ept);
--}
--
--static __init void prom_init_console(void)
--{
--	/* Initialize CFE console */
--	cfe_cons_handle = cfe_getstdhandle(CFE_STDHANDLE_CONSOLE);
--}
--
--static __init void prom_init_cmdline(void)
--{
--	static char buf[COMMAND_LINE_SIZE] __initdata;
--
--	/* Get the kernel command line from CFE */
--	if (cfe_getenv("LINUX_CMDLINE", buf, COMMAND_LINE_SIZE) >= 0) {
--		buf[COMMAND_LINE_SIZE - 1] = 0;
--		strcpy(arcs_cmdline, buf);
--	}
--
--	/* Force a console handover by adding a console= argument if needed,
--	 * as CFE is not available anymore later in the boot process. */
--	if ((strstr(arcs_cmdline, "console=")) == NULL) {
--		/* Try to read the default serial port used by CFE */
--		if ((cfe_getenv("BOOT_CONSOLE", buf, COMMAND_LINE_SIZE) < 0)
--		    || (strncmp("uart", buf, 4)))
--			/* Default to uart0 */
--			strcpy(buf, "uart0");
--
--		/* Compute the new command line */
--		snprintf(arcs_cmdline, COMMAND_LINE_SIZE, "%s console=ttyS%c,115200",
--			 arcs_cmdline, buf[4]);
--	}
--}
--
- static __init void prom_init_mem(void)
- {
- 	unsigned long mem;
-@@ -184,9 +96,6 @@ static __init void prom_init_mem(void)
- 
- void __init prom_init(void)
- {
--	prom_init_cfe();
--	prom_init_console();
--	prom_init_cmdline();
- 	prom_init_mem();
- }
- 
--- 
-1.7.10.4
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> ---
+>   arch/mips/Kconfig        |    2 ++
+>   arch/mips/bcm47xx/prom.c |    1 +
+>   2 files changed, 3 insertions(+)
+
+[...]
+> diff --git a/arch/mips/bcm47xx/prom.c b/arch/mips/bcm47xx/prom.c
+> index 99c3ce2..26f49f8 100644
+> --- a/arch/mips/bcm47xx/prom.c
+> +++ b/arch/mips/bcm47xx/prom.c
+> @@ -97,6 +97,7 @@ static __init void prom_init_mem(void)
+>   void __init prom_init(void)
+>   {
+>   	prom_init_mem();
+> +	setup_8250_early_printk_port(CKSEG1ADDR(0xb8000300), 0, 0);
+
+    Applying CKSEG1ADDR() to virtual address is wrong.
+
+WBR, Sergei

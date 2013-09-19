@@ -1,49 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2013 15:09:39 +0200 (CEST)
-Received: from e28smtp01.in.ibm.com ([122.248.162.1]:34701 "EHLO
-        e28smtp01.in.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6832655Ab3ISNJcw4OGY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Sep 2013 15:09:32 +0200
-Received: from /spool/local
-        by e28smtp01.in.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <maddy@linux.vnet.ibm.com>;
-        Thu, 19 Sep 2013 18:39:22 +0530
-Received: from d28dlp01.in.ibm.com (9.184.220.126)
-        by e28smtp01.in.ibm.com (192.168.1.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Thu, 19 Sep 2013 18:39:20 +0530
-Received: from d28relay02.in.ibm.com (d28relay02.in.ibm.com [9.184.220.59])
-        by d28dlp01.in.ibm.com (Postfix) with ESMTP id 7D113E0053;
-        Thu, 19 Sep 2013 18:40:17 +0530 (IST)
-Received: from d28av03.in.ibm.com (d28av03.in.ibm.com [9.184.220.65])
-        by d28relay02.in.ibm.com (8.13.8/8.13.8/NCO v10.0) with ESMTP id r8JDBQpM40960188;
-        Thu, 19 Sep 2013 18:41:29 +0530
-Received: from d28av03.in.ibm.com (localhost [127.0.0.1])
-        by d28av03.in.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id r8JD9DGf022071;
-        Thu, 19 Sep 2013 18:39:13 +0530
-Received: from SrihariMadhavan.in.ibm.com (sriharimadhavan.in.ibm.com [9.121.0.193] (may be forged))
-        by d28av03.in.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id r8JD9CDf022036;
-        Thu, 19 Sep 2013 18:39:13 +0530
-From:   Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-To:     ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Sep 2013 15:39:36 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:55711 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6832658Ab3ISNjacu0xN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 19 Sep 2013 15:39:30 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r8JDdQCu026209;
+        Thu, 19 Sep 2013 15:39:26 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r8JDdKaW026208;
+        Thu, 19 Sep 2013 15:39:20 +0200
+Date:   Thu, 19 Sep 2013 15:39:20 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+        Grant Likely <grant.likely@linaro.org>,
+        Rob Herring <rob.herring@calxeda.com>,
+        devicetree@vger.kernel.org, git@vger.kernel.org
 Cc:     steven.hill@imgtec.com, mmarek@suse.cz, swarren@nvidia.com,
         linux-mips@linux-mips.org, linux-kbuild@vger.kernel.org,
-        james.hogan@imgtec.com,
-        Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-Subject: [PATCH] MIPS: fix invalid symbolic link file
-Date:   Thu, 19 Sep 2013 18:39:08 +0530
-Message-Id: <1379596148-32520-1-git-send-email-maddy@linux.vnet.ibm.com>
-X-Mailer: git-send-email 1.7.10.4
-X-TM-AS-MML: No
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 13091913-4790-0000-0000-00000A67CB42
-Return-Path: <maddy@linux.vnet.ibm.com>
+        james.hogan@imgtec.com
+Subject: Re: git issue / [PATCH] MIPS: fix invalid symbolic link file
+Message-ID: <20130919133920.GA22468@linux-mips.org>
+References: <1379596148-32520-1-git-send-email-maddy@linux.vnet.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1379596148-32520-1-git-send-email-maddy@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37880
+X-archive-position: 37881
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maddy@linux.vnet.ibm.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,25 +47,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-   Commit 3b29aa5ba204c created a symlink file in include/dt-bindings.
-   Even though commit diff is fine, symlink is invalid.
-   ls -lb shows a newline character at the end of the filename.
+On Thu, Sep 19, 2013 at 06:39:08PM +0530, Madhavan Srinivasan wrote:
 
-lrwxrwxrwx 1 maddy maddy 35 Sep 19 18:11 dt-bindings ->
-../../../../../include/dt-bindings\n
+(Git folks, please read on.)
 
-Signed-off-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
----
- arch/mips/boot/dts/include/dt-bindings |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>    Commit 3b29aa5ba204c created a symlink file in include/dt-bindings.
+>    Even though commit diff is fine, symlink is invalid.
+>    ls -lb shows a newline character at the end of the filename.
+> 
+> lrwxrwxrwx 1 maddy maddy 35 Sep 19 18:11 dt-bindings ->
+> ../../../../../include/dt-bindings\n
+> 
+> Signed-off-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+> ---
+>  arch/mips/boot/dts/include/dt-bindings |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/boot/dts/include/dt-bindings b/arch/mips/boot/dts/include/dt-bindings
+> index 68ae388..08c00e4 120000
+> --- a/arch/mips/boot/dts/include/dt-bindings
+> +++ b/arch/mips/boot/dts/include/dt-bindings
+> @@ -1 +1 @@
+> -../../../../../include/dt-bindings
+> +../../../../../include/dt-bindings
+> \ No newline at end of file
+> -- 
+> 1.7.10.4
 
-diff --git a/arch/mips/boot/dts/include/dt-bindings b/arch/mips/boot/dts/include/dt-bindings
-index 68ae388..08c00e4 120000
---- a/arch/mips/boot/dts/include/dt-bindings
-+++ b/arch/mips/boot/dts/include/dt-bindings
-@@ -1 +1 @@
--../../../../../include/dt-bindings
-+../../../../../include/dt-bindings
-\ No newline at end of file
--- 
-1.7.10.4
+I applied your patch - but now git-show shows it as an empty commit and
+
+  ls -lb arch/mips/boot/dts/include/dt-bindings
+
+still shows the \n at the end of the link target.  Things are looking ok
+now that I manually fixed the link and commited the result.  I hope
+git-push and git-pull are going to handle this correct.
+
+So, I wonder if this is a git bug.
+
+The original patch that introduced the symlink with the \n is kernel
+commit 3b29aa5ba204c62b3ec8f9f5b1ebd6e5d74f75d3 and is archived in
+patchwork at http://patchwork.linux-mips.org/patch/5745/  The patch
+file contains a \n at the end - but one would expect that from a
+patch file that has been transfered via email, so I'm not sure how this
+is supposed to work with emailed patches?!?
+
+Anyway, I'm not too fond of sylinks in the tree or in patches and I'm
+wondering if we could get rid of them for something more bullet proof.
+
+  Ralf

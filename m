@@ -1,38 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Sep 2013 22:15:09 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:56040 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823067Ab3ITUPDzMnhR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Sep 2013 22:15:03 +0200
-Received: from c-67-160-231-162.hsd1.ca.comcast.net ([67.160.231.162] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <kamal@canonical.com>)
-        id 1VN71g-0000MS-GC; Fri, 20 Sep 2013 20:10:04 +0000
-Received: from kamal by fourier with local (Exim 4.80)
-        (envelope-from <kamal@whence.com>)
-        id 1VN71e-0000bx-8m; Fri, 20 Sep 2013 13:10:02 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     Felix Fietkau <nbd@openwrt.org>, Gabor Juhos <juhosg@openwrt.org>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 69/93] MIPS: ath79: Fix ar933x watchdog clock
-Date:   Fri, 20 Sep 2013 13:09:04 -0700
-Message-Id: <1379707768-1804-70-git-send-email-kamal@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Sep 2013 00:47:01 +0200 (CEST)
+Received: from fifo99.com ([67.223.236.141]:36604 "EHLO fifo99.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6822681Ab3ITWq5zzyJU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 21 Sep 2013 00:46:57 +0200
+Received: from zorba.lan (adsl-99-25-115-217.dsl.pltn13.sbcglobal.net [99.25.115.217])
+        (Authenticated sender: dwalker)
+        by fifo99.com (Postfix) with ESMTPSA id A4828327D3AF;
+        Fri, 20 Sep 2013 15:46:45 -0700 (PDT)
+From:   Daniel Walker <dwalker@fifo99.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        Doug Thompson <dougthompson@xmission.com>
+Cc:     linux-edac@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] drivers: edac: octeon: fix lack of opstate_init
+Date:   Fri, 20 Sep 2013 15:46:40 -0700
+Message-Id: <1379717202-26990-1-git-send-email-dwalker@fifo99.com>
 X-Mailer: git-send-email 1.8.1.2
-In-Reply-To: <1379707768-1804-1-git-send-email-kamal@canonical.com>
-References: <1379707768-1804-1-git-send-email-kamal@canonical.com>
-X-Extended-Stable: 3.8
-Return-Path: <kamal@canonical.com>
+Return-Path: <dwalker@fifo99.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37905
+X-archive-position: 37906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
+X-original-sender: dwalker@fifo99.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,50 +38,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.8.13.10 -stable review patch.  If anyone has any objections, please let me know.
+If the opstate_init() isn't called the driver won't start properly.
 
-------------------
+I just added it in what appears to be an appropriate place.
 
-From: Felix Fietkau <nbd@openwrt.org>
-
-commit a1191927ace7e6f827132aa9e062779eb3f11fa5 upstream.
-
-The watchdog device on the AR933x is connected to
-the AHB clock, however the current code uses the
-reference clock. Due to the wrong rate, the watchdog
-driver can't calculate correct register values for
-a given timeout value and the watchdog unexpectedly
-restarts the system.
-
-The code uses the wrong value since the initial
-commit 04225e1d227c8e68d685936ecf42ac175fec0e54
-(MIPS: ath79: add AR933X specific clock init)
-
-The patch fixes the code to use the correct clock
-rate to avoid the problem.
-
-Signed-off-by: Felix Fietkau <nbd@openwrt.org>
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/5777/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+Signed-off-by: Daniel Walker <dwalker@fifo99.com>
 ---
- arch/mips/ath79/clock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/edac/octeon_edac-lmc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index 579f452..300d7d3 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -164,7 +164,7 @@ static void __init ar933x_clocks_init(void)
- 		ath79_ahb_clk.rate = freq / t;
- 	}
+diff --git a/drivers/edac/octeon_edac-lmc.c b/drivers/edac/octeon_edac-lmc.c
+index 93412d6..4881ad0 100644
+--- a/drivers/edac/octeon_edac-lmc.c
++++ b/drivers/edac/octeon_edac-lmc.c
+@@ -92,6 +92,8 @@ static int octeon_lmc_edac_probe(struct platform_device *pdev)
+ 	struct edac_mc_layer layers[1];
+ 	int mc = pdev->id;
  
--	ath79_wdt_clk.rate = ath79_ref_clk.rate;
-+	ath79_wdt_clk.rate = ath79_ahb_clk.rate;
- 	ath79_uart_clk.rate = ath79_ref_clk.rate;
- }
- 
++	opstate_init();
++
+ 	layers[0].type = EDAC_MC_LAYER_CHANNEL;
+ 	layers[0].size = 1;
+ 	layers[0].is_virt_csrow = false;
 -- 
 1.8.1.2

@@ -1,47 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Sep 2013 20:43:15 +0200 (CEST)
-Received: from smtprelay0190.hostedemail.com ([216.40.44.190]:47679 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6823043Ab3ITSnNF-6rT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Sep 2013 20:43:13 +0200
-Received: from filter.hostedemail.com (ff-bigip1 [10.5.19.254])
-        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 2EA7FC209C;
-        Fri, 20 Sep 2013 18:43:10 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-HE-Tag: dime44_559f2a9c3a216
-X-Filterd-Recvd-Size: 2980
-Received: from [192.168.1.157] (pool-96-251-49-11.lsanca.fios.verizon.net [96.251.49.11])
-        (Authenticated sender: joe@perches.com)
-        by omf11.hostedemail.com (Postfix) with ESMTPA;
-        Fri, 20 Sep 2013 18:43:08 +0000 (UTC)
-Message-ID: <1379702587.2301.12.camel@joe-AO722>
-Subject: Re: [PATCH 2/2] framebuffer: Remove pmag-aa-fb
-From:   Joe Perches <joe@perches.com>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Date:   Fri, 20 Sep 2013 11:43:07 -0700
-In-Reply-To: <alpine.LFD.2.03.1309201907380.8379@linux-mips.org>
-References: <c94f3e342947923f20d4c12932f382aa5200511b.1379641901.git.joe@perches.com>
-         <6f500d88eb23fd9a4cfc5583f5ca17bc5f58fe24.1379641901.git.joe@perches.com>
-         <CAMuHMdW6R5qTJ0uvsUUaYBZAqFcNshPsXeMbz5hwqq5UOkJr-g@mail.gmail.com>
-         <alpine.LFD.2.03.1309201907380.8379@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-X-Mailer: Evolution 3.6.4-0ubuntu1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <joe@perches.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Sep 2013 21:36:15 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:55435 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822681Ab3ITTgKq6wLo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Sep 2013 21:36:10 +0200
+Received: from [204.57.119.28] (helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1VN6Uq-0007Zj-IQ; Fri, 20 Sep 2013 19:36:09 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     Felix Fietkau <nbd@openwrt.org>
+Cc:     Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Luis Henriques <luis.henriques@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [ 3.5.y.z extended stable ] Patch "MIPS: ath79: Fix ar933x watchdog clock" has been added to staging queue
+Date:   Fri, 20 Sep 2013 20:36:05 +0100
+Message-Id: <1379705765-17106-1-git-send-email-luis.henriques@canonical.com>
+X-Mailer: git-send-email 1.8.3.2
+X-Extended-Stable: 3.5
+Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37903
+X-archive-position: 37904
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joe@perches.com
+X-original-sender: luis.henriques@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,56 +40,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 2013-09-20 at 19:18 +0100, Maciej W. Rozycki wrote:
-> Joe, Geert --
+This is a note to let you know that I have just added a patch titled
 
-Hi Maciej
+    MIPS: ath79: Fix ar933x watchdog clock
 
-> Can we please wait with that a few days?  I've been reviving DECstation 
-> bits recently but the generic stuff took priority (thankfully little 
-> bitrot there, the port generally works, except from the 64-bit mode).  I 
-> think it'll make more sense if we have an incremental diff in the repo 
-> rather than a complete removal, followed with a readdition with necessary 
-> adjustments.
+to the linux-3.5.y-queue branch of the 3.5.y.z extended stable tree 
+which can be found at:
 
-Good for you.
+ http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.5.y-queue
 
-I do wonder how many of these still exist though.
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
-I haven't had one of those on a desk since the early
-'90's (a VAXstation w/VMS and a DECstation w/Ultrix)
+For more information about the 3.5.y.z tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 
-This one's been dead for about that long too so
-what's a little more time...
+Thanks.
+-Luis
 
-The commit that removed it was:
--------------------
-commit c708093f8164011d01eb3bbdf7d61965f283ee0e
-Author: James Simmons <jsimmons@maxwell.earthlink.net>
-Date:   Wed Oct 30 20:06:21 2002 -0800
-
-Moved all console configuration out of arch directories into
-drivers/video/console. Allow resize of a single VC via the tty layer.
-Nuked GET_FB_IDX.
--------------------
-
-I think you could do:
-
----
-
- drivers/video/pmag-aa-fb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/video/pmag-aa-fb.c b/drivers/video/pmag-aa-fb.c
-index 8384248..0362fb7 100644
---- a/drivers/video/pmag-aa-fb.c
-+++ b/drivers/video/pmag-aa-fb.c
-@@ -459,7 +459,7 @@ static int __init init_one(int slot)
- 		return -EINVAL;
- 
- 	printk(KERN_INFO "fb%d: %s frame buffer in TC slot %d\n",
--	       GET_FB_IDX(ip->info.node), ip->info.modename, slot);
-+	       ip->info.node, ip->info.modename, slot);
- 
- 	return 0;
- }
+------

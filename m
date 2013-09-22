@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Sep 2013 22:55:24 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:36651 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Sep 2013 22:58:56 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:36667 "EHLO
         localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6818702Ab3IVUzTK6crB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Sep 2013 22:55:19 +0200
-Date:   Sun, 22 Sep 2013 21:55:19 +0100 (BST)
+        by eddie.linux-mips.org with ESMTP id S6818702Ab3IVU6ud0hZQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Sep 2013 22:58:50 +0200
+Date:   Sun, 22 Sep 2013 21:58:50 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 cc:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: DECstation I/O ASIC DMA interrupt classes
-Message-ID: <alpine.LFD.2.03.1309222128400.16797@linux-mips.org>
+Subject: [MIPS] DEC: whitespace cleanup
+Message-ID: <alpine.LFD.2.03.1309151721020.2176@linux-mips.org>
 User-Agent: Alpine 2.03 (LFD 1266 2009-07-14)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -16,7 +16,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37912
+X-archive-position: 37913
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,169 +33,178 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This change complements commits d0da7c002f7b2a93582187a9e3f73891a01d8ee4 
-[MIPS: DEC: Convert to new irq_chip functions] and 
-5359b938c088423a28c41499f183cd10824c1816 [MIPS: DECstation I/O ASIC DMA 
-interrupt handling fix] and implements automatic handling of the two 
-classes of DMA interrupts the I/O ASIC implements, informational and 
-errors.
-
-Informational DMA interrupts do not stop the transfer and use the 
-`handle_edge_irq' handler that clears the request right away so that 
-another request may be recorded while the previous is being handled.
-
-DMA error interrupts stop the transfer and require a corrective action 
-before DMA can be reenabled.  Therefore they use the `handle_fasteoi_irq' 
-handler that only clears the request on the way out.  Because MIPS 
-processor interrupt inputs, one of which the I/O ASIC's interrupt 
-controller is cascaded to, are level-triggered it is recommended that 
-error DMA interrupt action handlers are registered with the IRQF_ONESHOT 
-flag set so that they are run with the interrupt line masked.
-
-This change removes the export of clear_ioasic_dma_irq that now does not 
-have to be called by device drivers to clear interrupts explicitly 
-anymore.  Originally these interrupts were cleared in the .end handler of 
-the `irq_chip' structure, before it was removed.
+Commit 7034228792cc561e79ff8600f02884bd4c80e287 [MIPS: Whitespace 
+cleanup.] did a lot of good and a little damage.  Revert the damage.
 
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
 Ralf,
 
-> > The first patch is already upstream in 3.12-rc1, so I will need an 
-> > incremental patch.
-> 
-> Argh, that means I'll have to rewrite the explanation...  Ran out of time
-> now, will post later.
+ Please apply (as obvious).
 
- So here it is, please apply.  Additionally:
+ Maciej
 
->  This change was tested at run time, however the LANCE does not work quite
-> right -- while data is exchanged so that multi-user login can be reached
-> NFS-rooted, link keeps being dropped all the time.  This is not a hardware
-> problem, because net-booting using the firmware does not exhibit this
-> behaviour.
-
--- well, I had never expected I would ever say or write that, but 
-fortunately it was a hardware problem after all.  It has turned out the 
-uplink switch's PSU was on the way out; its operation has since 
-deteriorated even further, enough for me to notice it being the cause.  
-With the PSU replaced, the LANCE stopped misbehaving and the DECstation is 
-fully operational NFS-rooted over Ethernet as well.
-
-  Maciej
-
-linux-dec-ioasic-dma-irq.patch
-Index: linux-mips-3.12.0-rc1-20130917-4maxp/arch/mips/dec/ioasic-irq.c
+linux-dec-tab.patch
+Index: linux/arch/mips/dec/int-handler.S
 ===================================================================
---- linux-mips-3.12.0-rc1-20130917-4maxp.orig/arch/mips/dec/ioasic-irq.c
-+++ linux-mips-3.12.0-rc1-20130917-4maxp/arch/mips/dec/ioasic-irq.c
-@@ -1,7 +1,7 @@
+--- linux.orig/arch/mips/dec/int-handler.S
++++ linux/arch/mips/dec/int-handler.S
+@@ -118,7 +118,7 @@
+  *	       7	FPU/R4k timer
+  *
+  * We handle the IRQ according to _our_ priority (see setup.c),
+- * then we just return.	 If multiple IRQs are pending then we will
++ * then we just return.  If multiple IRQs are pending then we will
+  * just take another exception, big deal.
+  */
+ 		.align	5
+@@ -146,7 +146,7 @@
+ 		/*
+ 		 * Find irq with highest priority
+ 		 */
+-		 PTR_LA t1,cpu_mask_nr_tbl
++		 PTR_LA	t1,cpu_mask_nr_tbl
+ 1:		lw	t2,(t1)
+ 		nop
+ 		and	t2,t0
+@@ -195,7 +195,7 @@
+ 		/*
+ 		 * Find irq with highest priority
+ 		 */
+-		 PTR_LA t1,asic_mask_nr_tbl
++		 PTR_LA	t1,asic_mask_nr_tbl
+ 2:		lw	t2,(t1)
+ 		nop
+ 		and	t2,t0
+@@ -221,7 +221,7 @@
+ 		FEXPORT(cpu_all_int)		# HALT, timers, software junk
+ 		li	a0,DEC_CPU_IRQ_BASE
+ 		srl	t0,CAUSEB_IP
+-		li	t1,CAUSEF_IP>>CAUSEB_IP # mask
++		li	t1,CAUSEF_IP>>CAUSEB_IP	# mask
+ 		b	1f
+ 		 li	t2,4			# nr of bits / 2
+ 
+Index: linux/arch/mips/dec/prom/call_o32.S
+===================================================================
+--- linux.orig/arch/mips/dec/prom/call_o32.S
++++ linux/arch/mips/dec/prom/call_o32.S
+@@ -14,7 +14,7 @@
+ 
+ /* Maximum number of arguments supported.  Must be even!  */
+ #define O32_ARGC	32
+-/* Number of static registers we save.	*/
++/* Number of static registers we save.  */
+ #define O32_STATC	11
+ /* Frame size for both of the above.  */
+ #define O32_FRAMESZ	(4 * O32_ARGC + SZREG * O32_STATC)
+Index: linux/arch/mips/dec/prom/init.c
+===================================================================
+--- linux.orig/arch/mips/dec/prom/init.c
++++ linux/arch/mips/dec/prom/init.c
+@@ -103,7 +103,7 @@ void __init prom_init(void)
+ 	if (prom_is_rex(magic))
+ 		rex_clear_cache();
+ 
+-	/* Register the early console.	*/
++	/* Register the early console.  */
+ 	register_prom_console();
+ 
+ 	/* Were we compiled with the right CPU option? */
+Index: linux/arch/mips/dec/prom/memory.c
+===================================================================
+--- linux.orig/arch/mips/dec/prom/memory.c
++++ linux/arch/mips/dec/prom/memory.c
+@@ -22,7 +22,7 @@ volatile unsigned long mem_err;		/* So w
+ 
  /*
-  *	DEC I/O ASIC interrupts.
-  *
-- *	Copyright (c) 2002, 2003  Maciej W. Rozycki
-+ *	Copyright (c) 2002, 2003, 2013  Maciej W. Rozycki
-  *
-  *	This program is free software; you can redistribute it and/or
-  *	modify it under the terms of the GNU General Public License
-@@ -51,22 +51,51 @@ static struct irq_chip ioasic_irq_type =
- 	.irq_unmask = unmask_ioasic_irq,
- };
+  * Probe memory in 4MB chunks, waiting for an error to tell us we've fallen
+- * off the end of real memory.	Only suitable for the 2100/3100's (PMAX).
++ * off the end of real memory.  Only suitable for the 2100/3100's (PMAX).
+  */
  
--void clear_ioasic_dma_irq(unsigned int irq)
-+static void clear_ioasic_dma_irq(struct irq_data *d)
- {
- 	u32 sir;
- 
--	sir = ~(1 << (irq - ioasic_irq_base));
-+	sir = ~(1 << (d->irq - ioasic_irq_base));
- 	ioasic_write(IO_REG_SIR, sir);
-+	fast_iob();
- }
- 
- static struct irq_chip ioasic_dma_irq_type = {
- 	.name = "IO-ASIC-DMA",
--	.irq_ack = ack_ioasic_irq,
-+	.irq_ack = clear_ioasic_dma_irq,
- 	.irq_mask = mask_ioasic_irq,
--	.irq_mask_ack = ack_ioasic_irq,
- 	.irq_unmask = unmask_ioasic_irq,
-+	.irq_eoi = clear_ioasic_dma_irq,
- };
- 
-+/*
-+ * I/O ASIC implements two kinds of DMA interrupts, informational and
-+ * error interrupts.
-+ *
-+ * The formers do not stop DMA and should be cleared as soon as possible
-+ * so that if they retrigger before the handler has completed, usually as
-+ * a side effect of actions taken by the handler, then they are reissued.
-+ * These use the `handle_edge_irq' handler that clears the request right
-+ * away.
-+ *
-+ * The latters stop DMA and do not resume it until the interrupt has been
-+ * cleared.  This cannot be done until after a corrective action has been
-+ * taken and this also means they will not retrigger.  Therefore they use
-+ * the `handle_fasteoi_irq' handler that only clears the request on the
-+ * way out.  Because MIPS processor interrupt inputs, one of which the I/O
-+ * ASIC is cascaded to, are level-triggered it is recommended that error
-+ * DMA interrupt action handlers are registered with the IRQF_ONESHOT flag
-+ * set so that they are run with the interrupt line masked.
-+ *
-+ * This mask has `1' bits in the positions of informational interrupts.
-+ */
-+#define IO_IRQ_DMA_INFO							\
-+	(IO_IRQ_MASK(IO_INR_SCC0A_RXDMA) |				\
-+	 IO_IRQ_MASK(IO_INR_SCC1A_RXDMA) |				\
-+	 IO_IRQ_MASK(IO_INR_ISDN_TXDMA) |				\
-+	 IO_IRQ_MASK(IO_INR_ISDN_RXDMA) |				\
-+	 IO_IRQ_MASK(IO_INR_ASC_DMA))
-+
- void __init init_ioasic_irqs(int base)
- {
- 	int i;
-@@ -79,7 +108,9 @@ void __init init_ioasic_irqs(int base)
- 		irq_set_chip_and_handler(i, &ioasic_irq_type,
- 					 handle_level_irq);
- 	for (; i < base + IO_IRQ_LINES; i++)
--		irq_set_chip(i, &ioasic_dma_irq_type);
-+		irq_set_chip_and_handler(i, &ioasic_dma_irq_type,
-+					 1 << (i - base) & IO_IRQ_DMA_INFO ?
-+					 handle_edge_irq : handle_fasteoi_irq);
- 
- 	ioasic_irq_base = base;
- }
-Index: linux-mips-3.12.0-rc1-20130917-4maxp/arch/mips/include/asm/dec/ioasic.h
+ #define CHUNK_SIZE 0x400000
+Index: linux/arch/mips/dec/setup.c
 ===================================================================
---- linux-mips-3.12.0-rc1-20130917-4maxp.orig/arch/mips/include/asm/dec/ioasic.h
-+++ linux-mips-3.12.0-rc1-20130917-4maxp/arch/mips/include/asm/dec/ioasic.h
-@@ -31,8 +31,6 @@ static inline u32 ioasic_read(unsigned i
- 	return ioasic_base[reg / 4];
- }
+--- linux.orig/arch/mips/dec/setup.c
++++ linux/arch/mips/dec/setup.c
+@@ -65,7 +65,7 @@ EXPORT_SYMBOL(ioasic_base);
+ /*
+  * IRQ routing and priority tables.  Priorites are set as follows:
+  *
+- *		KN01	KN230	KN02	KN02-BA KN02-CA KN03
++ *		KN01	KN230	KN02	KN02-BA	KN02-CA	KN03
+  *
+  * MEMORY	CPU	CPU	CPU	ASIC	CPU	CPU
+  * RTC		CPU	CPU	CPU	ASIC	CPU	CPU
+@@ -413,7 +413,7 @@ static void __init dec_init_kn02(void)
  
--extern void clear_ioasic_dma_irq(unsigned int irq);
--
- extern void init_ioasic_irqs(int base);
- 
- extern int dec_ioasic_clocksource_init(void);
-Index: linux-mips-3.12.0-rc1-20130917-4maxp/drivers/net/ethernet/amd/declance.c
+ /*
+  * Machine-specific initialisation for KN02-BA, aka DS5000/1xx
+- * (xx = 20, 25, 33), aka 3min.	 Also applies to KN04(-BA), aka
++ * (xx = 20, 25, 33), aka 3min.  Also applies to KN04(-BA), aka
+  * DS5000/150, aka 4min.
+  */
+ static int kn02ba_interrupt[DEC_NR_INTS] __initdata = {
+Index: linux/arch/mips/include/asm/dec/ioasic_addrs.h
 ===================================================================
---- linux-mips-3.12.0-rc1-20130917-4maxp.orig/drivers/net/ethernet/amd/declance.c
-+++ linux-mips-3.12.0-rc1-20130917-4maxp/drivers/net/ethernet/amd/declance.c
-@@ -725,7 +725,6 @@ static irqreturn_t lance_dma_merr_int(in
- {
- 	struct net_device *dev = dev_id;
+--- linux.orig/arch/mips/include/asm/dec/ioasic_addrs.h
++++ linux/arch/mips/include/asm/dec/ioasic_addrs.h
+@@ -40,7 +40,7 @@
+ #define IOASIC_FLOPPY	(11*IOASIC_SLOT_SIZE)	/* FDC (maxine) */
+ #define IOASIC_SCSI	(12*IOASIC_SLOT_SIZE)	/* ASC SCSI */
+ #define IOASIC_FDC_DMA	(13*IOASIC_SLOT_SIZE)	/* FDC DMA (maxine) */
+-#define IOASIC_SCSI_DMA (14*IOASIC_SLOT_SIZE)	/* ??? */
++#define IOASIC_SCSI_DMA	(14*IOASIC_SLOT_SIZE)	/* ??? */
+ #define IOASIC_RES_15	(15*IOASIC_SLOT_SIZE)	/* unused? */
  
--	clear_ioasic_dma_irq(irq);
- 	printk(KERN_ERR "%s: DMA error\n", dev->name);
- 	return IRQ_HANDLED;
- }
-@@ -812,7 +811,7 @@ static int lance_open(struct net_device 
- 	if (lp->dma_irq >= 0) {
- 		unsigned long flags;
  
--		if (request_irq(lp->dma_irq, lance_dma_merr_int, 0,
-+		if (request_irq(lp->dma_irq, lance_dma_merr_int, IRQF_ONESHOT,
- 				"lance error", dev)) {
- 			free_irq(dev->irq, dev);
- 			printk("%s: Can't get DMA IRQ %d\n", dev->name,
+Index: linux/arch/mips/include/asm/dec/kn01.h
+===================================================================
+--- linux.orig/arch/mips/include/asm/dec/kn01.h
++++ linux/arch/mips/include/asm/dec/kn01.h
+@@ -57,12 +57,12 @@
+ /*
+  * System Control & Status Register bits.
+  */
+-#define KN01_CSR_MNFMOD		(1<<15) /* MNFMOD manufacturing jumper */
+-#define KN01_CSR_STATUS		(1<<14) /* self-test result status output */
+-#define KN01_CSR_PARDIS		(1<<13) /* parity error disable */
+-#define KN01_CSR_CRSRTST	(1<<12) /* PCC test output */
+-#define KN01_CSR_MONO		(1<<11) /* mono/color fb SIMM installed */
+-#define KN01_CSR_MEMERR		(1<<10) /* write timeout error status & ack*/
++#define KN01_CSR_MNFMOD		(1<<15)	/* MNFMOD manufacturing jumper */
++#define KN01_CSR_STATUS		(1<<14)	/* self-test result status output */
++#define KN01_CSR_PARDIS		(1<<13)	/* parity error disable */
++#define KN01_CSR_CRSRTST	(1<<12)	/* PCC test output */
++#define KN01_CSR_MONO		(1<<11)	/* mono/color fb SIMM installed */
++#define KN01_CSR_MEMERR		(1<<10)	/* write timeout error status & ack*/
+ #define KN01_CSR_VINT		(1<<9)	/* PCC area detect #2 status & ack */
+ #define KN01_CSR_TXDIS		(1<<8)	/* DZ11 transmit disable */
+ #define KN01_CSR_VBGTRG		(1<<2)	/* blue DAC voltage over green (r/o) */
+Index: linux/arch/mips/include/asm/dec/kn02ca.h
+===================================================================
+--- linux.orig/arch/mips/include/asm/dec/kn02ca.h
++++ linux/arch/mips/include/asm/dec/kn02ca.h
+@@ -68,7 +68,7 @@
+ #define KN03CA_IO_SSR_ISDN_RST	(1<<12)		/* ~ISDN (Am79C30A) reset */
+ 
+ #define KN03CA_IO_SSR_FLOPPY_RST (1<<7)		/* ~FDC (82077) reset */
+-#define KN03CA_IO_SSR_VIDEO_RST (1<<6)		/* ~framebuffer reset */
++#define KN03CA_IO_SSR_VIDEO_RST	(1<<6)		/* ~framebuffer reset */
+ #define KN03CA_IO_SSR_AB_RST	(1<<5)		/* ACCESS.bus reset */
+ #define KN03CA_IO_SSR_RES_4	(1<<4)		/* unused */
+ #define KN03CA_IO_SSR_RES_3	(1<<4)		/* unused */
+Index: linux/arch/mips/include/asm/dec/prom.h
+===================================================================
+--- linux.orig/arch/mips/include/asm/dec/prom.h
++++ linux/arch/mips/include/asm/dec/prom.h
+@@ -49,7 +49,7 @@
+ 
+ #ifdef CONFIG_64BIT
+ 
+-#define prom_is_rex(magic)	1	/* KN04 and KN05 are REX PROMs.	 */
++#define prom_is_rex(magic)	1	/* KN04 and KN05 are REX PROMs.  */
+ 
+ #else /* !CONFIG_64BIT */
+ 

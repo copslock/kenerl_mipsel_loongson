@@ -1,28 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Sep 2013 15:01:59 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:39373 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6824283Ab3IWNBx2PDu5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Sep 2013 15:01:53 +0200
-Date:   Mon, 23 Sep 2013 14:01:53 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Jonas Gorski <jogo@openwrt.org>, Ralf Baechle <ralf@linux-mips.org>
-cc:     MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: [PATCH v3] MIPS: Tell R4k SC and MC variations apart
-In-Reply-To: <CAOiHx==su=eew_rXG_EJcub71vpqJgOS7XL05OcgjVDyZ8-1_Q@mail.gmail.com>
-Message-ID: <alpine.LFD.2.03.1309231358090.16797@linux-mips.org>
-References: <alpine.LFD.2.03.1309222307440.16797@linux-mips.org> <CAOiHx==GRTP3FpSfPG9yUc50mZBvrzjnXnGMXA6A5WSBRXbp3g@mail.gmail.com> <alpine.LFD.2.03.1309231332500.16797@linux-mips.org> <CAOiHx==su=eew_rXG_EJcub71vpqJgOS7XL05OcgjVDyZ8-1_Q@mail.gmail.com>
-User-Agent: Alpine 2.03 (LFD 1266 2009-07-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Sep 2013 16:11:26 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:4691 "EHLO mms3.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6818702Ab3IWOLToB57O (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 23 Sep 2013 16:11:19 +0200
+Received: from [10.9.208.55] by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Mon, 23 Sep 2013 07:00:21 -0700
+X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
+Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
+ IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Mon, 23 Sep 2013 07:11:00 -0700
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
+ Server id 14.1.438.0; Mon, 23 Sep 2013 07:11:00 -0700
+Received: from xl-blr-01.broadcom.com (xl-blr-01.ban.broadcom.com
+ [10.132.130.166]) by mail-irva-13.broadcom.com (Postfix) with ESMTP id
+ 07CEC246A5; Mon, 23 Sep 2013 07:11:00 -0700 (PDT)
+Received: by xl-blr-01.broadcom.com (Postfix, from userid 31394) id
+ 8672D146A499; Mon, 23 Sep 2013 19:40:55 +0530 (IST)
+From:   "Ashok Kumar" <ashoks@broadcom.com>
+To:     linux-mips@linux-mips.org, gerg@uclinux.org
+cc:     ralf@linux-mips.org, "Ashok Kumar" <ashoks@broadcom.com>
+Subject: [PATCH] MIPS: fix mapstart when using initrd
+Date:   Mon, 23 Sep 2013 19:40:26 +0530
+Message-ID: <1379945426-32205-1-git-send-email-ashoks@broadcom.com>
+X-Mailer: git-send-email 1.7.6
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+X-WSS-ID: 7E5E96FF2L887512444-01-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Return-Path: <ashoks@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37930
+X-archive-position: 37931
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ashoks@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,69 +49,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There is no reliable way to tell R4000/R4400 SC and MC variations apart,
-however simple heuristic should give good results.  Only the MC version
-supports coherent caching so we can rely on such a mode having been set
-for KSEG0 by the power-on firmware to reliably indicate an MC processor.
-SC processors reportedly hang on coherent cached memory accesses and Linux
-is linked to a cached load address so the firmware has to use the correct
-caching mode to download the kernel image in a cached mode successfully.
+When initrd is present in the PFN right after the _end, bootmem
+bitmap(mapstart) overwrites it. So check for initrd_end in
+mapstart calculation.
 
-OTOH if the firmware chooses to use either the non-coherent cached or the
-uncached mode for KSEG0 on an MC processor, then the SC variant will be
-reported, just as we currently do, so no regression here.
-
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+Signed-off-by: Ashok Kumar <ashoks@broadcom.com>
 ---
-> > +                               c->cputype = mc ? CPU_R4000MC : CPU_R4000SC;
-> > +                               __cpu_name[cpu] = mc ? "R4400MC" : "R4000SC";
-> 
-> You are still calling it "R4400", not "R4000" as expected.
+This is seen after the commit
+"mips: fix start of free memory when using initrd"
+in git://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git branch
 
- Sigh, sorry about that, and thanks for your persistence.
+Tested the image on MIPS platform creating the above
+said scenario and initrd was corrupted.
 
-  Maciej
+ arch/mips/kernel/setup.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
 
-linux-mips-r4k-mc.patch
-Index: linux/arch/mips/kernel/cpu-probe.c
-===================================================================
---- linux.orig/arch/mips/kernel/cpu-probe.c
-+++ linux/arch/mips/kernel/cpu-probe.c
-@@ -362,13 +362,33 @@ static inline void cpu_probe_legacy(stru
- 				__cpu_name[cpu] = "R4000PC";
- 			}
- 		} else {
-+			int cca = read_c0_config() & CONF_CM_CMASK;
-+			int mc;
-+
-+			/*
-+			 * SC and MC versions can't be reliably told apart,
-+			 * but only the latter support coherent caching
-+			 * modes so assume the firmware has set the KSEG0
-+			 * coherency attribute reasonably (if uncached, we
-+			 * assume SC).
-+			 */
-+			switch (cca) {
-+			case CONF_CM_CACHABLE_CE:
-+			case CONF_CM_CACHABLE_COW:
-+			case CONF_CM_CACHABLE_CUW:
-+				mc = 1;
-+				break;
-+			default:
-+				mc = 0;
-+				break;
-+			}
- 			if ((c->processor_id & PRID_REV_MASK) >=
- 			    PRID_REV_R4400) {
--				c->cputype = CPU_R4400SC;
--				__cpu_name[cpu] = "R4400SC";
-+				c->cputype = mc ? CPU_R4400MC : CPU_R4400SC;
-+				__cpu_name[cpu] = mc ? "R4400MC" : "R4400SC";
- 			} else {
--				c->cputype = CPU_R4000SC;
--				__cpu_name[cpu] = "R4000SC";
-+				c->cputype = mc ? CPU_R4000MC : CPU_R4000SC;
-+				__cpu_name[cpu] = mc ? "R4000MC" : "R4000SC";
- 			}
- 		}
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 5342385..dfb8585 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -364,6 +364,11 @@ static void __init bootmem_init(void)
+ 	}
  
+ 	/*
++	 * mapstart should be after initrd_end
++	 */
++	mapstart = max(mapstart, (unsigned long)PFN_UP(__pa(initrd_end)));
++
++	/*
+ 	 * Initialize the boot-time allocator with low memory only.
+ 	 */
+ 	bootmap_size = init_bootmem_node(NODE_DATA(0), mapstart,
+-- 
+1.7.6

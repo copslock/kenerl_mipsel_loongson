@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Sep 2013 12:38:42 +0200 (CEST)
-Received: from szxga02-in.huawei.com ([119.145.14.65]:64485 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Sep 2013 12:43:43 +0200 (CEST)
+Received: from szxga02-in.huawei.com ([119.145.14.65]:36812 "EHLO
         szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6819540Ab3IWKiiH8QMa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Sep 2013 12:38:38 +0200
-Received: from 172.24.2.119 (EHLO szxeml212-edg.china.huawei.com) ([172.24.2.119])
+        by eddie.linux-mips.org with ESMTP id S6819540Ab3IWKne5Lv1d (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Sep 2013 12:43:34 +0200
+Received: from 172.24.2.119 (EHLO szxeml210-edg.china.huawei.com) ([172.24.2.119])
         by szxrg02-dlp.huawei.com (MOS 4.3.4-GA FastPath queued)
-        with ESMTP id BIF03828;
-        Mon, 23 Sep 2013 18:37:21 +0800 (CST)
-Received: from SZXEML416-HUB.china.huawei.com (10.82.67.155) by
- szxeml212-edg.china.huawei.com (172.24.2.181) with Microsoft SMTP Server
- (TLS) id 14.3.146.0; Mon, 23 Sep 2013 18:37:14 +0800
-Received: from [127.0.0.1] (10.135.74.216) by szxeml416-hub.china.huawei.com
- (10.82.67.155) with Microsoft SMTP Server id 14.3.146.0; Mon, 23 Sep 2013
- 18:37:09 +0800
-Message-ID: <524019D0.9070706@huawei.com>
-Date:   Mon, 23 Sep 2013 18:37:04 +0800
+        with ESMTP id BIF04338;
+        Mon, 23 Sep 2013 18:43:07 +0800 (CST)
+Received: from SZXEML413-HUB.china.huawei.com (10.82.67.152) by
+ szxeml210-edg.china.huawei.com (172.24.2.183) with Microsoft SMTP Server
+ (TLS) id 14.3.146.0; Mon, 23 Sep 2013 18:40:56 +0800
+Received: from [127.0.0.1] (10.135.74.216) by szxeml413-hub.china.huawei.com
+ (10.82.67.152) with Microsoft SMTP Server id 14.3.146.0; Mon, 23 Sep 2013
+ 18:40:51 +0800
+Message-ID: <52401AB2.8000605@huawei.com>
+Date:   Mon, 23 Sep 2013 18:40:50 +0800
 From:   Jianguo Wu <wujianguo@huawei.com>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
 MIME-Version: 1.0
 To:     Andrew Morton <akpm@linux-foundation.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        David Rientjes <rientjes@google.com>, <linux-mm@kvack.org>,
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mm@kvack.org>,
         <linux-kernel@vger.kernel.org>,
+        David Rientjes <rientjes@google.com>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-mips@linux-mips.org>, <linux-parisc@vger.kernel.org>,
-        <linux-s390@vger.kernel.org>, <sparclinux@vger.kernel.org>,
-        <x86@kernel.org>
-Subject: [Resend with ACK][PATCH] mm/arch: use NUMA_NODE
+        <linux-mips@linux-mips.org>, <linux-s390@vger.kernel.org>,
+        <sparclinux@vger.kernel.org>, <x86@kernel.org>,
+        <linux-parisc@vger.kernel.org>
+Subject: [Resend with ACK][PATCH] mm/arch: use NUMA_NO_NODE
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.135.74.216]
@@ -35,7 +35,7 @@ Return-Path: <wujianguo@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37925
+X-archive-position: 37926
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

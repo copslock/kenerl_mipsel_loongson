@@ -1,36 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Sep 2013 23:49:57 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:56567 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Sep 2013 00:04:09 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:56626 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6815989Ab3IXVty6i9HN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Sep 2013 23:49:54 +0200
+        with ESMTP id S6815989Ab3IXWEG2FJph (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Sep 2013 00:04:06 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id B84958F61;
-        Tue, 24 Sep 2013 23:49:52 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id 72FBC8F62;
+        Wed, 25 Sep 2013 00:04:05 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id eLJpx7UuMsbm; Tue, 24 Sep 2013 23:49:48 +0200 (CEST)
-Received: from [IPv6:2001:470:1f0b:447:405d:6e10:9f33:b074] (unknown [IPv6:2001:470:1f0b:447:405d:6e10:9f33:b074])
-        by hauke-m.de (Postfix) with ESMTPSA id 01F17857F;
-        Tue, 24 Sep 2013 23:49:47 +0200 (CEST)
-Message-ID: <524208F7.5060503@hauke-m.de>
-Date:   Tue, 24 Sep 2013 23:49:43 +0200
+        with ESMTP id aN3GXoOAhQWk; Wed, 25 Sep 2013 00:04:00 +0200 (CEST)
+Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
+        by hauke-m.de (Postfix) with ESMTPSA id C3BC6857F;
+        Wed, 25 Sep 2013 00:04:00 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.0
-MIME-Version: 1.0
-To:     Jayachandran C <jchandra@broadcom.com>, ralf@linux-mips.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] MIPS: mm: Use scratch for PGD when !CONFIG_MIPS_PGD_C0_CONTEXT
-References: <1376221217-9335-1-git-send-email-jchandra@broadcom.com> <1376221217-9335-3-git-send-email-jchandra@broadcom.com>
-In-Reply-To: <1376221217-9335-3-git-send-email-jchandra@broadcom.com>
-X-Enigmail-Version: 1.5.2
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+To:     ralf@linux-mips.org
+Cc:     sergei.shtylyov@cogentembedded.com, zajec5@gmail.com,
+        linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH v2 1/2] MIPS: BCM47XX: Remove CFE support
+Date:   Wed, 25 Sep 2013 00:03:54 +0200
+Message-Id: <1380060235-13462-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.10.4
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37942
+X-archive-position: 37943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,74 +42,159 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/11/2013 01:40 PM, Jayachandran C wrote:
-> Allow usage of scratch register for current pgd even when
-> MIPS_PGD_C0_CONTEXT is not configured. MIPS_PGD_C0_CONTEXT is set
-> for 64r2 platforms to indicate availability of Xcontext for saving
-> cpuid, thus freeing Context to be used for saving PGD. This option
-> was also tied to using a scratch register for storing PGD.
-> 
-> This commit will allow usage of scratch register to store the current
-> pgd if one can be allocated for the platform, even when
-> MIPS_PGD_C0_CONTEXT is not set. The cpuid will be kept in the CP0
-> Context register in this case.
-> 
-> The code to store the current pgd for the TLB miss handler is now
-> generated in all cases. When scratch register is available, the PGD
-> is also stored in the scratch register.
-> 
-> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+bcm47xx only uses the CFE code for early print to a console, but that
+is also possible with a early print serial 8250 driver.
 
-This patch breaks booting for me on bcm47xx. I found this commit by
-bisecting and then reverted it and it made bcm47xx boot again. The boot
-process stops after: [    0.000000] Inode-cache hash table entries: 4096
-(order: 2, 16384 bytes)
+The CFE api init causes hangs somewhere in prom_init_cfe() on some
+devices like the Buffalo WHR-HP-G54 and the Asus WL-520GU.
+This was reported in https://dev.openwrt.org/ticket/4061 and
+https://forum.openwrt.org/viewtopic.php?id=17063
 
-The next message would be: [    0.000000] Writing ErrCtl register=00000000
+This will remove all the CFE handling code from bcm47xx.
 
-This issue was seen on bcm4716.
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+ arch/mips/Kconfig        |    2 -
+ arch/mips/bcm47xx/prom.c |   91 ----------------------------------------------
+ 2 files changed, 93 deletions(-)
 
-This is the boot log:
-
-CFE> boot -tftp -elf
-192.168.1.195:/brcm47xx/openwrt-brcm47xx-vmlinux-initramfs.elf
-Loader:elf Filesys:tftp Dev:eth0
-File:192.168.1.195:/brcm47xx/openwrt-brcm47xx-vmlinux-initramfs.elf
-Options:(null)
-Loading: 0x80001000/4593328 0x804626b0/279760 Entry at 0x80264800
-Closing network.
-Starting program at 0x80264800
-[    0.000000] Linux version 3.12.0-rc1+ (hauke@hauke-desktop) (gcc
-version 4.6.4 (OpenWrt/Linaro GCC 4.6-2013.05 r37948) ) #151 Tue Sep 24
-23:35:35 CEST 2013
-[    0.000000] bootconsole [early0] enabled
-[    0.000000] CPU revision is: 00019740 (MIPS 74Kc)
-[    0.000000] bcm47xx: using bcma bus
-[    0.000000] bcma: bus0: Found chip with id 0x4716, rev 0x01 and
-package 0x0A
-[    0.000000] bcma: bus0: Core 0 found: ChipCommon (manuf 0x4BF, id
-0x800, rev 0x1F, class 0x0)
-[    0.000000] bcma: bus0: Core 3 found: MIPS 74K (manuf 0x4A7, id
-0x82C, rev 0x01, class 0x0)
-[    0.000000] bcma: bus0: Found M25P64 serial flash (size: 8192KiB,
-blocksize: 0x10000, blocks: 128)
-[    0.000000] bcma: bus0: Early bus registered
-[    0.000000] MIPS: machine is Netgear WNDR3400 V1
-[    0.000000] Determined physical RAM map:
-[    0.000000]  memory: 04000000 @ 00000000 (usable)
-[    0.000000] Initrd not found or empty - disabling initrd
-[    0.000000] Zone ranges:
-[    0.000000]   Normal   [mem 0x00000000-0x03ffffff]
-[    0.000000] Movable zone start for each node
-[    0.000000] Early memory node ranges
-[    0.000000]   node   0: [mem 0x00000000-0x03ffffff]
-[    0.000000] Primary instruction cache 32kB, VIPT, 4-way, linesize 32
-bytes.
-[    0.000000] Primary data cache 32kB, 4-way, VIPT, cache aliases,
-linesize 32 bytes
-[    0.000000] Built 1 zonelists in Zone order, mobility grouping on.
-Total pages: 16256
-[    0.000000] Kernel command line:  noinitrd console=ttyS0,115200
-[    0.000000] PID hash table entries: 256 (order: -2, 1024 bytes)
-[    0.000000] Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
-[    0.000000] Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index e70cf31..f73cb81 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -111,14 +111,12 @@ config BCM47XX
+ 	select CEVT_R4K
+ 	select CSRC_R4K
+ 	select DMA_NONCOHERENT
+-	select FW_CFE
+ 	select HW_HAS_PCI
+ 	select IRQ_CPU
+ 	select SYS_HAS_CPU_MIPS32_R1
+ 	select NO_EXCEPT_FILL
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	select SYS_HAS_EARLY_PRINTK
+ 	help
+ 	 Support for BCM47XX based boards
+ 
+diff --git a/arch/mips/bcm47xx/prom.c b/arch/mips/bcm47xx/prom.c
+index 53b9a3fb..99c3ce2 100644
+--- a/arch/mips/bcm47xx/prom.c
++++ b/arch/mips/bcm47xx/prom.c
+@@ -30,12 +30,9 @@
+ #include <linux/spinlock.h>
+ #include <linux/smp.h>
+ #include <asm/bootinfo.h>
+-#include <asm/fw/cfe/cfe_api.h>
+-#include <asm/fw/cfe/cfe_error.h>
+ #include <bcm47xx.h>
+ #include <bcm47xx_board.h>
+ 
+-static int cfe_cons_handle;
+ 
+ static char bcm47xx_system_type[20] = "Broadcom BCM47XX";
+ 
+@@ -52,91 +49,6 @@ __init void bcm47xx_set_system_type(u16 chip_id)
+ 		 chip_id);
+ }
+ 
+-void prom_putchar(char c)
+-{
+-	while (cfe_write(cfe_cons_handle, &c, 1) == 0)
+-		;
+-}
+-
+-static __init void prom_init_cfe(void)
+-{
+-	uint32_t cfe_ept;
+-	uint32_t cfe_handle;
+-	uint32_t cfe_eptseal;
+-	int argc = fw_arg0;
+-	char **envp = (char **) fw_arg2;
+-	int *prom_vec = (int *) fw_arg3;
+-
+-	/*
+-	 * Check if a loader was used; if NOT, the 4 arguments are
+-	 * what CFE gives us (handle, 0, EPT and EPTSEAL)
+-	 */
+-	if (argc < 0) {
+-		cfe_handle = (uint32_t)argc;
+-		cfe_ept = (uint32_t)envp;
+-		cfe_eptseal = (uint32_t)prom_vec;
+-	} else {
+-		if ((int)prom_vec < 0) {
+-			/*
+-			 * Old loader; all it gives us is the handle,
+-			 * so use the "known" entrypoint and assume
+-			 * the seal.
+-			 */
+-			cfe_handle = (uint32_t)prom_vec;
+-			cfe_ept = 0xBFC00500;
+-			cfe_eptseal = CFE_EPTSEAL;
+-		} else {
+-			/*
+-			 * Newer loaders bundle the handle/ept/eptseal
+-			 * Note: prom_vec is in the loader's useg
+-			 * which is still alive in the TLB.
+-			 */
+-			cfe_handle = prom_vec[0];
+-			cfe_ept = prom_vec[2];
+-			cfe_eptseal = prom_vec[3];
+-		}
+-	}
+-
+-	if (cfe_eptseal != CFE_EPTSEAL) {
+-		/* too early for panic to do any good */
+-		printk(KERN_ERR "CFE's entrypoint seal doesn't match.");
+-		while (1) ;
+-	}
+-
+-	cfe_init(cfe_handle, cfe_ept);
+-}
+-
+-static __init void prom_init_console(void)
+-{
+-	/* Initialize CFE console */
+-	cfe_cons_handle = cfe_getstdhandle(CFE_STDHANDLE_CONSOLE);
+-}
+-
+-static __init void prom_init_cmdline(void)
+-{
+-	static char buf[COMMAND_LINE_SIZE] __initdata;
+-
+-	/* Get the kernel command line from CFE */
+-	if (cfe_getenv("LINUX_CMDLINE", buf, COMMAND_LINE_SIZE) >= 0) {
+-		buf[COMMAND_LINE_SIZE - 1] = 0;
+-		strcpy(arcs_cmdline, buf);
+-	}
+-
+-	/* Force a console handover by adding a console= argument if needed,
+-	 * as CFE is not available anymore later in the boot process. */
+-	if ((strstr(arcs_cmdline, "console=")) == NULL) {
+-		/* Try to read the default serial port used by CFE */
+-		if ((cfe_getenv("BOOT_CONSOLE", buf, COMMAND_LINE_SIZE) < 0)
+-		    || (strncmp("uart", buf, 4)))
+-			/* Default to uart0 */
+-			strcpy(buf, "uart0");
+-
+-		/* Compute the new command line */
+-		snprintf(arcs_cmdline, COMMAND_LINE_SIZE, "%s console=ttyS%c,115200",
+-			 arcs_cmdline, buf[4]);
+-	}
+-}
+-
+ static __init void prom_init_mem(void)
+ {
+ 	unsigned long mem;
+@@ -184,9 +96,6 @@ static __init void prom_init_mem(void)
+ 
+ void __init prom_init(void)
+ {
+-	prom_init_cfe();
+-	prom_init_console();
+-	prom_init_cmdline();
+ 	prom_init_mem();
+ }
+ 
+-- 
+1.7.10.4

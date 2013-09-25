@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Sep 2013 02:12:52 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:40114 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Sep 2013 02:17:09 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:40696 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817315Ab3IYAMrO8MtF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Sep 2013 02:12:47 +0200
+        by eddie.linux-mips.org with ESMTP id S6827362Ab3IYARDckUTU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Sep 2013 02:17:03 +0200
 Received: from localhost (c-76-28-172-123.hsd1.wa.comcast.net [76.28.172.123])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 74FDF800;
-        Wed, 25 Sep 2013 00:12:39 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4CB9597A;
+        Wed, 25 Sep 2013 00:16:57 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Felix Fietkau <nbd@openwrt.org>,
         Gabor Juhos <juhosg@openwrt.org>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [ 30/40] MIPS: ath79: Fix ar933x watchdog clock
-Date:   Tue, 24 Sep 2013 17:12:02 -0700
-Message-Id: <20130925001045.223911302@linuxfoundation.org>
+Subject: [ 086/110] MIPS: ath79: Fix ar933x watchdog clock
+Date:   Tue, 24 Sep 2013 17:15:24 -0700
+Message-Id: <20130925001332.749799302@linuxfoundation.org>
 X-Mailer: git-send-email 1.8.4.3.gca3854a
-In-Reply-To: <20130925001041.939335518@linuxfoundation.org>
-References: <20130925001041.939335518@linuxfoundation.org>
+In-Reply-To: <20130925001323.387158698@linuxfoundation.org>
+References: <20130925001323.387158698@linuxfoundation.org>
 User-Agent: quilt/0.60-5.1.1
 Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37948
+X-archive-position: 37949
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,7 +40,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.4-stable review patch.  If anyone has any objections, please let me know.
+3.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -75,7 +75,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/ath79/clock.c
 +++ b/arch/mips/ath79/clock.c
-@@ -159,7 +159,7 @@ static void __init ar933x_clocks_init(vo
+@@ -164,7 +164,7 @@ static void __init ar933x_clocks_init(vo
  		ath79_ahb_clk.rate = freq / t;
  	}
  

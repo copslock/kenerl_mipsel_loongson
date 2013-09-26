@@ -1,46 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Sep 2013 12:32:33 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:3156 "EHLO mms1.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817315Ab3IZKc3N45FT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Sep 2013 12:32:29 +0200
-Received: from [10.9.208.55] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Thu, 26 Sep 2013 03:28:10 -0700
-X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Thu, 26 Sep 2013 03:32:08 -0700
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
- Server id 14.1.438.0; Thu, 26 Sep 2013 03:32:09 -0700
-Received: from jayachandranc.netlogicmicro.com (
- netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 62801246A3; Thu, 26
- Sep 2013 03:32:08 -0700 (PDT)
-Date:   Thu, 26 Sep 2013 16:06:52 +0530
-From:   "Jayachandran C." <jchandra@broadcom.com>
-To:     ralf@linux-mips.org
-cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: mm: Move some checks out of 'for' loop in DMA
- operations
-Message-ID: <20130926103651.GL24359@jayachandranc.netlogicmicro.com>
-References: <1380114065-9761-1-git-send-email-jchandra@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Sep 2013 12:41:09 +0200 (CEST)
+Received: from mail-ie0-f176.google.com ([209.85.223.176]:37383 "EHLO
+        mail-ie0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6818991Ab3IZKlFxzht- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Sep 2013 12:41:05 +0200
+Received: by mail-ie0-f176.google.com with SMTP id as1so1091979iec.7
+        for <multiple recipients>; Thu, 26 Sep 2013 03:40:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=4bbWXS6LUw2y645I9VV6il9w2Tk3cB5gRERJKJzzO6o=;
+        b=QSksAfVlHoXq0lSPTR1sJblVrbawQUU+ViZL6aqbLywS+4tfonfW/C4qGTwPS1cetY
+         hYLovk8brTR5c7qnpbMsbJuERoX0gY8smdLBzHLLVZ2/Rqd6+o8IZFwS5d5V/hTeraFL
+         wHPYUw7lLCl9SYw9RM2sKFbR3anBEsOk4XajdxRhX807sbdZzD1G9oUJHHGP+tZO8A2m
+         94u5h7j2whQV7pOFmT8VRkZpA1MtPmcxAs820gH4T89a4W+/tbgSLVJm2spx3ExV8l91
+         /lp50vdETosO1YnFeyRWk7Gv24nd7TeJ49NF7N+0/jYfw8RAsPizdB6UHHIBBqZ6rsy/
+         kPuQ==
+X-Received: by 10.43.104.73 with SMTP id dl9mr177100icc.39.1380192059669; Thu,
+ 26 Sep 2013 03:40:59 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1380114065-9761-1-git-send-email-jchandra@broadcom.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-WSS-ID: 7E5AD3B00UO11247868-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-Return-Path: <jchandra@broadcom.com>
+Received: by 10.64.73.36 with HTTP; Thu, 26 Sep 2013 03:40:19 -0700 (PDT)
+In-Reply-To: <1377073172-3662-3-git-send-email-richard@nod.at>
+References: <1377073172-3662-1-git-send-email-richard@nod.at> <1377073172-3662-3-git-send-email-richard@nod.at>
+From:   Ramkumar Ramachandra <artagnon@gmail.com>
+Date:   Thu, 26 Sep 2013 16:10:19 +0530
+Message-ID: <CALkWK0kCrQ9hPABD_XQ9QFG-vByP+xZWZs+RkVK77+cX7Odz7g@mail.gmail.com>
+Subject: Re: [PATCH 2/8] um: Do not use SUBARCH
+To:     Richard Weinberger <richard@nod.at>
+Cc:     linux-arch@vger.kernel.org, Michal Marek <mmarek@suse.cz>,
+        geert@linux-m68k.org, ralf@linux-mips.org, lethal@linux-sh.org,
+        Jeff Dike <jdike@addtoit.com>, gxt@mprc.pku.edu.cn,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        linux-kbuild@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org,
+        user-mode-linux-devel@lists.sourceforge.net
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <artagnon@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37982
+X-archive-position: 37983
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: artagnon@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,63 +59,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Sep 25, 2013 at 06:31:05PM +0530, Jayachandran C wrote:
+Richard Weinberger wrote:
+> This patch is based on: https://lkml.org/lkml/2013/7/4/396
 
-The patch was missing the required Signed-off-by, added below.
+This is the original patch I sent across in July.
 
-> The check cpu_needs_post_dma_flush() in mips_dma_sync_sg_for_cpu() and
-> the check !plat_device_is_coherent() in mips_dma_sync_sg_for_device()
-> can be moved outside the for loop.
-> 
-> As a side effect, this also avoids a GCC bug that caused kernel compile
-> to fail with the error:
-> 
-> arch/mips/mm/dma-default.c: In function 'mips_dma_sync_sg_for_cpu':
-> arch/mips/mm/dma-default.c:316:1: internal compiler error: in add_insn_before, at emit-rtl.c:3852
-> 
-> This gcc failure is seen in Code Sourcery toolchains [e.g. gcc version
-> 4.7.2 (Sourcery CodeBench Lite 2012.09-99)] after commit "MIPS: Optimize
-> current_cpu_type() for better code."
+> diff --git a/arch/um/Makefile b/arch/um/Makefile
+> index 133f7de..5bc7892 100644
+> --- a/arch/um/Makefile
+> +++ b/arch/um/Makefile
+> @@ -8,6 +8,8 @@
+>
+>  ARCH_DIR := arch/um
+>  OS := $(shell uname -s)
+> +OS_ARCH := $(shell uname -m)
+> +
+>  # We require bash because the vmlinux link and loader script cpp use bash
+>  # features.
+>  SHELL := /bin/bash
+> @@ -20,15 +22,14 @@ core-y                      += $(ARCH_DIR)/kernel/          \
+>
+>  MODE_INCLUDE   += -I$(srctree)/$(ARCH_DIR)/include/shared/skas
+>
+> -HEADER_ARCH    := $(SUBARCH)
+> -
+> -# Additional ARCH settings for x86
+> -ifeq ($(SUBARCH),i386)
+> -        HEADER_ARCH := x86
+> -endif
+> -ifeq ($(SUBARCH),x86_64)
+> -        HEADER_ARCH := x86
+> -       KBUILD_CFLAGS += -mcmodel=large
+> +# Currently we support only i386 and x86_64, if you port UML to another arch
+> +# add another if branch...
+> +ifeq ($(OS_ARCH),x86_64)
+> +       HEADER_ARCH := x86
+> +       KBUILD_DEFCONFIG := x86_64_defconfig
+> +else
+> +       HEADER_ARCH := x86
+> +       KBUILD_DEFCONFIG := i386_defconfig
+>  endif
 
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+I honestly don't get why this approach is superior to the original
+one. In the original, I could set SUBARCH to whatever target
+architecture and attempt to build user-mode Linux. Fact that it is
+only implemented for i386 and x86_64 aside, keeping a SUBARCH means
+that it's possible to build a 32-bit kernel on a 64-bit machine and
+vice-versa. If you want stuff to work automagically (ie. in the 90%
+case), you have to shell out to uname -m to figure out the host's real
+architecture. Which both versions do sufficiently well.
 
-> ---
->  arch/mips/mm/dma-default.c |   12 ++++--------
->  1 file changed, 4 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-> index e45e4b0..2e94185 100644
-> --- a/arch/mips/mm/dma-default.c
-> +++ b/arch/mips/mm/dma-default.c
-> @@ -307,12 +307,10 @@ static void mips_dma_sync_sg_for_cpu(struct device *dev,
->  {
->  	int i;
->  
-> -	/* Make sure that gcc doesn't leave the empty loop body.  */
-> -	for (i = 0; i < nelems; i++, sg++) {
-> -		if (cpu_needs_post_dma_flush(dev))
-> +	if (cpu_needs_post_dma_flush(dev))
-> +		for (i = 0; i < nelems; i++, sg++)
->  			__dma_sync(sg_page(sg), sg->offset, sg->length,
->  				   direction);
-> -	}
->  }
->  
->  static void mips_dma_sync_sg_for_device(struct device *dev,
-> @@ -320,12 +318,10 @@ static void mips_dma_sync_sg_for_device(struct device *dev,
->  {
->  	int i;
->  
-> -	/* Make sure that gcc doesn't leave the empty loop body.  */
-> -	for (i = 0; i < nelems; i++, sg++) {
-> -		if (!plat_device_is_coherent(dev))
-> +	if (!plat_device_is_coherent(dev))
-> +		for (i = 0; i < nelems; i++, sg++)
->  			__dma_sync(sg_page(sg), sg->offset, sg->length,
->  				   direction);
-> -	}
->  }
->  
->  int mips_dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
-
-JC.
+Forget all that. What matters is that upstream is still broken, and
+users are suffering. Despite a reasonable fix being submitted in July.

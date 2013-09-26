@@ -1,20 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Sep 2013 13:01:35 +0200 (CEST)
-Received: from b.ns.miles-group.at ([95.130.255.144]:9062 "EHLO radon.swed.at"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6818991Ab3IZLBdrJtdg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Sep 2013 13:01:33 +0200
-Received: (qmail 17712 invoked by uid 89); 26 Sep 2013 11:01:33 -0000
-Received: by simscan 1.3.1 ppid: 17705, pid: 17708, t: 0.0624s
-         scanners: attach: 1.3.1 clamav: 0.96.5/m:
-Received: from unknown (HELO ?192.168.0.11?) (richard@nod.at@212.186.22.124)
-  by radon.swed.at with ESMTPA; 26 Sep 2013 11:01:33 -0000
-Message-ID: <52441407.9010603@nod.at>
-Date:   Thu, 26 Sep 2013 13:01:27 +0200
-From:   Richard Weinberger <richard@nod.at>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130620 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Sep 2013 13:58:22 +0200 (CEST)
+Received: from mail-ie0-f173.google.com ([209.85.223.173]:62798 "EHLO
+        mail-ie0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822345Ab3IZL6Pw-1Ld (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Sep 2013 13:58:15 +0200
+Received: by mail-ie0-f173.google.com with SMTP id ar20so1185369iec.32
+        for <multiple recipients>; Thu, 26 Sep 2013 04:58:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=Qn3hU3X9Nx2bwPxSc7EIpzpEQGniY99mJm6uPPmj8Bw=;
+        b=aY0gBhxbHv7/df15P8JxWIDI7kgccPRaZ46AezYoA4yE0BVo/1CggY+ogof8jLnRXG
+         4ZQmEjyTxWY3bSll8dXNJsSe5QwX5hMUcuSsDni+PFMabDbesTBqjROIyKYMtUrudc5r
+         mHM8Q055cgHllJM1lP+bvZ3LsX5bza6aJ35cNS6VkDwKm0uKN/1Jdw7ebLyZpP1HVXDj
+         AEytqGjWNXmtiPY/D6x681T3DVGFrsh9vTfqBaoz1iImwQ6g4I+4S7Vs+KEIalnvMpeJ
+         GWTcBnJw6M1FFgbGisU4IXvzjxZaNEaFgSTrLD1YwRaJKRqUm/jF9KDiQ6oy3P+tYLaM
+         OGyg==
+X-Received: by 10.43.126.68 with SMTP id gv4mr671342icc.48.1380196689642; Thu,
+ 26 Sep 2013 04:58:09 -0700 (PDT)
 MIME-Version: 1.0
-To:     Ramkumar Ramachandra <artagnon@gmail.com>
-CC:     linux-arch@vger.kernel.org, Michal Marek <mmarek@suse.cz>,
+Received: by 10.64.73.36 with HTTP; Thu, 26 Sep 2013 04:57:29 -0700 (PDT)
+In-Reply-To: <52440DE0.1030807@nod.at>
+References: <1377073172-3662-1-git-send-email-richard@nod.at>
+ <1377073172-3662-2-git-send-email-richard@nod.at> <CALkWK0=W38JpZoGVkPYD4qd=+Pt1G7oYPEK_R=c8TAW6W=wxyg@mail.gmail.com>
+ <52440DE0.1030807@nod.at>
+From:   Ramkumar Ramachandra <artagnon@gmail.com>
+Date:   Thu, 26 Sep 2013 17:27:29 +0530
+Message-ID: <CALkWK0nEy90VrWawTpYsLNJcnyRSizgArCa-qnzpuJQkyK6zHA@mail.gmail.com>
+Subject: Re: [PATCH 1/8] um: Create defconfigs for i386 and x86_64
+To:     Richard Weinberger <richard@nod.at>
+Cc:     linux-arch@vger.kernel.org, Michal Marek <mmarek@suse.cz>,
         geert@linux-m68k.org, ralf@linux-mips.org, lethal@linux-sh.org,
         Jeff Dike <jdike@addtoit.com>,
         Guan Xuetao <gxt@mprc.pku.edu.cn>,
@@ -24,22 +39,18 @@ CC:     linux-arch@vger.kernel.org, Michal Marek <mmarek@suse.cz>,
         linux-kbuild@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
         linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
         linux-sh@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net
-Subject: Re: [PATCH 2/8] um: Do not use SUBARCH
-References: <1377073172-3662-1-git-send-email-richard@nod.at> <1377073172-3662-3-git-send-email-richard@nod.at> <CALkWK0kCrQ9hPABD_XQ9QFG-vByP+xZWZs+RkVK77+cX7Odz7g@mail.gmail.com> <52441025.9030308@nod.at> <CALkWK0k5neR50h+AWEF5AgnpbgWMitZUnbv_caVzt6HiUA6mXg@mail.gmail.com>
-In-Reply-To: <CALkWK0k5neR50h+AWEF5AgnpbgWMitZUnbv_caVzt6HiUA6mXg@mail.gmail.com>
-X-Enigmail-Version: 1.5.2
+        user-mode-linux-devel@lists.sourceforge.net,
+        =?UTF-8?Q?Toralf_F=C3=B6rster?= <toralf.foerster@gmx.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <richard@nod.at>
+Return-Path: <artagnon@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37986
+X-archive-position: 37987
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: richard@nod.at
+X-original-sender: artagnon@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,36 +63,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Am 26.09.2013 12:53, schrieb Ramkumar Ramachandra:
-> Richard Weinberger wrote:
->> So, what exactly is broken in upstream?
->> make defconfig works as it always did.
-> 
-> Auto-detection of SUBARCH, which can be done with a simple call to
-> uname -m (the 90% case). The second patch I submitted prevented
-> spawning xterms unnecessarily, which we discussed was a good move.
+Richard Weinberger wrote:
+>> $ file linux
+>> linux: ELF 32-bit LSB  executable, Intel 80386, version 1 (SYSV),
+>> dynamically linked (uses shared libs), for GNU/Linux 2.6.32, not
+>> stripped
+>> $ ./linux ubd0=busybox-rootfs
+>> [...]
+>> Kernel panic - not syncing: No init found.  Try passing init= option
+>> to kernel. See Linux Documentation/init.txt for guidance.
+>
+> I don't know that rootfs but it looks like there is no init.
 
-Covering only 90% of all cases is not enough.
-We must not break existing setups.
-That's also why my "Get rid of SUBARCH" series is not upstream.
+Ofcourse there's an init on the busybox-rootfs, and I'm able to boot
+it with an x86_64 Linux. The reason for panic is incorrect: I think
+(although not sure) a 32-bit rootfs userland will work.
 
-Your second patch changed CONFIG_CON_CHAN to pts, which is ok but not
-a major issue.
-The xterms are also not spawning unnecessarily they spawn upon a tty device is opened.
-With your patch UML create another pts. Thus, the spawning is hidden...
-I did not push it upstream because it depended on your first one and as I said, it's not critical.
-This does not mean that I moved it to /dev/null.
-Again, the plan is to get rid of SUBARCH at all.
+>> [1]    25526 abort (core dumped)  linux ubd0=busybox-rootfs
+>>                                                            %
+>>
+>> Rubbish.
+>
+> UML core dumps at panic() by design.
 
->> make defconfig ARCH=um SUBARCH=x86 (or SUBARCH=i386) will create a defconfig for 32bit.
->> make defconfig ARCH=um SUBARCH=x86_64 one for 64bit.
-> 
-> Yes, that's how I prepared the patch in the first place.
+On a related note, why does it screw up my terminal? I have to `reset`
+to get a nice working terminal.
 
-So, nothing is broken.
+> Seriously, my plan is to get rid of SUBARCH, that's why I did not push your patches
+> upstream and I've send the rid of SUBARCH patch series.
+> It turned out that other archs depend on SUBARCH too therefore some more thinking is needed.
+> Time passed, merge window closed, $dayjob needed some attention...
 
-If you want "make defconfig ARCH=um" creating a defconfig for the correct arch you need
-more than your first patch. Again, "Get rid of SUBARCH" series has the same goal.
+Don't let some grand plan stall reasonable patches that fix immediate problems.
 
-Thanks,
-//richard
+> That said, your "arch/um: make it work with defconfig and x86_64" patch is also not perfect.
+> "make defconfig ARCH=um SUBARCH=x86" will create x86_64 defconfig, which is wrong and breaks existing
+> setups.
+
+Wrong.
+
+  $ make defconfig ARCH=um SUBARCH=i386
+  *** Default configuration is based on 'i386_defconfig'
+  #
+  # configuration written to .config
+  #
+
+I can build a 32-bit kernel just fine with my patch applied.

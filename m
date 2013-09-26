@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Oct 2013 13:59:17 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Oct 2013 13:59:32 +0200 (CEST)
 Received: from b.ns.miles-group.at ([95.130.255.144]:9062 "EHLO radon.swed.at"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6827310Ab3IZKfXec39i (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Sep 2013 12:35:23 +0200
-Received: (qmail 12309 invoked by uid 89); 26 Sep 2013 10:35:37 -0000
-Received: by simscan 1.3.1 ppid: 12299, pid: 12305, t: 0.0684s
+        id S6824799Ab3IZL5EJfKfH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 26 Sep 2013 13:57:04 +0200
+Received: (qmail 18924 invoked by uid 89); 26 Sep 2013 11:57:30 -0000
+Received: by simscan 1.3.1 ppid: 18916, pid: 18920, t: 0.0647s
          scanners: attach: 1.3.1 clamav: 0.96.5/m:
 Received: from unknown (HELO ?192.168.0.11?) (richard@nod.at@212.186.22.124)
-  by radon.swed.at with ESMTPA; 26 Sep 2013 10:35:37 -0000
-Message-ID: <52440DE0.1030807@nod.at>
-Date:   Thu, 26 Sep 2013 12:35:12 +0200
+  by radon.swed.at with ESMTPA; 26 Sep 2013 11:57:30 -0000
+Message-ID: <52442108.1020304@nod.at>
+Date:   Thu, 26 Sep 2013 13:56:56 +0200
 From:   Richard Weinberger <richard@nod.at>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130620 Thunderbird/17.0.7
 MIME-Version: 1.0
 To:     Ramkumar Ramachandra <artagnon@gmail.com>
 CC:     linux-arch@vger.kernel.org, Michal Marek <mmarek@suse.cz>,
         geert@linux-m68k.org, ralf@linux-mips.org, lethal@linux-sh.org,
-        Jeff Dike <jdike@addtoit.com>, gxt@mprc.pku.edu.cn,
+        Jeff Dike <jdike@addtoit.com>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
         "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
         linux-kbuild@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
         linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
         linux-sh@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        =?UTF-8?B?VG9yYWxmIEbDtnJzdGVy?= <toralf.foerster@gmx.de>
-Subject: Re: [PATCH 1/8] um: Create defconfigs for i386 and x86_64
-References: <1377073172-3662-1-git-send-email-richard@nod.at> <1377073172-3662-2-git-send-email-richard@nod.at> <CALkWK0=W38JpZoGVkPYD4qd=+Pt1G7oYPEK_R=c8TAW6W=wxyg@mail.gmail.com>
-In-Reply-To: <CALkWK0=W38JpZoGVkPYD4qd=+Pt1G7oYPEK_R=c8TAW6W=wxyg@mail.gmail.com>
+        user-mode-linux-devel@lists.sourceforge.net
+Subject: Re: [PATCH 2/8] um: Do not use SUBARCH
+References: <1377073172-3662-1-git-send-email-richard@nod.at> <1377073172-3662-3-git-send-email-richard@nod.at> <CALkWK0kCrQ9hPABD_XQ9QFG-vByP+xZWZs+RkVK77+cX7Odz7g@mail.gmail.com> <52441025.9030308@nod.at> <CALkWK0k5neR50h+AWEF5AgnpbgWMitZUnbv_caVzt6HiUA6mXg@mail.gmail.com> <52441407.9010603@nod.at> <CALkWK0=FG4COEjv5+mu1JRiiFQ2k6vop1mhFPmAT4bjtYeK6nA@mail.gmail.com>
+In-Reply-To: <CALkWK0=FG4COEjv5+mu1JRiiFQ2k6vop1mhFPmAT4bjtYeK6nA@mail.gmail.com>
 X-Enigmail-Version: 1.5.2
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
@@ -35,7 +35,7 @@ Return-Path: <richard@nod.at>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38283
+X-archive-position: 38284
 X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
@@ -53,96 +53,112 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Am 26.09.2013 12:20, schrieb Ramkumar Ramachandra:
+Am 26.09.2013 13:43, schrieb Ramkumar Ramachandra:
 > Richard Weinberger wrote:
->> This patch is based on: https://lkml.org/lkml/2013/7/4/396
+>>> Auto-detection of SUBARCH, which can be done with a simple call to
+>>> uname -m (the 90% case). The second patch I submitted prevented
+>>> spawning xterms unnecessarily, which we discussed was a good move.
 >>
->> Cc: Ramkumar Ramachandra <artagnon@gmail.com>
->> Signed-off-by: Richard Weinberger <richard@nod.at>
->> ---
->>  arch/um/configs/i386_defconfig   | 954 +++++++++++++++++++++++++++++++++++++++
->>  arch/um/configs/x86_64_defconfig | 943 ++++++++++++++++++++++++++++++++++++++
->>  2 files changed, 1897 insertions(+)
->>  create mode 100644 arch/um/configs/i386_defconfig
->>  create mode 100644 arch/um/configs/x86_64_defconfig
+>> Covering only 90% of all cases is not enough.
+>> We must not break existing setups.
+>> That's also why my "Get rid of SUBARCH" series is not upstream.
 > 
-> First, I'm pissed that the upstream tree doesn't build and run out of
-> the box months after I submitted a fix in July (and it's September
-> now). Fact that you dropped my sane patches aside and decided to write
-> a much larger series aside, user-mode Linux in upstream is broken.
-> This means that any user who does:
+> Mine covers 100% of the cases. My series is about auto-detection of
+> SUBARCH, not its removal: you can still set a SUBARCH from the
+> command-line; existing setups don't break.
+
+I told you already that "make defconfig ARCH=um SUBARCH=x86" will spuriously
+create a x86_64 config on x86_64.
+This breaks existing setups.
+
+>> Your second patch changed CONFIG_CON_CHAN to pts, which is ok but not
+>> a major issue.
 > 
-> $ ARCH=um make defconfig
-> $ ARCH=um make
+> "Major" or "minor" is purely your classification: don't impose your
+> value judgement on reasonable patches. I am the user, and I demand a
+> pleasant build process and ui. Moreover, how do you expect more
+> contributions to come in until existing patches make it to upstream?
 > 
-> will end up with a *broken* Linux _today_. Unless the user is living
-> in the Stone Age with a 32-bit computer, this is what she will see
-> when she attempts to boot up Linux:
-
-Not here.
-
-> $ file linux
-> linux: ELF 32-bit LSB  executable, Intel 80386, version 1 (SYSV),
-> dynamically linked (uses shared libs), for GNU/Linux 2.6.32, not
-> stripped
-> $ ./linux ubd0=busybox-rootfs
-> [...]
-> Kernel panic - not syncing: No init found.  Try passing init= option
-> to kernel. See Linux Documentation/init.txt for guidance.
-
-I don't know that rootfs but it looks like there is no init.
-
-> CPU: 0 PID: 1 Comm: swapper Not tainted 3.12.0-rc2-00083-g4b97280 #1
-> 0b869fbc 08272f87 0b869fdc 0820c5cd 00000001 00000000 00000000 00000000
->        0b869fe8 0820c126 08252593 0b869ff8 08059317 00000000 00000001 00000000
->        00000000 0b869f94:  [<0805a11c>] show_stack+0x54/0x8c
-> 0b869fb4:  [<0820e3c8>] dump_stack+0x16/0x1b
-> 0b869fc8:  [<0820c5cd>] panic+0x67/0x149
-> 0b869fe0:  [<0820c126>] kernel_init+0xab/0xaf
-> 0b869fec:  [<08059317>] new_thread_handler+0x63/0x7c
-> 0b869ffc:  [<00000000>] 0x0
+>> The xterms are also not spawning unnecessarily they spawn upon a tty device is opened.
+>> With your patch UML create another pts. Thus, the spawning is hidden...
 > 
+> It connects to an existing host pts device instead of spawning a new
+> xterm and connecting to the console io on that. Why is that not
+> desirable?
 > 
-> EIP: 0023:[<f7717430>] CPU: 0 Not tainted ESP: 002b:ffc386dc EFLAGS: 00000296
->     Not tainted
-> EAX: 00000000 EBX: 000063ba ECX: 00000013 EDX: 000063ba
-> ESI: 000063b6 EDI: 00000002 EBP: ffc38708 DS: 002b ES: 002b
-> 0b869f44:  [<0806aff4>] show_regs+0xb4/0xbc
-> 0b869f70:  [<0805b23b>] panic_exit+0x20/0x36
-> 0b869f84:  [<0808521b>] notifier_call_chain+0x28/0x4b
-> 0b869fac:  [<0808526c>] atomic_notifier_call_chain+0x15/0x17
-> 0b869fbc:  [<0820c5de>] panic+0x78/0x149
-> 0b869fe0:  [<0820c126>] kernel_init+0xab/0xaf
-> 0b869fec:  [<08059317>] new_thread_handler+0x63/0x7c
-> 0b869ffc:  [<00000000>] 0x0
+>> I did not push it upstream because it depended on your first one and as I said, it's not critical.
+>> This does not mean that I moved it to /dev/null.
 > 
-> [1]    25526 abort (core dumped)  linux ubd0=busybox-rootfs
->                                                            %
+> ... and you still haven't told me what's wrong with my first patch.
 > 
-> Rubbish.
+>> Again, the plan is to get rid of SUBARCH at all.
+> 
+> You've been harping about this plan for the last N months, and nothing
+> has happened so far. It's time to stop planning, and accept good work.
 
-UML core dumps at panic() by design.
+I sent the series on Aug 21st.
+Do the maths, it's not N months...
 
-> When I rebase my original patches (exactly 2 small independent
-> patches) onto the new upstream, stuff works as usual. If you're not
-> convinced, try the um-build branch from
-> https://github.com/artagnon/linux for yourself.
+>>>> make defconfig ARCH=um SUBARCH=x86 (or SUBARCH=i386) will create a defconfig for 32bit.
+>>>> make defconfig ARCH=um SUBARCH=x86_64 one for 64bit.
+>>>
+>>> Yes, that's how I prepared the patch in the first place.
+>>
+>> So, nothing is broken.
+> 
+> So the user is Ugly and Stupid for expecting:
+> 
+>   $ "
+>   $ make -j 8 ARCH=um
+> 
+> to work? Stop denying problems, no matter how "major" or "minor" they are.
 
-> Are you against accepting good patches and stalling work? What is your
-> plan exactly?
+"make defconfig ARCH=um" creates a defconfig for x86 as it always did.
+If you want to run a x86_64 bit user space, create a x86_64 defconfig.
 
-Sure, my great plan is to destroy Linux. I work for Microsoft. ;-)
+>> If you want "make defconfig ARCH=um" creating a defconfig for the correct arch you need
+>> more than your first patch.
+> 
+> No, you don't. Try it for yourself and see. Set a SUBARCH if you like,
+> and it'll still work fine.
+> 
+>> Again, "Get rid of SUBARCH" series has the same goal.
+> 
+> For the last time, getting rid of SUBARCH is Wrong and Undesirable.
 
-Seriously, my plan is to get rid of SUBARCH, that's why I did not push your patches
-upstream and I've send the rid of SUBARCH patch series.
-It turned out that other archs depend on SUBARCH too therefore some more thinking is needed.
-Time passed, merge window closed, $dayjob needed some attention...
+That's your opinion.
 
-That said, your "arch/um: make it work with defconfig and x86_64" patch is also not perfect.
-"make defconfig ARCH=um SUBARCH=x86" will create x86_64 defconfig, which is wrong and breaks existing
-setups.
-Secondly, what stops you from running "make defconfig ARCH=um SUBARCH=x86_64" to run your x86_64 bit
-userspace?
+> -- 8< --
+> Here's a transcript spoonfeeding you the impact of my first patch:
+> 
+>   $ make defconfig ARCH=um SUBARCH=i386
+>   *** Default configuration is based on 'i386_defconfig'
+>   #
+>   # configuration written to .config
+>   #
+>   $ make defconfig ARCH=um SUBARCH=x86_64
+>   *** Default configuration is based on 'x86_64_defconfig'
+>   #
+>   # configuration written to .config
+>   #
+>   $ make defconfig ARCH=um
+>   *** Default configuration is based on 'x86_64_defconfig'
+>   #
+>   # configuration written to .config
+>   #
+> 
+> In the last case, notice how defconfig automatically picks up
+> x86_64_defconfig correctly: if I were on an i386 machine, it would
+> have picked up i386_defconfig like in the first case. Without my
+> patch, the last case would have incorrectly picked up an i386
+> defconfig, which is Stupid and Wrong.
+
+You missed SUBARCH=x86.
+
+That said, if you cover all cases I'll happily merge that.
+And honestly, your patches are minor stuff, they don't even touch C source files.
+Acting up like you do just because of some default values is crazy.
+We have more serious problems so solve.
 
 Thanks,
 //richard

@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Sep 2013 18:08:26 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:54474 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Sep 2013 18:24:36 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:54531 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6817258Ab3IZQIYR1gYA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Sep 2013 18:08:24 +0200
+        id S6822345Ab3IZQYVm70US (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 26 Sep 2013 18:24:21 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r8QG8Mu3027425;
-        Thu, 26 Sep 2013 18:08:22 +0200
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r8QGNtlc027846;
+        Thu, 26 Sep 2013 18:23:55 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r8QG8MpV027424;
-        Thu, 26 Sep 2013 18:08:22 +0200
-Date:   Thu, 26 Sep 2013 18:08:22 +0200
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r8QGNtIp027845;
+        Thu, 26 Sep 2013 18:23:55 +0200
+Date:   Thu, 26 Sep 2013 18:23:55 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Markos Chandras <markos.chandras@imgtec.com>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: kernel: traps: Remove useless BUG_ON()
-Message-ID: <20130926160822.GD31496@linux-mips.org>
+Subject: MIPS: PowerTV: Remove support code.
+Message-ID: <20130926162355.GE31496@linux-mips.org>
 References: <1380188131-28792-1-git-send-email-markos.chandras@imgtec.com>
+ <20130926160822.GD31496@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1380188131-28792-1-git-send-email-markos.chandras@imgtec.com>
+In-Reply-To: <20130926160822.GD31496@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 37999
+X-archive-position: 38000
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,33 +43,6320 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Sep 26, 2013 at 10:35:31AM +0100, Markos Chandras wrote:
+Nobody seems to care about this platform anymore and my attempts to find
+somebody willing to provide some tlc for PowerTV have failed so far.
 
-> Checking for n<0 && n>9 makes no sense because it can never
-> be true. Moreover, we can have up to 64 vectored interrupts
-> so BUG_ON(n>9) was wrong anyway.
-> 
-> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-> Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
-> ---
-> This patch is for the upstream-sfr/mips-for-linux-next tree
+So let's nuke the bloody thing.
 
-What gem ;-)
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+---
+ arch/mips/Kbuild.platforms                         |   1 -
+ arch/mips/Kconfig                                  |  20 -
+ arch/mips/configs/powertv_defconfig                | 136 -----
+ arch/mips/include/asm/mach-powertv/asic.h          | 120 -----
+ arch/mips/include/asm/mach-powertv/asic_reg_map.h  |  90 ----
+ arch/mips/include/asm/mach-powertv/asic_regs.h     | 125 -----
+ .../asm/mach-powertv/cpu-feature-overrides.h       |  60 ---
+ arch/mips/include/asm/mach-powertv/dma-coherence.h | 107 ----
+ arch/mips/include/asm/mach-powertv/interrupts.h    | 253 ---------
+ arch/mips/include/asm/mach-powertv/ioremap.h       | 167 ------
+ arch/mips/include/asm/mach-powertv/irq.h           |  25 -
+ arch/mips/include/asm/mach-powertv/powertv-clock.h |  29 -
+ arch/mips/include/asm/mach-powertv/war.h           |  27 -
+ arch/mips/kernel/Makefile                          |   1 -
+ arch/mips/kernel/csrc-powertv.c                    | 151 ------
+ arch/mips/powertv/Kconfig                          |  12 -
+ arch/mips/powertv/Makefile                         |  29 -
+ arch/mips/powertv/Platform                         |   7 -
+ arch/mips/powertv/asic/Makefile                    |  21 -
+ arch/mips/powertv/asic/asic-calliope.c             | 101 ----
+ arch/mips/powertv/asic/asic-cronus.c               | 101 ----
+ arch/mips/powertv/asic/asic-gaia.c                 |  96 ----
+ arch/mips/powertv/asic/asic-zeus.c                 | 101 ----
+ arch/mips/powertv/asic/asic_devices.c              | 549 -------------------
+ arch/mips/powertv/asic/asic_int.c                  | 125 -----
+ arch/mips/powertv/asic/irq_asic.c                  | 115 ----
+ arch/mips/powertv/asic/prealloc-calliope.c         | 385 --------------
+ arch/mips/powertv/asic/prealloc-cronus.c           | 340 ------------
+ arch/mips/powertv/asic/prealloc-cronuslite.c       | 174 ------
+ arch/mips/powertv/asic/prealloc-gaia.c             | 589 ---------------------
+ arch/mips/powertv/asic/prealloc-zeus.c             | 304 -----------
+ arch/mips/powertv/asic/prealloc.h                  |  70 ---
+ arch/mips/powertv/init.c                           |  90 ----
+ arch/mips/powertv/init.h                           |  28 -
+ arch/mips/powertv/ioremap.c                        | 136 -----
+ arch/mips/powertv/memory.c                         | 353 ------------
+ arch/mips/powertv/pci/Makefile                     |  19 -
+ arch/mips/powertv/pci/fixup-powertv.c              |  37 --
+ arch/mips/powertv/pci/powertv-pci.h                |  31 --
+ arch/mips/powertv/powertv-clock.h                  |  26 -
+ arch/mips/powertv/powertv-usb.c                    | 404 --------------
+ arch/mips/powertv/powertv_setup.c                  | 319 -----------
+ arch/mips/powertv/reset.c                          |  35 --
+ arch/mips/powertv/reset.h                          |  26 -
+ arch/mips/powertv/time.c                           |  36 --
+ 45 files changed, 5971 deletions(-)
 
-I think the intent was
-
-  BUG_ON(n < 0 || n > 9);
-
-and 9 probably is the highest currently used value?
-
-In any case that could have broken PowerTV which does the following:
-
-        if (cpu_has_veic || cpu_has_vint) {
-                int nvec = cpu_has_veic ? 64 : 8;
-                for (i = 0; i < nvec; i++)
-                        set_vi_handler(i, asic_irqdispatch);
-        }
-
-Nobody from PowerTV complained.  Time to sharpen the axe!
-
-  Ralf
+diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
+index d9d81c2..6e23912 100644
+--- a/arch/mips/Kbuild.platforms
++++ b/arch/mips/Kbuild.platforms
+@@ -20,7 +20,6 @@ platforms += mti-sead3
+ platforms += netlogic
+ platforms += pmcs-msp71xx
+ platforms += pnx833x
+-platforms += powertv
+ platforms += ralink
+ platforms += rb532
+ platforms += sgi-ip22
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index d244047..1f2e4ee 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -415,23 +415,6 @@ config PMC_MSP
+ 	  of integrated peripherals, interfaces and DSPs in addition to
+ 	  a variety of MIPS cores.
+ 
+-config POWERTV
+-	bool "Cisco PowerTV"
+-	select BOOT_ELF32
+-	select CEVT_R4K
+-	select CPU_MIPSR2_IRQ_VI
+-	select CPU_MIPSR2_IRQ_EI
+-	select CSRC_POWERTV
+-	select DMA_NONCOHERENT
+-	select HW_HAS_PCI
+-	select SYS_HAS_CPU_MIPS32_R2
+-	select SYS_SUPPORTS_32BIT_KERNEL
+-	select SYS_SUPPORTS_BIG_ENDIAN
+-	select SYS_SUPPORTS_HIGHMEM
+-	select USB_OHCI_LITTLE_ENDIAN
+-	help
+-	  This enables support for the Cisco PowerTV Platform.
+-
+ config RALINK
+ 	bool "Ralink based machines"
+ 	select CEVT_R4K
+@@ -893,9 +876,6 @@ config CSRC_BCM1480
+ config CSRC_IOASIC
+ 	bool
+ 
+-config CSRC_POWERTV
+-	bool
+-
+ config CSRC_R4K
+ 	bool
+ 
+diff --git a/arch/mips/configs/powertv_defconfig b/arch/mips/configs/powertv_defconfig
+deleted file mode 100644
+index 7fda0ce..0000000
+--- a/arch/mips/configs/powertv_defconfig
++++ /dev/null
+@@ -1,136 +0,0 @@
+-CONFIG_POWERTV=y
+-CONFIG_BOOTLOADER_FAMILY="R2"
+-CONFIG_NO_HZ=y
+-CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_HZ_1000=y
+-CONFIG_PREEMPT=y
+-# CONFIG_SECCOMP is not set
+-CONFIG_EXPERIMENTAL=y
+-CONFIG_CROSS_COMPILE=""
+-# CONFIG_SWAP is not set
+-CONFIG_SYSVIPC=y
+-CONFIG_LOG_BUF_SHIFT=16
+-CONFIG_RELAY=y
+-CONFIG_BLK_DEV_INITRD=y
+-# CONFIG_RD_GZIP is not set
+-# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
+-CONFIG_EXPERT=y
+-# CONFIG_SYSCTL_SYSCALL is not set
+-CONFIG_KALLSYMS_ALL=y
+-# CONFIG_PCSPKR_PLATFORM is not set
+-# CONFIG_EPOLL is not set
+-# CONFIG_SIGNALFD is not set
+-# CONFIG_EVENTFD is not set
+-# CONFIG_VM_EVENT_COUNTERS is not set
+-# CONFIG_SLUB_DEBUG is not set
+-CONFIG_MODULES=y
+-CONFIG_MODULE_UNLOAD=y
+-CONFIG_MODVERSIONS=y
+-CONFIG_MODULE_SRCVERSION_ALL=y
+-# CONFIG_BLK_DEV_BSG is not set
+-# CONFIG_IOSCHED_DEADLINE is not set
+-# CONFIG_IOSCHED_CFQ is not set
+-CONFIG_PCI=y
+-CONFIG_NET=y
+-CONFIG_PACKET=y
+-CONFIG_UNIX=y
+-CONFIG_INET=y
+-CONFIG_IP_MULTICAST=y
+-CONFIG_IP_ADVANCED_ROUTER=y
+-CONFIG_IP_PNP=y
+-CONFIG_SYN_COOKIES=y
+-# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
+-# CONFIG_INET_XFRM_MODE_TUNNEL is not set
+-# CONFIG_INET_XFRM_MODE_BEET is not set
+-# CONFIG_INET_LRO is not set
+-# CONFIG_INET_DIAG is not set
+-CONFIG_IPV6=y
+-CONFIG_IPV6_PRIVACY=y
+-CONFIG_INET6_AH=y
+-CONFIG_INET6_ESP=y
+-CONFIG_INET6_IPCOMP=y
+-# CONFIG_INET6_XFRM_MODE_TRANSPORT is not set
+-# CONFIG_INET6_XFRM_MODE_TUNNEL is not set
+-# CONFIG_INET6_XFRM_MODE_BEET is not set
+-# CONFIG_IPV6_SIT is not set
+-CONFIG_IPV6_TUNNEL=y
+-CONFIG_NETFILTER=y
+-# CONFIG_BRIDGE_NETFILTER is not set
+-CONFIG_NETFILTER_XT_MATCH_MULTIPORT=y
+-CONFIG_IP_NF_IPTABLES=y
+-CONFIG_IP_NF_FILTER=y
+-CONFIG_IP_NF_ARPTABLES=y
+-CONFIG_IP_NF_ARPFILTER=y
+-CONFIG_IP6_NF_IPTABLES=y
+-CONFIG_IP6_NF_FILTER=y
+-CONFIG_BRIDGE=y
+-CONFIG_NET_SCHED=y
+-CONFIG_NET_SCH_TBF=y
+-CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+-CONFIG_MTD=y
+-CONFIG_MTD_PARTITIONS=y
+-CONFIG_MTD_CMDLINE_PARTS=y
+-CONFIG_MTD_CHAR=y
+-CONFIG_MTD_BLOCK=y
+-CONFIG_MTD_NAND=y
+-CONFIG_BLK_DEV_LOOP=y
+-CONFIG_BLK_DEV_RAM=y
+-CONFIG_BLK_DEV_RAM_SIZE=32768
+-# CONFIG_MISC_DEVICES is not set
+-# CONFIG_SCSI_PROC_FS is not set
+-CONFIG_BLK_DEV_SD=y
+-# CONFIG_SCSI_LOWLEVEL is not set
+-CONFIG_ATA=y
+-CONFIG_NETDEVICES=y
+-CONFIG_NET_ETHERNET=y
+-# CONFIG_WLAN is not set
+-CONFIG_USB_RTL8150=y
+-# CONFIG_INPUT_MOUSEDEV is not set
+-CONFIG_INPUT_EVDEV=y
+-# CONFIG_INPUT_KEYBOARD is not set
+-# CONFIG_INPUT_MOUSE is not set
+-# CONFIG_SERIO is not set
+-# CONFIG_VT is not set
+-# CONFIG_DEVKMEM is not set
+-# CONFIG_LEGACY_PTYS is not set
+-# CONFIG_HW_RANDOM is not set
+-# CONFIG_HWMON is not set
+-# CONFIG_MFD_SUPPORT is not set
+-# CONFIG_VGA_ARB is not set
+-CONFIG_USB_HIDDEV=y
+-CONFIG_USB=y
+-CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
+-CONFIG_USB_DEVICEFS=y
+-# CONFIG_USB_DEVICE_CLASS is not set
+-CONFIG_USB_EHCI_HCD=y
+-# CONFIG_USB_EHCI_TT_NEWSCHED is not set
+-CONFIG_USB_OHCI_HCD=y
+-CONFIG_USB_STORAGE=y
+-CONFIG_USB_SERIAL=y
+-CONFIG_USB_SERIAL_CONSOLE=y
+-CONFIG_USB_SERIAL_CP210X=y
+-CONFIG_EXT2_FS=y
+-CONFIG_EXT3_FS=y
+-# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+-# CONFIG_EXT3_FS_XATTR is not set
+-# CONFIG_DNOTIFY is not set
+-CONFIG_FUSE_FS=y
+-CONFIG_PROC_KCORE=y
+-CONFIG_TMPFS=y
+-CONFIG_JFFS2_FS=y
+-CONFIG_CRAMFS=y
+-CONFIG_NFS_FS=y
+-CONFIG_NFS_V3=y
+-CONFIG_ROOT_NFS=y
+-CONFIG_PRINTK_TIME=y
+-CONFIG_DEBUG_FS=y
+-CONFIG_DEBUG_KERNEL=y
+-CONFIG_DETECT_HUNG_TASK=y
+-# CONFIG_SCHED_DEBUG is not set
+-# CONFIG_DEBUG_PREEMPT is not set
+-CONFIG_DEBUG_INFO=y
+-# CONFIG_RCU_CPU_STALL_DETECTOR is not set
+-# CONFIG_EARLY_PRINTK is not set
+-CONFIG_CMDLINE_BOOL=y
+-# CONFIG_CRYPTO_ANSI_CPRNG is not set
+-# CONFIG_CRYPTO_HW is not set
+diff --git a/arch/mips/include/asm/mach-powertv/asic.h b/arch/mips/include/asm/mach-powertv/asic.h
+deleted file mode 100644
+index b341108..0000000
+--- a/arch/mips/include/asm/mach-powertv/asic.h
++++ /dev/null
+@@ -1,120 +0,0 @@
+-/*
+- * Copyright (C) 2009  Cisco Systems, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-#ifndef _ASM_MACH_POWERTV_ASIC_H
+-#define _ASM_MACH_POWERTV_ASIC_H
+-
+-#include <linux/ioport.h>
+-#include <linux/platform_device.h>
+-#include <asm/mach-powertv/asic_regs.h>
+-
+-#define DVR_CAPABLE	(1<<0)
+-#define PCIE_CAPABLE	(1<<1)
+-#define FFS_CAPABLE	(1<<2)
+-#define DISPLAY_CAPABLE (1<<3)
+-
+-/* Platform Family types
+- * For compitability, the new value must be added in the end */
+-enum family_type {
+-	FAMILY_8500,
+-	FAMILY_8500RNG,
+-	FAMILY_4500,
+-	FAMILY_1500,
+-	FAMILY_8600,
+-	FAMILY_4600,
+-	FAMILY_4600VZA,
+-	FAMILY_8600VZB,
+-	FAMILY_1500VZE,
+-	FAMILY_1500VZF,
+-	FAMILY_8700,
+-	FAMILIES
+-};
+-
+-/* Register maps for each ASIC */
+-extern const struct register_map calliope_register_map;
+-extern const struct register_map cronus_register_map;
+-extern const struct register_map gaia_register_map;
+-extern const struct register_map zeus_register_map;
+-
+-extern struct resource dvr_cronus_resources[];
+-extern struct resource dvr_gaia_resources[];
+-extern struct resource dvr_zeus_resources[];
+-extern struct resource non_dvr_calliope_resources[];
+-extern struct resource non_dvr_cronus_resources[];
+-extern struct resource non_dvr_cronuslite_resources[];
+-extern struct resource non_dvr_gaia_resources[];
+-extern struct resource non_dvr_vz_calliope_resources[];
+-extern struct resource non_dvr_vze_calliope_resources[];
+-extern struct resource non_dvr_vzf_calliope_resources[];
+-extern struct resource non_dvr_zeus_resources[];
+-
+-extern void powertv_platform_init(void);
+-extern void platform_alloc_bootmem(void);
+-extern enum asic_type platform_get_asic(void);
+-extern enum family_type platform_get_family(void);
+-extern int platform_supports_dvr(void);
+-extern int platform_supports_ffs(void);
+-extern int platform_supports_pcie(void);
+-extern int platform_supports_display(void);
+-extern void configure_platform(void);
+-
+-/* Platform Resources */
+-#define ASIC_RESOURCE_GET_EXISTS 1
+-extern struct resource *asic_resource_get(const char *name);
+-extern void platform_release_memory(void *baddr, int size);
+-
+-/* USB configuration */
+-struct usb_hcd;			/* Forward reference */
+-extern void platform_configure_usb_ehci(void);
+-extern void platform_unconfigure_usb_ehci(void);
+-extern void platform_configure_usb_ohci(void);
+-extern void platform_unconfigure_usb_ohci(void);
+-
+-/* Resource for ASIC registers */
+-extern struct resource asic_resource;
+-extern int platform_usb_devices_init(struct platform_device **echi_dev,
+-	struct platform_device **ohci_dev);
+-
+-/* Reboot Cause */
+-extern void set_reboot_cause(char code, unsigned int data, unsigned int data2);
+-extern void set_locked_reboot_cause(char code, unsigned int data,
+-	unsigned int data2);
+-
+-enum sys_reboot_type {
+-	sys_unknown_reboot = 0x00,	/* Unknown reboot cause */
+-	sys_davic_change = 0x01,	/* Reboot due to change in DAVIC
+-					 * mode */
+-	sys_user_reboot = 0x02,		/* Reboot initiated by user */
+-	sys_system_reboot = 0x03,	/* Reboot initiated by OS */
+-	sys_trap_reboot = 0x04,		/* Reboot due to a CPU trap */
+-	sys_silent_reboot = 0x05,	/* Silent reboot */
+-	sys_boot_ldr_reboot = 0x06,	/* Bootloader reboot */
+-	sys_power_up_reboot = 0x07,	/* Power on bootup.  Older
+-					 * drivers may report as
+-					 * userReboot. */
+-	sys_code_change = 0x08,		/* Reboot to take code change.
+-					 * Older drivers may report as
+-					 * userReboot. */
+-	sys_hardware_reset = 0x09,	/* HW watchdog or front-panel
+-					 * reset button reset.	Older
+-					 * drivers may report as
+-					 * userReboot. */
+-	sys_watchdogInterrupt = 0x0A	/* Pre-watchdog interrupt */
+-};
+-
+-#endif /* _ASM_MACH_POWERTV_ASIC_H */
+diff --git a/arch/mips/include/asm/mach-powertv/asic_reg_map.h b/arch/mips/include/asm/mach-powertv/asic_reg_map.h
+deleted file mode 100644
+index 20348e8..0000000
+--- a/arch/mips/include/asm/mach-powertv/asic_reg_map.h
++++ /dev/null
+@@ -1,90 +0,0 @@
+-/*
+- *				asic_reg_map.h
+- *
+- * A macro-enclosed list of the elements for the register_map structure for
+- * use in defining and manipulating the structure.
+- *
+- * Copyright (C) 2009  Cisco Systems, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-REGISTER_MAP_ELEMENT(eic_slow0_strt_add)
+-REGISTER_MAP_ELEMENT(eic_cfg_bits)
+-REGISTER_MAP_ELEMENT(eic_ready_status)
+-REGISTER_MAP_ELEMENT(chipver3)
+-REGISTER_MAP_ELEMENT(chipver2)
+-REGISTER_MAP_ELEMENT(chipver1)
+-REGISTER_MAP_ELEMENT(chipver0)
+-REGISTER_MAP_ELEMENT(uart1_intstat)
+-REGISTER_MAP_ELEMENT(uart1_inten)
+-REGISTER_MAP_ELEMENT(uart1_config1)
+-REGISTER_MAP_ELEMENT(uart1_config2)
+-REGISTER_MAP_ELEMENT(uart1_divisorhi)
+-REGISTER_MAP_ELEMENT(uart1_divisorlo)
+-REGISTER_MAP_ELEMENT(uart1_data)
+-REGISTER_MAP_ELEMENT(uart1_status)
+-REGISTER_MAP_ELEMENT(int_stat_3)
+-REGISTER_MAP_ELEMENT(int_stat_2)
+-REGISTER_MAP_ELEMENT(int_stat_1)
+-REGISTER_MAP_ELEMENT(int_stat_0)
+-REGISTER_MAP_ELEMENT(int_config)
+-REGISTER_MAP_ELEMENT(int_int_scan)
+-REGISTER_MAP_ELEMENT(ien_int_3)
+-REGISTER_MAP_ELEMENT(ien_int_2)
+-REGISTER_MAP_ELEMENT(ien_int_1)
+-REGISTER_MAP_ELEMENT(ien_int_0)
+-REGISTER_MAP_ELEMENT(int_level_3_3)
+-REGISTER_MAP_ELEMENT(int_level_3_2)
+-REGISTER_MAP_ELEMENT(int_level_3_1)
+-REGISTER_MAP_ELEMENT(int_level_3_0)
+-REGISTER_MAP_ELEMENT(int_level_2_3)
+-REGISTER_MAP_ELEMENT(int_level_2_2)
+-REGISTER_MAP_ELEMENT(int_level_2_1)
+-REGISTER_MAP_ELEMENT(int_level_2_0)
+-REGISTER_MAP_ELEMENT(int_level_1_3)
+-REGISTER_MAP_ELEMENT(int_level_1_2)
+-REGISTER_MAP_ELEMENT(int_level_1_1)
+-REGISTER_MAP_ELEMENT(int_level_1_0)
+-REGISTER_MAP_ELEMENT(int_level_0_3)
+-REGISTER_MAP_ELEMENT(int_level_0_2)
+-REGISTER_MAP_ELEMENT(int_level_0_1)
+-REGISTER_MAP_ELEMENT(int_level_0_0)
+-REGISTER_MAP_ELEMENT(int_docsis_en)
+-REGISTER_MAP_ELEMENT(mips_pll_setup)
+-REGISTER_MAP_ELEMENT(fs432x4b4_usb_ctl)
+-REGISTER_MAP_ELEMENT(test_bus)
+-REGISTER_MAP_ELEMENT(crt_spare)
+-REGISTER_MAP_ELEMENT(usb2_ohci_int_mask)
+-REGISTER_MAP_ELEMENT(usb2_strap)
+-REGISTER_MAP_ELEMENT(ehci_hcapbase)
+-REGISTER_MAP_ELEMENT(ohci_hc_revision)
+-REGISTER_MAP_ELEMENT(bcm1_bs_lmi_steer)
+-REGISTER_MAP_ELEMENT(usb2_control)
+-REGISTER_MAP_ELEMENT(usb2_stbus_obc)
+-REGISTER_MAP_ELEMENT(usb2_stbus_mess_size)
+-REGISTER_MAP_ELEMENT(usb2_stbus_chunk_size)
+-REGISTER_MAP_ELEMENT(pcie_regs)
+-REGISTER_MAP_ELEMENT(tim_ch)
+-REGISTER_MAP_ELEMENT(tim_cl)
+-REGISTER_MAP_ELEMENT(gpio_dout)
+-REGISTER_MAP_ELEMENT(gpio_din)
+-REGISTER_MAP_ELEMENT(gpio_dir)
+-REGISTER_MAP_ELEMENT(watchdog)
+-REGISTER_MAP_ELEMENT(front_panel)
+-REGISTER_MAP_ELEMENT(misc_clk_ctl1)
+-REGISTER_MAP_ELEMENT(misc_clk_ctl2)
+-REGISTER_MAP_ELEMENT(crt_ext_ctl)
+-REGISTER_MAP_ELEMENT(register_maps)
+diff --git a/arch/mips/include/asm/mach-powertv/asic_regs.h b/arch/mips/include/asm/mach-powertv/asic_regs.h
+deleted file mode 100644
+index 06712ab..0000000
+--- a/arch/mips/include/asm/mach-powertv/asic_regs.h
++++ /dev/null
+@@ -1,125 +0,0 @@
+-/*
+- * Copyright (C) 2009  Cisco Systems, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-#ifndef __ASM_MACH_POWERTV_ASIC_H_
+-#define __ASM_MACH_POWERTV_ASIC_H_
+-#include <linux/io.h>
+-
+-/* ASIC types */
+-enum asic_type {
+-	ASIC_UNKNOWN,
+-	ASIC_ZEUS,
+-	ASIC_CALLIOPE,
+-	ASIC_CRONUS,
+-	ASIC_CRONUSLITE,
+-	ASIC_GAIA,
+-	ASICS			/* Number of supported ASICs */
+-};
+-
+-/* hardcoded values read from Chip Version registers */
+-#define CRONUS_10	0x0B4C1C20
+-#define CRONUS_11	0x0B4C1C21
+-#define CRONUSLITE_10	0x0B4C1C40
+-
+-#define NAND_FLASH_BASE		0x03000000
+-#define CALLIOPE_IO_BASE	0x08000000
+-#define GAIA_IO_BASE		0x09000000
+-#define CRONUS_IO_BASE		0x09000000
+-#define ZEUS_IO_BASE		0x09000000
+-
+-#define ASIC_IO_SIZE		0x01000000
+-
+-/* Definitions for backward compatibility */
+-#define UART1_INTSTAT	uart1_intstat
+-#define UART1_INTEN	uart1_inten
+-#define UART1_CONFIG1	uart1_config1
+-#define UART1_CONFIG2	uart1_config2
+-#define UART1_DIVISORHI uart1_divisorhi
+-#define UART1_DIVISORLO uart1_divisorlo
+-#define UART1_DATA	uart1_data
+-#define UART1_STATUS	uart1_status
+-
+-/* ASIC register enumeration */
+-union register_map_entry {
+-	unsigned long phys;
+-	u32 *virt;
+-};
+-
+-#define REGISTER_MAP_ELEMENT(x) union register_map_entry x;
+-struct register_map {
+-#include <asm/mach-powertv/asic_reg_map.h>
+-};
+-#undef REGISTER_MAP_ELEMENT
+-
+-/**
+- * register_map_offset_phys - add an offset to the physical address
+- * @map:	Pointer to the &struct register_map
+- * @offset:	Value to add
+- *
+- * Only adds the base to non-zero physical addresses
+- */
+-static inline void register_map_offset_phys(struct register_map *map,
+-	unsigned long offset)
+-{
+-#define REGISTER_MAP_ELEMENT(x)		do {				\
+-		if (map->x.phys != 0)					\
+-			map->x.phys += offset;				\
+-	} while (false);
+-
+-#include <asm/mach-powertv/asic_reg_map.h>
+-#undef REGISTER_MAP_ELEMENT
+-}
+-
+-/**
+- * register_map_virtualize - Convert &register_map to virtual addresses
+- * @map:	Pointer to &register_map to virtualize
+- */
+-static inline void register_map_virtualize(struct register_map *map)
+-{
+-#define REGISTER_MAP_ELEMENT(x)		do {				\
+-		map->x.virt = (!map->x.phys) ? NULL :			\
+-			UNCAC_ADDR(phys_to_virt(map->x.phys));		\
+-	} while (false);
+-
+-#include <asm/mach-powertv/asic_reg_map.h>
+-#undef REGISTER_MAP_ELEMENT
+-}
+-
+-extern struct register_map _asic_register_map;
+-extern unsigned long asic_phy_base;
+-
+-/*
+- * Macros to interface to registers through their ioremapped address
+- * asic_reg_phys_addr	Returns the physical address of the given register
+- * asic_reg_addr	Returns the iomapped virtual address of the given
+- *			register.
+- */
+-#define asic_reg_addr(x)	(_asic_register_map.x.virt)
+-#define asic_reg_phys_addr(x)	(virt_to_phys((void *) CAC_ADDR(	\
+-					(unsigned long) asic_reg_addr(x))))
+-
+-/*
+- * The asic_reg macro is gone. It should be replaced by either asic_read or
+- * asic_write, as appropriate.
+- */
+-
+-#define asic_read(x)		readl(asic_reg_addr(x))
+-#define asic_write(v, x)	writel(v, asic_reg_addr(x))
+-
+-extern void asic_irq_init(void);
+-#endif
+diff --git a/arch/mips/include/asm/mach-powertv/cpu-feature-overrides.h b/arch/mips/include/asm/mach-powertv/cpu-feature-overrides.h
+deleted file mode 100644
+index 58c76ec..0000000
+--- a/arch/mips/include/asm/mach-powertv/cpu-feature-overrides.h
++++ /dev/null
+@@ -1,60 +0,0 @@
+-/*
+- * Copyright (C) 2010  Cisco Systems, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-#ifndef _ASM_MACH_POWERTV_CPU_FEATURE_OVERRIDES_H_
+-#define _ASM_MACH_POWERTV_CPU_FEATURE_OVERRIDES_H_
+-#define cpu_has_tlb			1
+-#define cpu_has_4kex			1
+-#define cpu_has_3k_cache		0
+-#define cpu_has_4k_cache		1
+-#define cpu_has_tx39_cache		0
+-#define cpu_has_fpu			0
+-#define cpu_has_counter			1
+-#define cpu_has_watch			1
+-#define cpu_has_divec			1
+-#define cpu_has_vce			0
+-#define cpu_has_cache_cdex_p		0
+-#define cpu_has_cache_cdex_s		0
+-#define cpu_has_mcheck			1
+-#define cpu_has_ejtag			1
+-#define cpu_has_llsc			1
+-#define cpu_has_mips16			0
+-#define cpu_has_mdmx			0
+-#define cpu_has_mips3d			0
+-#define cpu_has_smartmips		0
+-#define cpu_has_vtag_icache		0
+-#define cpu_has_dc_aliases		0
+-#define cpu_has_ic_fills_f_dc		0
+-#define cpu_has_mips32r1		0
+-#define cpu_has_mips32r2		1
+-#define cpu_has_mips64r1		0
+-#define cpu_has_mips64r2		0
+-#define cpu_has_dsp			0
+-#define cpu_has_dsp2			0
+-#define cpu_has_mipsmt			0
+-#define cpu_has_userlocal		0
+-#define cpu_has_nofpuex			0
+-#define cpu_has_64bits			0
+-#define cpu_has_64bit_zero_reg		0
+-#define cpu_has_vint			1
+-#define cpu_has_veic			1
+-#define cpu_has_inclusive_pcaches	0
+-
+-#define cpu_dcache_line_size()		32
+-#define cpu_icache_line_size()		32
+-#endif
+diff --git a/arch/mips/include/asm/mach-powertv/dma-coherence.h b/arch/mips/include/asm/mach-powertv/dma-coherence.h
+deleted file mode 100644
+index 5d4c3fe..0000000
+--- a/arch/mips/include/asm/mach-powertv/dma-coherence.h
++++ /dev/null
+@@ -1,107 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Version from mach-generic modified to support PowerTV port
+- * Portions Copyright (C) 2009	Cisco Systems, Inc.
+- * Copyright (C) 2006  Ralf Baechle <ralf@linux-mips.org>
+- *
+- */
+-
+-#ifndef __ASM_MACH_POWERTV_DMA_COHERENCE_H
+-#define __ASM_MACH_POWERTV_DMA_COHERENCE_H
+-
+-#include <linux/sched.h>
+-#include <linux/device.h>
+-#include <asm/mach-powertv/asic.h>
+-
+-static inline bool is_kseg2(void *addr)
+-{
+-	return (unsigned long)addr >= KSEG2;
+-}
+-
+-static inline unsigned long virt_to_phys_from_pte(void *addr)
+-{
+-	pgd_t *pgd;
+-	pud_t *pud;
+-	pmd_t *pmd;
+-	pte_t *ptep, pte;
+-
+-	unsigned long virt_addr = (unsigned long)addr;
+-	unsigned long phys_addr = 0UL;
+-
+-	/* get the page global directory. */
+-	pgd = pgd_offset_k(virt_addr);
+-
+-	if (!pgd_none(*pgd)) {
+-		/* get the page upper directory */
+-		pud = pud_offset(pgd, virt_addr);
+-		if (!pud_none(*pud)) {
+-			/* get the page middle directory */
+-			pmd = pmd_offset(pud, virt_addr);
+-			if (!pmd_none(*pmd)) {
+-				/* get a pointer to the page table entry */
+-				ptep = pte_offset(pmd, virt_addr);
+-				pte = *ptep;
+-				/* check for a valid page */
+-				if (pte_present(pte)) {
+-					/* get the physical address the page is
+-					 * referring to */
+-					phys_addr = (unsigned long)
+-						page_to_phys(pte_page(pte));
+-					/* add the offset within the page */
+-					phys_addr |= (virt_addr & ~PAGE_MASK);
+-				}
+-			}
+-		}
+-	}
+-
+-	return phys_addr;
+-}
+-
+-static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
+-	size_t size)
+-{
+-	if (is_kseg2(addr))
+-		return phys_to_dma(virt_to_phys_from_pte(addr));
+-	else
+-		return phys_to_dma(virt_to_phys(addr));
+-}
+-
+-static inline dma_addr_t plat_map_dma_mem_page(struct device *dev,
+-	struct page *page)
+-{
+-	return phys_to_dma(page_to_phys(page));
+-}
+-
+-static inline unsigned long plat_dma_addr_to_phys(struct device *dev,
+-	dma_addr_t dma_addr)
+-{
+-	return dma_to_phys(dma_addr);
+-}
+-
+-static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr,
+-	size_t size, enum dma_data_direction direction)
+-{
+-}
+-
+-static inline int plat_dma_supported(struct device *dev, u64 mask)
+-{
+-	/*
+-	 * we fall back to GFP_DMA when the mask isn't all 1s,
+-	 * so we can't guarantee allocations that must be
+-	 * within a tighter range than GFP_DMA..
+-	 */
+-	if (mask < DMA_BIT_MASK(24))
+-		return 0;
+-
+-	return 1;
+-}
+-
+-static inline int plat_device_is_coherent(struct device *dev)
+-{
+-	return 0;
+-}
+-
+-#endif /* __ASM_MACH_POWERTV_DMA_COHERENCE_H */
+diff --git a/arch/mips/include/asm/mach-powertv/interrupts.h b/arch/mips/include/asm/mach-powertv/interrupts.h
+deleted file mode 100644
+index 6c463be..0000000
+--- a/arch/mips/include/asm/mach-powertv/interrupts.h
++++ /dev/null
+@@ -1,253 +0,0 @@
+-/*
+- * Copyright (C) 2009  Cisco Systems, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-#ifndef _ASM_MACH_POWERTV_INTERRUPTS_H_
+-#define _ASM_MACH_POWERTV_INTERRUPTS_H_
+-
+-/*
+- * Defines for all of the interrupt lines
+- */
+-
+-/* Definitions for backward compatibility */
+-#define kIrq_Uart1		irq_uart1
+-
+-#define ibase 0
+-
+-/*------------- Register: int_stat_3 */
+-/* 126 unused (bit 31) */
+-#define irq_asc2video		(ibase+126)	/* ASC 2 Video Interrupt */
+-#define irq_asc1video		(ibase+125)	/* ASC 1 Video Interrupt */
+-#define irq_comms_block_wd	(ibase+124)	/* ASC 1 Video Interrupt */
+-#define irq_fdma_mailbox	(ibase+123)	/* FDMA Mailbox Output */
+-#define irq_fdma_gp		(ibase+122)	/* FDMA GP Output */
+-#define irq_mips_pic		(ibase+121)	/* MIPS Performance Counter
+-						 * Interrupt */
+-#define irq_mips_timer		(ibase+120)	/* MIPS Timer Interrupt */
+-#define irq_memory_protect	(ibase+119)	/* Memory Protection Interrupt
+-						 * -- Ored by glue logic inside
+-						 *  SPARC ILC (see
+-						 *  INT_MEM_PROT_STAT, below,
+-						 *  for individual interrupts)
+-						 */
+-/* 118 unused (bit 22) */
+-#define irq_sbag		(ibase+117)	/* SBAG Interrupt -- Ored by
+-						 * glue logic inside SPARC ILC
+-						 * (see INT_SBAG_STAT, below,
+-						 * for individual interrupts) */
+-#define irq_qam_b_fec		(ibase+116)	/* QAM	B FEC Interrupt */
+-#define irq_qam_a_fec		(ibase+115)	/* QAM A FEC Interrupt */
+-/* 114 unused	(bit 18) */
+-#define irq_mailbox		(ibase+113)	/* Mailbox Debug Interrupt  --
+-						 * Ored by glue logic inside
+-						 * SPARC ILC (see
+-						 * INT_MAILBOX_STAT, below, for
+-						 * individual interrupts) */
+-#define irq_fuse_stat1		(ibase+112)	/* Fuse Status 1 */
+-#define irq_fuse_stat2		(ibase+111)	/* Fuse Status 2 */
+-#define irq_fuse_stat3		(ibase+110)	/* Blitter Interrupt / Fuse
+-						 * Status 3 */
+-#define irq_blitter		(ibase+110)	/* Blitter Interrupt / Fuse
+-						 * Status 3 */
+-#define irq_avc1_pp0		(ibase+109)	/* AVC Decoder #1 PP0
+-						 * Interrupt */
+-#define irq_avc1_pp1		(ibase+108)	/* AVC Decoder #1 PP1
+-						 * Interrupt */
+-#define irq_avc1_mbe		(ibase+107)	/* AVC Decoder #1 MBE
+-						 * Interrupt */
+-#define irq_avc2_pp0		(ibase+106)	/* AVC Decoder #2 PP0
+-						 * Interrupt */
+-#define irq_avc2_pp1		(ibase+105)	/* AVC Decoder #2 PP1
+-						 * Interrupt */
+-#define irq_avc2_mbe		(ibase+104)	/* AVC Decoder #2 MBE
+-						 * Interrupt */
+-#define irq_zbug_spi		(ibase+103)	/* Zbug SPI Slave Interrupt */
+-#define irq_qam_mod2		(ibase+102)	/* QAM Modulator 2 DMA
+-						 * Interrupt */
+-#define irq_ir_rx		(ibase+101)	/* IR RX 2 Interrupt */
+-#define irq_aud_dsp2		(ibase+100)	/* Audio DSP #2 Interrupt */
+-#define irq_aud_dsp1		(ibase+99)	/* Audio DSP #1 Interrupt */
+-#define irq_docsis		(ibase+98)	/* DOCSIS Debug Interrupt */
+-#define irq_sd_dvp1		(ibase+97)	/* SD DVP #1 Interrupt */
+-#define irq_sd_dvp2		(ibase+96)	/* SD DVP #2 Interrupt */
+-/*------------- Register: int_stat_2 */
+-#define irq_hd_dvp		(ibase+95)	/* HD DVP Interrupt */
+-#define kIrq_Prewatchdog	(ibase+94)	/* watchdog Pre-Interrupt */
+-#define irq_timer2		(ibase+93)	/* Programmable Timer
+-						 * Interrupt 2 */
+-#define irq_1394		(ibase+92)	/* 1394 Firewire Interrupt */
+-#define irq_usbohci		(ibase+91)	/* USB 2.0 OHCI Interrupt */
+-#define irq_usbehci		(ibase+90)	/* USB 2.0 EHCI Interrupt */
+-#define irq_pciexp		(ibase+89)	/* PCI Express 0 Interrupt */
+-#define irq_pciexp0		(ibase+89)	/* PCI Express 0 Interrupt */
+-#define irq_afe1		(ibase+88)	/* AFE 1 Interrupt */
+-#define irq_sata		(ibase+87)	/* SATA 1 Interrupt */
+-#define irq_sata1		(ibase+87)	/* SATA 1 Interrupt */
+-#define irq_dtcp		(ibase+86)	/* DTCP Interrupt */
+-#define irq_pciexp1		(ibase+85)	/* PCI Express 1 Interrupt */
+-/* 84 unused	(bit 20) */
+-/* 83 unused	(bit 19) */
+-/* 82 unused	(bit 18) */
+-#define irq_sata2		(ibase+81)	/* SATA2 Interrupt */
+-#define irq_uart2		(ibase+80)	/* UART2 Interrupt */
+-#define irq_legacy_usb		(ibase+79)	/* Legacy USB Host ISR (1.1
+-						 * Host module) */
+-#define irq_pod			(ibase+78)	/* POD Interrupt */
+-#define irq_slave_usb		(ibase+77)	/* Slave USB */
+-#define irq_denc1		(ibase+76)	/* DENC #1 VTG Interrupt */
+-#define irq_vbi_vtg		(ibase+75)	/* VBI VTG Interrupt */
+-#define irq_afe2		(ibase+74)	/* AFE 2 Interrupt */
+-#define irq_denc2		(ibase+73)	/* DENC #2 VTG Interrupt */
+-#define irq_asc2		(ibase+72)	/* ASC #2 Interrupt */
+-#define irq_asc1		(ibase+71)	/* ASC #1 Interrupt */
+-#define irq_mod_dma		(ibase+70)	/* Modulator DMA Interrupt */
+-#define irq_byte_eng1		(ibase+69)	/* Byte Engine Interrupt [1] */
+-#define irq_byte_eng0		(ibase+68)	/* Byte Engine Interrupt [0] */
+-/* 67 unused	(bit 03) */
+-/* 66 unused	(bit 02) */
+-/* 65 unused	(bit 01) */
+-/* 64 unused	(bit 00) */
+-/*------------- Register: int_stat_1 */
+-/* 63 unused	(bit 31) */
+-/* 62 unused	(bit 30) */
+-/* 61 unused	(bit 29) */
+-/* 60 unused	(bit 28) */
+-/* 59 unused	(bit 27) */
+-/* 58 unused	(bit 26) */
+-/* 57 unused	(bit 25) */
+-/* 56 unused	(bit 24) */
+-#define irq_buf_dma_mem2mem	(ibase+55)	/* BufDMA Memory to Memory
+-						 * Interrupt */
+-#define irq_buf_dma_usbtransmit (ibase+54)	/* BufDMA USB Transmit
+-						 * Interrupt */
+-#define irq_buf_dma_qpskpodtransmit (ibase+53)	/* BufDMA QPSK/POD Tramsit
+-						 * Interrupt */
+-#define irq_buf_dma_transmit_error (ibase+52)	/* BufDMA Transmit Error
+-						 * Interrupt */
+-#define irq_buf_dma_usbrecv	(ibase+51)	/* BufDMA USB Receive
+-						 * Interrupt */
+-#define irq_buf_dma_qpskpodrecv (ibase+50)	/* BufDMA QPSK/POD Receive
+-						 * Interrupt */
+-#define irq_buf_dma_recv_error	(ibase+49)	/* BufDMA Receive Error
+-						 * Interrupt */
+-#define irq_qamdma_transmit_play (ibase+48)	/* QAMDMA Transmit/Play
+-						 * Interrupt */
+-#define irq_qamdma_transmit_error (ibase+47)	/* QAMDMA Transmit Error
+-						 * Interrupt */
+-#define irq_qamdma_recv2high	(ibase+46)	/* QAMDMA Receive 2 High
+-						 * (Chans 63-32) */
+-#define irq_qamdma_recv2low	(ibase+45)	/* QAMDMA Receive 2 Low
+-						 * (Chans 31-0) */
+-#define irq_qamdma_recv1high	(ibase+44)	/* QAMDMA Receive 1 High
+-						 * (Chans 63-32) */
+-#define irq_qamdma_recv1low	(ibase+43)	/* QAMDMA Receive 1 Low
+-						 * (Chans 31-0) */
+-#define irq_qamdma_recv_error	(ibase+42)	/* QAMDMA Receive Error
+-						 * Interrupt */
+-#define irq_mpegsplice		(ibase+41)	/* MPEG Splice Interrupt */
+-#define irq_deinterlace_rdy	(ibase+40)	/* Deinterlacer Frame Ready
+-						 * Interrupt */
+-#define irq_ext_in0		(ibase+39)	/* External Interrupt irq_in0 */
+-#define irq_gpio3		(ibase+38)	/* GP I/O IRQ 3 - From GP I/O
+-						 * Module */
+-#define irq_gpio2		(ibase+37)	/* GP I/O IRQ 2 - From GP I/O
+-						 * Module (ABE_intN) */
+-#define irq_pcrcmplt1		(ibase+36)	/* PCR Capture Complete	 or
+-						 * Discontinuity 1 */
+-#define irq_pcrcmplt2		(ibase+35)	/* PCR Capture Complete or
+-						 * Discontinuity 2 */
+-#define irq_parse_peierr	(ibase+34)	/* PID Parser Error Detect
+-						 * (PEI) */
+-#define irq_parse_cont_err	(ibase+33)	/* PID Parser continuity error
+-						 * detect */
+-#define irq_ds1framer		(ibase+32)	/* DS1 Framer Interrupt */
+-/*------------- Register: int_stat_0 */
+-#define irq_gpio1		(ibase+31)	/* GP I/O IRQ 1 - From GP I/O
+-						 * Module */
+-#define irq_gpio0		(ibase+30)	/* GP I/O IRQ 0 - From GP I/O
+-						 * Module */
+-#define irq_qpsk_out_aloha	(ibase+29)	/* QPSK Output Slotted Aloha
+-						 * (chan 3) Transmission
+-						 * Completed OK */
+-#define irq_qpsk_out_tdma	(ibase+28)	/* QPSK Output TDMA (chan 2)
+-						 * Transmission Completed OK */
+-#define irq_qpsk_out_reserve	(ibase+27)	/* QPSK Output Reservation
+-						 * (chan 1) Transmission
+-						 * Completed OK */
+-#define irq_qpsk_out_aloha_err	(ibase+26)	/* QPSK Output Slotted Aloha
+-						 * (chan 3)Transmission
+-						 * completed with Errors. */
+-#define irq_qpsk_out_tdma_err	(ibase+25)	/* QPSK Output TDMA (chan 2)
+-						 * Transmission completed with
+-						 * Errors. */
+-#define irq_qpsk_out_rsrv_err	(ibase+24)	/* QPSK Output Reservation
+-						 * (chan 1) Transmission
+-						 * completed with Errors */
+-#define irq_aloha_fail		(ibase+23)	/* Unsuccessful Resend of Aloha
+-						 * for N times. Aloha retry
+-						 * timeout for channel 3. */
+-#define irq_timer1		(ibase+22)	/* Programmable Timer
+-						 * Interrupt */
+-#define irq_keyboard		(ibase+21)	/* Keyboard Module Interrupt */
+-#define irq_i2c			(ibase+20)	/* I2C Module Interrupt */
+-#define irq_spi			(ibase+19)	/* SPI Module Interrupt */
+-#define irq_irblaster		(ibase+18)	/* IR Blaster Interrupt */
+-#define irq_splice_detect	(ibase+17)	/* PID Key Change Interrupt or
+-						 * Splice Detect Interrupt */
+-#define irq_se_micro		(ibase+16)	/* Secure Micro I/F Module
+-						 * Interrupt */
+-#define irq_uart1		(ibase+15)	/* UART Interrupt */
+-#define irq_irrecv		(ibase+14)	/* IR Receiver Interrupt */
+-#define irq_host_int1		(ibase+13)	/* Host-to-Host Interrupt 1 */
+-#define irq_host_int0		(ibase+12)	/* Host-to-Host Interrupt 0 */
+-#define irq_qpsk_hecerr		(ibase+11)	/* QPSK HEC Error Interrupt */
+-#define irq_qpsk_crcerr		(ibase+10)	/* QPSK AAL-5 CRC Error
+-						 * Interrupt */
+-/* 9 unused	(bit 09) */
+-/* 8 unused	(bit 08) */
+-#define irq_psicrcerr		(ibase+7)	/* QAM PSI CRC Error
+-						 * Interrupt */
+-#define irq_psilength_err	(ibase+6)	/* QAM PSI Length Error
+-						 * Interrupt */
+-#define irq_esfforward		(ibase+5)	/* ESF Interrupt Mark From
+-						 * Forward Path Reference -
+-						 * every 3ms when forward Mbits
+-						 * and forward slot control
+-						 * bytes are updated. */
+-#define irq_esfreverse		(ibase+4)	/* ESF Interrupt Mark from
+-						 * Reverse Path Reference -
+-						 * delayed from forward mark by
+-						 * the ranging delay plus a
+-						 * fixed amount. When reverse
+-						 * Mbits and reverse slot
+-						 * control bytes are updated.
+-						 * Occurs every 3ms for 3.0M and
+-						 * 1.554 M upstream rates and
+-						 * every 6 ms for 256K upstream
+-						 * rate. */
+-#define irq_aloha_timeout	(ibase+3)	/* Slotted-Aloha timeout on
+-						 * Channel 1. */
+-#define irq_reservation		(ibase+2)	/* Partial (or Incremental)
+-						 * Reservation Message Completed
+-						 * or Slotted aloha verify for
+-						 * channel 1. */
+-#define irq_aloha3		(ibase+1)	/* Slotted-Aloha Message Verify
+-						 * Interrupt or Reservation
+-						 * increment completed for
+-						 * channel 3. */
+-#define irq_mpeg_d		(ibase+0)	/* MPEG Decoder Interrupt */
+-#endif	/* _ASM_MACH_POWERTV_INTERRUPTS_H_ */
+diff --git a/arch/mips/include/asm/mach-powertv/ioremap.h b/arch/mips/include/asm/mach-powertv/ioremap.h
+deleted file mode 100644
+index c86ef09..0000000
+--- a/arch/mips/include/asm/mach-powertv/ioremap.h
++++ /dev/null
+@@ -1,167 +0,0 @@
+-/*
+- *	This program is free software; you can redistribute it and/or
+- *	modify it under the terms of the GNU General Public License
+- *	as published by the Free Software Foundation; either version
+- *	2 of the License, or (at your option) any later version.
+- *
+- * Portions Copyright (C)  Cisco Systems, Inc.
+- */
+-#ifndef __ASM_MACH_POWERTV_IOREMAP_H
+-#define __ASM_MACH_POWERTV_IOREMAP_H
+-
+-#include <linux/types.h>
+-#include <linux/log2.h>
+-#include <linux/compiler.h>
+-
+-#include <asm/pgtable-bits.h>
+-#include <asm/addrspace.h>
+-
+-/* We're going to mess with bits, so get sizes */
+-#define IOR_BPC			8			/* Bits per char */
+-#define IOR_PHYS_BITS		(IOR_BPC * sizeof(phys_addr_t))
+-#define IOR_DMA_BITS		(IOR_BPC * sizeof(dma_addr_t))
+-
+-/*
+- * Define the granularity of physical/DMA mapping in terms of the number
+- * of bits that defines the offset within a grain. These will be the
+- * least significant bits of the address. The rest of a physical or DMA
+- * address will be used to index into an appropriate table to find the
+- * offset to add to the address to yield the corresponding DMA or physical
+- * address, respectively.
+- */
+-#define IOR_LSBITS		22			/* Bits in a grain */
+-
+-/*
+- * Compute the number of most significant address bits after removing those
+- * used for the offset within a grain and then compute the number of table
+- * entries for the conversion.
+- */
+-#define IOR_PHYS_MSBITS		(IOR_PHYS_BITS - IOR_LSBITS)
+-#define IOR_NUM_PHYS_TO_DMA	((phys_addr_t) 1 << IOR_PHYS_MSBITS)
+-
+-#define IOR_DMA_MSBITS		(IOR_DMA_BITS - IOR_LSBITS)
+-#define IOR_NUM_DMA_TO_PHYS	((dma_addr_t) 1 << IOR_DMA_MSBITS)
+-
+-/*
+- * Define data structures used as elements in the arrays for the conversion
+- * between physical and DMA addresses. We do some slightly fancy math to
+- * compute the width of the offset element of the conversion tables so
+- * that we can have the smallest conversion tables. Next, round up the
+- * sizes to the next higher power of two, i.e. the offset element will have
+- * 8, 16, 32, 64, etc. bits. This eliminates the need to mask off any
+- * bits.  Finally, we compute a shift value that puts the most significant
+- * bits of the offset into the most significant bits of the offset element.
+- * This makes it more efficient on processors without barrel shifters and
+- * easier to see the values if the conversion table is dumped in binary.
+- */
+-#define _IOR_OFFSET_WIDTH(n)	(1 << order_base_2(n))
+-#define IOR_OFFSET_WIDTH(n) \
+-	(_IOR_OFFSET_WIDTH(n) < 8 ? 8 : _IOR_OFFSET_WIDTH(n))
+-
+-#define IOR_PHYS_OFFSET_BITS	IOR_OFFSET_WIDTH(IOR_PHYS_MSBITS)
+-#define IOR_PHYS_SHIFT		(IOR_PHYS_BITS - IOR_PHYS_OFFSET_BITS)
+-
+-#define IOR_DMA_OFFSET_BITS	IOR_OFFSET_WIDTH(IOR_DMA_MSBITS)
+-#define IOR_DMA_SHIFT		(IOR_DMA_BITS - IOR_DMA_OFFSET_BITS)
+-
+-struct ior_phys_to_dma {
+-	dma_addr_t offset:IOR_DMA_OFFSET_BITS __packed
+-		__aligned((IOR_DMA_OFFSET_BITS / IOR_BPC));
+-};
+-
+-struct ior_dma_to_phys {
+-	dma_addr_t offset:IOR_PHYS_OFFSET_BITS __packed
+-		__aligned((IOR_PHYS_OFFSET_BITS / IOR_BPC));
+-};
+-
+-extern struct ior_phys_to_dma _ior_phys_to_dma[IOR_NUM_PHYS_TO_DMA];
+-extern struct ior_dma_to_phys _ior_dma_to_phys[IOR_NUM_DMA_TO_PHYS];
+-
+-static inline dma_addr_t _phys_to_dma_offset_raw(phys_addr_t phys)
+-{
+-	return (dma_addr_t)_ior_phys_to_dma[phys >> IOR_LSBITS].offset;
+-}
+-
+-static inline dma_addr_t _dma_to_phys_offset_raw(dma_addr_t dma)
+-{
+-	return (dma_addr_t)_ior_dma_to_phys[dma >> IOR_LSBITS].offset;
+-}
+-
+-/* These are not portable and should not be used in drivers. Drivers should
+- * be using ioremap() and friends to map physical addresses to virtual
+- * addresses and dma_map*() and friends to map virtual addresses into DMA
+- * addresses and back.
+- */
+-static inline dma_addr_t phys_to_dma(phys_addr_t phys)
+-{
+-	return phys + (_phys_to_dma_offset_raw(phys) << IOR_PHYS_SHIFT);
+-}
+-
+-static inline phys_addr_t dma_to_phys(dma_addr_t dma)
+-{
+-	return dma + (_dma_to_phys_offset_raw(dma) << IOR_DMA_SHIFT);
+-}
+-
+-extern void ioremap_add_map(dma_addr_t phys, phys_addr_t alias,
+-	dma_addr_t size);
+-
+-/*
+- * Allow physical addresses to be fixed up to help peripherals located
+- * outside the low 32-bit range -- generic pass-through version.
+- */
+-static inline phys_t fixup_bigphys_addr(phys_t phys_addr, phys_t size)
+-{
+-	return phys_addr;
+-}
+-
+-/*
+- * Handle the special case of addresses the area aliased into the first
+- * 512 MiB of the processor's physical address space. These turn into either
+- * kseg0 or kseg1 addresses, depending on flags.
+- */
+-static inline void __iomem *plat_ioremap(phys_t start, unsigned long size,
+-	unsigned long flags)
+-{
+-	phys_addr_t start_offset;
+-	void __iomem *result = NULL;
+-
+-	/* Start by checking to see whether this is an aliased address */
+-	start_offset = _dma_to_phys_offset_raw(start);
+-
+-	/*
+-	 * If:
+-	 * o	the memory is aliased into the first 512 MiB, and
+-	 * o	the start and end are in the same RAM bank, and
+-	 * o	we don't have a zero size or wrap around, and
+-	 * o	we are supposed to create an uncached mapping,
+-	 *	handle this is a kseg0 or kseg1 address
+-	 */
+-	if (start_offset != 0) {
+-		phys_addr_t last;
+-		dma_addr_t dma_to_phys_offset;
+-
+-		last = start + size - 1;
+-		dma_to_phys_offset =
+-			_dma_to_phys_offset_raw(last) << IOR_DMA_SHIFT;
+-
+-		if (dma_to_phys_offset == start_offset &&
+-			size != 0 && start <= last) {
+-			phys_t adjusted_start;
+-			adjusted_start = start + start_offset;
+-			if (flags == _CACHE_UNCACHED)
+-				result = (void __iomem *) (unsigned long)
+-					CKSEG1ADDR(adjusted_start);
+-			else
+-				result = (void __iomem *) (unsigned long)
+-					CKSEG0ADDR(adjusted_start);
+-		}
+-	}
+-
+-	return result;
+-}
+-
+-static inline int plat_iounmap(const volatile void __iomem *addr)
+-{
+-	return 0;
+-}
+-#endif /* __ASM_MACH_POWERTV_IOREMAP_H */
+diff --git a/arch/mips/include/asm/mach-powertv/irq.h b/arch/mips/include/asm/mach-powertv/irq.h
+deleted file mode 100644
+index 4bd5d0c..0000000
+--- a/arch/mips/include/asm/mach-powertv/irq.h
++++ /dev/null
+@@ -1,25 +0,0 @@
+-/*
+- * Copyright (C) 2009  Cisco Systems, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-#ifndef _ASM_MACH_POWERTV_IRQ_H
+-#define _ASM_MACH_POWERTV_IRQ_H
+-#include <asm/mach-powertv/interrupts.h>
+-
+-#define MIPS_CPU_IRQ_BASE	ibase
+-#define NR_IRQS			127
+-#endif
+diff --git a/arch/mips/include/asm/mach-powertv/powertv-clock.h b/arch/mips/include/asm/mach-powertv/powertv-clock.h
+deleted file mode 100644
+index 6f3e9a0..0000000
+--- a/arch/mips/include/asm/mach-powertv/powertv-clock.h
++++ /dev/null
+@@ -1,29 +0,0 @@
+-/*
+- * Copyright (C) 2009  Cisco Systems, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-/*
+- * Local definitions for the powertv PCI code
+- */
+-
+-#ifndef _POWERTV_PCI_POWERTV_PCI_H_
+-#define _POWERTV_PCI_POWERTV_PCI_H_
+-extern int asic_pcie_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
+-extern int asic_pcie_init(void);
+-extern int asic_pcie_init(void);
+-
+-extern int log_level;
+-#endif
+diff --git a/arch/mips/include/asm/mach-powertv/war.h b/arch/mips/include/asm/mach-powertv/war.h
+deleted file mode 100644
+index c5651c8..0000000
+--- a/arch/mips/include/asm/mach-powertv/war.h
++++ /dev/null
+@@ -1,27 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * This version for the PowerTV platform copied from the Malta version.
+- *
+- * Copyright (C) 2002, 2004, 2007 by Ralf Baechle <ralf@linux-mips.org>
+- * Portions copyright (C) 2009 Cisco Systems, Inc.
+- */
+-#ifndef __ASM_MACH_POWERTV_WAR_H
+-#define __ASM_MACH_POWERTV_WAR_H
+-
+-#define R4600_V1_INDEX_ICACHEOP_WAR	0
+-#define R4600_V1_HIT_CACHEOP_WAR	0
+-#define R4600_V2_HIT_CACHEOP_WAR	0
+-#define R5432_CP0_INTERRUPT_WAR		0
+-#define BCM1250_M3_WAR			0
+-#define SIBYTE_1956_WAR			0
+-#define MIPS4K_ICACHE_REFILL_WAR	1
+-#define MIPS_CACHE_SYNC_WAR		1
+-#define TX49XX_ICACHE_INDEX_INV_WAR	0
+-#define ICACHE_REFILLS_WORKAROUND_WAR	1
+-#define R10000_LLSC_WAR			0
+-#define MIPS34K_MISSED_ITLB_WAR		0
+-
+-#endif /* __ASM_MACH_POWERTV_WAR_H */
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index 81773a4..1c1b717 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -26,7 +26,6 @@ obj-$(CONFIG_CEVT_TXX9)		+= cevt-txx9.o
+ obj-$(CONFIG_CSRC_BCM1480)	+= csrc-bcm1480.o
+ obj-$(CONFIG_CSRC_GIC)		+= csrc-gic.o
+ obj-$(CONFIG_CSRC_IOASIC)	+= csrc-ioasic.o
+-obj-$(CONFIG_CSRC_POWERTV)	+= csrc-powertv.o
+ obj-$(CONFIG_CSRC_R4K)		+= csrc-r4k.o
+ obj-$(CONFIG_CSRC_SB1250)	+= csrc-sb1250.o
+ obj-$(CONFIG_SYNC_R4K)		+= sync-r4k.o
+diff --git a/arch/mips/kernel/csrc-powertv.c b/arch/mips/kernel/csrc-powertv.c
+deleted file mode 100644
+index abd99ea..0000000
+--- a/arch/mips/kernel/csrc-powertv.c
++++ /dev/null
+@@ -1,151 +0,0 @@
+-/*
+- * Copyright (C) 2008 Scientific-Atlanta, Inc.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * as published by the Free Software Foundation; either version 2
+- * of the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+- */
+-/*
+- * The file comes from kernel/csrc-r4k.c
+- */
+-#include <linux/clocksource.h>
+-#include <linux/init.h>
+-
+-#include <asm/time.h>			/* Not included in linux/time.h */
+-
+-#include <asm/mach-powertv/asic_regs.h>
+-#include "powertv-clock.h"
+-
+-/* MIPS PLL Register Definitions */
+-#define PLL_GET_M(x)		(((x) >> 8) & 0x000000FF)
+-#define PLL_GET_N(x)		(((x) >> 16) & 0x000000FF)
+-#define PLL_GET_P(x)		(((x) >> 24) & 0x00000007)
+-
+-/*
+- * returns:  Clock frequency in kHz
+- */
+-unsigned int __init mips_get_pll_freq(void)
+-{
+-	unsigned int pll_reg, m, n, p;
+-	unsigned int fin = 54000; /* Base frequency in kHz */
+-	unsigned int fout;
+-
+-	/* Read PLL register setting */
+-	pll_reg = asic_read(mips_pll_setup);
+-	m = PLL_GET_M(pll_reg);
+-	n = PLL_GET_N(pll_reg);
+-	p = PLL_GET_P(pll_reg);
+-	pr_info("MIPS PLL Register:0x%x	 M=%d  N=%d  P=%d\n", pll_reg, m, n, p);
+-
+-	/* Calculate clock frequency = (2 * N * 54MHz) / (M * (2**P)) */
+-	fout = ((2 * n * fin) / (m * (0x01 << p)));
+-
+-	pr_info("MIPS Clock Freq=%d kHz\n", fout);
+-
+-	return fout;
+-}
+-
+-static cycle_t c0_hpt_read(struct clocksource *cs)
+-{
+-	return read_c0_count();
+-}
+-
+-static struct clocksource clocksource_mips = {
+-	.name		= "powertv-counter",
+-	.read		= c0_hpt_read,
+-	.mask		= CLOCKSOURCE_MASK(32),
+-	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
+-};
+-
+-static void __init powertv_c0_hpt_clocksource_init(void)
+-{
+-	unsigned int pll_freq = mips_get_pll_freq();
+-
+-	pr_info("CPU frequency %d.%02d MHz\n", pll_freq / 1000,
+-		(pll_freq % 1000) * 100 / 1000);
+-
+-	mips_hpt_frequency = pll_freq / 2 * 1000;
+-
+-	clocksource_mips.rating = 200 + mips_hpt_frequency / 10000000;
+-
+-	clocksource_register_hz(&clocksource_mips, mips_hpt_frequency);
+-}
+-
+-/**
+- * struct tim_c - free running counter
+- * @hi: High 16 bits of the counter
+- * @lo: Low 32 bits of the counter
+- *
+- * Lays out the structure of the free running counter in memory. This counter
+- * increments at a rate of 27 MHz/8 on all platforms.
+- */
+-struct tim_c {
+-	unsigned int hi;
+-	unsigned int lo;
+-};
+-
+-static struct tim_c *tim_c;
+-
+-static cycle_t tim_c_read(struct clocksource *cs)
+-{
+-	unsigned int hi;
+-	unsigned int next_hi;
+-	unsigned int lo;
+-
+-	hi = readl(&tim_c->hi);
+-
+-	for (;;) {
+-		lo = readl(&tim_c->lo);
+-		next_hi = readl(&tim_c->hi);
+-		if (next_hi == hi)
+-			break;
+-		hi = next_hi;
+-	}
+-
+-pr_crit("%s: read %llx\n", __func__, ((u64) hi << 32) | lo);
+-	return ((u64) hi << 32) | lo;
+-}
+-
+-#define TIM_C_SIZE		48		/* # bits in the timer */
+-
+-static struct clocksource clocksource_tim_c = {
+-	.name		= "powertv-tim_c",
+-	.read		= tim_c_read,
+-	.mask		= CLOCKSOURCE_MASK(TIM_C_SIZE),
+-	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
+-};
+-
+-/**
+- * powertv_tim_c_clocksource_init - set up a clock source for the TIM_C clock
+- *
+- * We know that TIM_C counts at 27 MHz/8, so each cycle corresponds to
+- * 1 / (27,000,000/8) seconds.
+- */
+-static void __init powertv_tim_c_clocksource_init(void)
+-{
+-	const unsigned long	counts_per_second = 27000000 / 8;
+-
+-	clocksource_tim_c.rating = 200;
+-
+-	clocksource_register_hz(&clocksource_tim_c, counts_per_second);
+-	tim_c = (struct tim_c *) asic_reg_addr(tim_ch);
+-}
+-
+-/**
+- powertv_clocksource_init - initialize all clocksources
+- */
+-void __init powertv_clocksource_init(void)
+-{
+-	powertv_c0_hpt_clocksource_init();
+-	powertv_tim_c_clocksource_init();
+-}
+diff --git a/arch/mips/powertv/Kconfig b/arch/mips/powertv/Kconfig
+deleted file mode 100644
+index dd91fba..0000000
+--- a/arch/mips/powertv/Kconfig
++++ /dev/null
+@@ -1,12 +0,0 @@
+-config BOOTLOADER_FAMILY
+-	string "POWERTV Bootloader Family string"
+-	default "85"
+-	depends on POWERTV
+-	help
+-	  This value should be specified when the bootloader driver is disabled
+-	  and must be exactly two characters long. Families supported are:
+-	    R1 - RNG-100  R2 - RNG-200
+-	    A1 - Class A  B1 - Class B
+-	    E1 - Class E  F1 - Class F
+-	    44 - 45xx     46 - 46xx
+-	    85 - 85xx     86 - 86xx
+diff --git a/arch/mips/powertv/Makefile b/arch/mips/powertv/Makefile
+deleted file mode 100644
+index 39ca9f8..0000000
+--- a/arch/mips/powertv/Makefile
++++ /dev/null
+@@ -1,29 +0,0 @@
+-#
+-# Carsten Langgaard, carstenl@mips.com
+-# Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+-#
+-# Carsten Langgaard, carstenl@mips.com
+-# Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
+-# Portions copyright (C)  2009 Cisco Systems, Inc.
+-#
+-# This program is free software; you can distribute it and/or modify it
+-# under the terms of the GNU General Public License (Version 2) as
+-# published by the Free Software Foundation.
+-#
+-# This program is distributed in the hope it will be useful, but WITHOUT
+-# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+-# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+-# for more details.
+-#
+-# You should have received a copy of the GNU General Public License along
+-# with this program; if not, write to the Free Software Foundation, Inc.,
+-# 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+-#
+-# Makefile for the Cisco PowerTV-specific kernel interface routines
+-# under Linux.
+-#
+-
+-obj-y += init.o ioremap.o memory.o powertv_setup.o reset.o time.o \
+-	asic/ pci/
+-
+-obj-$(CONFIG_USB) += powertv-usb.o
+diff --git a/arch/mips/powertv/Platform b/arch/mips/powertv/Platform
+deleted file mode 100644
+index 4eb5af1..0000000
+--- a/arch/mips/powertv/Platform
++++ /dev/null
+@@ -1,7 +0,0 @@
+-#
+-# Cisco PowerTV Platform
+-#
+-platform-$(CONFIG_POWERTV)	+= powertv/
+-cflags-$(CONFIG_POWERTV)	+=					\
+-		-I$(srctree)/arch/mips/include/asm/mach-powertv
+-load-$(CONFIG_POWERTV)		+= 0xffffffff90800000
+diff --git a/arch/mips/powertv/asic/Makefile b/arch/mips/powertv/asic/Makefile
+deleted file mode 100644
+index 35dcc53..0000000
+--- a/arch/mips/powertv/asic/Makefile
++++ /dev/null
+@@ -1,21 +0,0 @@
+-#
+-# Copyright (C) 2009  Scientific-Atlanta, Inc.
+-#
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2 of the License, or
+-# (at your option) any later version.
+-#
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-#
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+-#
+-
+-obj-y += asic-calliope.o asic-cronus.o asic-gaia.o asic-zeus.o \
+-	asic_devices.o asic_int.o irq_asic.o prealloc-calliope.o \
+-	prealloc-cronus.o prealloc-cronuslite.o prealloc-gaia.o prealloc-zeus.o
+diff --git a/arch/mips/powertv/asic/asic-calliope.c b/arch/mips/powertv/asic/asic-calliope.c
+deleted file mode 100644
+index 2f539b4..0000000
+--- a/arch/mips/powertv/asic/asic-calliope.c
++++ /dev/null
+@@ -1,101 +0,0 @@
+-/*
+- * Locations of devices in the Calliope ASIC.
+- *
+- * Copyright (C) 2005-2009 Scientific-Atlanta, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- *
+- * Author:	 Ken Eppinett
+- *		 David Schleef <ds@schleef.org>
+- *
+- * Description:	 Defines the platform resources for the SA settop.
+- */
+-
+-#include <linux/init.h>
+-#include <asm/mach-powertv/asic.h>
+-
+-#define CALLIOPE_ADDR(x)	(CALLIOPE_IO_BASE + (x))
+-
+-const struct register_map calliope_register_map __initconst = {
+-	.eic_slow0_strt_add = {.phys = CALLIOPE_ADDR(0x800000)},
+-	.eic_cfg_bits = {.phys = CALLIOPE_ADDR(0x800038)},
+-	.eic_ready_status = {.phys = CALLIOPE_ADDR(0x80004c)},
+-
+-	.chipver3 = {.phys = CALLIOPE_ADDR(0xA00800)},
+-	.chipver2 = {.phys = CALLIOPE_ADDR(0xA00804)},
+-	.chipver1 = {.phys = CALLIOPE_ADDR(0xA00808)},
+-	.chipver0 = {.phys = CALLIOPE_ADDR(0xA0080c)},
+-
+-	/* The registers of IRBlaster */
+-	.uart1_intstat = {.phys = CALLIOPE_ADDR(0xA01800)},
+-	.uart1_inten = {.phys = CALLIOPE_ADDR(0xA01804)},
+-	.uart1_config1 = {.phys = CALLIOPE_ADDR(0xA01808)},
+-	.uart1_config2 = {.phys = CALLIOPE_ADDR(0xA0180C)},
+-	.uart1_divisorhi = {.phys = CALLIOPE_ADDR(0xA01810)},
+-	.uart1_divisorlo = {.phys = CALLIOPE_ADDR(0xA01814)},
+-	.uart1_data = {.phys = CALLIOPE_ADDR(0xA01818)},
+-	.uart1_status = {.phys = CALLIOPE_ADDR(0xA0181C)},
+-
+-	.int_stat_3 = {.phys = CALLIOPE_ADDR(0xA02800)},
+-	.int_stat_2 = {.phys = CALLIOPE_ADDR(0xA02804)},
+-	.int_stat_1 = {.phys = CALLIOPE_ADDR(0xA02808)},
+-	.int_stat_0 = {.phys = CALLIOPE_ADDR(0xA0280c)},
+-	.int_config = {.phys = CALLIOPE_ADDR(0xA02810)},
+-	.int_int_scan = {.phys = CALLIOPE_ADDR(0xA02818)},
+-	.ien_int_3 = {.phys = CALLIOPE_ADDR(0xA02830)},
+-	.ien_int_2 = {.phys = CALLIOPE_ADDR(0xA02834)},
+-	.ien_int_1 = {.phys = CALLIOPE_ADDR(0xA02838)},
+-	.ien_int_0 = {.phys = CALLIOPE_ADDR(0xA0283c)},
+-	.int_level_3_3 = {.phys = CALLIOPE_ADDR(0xA02880)},
+-	.int_level_3_2 = {.phys = CALLIOPE_ADDR(0xA02884)},
+-	.int_level_3_1 = {.phys = CALLIOPE_ADDR(0xA02888)},
+-	.int_level_3_0 = {.phys = CALLIOPE_ADDR(0xA0288c)},
+-	.int_level_2_3 = {.phys = CALLIOPE_ADDR(0xA02890)},
+-	.int_level_2_2 = {.phys = CALLIOPE_ADDR(0xA02894)},
+-	.int_level_2_1 = {.phys = CALLIOPE_ADDR(0xA02898)},
+-	.int_level_2_0 = {.phys = CALLIOPE_ADDR(0xA0289c)},
+-	.int_level_1_3 = {.phys = CALLIOPE_ADDR(0xA028a0)},
+-	.int_level_1_2 = {.phys = CALLIOPE_ADDR(0xA028a4)},
+-	.int_level_1_1 = {.phys = CALLIOPE_ADDR(0xA028a8)},
+-	.int_level_1_0 = {.phys = CALLIOPE_ADDR(0xA028ac)},
+-	.int_level_0_3 = {.phys = CALLIOPE_ADDR(0xA028b0)},
+-	.int_level_0_2 = {.phys = CALLIOPE_ADDR(0xA028b4)},
+-	.int_level_0_1 = {.phys = CALLIOPE_ADDR(0xA028b8)},
+-	.int_level_0_0 = {.phys = CALLIOPE_ADDR(0xA028bc)},
+-	.int_docsis_en = {.phys = CALLIOPE_ADDR(0xA028F4)},
+-
+-	.mips_pll_setup = {.phys = CALLIOPE_ADDR(0x980000)},
+-	.fs432x4b4_usb_ctl = {.phys = CALLIOPE_ADDR(0x980030)},
+-	.test_bus = {.phys = CALLIOPE_ADDR(0x9800CC)},
+-	.crt_spare = {.phys = CALLIOPE_ADDR(0x9800d4)},
+-	.usb2_ohci_int_mask = {.phys = CALLIOPE_ADDR(0x9A000c)},
+-	.usb2_strap = {.phys = CALLIOPE_ADDR(0x9A0014)},
+-	.ehci_hcapbase = {.phys = CALLIOPE_ADDR(0x9BFE00)},
+-	.ohci_hc_revision = {.phys = CALLIOPE_ADDR(0x9BFC00)},
+-	.bcm1_bs_lmi_steer = {.phys = CALLIOPE_ADDR(0x9E0004)},
+-	.usb2_control = {.phys = CALLIOPE_ADDR(0x9E0054)},
+-	.usb2_stbus_obc = {.phys = CALLIOPE_ADDR(0x9BFF00)},
+-	.usb2_stbus_mess_size = {.phys = CALLIOPE_ADDR(0x9BFF04)},
+-	.usb2_stbus_chunk_size = {.phys = CALLIOPE_ADDR(0x9BFF08)},
+-
+-	.pcie_regs = {.phys = 0x000000},	/* -doesn't exist- */
+-	.tim_ch = {.phys = CALLIOPE_ADDR(0xA02C10)},
+-	.tim_cl = {.phys = CALLIOPE_ADDR(0xA02C14)},
+-	.gpio_dout = {.phys = CALLIOPE_ADDR(0xA02c20)},
+-	.gpio_din = {.phys = CALLIOPE_ADDR(0xA02c24)},
+-	.gpio_dir = {.phys = CALLIOPE_ADDR(0xA02c2C)},
+-	.watchdog = {.phys = CALLIOPE_ADDR(0xA02c30)},
+-	.front_panel = {.phys = 0x000000},	/* -not used- */
+-};
+diff --git a/arch/mips/powertv/asic/asic-cronus.c b/arch/mips/powertv/asic/asic-cronus.c
+deleted file mode 100644
+index 7f8f342..0000000
+--- a/arch/mips/powertv/asic/asic-cronus.c
++++ /dev/null
+@@ -1,101 +0,0 @@
+-/*
+- * Locations of devices in the Cronus ASIC
+- *
+- * Copyright (C) 2005-2009 Scientific-Atlanta, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- *
+- * Author:	 Ken Eppinett
+- *		 David Schleef <ds@schleef.org>
+- *
+- * Description:	 Defines the platform resources for the SA settop.
+- */
+-
+-#include <linux/init.h>
+-#include <asm/mach-powertv/asic.h>
+-
+-#define CRONUS_ADDR(x)	(CRONUS_IO_BASE + (x))
+-
+-const struct register_map cronus_register_map __initconst = {
+-	.eic_slow0_strt_add = {.phys = CRONUS_ADDR(0x000000)},
+-	.eic_cfg_bits = {.phys = CRONUS_ADDR(0x000038)},
+-	.eic_ready_status = {.phys = CRONUS_ADDR(0x00004C)},
+-
+-	.chipver3 = {.phys = CRONUS_ADDR(0x2A0800)},
+-	.chipver2 = {.phys = CRONUS_ADDR(0x2A0804)},
+-	.chipver1 = {.phys = CRONUS_ADDR(0x2A0808)},
+-	.chipver0 = {.phys = CRONUS_ADDR(0x2A080C)},
+-
+-	/* The registers of IRBlaster */
+-	.uart1_intstat = {.phys = CRONUS_ADDR(0x2A1800)},
+-	.uart1_inten = {.phys = CRONUS_ADDR(0x2A1804)},
+-	.uart1_config1 = {.phys = CRONUS_ADDR(0x2A1808)},
+-	.uart1_config2 = {.phys = CRONUS_ADDR(0x2A180C)},
+-	.uart1_divisorhi = {.phys = CRONUS_ADDR(0x2A1810)},
+-	.uart1_divisorlo = {.phys = CRONUS_ADDR(0x2A1814)},
+-	.uart1_data = {.phys = CRONUS_ADDR(0x2A1818)},
+-	.uart1_status = {.phys = CRONUS_ADDR(0x2A181C)},
+-
+-	.int_stat_3 = {.phys = CRONUS_ADDR(0x2A2800)},
+-	.int_stat_2 = {.phys = CRONUS_ADDR(0x2A2804)},
+-	.int_stat_1 = {.phys = CRONUS_ADDR(0x2A2808)},
+-	.int_stat_0 = {.phys = CRONUS_ADDR(0x2A280C)},
+-	.int_config = {.phys = CRONUS_ADDR(0x2A2810)},
+-	.int_int_scan = {.phys = CRONUS_ADDR(0x2A2818)},
+-	.ien_int_3 = {.phys = CRONUS_ADDR(0x2A2830)},
+-	.ien_int_2 = {.phys = CRONUS_ADDR(0x2A2834)},
+-	.ien_int_1 = {.phys = CRONUS_ADDR(0x2A2838)},
+-	.ien_int_0 = {.phys = CRONUS_ADDR(0x2A283C)},
+-	.int_level_3_3 = {.phys = CRONUS_ADDR(0x2A2880)},
+-	.int_level_3_2 = {.phys = CRONUS_ADDR(0x2A2884)},
+-	.int_level_3_1 = {.phys = CRONUS_ADDR(0x2A2888)},
+-	.int_level_3_0 = {.phys = CRONUS_ADDR(0x2A288C)},
+-	.int_level_2_3 = {.phys = CRONUS_ADDR(0x2A2890)},
+-	.int_level_2_2 = {.phys = CRONUS_ADDR(0x2A2894)},
+-	.int_level_2_1 = {.phys = CRONUS_ADDR(0x2A2898)},
+-	.int_level_2_0 = {.phys = CRONUS_ADDR(0x2A289C)},
+-	.int_level_1_3 = {.phys = CRONUS_ADDR(0x2A28A0)},
+-	.int_level_1_2 = {.phys = CRONUS_ADDR(0x2A28A4)},
+-	.int_level_1_1 = {.phys = CRONUS_ADDR(0x2A28A8)},
+-	.int_level_1_0 = {.phys = CRONUS_ADDR(0x2A28AC)},
+-	.int_level_0_3 = {.phys = CRONUS_ADDR(0x2A28B0)},
+-	.int_level_0_2 = {.phys = CRONUS_ADDR(0x2A28B4)},
+-	.int_level_0_1 = {.phys = CRONUS_ADDR(0x2A28B8)},
+-	.int_level_0_0 = {.phys = CRONUS_ADDR(0x2A28BC)},
+-	.int_docsis_en = {.phys = CRONUS_ADDR(0x2A28F4)},
+-
+-	.mips_pll_setup = {.phys = CRONUS_ADDR(0x1C0000)},
+-	.fs432x4b4_usb_ctl = {.phys = CRONUS_ADDR(0x1C0028)},
+-	.test_bus = {.phys = CRONUS_ADDR(0x1C00CC)},
+-	.crt_spare = {.phys = CRONUS_ADDR(0x1c00d4)},
+-	.usb2_ohci_int_mask = {.phys = CRONUS_ADDR(0x20000C)},
+-	.usb2_strap = {.phys = CRONUS_ADDR(0x200014)},
+-	.ehci_hcapbase = {.phys = CRONUS_ADDR(0x21FE00)},
+-	.ohci_hc_revision = {.phys = CRONUS_ADDR(0x21fc00)},
+-	.bcm1_bs_lmi_steer = {.phys = CRONUS_ADDR(0x2E0008)},
+-	.usb2_control = {.phys = CRONUS_ADDR(0x2E004C)},
+-	.usb2_stbus_obc = {.phys = CRONUS_ADDR(0x21FF00)},
+-	.usb2_stbus_mess_size = {.phys = CRONUS_ADDR(0x21FF04)},
+-	.usb2_stbus_chunk_size = {.phys = CRONUS_ADDR(0x21FF08)},
+-
+-	.pcie_regs = {.phys = CRONUS_ADDR(0x220000)},
+-	.tim_ch = {.phys = CRONUS_ADDR(0x2A2C10)},
+-	.tim_cl = {.phys = CRONUS_ADDR(0x2A2C14)},
+-	.gpio_dout = {.phys = CRONUS_ADDR(0x2A2C20)},
+-	.gpio_din = {.phys = CRONUS_ADDR(0x2A2C24)},
+-	.gpio_dir = {.phys = CRONUS_ADDR(0x2A2C2C)},
+-	.watchdog = {.phys = CRONUS_ADDR(0x2A2C30)},
+-	.front_panel = {.phys = CRONUS_ADDR(0x2A3800)},
+-};
+diff --git a/arch/mips/powertv/asic/asic-gaia.c b/arch/mips/powertv/asic/asic-gaia.c
+deleted file mode 100644
+index 1265b49..0000000
+--- a/arch/mips/powertv/asic/asic-gaia.c
++++ /dev/null
+@@ -1,96 +0,0 @@
+-/*
+- * Locations of devices in the Gaia ASIC
+- *
+- * Copyright (C) 2005-2009 Scientific-Atlanta, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- *
+- * Author:	 David VomLehn
+- */
+-
+-#include <linux/init.h>
+-#include <asm/mach-powertv/asic.h>
+-
+-const struct register_map gaia_register_map __initconst = {
+-	.eic_slow0_strt_add = {.phys = GAIA_IO_BASE + 0x000000},
+-	.eic_cfg_bits = {.phys = GAIA_IO_BASE + 0x000038},
+-	.eic_ready_status = {.phys = GAIA_IO_BASE + 0x00004C},
+-
+-	.chipver3 = {.phys = GAIA_IO_BASE + 0x2A0800},
+-	.chipver2 = {.phys = GAIA_IO_BASE + 0x2A0804},
+-	.chipver1 = {.phys = GAIA_IO_BASE + 0x2A0808},
+-	.chipver0 = {.phys = GAIA_IO_BASE + 0x2A080C},
+-
+-	/* The registers of IRBlaster */
+-	.uart1_intstat = {.phys = GAIA_IO_BASE + 0x2A1800},
+-	.uart1_inten = {.phys = GAIA_IO_BASE + 0x2A1804},
+-	.uart1_config1 = {.phys = GAIA_IO_BASE + 0x2A1808},
+-	.uart1_config2 = {.phys = GAIA_IO_BASE + 0x2A180C},
+-	.uart1_divisorhi = {.phys = GAIA_IO_BASE + 0x2A1810},
+-	.uart1_divisorlo = {.phys = GAIA_IO_BASE + 0x2A1814},
+-	.uart1_data = {.phys = GAIA_IO_BASE + 0x2A1818},
+-	.uart1_status = {.phys = GAIA_IO_BASE + 0x2A181C},
+-
+-	.int_stat_3 = {.phys = GAIA_IO_BASE + 0x2A2800},
+-	.int_stat_2 = {.phys = GAIA_IO_BASE + 0x2A2804},
+-	.int_stat_1 = {.phys = GAIA_IO_BASE + 0x2A2808},
+-	.int_stat_0 = {.phys = GAIA_IO_BASE + 0x2A280C},
+-	.int_config = {.phys = GAIA_IO_BASE + 0x2A2810},
+-	.int_int_scan = {.phys = GAIA_IO_BASE + 0x2A2818},
+-	.ien_int_3 = {.phys = GAIA_IO_BASE + 0x2A2830},
+-	.ien_int_2 = {.phys = GAIA_IO_BASE + 0x2A2834},
+-	.ien_int_1 = {.phys = GAIA_IO_BASE + 0x2A2838},
+-	.ien_int_0 = {.phys = GAIA_IO_BASE + 0x2A283C},
+-	.int_level_3_3 = {.phys = GAIA_IO_BASE + 0x2A2880},
+-	.int_level_3_2 = {.phys = GAIA_IO_BASE + 0x2A2884},
+-	.int_level_3_1 = {.phys = GAIA_IO_BASE + 0x2A2888},
+-	.int_level_3_0 = {.phys = GAIA_IO_BASE + 0x2A288C},
+-	.int_level_2_3 = {.phys = GAIA_IO_BASE + 0x2A2890},
+-	.int_level_2_2 = {.phys = GAIA_IO_BASE + 0x2A2894},
+-	.int_level_2_1 = {.phys = GAIA_IO_BASE + 0x2A2898},
+-	.int_level_2_0 = {.phys = GAIA_IO_BASE + 0x2A289C},
+-	.int_level_1_3 = {.phys = GAIA_IO_BASE + 0x2A28A0},
+-	.int_level_1_2 = {.phys = GAIA_IO_BASE + 0x2A28A4},
+-	.int_level_1_1 = {.phys = GAIA_IO_BASE + 0x2A28A8},
+-	.int_level_1_0 = {.phys = GAIA_IO_BASE + 0x2A28AC},
+-	.int_level_0_3 = {.phys = GAIA_IO_BASE + 0x2A28B0},
+-	.int_level_0_2 = {.phys = GAIA_IO_BASE + 0x2A28B4},
+-	.int_level_0_1 = {.phys = GAIA_IO_BASE + 0x2A28B8},
+-	.int_level_0_0 = {.phys = GAIA_IO_BASE + 0x2A28BC},
+-	.int_docsis_en = {.phys = GAIA_IO_BASE + 0x2A28F4},
+-
+-	.mips_pll_setup = {.phys = GAIA_IO_BASE + 0x1C0000},
+-	.fs432x4b4_usb_ctl = {.phys = GAIA_IO_BASE + 0x1C0024},
+-	.test_bus = {.phys = GAIA_IO_BASE + 0x1C00CC},
+-	.crt_spare = {.phys = GAIA_IO_BASE + 0x1c0108},
+-	.usb2_ohci_int_mask = {.phys = GAIA_IO_BASE + 0x20000C},
+-	.usb2_strap = {.phys = GAIA_IO_BASE + 0x200014},
+-	.ehci_hcapbase = {.phys = GAIA_IO_BASE + 0x21FE00},
+-	.ohci_hc_revision = {.phys = GAIA_IO_BASE + 0x21fc00},
+-	.bcm1_bs_lmi_steer = {.phys = GAIA_IO_BASE + 0x2E0004},
+-	.usb2_control = {.phys = GAIA_IO_BASE + 0x2E004C},
+-	.usb2_stbus_obc = {.phys = GAIA_IO_BASE + 0x21FF00},
+-	.usb2_stbus_mess_size = {.phys = GAIA_IO_BASE + 0x21FF04},
+-	.usb2_stbus_chunk_size = {.phys = GAIA_IO_BASE + 0x21FF08},
+-
+-	.pcie_regs = {.phys = GAIA_IO_BASE + 0x220000},
+-	.tim_ch = {.phys = GAIA_IO_BASE + 0x2A2C10},
+-	.tim_cl = {.phys = GAIA_IO_BASE + 0x2A2C14},
+-	.gpio_dout = {.phys = GAIA_IO_BASE + 0x2A2C20},
+-	.gpio_din = {.phys = GAIA_IO_BASE + 0x2A2C24},
+-	.gpio_dir = {.phys = GAIA_IO_BASE + 0x2A2C2C},
+-	.watchdog = {.phys = GAIA_IO_BASE + 0x2A2C30},
+-	.front_panel = {.phys = GAIA_IO_BASE + 0x2A3800},
+-};
+diff --git a/arch/mips/powertv/asic/asic-zeus.c b/arch/mips/powertv/asic/asic-zeus.c
+deleted file mode 100644
+index 14e7de1..0000000
+--- a/arch/mips/powertv/asic/asic-zeus.c
++++ /dev/null
+@@ -1,101 +0,0 @@
+-/*
+- * Locations of devices in the Zeus ASIC
+- *
+- * Copyright (C) 2005-2009 Scientific-Atlanta, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- *
+- * Author:	 Ken Eppinett
+- *		 David Schleef <ds@schleef.org>
+- *
+- * Description:	 Defines the platform resources for the SA settop.
+- */
+-
+-#include <linux/init.h>
+-#include <asm/mach-powertv/asic.h>
+-
+-#define ZEUS_ADDR(x)	(ZEUS_IO_BASE + (x))
+-
+-const struct register_map zeus_register_map __initconst = {
+-	.eic_slow0_strt_add = {.phys = ZEUS_ADDR(0x000000)},
+-	.eic_cfg_bits = {.phys = ZEUS_ADDR(0x000038)},
+-	.eic_ready_status = {.phys = ZEUS_ADDR(0x00004c)},
+-
+-	.chipver3 = {.phys = ZEUS_ADDR(0x280800)},
+-	.chipver2 = {.phys = ZEUS_ADDR(0x280804)},
+-	.chipver1 = {.phys = ZEUS_ADDR(0x280808)},
+-	.chipver0 = {.phys = ZEUS_ADDR(0x28080c)},
+-
+-	/* The registers of IRBlaster */
+-	.uart1_intstat = {.phys = ZEUS_ADDR(0x281800)},
+-	.uart1_inten = {.phys = ZEUS_ADDR(0x281804)},
+-	.uart1_config1 = {.phys = ZEUS_ADDR(0x281808)},
+-	.uart1_config2 = {.phys = ZEUS_ADDR(0x28180C)},
+-	.uart1_divisorhi = {.phys = ZEUS_ADDR(0x281810)},
+-	.uart1_divisorlo = {.phys = ZEUS_ADDR(0x281814)},
+-	.uart1_data = {.phys = ZEUS_ADDR(0x281818)},
+-	.uart1_status = {.phys = ZEUS_ADDR(0x28181C)},
+-
+-	.int_stat_3 = {.phys = ZEUS_ADDR(0x282800)},
+-	.int_stat_2 = {.phys = ZEUS_ADDR(0x282804)},
+-	.int_stat_1 = {.phys = ZEUS_ADDR(0x282808)},
+-	.int_stat_0 = {.phys = ZEUS_ADDR(0x28280c)},
+-	.int_config = {.phys = ZEUS_ADDR(0x282810)},
+-	.int_int_scan = {.phys = ZEUS_ADDR(0x282818)},
+-	.ien_int_3 = {.phys = ZEUS_ADDR(0x282830)},
+-	.ien_int_2 = {.phys = ZEUS_ADDR(0x282834)},
+-	.ien_int_1 = {.phys = ZEUS_ADDR(0x282838)},
+-	.ien_int_0 = {.phys = ZEUS_ADDR(0x28283c)},
+-	.int_level_3_3 = {.phys = ZEUS_ADDR(0x282880)},
+-	.int_level_3_2 = {.phys = ZEUS_ADDR(0x282884)},
+-	.int_level_3_1 = {.phys = ZEUS_ADDR(0x282888)},
+-	.int_level_3_0 = {.phys = ZEUS_ADDR(0x28288c)},
+-	.int_level_2_3 = {.phys = ZEUS_ADDR(0x282890)},
+-	.int_level_2_2 = {.phys = ZEUS_ADDR(0x282894)},
+-	.int_level_2_1 = {.phys = ZEUS_ADDR(0x282898)},
+-	.int_level_2_0 = {.phys = ZEUS_ADDR(0x28289c)},
+-	.int_level_1_3 = {.phys = ZEUS_ADDR(0x2828a0)},
+-	.int_level_1_2 = {.phys = ZEUS_ADDR(0x2828a4)},
+-	.int_level_1_1 = {.phys = ZEUS_ADDR(0x2828a8)},
+-	.int_level_1_0 = {.phys = ZEUS_ADDR(0x2828ac)},
+-	.int_level_0_3 = {.phys = ZEUS_ADDR(0x2828b0)},
+-	.int_level_0_2 = {.phys = ZEUS_ADDR(0x2828b4)},
+-	.int_level_0_1 = {.phys = ZEUS_ADDR(0x2828b8)},
+-	.int_level_0_0 = {.phys = ZEUS_ADDR(0x2828bc)},
+-	.int_docsis_en = {.phys = ZEUS_ADDR(0x2828F4)},
+-
+-	.mips_pll_setup = {.phys = ZEUS_ADDR(0x1a0000)},
+-	.fs432x4b4_usb_ctl = {.phys = ZEUS_ADDR(0x1a0018)},
+-	.test_bus = {.phys = ZEUS_ADDR(0x1a0238)},
+-	.crt_spare = {.phys = ZEUS_ADDR(0x1a0090)},
+-	.usb2_ohci_int_mask = {.phys = ZEUS_ADDR(0x1e000c)},
+-	.usb2_strap = {.phys = ZEUS_ADDR(0x1e0014)},
+-	.ehci_hcapbase = {.phys = ZEUS_ADDR(0x1FFE00)},
+-	.ohci_hc_revision = {.phys = ZEUS_ADDR(0x1FFC00)},
+-	.bcm1_bs_lmi_steer = {.phys = ZEUS_ADDR(0x2C0008)},
+-	.usb2_control = {.phys = ZEUS_ADDR(0x2c01a0)},
+-	.usb2_stbus_obc = {.phys = ZEUS_ADDR(0x1FFF00)},
+-	.usb2_stbus_mess_size = {.phys = ZEUS_ADDR(0x1FFF04)},
+-	.usb2_stbus_chunk_size = {.phys = ZEUS_ADDR(0x1FFF08)},
+-
+-	.pcie_regs = {.phys = ZEUS_ADDR(0x200000)},
+-	.tim_ch = {.phys = ZEUS_ADDR(0x282C10)},
+-	.tim_cl = {.phys = ZEUS_ADDR(0x282C14)},
+-	.gpio_dout = {.phys = ZEUS_ADDR(0x282c20)},
+-	.gpio_din = {.phys = ZEUS_ADDR(0x282c24)},
+-	.gpio_dir = {.phys = ZEUS_ADDR(0x282c2C)},
+-	.watchdog = {.phys = ZEUS_ADDR(0x282c30)},
+-	.front_panel = {.phys = ZEUS_ADDR(0x283800)},
+-};
+diff --git a/arch/mips/powertv/asic/asic_devices.c b/arch/mips/powertv/asic/asic_devices.c
+deleted file mode 100644
+index 8380605..0000000
+--- a/arch/mips/powertv/asic/asic_devices.c
++++ /dev/null
+@@ -1,549 +0,0 @@
+-/*
+- *
+- * Description:	 Defines the platform resources for Gaia-based settops.
+- *
+- * Copyright (C) 2005-2009 Scientific-Atlanta, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- *
+- * NOTE: The bootloader allocates persistent memory at an address which is
+- * 16 MiB below the end of the highest address in KSEG0. All fixed
+- * address memory reservations must avoid this region.
+- */
+-
+-#include <linux/device.h>
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <linux/resource.h>
+-#include <linux/serial_reg.h>
+-#include <linux/io.h>
+-#include <linux/bootmem.h>
+-#include <linux/mm.h>
+-#include <linux/platform_device.h>
+-#include <linux/module.h>
+-#include <asm/page.h>
+-#include <linux/swap.h>
+-#include <linux/highmem.h>
+-#include <linux/dma-mapping.h>
+-
+-#include <asm/mach-powertv/asic.h>
+-#include <asm/mach-powertv/asic_regs.h>
+-#include <asm/mach-powertv/interrupts.h>
+-
+-#ifdef CONFIG_BOOTLOADER_DRIVER
+-#include <asm/mach-powertv/kbldr.h>
+-#endif
+-#include <asm/bootinfo.h>
+-
+-#define BOOTLDRFAMILY(byte1, byte0) (((byte1) << 8) | (byte0))
+-
+-/*
+- * Forward Prototypes
+- */
+-static void pmem_setup_resource(void);
+-
+-/*
+- * Global Variables
+- */
+-enum asic_type asic;
+-
+-unsigned int platform_features;
+-unsigned int platform_family;
+-struct register_map _asic_register_map;
+-EXPORT_SYMBOL(_asic_register_map);		/* Exported for testing */
+-unsigned long asic_phy_base;
+-unsigned long asic_base;
+-EXPORT_SYMBOL(asic_base);			/* Exported for testing */
+-struct resource *gp_resources;
+-
+-/*
+- * Don't recommend to use it directly, it is usually used by kernel internally.
+- * Portable code should be using interfaces such as ioremp, dma_map_single, etc.
+- */
+-unsigned long phys_to_dma_offset;
+-EXPORT_SYMBOL(phys_to_dma_offset);
+-
+-/*
+- *
+- * IO Resource Definition
+- *
+- */
+-
+-struct resource asic_resource = {
+-	.name  = "ASIC Resource",
+-	.start = 0,
+-	.end   = ASIC_IO_SIZE,
+-	.flags = IORESOURCE_MEM,
+-};
+-
+-/*
+- * Allow override of bootloader-specified model
+- * Returns zero on success, a negative errno value on failure.	This parameter
+- * allows overriding of the bootloader-specified model.
+- */
+-static char __initdata cmdline[COMMAND_LINE_SIZE];
+-
+-#define FORCEFAMILY_PARAM	"forcefamily"
+-
+-/*
+- * check_forcefamily - check for, and parse, forcefamily command line parameter
+- * @forced_family:	Pointer to two-character array in which to store the
+- *			value of the forcedfamily parameter, if any.
+- */
+-static __init int check_forcefamily(unsigned char forced_family[2])
+-{
+-	const char *p;
+-
+-	forced_family[0] = '\0';
+-	forced_family[1] = '\0';
+-
+-	/* Check the command line for a forcefamily directive */
+-	strncpy(cmdline, arcs_cmdline, COMMAND_LINE_SIZE - 1);
+-	p = strstr(cmdline, FORCEFAMILY_PARAM);
+-	if (p && (p != cmdline) && (*(p - 1) != ' '))
+-		p = strstr(p, " " FORCEFAMILY_PARAM "=");
+-
+-	if (p) {
+-		p += strlen(FORCEFAMILY_PARAM "=");
+-
+-		if (*p == '\0' || *(p + 1) == '\0' ||
+-			(*(p + 2) != '\0' && *(p + 2) != ' '))
+-			pr_err(FORCEFAMILY_PARAM " must be exactly two "
+-				"characters long, ignoring value\n");
+-
+-		else {
+-			forced_family[0] = *p;
+-			forced_family[1] = *(p + 1);
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-/*
+- * platform_set_family - determine major platform family type.
+- *
+- * Returns family type; -1 if none
+- * Returns the family type; -1 if none
+- *
+- */
+-static __init noinline void platform_set_family(void)
+-{
+-	unsigned char forced_family[2];
+-	unsigned short bootldr_family;
+-
+-	if (check_forcefamily(forced_family) == 0)
+-		bootldr_family = BOOTLDRFAMILY(forced_family[0],
+-			forced_family[1]);
+-	else
+-		bootldr_family = (unsigned short) BOOTLDRFAMILY(
+-			CONFIG_BOOTLOADER_FAMILY[0],
+-			CONFIG_BOOTLOADER_FAMILY[1]);
+-
+-	pr_info("Bootloader Family = 0x%04X\n", bootldr_family);
+-
+-	switch (bootldr_family) {
+-	case BOOTLDRFAMILY('R', '1'):
+-		platform_family = FAMILY_1500;
+-		break;
+-	case BOOTLDRFAMILY('4', '4'):
+-		platform_family = FAMILY_4500;
+-		break;
+-	case BOOTLDRFAMILY('4', '6'):
+-		platform_family = FAMILY_4600;
+-		break;
+-	case BOOTLDRFAMILY('A', '1'):
+-		platform_family = FAMILY_4600VZA;
+-		break;
+-	case BOOTLDRFAMILY('8', '5'):
+-		platform_family = FAMILY_8500;
+-		break;
+-	case BOOTLDRFAMILY('R', '2'):
+-		platform_family = FAMILY_8500RNG;
+-		break;
+-	case BOOTLDRFAMILY('8', '6'):
+-		platform_family = FAMILY_8600;
+-		break;
+-	case BOOTLDRFAMILY('B', '1'):
+-		platform_family = FAMILY_8600VZB;
+-		break;
+-	case BOOTLDRFAMILY('E', '1'):
+-		platform_family = FAMILY_1500VZE;
+-		break;
+-	case BOOTLDRFAMILY('F', '1'):
+-		platform_family = FAMILY_1500VZF;
+-		break;
+-	case BOOTLDRFAMILY('8', '7'):
+-		platform_family = FAMILY_8700;
+-		break;
+-	default:
+-		platform_family = -1;
+-	}
+-}
+-
+-unsigned int platform_get_family(void)
+-{
+-	return platform_family;
+-}
+-EXPORT_SYMBOL(platform_get_family);
+-
+-/*
+- * platform_get_asic - determine the ASIC type.
+- *
+- * Returns the ASIC type, or ASIC_UNKNOWN if unknown
+- *
+- */
+-enum asic_type platform_get_asic(void)
+-{
+-	return asic;
+-}
+-EXPORT_SYMBOL(platform_get_asic);
+-
+-/*
+- * set_register_map - set ASIC register configuration
+- * @phys_base:	Physical address of the base of the ASIC registers
+- * @map:	Description of key ASIC registers
+- */
+-static void __init set_register_map(unsigned long phys_base,
+-	const struct register_map *map)
+-{
+-	asic_phy_base = phys_base;
+-	_asic_register_map = *map;
+-	register_map_virtualize(&_asic_register_map);
+-	asic_base = (unsigned long)ioremap_nocache(phys_base, ASIC_IO_SIZE);
+-}
+-
+-/**
+- * configure_platform - configuration based on platform type.
+- */
+-void __init configure_platform(void)
+-{
+-	platform_set_family();
+-
+-	switch (platform_family) {
+-	case FAMILY_1500:
+-	case FAMILY_1500VZE:
+-	case FAMILY_1500VZF:
+-		platform_features = FFS_CAPABLE;
+-		asic = ASIC_CALLIOPE;
+-		set_register_map(CALLIOPE_IO_BASE, &calliope_register_map);
+-
+-		if (platform_family == FAMILY_1500VZE) {
+-			gp_resources = non_dvr_vze_calliope_resources;
+-			pr_info("Platform: 1500/Vz Class E - "
+-				"CALLIOPE, NON_DVR_CAPABLE\n");
+-		} else if (platform_family == FAMILY_1500VZF) {
+-			gp_resources = non_dvr_vzf_calliope_resources;
+-			pr_info("Platform: 1500/Vz Class F - "
+-				"CALLIOPE, NON_DVR_CAPABLE\n");
+-		} else {
+-			gp_resources = non_dvr_calliope_resources;
+-			pr_info("Platform: 1500/RNG100 - CALLIOPE, "
+-				"NON_DVR_CAPABLE\n");
+-		}
+-		break;
+-
+-	case FAMILY_4500:
+-		platform_features = FFS_CAPABLE | PCIE_CAPABLE |
+-			DISPLAY_CAPABLE;
+-		asic = ASIC_ZEUS;
+-		set_register_map(ZEUS_IO_BASE, &zeus_register_map);
+-		gp_resources = non_dvr_zeus_resources;
+-
+-		pr_info("Platform: 4500 - ZEUS, NON_DVR_CAPABLE\n");
+-		break;
+-
+-	case FAMILY_4600:
+-	{
+-		unsigned int chipversion = 0;
+-
+-		/* The settop has PCIE but it isn't used, so don't advertise
+-		 * it*/
+-		platform_features = FFS_CAPABLE | DISPLAY_CAPABLE;
+-
+-		/* Cronus and Cronus Lite have the same register map */
+-		set_register_map(CRONUS_IO_BASE, &cronus_register_map);
+-
+-		/* ASIC version will determine if this is a real CronusLite or
+-		 * Castrati(Cronus) */
+-		chipversion  = asic_read(chipver3) << 24;
+-		chipversion |= asic_read(chipver2) << 16;
+-		chipversion |= asic_read(chipver1) << 8;
+-		chipversion |= asic_read(chipver0);
+-
+-		if ((chipversion == CRONUS_10) || (chipversion == CRONUS_11))
+-			asic = ASIC_CRONUS;
+-		else
+-			asic = ASIC_CRONUSLITE;
+-
+-		gp_resources = non_dvr_cronuslite_resources;
+-		pr_info("Platform: 4600 - %s, NON_DVR_CAPABLE, "
+-			"chipversion=0x%08X\n",
+-			(asic == ASIC_CRONUS) ? "CRONUS" : "CRONUS LITE",
+-			chipversion);
+-		break;
+-	}
+-	case FAMILY_4600VZA:
+-		platform_features = FFS_CAPABLE | DISPLAY_CAPABLE;
+-		asic = ASIC_CRONUS;
+-		set_register_map(CRONUS_IO_BASE, &cronus_register_map);
+-		gp_resources = non_dvr_cronus_resources;
+-
+-		pr_info("Platform: Vz Class A - CRONUS, NON_DVR_CAPABLE\n");
+-		break;
+-
+-	case FAMILY_8500:
+-	case FAMILY_8500RNG:
+-		platform_features = DVR_CAPABLE | PCIE_CAPABLE |
+-			DISPLAY_CAPABLE;
+-		asic = ASIC_ZEUS;
+-		set_register_map(ZEUS_IO_BASE, &zeus_register_map);
+-		gp_resources = dvr_zeus_resources;
+-
+-		pr_info("Platform: 8500/RNG200 - ZEUS, DVR_CAPABLE\n");
+-		break;
+-
+-	case FAMILY_8600:
+-	case FAMILY_8600VZB:
+-		platform_features = DVR_CAPABLE | PCIE_CAPABLE |
+-			DISPLAY_CAPABLE;
+-		asic = ASIC_CRONUS;
+-		set_register_map(CRONUS_IO_BASE, &cronus_register_map);
+-		gp_resources = dvr_cronus_resources;
+-
+-		pr_info("Platform: 8600/Vz Class B - CRONUS, "
+-			"DVR_CAPABLE\n");
+-		break;
+-
+-	case FAMILY_8700:
+-		platform_features = FFS_CAPABLE | PCIE_CAPABLE;
+-		asic = ASIC_GAIA;
+-		set_register_map(GAIA_IO_BASE, &gaia_register_map);
+-		gp_resources = dvr_gaia_resources;
+-
+-		pr_info("Platform: 8700 - GAIA, DVR_CAPABLE\n");
+-		break;
+-
+-	default:
+-		pr_crit("Platform:  UNKNOWN PLATFORM\n");
+-		break;
+-	}
+-
+-	switch (asic) {
+-	case ASIC_ZEUS:
+-		phys_to_dma_offset = 0x30000000;
+-		break;
+-	case ASIC_CALLIOPE:
+-		phys_to_dma_offset = 0x10000000;
+-		break;
+-	case ASIC_CRONUSLITE:
+-		/* Fall through */
+-	case ASIC_CRONUS:
+-		/*
+-		 * TODO: We suppose 0x10000000 aliases into 0x20000000-
+-		 * 0x2XXXXXXX. If 0x10000000 aliases into 0x60000000-
+-		 * 0x6XXXXXXX, the offset should be 0x50000000, not 0x10000000.
+-		 */
+-		phys_to_dma_offset = 0x10000000;
+-		break;
+-	default:
+-		phys_to_dma_offset = 0x00000000;
+-		break;
+-	}
+-}
+-
+-/*
+- * RESOURCE ALLOCATION
+- *
+- */
+-/*
+- * Allocates/reserves the Platform memory resources early in the boot process.
+- * This ignores any resources that are designated IORESOURCE_IO
+- */
+-void __init platform_alloc_bootmem(void)
+-{
+-	int i;
+-	int total = 0;
+-
+-	/* Get persistent memory data from command line before allocating
+-	 * resources. This need to happen before normal command line parsing
+-	 * has been done */
+-	pmem_setup_resource();
+-
+-	/* Loop through looking for resources that want a particular address */
+-	for (i = 0; gp_resources[i].flags != 0; i++) {
+-		int size = resource_size(&gp_resources[i]);
+-		if ((gp_resources[i].start != 0) &&
+-			((gp_resources[i].flags & IORESOURCE_MEM) != 0)) {
+-			reserve_bootmem(dma_to_phys(gp_resources[i].start),
+-				size, 0);
+-			total += resource_size(&gp_resources[i]);
+-			pr_info("reserve resource %s at %08x (%u bytes)\n",
+-				gp_resources[i].name, gp_resources[i].start,
+-				resource_size(&gp_resources[i]));
+-		}
+-	}
+-
+-	/* Loop through assigning addresses for those that are left */
+-	for (i = 0; gp_resources[i].flags != 0; i++) {
+-		int size = resource_size(&gp_resources[i]);
+-		if ((gp_resources[i].start == 0) &&
+-			((gp_resources[i].flags & IORESOURCE_MEM) != 0)) {
+-			void *mem = alloc_bootmem_pages(size);
+-
+-			if (mem == NULL)
+-				pr_err("Unable to allocate bootmem pages "
+-					"for %s\n", gp_resources[i].name);
+-
+-			else {
+-				gp_resources[i].start =
+-					phys_to_dma(virt_to_phys(mem));
+-				gp_resources[i].end =
+-					gp_resources[i].start + size - 1;
+-				total += size;
+-				pr_info("allocate resource %s at %08x "
+-						"(%u bytes)\n",
+-					gp_resources[i].name,
+-					gp_resources[i].start, size);
+-			}
+-		}
+-	}
+-
+-	pr_info("Total Platform driver memory allocation: 0x%08x\n", total);
+-
+-	/* indicate resources that are platform I/O related */
+-	for (i = 0; gp_resources[i].flags != 0; i++) {
+-		if ((gp_resources[i].start != 0) &&
+-			((gp_resources[i].flags & IORESOURCE_IO) != 0)) {
+-			pr_info("reserved platform resource %s at %08x\n",
+-				gp_resources[i].name, gp_resources[i].start);
+-		}
+-	}
+-}
+-
+-/*
+- *
+- * PERSISTENT MEMORY (PMEM) CONFIGURATION
+- *
+- */
+-static unsigned long pmemaddr __initdata;
+-
+-static int __init early_param_pmemaddr(char *p)
+-{
+-	pmemaddr = (unsigned long)simple_strtoul(p, NULL, 0);
+-	return 0;
+-}
+-early_param("pmemaddr", early_param_pmemaddr);
+-
+-static long pmemlen __initdata;
+-
+-static int __init early_param_pmemlen(char *p)
+-{
+-/* TODO: we can use this code when and if the bootloader ever changes this */
+-#if 0
+-	pmemlen = (unsigned long)simple_strtoul(p, NULL, 0);
+-#else
+-	pmemlen = 0x20000;
+-#endif
+-	return 0;
+-}
+-early_param("pmemlen", early_param_pmemlen);
+-
+-/*
+- * Set up persistent memory. If we were given values, we patch the array of
+- * resources. Otherwise, persistent memory may be allocated anywhere at all.
+- */
+-static void __init pmem_setup_resource(void)
+-{
+-	struct resource *resource;
+-	resource = asic_resource_get("DiagPersistentMemory");
+-
+-	if (resource && pmemaddr && pmemlen) {
+-		/* The address provided by bootloader is in kseg0. Convert to
+-		 * a bus address. */
+-		resource->start = phys_to_dma(pmemaddr - 0x80000000);
+-		resource->end = resource->start + pmemlen - 1;
+-
+-		pr_info("persistent memory: start=0x%x	end=0x%x\n",
+-			resource->start, resource->end);
+-	}
+-}
+-
+-/*
+- *
+- * RESOURCE ACCESS FUNCTIONS
+- *
+- */
+-
+-/**
+- * asic_resource_get - retrieves parameters for a platform resource.
+- * @name:	string to match resource
+- *
+- * Returns a pointer to a struct resource corresponding to the given name.
+- *
+- * CANNOT BE NAMED platform_resource_get, which would be the obvious choice,
+- * as this function name is already declared
+- */
+-struct resource *asic_resource_get(const char *name)
+-{
+-	int i;
+-
+-	for (i = 0; gp_resources[i].flags != 0; i++) {
+-		if (strcmp(gp_resources[i].name, name) == 0)
+-			return &gp_resources[i];
+-	}
+-
+-	return NULL;
+-}
+-EXPORT_SYMBOL(asic_resource_get);
+-
+-/**
+- * platform_release_memory - release pre-allocated memory
+- * @ptr:	pointer to memory to release
+- * @size:	size of resource
+- *
+- * This must only be called for memory allocated or reserved via the boot
+- * memory allocator.
+- */
+-void platform_release_memory(void *ptr, int size)
+-{
+-	free_reserved_area(ptr, ptr + size, -1, NULL);
+-}
+-EXPORT_SYMBOL(platform_release_memory);
+-
+-/*
+- *
+- * FEATURE AVAILABILITY FUNCTIONS
+- *
+- */
+-int platform_supports_dvr(void)
+-{
+-	return (platform_features & DVR_CAPABLE) != 0;
+-}
+-
+-int platform_supports_ffs(void)
+-{
+-	return (platform_features & FFS_CAPABLE) != 0;
+-}
+-
+-int platform_supports_pcie(void)
+-{
+-	return (platform_features & PCIE_CAPABLE) != 0;
+-}
+-
+-int platform_supports_display(void)
+-{
+-	return (platform_features & DISPLAY_CAPABLE) != 0;
+-}
+diff --git a/arch/mips/powertv/asic/asic_int.c b/arch/mips/powertv/asic/asic_int.c
+deleted file mode 100644
+index f44cd92..0000000
+--- a/arch/mips/powertv/asic/asic_int.c
++++ /dev/null
+@@ -1,125 +0,0 @@
+-/*
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 2000, 2001, 2004 MIPS Technologies, Inc.
+- * Copyright (C) 2001 Ralf Baechle
+- * Portions copyright (C) 2009	Cisco Systems, Inc.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * Routines for generic manipulation of the interrupts found on the PowerTV
+- * platform.
+- *
+- * The interrupt controller is located in the South Bridge a PIIX4 device
+- * with two internal 82C95 interrupt controllers.
+- */
+-#include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/sched.h>
+-#include <linux/interrupt.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/kernel.h>
+-#include <linux/random.h>
+-
+-#include <asm/irq_cpu.h>
+-#include <linux/io.h>
+-#include <asm/irq_regs.h>
+-#include <asm/setup.h>
+-#include <asm/mips-boards/generic.h>
+-
+-#include <asm/mach-powertv/asic_regs.h>
+-
+-static DEFINE_RAW_SPINLOCK(asic_irq_lock);
+-
+-static inline int get_int(void)
+-{
+-	unsigned long flags;
+-	int irq;
+-
+-	raw_spin_lock_irqsave(&asic_irq_lock, flags);
+-
+-	irq = (asic_read(int_int_scan) >> 4) - 1;
+-
+-	if (irq == 0 || irq >= NR_IRQS)
+-		irq = -1;
+-
+-	raw_spin_unlock_irqrestore(&asic_irq_lock, flags);
+-
+-	return irq;
+-}
+-
+-static void asic_irqdispatch(void)
+-{
+-	int irq;
+-
+-	irq = get_int();
+-	if (irq < 0)
+-		return;	 /* interrupt has already been cleared */
+-
+-	do_IRQ(irq);
+-}
+-
+-static inline int clz(unsigned long x)
+-{
+-	__asm__(
+-	"	.set	push					\n"
+-	"	.set	mips32					\n"
+-	"	clz	%0, %1					\n"
+-	"	.set	pop					\n"
+-	: "=r" (x)
+-	: "r" (x));
+-
+-	return x;
+-}
+-
+-/*
+- * Version of ffs that only looks at bits 12..15.
+- */
+-static inline unsigned int irq_ffs(unsigned int pending)
+-{
+-	return fls(pending) - 1 + CAUSEB_IP;
+-}
+-
+-/*
+- * TODO: check how it works under EIC mode.
+- */
+-asmlinkage void plat_irq_dispatch(void)
+-{
+-	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
+-	int irq;
+-
+-	irq = irq_ffs(pending);
+-
+-	if (irq == CAUSEF_IP3)
+-		asic_irqdispatch();
+-	else if (irq >= 0)
+-		do_IRQ(irq);
+-	else
+-		spurious_interrupt();
+-}
+-
+-void __init arch_init_irq(void)
+-{
+-	int i;
+-
+-	asic_irq_init();
+-
+-	/*
+-	 * Initialize interrupt exception vectors.
+-	 */
+-	if (cpu_has_veic || cpu_has_vint) {
+-		int nvec = cpu_has_veic ? 64 : 8;
+-		for (i = 0; i < nvec; i++)
+-			set_vi_handler(i, asic_irqdispatch);
+-	}
+-}
+diff --git a/arch/mips/powertv/asic/irq_asic.c b/arch/mips/powertv/asic/irq_asic.c
+deleted file mode 100644
+index 9344902..0000000
+--- a/arch/mips/powertv/asic/irq_asic.c
++++ /dev/null
+@@ -1,115 +0,0 @@
+-/*
+- * Portions copyright (C) 2005-2009 Scientific Atlanta
+- * Portions copyright (C) 2009 Cisco Systems, Inc.
+- *
+- * Modified from arch/mips/kernel/irq-rm7000.c:
+- * Copyright (C) 2003 Ralf Baechle
+- *
+- * This program is free software; you can redistribute	it and/or modify it
+- * under  the terms of	the GNU General	 Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- */
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <linux/kernel.h>
+-#include <linux/irq.h>
+-
+-#include <asm/irq_cpu.h>
+-#include <asm/mipsregs.h>
+-
+-#include <asm/mach-powertv/asic_regs.h>
+-
+-static inline void unmask_asic_irq(struct irq_data *d)
+-{
+-	unsigned long enable_bit;
+-	unsigned int irq = d->irq;
+-
+-	enable_bit = (1 << (irq & 0x1f));
+-
+-	switch (irq >> 5) {
+-	case 0:
+-		asic_write(asic_read(ien_int_0) | enable_bit, ien_int_0);
+-		break;
+-	case 1:
+-		asic_write(asic_read(ien_int_1) | enable_bit, ien_int_1);
+-		break;
+-	case 2:
+-		asic_write(asic_read(ien_int_2) | enable_bit, ien_int_2);
+-		break;
+-	case 3:
+-		asic_write(asic_read(ien_int_3) | enable_bit, ien_int_3);
+-		break;
+-	default:
+-		BUG();
+-	}
+-}
+-
+-static inline void mask_asic_irq(struct irq_data *d)
+-{
+-	unsigned long disable_mask;
+-	unsigned int irq = d->irq;
+-
+-	disable_mask = ~(1 << (irq & 0x1f));
+-
+-	switch (irq >> 5) {
+-	case 0:
+-		asic_write(asic_read(ien_int_0) & disable_mask, ien_int_0);
+-		break;
+-	case 1:
+-		asic_write(asic_read(ien_int_1) & disable_mask, ien_int_1);
+-		break;
+-	case 2:
+-		asic_write(asic_read(ien_int_2) & disable_mask, ien_int_2);
+-		break;
+-	case 3:
+-		asic_write(asic_read(ien_int_3) & disable_mask, ien_int_3);
+-		break;
+-	default:
+-		BUG();
+-	}
+-}
+-
+-static struct irq_chip asic_irq_chip = {
+-	.name = "ASIC Level",
+-	.irq_mask = mask_asic_irq,
+-	.irq_unmask = unmask_asic_irq,
+-};
+-
+-void __init asic_irq_init(void)
+-{
+-	int i;
+-
+-	/* set priority to 0 */
+-	write_c0_status(read_c0_status() & ~(0x0000fc00));
+-
+-	asic_write(0, ien_int_0);
+-	asic_write(0, ien_int_1);
+-	asic_write(0, ien_int_2);
+-	asic_write(0, ien_int_3);
+-
+-	asic_write(0x0fffffff, int_level_3_3);
+-	asic_write(0xffffffff, int_level_3_2);
+-	asic_write(0xffffffff, int_level_3_1);
+-	asic_write(0xffffffff, int_level_3_0);
+-	asic_write(0xffffffff, int_level_2_3);
+-	asic_write(0xffffffff, int_level_2_2);
+-	asic_write(0xffffffff, int_level_2_1);
+-	asic_write(0xffffffff, int_level_2_0);
+-	asic_write(0xffffffff, int_level_1_3);
+-	asic_write(0xffffffff, int_level_1_2);
+-	asic_write(0xffffffff, int_level_1_1);
+-	asic_write(0xffffffff, int_level_1_0);
+-	asic_write(0xffffffff, int_level_0_3);
+-	asic_write(0xffffffff, int_level_0_2);
+-	asic_write(0xffffffff, int_level_0_1);
+-	asic_write(0xffffffff, int_level_0_0);
+-
+-	asic_write(0xf, int_int_scan);
+-
+-	/*
+-	 * Initialize interrupt handlers.
+-	 */
+-	for (i = 0; i < NR_IRQS; i++)
+-		irq_set_chip_and_handler(i, &asic_irq_chip, handle_level_irq);
+-}
+diff --git a/arch/mips/powertv/asic/prealloc-calliope.c b/arch/mips/powertv/asic/prealloc-calliope.c
+deleted file mode 100644
+index 98dc516..0000000
+--- a/arch/mips/powertv/asic/prealloc-calliope.c
++++ /dev/null
+@@ -1,385 +0,0 @@
+-/*
+- * Memory pre-allocations for Calliope boxes.
+- *
+- * Copyright (C) 2005-2009 Scientific-Atlanta, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- *
+- * Author:	 Ken Eppinett
+- *		 David Schleef <ds@schleef.org>
+- */
+-
+-#include <linux/init.h>
+-#include <linux/ioport.h>
+-#include <asm/mach-powertv/asic.h>
+-#include "prealloc.h"
+-
+-/*
+- * NON_DVR_CAPABLE CALLIOPE RESOURCES
+- */
+-struct resource non_dvr_calliope_resources[] __initdata =
+-{
+-	/*
+-	 * VIDEO / LX1
+-	 */
+-	/* Delta-Mu 1 image (2MiB) */
+-	PREALLOC_NORMAL("ST231aImage", 0x24000000, 0x24200000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 monitor (8KiB) */
+-	PREALLOC_NORMAL("ST231aMonitor", 0x24200000, 0x24202000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 RAM (~36.9MiB (32MiB - (2MiB + 8KiB))) */
+-	PREALLOC_NORMAL("MediaMemory1", 0x24202000, 0x26700000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * Sysaudio Driver
+-	 */
+-	/* DSP code and data images (1MiB) */
+-	PREALLOC_NORMAL("DSP_Image_Buff", 0x00000000, 0x00100000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC CPU PCM buffer (40KiB) */
+-	PREALLOC_NORMAL("ADSC_CPU_PCM_Buff", 0x00000000, 0x0000A000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC AUX buffer (128KiB) */
+-	PREALLOC_NORMAL("ADSC_AUX_Buff", 0x00000000, 0x00020000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC Main buffer (128KiB) */
+-	PREALLOC_NORMAL("ADSC_Main_Buff", 0x00000000, 0x00020000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * STAVEM driver/STAPI
+-	 */
+-	/* 6MiB */
+-	PREALLOC_NORMAL("AVMEMPartition0", 0x00000000, 0x00600000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * DOCSIS Subsystem
+-	 */
+-	/* 7MiB */
+-	PREALLOC_DOCSIS("Docsis", 0x27500000, 0x27c00000-1, IORESOURCE_MEM)
+-
+-	/*
+-	 * GHW HAL Driver
+-	 */
+-	/* PowerTV Graphics Heap (14MiB) */
+-	PREALLOC_NORMAL("GraphicsHeap", 0x26700000, 0x26700000+(14*1048576)-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * multi com buffer area
+-	 */
+-	/* 128KiB */
+-	PREALLOC_NORMAL("MulticomSHM", 0x23700000, 0x23720000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * DMA Ring buffer (don't need recording buffers)
+-	 */
+-	/* 680KiB */
+-	PREALLOC_NORMAL("BMM_Buffer", 0x00000000, 0x000AA000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Display bins buffer for unit0
+-	 */
+-	/* 4KiB */
+-	PREALLOC_NORMAL("DisplayBins0", 0x00000000, 0x00001000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * AVFS: player HAL memory
+-	 */
+-	/* 945K * 3 for playback */
+-	PREALLOC_NORMAL("AvfsDmaMem", 0x00000000, 0x002c4c00-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * PMEM
+-	 */
+-	/* Persistent memory for diagnostics (64KiB) */
+-	PREALLOC_PMEM("DiagPersistentMemory", 0x00000000, 0x10000-1,
+-	     (IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Smartcard
+-	 */
+-	/* Read and write buffers for Internal/External cards (10KiB) */
+-	PREALLOC_NORMAL("SmartCardInfo", 0x00000000, 0x2800-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * NAND Flash
+-	 */
+-	/* 10KiB */
+-	PREALLOC_NORMAL("NandFlash", NAND_FLASH_BASE, NAND_FLASH_BASE+0x400-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * Synopsys GMAC Memory Region
+-	 */
+-	/* 64KiB */
+-	PREALLOC_NORMAL("GMAC", 0x00000000, 0x00010000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * TFTPBuffer
+-	 *
+-	 *  This buffer is used in some minimal configurations (e.g. two-way
+-	 *  loader) for storing software images
+-	 */
+-	PREALLOC_TFTP("TFTPBuffer", 0x00000000, MEBIBYTE(80)-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Add other resources here
+-	 */
+-
+-	/*
+-	 * End of Resource marker
+-	 */
+-	{
+-		.flags	= 0,
+-	},
+-};
+-
+-
+-struct resource non_dvr_vze_calliope_resources[] __initdata =
+-{
+-	/*
+-	 * VIDEO / LX1
+-	 */
+-	/* Delta-Mu 1 image (2MiB) */
+-	PREALLOC_NORMAL("ST231aImage", 0x22000000, 0x22200000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 monitor (8KiB) */
+-	PREALLOC_NORMAL("ST231aMonitor", 0x22200000, 0x22202000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 RAM (10.12MiB) */
+-	PREALLOC_NORMAL("MediaMemory1", 0x22202000, 0x22C20B85-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * Sysaudio Driver
+-	 */
+-	/* DSP code and data images (1MiB) */
+-	PREALLOC_NORMAL("DSP_Image_Buff", 0x00000000, 0x00100000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC CPU PCM buffer (40KiB) */
+-	PREALLOC_NORMAL("ADSC_CPU_PCM_Buff", 0x00000000, 0x0000A000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC AUX buffer (16KiB) */
+-	PREALLOC_NORMAL("ADSC_AUX_Buff", 0x00000000, 0x00004000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC Main buffer (16KiB) */
+-	PREALLOC_NORMAL("ADSC_Main_Buff", 0x00000000, 0x00004000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * STAVEM driver/STAPI
+-	 */
+-	/* 3.125MiB */
+-	PREALLOC_NORMAL("AVMEMPartition0", 0x20396000, 0x206B6000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * GHW HAL Driver
+-	 */
+-	/* PowerTV Graphics Heap (2.59MiB) */
+-	PREALLOC_NORMAL("GraphicsHeap", 0x20100000, 0x20396000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * multi com buffer area
+-	 */
+-	/* 128KiB */
+-	PREALLOC_NORMAL("MulticomSHM", 0x206B6000, 0x206D6000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * DMA Ring buffer (don't need recording buffers)
+-	 */
+-	/* 680KiB */
+-	PREALLOC_NORMAL("BMM_Buffer", 0x00000000, 0x000AA000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Display bins buffer for unit0
+-	 */
+-	/* 4KiB */
+-	PREALLOC_NORMAL("DisplayBins0", 0x00000000, 0x00001000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * PMEM
+-	 */
+-	/* Persistent memory for diagnostics (64KiB) */
+-	PREALLOC_PMEM("DiagPersistentMemory", 0x00000000, 0x10000-1,
+-	     (IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Smartcard
+-	 */
+-	/* Read and write buffers for Internal/External cards (10KiB) */
+-	PREALLOC_NORMAL("SmartCardInfo", 0x00000000, 0x2800-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * NAND Flash
+-	 */
+-	/* 10KiB */
+-	PREALLOC_NORMAL("NandFlash", NAND_FLASH_BASE, NAND_FLASH_BASE+0x400-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * Synopsys GMAC Memory Region
+-	 */
+-	/* 64KiB */
+-	PREALLOC_NORMAL("GMAC", 0x00000000, 0x00010000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Add other resources here
+-	 */
+-
+-	/*
+-	 * End of Resource marker
+-	 */
+-	{
+-		.flags	= 0,
+-	},
+-};
+-
+-struct resource non_dvr_vzf_calliope_resources[] __initdata =
+-{
+-	/*
+-	 * VIDEO / LX1
+-	 */
+-	/* Delta-Mu 1 image (2MiB) */
+-	PREALLOC_NORMAL("ST231aImage", 0x24000000, 0x24200000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 monitor (8KiB) */
+-	PREALLOC_NORMAL("ST231aMonitor", 0x24200000, 0x24202000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 RAM (~19.4 (21.5MiB - (2MiB + 8KiB))) */
+-	PREALLOC_NORMAL("MediaMemory1", 0x24202000, 0x25580000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * Sysaudio Driver
+-	 */
+-	/* DSP code and data images (1MiB) */
+-	PREALLOC_NORMAL("DSP_Image_Buff", 0x00000000, 0x00100000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC CPU PCM buffer (40KiB) */
+-	PREALLOC_NORMAL("ADSC_CPU_PCM_Buff", 0x00000000, 0x0000A000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC AUX buffer (128KiB) */
+-	PREALLOC_NORMAL("ADSC_AUX_Buff", 0x00000000, 0x00020000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC Main buffer (128KiB) */
+-	PREALLOC_NORMAL("ADSC_Main_Buff", 0x00000000, 0x00020000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * STAVEM driver/STAPI
+-	 */
+-	/* 4.5MiB */
+-	PREALLOC_NORMAL("AVMEMPartition0", 0x00000000, 0x00480000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * GHW HAL Driver
+-	 */
+-	/* PowerTV Graphics Heap (14MiB) */
+-	PREALLOC_NORMAL("GraphicsHeap", 0x25600000, 0x25600000+(14*1048576)-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * multi com buffer area
+-	 */
+-	/* 128KiB */
+-	PREALLOC_NORMAL("MulticomSHM", 0x23700000, 0x23720000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * DMA Ring buffer (don't need recording buffers)
+-	 */
+-	/* 680KiB */
+-	PREALLOC_NORMAL("BMM_Buffer", 0x00000000, 0x000AA000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Display bins buffer for unit0
+-	 */
+-	/* 4KiB */
+-	PREALLOC_NORMAL("DisplayBins0", 0x00000000, 0x00001000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Display bins buffer for unit1
+-	 */
+-	/* 4KiB */
+-	PREALLOC_NORMAL("DisplayBins1", 0x00000000, 0x00001000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * AVFS: player HAL memory
+-	 */
+-	/* 945K * 3 for playback */
+-	PREALLOC_NORMAL("AvfsDmaMem", 0x00000000, 0x002c4c00-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * PMEM
+-	 */
+-	/* Persistent memory for diagnostics (64KiB) */
+-	PREALLOC_PMEM("DiagPersistentMemory", 0x00000000, 0x10000-1,
+-	     (IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Smartcard
+-	 */
+-	/* Read and write buffers for Internal/External cards (10KiB) */
+-	PREALLOC_NORMAL("SmartCardInfo", 0x00000000, 0x2800-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * NAND Flash
+-	 */
+-	/* 10KiB */
+-	PREALLOC_NORMAL("NandFlash", NAND_FLASH_BASE, NAND_FLASH_BASE+0x400-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * Synopsys GMAC Memory Region
+-	 */
+-	/* 64KiB */
+-	PREALLOC_NORMAL("GMAC", 0x00000000, 0x00010000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Add other resources here
+-	 */
+-
+-	/*
+-	 * End of Resource marker
+-	 */
+-	{
+-		.flags	= 0,
+-	},
+-};
+diff --git a/arch/mips/powertv/asic/prealloc-cronus.c b/arch/mips/powertv/asic/prealloc-cronus.c
+deleted file mode 100644
+index 7c6ce75..0000000
+--- a/arch/mips/powertv/asic/prealloc-cronus.c
++++ /dev/null
+@@ -1,340 +0,0 @@
+-/*
+- * Memory pre-allocations for Cronus boxes.
+- *
+- * Copyright (C) 2005-2009 Scientific-Atlanta, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- *
+- * Author:	 Ken Eppinett
+- *		 David Schleef <ds@schleef.org>
+- */
+-
+-#include <linux/init.h>
+-#include <linux/ioport.h>
+-#include <asm/mach-powertv/asic.h>
+-#include "prealloc.h"
+-
+-/*
+- * DVR_CAPABLE CRONUS RESOURCES
+- */
+-struct resource dvr_cronus_resources[] __initdata =
+-{
+-	/*
+-	 * VIDEO1 / LX1
+-	 */
+-	/* Delta-Mu 1 image (2MiB) */
+-	PREALLOC_NORMAL("ST231aImage", 0x24000000, 0x24200000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 monitor (8KiB) */
+-	PREALLOC_NORMAL("ST231aMonitor", 0x24200000, 0x24202000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 RAM (~29.9MiB (32MiB - (2MiB + 8KiB))) */
+-	PREALLOC_NORMAL("MediaMemory1", 0x24202000, 0x26000000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * VIDEO2 / LX2
+-	 */
+-	/* Delta-Mu 2 image (2MiB) */
+-	PREALLOC_NORMAL("ST231bImage", 0x60000000, 0x60200000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 2 monitor (8KiB) */
+-	PREALLOC_NORMAL("ST231bMonitor", 0x60200000, 0x60202000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 2 RAM (~29.9MiB (32MiB - (2MiB + 8KiB))) */
+-	PREALLOC_NORMAL("MediaMemory2", 0x60202000, 0x62000000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * Sysaudio Driver
+-	 */
+-	/* DSP code and data images (1MiB) */
+-	PREALLOC_NORMAL("DSP_Image_Buff", 0x00000000, 0x00100000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC CPU PCM buffer (40KiB) */
+-	PREALLOC_NORMAL("ADSC_CPU_PCM_Buff", 0x00000000, 0x0000A000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC AUX buffer (128KiB) */
+-	PREALLOC_NORMAL("ADSC_AUX_Buff", 0x00000000, 0x00020000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC Main buffer (128KiB) */
+-	PREALLOC_NORMAL("ADSC_Main_Buff", 0x00000000, 0x00020000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * STAVEM driver/STAPI
+-	 *
+-	 *  This memory area is used for allocating buffers for Video decoding
+-	 *  purposes.  Allocation/De-allocation within this buffer is managed
+-	 *  by the STAVMEM driver of the STAPI.	 They could be Decimated
+-	 *  Picture Buffers, Intermediate Buffers, as deemed necessary for
+-	 *  video decoding purposes, for any video decoders on Zeus.
+-	 */
+-	/* 12MiB */
+-	PREALLOC_NORMAL("AVMEMPartition0", 0x00000000, 0x00c00000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * DOCSIS Subsystem
+-	 */
+-	/* 7MiB */
+-	PREALLOC_DOCSIS("Docsis", 0x67500000, 0x67c00000-1, IORESOURCE_MEM)
+-
+-	/*
+-	 * GHW HAL Driver
+-	 */
+-	/* PowerTV Graphics Heap (14MiB) */
+-	PREALLOC_NORMAL("GraphicsHeap", 0x62700000, 0x63500000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * multi com buffer area
+-	 */
+-	/* 128KiB */
+-	PREALLOC_NORMAL("MulticomSHM", 0x26000000, 0x26020000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * DMA Ring buffer
+-	 */
+-	PREALLOC_NORMAL("BMM_Buffer", 0x00000000, 0x002EA000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Display bins buffer for unit0
+-	 */
+-	/* 4KiB */
+-	PREALLOC_NORMAL("DisplayBins0", 0x00000000, 0x00001000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Display bins buffer for unit1
+-	 */
+-	/* 4KiB */
+-	PREALLOC_NORMAL("DisplayBins1", 0x00000000, 0x00001000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * ITFS
+-	 */
+-	/* 815,104 bytes each for 2 ITFS partitions. */
+-	PREALLOC_NORMAL("ITFS", 0x00000000, 0x0018E000-1, IORESOURCE_MEM)
+-
+-	/*
+-	 * AVFS
+-	 */
+-	/* (945K * 8) = (128K * 3) 5 playbacks / 3 server */
+-	PREALLOC_NORMAL("AvfsDmaMem", 0x00000000, 0x007c2000-1,
+-		IORESOURCE_MEM)
+-
+-	/* 4KiB */
+-	PREALLOC_NORMAL("AvfsFileSys", 0x00000000, 0x00001000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * PMEM
+-	 */
+-	/* Persistent memory for diagnostics (64KiB) */
+-	PREALLOC_PMEM("DiagPersistentMemory", 0x00000000, 0x10000-1,
+-	     (IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Smartcard
+-	 */
+-	/* Read and write buffers for Internal/External cards (10KiB) */
+-	PREALLOC_NORMAL("SmartCardInfo", 0x00000000, 0x2800-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * KAVNET
+-	 */
+-	/* NP Reset Vector - must be of the form xxCxxxxx (4KiB) */
+-	PREALLOC_NORMAL("NP_Reset_Vector", 0x27c00000, 0x27c01000-1,
+-		IORESOURCE_MEM)
+-	/* NP Image - must be video bank 1 (320KiB) */
+-	PREALLOC_NORMAL("NP_Image", 0x27020000, 0x27070000-1, IORESOURCE_MEM)
+-	/* NP IPC - must be video bank 2 (512KiB) */
+-	PREALLOC_NORMAL("NP_IPC", 0x63500000, 0x63580000-1, IORESOURCE_MEM)
+-
+-	/*
+-	 * TFTPBuffer
+-	 *
+-	 *  This buffer is used in some minimal configurations (e.g. two-way
+-	 *  loader) for storing software images
+-	 */
+-	PREALLOC_TFTP("TFTPBuffer", 0x00000000, MEBIBYTE(80)-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Add other resources here
+-	 */
+-
+-	/*
+-	 * End of Resource marker
+-	 */
+-	{
+-		.flags	= 0,
+-	},
+-};
+-
+-/*
+- * NON_DVR_CAPABLE CRONUS RESOURCES
+- */
+-struct resource non_dvr_cronus_resources[] __initdata =
+-{
+-	/*
+-	 * VIDEO1 / LX1
+-	 */
+-	/* Delta-Mu 1 image (2MiB) */
+-	PREALLOC_NORMAL("ST231aImage", 0x24000000, 0x24200000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 monitor (8KiB) */
+-	PREALLOC_NORMAL("ST231aMonitor", 0x24200000, 0x24202000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 RAM (~29.9MiB (32MiB - (2MiB + 8KiB))) */
+-	PREALLOC_NORMAL("MediaMemory1", 0x24202000, 0x26000000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * VIDEO2 / LX2
+-	 */
+-	/* Delta-Mu 2 image (2MiB) */
+-	PREALLOC_NORMAL("ST231bImage", 0x60000000, 0x60200000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 2 monitor (8KiB) */
+-	PREALLOC_NORMAL("ST231bMonitor", 0x60200000, 0x60202000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 2 RAM (~29.9MiB (32MiB - (2MiB + 8KiB))) */
+-	PREALLOC_NORMAL("MediaMemory2", 0x60202000, 0x62000000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * Sysaudio Driver
+-	 */
+-	/* DSP code and data images (1MiB) */
+-	PREALLOC_NORMAL("DSP_Image_Buff", 0x00000000, 0x00100000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC CPU PCM buffer (40KiB) */
+-	PREALLOC_NORMAL("ADSC_CPU_PCM_Buff", 0x00000000, 0x0000A000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC AUX buffer (128KiB) */
+-	PREALLOC_NORMAL("ADSC_AUX_Buff", 0x00000000, 0x00020000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC Main buffer (128KiB) */
+-	PREALLOC_NORMAL("ADSC_Main_Buff", 0x00000000, 0x00020000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * STAVEM driver/STAPI
+-	 *
+-	 *  This memory area is used for allocating buffers for Video decoding
+-	 *  purposes.  Allocation/De-allocation within this buffer is managed
+-	 *  by the STAVMEM driver of the STAPI.	 They could be Decimated
+-	 *  Picture Buffers, Intermediate Buffers, as deemed necessary for
+-	 *  video decoding purposes, for any video decoders on Zeus.
+-	 */
+-	/* 12MiB */
+-	PREALLOC_NORMAL("AVMEMPartition0", 0x00000000, 0x00c00000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * DOCSIS Subsystem
+-	 */
+-	/* 7MiB */
+-	PREALLOC_DOCSIS("Docsis", 0x67500000, 0x67c00000-1, IORESOURCE_MEM)
+-
+-	/*
+-	 * GHW HAL Driver
+-	 */
+-	/* PowerTV Graphics Heap (14MiB) */
+-	PREALLOC_NORMAL("GraphicsHeap", 0x62700000, 0x63500000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * multi com buffer area
+-	 */
+-	/* 128KiB */
+-	PREALLOC_NORMAL("MulticomSHM", 0x26000000, 0x26020000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * DMA Ring buffer (don't need recording buffers)
+-	 */
+-	/* 680KiB */
+-	PREALLOC_NORMAL("BMM_Buffer", 0x00000000, 0x000AA000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Display bins buffer for unit0
+-	 */
+-	/* 4KiB */
+-	PREALLOC_NORMAL("DisplayBins0", 0x00000000, 0x00001000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Display bins buffer for unit1
+-	 */
+-	/* 4KiB */
+-	PREALLOC_NORMAL("DisplayBins1", 0x00000000, 0x00001000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * AVFS: player HAL memory
+-	 */
+-	/* 945K * 3 for playback */
+-	PREALLOC_NORMAL("AvfsDmaMem", 0x00000000, 0x002c4c00-1, IORESOURCE_MEM)
+-
+-	/*
+-	 * PMEM
+-	 */
+-	/* Persistent memory for diagnostics (64KiB) */
+-	PREALLOC_PMEM("DiagPersistentMemory", 0x00000000, 0x10000-1,
+-	     (IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Smartcard
+-	 */
+-	/* Read and write buffers for Internal/External cards (10KiB) */
+-	PREALLOC_NORMAL("SmartCardInfo", 0x00000000, 0x2800-1, IORESOURCE_MEM)
+-
+-	/*
+-	 * KAVNET
+-	 */
+-	/* NP Reset Vector - must be of the form xxCxxxxx (4KiB) */
+-	PREALLOC_NORMAL("NP_Reset_Vector", 0x27c00000, 0x27c01000-1,
+-		IORESOURCE_MEM)
+-	/* NP Image - must be video bank 1 (320KiB) */
+-	PREALLOC_NORMAL("NP_Image", 0x27020000, 0x27070000-1, IORESOURCE_MEM)
+-	/* NP IPC - must be video bank 2 (512KiB) */
+-	PREALLOC_NORMAL("NP_IPC", 0x63500000, 0x63580000-1, IORESOURCE_MEM)
+-
+-	/*
+-	 * NAND Flash
+-	 */
+-	/* 10KiB */
+-	PREALLOC_NORMAL("NandFlash", NAND_FLASH_BASE, NAND_FLASH_BASE+0x400-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * Add other resources here
+-	 */
+-
+-	/*
+-	 * End of Resource marker
+-	 */
+-	{
+-		.flags	= 0,
+-	},
+-};
+diff --git a/arch/mips/powertv/asic/prealloc-cronuslite.c b/arch/mips/powertv/asic/prealloc-cronuslite.c
+deleted file mode 100644
+index a7937ba..0000000
+--- a/arch/mips/powertv/asic/prealloc-cronuslite.c
++++ /dev/null
+@@ -1,174 +0,0 @@
+-/*
+- * Memory pre-allocations for Cronus Lite boxes.
+- *
+- * Copyright (C) 2005-2009 Scientific-Atlanta, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- *
+- * Author:	 Ken Eppinett
+- *		 David Schleef <ds@schleef.org>
+- */
+-
+-#include <linux/init.h>
+-#include <linux/ioport.h>
+-#include <asm/mach-powertv/asic.h>
+-#include "prealloc.h"
+-
+-/*
+- * NON_DVR_CAPABLE CRONUSLITE RESOURCES
+- */
+-struct resource non_dvr_cronuslite_resources[] __initdata =
+-{
+-	/*
+-	 * VIDEO2 / LX2
+-	 */
+-	/* Delta-Mu 1 image (2MiB) */
+-	PREALLOC_NORMAL("ST231aImage", 0x60000000, 0x60200000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 monitor (8KiB) */
+-	PREALLOC_NORMAL("ST231aMonitor", 0x60200000, 0x60202000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 RAM (~29.9MiB (32MiB - (2MiB + 8KiB))) */
+-	PREALLOC_NORMAL("MediaMemory1", 0x60202000, 0x62000000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * Sysaudio Driver
+-	 */
+-	/* DSP code and data images (1MiB) */
+-	PREALLOC_NORMAL("DSP_Image_Buff", 0x00000000, 0x00100000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC CPU PCM buffer (40KiB) */
+-	PREALLOC_NORMAL("ADSC_CPU_PCM_Buff", 0x00000000, 0x0000A000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC AUX buffer (128KiB) */
+-	PREALLOC_NORMAL("ADSC_AUX_Buff", 0x00000000, 0x00020000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC Main buffer (128KiB) */
+-	PREALLOC_NORMAL("ADSC_Main_Buff", 0x00000000, 0x00020000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * STAVEM driver/STAPI
+-	 *
+-	 *  This memory area is used for allocating buffers for Video decoding
+-	 *  purposes.  Allocation/De-allocation within this buffer is managed
+-	 *  by the STAVMEM driver of the STAPI.	 They could be Decimated
+-	 *  Picture Buffers, Intermediate Buffers, as deemed necessary for
+-	 *  video decoding purposes, for any video decoders on Zeus.
+-	 */
+-	/* 6MiB */
+-	PREALLOC_NORMAL("AVMEMPartition0", 0x00000000, 0x00600000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * DOCSIS Subsystem
+-	 */
+-	/* 7MiB */
+-	PREALLOC_DOCSIS("Docsis", 0x67500000, 0x67c00000-1, IORESOURCE_MEM)
+-
+-	/*
+-	 * GHW HAL Driver
+-	 */
+-	/* PowerTV Graphics Heap (14MiB) */
+-	PREALLOC_NORMAL("GraphicsHeap", 0x62700000, 0x63500000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * multi com buffer area
+-	 */
+-	/* 128KiB */
+-	PREALLOC_NORMAL("MulticomSHM", 0x26000000, 0x26020000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * DMA Ring buffer (don't need recording buffers)
+-	 */
+-	/* 680KiB */
+-	PREALLOC_NORMAL("BMM_Buffer", 0x00000000, 0x000AA000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Display bins buffer for unit0
+-	 */
+-	/* 4KiB */
+-	PREALLOC_NORMAL("DisplayBins0", 0x00000000, 0x00001000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Display bins buffer for unit1
+-	 */
+-	/* 4KiB */
+-	PREALLOC_NORMAL("DisplayBins1", 0x00000000, 0x00001000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * AVFS: player HAL memory
+-	 */
+-	/* 945K * 3 for playback */
+-	PREALLOC_NORMAL("AvfsDmaMem", 0x00000000, 0x002c4c00-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * PMEM
+-	 */
+-	/* Persistent memory for diagnostics (64KiB) */
+-	PREALLOC_PMEM("DiagPersistentMemory", 0x00000000, 0x10000-1,
+-	     (IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Smartcard
+-	 */
+-	/* Read and write buffers for Internal/External cards (10KiB) */
+-	PREALLOC_NORMAL("SmartCardInfo", 0x00000000, 0x2800-1, IORESOURCE_MEM)
+-
+-	/*
+-	 * KAVNET
+-	 */
+-	/* NP Reset Vector - must be of the form xxCxxxxx (4KiB) */
+-	PREALLOC_NORMAL("NP_Reset_Vector", 0x27c00000, 0x27c01000-1,
+-		IORESOURCE_MEM)
+-	/* NP Image - must be video bank 1 (320KiB) */
+-	PREALLOC_NORMAL("NP_Image", 0x27020000, 0x27070000-1, IORESOURCE_MEM)
+-	/* NP IPC - must be video bank 2 (512KiB) */
+-	PREALLOC_NORMAL("NP_IPC", 0x63500000, 0x63580000-1, IORESOURCE_MEM)
+-
+-	/*
+-	 * NAND Flash
+-	 */
+-	/* 10KiB */
+-	PREALLOC_NORMAL("NandFlash", NAND_FLASH_BASE, NAND_FLASH_BASE+0x400-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * TFTPBuffer
+-	 *
+-	 *  This buffer is used in some minimal configurations (e.g. two-way
+-	 *  loader) for storing software images
+-	 */
+-	PREALLOC_TFTP("TFTPBuffer", 0x00000000, MEBIBYTE(80)-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Add other resources here
+-	 */
+-
+-	/*
+-	 * End of Resource marker
+-	 */
+-	{
+-		.flags	= 0,
+-	},
+-};
+diff --git a/arch/mips/powertv/asic/prealloc-gaia.c b/arch/mips/powertv/asic/prealloc-gaia.c
+deleted file mode 100644
+index 2303bbf..0000000
+--- a/arch/mips/powertv/asic/prealloc-gaia.c
++++ /dev/null
+@@ -1,589 +0,0 @@
+-/*
+- * Memory pre-allocations for Gaia boxes.
+- *
+- * Copyright (C) 2005-2009 Scientific-Atlanta, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- *
+- * Author:	 David VomLehn
+- */
+-
+-#include <linux/init.h>
+-#include <asm/mach-powertv/asic.h>
+-
+-/*
+- * DVR_CAPABLE GAIA RESOURCES
+- */
+-struct resource dvr_gaia_resources[] __initdata = {
+-	/*
+-	 *
+-	 * VIDEO1 / LX1
+-	 *
+-	 */
+-	{
+-		.name	= "ST231aImage",	/* Delta-Mu 1 image and ram */
+-		.start	= 0x24000000,
+-		.end	= 0x241FFFFF,		/* 2MiB */
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "ST231aMonitor",	/* 8KiB block ST231a monitor */
+-		.start	= 0x24200000,
+-		.end	= 0x24201FFF,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "MediaMemory1",
+-		.start	= 0x24202000,
+-		.end	= 0x25FFFFFF, /*~29.9MiB (32MiB - (2MiB + 8KiB)) */
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	/*
+-	 *
+-	 * VIDEO2 / LX2
+-	 *
+-	 */
+-	{
+-		.name	= "ST231bImage",	/* Delta-Mu 2 image and ram */
+-		.start	= 0x60000000,
+-		.end	= 0x601FFFFF,		/* 2MiB */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	{
+-		.name	= "ST231bMonitor",	/* 8KiB block ST231b monitor */
+-		.start	= 0x60200000,
+-		.end	= 0x60201FFF,
+-		.flags	= IORESOURCE_IO,
+-	},
+-	{
+-		.name	= "MediaMemory2",
+-		.start	= 0x60202000,
+-		.end	= 0x61FFFFFF, /*~29.9MiB (32MiB - (2MiB + 8KiB)) */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * Sysaudio Driver
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  DSP_Image_Buff - DSP code and data images (1MB)
+-	 *  ADSC_CPU_PCM_Buff - ADSC CPU PCM buffer (40KB)
+-	 *  ADSC_AUX_Buff - ADSC AUX buffer (16KB)
+-	 *  ADSC_Main_Buff - ADSC Main buffer (16KB)
+-	 *
+-	 */
+-	{
+-		.name	= "DSP_Image_Buff",
+-		.start	= 0x00000000,
+-		.end	= 0x000FFFFF,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "ADSC_CPU_PCM_Buff",
+-		.start	= 0x00000000,
+-		.end	= 0x00009FFF,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "ADSC_AUX_Buff",
+-		.start	= 0x00000000,
+-		.end	= 0x00003FFF,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "ADSC_Main_Buff",
+-		.start	= 0x00000000,
+-		.end	= 0x00003FFF,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	/*
+-	 *
+-	 * STAVEM driver/STAPI
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  This memory area is used for allocating buffers for Video decoding
+-	 *  purposes.  Allocation/De-allocation within this buffer is managed
+-	 *  by the STAVMEM driver of the STAPI.	 They could be Decimated
+-	 *  Picture Buffers, Intermediate Buffers, as deemed necessary for
+-	 *  video decoding purposes, for any video decoders on Zeus.
+-	 *
+-	 */
+-	{
+-		.name	= "AVMEMPartition0",
+-		.start	= 0x63580000,
+-		.end	= 0x64180000 - 1,  /* 12 MB total */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * DOCSIS Subsystem
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Docsis -
+-	 *
+-	 */
+-	{
+-		.name	= "Docsis",
+-		.start	= 0x62000000,
+-		.end	= 0x62700000 - 1,	/* 7 MB total */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * GHW HAL Driver
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  GraphicsHeap - PowerTV Graphics Heap
+-	 *
+-	 */
+-	{
+-		.name	= "GraphicsHeap",
+-		.start	= 0x62700000,
+-		.end	= 0x63500000 - 1,	/* 14 MB total */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * multi com buffer area
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Docsis -
+-	 *
+-	 */
+-	{
+-		.name	= "MulticomSHM",
+-		.start	= 0x26000000,
+-		.end	= 0x26020000 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	/*
+-	 *
+-	 * DMA Ring buffer
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Docsis -
+-	 *
+-	 */
+-	{
+-		.name	= "BMM_Buffer",
+-		.start	= 0x00000000,
+-		.end	= 0x00280000 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	/*
+-	 *
+-	 * Display bins buffer for unit0
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Display Bins for unit0
+-	 *
+-	 */
+-	{
+-		.name	= "DisplayBins0",
+-		.start	= 0x00000000,
+-		.end	= 0x00000FFF,		/* 4 KB total */
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	/*
+-	 *
+-	 * Display bins buffer
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Display Bins for unit1
+-	 *
+-	 */
+-	{
+-		.name	= "DisplayBins1",
+-		.start	= 0x64AD4000,
+-		.end	= 0x64AD5000 - 1,  /* 4 KB total */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * ITFS
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Docsis -
+-	 *
+-	 */
+-	{
+-		.name	= "ITFS",
+-		.start	= 0x64180000,
+-		/* 815,104 bytes each for 2 ITFS partitions. */
+-		.end	= 0x6430DFFF,
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * AVFS
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Docsis -
+-	 *
+-	 */
+-	{
+-		.name	= "AvfsDmaMem",
+-		.start	= 0x6430E000,
+-		/* (945K * 8) = (128K *3) 5 playbacks / 3 server */
+-		.end	= 0x64AD0000 - 1,
+-		.flags	= IORESOURCE_IO,
+-	},
+-	{
+-		.name	= "AvfsFileSys",
+-		.start	= 0x64AD0000,
+-		.end	= 0x64AD1000 - 1,  /* 4K */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * Smartcard
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Read and write buffers for Internal/External cards
+-	 *
+-	 */
+-	{
+-		.name	= "SmartCardInfo",
+-		.start	= 0x64AD1000,
+-		.end	= 0x64AD3800 - 1,
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * KAVNET
+-	 *    NP Reset Vector - must be of the form xxCxxxxx
+-	 *	   NP Image - must be video bank 1
+-	 *	   NP IPC - must be video bank 2
+-	 */
+-	{
+-		.name	= "NP_Reset_Vector",
+-		.start	= 0x27c00000,
+-		.end	= 0x27c01000 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "NP_Image",
+-		.start	= 0x27020000,
+-		.end	= 0x27060000 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "NP_IPC",
+-		.start	= 0x63500000,
+-		.end	= 0x63580000 - 1,
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 * Add other resources here
+-	 */
+-	{ },
+-};
+-
+-/*
+- * NON_DVR_CAPABLE GAIA RESOURCES
+- */
+-struct resource non_dvr_gaia_resources[] __initdata = {
+-	/*
+-	 *
+-	 * VIDEO1 / LX1
+-	 *
+-	 */
+-	{
+-		.name	= "ST231aImage",	/* Delta-Mu 1 image and ram */
+-		.start	= 0x24000000,
+-		.end	= 0x241FFFFF,		/* 2MiB */
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "ST231aMonitor",	/* 8KiB block ST231a monitor */
+-		.start	= 0x24200000,
+-		.end	= 0x24201FFF,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "MediaMemory1",
+-		.start	= 0x24202000,
+-		.end	= 0x25FFFFFF, /*~29.9MiB (32MiB - (2MiB + 8KiB)) */
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	/*
+-	 *
+-	 * VIDEO2 / LX2
+-	 *
+-	 */
+-	{
+-		.name	= "ST231bImage",	/* Delta-Mu 2 image and ram */
+-		.start	= 0x60000000,
+-		.end	= 0x601FFFFF,		/* 2MiB */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	{
+-		.name	= "ST231bMonitor",	/* 8KiB block ST231b monitor */
+-		.start	= 0x60200000,
+-		.end	= 0x60201FFF,
+-		.flags	= IORESOURCE_IO,
+-	},
+-	{
+-		.name	= "MediaMemory2",
+-		.start	= 0x60202000,
+-		.end	= 0x61FFFFFF, /*~29.9MiB (32MiB - (2MiB + 8KiB)) */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * Sysaudio Driver
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  DSP_Image_Buff - DSP code and data images (1MB)
+-	 *  ADSC_CPU_PCM_Buff - ADSC CPU PCM buffer (40KB)
+-	 *  ADSC_AUX_Buff - ADSC AUX buffer (16KB)
+-	 *  ADSC_Main_Buff - ADSC Main buffer (16KB)
+-	 *
+-	 */
+-	{
+-		.name	= "DSP_Image_Buff",
+-		.start	= 0x00000000,
+-		.end	= 0x000FFFFF,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "ADSC_CPU_PCM_Buff",
+-		.start	= 0x00000000,
+-		.end	= 0x00009FFF,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "ADSC_AUX_Buff",
+-		.start	= 0x00000000,
+-		.end	= 0x00003FFF,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "ADSC_Main_Buff",
+-		.start	= 0x00000000,
+-		.end	= 0x00003FFF,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	/*
+-	 *
+-	 * STAVEM driver/STAPI
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  This memory area is used for allocating buffers for Video decoding
+-	 *  purposes.  Allocation/De-allocation within this buffer is managed
+-	 *  by the STAVMEM driver of the STAPI.	 They could be Decimated
+-	 *  Picture Buffers, Intermediate Buffers, as deemed necessary for
+-	 *  video decoding purposes, for any video decoders on Zeus.
+-	 *
+-	 */
+-	{
+-		.name	= "AVMEMPartition0",
+-		.start	= 0x63580000,
+-		.end	= 0x64180000 - 1,  /* 12 MB total */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * DOCSIS Subsystem
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Docsis -
+-	 *
+-	 */
+-	{
+-		.name	= "Docsis",
+-		.start	= 0x62000000,
+-		.end	= 0x62700000 - 1,	/* 7 MB total */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * GHW HAL Driver
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  GraphicsHeap - PowerTV Graphics Heap
+-	 *
+-	 */
+-	{
+-		.name	= "GraphicsHeap",
+-		.start	= 0x62700000,
+-		.end	= 0x63500000 - 1,	/* 14 MB total */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * multi com buffer area
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Docsis -
+-	 *
+-	 */
+-	{
+-		.name	= "MulticomSHM",
+-		.start	= 0x26000000,
+-		.end	= 0x26020000 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	/*
+-	 *
+-	 * DMA Ring buffer
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Docsis -
+-	 *
+-	 */
+-	{
+-		.name	= "BMM_Buffer",
+-		.start	= 0x00000000,
+-		.end	= 0x000AA000 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	/*
+-	 *
+-	 * Display bins buffer for unit0
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Display Bins for unit0
+-	 *
+-	 */
+-	{
+-		.name	= "DisplayBins0",
+-		.start	= 0x00000000,
+-		.end	= 0x00000FFF,		/* 4 KB total */
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	/*
+-	 *
+-	 * Display bins buffer
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Display Bins for unit1
+-	 *
+-	 */
+-	{
+-		.name	= "DisplayBins1",
+-		.start	= 0x64AD4000,
+-		.end	= 0x64AD5000 - 1,  /* 4 KB total */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * AVFS: player HAL memory
+-	 *
+-	 *
+-	 */
+-	{
+-		.name	= "AvfsDmaMem",
+-		.start	= 0x6430E000,
+-		.end	= 0x645D2C00 - 1,  /* 945K * 3 for playback */
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * PMEM
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Persistent memory for diagnostics.
+-	 *
+-	 */
+-	{
+-		.name	= "DiagPersistentMemory",
+-		.start	= 0x00000000,
+-		.end	= 0x10000 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	/*
+-	 *
+-	 * Smartcard
+-	 *
+-	 * This driver requires:
+-	 *
+-	 * Arbitrary Based Buffers:
+-	 *  Read and write buffers for Internal/External cards
+-	 *
+-	 */
+-	{
+-		.name	= "SmartCardInfo",
+-		.start	= 0x64AD1000,
+-		.end	= 0x64AD3800 - 1,
+-		.flags	= IORESOURCE_IO,
+-	},
+-	/*
+-	 *
+-	 * KAVNET
+-	 *    NP Reset Vector - must be of the form xxCxxxxx
+-	 *	   NP Image - must be video bank 1
+-	 *	   NP IPC - must be video bank 2
+-	 */
+-	{
+-		.name	= "NP_Reset_Vector",
+-		.start	= 0x27c00000,
+-		.end	= 0x27c01000 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "NP_Image",
+-		.start	= 0x27020000,
+-		.end	= 0x27060000 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.name	= "NP_IPC",
+-		.start	= 0x63500000,
+-		.end	= 0x63580000 - 1,
+-		.flags	= IORESOURCE_IO,
+-	},
+-	{ },
+-};
+diff --git a/arch/mips/powertv/asic/prealloc-zeus.c b/arch/mips/powertv/asic/prealloc-zeus.c
+deleted file mode 100644
+index 6e76f09..0000000
+--- a/arch/mips/powertv/asic/prealloc-zeus.c
++++ /dev/null
+@@ -1,304 +0,0 @@
+-/*
+- * Memory pre-allocations for Zeus boxes.
+- *
+- * Copyright (C) 2005-2009 Scientific-Atlanta, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- *
+- * Author:	 Ken Eppinett
+- *		 David Schleef <ds@schleef.org>
+- */
+-
+-#include <linux/init.h>
+-#include <linux/ioport.h>
+-#include <asm/mach-powertv/asic.h>
+-#include "prealloc.h"
+-
+-/*
+- * DVR_CAPABLE RESOURCES
+- */
+-struct resource dvr_zeus_resources[] __initdata =
+-{
+-	/*
+-	 * VIDEO1 / LX1
+-	 */
+-	/* Delta-Mu 1 image (2MiB) */
+-	PREALLOC_NORMAL("ST231aImage", 0x20000000, 0x20200000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 monitor (8KiB) */
+-	PREALLOC_NORMAL("ST231aMonitor", 0x20200000, 0x20202000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 RAM (~29.9MiB (32MiB - (2MiB + 8KiB))) */
+-	PREALLOC_NORMAL("MediaMemory1", 0x20202000, 0x22000000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * VIDEO2 / LX2
+-	 */
+-	/* Delta-Mu 2 image (2MiB) */
+-	PREALLOC_NORMAL("ST231bImage", 0x30000000, 0x30200000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 2 monitor (8KiB) */
+-	PREALLOC_NORMAL("ST231bMonitor", 0x30200000, 0x30202000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 2 RAM (~29.9MiB (32MiB - (2MiB + 8KiB))) */
+-	PREALLOC_NORMAL("MediaMemory2", 0x30202000, 0x32000000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * Sysaudio Driver
+-	 */
+-	/* DSP code and data images (1MiB) */
+-	PREALLOC_NORMAL("DSP_Image_Buff", 0x00000000, 0x00100000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC CPU PCM buffer (40KiB) */
+-	PREALLOC_NORMAL("ADSC_CPU_PCM_Buff", 0x00000000, 0x0000A000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC AUX buffer (16KiB) */
+-	PREALLOC_NORMAL("ADSC_AUX_Buff", 0x00000000, 0x00004000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC Main buffer (16KiB) */
+-	PREALLOC_NORMAL("ADSC_Main_Buff", 0x00000000, 0x00004000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * STAVEM driver/STAPI
+-	 *
+-	 *  This memory area is used for allocating buffers for Video decoding
+-	 *  purposes.  Allocation/De-allocation within this buffer is managed
+-	 *  by the STAVMEM driver of the STAPI.	 They could be Decimated
+-	 *  Picture Buffers, Intermediate Buffers, as deemed necessary for
+-	 *  video decoding purposes, for any video decoders on Zeus.
+-	 */
+-	/* 12MiB */
+-	PREALLOC_NORMAL("AVMEMPartition0", 0x00000000, 0x00c00000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * DOCSIS Subsystem
+-	 */
+-	/* 7MiB */
+-	PREALLOC_DOCSIS("Docsis", 0x40100000, 0x40800000-1, IORESOURCE_MEM)
+-
+-	/*
+-	 * GHW HAL Driver
+-	 */
+-	/* PowerTV Graphics Heap (14MiB) */
+-	PREALLOC_NORMAL("GraphicsHeap", 0x46900000, 0x47700000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * multi com buffer area
+-	 */
+-	/* 128KiB */
+-	PREALLOC_NORMAL("MulticomSHM", 0x47900000, 0x47920000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * DMA Ring buffer
+-	 */
+-	/* 2.5MiB */
+-	PREALLOC_NORMAL("BMM_Buffer", 0x00000000, 0x00280000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Display bins buffer for unit0
+-	 */
+-	/* 4KiB */
+-	PREALLOC_NORMAL("DisplayBins0", 0x00000000, 0x00001000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Display bins buffer for unit1
+-	 */
+-	/* 4KiB */
+-	PREALLOC_NORMAL("DisplayBins1", 0x00000000, 0x00001000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * ITFS
+-	 */
+-	/* 815,104 bytes each for 2 ITFS partitions. */
+-	PREALLOC_NORMAL("ITFS", 0x00000000, 0x0018E000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * AVFS
+-	 */
+-	/* (945K * 8) = (128K * 3) 5 playbacks / 3 server */
+-	PREALLOC_NORMAL("AvfsDmaMem", 0x00000000, 0x007c2000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* 4KiB */
+-	PREALLOC_NORMAL("AvfsFileSys", 0x00000000, 0x00001000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * PMEM
+-	 */
+-	/* Persistent memory for diagnostics (64KiB) */
+-	PREALLOC_PMEM("DiagPersistentMemory", 0x00000000, 0x10000-1,
+-	     (IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Smartcard
+-	 */
+-	/* Read and write buffers for Internal/External cards (10KiB) */
+-	PREALLOC_NORMAL("SmartCardInfo", 0x00000000, 0x2800-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * TFTPBuffer
+-	 *
+-	 *  This buffer is used in some minimal configurations (e.g. two-way
+-	 *  loader) for storing software images
+-	 */
+-	PREALLOC_TFTP("TFTPBuffer", 0x00000000, MEBIBYTE(80)-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Add other resources here
+-	 */
+-
+-	/*
+-	 * End of Resource marker
+-	 */
+-	{
+-		.flags	= 0,
+-	},
+-};
+-
+-/*
+- * NON_DVR_CAPABLE ZEUS RESOURCES
+- */
+-struct resource non_dvr_zeus_resources[] __initdata =
+-{
+-	/*
+-	 * VIDEO1 / LX1
+-	 */
+-	/* Delta-Mu 1 image (2MiB) */
+-	PREALLOC_NORMAL("ST231aImage", 0x20000000, 0x20200000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 monitor (8KiB) */
+-	PREALLOC_NORMAL("ST231aMonitor", 0x20200000, 0x20202000-1,
+-		IORESOURCE_MEM)
+-	/* Delta-Mu 1 RAM (~29.9MiB (32MiB - (2MiB + 8KiB))) */
+-	PREALLOC_NORMAL("MediaMemory1", 0x20202000, 0x22000000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * Sysaudio Driver
+-	 */
+-	/* DSP code and data images (1MiB) */
+-	PREALLOC_NORMAL("DSP_Image_Buff", 0x00000000, 0x00100000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC CPU PCM buffer (40KiB) */
+-	PREALLOC_NORMAL("ADSC_CPU_PCM_Buff", 0x00000000, 0x0000A000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC AUX buffer (16KiB) */
+-	PREALLOC_NORMAL("ADSC_AUX_Buff", 0x00000000, 0x00004000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-	/* ADSC Main buffer (16KiB) */
+-	PREALLOC_NORMAL("ADSC_Main_Buff", 0x00000000, 0x00004000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * STAVEM driver/STAPI
+-	 */
+-	/* 6MiB */
+-	PREALLOC_NORMAL("AVMEMPartition0", 0x00000000, 0x00600000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * DOCSIS Subsystem
+-	 */
+-	/* 7MiB */
+-	PREALLOC_DOCSIS("Docsis", 0x40100000, 0x40800000-1, IORESOURCE_MEM)
+-
+-	/*
+-	 * GHW HAL Driver
+-	 */
+-	/* PowerTV Graphics Heap (14MiB) */
+-	PREALLOC_NORMAL("GraphicsHeap", 0x46900000, 0x47700000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * multi com buffer area
+-	 */
+-	/* 128KiB */
+-	PREALLOC_NORMAL("MulticomSHM", 0x47900000, 0x47920000-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * DMA Ring buffer
+-	 */
+-	/* 2.5MiB */
+-	PREALLOC_NORMAL("BMM_Buffer", 0x00000000, 0x00280000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Display bins buffer for unit0
+-	 */
+-	/* 4KiB */
+-	PREALLOC_NORMAL("DisplayBins0", 0x00000000, 0x00001000-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * AVFS: player HAL memory
+-	 */
+-	/* 945K * 3 for playback */
+-	PREALLOC_NORMAL("AvfsDmaMem", 0x00000000, 0x002c4c00-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * PMEM
+-	 */
+-	/* Persistent memory for diagnostics (64KiB) */
+-	PREALLOC_PMEM("DiagPersistentMemory", 0x00000000, 0x10000-1,
+-	     (IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Smartcard
+-	 */
+-	/* Read and write buffers for Internal/External cards (10KiB) */
+-	PREALLOC_NORMAL("SmartCardInfo", 0x00000000, 0x2800-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * NAND Flash
+-	 */
+-	/* 10KiB */
+-	PREALLOC_NORMAL("NandFlash", NAND_FLASH_BASE, NAND_FLASH_BASE+0x400-1,
+-		IORESOURCE_MEM)
+-
+-	/*
+-	 * TFTPBuffer
+-	 *
+-	 *  This buffer is used in some minimal configurations (e.g. two-way
+-	 *  loader) for storing software images
+-	 */
+-	PREALLOC_TFTP("TFTPBuffer", 0x00000000, MEBIBYTE(80)-1,
+-		(IORESOURCE_MEM|IORESOURCE_PTV_RES_LOEXT))
+-
+-	/*
+-	 * Add other resources here
+-	 */
+-
+-	/*
+-	 * End of Resource marker
+-	 */
+-	{
+-		.flags	= 0,
+-	},
+-};
+diff --git a/arch/mips/powertv/asic/prealloc.h b/arch/mips/powertv/asic/prealloc.h
+deleted file mode 100644
+index 8e682df..0000000
+--- a/arch/mips/powertv/asic/prealloc.h
++++ /dev/null
+@@ -1,70 +0,0 @@
+-/*
+- * Definitions for memory preallocations
+- *
+- * Copyright (C) 2005-2009 Scientific-Atlanta, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- */
+-
+-#ifndef _ARCH_MIPS_POWERTV_ASIC_PREALLOC_H
+-#define _ARCH_MIPS_POWERTV_ASIC_PREALLOC_H
+-
+-#define KIBIBYTE(n) ((n) * 1024)    /* Number of kibibytes */
+-#define MEBIBYTE(n) ((n) * KIBIBYTE(1024)) /* Number of mebibytes */
+-
+-/* "struct resource" array element definition */
+-#define PREALLOC(NAME, START, END, FLAGS) {	\
+-		.name = (NAME),			\
+-		.start = (START),		\
+-		.end = (END),			\
+-		.flags = (FLAGS)		\
+-	},
+-
+-/* Individual resources in the preallocated resource arrays are defined using
+- *  macros.  These macros are conditionally defined based on their
+- *  corresponding kernel configuration flag:
+- *    - CONFIG_PREALLOC_NORMAL: preallocate resources for a normal settop box
+- *    - CONFIG_PREALLOC_TFTP: preallocate the TFTP download resource
+- *    - CONFIG_PREALLOC_DOCSIS: preallocate the DOCSIS resource
+- *    - CONFIG_PREALLOC_PMEM: reserve space for persistent memory
+- */
+-#ifdef CONFIG_PREALLOC_NORMAL
+-#define PREALLOC_NORMAL(name, start, end, flags) \
+-   PREALLOC(name, start, end, flags)
+-#else
+-#define PREALLOC_NORMAL(name, start, end, flags)
+-#endif
+-
+-#ifdef CONFIG_PREALLOC_TFTP
+-#define PREALLOC_TFTP(name, start, end, flags) \
+-   PREALLOC(name, start, end, flags)
+-#else
+-#define PREALLOC_TFTP(name, start, end, flags)
+-#endif
+-
+-#ifdef CONFIG_PREALLOC_DOCSIS
+-#define PREALLOC_DOCSIS(name, start, end, flags) \
+-   PREALLOC(name, start, end, flags)
+-#else
+-#define PREALLOC_DOCSIS(name, start, end, flags)
+-#endif
+-
+-#ifdef CONFIG_PREALLOC_PMEM
+-#define PREALLOC_PMEM(name, start, end, flags) \
+-   PREALLOC(name, start, end, flags)
+-#else
+-#define PREALLOC_PMEM(name, start, end, flags)
+-#endif
+-#endif
+diff --git a/arch/mips/powertv/init.c b/arch/mips/powertv/init.c
+deleted file mode 100644
+index 4989263..0000000
+--- a/arch/mips/powertv/init.c
++++ /dev/null
+@@ -1,90 +0,0 @@
+-/*
+- * Copyright (C) 1999, 2000, 2004, 2005	 MIPS Technologies, Inc.
+- *	All rights reserved.
+- *	Authors: Carsten Langgaard <carstenl@mips.com>
+- *		 Maciej W. Rozycki <macro@mips.com>
+- * Portions copyright (C) 2009 Cisco Systems, Inc.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * PROM library initialisation code.
+- */
+-#include <linux/init.h>
+-#include <linux/string.h>
+-#include <linux/kernel.h>
+-
+-#include <asm/bootinfo.h>
+-#include <linux/io.h>
+-#include <asm/cacheflush.h>
+-#include <asm/traps.h>
+-
+-#include <asm/mips-boards/generic.h>
+-#include <asm/mach-powertv/asic.h>
+-
+-#include "init.h"
+-
+-static int *_prom_envp;
+-unsigned long _prom_memsize;
+-
+-/*
+- * YAMON (32-bit PROM) pass arguments and environment as 32-bit pointer.
+- * This macro take care of sign extension, if running in 64-bit mode.
+- */
+-#define prom_envp(index) ((char *)(long)_prom_envp[(index)])
+-
+-char *prom_getenv(char *envname)
+-{
+-	char *result = NULL;
+-
+-	if (_prom_envp != NULL) {
+-		/*
+-		 * Return a pointer to the given environment variable.
+-		 * In 64-bit mode: we're using 64-bit pointers, but all pointers
+-		 * in the PROM structures are only 32-bit, so we need some
+-		 * workarounds, if we are running in 64-bit mode.
+-		 */
+-		int i, index = 0;
+-
+-		i = strlen(envname);
+-
+-		while (prom_envp(index)) {
+-			if (strncmp(envname, prom_envp(index), i) == 0) {
+-				result = prom_envp(index + 1);
+-				break;
+-			}
+-			index += 2;
+-		}
+-	}
+-
+-	return result;
+-}
+-
+-void __init prom_init(void)
+-{
+-	int prom_argc;
+-	char *prom_argv;
+-
+-	prom_argc = fw_arg0;
+-	prom_argv = (char *) fw_arg1;
+-	_prom_envp = (int *) fw_arg2;
+-	_prom_memsize = (unsigned long) fw_arg3;
+-
+-	if (prom_argc == 1) {
+-		strlcat(arcs_cmdline, " ", COMMAND_LINE_SIZE);
+-		strlcat(arcs_cmdline, prom_argv, COMMAND_LINE_SIZE);
+-	}
+-
+-	configure_platform();
+-	prom_meminit();
+-}
+diff --git a/arch/mips/powertv/init.h b/arch/mips/powertv/init.h
+deleted file mode 100644
+index c1a8bd0..0000000
+--- a/arch/mips/powertv/init.h
++++ /dev/null
+@@ -1,28 +0,0 @@
+-/*
+- * Definitions from powertv init.c file
+- *
+- * Copyright (C) 2009  Cisco Systems, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- *
+- * Author: David VomLehn
+- */
+-
+-#ifndef _POWERTV_INIT_H
+-#define _POWERTV_INIT_H
+-extern unsigned long _prom_memsize;
+-extern void prom_meminit(void);
+-extern char *prom_getenv(char *name);
+-#endif
+diff --git a/arch/mips/powertv/ioremap.c b/arch/mips/powertv/ioremap.c
+deleted file mode 100644
+index d060478..0000000
+--- a/arch/mips/powertv/ioremap.c
++++ /dev/null
+@@ -1,136 +0,0 @@
+-/*
+- *			ioremap.c
+- *
+- * Support for mapping between dma_addr_t values a phys_addr_t values.
+- *
+- * Copyright (C) 2005-2009 Scientific-Atlanta, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- *
+- * Author:	 David VomLehn <dvomlehn@cisco.com>
+- *
+- * Description:	 Defines the platform resources for the SA settop.
+- *
+- * NOTE: The bootloader allocates persistent memory at an address which is
+- * 16 MiB below the end of the highest address in KSEG0. All fixed
+- * address memory reservations must avoid this region.
+- */
+-
+-#include <linux/kernel.h>
+-#include <linux/module.h>
+-
+-#include <asm/mach-powertv/ioremap.h>
+-
+-/*
+- * Define the sizes of and masks for grains in physical and DMA space. The
+- * values are the same but the types are not.
+- */
+-#define IOR_PHYS_GRAIN		((phys_addr_t) 1 << IOR_LSBITS)
+-#define IOR_PHYS_GRAIN_MASK	(IOR_PHYS_GRAIN - 1)
+-
+-#define IOR_DMA_GRAIN		((dma_addr_t) 1 << IOR_LSBITS)
+-#define IOR_DMA_GRAIN_MASK	(IOR_DMA_GRAIN - 1)
+-
+-/*
+- * Values that, when accessed by an index derived from a phys_addr_t and
+- * added to phys_addr_t value, yield a DMA address
+- */
+-struct ior_phys_to_dma _ior_phys_to_dma[IOR_NUM_PHYS_TO_DMA];
+-EXPORT_SYMBOL(_ior_phys_to_dma);
+-
+-/*
+- * Values that, when accessed by an index derived from a dma_addr_t and
+- * added to that dma_addr_t value, yield a physical address
+- */
+-struct ior_dma_to_phys _ior_dma_to_phys[IOR_NUM_DMA_TO_PHYS];
+-EXPORT_SYMBOL(_ior_dma_to_phys);
+-
+-/**
+- * setup_dma_to_phys - set up conversion from DMA to physical addresses
+- * @dma_idx:	Top IOR_LSBITS bits of the DMA address, i.e. an index
+- *		into the array _dma_to_phys.
+- * @delta:	Value that, when added to the DMA address, will yield the
+- *		physical address
+- * @s:		Number of bytes in the section of memory with the given delta
+- *		between DMA and physical addresses.
+- */
+-static void setup_dma_to_phys(dma_addr_t dma, phys_addr_t delta, dma_addr_t s)
+-{
+-	int dma_idx, first_idx, last_idx;
+-	phys_addr_t first, last;
+-
+-	/*
+-	 * Calculate the first and last indices, rounding the first up and
+-	 * the second down.
+-	 */
+-	first = dma & ~IOR_DMA_GRAIN_MASK;
+-	last = (dma + s - 1) & ~IOR_DMA_GRAIN_MASK;
+-	first_idx = first >> IOR_LSBITS;		/* Convert to indices */
+-	last_idx = last >> IOR_LSBITS;
+-
+-	for (dma_idx = first_idx; dma_idx <= last_idx; dma_idx++)
+-		_ior_dma_to_phys[dma_idx].offset = delta >> IOR_DMA_SHIFT;
+-}
+-
+-/**
+- * setup_phys_to_dma - set up conversion from DMA to physical addresses
+- * @phys_idx:	Top IOR_LSBITS bits of the DMA address, i.e. an index
+- *		into the array _phys_to_dma.
+- * @delta:	Value that, when added to the DMA address, will yield the
+- *		physical address
+- * @s:		Number of bytes in the section of memory with the given delta
+- *		between DMA and physical addresses.
+- */
+-static void setup_phys_to_dma(phys_addr_t phys, dma_addr_t delta, phys_addr_t s)
+-{
+-	int phys_idx, first_idx, last_idx;
+-	phys_addr_t first, last;
+-
+-	/*
+-	 * Calculate the first and last indices, rounding the first up and
+-	 * the second down.
+-	 */
+-	first = phys & ~IOR_PHYS_GRAIN_MASK;
+-	last = (phys + s - 1) & ~IOR_PHYS_GRAIN_MASK;
+-	first_idx = first >> IOR_LSBITS;		/* Convert to indices */
+-	last_idx = last >> IOR_LSBITS;
+-
+-	for (phys_idx = first_idx; phys_idx <= last_idx; phys_idx++)
+-		_ior_phys_to_dma[phys_idx].offset = delta >> IOR_PHYS_SHIFT;
+-}
+-
+-/**
+- * ioremap_add_map - add to the physical and DMA address conversion arrays
+- * @phys:	Process's view of the address of the start of the memory chunk
+- * @dma:	DMA address of the start of the memory chunk
+- * @size:	Size, in bytes, of the chunk of memory
+- *
+- * NOTE: It might be obvious, but the assumption is that all @size bytes have
+- * the same offset between the physical address and the DMA address.
+- */
+-void ioremap_add_map(phys_addr_t phys, phys_addr_t dma, phys_addr_t size)
+-{
+-	if (size == 0)
+-		return;
+-
+-	if ((dma & IOR_DMA_GRAIN_MASK) != 0 ||
+-		(phys & IOR_PHYS_GRAIN_MASK) != 0 ||
+-		(size & IOR_PHYS_GRAIN_MASK) != 0)
+-		pr_crit("Memory allocation must be in chunks of 0x%x bytes\n",
+-			IOR_PHYS_GRAIN);
+-
+-	setup_dma_to_phys(dma, phys - dma, size);
+-	setup_phys_to_dma(phys, dma - phys, size);
+-}
+diff --git a/arch/mips/powertv/memory.c b/arch/mips/powertv/memory.c
+deleted file mode 100644
+index bc2f3ca..0000000
+--- a/arch/mips/powertv/memory.c
++++ /dev/null
+@@ -1,353 +0,0 @@
+-/*
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- * Portions copyright (C) 2009 Cisco Systems, Inc.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * Apparently originally from arch/mips/malta-memory.c. Modified to work
+- * with the PowerTV bootloader.
+- */
+-#include <linux/init.h>
+-#include <linux/mm.h>
+-#include <linux/bootmem.h>
+-#include <linux/pfn.h>
+-#include <linux/string.h>
+-
+-#include <asm/bootinfo.h>
+-#include <asm/page.h>
+-#include <asm/sections.h>
+-
+-#include <asm/mach-powertv/asic.h>
+-#include <asm/mach-powertv/ioremap.h>
+-
+-#include "init.h"
+-
+-/* Memory constants */
+-#define KIBIBYTE(n)		((n) * 1024)	/* Number of kibibytes */
+-#define MEBIBYTE(n)		((n) * KIBIBYTE(1024)) /* Number of mebibytes */
+-#define DEFAULT_MEMSIZE		MEBIBYTE(128)	/* If no memsize provided */
+-
+-#define BLDR_SIZE	KIBIBYTE(256)		/* Memory reserved for bldr */
+-#define RV_SIZE		MEBIBYTE(4)		/* Size of reset vector */
+-
+-#define LOW_MEM_END	0x20000000		/* Highest low memory address */
+-#define BLDR_ALIAS	0x10000000		/* Bootloader address */
+-#define RV_PHYS		0x1fc00000		/* Reset vector address */
+-#define LOW_RAM_END	RV_PHYS			/* End of real RAM in low mem */
+-
+-/*
+- * Very low-level conversion from processor physical address to device
+- * DMA address for the first bank of memory.
+- */
+-#define PHYS_TO_DMA(paddr)	((paddr) + (CONFIG_LOW_RAM_DMA - LOW_RAM_ALIAS))
+-
+-unsigned long ptv_memsize;
+-
+-/*
+- * struct low_mem_reserved - Items in low memory that are reserved
+- * @start:	Physical address of item
+- * @size:	Size, in bytes, of this item
+- * @is_aliased: True if this is RAM aliased from another location. If false,
+- *		it is something other than aliased RAM and the RAM in the
+- *		unaliased address is still visible outside of low memory.
+- */
+-struct low_mem_reserved {
+-	phys_addr_t	start;
+-	phys_addr_t	size;
+-	bool		is_aliased;
+-};
+-
+-/*
+- * Must be in ascending address order
+- */
+-struct low_mem_reserved low_mem_reserved[] = {
+-	{BLDR_ALIAS, BLDR_SIZE, true},	/* Bootloader RAM */
+-	{RV_PHYS, RV_SIZE, false},	/* Reset vector */
+-};
+-
+-/*
+- * struct mem_layout - layout of a piece of the system RAM
+- * @phys:	Physical address of the start of this piece of RAM. This is the
+- *		address at which both the processor and I/O devices see the
+- *		RAM.
+- * @alias:	Alias of this piece of memory in order to make it appear in
+- *		the low memory part of the processor's address space. I/O
+- *		devices don't see anything here.
+- * @size:	Size, in bytes, of this piece of RAM
+- */
+-struct mem_layout {
+-	phys_addr_t	phys;
+-	phys_addr_t	alias;
+-	phys_addr_t	size;
+-};
+-
+-/*
+- * struct mem_layout_list - list descriptor for layouts of system RAM pieces
+- * @family:	Specifies the family being described
+- * @n:		Number of &struct mem_layout elements
+- * @layout:	Pointer to the list of &mem_layout structures
+- */
+-struct mem_layout_list {
+-	enum family_type	family;
+-	size_t			n;
+-	struct mem_layout	*layout;
+-};
+-
+-static struct mem_layout f1500_layout[] = {
+-	{0x20000000, 0x10000000, MEBIBYTE(256)},
+-};
+-
+-static struct mem_layout f4500_layout[] = {
+-	{0x40000000, 0x10000000, MEBIBYTE(256)},
+-	{0x20000000, 0x20000000, MEBIBYTE(32)},
+-};
+-
+-static struct mem_layout f8500_layout[] = {
+-	{0x40000000, 0x10000000, MEBIBYTE(256)},
+-	{0x20000000, 0x20000000, MEBIBYTE(32)},
+-	{0x30000000, 0x30000000, MEBIBYTE(32)},
+-};
+-
+-static struct mem_layout fx600_layout[] = {
+-	{0x20000000, 0x10000000, MEBIBYTE(256)},
+-	{0x60000000, 0x60000000, MEBIBYTE(128)},
+-};
+-
+-static struct mem_layout_list layout_list[] = {
+-	{FAMILY_1500, ARRAY_SIZE(f1500_layout), f1500_layout},
+-	{FAMILY_1500VZE, ARRAY_SIZE(f1500_layout), f1500_layout},
+-	{FAMILY_1500VZF, ARRAY_SIZE(f1500_layout), f1500_layout},
+-	{FAMILY_4500, ARRAY_SIZE(f4500_layout), f4500_layout},
+-	{FAMILY_8500, ARRAY_SIZE(f8500_layout), f8500_layout},
+-	{FAMILY_8500RNG, ARRAY_SIZE(f8500_layout), f8500_layout},
+-	{FAMILY_4600, ARRAY_SIZE(fx600_layout), fx600_layout},
+-	{FAMILY_4600VZA, ARRAY_SIZE(fx600_layout), fx600_layout},
+-	{FAMILY_8600, ARRAY_SIZE(fx600_layout), fx600_layout},
+-	{FAMILY_8600VZB, ARRAY_SIZE(fx600_layout), fx600_layout},
+-};
+-
+-/* If we can't determine the layout, use this */
+-static struct mem_layout default_layout[] = {
+-	{0x20000000, 0x10000000, MEBIBYTE(128)},
+-};
+-
+-/**
+- * register_non_ram - register low memory not available for RAM usage
+- */
+-static __init void register_non_ram(void)
+-{
+-	int i;
+-
+-	for (i = 0; i < ARRAY_SIZE(low_mem_reserved); i++)
+-		add_memory_region(low_mem_reserved[i].start,
+-			low_mem_reserved[i].size, BOOT_MEM_RESERVED);
+-}
+-
+-/**
+- * get_memsize - get the size of memory as a single bank
+- */
+-static phys_addr_t get_memsize(void)
+-{
+-	static char cmdline[COMMAND_LINE_SIZE] __initdata;
+-	phys_addr_t memsize = 0;
+-	char *memsize_str;
+-	char *ptr;
+-
+-	/* Check the command line first for a memsize directive */
+-	strcpy(cmdline, arcs_cmdline);
+-	ptr = strstr(cmdline, "memsize=");
+-	if (ptr && (ptr != cmdline) && (*(ptr - 1) != ' '))
+-		ptr = strstr(ptr, " memsize=");
+-
+-	if (ptr) {
+-		memsize = memparse(ptr + 8, &ptr);
+-	} else {
+-		/* otherwise look in the environment */
+-		memsize_str = prom_getenv("memsize");
+-
+-		if (memsize_str != NULL) {
+-			pr_info("prom memsize = %s\n", memsize_str);
+-			memsize = simple_strtol(memsize_str, NULL, 0);
+-		}
+-
+-		if (memsize == 0) {
+-			if (_prom_memsize != 0) {
+-				memsize = _prom_memsize;
+-				pr_info("_prom_memsize = 0x%x\n", memsize);
+-				/* add in memory that the bootloader doesn't
+-				 * report */
+-				memsize += BLDR_SIZE;
+-			} else {
+-				memsize = DEFAULT_MEMSIZE;
+-				pr_info("Memsize not passed by bootloader, "
+-					"defaulting to 0x%x\n", memsize);
+-			}
+-		}
+-	}
+-
+-	return memsize;
+-}
+-
+-/**
+- * register_low_ram - register an aliased section of RAM
+- * @p:		Alias address of memory
+- * @n:		Number of bytes in this section of memory
+- *
+- * Returns the number of bytes registered
+- *
+- */
+-static __init phys_addr_t register_low_ram(phys_addr_t p, phys_addr_t n)
+-{
+-	phys_addr_t s;
+-	int i;
+-	phys_addr_t orig_n;
+-
+-	orig_n = n;
+-
+-	BUG_ON(p + n > RV_PHYS);
+-
+-	for (i = 0; n != 0 && i < ARRAY_SIZE(low_mem_reserved); i++) {
+-		phys_addr_t start;
+-		phys_addr_t size;
+-
+-		start = low_mem_reserved[i].start;
+-		size = low_mem_reserved[i].size;
+-
+-		/* Handle memory before this low memory section */
+-		if (p < start) {
+-			phys_addr_t s;
+-			s = min(n, start - p);
+-			add_memory_region(p, s, BOOT_MEM_RAM);
+-			p += s;
+-			n -= s;
+-		}
+-
+-		/* Handle the low memory section itself. If it's aliased,
+-		 * we reduce the number of byes left, but if not, the RAM
+-		 * is available elsewhere and we don't reduce the number of
+-		 * bytes remaining. */
+-		if (p == start) {
+-			if (low_mem_reserved[i].is_aliased) {
+-				s = min(n, size);
+-				n -= s;
+-				p += s;
+-			} else
+-				p += n;
+-		}
+-	}
+-
+-	return orig_n - n;
+-}
+-
+-/*
+- * register_ram - register real RAM
+- * @p:	Address of memory as seen by devices
+- * @alias:	If the memory is seen at an additional address by the processor,
+- *		this will be the address, otherwise it is the same as @p.
+- * @n:		Number of bytes in this section of memory
+- */
+-static __init void register_ram(phys_addr_t p, phys_addr_t alias,
+-	phys_addr_t n)
+-{
+-	/*
+-	 * If some or all of this memory has an alias, break it into the
+-	 * aliased and non-aliased portion.
+-	 */
+-	if (p != alias) {
+-		phys_addr_t alias_size;
+-		phys_addr_t registered;
+-
+-		alias_size = min(n, LOW_RAM_END - alias);
+-		registered = register_low_ram(alias, alias_size);
+-		ioremap_add_map(alias, p, n);
+-		n -= registered;
+-		p += registered;
+-	}
+-
+-#ifdef CONFIG_HIGHMEM
+-	if (n != 0) {
+-		add_memory_region(p, n, BOOT_MEM_RAM);
+-		ioremap_add_map(p, p, n);
+-	}
+-#endif
+-}
+-
+-/**
+- * register_address_space - register things in the address space
+- * @memsize:	Number of bytes of RAM installed
+- *
+- * Takes the given number of bytes of RAM and registers as many of the regions,
+- * or partial regions, as it can. So, the default configuration might have
+- * two regions with 256 MiB each. If the memsize passed in on the command line
+- * is 384 MiB, it will register the first region with 256 MiB and the second
+- * with 128 MiB.
+- */
+-static __init void register_address_space(phys_addr_t memsize)
+-{
+-	int i;
+-	phys_addr_t size;
+-	size_t n;
+-	struct mem_layout *layout;
+-	enum family_type family;
+-
+-	/*
+-	 * Register all of the things that aren't available to the kernel as
+-	 * memory.
+-	 */
+-	register_non_ram();
+-
+-	/* Find the appropriate memory description */
+-	family = platform_get_family();
+-
+-	for (i = 0; i < ARRAY_SIZE(layout_list); i++) {
+-		if (layout_list[i].family == family)
+-			break;
+-	}
+-
+-	if (i == ARRAY_SIZE(layout_list)) {
+-		n = ARRAY_SIZE(default_layout);
+-		layout = default_layout;
+-	} else {
+-		n = layout_list[i].n;
+-		layout = layout_list[i].layout;
+-	}
+-
+-	for (i = 0; memsize != 0 && i < n; i++) {
+-		size = min(memsize, layout[i].size);
+-		register_ram(layout[i].phys, layout[i].alias, size);
+-		memsize -= size;
+-	}
+-}
+-
+-void __init prom_meminit(void)
+-{
+-	ptv_memsize = get_memsize();
+-	register_address_space(ptv_memsize);
+-}
+-
+-void __init prom_free_prom_memory(void)
+-{
+-	unsigned long addr;
+-	int i;
+-
+-	for (i = 0; i < boot_mem_map.nr_map; i++) {
+-		if (boot_mem_map.map[i].type != BOOT_MEM_ROM_DATA)
+-			continue;
+-
+-		addr = boot_mem_map.map[i].addr;
+-		free_init_pages("prom memory",
+-				addr, addr + boot_mem_map.map[i].size);
+-	}
+-}
+diff --git a/arch/mips/powertv/pci/Makefile b/arch/mips/powertv/pci/Makefile
+deleted file mode 100644
+index 2610a6a..0000000
+--- a/arch/mips/powertv/pci/Makefile
++++ /dev/null
+@@ -1,19 +0,0 @@
+-#
+-# Copyright (C) 2009  Scientific-Atlanta, Inc.
+-#
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2 of the License, or
+-# (at your option) any later version.
+-#
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-#
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+-#
+-
+-obj-$(CONFIG_PCI)	+= fixup-powertv.o
+diff --git a/arch/mips/powertv/pci/fixup-powertv.c b/arch/mips/powertv/pci/fixup-powertv.c
+deleted file mode 100644
+index d7ecbae..0000000
+--- a/arch/mips/powertv/pci/fixup-powertv.c
++++ /dev/null
+@@ -1,37 +0,0 @@
+-#include <linux/init.h>
+-#include <linux/export.h>
+-#include <linux/pci.h>
+-#include <asm/mach-powertv/interrupts.h>
+-#include "powertv-pci.h"
+-
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
+-{
+-	return asic_pcie_map_irq(dev, slot, pin);
+-}
+-
+-/* Do platform specific device initialization at pci_enable_device() time */
+-int pcibios_plat_dev_init(struct pci_dev *dev)
+-{
+-	return 0;
+-}
+-
+-/*
+- * asic_pcie_map_irq
+- *
+- * Parameters:
+- * *dev - pointer to a pci_dev structure  (not used)
+- * slot - slot number  (not used)
+- * pin - pin number  (not used)
+- *
+- * Return Value:
+- * Returns: IRQ number (always the PCI Express IRQ number)
+- *
+- * Description:
+- * asic_pcie_map_irq will return the IRQ number of the PCI Express interrupt.
+- *
+- */
+-int asic_pcie_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
+-{
+-	return irq_pciexp;
+-}
+-EXPORT_SYMBOL(asic_pcie_map_irq);
+diff --git a/arch/mips/powertv/pci/powertv-pci.h b/arch/mips/powertv/pci/powertv-pci.h
+deleted file mode 100644
+index 1b5886b..0000000
+--- a/arch/mips/powertv/pci/powertv-pci.h
++++ /dev/null
+@@ -1,31 +0,0 @@
+-/*
+- *				powertv-pci.c
+- *
+- * Copyright (C) 2009  Cisco Systems, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-/*
+- * Local definitions for the powertv PCI code
+- */
+-
+-#ifndef _POWERTV_PCI_POWERTV_PCI_H_
+-#define _POWERTV_PCI_POWERTV_PCI_H_
+-extern int asic_pcie_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
+-extern int asic_pcie_init(void);
+-extern int asic_pcie_init(void);
+-
+-extern int log_level;
+-#endif
+diff --git a/arch/mips/powertv/powertv-clock.h b/arch/mips/powertv/powertv-clock.h
+deleted file mode 100644
+index d94c543..0000000
+--- a/arch/mips/powertv/powertv-clock.h
++++ /dev/null
+@@ -1,26 +0,0 @@
+-/*
+- * Copyright (C) 2009  Cisco Systems, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- *
+- * Author: David VomLehn
+- */
+-
+-#ifndef _POWERTV_POWERTV_CLOCK_H
+-#define _POWERTV_POWERTV_CLOCK_H
+-extern int powertv_clockevent_init(void);
+-extern void powertv_clocksource_init(void);
+-extern unsigned int mips_get_pll_freq(void);
+-#endif
+diff --git a/arch/mips/powertv/powertv-usb.c b/arch/mips/powertv/powertv-usb.c
+deleted file mode 100644
+index d845eac..0000000
+--- a/arch/mips/powertv/powertv-usb.c
++++ /dev/null
+@@ -1,404 +0,0 @@
+-/*
+- *				powertv-usb.c
+- *
+- * Description:	 ASIC-specific USB device setup and shutdown
+- *
+- * Copyright (C) 2005-2009 Scientific-Atlanta, Inc.
+- * Copyright (C) 2009 Cisco Systems, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- *
+- * Author:	 Ken Eppinett
+- *		 David Schleef <ds@schleef.org>
+- *
+- * NOTE: The bootloader allocates persistent memory at an address which is
+- * 16 MiB below the end of the highest address in KSEG0. All fixed
+- * address memory reservations must avoid this region.
+- */
+-
+-#include <linux/kernel.h>
+-#include <linux/export.h>
+-#include <linux/ioport.h>
+-#include <linux/platform_device.h>
+-#include <asm/mach-powertv/asic.h>
+-#include <asm/mach-powertv/interrupts.h>
+-
+-/* misc_clk_ctl1 values */
+-#define MCC1_30MHZ_POWERUP_SELECT	(1 << 14)
+-#define MCC1_DIV9			(1 << 13)
+-#define MCC1_ETHMIPS_POWERUP_SELECT	(1 << 11)
+-#define MCC1_USB_POWERUP_SELECT		(1 << 1)
+-#define MCC1_CLOCK108_POWERUP_SELECT	(1 << 0)
+-
+-/* Possible values for clock select */
+-#define MCC1_USB_CLOCK_HIGH_Z		(0 << 4)
+-#define MCC1_USB_CLOCK_48MHZ		(1 << 4)
+-#define MCC1_USB_CLOCK_24MHZ		(2 << 4)
+-#define MCC1_USB_CLOCK_6MHZ		(3 << 4)
+-
+-#define MCC1_CONFIG	(MCC1_30MHZ_POWERUP_SELECT |		\
+-			 MCC1_DIV9 |				\
+-			 MCC1_ETHMIPS_POWERUP_SELECT |		\
+-			 MCC1_USB_POWERUP_SELECT |		\
+-			 MCC1_CLOCK108_POWERUP_SELECT)
+-
+-/* misc_clk_ctl2 values */
+-#define MCC2_GMII_GCLK_TO_PAD		(1 << 31)
+-#define MCC2_ETHER125_0_CLOCK_SELECT	(1 << 29)
+-#define MCC2_RMII_0_CLOCK_SELECT	(1 << 28)
+-#define MCC2_GMII_TX0_CLOCK_SELECT	(1 << 27)
+-#define MCC2_GMII_RX0_CLOCK_SELECT	(1 << 26)
+-#define MCC2_ETHER125_1_CLOCK_SELECT	(1 << 24)
+-#define MCC2_RMII_1_CLOCK_SELECT	(1 << 23)
+-#define MCC2_GMII_TX1_CLOCK_SELECT	(1 << 22)
+-#define MCC2_GMII_RX1_CLOCK_SELECT	(1 << 21)
+-#define MCC2_ETHER125_2_CLOCK_SELECT	(1 << 19)
+-#define MCC2_RMII_2_CLOCK_SELECT	(1 << 18)
+-#define MCC2_GMII_TX2_CLOCK_SELECT	(1 << 17)
+-#define MCC2_GMII_RX2_CLOCK_SELECT	(1 << 16)
+-
+-#define ETHER_CLK_CONFIG	(MCC2_GMII_GCLK_TO_PAD |	\
+-				 MCC2_ETHER125_0_CLOCK_SELECT | \
+-				 MCC2_RMII_0_CLOCK_SELECT |	\
+-				 MCC2_GMII_TX0_CLOCK_SELECT |	\
+-				 MCC2_GMII_RX0_CLOCK_SELECT |	\
+-				 MCC2_ETHER125_1_CLOCK_SELECT | \
+-				 MCC2_RMII_1_CLOCK_SELECT |	\
+-				 MCC2_GMII_TX1_CLOCK_SELECT |	\
+-				 MCC2_GMII_RX1_CLOCK_SELECT |	\
+-				 MCC2_ETHER125_2_CLOCK_SELECT | \
+-				 MCC2_RMII_2_CLOCK_SELECT |	\
+-				 MCC2_GMII_TX2_CLOCK_SELECT |	\
+-				 MCC2_GMII_RX2_CLOCK_SELECT)
+-
+-/* misc_clk_ctl2 definitions for Gaia */
+-#define FSX4A_REF_SELECT		(1 << 16)
+-#define FSX4B_REF_SELECT		(1 << 17)
+-#define FSX4C_REF_SELECT		(1 << 18)
+-#define DDR_PLL_REF_SELECT		(1 << 19)
+-#define MIPS_PLL_REF_SELECT		(1 << 20)
+-
+-/* Definitions for the QAM frequency select register FS432X4A4_QAM_CTL */
+-#define QAM_FS_SDIV_SHIFT		29
+-#define QAM_FS_MD_SHIFT			24
+-#define QAM_FS_MD_MASK			0x1f	/* Cut down to 5 bits */
+-#define QAM_FS_PE_SHIFT			8
+-
+-#define QAM_FS_DISABLE_DIVIDE_BY_3		(1 << 5)
+-#define QAM_FS_ENABLE_PROGRAM			(1 << 4)
+-#define QAM_FS_ENABLE_OUTPUT			(1 << 3)
+-#define QAM_FS_SELECT_TEST_BYPASS		(1 << 2)
+-#define QAM_FS_DISABLE_DIGITAL_STANDBY		(1 << 1)
+-#define QAM_FS_CHOOSE_FS			(1 << 0)
+-
+-/* Definitions for fs432x4a_ctl register */
+-#define QAM_FS_NSDIV_54MHZ			(1 << 2)
+-
+-/* Definitions for bcm1_usb2_ctl register */
+-#define BCM1_USB2_CTL_BISTOK				(1 << 11)
+-#define BCM1_USB2_CTL_PORT2_SHIFT_JK			(1 << 7)
+-#define BCM1_USB2_CTL_PORT1_SHIFT_JK			(1 << 6)
+-#define BCM1_USB2_CTL_PORT2_FAST_EDGE			(1 << 5)
+-#define BCM1_USB2_CTL_PORT1_FAST_EDGE			(1 << 4)
+-#define BCM1_USB2_CTL_EHCI_PRT_PWR_ACTIVE_HIGH		(1 << 1)
+-#define BCM1_USB2_CTL_APP_PRT_OVRCUR_IN_ACTIVE_HIGH	(1 << 0)
+-
+-/* Definitions for crt_spare register */
+-#define CRT_SPARE_PORT2_SHIFT_JK			(1 << 21)
+-#define CRT_SPARE_PORT1_SHIFT_JK			(1 << 20)
+-#define CRT_SPARE_PORT2_FAST_EDGE			(1 << 19)
+-#define CRT_SPARE_PORT1_FAST_EDGE			(1 << 18)
+-#define CRT_SPARE_DIVIDE_BY_9_FROM_432			(1 << 17)
+-#define CRT_SPARE_USB_DIVIDE_BY_9			(1 << 16)
+-
+-/* Definitions for usb2_stbus_obc register */
+-#define USB_STBUS_OBC_STORE32_LOAD32			0x3
+-
+-/* Definitions for usb2_stbus_mess_size register */
+-#define USB2_STBUS_MESS_SIZE_2				0x1	/* 2 packets */
+-
+-/* Definitions for usb2_stbus_chunk_size register */
+-#define USB2_STBUS_CHUNK_SIZE_2				0x1	/* 2 packets */
+-
+-/* Definitions for usb2_strap register */
+-#define USB2_STRAP_HFREQ_SELECT				0x1
+-
+-/*
+- * USB Host Resource Definition
+- */
+-
+-static struct resource ehci_resources[] = {
+-	{
+-		.parent = &asic_resource,
+-		.start	= 0,
+-		.end	= 0xff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.start	= irq_usbehci,
+-		.end	= irq_usbehci,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-};
+-
+-static u64 ehci_dmamask = 0xffffffffULL;
+-
+-static struct platform_device ehci_device = {
+-	.name = "powertv-ehci",
+-	.id = 0,
+-	.num_resources = 2,
+-	.resource = ehci_resources,
+-	.dev = {
+-		.dma_mask = &ehci_dmamask,
+-		.coherent_dma_mask = 0xffffffff,
+-	},
+-};
+-
+-static struct resource ohci_resources[] = {
+-	{
+-		.parent = &asic_resource,
+-		.start	= 0,
+-		.end	= 0xff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.start	= irq_usbohci,
+-		.end	= irq_usbohci,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-};
+-
+-static u64 ohci_dmamask = 0xffffffffULL;
+-
+-static struct platform_device ohci_device = {
+-	.name = "powertv-ohci",
+-	.id = 0,
+-	.num_resources = 2,
+-	.resource = ohci_resources,
+-	.dev = {
+-		.dma_mask = &ohci_dmamask,
+-		.coherent_dma_mask = 0xffffffff,
+-	},
+-};
+-
+-static unsigned usb_users;
+-static DEFINE_SPINLOCK(usb_regs_lock);
+-
+-/*
+- *
+- * fs_update - set frequency synthesizer for USB
+- * @pe_bits		Phase tap setting
+- * @md_bits		Coarse selector bus for algorithm of phase tap
+- * @sdiv_bits		Output divider setting
+- * @disable_div_by_3	Either QAM_FS_DISABLE_DIVIDE_BY_3 or zero
+- * @standby		Either QAM_FS_DISABLE_DIGITAL_STANDBY or zero
+- *
+- * QAM frequency selection code, which affects the frequency at which USB
+- * runs. The frequency is calculated as:
+- *			       2^15 * ndiv * Fin
+- * Fout = ------------------------------------------------------------
+- *	  (sdiv * (ipe * (1 + md/32) - (ipe - 2^15)*(1 + (md + 1)/32)))
+- * where:
+- * Fin		54 MHz
+- * ndiv		QAM_FS_NSDIV_54MHZ ? 8 : 16
+- * sdiv		1 << (sdiv_bits + 1)
+- * ipe		Same as pe_bits
+- * md		A five-bit, two's-complement integer (range [-16, 15]), which
+- *		is the lower 5 bits of md_bits.
+- */
+-static void fs_update(u32 pe_bits, int md_bits, u32 sdiv_bits,
+-	u32 disable_div_by_3, u32 standby)
+-{
+-	u32 val;
+-
+-	val = ((sdiv_bits << QAM_FS_SDIV_SHIFT) |
+-		((md_bits & QAM_FS_MD_MASK) << QAM_FS_MD_SHIFT) |
+-		(pe_bits << QAM_FS_PE_SHIFT) |
+-		QAM_FS_ENABLE_OUTPUT |
+-		standby |
+-		disable_div_by_3);
+-	asic_write(val, fs432x4b4_usb_ctl);
+-	asic_write(val | QAM_FS_ENABLE_PROGRAM, fs432x4b4_usb_ctl);
+-	asic_write(val | QAM_FS_ENABLE_PROGRAM | QAM_FS_CHOOSE_FS,
+-		fs432x4b4_usb_ctl);
+-}
+-
+-/*
+- * usb_eye_configure - for optimizing the shape USB eye waveform
+- * @set:	Bits to set in the register
+- * @clear:	Bits to clear in the register; each bit with a one will
+- *		be set in the register, zero bits will not be modified
+- */
+-static void usb_eye_configure(u32 set, u32 clear)
+-{
+-	u32 old;
+-
+-	old = asic_read(crt_spare);
+-	old |= set;
+-	old &= ~clear;
+-	asic_write(old, crt_spare);
+-}
+-
+-/*
+- * platform_configure_usb - usb configuration based on platform type.
+- */
+-static void platform_configure_usb(void)
+-{
+-	u32 bcm1_usb2_ctl_value;
+-	enum asic_type asic_type;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&usb_regs_lock, flags);
+-	usb_users++;
+-
+-	if (usb_users != 1) {
+-		spin_unlock_irqrestore(&usb_regs_lock, flags);
+-		return;
+-	}
+-
+-	asic_type = platform_get_asic();
+-
+-	switch (asic_type) {
+-	case ASIC_ZEUS:
+-		fs_update(0x0000, -15, 0x02, 0, 0);
+-		bcm1_usb2_ctl_value = BCM1_USB2_CTL_EHCI_PRT_PWR_ACTIVE_HIGH |
+-			BCM1_USB2_CTL_APP_PRT_OVRCUR_IN_ACTIVE_HIGH;
+-		break;
+-
+-	case ASIC_CRONUS:
+-	case ASIC_CRONUSLITE:
+-		usb_eye_configure(0, CRT_SPARE_USB_DIVIDE_BY_9);
+-		fs_update(0x8000, -14, 0x03, QAM_FS_DISABLE_DIVIDE_BY_3,
+-			QAM_FS_DISABLE_DIGITAL_STANDBY);
+-		bcm1_usb2_ctl_value = BCM1_USB2_CTL_EHCI_PRT_PWR_ACTIVE_HIGH |
+-			BCM1_USB2_CTL_APP_PRT_OVRCUR_IN_ACTIVE_HIGH;
+-		break;
+-
+-	case ASIC_CALLIOPE:
+-		fs_update(0x0000, -15, 0x02, QAM_FS_DISABLE_DIVIDE_BY_3,
+-			QAM_FS_DISABLE_DIGITAL_STANDBY);
+-
+-		switch (platform_get_family()) {
+-		case FAMILY_1500VZE:
+-			break;
+-
+-		case FAMILY_1500VZF:
+-			usb_eye_configure(CRT_SPARE_PORT2_SHIFT_JK |
+-				CRT_SPARE_PORT1_SHIFT_JK |
+-				CRT_SPARE_PORT2_FAST_EDGE |
+-				CRT_SPARE_PORT1_FAST_EDGE, 0);
+-			break;
+-
+-		default:
+-			usb_eye_configure(CRT_SPARE_PORT2_SHIFT_JK |
+-				CRT_SPARE_PORT1_SHIFT_JK, 0);
+-			break;
+-		}
+-
+-		bcm1_usb2_ctl_value = BCM1_USB2_CTL_BISTOK |
+-			BCM1_USB2_CTL_EHCI_PRT_PWR_ACTIVE_HIGH |
+-			BCM1_USB2_CTL_APP_PRT_OVRCUR_IN_ACTIVE_HIGH;
+-		break;
+-
+-	case ASIC_GAIA:
+-		fs_update(0x8000, -14, 0x03, QAM_FS_DISABLE_DIVIDE_BY_3,
+-			QAM_FS_DISABLE_DIGITAL_STANDBY);
+-		bcm1_usb2_ctl_value = BCM1_USB2_CTL_BISTOK |
+-			BCM1_USB2_CTL_EHCI_PRT_PWR_ACTIVE_HIGH |
+-			BCM1_USB2_CTL_APP_PRT_OVRCUR_IN_ACTIVE_HIGH;
+-		break;
+-
+-	default:
+-		pr_err("Unknown ASIC type: %d\n", asic_type);
+-		bcm1_usb2_ctl_value = 0;
+-		break;
+-	}
+-
+-	/* turn on USB power */
+-	asic_write(0, usb2_strap);
+-	/* Enable all OHCI interrupts */
+-	asic_write(bcm1_usb2_ctl_value, usb2_control);
+-	/* usb2_stbus_obc store32/load32 */
+-	asic_write(USB_STBUS_OBC_STORE32_LOAD32, usb2_stbus_obc);
+-	/* usb2_stbus_mess_size 2 packets */
+-	asic_write(USB2_STBUS_MESS_SIZE_2, usb2_stbus_mess_size);
+-	/* usb2_stbus_chunk_size 2 packets */
+-	asic_write(USB2_STBUS_CHUNK_SIZE_2, usb2_stbus_chunk_size);
+-	spin_unlock_irqrestore(&usb_regs_lock, flags);
+-}
+-
+-static void platform_unconfigure_usb(void)
+-{
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&usb_regs_lock, flags);
+-	usb_users--;
+-	if (usb_users == 0)
+-		asic_write(USB2_STRAP_HFREQ_SELECT, usb2_strap);
+-	spin_unlock_irqrestore(&usb_regs_lock, flags);
+-}
+-
+-/*
+- * Set up the USB EHCI interface
+- */
+-void platform_configure_usb_ehci()
+-{
+-	platform_configure_usb();
+-}
+-EXPORT_SYMBOL(platform_configure_usb_ehci);
+-
+-/*
+- * Set up the USB OHCI interface
+- */
+-void platform_configure_usb_ohci()
+-{
+-	platform_configure_usb();
+-}
+-EXPORT_SYMBOL(platform_configure_usb_ohci);
+-
+-/*
+- * Shut the USB EHCI interface down
+- */
+-void platform_unconfigure_usb_ehci()
+-{
+-	platform_unconfigure_usb();
+-}
+-EXPORT_SYMBOL(platform_unconfigure_usb_ehci);
+-
+-/*
+- * Shut the USB OHCI interface down
+- */
+-void platform_unconfigure_usb_ohci()
+-{
+-	platform_unconfigure_usb();
+-}
+-EXPORT_SYMBOL(platform_unconfigure_usb_ohci);
+-
+-/**
+- * platform_devices_init - sets up USB device resourse.
+- */
+-int __init platform_usb_devices_init(struct platform_device **ehci_dev,
+-	struct platform_device **ohci_dev)
+-{
+-	*ehci_dev = &ehci_device;
+-	ehci_resources[0].start = asic_reg_phys_addr(ehci_hcapbase);
+-	ehci_resources[0].end += ehci_resources[0].start;
+-
+-	*ohci_dev = &ohci_device;
+-	ohci_resources[0].start = asic_reg_phys_addr(ohci_hc_revision);
+-	ohci_resources[0].end += ohci_resources[0].start;
+-
+-	return 0;
+-}
+diff --git a/arch/mips/powertv/powertv_setup.c b/arch/mips/powertv/powertv_setup.c
+deleted file mode 100644
+index 24689bf..0000000
+--- a/arch/mips/powertv/powertv_setup.c
++++ /dev/null
+@@ -1,319 +0,0 @@
+-/*
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
+- * Portions copyright (C) 2009 Cisco Systems, Inc.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- */
+-#include <linux/init.h>
+-#include <linux/sched.h>
+-#include <linux/ioport.h>
+-#include <linux/pci.h>
+-#include <linux/screen_info.h>
+-#include <linux/notifier.h>
+-#include <linux/etherdevice.h>
+-#include <linux/if_ether.h>
+-#include <linux/ctype.h>
+-#include <linux/cpu.h>
+-#include <linux/time.h>
+-
+-#include <asm/bootinfo.h>
+-#include <asm/irq.h>
+-#include <asm/mips-boards/generic.h>
+-#include <asm/dma.h>
+-#include <asm/asm.h>
+-#include <asm/traps.h>
+-#include <asm/asm-offsets.h>
+-#include "reset.h"
+-
+-#define VAL(n)		STR(n)
+-
+-/*
+- * Macros for loading addresses and storing registers:
+- * LONG_L_	Stringified version of LONG_L for use in asm() statement
+- * LONG_S_	Stringified version of LONG_S for use in asm() statement
+- * PTR_LA_	Stringified version of PTR_LA for use in asm() statement
+- * REG_SIZE	Number of 8-bit bytes in a full width register
+- */
+-#define LONG_L_		VAL(LONG_L) " "
+-#define LONG_S_		VAL(LONG_S) " "
+-#define PTR_LA_		VAL(PTR_LA) " "
+-
+-#ifdef CONFIG_64BIT
+-#warning TODO: 64-bit code needs to be verified
+-#define REG_SIZE	"8"		/* In bytes */
+-#endif
+-
+-#ifdef CONFIG_32BIT
+-#define REG_SIZE	"4"		/* In bytes */
+-#endif
+-
+-static void register_panic_notifier(void);
+-static int panic_handler(struct notifier_block *notifier_block,
+-	unsigned long event, void *cause_string);
+-
+-const char *get_system_type(void)
+-{
+-	return "PowerTV";
+-}
+-
+-void __init plat_mem_setup(void)
+-{
+-	panic_on_oops = 1;
+-	register_panic_notifier();
+-
+-#if 0
+-	mips_pcibios_init();
+-#endif
+-	mips_reboot_setup();
+-}
+-
+-/*
+- * Install a panic notifier for platform-specific diagnostics
+- */
+-static void register_panic_notifier()
+-{
+-	static struct notifier_block panic_notifier = {
+-		.notifier_call = panic_handler,
+-		.next = NULL,
+-		.priority	= INT_MAX
+-	};
+-	atomic_notifier_chain_register(&panic_notifier_list, &panic_notifier);
+-}
+-
+-static int panic_handler(struct notifier_block *notifier_block,
+-	unsigned long event, void *cause_string)
+-{
+-	struct pt_regs	my_regs;
+-
+-	/* Save all of the registers */
+-	{
+-		unsigned long	at, v0, v1; /* Must be on the stack */
+-
+-		/* Start by saving $at and v0 on the stack. We use $at
+-		 * ourselves, but it looks like the compiler may use v0 or v1
+-		 * to load the address of the pt_regs structure. We'll come
+-		 * back later to store the registers in the pt_regs
+-		 * structure. */
+-		__asm__ __volatile__ (
+-			".set	noat\n"
+-			LONG_S_		"$at, %[at]\n"
+-			LONG_S_		"$2, %[v0]\n"
+-			LONG_S_		"$3, %[v1]\n"
+-		:
+-			[at] "=m" (at),
+-			[v0] "=m" (v0),
+-			[v1] "=m" (v1)
+-		:
+-		:	"at"
+-		);
+-
+-		__asm__ __volatile__ (
+-			".set	noat\n"
+-			"move		$at, %[pt_regs]\n"
+-
+-			/* Argument registers */
+-			LONG_S_		"$4, " VAL(PT_R4) "($at)\n"
+-			LONG_S_		"$5, " VAL(PT_R5) "($at)\n"
+-			LONG_S_		"$6, " VAL(PT_R6) "($at)\n"
+-			LONG_S_		"$7, " VAL(PT_R7) "($at)\n"
+-
+-			/* Temporary regs */
+-			LONG_S_		"$8, " VAL(PT_R8) "($at)\n"
+-			LONG_S_		"$9, " VAL(PT_R9) "($at)\n"
+-			LONG_S_		"$10, " VAL(PT_R10) "($at)\n"
+-			LONG_S_		"$11, " VAL(PT_R11) "($at)\n"
+-			LONG_S_		"$12, " VAL(PT_R12) "($at)\n"
+-			LONG_S_		"$13, " VAL(PT_R13) "($at)\n"
+-			LONG_S_		"$14, " VAL(PT_R14) "($at)\n"
+-			LONG_S_		"$15, " VAL(PT_R15) "($at)\n"
+-
+-			/* "Saved" registers */
+-			LONG_S_		"$16, " VAL(PT_R16) "($at)\n"
+-			LONG_S_		"$17, " VAL(PT_R17) "($at)\n"
+-			LONG_S_		"$18, " VAL(PT_R18) "($at)\n"
+-			LONG_S_		"$19, " VAL(PT_R19) "($at)\n"
+-			LONG_S_		"$20, " VAL(PT_R20) "($at)\n"
+-			LONG_S_		"$21, " VAL(PT_R21) "($at)\n"
+-			LONG_S_		"$22, " VAL(PT_R22) "($at)\n"
+-			LONG_S_		"$23, " VAL(PT_R23) "($at)\n"
+-
+-			/* Add'l temp regs */
+-			LONG_S_		"$24, " VAL(PT_R24) "($at)\n"
+-			LONG_S_		"$25, " VAL(PT_R25) "($at)\n"
+-
+-			/* Kernel temp regs */
+-			LONG_S_		"$26, " VAL(PT_R26) "($at)\n"
+-			LONG_S_		"$27, " VAL(PT_R27) "($at)\n"
+-
+-			/* Global pointer, stack pointer, frame pointer and
+-			 * return address */
+-			LONG_S_		"$gp, " VAL(PT_R28) "($at)\n"
+-			LONG_S_		"$sp, " VAL(PT_R29) "($at)\n"
+-			LONG_S_		"$fp, " VAL(PT_R30) "($at)\n"
+-			LONG_S_		"$ra, " VAL(PT_R31) "($at)\n"
+-
+-			/* Now we can get the $at and v0 registers back and
+-			 * store them */
+-			LONG_L_		"$8, %[at]\n"
+-			LONG_S_		"$8, " VAL(PT_R1) "($at)\n"
+-			LONG_L_		"$8, %[v0]\n"
+-			LONG_S_		"$8, " VAL(PT_R2) "($at)\n"
+-			LONG_L_		"$8, %[v1]\n"
+-			LONG_S_		"$8, " VAL(PT_R3) "($at)\n"
+-		:
+-		:
+-			[at] "m" (at),
+-			[v0] "m" (v0),
+-			[v1] "m" (v1),
+-			[pt_regs] "r" (&my_regs)
+-		:	"at", "t0"
+-		);
+-
+-		/* Set the current EPC value to be the current location in this
+-		 * function */
+-		__asm__ __volatile__ (
+-			".set	noat\n"
+-		"1:\n"
+-			PTR_LA_		"$at, 1b\n"
+-			LONG_S_		"$at, %[cp0_epc]\n"
+-		:
+-			[cp0_epc] "=m" (my_regs.cp0_epc)
+-		:
+-		:	"at"
+-		);
+-
+-		my_regs.cp0_cause = read_c0_cause();
+-		my_regs.cp0_status = read_c0_status();
+-	}
+-
+-	pr_crit("I'm feeling a bit sleepy. hmmmmm... perhaps a nap would... "
+-		"zzzz... \n");
+-
+-	return NOTIFY_DONE;
+-}
+-
+-/* Information about the RF MAC address, if one was supplied on the
+- * command line. */
+-static bool have_rfmac;
+-static u8 rfmac[ETH_ALEN];
+-
+-static int rfmac_param(char *p)
+-{
+-	u8	*q;
+-	bool	is_high_nibble;
+-	int	c;
+-
+-	/* Skip a leading "0x", if present */
+-	if (*p == '0' && *(p+1) == 'x')
+-		p += 2;
+-
+-	q = rfmac;
+-	is_high_nibble = true;
+-
+-	for (c = (unsigned char) *p++;
+-		isxdigit(c) && q - rfmac < ETH_ALEN;
+-		c = (unsigned char) *p++) {
+-		int	nibble;
+-
+-		nibble = (isdigit(c) ? (c - '0') :
+-			(isupper(c) ? c - 'A' + 10 : c - 'a' + 10));
+-
+-		if (is_high_nibble)
+-			*q = nibble << 4;
+-		else
+-			*q++ |= nibble;
+-
+-		is_high_nibble = !is_high_nibble;
+-	}
+-
+-	/* If we parsed all the way to the end of the parameter value and
+-	 * parsed all ETH_ALEN bytes, we have a usable RF MAC address */
+-	have_rfmac = (c == '\0' && q - rfmac == ETH_ALEN);
+-
+-	return 0;
+-}
+-
+-early_param("rfmac", rfmac_param);
+-
+-/*
+- * Generate an Ethernet MAC address that has a good chance of being unique.
+- * @addr:	Pointer to six-byte array containing the Ethernet address
+- * Generates an Ethernet MAC address that is highly likely to be unique for
+- * this particular system on a network with other systems of the same type.
+- *
+- * The problem we are solving is that, when eth_random_addr() is used to
+- * generate MAC addresses at startup, there isn't much entropy for the random
+- * number generator to use and the addresses it produces are fairly likely to
+- * be the same as those of other identical systems on the same local network.
+- * This is true even for relatively small numbers of systems (for the reason
+- * why, see the Wikipedia entry for "Birthday problem" at:
+- *	http://en.wikipedia.org/wiki/Birthday_problem
+- *
+- * The good news is that we already have a MAC address known to be unique, the
+- * RF MAC address. The bad news is that this address is already in use on the
+- * RF interface. Worse, the obvious trick, taking the RF MAC address and
+- * turning on the locally managed bit, has already been used for other devices.
+- * Still, this does give us something to work with.
+- *
+- * The approach we take is:
+- * 1.	If we can't get the RF MAC Address, just call eth_random_addr.
+- * 2.	Use the 24-bit NIC-specific bits of the RF MAC address as the last 24
+- *	bits of the new address. This is very likely to be unique, except for
+- *	the current box.
+- * 3.	To avoid using addresses already on the current box, we set the top
+- *	six bits of the address with a value different from any currently
+- *	registered Scientific Atlanta organizationally unique identifyer
+- *	(OUI). This avoids duplication with any addresses on the system that
+- *	were generated from valid Scientific Atlanta-registered address by
+- *	simply flipping the locally managed bit.
+- * 4.	We aren't generating a multicast address, so we leave the multicast
+- *	bit off. Since we aren't using a registered address, we have to set
+- *	the locally managed bit.
+- * 5.	We then randomly generate the remaining 16-bits. This does two
+- *	things:
+- *	a.	It allows us to call this function for more than one device
+- *		in this system
+- *	b.	It ensures that things will probably still work even if
+- *		some device on the device network has a locally managed
+- *		address that matches the top six bits from step 2.
+- */
+-void platform_random_ether_addr(u8 addr[ETH_ALEN])
+-{
+-	const int num_random_bytes = 2;
+-	const unsigned char non_sciatl_oui_bits = 0xc0u;
+-	const unsigned char mac_addr_locally_managed = (1 << 1);
+-
+-	if (!have_rfmac) {
+-		pr_warning("rfmac not available on command line; "
+-			"generating random MAC address\n");
+-		eth_random_addr(addr);
+-	}
+-
+-	else {
+-		int	i;
+-
+-		/* Set the first byte to something that won't match a Scientific
+-		 * Atlanta OUI, is locally managed, and isn't a multicast
+-		 * address */
+-		addr[0] = non_sciatl_oui_bits | mac_addr_locally_managed;
+-
+-		/* Get some bytes of random address information */
+-		get_random_bytes(&addr[1], num_random_bytes);
+-
+-		/* Copy over the NIC-specific bits of the RF MAC address */
+-		for (i = 1 + num_random_bytes; i < ETH_ALEN; i++)
+-			addr[i] = rfmac[i];
+-	}
+-}
+diff --git a/arch/mips/powertv/reset.c b/arch/mips/powertv/reset.c
+deleted file mode 100644
+index 11c32fb..0000000
+--- a/arch/mips/powertv/reset.c
++++ /dev/null
+@@ -1,35 +0,0 @@
+-/*
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- * Portions copyright (C) 2009 Cisco Systems, Inc.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- */
+-#include <linux/pm.h>
+-
+-#include <linux/io.h>
+-#include <asm/reboot.h>			/* Not included by linux/reboot.h */
+-
+-#include <asm/mach-powertv/asic_regs.h>
+-#include "reset.h"
+-
+-static void mips_machine_restart(char *command)
+-{
+-	writel(0x1, asic_reg_addr(watchdog));
+-}
+-
+-void mips_reboot_setup(void)
+-{
+-	_machine_restart = mips_machine_restart;
+-}
+diff --git a/arch/mips/powertv/reset.h b/arch/mips/powertv/reset.h
+deleted file mode 100644
+index 888fd09..0000000
+--- a/arch/mips/powertv/reset.h
++++ /dev/null
+@@ -1,26 +0,0 @@
+-/*
+- * Definitions from powertv reset.c file
+- *
+- * Copyright (C) 2009  Cisco Systems, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- *
+- * Author: David VomLehn
+- */
+-
+-#ifndef _POWERTV_POWERTV_RESET_H
+-#define _POWERTV_POWERTV_RESET_H
+-extern void mips_reboot_setup(void);
+-#endif
+diff --git a/arch/mips/powertv/time.c b/arch/mips/powertv/time.c
+deleted file mode 100644
+index f38b0d4..0000000
+--- a/arch/mips/powertv/time.c
++++ /dev/null
+@@ -1,36 +0,0 @@
+-/*
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- * Portions copyright (C) 2009 Cisco Systems, Inc.
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * Setting up the clock on the MIPS boards.
+- */
+-
+-#include <linux/init.h>
+-#include <asm/mach-powertv/interrupts.h>
+-#include <asm/time.h>
+-
+-#include "powertv-clock.h"
+-
+-unsigned int get_c0_compare_int(void)
+-{
+-	return irq_mips_timer;
+-}
+-
+-void __init plat_time_init(void)
+-{
+-	powertv_clocksource_init();
+-}

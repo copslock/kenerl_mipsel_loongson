@@ -1,41 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Oct 2013 13:59:32 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Oct 2013 13:59:48 +0200 (CEST)
 Received: from b.ns.miles-group.at ([95.130.255.144]:9062 "EHLO radon.swed.at"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6824799Ab3IZL5EJfKfH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Sep 2013 13:57:04 +0200
-Received: (qmail 18924 invoked by uid 89); 26 Sep 2013 11:57:30 -0000
-Received: by simscan 1.3.1 ppid: 18916, pid: 18920, t: 0.0647s
+        id S6824799Ab3IZN4Vj8GoR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 26 Sep 2013 15:56:21 +0200
+Received: (qmail 21020 invoked by uid 89); 26 Sep 2013 13:56:46 -0000
+Received: by simscan 1.3.1 ppid: 21013, pid: 21016, t: 0.2900s
          scanners: attach: 1.3.1 clamav: 0.96.5/m:
-Received: from unknown (HELO ?192.168.0.11?) (richard@nod.at@212.186.22.124)
-  by radon.swed.at with ESMTPA; 26 Sep 2013 11:57:30 -0000
-Message-ID: <52442108.1020304@nod.at>
-Date:   Thu, 26 Sep 2013 13:56:56 +0200
-From:   Richard Weinberger <richard@nod.at>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130620 Thunderbird/17.0.7
+Received: from unknown (HELO 046207148010.atmpu0029.highway.a1.net) (richard@nod.at@46.207.148.10)
+  by radon.swed.at with ESMTPA; 26 Sep 2013 13:56:46 -0000
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAMuHMdU3LdDhbp_AKjD7b8Wytbqfp29DrPwTdtwQa2hUNdcy3Q@mail.gmail.com>
+References: <1377073172-3662-1-git-send-email-richard@nod.at> <1377073172-3662-3-git-send-email-richard@nod.at> <CALkWK0kCrQ9hPABD_XQ9QFG-vByP+xZWZs+RkVK77+cX7Odz7g@mail.gmail.com> <52441025.9030308@nod.at> <CALkWK0k5neR50h+AWEF5AgnpbgWMitZUnbv_caVzt6HiUA6mXg@mail.gmail.com> <52441407.9010603@nod.at> <CALkWK0=FG4COEjv5+mu1JRiiFQ2k6vop1mhFPmAT4bjtYeK6nA@mail.gmail.com> <52442108.1020304@nod.at> <CALkWK0nm=9n7DiV0MaGKVLMs=vxAiiQUx=OFuOg-DinkdMej5A@mail.gmail.com> <CALkWK0ndMtyQxE0uK4H-Ly6oy+tRn-SFc=_1WoC2QAp2uy0dtw@mail.gmail.com> <CAMuHMdU3LdDhbp_AKjD7b8Wytbqfp29DrPwTdtwQa2hUNdcy3Q@mail.gmail.com>
 MIME-Version: 1.0
-To:     Ramkumar Ramachandra <artagnon@gmail.com>
-CC:     linux-arch@vger.kernel.org, Michal Marek <mmarek@suse.cz>,
-        geert@linux-m68k.org, ralf@linux-mips.org, lethal@linux-sh.org,
+Content-Type: multipart/alternative; boundary="----5QY7030VZWCJNE5X8N17B2HC1XHSHG"
+Subject: Re: [PATCH 2/8] um: Do not use SUBARCH
+From:   Richard Weinberger <richard@nod.at>
+Date:   Thu, 26 Sep 2013 15:56:07 +0200
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ramkumar Ramachandra <artagnon@gmail.com>
+CC:     Linux-Arch <linux-arch@vger.kernel.org>,
+        Michal Marek <mmarek@suse.cz>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Mundt <lethal@linux-sh.org>,
         Jeff Dike <jdike@addtoit.com>,
         Guan Xuetao <gxt@mprc.pku.edu.cn>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        linux-kbuild@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net
-Subject: Re: [PATCH 2/8] um: Do not use SUBARCH
-References: <1377073172-3662-1-git-send-email-richard@nod.at> <1377073172-3662-3-git-send-email-richard@nod.at> <CALkWK0kCrQ9hPABD_XQ9QFG-vByP+xZWZs+RkVK77+cX7Odz7g@mail.gmail.com> <52441025.9030308@nod.at> <CALkWK0k5neR50h+AWEF5AgnpbgWMitZUnbv_caVzt6HiUA6mXg@mail.gmail.com> <52441407.9010603@nod.at> <CALkWK0=FG4COEjv5+mu1JRiiFQ2k6vop1mhFPmAT4bjtYeK6nA@mail.gmail.com>
-In-Reply-To: <CALkWK0=FG4COEjv5+mu1JRiiFQ2k6vop1mhFPmAT4bjtYeK6nA@mail.gmail.com>
-X-Enigmail-Version: 1.5.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        "H. Peter Anvin" <hpa@zytor.com>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        linux-kbuild <linux-kbuild@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        uml-devel <user-mode-linux-devel@lists.sourceforge.net>
+Message-ID: <6ca106c1-3ba4-4d49-97ad-9f400045dd2c@email.android.com>
 Return-Path: <richard@nod.at>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38284
+X-archive-position: 38285
 X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
@@ -53,112 +57,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Am 26.09.2013 13:43, schrieb Ramkumar Ramachandra:
-> Richard Weinberger wrote:
->>> Auto-detection of SUBARCH, which can be done with a simple call to
->>> uname -m (the 90% case). The second patch I submitted prevented
->>> spawning xterms unnecessarily, which we discussed was a good move.
->>
->> Covering only 90% of all cases is not enough.
->> We must not break existing setups.
->> That's also why my "Get rid of SUBARCH" series is not upstream.
-> 
-> Mine covers 100% of the cases. My series is about auto-detection of
-> SUBARCH, not its removal: you can still set a SUBARCH from the
-> command-line; existing setups don't break.
+------5QY7030VZWCJNE5X8N17B2HC1XHSHG
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-I told you already that "make defconfig ARCH=um SUBARCH=x86" will spuriously
-create a x86_64 config on x86_64.
-This breaks existing setups.
+Correct. Users expect Form SUBARCH=x86 a 32bit kernel.
 
->> Your second patch changed CONFIG_CON_CHAN to pts, which is ok but not
->> a major issue.
-> 
-> "Major" or "minor" is purely your classification: don't impose your
-> value judgement on reasonable patches. I am the user, and I demand a
-> pleasant build process and ui. Moreover, how do you expect more
-> contributions to come in until existing patches make it to upstream?
-> 
->> The xterms are also not spawning unnecessarily they spawn upon a tty device is opened.
->> With your patch UML create another pts. Thus, the spawning is hidden...
-> 
-> It connects to an existing host pts device instead of spawning a new
-> xterm and connecting to the console io on that. Why is that not
-> desirable?
-> 
->> I did not push it upstream because it depended on your first one and as I said, it's not critical.
->> This does not mean that I moved it to /dev/null.
-> 
-> ... and you still haven't told me what's wrong with my first patch.
-> 
->> Again, the plan is to get rid of SUBARCH at all.
-> 
-> You've been harping about this plan for the last N months, and nothing
-> has happened so far. It's time to stop planning, and accept good work.
 
-I sent the series on Aug 21st.
-Do the maths, it's not N months...
 
->>>> make defconfig ARCH=um SUBARCH=x86 (or SUBARCH=i386) will create a defconfig for 32bit.
->>>> make defconfig ARCH=um SUBARCH=x86_64 one for 64bit.
+Geert Uytterhoeven <geert@linux-m68k.org> schrieb:
+
+>On Thu, Sep 26, 2013 at 3:13 PM, Ramkumar Ramachandra
+><artagnon@gmail.com> wrote:
+>> Ramkumar Ramachandra wrote:
+>>> Richard Weinberger wrote:
+>>>> I told you already that "make defconfig ARCH=um SUBARCH=x86" will
+>spuriously
+>>>> create a x86_64 config on x86_64.
+>>>> This breaks existing setups.
 >>>
->>> Yes, that's how I prepared the patch in the first place.
+>>> I'll fix this and resubmit soon.
 >>
->> So, nothing is broken.
-> 
-> So the user is Ugly and Stupid for expecting:
-> 
->   $ "
->   $ make -j 8 ARCH=um
-> 
-> to work? Stop denying problems, no matter how "major" or "minor" they are.
+>> Wait a minute. You're now arguing about whether the generic "x86"
+>> means i386 or x86_64. Its meaning is already defined in
+>> arch/x86/Kconfig and arch/x86/um/Kconfig: see the config 64BIT.
+>Unless
+>> i386 is explicitly specified, the default is to build a 64-bit
+>kernel.
+>> That is already defined for a normal Linux kernel, and user-mode
+>Linux
+>> should not break that convention. So, in the example you pulled out
+>of
+>> your hat:
+>>
+>>   $ make defconfig ARCH=um SUBARCH=x86
+>>
+>> the user should expect a 64-bit build, and not an i386 build as you
+>> say. Both my patches are correct, and the "regression" that you
+>> pointed out is a red herring.
+>
+>Sorry for chiming in, but... what about cross compiling?
+>SUBARCH=x86 should give you a 32-bit ia32 kernel, right?
+>
+>Gr{oetje,eeting}s,
+>
+>                        Geert
+>
+>--
+>Geert Uytterhoeven -- There's lots of Linux beyond ia32 --
+>geert@linux-m68k.org
+>
+>In personal conversations with technical people, I call myself a
+>hacker. But
+>when I'm talking to journalists I just say "programmer" or something
+>like that.
+>                                -- Linus Torvalds
 
-"make defconfig ARCH=um" creates a defconfig for x86 as it always did.
-If you want to run a x86_64 bit user space, create a x86_64 defconfig.
+-- 
+Diese Nachricht wurde von meinem Android-Mobiltelefon mit K-9 Mail gesendet.
+------5QY7030VZWCJNE5X8N17B2HC1XHSHG
+Content-Type: text/html;
+ charset=utf-8
+Content-Transfer-Encoding: 8bit
 
->> If you want "make defconfig ARCH=um" creating a defconfig for the correct arch you need
->> more than your first patch.
-> 
-> No, you don't. Try it for yourself and see. Set a SUBARCH if you like,
-> and it'll still work fine.
-> 
->> Again, "Get rid of SUBARCH" series has the same goal.
-> 
-> For the last time, getting rid of SUBARCH is Wrong and Undesirable.
-
-That's your opinion.
-
-> -- 8< --
-> Here's a transcript spoonfeeding you the impact of my first patch:
-> 
->   $ make defconfig ARCH=um SUBARCH=i386
->   *** Default configuration is based on 'i386_defconfig'
->   #
->   # configuration written to .config
->   #
->   $ make defconfig ARCH=um SUBARCH=x86_64
->   *** Default configuration is based on 'x86_64_defconfig'
->   #
->   # configuration written to .config
->   #
->   $ make defconfig ARCH=um
->   *** Default configuration is based on 'x86_64_defconfig'
->   #
->   # configuration written to .config
->   #
-> 
-> In the last case, notice how defconfig automatically picks up
-> x86_64_defconfig correctly: if I were on an i386 machine, it would
-> have picked up i386_defconfig like in the first case. Without my
-> patch, the last case would have incorrectly picked up an i386
-> defconfig, which is Stupid and Wrong.
-
-You missed SUBARCH=x86.
-
-That said, if you cover all cases I'll happily merge that.
-And honestly, your patches are minor stuff, they don't even touch C source files.
-Acting up like you do just because of some default values is crazy.
-We have more serious problems so solve.
-
-Thanks,
-//richard
+<html><head/><body><html><head></head><body>Correct. Users expect Form SUBARCH=x86 a 32bit kernel.<br><br><div class="gmail_quote"><br>
+<br>
+Geert Uytterhoeven &lt;geert@linux-m68k.org&gt; schrieb:<blockquote class="gmail_quote" style="margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;">
+<pre style="white-space: pre-wrap; word-wrap:break-word; font-family: sans-serif; margin-top: 0px">On Thu, Sep 26, 2013 at 3:13 PM, Ramkumar Ramachandra<br />&lt;artagnon@gmail.com&gt; wrote:<br /><blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;">Ramkumar Ramachandra wrote:<br /><blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;">Richard Weinberger wrote:<br /><blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #8ae234; padding-left: 1ex;">I told you already that "make defconfig ARCH=um SUBARCH=x86" will spuriously<br />create a x86_64 config on x86_64.<br />This breaks existing setups.</blockquote><br />I'll fix this and resubmit soon.</blockquote><br />Wait a minute. You're now arguing about whether the generic "x86"<br />means i386 or x86_64. Its meaning is already defined in<br />arch/x86/Kconfig and
+arch/x86/um/Kconfig: see the config 64BIT. Unless<br />i386 is explicitly specified, the default is to build a 64-bit kernel.<br />That is already defined for a normal Linux kernel, and user-mode Linux<br />should not break that convention. So, in the example you pulled out of<br />your hat:<br /><br />$ make defconfig ARCH=um SUBARCH=x86<br /><br />the user should expect a 64-bit build, and not an i386 build as you<br />say. Both my patches are correct, and the "regression" that you<br />pointed out is a red herring.</blockquote><br />Sorry for chiming in, but... what about cross compiling?<br />SUBARCH=x86 should give you a 32-bit ia32 kernel, right?<br /><br />Gr{oetje,eeting}s,<br /><br />Geert<br /><br />--<br />Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org<br /><br />In personal conversations with technical people, I call myself a hacker. But<br />when I'm talking to journalists I just say "programmer" or something like that.<br />-- Linus
+Torvalds<br /></pre></blockquote></div><br>
+-- <br>
+Diese Nachricht wurde von meinem Android-Mobiltelefon mit K-9 Mail gesendet.</body></html></body></html>
+------5QY7030VZWCJNE5X8N17B2HC1XHSHG--

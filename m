@@ -1,46 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Sep 2013 20:51:39 +0200 (CEST)
-Received: from mail-ie0-f180.google.com ([209.85.223.180]:40131 "EHLO
-        mail-ie0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816384Ab3IZSveBW0St (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Sep 2013 20:51:34 +0200
-Received: by mail-ie0-f180.google.com with SMTP id u16so1966124iet.39
-        for <multiple recipients>; Thu, 26 Sep 2013 11:51:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=noVV1u5RfkID4yFGfTTP4+o/sciPsXkHw1x6dqIwbQU=;
-        b=TieIliaTJKWKeGvkA2LzvZUZ6lnJHLg1wnWY9I4d9Qbo9+Pk9A/1jCUdC5vxcuBB4v
-         Ry/tnV/NRES3ZDqyjCT+DJIJa58EuJvwWUJhflNAYLnr7U644ldn+A4d2pkJgy4hMgne
-         96wHX+qXpd5yX+M4Ipu+TsmgRfd1eJvZoEj13UBgDEyTOHVli3PLnZeQqUSMOAEjLIfX
-         30C2V92I1+YaKDc6UaIf/GWdywjNSK2w7lRfF7C2RXcsEvA+UbgqPDa5KcARIVyz2pa9
-         DKMRdLmOmII2s+t5YJHrpC6FVHgA27un/X6GO8F74msMjNSEmNmBlFb2TcB2c/mnd7Ra
-         zTYA==
-X-Received: by 10.43.49.8 with SMTP id uy8mr2717243icb.73.1380221487781;
-        Thu, 26 Sep 2013 11:51:27 -0700 (PDT)
-Received: from rob-laptop.calxeda.com ([173.226.190.126])
-        by mx.google.com with ESMTPSA id x5sm56492iga.6.1969.12.31.16.00.00
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 26 Sep 2013 11:51:27 -0700 (PDT)
-From:   Rob Herring <robherring2@gmail.com>
-To:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     Grant Likely <grant.likely@linaro.org>,
-        Rob Herring <rob.herring@calxeda.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 11/21] mips: add explicit includes of prom.h
-Date:   Thu, 26 Sep 2013 13:50:46 -0500
-Message-Id: <1380221456-11192-12-git-send-email-robherring2@gmail.com>
-X-Mailer: git-send-email 1.8.1.2
-In-Reply-To: <1380221456-11192-1-git-send-email-robherring2@gmail.com>
-References: <1380221456-11192-1-git-send-email-robherring2@gmail.com>
-Return-Path: <robherring2@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Sep 2013 12:05:03 +0200 (CEST)
+Received: from mail-vc0-f172.google.com ([209.85.220.172]:43217 "EHLO
+        mail-vc0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6820116Ab3I0KE4nXLkx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Sep 2013 12:04:56 +0200
+Received: by mail-vc0-f172.google.com with SMTP id hu8so1742763vcb.3
+        for <linux-mips@linux-mips.org>; Fri, 27 Sep 2013 03:04:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to
+         :content-type;
+        bh=eXf0QurRc40M54/aZzLqyaSYKMtV1B+MMKrGmkkMq3g=;
+        b=DY3BXut2lN1l2pWgm/16RpBRYJiOmRtKXTqJdStDg0zLQt/cxaztLmiFsBZxpa5M6U
+         kT0jBCqg3cir17kWu84YZ8QuIwCeLHJ5fTRs4udafUG2UeS7Sb4To+NcC+fJkahMWiAe
+         FpFHtjhS18CzaWCP1qCtGyStS6kQojkbcrAtT0DK0nnVUaNILZ0esilvz4JQM+W2JsBU
+         IEcGvpXbQVneGEpeSibRO6y7YCFoGMt6YLc1ql+1hXFUtmDc+bGlsjUca2zaHy631mzG
+         PMJ6fioIh8ySMYLT8kOks7Z023Ifho+qgoCf6hgyRgxbmAuZU5QSOFGefVGmAjmdukUG
+         Y6FA==
+X-Gm-Message-State: ALoCoQlaNcm7Ft2yQUmAXGZiZAjitUUSUJ6vgu+erAbjie/7cyYq6ze66WjmGHF2s0P0aaIAbDIE
+MIME-Version: 1.0
+X-Received: by 10.52.230.35 with SMTP id sv3mr4701154vdc.27.1380276289981;
+ Fri, 27 Sep 2013 03:04:49 -0700 (PDT)
+Received: by 10.52.231.170 with HTTP; Fri, 27 Sep 2013 03:04:49 -0700 (PDT)
+Date:   Fri, 27 Sep 2013 12:04:49 +0200
+Message-ID: <CAPVwjkwX=uCTsg6dG_T4c8iYEM0jemeTpGgxJZbAiWLYfgymZg@mail.gmail.com>
+Subject: MIPS - passing data to kernel
+From:   Martin Hinner <martin@hinner.info>
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <martin@hinner.info>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38002
+X-archive-position: 38003
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robherring2@gmail.com
+X-original-sender: martin@hinner.info
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,55 +48,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Rob Herring <rob.herring@calxeda.com>
+Hello,
 
-In preparation of removing prom.h include by of.h, add explicit includes.
+ I am trying to port Linux to MIPS-based platform with custom
+bootloader. I need to pass command line, initrd, and some parameters
+such as memory size to kernel (preferably via device tree). The
+devicetree is built/modified  in bootloader, so I cannot embed it in
+kernel.
 
-Signed-off-by: Rob Herring <rob.herring@calxeda.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/lantiq/prom.c           | 1 +
- arch/mips/mti-sead3/sead3-setup.c | 2 ++
- arch/mips/ralink/of.c             | 1 +
- 3 files changed, 4 insertions(+)
+Please correct me if I am wrong:
 
-diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-index 49c4603..19686c5 100644
---- a/arch/mips/lantiq/prom.c
-+++ b/arch/mips/lantiq/prom.c
-@@ -14,6 +14,7 @@
- 
- #include <asm/bootinfo.h>
- #include <asm/time.h>
-+#include <asm/prom.h>
- 
- #include <lantiq.h>
- 
-diff --git a/arch/mips/mti-sead3/sead3-setup.c b/arch/mips/mti-sead3/sead3-setup.c
-index b5059dc..928ba84 100644
---- a/arch/mips/mti-sead3/sead3-setup.c
-+++ b/arch/mips/mti-sead3/sead3-setup.c
-@@ -10,6 +10,8 @@
- #include <linux/of_fdt.h>
- #include <linux/bootmem.h>
- 
-+#include <asm/prom.h>
-+
- #include <asm/mips-boards/generic.h>
- 
- const char *get_system_type(void)
-diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
-index ce38d11..58c4fd52 100644
---- a/arch/mips/ralink/of.c
-+++ b/arch/mips/ralink/of.c
-@@ -21,6 +21,7 @@
- #include <asm/reboot.h>
- #include <asm/bootinfo.h>
- #include <asm/addrspace.h>
-+#include <asm/prom.h>
- 
- #include "common.h"
- 
--- 
-1.8.1.2
+- I think there is no standard for passing data to kernel, just some
+firmwares use a0/a1 for argv/argc (in fw_init_cmdline).
+
+- there is no standard for passing device tree on MIPS (does U-Boot
+support this on MIPS? How?)
+
+- the only way how to pass address/size of initramfs/initrd is via
+commandline parameters (rd_start, rd_size)
+
+What I would like to do is to pass initrd, device tree and commandline
+to kernel. For example PowerPC has the following arguments on kernel
+start which perfectly matches my needs:
+
+  51 *   r3: ptr to board info data
+  52 *   r4: initrd_start or if no initrd then 0
+  53 *   r5: initrd_end - unused if r4 is 0
+  54 *   r6: Start of command line string
+  55 *   r7: End of command line string
+
+Unfortunately MIPS ABI allows only a0..a3 (+stack arguments which is
+of no use in this case) so I'll have to use either some sort of memory
+structure (such as ATAGs used in ARMLinux/Android) or pass devicetree
+address via register or commandline. I would prefer ATAG-like method
+as it's much cleaner than other methods.
+
+Any comments on this are welcome. I do not want to re-invent wheel.
+
+
+Thank you,
+
+Martin

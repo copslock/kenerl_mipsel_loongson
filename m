@@ -1,51 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Sep 2013 22:17:12 +0200 (CEST)
-Received: from mail-lb0-f176.google.com ([209.85.217.176]:60871 "EHLO
-        mail-lb0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823127Ab3I1URHwrJNd convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 28 Sep 2013 22:17:07 +0200
-Received: by mail-lb0-f176.google.com with SMTP id y6so3306147lbh.35
-        for <multiple recipients>; Sat, 28 Sep 2013 13:17:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=9yS8uKcZdMD24TgSr94z1yL7IrCBWpxocAeGhopBzqo=;
-        b=PQqXj0Ba1YgCVUJUKQFv1wQx3i/rDZRBebckepqHH2Vgvg0zz+Y67CuWW6B9r8Phxy
-         pN3mVeST7uXQUyghpjkvohZ+EwIGwZZAvKBUjkzkVARBMnW4TCWwlZyx7UOZsP6YTY/L
-         rIaZaV2kvFnIXUpfnO47OwKjLEubarhAjA03acBAAtsxuSSZAX55Bmr98Do+R6cbnz2N
-         U1RiipoOoOqWMx0yPy3mQXrtDEVA1aGXSkrDQg+Bz/h7QQmLOEgV/180pgpSm07uGGoc
-         CE7XtU5VanAxf+nKs30WQTQUx8uqPf+1w0DvvbtoT6L6REg5kQK0qq6TremkowgZb9Yi
-         k1QA==
-X-Received: by 10.112.126.37 with SMTP id mv5mr14587778lbb.20.1380399422250;
-        Sat, 28 Sep 2013 13:17:02 -0700 (PDT)
-Received: from quiet (ppp37-190-57-6.pppoe.spdop.ru. [37.190.57.6])
-        by mx.google.com with ESMTPSA id ua4sm10192343lbb.17.1969.12.31.16.00.00
-        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sat, 28 Sep 2013 13:17:01 -0700 (PDT)
-Date:   Sun, 29 Sep 2013 00:14:21 +0400
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: vmlinuz: gather some string functions into
- string.c
-Message-Id: <20130929001421.cc255b12705c2f7036c418e9@gmail.com>
-In-Reply-To: <524712A7.7060402@gmail.com>
-References: <1380382974-27884-1-git-send-email-antonynpavlov@gmail.com>
-        <524712A7.7060402@gmail.com>
-X-Mailer: Sylpheed 3.4.0beta4 (GTK+ 2.24.20; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Sep 2013 22:40:55 +0200 (CEST)
+Received: from b.ns.miles-group.at ([95.130.255.144]:9061 "EHLO radon.swed.at"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6823064Ab3I1UkvGl3ZI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 28 Sep 2013 22:40:51 +0200
+Received: (qmail 21400 invoked by uid 89); 28 Sep 2013 20:40:58 -0000
+Received: by simscan 1.3.1 ppid: 21392, pid: 21396, t: 0.0786s
+         scanners: attach: 1.3.1 clamav: 0.96.5/m:
+Received: from unknown (HELO ?192.168.0.11?) (richard@nod.at@212.186.22.124)
+  by radon.swed.at with ESMTPA; 28 Sep 2013 20:40:58 -0000
+Message-ID: <52473ECF.8080503@nod.at>
+Date:   Sat, 28 Sep 2013 22:40:47 +0200
+From:   Richard Weinberger <richard@nod.at>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130620 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+CC:     devel@driverdev.osuosl.org, linux-mips@linux-mips.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 1/2] staging: octeon-ethernet: don't assume that CPU 0
+ is special
+References: <1380397834-14286-1-git-send-email-aaro.koskinen@iki.fi>
+In-Reply-To: <1380397834-14286-1-git-send-email-aaro.koskinen@iki.fi>
+X-Enigmail-Version: 1.5.2
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: 7bit
+Return-Path: <richard@nod.at>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38053
+X-archive-position: 38054
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: richard@nod.at
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,144 +45,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 28 Sep 2013 19:32:23 +0200
-Florian Fainelli <f.fainelli@gmail.com> wrote:
-
-> Hello,
+Am 28.09.2013 21:50, schrieb Aaro Koskinen:
+> Currently the driver assumes that CPU 0 is handling all the hard IRQs.
+> This is wrong in Linux SMP systems where user is allowed to assign to
+> hardware IRQs to any CPU. The driver will stop working if user sets
+> smp_affinity so that interrupts end up being handled by other than CPU
+> 0. The patch fixes that.
 > 
-> Le 28/09/2013 17:42, Antony Pavlov a écrit :
-> > This patch fixes linker error:
-> >
-> >      LD    vmlinuz
-> >    arch/mips/boot/compressed/decompress.o: In function `decompress_kernel':
-> >    decompress.c:(.text+0x754): undefined reference to `memcpy'
-> >    make[1]: *** [vmlinuz] Error 1
-> >
-> > Which appears when compiling vmlinuz image with CONFIG_KERNEL_LZO=y.
+> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> ---
+>  drivers/staging/octeon/ethernet-rx.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 > 
-> You would have to rebase this on top of mips-for-linux-next which 
-> contains a bit more ifdef for supporting LZ4 and XZ otherwise the first 
-> hunk of the patch does not apply.
+> diff --git a/drivers/staging/octeon/ethernet-rx.c b/drivers/staging/octeon/ethernet-rx.c
+> index e14a1bb..de831c1 100644
+> --- a/drivers/staging/octeon/ethernet-rx.c
+> +++ b/drivers/staging/octeon/ethernet-rx.c
+> @@ -80,6 +80,8 @@ struct cvm_oct_core_state {
+>  
+>  static struct cvm_oct_core_state core_state __cacheline_aligned_in_smp;
+>  
+> +static int cvm_irq_cpu = -1;
 
-My bad, I found your "[PATCH v2] MIPS: ZBOOT: support LZ4 compression scheme" patch
-__after__ sending my patches.
+Why are you introducing a new global variable here?
+Can't you pass cvm_irq_cpu as argument to cvm_oct_enable_napi()?
 
-Unfortunately I can't get access to the mips-for-linux-next branch:
-
-* the git://git.linux-mips.org/pub/scm/ralf/linux.git repo contain only the *-stable
-branches;
-* I can't clone linux-queue.git (see below).
-
-$ git clone git://git.linux-mips.org/pub/scm/ralf/linux-queue.git
-Cloning into 'linux-queue'...
-fatal: remote error: access denied or repository not exported: /pub/scm/ralf/linux-queue.git
-
-How can I obtain the mips-for-linux-next branch?
-
-> Regarding the contents of the patch, you are somehow changing the 
-> existing compressor code by unconditionnaly providing a memset and 
-> memcpy implementation, which is fine per se but should be mentioned at 
-> least.
-> 
-> >
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> >   arch/mips/boot/compressed/Makefile     |  4 ++--
-> >   arch/mips/boot/compressed/decompress.c | 19 -------------------
-> >   arch/mips/boot/compressed/string.c     | 28 ++++++++++++++++++++++++++++
-> >   3 files changed, 30 insertions(+), 21 deletions(-)
-> >   create mode 100644 arch/mips/boot/compressed/string.c
-> >
-> > diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-> > index 0048c08..30e30d4 100644
-> > --- a/arch/mips/boot/compressed/Makefile
-> > +++ b/arch/mips/boot/compressed/Makefile
-> > @@ -27,10 +27,10 @@ KBUILD_AFLAGS := $(LINUXINCLUDE) $(KBUILD_AFLAGS) -D__ASSEMBLY__ \
-> >   	-DBOOT_HEAP_SIZE=$(BOOT_HEAP_SIZE) \
-> >   	-DKERNEL_ENTRY=$(VMLINUX_ENTRY_ADDRESS)
-> >
-> > -targets := head.o decompress.o dbg.o uart-16550.o uart-alchemy.o
-> > +targets := head.o decompress.o string.o dbg.o uart-16550.o uart-alchemy.o
-> >
-> >   # decompressor objects (linked with vmlinuz)
-> > -vmlinuzobjs-y := $(obj)/head.o $(obj)/decompress.o $(obj)/dbg.o
-> > +vmlinuzobjs-y := $(obj)/head.o $(obj)/decompress.o $(obj)/string.o $(obj)/dbg.o
-> >
-> >   ifdef CONFIG_DEBUG_ZBOOT
-> >   vmlinuzobjs-$(CONFIG_SYS_SUPPORTS_ZBOOT_UART16550) += $(obj)/uart-16550.o
-> > diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
-> > index 2c95730..fc1f294 100644
-> > --- a/arch/mips/boot/compressed/decompress.c
-> > +++ b/arch/mips/boot/compressed/decompress.c
-> > @@ -44,29 +44,10 @@ void error(char *x)
-> >   #define STATIC static
-> >
-> >   #ifdef CONFIG_KERNEL_GZIP
-> > -void *memcpy(void *dest, const void *src, size_t n)
-> > -{
-> > -	int i;
-> > -	const char *s = src;
-> > -	char *d = dest;
-> > -
-> > -	for (i = 0; i < n; i++)
-> > -		d[i] = s[i];
-> > -	return dest;
-> > -}
-> >   #include "../../../../lib/decompress_inflate.c"
-> >   #endif
-> >
-> >   #ifdef CONFIG_KERNEL_BZIP2
-> > -void *memset(void *s, int c, size_t n)
-> > -{
-> > -	int i;
-> > -	char *ss = s;
-> > -
-> > -	for (i = 0; i < n; i++)
-> > -		ss[i] = c;
-> > -	return s;
-> > -}
-> >   #include "../../../../lib/decompress_bunzip2.c"
-> >   #endif
-> >
-> > diff --git a/arch/mips/boot/compressed/string.c b/arch/mips/boot/compressed/string.c
-> > new file mode 100644
-> > index 0000000..49e6db0
-> > --- /dev/null
-> > +++ b/arch/mips/boot/compressed/string.c
-> > @@ -0,0 +1,28 @@
-> > +/*
-> > + * arch/mips/boot/compressed/string.c
-> > + *
-> > + * Very small subset of simple string routines
-> > + */
-> > +
-> > +#include <linux/string.h>
-> > +
-> > +void *memcpy(void *dest, const void *src, size_t n)
-> > +{
-> > +	int i;
-> > +	const char *s = src;
-> > +	char *d = dest;
-> > +
-> > +	for (i = 0; i < n; i++)
-> > +		d[i] = s[i];
-> > +	return dest;
-> > +}
-> > +
-> > +void *memset(void *s, int c, size_t n)
-> > +{
-> > +	int i;
-> > +	char *ss = s;
-> > +
-> > +	for (i = 0; i < n; i++)
-> > +		ss[i] = c;
-> > +	return s;
-> > +}
-> >
-> 
-
-
--- 
--- 
-Best regards,
-  Antony Pavlov
+Thanks,
+//richard

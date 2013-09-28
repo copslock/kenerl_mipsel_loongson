@@ -1,44 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Sep 2013 17:52:25 +0200 (CEST)
-Received: from mail-la0-f42.google.com ([209.85.215.42]:33109 "EHLO
-        mail-la0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816285Ab3I1PwXtTM19 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Sep 2013 17:52:23 +0200
-Received: by mail-la0-f42.google.com with SMTP id ep20so3129736lab.15
-        for <multiple recipients>; Sat, 28 Sep 2013 08:52:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=/d2Vs3oQBsBUgjEcPa4zTH6WoPzIva5hKF1G2UtSGkM=;
-        b=i+nUZsaqQLj2KGFGImjDIN0QLw9CEHnRqxqYHTyiMlppwVTUnGWxLazz8gx2UwOr/j
-         7WBWY4XBMwzgx1qYD3LN4U0vFcvlHboi3HlS451MJE/teNIgx7I5s36bMEo/3OTaGr0A
-         hDAtGe7yAxCREpp6IfVCUA1vKpXH4nyohD6KzjALYAgfblRp4Jxg2ajnyPzZ2HajqOC3
-         MzB61ghkW4V10PuMNQAoeKe9cmu8dKa7ZIIWBfkoRQoQTWzC0aXLd+XQnkPPSBQsbz2W
-         TnO5Sx7eizOCwC4fTVfpD6NZy/mOSrFJYB6oq2KIyPEB3/tHSKnkSIeIaTS2szxvTzMI
-         THpg==
-X-Received: by 10.152.2.74 with SMTP id 10mr450682las.36.1380383538243;
-        Sat, 28 Sep 2013 08:52:18 -0700 (PDT)
-Received: from localhost.localdomain (ppp37-190-57-6.pppoe.spdop.ru. [37.190.57.6])
-        by mx.google.com with ESMTPSA id ur6sm9603707lbc.5.1969.12.31.16.00.00
-        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sat, 28 Sep 2013 08:52:17 -0700 (PDT)
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Antony Pavlov <antonynpavlov@gmail.com>
-Subject: [PATCH] MIPS: JZ4740: reuse UART0 address macro for vmlinuz debug port
-Date:   Sat, 28 Sep 2013 19:49:34 +0400
-Message-Id: <1380383374-28406-1-git-send-email-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 1.8.4.rc3
-Return-Path: <antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Sep 2013 19:05:25 +0200 (CEST)
+Received: from smtp-out-202.synserver.de ([212.40.185.202]:1052 "EHLO
+        smtp-out-200.synserver.de" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6817088Ab3I1RFVpLLRE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Sep 2013 19:05:21 +0200
+Received: (qmail 31884 invoked by uid 0); 28 Sep 2013 17:05:18 -0000
+X-SynServer-TrustedSrc: 1
+X-SynServer-AuthUser: lars@metafoo.de
+X-SynServer-PPID: 31865
+Received: from ppp-88-217-85-219.dynamic.mnet-online.de (HELO ?192.168.178.23?) [88.217.85.219]
+  by 217.119.54.81 with AES256-SHA encrypted SMTP; 28 Sep 2013 17:05:17 -0000
+Message-ID: <52470CBB.30406@metafoo.de>
+Date:   Sat, 28 Sep 2013 19:07:07 +0200
+From:   Lars-Peter Clausen <lars@metafoo.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130922 Icedove/17.0.9
+MIME-Version: 1.0
+To:     Antony Pavlov <antonynpavlov@gmail.com>
+CC:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] MIPS: JZ4740: reuse UART0 address macro for vmlinuz debug
+ port
+References: <1380383374-28406-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1380383374-28406-1-git-send-email-antonynpavlov@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <lars@metafoo.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38048
+X-archive-position: 38049
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,25 +43,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/boot/compressed/uart-16550.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On 09/28/2013 05:49 PM, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-diff --git a/arch/mips/boot/compressed/uart-16550.c b/arch/mips/boot/compressed/uart-16550.c
-index c01d343..869172d 100644
---- a/arch/mips/boot/compressed/uart-16550.c
-+++ b/arch/mips/boot/compressed/uart-16550.c
-@@ -19,8 +19,8 @@
- #endif
- 
- #ifdef CONFIG_MACH_JZ4740
--#define UART0_BASE  0xB0030000
--#define PORT(offset) (UART0_BASE + (4 * offset))
-+#include <asm/mach-jz4740/base.h>
-+#define PORT(offset) (CKSEG1ADDR(JZ4740_UART0_BASE_ADDR) + (4 * offset))
- #endif
- 
- #ifdef CONFIG_CPU_XLR
--- 
-1.8.4.rc3
+Looks good.
+
+Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+
+> ---
+>  arch/mips/boot/compressed/uart-16550.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/boot/compressed/uart-16550.c b/arch/mips/boot/compressed/uart-16550.c
+> index c01d343..869172d 100644
+> --- a/arch/mips/boot/compressed/uart-16550.c
+> +++ b/arch/mips/boot/compressed/uart-16550.c
+> @@ -19,8 +19,8 @@
+>  #endif
+>  
+>  #ifdef CONFIG_MACH_JZ4740
+> -#define UART0_BASE  0xB0030000
+> -#define PORT(offset) (UART0_BASE + (4 * offset))
+> +#include <asm/mach-jz4740/base.h>
+> +#define PORT(offset) (CKSEG1ADDR(JZ4740_UART0_BASE_ADDR) + (4 * offset))
+>  #endif
+>  
+>  #ifdef CONFIG_CPU_XLR
+> 

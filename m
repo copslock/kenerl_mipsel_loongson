@@ -1,48 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Sep 2013 08:46:41 +0200 (CEST)
-Received: from mail-pa0-f52.google.com ([209.85.220.52]:55221 "EHLO
-        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6820116Ab3I1Gm5S42GA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Sep 2013 08:42:57 +0200
-Received: by mail-pa0-f52.google.com with SMTP id kl14so3648354pab.39
-        for <multiple recipients>; Fri, 27 Sep 2013 23:42:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Sep 2013 17:45:50 +0200 (CEST)
+Received: from mail-lb0-f174.google.com ([209.85.217.174]:46277 "EHLO
+        mail-lb0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816285Ab3I1Ppni9Ll1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Sep 2013 17:45:43 +0200
+Received: by mail-lb0-f174.google.com with SMTP id w6so3146619lbh.5
+        for <multiple recipients>; Sat, 28 Sep 2013 08:45:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Zaqqe5lgRCTmRXygpB+Dgvj4RtD+BBi3K6ViPJvE/t4=;
-        b=uWSGRU70icC/8JzPLWMO6b7xyqByTmKO0XQnRODkPzGi1Q8u7OZQO2SUB9OJ9ASzWT
-         1zGOMDkBWL+TNGBwaHkAKYEpJGcqThwigQKV3kuxuCVGqFjQ0RiljAcPSOfhFr7aAR2q
-         mSqlE3q3QTmMdjt4mqv4WPwgDTvPxpkksPbZQSeHfI/9NUSE5JFZEOOAc0yG3tm26Of7
-         X2HMtQn99OLxr5vjttZJGXopKnGiFuTXP5GNgFeE04nwrFZIEWQ3t77dLH2SMxJ2lYlR
-         gU1+5vGRKmKZD+v66AREgRSslmW5etMDU+PCj/39L4/+VhAmzud3IP4Z7q9HMLp1i+RM
-         2nJw==
-X-Received: by 10.66.162.136 with SMTP id ya8mr15708870pab.110.1380350570928;
-        Fri, 27 Sep 2013 23:42:50 -0700 (PDT)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id oj6sm17406031pab.9.1969.12.31.16.00.00
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 27 Sep 2013 23:42:50 -0700 (PDT)
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: [PATCH V13 12/12] MIPS: Loongson: Add a Loongson-3 default config file
-Date:   Sat, 28 Sep 2013 14:41:11 +0800
-Message-Id: <1380350471-1015-13-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 1.7.7.3
-In-Reply-To: <1380350471-1015-1-git-send-email-chenhc@lemote.com>
-References: <1380350471-1015-1-git-send-email-chenhc@lemote.com>
-Return-Path: <chenhuacai@gmail.com>
+        h=from:to:cc:subject:date:message-id;
+        bh=txOuMoPz25JYF6XrFJWxVvCn62wQ6lTnWvEdx5IECtQ=;
+        b=Y7GyGEJXJXtxQM50zsHYzsSm36fPGK2vVWXskbDVgr+qSWYwfOLi51Jfw350R3IvAK
+         AZn7H8yB+4kN/f5Ipis2KcNZ1deLVCu26qq5ygxsuPrJ/PeuSk0y910o3xMn+y7MIpxi
+         780Wp5+3GKJF9x7KDKrvcJAbR/W40gxU0A2RO4P0WY95XDpBn5isGBVeSWOPF4ekktIL
+         SUye+Th4smNlfib+6sgKfywyYt/VJTAFV9XjmYs3ZFw1fAEzJaNKYtlPrfNAOjq5NeV7
+         4VDpjslfpQcYV5IZnK69wAQc4o/9w/KKYKvbTnD8dzoNOgp7Aha0sLilUWnSvA9lQ5ei
+         s9Ig==
+X-Received: by 10.152.115.176 with SMTP id jp16mr10911214lab.17.1380383137714;
+        Sat, 28 Sep 2013 08:45:37 -0700 (PDT)
+Received: from localhost.localdomain (ppp37-190-57-6.pppoe.spdop.ru. [37.190.57.6])
+        by mx.google.com with ESMTPSA id f17sm9565479lbo.12.1969.12.31.16.00.00
+        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sat, 28 Sep 2013 08:45:36 -0700 (PDT)
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Antony Pavlov <antonynpavlov@gmail.com>
+Subject: [PATCH] MIPS: vmlinuz: gather some string functions into string.c
+Date:   Sat, 28 Sep 2013 19:42:54 +0400
+Message-Id: <1380382974-27884-1-git-send-email-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 1.8.4.rc3
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38046
+X-archive-position: 38047
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,357 +50,107 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Signed-off-by: Hongliang Tao <taohl@lemote.com>
-Signed-off-by: Hua Yan <yanh@lemote.com>
----
- arch/mips/configs/loongson3_defconfig |  338 +++++++++++++++++++++++++++++++++
- 1 files changed, 338 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/configs/loongson3_defconfig
+This patch fixes linker error:
 
-diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
+    LD    vmlinuz
+  arch/mips/boot/compressed/decompress.o: In function `decompress_kernel':
+  decompress.c:(.text+0x754): undefined reference to `memcpy'
+  make[1]: *** [vmlinuz] Error 1
+
+Which appears when compiling vmlinuz image with CONFIG_KERNEL_LZO=y.
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/boot/compressed/Makefile     |  4 ++--
+ arch/mips/boot/compressed/decompress.c | 19 -------------------
+ arch/mips/boot/compressed/string.c     | 28 ++++++++++++++++++++++++++++
+ 3 files changed, 30 insertions(+), 21 deletions(-)
+ create mode 100644 arch/mips/boot/compressed/string.c
+
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index 0048c08..30e30d4 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -27,10 +27,10 @@ KBUILD_AFLAGS := $(LINUXINCLUDE) $(KBUILD_AFLAGS) -D__ASSEMBLY__ \
+ 	-DBOOT_HEAP_SIZE=$(BOOT_HEAP_SIZE) \
+ 	-DKERNEL_ENTRY=$(VMLINUX_ENTRY_ADDRESS)
+ 
+-targets := head.o decompress.o dbg.o uart-16550.o uart-alchemy.o
++targets := head.o decompress.o string.o dbg.o uart-16550.o uart-alchemy.o
+ 
+ # decompressor objects (linked with vmlinuz)
+-vmlinuzobjs-y := $(obj)/head.o $(obj)/decompress.o $(obj)/dbg.o
++vmlinuzobjs-y := $(obj)/head.o $(obj)/decompress.o $(obj)/string.o $(obj)/dbg.o
+ 
+ ifdef CONFIG_DEBUG_ZBOOT
+ vmlinuzobjs-$(CONFIG_SYS_SUPPORTS_ZBOOT_UART16550) += $(obj)/uart-16550.o
+diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
+index 2c95730..fc1f294 100644
+--- a/arch/mips/boot/compressed/decompress.c
++++ b/arch/mips/boot/compressed/decompress.c
+@@ -44,29 +44,10 @@ void error(char *x)
+ #define STATIC static
+ 
+ #ifdef CONFIG_KERNEL_GZIP
+-void *memcpy(void *dest, const void *src, size_t n)
+-{
+-	int i;
+-	const char *s = src;
+-	char *d = dest;
+-
+-	for (i = 0; i < n; i++)
+-		d[i] = s[i];
+-	return dest;
+-}
+ #include "../../../../lib/decompress_inflate.c"
+ #endif
+ 
+ #ifdef CONFIG_KERNEL_BZIP2
+-void *memset(void *s, int c, size_t n)
+-{
+-	int i;
+-	char *ss = s;
+-
+-	for (i = 0; i < n; i++)
+-		ss[i] = c;
+-	return s;
+-}
+ #include "../../../../lib/decompress_bunzip2.c"
+ #endif
+ 
+diff --git a/arch/mips/boot/compressed/string.c b/arch/mips/boot/compressed/string.c
 new file mode 100644
-index 0000000..2445a90
+index 0000000..49e6db0
 --- /dev/null
-+++ b/arch/mips/configs/loongson3_defconfig
-@@ -0,0 +1,338 @@
-+CONFIG_MACH_LOONGSON=y
-+CONFIG_LEMOTE_MACH3A=y
-+CONFIG_LOONGSON_BIGMEM=y
-+CONFIG_CPU_LOONGSON3=y
-+CONFIG_64BIT=y
-+CONFIG_PAGE_SIZE_16KB=y
-+CONFIG_KSM=y
-+CONFIG_SMP=y
-+CONFIG_NR_CPUS=4
-+CONFIG_HZ_256=y
-+CONFIG_PREEMPT=y
-+CONFIG_KEXEC=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_KERNEL_LZMA=y
-+CONFIG_SYSVIPC=y
-+CONFIG_POSIX_MQUEUE=y
-+CONFIG_AUDIT=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_BSD_PROCESS_ACCT=y
-+CONFIG_BSD_PROCESS_ACCT_V3=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_CPUSETS=y
-+CONFIG_RESOURCE_COUNTERS=y
-+CONFIG_MEMCG=y
-+CONFIG_MEMCG_SWAP=y
-+CONFIG_BLK_CGROUP=y
-+CONFIG_SCHED_AUTOGROUP=y
-+CONFIG_SYSFS_DEPRECATED=y
-+CONFIG_RELAY=y
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_RD_BZIP2=y
-+CONFIG_RD_LZMA=y
-+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
-+CONFIG_SYSCTL_SYSCALL=y
-+CONFIG_EMBEDDED=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_FORCE_LOAD=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODULE_FORCE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+CONFIG_BLK_DEV_INTEGRITY=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_IOSCHED_DEADLINE=m
-+CONFIG_CFQ_GROUP_IOSCHED=y
-+CONFIG_PCI=y
-+CONFIG_HT_PCI=y
-+CONFIG_PCIEPORTBUS=y
-+CONFIG_HOTPLUG_PCI_PCIE=y
-+# CONFIG_PCIEAER is not set
-+CONFIG_PCIEASPM_PERFORMANCE=y
-+CONFIG_HOTPLUG_PCI=y
-+CONFIG_HOTPLUG_PCI_SHPC=m
-+CONFIG_BINFMT_MISC=m
-+CONFIG_MIPS32_COMPAT=y
-+CONFIG_MIPS32_O32=y
-+CONFIG_MIPS32_N32=y
-+CONFIG_PM_RUNTIME=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_XFRM_USER=y
-+CONFIG_NET_KEY=y
-+CONFIG_INET=y
-+CONFIG_IP_MULTICAST=y
-+CONFIG_IP_ADVANCED_ROUTER=y
-+CONFIG_IP_MULTIPLE_TABLES=y
-+CONFIG_IP_ROUTE_MULTIPATH=y
-+CONFIG_IP_ROUTE_VERBOSE=y
-+CONFIG_NETFILTER=y
-+CONFIG_NETFILTER_NETLINK_LOG=m
-+CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
-+CONFIG_NETFILTER_XT_TARGET_MARK=m
-+CONFIG_NETFILTER_XT_TARGET_NFQUEUE=m
-+CONFIG_NETFILTER_XT_MATCH_COMMENT=m
-+CONFIG_NETFILTER_XT_MATCH_DCCP=m
-+CONFIG_NETFILTER_XT_MATCH_ESP=m
-+CONFIG_NETFILTER_XT_MATCH_LENGTH=m
-+CONFIG_NETFILTER_XT_MATCH_LIMIT=m
-+CONFIG_NETFILTER_XT_MATCH_MAC=m
-+CONFIG_NETFILTER_XT_MATCH_MARK=m
-+CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
-+CONFIG_NETFILTER_XT_MATCH_PKTTYPE=m
-+CONFIG_NETFILTER_XT_MATCH_QUOTA=m
-+CONFIG_NETFILTER_XT_MATCH_REALM=m
-+CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
-+CONFIG_NETFILTER_XT_MATCH_STRING=m
-+CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
-+CONFIG_IP_VS=m
-+CONFIG_IP_NF_IPTABLES=m
-+CONFIG_IP_NF_MATCH_AH=m
-+CONFIG_IP_NF_MATCH_ECN=m
-+CONFIG_IP_NF_MATCH_TTL=m
-+CONFIG_IP_NF_FILTER=m
-+CONFIG_IP_NF_TARGET_REJECT=m
-+CONFIG_IP_NF_TARGET_ULOG=m
-+CONFIG_IP_NF_MANGLE=m
-+CONFIG_IP_NF_TARGET_ECN=m
-+CONFIG_IP_NF_TARGET_TTL=m
-+CONFIG_IP_NF_RAW=m
-+CONFIG_IP_NF_ARPTABLES=m
-+CONFIG_IP_NF_ARPFILTER=m
-+CONFIG_IP_NF_ARP_MANGLE=m
-+CONFIG_IP_SCTP=m
-+CONFIG_L2TP=m
-+CONFIG_CFG80211=m
-+CONFIG_CFG80211_WEXT=y
-+CONFIG_MAC80211=m
-+CONFIG_RFKILL=m
-+CONFIG_RFKILL_INPUT=y
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+CONFIG_MTD=m
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_BLK_DEV_CRYPTOLOOP=y
-+CONFIG_BLK_DEV_RAM=y
-+CONFIG_BLK_DEV_RAM_SIZE=8192
-+CONFIG_RAID_ATTRS=m
-+CONFIG_SCSI_TGT=y
-+CONFIG_BLK_DEV_SD=y
-+CONFIG_BLK_DEV_SR=y
-+CONFIG_CHR_DEV_SG=y
-+CONFIG_CHR_DEV_SCH=m
-+CONFIG_SCSI_MULTI_LUN=y
-+CONFIG_SCSI_CONSTANTS=y
-+CONFIG_SCSI_LOGGING=y
-+CONFIG_SCSI_SPI_ATTRS=m
-+CONFIG_SCSI_FC_ATTRS=m
-+CONFIG_SCSI_ISCSI_ATTRS=m
-+CONFIG_MEGARAID_NEWGEN=y
-+CONFIG_MEGARAID_MM=y
-+CONFIG_MEGARAID_MAILBOX=y
-+CONFIG_MEGARAID_LEGACY=y
-+CONFIG_MEGARAID_SAS=y
-+CONFIG_ATA=y
-+CONFIG_SATA_AHCI=y
-+CONFIG_PATA_ATIIXP=y
-+CONFIG_MD=y
-+CONFIG_BLK_DEV_DM=m
-+CONFIG_DM_CRYPT=m
-+CONFIG_DM_SNAPSHOT=m
-+CONFIG_DM_MIRROR=m
-+CONFIG_DM_ZERO=m
-+CONFIG_NETDEVICES=y
-+CONFIG_TUN=m
-+# CONFIG_NET_VENDOR_3COM is not set
-+# CONFIG_NET_VENDOR_ADAPTEC is not set
-+# CONFIG_NET_VENDOR_ALTEON is not set
-+# CONFIG_NET_VENDOR_AMD is not set
-+# CONFIG_NET_VENDOR_ARC is not set
-+# CONFIG_NET_VENDOR_ATHEROS is not set
-+# CONFIG_NET_CADENCE is not set
-+# CONFIG_NET_VENDOR_BROADCOM is not set
-+# CONFIG_NET_VENDOR_BROCADE is not set
-+# CONFIG_NET_VENDOR_CHELSIO is not set
-+# CONFIG_NET_VENDOR_CIRRUS is not set
-+# CONFIG_NET_VENDOR_CISCO is not set
-+# CONFIG_NET_VENDOR_DEC is not set
-+# CONFIG_NET_VENDOR_DLINK is not set
-+# CONFIG_NET_VENDOR_EMULEX is not set
-+# CONFIG_NET_VENDOR_EXAR is not set
-+# CONFIG_NET_VENDOR_FUJITSU is not set
-+# CONFIG_NET_VENDOR_HP is not set
-+CONFIG_E1000=y
-+CONFIG_E1000E=y
-+CONFIG_IGB=y
-+# CONFIG_NET_VENDOR_I825XX is not set
-+# CONFIG_NET_VENDOR_MARVELL is not set
-+# CONFIG_NET_VENDOR_MELLANOX is not set
-+# CONFIG_NET_VENDOR_MICREL is not set
-+# CONFIG_NET_VENDOR_MYRI is not set
-+# CONFIG_NET_VENDOR_NATSEMI is not set
-+# CONFIG_NET_VENDOR_NVIDIA is not set
-+# CONFIG_NET_VENDOR_OKI is not set
-+# CONFIG_NET_PACKET_ENGINE is not set
-+# CONFIG_NET_VENDOR_QLOGIC is not set
-+CONFIG_R8169=y
-+# CONFIG_NET_VENDOR_RDC is not set
-+# CONFIG_NET_VENDOR_SEEQ is not set
-+# CONFIG_NET_VENDOR_SILAN is not set
-+# CONFIG_NET_VENDOR_SIS is not set
-+# CONFIG_NET_VENDOR_SMSC is not set
-+# CONFIG_NET_VENDOR_STMICRO is not set
-+# CONFIG_NET_VENDOR_SUN is not set
-+# CONFIG_NET_VENDOR_TEHUTI is not set
-+# CONFIG_NET_VENDOR_TI is not set
-+# CONFIG_NET_VENDOR_TOSHIBA is not set
-+# CONFIG_NET_VENDOR_VIA is not set
-+# CONFIG_NET_VENDOR_WIZNET is not set
-+CONFIG_PPP=m
-+CONFIG_PPP_BSDCOMP=m
-+CONFIG_PPP_DEFLATE=m
-+CONFIG_PPP_FILTER=y
-+CONFIG_PPP_MPPE=m
-+CONFIG_PPP_MULTILINK=y
-+CONFIG_PPPOE=m
-+CONFIG_PPPOL2TP=m
-+CONFIG_PPP_ASYNC=m
-+CONFIG_PPP_SYNC_TTY=m
-+CONFIG_ATH_CARDS=m
-+CONFIG_ATH9K=m
-+CONFIG_HOSTAP=m
-+CONFIG_INPUT_POLLDEV=m
-+CONFIG_INPUT_SPARSEKMAP=y
-+CONFIG_INPUT_EVDEV=y
-+CONFIG_KEYBOARD_XTKBD=m
-+CONFIG_MOUSE_PS2_SENTELIC=y
-+CONFIG_MOUSE_SERIAL=m
-+CONFIG_INPUT_MISC=y
-+CONFIG_INPUT_UINPUT=m
-+CONFIG_SERIO_SERPORT=m
-+CONFIG_SERIO_RAW=m
-+CONFIG_LEGACY_PTY_COUNT=16
-+CONFIG_SERIAL_NONSTANDARD=y
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_NR_UARTS=16
-+CONFIG_SERIAL_8250_EXTENDED=y
-+CONFIG_SERIAL_8250_MANY_PORTS=y
-+CONFIG_SERIAL_8250_SHARE_IRQ=y
-+CONFIG_SERIAL_8250_RSA=y
-+CONFIG_HW_RANDOM=y
-+CONFIG_RAW_DRIVER=m
-+CONFIG_I2C_CHARDEV=y
-+CONFIG_I2C_PIIX4=y
-+CONFIG_SENSORS_LM75=m
-+CONFIG_SENSORS_LM93=m
-+CONFIG_MEDIA_SUPPORT=m
-+CONFIG_MEDIA_CAMERA_SUPPORT=y
-+CONFIG_MEDIA_USB_SUPPORT=y
-+CONFIG_USB_VIDEO_CLASS=m
-+CONFIG_DRM=y
-+CONFIG_DRM_RADEON=y
-+CONFIG_VIDEO_OUTPUT_CONTROL=y
-+CONFIG_FB_RADEON=y
-+CONFIG_LCD_CLASS_DEVICE=y
-+CONFIG_LCD_PLATFORM=m
-+CONFIG_BACKLIGHT_GENERIC=m
-+# CONFIG_VGA_CONSOLE is not set
-+CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
-+CONFIG_LOGO=y
-+CONFIG_SOUND=y
-+CONFIG_SND=m
-+CONFIG_SND_SEQUENCER=m
-+CONFIG_SND_SEQ_DUMMY=m
-+# CONFIG_SND_ISA is not set
-+CONFIG_SND_HDA_INTEL=m
-+CONFIG_SND_HDA_PATCH_LOADER=y
-+# CONFIG_SND_USB is not set
-+CONFIG_HID_A4TECH=m
-+CONFIG_HID_SUNPLUS=m
-+CONFIG_USB=y
-+CONFIG_USB_MON=y
-+CONFIG_USB_XHCI_HCD=m
-+CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_EHCI_ROOT_HUB_TT=y
-+CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_UHCI_HCD=m
-+CONFIG_USB_STORAGE=m
-+CONFIG_USB_SERIAL=m
-+CONFIG_USB_SERIAL_OPTION=m
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_CMOS=y
-+CONFIG_DMADEVICES=y
-+CONFIG_PM_DEVFREQ=y
-+CONFIG_DEVFREQ_GOV_SIMPLE_ONDEMAND=y
-+CONFIG_DEVFREQ_GOV_PERFORMANCE=y
-+CONFIG_DEVFREQ_GOV_POWERSAVE=y
-+CONFIG_DEVFREQ_GOV_USERSPACE=y
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT2_FS_XATTR=y
-+CONFIG_EXT2_FS_POSIX_ACL=y
-+CONFIG_EXT2_FS_SECURITY=y
-+CONFIG_EXT3_FS=y
-+CONFIG_EXT3_FS_POSIX_ACL=y
-+CONFIG_EXT3_FS_SECURITY=y
-+CONFIG_EXT4_FS=y
-+CONFIG_EXT4_FS_POSIX_ACL=y
-+CONFIG_EXT4_FS_SECURITY=y
-+CONFIG_QUOTA=y
-+# CONFIG_PRINT_QUOTA_WARNING is not set
-+CONFIG_AUTOFS4_FS=y
-+CONFIG_FUSE_FS=m
-+CONFIG_ISO9660_FS=m
-+CONFIG_JOLIET=y
-+CONFIG_MSDOS_FS=m
-+CONFIG_VFAT_FS=m
-+CONFIG_FAT_DEFAULT_CODEPAGE=936
-+CONFIG_FAT_DEFAULT_IOCHARSET="gb2312"
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+CONFIG_CRAMFS=m
-+CONFIG_SQUASHFS=y
-+CONFIG_SQUASHFS_XATTR=y
-+CONFIG_NFS_FS=m
-+CONFIG_NFS_V3_ACL=y
-+CONFIG_NFS_V4=m
-+CONFIG_NFSD=m
-+CONFIG_NFSD_V3_ACL=y
-+CONFIG_NFSD_V4=y
-+CONFIG_CIFS=m
-+CONFIG_NLS_CODEPAGE_437=y
-+CONFIG_NLS_CODEPAGE_936=y
-+CONFIG_NLS_ASCII=y
-+CONFIG_NLS_UTF8=y
-+CONFIG_PRINTK_TIME=y
-+CONFIG_FRAME_WARN=1024
-+CONFIG_STRIP_ASM_SYMS=y
-+CONFIG_MAGIC_SYSRQ=y
-+# CONFIG_SCHED_DEBUG is not set
-+# CONFIG_DEBUG_PREEMPT is not set
-+# CONFIG_RCU_CPU_STALL_VERBOSE is not set
-+# CONFIG_FTRACE is not set
-+CONFIG_SECURITY=y
-+CONFIG_SECURITYFS=y
-+CONFIG_SECURITY_NETWORK=y
-+CONFIG_SECURITY_PATH=y
-+CONFIG_SECURITY_SELINUX=y
-+CONFIG_SECURITY_SELINUX_BOOTPARAM=y
-+CONFIG_SECURITY_SELINUX_DISABLE=y
-+CONFIG_DEFAULT_SECURITY_DAC=y
-+CONFIG_CRYPTO_AUTHENC=m
-+CONFIG_CRYPTO_HMAC=y
-+CONFIG_CRYPTO_MD5=y
-+CONFIG_CRYPTO_SHA512=m
-+CONFIG_CRYPTO_TGR192=m
-+CONFIG_CRYPTO_WP512=m
-+CONFIG_CRYPTO_ANUBIS=m
-+CONFIG_CRYPTO_BLOWFISH=m
-+CONFIG_CRYPTO_CAST5=m
-+CONFIG_CRYPTO_CAST6=m
-+CONFIG_CRYPTO_KHAZAD=m
-+CONFIG_CRYPTO_SERPENT=m
-+CONFIG_CRYPTO_TEA=m
-+CONFIG_CRYPTO_TWOFISH=m
-+CONFIG_CRYPTO_DEFLATE=m
++++ b/arch/mips/boot/compressed/string.c
+@@ -0,0 +1,28 @@
++/*
++ * arch/mips/boot/compressed/string.c
++ *
++ * Very small subset of simple string routines
++ */
++
++#include <linux/string.h>
++
++void *memcpy(void *dest, const void *src, size_t n)
++{
++	int i;
++	const char *s = src;
++	char *d = dest;
++
++	for (i = 0; i < n; i++)
++		d[i] = s[i];
++	return dest;
++}
++
++void *memset(void *s, int c, size_t n)
++{
++	int i;
++	char *ss = s;
++
++	for (i = 0; i < n; i++)
++		ss[i] = c;
++	return s;
++}
 -- 
-1.7.7.3
+1.8.4.rc3

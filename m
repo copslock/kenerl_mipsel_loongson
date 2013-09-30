@@ -1,28 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Sep 2013 10:38:16 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:14597 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6867712Ab3I3IiCPg4u6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Sep 2013 10:38:02 +0200
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH] MIPS: bcm63xx: cpu: Replace BUG() with panic()
-Date:   Mon, 30 Sep 2013 09:38:00 +0100
-Message-ID: <1380530280-6467-1-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Sep 2013 12:13:43 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:58143 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6818997Ab3I3KNiGLqS7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Sep 2013 12:13:38 +0200
+Received: from bl15-111-94.dsl.telepac.pt ([188.80.111.94] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1VQaTx-0003kv-7w; Mon, 30 Sep 2013 10:13:37 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel-team@lists.ubuntu.com
+Cc:     Felix Fietkau <nbd@openwrt.org>, Gabor Juhos <juhosg@openwrt.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Luis Henriques <luis.henriques@canonical.com>
+Subject: [PATCH 095/104] MIPS: ath79: Fix ar933x watchdog clock
+Date:   Mon, 30 Sep 2013 11:11:12 +0100
+Message-Id: <1380535881-9239-96-git-send-email-luis.henriques@canonical.com>
 X-Mailer: git-send-email 1.8.3.2
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.31]
-X-SEF-Processed: 7_3_0_01192__2013_09_30_09_37_55
-Return-Path: <Markos.Chandras@imgtec.com>
+In-Reply-To: <1380535881-9239-1-git-send-email-luis.henriques@canonical.com>
+References: <1380535881-9239-1-git-send-email-luis.henriques@canonical.com>
+X-Extended-Stable: 3.5
+Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38060
+X-archive-position: 38061
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: luis.henriques@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,47 +42,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-BUG() can be a noop if CONFIG_BUG is not selected,
-leading to the following build problem on a randconfig:
+3.5.7.22 -stable review patch.  If anyone has any objections, please let me know.
 
-arch/mips/bcm63xx/cpu.c: In function 'detect_cpu_clock':
-arch/mips/bcm63xx/cpu.c:254:1: error: control reaches end of
-non-void function [-Werror=return-type]
+------------------
 
-We fix this problem by replacing BUG() with panic() since it's
-best to handle the case of an unknown board instead of silently
-returning a random clock frequency.
+From: Felix Fietkau <nbd@openwrt.org>
 
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
-Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+commit a1191927ace7e6f827132aa9e062779eb3f11fa5 upstream.
+
+The watchdog device on the AR933x is connected to
+the AHB clock, however the current code uses the
+reference clock. Due to the wrong rate, the watchdog
+driver can't calculate correct register values for
+a given timeout value and the watchdog unexpectedly
+restarts the system.
+
+The code uses the wrong value since the initial
+commit 04225e1d227c8e68d685936ecf42ac175fec0e54
+(MIPS: ath79: add AR933X specific clock init)
+
+The patch fixes the code to use the correct clock
+rate to avoid the problem.
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/5777/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
 ---
-This patch is for the upstream-sfr/mips-for-linux-next tree
----
- arch/mips/bcm63xx/cpu.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/mips/ath79/clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/bcm63xx/cpu.c b/arch/mips/bcm63xx/cpu.c
-index b713cd6..88c57cc 100644
---- a/arch/mips/bcm63xx/cpu.c
-+++ b/arch/mips/bcm63xx/cpu.c
-@@ -123,7 +123,9 @@ unsigned int bcm63xx_get_memory_size(void)
- 
- static unsigned int detect_cpu_clock(void)
- {
--	switch (bcm63xx_get_cpu_id()) {
-+	u16 cpu_id = bcm63xx_get_cpu_id();
-+
-+	switch (cpu_id) {
- 	case BCM3368_CPU_ID:
- 		return 300000000;
- 
-@@ -249,7 +251,7 @@ static unsigned int detect_cpu_clock(void)
+diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
+index 579f452..300d7d3 100644
+--- a/arch/mips/ath79/clock.c
++++ b/arch/mips/ath79/clock.c
+@@ -164,7 +164,7 @@ static void __init ar933x_clocks_init(void)
+ 		ath79_ahb_clk.rate = freq / t;
  	}
  
- 	default:
--		BUG();
-+		panic("Failed to detect clock for CPU with id=%04d\n", cpu_id);
- 	}
+-	ath79_wdt_clk.rate = ath79_ref_clk.rate;
++	ath79_wdt_clk.rate = ath79_ahb_clk.rate;
+ 	ath79_uart_clk.rate = ath79_ref_clk.rate;
  }
  
 -- 

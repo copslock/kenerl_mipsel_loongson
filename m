@@ -1,48 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Sep 2013 23:27:20 +0200 (CEST)
-Received: from filtteri2.pp.htv.fi ([213.243.153.185]:54516 "EHLO
-        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823043Ab3I3V1Svb8oV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Sep 2013 23:27:18 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 5D07B19BF73;
-        Tue,  1 Oct 2013 00:27:16 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp4.welho.com ([213.243.153.38])
-        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
-        with ESMTP id xhNfQJ22cHl4; Tue,  1 Oct 2013 00:27:11 +0300 (EEST)
-Received: from musicnaut.iki.fi (cs181064211.pp.htv.fi [82.181.64.211])
-        by smtp4.welho.com (Postfix) with SMTP id 675FA5BC012;
-        Tue,  1 Oct 2013 00:27:10 +0300 (EEST)
-Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Tue, 01 Oct 2013 00:27:08 +0300
-Date:   Tue, 1 Oct 2013 00:27:08 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     devel@driverdev.osuosl.org, linux-mips@linux-mips.org,
-        David Daney <david.daney@cavium.com>, richard@nod.at,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 1/2] staging: octeon-ethernet: don't assume that CPU 0 is
- special
-Message-ID: <20130930212707.GA14359@blackmetal.musicnaut.iki.fi>
-References: <1380397834-14286-1-git-send-email-aaro.koskinen@iki.fi>
- <5249B37E.4050000@caviumnetworks.com>
- <20130930193502.GE4572@blackmetal.musicnaut.iki.fi>
- <5249D407.2090904@caviumnetworks.com>
- <20130930195642.GF4572@blackmetal.musicnaut.iki.fi>
- <5249E84F.2070008@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Sep 2013 23:29:13 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:26572 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823043Ab3I3V3Kf09yh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 Sep 2013 23:29:10 +0200
+Message-ID: <5249ED1E.4050106@imgtec.com>
+Date:   Mon, 30 Sep 2013 14:29:02 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5249E84F.2070008@caviumnetworks.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>
+Subject: Re: 74K/1074K support
+References: <20130925052715.GB473@linux-mips.org>
+In-Reply-To: <20130925052715.GB473@linux-mips.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.65.146]
+X-SEF-Processed: 7_3_0_01192__2013_09_30_22_29_05
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38078
+X-archive-position: 38079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,25 +39,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On 09/24/2013 10:27 PM, Ralf Baechle wrote:
+> Commit 006a851b10a395955c153a145ad8241494d43688 adds 74K support in c-r4k.c:
+>
+> +static inline void alias_74k_erratum(struct cpuinfo_mips *c)
+> +{
+> +       /*
+> +        * Early versions of the 74K do not update the cache tags on a
+> +        * vtag miss/ptag hit which can occur in the case of KSEG0/KUSEG
+> +        * aliases. In this case it is better to treat the cache as always
+> +        * having aliases.
+> +        */
+> +       if ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(2, 4, 0))
+> +               c->dcache.flags |= MIPS_CACHE_VTAG;
+> +       if ((c->processor_id & 0xff) == PRID_REV_ENCODE_332(2, 4, 0))
+> +               write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
+> +       if (((c->processor_id & 0xff00) == PRID_IMP_1074K) &&
+> +           ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(1, 1, 0))) {
+> +               c->dcache.flags |= MIPS_CACHE_VTAG;
+> +               write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
+> +       }
+> +}
+>
+> But MIPS D-caches are never virtually tagged, so there is nothing in
+> the kernel that ever tests the MIPS_CACHE_VTAG flag in a D-cache
+> descriptor.
+>
+> Cargo cult programming at its finest?  Or was MIPS_CACHE_ALIASES what
+> really was meant to be set?
+>
+>    Ralf
 
-On Mon, Sep 30, 2013 at 02:08:31PM -0700, David Daney wrote:
-> On 09/30/2013 12:56 PM, Aaro Koskinen wrote:
-> >What guarantees that CPU0 is around (or the smp_affinity is at its
-> >default value) by the time user executes modprobe?
-> 
-> Nothing enforced by the kernel.  Just don't take CPU0 off-line and
-> you should be good to go.
-> 
-> There is a lot of room for improvement in the driver.
-> 
-> Really this whole thing of starting NAPI on multiple CPUs for the
-> same input queue is not good.  It leads to loss of packet ordering
-> when forwarding.
+There is a problem on early versions of 74K/1074K which can be effectively cured by setting MIPS_CACHE_VTAG.
+It enforces the needed cache handling.
+I hope it will go away as customers replace RTL for newer versions.
+  
+But I prefer the patch version from Maciej W. Rozycki, it is more clear.
 
-I agree. I have also another patch which deletes this functionality
-altogether - should I post that one instead? In modern kernel you can use
-RPS to steer packets to different cores/softirqs threads, so in a way the
-driver currently duplicates some of the generic kernel functionality...
-
-A.
+- Leonid.

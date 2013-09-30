@@ -1,35 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Sep 2013 12:13:43 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:58143 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6818997Ab3I3KNiGLqS7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Sep 2013 12:13:38 +0200
-Received: from bl15-111-94.dsl.telepac.pt ([188.80.111.94] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.71)
-        (envelope-from <luis.henriques@canonical.com>)
-        id 1VQaTx-0003kv-7w; Mon, 30 Sep 2013 10:13:37 +0000
-From:   Luis Henriques <luis.henriques@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     Felix Fietkau <nbd@openwrt.org>, Gabor Juhos <juhosg@openwrt.org>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Luis Henriques <luis.henriques@canonical.com>
-Subject: [PATCH 095/104] MIPS: ath79: Fix ar933x watchdog clock
-Date:   Mon, 30 Sep 2013 11:11:12 +0100
-Message-Id: <1380535881-9239-96-git-send-email-luis.henriques@canonical.com>
-X-Mailer: git-send-email 1.8.3.2
-In-Reply-To: <1380535881-9239-1-git-send-email-luis.henriques@canonical.com>
-References: <1380535881-9239-1-git-send-email-luis.henriques@canonical.com>
-X-Extended-Stable: 3.5
-Return-Path: <luis.henriques@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Sep 2013 15:09:50 +0200 (CEST)
+Received: from mailout4.samsung.com ([203.254.224.34]:54483 "EHLO
+        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6822681Ab3I3NJmT58Cw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Sep 2013 15:09:42 +0200
+Received: from epcpsbgm1.samsung.com (epcpsbgm1 [203.254.230.26])
+ by mailout4.samsung.com
+ (Oracle Communications Messaging Server 7u4-24.01(7.0.4.24.0) 64bit (built Nov
+ 17 2011)) with ESMTP id <0MTX0003ZWJRTJT0@mailout4.samsung.com>; Mon,
+ 30 Sep 2013 22:09:32 +0900 (KST)
+X-AuditID: cbfee61a-b7f7a6d00000235f-77-5249780ba46d
+Received: from epmmp1.local.host ( [203.254.227.16])
+        by epcpsbgm1.samsung.com (EPCPMTA) with SMTP id CE.EE.09055.B0879425; Mon,
+ 30 Sep 2013 22:09:32 +0900 (KST)
+Received: from amdc1032.localnet ([106.116.147.136])
+ by mmp1.samsung.com (Oracle Communications Messaging Server 7u4-24.01
+ (7.0.4.24.0) 64bit (built Nov 17 2011))
+ with ESMTPA id <0MTX001L4WJUHE20@mmp1.samsung.com>; Mon,
+ 30 Sep 2013 22:09:31 +0900 (KST)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Kyungmin Park <kyungmin.park@samsung.com>
+Subject: [PATCH] MIPS: Alchemy: MTX-1: fix incorrect placement of __initdata tag
+Date:   Mon, 30 Sep 2013 15:09:20 +0200
+Message-id: <1426447.xVtcA00boF@amdc1032>
+User-Agent: KMail/4.8.4 (Linux/3.2.0-52-generic-pae; KDE/4.8.5; i686; ; )
+MIME-version: 1.0
+Content-transfer-encoding: 7Bit
+Content-type: text/plain; charset=us-ascii
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrJLMWRmVeSWpSXmKPExsVy+t9jAV2eCs8ggxnPWS3ONr1ht7i8aw6b
+        xYSpk9gtLu1RcWDxOLpyLZNH35ZVjB6fN8kFMEdx2aSk5mSWpRbp2yVwZVyef4254AZbxckZ
+        4g2MV1i7GDk5JARMJOZcWscGYYtJXLi3Hsjm4hASWMQo8bWrkRnCaWGSeNX5kAmkik3ASmJi
+        +ypGEFtEQE3i1bfNYJOYBTIkXu/qZwaxhQUCJJ6d+MMCYrMIqEr8ujUFrJ5XQFPizpJ1YDWi
+        Ap4SnyYtZYaIC0r8mHyPBWKOvMS+/VOhZmpJrN95nGkCI98sJGWzkJTNQlK2gJF5FaNoakFy
+        QXFSeq6hXnFibnFpXrpecn7uJkZwAD6T2sG4ssHiEKMAB6MSD++E5R5BQqyJZcWVuYcYJTiY
+        lUR4xcs8g4R4UxIrq1KL8uOLSnNSiw8xSnOwKInzHmi1DhQSSE8sSc1OTS1ILYLJMnFwSjUw
+        mrleb/V8dTHNKLLjg2/ikdfyjXdtX+/jsjDhKNjRdT7uyX1HBuYyJ8spD75sqXIwXvf0pCrf
+        +UPMM/ykBNlYp1tynXrg2V45gXFNyX6deOdYG/d3rybMOKnN4LJ9+5qw0uArWTpnDvS+tvR1
+        jEu+aPdQchnDpVbxNZM+Wn04J+13pX21lWm0EktxRqKhFnNRcSIAiq1oEzwCAAA=
+Return-Path: <b.zolnierkie@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38061
+X-archive-position: 38062
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luis.henriques@canonical.com
+X-original-sender: b.zolnierkie@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,50 +59,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.5.7.22 -stable review patch.  If anyone has any objections, please let me know.
+__initdata tag should be placed between the variable name and equal
+sign for the variable to be placed in the intended .init.data section.
 
-------------------
-
-From: Felix Fietkau <nbd@openwrt.org>
-
-commit a1191927ace7e6f827132aa9e062779eb3f11fa5 upstream.
-
-The watchdog device on the AR933x is connected to
-the AHB clock, however the current code uses the
-reference clock. Due to the wrong rate, the watchdog
-driver can't calculate correct register values for
-a given timeout value and the watchdog unexpectedly
-restarts the system.
-
-The code uses the wrong value since the initial
-commit 04225e1d227c8e68d685936ecf42ac175fec0e54
-(MIPS: ath79: add AR933X specific clock init)
-
-The patch fixes the code to use the correct clock
-rate to avoid the problem.
-
-Signed-off-by: Felix Fietkau <nbd@openwrt.org>
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/5777/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
 ---
- arch/mips/ath79/clock.c | 2 +-
+ arch/mips/alchemy/board-mtx1.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index 579f452..300d7d3 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -164,7 +164,7 @@ static void __init ar933x_clocks_init(void)
- 		ath79_ahb_clk.rate = freq / t;
- 	}
+diff --git a/arch/mips/alchemy/board-mtx1.c b/arch/mips/alchemy/board-mtx1.c
+index 4a9baa9..9969dba 100644
+--- a/arch/mips/alchemy/board-mtx1.c
++++ b/arch/mips/alchemy/board-mtx1.c
+@@ -276,7 +276,7 @@ static struct platform_device mtx1_pci_host = {
+ 	.resource	= alchemy_pci_host_res,
+ };
  
--	ath79_wdt_clk.rate = ath79_ref_clk.rate;
-+	ath79_wdt_clk.rate = ath79_ahb_clk.rate;
- 	ath79_uart_clk.rate = ath79_ref_clk.rate;
- }
- 
+-static struct __initdata platform_device * mtx1_devs[] = {
++static struct platform_device *mtx1_devs[] __initdata = {
+ 	&mtx1_pci_host,
+ 	&mtx1_gpio_leds,
+ 	&mtx1_wdt,
 -- 
-1.8.3.2
+1.8.2.3

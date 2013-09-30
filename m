@@ -1,55 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Sep 2013 21:17:58 +0200 (CEST)
-Received: from mail-oa0-f52.google.com ([209.85.219.52]:52290 "EHLO
-        mail-oa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823043Ab3I3TR4pCGES (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Sep 2013 21:17:56 +0200
-Received: by mail-oa0-f52.google.com with SMTP id n2so4053338oag.39
-        for <multiple recipients>; Mon, 30 Sep 2013 12:17:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=96ntcOkd0+vniyQlCqsxzwLhpVF1bhqpfNhqCuUVXio=;
-        b=PdJCcb9L2SN3fpEokl6UBkMmjR8OMg7/JRFJnV9reUHQjm8r/3INgfqoyAZdlITsPn
-         RulrUPltJiyiXLBAQBE24CkQFtjxQLI/to2cFOQ4NvNWtkQ3BGfmFE2fLj4Ymx+ICp1C
-         UFVimmLkyaXp3ZahyZlmOol55ehkO8mTtBxA9mTXUdEMEt9KVovONj4wS5oU2Qp5LBQL
-         baPRCKdDMjl31l+j8stfX+G5hFX0Bgv8UOtDXqZ570jkVnhp8FCxrba+z3n26rf+KBT7
-         1P9NaCA07SlaJmsC7MxezAMJ3Cxxtqvcm9uWHstF7yLE7i7VVichUNUJLctMQgd1gPJ+
-         /JpQ==
-X-Received: by 10.60.134.230 with SMTP id pn6mr1958217oeb.52.1380568670285;
-        Mon, 30 Sep 2013 12:17:50 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id d3sm3255309oek.5.1969.12.31.16.00.00
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Mon, 30 Sep 2013 12:17:49 -0700 (PDT)
-Message-ID: <5249CE5B.7040505@gmail.com>
-Date:   Mon, 30 Sep 2013 12:17:47 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Sep 2013 21:35:17 +0200 (CEST)
+Received: from filtteri2.pp.htv.fi ([213.243.153.185]:47446 "EHLO
+        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823043Ab3I3TfNi4mwW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Sep 2013 21:35:13 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 04B5619BFEA;
+        Mon, 30 Sep 2013 22:35:11 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
+        with ESMTP id 8osjCV+ja8As; Mon, 30 Sep 2013 22:35:06 +0300 (EEST)
+Received: from musicnaut.iki.fi (cs181064211.pp.htv.fi [82.181.64.211])
+        by smtp4.welho.com (Postfix) with SMTP id 021695BC005;
+        Mon, 30 Sep 2013 22:35:04 +0300 (EEST)
+Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Mon, 30 Sep 2013 22:35:02 +0300
+Date:   Mon, 30 Sep 2013 22:35:02 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     devel@driverdev.osuosl.org, linux-mips@linux-mips.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        David Daney <david.daney@cavium.com>, richard@nod.at
+Subject: Re: [PATCH 1/2] staging: octeon-ethernet: don't assume that CPU 0 is
+ special
+Message-ID: <20130930193502.GE4572@blackmetal.musicnaut.iki.fi>
+References: <1380397834-14286-1-git-send-email-aaro.koskinen@iki.fi>
+ <5249B37E.4050000@caviumnetworks.com>
 MIME-Version: 1.0
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-CC:     "Pinski, Andrew" <Andrew.Pinski@caviumnetworks.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Markos Chandras <Markos.Chandras@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>
-Subject: Re: Issue with BUG() in asm-gemeric/bug.h if CONFIG_BUG=n
-References: <20130930145630.GA14672@linux-mips.org> <52499E8B.6000702@gmail.com> <C9BC92C2-A7F5-4F9A-B001-D1A7F4ADEA5A@caviumnetworks.com> <5249B8A4.9070905@gmail.com> <CAMuHMdXkb6BH=1QvfHwMN54db9mP64KnCgoAj3aXida7-6OtPA@mail.gmail.com>
-In-Reply-To: <CAMuHMdXkb6BH=1QvfHwMN54db9mP64KnCgoAj3aXida7-6OtPA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5249B37E.4050000@caviumnetworks.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38073
+X-archive-position: 38074
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,55 +51,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/30/2013 12:03 PM, Geert Uytterhoeven wrote:
-> On Mon, Sep 30, 2013 at 7:45 PM, David Daney <ddaney.cavm@gmail.com> wrote:
->>> What about using __builtin_unreachable when we can but turn off warnings
->>> and use do{}while(0) when __builtin_unreachable does not exist?  This seems
->>> the both worlds.  Newer compilers produce better code with unreachable
->>> anyways.
->>>
->>
->> Simply not true.
->>
->> do{}while(0) is a NOP it is no more useful than an ';' statement.  It
->> doesn't serve as a magic uninitialized variable hiding mechanism.
->
-> You missed the "turn off warnings" part of the "and".
+Hi,
 
-You are correct, I did miss it.
+On Mon, Sep 30, 2013 at 10:23:10AM -0700, David Daney wrote:
+> On 09/28/2013 12:50 PM, Aaro Koskinen wrote:
+> >Currently the driver assumes that CPU 0 is handling all the hard IRQs.
+> >This is wrong in Linux SMP systems where user is allowed to assign to
+> >hardware IRQs to any CPU. The driver will stop working if user sets
+> >smp_affinity so that interrupts end up being handled by other than CPU
+> >0. The patch fixes that.
+> >
+> >Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> >---
+> >  drivers/staging/octeon/ethernet-rx.c | 12 ++++++------
+> >  1 file changed, 6 insertions(+), 6 deletions(-)
+> >
+> >diff --git a/drivers/staging/octeon/ethernet-rx.c b/drivers/staging/octeon/ethernet-rx.c
+> >index e14a1bb..de831c1 100644
+> >--- a/drivers/staging/octeon/ethernet-rx.c
+> >+++ b/drivers/staging/octeon/ethernet-rx.c
+> >@@ -80,6 +80,8 @@ struct cvm_oct_core_state {
+> >
+> >  static struct cvm_oct_core_state core_state __cacheline_aligned_in_smp;
+> >
+> >+static int cvm_irq_cpu = -1;
+> >+
+> >  static void cvm_oct_enable_napi(void *_)
+> >  {
+> >  	int cpu = smp_processor_id();
+> >@@ -112,11 +114,7 @@ static void cvm_oct_no_more_work(void)
+> >  {
+> >  	int cpu = smp_processor_id();
+> >
+> >-	/*
+> >-	 * CPU zero is special.  It always has the irq enabled when
+> >-	 * waiting for incoming packets.
+> >-	 */
+> >-	if (cpu == 0) {
+> >+	if (cpu == cvm_irq_cpu) {
+> >  		enable_irq(OCTEON_IRQ_WORKQ0 + pow_receive_group);
+> >  		return;
+> >  	}
+> >@@ -135,6 +133,7 @@ static irqreturn_t cvm_oct_do_interrupt(int cpl, void *dev_id)
+> >  {
+> >  	/* Disable the IRQ and start napi_poll. */
+> >  	disable_irq_nosync(OCTEON_IRQ_WORKQ0 + pow_receive_group);
+> >+	cvm_irq_cpu = smp_processor_id();
+> >  	cvm_oct_enable_napi(NULL);
+> >
+> >  	return IRQ_HANDLED;
+> >@@ -547,8 +546,9 @@ void cvm_oct_rx_initialize(void)
+> >  	cvmx_write_csr(CVMX_POW_WQ_INT_PC, int_pc.u64);
+> >
+> >
+> >-	/* Scheduld NAPI now.  This will indirectly enable interrupts. */
+> >+	/* Schedule NAPI now. */
+> >  	cvm_oct_enable_one_cpu();
+> >+	enable_irq(OCTEON_IRQ_WORKQ0 + pow_receive_group);
+> 
+> The fact that you have to manually enable irqs here indicates that
+> the patch is not good.
+> 
+> Either the enable_irq() is unnecessary, or you broke the logic for
+> enabling NAPI on more than one CPU.
+> 
+> I am not sure which is the case, but I think it would be best if you
+> supplied a fixed patch set that corrects whichever happens to be the
+> case.
 
-The real problem here is that the kernel is written to expect that BUG() 
-never returns.  Any implementation that has BUG() return, is almost 
-certainly *not* what we want.
+No, the original logic was already broken. The code assumed that the
+NAPI scheduled by the driver init gets executed always on CPU 0. The
+IRQ got enabled just because we are lucky.
 
-But wieh people select CONFIG_BUG=n they expect the smallest possible code.
+The patch removes such assumption. During the driver init, the IRQ is
+disabled and cvm_irq_cpu is -1. So when the NAPI scheduled (on whatever
+CPU) by the init is done, the check in cvm_oct_no_more_work() will be
+false and the IRQ remains disabled. So the init routine has to enable IRQ
+"manually". This is a special case only for the driver initialization.
 
-These two criteria are mutually exclusive, so something should change.
+During the normal operation, the IRQ handler record the CPU (on which
+it's going the schedule for the first NAPI poll) in cvm_irq_cpu so
+cvm_oct_no_more_work() will always re-enable the IRQ correctly.
 
-It is not just the uninitialized variable warning, there can be others 
-as well (control reaching the end of a non-void function comes to mind). 
-  So I don't think turning off the warnings is a good solution.
-
-That leaves:
-
-1) Remove CONFIG_BUG and make it unconditionally enabled.
-
-2) Make CONFIG_BUG=n imply "static inline void BUG(void){do{}while(1);}" 
-which might be bigger than with CONFIG_BUG=y
-
-David Daney
-
-
->
-> Gr{oetje,eeting}s,
->
->                          Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
->
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                  -- Linus Torvalds
->
->
+A.

@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Oct 2013 06:04:27 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:42531 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Oct 2013 06:14:01 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:42543 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6865320Ab3JAEEYBkNwO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Oct 2013 06:04:24 +0200
+        with ESMTP id S6865325Ab3JAEN5xF0Td (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Oct 2013 06:13:57 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <Steven.Hill@imgtec.com>)
-        id 1VQrC4-0005Na-2L; Mon, 30 Sep 2013 23:04:16 -0500
+        id 1VQrLK-0005Nt-68; Mon, 30 Sep 2013 23:13:50 -0500
 From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
 To:     linux-mips@linux-mips.org
-Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>, ralf@linux-mips.org,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>
-Subject: [PATCH] MIPS HIGHMEM fixes for cache aliasing and non-DMA I/O.
-Date:   Mon, 30 Sep 2013 23:04:11 -0500
-Message-Id: <1380600251-28018-1-git-send-email-Steven.Hill@imgtec.com>
+Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>, linux-mm@kvack.org,
+        ralf@linux-mips.org, "Steven J. Hill" <Steven.Hill@imgtec.com>
+Subject: [RESEND PATCH] MIPS HIGHMEM fixes for cache aliasing and non-DMA I/O.
+Date:   Mon, 30 Sep 2013 23:13:45 -0500
+Message-Id: <1380600825-28319-1-git-send-email-Steven.Hill@imgtec.com>
 X-Mailer: git-send-email 1.7.9.5
 Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38080
+X-archive-position: 38081
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

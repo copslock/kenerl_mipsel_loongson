@@ -1,38 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Oct 2013 07:24:56 +0200 (CEST)
-Received: from mo10.iij4u.or.jp ([210.138.174.78]:36230 "EHLO mo.iij4u.or.jp"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823043Ab3JAFYws4gse (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 1 Oct 2013 07:24:52 +0200
-Received: by mo.iij4u.or.jp (mo10) id r915OenB023394; Tue, 1 Oct 2013 14:24:40 +0900
-Received: from delta (sannin29190.nirai.ne.jp [203.160.29.190])
-        by mbox.iij4u.or.jp (mbox10) id r915OM8s024418
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Tue, 1 Oct 2013 14:24:39 +0900
-Date:   Tue, 1 Oct 2013 14:24:21 +0900
-From:   Yoichi Yuasa <yuasa@linux-mips.org>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     yuasa@linux-mips.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: Linux 3.12-rc2 - MIPS regression
-Message-Id: <20131001142421.6cd0870138caf2fe5600a1ea@linux-mips.org>
-In-Reply-To: <20130927231012.GB4572@blackmetal.musicnaut.iki.fi>
-References: <CA+55aFxoF75RJfkp0vnm-b9B0h7PGMitrQiLyTt315tKvG-wTQ@mail.gmail.com>
-        <20130927231012.GB4572@blackmetal.musicnaut.iki.fi>
-X-Mailer: Sylpheed 3.2.0beta5 (GTK+ 2.24.10; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Oct 2013 14:54:26 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:42896 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6867713Ab3JAMyXvnBOu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 1 Oct 2013 14:54:23 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r91CsLus013196;
+        Tue, 1 Oct 2013 14:54:21 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r91CsLcc013195;
+        Tue, 1 Oct 2013 14:54:21 +0200
+Date:   Tue, 1 Oct 2013 14:54:21 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc:     linux-mips@linux-mips.org,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>
+Subject: Re: 74K/1074K support
+Message-ID: <20131001125420.GA12616@linux-mips.org>
+References: <20130925052715.GB473@linux-mips.org>
+ <5249ED1E.4050106@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5249ED1E.4050106@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38082
+X-archive-position: 38083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,40 +44,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Mon, Sep 30, 2013 at 02:29:02PM -0700, Leonid Yegoshin wrote:
 
-On Sat, 28 Sep 2013 02:10:12 +0300
-Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
-
-> Hi,
+> On 09/24/2013 10:27 PM, Ralf Baechle wrote:
+> >Commit 006a851b10a395955c153a145ad8241494d43688 adds 74K support in c-r4k.c:
+> >
+> >+static inline void alias_74k_erratum(struct cpuinfo_mips *c)
+> >+{
+> >+       /*
+> >+        * Early versions of the 74K do not update the cache tags on a
+> >+        * vtag miss/ptag hit which can occur in the case of KSEG0/KUSEG
+> >+        * aliases. In this case it is better to treat the cache as always
+> >+        * having aliases.
+> >+        */
+> >+       if ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(2, 4, 0))
+> >+               c->dcache.flags |= MIPS_CACHE_VTAG;
+> >+       if ((c->processor_id & 0xff) == PRID_REV_ENCODE_332(2, 4, 0))
+> >+               write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
+> >+       if (((c->processor_id & 0xff00) == PRID_IMP_1074K) &&
+> >+           ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(1, 1, 0))) {
+> >+               c->dcache.flags |= MIPS_CACHE_VTAG;
+> >+               write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
+> >+       }
+> >+}
+> >
+> >But MIPS D-caches are never virtually tagged, so there is nothing in
+> >the kernel that ever tests the MIPS_CACHE_VTAG flag in a D-cache
+> >descriptor.
+> >
+> >Cargo cult programming at its finest?  Or was MIPS_CACHE_ALIASES what
+> >really was meant to be set?
+> >
+> >   Ralf
 > 
-> 3.12-rc2 breaks the boot (BUG: scheduling while atomic, see logs below)
-> on Lemote Mini-PC (MIPS). According to git bisect, this is caused by:
-> 
-> ff522058bd717506b2fa066fa564657f2b86477e is the first bad commit
-> commit ff522058bd717506b2fa066fa564657f2b86477e
-> Author: Ralf Baechle <ralf@linux-mips.org>
-> Date:   Tue Sep 17 12:44:31 2013 +0200
-> 
->     MIPS: Fix accessing to per-cpu data when flushing the cache
-> 
-> Reverting the commit from v3.12-rc2 makes the board boot fine.
+> There is a problem on early versions of 74K/1074K which can be effectively cured by setting MIPS_CACHE_VTAG.
+> It enforces the needed cache handling.
+> I hope it will go away as customers replace RTL for newer versions.
+> But I prefer the patch version from Maciej W. Rozycki, it is more clear.
 
-Please try this patch on top of rc2.
+There is nothing in the kernel that _reads_ that flag if it's set in an
+I-cache descriptor.  See:
 
-MIPS: Fix forgotten preempt_enable() when CPU has inclusive pcaches
+arch/mips/include/asm/cpu-features.h:#define cpu_has_vtag_icache        (cpu_data[0].icache.flags & MIPS_CACHE_VTAG)
+arch/mips/include/asm/cpu-info.h:#define MIPS_CACHE_VTAG                0x00000002      /* Virtually tagged cache */
+arch/mips/mm/c-octeon.c:                c->icache.flags |= MIPS_CACHE_VTAG;
+arch/mips/mm/c-octeon.c:                c->icache.flags |= MIPS_CACHE_VTAG;
+arch/mips/mm/c-octeon.c:                c->icache.flags |= MIPS_CACHE_VTAG;
+arch/mips/mm/c-r4k.c:                   c->dcache.flags |= MIPS_CACHE_VTAG;
+arch/mips/mm/c-r4k.c:                   c->dcache.flags |= MIPS_CACHE_VTAG;
+arch/mips/mm/c-r4k.c:                   c->icache.flags |= MIPS_CACHE_VTAG;
+arch/mips/mm/c-r4k.c:           c->icache.flags |= MIPS_CACHE_VTAG;
+arch/mips/mm/c-r4k.c:          c->icache.flags & MIPS_CACHE_VTAG ? "VIVT" : "VIPT",
 
-Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+There simply is not support whatsoever for virtually tagged D-caches in
+the kernel, so setting that flag may feel good - but achieves nothing.
+See, the sole test for the MIPS_CACHE_VTAG above tests it in a D-cache
+descriptor.  So I'm not sure what the intention is.  Maybe there is some
+code that has not yet been merged?
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 627883b..2492e60 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -609,6 +609,7 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
- 			r4k_blast_scache();
- 		else
- 			blast_scache_range(addr, addr + size);
-+		preempt_enable();
- 		__sync();
- 		return;
- 	}
+  Ralf

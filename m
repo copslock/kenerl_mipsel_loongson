@@ -1,28 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 20:19:50 +0200 (CEST)
-Received: from out1-smtp.messagingengine.com ([66.111.4.25]:51303 "EHLO
-        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6838727Ab3JBSTMXVUvV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 20:19:12 +0200
-Received: from compute4.internal (compute4.nyi.mail.srv.osa [10.202.2.44])
-        by gateway1.nyi.mail.srv.osa (Postfix) with ESMTP id CAA16212B5;
-        Wed,  2 Oct 2013 14:19:09 -0400 (EDT)
-Received: from frontend2 ([10.202.2.161])
-  by compute4.internal (MEProxy); Wed, 02 Oct 2013 14:19:09 -0400
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
-        messagingengine.com; h=date:from:to:cc:subject:message-id
-        :references:mime-version:content-type:in-reply-to; s=smtpout;
-         bh=Q/9gTAyZrhJ0FUGtF+FIS6tDtuE=; b=gWvlMpR64qjJblW3KxBPmDhirB+e
-        nCRh78VYEDL/ttrAEOJbBnOGTwUONV6Yy1OW+mrnG1k1zwufjX/nreQuxwCyjSrO
-        4k3j4b7UXbc/Z4f7yDKnZ8Ki8P24Y1kHo2GumKRUun/JHvVYuwV3qtI26lGiDVDC
-        XAzKbVob9bnbFsU=
-X-Sasl-enc: /wuFenq8EQs03Qovh0b9tIxlhjDvLDVV46Em0TdOcLY/ 1380737911
-Received: from localhost (unknown [70.102.97.201])
-        by mail.messagingengine.com (Postfix) with ESMTPA id CFD1B6802B2;
-        Wed,  2 Oct 2013 14:17:58 -0400 (EDT)
-Date:   Wed, 2 Oct 2013 11:17:49 -0700
-From:   Greg KH <greg@kroah.com>
-To:     Alexander Gordeev <agordeev@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 21:02:25 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:28981 "EHLO
+        dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6868559Ab3JBTCS2X1Sz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 21:02:18 +0200
+Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92ApHjK002358;
+        Wed, 2 Oct 2013 12:51:18 +0200
+Received: (from agordeev@localhost)
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92ApA9w002349;
+        Wed, 2 Oct 2013 12:51:10 +0200
+From:   Alexander Gordeev <agordeev@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Alexander Gordeev <agordeev@redhat.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Michael Ellerman <michael@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -40,25 +30,21 @@ Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH RFC 04/77] PCI/MSI/s390: Remove superfluous check of MSI
- type
-Message-ID: <20131002181749.GA6942@kroah.com>
+Subject: [PATCH RFC 01/77] PCI/MSI: Fix return value when populate_msi_sysfs() failed
+Date:   Wed,  2 Oct 2013 12:48:17 +0200
+Message-Id: <3ff5236944aae69f2cd934b5b6da7c1c269df7c1.1380703262.git.agordeev@redhat.com>
+X-Mailer: git-send-email 1.7.7.6
+In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
- <bae65aa3e30dfd23bd5ed47add7310cfbb96243a.1380703262.git.agordeev@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bae65aa3e30dfd23bd5ed47add7310cfbb96243a.1380703262.git.agordeev@redhat.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <greg@kroah.com>
+Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38167
+X-archive-position: 38168
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: greg@kroah.com
+X-original-sender: agordeev@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,18 +57,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 02, 2013 at 12:48:20PM +0200, Alexander Gordeev wrote:
-> arch_setup_msi_irqs() hook can only be called from the generic
-> MSI code which ensures correct MSI type parameter.
-> 
-> Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
-> ---
->  arch/s390/pci/pci.c |    2 --
->  1 files changed, 0 insertions(+), 2 deletions(-)
+Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
+---
+ drivers/pci/msi.c |   11 +++++------
+ 1 files changed, 5 insertions(+), 6 deletions(-)
 
-I have no idea why you sent the stable@ alias so many patches, all in
-the incorrect form for them to be ever accepted in the stable kernel
-releases.  Please read Documentation/stable_kernel_rules.txt for how to
-do this properly.
-
-greg k-h
+diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
+index d5f90d6..b43f391 100644
+--- a/drivers/pci/msi.c
++++ b/drivers/pci/msi.c
+@@ -719,7 +719,7 @@ static int msix_capability_init(struct pci_dev *dev,
+ 
+ 	ret = arch_setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSIX);
+ 	if (ret)
+-		goto error;
++		goto out_avail;
+ 
+ 	/*
+ 	 * Some devices require MSI-X to be enabled before we can touch the
+@@ -732,10 +732,8 @@ static int msix_capability_init(struct pci_dev *dev,
+ 	msix_program_entries(dev, entries);
+ 
+ 	ret = populate_msi_sysfs(dev);
+-	if (ret) {
+-		ret = 0;
+-		goto error;
+-	}
++	if (ret)
++		goto out_free;
+ 
+ 	/* Set MSI-X enabled bits and unmask the function */
+ 	pci_intx_for_msi(dev, 0);
+@@ -746,7 +744,7 @@ static int msix_capability_init(struct pci_dev *dev,
+ 
+ 	return 0;
+ 
+-error:
++out_avail:
+ 	if (ret < 0) {
+ 		/*
+ 		 * If we had some success, report the number of irqs
+@@ -763,6 +761,7 @@ error:
+ 			ret = avail;
+ 	}
+ 
++out_free:
+ 	free_msi_irqs(dev);
+ 
+ 	return ret;
+-- 
+1.7.7.6

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:44:37 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26783 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:44:56 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26784 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868656Ab3JBRoaakMxG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:44:30 +0200
+        by eddie.linux-mips.org with ESMTP id S6868658Ab3JBRobcxYuW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:44:31 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92B0GPt002777;
-        Wed, 2 Oct 2013 13:00:16 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AruT5002459;
+        Wed, 2 Oct 2013 12:53:56 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92B08vd002770;
-        Wed, 2 Oct 2013 13:00:08 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92ArsLQ002457;
+        Wed, 2 Oct 2013 12:53:54 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 71/77] vmxnet3: Return -EINVAL if number of requested MSI-Xs is not enough
-Date:   Wed,  2 Oct 2013 12:49:27 +0200
-Message-Id: <e97bde9008434668e2c3f35d43056a4bd1d69ad1.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 17/77] cciss: Update a misleading comment on interrupt usage
+Date:   Wed,  2 Oct 2013 12:48:33 +0200
+Message-Id: <3607cede809d07e1d1d6548a5f249d1ac2f9094c.1380703262.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38142
+X-archive-position: 38143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,21 +59,24 @@ X-list: linux-mips
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/net/vmxnet3/vmxnet3_drv.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/block/cciss.c |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
-index 7e2788c..5b8ea71 100644
---- a/drivers/net/vmxnet3/vmxnet3_drv.c
-+++ b/drivers/net/vmxnet3/vmxnet3_drv.c
-@@ -2738,7 +2738,7 @@ static int
- vmxnet3_acquire_msix_vectors(struct vmxnet3_adapter *adapter,
- 			     int vectors)
- {
--	int err = 0, vector_threshold;
-+	int err = -EINVAL, vector_threshold;
- 	vector_threshold = VMXNET3_LINUX_MIN_MSIX_VECT;
- 
- 	while (vectors >= vector_threshold) {
+diff --git a/drivers/block/cciss.c b/drivers/block/cciss.c
+index 80068a0..bf11540 100644
+--- a/drivers/block/cciss.c
++++ b/drivers/block/cciss.c
+@@ -4103,7 +4103,10 @@ static void cciss_interrupt_mode(ctlr_info_t *h)
+ 	}
+ default_int_mode:
+ #endif				/* CONFIG_PCI_MSI */
+-	/* if we get here we're going to use the default interrupt mode */
++	/*
++	 * If we get here we're going to use either the
++	 * default interrupt mode or single MSI mode
++	 */
+ 	h->intr[h->intr_mode] = h->pdev->irq;
+ 	return;
+ }
 -- 
 1.7.7.6

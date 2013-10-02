@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:41:19 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26647 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:42:52 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26729 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868574Ab3JBRlBb2g4n (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:41:01 +0200
+        by eddie.linux-mips.org with ESMTP id S6868574Ab3JBRmtoJt3d (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:42:49 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AsFMU002475;
-        Wed, 2 Oct 2013 12:54:16 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AuXui002578;
+        Wed, 2 Oct 2013 12:56:34 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AsBAj002467;
-        Wed, 2 Oct 2013 12:54:11 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AuUtC002577;
+        Wed, 2 Oct 2013 12:56:30 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 19/77] csiostor: Do not call pci_disable_msix() if pci_enable_msix() failed
-Date:   Wed,  2 Oct 2013 12:48:35 +0200
-Message-Id: <3697708ec423a6b6f3d924ea4af9a56874f5787a.1380703262.git.agordeev@redhat.com>
+Subject: [PATCH RFC 36/77] ipr: Enable MSI-X when IPR_USE_MSIX type is set, not IPR_USE_MSI
+Date:   Wed,  2 Oct 2013 12:48:52 +0200
+Message-Id: <2d4272136269f3cb3b1a5ac53b12aa45c7ea65c0.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38139
+X-archive-position: 38140
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,24 +59,21 @@ X-list: linux-mips
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/scsi/csiostor/csio_isr.c |    4 +---
- 1 files changed, 1 insertions(+), 3 deletions(-)
+ drivers/scsi/ipr.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/scsi/csiostor/csio_isr.c b/drivers/scsi/csiostor/csio_isr.c
-index 7ee9777..91ba91d 100644
---- a/drivers/scsi/csiostor/csio_isr.c
-+++ b/drivers/scsi/csiostor/csio_isr.c
-@@ -529,10 +529,8 @@ csio_enable_msix(struct csio_hw *hw)
- 			csio_reduce_sqsets(hw, cnt - extra);
- 		}
- 	} else {
--		if (rv > 0) {
--			pci_disable_msix(hw->pdev);
-+		if (rv > 0)
- 			csio_info(hw, "Not using MSI-X, remainder:%d\n", rv);
--		}
+diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
+index fb57e21..762a93e 100644
+--- a/drivers/scsi/ipr.c
++++ b/drivers/scsi/ipr.c
+@@ -9527,7 +9527,7 @@ static int ipr_probe_ioa(struct pci_dev *pdev,
+ 		ipr_number_of_msix = IPR_MAX_MSIX_VECTORS;
+ 	}
  
- 		kfree(entries);
- 		return -ENOMEM;
+-	if (ioa_cfg->ipr_chip->intr_type == IPR_USE_MSI &&
++	if (ioa_cfg->ipr_chip->intr_type == IPR_USE_MSIX &&
+ 			ipr_enable_msix(ioa_cfg) == 0)
+ 		ioa_cfg->intr_flag = IPR_USE_MSIX;
+ 	else if (ioa_cfg->ipr_chip->intr_type == IPR_USE_MSI &&
 -- 
 1.7.7.6

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:48:48 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26949 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:49:08 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26958 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6865325Ab3JBRsqVFLip (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:48:46 +0200
+        by eddie.linux-mips.org with ESMTP id S6865325Ab3JBRtEq5r91 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:49:04 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AxQni002727;
-        Wed, 2 Oct 2013 12:59:27 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92ApqRl002377;
+        Wed, 2 Oct 2013 12:51:52 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AxPEG002726;
-        Wed, 2 Oct 2013 12:59:25 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92ApofH002373;
+        Wed, 2 Oct 2013 12:51:50 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 62/77] qlcnic: Remove redundant return operator
-Date:   Wed,  2 Oct 2013 12:49:18 +0200
-Message-Id: <c89bd7ba946d731935ea59108c7a169a16624c5d.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 04/77] PCI/MSI/s390: Remove superfluous check of MSI type
+Date:   Wed,  2 Oct 2013 12:48:20 +0200
+Message-Id: <bae65aa3e30dfd23bd5ed47add7310cfbb96243a.1380703262.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38148
+X-archive-position: 38149
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,22 +57,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+arch_setup_msi_irqs() hook can only be called from the generic
+MSI code which ensures correct MSI type parameter.
+
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+ arch/s390/pci/pci.c |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-index ff6a78b..b94e679 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-@@ -613,7 +613,6 @@ int qlcnic_enable_msix(struct qlcnic_adapter *adapter, u32 num_msix)
- 				adapter->max_sds_rings = max_sds_rings;
- 			}
- 			dev_info(&pdev->dev, "using msi-x interrupts\n");
--			return err;
- 		} else if (err > 0) {
- 			dev_info(&pdev->dev,
- 				 "Unable to allocate %d MSI-X interrupt vectors\n",
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index c79c6e4..61a3c2c 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -425,8 +425,6 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ 	int rc;
+ 
+ 	pr_debug("%s: requesting %d MSI-X interrupts...", __func__, nvec);
+-	if (type != PCI_CAP_ID_MSIX && type != PCI_CAP_ID_MSI)
+-		return -EINVAL;
+ 	if (type == PCI_CAP_ID_MSI && nvec > 1)
+ 		return 1;
+ 	msi_vecs = min(nvec, ZPCI_MSI_VEC_MAX);
 -- 
 1.7.7.6

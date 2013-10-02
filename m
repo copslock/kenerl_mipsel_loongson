@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:49:08 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26958 "EHLO
-        dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6865325Ab3JBRtEq5r91 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:49:04 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:50:46 +0200 (CEST)
+Received: from [89.24.186.221] ([89.24.186.221]:27004 "EHLO
+        dhcp-26-207.brq.redhat.com" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6865325Ab3JBRuj53Sgj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:50:39 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92ApqRl002377;
-        Wed, 2 Oct 2013 12:51:52 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AsbUN002488;
+        Wed, 2 Oct 2013 12:54:37 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92ApofH002373;
-        Wed, 2 Oct 2013 12:51:50 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AsZQY002486;
+        Wed, 2 Oct 2013 12:54:35 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 04/77] PCI/MSI/s390: Remove superfluous check of MSI type
-Date:   Wed,  2 Oct 2013 12:48:20 +0200
-Message-Id: <bae65aa3e30dfd23bd5ed47add7310cfbb96243a.1380703262.git.agordeev@redhat.com>
+Subject: [PATCH RFC 22/77] cxgb3: Do not call pci_disable_msix() if pci_enable_msix() failed
+Date:   Wed,  2 Oct 2013 12:48:38 +0200
+Message-Id: <c5c45dfed1a95dbb7848298f1fb8e26d5f10506a.1380703262.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38149
+X-archive-position: 38150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,26 +57,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-arch_setup_msi_irqs() hook can only be called from the generic
-MSI code which ensures correct MSI type parameter.
-
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- arch/s390/pci/pci.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
 
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index c79c6e4..61a3c2c 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -425,8 +425,6 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
- 	int rc;
+diff --git a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
+index b650951..9bd3099 100644
+--- a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
+@@ -3097,9 +3097,6 @@ static int cxgb_enable_msix(struct adapter *adap)
+ 	while ((err = pci_enable_msix(adap->pdev, entries, vectors)) > 0)
+ 		vectors = err;
  
- 	pr_debug("%s: requesting %d MSI-X interrupts...", __func__, nvec);
--	if (type != PCI_CAP_ID_MSIX && type != PCI_CAP_ID_MSI)
--		return -EINVAL;
- 	if (type == PCI_CAP_ID_MSI && nvec > 1)
- 		return 1;
- 	msi_vecs = min(nvec, ZPCI_MSI_VEC_MAX);
+-	if (err < 0)
+-		pci_disable_msix(adap->pdev);
+-
+ 	if (!err && vectors < (adap->params.nports + 1)) {
+ 		pci_disable_msix(adap->pdev);
+ 		err = -1;
 -- 
 1.7.7.6

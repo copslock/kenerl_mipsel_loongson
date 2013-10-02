@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:17:03 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:25883 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:18:41 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:25908 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868572Ab3JBRP4WEQW9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:15:56 +0200
+        by eddie.linux-mips.org with ESMTP id S6868572Ab3JBRSiuqcOA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:18:38 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AugjV002582;
-        Wed, 2 Oct 2013 12:56:42 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AxfE0002743;
+        Wed, 2 Oct 2013 12:59:41 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AucOr002581;
-        Wed, 2 Oct 2013 12:56:38 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92Axdfq002742;
+        Wed, 2 Oct 2013 12:59:39 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 37/77] ipr: Update MSI/MSI-X interrupts enablement code
-Date:   Wed,  2 Oct 2013 12:48:53 +0200
-Message-Id: <5bc4414bf44d7ded72c38333225b9057b3427869.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 66/77] qlge: Update MSI/MSI-X interrupts enablement code
+Date:   Wed,  2 Oct 2013 12:49:22 +0200
+Message-Id: <5161bfdf162c8edd77d03e96312d48edb54242bc.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38118
+X-archive-position: 38119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,81 +63,75 @@ obtain a optimal number of MSI/MSI-X interrupts required.
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/scsi/ipr.c |   46 +++++++++++++++++++++++-----------------------
- 1 files changed, 23 insertions(+), 23 deletions(-)
+ drivers/net/ethernet/qlogic/qlge/qlge_main.c |   39 +++++++++++--------------
+ 1 files changed, 17 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
-index 762a93e..86ed0a2 100644
---- a/drivers/scsi/ipr.c
-+++ b/drivers/scsi/ipr.c
-@@ -9247,45 +9247,45 @@ static int ipr_enable_msix(struct ipr_ioa_cfg *ioa_cfg)
- 	struct msix_entry entries[IPR_MAX_MSIX_VECTORS];
- 	int i, err, vectors;
+diff --git a/drivers/net/ethernet/qlogic/qlge/qlge_main.c b/drivers/net/ethernet/qlogic/qlge/qlge_main.c
+index ac54cb0..d6fdd93 100644
+--- a/drivers/net/ethernet/qlogic/qlge/qlge_main.c
++++ b/drivers/net/ethernet/qlogic/qlge/qlge_main.c
+@@ -3258,45 +3258,40 @@ static void ql_enable_msix(struct ql_adapter *qdev)
  
--	for (i = 0; i < ARRAY_SIZE(entries); ++i)
--		entries[i].entry = i;
-+	err = pci_msix_table_size(ioa_cfg->pdev);
-+	if (err < 0)
-+		return err;
- 
--	vectors = ipr_number_of_msix;
-+	vectors = min_t(int, err, ipr_number_of_msix);
- 
--	while ((err = pci_enable_msix(ioa_cfg->pdev, entries, vectors)) > 0)
--			vectors = err;
-+	BUG_ON(vectors > ARRAY_SIZE(entries));
-+	for (i = 0; i < vectors; ++i)
-+		entries[i].entry = i;
- 
--	if (err < 0)
-+	err = pci_enable_msix(ioa_cfg->pdev, entries, vectors);
-+	if (err)
- 		return err;
- 
--	if (!err) {
--		for (i = 0; i < vectors; i++)
--			ioa_cfg->vectors_info[i].vec = entries[i].vector;
--		ioa_cfg->nvectors = vectors;
--	}
-+	for (i = 0; i < vectors; i++)
-+		ioa_cfg->vectors_info[i].vec = entries[i].vector;
-+	ioa_cfg->nvectors = vectors;
- 
--	return err;
-+	return 0;
- }
- 
- static int ipr_enable_msi(struct ipr_ioa_cfg *ioa_cfg)
- {
- 	int i, err, vectors;
- 
--	vectors = ipr_number_of_msix;
--
--	while ((err = pci_enable_msi_block(ioa_cfg->pdev, vectors)) > 0)
--			vectors = err;
--
-+	err = pci_get_msi_cap(ioa_cfg->pdev);
- 	if (err < 0)
- 		return err;
- 
--	if (!err) {
--		for (i = 0; i < vectors; i++)
--			ioa_cfg->vectors_info[i].vec = ioa_cfg->pdev->irq + i;
--		ioa_cfg->nvectors = vectors;
--	}
-+	vectors = min_t(int, err, ipr_number_of_msix);
-+	err = pci_enable_msi_block(ioa_cfg->pdev, vectors);
-+	if (err)
-+		return err;
+ 	/* Get the MSIX vectors. */
+ 	if (qlge_irq_type == MSIX_IRQ) {
++		err = pci_msix_table_size(qdev->pdev);
++		if (err < 0)
++			goto msix_fail;
 +
-+	for (i = 0; i < vectors; i++)
-+		ioa_cfg->vectors_info[i].vec = ioa_cfg->pdev->irq + i;
-+	ioa_cfg->nvectors = vectors;
++		qdev->intr_count = min_t(u32, qdev->intr_count, err);
++
+ 		/* Try to alloc space for the msix struct,
+ 		 * if it fails then go to MSI/legacy.
+ 		 */
+ 		qdev->msi_x_entry = kcalloc(qdev->intr_count,
+ 					    sizeof(struct msix_entry),
+ 					    GFP_KERNEL);
+-		if (!qdev->msi_x_entry) {
+-			qlge_irq_type = MSI_IRQ;
+-			goto msi;
+-		}
++		if (!qdev->msi_x_entry)
++			goto msix_fail;
  
--	return err;
-+	return 0;
- }
+ 		for (i = 0; i < qdev->intr_count; i++)
+ 			qdev->msi_x_entry[i].entry = i;
  
- static void name_msi_vectors(struct ipr_ioa_cfg *ioa_cfg)
+-		/* Loop to get our vectors.  We start with
+-		 * what we want and settle for what we get.
+-		 */
+-		do {
+-			err = pci_enable_msix(qdev->pdev,
+-				qdev->msi_x_entry, qdev->intr_count);
+-			if (err > 0)
+-				qdev->intr_count = err;
+-		} while (err > 0);
+-
+-		if (err < 0) {
+-			kfree(qdev->msi_x_entry);
+-			qdev->msi_x_entry = NULL;
+-			netif_warn(qdev, ifup, qdev->ndev,
+-				   "MSI-X Enable failed, trying MSI.\n");
+-			qlge_irq_type = MSI_IRQ;
+-		} else if (err == 0) {
++		if (!pci_enable_msix(qdev->pdev,
++				     qdev->msi_x_entry, qdev->intr_count)) {
+ 			set_bit(QL_MSIX_ENABLED, &qdev->flags);
+ 			netif_info(qdev, ifup, qdev->ndev,
+ 				   "MSI-X Enabled, got %d vectors.\n",
+ 				   qdev->intr_count);
+ 			return;
+ 		}
++
++		kfree(qdev->msi_x_entry);
++		qdev->msi_x_entry = NULL;
++msix_fail:
++		netif_warn(qdev, ifup, qdev->ndev,
++			   "MSI-X Enable failed, trying MSI.\n");
++		qlge_irq_type = MSI_IRQ;
+ 	}
+-msi:
+ 	qdev->intr_count = 1;
+ 	if (qlge_irq_type == MSI_IRQ) {
+ 		if (!pci_enable_msi(qdev->pdev)) {
 -- 
 1.7.7.6

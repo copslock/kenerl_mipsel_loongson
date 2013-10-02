@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:55:25 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:27136 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:57:06 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:27159 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868664Ab3JBRzWg6HPX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:55:22 +0200
+        by eddie.linux-mips.org with ESMTP id S6868674Ab3JBR5DqztOR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:57:03 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AuOl9002574;
-        Wed, 2 Oct 2013 12:56:25 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92Au4JM002554;
+        Wed, 2 Oct 2013 12:56:04 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AuJHG002573;
-        Wed, 2 Oct 2013 12:56:19 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92Au1sR002553;
+        Wed, 2 Oct 2013 12:56:01 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 35/77] ipr: Do not call pci_disable_msi/msix() if pci_enable_msi/msix() failed
-Date:   Wed,  2 Oct 2013 12:48:51 +0200
-Message-Id: <5d673eed9f7742f0551214d273a4fa905a721ac4.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 32/77] hpsa: Fallback to single MSI mode in case MSI-X failed
+Date:   Wed,  2 Oct 2013 12:48:48 +0200
+Message-Id: <a8343fb00f8dfdcb637913b5a691dcea7ecffffc.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38157
+X-archive-position: 38158
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,36 +59,32 @@ X-list: linux-mips
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/scsi/ipr.c |    8 ++------
- 1 files changed, 2 insertions(+), 6 deletions(-)
+ drivers/scsi/hpsa.c |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
-index 36ac1c3..fb57e21 100644
---- a/drivers/scsi/ipr.c
-+++ b/drivers/scsi/ipr.c
-@@ -9255,10 +9255,8 @@ static int ipr_enable_msix(struct ipr_ioa_cfg *ioa_cfg)
- 	while ((err = pci_enable_msix(ioa_cfg->pdev, entries, vectors)) > 0)
- 			vectors = err;
+diff --git a/drivers/scsi/hpsa.c b/drivers/scsi/hpsa.c
+index eb17b3d..252b65d 100644
+--- a/drivers/scsi/hpsa.c
++++ b/drivers/scsi/hpsa.c
+@@ -4112,7 +4112,7 @@ static void hpsa_interrupt_mode(struct ctlr_info *h)
  
--	if (err < 0) {
--		pci_disable_msix(ioa_cfg->pdev);
-+	if (err < 0)
- 		return err;
--	}
+ 		err = pci_msix_table_size(h->pdev);
+ 		if (err < ARRAY_SIZE(hpsa_msix_entries))
+-			goto default_int_mode;
++			goto single_msi_mode;
  
- 	if (!err) {
- 		for (i = 0; i < vectors; i++)
-@@ -9278,10 +9276,8 @@ static int ipr_enable_msi(struct ipr_ioa_cfg *ioa_cfg)
- 	while ((err = pci_enable_msi_block(ioa_cfg->pdev, vectors)) > 0)
- 			vectors = err;
- 
--	if (err < 0) {
--		pci_disable_msi(ioa_cfg->pdev);
-+	if (err < 0)
- 		return err;
--	}
- 
- 	if (!err) {
- 		for (i = 0; i < vectors; i++)
+ 		for (i = 0; i < ARRAY_SIZE(hpsa_msix_entries); i++) {
+ 			hpsa_msix_entries[i].vector = 0;
+@@ -4128,8 +4128,9 @@ static void hpsa_interrupt_mode(struct ctlr_info *h)
+ 			return;
+ 		}
+ 		dev_warn(&h->pdev->dev, "MSI-X init failed %d\n", err);
+-		goto default_int_mode;
++		goto single_msi_mode;
+ 	}
++single_msi_mode:
+ 	if (pci_find_capability(h->pdev, PCI_CAP_ID_MSI)) {
+ 		dev_info(&h->pdev->dev, "MSI\n");
+ 		if (!pci_enable_msi(h->pdev))
 -- 
 1.7.7.6

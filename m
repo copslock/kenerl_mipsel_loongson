@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 20:02:31 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:27315 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 20:04:19 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:27335 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6838727Ab3JBSCZn3IHF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 20:02:25 +0200
+        by eddie.linux-mips.org with ESMTP id S6868680Ab3JBSENJ0JIR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 20:04:13 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AvC7A002603;
-        Wed, 2 Oct 2013 12:57:12 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92B0VBQ002789;
+        Wed, 2 Oct 2013 13:00:31 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AvARq002602;
-        Wed, 2 Oct 2013 12:57:10 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92B0T7M002788;
+        Wed, 2 Oct 2013 13:00:29 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 41/77] lpfc: Do not call pci_disable_msix() if pci_enable_msix() failed
-Date:   Wed,  2 Oct 2013 12:48:57 +0200
-Message-Id: <8e18482bc1c22d1764a743f053909c348d7acdec.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 74/77] vmxnet3: Limit number of rx queues to 1 if per-queue MSI-Xs failed
+Date:   Wed,  2 Oct 2013 12:49:30 +0200
+Message-Id: <f029865a23808e2f788f90f878355fddf3b04ad2.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38164
+X-archive-position: 38165
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,51 +59,42 @@ X-list: linux-mips
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/scsi/lpfc/lpfc_init.c |    9 ++++++---
- 1 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/vmxnet3/vmxnet3_drv.c |   16 ++++++++--------
+ 1 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index 647f5bf..0803b84 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -8080,7 +8080,7 @@ lpfc_sli_enable_msix(struct lpfc_hba *phba)
- 	if (rc) {
- 		lpfc_printf_log(phba, KERN_INFO, LOG_INIT,
- 				"0420 PCI enable MSI-X failed (%d)\n", rc);
--		goto msi_fail_out;
-+		goto vec_fail_out;
- 	}
- 	for (i = 0; i < LPFC_MSIX_VECTORS; i++)
- 		lpfc_printf_log(phba, KERN_INFO, LOG_INIT,
-@@ -8158,6 +8158,8 @@ irq_fail_out:
- msi_fail_out:
- 	/* Unconfigure MSI-X capability structure */
- 	pci_disable_msix(phba->pcidev);
-+
-+vec_fail_out:
- 	return rc;
- }
+diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
+index 3df7f32..00dc0d0 100644
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -2814,12 +2814,14 @@ vmxnet3_alloc_intr_resources(struct vmxnet3_adapter *adapter)
  
-@@ -8646,7 +8648,7 @@ enable_msix_vectors:
- 	} else if (rc) {
- 		lpfc_printf_log(phba, KERN_INFO, LOG_INIT,
- 				"0484 PCI enable MSI-X failed (%d)\n", rc);
--		goto msi_fail_out;
-+		goto vec_fail_out;
- 	}
+ 		err = vmxnet3_acquire_msix_vectors(adapter,
+ 						   adapter->intr.num_intrs);
+-		/* If we cannot allocate one MSIx vector per queue
+-		 * then limit the number of rx queues to 1
+-		 */
+-		if (err == VMXNET3_LINUX_MIN_MSIX_VECT) {
+-			if (adapter->share_intr != VMXNET3_INTR_BUDDYSHARE
+-			    || adapter->num_rx_queues != 1) {
++		if (!err) {
++			/* If we cannot allocate one MSIx vector per queue
++			 * then limit the number of rx queues to 1
++			 */
++			if ((adapter->intr.num_intrs ==
++			     VMXNET3_LINUX_MIN_MSIX_VECT) &&
++			    ((adapter->share_intr != VMXNET3_INTR_BUDDYSHARE) ||
++			     (adapter->num_rx_queues != 1))) {
+ 				adapter->share_intr = VMXNET3_INTR_TXSHARE;
+ 				netdev_err(adapter->netdev,
+ 					   "Number of rx queues : 1\n");
+@@ -2829,8 +2831,6 @@ vmxnet3_alloc_intr_resources(struct vmxnet3_adapter *adapter)
+ 			}
+ 			return;
+ 		}
+-		if (!err)
+-			return;
  
- 	/* Log MSI-X vector assignment */
-@@ -8698,9 +8700,10 @@ cfg_fail_out:
- 			 &phba->sli4_hba.fcp_eq_hdl[index]);
- 	}
- 
--msi_fail_out:
- 	/* Unconfigure MSI-X capability structure */
- 	pci_disable_msix(phba->pcidev);
-+
-+vec_fail_out:
- 	return rc;
- }
- 
+ 		/* If we cannot allocate MSIx vectors use only one rx queue */
+ 		dev_info(&adapter->pdev->dev,
 -- 
 1.7.7.6

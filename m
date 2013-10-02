@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 18:27:14 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:24438 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 18:29:30 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:24523 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6865325Ab3JBQ1M3xXx3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 18:27:12 +0200
+        by eddie.linux-mips.org with ESMTP id S6865325Ab3JBQ3ZUf9Tt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 18:29:25 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92Ar2LD002421;
-        Wed, 2 Oct 2013 12:53:02 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AxCGG002704;
+        Wed, 2 Oct 2013 12:59:12 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AqviW002420;
-        Wed, 2 Oct 2013 12:52:57 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AxA8p002703;
+        Wed, 2 Oct 2013 12:59:10 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 11/77] benet: Return -ENOSPC when not enough MSI-Xs available
-Date:   Wed,  2 Oct 2013 12:48:27 +0200
-Message-Id: <4c73b38e38e37857e85e28a38279a2917bfcc01b.1380703262.git.agordeev@redhat.com>
+Subject: [PATCH RFC 58/77] qib: Update MSI/MSI-X interrupts enablement code
+Date:   Wed,  2 Oct 2013 12:49:14 +0200
+Message-Id: <5dac1d5d1329cb290043f93b250d26290e553be9.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38092
+X-archive-position: 38093
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,23 +57,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+As result of recent re-design of the MSI/MSI-X interrupts enabling
+pattern this driver has to be updated to use the new technique to
+obtain a optimal number of MSI/MSI-X interrupts required.
+
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/net/ethernet/emulex/benet/be_main.c |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+ drivers/infiniband/hw/qib/qib_pcie.c |    4 ----
+ 1 files changed, 0 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
-index 100b528..3e2c834 100644
---- a/drivers/net/ethernet/emulex/benet/be_main.c
-+++ b/drivers/net/ethernet/emulex/benet/be_main.c
-@@ -2378,6 +2378,8 @@ static int be_msix_enable(struct be_adapter *adapter)
- 					 num_vec);
- 		if (!status)
- 			goto done;
-+	} else (status > 0) {
-+		status = -ENOSPC;
- 	}
- 
- 	dev_warn(dev, "MSIx enable failed\n");
+diff --git a/drivers/infiniband/hw/qib/qib_pcie.c b/drivers/infiniband/hw/qib/qib_pcie.c
+index 3f14009..9580903 100644
+--- a/drivers/infiniband/hw/qib/qib_pcie.c
++++ b/drivers/infiniband/hw/qib/qib_pcie.c
+@@ -218,10 +218,6 @@ static void qib_msix_setup(struct qib_devdata *dd, int pos, u32 *msixcnt,
+ 	if (tabsize > *msixcnt)
+ 		tabsize = *msixcnt;
+ 	ret = pci_enable_msix(dd->pcidev, msix_entry, tabsize);
+-	if (ret > 0) {
+-		tabsize = ret;
+-		ret = pci_enable_msix(dd->pcidev, msix_entry, tabsize);
+-	}
+ do_intx:
+ 	if (ret) {
+ 		qib_dev_err(dd,
 -- 
 1.7.7.6

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:02:42 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:25492 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:05:00 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:25654 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868570Ab3JBRCjKUg-G (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:02:39 +0200
+        by eddie.linux-mips.org with ESMTP id S6868569Ab3JBRE6dENKR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:04:58 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92B00Cr002763;
-        Wed, 2 Oct 2013 13:00:01 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92Ax4Yf002696;
+        Wed, 2 Oct 2013 12:59:04 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92Axqf1002754;
-        Wed, 2 Oct 2013 12:59:52 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92Ax3rd002695;
+        Wed, 2 Oct 2013 12:59:03 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 69/77] tg3: Update MSI/MSI-X interrupts enablement code
-Date:   Wed,  2 Oct 2013 12:49:25 +0200
-Message-Id: <7439a70d0bb225702097714d92df2169ffd94dd6.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 56/77] nvme: Update MSI/MSI-X interrupts enablement code
+Date:   Wed,  2 Oct 2013 12:49:12 +0200
+Message-Id: <e8ea98c33d82a110db6bfdda092402ef45692f43.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38112
+X-archive-position: 38113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,58 +63,72 @@ obtain a optimal number of MSI/MSI-X interrupts required.
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/net/ethernet/broadcom/tg3.c |   24 +++++++++++++-----------
- 1 files changed, 13 insertions(+), 11 deletions(-)
+ drivers/block/nvme-core.c |   48 +++++++++++++++++++++++---------------------
+ 1 files changed, 25 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 12d961c..2e842ef3 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -11241,6 +11241,10 @@ static bool tg3_enable_msix(struct tg3 *tp)
- 	int i, rc;
- 	struct msix_entry msix_ent[TG3_IRQ_MAX_VECS];
+diff --git a/drivers/block/nvme-core.c b/drivers/block/nvme-core.c
+index da52092..f69d7af 100644
+--- a/drivers/block/nvme-core.c
++++ b/drivers/block/nvme-core.c
+@@ -1774,34 +1774,36 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
+ 	/* Deregister the admin queue's interrupt */
+ 	free_irq(dev->entry[0].vector, dev->queues[0]);
  
-+	rc = pci_msix_table_size(tp->pdev);
-+	if (rc < 0)
-+		return false;
+-	vecs = nr_io_queues;
++	result = pci_msix_table_size(pdev);
++	if (result < 0)
++		goto msi;
 +
- 	tp->txq_cnt = tp->txq_req;
- 	tp->rxq_cnt = tp->rxq_req;
- 	if (!tp->rxq_cnt)
-@@ -11256,6 +11260,14 @@ static bool tg3_enable_msix(struct tg3 *tp)
- 		tp->txq_cnt = 1;
- 
- 	tp->irq_cnt = tg3_irq_count(tp);
-+	if (tp->irq_cnt > rc) {
-+		netdev_notice(tp->dev, "Requested %d MSI-Xs, available %d\n",
-+			      tp->irq_cnt, rc);
-+		tp->irq_cnt = rc;
-+		tp->rxq_cnt = max(rc - 1, 1);
-+		if (tp->txq_cnt)
-+			tp->txq_cnt = min(tp->rxq_cnt, tp->txq_max);
-+	}
- 
- 	for (i = 0; i < tp->irq_max; i++) {
- 		msix_ent[i].entry  = i;
-@@ -11263,18 +11275,8 @@ static bool tg3_enable_msix(struct tg3 *tp)
- 	}
- 
- 	rc = pci_enable_msix(tp->pdev, msix_ent, tp->irq_cnt);
--	if (rc < 0) {
-+	if (rc)
- 		return false;
--	} else if (rc != 0) {
--		if (pci_enable_msix(tp->pdev, msix_ent, rc))
--			return false;
--		netdev_notice(tp->dev, "Requested %d MSI-X vectors, received %d\n",
--			      tp->irq_cnt, rc);
--		tp->irq_cnt = rc;
--		tp->rxq_cnt = max(rc - 1, 1);
--		if (tp->txq_cnt)
--			tp->txq_cnt = min(tp->rxq_cnt, tp->txq_max);
++	vecs = min(result, nr_io_queues);
+ 	for (i = 0; i < vecs; i++)
+ 		dev->entry[i].entry = i;
+-	for (;;) {
+-		result = pci_enable_msix(pdev, dev->entry, vecs);
+-		if (result <= 0)
+-			break;
+-		vecs = result;
 -	}
  
- 	for (i = 0; i < tp->irq_max; i++)
- 		tp->napi[i].irq_vec = msix_ent[i].vector;
+-	if (result < 0) {
+-		vecs = nr_io_queues;
+-		if (vecs > 32)
+-			vecs = 32;
+-		for (;;) {
+-			result = pci_enable_msi_block(pdev, vecs);
+-			if (result == 0) {
+-				for (i = 0; i < vecs; i++)
+-					dev->entry[i].vector = i + pdev->irq;
+-				break;
+-			} else if (result < 0) {
+-				vecs = 1;
+-				break;
+-			}
+-			vecs = result;
+-		}
++	result = pci_enable_msix(pdev, dev->entry, vecs);
++	if (result == 0)
++		goto irq;
++
++ msi:
++	result = pci_get_msi_cap(pdev);
++	if (result < 0)
++		goto no_msi;
++
++	vecs = min(result, nr_io_queues);
++
++	result = pci_enable_msi_block(pdev, vecs);
++	if (result == 0) {
++		for (i = 0; i < vecs; i++)
++			dev->entry[i].vector = i + pdev->irq;
++		goto irq;
+ 	}
+ 
++ no_msi:
++	vecs = 1;
++
++ irq:
+ 	/*
+ 	 * Should investigate if there's a performance win from allocating
+ 	 * more queues than interrupt vectors; it might allow the submission
 -- 
 1.7.7.6

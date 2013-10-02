@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 18:59:36 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:25325 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:01:02 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:25426 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868567Ab3JBQ7bMCn5Q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 18:59:31 +0200
+        by eddie.linux-mips.org with ESMTP id S6868570Ab3JBRA74n7QG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:00:59 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92Axja7002747;
-        Wed, 2 Oct 2013 12:59:45 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AxoDi002751;
+        Wed, 2 Oct 2013 12:59:50 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92Axh79002746;
-        Wed, 2 Oct 2013 12:59:43 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AxmWw002750;
+        Wed, 2 Oct 2013 12:59:48 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 67/77] rapidio: Update MSI/MSI-X interrupts enablement code
-Date:   Wed,  2 Oct 2013 12:49:23 +0200
-Message-Id: <d73f825db39f969247aa80380da2a9c41c101f09.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 68/77] sfc: Update MSI/MSI-X interrupts enablement code
+Date:   Wed,  2 Oct 2013 12:49:24 +0200
+Message-Id: <d1d4c1c82e340283193c6a56e2e21c691956e605.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38110
+X-archive-position: 38111
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,60 +63,52 @@ obtain a optimal number of MSI/MSI-X interrupts required.
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/rapidio/devices/tsi721.c |   27 +++++++++++++++++----------
- 1 files changed, 17 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/sfc/efx.c |   18 +++++++++++-------
+ 1 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/rapidio/devices/tsi721.c b/drivers/rapidio/devices/tsi721.c
-index ff7cbf2..5edd920 100644
---- a/drivers/rapidio/devices/tsi721.c
-+++ b/drivers/rapidio/devices/tsi721.c
-@@ -734,6 +734,16 @@ static int tsi721_enable_msix(struct tsi721_device *priv)
- 	int err;
- 	int i;
+diff --git a/drivers/net/ethernet/sfc/efx.c b/drivers/net/ethernet/sfc/efx.c
+index 07c9bc4..184ef9f 100644
+--- a/drivers/net/ethernet/sfc/efx.c
++++ b/drivers/net/ethernet/sfc/efx.c
+@@ -1261,21 +1261,24 @@ static int efx_probe_interrupts(struct efx_nic *efx)
+ 		n_channels += extra_channels;
+ 		n_channels = min(n_channels, efx->max_channels);
  
-+	err = pci_msix_table_size(priv->pdev);
-+	if (err < 0)
-+		goto err_out;
-+	if (err < ARRAY_SIZE(entries)) {
-+		dev_info(&priv->pdev->dev,
-+			 "Only %d MSI-X vectors available, not using MSI-X\n",
-+			 err);
-+		return -ENOSPC;
-+	}
+-		for (i = 0; i < n_channels; i++)
+-			xentries[i].entry = i;
+-		rc = pci_enable_msix(efx->pci_dev, xentries, n_channels);
+-		if (rc > 0) {
++		rc = pci_msix_table_size(efx->pci_dev);
++		if (rc < 0)
++			goto msi;
 +
- 	entries[TSI721_VECT_IDB].entry = TSI721_MSIX_SR2PC_IDBQ_RCV(IDB_QUEUE);
- 	entries[TSI721_VECT_PWRX].entry = TSI721_MSIX_SRIO_MAC_INT;
++		if (rc < n_channels) {
+ 			netif_err(efx, drv, efx->net_dev,
+ 				  "WARNING: Insufficient MSI-X vectors"
+ 				  " available (%d < %u).\n", rc, n_channels);
+ 			netif_err(efx, drv, efx->net_dev,
+ 				  "WARNING: Performance may be reduced.\n");
+-			EFX_BUG_ON_PARANOID(rc >= n_channels);
+ 			n_channels = rc;
+-			rc = pci_enable_msix(efx->pci_dev, xentries,
+-					     n_channels);
+ 		}
  
-@@ -769,16 +779,8 @@ static int tsi721_enable_msix(struct tsi721_device *priv)
- #endif /* CONFIG_RAPIDIO_DMA_ENGINE */
- 
- 	err = pci_enable_msix(priv->pdev, entries, ARRAY_SIZE(entries));
--	if (err) {
--		if (err > 0)
--			dev_info(&priv->pdev->dev,
--				 "Only %d MSI-X vectors available, "
--				 "not using MSI-X\n", err);
--		else
--			dev_err(&priv->pdev->dev,
--				"Failed to enable MSI-X (err=%d)\n", err);
--		return err;
--	}
-+	if (err)
-+		goto err_out;
- 
- 	/*
- 	 * Copy MSI-X vector information into tsi721 private structure
-@@ -833,6 +835,11 @@ static int tsi721_enable_msix(struct tsi721_device *priv)
- #endif /* CONFIG_RAPIDIO_DMA_ENGINE */
- 
- 	return 0;
++		EFX_BUG_ON_PARANOID(n_channels > ARRAY_SIZE(xentries));
++		for (i = 0; i < n_channels; i++)
++			xentries[i].entry = i;
 +
-+err_out:
-+	dev_err(&priv->pdev->dev,
-+		"Failed to enable MSI-X (err=%d)\n", err);
-+	return err;
- }
- #endif /* CONFIG_PCI_MSI */
- 
++		rc = pci_enable_msix(efx->pci_dev, xentries, n_channels);
+ 		if (rc == 0) {
+ 			efx->n_channels = n_channels;
+ 			if (n_channels > extra_channels)
+@@ -1293,6 +1296,7 @@ static int efx_probe_interrupts(struct efx_nic *efx)
+ 				efx_get_channel(efx, i)->irq =
+ 					xentries[i].vector;
+ 		} else {
++msi:
+ 			/* Fall back to single channel MSI */
+ 			efx->interrupt_mode = EFX_INT_MODE_MSI;
+ 			netif_err(efx, drv, efx->net_dev,
 -- 
 1.7.7.6

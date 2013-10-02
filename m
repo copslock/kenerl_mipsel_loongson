@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:50:46 +0200 (CEST)
-Received: from [89.24.186.221] ([89.24.186.221]:27004 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:51:05 +0200 (CEST)
+Received: from [89.24.186.221] ([89.24.186.221]:27005 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6865325Ab3JBRuj53Sgj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:50:39 +0200
+        by eddie.linux-mips.org with ESMTP id S6868664Ab3JBRulMVjhx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:50:41 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AsbUN002488;
-        Wed, 2 Oct 2013 12:54:37 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92Asx33002512;
+        Wed, 2 Oct 2013 12:54:59 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AsZQY002486;
-        Wed, 2 Oct 2013 12:54:35 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AsvHH002506;
+        Wed, 2 Oct 2013 12:54:57 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 22/77] cxgb3: Do not call pci_disable_msix() if pci_enable_msix() failed
-Date:   Wed,  2 Oct 2013 12:48:38 +0200
-Message-Id: <c5c45dfed1a95dbb7848298f1fb8e26d5f10506a.1380703262.git.agordeev@redhat.com>
+Subject: [PATCH RFC 25/77] cxgb4: Return -ENOSPC when not enough MSI-X vectors available
+Date:   Wed,  2 Oct 2013 12:48:41 +0200
+Message-Id: <3c7f347b79afdce03af1fadf4f50f7906979ee94.1380703262.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38150
+X-archive-position: 38151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,22 +59,25 @@ X-list: linux-mips
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c |    3 ---
- 1 files changed, 0 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
-index b650951..9bd3099 100644
---- a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
-+++ b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
-@@ -3097,9 +3097,6 @@ static int cxgb_enable_msix(struct adapter *adap)
- 	while ((err = pci_enable_msix(adap->pdev, entries, vectors)) > 0)
- 		vectors = err;
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+index c73cabd..9425bc6 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+@@ -5732,9 +5732,11 @@ static int enable_msix(struct adapter *adap)
+ 		}
+ 		for (i = 0; i < want; ++i)
+ 			adap->msix_info[i].vec = entries[i].vector;
+-	} else if (err > 0)
++	} else if (err > 0) {
+ 		dev_info(adap->pdev_dev,
+ 			 "only %d MSI-X vectors left, not using MSI-X\n", err);
++		err = -ENOSPC;
++	}
+ 	return err;
+ }
  
--	if (err < 0)
--		pci_disable_msix(adap->pdev);
--
- 	if (!err && vectors < (adap->params.nports + 1)) {
- 		pci_disable_msix(adap->pdev);
- 		err = -1;
 -- 
 1.7.7.6

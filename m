@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 18:43:18 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:24751 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 18:45:04 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:24770 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868559Ab3JBQnM6eDyZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 18:43:12 +0200
+        by eddie.linux-mips.org with ESMTP id S6865325Ab3JBQpCVd5vB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 18:45:02 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AvM1P002614;
-        Wed, 2 Oct 2013 12:57:22 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92Avrwk002643;
+        Wed, 2 Oct 2013 12:57:53 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AvG0m002612;
-        Wed, 2 Oct 2013 12:57:16 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92Avpjm002638;
+        Wed, 2 Oct 2013 12:57:51 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 42/77] lpfc: Update MSI/MSI-X interrupts enablement code
-Date:   Wed,  2 Oct 2013 12:48:58 +0200
-Message-Id: <b0f0cdcc95f7899d9340214fdc1db01097bdc25f.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 46/77] mlx4: Update MSI/MSI-X interrupts enablement code
+Date:   Wed,  2 Oct 2013 12:49:02 +0200
+Message-Id: <b0a9f6f455aa03b7769e6d9cc2e7fdbc06732b2f.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38101
+X-archive-position: 38102
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,47 +61,49 @@ As result of recent re-design of the MSI/MSI-X interrupts enabling
 pattern this driver has to be updated to use the new technique to
 obtain a optimal number of MSI/MSI-X interrupts required.
 
-Note, in case just one MSI-X vector was available the
-error message "0484 PCI enable MSI-X failed 1" is
-preserved to not break tools which might depend on it.
-
-Also, not sure why in case of multiple MSI-Xs mode failed
-the driver skips the single MSI-X mode and falls back to
-single MSI mode.
-
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/scsi/lpfc/lpfc_init.c |   18 +++++++++++-------
- 1 files changed, 11 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/main.c |   17 ++++++++---------
+ 1 files changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index 0803b84..d83a1a3 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -8639,13 +8639,17 @@ lpfc_sli4_enable_msix(struct lpfc_hba *phba)
+diff --git a/drivers/net/ethernet/mellanox/mlx4/main.c b/drivers/net/ethernet/mellanox/mlx4/main.c
+index 60c9f4f..377a5ea 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/main.c
++++ b/drivers/net/ethernet/mellanox/mlx4/main.c
+@@ -1852,8 +1852,16 @@ static void mlx4_enable_msi_x(struct mlx4_dev *dev)
+ 	int i;
  
- 	/* Configure MSI-X capability structure */
- 	vectors = phba->cfg_fcp_io_channel;
--enable_msix_vectors:
--	rc = pci_enable_msix(phba->pcidev, phba->sli4_hba.msix_entries,
--			     vectors);
--	if (rc > 1) {
--		vectors = rc;
--		goto enable_msix_vectors;
--	} else if (rc) {
+ 	if (msi_x) {
++		err = pci_msix_table_size(dev->pdev);
++		if (err < 0)
++			goto no_msi;
 +
-+	rc = pci_msix_table_size(phba->pcidev);
-+	if (rc < 0)
-+		goto msg_fail_out;
-+
-+	vectors = min(vectors, rc);
-+	if (vectors > 1)
-+		rc = pci_enable_msix(phba->pcidev, phba->sli4_hba.msix_entries,
-+				     vectors);
-+	if (rc) {
-+msg_fail_out:
- 		lpfc_printf_log(phba, KERN_INFO, LOG_INIT,
- 				"0484 PCI enable MSI-X failed (%d)\n", rc);
- 		goto vec_fail_out;
++		/* Try if at least 2 vectors are available */
+ 		nreq = min_t(int, dev->caps.num_eqs - dev->caps.reserved_eqs,
+ 			     nreq);
++		nreq = min_t(int, nreq, err);
++		if (nreq < 2)
++			goto no_msi;
+ 
+ 		entries = kcalloc(nreq, sizeof *entries, GFP_KERNEL);
+ 		if (!entries)
+@@ -1862,17 +1870,8 @@ static void mlx4_enable_msi_x(struct mlx4_dev *dev)
+ 		for (i = 0; i < nreq; ++i)
+ 			entries[i].entry = i;
+ 
+-	retry:
+ 		err = pci_enable_msix(dev->pdev, entries, nreq);
+ 		if (err) {
+-			/* Try again if at least 2 vectors are available */
+-			if (err > 1) {
+-				mlx4_info(dev, "Requested %d vectors, "
+-					  "but only %d MSI-X vectors available, "
+-					  "trying again\n", nreq, err);
+-				nreq = err;
+-				goto retry;
+-			}
+ 			kfree(entries);
+ 			goto no_msi;
+ 		}
 -- 
 1.7.7.6

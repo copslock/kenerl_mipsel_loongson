@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:54:29 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:27111 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:55:25 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:27136 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868664Ab3JBRy0rec3z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:54:26 +0200
+        by eddie.linux-mips.org with ESMTP id S6868664Ab3JBRzWg6HPX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:55:22 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92Awojj002680;
-        Wed, 2 Oct 2013 12:58:50 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AuOl9002574;
+        Wed, 2 Oct 2013 12:56:25 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92Awm92002679;
-        Wed, 2 Oct 2013 12:58:48 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AuJHG002573;
+        Wed, 2 Oct 2013 12:56:19 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 53/77] ntb: Fix missed call to pci_enable_msix()
-Date:   Wed,  2 Oct 2013 12:49:09 +0200
-Message-Id: <0590d63c3432229a3824bada71e07a08fb955498.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 35/77] ipr: Do not call pci_disable_msi/msix() if pci_enable_msi/msix() failed
+Date:   Wed,  2 Oct 2013 12:48:51 +0200
+Message-Id: <5d673eed9f7742f0551214d273a4fa905a721ac4.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38156
+X-archive-position: 38157
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,30 +57,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Current MSI-X enablement code assumes MSI-Xs were successfully
-allocated in case less than requested vectors were available.
-That assumption is wrong, since MSI-Xs should be enabled with
-a repeated call to pci_enable_msix(). This update fixes this.
-
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/ntb/ntb_hw.c |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+ drivers/scsi/ipr.c |    8 ++------
+ 1 files changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ntb/ntb_hw.c b/drivers/ntb/ntb_hw.c
-index 1cb6e51..de2062c 100644
---- a/drivers/ntb/ntb_hw.c
-+++ b/drivers/ntb/ntb_hw.c
-@@ -1075,6 +1075,10 @@ static int ntb_setup_msix(struct ntb_device *ndev)
- 			 "Only %d MSI-X vectors.  Limiting the number of queues to that number.\n",
- 			 rc);
- 		msix_entries = rc;
-+
-+		rc = pci_enable_msix(pdev, ndev->msix_entries, msix_entries);
-+		if (rc)
-+			goto err1;
- 	}
+diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
+index 36ac1c3..fb57e21 100644
+--- a/drivers/scsi/ipr.c
++++ b/drivers/scsi/ipr.c
+@@ -9255,10 +9255,8 @@ static int ipr_enable_msix(struct ipr_ioa_cfg *ioa_cfg)
+ 	while ((err = pci_enable_msix(ioa_cfg->pdev, entries, vectors)) > 0)
+ 			vectors = err;
  
- 	for (i = 0; i < msix_entries; i++) {
+-	if (err < 0) {
+-		pci_disable_msix(ioa_cfg->pdev);
++	if (err < 0)
+ 		return err;
+-	}
+ 
+ 	if (!err) {
+ 		for (i = 0; i < vectors; i++)
+@@ -9278,10 +9276,8 @@ static int ipr_enable_msi(struct ipr_ioa_cfg *ioa_cfg)
+ 	while ((err = pci_enable_msi_block(ioa_cfg->pdev, vectors)) > 0)
+ 			vectors = err;
+ 
+-	if (err < 0) {
+-		pci_disable_msi(ioa_cfg->pdev);
++	if (err < 0)
+ 		return err;
+-	}
+ 
+ 	if (!err) {
+ 		for (i = 0; i < vectors; i++)
 -- 
 1.7.7.6

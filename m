@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:47:47 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26917 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:48:48 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26949 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868658Ab3JBRrapOmNP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:47:30 +0200
+        by eddie.linux-mips.org with ESMTP id S6865325Ab3JBRsqVFLip (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:48:46 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AxNaZ002723;
-        Wed, 2 Oct 2013 12:59:23 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AxQni002727;
+        Wed, 2 Oct 2013 12:59:27 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AxMca002722;
-        Wed, 2 Oct 2013 12:59:22 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AxPEG002726;
+        Wed, 2 Oct 2013 12:59:25 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 61/77] qlogic: Return -EINVAL in case MSI-X is not supported
-Date:   Wed,  2 Oct 2013 12:49:17 +0200
-Message-Id: <c64f2f34b18acdd71ad113228f78fefdcf1cfd26.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 62/77] qlcnic: Remove redundant return operator
+Date:   Wed,  2 Oct 2013 12:49:18 +0200
+Message-Id: <c89bd7ba946d731935ea59108c7a169a16624c5d.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38147
+X-archive-position: 38148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,21 +59,20 @@ X-list: linux-mips
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-index c6018bb..ff6a78b 100644
+index ff6a78b..b94e679 100644
 --- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
 +++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-@@ -568,7 +568,7 @@ int qlcnic_enable_msix(struct qlcnic_adapter *adapter, u32 num_msix)
- {
- 	struct pci_dev *pdev = adapter->pdev;
- 	int max_tx_rings, max_sds_rings, tx_vector;
--	int err = -1, i;
-+	int err = -EINVAL, i;
- 
- 	if (adapter->flags & QLCNIC_TX_INTR_SHARED) {
- 		max_tx_rings = 0;
+@@ -613,7 +613,6 @@ int qlcnic_enable_msix(struct qlcnic_adapter *adapter, u32 num_msix)
+ 				adapter->max_sds_rings = max_sds_rings;
+ 			}
+ 			dev_info(&pdev->dev, "using msi-x interrupts\n");
+-			return err;
+ 		} else if (err > 0) {
+ 			dev_info(&pdev->dev,
+ 				 "Unable to allocate %d MSI-X interrupt vectors\n",
 -- 
 1.7.7.6

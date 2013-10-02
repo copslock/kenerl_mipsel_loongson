@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 18:40:14 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:24708 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 18:41:39 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:24728 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868563Ab3JBQkLXincl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 18:40:11 +0200
+        by eddie.linux-mips.org with ESMTP id S6868559Ab3JBQlhEpMRO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 18:41:37 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AvlQa002635;
-        Wed, 2 Oct 2013 12:57:47 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92ArhDE002443;
+        Wed, 2 Oct 2013 12:53:44 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AvjWB002634;
-        Wed, 2 Oct 2013 12:57:45 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92ArcRa002442;
+        Wed, 2 Oct 2013 12:53:38 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 45/77] megaraid: Update MSI/MSI-X interrupts enablement code
-Date:   Wed,  2 Oct 2013 12:49:01 +0200
-Message-Id: <9c28bb824f403b6418840970f2a3b63d9fa9d924.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 15/77] bnx2: Update MSI/MSI-X interrupts enablement code
+Date:   Wed,  2 Oct 2013 12:48:31 +0200
+Message-Id: <69c0bf5f6ee4b2a913891cfc94442a3c9a3f9434.1380703262.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38099
+X-archive-position: 38100
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,40 +63,52 @@ obtain a optimal number of MSI/MSI-X interrupts required.
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/scsi/megaraid/megaraid_sas_base.c |   20 +++++++++-----------
- 1 files changed, 9 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/broadcom/bnx2.c |   27 ++++++++++++++-------------
+ 1 files changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/scsi/megaraid/megaraid_sas_base.c b/drivers/scsi/megaraid/megaraid_sas_base.c
-index 3020921..b5973e4 100644
---- a/drivers/scsi/megaraid/megaraid_sas_base.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -3727,18 +3727,16 @@ static int megasas_init_fw(struct megasas_instance *instance)
- 					     (unsigned int)num_online_cpus());
- 		for (i = 0; i < instance->msix_vectors; i++)
- 			instance->msixentry[i].entry = i;
--		i = pci_enable_msix(instance->pdev, instance->msixentry,
--				    instance->msix_vectors);
--		if (i >= 0) {
--			if (i) {
--				if (!pci_enable_msix(instance->pdev,
--						     instance->msixentry, i))
--					instance->msix_vectors = i;
--				else
--					instance->msix_vectors = 0;
--			}
--		} else
-+		i = pci_msix_table_size(instance->pdev);
-+		if (i < 0) {
- 			instance->msix_vectors = 0;
-+		} else {
-+			if (!pci_enable_msix(instance->pdev,
-+					     instance->msixentry, i))
-+				instance->msix_vectors = i;
-+			else
-+				instance->msix_vectors = 0;
-+		}
+diff --git a/drivers/net/ethernet/broadcom/bnx2.c b/drivers/net/ethernet/broadcom/bnx2.c
+index e838a3f..c902627 100644
+--- a/drivers/net/ethernet/broadcom/bnx2.c
++++ b/drivers/net/ethernet/broadcom/bnx2.c
+@@ -6202,25 +6202,26 @@ bnx2_enable_msix(struct bnx2 *bp, int msix_vecs)
+ 	 *  is setup properly */
+ 	BNX2_RD(bp, BNX2_PCI_MSIX_CONTROL);
  
- 		dev_info(&instance->pdev->dev, "[scsi%d]: FW supports"
- 			"<%d> MSIX vector,Online CPUs: <%d>,"
+-	for (i = 0; i < BNX2_MAX_MSIX_VEC; i++) {
+-		msix_ent[i].entry = i;
+-		msix_ent[i].vector = 0;
+-	}
+-
+ 	total_vecs = msix_vecs;
+ #ifdef BCM_CNIC
+ 	total_vecs++;
+ #endif
+-	rc = -ENOSPC;
+-	while (total_vecs >= BNX2_MIN_MSIX_VEC) {
+-		rc = pci_enable_msix(bp->pdev, msix_ent, total_vecs);
+-		if (rc <= 0)
+-			break;
+-		if (rc > 0)
+-			total_vecs = rc;
++	rc = pci_msix_table_size(bp->pdev);
++	if (rc < 0)
++		return;
++
++	total_vecs = min(total_vecs, rc);
++	if (total_vecs < BNX2_MIN_MSIX_VEC)
++		return;
++
++	BUG_ON(total_vecs > ARRAY_SIZE(msix_ent));
++	for (i = 0; i < total_vecs; i++) {
++		msix_ent[i].entry = i;
++		msix_ent[i].vector = 0;
+ 	}
+ 
+-	if (rc != 0)
++	rc = pci_enable_msix(bp->pdev, msix_ent, total_vecs);
++	if (rc)
+ 		return;
+ 
+ 	msix_vecs = total_vecs;
 -- 
 1.7.7.6

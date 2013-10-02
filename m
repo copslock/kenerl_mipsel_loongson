@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:37:40 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26500 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:38:07 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26511 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868565Ab3JBRhiHSyVX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:37:38 +0200
+        by eddie.linux-mips.org with ESMTP id S6868565Ab3JBRiAkJnXn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:38:00 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92Avu70002648;
-        Wed, 2 Oct 2013 12:57:56 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92B0L5t002781;
+        Wed, 2 Oct 2013 13:00:21 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92Avt5R002647;
-        Wed, 2 Oct 2013 12:57:55 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92B0J5V002780;
+        Wed, 2 Oct 2013 13:00:19 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 47/77] mlx5: Fix memory leak in case not enough MSI-X vectors available
-Date:   Wed,  2 Oct 2013 12:49:03 +0200
-Message-Id: <7cb36bb9a3ebfe79d42b9c287c2fe89d616b3190.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 72/77] vmxnet3: Fixup a weird loop exit
+Date:   Wed,  2 Oct 2013 12:49:28 +0200
+Message-Id: <93fde8941d272e952e796abbf6526f19dc2d265f.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38134
+X-archive-position: 38135
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,20 +59,21 @@ X-list: linux-mips
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ drivers/net/vmxnet3/vmxnet3_drv.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index b47739b..3573ba4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -142,6 +142,7 @@ retry:
- 	}
- 
- 	mlx5_core_dbg(dev, "received %d MSI vectors out of %d requested\n", err, nvec);
-+	kfree(table->msix_arr);
- 
- 	return 0;
- }
+diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
+index 5b8ea71..3518173 100644
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -2750,7 +2750,7 @@ vmxnet3_acquire_msix_vectors(struct vmxnet3_adapter *adapter,
+ 		} else if (err < 0) {
+ 			dev_err(&adapter->netdev->dev,
+ 				   "Failed to enable MSI-X, error: %d\n", err);
+-			vectors = 0;
++			return err;
+ 		} else if (err < vector_threshold) {
+ 			break;
+ 		} else {
 -- 
 1.7.7.6

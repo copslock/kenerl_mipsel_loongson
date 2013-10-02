@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 18:37:08 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:24672 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 18:38:32 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:24689 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868563Ab3JBQgya2uGq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 18:36:54 +0200
+        by eddie.linux-mips.org with ESMTP id S6868563Ab3JBQiZx3QJs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 18:38:25 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92B062B002767;
-        Wed, 2 Oct 2013 13:00:06 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AxGuu002714;
+        Wed, 2 Oct 2013 12:59:16 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92B046C002766;
-        Wed, 2 Oct 2013 13:00:04 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AxFne002707;
+        Wed, 2 Oct 2013 12:59:15 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 70/77] vmci: Update MSI/MSI-X interrupts enablement code
-Date:   Wed,  2 Oct 2013 12:49:26 +0200
-Message-Id: <654a7884b9ad6fbe777d00bb0a226010e421b3b9.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 59/77] qla2xxx: Update MSI/MSI-X interrupts enablement code
+Date:   Wed,  2 Oct 2013 12:49:15 +0200
+Message-Id: <54f6b89372f51cd27a6adf6ecc91b8bf6bb5ba74.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38097
+X-archive-position: 38098
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,47 +63,40 @@ obtain a optimal number of MSI/MSI-X interrupts required.
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/misc/vmw_vmci/vmci_guest.c |   22 +++++++++++++++-------
- 1 files changed, 15 insertions(+), 7 deletions(-)
+ drivers/scsi/qla2xxx/qla_isr.c |   18 +++++++++++-------
+ 1 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_guest.c b/drivers/misc/vmw_vmci/vmci_guest.c
-index b3a2b76..af5caf8 100644
---- a/drivers/misc/vmw_vmci/vmci_guest.c
-+++ b/drivers/misc/vmw_vmci/vmci_guest.c
-@@ -377,19 +377,27 @@ static int vmci_enable_msix(struct pci_dev *pdev,
- {
- 	int i;
- 	int result;
-+	int nvec;
+diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
+index df1b30b..6c11ab9 100644
+--- a/drivers/scsi/qla2xxx/qla_isr.c
++++ b/drivers/scsi/qla2xxx/qla_isr.c
+@@ -2836,16 +2836,20 @@ qla24xx_enable_msix(struct qla_hw_data *ha, struct rsp_que *rsp)
+ 	for (i = 0; i < ha->msix_count; i++)
+ 		entries[i].entry = i;
  
--	for (i = 0; i < VMCI_MAX_INTRS; ++i) {
-+	result = pci_msix_table_size(pdev);
-+	if (result < 0)
-+		return result;
-+
-+	nvec = min(result, VMCI_MAX_INTRS);
-+	if (nvec < VMCI_MAX_INTRS)
-+		nvec = 1;
-+
-+	for (i = 0; i < nvec; ++i) {
- 		vmci_dev->msix_entries[i].entry = i;
- 		vmci_dev->msix_entries[i].vector = i;
- 	}
+-	ret = pci_enable_msix(ha->pdev, entries, ha->msix_count);
+-	if (ret) {
++	ret = pci_msix_table_size(ha->pdev);
++	if (ret < 0) {
++		goto msix_failed;
++	} else {
+ 		if (ret < MIN_MSIX_COUNT)
+ 			goto msix_failed;
  
--	result = pci_enable_msix(pdev, vmci_dev->msix_entries, VMCI_MAX_INTRS);
--	if (result == 0)
--		vmci_dev->exclusive_vectors = true;
--	else if (result > 0)
--		result = pci_enable_msix(pdev, vmci_dev->msix_entries, 1);
-+	result = pci_enable_msix(pdev, vmci_dev->msix_entries, nvec);
-+	if (result)
-+		return result;
- 
--	return result;
-+	vmci_dev->exclusive_vectors = true;
-+	return 0;
- }
- 
- /*
+-		ql_log(ql_log_warn, vha, 0x00c6,
+-		    "MSI-X: Failed to enable support "
+-		    "-- %d/%d\n Retry with %d vectors.\n",
+-		    ha->msix_count, ret, ret);
+-		ha->msix_count = ret;
++		if (ret < ha->msix_count) {
++			ql_log(ql_log_warn, vha, 0x00c6,
++			    "MSI-X: Failed to enable support "
++			    "-- %d/%d\n Retry with %d vectors.\n",
++			    ha->msix_count, ret, ret);
++			ha->msix_count = ret;
++		}
+ 		ret = pci_enable_msix(ha->pdev, entries, ha->msix_count);
+ 		if (ret) {
+ msix_failed:
 -- 
 1.7.7.6

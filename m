@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:22:27 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26012 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:24:15 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26037 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868643Ab3JBRWYIby1A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:22:24 +0200
+        by eddie.linux-mips.org with ESMTP id S6868562Ab3JBRYIdPYek (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:24:08 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92Ax0Pa002692;
-        Wed, 2 Oct 2013 12:59:01 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AtXY2002536;
+        Wed, 2 Oct 2013 12:55:34 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AwvOW002691;
-        Wed, 2 Oct 2013 12:58:57 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AtOQB002535;
+        Wed, 2 Oct 2013 12:55:24 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 55/77] ntb: Update MSI/MSI-X interrupts enablement code
-Date:   Wed,  2 Oct 2013 12:49:11 +0200
-Message-Id: <49eb592e15aaec804f9c11ca132d2b85c516aefa.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 29/77] cxgb4vf: Update MSI/MSI-X interrupts enablement code
+Date:   Wed,  2 Oct 2013 12:48:45 +0200
+Message-Id: <e4d21d117874dbbe4aac4618b3cc3e3d9d0cbeb6.1380703262.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38121
+X-archive-position: 38122
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,90 +63,82 @@ obtain a optimal number of MSI/MSI-X interrupts required.
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/ntb/ntb_hw.c |   41 +++++++++++++----------------------------
- drivers/ntb/ntb_hw.h |    2 --
- 2 files changed, 13 insertions(+), 30 deletions(-)
+ .../net/ethernet/chelsio/cxgb4vf/cxgb4vf_main.c    |   49 ++++++++++++--------
+ 1 files changed, 29 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/ntb/ntb_hw.c b/drivers/ntb/ntb_hw.c
-index eccd5e5..7776429 100644
---- a/drivers/ntb/ntb_hw.c
-+++ b/drivers/ntb/ntb_hw.c
-@@ -1032,23 +1032,26 @@ static int ntb_setup_msix(struct ntb_device *ndev)
- 	struct msix_entry *msix;
- 	int msix_entries;
- 	int rc, i;
--	u16 val;
- 
--	if (!pdev->msix_cap) {
--		rc = -EIO;
-+	rc = pci_msix_table_size(pdev);
-+	if (rc < 0)
- 		goto err;
--	}
- 
--	rc = pci_read_config_word(pdev, pdev->msix_cap + PCI_MSIX_FLAGS, &val);
--	if (rc)
-+	/*
-+	 * On SNB, the link interrupt is always tied to 4th vector.  If
-+	 * we can't get all 4, then we can't use MSI-X.
-+	 */
-+	if ((rc < SNB_MSIX_CNT) && (ndev->hw_type != BWD_HW)) {
-+		rc = -ENOSPC;
- 		goto err;
--
--	msix_entries = msix_table_size(val);
--	if (msix_entries > ndev->limits.msix_cnt) {
-+	}
-+	if (rc > ndev->limits.msix_cnt) {
- 		rc = -EINVAL;
- 		goto err;
- 	}
- 
-+	msix_entries = rc;
-+
- 	ndev->msix_entries = kmalloc(sizeof(struct msix_entry) * msix_entries,
- 				     GFP_KERNEL);
- 	if (!ndev->msix_entries) {
-@@ -1060,26 +1063,8 @@ static int ntb_setup_msix(struct ntb_device *ndev)
- 		ndev->msix_entries[i].entry = i;
- 
- 	rc = pci_enable_msix(pdev, ndev->msix_entries, msix_entries);
--	if (rc < 0)
-+	if (rc)
- 		goto err1;
--	if (rc > 0) {
--		/* On SNB, the link interrupt is always tied to 4th vector.  If
--		 * we can't get all 4, then we can't use MSI-X.
--		 */
--		if ((rc < SNB_MSIX_CNT) && (ndev->hw_type != BWD_HW)) {
--			rc = -EIO;
--			goto err1;
--		}
--
--		dev_warn(&pdev->dev,
--			 "Only %d MSI-X vectors.  Limiting the number of queues to that number.\n",
--			 rc);
--		msix_entries = rc;
--
--		rc = pci_enable_msix(pdev, ndev->msix_entries, msix_entries);
--		if (rc)
--			goto err1;
--	}
- 
- 	for (i = 0; i < msix_entries; i++) {
- 		msix = &ndev->msix_entries[i];
-diff --git a/drivers/ntb/ntb_hw.h b/drivers/ntb/ntb_hw.h
-index 0a31ced..50bd760 100644
---- a/drivers/ntb/ntb_hw.h
-+++ b/drivers/ntb/ntb_hw.h
-@@ -60,8 +60,6 @@
- #define PCI_DEVICE_ID_INTEL_NTB_SS_HSX		0x2F0F
- #define PCI_DEVICE_ID_INTEL_NTB_B2B_BWD		0x0C4E
- 
--#define msix_table_size(control)	((control & PCI_MSIX_FLAGS_QSIZE)+1)
--
- #ifndef readq
- static inline u64 readq(void __iomem *addr)
+diff --git a/drivers/net/ethernet/chelsio/cxgb4vf/cxgb4vf_main.c b/drivers/net/ethernet/chelsio/cxgb4vf/cxgb4vf_main.c
+index 11cbce1..48bb33b 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4vf/cxgb4vf_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4vf/cxgb4vf_main.c
+@@ -2437,13 +2437,10 @@ static void reduce_ethqs(struct adapter *adapter, int n)
+  */
+ static int enable_msix(struct adapter *adapter)
  {
+-	int i, err, want, need;
++	int i, err, want, need, nqsets;
+ 	struct msix_entry entries[MSIX_ENTRIES];
+ 	struct sge *s = &adapter->sge;
+ 
+-	for (i = 0; i < MSIX_ENTRIES; ++i)
+-		entries[i].entry = i;
+-
+ 	/*
+ 	 * We _want_ enough MSI-X interrupts to cover all of our "Queue Sets"
+ 	 * plus those needed for our "extras" (for example, the firmware
+@@ -2453,26 +2450,38 @@ static int enable_msix(struct adapter *adapter)
+ 	 */
+ 	want = s->max_ethqsets + MSIX_EXTRAS;
+ 	need = adapter->params.nports + MSIX_EXTRAS;
+-	while ((err = pci_enable_msix(adapter->pdev, entries, want)) >= need)
+-		want = err;
+ 
+-	if (err == 0) {
+-		int nqsets = want - MSIX_EXTRAS;
+-		if (nqsets < s->max_ethqsets) {
+-			dev_warn(adapter->pdev_dev, "only enough MSI-X vectors"
+-				 " for %d Queue Sets\n", nqsets);
+-			s->max_ethqsets = nqsets;
+-			if (nqsets < s->ethqsets)
+-				reduce_ethqs(adapter, nqsets);
+-		}
+-		for (i = 0; i < want; ++i)
+-			adapter->msix_info[i].vec = entries[i].vector;
+-	} else if (err > 0) {
++	err = pci_msix_table_size(adapter->pdev);
++	if (err < 0)
++		return err;
++
++	want = min(want, err);
++	if (want < need) {
+ 		dev_info(adapter->pdev_dev, "only %d MSI-X vectors left,"
+ 			 " not using MSI-X\n", err);
+-		err = -ENOSPC;
++		return -ENOSPC;
+ 	}
+-	return err;
++
++	BUG_ON(want > ARRAY_SIZE(entries));
++	for (i = 0; i < want; ++i)
++		entries[i].entry = i;
++
++	err = pci_enable_msix(adapter->pdev, entries, want);
++	if (err)
++		return err;
++
++	nqsets = want - MSIX_EXTRAS;
++	if (nqsets < s->max_ethqsets) {
++		dev_warn(adapter->pdev_dev, "only enough MSI-X vectors"
++			 " for %d Queue Sets\n", nqsets);
++		s->max_ethqsets = nqsets;
++		if (nqsets < s->ethqsets)
++			reduce_ethqs(adapter, nqsets);
++	}
++	for (i = 0; i < want; ++i)
++		adapter->msix_info[i].vec = entries[i].vector;
++
++	return 0;
+ }
+ 
+ static const struct net_device_ops cxgb4vf_netdev_ops	= {
 -- 
 1.7.7.6

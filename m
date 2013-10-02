@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:41:00 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26644 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:41:19 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26647 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868565Ab3JBRk4vD0tZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:40:56 +0200
+        by eddie.linux-mips.org with ESMTP id S6868574Ab3JBRlBb2g4n (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:41:01 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AsiAq002494;
-        Wed, 2 Oct 2013 12:54:44 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AsFMU002475;
+        Wed, 2 Oct 2013 12:54:16 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AsgpQ002491;
-        Wed, 2 Oct 2013 12:54:42 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AsBAj002467;
+        Wed, 2 Oct 2013 12:54:11 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 23/77] cxgb3: Return -ENOSPC when not enough MSI-X vectors available
-Date:   Wed,  2 Oct 2013 12:48:39 +0200
-Message-Id: <cbdbe5f2d6d9d8826c9c234ba45bd52c059cf66e.1380703262.git.agordeev@redhat.com>
+Subject: [PATCH RFC 19/77] csiostor: Do not call pci_disable_msix() if pci_enable_msix() failed
+Date:   Wed,  2 Oct 2013 12:48:35 +0200
+Message-Id: <3697708ec423a6b6f3d924ea4af9a56874f5787a.1380703262.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38138
+X-archive-position: 38139
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,21 +59,24 @@ X-list: linux-mips
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/scsi/csiostor/csio_isr.c |    4 +---
+ 1 files changed, 1 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
-index 9bd3099..915729c 100644
---- a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
-+++ b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
-@@ -3099,7 +3099,7 @@ static int cxgb_enable_msix(struct adapter *adap)
+diff --git a/drivers/scsi/csiostor/csio_isr.c b/drivers/scsi/csiostor/csio_isr.c
+index 7ee9777..91ba91d 100644
+--- a/drivers/scsi/csiostor/csio_isr.c
++++ b/drivers/scsi/csiostor/csio_isr.c
+@@ -529,10 +529,8 @@ csio_enable_msix(struct csio_hw *hw)
+ 			csio_reduce_sqsets(hw, cnt - extra);
+ 		}
+ 	} else {
+-		if (rv > 0) {
+-			pci_disable_msix(hw->pdev);
++		if (rv > 0)
+ 			csio_info(hw, "Not using MSI-X, remainder:%d\n", rv);
+-		}
  
- 	if (!err && vectors < (adap->params.nports + 1)) {
- 		pci_disable_msix(adap->pdev);
--		err = -1;
-+		err = -ENOSPC;
- 	}
- 
- 	if (!err) {
+ 		kfree(entries);
+ 		return -ENOMEM;
 -- 
 1.7.7.6

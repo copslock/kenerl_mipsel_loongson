@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:47:28 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26915 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:47:47 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:26917 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6865325Ab3JBRrZrubDy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:47:25 +0200
+        by eddie.linux-mips.org with ESMTP id S6868658Ab3JBRrapOmNP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:47:30 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AxbSD002739;
-        Wed, 2 Oct 2013 12:59:37 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92AxNaZ002723;
+        Wed, 2 Oct 2013 12:59:23 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AxZwF002738;
-        Wed, 2 Oct 2013 12:59:35 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92AxMca002722;
+        Wed, 2 Oct 2013 12:59:22 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 65/77] qlge: Remove a redundant assignment
-Date:   Wed,  2 Oct 2013 12:49:21 +0200
-Message-Id: <2d9997f8ec6637dd41c10363785754698f6aa173.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 61/77] qlogic: Return -EINVAL in case MSI-X is not supported
+Date:   Wed,  2 Oct 2013 12:49:17 +0200
+Message-Id: <c64f2f34b18acdd71ad113228f78fefdcf1cfd26.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38146
+X-archive-position: 38147
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,20 +59,21 @@ X-list: linux-mips
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/net/ethernet/qlogic/qlge/qlge_main.c |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qlge/qlge_main.c b/drivers/net/ethernet/qlogic/qlge/qlge_main.c
-index 2553cf4..ac54cb0 100644
---- a/drivers/net/ethernet/qlogic/qlge/qlge_main.c
-+++ b/drivers/net/ethernet/qlogic/qlge/qlge_main.c
-@@ -3287,7 +3287,6 @@ static void ql_enable_msix(struct ql_adapter *qdev)
- 			qdev->msi_x_entry = NULL;
- 			netif_warn(qdev, ifup, qdev->ndev,
- 				   "MSI-X Enable failed, trying MSI.\n");
--			qdev->intr_count = 1;
- 			qlge_irq_type = MSI_IRQ;
- 		} else if (err == 0) {
- 			set_bit(QL_MSIX_ENABLED, &qdev->flags);
+diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
+index c6018bb..ff6a78b 100644
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
+@@ -568,7 +568,7 @@ int qlcnic_enable_msix(struct qlcnic_adapter *adapter, u32 num_msix)
+ {
+ 	struct pci_dev *pdev = adapter->pdev;
+ 	int max_tx_rings, max_sds_rings, tx_vector;
+-	int err = -1, i;
++	int err = -EINVAL, i;
+ 
+ 	if (adapter->flags & QLCNIC_TX_INTR_SHARED) {
+ 		max_tx_rings = 0;
 -- 
 1.7.7.6

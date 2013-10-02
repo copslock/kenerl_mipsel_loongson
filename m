@@ -1,31 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 11:19:19 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:45750 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 11:25:05 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:45775 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6862035Ab3JBJTMzqvr5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 Oct 2013 11:19:12 +0200
+        id S6865325Ab3JBJZDHJU3g (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 Oct 2013 11:25:03 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r929JAl6024127;
-        Wed, 2 Oct 2013 11:19:10 +0200
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r929P0Qe024462;
+        Wed, 2 Oct 2013 11:25:00 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r929J9HA024126;
-        Wed, 2 Oct 2013 11:19:09 +0200
-Date:   Wed, 2 Oct 2013 11:19:09 +0200
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r929Ov25024461;
+        Wed, 2 Oct 2013 11:24:57 +0200
+Date:   Wed, 2 Oct 2013 11:24:57 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: fix forced successful syscalls
-Message-ID: <20131002091909.GA23236@linux-mips.org>
-References: <1380550969-9522-1-git-send-email-tanguy.bouzeloc@efixo.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org, Chris Ball <cjb@laptop.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] MIPS: db1235: Don't use MMC_CLKGATE
+Message-ID: <20131002092457.GB23236@linux-mips.org>
+References: <1380552120-31003-1-git-send-email-ulf.hansson@linaro.org>
+ <1380552120-31003-2-git-send-email-ulf.hansson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1380550969-9522-1-git-send-email-tanguy.bouzeloc@efixo.com>
+In-Reply-To: <1380552120-31003-2-git-send-email-ulf.hansson@linaro.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38089
+X-archive-position: 38090
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,46 +45,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Sep 30, 2013 at 04:22:49PM +0200, Tanguy Bouzeloc wrote:
-> Date:   Mon, 30 Sep 2013 16:22:49 +0200
-> From: Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
-> To: ralf@linux-mips.org
-> Cc: linux-mips@linux-mips.org, Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
-> Subject: [PATCH] MIPS: fix forced successful syscalls
+On Mon, Sep 30, 2013 at 04:41:59PM +0200, Ulf Hansson wrote:
+
+> As a first step in removing code for MMC_CLKGATE, MIPS db1235 defconfig
+> which is the only current user, shall move away from this option.
 > 
-> On mips any syscalls who return a value between -MAXERRNO (1133) and
-> -1, is considered as an error (the error flag is set and return value
-> is the positive value of the error number).
+> The mmc host drivers au1xmmc and jz4740_mmc, which are used on MIPS
+> don't support clock gating through MMC_CLKGATE, thus removing the
+> config option will have no effect on power save - clock gating wise.
 > 
-> But some syscalls can return values between -MAXERRNO and -1 like
-> sys_time and sys_times. In this case the userspace return value is
-> -return value of the syscall and the error flag set.
-> 
-> This patch add a TIF_NOERROR thread flag which indicates that the
-> return value of a syscall is always correct.
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-To my personal embarassment I have to admit that I knew about this since the
-day the syscall wrapper was written - but was considering it an acceptable
-bug ...
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-Where it really bits is sigreturn and similar which use the following
-stunt:
-
-        /*
-         * Don't let your children do this ...
-         */
-        __asm__ __volatile__(
-                "move\t$29, %0\n\t"
-                "j\tsyscall_exit"
-                :/* no outputs */
-                :"r" (&regs));
-        /* Unreached */
-
-to keep the syscall return path from tampering with the return value.
-
-The scall*.S part of your patch is clearing TIF_NOERROR using a non-atomic
-LW/SW sequence.  This needs to be done atomically or the thread's flags
-variable might get corrupted.  This is complicated by MIPS I, R5900 and
-afair some older oddball not-quite MIPS II CPUs lacking LL/SC rsp. LLD/SCD.
+Feel free to feed this MIPS patch to Linus via the MMC tree.
 
   Ralf

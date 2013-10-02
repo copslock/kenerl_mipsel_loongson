@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:05:00 +0200 (CEST)
-Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:25654 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Oct 2013 19:07:46 +0200 (CEST)
+Received: from 221-186-24-89.in-addr.arpa ([89.24.186.221]:25759 "EHLO
         dhcp-26-207.brq.redhat.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6868569Ab3JBRE6dENKR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:04:58 +0200
+        by eddie.linux-mips.org with ESMTP id S6868569Ab3JBRHlJv5cG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Oct 2013 19:07:41 +0200
 Received: from dhcp-26-207.brq.redhat.com (localhost [127.0.0.1])
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92Ax4Yf002696;
-        Wed, 2 Oct 2013 12:59:04 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5) with ESMTP id r92B0jAC002801;
+        Wed, 2 Oct 2013 13:00:45 +0200
 Received: (from agordeev@localhost)
-        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92Ax3rd002695;
-        Wed, 2 Oct 2013 12:59:03 +0200
+        by dhcp-26-207.brq.redhat.com (8.14.5/8.14.5/Submit) id r92B0h9R002800;
+        Wed, 2 Oct 2013 13:00:43 +0200
 From:   Alexander Gordeev <agordeev@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Alexander Gordeev <agordeev@redhat.com>,
@@ -30,9 +30,9 @@ Cc:     Alexander Gordeev <agordeev@redhat.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: [PATCH RFC 56/77] nvme: Update MSI/MSI-X interrupts enablement code
-Date:   Wed,  2 Oct 2013 12:49:12 +0200
-Message-Id: <e8ea98c33d82a110db6bfdda092402ef45692f43.1380703263.git.agordeev@redhat.com>
+Subject: [PATCH RFC 77/77] vxge: Update MSI/MSI-X interrupts enablement code
+Date:   Wed,  2 Oct 2013 12:49:33 +0200
+Message-Id: <467ce10b1df795edf80ed222816ab739fee7b0ea.1380703263.git.agordeev@redhat.com>
 X-Mailer: git-send-email 1.7.7.6
 In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
@@ -40,7 +40,7 @@ Return-Path: <agordeev@dhcp-26-207.brq.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38113
+X-archive-position: 38114
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,72 +63,62 @@ obtain a optimal number of MSI/MSI-X interrupts required.
 
 Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
 ---
- drivers/block/nvme-core.c |   48 +++++++++++++++++++++++---------------------
- 1 files changed, 25 insertions(+), 23 deletions(-)
+ drivers/net/ethernet/neterion/vxge/vxge-main.c |   36 ++++++++++-------------
+ 1 files changed, 16 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/block/nvme-core.c b/drivers/block/nvme-core.c
-index da52092..f69d7af 100644
---- a/drivers/block/nvme-core.c
-+++ b/drivers/block/nvme-core.c
-@@ -1774,34 +1774,36 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
- 	/* Deregister the admin queue's interrupt */
- 	free_irq(dev->entry[0].vector, dev->queues[0]);
+diff --git a/drivers/net/ethernet/neterion/vxge/vxge-main.c b/drivers/net/ethernet/neterion/vxge/vxge-main.c
+index b81ff8b..b4d40dd 100644
+--- a/drivers/net/ethernet/neterion/vxge/vxge-main.c
++++ b/drivers/net/ethernet/neterion/vxge/vxge-main.c
+@@ -2297,7 +2297,21 @@ static int vxge_alloc_msix(struct vxgedev *vdev)
+ 	int msix_intr_vect = 0, temp;
+ 	vdev->intr_cnt = 0;
  
--	vecs = nr_io_queues;
-+	result = pci_msix_table_size(pdev);
-+	if (result < 0)
-+		goto msi;
+-start:
++	ret = pci_msix_table_size(vdev->pdev);
++	if (ret < 0)
++		goto alloc_entries_failed;
 +
-+	vecs = min(result, nr_io_queues);
- 	for (i = 0; i < vecs; i++)
- 		dev->entry[i].entry = i;
--	for (;;) {
--		result = pci_enable_msix(pdev, dev->entry, vecs);
--		if (result <= 0)
--			break;
--		vecs = result;
--	}
++	if (ret < (vdev->no_of_vpath * 2 + 1)) {
++		if ((max_config_vpath != VXGE_USE_DEFAULT) || (ret < 3)) {
++			ret = -ENOSPC;
++			goto alloc_entries_failed;
++		}
++		/* Try with less no of vector by reducing no of vpaths count */
++		temp = (ret - 1)/2;
++		vxge_close_vpaths(vdev, temp);
++		vdev->no_of_vpath = temp;
++	}
++
+ 	/* Tx/Rx MSIX Vectors count */
+ 	vdev->intr_cnt = vdev->no_of_vpath * 2;
  
--	if (result < 0) {
--		vecs = nr_io_queues;
--		if (vecs > 32)
--			vecs = 32;
--		for (;;) {
--			result = pci_enable_msi_block(pdev, vecs);
--			if (result == 0) {
--				for (i = 0; i < vecs; i++)
--					dev->entry[i].vector = i + pdev->irq;
--				break;
--			} else if (result < 0) {
--				vecs = 1;
--				break;
--			}
--			vecs = result;
+@@ -2347,25 +2361,7 @@ start:
+ 	vdev->vxge_entries[j].in_use = 0;
+ 
+ 	ret = pci_enable_msix(vdev->pdev, vdev->entries, vdev->intr_cnt);
+-	if (ret > 0) {
+-		vxge_debug_init(VXGE_ERR,
+-			"%s: MSI-X enable failed for %d vectors, ret: %d",
+-			VXGE_DRIVER_NAME, vdev->intr_cnt, ret);
+-		if ((max_config_vpath != VXGE_USE_DEFAULT) || (ret < 3)) {
+-			ret = -ENOSPC;
+-			goto enable_msix_failed;
 -		}
-+	result = pci_enable_msix(pdev, dev->entry, vecs);
-+	if (result == 0)
-+		goto irq;
-+
-+ msi:
-+	result = pci_get_msi_cap(pdev);
-+	if (result < 0)
-+		goto no_msi;
-+
-+	vecs = min(result, nr_io_queues);
-+
-+	result = pci_enable_msi_block(pdev, vecs);
-+	if (result == 0) {
-+		for (i = 0; i < vecs; i++)
-+			dev->entry[i].vector = i + pdev->irq;
-+		goto irq;
- 	}
+-
+-		kfree(vdev->entries);
+-		kfree(vdev->vxge_entries);
+-		vdev->entries = NULL;
+-		vdev->vxge_entries = NULL;
+-		/* Try with less no of vector by reducing no of vpaths count */
+-		temp = (ret - 1)/2;
+-		vxge_close_vpaths(vdev, temp);
+-		vdev->no_of_vpath = temp;
+-		goto start;
+-	} else if (ret < 0)
++	if (ret)
+ 		goto enable_msix_failed;
+ 	return 0;
  
-+ no_msi:
-+	vecs = 1;
-+
-+ irq:
- 	/*
- 	 * Should investigate if there's a performance win from allocating
- 	 * more queues than interrupt vectors; it might allow the submission
 -- 
 1.7.7.6

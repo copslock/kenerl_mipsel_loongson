@@ -1,79 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 19:46:14 +0200 (CEST)
-Received: from mx0a-0016ce01.pphosted.com ([67.231.148.157]:38160 "EHLO
-        mx0a-0016ce01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6865174Ab3JCRqME-V9P convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 3 Oct 2013 19:46:12 +0200
-Received: from pps.filterd (m0045602.ppops.net [127.0.0.1])
-        by mx0a-0016ce01.pphosted.com (8.14.5/8.14.5) with SMTP id r93HRWbL032706;
-        Thu, 3 Oct 2013 10:42:36 -0700
-Received: from avcashub1.qlogic.com (avcashub2.qlogic.com [198.70.193.116])
-        by mx0a-0016ce01.pphosted.com with ESMTP id 1f91vb930v-2
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=NOT);
-        Thu, 03 Oct 2013 10:42:36 -0700
-Received: from AVMB1.qlogic.org ([fe80::c919:8cc:f3ba:c727]) by
- avcashub2.qlogic.org ([::1]) with mapi id 14.02.0318.001; Thu, 3 Oct 2013
- 10:42:34 -0700
-From:   Saurav Kashyap <saurav.kashyap@qlogic.com>
-To:     Alexander Gordeev <agordeev@redhat.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-CC:     Bjorn Helgaas <bhelgaas@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Michael Ellerman <michael@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        "Ingo Molnar" <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux390@de.ibm.com" <linux390@de.ibm.com>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
-        "iss_storagedev@hp.com" <iss_storagedev@hp.com>,
-        "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        "e1000-devel@lists.sourceforge.net" 
-        <e1000-devel@lists.sourceforge.net>,
-        Dept-Eng Linux Driver <Linux-Driver@qlogic.com>,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        "VMware, Inc." <pv-drivers@vmware.com>,
-        linux-scsi <linux-scsi@vger.kernel.org>
-Subject: Re: [PATCH RFC 59/77] qla2xxx: Update MSI/MSI-X interrupts
- enablement code
-Thread-Topic: [PATCH RFC 59/77] qla2xxx: Update MSI/MSI-X interrupts
- enablement code
-Thread-Index: AQHOwF/w5pjxosepm0ec17m9dR0hkA==
-Date:   Thu, 3 Oct 2013 17:42:33 +0000
-Message-ID: <F5D084D6342F9B479C34599BB0A03E4D8982E209@AVMB1.qlogic.org>
-In-Reply-To: <54f6b89372f51cd27a6adf6ecc91b8bf6bb5ba74.1380703263.git.agordeev@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Microsoft-MacOutlook/14.10.0.110310
-x-originating-ip: [10.1.4.10]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <7ECF417E2B641E48ADC3CD2AEF525292@qlogic.com>
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 20:29:22 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52788 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6868687Ab3JCS3UC5tCU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 3 Oct 2013 20:29:20 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r93ITHL5019033;
+        Thu, 3 Oct 2013 20:29:17 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r93ITFQU019032;
+        Thu, 3 Oct 2013 20:29:15 +0200
+Date:   Thu, 3 Oct 2013 20:29:15 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Prem Mallappa <prem.mallappa@gmail.com>
+Cc:     linux-mips <linux-mips@linux-mips.org>,
+        Prem Mallappa <pmallappa@caviumnetworks.com>
+Subject: Re: [PATCH] MIPS: KDUMP: Fix to access non-sectioned memory
+Message-ID: <20131003182915.GA15556@linux-mips.org>
+References: <1380786415-24956-1-git-send-email-pmallappa@caviumnetworks.com>
+ <1380786415-24956-2-git-send-email-pmallappa@caviumnetworks.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=nai engine=5600 definitions=7216 signatures=668722
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 phishscore=0
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=7.0.1-1305240000 definitions=main-1310030074
-Return-Path: <saurav.kashyap@qlogic.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1380786415-24956-2-git-send-email-pmallappa@caviumnetworks.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38186
+X-archive-position: 38187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: saurav.kashyap@qlogic.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -86,56 +44,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Acked-by: Saurav Kashyap <saurav.kashyap@qlogic.com>
+On Thu, Oct 03, 2013 at 01:16:55PM +0530, Prem Mallappa wrote:
 
+> @@ -41,19 +42,20 @@ ssize_t copy_oldmem_page(unsigned long pfn, char *buf,
+>  	if (!csize)
+>  		return 0;
+>  
+> -	vaddr = kmap_atomic_pfn(pfn);
+> +	vaddr = ioremap(pfn << PAGE_SHIFT, PAGE_SIZE);
 
->As result of recent re-design of the MSI/MSI-X interrupts enabling
->pattern this driver has to be updated to use the new technique to
->obtain a optimal number of MSI/MSI-X interrupts required.
->
->Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
->---
-> drivers/scsi/qla2xxx/qla_isr.c |   18 +++++++++++-------
-> 1 files changed, 11 insertions(+), 7 deletions(-)
->
->diff --git a/drivers/scsi/qla2xxx/qla_isr.c
->b/drivers/scsi/qla2xxx/qla_isr.c
->index df1b30b..6c11ab9 100644
->--- a/drivers/scsi/qla2xxx/qla_isr.c
->+++ b/drivers/scsi/qla2xxx/qla_isr.c
->@@ -2836,16 +2836,20 @@ qla24xx_enable_msix(struct qla_hw_data *ha,
->struct rsp_que *rsp)
-> 	for (i = 0; i < ha->msix_count; i++)
-> 		entries[i].entry = i;
-> 
->-	ret = pci_enable_msix(ha->pdev, entries, ha->msix_count);
->-	if (ret) {
->+	ret = pci_msix_table_size(ha->pdev);
->+	if (ret < 0) {
->+		goto msix_failed;
->+	} else {
-> 		if (ret < MIN_MSIX_COUNT)
-> 			goto msix_failed;
-> 
->-		ql_log(ql_log_warn, vha, 0x00c6,
->-		    "MSI-X: Failed to enable support "
->-		    "-- %d/%d\n Retry with %d vectors.\n",
->-		    ha->msix_count, ret, ret);
->-		ha->msix_count = ret;
->+		if (ret < ha->msix_count) {
->+			ql_log(ql_log_warn, vha, 0x00c6,
->+			    "MSI-X: Failed to enable support "
->+			    "-- %d/%d\n Retry with %d vectors.\n",
->+			    ha->msix_count, ret, ret);
->+			ha->msix_count = ret;
->+		}
-> 		ret = pci_enable_msix(ha->pdev, entries, ha->msix_count);
-> 		if (ret) {
-> msix_failed:
->-- 
->1.7.7.6
->
->--
->To unsubscribe from this list: send the line "unsubscribe linux-scsi" in
->the body of a message to majordomo@vger.kernel.org
->More majordomo info at  http://vger.kernel.org/majordomo-info.html
+This is not portable, I'm afraid.
+
+Ioremap on MIPS is creating uncached mappings - on most systems, that is.
+However there is no guarantee that the data accessed through this mapping
+does not reside in a cache on another CPU or another virtual address
+which would make the operation undefined.
+
+On SGI IP27 and IP35 ioremap is not even able to create RAM mappings at
+all.  If you're lucky this would result in a bus error; if you're unlucky
+it'll make the SCSI controller scribble the answer to the universe, life
+and everything on the disk drive only to corrupt it again before you have
+a chance to read it ;-)
+
+I think this is bulletproof on Octeon so until there's a better patch you
+may want to keep this around for the SDK.
+
+I wonder, does commit 5395d97b675986e7e8f3140f9e0819d20b1d22cd
+in upstream-sfr.git fix your issue?
+
+Cheers,
+
+  Ralf

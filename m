@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 02:39:22 +0200 (CEST)
-Received: from mga09.intel.com ([134.134.136.24]:61639 "EHLO mga09.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 02:48:18 +0200 (CEST)
+Received: from mga11.intel.com ([192.55.52.93]:30010 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6868565Ab3JCAjSp0Yol (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 3 Oct 2013 02:39:18 +0200
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP; 02 Oct 2013 17:35:56 -0700
+        id S6868565Ab3JCAsPXEe03 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 3 Oct 2013 02:48:15 +0200
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP; 02 Oct 2013 17:48:07 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="4.90,1022,1371106800"; 
-   d="scan'208";a="387026724"
+   d="scan'208";a="410690805"
 Received: from jonmason-lab.ch.intel.com (HELO jonmason-lab) ([143.182.51.14])
-  by orsmga001.jf.intel.com with ESMTP; 02 Oct 2013 17:39:05 -0700
-Date:   Wed, 2 Oct 2013 17:39:05 -0700
+  by fmsmga002.fm.intel.com with ESMTP; 02 Oct 2013 17:48:06 -0700
+Date:   Wed, 2 Oct 2013 17:48:05 -0700
 From:   Jon Mason <jon.mason@intel.com>
 To:     Alexander Gordeev <agordeev@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
@@ -31,21 +31,21 @@ Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH RFC 01/77] PCI/MSI: Fix return value when
- populate_msi_sysfs() failed
-Message-ID: <20131003003905.GK6768@jonmason-lab>
+Subject: Re: [PATCH RFC 54/77] ntb: Ensure number of MSIs on SNB is enough
+ for the link interrupt
+Message-ID: <20131003004805.GL6768@jonmason-lab>
 References: <cover.1380703262.git.agordeev@redhat.com>
- <3ff5236944aae69f2cd934b5b6da7c1c269df7c1.1380703262.git.agordeev@redhat.com>
+ <5d9c5b2d3bbc444ff32bddeece7a239d046bd79c.1380703263.git.agordeev@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3ff5236944aae69f2cd934b5b6da7c1c269df7c1.1380703262.git.agordeev@redhat.com>
+In-Reply-To: <5d9c5b2d3bbc444ff32bddeece7a239d046bd79c.1380703263.git.agordeev@redhat.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <jon.mason@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38173
+X-archive-position: 38174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,60 +62,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 02, 2013 at 12:48:17PM +0200, Alexander Gordeev wrote:
+On Wed, Oct 02, 2013 at 12:49:10PM +0200, Alexander Gordeev wrote:
 > Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
-
-Since you are changing the behavior of the msix_capability_init
-function on populate_msi_sysfs error, a comment describing why in this
-commit would be nice.
-
 > ---
->  drivers/pci/msi.c |   11 +++++------
->  1 files changed, 5 insertions(+), 6 deletions(-)
+>  drivers/ntb/ntb_hw.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
 > 
-> diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-> index d5f90d6..b43f391 100644
-> --- a/drivers/pci/msi.c
-> +++ b/drivers/pci/msi.c
-> @@ -719,7 +719,7 @@ static int msix_capability_init(struct pci_dev *dev,
->  
->  	ret = arch_setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSIX);
->  	if (ret)
-> -		goto error;
-> +		goto out_avail;
->  
->  	/*
->  	 * Some devices require MSI-X to be enabled before we can touch the
-> @@ -732,10 +732,8 @@ static int msix_capability_init(struct pci_dev *dev,
->  	msix_program_entries(dev, entries);
->  
->  	ret = populate_msi_sysfs(dev);
-> -	if (ret) {
-> -		ret = 0;
-> -		goto error;
-> -	}
-> +	if (ret)
-> +		goto out_free;
->  
->  	/* Set MSI-X enabled bits and unmask the function */
->  	pci_intx_for_msi(dev, 0);
-> @@ -746,7 +744,7 @@ static int msix_capability_init(struct pci_dev *dev,
->  
->  	return 0;
->  
-> -error:
-> +out_avail:
->  	if (ret < 0) {
->  		/*
->  		 * If we had some success, report the number of irqs
-> @@ -763,6 +761,7 @@ error:
->  			ret = avail;
->  	}
->  
-> +out_free:
->  	free_msi_irqs(dev);
->  
->  	return ret;
+> diff --git a/drivers/ntb/ntb_hw.c b/drivers/ntb/ntb_hw.c
+> index de2062c..eccd5e5 100644
+> --- a/drivers/ntb/ntb_hw.c
+> +++ b/drivers/ntb/ntb_hw.c
+> @@ -1066,7 +1066,7 @@ static int ntb_setup_msix(struct ntb_device *ndev)
+>  		/* On SNB, the link interrupt is always tied to 4th vector.  If
+>  		 * we can't get all 4, then we can't use MSI-X.
+>  		 */
+> -		if (ndev->hw_type != BWD_HW) {
+> +		if ((rc < SNB_MSIX_CNT) && (ndev->hw_type != BWD_HW)) {
+
+Nack, this check is unnecessary.
+
+Also, no comment in the commit on why it could be necessary.
+
+
+>  			rc = -EIO;
+>  			goto err1;
+>  		}
 > -- 
 > 1.7.7.6
 > 

@@ -1,40 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 22:16:48 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:53182 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6868696Ab3JCUQqyi8bs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 3 Oct 2013 22:16:46 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r93KGhm1026656;
-        Thu, 3 Oct 2013 22:16:43 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r93KGfpw026655;
-        Thu, 3 Oct 2013 22:16:41 +0200
-Date:   Thu, 3 Oct 2013 22:16:41 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Prem Mallappa <prem.mallappa@gmail.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Prem Mallappa <pmallappa@caviumnetworks.com>
-Subject: Re: [PATCH] MIPS: KDUMP: Fix to access non-sectioned memory
-Message-ID: <20131003201641.GC15556@linux-mips.org>
-References: <1380786415-24956-1-git-send-email-pmallappa@caviumnetworks.com>
- <1380786415-24956-2-git-send-email-pmallappa@caviumnetworks.com>
- <20131003182915.GA15556@linux-mips.org>
- <524DBC02.6020009@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 22:36:43 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:59132 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6868692Ab3JCUglTsLPH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Oct 2013 22:36:41 +0200
+Received: from localhost (c-76-28-172-123.hsd1.wa.comcast.net [76.28.172.123])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5C013A9C;
+        Thu,  3 Oct 2013 20:36:33 +0000 (UTC)
+Date:   Thu, 3 Oct 2013 13:36:32 -0700
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc:     devel@driverdev.osuosl.org, linux-mips@linux-mips.org,
+        David Daney <david.daney@cavium.com>, richard@nod.at
+Subject: Re: [PATCH 1/2] staging: octeon-ethernet: don't assume that CPU 0 is
+ special
+Message-ID: <20131003203632.GA7115@kroah.com>
+References: <1380397834-14286-1-git-send-email-aaro.koskinen@iki.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <524DBC02.6020009@gmail.com>
+In-Reply-To: <1380397834-14286-1-git-send-email-aaro.koskinen@iki.fi>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38190
+X-archive-position: 38191
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,27 +41,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Oct 03, 2013 at 11:48:34AM -0700, David Daney wrote:
+On Sat, Sep 28, 2013 at 10:50:33PM +0300, Aaro Koskinen wrote:
+> Currently the driver assumes that CPU 0 is handling all the hard IRQs.
+> This is wrong in Linux SMP systems where user is allowed to assign to
+> hardware IRQs to any CPU. The driver will stop working if user sets
+> smp_affinity so that interrupts end up being handled by other than CPU
+> 0. The patch fixes that.
+> 
+> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> ---
+>  drivers/staging/octeon/ethernet-rx.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 
-> I wonder, how does /dev/mem handle it?  We should probably do what
-> the mem driver does for this.
+Given the objections for this series, I've now dropped it from my queue.
+If you want to resubmit it, please do so.
 
-/dev/mem is converting physical address to virtual addresses using
-xlate_dev_mem_ptr() which is defined as:
+thanks,
 
-#define xlate_dev_mem_ptr(p)	__va(p)
-
-which obviously is suffering from similar problems as Prem's suggested
-patch.
-
-Fortunately /dev/(k)mem have pretty much gotten out of fashion ;-)
-
-The x86 implementation of xlate_dev_mem_ptr() is based on ioremap_cache()
-which may be x86-specific - but very handy in situations like this and
-there might also be devices which want to be mapped cached.
-
-I'm considering to implement it since ages.  I just don't want a whole
-flood of new cache modes like ioremap_uncached_accelerated() or maybe
-ioremap_writeback_on_sunday_afternoons_only()  ;-)
-
-  Ralf
+greg k-h

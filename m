@@ -1,37 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 09:47:24 +0200 (CEST)
-Received: from mail-pd0-f182.google.com ([209.85.192.182]:36835 "EHLO
-        mail-pd0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822995Ab3JCHrSZYwlN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Oct 2013 09:47:18 +0200
-Received: by mail-pd0-f182.google.com with SMTP id r10so2080620pdi.13
-        for <linux-mips@linux-mips.org>; Thu, 03 Oct 2013 00:47:11 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 09:47:42 +0200 (CEST)
+Received: from mail-pb0-f54.google.com ([209.85.160.54]:54542 "EHLO
+        mail-pb0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6819540Ab3JCHrVnr5P0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Oct 2013 09:47:21 +0200
+Received: by mail-pb0-f54.google.com with SMTP id ro12so2079793pbb.13
+        for <linux-mips@linux-mips.org>; Thu, 03 Oct 2013 00:47:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:subject:date:message-id;
-        bh=dBeknLgWqRfE9ss1c2Ny6AXKSJ/55qtYzmCNeY0xCfE=;
-        b=RgU6TADonALYqm3yJmkqJe2uWvW8JexfflHdcQ45lhV4yrm/KtdTe5Q2y5uAY3bvhT
-         iYpIvjAZQHUXWR6wgl11LdOE8Xps/rmgKBdrzQmTgJJXj98QThohSeNETkiAbmwY/YBr
-         ZiqBxGB19uCQ1PhdPpRjikznbjLO46qmSocBD9ZDb8/jpARaVxno+0WQFfDASdZNJmTv
-         wOrztoyiX4lA29eSTnYC89YJUTMLZWWIiGvJLHgN60EKU6jVYV0OR93O72htaMpqjUMD
-         DEY3+/cTlonHfUaqWdMD/rRYMzEB1wgPZjXB+w/3sXXbK1kmUVM9vXdyLQCoKqqoMS0J
-         OsNQ==
-X-Received: by 10.68.244.130 with SMTP id xg2mr7090164pbc.13.1380786431167;
-        Thu, 03 Oct 2013 00:47:11 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=Tdkwb3uIVq6013x36h1nyrylJsxIre3ZRcGlJSGI7y8=;
+        b=Sllstv6x+fYImSqzIGCYQbKnlLbypkIrb4qE87K06jGhK8v+Ko152s9E5puX7EUN74
+         WXGH1NWsTjvvqFCIXPZS03sdZTO6GBAZpHdyxYkj3jnjmO1gzdtfsRQoWHtPHef4VrT9
+         nAs5MhYBQULrNvRZ2+jCnoAWYw4HySw+u3M3yRDhhnUhr12e19cwHHArut8lmlMKWyd2
+         J6IoforhmnHS7oFlUhpmlHljahf/rLV4D4xmFOBIy1ikBiXnfdKC7NXQk3G8T1kBpZOZ
+         l/S/bBFp4EqyvCnj/vusNAPmCOJX8hac8L+yc+Sr79ZvzibpMzx9eXA5W/sc2l0NqUvJ
+         DGsg==
+X-Received: by 10.66.26.112 with SMTP id k16mr7598838pag.65.1380786435616;
+        Thu, 03 Oct 2013 00:47:15 -0700 (PDT)
 Received: from localhost ([115.115.74.130])
-        by mx.google.com with ESMTPSA id uw6sm6472077pbc.8.1969.12.31.16.00.00
+        by mx.google.com with ESMTPSA id go4sm6465468pbb.15.1969.12.31.16.00.00
         (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 03 Oct 2013 00:47:10 -0700 (PDT)
+        Thu, 03 Oct 2013 00:47:14 -0700 (PDT)
 From:   Prem Mallappa <prem.mallappa@gmail.com>
 To:     linux-mips <linux-mips@linux-mips.org>
-Subject: MIPS: KDUMP: fix for crashkernel to load from non-sectioned memory.
-Date:   Thu,  3 Oct 2013 13:16:54 +0530
-Message-Id: <1380786415-24956-1-git-send-email-pmallappa@caviumnetworks.com>
+Cc:     Prem Mallappa <pmallappa@caviumnetworks.com>
+Subject: [PATCH] MIPS: KDUMP: Fix to access non-sectioned memory
+Date:   Thu,  3 Oct 2013 13:16:55 +0530
+Message-Id: <1380786415-24956-2-git-send-email-pmallappa@caviumnetworks.com>
 X-Mailer: git-send-email 1.8.4
+In-Reply-To: <1380786415-24956-1-git-send-email-pmallappa@caviumnetworks.com>
+References: <1380786415-24956-1-git-send-email-pmallappa@caviumnetworks.com>
 Return-Path: <prem.mallappa@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38178
+X-archive-position: 38179
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,46 +51,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+When booted with initramfs, percpu crash_notes ends up in memory that is not accessible by crashkernel
 
-This only happens with kernels having initramfs builtin.
-W.R.T following memory map, first kernel ends up in creating per-cpu crash notes (ELF PT_NOTE) in the higher memory area.
-When a initramfs image is used, most often the crash_note ends up in "pfn's" belonging to 0x2000.0000
+Signed-off-by: Prem Mallappa <pmallappa@caviumnetworks.com>
+---
+ arch/mips/kernel/crash_dump.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-When crashkernel tries to access the PT_NOTEs (crash_notes per cpu variable) via __pfn_to_section <= pfn_to_page <= kmap, we end up in crash, as the sections belong to pfn 0x20006c00 (mem_section[2][0]) for a crash kernel is not populated.
-
-Creating new mappings using ioremap solves the problem, which is pretty much what the patch does.
-
-Determined physical RAM map:
- memory: 0000000004eff000 @ 0000000000100000 (usable)
- memory: 000000000a000000 @ 0000000005000000 (usable)   <<<< Crashkernel reserved area
- memory: 0000000030000000 @ 0000000020000000 (usable)
-
-------------
-mem_section[0][0]:0x8000000004180003
-mem_section[1][0]:0x0
-mem_section[2][0]:0x8000000003e00003
-mem_section[3][0]:0x8000000003e00003
-mem_section[4][0]:0x8000000003e00003
-mem_section[5][0]:0x0
-mem_section[6][0]:0x0  << Repeats rest of 1024 times >>
-
-get_crash_notes_per_cpu: crash_notes addr = 20006c00
-<<32 entries>>
-get_crash_notes_per_cpu: crash_notes addr = 2013cc00
-
-
-Crash Kernel
-============
-Determined physical RAM map:
- memory: 000000000a000000 @ 0000000005000000 (usable)
- memory: 0000000020000000 @ 0000000050000000 (usable)
-
-------
-mem_section[0][0]:0x8000000008184003
-mem_section[1][0]:0x0
-mem_section[2][0]:0x0
-mem_section[3][0]:0x0
-mem_section[4][0]:0x0
-mem_section[5][0]:0x8000000007384003
-mem_section[6][0]:0x8000000007384003
-mem_section[7][0]:0x0    << Repeats rest of 1024 times >>
+diff --git a/arch/mips/kernel/crash_dump.c b/arch/mips/kernel/crash_dump.c
+index 3be9e7b..f9886437 100644
+--- a/arch/mips/kernel/crash_dump.c
++++ b/arch/mips/kernel/crash_dump.c
+@@ -3,6 +3,8 @@
+ #include <linux/crash_dump.h>
+ #include <asm/uaccess.h>
+ #include <linux/slab.h>
++#include <linux/errno.h>
++#include <linux/io.h>
+ 
+ static int __init parse_savemaxmem(char *p)
+ {
+@@ -13,7 +15,6 @@ static int __init parse_savemaxmem(char *p)
+ }
+ __setup("savemaxmem=", parse_savemaxmem);
+ 
+-
+ static void *kdump_buf_page;
+ 
+ /**
+@@ -41,19 +42,20 @@ ssize_t copy_oldmem_page(unsigned long pfn, char *buf,
+ 	if (!csize)
+ 		return 0;
+ 
+-	vaddr = kmap_atomic_pfn(pfn);
++	vaddr = ioremap(pfn << PAGE_SHIFT, PAGE_SIZE);
+ 
+ 	if (!userbuf) {
+ 		memcpy(buf, (vaddr + offset), csize);
+-		kunmap_atomic(vaddr);
++		iounmap(vaddr);
+ 	} else {
+ 		if (!kdump_buf_page) {
+ 			pr_warning("Kdump: Kdump buffer page not allocated\n");
+ 
+ 			return -EFAULT;
+ 		}
++
+ 		copy_page(kdump_buf_page, vaddr);
+-		kunmap_atomic(vaddr);
++		iounmap(vaddr);
+ 		if (copy_to_user(buf, (kdump_buf_page + offset), csize))
+ 			return -EFAULT;
+ 	}
+-- 
+1.8.4

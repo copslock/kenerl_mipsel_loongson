@@ -1,50 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 20:48:47 +0200 (CEST)
-Received: from mail-ye0-f181.google.com ([209.85.213.181]:36322 "EHLO
-        mail-ye0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6868678Ab3JCSsniAwvT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Oct 2013 20:48:43 +0200
-Received: by mail-ye0-f181.google.com with SMTP id r14so711668yen.12
-        for <multiple recipients>; Thu, 03 Oct 2013 11:48:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=cHjUjD9RudDM8EGd/ZeOTzHa7TYG6q2sivQxO/oWQeg=;
-        b=rRD4zbYZrPvRRsXcGVpsEcSWdJPlnUuWBdDFhJQKrtnMLwTrt9U4m8i6OnaN7vPN4v
-         MVv0c7JekqBI1IWzig9CLwHkS1fkLbK6XGYUDW24/L04oJ/hiW5CVzCPFLIiPasNFWRT
-         A4VBmHuBvhYWZGi51xjxRl7VPsV0o7JWcgE3jOh6rp+Y6Yf945KcZ232GyjuDn+V8wCQ
-         Ljiqv81o57IMqbOV3VXlz4lDbS1Nt6f+GFGtbIp6oeCi0gOs3rGDqMal1ypcwEdHb25s
-         YPiwlnEMrstVbCJd49kpDisIfsjhhF8u8TbKkwQZCBi3ee0Nv6vOUXkaauK+IA6lEoLK
-         ul0g==
-X-Received: by 10.236.31.71 with SMTP id l47mr1646685yha.121.1380826117339;
-        Thu, 03 Oct 2013 11:48:37 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id a21sm12778055yhc.23.1969.12.31.16.00.00
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 03 Oct 2013 11:48:36 -0700 (PDT)
-Message-ID: <524DBC02.6020009@gmail.com>
-Date:   Thu, 03 Oct 2013 11:48:34 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 21:47:01 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:18351 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6868690Ab3JCTq620AJ0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 3 Oct 2013 21:46:58 +0200
+Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r93JkYmj007528
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Thu, 3 Oct 2013 15:46:34 -0400
+Received: from dhcp-26-207.brq.redhat.com (vpn-54-8.rdu2.redhat.com [10.10.54.8])
+        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r93JkMlu004064
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
+        Thu, 3 Oct 2013 15:46:26 -0400
+Date:   Thu, 3 Oct 2013 21:48:39 +0200
+From:   Alexander Gordeev <agordeev@redhat.com>
+To:     Eli Cohen <eli@dev.mellanox.co.il>
+Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Michael Ellerman <michael@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
+        linux-s390@vger.kernel.org, x86@kernel.org,
+        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
+        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
+        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
+        linux-driver@qlogic.com,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH RFC 50/77] mlx5: Update MSI/MSI-X interrupts enablement
+ code
+Message-ID: <20131003194837.GA27636@dhcp-26-207.brq.redhat.com>
+References: <cover.1380703262.git.agordeev@redhat.com>
+ <9650a7dfbcfd5f1da21f7b093665abf4b1041071.1380703263.git.agordeev@redhat.com>
+ <20131003071433.GA7299@mtldesk30>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Prem Mallappa <prem.mallappa@gmail.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Prem Mallappa <pmallappa@caviumnetworks.com>
-Subject: Re: [PATCH] MIPS: KDUMP: Fix to access non-sectioned memory
-References: <1380786415-24956-1-git-send-email-pmallappa@caviumnetworks.com> <1380786415-24956-2-git-send-email-pmallappa@caviumnetworks.com> <20131003182915.GA15556@linux-mips.org>
-In-Reply-To: <20131003182915.GA15556@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20131003071433.GA7299@mtldesk30>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
+Return-Path: <agordeev@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38188
+X-archive-position: 38189
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: agordeev@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,47 +65,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/03/2013 11:29 AM, Ralf Baechle wrote:
-> On Thu, Oct 03, 2013 at 01:16:55PM +0530, Prem Mallappa wrote:
->
->> @@ -41,19 +42,20 @@ ssize_t copy_oldmem_page(unsigned long pfn, char *buf,
->>   	if (!csize)
->>   		return 0;
->>
->> -	vaddr = kmap_atomic_pfn(pfn);
->> +	vaddr = ioremap(pfn << PAGE_SHIFT, PAGE_SIZE);
->
-> This is not portable, I'm afraid.
+On Thu, Oct 03, 2013 at 10:14:33AM +0300, Eli Cohen wrote:
+> On Wed, Oct 02, 2013 at 12:49:06PM +0200, Alexander Gordeev wrote:
+> >  
+> > +	err = pci_msix_table_size(dev->pdev);
+> > +	if (err < 0)
+> > +		return err;
+> > +
+> >  	nvec = dev->caps.num_ports * num_online_cpus() + MLX5_EQ_VEC_COMP_BASE;
+> >  	nvec = min_t(int, nvec, num_eqs);
+> > +	nvec = min_t(int, nvec, err);
+> >  	if (nvec <= MLX5_EQ_VEC_COMP_BASE)
+> >  		return -ENOSPC;
+> 
+> Making sure we don't request more vectors then the device's is capable
+> of -- looks good.
+> >  
+> > @@ -131,20 +136,15 @@ static int mlx5_enable_msix(struct mlx5_core_dev *dev)
+> >  	for (i = 0; i < nvec; i++)
+> >  		table->msix_arr[i].entry = i;
+> >  
+> > -retry:
+> > -	table->num_comp_vectors = nvec - MLX5_EQ_VEC_COMP_BASE;
+> >  	err = pci_enable_msix(dev->pdev, table->msix_arr, nvec);
+> > -	if (err <= 0) {
+> > +	if (err) {
+> > +		kfree(table->msix_arr);
+> >  		return err;
+> > -	} else if (err > MLX5_EQ_VEC_COMP_BASE) {
+> > -		nvec = err;
+> > -		goto retry;
+> >  	}
+> >  
+> 
+> According to latest sources, pci_enable_msix() may still fail so why
+> do you want to remove this code?
 
-It raised a red flag for me too.
+pci_enable_msix() may fail, but it can not return a positive number.
 
-I wonder, how does /dev/mem handle it?  We should probably do what the 
-mem driver does for this.
+We first calculate how many MSI-Xs we need, adjust to what we can get,
+check if that is enough and only then go for it.
 
-David Daney
+> > -	mlx5_core_dbg(dev, "received %d MSI vectors out of %d requested\n", err, nvec);
+> > -	kfree(table->msix_arr);
+> > +	table->num_comp_vectors = nvec - MLX5_EQ_VEC_COMP_BASE;
+> >  
+> > -	return -ENOSPC;
+> > +	return 0;
+> >  }
+> >  
+> >  static void mlx5_disable_msix(struct mlx5_core_dev *dev)
 
-
->
-> Ioremap on MIPS is creating uncached mappings - on most systems, that is.
-> However there is no guarantee that the data accessed through this mapping
-> does not reside in a cache on another CPU or another virtual address
-> which would make the operation undefined.
->
-> On SGI IP27 and IP35 ioremap is not even able to create RAM mappings at
-> all.  If you're lucky this would result in a bus error; if you're unlucky
-> it'll make the SCSI controller scribble the answer to the universe, life
-> and everything on the disk drive only to corrupt it again before you have
-> a chance to read it ;-)
->
-> I think this is bulletproof on Octeon so until there's a better patch you
-> may want to keep this around for the SDK.
->
-> I wonder, does commit 5395d97b675986e7e8f3140f9e0819d20b1d22cd
-> in upstream-sfr.git fix your issue?
->
-> Cheers,
->
->    Ralf
->
->
->
+-- 
+Regards,
+Alexander Gordeev
+agordeev@redhat.com

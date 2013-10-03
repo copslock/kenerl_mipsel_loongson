@@ -1,71 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 10:39:43 +0200 (CEST)
-Received: from mail-ee0-f51.google.com ([74.125.83.51]:33354 "EHLO
-        mail-ee0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6815748Ab3JCIjkSjyxx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Oct 2013 10:39:40 +0200
-Received: by mail-ee0-f51.google.com with SMTP id c1so903532eek.24
-        for <linux-mips@linux-mips.org>; Thu, 03 Oct 2013 01:39:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:organization:mime-version:content-type
-         :content-transfer-encoding;
-        bh=WWHccz2axGnBTwWfHs5MpXfTewPausLmkbemoYIVqHM=;
-        b=dgcdESWutDz4uKyCe75TiLfr/66bHcgqYoQ+bBM9Yp90NyCdUA62oG6nnIJr4qfTfj
-         ASrE5MG4A1vat8EqrJV8gYET4/awbBBWYDH9jzOnQ/eA6ddzCcZ3Ff7NcGWOx314Fa6n
-         jEMAN/vkIXmgzsBgML1J187t3CBelGM8ddIlXPEWOoZ5RWv/yMAd0zFf8Vxia8ksTibN
-         koO14Fl3AvZCkZWDoa6u3u01NbT1Nb7HLnnUU5EKA4a3k4JGR5zFO0JmsBLOsyH4MqLx
-         4H6J6qKpcj/4rWeV36e+v5z83kcDPQ4rRwvLROQ5fXz6S2g9liziHem9VI5PNrLGU+JF
-         Plcw==
-X-Gm-Message-State: ALoCoQmii0d0L8XXVZvXniz99cdk5+pk6eehfqEZeTghp9kEKyS/0/mUb+dXzv1CTb9ggqCB+Vx+
-X-Received: by 10.14.29.67 with SMTP id h43mr10984911eea.7.1380789574832;
-        Thu, 03 Oct 2013 01:39:34 -0700 (PDT)
-Received: from jpm-OptiPlex-GX620 (out.voltaire.com. [193.47.165.251])
-        by mx.google.com with ESMTPSA id d8sm13040053eeh.8.1969.12.31.16.00.00
-        (version=SSLv3 cipher=RC4-SHA bits=128/128);
-        Thu, 03 Oct 2013 01:39:33 -0700 (PDT)
-Date:   Thu, 3 Oct 2013 11:39:32 +0300
-From:   Jack Morgenstein <jackm@dev.mellanox.co.il>
-To:     Alexander Gordeev <agordeev@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Michael Ellerman <michael@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
-        linux-s390@vger.kernel.org, x86@kernel.org,
-        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
-        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
-        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
-        linux-driver@qlogic.com,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org,
-        ogerlitz@mellanox.com, eli@mellanox.com
-Subject: Re: [PATCH RFC 46/77] mlx4: Update MSI/MSI-X interrupts enablement
- code
-Message-ID: <20131003113932.065b9b63@jpm-OptiPlex-GX620>
-In-Reply-To: <b0a9f6f455aa03b7769e6d9cc2e7fdbc06732b2f.1380703263.git.agordeev@redhat.com>
-References: <cover.1380703262.git.agordeev@redhat.com>
-        <b0a9f6f455aa03b7769e6d9cc2e7fdbc06732b2f.1380703263.git.agordeev@redhat.com>
-Organization: Mellanox
-X-Mailer: Claws Mail 3.8.1 (GTK+ 2.24.17; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <jackm@dev.mellanox.co.il>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 16:00:56 +0200 (CEST)
+Received: from ni.piap.pl ([195.187.100.4]:39275 "EHLO ni.piap.pl"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6865325Ab3JCOAsmq0Qj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 3 Oct 2013 16:00:48 +0200
+Received: from ni.piap.pl (localhost.localdomain [127.0.0.1])
+        by ni.piap.pl (Postfix) with ESMTP id CD052442130;
+        Thu,  3 Oct 2013 16:00:47 +0200 (CEST)
+Received: by ni.piap.pl (Postfix, from userid 1015)
+        id C8378442138; Thu,  3 Oct 2013 16:00:47 +0200 (CEST)
+From:   khalasa@piap.pl (Krzysztof =?utf-8?Q?Ha=C5=82asa?=)
+To:     linux-mips@linux-mips.org, linux-media@vger.kernel.org
+Date:   Thu, 03 Oct 2013 16:00:47 +0200
+MIME-Version: 1.0
+Message-ID: <m3eh82a1yo.fsf@t19.piap.pl>
+Content-Type: text/plain
+Subject: Suspected cache coherency problem on V4L2 and AR7100 CPU
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.44/RELEASE,
+         bases: 20131003 #11164749, check: 20131003 clean
+Return-Path: <khalasa@ni.piap.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38182
+X-archive-position: 38183
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jackm@dev.mellanox.co.il
+X-original-sender: khalasa@piap.pl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,26 +38,140 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed,  2 Oct 2013 12:49:02 +0200
-Alexander Gordeev <agordeev@redhat.com> wrote:
+Hi,
 
-> As result of recent re-design of the MSI/MSI-X interrupts enabling
-> pattern this driver has to be updated to use the new technique to
-> obtain a optimal number of MSI/MSI-X interrupts required.
-> 
-> Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
+I'm debugging a problem with a SOLO6110-based H.264 PCI video encoder on
+Atheros AR7100-based (MIPS, big-endian) platform.
 
-New review -- ACK (i.e., patch is OK), subject to acceptance of patches
-05 and 07 of this patch set.
+The problem manifests itself with stale data being returned by the
+driver (using ioctl VIDIOC_DQBUF). The stale date always starts and ends
+on 32-byte cache line boundary.
 
-I sent my previous review (NACK) when I was not yet aware that
-changes proposed were due to the two earlier patches (mentioned above)
-in the current patch set.
+The driver is drivers/staging/media/solo6x10.
 
-The change log here should actually read something like the following:
+Initially I thought the encoder hardware is at fault (though it works on
+i686 and on (both endians) ARM). But I've eliminated actual DMA accesses
+from the driver and the problems still persists.
 
-As a result of changes to the MSI/MSI_X enabling procedures, this driver
-must be modified in order to preserve its current msi/msi_x enablement
-logic.
+The control flow is now basically the following:
+- userspace program initializes the adapter and allocates 192 KB long
+  buffers (at least 2 of them):
+	open(/dev/video1);
 
--Jack
+	various ioctl() calls
+
+	for (cnt = 0; cnt < buffer_count; cnt++) {
+		struct v4l2_buffer buf = {
+			.type = V4L2_BUF_TYPE_VIDEO_CAPTURE,
+			.memory = V4L2_MEMORY_MMAP,
+			.index = cnt,
+		};
+		ioctl(stream->fd, VIDIOC_QUERYBUF, &buf);
+		mmap(NULL, buf.length, PROT_READ | PROT_WRITE, MAP_SHARED, stream->fd, buf.m.offset);
+        }
+
+and then:
+
+	for (cnt = 0; cnt < buffer_count; cnt++) {
+		struct v4l2_buffer buf = {
+			.type = V4L2_BUF_TYPE_VIDEO_CAPTURE,
+			.memory = V4L2_MEMORY_MMAP,
+			.index = cnt,
+		ioctl(stream->fd, VIDIOC_QBUF, &buf);
+	}
+
+The buffers are now queued. The driver (upon receiving an encoded frame)
+now mostly does:
+
+	various spin_lock() etc.
+	vb = list_first_entry(&solo_enc->vidq_active, struct solo_vb2_buf, list);
+	list_del(&vb->list);
+
+	struct vb2_dma_sg_desc *vbuf = vb2_dma_sg_plane_desc(vb, 0);
+
+        /* now we have vbuf->sglist which corresponds to a single
+	userspace 192-KB buffer */
+
+	vb2_set_plane_payload(vb, 0, 1024 /* bytes */);
+
+	static u32 n = 0; /* a counter to mark each buffer */
+
+        /* the following is normally done using dma_map_sg() and DMA,
+        and also with sg_copy_from_buffer() - eliminated for now */
+
+	/* I do the following instead */
+	struct page *page = sg_page(vbuf->sglist);
+	u32 *addr = kmap_atomic(page);
+
+	/* 4 times as large, I know, the buffer is much longer though */
+	for (i = 0; i < 1024; i++)
+		addr[i] = n;
+
+	flush_dcache_page(page); /* and/or */
+	flush_kernel_dcache_page(page);
+
+	kunmap_atomic(addr);
+
+	vb->v4l2_buf.sequence = solo_enc->sequence++;
+	vb->v4l2_buf.timestamp.tv_sec = vop_sec(vh);
+	vb->v4l2_buf.timestamp.tv_usec = vop_usec(vh);
+
+	vb2_buffer_done(vb, VB2_BUF_STATE_DONE);
+
+The userspace server now does ioctl(VIDIOC_DQBUF), sends it using UDP,
+and populates buffer pool again with ioctl(VIDIOC_QBUF).
+
+The driver uses directly-mapped cached (kernel) pointers to access the
+buffers (0x80000000->0x9FFFFFFF kseg0 region) while (obviously)
+userspace uses TLB-mapped pointers.
+
+I have verified with a JTAG-based debugger (OpenOCD) that the buffers
+are flushed to DRAM (0xAxxxxxxx uncached directly-mapped region has
+valid data), however the userspace TLB-mapped buffers (which correspond
+to the same physical DRAM addresses) partially contain old cached data
+(from previous iterations).
+
+The question is which part of the code is at fault, and how do I fix it.
+I understand invalidating (and perhaps first flushing) userspace buffers
+(cache) should generally fix the problem.
+
+This could also be a simple bug rather than API/platform incompatibility
+because usually (though not always) only 1 of the buffers gets corrupted
+(the second one of two).
+
+It looks like this - valid buffer, counter n = 0x499, a fragment
+of actual UDP packet:
+        0x0030:  0000 0499 0000 0499 0000 0499 0000 0499  ................
+        0x0040:  0000 0499 0000 0499 0000 0499 0000 0499  ................
+        0x0050:  0000 0499 0000 0499 0000 0499 0000 0499  ................
+        0x0060:  0000 0499 0000 0499 0000 0499 0000 0499  ................
+        0x0070:  0000 0499 0000 0499 0000 0499 0000 0499  ................
+        0x0080:  0000 0499 0000 0499 0000 0499 0000 0499  ................
+        0x0090:  0000 0499 0000 0499 0000 0499 0000 0499  ................
+        0x00a0:  0000 0499 0000 0499 0000 0499 0000 0499  ................
+        0x00b0:  0000 0499 0000 0499 0000 0499 0000 0499  ................
+
+next buffer is corrupted, n = 0x49A:
+        0x0030:  0000 049a 0000 049a 0000 049a 0000 049a  ................
+        0x0040:  0000 049a 0000 0468 0000 0468 0000 0468  .......h...h...h
+        0x0050:  0000 0468 0000 0468 0000 0468 0000 0468  ...h...h...h...h
+        0x0060:  0000 0468 0000 049a 0000 049a 0000 049a  ...h............
+        0x0070:  0000 049a 0000 049a 0000 049a 0000 049a  ................
+        0x0080:  0000 049a 0000 049a 0000 049a 0000 049a  ................
+        0x0090:  0000 049a 0000 049a 0000 049a 0000 049a  ................
+        0x00a0:  0000 049a 0000 049a 0000 049a 0000 049a  ................
+        0x00b0:  0000 049a 0000 049a 0000 049a 0000 049a  ................
+        0x00c0:  0000 049a 0000 0478 0000 0478 0000 0478  .......x...x...x
+        0x00d0:  0000 0478 0000 0478 0000 0478 0000 0478  ...x...x...x...x
+        0x00e0:  0000 0478 0000 049a 0000 049a 0000 049a  ...x............
+        0x00f0:  0000 049a 0000 049a 0000 049a 0000 049a  ................
+        0x0100:  0000 049a 0000 049a 0000 049a 0000 049a  ................
+
+Additional details: Ubiquity RouterStation Pro, gcc-4.7.3, Linux v3.11.
+
+Any ideas?
+-- 
+Krzysztof Halasa
+
+Research Institute for Automation and Measurements PIAP
+Al. Jerozolimskie 202, 02-486 Warsaw, Poland

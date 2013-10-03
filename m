@@ -1,17 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 03:02:42 +0200 (CEST)
-Received: from mga14.intel.com ([143.182.124.37]:46258 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6868569Ab3JCBCjbEMhU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 3 Oct 2013 03:02:39 +0200
-Received: from azsmga001.ch.intel.com ([10.2.17.19])
-  by azsmga102.ch.intel.com with ESMTP; 02 Oct 2013 18:02:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.90,1022,1371106800"; 
-   d="scan'208";a="369042883"
-Received: from jonmason-lab.ch.intel.com (HELO jonmason-lab) ([143.182.51.14])
-  by azsmga001.ch.intel.com with ESMTP; 02 Oct 2013 18:02:30 -0700
-Date:   Wed, 2 Oct 2013 18:02:30 -0700
-From:   Jon Mason <jon.mason@intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 09:14:44 +0200 (CEST)
+Received: from mail-ee0-f42.google.com ([74.125.83.42]:55813 "EHLO
+        mail-ee0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816022Ab3JCHOlnpoWI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Oct 2013 09:14:41 +0200
+Received: by mail-ee0-f42.google.com with SMTP id b45so877338eek.29
+        for <linux-mips@linux-mips.org>; Thu, 03 Oct 2013 00:14:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent;
+        bh=ldyvT2XdunLzGQJ6D1fTtr+tecXla4lvpJQyXcCCo+s=;
+        b=JFea4yv3HjmBORfbaTcfR2lOek/6JK1nKEzskgkAPgjtvzHNbKU5Pwb+XuniDYVjaB
+         7DTFoERsR5/wWizvqvd5fRA3xb/jbA6UHPkZD4TpsCjQ4WKzbw/s1xJTS2wbg/7shcoR
+         UPz0icZ/jBQ4aIZ67J/t7SzlHTY9+vx3Ur6VXhwNDN5bePug34rD6fUdYd5je1WPq9V/
+         jY3pVwqj/vwCy369R0ZzBojzInjVR5C8FBARgm84PipGDLRIakxrSzU+jas/B/PkHvw0
+         HVH8Tj+W2t/0/ONC5TpwilHyYWvVR3Xfx+XrWL4hAts3kGfxiLGiYm4zW2r+q+DhCxXs
+         oXSw==
+X-Gm-Message-State: ALoCoQnZ5ZkHMc0YD47B7pt0x1zljE9/Zwyf05DF+tNw33hIVPvJvLacB1bKRF9lkTDO07l8d+Uj
+X-Received: by 10.14.179.9 with SMTP id g9mr75250eem.93.1380784475980;
+        Thu, 03 Oct 2013 00:14:35 -0700 (PDT)
+Received: from localhost (out.voltaire.com. [193.47.165.251])
+        by mx.google.com with ESMTPSA id bn13sm12243740eeb.11.1969.12.31.16.00.00
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Thu, 03 Oct 2013 00:14:35 -0700 (PDT)
+Date:   Thu, 3 Oct 2013 10:14:33 +0300
+From:   Eli Cohen <eli@dev.mellanox.co.il>
 To:     Alexander Gordeev <agordeev@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -20,7 +34,7 @@ Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
         Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
         Dan Williams <dan.j.williams@intel.com>,
-        Andy King <acking@vmware.com>,
+        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
         Matt Porter <mporter@kernel.crashing.org>,
         linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
@@ -31,25 +45,25 @@ Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH RFC 55/77] ntb: Update MSI/MSI-X interrupts enablement
+Subject: Re: [PATCH RFC 50/77] mlx5: Update MSI/MSI-X interrupts enablement
  code
-Message-ID: <20131003010230.GN6768@jonmason-lab>
+Message-ID: <20131003071433.GA7299@mtldesk30>
 References: <cover.1380703262.git.agordeev@redhat.com>
- <49eb592e15aaec804f9c11ca132d2b85c516aefa.1380703263.git.agordeev@redhat.com>
+ <9650a7dfbcfd5f1da21f7b093665abf4b1041071.1380703263.git.agordeev@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <49eb592e15aaec804f9c11ca132d2b85c516aefa.1380703263.git.agordeev@redhat.com>
+In-Reply-To: <9650a7dfbcfd5f1da21f7b093665abf4b1041071.1380703263.git.agordeev@redhat.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <jon.mason@intel.com>
+Return-Path: <eli@dev.mellanox.co.il>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38176
+X-archive-position: 38177
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jon.mason@intel.com
+X-original-sender: eli@dev.mellanox.co.il
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,110 +76,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 02, 2013 at 12:49:11PM +0200, Alexander Gordeev wrote:
-> As result of recent re-design of the MSI/MSI-X interrupts enabling
-> pattern this driver has to be updated to use the new technique to
-> obtain a optimal number of MSI/MSI-X interrupts required.
-> 
-> Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
-> ---
->  drivers/ntb/ntb_hw.c |   41 +++++++++++++----------------------------
->  drivers/ntb/ntb_hw.h |    2 --
->  2 files changed, 13 insertions(+), 30 deletions(-)
-> 
-> diff --git a/drivers/ntb/ntb_hw.c b/drivers/ntb/ntb_hw.c
-> index eccd5e5..7776429 100644
-> --- a/drivers/ntb/ntb_hw.c
-> +++ b/drivers/ntb/ntb_hw.c
-> @@ -1032,23 +1032,26 @@ static int ntb_setup_msix(struct ntb_device *ndev)
->  	struct msix_entry *msix;
->  	int msix_entries;
->  	int rc, i;
-> -	u16 val;
+On Wed, Oct 02, 2013 at 12:49:06PM +0200, Alexander Gordeev wrote:
 >  
-> -	if (!pdev->msix_cap) {
-> -		rc = -EIO;
-> +	rc = pci_msix_table_size(pdev);
-> +	if (rc < 0)
->  		goto err;
-> -	}
+> +	err = pci_msix_table_size(dev->pdev);
+> +	if (err < 0)
+> +		return err;
+> +
+>  	nvec = dev->caps.num_ports * num_online_cpus() + MLX5_EQ_VEC_COMP_BASE;
+>  	nvec = min_t(int, nvec, num_eqs);
+> +	nvec = min_t(int, nvec, err);
+>  	if (nvec <= MLX5_EQ_VEC_COMP_BASE)
+>  		return -ENOSPC;
+
+Making sure we don't request more vectors then the device's is capable
+of -- looks good.
 >  
-> -	rc = pci_read_config_word(pdev, pdev->msix_cap + PCI_MSIX_FLAGS, &val);
-> -	if (rc)
-> +	/*
-> +	 * On SNB, the link interrupt is always tied to 4th vector.  If
-> +	 * we can't get all 4, then we can't use MSI-X.
-> +	 */
-> +	if ((rc < SNB_MSIX_CNT) && (ndev->hw_type != BWD_HW)) {
-
-Please check for the HW type first, and then compare to
-ndev->limits.msix_cnt (which will be SNB_MSIX_CNT on SNB HW).  Also,
-put the comment inside the if statement and remove the unecessary "()"
-around the comparisons.  OCD on my part, but I like it that way.  
-
-> +		rc = -ENOSPC;
->  		goto err;
-> -
-> -	msix_entries = msix_table_size(val);
-> -	if (msix_entries > ndev->limits.msix_cnt) {
-> +	}
-
-else if...
-
-> +	if (rc > ndev->limits.msix_cnt) {
->  		rc = -EINVAL;
->  		goto err;
+> @@ -131,20 +136,15 @@ static int mlx5_enable_msix(struct mlx5_core_dev *dev)
+>  	for (i = 0; i < nvec; i++)
+>  		table->msix_arr[i].entry = i;
+>  
+> -retry:
+> -	table->num_comp_vectors = nvec - MLX5_EQ_VEC_COMP_BASE;
+>  	err = pci_enable_msix(dev->pdev, table->msix_arr, nvec);
+> -	if (err <= 0) {
+> +	if (err) {
+> +		kfree(table->msix_arr);
+>  		return err;
+> -	} else if (err > MLX5_EQ_VEC_COMP_BASE) {
+> -		nvec = err;
+> -		goto retry;
 >  	}
 >  
-> +	msix_entries = rc;
-> +
->  	ndev->msix_entries = kmalloc(sizeof(struct msix_entry) * msix_entries,
->  				     GFP_KERNEL);
->  	if (!ndev->msix_entries) {
-> @@ -1060,26 +1063,8 @@ static int ntb_setup_msix(struct ntb_device *ndev)
->  		ndev->msix_entries[i].entry = i;
->  
->  	rc = pci_enable_msix(pdev, ndev->msix_entries, msix_entries);
-> -	if (rc < 0)
-> +	if (rc)
->  		goto err1;
-> -	if (rc > 0) {
-> -		/* On SNB, the link interrupt is always tied to 4th vector.  If
-> -		 * we can't get all 4, then we can't use MSI-X.
-> -		 */
-> -		if ((rc < SNB_MSIX_CNT) && (ndev->hw_type != BWD_HW)) {
-> -			rc = -EIO;
-> -			goto err1;
-> -		}
-> -
-> -		dev_warn(&pdev->dev,
-> -			 "Only %d MSI-X vectors.  Limiting the number of queues to that number.\n",
-> -			 rc);
-> -		msix_entries = rc;
-> -
-> -		rc = pci_enable_msix(pdev, ndev->msix_entries, msix_entries);
-> -		if (rc)
-> -			goto err1;
-> -	}
->  
->  	for (i = 0; i < msix_entries; i++) {
->  		msix = &ndev->msix_entries[i];
-> diff --git a/drivers/ntb/ntb_hw.h b/drivers/ntb/ntb_hw.h
-> index 0a31ced..50bd760 100644
-> --- a/drivers/ntb/ntb_hw.h
-> +++ b/drivers/ntb/ntb_hw.h
-> @@ -60,8 +60,6 @@
->  #define PCI_DEVICE_ID_INTEL_NTB_SS_HSX		0x2F0F
->  #define PCI_DEVICE_ID_INTEL_NTB_B2B_BWD		0x0C4E
->  
-> -#define msix_table_size(control)	((control & PCI_MSIX_FLAGS_QSIZE)+1)
 
-Good riddance!  :-)
+According to latest sources, pci_enable_msix() may still fail so why
+do you want to remove this code?
 
-> -
->  #ifndef readq
->  static inline u64 readq(void __iomem *addr)
->  {
+> -	mlx5_core_dbg(dev, "received %d MSI vectors out of %d requested\n", err, nvec);
+> -	kfree(table->msix_arr);
+> +	table->num_comp_vectors = nvec - MLX5_EQ_VEC_COMP_BASE;
+>  
+> -	return -ENOSPC;
+> +	return 0;
+>  }
+>  
+>  static void mlx5_disable_msix(struct mlx5_core_dev *dev)
 > -- 
 > 1.7.7.6
 > 
+> --
+> To unsubscribe from this list: send the line "unsubscribe netdev" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,30 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 10:03:06 +0200 (CEST)
-Received: from mail-ee0-f47.google.com ([74.125.83.47]:50859 "EHLO
-        mail-ee0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6819540Ab3JCIDDnXpxB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Oct 2013 10:03:03 +0200
-Received: by mail-ee0-f47.google.com with SMTP id d49so896054eek.20
-        for <linux-mips@linux-mips.org>; Thu, 03 Oct 2013 01:02:58 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Oct 2013 10:27:20 +0200 (CEST)
+Received: from mail-ee0-f49.google.com ([74.125.83.49]:59555 "EHLO
+        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825899Ab3JCI1LNSIw7 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 3 Oct 2013 10:27:11 +0200
+Received: by mail-ee0-f49.google.com with SMTP id d41so911743eek.22
+        for <linux-mips@linux-mips.org>; Thu, 03 Oct 2013 01:27:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
          :references:organization:mime-version:content-type
          :content-transfer-encoding;
-        bh=K9lP+ptdyKXFDeCSWmRsk/PGpckF0vT1dyAejpdevRs=;
-        b=OZ8BWzZVOXW2jDT514RY3Rt0cdM/DocCIuVD3gCJR5fSsu9a+vNVCa/QKA9IDmRQ/h
-         D9ivhnb33OZgve+w9QSvJI2SgnmahCqKBujW/LvYGj6iZ67njlvWCgoCSAOO8U8vZaEJ
-         aeKc55XQVRXxWcZKtmpNSheseiPyKEAJRgMH6jikDgWq0IFPbJBL5LOGI7zNwXX651YB
-         17ap3kxz3KDUAWEokIm2yFH+2ehQIgsbuAnxC4Vysf1BSl2I0SsGWZVHNn1ewDdMEyuk
-         hJ0XsHz4ErnzKSbPSnSo/iQRYX9l7/UEnqivzflwQmw00MeAug84anfp8cY/TaWq1MfS
-         WKbg==
-X-Gm-Message-State: ALoCoQlx6GzSeaVxOcXIIwunmHGCNgk9RQS5Y8A+oWqLtm8eF950VPVb54NQugPfDVy1e85EgqFR
-X-Received: by 10.14.115.133 with SMTP id e5mr10797848eeh.27.1380787378085;
-        Thu, 03 Oct 2013 01:02:58 -0700 (PDT)
+        bh=l0MduLR3HrUlJTcsFYfKAMA7C/UXLaJYSJIZ7M6H41U=;
+        b=K2MHWa8Nf4dOiOushhSFULYOhasJS52/KNl0VG4D5Th992UNdN176rBooPVTjQJU76
+         KTyJguck1/9VmpGBTXcd1LsgUJhb14RYDeyQiHhp6VvX3BtLrFzMeQd8sLQ4FU4bk9Hb
+         j9nEV6ZrmaPEvAxELMFQqUViOBE/3iAA86YY8awz4uQAFXgwKh8RcmRHoxOyCVj0ed7K
+         y3Ov43Al6z/YyaUKk0eIf720jyLMEFtrF8Nf6Sn99p/juUoFgwNAkUCSIcvJCRFvUbcQ
+         82Cx1mGow3hBQQcSwPKe9Z1J/MzozUrXsrxJ4aH6ch+ceaBnm+M86r/cpcmztLVRgxqD
+         yGMQ==
+X-Gm-Message-State: ALoCoQkKAhTH75o2UDwDCcn7e/NTtCWz16pUWBtc7baNouh50/Uaj45OCE4mschMgLRE8zmT1y/d
+X-Received: by 10.15.35.196 with SMTP id g44mr10972895eev.18.1380788825523;
+        Thu, 03 Oct 2013 01:27:05 -0700 (PDT)
 Received: from jpm-OptiPlex-GX620 (out.voltaire.com. [193.47.165.251])
-        by mx.google.com with ESMTPSA id b45sm12713094eef.4.1969.12.31.16.00.00
+        by mx.google.com with ESMTPSA id i1sm12970734eeg.0.1969.12.31.16.00.00
         (version=SSLv3 cipher=RC4-SHA bits=128/128);
-        Thu, 03 Oct 2013 01:02:56 -0700 (PDT)
-Date:   Thu, 3 Oct 2013 11:02:54 +0300
+        Thu, 03 Oct 2013 01:27:04 -0700 (PDT)
+Date:   Thu, 3 Oct 2013 11:27:02 +0300
 From:   Jack Morgenstein <jackm@dev.mellanox.co.il>
 To:     Alexander Gordeev <agordeev@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
@@ -48,20 +49,20 @@ Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
         ogerlitz@mellanox.com, eli@mellanox.com
 Subject: Re: [PATCH RFC 46/77] mlx4: Update MSI/MSI-X interrupts enablement
  code
-Message-ID: <20131003110254.5f10fbb8@jpm-OptiPlex-GX620>
+Message-ID: <20131003112702.6f3210b0@jpm-OptiPlex-GX620>
 In-Reply-To: <b0a9f6f455aa03b7769e6d9cc2e7fdbc06732b2f.1380703263.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
-        <b0a9f6f455aa03b7769e6d9cc2e7fdbc06732b2f.1380703263.git.agordeev@redhat.com>
+ <b0a9f6f455aa03b7769e6d9cc2e7fdbc06732b2f.1380703263.git.agordeev@redhat.com>
 Organization: Mellanox
 X-Mailer: Claws Mail 3.8.1 (GTK+ 2.24.17; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 Return-Path: <jackm@dev.mellanox.co.il>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38180
+X-archive-position: 38181
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -81,9 +82,19 @@ X-list: linux-mips
 On Wed,  2 Oct 2013 12:49:02 +0200
 Alexander Gordeev <agordeev@redhat.com> wrote:
 
+UPDATING THIS REPLY.
+Your change log confused me. The change below is not from a "recent
+re-design", it is required due to an earlier patch in this patch set.
+From the log, I assumed that the change you are talking about is already
+upstream.
+
+I will re-review.
+
+-Jack
+
 NACK.  This change does not do anything logically as far as I can tell.
 pci_enable_msix in the current upstream kernel itself calls
-pci_msix_table_size.  The current code yields the same results
+pci_msix_table_size.  The current code yields the same resultswill
 as the code suggested below. (i.e., the suggested code has no effect on
 optimality).
 

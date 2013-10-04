@@ -1,58 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2013 00:52:07 +0200 (CEST)
-Received: from webmail.solarflare.com ([12.187.104.25]:29049 "EHLO
-        webmail.solarflare.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816288Ab3JCWwFO9uad (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Oct 2013 00:52:05 +0200
-Received: from [10.17.20.137] (10.17.20.137) by ocex02.SolarFlarecom.com
- (10.20.40.31) with Microsoft SMTP Server (TLS) id 14.3.158.1; Thu, 3 Oct 2013
- 15:51:55 -0700
-Message-ID: <1380840585.3419.50.camel@bwh-desktop.uk.level5networks.com>
-Subject: Re: [PATCH RFC 00/77] Re-design MSI/MSI-X interrupts enablement
- pattern
-From:   Ben Hutchings <bhutchings@solarflare.com>
-To:     Alexander Gordeev <agordeev@redhat.com>
-CC:     <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2013 02:59:25 +0200 (CEST)
+Received: from mga01.intel.com ([192.55.52.88]:7235 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6868696Ab3JDA7XNFoLG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 4 Oct 2013 02:59:23 +0200
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP; 03 Oct 2013 17:59:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.90,1029,1371106800"; 
+   d="scan'208";a="411273988"
+Received: from jonmason-lab.ch.intel.com (HELO jonmason-lab) ([143.182.51.14])
+  by fmsmga002.fm.intel.com with ESMTP; 03 Oct 2013 17:59:13 -0700
+Date:   Thu, 3 Oct 2013 17:59:13 -0700
+From:   Jon Mason <jon.mason@intel.com>
+To:     Ben Hutchings <bhutchings@solarflare.com>
+Cc:     Alexander Gordeev <agordeev@redhat.com>,
+        linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Michael Ellerman <michael@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
         Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
         Dan Williams <dan.j.williams@intel.com>,
-        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
+        Andy King <acking@vmware.com>,
         Matt Porter <mporter@kernel.crashing.org>,
-        <linux-pci@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux390@de.ibm.com>,
-        <linux-s390@vger.kernel.org>, <x86@kernel.org>,
-        <linux-ide@vger.kernel.org>, <iss_storagedev@hp.com>,
-        <linux-nvme@lists.infradead.org>, <linux-rdma@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <e1000-devel@lists.sourceforge.net>,
-        <linux-driver@qlogic.com>,
+        stable@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux390@de.ibm.com, linux-s390@vger.kernel.org, x86@kernel.org,
+        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
+        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
+        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
+        linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        "VMware, Inc." <pv-drivers@vmware.com>,
-        <linux-scsi@vger.kernel.org>
-In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
+        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH RFC 01/77] PCI/MSI: Fix return value when
+ populate_msi_sysfs() failed
+Message-ID: <20131004005912.GB4787@jonmason-lab>
 References: <cover.1380703262.git.agordeev@redhat.com>
-Organization: Solarflare
-Content-Type: text/plain; charset="UTF-8"
-Date:   Thu, 3 Oct 2013 23:49:45 +0100
+ <3ff5236944aae69f2cd934b5b6da7c1c269df7c1.1380703262.git.agordeev@redhat.com>
+ <20131003003905.GK6768@jonmason-lab>
+ <1380836781.3419.17.camel@bwh-desktop.uk.level5networks.com>
 MIME-Version: 1.0
-X-Mailer: Evolution 3.6.4 (3.6.4-3.fc18) 
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.17.20.137]
-X-TM-AS-Product-Ver: SMEX-10.0.0.1412-7.000.1014-20192.004
-X-TM-AS-Result: No--21.602200-0.000000-31
-X-TM-AS-User-Approved-Sender: Yes
-X-TM-AS-User-Blocked-Sender: No
-Return-Path: <bhutchings@solarflare.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1380836781.3419.17.camel@bwh-desktop.uk.level5networks.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <jon.mason@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38194
+X-archive-position: 38195
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bhutchings@solarflare.com
+X-original-sender: jon.mason@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,58 +65,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 2013-10-02 at 12:48 +0200, Alexander Gordeev wrote:
-> This series is against "next" branch in Bjorn's repo:
-> git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git
+On Thu, Oct 03, 2013 at 10:46:21PM +0100, Ben Hutchings wrote:
+> On Wed, 2013-10-02 at 17:39 -0700, Jon Mason wrote:
+> > On Wed, Oct 02, 2013 at 12:48:17PM +0200, Alexander Gordeev wrote:
+> > > Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
+> > 
+> > Since you are changing the behavior of the msix_capability_init
+> > function on populate_msi_sysfs error, a comment describing why in this
+> > commit would be nice.
+> [...]
 > 
-> Currently pci_enable_msi_block() and pci_enable_msix() interfaces
-> return a error code in case of failure, 0 in case of success and a
-> positive value which indicates the number of MSI-X/MSI interrupts
-> that could have been allocated. The latter value should be passed
-> to a repeated call to the interfaces until a failure or success:
->
-> 
-> 	for (i = 0; i < FOO_DRIVER_MAXIMUM_NVEC; i++)
-> 		adapter->msix_entries[i].entry = i;
-> 
-> 	while (nvec >= FOO_DRIVER_MINIMUM_NVEC) {
-> 		rc = pci_enable_msix(adapter->pdev,
-> 				     adapter->msix_entries, nvec);
-> 		if (rc > 0)
-> 			nvec = rc;
-> 		else
-> 			return rc;
-> 	}
-> 
-> 	return -ENOSPC;
-> 
-> 
-> This technique proved to be confusing and error-prone. Vast share
-> of device drivers simply fail to follow the described guidelines.
-> 
-> This update converts pci_enable_msix() and pci_enable_msi_block()
-> interfaces to canonical kernel functions and makes them return a
-> error code in case of failure or 0 in case of success.
-[...]
+> This function was already treating that error as fatal, and freeing the
+> MSIs.  The change in behaviour is that it now returns the error code in
+> this case, rather than 0.  This is obviously correct and properly
+> described by the one-line summary.
 
-I think this is fundamentally flawed: pci_msix_table_size() and
-pci_get_msi_cap() can only report the limits of the *device* (which the
-driver usually already knows), whereas MSI allocation can also be
-constrained due to *global* limits on the number of distinct IRQs.
+If someone dumb, like me, is looking at this commit and trying to
+figure out what is happening, having ANY commit message is good.  "Fix
+the return value" doesn't tell me anything.  Documenting what issue(s)
+would've been seen had the error case been encountered and what will
+now been seen would be very nice.
 
-Currently pci_enable_msix() will report a positive value if it fails due
-to the global limit.  Your patch 7 removes that.  pci_enable_msi_block()
-unfortunately doesn't appear to do this.
-
-It seems to me that a more useful interface would take a minimum and
-maximum number of vectors from the driver.  This wouldn't allow the
-driver to specify that it could only accept, say, any even number within
-a certain range, but you could still leave the current functions
-available for any driver that needs that.
-
-Ben.
-
--- 
-Ben Hutchings, Staff Engineer, Solarflare
-Not speaking for my employer; that's the marketing department's job.
-They asked us to note that Solarflare product names are trademarked.
+> 
+> Ben.
+> 
+> -- 
+> Ben Hutchings, Staff Engineer, Solarflare
+> Not speaking for my employer; that's the marketing department's job.
+> They asked us to note that Solarflare product names are trademarked.
+> 

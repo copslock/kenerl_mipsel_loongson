@@ -1,57 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2013 07:11:37 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:64543 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816233Ab3JDFLewYqCy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 Oct 2013 07:11:34 +0200
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r945BGon009214
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 4 Oct 2013 01:11:16 -0400
-Received: from dhcp-26-207.brq.redhat.com (vpn-54-8.rdu2.redhat.com [10.10.54.8])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r945B7ha019544
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
-        Fri, 4 Oct 2013 01:11:09 -0400
-Date:   Fri, 4 Oct 2013 07:13:24 +0200
-From:   Alexander Gordeev <agordeev@redhat.com>
-To:     Ben Hutchings <bhutchings@solarflare.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2013 09:40:20 +0200 (CEST)
+Received: from e06smtp11.uk.ibm.com ([195.75.94.107]:48146 "EHLO
+        e06smtp11.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6822429Ab3JDHkRk1MtQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Oct 2013 09:40:17 +0200
+Received: from /spool/local
+        by e06smtp11.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <schwidefsky@de.ibm.com>;
+        Fri, 4 Oct 2013 08:40:10 +0100
+Received: from d06dlp01.portsmouth.uk.ibm.com (9.149.20.13)
+        by e06smtp11.uk.ibm.com (192.168.101.141) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Fri, 4 Oct 2013 08:40:08 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by d06dlp01.portsmouth.uk.ibm.com (Postfix) with ESMTP id 28A1517D8059;
+        Fri,  4 Oct 2013 08:40:26 +0100 (BST)
+Received: from d06av11.portsmouth.uk.ibm.com (d06av11.portsmouth.uk.ibm.com [9.149.37.252])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.13.8/8.13.8/NCO v10.0) with ESMTP id r947dtq366912436;
+        Fri, 4 Oct 2013 07:39:55 GMT
+Received: from d06av11.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av11.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id r947e6WN031598;
+        Fri, 4 Oct 2013 01:40:07 -0600
+Received: from mschwide (icon-9-167-244-96.megacenter.de.ibm.com [9.167.244.96])
+        by d06av11.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id r947e2vv031477;
+        Fri, 4 Oct 2013 01:40:02 -0600
+Date:   Fri, 4 Oct 2013 09:39:56 +0200
+From:   Martin Schwidefsky <schwidefsky@de.ibm.com>
+To:     Alexander Gordeev <agordeev@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Michael Ellerman <michael@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
         Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
         Dan Williams <dan.j.williams@intel.com>,
         Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
         Matt Porter <mporter@kernel.crashing.org>,
-        linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
-        linux-s390@vger.kernel.org, x86@kernel.org,
+        stable@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux390@de.ibm.com, linux-s390@vger.kernel.org, x86@kernel.org,
         linux-ide@vger.kernel.org, iss_storagedev@hp.com,
         linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
         netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
         linux-driver@qlogic.com,
         Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH RFC 06/77] PCI/MSI: Factor out pci_get_msi_cap() interface
-Message-ID: <20131004051322.GA3577@dhcp-26-207.brq.redhat.com>
+Subject: Re: [PATCH RFC 03/77] PCI/MSI/s390: Fix single MSI only check
+Message-ID: <20131004093956.183f6901@mschwide>
+In-Reply-To: <8c9811b13fd93e73641dab8e3bd1bd5b2dc37a61.1380703262.git.agordeev@redhat.com>
 References: <cover.1380703262.git.agordeev@redhat.com>
- <9c282c4ab92731c719d161d2db6fc54ce33891d9.1380703262.git.agordeev@redhat.com>
- <1380837174.3419.21.camel@bwh-desktop.uk.level5networks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1380837174.3419.21.camel@bwh-desktop.uk.level5networks.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
-Return-Path: <agordeev@redhat.com>
+        <8c9811b13fd93e73641dab8e3bd1bd5b2dc37a61.1380703262.git.agordeev@redhat.com>
+Organization: IBM Corporation
+X-Mailer: Claws Mail 3.8.0 (GTK+ 2.24.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-MML: No
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 13100407-5024-0000-0000-000007686457
+Return-Path: <schwidefsky@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38196
+X-archive-position: 38197
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agordeev@redhat.com
+X-original-sender: schwidefsky@de.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,22 +76,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Oct 03, 2013 at 10:52:54PM +0100, Ben Hutchings wrote:
-> On Wed, 2013-10-02 at 12:48 +0200, Alexander Gordeev wrote:
-> >  #ifndef CONFIG_PCI_MSI
-> > +static inline int pci_get_msi_cap(struct pci_dev *dev)
-> > +{
-> > +	return -1;
-> [...]
+On Wed,  2 Oct 2013 12:48:19 +0200
+Alexander Gordeev <agordeev@redhat.com> wrote:
+
+> Multiple MSIs have never been supported on s390 architecture,
+> but the platform code fails to report single MSI only.
 > 
-> Shouldn't this also return -EINVAL?
+> Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
+> ---
+>  arch/s390/pci/pci.c |    2 ++
+>  1 files changed, 2 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+> index f17a834..c79c6e4 100644
+> --- a/arch/s390/pci/pci.c
+> +++ b/arch/s390/pci/pci.c
+> @@ -427,6 +427,8 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+>  	pr_debug("%s: requesting %d MSI-X interrupts...", __func__, nvec);
+>  	if (type != PCI_CAP_ID_MSIX && type != PCI_CAP_ID_MSI)
+>  		return -EINVAL;
+> +	if (type == PCI_CAP_ID_MSI && nvec > 1)
+> +		return 1;
+>  	msi_vecs = min(nvec, ZPCI_MSI_VEC_MAX);
+>  	msi_vecs = min_t(unsigned int, msi_vecs, CONFIG_PCI_NR_MSI);
+> 
 
-Yep, all inliners here are better to return -EINVAL.
-Will do unless someone speaks out against.
-
-> Ben.
+Acked-by: Martin Schwidefsky <schwidefsky@de.ibm.com>
 
 -- 
-Regards,
-Alexander Gordeev
-agordeev@redhat.com
+blue skies,
+   Martin.
+
+"Reality continues to ruin my life." - Calvin.

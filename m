@@ -1,70 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2013 09:41:18 +0200 (CEST)
-Received: from e06smtp11.uk.ibm.com ([195.75.94.107]:41458 "EHLO
-        e06smtp11.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6822429Ab3JDHlPGMDFV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Oct 2013 09:41:15 +0200
-Received: from /spool/local
-        by e06smtp11.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <schwidefsky@de.ibm.com>;
-        Fri, 4 Oct 2013 08:41:08 +0100
-Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
-        by e06smtp11.uk.ibm.com (192.168.101.141) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Fri, 4 Oct 2013 08:41:06 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id DC0912190059;
-        Fri,  4 Oct 2013 08:41:05 +0100 (BST)
-Received: from d06av10.portsmouth.uk.ibm.com (d06av10.portsmouth.uk.ibm.com [9.149.37.251])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.13.8/8.13.8/NCO v10.0) with ESMTP id r947ernv21168256;
-        Fri, 4 Oct 2013 07:40:53 GMT
-Received: from d06av10.portsmouth.uk.ibm.com (localhost [127.0.0.1])
-        by d06av10.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id r947f43Q015368;
-        Fri, 4 Oct 2013 01:41:05 -0600
-Received: from mschwide (icon-9-167-244-96.megacenter.de.ibm.com [9.167.244.96])
-        by d06av10.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id r947f0JC015239;
-        Fri, 4 Oct 2013 01:41:00 -0600
-Date:   Fri, 4 Oct 2013 09:40:53 +0200
-From:   Martin Schwidefsky <schwidefsky@de.ibm.com>
-To:     Alexander Gordeev <agordeev@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Michael Ellerman <michael@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        stable@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        linux390@de.ibm.com, linux-s390@vger.kernel.org, x86@kernel.org,
-        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
-        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
-        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
-        linux-driver@qlogic.com,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH RFC 04/77] PCI/MSI/s390: Remove superfluous check of MSI
- type
-Message-ID: <20131004094053.5e846a29@mschwide>
-In-Reply-To: <bae65aa3e30dfd23bd5ed47add7310cfbb96243a.1380703262.git.agordeev@redhat.com>
-References: <cover.1380703262.git.agordeev@redhat.com>
-        <bae65aa3e30dfd23bd5ed47add7310cfbb96243a.1380703262.git.agordeev@redhat.com>
-Organization: IBM Corporation
-X-Mailer: Claws Mail 3.8.0 (GTK+ 2.24.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-MML: No
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 13100407-5024-0000-0000-000007686540
-Return-Path: <schwidefsky@de.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Oct 2013 10:06:49 +0200 (CEST)
+Received: from ni.piap.pl ([195.187.100.4]:57958 "EHLO ni.piap.pl"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817090Ab3JDIGqevcUg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 4 Oct 2013 10:06:46 +0200
+Received: from ni.piap.pl (localhost.localdomain [127.0.0.1])
+        by ni.piap.pl (Postfix) with ESMTP id A0215440234;
+        Fri,  4 Oct 2013 10:06:45 +0200 (CEST)
+Received: by ni.piap.pl (Postfix, from userid 1015)
+        id 98950440235; Fri,  4 Oct 2013 10:06:45 +0200 (CEST)
+From:   khalasa@piap.pl (Krzysztof =?utf-8?Q?Ha=C5=82asa?=)
+To:     linux-mips@linux-mips.org
+Cc:     linux-media@vger.kernel.org
+References: <m3eh82a1yo.fsf@t19.piap.pl>
+Date:   Fri, 04 Oct 2013 10:06:45 +0200
+In-Reply-To: <m3eh82a1yo.fsf@t19.piap.pl> ("Krzysztof =?utf-8?Q?Ha=C5=82as?=
+ =?utf-8?Q?a=22's?= message of
+        "Thu, 03 Oct 2013 16:00:47 +0200")
+MIME-Version: 1.0
+Message-ID: <m3a9ipa296.fsf@t19.piap.pl>
+Content-Type: text/plain
+Subject: Re: Suspected cache coherency problem on V4L2 and AR7100 CPU
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.44/RELEASE,
+         bases: 20131004 #11175540, check: 20131004 clean
+Return-Path: <khalasa@ni.piap.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38198
+X-archive-position: 38199
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: schwidefsky@de.ibm.com
+X-original-sender: khalasa@piap.pl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,35 +43,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed,  2 Oct 2013 12:48:20 +0200
-Alexander Gordeev <agordeev@redhat.com> wrote:
+> I'm debugging a problem with a SOLO6110-based H.264 PCI video encoder on
+> Atheros AR7100-based (MIPS, big-endian) platform.
 
-> arch_setup_msi_irqs() hook can only be called from the generic
-> MSI code which ensures correct MSI type parameter.
-> 
-> Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
-> ---
->  arch/s390/pci/pci.c |    2 --
->  1 files changed, 0 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-> index c79c6e4..61a3c2c 100644
-> --- a/arch/s390/pci/pci.c
-> +++ b/arch/s390/pci/pci.c
-> @@ -425,8 +425,6 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
->  	int rc;
-> 
->  	pr_debug("%s: requesting %d MSI-X interrupts...", __func__, nvec);
-> -	if (type != PCI_CAP_ID_MSIX && type != PCI_CAP_ID_MSI)
-> -		return -EINVAL;
->  	if (type == PCI_CAP_ID_MSI && nvec > 1)
->  		return 1;
->  	msi_vecs = min(nvec, ZPCI_MSI_VEC_MAX);
+BTW this CPU obviously has VIPT data cache, this means a physical page
+with multiple virtual addresses (e.g. mapped multiple times) may and
+will be cached multiple times.
 
-Acked-by: Martin Schwidefsky <schwidefsky@de.ibm.com>
-
+AR7100 = arch/mips/ath79.
 -- 
-blue skies,
-   Martin.
+Krzysztof Halasa
 
-"Reality continues to ruin my life." - Calvin.
+Research Institute for Automation and Measurements PIAP
+Al. Jerozolimskie 202, 02-486 Warsaw, Poland

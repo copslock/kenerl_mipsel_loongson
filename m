@@ -1,63 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Oct 2013 09:08:47 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:53196 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6818014Ab3JFHIpSNhGA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 6 Oct 2013 09:08:45 +0200
-Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r9678P8k006523
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Sun, 6 Oct 2013 03:08:25 -0400
-Received: from dhcp-26-207.brq.redhat.com (vpn-56-47.rdu2.redhat.com [10.10.56.47])
-        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id r9678Egx028169
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
-        Sun, 6 Oct 2013 03:08:18 -0400
-Date:   Sun, 6 Oct 2013 09:10:30 +0200
-From:   Alexander Gordeev <agordeev@redhat.com>
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc:     Ben Hutchings <bhutchings@solarflare.com>,
-        linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Michael Ellerman <michael@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
-        linux-s390@vger.kernel.org, x86@kernel.org,
-        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
-        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
-        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
-        linux-driver@qlogic.com,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH RFC 00/77] Re-design MSI/MSI-X interrupts enablement
- pattern
-Message-ID: <20131006071027.GA29143@dhcp-26-207.brq.redhat.com>
-References: <cover.1380703262.git.agordeev@redhat.com>
- <1380840585.3419.50.camel@bwh-desktop.uk.level5networks.com>
- <20131004082920.GA4536@dhcp-26-207.brq.redhat.com>
- <1380922156.3214.49.camel@bwh-desktop.uk.level5networks.com>
- <20131005142054.GA11270@dhcp-26-207.brq.redhat.com>
- <1381009586.645.141.camel@pasglop>
- <20131006060243.GB28142@dhcp-26-207.brq.redhat.com>
- <1381040386.645.143.camel@pasglop>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1381040386.645.143.camel@pasglop>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
-Return-Path: <agordeev@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Oct 2013 22:35:37 +0200 (CEST)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:55386 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6867679Ab3JFUfdyBU8f (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Oct 2013 22:35:33 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 7A6DF21B86E;
+        Sun,  6 Oct 2013 23:35:32 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp6.welho.com ([213.243.153.40])
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id dvkwg+Pz29dm; Sun,  6 Oct 2013 23:35:27 +0300 (EEST)
+Received: from blackmetal.pp.htv.fi (cs181064211.pp.htv.fi [82.181.64.211])
+        by smtp6.welho.com (Postfix) with ESMTP id 850D45BC006;
+        Sun,  6 Oct 2013 23:35:27 +0300 (EEST)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     devel@driverdev.osuosl.org, linux-mips@linux-mips.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        David Daney <david.daney@cavium.com>
+Cc:     richard@nod.at, Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH v2 1/2] staging: octeon-ethernet: allow to set IRQ smp_affinity freely
+Date:   Sun,  6 Oct 2013 23:35:15 +0300
+Message-Id: <1381091716-23531-2-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 1.8.4.rc3
+In-Reply-To: <1381091716-23531-1-git-send-email-aaro.koskinen@iki.fi>
+References: <1381091716-23531-1-git-send-email-aaro.koskinen@iki.fi>
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38210
+X-archive-position: 38211
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agordeev@redhat.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,33 +45,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Oct 06, 2013 at 05:19:46PM +1100, Benjamin Herrenschmidt wrote:
-> On Sun, 2013-10-06 at 08:02 +0200, Alexander Gordeev wrote:
-> > In fact, in the current design to address the quota race decently the
-> > drivers would have to protect the *loop* to prevent the quota change
-> > between a pci_enable_msix() returned a positive number and the the next
-> > call to pci_enable_msix() with that number. Is it doable?
-> 
-> I am not advocating for the current design, simply saying that your
-> proposal doesn't address this issue while Ben's does.
+Currently the driver assumes that CPU 0 is handling all the hard IRQs.
+This is wrong in Linux SMP systems where user is allowed to assign to
+hardware IRQs to any CPU. The driver will stop working if user sets
+smp_affinity so that interrupts end up being handled by other than CPU
+0. The patch fixes that.
 
-There is one major flaw in min-max approach - the generic MSI layer
-will have to take decisions on exact number of MSIs to request, not
-device drivers.
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ drivers/staging/octeon/ethernet-rx.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-This will never work for all devices, because there might be specific
-requirements which are not covered by the min-max. That is what Ben
-described "...say, any even number within a certain range". Ben suggests
-to leave the existing loop scheme to cover such devices, which I think is
-not right.
-
-What about introducing pci_lock_msi() and pci_unlock_msi() and let device
-drivers care about their ranges and specifics in race-safe manner?
-I do not call to introduce it right now (since it appears pSeries has not
-been hitting the race for years) just as a possible alternative to Ben's
-proposal.
-
+diff --git a/drivers/staging/octeon/ethernet-rx.c b/drivers/staging/octeon/ethernet-rx.c
+index 8897d2d..0d539eb 100644
+--- a/drivers/staging/octeon/ethernet-rx.c
++++ b/drivers/staging/octeon/ethernet-rx.c
+@@ -80,6 +80,8 @@ struct cvm_oct_core_state {
+ 
+ static struct cvm_oct_core_state core_state __cacheline_aligned_in_smp;
+ 
++static int cvm_irq_cpu;
++
+ static void cvm_oct_enable_napi(void *_)
+ {
+ 	int cpu = smp_processor_id();
+@@ -112,11 +114,7 @@ static void cvm_oct_no_more_work(void)
+ {
+ 	int cpu = smp_processor_id();
+ 
+-	/*
+-	 * CPU zero is special.  It always has the irq enabled when
+-	 * waiting for incoming packets.
+-	 */
+-	if (cpu == 0) {
++	if (cpu == cvm_irq_cpu) {
+ 		enable_irq(OCTEON_IRQ_WORKQ0 + pow_receive_group);
+ 		return;
+ 	}
+@@ -135,6 +133,7 @@ static irqreturn_t cvm_oct_do_interrupt(int cpl, void *dev_id)
+ {
+ 	/* Disable the IRQ and start napi_poll. */
+ 	disable_irq_nosync(OCTEON_IRQ_WORKQ0 + pow_receive_group);
++	cvm_irq_cpu = smp_processor_id();
+ 	cvm_oct_enable_napi(NULL);
+ 
+ 	return IRQ_HANDLED;
 -- 
-Regards,
-Alexander Gordeev
-agordeev@redhat.com
+1.8.4.rc3

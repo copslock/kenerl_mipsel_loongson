@@ -1,47 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Oct 2013 17:20:53 +0200 (CEST)
-Received: from mail-bk0-f47.google.com ([209.85.214.47]:49113 "EHLO
-        mail-bk0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6868729Ab3JGPUvr77EQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Oct 2013 17:20:51 +0200
-Received: by mail-bk0-f47.google.com with SMTP id mx12so2652427bkb.20
-        for <multiple recipients>; Mon, 07 Oct 2013 08:20:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=NNug867eNAmNoGvhscwX5VBNuYtcJCILM5xYt3HQhIQ=;
-        b=RU/z3xGtuquYqxRSO+4dYfC9u5ZpZ9qZ5b/u+baYfPqs7/LNJS1BJbK3TR50xVK6/9
-         WmoNst7NjauwoY8XKMmCQ3JWLt1phIjCig+Kcdkm3xW+lKqAiN6P/K6XxmH2uPFkT3eM
-         e8jkYE2XPYXk2CgWg+uAGo7mzME/TLx9RegWF49gPeA3aPSqI0+lGEwKq/mms99Q7E6y
-         8ay/bBhaf3t6GY3bj7YGcOrMD9vNQBM79u+vJSc9wvSRoV7bjZT6TuSZlQIo9/5wD2kY
-         0vMAcdINOD9tYuZj69ZPUT4mrBB7FPhukYmPwPr5vcYtm031gHSuszyFnqamenL90O/E
-         uooA==
-X-Received: by 10.204.228.198 with SMTP id jf6mr2416631bkb.41.1381159246432;
-        Mon, 07 Oct 2013 08:20:46 -0700 (PDT)
-Received: from localhost (port-46445.pppoe.wtnet.de. [46.59.230.36])
-        by mx.google.com with ESMTPSA id qe6sm17521041bkb.5.1969.12.31.16.00.00
-        (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Mon, 07 Oct 2013 08:20:45 -0700 (PDT)
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Greg Ungerer <gerg@snapgear.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Ashok Kumar <ashoks@broadcom.com>
-Cc:     linux-next@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: linux-next: build failure after merge of the mips tree
-Date:   Mon,  7 Oct 2013 17:18:44 +0200
-Message-Id: <1381159127-11067-2-git-send-email-treding@nvidia.com>
-X-Mailer: git-send-email 1.8.4
-In-Reply-To: <1381159127-11067-1-git-send-email-treding@nvidia.com>
-References: <1381159127-11067-1-git-send-email-treding@nvidia.com>
-Return-Path: <thierry.reding@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Oct 2013 17:28:58 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:47836 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6868729Ab3JGP24dRgW9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 Oct 2013 17:28:56 +0200
+Message-ID: <5252D343.6090100@imgtec.com>
+Date:   Mon, 7 Oct 2013 16:29:07 +0100
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.0
+MIME-Version: 1.0
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: SmartMIPS: Fix build
+References: <1381158642-10598-1-git-send-email-treding@nvidia.com>
+In-Reply-To: <1381158642-10598-1-git-send-email-treding@nvidia.com>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.31]
+X-SEF-Processed: 7_3_0_01192__2013_10_07_16_28_50
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38223
+X-archive-position: 38224
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@gmail.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,16 +39,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Today's linux-next merge fails to build on various default configuration
-builds. This seems to be caused by the following commit:
+On 10/07/13 16:10, Thierry Reding wrote:
+> All CONFIG_CPU_HAS_SMARTMIPS #ifdefs have been removed from code, but
+> the ACX register declaration in struct pt_regs is still protected by it,
+> causing builds to fail. Remove the #ifdef protection and always declare
+> the register.
+>
+> Signed-off-by: Thierry Reding <treding@nvidia.com>
+> ---
+>   arch/mips/include/asm/ptrace.h | 2 --
+>   1 file changed, 2 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
+> index 7bba9da..d47bdce 100644
+> --- a/arch/mips/include/asm/ptrace.h
+> +++ b/arch/mips/include/asm/ptrace.h
+> @@ -33,9 +33,7 @@ struct pt_regs {
+>   	unsigned long cp0_status;
+>   	unsigned long hi;
+>   	unsigned long lo;
+> -#ifdef CONFIG_CPU_HAS_SMARTMIPS
+>   	unsigned long acx;
+> -#endif
+>   	unsigned long cp0_badvaddr;
+>   	unsigned long cp0_cause;
+>   	unsigned long cp0_epc;
+>
 
-	5395d97 MIPS: Fix start of free memory when using initrd
+Hi Thierry,
 
-Looking at the patchwork URLs in that commit message, Greg's original
-patch seems to have been fine, but Ashok's patch uses the initrd_end
-symbol outside of the section protected by an CONFIG_BLK_DEV_INITRD
-#ifdef and therefore causes to fail during linking.
+Looks good to me. Thanks!
 
-I've reverted the patch in today's linux-next tree.
-
-Thierry
+Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>

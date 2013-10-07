@@ -1,38 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Oct 2013 22:36:15 +0200 (CEST)
-Received: from filtteri5.pp.htv.fi ([213.243.153.188]:38888 "EHLO
-        filtteri5.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6867714Ab3JFUfgEqmS5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Oct 2013 22:35:36 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri5.pp.htv.fi (Postfix) with ESMTP id 57B815A6E4D;
-        Sun,  6 Oct 2013 23:35:32 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp6.welho.com ([213.243.153.40])
-        by localhost (filtteri5.pp.htv.fi [213.243.153.188]) (amavisd-new, port 10024)
-        with ESMTP id XuoyUTCeY7Yz; Sun,  6 Oct 2013 23:35:27 +0300 (EEST)
-Received: from blackmetal.pp.htv.fi (cs181064211.pp.htv.fi [82.181.64.211])
-        by smtp6.welho.com (Postfix) with ESMTP id A3D085BC007;
-        Sun,  6 Oct 2013 23:35:27 +0300 (EEST)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     devel@driverdev.osuosl.org, linux-mips@linux-mips.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        David Daney <david.daney@cavium.com>
-Cc:     richard@nod.at, Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH v2 2/2] staging: octeon-ethernet: allow to use only 1 CPU for packet processing
-Date:   Sun,  6 Oct 2013 23:35:16 +0300
-Message-Id: <1381091716-23531-3-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 1.8.4.rc3
-In-Reply-To: <1381091716-23531-1-git-send-email-aaro.koskinen@iki.fi>
-References: <1381091716-23531-1-git-send-email-aaro.koskinen@iki.fi>
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Oct 2013 10:38:53 +0200 (CEST)
+Received: from ni.piap.pl ([195.187.100.4]:48769 "EHLO ni.piap.pl"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823911Ab3JGIiuqr4Gq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 Oct 2013 10:38:50 +0200
+Received: from ni.piap.pl (localhost.localdomain [127.0.0.1])
+        by ni.piap.pl (Postfix) with ESMTP id AF81844219D;
+        Mon,  7 Oct 2013 10:38:49 +0200 (CEST)
+Received: by ni.piap.pl (Postfix, from userid 1015)
+        id AA46E44219E; Mon,  7 Oct 2013 10:38:49 +0200 (CEST)
+From:   khalasa@piap.pl (Krzysztof =?utf-8?Q?Ha=C5=82asa?=)
+To:     linux-mips@linux-mips.org
+Cc:     linux-media@vger.kernel.org
+References: <m3eh82a1yo.fsf@t19.piap.pl>
+Date:   Mon, 07 Oct 2013 10:38:49 +0200
+In-Reply-To: <m3eh82a1yo.fsf@t19.piap.pl> ("Krzysztof =?utf-8?Q?Ha=C5=82as?=
+ =?utf-8?Q?a=22's?= message of
+        "Thu, 03 Oct 2013 16:00:47 +0200")
+MIME-Version: 1.0
+Message-ID: <m361t9a31i.fsf@t19.piap.pl>
+Content-Type: text/plain
+Subject: Re: Suspected cache coherency problem on V4L2 and AR7100 CPU
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.44/RELEASE,
+         bases: 20131007 #11164323, check: 20131007 clean
+Return-Path: <khalasa@ni.piap.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38213
+X-archive-position: 38214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: khalasa@piap.pl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,25 +43,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Module parameter max_rx_cpus has off-by-one error. Fix that.
+Please forgive me my MIPS TLB ignorance.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
----
- drivers/staging/octeon/ethernet-rx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It seems there is a TLB entry pointing to the userspace buffer at the
+time the kernel pointer (kseg0) is used. Is is an allowed situation on
+MIPS 24K?
 
-diff --git a/drivers/staging/octeon/ethernet-rx.c b/drivers/staging/octeon/ethernet-rx.c
-index 0d539eb..0315f60 100644
---- a/drivers/staging/octeon/ethernet-rx.c
-+++ b/drivers/staging/octeon/ethernet-rx.c
-@@ -513,7 +513,7 @@ void cvm_oct_rx_initialize(void)
- 	if (NULL == dev_for_napi)
- 		panic("No net_devices were allocated.");
- 
--	if (max_rx_cpus > 1  && max_rx_cpus < num_online_cpus())
-+	if (max_rx_cpus >= 1 && max_rx_cpus < num_online_cpus())
- 		atomic_set(&core_state.available_cores, max_rx_cpus);
- 	else
- 		atomic_set(&core_state.available_cores, num_online_cpus());
+buffer: len 0x1000 (first page),
+	userspace pointer 0x77327000,
+	kernel pointer 0x867ac000 (physical address = 0x067ac000)
+
+TLB Index: 15 pgmask=4kb va=77326000 asid=be
+       [pa=01149000 c=3 d=1 v=1 g=0] [pa=067ac000 c=3 d=1 v=1 g=0]
+
+Should the TLB entry be deleted before using the kernel pointer (which
+points at the same page)?
 -- 
-1.8.4.rc3
+Krzysztof Halasa
+
+Research Institute for Automation and Measurements PIAP
+Al. Jerozolimskie 202, 02-486 Warsaw, Poland

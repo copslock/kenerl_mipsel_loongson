@@ -1,31 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Oct 2013 18:47:09 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:62104 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Oct 2013 18:51:21 +0200 (CEST)
+Received: from mga11.intel.com ([192.55.52.93]:47880 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6868729Ab3JGQqPhYilK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 7 Oct 2013 18:46:15 +0200
-From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
-CC:     <james.hogan@imgtec.com>, <paul.burton@imgtec.com>,
-        <Steven.Hill@imgtec.com>, Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-Subject: [PATCH v2 2/2] MIPS: Remove unused defines in piix4.h
-Date:   Mon, 7 Oct 2013 09:45:05 -0700
-Message-ID: <1381164305-28500-3-git-send-email-dengcheng.zhu@imgtec.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1381164305-28500-1-git-send-email-dengcheng.zhu@imgtec.com>
-References: <1381164305-28500-1-git-send-email-dengcheng.zhu@imgtec.com>
+        id S6868735Ab3JGQvRUpeEw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 Oct 2013 18:51:17 +0200
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP; 07 Oct 2013 09:50:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.90,1051,1371106800"; 
+   d="scan'208";a="406713353"
+Received: from jonmason-lab.ch.intel.com (HELO jonmason-lab) ([143.182.51.14])
+  by fmsmga001.fm.intel.com with ESMTP; 07 Oct 2013 09:50:57 -0700
+Date:   Mon, 7 Oct 2013 09:50:57 -0700
+From:   Jon Mason <jon.mason@intel.com>
+To:     Alexander Gordeev <agordeev@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Michael Ellerman <michael@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy King <acking@vmware.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        stable@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux390@de.ibm.com, linux-s390@vger.kernel.org, x86@kernel.org,
+        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
+        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
+        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
+        linux-driver@qlogic.com,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH RFC 54/77] ntb: Ensure number of MSIs on SNB is enough
+ for the link interrupt
+Message-ID: <20131007165056.GA24536@jonmason-lab>
+References: <cover.1380703262.git.agordeev@redhat.com>
+ <5d9c5b2d3bbc444ff32bddeece7a239d046bd79c.1380703263.git.agordeev@redhat.com>
+ <20131003004805.GL6768@jonmason-lab>
+ <20131005214303.GA21589@dhcp-26-207.brq.redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.136.61]
-X-SEF-Processed: 7_3_0_01192__2013_10_07_17_45_28
-Return-Path: <DengCheng.Zhu@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20131005214303.GA21589@dhcp-26-207.brq.redhat.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <jon.mason@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38234
+X-archive-position: 38235
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@imgtec.com
+X-original-sender: jon.mason@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,108 +64,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+On Sat, Oct 05, 2013 at 11:43:04PM +0200, Alexander Gordeev wrote:
+> On Wed, Oct 02, 2013 at 05:48:05PM -0700, Jon Mason wrote:
+> > On Wed, Oct 02, 2013 at 12:49:10PM +0200, Alexander Gordeev wrote:
+> > > Signed-off-by: Alexander Gordeev <agordeev@redhat.com>
+> > > ---
+> > >  drivers/ntb/ntb_hw.c |    2 +-
+> > >  1 files changed, 1 insertions(+), 1 deletions(-)
+> > > 
+> > > diff --git a/drivers/ntb/ntb_hw.c b/drivers/ntb/ntb_hw.c
+> > > index de2062c..eccd5e5 100644
+> > > --- a/drivers/ntb/ntb_hw.c
+> > > +++ b/drivers/ntb/ntb_hw.c
+> > > @@ -1066,7 +1066,7 @@ static int ntb_setup_msix(struct ntb_device *ndev)
+> > >  		/* On SNB, the link interrupt is always tied to 4th vector.  If
+> > >  		 * we can't get all 4, then we can't use MSI-X.
+> > >  		 */
+> > > -		if (ndev->hw_type != BWD_HW) {
+> > > +		if ((rc < SNB_MSIX_CNT) && (ndev->hw_type != BWD_HW)) {
+> > 
+> > Nack, this check is unnecessary.
+> 
+> If SNB can do more than SNB_MSIX_CNT MSI-Xs then this check is needed
+> to enable less than maximum MSI-Xs in case the maximum was not allocated.
+> Otherwise SNB will fallback to single MSI instead of multiple MSI-Xs.
 
-The PIIX4_ICTLR* and PIIX4_OCW* defines are not used by any other files.
-Remove them.
+Per the comment in the code snippet above, "If we can't get all 4,
+then we can't use MSI-X".  There is already a check to see if more
+than 4 were acquired.  So it's not possible to hit this.  Even if it
+was, don't use SNB_MSIX_CNT here (limits.msix_cnt is the preferred
+variable).  Also, the "()" are unnecessary.
 
-The only file (other than fixup-malta.c which includes piix4.h in patch #1)
-containing "#include <asm/mips-boards/piix4.h>" is
-arch/mips/mti-malta/malta-int.c whose first version is actually
-"1da177e4c3:arch/mips/mips-boards/malta/malta_int.c". In that version, in
-the function get_int(), things in piix4.h are used. But now malta-int.c no
-longer needs those stuff.
+Thanks,
+Jon
 
-Cc: Steven J. Hill <Steven.Hill@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
----
-Changes:
-v2 - v1:
-o Remove "#include <asm/mips-boards/piix4.h>" from malta-int.c.
-
- arch/mips/include/asm/mips-boards/piix4.h |   57 -----------------------------
- arch/mips/mti-malta/malta-int.c           |    1 -
- 2 files changed, 0 insertions(+), 58 deletions(-)
-
-diff --git a/arch/mips/include/asm/mips-boards/piix4.h b/arch/mips/include/asm/mips-boards/piix4.h
-index 06d4831..e332279 100644
---- a/arch/mips/include/asm/mips-boards/piix4.h
-+++ b/arch/mips/include/asm/mips-boards/piix4.h
-@@ -43,61 +43,4 @@
- #define PIIX4_FUNC1_IDETIM_SECONDARY_HI		0x43
- #define   PIIX4_FUNC1_IDETIM_SECONDARY_HI_IDE_DECODE_EN	(1 << 7)
- 
--/************************************************************************
-- *  IO register offsets
-- ************************************************************************/
--#define PIIX4_ICTLR1_ICW1	0x20
--#define PIIX4_ICTLR1_ICW2	0x21
--#define PIIX4_ICTLR1_ICW3	0x21
--#define PIIX4_ICTLR1_ICW4	0x21
--#define PIIX4_ICTLR2_ICW1	0xa0
--#define PIIX4_ICTLR2_ICW2	0xa1
--#define PIIX4_ICTLR2_ICW3	0xa1
--#define PIIX4_ICTLR2_ICW4	0xa1
--#define PIIX4_ICTLR1_OCW1	0x21
--#define PIIX4_ICTLR1_OCW2	0x20
--#define PIIX4_ICTLR1_OCW3	0x20
--#define PIIX4_ICTLR1_OCW4	0x20
--#define PIIX4_ICTLR2_OCW1	0xa1
--#define PIIX4_ICTLR2_OCW2	0xa0
--#define PIIX4_ICTLR2_OCW3	0xa0
--#define PIIX4_ICTLR2_OCW4	0xa0
--
--
--/************************************************************************
-- *  Register encodings.
-- ************************************************************************/
--#define PIIX4_OCW2_NSEOI	(0x1 << 5)
--#define PIIX4_OCW2_SEOI		(0x3 << 5)
--#define PIIX4_OCW2_RNSEOI	(0x5 << 5)
--#define PIIX4_OCW2_RAEOIS	(0x4 << 5)
--#define PIIX4_OCW2_RAEOIC	(0x0 << 5)
--#define PIIX4_OCW2_RSEOI	(0x7 << 5)
--#define PIIX4_OCW2_SP		(0x6 << 5)
--#define PIIX4_OCW2_NOP		(0x2 << 5)
--
--#define PIIX4_OCW2_SEL		(0x0 << 3)
--
--#define PIIX4_OCW2_ILS_0	0
--#define PIIX4_OCW2_ILS_1	1
--#define PIIX4_OCW2_ILS_2	2
--#define PIIX4_OCW2_ILS_3	3
--#define PIIX4_OCW2_ILS_4	4
--#define PIIX4_OCW2_ILS_5	5
--#define PIIX4_OCW2_ILS_6	6
--#define PIIX4_OCW2_ILS_7	7
--#define PIIX4_OCW2_ILS_8	0
--#define PIIX4_OCW2_ILS_9	1
--#define PIIX4_OCW2_ILS_10	2
--#define PIIX4_OCW2_ILS_11	3
--#define PIIX4_OCW2_ILS_12	4
--#define PIIX4_OCW2_ILS_13	5
--#define PIIX4_OCW2_ILS_14	6
--#define PIIX4_OCW2_ILS_15	7
--
--#define PIIX4_OCW3_SEL		(0x1 << 3)
--
--#define PIIX4_OCW3_IRR		0x2
--#define PIIX4_OCW3_ISR		0x3
--
- #endif /* __ASM_MIPS_BOARDS_PIIX4_H */
-diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
-index c69da37..be4a109 100644
---- a/arch/mips/mti-malta/malta-int.c
-+++ b/arch/mips/mti-malta/malta-int.c
-@@ -37,7 +37,6 @@
- #include <asm/irq_regs.h>
- #include <asm/mips-boards/malta.h>
- #include <asm/mips-boards/maltaint.h>
--#include <asm/mips-boards/piix4.h>
- #include <asm/gt64120.h>
- #include <asm/mips-boards/generic.h>
- #include <asm/mips-boards/msc01_pci.h>
--- 
-1.7.1
+> -- 
+> Regards,
+> Alexander Gordeev
+> agordeev@redhat.com

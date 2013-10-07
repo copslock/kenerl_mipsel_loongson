@@ -1,46 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Oct 2013 18:30:55 +0200 (CEST)
-Received: from mail-ye0-f176.google.com ([209.85.213.176]:56752 "EHLO
-        mail-ye0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6868740Ab3JGQaucbj-1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Oct 2013 18:30:50 +0200
-Received: by mail-ye0-f176.google.com with SMTP id m4so1624291yen.21
-        for <multiple recipients>; Mon, 07 Oct 2013 09:30:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=gyIgkJwwxWVfFYN/gKw6ghVFVCpOWGOzK+wiT/hb/J8=;
-        b=hFhNtJuiMGbjFaOFUE/i4YMOpaMsnNZ6e2ZUANeqMxPg/7+oV1bNrGSwSJvUSZvFUK
-         Vet2BuYeavJWgidSwErztjZ1XABNI95RcR6N7tsSmayU8A10LOugnMfB/b8L/6vDCnid
-         q7kbE/oIHGoMAkXOVWu4dJkt4U9acYjowmTU9KpTQUIBGsZ+y73NJNSL22nZVqBs6YTr
-         vu+SlBxZLqADVJRVdyl5uUx4Og6n8FyZjnHw+pjeOP7EFvm5Ef2Fs6L0jqdAVInCMAQz
-         bhE6ri8zSadFvyav82FdEZpAjhNeYfcg3BuX8td4z1OvHyryUCyvCYPV3FUP7U6irz6c
-         AjeQ==
-X-Received: by 10.236.143.10 with SMTP id k10mr1015843yhj.116.1381163444521;
-        Mon, 07 Oct 2013 09:30:44 -0700 (PDT)
-Received: from rob-laptop.calxeda.com ([173.226.190.126])
-        by mx.google.com with ESMTPSA id d40sm44620829yhi.10.1969.12.31.16.00.00
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Mon, 07 Oct 2013 09:30:43 -0700 (PDT)
-From:   Rob Herring <robherring2@gmail.com>
-To:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     Grant Likely <grant.likely@linaro.org>,
-        Rob Herring <rob.herring@calxeda.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH v2 29/29] mips: use common of_flat_dt_get_machine_name
-Date:   Mon,  7 Oct 2013 11:29:37 -0500
-Message-Id: <1381163377-21044-30-git-send-email-robherring2@gmail.com>
-X-Mailer: git-send-email 1.8.1.2
-In-Reply-To: <1381163377-21044-1-git-send-email-robherring2@gmail.com>
-References: <1381163377-21044-1-git-send-email-robherring2@gmail.com>
-Return-Path: <robherring2@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Oct 2013 18:46:28 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:62104 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6868731Ab3JGQpj4nFiN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 Oct 2013 18:45:39 +0200
+From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
+CC:     <james.hogan@imgtec.com>, <paul.burton@imgtec.com>,
+        <Steven.Hill@imgtec.com>, Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+Subject: [PATCH v2 1/2] MIPS: Get rid of hard-coded values for Malta PIIX4 fixups
+Date:   Mon, 7 Oct 2013 09:45:04 -0700
+Message-ID: <1381164305-28500-2-git-send-email-dengcheng.zhu@imgtec.com>
+X-Mailer: git-send-email 1.7.1
+In-Reply-To: <1381164305-28500-1-git-send-email-dengcheng.zhu@imgtec.com>
+References: <1381164305-28500-1-git-send-email-dengcheng.zhu@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.136.61]
+X-SEF-Processed: 7_3_0_01192__2013_10_07_17_45_28
+Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38231
+X-archive-position: 38232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robherring2@gmail.com
+X-original-sender: dengcheng.zhu@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,47 +38,143 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Rob Herring <rob.herring@calxeda.com>
+From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
 
-Convert mips to use the common of_flat_dt_get_machine_name function.
+Make the code more readable by using defines.
 
-Signed-off-by: Rob Herring <rob.herring@calxeda.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Acked-by: John Crispin <blogic@openwrt.org>
+Cc: Steven J. Hill <Steven.Hill@imgtec.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
 ---
- arch/mips/kernel/prom.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+ arch/mips/include/asm/mips-boards/piix4.h |   23 ++++++++++++++++++
+ arch/mips/pci/fixup-malta.c               |   36 ++++++++++++++++++----------
+ 2 files changed, 46 insertions(+), 13 deletions(-)
 
-diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
-index 0b2485f..3c3b0df 100644
---- a/arch/mips/kernel/prom.c
-+++ b/arch/mips/kernel/prom.c
-@@ -47,24 +47,11 @@ void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
- 	return __alloc_bootmem(size, align, __pa(MAX_DMA_ADDRESS));
- }
+diff --git a/arch/mips/include/asm/mips-boards/piix4.h b/arch/mips/include/asm/mips-boards/piix4.h
+index a02596c..06d4831 100644
+--- a/arch/mips/include/asm/mips-boards/piix4.h
++++ b/arch/mips/include/asm/mips-boards/piix4.h
+@@ -1,6 +1,7 @@
+ /*
+  * Carsten Langgaard, carstenl@mips.com
+  * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
++ * Copyright (C) 2013 Imagination Technologies Ltd.
+  *
+  *  This program is free software; you can distribute it and/or modify it
+  *  under the terms of the GNU General Public License (Version 2) as
+@@ -20,6 +21,28 @@
+ #ifndef __ASM_MIPS_BOARDS_PIIX4_H
+ #define __ASM_MIPS_BOARDS_PIIX4_H
  
--int __init early_init_dt_scan_model(unsigned long node,	const char *uname,
--				    int depth, void *data)
--{
--	if (!depth) {
--		char *model = of_get_flat_dt_prop(node, "model", NULL);
--
--		if (model)
--			mips_set_machine_name(model);
--	}
--	return 0;
--}
--
- void __init __dt_setup_arch(struct boot_param_header *bph)
++/* PIRQX Route Control */
++#define PIIX4_FUNC0_PIRQRC			0x60
++#define   PIIX4_FUNC0_PIRQRC_IRQ_ROUTING_DISABLE	(1 << 7)
++#define   PIIX4_FUNC0_PIRQRC_IRQ_ROUTING_MASK		0xf
++#define   PIIX4_FUNC0_PIRQRC_IRQ_ROUTING_MAX		16
++/* Top Of Memory */
++#define PIIX4_FUNC0_TOM				0x69
++#define   PIIX4_FUNC0_TOM_TOP_OF_MEMORY_MASK		0xf0
++/* Deterministic Latency Control */
++#define PIIX4_FUNC0_DLC				0x82
++#define   PIIX4_FUNC0_DLC_USBPR_EN			(1 << 2)
++#define   PIIX4_FUNC0_DLC_PASSIVE_RELEASE_EN		(1 << 1)
++#define   PIIX4_FUNC0_DLC_DELAYED_TRANSACTION_EN	(1 << 0)
++
++/* IDE Timing */
++#define PIIX4_FUNC1_IDETIM_PRIMARY_LO		0x40
++#define PIIX4_FUNC1_IDETIM_PRIMARY_HI		0x41
++#define   PIIX4_FUNC1_IDETIM_PRIMARY_HI_IDE_DECODE_EN	(1 << 7)
++#define PIIX4_FUNC1_IDETIM_SECONDARY_LO		0x42
++#define PIIX4_FUNC1_IDETIM_SECONDARY_HI		0x43
++#define   PIIX4_FUNC1_IDETIM_SECONDARY_HI_IDE_DECODE_EN	(1 << 7)
++
+ /************************************************************************
+  *  IO register offsets
+  ************************************************************************/
+diff --git a/arch/mips/pci/fixup-malta.c b/arch/mips/pci/fixup-malta.c
+index 07ada7f..df36e23 100644
+--- a/arch/mips/pci/fixup-malta.c
++++ b/arch/mips/pci/fixup-malta.c
+@@ -1,5 +1,6 @@
+ #include <linux/init.h>
+ #include <linux/pci.h>
++#include <asm/mips-boards/piix4.h>
+ 
+ /* PCI interrupt pins */
+ #define PCIA		1
+@@ -53,7 +54,8 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
+ static void malta_piix_func0_fixup(struct pci_dev *pdev)
  {
- 	if (!early_init_dt_scan(bph))
- 		return;
+ 	unsigned char reg_val;
+-	static int piixirqmap[16] = {  /* PIIX PIRQC[A:D] irq mappings */
++	/* PIIX PIRQC[A:D] irq mappings */
++	static int piixirqmap[PIIX4_FUNC0_PIRQRC_IRQ_ROUTING_MAX] = {
+ 		0,  0,	0,  3,
+ 		4,  5,	6,  7,
+ 		0,  9, 10, 11,
+@@ -63,11 +65,12 @@ static void malta_piix_func0_fixup(struct pci_dev *pdev)
  
--	/* try to load the mips machine name */
--	of_scan_flat_dt(early_init_dt_scan_model, NULL);
-+	mips_set_machine_name(of_flat_dt_get_machine_name());
+ 	/* Interrogate PIIX4 to get PCI IRQ mapping */
+ 	for (i = 0; i <= 3; i++) {
+-		pci_read_config_byte(pdev, 0x60+i, &reg_val);
+-		if (reg_val & 0x80)
++		pci_read_config_byte(pdev, PIIX4_FUNC0_PIRQRC+i, &reg_val);
++		if (reg_val & PIIX4_FUNC0_PIRQRC_IRQ_ROUTING_DISABLE)
+ 			pci_irq[PCIA+i] = 0;	/* Disabled */
+ 		else
+-			pci_irq[PCIA+i] = piixirqmap[reg_val & 15];
++			pci_irq[PCIA+i] = piixirqmap[reg_val &
++				PIIX4_FUNC0_PIRQRC_IRQ_ROUTING_MASK];
+ 	}
+ 
+ 	/* Done by YAMON 2.00 onwards */
+@@ -76,8 +79,9 @@ static void malta_piix_func0_fixup(struct pci_dev *pdev)
+ 		 * Set top of main memory accessible by ISA or DMA
+ 		 * devices to 16 Mb.
+ 		 */
+-		pci_read_config_byte(pdev, 0x69, &reg_val);
+-		pci_write_config_byte(pdev, 0x69, reg_val | 0xf0);
++		pci_read_config_byte(pdev, PIIX4_FUNC0_TOM, &reg_val);
++		pci_write_config_byte(pdev, PIIX4_FUNC0_TOM, reg_val |
++				PIIX4_FUNC0_TOM_TOP_OF_MEMORY_MASK);
+ 	}
  }
- #endif
+ 
+@@ -93,10 +97,14 @@ static void malta_piix_func1_fixup(struct pci_dev *pdev)
+ 		/*
+ 		 * IDE Decode enable.
+ 		 */
+-		pci_read_config_byte(pdev, 0x41, &reg_val);
+-		pci_write_config_byte(pdev, 0x41, reg_val|0x80);
+-		pci_read_config_byte(pdev, 0x43, &reg_val);
+-		pci_write_config_byte(pdev, 0x43, reg_val|0x80);
++		pci_read_config_byte(pdev, PIIX4_FUNC1_IDETIM_PRIMARY_HI,
++			&reg_val);
++		pci_write_config_byte(pdev, PIIX4_FUNC1_IDETIM_PRIMARY_HI,
++			reg_val|PIIX4_FUNC1_IDETIM_PRIMARY_HI_IDE_DECODE_EN);
++		pci_read_config_byte(pdev, PIIX4_FUNC1_IDETIM_SECONDARY_HI,
++			&reg_val);
++		pci_write_config_byte(pdev, PIIX4_FUNC1_IDETIM_SECONDARY_HI,
++			reg_val|PIIX4_FUNC1_IDETIM_SECONDARY_HI_IDE_DECODE_EN);
+ 	}
+ }
+ 
+@@ -108,10 +116,12 @@ static void quirk_dlcsetup(struct pci_dev *dev)
+ {
+ 	u8 odlc, ndlc;
+ 
+-	(void) pci_read_config_byte(dev, 0x82, &odlc);
++	(void) pci_read_config_byte(dev, PIIX4_FUNC0_DLC, &odlc);
+ 	/* Enable passive releases and delayed transaction */
+-	ndlc = odlc | 7;
+-	(void) pci_write_config_byte(dev, 0x82, ndlc);
++	ndlc = odlc | PIIX4_FUNC0_DLC_USBPR_EN |
++		      PIIX4_FUNC0_DLC_PASSIVE_RELEASE_EN |
++		      PIIX4_FUNC0_DLC_DELAYED_TRANSACTION_EN;
++	(void) pci_write_config_byte(dev, PIIX4_FUNC0_DLC, ndlc);
+ }
+ 
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_82371AB_0,
 -- 
-1.8.1.2
+1.7.1

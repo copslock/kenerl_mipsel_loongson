@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Oct 2013 13:10:32 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:47194 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Oct 2013 13:15:13 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:57323 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6868722Ab3JGLK3n-QmY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 7 Oct 2013 13:10:29 +0200
+        id S6868725Ab3JGLPGlm82z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 Oct 2013 13:15:06 +0200
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>, Gregory Fong
-        <gregory.0xf0@gmail.com>, <linux-mips@linux-mips.org>,
-        <stable@vger.kernel.org #3.11>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        <linux-mips@linux-mips.org>, <stable@vger.kernel.org>
 Subject: [PATCH] MIPS: stack protector: Fix per-task canary switch
-Date:   Mon, 7 Oct 2013 12:08:42 +0100
-Message-ID: <1381144122-19554-1-git-send-email-james.hogan@imgtec.com>
+Date:   Mon, 7 Oct 2013 12:14:26 +0100
+Message-ID: <1381144466-19736-1-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 1.8.1.2
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.65]
-X-SEF-Processed: 7_3_0_01192__2013_10_07_12_10_24
+X-SEF-Processed: 7_3_0_01192__2013_10_07_12_15_01
 Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38218
+X-archive-position: 38219
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,9 +73,11 @@ Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Gregory Fong <gregory.0xf0@gmail.com>
 Cc: linux-mips@linux-mips.org
-Cc: stable@vger.kernel.org #3.11
+Cc: <stable@vger.kernel.org> #3.11
 ---
 Ralf: This is a regression in v3.11, so please consider for v3.12.
+
+(Sorry, resent to Cc stable correctly)
 
  arch/mips/kernel/octeon_switch.S | 2 +-
  arch/mips/kernel/r2300_switch.S  | 2 +-

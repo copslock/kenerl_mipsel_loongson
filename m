@@ -1,58 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Oct 2013 09:55:15 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:27676 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Oct 2013 10:17:26 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:29873 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823119Ab3JHHzNSX85k (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Oct 2013 09:55:13 +0200
-Received: from int-mx02.intmail.prod.int.phx2.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r987sqKN028615
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Tue, 8 Oct 2013 03:54:52 -0400
-Received: from dhcp-26-207.brq.redhat.com (vpn-57-75.rdu2.redhat.com [10.10.57.75])
-        by int-mx02.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id r987si4G030073
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
-        Tue, 8 Oct 2013 03:54:46 -0400
-Date:   Tue, 8 Oct 2013 09:56:59 +0200
-From:   Alexander Gordeev <agordeev@redhat.com>
-To:     Tejun Heo <tj@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Michael Ellerman <michael@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
-        linux-s390@vger.kernel.org, x86@kernel.org,
-        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
-        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
-        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
-        linux-driver@qlogic.com,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH RFC 05/77] PCI/MSI: Convert pci_msix_table_size() to a
- public interface
-Message-ID: <20131008075658.GE10669@dhcp-26-207.brq.redhat.com>
-References: <cover.1380703262.git.agordeev@redhat.com>
- <e8b51bd48c24d0fc4ee8adea5c138c9bf84191e9.1380703262.git.agordeev@redhat.com>
- <20131007181043.GA27396@htj.dyndns.org>
+        id S6823119Ab3JHIRYQsbqx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Oct 2013 10:17:24 +0200
+Message-ID: <5253BF5B.40405@imgtec.com>
+Date:   Tue, 8 Oct 2013 09:16:27 +0100
+From:   Markos Chandras <Markos.Chandras@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20131007181043.GA27396@htj.dyndns.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.12
-Return-Path: <agordeev@redhat.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Subject: Re: [PATCH] MIPS: Add printing of ES bit when cache error occurs.
+References: <1381137952-18340-1-git-send-email-markos.chandras@imgtec.com> <20131008050633.GD1615@linux-mips.org>
+In-Reply-To: <20131008050633.GD1615@linux-mips.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.31]
+X-SEF-Processed: 7_3_0_01192__2013_10_08_09_17_18
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38256
+X-archive-position: 38257
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agordeev@redhat.com
+X-original-sender: Markos.Chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,26 +39,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 07, 2013 at 02:10:43PM -0400, Tejun Heo wrote:
-> On Wed, Oct 02, 2013 at 12:48:21PM +0200, Alexander Gordeev wrote:
-> > Make pci_msix_table_size() to return a error code if the device
-> > does not support MSI-X. This update is needed to facilitate a
-> > forthcoming re-design MSI/MSI-X interrupts enabling pattern.
-> > 
-> > Device drivers will use this interface to obtain maximum number
-> > of MSI-X interrupts the device supports and use that value in
-> > the following call to pci_enable_msix() interface.
-> 
-> Hmmm... I probably missed something but why is this necessary?  To
-> discern between -EINVAL and -ENOSPC?  If so, does that really matter?
+On 10/08/13 06:06, Ralf Baechle wrote:
+> On Mon, Oct 07, 2013 at 10:25:52AM +0100, Markos Chandras wrote:
+>
+>> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>>
+>> Print out the source of request that caused the error (ES bit) when
+>> a cache error exception occurs.
+>
+> The reason ES isn't being printed is that not all processors that support
+> a cache error exception have an ES bit.  The R4000 has it, R5000 doesn't,
+> R10000 CacheErr looks rather different - and in fact MIPS32/64 make the
+> entire register optional and its details implementation specific.
+>
+> Don't even ask me anymore which processor the implementation in the
+> kernel is trying to support - probably something R7000ish, at least
+> that's what guess from the 1385617929e09545f9858785ea3dc1068fedfde1
+> commit log.
+>
+> Short of some fancy engineering, I'd suggest throwing in a switch
+> statement and per processor type printks just as in parity_protection_init.
+>
+>    Ralf
+>
+Hi Ralf,
 
-pci_msix_table_size() is kind of helper and returns 0 if a device does
-not have MSI-X table. If we want drivers to use it we need return -EINVAL
-for MSI-X incapable/disabled devices. Nothing about -ENOSPC.
-
-> tejun
-
--- 
-Regards,
-Alexander Gordeev
-agordeev@redhat.com
+hmm i see. ok i will do that instead.

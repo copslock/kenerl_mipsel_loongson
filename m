@@ -1,36 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Oct 2013 10:24:18 +0200 (CEST)
-Received: from ni.piap.pl ([195.187.100.4]:45262 "EHLO ni.piap.pl"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Oct 2013 11:05:31 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:65355 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6839455Ab3JHIYPDUN-l (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Oct 2013 10:24:15 +0200
-Received: from ni.piap.pl (localhost.localdomain [127.0.0.1])
-        by ni.piap.pl (Postfix) with ESMTP id 3838544027A;
-        Tue,  8 Oct 2013 10:24:14 +0200 (CEST)
-Received: by ni.piap.pl (Postfix, from userid 1015)
-        id 332F444029F; Tue,  8 Oct 2013 10:24:14 +0200 (CEST)
-From:   khalasa@piap.pl (Krzysztof =?utf-8?Q?Ha=C5=82asa?=)
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-media@vger.kernel.org
-References: <m3eh82a1yo.fsf@t19.piap.pl> <m361t9a31i.fsf@t19.piap.pl>
-        <20131007142429.GG3098@linux-mips.org>
-Date:   Tue, 08 Oct 2013 10:24:13 +0200
-In-Reply-To: <20131007142429.GG3098@linux-mips.org> (Ralf Baechle's message of
-        "Mon, 7 Oct 2013 16:24:29 +0200")
+        id S6827313Ab3JHJFYsjPkm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Oct 2013 11:05:24 +0200
+Received: from int-mx12.intmail.prod.int.phx2.redhat.com (int-mx12.intmail.prod.int.phx2.redhat.com [10.5.11.25])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r9895Bj1024153
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Tue, 8 Oct 2013 05:05:11 -0400
+Received: from dhcp-26-207.brq.redhat.com (vpn-57-75.rdu2.redhat.com [10.10.57.75])
+        by int-mx12.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r98951d2003632
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
+        Tue, 8 Oct 2013 05:05:03 -0400
+Date:   Tue, 8 Oct 2013 11:07:16 +0200
+From:   Alexander Gordeev <agordeev@redhat.com>
+To:     Tejun Heo <tj@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Michael Ellerman <michael@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
+        linux-s390@vger.kernel.org, x86@kernel.org,
+        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
+        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
+        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
+        linux-driver@qlogic.com,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH RFC 00/77] Re-design MSI/MSI-X interrupts enablement
+ pattern
+Message-ID: <20131008090716.GA10561@dhcp-26-207.brq.redhat.com>
+References: <cover.1380703262.git.agordeev@redhat.com>
+ <20131007182117.GC27396@htj.dyndns.org>
 MIME-Version: 1.0
-Message-ID: <m3li24891u.fsf@t19.piap.pl>
-Content-Type: text/plain
-Subject: Re: Suspected cache coherency problem on V4L2 and AR7100 CPU
-X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.44/RELEASE,
-         bases: 20131008 #11178143, check: 20131008 clean
-Return-Path: <khalasa@ni.piap.pl>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20131007182117.GC27396@htj.dyndns.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.25
+Return-Path: <agordeev@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38258
+X-archive-position: 38259
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khalasa@piap.pl
+X-original-sender: agordeev@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,50 +64,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Ralf Baechle <ralf@linux-mips.org> writes:
+On Mon, Oct 07, 2013 at 02:21:17PM -0400, Tejun Heo wrote:
+> Whee.... that's a lot more than I expected.  I was just scanning
+> multiple msi users.  Maybe we can stage the work in more manageable
+> steps so that you don't have to go through massive conversion only to
+> do it all over again afterwards and likewise people don't get
+> bombarded on each iteration?  Maybe we can first update pci / msi code
+> proper, msi and then msix?
 
-> That's fine.  You just need to ensure that there are no virtual
-> aliases.
+Multipe MSIs is just a handful of drivers, really. MSI-X impact still
+will be huge. But if we opt a different name for the new pci_enable_msix()
+then we could first update pci/msi, then drivers (in few stages possibly)
+and finally remove the old implementation.
 
-Does this include virtual aliasing between a 4 KB TLB-mapped page and
-a kseg0 address? I don't really have two TLBs pointing to the same page.
+> tejun
 
-> One way to do so is to increase the page size to 16kB.
-
-Right, this way we will have a unique mapping from the virtual address
-to the data cache, as the cache size (per way) is 8 KB here. Is it the
-correct fix in this situation?
-
-> Note that there is a variant of the 24K which has a VIPT cache but uses
-> hardware to resolve cache aliases.  That is, from a kernel cache management
-> perspective it behaves like a PIPT cache.
-
-It seems it's not the case here. What I have here is:
-CPU revision is: 00019374 (MIPS 24Kc)
-SoC: Atheros AR7161 rev 2
-Primary instruction cache 64kB, VIPT, 4-way, linesize 32 bytes.
-Primary data cache 32kB, 4-way, VIPT, cache aliases, linesize 32 bytes
-
-> However as I understand what you're mapping to userspace is actually
-> device memory, right?
-
-Not exactly - I'm using PCI DMA to userspace SG buffers in RAM.
-
-The userspace first allocates the buffers in normal RAM (with vmalloc()
-or something, there is an mmap ioctl() for this), the address returned
-is 0x7xxxxxxx. Then the buffers (which consist of several pages each)
-are presented to the hw driver which obtains separate (kernel) mapping
-for each page (kseg0) and does dma_map_sg() and so on. The driver also
-simply writes to the buffers. This isn't a problem, though - only the
-incoherence between TLB and kseg0 is.
-
-The problem is the userspace doesn't see the kernel writes - The
-0x7xxxxxxx TLB-mapped pages are read-cached and not invalidated while
-the kernel writes to the same pages using kseg0 addresses.
-
-Thanks for looking at this.
 -- 
-Krzysztof Halasa
-
-Research Institute for Automation and Measurements PIAP
-Al. Jerozolimskie 202, 02-486 Warsaw, Poland
+Regards,
+Alexander Gordeev
+agordeev@redhat.com

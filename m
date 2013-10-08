@@ -1,31 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Oct 2013 14:21:06 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:20637 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6832655Ab3JHMU6LYxgZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Oct 2013 14:20:58 +0200
-Message-ID: <5253F8B3.3070700@imgtec.com>
-Date:   Tue, 8 Oct 2013 13:21:07 +0100
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.0
-MIME-Version: 1.0
-To:     <thomas.langer@lantiq.com>, <linux-mips@linux-mips.org>
-CC:     <Leonid.Yegoshin@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Oct 2013 14:29:13 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:39204 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6827313Ab3JHM3HwMv7i (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Oct 2013 14:29:07 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r98CT6Ka029104;
+        Tue, 8 Oct 2013 14:29:06 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r98CT5FO029103;
+        Tue, 8 Oct 2013 14:29:05 +0200
+Date:   Tue, 8 Oct 2013 14:29:05 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     thomas.langer@lantiq.com
+Cc:     markos.chandras@imgtec.com, linux-mips@linux-mips.org,
+        Leonid.Yegoshin@imgtec.com
 Subject: Re: [PATCH] MIPS: Print correct PC in trace dump after NMI exception
-References: <1381232371-25017-1-git-send-email-markos.chandras@imgtec.com> <593AEF6C47F46446852B067021A273D6D990182F@MUCSE039.lantiq.com>
+Message-ID: <20131008122905.GJ1615@linux-mips.org>
+References: <1381232371-25017-1-git-send-email-markos.chandras@imgtec.com>
+ <593AEF6C47F46446852B067021A273D6D990182F@MUCSE039.lantiq.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <593AEF6C47F46446852B067021A273D6D990182F@MUCSE039.lantiq.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.31]
-X-SEF-Processed: 7_3_0_01192__2013_10_08_13_20_49
-Return-Path: <Markos.Chandras@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38266
+X-archive-position: 38267
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,15 +44,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/08/13 12:48, thomas.langer@lantiq.com wrote:
-> Hello Markos,
->
-> If this is a YAMON specific fix, why is it done in a common file?
->
-Hi Thomas,
+On Tue, Oct 08, 2013 at 11:48:54AM +0000, thomas.langer@lantiq.com wrote:
 
-I can see how the commit message can be a bit misleading. However, it's 
-not YAMON specific. The NMI was just delivered by YAMON because we patch 
-the default NMI location in YAMON (see mti-malta/malta-init.c).
-NMI, Reset and Cache Error exceptions use ErrorEPC instead of EPC so 
-this patch is platform independent.
+> >  void __noreturn nmi_exception_handler(struct pt_regs *regs)
+> >  {
+> > +	char str[100];
+> > +
+> >  	raw_notifier_call_chain(&nmi_chain, 0, regs);
+> >  	bust_spinlocks(1);
+> > -	printk("NMI taken!!!!\n");
+> > -	die("NMI", regs);
+> > +	snprintf(str, 100, "CPU%d NMI taken, CP0_EPC=%lx\n",
+> > +		 smp_processor_id(), regs->cp0_epc);
+> > +	regs->cp0_epc = read_c0_errorepc();
+> 
+> If this is a YAMON specific fix, why is it done in a common file?
+
+The installation of an NMI handler is platform specific - this handler
+however in all its simplicity is generic - or at least trying to.
+
+The NMI on MIPS is notoriously hard to use.  The vectors is pointing to
+the boot ROM so firmware first gets its grubby hands on a fresh NMI and
+on most systems it'll do the firmware equivalent of a panic or reset
+the system outright.  If that's still working - it's about the worst
+tested functionality of firmware ...
+
+  Ralf

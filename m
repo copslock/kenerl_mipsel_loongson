@@ -1,85 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Oct 2013 00:22:03 +0200 (CEST)
-Received: from mga03.intel.com ([143.182.124.21]:19359 "EHLO mga03.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Oct 2013 06:33:39 +0200 (CEST)
+Received: from ozlabs.org ([203.10.76.45]:57610 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817906Ab3JGWWAVh8ME (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Oct 2013 00:22:00 +0200
-Received: from azsmga001.ch.intel.com ([10.2.17.19])
-  by azsmga101.ch.intel.com with ESMTP; 07 Oct 2013 15:21:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.90,1051,1371106800"; 
-   d="scan'208";a="371098588"
-Received: from orsmsx105.amr.corp.intel.com ([10.22.225.132])
-  by azsmga001.ch.intel.com with ESMTP; 07 Oct 2013 15:21:50 -0700
-Received: from orsmsx109.amr.corp.intel.com ([169.254.2.189]) by
- ORSMSX105.amr.corp.intel.com ([169.254.4.17]) with mapi id 14.03.0123.003;
- Mon, 7 Oct 2013 15:21:50 -0700
-From:   "Waskiewicz Jr, Peter P" <peter.p.waskiewicz.jr@intel.com>
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
-CC:     Tejun Heo <tj@kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "VMware, Inc." <pv-drivers@vmware.com>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        King <acking@vmware.com>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "Ben Hutchings" <bhutchings@solarflare.com>,
-        Alexander Gordeev <agordeev@redhat.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        "iss_storagedev@hp.com" <iss_storagedev@hp.com>,
-        Michael Ellerman <michael@ellerman.id.au>,
-        "linux-driver@qlogic.com" <linux-driver@qlogic.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Williams, Dan J" <dan.j.williams@intel.com>,
-        "Mason, Jon" <jon.mason@intel.com>, Molnar <mingo@redhat.com>,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        id S6819547Ab3JHEdgpDYHX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Oct 2013 06:33:36 +0200
+Received: from concordia (ibmaus65.lnk.telstra.net [165.228.126.9])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (Client did not present a certificate)
+        by ozlabs.org (Postfix) with ESMTPSA id C01462C00A2;
+        Tue,  8 Oct 2013 15:33:30 +1100 (EST)
+Date:   Tue, 8 Oct 2013 15:33:30 +1100
+From:   Michael Ellerman <michael@ellerman.id.au>
+To:     Alexander Gordeev <agordeev@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        "e1000-devel@lists.sourceforge.net" 
-        <e1000-devel@lists.sourceforge.net>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        "linux390@de.ibm.com" <linux390@de.ibm.com>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [E1000-devel] [PATCH RFC 00/77] Re-design MSI/MSI-X interrupts
- enablement pattern
-Thread-Topic: [E1000-devel] [PATCH RFC 00/77] Re-design MSI/MSI-X interrupts
- enablement pattern
-Thread-Index: AQHOwIuZjLWjOrsKJ0GTI3oFcZBHxpnkq+YAgADZ6QCAARqngIAAfHoAgACKqgCAAATCAIAADi0AgAJIIYCAACRBAIAAJJAA
-Date:   Mon, 7 Oct 2013 22:21:49 +0000
-Message-ID: <1381184508.16853.20.camel@ppwaskie-mobl2>
+        Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
+        linux-s390@vger.kernel.org, x86@kernel.org,
+        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
+        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
+        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
+        linux-driver@qlogic.com,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        VMware@dhcp-26-207.brq.redhat.com, "Inc." <pv-drivers@vmware.com>,
+        linux-scsi@vger.kernel.org
+Subject: Re: [PATCH RFC 00/77] Re-design MSI/MSI-X interrupts enablement
+ pattern
+Message-ID: <20131008043330.GF31666@concordia>
 References: <cover.1380703262.git.agordeev@redhat.com>
-         <1380840585.3419.50.camel@bwh-desktop.uk.level5networks.com>
-         <20131004082920.GA4536@dhcp-26-207.brq.redhat.com>
-         <1380922156.3214.49.camel@bwh-desktop.uk.level5networks.com>
-         <20131005142054.GA11270@dhcp-26-207.brq.redhat.com>
-         <1381009586.645.141.camel@pasglop>
-         <20131006060243.GB28142@dhcp-26-207.brq.redhat.com>
-         <1381040386.645.143.camel@pasglop>
-         <20131006071027.GA29143@dhcp-26-207.brq.redhat.com>
-         <20131007180111.GC2481@htj.dyndns.org> <1381176656.645.171.camel@pasglop>
-In-Reply-To: <1381176656.645.171.camel@pasglop>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.255.15.230]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <5266EE94AAF93F43AF6E5E9594A7A470@intel.com>
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Return-Path: <peter.p.waskiewicz.jr@intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1380703262.git.agordeev@redhat.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <michael@ellerman.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38245
+X-archive-position: 38246
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peter.p.waskiewicz.jr@intel.com
+X-original-sender: michael@ellerman.id.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -92,30 +59,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-T24gVHVlLCAyMDEzLTEwLTA4IGF0IDA3OjEwICsxMTAwLCBCZW5qYW1pbiBIZXJyZW5zY2htaWR0
-IHdyb3RlOg0KPiBPbiBNb24sIDIwMTMtMTAtMDcgYXQgMTQ6MDEgLTA0MDAsIFRlanVuIEhlbyB3
-cm90ZToNCj4gPiBJIGRvbid0IHRoaW5rIHRoZSBzYW1lIHJhY2UgY29uZGl0aW9uIHdvdWxkIGhh
-cHBlbiB3aXRoIHRoZSBsb29wLiAgVGhlDQo+ID4gcHJvYmxlbSBjYXNlIGlzIHdoZXJlIG11bHRp
-cGxlIG1zaSh4KSBhbGxvY2F0aW9uIGZhaWxzIGNvbXBsZXRlbHkNCj4gPiBiZWNhdXNlIHRoZSBn
-bG9iYWwgbGltaXQgd2VudCBkb3duIGJlZm9yZSBpbnF1aXJ5IGFuZCBhbGxvY2F0aW9uLiAgSW4N
-Cj4gPiB0aGUgbG9vcCBiYXNlZCBpbnRlcmZhY2UsIGl0J2QgcmV0cnkgd2l0aCB0aGUgbG93ZXIg
-bnVtYmVyLg0KPiA+IA0KPiA+IEFzIGxvbmcgYXMgdGhlIG51bWJlciBvZiBkcml2ZXJzIHdoaWNo
-IG5lZWQgdGhpcyBzb3J0IG9mIGFkYXB0aXZlDQo+ID4gYWxsb2NhdGlvbiBpc24ndCB0b28gaGln
-aCBhbmQgdGhlIGNvbW1vbiBjYXNlcyBjYW4gYmUgbWFkZSBzaW1wbGUsIEkNCj4gPiBkb24ndCB0
-aGluayB0aGUgImNvbXBsZXgiIHBhcnQgb2YgaW50ZXJmYWNlIGlzIGFsbCB0aGF0IGltcG9ydGFu
-dC4NCj4gPiBNYXliZSB3ZSBjYW4gaGF2ZSByZXNlcnZlIC8gY2FuY2VsIHR5cGUgaW50ZXJmYWNl
-IG9yIGp1c3Qga2VlcCB0aGUNCj4gPiBsb29wIHdpdGggbW9yZSBleHBsaWNpdCBmdW5jdGlvbiBu
-YW1lcyAoaWUuIHRyeV9lbmFibGUgb3Igc29tZXRoaW5nDQo+ID4gbGlrZSB0aGF0KS4NCj4gDQo+
-IFdlIHdhbnQgdG8gYmUgYWJsZSB0byByZXF1ZXN0IGFuIE1TSS1YIGF0IHJ1bnRpbWUgYW55d2F5
-IC4uLiBpZiBJIHdhbnQNCj4gdG8gZHluYW1pY2FsbHkgYWRkIGEgcXVldWUgdG8gbXkgbmV0d29y
-ayBpbnRlcmZhY2UsIEkgd2FudCBpdCB0byBiZSBhYmxlDQo+IHRvIHBvcCBhIG5ldyBhcmJpdHJh
-cnkgTVNJLVguDQoNCklmIHlvdSB3YW50IHRvIGR5bmFtaWNhbGx5IGFsbG9jYXRlIGFub3RoZXIg
-cXVldWUsIHlvdSdkIGVpdGhlciBuZWVkIHRvDQpoYXZlIHRoZW0gYWxsIHByZS1hbGxvY2F0ZWQg
-YXQgYWxsb2NfZXRoZXJkZXZfbXFzKCksIG9yIGFkZCBhIG5ldyBBUEkgdG8NCm5ldGRldiB0aGF0
-IGFsbG93cyBhZGRpbmcgbmV3IHF1ZXVlcyBvbiB0aGUgZmx5Lg0KDQpIb3cgdGhpbmdzIGFyZSBk
-b25lIHRvZGF5LCB0aGUgVHggcXVldWVzIGFyZSBhbGwgdGFja2VkIG9udG8gdGhlIGVuZCBvZg0K
-dGhlIG5ldGRldiBzdHJ1Y3QuICBUaGF0IHdvdWxkIGhhdmUgdG8gY2hhbmdlIHRvIHByb2JhYmx5
-IGEgbGlua2VkIGxpc3QNCm9mIHF1ZXVlcyB0aGF0IGNvdWxkIGJlIGdyb3duIG9yIHNocnVuayBv
-biB0aGUgZmx5Lg0KbmV0aWZfYWxsb2NfbmV0ZGV2X3F1ZXVlcygpIHdvdWxkIG5lZWQgdG8gY2hh
-bmdlIHRoZSBremFsbG9jKCkgdG8gYSBsaXN0DQphbGxvY2F0aW9uLg0KDQpDaGVlcnMsDQotUEoN
-Cg==
+On Wed, Oct 02, 2013 at 12:29:04PM +0200, Alexander Gordeev wrote:
+> This series is against "next" branch in Bjorn's repo:
+> git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git
+> 
+> Currently pci_enable_msi_block() and pci_enable_msix() interfaces
+> return a error code in case of failure, 0 in case of success and a
+> positive value which indicates the number of MSI-X/MSI interrupts
+> that could have been allocated. The latter value should be passed
+> to a repeated call to the interfaces until a failure or success:
+> 
+> 
+> 	for (i = 0; i < FOO_DRIVER_MAXIMUM_NVEC; i++)
+> 		adapter->msix_entries[i].entry = i;
+> 
+> 	while (nvec >= FOO_DRIVER_MINIMUM_NVEC) {
+> 		rc = pci_enable_msix(adapter->pdev,
+> 				     adapter->msix_entries, nvec);
+> 		if (rc > 0)
+> 			nvec = rc;
+> 		else
+> 			return rc;
+> 	}
+> 
+> 	return -ENOSPC;
+> 
+> 
+> This technique proved to be confusing and error-prone. Vast share
+> of device drivers simply fail to follow the described guidelines.
+
+To clarify "Vast share of device drivers":
+
+ - 58 drivers call pci_enable_msix()
+ - 24 try a single allocation and then fallback to MSI/LSI
+ - 19 use the loop style allocation as above
+ - 14 try an allocation, and if it fails retry once
+ - 1  incorrectly continues when pci_enable_msix() returns > 0
+
+So 33 drivers (> 50%) successfully make use of the "confusing and
+error-prone" return value.
+
+Another 24 happily ignore it, which is also entirely fine.
+
+And yes, one is buggy, so obviously the interface is too complex. Thanks
+drivers/ntb/ntb_hw.c
+
+cheers

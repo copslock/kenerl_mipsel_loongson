@@ -1,50 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Oct 2013 14:57:30 +0200 (CEST)
-Received: from Smtp1.Lantiq.com ([195.219.66.200]:13795 "EHLO smtp1.lantiq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Oct 2013 17:18:06 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:2025 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6868728Ab3JHM5YBe5gL convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Oct 2013 14:57:24 +0200
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: AqEEAAAAVFIKQLW9/2dsb2JhbABZgz9SwSKBNXSCJQEBAQMBJ1IFCwIBCA0LCiQyJQIEDgUIh3gSukSPETEHFoMJgQQDiQGVXY5Hgio
-X-IronPort-AV: E=McAfee;i="5400,1158,7221"; a="2412263"
-Received: from unknown (HELO MUCSVECH044.lantiq.com) ([10.64.181.189])
-  by smtp1.lantiq.com with ESMTP; 08 Oct 2013 14:57:17 +0200
-Received: from MUCSE039.lantiq.com ([169.254.3.108]) by MUCSVECH044.lantiq.com
- ([10.64.181.189]) with mapi id 14.02.0247.003; Tue, 8 Oct 2013 14:57:18 +0200
-From:   <thomas.langer@lantiq.com>
-To:     <ralf@linux-mips.org>
-CC:     <markos.chandras@imgtec.com>, <linux-mips@linux-mips.org>,
-        <Leonid.Yegoshin@imgtec.com>
-Subject: RE: [PATCH] MIPS: Print correct PC in trace dump after NMI exception
-Thread-Topic: [PATCH] MIPS: Print correct PC in trace dump after NMI
- exception
-Thread-Index: AQHOxBshqs4+SS5ZNkq49qTjFbXjeJnqr81A///qaYCAACLJ8A==
-Date:   Tue, 8 Oct 2013 12:57:17 +0000
-Message-ID: <593AEF6C47F46446852B067021A273D6D9901A5C@MUCSE039.lantiq.com>
-References: <1381232371-25017-1-git-send-email-markos.chandras@imgtec.com>
- <593AEF6C47F46446852B067021A273D6D990182F@MUCSE039.lantiq.com>
- <20131008122905.GJ1615@linux-mips.org>
-In-Reply-To: <20131008122905.GJ1615@linux-mips.org>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.64.175.92]
-x-tm-as-product-ver: SMEX-10.0.0.1412-7.000.1014-20204.006
-x-tm-as-result: No--42.748300-0.000000-31
-x-tm-as-user-approved-sender: Yes
-x-tm-as-user-blocked-sender: No
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+        id S6822674Ab3JHPSDdU1tA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Oct 2013 17:18:03 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS/Perf-events: Fix 74K cache map
+Date:   Tue, 8 Oct 2013 16:17:48 +0100
+Message-ID: <1381245468-1726-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.3.2
 MIME-Version: 1.0
-Return-Path: <thomas.langer@lantiq.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.31]
+X-SEF-Processed: 7_3_0_01192__2013_10_08_16_17_58
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38272
+X-archive-position: 38273
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.langer@lantiq.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,44 +36,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello Ralf,
+From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
 
-Ralf Baechle wrote on 2013-10-08:
+According to Software User's Manual, the event of last-level-cache
+read/write misses is mapped to even counters. Odd counters of that
+event number count miss cycles.
 
-> On Tue, Oct 08, 2013 at 11:48:54AM +0000, thomas.langer@lantiq.com wrote:
-> 
->>>  void __noreturn nmi_exception_handler(struct pt_regs *regs)
->>>  {
->>> +	char str[100];
->>> +
->>>  	raw_notifier_call_chain(&nmi_chain, 0, regs);
->>>  	bust_spinlocks(1);
->>> -	printk("NMI taken!!!!\n");
->>> -	die("NMI", regs);
->>> +	snprintf(str, 100, "CPU%d NMI taken, CP0_EPC=%lx\n",
->>> +		 smp_processor_id(), regs->cp0_epc);
->>> +	regs->cp0_epc = read_c0_errorepc();
->> 
->> If this is a YAMON specific fix, why is it done in a common file?
-> 
-> The installation of an NMI handler is platform specific - this handler
-> however in all its simplicity is generic - or at least trying to.
-> 
-> The NMI on MIPS is notoriously hard to use.  The vectors is pointing to
-> the boot ROM so firmware first gets its grubby hands on a fresh NMI and
-> on most systems it'll do the firmware equivalent of a panic or reset
-> the system outright.  If that's still working - it's about the worst
-> tested functionality of firmware ...
+Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+This patch is for the upstream-sfr/mips-for-linux-next tree
+---
+ arch/mips/kernel/perf_event_mipsxx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I know, I am working on a chip which has working wrapper implemented in its bootrom:
-http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/arch/mips/lantiq/falcon/prom.c#n90
-Therefore I was triggered by the keyword NMI ;-)
-
-So if this has nothing to do with YAMON and is some generic NMI specific fix:
-Acked-By: Thomas Langer <thomas.langer@lantiq.com>
-
-> 
->   Ralf
-
-Best Regards,
-Thomas
+diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
+index 45f1ffc..24cdf64 100644
+--- a/arch/mips/kernel/perf_event_mipsxx.c
++++ b/arch/mips/kernel/perf_event_mipsxx.c
+@@ -971,11 +971,11 @@ static const struct mips_perf_event mipsxx74Kcore_cache_map
+ [C(LL)] = {
+ 	[C(OP_READ)] = {
+ 		[C(RESULT_ACCESS)]	= { 0x1c, CNTR_ODD, P },
+-		[C(RESULT_MISS)]	= { 0x1d, CNTR_EVEN | CNTR_ODD, P },
++		[C(RESULT_MISS)]	= { 0x1d, CNTR_EVEN, P },
+ 	},
+ 	[C(OP_WRITE)] = {
+ 		[C(RESULT_ACCESS)]	= { 0x1c, CNTR_ODD, P },
+-		[C(RESULT_MISS)]	= { 0x1d, CNTR_EVEN | CNTR_ODD, P },
++		[C(RESULT_MISS)]	= { 0x1d, CNTR_EVEN, P },
+ 	},
+ },
+ [C(ITLB)] = {
+-- 
+1.8.3.2

@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Oct 2013 17:43:36 +0200 (CEST)
-Received: from mail-qc0-f179.google.com ([209.85.216.179]:63404 "EHLO
-        mail-qc0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6839455Ab3JIPnd2lESv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Oct 2013 17:43:33 +0200
-Received: by mail-qc0-f179.google.com with SMTP id l4so713000qcv.38
-        for <multiple recipients>; Wed, 09 Oct 2013 08:43:27 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Oct 2013 17:46:23 +0200 (CEST)
+Received: from mail-qe0-f52.google.com ([209.85.128.52]:36537 "EHLO
+        mail-qe0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6868739Ab3JIPqQWbfF5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Oct 2013 17:46:16 +0200
+Received: by mail-qe0-f52.google.com with SMTP id w7so754887qeb.39
+        for <multiple recipients>; Wed, 09 Oct 2013 08:46:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:date:from:to:cc:subject:message-id:references:mime-version
          :content-type:content-disposition:in-reply-to:user-agent;
-        bh=ifdHpINxJRj1PJtzyLGWv1m6fdPwF6KPC7ogH4dJXxQ=;
-        b=vrOoErSt7va8gWziu9rYAO602J0sZAxxM2tz0+Fd0qGR/TKy25fy4r8VsyPBEofpX0
-         PuRuyOhVu0zIhWXfynpe5V2ekg+8Is9j6YnDKBPkuWxUbwlkEqzde6Xpez3ATl7MRDSK
-         3XnpRfKvhMVLcIC8aSxC67xBNEJAotVN04qwIvAMCvVDLDCGsuwOgxJnXG5YqWqO000j
-         rN06IVfR4QWAKVMnpUB9LUuR4maOQy20G6myvXzh9pBCkskaigucG5djYsaYAlyGBePe
-         2QR8Jvo4xDyn+1Bp5kHwv2JDGhvUrHWJYoHUDoaxTffsZZOLPzFG3FyDvhzKFepplJVQ
-         E1hw==
-X-Received: by 10.229.191.7 with SMTP id dk7mr10438539qcb.4.1381333407536;
-        Wed, 09 Oct 2013 08:43:27 -0700 (PDT)
+        bh=4VyhOrgIPoHGT/7G7udfP2Gifv4pcNA/GhX+A/dOLfc=;
+        b=seMlYycMgTxoH6WK4YBv4g6qDuRZupaUKY4a6s+3QXIYh2RVFTd0/39aIZDm+ECg7w
+         oNVDrOtqGwxm+pk7MP2e8gAcRvHlc4NhkogjJWdzov65s9LzAB/5BQJI5UqUZVpn6VEL
+         6WLekYqzfUllf68D2ATsurqpVTJVof8hTNJFC8IDPMA7DzPcT3bk+TtXz9PKTXqL9pj8
+         C7tteiHQpD4zrT7Qml9iatSP9H/eMsXGrhlXbCpj9/8G2Hp+wmU+D3acxvN90b9CTm23
+         eo7e0sKIo8g2uvZCFylGIoPzqBLtZtkbsBNIClef/aMbXD+XZfqfSAcc0LlWDMiaAtuG
+         rFhw==
+X-Received: by 10.224.5.137 with SMTP id 9mr12038277qav.65.1381333570314;
+        Wed, 09 Oct 2013 08:46:10 -0700 (PDT)
 Received: from htj.dyndns.org (207-38-225-25.c3-0.43d-ubr1.qens-43d.ny.cable.rcn.com. [207.38.225.25])
-        by mx.google.com with ESMTPSA id i4sm87446671qan.0.1969.12.31.16.00.00
+        by mx.google.com with ESMTPSA id a9sm54951034qed.6.1969.12.31.16.00.00
         (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 09 Oct 2013 08:43:26 -0700 (PDT)
-Date:   Wed, 9 Oct 2013 11:43:23 -0400
+        Wed, 09 Oct 2013 08:46:09 -0700 (PDT)
+Date:   Wed, 9 Oct 2013 11:46:06 -0400
 From:   Tejun Heo <tj@kernel.org>
-To:     Alexander Gordeev <agordeev@redhat.com>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ben Hutchings <bhutchings@solarflare.com>,
+To:     Ben Hutchings <bhutchings@solarflare.com>
+Cc:     Alexander Gordeev <agordeev@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Michael Ellerman <michael@ellerman.id.au>,
@@ -46,8 +46,9 @@ Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
 Subject: Re: [PATCH RFC 00/77] Re-design MSI/MSI-X interrupts enablement
  pattern
-Message-ID: <20131009154323.GB22495@htj.dyndns.org>
-References: <1380840585.3419.50.camel@bwh-desktop.uk.level5networks.com>
+Message-ID: <20131009154606.GC22495@htj.dyndns.org>
+References: <cover.1380703262.git.agordeev@redhat.com>
+ <1380840585.3419.50.camel@bwh-desktop.uk.level5networks.com>
  <20131004082920.GA4536@dhcp-26-207.brq.redhat.com>
  <1380922156.3214.49.camel@bwh-desktop.uk.level5networks.com>
  <20131005142054.GA11270@dhcp-26-207.brq.redhat.com>
@@ -55,18 +56,17 @@ References: <1380840585.3419.50.camel@bwh-desktop.uk.level5networks.com>
  <20131006060243.GB28142@dhcp-26-207.brq.redhat.com>
  <1381040386.645.143.camel@pasglop>
  <20131006071027.GA29143@dhcp-26-207.brq.redhat.com>
- <20131007180111.GC2481@htj.dyndns.org>
- <20131009125715.GC32733@dhcp-26-207.brq.redhat.com>
+ <1381178881.1536.28.camel@bwh-desktop.uk.level5networks.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20131009125715.GC32733@dhcp-26-207.brq.redhat.com>
+In-Reply-To: <1381178881.1536.28.camel@bwh-desktop.uk.level5networks.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <htejun@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38292
+X-archive-position: 38293
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -83,26 +83,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
-
-On Wed, Oct 09, 2013 at 02:57:16PM +0200, Alexander Gordeev wrote:
-> On Mon, Oct 07, 2013 at 02:01:11PM -0400, Tejun Heo wrote:
-> > Hmmm... yean, the race condition could be an issue as multiple msi
-> > allocation might fail even if the driver can and explicitly handle
-> > multiple allocation if the quota gets reduced inbetween.
+On Mon, Oct 07, 2013 at 09:48:01PM +0100, Ben Hutchings wrote:
+> > There is one major flaw in min-max approach - the generic MSI layer
+> > will have to take decisions on exact number of MSIs to request, not
+> > device drivers.
+> [...
 > 
-> BTW, should we care about the quota getting increased inbetween?
-> That would entail.. kind of pci_get_msi_limit() :), but IMHO it is
-> not worth it.
+> No, the min-max functions should be implemented using the same loop that
+> drivers are expected to use now.
 
-I think we shouldn't.  If the resource was low during a point in time
-during allocation, it's fine to base the result on that - the resource
-was actually low and which answer we return is just a question of
-timing and both are correct.  The only reason the existing race
-condition is problematic is because it may fail even if the resource
-never falls below the failure point.
-
-Thanks.
+Wheee... earlier in the thread I thought you guys were referring to
+yourselves in the third person and was getting a bit worried. :)
 
 -- 
 tejun

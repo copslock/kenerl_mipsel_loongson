@@ -1,36 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Oct 2013 14:08:22 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:43643 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6839455Ab3JIMIN72Zo4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 9 Oct 2013 14:08:13 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r99C8CuG019982;
-        Wed, 9 Oct 2013 14:08:12 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r99C89IV019981;
-        Wed, 9 Oct 2013 14:08:09 +0200
-Date:   Wed, 9 Oct 2013 14:08:09 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Oleg Nesterov <oleg@redhat.com>,
-        Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
-        Anton Arapov <anton@redhat.com>,
-        Ananth N Mavinakayanahalli <ananth@in.ibm.com>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH] UPROBES: Remove useless __weak attribute
-Message-ID: <20131009120809.GN1615@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Oct 2013 14:55:34 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:33575 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817090Ab3JIMzbmfd6v (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 9 Oct 2013 14:55:31 +0200
+Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r99CtCgi021026
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Wed, 9 Oct 2013 08:55:13 -0400
+Received: from dhcp-26-207.brq.redhat.com (dhcp-26-163.brq.redhat.com [10.34.26.163])
+        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r99Ct06u023578
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
+        Wed, 9 Oct 2013 08:55:04 -0400
+Date:   Wed, 9 Oct 2013 14:57:16 +0200
+From:   Alexander Gordeev <agordeev@redhat.com>
+To:     Tejun Heo <tj@kernel.org>
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Ben Hutchings <bhutchings@solarflare.com>,
+        linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Michael Ellerman <michael@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
+        linux-s390@vger.kernel.org, x86@kernel.org,
+        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
+        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
+        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
+        linux-driver@qlogic.com,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH RFC 00/77] Re-design MSI/MSI-X interrupts enablement
+ pattern
+Message-ID: <20131009125715.GC32733@dhcp-26-207.brq.redhat.com>
+References: <cover.1380703262.git.agordeev@redhat.com>
+ <1380840585.3419.50.camel@bwh-desktop.uk.level5networks.com>
+ <20131004082920.GA4536@dhcp-26-207.brq.redhat.com>
+ <1380922156.3214.49.camel@bwh-desktop.uk.level5networks.com>
+ <20131005142054.GA11270@dhcp-26-207.brq.redhat.com>
+ <1381009586.645.141.camel@pasglop>
+ <20131006060243.GB28142@dhcp-26-207.brq.redhat.com>
+ <1381040386.645.143.camel@pasglop>
+ <20131006071027.GA29143@dhcp-26-207.brq.redhat.com>
+ <20131007180111.GC2481@htj.dyndns.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20131007180111.GC2481@htj.dyndns.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
+Return-Path: <agordeev@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38287
+X-archive-position: 38288
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: agordeev@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,28 +73,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-<linux/uprobes.h> declares arch_uprobe_skip_sstep() as a weak function.
-But as there is no definition of generic version so when trying to build
-uprobes for an architecture that doesn't yet have a arch_uprobe_skip_sstep()
-implementation, the vmlinux will try to call arch_uprobe_skip_sstep()
-somehwere in Stupidhistan leading to a system crash.  We rather want a
-proper link error so remove arch_uprobe_skip_sstep().
+On Mon, Oct 07, 2013 at 02:01:11PM -0400, Tejun Heo wrote:
+> Hmmm... yean, the race condition could be an issue as multiple msi
+> allocation might fail even if the driver can and explicitly handle
+> multiple allocation if the quota gets reduced inbetween.
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+BTW, should we care about the quota getting increased inbetween?
+That would entail.. kind of pci_get_msi_limit() :), but IMHO it is
+not worth it.
 
- include/linux/uprobes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> tejun
 
-diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
-index 2a9d75d..cec7397 100644
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -124,7 +124,7 @@ extern int uprobe_post_sstep_notifier(struct pt_regs *regs);
- extern int uprobe_pre_sstep_notifier(struct pt_regs *regs);
- extern void uprobe_notify_resume(struct pt_regs *regs);
- extern bool uprobe_deny_signal(void);
--extern bool __weak arch_uprobe_skip_sstep(struct arch_uprobe *aup, struct pt_regs *regs);
-+extern bool arch_uprobe_skip_sstep(struct arch_uprobe *aup, struct pt_regs *regs);
- extern void uprobe_clear_state(struct mm_struct *mm);
- #else /* !CONFIG_UPROBES */
- struct uprobes_state {
+-- 
+Regards,
+Alexander Gordeev
+agordeev@redhat.com

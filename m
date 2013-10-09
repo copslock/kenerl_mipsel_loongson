@@ -1,46 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Oct 2013 14:00:04 +0200 (CEST)
-Received: from b.ns.miles-group.at ([95.130.255.144]:9062 "EHLO radon.swed.at"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Oct 2013 14:08:22 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:43643 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6817505Ab3I0J0ZRwPLp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 27 Sep 2013 11:26:25 +0200
-Received: (qmail 1572 invoked by uid 89); 27 Sep 2013 09:26:31 -0000
-Received: by simscan 1.3.1 ppid: 1565, pid: 1568, t: 0.0523s
-         scanners: attach: 1.3.1 clamav: 0.96.5/m:
-Received: from unknown (HELO ?192.168.0.11?) (richard@nod.at@212.186.22.124)
-  by radon.swed.at with ESMTPA; 27 Sep 2013 09:26:30 -0000
-Message-ID: <52454F38.60902@nod.at>
-Date:   Fri, 27 Sep 2013 11:26:16 +0200
-From:   Richard Weinberger <richard@nod.at>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130620 Thunderbird/17.0.7
+        id S6839455Ab3JIMIN72Zo4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 9 Oct 2013 14:08:13 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r99C8CuG019982;
+        Wed, 9 Oct 2013 14:08:12 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r99C89IV019981;
+        Wed, 9 Oct 2013 14:08:09 +0200
+Date:   Wed, 9 Oct 2013 14:08:09 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Oleg Nesterov <oleg@redhat.com>,
+        Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+        Anton Arapov <anton@redhat.com>,
+        Ananth N Mavinakayanahalli <ananth@in.ibm.com>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH] UPROBES: Remove useless __weak attribute
+Message-ID: <20131009120809.GN1615@linux-mips.org>
 MIME-Version: 1.0
-To:     =?UTF-8?B?VG9yYWxmIEbDtnJzdGVy?= <toralf.foerster@gmx.de>
-CC:     Ramkumar Ramachandra <artagnon@gmail.com>,
-        linux-arch@vger.kernel.org, Michal Marek <mmarek@suse.cz>,
-        geert@linux-m68k.org, ralf@linux-mips.org, lethal@linux-sh.org,
-        Jeff Dike <jdike@addtoit.com>, gxt@mprc.pku.edu.cn,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        linux-kbuild@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net
-Subject: Re: [PATCH 1/8] um: Create defconfigs for i386 and x86_64
-References: <1377073172-3662-1-git-send-email-richard@nod.at> <1377073172-3662-2-git-send-email-richard@nod.at> <CALkWK0=W38JpZoGVkPYD4qd=+Pt1G7oYPEK_R=c8TAW6W=wxyg@mail.gmail.com> <52440DE0.1030807@nod.at> <52454E58.3010305@gmx.de>
-In-Reply-To: <52454E58.3010305@gmx.de>
-X-Enigmail-Version: 1.5.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <richard@nod.at>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38286
-X-Approved-By: ralf@linux-mips.org
+X-archive-position: 38287
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: richard@nod.at
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,49 +43,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Am 27.09.2013 11:22, schrieb Toralf Förster:
-> On 09/26/2013 12:35 PM, Richard Weinberger wrote:
->> Am 26.09.2013 12:20, schrieb Ramkumar Ramachandra:
->>> Richard Weinberger wrote:
->>>> This patch is based on: https://lkml.org/lkml/2013/7/4/396
->>>>
->>>> Cc: Ramkumar Ramachandra <artagnon@gmail.com>
->>>> Signed-off-by: Richard Weinberger <richard@nod.at>
->>>> ---
->>>>  arch/um/configs/i386_defconfig   | 954 +++++++++++++++++++++++++++++++++++++++
->>>>  arch/um/configs/x86_64_defconfig | 943 ++++++++++++++++++++++++++++++++++++++
->>>>  2 files changed, 1897 insertions(+)
->>>>  create mode 100644 arch/um/configs/i386_defconfig
->>>>  create mode 100644 arch/um/configs/x86_64_defconfig
->>>
->>> First, I'm pissed that the upstream tree doesn't build and run out of
->>> the box months after I submitted a fix in July (and it's September
->>> now). Fact that you dropped my sane patches aside and decided to write
->>> a much larger series aside, user-mode Linux in upstream is broken.
->>> This means that any user who does:
->>>
->>> $ ARCH=um make defconfig
->>> $ ARCH=um make
->>>
->>> will end up with a *broken* Linux _today_. Unless the user is living
->>> in the Stone Age with a 32-bit computer, this is what she will see
->>> when she attempts to boot up Linux:
-> 
-> :-{
-> 
-> Grmpf
-> 
-> There are a lot of 32 bit user land linux installation (beside my own,
-> look at the x86 Gentoo world) in the wild - even running on modern 64bit
-> CPUs. The simple reason is that those installations run fine and the
-> performance "boost" of 64bit often isn't worth a new reinstallation.
+<linux/uprobes.h> declares arch_uprobe_skip_sstep() as a weak function.
+But as there is no definition of generic version so when trying to build
+uprobes for an architecture that doesn't yet have a arch_uprobe_skip_sstep()
+implementation, the vmlinux will try to call arch_uprobe_skip_sstep()
+somehwere in Stupidhistan leading to a system crash.  We rather want a
+proper link error so remove arch_uprobe_skip_sstep().
 
-You *can* of course run 32bit userland on UML. Just create a 32bit UML on x86_64.
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-make defconfig ARCH=um SUBARCH=i386
-make linux ARCH=um SUBARCH=i386
+ include/linux/uprobes.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This will work on x86_64 and x86 hosts.
-
-Thanks,
-//richard
+diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
+index 2a9d75d..cec7397 100644
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -124,7 +124,7 @@ extern int uprobe_post_sstep_notifier(struct pt_regs *regs);
+ extern int uprobe_pre_sstep_notifier(struct pt_regs *regs);
+ extern void uprobe_notify_resume(struct pt_regs *regs);
+ extern bool uprobe_deny_signal(void);
+-extern bool __weak arch_uprobe_skip_sstep(struct arch_uprobe *aup, struct pt_regs *regs);
++extern bool arch_uprobe_skip_sstep(struct arch_uprobe *aup, struct pt_regs *regs);
+ extern void uprobe_clear_state(struct mm_struct *mm);
+ #else /* !CONFIG_UPROBES */
+ struct uprobes_state {

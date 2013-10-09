@@ -1,76 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Oct 2013 17:46:23 +0200 (CEST)
-Received: from mail-qe0-f52.google.com ([209.85.128.52]:36537 "EHLO
-        mail-qe0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6868739Ab3JIPqQWbfF5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Oct 2013 17:46:16 +0200
-Received: by mail-qe0-f52.google.com with SMTP id w7so754887qeb.39
-        for <multiple recipients>; Wed, 09 Oct 2013 08:46:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=4VyhOrgIPoHGT/7G7udfP2Gifv4pcNA/GhX+A/dOLfc=;
-        b=seMlYycMgTxoH6WK4YBv4g6qDuRZupaUKY4a6s+3QXIYh2RVFTd0/39aIZDm+ECg7w
-         oNVDrOtqGwxm+pk7MP2e8gAcRvHlc4NhkogjJWdzov65s9LzAB/5BQJI5UqUZVpn6VEL
-         6WLekYqzfUllf68D2ATsurqpVTJVof8hTNJFC8IDPMA7DzPcT3bk+TtXz9PKTXqL9pj8
-         C7tteiHQpD4zrT7Qml9iatSP9H/eMsXGrhlXbCpj9/8G2Hp+wmU+D3acxvN90b9CTm23
-         eo7e0sKIo8g2uvZCFylGIoPzqBLtZtkbsBNIClef/aMbXD+XZfqfSAcc0LlWDMiaAtuG
-         rFhw==
-X-Received: by 10.224.5.137 with SMTP id 9mr12038277qav.65.1381333570314;
-        Wed, 09 Oct 2013 08:46:10 -0700 (PDT)
-Received: from htj.dyndns.org (207-38-225-25.c3-0.43d-ubr1.qens-43d.ny.cable.rcn.com. [207.38.225.25])
-        by mx.google.com with ESMTPSA id a9sm54951034qed.6.1969.12.31.16.00.00
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 09 Oct 2013 08:46:09 -0700 (PDT)
-Date:   Wed, 9 Oct 2013 11:46:06 -0400
-From:   Tejun Heo <tj@kernel.org>
-To:     Ben Hutchings <bhutchings@solarflare.com>
-Cc:     Alexander Gordeev <agordeev@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Michael Ellerman <michael@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
-        linux-s390@vger.kernel.org, x86@kernel.org,
-        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
-        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
-        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
-        linux-driver@qlogic.com,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH RFC 00/77] Re-design MSI/MSI-X interrupts enablement
- pattern
-Message-ID: <20131009154606.GC22495@htj.dyndns.org>
-References: <cover.1380703262.git.agordeev@redhat.com>
- <1380840585.3419.50.camel@bwh-desktop.uk.level5networks.com>
- <20131004082920.GA4536@dhcp-26-207.brq.redhat.com>
- <1380922156.3214.49.camel@bwh-desktop.uk.level5networks.com>
- <20131005142054.GA11270@dhcp-26-207.brq.redhat.com>
- <1381009586.645.141.camel@pasglop>
- <20131006060243.GB28142@dhcp-26-207.brq.redhat.com>
- <1381040386.645.143.camel@pasglop>
- <20131006071027.GA29143@dhcp-26-207.brq.redhat.com>
- <1381178881.1536.28.camel@bwh-desktop.uk.level5networks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Oct 2013 17:47:25 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:18356 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6818997Ab3JIPrUQRsnk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 9 Oct 2013 17:47:20 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: GIC: Send IPIs using the GIC
+Date:   Wed, 9 Oct 2013 16:47:23 +0100
+Message-ID: <1381333643-17205-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.3.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1381178881.1536.28.camel@bwh-desktop.uk.level5networks.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <htejun@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.31]
+X-SEF-Processed: 7_3_0_01192__2013_10_09_16_47_14
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38293
+X-archive-position: 38294
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tj@kernel.org
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -83,17 +36,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 07, 2013 at 09:48:01PM +0100, Ben Hutchings wrote:
-> > There is one major flaw in min-max approach - the generic MSI layer
-> > will have to take decisions on exact number of MSIs to request, not
-> > device drivers.
-> [...
-> 
-> No, the min-max functions should be implemented using the same loop that
-> drivers are expected to use now.
+From: "Steven J. Hill" <Steven.Hill@imgtec.com>
 
-Wheee... earlier in the thread I thought you guys were referring to
-yourselves in the third person and was getting a bit worried. :)
+If GIC is present, then use it to send IPIs between the cores.
+Using GIC for IPIs is simpler and is usable for multicore
+systems compared to the existing way of doing IPIs where all VPEs
+had to be disabled for another VPE to access the Cause register
+in one of the TCs and enable all the VPEs back.
 
+Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/kernel/smp-mt.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
+index 35f8d22..0fb8cef 100644
+--- a/arch/mips/kernel/smp-mt.c
++++ b/arch/mips/kernel/smp-mt.c
+@@ -113,12 +113,39 @@ static void __init smvp_tc_init(unsigned int tc, unsigned int mvpconf0)
+ 	write_tc_c0_tchalt(TCHALT_H);
+ }
+ 
++#ifdef CONFIG_IRQ_GIC
++static void mp_send_ipi_single(int cpu, unsigned int action)
++{
++	unsigned long flags;
++
++	local_irq_save(flags);
++
++	switch (action) {
++	case SMP_CALL_FUNCTION:
++		gic_send_ipi(plat_ipi_call_int_xlate(cpu));
++		break;
++
++	case SMP_RESCHEDULE_YOURSELF:
++		gic_send_ipi(plat_ipi_resched_int_xlate(cpu));
++		break;
++	}
++
++	local_irq_restore(flags);
++}
++#endif
++
+ static void vsmp_send_ipi_single(int cpu, unsigned int action)
+ {
+ 	int i;
+ 	unsigned long flags;
+ 	int vpflags;
+ 
++#ifdef CONFIG_IRQ_GIC
++	if (gic_present) {
++		mp_send_ipi_single(cpu, action);
++		return;
++	}
++#endif
+ 	local_irq_save(flags);
+ 
+ 	vpflags = dvpe();	/* can't access the other CPU's registers whilst MVPE enabled */
 -- 
-tejun
+1.8.3.2

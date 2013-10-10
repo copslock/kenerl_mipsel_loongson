@@ -1,68 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Oct 2013 17:58:09 +0200 (CEST)
-Received: from mail-ye0-f169.google.com ([209.85.213.169]:53392 "EHLO
-        mail-ye0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6868641Ab3JIP6EGZhKf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Oct 2013 17:58:04 +0200
-Received: by mail-ye0-f169.google.com with SMTP id r10so220877yen.28
-        for <multiple recipients>; Wed, 09 Oct 2013 08:57:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=JAtdCSU4zrG0+SBJpoLUhui92fWq9jdNjtTCHMrPgwE=;
-        b=aIE4SEeZQPpxiukoLmkSPhvz7bqEJirB0AD5+biWDhfp0qPzKSknsUyN8WXS6RduSG
-         /dAvWS7v5qEUOrP/YceLgCmCcvzkXTTa9/hY5X+IitDTvSkCuCXi3eRGbY7B3/5qTiJQ
-         l+/iSbRgK/KCllRhFwoKcLYvy8BUdvNx1u7el+LwIIgt08m90tU22dv0HntqCxRi5jG9
-         wzhQawhg+ksnTvC8evWVc3TVZ8B/lELV3GJWIvx6SHLN/h+u2XcR7csJGaeKnmD/ssrN
-         FjiwMWoARbKgPF8t1wzW5oC0eikjCHW8dKo7bERQOGEitGGElroRVntMiQSJLfJ8Geab
-         zN7Q==
-X-Received: by 10.236.147.210 with SMTP id t58mr7796435yhj.1.1381334277994;
-        Wed, 09 Oct 2013 08:57:57 -0700 (PDT)
-Received: from htj.dyndns.org (207-38-225-25.c3-0.43d-ubr1.qens-43d.ny.cable.rcn.com. [207.38.225.25])
-        by mx.google.com with ESMTPSA id v45sm61687548yha.2.1969.12.31.16.00.00
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Wed, 09 Oct 2013 08:57:56 -0700 (PDT)
-Date:   Wed, 9 Oct 2013 11:57:52 -0400
-From:   Tejun Heo <tj@kernel.org>
-To:     Alexander Gordeev <agordeev@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Michael Ellerman <michael@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
-        linux-s390@vger.kernel.org, x86@kernel.org,
-        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
-        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
-        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
-        linux-driver@qlogic.com,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH RFC 00/77] Re-design MSI/MSI-X interrupts enablement
- pattern
-Message-ID: <20131009155752.GE22495@htj.dyndns.org>
-References: <cover.1380703262.git.agordeev@redhat.com>
- <20131007182117.GC27396@htj.dyndns.org>
- <20131008090716.GA10561@dhcp-26-207.brq.redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Oct 2013 10:59:18 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:37189 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6822451Ab3JJI7M4SIwl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 10 Oct 2013 10:59:12 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH v2] MIPS: Add printing of ES bit for Imgtec cores when cache error occurs.
+Date:   Thu, 10 Oct 2013 09:58:59 +0100
+Message-ID: <1381395539-30063-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.3.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20131008090716.GA10561@dhcp-26-207.brq.redhat.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <htejun@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.31]
+X-SEF-Processed: 7_3_0_01192__2013_10_10_09_59_07
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38296
+X-archive-position: 38298
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tj@kernel.org
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,25 +36,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-On Tue, Oct 08, 2013 at 11:07:16AM +0200, Alexander Gordeev wrote:
-> Multipe MSIs is just a handful of drivers, really. MSI-X impact still
+The cacheer register is always implemented in the same way in the
+MIPS32r2 Imgtec cores so print the ES bit when an cache error
+occurs.
 
-Yes, so it's pretty nice to try out things there before going full-on.
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/kernel/traps.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-> will be huge. But if we opt a different name for the new pci_enable_msix()
-> then we could first update pci/msi, then drivers (in few stages possibly)
-> and finally remove the old implementation.
-
-Yes, that probably should be the steps to follow eventually.  My point
-was that you don't have to submit patches for all 7x conversions for
-an RFC round.  Scanning them and seeing what would be necessary
-definitely is a good idea but just giving summary of the full
-conversion with several examples should be good enough before settling
-on the way forward, which should be easier for all involved.
-
-Thanks a lot for your effort!
-
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 524841f..2a5523e 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1416,14 +1416,27 @@ asmlinkage void cache_parity_error(void)
+ 	printk("Decoded c0_cacheerr: %s cache fault in %s reference.\n",
+ 	       reg_val & (1<<30) ? "secondary" : "primary",
+ 	       reg_val & (1<<31) ? "data" : "insn");
+-	printk("Error bits: %s%s%s%s%s%s%s\n",
+-	       reg_val & (1<<29) ? "ED " : "",
+-	       reg_val & (1<<28) ? "ET " : "",
+-	       reg_val & (1<<26) ? "EE " : "",
+-	       reg_val & (1<<25) ? "EB " : "",
+-	       reg_val & (1<<24) ? "EI " : "",
+-	       reg_val & (1<<23) ? "E1 " : "",
+-	       reg_val & (1<<22) ? "E0 " : "");
++	if (cpu_has_mips_r2 &&
++	    ((current_cpu_data.processor_id && 0xff0000) == PRID_COMP_MIPS)) {
++		pr_err("Error bits: %s%s%s%s%s%s%s%s\n",
++			reg_val & (1<<29) ? "ED " : "",
++			reg_val & (1<<28) ? "ET " : "",
++			reg_val & (1<<27) ? "ES " : "",
++			reg_val & (1<<26) ? "EE " : "",
++			reg_val & (1<<25) ? "EB " : "",
++			reg_val & (1<<24) ? "EI " : "",
++			reg_val & (1<<23) ? "E1 " : "",
++			reg_val & (1<<22) ? "E0 " : "");
++	} else {
++		pr_err("Error bits: %s%s%s%s%s%s%s\n",
++			reg_val & (1<<29) ? "ED " : "",
++			reg_val & (1<<28) ? "ET " : "",
++			reg_val & (1<<26) ? "EE " : "",
++			reg_val & (1<<25) ? "EB " : "",
++			reg_val & (1<<24) ? "EI " : "",
++			reg_val & (1<<23) ? "E1 " : "",
++			reg_val & (1<<22) ? "E0 " : "");
++	}
+ 	printk("IDX: 0x%08x\n", reg_val & ((1<<22)-1));
+ 
+ #if defined(CONFIG_CPU_MIPS32) || defined(CONFIG_CPU_MIPS64)
 -- 
-tejun
+1.8.3.2

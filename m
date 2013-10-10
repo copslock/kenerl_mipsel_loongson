@@ -1,58 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Oct 2013 12:15:23 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:21850 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Oct 2013 13:50:01 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:23622 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6867712Ab3JJKPU2lorb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 Oct 2013 12:15:20 +0200
-Received: from int-mx12.intmail.prod.int.phx2.redhat.com (int-mx12.intmail.prod.int.phx2.redhat.com [10.5.11.25])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r9AAExRK028506
+        id S6867712Ab3JJLty5ALRV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 10 Oct 2013 13:49:54 +0200
+Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r9ABnnNt029346
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 10 Oct 2013 06:14:59 -0400
-Received: from dhcp-26-207.brq.redhat.com (dhcp-26-163.brq.redhat.com [10.34.26.163])
-        by int-mx12.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r9AAEoeY004050
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
-        Thu, 10 Oct 2013 06:14:53 -0400
-Date:   Thu, 10 Oct 2013 12:17:05 +0200
-From:   Alexander Gordeev <agordeev@redhat.com>
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc:     "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Michael Ellerman <michael@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
-        linux-s390@vger.kernel.org, x86@kernel.org,
-        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
-        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
-        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
-        linux-driver@qlogic.com,
-        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
-        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH RFC 00/77] Re-design MSI/MSI-X interrupts enablement
- pattern
-Message-ID: <20131010101704.GC11874@dhcp-26-207.brq.redhat.com>
-References: <cover.1380703262.git.agordeev@redhat.com>
- <5254D397.9030307@zytor.com>
- <1381292648.645.259.camel@pasglop>
+        Thu, 10 Oct 2013 07:49:50 -0400
+Received: from tranklukator.brq.redhat.com (dhcp-1-105.brq.redhat.com [10.34.1.105])
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id r9ABnk7s018574;
+        Thu, 10 Oct 2013 07:49:48 -0400
+Received: by tranklukator.brq.redhat.com (nbSMTP-1.00) for uid 500
+        oleg@redhat.com; Thu, 10 Oct 2013 13:43:17 +0200 (CEST)
+Date:   Thu, 10 Oct 2013 13:43:14 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+        Anton Arapov <anton@redhat.com>,
+        Ananth N Mavinakayanahalli <ananth@in.ibm.com>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] UPROBES: Remove useless __weak attribute
+Message-ID: <20131010114314.GA24592@redhat.com>
+References: <20131009120809.GN1615@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1381292648.645.259.camel@pasglop>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.25
-Return-Path: <agordeev@redhat.com>
+In-Reply-To: <20131009120809.GN1615@linux-mips.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
+Return-Path: <oleg@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38299
+X-archive-position: 38300
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agordeev@redhat.com
+X-original-sender: oleg@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,46 +49,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Oct 09, 2013 at 03:24:08PM +1100, Benjamin Herrenschmidt wrote:
-> On Tue, 2013-10-08 at 20:55 -0700, H. Peter Anvin wrote:
-> > Why not add a minimum number to pci_enable_msix(), i.e.:
-> > 
-> > pci_enable_msix(pdev, msix_entries, nvec, minvec)
-> > 
-> > ... which means "nvec" is the number of interrupts *requested*, and
-> > "minvec" is the minimum acceptable number (otherwise fail).
+On 10/09, Ralf Baechle wrote:
+>
+> <linux/uprobes.h> declares arch_uprobe_skip_sstep() as a weak function.
+> But as there is no definition of generic version so when trying to build
+> uprobes for an architecture that doesn't yet have a arch_uprobe_skip_sstep()
+> implementation, the vmlinux will try to call arch_uprobe_skip_sstep()
+> somehwere in Stupidhistan leading to a system crash.  We rather want a
+> proper link error so remove arch_uprobe_skip_sstep().
 > 
-> Which is exactly what Ben (the other Ben :-) suggested and that I
-> supports...
-
-Ok, this suggestion sounded in one or another form by several people.
-What about name it pcim_enable_msix_range() and wrap in couple more
-helpers to complete an API:
-
-int pcim_enable_msix_range(pdev, msix_entries, nvec, minvec);
-	<0 - error code
-	>0 - number of MSIs allocated, where minvec >= result <= nvec
-
-int pcim_enable_msix(pdev, msix_entries, nvec);
-	<0 - error code
-	>0 - number of MSIs allocated, where 1 >= result <= nvec 
-
-int pcim_enable_msix_exact(pdev, msix_entries, nvec);
-	<0 - error code
-	>0 - number of MSIs allocated, where result == nvec
-
-The latter's return value seems odd, but I can not help to make
-it consistent with the first two.
-
-
-(Sorry if you see this message twice - my MUA seems struggle with one of CC).
-
-> Cheers,
-> Ben.
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 > 
+>  include/linux/uprobes.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
+> index 2a9d75d..cec7397 100644
+> --- a/include/linux/uprobes.h
+> +++ b/include/linux/uprobes.h
+> @@ -124,7 +124,7 @@ extern int uprobe_post_sstep_notifier(struct pt_regs *regs);
+>  extern int uprobe_pre_sstep_notifier(struct pt_regs *regs);
+>  extern void uprobe_notify_resume(struct pt_regs *regs);
+>  extern bool uprobe_deny_signal(void);
+> -extern bool __weak arch_uprobe_skip_sstep(struct arch_uprobe *aup, struct pt_regs *regs);
+> +extern bool arch_uprobe_skip_sstep(struct arch_uprobe *aup, struct pt_regs *regs);
 
--- 
-Regards,
-Alexander Gordeev
-agordeev@redhat.com
+Agreed. I'll take this patch, thanks.
+
+Oleg.

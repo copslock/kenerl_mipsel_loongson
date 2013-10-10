@@ -1,35 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Oct 2013 01:16:28 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:40489 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6868768Ab3JJXQ0wnnpo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Oct 2013 01:16:26 +0200
-Received: from localhost (c-76-28-172-123.hsd1.wa.comcast.net [76.28.172.123])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id CEB9098E;
-        Thu, 10 Oct 2013 23:16:18 +0000 (UTC)
-Date:   Thu, 10 Oct 2013 16:16:17 -0700
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        linux-mips@linux-mips.org, stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: stack protector: Fix per-task canary switch
-Message-ID: <20131010231617.GI4301@kroah.com>
-References: <1381144466-19736-1-git-send-email-james.hogan@imgtec.com>
- <20131007124859.GF3098@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Oct 2013 01:17:50 +0200 (CEST)
+Received: from mouse.start.ca ([64.140.120.56]:57981 "EHLO mouse.start.ca"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6868768Ab3JJXRrdEUhS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 11 Oct 2013 01:17:47 +0200
+Received: from mail.rtr.ca (dhcp-24-53-240-101.cable.user.start.ca [24.53.240.101])
+        by mouse.start.ca (8.14.3/8.13.5) with ESMTP id r9ANHKoP002764;
+        Thu, 10 Oct 2013 19:17:22 -0400
+Received: by mail.rtr.ca (Postfix, from userid 1003)
+        id 2D13D340665; Thu, 10 Oct 2013 19:17:19 -0400 (EDT)
+Received: from [10.0.0.7] (peppy.localnet [10.0.0.7])
+        by mail.rtr.ca (Postfix) with ESMTP id DA0483402D4;
+        Thu, 10 Oct 2013 19:17:18 -0400 (EDT)
+Message-ID: <5257357E.8080506@start.ca>
+Date:   Thu, 10 Oct 2013 19:17:18 -0400
+From:   Mark Lord <kernel@start.ca>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20131007124859.GF3098@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <gregkh@linuxfoundation.org>
+To:     Alexander Gordeev <agordeev@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>
+CC:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Michael Ellerman <michael@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
+        linux-s390@vger.kernel.org, x86@kernel.org,
+        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
+        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
+        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
+        linux-driver@qlogic.com,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH RFC 00/77] Re-design MSI/MSI-X interrupts enablement pattern
+References: <cover.1380703262.git.agordeev@redhat.com> <5254D397.9030307@zytor.com> <1381292648.645.259.camel@pasglop> <20131010101704.GC11874@dhcp-26-207.brq.redhat.com> <5256D5AB.4050105@zytor.com> <20131010180704.GA15719@dhcp-26-207.brq.redhat.com>
+In-Reply-To: <20131010180704.GA15719@dhcp-26-207.brq.redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <kernel@start.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38304
+X-archive-position: 38305
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: kernel@start.ca
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,19 +62,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 07, 2013 at 02:48:59PM +0200, Ralf Baechle wrote:
-> On Mon, Oct 07, 2013 at 12:14:26PM +0100, James Hogan wrote:
-> 
-> > Ralf: This is a regression in v3.11, so please consider for v3.12.
-> 
-> Applied, will send to Linus with the next pull request.
+Just to help us all understand "the loop" issue..
 
-Which would be in time for 3.12-final, right?
+Here's an example of driver code which uses the existing MSI-X interfaces,
+for a device which can work with either 16, 8, 4, 2, or 1 MSI-X interrupt.
+This is from a new driver I'm working on right now:
 
-> stable folks - please apply to 3.12-stable.
 
-There is no 3.12-stable yet, as 3.12-final isn't out yet.
+static int xx_alloc_msix_irqs (struct xx_dev *dev, int nvec)
+{
+        xx_disable_all_irqs(dev);
+        do {
+                if (nvec < 2)
+                        xx_prep_for_1_msix_vector(dev);
+                else if (nvec < 4)
+                        xx_prep_for_2_msix_vectors(dev);
+                else if (nvec < 8)
+                        xx_prep_for_4_msix_vectors(dev);
+                else if (nvec < 16)
+                        xx_prep_for_8_msix_vectors(dev);
+                else
+                        xx_prep_for_16_msix_vectors(dev);
+                nvec = pci_enable_msix(dev->pdev, dev->irqs, dev->num_vectors);
+        } while (nvec > 0);
 
-Confused,
-
-greg k-h
+        if (nvec) {
+                kerr(dev->name, "pci_enable_msix() failed, err=%d", nvec);
+                dev->num_vectors = 0;
+                return nvec;
+        }
+        return 0;       /* success */
+}

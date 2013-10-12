@@ -1,52 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Oct 2013 00:07:10 +0200 (CEST)
-Received: from mail-ie0-f181.google.com ([209.85.223.181]:40826 "EHLO
-        mail-ie0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822305Ab3JKWHIKxzz7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Oct 2013 00:07:08 +0200
-Received: by mail-ie0-f181.google.com with SMTP id tp5so9383018ieb.40
-        for <multiple recipients>; Fri, 11 Oct 2013 15:07:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=F6ZarSfOMrr+muZwHtWnAUmKsxTDUDLnRHo7fb8EGP0=;
-        b=cu1RF3jnNNhlFZxsRJBhj2ezBG7Pvn4lAcwXg2HBRyxTo4J2pfyJhJHjKjG9bkWBZM
-         RqbUNmvMitSbcUEECePG5jQsUgrlbWj5+tIUNMGS8zl8YP9/fW4SvKSh1cmuLK+bB2sf
-         5J+aGs0wrZRX/X+Ug+cbGRQ34hQijbzWF8fTC2uPPsCXKi1TRxUSnajrhwD0NckCfb9K
-         kJpYsUlqQt1/fI5/E7TaIy2xKZHiaMDyjIAI0ACpwtOlHmk3LEQeDoqcpj0VVwRj6QBA
-         Nr5twPDffyI/A2fSCtzvBVjP6EaNHgBFQSgxYVKjUaFbtJNKTxTjXzeQD+XXzu8oTzdC
-         SoKQ==
-X-Received: by 10.43.77.212 with SMTP id zj20mr12948632icb.5.1381529221547;
-        Fri, 11 Oct 2013 15:07:01 -0700 (PDT)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id p5sm5050192igj.10.1969.12.31.16.00.00
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 11 Oct 2013 15:07:00 -0700 (PDT)
-Message-ID: <52587681.8090703@gmail.com>
-Date:   Fri, 11 Oct 2013 15:06:57 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Oct 2013 15:08:54 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:55458 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822995Ab3JLNIw0M54Q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Oct 2013 15:08:52 +0200
+Date:   Sat, 12 Oct 2013 14:08:52 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Joe Perches <joe@perches.com>
+cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 2/2] framebuffer: Remove pmag-aa-fb
+In-Reply-To: <alpine.LFD.2.03.1309201946430.8379@linux-mips.org>
+Message-ID: <alpine.LFD.2.03.1310121308310.10951@linux-mips.org>
+References: <c94f3e342947923f20d4c12932f382aa5200511b.1379641901.git.joe@perches.com>         <6f500d88eb23fd9a4cfc5583f5ca17bc5f58fe24.1379641901.git.joe@perches.com>         <CAMuHMdW6R5qTJ0uvsUUaYBZAqFcNshPsXeMbz5hwqq5UOkJr-g@mail.gmail.com>        
+ <alpine.LFD.2.03.1309201907380.8379@linux-mips.org> <1379702587.2301.12.camel@joe-AO722> <alpine.LFD.2.03.1309201946430.8379@linux-mips.org>
+User-Agent: Alpine 2.03 (LFD 1266 2009-07-14)
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Anton Arapov <anton@redhat.com>,
-        Ananth N Mavinakayanahalli <ananth@in.ibm.com>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] UPROBES: Remove useless __weak attribute
-References: <20131009120809.GN1615@linux-mips.org> <20131011005128.GA2199@linux.vnet.ibm.com> <20131011122407.GO1615@linux-mips.org>
-In-Reply-To: <20131011122407.GO1615@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: TEXT/PLAIN; charset=ISO-8859-7
+Content-Transfer-Encoding: 8BIT
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38312
+X-archive-position: 38313
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,25 +42,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/11/2013 05:24 AM, Ralf Baechle wrote:
-> On Fri, Oct 11, 2013 at 06:21:28AM +0530, Srikar Dronamraju wrote:
->
->> Will be nice to have another arch(mips) support for uprobes.
->
-> It's basically ready to be merged - but it's triggering issues elsewhere
-> in the kernel which I have to resolve first.
->
-> The short version is that the memory special mapping created by uprobe
-> with VM_EXEC but not VM_READ permissions is not working but it's working
-> if I add VM_READ.  That should not be necessary so something deep down
-> in the guts of arch/mips is wrong.
->
+Joe,
 
-Weird, I have a testcase that explicitly tests VM_EXEC and !VM_READ that 
-works.
+ Just a quick update.
 
-Do you have more information about the failure, I can look at it in the 
-simulator and see where it goes wrong.
+On Sun, 22 Sep 2013, Maciej W. Rozycki wrote:
 
-Thanks,
-David Daney
+>  As to the PMAG-AA board itself -- well, this is indeed a very rare item, 
+> but I happen to have a specimen.  To support it properly I'll first have 
+> to wire it to a monitor somehow though; signalling is standard, 1.0 Vpp 
+> composite monochrome, but what looks to me like a type F connector is used 
+> for video output, quite unusually for a graphics card (and for DEC itself 
+> too as 3W3 was their usual video socket).  It looks to me like converting 
+> it to BNC and then a standard DE-15 VGA connector (via the green line) 
+> will be the easiest way to get image produced by the adapter on a 
+> contemporary monitor (sync-on-green required of course, but with LCD 
+> devices being the norm now that seems less of a problem these days).
+
+ So more weirdly even that's actually a TNC connector rather than a type F 
+one.  I've got a suitable TNC->BNC adapter now (although regrettably such 
+adapters seem to be available as 50Ù parts only; hopefully any distortion 
+won't be too significant or maybe my digital monitor will even be able to 
+compensate it, but at £1.76 (~$2.64) per item it's certainly worth trying 
+before resorting to the original DEC TNC->BNC cable still apparently 
+available from second-hand part suppliers at ~£80/$120 per a mere 1ft 
+part) and a BNC->DE-15 cable is on the way.
+
+> > --- a/drivers/video/pmag-aa-fb.c
+> > +++ b/drivers/video/pmag-aa-fb.c
+> > @@ -459,7 +459,7 @@ static int __init init_one(int slot)
+> >  		return -EINVAL;
+> >  
+> >  	printk(KERN_INFO "fb%d: %s frame buffer in TC slot %d\n",
+> > -	       GET_FB_IDX(ip->info.node), ip->info.modename, slot);
+> > +	       ip->info.node, ip->info.modename, slot);
+> >  
+> >  	return 0;
+> >  }
+> 
+>  Thanks, but the changes required are actually much more than that -- the 
+> driver has never been converted to the modern TURBOchannel API.  I have 
+> now dug out an old patch I was working on back in 2006 to convert this 
+> driver as well as drivers/video/maxinefb.c.  I'll try to complete the two 
+> drivers as soon as possible (unfortunately I can't test the latter at all; 
+> it's for an onboard graphics adapter of another DECstation model), 
+> although I now remember the main reason I didn't complete them back then 
+> was they used an old internal API that was removed and no suitable 
+> replacement provided.  I need to investigate again what that actually was 
+> though (hw cursor probably).
+
+ So I think I've got all the basic stuff covered now, including a change 
+similar to your proposal as well as a conversion to the driver model/new 
+TURBOchannel support infrastructure.  But what I remembered is actually 
+right, the issue is wiring hardware cursor support into fbcon.  The driver 
+uses its own display_switch structure with its own aafbcon_cursor handler 
+to use the twin onboard Bt431 chips for cursor generation (there's also 
+aafbcon_set_font that pokes at the Bt431s for cursor dimension changes).  
+I need to figure out what the best way will be to make the fbcon subsystem 
+support such an arrangement and that'll take me a little bit yet, so 
+please be patient.
+
+ Note that the board is weird enough to have a 1-bit (true monochrome) 
+graphics plane, however the Bt455 used by the MX graphics adapter for 
+screen image generation is a 4-bit grey-scale video RAMDAC (only the LSB 
+inputs of its pixel port are wired to the graphics plane) and the twin 
+Bt431s use the overlay plane to produce a 2-bit grey-scale cursor.  So we 
+do want to use the hardware cursor to be able to make it prominent among 
+the characters displayed throughout the screen and a software-generated 
+cursor cannot really substitute what hardware provides.
+
+  Maciej

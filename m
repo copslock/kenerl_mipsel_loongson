@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2013 15:16:33 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:1297 "EHLO mms1.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2013 15:17:09 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:2808 "EHLO mms3.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816642Ab3JNNPqdvBn2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6823088Ab3JNNPqkxKe2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 14 Oct 2013 15:15:46 +0200
-Received: from [10.9.208.57] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Mon, 14 Oct 2013 06:15:23 -0700
-X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+Received: from [10.9.208.57] by mms3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Mon, 14 Oct 2013 06:15:12 -0700
+X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
  IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Mon, 14 Oct 2013 06:15:25 -0700
+ Server (TLS) id 14.1.438.0; Mon, 14 Oct 2013 06:15:22 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Mon, 14 Oct 2013 06:15:24 -0700
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
+ Server id 14.1.438.0; Mon, 14 Oct 2013 06:15:22 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id EEE4E246A6; Mon, 14
- Oct 2013 06:15:23 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 4B04C246A6; Mon, 14
+ Oct 2013 06:15:21 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org
 cc:     "Jayachandran C" <jchandra@broadcom.com>, ralf@linux-mips.org
-Subject: [PATCH 11/18] MIPS: Netlogic: SYS block updates of XLP9XX
-Date:   Mon, 14 Oct 2013 18:51:07 +0530
-Message-ID: <1381756874-22616-12-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH 09/18] MIPS: Netlogic: update iomap.h for XLP9XX
+Date:   Mon, 14 Oct 2013 18:51:05 +0530
+Message-ID: <1381756874-22616-10-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1381756874-22616-1-git-send-email-jchandra@broadcom.com>
 References: <1381756874-22616-1-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7E4531E14FK1415226-01-01
+X-WSS-ID: 7E4531EA2E41366911-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38324
+X-archive-position: 38325
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,232 +50,116 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add the SYS block registers for XLP9XX, most of them have changed.
-The wakeup sequence has been updated to set the coherent mode from
-the main thread rather than the woken up thread.
+Most IO block offsets have changed in XLP9XX. Update iomap.h to add the
+new addresses of different SoC blocks like PIC, SYS, UART etc. that are
+needed by the base code.
+
+On XLP9xx, the SoC blocks of other nodes are seen on a PCI bus
+corresponding to the node. Update iomap code to reflect this.
 
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/include/asm/netlogic/xlp-hal/sys.h |   18 +++++-
- arch/mips/netlogic/common/reset.S            |    8 +++
- arch/mips/netlogic/xlp/nlm_hal.c             |    5 +-
- arch/mips/netlogic/xlp/setup.c               |    5 +-
- arch/mips/netlogic/xlp/wakeup.c              |   78 +++++++++++++++++---------
- 5 files changed, 86 insertions(+), 28 deletions(-)
+ arch/mips/include/asm/mach-netlogic/multi-node.h |    1 +
+ arch/mips/include/asm/netlogic/xlp-hal/iomap.h   |   45 +++++++++++++++++++++-
+ arch/mips/netlogic/xlp/nlm_hal.c                 |    4 ++
+ 3 files changed, 48 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/sys.h b/arch/mips/include/asm/netlogic/xlp-hal/sys.h
-index fcf2833..d9b107f 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/sys.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/sys.h
-@@ -147,13 +147,29 @@
- #define SYS_SYS_PLL_MEM_REQ			0x2a3
- #define SYS_PLL_MEM_STAT			0x2a4
+diff --git a/arch/mips/include/asm/mach-netlogic/multi-node.h b/arch/mips/include/asm/mach-netlogic/multi-node.h
+index beeb36b..df9869d 100644
+--- a/arch/mips/include/asm/mach-netlogic/multi-node.h
++++ b/arch/mips/include/asm/mach-netlogic/multi-node.h
+@@ -59,6 +59,7 @@ struct nlm_soc_info {
+ 	uint64_t	picbase;	/* PIC block base */
+ 	spinlock_t	piclock;	/* lock for PIC access */
+ 	cpumask_t	cpumask;	/* logical cpu mask for node */
++	unsigned int	socbus;
+ };
  
-+/* Registers changed on 9XX */
-+#define SYS_9XX_POWER_ON_RESET_CFG		0x00
-+#define SYS_9XX_CHIP_RESET			0x01
-+#define SYS_9XX_CPU_RESET			0x02
-+#define SYS_9XX_CPU_NONCOHERENT_MODE		0x03
+ extern struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
+index 55eee77..92fd866 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
+@@ -48,8 +48,10 @@
+ #define XLP_IO_SIZE			(64 << 20)	/* ECFG space size */
+ #define XLP_IO_PCI_HDRSZ		0x100
+ #define XLP_IO_DEV(node, dev)		((dev) + (node) * 8)
+-#define XLP_HDR_OFFSET(node, bus, dev, fn)	(((bus) << 20) | \
+-				((XLP_IO_DEV(node, dev)) << 15) | ((fn) << 12))
++#define XLP_IO_PCI_OFFSET(b, d, f)	(((b) << 20) | ((d) << 15) | ((f) << 12))
 +
-+/* XLP 9XX fuse block registers */
-+#define FUSE_9XX_DEVCFG6			0xc6
++#define XLP_HDR_OFFSET(node, bus, dev, fn) \
++		XLP_IO_PCI_OFFSET(bus, XLP_IO_DEV(node, dev), fn)
+ 
+ #define XLP_IO_BRIDGE_OFFSET(node)	XLP_HDR_OFFSET(node, 0, 0, 0)
+ /* coherent inter chip */
+@@ -109,6 +111,36 @@
+ #define XLP_IO_MMC_OFFSET(node, slot)	\
+ 		((XLP_IO_SD_OFFSET(node))+(slot*0x100)+XLP_IO_PCI_HDRSZ)
+ 
++/* Things have changed drastically in XLP 9XX */
++#define XLP9XX_HDR_OFFSET(n, d, f)	\
++			XLP_IO_PCI_OFFSET(xlp9xx_get_socbus(n), d, f)
 +
- #ifndef __ASSEMBLY__
- 
- #define nlm_read_sys_reg(b, r)		nlm_read_reg(b, r)
- #define nlm_write_sys_reg(b, r, v)	nlm_write_reg(b, r, v)
--#define nlm_get_sys_pcibase(node) nlm_pcicfg_base(XLP_IO_SYS_OFFSET(node))
-+#define nlm_get_sys_pcibase(node)	nlm_pcicfg_base(cpu_is_xlp9xx() ? \
-+		XLP9XX_IO_SYS_OFFSET(node) : XLP_IO_SYS_OFFSET(node))
- #define nlm_get_sys_regbase(node) (nlm_get_sys_pcibase(node) + XLP_IO_PCI_HDRSZ)
- 
-+/* XLP9XX fuse block */
-+#define nlm_get_fuse_pcibase(node)	\
-+			nlm_pcicfg_base(XLP9XX_IO_FUSE_OFFSET(node))
-+#define nlm_get_fuse_regbase(node)	\
-+			(nlm_get_fuse_pcibase(node) + XLP_IO_PCI_HDRSZ)
++#define XLP9XX_IO_BRIDGE_OFFSET(node)	XLP_IO_PCI_OFFSET(0, 0, node)
++#define XLP9XX_IO_PIC_OFFSET(node)	XLP9XX_HDR_OFFSET(node, 2, 0)
++#define XLP9XX_IO_UART_OFFSET(node)	XLP9XX_HDR_OFFSET(node, 2, 2)
++#define XLP9XX_IO_SYS_OFFSET(node)	XLP9XX_HDR_OFFSET(node, 6, 0)
++#define XLP9XX_IO_FUSE_OFFSET(node)	XLP9XX_HDR_OFFSET(node, 6, 1)
++#define XLP9XX_IO_JTAG_OFFSET(node)	XLP9XX_HDR_OFFSET(node, 6, 4)
 +
- unsigned int nlm_get_pic_frequency(int node);
- #endif
- #endif
-diff --git a/arch/mips/netlogic/common/reset.S b/arch/mips/netlogic/common/reset.S
-index 57eb7a1..dfbf94d 100644
---- a/arch/mips/netlogic/common/reset.S
-+++ b/arch/mips/netlogic/common/reset.S
-@@ -159,6 +159,13 @@ FEXPORT(nlm_reset_entry)
- 	nop
- 
- 1:	/* Entry point on core wakeup */
-+	mfc0	t0, CP0_EBASE, 0	/* processor ID */
-+	andi	t0, 0xff00
-+	li	t1, 0x1500		/* XLP 9xx */
-+	beq	t0, t1, 2f		/* does not need to set coherent */
-+	nop
++#define XLP9XX_IO_PCIE_OFFSET(node, i)	XLP9XX_HDR_OFFSET(node, 1, i)
++#define XLP9XX_IO_PCIE0_OFFSET(node)	XLP9XX_HDR_OFFSET(node, 1, 0)
++#define XLP9XX_IO_PCIE2_OFFSET(node)	XLP9XX_HDR_OFFSET(node, 1, 2)
++#define XLP9XX_IO_PCIE3_OFFSET(node)	XLP9XX_HDR_OFFSET(node, 1, 3)
 +
-+	/* set bit in SYS coherent register for the core */
- 	mfc0	t0, CP0_EBASE, 1
- 	mfc0	t1, CP0_EBASE, 1
- 	srl	t1, 5
-@@ -180,6 +187,7 @@ FEXPORT(nlm_reset_entry)
- 	lw	t1, 0(t2)
- 	sync
++/* XLP9xx USB block */
++#define XLP9XX_IO_USB_OFFSET(node, i)		XLP9XX_HDR_OFFSET(node, 4, i)
++#define XLP9XX_IO_USB_XHCI0_OFFSET(node)	XLP9XX_HDR_OFFSET(node, 4, 1)
++#define XLP9XX_IO_USB_XHCI1_OFFSET(node)	XLP9XX_HDR_OFFSET(node, 4, 2)
++
++/* XLP9XX on-chip SATA controller */
++#define XLP9XX_IO_SATA_OFFSET(node)		XLP9XX_HDR_OFFSET(node, 3, 2)
++
++#define XLP9XX_IO_NOR_OFFSET(node)		XLP9XX_HDR_OFFSET(node, 7, 0)
++#define XLP9XX_IO_NAND_OFFSET(node)		XLP9XX_HDR_OFFSET(node, 7, 1)
++#define XLP9XX_IO_SPI_OFFSET(node)		XLP9XX_HDR_OFFSET(node, 7, 2)
++/* SD flash */
++#define XLP9XX_IO_MMCSD_OFFSET(node)		XLP9XX_HDR_OFFSET(node, 7, 3)
++
+ /* PCI config header register id's */
+ #define XLP_PCI_CFGREG0			0x00
+ #define XLP_PCI_CFGREG1			0x01
+@@ -161,6 +193,15 @@
+ #define nlm_read_pci_reg(b, r)		nlm_read_reg(b, r)
+ #define nlm_write_pci_reg(b, r, v)	nlm_write_reg(b, r, v)
  
-+2:
- 	/* Configure LSU on Non-0 Cores. */
- 	xlp_config_lsu
- 	/* FALL THROUGH */
++static inline int xlp9xx_get_socbus(int node)
++{
++	uint64_t socbridge;
++
++	if (node == 0)
++		return 1;
++	socbridge = nlm_pcicfg_base(XLP9XX_IO_BRIDGE_OFFSET(node));
++	return (nlm_read_pci_reg(socbridge, 0x6) >> 8) & 0xff;
++}
+ #endif /* !__ASSEMBLY */
+ 
+ #endif /* __NLM_HAL_IOMAP_H__ */
 diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
-index 2d31cf1..61f325d 100644
+index 5693021..5f191f5 100644
 --- a/arch/mips/netlogic/xlp/nlm_hal.c
 +++ b/arch/mips/netlogic/xlp/nlm_hal.c
-@@ -174,7 +174,10 @@ unsigned int nlm_get_core_frequency(int node, int core)
- 	uint64_t num, sysbase;
- 
- 	sysbase = nlm_get_node(node)->sysbase;
--	rstval = nlm_read_sys_reg(sysbase, SYS_POWER_ON_RESET_CFG);
+@@ -57,6 +57,10 @@ void nlm_node_init(int node)
+ 	nodep->sysbase = nlm_get_sys_regbase(node);
+ 	nodep->picbase = nlm_get_pic_regbase(node);
+ 	nodep->ebase = read_c0_ebase() & (~((1 << 12) - 1));
 +	if (cpu_is_xlp9xx())
-+		rstval = nlm_read_sys_reg(sysbase, SYS_9XX_POWER_ON_RESET_CFG);
++		nodep->socbus = xlp9xx_get_socbus(node);
 +	else
-+		rstval = nlm_read_sys_reg(sysbase, SYS_POWER_ON_RESET_CFG);
- 	if (cpu_is_xlpii()) {
- 		num = 1000000ULL * (400 * 3 + 100 * (rstval >> 26));
- 		denom = 3;
-diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
-index fb4dd71..a3c1a95 100644
---- a/arch/mips/netlogic/xlp/setup.c
-+++ b/arch/mips/netlogic/xlp/setup.c
-@@ -56,7 +56,10 @@ static void nlm_linux_exit(void)
- {
- 	uint64_t sysbase = nlm_get_node(0)->sysbase;
- 
--	nlm_write_sys_reg(sysbase, SYS_CHIP_RESET, 1);
-+	if (cpu_is_xlp9xx())
-+		nlm_write_sys_reg(sysbase, SYS_9XX_CHIP_RESET, 1);
-+	else
-+		nlm_write_sys_reg(sysbase, SYS_CHIP_RESET, 1);
- 	for ( ; ; )
- 		cpu_wait();
++		nodep->socbus = 0;
+ 	spin_lock_init(&nodep->piclock);
  }
-diff --git a/arch/mips/netlogic/xlp/wakeup.c b/arch/mips/netlogic/xlp/wakeup.c
-index 5337ff4..e4bcb3a 100644
---- a/arch/mips/netlogic/xlp/wakeup.c
-+++ b/arch/mips/netlogic/xlp/wakeup.c
-@@ -54,7 +54,7 @@
- static int xlp_wakeup_core(uint64_t sysbase, int node, int core)
- {
- 	uint32_t coremask, value;
--	int count;
-+	int count, resetreg;
  
- 	coremask = (1 << core);
- 
-@@ -65,12 +65,24 @@ static int xlp_wakeup_core(uint64_t sysbase, int node, int core)
- 		nlm_write_sys_reg(sysbase, SYS_CORE_DFS_DIS_CTRL, value);
- 	}
- 
-+	/* On 9XX, mark coherent first */
-+	if (cpu_is_xlp9xx()) {
-+		value = nlm_read_sys_reg(sysbase, SYS_9XX_CPU_NONCOHERENT_MODE);
-+		value &= ~coremask;
-+		nlm_write_sys_reg(sysbase, SYS_9XX_CPU_NONCOHERENT_MODE, value);
-+	}
-+
- 	/* Remove CPU Reset */
--	value = nlm_read_sys_reg(sysbase, SYS_CPU_RESET);
-+	resetreg = cpu_is_xlp9xx() ? SYS_9XX_CPU_RESET : SYS_CPU_RESET;
-+	value = nlm_read_sys_reg(sysbase, resetreg);
- 	value &= ~coremask;
--	nlm_write_sys_reg(sysbase, SYS_CPU_RESET, value);
-+	nlm_write_sys_reg(sysbase, resetreg, value);
-+
-+	/* We are done on 9XX */
-+	if (cpu_is_xlp9xx())
-+		return 1;
- 
--	/* Poll for CPU to mark itself coherent */
-+	/* Poll for CPU to mark itself coherent on other type of XLP */
- 	count = 100000;
- 	do {
- 		value = nlm_read_sys_reg(sysbase, SYS_CPU_NONCOHERENT_MODE);
-@@ -98,35 +110,50 @@ static int wait_for_cpus(int cpu, int bootcpu)
- static void xlp_enable_secondary_cores(const cpumask_t *wakeup_mask)
- {
- 	struct nlm_soc_info *nodep;
--	uint64_t syspcibase;
-+	uint64_t syspcibase, fusebase;
- 	uint32_t syscoremask, mask, fusemask;
- 	int core, n, cpu;
- 
- 	for (n = 0; n < NLM_NR_NODES; n++) {
--		syspcibase = nlm_get_sys_pcibase(n);
--		if (nlm_read_reg(syspcibase, 0) == 0xffffffff)
--			break;
-+		if (n != 0) {
-+			/* check if node exists and is online */
-+			if (cpu_is_xlp9xx()) {
-+				int b = xlp9xx_get_socbus(n);
-+				pr_info("Node %d SoC PCI bus %d.\n", n, b);
-+				if (b == 0)
-+					break;
-+			} else {
-+				syspcibase = nlm_get_sys_pcibase(n);
-+				if (nlm_read_reg(syspcibase, 0) == 0xffffffff)
-+					break;
-+			}
-+			nlm_node_init(n);
-+		}
- 
- 		/* read cores in reset from SYS */
--		if (n != 0)
--			nlm_node_init(n);
- 		nodep = nlm_get_node(n);
- 
--		fusemask = nlm_read_sys_reg(nodep->sysbase,
--					SYS_EFUSE_DEVICE_CFG_STATUS0);
--		switch (read_c0_prid() & 0xff00) {
--		case PRID_IMP_NETLOGIC_XLP3XX:
--			mask = 0xf;
--			break;
--		case PRID_IMP_NETLOGIC_XLP2XX:
--			mask = 0x3;
--			break;
--		case PRID_IMP_NETLOGIC_XLP8XX:
--			mask = 0xff;
--			break;
--		default:
--			mask = 0xff;
--			break;
-+		if (cpu_is_xlp9xx()) {
-+			fusebase = nlm_get_fuse_regbase(n);
-+			fusemask = nlm_read_reg(fusebase, FUSE_9XX_DEVCFG6);
-+			mask = 0xfffff;
-+		} else {
-+			fusemask = nlm_read_sys_reg(nodep->sysbase,
-+						SYS_EFUSE_DEVICE_CFG_STATUS0);
-+			switch (read_c0_prid() & 0xff00) {
-+			case PRID_IMP_NETLOGIC_XLP3XX:
-+				mask = 0xf;
-+				break;
-+			case PRID_IMP_NETLOGIC_XLP2XX:
-+				mask = 0x3;
-+				break;
-+			case PRID_IMP_NETLOGIC_XLP8XX:
-+				mask = 0xff;
-+				break;
-+			default:
-+				mask = 0xff;
-+				break;
-+			}
- 		}
- 
- 		/*
-@@ -139,6 +166,7 @@ static void xlp_enable_secondary_cores(const cpumask_t *wakeup_mask)
- 		if (n == 0)
- 			nodep->coremask = 1;
- 
-+		pr_info("Node %d - SYS/FUSE coremask %x\n", n, syscoremask);
- 		for (core = 0; core < NLM_CORES_PER_NODE; core++) {
- 			/* we will be on node 0 core 0 */
- 			if (n == 0 && core == 0)
 -- 
 1.7.9.5

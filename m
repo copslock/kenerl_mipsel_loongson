@@ -1,37 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2013 15:17:54 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:1192 "EHLO mms1.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2013 15:18:15 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:1328 "EHLO mms1.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817329Ab3JNNPr53clx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 Oct 2013 15:15:47 +0200
+        id S6822133Ab3JNNPslEbjX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 Oct 2013 15:15:48 +0200
 Received: from [10.9.208.53] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Mon, 14 Oct 2013 06:15:10 -0700
+ SMTP Relay (Email Firewall v6.5)); Mon, 14 Oct 2013 06:15:27 -0700
 X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
+Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
  IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Mon, 14 Oct 2013 06:15:11 -0700
+ Server (TLS) id 14.1.438.0; Mon, 14 Oct 2013 06:15:28 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
- Server id 14.1.438.0; Mon, 14 Oct 2013 06:15:12 -0700
+ IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
+ Server id 14.1.438.0; Mon, 14 Oct 2013 06:15:28 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 88784246DB; Mon, 14
- Oct 2013 06:15:06 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 00151246A8; Mon, 14
+ Oct 2013 06:15:27 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org
 cc:     "Jayachandran C" <jchandra@broadcom.com>, ralf@linux-mips.org
-Subject: [PATCH 00/18] Broadcom XLP Updates
-Date:   Mon, 14 Oct 2013 18:50:56 +0530
-Message-ID: <1381756874-22616-1-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH 14/18] MIPS: Netlogic: Add cpu to node mapping for
+ XLP9XX
+Date:   Mon, 14 Oct 2013 18:51:10 +0530
+Message-ID: <1381756874-22616-15-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1381756874-22616-1-git-send-email-jchandra@broadcom.com>
+References: <1381756874-22616-1-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7E4531D44FK1415110-01-01
+X-WSS-ID: 7E4531E54FK1415288-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38327
+X-archive-position: 38328
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,77 +51,205 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The main change is to support the XLP9XX processor family:
-http://www.broadcom.com/products/Processors/Enterprise/XLP900-Series
+XLP9XX has 20 cores per node, opposed to 8 on earlier XLP8XX.
+Update code that calculates node id from cpu id to handle this.
 
-The other changes (patches 1-7) are updates to the existing XLP code,
-changes are to 
-* add MSI/MSI-X support for XLP PCIe interface,
-* add topology.h for XLP,
-* do some few minor fixes and cleanups.
-
-JC.
-
-Ganesan Ramalingam (1):
-  MIPS: Netlogic: XLP9XX USB support
-
-Jayachandran C (16):
-  MIPS: Netlogic: Add MSI support for XLP
-  MIPS: Netlogic: Add topology.h for XLP family
-  MIPS: Netlogic: Some cleanups for assembly code
-  MIPS: Netlogic: Add macro for node present
-  MIPS: Netlogic: Get coremask from FUSE register
-  MIPS: Netlogic: Core wakeup improvements
-  MIPS: Netlogic: Identify XLP 9XX chip
-  MIPS: Netlogic: update iomap.h for XLP9XX
-  MIPS: Netlogic: XLP9XX PIC updates
-  MIPS: Netlogic: SYS block updates of XLP9XX
-  MIPS: Netlogic: XLP9XX UART offset
-  MIPS: Netlogic: XLP9XX bridge and DRAM code
-  MIPS: Netlogic: Add cpu to node mapping for XLP9XX
-  MIPS: PCI: Netlogic XLP9XX support
-  MIPS: Netlogic: XLP9XX PIC OF support
-  MIPS: Netlogic: Add default DTB for XLP9XX SoC
-
-Yonghong Song (1):
-  MIPS: Netlogic: L1D cacheflush before thread enable on XLPII
-
- arch/mips/Kconfig                                |    1 +
- arch/mips/include/asm/cpu.h                      |    1 +
- arch/mips/include/asm/mach-netlogic/irq.h        |    3 +-
- arch/mips/include/asm/mach-netlogic/multi-node.h |   33 +-
- arch/mips/include/asm/mach-netlogic/topology.h   |   20 +
- arch/mips/include/asm/netlogic/common.h          |   24 +-
- arch/mips/include/asm/netlogic/mips-extns.h      |    7 +-
- arch/mips/include/asm/netlogic/xlp-hal/bridge.h  |   69 ++-
- arch/mips/include/asm/netlogic/xlp-hal/iomap.h   |   48 ++-
- arch/mips/include/asm/netlogic/xlp-hal/pcibus.h  |   41 +-
- arch/mips/include/asm/netlogic/xlp-hal/pic.h     |   77 ++--
- arch/mips/include/asm/netlogic/xlp-hal/sys.h     |   18 +-
- arch/mips/include/asm/netlogic/xlp-hal/uart.h    |    3 +-
- arch/mips/include/asm/netlogic/xlp-hal/xlp.h     |   38 +-
- arch/mips/kernel/cpu-probe.c                     |    1 +
- arch/mips/netlogic/Kconfig                       |    9 +
- arch/mips/netlogic/common/earlycons.c            |    2 +
- arch/mips/netlogic/common/irq.c                  |   63 ++-
- arch/mips/netlogic/common/reset.S                |   62 ++-
- arch/mips/netlogic/common/smp.c                  |    8 +-
- arch/mips/netlogic/common/smpboot.S              |    3 +-
- arch/mips/netlogic/dts/Makefile                  |    1 +
- arch/mips/netlogic/dts/xlp_gvp.dts               |  164 +++++++
- arch/mips/netlogic/xlp/dt.c                      |    7 +-
- arch/mips/netlogic/xlp/nlm_hal.c                 |   71 +++-
- arch/mips/netlogic/xlp/setup.c                   |   25 +-
- arch/mips/netlogic/xlp/usb-init-xlp2.c           |   88 +++-
- arch/mips/netlogic/xlp/wakeup.c                  |   93 +++-
+Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+---
+ arch/mips/include/asm/mach-netlogic/multi-node.h |   11 +++++++++--
+ arch/mips/include/asm/netlogic/mips-extns.h      |    7 ++++++-
+ arch/mips/netlogic/common/irq.c                  |    6 +++---
+ arch/mips/netlogic/common/smp.c                  |    8 +++++---
+ arch/mips/netlogic/xlp/setup.c                   |    5 +++++
+ arch/mips/netlogic/xlp/wakeup.c                  |    4 ++--
  arch/mips/netlogic/xlr/wakeup.c                  |    2 +-
- arch/mips/pci/Makefile                           |    1 +
- arch/mips/pci/msi-xlp.c                          |  493 ++++++++++++++++++++++
- arch/mips/pci/pci-xlp.c                          |  108 +++--
- 32 files changed, 1360 insertions(+), 224 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-netlogic/topology.h
- create mode 100644 arch/mips/netlogic/dts/xlp_gvp.dts
- create mode 100644 arch/mips/pci/msi-xlp.c
+ arch/mips/pci/msi-xlp.c                          |    4 ++--
+ 8 files changed, 33 insertions(+), 14 deletions(-)
 
+diff --git a/arch/mips/include/asm/mach-netlogic/multi-node.h b/arch/mips/include/asm/mach-netlogic/multi-node.h
+index df9869d..9ed8dac 100644
+--- a/arch/mips/include/asm/mach-netlogic/multi-node.h
++++ b/arch/mips/include/asm/mach-netlogic/multi-node.h
+@@ -47,9 +47,16 @@
+ #endif
+ #endif
+ 
+-#define NLM_CORES_PER_NODE	8
+ #define NLM_THREADS_PER_CORE	4
+-#define NLM_CPUS_PER_NODE	(NLM_CORES_PER_NODE * NLM_THREADS_PER_CORE)
++#ifdef CONFIG_CPU_XLR
++#define nlm_cores_per_node()	8
++#else
++extern unsigned int xlp_cores_per_node;
++#define nlm_cores_per_node()	xlp_cores_per_node
++#endif
++
++#define nlm_threads_per_node()	(nlm_cores_per_node() * NLM_THREADS_PER_CORE)
++#define nlm_cpuid_to_node(c)	((c) / nlm_threads_per_node())
+ 
+ struct nlm_soc_info {
+ 	unsigned long	coremask;	/* cores enabled on the soc */
+diff --git a/arch/mips/include/asm/netlogic/mips-extns.h b/arch/mips/include/asm/netlogic/mips-extns.h
+index f299d31..de9aada 100644
+--- a/arch/mips/include/asm/netlogic/mips-extns.h
++++ b/arch/mips/include/asm/netlogic/mips-extns.h
+@@ -146,7 +146,12 @@ static inline int hard_smp_processor_id(void)
+ 
+ static inline int nlm_nodeid(void)
+ {
+-	return (__read_32bit_c0_register($15, 1) >> 5) & 0x3;
++	uint32_t prid = read_c0_prid();
++
++	if ((prid & 0xff00) == PRID_IMP_NETLOGIC_XLP9XX)
++		return (__read_32bit_c0_register($15, 1) >> 7) & 0x7;
++	else
++		return (__read_32bit_c0_register($15, 1) >> 5) & 0x3;
+ }
+ 
+ static inline unsigned int nlm_core_id(void)
+diff --git a/arch/mips/netlogic/common/irq.c b/arch/mips/netlogic/common/irq.c
+index 3800bf6..8092bb3 100644
+--- a/arch/mips/netlogic/common/irq.c
++++ b/arch/mips/netlogic/common/irq.c
+@@ -223,7 +223,7 @@ static void nlm_init_node_irqs(int node)
+ 			continue;
+ 
+ 		nlm_pic_init_irt(nodep->picbase, irt, i,
+-					node * NLM_CPUS_PER_NODE, 0);
++				node * nlm_threads_per_node(), 0);
+ 		nlm_setup_pic_irq(node, i, i, irt);
+ 	}
+ }
+@@ -232,8 +232,8 @@ void nlm_smp_irq_init(int hwcpuid)
+ {
+ 	int node, cpu;
+ 
+-	node = hwcpuid / NLM_CPUS_PER_NODE;
+-	cpu  = hwcpuid % NLM_CPUS_PER_NODE;
++	node = nlm_cpuid_to_node(hwcpuid);
++	cpu  = hwcpuid % nlm_threads_per_node();
+ 
+ 	if (cpu == 0 && node != 0)
+ 		nlm_init_node_irqs(node);
+diff --git a/arch/mips/netlogic/common/smp.c b/arch/mips/netlogic/common/smp.c
+index 6f8feb9..a75c6a6 100644
+--- a/arch/mips/netlogic/common/smp.c
++++ b/arch/mips/netlogic/common/smp.c
+@@ -63,7 +63,7 @@ void nlm_send_ipi_single(int logical_cpu, unsigned int action)
+ 	uint64_t picbase;
+ 
+ 	cpu = cpu_logical_map(logical_cpu);
+-	node = cpu / NLM_CPUS_PER_NODE;
++	node = nlm_cpuid_to_node(cpu);
+ 	picbase = nlm_get_node(node)->picbase;
+ 
+ 	if (action & SMP_CALL_FUNCTION)
+@@ -152,7 +152,7 @@ void nlm_boot_secondary(int logical_cpu, struct task_struct *idle)
+ 	int cpu, node;
+ 
+ 	cpu = cpu_logical_map(logical_cpu);
+-	node = cpu / NLM_CPUS_PER_NODE;
++	node = nlm_cpuid_to_node(logical_cpu);
+ 	nlm_next_sp = (unsigned long)__KSTK_TOS(idle);
+ 	nlm_next_gp = (unsigned long)task_thread_info(idle);
+ 
+@@ -164,7 +164,7 @@ void nlm_boot_secondary(int logical_cpu, struct task_struct *idle)
+ void __init nlm_smp_setup(void)
+ {
+ 	unsigned int boot_cpu;
+-	int num_cpus, i, ncore;
++	int num_cpus, i, ncore, node;
+ 	volatile u32 *cpu_ready = nlm_get_boot_data(BOOT_CPU_READY);
+ 	char buf[64];
+ 
+@@ -187,6 +187,8 @@ void __init nlm_smp_setup(void)
+ 			__cpu_number_map[i] = num_cpus;
+ 			__cpu_logical_map[num_cpus] = i;
+ 			set_cpu_possible(num_cpus, true);
++			node = nlm_cpuid_to_node(i);
++			cpumask_set_cpu(num_cpus, &nlm_get_node(node)->cpumask);
+ 			++num_cpus;
+ 		}
+ 	}
+diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
+index a3c1a95..730ffeb 100644
+--- a/arch/mips/netlogic/xlp/setup.c
++++ b/arch/mips/netlogic/xlp/setup.c
+@@ -51,6 +51,7 @@ uint64_t nlm_io_base;
+ struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
+ cpumask_t nlm_cpumask = CPU_MASK_CPU0;
+ unsigned int nlm_threads_per_core;
++unsigned int xlp_cores_per_node;
+ 
+ static void nlm_linux_exit(void)
+ {
+@@ -162,6 +163,10 @@ void __init prom_init(void)
+ 	void *reset_vec;
+ 
+ 	nlm_io_base = CKSEG1ADDR(XLP_DEFAULT_IO_BASE);
++	if (cpu_is_xlp9xx())
++		xlp_cores_per_node = 32;
++	else
++		xlp_cores_per_node = 8;
+ 	nlm_init_boot_cpu();
+ 	xlp_mmu_init();
+ 	nlm_node_init(0);
+diff --git a/arch/mips/netlogic/xlp/wakeup.c b/arch/mips/netlogic/xlp/wakeup.c
+index e4bcb3a..e33e93a 100644
+--- a/arch/mips/netlogic/xlp/wakeup.c
++++ b/arch/mips/netlogic/xlp/wakeup.c
+@@ -167,7 +167,7 @@ static void xlp_enable_secondary_cores(const cpumask_t *wakeup_mask)
+ 			nodep->coremask = 1;
+ 
+ 		pr_info("Node %d - SYS/FUSE coremask %x\n", n, syscoremask);
+-		for (core = 0; core < NLM_CORES_PER_NODE; core++) {
++		for (core = 0; core < nlm_cores_per_node(); core++) {
+ 			/* we will be on node 0 core 0 */
+ 			if (n == 0 && core == 0)
+ 				continue;
+@@ -177,7 +177,7 @@ static void xlp_enable_secondary_cores(const cpumask_t *wakeup_mask)
+ 				continue;
+ 
+ 			/* see if at least the first hw thread is enabled */
+-			cpu = (n * NLM_CORES_PER_NODE + core)
++			cpu = (n * nlm_cores_per_node() + core)
+ 						* NLM_THREADS_PER_CORE;
+ 			if (!cpumask_test_cpu(cpu, wakeup_mask))
+ 				continue;
+diff --git a/arch/mips/netlogic/xlr/wakeup.c b/arch/mips/netlogic/xlr/wakeup.c
+index 9fb81fa..ec60e71 100644
+--- a/arch/mips/netlogic/xlr/wakeup.c
++++ b/arch/mips/netlogic/xlr/wakeup.c
+@@ -70,7 +70,7 @@ int xlr_wakeup_secondary_cpus(void)
+ 
+ 	/* Fill up the coremask early */
+ 	nodep->coremask = 1;
+-	for (i = 1; i < NLM_CORES_PER_NODE; i++) {
++	for (i = 1; i < nlm_cores_per_node(); i++) {
+ 		for (j = 1000000; j > 0; j--) {
+ 			if (cpu_ready[i * NLM_THREADS_PER_CORE])
+ 				break;
+diff --git a/arch/mips/pci/msi-xlp.c b/arch/mips/pci/msi-xlp.c
+index 9daa977..5b4272e 100644
+--- a/arch/mips/pci/msi-xlp.c
++++ b/arch/mips/pci/msi-xlp.c
+@@ -279,7 +279,7 @@ static int xlp_setup_msi(uint64_t lnkbase, int node, int link,
+ 		irt = PIC_IRT_PCIE_LINK_INDEX(link);
+ 		nlm_setup_pic_irq(node, lirq, lirq, irt);
+ 		nlm_pic_init_irt(nlm_get_node(node)->picbase, irt, lirq,
+-				 node * NLM_CPUS_PER_NODE, 1 /*en */);
++				 node * nlm_threads_per_node(), 1 /*en */);
+ 	}
+ 
+ 	/* allocate a MSI vec, and tell the bridge about it */
+@@ -442,7 +442,7 @@ void __init xlp_init_node_msi_irqs(int node, int link)
+ 		msixvec = link * XLP_MSIXVEC_PER_LINK + i;
+ 		irt = PIC_IRT_PCIE_MSIX_INDEX(msixvec);
+ 		nlm_pic_init_irt(nodep->picbase, irt, PIC_PCIE_MSIX_IRQ(link),
+-			node * NLM_CPUS_PER_NODE, 1 /* enable */);
++			node * nlm_threads_per_node(), 1 /* enable */);
+ 
+ 		/* Initialize MSI-X extended irq space for the link  */
+ 		irq = nlm_irq_to_xirq(node, nlm_link_msixirq(link, i));
 -- 
 1.7.9.5

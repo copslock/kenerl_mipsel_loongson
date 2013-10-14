@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2013 15:20:24 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:4142 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2013 15:20:44 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:4162 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827336Ab3JNNPvFEb0a (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 Oct 2013 15:15:51 +0200
-Received: from [10.9.208.55] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Mon, 14 Oct 2013 06:15:25 -0700
+        id S6827367Ab3JNNPw4kR62 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 Oct 2013 15:15:52 +0200
+Received: from [10.9.208.57] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Mon, 14 Oct 2013 06:15:30 -0700
 X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
 Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Mon, 14 Oct 2013 06:15:30 -0700
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Mon, 14 Oct 2013 06:15:34 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
  IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Mon, 14 Oct 2013 06:15:30 -0700
+ Server id 14.1.438.0; Mon, 14 Oct 2013 06:15:34 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 53864246A3; Mon, 14
- Oct 2013 06:15:29 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 9925A246AE; Mon, 14
+ Oct 2013 06:15:33 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org
 cc:     "Jayachandran C" <jchandra@broadcom.com>, ralf@linux-mips.org
-Subject: [PATCH 15/18] MIPS: PCI: Netlogic XLP9XX support
-Date:   Mon, 14 Oct 2013 18:51:11 +0530
-Message-ID: <1381756874-22616-16-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH 18/18] MIPS: Netlogic: Add default DTB for XLP9XX SoC
+Date:   Mon, 14 Oct 2013 18:51:14 +0530
+Message-ID: <1381756874-22616-19-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1381756874-22616-1-git-send-email-jchandra@broadcom.com>
 References: <1381756874-22616-1-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7E4531E71R0100350029-01-01
+X-WSS-ID: 7E4531F81R0100350045-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38334
+X-archive-position: 38335
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,217 +50,151 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add PCI support for Netlogic XLP9XX. The PCI registers and
-SoC bus numbers have changed in XLP9XX.
-
-Also skip a few (bus,dev,fn) combinations which have issues when
-read.
+Add a default device tree fie for XLP9XX boards, and add code to use
+this device tree if no DTB is passed to the kernel.
 
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/include/asm/netlogic/xlp-hal/pcibus.h |   10 ++-
- arch/mips/include/asm/netlogic/xlp-hal/xlp.h    |    3 +
- arch/mips/netlogic/xlp/nlm_hal.c                |    5 ++
- arch/mips/pci/pci-xlp.c                         |   93 ++++++++++++++++++-----
- 4 files changed, 89 insertions(+), 22 deletions(-)
+ arch/mips/netlogic/Kconfig         |    9 +++++
+ arch/mips/netlogic/dts/Makefile    |    1 +
+ arch/mips/netlogic/dts/xlp_gvp.dts |   76 ++++++++++++++++++++++++++++++++++++
+ arch/mips/netlogic/xlp/dt.c        |    7 +++-
+ 4 files changed, 92 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/netlogic/dts/xlp_gvp.dts
 
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h b/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h
-index 0fac32b..d4deb87 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h
-@@ -63,6 +63,12 @@
- #define PCIE_INT_EN0			0x261
- #define PCIE_INT_EN1			0x262
+diff --git a/arch/mips/netlogic/Kconfig b/arch/mips/netlogic/Kconfig
+index 852a4ee..4eb683a 100644
+--- a/arch/mips/netlogic/Kconfig
++++ b/arch/mips/netlogic/Kconfig
+@@ -28,6 +28,15 @@ config DT_XLP_FVP
+ 	  pointer to the kernel.  The corresponding DTS file is at
+ 	  arch/mips/netlogic/dts/xlp_fvp.dts
  
-+/* XLP9XX has basic changes */
-+#define PCIE_9XX_BYTE_SWAP_MEM_BASE	0x25c
-+#define PCIE_9XX_BYTE_SWAP_MEM_LIM	0x25d
-+#define PCIE_9XX_BYTE_SWAP_IO_BASE	0x25e
-+#define PCIE_9XX_BYTE_SWAP_IO_LIM	0x25f
++config DT_XLP_GVP
++	bool "Built-in device tree for XLP GVP boards"
++	default y
++	help
++	  Add an FDT blob for XLP GVP board into the kernel.
++	  This DTB will be used if the firmware does not pass in a DTB
++	  pointer to the kernel.  The corresponding DTS file is at
++	  arch/mips/netlogic/dts/xlp_gvp.dts
 +
- /* other */
- #define PCIE_NLINKS			4
- 
-@@ -78,8 +84,8 @@
- 
- #define nlm_read_pcie_reg(b, r)		nlm_read_reg(b, r)
- #define nlm_write_pcie_reg(b, r, v)	nlm_write_reg(b, r, v)
--#define nlm_get_pcie_base(node, inst)	\
--			nlm_pcicfg_base(XLP_IO_PCIE_OFFSET(node, inst))
-+#define nlm_get_pcie_base(node, inst)	nlm_pcicfg_base(cpu_is_xlp9xx() ? \
-+	XLP9XX_IO_PCIE_OFFSET(node, inst) : XLP_IO_PCIE_OFFSET(node, inst))
- 
- #ifdef CONFIG_PCI_MSI
- void xlp_init_node_msi_irqs(int node, int link);
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-index c29f222..848746b 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-@@ -84,6 +84,9 @@ void xlp_mmu_init(void);
- void nlm_hal_init(void);
- int xlp_get_dram_map(int n, uint64_t *dram_map);
- 
-+struct pci_dev;
-+int xlp_socdev_to_node(const struct pci_dev *dev);
+ config NLM_MULTINODE
+ 	bool "Support for multi-chip boards"
+ 	depends on NLM_XLP_BOARD
+diff --git a/arch/mips/netlogic/dts/Makefile b/arch/mips/netlogic/dts/Makefile
+index 0b9be5f..25c8e87 100644
+--- a/arch/mips/netlogic/dts/Makefile
++++ b/arch/mips/netlogic/dts/Makefile
+@@ -1,3 +1,4 @@
+ obj-$(CONFIG_DT_XLP_EVP) := xlp_evp.dtb.o
+ obj-$(CONFIG_DT_XLP_SVP) += xlp_svp.dtb.o
+ obj-$(CONFIG_DT_XLP_FVP) += xlp_fvp.dtb.o
++obj-$(CONFIG_DT_XLP_GVP) += xlp_gvp.dtb.o
+diff --git a/arch/mips/netlogic/dts/xlp_gvp.dts b/arch/mips/netlogic/dts/xlp_gvp.dts
+new file mode 100644
+index 0000000..540c3be
+--- /dev/null
++++ b/arch/mips/netlogic/dts/xlp_gvp.dts
+@@ -0,0 +1,76 @@
++/*
++ * XLP9XX Device Tree Source for GVP boards
++ */
 +
- /* Device tree related */
- void *xlp_dt_init(void *fdtp);
++/dts-v1/;
++/ {
++	model = "netlogic,XLP-GVP";
++	compatible = "netlogic,xlp";
++	#address-cells = <2>;
++	#size-cells = <2>;
++
++	soc {
++		#address-cells = <2>;
++		#size-cells = <1>;
++		compatible = "simple-bus";
++		ranges = <0 0  0 0x18000000  0x04000000   // PCIe CFG
++			  1 0  0 0x16000000  0x02000000>; // GBU chipselects
++
++		serial0: serial@30000 {
++			device_type = "serial";
++			compatible = "ns16550";
++			reg = <0 0x112100 0xa00>;
++			reg-shift = <2>;
++			reg-io-width = <4>;
++			clock-frequency = <125000000>;
++			interrupt-parent = <&pic>;
++			interrupts = <17>;
++		};
++		pic: pic@4000 {
++			interrupt-controller;
++			#address-cells = <0>;
++			#interrupt-cells = <1>;
++			reg = <0 0x0x110000 0x200>;
++		};
++
++		nor_flash@1,0 {
++			compatible = "cfi-flash";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			bank-width = <2>;
++			reg = <1 0 0x1000000>;
++
++			partition@0 {
++				label = "x-loader";
++				reg = <0x0 0x100000>; /* 1M */
++				read-only;
++			};
++
++			partition@100000 {
++				label = "u-boot";
++				reg = <0x100000 0x100000>; /* 1M */
++			};
++
++			partition@200000 {
++				label = "kernel";
++				reg = <0x200000 0x500000>; /* 5M */
++			};
++
++			partition@700000 {
++				label = "rootfs";
++				reg = <0x700000 0x800000>; /* 8M */
++			};
++
++			partition@f00000 {
++				label = "env";
++				reg = <0xf00000 0x100000>; /* 1M */
++				read-only;
++			};
++		};
++
++	};
++
++	chosen {
++		bootargs = "console=ttyS0,115200 rdinit=/sbin/init";
++	};
++};
+diff --git a/arch/mips/netlogic/xlp/dt.c b/arch/mips/netlogic/xlp/dt.c
+index 88df445..7e4a84f 100644
+--- a/arch/mips/netlogic/xlp/dt.c
++++ b/arch/mips/netlogic/xlp/dt.c
+@@ -40,12 +40,17 @@
+ #include <linux/of_device.h>
  
-diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
-index efd64ac..e7ff2d3 100644
---- a/arch/mips/netlogic/xlp/nlm_hal.c
-+++ b/arch/mips/netlogic/xlp/nlm_hal.c
-@@ -76,6 +76,11 @@ int nlm_irq_to_irt(int irq)
- 			return 133;
- 		case PIC_UART_1_IRQ:
- 			return 134;
-+		case PIC_PCIE_LINK_LEGACY_IRQ(0):
-+		case PIC_PCIE_LINK_LEGACY_IRQ(1):
-+		case PIC_PCIE_LINK_LEGACY_IRQ(2):
-+		case PIC_PCIE_LINK_LEGACY_IRQ(3):
-+			return 191 + irq - PIC_PCIE_LINK_LEGACY_IRQ_BASE;
- 		}
- 		return -1;
- 	}
-diff --git a/arch/mips/pci/pci-xlp.c b/arch/mips/pci/pci-xlp.c
-index f390aa9..32e7e66 100644
---- a/arch/mips/pci/pci-xlp.c
-+++ b/arch/mips/pci/pci-xlp.c
-@@ -67,7 +67,20 @@ static inline u32 pci_cfg_read_32bit(struct pci_bus *bus, unsigned int devfn,
- 	u32 *cfgaddr;
+ extern u32 __dtb_xlp_evp_begin[], __dtb_xlp_svp_begin[],
+-	__dtb_xlp_fvp_begin[], __dtb_start[];
++	__dtb_xlp_fvp_begin[], __dtb_xlp_gvp_begin[], __dtb_start[];
  
- 	where &= ~3;
--	if (bus->number == 0 && PCI_SLOT(devfn) == 1 && where == 0x954)
-+	if (cpu_is_xlp9xx()) {
-+		/* be very careful on SoC buses */
-+		if (bus->number == 0) {
-+			/* Scan only existing nodes - uboot bug? */
-+			if (PCI_SLOT(devfn) != 0 ||
-+					   !nlm_node_present(PCI_FUNC(devfn)))
-+				return 0xffffffff;
-+		} else if (bus->parent->number == 0) {	/* SoC bus */
-+			if (PCI_SLOT(devfn) == 0)	/* b.0.0 hangs */
-+				return 0xffffffff;
-+			if (devfn == 44)		/* b.5.4 hangs */
-+				return 0xffffffff;
-+		}
-+	} else if (bus->number == 0 && PCI_SLOT(devfn) == 1 && where == 0x954)
- 		return 0xffffffff;
- 
- 	cfgaddr = (u32 *)(pci_config_base +
-@@ -167,18 +180,35 @@ struct pci_dev *xlp_get_pcie_link(const struct pci_dev *dev)
+ void __init *xlp_dt_init(void *fdtp)
  {
- 	struct pci_bus *bus, *p;
- 
--	/* Find the bridge on bus 0 */
- 	bus = dev->bus;
--	for (p = bus->parent; p && p->number != 0; p = p->parent)
--		bus = p;
- 
--	return p ? bus->self : NULL;
-+	if (cpu_is_xlp9xx()) {
-+		/* find bus with grand parent number == 0 */
-+		for (p = bus->parent; p && p->parent && p->parent->number != 0;
-+				p = p->parent)
-+			bus = p;
-+		return (p && p->parent) ? bus->self : NULL;
-+	} else {
-+		/* Find the bridge on bus 0 */
-+		for (p = bus->parent; p && p->number != 0; p = p->parent)
-+			bus = p;
-+
-+		return p ? bus->self : NULL;
-+	}
-+}
-+
-+int xlp_socdev_to_node(const struct pci_dev *lnkdev)
-+{
-+	if (cpu_is_xlp9xx())
-+		return PCI_FUNC(lnkdev->bus->self->devfn);
-+	else
-+		return PCI_SLOT(lnkdev->devfn) / 8;
- }
- 
- int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
- {
- 	struct pci_dev *lnkdev;
--	int lnkslot, lnkfunc;
-+	int lnkfunc, node;
- 
- 	/*
- 	 * For XLP PCIe, there is an IRQ per Link, find out which
-@@ -187,9 +217,11 @@ int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
- 	lnkdev = xlp_get_pcie_link(dev);
- 	if (lnkdev == NULL)
- 		return 0;
-+
- 	lnkfunc = PCI_FUNC(lnkdev->devfn);
--	lnkslot = PCI_SLOT(lnkdev->devfn);
--	return nlm_irq_to_xirq(lnkslot / 8, PIC_PCIE_LINK_LEGACY_IRQ(lnkfunc));
-+	node = xlp_socdev_to_node(lnkdev);
-+
-+	return nlm_irq_to_xirq(node, PIC_PCIE_LINK_LEGACY_IRQ(lnkfunc));
- }
- 
- /* Do platform specific device initialization at pci_enable_device() time */
-@@ -216,17 +248,38 @@ static void xlp_config_pci_bswap(int node, int link)
- 	 *  Enable byte swap in hardware. Program each link's PCIe SWAP regions
- 	 * from the link's address ranges.
- 	 */
--	reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEMEM_BASE0 + link);
--	nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_MEM_BASE, reg);
--
--	reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEMEM_LIMIT0 + link);
--	nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_MEM_LIM, reg | 0xfff);
--
--	reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEIO_BASE0 + link);
--	nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_IO_BASE, reg);
--
--	reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEIO_LIMIT0 + link);
--	nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_IO_LIM, reg | 0xfff);
-+	if (cpu_is_xlp9xx()) {
-+		reg = nlm_read_bridge_reg(nbubase,
-+				BRIDGE_9XX_PCIEMEM_BASE0 + link);
-+		nlm_write_pci_reg(lnkbase, PCIE_9XX_BYTE_SWAP_MEM_BASE, reg);
-+
-+		reg = nlm_read_bridge_reg(nbubase,
-+				BRIDGE_9XX_PCIEMEM_LIMIT0 + link);
-+		nlm_write_pci_reg(lnkbase,
-+				PCIE_9XX_BYTE_SWAP_MEM_LIM, reg | 0xfff);
-+
-+		reg = nlm_read_bridge_reg(nbubase,
-+				BRIDGE_9XX_PCIEIO_BASE0 + link);
-+		nlm_write_pci_reg(lnkbase, PCIE_9XX_BYTE_SWAP_IO_BASE, reg);
-+
-+		reg = nlm_read_bridge_reg(nbubase,
-+				BRIDGE_9XX_PCIEIO_LIMIT0 + link);
-+		nlm_write_pci_reg(lnkbase,
-+				PCIE_9XX_BYTE_SWAP_IO_LIM, reg | 0xfff);
-+	} else {
-+		reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEMEM_BASE0 + link);
-+		nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_MEM_BASE, reg);
-+
-+		reg = nlm_read_bridge_reg(nbubase,
-+					BRIDGE_PCIEMEM_LIMIT0 + link);
-+		nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_MEM_LIM, reg | 0xfff);
-+
-+		reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEIO_BASE0 + link);
-+		nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_IO_BASE, reg);
-+
-+		reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEIO_LIMIT0 + link);
-+		nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_IO_LIM, reg | 0xfff);
-+	}
- }
- #else
- /* Swap configuration not needed in little-endian mode */
-@@ -260,7 +313,7 @@ static int __init pcibios_init(void)
- 
- 			/* put in intpin and irq - u-boot does not */
- 			reg = nlm_read_pci_reg(pciebase, 0xf);
--			reg &= ~0x1fu;
-+			reg &= ~0x1ffu;
- 			reg |= (1 << 8) | PIC_PCIE_LINK_LEGACY_IRQ(link);
- 			nlm_write_pci_reg(pciebase, 0xf, reg);
- 			pr_info("XLP PCIe: Link %d-%d initialized.\n", n, link);
+ 	if (!fdtp) {
+ 		switch (current_cpu_data.processor_id & 0xff00) {
++#ifdef CONFIG_DT_XLP_GVP
++		case PRID_IMP_NETLOGIC_XLP9XX:
++			fdtp = __dtb_xlp_gvp_begin;
++			break;
++#endif
+ #ifdef CONFIG_DT_XLP_FVP
+ 		case PRID_IMP_NETLOGIC_XLP2XX:
+ 			fdtp = __dtb_xlp_fvp_begin;
 -- 
 1.7.9.5

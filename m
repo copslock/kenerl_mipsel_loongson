@@ -1,40 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2013 15:21:47 +0200 (CEST)
-Received: from mms3.broadcom.com ([216.31.210.19]:2780 "EHLO mms3.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2013 15:22:07 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:2808 "EHLO mms3.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823081Ab3JNNQGTJTh7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6831302Ab3JNNQGOBPTd (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 14 Oct 2013 15:16:06 +0200
 Received: from [10.9.208.57] by mms3.broadcom.com with ESMTP (Broadcom
  SMTP Relay (Email Firewall v6.5)); Mon, 14 Oct 2013 06:15:41 -0700
 X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
  IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
  Server (TLS) id 14.1.438.0; Mon, 14 Oct 2013 06:15:52 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
- Server id 14.1.438.0; Mon, 14 Oct 2013 06:15:31 -0700
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
+ Server id 14.1.438.0; Mon, 14 Oct 2013 06:15:27 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id ABBE0246A9; Mon, 14
- Oct 2013 06:15:30 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id A356F246A4; Mon, 14
+ Oct 2013 06:15:26 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org
-cc:     "Ganesan Ramalingam" <ganesanr@broadcom.com>, ralf@linux-mips.org,
-        "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH 16/18] MIPS: Netlogic: XLP9XX USB support
-Date:   Mon, 14 Oct 2013 18:51:12 +0530
-Message-ID: <1381756874-22616-17-git-send-email-jchandra@broadcom.com>
+cc:     "Jayachandran C" <jchandra@broadcom.com>, ralf@linux-mips.org
+Subject: [PATCH 13/18] MIPS: Netlogic: XLP9XX bridge and DRAM code
+Date:   Mon, 14 Oct 2013 18:51:09 +0530
+Message-ID: <1381756874-22616-14-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1381756874-22616-1-git-send-email-jchandra@broadcom.com>
 References: <1381756874-22616-1-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7E4531F72E41367045-01-01
+X-WSS-ID: 7E4531F72E41367045-02-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38338
+X-archive-position: 38339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,201 +50,153 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Ganesan Ramalingam <ganesanr@broadcom.com>
+Update bridge code. Add code to the XLP9XX registers for DRAM
+size, limit and node when running on XLPXX
 
-XLP9XX has a USB 3.0 controller on-chip with 2 xHCI ports. The USB
-block is similar to the one on XLP2XX, so update usb-init-xlp2.c
-to handle XLP9XX as well.
-
-Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/include/asm/netlogic/xlp-hal/iomap.h |    3 +
- arch/mips/include/asm/netlogic/xlp-hal/xlp.h   |    2 +
- arch/mips/netlogic/xlp/nlm_hal.c               |    4 ++
- arch/mips/netlogic/xlp/usb-init-xlp2.c         |   88 ++++++++++++++++++++----
- 4 files changed, 84 insertions(+), 13 deletions(-)
+ arch/mips/include/asm/netlogic/xlp-hal/bridge.h |   69 +++++++++++------------
+ arch/mips/netlogic/xlp/nlm_hal.c                |   26 ++++++---
+ 2 files changed, 51 insertions(+), 44 deletions(-)
 
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
-index 92fd866..1f23dfa 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
-@@ -188,6 +188,9 @@
- #define PCI_DEVICE_ID_NLM_MMC		0x1018
- #define PCI_DEVICE_ID_NLM_XHCI		0x101d
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/bridge.h b/arch/mips/include/asm/netlogic/xlp-hal/bridge.h
+index 4e8eacb..3067f98 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/bridge.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/bridge.h
+@@ -69,44 +69,9 @@
+ #define BRIDGE_FLASH_LIMIT3		0x13
  
-+#define PCI_DEVICE_ID_XLP9XX_SATA	0x901A
-+#define PCI_DEVICE_ID_XLP9XX_XHCI	0x901D
+ #define BRIDGE_DRAM_BAR(i)		(0x14 + (i))
+-#define BRIDGE_DRAM_BAR0		0x14
+-#define BRIDGE_DRAM_BAR1		0x15
+-#define BRIDGE_DRAM_BAR2		0x16
+-#define BRIDGE_DRAM_BAR3		0x17
+-#define BRIDGE_DRAM_BAR4		0x18
+-#define BRIDGE_DRAM_BAR5		0x19
+-#define BRIDGE_DRAM_BAR6		0x1a
+-#define BRIDGE_DRAM_BAR7		0x1b
+-
+ #define BRIDGE_DRAM_LIMIT(i)		(0x1c + (i))
+-#define BRIDGE_DRAM_LIMIT0		0x1c
+-#define BRIDGE_DRAM_LIMIT1		0x1d
+-#define BRIDGE_DRAM_LIMIT2		0x1e
+-#define BRIDGE_DRAM_LIMIT3		0x1f
+-#define BRIDGE_DRAM_LIMIT4		0x20
+-#define BRIDGE_DRAM_LIMIT5		0x21
+-#define BRIDGE_DRAM_LIMIT6		0x22
+-#define BRIDGE_DRAM_LIMIT7		0x23
+-
+ #define BRIDGE_DRAM_NODE_TRANSLN(i)	(0x24 + (i))
+-#define BRIDGE_DRAM_NODE_TRANSLN0	0x24
+-#define BRIDGE_DRAM_NODE_TRANSLN1	0x25
+-#define BRIDGE_DRAM_NODE_TRANSLN2	0x26
+-#define BRIDGE_DRAM_NODE_TRANSLN3	0x27
+-#define BRIDGE_DRAM_NODE_TRANSLN4	0x28
+-#define BRIDGE_DRAM_NODE_TRANSLN5	0x29
+-#define BRIDGE_DRAM_NODE_TRANSLN6	0x2a
+-#define BRIDGE_DRAM_NODE_TRANSLN7	0x2b
+-
+ #define BRIDGE_DRAM_CHNL_TRANSLN(i)	(0x2c + (i))
+-#define BRIDGE_DRAM_CHNL_TRANSLN0	0x2c
+-#define BRIDGE_DRAM_CHNL_TRANSLN1	0x2d
+-#define BRIDGE_DRAM_CHNL_TRANSLN2	0x2e
+-#define BRIDGE_DRAM_CHNL_TRANSLN3	0x2f
+-#define BRIDGE_DRAM_CHNL_TRANSLN4	0x30
+-#define BRIDGE_DRAM_CHNL_TRANSLN5	0x31
+-#define BRIDGE_DRAM_CHNL_TRANSLN6	0x32
+-#define BRIDGE_DRAM_CHNL_TRANSLN7	0x33
+ 
+ #define BRIDGE_PCIEMEM_BASE0		0x34
+ #define BRIDGE_PCIEMEM_BASE1		0x35
+@@ -178,12 +143,42 @@
+ #define BRIDGE_GIO_WEIGHT		0x2cb
+ #define BRIDGE_FLASH_WEIGHT		0x2cc
+ 
++/* FIXME verify */
++#define BRIDGE_9XX_FLASH_BAR(i)		(0x11 + (i))
++#define BRIDGE_9XX_FLASH_BAR_LIMIT(i)	(0x15 + (i))
++
++#define BRIDGE_9XX_DRAM_BAR(i)		(0x19 + (i))
++#define BRIDGE_9XX_DRAM_LIMIT(i)	(0x29 + (i))
++#define BRIDGE_9XX_DRAM_NODE_TRANSLN(i)	(0x39 + (i))
++#define BRIDGE_9XX_DRAM_CHNL_TRANSLN(i)	(0x49 + (i))
++
++#define BRIDGE_9XX_ADDRESS_ERROR0	0x9d
++#define BRIDGE_9XX_ADDRESS_ERROR1	0x9e
++#define BRIDGE_9XX_ADDRESS_ERROR2	0x9f
++
++#define BRIDGE_9XX_PCIEMEM_BASE0	0x59
++#define BRIDGE_9XX_PCIEMEM_BASE1	0x5a
++#define BRIDGE_9XX_PCIEMEM_BASE2	0x5b
++#define BRIDGE_9XX_PCIEMEM_BASE3	0x5c
++#define BRIDGE_9XX_PCIEMEM_LIMIT0	0x5d
++#define BRIDGE_9XX_PCIEMEM_LIMIT1	0x5e
++#define BRIDGE_9XX_PCIEMEM_LIMIT2	0x5f
++#define BRIDGE_9XX_PCIEMEM_LIMIT3	0x60
++#define BRIDGE_9XX_PCIEIO_BASE0		0x61
++#define BRIDGE_9XX_PCIEIO_BASE1		0x62
++#define BRIDGE_9XX_PCIEIO_BASE2		0x63
++#define BRIDGE_9XX_PCIEIO_BASE3		0x64
++#define BRIDGE_9XX_PCIEIO_LIMIT0	0x65
++#define BRIDGE_9XX_PCIEIO_LIMIT1	0x66
++#define BRIDGE_9XX_PCIEIO_LIMIT2	0x67
++#define BRIDGE_9XX_PCIEIO_LIMIT3	0x68
 +
  #ifndef __ASSEMBLY__
  
- #define nlm_read_pci_reg(b, r)		nlm_read_reg(b, r)
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-index 848746b..5ce4919 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-@@ -50,6 +50,8 @@
- #define PIC_2XX_XHCI_0_IRQ		23
- #define PIC_2XX_XHCI_1_IRQ		24
- #define PIC_2XX_XHCI_2_IRQ		25
-+#define PIC_9XX_XHCI_0_IRQ		23
-+#define PIC_9XX_XHCI_1_IRQ		24
+ #define nlm_read_bridge_reg(b, r)	nlm_read_reg(b, r)
+ #define nlm_write_bridge_reg(b, r, v)	nlm_write_reg(b, r, v)
+-#define nlm_get_bridge_pcibase(node)	\
+-			nlm_pcicfg_base(XLP_IO_BRIDGE_OFFSET(node))
++#define nlm_get_bridge_pcibase(node)	nlm_pcicfg_base(cpu_is_xlp9xx() ? \
++		XLP9XX_IO_BRIDGE_OFFSET(node) : XLP_IO_BRIDGE_OFFSET(node))
+ #define nlm_get_bridge_regbase(node)	\
+ 			(nlm_get_bridge_pcibase(node) + XLP_IO_PCI_HDRSZ)
  
- #define PIC_MMC_IRQ			29
- #define PIC_I2C_0_IRQ			30
 diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
-index e7ff2d3..997cd9e 100644
+index 61f325d..efd64ac 100644
 --- a/arch/mips/netlogic/xlp/nlm_hal.c
 +++ b/arch/mips/netlogic/xlp/nlm_hal.c
-@@ -72,6 +72,10 @@ int nlm_irq_to_irt(int irq)
- 	/* bypass for 9xx */
- 	if (cpu_is_xlp9xx()) {
- 		switch (irq) {
-+		case PIC_9XX_XHCI_0_IRQ:
-+			return 114;
-+		case PIC_9XX_XHCI_1_IRQ:
-+			return 115;
- 		case PIC_UART_0_IRQ:
- 			return 133;
- 		case PIC_UART_1_IRQ:
-diff --git a/arch/mips/netlogic/xlp/usb-init-xlp2.c b/arch/mips/netlogic/xlp/usb-init-xlp2.c
-index 36e9c22..17ade1c 100644
---- a/arch/mips/netlogic/xlp/usb-init-xlp2.c
-+++ b/arch/mips/netlogic/xlp/usb-init-xlp2.c
-@@ -37,6 +37,7 @@
- #include <linux/delay.h>
- #include <linux/init.h>
- #include <linux/pci.h>
-+#include <linux/pci_ids.h>
- #include <linux/platform_device.h>
- #include <linux/irq.h>
- 
-@@ -83,12 +84,14 @@
- #define nlm_read_usb_reg(b, r)		nlm_read_reg(b, r)
- #define nlm_write_usb_reg(b, r, v)	nlm_write_reg(b, r, v)
- 
--#define nlm_xlpii_get_usb_pcibase(node, inst)		\
--	nlm_pcicfg_base(XLP2XX_IO_USB_OFFSET(node, inst))
-+#define nlm_xlpii_get_usb_pcibase(node, inst)			\
-+			nlm_pcicfg_base(cpu_is_xlp9xx() ?	\
-+			XLP9XX_IO_USB_OFFSET(node, inst) :	\
-+			XLP2XX_IO_USB_OFFSET(node, inst))
- #define nlm_xlpii_get_usb_regbase(node, inst)		\
- 	(nlm_xlpii_get_usb_pcibase(node, inst) + XLP_IO_PCI_HDRSZ)
- 
--static void xlpii_usb_ack(struct irq_data *data)
-+static void xlp2xx_usb_ack(struct irq_data *data)
+@@ -314,21 +314,33 @@ int xlp_get_dram_map(int n, uint64_t *dram_map)
  {
- 	u64 port_addr;
+ 	uint64_t bridgebase, base, lim;
+ 	uint32_t val;
++	unsigned int barreg, limreg, xlatreg;
+ 	int i, node, rv;
  
-@@ -109,6 +112,29 @@ static void xlpii_usb_ack(struct irq_data *data)
- 	nlm_write_usb_reg(port_addr, XLPII_USB3_INT_REG, 0xffffffff);
- }
- 
-+static void xlp9xx_usb_ack(struct irq_data *data)
-+{
-+	u64 port_addr;
-+	int node, irq;
-+
-+	/* Find the node and irq on the node */
-+	irq = data->irq % NLM_IRQS_PER_NODE;
-+	node = data->irq / NLM_IRQS_PER_NODE;
-+
-+	switch (irq) {
-+	case PIC_9XX_XHCI_0_IRQ:
-+		port_addr = nlm_xlpii_get_usb_regbase(node, 1);
-+		break;
-+	case PIC_9XX_XHCI_1_IRQ:
-+		port_addr = nlm_xlpii_get_usb_regbase(node, 2);
-+		break;
-+	default:
-+		pr_err("No matching USB irq %d node  %d!\n", irq, node);
-+		return;
-+	}
-+	nlm_write_usb_reg(port_addr, XLPII_USB3_INT_REG, 0xffffffff);
-+}
-+
- static void nlm_xlpii_usb_hw_reset(int node, int port)
- {
- 	u64 port_addr, xhci_base, pci_base;
-@@ -178,17 +204,33 @@ static void nlm_xlpii_usb_hw_reset(int node, int port)
- 
- static int __init nlm_platform_xlpii_usb_init(void)
- {
-+	int node;
-+
- 	if (!cpu_is_xlpii())
- 		return 0;
- 
--	pr_info("Initializing 2XX USB Interface\n");
--	nlm_xlpii_usb_hw_reset(0, 1);
--	nlm_xlpii_usb_hw_reset(0, 2);
--	nlm_xlpii_usb_hw_reset(0, 3);
--	nlm_set_pic_extra_ack(0, PIC_2XX_XHCI_0_IRQ, xlpii_usb_ack);
--	nlm_set_pic_extra_ack(0, PIC_2XX_XHCI_1_IRQ, xlpii_usb_ack);
--	nlm_set_pic_extra_ack(0, PIC_2XX_XHCI_2_IRQ, xlpii_usb_ack);
-+	if (!cpu_is_xlp9xx()) {
-+		/* XLP 2XX single node */
-+		pr_info("Initializing 2XX USB Interface\n");
-+		nlm_xlpii_usb_hw_reset(0, 1);
-+		nlm_xlpii_usb_hw_reset(0, 2);
-+		nlm_xlpii_usb_hw_reset(0, 3);
-+		nlm_set_pic_extra_ack(0, PIC_2XX_XHCI_0_IRQ, xlp2xx_usb_ack);
-+		nlm_set_pic_extra_ack(0, PIC_2XX_XHCI_1_IRQ, xlp2xx_usb_ack);
-+		nlm_set_pic_extra_ack(0, PIC_2XX_XHCI_2_IRQ, xlp2xx_usb_ack);
-+		return 0;
-+	}
- 
-+	/* XLP 9XX, multi-node */
-+	pr_info("Initializing 9XX USB Interface\n");
-+	for (node = 0; node < NLM_NR_NODES; node++) {
-+		if (!nlm_node_present(node))
-+			continue;
-+		nlm_xlpii_usb_hw_reset(node, 1);
-+		nlm_xlpii_usb_hw_reset(node, 2);
-+		nlm_set_pic_extra_ack(node, PIC_9XX_XHCI_0_IRQ, xlp9xx_usb_ack);
-+		nlm_set_pic_extra_ack(node, PIC_9XX_XHCI_1_IRQ, xlp9xx_usb_ack);
-+	}
- 	return 0;
- }
- 
-@@ -196,8 +238,26 @@ arch_initcall(nlm_platform_xlpii_usb_init);
- 
- static u64 xlp_usb_dmamask = ~(u32)0;
- 
--/* Fixup IRQ for USB devices on XLP the SoC PCIe bus */
--static void nlm_usb_fixup_final(struct pci_dev *dev)
-+/* Fixup the IRQ for USB devices which is exist on XLP9XX SOC PCIE bus */
-+static void nlm_xlp9xx_usb_fixup_final(struct pci_dev *dev)
-+{
-+	int node;
-+
-+	node = xlp_socdev_to_node(dev);
-+	dev->dev.dma_mask		= &xlp_usb_dmamask;
-+	dev->dev.coherent_dma_mask	= DMA_BIT_MASK(32);
-+	switch (dev->devfn) {
-+	case 0x21:
-+		dev->irq = nlm_irq_to_xirq(node, PIC_9XX_XHCI_0_IRQ);
-+		break;
-+	case 0x22:
-+		dev->irq = nlm_irq_to_xirq(node, PIC_9XX_XHCI_1_IRQ);
-+		break;
-+	}
-+}
-+
-+/* Fixup the IRQ for USB devices which is exist on XLP2XX SOC PCIE bus */
-+static void nlm_xlp2xx_usb_fixup_final(struct pci_dev *dev)
- {
- 	dev->dev.dma_mask		= &xlp_usb_dmamask;
- 	dev->dev.coherent_dma_mask	= DMA_BIT_MASK(32);
-@@ -214,5 +274,7 @@ static void nlm_usb_fixup_final(struct pci_dev *dev)
- 	}
- }
- 
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_BROADCOM, PCI_DEVICE_ID_XLP9XX_XHCI,
-+		nlm_xlp9xx_usb_fixup_final);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_NETLOGIC, PCI_DEVICE_ID_NLM_XHCI,
--		nlm_usb_fixup_final);
-+		nlm_xlp2xx_usb_fixup_final);
+ 	/* Look only at mapping on Node 0, we don't handle crazy configs */
+ 	bridgebase = nlm_get_bridge_regbase(0);
+ 	rv = 0;
+ 	for (i = 0; i < 8; i++) {
+-		val = nlm_read_bridge_reg(bridgebase,
+-					BRIDGE_DRAM_NODE_TRANSLN(i));
+-		node = (val >> 1) & 0x3;
+-		if (n >= 0 && n != node)
+-			continue;
+-		val = nlm_read_bridge_reg(bridgebase, BRIDGE_DRAM_BAR(i));
++		if (cpu_is_xlp9xx()) {
++			barreg = BRIDGE_9XX_DRAM_BAR(i);
++			limreg = BRIDGE_9XX_DRAM_LIMIT(i);
++			xlatreg = BRIDGE_9XX_DRAM_NODE_TRANSLN(i);
++		} else {
++			barreg = BRIDGE_DRAM_BAR(i);
++			limreg = BRIDGE_DRAM_LIMIT(i);
++			xlatreg = BRIDGE_DRAM_NODE_TRANSLN(i);
++		}
++		if (n >= 0) {
++			/* node specified, get node mapping of BAR */
++			val = nlm_read_bridge_reg(bridgebase, xlatreg);
++			node = (val >> 1) & 0x3;
++			if (n != node)
++				continue;
++		}
++		val = nlm_read_bridge_reg(bridgebase, barreg);
+ 		val = (val >>  12) & 0xfffff;
+ 		base = (uint64_t) val << 20;
+-		val = nlm_read_bridge_reg(bridgebase, BRIDGE_DRAM_LIMIT(i));
++		val = nlm_read_bridge_reg(bridgebase, limreg);
+ 		val = (val >>  12) & 0xfffff;
+ 		if (val == 0)   /* BAR not used */
+ 			continue;
 -- 
 1.7.9.5

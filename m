@@ -1,35 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2013 10:41:35 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:48426 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2013 10:49:19 +0200 (CEST)
+Received: from multi.imgtec.com ([194.200.65.239]:48530 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816642Ab3JNIlbpjwzL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 Oct 2013 10:41:31 +0200
-Message-ID: <525BADFB.4070601@imgtec.com>
-Date:   Mon, 14 Oct 2013 09:40:27 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+        id S6817315Ab3JNItPi0d-5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 Oct 2013 10:49:15 +0200
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: Malta: Remove ttyS2 serial for CMP platforms
+Date:   Mon, 14 Oct 2013 09:49:25 +0100
+Message-ID: <1381740565-17243-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.3.2
 MIME-Version: 1.0
-To:     Greg KH <gregkh@linuxfoundation.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        <linux-mips@linux-mips.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: stack protector: Fix per-task canary switch
-References: <1381144466-19736-1-git-send-email-james.hogan@imgtec.com> <20131007124859.GF3098@linux-mips.org> <20131010231617.GI4301@kroah.com>
-In-Reply-To: <20131010231617.GI4301@kroah.com>
-X-Enigmail-Version: 1.5.2
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature";
-        boundary="f4cWQ6IOHFSdwW7FDOpeEuVlXW5wMM18L"
-X-Originating-IP: [192.168.154.65]
-X-SEF-Processed: 7_3_0_01192__2013_10_14_09_41_26
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.31]
+X-SEF-Processed: 7_3_0_01192__2013_10_14_09_49_07
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38318
+X-archive-position: 38319
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,59 +36,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---f4cWQ6IOHFSdwW7FDOpeEuVlXW5wMM18L
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-Hi Greg,
+Commit 225ae5fd9a320e22841410049c3bdb6cf14a5841
+"MIPS: Malta: Fix interupt number of CBUS UART"
 
-On 11/10/13 00:16, Greg KH wrote:
-> On Mon, Oct 07, 2013 at 02:48:59PM +0200, Ralf Baechle wrote:
->> On Mon, Oct 07, 2013 at 12:14:26PM +0100, James Hogan wrote:
->>
->>> Ralf: This is a regression in v3.11, so please consider for v3.12.
->>
->> Applied, will send to Linus with the next pull request.
->=20
-> Which would be in time for 3.12-final, right?
+fixed the IRQ number for the ttyS2 CBUS UART. However, this now
+conflicts with the GIC IPI1 interrupt in CMP platforms. The Malta
+interrupt code arbitrarily binds IPIs to INT2 and INT3 and since
+ttyS2 uses the INT2 IRQ line, closing the device disables the
+INT2 interrupt and this effectively disables the IPI1 interrupt
+as well. This patch is mainly a workaround until the Malta code
+is fixed properly.
 
-Yes, it's included in v3.12-rc5 as:
-8b3c569a3999a8fd5a819f892525ab5520777c92
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/mti-malta/malta-platform.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
->> stable folks - please apply to 3.12-stable.
->=20
-> There is no 3.12-stable yet, as 3.12-final isn't out yet.
->=20
-> Confused,
-
-I think Ralf meant v3.11-stable. It's only needed there as the
-regression was introduced in v3.11-rc1.
-
-Thanks
-James
-
-
---f4cWQ6IOHFSdwW7FDOpeEuVlXW5wMM18L
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.13 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSW64BAAoJEKHZs+irPybf6ZMP/RCQSAsOIOTSL8Wqdl3RjyRG
-hzmWQZws8Dl7gpc93jwNd3nKyqkm2UPmQJgfKY2xDvD8+3y94TEUU/JXYE1Djkmr
-Om4tXngwFQ0g0Xpy5wQ4KoSaBeAM6172voRBzzD5z+hg10RMPEAoixrW4hl4SU6I
-rZj4ZHI/G9rI4XrznYRcSKkEaYzW1pgOzlojs9Dd0xGurPbm8cE70usVQ1Dhel8c
-DV+40Ku63gEDDUyCX0cI4DzLOMAHt1+giSIsFysekuhb+9CjliPQLivPLdZpwSuL
-b3rqhWhx2XHOaQ7qJdfPiYK3P6fb5I25YCj2cKh9klZ/I+ksN+cuxHOwqGwG3oAl
-Otlg0NhS8xPj7derzCkovNoJeSvsfAAZWlQgDLfkw+iuS/KCd1KlABzO4AgKW6yg
-EWRwvIKIrQt9qGGWno4IhRisJ6lT3V+fxI7qJclxUrrq1Yd3H1q/YmMmnvcr3LMM
-Y1Bz2g8CL6DimwbOsoR+/m3z0DgAY69zUcMGwjinZjbRVYeBOGV5rQ54BkywKU2N
-AjJoD+qXDy3tbjshH6kA9vmmmSQFWHvPKk9wqeCmCs/FeFaxPKd5A0gbUebyigCa
-wxj2zY5pgIaX1h4QOj69eomoM6yguw4kUQ0ROddgJWwFEXXBUHHGBEpVsr9Y4BQ9
-PNI/2vA2PrTQAljmS8jp
-=lqpH
------END PGP SIGNATURE-----
-
---f4cWQ6IOHFSdwW7FDOpeEuVlXW5wMM18L--
+diff --git a/arch/mips/mti-malta/malta-platform.c b/arch/mips/mti-malta/malta-platform.c
+index 132f866..e1dd1c1 100644
+--- a/arch/mips/mti-malta/malta-platform.c
++++ b/arch/mips/mti-malta/malta-platform.c
+@@ -47,6 +47,7 @@
+ static struct plat_serial8250_port uart8250_data[] = {
+ 	SMC_PORT(0x3F8, 4),
+ 	SMC_PORT(0x2F8, 3),
++#ifndef CONFIG_MIPS_CMP
+ 	{
+ 		.mapbase	= 0x1f000900,	/* The CBUS UART */
+ 		.irq		= MIPS_CPU_IRQ_BASE + MIPSCPU_INT_MB2,
+@@ -55,6 +56,7 @@ static struct plat_serial8250_port uart8250_data[] = {
+ 		.flags		= CBUS_UART_FLAGS,
+ 		.regshift	= 3,
+ 	},
++#endif
+ 	{ },
+ };
+ 
+-- 
+1.8.3.2

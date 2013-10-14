@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2013 15:21:03 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:1256 "EHLO mms1.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2013 15:21:24 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:4114 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6831298Ab3JNNP4puI7P (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 Oct 2013 15:15:56 +0200
-Received: from [10.9.208.55] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Mon, 14 Oct 2013 06:15:15 -0700
-X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Mon, 14 Oct 2013 06:15:16 -0700
+        id S6831299Ab3JNNP7GgJm9 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 Oct 2013 15:15:59 +0200
+Received: from [10.9.208.53] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Mon, 14 Oct 2013 06:15:16 -0700
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+ IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Mon, 14 Oct 2013 06:15:20 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
- Server id 14.1.438.0; Mon, 14 Oct 2013 06:15:16 -0700
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
+ Server id 14.1.438.0; Mon, 14 Oct 2013 06:15:20 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id EE1FB246A7; Mon, 14
- Oct 2013 06:15:15 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id ECFA9246A3; Mon, 14
+ Oct 2013 06:15:19 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org
 cc:     "Jayachandran C" <jchandra@broadcom.com>, ralf@linux-mips.org
-Subject: [PATCH 05/18] MIPS: Netlogic: Add macro for node present
-Date:   Mon, 14 Oct 2013 18:51:01 +0530
-Message-ID: <1381756874-22616-6-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH 08/18] MIPS: Netlogic: Identify XLP 9XX chip
+Date:   Mon, 14 Oct 2013 18:51:04 +0530
+Message-ID: <1381756874-22616-9-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1381756874-22616-1-git-send-email-jchandra@broadcom.com>
 References: <1381756874-22616-1-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7E4531E94FK1415169-01-01
+X-WSS-ID: 7E4531EE1R0100350015-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38336
+X-archive-position: 38337
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,51 +50,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add macro nlm_node_present() that can be used to check if a node is present
-in a multi-chip configuration. This can be used even when NUMA is not enabled.
+Adds processor ID of XLP 9XX to asm/cpu.h.  Update netlogic/xlp-hal/xlp.h
+to add cpu_is_xlp9xx() and to update cpu_is_xlpii() to support XLP 9XX.
 
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/include/asm/mach-netlogic/multi-node.h |    2 ++
- arch/mips/pci/pci-xlp.c                          |    6 ++----
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/cpu.h                  |    1 +
+ arch/mips/include/asm/netlogic/xlp-hal/xlp.h |    9 ++++++++-
+ arch/mips/kernel/cpu-probe.c                 |    1 +
+ arch/mips/netlogic/xlp/setup.c               |    1 +
+ 4 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/mach-netlogic/multi-node.h b/arch/mips/include/asm/mach-netlogic/multi-node.h
-index b3d91e0..beeb36b 100644
---- a/arch/mips/include/asm/mach-netlogic/multi-node.h
-+++ b/arch/mips/include/asm/mach-netlogic/multi-node.h
-@@ -63,6 +63,8 @@ struct nlm_soc_info {
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index d2035e1..40727e2 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -194,6 +194,7 @@
+ #define PRID_IMP_NETLOGIC_XLP8XX	0x1000
+ #define PRID_IMP_NETLOGIC_XLP3XX	0x1100
+ #define PRID_IMP_NETLOGIC_XLP2XX	0x1200
++#define PRID_IMP_NETLOGIC_XLP9XX	0x1500
  
- extern struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
- #define nlm_get_node(i)		(&nlm_nodes[i])
-+#define nlm_node_present(n)	((n) >= 0 && (n) < NLM_NR_NODES && \
-+					nlm_get_node(n)->coremask != 0)
- #ifdef CONFIG_CPU_XLR
- #define nlm_current_node()	(&nlm_nodes[0])
- #else
-diff --git a/arch/mips/pci/pci-xlp.c b/arch/mips/pci/pci-xlp.c
-index 222d804..da7a37a 100644
---- a/arch/mips/pci/pci-xlp.c
-+++ b/arch/mips/pci/pci-xlp.c
-@@ -235,7 +235,6 @@ static inline void xlp_config_pci_bswap(int node, int link) {}
- 
- static int __init pcibios_init(void)
+ /*
+  * Particular Revision values for bits 7:0 of the PRId register.
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
+index 3ab1290..c29f222 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
+@@ -91,8 +91,15 @@ static inline int cpu_is_xlpii(void)
  {
--	struct nlm_soc_info *nodep;
- 	uint64_t pciebase;
- 	int link, n;
- 	u32 reg;
-@@ -249,9 +248,8 @@ static int __init pcibios_init(void)
- 	ioport_resource.end   = ~0;
+ 	int chip = read_c0_prid() & 0xff00;
  
- 	for (n = 0; n < NLM_NR_NODES; n++) {
--		nodep = nlm_get_node(n);
--		if (!nodep->coremask)
--			continue;	/* node does not exist */
-+		if (!nlm_node_present(n))
-+			continue;
+-	return chip == PRID_IMP_NETLOGIC_XLP2XX;
++	return chip == PRID_IMP_NETLOGIC_XLP2XX ||
++		chip == PRID_IMP_NETLOGIC_XLP9XX;
+ }
  
- 		for (link = 0; link < PCIE_NLINKS; link++) {
- 			pciebase = nlm_get_pcie_base(n, link);
++static inline int cpu_is_xlp9xx(void)
++{
++	int chip = read_c0_prid() & 0xff00;
++
++	return chip == PRID_IMP_NETLOGIC_XLP9XX;
++}
+ #endif /* !__ASSEMBLY__ */
+ #endif /* _ASM_NLM_XLP_H */
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 5465dc1..e526ca0 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -923,6 +923,7 @@ static inline void cpu_probe_netlogic(struct cpuinfo_mips *c, int cpu)
+ 
+ 	switch (c->processor_id & PRID_IMP_MASK) {
+ 	case PRID_IMP_NETLOGIC_XLP2XX:
++	case PRID_IMP_NETLOGIC_XLP9XX:
+ 		c->cputype = CPU_XLP;
+ 		__cpu_name[cpu] = "Broadcom XLPII";
+ 		break;
+diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
+index bf3fdef..fb4dd71 100644
+--- a/arch/mips/netlogic/xlp/setup.c
++++ b/arch/mips/netlogic/xlp/setup.c
+@@ -119,6 +119,7 @@ void __init plat_mem_setup(void)
+ const char *get_system_type(void)
+ {
+ 	switch (read_c0_prid() & 0xff00) {
++	case PRID_IMP_NETLOGIC_XLP9XX:
+ 	case PRID_IMP_NETLOGIC_XLP2XX:
+ 		return "Broadcom XLPII Series";
+ 	default:
 -- 
 1.7.9.5

@@ -1,28 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2013 16:13:42 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:21811 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2013 17:28:59 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:42898 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823088Ab3JOONjfJgZ4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 15 Oct 2013 16:13:39 +0200
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH] MIPS: MT: proc: Add support for printing VPE and TC ids
-Date:   Tue, 15 Oct 2013 15:13:02 +0100
-Message-ID: <1381846382-26437-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.3.2
+        id S6816503Ab3JOP24vQCqN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 15 Oct 2013 17:28:56 +0200
+Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r9FFSPT9013065
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Tue, 15 Oct 2013 11:28:25 -0400
+Received: from dhcp-26-207.brq.redhat.com (dhcp-26-163.brq.redhat.com [10.34.26.163])
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r9FFSEhM011919
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
+        Tue, 15 Oct 2013 11:28:17 -0400
+Date:   Tue, 15 Oct 2013 17:30:29 +0200
+From:   Alexander Gordeev <agordeev@redhat.com>
+To:     Mark Lord <kernel@start.ca>
+Cc:     "H. Peter Anvin" <hpa@zytor.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Michael Ellerman <michael@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>, Tejun Heo <tj@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy King <acking@vmware.com>, Jon Mason <jon.mason@intel.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        linux-pci@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux390@de.ibm.com,
+        linux-s390@vger.kernel.org, x86@kernel.org,
+        linux-ide@vger.kernel.org, iss_storagedev@hp.com,
+        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
+        netdev@vger.kernel.org, e1000-devel@lists.sourceforge.net,
+        linux-driver@qlogic.com,
+        Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>, linux-scsi@vger.kernel.org
+Subject: Re: [PATCH RFC 00/77] Re-design MSI/MSI-X interrupts enablement
+ pattern
+Message-ID: <20131015153028.GB17687@dhcp-26-207.brq.redhat.com>
+References: <cover.1380703262.git.agordeev@redhat.com>
+ <5254D397.9030307@zytor.com>
+ <1381292648.645.259.camel@pasglop>
+ <20131010101704.GC11874@dhcp-26-207.brq.redhat.com>
+ <5256D5AB.4050105@zytor.com>
+ <20131010180704.GA15719@dhcp-26-207.brq.redhat.com>
+ <5257357E.8080506@start.ca>
+ <20131011084108.GA25702@dhcp-26-207.brq.redhat.com>
+ <52585FB3.7080508@start.ca>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.31]
-X-SEF-Processed: 7_3_0_01192__2013_10_15_15_13_30
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <52585FB3.7080508@start.ca>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
+Return-Path: <agordeev@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38345
+X-archive-position: 38346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: agordeev@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,36 +72,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add support for including VPE and TC ids in /proc/cpuinfo output as
-appropriate when MT/SMTC is enabled.
+On Fri, Oct 11, 2013 at 04:29:39PM -0400, Mark Lord wrote:
+> > static int xx_alloc_msix_irqs(struct xx_dev *dev, int nvec)
+> > {
+> > 	nvec = roundup_pow_of_two(nvec);	/* assume 0 > nvec <= 16 */
+> > 
+> > 	xx_disable_all_irqs(dev);
+> > 
+> > 	pci_lock_msi(dev->pdev);
+> > 
+> > 	rc = pci_get_msix_limit(dev->pdev, nvec);
+> > 	if (rc < 0)
+> > 		goto err;
+> > 
+> > 	nvec = min(nvec, rc);		/* if limit is more than requested */
+> > 	nvec = rounddown_pow_of_two(nvec);	/* (a) */
+> > 
+> > 	xx_prep_for_msix_vectors(dev, nvec);
+> > 
+> > 	rc = pci_enable_msix(dev->pdev, dev->irqs, nvec);	/* (b)	*/
+> > 	if (rc < 0)
+> > 		goto err;
+> > 
+> > 	pci_unlock_msi(dev->pdev);
+> > 
+> > 	dev->num_vectors = nvec;		/* (b) */
+> > 	return 0;
+> > 
+> > err:
+> > 	pci_unlock_msi(dev->pdev);
+> > 
+> >         kerr(dev->name, "pci_enable_msix() failed, err=%d", rc);
+> >         dev->num_vectors = 0;
+> >         return rc;
+> > }
+> 
+> That would still need a loop, to handle the natural race between
+> the calls to pci_get_msix_limit() and pci_enable_msix() -- the driver and device
+> can and should fall back to a smaller number of vectors when pci_enable_msix() fails.
 
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
-This patch is for the upstream-sfr/mips-for-linux-next tree
----
- arch/mips/kernel/proc.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Could you please explain why the value returned by pci_get_msix_limit()
+might change before pci_enable_msix() returned, while both protected by
+pci_lock_msi()?
 
-diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-index 8c58d8a..db49bfa 100644
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -107,7 +107,14 @@ static int show_cpuinfo(struct seq_file *m, void *v)
- 	seq_printf(m, "kscratch registers\t: %d\n",
- 		      hweight8(cpu_data[n].kscratch_mask));
- 	seq_printf(m, "core\t\t\t: %d\n", cpu_data[n].core);
--
-+#if defined(CONFIG_MIPS_MT_SMP) || defined(CONFIG_MIPS_MT_SMTC)
-+	if (cpu_has_mipsmt) {
-+		seq_printf(m, "VPE\t\t\t: %d\n", cpu_data[n].vpe_id);
-+#if defined(CONFIG_MIPS_MT_SMTC)
-+		seq_printf(m, "TC\t\t\t: %d\n", cpu_data[n].tc_id);
-+#endif
-+	}
-+#endif
- 	sprintf(fmt, "VCE%%c exceptions\t\t: %s\n",
- 		      cpu_has_vce ? "%u" : "not available");
- 	seq_printf(m, fmt, 'D', vced_count);
+Anyway, although the loop-free code (IMHO) reads better, pci_lock_msi()
+it is not a part of the original proposal and the more I think about it
+the less I like it.
+
 -- 
-1.8.3.2
+Regards,
+Alexander Gordeev
+agordeev@redhat.com

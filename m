@@ -1,43 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Oct 2013 15:22:30 +0200 (CEST)
-Received: from mms3.broadcom.com ([216.31.210.19]:3662 "EHLO mms3.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2013 12:20:02 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:1272 "EHLO mms3.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6853541Ab3JNNT4AynLl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 Oct 2013 15:19:56 +0200
+        id S6823067Ab3JOKTuh2V7P (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 15 Oct 2013 12:19:50 +0200
 Received: from [10.9.208.57] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Mon, 14 Oct 2013 06:15:13 -0700
+ SMTP Relay (Email Firewall v6.5)); Tue, 15 Oct 2013 03:19:29 -0700
 X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
  IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Mon, 14 Oct 2013 06:15:23 -0700
+ Server (TLS) id 14.1.438.0; Tue, 15 Oct 2013 03:19:40 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Mon, 14 Oct 2013 06:15:23 -0700
-Received: from netl-snoppy.ban.broadcom.com (
- netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 9C0C7246A5; Mon, 14
- Oct 2013 06:15:22 -0700 (PDT)
-From:   "Jayachandran C" <jchandra@broadcom.com>
-To:     linux-mips@linux-mips.org
-cc:     "Jayachandran C" <jchandra@broadcom.com>, ralf@linux-mips.org
-Subject: [PATCH 10/18] MIPS: Netlogic: XLP9XX PIC updates
-Date:   Mon, 14 Oct 2013 18:51:06 +0530
-Message-ID: <1381756874-22616-11-git-send-email-jchandra@broadcom.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1381756874-22616-1-git-send-email-jchandra@broadcom.com>
-References: <1381756874-22616-1-git-send-email-jchandra@broadcom.com>
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP
+ Server id 14.1.438.0; Tue, 15 Oct 2013 03:19:40 -0700
+Received: from xl-blr-01.broadcom.com (xl-blr-01.ban.broadcom.com
+ [10.132.130.166]) by mail-irva-13.broadcom.com (Postfix) with ESMTP id
+ D5916246A3; Tue, 15 Oct 2013 03:19:39 -0700 (PDT)
+Received: by xl-blr-01.broadcom.com (Postfix, from userid 31394) id
+ CB154146A4DC; Tue, 15 Oct 2013 15:49:38 +0530 (IST)
+Date:   Tue, 15 Oct 2013 15:49:38 +0530
+From:   "Ashok Kumar" <ashoks@broadcom.com>
+To:     "Jonas Gorski" <jogo@openwrt.org>
+cc:     "MIPS Mailing List" <linux-mips@linux-mips.org>, gerg@uclinux.org,
+        "Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: [PATCH] MIPS: fix mapstart when using initrd
+Message-ID: <20131015101932.GA3198@ashoks@broadcom.com>
+References: <1379945426-32205-1-git-send-email-ashoks@broadcom.com>
+ <CAOiHx==DTt5U_yjS8vNyZyrm3KRJfjLMGFxr7oRdYPa-uoSTEA@mail.gmail.com>
 MIME-Version: 1.0
-X-WSS-ID: 7E4531EB2E41366914-01-01
-Content-Type: text/plain
+In-Reply-To: <CAOiHx==DTt5U_yjS8vNyZyrm3KRJfjLMGFxr7oRdYPa-uoSTEA@mail.gmail.com>
+User-Agent: Mutt/1.4.2.2i
+X-WSS-ID: 7E43C93B2E41685936-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: 7bit
-Return-Path: <jchandra@broadcom.com>
+Return-Path: <ashoks@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38340
+X-archive-position: 38341
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: ashoks@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,210 +55,125 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Functions for the XLP9XX interrupt table entry format and other PIC
-register changes.
+On Mon, Oct 14, 2013 at 02:05:44PM +0200, Jonas Gorski wrote:
+> On Mon, Sep 23, 2013 at 4:10 PM, Ashok Kumar <ashoks@broadcom.com> wrote:
+> > When initrd is present in the PFN right after the _end, bootmem
+> > bitmap(mapstart) overwrites it. So check for initrd_end in
+> > mapstart calculation.
+> >
+> > Signed-off-by: Ashok Kumar <ashoks@broadcom.com>
+> > ---
+> > This is seen after the commit
+> > "mips: fix start of free memory when using initrd"
+> > in git://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git branch
+> >
+> > Tested the image on MIPS platform creating the above
+> > said scenario and initrd was corrupted.
+> 
+> Unfortunately this commit breaks booting ramdisk images on bcm63xx, at
+> least git bisect claims it to be responsible for:
+> 
+> Closing DMA Channels.
+> Starting program at 0x80284b60
+> [    0.000000] Linux version 3.12.0-rc4+ (jonas@ixxyvirt) (gcc version
+> 4.8.) #254 SMP Mon Oct 14 13:12:35 CEST 2013
+> [    0.000000] Detected Broadcom 0x6328 CPU revision b0
+> [    0.000000] CPU frequency is 320 MHz
+> [    0.000000] 128MB of RAM installed
+> [    0.000000] registering 32 GPIOs
+> [    0.000000] board_bcm963xx: CFE version: 1.0.37-106.17
+> [    0.000000] bootconsole [early0] enabled
+> [    0.000000] CPU revision is: 0002a075 (Broadcom BMIPS4350)
+> [    0.000000] board_bcm963xx: board name: 96328avng
+> [    0.000000] Determined physical RAM map:
+> [    0.000000]  memory: 08000000 @ 00000000 (usable)
+> **Exception 8: EPC=00000000, Cause=00000000 (Interrupt)
+>                 RA=00000000, VAddr=00000000
+> 
+>         0  ($00) = 8016E5F4     AT ($01) = 00000000
+>         v0 ($02) = 00000000     v1 ($03) = 0000000A
+>         a0 ($04) = FFFFFFFF     a1 ($05) = 0006FFFF
+>         a2 ($06) = 00000000     a3 ($07) = 803D6730
+>         t0 ($08) = 0000002A     t1 ($09) = 00000000
+>         t2 ($10) = 802D5203     t3 ($11) = 8029D2F8
+>         t4 ($12) = 803D6737     t5 ($13) = 802D5203
+>         t6 ($14) = 00000000     t7 ($15) = 8030BD68
+>         s0 ($16) = 8016E5F4     s1 ($17) = 803D6737
+>         s2 ($18) = 802D5203     s3 ($19) = 8029D2F8
+>         s4 ($20) = 8030BD90     s5 ($21) = 8016E5F4
+>         s6 ($22) = 00000001     s7 ($23) = 803D6730
+>         t8 ($24) = 0000000A     t9 ($25) = FFFFFFFF
+>         k0 ($26) = 0006FFFF     k1 ($27) = 8016EF08
+>         gp ($28) = 803F0000     sp ($29) = 8001DAC0
+>         fp ($30) = 0000001D     ra ($31) = 00000000
+> 
+> 
+> Probably relevant config parts are:
+> 
+> CONFIG_BLK_DEV_INITRD=y
+> CONFIG_INITRAMFS_SOURCE="/home/jonas/openwrt/trunk/build_dir/target-mips_mips32_uClibc-0.9.33.2/root-brcm63xx
+> /home/jonas/openwrt/trunk/target/linux/generic/image/initramfs-base-files.txt"
+> CONFIG_INITRAMFS_ROOT_UID=1000
+> CONFIG_INITRAMFS_ROOT_GID=1000
+> # CONFIG_RD_GZIP is not set
+> # CONFIG_RD_BZIP2 is not set
+> # CONFIG_RD_LZMA is not set
+> CONFIG_RD_XZ=y
+> # CONFIG_RD_LZO is not set
+> # CONFIG_RD_LZ4 is not set
+> # CONFIG_INITRAMFS_COMPRESSION_NONE is not set
+> CONFIG_INITRAMFS_COMPRESSION_XZ=y
+> 
+> >  arch/mips/kernel/setup.c |    5 +++++
+> >  1 files changed, 5 insertions(+), 0 deletions(-)
+> >
+> > diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> > index 5342385..dfb8585 100644
+> > --- a/arch/mips/kernel/setup.c
+> > +++ b/arch/mips/kernel/setup.c
+> > @@ -364,6 +364,11 @@ static void __init bootmem_init(void)
+> >         }
+> >
+> >         /*
+> > +        * mapstart should be after initrd_end
+> > +        */
+> > +       mapstart = max(mapstart, (unsigned long)PFN_UP(__pa(initrd_end)));
+> 
+> I wonder if this still holds if the initrd is compressed like in my
+> config, but that's just random guessing. I can't test it since I need
+> a compressed initrd, else the elf gets too big for CFE.
 
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
----
- arch/mips/include/asm/netlogic/xlp-hal/pic.h |   72 +++++++++++++++++---------
- arch/mips/netlogic/xlp/nlm_hal.c             |   15 ++++++
- arch/mips/netlogic/xlp/wakeup.c              |    2 +-
- arch/mips/pci/pci-xlp.c                      |    2 +-
- 4 files changed, 65 insertions(+), 26 deletions(-)
+when initramfs(compressed/uncompressed) is used and initrd is not used, 
+initrd_end should be zero. In 32-bit kernel __pa(0) becomes 0x80000000
+and mapstart points to wrong address. Added check for non zero initrd_end
+before finding max.
 
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/pic.h b/arch/mips/include/asm/netlogic/xlp-hal/pic.h
-index 3fcbe74..f10bf3b 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/pic.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/pic.h
-@@ -150,12 +150,19 @@
- #define PIC_IRT0		0x74
- #define PIC_IRT(i)		(PIC_IRT0 + ((i) * 2))
- 
--#define TIMER_CYCLES_MAXVAL	0xffffffffffffffffULL
-+#define PIC_9XX_PENDING_0	0x6
-+#define PIC_9XX_PENDING_1	0x8
-+#define PIC_9XX_PENDING_2	0xa
-+#define PIC_9XX_PENDING_3	0xc
-+
-+#define PIC_9XX_IRT0		0x1c0
-+#define PIC_9XX_IRT(i)		(PIC_9XX_IRT0 + ((i) * 2))
- 
- /*
-  *    IRT Map
-  */
- #define PIC_NUM_IRTS		160
-+#define PIC_9XX_NUM_IRTS	256
- 
- #define PIC_IRT_WD_0_INDEX	0
- #define PIC_IRT_WD_1_INDEX	1
-@@ -205,30 +212,26 @@
- 
- #define nlm_read_pic_reg(b, r)	nlm_read_reg64(b, r)
- #define nlm_write_pic_reg(b, r, v) nlm_write_reg64(b, r, v)
--#define nlm_get_pic_pcibase(node) nlm_pcicfg_base(XLP_IO_PIC_OFFSET(node))
-+#define nlm_get_pic_pcibase(node)	nlm_pcicfg_base(cpu_is_xlp9xx() ? \
-+		XLP9XX_IO_PIC_OFFSET(node) : XLP_IO_PIC_OFFSET(node))
- #define nlm_get_pic_regbase(node) (nlm_get_pic_pcibase(node) + XLP_IO_PCI_HDRSZ)
- 
- /* We use PIC on node 0 as a timer */
- #define pic_timer_freq()		nlm_get_pic_frequency(0)
- 
- /* IRT and h/w interrupt routines */
--static inline int
--nlm_pic_read_irt(uint64_t base, int irt_index)
--{
--	return nlm_read_pic_reg(base, PIC_IRT(irt_index));
--}
--
- static inline void
--nlm_set_irt_to_cpu(uint64_t base, int irt, int cpu)
-+nlm_9xx_pic_write_irt(uint64_t base, int irt_num, int en, int nmi,
-+	int sch, int vec, int dt, int db, int cpu)
- {
- 	uint64_t val;
- 
--	val = nlm_read_pic_reg(base, PIC_IRT(irt));
--	/* clear cpuset and mask */
--	val &= ~((0x7ull << 16) | 0xffff);
--	/* set DB, cpuset and cpumask */
--	val |= (1 << 19) | ((cpu >> 4) << 16) | (1 << (cpu & 0xf));
--	nlm_write_pic_reg(base, PIC_IRT(irt), val);
-+	val = (((uint64_t)en & 0x1) << 22) | ((nmi & 0x1) << 23) |
-+			((0 /*mc*/) << 20) | ((vec & 0x3f) << 24) |
-+			((dt & 0x1) << 21) | (0 /*ptr*/ << 16) |
-+			(cpu & 0x3ff);
-+
-+	nlm_write_pic_reg(base, PIC_9XX_IRT(irt_num), val);
- }
- 
- static inline void
-@@ -249,9 +252,13 @@ static inline void
- nlm_pic_write_irt_direct(uint64_t base, int irt_num, int en, int nmi,
- 	int sch, int vec, int cpu)
- {
--	nlm_pic_write_irt(base, irt_num, en, nmi, sch, vec, 1,
--		(cpu >> 4),		/* thread group */
--		1 << (cpu & 0xf));	/* thread mask */
-+	if (cpu_is_xlp9xx())
-+		nlm_9xx_pic_write_irt(base, irt_num, en, nmi, sch, vec,
-+							1, 0, cpu);
-+	else
-+		nlm_pic_write_irt(base, irt_num, en, nmi, sch, vec, 1,
-+			(cpu >> 4),		/* thread group */
-+			1 << (cpu & 0xf));	/* thread mask */
- }
- 
- static inline uint64_t
-@@ -293,8 +300,13 @@ nlm_pic_enable_irt(uint64_t base, int irt)
- {
- 	uint64_t reg;
- 
--	reg = nlm_read_pic_reg(base, PIC_IRT(irt));
--	nlm_write_pic_reg(base, PIC_IRT(irt), reg | (1u << 31));
-+	if (cpu_is_xlp9xx()) {
-+		reg = nlm_read_pic_reg(base, PIC_9XX_IRT(irt));
-+		nlm_write_pic_reg(base, PIC_9XX_IRT(irt), reg | (1 << 22));
-+	} else {
-+		reg = nlm_read_pic_reg(base, PIC_IRT(irt));
-+		nlm_write_pic_reg(base, PIC_IRT(irt), reg | (1u << 31));
-+	}
- }
- 
- static inline void
-@@ -302,8 +314,15 @@ nlm_pic_disable_irt(uint64_t base, int irt)
- {
- 	uint64_t reg;
- 
--	reg = nlm_read_pic_reg(base, PIC_IRT(irt));
--	nlm_write_pic_reg(base, PIC_IRT(irt), reg & ~((uint64_t)1 << 31));
-+	if (cpu_is_xlp9xx()) {
-+		reg = nlm_read_pic_reg(base, PIC_9XX_IRT(irt));
-+		reg &= ~((uint64_t)1 << 22);
-+		nlm_write_pic_reg(base, PIC_9XX_IRT(irt), reg);
-+	} else {
-+		reg = nlm_read_pic_reg(base, PIC_IRT(irt));
-+		reg &= ~((uint64_t)1 << 31);
-+		nlm_write_pic_reg(base, PIC_IRT(irt), reg);
-+	}
- }
- 
- static inline void
-@@ -311,8 +330,13 @@ nlm_pic_send_ipi(uint64_t base, int hwt, int irq, int nmi)
- {
- 	uint64_t ipi;
- 
--	ipi = ((uint64_t)nmi << 31) | (irq << 20);
--	ipi |= ((hwt >> 4) << 16) | (1 << (hwt & 0xf)); /* cpuset and mask */
-+	if (cpu_is_xlp9xx())
-+		ipi = (nmi << 23) | (irq << 24) |
-+			(0/*mcm*/ << 20) | (0/*ptr*/ << 16) | hwt;
-+	else
-+		ipi = ((uint64_t)nmi << 31) | (irq << 20) |
-+			((hwt >> 4) << 16) | (1 << (hwt & 0xf));
-+
- 	nlm_write_pic_reg(base, PIC_IPI_CTL, ipi);
- }
- 
-diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
-index 5f191f5..2d31cf1 100644
---- a/arch/mips/netlogic/xlp/nlm_hal.c
-+++ b/arch/mips/netlogic/xlp/nlm_hal.c
-@@ -69,6 +69,17 @@ int nlm_irq_to_irt(int irq)
- 	uint64_t pcibase;
- 	int devoff, irt;
- 
-+	/* bypass for 9xx */
-+	if (cpu_is_xlp9xx()) {
-+		switch (irq) {
-+		case PIC_UART_0_IRQ:
-+			return 133;
-+		case PIC_UART_1_IRQ:
-+			return 134;
-+		}
-+		return -1;
-+	}
-+
- 	devoff = 0;
- 	switch (irq) {
- 	case PIC_UART_0_IRQ:
-@@ -277,6 +288,10 @@ static unsigned int nlm_2xx_get_pic_frequency(int node)
- 
- unsigned int nlm_get_pic_frequency(int node)
- {
-+	/* TODO Has to calculate freq as like 2xx */
-+	if (cpu_is_xlp9xx())
-+		return 250000000;
-+
- 	if (cpu_is_xlpii())
- 		return nlm_2xx_get_pic_frequency(node);
- 	else
-diff --git a/arch/mips/netlogic/xlp/wakeup.c b/arch/mips/netlogic/xlp/wakeup.c
-index 055dc17..5337ff4 100644
---- a/arch/mips/netlogic/xlp/wakeup.c
-+++ b/arch/mips/netlogic/xlp/wakeup.c
-@@ -47,8 +47,8 @@
- #include <asm/netlogic/mips-extns.h>
- 
- #include <asm/netlogic/xlp-hal/iomap.h>
--#include <asm/netlogic/xlp-hal/pic.h>
- #include <asm/netlogic/xlp-hal/xlp.h>
-+#include <asm/netlogic/xlp-hal/pic.h>
- #include <asm/netlogic/xlp-hal/sys.h>
- 
- static int xlp_wakeup_core(uint64_t sysbase, int node, int core)
-diff --git a/arch/mips/pci/pci-xlp.c b/arch/mips/pci/pci-xlp.c
-index da7a37a..f390aa9 100644
---- a/arch/mips/pci/pci-xlp.c
-+++ b/arch/mips/pci/pci-xlp.c
-@@ -50,8 +50,8 @@
- #include <asm/netlogic/mips-extns.h>
- 
- #include <asm/netlogic/xlp-hal/iomap.h>
--#include <asm/netlogic/xlp-hal/pic.h>
- #include <asm/netlogic/xlp-hal/xlp.h>
-+#include <asm/netlogic/xlp-hal/pic.h>
- #include <asm/netlogic/xlp-hal/pcibus.h>
- #include <asm/netlogic/xlp-hal/bridge.h>
- 
--- 
-1.7.9.5
+I have tested the below patch on XLP 32-bit BE/LE, 64-bit BE/LE and 
+it works fine. could you please test this on your bcm63xx board.
+
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 9d5d31d..a842154 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -367,7 +367,8 @@ static void __init bootmem_init(void)
+    /*
+     * mapstart should be after initrd_end
+     */
+-   mapstart = max(mapstart, (unsigned long)PFN_UP(__pa(initrd_end)));
++   if (initrd_end)
++       mapstart = max(mapstart, (unsigned long)PFN_UP(__pa(initrd_end)));
+ #endif
+
+- Ashok
+
+> 
+> > +
+> > +       /*
+> >          * Initialize the boot-time allocator with low memory only.
+> >          */
+> >         bootmap_size = init_bootmem_node(NODE_DATA(0), mapstart,
+> 
+> 
+> Regards
+> Jonas
+> 

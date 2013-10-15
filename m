@@ -1,54 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2013 22:04:29 +0200 (CEST)
-Received: from mail-wi0-f177.google.com ([209.85.212.177]:52415 "EHLO
-        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827336Ab3JOUE1SYh92 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Oct 2013 22:04:27 +0200
-Received: by mail-wi0-f177.google.com with SMTP id h11so1386873wiv.4
-        for <linux-mips@linux-mips.org>; Tue, 15 Oct 2013 13:04:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=yn6yY4MO7KrSywzE0v++qrp7+KEMkmfg/lIn+2WWedg=;
-        b=XRwigqcgAIpbO3caUIwFxLk8RRHHBST072E40G+hiULmMFUrtwok05/M0MOZpNHEUQ
-         SLkXrha2W+mstFe0ta+icpu8yaWzMdTdq1UP+BcRB5SmDs37qKCq0e+VnUUDf4gzQEvg
-         ClRHOU42Tswo5a7TJ+AyQfWtDtknbQwDqq9FCCRflPT76M7THodGKQVn1CwkCn1Aw8QO
-         np2inN751p7yeMAWbZJPEIqHz2yDA2pbt5x2BHH7Z5RZay7hM8MIw7VkNACoR27xGF1X
-         XIQLrwBsrcu8/aGbYT66gM+pZ4yAwn3gmcfoivL4XeJwgaBiK5hzFPH5j4kcVNgbeErm
-         iq9w==
-X-Received: by 10.194.20.202 with SMTP id p10mr9239670wje.39.1381867461789;
-        Tue, 15 Oct 2013 13:04:21 -0700 (PDT)
-Received: from [192.168.1.110] (093105185086.warszawa.vectranet.pl. [93.105.185.86])
-        by mx.google.com with ESMTPSA id i8sm9355718wiy.6.1969.12.31.16.00.00
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 15 Oct 2013 13:04:20 -0700 (PDT)
-Message-ID: <525D9FC1.2040204@gmail.com>
-Date:   Tue, 15 Oct 2013 22:04:17 +0200
-From:   Sylwester Nawrocki <sylvester.nawrocki@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:11.0) Gecko/20120412 Thunderbird/11.0.1
-MIME-Version: 1.0
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-CC:     linux@arm.linux.org.uk, mturquette@linaro.org,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        linux-arm-kernel@lists.infradead.org, jiada_wang@mentor.com,
-        kyungmin.park@samsung.com, myungjoo.ham@samsung.com,
-        t.figa@samsung.com, g.liakhovetski@gmx.de,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, LMML <linux-media@vger.kernel.org>
-Subject: Re: [PATCH v6 0/5] clk: clock deregistration support
-References: <1377874402-2944-1-git-send-email-s.nawrocki@samsung.com> <52420664.2040604@gmail.com> <3160771.O1gFkR91vK@avalon>
-In-Reply-To: <3160771.O1gFkR91vK@avalon>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sylvester.nawrocki@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Oct 2013 00:42:57 +0200 (CEST)
+Received: from mail-wg0-f54.google.com ([74.125.82.54]:32852 "EHLO
+        mail-wg0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827335Ab3JOWmysOYO9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Oct 2013 00:42:54 +0200
+Received: by mail-wg0-f54.google.com with SMTP id c11so3617237wgh.21
+        for <linux-mips@linux-mips.org>; Tue, 15 Oct 2013 15:42:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:sender:from:subject:to:cc:in-reply-to:references
+         :date:message-id;
+        bh=575SW3vgQYNX8OIYf9m3mRJ/x6hdvCWH2UJj2hP0tx0=;
+        b=l90uwSeY8/mY6rXHulpef94jSWejHj6QZS8v0w7OYTT7knaisxDV97B+Q88QLUOgot
+         dP5Pj/BhROwvDF++8+nrk2Vtf9UfYLxRrGfEIBD+RBp4XpnypV0FjoG9+Wbxgd7iYsf1
+         j9jlNdvNv77+b4lHfRMZOsLeQCDIq4vs1btvhse5+QNKYNdf10PVIk1+BkSdqWB0C+BL
+         ylJJhjMrRIKbDNaXJL7pRXlnPbnSLSz58qgvzEeKASFpMVdhCyvPQ7slfvuogxloy6ZR
+         SRatQx3vCb/5Kz5E6S6H8pIefY/js+ANtfz7kS2tePW4EE4mviZd+qQkCnk0CV7lXMeB
+         Ixsg==
+X-Gm-Message-State: ALoCoQkveS8WWDuWPIKiTE/KgMAr4Yb1LjiNRz/t6jMqry+QRpN4tPPa+q1cwkk26UimrfCAIBsZ
+X-Received: by 10.180.73.40 with SMTP id i8mr21574309wiv.37.1381876968879;
+        Tue, 15 Oct 2013 15:42:48 -0700 (PDT)
+Received: from trevor.secretlab.ca (host86-141-177-155.range86-141.btcentralplus.com. [86.141.177.155])
+        by mx.google.com with ESMTPSA id om10sm923333wic.5.2013.10.15.15.42.46
+        for <multiple recipients>
+        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Tue, 15 Oct 2013 15:42:47 -0700 (PDT)
+Received: by trevor.secretlab.ca (Postfix, from userid 1000)
+        id 0B071C40099; Tue, 15 Oct 2013 23:42:45 +0100 (BST)
+From:   Grant Likely <grant.likely@linaro.org>
+Subject: Re: [PATCH v2 01/10] of/irq: Rework of_irq_count()
+To:     Rob Herring <robherring2@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>
+Cc:     Rob Herring <rob.herring@calxeda.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-mips@linux-mips.org, Russell King <linux@arm.linux.org.uk>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, sparclinux@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+In-Reply-To: <CAL_JsqLE8aj511oF-gK7Gu5QfmHsQO3+oJ0KFkv0wmuo7i6eiw@mail.gmail.com>
+References: <1379510692-32435-1-git-send-email-treding@nvidia.com> <1379510692-32435-2-git-send-email-treding@nvidia.com> <CAL_JsqLE8aj511oF-gK7Gu5QfmHsQO3+oJ0KFkv0wmuo7i6eiw@mail.gmail.com>
+Date:   Tue, 15 Oct 2013 23:42:44 +0100
+Message-Id: <20131015224245.0B071C40099@trevor.secretlab.ca>
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38347
+X-archive-position: 38348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sylvester.nawrocki@gmail.com
+X-original-sender: grant.likely@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,114 +66,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Sun, 22 Sep 2013 16:19:27 -0500, Rob Herring <robherring2@gmail.com> wrote:
+> On Wed, Sep 18, 2013 at 8:24 AM, Thierry Reding
+> <thierry.reding@gmail.com> wrote:
+> > The of_irq_to_resource() helper that is used to implement of_irq_count()
+> > tries to resolve interrupts and in fact creates a mapping for resolved
+> > interrupts. That's pretty heavy lifting for something that claims to
+> > just return the number of interrupts requested by a given device node.
+> >
+> > Instead, use the more lightweight of_irq_map_one(), which, despite the
+> > name, doesn't create an actual mapping. Perhaps a better name would be
+> > of_irq_translate_one().
+> >
+> > Signed-off-by: Thierry Reding <treding@nvidia.com>
+> 
+> Acked-by: Rob Herring <rob.herring@calxeda.com>
 
-(adding linux-media mailing list at Cc)
+Applied (and fixed to match the of_irq_map_one --> of_irq_parse_one
+rename that I'm going to merge in v3.13).
 
-On 09/25/2013 11:47 AM, Laurent Pinchart wrote:
-> On Tuesday 24 September 2013 23:38:44 Sylwester Nawrocki wrote:
-[...]
->> The only issue I found might be at the omap3isp driver, which provides
->> clock to its sub-drivers and takes reference on the sub-driver modules.
->> When sub-driver calls clk_get() all modules would get locked in memory,
->> due to circular reference. One solution to that could be to pass NULL
->> struct device pointer, as in the below patch.
->
-> Doesn't that introduce race conditions ? If the sub-drivers require the clock,
-> they want to be sure that the clock won't disappear beyond their backs. I
-> agree that the circular dependency needs to be solved somehow, but we probably
-> need a more generic solution. The problem will become more widespread in the
-> future with DT-based device instantiation in both V4L2 and KMS.
+g.
 
-I'm wondering whether subsystems and drivers itself should be written so
-they deal with such dependencies they are aware of.
-
-There is similar situation in the regulator API, regulator_get() simply
-takes a reference on a module providing the regulator object.
-
-Before a "more generic solution" is available, what do you think about
-keeping obtaining a reference on a clock provider module in clk_get() and
-doing clk_get(), clk_prepare_enable(), ..., clk_unprepare_disable(),
-clk_put() in sub-driver whenever a clock is actively used, to avoid
-permanent circular reference ?
-
---
-Thanks,
-Sylwester
-
->> ---------8<------------------
->>   From ca5963041aad67e31324cb5d4d5e2cfce1706d4f Mon Sep 17 00:00:00 2001
->> From: Sylwester Nawrocki<s.nawrocki@samsung.com>
->> Date: Thu, 19 Sep 2013 23:52:04 +0200
->> Subject: [PATCH] omap3isp: Pass NULL device pointer to clk_register()
->>
->> Signed-off-by: Sylwester Nawrocki<s.nawrocki@samsung.com>
->> ---
->>    drivers/media/platform/omap3isp/isp.c |   15 ++++++++++-----
->>    drivers/media/platform/omap3isp/isp.h |    1 +
->>    2 files changed, 11 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/media/platform/omap3isp/isp.c
->> b/drivers/media/platform/omap3isp/isp.c
->> index df3a0ec..d7f3c98 100644
->> --- a/drivers/media/platform/omap3isp/isp.c
->> +++ b/drivers/media/platform/omap3isp/isp.c
->> @@ -290,9 +290,11 @@ static int isp_xclk_init(struct isp_device *isp)
->>    	struct clk_init_data init;
->>    	unsigned int i;
->>
->> +	for (i = 0; i<  ARRAY_SIZE(isp->xclks); ++i)
->> +		isp->xclks[i] = ERR_PTR(-EINVAL);
->> +
->>    	for (i = 0; i<  ARRAY_SIZE(isp->xclks); ++i) {
->>    		struct isp_xclk *xclk =&isp->xclks[i];
->> -		struct clk *clk;
->>
->>    		xclk->isp = isp;
->>    		xclk->id = i == 0 ? ISP_XCLK_A : ISP_XCLK_B;
->> @@ -306,9 +308,9 @@ static int isp_xclk_init(struct isp_device *isp)
->>
->>    		xclk->hw.init =&init;
->>
->> -		clk = devm_clk_register(isp->dev,&xclk->hw);
->> -		if (IS_ERR(clk))
->> -			return PTR_ERR(clk);
->> +		xclk->clk = clk_register(NULL,&xclk->hw);
->> +		if (IS_ERR(xclk->clk))
->> +			return PTR_ERR(xclk->clk);
->>
->>    		if (pdata->xclks[i].con_id == NULL&&
->>    		pdata->xclks[i].dev_id == NULL)
->> @@ -320,7 +322,7 @@ static int isp_xclk_init(struct isp_device *isp)
->>
->>    		xclk->lookup->con_id = pdata->xclks[i].con_id;
->>    		xclk->lookup->dev_id = pdata->xclks[i].dev_id;
->> -		xclk->lookup->clk = clk;
->> +		xclk->lookup->clk = xclk->clk;
->>
->>    		clkdev_add(xclk->lookup);
->>    	}
->> @@ -335,6 +337,9 @@ static void isp_xclk_cleanup(struct isp_device *isp)
->>    	for (i = 0; i<  ARRAY_SIZE(isp->xclks); ++i) {
->>    		struct isp_xclk *xclk =&isp->xclks[i];
->>
->> +		if (!IS_ERR(xclk->clk))
->> +			clk_unregister(xclk->clk);
->> +
->>    		if (xclk->lookup)
->>    			clkdev_drop(xclk->lookup);
->>    	}
->> diff --git a/drivers/media/platform/omap3isp/isp.h
->> b/drivers/media/platform/omap3isp/isp.h
->> index cd3eff4..1498f2b 100644
->> --- a/drivers/media/platform/omap3isp/isp.h
->> +++ b/drivers/media/platform/omap3isp/isp.h
->> @@ -135,6 +135,7 @@ struct isp_xclk {
->>    	struct isp_device *isp;
->>    	struct clk_hw hw;
->>    	struct clk_lookup *lookup;
->> +	struct clk *clk;
->>    	enum isp_xclk_id id;
->>
->>    	spinlock_t lock;	/* Protects enabled and divider */
->> ---------8<------------------
+> 
+> > ---
+> >  drivers/of/irq.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/of/irq.c b/drivers/of/irq.c
+> > index 1752988..5f44388 100644
+> > --- a/drivers/of/irq.c
+> > +++ b/drivers/of/irq.c
+> > @@ -368,9 +368,10 @@ EXPORT_SYMBOL_GPL(of_irq_to_resource);
+> >   */
+> >  int of_irq_count(struct device_node *dev)
+> >  {
+> > +       struct of_irq irq;
+> >         int nr = 0;
+> >
+> > -       while (of_irq_to_resource(dev, nr, NULL))
+> > +       while (of_irq_map_one(dev, nr, &irq) == 0)
+> >                 nr++;
+> >
+> >         return nr;
+> > --
+> > 1.8.4
+> >
+> >
+> > _______________________________________________
+> > linux-arm-kernel mailing list
+> > linux-arm-kernel@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel

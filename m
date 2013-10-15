@@ -1,48 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2013 12:57:59 +0200 (CEST)
-Received: from 0.mx.nanl.de ([217.115.11.12]:49578 "EHLO mail.nanl.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6822902Ab3JOK5wu28wI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 15 Oct 2013 12:57:52 +0200
-Received: from mail-ve0-x22d.google.com (mail-ve0-x22d.google.com [IPv6:2607:f8b0:400c:c01::22d])
-        by mail.nanl.de (Postfix) with ESMTPSA id 2E0FB4608B;
-        Tue, 15 Oct 2013 10:57:22 +0000 (UTC)
-Received: by mail-ve0-f173.google.com with SMTP id jx11so542356veb.4
-        for <multiple recipients>; Tue, 15 Oct 2013 03:57:45 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2013 14:10:42 +0200 (CEST)
+Received: from mail-lb0-f170.google.com ([209.85.217.170]:48655 "EHLO
+        mail-lb0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823088Ab3JOMKjhMdyh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Oct 2013 14:10:39 +0200
+Received: by mail-lb0-f170.google.com with SMTP id w7so6873665lbi.29
+        for <linux-mips@linux-mips.org>; Tue, 15 Oct 2013 05:10:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=gAFdwCtFc6vdsXPqO6WTV1ZLgew+APUxdPBORpcYj3M=;
-        b=LD8Z1oS6aIurghcUzF0qo6d3Tgr2kBnnUnzvzQOtye0FuUhFnzFEByfIAcC9Tjcra6
-         PPAaC+LVX3l4bJrQl6ASMFS9fR2lTmcHBrDYxEn9pF4JQvqNmOGSCgnW3nbnkgt0+bcg
-         eyei/0aZP8A/8SEY2na4Ljzr1qlzIAiivWY3XTCP/+KkPI8sExmWQZho/8/fZPyM5MQ5
-         qIrT1VY2I1LqIBgqZb66Z97QG3TGTMEWNuYKJNsv6aXNJYQkQXgX8j2EtPniLJMpVV9V
-         Zeo/Ahja0LoJF1QWeNqnwFAtJwxPK0RQPaYnV+Um+NAKYI7PGFPy5+EMwjt8kGBMQBlM
-         xDwQ==
-X-Received: by 10.58.161.231 with SMTP id xv7mr11264463veb.2.1381834665705;
- Tue, 15 Oct 2013 03:57:45 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=VuXciUzqyS71307vbOpKcVpEuOM+TZe4h0cq1WO4Tww=;
+        b=FF48Uuq5tbICPeLNXCbEvhRJUPBAaaQUiXd+ZC79zyzewd6RezORYMwKtMYfSR33F3
+         0L/eS7JfL639zW6l4MFouGnzQvfj5MU5UozfJrsc6DK1MnA9UCtUzZzCXPGIxLyQbQZ1
+         bji+ZKrF/zeosoO046f/xurIHnkkWoPUw1a1wY/nFPKULcVLAp31cspGtVWFffOm1HVf
+         wqt9j9rYKw/bZeFEVy8y3LS6bBkzjOl6gaiTPAhmAySTeu305bAa0tLw8TdIuRgFo5pt
+         DDMRPeeqXrpzErnyWO7Mw6ql7VwMSpqMA9I3dm6Ttb8C21ssxicODA43uTZHvqdGEIcf
+         WK8A==
+X-Gm-Message-State: ALoCoQlkvvPNam0LYbyBxGyAfa8omyWtT5z9uwaU08q3rtNmVaTcUQG2K94dc6i56pCbq/R3yHEz
+X-Received: by 10.152.120.5 with SMTP id ky5mr35768573lab.18.1381839033901;
+        Tue, 15 Oct 2013 05:10:33 -0700 (PDT)
+Received: from [192.168.2.4] (ppp83-237-56-125.pppoe.mtu-net.ru. [83.237.56.125])
+        by mx.google.com with ESMTPSA id pw4sm47283870lbb.9.1969.12.31.16.00.00
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Tue, 15 Oct 2013 05:10:33 -0700 (PDT)
+Message-ID: <525D307A.9060403@cogentembedded.com>
+Date:   Tue, 15 Oct 2013 16:09:30 +0400
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130801 Thunderbird/17.0.8
 MIME-Version: 1.0
-Received: by 10.221.42.10 with HTTP; Tue, 15 Oct 2013 03:57:25 -0700 (PDT)
-In-Reply-To: <525d1725.85680e0a.0dea.4371SMTPIN_ADDED_BROKEN@mx.google.com>
-References: <1379945426-32205-1-git-send-email-ashoks@broadcom.com>
- <CAOiHx==DTt5U_yjS8vNyZyrm3KRJfjLMGFxr7oRdYPa-uoSTEA@mail.gmail.com> <525d1725.85680e0a.0dea.4371SMTPIN_ADDED_BROKEN@mx.google.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Date:   Tue, 15 Oct 2013 12:57:25 +0200
-Message-ID: <CAOiHx=k46Ngcp6en5E_sQB-Kcid1K2pxqEjjc+eGjtn3svsxfg@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: fix mapstart when using initrd
-To:     Ashok Kumar <ashoks@broadcom.com>
-Cc:     MIPS Mailing List <linux-mips@linux-mips.org>, gerg@uclinux.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jogo@openwrt.org>
+To:     Jayachandran C <jchandra@broadcom.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH 06/18] MIPS: Netlogic: Get coremask from FUSE register
+References: <1381756874-22616-1-git-send-email-jchandra@broadcom.com> <1381756874-22616-7-git-send-email-jchandra@broadcom.com>
+In-Reply-To: <1381756874-22616-7-git-send-email-jchandra@broadcom.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38342
+X-archive-position: 38343
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,139 +57,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 15, 2013 at 12:19 PM, Ashok Kumar <ashoks@broadcom.com> wrote:
-> On Mon, Oct 14, 2013 at 02:05:44PM +0200, Jonas Gorski wrote:
->> On Mon, Sep 23, 2013 at 4:10 PM, Ashok Kumar <ashoks@broadcom.com> wrote:
->> > When initrd is present in the PFN right after the _end, bootmem
->> > bitmap(mapstart) overwrites it. So check for initrd_end in
->> > mapstart calculation.
->> >
->> > Signed-off-by: Ashok Kumar <ashoks@broadcom.com>
->> > ---
->> > This is seen after the commit
->> > "mips: fix start of free memory when using initrd"
->> > in git://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git branch
->> >
->> > Tested the image on MIPS platform creating the above
->> > said scenario and initrd was corrupted.
->>
->> Unfortunately this commit breaks booting ramdisk images on bcm63xx, at
->> least git bisect claims it to be responsible for:
->>
->> Closing DMA Channels.
->> Starting program at 0x80284b60
->> [    0.000000] Linux version 3.12.0-rc4+ (jonas@ixxyvirt) (gcc version
->> 4.8.) #254 SMP Mon Oct 14 13:12:35 CEST 2013
->> [    0.000000] Detected Broadcom 0x6328 CPU revision b0
->> [    0.000000] CPU frequency is 320 MHz
->> [    0.000000] 128MB of RAM installed
->> [    0.000000] registering 32 GPIOs
->> [    0.000000] board_bcm963xx: CFE version: 1.0.37-106.17
->> [    0.000000] bootconsole [early0] enabled
->> [    0.000000] CPU revision is: 0002a075 (Broadcom BMIPS4350)
->> [    0.000000] board_bcm963xx: board name: 96328avng
->> [    0.000000] Determined physical RAM map:
->> [    0.000000]  memory: 08000000 @ 00000000 (usable)
->> **Exception 8: EPC=00000000, Cause=00000000 (Interrupt)
->>                 RA=00000000, VAddr=00000000
->>
->>         0  ($00) = 8016E5F4     AT ($01) = 00000000
->>         v0 ($02) = 00000000     v1 ($03) = 0000000A
->>         a0 ($04) = FFFFFFFF     a1 ($05) = 0006FFFF
->>         a2 ($06) = 00000000     a3 ($07) = 803D6730
->>         t0 ($08) = 0000002A     t1 ($09) = 00000000
->>         t2 ($10) = 802D5203     t3 ($11) = 8029D2F8
->>         t4 ($12) = 803D6737     t5 ($13) = 802D5203
->>         t6 ($14) = 00000000     t7 ($15) = 8030BD68
->>         s0 ($16) = 8016E5F4     s1 ($17) = 803D6737
->>         s2 ($18) = 802D5203     s3 ($19) = 8029D2F8
->>         s4 ($20) = 8030BD90     s5 ($21) = 8016E5F4
->>         s6 ($22) = 00000001     s7 ($23) = 803D6730
->>         t8 ($24) = 0000000A     t9 ($25) = FFFFFFFF
->>         k0 ($26) = 0006FFFF     k1 ($27) = 8016EF08
->>         gp ($28) = 803F0000     sp ($29) = 8001DAC0
->>         fp ($30) = 0000001D     ra ($31) = 00000000
->>
->>
->> Probably relevant config parts are:
->>
->> CONFIG_BLK_DEV_INITRD=y
->> CONFIG_INITRAMFS_SOURCE="/home/jonas/openwrt/trunk/build_dir/target-mips_mips32_uClibc-0.9.33.2/root-brcm63xx
->> /home/jonas/openwrt/trunk/target/linux/generic/image/initramfs-base-files.txt"
->> CONFIG_INITRAMFS_ROOT_UID=1000
->> CONFIG_INITRAMFS_ROOT_GID=1000
->> # CONFIG_RD_GZIP is not set
->> # CONFIG_RD_BZIP2 is not set
->> # CONFIG_RD_LZMA is not set
->> CONFIG_RD_XZ=y
->> # CONFIG_RD_LZO is not set
->> # CONFIG_RD_LZ4 is not set
->> # CONFIG_INITRAMFS_COMPRESSION_NONE is not set
->> CONFIG_INITRAMFS_COMPRESSION_XZ=y
->>
->> >  arch/mips/kernel/setup.c |    5 +++++
->> >  1 files changed, 5 insertions(+), 0 deletions(-)
->> >
->> > diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
->> > index 5342385..dfb8585 100644
->> > --- a/arch/mips/kernel/setup.c
->> > +++ b/arch/mips/kernel/setup.c
->> > @@ -364,6 +364,11 @@ static void __init bootmem_init(void)
->> >         }
->> >
->> >         /*
->> > +        * mapstart should be after initrd_end
->> > +        */
->> > +       mapstart = max(mapstart, (unsigned long)PFN_UP(__pa(initrd_end)));
->>
->> I wonder if this still holds if the initrd is compressed like in my
->> config, but that's just random guessing. I can't test it since I need
->> a compressed initrd, else the elf gets too big for CFE.
->
-> when initramfs(compressed/uncompressed) is used and initrd is not used,
-> initrd_end should be zero. In 32-bit kernel __pa(0) becomes 0x80000000
-> and mapstart points to wrong address. Added check for non zero initrd_end
-> before finding max.
->
-> I have tested the below patch on XLP 32-bit BE/LE, 64-bit BE/LE and
-> it works fine. could you please test this on your bcm63xx board.
->
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index 9d5d31d..a842154 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -367,7 +367,8 @@ static void __init bootmem_init(void)
->     /*
->      * mapstart should be after initrd_end
->      */
-> -   mapstart = max(mapstart, (unsigned long)PFN_UP(__pa(initrd_end)));
-> +   if (initrd_end)
-> +       mapstart = max(mapstart, (unsigned long)PFN_UP(__pa(initrd_end)));
->  #endif
+Hello.
 
+On 14-10-2013 17:21, Jayachandran C wrote:
 
-I came to the same conclusion/fix yesterday evening, so I can confirm
-this fixes it. I was just a bit inebriated at that time, and I didn't
-want to drink and submit ;). So
+> Use the FUSE register to get the list of active cores in the CPU
+> instead of using the CPU reset register, this is the recommended
+> method.
 
-Tested-by: Jonas Gorski <jogo@openwrt.org>
+> Also add code to mask the coremask with the default number of cores
+> for each processor series.
 
-Thanks,
-Jonas
+> Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+> ---
+>   arch/mips/netlogic/xlp/wakeup.c |   31 ++++++++++++++++++++++++++-----
+>   1 file changed, 26 insertions(+), 5 deletions(-)
 
->
-> - Ashok
->
->>
->> > +
->> > +       /*
->> >          * Initialize the boot-time allocator with low memory only.
->> >          */
->> >         bootmap_size = init_bootmem_node(NODE_DATA(0), mapstart,
->>
->>
->> Regards
->> Jonas
->>
->
->
+> diff --git a/arch/mips/netlogic/xlp/wakeup.c b/arch/mips/netlogic/xlp/wakeup.c
+> index 682d563..1011577 100644
+> --- a/arch/mips/netlogic/xlp/wakeup.c
+> +++ b/arch/mips/netlogic/xlp/wakeup.c
+[...]
+> @@ -111,12 +111,33 @@ static void xlp_enable_secondary_cores(const cpumask_t *wakeup_mask)
+>   		if (n != 0)
+>   			nlm_node_init(n);
+>   		nodep = nlm_get_node(n);
+> -		syscoremask = nlm_read_sys_reg(nodep->sysbase, SYS_CPU_RESET);
+> +
+> +		fusemask = nlm_read_sys_reg(nodep->sysbase,
+> +					SYS_EFUSE_DEVICE_CFG_STATUS0);
+> +		switch (read_c0_prid() & 0xff00) {
+> +		case PRID_IMP_NETLOGIC_XLP3XX:
+> +			mask = 0xf;
+> +			break;
+> +		case PRID_IMP_NETLOGIC_XLP2XX:
+> +			mask = 0x3;
+> +			break;
+> +		case PRID_IMP_NETLOGIC_XLP8XX:
+> +			mask = 0xff;
+> +			break;
+> +		default:
+> +			mask = 0xff;
+> +			break;
+
+    Why not merge the last 2 cases?
+
+> +		}
+
+WBR, Sergei

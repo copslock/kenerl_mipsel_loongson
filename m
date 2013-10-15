@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Oct 2013 00:42:57 +0200 (CEST)
-Received: from mail-wg0-f54.google.com ([74.125.82.54]:32852 "EHLO
-        mail-wg0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827335Ab3JOWmysOYO9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Oct 2013 00:42:54 +0200
-Received: by mail-wg0-f54.google.com with SMTP id c11so3617237wgh.21
-        for <linux-mips@linux-mips.org>; Tue, 15 Oct 2013 15:42:48 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Oct 2013 00:55:33 +0200 (CEST)
+Received: from mail-wi0-f177.google.com ([209.85.212.177]:49138 "EHLO
+        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827335Ab3JOWzbpLQN1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Oct 2013 00:55:31 +0200
+Received: by mail-wi0-f177.google.com with SMTP id h11so1583902wiv.4
+        for <linux-mips@linux-mips.org>; Tue, 15 Oct 2013 15:55:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:sender:from:subject:to:cc:in-reply-to:references
          :date:message-id;
-        bh=575SW3vgQYNX8OIYf9m3mRJ/x6hdvCWH2UJj2hP0tx0=;
-        b=l90uwSeY8/mY6rXHulpef94jSWejHj6QZS8v0w7OYTT7knaisxDV97B+Q88QLUOgot
-         dP5Pj/BhROwvDF++8+nrk2Vtf9UfYLxRrGfEIBD+RBp4XpnypV0FjoG9+Wbxgd7iYsf1
-         j9jlNdvNv77+b4lHfRMZOsLeQCDIq4vs1btvhse5+QNKYNdf10PVIk1+BkSdqWB0C+BL
-         ylJJhjMrRIKbDNaXJL7pRXlnPbnSLSz58qgvzEeKASFpMVdhCyvPQ7slfvuogxloy6ZR
-         SRatQx3vCb/5Kz5E6S6H8pIefY/js+ANtfz7kS2tePW4EE4mviZd+qQkCnk0CV7lXMeB
-         Ixsg==
-X-Gm-Message-State: ALoCoQkveS8WWDuWPIKiTE/KgMAr4Yb1LjiNRz/t6jMqry+QRpN4tPPa+q1cwkk26UimrfCAIBsZ
-X-Received: by 10.180.73.40 with SMTP id i8mr21574309wiv.37.1381876968879;
-        Tue, 15 Oct 2013 15:42:48 -0700 (PDT)
+        bh=WkJx9Ll0Qi2FEIGNj5ujbXVFkh0ip38XviQU6VRdzK4=;
+        b=Q8e/XPAyHiLWsmU3D+5gHhKhGUzcEctE8d1iPdvNT7DVbAhceB61hFOeogez7E3niO
+         Le7GneBdYgARwOW6e2SuJqMBRiOtWCrE/3UxMdK4K1HGRmbpncRNHZn/mLhSQ/yVkkf2
+         4pmAX457J0QBOZm/J4pY0RUFU08nR1DQHbkF1NfJzxERnPUs4eJm7yI37smlyOWitTMx
+         tstIKV5xmVwEWINL5TiELQ7WgK7u735escqkkoN3zLxIesJLwnMWcHdEe6bvDeYRFY1a
+         Hbbepp0tS9ZKSdykmk3yTEi4a2Gu8tKqb1SzSH6YY5X5Z7f0pYNwYXRr98sUsBa283aX
+         kZBw==
+X-Gm-Message-State: ALoCoQnhFOXajYtPqubYnB/8+vFq5pTjLT0LeMX8OGvB0eZ7syyCoFkoYC+m0ME5ZQsc9aDUNlc2
+X-Received: by 10.194.109.68 with SMTP id hq4mr36748862wjb.12.1381877726141;
+        Tue, 15 Oct 2013 15:55:26 -0700 (PDT)
 Received: from trevor.secretlab.ca (host86-141-177-155.range86-141.btcentralplus.com. [86.141.177.155])
-        by mx.google.com with ESMTPSA id om10sm923333wic.5.2013.10.15.15.42.46
+        by mx.google.com with ESMTPSA id s4sm72935wiy.1.2013.10.15.15.55.24
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 15 Oct 2013 15:42:47 -0700 (PDT)
+        Tue, 15 Oct 2013 15:55:25 -0700 (PDT)
 Received: by trevor.secretlab.ca (Postfix, from userid 1000)
-        id 0B071C40099; Tue, 15 Oct 2013 23:42:45 +0100 (BST)
+        id 2A9C1C40099; Tue, 15 Oct 2013 23:55:23 +0100 (BST)
 From:   Grant Likely <grant.likely@linaro.org>
 Subject: Re: [PATCH v2 01/10] of/irq: Rework of_irq_count()
 To:     Rob Herring <robherring2@gmail.com>,
@@ -43,13 +43,13 @@ Cc:     Rob Herring <rob.herring@calxeda.com>,
         <linux-arm-kernel@lists.infradead.org>
 In-Reply-To: <CAL_JsqLE8aj511oF-gK7Gu5QfmHsQO3+oJ0KFkv0wmuo7i6eiw@mail.gmail.com>
 References: <1379510692-32435-1-git-send-email-treding@nvidia.com> <1379510692-32435-2-git-send-email-treding@nvidia.com> <CAL_JsqLE8aj511oF-gK7Gu5QfmHsQO3+oJ0KFkv0wmuo7i6eiw@mail.gmail.com>
-Date:   Tue, 15 Oct 2013 23:42:44 +0100
-Message-Id: <20131015224245.0B071C40099@trevor.secretlab.ca>
+Date:   Tue, 15 Oct 2013 23:55:23 +0100
+Message-Id: <20131015225523.2A9C1C40099@trevor.secretlab.ca>
 Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38348
+X-archive-position: 38349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -82,8 +82,7 @@ On Sun, 22 Sep 2013 16:19:27 -0500, Rob Herring <robherring2@gmail.com> wrote:
 > 
 > Acked-by: Rob Herring <rob.herring@calxeda.com>
 
-Applied (and fixed to match the of_irq_map_one --> of_irq_parse_one
-rename that I'm going to merge in v3.13).
+Applied, thanks.
 
 g.
 

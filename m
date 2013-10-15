@@ -1,46 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2013 14:10:42 +0200 (CEST)
-Received: from mail-lb0-f170.google.com ([209.85.217.170]:48655 "EHLO
-        mail-lb0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823088Ab3JOMKjhMdyh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Oct 2013 14:10:39 +0200
-Received: by mail-lb0-f170.google.com with SMTP id w7so6873665lbi.29
-        for <linux-mips@linux-mips.org>; Tue, 15 Oct 2013 05:10:34 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Oct 2013 14:29:51 +0200 (CEST)
+Received: from mail-la0-f52.google.com ([209.85.215.52]:37954 "EHLO
+        mail-la0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6824926Ab3JOM3pVJj08 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Oct 2013 14:29:45 +0200
+Received: by mail-la0-f52.google.com with SMTP id ev20so6574446lab.25
+        for <linux-mips@linux-mips.org>; Tue, 15 Oct 2013 05:29:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
          :cc:subject:references:in-reply-to:content-type
          :content-transfer-encoding;
-        bh=VuXciUzqyS71307vbOpKcVpEuOM+TZe4h0cq1WO4Tww=;
-        b=FF48Uuq5tbICPeLNXCbEvhRJUPBAaaQUiXd+ZC79zyzewd6RezORYMwKtMYfSR33F3
-         0L/eS7JfL639zW6l4MFouGnzQvfj5MU5UozfJrsc6DK1MnA9UCtUzZzCXPGIxLyQbQZ1
-         bji+ZKrF/zeosoO046f/xurIHnkkWoPUw1a1wY/nFPKULcVLAp31cspGtVWFffOm1HVf
-         wqt9j9rYKw/bZeFEVy8y3LS6bBkzjOl6gaiTPAhmAySTeu305bAa0tLw8TdIuRgFo5pt
-         DDMRPeeqXrpzErnyWO7Mw6ql7VwMSpqMA9I3dm6Ttb8C21ssxicODA43uTZHvqdGEIcf
-         WK8A==
-X-Gm-Message-State: ALoCoQlkvvPNam0LYbyBxGyAfa8omyWtT5z9uwaU08q3rtNmVaTcUQG2K94dc6i56pCbq/R3yHEz
-X-Received: by 10.152.120.5 with SMTP id ky5mr35768573lab.18.1381839033901;
-        Tue, 15 Oct 2013 05:10:33 -0700 (PDT)
+        bh=olKljBBSPnHO8QuJqahZ0tDZHnCoHmqXXVwHhMa19js=;
+        b=hCR6vlppiS8R6Se3/KGH55V0Lr8Bv89vOdEsuL64c6bTLFgyWF0Cqs1thUoSh7rxIZ
+         /bOP85EwMVbhR8Efmb/NtGryKBkTdzp/YMgzGOVvavrIAyTNLcWtV/nwLrUbeU1QY8PG
+         x8gGyDTq1YzbLQ0xK2R42yS8IgSMi0/FCRPydQOcG3ZscgXPLzg/sM966+mn7Qvtx+7R
+         wxOCYpPEXPeQHAPdSpE3pYGCuHsP3aN2ldBcc9PvuSmjaZuIUehlIwNcaVxYSRWnSGIw
+         jqNqbsVqVUMb1zeCbEvUmvexinrD7bQI99w5Lq6LEKIIFQEubLqQCCHLeRlCByMia9w9
+         ePxQ==
+X-Gm-Message-State: ALoCoQnVX9qAe98I6aSeRXUFVcAbuCRxJh+X2aRxoUPxkdc1A1X7n7ebqlgUkNqM2ZN+WeYy9mNW
+X-Received: by 10.112.168.170 with SMTP id zx10mr34844845lbb.0.1381840179680;
+        Tue, 15 Oct 2013 05:29:39 -0700 (PDT)
 Received: from [192.168.2.4] (ppp83-237-56-125.pppoe.mtu-net.ru. [83.237.56.125])
-        by mx.google.com with ESMTPSA id pw4sm47283870lbb.9.1969.12.31.16.00.00
+        by mx.google.com with ESMTPSA id b1sm64527181lah.6.1969.12.31.16.00.00
         (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Tue, 15 Oct 2013 05:10:33 -0700 (PDT)
-Message-ID: <525D307A.9060403@cogentembedded.com>
-Date:   Tue, 15 Oct 2013 16:09:30 +0400
+        Tue, 15 Oct 2013 05:29:39 -0700 (PDT)
+Message-ID: <525D34F4.80807@cogentembedded.com>
+Date:   Tue, 15 Oct 2013 16:28:36 +0400
 From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130801 Thunderbird/17.0.8
 MIME-Version: 1.0
 To:     Jayachandran C <jchandra@broadcom.com>
 CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 06/18] MIPS: Netlogic: Get coremask from FUSE register
-References: <1381756874-22616-1-git-send-email-jchandra@broadcom.com> <1381756874-22616-7-git-send-email-jchandra@broadcom.com>
-In-Reply-To: <1381756874-22616-7-git-send-email-jchandra@broadcom.com>
+Subject: Re: [PATCH 17/18] MIPS: Netlogic: XLP9XX PIC OF support
+References: <1381756874-22616-1-git-send-email-jchandra@broadcom.com> <1381756874-22616-18-git-send-email-jchandra@broadcom.com>
+In-Reply-To: <1381756874-22616-18-git-send-email-jchandra@broadcom.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38343
+X-archive-position: 38344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,47 +61,42 @@ Hello.
 
 On 14-10-2013 17:21, Jayachandran C wrote:
 
-> Use the FUSE register to get the list of active cores in the CPU
-> instead of using the CPU reset register, this is the recommended
-> method.
-
-> Also add code to mask the coremask with the default number of cores
-> for each processor series.
+> Support for adding legacy IRQ domain for XLP9XX. The node id of the
+> PIC has to be calulated differently for XLP9XX.
 
 > Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 > ---
->   arch/mips/netlogic/xlp/wakeup.c |   31 ++++++++++++++++++++++++++-----
->   1 file changed, 26 insertions(+), 5 deletions(-)
+>   arch/mips/netlogic/common/irq.c |   28 ++++++++++++++++++++++++----
+>   1 file changed, 24 insertions(+), 4 deletions(-)
 
-> diff --git a/arch/mips/netlogic/xlp/wakeup.c b/arch/mips/netlogic/xlp/wakeup.c
-> index 682d563..1011577 100644
-> --- a/arch/mips/netlogic/xlp/wakeup.c
-> +++ b/arch/mips/netlogic/xlp/wakeup.c
+> diff --git a/arch/mips/netlogic/common/irq.c b/arch/mips/netlogic/common/irq.c
+> index 8092bb3..34be9bb 100644
+> --- a/arch/mips/netlogic/common/irq.c
+> +++ b/arch/mips/netlogic/common/irq.c
 [...]
-> @@ -111,12 +111,33 @@ static void xlp_enable_secondary_cores(const cpumask_t *wakeup_mask)
->   		if (n != 0)
->   			nlm_node_init(n);
->   		nodep = nlm_get_node(n);
-> -		syscoremask = nlm_read_sys_reg(nodep->sysbase, SYS_CPU_RESET);
+> @@ -293,7 +292,28 @@ static int __init xlp_of_pic_init(struct device_node *node,
+>   		pr_err("PIC %s: reg property not found!\n", node->name);
+>   		return -EINVAL;
+>   	}
+> -	socid = (res.start >> 18) & 0x3;
 > +
-> +		fusemask = nlm_read_sys_reg(nodep->sysbase,
-> +					SYS_EFUSE_DEVICE_CFG_STATUS0);
-> +		switch (read_c0_prid() & 0xff00) {
-> +		case PRID_IMP_NETLOGIC_XLP3XX:
-> +			mask = 0xf;
-> +			break;
-> +		case PRID_IMP_NETLOGIC_XLP2XX:
-> +			mask = 0x3;
-> +			break;
-> +		case PRID_IMP_NETLOGIC_XLP8XX:
-> +			mask = 0xff;
-> +			break;
-> +		default:
-> +			mask = 0xff;
-> +			break;
-
-    Why not merge the last 2 cases?
-
+> +	if (cpu_is_xlp9xx()) {
+> +		bus = (res.start >> 20) & 0xf;
+> +		for (socid = 0; socid < NLM_NR_NODES; socid++) {
+> +			if (!nlm_node_present(socid))
+> +				continue;
+> +			if (nlm_get_node(socid)->socbus == bus)
+> +				break;
 > +		}
+> +		if (socid == NLM_NR_NODES) {
+> +			pr_err("PIC %s: Node mapping for bus %d not found!n",
+> +					node->name, bus);
+> +			return -EINVAL;
+> +		}
+> +	} else
+> +		socid = (res.start >> 18) & 0x3;
+
+    Both arms of the *if* statement should have {} if one arm has it, 
+according to Documentation/CodingStyle.
 
 WBR, Sergei

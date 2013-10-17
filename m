@@ -1,34 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Oct 2013 19:46:34 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37364 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817179Ab3JPRqcIsVjE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Oct 2013 19:46:32 +0200
-Received: from localhost (c-76-28-172-123.hsd1.wa.comcast.net [76.28.172.123])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A64DD93B;
-        Wed, 16 Oct 2013 17:46:23 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        linux-mips@linux-mips.org
-Subject: [ 21/50] MIPS: stack protector: Fix per-task canary switch
-Date:   Wed, 16 Oct 2013 10:45:07 -0700
-Message-Id: <20131016174400.952627917@linuxfoundation.org>
-X-Mailer: git-send-email 1.8.4.3.gca3854a
-In-Reply-To: <20131016174358.335646140@linuxfoundation.org>
-References: <20131016174358.335646140@linuxfoundation.org>
-User-Agent: quilt/0.60-5.1.1
-Return-Path: <gregkh@linuxfoundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Oct 2013 04:14:47 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:52408 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6817906Ab3JQCOpcEEl5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Oct 2013 04:14:45 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <Steven.Hill@imgtec.com>)
+        id 1VWd6j-00047p-N9; Wed, 16 Oct 2013 21:14:37 -0500
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+To:     linux-mips@linux-mips.org
+Cc:     "Steven J. Hill" <Steven.Hill@imgtec.com>, ralf@linux-mips.org
+Subject: [PATCH 0/6] MIPS: APRP: Enable APRP for platforms with a CM.
+Date:   Wed, 16 Oct 2013 21:14:24 -0500
+Message-Id: <1381976070-8413-1-git-send-email-Steven.Hill@imgtec.com>
+X-Mailer: git-send-email 1.7.9.5
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38355
+X-archive-position: 38356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,90 +35,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.11-stable review patch.  If anyone has any objections, please let me know.
+From: "Steven J. Hill" <Steven.Hill@imgtec.com>
 
-------------------
+The APRP model makes it possible that one or more CPUs to run the
+Linux kernel and a dedicated CPU runs a special real-time or signal
+processing program.
 
-From: James Hogan <james.hogan@imgtec.com>
+This patchset adds the following to the current APRP support:
+1. Add CM and multicore APRP support.
+2. Several bug fixes.
+3. Running floating point heavy jobs on the RP side.
+4. Waking up the RP side read by interrupt.
 
-commit 8b3c569a3999a8fd5a819f892525ab5520777c92 upstream.
+Deng-Cheng Zhu (5):
+  MIPS: APRP: Split VPE loader into separate files.
+  MIPS: APRP: Add VPE loader support for CMP platforms.
+  MIPS: APRP: Split RTLX support into separate files.
+  MIPS: APRP: Add RTLX API support for CMP platforms.
+  MIPS: APRP: Malta Add support for Malta CMP platform.
 
-Commit 1400eb6 (MIPS: r4k,octeon,r2300: stack protector: change canary
-per task) was merged in v3.11 and introduced assembly in the MIPS resume
-functions to update the value of the current canary in
-__stack_chk_guard. However it used PTR_L resulting in a load of the
-canary value, instead of PTR_LA to construct its address. The value is
-intended to be random but is then treated as an address in the
-subsequent LONG_S (store).
+Steven J. Hill (1):
+  MIPS: APRP: Code formatting clean-ups.
 
-This was observed to cause a fault and panic:
+ arch/mips/include/asm/amon.h     |   15 +-
+ arch/mips/include/asm/rtlx.h     |   49 ++-
+ arch/mips/include/asm/vpe.h      |  136 +++++-
+ arch/mips/kernel/Makefile        |    4 +-
+ arch/mips/kernel/rtlx-cmp.c      |  120 +++++
+ arch/mips/kernel/rtlx-mt.c       |  152 +++++++
+ arch/mips/kernel/rtlx.c          |  275 +++---------
+ arch/mips/kernel/vpe-cmp.c       |  184 ++++++++
+ arch/mips/kernel/vpe-mt.c        |  527 ++++++++++++++++++++++
+ arch/mips/kernel/vpe.c           |  893 ++++++--------------------------------
+ arch/mips/mti-malta/malta-amon.c |   48 +-
+ arch/mips/mti-malta/malta-int.c  |  127 +++---
+ 12 files changed, 1435 insertions(+), 1095 deletions(-)
+ create mode 100644 arch/mips/kernel/rtlx-cmp.c
+ create mode 100644 arch/mips/kernel/rtlx-mt.c
+ create mode 100644 arch/mips/kernel/vpe-cmp.c
+ create mode 100644 arch/mips/kernel/vpe-mt.c
 
-CPU 0 Unable to handle kernel paging request at virtual address 139fea20, epc == 8000cc0c, ra == 8034f2a4
-Oops[#1]:
-...
-$24   : 139fea20 1e1f7cb6
-...
-Call Trace:
-[<8000cc0c>] resume+0xac/0x118
-[<8034f2a4>] __schedule+0x5f8/0x78c
-[<8034f4e0>] schedule_preempt_disabled+0x20/0x2c
-[<80348eec>] rest_init+0x74/0x84
-[<804dc990>] start_kernel+0x43c/0x454
-Code: 3c18804b  8f184030  8cb901f8 <af190000> 00c0e021  8cb002f0 8cb102f4  8cb202f8  8cb302fc
-
-This can also be forced by modifying
-arch/mips/include/asm/stackprotector.h so that the default
-__stack_chk_guard value is more likely to be a bad (or unaligned)
-pointer.
-
-Fix it to use PTR_LA instead, to load the address of the canary value,
-which the LONG_S can then use to write into it.
-
-Reported-by: bobjones (via #mipslinux on IRC)
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Gregory Fong <gregory.0xf0@gmail.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/6026/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/kernel/octeon_switch.S |    2 +-
- arch/mips/kernel/r2300_switch.S  |    2 +-
- arch/mips/kernel/r4k_switch.S    |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
---- a/arch/mips/kernel/octeon_switch.S
-+++ b/arch/mips/kernel/octeon_switch.S
-@@ -73,7 +73,7 @@
- 3:
- 
- #if defined(CONFIG_CC_STACKPROTECTOR) && !defined(CONFIG_SMP)
--	PTR_L	t8, __stack_chk_guard
-+	PTR_LA	t8, __stack_chk_guard
- 	LONG_L	t9, TASK_STACK_CANARY(a1)
- 	LONG_S	t9, 0(t8)
- #endif
---- a/arch/mips/kernel/r2300_switch.S
-+++ b/arch/mips/kernel/r2300_switch.S
-@@ -67,7 +67,7 @@ LEAF(resume)
- 1:
- 
- #if defined(CONFIG_CC_STACKPROTECTOR) && !defined(CONFIG_SMP)
--	PTR_L	t8, __stack_chk_guard
-+	PTR_LA	t8, __stack_chk_guard
- 	LONG_L	t9, TASK_STACK_CANARY(a1)
- 	LONG_S	t9, 0(t8)
- #endif
---- a/arch/mips/kernel/r4k_switch.S
-+++ b/arch/mips/kernel/r4k_switch.S
-@@ -69,7 +69,7 @@
- 1:
- 
- #if defined(CONFIG_CC_STACKPROTECTOR) && !defined(CONFIG_SMP)
--	PTR_L	t8, __stack_chk_guard
-+	PTR_LA	t8, __stack_chk_guard
- 	LONG_L	t9, TASK_STACK_CANARY(a1)
- 	LONG_S	t9, 0(t8)
- #endif
+-- 
+1.7.9.5

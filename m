@@ -1,29 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Oct 2013 19:22:01 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:53789 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6824926Ab3JQRV6QeJRv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Oct 2013 19:21:58 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <Steven.Hill@imgtec.com>)
-        id 1VWrGg-0004lW-Fh; Thu, 17 Oct 2013 12:21:50 -0500
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-To:     linux-mips@linux-mips.org
-Cc:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>, ralf@linux-mips.org,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>
-Subject: [v2 PATCH 5/6] MIPS: APRP: Add support for Malta CMP platform.
-Date:   Thu, 17 Oct 2013 12:21:46 -0500
-Message-Id: <1382030506-16588-1-git-send-email-Steven.Hill@imgtec.com>
-X-Mailer: git-send-email 1.7.9.5
-Return-Path: <Steven.Hill@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Oct 2013 19:37:59 +0200 (CEST)
+Received: from mail-ob0-f182.google.com ([209.85.214.182]:45314 "EHLO
+        mail-ob0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823123Ab3JQRh4iDeb9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Oct 2013 19:37:56 +0200
+Received: by mail-ob0-f182.google.com with SMTP id va2so2169806obc.13
+        for <multiple recipients>; Thu, 17 Oct 2013 10:37:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=HY98NJ7yNzpMYG9Vx4eJTCbkNF8Q0COfh2IUSCy3c9Y=;
+        b=NR/DDzX9/bu7CkVeKj0G6AlF8pJq0cl4YISIuu+XbbViaA8c0iQK3bQ0oVSqq368kR
+         3wazSsCngh6qSX+6Xwz0LlnrOPdRMgGoz7Phv0mV72AppsBNl59fmMh0MgkSvCcax6JD
+         sdmkYsuBiLw0ikpXpEC4HmgOyLe5z1iqi1jqHBpIBRf9snDO1h7qUJ3QLTQURYa6DL3S
+         LkMr2eHPklcUiaRMM8I50fflrSPrBjc8peWSCy6xcn1SyI/9wJ2nqsUkM9McjQ+w8Lwv
+         m6fia9HzTgSzDW6+sP0rdOV6KGNaYDCvEsQRN/a/JC85M8knLk08vvyKO2anQVBwhaKW
+         eovg==
+X-Received: by 10.182.246.39 with SMTP id xt7mr15648635obc.16.1382031469711;
+        Thu, 17 Oct 2013 10:37:49 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id m7sm38013020obo.7.1969.12.31.16.00.00
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 17 Oct 2013 10:37:48 -0700 (PDT)
+Message-ID: <5260206B.6000005@gmail.com>
+Date:   Thu, 17 Oct 2013 10:37:47 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+CC:     linux-mips@linux-mips.org,
+        Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>, ralf@linux-mips.org
+Subject: Re: [v2 PATCH 5/6] MIPS: APRP: Add support for Malta CMP platform.
+References: <1382030506-16588-1-git-send-email-Steven.Hill@imgtec.com>
+In-Reply-To: <1382030506-16588-1-git-send-email-Steven.Hill@imgtec.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38364
+X-archive-position: 38365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,130 +56,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+What changed from V1?
 
-Malta with multi-core CM platforms can now use APRP functionality.
 
-Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
-Reviewed-by: Qais Yousef <Qais.Yousef@imgtec.com>
----
- arch/mips/include/asm/amon.h     |    4 ++--
- arch/mips/mti-malta/malta-amon.c |   24 +++++++++++++++++++++---
- arch/mips/mti-malta/malta-int.c  |   12 ++++++++++++
- 3 files changed, 35 insertions(+), 5 deletions(-)
-
-diff --git a/arch/mips/include/asm/amon.h b/arch/mips/include/asm/amon.h
-index c3dc1a6..3bd6e76 100644
---- a/arch/mips/include/asm/amon.h
-+++ b/arch/mips/include/asm/amon.h
-@@ -3,5 +3,5 @@
-  */
- 
- int amon_cpu_avail(int);
--void amon_cpu_start(int, unsigned long, unsigned long,
--		    unsigned long, unsigned long);
-+int amon_cpu_start(int, unsigned long, unsigned long,
-+		   unsigned long, unsigned long);
-diff --git a/arch/mips/mti-malta/malta-amon.c b/arch/mips/mti-malta/malta-amon.c
-index 1e47844..917df6d 100644
---- a/arch/mips/mti-malta/malta-amon.c
-+++ b/arch/mips/mti-malta/malta-amon.c
-@@ -25,6 +25,7 @@
- #include <asm/addrspace.h>
- #include <asm/mips-boards/launch.h>
- #include <asm/mipsmtregs.h>
-+#include <asm/vpe.h>
- 
- int amon_cpu_avail(int cpu)
- {
-@@ -48,7 +49,7 @@ int amon_cpu_avail(int cpu)
- 	return 1;
- }
- 
--void amon_cpu_start(int cpu,
-+int amon_cpu_start(int cpu,
- 		    unsigned long pc, unsigned long sp,
- 		    unsigned long gp, unsigned long a0)
- {
-@@ -56,10 +57,10 @@ void amon_cpu_start(int cpu,
- 		(struct cpulaunch  *)CKSEG0ADDR(CPULAUNCH);
- 
- 	if (!amon_cpu_avail(cpu))
--		return;
-+		return -1;
- 	if (cpu == smp_processor_id()) {
- 		pr_debug("launch: I am cpu%d!\n", cpu);
--		return;
-+		return -1;
- 	}
- 	launch += cpu;
- 
-@@ -78,4 +79,21 @@ void amon_cpu_start(int cpu,
- 		;
- 	smp_rmb();	/* Target will be updating flags soon */
- 	pr_debug("launch: cpu%d gone!\n", cpu);
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_MIPS_VPE_LOADER
-+int vpe_run(struct vpe *v)
-+{
-+	struct vpe_notifications *n;
-+
-+	if (amon_cpu_start(aprp_cpu_index(), v->__start, 0, 0, 0) < 0)
-+		return -1;
-+
-+	list_for_each_entry(n, &v->notify, list)
-+		n->start(VPE_MODULE_MINOR);
-+
-+	return 0;
- }
-+#endif
-diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
-index be4a1092..ea9338d 100644
---- a/arch/mips/mti-malta/malta-int.c
-+++ b/arch/mips/mti-malta/malta-int.c
-@@ -2,6 +2,7 @@
-  * Carsten Langgaard, carstenl@mips.com
-  * Copyright (C) 2000, 2001, 2004 MIPS Technologies, Inc.
-  * Copyright (C) 2001 Ralf Baechle
-+ * Copyright (C) 2013 Imagination Technologies Ltd.
-  *
-  *  This program is free software; you can distribute it and/or modify it
-  *  under the terms of the GNU General Public License (Version 2) as
-@@ -44,6 +45,7 @@
- #include <asm/gic.h>
- #include <asm/gcmpregs.h>
- #include <asm/setup.h>
-+#include <asm/rtlx.h>
- 
- int gcmp_present = -1;
- static unsigned long _msc01_biu_base;
-@@ -126,6 +128,11 @@ static void malta_hw0_irqdispatch(void)
- 	}
- 
- 	do_IRQ(MALTA_INT_BASE + irq);
-+
-+#ifdef MIPS_VPE_APSP_API
-+	if (aprp_hook)
-+		aprp_hook();
-+#endif
- }
- 
- static void malta_ipi_irqdispatch(void)
-@@ -313,6 +320,11 @@ static void ipi_call_dispatch(void)
- 
- static irqreturn_t ipi_resched_interrupt(int irq, void *dev_id)
- {
-+#ifdef MIPS_VPE_APSP_API
-+	if (aprp_hook)
-+		aprp_hook();
-+#endif
-+
- 	scheduler_ipi();
- 
- 	return IRQ_HANDLED;
--- 
-1.7.9.5
+On 10/17/2013 10:21 AM, Steven J. Hill wrote:
+> From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+>
+> Malta with multi-core CM platforms can now use APRP functionality.
+>
+> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+> Reviewed-by: Qais Yousef <Qais.Yousef@imgtec.com>
+> ---
+>   arch/mips/include/asm/amon.h     |    4 ++--
+>   arch/mips/mti-malta/malta-amon.c |   24 +++++++++++++++++++++---
+>   arch/mips/mti-malta/malta-int.c  |   12 ++++++++++++
+>   3 files changed, 35 insertions(+), 5 deletions(-)
+>
+[...]

@@ -1,32 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Oct 2013 01:14:51 +0200 (CEST)
-Received: from multi.imgtec.com ([194.200.65.239]:29236 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Oct 2013 09:34:02 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:28092 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823123Ab3JQXOq0JrLZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 18 Oct 2013 01:14:46 +0200
-Message-ID: <52606F2D.7020508@imgtec.com>
-Date:   Thu, 17 Oct 2013 16:13:49 -0700
-From:   Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.0
+        id S6818997Ab3JRHd70exjy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Oct 2013 09:33:59 +0200
+Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id r9I7XXBm003023
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Fri, 18 Oct 2013 03:33:33 -0400
+Received: from potion.localdomain (ovpn-116-52.ams2.redhat.com [10.36.116.52])
+        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id r9I7XS6g023415;
+        Fri, 18 Oct 2013 03:33:29 -0400
+Received: by potion.localdomain (Postfix, from userid 1000)
+        id 9999A46442F0; Fri, 18 Oct 2013 09:30:56 +0200 (CEST)
+Date:   Fri, 18 Oct 2013 09:30:56 +0200
+From:   Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     linux-kernel@vger.kernel.org, Rob Landley <rob@landley.net>,
+        Russell King <linux@arm.linux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Richard Henderson <rth@twiddle.net>,
+        Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
+        Jiri Kosina <jkosina@suse.cz>,
+        Raghavendra K T <raghavendra.kt@linux.vnet.ibm.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Andrew Jones <drjones@redhat.com>, linux-doc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH 5/7] jump_label: relax branch hinting restrictions
+Message-ID: <20131018073050.GA24114@hpx.cz>
+References: <1382004631-25895-1-git-send-email-rkrcmar@redhat.com>
+ <1382004631-25895-6-git-send-email-rkrcmar@redhat.com>
+ <20131017133543.7e4e8d45@gandalf.local.home>
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
-Subject: Re: [PATCH 2/6] MIPS: APRP: Add VPE loader support for CMP platforms.
-References: <1381976070-8413-1-git-send-email-Steven.Hill@imgtec.com> <1381976070-8413-3-git-send-email-Steven.Hill@imgtec.com> <526020F6.80704@gmail.com> <52605E11.2060404@imgtec.com> <526060A8.40105@gmail.com> <526066F0.9090405@imgtec.com> <52606AC1.10403@gmail.com>
-In-Reply-To: <52606AC1.10403@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.136.61]
-X-SEF-Processed: 7_3_0_01192__2013_10_18_00_14_41
-Return-Path: <DengCheng.Zhu@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20131017133543.7e4e8d45@gandalf.local.home>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
+Return-Path: <rkrcmar@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38374
+X-archive-position: 38375
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@imgtec.com
+X-original-sender: rkrcmar@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,106 +67,96 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/17/2013 03:54 PM, David Daney wrote:
-> On 10/17/2013 03:38 PM, Deng-Cheng Zhu wrote:
->> On 10/17/2013 03:11 PM, David Daney wrote:
->>> On 10/17/2013 03:00 PM, Deng-Cheng Zhu wrote:
->>>> On 10/17/2013 10:40 AM, David Daney wrote:
->>>>> On 10/16/2013 07:14 PM, Steven J. Hill wrote:
->>>>>> From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
->>>>>>
->>>>>> This patch adds VPE loader support for platforms having a CMP.
->>>>>>
->>>>>> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
->>>>>> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
->>>>>> Reviewed-by: Qais Yousef <Qais.Yousef@imgtec.com>
->>>>>> ---
->>>>>>   arch/mips/kernel/Makefile  |    2 +-
->>>>>>   arch/mips/kernel/vpe-cmp.c |  184
->>>>>> ++++++++++++++++++++++++++++++++++++++++++++
->>>>>>   arch/mips/kernel/vpe-mt.c  |    4 +
->>>>>>   3 files changed, 189 insertions(+), 1 deletion(-)
->>>>>>   create mode 100644 arch/mips/kernel/vpe-cmp.c
->>>>>>
->>>>>> diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
->>>>>> index 51f9117..912eb64 100644
->>>>>> --- a/arch/mips/kernel/Makefile
->>>>>> +++ b/arch/mips/kernel/Makefile
->>>>>> @@ -54,7 +54,7 @@ obj-$(CONFIG_MIPS_MT_SMP)    += smp-mt.o
->>>>>>   obj-$(CONFIG_MIPS_CMP)        += smp-cmp.o
->>>>>>   obj-$(CONFIG_CPU_MIPSR2)    += spram.o
->>>>>>
->>>>>> -obj-$(CONFIG_MIPS_VPE_LOADER)    += vpe.o vpe-mt.o
->>>>>> +obj-$(CONFIG_MIPS_VPE_LOADER)    += vpe.o vpe-cmp.o vpe-mt.o
->>>>>>   obj-$(CONFIG_MIPS_VPE_APSP_API) += rtlx.o
->>>>>>
->>>>>>   obj-$(CONFIG_I8259)        += i8259.o
->>>>>> diff --git a/arch/mips/kernel/vpe-cmp.c b/arch/mips/kernel/vpe-cmp.c
->>>>>> new file mode 100644
->>>>>> index 0000000..a5628ca
->>>>>> --- /dev/null
->>>>>> +++ b/arch/mips/kernel/vpe-cmp.c
->>>>>> @@ -0,0 +1,184 @@
->>>>>> +/*
->>>>>> + * This file is subject to the terms and conditions of the GNU
->>>>>> General Public
->>>>>> + * License.  See the file "COPYING" in the main directory of this
->>>>>> archive
->>>>>> + * for more details.
->>>>>> + *
->>>>>> + * Copyright (C) 2004, 2005 MIPS Technologies, Inc. All rights
->>>>>> reserved.
->>>>>> + * Copyright (C) 2013 Imagination Technologies Ltd.
->>>>>> + */
->>>>>> +#ifdef CONFIG_MIPS_CMP
->>>>>> +
->>>>>
->>>>> Get rid of all these #ifdef.
->>>>>
->>>>> Use Kconfig symbols in the makefile instead.
->>>>>
->>>>>
->>>>
->>>> Right. Splitting stuff into -cmp/-mt files is an effort to remove such
->>>> kind of #ifdef. The example can be found in Makefile in the v4 of this
->>>> patch set: http://patchwork.linux-mips.org/patch/5059/
->>>>
->>>>
->>>
->>> OK, that patch you point to seems a little better, but there are still
->>> ifdefs in the Makefile.  You can create synthetic Kconfig variables so
->>> the makefile is cleaner, but I don't know if it is worth it in this case.
->>
->> Hmm. That has pros and cons, IMO. So the Makefile will look like:
->>
->> obj-$(CONFIG_MIPS_VPE_LOADER_CMP)  += vpe.o vpe-cmp.o
->> obj-$(CONFIG_MIPS_VPE_APSP_API_CMP) += rtlx.o rtlx-cmp.o
->> obj-$(CONFIG_MIPS_VPE_LOADER_MT)  += vpe.o vpe-mt.o
->> obj-$(CONFIG_MIPS_VPE_APSP_API_MT) += rtlx.o rtlx-mt.o
->>
->> It removes ifdef, but doesn't look straightforward to me: CMP and MT
->> APRP are mutually exclusive.
->
-> It is not necessarily cleaner but you could have something like:
-> ---------------------
-> config MIPS_VPE_LOADER_CMP
->     bool
->     default "y"
->     depends on MIPS_VPE_LOADER && MIPS_CMP
->
-> config MIPS_VPE_LOADER_MT
->     bool
->     default "y"
->     depends on MIPS_VPE_LOADER && !MIPS_CMP
->
-> ----------
-> obj-$(CONFIG_MIPS_VPE_LOADER)    += vpe.o
-> obj-$(CONFIG_MIPS_VPE_LOADER_CMP)    += vpe-cmt.o
-> obj-$(CONFIG_MIPS_VPE_LOADER_MT)    += vpe-mt.o
+2013-10-17 13:35-0400, Steven Rostedt:
+> On Thu, 17 Oct 2013 12:10:28 +0200
+> Radim Krčmář <rkrcmar@redhat.com> wrote:
+> 
+> > We implemented the optimized branch selection in higher levels of api.
+> > That made static_keys very unintuitive, so this patch introduces another
+> > element to jump_table, carrying one bit that tells the underlying code
+> > which branch to optimize.
+> > 
+> > It is now possible to select optimized branch for every jump_entry.
+> > 
+> > Current side effect is 1/3 increase increase in space, we could:
+> > * use bitmasks and selectors on 2+ aligned code/struct.
+> >   - aligning jump target is easy, but because it is not done by default
+> >     and few bytes in .text are much worse that few kilos in .data,
+> >     I chose not to
+> >   - data is probably aligned by default on all current architectures,
+> >     but programmer can force misalignment of static_key
+> > * optimize each architecture independently
+> >   - I can't test everything and this patch shouldn't break anything, so
+> >     others can contribute in the future
+> > * choose something worse, like packing or splitting
+> > * ignore
+> > 
+> > proof: example & x86_64 disassembly: (F = ffffffff)
+> > 
+> >   struct static_key flexible_feature;
+> >   noinline void jump_label_experiment(void) {
+> >   	if ( static_key_false(&flexible_feature))
+> >   	     asm ("push 0xa1");
+> >   	else asm ("push 0xa0");
+> >   	if (!static_key_false(&flexible_feature))
+> >   	     asm ("push 0xb0");
+> >   	else asm ("push 0xb1");
+> >   	if ( static_key_true(&flexible_feature))
+> >   	     asm ("push 0xc1");
+> >   	else asm ("push 0xc0");
+> >   	if (!static_key_true(&flexible_feature))
+> >   	     asm ("push 0xd0");
+> >   	else asm ("push 0xd1");
+> >   }
+> > 
+> >   Disassembly of section .text: (push marked by "->")
+> > 
+> >   F81002000 <jump_label_experiment>:
+> >   F81002000:       e8 7b 29 75 00          callq  F81754980 <__fentry__>
+> >   F81002005:       55                      push   %rbp
+> >   F81002006:       48 89 e5                mov    %rsp,%rbp
+> >   F81002009:       0f 1f 44 00 00          nopl   0x0(%rax,%rax,1)
+> >   F8100200e: ->    ff 34 25 a0 00 00 00    pushq  0xa0
+> >   F81002015:       0f 1f 44 00 00          nopl   0x0(%rax,%rax,1)
+> >   F8100201a: ->    ff 34 25 b0 00 00 00    pushq  0xb0
+> >   F81002021:       0f 1f 44 00 00          nopl   0x0(%rax,%rax,1)
+> >   F81002026: ->    ff 34 25 c1 00 00 00    pushq  0xc1
+> >   F8100202d:       0f 1f 00                nopl   (%rax)
+> >   F81002030:       0f 1f 44 00 00          nopl   0x0(%rax,%rax,1)
+> >   F81002035: ->    ff 34 25 d1 00 00 00    pushq  0xd1
+> >   F8100203c:       5d                      pop    %rbp
+> >   F8100203d:       0f 1f 00                nopl   (%rax)
+> >   F81002040:       c3                      retq
+> 
+> This looks exactly like what we want. I take it this is with your
+> patch. What was the result before the patch?
 
-Yes, I forgot to use the generic variables for vpe.o and rtlx.o in my last 
-reply. Your solution above is right what I wanted to discuss. Thanks for 
-the catch of large ifdefs in the C files.
+Yes, this is after the patch.
 
+The branches would (should) be the same without patch, but
+static_key_true() was defined as !static_key_false(), so this piece of
+code was invalid before, because half of them would be patched to use
+the wrong branch.
 
-Deng-Cheng
+> -- Steve
+> 
+> >   F81002041:       0f 1f 80 00 00 00 00    nopl   0x0(%rax)
+> >   F81002048: ->    ff 34 25 d0 00 00 00    pushq  0xd0
+> >   F8100204f:       5d                      pop    %rbp
+> >   F81002050:       c3                      retq
+> >   F81002051:       0f 1f 80 00 00 00 00    nopl   0x0(%rax)
+> >   F81002058: ->    ff 34 25 c0 00 00 00    pushq  0xc0
+> >   F8100205f:       90                      nop
+> >   F81002060:       eb cb                   jmp    F8100202d <[...]+0x2d>
+> >   F81002062:       66 0f 1f 44 00 00       nopw   0x0(%rax,%rax,1)
+> >   F81002068: ->    ff 34 25 b1 00 00 00    pushq  0xb1
+> >   F8100206f:       90                      nop
+> >   F81002070:       eb af                   jmp    F81002021 <[...]+0x21>
+> >   F81002072:       66 0f 1f 44 00 00       nopw   0x0(%rax,%rax,1)
+> >   F81002078: ->    ff 34 25 a1 00 00 00    pushq  0xa1
+> >   F8100207f:       90                      nop
+> >   F81002080:       eb 93                   jmp    F81002015 <[...]+0x15>
+> >   F81002082:       66 66 66 66 66 2e 0f    [...]
+> >   F81002089:       1f 84 00 00 00 00 00
+> > 
+> >   Contents of section .data: (relevant part of embedded __jump_table)

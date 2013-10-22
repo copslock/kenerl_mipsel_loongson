@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Oct 2013 13:14:24 +0200 (CEST)
-Received: from mms3.broadcom.com ([216.31.210.19]:4074 "EHLO mms3.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Oct 2013 13:15:39 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:1650 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6815858Ab3JVLOVb-Rqh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 22 Oct 2013 13:14:21 +0200
-Received: from [10.9.208.55] by mms3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Tue, 22 Oct 2013 04:13:49 -0700
-X-Server-Uuid: B86B6450-0931-4310-942E-F00ED04CA7AF
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Tue, 22 Oct 2013 04:14:07 -0700
+        id S6815858Ab3JVLPc4aZOV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 22 Oct 2013 13:15:32 +0200
+Received: from [10.9.208.57] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Tue, 22 Oct 2013 04:15:10 -0700
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Tue, 22 Oct 2013 04:15:18 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
- Server id 14.1.438.0; Tue, 22 Oct 2013 04:14:07 -0700
+ IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
+ Server id 14.1.438.0; Tue, 22 Oct 2013 04:15:18 -0700
 Received: from netl-snoppy.ban.broadcom.com (
  netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 22C1E246A3; Tue, 22
- Oct 2013 04:14:05 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id E8163246A3; Tue, 22
+ Oct 2013 04:15:16 -0700 (PDT)
 From:   "Jayachandran C" <jchandra@broadcom.com>
 To:     linux-mips@linux-mips.org
 cc:     "Jayachandran C" <jchandra@broadcom.com>, ralf@linux-mips.org
 Subject: [PATCH 11/18 UPDATED] MIPS: Netlogic: SYS block updates of
  XLP9XX
-Date:   Tue, 22 Oct 2013 16:50:58 +0530
-Message-ID: <1382440858-10905-1-git-send-email-jchandra@broadcom.com>
+Date:   Tue, 22 Oct 2013 16:52:09 +0530
+Message-ID: <1382440929-10941-1-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1381756874-22616-12-git-send-email-jchandra@broadcom.com>
-References: <1381756874-22616-12-git-send-email-jchandra@broadcom.com>
+In-Reply-To: <1381756874-22616-16-git-send-email-jchandra@broadcom.com>
+References: <1381756874-22616-16-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-X-WSS-ID: 7E7882671SC177385-01-01
+X-WSS-ID: 7E7881B44RS156787-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38380
+X-archive-position: 38381
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

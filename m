@@ -1,32 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Oct 2013 17:04:56 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:59513 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6815858Ab3JVPEv1r94z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 22 Oct 2013 17:04:51 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r9MF4oxB009394
-        for <linux-mips@linux-mips.org>; Tue, 22 Oct 2013 17:04:50 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r9MF4owA009393
-        for linux-mips@linux-mips.org; Tue, 22 Oct 2013 17:04:50 +0200
-Date:   Tue, 22 Oct 2013 17:04:50 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org
-Subject: rc5
-Message-ID: <20131022150450.GQ1615@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Oct 2013 12:49:03 +0200 (CEST)
+Received: from top.free-electrons.com ([176.31.233.9]:58802 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6865316Ab3JWKh5HsxUi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Oct 2013 12:37:57 +0200
+Received: by mail.free-electrons.com (Postfix, from userid 106)
+        id 508B57EB; Wed, 23 Oct 2013 12:37:52 +0200 (CEST)
+Received: from localhost (unknown [217.39.7.252])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 15D447E8;
+        Wed, 23 Oct 2013 12:37:52 +0200 (CEST)
+From:   Michael Opdenacker <michael.opdenacker@free-electrons.com>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Michael Opdenacker <michael.opdenacker@free-electrons.com>
+Subject: [PATCH] MIPS: remove duplicate define
+Date:   Wed, 23 Oct 2013 12:37:44 +0200
+Message-Id: <1382524664-3309-1-git-send-email-michael.opdenacker@free-electrons.com>
+X-Mailer: git-send-email 1.8.1.2
+Return-Path: <michael.opdenacker@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38384
+X-archive-position: 38385
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: michael.opdenacker@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,15 +37,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Folks,
+This patch removes a duplicate define from
+arch/mips/boot/ecoff.h
 
-As usual the number of patches posted spiked sharply after rc5 was
-release.  Feel free to post patches whenever you want - but I'd like
-to remind that 3.12-rc5 was the deadline for me to accept patches
-for 3.13.  Anything that I haven't applied yet is 3.14 material.
+Signed-off-by: Michael Opdenacker <michael.opdenacker@free-electrons.com>
+---
+ arch/mips/boot/ecoff.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-Bug fixes are of course exempted from this.
-
-Cheers,
-
-  Ralf
+diff --git a/arch/mips/boot/ecoff.h b/arch/mips/boot/ecoff.h
+index 83e5c38..7a75ce2 100644
+--- a/arch/mips/boot/ecoff.h
++++ b/arch/mips/boot/ecoff.h
+@@ -12,7 +12,6 @@ typedef struct filehdr {
+ } FILHDR;
+ #define FILHSZ	sizeof(FILHDR)
+ 
+-#define OMAGIC		0407
+ #define MIPSEBMAGIC	0x160
+ #define MIPSELMAGIC	0x162
+ 
+-- 
+1.8.1.2

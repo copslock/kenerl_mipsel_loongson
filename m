@@ -1,62 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Oct 2013 09:35:45 +0200 (CEST)
-Received: from mail-ea0-f170.google.com ([209.85.215.170]:45538 "EHLO
-        mail-ea0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817505Ab3JYHfnDr6Ob (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Oct 2013 09:35:43 +0200
-Received: by mail-ea0-f170.google.com with SMTP id q10so282562eaj.29
-        for <multiple recipients>; Fri, 25 Oct 2013 00:35:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=g0iw9l6BbDSf3U7DiC+Bkk5QuaEhoCCFj/P2q3kPcpU=;
-        b=QRmRon132eEyJP+rf6RZjfryN6Ygi5nPygCbcHu5ZPxcIVM3uf/M6wT1aqe1xKHsrr
-         8axL4cqUxAh0+wluGRfuZ9o8L+23dOpaebIva0VmhSJXXt6sRgfBHWZUMq3Rlv/T0VGw
-         1oPpcGKWeJPN4WjTeN8PEEW2Ts2VJx/jvL+2nuaryMaRnDWGuEQN6MyMtNzvP1rsathY
-         vd+8JVLY/Vi1XWupB5Vul1VXKRbxiR+81kASMfQUByL3lIDqsGuEe1pO7ZaU7agslprf
-         CrFv5+aNUw/U0pJ5fJdBUlrtEG6o5X22Qs3IfgY76biZNdem7CqRquN4BR6E5Pj+u9ak
-         MsTw==
-X-Received: by 10.14.174.7 with SMTP id w7mr1921246eel.112.1382686537773;
-        Fri, 25 Oct 2013 00:35:37 -0700 (PDT)
-Received: from localhost (port-6736.pppoe.wtnet.de. [84.46.26.106])
-        by mx.google.com with ESMTPSA id bn13sm14312379eeb.11.2013.10.25.00.35.36
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 25 Oct 2013 00:35:36 -0700 (PDT)
-Date:   Fri, 25 Oct 2013 09:35:35 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Grant Likely <grant.likely@linaro.org>
-Cc:     Rob Herring <rob.herring@calxeda.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 08/10] of/platform: Resolve interrupt references at
- probe time
-Message-ID: <20131025073534.GA19622@ulmo.nvidia.com>
-References: <1379510692-32435-1-git-send-email-treding@nvidia.com>
- <1379510692-32435-9-git-send-email-treding@nvidia.com>
- <20131015232436.19F61C40099@trevor.secretlab.ca>
- <20131024163749.68D01C403B6@trevor.secretlab.ca>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Oct 2013 10:47:27 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:4196 "EHLO mms1.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817088Ab3JYIrWllun- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 25 Oct 2013 10:47:22 +0200
+Received: from [10.9.208.57] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Fri, 25 Oct 2013 01:46:55 -0700
+X-Server-Uuid: 06151B78-6688-425E-9DE2-57CB27892261
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Fri, 25 Oct 2013 01:45:48 -0700
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
+ Server id 14.1.438.0; Fri, 25 Oct 2013 01:45:48 -0700
+Received: from netl-snoppy.ban.broadcom.com (
+ netl-snoppy.ban.broadcom.com [10.132.128.129]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id D1021246A3; Fri, 25
+ Oct 2013 01:45:47 -0700 (PDT)
+From:   "Jayachandran C" <jchandra@broadcom.com>
+To:     linux-mips@linux-mips.org
+cc:     "Jayachandran C" <jchandra@broadcom.com>, ralf@linux-mips.org
+Subject: [PATCH 18/18 UPDATED] MIPS: Netlogic: Add default DTB for
+ XLP9XX SoC
+Date:   Fri, 25 Oct 2013 14:22:49 +0530
+Message-ID: <1382691169-25941-1-git-send-email-jchandra@broadcom.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1381756874-22616-19-git-send-email-jchandra@broadcom.com>
+References: <1381756874-22616-19-git-send-email-jchandra@broadcom.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="fUYQa+Pmc3FrFX/N"
-Content-Disposition: inline
-In-Reply-To: <20131024163749.68D01C403B6@trevor.secretlab.ca>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <thierry.reding@gmail.com>
+X-WSS-ID: 7E74F0751501410072-05-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38389
+X-archive-position: 38390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@gmail.com
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,153 +51,153 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Add a default device tree fie for XLP9XX boards, and add code to use
+this device tree if no DTB is passed to the kernel.
 
---fUYQa+Pmc3FrFX/N
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+---
+Fixed a typo in the earlier .dts file
 
-On Thu, Oct 24, 2013 at 05:37:49PM +0100, Grant Likely wrote:
-> On Wed, 16 Oct 2013 00:24:36 +0100, Grant Likely <grant.likely@linaro.org=
-> wrote:
-> > On Wed, 18 Sep 2013 15:24:50 +0200, Thierry Reding <thierry.reding@gmai=
-l.com> wrote:
-> > > Interrupt references are currently resolved very early (when a device=
- is
-> > > created). This has the disadvantage that it will fail in cases where =
-the
-> > > interrupt parent hasn't been probed and no IRQ domain for it has been
-> > > registered yet. To work around that various drivers use explicit
-> > > initcall ordering to force interrupt parents to be probed before devi=
-ces
-> > > that need them are created. That's error prone and doesn't always wor=
-k.
-> > > If a platform device uses an interrupt line connected to a different
-> > > platform device (such as a GPIO controller), both will be created in =
-the
-> > > same batch, and the GPIO controller won't have been probed by its dri=
-ver
-> > > when the depending platform device is created. Interrupt resolution w=
-ill
-> > > fail in that case.
-> >=20
-> > What is the reason for all the rework on the irq parsing return values?
-> > A return value of '0' is always an error on irq parsing, regardless of
-> > architecture even if NO_IRQ is defined as -1. I may have missed it, but
-> > I don't see any checking for specific error values in the return paths
-> > of the functions.
-> >=20
-> > If the specific return value isn't required (and I don't think it is),
-> > then you can simplify the whole series by getting rid of the rework
-> > patches.
->=20
-> I've not heard back about the above, but I've just had a conversation
-> with Rob about what to do here.
+ arch/mips/netlogic/Kconfig         |    9 +++++
+ arch/mips/netlogic/dts/Makefile    |    1 +
+ arch/mips/netlogic/dts/xlp_gvp.dts |   76 ++++++++++++++++++++++++++++++++++++
+ arch/mips/netlogic/xlp/dt.c        |    7 +++-
+ 4 files changed, 92 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/netlogic/dts/xlp_gvp.dts
 
-I thought I had sent a reply regarding this about a week ago. Perhaps it
-got lost. I'll resend.
-
-> The problem that I have is that it makes a specific return code need
-> to traverse several levels of function calls and have a meaning come
-> out the other end. It becomes difficult to figure out where that code
-> actually comes from when reading the code. That's more of a gut-feel
-> reaction rather than pointing out specifics though.
-
-To be honest, I'm not all that happy with that aspect myself, but at the
-same time I didn't feel like duplicating a lot of code to get this done
-more easily. I imagine that would've caused significant pushback as
-well. It's somewhat unfortunate that we have to propagate back through
-several level, but that's just the way the code is currently written and
-I don't think we can really get the information (EPROBE_DEFER) from any
-other place but from the lowest level.
-
-> The other thing that makes me nervous how invasive the series is.
-
-Well, I guess that comes with the territory, doesn't it? Interrupts are
-used in a large number of places and they have been used in a very
-static manner so far. The end result of this patch series is that for
-most devices instantiated from the device tree interrupts end up in the
-same category as any other resources such as GPIOs, regulators or
-clocks. They become mostly dynamic.
-
-That in itself is a big change, so I don't think it's all that
-surprising that the required changes are invasive.
-
-And I think if we really want to solve it properly we need to make even
-more invasive changes. For example, Grygorii pointed out that we could
-have a setup in the future where the following happens:
-
-	1) driver providing interrupts is probed
-	2) driver using interrupts is probed, interrupt references are
-	   resolved at probe time
-	3) both drivers are unloaded
-	4) both drivers are reloaded
-
-In that case with the current set of patches the added core code assumes
-that the interrupts have already been resolved and are still valid.
-
-Possibly the easiest way to fix that would be to just zero out the
-interrupt resources on remove so that they can be re-resolved on next
-probe.
-
-But that's somewhat cumbersome and it seems to me like a better fix
-might be to go and change struct platform_device to not use a single
-array of resources, but rather a list, or perhaps an array per type of
-resource. The current platform_device structure is simple and easy, but
-it doesn't work well with all the new dynamicity that we want/need/have
-today.
-
-Obviously modifying the innards of struct platform_device will likely
-turn out to be a mammoth task of its own, but if that's what it takes
-I'm prepared to do that as well. Or at least even try.
-
-> However, even with saying all of the above, I'm not saying outright no.
-> I want to get this feature in.
-
-That's good to hear. Last time we talked about it we seemed to have an
-agreement that this needs to be done, but you not replying had me
-worried that perhaps you had changed your mind. It seems you've been
-busy trying to address other issues that maybe are even more pressing so
-I can hardly complain. =3D)
-
-I'm good as long as we can keep moving in the right direction.
-
-> It is obviously needed and I'll even merge the patches piecemeal as the
-> look ready (I've already merged 2). Regardless, the current series needs
-> to be reworked. It conflicts with the other IRQ rework that I've already
-> put into my tree. The best thing to do would probably be respin it
-> against my current tree and repost.
-
-Sure, that won't be a problem. I might not get to it immediately, but
-I'll get back to it.
-
-> I'll take a fresh look then.... In the mean time, anything you can do to
-> /sanely/ reduce the impact will probably help.  :-)
-
-I might be able to do that. But I'll mention that in another thread in
-the right context.
-
-Thierry
-
---fUYQa+Pmc3FrFX/N
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSah9GAAoJEN0jrNd/PrOhglEQALEA8kYxwwnW0OoScRWWD2Fw
-conQGp/mjJecS8927ypLouy7SX2DNAX/234wnaTPGVrnJ9xwXS1Y4Xd+uEd2DWQO
-9NfWP+9bdWhIbVO7oVpX6uQtUT4OXcelmMOVmvotDIAnBFHA5jLE6RwWpW8Pn3yU
-YSGaDkiOGHU0o2K5kk3+ZxqtZaDpm32MgtzB/ZcJWgJkUmebZ1gof01ARsev3+Vb
-5IC3tuhzT6uNR3fxEhoyPUN71f2+1tUNzzjVhn5A9nuAYnU4pYLkLwN3KXf7q1V2
-FfX6UhHC5mqHXkmdPqiT5Cg8rtS9nulq3zDwDd65HYq/g2Xlp/Qo5798h6xdoqeF
-EjCAOvucO333e7Ce9AiiDZsU6njVriNZU3UemPc2oW6BV1aOsUFaw/htbu1f7jze
-XmOtwGrY7fcQCVwNc7ff8aHsQ2equ6lPieN+HYI9hYQdysOpH8XBVlTP3OfJrhro
-hk2Zhhj4tJxBY80Wtd4g8TNtXa0n7HCzaTXdi7Ia7xpIlZ93XPENznOOTcXlYhhj
-dilfWfJX6ZpaPFd5bNcQr+iKNmIOM4x8DZYG8Ds+olEEgDm1uM4FsfqFZYaDJnPU
-93FDVkj/k7SLWzyk2FUnWMydi2P1A+Qr7il89cVMbazzMxRilwvpRXPGigVN69dV
-4+nSk5B422FhPGAEUZl9
-=WlHh
------END PGP SIGNATURE-----
-
---fUYQa+Pmc3FrFX/N--
+diff --git a/arch/mips/netlogic/Kconfig b/arch/mips/netlogic/Kconfig
+index 852a4ee..4eb683a 100644
+--- a/arch/mips/netlogic/Kconfig
++++ b/arch/mips/netlogic/Kconfig
+@@ -28,6 +28,15 @@ config DT_XLP_FVP
+ 	  pointer to the kernel.  The corresponding DTS file is at
+ 	  arch/mips/netlogic/dts/xlp_fvp.dts
+ 
++config DT_XLP_GVP
++	bool "Built-in device tree for XLP GVP boards"
++	default y
++	help
++	  Add an FDT blob for XLP GVP board into the kernel.
++	  This DTB will be used if the firmware does not pass in a DTB
++	  pointer to the kernel.  The corresponding DTS file is at
++	  arch/mips/netlogic/dts/xlp_gvp.dts
++
+ config NLM_MULTINODE
+ 	bool "Support for multi-chip boards"
+ 	depends on NLM_XLP_BOARD
+diff --git a/arch/mips/netlogic/dts/Makefile b/arch/mips/netlogic/dts/Makefile
+index 0b9be5f..25c8e87 100644
+--- a/arch/mips/netlogic/dts/Makefile
++++ b/arch/mips/netlogic/dts/Makefile
+@@ -1,3 +1,4 @@
+ obj-$(CONFIG_DT_XLP_EVP) := xlp_evp.dtb.o
+ obj-$(CONFIG_DT_XLP_SVP) += xlp_svp.dtb.o
+ obj-$(CONFIG_DT_XLP_FVP) += xlp_fvp.dtb.o
++obj-$(CONFIG_DT_XLP_GVP) += xlp_gvp.dtb.o
+diff --git a/arch/mips/netlogic/dts/xlp_gvp.dts b/arch/mips/netlogic/dts/xlp_gvp.dts
+new file mode 100644
+index 0000000..047d27f
+--- /dev/null
++++ b/arch/mips/netlogic/dts/xlp_gvp.dts
+@@ -0,0 +1,76 @@
++/*
++ * XLP9XX Device Tree Source for GVP boards
++ */
++
++/dts-v1/;
++/ {
++	model = "netlogic,XLP-GVP";
++	compatible = "netlogic,xlp";
++	#address-cells = <2>;
++	#size-cells = <2>;
++
++	soc {
++		#address-cells = <2>;
++		#size-cells = <1>;
++		compatible = "simple-bus";
++		ranges = <0 0  0 0x18000000  0x04000000   // PCIe CFG
++			  1 0  0 0x16000000  0x02000000>; // GBU chipselects
++
++		serial0: serial@30000 {
++			device_type = "serial";
++			compatible = "ns16550";
++			reg = <0 0x112100 0xa00>;
++			reg-shift = <2>;
++			reg-io-width = <4>;
++			clock-frequency = <125000000>;
++			interrupt-parent = <&pic>;
++			interrupts = <17>;
++		};
++		pic: pic@4000 {
++			interrupt-controller;
++			#address-cells = <0>;
++			#interrupt-cells = <1>;
++			reg = <0 0x110000 0x200>;
++		};
++
++		nor_flash@1,0 {
++			compatible = "cfi-flash";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			bank-width = <2>;
++			reg = <1 0 0x1000000>;
++
++			partition@0 {
++				label = "x-loader";
++				reg = <0x0 0x100000>; /* 1M */
++				read-only;
++			};
++
++			partition@100000 {
++				label = "u-boot";
++				reg = <0x100000 0x100000>; /* 1M */
++			};
++
++			partition@200000 {
++				label = "kernel";
++				reg = <0x200000 0x500000>; /* 5M */
++			};
++
++			partition@700000 {
++				label = "rootfs";
++				reg = <0x700000 0x800000>; /* 8M */
++			};
++
++			partition@f00000 {
++				label = "env";
++				reg = <0xf00000 0x100000>; /* 1M */
++				read-only;
++			};
++		};
++
++	};
++
++	chosen {
++		bootargs = "console=ttyS0,115200 rdinit=/sbin/init";
++	};
++};
+diff --git a/arch/mips/netlogic/xlp/dt.c b/arch/mips/netlogic/xlp/dt.c
+index 88df445..7e4a84f 100644
+--- a/arch/mips/netlogic/xlp/dt.c
++++ b/arch/mips/netlogic/xlp/dt.c
+@@ -40,12 +40,17 @@
+ #include <linux/of_device.h>
+ 
+ extern u32 __dtb_xlp_evp_begin[], __dtb_xlp_svp_begin[],
+-	__dtb_xlp_fvp_begin[], __dtb_start[];
++	__dtb_xlp_fvp_begin[], __dtb_xlp_gvp_begin[], __dtb_start[];
+ 
+ void __init *xlp_dt_init(void *fdtp)
+ {
+ 	if (!fdtp) {
+ 		switch (current_cpu_data.processor_id & 0xff00) {
++#ifdef CONFIG_DT_XLP_GVP
++		case PRID_IMP_NETLOGIC_XLP9XX:
++			fdtp = __dtb_xlp_gvp_begin;
++			break;
++#endif
+ #ifdef CONFIG_DT_XLP_FVP
+ 		case PRID_IMP_NETLOGIC_XLP2XX:
+ 			fdtp = __dtb_xlp_fvp_begin;
+-- 
+1.7.9.5

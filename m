@@ -1,44 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Oct 2013 13:17:40 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:2543 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Oct 2013 20:28:13 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:1200 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817088Ab3JYLRgSQB7v (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 25 Oct 2013 13:17:36 +0200
-Received: from [10.9.208.55] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Fri, 25 Oct 2013 04:17:12 -0700
+        id S6817974Ab3JYS2KqjZ0F (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 25 Oct 2013 20:28:10 +0200
+Received: from [10.9.208.57] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Fri, 25 Oct 2013 11:27:41 -0700
 X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP
- Server (TLS) id 14.1.438.0; Fri, 25 Oct 2013 04:17:22 -0700
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Fri, 25 Oct 2013 11:26:59 -0700
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP
- Server id 14.1.438.0; Fri, 25 Oct 2013 04:17:22 -0700
-Received: from netl-snoppy.ban.broadcom.com (
- netl-snoppy.ban.broadcom.com [10.132.128.129]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 16106246A5; Fri, 25
- Oct 2013 04:17:20 -0700 (PDT)
-From:   "Jayachandran C" <jchandra@broadcom.com>
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
+ Server id 14.1.438.0; Fri, 25 Oct 2013 11:26:59 -0700
+Received: from fainelli-desktop.broadcom.com (unknown [10.12.164.252])
+ by mail-irva-13.broadcom.com (Postfix) with ESMTP id 7A2BD246A3; Fri,
+ 25 Oct 2013 11:26:59 -0700 (PDT)
+From:   "Florian Fainelli" <f.fainelli@gmail.com>
 To:     linux-mips@linux-mips.org
-cc:     "Markos Chandras" <markos.chandras@imgtec.com>,
-        "Jayachandran C" <jchandra@broadcom.com>
-Subject: [PATCH] MIPS: Netlogic: Remove XLR early serial setup
-Date:   Fri, 25 Oct 2013 16:54:15 +0530
-Message-ID: <1382700255-26119-1-git-send-email-jchandra@broadcom.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1376571575-29037-1-git-send-email-markos.chandras@imgtec.com>
-References: <1376571575-29037-1-git-send-email-markos.chandras@imgtec.com>
+cc:     ralf@linux-mips.org, blogic@openwrt.org,
+        Leonid.Yegoshin@imgtec.com, markos.chandras@imgtec.com,
+        jim2101024@gmail.com, "Florian Fainelli" <f.fainelli@gmail.com>
+Subject: [PATCH mips-for-linux-next] MIPS: fix genex.S build for non
+ MIPS32r2 class processors
+Date:   Fri, 25 Oct 2013 11:26:57 -0700
+Message-ID: <1382725617-32561-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 1.8.3.2
 MIME-Version: 1.0
-X-WSS-ID: 7E748CB24RS1406178-01-01
+X-WSS-ID: 7E74679C4RS1562600-12-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Return-Path: <jchandra@broadcom.com>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38391
+X-archive-position: 38392
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,99 +50,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The early serial code is not needed because we already have early
-printk support provided by common/earlycons.c
+Commit d712357d ("MIPS: Print correct PC in trace dump after NMI
+exception") introduced assembly code which uses the "ehb" instruction,
+which is only available in MIPS32r2 class processors and causes such
+build errors on MIPS32r1 processors:
 
-This change also fixes the following build error that occurs when
-CONFIG_SERIAL_8250 is not configured for Netlogic XLR boards:
+  AS      arch/mips/kernel/genex.o
+arch/mips/kernel/genex.S: Assembler messages:
+arch/mips/kernel/genex.S:386: Error: opcode not supported on this
+processor: mips32 (mips32) `ehb'
+make[2]: *** [arch/mips/kernel/genex.o] Error 1
+make[1]: *** [arch/mips/kernel] Error 2
+make[1]: *** Waiting for unfinished jobs....
 
-arch/mips/built-in.o: In function `nlm_early_serial_setup':
-setup.c:(.init.text+0x274): undefined reference to `early_serial_setup'
-make: *** [vmlinux] Error 1
+Use _ehb which properly substitutes to a nop or a real ehb depending on
+the processor we are building for.
 
-Reported-by: Markos Chandras <markos.chandras@imgtec.com>
-Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- arch/mips/include/asm/netlogic/xlr/xlr.h |    5 -----
- arch/mips/netlogic/xlr/platform.c        |    4 ++--
- arch/mips/netlogic/xlr/setup.c           |   20 --------------------
- 3 files changed, 2 insertions(+), 27 deletions(-)
+ arch/mips/kernel/genex.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/netlogic/xlr/xlr.h b/arch/mips/include/asm/netlogic/xlr/xlr.h
-index c1667e0..ceb991c 100644
---- a/arch/mips/include/asm/netlogic/xlr/xlr.h
-+++ b/arch/mips/include/asm/netlogic/xlr/xlr.h
-@@ -35,11 +35,6 @@
- #ifndef _ASM_NLM_XLR_H
- #define _ASM_NLM_XLR_H
- 
--/* Platform UART functions */
--struct uart_port;
--unsigned int nlm_xlr_uart_in(struct uart_port *, int);
--void nlm_xlr_uart_out(struct uart_port *, int, int);
--
- /* SMP helpers */
- void xlr_wakeup_secondary_cpus(void);
- 
-diff --git a/arch/mips/netlogic/xlr/platform.c b/arch/mips/netlogic/xlr/platform.c
-index 7b96a91..4785932 100644
---- a/arch/mips/netlogic/xlr/platform.c
-+++ b/arch/mips/netlogic/xlr/platform.c
-@@ -23,7 +23,7 @@
- #include <asm/netlogic/xlr/pic.h>
- #include <asm/netlogic/xlr/xlr.h>
- 
--unsigned int nlm_xlr_uart_in(struct uart_port *p, int offset)
-+static unsigned int nlm_xlr_uart_in(struct uart_port *p, int offset)
- {
- 	uint64_t uartbase;
- 	unsigned int value;
-@@ -41,7 +41,7 @@ unsigned int nlm_xlr_uart_in(struct uart_port *p, int offset)
- 	return value;
- }
- 
--void nlm_xlr_uart_out(struct uart_port *p, int offset, int value)
-+static void nlm_xlr_uart_out(struct uart_port *p, int offset, int value)
- {
- 	uint64_t uartbase;
- 
-diff --git a/arch/mips/netlogic/xlr/setup.c b/arch/mips/netlogic/xlr/setup.c
-index 214d123..de1f287 100644
---- a/arch/mips/netlogic/xlr/setup.c
-+++ b/arch/mips/netlogic/xlr/setup.c
-@@ -60,25 +60,6 @@ unsigned int  nlm_threads_per_core = 1;
- struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
- cpumask_t nlm_cpumask = CPU_MASK_CPU0;
- 
--static void __init nlm_early_serial_setup(void)
--{
--	struct uart_port s;
--	unsigned long uart_base;
--
--	uart_base = (unsigned long)nlm_mmio_base(NETLOGIC_IO_UART_0_OFFSET);
--	memset(&s, 0, sizeof(s));
--	s.flags		= ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST;
--	s.iotype	= UPIO_MEM32;
--	s.regshift	= 2;
--	s.irq		= PIC_UART_0_IRQ;
--	s.uartclk	= PIC_CLK_HZ;
--	s.serial_in	= nlm_xlr_uart_in;
--	s.serial_out	= nlm_xlr_uart_out;
--	s.mapbase	= uart_base;
--	s.membase	= (unsigned char __iomem *)uart_base;
--	early_serial_setup(&s);
--}
--
- static void nlm_linux_exit(void)
- {
- 	uint64_t gpiobase;
-@@ -215,7 +196,6 @@ void __init prom_init(void)
- 	memcpy(reset_vec, (void *)nlm_reset_entry,
- 			(nlm_reset_entry_end - nlm_reset_entry));
- 
--	nlm_early_serial_setup();
- 	build_arcs_cmdline(argv);
- 	prom_add_memory();
- 
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index 72853aa..47d7583 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -383,7 +383,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
+ 	li	k1, ~(ST0_BEV | ST0_ERL)
+ 	and     k0, k0, k1
+ 	mtc0    k0, CP0_STATUS
+-	ehb
++	_ehb
+ 	SAVE_ALL
+ 	move	a0, sp
+ 	jal	nmi_exception_handler
 -- 
-1.7.9.5
+1.8.3.2

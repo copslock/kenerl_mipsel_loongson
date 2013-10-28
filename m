@@ -1,26 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Oct 2013 21:44:07 +0100 (CET)
-Received: from perceval.ideasonboard.com ([95.142.166.194]:51020 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Oct 2013 22:04:46 +0100 (CET)
+Received: from perceval.ideasonboard.com ([95.142.166.194]:51169 "EHLO
         perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817514Ab3J1UoFZFIPF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Oct 2013 21:44:05 +0100
+        by eddie.linux-mips.org with ESMTP id S6822995Ab3J1VEnkzEG- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Oct 2013 22:04:43 +0100
 Received: from avalon.localnet (unknown [91.177.152.157])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9FC2235A46;
-        Mon, 28 Oct 2013 21:43:22 +0100 (CET)
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id DD2A135A45;
+        Mon, 28 Oct 2013 22:03:59 +0100 (CET)
 From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Sylwester Nawrocki <sylvester.nawrocki@gmail.com>
-Cc:     linux@arm.linux.org.uk, mturquette@linaro.org,
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
+        linux@arm.linux.org.uk, mturquette@linaro.org,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
+        jiada_wang@mentor.com, t.figa@samsung.com,
+        linux-kernel@vger.kernel.org, kyungmin.park@samsung.com,
+        myungjoo.ham@samsung.com,
         Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        linux-arm-kernel@lists.infradead.org, jiada_wang@mentor.com,
-        kyungmin.park@samsung.com, myungjoo.ham@samsung.com,
-        t.figa@samsung.com, g.liakhovetski@gmx.de,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org
+        g.liakhovetski@gmx.de
 Subject: Re: [PATCH v6 0/5] clk: clock deregistration support
-Date:   Mon, 28 Oct 2013 21:44:25 +0100
-Message-ID: <13300609.Rh0Q97QhcX@avalon>
+Date:   Mon, 28 Oct 2013 22:05:02 +0100
+Message-ID: <13429728.zDYQ5qS5ur@avalon>
 User-Agent: KMail/4.10.5 (Linux/3.10.7-gentoo-r1; KDE/4.10.5; x86_64; ; )
-In-Reply-To: <52434CBC.2070408@gmail.com>
-References: <1377874402-2944-1-git-send-email-s.nawrocki@samsung.com> <3160771.O1gFkR91vK@avalon> <52434CBC.2070408@gmail.com>
+In-Reply-To: <52420664.2040604@gmail.com>
+References: <1377874402-2944-1-git-send-email-s.nawrocki@samsung.com> <52420664.2040604@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -28,7 +29,7 @@ Return-Path: <laurent.pinchart@ideasonboard.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38396
+X-archive-position: 38397
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,60 +48,120 @@ X-list: linux-mips
 
 Hi Sylwester,
 
-On Wednesday 25 September 2013 22:51:08 Sylwester Nawrocki wrote:
-> On 09/25/2013 11:47 AM, Laurent Pinchart wrote:
-> > Doesn't that introduce race conditions ? If the sub-drivers require the
-> > clock, they want to be sure that the clock won't disappear beyond their
-> > backs. I agree that the circular dependency needs to be solved somehow,
-> > but we probably need a more generic solution. The problem will become
-> > more widespread in the future with DT-based device instantiation in both
-> > V4L2 and KMS.
+On Tuesday 24 September 2013 23:38:44 Sylwester Nawrocki wrote:
+> On 08/30/2013 04:53 PM, Sylwester Nawrocki wrote:
+> > This patch series implements clock deregistration in the common clock
+> > framework. Comparing to v5 it only includes further corrections of NULL
+> > clock handling.
 > 
-> It doesn't introduce any new race conditions AFAICT. I doubt all these
-> issues can be resolved in one single step. Currently the modular clock
-> providers are seriously broken, there is no reference tracking and the clock
-> consumers can easily get into a state where they have invalid references to
-> clocks supplied by already unregistered drivers.
+> [...]
 > 
-> With this patch series the clock consumer drivers will not crash thanks
-> to the clock object reference counting. So the worst thing may happen is a
-> clock left in an unexpected state.
+> >    clk: Provide not locked variant of of_clk_get_from_provider()
+> >    clkdev: Fix race condition in clock lookup from device tree
+> >    clk: Add common __clk_get(), __clk_put() implementations
+> >    clk: Assign module owner of a clock being registered
+> >    clk: Implement clk_unregister
 > 
-> However there should be no problems with the v4l2-async API, the host driver
-> in its de-initialization routine unregisters its sub-drivers (they should
-> stop using the clock when notified of such an event), only then the host
-> would unregister the clock (subsequently the sub-drivers get re-attached and
-> put into deferred probing state).
+> Hi Mike, Russell,
+> 
+> Would you have any further comments/suggestions on this series ?
+> 
+> I have inspected all callers of clk_register() and all should be fine
+> with regards to dereferencing dev->driver. The first argument to this
+> function is either NULL or clk_register() is being called in drivers'
+> probe() callback, which ensures dev->driver won't change due to holding
+> dev->mutex.
+> 
+> The only issue I found might be at the omap3isp driver, which provides
+> clock to its sub-drivers and takes reference on the sub-driver modules.
+> When sub-driver calls clk_get() all modules would get locked in memory,
+> due to circular reference. One solution to that could be to pass NULL
+> struct device pointer, as in the below patch.
+> 
+> ---------8<------------------
+>  From ca5963041aad67e31324cb5d4d5e2cfce1706d4f Mon Sep 17 00:00:00 2001
+> From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+> Date: Thu, 19 Sep 2013 23:52:04 +0200
+> Subject: [PATCH] omap3isp: Pass NULL device pointer to clk_register()
+> 
+> Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+> ---
+>   drivers/media/platform/omap3isp/isp.c |   15 ++++++++++-----
+>   drivers/media/platform/omap3isp/isp.h |    1 +
+>   2 files changed, 11 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/media/platform/omap3isp/isp.c
+> b/drivers/media/platform/omap3isp/isp.c
+> index df3a0ec..d7f3c98 100644
+> --- a/drivers/media/platform/omap3isp/isp.c
+> +++ b/drivers/media/platform/omap3isp/isp.c
+> @@ -290,9 +290,11 @@ static int isp_xclk_init(struct isp_device *isp)
+>   	struct clk_init_data init;
+>   	unsigned int i;
+> 
+> +	for (i = 0; i < ARRAY_SIZE(isp->xclks); ++i)
+> +		isp->xclks[i] = ERR_PTR(-EINVAL);
 
-That in itself is a workaround I believe. Unbinding/rebinding devices from/to 
-drivers isn't something the v4l core should do.
+I don't think you've compile-tested this :-)
 
-> There may be issues when a sub-driver's file handle is opened while the host
-> is about to de-initialize. But I doubt resolution of such problems belongs
-> to the common clock framework. I have been trying to improve the situation
-> in small steps, rather than waiting forever for a perfect solution.
+> +
+>   	for (i = 0; i < ARRAY_SIZE(isp->xclks); ++i) {
+>   		struct isp_xclk *xclk = &isp->xclks[i];
+> -		struct clk *clk;
 > 
-> Do you perhaps have any ideas WRT to a "more generic solution" ? In general
-> I have been trying to avoid using v4l2-clk and add what's missing in the
-> common clock framework.
+>   		xclk->isp = isp;
+>   		xclk->id = i == 0 ? ISP_XCLK_A : ISP_XCLK_B;
+> @@ -306,9 +308,9 @@ static int isp_xclk_init(struct isp_device *isp)
 > 
-> Perhaps we should leave only the kref part in the __clk_get(), __clk_put()
-> hooks and be taking reference to a clock in clk_prepare() and releasing it
-> in clk_unprepare() ? This way circular reference would exist only between
-> clk_prepare(), clk_unprepare() calls.
+>   		xclk->hw.init = &init;
 > 
-> Assuming a driver prepares clock in device's open() and unprepares in device
-> close() handler perhaps it could all work better, without relying on the
-> host to ensure the resource reference tracking. I'm not sure if that is not
-> making too many assumptions for a generic API.
+> -		clk = devm_clk_register(isp->dev, &xclk->hw);
+> -		if (IS_ERR(clk))
+> -			return PTR_ERR(clk);
+> +		xclk->clk = clk_register(NULL, &xclk->hw);
+> +		if (IS_ERR(xclk->clk))
+> +			return PTR_ERR(xclk->clk);
 
-This is indeed an architecture decision that goes beyond the boundaries of the 
-clock framework. The question boils down to how we want to acquire/release and 
-refcount resources. Should drivers acquire and release hotpluggable resources 
-at probe and remove time respectively, or only when they need them ? Or should 
-they acquire them at probe them and be notified when they should release them 
-? The first option adds an overhead but could help solving the circular 
-dependency problem in a simpler way.
+This doesn't introduce any regression in the sense that it will trade a 
+problem for another one, so I'm fine with it in the short. Could you add a 
+small comment above the clk_register() call to explain why the first argument 
+is NULL ?
+
+> 
+>   		if (pdata->xclks[i].con_id == NULL &&
+>   		    pdata->xclks[i].dev_id == NULL)
+> @@ -320,7 +322,7 @@ static int isp_xclk_init(struct isp_device *isp)
+> 
+>   		xclk->lookup->con_id = pdata->xclks[i].con_id;
+>   		xclk->lookup->dev_id = pdata->xclks[i].dev_id;
+> -		xclk->lookup->clk = clk;
+> +		xclk->lookup->clk = xclk->clk;
+> 
+>   		clkdev_add(xclk->lookup);
+>   	}
+> @@ -335,6 +337,9 @@ static void isp_xclk_cleanup(struct isp_device *isp)
+>   	for (i = 0; i < ARRAY_SIZE(isp->xclks); ++i) {
+>   		struct isp_xclk *xclk = &isp->xclks[i];
+> 
+> +		if (!IS_ERR(xclk->clk))
+> +			clk_unregister(xclk->clk);
+> +
+>   		if (xclk->lookup)
+>   			clkdev_drop(xclk->lookup);
+>   	}
+> diff --git a/drivers/media/platform/omap3isp/isp.h
+> b/drivers/media/platform/omap3isp/isp.h
+> index cd3eff4..1498f2b 100644
+> --- a/drivers/media/platform/omap3isp/isp.h
+> +++ b/drivers/media/platform/omap3isp/isp.h
+> @@ -135,6 +135,7 @@ struct isp_xclk {
+>   	struct isp_device *isp;
+>   	struct clk_hw hw;
+>   	struct clk_lookup *lookup;
+> +	struct clk *clk;
+>   	enum isp_xclk_id id;
+> 
+>   	spinlock_t lock;	/* Protects enabled and divider */
 
 -- 
 Regards,

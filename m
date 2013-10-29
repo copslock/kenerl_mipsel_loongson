@@ -1,52 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Oct 2013 00:28:49 +0100 (CET)
-Received: from ring0.de ([91.143.88.219]:38139 "EHLO smtp.ring0.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817537Ab3J2X2r4SXMI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 30 Oct 2013 00:28:47 +0100
-Received: from comu.ring0.de (unknown [127.0.0.1])
-        by smtp.ring0.de (Postfix) with ESMTP id B4F5C2C58F3D;
-        Wed, 30 Oct 2013 00:28:46 +0100 (CET)
-Received: (from spamd@localhost)
-        by comu.ring0.de (8.13.8/8.13.8/Submit) id r9TNSgTH001088;
-        Wed, 30 Oct 2013 00:28:42 +0100
-X-Authentication-Warning: comu.ring0.de: spamd set sender to sre@ring0.de using -f
-Date:   Wed, 30 Oct 2013 00:28:39 +0100
-From:   Sebastian Reichel <sre@ring0.de>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        linux-arm-kernel@lists.infradead.org, mturquette@linaro.org,
-        linux@arm.linux.org.uk, jiada_wang@mentor.com,
-        kyungmin.park@samsung.com, linux-kernel@vger.kernel.org,
-        uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org
-Subject: Re: [PATCH v7 1/5] omap3isp: Modify clocks registration to avoid
- circular references
-Message-ID: <20131029232837.GB2266@earth.universe>
-Mail-Followup-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        linux-arm-kernel@lists.infradead.org, mturquette@linaro.org,
-        linux@arm.linux.org.uk, jiada_wang@mentor.com,
-        kyungmin.park@samsung.com, linux-kernel@vger.kernel.org,
-        uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org
-References: <1383076268-8984-1-git-send-email-s.nawrocki@samsung.com>
- <1383076268-8984-2-git-send-email-s.nawrocki@samsung.com>
- <16467881.81yEf9zq68@avalon>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Oct 2013 00:38:17 +0100 (CET)
+Received: from mail-wi0-f174.google.com ([209.85.212.174]:39847 "EHLO
+        mail-wi0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817537Ab3J2XiPAPvnf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Oct 2013 00:38:15 +0100
+Received: by mail-wi0-f174.google.com with SMTP id cb5so6018765wib.13
+        for <linux-mips@linux-mips.org>; Tue, 29 Oct 2013 16:38:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=EYl88PMxBzz9D+4Jt66XITaXKsq4l3MkO6qW9yMgJ90=;
+        b=mNFFh0M8TO2PyYULpu66nW+8RfwkbNEir/PE2NarrNmZZxFu6OpZrZjylOFaITzd0d
+         ZD0vWeT0jR2Apef4HZAA0LN7TGk3o7OxL5oAw9D214KV1c8+OwzWZJWeEGxdJpqyFZG0
+         0jd98wNrc4Qt1h0FdauvN7WQR/U5IJjwCqa0R/JhAo2MRMkm/54r7uWqPVxLTKJRXWqn
+         sHOv9ZCP8lKBcz6/piKOkaLRv2wHgbIGs0LQi0EXcXqezIe4YPdesWuNHI3u+lc0V0lH
+         JuXdp8Jc2duUGgFeDv/Um32UN0fFE++8rxRLX+X7Y+M+wWUfZW/Rzbefn436ykWl5hCF
+         cVTQ==
+X-Received: by 10.194.20.170 with SMTP id o10mr1976654wje.4.1383089889658;
+        Tue, 29 Oct 2013 16:38:09 -0700 (PDT)
+Received: from [192.168.1.110] (093105185086.warszawa.vectranet.pl. [93.105.185.86])
+        by mx.google.com with ESMTPSA id pi6sm9777656wic.3.2013.10.29.16.38.07
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Tue, 29 Oct 2013 16:38:08 -0700 (PDT)
+Message-ID: <527046DE.6050009@gmail.com>
+Date:   Wed, 30 Oct 2013 00:38:06 +0100
+From:   Sylwester Nawrocki <sylvester.nawrocki@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:11.0) Gecko/20120412 Thunderbird/11.0.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="EuxKj2iCbKjpUGkD"
-Content-Disposition: inline
-In-Reply-To: <16467881.81yEf9zq68@avalon>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <sre@ring0.de>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+CC:     linux-arm-kernel@lists.infradead.org, linux@arm.linux.org.uk,
+        mturquette@linaro.org, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org, jiada_wang@mentor.com,
+        t.figa@samsung.com, linux-kernel@vger.kernel.org,
+        kyungmin.park@samsung.com, myungjoo.ham@samsung.com,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        g.liakhovetski@gmx.de
+Subject: Re: [PATCH v6 0/5] clk: clock deregistration support
+References: <1377874402-2944-1-git-send-email-s.nawrocki@samsung.com> <52420664.2040604@gmail.com> <13429728.zDYQ5qS5ur@avalon>
+In-Reply-To: <13429728.zDYQ5qS5ur@avalon>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sylvester.nawrocki@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38408
+X-archive-position: 38409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sre@ring0.de
+X-original-sender: sylvester.nawrocki@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,61 +62,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi Laurent,
 
---EuxKj2iCbKjpUGkD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 10/28/2013 10:05 PM, Laurent Pinchart wrote:
+> On Tuesday 24 September 2013 23:38:44 Sylwester Nawrocki wrote:
+>> On 08/30/2013 04:53 PM, Sylwester Nawrocki wrote:
+>>> This patch series implements clock deregistration in the common clock
+>>> framework. Comparing to v5 it only includes further corrections of NULL
+>>> clock handling.
+[...]
+>> ---------8<------------------
+>>   From ca5963041aad67e31324cb5d4d5e2cfce1706d4f Mon Sep 17 00:00:00 2001
+>> From: Sylwester Nawrocki<s.nawrocki@samsung.com>
+>> Date: Thu, 19 Sep 2013 23:52:04 +0200
+>> Subject: [PATCH] omap3isp: Pass NULL device pointer to clk_register()
+>>
+>> Signed-off-by: Sylwester Nawrocki<s.nawrocki@samsung.com>
+>> ---
+>>    drivers/media/platform/omap3isp/isp.c |   15 ++++++++++-----
+>>    drivers/media/platform/omap3isp/isp.h |    1 +
+>>    2 files changed, 11 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/media/platform/omap3isp/isp.c
+>> b/drivers/media/platform/omap3isp/isp.c
+>> index df3a0ec..d7f3c98 100644
+>> --- a/drivers/media/platform/omap3isp/isp.c
+>> +++ b/drivers/media/platform/omap3isp/isp.c
+>> @@ -290,9 +290,11 @@ static int isp_xclk_init(struct isp_device *isp)
+>>    	struct clk_init_data init;
+>>    	unsigned int i;
+>>
+>> +	for (i = 0; i<  ARRAY_SIZE(isp->xclks); ++i)
+>> +		isp->xclks[i] = ERR_PTR(-EINVAL);
+>
+> I don't think you've compile-tested this :-)
 
-Hi,
+Thank you for the comments. Yeah, I messed up this, I thought this part
+got recompiled but it didn't. I've fixed this in the recently posted
+patch.
 
-On Tue, Oct 29, 2013 at 11:28:37PM +0100, Laurent Pinchart wrote:
-> On Tuesday 29 October 2013 20:51:04 Sylwester Nawrocki wrote:
-> > The clock core code is going to be modified so clk_get() takes
-> > reference on the clock provider module. Until the potential circular
-> > reference issue is properly addressed, we pass NULL as as the first
-> > argument to clk_register(), in order to disallow sub-devices taking
-> > a reference on the ISP module back trough clk_get(). This should
-> > prevent locking the modules in memory.
-> >=20
-> > Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-> > Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
->=20
-> Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
->=20
-> Do you plan to push this to mainline as part of this patch series ? I don=
-'t=20
-> have pending patches for the omap3isp that would conflict with this patch=
-, so=20
-> that would be fine with me.
+>> +
+>>    	for (i = 0; i<  ARRAY_SIZE(isp->xclks); ++i) {
+>>    		struct isp_xclk *xclk =&isp->xclks[i];
+>> -		struct clk *clk;
+>>
+>>    		xclk->isp = isp;
+>>    		xclk->id = i == 0 ? ISP_XCLK_A : ISP_XCLK_B;
+>> @@ -306,9 +308,9 @@ static int isp_xclk_init(struct isp_device *isp)
+>>
+>>    		xclk->hw.init =&init;
+>>
+>> -		clk = devm_clk_register(isp->dev,&xclk->hw);
+>> -		if (IS_ERR(clk))
+>> -			return PTR_ERR(clk);
+>> +		xclk->clk = clk_register(NULL,&xclk->hw);
+>> +		if (IS_ERR(xclk->clk))
+>> +			return PTR_ERR(xclk->clk);
+>
+> This doesn't introduce any regression in the sense that it will trade a
+> problem for another one, so I'm fine with it in the short. Could you add a
+> small comment above the clk_register() call to explain why the first argument
+> is NULL ?
 
-I plan to add support for DT to omap3isp + ADP1653 shortly. I have
-not yet started to work on this, but expect to send some first RFC
-patches in November.
+I'm not entirely happy about doing something like that. Nevertheless I 
+didn't
+hear so far any better proposals and I guess it could be treated as a short
+term modification while we're working on proper handling of those circular
+references.
 
--- Sebastian
-
---EuxKj2iCbKjpUGkD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.15 (GNU/Linux)
-
-iQIcBAEBCAAGBQJScESlAAoJENju1/PIO/qaty0P/ikY5V2SD3vIeSJREZ22QUFL
-UEcNERqLfy2bFF3M2yF5hYxTlW8K3iappltDlalaKypHo8GHLZdh7ZOYx4SEet0C
-aFJo7JIYC42hTTzfdU+v6b5+5x9eECq0+titlLSzXBcKco/390ETcLRgTJAIjprX
-ex8/BYvp4bLxYrVnvyWaCSXPG0OGIIuBBWSRfzhhOGIjJ2oSD8C7F9jSPKoOPV7z
-PsU95Z8xdapg+9QzXf3wAGbdZ+YldHoFCEfDnz3CDTpbzt+nD0wdYhB1EAZH/Skn
-8XnK04scyGqijlZZKUi7PApb3f0NB72iX/Kq79OSkrxB3TaS4US8gQP7TzkDVm74
-fONnHkiE3irwgbX9dM9T9WWcO7BXYHPtP646YtrFHWevokI/lbwDZgXbj56A0LMH
-t8/Qyqa/zY1lYfInBHg3y6f5tK4EgZoy6KqLcVDDD+MDSwoc3Qqg7CqQExN3pDlP
-6HY/K8VagMqVmqQDU6JQ1PHAjgKY1qepjO6rceS8a2slcfQTyx3h5JCb8CmkNTh+
-er94DO/AgRibTxCJfyQkz1x7eodEbDcApJKKl1SYWQjcl2syg4YfTtPAz0WpYlcd
-YCWnXHmJnv9/NQDOg+EWbJrMn+zLrKfN7CbVD6cEd+LdYze2r+9qKI3TZyUJlxq2
-97SygysEp7jr1vWclZXT
-=BbXO
------END PGP SIGNATURE-----
-
---EuxKj2iCbKjpUGkD--
+--
+Thanks,
+Sylwester

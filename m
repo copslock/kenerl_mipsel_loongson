@@ -1,39 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Oct 2013 15:12:03 +0100 (CET)
-Received: from demumfd002.nsn-inter.net ([93.183.12.31]:13986 "EHLO
-        demumfd002.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823120Ab3J3OLzvQ0C8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Oct 2013 15:11:55 +0100
-Received: from demuprx016.emea.nsn-intra.net ([10.150.129.55])
-        by demumfd002.nsn-inter.net (8.12.11.20060308/8.12.11) with ESMTP id r9UEBeQq032187
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
-        Wed, 30 Oct 2013 15:11:40 +0100
-Received: from ak-desktop.emea.nsn-net.net ([10.144.36.74])
-        by demuprx016.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id r9UEBc2M025168;
-        Wed, 30 Oct 2013 15:11:39 +0100
-From:   Aaro Koskinen <aaro.koskinen@nsn.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Aaro Koskinen <aaro.koskinen@nsn.com>
-Subject: [PATCH] MIPS: cavium-octeon: fix early boot hang on EBH5600 board
-Date:   Wed, 30 Oct 2013 16:08:07 +0200
-Message-Id: <1383142087-25995-1-git-send-email-aaro.koskinen@nsn.com>
-X-Mailer: git-send-email 1.8.4.rc3
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-size: 1201
-X-purgate-ID: 151667::1383142301-00005753-5C02A745/0-0/0-0
-Return-Path: <aaro.koskinen@nsn.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Oct 2013 15:28:06 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:12015 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823124Ab3J3O2A5cp1L (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 30 Oct 2013 15:28:00 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH] MIPS: malta: Fix GIC interrupt offsets
+Date:   Wed, 30 Oct 2013 14:27:48 +0000
+Message-ID: <1383143268-14134-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.4
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.31]
+X-SEF-Processed: 7_3_0_01192__2013_10_30_14_27_55
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38413
+X-archive-position: 38414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@nsn.com
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,36 +35,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The boot hangs early on EBH5600 board when octeon_fdt_pip_iface() is
-trying enumerate a non-existant interface. We can avoid this situation
-by first checking that the interface exists in the DTB.
+The GIC interrupt offsets are calculated based on the value of NR_CPUS.
+However, this is wrong because NR_CPUS may or may not contain the real
+number of the actual cpus present in the system. We fix that by using
+the 'nr_cpu_ids' variable which contains the real number of cpus in
+the system. Previously, an MT core (eg with 8 VPEs) will fail to boot if
+NR_CPUS was > 8 with the following errors:
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@nsn.com>
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 0 at kernel/irq/chip.c:670 __irq_set_handler+0x15c/0x164()
+Modules linked in:
+CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W    3.12.0-rc5-00087-gced5633 5
+Stack : 00000006 00000004 00000000 00000000 00000000 00000000 807a4f36 00000053
+          807a0000 00000000 80173218 80565aa8 00000000 00000000 00000000 0000000
+          00000000 00000000 00000000 00000000 00000000 00000000 00000000 0000000
+          00000000 00000000 00000000 8054fd00 8054fd94 80500514 805657a7 8016eb4
+          807a0000 80500514 00000000 00000000 80565aa8 8079a5d8 80565766 8054fd0
+          ...
+Call Trace:
+[<801098c0>] show_stack+0x64/0x7c
+[<8049c6b0>] dump_stack+0x64/0x84
+[<8012efc4>] warn_slowpath_common+0x84/0xb4
+[<8012f00c>] warn_slowpath_null+0x18/0x24
+[<80173218>] __irq_set_handler+0x15c/0x164
+[<80587cf4>] arch_init_ipiirq+0x2c/0x3c
+[<805880c8>] arch_init_irq+0x3c4/0x4bc
+[<80588e28>] init_IRQ+0x3c/0x50
+[<805847e8>] start_kernel+0x230/0x3d8
+
+---[ end trace 4eaa2a86a8e2da26 ]---
+
+This is now fixed and the Malta board can boot with any NR_CPUS value
+which also helps supporting more processors in a single kernel binary.
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/cavium-octeon/octeon-platform.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+This patch is for the upstream-sfr/mips-for-linux-next tree
+---
+ arch/mips/mti-malta/malta-int.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index 1830874..f68c75a 100644
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -336,14 +336,14 @@ static void __init octeon_fdt_pip_iface(int pip, int idx, u64 *pmac)
- 	int p;
- 	int count = 0;
+diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
+index be4a1092..0892575 100644
+--- a/arch/mips/mti-malta/malta-int.c
++++ b/arch/mips/mti-malta/malta-int.c
+@@ -472,7 +472,7 @@ static void __init fill_ipi_map(void)
+ {
+ 	int cpu;
  
--	if (cvmx_helper_interface_enumerate(idx) == 0)
--		count = cvmx_helper_ports_on_interface(idx);
--
- 	snprintf(name_buffer, sizeof(name_buffer), "interface@%d", idx);
- 	iface = fdt_subnode_offset(initial_boot_params, pip, name_buffer);
- 	if (iface < 0)
- 		return;
- 
-+	if (cvmx_helper_interface_enumerate(idx) == 0)
-+		count = cvmx_helper_ports_on_interface(idx);
-+
- 	for (p = 0; p < 16; p++)
- 		octeon_fdt_pip_port(iface, idx, p, count - 1, pmac);
- }
+-	for (cpu = 0; cpu < NR_CPUS; cpu++) {
++	for (cpu = 0; cpu < nr_cpu_ids; cpu++) {
+ 		fill_ipi_map1(gic_resched_int_base, cpu, GIC_CPU_INT1);
+ 		fill_ipi_map1(gic_call_int_base, cpu, GIC_CPU_INT2);
+ 	}
+@@ -573,8 +573,9 @@ void __init arch_init_irq(void)
+ 		/* FIXME */
+ 		int i;
+ #if defined(CONFIG_MIPS_MT_SMP)
+-		gic_call_int_base = GIC_NUM_INTRS - NR_CPUS;
+-		gic_resched_int_base = gic_call_int_base - NR_CPUS;
++		gic_call_int_base = GIC_NUM_INTRS -
++			(NR_CPUS - nr_cpu_ids) * 2 - nr_cpu_ids;
++		gic_resched_int_base = gic_call_int_base - nr_cpu_ids;
+ 		fill_ipi_map();
+ #endif
+ 		gic_init(GIC_BASE_ADDR, GIC_ADDRSPACE_SZ, gic_intr_map,
+@@ -598,7 +599,7 @@ void __init arch_init_irq(void)
+ 		printk("CPU%d: status register now %08x\n", smp_processor_id(), read_c0_status());
+ 		write_c0_status(0x1100dc00);
+ 		printk("CPU%d: status register frc %08x\n", smp_processor_id(), read_c0_status());
+-		for (i = 0; i < NR_CPUS; i++) {
++		for (i = 0; i < nr_cpu_ids; i++) {
+ 			arch_init_ipiirq(MIPS_GIC_IRQ_BASE +
+ 					 GIC_RESCHED_INT(i), &irq_resched);
+ 			arch_init_ipiirq(MIPS_GIC_IRQ_BASE +
 -- 
-1.8.4.rc3
+1.8.4

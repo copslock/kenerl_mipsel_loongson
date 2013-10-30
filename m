@@ -1,28 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Oct 2013 15:28:06 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:12015 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823124Ab3J3O2A5cp1L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 30 Oct 2013 15:28:00 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH] MIPS: malta: Fix GIC interrupt offsets
-Date:   Wed, 30 Oct 2013 14:27:48 +0000
-Message-ID: <1383143268-14134-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Oct 2013 20:43:13 +0100 (CET)
+Received: from mail-pd0-f173.google.com ([209.85.192.173]:48391 "EHLO
+        mail-pd0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827336Ab3J3TnKjzrij convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 30 Oct 2013 20:43:10 +0100
+Received: by mail-pd0-f173.google.com with SMTP id r10so1423088pdi.18
+        for <linux-mips@linux-mips.org>; Wed, 30 Oct 2013 12:43:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:content-type:mime-version
+         :content-transfer-encoding:to:from:in-reply-to:cc:references
+         :message-id:user-agent:subject:date;
+        bh=kjeAJ0t18LxYmWvkW2JfmMH5iKg2quXq4rzhR91F5Ak=;
+        b=a1SmBhwVoernwCKoxjdGsRqwBg7IDotkpm7mihmqqHR35rG6kTstme0/McklJoH6l7
+         rydu46DEy0B8coCs/WAj2kaXDl1iuRnTd/XOctxdHylsFAHAIO7M0Q7cqYbn1iNEyS6C
+         FGuAKCBbPZMqI5m8Zn5bm4+qrBFOMK90KuScTVcnX/ifLFbDhq1Iju+PgGE539gTnZqJ
+         mS2rJTEH3Q9vhcpvW7BC8cgdCE322mKBUlA/LY//Znho1BdwgKHmIamyjg3O/Aq2HFPT
+         /xB5/2AGn7Ge2QN3cP3/pPTHoz1AXYaMUifNGTE7cL9MJ4Me7eMRUXlpDaZgnjzaGsh7
+         x7rw==
+X-Gm-Message-State: ALoCoQlbFsx4Jgcn69/TWEYD4FCd6ivI1xwQR7Dv5GPgColpAaPvBBBHGd1fVK7Q6rGKQTDKcvKd
+X-Received: by 10.66.139.166 with SMTP id qz6mr167661pab.88.1383162183625;
+        Wed, 30 Oct 2013 12:43:03 -0700 (PDT)
+Received: from localhost ([2601:9:5b00:11d:ca60:ff:fe0a:8a36])
+        by mx.google.com with ESMTPSA id yg3sm220178pab.16.2013.10.30.12.43.02
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Wed, 30 Oct 2013 12:43:02 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.31]
-X-SEF-Processed: 7_3_0_01192__2013_10_30_14_27_55
-Return-Path: <Markos.Chandras@imgtec.com>
+Content-Transfer-Encoding: 8BIT
+To:     Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        linux-arm-kernel@lists.infradead.org
+From:   Mike Turquette <mturquette@linaro.org>
+In-Reply-To: <1383076268-8984-1-git-send-email-s.nawrocki@samsung.com>
+Cc:     linux@arm.linux.org.uk, jiada_wang@mentor.com,
+        kyungmin.park@samsung.com, laurent.pinchart@ideasonboard.com,
+        linux-kernel@vger.kernel.org,
+        uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>
+References: <1383076268-8984-1-git-send-email-s.nawrocki@samsung.com>
+Message-ID: <20131030194252.11662.92657@quantum>
+User-Agent: alot/0.3.4
+Subject: Re: [PATCH v7 0/5] clk: clock deregistration support
+Date:   Wed, 30 Oct 2013 12:42:52 -0700
+Return-Path: <mturquette@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38414
+X-archive-position: 38415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: mturquette@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,79 +65,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The GIC interrupt offsets are calculated based on the value of NR_CPUS.
-However, this is wrong because NR_CPUS may or may not contain the real
-number of the actual cpus present in the system. We fix that by using
-the 'nr_cpu_ids' variable which contains the real number of cpus in
-the system. Previously, an MT core (eg with 8 VPEs) will fail to boot if
-NR_CPUS was > 8 with the following errors:
+Quoting Sylwester Nawrocki (2013-10-29 12:51:03)
+> This patch series implements clock deregistration in the common clock
+> framework. Detailed changes are listed at each patch. I have included
+> an additional patch in this series for the omap3isp driver, required 
+> to avoid regressions.
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 0 at kernel/irq/chip.c:670 __irq_set_handler+0x15c/0x164()
-Modules linked in:
-CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W    3.12.0-rc5-00087-gced5633 5
-Stack : 00000006 00000004 00000000 00000000 00000000 00000000 807a4f36 00000053
-          807a0000 00000000 80173218 80565aa8 00000000 00000000 00000000 0000000
-          00000000 00000000 00000000 00000000 00000000 00000000 00000000 0000000
-          00000000 00000000 00000000 8054fd00 8054fd94 80500514 805657a7 8016eb4
-          807a0000 80500514 00000000 00000000 80565aa8 8079a5d8 80565766 8054fd0
-          ...
-Call Trace:
-[<801098c0>] show_stack+0x64/0x7c
-[<8049c6b0>] dump_stack+0x64/0x84
-[<8012efc4>] warn_slowpath_common+0x84/0xb4
-[<8012f00c>] warn_slowpath_null+0x18/0x24
-[<80173218>] __irq_set_handler+0x15c/0x164
-[<80587cf4>] arch_init_ipiirq+0x2c/0x3c
-[<805880c8>] arch_init_irq+0x3c4/0x4bc
-[<80588e28>] init_IRQ+0x3c/0x50
-[<805847e8>] start_kernel+0x230/0x3d8
+Taken into clk-next. Thanks for the fine rework!
 
----[ end trace 4eaa2a86a8e2da26 ]---
+Regards,
+Mike
 
-This is now fixed and the Malta board can boot with any NR_CPUS value
-which also helps supporting more processors in a single kernel binary.
-
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
-This patch is for the upstream-sfr/mips-for-linux-next tree
----
- arch/mips/mti-malta/malta-int.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
-index be4a1092..0892575 100644
---- a/arch/mips/mti-malta/malta-int.c
-+++ b/arch/mips/mti-malta/malta-int.c
-@@ -472,7 +472,7 @@ static void __init fill_ipi_map(void)
- {
- 	int cpu;
- 
--	for (cpu = 0; cpu < NR_CPUS; cpu++) {
-+	for (cpu = 0; cpu < nr_cpu_ids; cpu++) {
- 		fill_ipi_map1(gic_resched_int_base, cpu, GIC_CPU_INT1);
- 		fill_ipi_map1(gic_call_int_base, cpu, GIC_CPU_INT2);
- 	}
-@@ -573,8 +573,9 @@ void __init arch_init_irq(void)
- 		/* FIXME */
- 		int i;
- #if defined(CONFIG_MIPS_MT_SMP)
--		gic_call_int_base = GIC_NUM_INTRS - NR_CPUS;
--		gic_resched_int_base = gic_call_int_base - NR_CPUS;
-+		gic_call_int_base = GIC_NUM_INTRS -
-+			(NR_CPUS - nr_cpu_ids) * 2 - nr_cpu_ids;
-+		gic_resched_int_base = gic_call_int_base - nr_cpu_ids;
- 		fill_ipi_map();
- #endif
- 		gic_init(GIC_BASE_ADDR, GIC_ADDRSPACE_SZ, gic_intr_map,
-@@ -598,7 +599,7 @@ void __init arch_init_irq(void)
- 		printk("CPU%d: status register now %08x\n", smp_processor_id(), read_c0_status());
- 		write_c0_status(0x1100dc00);
- 		printk("CPU%d: status register frc %08x\n", smp_processor_id(), read_c0_status());
--		for (i = 0; i < NR_CPUS; i++) {
-+		for (i = 0; i < nr_cpu_ids; i++) {
- 			arch_init_ipiirq(MIPS_GIC_IRQ_BASE +
- 					 GIC_RESCHED_INT(i), &irq_resched);
- 			arch_init_ipiirq(MIPS_GIC_IRQ_BASE +
--- 
-1.8.4
+> 
+> Changes since v5:
+>  - fixed NULL clock handling in __clk_get(), __clk_put (patch 5/5).
+> 
+> Changes since v4:
+>  - removed stray struct module forward declaration in patch 3/5.
+> 
+> Changes since v3:
+>  - replaced WARN_ON() with WARN_ON_ONCE() in clk_nodrv_disable_unprepare()
+>    callback.
+> 
+> Changes since v2:
+>  - reordered the patches so the race condition is fixed before it can
+>    actually cause any issues,
+>  - fixed handling of NULL clock pointers in __clk_get(), __clk_put(),
+>  - added patch adding actual asignment of clk->owner; more details are
+>    discussed in that specific patch.
+> 
+> Changes since v1:
+>  - moved of_clk_{lock, unlock}, __of_clk_get_from_provider() function
+>    declaractions to a local header,
+>  - renamed clk_dummy_* to clk_nodrv_*.
+> 
+> Sylwester Nawrocki (5):
+>   omap3isp: Modify clocks registration to avoid circular references
+>   clk: Provide not locked variant of of_clk_get_from_provider()
+>   clkdev: Fix race condition in clock lookup from device tree
+>   clk: Add common __clk_get(), __clk_put() implementations
+>   clk: Implement clk_unregister()
+> 
+>  arch/arm/include/asm/clkdev.h         |    2 +
+>  arch/blackfin/include/asm/clkdev.h    |    2 +
+>  arch/mips/include/asm/clkdev.h        |    2 +
+>  arch/sh/include/asm/clkdev.h          |    2 +
+>  drivers/clk/clk.c                     |  185 +++++++++++++++++++++++++++++++--
+>  drivers/clk/clk.h                     |   16 +++
+>  drivers/clk/clkdev.c                  |   12 ++-
+>  drivers/media/platform/omap3isp/isp.c |   22 ++--
+>  drivers/media/platform/omap3isp/isp.h |    1 +
+>  include/linux/clk-private.h           |    5 +
+>  include/linux/clkdev.h                |    5 +
+>  11 files changed, 235 insertions(+), 19 deletions(-)
+>  create mode 100644 drivers/clk/clk.h
+> 
+> -- 
+> 1.7.9.5

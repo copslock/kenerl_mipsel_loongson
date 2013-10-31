@@ -1,49 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Oct 2013 12:10:09 +0100 (CET)
-Received: from mail-pa0-f42.google.com ([209.85.220.42]:33987 "EHLO
-        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822668Ab3JaLJmJ2M15 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Oct 2013 12:09:42 +0100
-Received: by mail-pa0-f42.google.com with SMTP id kp14so2368847pab.29
-        for <linux-mips@linux-mips.org>; Thu, 31 Oct 2013 04:09:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=pVlwOtswNBL+VMZUrQr48J57sRS0MjPcTKQ+joE4VO4=;
-        b=LUlmJ4xuDeabmS1oa3gYvire5uA+L2/JI1wWYGBTv7OgF67pZIRqD9CAtLv0wYpQac
-         rg88mudQwOTuaNoGqltt6JLC0Cx87AEo2owGGZ1+pqdnJDhhWJsNHu9gpUE3uemPFeos
-         Gcb53WDyOph7lItiw/POLgxC0x1raXyVRZnfGQF6cxSmNaIge2U0kH2MsSAXOSs6Tqu6
-         7sApgPY++2mneTwQ67b+2OFMc9m/sIGalh9uzQOCSwKHjaP0G+szWPItmyWH+U8+oUX5
-         SHa+97GCzNUxQ73jYB1dWkXxdPk8TTIqJqDZsFiu1LdEmlnjFBGfa1tc6AYvmDQbQqoj
-         MkJw==
-X-Gm-Message-State: ALoCoQmyxeSSXOToLSgIapiO548T0zDlNcRTPvh9zxURTzQ44NC+hn5a7z+4De4pPNKzu/kFOjYC
-X-Received: by 10.68.197.104 with SMTP id it8mr2462872pbc.17.1383217775952;
-        Thu, 31 Oct 2013 04:09:35 -0700 (PDT)
-Received: from linaro.sisodomain.com ([115.113.119.130])
-        by mx.google.com with ESMTPSA id hz10sm3446333pbc.36.2013.10.31.04.09.33
-        for <multiple recipients>
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Thu, 31 Oct 2013 04:09:35 -0700 (PDT)
-From:   Tushar Behera <tushar.behera@linaro.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     patches@linaro.org, linux-mips@linux-mips.org,
-        John Crispin <blogic@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 1/5] MIPS: ralink: Use devm_ioremap_resource
-Date:   Thu, 31 Oct 2013 16:38:03 +0530
-Message-Id: <1383217687-12037-2-git-send-email-tushar.behera@linaro.org>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1383217687-12037-1-git-send-email-tushar.behera@linaro.org>
-References: <1383217687-12037-1-git-send-email-tushar.behera@linaro.org>
-Return-Path: <tushar.behera@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Oct 2013 16:48:21 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:33158 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6823079Ab3JaPsSkAI1y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 31 Oct 2013 16:48:18 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r9VFmHdb009805;
+        Thu, 31 Oct 2013 16:48:17 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r9VFmHD3009804;
+        Thu, 31 Oct 2013 16:48:17 +0100
+Date:   Thu, 31 Oct 2013 16:48:17 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     linux-mips@linux-mips.org
+Cc:     Jayachandran C <jchandra@broadcom.com>,
+        Ganesan Ramalingam <ganesanr@broadcom.com>,
+        John Crispin <blogic@openwrt.org>
+Subject: Fwd: Re: Build breakage in latest -next
+Message-ID: <20131031154816.GX25884@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38427
+X-archive-position: 38428
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tushar.behera@linaro.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,26 +42,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Tushar Behera <tushar.behera@linaro.org>
-CC: linux-mips@linux-mips.org
-CC: John Crispin <blogic@openwrt.org>
-CC: Ralf Baechle <ralf@linux-mips.org>
----
- arch/mips/ralink/timer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Comments regarding Rob's build fix below appreciated.
 
-diff --git a/arch/mips/ralink/timer.c b/arch/mips/ralink/timer.c
-index e49241a..2027857 100644
---- a/arch/mips/ralink/timer.c
-+++ b/arch/mips/ralink/timer.c
-@@ -126,7 +126,7 @@ static int rt_timer_probe(struct platform_device *pdev)
- 		return -ENOENT;
- 	}
+Thanks,
+
+  Ralf
+
+Date: Tue, 29 Oct 2013 17:55:04 -0500
+From: Rob Herring <rob.herring@calxeda.com>
+Subject: Re: Build breakage in latest -next
+
+On 10/29/2013 04:04 PM, Ralf Baechle wrote:
+> nlm_xlp_defconfig fails with:
+> 
+>   LINK    vmlinux
+>   LD      vmlinux.o
+>   MODPOST vmlinux.o
+>   GEN     .version
+>   CHK     include/generated/compile.h
+>   UPD     include/generated/compile.h
+>   CC      init/version.o
+>   LD      init/built-in.o
+> arch/mips/built-in.o: In function `plat_mem_setup':
+> (.init.text+0x5b0): undefined reference to `early_init_devtree'
+> make[2]: *** [vmlinux] Error 1
+> make[1]: *** [sub-make] Error 2
+> make: *** [all] Error 2
+> make: Leaving directory `/home/ralf/src/linux/obj/nlm_xlp-build'
+> 
+> It appears this was caused by f75813c0127bbef41ac3152f64a72ba212a5514c
+> [mips: use early_init_dt_scan] which removes the early_init_devtree
+> function but doesn't the call in arch/mips/netlogic/xlp/setup.c.
+
+I could change this to a call to device_tree_init, but the way it was 
+done results in scanning the DT twice. I would like to move the 
+device_tree_init call to be earlier instead to avoid this. I think this 
+should be functionally equivalent, but could use more eyes on it.
+
+Rob
+
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index c538d6e..f5e5b0a 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -602,6 +602,8 @@ static void __init arch_mem_init(char **cmdline_p)
+ {
+ 	extern void plat_mem_setup(void);
  
--	rt->membase = devm_request_and_ioremap(&pdev->dev, res);
-+	rt->membase = devm_ioremap_resource(&pdev->dev, res);
- 	if (IS_ERR(rt->membase))
- 		return PTR_ERR(rt->membase);
++	device_tree_init();
++
+ 	/* call board setup routine */
+ 	plat_mem_setup();
  
--- 
-1.7.9.5
+@@ -662,7 +664,6 @@ static void __init arch_mem_init(char **cmdline_p)
+ 				crashk_res.end - crashk_res.start + 1,
+ 				BOOTMEM_DEFAULT);
+ #endif
+-	device_tree_init();
+ 	sparse_init();
+ 	plat_swiotlb_setup();
+ 	paging_init();
+diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
+index 76a7131..e8938b7 100644
+--- a/arch/mips/netlogic/xlp/setup.c
++++ b/arch/mips/netlogic/xlp/setup.c
+@@ -97,9 +97,6 @@ void __init plat_mem_setup(void)
+ 	_machine_halt	= nlm_linux_exit;
+ 	pm_power_off	= nlm_linux_exit;
+ 
+-	/* memory and bootargs from DT */
+-	early_init_devtree(initial_boot_params);
+-
+ 	if (boot_mem_map.nr_map == 0) {
+ 		pr_info("Using DRAM BARs for memory map.\n");
+ 		xlp_init_mem_from_bars();

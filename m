@@ -1,35 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Oct 2013 16:48:21 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:33158 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6823079Ab3JaPsSkAI1y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 31 Oct 2013 16:48:18 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id r9VFmHdb009805;
-        Thu, 31 Oct 2013 16:48:17 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id r9VFmHD3009804;
-        Thu, 31 Oct 2013 16:48:17 +0100
-Date:   Thu, 31 Oct 2013 16:48:17 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org
-Cc:     Jayachandran C <jchandra@broadcom.com>,
-        Ganesan Ramalingam <ganesanr@broadcom.com>,
-        John Crispin <blogic@openwrt.org>
-Subject: Fwd: Re: Build breakage in latest -next
-Message-ID: <20131031154816.GX25884@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Oct 2013 18:27:42 +0100 (CET)
+Received: from mail-ob0-f169.google.com ([209.85.214.169]:40363 "EHLO
+        mail-ob0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817090Ab3JaR1jnmMCB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Oct 2013 18:27:39 +0100
+Received: by mail-ob0-f169.google.com with SMTP id uz6so3419655obc.28
+        for <multiple recipients>; Thu, 31 Oct 2013 10:27:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=gAoTiWt87ihjhxTaZW4D84ksKZ+uZH41VzSWB2o0NrY=;
+        b=Ma2URXp5A8uSu5veYXRgSbs/Rnm2ZvYL62lcthsVlppC/Nozhgqc00D51Fj7q1wCDM
+         tlQjFdE/7ztH7dEHUBkAA/IlH9hlxoePojnJ2xWYZt7rHrsUYGnlmtXrbLkzwzEN6ypw
+         1PRVmsoBw6LR5yY7FcxZHBCQ7L3WOs90hJfKSMHeBDus+KINSD4KhC59230XZMw2LFpl
+         Qr61oa/bmUpO2wUadcHQgL4OHOGPmKRKASxncyUVn4f+sphl5O2SzzDUNcGfomi9jGrA
+         ZSsHHX2TWK4pLiBUWKse+2Ptph0hzo/ztcONLkiG1L/Eh1bwXesgC535/dTHlmpWGmSF
+         fg2Q==
+X-Received: by 10.60.155.166 with SMTP id vx6mr3604347oeb.28.1383240452992;
+        Thu, 31 Oct 2013 10:27:32 -0700 (PDT)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id rr6sm8629048oeb.0.2013.10.31.10.27.31
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 31 Oct 2013 10:27:32 -0700 (PDT)
+Message-ID: <52729302.6090505@gmail.com>
+Date:   Thu, 31 Oct 2013 10:27:30 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+To:     Aaro Koskinen <aaro.koskinen@nsn.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
+        linux-mips@linux-mips.org, Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: Re: [PATCH] MIPS: cavium-octeon: fix early boot hang on EBH5600 board
+References: <1383142087-25995-1-git-send-email-aaro.koskinen@nsn.com>
+In-Reply-To: <1383142087-25995-1-git-send-email-aaro.koskinen@nsn.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38428
+X-archive-position: 38429
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,77 +58,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Comments regarding Rob's build fix below appreciated.
+I am looking at this, but it could be a few days before I can render an 
+opinion about it.
 
-Thanks,
 
-  Ralf
-
-Date: Tue, 29 Oct 2013 17:55:04 -0500
-From: Rob Herring <rob.herring@calxeda.com>
-Subject: Re: Build breakage in latest -next
-
-On 10/29/2013 04:04 PM, Ralf Baechle wrote:
-> nlm_xlp_defconfig fails with:
-> 
->   LINK    vmlinux
->   LD      vmlinux.o
->   MODPOST vmlinux.o
->   GEN     .version
->   CHK     include/generated/compile.h
->   UPD     include/generated/compile.h
->   CC      init/version.o
->   LD      init/built-in.o
-> arch/mips/built-in.o: In function `plat_mem_setup':
-> (.init.text+0x5b0): undefined reference to `early_init_devtree'
-> make[2]: *** [vmlinux] Error 1
-> make[1]: *** [sub-make] Error 2
-> make: *** [all] Error 2
-> make: Leaving directory `/home/ralf/src/linux/obj/nlm_xlp-build'
-> 
-> It appears this was caused by f75813c0127bbef41ac3152f64a72ba212a5514c
-> [mips: use early_init_dt_scan] which removes the early_init_devtree
-> function but doesn't the call in arch/mips/netlogic/xlp/setup.c.
-
-I could change this to a call to device_tree_init, but the way it was 
-done results in scanning the DT twice. I would like to move the 
-device_tree_init call to be earlier instead to avoid this. I think this 
-should be functionally equivalent, but could use more eyes on it.
-
-Rob
-
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index c538d6e..f5e5b0a 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -602,6 +602,8 @@ static void __init arch_mem_init(char **cmdline_p)
- {
- 	extern void plat_mem_setup(void);
- 
-+	device_tree_init();
-+
- 	/* call board setup routine */
- 	plat_mem_setup();
- 
-@@ -662,7 +664,6 @@ static void __init arch_mem_init(char **cmdline_p)
- 				crashk_res.end - crashk_res.start + 1,
- 				BOOTMEM_DEFAULT);
- #endif
--	device_tree_init();
- 	sparse_init();
- 	plat_swiotlb_setup();
- 	paging_init();
-diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
-index 76a7131..e8938b7 100644
---- a/arch/mips/netlogic/xlp/setup.c
-+++ b/arch/mips/netlogic/xlp/setup.c
-@@ -97,9 +97,6 @@ void __init plat_mem_setup(void)
- 	_machine_halt	= nlm_linux_exit;
- 	pm_power_off	= nlm_linux_exit;
- 
--	/* memory and bootargs from DT */
--	early_init_devtree(initial_boot_params);
--
- 	if (boot_mem_map.nr_map == 0) {
- 		pr_info("Using DRAM BARs for memory map.\n");
- 		xlp_init_mem_from_bars();
+On 10/30/2013 07:08 AM, Aaro Koskinen wrote:
+> The boot hangs early on EBH5600 board when octeon_fdt_pip_iface() is
+> trying enumerate a non-existant interface. We can avoid this situation
+> by first checking that the interface exists in the DTB.
+>
+> Signed-off-by: Aaro Koskinen <aaro.koskinen@nsn.com>
+> ---
+>   arch/mips/cavium-octeon/octeon-platform.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+> index 1830874..f68c75a 100644
+> --- a/arch/mips/cavium-octeon/octeon-platform.c
+> +++ b/arch/mips/cavium-octeon/octeon-platform.c
+> @@ -336,14 +336,14 @@ static void __init octeon_fdt_pip_iface(int pip, int idx, u64 *pmac)
+>   	int p;
+>   	int count = 0;
+>
+> -	if (cvmx_helper_interface_enumerate(idx) == 0)
+> -		count = cvmx_helper_ports_on_interface(idx);
+> -
+>   	snprintf(name_buffer, sizeof(name_buffer), "interface@%d", idx);
+>   	iface = fdt_subnode_offset(initial_boot_params, pip, name_buffer);
+>   	if (iface < 0)
+>   		return;
+>
+> +	if (cvmx_helper_interface_enumerate(idx) == 0)
+> +		count = cvmx_helper_ports_on_interface(idx);
+> +
+>   	for (p = 0; p < 16; p++)
+>   		octeon_fdt_pip_port(iface, idx, p, count - 1, pmac);
+>   }
+>

@@ -1,58 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Nov 2013 17:42:11 +0100 (CET)
-Received: from mail-wi0-f175.google.com ([209.85.212.175]:43736 "EHLO
-        mail-wi0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822679Ab3KAQmFJFQoY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Nov 2013 17:42:05 +0100
-Received: by mail-wi0-f175.google.com with SMTP id hm4so1341965wib.2
-        for <linux-mips@linux-mips.org>; Fri, 01 Nov 2013 09:41:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=rf6cBpE7gqo8hGFp/El04PDDUukgrk2IHpnNGsMlY6Y=;
-        b=v+/RGjY57Rjc2DB1T1M+IZuvipXnFkGnLPCHzfPg4IUdzbsHpy6UtGb/C2UJlVIMgg
-         +e3NlGLSG9jS1XbmopnVuHb/zzcTtCiaeS2bOoTMRvNz3geazi+06d7O6gGiiVGWC3zF
-         ATStqRGcMQAO1LbF8XPCQN6dr8YG8uA5gEp2iTRDVThhvhfJe17Jq3Qfc5zrz92ewA9o
-         68E9TiMqdXcAKQ8LYpgwPcGfCQDkCCQJND8uwXO/YVxgLveXeU3nto7Ncy9GRaaxJv8w
-         4PFmJnRpgFdkJTB1E/8HeO1VyQFTWRGVhpDENxOCQlEWc6006l6uqLMDxKtlBwfcyQFv
-         UeHw==
-X-Received: by 10.195.13.45 with SMTP id ev13mr3064099wjd.20.1383324119788;
-        Fri, 01 Nov 2013 09:41:59 -0700 (PDT)
-Received: from [192.168.1.110] (093105185086.warszawa.vectranet.pl. [93.105.185.86])
-        by mx.google.com with ESMTPSA id ey4sm9080889wic.11.2013.11.01.09.41.55
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 01 Nov 2013 09:41:59 -0700 (PDT)
-Message-ID: <5273D9CD.2010800@gmail.com>
-Date:   Fri, 01 Nov 2013 17:41:49 +0100
-From:   Sylwester Nawrocki <sylvester.nawrocki@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:11.0) Gecko/20120412 Thunderbird/11.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Nov 2013 00:47:24 +0100 (CET)
+Received: from relay1.mentorg.com ([192.94.38.131]:43545 "EHLO
+        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6822679Ab3KAXrWTIWBh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 2 Nov 2013 00:47:22 +0100
+Received: from svr-orw-exc-10.mgc.mentorg.com ([147.34.98.58])
+        by relay1.mentorg.com with esmtp 
+        id 1VcOQr-0001e4-Px from Maciej_Rozycki@mentor.com ; Fri, 01 Nov 2013 16:47:13 -0700
+Received: from SVR-IES-FEM-01.mgc.mentorg.com ([137.202.0.104]) by SVR-ORW-EXC-10.mgc.mentorg.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 1 Nov 2013 16:47:13 -0700
+Received: from [172.30.64.29] (137.202.0.76) by SVR-IES-FEM-01.mgc.mentorg.com
+ (137.202.0.104) with Microsoft SMTP Server id 14.2.247.3; Fri, 1 Nov 2013
+ 23:47:12 +0000
+Date:   Fri, 1 Nov 2013 23:47:05 +0000
+From:   "Maciej W. Rozycki" <macro@codesourcery.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: Random whitespace clean-ups
+Message-ID: <alpine.DEB.1.10.1311012342550.12843@tp.orcam.me.uk>
+User-Agent: Alpine 1.10 (DEB 962 2008-03-14)
 MIME-Version: 1.0
-To:     Jonas Jensen <jonas.jensen@gmail.com>
-CC:     Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Mike Turquette <mturquette@linaro.org>,
-        linux-mips@linux-mips.org,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        linux-sh@vger.kernel.org, jiada_wang@mentor.com,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        kyungmin.park@samsung.com, laurent.pinchart@ideasonboard.com,
-        uclinux-dist-devel@blackfin.uclinux.org
-Subject: Re: [PATCH v7 0/5] clk: clock deregistration support
-References: <1383076268-8984-1-git-send-email-s.nawrocki@samsung.com> <CACmBeS2TiiTJ_n0bEzXGKN8B=U9EKXeVtrE2q0jgxsxf5TBivw@mail.gmail.com>
-In-Reply-To: <CACmBeS2TiiTJ_n0bEzXGKN8B=U9EKXeVtrE2q0jgxsxf5TBivw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sylvester.nawrocki@gmail.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-OriginalArrivalTime: 01 Nov 2013 23:47:13.0850 (UTC) FILETIME=[B08089A0:01CED75C]
+Return-Path: <Maciej_Rozycki@mentor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38441
+X-archive-position: 38443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sylvester.nawrocki@gmail.com
+X-original-sender: macro@codesourcery.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,68 +42,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Jonas,
+Another whitespace clean-up, this removes tabs from between sentences in 
+some comments.
 
-On 11/01/2013 02:56 PM, Jonas Jensen wrote:
-> Hi,
->
-> Just letting you know, the following warning from __clk_get is now
-> printed, and not printed after revert (git revert
-> 0b35b92fb3600a2f9ca114a6142db95f760d55f5).
-
-It is recommended to quote also human readable patch summary line,
-so it's more immediately clear which patch you refer to.
-
-> Is the driver doing something it shouldn't be doing?
-
-I don't think so. That is a known issue, it shouldn't be happening when
-you apply $subject patch series onto todays -next. If it does please
-let me know.
-
-Is the warning still triggered when you apply this patch:
-http://www.spinics.net/lists/arm-kernel/msg283550.html
-onto next-20131031 instead of reverting ?
-
-> moxart_of_pll_clk_init() source can be found here:
-> http://www.spinics.net/lists/arm-kernel/msg278572.html
-
-The driver seems OK from a brief look.  Thanks for the feedback.
-
-> boot log:
-> Uncompressing Linux... done, booting the kernel.
-> [    0.000000] Booting Linux on physical CPU 0x0
-> [    0.000000] Linux version 3.12.0-rc7-next-20131031+ (i@Ildjarn)
-
-> [    0.000000] ------------[ cut here ]------------
-> [    0.000000] WARNING: CPU: 0 PID: 0 at include/linux/kref.h:47
-> __clk_get+0x54/0x68()
-> [    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted
-> 3.12.0-rc7-next-20131031+ #1043
-> [    0.000000] [<c000d214>] (unwind_backtrace+0x0/0xf4) from
-> [<c000b964>] (show_stack+0x18/0x1c)
-> [    0.000000] [<c000b964>] (show_stack+0x18/0x1c) from [<c02715e0>]
-> (dump_stack+0x20/0x28)
-> [    0.000000] [<c02715e0>] (dump_stack+0x20/0x28) from [<c0013ab0>]
-> (warn_slowpath_common+0x64/0x84)
-> [    0.000000] [<c0013ab0>] (warn_slowpath_common+0x64/0x84) from
-> [<c0013ba4>] (warn_slowpath_null+0x24/0x2c)
-> [    0.000000] [<c0013ba4>] (warn_slowpath_null+0x24/0x2c) from
-> [<c01e5c00>] (__clk_get+0x54/0x68)
-> [    0.000000] [<c01e5c00>] (__clk_get+0x54/0x68) from [<c01e334c>]
-> (of_clk_get+0x64/0x7c)
-> [    0.000000] [<c01e334c>] (of_clk_get+0x64/0x7c) from [<c03508f0>]
-> (moxart_of_pll_clk_init+0xd8/0x15c)
-> [    0.000000] [<c03508f0>] (moxart_of_pll_clk_init+0xd8/0x15c) from
-> [<c0350588>] (of_clk_init+0x48/0x70)
-> [    0.000000] [<c0350588>] (of_clk_init+0x48/0x70) from [<c03425f0>]
-> (moxart_init_time+0x14/0x1c)
-> [    0.000000] [<c03425f0>] (moxart_init_time+0x14/0x1c) from
-> [<c034005c>] (time_init+0x28/0x3c)
-> [    0.000000] [<c034005c>] (time_init+0x28/0x3c) from [<c033e954>]
-> (start_kernel+0x1d0/0x2dc)
-> [    0.000000] [<c033e954>] (start_kernel+0x1d0/0x2dc) from
-> [<00008040>] (0x8040)
-> [    0.000000] ---[ end trace 3406ff24bd97382e ]---
-
-Regards,
-Sylwester
+Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
+---
+linux-space.diff
+Index: linux/arch/mips/include/asm/addrspace.h
+===================================================================
+--- linux.orig/arch/mips/include/asm/addrspace.h
++++ linux/arch/mips/include/asm/addrspace.h
+@@ -58,7 +58,7 @@
+ 
+ /*
+  * Memory segments (64bit kernel mode addresses)
+- * The compatibility segments use the full 64-bit sign extended value.	Note
++ * The compatibility segments use the full 64-bit sign extended value.  Note
+  * the R8000 doesn't have them so don't reference these in generic MIPS code.
+  */
+ #define XKUSEG			_CONST64_(0x0000000000000000)
+@@ -131,7 +131,7 @@
+ 
+ /*
+  * The ultimate limited of the 64-bit MIPS architecture:  2 bits for selecting
+- * the region, 3 bits for the CCA mode.	 This leaves 59 bits of which the
++ * the region, 3 bits for the CCA mode.  This leaves 59 bits of which the
+  * R8000 implements most with its 48-bit physical address space.
+  */
+ #define TO_PHYS_MASK	_CONST64_(0x07ffffffffffffff)	/* 2^^59 - 1 */
+Index: linux/arch/mips/include/asm/atomic.h
+===================================================================
+--- linux.orig/arch/mips/include/asm/atomic.h
++++ linux/arch/mips/include/asm/atomic.h
+@@ -1,5 +1,5 @@
+ /*
+- * Atomic operations that C can't guarantee us.	 Useful for
++ * Atomic operations that C can't guarantee us.  Useful for
+  * resource counting etc..
+  *
+  * But use these as seldom as possible since they are much more slower
+Index: linux/arch/mips/include/asm/barrier.h
+===================================================================
+--- linux.orig/arch/mips/include/asm/barrier.h
++++ linux/arch/mips/include/asm/barrier.h
+@@ -18,7 +18,7 @@
+  * over this barrier.  All reads preceding this primitive are guaranteed
+  * to access memory (but not necessarily other CPUs' caches) before any
+  * reads following this primitive that depend on the data return by
+- * any of the preceding reads.	This primitive is much lighter weight than
++ * any of the preceding reads.  This primitive is much lighter weight than
+  * rmb() on most CPUs, and is never heavier weight than is
+  * rmb().
+  *
+@@ -43,7 +43,7 @@
+  * </programlisting>
+  *
+  * because the read of "*q" depends on the read of "p" and these
+- * two reads are separated by a read_barrier_depends().	 However,
++ * two reads are separated by a read_barrier_depends().  However,
+  * the following code, with the same initial values for "a" and "b":
+  *
+  * <programlisting>
+@@ -57,7 +57,7 @@
+  * </programlisting>
+  *
+  * does not enforce ordering, since there is no data dependency between
+- * the read of "a" and the read of "b".	 Therefore, on some CPUs, such
++ * the read of "a" and the read of "b".  Therefore, on some CPUs, such
+  * as Alpha, "y" could be set to 3 and "x" to 0.  Use rmb()
+  * in cases like this where there are no data dependencies.
+  */

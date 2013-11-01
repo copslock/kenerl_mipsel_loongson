@@ -1,39 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Nov 2013 16:12:23 +0100 (CET)
-Received: from demumfd002.nsn-inter.net ([93.183.12.31]:11893 "EHLO
-        demumfd002.nsn-inter.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822679Ab3KAPL5R0Uqj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Nov 2013 16:11:57 +0100
-Received: from demuprx016.emea.nsn-intra.net ([10.150.129.55])
-        by demumfd002.nsn-inter.net (8.12.11.20060308/8.12.11) with ESMTP id rA1FBgO6009012
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
-        Fri, 1 Nov 2013 16:11:42 +0100
-Received: from ak-desktop.emea.nsn-net.net ([10.144.36.74])
-        by demuprx016.emea.nsn-intra.net (8.12.11.20060308/8.12.11) with ESMTP id rA1FBeBm032091;
-        Fri, 1 Nov 2013 16:11:41 +0100
-From:   Aaro Koskinen <aaro.koskinen@nsn.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Aaro Koskinen <aaro.koskinen@nsn.com>
-Subject: [PATCH v2 1/2] MIPS: cavium-octeon: fix out-of-bounds array access
-Date:   Fri,  1 Nov 2013 17:06:03 +0200
-Message-Id: <1383318364-30312-1-git-send-email-aaro.koskinen@nsn.com>
-X-Mailer: git-send-email 1.8.4.rc3
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-size: 1039
-X-purgate-ID: 151667::1383318702-00005753-E406F5E2/0-0/0-0
-Return-Path: <aaro.koskinen@nsn.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Nov 2013 16:58:57 +0100 (CET)
+Received: from avon.wwwdotorg.org ([70.85.31.133]:42458 "EHLO
+        avon.wwwdotorg.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823079Ab3KAP6zOo91x (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Nov 2013 16:58:55 +0100
+Received: from severn.wwwdotorg.org (unknown [192.168.65.5])
+        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by avon.wwwdotorg.org (Postfix) with ESMTPS id 379FB6414;
+        Fri,  1 Nov 2013 09:58:53 -0600 (MDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by severn.wwwdotorg.org (Postfix) with ESMTPSA id 0CD98E462D;
+        Fri,  1 Nov 2013 09:58:50 -0600 (MDT)
+Message-ID: <5273CFB9.1080603@wwwdotorg.org>
+Date:   Fri, 01 Nov 2013 09:58:49 -0600
+From:   Stephen Warren <swarren@wwwdotorg.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.0
+MIME-Version: 1.0
+To:     Domenico Andreoli <domenico.andreoli@linux.com>,
+        linux-arch@vger.kernel.org, Russell King <linux@arm.linux.org.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Olof Johansson <olof@lixom.net>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 00/11] RFC: Common machine reset handling
+References: <20131031062708.520968323@linux.com> <5272D05E.1070207@wwwdotorg.org> <20131101051610.GA28233@glitch>
+In-Reply-To: <20131101051610.GA28233@glitch>
+X-Enigmail-Version: 1.5.2
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.97.8 at avon.wwwdotorg.org
+X-Virus-Status: Clean
+Return-Path: <swarren@wwwdotorg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38438
+X-archive-position: 38439
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@nsn.com
+X-original-sender: swarren@wwwdotorg.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,30 +53,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When booting with in-kernel DTBs, the pruning code will enumerate
-interfaces 0-4. However, there is memory reserved only for 4 so some
-other data will get overwritten by cvmx_helper_interface_enumerate().
+On 10/31/2013 11:16 PM, Domenico Andreoli wrote:
+> On Thu, Oct 31, 2013 at 03:49:18PM -0600, Stephen Warren wrote:
+>> On 10/31/2013 12:27 AM, Domenico Andreoli wrote:
+>>> Hi,
+>>>
+>>>   I've been looking for a solution to my bcm4760 watchdog based restart
+>>> hook when I noticed that the kernel reboot/shutdown mechanism is having
+>>> a few unaddressed issues.
+>>>
+>>> Those I identified are:
+>>>
+>>>  1) context pointer often needed by the reset hook
+>>>     (currently local static data is used for this pourpose)
+>>>  2) unclear ownership/policy in case of multiple reset hooks
+>>>     (currently almost nobody seems to care much)
+>>
+>> I'm not sure how this patchset solves (2); even with the new API, it's
+>> still the case that whichever code calls set_machine_reset() last wins,
+>> just like before where whichever code wrote to pm_power_off won. I'm not
+>> sure what this series attempts to solve.
+> 
+> That's right, the last wins. But the previous has a chance to know.
+> 
+> I only supposed there is somebody in charge of selecting the best handler
+> for the machine. Don't know how fancy this decision is but at least for
+> the vexpress there is also a sysfs way to configure different reset methods
+> from user-space.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@nsn.com>
----
+For PMICs that provide power off, we've been adding a property to DT to
+indicate whether the PMIC is *the* system power off controller or not.
+If the property is present, the PMIC registers itself in the poweroff
+hook. If not, it doesn't. So, there really isn't an algorithm for
+selecting the power off mechanism, but rather we designate one mechanism
+ahead of time, and that's the only one that's relevant. We could
+probably do the same for reset mechanisms.
 
-	v2: a new patch in the series
+I guess the vexpress situation is actually the same; there's a single
+concept of a custom vexpress reset, it's just that sysfs is used to
+select exactly what that does?
 
- arch/mips/cavium-octeon/executive/cvmx-helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> So cleaning up things after the handler is replaced seemed a sensible
+> thing to do.
 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper.c b/arch/mips/cavium-octeon/executive/cvmx-helper.c
-index d63d20d..0e4b340 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
-@@ -67,7 +67,7 @@ void (*cvmx_override_pko_queue_priority) (int pko_port,
- void (*cvmx_override_ipd_port_setup) (int ipd_port);
- 
- /* Port count per interface */
--static int interface_port_count[4] = { 0, 0, 0, 0 };
-+static int interface_port_count[5];
- 
- /* Port last configured link info index by IPD/PKO port */
- static cvmx_helper_link_info_t
--- 
-1.8.4.rc3
+Can't we avoid replacing handlers, but only registering a single handler?
+
+> Another "problem" this patch would solve is the registration of the
+> reset handler in a architecture independent way. Now an otherwise platform
+> generic gpio HW reset driver would need to do different things on different
+> architectures.
+
+OK, if there are architecture differences in how the hooks are
+registered, that seems like a good thing to fix.

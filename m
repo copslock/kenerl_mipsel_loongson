@@ -1,44 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Nov 2013 17:13:22 +0100 (CET)
-Received: from caramon.arm.linux.org.uk ([78.32.30.218]:35403 "EHLO
-        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6827346Ab3KAQNQXUiO2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Nov 2013 17:13:16 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
-        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=Bl81PLwMk4wuSND12wBj2JPjTOJohLjKnBl+AL+gsMU=;
-        b=ceefJS42i9u9U/cJps4vVpF2aO6+o2EHTK9h58+wTUfr4/5slP2wpAIqqHLA/5YbD/KV/yyJ5TZbFpim8BSVc90hxKCOl+OFnD8aqqpuQNDXIR3JWMUA63hHF8c/ecd4EY3WPuxD4hKJoqmsy9Rsie30+zk8BtvsLALMPETQjFg=;
-Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:56354)
-        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.76)
-        (envelope-from <linux@arm.linux.org.uk>)
-        id 1VcHL7-0006g4-Kr; Fri, 01 Nov 2013 16:12:50 +0000
-Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
-        (envelope-from <linux@n2100.arm.linux.org.uk>)
-        id 1VcHL5-0005fi-Ja; Fri, 01 Nov 2013 16:12:47 +0000
-Date:   Fri, 1 Nov 2013 16:12:47 +0000
-From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
-To:     Stephen Warren <swarren@wwwdotorg.org>
-Cc:     Domenico Andreoli <domenico.andreoli@linux.com>,
-        linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Olof Johansson <olof@lixom.net>,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 00/11] RFC: Common machine reset handling
-Message-ID: <20131101161246.GM16735@n2100.arm.linux.org.uk>
-References: <20131031062708.520968323@linux.com> <5272D05E.1070207@wwwdotorg.org> <20131101051610.GA28233@glitch> <5273CFB9.1080603@wwwdotorg.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Nov 2013 17:42:11 +0100 (CET)
+Received: from mail-wi0-f175.google.com ([209.85.212.175]:43736 "EHLO
+        mail-wi0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822679Ab3KAQmFJFQoY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Nov 2013 17:42:05 +0100
+Received: by mail-wi0-f175.google.com with SMTP id hm4so1341965wib.2
+        for <linux-mips@linux-mips.org>; Fri, 01 Nov 2013 09:41:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=rf6cBpE7gqo8hGFp/El04PDDUukgrk2IHpnNGsMlY6Y=;
+        b=v+/RGjY57Rjc2DB1T1M+IZuvipXnFkGnLPCHzfPg4IUdzbsHpy6UtGb/C2UJlVIMgg
+         +e3NlGLSG9jS1XbmopnVuHb/zzcTtCiaeS2bOoTMRvNz3geazi+06d7O6gGiiVGWC3zF
+         ATStqRGcMQAO1LbF8XPCQN6dr8YG8uA5gEp2iTRDVThhvhfJe17Jq3Qfc5zrz92ewA9o
+         68E9TiMqdXcAKQ8LYpgwPcGfCQDkCCQJND8uwXO/YVxgLveXeU3nto7Ncy9GRaaxJv8w
+         4PFmJnRpgFdkJTB1E/8HeO1VyQFTWRGVhpDENxOCQlEWc6006l6uqLMDxKtlBwfcyQFv
+         UeHw==
+X-Received: by 10.195.13.45 with SMTP id ev13mr3064099wjd.20.1383324119788;
+        Fri, 01 Nov 2013 09:41:59 -0700 (PDT)
+Received: from [192.168.1.110] (093105185086.warszawa.vectranet.pl. [93.105.185.86])
+        by mx.google.com with ESMTPSA id ey4sm9080889wic.11.2013.11.01.09.41.55
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Fri, 01 Nov 2013 09:41:59 -0700 (PDT)
+Message-ID: <5273D9CD.2010800@gmail.com>
+Date:   Fri, 01 Nov 2013 17:41:49 +0100
+From:   Sylwester Nawrocki <sylvester.nawrocki@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:11.0) Gecko/20120412 Thunderbird/11.0.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5273CFB9.1080603@wwwdotorg.org>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
+To:     Jonas Jensen <jonas.jensen@gmail.com>
+CC:     Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Mike Turquette <mturquette@linaro.org>,
+        linux-mips@linux-mips.org,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        linux-sh@vger.kernel.org, jiada_wang@mentor.com,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        kyungmin.park@samsung.com, laurent.pinchart@ideasonboard.com,
+        uclinux-dist-devel@blackfin.uclinux.org
+Subject: Re: [PATCH v7 0/5] clk: clock deregistration support
+References: <1383076268-8984-1-git-send-email-s.nawrocki@samsung.com> <CACmBeS2TiiTJ_n0bEzXGKN8B=U9EKXeVtrE2q0jgxsxf5TBivw@mail.gmail.com>
+In-Reply-To: <CACmBeS2TiiTJ_n0bEzXGKN8B=U9EKXeVtrE2q0jgxsxf5TBivw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sylvester.nawrocki@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38440
+X-archive-position: 38441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@arm.linux.org.uk
+X-original-sender: sylvester.nawrocki@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,35 +65,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Nov 01, 2013 at 09:58:49AM -0600, Stephen Warren wrote:
-> For PMICs that provide power off, we've been adding a property to DT to
-> indicate whether the PMIC is *the* system power off controller or not.
-> If the property is present, the PMIC registers itself in the poweroff
-> hook. If not, it doesn't. So, there really isn't an algorithm for
-> selecting the power off mechanism, but rather we designate one mechanism
-> ahead of time, and that's the only one that's relevant. We could
-> probably do the same for reset mechanisms.
-> 
-> I guess the vexpress situation is actually the same; there's a single
-> concept of a custom vexpress reset, it's just that sysfs is used to
-> select exactly what that does?
+Hi Jonas,
 
-I'm not aware of that.  Vexpress has the following mechanisms:
+On 11/01/2013 02:56 PM, Jonas Jensen wrote:
+> Hi,
+>
+> Just letting you know, the following warning from __clk_get is now
+> printed, and not printed after revert (git revert
+> 0b35b92fb3600a2f9ca114a6142db95f760d55f5).
 
-- reset - this causes the system to be restarted without powering off.
-- restart - this causes the system to be powered off and back on.
-- poweroff - this causes the system to power off.
+It is recommended to quote also human readable patch summary line,
+so it's more immediately clear which patch you refer to.
 
-Obviously, poweroff is what needs to happen when someone issues the
-poweroff command (or, when we get hibernate support, the power off
-hook will also be called to power the system off after saving all
-system state.)  So, a power off callback really better power the
-system off and not reboot it.
+> Is the driver doing something it shouldn't be doing?
 
-reset vs restart is a choice, and one of those should happen as a result
-of the reboot command, or other similar event which ends up requesting
-a system restart.  That may be configurable.
+I don't think so. That is a known issue, it shouldn't be happening when
+you apply $subject patch series onto todays -next. If it does please
+let me know.
 
-Ultimately though, this should have no bearing on the hooking of poweroff
-and restart callbacks; the only difference there is on Vexpress is the
-function code passed to the system controller.
+Is the warning still triggered when you apply this patch:
+http://www.spinics.net/lists/arm-kernel/msg283550.html
+onto next-20131031 instead of reverting ?
+
+> moxart_of_pll_clk_init() source can be found here:
+> http://www.spinics.net/lists/arm-kernel/msg278572.html
+
+The driver seems OK from a brief look.  Thanks for the feedback.
+
+> boot log:
+> Uncompressing Linux... done, booting the kernel.
+> [    0.000000] Booting Linux on physical CPU 0x0
+> [    0.000000] Linux version 3.12.0-rc7-next-20131031+ (i@Ildjarn)
+
+> [    0.000000] ------------[ cut here ]------------
+> [    0.000000] WARNING: CPU: 0 PID: 0 at include/linux/kref.h:47
+> __clk_get+0x54/0x68()
+> [    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted
+> 3.12.0-rc7-next-20131031+ #1043
+> [    0.000000] [<c000d214>] (unwind_backtrace+0x0/0xf4) from
+> [<c000b964>] (show_stack+0x18/0x1c)
+> [    0.000000] [<c000b964>] (show_stack+0x18/0x1c) from [<c02715e0>]
+> (dump_stack+0x20/0x28)
+> [    0.000000] [<c02715e0>] (dump_stack+0x20/0x28) from [<c0013ab0>]
+> (warn_slowpath_common+0x64/0x84)
+> [    0.000000] [<c0013ab0>] (warn_slowpath_common+0x64/0x84) from
+> [<c0013ba4>] (warn_slowpath_null+0x24/0x2c)
+> [    0.000000] [<c0013ba4>] (warn_slowpath_null+0x24/0x2c) from
+> [<c01e5c00>] (__clk_get+0x54/0x68)
+> [    0.000000] [<c01e5c00>] (__clk_get+0x54/0x68) from [<c01e334c>]
+> (of_clk_get+0x64/0x7c)
+> [    0.000000] [<c01e334c>] (of_clk_get+0x64/0x7c) from [<c03508f0>]
+> (moxart_of_pll_clk_init+0xd8/0x15c)
+> [    0.000000] [<c03508f0>] (moxart_of_pll_clk_init+0xd8/0x15c) from
+> [<c0350588>] (of_clk_init+0x48/0x70)
+> [    0.000000] [<c0350588>] (of_clk_init+0x48/0x70) from [<c03425f0>]
+> (moxart_init_time+0x14/0x1c)
+> [    0.000000] [<c03425f0>] (moxart_init_time+0x14/0x1c) from
+> [<c034005c>] (time_init+0x28/0x3c)
+> [    0.000000] [<c034005c>] (time_init+0x28/0x3c) from [<c033e954>]
+> (start_kernel+0x1d0/0x2dc)
+> [    0.000000] [<c033e954>] (start_kernel+0x1d0/0x2dc) from
+> [<00008040>] (0x8040)
+> [    0.000000] ---[ end trace 3406ff24bd97382e ]---
+
+Regards,
+Sylwester

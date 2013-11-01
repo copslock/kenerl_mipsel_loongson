@@ -1,46 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Nov 2013 16:58:57 +0100 (CET)
-Received: from avon.wwwdotorg.org ([70.85.31.133]:42458 "EHLO
-        avon.wwwdotorg.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823079Ab3KAP6zOo91x (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Nov 2013 16:58:55 +0100
-Received: from severn.wwwdotorg.org (unknown [192.168.65.5])
-        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by avon.wwwdotorg.org (Postfix) with ESMTPS id 379FB6414;
-        Fri,  1 Nov 2013 09:58:53 -0600 (MDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by severn.wwwdotorg.org (Postfix) with ESMTPSA id 0CD98E462D;
-        Fri,  1 Nov 2013 09:58:50 -0600 (MDT)
-Message-ID: <5273CFB9.1080603@wwwdotorg.org>
-Date:   Fri, 01 Nov 2013 09:58:49 -0600
-From:   Stephen Warren <swarren@wwwdotorg.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.0
-MIME-Version: 1.0
-To:     Domenico Andreoli <domenico.andreoli@linux.com>,
-        linux-arch@vger.kernel.org, Russell King <linux@arm.linux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Nov 2013 17:13:22 +0100 (CET)
+Received: from caramon.arm.linux.org.uk ([78.32.30.218]:35403 "EHLO
+        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6827346Ab3KAQNQXUiO2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Nov 2013 17:13:16 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
+        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=Bl81PLwMk4wuSND12wBj2JPjTOJohLjKnBl+AL+gsMU=;
+        b=ceefJS42i9u9U/cJps4vVpF2aO6+o2EHTK9h58+wTUfr4/5slP2wpAIqqHLA/5YbD/KV/yyJ5TZbFpim8BSVc90hxKCOl+OFnD8aqqpuQNDXIR3JWMUA63hHF8c/ecd4EY3WPuxD4hKJoqmsy9Rsie30+zk8BtvsLALMPETQjFg=;
+Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:56354)
+        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.76)
+        (envelope-from <linux@arm.linux.org.uk>)
+        id 1VcHL7-0006g4-Kr; Fri, 01 Nov 2013 16:12:50 +0000
+Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
+        (envelope-from <linux@n2100.arm.linux.org.uk>)
+        id 1VcHL5-0005fi-Ja; Fri, 01 Nov 2013 16:12:47 +0000
+Date:   Fri, 1 Nov 2013 16:12:47 +0000
+From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
+To:     Stephen Warren <swarren@wwwdotorg.org>
+Cc:     Domenico Andreoli <domenico.andreoli@linux.com>,
+        linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         Olof Johansson <olof@lixom.net>,
         linux-arm-kernel@lists.infradead.org
 Subject: Re: [PATCH 00/11] RFC: Common machine reset handling
-References: <20131031062708.520968323@linux.com> <5272D05E.1070207@wwwdotorg.org> <20131101051610.GA28233@glitch>
-In-Reply-To: <20131101051610.GA28233@glitch>
-X-Enigmail-Version: 1.5.2
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.97.8 at avon.wwwdotorg.org
-X-Virus-Status: Clean
-Return-Path: <swarren@wwwdotorg.org>
+Message-ID: <20131101161246.GM16735@n2100.arm.linux.org.uk>
+References: <20131031062708.520968323@linux.com> <5272D05E.1070207@wwwdotorg.org> <20131101051610.GA28233@glitch> <5273CFB9.1080603@wwwdotorg.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5273CFB9.1080603@wwwdotorg.org>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38439
+X-archive-position: 38440
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: swarren@wwwdotorg.org
+X-original-sender: linux@arm.linux.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,55 +51,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/31/2013 11:16 PM, Domenico Andreoli wrote:
-> On Thu, Oct 31, 2013 at 03:49:18PM -0600, Stephen Warren wrote:
->> On 10/31/2013 12:27 AM, Domenico Andreoli wrote:
->>> Hi,
->>>
->>>   I've been looking for a solution to my bcm4760 watchdog based restart
->>> hook when I noticed that the kernel reboot/shutdown mechanism is having
->>> a few unaddressed issues.
->>>
->>> Those I identified are:
->>>
->>>  1) context pointer often needed by the reset hook
->>>     (currently local static data is used for this pourpose)
->>>  2) unclear ownership/policy in case of multiple reset hooks
->>>     (currently almost nobody seems to care much)
->>
->> I'm not sure how this patchset solves (2); even with the new API, it's
->> still the case that whichever code calls set_machine_reset() last wins,
->> just like before where whichever code wrote to pm_power_off won. I'm not
->> sure what this series attempts to solve.
+On Fri, Nov 01, 2013 at 09:58:49AM -0600, Stephen Warren wrote:
+> For PMICs that provide power off, we've been adding a property to DT to
+> indicate whether the PMIC is *the* system power off controller or not.
+> If the property is present, the PMIC registers itself in the poweroff
+> hook. If not, it doesn't. So, there really isn't an algorithm for
+> selecting the power off mechanism, but rather we designate one mechanism
+> ahead of time, and that's the only one that's relevant. We could
+> probably do the same for reset mechanisms.
 > 
-> That's right, the last wins. But the previous has a chance to know.
-> 
-> I only supposed there is somebody in charge of selecting the best handler
-> for the machine. Don't know how fancy this decision is but at least for
-> the vexpress there is also a sysfs way to configure different reset methods
-> from user-space.
+> I guess the vexpress situation is actually the same; there's a single
+> concept of a custom vexpress reset, it's just that sysfs is used to
+> select exactly what that does?
 
-For PMICs that provide power off, we've been adding a property to DT to
-indicate whether the PMIC is *the* system power off controller or not.
-If the property is present, the PMIC registers itself in the poweroff
-hook. If not, it doesn't. So, there really isn't an algorithm for
-selecting the power off mechanism, but rather we designate one mechanism
-ahead of time, and that's the only one that's relevant. We could
-probably do the same for reset mechanisms.
+I'm not aware of that.  Vexpress has the following mechanisms:
 
-I guess the vexpress situation is actually the same; there's a single
-concept of a custom vexpress reset, it's just that sysfs is used to
-select exactly what that does?
+- reset - this causes the system to be restarted without powering off.
+- restart - this causes the system to be powered off and back on.
+- poweroff - this causes the system to power off.
 
-> So cleaning up things after the handler is replaced seemed a sensible
-> thing to do.
+Obviously, poweroff is what needs to happen when someone issues the
+poweroff command (or, when we get hibernate support, the power off
+hook will also be called to power the system off after saving all
+system state.)  So, a power off callback really better power the
+system off and not reboot it.
 
-Can't we avoid replacing handlers, but only registering a single handler?
+reset vs restart is a choice, and one of those should happen as a result
+of the reboot command, or other similar event which ends up requesting
+a system restart.  That may be configurable.
 
-> Another "problem" this patch would solve is the registration of the
-> reset handler in a architecture independent way. Now an otherwise platform
-> generic gpio HW reset driver would need to do different things on different
-> architectures.
-
-OK, if there are architecture differences in how the hooks are
-registered, that seems like a good thing to fix.
+Ultimately though, this should have no bearing on the hooking of poweroff
+and restart callbacks; the only difference there is on Vexpress is the
+function code passed to the system controller.

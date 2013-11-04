@@ -1,55 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Nov 2013 09:43:30 +0100 (CET)
-Received: from mail-ie0-f179.google.com ([209.85.223.179]:41422 "EHLO
-        mail-ie0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822679Ab3KDIn1QoDF0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Nov 2013 09:43:27 +0100
-Received: by mail-ie0-f179.google.com with SMTP id aq17so11412078iec.24
-        for <linux-mips@linux-mips.org>; Mon, 04 Nov 2013 00:43:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=z6bgJKFUz5vMh0qYu+pKrqM4o2NwbtkdSAVssJEGmiw=;
-        b=WsJ7FaHe8dA1z76YXppioKpbdMkwvATT9v3tm/Rwi37yGzl1bBtJ6avbvy62ZQ/MD9
-         xbKtsJK+yUd6/7ZSRZUJH8pP20xGvY70ZYKPxuKzURMejZquCP9vZmIYF2ZflapwTJXJ
-         actTTTGGolNn4R090jDoEHC8U4k+OXsYwzaMAuSEyZhu1KK3M0GjyJ8A61zzrLsAKZvT
-         q2iKmzWRiGwPubJAj4WeSFrbR9aFgIVmiZj4SrlCzh7WGryfbln2sfJeOuDzmvFS16q2
-         6+iqwHyoqSK48D2TRY9itkMltTWAylLCDUcdIOvxLt6JtnvZ1FbO8iW4Fdme5Ruftdig
-         VZHQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Nov 2013 13:14:38 +0100 (CET)
+Received: from mms2.broadcom.com ([216.31.210.18]:4117 "EHLO mms2.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817664Ab3KDMObo5xI1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 4 Nov 2013 13:14:31 +0100
+Received: from [10.9.208.57] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Mon, 04 Nov 2013 04:13:46 -0800
+X-Server-Uuid: 4500596E-606A-40F9-852D-14843D8201B2
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP
+ Server (TLS) id 14.1.438.0; Mon, 4 Nov 2013 04:14:09 -0800
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP
+ Server id 14.1.438.0; Mon, 4 Nov 2013 04:14:09 -0800
+Received: from netl-snoppy.ban.broadcom.com (
+ netl-snoppy.ban.broadcom.com [10.132.128.129]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 55C8C246A3; Mon, 4
+ Nov 2013 04:14:08 -0800 (PST)
+From:   "Jayachandran C" <jchandra@broadcom.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+cc:     robherring2@gmail.com, "Jayachandran C" <jchandra@broadcom.com>
+Subject: [PATCH] MIPS: Netlogic: replace early_init_devtree() call
+Date:   Mon, 4 Nov 2013 17:51:54 +0530
+Message-ID: <1383567714-5164-1-git-send-email-jchandra@broadcom.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <20131031154816.GX25884@linux-mips.org>
+References: <20131031154816.GX25884@linux-mips.org>
 MIME-Version: 1.0
-X-Received: by 10.42.250.148 with SMTP id mo20mr2776720icb.34.1383554600740;
- Mon, 04 Nov 2013 00:43:20 -0800 (PST)
-Received: by 10.50.6.49 with HTTP; Mon, 4 Nov 2013 00:43:20 -0800 (PST)
-In-Reply-To: <5273D9CD.2010800@gmail.com>
-References: <1383076268-8984-1-git-send-email-s.nawrocki@samsung.com>
-        <CACmBeS2TiiTJ_n0bEzXGKN8B=U9EKXeVtrE2q0jgxsxf5TBivw@mail.gmail.com>
-        <5273D9CD.2010800@gmail.com>
-Date:   Mon, 4 Nov 2013 09:43:20 +0100
-Message-ID: <CACmBeS3DhHnQR7Ze8oZVAC9HThmXR4n7f90yje+R=8uRq9Nvsg@mail.gmail.com>
-Subject: Re: [PATCH v7 0/5] clk: clock deregistration support
-From:   Jonas Jensen <jonas.jensen@gmail.com>
-To:     Sylwester Nawrocki <sylvester.nawrocki@gmail.com>
-Cc:     Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Mike Turquette <mturquette@linaro.org>,
-        linux-mips@linux-mips.org,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        linux-sh@vger.kernel.org, jiada_wang@mentor.com,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        laurent.pinchart@ideasonboard.com,
-        uclinux-dist-devel@blackfin.uclinux.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jonas.jensen@gmail.com>
+X-WSS-ID: 7E6950F04RS4506895-01-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38445
+X-archive-position: 38446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.jensen@gmail.com
+X-original-sender: jchandra@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,22 +50,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 1 November 2013 17:41, Sylwester Nawrocki
-<sylvester.nawrocki@gmail.com> wrote:
-> It is recommended to quote also human readable patch summary line,
-> so it's more immediately clear which patch you refer to.
+The early_init_devtree() API was removed in linux-next for 3.13 with
+commit "mips: use early_init_dt_scan". This causes Netlogic XLP compile
+to fail:
 
-Sorry about that. This was tested on a clean (some added moxart
-drivers but no other patches) next-20131031, reverting the following
-patch:
-"clkdev: Fix race condition in clock lookup from device tree" -
-0b35b92fb3600a2f9ca114a6142db95f760d55f5
+arch/mips/netlogic/xlp/setup.c:101: undefined reference to `early_init_devtree'
 
-> Is the warning still triggered when you apply this patch:
-> http://www.spinics.net/lists/arm-kernel/msg283550.html
-> onto next-20131031 instead of reverting ?
+Add xlp_early_init_devtree() which uses the __dt_setup_arch() to
+handle early device tree related initialization to fix this.
 
-After patch, the warning is no longer triggered.
+Signed-off-by: Jayachandran C <jchandra@broadcom.com>
+---
+ arch/mips/include/asm/netlogic/xlp-hal/xlp.h |    1 +
+ arch/mips/netlogic/xlp/dt.c                  |   18 ++++++++++++++----
+ arch/mips/netlogic/xlp/setup.c               |    2 +-
+ 3 files changed, 16 insertions(+), 5 deletions(-)
 
-Thanks,
-Jonas
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
+index 17daffb2..470f209 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
+@@ -69,6 +69,7 @@ void nlm_hal_init(void);
+ int xlp_get_dram_map(int n, uint64_t *dram_map);
+ 
+ /* Device tree related */
++void xlp_early_init_devtree(void);
+ void *xlp_dt_init(void *fdtp);
+ 
+ static inline int cpu_is_xlpii(void)
+diff --git a/arch/mips/netlogic/xlp/dt.c b/arch/mips/netlogic/xlp/dt.c
+index 88df445..8316d54 100644
+--- a/arch/mips/netlogic/xlp/dt.c
++++ b/arch/mips/netlogic/xlp/dt.c
+@@ -39,8 +39,11 @@
+ #include <linux/of_platform.h>
+ #include <linux/of_device.h>
+ 
++#include <asm/prom.h>
++
+ extern u32 __dtb_xlp_evp_begin[], __dtb_xlp_svp_begin[],
+ 	__dtb_xlp_fvp_begin[], __dtb_start[];
++static void *xlp_fdt_blob;
+ 
+ void __init *xlp_dt_init(void *fdtp)
+ {
+@@ -67,19 +70,26 @@ void __init *xlp_dt_init(void *fdtp)
+ 			break;
+ 		}
+ 	}
+-	initial_boot_params = fdtp;
++	xlp_fdt_blob = fdtp;
+ 	return fdtp;
+ }
+ 
++void __init xlp_early_init_devtree(void)
++{
++	__dt_setup_arch(xlp_fdt_blob);
++	strlcpy(arcs_cmdline, boot_command_line, COMMAND_LINE_SIZE);
++}
++
+ void __init device_tree_init(void)
+ {
+ 	unsigned long base, size;
++	struct boot_param_header *fdtp = xlp_fdt_blob;
+ 
+-	if (!initial_boot_params)
++	if (!fdtp)
+ 		return;
+ 
+-	base = virt_to_phys((void *)initial_boot_params);
+-	size = be32_to_cpu(initial_boot_params->totalsize);
++	base = virt_to_phys(fdtp);
++	size = be32_to_cpu(fdtp->totalsize);
+ 
+ 	/* Before we do anything, lets reserve the dt blob */
+ 	reserve_bootmem(base, size, BOOTMEM_DEFAULT);
+diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
+index 76a7131..6d981bb 100644
+--- a/arch/mips/netlogic/xlp/setup.c
++++ b/arch/mips/netlogic/xlp/setup.c
+@@ -98,7 +98,7 @@ void __init plat_mem_setup(void)
+ 	pm_power_off	= nlm_linux_exit;
+ 
+ 	/* memory and bootargs from DT */
+-	early_init_devtree(initial_boot_params);
++	xlp_early_init_devtree();
+ 
+ 	if (boot_mem_map.nr_map == 0) {
+ 		pr_info("Using DRAM BARs for memory map.\n");
+-- 
+1.7.9.5

@@ -1,50 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Nov 2013 00:25:27 +0100 (CET)
-Received: from relay1.mentorg.com ([192.94.38.131]:58357 "EHLO
-        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6823083Ab3KEXZZ0p3MJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Nov 2013 00:25:25 +0100
-Received: from svr-orw-exc-10.mgc.mentorg.com ([147.34.98.58])
-        by relay1.mentorg.com with esmtp 
-        id 1Vdpzn-0004Ew-3x from joseph_myers@mentor.com ; Tue, 05 Nov 2013 15:25:15 -0800
-Received: from SVR-IES-FEM-01.mgc.mentorg.com ([137.202.0.104]) by SVR-ORW-EXC-10.mgc.mentorg.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 5 Nov 2013 15:25:15 -0800
-Received: from digraph.polyomino.org.uk (137.202.0.76) by
- SVR-IES-FEM-01.mgc.mentorg.com (137.202.0.104) with Microsoft SMTP Server id
- 14.2.247.3; Tue, 5 Nov 2013 23:25:13 +0000
-Received: from jsm28 (helo=localhost)   by digraph.polyomino.org.uk with
- local-esmtp (Exim 4.76)        (envelope-from <joseph@codesourcery.com>)       id
- 1Vdpzj-0000MB-S6; Tue, 05 Nov 2013 23:25:11 +0000
-Date:   Tue, 5 Nov 2013 23:25:11 +0000
-From:   "Joseph S. Myers" <joseph@codesourcery.com>
-X-X-Sender: jsm28@digraph.polyomino.org.uk
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Nov 2013 00:52:26 +0100 (CET)
+Received: from mail-out.m-online.net ([212.18.0.10]:56552 "EHLO
+        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823083Ab3KEXwYYgmbB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Nov 2013 00:52:24 +0100
+Received: from frontend1.mail.m-online.net (frontend1.mail.intern.m-online.net [192.168.8.180])
+        by mail-out.m-online.net (Postfix) with ESMTP id 3dDnjX2dWdz3hj1X;
+        Wed,  6 Nov 2013 00:52:15 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
+        by mail.m-online.net (Postfix) with ESMTP id 3dDnjW6lRkzbbjd;
+        Wed,  6 Nov 2013 00:52:15 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.180])
+        by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavisd-new, port 10024)
+        with ESMTP id ROsFvl2qYFKv; Wed,  6 Nov 2013 00:52:14 +0100 (CET)
+X-Auth-Info: QcbDWV/uc6gMXZ3FC0JKelBc5MfUgtvFzKOyXT2NHl4=
+Received: from igel.home (ppp-88-217-38-26.dynamic.mnet-online.de [88.217.38.26])
+        by mail.mnet-online.de (Postfix) with ESMTPA;
+        Wed,  6 Nov 2013 00:52:14 +0100 (CET)
+Received: by igel.home (Postfix, from userid 1000)
+        id 4BEFC2C1786; Wed,  6 Nov 2013 00:52:14 +0100 (CET)
+From:   Andreas Schwab <schwab@linux-m68k.org>
 To:     Rich Felker <dalias@aerifal.cx>
-CC:     David Daney <ddaney.cavm@gmail.com>,
-        "Pinski, Andrew" <Andrew.Pinski@caviumnetworks.com>,
+Cc:     "Joseph S. Myers" <joseph@codesourcery.com>,
+        David Daney <ddaney.cavm@gmail.com>,
+        "Pinski\, Andrew" <Andrew.Pinski@caviumnetworks.com>,
         Andreas Barth <aba@ayous.org>,
-        David Miller <davem@davemloft.net>, <aurelien@aurel32.net>,
-        <linux-mips@linux-mips.org>, <libc-alpha@sourceware.org>
+        David Miller <davem@davemloft.net>, aurelien@aurel32.net,
+        linux-mips@linux-mips.org, libc-alpha@sourceware.org
 Subject: Re: prlimit64: inconsistencies between kernel and userland
-In-Reply-To: <20131105223953.GG24286@brightrain.aerifal.cx>
-Message-ID: <Pine.LNX.4.64.1311052323180.30260@digraph.polyomino.org.uk>
-References: <20130628133835.GA21839@hall.aurel32.net> <20131104213756.GD18700@hall.aurel32.net>
- <20131104.194519.1657797548878784116.davem@davemloft.net>
- <Pine.LNX.4.64.1311050058580.9883@digraph.polyomino.org.uk>
- <20131105012203.GA24286@brightrain.aerifal.cx> <20131105085859.GE28240@mails.so.argh.org>
- <20131105183732.GB24286@brightrain.aerifal.cx> <52793C50.9030300@gmail.com>
- <Pine.LNX.4.64.1311052234420.30260@digraph.polyomino.org.uk>
- <20131105223953.GG24286@brightrain.aerifal.cx>
+References: <20130628133835.GA21839@hall.aurel32.net>
+        <20131104213756.GD18700@hall.aurel32.net>
+        <20131104.194519.1657797548878784116.davem@davemloft.net>
+        <Pine.LNX.4.64.1311050058580.9883@digraph.polyomino.org.uk>
+        <20131105012203.GA24286@brightrain.aerifal.cx>
+        <20131105085859.GE28240@mails.so.argh.org>
+        <20131105183732.GB24286@brightrain.aerifal.cx>
+        <52793C50.9030300@gmail.com>
+        <Pine.LNX.4.64.1311052234420.30260@digraph.polyomino.org.uk>
+        <20131105223953.GG24286@brightrain.aerifal.cx>
+X-Yow:  ..Everything is....FLIPPING AROUND!!
+Date:   Wed, 06 Nov 2013 00:52:14 +0100
+In-Reply-To: <20131105223953.GG24286@brightrain.aerifal.cx> (Rich Felker's
+        message of "Tue, 5 Nov 2013 17:39:53 -0500")
+Message-ID: <87ppqez9sh.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-OriginalArrivalTime: 05 Nov 2013 23:25:15.0278 (UTC) FILETIME=[48396AE0:01CEDA7E]
-Return-Path: <joseph_myers@mentor.com>
+Content-Type: text/plain
+Return-Path: <whitebox@nefkom.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38460
+X-archive-position: 38461
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joseph@codesourcery.com
+X-original-sender: schwab@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,31 +67,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 5 Nov 2013, Rich Felker wrote:
+Rich Felker <dalias@aerifal.cx> writes:
 
-> On Tue, Nov 05, 2013 at 10:36:24PM +0000, Joseph S. Myers wrote:
-> > On Tue, 5 Nov 2013, David Daney wrote:
-> > 
-> > > Why can't the default version of the functions in question be fixed so that
-> > > they do the right thing?  That way you wouldn't have to rebuild old binaries.
-> > > 
-> > > Do we really need new function versions at all?
-> > 
-> > If we change RLIM64_INFINITY to match the kernel, then the right thing for 
-> > at least getrlimit64 depends on whether it's an old or new binary (for old 
-> > binaries it should return the old value of RLIM64_INFINITY and for new 
-> > ones it should return the new value).
-> 
 > BTW, what happens on a distro where -dev packages are separate and the
 > user compiles with old headers (not having upgraded the dev package)
 > but new libc.so? :-)
 
-That's a bug in the distribution packaging that it allows such 
-inconsistent versions.  glibc only supports the case when the static-link 
-stage happens against the same glibc version as the headers that were used 
-(static libraries built with old headers are expected to break whenever 
-there's some ABI change made through symbol versioning).
+The devel package must either be self-contained or require the matching
+non-devel package.
+
+Andreas.
 
 -- 
-Joseph S. Myers
-joseph@codesourcery.com
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED5
+"And now for something completely different."

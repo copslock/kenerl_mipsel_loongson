@@ -1,45 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Nov 2013 01:03:47 +0100 (CET)
-Received: from 216-12-86-13.cv.mvl.ntelos.net ([216.12.86.13]:43548 "EHLO
-        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823083Ab3KFADoploXA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Nov 2013 01:03:44 +0100
-Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
-        id 1VdqSf-0002Ly-00; Tue, 05 Nov 2013 23:55:05 +0000
-Date:   Tue, 5 Nov 2013 18:55:05 -0500
-From:   Rich Felker <dalias@aerifal.cx>
-To:     Andreas Schwab <schwab@linux-m68k.org>
-Cc:     "Joseph S. Myers" <joseph@codesourcery.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Nov 2013 01:23:16 +0100 (CET)
+Received: from smtp2.Stanford.EDU ([171.67.219.82]:48145 "EHLO
+        smtp.stanford.edu" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S6826046Ab3KFAXOw70Uh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Nov 2013 01:23:14 +0100
+Received: from smtp.stanford.edu (localhost [127.0.0.1])
+        by localhost (Postfix) with SMTP id 2B901340ADD;
+        Tue,  5 Nov 2013 16:23:08 -0800 (PST)
+Received: from windlord.stanford.edu (windlord.Stanford.EDU [171.67.225.134])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by smtp.stanford.edu (Postfix) with ESMTPS id 8895C340C9C;
+        Tue,  5 Nov 2013 16:23:02 -0800 (PST)
+Received: by windlord.stanford.edu (Postfix, from userid 1000)
+        id 09B852F490; Tue,  5 Nov 2013 16:23:01 -0800 (PST)
+From:   Russ Allbery <eagle@eyrie.org>
+To:     Rich Felker <dalias@aerifal.cx>
+Cc:     Andreas Schwab <schwab@linux-m68k.org>,
+        "Joseph S. Myers" <joseph@codesourcery.com>,
         David Daney <ddaney.cavm@gmail.com>,
-        "Pinski, Andrew" <Andrew.Pinski@caviumnetworks.com>,
+        "Pinski\, Andrew" <Andrew.Pinski@caviumnetworks.com>,
         Andreas Barth <aba@ayous.org>,
         David Miller <davem@davemloft.net>, aurelien@aurel32.net,
         linux-mips@linux-mips.org, libc-alpha@sourceware.org
 Subject: Re: prlimit64: inconsistencies between kernel and userland
-Message-ID: <20131105235505.GK24286@brightrain.aerifal.cx>
+In-Reply-To: <20131105235505.GK24286@brightrain.aerifal.cx> (Rich Felker's
+        message of "Tue, 5 Nov 2013 18:55:05 -0500")
+Organization: The Eyrie
 References: <20131104213756.GD18700@hall.aurel32.net>
- <20131104.194519.1657797548878784116.davem@davemloft.net>
- <Pine.LNX.4.64.1311050058580.9883@digraph.polyomino.org.uk>
- <20131105012203.GA24286@brightrain.aerifal.cx>
- <20131105085859.GE28240@mails.so.argh.org>
- <20131105183732.GB24286@brightrain.aerifal.cx>
- <52793C50.9030300@gmail.com>
- <Pine.LNX.4.64.1311052234420.30260@digraph.polyomino.org.uk>
- <20131105223953.GG24286@brightrain.aerifal.cx>
- <87ppqez9sh.fsf@igel.home>
+        <20131104.194519.1657797548878784116.davem@davemloft.net>
+        <Pine.LNX.4.64.1311050058580.9883@digraph.polyomino.org.uk>
+        <20131105012203.GA24286@brightrain.aerifal.cx>
+        <20131105085859.GE28240@mails.so.argh.org>
+        <20131105183732.GB24286@brightrain.aerifal.cx>
+        <52793C50.9030300@gmail.com>
+        <Pine.LNX.4.64.1311052234420.30260@digraph.polyomino.org.uk>
+        <20131105223953.GG24286@brightrain.aerifal.cx>
+        <87ppqez9sh.fsf@igel.home>
+        <20131105235505.GK24286@brightrain.aerifal.cx>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.4 (gnu/linux)
+Date:   Tue, 05 Nov 2013 16:23:01 -0800
+Message-ID: <87bo1ycra2.fsf@windlord.stanford.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ppqez9sh.fsf@igel.home>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <dalias@aerifal.cx>
+Return-Path: <eagle@eyrie.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38462
+X-archive-position: 38463
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dalias@aerifal.cx
+X-original-sender: eagle@eyrie.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,22 +63,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Nov 06, 2013 at 12:52:14AM +0100, Andreas Schwab wrote:
-> Rich Felker <dalias@aerifal.cx> writes:
-> 
-> > BTW, what happens on a distro where -dev packages are separate and the
-> > user compiles with old headers (not having upgraded the dev package)
-> > but new libc.so? :-)
-> 
-> The devel package must either be self-contained or require the matching
-> non-devel package.
+Rich Felker <dalias@aerifal.cx> writes:
 
-That doesn't help. The problem is that the non-devel package gets
-upgraded and ldconfig re-links the .so to the .so.X.Y.Z for the new
-version. Really, the problem is ldconfig. If the .so link were
-correctly created by the devel package, rather than by ldconfig, then
-the headers and link-time library version would always match.
+> That doesn't help. The problem is that the non-devel package gets
+> upgraded and ldconfig re-links the .so to the .so.X.Y.Z for the new
+> version.
 
-So, in short, ldconfig considered harmful.
+Require the upgrades happen in lockstep.
 
-Rich
+Package: libc6-dev
+Version: 2.17-93
+Depends: libc6 (= 2.17-93), libc-dev-bin (= 2.17-93), linux-libc-dev
+
+-- 
+Russ Allbery (eagle@eyrie.org)              <http://www.eyrie.org/~eagle/>

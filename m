@@ -1,36 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Nov 2013 20:42:37 +0100 (CET)
-Received: from mail-ea0-f176.google.com ([209.85.215.176]:49582 "EHLO
-        mail-ea0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816841Ab3KFTmeFTfpU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Nov 2013 20:42:34 +0100
-Received: by mail-ea0-f176.google.com with SMTP id m14so1737879eaj.21
-        for <linux-mips@linux-mips.org>; Wed, 06 Nov 2013 11:42:28 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Nov 2013 22:02:42 +0100 (CET)
+Received: from mail-ea0-f172.google.com ([209.85.215.172]:37032 "EHLO
+        mail-ea0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816841Ab3KFVCj4HDv7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Nov 2013 22:02:39 +0100
+Received: by mail-ea0-f172.google.com with SMTP id r16so32065ead.17
+        for <linux-mips@linux-mips.org>; Wed, 06 Nov 2013 13:02:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=RMj8S0eSzPUBOnnl/f6ku48bmU8WKWCxRqFqnqC9Zr0=;
-        b=IPewhb3B5Yov0fttc6dmwj4FaRiUIowWl51QQu5jAB1oSw7VFsDRYLTyfPLo47qfn0
-         bm+GeGuMUqxgmb/Edh41gnA7Azj4K0rz/z0v89kSN0fH55G72MLr30yJUgr1nMz+XGu1
-         RF5sZ4HTcvX0AotvaDMbcDdlVCHKHXYnIg45f2TVx3LTWAO4a6lLqF7cevfdfcz92BM/
-         rpiu9TbVwoXtstBJFNlwAuvS9A8gFx35e1lOrq4ubC//ZqyKrrkfqWCw1KA+XDI3m/G/
-         q6ckMVLp7mPwiv9snm/JODCHbvMAcFl8rD+ZCeNF5TXLmUvy85pfLlLsyXO1G6SeqxXY
-         F1Pg==
-X-Received: by 10.15.50.195 with SMTP id l43mr5699370eew.30.1383766948749;
-        Wed, 06 Nov 2013 11:42:28 -0800 (PST)
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=mXBK0pLp8cT4l3VgQ+xsSd1TvjXKNp/EKVbC7Jt70yY=;
+        b=en5poy5XB1vNJz07mqOsb3hyABE6EwaPS5nAb4CF5CLtskPGb/aBh14k9mstdxFsgk
+         um6Q6UZljC97tBKLR4BWr+eA/q+U9o4w2Flm53AAtjQtUihvCIDnUySR5bI1sEdZk9n8
+         6ANZ6z5aL7FGe0v06LQy93gbqXd/7XkdTN+hKnEA+WcOytgAgQGvRxKHj0Tym61t+ou8
+         WMG4VXTCTr67M2rdS/VlNp7zT5qzLYqkLti8CQC8QLIUSexQTJt6yYwZ3yILXMZCi/vA
+         GK8tu5ktFQg1rawiJPe7DWlPFm9ge0yQQwhm3+lnen0v6YpiTQPF6tZEPjxrzD9lNgoe
+         j2Yw==
+X-Received: by 10.15.61.137 with SMTP id i9mr5889306eex.50.1383771754608;
+        Wed, 06 Nov 2013 13:02:34 -0800 (PST)
 Received: from linux-samsung700g7a.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id d7sm77593749eem.8.2013.11.06.11.42.26
+        by mx.google.com with ESMTPSA id z12sm282913eev.6.2013.11.06.13.02.33
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 06 Nov 2013 11:42:27 -0800 (PST)
+        Wed, 06 Nov 2013 13:02:33 -0800 (PST)
 From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH] MIPS: BCM47XX: Prepare support for LEDs
-Date:   Wed,  6 Nov 2013 20:42:20 +0100
-Message-Id: <1383766940-24168-1-git-send-email-zajec5@gmail.com>
+Subject: [PATCH V2] MIPS: BCM47XX: Prepare support for LEDs
+Date:   Wed,  6 Nov 2013 22:02:26 +0100
+Message-Id: <1383771746-31119-1-git-send-email-zajec5@gmail.com>
 X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1383766940-24168-1-git-send-email-zajec5@gmail.com>
+References: <1383766940-24168-1-git-send-email-zajec5@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +40,7 @@ Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38464
+X-archive-position: 38465
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,11 +64,15 @@ waste memory just because of support for a device with dozens on LEDs.
 
 Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
 ---
- arch/mips/bcm47xx/Kconfig  |    2 ++
- arch/mips/bcm47xx/Makefile |    2 +-
- arch/mips/bcm47xx/leds.c   |   71 ++++++++++++++++++++++++++++++++++++++++++++
- arch/mips/bcm47xx/setup.c  |    7 +++++
- 4 files changed, 81 insertions(+), 1 deletion(-)
+V2: use bcm47xx_private.h instead of ugly define in setup.c
+---
+ arch/mips/bcm47xx/Kconfig           |    2 +
+ arch/mips/bcm47xx/Makefile          |    2 +-
+ arch/mips/bcm47xx/bcm47xx_private.h |    9 +++++
+ arch/mips/bcm47xx/leds.c            |   73 +++++++++++++++++++++++++++++++++++
+ arch/mips/bcm47xx/setup.c           |    6 +++
+ 5 files changed, 91 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/bcm47xx/bcm47xx_private.h
  create mode 100644 arch/mips/bcm47xx/leds.c
 
 diff --git a/arch/mips/bcm47xx/Kconfig b/arch/mips/bcm47xx/Kconfig
@@ -101,12 +107,29 @@ index 571c15e..8d4a66c 100644
 +obj-y				+= board.o leds.o
  obj-y				+= gpio.o
  obj-y				+= cfe_env.o
+diff --git a/arch/mips/bcm47xx/bcm47xx_private.h b/arch/mips/bcm47xx/bcm47xx_private.h
+new file mode 100644
+index 0000000..1a1e600
+--- /dev/null
++++ b/arch/mips/bcm47xx/bcm47xx_private.h
+@@ -0,0 +1,9 @@
++#ifndef LINUX_BCM47XX_PRIVATE_H_
++#define LINUX_BCM47XX_PRIVATE_H_
++
++#include <linux/kernel.h>
++
++/* leds.c */
++void __init bcm47xx_leds_register(void);
++
++#endif
 diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
 new file mode 100644
-index 0000000..ebabaa5
+index 0000000..6a49d4c
 --- /dev/null
 +++ b/arch/mips/bcm47xx/leds.c
-@@ -0,0 +1,71 @@
+@@ -0,0 +1,73 @@
++#include "bcm47xx_private.h"
++
 +#include <linux/leds.h>
 +#include <bcm47xx_board.h>
 +
@@ -179,20 +202,27 @@ index 0000000..ebabaa5
 +	gpio_led_register_device(-1, &bcm47xx_leds_pdata);
 +}
 diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index 4b1e229..4fec32d 100644
+index 4b1e229..b97127e 100644
 --- a/arch/mips/bcm47xx/setup.c
 +++ b/arch/mips/bcm47xx/setup.c
-@@ -45,6 +46,9 @@ EXPORT_SYMBOL(bcm47xx_bus);
- enum bcm47xx_bus_type bcm47xx_bus_type;
- EXPORT_SYMBOL(bcm47xx_bus_type);
+@@ -26,6 +26,8 @@
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
  
-+/* leds.c */
-+int __init bcm47xx_leds_register(void);
++#include "bcm47xx_private.h"
 +
- static void bcm47xx_machine_restart(char *command)
- {
- 	printk(KERN_ALERT "Please stand by while rebooting the system...\n");
-@@ -272,6 +276,9 @@ static int __init bcm47xx_register_bus_complete(void)
+ #include <linux/export.h>
+ #include <linux/types.h>
+ #include <linux/ssb/ssb.h>
+@@ -37,6 +39,7 @@
+ #include <asm/reboot.h>
+ #include <asm/time.h>
+ #include <bcm47xx.h>
++#include <bcm47xx_board.h>
+ #include <bcm47xx_nvram.h>
+ 
+ union bcm47xx_bus bcm47xx_bus;
+@@ -272,6 +275,9 @@ static int __init bcm47xx_register_bus_complete(void)
  		break;
  #endif
  	}

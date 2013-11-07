@@ -1,31 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Nov 2013 18:12:23 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:43747 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823073Ab3KGRJ6cvg0W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 7 Nov 2013 18:09:58 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 6/6] MIPS: Add debugfs file to print the segmentation control registers
-Date:   Thu, 7 Nov 2013 17:08:40 +0000
-Message-ID: <1383844120-29601-7-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.4
-In-Reply-To: <1383844120-29601-1-git-send-email-markos.chandras@imgtec.com>
-References: <1383844120-29601-1-git-send-email-markos.chandras@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Nov 2013 19:00:38 +0100 (CET)
+Received: from mail-ie0-f171.google.com ([209.85.223.171]:56461 "EHLO
+        mail-ie0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823013Ab3KGSAcQGl0p (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Nov 2013 19:00:32 +0100
+Received: by mail-ie0-f171.google.com with SMTP id tp5so1389748ieb.2
+        for <linux-mips@linux-mips.org>; Thu, 07 Nov 2013 10:00:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:subject:references
+         :in-reply-to:content-type:content-transfer-encoding;
+        bh=ghjhSJEh3z4Z+bprY7W0ZazduYjLZFybG9Fw1p+I4uA=;
+        b=oae39H0N2QeLvFHcH2TNXERxVmT5UPC6ixHTAC2+Z2VtltQQyD92vmBchvFpDGkWO8
+         kVvVGmyn+ySVOx310XBd+DQOkgXVMD9Vr+C5687SatZKHPSlhkTBqcQWtxeMeNAHtMdh
+         hDbyxDP3Trqzw2Xcr4GWZrQRiLt4Yltn40X5dB07SDL706IQWL2njhn9YcjOWRJNmJUA
+         8486vW41H6ZFbHGaRgJPu/2pABRiRMr3RqOXWmt3svQkurBoOrYtKxsVLeqIDOCiyPxW
+         GxkYwBmYTnmyQ6uYcjLCEKu5IGzGemcAOnxBo6BOyBV5I76lNZoYsivzf5T4eHTla9Q3
+         ZfSA==
+X-Received: by 10.50.114.168 with SMTP id jh8mr2990249igb.6.1383847225462;
+        Thu, 07 Nov 2013 10:00:25 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id v2sm5358644igz.3.2013.11.07.10.00.23
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 07 Nov 2013 10:00:24 -0800 (PST)
+Message-ID: <527BD537.4040903@gmail.com>
+Date:   Thu, 07 Nov 2013 10:00:23 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.31]
-X-SEF-Processed: 7_3_0_01192__2013_11_07_17_09_54
-Return-Path: <Markos.Chandras@imgtec.com>
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 5/6] mips: use per-mm page to execute FP branch delay
+ slots
+References: <1383828513-28462-1-git-send-email-paul.burton@imgtec.com> <1383828513-28462-6-git-send-email-paul.burton@imgtec.com>
+In-Reply-To: <1383828513-28462-6-git-send-email-paul.burton@imgtec.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38484
+X-archive-position: 38485
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,248 +56,135 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Steven J. Hill" <Steven.Hill@imgtec.com>
+Nice work...
 
-Add a new mips/segments debugfs file to print the 6 segmentation
-control registers for supported cores. A sample from a proAptiv core
-is given below:
+On 11/07/2013 04:48 AM, Paul Burton wrote:
+[...]
+> -	 * Algorithmics used a system call instruction, and
+> -	 * borrowed that vector.  MIPS/Linux version is a bit
+> -	 * more heavyweight in the interests of portability and
+> -	 * multiprocessor support.  For Linux we generate a
+> -	 * an unaligned access and force an address error exception.
+> +	 *  1) Be a bug in the userland code, because it has a branch/jump in
+> +	 *     a branch delay slot. So if we run out of emuframes and the
+> +	 *     userland code hangs it's not exactly the kernels fault.
 
-Segment   Virtual    Size   Access Mode   Physical   Caching   EU
--------   -------    ----   -----------   --------   -------   --
-   0      e0000000   512M      MK           UND         U       0
-   1      c0000000   512M      MSK          UND         U       0
-   2      a0000000   512M      UK           000         2       0
-   3      80000000   512M      UK           000         3       0
-   4      40000000    1G       MUSK         UND         U       1
-   5      00000000    1G       MUSK         UND         U       1
+s/kernels/kernel's/
 
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
- arch/mips/include/asm/cpu-features.h |   4 ++
- arch/mips/include/asm/cpu.h          |   1 +
- arch/mips/include/asm/mipsregs.h     |  29 +++++++++
- arch/mips/kernel/Makefile            |   1 +
- arch/mips/kernel/cpu-probe.c         |   2 +
- arch/mips/kernel/segment.c           | 110 +++++++++++++++++++++++++++++++++++
- 6 files changed, 147 insertions(+)
- create mode 100644 arch/mips/kernel/segment.c
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 296606b..6e70b03 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -23,6 +23,10 @@
- #ifndef cpu_has_tlbinv
- #define cpu_has_tlbinv		(cpu_data[0].options & MIPS_CPU_TLBINV)
- #endif
-+#ifndef cpu_has_segments
-+#define cpu_has_segments	(cpu_data[0].options & MIPS_CPU_SEGMENTS)
-+#endif
-+
- 
- /*
-  * For the moment we don't consider R6000 and R8000 so we can assume that
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index ca5827c..9bb2abe 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -351,6 +351,7 @@ enum cpu_type_enum {
- #define MIPS_CPU_RIXI		0x00800000 /* CPU has TLB Read/eXec Inhibit */
- #define MIPS_CPU_MICROMIPS	0x01000000 /* CPU has microMIPS capability */
- #define MIPS_CPU_TLBINV		0x02000000 /* CPU supports TLBINV/F */
-+#define MIPS_CPU_SEGMENTS	0x04000000 /* CPU supports Segmentation Control registers */
- 
- /*
-  * CPU ASE encodings
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 303bb46..cb57e07 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -666,6 +666,26 @@
- #define MIPS_FPIR_L		(_ULCAST_(1) << 21)
- #define MIPS_FPIR_F64		(_ULCAST_(1) << 22)
- 
-+/*
-+ * Bits in the MIPS32 Memory Segmentation registers.
-+ */
-+#define MIPS_SEGCFG_PA_SHIFT	9
-+#define MIPS_SEGCFG_PA		(_ULCAST_(127) << MIPS_SEGCFG_PA_SHIFT)
-+#define MIPS_SEGCFG_AM_SHIFT	4
-+#define MIPS_SEGCFG_AM		(_ULCAST_(7) << MIPS_SEGCFG_AM_SHIFT)
-+#define MIPS_SEGCFG_EU_SHIFT	3
-+#define MIPS_SEGCFG_EU		(_ULCAST_(1) << MIPS_SEGCFG_EU_SHIFT)
-+#define MIPS_SEGCFG_C_SHIFT	0
-+#define MIPS_SEGCFG_C		(_ULCAST_(7) << MIPS_SEGCFG_C_SHIFT)
-+
-+#define MIPS_SEGCFG_UUSK	_ULCAST_(7)
-+#define MIPS_SEGCFG_USK		_ULCAST_(5)
-+#define MIPS_SEGCFG_MUSUK	_ULCAST_(4)
-+#define MIPS_SEGCFG_MUSK	_ULCAST_(3)
-+#define MIPS_SEGCFG_MSK		_ULCAST_(2)
-+#define MIPS_SEGCFG_MK		_ULCAST_(1)
-+#define MIPS_SEGCFG_UK		_ULCAST_(0)
-+
- #ifndef __ASSEMBLY__
- 
- /*
-@@ -1153,6 +1173,15 @@ do {									\
- #define read_c0_ebase()		__read_32bit_c0_register($15, 1)
- #define write_c0_ebase(val)	__write_32bit_c0_register($15, 1, val)
- 
-+/* MIPSR3 */
-+#define read_c0_segctl0()	__read_32bit_c0_register($5, 2)
-+#define write_c0_segctl0(val)	__write_32bit_c0_register($5, 2, val)
-+
-+#define read_c0_segctl1()	__read_32bit_c0_register($5, 3)
-+#define write_c0_segctl1(val)	__write_32bit_c0_register($5, 3, val)
-+
-+#define read_c0_segctl2()	__read_32bit_c0_register($5, 4)
-+#define write_c0_segctl2(val)	__write_32bit_c0_register($5, 4, val)
- 
- /* Cavium OCTEON (cnMIPS) */
- #define read_c0_cvmcount()	__read_ulong_c0_register($9, 6)
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index 1c1b717..b95eb741 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -30,6 +30,7 @@ obj-$(CONFIG_CSRC_R4K)		+= csrc-r4k.o
- obj-$(CONFIG_CSRC_SB1250)	+= csrc-sb1250.o
- obj-$(CONFIG_SYNC_R4K)		+= sync-r4k.o
- 
-+obj-$(CONFIG_DEBUG_FS)		+= segment.o
- obj-$(CONFIG_STACKTRACE)	+= stacktrace.o
- obj-$(CONFIG_MODULES)		+= mips_ksyms.o module.o
- obj-$(CONFIG_MODULES_USE_ELF_RELA) += module-rela.o
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index de364ac..beea299 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -300,6 +300,8 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
- 		c->options |= MIPS_CPU_MICROMIPS;
- 	if (config3 & MIPS_CONF3_VZ)
- 		c->ases |= MIPS_ASE_VZ;
-+	if (config3 & MIPS_CONF3_SC)
-+		c->options |= MIPS_CPU_SEGMENTS;
- 
- 	return config3 & MIPS_CONF_M;
- }
-diff --git a/arch/mips/kernel/segment.c b/arch/mips/kernel/segment.c
-new file mode 100644
-index 0000000..076ead2
---- /dev/null
-+++ b/arch/mips/kernel/segment.c
-@@ -0,0 +1,110 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2013 Imagination Technologies Ltd.
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/debugfs.h>
-+#include <linux/seq_file.h>
-+#include <asm/cpu.h>
-+#include <asm/mipsregs.h>
-+
-+static void build_segment_config(char *str, unsigned int cfg)
-+{
-+	unsigned int am;
-+	static const char * const am_str[] = {
-+		"UK", "MK", "MSK", "MUSK", "MUSUK", "USK",
-+		"RSRVD", "UUSK"};
-+
-+	/* Segment access mode. */
-+	am = (cfg & MIPS_SEGCFG_AM) >> MIPS_SEGCFG_AM_SHIFT;
-+	str += sprintf(str, "%-5s", am_str[am]);
-+
-+	/*
-+	 * Access modes MK, MSK and MUSK are mapped segments. Therefore
-+	 * there is no direct physical address mapping.
-+	 */
-+	if ((am == 0) || (am > 3)) {
-+		str += sprintf(str, "         %03lx",
-+			((cfg & MIPS_SEGCFG_PA) >> MIPS_SEGCFG_PA_SHIFT));
-+		str += sprintf(str, "         %01ld",
-+			((cfg & MIPS_SEGCFG_C) >> MIPS_SEGCFG_C_SHIFT));
-+	} else {
-+		str += sprintf(str, "         UND");
-+		str += sprintf(str, "         U");
-+	}
-+
-+	/* Exception configuration. */
-+	str += sprintf(str, "       %01ld\n",
-+		((cfg & MIPS_SEGCFG_EU) >> MIPS_SEGCFG_EU_SHIFT));
-+}
-+
-+static int show_segments(struct seq_file *m, void *v)
-+{
-+	unsigned int segcfg;
-+	char str[42];
-+
-+	seq_puts(m, "Segment   Virtual    Size   Access Mode   Physical   Caching   EU\n");
-+	seq_puts(m, "-------   -------    ----   -----------   --------   -------   --\n");
-+
-+	segcfg = read_c0_segctl0();
-+	build_segment_config(str, segcfg);
-+	seq_printf(m, "   0      e0000000   512M      %s", str);
-+
-+	segcfg >>= 16;
-+	build_segment_config(str, segcfg);
-+	seq_printf(m, "   1      c0000000   512M      %s", str);
-+
-+	segcfg = read_c0_segctl1();
-+	build_segment_config(str, segcfg);
-+	seq_printf(m, "   2      a0000000   512M      %s", str);
-+
-+	segcfg >>= 16;
-+	build_segment_config(str, segcfg);
-+	seq_printf(m, "   3      80000000   512M      %s", str);
-+
-+	segcfg = read_c0_segctl2();
-+	build_segment_config(str, segcfg);
-+	seq_printf(m, "   4      40000000    1G       %s", str);
-+
-+	segcfg >>= 16;
-+	build_segment_config(str, segcfg);
-+	seq_printf(m, "   5      00000000    1G       %s\n", str);
-+
-+	return 0;
-+}
-+
-+static int segments_open(struct inode *inode, struct file *file)
-+{
-+	return single_open(file, show_segments, NULL);
-+}
-+
-+static const struct file_operations segments_fops = {
-+	.open		= segments_open,
-+	.read		= seq_read,
-+	.llseek		= seq_lseek,
-+	.release	= single_release,
-+};
-+
-+static int __init segments_info(void)
-+{
-+	extern struct dentry *mips_debugfs_dir;
-+	struct dentry *segments;
-+
-+	if (cpu_has_segments) {
-+		if (!mips_debugfs_dir)
-+			return -ENODEV;
-+
-+		segments = debugfs_create_file("segments", S_IRUGO,
-+					       mips_debugfs_dir, NULL,
-+					       &segments_fops);
-+		if (!segments)
-+			return -ENOMEM;
-+	}
-+	return 0;
-+}
-+
-+device_initcall(segments_info);
--- 
-1.8.4
+>   	 *
+> -	 * For embedded systems (stand-alone) we prefer to use a
+> -	 * non-existing CP1 instruction. This prevents us from emulating
+> -	 * branches, but gives us a cleaner interface to the exception
+> -	 * handler (single entry point).
+> +	 *  2) Only affect that userland process, since emuframes are allocated
+> +	 *     per-mm and kernel threads don't use them at all.
+>   	 */
+> +	if (!get_isa16_mode(regs->cp0_epc)) {
+> +		if (!ir) {
+> +			/* typical NOP encoding: sll r0, r0, r0 */
+> +is_nop:
+> +			regs->cp0_epc = cpc;
+> +			regs->cp0_cause &= ~CAUSEF_BD;
+> +			return 0;
+> +		}
+>
+> -	/* Ensure that the two instructions are in the same cache line */
+> -	fr = (struct emuframe __user *)
+> -		((regs->regs[29] - sizeof(struct emuframe)) & ~0x7);
+> +		switch (inst.j_format.opcode) {
+> +		case bcond_op:
+> +			switch (inst.i_format.rt) {
+> +			case bltz_op:
+> +			case bgez_op:
+> +			case bltzl_op:
+> +			case bgezl_op:
+> +			case bltzal_op:
+> +			case bgezal_op:
+> +			case bltzall_op:
+> +			case bgezall_op:
+> +				goto is_branch;
+> +			}
+> +			break;
+
+Is there any way to use the support in arch/mips/kernel/branch.c instead 
+of duplicating the code here?
+
+It may require some refactoring to make it work, but I think it would be 
+worth it.
+
+>
+> -	/* Verify that the stack pointer is not competely insane */
+> -	if (unlikely(!access_ok(VERIFY_WRITE, fr, sizeof(struct emuframe))))
+> +		case cop1_op:
+> +			switch (inst.i_format.rs) {
+> +			case bc_op:
+> +				goto is_branch;
+> +			}
+> +			break;
+> +
+> +		case j_op:
+> +		case jal_op:
+> +		case beq_op:
+> +		case bne_op:
+> +		case blez_op:
+> +		case bgtz_op:
+> +		case beql_op:
+> +		case bnel_op:
+> +		case blezl_op:
+> +		case bgtzl_op:
+> +		case jalx_op:
+> +is_branch:
+> +			pr_warn("PID %d has a branch in an FP branch delay slot at 0x%08lx\n",
+> +				current->pid, regs->cp0_epc);
+> +			goto is_nop;
+> +		}
+> +	} else {
+> +		if ((ir >> 16) == MM_NOP16)
+> +			goto is_nop;
+> +
+> +		switch (inst.mm_i_format.opcode) {
+> +		case mm_beqz16_op:
+> +		case mm_beq32_op:
+> +		case mm_bnez16_op:
+> +		case mm_bne32_op:
+> +		case mm_b16_op:
+> +		case mm_j32_op:
+> +		case mm_jalx32_op:
+> +		case mm_jal32_op:
+> +			goto is_branch;
+> +
+> +		case mm_pool32i_op:
+> +			switch (inst.mm_i_format.rt) {
+> +			case mm_bltz_op:
+> +			case mm_bltzal_op:
+> +			case mm_bgez_op:
+> +			case mm_bgezal_op:
+> +			case mm_blez_op:
+> +			case mm_bnezc_op:
+> +			case mm_bgtz_op:
+> +			case mm_beqzc_op:
+> +			case mm_bltzals_op:
+> +			case mm_bgezals_op:
+> +			case mm_bc2f_op:
+> +			case mm_bc2t_op:
+> +			case mm_bc1f_op:
+> +			case mm_bc1t_op:
+> +				goto is_branch;
+> +			}
+> +			break;
+> +
+> +		case mm_pool16c_op:
+> +			switch (inst.mm16_r5_format.rt) {
+> +			case mm_jr16_op:
+> +			case mm_jrc_op:
+> +			case mm_jalr16_op:
+> +			case mm_jalrs16_op:
+> +			case mm_jraddiusp_op:
+> +				goto is_branch;
+> +			}
+> +			break;
+> +		}
+> +	}
+> +
+>

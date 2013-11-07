@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Nov 2013 18:12:03 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Nov 2013 18:12:23 +0100 (CET)
 Received: from multi.imgtec.com ([194.200.65.239]:43747 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823043Ab3KGRJ6W1wCE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6823073Ab3KGRJ6cvg0W (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 7 Nov 2013 18:09:58 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+CC:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
         Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 5/6] MIPS: Add support for FTLBs
-Date:   Thu, 7 Nov 2013 17:08:39 +0000
-Message-ID: <1383844120-29601-6-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH 6/6] MIPS: Add debugfs file to print the segmentation control registers
+Date:   Thu, 7 Nov 2013 17:08:40 +0000
+Message-ID: <1383844120-29601-7-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 1.8.4
 In-Reply-To: <1383844120-29601-1-git-send-email-markos.chandras@imgtec.com>
 References: <1383844120-29601-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.31]
-X-SEF-Processed: 7_3_0_01192__2013_11_07_17_09_52
+X-SEF-Processed: 7_3_0_01192__2013_11_07_17_09_54
 Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38483
+X-archive-position: 38484
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,373 +38,248 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+From: "Steven J. Hill" <Steven.Hill@imgtec.com>
 
-The Fixed Page Size TLB (FTLB) is a set-associative dual entry TLB. Its
-purpose is to reduce the number of TLB misses by increasing the effective
-TLB size and keep the implementation complexity to minimum levels.
-A supported core can have both VTLB and FTLB.
+Add a new mips/segments debugfs file to print the 6 segmentation
+control registers for supported cores. A sample from a proAptiv core
+is given below:
+
+Segment   Virtual    Size   Access Mode   Physical   Caching   EU
+-------   -------    ----   -----------   --------   -------   --
+   0      e0000000   512M      MK           UND         U       0
+   1      c0000000   512M      MSK          UND         U       0
+   2      a0000000   512M      UK           000         2       0
+   3      80000000   512M      UK           000         3       0
+   4      40000000    1G       MUSK         UND         U       1
+   5      00000000    1G       MUSK         UND         U       1
 
 Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/include/asm/cpu-info.h |  3 ++
- arch/mips/include/asm/mipsregs.h |  2 +
- arch/mips/include/asm/page.h     | 25 ++++++++++++
- arch/mips/kernel/cpu-probe.c     | 86 ++++++++++++++++++++++++++++++++++++----
- arch/mips/kernel/genex.S         |  1 +
- arch/mips/kernel/traps.c         | 30 ++++++++++++++
- arch/mips/mm/tlb-r4k.c           | 29 ++++++++++----
- 7 files changed, 162 insertions(+), 14 deletions(-)
+ arch/mips/include/asm/cpu-features.h |   4 ++
+ arch/mips/include/asm/cpu.h          |   1 +
+ arch/mips/include/asm/mipsregs.h     |  29 +++++++++
+ arch/mips/kernel/Makefile            |   1 +
+ arch/mips/kernel/cpu-probe.c         |   2 +
+ arch/mips/kernel/segment.c           | 110 +++++++++++++++++++++++++++++++++++
+ 6 files changed, 147 insertions(+)
+ create mode 100644 arch/mips/kernel/segment.c
 
-diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
-index 21c8e29..8f7adf0 100644
---- a/arch/mips/include/asm/cpu-info.h
-+++ b/arch/mips/include/asm/cpu-info.h
-@@ -52,6 +52,9 @@ struct cpuinfo_mips {
- 	unsigned int		cputype;
- 	int			isa_level;
- 	int			tlbsize;
-+	int			tlbsizevtlb;
-+	int			tlbsizeftlbsets;
-+	int			tlbsizeftlbways;
- 	struct cache_desc	icache; /* Primary I-cache */
- 	struct cache_desc	dcache; /* Primary D or combined I/D cache */
- 	struct cache_desc	scache; /* Secondary cache */
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index 296606b..6e70b03 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -23,6 +23,10 @@
+ #ifndef cpu_has_tlbinv
+ #define cpu_has_tlbinv		(cpu_data[0].options & MIPS_CPU_TLBINV)
+ #endif
++#ifndef cpu_has_segments
++#define cpu_has_segments	(cpu_data[0].options & MIPS_CPU_SEGMENTS)
++#endif
++
+ 
+ /*
+  * For the moment we don't consider R6000 and R8000 so we can assume that
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index ca5827c..9bb2abe 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -351,6 +351,7 @@ enum cpu_type_enum {
+ #define MIPS_CPU_RIXI		0x00800000 /* CPU has TLB Read/eXec Inhibit */
+ #define MIPS_CPU_MICROMIPS	0x01000000 /* CPU has microMIPS capability */
+ #define MIPS_CPU_TLBINV		0x02000000 /* CPU supports TLBINV/F */
++#define MIPS_CPU_SEGMENTS	0x04000000 /* CPU supports Segmentation Control registers */
+ 
+ /*
+  * CPU ASE encodings
 diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 9cd0e13..303bb46 100644
+index 303bb46..cb57e07 100644
 --- a/arch/mips/include/asm/mipsregs.h
 +++ b/arch/mips/include/asm/mipsregs.h
-@@ -645,6 +645,8 @@
- #define MIPS_CONF5_K		(_ULCAST_(1) << 30)
- 
- #define MIPS_CONF6_SYND		(_ULCAST_(1) << 13)
-+/* proAptiv FTLB on/off bit */
-+#define MIPS_CONF6_FTLBEN	(_ULCAST_(1) << 15)
- 
- #define MIPS_CONF7_WII		(_ULCAST_(1) << 31)
- 
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index f6be474..5e08bcc 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -11,6 +11,8 @@
- 
- #include <spaces.h>
- #include <linux/const.h>
-+#include <linux/kernel.h>
-+#include <asm/mipsregs.h>
- 
- /*
-  * PAGE_SHIFT determines the page size
-@@ -33,6 +35,29 @@
- #define PAGE_SIZE	(_AC(1,UL) << PAGE_SHIFT)
- #define PAGE_MASK	(~((1 << PAGE_SHIFT) - 1))
+@@ -666,6 +666,26 @@
+ #define MIPS_FPIR_L		(_ULCAST_(1) << 21)
+ #define MIPS_FPIR_F64		(_ULCAST_(1) << 22)
  
 +/*
-+ * This is used for calculating the real page sizes
-+ * for FTLB or VTLB + FTLB confugrations.
++ * Bits in the MIPS32 Memory Segmentation registers.
 + */
-+static inline unsigned int page_size_ftlb(unsigned int mmuextdef)
-+{
-+	switch (mmuextdef) {
-+	case MIPS_CONF4_MMUEXTDEF_FTLBSIZEEXT:
-+		if (PAGE_SIZE == (1 << 30))
-+			return 5;
-+		if (PAGE_SIZE == (1llu << 32))
-+			return 6;
-+		if (PAGE_SIZE > (256 << 10))
-+			return 7; /* reserved */
-+			/* fall through */
-+	case MIPS_CONF4_MMUEXTDEF_VTLBSIZEEXT:
-+		return (PAGE_SHIFT - 10) / 2;
-+	default:
-+		panic("Invalid FTLB configuration with Conf4_mmuextdef=%d value\n",
-+		      mmuextdef >> 14);
-+	}
-+}
++#define MIPS_SEGCFG_PA_SHIFT	9
++#define MIPS_SEGCFG_PA		(_ULCAST_(127) << MIPS_SEGCFG_PA_SHIFT)
++#define MIPS_SEGCFG_AM_SHIFT	4
++#define MIPS_SEGCFG_AM		(_ULCAST_(7) << MIPS_SEGCFG_AM_SHIFT)
++#define MIPS_SEGCFG_EU_SHIFT	3
++#define MIPS_SEGCFG_EU		(_ULCAST_(1) << MIPS_SEGCFG_EU_SHIFT)
++#define MIPS_SEGCFG_C_SHIFT	0
++#define MIPS_SEGCFG_C		(_ULCAST_(7) << MIPS_SEGCFG_C_SHIFT)
 +
- #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
- #define HPAGE_SHIFT	(PAGE_SHIFT + PAGE_SHIFT - 3)
- #define HPAGE_SIZE	(_AC(1,UL) << HPAGE_SHIFT)
++#define MIPS_SEGCFG_UUSK	_ULCAST_(7)
++#define MIPS_SEGCFG_USK		_ULCAST_(5)
++#define MIPS_SEGCFG_MUSUK	_ULCAST_(4)
++#define MIPS_SEGCFG_MUSK	_ULCAST_(3)
++#define MIPS_SEGCFG_MSK		_ULCAST_(2)
++#define MIPS_SEGCFG_MK		_ULCAST_(1)
++#define MIPS_SEGCFG_UK		_ULCAST_(0)
++
+ #ifndef __ASSEMBLY__
+ 
+ /*
+@@ -1153,6 +1173,15 @@ do {									\
+ #define read_c0_ebase()		__read_32bit_c0_register($15, 1)
+ #define write_c0_ebase(val)	__write_32bit_c0_register($15, 1, val)
+ 
++/* MIPSR3 */
++#define read_c0_segctl0()	__read_32bit_c0_register($5, 2)
++#define write_c0_segctl0(val)	__write_32bit_c0_register($5, 2, val)
++
++#define read_c0_segctl1()	__read_32bit_c0_register($5, 3)
++#define write_c0_segctl1(val)	__write_32bit_c0_register($5, 3, val)
++
++#define read_c0_segctl2()	__read_32bit_c0_register($5, 4)
++#define write_c0_segctl2(val)	__write_32bit_c0_register($5, 4, val)
+ 
+ /* Cavium OCTEON (cnMIPS) */
+ #define read_c0_cvmcount()	__read_ulong_c0_register($9, 6)
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index 1c1b717..b95eb741 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -30,6 +30,7 @@ obj-$(CONFIG_CSRC_R4K)		+= csrc-r4k.o
+ obj-$(CONFIG_CSRC_SB1250)	+= csrc-sb1250.o
+ obj-$(CONFIG_SYNC_R4K)		+= sync-r4k.o
+ 
++obj-$(CONFIG_DEBUG_FS)		+= segment.o
+ obj-$(CONFIG_STACKTRACE)	+= stacktrace.o
+ obj-$(CONFIG_MODULES)		+= mips_ksyms.o module.o
+ obj-$(CONFIG_MODULES_USE_ELF_RELA) += module-rela.o
 diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 8168e29..de364ac 100644
+index de364ac..beea299 100644
 --- a/arch/mips/kernel/cpu-probe.c
 +++ b/arch/mips/kernel/cpu-probe.c
-@@ -163,6 +163,26 @@ static void set_isa(struct cpuinfo_mips *c, unsigned int isa)
- static char unknown_isa[] = KERN_ERR \
- 	"Unsupported ISA type, c0.config0: %d.";
+@@ -300,6 +300,8 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
+ 		c->options |= MIPS_CPU_MICROMIPS;
+ 	if (config3 & MIPS_CONF3_VZ)
+ 		c->ases |= MIPS_ASE_VZ;
++	if (config3 & MIPS_CONF3_SC)
++		c->options |= MIPS_CPU_SEGMENTS;
  
-+static void set_ftlb_enable(struct cpuinfo_mips *c, int enable)
+ 	return config3 & MIPS_CONF_M;
+ }
+diff --git a/arch/mips/kernel/segment.c b/arch/mips/kernel/segment.c
+new file mode 100644
+index 0000000..076ead2
+--- /dev/null
++++ b/arch/mips/kernel/segment.c
+@@ -0,0 +1,110 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2013 Imagination Technologies Ltd.
++ */
++
++#include <linux/kernel.h>
++#include <linux/debugfs.h>
++#include <linux/seq_file.h>
++#include <asm/cpu.h>
++#include <asm/mipsregs.h>
++
++static void build_segment_config(char *str, unsigned int cfg)
 +{
-+	unsigned int config6;
++	unsigned int am;
++	static const char * const am_str[] = {
++		"UK", "MK", "MSK", "MUSK", "MUSUK", "USK",
++		"RSRVD", "UUSK"};
++
++	/* Segment access mode. */
++	am = (cfg & MIPS_SEGCFG_AM) >> MIPS_SEGCFG_AM_SHIFT;
++	str += sprintf(str, "%-5s", am_str[am]);
++
 +	/*
-+	 * Config6 is implementation dependent and it's currently only
-+	 * used by proAptiv
++	 * Access modes MK, MSK and MUSK are mapped segments. Therefore
++	 * there is no direct physical address mapping.
 +	 */
-+	if (c->cputype == CPU_PROAPTIV) {
-+		config6 = read_c0_config6();
-+		if (enable) {
-+			pr_info("Enabling FTLB support\n");
-+			write_c0_config6(config6 | MIPS_CONF6_FTLBEN);
-+		} else {
-+			pr_info("Switching FTLB OFF\n");
-+			write_c0_config6(config6 &  ~MIPS_CONF6_FTLBEN);
-+		}
-+		back_to_back_c0_hazard();
-+	}
-+}
-+
- static inline unsigned int decode_config0(struct cpuinfo_mips *c)
- {
- 	unsigned int config0;
-@@ -170,8 +190,13 @@ static inline unsigned int decode_config0(struct cpuinfo_mips *c)
- 
- 	config0 = read_c0_config();
- 
--	if (((config0 & MIPS_CONF_MT) >> 7) == 1)
-+	/*
-+	 * Look for Standard TLB or Dual VTLB and FTLB
-+	 */
-+	if ((((config0 & MIPS_CONF_MT) >> 7) == 1) ||
-+	    (((config0 & MIPS_CONF_MT) >> 7) == 4))
- 		c->options |= MIPS_CPU_TLB;
-+
- 	isa = (config0 & MIPS_CONF_AT) >> 13;
- 	switch (isa) {
- 	case 0:
-@@ -226,8 +251,11 @@ static inline unsigned int decode_config1(struct cpuinfo_mips *c)
- 		c->options |= MIPS_CPU_FPU;
- 		c->options |= MIPS_CPU_32FPR;
- 	}
--	if (cpu_has_tlb)
-+	if (cpu_has_tlb) {
- 		c->tlbsize = ((config1 & MIPS_CONF1_TLBS) >> 25) + 1;
-+		c->tlbsizevtlb = c->tlbsize;
-+		c->tlbsizeftlbsets = 0;
-+	}
- 
- 	return config1 & MIPS_CONF_M;
- }
-@@ -279,18 +307,58 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
- static inline unsigned int decode_config4(struct cpuinfo_mips *c)
- {
- 	unsigned int config4;
-+	unsigned int newcf4;
-+	unsigned int mmuextdef;
-+	unsigned int ftlb_page = MIPS_CONF4_FTLBPAGESIZE;
- 
- 	config4 = read_c0_config4();
- 
--	if ((config4 & MIPS_CONF4_MMUEXTDEF) == MIPS_CONF4_MMUEXTDEF_MMUSIZEEXT
--	    && cpu_has_tlb)
--		c->tlbsize += (config4 & MIPS_CONF4_MMUSIZEEXT) * 0x40;
--
- 	if (cpu_has_tlb) {
- 		if (((config4 & MIPS_CONF4_IE) >> 29) == 2) {
- 			c->options |= MIPS_CPU_TLBINV;
- 			pr_info("TLBINV/F supported, config4=0x%0x\n", config4);
- 		}
-+		mmuextdef = config4 & MIPS_CONF4_MMUEXTDEF;
-+		switch (mmuextdef) {
-+		case MIPS_CONF4_MMUEXTDEF_MMUSIZEEXT:
-+			c->tlbsize += (config4 & MIPS_CONF4_MMUSIZEEXT) * 0x40;
-+			c->tlbsizevtlb = c->tlbsize;
-+			pr_info("MMUSizeExt found, total TLB=%d\n", c->tlbsize);
-+			break;
-+		case MIPS_CONF4_MMUEXTDEF_VTLBSIZEEXT:
-+			c->tlbsizevtlb +=
-+				((config4 & MIPS_CONF4_VTLBSIZEEXT) >>
-+				  MIPS_CONF4_VTLBSIZEEXT_SHIFT) * 0x40;
-+			c->tlbsize = c->tlbsizevtlb;
-+			ftlb_page = MIPS_CONF4_VFTLBPAGESIZE;
-+			/* fall through */
-+		case MIPS_CONF4_MMUEXTDEF_FTLBSIZEEXT:
-+			newcf4 = (config4 & ~ftlb_page) |
-+				(page_size_ftlb(mmuextdef) <<
-+				 MIPS_CONF4_FTLBPAGESIZE_SHIFT);
-+			write_c0_config4(newcf4);
-+			back_to_back_c0_hazard();
-+			config4 = read_c0_config4();
-+			if (config4 != newcf4) {
-+				pr_err("PAGE_SIZE 0x%lx is not supported by FTLB (config4=0x%x)\n",
-+				       PAGE_SIZE, config4);
-+				/* Switch FTLB off */
-+				set_ftlb_enable(c, 0);
-+				pr_info("Total TLB(VTLB) in use: %d\n",
-+					c->tlbsizevtlb);
-+				break;
-+			}
-+			c->tlbsizeftlbsets = 1 <<
-+				((config4 & MIPS_CONF4_FTLBSETS) >>
-+				 MIPS_CONF4_FTLBSETS_SHIFT);
-+			c->tlbsizeftlbways = ((config4 & MIPS_CONF4_FTLBWAYS) >>
-+					      MIPS_CONF4_FTLBWAYS_SHIFT) + 2;
-+			c->tlbsize += c->tlbsizeftlbways * c->tlbsizeftlbsets;
-+			pr_info("V/FTLB found: VTLB=%d, FTLB sets=%d, ways=%d total TLB=%d\n",
-+				c->tlbsizevtlb, c->tlbsizeftlbsets,
-+				c->tlbsizeftlbways, c->tlbsize);
-+			break;
-+		}
- 	}
- 
- 	c->kscratch_mask = (config4 >> 16) & 0xff;
-@@ -319,6 +387,9 @@ static void decode_configs(struct cpuinfo_mips *c)
- 
- 	c->scache.flags = MIPS_CACHE_NOT_PRESENT;
- 
-+	/* Enable FTLB if present */
-+	set_ftlb_enable(c, 1);
-+
- 	ok = decode_config0(c);			/* Read Config registers.  */
- 	BUG_ON(!ok);				/* Arch spec violation!	 */
- 	if (ok)
-@@ -682,7 +753,6 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 
- static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
- {
--	decode_configs(c);
- 	switch (c->processor_id & PRID_IMP_MASK) {
- 	case PRID_IMP_4KC:
- 		c->cputype = CPU_4KC;
-@@ -756,6 +826,8 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
- 		break;
- 	}
- 
-+	decode_configs(c);
-+
- 	spram_config();
- }
- 
-diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-index 72853aa..bf56ae1 100644
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -476,6 +476,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
- 	BUILD_HANDLER ov ov sti silent			/* #12 */
- 	BUILD_HANDLER tr tr sti silent			/* #13 */
- 	BUILD_HANDLER fpe fpe fpe silent		/* #15 */
-+	BUILD_HANDLER ftlb ftlb none silent		/* #16 */
- 	BUILD_HANDLER mdmx mdmx sti silent		/* #22 */
- #ifdef	CONFIG_HARDWARE_WATCHPOINTS
- 	/*
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index cc20415..7541855 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -78,6 +78,7 @@ extern asmlinkage void handle_cpu(void);
- extern asmlinkage void handle_ov(void);
- extern asmlinkage void handle_tr(void);
- extern asmlinkage void handle_fpe(void);
-+extern asmlinkage void handle_ftlb(void);
- extern asmlinkage void handle_mdmx(void);
- extern asmlinkage void handle_watch(void);
- extern asmlinkage void handle_mt(void);
-@@ -1447,6 +1448,34 @@ asmlinkage void cache_parity_error(void)
- 	panic("Can't handle the cache error!");
- }
- 
-+asmlinkage void do_ftlb(void)
-+{
-+	const int field = 2 * sizeof(unsigned long);
-+	unsigned int reg_val;
-+
-+	/* For the moment, report the problem and hang. */
-+	if (cpu_has_mips_r2 &&
-+	    ((current_cpu_data.processor_id && 0xff0000) == PRID_COMP_MIPS)) {
-+		pr_err("FTLB error exception, cp0_ecc=0x%08x:\n",
-+		       read_c0_ecc());
-+		pr_err("cp0_errorepc == %0*lx\n", field, read_c0_errorepc());
-+		reg_val = read_c0_cacheerr();
-+		pr_err("c0_cacheerr == %08x\n", reg_val);
-+
-+		if ((reg_val & 0xc0000000) == 0xc0000000) {
-+			pr_err("Decoded c0_cacheerr: FTLB parity error\n");
-+		} else {
-+			pr_err("Decoded c0_cacheerr: %s cache fault in %s reference.\n",
-+			       reg_val & (1<<30) ? "secondary" : "primary",
-+			       reg_val & (1<<31) ? "data" : "insn");
-+		}
++	if ((am == 0) || (am > 3)) {
++		str += sprintf(str, "         %03lx",
++			((cfg & MIPS_SEGCFG_PA) >> MIPS_SEGCFG_PA_SHIFT));
++		str += sprintf(str, "         %01ld",
++			((cfg & MIPS_SEGCFG_C) >> MIPS_SEGCFG_C_SHIFT));
 +	} else {
-+		pr_err("FTLB error exception\n");
++		str += sprintf(str, "         UND");
++		str += sprintf(str, "         U");
 +	}
-+	/* Just print the cacheerr bits for now */
-+	cache_parity_error();
++
++	/* Exception configuration. */
++	str += sprintf(str, "       %01ld\n",
++		((cfg & MIPS_SEGCFG_EU) >> MIPS_SEGCFG_EU_SHIFT));
 +}
 +
- /*
-  * SDBBP EJTAG debug exception handler.
-  * We skip the instruction and return to the next instruction.
-@@ -1996,6 +2025,7 @@ void __init trap_init(void)
- 	if (cpu_has_fpu && !cpu_has_nofpuex)
- 		set_except_vector(15, handle_fpe);
- 
-+	set_except_vector(16, handle_ftlb);
- 	set_except_vector(22, handle_mdmx);
- 
- 	if (cpu_has_mcheck)
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 427dcac..11f149c 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -72,7 +72,7 @@ void local_flush_tlb_all(void)
- {
- 	unsigned long flags;
- 	unsigned long old_ctx;
--	int entry;
-+	int entry, ftlbhighset;
- 
- 	ENTER_CRITICAL(flags);
- 	/* Save old context and create impossible VPN2 value */
-@@ -83,10 +83,21 @@ void local_flush_tlb_all(void)
- 	entry = read_c0_wired();
- 
- 	/* Blast 'em all away. */
--	if (cpu_has_tlbinv && current_cpu_data.tlbsize) {
--		write_c0_index(0);
--		mtc0_tlbw_hazard();
--		tlbinvf();  /* invalidate VTLB */
-+	if (cpu_has_tlbinv) {
-+		if (current_cpu_data.tlbsizevtlb) {
-+			write_c0_index(0);
-+			mtc0_tlbw_hazard();
-+			tlbinvf();  /* invalidate VTLB */
-+		}
-+		ftlbhighset = current_cpu_data.tlbsizevtlb +
-+			current_cpu_data.tlbsizeftlbsets;
-+		for (entry = current_cpu_data.tlbsizevtlb;
-+		     entry < ftlbhighset;
-+		     entry++) {
-+			write_c0_index(entry);
-+			mtc0_tlbw_hazard();
-+			tlbinvf();  /* invalide one FTLB set */
-+		}
- 	} else {
- 		while (entry < current_cpu_data.tlbsize) {
- 			/* Make sure all entries differ. */
-@@ -134,7 +145,9 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 		start = round_down(start, PAGE_SIZE << 1);
- 		end = round_up(end, PAGE_SIZE << 1);
- 		size = (end - start) >> (PAGE_SHIFT + 1);
--		if (size <= current_cpu_data.tlbsize/2) {
-+		if (size <= (current_cpu_data.tlbsizeftlbsets ?
-+			     current_cpu_data.tlbsize / 8 :
-+			     current_cpu_data.tlbsize / 2)) {
- 			int oldpid = read_c0_entryhi();
- 			int newpid = cpu_asid(cpu, mm);
- 
-@@ -173,7 +186,9 @@ void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
- 	ENTER_CRITICAL(flags);
- 	size = (end - start + (PAGE_SIZE - 1)) >> PAGE_SHIFT;
- 	size = (size + 1) >> 1;
--	if (size <= current_cpu_data.tlbsize / 2) {
-+	if (size <= (current_cpu_data.tlbsizeftlbsets ?
-+		     current_cpu_data.tlbsize / 8 :
-+		     current_cpu_data.tlbsize / 2)) {
- 		int pid = read_c0_entryhi();
- 
- 		start &= (PAGE_MASK << 1);
++static int show_segments(struct seq_file *m, void *v)
++{
++	unsigned int segcfg;
++	char str[42];
++
++	seq_puts(m, "Segment   Virtual    Size   Access Mode   Physical   Caching   EU\n");
++	seq_puts(m, "-------   -------    ----   -----------   --------   -------   --\n");
++
++	segcfg = read_c0_segctl0();
++	build_segment_config(str, segcfg);
++	seq_printf(m, "   0      e0000000   512M      %s", str);
++
++	segcfg >>= 16;
++	build_segment_config(str, segcfg);
++	seq_printf(m, "   1      c0000000   512M      %s", str);
++
++	segcfg = read_c0_segctl1();
++	build_segment_config(str, segcfg);
++	seq_printf(m, "   2      a0000000   512M      %s", str);
++
++	segcfg >>= 16;
++	build_segment_config(str, segcfg);
++	seq_printf(m, "   3      80000000   512M      %s", str);
++
++	segcfg = read_c0_segctl2();
++	build_segment_config(str, segcfg);
++	seq_printf(m, "   4      40000000    1G       %s", str);
++
++	segcfg >>= 16;
++	build_segment_config(str, segcfg);
++	seq_printf(m, "   5      00000000    1G       %s\n", str);
++
++	return 0;
++}
++
++static int segments_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, show_segments, NULL);
++}
++
++static const struct file_operations segments_fops = {
++	.open		= segments_open,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= single_release,
++};
++
++static int __init segments_info(void)
++{
++	extern struct dentry *mips_debugfs_dir;
++	struct dentry *segments;
++
++	if (cpu_has_segments) {
++		if (!mips_debugfs_dir)
++			return -ENODEV;
++
++		segments = debugfs_create_file("segments", S_IRUGO,
++					       mips_debugfs_dir, NULL,
++					       &segments_fops);
++		if (!segments)
++			return -ENOMEM;
++	}
++	return 0;
++}
++
++device_initcall(segments_info);
 -- 
 1.8.4

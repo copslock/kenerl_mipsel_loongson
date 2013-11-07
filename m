@@ -1,49 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Nov 2013 19:00:38 +0100 (CET)
-Received: from mail-ie0-f171.google.com ([209.85.223.171]:56461 "EHLO
-        mail-ie0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823013Ab3KGSAcQGl0p (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Nov 2013 19:00:32 +0100
-Received: by mail-ie0-f171.google.com with SMTP id tp5so1389748ieb.2
-        for <linux-mips@linux-mips.org>; Thu, 07 Nov 2013 10:00:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:subject:references
-         :in-reply-to:content-type:content-transfer-encoding;
-        bh=ghjhSJEh3z4Z+bprY7W0ZazduYjLZFybG9Fw1p+I4uA=;
-        b=oae39H0N2QeLvFHcH2TNXERxVmT5UPC6ixHTAC2+Z2VtltQQyD92vmBchvFpDGkWO8
-         kVvVGmyn+ySVOx310XBd+DQOkgXVMD9Vr+C5687SatZKHPSlhkTBqcQWtxeMeNAHtMdh
-         hDbyxDP3Trqzw2Xcr4GWZrQRiLt4Yltn40X5dB07SDL706IQWL2njhn9YcjOWRJNmJUA
-         8486vW41H6ZFbHGaRgJPu/2pABRiRMr3RqOXWmt3svQkurBoOrYtKxsVLeqIDOCiyPxW
-         GxkYwBmYTnmyQ6uYcjLCEKu5IGzGemcAOnxBo6BOyBV5I76lNZoYsivzf5T4eHTla9Q3
-         ZfSA==
-X-Received: by 10.50.114.168 with SMTP id jh8mr2990249igb.6.1383847225462;
-        Thu, 07 Nov 2013 10:00:25 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id v2sm5358644igz.3.2013.11.07.10.00.23
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 07 Nov 2013 10:00:24 -0800 (PST)
-Message-ID: <527BD537.4040903@gmail.com>
-Date:   Thu, 07 Nov 2013 10:00:23 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Nov 2013 19:36:15 +0100 (CET)
+Received: from relay1.mentorg.com ([192.94.38.131]:65080 "EHLO
+        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823013Ab3KGSgMNC9L5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Nov 2013 19:36:12 +0100
+Received: from svr-orw-exc-10.mgc.mentorg.com ([147.34.98.58])
+        by relay1.mentorg.com with esmtp 
+        id 1VeUR2-0002YW-Kc from Maciej_Rozycki@mentor.com ; Thu, 07 Nov 2013 10:36:04 -0800
+Received: from SVR-IES-FEM-02.mgc.mentorg.com ([137.202.0.106]) by SVR-ORW-EXC-10.mgc.mentorg.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 7 Nov 2013 10:36:03 -0800
+Received: from [172.30.64.129] (137.202.0.76) by
+ SVR-IES-FEM-02.mgc.mentorg.com (137.202.0.106) with Microsoft SMTP Server id
+ 14.2.247.3; Thu, 7 Nov 2013 18:36:02 +0000
+Date:   Thu, 7 Nov 2013 18:35:54 +0000
+From:   "Maciej W. Rozycki" <macro@codesourcery.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: copy_to_user_page: Avoid ptrace(2) I-cache
+ incoherency
+Message-ID: <alpine.DEB.1.10.1311071758410.21686@tp.orcam.me.uk>
+User-Agent: Alpine 1.10 (DEB 962 2008-03-14)
 MIME-Version: 1.0
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 5/6] mips: use per-mm page to execute FP branch delay
- slots
-References: <1383828513-28462-1-git-send-email-paul.burton@imgtec.com> <1383828513-28462-6-git-send-email-paul.burton@imgtec.com>
-In-Reply-To: <1383828513-28462-6-git-send-email-paul.burton@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-OriginalArrivalTime: 07 Nov 2013 18:36:03.0786 (UTC) FILETIME=[36C15AA0:01CEDBE8]
+Return-Path: <Maciej_Rozycki@mentor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38485
+X-archive-position: 38486
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: macro@codesourcery.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,135 +43,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Nice work...
+We currently support no MIPS processor that has its I-cache coherent with 
+the D-cache, no such processor may even exist.  We apparently have two 
+configurations that have fully coherent D-caches and therefore set 
+cpu_has_ic_fills_f_dc, and these are the Alchemy and NetLogic processor 
+families.  I have checked relevant CPU documentation I was able to track 
+down and in both cases the respective documents[1][2] clearly state that 
+the I-cache provides no hardware coherency and whenever instructions in 
+memory are modified then the I-cache has to be synchronized by software 
+even though the D-caches are fully coherent.
 
-On 11/07/2013 04:48 AM, Paul Burton wrote:
-[...]
-> -	 * Algorithmics used a system call instruction, and
-> -	 * borrowed that vector.  MIPS/Linux version is a bit
-> -	 * more heavyweight in the interests of portability and
-> -	 * multiprocessor support.  For Linux we generate a
-> -	 * an unaligned access and force an address error exception.
-> +	 *  1) Be a bug in the userland code, because it has a branch/jump in
-> +	 *     a branch delay slot. So if we run out of emuframes and the
-> +	 *     userland code hangs it's not exactly the kernels fault.
+Therefore we cannot ever avoid the call to flush_cache_page in 
+copy_to_user_page and here is a change that reflects this observation.  
+The implementation of flush_cache_page may then choose freely whether it 
+needs to perform a full cache synchronization with D-cache writeback and 
+invalidation requests or whether a lone I-cache invalidation will suffice.  
+The c-r4k.c implementation already respects the setting of 
+cpu_has_ic_fills_f_dc and avoids touching the D-cache unless necessary.
 
-s/kernels/kernel's/
+The lack of I-cache synchronization is typically seen in debugging 
+sessions e.g. with GDB where software breakpoints are used.  When such a 
+breakpoint is hit and subsequently replaced using a ptrace(2) call with 
+the original instruction, the BREAK instruction previously executed 
+sometimes remains in the I-cache and causes the breakpoint just removed to 
+hit again regardless, resulting in a spurious SIGTRAP signal delivery that 
+debuggers typically complain about (e.g. "Program received signal SIGTRAP, 
+Trace/breakpoint trap" in the case of GDB).  Of course the I-cache line 
+containing the BREAK instruction may have since been randomly replaced, in 
+which case no problem occurs.
 
+[1] "AMD Alchemy Au1200 Processor Data Book", AMD Alchemy, January, 2005, 
+    Publication ID: 32798A
 
->   	 *
-> -	 * For embedded systems (stand-alone) we prefer to use a
-> -	 * non-existing CP1 instruction. This prevents us from emulating
-> -	 * branches, but gives us a cleaner interface to the exception
-> -	 * handler (single entry point).
-> +	 *  2) Only affect that userland process, since emuframes are allocated
-> +	 *     per-mm and kernel threads don't use them at all.
->   	 */
-> +	if (!get_isa16_mode(regs->cp0_epc)) {
-> +		if (!ir) {
-> +			/* typical NOP encoding: sll r0, r0, r0 */
-> +is_nop:
-> +			regs->cp0_epc = cpc;
-> +			regs->cp0_cause &= ~CAUSEF_BD;
-> +			return 0;
-> +		}
->
-> -	/* Ensure that the two instructions are in the same cache line */
-> -	fr = (struct emuframe __user *)
-> -		((regs->regs[29] - sizeof(struct emuframe)) & ~0x7);
-> +		switch (inst.j_format.opcode) {
-> +		case bcond_op:
-> +			switch (inst.i_format.rt) {
-> +			case bltz_op:
-> +			case bgez_op:
-> +			case bltzl_op:
-> +			case bgezl_op:
-> +			case bltzal_op:
-> +			case bgezal_op:
-> +			case bltzall_op:
-> +			case bgezall_op:
-> +				goto is_branch;
-> +			}
-> +			break;
+[2] "XLP Processor Family Programming Reference Manual", NetLogic 
+    Microsystems, Revision Level 1.10, February, 2011, Document Number 
+    10724V110PM-CR (regrettably not publicly available)
 
-Is there any way to use the support in arch/mips/kernel/branch.c instead 
-of duplicating the code here?
+Signed-off-by: Maciej W. Rozycki <macro@codesourcery.com>
+---
+Ralf,
 
-It may require some refactoring to make it work, but I think it would be 
-worth it.
+ Please apply.  I've seen these SIGTRAPs in some NetLogic GDB testing and 
+the removal of this cpu_has_ic_fills_f_dc condition from copy_to_user_page 
+is really necessary; also the Au1200 document is very explicit about the 
+requirement of I-cache invalidation in software (see Section 2.3.7.3 
+"Instruction Cache Coherency").
 
->
-> -	/* Verify that the stack pointer is not competely insane */
-> -	if (unlikely(!access_ok(VERIFY_WRITE, fr, sizeof(struct emuframe))))
-> +		case cop1_op:
-> +			switch (inst.i_format.rs) {
-> +			case bc_op:
-> +				goto is_branch;
-> +			}
-> +			break;
-> +
-> +		case j_op:
-> +		case jal_op:
-> +		case beq_op:
-> +		case bne_op:
-> +		case blez_op:
-> +		case bgtz_op:
-> +		case beql_op:
-> +		case bnel_op:
-> +		case blezl_op:
-> +		case bgtzl_op:
-> +		case jalx_op:
-> +is_branch:
-> +			pr_warn("PID %d has a branch in an FP branch delay slot at 0x%08lx\n",
-> +				current->pid, regs->cp0_epc);
-> +			goto is_nop;
-> +		}
-> +	} else {
-> +		if ((ir >> 16) == MM_NOP16)
-> +			goto is_nop;
-> +
-> +		switch (inst.mm_i_format.opcode) {
-> +		case mm_beqz16_op:
-> +		case mm_beq32_op:
-> +		case mm_bnez16_op:
-> +		case mm_bne32_op:
-> +		case mm_b16_op:
-> +		case mm_j32_op:
-> +		case mm_jalx32_op:
-> +		case mm_jal32_op:
-> +			goto is_branch;
-> +
-> +		case mm_pool32i_op:
-> +			switch (inst.mm_i_format.rt) {
-> +			case mm_bltz_op:
-> +			case mm_bltzal_op:
-> +			case mm_bgez_op:
-> +			case mm_bgezal_op:
-> +			case mm_blez_op:
-> +			case mm_bnezc_op:
-> +			case mm_bgtz_op:
-> +			case mm_beqzc_op:
-> +			case mm_bltzals_op:
-> +			case mm_bgezals_op:
-> +			case mm_bc2f_op:
-> +			case mm_bc2t_op:
-> +			case mm_bc1f_op:
-> +			case mm_bc1t_op:
-> +				goto is_branch;
-> +			}
-> +			break;
-> +
-> +		case mm_pool16c_op:
-> +			switch (inst.mm16_r5_format.rt) {
-> +			case mm_jr16_op:
-> +			case mm_jrc_op:
-> +			case mm_jalr16_op:
-> +			case mm_jalrs16_op:
-> +			case mm_jraddiusp_op:
-> +				goto is_branch;
-> +			}
-> +			break;
-> +		}
-> +	}
-> +
->
+  Maciej
+
+linux-mips-exec-cache-sync.diff
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 3e0eb5f..1251d86 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -239,7 +239,7 @@ void copy_to_user_page(struct vm_area_struct *vma,
+ 		if (cpu_has_dc_aliases)
+ 			SetPageDcacheDirty(page);
+ 	}
+-	if ((vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc)
++	if (vma->vm_flags & VM_EXEC)
+ 		flush_cache_page(vma, vaddr, page_to_pfn(page));
+ }
+ 

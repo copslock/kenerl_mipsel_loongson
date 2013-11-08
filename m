@@ -1,47 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Nov 2013 08:22:31 +0100 (CET)
-Received: from mail-pd0-f171.google.com ([209.85.192.171]:62608 "EHLO
-        mail-pd0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6817179Ab3KHHW1nJGlA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Nov 2013 08:22:27 +0100
-Received: by mail-pd0-f171.google.com with SMTP id w10so1759020pde.2
-        for <multiple recipients>; Thu, 07 Nov 2013 23:22:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=4oLoxF2xrE3PnaN0CKkeU40Ahywspm0/FUVfur8Fmnw=;
-        b=VwU3OJFHTuqMgdO52G3R8VDWRx0Q3Rq9CUFOTZ4HBtlktM6Ag7y4PH2GHmrWvPHbyc
-         1/HWrCcVxc0LJ8DIolQzgY25HAHoiNAAOV9to4uMkLjPRHCqdvDlxqR3KTcckQ5nhX7A
-         lGgd/Qr2B0T4IVbgJdpf8jLzyDZ7w5tHuVEMUvOoN3XgfCCVWQWJFPGV3krlp2+ADqkH
-         eqCIC3Sok8NAeUyYLSjZJybqobgBunC+MgPsaPqivjG3AxcbUdqpbLszu400Ey4IfpJf
-         PUJ3ZfzRNPFCSqv+9WP5FkxzTyt52qlp2B3pwegNAMn6PYDH5UCotcBfa9dLpm7vXuH8
-         dLjA==
-X-Received: by 10.66.186.204 with SMTP id fm12mr1304162pac.189.1383895340312;
-        Thu, 07 Nov 2013 23:22:20 -0800 (PST)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPSA id i6sm9967952pbc.1.2013.11.07.23.22.12
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Thu, 07 Nov 2013 23:22:19 -0800 (PST)
-From:   Huacai Chen <chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Nov 2013 10:44:53 +0100 (CET)
+Received: from userp1040.oracle.com ([156.151.31.81]:31257 "EHLO
+        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6823013Ab3KHJortLjrF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Nov 2013 10:44:47 +0100
+Received: from acsinet22.oracle.com (acsinet22.oracle.com [141.146.126.238])
+        by userp1040.oracle.com (Sentrion-MTA-4.3.1/Sentrion-MTA-4.3.1) with ESMTP id rA89icGe002063
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Fri, 8 Nov 2013 09:44:40 GMT
+Received: from aserz7021.oracle.com (aserz7021.oracle.com [141.146.126.230])
+        by acsinet22.oracle.com (8.14.4+Sun/8.14.4) with ESMTP id rA89ibUp019918
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Fri, 8 Nov 2013 09:44:37 GMT
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by aserz7021.oracle.com (8.14.4+Sun/8.14.4) with ESMTP id rA89ibKJ017866;
+        Fri, 8 Nov 2013 09:44:37 GMT
+Received: from elgon.mountain (/41.202.233.179)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 08 Nov 2013 01:44:36 -0800
+Date:   Fri, 8 Nov 2013 12:44:31 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [RFC PATCH] MIPS: Fix case mismatch in local_r4k_flush_icache_range()
-Date:   Fri,  8 Nov 2013 15:21:53 +0800
-Message-Id: <1383895313-6375-1-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 1.7.7.3
-Return-Path: <chenhuacai@gmail.com>
+Cc:     linux-mips@linux-mips.org, kernel-janitors@vger.kernel.org
+Subject: [patch] [MIPS] Lasat: a couple off by one bugs in picvue_proc.c
+Message-ID: <20131108094431.GC27977@elgon.mountain>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Source-IP: acsinet22.oracle.com [141.146.126.238]
+Return-Path: <dan.carpenter@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38487
+X-archive-position: 38488
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: dan.carpenter@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,81 +49,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Currently, Loongson-2 call protected_blast_icache_range() and others
-call protected_loongson23_blast_icache_range(), but I think the correct
-behavior should be the opposite. BTW, Loongson-3's cache-ops is
-compatible with MIPS64, but not compatible with Loongson-2. So, rename
-xxx_loongson23_yyy things to xxx_loongson2_yyy.
+These should be ">=" instead of ">" or we go past the end of the
+pvc_lines[] array.
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/include/asm/cacheops.h |    2 +-
- arch/mips/include/asm/r4kcache.h |    8 ++++----
- arch/mips/mm/c-r4k.c             |    4 ++--
- 3 files changed, 7 insertions(+), 7 deletions(-)
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-diff --git a/arch/mips/include/asm/cacheops.h b/arch/mips/include/asm/cacheops.h
-index c75025f..06b9bc7 100644
---- a/arch/mips/include/asm/cacheops.h
-+++ b/arch/mips/include/asm/cacheops.h
-@@ -83,6 +83,6 @@
- /*
-  * Loongson2-specific cacheops
-  */
--#define Hit_Invalidate_I_Loongson23	0x00
-+#define Hit_Invalidate_I_Loongson2	0x00
- 
- #endif	/* __ASM_CACHEOPS_H */
-diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
-index 34d1a19..91d20b0 100644
---- a/arch/mips/include/asm/r4kcache.h
-+++ b/arch/mips/include/asm/r4kcache.h
-@@ -165,7 +165,7 @@ static inline void flush_icache_line(unsigned long addr)
- 	__iflush_prologue
- 	switch (boot_cpu_type()) {
- 	case CPU_LOONGSON2:
--		cache_op(Hit_Invalidate_I_Loongson23, addr);
-+		cache_op(Hit_Invalidate_I_Loongson2, addr);
- 		break;
- 
- 	default:
-@@ -219,7 +219,7 @@ static inline void protected_flush_icache_line(unsigned long addr)
+diff --git a/arch/mips/lasat/picvue_proc.c b/arch/mips/lasat/picvue_proc.c
+index 638c5db..8c55de4 100644
+--- a/arch/mips/lasat/picvue_proc.c
++++ b/arch/mips/lasat/picvue_proc.c
+@@ -44,7 +44,7 @@ static int pvc_line_proc_show(struct seq_file *m, void *v)
  {
- 	switch (boot_cpu_type()) {
- 	case CPU_LOONGSON2:
--		protected_cache_op(Hit_Invalidate_I_Loongson23, addr);
-+		protected_cache_op(Hit_Invalidate_I_Loongson2, addr);
- 		break;
+ 	int lineno = *(int *)m->private;
  
- 	default:
-@@ -452,8 +452,8 @@ static inline void prot##extra##blast_##pfx##cache##_range(unsigned long start,
- __BUILD_BLAST_CACHE_RANGE(d, dcache, Hit_Writeback_Inv_D, protected_, )
- __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, protected_, )
- __BUILD_BLAST_CACHE_RANGE(i, icache, Hit_Invalidate_I, protected_, )
--__BUILD_BLAST_CACHE_RANGE(i, icache, Hit_Invalidate_I_Loongson23, \
--	protected_, loongson23_)
-+__BUILD_BLAST_CACHE_RANGE(i, icache, Hit_Invalidate_I_Loongson2, \
-+	protected_, loongson2_)
- __BUILD_BLAST_CACHE_RANGE(d, dcache, Hit_Writeback_Inv_D, , )
- __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, , )
- /* blast_inv_dcache_range */
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 62ffd20..73f02da 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -580,11 +580,11 @@ static inline void local_r4k_flush_icache_range(unsigned long start, unsigned lo
- 	else {
- 		switch (boot_cpu_type()) {
- 		case CPU_LOONGSON2:
--			protected_blast_icache_range(start, end);
-+			protected_loongson2_blast_icache_range(start, end);
- 			break;
- 
- 		default:
--			protected_loongson23_blast_icache_range(start, end);
-+			protected_blast_icache_range(start, end);
- 			break;
- 		}
+-	if (lineno < 0 || lineno > PVC_NLINES) {
++	if (lineno < 0 || lineno >= PVC_NLINES) {
+ 		printk(KERN_WARNING "proc_read_line: invalid lineno %d\n", lineno);
+ 		return 0;
  	}
--- 
-1.7.7.3
+@@ -68,7 +68,7 @@ static ssize_t pvc_line_proc_write(struct file *file, const char __user *buf,
+ 	char kbuf[PVC_LINELEN];
+ 	size_t len;
+ 
+-	BUG_ON(lineno < 0 || lineno > PVC_NLINES);
++	BUG_ON(lineno < 0 || lineno >= PVC_NLINES);
+ 
+ 	len = min(count, sizeof(kbuf) - 1);
+ 	if (copy_from_user(kbuf, buf, len))

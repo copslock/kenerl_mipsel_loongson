@@ -1,30 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Nov 2013 15:51:45 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:24380 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823013Ab3KHOviEIlAY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 8 Nov 2013 15:51:38 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     <ddaney.cavm@gmail.com>, Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v2 5/6] mips: use per-mm page to execute FP branch delay slots
-Date:   Fri, 8 Nov 2013 14:50:12 +0000
-Message-ID: <1383922212-20403-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 1.7.10
-In-Reply-To: <527CD403.8040407@imgtec.com>
-References: <527CD403.8040407@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Nov 2013 18:35:18 +0100 (CET)
+Received: from mail-oa0-f42.google.com ([209.85.219.42]:38201 "EHLO
+        mail-oa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6823013Ab3KHRfMitiSI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Nov 2013 18:35:12 +0100
+Received: by mail-oa0-f42.google.com with SMTP id l6so2743164oag.15
+        for <linux-mips@linux-mips.org>; Fri, 08 Nov 2013 09:35:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:cc
+         :content-type;
+        bh=BaB0iJ4FCaaEGGjKXjb6VnZU1tK7OAszAPi2GcMkBrQ=;
+        b=R+JYdCgaShi6XAz6lKe5bqBk0CLlQxkAg/NqB+LuPpD5b1B1zIeS0suoA7JHJJJ6kx
+         nqwM08e3B7mPttSnlIXLWUUG4iVLhBe3zHv3zDV8gpIO//uyTpCcqSnvPjBkVCx6OgIe
+         CFGUDYcIWaaUGCDSUbgq0a3aReIbEcXgQ7fPf9u1YG6XyAgfuH+NYOtPnia6Rahyokez
+         71kM4yiZIVEewZ4oqmjHcWpCEwu2Il8EdrQRe5GvLOz5c4dkbyMmEuj5/WDG93A5Fxwr
+         mwCH5FE0hhENlbakKy9/Q2COrmR+qhw8KJKwrM/cA5N7VuHlb7jy3IrqskPciAayqF+x
+         ictg==
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.152.22]
-X-SEF-Processed: 7_3_0_01192__2013_11_08_14_51_32
-Return-Path: <Paul.Burton@imgtec.com>
+X-Received: by 10.182.88.202 with SMTP id bi10mt2608760obb.52.1383932105899;
+ Fri, 08 Nov 2013 09:35:05 -0800 (PST)
+Received: by 10.76.83.233 with HTTP; Fri, 8 Nov 2013 09:35:05 -0800 (PST)
+In-Reply-To: <20131108172504.GA24021@intel.com>
+References: <20131108172504.GA24021@intel.com>
+Date:   Fri, 8 Nov 2013 09:35:05 -0800
+Message-ID: <CAMe9rOp=vH_GMZLZGBuUnThm2c9AzY8Ei6inrmjDredVt2-K1A@mail.gmail.com>
+Subject: Re: The Linux binutils 2.24.51.0.1 is released
+From:   "H.J. Lu" <hjl.tools@gmail.com>
+Cc:     linux-gcc@vger.kernel.org, GCC Development <gcc@gcc.gnu.org>,
+        GNU C Library <libc-alpha@sourceware.org>,
+        Mat Hostetter <mat@lcs.mit.edu>, Warner Losh <imp@village.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+To:     unlisted-recipients:; (no To-header on input)
+Return-Path: <hjl.tools@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38490
+X-archive-position: 38491
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: hjl.tools@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,600 +53,867 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If a floating point branch instruction (bc1[ft]l?) is emulated,
-typically because we're running on a core with no FPU, then we need to
-execute the instruction in its branch delay slot too. This is done by
-writing that instruction to memory followed by a trap, as part of an
-"emuframe", and executing it. This avoids the requirement of an emulator
-for the entire MIPS instruction set. Prior to this patch such emuframes
-are written to the user stack and executed from there.
+I renamed the release tag to hjl/linux/release/2.24.51.0.1
 
-This patch moves FP branch delay emuframes off of the user stack and
-into a per-mm page. Allocating a page per-mm leaves userland with access
-to only what it had access to previously, and prevents processes
-interfering with each other as they might if a single system-wide page
-were used. The book-keeping required to track the allocation of
-emuframes is not cheap, but given that invoking the FP emulator is
-already very expensive I don't expect this to be an issue.
 
-The biggest issue with executing the instruction from an FP branch delay
-is that we must ensure that we free the frame from which we ran it. That
-means that we must trap back to the kernel after executing that
-instruction, which means that we must take special care not to let the
-PC be changed as a result of that instruction. Fortunately since we're
-executing an instruction we found in a branch delay the result is
-unpredictable if that instruction is a branch or jump, so we can simply
-treat those as NOPs and avoid them causing a problem. However there is
-still the possibility that a signal may be handled whilst executing the
-branch delay instruction. This would usually be fine as we would simply
-execute our trap back to the kernel after sigreturn, however it is
-possible for userland to simply not return from the signal handler - for
-example if it executes something like a longjmp. In that case we would
-never trap back to the kernel and never free the frame. For that reason
-a TIF_FP_BD_EMU flag is introduced and set whilst we are executing an FP
-branch delay instruction. Whilst this flag is set, signals will be
-ignored. This isn't exactly pretty, but it's simpler than most of the
-alternatives. One other simple option I considered would be to just
-kill a process if we find a branch in an FP branch delay slot, but I
-chose the current approach because its result is closer to what would
-previously happen.
+H.J.
+On Fri, Nov 8, 2013 at 9:25 AM, H.J. Lu <hongjiu.lu@intel.com> wrote:
+> It is also available as linux/release/2.24.51.0.1 tag at
+>
+> https://sourceware.org/git/?p=binutils-gdb.git;a=summary
+>
+>
+> H.J.
+> ---
+> This is the beta release of binutils 2.24.51.0.1 for Linux, which is
+> based on binutils 2013 1106 master branch on sourceware.org plus
+> various changes. It is purely for Linux.
+>
+> All relevant patches in patches have been applied to the source tree.
+> You can take a look at patches/README to see what have been applied and
+> in what order they have been applied.
+>
+> Starting from the 2.23.52.0.2 release, when creating executables, BFD
+> linker will issue an error for undefined weak reference which is
+> defined in a shared library from DT_NEEDED.  Previously BFD linker
+> will silently include the shared library from DT_NEEDED.
+>
+> Starting from the 2.21.51.0.3 release, you must remove .ctors/.dtors
+> section sentinels when building glibc or other C run-time libraries.
+> Otherwise, you will run into:
+>
+> http://sourceware.org/bugzilla/show_bug.cgi?id=12343
+>
+> Starting from the 2.21.51.0.2 release, BFD linker has the working LTO
+> plugin support. It can be used with GCC 4.5 and above. For GCC 4.5, you
+> need to configure GCC with --enable-gold to enable LTO plugin support.
+>
+> Starting from the 2.21.51.0.2 release, binutils fully supports compressed
+> debug sections.  However, compressed debug section isn't turned on by
+> default in assembler. I am planning to turn it on for x86 assembler in
+> the future release, which may lead to the Linux kernel bug messages like
+>
+> WARNING: lib/ts_kmp.o (.zdebug_aranges): unexpected non-allocatable section.
+>
+> But the resulting kernel works fine.
+>
+> Starting from the 2.20.51.0.4 release, no diffs against the previous
+> release will be provided.
+>
+> You can enable both gold and bfd ld with --enable-gold=both.  Gold will
+> be installed as ld.gold and bfd ld will be installed as ld.bfd.  By
+> default, ld.bfd will be installed as ld.  You can use the configure
+> option, --enable-gold=both/gold to choose gold as the default linker,
+> ld.  IA-32 binary and X64_64 binary tar balls are configured with
+> --enable-gold=both/ld --enable-plugins --enable-threads.
+>
+> Starting from the 2.18.50.0.4 release, the x86 assembler no longer
+> accepts
+>
+>         fnstsw %eax
+>
+> fnstsw stores 16bit into %ax and the upper 16bit of %eax is unchanged.
+> Please use
+>
+>         fnstsw %ax
+>
+> Starting from the 2.17.50.0.4 release, the default output section LMA
+> (load memory address) has changed for allocatable sections from being
+> equal to VMA (virtual memory address), to keeping the difference between
+> LMA and VMA the same as the previous output section in the same region.
+>
+> For
+>
+> .data.init_task : { *(.data.init_task) }
+>
+> LMA of .data.init_task section is equal to its VMA with the old linker.
+> With the new linker, it depends on the previous output section. You
+> can use
+>
+> .data.init_task : AT (ADDR(.data.init_task)) { *(.data.init_task) }
+>
+> to ensure that LMA of .data.init_task section is always equal to its
+> VMA. The linker script in the older 2.6 x86-64 kernel depends on the
+> old behavior.  You can add AT (ADDR(section)) to force LMA of
+> .data.init_task section equal to its VMA. It will work with both old
+> and new linkers. The x86-64 kernel linker script in kernel 2.6.13 and
+> above is OK.
+>
+> The new x86_64 assembler no longer accepts
+>
+>         monitor %eax,%ecx,%edx
+>
+> You should use
+>
+>         monitor %rax,%ecx,%edx
+>
+> or
+>         monitor
+>
+> which works with both old and new x86_64 assemblers. They should
+> generate the same opcode.
+>
+> The new i386/x86_64 assemblers no longer accept instructions for moving
+> between a segment register and a 32bit memory location, i.e.,
+>
+>         movl (%eax),%ds
+>         movl %ds,(%eax)
+>
+> To generate instructions for moving between a segment register and a
+> 16bit memory location without the 16bit operand size prefix, 0x66,
+>
+>         mov (%eax),%ds
+>         mov %ds,(%eax)
+>
+> should be used. It will work with both new and old assemblers. The
+> assembler starting from 2.16.90.0.1 will also support
+>
+>         movw (%eax),%ds
+>         movw %ds,(%eax)
+>
+> without the 0x66 prefix. Patches for 2.4 and 2.6 Linux kernels are
+> available at
+>
+> http://www.kernel.org/pub/linux/devel/binutils/linux-2.4-seg-4.patch
+> http://www.kernel.org/pub/linux/devel/binutils/linux-2.6-seg-5.patch
+>
+> The ia64 assembler is now defaulted to tune for Itanium 2 processors.
+> To build a kernel for Itanium 1 processors, you will need to add
+>
+> ifeq ($(CONFIG_ITANIUM),y)
+>         CFLAGS += -Wa,-mtune=itanium1
+>         AFLAGS += -Wa,-mtune=itanium1
+> endif
+>
+> to arch/ia64/Makefile in your kernel source tree.
+>
+> Please report any bugs related to binutils 2.24.51.0.1 to
+> hjl.tools@gmail.com
+>
+> and
+>
+> http://www.sourceware.org/bugzilla/
+>
+> Changes from binutils 2.23.52.0.2:
+>
+> 1. Update from binutils 2013 1106.
+> 2. Add Intel AVX-512 new instruction support.
+> 3. Add Intel MPX new instruction support.
+> 4. Update ld to support x86-64 large PIC model with TLS GD and LD sequences.
+> 5. Fix ld to properly handle R_X86_64_DTPOFF64.  PR 15685.
+> 6. Fix x86 assembler to properly check 64-bit register.
+> 7. Update x86 assembler not to align text/data/bss sections for ELF.
+> 8. Fix x86 assembler to properly support cvttps2pi.  PR 13572.
+> 9. Fix ld to generate warning sections in glibc.  PR 15762.
+> 10. Avoid corrupted binary generated by objcopy/strip.  PR 16056.
+> 11. Improve ld hash.  PR 15657.
+> 12. Fix objdump on /proc/kcore.  PR 15818.
+> 13. Improve DWARF support.
+> 14. Improve addr2line.  PR 15994.
+> 15. Improve readelf.  PR 15745.
+> 16. Improve gold.
+> 17. Improve nacl support.
+> 18. Improve aarch64 support.
+> 19. Improve arm support.
+> 20. Improve cris support.
+> 21. Improve hppa support.
+> 22. Improve m32c support.
+> 23. Improve m68k support.
+> 24. Improve mips support.
+> 25. Improve msp430 support.
+> 26. Improve nios2 support.
+> 27. Improve ppc support.
+> 28. Improve rl78 support.
+> 29. Improve rx support.
+> 30. Improve rs6000 support.
+> 31. Improve s390 support.
+> 32. Improve sparc support.
+> 33. Improve tile support.
+> 34. Improve vax support.
+>
+> Changes from binutils 2.23.52.0.1:
+>
+> 1. Update from binutils 2013 0426.
+> 2. Add x32 support to embedded x86_64 ELF target.
+> 3. Fix an x86 IFUNC linker regression.  PR 15371.
+> 4. Fix an LTO linker weak definition bug.  PR 15323.
+> 5. Remove stale dynamic table entries for symbols optimized out by LTO.
+> PR 15270.
+> 6. Revert the fix for PR 15149.  When creating executables, BFD linker
+> won't issue an error for undefined weak reference which is defined in
+> 7 shared library from DT_NEEDED.
+> 8. Ignore weak reference which is is defined in a shared library from
+> DT_NEEDED.  This may change the behavior of resulting binaries with
+> undefined weak reference.  List libraries needed on command-line as work
+> around.  PR 12549.
+> 9. Fix a MIPS ELF linker crash.  PR 15382.
+> 10. Align LMA per VMA alignment only if needed.  PR 15222.
+> 11. Fix a BFD decompress memory leak.  PR 15356.
+> 12. Properly check SIB byte in x86 disassembler.
+> 13, Fix invalid memory access in readelf.  PR 15191.
+> 14, Fix invalid memory access in DWARF dumper.  PRs 15206/15202/15201.
+> 15. Improve gold.
+> 16. Improve aarch64 support.
+> 17. Improve arm support.
+> 18. Improve avr support.
+> 19. Improve h8300 support.
+> 20. Improve mips support.
+> 21. Improve nios2 support.
+> 22. Improve ppc support.
+> 23. Improve rl78 support.
+> 24. Improve sh support.
+> 25. Improve sparc support.
+> 26. Improve tic6x support.
+> 27. Improve v850 support.
+>
+> Changes from binutils 2.23.51.0.9:
+>
+> 1. Update from binutils 2013 0226.
+> 2. Add Intel SAMP new instruction support.
+> 3. Allow dynamic R_386_SIZE32, R_X86_64_SIZE32 and R_X86_64_SIZE64
+> relocations agaist TLS symbols.
+> 4. Fix BFD linker to set STB_GNU_UNIQUE only for definition.  PR 15167.
+> 5. Fix BFD linker to set STB_GNU_UNIQUE only if symbol is defined in
+> regular object.  PR 15107.
+> 6. Don't add DT_NEEDED for references from the LTO IR input.  PR 15146.
+> 7. When creating executables, BFD linker will issue an error for undefined
+> weak reference which is defined in a shared library from DT_NEEDED.
+> PR 15149.
+> 8. Also trace symbol from the LTO IR input.  PR 15141.
+> 9. Support stripping LTO IR sections.  PR 15033.
+> 10. Don't allow a nested archive pointing to itself and don't generate
+> bad archive.  PR 15140.
+> 11. Fix objcopy segfault on non-ELF input.  PR 14873.
+> 12. Update DWARF dump support.
+> 13. Improve gold.
+> 14. Add nios2 support.
+> 15. Improve mach support.
+> 16. Improve aarch64 support.
+> 17. Improve arm support.
+> 18. Improve avr support.
+> 19. Improve h8300 support.
+> 20. Improve meta support.
+> 21. Improve mips support.
+> 22. Improve ppc support.
+> 23. Improve rl78 support.
+> 24. Improve sparc support.
+> 25. Improve v850 support.
+>
+> Changes from binutils 2.23.51.0.8:
+>
+> 1. Update from binutils 2013 0118.
+> 2. Support R_386_SIZE32, R_X86_64_SIZE32 and R_X86_64_SIZE64
+> relocations.
+> 3. Fix x86 assembler for "xtrn@got -1".  PR 15019.
+> 4. Don't generate old dtags with --enable-new-dtags.
+> 5. Add Meta support.
+> 6. Improve gold.
+> 7. Improve aarch64 support.
+> 8. Improve arm support.
+> 9. Improve cr16 support.
+> 10. Improve mips support.
+> 11. Improve ppc support.
+> 12. Improve v850 support.
+> 13. Improve xgate support.
+>
+> Changes from binutils 2.23.51.0.7:
+>
+> 1. Properly adjust h->plt.refcount.  PR 14980.
+>
+> Changes from binutils 2.23.51.0.6:
+>
+> 1. Update from binutils 2012 1218.
+> 2. Add missing R_*_IRELATIVE relocations.  PR 14968.
+> 3. Remove unnecessary R_*_NONE relocations.  PR 14956.
+> 4. Fix ar/ranlib on 32-bit filesystems.  PR 14933.
+> 5. Fix a "Not enough room for program headers" linker bug.  PR 14926.
+> 6. Support self-assignment in a linker script to convert symbols to
+> absolute.  PR 14962.
+> 7. Support --copy-dt-needed-entries when creating DSO.  PR 14915.
+> 8. Improve linker plugin DSO error handling.  PR 14904.
+> 9. Issue warning for plugin dummy.  PR 12760.
+> 10. Add -fuse-ld=bfd|gold support to ld and gold.
+> 11. Fix gold configure.  PR 14897.
+> 12. Correct gas dependency.  PR 14899.
+> 13. Add rdos support.
+> 14. Improve gold.
+> 15. Improve nacl support.
+> 16. Improve aarch64 support.
+> 17. Improve arm support.
+> 18. Improve microblaze support.
+> 19. Improve mips support.
+> 20. Improve ppc support.
+> 21. Improve tile support.
+>
+> Changes from binutils 2.23.51.0.5:
+>
+> 1. Update from binutils 2012 1123.
+> 2. Fix 64-bit jecxz encoding regression in x86 assembler.  PR 14859.
+> 3. Revert an accidental linker change.  PR 14862.
+> 4. Fix x32 TLS LD to LE optimization in gold.  PR 14858.
+> 5. Add "-z global" option to set DF_1_GLOBAL to ld.
+> 6. Improve ld plugin error handling.
+> 7. Port ld lib32 arrangement from Debian.
+> 8. Properly set the output maxpagesize when rewriting program header.
+> PR 14493.
+> 9. Add additional DF_1_XXX support to readelf.
+> 10. Improve nacl support with separate code segments.
+> 11. Improve macos support.
+> 12. Improve arm support.
+> 13. Improve microblaze support.
+> 14. Improve mips support.
+> 15. Improve ppc support.
+> 16. Improve sparc support.
+>
+> Changes from binutils 2.23.51.0.4:
+>
+> 1. Update from binutils 2012 1110.
+> 2. Support new Linux NOTE sections.
+> 3. Add -z stacksize=SIZE option to ld to set size of stack segment.
+> 4. Fix a BFD IOVEC close bug.  PR 14813.
+> 5. Fix a BFD IOVEC on archive bug.  PR 14567.
+> 6. Fix archive support for non-ELF targets.  PR 14481.
+> 7. Improve gold.
+> 8. Improve COFF support.
+> 9. Improve arm support.
+> 10. Improve microblaze support.
+> 11. Improve mips support.
+> 12. Improve ppc support.
+> 13. Improve rx support.
+> 14. Improve s390 support.
+> 15. Improve v850 support.
+> 16. Improve xgate support.
+>
+> Changes from binutils 2.23.51.0.3:
+>
+> 1. Update from binutils 2012 1026.
+> 2. Fix an LTO linker bug.  PR 14747.
+> 3. Add cx16 arch feature to x86 assembler.
+> 4. Add -march=bdver3 option to x86 assembler.
+> 5. Properly handle ignored REX prefix with fwait in x86 disassembler.
+> 6. Fix x32 register names in objdump DWARF output.
+> 7. Add NT_SIGINFO/NT_FILE support to readelf.
+> 8. Add linker --ignore-unresolved-symbol option from NetBSD.
+> 9. Treat .gdb_index section as debug section.  PR 14662.
+> 10. Add --debug-dump=addr, --debug_dump=cu_index options to readelf and
+> objdump.
+> 11. Add dwp, DWARF packaging utility.
+> 12. Add compressed debug section support to Windows.  PR 14067.
+> 13. Improve gold.
+> 14. Improve aarch64 support.
+> 15. Improve arm support.
+> 16. Improve hppa support.
+> 17. Improve mips support.
+> 18. Improve s390 support.
+> 19. Improve tile support.
+> 20. Improve v850 support.
+>
+> Changes from binutils 2.23.51.0.2:
+>
+> 1. Update from binutils 2012 0918.
+> 2. Properly handle versioned STB_SECONDARY symbols.
+> 3. Fix wrong symbol type with common symbol and weak function.  PR 14591.
+> 4. Ignore discarded sections when converting mov to lea.
+> 5. Improve gold.
+> 6. Improve avr support.
+> 7. Improve aarch64 support.
+> 8. Improve moxie support.
+> 9. Improve ppc support.
+> 10. Improve tile support.
+>
+> Changes from binutils 2.23.51.0.1:
+>
+> 1. Update from binutils 2012 0908.
+> 2. Fix STB_SECONDARY support:
+>    a. Generate STB_SECONDARY symbols in DSO by default.
+>    b. Properly handle STB_SECONDAY symbols when linking with archive.
+>    c. Don't allow .weak directive to override .secondary directive.
+> 3. Optimize i386/x86-64 linker to convert GOT load (MOV) to LEA.
+> 4. Clarify x86 assembler error messages.  PR 14457.
+> 5. Improve NOP/prefetch support in x86 disassembler.
+> 6. Improve Intel syntax support in x86 assembler.
+> 7. Add -march={btver1, btver2} options to x86 assembler.
+> 8. Fix binutils build with --enable-shared.  PR 4970.
+> 9. Also provide __executable_start for PIE.  PR 14525.
+> 10. Use xmalloc to allocate memory for argument list file.  PR 14526.
+> 11. Add Intel Itanium Series 9500 support to assembler/diassembler.
+> 12. Ignore section symbols without a BFD section when outputing symbols
+> and check bad section index.  PR 14493.
+> 13. Improve archive reader.  PR 14475.
+> 14. Support DW_OP_GNU_const_index reader.
+> 15. Improve handling of imput files with empty ELF group sections.
+> PR 14444.
+> 16. Fix IFUNC support in s390 linker.
+> 17. Improve gold.
+> 18. Add aarch64 support.
+> 19. Improve arm support.
+> 20. Improve mips support.
+> 21. Improve mmix support.
+> 22. Improve moxie support.
+> 23. Improve ppc support.
+> 24. Improve s390 support.
+> 25. Improve tile support.
+>
+> Changes from binutils 2.22.52.0.4:
+>
+> 1. Update from binutils 2012 0806.
+> 2. Add Intel ADX, RDSEED and PRFCHW new instruction support.
+> 3. Support 'rep bsf', 'rep bsr', and 'rep ret' syntax in x86 assembler.
+> 4. Mark 256-bit vmovntdqa as AVX2 instruction for x86 assembler.
+> 5. Improve x86 assembler error handling.
+> 6. Improve the repeat directive support in assembler.  PR 14201.
+> 7. Improve x86-64 disassembler on superfluous prefixes.
+> 8. Fix x86 disassembler crash on bad XOP instructions.  PR 14355.
+> 9. Support STB_SECONDARY:
+>
+> https://groups.google.com/forum/?hl=en&fromgroups#!forum/generic-abi
+>
+> 10. Added SORT_NONE to the linker script language to disable section
+> sorting and properly handle .init/.fini sections.  PR 14156.
+> 11. Fix a weak alias linker bug.  PR 14323.
+> 12. Fix the NULL GNU_RELRO segment linker bug.  PR 14207.
+> 13. Fix the bad GNU_RELRO segment linker bug.  PR 14215.
+> 14. Add linker support of __ehdr_start symbol for the ELF file header.
+> 15. Add IFUNC support to s390 linker.
+> 16. Fix ar for >4GB member.  PR 14302.
+> 17. Fix objcopy --compress-debug-sections on empty debug section.  PR
+> 14319.
+> 18. Fix readelf/objdup to display null bytes in DWARF debug info.  PR
+> 14420.
+> 19. Improve gold.
+> 20. Improve arm support.
+> 21. Improve avr support.
+> 22. Improve cris support.
+> 23. Improve m68k support.
+> 24. Improve mips support.
+> 25. Improve ppc support.
+> 26. Improve vax support.
+> 27. Improve xgate support.
+>
+> Changes from binutils 2.22.52.0.3:
+>
+> 1. Update from binutils 2012 0604.
+> 2. Check addend overflow for R_X86_64_RELATIVE64.
+> 3. Fix ar/nm/ranlib with --plugin.
+> 4. Create .eh_frame_hdr section only if needed.  PR 13909.
+> 5. Properly create .eh_frame section for PLT.  PR 14105.
+> 6. Fix a linker crash. PR 14170.
+> 7. Fix readelf to properly display addend.
+> 8. Don't make _DYNAMIC/_GLOBAL_OFFSET_TABLE_/_PROCEDURE_LINKAGE_TABLE_
+> symbols absolute for x86 and ppc.
+> 9. Properly handle shared libraries with zero dynamic symbols.  PRs
+> 7023/13962.
+> 10. Update readelf/assembler to support multibyte characters in symbol
+> names.
+> 11. Add --strip-dwo/--extract-dwo options to objcopy/strip.
+> 12. Add R_X86_64_RELATIVE64 support to gold.
+> 13. Improve gold.
+> 14. Improve NACL support.
+> 15. Improve alpha support.
+> 16. Improve avr support.
+> 17. Improve m68k support.
+> 18. Improve mips support.
+> 19. Improve ppc support.
+> 20. Improve vax support.
+>
+> Changes from binutils 2.22.52.0.2:
+>
+> 1. Update from binutils 2012 0507.
+> 2. Fix Linux kernel build by reverting the PR 13621 fix.  PR 14052.
+> 3. Add support for x86_64-*-linux-gnux32 target.
+> 4. Improve x86 assembler.
+> 5. Improve DWARF support.
+> 6. Improve gold.
+> 7. Improve rx support.
+> 8. Improve sparc support.
+> 9. Add xgate support.
+>
+> Changes from binutils 2.22.52.0.1:
+>
+> 1. Update from binutils 2012 0424.
+> 2. Support Intel HLE and RTM extension.
+> 3. Add NACL support.
+> 4. Fix -Bsymbolic with protected function pointer.  PR 13880.
+> 5. Fix an IFUNC regression.  PR 13817.
+> 6. Fix x86 NOP fill regression.  PR 13675.
+> 7. Fix a linker regression.  PR 13991.
+> 8. Fix dangling global hidden symbol in symtab.  PR 13621.
+> 9. Fix objcopy, strip and ld for --emit-relocs.  PR 13947.
+> 10. Improve gold.
+> 11. Improve mach support.
+> 12. Improve vms support.
+> 13. Improve windows support.
+> 14. Improve arm support.
+> 15. Improve avr support.
+> 16. Improve mips support.
+> 17. Improve ppc support.
+> 18. Improve rx support.
+> 19. Improve s390 support.
+> 20. Improve sh support.
+> 21. Improve sparc support.
+> 22. Improve tile support.
+>
+> Changes from binutils 2.22.51.0.1:
+>
+> 1. Update from binutils 2012 0131.
+> 2. Add x32 support to gold.
+> 3. Support linker arch-depedent fill.  PR 13616.
+> 4. Add i386 NACL support to x86 assembler.
+> 5. Add fake zero displacement for .d8 and .d32 suffixes to x86 assembler.
+> 6. Add vmfunc support to x86 assembler/disassembler.
+> 7. Support >2GB archive member.  PR 13534.
+> 8. Support R_X86_64_PC32 relocation for PIC on x32.  PR 13581.
+> 9. Fix LTO linker with --start-group and archive.  PR 12758.
+> 10. Fix linker with --build-id.  PR 12451.
+> 11. Improve linker dead code dependency removal on DSO.  PR 12772.
+> 12. Improve demangler.
+> 13. Fix elf64-x86-64.c build with GCC 4.7.
+> 14. Avoid linker -z text crash.  PR 13468.
+> 15. Avoid readelf crash.  PR 13622.
+> 16. Avoid nm crash on --size-sort --no-sort.  PR 13593.
+> 17. Fix linker COFF SECREL32 relocation support.  PR 13491.
+> 18. Improve gold.
+> 19. Improve mach support.
+> 20. Improve arm support.
+> 21. Improve avr support.
+> 22. Improve hppa support.
+> 23. Improve m68k support.
+> 24. Improve mips support.
+> 25. Improve ppc support.
+> 26. Improve rl78 support.
+> 27. Improve rx support.
+>
+> Changes from binutils 2.21.53.0.2:
+>
+> 1. Update from binutils 2011 1118.
+> 2. Fix ar --plugin on archive with mixed IR/non-IR objects.  PR 13298.
+> 3. Preserve the maximum alignment and size for common symbols.  PR 13250.
+> 4. Fix LTO linker with -as-needed.  PR 13287.
+> 5. Fix --plugin support on thin archive.  PR 13257.
+> 6. Fix LTO linker on thin archive.  PR 13183.
+> 7. Fix --plugin slim object support on archive.  PR 13278.
+> 8. Support LDPR_PREVAILING_DEF_IRONLY_EXP in linker plugin.  PR 13229.
+> 9. Don't make make IR symbols dynamic.  PR 13244.
+> 10. Fix LTO linker with --as-needed.  PR 13201.
+> 11. Properly handle 2 IR symbols with the same comdat key.  PR 13066.
+> 12. Keep .debug_types sections with linker garbage collection.  PR 13233.
+> 13. Fix -ffunction-sections -Wl,--gc-sections failure with symbol
+> versioning.  PR 13195.
+> 14. Improve linker garbage collection support.  PR 13177.
+> 15. Remove symbols hidden by version scripts with --gc-sections.  PR 12975.
+> 16. Remove unnecessary GOT relocation created for IFUNC.  PR 13178.
+> 17. Move IRELATIVE relocations to the end.  PR 13302.
+> 18. Avoid readelf core dump.  PR 13219.
+> 19. Check zero address size when dumping DWARF sections.  PR 13196.
+> 20. Remove the group section if all members are removed.  PR 13180.
+> 21. Support R_X86_64_64 and R_X86_64_RELATIVE64 relocations for x32.
+> PR 13082.
+> 22. Add Adapteva Epiphany support.
+> 23. Add Renesas RL78 support.
+> 24. Improve gold.
+> 25. Improve mach-o support.
+> 26. Improve alpha support.
+> 27. Improve arm support.
+> 28. Improve hppa support.
+> 29. Improve mips support.
+> 30. Improve ppc support.
+> 31. Improve rx support.
+> 32. Improve sparc support.
+>
+> Changes from binutils 2.21.53.0.1:
+>
+> 1. Update from binutils 2011 0804.
+> 2. Add Intel K1OM support.
+> 3. Allow R_X86_64_64 relocation for x32 and check x32 relocation overflow.
+> PR ld/13048.
+> 4. Support direct call in x86-64 assembly code.  PR gas/13046.
+> 5. Add ia32 Google Native Client support.
+> 6. Add .debug_macro section support.
+> 7. Improve gold.
+> 8. Improve VMS support.
+> 9. Improve arm support.
+> 10. Improve hppa support.
+> 11. Improve mips support.
+> 12. Improve mmix support.
+> 13. Improve ppc support.
+>
+> Changes from binutils 2.21.52.0.2:
+>
+> 1. Update from binutils 2011 0716.
+> 2. Fix LTO linker bugs.  PRs 12982/12942.
+> 3. Fix rorx support in x86 assembler/disassembler for AVX Programming
+> Reference (June, 2011).
+> 4. Fix an x86-64 ELFOSABI linker regression.
+> 5. Update ELFOSABI_GNU support.  PR 12913.
+> 6. Fix a linker regression with prelink support.  PR 12921.
+> 7. Add unwind info to x86 PLT section.  PR 12570.
+> 8. Support x32 core files.
+> 9. Support native x32 linker.
+> 10. Fix linker --gc-sections on note sections.  PR 12851.
+> 11. Avoid linker crash on bad input.  PR 12887.
+> 12. Add section flags in linker script.
+> 13. Improve elf linker -z option support.
+> 14. Fix nm on compressed debug sections.  PR 12983.
+> 15. Fix an ar bug.  PR 12558.
+> 16. Fix an ia64 linker regression.  PR 12978.
+> 17. Improve gold.
+> 18. Improve VMS support.
+> 19. Add TILE-Gx/TILEPro support.
+> 20. Improve alpha support.
+> 21. Improve avr support.
+> 22. Improve mips support.
+> 23. Improve arm support.
+> 24. Improve ppc support.
+> 25. Improve sh support.
+> 26. Improve TIC6X support.
+>
+> Changes from binutils 2.21.52.0.1:
+>
+> 1. Update from binutils 2011 0610.
+> 2. Support AVX Programming Reference (June, 2011)
+> 3. Allow R_X86_64_64 relocations in SEC_DEBUGGING sections when building
+> x32 shared libraries.  Used to build kernel x32 vDSO.
+> 4. Fix linker --gc-sections on note sections.  PR 12851.
+> 5. Update readelf to handle binaries containing corrupt version
+> information.  PR 12855.
+> 6. Improve gold.
+> 7. Improve VMS support.
+> 8. Improve mips support.
+>
+> Changes from binutils 2.21.51.0.9:
+>
+> 1. Update from binutils 2011 0608.
+> 2. Fix an x86 linker regression. PRs 12833/12837/12859.
+> 3. Fix an x86-64 large model TLS linker bug.  PR 12809.
+> 4. Fix LTO bugs.  PRs 12758/12760.
+> 5. Add a new linker switch, -plugin-save-temps.
+> 6. Fix an linker bug for warning on common symbol in archive.
+> 7. Fix warning support when building shared library.  PR 12761.
+> 8. Reduce linker memory usage when linking many small object files.
+> PR 12682.
+> 9. Fix a thin archive bug.  PR 12710.
+> 10. Fix a TLS linker bug.  PR 12763.
+> 11. Improve gold.
+> 12. Improve DWARF dump support.
+> 13. Improve XCOFF support.
+> 14. Improve arm support.
+> 15. Improve cris support.
+> 16. Improve ia64 ILP32 support.
+> 17. Improve mips support.
+> 18. Improve ppc support.
+> 19. Improve rx support.
+> 20. Improve s390 support.
+> 21. Improve tic30 support.
+> 22. Improve tic6x support.
+> 23. Improve v850 support.
+>
+> Changes from binutils 2.21.51.0.8:
+>
+> 1. Update from binutils 2011 0507.
+> 2. Improve LTO bfd linker.  PRs 12365/12696/12672
+> 3. Fix a linker regression with constructor attribute in C++.  PR 12730.
+> 4. Warn relocation in readonly section when creating a shared object.
+> 5. Remove empty output sections.  PR 12718.
+> 6. Remove DT_TEXTREL with local IFUNC symbols.  PR 12694.
+> 7. Properly set ELFOSABI_LINUX for STB_GNU_UNIQUE. PR 10549.
+> 8. Fix objcopy on unusual input.  PR 12632.
+> 9. Fix an ar regression.  PR 12720.
+> 10  Avoid linker crash on bad linker input.
+> 11. Fix a linker script regression.  PR 12726.
+> 12. Support new GNU DWARF extensions.
+> 13. Initial support for SystemTap note sections.
+> 14. Add --dwarf-start and --dwarf-end to readelf and objdump.
+> 15. Disable 3dnow and 3dnowa for bdver1 in x86 assembler.
+> 16. Improve gold.
+> 17. Improve VMS support.
+> 18. Improve arm support.
+> 19. Improve mips support.
+> 20. Improve ppc support.
+> 21. Improve s390 support.
+> 22. Improve tic6x support.
+>
+> Changes from binutils 2.21.51.0.7:
+>
+> 1. Update from binutils 2011 0408.
+> 2. Fix x32 TLS linker bug.
+> 3. Enable .quad directive in x32 assembler.
+> 4. Fix an assembler regression.  PRs 12569/12589.
+> 5. Add --size-check= assembler option to issue a warning, instead of an
+> error, on bad ELF .size directive.
+> 6. Fix an ia32 linker bug with TLS/PIE.  PR 12654.
+> 7. Fix Intel L1OM linker library search path.
+> 8. Fix a linker buffer overflow on malformed inputs.  PR 12613.
+> 9. Check corrupted symtab in nm/readelf.  PR 12639.
+> 10. Avoid objcopy crash on archive with unknown objects.  PR 12632.
+> 11. Fix "ar -t".  PR 12590.
+> 12. Fix many memory leaks.
+> 13. Improve DWARF support.
+> 14. Improve gold.
+> 15. Improve VMS support.
+> 16. Improve Windows support.
+> 17. Improve alpha support.
+> 18. Improve arm support.
+> 19. Improve avr support.
+> 20. Improve ppc support.
+> 21. Improve sparc support.
+> 22. Improve tic6x support.
+>
+> Changes from binutils 2.21.51.0.6:
+>
+> 1. Update from binutils 2011 0306.
+> 2. Supprt x32 TLS IE->LE transition.
+> 3. Change x32 library directory from /lib32 to /libx32.
+> 4. Improve LTO linker support.  Fix PRs 12439/12314/12248/12430.
+> 5. Improve linker plugin support.
+> 6. Fix an ar bug.  PR 12513.
+> 7. Properly generate nops for ia32. PR 6957.
+> 8. Improve readelf DT_GNU_HASH support.  PR 12523.
+> 9. Improve readelf on invalid input.  PR 12467.
+> 10. Update ELF assembler to issue an error on invalid  .size directive.
+> PR 12519,
+> 11. Properly handle PT_DYNAMIC segment with zero size sections.  PR 12516.
+> 12.  Add a new linker option, --verbose=2, to report plugin symbol
+> status.
+> 13. Properly handle entry symbols in linker LTO support.  PR 12507.
+> 14. Improve gold.
+> 15. Improve arm support.
+> 16. Improve bfin support.
+> 17. Improve mips support.
+> 18. Improve ppc support.
+>
+> Changes from binutils 2.21.51.0.5:
+>
+> 1. Update from binutils 2011 0118.
+> 2. Fix x32 (ILP32) support.  Renamed assembler option to --x32.  It
+> can create working static and dynamic x32 executables.
+> 3. Add BMI and TBM new instruction support.
+> 4. Fix x86 disassembler to properly display sign-extended byte.
+> 5. Improve IFUNC linker support.  PRs 12366/12371.
+> 6. Fix readelf bug on archive. PR 12408.
+> 7. Fix a assembler when compressing empty debug sections.  PR 12409.
+> 8. Fix a warning symbol linker bug.  PR 12339.
+> 9. Fix a duplicated assert message linker bug.  PR 12380.
+> 10. Fix plugin linker build.  PR 12391.
+> 11. Fix a plugin linker crash.  PR 12364.
+> 12. Improve plugin linker.
+> 13. Improve gold.
+> 14. Improve arm support.
+> 15. Improve mips support.
+> 16. Improve rx support.
+>
+> Changes from binutils 2.21.51.0.4:
+>
+> 1. Update from binutils 2011 0104.
+> 2. Add ILP32 support:
+>
+> http://www.kernel.org/pub/linux/devel/binutils/ilp32/abi.pdf
+>
+> to Linux/x86-64.
+> 3. Prevent the Linux x86-64 kernel build failure and remove
+> __ld_compatibility support.  PR 12356.
+> 4. Improve gold.
+> 5. Improve Windows support.
+> 6. Improve hppa support.
+> 7. Improve mips support.
+>
+> Changes from binutils 2.21.51.0.3:
+>
+> 1. Update from binutils 2010 1217.
+> 2. Fix the Linux relocatable kernel build.  PR 12327.
+> 3. Improve mips support.
+>
+> Changes from binutils 2.21.51.0.2:
+>
+> 1. Update from binutils 2010 1215.
+> 2. Add BFD linker support for placing input .ctors/.dtors sections in
+> output .init_array/.fini_array section.  Add SORT_BY_INIT_PRIORITY.  The
+> benefits are
+>    a. Avoid output .ctors/.dtors section in executables and shared
+>       libraries.
+>    b. Allow mixing input .ctors/.dtors sections with input
+>    .init_array/.fini_array sectiobs.  GCC PR 46770.
+> 3. Add BFD linker support for "ld -r" on mixed IR/non-IR objects. Add
+> the new ELF section type SHT_GNU_OBJECT_ONLY (0x6ffffff8). See
+>
+> http://sourceware.org/bugzilla/show_bug.cgi?id=12291
+>
+> 4. Update BFD linker to accept -flto and -flto-partition= for GCC LTO
+> option compatibility.
+> 5. Fix BFD linker to avoid touching uncompressed section content when
+> relocating DWARF debug sections for errror reporting.
+> 6. Mark .gnu.lto_* sections with SHF_EXCLUDE.
+> 7. Add --target option to ar.
+> 8. Improve gold.
+> 9. Improve AIX support.
+> 10. Improve Windows support.
+> 11. Improve mips support.
+>
+> Changes from binutils 2.21.51.0.1:
+>
+> 1. Update from binutils 2010 1206.
+> 2. Fix BFD and GOLD linker for compressed debug section support.
+> 3. Fix BFD linker plugin support.  PR ld/12246, ld/12247, ld/12248,
+> ld/12277, ld/12288 and ld/12289.
+> 4. Update BFD linker to group .text.exit, text.startup and .text.hot
+> sections.
+> 5. Fix linker for W_EH_PE_datarel handling.  PR ld/12253.
+> 6. Fix array access bug in readelf/elfedit.  PR binutils/11742 and
+> binutils/12235.
+> 7. Support dumping GDB .gdb_index section.
+> 8. Install plugin-api.h.
+> 9. Improve gold.
+> 10. Improve Solaris support.
+> 11. Improve VMS support.
+> 12. Improve Windows support.
+> 13. Improve arm support.
+> 14. Improve bfin support.
+> 15. Improve mips support.
+> 16. Improve s390 support.
+> 17. Improve z80 support.
+>
+> Changes from binutils 2.20.51.0.12:
+>
+> 1. Update from binutils 2010 1110.
+> 2. Fix ld plugin support.  PRs lto/46291 and lto/46319.
+> 3. Fix x86 assembler to properly fold _GLOBAL_OFFSET_TABLE_ in Intel
+> syntax.  PR 12186.
+> 4. Update assembler to ensure that group signature symbols have the name
+> of the group.
+> 5. Avoid unnecessary relaxation in assembler.  PR 12049.
+> 6. Update linker NOLOAD processing.
+> 7. Update linker not to include archive members when symbols therein have
+> already been defined.  PR 12001.
+> 8. Change objdump to display compressed section names without 'z'.
+> 9. Improve gold.
+> 10. Improve Solaris support.
+> 11. Improve VMS support.
+> 12. Improve Windows support.
+> 13. Improve arm support.
+> 14. Improve cr16 support.
+> 15. Improve mips support.
+> 16. Improve ppc support.
+> 17. Improve tic6x support.
+>
+> The file list:
+>
+> 1. binutils-2.24.51.0.1.tar.bz2.  Source code.
+>
+> The primary sites for the beta Linux binutils are:
+>
+> 1. http://www.kernel.org/pub/linux/devel/binutils/
+>
+> It is also available as linux/release/2.24.51.0.1 tag at
+>
+> https://sourceware.org/git/?p=binutils-gdb.git;a=summary
+>
+> Thanks.
+>
+>
+> H.J. Lu
+> hjl.tools@gmail.com
+> 11/08/2013
 
-The primary benefit of this patch is that we are now free to mark the
-user stack non-executable where that is possible.
 
-Additionally the FP emuframes themselves are simplified somewhat. The
-cookie field is removed since we can be pretty certain that we're
-looking at an emuframe by virtue of it being located in the page
-allocated for them. The PC to continue from is moved into struct
-thread_struct since the control flow of a thread can no longer be
-modified for the duration of the 'emulation', meaning there will now
-only ever be a single emuframe required for a thread at any given time.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
-Changes in v2:
-  - s/kernels/kernel's/
-  - Use (mm_)isBranchInstr in mips_dsemul rather than duplicating
-    similar logic.
----
- arch/mips/include/asm/fpu_emulator.h |   4 +
- arch/mips/include/asm/mmu.h          |  12 ++
- arch/mips/include/asm/mmu_context.h  |   7 +
- arch/mips/include/asm/processor.h    |   7 +-
- arch/mips/include/asm/thread_info.h  |   2 +
- arch/mips/kernel/entry.S             |  13 +-
- arch/mips/kernel/process.c           |   2 +
- arch/mips/kernel/vdso.c              |   2 +-
- arch/mips/math-emu/cp1emu.c          |   4 +-
- arch/mips/math-emu/dsemul.c          | 266 ++++++++++++++++++++++++-----------
- 10 files changed, 226 insertions(+), 93 deletions(-)
-
-diff --git a/arch/mips/include/asm/fpu_emulator.h b/arch/mips/include/asm/fpu_emulator.h
-index 2abb587..16f7b0b 100644
---- a/arch/mips/include/asm/fpu_emulator.h
-+++ b/arch/mips/include/asm/fpu_emulator.h
-@@ -51,6 +51,8 @@ do {									\
- #define MIPS_FPU_EMU_INC_STATS(M) do { } while (0)
- #endif /* CONFIG_DEBUG_FS */
- 
-+extern void dsemul_thread_cleanup(void);
-+extern void dsemul_mm_cleanup(struct mm_struct *mm);
- extern int mips_dsemul(struct pt_regs *regs, mips_instruction ir,
- 	unsigned long cpc);
- extern int do_dsemulret(struct pt_regs *xcp);
-@@ -58,6 +60,8 @@ extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
- 				    struct mips_fpu_struct *ctx, int has_fpu,
- 				    void *__user *fault_addr);
- int process_fpemu_return(int sig, void __user *fault_addr);
-+int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
-+		  unsigned long *contpc);
- int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 		     unsigned long *contpc);
- 
-diff --git a/arch/mips/include/asm/mmu.h b/arch/mips/include/asm/mmu.h
-index c436138..08214da 100644
---- a/arch/mips/include/asm/mmu.h
-+++ b/arch/mips/include/asm/mmu.h
-@@ -1,9 +1,21 @@
- #ifndef __ASM_MMU_H
- #define __ASM_MMU_H
- 
-+#include <linux/mutex.h>
-+#include <linux/wait.h>
-+
- typedef struct {
- 	unsigned long asid[NR_CPUS];
- 	void *vdso;
-+
-+	/* address of page used to hold FP branch delay emulation frames */
-+	unsigned long fp_bd_emupage;
-+	/* bitmap tracking allocation of fp_bd_emupage */
-+	unsigned long *fp_bd_emupage_allocmap;
-+	/* mutex to be held whilst modifying fp_bd_emupage(_allocmap) */
-+	struct mutex fp_bd_emupage_mutex;
-+	/* wait queue for threads requiring an emuframe */
-+	wait_queue_head_t fp_bd_emupage_queue;
- } mm_context_t;
- 
- #endif /* __ASM_MMU_H */
-diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-index e277bba..c55e864 100644
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -16,6 +16,7 @@
- #include <linux/smp.h>
- #include <linux/slab.h>
- #include <asm/cacheflush.h>
-+#include <asm/fpu_emulator.h>
- #include <asm/hazards.h>
- #include <asm/tlbflush.h>
- #ifdef CONFIG_MIPS_MT_SMTC
-@@ -133,6 +134,11 @@ init_new_context(struct task_struct *tsk, struct mm_struct *mm)
- 	for_each_possible_cpu(i)
- 		cpu_context(i, mm) = 0;
- 
-+	mm->context.fp_bd_emupage = 0;
-+	mm->context.fp_bd_emupage_allocmap = NULL;
-+	mutex_init(&mm->context.fp_bd_emupage_mutex);
-+	init_waitqueue_head(&mm->context.fp_bd_emupage_queue);
-+
- 	return 0;
- }
- 
-@@ -199,6 +205,7 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
-  */
- static inline void destroy_context(struct mm_struct *mm)
- {
-+	dsemul_mm_cleanup(mm);
- }
- 
- #define deactivate_mm(tsk, mm)	do { } while (0)
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index 3605b84..683a3d6 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -38,9 +38,10 @@ extern unsigned int vced_count, vcei_count;
- 
- /*
-  * A special page (the vdso) is mapped into all processes at the very
-- * top of the virtual memory space.
-+ * top of the virtual memory space. The page below it is used for FP
-+ * emulator branch delay slot executions.
-  */
--#define SPECIAL_PAGES_SIZE PAGE_SIZE
-+#define SPECIAL_PAGES_SIZE (PAGE_SIZE * 2)
- 
- #ifdef CONFIG_32BIT
- #ifdef CONFIG_KVM_GUEST
-@@ -226,6 +227,8 @@ struct thread_struct {
- 
- 	/* Saved fpu/fpu emulator stuff. */
- 	struct mips_fpu_struct fpu;
-+	/* PC to continue from following an FP branch delay 'emulation' */
-+	unsigned long fp_bd_emu_cpc;
- #ifdef CONFIG_MIPS_MT_FPAFF
- 	/* Emulated instruction count */
- 	unsigned long emulated_fp;
-diff --git a/arch/mips/include/asm/thread_info.h b/arch/mips/include/asm/thread_info.h
-index b6da8b7..eee6e18 100644
---- a/arch/mips/include/asm/thread_info.h
-+++ b/arch/mips/include/asm/thread_info.h
-@@ -118,6 +118,7 @@ static inline struct thread_info *current_thread_info(void)
- #define TIF_LOAD_WATCH		25	/* If set, load watch registers */
- #define TIF_SYSCALL_TRACEPOINT	26	/* syscall tracepoint instrumentation */
- #define TIF_32BIT_FPREGS	27	/* 32-bit floating point registers */
-+#define TIF_FP_BD_EMU		28	/* executing an FP branch delay */
- #define TIF_SYSCALL_TRACE	31	/* syscall trace active */
- 
- #define _TIF_SYSCALL_TRACE	(1<<TIF_SYSCALL_TRACE)
-@@ -135,6 +136,7 @@ static inline struct thread_info *current_thread_info(void)
- #define _TIF_FPUBOUND		(1<<TIF_FPUBOUND)
- #define _TIF_LOAD_WATCH		(1<<TIF_LOAD_WATCH)
- #define _TIF_32BIT_FPREGS	(1<<TIF_32BIT_FPREGS)
-+#define _TIF_FP_BD_EMU		(1<<TIF_FP_BD_EMU)
- #define _TIF_SYSCALL_TRACEPOINT	(1<<TIF_SYSCALL_TRACEPOINT)
- 
- #define _TIF_WORK_SYSCALL_ENTRY	(_TIF_NOHZ | _TIF_SYSCALL_TRACE |	\
-diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
-index e578685..24707d7 100644
---- a/arch/mips/kernel/entry.S
-+++ b/arch/mips/kernel/entry.S
-@@ -168,10 +168,15 @@ work_resched:
- 	andi	t0, a2, _TIF_NEED_RESCHED
- 	bnez	t0, work_resched
- 
--work_notifysig:				# deal with pending signals and
--					# notify-resume requests
--	move	a0, sp
--	li	a1, 0
-+work_notifysig:
-+	and	t0, a2, _TIF_FP_BD_EMU	# are we currently 'emulating' the
-+					# delay slot of an FP branch?
-+	beqz	t0, 1f			# no, continue below
-+	and	a2, a2, ~_TIF_SIGPENDING	# yes, skip handling signals
-+	beqz	a2, restore_all		# which leaves us nothing to do
-+
-+1:	move	a0, sp			# deal with pending signals and
-+	li	a1, 0			# notify-resume requests
- 	jal	do_notify_resume	# a2 already loaded
- 	j	resume_userspace_check
- 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 747a6cf..0219502 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -32,6 +32,7 @@
- #include <asm/cpu.h>
- #include <asm/dsp.h>
- #include <asm/fpu.h>
-+#include <asm/fpu_emulator.h>
- #include <asm/pgtable.h>
- #include <asm/mipsregs.h>
- #include <asm/processor.h>
-@@ -72,6 +73,7 @@ void start_thread(struct pt_regs * regs, unsigned long pc, unsigned long sp)
- 
- void exit_thread(void)
- {
-+	dsemul_thread_cleanup();
- }
- 
- void flush_thread(void)
-diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
-index 0f1af58..213d871 100644
---- a/arch/mips/kernel/vdso.c
-+++ b/arch/mips/kernel/vdso.c
-@@ -78,7 +78,7 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
- 
- 	down_write(&mm->mmap_sem);
- 
--	addr = vdso_addr(mm->start_stack);
-+	addr = vdso_addr(mm->start_stack) + PAGE_SIZE;
- 
- 	addr = get_unmapped_area(NULL, addr, PAGE_SIZE, 0, 0);
- 	if (IS_ERR_VALUE(addr)) {
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 22f7b11..a0566c8 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -665,8 +665,8 @@ int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
-  * a single subroutine should be used across both
-  * modules.
-  */
--static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
--			 unsigned long *contpc)
-+int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
-+		  unsigned long *contpc)
- {
- 	union mips_instruction insn = (union mips_instruction)dec_insn.insn;
- 	unsigned int fcr31;
-diff --git a/arch/mips/math-emu/dsemul.c b/arch/mips/math-emu/dsemul.c
-index 7ea622a..3e64b17 100644
---- a/arch/mips/math-emu/dsemul.c
-+++ b/arch/mips/math-emu/dsemul.c
-@@ -1,6 +1,8 @@
- #include <linux/compiler.h>
-+#include <linux/err.h>
- #include <linux/mm.h>
- #include <linux/signal.h>
-+#include <linux/slab.h>
- #include <linux/smp.h>
- 
- #include <asm/asm.h>
-@@ -45,52 +47,173 @@
- struct emuframe {
- 	mips_instruction	emul;
- 	mips_instruction	badinst;
--	mips_instruction	cookie;
--	unsigned long		epc;
- };
- 
-+static const int emupage_frame_count = PAGE_SIZE / sizeof(struct emuframe);
-+
-+static struct emuframe __user *alloc_emuframe(void)
-+{
-+	mm_context_t *mm_ctx = &current->mm->context;
-+	struct emuframe __user *fr = NULL;
-+	unsigned long addr;
-+	int idx;
-+
-+retry:
-+	mutex_lock(&mm_ctx->fp_bd_emupage_mutex);
-+
-+	/* Ensure we have a page allocated for emuframes */
-+	if (!mm_ctx->fp_bd_emupage) {
-+		addr = mmap_region(NULL, STACK_TOP, PAGE_SIZE,
-+				   VM_READ|VM_WRITE|VM_EXEC|
-+				   VM_MAYREAD|VM_MAYWRITE|VM_MAYEXEC,
-+				   0);
-+		if (IS_ERR_VALUE(addr))
-+			goto out_unlock;
-+
-+		mm_ctx->fp_bd_emupage = addr;
-+		pr_debug("allocate emupage at 0x%08lx to %d\n", addr,
-+			 current->pid);
-+	}
-+
-+	/* Ensure we have an allocation bitmap */
-+	if (!mm_ctx->fp_bd_emupage_allocmap) {
-+		mm_ctx->fp_bd_emupage_allocmap =
-+			kcalloc(BITS_TO_LONGS(emupage_frame_count),
-+					      sizeof(unsigned long),
-+				GFP_KERNEL);
-+
-+		if (!mm_ctx->fp_bd_emupage_allocmap)
-+			goto out_unlock;
-+	}
-+
-+	/* Attempt to allocate a single bit/frame */
-+	idx = bitmap_find_free_region(mm_ctx->fp_bd_emupage_allocmap,
-+				      emupage_frame_count, 0);
-+	if (idx < 0) {
-+		/*
-+		 * Failed to allocate a frame. We'll wait until one becomes
-+		 * available. The mutex is unlocked so that other threads
-+		 * actually get the opportunity to free their frames, which
-+		 * means technically the result of bitmap_full may be incorrect.
-+		 * However the worst case is that we repeat all this and end up
-+		 * back here again.
-+		 */
-+		mutex_unlock(&mm_ctx->fp_bd_emupage_mutex);
-+		if (!wait_event_killable(mm_ctx->fp_bd_emupage_queue,
-+			!bitmap_full(mm_ctx->fp_bd_emupage_allocmap,
-+				     emupage_frame_count)))
-+			goto retry;
-+
-+		/* Received a fatal signal - just give in */
-+		return NULL;
-+	}
-+
-+	/* Success! */
-+	fr = (struct emuframe __user *)mm_ctx->fp_bd_emupage + idx;
-+	pr_debug("allocate emuframe %d to %d\n", idx, current->pid);
-+out_unlock:
-+	mutex_unlock(&mm_ctx->fp_bd_emupage_mutex);
-+	return fr;
-+}
-+
-+static void free_emuframe(struct emuframe __user *frame)
-+{
-+	mm_context_t *mm_ctx = &current->mm->context;
-+	int idx;
-+
-+	mutex_lock(&mm_ctx->fp_bd_emupage_mutex);
-+
-+	idx = frame - (struct emuframe __user *)mm_ctx->fp_bd_emupage;
-+	pr_debug("free emuframe %d from %d\n", idx, current->pid);
-+	bitmap_clear(mm_ctx->fp_bd_emupage_allocmap, idx, 1);
-+
-+	/* If some thread is waiting for a frame, now's its chance */
-+	wake_up(&mm_ctx->fp_bd_emupage_queue);
-+
-+	mutex_unlock(&mm_ctx->fp_bd_emupage_mutex);
-+}
-+
-+void dsemul_thread_cleanup(void)
-+{
-+	/*
-+	 * We should always have passed through do_dsemulret prior to the
-+	 * thread exiting, so TIF_FP_BD_EMU should never be set here.
-+	 */
-+	BUG_ON(test_thread_flag(TIF_FP_BD_EMU));
-+}
-+
-+void dsemul_mm_cleanup(struct mm_struct *mm)
-+{
-+	mm_context_t *mm_ctx = &mm->context;
-+
-+	kfree(mm_ctx->fp_bd_emupage_allocmap);
-+}
-+
- int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
- {
--	extern asmlinkage void handle_dsemulret(void);
-+	struct mm_decoded_insn mm_inst = { .insn = ir };
- 	struct emuframe __user *fr;
--	int err;
-+	struct pt_regs dummy_regs;
-+	unsigned long dummy_cpc;
-+	int err, is_mm;
- 
--	if ((get_isa16_mode(regs->cp0_epc) && ((ir >> 16) == MM_NOP16)) ||
--		(ir == 0)) {
--		/* NOP is easy */
-+	/*
-+	 * Trivially handle typical NOP encodings:
-+	 *
-+	 *   MIPS32:		sll	r0, r0, r0
-+	 *   microMIPS:		move16	r0, r0
-+	 */
-+	is_mm = get_isa16_mode(regs->cp0_epc);
-+	if ((!is_mm && !ir) || (is_mm && ((ir >> 16) == MM_NOP16))) {
-+is_nop:
- 		regs->cp0_epc = cpc;
- 		regs->cp0_cause &= ~CAUSEF_BD;
- 		return 0;
- 	}
--#ifdef DSEMUL_TRACE
--	printk("dsemul %lx %lx\n", regs->cp0_epc, cpc);
--
--#endif
- 
- 	/*
--	 * The strategy is to push the instruction onto the user stack
--	 * and put a trap after it which we can catch and jump to
--	 * the required address any alternative apart from full
--	 * instruction emulation!!.
-+	 * In order for us to clean up the emuframe properly, we'll need to
-+	 * execute a break instruction after ir. If ir is a branch then we may
-+	 * never reach that break instruction and thus never free the emuframe.
- 	 *
--	 * Algorithmics used a system call instruction, and
--	 * borrowed that vector.  MIPS/Linux version is a bit
--	 * more heavyweight in the interests of portability and
--	 * multiprocessor support.  For Linux we generate a
--	 * an unaligned access and force an address error exception.
-+	 * Fortunately we know that ir is in a branch delay slot and thus if
-+	 * it is a branch then its operation is unpredictable. So we can just
-+	 * treat branches as NOPs and skip the 'emulation' entirely.
- 	 *
--	 * For embedded systems (stand-alone) we prefer to use a
--	 * non-existing CP1 instruction. This prevents us from emulating
--	 * branches, but gives us a cleaner interface to the exception
--	 * handler (single entry point).
-+	 * If the worst happens and we miss a branch/jump instruction here, or
-+	 * some processor implements a custom one, then it would be possible
-+	 * for us to allocate an emuframe and never free it. Fortunately this
-+	 * would:
-+	 *
-+	 *  1) Be a bug in the userland code, because it has a branch/jump in
-+	 *     a branch delay slot. So if we run out of emuframes and the
-+	 *     userland code hangs it's not exactly the kernel's fault.
-+	 *
-+	 *  2) Only affect that userland process, since emuframes are allocated
-+	 *     per-mm and kernel threads don't use them at all.
- 	 */
-+	if ((!is_mm && isBranchInstr(&dummy_regs, mm_inst, &dummy_cpc)) ||
-+	    (is_mm && mm_isBranchInstr(&dummy_regs, mm_inst, &dummy_cpc))) {
-+		pr_warn("PID %d has a branch in an FP branch delay slot at 0x%08lx\n",
-+			current->pid, regs->cp0_epc);
-+		goto is_nop;
-+	}
- 
--	/* Ensure that the two instructions are in the same cache line */
--	fr = (struct emuframe __user *)
--		((regs->regs[29] - sizeof(struct emuframe)) & ~0x7);
-+	pr_debug("dsemul 0x%08lx cont at 0x%08lx\n", regs->cp0_epc, cpc);
- 
--	/* Verify that the stack pointer is not competely insane */
--	if (unlikely(!access_ok(VERIFY_WRITE, fr, sizeof(struct emuframe))))
-+	/*
-+	 * The strategy is to write the instruction to a per-mm page followed
-+	 * by a trap which we can catch to return to the required address. Any
-+	 * alternative to full instruction emulation!!
-+	 *
-+	 * Algorithmics used a system call instruction, and borrowed that
-+	 * vector.  MIPS/Linux version is a bit more heavyweight in the
-+	 * interests of portability and multiprocessor support.  For Linux we
-+	 * generate a BREAK instruction with a break code reserved for this
-+	 * purpose.
-+	 */
-+	fr = alloc_emuframe();
-+	if (!fr)
- 		return SIGBUS;
- 
- 	if (get_isa16_mode(regs->cp0_epc)) {
-@@ -103,17 +226,18 @@ int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
- 		err |= __put_user((mips_instruction)BREAK_MATH, &fr->badinst);
- 	}
- 
--	err |= __put_user((mips_instruction)BD_COOKIE, &fr->cookie);
--	err |= __put_user(cpc, &fr->epc);
--
- 	if (unlikely(err)) {
- 		MIPS_FPU_EMU_INC_STATS(errors);
-+		free_emuframe(fr);
- 		return SIGBUS;
- 	}
- 
- 	regs->cp0_epc = ((unsigned long) &fr->emul) |
- 		get_isa16_mode(regs->cp0_epc);
- 
-+	current->thread.fp_bd_emu_cpc = cpc;
-+	set_thread_flag(TIF_FP_BD_EMU);
-+
- 	flush_cache_sigtramp((unsigned long)&fr->badinst);
- 
- 	return SIGILL;		/* force out of emulation loop */
-@@ -121,64 +245,38 @@ int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
- 
- int do_dsemulret(struct pt_regs *xcp)
- {
--	struct emuframe __user *fr;
--	unsigned long epc;
--	u32 insn, cookie;
--	int err = 0;
--	u16 instr[2];
--
--	fr = (struct emuframe __user *)
--		(msk_isa16_mode(xcp->cp0_epc) - sizeof(mips_instruction));
--
--	/*
--	 * If we can't even access the area, something is very wrong, but we'll
--	 * leave that to the default handling
--	 */
--	if (!access_ok(VERIFY_READ, fr, sizeof(struct emuframe)))
--		return 0;
--
--	/*
--	 * Do some sanity checking on the stackframe:
--	 *
--	 *  - Is the instruction pointed to by the EPC an BREAK_MATH?
--	 *  - Is the following memory word the BD_COOKIE?
--	 */
--	if (get_isa16_mode(xcp->cp0_epc)) {
--		err = __get_user(instr[0], (u16 __user *)(&fr->badinst));
--		err |= __get_user(instr[1], (u16 __user *)((long)(&fr->badinst) + 2));
--		insn = (instr[0] << 16) | instr[1];
--	} else {
--		err = __get_user(insn, &fr->badinst);
--	}
--	err |= __get_user(cookie, &fr->cookie);
-+	mm_context_t *mm_ctx = &current->mm->context;
-+	struct emuframe __user *fr = NULL;
-+	unsigned long fr_addr;
-+	int success = 0;
- 
--	if (unlikely(err || (insn != BREAK_MATH) || (cookie != BD_COOKIE))) {
--		MIPS_FPU_EMU_INC_STATS(errors);
--		return 0;
--	}
-+	/* If we don't have TIF_FP_BD_EMU set... */
-+	if (!test_and_clear_thread_flag(TIF_FP_BD_EMU))
-+		goto out;
- 
- 	/*
--	 * At this point, we are satisfied that it's a BD emulation trap.  Yes,
--	 * a user might have deliberately put two malformed and useless
--	 * instructions in a row in his program, in which case he's in for a
--	 * nasty surprise - the next instruction will be treated as a
--	 * continuation address!  Alas, this seems to be the only way that we
--	 * can handle signals, recursion, and longjmps() in the context of
--	 * emulating the branch delay instruction.
-+	 * ...or EPC is outside of the expected page or misaligned then
-+	 * something is wrong. Leave it to the default trap/break code to
-+	 * handle.
- 	 */
-+	fr_addr = msk_isa16_mode(xcp->cp0_epc) - sizeof(mips_instruction);
-+	if ((fr_addr < mm_ctx->fp_bd_emupage) ||
-+	    (fr_addr > (mm_ctx->fp_bd_emupage + PAGE_SIZE - sizeof(*fr))) ||
-+	    (fr_addr & (sizeof(*fr) - 1)))
-+		goto out;
- 
--#ifdef DSEMUL_TRACE
--	printk("dsemulret\n");
--#endif
--	if (__get_user(epc, &fr->epc)) {		/* Saved EPC */
--		/* This is not a good situation to be in */
--		force_sig(SIGBUS, current);
--
--		return 0;
--	}
-+	/* At this point, we are satisfied that it's a BD emulation trap. */
-+	fr = (struct emuframe __user *)fr_addr;
- 
- 	/* Set EPC to return to post-branch instruction */
--	xcp->cp0_epc = epc;
-+	xcp->cp0_epc = current->thread.fp_bd_emu_cpc;
-+	success = 1;
- 
--	return 1;
-+	pr_debug("dsemulret to 0x%08lx\n", xcp->cp0_epc);
-+out:
-+	if (fr)
-+		free_emuframe(fr);
-+	if (!success)
-+		MIPS_FPU_EMU_INC_STATS(errors);
-+	return success;
- }
 -- 
-1.8.4.1
+H.J.

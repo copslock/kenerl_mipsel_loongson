@@ -1,48 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Nov 2013 16:55:54 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:2999 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6867663Ab3KLPzl1JLmV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 12 Nov 2013 16:55:41 +0100
-Received: from int-mx12.intmail.prod.int.phx2.redhat.com (int-mx12.intmail.prod.int.phx2.redhat.com [10.5.11.25])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id rACFtEnE020673
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Tue, 12 Nov 2013 10:55:14 -0500
-Received: from [10.3.113.54] (ovpn-113-54.phx2.redhat.com [10.3.113.54])
-        by int-mx12.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id rACFtCAE023159;
-        Tue, 12 Nov 2013 10:55:12 -0500
-Message-ID: <1384271711.24631.5.camel@deneb.redhat.com>
-Subject: Re: [PATCH 00/11] Consolidate asm/fixmap.h files
-From:   Mark Salter <msalter@redhat.com>
-To:     monstr@monstr.eu
-Cc:     linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-arch@vger.kernel.org, Russell King <linux@arm.linux.org.uk>,
-        linux-arm-kernel@lists.infradead.org,
-        Richard Kuo <rkuo@codeaurora.org>,
-        linux-hexagon@vger.kernel.org,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-metag@vger.kernel.org, microblaze-uclinux@itee.uq.edu.au,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org
-Date:   Tue, 12 Nov 2013 10:55:11 -0500
-In-Reply-To: <52824BBC.9020401@monstr.eu>
-References: <1384262545-20875-1-git-send-email-msalter@redhat.com>
-         <52824BBC.9020401@monstr.eu>
-Organization: Red Hat, Inc
-Content-Type: text/plain; charset="UTF-8"
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.25
-Return-Path: <msalter@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Nov 2013 19:30:31 +0100 (CET)
+Received: from mail-pd0-f176.google.com ([209.85.192.176]:43974 "EHLO
+        mail-pd0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822311Ab3KLSa3OTbhD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Nov 2013 19:30:29 +0100
+Received: by mail-pd0-f176.google.com with SMTP id r10so1906424pdi.7
+        for <linux-mips@linux-mips.org>; Tue, 12 Nov 2013 10:30:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=FEgzxxBifyjhQI+mZi24K/06rU0yrRTAysqZyiLmL0E=;
+        b=xjGm8tNop5Wjm81TgUhAvwdjC5+eU4bdh9AlqGQ1RRgWvNsmUjiZV+paX9pO6cN0Jf
+         oUWUlKFSOHT8RHNYw5UbbJy62y7xlaGxB68r/2wyQyvBvPvmSf7PmIXfaJw1n9maeH9q
+         wRJR8TmD2agzmRWi49eWz+rAHgVwS8VXNtf/Yavvd1zsqr0IoYE6/38CNp0IV0SAM1Gr
+         dyYqtptOutqxtmhLka7Q4gAuWYttw7RqbNQpGN3KNrFEQavEQIF2DhNNTu121nrsi2aa
+         QcvTjyUTYcbOrqo6XaY0ht0+gDnwoYBijoQ7HDI5mQvO0THCRDE6xtNylmUNAGBC8Iet
+         Kf1w==
+X-Received: by 10.68.251.133 with SMTP id zk5mr36863053pbc.69.1384281022611;
+ Tue, 12 Nov 2013 10:30:22 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.68.10.162 with HTTP; Tue, 12 Nov 2013 10:29:42 -0800 (PST)
+In-Reply-To: <528246BA.10607@imgtec.com>
+References: <528246BA.10607@imgtec.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Date:   Tue, 12 Nov 2013 10:29:42 -0800
+Message-ID: <CAGVrzcYV7f4zN23nSMOp3r9aiSme-mJPEz2OkyLUFDWKfWtGqw@mail.gmail.com>
+Subject: Re: Release of Linux MTI-3.10-LTS kernel.
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+Cc:     LMOL <linux-mips@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38512
+X-archive-position: 38513
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: msalter@redhat.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,23 +51,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 2013-11-12 at 16:39 +0100, Michal Simek wrote:
-> On 11/12/2013 02:22 PM, Mark Salter wrote:
-> > 
-> >  arch/arm/include/asm/fixmap.h        |  25 ++------
-> >  arch/hexagon/include/asm/fixmap.h    |  40 +------------
-> >  arch/metag/include/asm/fixmap.h      |  32 +----------
-> >  arch/microblaze/include/asm/fixmap.h |  44 +-------------
-> >  arch/mips/include/asm/fixmap.h       |  33 +----------
-> >  arch/powerpc/include/asm/fixmap.h    |  44 +-------------
-> >  arch/sh/include/asm/fixmap.h         |  39 +------------
-> >  arch/tile/include/asm/fixmap.h       |  33 +----------
-> >  arch/um/include/asm/fixmap.h         |  40 +------------
-> >  arch/x86/include/asm/fixmap.h        |  59 +------------------
-> >  include/asm-generic/fixmap.h         | 107 +++++++++++++++++++++++++++++++++++
-> >  11 files changed, 125 insertions(+), 371 deletions(-)
-> >  create mode 100644 include/asm-generic/fixmap.h
-> 
-> Any repo/branch with all these patches will be helpful.
+2013/11/12 Steven J. Hill <Steven.Hill@imgtec.com>:
+> Imagination Technologies is pleased to announce the release of its 3.10 LTS
+> (Long-Term Support) MIPS kernel. The changelog below is based off the stable
+> Linux 3.10.14 release done by Greg Kroah-Hartman in commit
+> 8c15abc94c737f9120d3d4a550abbcbb9be121f6 back on October 1st. The code
+> repository is hosted at the Linux/MIPS project GIT:
+>
+> http://git.linux-mips.org/?p=linux-mti.git;a=summary
+>
+> We look forward to any comments or feedback.
 
-https://github.com/mosalter/linux (fixmap branch)
+Nice job! Do you have a rough idea of the delta between your LTS
+kernel and the current status of mainline/pending submissions?
+
+Thanks!
+-- 
+Florian

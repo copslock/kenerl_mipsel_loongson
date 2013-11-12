@@ -1,44 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Nov 2013 19:30:31 +0100 (CET)
-Received: from mail-pd0-f176.google.com ([209.85.192.176]:43974 "EHLO
-        mail-pd0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6822311Ab3KLSa3OTbhD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Nov 2013 19:30:29 +0100
-Received: by mail-pd0-f176.google.com with SMTP id r10so1906424pdi.7
-        for <linux-mips@linux-mips.org>; Tue, 12 Nov 2013 10:30:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=FEgzxxBifyjhQI+mZi24K/06rU0yrRTAysqZyiLmL0E=;
-        b=xjGm8tNop5Wjm81TgUhAvwdjC5+eU4bdh9AlqGQ1RRgWvNsmUjiZV+paX9pO6cN0Jf
-         oUWUlKFSOHT8RHNYw5UbbJy62y7xlaGxB68r/2wyQyvBvPvmSf7PmIXfaJw1n9maeH9q
-         wRJR8TmD2agzmRWi49eWz+rAHgVwS8VXNtf/Yavvd1zsqr0IoYE6/38CNp0IV0SAM1Gr
-         dyYqtptOutqxtmhLka7Q4gAuWYttw7RqbNQpGN3KNrFEQavEQIF2DhNNTu121nrsi2aa
-         QcvTjyUTYcbOrqo6XaY0ht0+gDnwoYBijoQ7HDI5mQvO0THCRDE6xtNylmUNAGBC8Iet
-         Kf1w==
-X-Received: by 10.68.251.133 with SMTP id zk5mr36863053pbc.69.1384281022611;
- Tue, 12 Nov 2013 10:30:22 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.68.10.162 with HTTP; Tue, 12 Nov 2013 10:29:42 -0800 (PST)
-In-Reply-To: <528246BA.10607@imgtec.com>
-References: <528246BA.10607@imgtec.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Date:   Tue, 12 Nov 2013 10:29:42 -0800
-Message-ID: <CAGVrzcYV7f4zN23nSMOp3r9aiSme-mJPEz2OkyLUFDWKfWtGqw@mail.gmail.com>
-Subject: Re: Release of Linux MTI-3.10-LTS kernel.
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Nov 2013 22:02:44 +0100 (CET)
+Received: from filtteri2.pp.htv.fi ([213.243.153.185]:56545 "EHLO
+        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6822311Ab3KLVCmU0e8V (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Nov 2013 22:02:42 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri2.pp.htv.fi (Postfix) with ESMTP id C825219C0AA;
+        Tue, 12 Nov 2013 23:02:40 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp6.welho.com ([213.243.153.40])
+        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
+        with ESMTP id Hs2xvwSd2zLm; Tue, 12 Nov 2013 23:02:36 +0200 (EET)
+Received: from musicnaut.iki.fi (cs181064211.pp.htv.fi [82.181.64.211])
+        by smtp6.welho.com (Postfix) with SMTP id B2C595BC006;
+        Tue, 12 Nov 2013 23:02:35 +0200 (EET)
+Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Tue, 12 Nov 2013 23:02:34 +0200
+Date:   Tue, 12 Nov 2013 23:02:34 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
 To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
 Cc:     LMOL <linux-mips@linux-mips.org>,
         LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <f.fainelli@gmail.com>
+Subject: Re: Release of Linux MTI-3.10-LTS kernel.
+Message-ID: <20131112210234.GB30010@blackmetal.musicnaut.iki.fi>
+References: <528246BA.10607@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <528246BA.10607@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38513
+X-archive-position: 38514
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,20 +48,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2013/11/12 Steven J. Hill <Steven.Hill@imgtec.com>:
-> Imagination Technologies is pleased to announce the release of its 3.10 LTS
-> (Long-Term Support) MIPS kernel. The changelog below is based off the stable
-> Linux 3.10.14 release done by Greg Kroah-Hartman in commit
-> 8c15abc94c737f9120d3d4a550abbcbb9be121f6 back on October 1st. The code
-> repository is hosted at the Linux/MIPS project GIT:
->
+Hi,
+
+On Tue, Nov 12, 2013 at 09:18:18AM -0600, Steven J. Hill wrote:
+> Imagination Technologies is pleased to announce the release of its
+> 3.10 LTS (Long-Term Support) MIPS kernel. The changelog below is
+> based off the stable Linux 3.10.14 release done by Greg
+> Kroah-Hartman in commit
+> 8c15abc94c737f9120d3d4a550abbcbb9be121f6 back on October 1st. The
+> code repository is hosted at the Linux/MIPS project GIT:
+> 
 > http://git.linux-mips.org/?p=linux-mti.git;a=summary
->
+> 
 > We look forward to any comments or feedback.
 
-Nice job! Do you have a rough idea of the delta between your LTS
-kernel and the current status of mainline/pending submissions?
+Why multiple MIPS stable trees? There's already also
+http://git.linux-mips.org/?p=ralf/linux.git;a=shortlog;h=refs/heads/linux-3.10-stable?
 
-Thanks!
--- 
-Florian
+Also 3.10.14 sounds quite old. Are you sure you are not missing any
+important fixes?
+
+A.

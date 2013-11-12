@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Nov 2013 15:34:12 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:52673 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Nov 2013 16:18:34 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:53269 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6859924Ab3KLOeJ7M6Wa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 12 Nov 2013 15:34:09 +0100
-Message-ID: <52823C54.9050208@imgtec.com>
-Date:   Tue, 12 Nov 2013 08:33:56 -0600
+        id S6859924Ab3KLPSb6oLe5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 12 Nov 2013 16:18:31 +0100
+Message-ID: <528246BA.10607@imgtec.com>
+Date:   Tue, 12 Nov 2013 09:18:18 -0600
 From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.1.0
 MIME-Version: 1.0
-To:     Linux/MIPS Mailing List <linux-mips@linux-mips.org>
-CC:     LKML <linux-kernel@vger.kernel.org>
+To:     LMOL <linux-mips@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>
 Subject: Release of Linux MTI-3.10-LTS kernel.
 Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [192.168.159.176]
-X-SEF-Processed: 7_3_0_01192__2013_11_12_14_34_05
+X-SEF-Processed: 7_3_0_01192__2013_11_12_15_18_27
 Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38509
+X-archive-position: 38510
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

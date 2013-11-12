@@ -1,52 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Nov 2013 14:47:59 +0100 (CET)
-Received: from moutng.kundenserver.de ([212.227.126.186]:56071 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6839455Ab3KLNr4UyNTc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Nov 2013 14:47:56 +0100
-Received: from klappe2.localnet (HSI-KBW-46-223-47-137.hsi.kabel-badenwuerttemberg.de [46.223.47.137])
-        by mrelayeu.kundenserver.de (node=mreu4) with ESMTP (Nemesis)
-        id 0LgjGE-1VKsGC1pOY-00oDer; Tue, 12 Nov 2013 14:46:42 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Mark Salter <msalter@redhat.com>
-Subject: Re: [PATCH 01/11] Add generic fixmap.h
-Date:   Tue, 12 Nov 2013 14:46:40 +0100
-User-Agent: KMail/1.12.2 (Linux/3.8.0-22-generic; KDE/4.3.2; x86_64; ; )
-Cc:     linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-arm-kernel@lists.infradead.org,
-        Richard Kuo <rkuo@codeaurora.org>,
-        linux-hexagon@vger.kernel.org,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-metag@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
-        microblaze-uclinux@itee.uq.edu.au,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org
-References: <1384262545-20875-1-git-send-email-msalter@redhat.com> <1384262545-20875-2-git-send-email-msalter@redhat.com>
-In-Reply-To: <1384262545-20875-2-git-send-email-msalter@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Nov 2013 15:34:12 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:52673 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6859924Ab3KLOeJ7M6Wa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 12 Nov 2013 15:34:09 +0100
+Message-ID: <52823C54.9050208@imgtec.com>
+Date:   Tue, 12 Nov 2013 08:33:56 -0600
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.1.0
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-15"
+To:     Linux/MIPS Mailing List <linux-mips@linux-mips.org>
+CC:     LKML <linux-kernel@vger.kernel.org>
+Subject: Release of Linux MTI-3.10-LTS kernel.
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <201311121446.40700.arnd@arndb.de>
-X-Provags-ID: V02:K0:+2zmCdfderxGjbzwBr5c5ktT93yjI6sR2mBpcJiBz7b
- lnmkTEI+LEpJeY7SttwYPJCVkks05Zo07eB/xRXZJnxz2gwmpn
- iSg8BF92CewlBarW2l13ZeoQNQPfoKzJAkYMj1U33zZRKKsYdf
- A+uAf/zuIBDpZHoiXoB55Wk0vmnQph7RLPNxEiN7gKt04cSh9P
- QJD0/fpVtfL2YWcUpi5KFxuGqMafNzFWLZtNX9c6dcT61rlv26
- Rsv0gNyiKkipRCoLHETu3FAUvDIkkire2iEx2tspFIBNCQQf/I
- P++1WCajC2sQOvZKozxAPHCwt+aKqheScAXcAazXp4B5NXcyo1
- hRd+ZEuC4KtR3ZARkqag=
-Return-Path: <arnd@arndb.de>
+X-Originating-IP: [192.168.159.176]
+X-SEF-Processed: 7_3_0_01192__2013_11_12_14_34_05
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38508
+X-archive-position: 38509
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,35 +36,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tuesday 12 November 2013, Mark Salter wrote:
-> Many architectures provide an asm/fixmap.h which defines support for
-> compile-time 'special' virtual mappings which need to be made before
-> paging_init() has run. This suport is also used for early ioremap
-> on x86. Much of this support is identical across the architectures.
-> This patch consolidates all of the common bits into asm-generic/fixmap.h
-> which is intended to be included from arch/*/include/asm/fixmap.h.
+Imagination Technologies is pleased to announce the release of its 3.10 
+LTS (Long-Term Support) MIPS kernel. The changelog below is based off 
+the stable Linux 3.10.14 release done by Greg Kroah-Hartman in commit
+8c15abc94c737f9120d3d4a550abbcbb9be121f6 back on October 1st. The code 
+repository is hosted at the Linux/MIPS project GIT:
+
+http://git.linux-mips.org/?p=linux-mti.git;a=summary
+
+We look forward to any comments or feedback.
+
+         The Imagination MIPS Kernel Team
 
 
-Good idea, 
+---
+Upstream:
+* Move to Linux 3.10.14
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Userland visible changes:
+* Fix ability to perform a soft reset on SEAD-3.
+* Add 64-bit FP register support on 32-bit platforms.
+* Add FPU2 IEEE754-2008 SNaN support.
+* Support proAptiv/interAptiv core Perf-events.
 
-On Tuesday 12 November 2013, Mark Salter wrote:
-> +static __always_inline unsigned long fix_to_virt(const unsigned int idx)
-> +{
-> +       /*
-> +        * this branch gets completely eliminated after inlining,
-> +        * except when someone tries to use fixaddr indices in an
-> +        * illegal way. (such as mixing up address types or using
-> +        * out-of-range indices).
-> +        *
-> +        * If it doesn't get removed, the linker will complain
-> +        * loudly with a reasonably clear error message..
-> +        */
-> +       if (idx >= __end_of_fixed_addresses)
-> +               __this_fixmap_does_not_exist();
-> +
+Boot setup related changes:
+* Update GCMP detection on Malta.
+* Disable L2 cache on SEAD-3.
+* Always register R4K clock when selected.
+* Set cpu_has_mmips only if SYS_SUPPORTS_MICROMIPS is defined.
+* Do not write EVA bit in the config5 CP0 register.
 
-You might be able to turn this into the more readable BUILD_BUG_ON().
+New drivers and features:
+* Add interAptiv CPU support.
+* Add proAPTIV CPU support.
+* Add EVA to support 3GB virtual addressing for MIPS32 cores.
+* Add ERLite-3 platform support.
+* Add 64-bit address support on MIPS64R2 cores.
+* Add uImage build target.
+* Add MIPS32R2 SYNC optimization.
+* Send IPIs using the GIC.
 
-	Arnd
+Developer visible changes:
+* Move declaration of Octeon function fixup_irqs() to header.
+* Drop obsolete NR_CPUS_DEFAULT_{1,2} config options.
+* Remove -fstack-protector from CFLAGS when building images.
+* CMP support needs to select SMP as well.
+* Add printing of ES bit when cache error occurs.
+* Enable DEVTMPFS on Malta.
+* Remove ttyS2 serial support on Malta.
+
+Fixes:
+* Fix IDE PIO size calculation in IDE driver.
+* Fix TLBR-use hazards for R2 cores in the TLB reload handlers.
+* Fix execution hazard during watchpoint register probe.
+* Fix POOL16C minor opcode enumerations for microMIPS.
+* Fix gic_set_affinity infinite loop for GIC controller.
+* Fix improper definition of ISA exception bit for microMIPS.
+* Skip walking indirection page for crashkernels for kdump.
+* Fix random crashes while loading crashkernel for kexec.
+* Fix SMP core calculations when using MT support.
+* Fix accessing to per-cpu data when flushing the cache.
+* Fix VGA_MAP_MEM macro.
+* 74K/1074K erratum workarounds.
+* Bugfix of stack trace dump.
+* MIPS HIGHMEM fixes for cache aliasing and non-DMA I/O.
+* Revert fixrange_init() limiting to the FIXMAP region.
+* Bugfix of Malta PCI bridges loop.
+* Fix forgotten preempt_enable() when CPU has inclusive pcaches.
+* Fix GIC interrupt offsets for Malta.
+* Fix bug in using flush_cache_vunmap.
+* Fix encoding for UUSK AM bits on the SegCtl registers for EVA.
+
+Cleanups and refactors:
+* Refactor boot and boot/compressed rules.
+* Refactor load/entry address calculations.
+* Drop FRAME_POINTER codepath in mcount.S file.
+* Rearrange PTE bits into fixed positions for MIPS32R2.
+* Remove X bit in page tables for HEAP/BSS.
+* Rework cache flush functions.
+* Re-implement VPE functionality as writes to a pseudo-device.
+* Fix more section mismatch warnings.
+* Remove platform_set_drvdata() in SEAD-3 USB driver.

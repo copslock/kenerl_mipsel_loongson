@@ -1,29 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Nov 2013 16:18:34 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:53269 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6859924Ab3KLPSb6oLe5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 12 Nov 2013 16:18:31 +0100
-Message-ID: <528246BA.10607@imgtec.com>
-Date:   Tue, 12 Nov 2013 09:18:18 -0600
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Nov 2013 16:39:54 +0100 (CET)
+Received: from mail-ee0-f51.google.com ([74.125.83.51]:46436 "EHLO
+        mail-ee0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6866963Ab3KLPjsSBymg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Nov 2013 16:39:48 +0100
+Received: by mail-ee0-f51.google.com with SMTP id t10so3255048eei.10
+        for <linux-mips@linux-mips.org>; Tue, 12 Nov 2013 07:39:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:reply-to:user-agent
+         :mime-version:to:cc:subject:references:in-reply-to:content-type;
+        bh=RL7z9m9ElJu5UxglVaM/CpYpEPw5Lo/EyFzvAp21oJY=;
+        b=beidTutOKqpcSn71jeHRD/ryEd6Lf0obWxP0AixgceUHxc0uqhykvrTSA8hhDIGh4J
+         TksjEiuPJQXtOPNiLxzHap8Yt2WxtCumQNN47LdW65UDFZN4BKDSFwEd84U/qjWn4eMU
+         2U6NOt4wcUAezGmV2nfCiXB/iRH8aJqckByfgh/yWajvcpIybdHQVnbS08bTgZH7C8WK
+         0B6Xuat4CYz+5gpX3cR8tbJTpnyC+AVU/GtOr9NL4mAsjuw9NvSqvpIrC9KOSNqR2FiR
+         o5Oeez9npxLgWxb7rScnIHGu672cv/XA/9WgJBlWSkZitv/oQC2r1TI/aL9Z8KXdju61
+         1e2g==
+X-Gm-Message-State: ALoCoQnLOWmh/5yjXCzwELTS9vKpqO6amGmBlVrlTuV6HLIQfh+DUaPbb/H5SIfpT+bLGVNnewZ9
+X-Received: by 10.15.53.193 with SMTP id r41mr1506919eew.93.1384270782844;
+        Tue, 12 Nov 2013 07:39:42 -0800 (PST)
+Received: from [192.168.0.100] (nat-63.starnet.cz. [178.255.168.63])
+        by mx.google.com with ESMTPSA id z2sm77205559eee.7.2013.11.12.07.39.40
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Tue, 12 Nov 2013 07:39:42 -0800 (PST)
+Message-ID: <52824BBC.9020401@monstr.eu>
+Date:   Tue, 12 Nov 2013 16:39:40 +0100
+From:   Michal Simek <monstr@monstr.eu>
+Reply-To: monstr@monstr.eu
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130330 Thunderbird/17.0.5
 MIME-Version: 1.0
-To:     LMOL <linux-mips@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Release of Linux MTI-3.10-LTS kernel.
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.159.176]
-X-SEF-Processed: 7_3_0_01192__2013_11_12_15_18_27
-Return-Path: <Steven.Hill@imgtec.com>
+To:     Mark Salter <msalter@redhat.com>
+CC:     linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-arch@vger.kernel.org, Russell King <linux@arm.linux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Richard Kuo <rkuo@codeaurora.org>,
+        linux-hexagon@vger.kernel.org,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-metag@vger.kernel.org, microblaze-uclinux@itee.uq.edu.au,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 00/11] Consolidate asm/fixmap.h files
+References: <1384262545-20875-1-git-send-email-msalter@redhat.com>
+In-Reply-To: <1384262545-20875-1-git-send-email-msalter@redhat.com>
+X-Enigmail-Version: 1.6
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="wakS2gO08XuamRTkaApEoSt4HdIMUTtMO"
+Return-Path: <monstr@monstr.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38510
+X-archive-position: 38511
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: monstr@monstr.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,84 +70,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Imagination Technologies is pleased to announce the release of its 3.10 
-LTS (Long-Term Support) MIPS kernel. The changelog below is based off 
-the stable Linux 3.10.14 release done by Greg Kroah-Hartman in commit
-8c15abc94c737f9120d3d4a550abbcbb9be121f6 back on October 1st. The code 
-repository is hosted at the Linux/MIPS project GIT:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--wakS2gO08XuamRTkaApEoSt4HdIMUTtMO
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-http://git.linux-mips.org/?p=linux-mti.git;a=summary
+On 11/12/2013 02:22 PM, Mark Salter wrote:
+> Many architectures provide an asm/fixmap.h which defines support for
+> compile-time 'special' virtual mappings which need to be made before
+> paging_init() has run. This suport is also used for early ioremap
+> on x86. Much of this support is identical across the architectures.
+> This patch consolidates all of the common bits into asm-generic/fixmap.=
+h
+> which is intended to be included from arch/*/include/asm/fixmap.h.
+>=20
+> This has been compiled on x86, arm, powerpc, and sh, but tested
+> on x86 only.
+>=20
+> Mark Salter (11):
+>   Add generic fixmap.h
+>   x86: use generic fixmap.h
+>   arm: use generic fixmap.h
+>   hexagon: use generic fixmap.h
+>   metag: use generic fixmap.h
+>   microblaze: use generic fixmap.h
+>   mips: use generic fixmap.h
+>   powerpc: use generic fixmap.h
+>   sh: use generic fixmap.h
+>   tile: use generic fixmap.h
+>   um: use generic fixmap.h
+>=20
+>  arch/arm/include/asm/fixmap.h        |  25 ++------
+>  arch/hexagon/include/asm/fixmap.h    |  40 +------------
+>  arch/metag/include/asm/fixmap.h      |  32 +----------
+>  arch/microblaze/include/asm/fixmap.h |  44 +-------------
+>  arch/mips/include/asm/fixmap.h       |  33 +----------
+>  arch/powerpc/include/asm/fixmap.h    |  44 +-------------
+>  arch/sh/include/asm/fixmap.h         |  39 +------------
+>  arch/tile/include/asm/fixmap.h       |  33 +----------
+>  arch/um/include/asm/fixmap.h         |  40 +------------
+>  arch/x86/include/asm/fixmap.h        |  59 +------------------
+>  include/asm-generic/fixmap.h         | 107 +++++++++++++++++++++++++++=
+++++++++
+>  11 files changed, 125 insertions(+), 371 deletions(-)
+>  create mode 100644 include/asm-generic/fixmap.h
 
-We look forward to any comments or feedback.
+Any repo/branch with all these patches will be helpful.
 
-         The Imagination MIPS Kernel Team
+Thanks,
+Michal
 
 
----
-Upstream:
-* Move to Linux 3.10.14
 
-Userland visible changes:
-* Fix ability to perform a soft reset on SEAD-3.
-* Add 64-bit FP register support on 32-bit platforms.
-* Add FPU2 IEEE754-2008 SNaN support.
-* Support proAptiv/interAptiv core Perf-events.
+--=20
+Michal Simek, Ing. (M.Eng), OpenPGP -> KeyID: FE3D1F91
+w: www.monstr.eu p: +42-0-721842854
+Maintainer of Linux kernel - Microblaze cpu - http://www.monstr.eu/fdt/
+Maintainer of Linux kernel - Xilinx Zynq ARM architecture
+Microblaze U-BOOT custodian and responsible for u-boot arm zynq platform
 
-Boot setup related changes:
-* Update GCMP detection on Malta.
-* Disable L2 cache on SEAD-3.
-* Always register R4K clock when selected.
-* Set cpu_has_mmips only if SYS_SUPPORTS_MICROMIPS is defined.
-* Do not write EVA bit in the config5 CP0 register.
 
-New drivers and features:
-* Add interAptiv CPU support.
-* Add proAPTIV CPU support.
-* Add EVA to support 3GB virtual addressing for MIPS32 cores.
-* Add ERLite-3 platform support.
-* Add 64-bit address support on MIPS64R2 cores.
-* Add uImage build target.
-* Add MIPS32R2 SYNC optimization.
-* Send IPIs using the GIC.
 
-Developer visible changes:
-* Move declaration of Octeon function fixup_irqs() to header.
-* Drop obsolete NR_CPUS_DEFAULT_{1,2} config options.
-* Remove -fstack-protector from CFLAGS when building images.
-* CMP support needs to select SMP as well.
-* Add printing of ES bit when cache error occurs.
-* Enable DEVTMPFS on Malta.
-* Remove ttyS2 serial support on Malta.
+--wakS2gO08XuamRTkaApEoSt4HdIMUTtMO
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
-Fixes:
-* Fix IDE PIO size calculation in IDE driver.
-* Fix TLBR-use hazards for R2 cores in the TLB reload handlers.
-* Fix execution hazard during watchpoint register probe.
-* Fix POOL16C minor opcode enumerations for microMIPS.
-* Fix gic_set_affinity infinite loop for GIC controller.
-* Fix improper definition of ISA exception bit for microMIPS.
-* Skip walking indirection page for crashkernels for kdump.
-* Fix random crashes while loading crashkernel for kexec.
-* Fix SMP core calculations when using MT support.
-* Fix accessing to per-cpu data when flushing the cache.
-* Fix VGA_MAP_MEM macro.
-* 74K/1074K erratum workarounds.
-* Bugfix of stack trace dump.
-* MIPS HIGHMEM fixes for cache aliasing and non-DMA I/O.
-* Revert fixrange_init() limiting to the FIXMAP region.
-* Bugfix of Malta PCI bridges loop.
-* Fix forgotten preempt_enable() when CPU has inclusive pcaches.
-* Fix GIC interrupt offsets for Malta.
-* Fix bug in using flush_cache_vunmap.
-* Fix encoding for UUSK AM bits on the SegCtl registers for EVA.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
 
-Cleanups and refactors:
-* Refactor boot and boot/compressed rules.
-* Refactor load/entry address calculations.
-* Drop FRAME_POINTER codepath in mcount.S file.
-* Rearrange PTE bits into fixed positions for MIPS32R2.
-* Remove X bit in page tables for HEAP/BSS.
-* Rework cache flush functions.
-* Re-implement VPE functionality as writes to a pseudo-device.
-* Fix more section mismatch warnings.
-* Remove platform_set_drvdata() in SEAD-3 USB driver.
+iEYEARECAAYFAlKCS7wACgkQykllyylKDCEq9QCffe3d/+9UQGGG/rdCAxD81tq3
+sRQAmwaBtQ/8lmwDm9Eo3vmovL9WeRiE
+=R0bw
+-----END PGP SIGNATURE-----
+
+--wakS2gO08XuamRTkaApEoSt4HdIMUTtMO--

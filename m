@@ -1,26 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Nov 2013 17:13:31 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Nov 2013 17:13:51 +0100 (CET)
 Received: from multi.imgtec.com ([194.200.65.239]:1075 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6852076Ab3KNQM5btrNl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6852087Ab3KNQM5lX6SO (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 14 Nov 2013 17:12:57 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH v2 02/12] MIPS: mm: Move UNIQUE_ENTRYHI macro to a header file
-Date:   Thu, 14 Nov 2013 16:12:22 +0000
-Message-ID: <1384445552-30573-3-git-send-email-markos.chandras@imgtec.com>
+CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH v2 03/12] MIPS: features: Add initial support for TLBINVF capable cores
+Date:   Thu, 14 Nov 2013 16:12:23 +0000
+Message-ID: <1384445552-30573-4-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 1.8.4.3
 In-Reply-To: <1384445552-30573-1-git-send-email-markos.chandras@imgtec.com>
 References: <1384445552-30573-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.31]
-X-SEF-Processed: 7_3_0_01192__2013_11_14_16_12_53
+X-SEF-Processed: 7_3_0_01192__2013_11_14_16_12_54
 Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38522
+X-archive-position: 38523
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,64 +38,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The UNIQUE_ENTRYHI definition was duplicated whenever there
-was the need to flush the TLB entries. We move this common
-definition to a header file.
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
+New Aptiv cores support the TLBINVF instruction for flushing
+the VTLB.
+
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/include/asm/tlb.h | 2 ++
- arch/mips/mm/init.c         | 2 --
- arch/mips/mm/tlb-r4k.c      | 7 +------
- 3 files changed, 3 insertions(+), 8 deletions(-)
+ arch/mips/include/asm/cpu-features.h | 3 +++
+ arch/mips/include/asm/cpu.h          | 1 +
+ arch/mips/kernel/cpu-probe.c         | 5 +++++
+ 3 files changed, 9 insertions(+)
 
-diff --git a/arch/mips/include/asm/tlb.h b/arch/mips/include/asm/tlb.h
-index c67842b..235367ce 100644
---- a/arch/mips/include/asm/tlb.h
-+++ b/arch/mips/include/asm/tlb.h
-@@ -18,6 +18,8 @@
-  */
- #define tlb_flush(tlb) flush_tlb_mm((tlb)->mm)
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index d445d06..296606b 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -20,6 +20,9 @@
+ #ifndef cpu_has_tlb
+ #define cpu_has_tlb		(cpu_data[0].options & MIPS_CPU_TLB)
+ #endif
++#ifndef cpu_has_tlbinv
++#define cpu_has_tlbinv		(cpu_data[0].options & MIPS_CPU_TLBINV)
++#endif
  
-+#define UNIQUE_ENTRYHI(idx)	(CKSEG0 + ((idx) << (PAGE_SHIFT + 1)))
+ /*
+  * For the moment we don't consider R6000 and R8000 so we can assume that
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index d2035e1..fd3bc43 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -348,6 +348,7 @@ enum cpu_type_enum {
+ #define MIPS_CPU_PCI		0x00400000 /* CPU has Perf Ctr Int indicator */
+ #define MIPS_CPU_RIXI		0x00800000 /* CPU has TLB Read/eXec Inhibit */
+ #define MIPS_CPU_MICROMIPS	0x01000000 /* CPU has microMIPS capability */
++#define MIPS_CPU_TLBINV		0x02000000 /* CPU supports TLBINV/F */
+ 
+ /*
+  * CPU ASE encodings
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index c814287..5dac95a 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -286,6 +286,11 @@ static inline unsigned int decode_config4(struct cpuinfo_mips *c)
+ 	    && cpu_has_tlb)
+ 		c->tlbsize += (config4 & MIPS_CONF4_MMUSIZEEXT) * 0x40;
+ 
++	if (cpu_has_tlb) {
++		if (((config4 & MIPS_CONF4_IE) >> 29) == 2)
++			c->options |= MIPS_CPU_TLBINV;
++	}
 +
- #include <asm-generic/tlb.h>
+ 	c->kscratch_mask = (config4 >> 16) & 0xff;
  
- #endif /* __ASM_TLB_H */
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index e205ef5..6f44a31 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -171,8 +171,6 @@ void *kmap_coherent(struct page *page, unsigned long addr)
- 	return (void*) vaddr;
- }
- 
--#define UNIQUE_ENTRYHI(idx) (CKSEG0 + ((idx) << (PAGE_SHIFT + 1)))
--
- void kunmap_coherent(void)
- {
- #ifndef CONFIG_MIPS_MT_SMTC
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index da3b0b9..363aa03 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -20,16 +20,11 @@
- #include <asm/bootinfo.h>
- #include <asm/mmu_context.h>
- #include <asm/pgtable.h>
-+#include <asm/tlb.h>
- #include <asm/tlbmisc.h>
- 
- extern void build_tlb_refill_handler(void);
- 
--/*
-- * Make sure all entries differ.  If they're not different
-- * MIPS32 will take revenge ...
-- */
--#define UNIQUE_ENTRYHI(idx) (CKSEG0 + ((idx) << (PAGE_SHIFT + 1)))
--
- /* Atomicity and interruptability */
- #ifdef CONFIG_MIPS_MT_SMTC
- 
+ 	return config4 & MIPS_CONF_M;
 -- 
 1.8.4.3

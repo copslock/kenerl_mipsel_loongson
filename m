@@ -1,24 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Nov 2013 11:46:23 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:43120 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Nov 2013 11:46:43 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:43121 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816852Ab3KTKqTqDtfL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 20 Nov 2013 11:46:19 +0100
+        id S6823923Ab3KTKqYogi6N (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 20 Nov 2013 11:46:24 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 0/3] Add support for the interAptiv cores
-Date:   Wed, 20 Nov 2013 10:45:59 +0000
-Message-ID: <1384944362-7197-1-git-send-email-markos.chandras@imgtec.com>
+CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH 1/3] MIPS: Add processor identifiers for the interAptiv processors
+Date:   Wed, 20 Nov 2013 10:46:00 +0000
+Message-ID: <1384944362-7197-2-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 1.8.4.3
+In-Reply-To: <1384944362-7197-1-git-send-email-markos.chandras@imgtec.com>
+References: <1384944362-7197-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.31]
-X-SEF-Processed: 7_3_0_01192__2013_11_20_10_46_14
+X-SEF-Processed: 7_3_0_01192__2013_11_20_10_46_24
 Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38559
+X-archive-position: 38560
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,38 +38,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-This patchset adds support for the interAptiv cores.
+Add processor identifiers for UP and MT interAptiv processors.
 
-The interAptiv is a power-efficient multi-core microprocessor
-for use in system-on-chip (SoC) applications. The interAptiv combines
-a multi-threading pipeline with a coherence manager to deliver improved
-computational throughput and power efficiency. The interAptiv can
-contain one to four MIPS32R3 interAptiv cores, system level
-coherence manager with L2 cache, optional coherent I/O port,
-and optional floating point unit.
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/include/asm/cpu.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-http://www.imgtec.com/mips/mips-interaptiv.asp
-
-This patchset depends on the proAptiv patchset
-http://www.linux-mips.org/archives/linux-mips/2013-11/msg00086.html
-
-Leonid Yegoshin (3):
-  MIPS: Add processor identifiers for the interAptiv processors
-  MIPS: Add support for interAptiv cores
-  MIPS: kernel: cpu-probe: Add support for probing interAptiv cores
-
- arch/mips/include/asm/cpu-type.h     | 1 +
- arch/mips/include/asm/cpu.h          | 4 +++-
- arch/mips/kernel/cpu-probe.c         | 8 ++++++++
- arch/mips/kernel/idle.c              | 1 +
- arch/mips/kernel/spram.c             | 1 +
- arch/mips/kernel/traps.c             | 1 +
- arch/mips/mm/c-r4k.c                 | 1 +
- arch/mips/oprofile/common.c          | 1 +
- arch/mips/oprofile/op_model_mipsxx.c | 4 ++++
- 9 files changed, 21 insertions(+), 1 deletion(-)
-
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 9bb2abe..aa63c4c 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -111,6 +111,8 @@
+ #define PRID_IMP_1074K		0x9a00
+ #define PRID_IMP_M14KC		0x9c00
+ #define PRID_IMP_M14KEC		0x9e00
++#define PRID_IMP_INTERAPTIV_UP	0xa000
++#define PRID_IMP_INTERAPTIV_MP	0xa100
+ #define PRID_IMP_PROAPTIV_UP	0xa200
+ #define PRID_IMP_PROAPTIV_MP	0xa300
+ 
 -- 
 1.8.4.3

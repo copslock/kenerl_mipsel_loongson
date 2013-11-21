@@ -1,54 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Nov 2013 20:33:50 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:34109 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6825471Ab3KUTdnn1Y9k (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Nov 2013 20:33:43 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id rALJXIiD023986;
-        Thu, 21 Nov 2013 20:33:18 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id rALJXDAm023984;
-        Thu, 21 Nov 2013 20:33:13 +0100
-Date:   Thu, 21 Nov 2013 20:33:13 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Cc:     Richard Zhu <r65037@freescale.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, linux-s390@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Russell King <linux@arm.linux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Chris Metcalf <cmetcalf@tilera.com>,
-        Jason Cooper <jason@lakedaemon.net>
-Subject: Re: [PATCH 24/34] PCI: use weak functions for MSI arch-specific
- functions
-Message-ID: <20131121193313.GE13331@linux-mips.org>
-References: <1384915853-31006-1-git-send-email-r65037@freescale.com>
- <1384915853-31006-24-git-send-email-r65037@freescale.com>
- <20131121173933.GT10382@linux-mips.org>
- <20131121200804.617d6ae6@skate>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Nov 2013 20:52:07 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:34152 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6817128Ab3KUTwEsbuAN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Nov 2013 20:52:04 +0100
+Date:   Thu, 21 Nov 2013 19:52:04 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: R2300 (not the hay baler)
+In-Reply-To: <528B60B3.6030406@imgtec.com>
+Message-ID: <alpine.LFD.2.03.1311211934420.3267@linux-mips.org>
+References: <528B466A.3050906@imgtec.com> <alpine.LFD.2.03.1311191156570.3267@linux-mips.org> <528B60B3.6030406@imgtec.com>
+User-Agent: Alpine 2.03 (LFD 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20131121200804.617d6ae6@skate>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38568
+X-archive-position: 38569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,11 +36,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 21, 2013 at 08:08:04PM +0100, Thomas Petazzoni wrote:
+On Tue, 19 Nov 2013, Paul Burton wrote:
 
-> I think this patch was mistakenly sent by Richard Zhu. It is already
-> part of mainline since 3.12:
+> >   Well, it worked the last time I tried (a couple of weeks ago) with actual
+> > hardware (an R3400 integrated CPU/FPU), though maybe I missed something.
+> > There hasn't been a lot of R2000/R3000-class hardware development recently
+> > so no surprise our code didn't need any changes to match hardware updates.
+> > At this point I see no reason to retire this code, there's nothing wrong
+> > with it.  If there's an actual bug, then it should be fixed.  A test case
+> > should be easy to make, and then we can start from there.
+> > 
+> 
+> Yup that's fine, I'm not trying to scrap working code I just didn't
+> realise this code was still in use (which is why I asked about it). I
+> saw that the r2300_switch.S code seems to differ from the r4k_switch.S
+> code in its storage of 32 bit FP context & assumed that the older code
+> was less used & thus likely the incorrect one. It seems that assumption
+> was incorrect given the ABI expected by userland which you point out
+> below.
+> 
+> This does differ from the context layout the FPU emulator expects, but
+> I suppose that's not an issue.
 
-Explains the deja vue ...
+ I reckon the emulator had similar appropriate conditionals (in helper 
+macros or suchlike) to handle both cases, I hope they haven't gone by 
+accident (or I haven't got MIPS FP emulators mixed up in my memory, there 
+are so many of them...).
 
-  Ralf
+> >   If you are concerned about register layout in ptrace packets, then please
+> > see mips_read_fp_register_single and mips_read_fp_register_double in GDB
+> > sources and the comment above them; notice the register buffer offset of 4
+> > applied in the big-endian case -- what r2300_switch.S does is exactly what
+> > the userland expects (of course it might be that r4k_switch.S is wrong in
+> > some cases; actually I remember a discussion with Ralf where we came to
+> > this very conclusion and rather than converting r4k_switch.S to use
+> > LWC1/SWC1 -- that would degrade performance a bit for FP context switches
+> > -- considered a helper to convert between the internal and the ptrace
+> > format).
+> 
+> Do you know what happened to that or have a link to that discussion? I
+> don't see that conversion being done at the moment, which makes me
+> suspect that the kernel might handle ptrace incorrectly (arguably
+> more nicely, but still incorrectly) for mips32 tasks with FR=0 on an
+> R4K class CPU. I'll have a look.
+
+ I think the discussion was off-list (Ralf, would you mind if I digged up 
+any clues from there?).  The format has been set long ago, and is also odd 
+enough to have 32 64-bit slots in the PTRACE_GETFPREGS/PTRACE_SETFPREGS 
+structure even for o32 processes (that now should be unexpectedly helpful 
+for FP64 o32 processes though), so there's little sense discussing its 
+prettiness or ugliness at this point in the game.
+
+ Also I'm not sure what the core file format is for the FP context, it may 
+be worth double-checking too.
+
+ Please feel free to poke me directly if you have any further issues about 
+MIPS I ISA compatibility.
+
+  Maciej

@@ -1,42 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Nov 2013 17:15:13 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:26399 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6867247Ab3KYQOcriWUL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Nov 2013 17:14:32 +0100
-Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id rAPGECFD008756
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Mon, 25 Nov 2013 11:14:13 -0500
-Received: from deneb.redhat.com (ovpn-113-175.phx2.redhat.com [10.3.113.175])
-        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id rAPGE9Xw022728;
-        Mon, 25 Nov 2013 11:14:09 -0500
-From:   Mark Salter <msalter@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Mark Salter <msalter@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-arch@vger.kernel.org,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-arm-kernel@lists.infradead.org,
-        Richard Kuo <rkuo@codeaurora.org>,
-        linux-hexagon@vger.kernel.org,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-metag@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
-        microblaze-uclinux@itee.uq.edu.au, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 00/11] Consolidate asm/fixmap.h files
-Date:   Mon, 25 Nov 2013 11:13:54 -0500
-Message-Id: <1385396045-15852-1-git-send-email-msalter@redhat.com>
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
-Return-Path: <msalter@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Nov 2013 00:21:25 +0100 (CET)
+Received: from mail-pd0-f171.google.com ([209.85.192.171]:60809 "EHLO
+        mail-pd0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6831301Ab3KYXVXE1Kz9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Nov 2013 00:21:23 +0100
+Received: by mail-pd0-f171.google.com with SMTP id z10so6516577pdj.16
+        for <multiple recipients>; Mon, 25 Nov 2013 15:21:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=KkHBdTzZ94rFQSwLEiksbKhKiqI4SRvY7Q79Vn+SyM4=;
+        b=DULFtrhNI1kY+48FV1rVtNcBlvvZskPzwbi6/BCU7enLIG56aOpbHb9Se5uz2iNUuZ
+         QgDwmOfBn3MZowP9lsIDEHgpaGs9akhbDYHkvC1HgJiPC9R2mD+Y2PmBwKn0+Zw8LkWJ
+         4TOF78aJ4BGCwjrh7M5CvqrPSAUNmb+U2M1JJiLQ/SZiJlEpyQ0ur0Os7uxPO3xsq7Ws
+         Nt60pej+Iy0uJpbq9x66dOB7Skcyt1T+GpItFNoYHlhc9Ilyg2STvZsLJU50Uavn/ICJ
+         xI7wzoMxCOSaEtG+H3r9dWpcj7NdVqWgUEgZhk3VWSTVZqbqYtER7/JmjbL4NjBUlEOz
+         Yepg==
+X-Received: by 10.69.19.225 with SMTP id gx1mr20830898pbd.62.1385421676100;
+        Mon, 25 Nov 2013 15:21:16 -0800 (PST)
+Received: from localhost (108-223-40-66.lightspeed.sntcca.sbcglobal.net. [108.223.40.66])
+        by mx.google.com with ESMTPSA id oj6sm86001591pab.9.2013.11.25.15.21.15
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+        Mon, 25 Nov 2013 15:21:15 -0800 (PST)
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH] mips: Fix build error seen in some configurations
+Date:   Mon, 25 Nov 2013 15:21:00 -0800
+Message-Id: <1385421660-5608-1-git-send-email-linux@roeck-us.net>
+X-Mailer: git-send-email 1.7.9.7
+Return-Path: <groeck7@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38581
+X-archive-position: 38582
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: msalter@redhat.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,58 +51,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Many architectures provide an asm/fixmap.h which defines support for
-compile-time 'special' virtual mappings which need to be made before
-paging_init() has run. This suport is also used for early ioremap
-on x86. Much of this support is identical across the architectures.
-This patch consolidates all of the common bits into asm-generic/fixmap.h
-which is intended to be included from arch/*/include/asm/fixmap.h.
+The following build error is seen if CONFIG_32BIT is undefined,
+CONFIG_64BIT is defined, and CONFIG_MIPS32_O32 is undefined.
 
-This has been compiled on x86, arm, powerpc, and sh, but tested
-on x86 only.
+asm/syscall.h: In function 'mips_get_syscall_arg':
+arch/mips/include/asm/syscall.h:32:16: error: unused variable 'usp' [-Werror=unused-variable]
+cc1: all warnings being treated as errors
 
-This is version two of the patch series:
+Fixes: c0ff3c53d4f9 ('MIPS: Enable HAVE_ARCH_TRACEHOOK')
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ arch/mips/include/asm/syscall.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-   git://github.com/mosalter/linux.git#fixmap-v2
-
-Version 1 is here:
-
-   git://github.com/mosalter/linux.git#fixmap
-
-Changes from v1:
-
-  * Added acks from feedback.
-  * Use BUILD_BUG_ON in fix_to_virt()
-  * Fixed ARM patch to make FIXMAP_TOP inclusive of fixmap
-    range as is the case in the other architectures.
-
-Mark Salter (11):
-  Add generic fixmap.h
-  x86: use generic fixmap.h
-  arm: use generic fixmap.h
-  hexagon: use generic fixmap.h
-  metag: use generic fixmap.h
-  microblaze: use generic fixmap.h
-  mips: use generic fixmap.h
-  powerpc: use generic fixmap.h
-  sh: use generic fixmap.h
-  tile: use generic fixmap.h
-  um: use generic fixmap.h
-
- arch/arm/include/asm/fixmap.h        | 29 +++--------
- arch/arm/mm/init.c                   |  2 +-
- arch/hexagon/include/asm/fixmap.h    | 40 +--------------
- arch/metag/include/asm/fixmap.h      | 32 +-----------
- arch/microblaze/include/asm/fixmap.h | 44 +---------------
- arch/mips/include/asm/fixmap.h       | 33 +-----------
- arch/powerpc/include/asm/fixmap.h    | 44 +---------------
- arch/sh/include/asm/fixmap.h         | 39 +--------------
- arch/tile/include/asm/fixmap.h       | 33 +-----------
- arch/um/include/asm/fixmap.h         | 40 +--------------
- arch/x86/include/asm/fixmap.h        | 59 +---------------------
- include/asm-generic/fixmap.h         | 97 ++++++++++++++++++++++++++++++++++++
- 12 files changed, 118 insertions(+), 374 deletions(-)
- create mode 100644 include/asm-generic/fixmap.h
-
+diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
+index 81c8913..33e8dbf 100644
+--- a/arch/mips/include/asm/syscall.h
++++ b/arch/mips/include/asm/syscall.h
+@@ -29,7 +29,7 @@ static inline long syscall_get_nr(struct task_struct *task,
+ static inline unsigned long mips_get_syscall_arg(unsigned long *arg,
+ 	struct task_struct *task, struct pt_regs *regs, unsigned int n)
+ {
+-	unsigned long usp = regs->regs[29];
++	unsigned long usp __maybe_unused = regs->regs[29];
+ 
+ 	switch (n) {
+ 	case 0: case 1: case 2: case 3:
 -- 
-1.8.3.1
+1.7.9.7

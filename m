@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Nov 2013 11:08:10 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:41736 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Nov 2013 18:12:56 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:51097 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827281Ab3K0KIFN6VLb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 27 Nov 2013 11:08:05 +0100
-From:   Markos Chandras <markos.chandras@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH v2 2/3] MIPS: Add support for interAptiv cores
-Date:   Wed, 27 Nov 2013 10:07:53 +0000
-Message-ID: <1385546873-32767-1-git-send-email-markos.chandras@imgtec.com>
-X-Mailer: git-send-email 1.8.4.4
-In-Reply-To: <1384944362-7197-1-git-send-email-markos.chandras@imgtec.com>
-References: <1384944362-7197-1-git-send-email-markos.chandras@imgtec.com>
+        id S6816022Ab3K0RMwfLZWd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 27 Nov 2013 18:12:52 +0100
+Message-ID: <529627D4.1060204@imgtec.com>
+Date:   Wed, 27 Nov 2013 17:11:48 +0000
+From:   Paul Burton <paul.burton@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.1.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.31]
-X-SEF-Processed: 7_3_0_01192__2013_11_27_10_07_59
-Return-Path: <Markos.Chandras@imgtec.com>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: R2300 (not the hay baler)
+References: <528B466A.3050906@imgtec.com> <alpine.LFD.2.03.1311191156570.3267@linux-mips.org> <528B60B3.6030406@imgtec.com> <alpine.LFD.2.03.1311211934420.3267@linux-mips.org>
+In-Reply-To: <alpine.LFD.2.03.1311211934420.3267@linux-mips.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.79]
+X-SEF-Processed: 7_3_0_01192__2013_11_27_17_12_47
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38587
+X-archive-position: 38588
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markos.chandras@imgtec.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,144 +39,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+On 21/11/13 19:52, Maciej W. Rozycki wrote:
+>>>   If you are concerned about register layout in ptrace packets, then please
+>>> see mips_read_fp_register_single and mips_read_fp_register_double in GDB
+>>> sources and the comment above them; notice the register buffer offset of 4
+>>> applied in the big-endian case -- what r2300_switch.S does is exactly what
+>>> the userland expects (of course it might be that r4k_switch.S is wrong in
+>>> some cases; actually I remember a discussion with Ralf where we came to
+>>> this very conclusion and rather than converting r4k_switch.S to use
+>>> LWC1/SWC1 -- that would degrade performance a bit for FP context switches
+>>> -- considered a helper to convert between the internal and the ptrace
+>>> format).
+>>
+>> Do you know what happened to that or have a link to that discussion? I
+>> don't see that conversion being done at the moment, which makes me
+>> suspect that the kernel might handle ptrace incorrectly (arguably
+>> more nicely, but still incorrectly) for mips32 tasks with FR=0 on an
+>> R4K class CPU. I'll have a look.
+> 
+>  I think the discussion was off-list (Ralf, would you mind if I digged up 
+> any clues from there?).  The format has been set long ago, and is also odd 
+> enough to have 32 64-bit slots in the PTRACE_GETFPREGS/PTRACE_SETFPREGS 
+> structure even for o32 processes (that now should be unexpectedly helpful 
+> for FP64 o32 processes though), so there's little sense discussing its 
+> prettiness or ugliness at this point in the game.
+> 
+>  Also I'm not sure what the core file format is for the FP context, it may 
+> be worth double-checking too.
+> 
+>  Please feel free to poke me directly if you have any further issues about 
+> MIPS I ISA compatibility.
 
-The interAptiv is a power-efficient multi-core microprocessor
-for use in system-on-chip (SoC) applications. The interAptiv combines
-a multi-threading pipeline with a coherence manager to deliver improved
-computational throughput and power efficiency. The interAptiv can
-contain one to four MIPS32R3 interAptiv cores, system level
-coherence manager with L2 cache, optional coherent I/O port,
-and optional floating point unit.
+Ok I finally had time to look at this. It seems that r2300_switch.S used
+to match the current behaviour of r4k_switch.S. Ralf made it that way by
+saving to the appropriate 32 bits of the even numbered 64 bit values of
+the FP context, taking endianness into account, in the following commit:
 
-Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
----
-Changes since v1:
-- Add missing CPU_INTERAPTIV case in arch/mips/kernel/sc-mips.c
----
- arch/mips/include/asm/cpu-type.h     | 1 +
- arch/mips/include/asm/cpu.h          | 2 +-
- arch/mips/kernel/idle.c              | 1 +
- arch/mips/kernel/spram.c             | 1 +
- arch/mips/kernel/traps.c             | 1 +
- arch/mips/mm/c-r4k.c                 | 1 +
- arch/mips/mm/sc-mips.c               | 1 +
- arch/mips/oprofile/common.c          | 1 +
- arch/mips/oprofile/op_model_mipsxx.c | 4 ++++
- 9 files changed, 12 insertions(+), 1 deletion(-)
+http://git.linux-mips.org/?p=ralf/linux.git;a=commitdiff;h=42533948caacb82574ccf91cae84df851d4f0521#patch28
 
-diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
-index 673f426..d879c91 100644
---- a/arch/mips/include/asm/cpu-type.h
-+++ b/arch/mips/include/asm/cpu-type.h
-@@ -47,6 +47,7 @@ static inline int __pure __get_cpu_type(const int cpu_type)
- 	case CPU_74K:
- 	case CPU_M14KC:
- 	case CPU_M14KEC:
-+	case CPU_INTERAPTIV:
- 	case CPU_PROAPTIV:
- #endif
- 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index aa63c4c..770685c 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -293,7 +293,7 @@ enum cpu_type_enum {
- 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
- 	CPU_ALCHEMY, CPU_PR4450, CPU_BMIPS32, CPU_BMIPS3300, CPU_BMIPS4350,
- 	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_LOONGSON1, CPU_M14KC,
--	CPU_M14KEC, CPU_PROAPTIV,
-+	CPU_M14KEC, CPU_INTERAPTIV, CPU_PROAPTIV,
- 
- 	/*
- 	 * MIPS64 class processors
-diff --git a/arch/mips/kernel/idle.c b/arch/mips/kernel/idle.c
-index cb2c94f..3553243 100644
---- a/arch/mips/kernel/idle.c
-+++ b/arch/mips/kernel/idle.c
-@@ -184,6 +184,7 @@ void __init check_wait(void)
- 	case CPU_24K:
- 	case CPU_34K:
- 	case CPU_1004K:
-+	case CPU_INTERAPTIV:
- 	case CPU_PROAPTIV:
- 		cpu_wait = r4k_wait;
- 		if (read_c0_config7() & MIPS_CONF7_WII)
-diff --git a/arch/mips/kernel/spram.c b/arch/mips/kernel/spram.c
-index fb72b80..dfed8a4 100644
---- a/arch/mips/kernel/spram.c
-+++ b/arch/mips/kernel/spram.c
-@@ -206,6 +206,7 @@ void spram_config(void)
- 	case CPU_34K:
- 	case CPU_74K:
- 	case CPU_1004K:
-+	case CPU_INTERAPTIV:
- 	case CPU_PROAPTIV:
- 		config0 = read_c0_config();
- 		/* FIXME: addresses are Malta specific */
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 7541855..e451f67 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1337,6 +1337,7 @@ static inline void parity_protection_init(void)
- 	case CPU_34K:
- 	case CPU_74K:
- 	case CPU_1004K:
-+	case CPU_INTERAPTIV:
- 	case CPU_PROAPTIV:
- 		{
- #define ERRCTL_PE	0x80000000
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 24b3a63..2b28afa 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1098,6 +1098,7 @@ static void probe_pcache(void)
- 	case CPU_34K:
- 	case CPU_74K:
- 	case CPU_1004K:
-+	case CPU_INTERAPTIV:
- 	case CPU_PROAPTIV:
- 		if (current_cpu_type() == CPU_74K)
- 			alias_74k_erratum(c);
-diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
-index 317c249..7a56aee 100644
---- a/arch/mips/mm/sc-mips.c
-+++ b/arch/mips/mm/sc-mips.c
-@@ -76,6 +76,7 @@ static inline int mips_sc_is_activated(struct cpuinfo_mips *c)
- 	case CPU_34K:
- 	case CPU_74K:
- 	case CPU_1004K:
-+	case CPU_INTERAPTIV:
- 	case CPU_PROAPTIV:
- 	case CPU_BMIPS5000:
- 		if (config2 & (1 << 12))
-diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
-index efd2eb3..2a86e38 100644
---- a/arch/mips/oprofile/common.c
-+++ b/arch/mips/oprofile/common.c
-@@ -86,6 +86,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
- 	case CPU_34K:
- 	case CPU_1004K:
- 	case CPU_74K:
-+	case CPU_INTERAPTIV:
- 	case CPU_PROAPTIV:
- 	case CPU_LOONGSON1:
- 	case CPU_SB1:
-diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-index 3e28aaa..4d94d75 100644
---- a/arch/mips/oprofile/op_model_mipsxx.c
-+++ b/arch/mips/oprofile/op_model_mipsxx.c
-@@ -376,6 +376,10 @@ static int __init mipsxx_init(void)
- 		op_model_mipsxx_ops.cpu_type = "mips/74K";
- 		break;
- 
-+	case CPU_INTERAPTIV:
-+		op_model_mipsxx_ops.cpu_type = "mips/interAptiv";
-+		break;
-+
- 	case CPU_PROAPTIV:
- 		op_model_mipsxx_ops.cpu_type = "mips/proAptiv";
- 		break;
--- 
-1.8.4.4
+...and then you fixed up ptrace to always expect values stored in the
+format now used by r4k_switch.S (& at the time used by r2300_switch.S too):
+
+http://git.linux-mips.org/?p=ralf/linux.git;a=commitdiff;h=849fa7a50dff104cbf6654c421b666eefd6da0c1;hp=364e85467c9c08c803087c5b75ae2e70540e3bb5
+
+Unfortunately later when Ralf replaced the FPU_SAVE_SINGLE macro with
+the fpu_save_single macro in this commit:
+
+http://git.linux-mips.org/?p=ralf/linux.git;a=commitdiff;h=bf0b3bb876115b1e69b2266477128d8270d0b356;hp=39507fed032849b72552062883d143025be8be36
+
+...he effectively reverted r2300_switch.S to its old behaviour, whilst
+ptrace continues to expect the r4k_switch.S-like behaviour. So as far as
+I can tell the original intended FP register layout was that currently
+used by r4k_switch.S. That makes r2300_switch.S the incorrect one -
+fixed 11 years ago & broken again 10 years ago.
+
+What I'm less sure about right now is what gdb has come to expect in the
+meantime - but from your description it sounds like it expects the
+r2300_switch.S behaviour? In which case I suspect that although it seems
+the original intended ptrace ABI was broken long ago & the easiest fix
+may be for the kernel to just go with the unintended ABI on r4k-class
+cores too? I'll have a read through more gdb code & try to confirm.
+
+Thanks,
+    Paul

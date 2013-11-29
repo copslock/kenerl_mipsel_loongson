@@ -1,34 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Nov 2013 21:08:50 +0100 (CET)
-Received: from filtteri6.pp.htv.fi ([213.243.153.189]:37050 "EHLO
-        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6819765Ab3K2UIrTond- (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Nov 2013 21:09:09 +0100 (CET)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:35536 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6861333Ab3K2UIr1Jd1q (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 29 Nov 2013 21:08:47 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by filtteri6.pp.htv.fi (Postfix) with ESMTP id 79CF456F738;
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 5B26F21B876;
         Fri, 29 Nov 2013 22:08:46 +0200 (EET)
 X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
 Received: from smtp6.welho.com ([213.243.153.40])
-        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
-        with ESMTP id H52FeEJdJ0Jh; Fri, 29 Nov 2013 22:08:41 +0200 (EET)
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id 1mLfCeXH+kvs; Fri, 29 Nov 2013 22:08:41 +0200 (EET)
 Received: from blackmetal.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp6.welho.com (Postfix) with ESMTP id 7E8285BC004;
+        by smtp6.welho.com (Postfix) with ESMTP id 524745BC003;
         Fri, 29 Nov 2013 22:08:41 +0200 (EET)
 From:   Aaro Koskinen <aaro.koskinen@iki.fi>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Huacai Chen <chenhc@lemote.com>,
         Huacai Chen <chenhuacai@gmail.com>, linux-mips@linux-mips.org
 Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 2/2] MIPS: fix blast_icache32 on loongson2
-Date:   Fri, 29 Nov 2013 22:07:03 +0200
-Message-Id: <1385755623-25219-2-git-send-email-aaro.koskinen@iki.fi>
+Subject: [PATCH 1/2] MIPS: Fix case mismatch in local_r4k_flush_icache_range()
+Date:   Fri, 29 Nov 2013 22:07:02 +0200
+Message-Id: <1385755623-25219-1-git-send-email-aaro.koskinen@iki.fi>
 X-Mailer: git-send-email 1.8.4.4
-In-Reply-To: <1385755623-25219-1-git-send-email-aaro.koskinen@iki.fi>
-References: <1385755623-25219-1-git-send-email-aaro.koskinen@iki.fi>
 Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38609
+X-archive-position: 38610
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,137 +43,88 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 14bd8c082016cd1f67fdfd702e4cf6367869a712 (MIPS: Loongson: Get
-rid of Loongson 2 #ifdefery all over arch/mips.) failed to add Loongson2
-specific blast_icache32 functions. Fix that.
+From: Huacai Chen <chenhc@lemote.com>
 
-The patch fixes the following crash seen with 3.13-rc1:
+Currently, Loongson-2 call protected_blast_icache_range() and others
+call protected_loongson23_blast_icache_range(), but I think the
+correct behavior should be the opposite. BTW, Loongson-3's cache-ops is
+compatible with MIPS64, but not compatible with Loongson-2. So, rename
+xxx_loongson23_yyy things to xxx_loongson2_yyy.
 
-[    3.652000] Reserved instruction in kernel code[#1]:
-[...]
-[    3.652000] Call Trace:
-[    3.652000] [<ffffffff802223c8>] blast_icache32_page+0x8/0xb0
-[    3.652000] [<ffffffff80222c34>] r4k_flush_cache_page+0x19c/0x200
-[    3.652000] [<ffffffff802d17e4>] do_wp_page.isra.97+0x47c/0xe08
-[    3.652000] [<ffffffff802d51b0>] handle_mm_fault+0x938/0x1118
-[    3.652000] [<ffffffff8021bd40>] __do_page_fault+0x140/0x540
-[    3.652000] [<ffffffff80206be4>] resume_userspace_check+0x0/0x10
-[    3.652000]
-[    3.652000] Code: 00200825  64834000  00200825 <bc900000> bc900020  bc900040  bc900060  bc900080  bc9000a0
-[    3.656000] ---[ end trace cd8a48f722f5c5f7 ]---
+The patch fixes early boot hang with 3.13-rc1, introduced in the commit
+14bd8c082016cd1f67fdfd702e4cf6367869a712 (MIPS: Loongson: Get rid of
+Loongson 2 #ifdefery all over arch/mips.).
 
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 ---
- arch/mips/include/asm/r4kcache.h | 43 ++++++++++++++++++++--------------------
- arch/mips/mm/c-r4k.c             |  7 +++++++
- 2 files changed, 29 insertions(+), 21 deletions(-)
+ arch/mips/include/asm/cacheops.h | 2 +-
+ arch/mips/include/asm/r4kcache.h | 8 ++++----
+ arch/mips/mm/c-r4k.c             | 4 ++--
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
+diff --git a/arch/mips/include/asm/cacheops.h b/arch/mips/include/asm/cacheops.h
+index c75025f..06b9bc7 100644
+--- a/arch/mips/include/asm/cacheops.h
++++ b/arch/mips/include/asm/cacheops.h
+@@ -83,6 +83,6 @@
+ /*
+  * Loongson2-specific cacheops
+  */
+-#define Hit_Invalidate_I_Loongson23	0x00
++#define Hit_Invalidate_I_Loongson2	0x00
+ 
+ #endif	/* __ASM_CACHEOPS_H */
 diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
-index 91d20b0..c84cadd 100644
+index 34d1a19..91d20b0 100644
 --- a/arch/mips/include/asm/r4kcache.h
 +++ b/arch/mips/include/asm/r4kcache.h
-@@ -357,8 +357,8 @@ static inline void invalidate_tcache_page(unsigned long addr)
- 		  "i" (op));
+@@ -165,7 +165,7 @@ static inline void flush_icache_line(unsigned long addr)
+ 	__iflush_prologue
+ 	switch (boot_cpu_type()) {
+ 	case CPU_LOONGSON2:
+-		cache_op(Hit_Invalidate_I_Loongson23, addr);
++		cache_op(Hit_Invalidate_I_Loongson2, addr);
+ 		break;
  
- /* build blast_xxx, blast_xxx_page, blast_xxx_page_indexed */
--#define __BUILD_BLAST_CACHE(pfx, desc, indexop, hitop, lsize) \
--static inline void blast_##pfx##cache##lsize(void)			\
-+#define __BUILD_BLAST_CACHE(pfx, desc, indexop, hitop, lsize, extra)	\
-+static inline void extra##blast_##pfx##cache##lsize(void)		\
- {									\
- 	unsigned long start = INDEX_BASE;				\
- 	unsigned long end = start + current_cpu_data.desc.waysize;	\
-@@ -376,7 +376,7 @@ static inline void blast_##pfx##cache##lsize(void)			\
- 	__##pfx##flush_epilogue						\
- }									\
- 									\
--static inline void blast_##pfx##cache##lsize##_page(unsigned long page) \
-+static inline void extra##blast_##pfx##cache##lsize##_page(unsigned long page) \
- {									\
- 	unsigned long start = page;					\
- 	unsigned long end = page + PAGE_SIZE;				\
-@@ -391,7 +391,7 @@ static inline void blast_##pfx##cache##lsize##_page(unsigned long page) \
- 	__##pfx##flush_epilogue						\
- }									\
- 									\
--static inline void blast_##pfx##cache##lsize##_page_indexed(unsigned long page) \
-+static inline void extra##blast_##pfx##cache##lsize##_page_indexed(unsigned long page) \
- {									\
- 	unsigned long indexmask = current_cpu_data.desc.waysize - 1;	\
- 	unsigned long start = INDEX_BASE + (page & indexmask);		\
-@@ -410,23 +410,24 @@ static inline void blast_##pfx##cache##lsize##_page_indexed(unsigned long page)
- 	__##pfx##flush_epilogue						\
- }
+ 	default:
+@@ -219,7 +219,7 @@ static inline void protected_flush_icache_line(unsigned long addr)
+ {
+ 	switch (boot_cpu_type()) {
+ 	case CPU_LOONGSON2:
+-		protected_cache_op(Hit_Invalidate_I_Loongson23, addr);
++		protected_cache_op(Hit_Invalidate_I_Loongson2, addr);
+ 		break;
  
--__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 16)
--__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 16)
--__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
--__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 32)
--__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 32)
--__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32)
--__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 64)
--__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 64)
--__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64)
--__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128)
--
--__BUILD_BLAST_CACHE(inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 16)
--__BUILD_BLAST_CACHE(inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 32)
--__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 16)
--__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 32)
--__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 64)
--__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 128)
-+__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 16, )
-+__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 16, )
-+__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16, )
-+__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 32, )
-+__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 32, )
-+__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I_Loongson2, 32, loongson2_)
-+__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32, )
-+__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 64, )
-+__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 64, )
-+__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64, )
-+__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128, )
-+
-+__BUILD_BLAST_CACHE(inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 16, )
-+__BUILD_BLAST_CACHE(inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 32, )
-+__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 16, )
-+__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 32, )
-+__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 64, )
-+__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 128, )
- 
- /* build blast_xxx_range, protected_blast_xxx_range */
- #define __BUILD_BLAST_CACHE_RANGE(pfx, desc, hitop, prot, extra)	\
+ 	default:
+@@ -452,8 +452,8 @@ static inline void prot##extra##blast_##pfx##cache##_range(unsigned long start,
+ __BUILD_BLAST_CACHE_RANGE(d, dcache, Hit_Writeback_Inv_D, protected_, )
+ __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, protected_, )
+ __BUILD_BLAST_CACHE_RANGE(i, icache, Hit_Invalidate_I, protected_, )
+-__BUILD_BLAST_CACHE_RANGE(i, icache, Hit_Invalidate_I_Loongson23, \
+-	protected_, loongson23_)
++__BUILD_BLAST_CACHE_RANGE(i, icache, Hit_Invalidate_I_Loongson2, \
++	protected_, loongson2_)
+ __BUILD_BLAST_CACHE_RANGE(d, dcache, Hit_Writeback_Inv_D, , )
+ __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, , )
+ /* blast_inv_dcache_range */
 diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 73f02da..49e572d 100644
+index 62ffd20..73f02da 100644
 --- a/arch/mips/mm/c-r4k.c
 +++ b/arch/mips/mm/c-r4k.c
-@@ -237,6 +237,8 @@ static void r4k_blast_icache_page_setup(void)
- 		r4k_blast_icache_page = (void *)cache_noop;
- 	else if (ic_lsize == 16)
- 		r4k_blast_icache_page = blast_icache16_page;
-+	else if (ic_lsize == 32 && current_cpu_type() == CPU_LOONGSON2)
-+		r4k_blast_icache_page = loongson2_blast_icache32_page;
- 	else if (ic_lsize == 32)
- 		r4k_blast_icache_page = blast_icache32_page;
- 	else if (ic_lsize == 64)
-@@ -261,6 +263,9 @@ static void r4k_blast_icache_page_indexed_setup(void)
- 		else if (TX49XX_ICACHE_INDEX_INV_WAR)
- 			r4k_blast_icache_page_indexed =
- 				tx49_blast_icache32_page_indexed;
-+		else if (current_cpu_type() == CPU_LOONGSON2)
-+			r4k_blast_icache_page_indexed =
-+				loongson2_blast_icache32_page_indexed;
- 		else
- 			r4k_blast_icache_page_indexed =
- 				blast_icache32_page_indexed;
-@@ -284,6 +289,8 @@ static void r4k_blast_icache_setup(void)
- 			r4k_blast_icache = blast_r4600_v1_icache32;
- 		else if (TX49XX_ICACHE_INDEX_INV_WAR)
- 			r4k_blast_icache = tx49_blast_icache32;
-+		else if (current_cpu_type() == CPU_LOONGSON2)
-+			r4k_blast_icache = loongson2_blast_icache32;
- 		else
- 			r4k_blast_icache = blast_icache32;
- 	} else if (ic_lsize == 64)
+@@ -580,11 +580,11 @@ static inline void local_r4k_flush_icache_range(unsigned long start, unsigned lo
+ 	else {
+ 		switch (boot_cpu_type()) {
+ 		case CPU_LOONGSON2:
+-			protected_blast_icache_range(start, end);
++			protected_loongson2_blast_icache_range(start, end);
+ 			break;
+ 
+ 		default:
+-			protected_loongson23_blast_icache_range(start, end);
++			protected_blast_icache_range(start, end);
+ 			break;
+ 		}
+ 	}
 -- 
 1.8.4.4

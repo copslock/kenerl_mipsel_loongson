@@ -1,50 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Nov 2013 17:10:38 +0100 (CET)
-Received: from mail-ea0-f178.google.com ([209.85.215.178]:33277 "EHLO
-        mail-ea0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6867276Ab3K2QKMguYxj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Nov 2013 17:10:12 +0100
-Received: by mail-ea0-f178.google.com with SMTP id d10so7146152eaj.9
-        for <multiple recipients>; Fri, 29 Nov 2013 08:10:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=edBdK/AE3I/LT+lz53zSn5uOpu5lAUvcw8N/24AYdCg=;
-        b=qQW1Bc8xuiuFa6QTfjeSMNy18P2Lw5WKiGr7/rpsFlKNvoCtVojnbAK4dSOCKChC1f
-         +1Af0GvPknU4Rv392qrhdrlCczweWKkEwDoH8YDJI0BpEmC4mushPLnird5/y8PE+xv6
-         /3tYl/xrGR6bpEt5QxiA6gwjhhPVpP5cAee95IdViD0yaq0849G6Xuv9y66mtZcyv1XJ
-         OgmZ+0eCigVuB0W9/DZYQ5qZaRTWSQYTySFwsoTf7U8Wt18Fh9Q7SUwQqbI5iDTyt7Vc
-         /aJDoj/fc8CHki39sfdgQLCQECwHBw8x/xzxPJqXWKXhFcPrLKaxILp4O+ADbZLF15jF
-         v05w==
-X-Received: by 10.14.179.130 with SMTP id h2mr20995432eem.34.1385741407301;
-        Fri, 29 Nov 2013 08:10:07 -0800 (PST)
-Received: from linux-samsung700g7a.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id m1sm36346284eeg.0.2013.11.29.08.10.05
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 29 Nov 2013 08:10:06 -0800 (PST)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH V2 2/2] MIPS: BCM47XX: Prepare support for GPIO buttons
-Date:   Fri, 29 Nov 2013 17:09:57 +0100
-Message-Id: <1385741397-32740-2-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1385741397-32740-1-git-send-email-zajec5@gmail.com>
-References: <1385741397-32740-1-git-send-email-zajec5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Nov 2013 17:31:41 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:52864 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6867279Ab3K2Qbgyff8b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Nov 2013 17:31:36 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 1211A8F6D;
+        Fri, 29 Nov 2013 17:31:36 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 9ofVeVKYT5-I; Fri, 29 Nov 2013 17:31:29 +0100 (CET)
+Received: from [IPv6:2001:470:1f0b:447:75ef:27c:89bc:a22f] (unknown [IPv6:2001:470:1f0b:447:75ef:27c:89bc:a22f])
+        by hauke-m.de (Postfix) with ESMTPSA id 9CFB08F6E;
+        Fri, 29 Nov 2013 17:31:29 +0100 (CET)
+Message-ID: <5298C15F.2040101@hauke-m.de>
+Date:   Fri, 29 Nov 2013 17:31:27 +0100
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.1.1
 MIME-Version: 1.0
+To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+CC:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH V2 1/2] bcma: gpio: add own IRQ domain
+References: <1385741397-32740-1-git-send-email-zajec5@gmail.com>
+In-Reply-To: <1385741397-32740-1-git-send-email-zajec5@gmail.com>
+X-Enigmail-Version: 1.5.2
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38601
+X-archive-position: 38602
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,144 +47,188 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-So far this adds support for one Netgear model only, but it's designed
-and ready to add many more device. We could hopefully import database
-from OpenWrt.
-Support for SSB is currently disabled, because SSB doesn't implement IRQ
-domain yet.
+On 11/29/2013 05:09 PM, Rafał Miłecki wrote:
+> Input GPIO changes can generate interrupts, but we need kind of ACK for
+> them by changing IRQ polarity. This is required to stop hardware from
+> keep generating interrupts and generate another one on the next GPIO
+> state change.
+> This code allows using GPIOs with standard interrupts and add for
+> example GPIO buttons support.
 
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
- arch/mips/bcm47xx/Makefile          |    2 +-
- arch/mips/bcm47xx/bcm47xx_private.h |    3 ++
- arch/mips/bcm47xx/buttons.c         |   81 +++++++++++++++++++++++++++++++++++
- arch/mips/bcm47xx/setup.c           |    1 +
- 4 files changed, 86 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/bcm47xx/buttons.c
+As far as I know IRQs for GPIOs are only support on SoCs and not on PCIe
+wifi cards like the BCM43224. I think the dependency to IRQ_DOMAIN
+should only be added when BCMA_HOST_SOC is set.
 
-diff --git a/arch/mips/bcm47xx/Makefile b/arch/mips/bcm47xx/Makefile
-index 84e9aed..006a05e 100644
---- a/arch/mips/bcm47xx/Makefile
-+++ b/arch/mips/bcm47xx/Makefile
-@@ -4,5 +4,5 @@
- #
- 
- obj-y				+= irq.o nvram.o prom.o serial.o setup.o time.o sprom.o
--obj-y				+= board.o leds.o
-+obj-y				+= board.o buttons.o leds.o
- obj-$(CONFIG_BCM47XX_SSB)	+= wgt634u.o
-diff --git a/arch/mips/bcm47xx/bcm47xx_private.h b/arch/mips/bcm47xx/bcm47xx_private.h
-index 1a1e600..5c94ace 100644
---- a/arch/mips/bcm47xx/bcm47xx_private.h
-+++ b/arch/mips/bcm47xx/bcm47xx_private.h
-@@ -3,6 +3,9 @@
- 
- #include <linux/kernel.h>
- 
-+/* buttons.c */
-+int __init bcm47xx_buttons_register(void);
-+
- /* leds.c */
- void __init bcm47xx_leds_register(void);
- 
-diff --git a/arch/mips/bcm47xx/buttons.c b/arch/mips/bcm47xx/buttons.c
-new file mode 100644
-index 0000000..ecd6b1b
---- /dev/null
-+++ b/arch/mips/bcm47xx/buttons.c
-@@ -0,0 +1,81 @@
-+#include "bcm47xx_private.h"
-+
-+#include <linux/input.h>
-+#include <linux/gpio_keys.h>
-+#include <linux/interrupt.h>
-+#include <linux/ssb/ssb_embedded.h>
-+#include <bcm47xx_board.h>
-+#include <bcm47xx.h>
-+
-+struct input_dev *input;
-+
-+/**************************************************
-+ * Database
-+ **************************************************/
-+
-+static struct gpio_keys_button
-+bcm47xx_buttons_netgear_wndr4500_v1[] = {
-+	{
-+		.code		= KEY_WPS_BUTTON,
-+		.gpio		= 4,
-+		.active_low	= 1,
-+	},
-+	{
-+		.code		= KEY_RFKILL,
-+		.gpio		= 5,
-+		.active_low	= 1,
-+	},
-+	{
-+		.code		= KEY_RESTART,
-+		.gpio		= 6,
-+		.active_low	= 1,
-+	},
-+};
-+
-+/**************************************************
-+ * Init
-+ **************************************************/
-+
-+static struct gpio_keys_platform_data bcm47xx_button_pdata;
-+
-+static struct platform_device bcm47xx_buttons_gpio_keys = {
-+	.name = "gpio-keys",
-+	.dev = {
-+		.platform_data = &bcm47xx_button_pdata,
-+	}
-+};
-+
-+#define bcm47xx_set_bdata(dev_buttons) do {				\
-+	bcm47xx_button_pdata.buttons = dev_buttons;			\
-+	bcm47xx_button_pdata.nbuttons = ARRAY_SIZE(dev_buttons);	\
-+} while (0)
-+
-+int __init bcm47xx_buttons_register(void)
-+{
-+	enum bcm47xx_board board = bcm47xx_board_get();
-+	int err;
-+
-+#ifdef CONFIG_BCM47XX_SSB
-+	if (bcm47xx_bus_type == BCM47XX_BUS_TYPE_SSB) {
-+		pr_debug("Buttons on SSB are not supported yet.\n");
-+		return -ENOTSUPP;
-+	}
-+#endif
-+
-+	switch (board) {
-+	case BCM47XX_BOARD_NETGEAR_WNDR4500V1:
-+		bcm47xx_set_bdata(bcm47xx_buttons_netgear_wndr4500_v1);
-+		break;
-+	default:
-+		pr_debug("No buttons configuration found for this device\n");
-+		return -ENOTSUPP;
-+	}
-+
-+	err = platform_device_register(&bcm47xx_buttons_gpio_keys);
-+	if (err) {
-+		pr_err("Failed to register platform device: %d\n", err);
-+		return err;
-+	}
-+
-+	return 0;
-+}
-diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index 7e61c0b..a791124 100644
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -242,6 +242,7 @@ static int __init bcm47xx_register_bus_complete(void)
- #endif
- 	}
- 
-+	bcm47xx_buttons_register();
- 	bcm47xx_leds_register();
- 
- 	return 0;
--- 
-1.7.10.4
+Hauke
+
+> 
+> Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+> ---
+>  drivers/bcma/Kconfig                        |    1 +
+>  drivers/bcma/driver_gpio.c                  |   92 ++++++++++++++++++++++++++-
+>  include/linux/bcma/bcma_driver_chipcommon.h |    1 +
+>  3 files changed, 92 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/bcma/Kconfig b/drivers/bcma/Kconfig
+> index 7c081b3..649568e 100644
+> --- a/drivers/bcma/Kconfig
+> +++ b/drivers/bcma/Kconfig
+> @@ -75,6 +75,7 @@ config BCMA_DRIVER_GMAC_CMN
+>  config BCMA_DRIVER_GPIO
+>  	bool "BCMA GPIO driver"
+>  	depends on BCMA && GPIOLIB
+> +	select IRQ_DOMAIN
+>  	help
+>  	  Driver to provide access to the GPIO pins of the bcma bus.
+>  
+> diff --git a/drivers/bcma/driver_gpio.c b/drivers/bcma/driver_gpio.c
+> index 45f0996..0abf09a 100644
+> --- a/drivers/bcma/driver_gpio.c
+> +++ b/drivers/bcma/driver_gpio.c
+> @@ -9,6 +9,9 @@
+>   */
+>  
+>  #include <linux/gpio.h>
+> +#include <linux/irq.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irqdomain.h>
+>  #include <linux/export.h>
+>  #include <linux/bcma/bcma.h>
+>  
+> @@ -78,15 +81,60 @@ static int bcma_gpio_to_irq(struct gpio_chip *chip, unsigned gpio)
+>  	struct bcma_drv_cc *cc = bcma_gpio_get_cc(chip);
+>  
+>  	if (cc->core->bus->hosttype == BCMA_HOSTTYPE_SOC)
+> -		return bcma_core_irq(cc->core);
+> +		return irq_find_mapping(cc->irq_domain, gpio);
+>  	else
+>  		return -EINVAL;
+>  }
+>  
+> +static void bcma_gpio_irq_unmask(struct irq_data *d)
+> +{
+> +	struct bcma_drv_cc *cc = irq_data_get_irq_chip_data(d);
+> +	int gpio = irqd_to_hwirq(d);
+> +
+> +	bcma_chipco_gpio_intmask(cc, BIT(gpio), BIT(gpio));
+> +}
+> +
+> +static void bcma_gpio_irq_mask(struct irq_data *d)
+> +{
+> +	struct bcma_drv_cc *cc = irq_data_get_irq_chip_data(d);
+> +	int gpio = irqd_to_hwirq(d);
+> +
+> +	bcma_chipco_gpio_intmask(cc, BIT(gpio), 0);
+> +}
+> +
+> +static struct irq_chip bcma_gpio_irq_chip = {
+> +	.name		= "BCMA-GPIO",
+> +	.irq_mask	= bcma_gpio_irq_mask,
+> +	.irq_unmask	= bcma_gpio_irq_unmask,
+> +};
+> +
+> +static irqreturn_t bcma_gpio_irq_handler(int irq, void *dev_id)
+> +{
+> +	struct bcma_drv_cc *cc = dev_id;
+> +	u32 val = bcma_cc_read32(cc, BCMA_CC_GPIOIN);
+> +	u32 mask = bcma_cc_read32(cc, BCMA_CC_GPIOIRQ);
+> +	u32 pol = bcma_cc_read32(cc, BCMA_CC_GPIOPOL);
+> +	u32 irqs = (val ^ pol) & mask;
+> +	int gpio;
+> +
+> +	for_each_set_bit(gpio, (unsigned long *)&irqs, cc->gpio.ngpio) {
+> +		generic_handle_irq(bcma_gpio_to_irq(&cc->gpio, gpio));
+> +		bcma_chipco_gpio_polarity(cc, BIT(gpio),
+> +					  (val & BIT(gpio)) ? BIT(gpio) : 0);
+
+What about setting this once for all irqs at the end of this function?
+bcma_chipco_gpio_polarity() takes an lock.
+
+> +	}
+> +
+> +	return irqs ? IRQ_HANDLED : IRQ_NONE;
+> +}
+> +
+>  int bcma_gpio_init(struct bcma_drv_cc *cc)
+>  {
+>  	struct gpio_chip *chip = &cc->gpio;
+> +	unsigned int hwirq, gpio;
+> +	int err;
+>  
+> +	/*
+> +	 * GPIO chip
+> +	 */
+>  	chip->label		= "bcma_gpio";
+>  	chip->owner		= THIS_MODULE;
+>  	chip->request		= bcma_gpio_request;
+> @@ -104,8 +152,48 @@ int bcma_gpio_init(struct bcma_drv_cc *cc)
+>  		chip->base		= 0;
+>  	else
+>  		chip->base		= -1;
+> +	err = gpiochip_add(chip);
+> +	if (err)
+> +		goto err_gpiochip_add;
+
+Shouldn't the gpio chip be registered after we set up the irq handling
+so no one uses it before?
+
+> +
+> +	/*
+> +	 * IRQ domain
+> +	 */
+> +	cc->irq_domain = irq_domain_add_linear(NULL, chip->ngpio,
+> +					       &irq_domain_simple_ops, cc);
+> +	if (!cc->irq_domain) {
+> +		err = -ENODEV;
+> +		goto err_irq_domain;
+> +	}
+> +	for (gpio = 0; gpio < chip->ngpio; gpio++) {
+> +		int irq = irq_create_mapping(cc->irq_domain, gpio);
+> +
+> +		irq_set_chip_data(irq, cc);
+> +		irq_set_chip_and_handler(irq, &bcma_gpio_irq_chip,
+> +					 handle_simple_irq);
+> +	}
+
+Is there some method needed to free or unregister these functions? This
+could be build as an module when it is not used on a SoC.
+
+> +
+> +	/*
+> +	 * IRQ handler
+> +	 */
+> +	hwirq = bcma_core_irq(cc->core);
+> +	err = request_irq(hwirq, bcma_gpio_irq_handler, IRQF_SHARED, "gpio",
+> +			  cc);
+> +	if (err)
+> +		goto err_req_irq;
+> +
+> +	bcma_cc_set32(cc, BCMA_CC_IRQMASK, BCMA_CC_IRQ_GPIO);
+> +
+> +	return 0;
+>  
+> -	return gpiochip_add(chip);
+> +err_req_irq:
+> +	irq_domain_remove(cc->irq_domain);
+> +err_irq_domain:
+> +	err = gpiochip_remove(&cc->gpio);
+> +	if (err)
+> +		pr_err("Failed to remove GPIO chip: %d\n", err);
+> +err_gpiochip_add:
+> +	return err;
+>  }
+>  
+>  int bcma_gpio_unregister(struct bcma_drv_cc *cc)
+> diff --git a/include/linux/bcma/bcma_driver_chipcommon.h b/include/linux/bcma/bcma_driver_chipcommon.h
+> index c49e1a1..63d105c 100644
+> --- a/include/linux/bcma/bcma_driver_chipcommon.h
+> +++ b/include/linux/bcma/bcma_driver_chipcommon.h
+> @@ -640,6 +640,7 @@ struct bcma_drv_cc {
+>  	spinlock_t gpio_lock;
+>  #ifdef CONFIG_BCMA_DRIVER_GPIO
+>  	struct gpio_chip gpio;
+> +	struct irq_domain *irq_domain;
+>  #endif
+>  };
+>  
+> 

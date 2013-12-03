@@ -1,32 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Dec 2013 17:49:22 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:22418 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6867265Ab3LCQtSGAsVE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Dec 2013 17:49:18 +0100
-Message-ID: <529E0B86.2080607@imgtec.com>
-Date:   Tue, 3 Dec 2013 16:49:10 +0000
-From:   Paul Burton <paul.burton@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.1.0
-MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: MASS MAILING:    Re: R2300 (not the hay baler)
-References: <528B466A.3050906@imgtec.com> <alpine.LFD.2.03.1311191156570.3267@linux-mips.org> <528B60B3.6030406@imgtec.com> <alpine.LFD.2.03.1311211934420.3267@linux-mips.org> <529627D4.1060204@imgtec.com>
-In-Reply-To: <529627D4.1060204@imgtec.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.79]
-X-SEF-Processed: 7_3_0_01192__2013_12_03_16_49_11
-Return-Path: <Paul.Burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Dec 2013 20:47:11 +0100 (CET)
+Received: from mail-ie0-f170.google.com ([209.85.223.170]:39602 "EHLO
+        mail-ie0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6822668Ab3LCTrJM6vYa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Dec 2013 20:47:09 +0100
+Received: by mail-ie0-f170.google.com with SMTP id qd12so25304645ieb.29
+        for <multiple recipients>; Tue, 03 Dec 2013 11:47:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=dDmVmU3ab+0bl0bJzYHUGBelwesZ81x/xPiXJsBzfrQ=;
+        b=SRnIlU+CX+jpde5wp8SkW8AaBPNEaV1CFWfiuJX43UDEwOhfTNsF1oi8wO9Q7LxvY3
+         XD0/bDZCTQ+lVuCy6/eLFJJiMHTnUx/WIQ+DBkpFzs3lkSh1KOYz4UD/nK8oNmV5yns8
+         Xn6K2bguEq/7qIA+Depm5xCtLPqgX0XB/0vqgkLVs/yHN1lcN90r6kGLAW+0uEc3wrAR
+         sFSVvaRfsi22MJ/y8dcqhF3q0Z+ImD2bjOsgnXeSgc4tuzYNwcQKAnQ35F0AFWGWORSg
+         JdHIGPlv0vdCtdy8LWn0ToMgYOUY3hJROaOO5EtOeVtbGHcjNJPE0sjiuqzIFS5s8G5y
+         HAYA==
+X-Received: by 10.43.16.2 with SMTP id pw2mr3460985icb.56.1386100022692;
+        Tue, 03 Dec 2013 11:47:02 -0800 (PST)
+Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPSA id p5sm4686049igj.10.2013.12.03.11.47.00
+        for <multiple recipients>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Tue, 03 Dec 2013 11:47:01 -0800 (PST)
+Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id rB3Jkx74006112;
+        Tue, 3 Dec 2013 11:46:59 -0800
+Received: (from ddaney@localhost)
+        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id rB3JktCC006111;
+        Tue, 3 Dec 2013 11:46:55 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
+Subject: [PATCH 0/2] MIPS/staging: Probe octeon-usb driver via device-tree
+Date:   Tue,  3 Dec 2013 11:46:50 -0800
+Message-Id: <1386100012-6077-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.11.7
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38631
+X-archive-position: 38632
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,54 +58,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 27/11/13 17:11, Paul Burton wrote:
-> On 21/11/13 19:52, Maciej W. Rozycki wrote:
->>  I think the discussion was off-list (Ralf, would you mind if I digged up 
->> any clues from there?).  The format has been set long ago, and is also odd 
->> enough to have 32 64-bit slots in the PTRACE_GETFPREGS/PTRACE_SETFPREGS 
->> structure even for o32 processes (that now should be unexpectedly helpful 
->> for FP64 o32 processes though), so there's little sense discussing its 
->> prettiness or ugliness at this point in the game.
->>
->>  Also I'm not sure what the core file format is for the FP context, it may 
->> be worth double-checking too.
->>
->>  Please feel free to poke me directly if you have any further issues about 
->> MIPS I ISA compatibility.
-> 
-> Ok I finally had time to look at this. It seems that r2300_switch.S used
-> to match the current behaviour of r4k_switch.S. Ralf made it that way by
-> saving to the appropriate 32 bits of the even numbered 64 bit values of
-> the FP context, taking endianness into account, in the following commit:
-> 
-> http://git.linux-mips.org/?p=ralf/linux.git;a=commitdiff;h=42533948caacb82574ccf91cae84df851d4f0521#patch28
-> 
-> ...and then you fixed up ptrace to always expect values stored in the
-> format now used by r4k_switch.S (& at the time used by r2300_switch.S too):
-> 
-> http://git.linux-mips.org/?p=ralf/linux.git;a=commitdiff;h=849fa7a50dff104cbf6654c421b666eefd6da0c1;hp=364e85467c9c08c803087c5b75ae2e70540e3bb5
-> 
-> Unfortunately later when Ralf replaced the FPU_SAVE_SINGLE macro with
-> the fpu_save_single macro in this commit:
-> 
-> http://git.linux-mips.org/?p=ralf/linux.git;a=commitdiff;h=bf0b3bb876115b1e69b2266477128d8270d0b356;hp=39507fed032849b72552062883d143025be8be36
-> 
-> ...he effectively reverted r2300_switch.S to its old behaviour, whilst
-> ptrace continues to expect the r4k_switch.S-like behaviour. So as far as
-> I can tell the original intended FP register layout was that currently
-> used by r4k_switch.S. That makes r2300_switch.S the incorrect one -
-> fixed 11 years ago & broken again 10 years ago.
-> 
-> What I'm less sure about right now is what gdb has come to expect in the
-> meantime - but from your description it sounds like it expects the
-> r2300_switch.S behaviour? In which case I suspect that although it seems
-> the original intended ptrace ABI was broken long ago & the easiest fix
-> may be for the kernel to just go with the unintended ABI on r4k-class
-> cores too? I'll have a read through more gdb code & try to confirm.
+From: David Daney <david.daney@cavium.com>
 
-Maciej: are you sure this is working correctly with r2300_switch.S? gdb
-seems to be working as I'd expect with r4k_switch.S and I have no
-r2k/r3k hardware to test on.
+Tested against both EdgeRouter LITE (no bootloader supplied device
+tree), and ebb5610 (device tree supplied by bootloader).
 
-Thanks,
-    Paul
+The patch set is spread across both the MIPS and staging trees, so it
+would be great if Ralf could merge at least the MIPS parts, if not
+both parts.
+
+
+David Daney (2):
+  MIPS: OCTEON: Supply OCTEON+ USB nodes in internal device trees.
+  staging: octeon-usb: Probe via device tree populated platform device.
+
+ .../cavium-octeon/executive/cvmx-helper-board.c    |  27 ++
+ arch/mips/cavium-octeon/octeon-platform.c          |  32 +++
+ arch/mips/cavium-octeon/octeon_3xxx.dts            |  19 ++
+ arch/mips/include/asm/octeon/cvmx-helper-board.h   |   9 +
+ drivers/staging/octeon-usb/octeon-hcd.c            | 273 +++++++++------------
+ 5 files changed, 203 insertions(+), 157 deletions(-)
+
+-- 
+1.7.11.7

@@ -1,43 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2013 22:30:44 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:50302 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823977Ab3LDVal4xYL2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Dec 2013 22:30:41 +0100
-Received: from int-mx12.intmail.prod.int.phx2.redhat.com (int-mx12.intmail.prod.int.phx2.redhat.com [10.5.11.25])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id rB4LUIb0016870
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 4 Dec 2013 16:30:31 -0500
-Received: from horse.usersys.redhat.com ([10.18.17.71])
-        by int-mx12.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id rB4LUHte015667;
-        Wed, 4 Dec 2013 16:30:17 -0500
-Received: by horse.usersys.redhat.com (Postfix, from userid 10451)
-        id 5390266BA6; Wed,  4 Dec 2013 16:30:17 -0500 (EST)
-Date:   Wed, 4 Dec 2013 16:30:17 -0500
-From:   Vivek Goyal <vgoyal@redhat.com>
-To:     Qais Yousef <qais.yousef@imgtec.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
-        linux-mips@linux-mips.org, stable@vger.kernel.org
-Subject: Re: [PATCH] crash_dump: fix compilation error (on MIPS at least)
-Message-ID: <20131204213017.GJ19087@redhat.com>
-References: <1386172702-31266-1-git-send-email-qais.yousef@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Dec 2013 22:40:09 +0100 (CET)
+Received: from filtteri2.pp.htv.fi ([213.243.153.185]:56092 "EHLO
+        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6841837Ab3LDVkGdn7hq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Dec 2013 22:40:06 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri2.pp.htv.fi (Postfix) with ESMTP id 2812819BE83;
+        Wed,  4 Dec 2013 23:40:03 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
+        with ESMTP id BOirCJgBm7Yi; Wed,  4 Dec 2013 23:39:58 +0200 (EET)
+Received: from musicnaut.iki.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp4.welho.com (Postfix) with SMTP id 292965BC015;
+        Wed,  4 Dec 2013 23:39:57 +0200 (EET)
+Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Wed, 04 Dec 2013 23:39:51 +0200
+Date:   Wed, 4 Dec 2013 23:39:51 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     David Daney <ddaney.cavm@gmail.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 1/2] MIPS: OCTEON: Supply OCTEON+ USB nodes in internal
+ device trees.
+Message-ID: <20131204213951.GH30823@blackmetal.musicnaut.iki.fi>
+References: <1386100012-6077-1-git-send-email-ddaney.cavm@gmail.com>
+ <1386100012-6077-2-git-send-email-ddaney.cavm@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1386172702-31266-1-git-send-email-qais.yousef@imgtec.com>
+In-Reply-To: <1386100012-6077-2-git-send-email-ddaney.cavm@gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.25
-Return-Path: <vgoyal@redhat.com>
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38641
+X-archive-position: 38642
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vgoyal@redhat.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,57 +51,175 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 04, 2013 at 03:58:22PM +0000, Qais Yousef wrote:
->   In file included from kernel/crash_dump.c:2:0:
->   include/linux/crash_dump.h:22:27: error: unknown type name ‘pgprot_t’
-> 
-> when CONFIG_CRASH_DUMP=y
-> 
-> The error was traced back to this commit:
-> 
->   9cb218131de1 vmcore: introduce remap_oldmem_pfn_range()
-> 
-> include <asm/pgtable.h> to get the missing definition
+Hi,
 
-pgprot_t definition for mips seems to be in asm/page.h. So why are you
-including asm/pgtable.h and not asm/page.h? For other architectures it
-seems to be in other files. That means those arch will have broken
-compilation now. 
-
-So question is, is there any arch specific file which one can include
-and be covered for pgprot_t definition for all the arches.
-
-Thanks
-Vivek
-
+On Tue, Dec 03, 2013 at 11:46:51AM -0800, David Daney wrote:
+> From: David Daney <david.daney@cavium.com>
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Michael Holzheu <holzheu@linux.vnet.ibm.com>
-> Cc: Vivek Goyal <vgoyal@redhat.com>
-> Cc: <linux-mips@linux-mips.org>
-> Cc: <stable@vger.kernel.org> # 3.12
-> Reviewed-by: James Hogan <james.hogan@imgtec.com>
-> Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
+> This will be needed by the next patch to use said nodes for probing
+> via the device tree.
+> 
+> Signed-off-by: David Daney <david.daney@cavium.com>
+
+Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+
+A.
+
 > ---
-> I haven't tried any other architecture except mips.
-> If OK this should be considered for stable 3.12 (CCed).
+>  .../cavium-octeon/executive/cvmx-helper-board.c    | 27 ++++++++++++++++++
+>  arch/mips/cavium-octeon/octeon-platform.c          | 32 ++++++++++++++++++++++
+>  arch/mips/cavium-octeon/octeon_3xxx.dts            | 19 +++++++++++++
+>  arch/mips/include/asm/octeon/cvmx-helper-board.h   |  9 ++++++
+>  4 files changed, 87 insertions(+)
 > 
->  include/linux/crash_dump.h |    2 ++
->  1 files changed, 2 insertions(+), 0 deletions(-)
-> 
-> diff --git a/include/linux/crash_dump.h b/include/linux/crash_dump.h
-> index fe68a5a..7032518 100644
-> --- a/include/linux/crash_dump.h
-> +++ b/include/linux/crash_dump.h
-> @@ -6,6 +6,8 @@
->  #include <linux/proc_fs.h>
->  #include <linux/elf.h>
->  
-> +#include <asm/pgtable.h> /* for pgprot_t */
+> diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+> index 0a1283c..b764df6 100644
+> --- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+> +++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+> @@ -722,3 +722,30 @@ int __cvmx_helper_board_hardware_enable(int interface)
+>  	}
+>  	return 0;
+>  }
 > +
->  #define ELFCORE_ADDR_MAX	(-1ULL)
->  #define ELFCORE_ADDR_ERR	(-2ULL)
+> +/**
+> + * Get the clock type used for the USB block based on board type.
+> + * Used by the USB code for auto configuration of clock type.
+> + *
+> + * Return USB clock type enumeration
+> + */
+> +enum cvmx_helper_board_usb_clock_types __cvmx_helper_board_usb_get_clock_type(void)
+> +{
+> +	switch (cvmx_sysinfo_get()->board_type) {
+> +	case CVMX_BOARD_TYPE_BBGW_REF:
+> +	case CVMX_BOARD_TYPE_LANAI2_A:
+> +	case CVMX_BOARD_TYPE_LANAI2_U:
+> +	case CVMX_BOARD_TYPE_LANAI2_G:
+> +	case CVMX_BOARD_TYPE_NIC10E_66:
+> +	case CVMX_BOARD_TYPE_UBNT_E100:
+> +		return USB_CLOCK_TYPE_CRYSTAL_12;
+> +	case CVMX_BOARD_TYPE_NIC10E:
+> +		return USB_CLOCK_TYPE_REF_12;
+> +	default:
+> +		break;
+> +	}
+> +	/* Most boards except NIC10e use a 12MHz crystal */
+> +	if (OCTEON_IS_MODEL(OCTEON_FAM_2))
+> +		return USB_CLOCK_TYPE_CRYSTAL_12;
+> +	return USB_CLOCK_TYPE_REF_48;
+> +}
+> diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+> index 1830874..cd4fd6b 100644
+> --- a/arch/mips/cavium-octeon/octeon-platform.c
+> +++ b/arch/mips/cavium-octeon/octeon-platform.c
+> @@ -171,6 +171,7 @@ device_initcall(octeon_ohci_device_init);
+>  static struct of_device_id __initdata octeon_ids[] = {
+>  	{ .compatible = "simple-bus", },
+>  	{ .compatible = "cavium,octeon-6335-uctl", },
+> +	{ .compatible = "cavium,octeon-5750-usbn", },
+>  	{ .compatible = "cavium,octeon-3860-bootbus", },
+>  	{ .compatible = "cavium,mdio-mux", },
+>  	{ .compatible = "gpio-leds", },
+> @@ -682,6 +683,37 @@ end_led:
+>  		}
+>  	}
 >  
+> +	/* DWC2 USB */
+> +	alias_prop = fdt_getprop(initial_boot_params, aliases,
+> +				 "usbn", NULL);
+> +	if (alias_prop) {
+> +		int usbn = fdt_path_offset(initial_boot_params, alias_prop);
+> +
+> +		if (usbn >= 0 && (current_cpu_type() == CPU_CAVIUM_OCTEON2 ||
+> +				  !octeon_has_feature(OCTEON_FEATURE_USB))) {
+> +			pr_debug("Deleting usbn\n");
+> +			fdt_nop_node(initial_boot_params, usbn);
+> +			fdt_nop_property(initial_boot_params, aliases, "usbn");
+> +		} else  {
+> +			__be32 new_f[1];
+> +			enum cvmx_helper_board_usb_clock_types c;
+> +			c = __cvmx_helper_board_usb_get_clock_type();
+> +			switch (c) {
+> +			case USB_CLOCK_TYPE_REF_48:
+> +				new_f[0] = cpu_to_be32(48000000);
+> +				fdt_setprop_inplace(initial_boot_params, usbn,
+> +						    "refclk-frequency",  new_f, sizeof(new_f));
+> +				/* Fall through ...*/
+> +			case USB_CLOCK_TYPE_REF_12:
+> +				/* Missing "refclk-type" defaults to external. */
+> +				fdt_nop_property(initial_boot_params, usbn, "refclk-type");
+> +				break;
+> +			default:
+> +				break;
+> +			}
+> +		}
+> +	}
+> +
+>  	return 0;
+>  }
+>  
+> diff --git a/arch/mips/cavium-octeon/octeon_3xxx.dts b/arch/mips/cavium-octeon/octeon_3xxx.dts
+> index 88cb42d..fa33115 100644
+> --- a/arch/mips/cavium-octeon/octeon_3xxx.dts
+> +++ b/arch/mips/cavium-octeon/octeon_3xxx.dts
+> @@ -550,6 +550,24 @@
+>  				big-endian-regs;
+>  			};
+>  		};
+> +
+> +		usbn: usbn@1180068000000 {
+> +			compatible = "cavium,octeon-5750-usbn";
+> +			reg = <0x11800 0x68000000 0x0 0x1000>;
+> +			ranges; /* Direct mapping */
+> +			#address-cells = <2>;
+> +			#size-cells = <2>;
+> +			/* 12MHz, 24MHz and 48MHz allowed */
+> +			refclk-frequency = <12000000>;
+> +			/* Either "crystal" or "external" */
+> +			refclk-type = "crystal";
+> +
+> +			usbc@16f0010000000 {
+> +				compatible = "cavium,octeon-5750-usbc";
+> +				reg = <0x16f00 0x10000000 0x0 0x80000>;
+> +				interrupts = <0 56>;
+> +			};
+> +		};
+>  	};
+>  
+>  	aliases {
+> @@ -566,6 +584,7 @@
+>  		flash0 = &flash0;
+>  		cf0 = &cf0;
+>  		uctl = &uctl;
+> +		usbn = &usbn;
+>  		led0 = &led0;
+>  	};
+>   };
+> diff --git a/arch/mips/include/asm/octeon/cvmx-helper-board.h b/arch/mips/include/asm/octeon/cvmx-helper-board.h
+> index 41785dd..8933203 100644
+> --- a/arch/mips/include/asm/octeon/cvmx-helper-board.h
+> +++ b/arch/mips/include/asm/octeon/cvmx-helper-board.h
+> @@ -36,6 +36,13 @@
+>  
+>  #include <asm/octeon/cvmx-helper.h>
+>  
+> +enum cvmx_helper_board_usb_clock_types {
+> +	USB_CLOCK_TYPE_REF_12,
+> +	USB_CLOCK_TYPE_REF_24,
+> +	USB_CLOCK_TYPE_REF_48,
+> +	USB_CLOCK_TYPE_CRYSTAL_12,
+> +};
+> +
+>  typedef enum {
+>  	set_phy_link_flags_autoneg = 0x1,
+>  	set_phy_link_flags_flow_control_dont_touch = 0x0 << 1,
+> @@ -154,4 +161,6 @@ extern int __cvmx_helper_board_interface_probe(int interface,
+>   */
+>  extern int __cvmx_helper_board_hardware_enable(int interface);
+>  
+> +enum cvmx_helper_board_usb_clock_types __cvmx_helper_board_usb_get_clock_type(void);
+> +
+>  #endif /* __CVMX_HELPER_BOARD_H__ */
 > -- 
-> 1.7.1
+> 1.7.11.7
+> 
 > 

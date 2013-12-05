@@ -1,43 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Dec 2013 14:58:54 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:38153 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6831298Ab3LEN6sCui2a (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Dec 2013 14:58:48 +0100
-Received: from int-mx02.intmail.prod.int.phx2.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id rB5DwaLE023154
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 5 Dec 2013 08:58:37 -0500
-Received: from horse.usersys.redhat.com ([10.18.17.71])
-        by int-mx02.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id rB5DwZQG017356;
-        Thu, 5 Dec 2013 08:58:36 -0500
-Received: by horse.usersys.redhat.com (Postfix, from userid 10451)
-        id A08B166B5D; Thu,  5 Dec 2013 08:58:35 -0500 (EST)
-Date:   Thu, 5 Dec 2013 08:58:35 -0500
-From:   Vivek Goyal <vgoyal@redhat.com>
-To:     Qais Yousef <qais.yousef@imgtec.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
-        linux-mips@linux-mips.org, stable@vger.kernel.org
-Subject: Re: [PATCH] crash_dump: fix compilation error (on MIPS at least)
-Message-ID: <20131205135835.GA1600@redhat.com>
-References: <1386172702-31266-1-git-send-email-qais.yousef@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1386172702-31266-1-git-send-email-qais.yousef@imgtec.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.12
-Return-Path: <vgoyal@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Dec 2013 18:38:12 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:32806 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6816676Ab3LERiFAAAOc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Dec 2013 18:38:05 +0100
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <Steven.Hill@imgtec.com>)
+        id 1Vocs9-0008So-Lg; Thu, 05 Dec 2013 11:37:57 -0600
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org
+Subject: [PATCH] MIPS: microMIPS: Remove unsupported compiler flag.
+Date:   Thu,  5 Dec 2013 11:37:49 -0600
+Message-Id: <1386265069-21930-1-git-send-email-Steven.Hill@imgtec.com>
+X-Mailer: git-send-email 1.7.9.5
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38660
+X-archive-position: 38661
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vgoyal@redhat.com
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,52 +35,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 04, 2013 at 03:58:22PM +0000, Qais Yousef wrote:
->   In file included from kernel/crash_dump.c:2:0:
->   include/linux/crash_dump.h:22:27: error: unknown type name ‘pgprot_t’
-> 
-> when CONFIG_CRASH_DUMP=y
-> 
-> The error was traced back to this commit:
-> 
->   9cb218131de1 vmcore: introduce remap_oldmem_pfn_range()
-> 
-> include <asm/pgtable.h> to get the missing definition
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Michael Holzheu <holzheu@linux.vnet.ibm.com>
-> Cc: Vivek Goyal <vgoyal@redhat.com>
-> Cc: <linux-mips@linux-mips.org>
-> Cc: <stable@vger.kernel.org> # 3.12
-> Reviewed-by: James Hogan <james.hogan@imgtec.com>
-> Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
-> ---
+From: "Steven J. Hill" <Steven.Hill@imgtec.com>
 
-Looks good to me.
+Remove usage of -mno-jals compiler flag when building a pure
+microMIPS kernel. The -mno-jals flag only ever existed within
+Mentor toolchains. Dropping this flag allows all FSF toolchains
+to work.
 
-Acked-by: Vivek Goyal <vgoyal@redhat.com>
+Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ arch/mips/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Vivek
-
-> I haven't tried any other architecture except mips.
-> If OK this should be considered for stable 3.12 (CCed).
-> 
->  include/linux/crash_dump.h |    2 ++
->  1 files changed, 2 insertions(+), 0 deletions(-)
-> 
-> diff --git a/include/linux/crash_dump.h b/include/linux/crash_dump.h
-> index fe68a5a..7032518 100644
-> --- a/include/linux/crash_dump.h
-> +++ b/include/linux/crash_dump.h
-> @@ -6,6 +6,8 @@
->  #include <linux/proc_fs.h>
->  #include <linux/elf.h>
->  
-> +#include <asm/pgtable.h> /* for pgprot_t */
-> +
->  #define ELFCORE_ADDR_MAX	(-1ULL)
->  #define ELFCORE_ADDR_ERR	(-2ULL)
->  
-> -- 
-> 1.7.1
-> 
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index de300b9..873a0ca 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -114,7 +114,7 @@ cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(shell $(CC) -dumpmachine |grep -q 'mips.*e
+ cflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' || echo -EL $(undef-all) $(predef-le))
+ 
+ cflags-$(CONFIG_CPU_HAS_SMARTMIPS)	+= $(call cc-option,-msmartmips)
+-cflags-$(CONFIG_CPU_MICROMIPS) += $(call cc-option,-mmicromips -mno-jals)
++cflags-$(CONFIG_CPU_MICROMIPS) += $(call cc-option,-mmicromips)
+ 
+ cflags-$(CONFIG_SB1XXX_CORELIS)	+= $(call cc-option,-mno-sched-prolog) \
+ 				   -fno-omit-frame-pointer
+-- 
+1.7.9.5

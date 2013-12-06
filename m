@@ -1,44 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Dec 2013 03:28:34 +0100 (CET)
-Received: from mail-gw1-out.broadcom.com ([216.31.210.62]:19372 "EHLO
-        mail-gw1-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6867247Ab3LFC0z5azE4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Dec 2013 03:26:55 +0100
-X-IronPort-AV: E=Sophos;i="4.93,838,1378882800"; 
-   d="scan'208";a="419985"
-Received: from irvexchcas07.broadcom.com (HELO IRVEXCHCAS07.corp.ad.broadcom.com) ([10.9.208.55])
-  by mail-gw1-out.broadcom.com with ESMTP; 05 Dec 2013 18:30:23 -0800
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP Server
- (TLS) id 14.1.438.0; Thu, 5 Dec 2013 18:26:24 -0800
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP Server id
- 14.1.438.0; Thu, 5 Dec 2013 18:26:24 -0800
-Received: from fainelli-desktop.broadcom.com (unknown [10.12.164.252])  by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 73331246A4;  Thu,  5 Dec
- 2013 18:26:24 -0800 (PST)
-From:   Florian Fainelli <florian@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Dec 2013 10:21:17 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:30843 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6828766Ab3LFJVOdh9uc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 6 Dec 2013 10:21:14 +0100
+From:   Qais Yousef <qais.yousef@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     <ralf@linux-mips.org>, <blogic@openwrt.org>, <jogo@openwrt.org>,
-        <mbizon@freebox.fr>, <cernekee@gmail.com>,
-        <gregkh@linuxfoundation.org>, <linux-serial@vger.kernel.org>,
-        Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH 1/5] tty: serial: bcm63xx_uart: remove unused inclusion
-Date:   Thu, 5 Dec 2013 18:26:04 -0800
-Message-ID: <1386296768-20204-2-git-send-email-florian@openwrt.org>
-X-Mailer: git-send-email 1.8.3.2
-In-Reply-To: <1386296768-20204-1-git-send-email-florian@openwrt.org>
-References: <1386296768-20204-1-git-send-email-florian@openwrt.org>
+CC:     Qais Yousef <qais.yousef@imgtec.com>
+Subject: [PATCH] mips/include/asm/mipsregs.h: s/u16/unsigned short/
+Date:   Fri, 6 Dec 2013 09:20:59 +0000
+Message-ID: <1386321659-30073-1-git-send-email-qais.yousef@imgtec.com>
+X-Mailer: git-send-email 1.7.1
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <florian@openwrt.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [192.168.154.36]
+X-SEF-Processed: 7_3_0_01192__2013_12_06_09_21_08
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38667
+X-archive-position: 38668
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: qais.yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,25 +36,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-bcm63xx_irqs.h is included but we are not using anything from it, drop
-that include.
+I was getting this error when including this header in my driver:
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
+  arch/mips/include/asm/mipsregs.h:644:33: error: unknown type name ‘u16’
+
+since the use of u16 is not really necessary, convert it to unsigned short.
+
+Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
+Reviewed-by: Steven J. Hill <Steven.Hill@imgtec.com>
 ---
- drivers/tty/serial/bcm63xx_uart.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/include/asm/mipsregs.h |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/bcm63xx_uart.c b/drivers/tty/serial/bcm63xx_uart.c
-index 649d512..2e72752 100644
---- a/drivers/tty/serial/bcm63xx_uart.c
-+++ b/drivers/tty/serial/bcm63xx_uart.c
-@@ -30,7 +30,6 @@
- #include <linux/serial.h>
- #include <linux/serial_core.h>
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index e033141..0a2d6ef 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -641,9 +641,9 @@
+  * microMIPS instructions can be 16-bit or 32-bit in length. This
+  * returns a 1 if the instruction is 16-bit and a 0 if 32-bit.
+  */
+-static inline int mm_insn_16bit(u16 insn)
++static inline int mm_insn_16bit(unsigned short insn)
+ {
+-	u16 opcode = (insn >> 10) & 0x7;
++	unsigned short opcode = (insn >> 10) & 0x7;
  
--#include <bcm63xx_irq.h>
- #include <bcm63xx_regs.h>
- #include <bcm63xx_io.h>
- 
+ 	return (opcode >= 1 && opcode <= 3) ? 1 : 0;
+ }
 -- 
-1.8.3.2
+1.7.1

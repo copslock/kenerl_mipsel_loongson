@@ -1,49 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Dec 2013 17:32:19 +0100 (CET)
-Received: from mail-ie0-f180.google.com ([209.85.223.180]:33479 "EHLO
-        mail-ie0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6820116Ab3LFQcQDvhj5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Dec 2013 17:32:16 +0100
-Received: by mail-ie0-f180.google.com with SMTP id tp5so1630494ieb.11
-        for <linux-mips@linux-mips.org>; Fri, 06 Dec 2013 08:32:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=nptTMQ47E32W3kzuKUvACLjpIaJkmBJfmZuW5GqoiCI=;
-        b=aSxokZK/81mScRL1NsGIpIg/gjbTWkgvR1YWsVmWE3Vtjw2Ev6a+ekx5HZxHipO88Q
-         8z4UXQADCkinPwzF80zlDoTdXXdtDTzesKix07+49WgNFSRB4byDkNnpuhQIREpOlNKp
-         lj8foEWBf0NhONAV7skbt3s4udEwKcLBS+PPoMCjpMmUgNp37iuPtiRRszURO9d4RTdZ
-         O16NYdKu3jJxWWqPptZX/1P6Khbd3J0gNsWdM1H623sJlNdRnq4avfPp7rH8DvnbFht1
-         rum7Sj19zUON5icxxZAvyXczGsoNaHum/mwbw6u/kPqPTa7uC+5hKwdX5ZBbRnPIHy9h
-         JUnA==
-X-Received: by 10.50.128.72 with SMTP id nm8mr3626670igb.10.1386347529548;
-        Fri, 06 Dec 2013 08:32:09 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id v2sm4330275igz.3.2013.12.06.08.32.08
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Fri, 06 Dec 2013 08:32:08 -0800 (PST)
-Message-ID: <52A1FC07.8030902@gmail.com>
-Date:   Fri, 06 Dec 2013 08:32:07 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
-To:     Qais Yousef <qais.yousef@imgtec.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] mips/include/asm/mipsregs.h: s/u16/unsigned short/
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Dec 2013 17:35:54 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:6579 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6820116Ab3LFQftAilXg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 6 Dec 2013 17:35:49 +0100
+From:   Qais Yousef <Qais.Yousef@imgtec.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH] mips/include/asm/mipsregs.h: s/u16/unsigned short/
+Thread-Topic: [PATCH] mips/include/asm/mipsregs.h: s/u16/unsigned short/
+Thread-Index: AQHO8mR+/DsSvBx3hkan8k2STnHNF5pHXJ+AgAAAdkA=
+Date:   Fri, 6 Dec 2013 16:35:41 +0000
+Message-ID: <392C4BDEFF12D14FA57A3F30B283D7D13C5935@LEMAIL01.le.imgtec.org>
 References: <1386321659-30073-1-git-send-email-qais.yousef@imgtec.com>
-In-Reply-To: <1386321659-30073-1-git-send-email-qais.yousef@imgtec.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <ddaney.cavm@gmail.com>
+ <52A1FC07.8030902@gmail.com>
+In-Reply-To: <52A1FC07.8030902@gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.154.35]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-SEF-Processed: 7_3_0_01192__2013_12_06_16_35_43
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38674
+X-archive-position: 38675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: Qais.Yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,41 +44,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/06/2013 01:20 AM, Qais Yousef wrote:
-> I was getting this error when including this header in my driver:
->
->    arch/mips/include/asm/mipsregs.h:644:33: error: unknown type name ‘u16’
->
-> since the use of u16 is not really necessary, convert it to unsigned short.
->
-> Signed-off-by: Qais Yousef <qais.yousef@imgtec.com>
-> Reviewed-by: Steven J. Hill <Steven.Hill@imgtec.com>
-
-NAK.
-
-Just #include <linux/types.h> at the top of asm/mipsregs.h instead.
-
-David Daney
-
-
-> ---
->   arch/mips/include/asm/mipsregs.h |    4 ++--
->   1 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-> index e033141..0a2d6ef 100644
-> --- a/arch/mips/include/asm/mipsregs.h
-> +++ b/arch/mips/include/asm/mipsregs.h
-> @@ -641,9 +641,9 @@
->    * microMIPS instructions can be 16-bit or 32-bit in length. This
->    * returns a 1 if the instruction is 16-bit and a 0 if 32-bit.
->    */
-> -static inline int mm_insn_16bit(u16 insn)
-> +static inline int mm_insn_16bit(unsigned short insn)
->   {
-> -	u16 opcode = (insn >> 10) & 0x7;
-> +	unsigned short opcode = (insn >> 10) & 0x7;
->
->   	return (opcode >= 1 && opcode <= 3) ? 1 : 0;
->   }
->
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBEYXZpZCBEYW5leSBbbWFpbHRv
+OmRkYW5leS5jYXZtQGdtYWlsLmNvbV0NCj4gU2VudDogMDYgRGVjZW1iZXIgMjAxMyAxNjozMg0K
+PiBUbzogUWFpcyBZb3VzZWYNCj4gQ2M6IGxpbnV4LW1pcHNAbGludXgtbWlwcy5vcmcNCj4gU3Vi
+amVjdDogUmU6IFtQQVRDSF0gbWlwcy9pbmNsdWRlL2FzbS9taXBzcmVncy5oOiBzL3UxNi91bnNp
+Z25lZCBzaG9ydC8NCj4gDQo+IE9uIDEyLzA2LzIwMTMgMDE6MjAgQU0sIFFhaXMgWW91c2VmIHdy
+b3RlOg0KPiA+IEkgd2FzIGdldHRpbmcgdGhpcyBlcnJvciB3aGVuIGluY2x1ZGluZyB0aGlzIGhl
+YWRlciBpbiBteSBkcml2ZXI6DQo+ID4NCj4gPiAgICBhcmNoL21pcHMvaW5jbHVkZS9hc20vbWlw
+c3JlZ3MuaDo2NDQ6MzM6IGVycm9yOiB1bmtub3duIHR5cGUgbmFtZSDigJh1MTbigJkNCj4gPg0K
+PiA+IHNpbmNlIHRoZSB1c2Ugb2YgdTE2IGlzIG5vdCByZWFsbHkgbmVjZXNzYXJ5LCBjb252ZXJ0
+IGl0IHRvIHVuc2lnbmVkIHNob3J0Lg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogUWFpcyBZb3Vz
+ZWYgPHFhaXMueW91c2VmQGltZ3RlYy5jb20+DQo+ID4gUmV2aWV3ZWQtYnk6IFN0ZXZlbiBKLiBI
+aWxsIDxTdGV2ZW4uSGlsbEBpbWd0ZWMuY29tPg0KPiANCj4gTkFLLg0KPiANCj4gSnVzdCAjaW5j
+bHVkZSA8bGludXgvdHlwZXMuaD4gYXQgdGhlIHRvcCBvZiBhc20vbWlwc3JlZ3MuaCBpbnN0ZWFk
+Lg0KDQpGdW5uaWx5IHRoYXQgd2FzIG15IGZpcnN0IHNvbHV0aW9uIGJlZm9yZSBJIGNoYW5nZWQg
+aXQgdG8gdGhpcyA6KQ0KDQpJJ2xsIHJlc2VuZCBidXQgY2FuIHlvdSBwbGVhc2UgZ2l2ZSBzb21l
+IGV4cGxhbmF0aW9uIHdoeSBjaGFuZ2luZyB1MTYgdG8gdW5zaWduZWQgc2hvcnQgaXMgYmFkPw0K
+DQpUaGFua3MsDQpRYWlzDQoNCj4gDQo+IERhdmlkIERhbmV5DQo+IA0KPiANCj4gPiAtLS0NCj4g
+PiAgIGFyY2gvbWlwcy9pbmNsdWRlL2FzbS9taXBzcmVncy5oIHwgICAgNCArKy0tDQo+ID4gICAx
+IGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCj4gPg0KPiA+
+IGRpZmYgLS1naXQgYS9hcmNoL21pcHMvaW5jbHVkZS9hc20vbWlwc3JlZ3MuaA0KPiBiL2FyY2gv
+bWlwcy9pbmNsdWRlL2FzbS9taXBzcmVncy5oDQo+ID4gaW5kZXggZTAzMzE0MS4uMGEyZDZlZiAx
+MDA2NDQNCj4gPiAtLS0gYS9hcmNoL21pcHMvaW5jbHVkZS9hc20vbWlwc3JlZ3MuaA0KPiA+ICsr
+KyBiL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9taXBzcmVncy5oDQo+ID4gQEAgLTY0MSw5ICs2NDEs
+OSBAQA0KPiA+ICAgICogbWljcm9NSVBTIGluc3RydWN0aW9ucyBjYW4gYmUgMTYtYml0IG9yIDMy
+LWJpdCBpbiBsZW5ndGguIFRoaXMNCj4gPiAgICAqIHJldHVybnMgYSAxIGlmIHRoZSBpbnN0cnVj
+dGlvbiBpcyAxNi1iaXQgYW5kIGEgMCBpZiAzMi1iaXQuDQo+ID4gICAgKi8NCj4gPiAtc3RhdGlj
+IGlubGluZSBpbnQgbW1faW5zbl8xNmJpdCh1MTYgaW5zbikNCj4gPiArc3RhdGljIGlubGluZSBp
+bnQgbW1faW5zbl8xNmJpdCh1bnNpZ25lZCBzaG9ydCBpbnNuKQ0KPiA+ICAgew0KPiA+IC0JdTE2
+IG9wY29kZSA9IChpbnNuID4+IDEwKSAmIDB4NzsNCj4gPiArCXVuc2lnbmVkIHNob3J0IG9wY29k
+ZSA9IChpbnNuID4+IDEwKSAmIDB4NzsNCj4gPg0KPiA+ICAgCXJldHVybiAob3Bjb2RlID49IDEg
+JiYgb3Bjb2RlIDw9IDMpID8gMSA6IDA7DQo+ID4gICB9DQo+ID4NCg0K

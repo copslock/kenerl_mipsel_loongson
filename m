@@ -1,28 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Dec 2013 18:38:12 +0100 (CET)
-Received: from home.bethel-hill.org ([63.228.164.32]:32806 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816676Ab3LERiFAAAOc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Dec 2013 18:38:05 +0100
-Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <Steven.Hill@imgtec.com>)
-        id 1Vocs9-0008So-Lg; Thu, 05 Dec 2013 11:37:57 -0600
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org
-Subject: [PATCH] MIPS: microMIPS: Remove unsupported compiler flag.
-Date:   Thu,  5 Dec 2013 11:37:49 -0600
-Message-Id: <1386265069-21930-1-git-send-email-Steven.Hill@imgtec.com>
-X-Mailer: git-send-email 1.7.9.5
-Return-Path: <Steven.Hill@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Dec 2013 03:26:43 +0100 (CET)
+Received: from mail-gw3-out.broadcom.com ([216.31.210.64]:61673 "EHLO
+        mail-gw3-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6838329Ab3LFC0dflxDc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Dec 2013 03:26:33 +0100
+X-IronPort-AV: E=Sophos;i="4.93,838,1378882800"; 
+   d="scan'208";a="218828"
+Received: from irvexchcas06.broadcom.com (HELO IRVEXCHCAS06.corp.ad.broadcom.com) ([10.9.208.53])
+  by mail-gw3-out.broadcom.com with ESMTP; 05 Dec 2013 18:26:02 -0800
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
+ IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP Server
+ (TLS) id 14.1.438.0; Thu, 5 Dec 2013 18:26:24 -0800
+Received: from mail-irva-13.broadcom.com (10.10.10.20) by
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
+ 14.1.438.0; Thu, 5 Dec 2013 18:26:24 -0800
+Received: from fainelli-desktop.broadcom.com (unknown [10.12.164.252])  by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 8634B246A6;  Thu,  5 Dec
+ 2013 18:26:24 -0800 (PST)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     <linux-mips@linux-mips.org>
+CC:     <ralf@linux-mips.org>, <blogic@openwrt.org>, <jogo@openwrt.org>,
+        <mbizon@freebox.fr>, <cernekee@gmail.com>,
+        <gregkh@linuxfoundation.org>, <linux-serial@vger.kernel.org>,
+        Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH 2/5] tty: serial: bcm63xx_uart: drop bcm_{readl,writel} macros
+Date:   Thu, 5 Dec 2013 18:26:05 -0800
+Message-ID: <1386296768-20204-3-git-send-email-florian@openwrt.org>
+X-Mailer: git-send-email 1.8.3.2
+In-Reply-To: <1386296768-20204-1-git-send-email-florian@openwrt.org>
+References: <1386296768-20204-1-git-send-email-florian@openwrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+Return-Path: <florian@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38661
+X-archive-position: 38662
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,31 +51,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Steven J. Hill" <Steven.Hill@imgtec.com>
+bcm_{readl,writel} macros expand to __raw_{readl,writel}, use these
+directly such that we do not rely on the platform to provide these for
+us. As a result, we no longer use bcm63xx_io.h, so remove that inclusion
+too.
 
-Remove usage of -mno-jals compiler flag when building a pure
-microMIPS kernel. The -mno-jals flag only ever existed within
-Mentor toolchains. Dropping this flag allows all FSF toolchains
-to work.
-
-Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
-Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
- arch/mips/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/bcm63xx_uart.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index de300b9..873a0ca 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -114,7 +114,7 @@ cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(shell $(CC) -dumpmachine |grep -q 'mips.*e
- cflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' || echo -EL $(undef-all) $(predef-le))
+diff --git a/drivers/tty/serial/bcm63xx_uart.c b/drivers/tty/serial/bcm63xx_uart.c
+index 2e72752..6d773a3 100644
+--- a/drivers/tty/serial/bcm63xx_uart.c
++++ b/drivers/tty/serial/bcm63xx_uart.c
+@@ -31,7 +31,6 @@
+ #include <linux/serial_core.h>
  
- cflags-$(CONFIG_CPU_HAS_SMARTMIPS)	+= $(call cc-option,-msmartmips)
--cflags-$(CONFIG_CPU_MICROMIPS) += $(call cc-option,-mmicromips -mno-jals)
-+cflags-$(CONFIG_CPU_MICROMIPS) += $(call cc-option,-mmicromips)
+ #include <bcm63xx_regs.h>
+-#include <bcm63xx_io.h>
  
- cflags-$(CONFIG_SB1XXX_CORELIS)	+= $(call cc-option,-mno-sched-prolog) \
- 				   -fno-omit-frame-pointer
+ #define BCM63XX_NR_UARTS	2
+ 
+@@ -80,13 +79,13 @@ static struct uart_port ports[BCM63XX_NR_UARTS];
+ static inline unsigned int bcm_uart_readl(struct uart_port *port,
+ 					 unsigned int offset)
+ {
+-	return bcm_readl(port->membase + offset);
++	return __raw_readl(port->membase + offset);
+ }
+ 
+ static inline void bcm_uart_writel(struct uart_port *port,
+ 				  unsigned int value, unsigned int offset)
+ {
+-	bcm_writel(value, port->membase + offset);
++	__raw_writel(value, port->membase + offset);
+ }
+ 
+ /*
 -- 
-1.7.9.5
+1.8.3.2

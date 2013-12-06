@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Dec 2013 03:27:16 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Dec 2013 03:27:36 +0100 (CET)
 Received: from mail-gw3-out.broadcom.com ([216.31.210.64]:61673 "EHLO
         mail-gw3-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6862094Ab3LFC0g1XobF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Dec 2013 03:26:36 +0100
+        by eddie.linux-mips.org with ESMTP id S6831300Ab3LFC0lOjeI5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Dec 2013 03:26:41 +0100
 X-IronPort-AV: E=Sophos;i="4.93,838,1378882800"; 
-   d="scan'208";a="218829"
-Received: from irvexchcas06.broadcom.com (HELO IRVEXCHCAS06.corp.ad.broadcom.com) ([10.9.208.53])
+   d="scan'208";a="218831"
+Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
   by mail-gw3-out.broadcom.com with ESMTP; 05 Dec 2013 18:26:02 -0800
-Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP Server
- (TLS) id 14.1.438.0; Thu, 5 Dec 2013 18:26:24 -0800
+Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
+ IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
+ (TLS) id 14.1.438.0; Thu, 5 Dec 2013 18:26:25 -0800
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP Server id
- 14.1.438.0; Thu, 5 Dec 2013 18:26:24 -0800
+ IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
+ 14.1.438.0; Thu, 5 Dec 2013 18:26:25 -0800
 Received: from fainelli-desktop.broadcom.com (unknown [10.12.164.252])  by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 9EDAA246A8;  Thu,  5 Dec
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id DAC5A246A3;  Thu,  5 Dec
  2013 18:26:24 -0800 (PST)
 From:   Florian Fainelli <florian@openwrt.org>
 To:     <linux-mips@linux-mips.org>
@@ -22,9 +22,9 @@ CC:     <ralf@linux-mips.org>, <blogic@openwrt.org>, <jogo@openwrt.org>,
         <mbizon@freebox.fr>, <cernekee@gmail.com>,
         <gregkh@linuxfoundation.org>, <linux-serial@vger.kernel.org>,
         Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH 3/5] MIPS: BCM63XX: move UART register definitions
-Date:   Thu, 5 Dec 2013 18:26:06 -0800
-Message-ID: <1386296768-20204-4-git-send-email-florian@openwrt.org>
+Subject: [PATCH 5/5] MIPS: BCM63XX: use linux/serial_bcm63xx.h
+Date:   Thu, 5 Dec 2013 18:26:08 -0800
+Message-ID: <1386296768-20204-6-git-send-email-florian@openwrt.org>
 X-Mailer: git-send-email 1.8.3.2
 In-Reply-To: <1386296768-20204-1-git-send-email-florian@openwrt.org>
 References: <1386296768-20204-1-git-send-email-florian@openwrt.org>
@@ -34,7 +34,7 @@ Return-Path: <florian@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38663
+X-archive-position: 38664
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,267 +51,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Move the BCM63XX UART driver definitions to
-include/linux/serial_bcm63xx.h such that we do not rely on the MIPS
-BCM63XX code to provide these for us.
+Update the early_printk code to include linux/serial_bcm63xx.h which
+provides the definitions for the UART block registers. While at it,
+remove the inclusion of serial_bcm63xx.h which was just there to allow
+smooth transition.
 
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h | 115 +--------------------
- include/linux/serial_bcm63xx.h                    | 119 ++++++++++++++++++++++
- 2 files changed, 120 insertions(+), 114 deletions(-)
- create mode 100644 include/linux/serial_bcm63xx.h
+ arch/mips/bcm63xx/early_printk.c                  | 2 +-
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h | 7 -------
+ 2 files changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-index 9875db3..96a2d2c 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-@@ -466,120 +466,7 @@
-  * _REG relative to RSET_UARTx
-  *************************************************************************/
+diff --git a/arch/mips/bcm63xx/early_printk.c b/arch/mips/bcm63xx/early_printk.c
+index aa8f7f9..f92f1a2 100644
+--- a/arch/mips/bcm63xx/early_printk.c
++++ b/arch/mips/bcm63xx/early_printk.c
+@@ -8,7 +8,7 @@
  
--/* UART Control Register */
--#define UART_CTL_REG			0x0
--#define UART_CTL_RXTMOUTCNT_SHIFT	0
--#define UART_CTL_RXTMOUTCNT_MASK	(0x1f << UART_CTL_RXTMOUTCNT_SHIFT)
--#define UART_CTL_RSTTXDN_SHIFT		5
--#define UART_CTL_RSTTXDN_MASK		(1 << UART_CTL_RSTTXDN_SHIFT)
--#define UART_CTL_RSTRXFIFO_SHIFT		6
--#define UART_CTL_RSTRXFIFO_MASK		(1 << UART_CTL_RSTRXFIFO_SHIFT)
--#define UART_CTL_RSTTXFIFO_SHIFT		7
--#define UART_CTL_RSTTXFIFO_MASK		(1 << UART_CTL_RSTTXFIFO_SHIFT)
--#define UART_CTL_STOPBITS_SHIFT		8
--#define UART_CTL_STOPBITS_MASK		(0xf << UART_CTL_STOPBITS_SHIFT)
--#define UART_CTL_STOPBITS_1		(0x7 << UART_CTL_STOPBITS_SHIFT)
--#define UART_CTL_STOPBITS_2		(0xf << UART_CTL_STOPBITS_SHIFT)
--#define UART_CTL_BITSPERSYM_SHIFT	12
--#define UART_CTL_BITSPERSYM_MASK	(0x3 << UART_CTL_BITSPERSYM_SHIFT)
--#define UART_CTL_XMITBRK_SHIFT		14
--#define UART_CTL_XMITBRK_MASK		(1 << UART_CTL_XMITBRK_SHIFT)
--#define UART_CTL_RSVD_SHIFT		15
--#define UART_CTL_RSVD_MASK		(1 << UART_CTL_RSVD_SHIFT)
--#define UART_CTL_RXPAREVEN_SHIFT		16
--#define UART_CTL_RXPAREVEN_MASK		(1 << UART_CTL_RXPAREVEN_SHIFT)
--#define UART_CTL_RXPAREN_SHIFT		17
--#define UART_CTL_RXPAREN_MASK		(1 << UART_CTL_RXPAREN_SHIFT)
--#define UART_CTL_TXPAREVEN_SHIFT		18
--#define UART_CTL_TXPAREVEN_MASK		(1 << UART_CTL_TXPAREVEN_SHIFT)
--#define UART_CTL_TXPAREN_SHIFT		18
--#define UART_CTL_TXPAREN_MASK		(1 << UART_CTL_TXPAREN_SHIFT)
--#define UART_CTL_LOOPBACK_SHIFT		20
--#define UART_CTL_LOOPBACK_MASK		(1 << UART_CTL_LOOPBACK_SHIFT)
--#define UART_CTL_RXEN_SHIFT		21
--#define UART_CTL_RXEN_MASK		(1 << UART_CTL_RXEN_SHIFT)
--#define UART_CTL_TXEN_SHIFT		22
--#define UART_CTL_TXEN_MASK		(1 << UART_CTL_TXEN_SHIFT)
--#define UART_CTL_BRGEN_SHIFT		23
--#define UART_CTL_BRGEN_MASK		(1 << UART_CTL_BRGEN_SHIFT)
--
--/* UART Baudword register */
--#define UART_BAUD_REG			0x4
--
--/* UART Misc Control register */
--#define UART_MCTL_REG			0x8
--#define UART_MCTL_DTR_SHIFT		0
--#define UART_MCTL_DTR_MASK		(1 << UART_MCTL_DTR_SHIFT)
--#define UART_MCTL_RTS_SHIFT		1
--#define UART_MCTL_RTS_MASK		(1 << UART_MCTL_RTS_SHIFT)
--#define UART_MCTL_RXFIFOTHRESH_SHIFT	8
--#define UART_MCTL_RXFIFOTHRESH_MASK	(0xf << UART_MCTL_RXFIFOTHRESH_SHIFT)
--#define UART_MCTL_TXFIFOTHRESH_SHIFT	12
--#define UART_MCTL_TXFIFOTHRESH_MASK	(0xf << UART_MCTL_TXFIFOTHRESH_SHIFT)
--#define UART_MCTL_RXFIFOFILL_SHIFT	16
--#define UART_MCTL_RXFIFOFILL_MASK	(0x1f << UART_MCTL_RXFIFOFILL_SHIFT)
--#define UART_MCTL_TXFIFOFILL_SHIFT	24
--#define UART_MCTL_TXFIFOFILL_MASK	(0x1f << UART_MCTL_TXFIFOFILL_SHIFT)
--
--/* UART External Input Configuration register */
--#define UART_EXTINP_REG			0xc
--#define UART_EXTINP_RI_SHIFT		0
--#define UART_EXTINP_RI_MASK		(1 << UART_EXTINP_RI_SHIFT)
--#define UART_EXTINP_CTS_SHIFT		1
--#define UART_EXTINP_CTS_MASK		(1 << UART_EXTINP_CTS_SHIFT)
--#define UART_EXTINP_DCD_SHIFT		2
--#define UART_EXTINP_DCD_MASK		(1 << UART_EXTINP_DCD_SHIFT)
--#define UART_EXTINP_DSR_SHIFT		3
--#define UART_EXTINP_DSR_MASK		(1 << UART_EXTINP_DSR_SHIFT)
--#define UART_EXTINP_IRSTAT(x)		(1 << (x + 4))
--#define UART_EXTINP_IRMASK(x)		(1 << (x + 8))
--#define UART_EXTINP_IR_RI		0
--#define UART_EXTINP_IR_CTS		1
--#define UART_EXTINP_IR_DCD		2
--#define UART_EXTINP_IR_DSR		3
--#define UART_EXTINP_RI_NOSENSE_SHIFT	16
--#define UART_EXTINP_RI_NOSENSE_MASK	(1 << UART_EXTINP_RI_NOSENSE_SHIFT)
--#define UART_EXTINP_CTS_NOSENSE_SHIFT	17
--#define UART_EXTINP_CTS_NOSENSE_MASK	(1 << UART_EXTINP_CTS_NOSENSE_SHIFT)
--#define UART_EXTINP_DCD_NOSENSE_SHIFT	18
--#define UART_EXTINP_DCD_NOSENSE_MASK	(1 << UART_EXTINP_DCD_NOSENSE_SHIFT)
--#define UART_EXTINP_DSR_NOSENSE_SHIFT	19
--#define UART_EXTINP_DSR_NOSENSE_MASK	(1 << UART_EXTINP_DSR_NOSENSE_SHIFT)
--
--/* UART Interrupt register */
--#define UART_IR_REG			0x10
--#define UART_IR_MASK(x)			(1 << (x + 16))
--#define UART_IR_STAT(x)			(1 << (x))
--#define UART_IR_EXTIP			0
--#define UART_IR_TXUNDER			1
--#define UART_IR_TXOVER			2
--#define UART_IR_TXTRESH			3
--#define UART_IR_TXRDLATCH		4
--#define UART_IR_TXEMPTY			5
--#define UART_IR_RXUNDER			6
--#define UART_IR_RXOVER			7
--#define UART_IR_RXTIMEOUT		8
--#define UART_IR_RXFULL			9
--#define UART_IR_RXTHRESH		10
--#define UART_IR_RXNOTEMPTY		11
--#define UART_IR_RXFRAMEERR		12
--#define UART_IR_RXPARERR		13
--#define UART_IR_RXBRK			14
--#define UART_IR_TXDONE			15
--
--/* UART Fifo register */
--#define UART_FIFO_REG			0x14
--#define UART_FIFO_VALID_SHIFT		0
--#define UART_FIFO_VALID_MASK		0xff
--#define UART_FIFO_FRAMEERR_SHIFT	8
--#define UART_FIFO_FRAMEERR_MASK		(1 << UART_FIFO_FRAMEERR_SHIFT)
--#define UART_FIFO_PARERR_SHIFT		9
--#define UART_FIFO_PARERR_MASK		(1 << UART_FIFO_PARERR_SHIFT)
--#define UART_FIFO_BRKDET_SHIFT		10
--#define UART_FIFO_BRKDET_MASK		(1 << UART_FIFO_BRKDET_SHIFT)
--#define UART_FIFO_ANYERR_MASK		(UART_FIFO_FRAMEERR_MASK |	\
--					UART_FIFO_PARERR_MASK |		\
--					UART_FIFO_BRKDET_MASK)
+ #include <linux/init.h>
+ #include <bcm63xx_io.h>
+-#include <bcm63xx_regs.h>
 +#include <linux/serial_bcm63xx.h>
  
+ static void wait_xfered(void)
+ {
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+index 96a2d2c..ab427f8 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+@@ -463,13 +463,6 @@
+ #define WDT_SOFTRESET_REG		0xc
  
  /*************************************************************************
-diff --git a/include/linux/serial_bcm63xx.h b/include/linux/serial_bcm63xx.h
-new file mode 100644
-index 0000000..570e964
---- /dev/null
-+++ b/include/linux/serial_bcm63xx.h
-@@ -0,0 +1,119 @@
-+#ifndef _LINUX_SERIAL_BCM63XX_H
-+#define _LINUX_SERIAL_BCM63XX_H
-+
-+/* UART Control Register */
-+#define UART_CTL_REG			0x0
-+#define UART_CTL_RXTMOUTCNT_SHIFT	0
-+#define UART_CTL_RXTMOUTCNT_MASK	(0x1f << UART_CTL_RXTMOUTCNT_SHIFT)
-+#define UART_CTL_RSTTXDN_SHIFT		5
-+#define UART_CTL_RSTTXDN_MASK		(1 << UART_CTL_RSTTXDN_SHIFT)
-+#define UART_CTL_RSTRXFIFO_SHIFT		6
-+#define UART_CTL_RSTRXFIFO_MASK		(1 << UART_CTL_RSTRXFIFO_SHIFT)
-+#define UART_CTL_RSTTXFIFO_SHIFT		7
-+#define UART_CTL_RSTTXFIFO_MASK		(1 << UART_CTL_RSTTXFIFO_SHIFT)
-+#define UART_CTL_STOPBITS_SHIFT		8
-+#define UART_CTL_STOPBITS_MASK		(0xf << UART_CTL_STOPBITS_SHIFT)
-+#define UART_CTL_STOPBITS_1		(0x7 << UART_CTL_STOPBITS_SHIFT)
-+#define UART_CTL_STOPBITS_2		(0xf << UART_CTL_STOPBITS_SHIFT)
-+#define UART_CTL_BITSPERSYM_SHIFT	12
-+#define UART_CTL_BITSPERSYM_MASK	(0x3 << UART_CTL_BITSPERSYM_SHIFT)
-+#define UART_CTL_XMITBRK_SHIFT		14
-+#define UART_CTL_XMITBRK_MASK		(1 << UART_CTL_XMITBRK_SHIFT)
-+#define UART_CTL_RSVD_SHIFT		15
-+#define UART_CTL_RSVD_MASK		(1 << UART_CTL_RSVD_SHIFT)
-+#define UART_CTL_RXPAREVEN_SHIFT		16
-+#define UART_CTL_RXPAREVEN_MASK		(1 << UART_CTL_RXPAREVEN_SHIFT)
-+#define UART_CTL_RXPAREN_SHIFT		17
-+#define UART_CTL_RXPAREN_MASK		(1 << UART_CTL_RXPAREN_SHIFT)
-+#define UART_CTL_TXPAREVEN_SHIFT		18
-+#define UART_CTL_TXPAREVEN_MASK		(1 << UART_CTL_TXPAREVEN_SHIFT)
-+#define UART_CTL_TXPAREN_SHIFT		18
-+#define UART_CTL_TXPAREN_MASK		(1 << UART_CTL_TXPAREN_SHIFT)
-+#define UART_CTL_LOOPBACK_SHIFT		20
-+#define UART_CTL_LOOPBACK_MASK		(1 << UART_CTL_LOOPBACK_SHIFT)
-+#define UART_CTL_RXEN_SHIFT		21
-+#define UART_CTL_RXEN_MASK		(1 << UART_CTL_RXEN_SHIFT)
-+#define UART_CTL_TXEN_SHIFT		22
-+#define UART_CTL_TXEN_MASK		(1 << UART_CTL_TXEN_SHIFT)
-+#define UART_CTL_BRGEN_SHIFT		23
-+#define UART_CTL_BRGEN_MASK		(1 << UART_CTL_BRGEN_SHIFT)
-+
-+/* UART Baudword register */
-+#define UART_BAUD_REG			0x4
-+
-+/* UART Misc Control register */
-+#define UART_MCTL_REG			0x8
-+#define UART_MCTL_DTR_SHIFT		0
-+#define UART_MCTL_DTR_MASK		(1 << UART_MCTL_DTR_SHIFT)
-+#define UART_MCTL_RTS_SHIFT		1
-+#define UART_MCTL_RTS_MASK		(1 << UART_MCTL_RTS_SHIFT)
-+#define UART_MCTL_RXFIFOTHRESH_SHIFT	8
-+#define UART_MCTL_RXFIFOTHRESH_MASK	(0xf << UART_MCTL_RXFIFOTHRESH_SHIFT)
-+#define UART_MCTL_TXFIFOTHRESH_SHIFT	12
-+#define UART_MCTL_TXFIFOTHRESH_MASK	(0xf << UART_MCTL_TXFIFOTHRESH_SHIFT)
-+#define UART_MCTL_RXFIFOFILL_SHIFT	16
-+#define UART_MCTL_RXFIFOFILL_MASK	(0x1f << UART_MCTL_RXFIFOFILL_SHIFT)
-+#define UART_MCTL_TXFIFOFILL_SHIFT	24
-+#define UART_MCTL_TXFIFOFILL_MASK	(0x1f << UART_MCTL_TXFIFOFILL_SHIFT)
-+
-+/* UART External Input Configuration register */
-+#define UART_EXTINP_REG			0xc
-+#define UART_EXTINP_RI_SHIFT		0
-+#define UART_EXTINP_RI_MASK		(1 << UART_EXTINP_RI_SHIFT)
-+#define UART_EXTINP_CTS_SHIFT		1
-+#define UART_EXTINP_CTS_MASK		(1 << UART_EXTINP_CTS_SHIFT)
-+#define UART_EXTINP_DCD_SHIFT		2
-+#define UART_EXTINP_DCD_MASK		(1 << UART_EXTINP_DCD_SHIFT)
-+#define UART_EXTINP_DSR_SHIFT		3
-+#define UART_EXTINP_DSR_MASK		(1 << UART_EXTINP_DSR_SHIFT)
-+#define UART_EXTINP_IRSTAT(x)		(1 << (x + 4))
-+#define UART_EXTINP_IRMASK(x)		(1 << (x + 8))
-+#define UART_EXTINP_IR_RI		0
-+#define UART_EXTINP_IR_CTS		1
-+#define UART_EXTINP_IR_DCD		2
-+#define UART_EXTINP_IR_DSR		3
-+#define UART_EXTINP_RI_NOSENSE_SHIFT	16
-+#define UART_EXTINP_RI_NOSENSE_MASK	(1 << UART_EXTINP_RI_NOSENSE_SHIFT)
-+#define UART_EXTINP_CTS_NOSENSE_SHIFT	17
-+#define UART_EXTINP_CTS_NOSENSE_MASK	(1 << UART_EXTINP_CTS_NOSENSE_SHIFT)
-+#define UART_EXTINP_DCD_NOSENSE_SHIFT	18
-+#define UART_EXTINP_DCD_NOSENSE_MASK	(1 << UART_EXTINP_DCD_NOSENSE_SHIFT)
-+#define UART_EXTINP_DSR_NOSENSE_SHIFT	19
-+#define UART_EXTINP_DSR_NOSENSE_MASK	(1 << UART_EXTINP_DSR_NOSENSE_SHIFT)
-+
-+/* UART Interrupt register */
-+#define UART_IR_REG			0x10
-+#define UART_IR_MASK(x)			(1 << (x + 16))
-+#define UART_IR_STAT(x)			(1 << (x))
-+#define UART_IR_EXTIP			0
-+#define UART_IR_TXUNDER			1
-+#define UART_IR_TXOVER			2
-+#define UART_IR_TXTRESH			3
-+#define UART_IR_TXRDLATCH		4
-+#define UART_IR_TXEMPTY			5
-+#define UART_IR_RXUNDER			6
-+#define UART_IR_RXOVER			7
-+#define UART_IR_RXTIMEOUT		8
-+#define UART_IR_RXFULL			9
-+#define UART_IR_RXTHRESH		10
-+#define UART_IR_RXNOTEMPTY		11
-+#define UART_IR_RXFRAMEERR		12
-+#define UART_IR_RXPARERR		13
-+#define UART_IR_RXBRK			14
-+#define UART_IR_TXDONE			15
-+
-+/* UART Fifo register */
-+#define UART_FIFO_REG			0x14
-+#define UART_FIFO_VALID_SHIFT		0
-+#define UART_FIFO_VALID_MASK		0xff
-+#define UART_FIFO_FRAMEERR_SHIFT	8
-+#define UART_FIFO_FRAMEERR_MASK		(1 << UART_FIFO_FRAMEERR_SHIFT)
-+#define UART_FIFO_PARERR_SHIFT		9
-+#define UART_FIFO_PARERR_MASK		(1 << UART_FIFO_PARERR_SHIFT)
-+#define UART_FIFO_BRKDET_SHIFT		10
-+#define UART_FIFO_BRKDET_MASK		(1 << UART_FIFO_BRKDET_SHIFT)
-+#define UART_FIFO_ANYERR_MASK		(UART_FIFO_FRAMEERR_MASK |	\
-+					UART_FIFO_PARERR_MASK |		\
-+					UART_FIFO_BRKDET_MASK)
-+
-+#endif /* _LINUX_SERIAL_BCM63XX_H */
+- * _REG relative to RSET_UARTx
+- *************************************************************************/
+-
+-#include <linux/serial_bcm63xx.h>
+-
+-
+-/*************************************************************************
+  * _REG relative to RSET_GPIO
+  *************************************************************************/
+ 
 -- 
 1.8.3.2

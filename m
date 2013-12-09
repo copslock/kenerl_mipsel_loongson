@@ -1,34 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Dec 2013 09:22:47 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41506 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6821408Ab3LIIWoOmF2j (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Dec 2013 09:22:44 +0100
-Received: from localhost (unknown [166.170.57.22])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6B966273;
-        Mon,  9 Dec 2013 08:22:33 +0000 (UTC)
-Date:   Sun, 8 Dec 2013 17:13:56 -0800
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Florian Fainelli <florian@openwrt.org>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org, blogic@openwrt.org,
-        jogo@openwrt.org, mbizon@freebox.fr, cernekee@gmail.com,
-        linux-serial@vger.kernel.org
-Subject: Re: [PATCH 0/5] tty: serial: bcm63xx_uart: do not depend on MIPS
-Message-ID: <20131209011356.GB7671@kroah.com>
-References: <1386296768-20204-1-git-send-email-florian@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Dec 2013 10:36:13 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:41591 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6821408Ab3LIJgKMia94 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 9 Dec 2013 10:36:10 +0100
+From:   Qais Yousef <Qais.Yousef@imgtec.com>
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH] mips/include/asm/mipsregs.h: s/u16/unsigned short/
+Thread-Topic: [PATCH] mips/include/asm/mipsregs.h: s/u16/unsigned short/
+Thread-Index: AQHO8mR+/DsSvBx3hkan8k2STnHNF5pHXJ+AgAAAdkCAAAPXgIAEPKqA
+Date:   Mon, 9 Dec 2013 09:35:56 +0000
+Message-ID: <392C4BDEFF12D14FA57A3F30B283D7D13C5FA0@LEMAIL01.le.imgtec.org>
+References: <1386321659-30073-1-git-send-email-qais.yousef@imgtec.com>
+ <52A1FC07.8030902@gmail.com>
+ <392C4BDEFF12D14FA57A3F30B283D7D13C5935@LEMAIL01.le.imgtec.org>
+ <52A1FFA3.3000909@gmail.com>
+In-Reply-To: <52A1FFA3.3000909@gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.154.35]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1386296768-20204-1-git-send-email-florian@openwrt.org>
-User-Agent: Mutt/1.5.22 (2013-10-16)
-Return-Path: <gregkh@linuxfoundation.org>
+X-SEF-Processed: 7_3_0_01192__2013_12_09_09_35_59
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38682
+X-archive-position: 38683
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: Qais.Yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,16 +46,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Dec 05, 2013 at 06:26:03PM -0800, Florian Fainelli wrote:
-> Hi all,
-> 
-> This patchset reduces the dependency of the bcm63xx_uart on the MIPS BCM63XX
-> SoC support code in preparation for being used on different architectures
-> such as ARM.
-> 
-> Due to the MIPS patch which breaks down the register defines, this series
-> should ideally go via the MIPS tree.
-
-That's fine with me:
-
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBEYXZpZCBEYW5leSBbbWFpbHRv
+OmRkYW5leS5jYXZtQGdtYWlsLmNvbV0NCj4gU2VudDogMDYgRGVjZW1iZXIgMjAxMyAxNjo0OA0K
+PiBUbzogUWFpcyBZb3VzZWYNCj4gQ2M6IGxpbnV4LW1pcHNAbGludXgtbWlwcy5vcmcNCj4gU3Vi
+amVjdDogUmU6IFtQQVRDSF0gbWlwcy9pbmNsdWRlL2FzbS9taXBzcmVncy5oOiBzL3UxNi91bnNp
+Z25lZCBzaG9ydC8NCj4gDQo+IE9uIDEyLzA2LzIwMTMgMDg6MzUgQU0sIFFhaXMgWW91c2VmIHdy
+b3RlOg0KPiA+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+PiBGcm9tOiBEYXZpZCBE
+YW5leSBbbWFpbHRvOmRkYW5leS5jYXZtQGdtYWlsLmNvbV0NCj4gPj4gU2VudDogMDYgRGVjZW1i
+ZXIgMjAxMyAxNjozMg0KPiA+PiBUbzogUWFpcyBZb3VzZWYNCj4gPj4gQ2M6IGxpbnV4LW1pcHNA
+bGludXgtbWlwcy5vcmcNCj4gPj4gU3ViamVjdDogUmU6IFtQQVRDSF0gbWlwcy9pbmNsdWRlL2Fz
+bS9taXBzcmVncy5oOiBzL3UxNi91bnNpZ25lZA0KPiA+PiBzaG9ydC8NCj4gPj4NCj4gPj4gT24g
+MTIvMDYvMjAxMyAwMToyMCBBTSwgUWFpcyBZb3VzZWYgd3JvdGU6DQo+ID4+PiBJIHdhcyBnZXR0
+aW5nIHRoaXMgZXJyb3Igd2hlbiBpbmNsdWRpbmcgdGhpcyBoZWFkZXIgaW4gbXkgZHJpdmVyOg0K
+PiA+Pj4NCj4gPj4+ICAgICBhcmNoL21pcHMvaW5jbHVkZS9hc20vbWlwc3JlZ3MuaDo2NDQ6MzM6
+IGVycm9yOiB1bmtub3duIHR5cGUgbmFtZQ0KPiDigJh1MTbigJkNCj4gPj4+DQo+ID4+PiBzaW5j
+ZSB0aGUgdXNlIG9mIHUxNiBpcyBub3QgcmVhbGx5IG5lY2Vzc2FyeSwgY29udmVydCBpdCB0byB1
+bnNpZ25lZCBzaG9ydC4NCj4gPj4+DQo+ID4+PiBTaWduZWQtb2ZmLWJ5OiBRYWlzIFlvdXNlZiA8
+cWFpcy55b3VzZWZAaW1ndGVjLmNvbT4NCj4gPj4+IFJldmlld2VkLWJ5OiBTdGV2ZW4gSi4gSGls
+bCA8U3RldmVuLkhpbGxAaW1ndGVjLmNvbT4NCj4gPj4NCj4gPj4gTkFLLg0KPiA+Pg0KPiA+PiBK
+dXN0ICNpbmNsdWRlIDxsaW51eC90eXBlcy5oPiBhdCB0aGUgdG9wIG9mIGFzbS9taXBzcmVncy5o
+IGluc3RlYWQuDQo+ID4NCj4gPiBGdW5uaWx5IHRoYXQgd2FzIG15IGZpcnN0IHNvbHV0aW9uIGJl
+Zm9yZSBJIGNoYW5nZWQgaXQgdG8gdGhpcyA6KQ0KPiA+DQo+ID4gSSdsbCByZXNlbmQgYnV0IGNh
+biB5b3UgcGxlYXNlIGdpdmUgc29tZSBleHBsYW5hdGlvbiB3aHkgY2hhbmdpbmcgdTE2IHRvDQo+
+IHVuc2lnbmVkIHNob3J0IGlzIGJhZD8NCj4gDQo+IFRoaXMgaXMgdGhlIGxpbnV4IGtlcm5lbC4g
+IFBlb3BsZSBleHBlY3QgdG8gc2VlIGZpeGVkIHdpZHRoIGludGVnZXIgdHlwZSBkZWZpbml0aW9u
+cw0KPiB1c2luZyB0aGUgY29udmVudGlvbmFsIHU4LCB1MTYsIHUzMiwgZXRjLg0KPiANCj4gSWYg
+eW91IGFyZSBkb2luZyBzb21ldGhpbmcgdHJpY2t5IGVub3VnaCB0aGF0IHlvdSBuZWVkIHRvIGV4
+cGxpY2l0bHkgdXNlIGEgdHlwZSBvZg0KPiBhIGdpdmVuIHdpZHRoLCBkb24ndCBoaWRlIHRoZSBm
+YWN0LCBicmluZyBpdCB0byBvdXIgYXR0ZW50aW9uIGJ5IHVzaW5nIHRoZSBrZXJuZWwNCj4gc3Rh
+bmRhcmQgdHlwZS4NCj4gDQo+IElmIHlvdSBkb24ndCBuZWVkIGV4YWN0bHkgYSB1MTYsIGp1c3Qg
+bWFrZSBpdCBhbiB1bnNpZ25lZCBpbnQgYW5kIGJlIGRvbmUgd2l0aCBpdC4NCj4gDQo+IEl0IHdv
+dWxkIGFwcGVhciB0aGF0IG1pY3JvLU1JUFMgaW5zdHJ1Y3Rpb25zIGFyZSAxNiBiaXQsIHNvIHVz
+ZSB1MTYgZXZlcnl3aGVyZQ0KPiBmb3IgdGhlbS4NCg0KT0sgdGhhbmtzIGZvciB0aGUgZXhwbGFu
+YXRpb24uIHUxNiBpcyBtb3JlIHNhZmUgYW5kIGZ1dHVyZSBwcm9vZiBmb3Igc3VyZS4NCg0KPiAN
+Cj4gQWxzbyBpdCBsb29rcyBsaWtlIHRoaXMgZnVuY3Rpb24gcmVhbGx5IHNob3VsZCBiZSBkZWNs
+YXJlZCBhcyByZXR1cm5pbmcgdHlwZSBib29sLCBub3QNCj4gaW50LiAgRm9yIHRoZSBzYW1lIHJl
+YXNvbjogIEl0IGNhbm5vdCByZXR1cm4gYW55IGludGVnZXIsIG9ubHkgdHJ1dGggdmFsdWVzLiAg
+RG9uJ3QNCj4gaGlkZSB0aGlzIGZhY3QuICBCcmluZyBpdCB0byBvdXIgYXR0ZW50aW9uIGJ5IHVz
+aW5nIHRoZSBwcm9wZXIgdHlwZXMuDQoNCkkgc2hhcmUgdGhpcyB2aWV3IGFib3V0IEJvb2xlYW5z
+IHRvIGJlIGhvbmVzdA0KaHR0cDovL2FydGljbGUuZ21hbmUub3JnL2dtYW5lLmxpbnV4Lmtlcm5l
+bC8xNTU0MTgzL21hdGNoPWJvb2wNCg0KdjIgaXMgb24gdGhlIHdheS4NCg0KVGhhbmtzLA0KUWFp
+cw0KDQo+IA0KPiANCj4gRGF2aWQgRGFuZXkNCj4gDQo+IA0KPiA+DQo+ID4gVGhhbmtzLA0KPiA+
+IFFhaXMNCj4gPg0KPiA+Pg0KPiA+PiBEYXZpZCBEYW5leQ0KPiA+Pg0KPiA+Pg0KPiA+Pj4gLS0t
+DQo+ID4+PiAgICBhcmNoL21pcHMvaW5jbHVkZS9hc20vbWlwc3JlZ3MuaCB8ICAgIDQgKystLQ0K
+PiA+Pj4gICAgMSBmaWxlcyBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0p
+DQo+ID4+Pg0KPiA+Pj4gZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9taXBzcmVn
+cy5oDQo+ID4+IGIvYXJjaC9taXBzL2luY2x1ZGUvYXNtL21pcHNyZWdzLmgNCj4gPj4+IGluZGV4
+IGUwMzMxNDEuLjBhMmQ2ZWYgMTAwNjQ0DQo+ID4+PiAtLS0gYS9hcmNoL21pcHMvaW5jbHVkZS9h
+c20vbWlwc3JlZ3MuaA0KPiA+Pj4gKysrIGIvYXJjaC9taXBzL2luY2x1ZGUvYXNtL21pcHNyZWdz
+LmgNCj4gPj4+IEBAIC02NDEsOSArNjQxLDkgQEANCj4gPj4+ICAgICAqIG1pY3JvTUlQUyBpbnN0
+cnVjdGlvbnMgY2FuIGJlIDE2LWJpdCBvciAzMi1iaXQgaW4gbGVuZ3RoLiBUaGlzDQo+ID4+PiAg
+ICAgKiByZXR1cm5zIGEgMSBpZiB0aGUgaW5zdHJ1Y3Rpb24gaXMgMTYtYml0IGFuZCBhIDAgaWYg
+MzItYml0Lg0KPiA+Pj4gICAgICovDQo+ID4+PiAtc3RhdGljIGlubGluZSBpbnQgbW1faW5zbl8x
+NmJpdCh1MTYgaW5zbikNCj4gPj4+ICtzdGF0aWMgaW5saW5lIGludCBtbV9pbnNuXzE2Yml0KHVu
+c2lnbmVkIHNob3J0IGluc24pDQo+ID4+PiAgICB7DQo+ID4+PiAtCXUxNiBvcGNvZGUgPSAoaW5z
+biA+PiAxMCkgJiAweDc7DQo+ID4+PiArCXVuc2lnbmVkIHNob3J0IG9wY29kZSA9IChpbnNuID4+
+IDEwKSAmIDB4NzsNCj4gPj4+DQo+ID4+PiAgICAJcmV0dXJuIChvcGNvZGUgPj0gMSAmJiBvcGNv
+ZGUgPD0gMykgPyAxIDogMDsNCj4gPj4+ICAgIH0NCj4gPj4+DQo+ID4NCg0K

@@ -1,38 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Dec 2013 19:27:14 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:41639 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817179Ab3LHS1M41aD- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 8 Dec 2013 19:27:12 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 5BC6D8F67;
-        Sun,  8 Dec 2013 19:27:12 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id QQVDmFDv20iB; Sun,  8 Dec 2013 19:27:04 +0100 (CET)
-Received: from [IPv6:2001:470:1f0b:447:609b:6857:e4ae:c4e9] (unknown [IPv6:2001:470:1f0b:447:609b:6857:e4ae:c4e9])
-        by hauke-m.de (Postfix) with ESMTPSA id 133CC8F66;
-        Sun,  8 Dec 2013 19:27:03 +0100 (CET)
-Message-ID: <52A4B9F6.3050001@hauke-m.de>
-Date:   Sun, 08 Dec 2013 19:27:02 +0100
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Dec 2013 09:22:47 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41506 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821408Ab3LIIWoOmF2j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Dec 2013 09:22:44 +0100
+Received: from localhost (unknown [166.170.57.22])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6B966273;
+        Mon,  9 Dec 2013 08:22:33 +0000 (UTC)
+Date:   Sun, 8 Dec 2013 17:13:56 -0800
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Florian Fainelli <florian@openwrt.org>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org, blogic@openwrt.org,
+        jogo@openwrt.org, mbizon@freebox.fr, cernekee@gmail.com,
+        linux-serial@vger.kernel.org
+Subject: Re: [PATCH 0/5] tty: serial: bcm63xx_uart: do not depend on MIPS
+Message-ID: <20131209011356.GB7671@kroah.com>
+References: <1386296768-20204-1-git-send-email-florian@openwrt.org>
 MIME-Version: 1.0
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: MIPS: BCM47XX patch status?
-X-Enigmail-Version: 1.5.2
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <hauke@hauke-m.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1386296768-20204-1-git-send-email-florian@openwrt.org>
+User-Agent: Mutt/1.5.22 (2013-10-16)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38681
+X-archive-position: 38682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,47 +41,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Thu, Dec 05, 2013 at 06:26:03PM -0800, Florian Fainelli wrote:
+> Hi all,
+> 
+> This patchset reduces the dependency of the bcm63xx_uart on the MIPS BCM63XX
+> SoC support code in preparation for being used on different architectures
+> such as ARM.
+> 
+> Due to the MIPS patch which breaks down the register defines, this series
+> should ideally go via the MIPS tree.
 
-there are some long lending patches for BCM47xx which I would like to
-see in mainline linux some time. This is the list of patches for the
-BCM47xx SoCs I came up with. I haven't seen them in the upstream git
-repository [0].
+That's fine with me:
 
-Are there any problems and if so, how can I help with them?
-
-
-Hauke
-
-[0]: git://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git
-
-
-MIPS: BCM47XX: Fix some very confused types and data corruption
-http://patchwork.linux-mips.org/patch/6211/
-
-bcma: gpio: add own IRQ domain
-http://patchwork.linux-mips.org/patch/6174/
-
-MIPS: BCM47XX: Prepare support for LEDs
-http://patchwork.linux-mips.org/patch/6109/
-
-MIPS: BCM47XX: move constant array from stack
-http://patchwork.linux-mips.org/patch/6044/
-
-MIPS: BCM47XX: add asmlinkage to plat_irq_dispatch()
-http://patchwork.linux-mips.org/patch/6043/
-
-MIPS: BCM47XX: add EARLY_PRINTK_8250 support
-http://patchwork.linux-mips.org/patch/5889/
-
-MIPS: BCM47XX: Remove CFE support
-http://patchwork.linux-mips.org/patch/5888/
-
-MIPS: BCM47XX: print board name in machine entry in cpuinfo
-http://patchwork.linux-mips.org/patch/5864/
-
-MIPS: BCM47XX: only print SoC name in system type in cpuinfo
-http://patchwork.linux-mips.org/patch/5865/
-
-MIPS: BCM47XX: update defconfig
-http://patchwork.linux-mips.org/patch/5930/
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>

@@ -1,56 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Dec 2013 09:48:46 +0100 (CET)
-Received: from mail-oa0-f45.google.com ([209.85.219.45]:55516 "EHLO
-        mail-oa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823162Ab3LJIslRkvpX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Dec 2013 09:48:41 +0100
-Received: by mail-oa0-f45.google.com with SMTP id o6so5227778oag.32
-        for <multiple recipients>; Tue, 10 Dec 2013 00:48:34 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Dec 2013 12:56:22 +0100 (CET)
+Received: from mail-ee0-f41.google.com ([74.125.83.41]:45890 "EHLO
+        mail-ee0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6826484Ab3LJL4TB32ia (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Dec 2013 12:56:19 +0100
+Received: by mail-ee0-f41.google.com with SMTP id t10so2192969eei.0
+        for <multiple recipients>; Tue, 10 Dec 2013 03:56:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=ag3fQn5EnQjvDgtumvuok85+Kwk+plmswNc5IjULU4Q=;
-        b=qhyOdNsMjRUbcIFkP5ISd+WEZ8reC47ch7+/57apI3P/os1HAdfqwG52SF7SGOhJGJ
-         BPCmM8H18VSrVmgUmQMP6kb9B164Fbr3h0Ui3v9hmaY2RTOZ+UiaE7Us8zQNYUSguLgT
-         PuIvQDkUsFK9h61SMoweIeOqHac6i+sYdTfJUyXNlGD9igPD5jIkm2r59iD16MZjC8uC
-         bAho3PCwGrKFeZ2Y+4bbt6jDO9nLUxHiw8t7q3EinEGwH+MxWgTt8qGCfKxmqfHXR3h2
-         8/RN17gYzVNX5Qtcfqt/xVJ/oxG/7Kd9HlakjdEWWIbjjoSmDjfLooiFU/neFUExP/YU
-         HDiw==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=Z7ZrrcXDuXnvYdEkPS1FvL6cdCxKN4EMVq6cfqq46ss=;
+        b=GGDvRD6jO0EiEQ1qSklvJaEKuZSLlIwUnagHCCIHhCADAwrJo8gWAciC7e6ZRIVVrB
+         cxmSd48iB64ILZqnOt8s++bh4tmqxGX43Ytbn9/wijpaLkQDevNiQcBajvuZXS0Ok1O2
+         FyZ8ajwRJCW9D8XN5Jjezl7IWg2g+udmIODJmKsL/CQ2F2wtGhUpfrzlm4Xyh4d6pHdc
+         oGDDH6AMd9HiXmwg5MRqVfQwvq9qcjCwKx79TjyExcWFLSq6lsog8jaVQJj/VWvttrm7
+         cOnxezF+5Zg01Sqg2mU554KVuIlV2ht4LxrdSEwJS1VJgc+3U1+iHNNfJVb+C+ThqiDS
+         atJQ==
+X-Received: by 10.15.41.140 with SMTP id s12mr17673877eev.50.1386676573626;
+        Tue, 10 Dec 2013 03:56:13 -0800 (PST)
+Received: from linux-t0zw.lan (static-91-227-21-4.devs.futuro.pl. [91.227.21.4])
+        by mx.google.com with ESMTPSA id m1sm40320279eeg.0.2013.12.10.03.56.11
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 10 Dec 2013 03:56:12 -0800 (PST)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Subject: [PATCH V5 1/2] bcma: gpio: add own IRQ domain
+Date:   Tue, 10 Dec 2013 12:56:00 +0100
+Message-Id: <1386676560-10932-1-git-send-email-zajec5@gmail.com>
+X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1385752379-19540-1-git-send-email-zajec5@gmail.com>
+References: <1385752379-19540-1-git-send-email-zajec5@gmail.com>
 MIME-Version: 1.0
-X-Received: by 10.60.56.70 with SMTP id y6mr15833604oep.32.1386665314691; Tue,
- 10 Dec 2013 00:48:34 -0800 (PST)
-Received: by 10.76.10.41 with HTTP; Tue, 10 Dec 2013 00:48:34 -0800 (PST)
-In-Reply-To: <1385396045-15852-1-git-send-email-msalter@redhat.com>
-References: <1385396045-15852-1-git-send-email-msalter@redhat.com>
-Date:   Tue, 10 Dec 2013 09:48:34 +0100
-Message-ID: <CACM3HyGCPMbw3t+DFFSySEytvDMnGGQMS6pVFpGbhkAoDzjhXg@mail.gmail.com>
-Subject: Re: [PATCH v2 00/11] Consolidate asm/fixmap.h files
-From:   Jonas Bonn <jonas.bonn@gmail.com>
-To:     Mark Salter <msalter@redhat.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-arm-kernel@lists.infradead.org,
-        Richard Kuo <rkuo@codeaurora.org>,
-        linux-hexagon@vger.kernel.org,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-metag@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
-        microblaze-uclinux@itee.uq.edu.au, linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <jonas.bonn@gmail.com>
+Content-Transfer-Encoding: 8bit
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38689
+X-archive-position: 38690
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.bonn@gmail.com
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,79 +57,233 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Mark,
+Input GPIO changes can generate interrupts, but we need kind of ACK for
+them by changing IRQ polarity. This is required to stop hardware from
+keep generating interrupts and generate another one on the next GPIO
+state change.
+This code allows using GPIOs with standard interrupts and add for
+example GPIO buttons support.
 
-Is there some reason you've excluded OpenRISC here?  Did you just miss
-it, or does the implementation diverage too much to be usable with
-your generic version?
+Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+V3: Apply Hauke's comments.
+1) Use IRQ domain for CONFIG_BCMA_HOST_SOC only
+2) Optimize bcma_gpio_irq_handler
+3) Register GPIO chip after doing everything else
+4) Improve cleaning paths
 
-Regards,
-Jonas
+V4: More fixes from Hauke's comments:
+1) Less #ifdef CONFIG_BCMA_HOST_SOC
+2) Move BCMA_CC_IRQMASK op (and unset on exit)
+3) Optimize bcma_gpio_irq_handler
 
-On 25 November 2013 17:13, Mark Salter <msalter@redhat.com> wrote:
-> Many architectures provide an asm/fixmap.h which defines support for
-> compile-time 'special' virtual mappings which need to be made before
-> paging_init() has run. This suport is also used for early ioremap
-> on x86. Much of this support is identical across the architectures.
-> This patch consolidates all of the common bits into asm-generic/fixmap.h
-> which is intended to be included from arch/*/include/asm/fixmap.h.
->
-> This has been compiled on x86, arm, powerpc, and sh, but tested
-> on x86 only.
->
-> This is version two of the patch series:
->
->    git://github.com/mosalter/linux.git#fixmap-v2
->
-> Version 1 is here:
->
->    git://github.com/mosalter/linux.git#fixmap
->
-> Changes from v1:
->
->   * Added acks from feedback.
->   * Use BUILD_BUG_ON in fix_to_virt()
->   * Fixed ARM patch to make FIXMAP_TOP inclusive of fixmap
->     range as is the case in the other architectures.
->
-> Mark Salter (11):
->   Add generic fixmap.h
->   x86: use generic fixmap.h
->   arm: use generic fixmap.h
->   hexagon: use generic fixmap.h
->   metag: use generic fixmap.h
->   microblaze: use generic fixmap.h
->   mips: use generic fixmap.h
->   powerpc: use generic fixmap.h
->   sh: use generic fixmap.h
->   tile: use generic fixmap.h
->   um: use generic fixmap.h
->
->  arch/arm/include/asm/fixmap.h        | 29 +++--------
->  arch/arm/mm/init.c                   |  2 +-
->  arch/hexagon/include/asm/fixmap.h    | 40 +--------------
->  arch/metag/include/asm/fixmap.h      | 32 +-----------
->  arch/microblaze/include/asm/fixmap.h | 44 +---------------
->  arch/mips/include/asm/fixmap.h       | 33 +-----------
->  arch/powerpc/include/asm/fixmap.h    | 44 +---------------
->  arch/sh/include/asm/fixmap.h         | 39 +--------------
->  arch/tile/include/asm/fixmap.h       | 33 +-----------
->  arch/um/include/asm/fixmap.h         | 40 +--------------
->  arch/x86/include/asm/fixmap.h        | 59 +---------------------
->  include/asm-generic/fixmap.h         | 97 ++++++++++++++++++++++++++++++++++++
->  12 files changed, 118 insertions(+), 374 deletions(-)
->  create mode 100644 include/asm-generic/fixmap.h
->
-> --
-> 1.8.3.1
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-arch" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+V5: Use IS_BUILTIN 
+---
+ drivers/bcma/Kconfig                        |    1 +
+ drivers/bcma/driver_gpio.c                  |  129 ++++++++++++++++++++++++++-
+ include/linux/bcma/bcma_driver_chipcommon.h |    1 +
+ 3 files changed, 128 insertions(+), 3 deletions(-)
 
-
-
+diff --git a/drivers/bcma/Kconfig b/drivers/bcma/Kconfig
+index 7c081b3..0ee48be 100644
+--- a/drivers/bcma/Kconfig
++++ b/drivers/bcma/Kconfig
+@@ -75,6 +75,7 @@ config BCMA_DRIVER_GMAC_CMN
+ config BCMA_DRIVER_GPIO
+ 	bool "BCMA GPIO driver"
+ 	depends on BCMA && GPIOLIB
++	select IRQ_DOMAIN if BCMA_HOST_SOC
+ 	help
+ 	  Driver to provide access to the GPIO pins of the bcma bus.
+ 
+diff --git a/drivers/bcma/driver_gpio.c b/drivers/bcma/driver_gpio.c
+index 45f0996..d5b02d2 100644
+--- a/drivers/bcma/driver_gpio.c
++++ b/drivers/bcma/driver_gpio.c
+@@ -9,6 +9,9 @@
+  */
+ 
+ #include <linux/gpio.h>
++#include <linux/irq.h>
++#include <linux/interrupt.h>
++#include <linux/irqdomain.h>
+ #include <linux/export.h>
+ #include <linux/bcma/bcma.h>
+ 
+@@ -73,19 +76,127 @@ static void bcma_gpio_free(struct gpio_chip *chip, unsigned gpio)
+ 	bcma_chipco_gpio_pullup(cc, 1 << gpio, 0);
+ }
+ 
++#if IS_BUILTIN(CONFIG_BCMA_HOST_SOC)
+ static int bcma_gpio_to_irq(struct gpio_chip *chip, unsigned gpio)
+ {
+ 	struct bcma_drv_cc *cc = bcma_gpio_get_cc(chip);
+ 
+ 	if (cc->core->bus->hosttype == BCMA_HOSTTYPE_SOC)
+-		return bcma_core_irq(cc->core);
++		return irq_find_mapping(cc->irq_domain, gpio);
+ 	else
+ 		return -EINVAL;
+ }
+ 
++static void bcma_gpio_irq_unmask(struct irq_data *d)
++{
++	struct bcma_drv_cc *cc = irq_data_get_irq_chip_data(d);
++	int gpio = irqd_to_hwirq(d);
++
++	bcma_chipco_gpio_intmask(cc, BIT(gpio), BIT(gpio));
++}
++
++static void bcma_gpio_irq_mask(struct irq_data *d)
++{
++	struct bcma_drv_cc *cc = irq_data_get_irq_chip_data(d);
++	int gpio = irqd_to_hwirq(d);
++
++	bcma_chipco_gpio_intmask(cc, BIT(gpio), 0);
++}
++
++static struct irq_chip bcma_gpio_irq_chip = {
++	.name		= "BCMA-GPIO",
++	.irq_mask	= bcma_gpio_irq_mask,
++	.irq_unmask	= bcma_gpio_irq_unmask,
++};
++
++static irqreturn_t bcma_gpio_irq_handler(int irq, void *dev_id)
++{
++	struct bcma_drv_cc *cc = dev_id;
++	u32 val = bcma_cc_read32(cc, BCMA_CC_GPIOIN);
++	u32 mask = bcma_cc_read32(cc, BCMA_CC_GPIOIRQ);
++	u32 pol = bcma_cc_read32(cc, BCMA_CC_GPIOPOL);
++	u32 irqs = (val ^ pol) & mask;
++	int gpio;
++
++	if (!irqs)
++		return IRQ_NONE;
++
++	for_each_set_bit(gpio, (unsigned long *)&irqs, cc->gpio.ngpio)
++		generic_handle_irq(bcma_gpio_to_irq(&cc->gpio, gpio));
++	bcma_chipco_gpio_polarity(cc, irqs, val & irqs);
++
++	return IRQ_HANDLED;
++}
++
++static int bcma_gpio_irq_domain_init(struct bcma_drv_cc *cc)
++{
++	struct gpio_chip *chip = &cc->gpio;
++	int gpio, hwirq, err;
++
++	cc->irq_domain = irq_domain_add_linear(NULL, chip->ngpio,
++					       &irq_domain_simple_ops, cc);
++	if (!cc->irq_domain) {
++		err = -ENODEV;
++		goto err_irq_domain;
++	}
++	for (gpio = 0; gpio < chip->ngpio; gpio++) {
++		int irq = irq_create_mapping(cc->irq_domain, gpio);
++
++		irq_set_chip_data(irq, cc);
++		irq_set_chip_and_handler(irq, &bcma_gpio_irq_chip,
++					 handle_simple_irq);
++	}
++
++	hwirq = bcma_core_irq(cc->core);
++	err = request_irq(hwirq, bcma_gpio_irq_handler, IRQF_SHARED, "gpio",
++			  cc);
++	if (err)
++		goto err_req_irq;
++
++	bcma_cc_set32(cc, BCMA_CC_IRQMASK, BCMA_CC_IRQ_GPIO);
++
++	return 0;
++
++err_req_irq:
++	for (gpio = 0; gpio < chip->ngpio; gpio++) {
++		int irq = irq_find_mapping(cc->irq_domain, gpio);
++
++		irq_dispose_mapping(irq);
++	}
++	irq_domain_remove(cc->irq_domain);
++err_irq_domain:
++	return err;
++}
++
++static void bcma_gpio_irq_domain_exit(struct bcma_drv_cc *cc)
++{
++	struct gpio_chip *chip = &cc->gpio;
++	int gpio;
++
++	bcma_cc_mask32(cc, BCMA_CC_IRQMASK, ~BCMA_CC_IRQ_GPIO);
++	free_irq(bcma_core_irq(cc->core), cc);
++	for (gpio = 0; gpio < chip->ngpio; gpio++) {
++		int irq = irq_find_mapping(cc->irq_domain, gpio);
++
++		irq_dispose_mapping(irq);
++	}
++	irq_domain_remove(cc->irq_domain);
++}
++#else
++static int bcma_gpio_irq_domain_init(struct bcma_drv_cc *cc)
++{
++	return 0;
++}
++
++static void bcma_gpio_irq_domain_exit(struct bcma_drv_cc *cc)
++{
++}
++#endif
++
+ int bcma_gpio_init(struct bcma_drv_cc *cc)
+ {
+ 	struct gpio_chip *chip = &cc->gpio;
++	int err;
+ 
+ 	chip->label		= "bcma_gpio";
+ 	chip->owner		= THIS_MODULE;
+@@ -95,7 +206,8 @@ int bcma_gpio_init(struct bcma_drv_cc *cc)
+ 	chip->set		= bcma_gpio_set_value;
+ 	chip->direction_input	= bcma_gpio_direction_input;
+ 	chip->direction_output	= bcma_gpio_direction_output;
+-	chip->to_irq		= bcma_gpio_to_irq;
++	if (IS_BUILTIN(CONFIG_BCMA_HOST_SOC))
++		chip->to_irq		= bcma_gpio_to_irq;
+ 	chip->ngpio		= 16;
+ 	/* There is just one SoC in one device and its GPIO addresses should be
+ 	 * deterministic to address them more easily. The other buses could get
+@@ -105,10 +217,21 @@ int bcma_gpio_init(struct bcma_drv_cc *cc)
+ 	else
+ 		chip->base		= -1;
+ 
+-	return gpiochip_add(chip);
++	err = bcma_gpio_irq_domain_init(cc);
++	if (err)
++		return err;
++
++	err = gpiochip_add(chip);
++	if (err) {
++		bcma_gpio_irq_domain_exit(cc);
++		return err;
++	}
++
++	return 0;
+ }
+ 
+ int bcma_gpio_unregister(struct bcma_drv_cc *cc)
+ {
++	bcma_gpio_irq_domain_exit(cc);
+ 	return gpiochip_remove(&cc->gpio);
+ }
+diff --git a/include/linux/bcma/bcma_driver_chipcommon.h b/include/linux/bcma/bcma_driver_chipcommon.h
+index c49e1a1..63d105c 100644
+--- a/include/linux/bcma/bcma_driver_chipcommon.h
++++ b/include/linux/bcma/bcma_driver_chipcommon.h
+@@ -640,6 +640,7 @@ struct bcma_drv_cc {
+ 	spinlock_t gpio_lock;
+ #ifdef CONFIG_BCMA_DRIVER_GPIO
+ 	struct gpio_chip gpio;
++	struct irq_domain *irq_domain;
+ #endif
+ };
+ 
 -- 
-Jonas Bonn
-Stockholm, Sweden
+1.7.10.4

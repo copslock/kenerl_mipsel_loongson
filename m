@@ -1,50 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Dec 2013 16:24:45 +0100 (CET)
-Received: from mail-ea0-f179.google.com ([209.85.215.179]:41457 "EHLO
-        mail-ea0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823017Ab3LJPYnF-Jma (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Dec 2013 16:24:43 +0100
-Received: by mail-ea0-f179.google.com with SMTP id r15so2328865ead.10
-        for <multiple recipients>; Tue, 10 Dec 2013 07:24:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=YKJd5s04BjrZCBT1Ddo/q2DYsws1qwOU8VtmYaUXdV8=;
-        b=oF/9ZV8gydw6mWXZPT4byGV87dTB387Z4rqPTW4lOABuY1geRyD9dbuSMKDfUJVw2l
-         IvtVrJd/riMIM5fqoiOGQSZPnexzgvMi6UBQsoSaXxK2pJDJ7Z3GKWfr6W6IuR9QIgJb
-         lLuU1jrJ8HKLebH2x0orGD+zF0vsGUpUd9YtnEuMEh56e/+AWTJSc3xnnlINWjfs7bdI
-         5ARj5FOwAjtV2IhKn0mzHNJllQ/61lqbFZiRETEvQUd8OnK1sfhr1AYJWf2443GKIXhM
-         RUn+0j7M0voNTYsHP3/TXZWEbHPwAtTSa7yzJktIqRFlstH/N39nomkj1tnTaBpIKz+K
-         uPcA==
-X-Received: by 10.14.175.131 with SMTP id z3mr8362168eel.65.1386689077743;
-        Tue, 10 Dec 2013 07:24:37 -0800 (PST)
-Received: from linux-samsung700g7a.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id e43sm42368747eep.7.2013.12.10.07.24.35
-        for <multiple recipients>
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 10 Dec 2013 07:24:36 -0800 (PST)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH V3 2/2] MIPS: BCM47XX: Prepare support for GPIO buttons
-Date:   Tue, 10 Dec 2013 16:24:31 +0100
-Message-Id: <1386689071-13170-1-git-send-email-zajec5@gmail.com>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1385741397-32740-2-git-send-email-zajec5@gmail.com>
-References: <1385741397-32740-2-git-send-email-zajec5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Dec 2013 12:43:44 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:21863 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6819780Ab3LKLnk5OJXu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 Dec 2013 12:43:40 +0100
+From:   Qais Yousef <Qais.Yousef@imgtec.com>
+To:     Vivek Goyal <vgoyal@redhat.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Andrew Morton" <akpm@linux-foundation.org>,
+        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] crash_dump: fix compilation error (on MIPS at least)
+Thread-Topic: [PATCH] crash_dump: fix compilation error (on MIPS at least)
+Thread-Index: AQHO8QnExmvHISq+vkaNQVlz0RPH3ppFohqAgAlF3UA=
+Date:   Wed, 11 Dec 2013 11:43:32 +0000
+Message-ID: <392C4BDEFF12D14FA57A3F30B283D7D13C7764@LEMAIL01.le.imgtec.org>
+References: <1386172702-31266-1-git-send-email-qais.yousef@imgtec.com>
+ <20131205135835.GA1600@redhat.com>
+In-Reply-To: <20131205135835.GA1600@redhat.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.154.35]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zajec5@gmail.com>
+X-SEF-Processed: 7_3_0_01192__2013_12_11_11_43_34
+Return-Path: <Qais.Yousef@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38691
+X-archive-position: 38693
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: Qais.Yousef@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,161 +48,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-So far this adds support for one Netgear model only, but it's designed
-and ready to add many more device. We could hopefully import database
-from OpenWrt.
-Support for SSB is currently disabled, because SSB doesn't implement IRQ
-domain yet.
-
-Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
----
-V3: Use __initconst and copy data for detected device. This will allow
-    us to free some memory after init.
----
- arch/mips/bcm47xx/Makefile          |    2 +-
- arch/mips/bcm47xx/bcm47xx_private.h |    3 ++
- arch/mips/bcm47xx/buttons.c         |   95 +++++++++++++++++++++++++++++++++++
- arch/mips/bcm47xx/setup.c           |    1 +
- 4 files changed, 100 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/bcm47xx/buttons.c
-
-diff --git a/arch/mips/bcm47xx/Makefile b/arch/mips/bcm47xx/Makefile
-index 84e9aed..006a05e 100644
---- a/arch/mips/bcm47xx/Makefile
-+++ b/arch/mips/bcm47xx/Makefile
-@@ -4,5 +4,5 @@
- #
- 
- obj-y				+= irq.o nvram.o prom.o serial.o setup.o time.o sprom.o
--obj-y				+= board.o leds.o
-+obj-y				+= board.o buttons.o leds.o
- obj-$(CONFIG_BCM47XX_SSB)	+= wgt634u.o
-diff --git a/arch/mips/bcm47xx/bcm47xx_private.h b/arch/mips/bcm47xx/bcm47xx_private.h
-index 1a1e600..5c94ace 100644
---- a/arch/mips/bcm47xx/bcm47xx_private.h
-+++ b/arch/mips/bcm47xx/bcm47xx_private.h
-@@ -3,6 +3,9 @@
- 
- #include <linux/kernel.h>
- 
-+/* buttons.c */
-+int __init bcm47xx_buttons_register(void);
-+
- /* leds.c */
- void __init bcm47xx_leds_register(void);
- 
-diff --git a/arch/mips/bcm47xx/buttons.c b/arch/mips/bcm47xx/buttons.c
-new file mode 100644
-index 0000000..3138f03
---- /dev/null
-+++ b/arch/mips/bcm47xx/buttons.c
-@@ -0,0 +1,95 @@
-+#include "bcm47xx_private.h"
-+
-+#include <linux/input.h>
-+#include <linux/gpio_keys.h>
-+#include <linux/interrupt.h>
-+#include <linux/ssb/ssb_embedded.h>
-+#include <bcm47xx_board.h>
-+#include <bcm47xx.h>
-+
-+/**************************************************
-+ * Database
-+ **************************************************/
-+
-+static struct gpio_keys_button
-+bcm47xx_buttons_netgear_wndr4500_v1[] __initconst = {
-+	{
-+		.code		= KEY_WPS_BUTTON,
-+		.gpio		= 4,
-+		.active_low	= 1,
-+	},
-+	{
-+		.code		= KEY_RFKILL,
-+		.gpio		= 5,
-+		.active_low	= 1,
-+	},
-+	{
-+		.code		= KEY_RESTART,
-+		.gpio		= 6,
-+		.active_low	= 1,
-+	},
-+};
-+
-+/**************************************************
-+ * Init
-+ **************************************************/
-+
-+static struct gpio_keys_platform_data bcm47xx_button_pdata;
-+
-+static struct platform_device bcm47xx_buttons_gpio_keys = {
-+	.name = "gpio-keys",
-+	.dev = {
-+		.platform_data = &bcm47xx_button_pdata,
-+	}
-+};
-+
-+/* Copy data from __initconst */
-+static int __init bcm47xx_buttons_copy(struct gpio_keys_button *buttons,
-+					size_t nbuttons)
-+{
-+	size_t size = nbuttons * sizeof(*buttons);
-+
-+	bcm47xx_button_pdata.buttons = kmalloc(size, GFP_KERNEL);
-+	if (!bcm47xx_button_pdata.buttons)
-+		return -ENOMEM;
-+	memcpy(bcm47xx_button_pdata.buttons, buttons, size);
-+	bcm47xx_button_pdata.nbuttons = nbuttons;
-+
-+	return 0;
-+}
-+
-+#define bcm47xx_copy_bdata(dev_buttons)					\
-+	bcm47xx_buttons_copy(dev_buttons, ARRAY_SIZE(dev_buttons));
-+
-+int __init bcm47xx_buttons_register(void)
-+{
-+	enum bcm47xx_board board = bcm47xx_board_get();
-+	int err;
-+
-+#ifdef CONFIG_BCM47XX_SSB
-+	if (bcm47xx_bus_type == BCM47XX_BUS_TYPE_SSB) {
-+		pr_debug("Buttons on SSB are not supported yet.\n");
-+		return -ENOTSUPP;
-+	}
-+#endif
-+
-+	switch (board) {
-+	case BCM47XX_BOARD_NETGEAR_WNDR4500V1:
-+		err = bcm47xx_copy_bdata(bcm47xx_buttons_netgear_wndr4500_v1);
-+		break;
-+	default:
-+		pr_debug("No buttons configuration found for this device\n");
-+		return -ENOTSUPP;
-+	}
-+
-+	if (err)
-+		return -ENOMEM;
-+
-+	err = platform_device_register(&bcm47xx_buttons_gpio_keys);
-+	if (err) {
-+		pr_err("Failed to register platform device: %d\n", err);
-+		return err;
-+	}
-+
-+	return 0;
-+}
-diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index 7e61c0b..a791124 100644
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -242,6 +242,7 @@ static int __init bcm47xx_register_bus_complete(void)
- #endif
- 	}
- 
-+	bcm47xx_buttons_register();
- 	bcm47xx_leds_register();
- 
- 	return 0;
--- 
-1.7.10.4
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBWaXZlayBHb3lhbCBbbWFpbHRv
+OnZnb3lhbEByZWRoYXQuY29tXQ0KPiBTZW50OiAwNSBEZWNlbWJlciAyMDEzIDEzOjU5DQo+IFRv
+OiBRYWlzIFlvdXNlZg0KPiBDYzogbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgQW5kcmV3
+IE1vcnRvbjsgTWljaGFlbCBIb2x6aGV1OyBsaW51eC0NCj4gbWlwc0BsaW51eC1taXBzLm9yZzsg
+c3RhYmxlQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIXSBjcmFzaF9kdW1w
+OiBmaXggY29tcGlsYXRpb24gZXJyb3IgKG9uIE1JUFMgYXQgbGVhc3QpDQo+IA0KPiBPbiBXZWQs
+IERlYyAwNCwgMjAxMyBhdCAwMzo1ODoyMlBNICswMDAwLCBRYWlzIFlvdXNlZiB3cm90ZToNCj4g
+PiAgIEluIGZpbGUgaW5jbHVkZWQgZnJvbSBrZXJuZWwvY3Jhc2hfZHVtcC5jOjI6MDoNCj4gPiAg
+IGluY2x1ZGUvbGludXgvY3Jhc2hfZHVtcC5oOjIyOjI3OiBlcnJvcjogdW5rbm93biB0eXBlIG5h
+bWUg4oCYcGdwcm90X3TigJkNCj4gPg0KPiA+IHdoZW4gQ09ORklHX0NSQVNIX0RVTVA9eQ0KPiA+
+DQo+ID4gVGhlIGVycm9yIHdhcyB0cmFjZWQgYmFjayB0byB0aGlzIGNvbW1pdDoNCj4gPg0KPiA+
+ICAgOWNiMjE4MTMxZGUxIHZtY29yZTogaW50cm9kdWNlIHJlbWFwX29sZG1lbV9wZm5fcmFuZ2Uo
+KQ0KPiA+DQo+ID4gaW5jbHVkZSA8YXNtL3BndGFibGUuaD4gdG8gZ2V0IHRoZSBtaXNzaW5nIGRl
+ZmluaXRpb24NCj4gPg0KPiA+IENjOiBBbmRyZXcgTW9ydG9uIDxha3BtQGxpbnV4LWZvdW5kYXRp
+b24ub3JnPg0KPiA+IENjOiBNaWNoYWVsIEhvbHpoZXUgPGhvbHpoZXVAbGludXgudm5ldC5pYm0u
+Y29tPg0KPiA+IENjOiBWaXZlayBHb3lhbCA8dmdveWFsQHJlZGhhdC5jb20+DQo+ID4gQ2M6IDxs
+aW51eC1taXBzQGxpbnV4LW1pcHMub3JnPg0KPiA+IENjOiA8c3RhYmxlQHZnZXIua2VybmVsLm9y
+Zz4gIyAzLjEyDQo+ID4gUmV2aWV3ZWQtYnk6IEphbWVzIEhvZ2FuIDxqYW1lcy5ob2dhbkBpbWd0
+ZWMuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFFhaXMgWW91c2VmIDxxYWlzLnlvdXNlZkBpbWd0
+ZWMuY29tPg0KPiA+IC0tLQ0KPiANCj4gTG9va3MgZ29vZCB0byBtZS4NCj4gDQo+IEFja2VkLWJ5
+OiBWaXZlayBHb3lhbCA8dmdveWFsQHJlZGhhdC5jb20+DQo+IA0KPiBWaXZlaw0KDQpIaSwNCg0K
+SSBmYWlsZWQgdG8gc2VlIHRoaXMgcGlja2VkIHVwIGJ5IGFueW9uZS4gSSdtIG5vdCBzdXJlIHdo
+aWNoIHRyZWUgaXQgc2hvdWxkIGdvIHRvIHRvIGJlIGhvbmVzdC4gRG8gSSBuZWVkIHRvIGFkZCBt
+b3JlIHBlb3BsZSB0byB0aGUgQ2M/IE9yIGFtIEkganVzdCBiZWluZyBpbXBhdGllbnQ/IDopDQoN
+ClRoYW5rcywNClFhaXMNCg0KPiANCj4gPiBJIGhhdmVuJ3QgdHJpZWQgYW55IG90aGVyIGFyY2hp
+dGVjdHVyZSBleGNlcHQgbWlwcy4NCj4gPiBJZiBPSyB0aGlzIHNob3VsZCBiZSBjb25zaWRlcmVk
+IGZvciBzdGFibGUgMy4xMiAoQ0NlZCkuDQo+ID4NCj4gPiAgaW5jbHVkZS9saW51eC9jcmFzaF9k
+dW1wLmggfCAgICAyICsrDQo+ID4gIDEgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAw
+IGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvY3Jhc2hf
+ZHVtcC5oIGIvaW5jbHVkZS9saW51eC9jcmFzaF9kdW1wLmgNCj4gPiBpbmRleCBmZTY4YTVhLi43
+MDMyNTE4IDEwMDY0NA0KPiA+IC0tLSBhL2luY2x1ZGUvbGludXgvY3Jhc2hfZHVtcC5oDQo+ID4g
+KysrIGIvaW5jbHVkZS9saW51eC9jcmFzaF9kdW1wLmgNCj4gPiBAQCAtNiw2ICs2LDggQEANCj4g
+PiAgI2luY2x1ZGUgPGxpbnV4L3Byb2NfZnMuaD4NCj4gPiAgI2luY2x1ZGUgPGxpbnV4L2VsZi5o
+Pg0KPiA+DQo+ID4gKyNpbmNsdWRlIDxhc20vcGd0YWJsZS5oPiAvKiBmb3IgcGdwcm90X3QgKi8N
+Cj4gPiArDQo+ID4gICNkZWZpbmUgRUxGQ09SRV9BRERSX01BWAkoLTFVTEwpDQo+ID4gICNkZWZp
+bmUgRUxGQ09SRV9BRERSX0VSUgkoLTJVTEwpDQo+ID4NCj4gPiAtLQ0KPiA+IDEuNy4xDQo+ID4N
+Cg==

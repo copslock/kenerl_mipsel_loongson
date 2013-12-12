@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Dec 2013 13:43:00 +0100 (CET)
-Received: from mail-ee0-f52.google.com ([74.125.83.52]:52632 "EHLO
-        mail-ee0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6867258Ab3LLMmulOxS6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Dec 2013 13:42:50 +0100
-Received: by mail-ee0-f52.google.com with SMTP id d17so205842eek.39
-        for <multiple recipients>; Thu, 12 Dec 2013 04:42:45 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Dec 2013 13:46:17 +0100 (CET)
+Received: from mail-ea0-f172.google.com ([209.85.215.172]:35919 "EHLO
+        mail-ea0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825697Ab3LLMqO4MfYQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Dec 2013 13:46:14 +0100
+Received: by mail-ea0-f172.google.com with SMTP id q10so171265ead.31
+        for <multiple recipients>; Thu, 12 Dec 2013 04:46:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-type:content-transfer-encoding;
-        bh=uAwaGQ+2pAFGTvHIaOBj019J2BoX2v/yjl5xdsMBS+Q=;
-        b=HtacvSwcfc8Qs5kRZNF6gaipjxJpqHrKATXyZkufcEoyhhroH0cqszOzZT9aAIMG41
-         j/1VrQTSKjg76YgpU7GIUx3X6Bd3BSSABnF+TLwDB3j8HXMPMJ3ORVV+6DzYLEPrxxym
-         RVSB8iyJNLee4oA4jjIwCyoBjDzOiEkata75mDEnULVYCBqLv+QKsWTsdkhX3PNiqip+
-         kYRPauo13PgS/juvY7FuIT1cDeGdc3khlJzjoa9dH0DrqWGg5QNWrSjDiMjeyvmzCJyX
-         CA+rg9FbL/QE1d7poXgF/BSjF1B7LO3k4iNLVvaTKckrl/wTbOX9ypwxoJlO1D6phLCI
-         ewrA==
-X-Received: by 10.14.29.66 with SMTP id h42mr7949048eea.4.1386852165397;
-        Thu, 12 Dec 2013 04:42:45 -0800 (PST)
+        bh=n008PtRyTzlMrbt9UL6Sb/VYkfx1dZhkPnZj/qMvnP8=;
+        b=OXqpX1zF5nMVVKuRwMFL3AC1kjOK/7OE8iWUm8hsIB4iZeZTRIbAlgcpgGbMdsFxCu
+         ggIWexTy75dJsl2zU1VjN1OUdnv8KjWXefUfoAl83raNalqleZ04XkSzDqeNdvO2OKFD
+         YVnixtzCM1hT2824Ly0i7tMaupheReJXDH+G26tU72d4jOplLyG8x4y0FMLbPRLxq6jf
+         kF9ft9WYQl6wHJiZ2jVfPPodjz6JGfCV3QPPTA+nXCOAc+UJ6+qUxfwEvy4QthQiQQgQ
+         yR6rHhPGAeGs+qc3YEYEMGbD5R3MUn5n8ZJKdxuKNPTx+n6+iWo/zSspj1b4c04hplnJ
+         ibAg==
+X-Received: by 10.15.41.140 with SMTP id s12mr7867500eev.50.1386852367661;
+        Thu, 12 Dec 2013 04:46:07 -0800 (PST)
 Received: from linux-samsung700g7a.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id h48sm65400269eev.3.2013.12.12.04.42.43
+        by mx.google.com with ESMTPSA id 4sm35712692eed.14.2013.12.12.04.46.06
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 12 Dec 2013 04:42:44 -0800 (PST)
+        Thu, 12 Dec 2013 04:46:06 -0800 (PST)
 From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
 To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH V6 1/2] bcma: gpio: add own IRQ domain
-Date:   Thu, 12 Dec 2013 13:42:38 +0100
-Message-Id: <1386852158-30636-1-git-send-email-zajec5@gmail.com>
+Subject: [PATCH V7 1/2] bcma: gpio: add own IRQ domain
+Date:   Thu, 12 Dec 2013 13:46:03 +0100
+Message-Id: <1386852363-21127-1-git-send-email-zajec5@gmail.com>
 X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1386676560-10932-1-git-send-email-zajec5@gmail.com>
-References: <1386676560-10932-1-git-send-email-zajec5@gmail.com>
+In-Reply-To: <1386852158-30636-1-git-send-email-zajec5@gmail.com>
+References: <1386852158-30636-1-git-send-email-zajec5@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -40,7 +40,7 @@ Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38697
+X-archive-position: 38698
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -79,8 +79,8 @@ V4: More fixes from Hauke's comments:
 3) Optimize bcma_gpio_irq_handler
 
 V5: Use IS_BUILTIN
-
 V6: Add IRQ domain on SOC only
+V7: Change "return 0" to "return"
 
 Hauke: does it look OK to you?
 ---
@@ -102,7 +102,7 @@ index 7c081b3..0ee48be 100644
  	  Driver to provide access to the GPIO pins of the bcma bus.
  
 diff --git a/drivers/bcma/driver_gpio.c b/drivers/bcma/driver_gpio.c
-index 45f0996..fd8ce7d 100644
+index 45f0996..ec422a9 100644
 --- a/drivers/bcma/driver_gpio.c
 +++ b/drivers/bcma/driver_gpio.c
 @@ -9,6 +9,9 @@
@@ -221,7 +221,7 @@ index 45f0996..fd8ce7d 100644
 +	int gpio;
 +
 +	if (cc->core->bus->hosttype != BCMA_HOSTTYPE_SOC)
-+		return 0;
++		return;
 +
 +	bcma_cc_mask32(cc, BCMA_CC_IRQMASK, ~BCMA_CC_IRQ_GPIO);
 +	free_irq(bcma_core_irq(cc->core), cc);

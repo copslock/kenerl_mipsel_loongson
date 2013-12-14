@@ -1,34 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Dec 2013 18:24:10 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:18998 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Dec 2013 19:33:17 +0100 (CET)
+Received: from terminus.zytor.com ([198.137.202.10]:49578 "EHLO mail.zytor.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823900Ab3LNRYIE1Kkc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 14 Dec 2013 18:24:08 +0100
-Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id rBEH00g1020015
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Sat, 14 Dec 2013 12:00:00 -0500
-Received: from deneb.redhat.com (ovpn-113-72.phx2.redhat.com [10.3.113.72])
-        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id rBEGxot7012322;
-        Sat, 14 Dec 2013 11:59:58 -0500
-From:   Mark Salter <msalter@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Mark Salter <msalter@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 04/10] mips: select ARCH_MIGHT_HAVE_PC_SERIO
-Date:   Sat, 14 Dec 2013 11:59:30 -0500
-Message-Id: <1387040376-26906-5-git-send-email-msalter@redhat.com>
-In-Reply-To: <1387040376-26906-1-git-send-email-msalter@redhat.com>
-References: <1387040376-26906-1-git-send-email-msalter@redhat.com>
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
-Return-Path: <msalter@redhat.com>
+        id S6822679Ab3LNSdOhMdSO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 14 Dec 2013 19:33:14 +0100
+Received: from tazenda.hos.anvin.org (c-71-202-112-181.hsd1.ca.comcast.net [71.202.112.181])
+        (authenticated bits=0)
+        by mail.zytor.com (8.14.7/8.14.5) with ESMTP id rBEIWajb024393
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-CAMELLIA256-SHA bits=256 verify=NO);
+        Sat, 14 Dec 2013 10:32:37 -0800
+Message-ID: <52ACA43F.2040402@zytor.com>
+Date:   Sat, 14 Dec 2013 10:32:31 -0800
+From:   "H. Peter Anvin" <hpa@zytor.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.1.0
+MIME-Version: 1.0
+To:     Mark Salter <msalter@redhat.com>, linux-kernel@vger.kernel.org
+CC:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Richard Henderson <rth@twiddle.net>,
+        linux-alpha@vger.kernel.org, Russell King <linux@arm.linux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org, Paul Mundt <lethal@linux-sh.org>,
+        linux-sh@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org
+Subject: Re: [PATCH 10/10] Kconfig: cleanup SERIO_I8042 dependencies
+References: <1387040376-26906-1-git-send-email-msalter@redhat.com> <1387040376-26906-11-git-send-email-msalter@redhat.com>
+In-Reply-To: <1387040376-26906-11-git-send-email-msalter@redhat.com>
+X-Enigmail-Version: 1.6
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <hpa@zytor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38701
+X-archive-position: 38702
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: msalter@redhat.com
+X-original-sender: hpa@zytor.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,27 +55,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Architectures which might use an i8042 for serial IO to keyboard,
-mouse, etc should select ARCH_MIGHT_HAVE_PC_SERIO.
+On 12/14/2013 08:59 AM, Mark Salter wrote:
+> Remove messy dependencies from SERIO_I8042 by having it depend on one
+> Kconfig symbol (ARCH_MIGHT_HAVE_PC_SERIO) and having architectures
+> which need it select ARCH_MIGHT_HAVE_PC_SERIO in arch/*/Kconfig.
+> New architectures are unlikely to need SERIO_I8042, so this avoids
+> having an ever growing list of architectures to exclude.
+> 
+> Signed-off-by: Mark Salter <msalter@redhat.com>
+> CC: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> CC: Richard Henderson <rth@twiddle.net>
+> CC: linux-alpha@vger.kernel.org
+> CC: Russell King <linux@arm.linux.org.uk>
+> CC: linux-arm-kernel@lists.infradead.org
+> CC: Tony Luck <tony.luck@intel.com>
+> CC: Fenghua Yu <fenghua.yu@intel.com>
+> CC: linux-ia64@vger.kernel.org
+> CC: Ralf Baechle <ralf@linux-mips.org>
+> CC: linux-mips@linux-mips.org
+> CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> CC: Paul Mackerras <paulus@samba.org>
+> CC: linuxppc-dev@lists.ozlabs.org
+> CC: Paul Mundt <lethal@linux-sh.org>
+> CC: linux-sh@vger.kernel.org
+> CC: "David S. Miller" <davem@davemloft.net>
+> CC: sparclinux@vger.kernel.org
+> CC: Guan Xuetao <gxt@mprc.pku.edu.cn>
+> CC: Ingo Molnar <mingo@redhat.com>
+> CC: Thomas Gleixner <tglx@linutronix.de>
+> CC: "H. Peter Anvin" <hpa@zytor.com>
+> CC: x86@kernel.org
 
-Signed-off-by: Mark Salter <msalter@redhat.com>
-CC: Ralf Baechle <ralf@linux-mips.org>
-CC: linux-mips@linux-mips.org
----
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 650de39..99db162 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2,6 +2,7 @@ config MIPS
- 	bool
- 	default y
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
-+	select ARCH_MIGHT_HAVE_PC_SERIO
- 	select HAVE_CONTEXT_TRACKING
- 	select HAVE_GENERIC_DMA_COHERENT
- 	select HAVE_IDE
--- 
-1.8.3.1
+Acked-by: H. Peter Anvin <hpa@linux.intel.com>

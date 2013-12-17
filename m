@@ -1,45 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Dec 2013 16:51:12 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:59687 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816671Ab3LQPuyCPEzW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Dec 2013 16:50:54 +0100
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id rBHFnuGj011843
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Tue, 17 Dec 2013 10:49:57 -0500
-Received: from deneb.redhat.com (ovpn-113-103.phx2.redhat.com [10.3.113.103])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id rBHFn9B0022379;
-        Tue, 17 Dec 2013 10:49:54 -0500
-From:   Mark Salter <msalter@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Mark Salter <msalter@redhat.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Richard Henderson <rth@twiddle.net>,
-        linux-alpha@vger.kernel.org, Russell King <linux@arm.linux.org.uk>,
-        linux-arm-kernel@lists.infradead.org,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org, Paul Mundt <lethal@linux-sh.org>,
-        linux-sh@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org
-Subject: [PATCH v2 10/10] Kconfig: cleanup SERIO_I8042 dependencies
-Date:   Tue, 17 Dec 2013 10:48:53 -0500
-Message-Id: <1387295333-24684-11-git-send-email-msalter@redhat.com>
-In-Reply-To: <1387295333-24684-1-git-send-email-msalter@redhat.com>
-References: <1387295333-24684-1-git-send-email-msalter@redhat.com>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
-Return-Path: <msalter@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Dec 2013 19:16:08 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:47306 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816671Ab3LQSQF5Vlqt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Dec 2013 19:16:05 +0100
+Received: from [188.250.212.249] (helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1VszBc-0005T7-O2; Tue, 17 Dec 2013 18:16:04 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel-team@lists.ubuntu.com
+Cc:     Jim Quinlan <jim2101024@gmail.com>, linux-mips@linux-mips.org,
+        cernekee@gmail.com, Ralf Baechle <ralf@linux-mips.org>,
+        Luis Henriques <luis.henriques@canonical.com>
+Subject: [PATCH 3.5 102/103] MIPS: DMA: For BMIPS5000 cores flush region just like non-coherent R10000
+Date:   Tue, 17 Dec 2013 18:13:31 +0000
+Message-Id: <1387304012-23805-103-git-send-email-luis.henriques@canonical.com>
+X-Mailer: git-send-email 1.8.3.2
+In-Reply-To: <1387304012-23805-1-git-send-email-luis.henriques@canonical.com>
+References: <1387304012-23805-1-git-send-email-luis.henriques@canonical.com>
+X-Extended-Stable: 3.5
+Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38726
+X-archive-position: 38727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: msalter@redhat.com
+X-original-sender: luis.henriques@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,65 +42,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Remove messy dependencies from SERIO_I8042 by having it depend on one
-Kconfig symbol (ARCH_MIGHT_HAVE_PC_SERIO) and having architectures
-which need it select ARCH_MIGHT_HAVE_PC_SERIO in arch/*/Kconfig.
-New architectures are unlikely to need SERIO_I8042, so this avoids
-having an ever growing list of architectures to exclude.
+3.5.7.28 -stable review patch.  If anyone has any objections, please let me know.
 
-Signed-off-by: Mark Salter <msalter@redhat.com>
-Acked-by: "H. Peter Anvin" <hpa@zytor.com>
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
-Acked-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-CC: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-CC: Richard Henderson <rth@twiddle.net>
-CC: linux-alpha@vger.kernel.org
-CC: Russell King <linux@arm.linux.org.uk>
-CC: linux-arm-kernel@lists.infradead.org
-CC: Tony Luck <tony.luck@intel.com>
-CC: Fenghua Yu <fenghua.yu@intel.com>
-CC: linux-ia64@vger.kernel.org
-CC: linux-mips@linux-mips.org
-CC: Paul Mackerras <paulus@samba.org>
-CC: linuxppc-dev@lists.ozlabs.org
-CC: Paul Mundt <lethal@linux-sh.org>
-CC: linux-sh@vger.kernel.org
-CC: "David S. Miller" <davem@davemloft.net>
-CC: sparclinux@vger.kernel.org
-CC: Guan Xuetao <gxt@mprc.pku.edu.cn>
-CC: Ingo Molnar <mingo@redhat.com>
-CC: Thomas Gleixner <tglx@linutronix.de>
-CC: x86@kernel.org
+------------------
+
+From: Jim Quinlan <jim2101024@gmail.com>
+
+commit f86f55d3ad21b21b736bdeb29bee0f0937b77138 upstream.
+
+The BMIPS5000 (Zephyr) processor utilizes instruction speculation. A
+stale misprediction address in either the JTB or the CRS may trigger
+a prefetch inside a region that is currently being used by a DMA engine,
+which is not IO-coherent.  This prefetch will fetch a line into the
+scache, and that line will soon become stale (ie wrong) during/after the
+DMA.  Mayhem ensues.
+
+In dma-default.c, the r10000 is handled as a special case in the same way
+that we want to handle Zephyr.  So we generalize the exception cases into
+a function, and include Zephyr as one of the processors that needs this
+special care.
+
+Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+Cc: linux-mips@linux-mips.org
+Cc: cernekee@gmail.com
+Patchwork: https://patchwork.linux-mips.org/patch/5776/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
 ---
- drivers/input/serio/Kconfig | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/mips/mm/dma-default.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/input/serio/Kconfig b/drivers/input/serio/Kconfig
-index 8541f94..1f5cec2 100644
---- a/drivers/input/serio/Kconfig
-+++ b/drivers/input/serio/Kconfig
-@@ -16,14 +16,19 @@ config SERIO
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called serio.
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index 3fab204..0eea2d2 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -30,16 +30,20 @@ static inline struct page *dma_addr_to_page(struct device *dev,
+ }
  
-+config ARCH_MIGHT_HAVE_PC_SERIO
-+	bool
-+	help
-+	  Select this config option from the architecture Kconfig if
-+	  the architecture might use a PC serio device (i8042) to
-+          communicate with keyboard, mouse, etc.
-+
- if SERIO
+ /*
++ * The affected CPUs below in 'cpu_needs_post_dma_flush()' can
++ * speculatively fill random cachelines with stale data at any time,
++ * requiring an extra flush post-DMA.
++ *
+  * Warning on the terminology - Linux calls an uncached area coherent;
+  * MIPS terminology calls memory areas with hardware maintained coherency
+  * coherent.
+  */
+-
+-static inline int cpu_is_noncoherent_r10000(struct device *dev)
++static inline int cpu_needs_post_dma_flush(struct device *dev)
+ {
+ 	return !plat_device_is_coherent(dev) &&
+ 	       (current_cpu_type() == CPU_R10000 ||
+-	       current_cpu_type() == CPU_R12000);
++		current_cpu_type() == CPU_R12000 ||
++		current_cpu_type() == CPU_BMIPS5000);
+ }
  
- config SERIO_I8042
- 	tristate "i8042 PC Keyboard controller"
- 	default y
--	depends on !PARISC && (!ARM || FOOTBRIDGE_HOST) && \
--		   (!SUPERH || SH_CAYMAN) && !M68K && !BLACKFIN && !S390 && \
--		   !ARC
-+	depends on ARCH_MIGHT_HAVE_PC_SERIO
- 	help
- 	  i8042 is the chip over which the standard AT keyboard and PS/2
- 	  mouse are connected to the computer. If you use these devices,
+ static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
+@@ -209,7 +213,7 @@ static inline void __dma_sync(struct page *page,
+ static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
+ 	size_t size, enum dma_data_direction direction, struct dma_attrs *attrs)
+ {
+-	if (cpu_is_noncoherent_r10000(dev))
++	if (cpu_needs_post_dma_flush(dev))
+ 		__dma_sync(dma_addr_to_page(dev, dma_addr),
+ 			   dma_addr & ~PAGE_MASK, size, direction);
+ 
+@@ -260,7 +264,7 @@ static void mips_dma_unmap_sg(struct device *dev, struct scatterlist *sg,
+ static void mips_dma_sync_single_for_cpu(struct device *dev,
+ 	dma_addr_t dma_handle, size_t size, enum dma_data_direction direction)
+ {
+-	if (cpu_is_noncoherent_r10000(dev))
++	if (cpu_needs_post_dma_flush(dev))
+ 		__dma_sync(dma_addr_to_page(dev, dma_handle),
+ 			   dma_handle & ~PAGE_MASK, size, direction);
+ }
+@@ -281,7 +285,7 @@ static void mips_dma_sync_sg_for_cpu(struct device *dev,
+ 
+ 	/* Make sure that gcc doesn't leave the empty loop body.  */
+ 	for (i = 0; i < nelems; i++, sg++) {
+-		if (cpu_is_noncoherent_r10000(dev))
++		if (cpu_needs_post_dma_flush(dev))
+ 			__dma_sync(sg_page(sg), sg->offset, sg->length,
+ 				   direction);
+ 	}
 -- 
-1.8.3.1
+1.8.3.2

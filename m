@@ -1,36 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Dec 2013 17:24:51 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:59012 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6817545Ab3LPQYoYYsWL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 Dec 2013 17:24:44 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id rBGGOh9s018390;
-        Mon, 16 Dec 2013 17:24:43 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id rBGGOhuD018389;
-        Mon, 16 Dec 2013 17:24:43 +0100
-Date:   Mon, 16 Dec 2013 17:24:43 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Mark Salter <msalter@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 04/10] mips: select ARCH_MIGHT_HAVE_PC_SERIO
-Message-ID: <20131216162443.GB19285@linux-mips.org>
-References: <1387040376-26906-1-git-send-email-msalter@redhat.com>
- <1387040376-26906-5-git-send-email-msalter@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1387040376-26906-5-git-send-email-msalter@redhat.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Dec 2013 14:32:05 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:45273 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6816852Ab3LQNb7F7jQE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Dec 2013 14:31:59 +0100
+Received: from [188.250.212.249] (helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1Vsukf-0006WK-KG; Tue, 17 Dec 2013 13:31:57 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     Jim Quinlan <jim2101024@gmail.com>
+Cc:     linux-mips@linux-mips.org, cernekee@gmail.com,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Luis Henriques <luis.henriques@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.5.y.z extended stable] Patch "MIPS: DMA: For BMIPS5000 cores flush region just like non-coherent" has been added to staging queue
+Date:   Tue, 17 Dec 2013 13:31:56 +0000
+Message-Id: <1387287116-28667-1-git-send-email-luis.henriques@canonical.com>
+X-Mailer: git-send-email 1.8.3.2
+X-Extended-Stable: 3.5
+Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38721
+X-archive-position: 38723
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: luis.henriques@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,8 +40,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+This is a note to let you know that I have just added a patch titled
 
-Thanks,
+    MIPS: DMA: For BMIPS5000 cores flush region just like non-coherent
 
-  Ralf
+to the linux-3.5.y-queue branch of the 3.5.y.z extended stable tree 
+which can be found at:
+
+ http://kernel.ubuntu.com/git?p=ubuntu/linux.git;a=shortlog;h=refs/heads/linux-3.5.y-queue
+
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
+
+For more information about the 3.5.y.z tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Luis
+
+------

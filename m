@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2013 14:16:27 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:35636 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2013 14:16:49 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:35640 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6867279Ab3LRNOFBeIqj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6867280Ab3LRNOFhxT55 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 18 Dec 2013 14:14:05 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 8525828026E;
+        by arrakis.dune.hu (Postfix) with ESMTP id D8C27284713;
         Wed, 18 Dec 2013 14:11:47 +0100 (CET)
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from shaker64.lan (dslb-088-073-137-004.pools.arcor-ip.net [88.73.137.4])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 3781928A92A;
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 079C228A92B;
         Wed, 18 Dec 2013 14:11:46 +0100 (CET)
 From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
@@ -18,9 +18,9 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH V2 11/13] MIPS: BCM47XX: select BMIPS CPUs for BCM47XX_SSB
-Date:   Wed, 18 Dec 2013 14:12:09 +0100
-Message-Id: <1387372331-23474-12-git-send-email-jogo@openwrt.org>
+Subject: [PATCH V2 12/13] MIPS: cpu-type: guard BMIPS variants with SYS_HAS_CPU_BMIPS*
+Date:   Wed, 18 Dec 2013 14:12:10 +0100
+Message-Id: <1387372331-23474-13-git-send-email-jogo@openwrt.org>
 X-Mailer: git-send-email 1.8.5.1
 In-Reply-To: <1387372331-23474-1-git-send-email-jogo@openwrt.org>
 References: <1387372331-23474-1-git-send-email-jogo@openwrt.org>
@@ -28,7 +28,7 @@ Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38740
+X-archive-position: 38741
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,25 +45,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Let BCM47XX_SSB select the appropriate BMIPS CPUs enountered on those
-systems.
+BMIPS32 and  BMIPS3300 also need to be available for MIPS32R1, as
+bcm47xx might not select BMIPS.
 
 Signed-off-by: Jonas Gorski <jogo@openwrt.org>
 ---
- arch/mips/bcm47xx/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/include/asm/cpu-type.h | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/bcm47xx/Kconfig b/arch/mips/bcm47xx/Kconfig
-index 2b8b118..a29f51d 100644
---- a/arch/mips/bcm47xx/Kconfig
-+++ b/arch/mips/bcm47xx/Kconfig
-@@ -2,6 +2,7 @@ if BCM47XX
+diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
+index 4a402cc..71d36ff 100644
+--- a/arch/mips/include/asm/cpu-type.h
++++ b/arch/mips/include/asm/cpu-type.h
+@@ -27,10 +27,7 @@ static inline int __pure __get_cpu_type(const int cpu_type)
+ #ifdef CONFIG_SYS_HAS_CPU_MIPS32_R1
+ 	case CPU_4KC:
+ 	case CPU_ALCHEMY:
+-	case CPU_BMIPS3300:
+-	case CPU_BMIPS4350:
+ 	case CPU_PR4450:
+-	case CPU_BMIPS32:
+ 	case CPU_JZRISC:
+ #endif
  
- config BCM47XX_SSB
- 	bool "SSB Support for Broadcom BCM47XX"
-+	select SYS_HAS_CPU_BMIPS32_3300
- 	select SSB
- 	select SSB_DRIVER_MIPS
- 	select SSB_DRIVER_EXTIF
+@@ -163,6 +160,16 @@ static inline int __pure __get_cpu_type(const int cpu_type)
+ 	case CPU_CAVIUM_OCTEON2:
+ #endif
+ 
++#if defined(CONFIG_SYS_HAS_CPU_BMIPS32_3300) || \
++	defined (CONFIG_SYS_HAS_CPU_MIPS32_R1)
++	case CPU_BMIPS32:
++	case CPU_BMIPS3300:
++#endif
++
++#ifdef CONFIG_SYS_HAS_CPU_BMIPS4350
++	case CPU_BMIPS4350:
++#endif
++
+ #ifdef CONFIG_SYS_HAS_CPU_BMIPS4380
+ 	case CPU_BMIPS4380:
+ #endif
 -- 
 1.8.5.1

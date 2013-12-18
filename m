@@ -1,46 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2013 19:58:11 +0100 (CET)
-Received: from mxout1.idt.com ([157.165.5.25]:51274 "EHLO mxout1.idt.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6867263Ab3LRS6FI7QS- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 18 Dec 2013 19:58:05 +0100
-Received: from mail.idt.com (localhost [127.0.0.1])
-        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id rBIIvjlo003366;
-        Wed, 18 Dec 2013 10:57:45 -0800
-Received: from corpml1.corp.idt.com (corpml1.corp.idt.com [157.165.140.20])
-        by mail.idt.com (8.13.8/8.13.8) with ESMTP id rBIIviBF005769;
-        Wed, 18 Dec 2013 10:57:44 -0800 (PST)
-Received: from kaneng03.ott.idt.com (kaneng03.ott.idt.com [10.1.0.147])
-        by corpml1.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id rBIIvh119239;
-        Wed, 18 Dec 2013 10:57:43 -0800 (PST)
-Received: from kaneng03.ott.idt.com (localhost.localdomain [127.0.0.1])
-        by kaneng03.ott.idt.com (8.13.8/8.13.8) with ESMTP id rBIIvfWa010150;
-        Wed, 18 Dec 2013 13:57:41 -0500
-Received: (from abounine@localhost)
-        by kaneng03.ott.idt.com (8.13.8/8.13.8/Submit) id rBIIvdDU010148;
-        Wed, 18 Dec 2013 13:57:39 -0500
-From:   Alexandre Bounine <alexandre.bounine@idt.com>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc:     Alexandre Bounine <alexandre.bounine@idt.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        Jean Delvare <jdelvare@suse.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2013 22:08:59 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:57489 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6867263Ab3LRVI4QpFVl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Dec 2013 22:08:56 +0100
+Received: from localhost (c-76-28-172-123.hsd1.wa.comcast.net [76.28.172.123])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3C812800;
+        Wed, 18 Dec 2013 21:08:47 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Jim Quinlan <jim2101024@gmail.com>,
+        linux-mips@linux-mips.org, cernekee@gmail.com,
         Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Li Yang <leoli@freescale.com>, linux-mips@linux-mips.org
-Subject: [PATCH] rapidio: add modular rapidio core build into powerpc and mips branches
-Date:   Wed, 18 Dec 2013 13:57:35 -0500
-Message-Id: <1387393055-10114-1-git-send-email-alexandre.bounine@idt.com>
-X-Mailer: git-send-email 1.7.8.4
-X-Scanned-By: MIMEDefang 2.43
-Return-Path: <abounine@idt.com>
+        John Ulvr <julvr@broadcom.com>
+Subject: [PATCH 3.4 01/31] MIPS: DMA: For BMIPS5000 cores flush region just like non-coherent R10000
+Date:   Wed, 18 Dec 2013 13:08:09 -0800
+Message-Id: <20131218210522.833580254@linuxfoundation.org>
+X-Mailer: git-send-email 1.8.5.1.163.gd7aced9
+In-Reply-To: <20131218210522.790152625@linuxfoundation.org>
+References: <20131218210522.790152625@linuxfoundation.org>
+User-Agent: quilt/0.61-1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38750
+X-archive-position: 38751
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.bounine@idt.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,58 +43,88 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allow modular build option for RapidIO subsystem core in MIPS and PowerPC
-architectural branches.
+3.4-stable review patch.  If anyone has any objections, please let me know.
 
-At this moment modular RapidIO subsystem build is enabled only for platforms
-that use PCI/PCIe based RapidIO controllers (e.g. Tsi721).
+------------------
 
-Signed-off-by: Alexandre Bounine <alexandre.bounine@idt.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
-Cc: Jean Delvare <jdelvare@suse.de>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Li Yang <leoli@freescale.com>
+From: Jim Quinlan <jim2101024@gmail.com>
+
+commit f86f55d3ad21b21b736bdeb29bee0f0937b77138 upstream.
+
+The BMIPS5000 (Zephyr) processor utilizes instruction speculation. A
+stale misprediction address in either the JTB or the CRS may trigger
+a prefetch inside a region that is currently being used by a DMA engine,
+which is not IO-coherent.  This prefetch will fetch a line into the
+scache, and that line will soon become stale (ie wrong) during/after the
+DMA.  Mayhem ensues.
+
+In dma-default.c, the r10000 is handled as a special case in the same way
+that we want to handle Zephyr.  So we generalize the exception cases into
+a function, and include Zephyr as one of the processors that needs this
+special care.
+
+Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
 Cc: linux-mips@linux-mips.org
----
- arch/mips/Kconfig    |    2 +-
- arch/powerpc/Kconfig |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+Cc: cernekee@gmail.com
+Patchwork: https://patchwork.linux-mips.org/patch/5776/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: John Ulvr <julvr@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 650de39..e6a8a7a 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2442,7 +2442,7 @@ source "drivers/pcmcia/Kconfig"
- source "drivers/pci/hotplug/Kconfig"
+---
+ arch/mips/mm/dma-default.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -30,16 +30,20 @@ static inline struct page *dma_addr_to_p
+ }
  
- config RAPIDIO
--	bool "RapidIO support"
-+	tristate "RapidIO support"
- 	depends on PCI
- 	default n
- 	help
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index b44b52c..992531f 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -790,7 +790,7 @@ config HAS_RAPIDIO
- 	default n
+ /*
++ * The affected CPUs below in 'cpu_needs_post_dma_flush()' can
++ * speculatively fill random cachelines with stale data at any time,
++ * requiring an extra flush post-DMA.
++ *
+  * Warning on the terminology - Linux calls an uncached area coherent;
+  * MIPS terminology calls memory areas with hardware maintained coherency
+  * coherent.
+  */
+-
+-static inline int cpu_is_noncoherent_r10000(struct device *dev)
++static inline int cpu_needs_post_dma_flush(struct device *dev)
+ {
+ 	return !plat_device_is_coherent(dev) &&
+ 	       (current_cpu_type() == CPU_R10000 ||
+-	       current_cpu_type() == CPU_R12000);
++		current_cpu_type() == CPU_R12000 ||
++		current_cpu_type() == CPU_BMIPS5000);
+ }
  
- config RAPIDIO
--	bool "RapidIO support"
-+	tristate "RapidIO support"
- 	depends on HAS_RAPIDIO || PCI
- 	help
- 	  If you say Y here, the kernel will include drivers and
-@@ -798,7 +798,7 @@ config RAPIDIO
+ static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
+@@ -209,7 +213,7 @@ static inline void __dma_sync(struct pag
+ static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
+ 	size_t size, enum dma_data_direction direction, struct dma_attrs *attrs)
+ {
+-	if (cpu_is_noncoherent_r10000(dev))
++	if (cpu_needs_post_dma_flush(dev))
+ 		__dma_sync(dma_addr_to_page(dev, dma_addr),
+ 			   dma_addr & ~PAGE_MASK, size, direction);
  
- config FSL_RIO
- 	bool "Freescale Embedded SRIO Controller support"
--	depends on RAPIDIO && HAS_RAPIDIO
-+	depends on RAPIDIO = y && HAS_RAPIDIO
- 	default "n"
- 	---help---
- 	  Include support for RapidIO controller on Freescale embedded
--- 
-1.7.8.4
+@@ -260,7 +264,7 @@ static void mips_dma_unmap_sg(struct dev
+ static void mips_dma_sync_single_for_cpu(struct device *dev,
+ 	dma_addr_t dma_handle, size_t size, enum dma_data_direction direction)
+ {
+-	if (cpu_is_noncoherent_r10000(dev))
++	if (cpu_needs_post_dma_flush(dev))
+ 		__dma_sync(dma_addr_to_page(dev, dma_handle),
+ 			   dma_handle & ~PAGE_MASK, size, direction);
+ }
+@@ -281,7 +285,7 @@ static void mips_dma_sync_sg_for_cpu(str
+ 
+ 	/* Make sure that gcc doesn't leave the empty loop body.  */
+ 	for (i = 0; i < nelems; i++, sg++) {
+-		if (cpu_is_noncoherent_r10000(dev))
++		if (cpu_needs_post_dma_flush(dev))
+ 			__dma_sync(sg_page(sg), sg->offset, sg->length,
+ 				   direction);
+ 	}

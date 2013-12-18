@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2013 14:14:27 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:35597 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2013 14:14:46 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:35607 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6867263Ab3LRNOBIzMP6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 18 Dec 2013 14:14:01 +0100
+        id S6867268Ab3LRNOCY04I0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 18 Dec 2013 14:14:02 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 7C91928A924;
-        Wed, 18 Dec 2013 14:11:43 +0100 (CET)
+        by arrakis.dune.hu (Postfix) with ESMTP id A538528A926;
+        Wed, 18 Dec 2013 14:11:44 +0100 (CET)
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from shaker64.lan (dslb-088-073-137-004.pools.arcor-ip.net [88.73.137.4])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 53C1F2846CB;
-        Wed, 18 Dec 2013 14:11:40 +0100 (CET)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id BB938284516;
+        Wed, 18 Dec 2013 14:11:39 +0100 (CET)
 From:   Jonas Gorski <jogo@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
@@ -18,9 +18,9 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <florian@openwrt.org>,
         Kevin Cernekee <cernekee@gmail.com>,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH V2 02/13] MIPS: allow asm/cpu.h to be included from assembly
-Date:   Wed, 18 Dec 2013 14:12:00 +0100
-Message-Id: <1387372331-23474-3-git-send-email-jogo@openwrt.org>
+Subject: [PATCH V2 01/13] MIPS: BCM63XX: disable SMP also on BCM3368
+Date:   Wed, 18 Dec 2013 14:11:59 +0100
+Message-Id: <1387372331-23474-2-git-send-email-jogo@openwrt.org>
 X-Mailer: git-send-email 1.8.5.1
 In-Reply-To: <1387372331-23474-1-git-send-email-jogo@openwrt.org>
 References: <1387372331-23474-1-git-send-email-jogo@openwrt.org>
@@ -28,7 +28,7 @@ Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38734
+X-archive-position: 38735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,33 +45,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add guards around the enum to allow including cpu.h from assembly.
+BCM3368 has the same shared TLB as BCM6358.
 
 Signed-off-by: Jonas Gorski <jogo@openwrt.org>
 ---
- arch/mips/include/asm/cpu.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/mips/bcm63xx/prom.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index d2035e1..e71b491 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -249,6 +249,8 @@
+diff --git a/arch/mips/bcm63xx/prom.c b/arch/mips/bcm63xx/prom.c
+index 8ac4e09..0215849 100644
+--- a/arch/mips/bcm63xx/prom.c
++++ b/arch/mips/bcm63xx/prom.c
+@@ -64,9 +64,9 @@ void __init prom_init(void)
+ 		register_smp_ops(&bmips_smp_ops);
  
- #define FPIR_IMP_NONE		0x0000
+ 		/*
+-		 * BCM6328 might not have its second CPU enabled, while BCM6358
+-		 * needs special handling for its shared TLB, so disable SMP
+-		 * for now.
++		 * BCM6328 might not have its second CPU enabled, while BCM3368
++		 * and BCM6358 need special handling for their shared TLB, so
++		 * disable SMP for now.
+ 		 */
+ 		if (BCMCPU_IS_6328()) {
+ 			reg = bcm_readl(BCM_6328_OTP_BASE +
+@@ -74,7 +74,7 @@ void __init prom_init(void)
  
-+#if !defined(__ASSEMBLY__)
-+
- enum cpu_type_enum {
- 	CPU_UNKNOWN,
+ 			if (reg & OTP_6328_REG3_TP1_DISABLED)
+ 				bmips_smp_enabled = 0;
+-		} else if (BCMCPU_IS_6358()) {
++		} else if (BCMCPU_IS_3368() || BCMCPU_IS_6358()) {
+ 			bmips_smp_enabled = 0;
+ 		}
  
-@@ -301,6 +303,7 @@ enum cpu_type_enum {
- 	CPU_LAST
- };
- 
-+#endif /* !__ASSEMBLY */
- 
- /*
-  * ISA Level encodings
 -- 
 1.8.5.1

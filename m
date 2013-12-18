@@ -1,87 +1,95 @@
-From: Jim Quinlan <jim2101024@gmail.com>
-Date: Tue, 27 Aug 2013 16:57:51 -0400
-Subject: MIPS: DMA: For BMIPS5000 cores flush region just like non-coherent
- R10000
-Message-ID: <20130827205751.1CjlQ9_fImkYN0HNkCF67Qa5AnBnjnc5BkSzrpfYYAY@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2013 14:14:04 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:35589 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6867261Ab3LRNOA3ezZc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 18 Dec 2013 14:14:00 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 9043828A923;
+        Wed, 18 Dec 2013 14:11:42 +0100 (CET)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from shaker64.lan (dslb-088-073-137-004.pools.arcor-ip.net [88.73.137.4])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 0C17528026E;
+        Wed, 18 Dec 2013 14:11:36 +0100 (CET)
+From:   Jonas Gorski <jogo@openwrt.org>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH V2 00/13] MIPS: improve BMIPS support
+Date:   Wed, 18 Dec 2013 14:11:58 +0100
+Message-Id: <1387372331-23474-1-git-send-email-jogo@openwrt.org>
+X-Mailer: git-send-email 1.8.5.1
+Return-Path: <jogo@openwrt.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 38733
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: jogo@openwrt.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit f86f55d3ad21b21b736bdeb29bee0f0937b77138 upstream.
+This patchset aims at unifying the different BMIPS support code to allow
+building a kernel that runs on multiple BCM63XX SoCs which might have
+different BMIPS flavours on them, regardless of SMP support enabled in
+the kernel.
 
-The BMIPS5000 (Zephyr) processor utilizes instruction speculation. A
-stale misprediction address in either the JTB or the CRS may trigger
-a prefetch inside a region that is currently being used by a DMA engine,
-which is not IO-coherent.  This prefetch will fetch a line into the
-scache, and that line will soon become stale (ie wrong) during/after the
-DMA.  Mayhem ensues.
+The first few patches clean up BMIPS itself and prepare it for multi-cpu
+support, while the latter add support to BCM63XX for running a SMP kernel
+with support for all SoCs, even those that do not have a SMP capable
+CPU.
 
-In dma-default.c, the r10000 is handled as a special case in the same way
-that we want to handle Zephyr.  So we generalize the exception cases into
-a function, and include Zephyr as one of the processors that needs this
-special care.
+This patchset is runtime tested on BCM6348, BCM6328 and BCM6368, to
+verify that it actually does what it claims it does.
 
-Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
-Cc: linux-mips@linux-mips.org
-Cc: cernekee@gmail.com
-Patchwork: https://patchwork.linux-mips.org/patch/5776/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
----
- arch/mips/mm/dma-default.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+Lacking hardware, it is only build tested for BMIPS4380 and BMIPS5000.
 
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index aaccf1c..468f7f9 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -50,16 +50,20 @@ static inline struct page *dma_addr_to_page(struct device *dev,
- }
+Changes V1 -> V2:
+ * dropped the compilation fix (a different fix  was already comitted)
+ * rebased on the cpu-type cleanup patches
+ * used the cpu-type cleanup effects to remove the macros and replace
+   them with normal switch-cases.
+ * Let BCM47XX_SSB also select BMIPS32_3300
 
- /*
-+ * The affected CPUs below in 'cpu_needs_post_dma_flush()' can
-+ * speculatively fill random cachelines with stale data at any time,
-+ * requiring an extra flush post-DMA.
-+ *
-  * Warning on the terminology - Linux calls an uncached area coherent;
-  * MIPS terminology calls memory areas with hardware maintained coherency
-  * coherent.
-  */
--
--static inline int cpu_is_noncoherent_r10000(struct device *dev)
-+static inline int cpu_needs_post_dma_flush(struct device *dev)
- {
- 	return !plat_device_is_coherent(dev) &&
- 	       (current_cpu_type() == CPU_R10000 ||
--	       current_cpu_type() == CPU_R12000);
-+		current_cpu_type() == CPU_R12000 ||
-+		current_cpu_type() == CPU_BMIPS5000);
- }
+Jonas Gorski (13):
+  MIPS: BCM63XX: disable SMP also on BCM3368
+  MIPS: allow asm/cpu.h to be included from assembly
+  MIPS: BMIPS: change compile time checks to runtime checks
+  MIPS: BMIPS: merge CPU options into one option
+  MIPS: BMIPS: select CPU_SUPPORTS_HIGHMEM
+  MIPS: BMIPS: select CPU_HAS_PREFETCH
+  MIPS: BMIPS: extend BMIPS3300 to include BMIPS32
+  MIPS: BMIPS: add a smp ops registration helper
+  MIPS: BCM63XX: always register bmips smp ops
+  MIPS: BCM63XX: let the individual SoCs select the appropriate CPUs
+  MIPS: BCM47XX: select BMIPS CPUs for BCM47XX_SSB
+  MIPS: cpu-type: guard BMIPS variants with SYS_HAS_CPU_BMIPS*
+  MIPS: BCM63XX: drop SYS_HAS_CPU_MIPS32R1
 
- static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
-@@ -230,7 +234,7 @@ static inline void __dma_sync(struct page *page,
- static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
- 	size_t size, enum dma_data_direction direction, struct dma_attrs *attrs)
- {
--	if (cpu_is_noncoherent_r10000(dev))
-+	if (cpu_needs_post_dma_flush(dev))
- 		__dma_sync(dma_addr_to_page(dev, dma_addr),
- 			   dma_addr & ~PAGE_MASK, size, direction);
+ arch/mips/Kconfig                |  84 +++++------
+ arch/mips/bcm47xx/Kconfig        |   1 +
+ arch/mips/bcm63xx/Kconfig        |   8 +
+ arch/mips/bcm63xx/prom.c         |  14 +-
+ arch/mips/include/asm/bmips.h    |  29 +++-
+ arch/mips/include/asm/cpu-type.h |  13 +-
+ arch/mips/include/asm/cpu.h      |   3 +
+ arch/mips/kernel/bmips_vec.S     |  55 +++++--
+ arch/mips/kernel/smp-bmips.c     | 312 ++++++++++++++++++++++++---------------
+ 9 files changed, 329 insertions(+), 190 deletions(-)
 
-@@ -284,7 +288,7 @@ static void mips_dma_unmap_sg(struct device *dev, struct scatterlist *sg,
- static void mips_dma_sync_single_for_cpu(struct device *dev,
- 	dma_addr_t dma_handle, size_t size, enum dma_data_direction direction)
- {
--	if (cpu_is_noncoherent_r10000(dev))
-+	if (cpu_needs_post_dma_flush(dev))
- 		__dma_sync(dma_addr_to_page(dev, dma_handle),
- 			   dma_handle & ~PAGE_MASK, size, direction);
- }
-@@ -305,7 +309,7 @@ static void mips_dma_sync_sg_for_cpu(struct device *dev,
-
- 	/* Make sure that gcc doesn't leave the empty loop body.  */
- 	for (i = 0; i < nelems; i++, sg++) {
--		if (cpu_is_noncoherent_r10000(dev))
-+		if (cpu_needs_post_dma_flush(dev))
- 			__dma_sync(sg_page(sg), sg->offset, sg->length,
- 				   direction);
- 	}
---
-1.8.3.2
+-- 
+1.8.5.1

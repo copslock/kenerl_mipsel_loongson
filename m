@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2013 22:08:59 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:57489 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2013 22:11:55 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:57620 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6867263Ab3LRVI4QpFVl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Dec 2013 22:08:56 +0100
+        by eddie.linux-mips.org with ESMTP id S6822672Ab3LRVLxBPuxd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Dec 2013 22:11:53 +0100
 Received: from localhost (c-76-28-172-123.hsd1.wa.comcast.net [76.28.172.123])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3C812800;
-        Wed, 18 Dec 2013 21:08:47 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B8B588FA;
+        Wed, 18 Dec 2013 21:11:46 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,12 +13,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-mips@linux-mips.org, cernekee@gmail.com,
         Ralf Baechle <ralf@linux-mips.org>,
         John Ulvr <julvr@broadcom.com>
-Subject: [PATCH 3.4 01/31] MIPS: DMA: For BMIPS5000 cores flush region just like non-coherent R10000
-Date:   Wed, 18 Dec 2013 13:08:09 -0800
-Message-Id: <20131218210522.833580254@linuxfoundation.org>
+Subject: [PATCH 3.10 01/78] MIPS: DMA: For BMIPS5000 cores flush region just like non-coherent R10000
+Date:   Wed, 18 Dec 2013 13:10:29 -0800
+Message-Id: <20131218211111.946465474@linuxfoundation.org>
 X-Mailer: git-send-email 1.8.5.1.163.gd7aced9
-In-Reply-To: <20131218210522.790152625@linuxfoundation.org>
-References: <20131218210522.790152625@linuxfoundation.org>
+In-Reply-To: <20131218211111.903835960@linuxfoundation.org>
+References: <20131218211111.903835960@linuxfoundation.org>
 User-Agent: quilt/0.61-1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38751
+X-archive-position: 38752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,7 +43,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.4-stable review patch.  If anyone has any objections, please let me know.
+3.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -77,7 +77,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/mm/dma-default.c
 +++ b/arch/mips/mm/dma-default.c
-@@ -30,16 +30,20 @@ static inline struct page *dma_addr_to_p
+@@ -50,16 +50,20 @@ static inline struct page *dma_addr_to_p
  }
  
  /*
@@ -101,7 +101,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  }
  
  static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
-@@ -209,7 +213,7 @@ static inline void __dma_sync(struct pag
+@@ -230,7 +234,7 @@ static inline void __dma_sync(struct pag
  static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
  	size_t size, enum dma_data_direction direction, struct dma_attrs *attrs)
  {
@@ -110,7 +110,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		__dma_sync(dma_addr_to_page(dev, dma_addr),
  			   dma_addr & ~PAGE_MASK, size, direction);
  
-@@ -260,7 +264,7 @@ static void mips_dma_unmap_sg(struct dev
+@@ -281,7 +285,7 @@ static void mips_dma_unmap_sg(struct dev
  static void mips_dma_sync_single_for_cpu(struct device *dev,
  	dma_addr_t dma_handle, size_t size, enum dma_data_direction direction)
  {
@@ -119,7 +119,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		__dma_sync(dma_addr_to_page(dev, dma_handle),
  			   dma_handle & ~PAGE_MASK, size, direction);
  }
-@@ -281,7 +285,7 @@ static void mips_dma_sync_sg_for_cpu(str
+@@ -302,7 +306,7 @@ static void mips_dma_sync_sg_for_cpu(str
  
  	/* Make sure that gcc doesn't leave the empty loop body.  */
  	for (i = 0; i < nelems; i++, sg++) {

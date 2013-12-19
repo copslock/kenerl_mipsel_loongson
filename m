@@ -1,43 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Dec 2013 20:37:50 +0100 (CET)
-Received: from smtp.outflux.net ([198.145.64.163]:36476 "EHLO smtp.outflux.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Dec 2013 22:11:46 +0100 (CET)
+Received: from seketeli.net ([91.121.166.71]:40845 "EHLO ms.seketeli.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6867279Ab3LSThCYVylD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 19 Dec 2013 20:37:02 +0100
-Received: from www.outflux.net (serenity-end.outflux.net [10.2.0.2])
-        by vinyl.outflux.net (8.14.4/8.14.4/Debian-2ubuntu2.1) with ESMTP id rBJJa69c000686;
-        Thu, 19 Dec 2013 11:36:06 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Michal Marek <mmarek@suse.cz>,
-        Russell King <linux@arm.linux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Shawn Guo <shawn.guo@linaro.org>, x86@kernel.org,
-        linux-kbuild@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
-        keescook@chromium.org
-Subject: [PATCH v5] provide -fstack-protector-strong build option
-Date:   Thu, 19 Dec 2013 11:35:57 -0800
-Message-Id: <1387481759-14535-1-git-send-email-keescook@chromium.org>
-X-Mailer: git-send-email 1.7.9.5
-X-MIMEDefang-Filter: outflux$Revision: 1.316 $
-X-HELO: www.outflux.net
-X-Scanned-By: MIMEDefang 2.71 on 10.2.0.1
-Return-Path: <keescook@www.outflux.net>
+        id S6867278Ab3LSVLoOtKxg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 19 Dec 2013 22:11:44 +0100
+Received: from localhost (176-26-190-109.dsl.ovh.fr [109.190.26.176])
+        by ms.seketeli.net (Postfix) with ESMTP id 2A7C5EA075;
+        Thu, 19 Dec 2013 22:46:45 +0100 (CET)
+Received: by localhost (Postfix, from userid 1000)
+        id 17AD4A405B1; Thu, 19 Dec 2013 22:11:43 +0100 (CET)
+From:   Apelete Seketeli <apelete@seketeli.net>
+To:     linux-mips@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Vinod Koul <vinod.koul@intel.com>
+Subject: [PATCH] Update platform data for JZ4740 usb device controller
+Date:   Thu, 19 Dec 2013 22:11:42 +0100
+Message-Id: <1387487503-26161-1-git-send-email-apelete@seketeli.net>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <apelete@seketeli.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38763
+X-archive-position: 38764
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: apelete@seketeli.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,10 +38,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This reorganizes the build options for CONFIG_CC_STACKPROTECTOR so that
-the new CONFIG_CC_STACKPROTECTOR_STRONG can be used when building with
-a compiler that supports it.
+Hello,
 
-Now with more help text.
+Following a few patches sent to the linux-usb mailing list to add USB
+support for the Ingenic JZ4740 MIPS SoC found in the Ben Nanonote,
+here is a patch that updates platform data for JZ4740 usb device
+controller.
 
--Kees
+The patch that comes as a follow-up of this message was originally
+part of the patch set sent to linux-usb but was split out to separate
+arch/ from drivers/ files.
+
+Changes were rebased on top of Ralf Baechle's Linux MIPS master
+branch, built and tested on device successfully.
+
+The following changes since commit a9b7663:
+
+  Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux
+
+are available in the git repository at:
+
+  git://seketeli.fr/~apelete/linux-mips.git update-jz4740-arch
+
+Apelete Seketeli (1):
+  arch: mips: update platform data for JZ4740 usb device controller
+
+ arch/mips/include/asm/mach-jz4740/platform.h |    1 +
+ arch/mips/jz4740/board-qi_lb60.c             |    1 +
+ arch/mips/jz4740/platform.c                  |   40 +++++++++++++++-----------
+ 3 files changed, 26 insertions(+), 16 deletions(-)
+
+-- 
+1.7.10.4

@@ -1,64 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Dec 2013 23:00:10 +0100 (CET)
-Received: from mga11.intel.com ([192.55.52.93]:52067 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6867257Ab3LRWABhPH8w convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Dec 2013 23:00:01 +0100
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP; 18 Dec 2013 13:59:51 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.95,509,1384329600"; 
-   d="scan'208";a="452256438"
-Received: from orsmsx103.amr.corp.intel.com ([10.22.225.130])
-  by fmsmga002.fm.intel.com with ESMTP; 18 Dec 2013 13:59:50 -0800
-Received: from orsmsx106.amr.corp.intel.com ([169.254.5.110]) by
- ORSMSX103.amr.corp.intel.com ([169.254.2.114]) with mapi id 14.03.0123.003;
- Wed, 18 Dec 2013 13:59:50 -0800
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     Mark Salter <msalter@redhat.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Richard Henderson <rth@twiddle.net>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "x86@kernel.org" <x86@kernel.org>
-Subject: RE: [PATCH v2 00/10] Kconfig: cleanup SERIO_I8042 dependencies
-Thread-Topic: [PATCH v2 00/10] Kconfig: cleanup SERIO_I8042 dependencies
-Thread-Index: AQHO+z/OuxcCzhfNTESZVWf9Hu2Bc5pagiFA
-Date:   Wed, 18 Dec 2013 21:59:49 +0000
-Message-ID: <3908561D78D1C84285E8C5FCA982C28F31D8CDD5@ORSMSX106.amr.corp.intel.com>
-References: <1387295333-24684-1-git-send-email-msalter@redhat.com>
-In-Reply-To: <1387295333-24684-1-git-send-email-msalter@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.22.254.138]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-Return-Path: <tony.luck@intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Dec 2013 13:00:21 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:59756 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6819547Ab3LSMAS2Ax0b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Dec 2013 13:00:18 +0100
+Received: from [188.250.212.249] (helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.71)
+        (envelope-from <luis.henriques@canonical.com>)
+        id 1VtcH3-0006LH-Fy; Thu, 19 Dec 2013 12:00:17 +0000
+From:   Luis Henriques <luis.henriques@canonical.com>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel-team@lists.ubuntu.com
+Cc:     Jim Quinlan <jim2101024@gmail.com>, linux-mips@linux-mips.org,
+        cernekee@gmail.com, Ralf Baechle <ralf@linux-mips.org>,
+        Luis Henriques <luis.henriques@canonical.com>
+Subject: [PATCH 3.11 206/208] MIPS: DMA: For BMIPS5000 cores flush region just like non-coherent R10000
+Date:   Thu, 19 Dec 2013 11:55:04 +0000
+Message-Id: <1387454106-19326-207-git-send-email-luis.henriques@canonical.com>
+X-Mailer: git-send-email 1.8.3.2
+In-Reply-To: <1387454106-19326-1-git-send-email-luis.henriques@canonical.com>
+References: <1387454106-19326-1-git-send-email-luis.henriques@canonical.com>
+X-Extended-Stable: 3.11
+Return-Path: <luis.henriques@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38755
+X-archive-position: 38756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tony.luck@intel.com
+X-original-sender: luis.henriques@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,10 +42,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> This is v2 of the patch series. Changes from version 1:
->
->  o Added acks. arm, ia64, and sh are only ones without acks.
+3.11.10.2 -stable review patch.  If anyone has any objections, please let me know.
 
-ia64 bits look OK
+------------------
 
-Acked-by: Tony Luck <tony.luck@intel.com>
+From: Jim Quinlan <jim2101024@gmail.com>
+
+commit f86f55d3ad21b21b736bdeb29bee0f0937b77138 upstream.
+
+The BMIPS5000 (Zephyr) processor utilizes instruction speculation. A
+stale misprediction address in either the JTB or the CRS may trigger
+a prefetch inside a region that is currently being used by a DMA engine,
+which is not IO-coherent.  This prefetch will fetch a line into the
+scache, and that line will soon become stale (ie wrong) during/after the
+DMA.  Mayhem ensues.
+
+In dma-default.c, the r10000 is handled as a special case in the same way
+that we want to handle Zephyr.  So we generalize the exception cases into
+a function, and include Zephyr as one of the processors that needs this
+special care.
+
+Signed-off-by: Jim Quinlan <jim2101024@gmail.com>
+Cc: linux-mips@linux-mips.org
+Cc: cernekee@gmail.com
+Patchwork: https://patchwork.linux-mips.org/patch/5776/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Luis Henriques <luis.henriques@canonical.com>
+---
+ arch/mips/mm/dma-default.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index aaccf1c..468f7f9 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -50,16 +50,20 @@ static inline struct page *dma_addr_to_page(struct device *dev,
+ }
+ 
+ /*
++ * The affected CPUs below in 'cpu_needs_post_dma_flush()' can
++ * speculatively fill random cachelines with stale data at any time,
++ * requiring an extra flush post-DMA.
++ *
+  * Warning on the terminology - Linux calls an uncached area coherent;
+  * MIPS terminology calls memory areas with hardware maintained coherency
+  * coherent.
+  */
+-
+-static inline int cpu_is_noncoherent_r10000(struct device *dev)
++static inline int cpu_needs_post_dma_flush(struct device *dev)
+ {
+ 	return !plat_device_is_coherent(dev) &&
+ 	       (current_cpu_type() == CPU_R10000 ||
+-	       current_cpu_type() == CPU_R12000);
++		current_cpu_type() == CPU_R12000 ||
++		current_cpu_type() == CPU_BMIPS5000);
+ }
+ 
+ static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
+@@ -230,7 +234,7 @@ static inline void __dma_sync(struct page *page,
+ static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
+ 	size_t size, enum dma_data_direction direction, struct dma_attrs *attrs)
+ {
+-	if (cpu_is_noncoherent_r10000(dev))
++	if (cpu_needs_post_dma_flush(dev))
+ 		__dma_sync(dma_addr_to_page(dev, dma_addr),
+ 			   dma_addr & ~PAGE_MASK, size, direction);
+ 
+@@ -284,7 +288,7 @@ static void mips_dma_unmap_sg(struct device *dev, struct scatterlist *sg,
+ static void mips_dma_sync_single_for_cpu(struct device *dev,
+ 	dma_addr_t dma_handle, size_t size, enum dma_data_direction direction)
+ {
+-	if (cpu_is_noncoherent_r10000(dev))
++	if (cpu_needs_post_dma_flush(dev))
+ 		__dma_sync(dma_addr_to_page(dev, dma_handle),
+ 			   dma_handle & ~PAGE_MASK, size, direction);
+ }
+@@ -305,7 +309,7 @@ static void mips_dma_sync_sg_for_cpu(struct device *dev,
+ 
+ 	/* Make sure that gcc doesn't leave the empty loop body.  */
+ 	for (i = 0; i < nelems; i++, sg++) {
+-		if (cpu_is_noncoherent_r10000(dev))
++		if (cpu_needs_post_dma_flush(dev))
+ 			__dma_sync(sg_page(sg), sg->offset, sg->length,
+ 				   direction);
+ 	}
+-- 
+1.8.3.2

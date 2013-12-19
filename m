@@ -1,38 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Dec 2013 16:04:47 +0100 (CET)
-Received: from mail-ea0-f173.google.com ([209.85.215.173]:53662 "EHLO
-        mail-ea0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816676Ab3LSPEkKFJnf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Dec 2013 16:04:40 +0100
-Received: by mail-ea0-f173.google.com with SMTP id o10so539136eaj.32
-        for <multiple recipients>; Thu, 19 Dec 2013 07:04:34 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Dec 2013 16:05:06 +0100 (CET)
+Received: from mail-ee0-f46.google.com ([74.125.83.46]:56762 "EHLO
+        mail-ee0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6867271Ab3LSPEmuf185 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Dec 2013 16:04:42 +0100
+Received: by mail-ee0-f46.google.com with SMTP id d49so533479eek.33
+        for <multiple recipients>; Thu, 19 Dec 2013 07:04:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=gBjf120On0BvUVDQdgDZ3GNc/xifXTXd/1c1GQpqW/U=;
-        b=fLCDwB2mAzWzveO5DIV64uSOiUAq15yoTu7ZVCHNyPIDJcfuTa9FdczkeBhOU0gfgd
-         zq28iz2UljFKexWKvlTTBKkp1JyTh9XErtys71CYIlyXoGeLw28Rar1mE/dMfFu7IQnh
-         VEYe96kgCnP1kszzDuZol73zH/EPp6V+7urMLZZdimlryvLVVE6/nS15DSiUGp0tzJw1
-         QnJrBDtK3Z4D/WuwIdwPSDej5KduYUK4fbysXm3WEuJ3EoUkaE4BOCCF5toC/74AWF6C
-         a1xGxEIwDJHN7oruJfbVbAtRvokEX81UxNyVanLKMx3bQ9G3LSqoVt/aTzf3ke4/kUj6
-         tsug==
-X-Received: by 10.15.74.200 with SMTP id j48mr134126eey.102.1387465474588;
-        Thu, 19 Dec 2013 07:04:34 -0800 (PST)
+        bh=inB09bzHnUxDaCAx6tG9cj7K65BporWNxhJZ0mM2UtQ=;
+        b=Kw6LrtnQgpRh3ei+R7OHXCkuia2HppiT3BPRZZzPX2RaZTHlDKfdjWCY18RVwwbqgK
+         PG5qfDtOdRp8Jqwrxa7DWz0/IZxPlY9xoaj3bH+N/cqbrZqHbSMjDytrNO9QmbDgDckF
+         /QtxGru/Cv8CXW6J+bDP0Mt/NWsf89jS+PzOrJN+8d59cCXMg2XliL2of8u3Y48jFVPG
+         3DGNOnskuSZRZBZRQ5PRNfQlZ19B98B1vEzmqTrWnLSLvvn510OV7bw9ZfQDLOe9mLWJ
+         QlXEJVa+04oJnQArXGAbCchcvZWFgR/167WDlzeza4/RiU0RAkag2dS0UM0KrsDqGD+u
+         ONZw==
+X-Received: by 10.15.61.134 with SMTP id i6mr214289eex.48.1387465477582;
+        Thu, 19 Dec 2013 07:04:37 -0800 (PST)
 Received: from localhost.tiszanet.hu (mail.mediaweb.hu. [62.201.96.214])
-        by mx.google.com with ESMTPSA id h48sm10102799eev.3.2013.12.19.07.04.32
+        by mx.google.com with ESMTPSA id h48sm10102799eev.3.2013.12.19.07.04.36
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 19 Dec 2013 07:04:33 -0800 (PST)
+        Thu, 19 Dec 2013 07:04:36 -0800 (PST)
 From:   Levente Kurusa <levex@linux.com>
 To:     LKML <linux-kernel@vger.kernel.org>
 Cc:     Levente Kurusa <levex@linux.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org
-Subject: [PATCH 14/38] mips: txx9: add missing put_device call
-Date:   Thu, 19 Dec 2013 16:03:25 +0100
-Message-Id: <1387465429-3568-15-git-send-email-levex@linux.com>
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 15/38] mips: txx9: 7segled: add missing put_device call
+Date:   Thu, 19 Dec 2013 16:03:26 +0100
+Message-Id: <1387465429-3568-16-git-send-email-levex@linux.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1387465429-3568-2-git-send-email-levex@linux.com>
 References: <1387465429-3568-2-git-send-email-levex@linux.com>
@@ -40,7 +36,7 @@ Return-Path: <ilevex.linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38758
+X-archive-position: 38759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,67 +55,46 @@ X-list: linux-mips
 
 This is required so that we give up the last reference to the device.
 
-Also, rework error path so that it is easier to read.
+Also, add a new tx_7segled_release function which will be called after the
+put_device to ensure that device is kfree'd.
 
 Signed-off-by: Levente Kurusa <levex@linux.com>
 ---
- arch/mips/txx9/generic/setup.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ arch/mips/txx9/generic/7segled.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index 2b0b83c..24332f5 100644
---- a/arch/mips/txx9/generic/setup.c
-+++ b/arch/mips/txx9/generic/setup.c
-@@ -937,6 +937,12 @@ static ssize_t txx9_sram_write(struct file *filp, struct kobject *kobj,
- 	return size;
- }
+diff --git a/arch/mips/txx9/generic/7segled.c b/arch/mips/txx9/generic/7segled.c
+index 4642f56..3caa548 100644
+--- a/arch/mips/txx9/generic/7segled.c
++++ b/arch/mips/txx9/generic/7segled.c
+@@ -83,6 +83,10 @@ static struct bus_type tx_7segled_subsys = {
+ 	.dev_name	= "7segled",
+ };
  
-+void txx9_device_release(struct device *dev) {
-+	struct txx9_sramc_dev *sramc_dev;
-+	txx9_sramc_dev = container_of(dev, struct txx9_sramc_dev, dev);
-+	kfree(txx9_sramc_dev);
++void tx_7segled_release(struct device *dev) {
++	kfree(dev);
 +}
 +
- void __init txx9_sramc_init(struct resource *r)
+ static int __init tx_7segled_init_sysfs(void)
  {
- 	struct txx9_sramc_dev *dev;
-@@ -951,8 +957,11 @@ void __init txx9_sramc_init(struct resource *r)
- 		return;
- 	size = resource_size(r);
- 	dev->base = ioremap(r->start, size);
--	if (!dev->base)
--		goto exit;
-+	if (!dev->base) {
-+		kfree(dev);
-+		return;
-+	}
-+	dev->dev.release = &txx9_device_release;
- 	dev->dev.bus = &txx9_sramc_subsys;
- 	sysfs_bin_attr_init(&dev->bindata_attr);
- 	dev->bindata_attr.attr.name = "bindata";
-@@ -963,17 +972,15 @@ void __init txx9_sramc_init(struct resource *r)
- 	dev->bindata_attr.private = dev;
- 	err = device_register(&dev->dev);
- 	if (err)
--		goto exit;
-+		goto exit_put;
- 	err = sysfs_create_bin_file(&dev->dev.kobj, &dev->bindata_attr);
- 	if (err) {
- 		device_unregister(&dev->dev);
--		goto exit;
--	}
--	return;
--exit:
--	if (dev) {
--		if (dev->base)
--			iounmap(dev->base);
-+		iounmap(dev->base);
- 		kfree(dev);
+ 	int error, i;
+@@ -103,11 +107,14 @@ static int __init tx_7segled_init_sysfs(void)
+ 		}
+ 		dev->id = i;
+ 		dev->bus = &tx_7segled_subsys;
++		dev->release = &tx_7segled_release;
+ 		error = device_register(dev);
+-		if (!error) {
+-			device_create_file(dev, &dev_attr_ascii);
+-			device_create_file(dev, &dev_attr_raw);
++		if (error) {
++			put_device(dev);
++			return error;
+ 		}
++		device_create_file(dev, &dev_attr_ascii);
++		device_create_file(dev, &dev_attr_raw);	
  	}
-+	return;
-+exit_put:
-+	put_device(&dev->dev);
-+	return;
+ 	return error;
  }
 -- 
 1.8.3.1

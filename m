@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Dec 2013 18:44:15 +0100 (CET)
-Received: from qmta07.emeryville.ca.mail.comcast.net ([76.96.30.64]:35766 "EHLO
-        qmta07.emeryville.ca.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6867128Ab3LTRoLDJ5vm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Dec 2013 18:44:11 +0100
-Received: from omta14.emeryville.ca.mail.comcast.net ([76.96.30.60])
-        by qmta07.emeryville.ca.mail.comcast.net with comcast
-        id 3qcY1n0051HpZEsA7tk392; Fri, 20 Dec 2013 17:44:03 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Dec 2013 18:49:35 +0100 (CET)
+Received: from qmta09.emeryville.ca.mail.comcast.net ([76.96.30.96]:44734 "EHLO
+        qmta09.emeryville.ca.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6867128Ab3LTRtdTXJHC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Dec 2013 18:49:33 +0100
+Received: from omta17.emeryville.ca.mail.comcast.net ([76.96.30.73])
+        by qmta09.emeryville.ca.mail.comcast.net with comcast
+        id 3t1l1n0031afHeLA9tpSN2; Fri, 20 Dec 2013 17:49:26 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
-        s=q20121106; t=1387561443;
-        bh=ZozvllXG9DX4C01hdGkbXTMp1SkjMQdi7NJI3SoArGY=;
+        s=q20121106; t=1387561766;
+        bh=Vn7yS5mFs1C4q35TN08tnzFc1jzMW9XXm5mJux+9Qw0=;
         h=Received:Received:Received:Received:Date:From:To:Subject:
          Message-ID:Content-Type;
-        b=cHdN2glbBvxjznF9n8ucgIiaxu+3E0yQmLqb3BKrOv60zeCMVlGBwyelM3slzXAnt
-         qp+MpcYB+6KsjmzeLNocWjLEThcysxUuJ+8f/iabNuXD3p8N96OCQ63ZjxI1Rf6Ary
-         qvntvvMRhEGOgIX+YvkP2QjTTmPrDj7Da7QkowjDxjhOjgYVZOfjTv/4WopyfTVYg0
-         NxcLHHO7uBdBxyKrdzMMSfTRpTaB0mXVBCjspftLcdP5VX/VXKiUj2fY+/ZBG7XJ2I
-         oROWLgDHQQN5tMqXKyAsI5UOrgfBiZcrH4H9eitVwjpJxKb/JJHzf6/Sf5O+mUpBNy
-         5QVchnTDNpFHQ==
+        b=omaRSE2eA/Hz4pqKAlXXaUXWM1adEmbICHfH1NMoHS+tI+yYYnso4NuahEM/VUABQ
+         4DWny3Dvcgr/V6p7eDffhNj14OvLgjFYnFK+SRTAFjIyiOUyq4LUuRbRZE8z3hdp8d
+         oXod9IYhBySDseIkGV7vW5S/82V3Iuhys7VgzfyQBXeiLjpV1lZPIzjvqWZhmBkf4w
+         4ksSB+nHJCOhX7bFuz8xjqSzbBDU4FIQE5ZIZPP9VdGh+xBlHZFNEVgHwz9mA5DhDb
+         rCspym6IM6ZCypch0+F8eH3HF/spN6IhAY06upPvCnCqY0cT8e9iE2Z043+pYUdHKs
+         VTI38RUJ4BnnQ==
 Received: from gentwo.org ([98.213.233.247])
-        by omta14.emeryville.ca.mail.comcast.net with comcast
-        id 3tjz1n00T5Lw0ES8atk0BS; Fri, 20 Dec 2013 17:44:02 +0000
-X-Authority-Analysis: v=2.1 cv=dfa5gxne c=1 sm=1 tr=0
+        by omta17.emeryville.ca.mail.comcast.net with comcast
+        id 3tpQ1n0015Lw0ES8dtpQJC; Fri, 20 Dec 2013 17:49:26 +0000
+X-Authority-Analysis: v=2.1 cv=M6V0dUAs c=1 sm=1 tr=0
  a=P1/czelPj/zYsqkqtI4LGg==:117 a=P1/czelPj/zYsqkqtI4LGg==:17 a=PuvxfXWCAAAA:8
  a=C_IRinGWAAAA:8 a=GGcpBh7Jt_oA:10 a=-WwNHMU88Q4A:10 a=WuCusnQs47UA:10
  a=wPDyFdB5xvgA:10 a=NufY4J3AAAAA:8 a=KzMNtAa5ikUA:10 a=nlC_4_pT8q9DhB4Ho9EA:9
- a=cz2ZRIgtxKwA:10 a=wJWlkF7cXJYA:10 a=jP3r5qrIOmJWLxy-jIAA:9
- a=CjuIK1q_8ugA:10 a=bLOH0to22SMA:10 a=5mp-4R8GUREA:10 a=zAyngx5bAAAA:8
+ a=cz2ZRIgtxKwA:10 a=wJWlkF7cXJYA:10 a=DKaUk24zBScKoA4pmcsA:9
+ a=CjuIK1q_8ugA:10 a=dOYBo6RpTd0A:10 a=pOR2WPV-qBAA:10 a=zAyngx5bAAAA:8
  a=VAFAUJkowcUm3wKbofEA:9 a=kt2o4b_9nEejsCxR:21 a=tHNyf73kXbzlcCHq:21
  a=9g6PTisfegMA:10
 Received: by gentwo.org (Postfix, from userid 1001)
-        id 5E98630F04; Fri, 20 Dec 2013 11:43:59 -0600 (CST)
+        id BDA3130F04; Fri, 20 Dec 2013 11:49:23 -0600 (CST)
 Received: from localhost (localhost [127.0.0.1])
-        by gentwo.org (Postfix) with ESMTP id 5C50A1FF23;
-        Fri, 20 Dec 2013 11:43:59 -0600 (CST)
-Date:   Fri, 20 Dec 2013 11:43:59 -0600 (CST)
+        by gentwo.org (Postfix) with ESMTP id BBC0B1208;
+        Fri, 20 Dec 2013 11:49:23 -0600 (CST)
+Date:   Fri, 20 Dec 2013 11:49:23 -0600 (CST)
 From:   Christoph Lameter <cl@linux.com>
 X-X-Sender: cl@nuc
 To:     David Daney <ddaney.cavm@gmail.com>
@@ -46,15 +46,15 @@ cc:     Ralf Baechle <ralf@linux-mips.org>,
         Thomas Gleixner <tglx@linutronix.de>
 Subject: Re: [PATCH 29/40] mips: Replace __get_cpu_var uses
 In-Reply-To: <52B37C56.7090302@gmail.com>
-Message-ID: <alpine.DEB.2.10.1312201143010.10717@nuc>
+Message-ID: <alpine.DEB.2.10.1312201148560.13718@nuc>
 References: <20131219155015.443763038@linux.com> <20131219155033.834416420@linux.com> <52B330F3.4090603@gmail.com> <alpine.DEB.2.10.1312191506370.17603@nuc> <52B37C56.7090302@gmail.com>
 Content-Type: MULTIPART/Mixed; BOUNDARY=------------070507070702050801040409
-Content-ID: <alpine.DEB.2.10.1312201143011.10717@nuc>
+Content-ID: <alpine.DEB.2.10.1312201148561.13718@nuc>
 Return-Path: <cl@linux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38770
+X-archive-position: 38771
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -76,16 +76,23 @@ X-list: linux-mips
 
 --------------070507070702050801040409
 Content-Type: TEXT/PLAIN; CHARSET=US-ASCII; FORMAT=flowed
-Content-ID: <alpine.DEB.2.10.1312201143012.10717@nuc>
+Content-ID: <alpine.DEB.2.10.1312201148562.13718@nuc>
 
 On Thu, 19 Dec 2013, David Daney wrote:
 
-> See the attached patch.  Feel free to include it as part of your patch set.
+> > Use
+> >
+> > __local_inc(this_cpu_ptr(fpuemustats.M);
+> >
+>
+> No, I couldn't get various incantations of that to work either.
 
-Looks good. I will place this before the mips patch.
+Your patch removes the last use of local.h by mips arch code by the way.
+
+
 --------------070507070702050801040409
 Content-Type: TEXT/X-PATCH; NAME=0001-MIPS-Replace-__get_cpu_var-uses-in-FPU-emulator.patch
-Content-ID: <alpine.DEB.2.10.1312201143013.10717@nuc>
+Content-ID: <alpine.DEB.2.10.1312201148563.13718@nuc>
 Content-Description: 
 Content-Disposition: ATTACHMENT; FILENAME*0=0001-MIPS-Replace-__get_cpu_var-uses-in-FPU-emulator.patch
 

@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Dec 2013 12:14:14 +0100 (CET)
-Received: from mail-gw3-out.broadcom.com ([216.31.210.64]:1142 "EHLO
-        mail-gw3-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6867243Ab3LULK7uJkET (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Dec 2013 12:10:59 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Dec 2013 12:14:34 +0100 (CET)
+Received: from mail-gw1-out.broadcom.com ([216.31.210.62]:63752 "EHLO
+        mail-gw1-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6867253Ab3LULLBZ5Gwz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Dec 2013 12:11:01 +0100
 X-IronPort-AV: E=Sophos;i="4.95,527,1384329600"; 
-   d="scan'208";a="4363733"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw3-out.broadcom.com with ESMTP; 21 Dec 2013 03:12:52 -0800
+   d="scan'208";a="4638690"
+Received: from irvexchcas07.broadcom.com (HELO IRVEXCHCAS07.corp.ad.broadcom.com) ([10.9.208.55])
+  by mail-gw1-out.broadcom.com with ESMTP; 21 Dec 2013 03:17:07 -0800
 Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.1.438.0; Sat, 21 Dec 2013 03:10:58 -0800
+ IRVEXCHCAS07.corp.ad.broadcom.com (10.9.208.55) with Microsoft SMTP Server
+ (TLS) id 14.1.438.0; Sat, 21 Dec 2013 03:10:59 -0800
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
  IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP Server id
- 14.1.438.0; Sat, 21 Dec 2013 03:10:58 -0800
+ 14.1.438.0; Sat, 21 Dec 2013 03:10:59 -0800
 Received: from netl-snoppy.ban.broadcom.com (netl-snoppy.ban.broadcom.com
  [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- A0385246A4;    Sat, 21 Dec 2013 03:10:57 -0800 (PST)
+ F1BEA246A3;    Sat, 21 Dec 2013 03:10:58 -0800 (PST)
 From:   Jayachandran C <jchandra@broadcom.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Jayachandran C <jchandra@broadcom.com>, <ralf@linux-mips.org>
-Subject: [PATCH 10/18] MIPS: Netlogic: XLP9XX PIC updates
-Date:   Sat, 21 Dec 2013 16:52:22 +0530
-Message-ID: <1387624950-31297-11-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH 11/18] MIPS: Netlogic: SYS block updates of XLP9XX
+Date:   Sat, 21 Dec 2013 16:52:23 +0530
+Message-ID: <1387624950-31297-12-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1387624950-31297-1-git-send-email-jchandra@broadcom.com>
 References: <1387624950-31297-1-git-send-email-jchandra@broadcom.com>
@@ -31,7 +31,7 @@ Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38783
+X-archive-position: 38784
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,210 +48,228 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Functions for the XLP9XX interrupt table entry format and other PIC
-register changes.
+Add the SYS block registers for XLP9XX, most of them have changed.
+The wakeup sequence has been updated to set the coherent mode from
+the main thread rather than the woken up thread.
 
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/include/asm/netlogic/xlp-hal/pic.h |   72 +++++++++++++++++---------
- arch/mips/netlogic/xlp/nlm_hal.c             |   15 ++++++
- arch/mips/netlogic/xlp/wakeup.c              |    2 +-
- arch/mips/pci/pci-xlp.c                      |    2 +-
- 4 files changed, 65 insertions(+), 26 deletions(-)
+ arch/mips/include/asm/netlogic/xlp-hal/sys.h |   18 ++++++-
+ arch/mips/netlogic/common/reset.S            |    8 +++
+ arch/mips/netlogic/xlp/nlm_hal.c             |    5 +-
+ arch/mips/netlogic/xlp/setup.c               |    5 +-
+ arch/mips/netlogic/xlp/wakeup.c              |   74 ++++++++++++++++++--------
+ 5 files changed, 84 insertions(+), 26 deletions(-)
 
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/pic.h b/arch/mips/include/asm/netlogic/xlp-hal/pic.h
-index 3fcbe74..f10bf3b 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/pic.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/pic.h
-@@ -150,12 +150,19 @@
- #define PIC_IRT0		0x74
- #define PIC_IRT(i)		(PIC_IRT0 + ((i) * 2))
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/sys.h b/arch/mips/include/asm/netlogic/xlp-hal/sys.h
+index fcf2833..d9b107f 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/sys.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/sys.h
+@@ -147,13 +147,29 @@
+ #define SYS_SYS_PLL_MEM_REQ			0x2a3
+ #define SYS_PLL_MEM_STAT			0x2a4
  
--#define TIMER_CYCLES_MAXVAL	0xffffffffffffffffULL
-+#define PIC_9XX_PENDING_0	0x6
-+#define PIC_9XX_PENDING_1	0x8
-+#define PIC_9XX_PENDING_2	0xa
-+#define PIC_9XX_PENDING_3	0xc
++/* Registers changed on 9XX */
++#define SYS_9XX_POWER_ON_RESET_CFG		0x00
++#define SYS_9XX_CHIP_RESET			0x01
++#define SYS_9XX_CPU_RESET			0x02
++#define SYS_9XX_CPU_NONCOHERENT_MODE		0x03
 +
-+#define PIC_9XX_IRT0		0x1c0
-+#define PIC_9XX_IRT(i)		(PIC_9XX_IRT0 + ((i) * 2))
- 
- /*
-  *    IRT Map
-  */
- #define PIC_NUM_IRTS		160
-+#define PIC_9XX_NUM_IRTS	256
- 
- #define PIC_IRT_WD_0_INDEX	0
- #define PIC_IRT_WD_1_INDEX	1
-@@ -205,30 +212,26 @@
- 
- #define nlm_read_pic_reg(b, r)	nlm_read_reg64(b, r)
- #define nlm_write_pic_reg(b, r, v) nlm_write_reg64(b, r, v)
--#define nlm_get_pic_pcibase(node) nlm_pcicfg_base(XLP_IO_PIC_OFFSET(node))
-+#define nlm_get_pic_pcibase(node)	nlm_pcicfg_base(cpu_is_xlp9xx() ? \
-+		XLP9XX_IO_PIC_OFFSET(node) : XLP_IO_PIC_OFFSET(node))
- #define nlm_get_pic_regbase(node) (nlm_get_pic_pcibase(node) + XLP_IO_PCI_HDRSZ)
- 
- /* We use PIC on node 0 as a timer */
- #define pic_timer_freq()		nlm_get_pic_frequency(0)
- 
- /* IRT and h/w interrupt routines */
--static inline int
--nlm_pic_read_irt(uint64_t base, int irt_index)
--{
--	return nlm_read_pic_reg(base, PIC_IRT(irt_index));
--}
--
- static inline void
--nlm_set_irt_to_cpu(uint64_t base, int irt, int cpu)
-+nlm_9xx_pic_write_irt(uint64_t base, int irt_num, int en, int nmi,
-+	int sch, int vec, int dt, int db, int cpu)
- {
- 	uint64_t val;
- 
--	val = nlm_read_pic_reg(base, PIC_IRT(irt));
--	/* clear cpuset and mask */
--	val &= ~((0x7ull << 16) | 0xffff);
--	/* set DB, cpuset and cpumask */
--	val |= (1 << 19) | ((cpu >> 4) << 16) | (1 << (cpu & 0xf));
--	nlm_write_pic_reg(base, PIC_IRT(irt), val);
-+	val = (((uint64_t)en & 0x1) << 22) | ((nmi & 0x1) << 23) |
-+			((0 /*mc*/) << 20) | ((vec & 0x3f) << 24) |
-+			((dt & 0x1) << 21) | (0 /*ptr*/ << 16) |
-+			(cpu & 0x3ff);
++/* XLP 9XX fuse block registers */
++#define FUSE_9XX_DEVCFG6			0xc6
 +
-+	nlm_write_pic_reg(base, PIC_9XX_IRT(irt_num), val);
- }
+ #ifndef __ASSEMBLY__
  
- static inline void
-@@ -249,9 +252,13 @@ static inline void
- nlm_pic_write_irt_direct(uint64_t base, int irt_num, int en, int nmi,
- 	int sch, int vec, int cpu)
- {
--	nlm_pic_write_irt(base, irt_num, en, nmi, sch, vec, 1,
--		(cpu >> 4),		/* thread group */
--		1 << (cpu & 0xf));	/* thread mask */
-+	if (cpu_is_xlp9xx())
-+		nlm_9xx_pic_write_irt(base, irt_num, en, nmi, sch, vec,
-+							1, 0, cpu);
-+	else
-+		nlm_pic_write_irt(base, irt_num, en, nmi, sch, vec, 1,
-+			(cpu >> 4),		/* thread group */
-+			1 << (cpu & 0xf));	/* thread mask */
- }
+ #define nlm_read_sys_reg(b, r)		nlm_read_reg(b, r)
+ #define nlm_write_sys_reg(b, r, v)	nlm_write_reg(b, r, v)
+-#define nlm_get_sys_pcibase(node) nlm_pcicfg_base(XLP_IO_SYS_OFFSET(node))
++#define nlm_get_sys_pcibase(node)	nlm_pcicfg_base(cpu_is_xlp9xx() ? \
++		XLP9XX_IO_SYS_OFFSET(node) : XLP_IO_SYS_OFFSET(node))
+ #define nlm_get_sys_regbase(node) (nlm_get_sys_pcibase(node) + XLP_IO_PCI_HDRSZ)
  
- static inline uint64_t
-@@ -293,8 +300,13 @@ nlm_pic_enable_irt(uint64_t base, int irt)
- {
- 	uint64_t reg;
- 
--	reg = nlm_read_pic_reg(base, PIC_IRT(irt));
--	nlm_write_pic_reg(base, PIC_IRT(irt), reg | (1u << 31));
-+	if (cpu_is_xlp9xx()) {
-+		reg = nlm_read_pic_reg(base, PIC_9XX_IRT(irt));
-+		nlm_write_pic_reg(base, PIC_9XX_IRT(irt), reg | (1 << 22));
-+	} else {
-+		reg = nlm_read_pic_reg(base, PIC_IRT(irt));
-+		nlm_write_pic_reg(base, PIC_IRT(irt), reg | (1u << 31));
-+	}
- }
- 
- static inline void
-@@ -302,8 +314,15 @@ nlm_pic_disable_irt(uint64_t base, int irt)
- {
- 	uint64_t reg;
- 
--	reg = nlm_read_pic_reg(base, PIC_IRT(irt));
--	nlm_write_pic_reg(base, PIC_IRT(irt), reg & ~((uint64_t)1 << 31));
-+	if (cpu_is_xlp9xx()) {
-+		reg = nlm_read_pic_reg(base, PIC_9XX_IRT(irt));
-+		reg &= ~((uint64_t)1 << 22);
-+		nlm_write_pic_reg(base, PIC_9XX_IRT(irt), reg);
-+	} else {
-+		reg = nlm_read_pic_reg(base, PIC_IRT(irt));
-+		reg &= ~((uint64_t)1 << 31);
-+		nlm_write_pic_reg(base, PIC_IRT(irt), reg);
-+	}
- }
- 
- static inline void
-@@ -311,8 +330,13 @@ nlm_pic_send_ipi(uint64_t base, int hwt, int irq, int nmi)
- {
- 	uint64_t ipi;
- 
--	ipi = ((uint64_t)nmi << 31) | (irq << 20);
--	ipi |= ((hwt >> 4) << 16) | (1 << (hwt & 0xf)); /* cpuset and mask */
-+	if (cpu_is_xlp9xx())
-+		ipi = (nmi << 23) | (irq << 24) |
-+			(0/*mcm*/ << 20) | (0/*ptr*/ << 16) | hwt;
-+	else
-+		ipi = ((uint64_t)nmi << 31) | (irq << 20) |
-+			((hwt >> 4) << 16) | (1 << (hwt & 0xf));
++/* XLP9XX fuse block */
++#define nlm_get_fuse_pcibase(node)	\
++			nlm_pcicfg_base(XLP9XX_IO_FUSE_OFFSET(node))
++#define nlm_get_fuse_regbase(node)	\
++			(nlm_get_fuse_pcibase(node) + XLP_IO_PCI_HDRSZ)
 +
- 	nlm_write_pic_reg(base, PIC_IPI_CTL, ipi);
- }
+ unsigned int nlm_get_pic_frequency(int node);
+ #endif
+ #endif
+diff --git a/arch/mips/netlogic/common/reset.S b/arch/mips/netlogic/common/reset.S
+index 57eb7a1..dfbf94d 100644
+--- a/arch/mips/netlogic/common/reset.S
++++ b/arch/mips/netlogic/common/reset.S
+@@ -159,6 +159,13 @@ FEXPORT(nlm_reset_entry)
+ 	nop
  
+ 1:	/* Entry point on core wakeup */
++	mfc0	t0, CP0_EBASE, 0	/* processor ID */
++	andi	t0, 0xff00
++	li	t1, 0x1500		/* XLP 9xx */
++	beq	t0, t1, 2f		/* does not need to set coherent */
++	nop
++
++	/* set bit in SYS coherent register for the core */
+ 	mfc0	t0, CP0_EBASE, 1
+ 	mfc0	t1, CP0_EBASE, 1
+ 	srl	t1, 5
+@@ -180,6 +187,7 @@ FEXPORT(nlm_reset_entry)
+ 	lw	t1, 0(t2)
+ 	sync
+ 
++2:
+ 	/* Configure LSU on Non-0 Cores. */
+ 	xlp_config_lsu
+ 	/* FALL THROUGH */
 diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
-index 5f191f5..2d31cf1 100644
+index 2d31cf1..61f325d 100644
 --- a/arch/mips/netlogic/xlp/nlm_hal.c
 +++ b/arch/mips/netlogic/xlp/nlm_hal.c
-@@ -69,6 +69,17 @@ int nlm_irq_to_irt(int irq)
- 	uint64_t pcibase;
- 	int devoff, irt;
+@@ -174,7 +174,10 @@ unsigned int nlm_get_core_frequency(int node, int core)
+ 	uint64_t num, sysbase;
  
-+	/* bypass for 9xx */
-+	if (cpu_is_xlp9xx()) {
-+		switch (irq) {
-+		case PIC_UART_0_IRQ:
-+			return 133;
-+		case PIC_UART_1_IRQ:
-+			return 134;
-+		}
-+		return -1;
-+	}
-+
- 	devoff = 0;
- 	switch (irq) {
- 	case PIC_UART_0_IRQ:
-@@ -277,6 +288,10 @@ static unsigned int nlm_2xx_get_pic_frequency(int node)
- 
- unsigned int nlm_get_pic_frequency(int node)
- {
-+	/* TODO Has to calculate freq as like 2xx */
+ 	sysbase = nlm_get_node(node)->sysbase;
+-	rstval = nlm_read_sys_reg(sysbase, SYS_POWER_ON_RESET_CFG);
 +	if (cpu_is_xlp9xx())
-+		return 250000000;
-+
- 	if (cpu_is_xlpii())
- 		return nlm_2xx_get_pic_frequency(node);
- 	else
++		rstval = nlm_read_sys_reg(sysbase, SYS_9XX_POWER_ON_RESET_CFG);
++	else
++		rstval = nlm_read_sys_reg(sysbase, SYS_POWER_ON_RESET_CFG);
+ 	if (cpu_is_xlpii()) {
+ 		num = 1000000ULL * (400 * 3 + 100 * (rstval >> 26));
+ 		denom = 3;
+diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
+index d1057bd..d739c5d 100644
+--- a/arch/mips/netlogic/xlp/setup.c
++++ b/arch/mips/netlogic/xlp/setup.c
+@@ -56,7 +56,10 @@ static void nlm_linux_exit(void)
+ {
+ 	uint64_t sysbase = nlm_get_node(0)->sysbase;
+ 
+-	nlm_write_sys_reg(sysbase, SYS_CHIP_RESET, 1);
++	if (cpu_is_xlp9xx())
++		nlm_write_sys_reg(sysbase, SYS_9XX_CHIP_RESET, 1);
++	else
++		nlm_write_sys_reg(sysbase, SYS_CHIP_RESET, 1);
+ 	for ( ; ; )
+ 		cpu_wait();
+ }
 diff --git a/arch/mips/netlogic/xlp/wakeup.c b/arch/mips/netlogic/xlp/wakeup.c
-index 5bd7d18..598b4c3 100644
+index 598b4c3..7e3c5b9 100644
 --- a/arch/mips/netlogic/xlp/wakeup.c
 +++ b/arch/mips/netlogic/xlp/wakeup.c
-@@ -47,8 +47,8 @@
- #include <asm/netlogic/mips-extns.h>
- 
- #include <asm/netlogic/xlp-hal/iomap.h>
--#include <asm/netlogic/xlp-hal/pic.h>
- #include <asm/netlogic/xlp-hal/xlp.h>
-+#include <asm/netlogic/xlp-hal/pic.h>
- #include <asm/netlogic/xlp-hal/sys.h>
- 
+@@ -54,7 +54,7 @@
  static int xlp_wakeup_core(uint64_t sysbase, int node, int core)
-diff --git a/arch/mips/pci/pci-xlp.c b/arch/mips/pci/pci-xlp.c
-index da7a37a..f390aa9 100644
---- a/arch/mips/pci/pci-xlp.c
-+++ b/arch/mips/pci/pci-xlp.c
-@@ -50,8 +50,8 @@
- #include <asm/netlogic/mips-extns.h>
+ {
+ 	uint32_t coremask, value;
+-	int count;
++	int count, resetreg;
  
- #include <asm/netlogic/xlp-hal/iomap.h>
--#include <asm/netlogic/xlp-hal/pic.h>
- #include <asm/netlogic/xlp-hal/xlp.h>
-+#include <asm/netlogic/xlp-hal/pic.h>
- #include <asm/netlogic/xlp-hal/pcibus.h>
- #include <asm/netlogic/xlp-hal/bridge.h>
+ 	coremask = (1 << core);
  
+@@ -65,12 +65,24 @@ static int xlp_wakeup_core(uint64_t sysbase, int node, int core)
+ 		nlm_write_sys_reg(sysbase, SYS_CORE_DFS_DIS_CTRL, value);
+ 	}
+ 
++	/* On 9XX, mark coherent first */
++	if (cpu_is_xlp9xx()) {
++		value = nlm_read_sys_reg(sysbase, SYS_9XX_CPU_NONCOHERENT_MODE);
++		value &= ~coremask;
++		nlm_write_sys_reg(sysbase, SYS_9XX_CPU_NONCOHERENT_MODE, value);
++	}
++
+ 	/* Remove CPU Reset */
+-	value = nlm_read_sys_reg(sysbase, SYS_CPU_RESET);
++	resetreg = cpu_is_xlp9xx() ? SYS_9XX_CPU_RESET : SYS_CPU_RESET;
++	value = nlm_read_sys_reg(sysbase, resetreg);
+ 	value &= ~coremask;
+-	nlm_write_sys_reg(sysbase, SYS_CPU_RESET, value);
++	nlm_write_sys_reg(sysbase, resetreg, value);
++
++	/* We are done on 9XX */
++	if (cpu_is_xlp9xx())
++		return 1;
+ 
+-	/* Poll for CPU to mark itself coherent */
++	/* Poll for CPU to mark itself coherent on other type of XLP */
+ 	count = 100000;
+ 	do {
+ 		value = nlm_read_sys_reg(sysbase, SYS_CPU_NONCOHERENT_MODE);
+@@ -98,33 +110,48 @@ static int wait_for_cpus(int cpu, int bootcpu)
+ static void xlp_enable_secondary_cores(const cpumask_t *wakeup_mask)
+ {
+ 	struct nlm_soc_info *nodep;
+-	uint64_t syspcibase;
++	uint64_t syspcibase, fusebase;
+ 	uint32_t syscoremask, mask, fusemask;
+ 	int core, n, cpu;
+ 
+ 	for (n = 0; n < NLM_NR_NODES; n++) {
+-		syspcibase = nlm_get_sys_pcibase(n);
+-		if (nlm_read_reg(syspcibase, 0) == 0xffffffff)
+-			break;
++		if (n != 0) {
++			/* check if node exists and is online */
++			if (cpu_is_xlp9xx()) {
++				int b = xlp9xx_get_socbus(n);
++				pr_info("Node %d SoC PCI bus %d.\n", n, b);
++				if (b == 0)
++					break;
++			} else {
++				syspcibase = nlm_get_sys_pcibase(n);
++				if (nlm_read_reg(syspcibase, 0) == 0xffffffff)
++					break;
++			}
++			nlm_node_init(n);
++		}
+ 
+ 		/* read cores in reset from SYS */
+-		if (n != 0)
+-			nlm_node_init(n);
+ 		nodep = nlm_get_node(n);
+ 
+-		fusemask = nlm_read_sys_reg(nodep->sysbase,
+-					SYS_EFUSE_DEVICE_CFG_STATUS0);
+-		switch (read_c0_prid() & 0xff00) {
+-		case PRID_IMP_NETLOGIC_XLP3XX:
+-			mask = 0xf;
+-			break;
+-		case PRID_IMP_NETLOGIC_XLP2XX:
+-			mask = 0x3;
+-			break;
+-		case PRID_IMP_NETLOGIC_XLP8XX:
+-		default:
+-			mask = 0xff;
+-			break;
++		if (cpu_is_xlp9xx()) {
++			fusebase = nlm_get_fuse_regbase(n);
++			fusemask = nlm_read_reg(fusebase, FUSE_9XX_DEVCFG6);
++			mask = 0xfffff;
++		} else {
++			fusemask = nlm_read_sys_reg(nodep->sysbase,
++						SYS_EFUSE_DEVICE_CFG_STATUS0);
++			switch (read_c0_prid() & 0xff00) {
++			case PRID_IMP_NETLOGIC_XLP3XX:
++				mask = 0xf;
++				break;
++			case PRID_IMP_NETLOGIC_XLP2XX:
++				mask = 0x3;
++				break;
++			case PRID_IMP_NETLOGIC_XLP8XX:
++			default:
++				mask = 0xff;
++				break;
++			}
+ 		}
+ 
+ 		/*
+@@ -137,6 +164,7 @@ static void xlp_enable_secondary_cores(const cpumask_t *wakeup_mask)
+ 		if (n == 0)
+ 			nodep->coremask = 1;
+ 
++		pr_info("Node %d - SYS/FUSE coremask %x\n", n, syscoremask);
+ 		for (core = 0; core < NLM_CORES_PER_NODE; core++) {
+ 			/* we will be on node 0 core 0 */
+ 			if (n == 0 && core == 0)
 -- 
 1.7.9.5

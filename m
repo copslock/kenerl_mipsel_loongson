@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Dec 2013 12:15:12 +0100 (CET)
-Received: from mail-gw3-out.broadcom.com ([216.31.210.64]:1142 "EHLO
-        mail-gw3-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6867256Ab3LULLETknUU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Dec 2013 12:11:04 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Dec 2013 12:15:32 +0100 (CET)
+Received: from mail-gw1-out.broadcom.com ([216.31.210.62]:63752 "EHLO
+        mail-gw1-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6867258Ab3LULLFg6-VQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Dec 2013 12:11:05 +0100
 X-IronPort-AV: E=Sophos;i="4.95,527,1384329600"; 
-   d="scan'208";a="4363734"
+   d="scan'208";a="4638693"
 Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw3-out.broadcom.com with ESMTP; 21 Dec 2013 03:12:56 -0800
-Received: from IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) by
+  by mail-gw1-out.broadcom.com with ESMTP; 21 Dec 2013 03:17:11 -0800
+Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
  IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.1.438.0; Sat, 21 Dec 2013 03:11:02 -0800
+ (TLS) id 14.1.438.0; Sat, 21 Dec 2013 03:11:04 -0800
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP2.corp.ad.broadcom.com (10.9.207.52) with Microsoft SMTP Server id
- 14.1.438.0; Sat, 21 Dec 2013 03:11:02 -0800
+ IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP Server id
+ 14.1.438.0; Sat, 21 Dec 2013 03:11:04 -0800
 Received: from netl-snoppy.ban.broadcom.com (netl-snoppy.ban.broadcom.com
  [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- A9F7D246A7;    Sat, 21 Dec 2013 03:11:01 -0800 (PST)
+ 10908246A9;    Sat, 21 Dec 2013 03:11:02 -0800 (PST)
 From:   Jayachandran C <jchandra@broadcom.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Jayachandran C <jchandra@broadcom.com>, <ralf@linux-mips.org>
-Subject: [PATCH 13/18] MIPS: Netlogic: XLP9XX bridge and DRAM code
-Date:   Sat, 21 Dec 2013 16:52:25 +0530
-Message-ID: <1387624950-31297-14-git-send-email-jchandra@broadcom.com>
+Subject: [PATCH 14/18] MIPS: Netlogic: Add cpu to node mapping for XLP9XX
+Date:   Sat, 21 Dec 2013 16:52:26 +0530
+Message-ID: <1387624950-31297-15-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1387624950-31297-1-git-send-email-jchandra@broadcom.com>
 References: <1387624950-31297-1-git-send-email-jchandra@broadcom.com>
@@ -31,7 +31,7 @@ Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38786
+X-archive-position: 38787
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,153 +48,205 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Update bridge code. Add code to the XLP9XX registers for DRAM
-size, limit and node when running on XLPXX
+XLP9XX has 20 cores per node, opposed to 8 on earlier XLP8XX.
+Update code that calculates node id from cpu id to handle this.
 
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/include/asm/netlogic/xlp-hal/bridge.h |   69 +++++++++++------------
- arch/mips/netlogic/xlp/nlm_hal.c                |   26 ++++++---
- 2 files changed, 51 insertions(+), 44 deletions(-)
+ arch/mips/include/asm/mach-netlogic/multi-node.h |   11 +++++++++--
+ arch/mips/include/asm/netlogic/mips-extns.h      |    7 ++++++-
+ arch/mips/netlogic/common/irq.c                  |    6 +++---
+ arch/mips/netlogic/common/smp.c                  |    8 +++++---
+ arch/mips/netlogic/xlp/setup.c                   |    5 +++++
+ arch/mips/netlogic/xlp/wakeup.c                  |    4 ++--
+ arch/mips/netlogic/xlr/wakeup.c                  |    2 +-
+ arch/mips/pci/msi-xlp.c                          |    4 ++--
+ 8 files changed, 33 insertions(+), 14 deletions(-)
 
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/bridge.h b/arch/mips/include/asm/netlogic/xlp-hal/bridge.h
-index 4e8eacb..3067f98 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/bridge.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/bridge.h
-@@ -69,44 +69,9 @@
- #define BRIDGE_FLASH_LIMIT3		0x13
+diff --git a/arch/mips/include/asm/mach-netlogic/multi-node.h b/arch/mips/include/asm/mach-netlogic/multi-node.h
+index df9869d..9ed8dac 100644
+--- a/arch/mips/include/asm/mach-netlogic/multi-node.h
++++ b/arch/mips/include/asm/mach-netlogic/multi-node.h
+@@ -47,9 +47,16 @@
+ #endif
+ #endif
  
- #define BRIDGE_DRAM_BAR(i)		(0x14 + (i))
--#define BRIDGE_DRAM_BAR0		0x14
--#define BRIDGE_DRAM_BAR1		0x15
--#define BRIDGE_DRAM_BAR2		0x16
--#define BRIDGE_DRAM_BAR3		0x17
--#define BRIDGE_DRAM_BAR4		0x18
--#define BRIDGE_DRAM_BAR5		0x19
--#define BRIDGE_DRAM_BAR6		0x1a
--#define BRIDGE_DRAM_BAR7		0x1b
--
- #define BRIDGE_DRAM_LIMIT(i)		(0x1c + (i))
--#define BRIDGE_DRAM_LIMIT0		0x1c
--#define BRIDGE_DRAM_LIMIT1		0x1d
--#define BRIDGE_DRAM_LIMIT2		0x1e
--#define BRIDGE_DRAM_LIMIT3		0x1f
--#define BRIDGE_DRAM_LIMIT4		0x20
--#define BRIDGE_DRAM_LIMIT5		0x21
--#define BRIDGE_DRAM_LIMIT6		0x22
--#define BRIDGE_DRAM_LIMIT7		0x23
--
- #define BRIDGE_DRAM_NODE_TRANSLN(i)	(0x24 + (i))
--#define BRIDGE_DRAM_NODE_TRANSLN0	0x24
--#define BRIDGE_DRAM_NODE_TRANSLN1	0x25
--#define BRIDGE_DRAM_NODE_TRANSLN2	0x26
--#define BRIDGE_DRAM_NODE_TRANSLN3	0x27
--#define BRIDGE_DRAM_NODE_TRANSLN4	0x28
--#define BRIDGE_DRAM_NODE_TRANSLN5	0x29
--#define BRIDGE_DRAM_NODE_TRANSLN6	0x2a
--#define BRIDGE_DRAM_NODE_TRANSLN7	0x2b
--
- #define BRIDGE_DRAM_CHNL_TRANSLN(i)	(0x2c + (i))
--#define BRIDGE_DRAM_CHNL_TRANSLN0	0x2c
--#define BRIDGE_DRAM_CHNL_TRANSLN1	0x2d
--#define BRIDGE_DRAM_CHNL_TRANSLN2	0x2e
--#define BRIDGE_DRAM_CHNL_TRANSLN3	0x2f
--#define BRIDGE_DRAM_CHNL_TRANSLN4	0x30
--#define BRIDGE_DRAM_CHNL_TRANSLN5	0x31
--#define BRIDGE_DRAM_CHNL_TRANSLN6	0x32
--#define BRIDGE_DRAM_CHNL_TRANSLN7	0x33
- 
- #define BRIDGE_PCIEMEM_BASE0		0x34
- #define BRIDGE_PCIEMEM_BASE1		0x35
-@@ -178,12 +143,42 @@
- #define BRIDGE_GIO_WEIGHT		0x2cb
- #define BRIDGE_FLASH_WEIGHT		0x2cc
- 
-+/* FIXME verify */
-+#define BRIDGE_9XX_FLASH_BAR(i)		(0x11 + (i))
-+#define BRIDGE_9XX_FLASH_BAR_LIMIT(i)	(0x15 + (i))
+-#define NLM_CORES_PER_NODE	8
+ #define NLM_THREADS_PER_CORE	4
+-#define NLM_CPUS_PER_NODE	(NLM_CORES_PER_NODE * NLM_THREADS_PER_CORE)
++#ifdef CONFIG_CPU_XLR
++#define nlm_cores_per_node()	8
++#else
++extern unsigned int xlp_cores_per_node;
++#define nlm_cores_per_node()	xlp_cores_per_node
++#endif
 +
-+#define BRIDGE_9XX_DRAM_BAR(i)		(0x19 + (i))
-+#define BRIDGE_9XX_DRAM_LIMIT(i)	(0x29 + (i))
-+#define BRIDGE_9XX_DRAM_NODE_TRANSLN(i)	(0x39 + (i))
-+#define BRIDGE_9XX_DRAM_CHNL_TRANSLN(i)	(0x49 + (i))
-+
-+#define BRIDGE_9XX_ADDRESS_ERROR0	0x9d
-+#define BRIDGE_9XX_ADDRESS_ERROR1	0x9e
-+#define BRIDGE_9XX_ADDRESS_ERROR2	0x9f
-+
-+#define BRIDGE_9XX_PCIEMEM_BASE0	0x59
-+#define BRIDGE_9XX_PCIEMEM_BASE1	0x5a
-+#define BRIDGE_9XX_PCIEMEM_BASE2	0x5b
-+#define BRIDGE_9XX_PCIEMEM_BASE3	0x5c
-+#define BRIDGE_9XX_PCIEMEM_LIMIT0	0x5d
-+#define BRIDGE_9XX_PCIEMEM_LIMIT1	0x5e
-+#define BRIDGE_9XX_PCIEMEM_LIMIT2	0x5f
-+#define BRIDGE_9XX_PCIEMEM_LIMIT3	0x60
-+#define BRIDGE_9XX_PCIEIO_BASE0		0x61
-+#define BRIDGE_9XX_PCIEIO_BASE1		0x62
-+#define BRIDGE_9XX_PCIEIO_BASE2		0x63
-+#define BRIDGE_9XX_PCIEIO_BASE3		0x64
-+#define BRIDGE_9XX_PCIEIO_LIMIT0	0x65
-+#define BRIDGE_9XX_PCIEIO_LIMIT1	0x66
-+#define BRIDGE_9XX_PCIEIO_LIMIT2	0x67
-+#define BRIDGE_9XX_PCIEIO_LIMIT3	0x68
-+
- #ifndef __ASSEMBLY__
++#define nlm_threads_per_node()	(nlm_cores_per_node() * NLM_THREADS_PER_CORE)
++#define nlm_cpuid_to_node(c)	((c) / nlm_threads_per_node())
  
- #define nlm_read_bridge_reg(b, r)	nlm_read_reg(b, r)
- #define nlm_write_bridge_reg(b, r, v)	nlm_write_reg(b, r, v)
--#define nlm_get_bridge_pcibase(node)	\
--			nlm_pcicfg_base(XLP_IO_BRIDGE_OFFSET(node))
-+#define nlm_get_bridge_pcibase(node)	nlm_pcicfg_base(cpu_is_xlp9xx() ? \
-+		XLP9XX_IO_BRIDGE_OFFSET(node) : XLP_IO_BRIDGE_OFFSET(node))
- #define nlm_get_bridge_regbase(node)	\
- 			(nlm_get_bridge_pcibase(node) + XLP_IO_PCI_HDRSZ)
+ struct nlm_soc_info {
+ 	unsigned long	coremask;	/* cores enabled on the soc */
+diff --git a/arch/mips/include/asm/netlogic/mips-extns.h b/arch/mips/include/asm/netlogic/mips-extns.h
+index f299d31..de9aada 100644
+--- a/arch/mips/include/asm/netlogic/mips-extns.h
++++ b/arch/mips/include/asm/netlogic/mips-extns.h
+@@ -146,7 +146,12 @@ static inline int hard_smp_processor_id(void)
  
-diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
-index 61f325d..efd64ac 100644
---- a/arch/mips/netlogic/xlp/nlm_hal.c
-+++ b/arch/mips/netlogic/xlp/nlm_hal.c
-@@ -314,21 +314,33 @@ int xlp_get_dram_map(int n, uint64_t *dram_map)
+ static inline int nlm_nodeid(void)
  {
- 	uint64_t bridgebase, base, lim;
- 	uint32_t val;
-+	unsigned int barreg, limreg, xlatreg;
- 	int i, node, rv;
+-	return (__read_32bit_c0_register($15, 1) >> 5) & 0x3;
++	uint32_t prid = read_c0_prid();
++
++	if ((prid & 0xff00) == PRID_IMP_NETLOGIC_XLP9XX)
++		return (__read_32bit_c0_register($15, 1) >> 7) & 0x7;
++	else
++		return (__read_32bit_c0_register($15, 1) >> 5) & 0x3;
+ }
  
- 	/* Look only at mapping on Node 0, we don't handle crazy configs */
- 	bridgebase = nlm_get_bridge_regbase(0);
- 	rv = 0;
- 	for (i = 0; i < 8; i++) {
--		val = nlm_read_bridge_reg(bridgebase,
--					BRIDGE_DRAM_NODE_TRANSLN(i));
--		node = (val >> 1) & 0x3;
--		if (n >= 0 && n != node)
--			continue;
--		val = nlm_read_bridge_reg(bridgebase, BRIDGE_DRAM_BAR(i));
-+		if (cpu_is_xlp9xx()) {
-+			barreg = BRIDGE_9XX_DRAM_BAR(i);
-+			limreg = BRIDGE_9XX_DRAM_LIMIT(i);
-+			xlatreg = BRIDGE_9XX_DRAM_NODE_TRANSLN(i);
-+		} else {
-+			barreg = BRIDGE_DRAM_BAR(i);
-+			limreg = BRIDGE_DRAM_LIMIT(i);
-+			xlatreg = BRIDGE_DRAM_NODE_TRANSLN(i);
-+		}
-+		if (n >= 0) {
-+			/* node specified, get node mapping of BAR */
-+			val = nlm_read_bridge_reg(bridgebase, xlatreg);
-+			node = (val >> 1) & 0x3;
-+			if (n != node)
-+				continue;
-+		}
-+		val = nlm_read_bridge_reg(bridgebase, barreg);
- 		val = (val >>  12) & 0xfffff;
- 		base = (uint64_t) val << 20;
--		val = nlm_read_bridge_reg(bridgebase, BRIDGE_DRAM_LIMIT(i));
-+		val = nlm_read_bridge_reg(bridgebase, limreg);
- 		val = (val >>  12) & 0xfffff;
- 		if (val == 0)   /* BAR not used */
+ static inline unsigned int nlm_core_id(void)
+diff --git a/arch/mips/netlogic/common/irq.c b/arch/mips/netlogic/common/irq.c
+index 3800bf6..8092bb3 100644
+--- a/arch/mips/netlogic/common/irq.c
++++ b/arch/mips/netlogic/common/irq.c
+@@ -223,7 +223,7 @@ static void nlm_init_node_irqs(int node)
  			continue;
+ 
+ 		nlm_pic_init_irt(nodep->picbase, irt, i,
+-					node * NLM_CPUS_PER_NODE, 0);
++				node * nlm_threads_per_node(), 0);
+ 		nlm_setup_pic_irq(node, i, i, irt);
+ 	}
+ }
+@@ -232,8 +232,8 @@ void nlm_smp_irq_init(int hwcpuid)
+ {
+ 	int node, cpu;
+ 
+-	node = hwcpuid / NLM_CPUS_PER_NODE;
+-	cpu  = hwcpuid % NLM_CPUS_PER_NODE;
++	node = nlm_cpuid_to_node(hwcpuid);
++	cpu  = hwcpuid % nlm_threads_per_node();
+ 
+ 	if (cpu == 0 && node != 0)
+ 		nlm_init_node_irqs(node);
+diff --git a/arch/mips/netlogic/common/smp.c b/arch/mips/netlogic/common/smp.c
+index c0eded0..6baae15 100644
+--- a/arch/mips/netlogic/common/smp.c
++++ b/arch/mips/netlogic/common/smp.c
+@@ -63,7 +63,7 @@ void nlm_send_ipi_single(int logical_cpu, unsigned int action)
+ 	uint64_t picbase;
+ 
+ 	cpu = cpu_logical_map(logical_cpu);
+-	node = cpu / NLM_CPUS_PER_NODE;
++	node = nlm_cpuid_to_node(cpu);
+ 	picbase = nlm_get_node(node)->picbase;
+ 
+ 	if (action & SMP_CALL_FUNCTION)
+@@ -152,7 +152,7 @@ void nlm_boot_secondary(int logical_cpu, struct task_struct *idle)
+ 	int cpu, node;
+ 
+ 	cpu = cpu_logical_map(logical_cpu);
+-	node = cpu / NLM_CPUS_PER_NODE;
++	node = nlm_cpuid_to_node(logical_cpu);
+ 	nlm_next_sp = (unsigned long)__KSTK_TOS(idle);
+ 	nlm_next_gp = (unsigned long)task_thread_info(idle);
+ 
+@@ -164,7 +164,7 @@ void nlm_boot_secondary(int logical_cpu, struct task_struct *idle)
+ void __init nlm_smp_setup(void)
+ {
+ 	unsigned int boot_cpu;
+-	int num_cpus, i, ncore;
++	int num_cpus, i, ncore, node;
+ 	volatile u32 *cpu_ready = nlm_get_boot_data(BOOT_CPU_READY);
+ 	char buf[64];
+ 
+@@ -187,6 +187,8 @@ void __init nlm_smp_setup(void)
+ 			__cpu_number_map[i] = num_cpus;
+ 			__cpu_logical_map[num_cpus] = i;
+ 			set_cpu_possible(num_cpus, true);
++			node = nlm_cpuid_to_node(i);
++			cpumask_set_cpu(num_cpus, &nlm_get_node(node)->cpumask);
+ 			++num_cpus;
+ 		}
+ 	}
+diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
+index d739c5d..c3af2d8 100644
+--- a/arch/mips/netlogic/xlp/setup.c
++++ b/arch/mips/netlogic/xlp/setup.c
+@@ -51,6 +51,7 @@ uint64_t nlm_io_base;
+ struct nlm_soc_info nlm_nodes[NLM_NR_NODES];
+ cpumask_t nlm_cpumask = CPU_MASK_CPU0;
+ unsigned int nlm_threads_per_core;
++unsigned int xlp_cores_per_node;
+ 
+ static void nlm_linux_exit(void)
+ {
+@@ -162,6 +163,10 @@ void __init prom_init(void)
+ 	void *reset_vec;
+ 
+ 	nlm_io_base = CKSEG1ADDR(XLP_DEFAULT_IO_BASE);
++	if (cpu_is_xlp9xx())
++		xlp_cores_per_node = 32;
++	else
++		xlp_cores_per_node = 8;
+ 	nlm_init_boot_cpu();
+ 	xlp_mmu_init();
+ 	nlm_node_init(0);
+diff --git a/arch/mips/netlogic/xlp/wakeup.c b/arch/mips/netlogic/xlp/wakeup.c
+index 7e3c5b9..4eb7cdb 100644
+--- a/arch/mips/netlogic/xlp/wakeup.c
++++ b/arch/mips/netlogic/xlp/wakeup.c
+@@ -165,7 +165,7 @@ static void xlp_enable_secondary_cores(const cpumask_t *wakeup_mask)
+ 			nodep->coremask = 1;
+ 
+ 		pr_info("Node %d - SYS/FUSE coremask %x\n", n, syscoremask);
+-		for (core = 0; core < NLM_CORES_PER_NODE; core++) {
++		for (core = 0; core < nlm_cores_per_node(); core++) {
+ 			/* we will be on node 0 core 0 */
+ 			if (n == 0 && core == 0)
+ 				continue;
+@@ -175,7 +175,7 @@ static void xlp_enable_secondary_cores(const cpumask_t *wakeup_mask)
+ 				continue;
+ 
+ 			/* see if at least the first hw thread is enabled */
+-			cpu = (n * NLM_CORES_PER_NODE + core)
++			cpu = (n * nlm_cores_per_node() + core)
+ 						* NLM_THREADS_PER_CORE;
+ 			if (!cpumask_test_cpu(cpu, wakeup_mask))
+ 				continue;
+diff --git a/arch/mips/netlogic/xlr/wakeup.c b/arch/mips/netlogic/xlr/wakeup.c
+index 9fb81fa..ec60e71 100644
+--- a/arch/mips/netlogic/xlr/wakeup.c
++++ b/arch/mips/netlogic/xlr/wakeup.c
+@@ -70,7 +70,7 @@ int xlr_wakeup_secondary_cpus(void)
+ 
+ 	/* Fill up the coremask early */
+ 	nodep->coremask = 1;
+-	for (i = 1; i < NLM_CORES_PER_NODE; i++) {
++	for (i = 1; i < nlm_cores_per_node(); i++) {
+ 		for (j = 1000000; j > 0; j--) {
+ 			if (cpu_ready[i * NLM_THREADS_PER_CORE])
+ 				break;
+diff --git a/arch/mips/pci/msi-xlp.c b/arch/mips/pci/msi-xlp.c
+index 66a244a..afd8405 100644
+--- a/arch/mips/pci/msi-xlp.c
++++ b/arch/mips/pci/msi-xlp.c
+@@ -280,7 +280,7 @@ static int xlp_setup_msi(uint64_t lnkbase, int node, int link,
+ 		irt = PIC_IRT_PCIE_LINK_INDEX(link);
+ 		nlm_setup_pic_irq(node, lirq, lirq, irt);
+ 		nlm_pic_init_irt(nlm_get_node(node)->picbase, irt, lirq,
+-				 node * NLM_CPUS_PER_NODE, 1 /*en */);
++				 node * nlm_threads_per_node(), 1 /*en */);
+ 	}
+ 
+ 	/* allocate a MSI vec, and tell the bridge about it */
+@@ -443,7 +443,7 @@ void __init xlp_init_node_msi_irqs(int node, int link)
+ 		msixvec = link * XLP_MSIXVEC_PER_LINK + i;
+ 		irt = PIC_IRT_PCIE_MSIX_INDEX(msixvec);
+ 		nlm_pic_init_irt(nodep->picbase, irt, PIC_PCIE_MSIX_IRQ(link),
+-			node * NLM_CPUS_PER_NODE, 1 /* enable */);
++			node * nlm_threads_per_node(), 1 /* enable */);
+ 
+ 		/* Initialize MSI-X extended irq space for the link  */
+ 		irq = nlm_irq_to_xirq(node, nlm_link_msixirq(link, i));
 -- 
 1.7.9.5

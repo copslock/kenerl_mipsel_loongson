@@ -1,29 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Dec 2013 18:37:19 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:60284 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6816233Ab3LURhPmtx7m (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 21 Dec 2013 18:37:15 +0100
-Message-ID: <52B5D14A.3030504@phrozen.org>
-Date:   Sat, 21 Dec 2013 18:35:06 +0100
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20130116 Icedove/10.0.12
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Dec 2013 18:55:12 +0100 (CET)
+Received: from smtp-out-221.synserver.de ([212.40.185.221]:1444 "EHLO
+        smtp-out-142.synserver.de" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S6815753Ab3LURzJcdqqE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Dec 2013 18:55:09 +0100
+Received: (qmail 8074 invoked by uid 0); 21 Dec 2013 17:55:06 -0000
+X-SynServer-TrustedSrc: 1
+X-SynServer-AuthUser: lars@metafoo.de
+X-SynServer-PPID: 7631
+Received: from ppp-83-171-154-177.dynamic.mnet-online.de (HELO ?192.168.178.23?) [83.171.154.177]
+  by 217.119.54.96 with AES256-SHA encrypted SMTP; 21 Dec 2013 17:55:06 -0000
+Message-ID: <52B5C821.7040206@metafoo.de>
+Date:   Sat, 21 Dec 2013 17:56:01 +0100
+From:   Lars-Peter Clausen <lars@metafoo.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20131103 Icedove/17.0.10
 MIME-Version: 1.0
-To:     Jayachandran C <jchandra@broadcom.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 12/18] MIPS: Netlogic: XLP9XX UART offset
-References: <1387624950-31297-1-git-send-email-jchandra@broadcom.com> <1387624950-31297-13-git-send-email-jchandra@broadcom.com>
-In-Reply-To: <1387624950-31297-13-git-send-email-jchandra@broadcom.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:     Apelete Seketeli <apelete@seketeli.net>
+CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>
+Subject: Re: [PATCH] mips: qi_lb60: add defconfig for Ben NanoNote
+References: <1387402619-22921-1-git-send-email-apelete@seketeli.net> <1387402619-22921-2-git-send-email-apelete@seketeli.net>
+In-Reply-To: <1387402619-22921-2-git-send-email-apelete@seketeli.net>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <john@phrozen.org>
+Return-Path: <lars@metafoo.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38792
+X-archive-position: 38793
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,50 +44,211 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 21/12/13 12:22, Jayachandran C wrote:
-> Update IO offset of the early console UART.
->
-> Signed-off-by: Jayachandran C<jchandra@broadcom.com>
+On 12/18/2013 10:36 PM, Apelete Seketeli wrote:
+> Add defconfig for the Ben NanoNote handheld computer which is built
+> around QI_LB60 board and Ingenic JZ4740 MIPS SoC.
+> 
+> Signed-off-by: Apelete Seketeli <apelete@seketeli.net>
+
+Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+
 > ---
->   arch/mips/include/asm/netlogic/xlp-hal/uart.h |    3 ++-
->   arch/mips/netlogic/common/earlycons.c         |    2 ++
->   2 files changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/mips/include/asm/netlogic/xlp-hal/uart.h b/arch/mips/include/asm/netlogic/xlp-hal/uart.h
-> index 86d16e1..a6c5442 100644
-> --- a/arch/mips/include/asm/netlogic/xlp-hal/uart.h
-> +++ b/arch/mips/include/asm/netlogic/xlp-hal/uart.h
-> @@ -94,7 +94,8 @@
->   #define nlm_read_uart_reg(b, r)		nlm_read_reg(b, r)
->   #define nlm_write_uart_reg(b, r, v)	nlm_write_reg(b, r, v)
->   #define nlm_get_uart_pcibase(node, inst)	\
-> -		nlm_pcicfg_base(XLP_IO_UART_OFFSET(node, inst))
-> +	nlm_pcicfg_base(cpu_is_xlp9xx() ?  XLP9XX_IO_UART_OFFSET(node) : \
-> +						XLP_IO_UART_OFFSET(node, inst))
-
-nitpick: i think this looks really ugly. maybe move the ()?():() logic 
-to a define ?
-
-
-
-
-
->   #define nlm_get_uart_regbase(node, inst)	\
->   			(nlm_get_uart_pcibase(node, inst) + XLP_IO_PCI_HDRSZ)
->
-> diff --git a/arch/mips/netlogic/common/earlycons.c b/arch/mips/netlogic/common/earlycons.c
-> index 1902fa2..769f930 100644
-> --- a/arch/mips/netlogic/common/earlycons.c
-> +++ b/arch/mips/netlogic/common/earlycons.c
-> @@ -37,9 +37,11 @@
->
->   #include<asm/mipsregs.h>
->   #include<asm/netlogic/haldefs.h>
-> +#include<asm/netlogic/common.h>
->
->   #if defined(CONFIG_CPU_XLP)
->   #include<asm/netlogic/xlp-hal/iomap.h>
-> +#include<asm/netlogic/xlp-hal/xlp.h>
->   #include<asm/netlogic/xlp-hal/uart.h>
->   #elif defined(CONFIG_CPU_XLR)
->   #include<asm/netlogic/xlr/iomap.h>
+>  arch/mips/configs/qi_lb60_defconfig |  188 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 188 insertions(+)
+>  create mode 100644 arch/mips/configs/qi_lb60_defconfig
+> 
+> diff --git a/arch/mips/configs/qi_lb60_defconfig b/arch/mips/configs/qi_lb60_defconfig
+> new file mode 100644
+> index 0000000..2b96547
+> --- /dev/null
+> +++ b/arch/mips/configs/qi_lb60_defconfig
+> @@ -0,0 +1,188 @@
+> +CONFIG_MACH_JZ4740=y
+> +# CONFIG_COMPACTION is not set
+> +# CONFIG_CROSS_MEMORY_ATTACH is not set
+> +CONFIG_HZ_100=y
+> +CONFIG_PREEMPT=y
+> +# CONFIG_SECCOMP is not set
+> +# CONFIG_LOCALVERSION_AUTO is not set
+> +CONFIG_SYSVIPC=y
+> +CONFIG_LOG_BUF_SHIFT=14
+> +CONFIG_SYSCTL_SYSCALL=y
+> +CONFIG_KALLSYMS_ALL=y
+> +CONFIG_EMBEDDED=y
+> +# CONFIG_VM_EVENT_COUNTERS is not set
+> +# CONFIG_COMPAT_BRK is not set
+> +CONFIG_SLAB=y
+> +CONFIG_MODULES=y
+> +CONFIG_MODULE_UNLOAD=y
+> +# CONFIG_BLK_DEV_BSG is not set
+> +CONFIG_PARTITION_ADVANCED=y
+> +# CONFIG_EFI_PARTITION is not set
+> +# CONFIG_IOSCHED_CFQ is not set
+> +# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
+> +CONFIG_NET=y
+> +CONFIG_PACKET=y
+> +CONFIG_UNIX=y
+> +CONFIG_INET=y
+> +CONFIG_IP_MULTICAST=y
+> +CONFIG_IP_ADVANCED_ROUTER=y
+> +CONFIG_IP_MULTIPLE_TABLES=y
+> +CONFIG_IP_ROUTE_MULTIPATH=y
+> +CONFIG_IP_ROUTE_VERBOSE=y
+> +CONFIG_IP_MROUTE=y
+> +CONFIG_IP_MROUTE_MULTIPLE_TABLES=y
+> +# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
+> +# CONFIG_INET_XFRM_MODE_TUNNEL is not set
+> +# CONFIG_INET_XFRM_MODE_BEET is not set
+> +# CONFIG_INET_LRO is not set
+> +# CONFIG_INET_DIAG is not set
+> +CONFIG_TCP_CONG_ADVANCED=y
+> +# CONFIG_TCP_CONG_BIC is not set
+> +# CONFIG_TCP_CONG_CUBIC is not set
+> +CONFIG_TCP_CONG_WESTWOOD=y
+> +# CONFIG_TCP_CONG_HTCP is not set
+> +# CONFIG_IPV6 is not set
+> +CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+> +# CONFIG_FIRMWARE_IN_KERNEL is not set
+> +CONFIG_MTD=y
+> +CONFIG_MTD_BLOCK=y
+> +CONFIG_MTD_NAND=y
+> +CONFIG_MTD_NAND_JZ4740=y
+> +CONFIG_MTD_UBI=y
+> +CONFIG_NETDEVICES=y
+> +# CONFIG_WLAN is not set
+> +# CONFIG_INPUT_MOUSEDEV is not set
+> +CONFIG_INPUT_EVDEV=y
+> +# CONFIG_KEYBOARD_ATKBD is not set
+> +CONFIG_KEYBOARD_GPIO=y
+> +CONFIG_KEYBOARD_MATRIX=y
+> +# CONFIG_INPUT_MOUSE is not set
+> +CONFIG_INPUT_MISC=y
+> +# CONFIG_SERIO is not set
+> +CONFIG_LEGACY_PTY_COUNT=2
+> +# CONFIG_DEVKMEM is not set
+> +CONFIG_SERIAL_8250=y
+> +CONFIG_SERIAL_8250_CONSOLE=y
+> +# CONFIG_SERIAL_8250_DMA is not set
+> +CONFIG_SERIAL_8250_NR_UARTS=2
+> +CONFIG_SERIAL_8250_RUNTIME_UARTS=2
+> +# CONFIG_HW_RANDOM is not set
+> +CONFIG_SPI=y
+> +CONFIG_SPI_GPIO=y
+> +CONFIG_POWER_SUPPLY=y
+> +CONFIG_BATTERY_JZ4740=y
+> +CONFIG_CHARGER_GPIO=y
+> +# CONFIG_HWMON is not set
+> +CONFIG_MFD_JZ4740_ADC=y
+> +CONFIG_REGULATOR=y
+> +CONFIG_REGULATOR_FIXED_VOLTAGE=y
+> +CONFIG_FB=y
+> +CONFIG_FB_JZ4740=y
+> +CONFIG_BACKLIGHT_LCD_SUPPORT=y
+> +CONFIG_LCD_CLASS_DEVICE=y
+> +# CONFIG_BACKLIGHT_CLASS_DEVICE is not set
+> +# CONFIG_VGA_CONSOLE is not set
+> +CONFIG_FRAMEBUFFER_CONSOLE=y
+> +CONFIG_LOGO=y
+> +# CONFIG_LOGO_LINUX_MONO is not set
+> +# CONFIG_LOGO_LINUX_VGA16 is not set
+> +# CONFIG_LOGO_LINUX_CLUT224 is not set
+> +CONFIG_SOUND=y
+> +CONFIG_SND=y
+> +# CONFIG_SND_SUPPORT_OLD_API is not set
+> +# CONFIG_SND_VERBOSE_PROCFS is not set
+> +# CONFIG_SND_DRIVERS is not set
+> +# CONFIG_SND_SPI is not set
+> +# CONFIG_SND_MIPS is not set
+> +CONFIG_SND_SOC=y
+> +CONFIG_SND_JZ4740_SOC=y
+> +CONFIG_SND_JZ4740_SOC_QI_LB60=y
+> +CONFIG_USB=y
+> +CONFIG_USB_OTG_BLACKLIST_HUB=y
+> +CONFIG_USB_MUSB_HDRC=y
+> +CONFIG_USB_MUSB_GADGET=y
+> +CONFIG_USB_MUSB_JZ4740=y
+> +CONFIG_NOP_USB_XCEIV=y
+> +CONFIG_USB_GADGET=y
+> +CONFIG_USB_GADGET_DEBUG=y
+> +CONFIG_USB_ETH=y
+> +# CONFIG_USB_ETH_RNDIS is not set
+> +CONFIG_MMC=y
+> +CONFIG_MMC_UNSAFE_RESUME=y
+> +# CONFIG_MMC_BLOCK_BOUNCE is not set
+> +CONFIG_MMC_JZ4740=y
+> +CONFIG_RTC_CLASS=y
+> +CONFIG_RTC_DRV_JZ4740=y
+> +CONFIG_DMADEVICES=y
+> +CONFIG_DMA_JZ4740=y
+> +CONFIG_PWM=y
+> +CONFIG_PWM_JZ4740=y
+> +CONFIG_EXT2_FS=y
+> +CONFIG_EXT3_FS=y
+> +# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+> +# CONFIG_EXT3_FS_XATTR is not set
+> +# CONFIG_DNOTIFY is not set
+> +CONFIG_VFAT_FS=y
+> +CONFIG_PROC_KCORE=y
+> +# CONFIG_PROC_PAGE_MONITOR is not set
+> +CONFIG_TMPFS=y
+> +CONFIG_JFFS2_FS=y
+> +CONFIG_JFFS2_SUMMARY=y
+> +CONFIG_JFFS2_COMPRESSION_OPTIONS=y
+> +# CONFIG_JFFS2_ZLIB is not set
+> +CONFIG_UBIFS_FS=y
+> +CONFIG_UBIFS_FS_ADVANCED_COMPR=y
+> +# CONFIG_NETWORK_FILESYSTEMS is not set
+> +CONFIG_NLS_CODEPAGE_437=y
+> +CONFIG_NLS_CODEPAGE_737=y
+> +CONFIG_NLS_CODEPAGE_775=y
+> +CONFIG_NLS_CODEPAGE_850=y
+> +CONFIG_NLS_CODEPAGE_852=y
+> +CONFIG_NLS_CODEPAGE_855=y
+> +CONFIG_NLS_CODEPAGE_857=y
+> +CONFIG_NLS_CODEPAGE_860=y
+> +CONFIG_NLS_CODEPAGE_861=y
+> +CONFIG_NLS_CODEPAGE_862=y
+> +CONFIG_NLS_CODEPAGE_863=y
+> +CONFIG_NLS_CODEPAGE_864=y
+> +CONFIG_NLS_CODEPAGE_865=y
+> +CONFIG_NLS_CODEPAGE_866=y
+> +CONFIG_NLS_CODEPAGE_869=y
+> +CONFIG_NLS_CODEPAGE_936=y
+> +CONFIG_NLS_CODEPAGE_950=y
+> +CONFIG_NLS_CODEPAGE_932=y
+> +CONFIG_NLS_CODEPAGE_949=y
+> +CONFIG_NLS_CODEPAGE_874=y
+> +CONFIG_NLS_ISO8859_8=y
+> +CONFIG_NLS_CODEPAGE_1250=y
+> +CONFIG_NLS_CODEPAGE_1251=y
+> +CONFIG_NLS_ASCII=y
+> +CONFIG_NLS_ISO8859_1=y
+> +CONFIG_NLS_ISO8859_2=y
+> +CONFIG_NLS_ISO8859_3=y
+> +CONFIG_NLS_ISO8859_4=y
+> +CONFIG_NLS_ISO8859_5=y
+> +CONFIG_NLS_ISO8859_6=y
+> +CONFIG_NLS_ISO8859_7=y
+> +CONFIG_NLS_ISO8859_9=y
+> +CONFIG_NLS_ISO8859_13=y
+> +CONFIG_NLS_ISO8859_14=y
+> +CONFIG_NLS_ISO8859_15=y
+> +CONFIG_NLS_KOI8_R=y
+> +CONFIG_NLS_KOI8_U=y
+> +CONFIG_NLS_UTF8=y
+> +CONFIG_PRINTK_TIME=y
+> +CONFIG_DEBUG_INFO=y
+> +CONFIG_STRIP_ASM_SYMS=y
+> +CONFIG_READABLE_ASM=y
+> +CONFIG_DEBUG_KMEMLEAK=y
+> +CONFIG_DEBUG_MEMORY_INIT=y
+> +CONFIG_DEBUG_STACKOVERFLOW=y
+> +CONFIG_PANIC_ON_OOPS=y
+> +# CONFIG_FTRACE is not set
+> +CONFIG_KGDB=y
+> +CONFIG_RUNTIME_DEBUG=y
+> +CONFIG_CRYPTO_ZLIB=y
+> +# CONFIG_CRYPTO_ANSI_CPRNG is not set
+> +CONFIG_FONTS=y
+> +CONFIG_FONT_SUN8x16=y
+> 

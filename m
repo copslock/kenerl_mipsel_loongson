@@ -1,27 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Dec 2013 12:15:52 +0100 (CET)
-Received: from mail-gw2-out.broadcom.com ([216.31.210.63]:33332 "EHLO
-        mail-gw2-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6867259Ab3LULLGr01B7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Dec 2013 12:11:06 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Dec 2013 12:16:12 +0100 (CET)
+Received: from mail-gw1-out.broadcom.com ([216.31.210.62]:63752 "EHLO
+        mail-gw1-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6867263Ab3LULLKVmjOV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Dec 2013 12:11:10 +0100
 X-IronPort-AV: E=Sophos;i="4.95,527,1384329600"; 
-   d="scan'208";a="4602652"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw2-out.broadcom.com with ESMTP; 21 Dec 2013 03:17:47 -0800
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.1.438.0; Sat, 21 Dec 2013 03:11:05 -0800
+   d="scan'208";a="4638695"
+Received: from irvexchcas06.broadcom.com (HELO IRVEXCHCAS06.corp.ad.broadcom.com) ([10.9.208.53])
+  by mail-gw1-out.broadcom.com with ESMTP; 21 Dec 2013 03:17:16 -0800
+Received: from IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) by
+ IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP Server
+ (TLS) id 14.1.438.0; Sat, 21 Dec 2013 03:11:09 -0800
 Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP Server id
- 14.1.438.0; Sat, 21 Dec 2013 03:11:05 -0800
+ IRVEXCHSMTP1.corp.ad.broadcom.com (10.9.207.51) with Microsoft SMTP Server id
+ 14.1.438.0; Sat, 21 Dec 2013 03:11:08 -0800
 Received: from netl-snoppy.ban.broadcom.com (netl-snoppy.ban.broadcom.com
  [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- 6EC3F246A6;    Sat, 21 Dec 2013 03:11:04 -0800 (PST)
+ C3D22246A7;    Sat, 21 Dec 2013 03:11:05 -0800 (PST)
 From:   Jayachandran C <jchandra@broadcom.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Jayachandran C <jchandra@broadcom.com>, <ralf@linux-mips.org>
-Subject: [PATCH 15/18] MIPS: PCI: Netlogic XLP9XX support
-Date:   Sat, 21 Dec 2013 16:52:27 +0530
-Message-ID: <1387624950-31297-16-git-send-email-jchandra@broadcom.com>
+CC:     Ganesan Ramalingam <ganesanr@broadcom.com>, <ralf@linux-mips.org>,
+        Jayachandran C <jchandra@broadcom.com>
+Subject: [PATCH 16/18] MIPS: Netlogic: XLP9XX USB support
+Date:   Sat, 21 Dec 2013 16:52:28 +0530
+Message-ID: <1387624950-31297-17-git-send-email-jchandra@broadcom.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1387624950-31297-1-git-send-email-jchandra@broadcom.com>
 References: <1387624950-31297-1-git-send-email-jchandra@broadcom.com>
@@ -31,7 +32,7 @@ Return-Path: <jchandra@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38788
+X-archive-position: 38789
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,220 +49,201 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add PCI support for Netlogic XLP9XX. The PCI registers and
-SoC bus numbers have changed in XLP9XX.
+From: Ganesan Ramalingam <ganesanr@broadcom.com>
 
-Also skip a few (bus,dev,fn) combinations which have issues when
-read.
+XLP9XX has a USB 3.0 controller on-chip with 2 xHCI ports. The USB
+block is similar to the one on XLP2XX, so update usb-init-xlp2.c
+to handle XLP9XX as well.
 
+Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
 Signed-off-by: Jayachandran C <jchandra@broadcom.com>
 ---
- arch/mips/include/asm/netlogic/xlp-hal/pcibus.h |   10 ++-
- arch/mips/include/asm/netlogic/xlp-hal/xlp.h    |    3 +
- arch/mips/netlogic/xlp/nlm_hal.c                |    5 ++
- arch/mips/pci/pci-xlp.c                         |   95 ++++++++++++++++++-----
- 4 files changed, 90 insertions(+), 23 deletions(-)
+ arch/mips/include/asm/netlogic/xlp-hal/iomap.h |    3 +
+ arch/mips/include/asm/netlogic/xlp-hal/xlp.h   |    2 +
+ arch/mips/netlogic/xlp/nlm_hal.c               |    4 ++
+ arch/mips/netlogic/xlp/usb-init-xlp2.c         |   88 ++++++++++++++++++++----
+ 4 files changed, 84 insertions(+), 13 deletions(-)
 
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h b/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h
-index 0fac32b..d4deb87 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h
-@@ -63,6 +63,12 @@
- #define PCIE_INT_EN0			0x261
- #define PCIE_INT_EN1			0x262
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
+index 92fd866..1f23dfa 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
+@@ -188,6 +188,9 @@
+ #define PCI_DEVICE_ID_NLM_MMC		0x1018
+ #define PCI_DEVICE_ID_NLM_XHCI		0x101d
  
-+/* XLP9XX has basic changes */
-+#define PCIE_9XX_BYTE_SWAP_MEM_BASE	0x25c
-+#define PCIE_9XX_BYTE_SWAP_MEM_LIM	0x25d
-+#define PCIE_9XX_BYTE_SWAP_IO_BASE	0x25e
-+#define PCIE_9XX_BYTE_SWAP_IO_LIM	0x25f
++#define PCI_DEVICE_ID_XLP9XX_SATA	0x901A
++#define PCI_DEVICE_ID_XLP9XX_XHCI	0x901D
 +
- /* other */
- #define PCIE_NLINKS			4
+ #ifndef __ASSEMBLY__
  
-@@ -78,8 +84,8 @@
- 
- #define nlm_read_pcie_reg(b, r)		nlm_read_reg(b, r)
- #define nlm_write_pcie_reg(b, r, v)	nlm_write_reg(b, r, v)
--#define nlm_get_pcie_base(node, inst)	\
--			nlm_pcicfg_base(XLP_IO_PCIE_OFFSET(node, inst))
-+#define nlm_get_pcie_base(node, inst)	nlm_pcicfg_base(cpu_is_xlp9xx() ? \
-+	XLP9XX_IO_PCIE_OFFSET(node, inst) : XLP_IO_PCIE_OFFSET(node, inst))
- 
- #ifdef CONFIG_PCI_MSI
- void xlp_init_node_msi_irqs(int node, int link);
+ #define nlm_read_pci_reg(b, r)		nlm_read_reg(b, r)
 diff --git a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-index 9ccdb7d..120c003 100644
+index 120c003..2b0c959 100644
 --- a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
 +++ b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-@@ -84,6 +84,9 @@ void xlp_mmu_init(void);
- void nlm_hal_init(void);
- int xlp_get_dram_map(int n, uint64_t *dram_map);
+@@ -50,6 +50,8 @@
+ #define PIC_2XX_XHCI_0_IRQ		23
+ #define PIC_2XX_XHCI_1_IRQ		24
+ #define PIC_2XX_XHCI_2_IRQ		25
++#define PIC_9XX_XHCI_0_IRQ		23
++#define PIC_9XX_XHCI_1_IRQ		24
  
-+struct pci_dev;
-+int xlp_socdev_to_node(const struct pci_dev *dev);
-+
- /* Device tree related */
- void xlp_early_init_devtree(void);
- void *xlp_dt_init(void *fdtp);
+ #define PIC_MMC_IRQ			29
+ #define PIC_I2C_0_IRQ			30
 diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
-index efd64ac..e7ff2d3 100644
+index e7ff2d3..997cd9e 100644
 --- a/arch/mips/netlogic/xlp/nlm_hal.c
 +++ b/arch/mips/netlogic/xlp/nlm_hal.c
-@@ -76,6 +76,11 @@ int nlm_irq_to_irt(int irq)
+@@ -72,6 +72,10 @@ int nlm_irq_to_irt(int irq)
+ 	/* bypass for 9xx */
+ 	if (cpu_is_xlp9xx()) {
+ 		switch (irq) {
++		case PIC_9XX_XHCI_0_IRQ:
++			return 114;
++		case PIC_9XX_XHCI_1_IRQ:
++			return 115;
+ 		case PIC_UART_0_IRQ:
  			return 133;
  		case PIC_UART_1_IRQ:
- 			return 134;
-+		case PIC_PCIE_LINK_LEGACY_IRQ(0):
-+		case PIC_PCIE_LINK_LEGACY_IRQ(1):
-+		case PIC_PCIE_LINK_LEGACY_IRQ(2):
-+		case PIC_PCIE_LINK_LEGACY_IRQ(3):
-+			return 191 + irq - PIC_PCIE_LINK_LEGACY_IRQ_BASE;
- 		}
- 		return -1;
- 	}
-diff --git a/arch/mips/pci/pci-xlp.c b/arch/mips/pci/pci-xlp.c
-index f390aa9..7babf01 100644
---- a/arch/mips/pci/pci-xlp.c
-+++ b/arch/mips/pci/pci-xlp.c
-@@ -67,9 +67,22 @@ static inline u32 pci_cfg_read_32bit(struct pci_bus *bus, unsigned int devfn,
- 	u32 *cfgaddr;
+diff --git a/arch/mips/netlogic/xlp/usb-init-xlp2.c b/arch/mips/netlogic/xlp/usb-init-xlp2.c
+index 36e9c22..17ade1c 100644
+--- a/arch/mips/netlogic/xlp/usb-init-xlp2.c
++++ b/arch/mips/netlogic/xlp/usb-init-xlp2.c
+@@ -37,6 +37,7 @@
+ #include <linux/delay.h>
+ #include <linux/init.h>
+ #include <linux/pci.h>
++#include <linux/pci_ids.h>
+ #include <linux/platform_device.h>
+ #include <linux/irq.h>
  
- 	where &= ~3;
--	if (bus->number == 0 && PCI_SLOT(devfn) == 1 && where == 0x954)
-+	if (cpu_is_xlp9xx()) {
-+		/* be very careful on SoC buses */
-+		if (bus->number == 0) {
-+			/* Scan only existing nodes - uboot bug? */
-+			if (PCI_SLOT(devfn) != 0 ||
-+					   !nlm_node_present(PCI_FUNC(devfn)))
-+				return 0xffffffff;
-+		} else if (bus->parent->number == 0) {	/* SoC bus */
-+			if (PCI_SLOT(devfn) == 0)	/* b.0.0 hangs */
-+				return 0xffffffff;
-+			if (devfn == 44)		/* b.5.4 hangs */
-+				return 0xffffffff;
-+		}
-+	} else if (bus->number == 0 && PCI_SLOT(devfn) == 1 && where == 0x954) {
- 		return 0xffffffff;
--
-+	}
- 	cfgaddr = (u32 *)(pci_config_base +
- 			pci_cfg_addr(bus->number, devfn, where));
- 	data = *cfgaddr;
-@@ -167,18 +180,35 @@ struct pci_dev *xlp_get_pcie_link(const struct pci_dev *dev)
+@@ -83,12 +84,14 @@
+ #define nlm_read_usb_reg(b, r)		nlm_read_reg(b, r)
+ #define nlm_write_usb_reg(b, r, v)	nlm_write_reg(b, r, v)
+ 
+-#define nlm_xlpii_get_usb_pcibase(node, inst)		\
+-	nlm_pcicfg_base(XLP2XX_IO_USB_OFFSET(node, inst))
++#define nlm_xlpii_get_usb_pcibase(node, inst)			\
++			nlm_pcicfg_base(cpu_is_xlp9xx() ?	\
++			XLP9XX_IO_USB_OFFSET(node, inst) :	\
++			XLP2XX_IO_USB_OFFSET(node, inst))
+ #define nlm_xlpii_get_usb_regbase(node, inst)		\
+ 	(nlm_xlpii_get_usb_pcibase(node, inst) + XLP_IO_PCI_HDRSZ)
+ 
+-static void xlpii_usb_ack(struct irq_data *data)
++static void xlp2xx_usb_ack(struct irq_data *data)
  {
- 	struct pci_bus *bus, *p;
+ 	u64 port_addr;
  
--	/* Find the bridge on bus 0 */
- 	bus = dev->bus;
--	for (p = bus->parent; p && p->number != 0; p = p->parent)
--		bus = p;
+@@ -109,6 +112,29 @@ static void xlpii_usb_ack(struct irq_data *data)
+ 	nlm_write_usb_reg(port_addr, XLPII_USB3_INT_REG, 0xffffffff);
+ }
  
--	return p ? bus->self : NULL;
-+	if (cpu_is_xlp9xx()) {
-+		/* find bus with grand parent number == 0 */
-+		for (p = bus->parent; p && p->parent && p->parent->number != 0;
-+				p = p->parent)
-+			bus = p;
-+		return (p && p->parent) ? bus->self : NULL;
-+	} else {
-+		/* Find the bridge on bus 0 */
-+		for (p = bus->parent; p && p->number != 0; p = p->parent)
-+			bus = p;
++static void xlp9xx_usb_ack(struct irq_data *data)
++{
++	u64 port_addr;
++	int node, irq;
 +
-+		return p ? bus->self : NULL;
++	/* Find the node and irq on the node */
++	irq = data->irq % NLM_IRQS_PER_NODE;
++	node = data->irq / NLM_IRQS_PER_NODE;
++
++	switch (irq) {
++	case PIC_9XX_XHCI_0_IRQ:
++		port_addr = nlm_xlpii_get_usb_regbase(node, 1);
++		break;
++	case PIC_9XX_XHCI_1_IRQ:
++		port_addr = nlm_xlpii_get_usb_regbase(node, 2);
++		break;
++	default:
++		pr_err("No matching USB irq %d node  %d!\n", irq, node);
++		return;
++	}
++	nlm_write_usb_reg(port_addr, XLPII_USB3_INT_REG, 0xffffffff);
++}
++
+ static void nlm_xlpii_usb_hw_reset(int node, int port)
+ {
+ 	u64 port_addr, xhci_base, pci_base;
+@@ -178,17 +204,33 @@ static void nlm_xlpii_usb_hw_reset(int node, int port)
+ 
+ static int __init nlm_platform_xlpii_usb_init(void)
+ {
++	int node;
++
+ 	if (!cpu_is_xlpii())
+ 		return 0;
+ 
+-	pr_info("Initializing 2XX USB Interface\n");
+-	nlm_xlpii_usb_hw_reset(0, 1);
+-	nlm_xlpii_usb_hw_reset(0, 2);
+-	nlm_xlpii_usb_hw_reset(0, 3);
+-	nlm_set_pic_extra_ack(0, PIC_2XX_XHCI_0_IRQ, xlpii_usb_ack);
+-	nlm_set_pic_extra_ack(0, PIC_2XX_XHCI_1_IRQ, xlpii_usb_ack);
+-	nlm_set_pic_extra_ack(0, PIC_2XX_XHCI_2_IRQ, xlpii_usb_ack);
++	if (!cpu_is_xlp9xx()) {
++		/* XLP 2XX single node */
++		pr_info("Initializing 2XX USB Interface\n");
++		nlm_xlpii_usb_hw_reset(0, 1);
++		nlm_xlpii_usb_hw_reset(0, 2);
++		nlm_xlpii_usb_hw_reset(0, 3);
++		nlm_set_pic_extra_ack(0, PIC_2XX_XHCI_0_IRQ, xlp2xx_usb_ack);
++		nlm_set_pic_extra_ack(0, PIC_2XX_XHCI_1_IRQ, xlp2xx_usb_ack);
++		nlm_set_pic_extra_ack(0, PIC_2XX_XHCI_2_IRQ, xlp2xx_usb_ack);
++		return 0;
++	}
+ 
++	/* XLP 9XX, multi-node */
++	pr_info("Initializing 9XX USB Interface\n");
++	for (node = 0; node < NLM_NR_NODES; node++) {
++		if (!nlm_node_present(node))
++			continue;
++		nlm_xlpii_usb_hw_reset(node, 1);
++		nlm_xlpii_usb_hw_reset(node, 2);
++		nlm_set_pic_extra_ack(node, PIC_9XX_XHCI_0_IRQ, xlp9xx_usb_ack);
++		nlm_set_pic_extra_ack(node, PIC_9XX_XHCI_1_IRQ, xlp9xx_usb_ack);
++	}
+ 	return 0;
+ }
+ 
+@@ -196,8 +238,26 @@ arch_initcall(nlm_platform_xlpii_usb_init);
+ 
+ static u64 xlp_usb_dmamask = ~(u32)0;
+ 
+-/* Fixup IRQ for USB devices on XLP the SoC PCIe bus */
+-static void nlm_usb_fixup_final(struct pci_dev *dev)
++/* Fixup the IRQ for USB devices which is exist on XLP9XX SOC PCIE bus */
++static void nlm_xlp9xx_usb_fixup_final(struct pci_dev *dev)
++{
++	int node;
++
++	node = xlp_socdev_to_node(dev);
++	dev->dev.dma_mask		= &xlp_usb_dmamask;
++	dev->dev.coherent_dma_mask	= DMA_BIT_MASK(32);
++	switch (dev->devfn) {
++	case 0x21:
++		dev->irq = nlm_irq_to_xirq(node, PIC_9XX_XHCI_0_IRQ);
++		break;
++	case 0x22:
++		dev->irq = nlm_irq_to_xirq(node, PIC_9XX_XHCI_1_IRQ);
++		break;
 +	}
 +}
 +
-+int xlp_socdev_to_node(const struct pci_dev *lnkdev)
-+{
-+	if (cpu_is_xlp9xx())
-+		return PCI_FUNC(lnkdev->bus->self->devfn);
-+	else
-+		return PCI_SLOT(lnkdev->devfn) / 8;
- }
- 
- int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++/* Fixup the IRQ for USB devices which is exist on XLP2XX SOC PCIE bus */
++static void nlm_xlp2xx_usb_fixup_final(struct pci_dev *dev)
  {
- 	struct pci_dev *lnkdev;
--	int lnkslot, lnkfunc;
-+	int lnkfunc, node;
- 
- 	/*
- 	 * For XLP PCIe, there is an IRQ per Link, find out which
-@@ -187,9 +217,11 @@ int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
- 	lnkdev = xlp_get_pcie_link(dev);
- 	if (lnkdev == NULL)
- 		return 0;
-+
- 	lnkfunc = PCI_FUNC(lnkdev->devfn);
--	lnkslot = PCI_SLOT(lnkdev->devfn);
--	return nlm_irq_to_xirq(lnkslot / 8, PIC_PCIE_LINK_LEGACY_IRQ(lnkfunc));
-+	node = xlp_socdev_to_node(lnkdev);
-+
-+	return nlm_irq_to_xirq(node, PIC_PCIE_LINK_LEGACY_IRQ(lnkfunc));
+ 	dev->dev.dma_mask		= &xlp_usb_dmamask;
+ 	dev->dev.coherent_dma_mask	= DMA_BIT_MASK(32);
+@@ -214,5 +274,7 @@ static void nlm_usb_fixup_final(struct pci_dev *dev)
+ 	}
  }
  
- /* Do platform specific device initialization at pci_enable_device() time */
-@@ -216,17 +248,38 @@ static void xlp_config_pci_bswap(int node, int link)
- 	 *  Enable byte swap in hardware. Program each link's PCIe SWAP regions
- 	 * from the link's address ranges.
- 	 */
--	reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEMEM_BASE0 + link);
--	nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_MEM_BASE, reg);
--
--	reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEMEM_LIMIT0 + link);
--	nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_MEM_LIM, reg | 0xfff);
--
--	reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEIO_BASE0 + link);
--	nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_IO_BASE, reg);
--
--	reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEIO_LIMIT0 + link);
--	nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_IO_LIM, reg | 0xfff);
-+	if (cpu_is_xlp9xx()) {
-+		reg = nlm_read_bridge_reg(nbubase,
-+				BRIDGE_9XX_PCIEMEM_BASE0 + link);
-+		nlm_write_pci_reg(lnkbase, PCIE_9XX_BYTE_SWAP_MEM_BASE, reg);
-+
-+		reg = nlm_read_bridge_reg(nbubase,
-+				BRIDGE_9XX_PCIEMEM_LIMIT0 + link);
-+		nlm_write_pci_reg(lnkbase,
-+				PCIE_9XX_BYTE_SWAP_MEM_LIM, reg | 0xfff);
-+
-+		reg = nlm_read_bridge_reg(nbubase,
-+				BRIDGE_9XX_PCIEIO_BASE0 + link);
-+		nlm_write_pci_reg(lnkbase, PCIE_9XX_BYTE_SWAP_IO_BASE, reg);
-+
-+		reg = nlm_read_bridge_reg(nbubase,
-+				BRIDGE_9XX_PCIEIO_LIMIT0 + link);
-+		nlm_write_pci_reg(lnkbase,
-+				PCIE_9XX_BYTE_SWAP_IO_LIM, reg | 0xfff);
-+	} else {
-+		reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEMEM_BASE0 + link);
-+		nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_MEM_BASE, reg);
-+
-+		reg = nlm_read_bridge_reg(nbubase,
-+					BRIDGE_PCIEMEM_LIMIT0 + link);
-+		nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_MEM_LIM, reg | 0xfff);
-+
-+		reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEIO_BASE0 + link);
-+		nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_IO_BASE, reg);
-+
-+		reg = nlm_read_bridge_reg(nbubase, BRIDGE_PCIEIO_LIMIT0 + link);
-+		nlm_write_pci_reg(lnkbase, PCIE_BYTE_SWAP_IO_LIM, reg | 0xfff);
-+	}
- }
- #else
- /* Swap configuration not needed in little-endian mode */
-@@ -260,7 +313,7 @@ static int __init pcibios_init(void)
- 
- 			/* put in intpin and irq - u-boot does not */
- 			reg = nlm_read_pci_reg(pciebase, 0xf);
--			reg &= ~0x1fu;
-+			reg &= ~0x1ffu;
- 			reg |= (1 << 8) | PIC_PCIE_LINK_LEGACY_IRQ(link);
- 			nlm_write_pci_reg(pciebase, 0xf, reg);
- 			pr_info("XLP PCIe: Link %d-%d initialized.\n", n, link);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_BROADCOM, PCI_DEVICE_ID_XLP9XX_XHCI,
++		nlm_xlp9xx_usb_fixup_final);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_NETLOGIC, PCI_DEVICE_ID_NLM_XHCI,
+-		nlm_usb_fixup_final);
++		nlm_xlp2xx_usb_fixup_final);
 -- 
 1.7.9.5

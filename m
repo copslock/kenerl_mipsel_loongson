@@ -1,37 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Dec 2013 18:55:12 +0100 (CET)
-Received: from smtp-out-221.synserver.de ([212.40.185.221]:1444 "EHLO
-        smtp-out-142.synserver.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S6815753Ab3LURzJcdqqE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Dec 2013 18:55:09 +0100
-Received: (qmail 8074 invoked by uid 0); 21 Dec 2013 17:55:06 -0000
-X-SynServer-TrustedSrc: 1
-X-SynServer-AuthUser: lars@metafoo.de
-X-SynServer-PPID: 7631
-Received: from ppp-83-171-154-177.dynamic.mnet-online.de (HELO ?192.168.178.23?) [83.171.154.177]
-  by 217.119.54.96 with AES256-SHA encrypted SMTP; 21 Dec 2013 17:55:06 -0000
-Message-ID: <52B5C821.7040206@metafoo.de>
-Date:   Sat, 21 Dec 2013 17:56:01 +0100
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20131103 Icedove/17.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Dec 2013 20:08:31 +0100 (CET)
+Received: from 0.mx.nanl.de ([217.115.11.12]:49916 "EHLO mail.nanl.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6815753Ab3LUTI30e5e3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 21 Dec 2013 20:08:29 +0100
+Received: from mail-qa0-f52.google.com (mail-qa0-f52.google.com [209.85.216.52])
+        by mail.nanl.de (Postfix) with ESMTPSA id 53683460B4
+        for <linux-mips@linux-mips.org>; Sat, 21 Dec 2013 19:07:11 +0000 (UTC)
+Received: by mail-qa0-f52.google.com with SMTP id cm18so3809933qab.4
+        for <linux-mips@linux-mips.org>; Sat, 21 Dec 2013 11:08:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=RgD/LzQPknc19hjdOP/2ZxnQMF8HfT2p2x1wSoJdDBA=;
+        b=aicKK2qn/fK3co/A7jXbo4XCD61ZYGBMndZL5ymYZCBLyQGNcwq1XIr+L2E5jas3CS
+         K9CkXJ3oYKa1thmZrnHRQ5z1pWIT5he+bFjaEZwUAtttEW65uIrH3tMX+j+ZDzdWlfKF
+         fL/gX1vACflqRtSBiFB8orWIiF2y/pXpfBO6/4cT5/DfnPImf/Ga4FjAgDpwpRt/bn+N
+         wzbiIzR352tC7HQZebk420J4lQkeEjUmDxCJqsvQMtJWRVT5I3xgVFL0Hf7NWyKG7JGo
+         r6/+ebwX4lW3hjAmJpV5rzBc1+9hgzKd95uR6HklWWvoTS8vDbGoVvutsl20ns7Q0IFb
+         jXWg==
+X-Received: by 10.229.219.5 with SMTP id hs5mr26935119qcb.9.1387652903686;
+ Sat, 21 Dec 2013 11:08:23 -0800 (PST)
 MIME-Version: 1.0
-To:     Apelete Seketeli <apelete@seketeli.net>
-CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>
-Subject: Re: [PATCH] mips: qi_lb60: add defconfig for Ben NanoNote
-References: <1387402619-22921-1-git-send-email-apelete@seketeli.net> <1387402619-22921-2-git-send-email-apelete@seketeli.net>
-In-Reply-To: <1387402619-22921-2-git-send-email-apelete@seketeli.net>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <lars@metafoo.de>
+Received: by 10.140.27.117 with HTTP; Sat, 21 Dec 2013 11:08:03 -0800 (PST)
+In-Reply-To: <1380530280-6467-1-git-send-email-markos.chandras@imgtec.com>
+References: <1380530280-6467-1-git-send-email-markos.chandras@imgtec.com>
+From:   Jonas Gorski <jogo@openwrt.org>
+Date:   Sat, 21 Dec 2013 20:08:03 +0100
+Message-ID: <CAOiHx=kBLNAKhfa_6iPC5CsqYcNBCpaLPTw2ihNr8EEYdCkWsg@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: bcm63xx: cpu: Replace BUG() with panic()
+To:     Markos Chandras <markos.chandras@imgtec.com>
+Cc:     MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38793
+X-archive-position: 38794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,211 +53,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/18/2013 10:36 PM, Apelete Seketeli wrote:
-> Add defconfig for the Ben NanoNote handheld computer which is built
-> around QI_LB60 board and Ingenic JZ4740 MIPS SoC.
-> 
-> Signed-off-by: Apelete Seketeli <apelete@seketeli.net>
+Hi,
 
-Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+On Mon, Sep 30, 2013 at 10:38 AM, Markos Chandras
+<markos.chandras@imgtec.com> wrote:
+> BUG() can be a noop if CONFIG_BUG is not selected,
+> leading to the following build problem on a randconfig:
+>
+> arch/mips/bcm63xx/cpu.c: In function 'detect_cpu_clock':
+> arch/mips/bcm63xx/cpu.c:254:1: error: control reaches end of
+> non-void function [-Werror=return-type]
+>
+> We fix this problem by replacing BUG() with panic() since it's
+> best to handle the case of an unknown board instead of silently
+> returning a random clock frequency.
+>
+> Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+> Acked-by: Steven J. Hill <Steven.Hill@imgtec.com>
+
+The patch seems mostly okay, although there tend to be quite a few
+places treating BUG() as unreachable() - for my part BUG() not being
+unreachable for BUG=n is a bug, but that's a different story ;) One
+nitpick though ...
 
 > ---
->  arch/mips/configs/qi_lb60_defconfig |  188 +++++++++++++++++++++++++++++++++++
->  1 file changed, 188 insertions(+)
->  create mode 100644 arch/mips/configs/qi_lb60_defconfig
-> 
-> diff --git a/arch/mips/configs/qi_lb60_defconfig b/arch/mips/configs/qi_lb60_defconfig
-> new file mode 100644
-> index 0000000..2b96547
-> --- /dev/null
-> +++ b/arch/mips/configs/qi_lb60_defconfig
-> @@ -0,0 +1,188 @@
-> +CONFIG_MACH_JZ4740=y
-> +# CONFIG_COMPACTION is not set
-> +# CONFIG_CROSS_MEMORY_ATTACH is not set
-> +CONFIG_HZ_100=y
-> +CONFIG_PREEMPT=y
-> +# CONFIG_SECCOMP is not set
-> +# CONFIG_LOCALVERSION_AUTO is not set
-> +CONFIG_SYSVIPC=y
-> +CONFIG_LOG_BUF_SHIFT=14
-> +CONFIG_SYSCTL_SYSCALL=y
-> +CONFIG_KALLSYMS_ALL=y
-> +CONFIG_EMBEDDED=y
-> +# CONFIG_VM_EVENT_COUNTERS is not set
-> +# CONFIG_COMPAT_BRK is not set
-> +CONFIG_SLAB=y
-> +CONFIG_MODULES=y
-> +CONFIG_MODULE_UNLOAD=y
-> +# CONFIG_BLK_DEV_BSG is not set
-> +CONFIG_PARTITION_ADVANCED=y
-> +# CONFIG_EFI_PARTITION is not set
-> +# CONFIG_IOSCHED_CFQ is not set
-> +# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-> +CONFIG_NET=y
-> +CONFIG_PACKET=y
-> +CONFIG_UNIX=y
-> +CONFIG_INET=y
-> +CONFIG_IP_MULTICAST=y
-> +CONFIG_IP_ADVANCED_ROUTER=y
-> +CONFIG_IP_MULTIPLE_TABLES=y
-> +CONFIG_IP_ROUTE_MULTIPATH=y
-> +CONFIG_IP_ROUTE_VERBOSE=y
-> +CONFIG_IP_MROUTE=y
-> +CONFIG_IP_MROUTE_MULTIPLE_TABLES=y
-> +# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-> +# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-> +# CONFIG_INET_XFRM_MODE_BEET is not set
-> +# CONFIG_INET_LRO is not set
-> +# CONFIG_INET_DIAG is not set
-> +CONFIG_TCP_CONG_ADVANCED=y
-> +# CONFIG_TCP_CONG_BIC is not set
-> +# CONFIG_TCP_CONG_CUBIC is not set
-> +CONFIG_TCP_CONG_WESTWOOD=y
-> +# CONFIG_TCP_CONG_HTCP is not set
-> +# CONFIG_IPV6 is not set
-> +CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-> +# CONFIG_FIRMWARE_IN_KERNEL is not set
-> +CONFIG_MTD=y
-> +CONFIG_MTD_BLOCK=y
-> +CONFIG_MTD_NAND=y
-> +CONFIG_MTD_NAND_JZ4740=y
-> +CONFIG_MTD_UBI=y
-> +CONFIG_NETDEVICES=y
-> +# CONFIG_WLAN is not set
-> +# CONFIG_INPUT_MOUSEDEV is not set
-> +CONFIG_INPUT_EVDEV=y
-> +# CONFIG_KEYBOARD_ATKBD is not set
-> +CONFIG_KEYBOARD_GPIO=y
-> +CONFIG_KEYBOARD_MATRIX=y
-> +# CONFIG_INPUT_MOUSE is not set
-> +CONFIG_INPUT_MISC=y
-> +# CONFIG_SERIO is not set
-> +CONFIG_LEGACY_PTY_COUNT=2
-> +# CONFIG_DEVKMEM is not set
-> +CONFIG_SERIAL_8250=y
-> +CONFIG_SERIAL_8250_CONSOLE=y
-> +# CONFIG_SERIAL_8250_DMA is not set
-> +CONFIG_SERIAL_8250_NR_UARTS=2
-> +CONFIG_SERIAL_8250_RUNTIME_UARTS=2
-> +# CONFIG_HW_RANDOM is not set
-> +CONFIG_SPI=y
-> +CONFIG_SPI_GPIO=y
-> +CONFIG_POWER_SUPPLY=y
-> +CONFIG_BATTERY_JZ4740=y
-> +CONFIG_CHARGER_GPIO=y
-> +# CONFIG_HWMON is not set
-> +CONFIG_MFD_JZ4740_ADC=y
-> +CONFIG_REGULATOR=y
-> +CONFIG_REGULATOR_FIXED_VOLTAGE=y
-> +CONFIG_FB=y
-> +CONFIG_FB_JZ4740=y
-> +CONFIG_BACKLIGHT_LCD_SUPPORT=y
-> +CONFIG_LCD_CLASS_DEVICE=y
-> +# CONFIG_BACKLIGHT_CLASS_DEVICE is not set
-> +# CONFIG_VGA_CONSOLE is not set
-> +CONFIG_FRAMEBUFFER_CONSOLE=y
-> +CONFIG_LOGO=y
-> +# CONFIG_LOGO_LINUX_MONO is not set
-> +# CONFIG_LOGO_LINUX_VGA16 is not set
-> +# CONFIG_LOGO_LINUX_CLUT224 is not set
-> +CONFIG_SOUND=y
-> +CONFIG_SND=y
-> +# CONFIG_SND_SUPPORT_OLD_API is not set
-> +# CONFIG_SND_VERBOSE_PROCFS is not set
-> +# CONFIG_SND_DRIVERS is not set
-> +# CONFIG_SND_SPI is not set
-> +# CONFIG_SND_MIPS is not set
-> +CONFIG_SND_SOC=y
-> +CONFIG_SND_JZ4740_SOC=y
-> +CONFIG_SND_JZ4740_SOC_QI_LB60=y
-> +CONFIG_USB=y
-> +CONFIG_USB_OTG_BLACKLIST_HUB=y
-> +CONFIG_USB_MUSB_HDRC=y
-> +CONFIG_USB_MUSB_GADGET=y
-> +CONFIG_USB_MUSB_JZ4740=y
-> +CONFIG_NOP_USB_XCEIV=y
-> +CONFIG_USB_GADGET=y
-> +CONFIG_USB_GADGET_DEBUG=y
-> +CONFIG_USB_ETH=y
-> +# CONFIG_USB_ETH_RNDIS is not set
-> +CONFIG_MMC=y
-> +CONFIG_MMC_UNSAFE_RESUME=y
-> +# CONFIG_MMC_BLOCK_BOUNCE is not set
-> +CONFIG_MMC_JZ4740=y
-> +CONFIG_RTC_CLASS=y
-> +CONFIG_RTC_DRV_JZ4740=y
-> +CONFIG_DMADEVICES=y
-> +CONFIG_DMA_JZ4740=y
-> +CONFIG_PWM=y
-> +CONFIG_PWM_JZ4740=y
-> +CONFIG_EXT2_FS=y
-> +CONFIG_EXT3_FS=y
-> +# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
-> +# CONFIG_EXT3_FS_XATTR is not set
-> +# CONFIG_DNOTIFY is not set
-> +CONFIG_VFAT_FS=y
-> +CONFIG_PROC_KCORE=y
-> +# CONFIG_PROC_PAGE_MONITOR is not set
-> +CONFIG_TMPFS=y
-> +CONFIG_JFFS2_FS=y
-> +CONFIG_JFFS2_SUMMARY=y
-> +CONFIG_JFFS2_COMPRESSION_OPTIONS=y
-> +# CONFIG_JFFS2_ZLIB is not set
-> +CONFIG_UBIFS_FS=y
-> +CONFIG_UBIFS_FS_ADVANCED_COMPR=y
-> +# CONFIG_NETWORK_FILESYSTEMS is not set
-> +CONFIG_NLS_CODEPAGE_437=y
-> +CONFIG_NLS_CODEPAGE_737=y
-> +CONFIG_NLS_CODEPAGE_775=y
-> +CONFIG_NLS_CODEPAGE_850=y
-> +CONFIG_NLS_CODEPAGE_852=y
-> +CONFIG_NLS_CODEPAGE_855=y
-> +CONFIG_NLS_CODEPAGE_857=y
-> +CONFIG_NLS_CODEPAGE_860=y
-> +CONFIG_NLS_CODEPAGE_861=y
-> +CONFIG_NLS_CODEPAGE_862=y
-> +CONFIG_NLS_CODEPAGE_863=y
-> +CONFIG_NLS_CODEPAGE_864=y
-> +CONFIG_NLS_CODEPAGE_865=y
-> +CONFIG_NLS_CODEPAGE_866=y
-> +CONFIG_NLS_CODEPAGE_869=y
-> +CONFIG_NLS_CODEPAGE_936=y
-> +CONFIG_NLS_CODEPAGE_950=y
-> +CONFIG_NLS_CODEPAGE_932=y
-> +CONFIG_NLS_CODEPAGE_949=y
-> +CONFIG_NLS_CODEPAGE_874=y
-> +CONFIG_NLS_ISO8859_8=y
-> +CONFIG_NLS_CODEPAGE_1250=y
-> +CONFIG_NLS_CODEPAGE_1251=y
-> +CONFIG_NLS_ASCII=y
-> +CONFIG_NLS_ISO8859_1=y
-> +CONFIG_NLS_ISO8859_2=y
-> +CONFIG_NLS_ISO8859_3=y
-> +CONFIG_NLS_ISO8859_4=y
-> +CONFIG_NLS_ISO8859_5=y
-> +CONFIG_NLS_ISO8859_6=y
-> +CONFIG_NLS_ISO8859_7=y
-> +CONFIG_NLS_ISO8859_9=y
-> +CONFIG_NLS_ISO8859_13=y
-> +CONFIG_NLS_ISO8859_14=y
-> +CONFIG_NLS_ISO8859_15=y
-> +CONFIG_NLS_KOI8_R=y
-> +CONFIG_NLS_KOI8_U=y
-> +CONFIG_NLS_UTF8=y
-> +CONFIG_PRINTK_TIME=y
-> +CONFIG_DEBUG_INFO=y
-> +CONFIG_STRIP_ASM_SYMS=y
-> +CONFIG_READABLE_ASM=y
-> +CONFIG_DEBUG_KMEMLEAK=y
-> +CONFIG_DEBUG_MEMORY_INIT=y
-> +CONFIG_DEBUG_STACKOVERFLOW=y
-> +CONFIG_PANIC_ON_OOPS=y
-> +# CONFIG_FTRACE is not set
-> +CONFIG_KGDB=y
-> +CONFIG_RUNTIME_DEBUG=y
-> +CONFIG_CRYPTO_ZLIB=y
-> +# CONFIG_CRYPTO_ANSI_CPRNG is not set
-> +CONFIG_FONTS=y
-> +CONFIG_FONT_SUN8x16=y
-> 
+> This patch is for the upstream-sfr/mips-for-linux-next tree
+> ---
+>  arch/mips/bcm63xx/cpu.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/mips/bcm63xx/cpu.c b/arch/mips/bcm63xx/cpu.c
+> index b713cd6..88c57cc 100644
+> --- a/arch/mips/bcm63xx/cpu.c
+> +++ b/arch/mips/bcm63xx/cpu.c
+> @@ -123,7 +123,9 @@ unsigned int bcm63xx_get_memory_size(void)
+>
+>  static unsigned int detect_cpu_clock(void)
+>  {
+> -       switch (bcm63xx_get_cpu_id()) {
+> +       u16 cpu_id = bcm63xx_get_cpu_id();
+> +
+> +       switch (cpu_id) {
+>         case BCM3368_CPU_ID:
+>                 return 300000000;
+>
+> @@ -249,7 +251,7 @@ static unsigned int detect_cpu_clock(void)
+>         }
+>
+>         default:
+> -               BUG();
+> +               panic("Failed to detect clock for CPU with id=%04d\n", cpu_id);
+
+The cpu_id is in hex, so it needs to be %04x - not that it matters
+much since early printk won't work yet at this stage anyway IIRC.
+
+with this fixed (maybe John is nice enough to replace the one character ;),
+
+Acked-by: Jonas Gorski <jogo@openwrt.org>

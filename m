@@ -1,30 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Dec 2013 14:36:53 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:41098 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Dec 2013 14:37:13 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:41102 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6816384Ab3LVNguFVTa8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Dec 2013 14:36:50 +0100
+        with ESMTP id S6817090Ab3LVNgvARF75 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Dec 2013 14:36:51 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 6E2408F61;
-        Sun, 22 Dec 2013 14:36:49 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id 1415C8F65;
+        Sun, 22 Dec 2013 14:36:48 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id WmgVTLs3QXQu; Sun, 22 Dec 2013 14:36:43 +0100 (CET)
+        with ESMTP id pd4IUWUhtllF; Sun, 22 Dec 2013 14:36:44 +0100 (CET)
 Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id A63DC857F;
-        Sun, 22 Dec 2013 14:36:43 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 529378F61;
+        Sun, 22 Dec 2013 14:36:44 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org, blogic@openwrt.org
 Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 1/3] MIPS: BCM47XX: do not use cpu_wait instruction on BCM4706
-Date:   Sun, 22 Dec 2013 14:36:30 +0100
-Message-Id: <1387719392-17565-1-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 2/3] MIPS: BCM47XX: add cpu-feature-overrides.h
+Date:   Sun, 22 Dec 2013 14:36:31 +0100
+Message-Id: <1387719392-17565-2-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1387719392-17565-1-git-send-email-hauke@hauke-m.de>
+References: <1387719392-17565-1-git-send-email-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38796
+X-archive-position: 38797
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,45 +43,109 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The BCM4706 has a problem with the CPU wait instruction. When r4k_wait
-or r4k_wait_irqoff is used will just hang and not return from a
-msleep(). Removing the cpu_wait functionality is a workaround for this
-problem. The BCM4716 does not have this problem.
+The BCM47XX SoC code missed a cpu-feature-overrides.h header file, this
+patch adds it. This code supports a long line of SoCs with different
+features so for some features we still have to rely on the runtime
+detection.
 
-The BCM4706 SoC uses a MIPS 74K V4.9 CPU.
+This was crated by checking the features of a BCM4712, BCM4704,
+BCM5354, BCM4716 and BCM4706 SoC and then tested on these SoCs. There
+are some SoCs missing but I hope they do not have any more or less
+features.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/bcm47xx/setup.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../asm/mach-bcm47xx/cpu-feature-overrides.h       |   82 ++++++++++++++++++++
+ 1 file changed, 82 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-bcm47xx/cpu-feature-overrides.h
 
-diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index 2ecb6ee..111be0b 100644
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -34,6 +34,7 @@
- #include <linux/ssb/ssb_embedded.h>
- #include <linux/bcma/bcma_soc.h>
- #include <asm/bootinfo.h>
-+#include <asm/idle.h>
- #include <asm/prom.h>
- #include <asm/reboot.h>
- #include <asm/time.h>
-@@ -201,6 +202,15 @@ static void __init bcm47xx_register_bcma(void)
- 		panic("Failed to initialize BCMA bus (err %d)", err);
- 
- 	bcm47xx_fill_bcma_boardinfo(&bcm47xx_bus.bcma.bus.boardinfo, NULL);
+diff --git a/arch/mips/include/asm/mach-bcm47xx/cpu-feature-overrides.h b/arch/mips/include/asm/mach-bcm47xx/cpu-feature-overrides.h
+new file mode 100644
+index 0000000..b7992cd
+--- /dev/null
++++ b/arch/mips/include/asm/mach-bcm47xx/cpu-feature-overrides.h
+@@ -0,0 +1,82 @@
++#ifndef __ASM_MACH_BCM47XX_CPU_FEATURE_OVERRIDES_H
++#define __ASM_MACH_BCM47XX_CPU_FEATURE_OVERRIDES_H
 +
-+	/* The BCM4706 has a problem with the CPU wait instruction.
-+	 * When r4k_wait or r4k_wait_irqoff is used will just hang and 
-+	 * not return from a msleep(). Removing the cpu_wait 
-+	 * functionality is a workaround for this problem. The BCM4716 
-+	 * does not have this problem.
-+	 */
-+	if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
-+		cpu_wait = NULL;
- }
- #endif
- 
++#define cpu_has_tlb			1
++#define cpu_has_4kex			1
++#define cpu_has_3k_cache		0
++#define cpu_has_4k_cache		1
++#define cpu_has_tx39_cache		0
++#define cpu_has_fpu			0
++#define cpu_has_32fpr			0
++#define cpu_has_counter			1
++#if defined(CONFIG_BCM47XX_BCMA) && !defined(CONFIG_BCM47XX_SSB)
++#define cpu_has_watch			1
++#elif defined(CONFIG_BCM47XX_SSB) && !defined(CONFIG_BCM47XX_BCMA)
++#define cpu_has_watch			0
++#endif
++#define cpu_has_divec			1
++#define cpu_has_vce			0
++#define cpu_has_cache_cdex_p		0
++#define cpu_has_cache_cdex_s		0
++#define cpu_has_prefetch		1
++#define cpu_has_mcheck			1
++#define cpu_has_ejtag			1
++#define cpu_has_llsc			1
++
++/* cpu_has_mips16 */
++#define cpu_has_mdmx			0
++#define cpu_has_mips3d			0
++#define cpu_has_rixi			0
++#define cpu_has_mmips			0
++#define cpu_has_smartmips		0
++#define cpu_has_vtag_icache		0
++/* cpu_has_dc_aliases */
++#define cpu_has_ic_fills_f_dc		0
++#define cpu_has_pindexed_dcache		0
++#define cpu_icache_snoops_remote_store	0
++
++#define cpu_has_mips_2			1
++#define cpu_has_mips_3			0
++#define cpu_has_mips32r1		1
++#if defined(CONFIG_BCM47XX_BCMA) && !defined(CONFIG_BCM47XX_SSB)
++#define cpu_has_mips32r2		1
++#elif defined(CONFIG_BCM47XX_SSB) && !defined(CONFIG_BCM47XX_BCMA)
++#define cpu_has_mips32r2		0
++#endif
++#define cpu_has_mips64r1		0
++#define cpu_has_mips64r2		0
++
++#if defined(CONFIG_BCM47XX_BCMA) && !defined(CONFIG_BCM47XX_SSB)
++#define cpu_has_dsp			1
++#define cpu_has_dsp2			1
++#elif defined(CONFIG_BCM47XX_SSB) && !defined(CONFIG_BCM47XX_BCMA)
++#define cpu_has_dsp			0
++#define cpu_has_dsp2			0
++#endif
++#define cpu_has_mipsmt			0
++/* cpu_has_userlocal */
++
++#define cpu_has_nofpuex			0
++#define cpu_has_64bits			0
++#define cpu_has_64bit_zero_reg		0
++#if defined(CONFIG_BCM47XX_BCMA) && !defined(CONFIG_BCM47XX_SSB)
++#define cpu_has_vint			1
++#elif defined(CONFIG_BCM47XX_SSB) && !defined(CONFIG_BCM47XX_BCMA)
++#define cpu_has_vint			0
++#endif
++#define cpu_has_veic			0
++#define cpu_has_inclusive_pcaches	0
++
++#if defined(CONFIG_BCM47XX_BCMA) && !defined(CONFIG_BCM47XX_SSB)
++#define cpu_dcache_line_size()		32
++#define cpu_icache_line_size()		32
++#define cpu_has_perf_cntr_intr_bit	1
++#elif defined(CONFIG_BCM47XX_SSB) && !defined(CONFIG_BCM47XX_BCMA)
++#define cpu_dcache_line_size()		16
++#define cpu_icache_line_size()		16
++#define cpu_has_perf_cntr_intr_bit	0
++#endif
++#define cpu_scache_line_size()		0
++#define cpu_has_vz			0
++
++#endif /* __ASM_MACH_BCM47XX_CPU_FEATURE_OVERRIDES_H */
 -- 
 1.7.10.4

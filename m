@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Dec 2013 14:37:13 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:41102 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Dec 2013 14:37:33 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:41105 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817090Ab3LVNgvARF75 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Dec 2013 14:36:51 +0100
+        with ESMTP id S6822311Ab3LVNgwGwsUf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Dec 2013 14:36:52 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 1415C8F65;
-        Sun, 22 Dec 2013 14:36:48 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id B5F68857F;
+        Sun, 22 Dec 2013 14:36:51 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id pd4IUWUhtllF; Sun, 22 Dec 2013 14:36:44 +0100 (CET)
+        with ESMTP id 1GQqx1kObrPz; Sun, 22 Dec 2013 14:36:48 +0100 (CET)
 Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id 529378F61;
-        Sun, 22 Dec 2013 14:36:44 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 25BD48F62;
+        Sun, 22 Dec 2013 14:36:45 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org, blogic@openwrt.org
 Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 2/3] MIPS: BCM47XX: add cpu-feature-overrides.h
-Date:   Sun, 22 Dec 2013 14:36:31 +0100
-Message-Id: <1387719392-17565-2-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 3/3] MIPS: BCM47XX: add vectored interrupt support
+Date:   Sun, 22 Dec 2013 14:36:32 +0100
+Message-Id: <1387719392-17565-3-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1387719392-17565-1-git-send-email-hauke@hauke-m.de>
 References: <1387719392-17565-1-git-send-email-hauke@hauke-m.de>
@@ -26,7 +26,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38797
+X-archive-position: 38798
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,109 +43,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The BCM47XX SoC code missed a cpu-feature-overrides.h header file, this
-patch adds it. This code supports a long line of SoCs with different
-features so for some features we still have to rely on the runtime
-detection.
-
-This was crated by checking the features of a BCM4712, BCM4704,
-BCM5354, BCM4716 and BCM4706 SoC and then tested on these SoCs. There
-are some SoCs missing but I hope they do not have any more or less
-features.
+This adds support for vectored interrupt which is supported by the SoC
+using a MIPS 74K CPU like the BCM4716 and BCM4706.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- .../asm/mach-bcm47xx/cpu-feature-overrides.h       |   82 ++++++++++++++++++++
- 1 file changed, 82 insertions(+)
- create mode 100644 arch/mips/include/asm/mach-bcm47xx/cpu-feature-overrides.h
+ arch/mips/bcm47xx/Kconfig |    1 +
+ arch/mips/bcm47xx/irq.c   |   23 +++++++++++++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/arch/mips/include/asm/mach-bcm47xx/cpu-feature-overrides.h b/arch/mips/include/asm/mach-bcm47xx/cpu-feature-overrides.h
-new file mode 100644
-index 0000000..b7992cd
---- /dev/null
-+++ b/arch/mips/include/asm/mach-bcm47xx/cpu-feature-overrides.h
-@@ -0,0 +1,82 @@
-+#ifndef __ASM_MACH_BCM47XX_CPU_FEATURE_OVERRIDES_H
-+#define __ASM_MACH_BCM47XX_CPU_FEATURE_OVERRIDES_H
+diff --git a/arch/mips/bcm47xx/Kconfig b/arch/mips/bcm47xx/Kconfig
+index 09fc922..582a8454 100644
+--- a/arch/mips/bcm47xx/Kconfig
++++ b/arch/mips/bcm47xx/Kconfig
+@@ -21,6 +21,7 @@ config BCM47XX_SSB
+ config BCM47XX_BCMA
+ 	bool "BCMA Support for Broadcom BCM47XX"
+ 	select SYS_HAS_CPU_MIPS32_R2
++	select CPU_MIPSR2_IRQ_VI
+ 	select BCMA
+ 	select BCMA_HOST_SOC
+ 	select BCMA_DRIVER_MIPS
+diff --git a/arch/mips/bcm47xx/irq.c b/arch/mips/bcm47xx/irq.c
+index a9133e9..e0585b7 100644
+--- a/arch/mips/bcm47xx/irq.c
++++ b/arch/mips/bcm47xx/irq.c
+@@ -25,6 +25,7 @@
+ #include <linux/types.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
++#include <asm/setup.h>
+ #include <asm/irq_cpu.h>
+ #include <bcm47xx.h>
+ 
+@@ -50,6 +51,18 @@ asmlinkage void plat_irq_dispatch(void)
+ 		do_IRQ(6);
+ }
+ 
++#define DEFINE_HWx_IRQDISPATCH(x)					\
++	static void bcm47xx_hw ## x ## _irqdispatch(void)		\
++	{								\
++		do_IRQ(x);						\
++	}
++DEFINE_HWx_IRQDISPATCH(2)
++DEFINE_HWx_IRQDISPATCH(3)
++DEFINE_HWx_IRQDISPATCH(4)
++DEFINE_HWx_IRQDISPATCH(5)
++DEFINE_HWx_IRQDISPATCH(6)
++DEFINE_HWx_IRQDISPATCH(7)
 +
-+#define cpu_has_tlb			1
-+#define cpu_has_4kex			1
-+#define cpu_has_3k_cache		0
-+#define cpu_has_4k_cache		1
-+#define cpu_has_tx39_cache		0
-+#define cpu_has_fpu			0
-+#define cpu_has_32fpr			0
-+#define cpu_has_counter			1
-+#if defined(CONFIG_BCM47XX_BCMA) && !defined(CONFIG_BCM47XX_SSB)
-+#define cpu_has_watch			1
-+#elif defined(CONFIG_BCM47XX_SSB) && !defined(CONFIG_BCM47XX_BCMA)
-+#define cpu_has_watch			0
-+#endif
-+#define cpu_has_divec			1
-+#define cpu_has_vce			0
-+#define cpu_has_cache_cdex_p		0
-+#define cpu_has_cache_cdex_s		0
-+#define cpu_has_prefetch		1
-+#define cpu_has_mcheck			1
-+#define cpu_has_ejtag			1
-+#define cpu_has_llsc			1
+ void __init arch_init_irq(void)
+ {
+ #ifdef CONFIG_BCM47XX_BCMA
+@@ -64,4 +77,14 @@ void __init arch_init_irq(void)
+ 	}
+ #endif
+ 	mips_cpu_irq_init();
 +
-+/* cpu_has_mips16 */
-+#define cpu_has_mdmx			0
-+#define cpu_has_mips3d			0
-+#define cpu_has_rixi			0
-+#define cpu_has_mmips			0
-+#define cpu_has_smartmips		0
-+#define cpu_has_vtag_icache		0
-+/* cpu_has_dc_aliases */
-+#define cpu_has_ic_fills_f_dc		0
-+#define cpu_has_pindexed_dcache		0
-+#define cpu_icache_snoops_remote_store	0
-+
-+#define cpu_has_mips_2			1
-+#define cpu_has_mips_3			0
-+#define cpu_has_mips32r1		1
-+#if defined(CONFIG_BCM47XX_BCMA) && !defined(CONFIG_BCM47XX_SSB)
-+#define cpu_has_mips32r2		1
-+#elif defined(CONFIG_BCM47XX_SSB) && !defined(CONFIG_BCM47XX_BCMA)
-+#define cpu_has_mips32r2		0
-+#endif
-+#define cpu_has_mips64r1		0
-+#define cpu_has_mips64r2		0
-+
-+#if defined(CONFIG_BCM47XX_BCMA) && !defined(CONFIG_BCM47XX_SSB)
-+#define cpu_has_dsp			1
-+#define cpu_has_dsp2			1
-+#elif defined(CONFIG_BCM47XX_SSB) && !defined(CONFIG_BCM47XX_BCMA)
-+#define cpu_has_dsp			0
-+#define cpu_has_dsp2			0
-+#endif
-+#define cpu_has_mipsmt			0
-+/* cpu_has_userlocal */
-+
-+#define cpu_has_nofpuex			0
-+#define cpu_has_64bits			0
-+#define cpu_has_64bit_zero_reg		0
-+#if defined(CONFIG_BCM47XX_BCMA) && !defined(CONFIG_BCM47XX_SSB)
-+#define cpu_has_vint			1
-+#elif defined(CONFIG_BCM47XX_SSB) && !defined(CONFIG_BCM47XX_BCMA)
-+#define cpu_has_vint			0
-+#endif
-+#define cpu_has_veic			0
-+#define cpu_has_inclusive_pcaches	0
-+
-+#if defined(CONFIG_BCM47XX_BCMA) && !defined(CONFIG_BCM47XX_SSB)
-+#define cpu_dcache_line_size()		32
-+#define cpu_icache_line_size()		32
-+#define cpu_has_perf_cntr_intr_bit	1
-+#elif defined(CONFIG_BCM47XX_SSB) && !defined(CONFIG_BCM47XX_BCMA)
-+#define cpu_dcache_line_size()		16
-+#define cpu_icache_line_size()		16
-+#define cpu_has_perf_cntr_intr_bit	0
-+#endif
-+#define cpu_scache_line_size()		0
-+#define cpu_has_vz			0
-+
-+#endif /* __ASM_MACH_BCM47XX_CPU_FEATURE_OVERRIDES_H */
++	if (cpu_has_vint) {
++		pr_info("Setting up vectored interrupts\n");
++		set_vi_handler(2, bcm47xx_hw2_irqdispatch);
++		set_vi_handler(3, bcm47xx_hw3_irqdispatch);
++		set_vi_handler(4, bcm47xx_hw4_irqdispatch);
++		set_vi_handler(5, bcm47xx_hw5_irqdispatch);
++		set_vi_handler(6, bcm47xx_hw6_irqdispatch);
++		set_vi_handler(7, bcm47xx_hw7_irqdispatch);
++	}
+ }
 -- 
 1.7.10.4

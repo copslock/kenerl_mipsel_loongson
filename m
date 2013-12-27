@@ -1,44 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Dec 2013 18:37:56 +0100 (CET)
-Received: from mail-gw1-out.broadcom.com ([216.31.210.62]:47038 "EHLO
-        mail-gw1-out.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6871609Ab3LYGzZOK2Zp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Dec 2013 07:55:25 +0100
-X-IronPort-AV: E=Sophos;i="4.95,547,1384329600"; 
-   d="scan'208";a="5602255"
-Received: from irvexchcas08.broadcom.com (HELO IRVEXCHCAS08.corp.ad.broadcom.com) ([10.9.208.57])
-  by mail-gw1-out.broadcom.com with ESMTP; 24 Dec 2013 23:01:55 -0800
-Received: from IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) by
- IRVEXCHCAS08.corp.ad.broadcom.com (10.9.208.57) with Microsoft SMTP Server
- (TLS) id 14.1.438.0; Tue, 24 Dec 2013 22:55:17 -0800
-Received: from mail-irva-13.broadcom.com (10.10.10.20) by
- IRVEXCHSMTP3.corp.ad.broadcom.com (10.9.207.53) with Microsoft SMTP Server id
- 14.1.438.0; Tue, 24 Dec 2013 22:55:17 -0800
-Received: from jayachandranc.netlogicmicro.com (netl-snoppy.ban.broadcom.com
- [10.132.128.129])      by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- 5A31D246A3;    Tue, 24 Dec 2013 22:55:16 -0800 (PST)
-Date:   Wed, 25 Dec 2013 12:37:27 +0530
-From:   Jayachandran C. <jchandra@broadcom.com>
-To:     John Crispin <john@phrozen.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 12/18] MIPS: Netlogic: XLP9XX UART offset
-Message-ID: <20131225070726.GB22667@jayachandranc.netlogicmicro.com>
-References: <1387624950-31297-1-git-send-email-jchandra@broadcom.com>
- <1387624950-31297-13-git-send-email-jchandra@broadcom.com>
- <52B5D14A.3030504@phrozen.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Dec 2013 19:00:33 +0100 (CET)
+Received: from mga02.intel.com ([134.134.136.20]:15837 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6827312Ab3L0SA2P6Rlx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 27 Dec 2013 19:00:28 +0100
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga101.jf.intel.com with ESMTP; 27 Dec 2013 10:00:20 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.95,561,1384329600"; 
+   d="scan'208";a="458488717"
+Received: from unknown (HELO rizzo.int.wil.cx) ([10.255.12.21])
+  by orsmga002.jf.intel.com with ESMTP; 27 Dec 2013 10:00:19 -0800
+Received: by rizzo.int.wil.cx (Postfix, from userid 1000)
+        id AB382172477; Fri, 27 Dec 2013 13:00:18 -0500 (EST)
+Date:   Fri, 27 Dec 2013 13:00:18 -0500
+From:   Matthew Wilcox <willy@linux.intel.com>
+To:     linux-mm@kvack.org
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: [PATCH] remap_file_pages needs to check for cache coherency
+Message-ID: <20131227180018.GC4945@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <52B5D14A.3030504@phrozen.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <jchandra@broadcom.com>
+Return-Path: <willy@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38805
+X-archive-position: 38806
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jchandra@broadcom.com
+X-original-sender: willy@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,33 +45,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Dec 21, 2013 at 06:35:06PM +0100, John Crispin wrote:
-> On 21/12/13 12:22, Jayachandran C wrote:
-> >Update IO offset of the early console UART.
-> >
-> >Signed-off-by: Jayachandran C<jchandra@broadcom.com>
-> >---
-> >  arch/mips/include/asm/netlogic/xlp-hal/uart.h |    3 ++-
-> >  arch/mips/netlogic/common/earlycons.c         |    2 ++
-> >  2 files changed, 4 insertions(+), 1 deletion(-)
-> >
-> >diff --git a/arch/mips/include/asm/netlogic/xlp-hal/uart.h b/arch/mips/include/asm/netlogic/xlp-hal/uart.h
-> >index 86d16e1..a6c5442 100644
-> >--- a/arch/mips/include/asm/netlogic/xlp-hal/uart.h
-> >+++ b/arch/mips/include/asm/netlogic/xlp-hal/uart.h
-> >@@ -94,7 +94,8 @@
-> >  #define nlm_read_uart_reg(b, r)		nlm_read_reg(b, r)
-> >  #define nlm_write_uart_reg(b, r, v)	nlm_write_reg(b, r, v)
-> >  #define nlm_get_uart_pcibase(node, inst)	\
-> >-		nlm_pcicfg_base(XLP_IO_UART_OFFSET(node, inst))
-> >+	nlm_pcicfg_base(cpu_is_xlp9xx() ?  XLP9XX_IO_UART_OFFSET(node) : \
-> >+						XLP_IO_UART_OFFSET(node, inst))
-> 
-> nitpick: i think this looks really ugly. maybe move the ()?():()
-> logic to a define ?
 
-Since it is already inside a macro, I would say that the improvement is minor.
-This is the also the same pattern we have used in all include/asm/xlp-hal/ files,
-I cannot change it in just one place.
+It seems to me that while (for example) on SPARC, it's not possible to
+create a non-coherent mapping with mmap(), after we've done an mmap,
+we can then use remap_file_pages() to create a mapping that no longer
+aliases in the D-cache.
 
-JC.
+I have only compile-tested this patch.  I don't have any SPARC hardware,
+and my PA-RISC hardware hasn't been turned on in six years ... I noticed
+this while wandering around looking at some other stuff.
+
+diff --git a/mm/fremap.c b/mm/fremap.c
+index 5bff081..01fc2e7 100644
+--- a/mm/fremap.c
++++ b/mm/fremap.c
+@@ -19,6 +19,7 @@
+ 
+ #include <asm/mmu_context.h>
+ #include <asm/cacheflush.h>
++#include <asm/shmparam.h>
+ #include <asm/tlbflush.h>
+ 
+ #include "internal.h"
+@@ -177,6 +178,13 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+ 	if (start < vma->vm_start || start + size > vma->vm_end)
+ 		goto out;
+ 
++#ifdef __ARCH_FORCE_SHMLBA
++	/* Is the mapping cache-coherent? */
++	if ((pgoff ^ linear_page_index(vma, start)) &
++	    ((SHMLBA-1) >> PAGE_SHIFT))
++		goto out;
++#endif
++
+ 	/* Must set VM_NONLINEAR before any pages are populated. */
+ 	if (!(vma->vm_flags & VM_NONLINEAR)) {
+ 		/*

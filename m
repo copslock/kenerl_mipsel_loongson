@@ -1,32 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Dec 2013 00:26:57 +0100 (CET)
-Received: from filtteri1.pp.htv.fi ([213.243.153.184]:50491 "EHLO
-        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6825378Ab3L3X0zTu4-- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Dec 2013 00:26:55 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Dec 2013 00:33:41 +0100 (CET)
+Received: from filtteri6.pp.htv.fi ([213.243.153.189]:34412 "EHLO
+        filtteri6.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6825378Ab3L3Xdj26de1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Dec 2013 00:33:39 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 0220C21B8B1;
-        Tue, 31 Dec 2013 01:26:52 +0200 (EET)
+        by filtteri6.pp.htv.fi (Postfix) with ESMTP id 0A54F56F8A2
+        for <linux-mips@linux-mips.org>; Tue, 31 Dec 2013 01:33:39 +0200 (EET)
 X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp5.welho.com ([213.243.153.39])
-        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
-        with ESMTP id EVhEMzEmBhzh; Tue, 31 Dec 2013 01:26:47 +0200 (EET)
-Received: from blackmetal.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp5.welho.com (Postfix) with ESMTP id 085065BC002;
-        Tue, 31 Dec 2013 01:26:47 +0200 (EET)
+Received: from smtp4.welho.com ([213.243.153.38])
+        by localhost (filtteri6.pp.htv.fi [213.243.153.189]) (amavisd-new, port 10024)
+        with ESMTP id l7ytXiEG1g38 for <linux-mips@linux-mips.org>;
+        Tue, 31 Dec 2013 01:33:34 +0200 (EET)
+Received: from musicnaut.iki.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp4.welho.com (Postfix) with SMTP id D7D265BC005
+        for <linux-mips@linux-mips.org>; Tue, 31 Dec 2013 01:33:33 +0200 (EET)
+Received: by musicnaut.iki.fi (sSMTP sendmail emulation); Tue, 31 Dec 2013 01:33:28 +0200
+Resent-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+Resent-Date: Tue, 31 Dec 2013 01:33:28 +0200
+Resent-Message-ID: <20131230233328.GA7429@blackmetal.musicnaut.iki.fi>
+Resent-To: linux-mips@linux-mips.org
+Date:   Sun, 29 Dec 2013 21:12:56 +0200
 From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH] MIPS: /proc/cpuinfo: always print the supported ISA
-Date:   Tue, 31 Dec 2013 01:26:31 +0200
-Message-Id: <1388445992-7486-1-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 1.8.5.2
+To:     Petr =?utf-8?B?UMOtc2HFmQ==?= <petr.pisar@atlas.cz>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] Fix cache flushing on Loongson 2
+Message-ID: <20131229191256.GC19462@blackmetal.musicnaut.iki.fi>
+References: <1387980262-2250-1-git-send-email-petr.pisar@atlas.cz>
+ <1387980262-2250-2-git-send-email-petr.pisar@atlas.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1387980262-2250-2-git-send-email-petr.pisar@atlas.cz>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38818
+X-archive-position: 38819
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,63 +54,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Currently the supported ISA is only printed on the latest architectures.
-Print it also on legacy platforms.
+Hi,
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
----
- arch/mips/kernel/proc.c | 39 +++++++++++++++++++--------------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
+On Wed, Dec 25, 2013 at 03:04:21PM +0100, Petr Písař wrote:
+> This bug was introduced by an unintended branch swap in commit
+> 14bd8c082016cd1f67fdfd702e4cf6367869a712 (MIPS: Loongson:
+> Get rid of Loongson 2 #ifdefery all over arch/mips).
 
-diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-index 8c58d8a84bf3..71236709f3f5 100644
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -65,26 +65,25 @@ static int show_cpuinfo(struct seq_file *m, void *v)
- 				cpu_data[n].watch_reg_masks[i]);
- 		seq_printf(m, "]\n");
- 	}
--	if (cpu_has_mips_r) {
--		seq_printf(m, "isa\t\t\t: mips1");
--		if (cpu_has_mips_2)
--			seq_printf(m, "%s", " mips2");
--		if (cpu_has_mips_3)
--			seq_printf(m, "%s", " mips3");
--		if (cpu_has_mips_4)
--			seq_printf(m, "%s", " mips4");
--		if (cpu_has_mips_5)
--			seq_printf(m, "%s", " mips5");
--		if (cpu_has_mips32r1)
--			seq_printf(m, "%s", " mips32r1");
--		if (cpu_has_mips32r2)
--			seq_printf(m, "%s", " mips32r2");
--		if (cpu_has_mips64r1)
--			seq_printf(m, "%s", " mips64r1");
--		if (cpu_has_mips64r2)
--			seq_printf(m, "%s", " mips64r2");
--		seq_printf(m, "\n");
--	}
-+
-+	seq_printf(m, "isa\t\t\t: mips1");
-+	if (cpu_has_mips_2)
-+		seq_printf(m, "%s", " mips2");
-+	if (cpu_has_mips_3)
-+		seq_printf(m, "%s", " mips3");
-+	if (cpu_has_mips_4)
-+		seq_printf(m, "%s", " mips4");
-+	if (cpu_has_mips_5)
-+		seq_printf(m, "%s", " mips5");
-+	if (cpu_has_mips32r1)
-+		seq_printf(m, "%s", " mips32r1");
-+	if (cpu_has_mips32r2)
-+		seq_printf(m, "%s", " mips32r2");
-+	if (cpu_has_mips64r1)
-+		seq_printf(m, "%s", " mips64r1");
-+	if (cpu_has_mips64r2)
-+		seq_printf(m, "%s", " mips64r2");
-+	seq_printf(m, "\n");
- 
- 	seq_printf(m, "ASEs implemented\t:");
- 	if (cpu_has_mips16)	seq_printf(m, "%s", " mips16");
--- 
-1.8.5.2
+Fixes for both of these issues have been already sent earlier, see the
+following patches:
+
+http://marc.info/?l=linux-mips&m=138575576803890&w=2
+http://marc.info/?l=linux-mips&m=138575575002599&w=2
+
+A.

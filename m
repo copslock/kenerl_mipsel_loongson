@@ -1,38 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Dec 2013 22:54:44 +0100 (CET)
-Received: from [195.154.112.97] ([195.154.112.97]:44022 "EHLO hall.aurel32.net"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825378Ab3L3VymRHAlC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Dec 2013 22:54:42 +0100
-Received: from aurel32 by hall.aurel32.net with local (Exim 4.80)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1VxknH-0005Wk-GR; Mon, 30 Dec 2013 22:54:39 +0100
-Date:   Mon, 30 Dec 2013 22:54:39 +0100
-From:   Aurelien Jarno <aurelien@aurel32.net>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Dec 2013 00:26:57 +0100 (CET)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:50491 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6825378Ab3L3X0zTu4-- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Dec 2013 00:26:55 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 0220C21B8B1;
+        Tue, 31 Dec 2013 01:26:52 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp5.welho.com ([213.243.153.39])
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id EVhEMzEmBhzh; Tue, 31 Dec 2013 01:26:47 +0200 (EET)
+Received: from blackmetal.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
+        by smtp5.welho.com (Postfix) with ESMTP id 085065BC002;
+        Tue, 31 Dec 2013 01:26:47 +0200 (EET)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH V15 00/12] MIPS: Add Loongson-3 based machines support
-Message-ID: <20131230215439.GA20636@hall.aurel32.net>
-References: <1387109676-540-1-git-send-email-chenhc@lemote.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-In-Reply-To: <1387109676-540-1-git-send-email-chenhc@lemote.com>
-X-Mailer: Mutt 1.5.21 (2010-09-15)
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <aurelien@aurel32.net>
+        linux-mips@linux-mips.org
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH] MIPS: /proc/cpuinfo: always print the supported ISA
+Date:   Tue, 31 Dec 2013 01:26:31 +0200
+Message-Id: <1388445992-7486-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 1.8.5.2
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38817
+X-archive-position: 38818
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,25 +43,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Dec 15, 2013 at 08:14:24PM +0800, Huacai Chen wrote:
-> This patchset is prepared for the next 3.14 release for Linux/MIPS. 
-> Loongson-3 is a multi-core MIPS family CPU, it is MIPS64R2 compatible
-> and has the same IMP field (0x6300) as Loongson-2. These patches make
-> Linux kernel support Loongson-3 CPU and Loongson-3 based computers
-> (including Laptop, Mini-ITX, All-In-One PC, etc.)
+Currently the supported ISA is only printed on the latest architectures.
+Print it also on legacy platforms.
 
-In general this patchset is suffering from coding style issue. I would
-suggest you to use the script checkpatch.pl, in the scripts/ directory
-of the linux sources.
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ arch/mips/kernel/proc.c | 39 +++++++++++++++++++--------------------
+ 1 file changed, 19 insertions(+), 20 deletions(-)
 
-It currently gives 1 error and 61 warnings for all the patches. You
-should try to fix most of them if not all, there are only some rare
-cases where the warning should be ignored. 
-
-I am not going to report all the mistakes in the individual patch, the
-tool is doing that a lot better than me. Just don't forget to run it
-before submitting patches.
-
+diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+index 8c58d8a84bf3..71236709f3f5 100644
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -65,26 +65,25 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+ 				cpu_data[n].watch_reg_masks[i]);
+ 		seq_printf(m, "]\n");
+ 	}
+-	if (cpu_has_mips_r) {
+-		seq_printf(m, "isa\t\t\t: mips1");
+-		if (cpu_has_mips_2)
+-			seq_printf(m, "%s", " mips2");
+-		if (cpu_has_mips_3)
+-			seq_printf(m, "%s", " mips3");
+-		if (cpu_has_mips_4)
+-			seq_printf(m, "%s", " mips4");
+-		if (cpu_has_mips_5)
+-			seq_printf(m, "%s", " mips5");
+-		if (cpu_has_mips32r1)
+-			seq_printf(m, "%s", " mips32r1");
+-		if (cpu_has_mips32r2)
+-			seq_printf(m, "%s", " mips32r2");
+-		if (cpu_has_mips64r1)
+-			seq_printf(m, "%s", " mips64r1");
+-		if (cpu_has_mips64r2)
+-			seq_printf(m, "%s", " mips64r2");
+-		seq_printf(m, "\n");
+-	}
++
++	seq_printf(m, "isa\t\t\t: mips1");
++	if (cpu_has_mips_2)
++		seq_printf(m, "%s", " mips2");
++	if (cpu_has_mips_3)
++		seq_printf(m, "%s", " mips3");
++	if (cpu_has_mips_4)
++		seq_printf(m, "%s", " mips4");
++	if (cpu_has_mips_5)
++		seq_printf(m, "%s", " mips5");
++	if (cpu_has_mips32r1)
++		seq_printf(m, "%s", " mips32r1");
++	if (cpu_has_mips32r2)
++		seq_printf(m, "%s", " mips32r2");
++	if (cpu_has_mips64r1)
++		seq_printf(m, "%s", " mips64r1");
++	if (cpu_has_mips64r2)
++		seq_printf(m, "%s", " mips64r2");
++	seq_printf(m, "\n");
+ 
+ 	seq_printf(m, "ASEs implemented\t:");
+ 	if (cpu_has_mips16)	seq_printf(m, "%s", " mips16");
 -- 
-Aurelien Jarno	                        GPG: 1024D/F1BCDB73
-aurelien@aurel32.net                 http://www.aurel32.net
+1.8.5.2

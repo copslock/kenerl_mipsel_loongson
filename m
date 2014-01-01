@@ -1,38 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jan 2014 17:09:52 +0100 (CET)
-Received: from [195.154.112.97] ([195.154.112.97]:52173 "EHLO hall.aurel32.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jan 2014 17:10:10 +0100 (CET)
+Received: from [195.154.112.97] ([195.154.112.97]:52179 "EHLO hall.aurel32.net"
         rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825694AbaAAQJtstUUu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 1 Jan 2014 17:09:49 +0100
+        id S6825722AbaAAQKBEMYex (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Jan 2014 17:10:01 +0100
 Received: from aurel32 by hall.aurel32.net with local (Exim 4.80)
         (envelope-from <aurelien@aurel32.net>)
-        id 1VyOMb-0005w0-MH; Wed, 01 Jan 2014 17:09:45 +0100
-Date:   Wed, 1 Jan 2014 17:09:45 +0100
+        id 1VyOMn-0005wA-IL; Wed, 01 Jan 2014 17:09:57 +0100
+Date:   Wed, 1 Jan 2014 17:09:57 +0100
 From:   Aurelien Jarno <aurelien@aurel32.net>
 To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Ralf Baechle <ralf@linux-mips.org>,
         John Crispin <john@phrozen.org>,
         "Steven J. Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH V15 03/12] MIPS: Loongson 3: Add Lemote-3A machtypes
- definition
-Message-ID: <20140101160945.GA26719@hall.aurel32.net>
+Subject: Re: [PATCH V15 02/12] MIPS: Loongson: Add basic Loongson-3 CPU
+ support
+Message-ID: <20140101160957.GA21559@hall.aurel32.net>
 References: <1387109676-540-1-git-send-email-chenhc@lemote.com>
- <1387109676-540-4-git-send-email-chenhc@lemote.com>
- <20131230214333.GA20651@hall.aurel32.net>
- <CAAhV-H66qshv-44q0XR6bfX7=KPa6NzDLO8AtY0Ed0AZScJ8=A@mail.gmail.com>
+ <1387109676-540-3-git-send-email-chenhc@lemote.com>
+ <20131230213354.GA20586@hall.aurel32.net>
+ <20131231151751.GB7429@blackmetal.musicnaut.iki.fi>
+ <20131231154315.GE9794@hall.aurel32.net>
+ <CAAhV-H6eKg0Q0oDeDW6mp6p7Qh3dr07n1PDe9BPL37tsX286gw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <CAAhV-H66qshv-44q0XR6bfX7=KPa6NzDLO8AtY0Ed0AZScJ8=A@mail.gmail.com>
+In-Reply-To: <CAAhV-H6eKg0Q0oDeDW6mp6p7Qh3dr07n1PDe9BPL37tsX286gw@mail.gmail.com>
 X-Mailer: Mutt 1.5.21 (2010-09-15)
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38827
+X-archive-position: 38828
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,131 +52,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Thanks a lot for that. I haven't found the time to review all the
+patches from V15 now, but I can directly review the V16 instead when I
+find the time.
 
-On Wed, Jan 01, 2014 at 05:58:25PM +0800, Huacai Chen wrote:
-> The 4 machtypes have different features, such as serial port clock in
-> patch-7, and the next patchset will bring more differences.
+Aurelien
 
-I understand that part, it's actually a good idea to have a machine type
-that is used to differentiate between the supported machine, and thus
-having a common kernel.
-
-> All Loongson-3 machines can use a same kernel, by export a different
-> "machtype=" parameter via PMON.
-
-This doesn't seems to be the case, at least on a LS3A/3B-RS780E-R1.03 
-Lemote machine. Also if the machine type can be detected at runtime, why
-this patch forces it to MACH_LEMOTE_A1101?
-
-> UEFI-like interface cannot be detected, but all Loongson-3 machines will
-> enable it.
- 
-> On Tue, Dec 31, 2013 at 5:43 AM, Aurelien Jarno <aurelien@aurel32.net>wrote:
+On Wed, Jan 01, 2014 at 11:04:15PM +0800, Huacai Chen wrote:
+> V16 will be coming soon.
 > 
-> > On Sun, Dec 15, 2013 at 08:14:27PM +0800, Huacai Chen wrote:
-> > > Add four Loongson-3 based machine types:
-> > > MACH_LEMOTE_A1004/MACH_LEMOTE_A1201 are laptops;
-> > > MACH_LEMOTE_A1101 is mini-itx;
-> > > MACH_LEMOTE_A1205 is all-in-one machine.
+> 
+> On Tue, Dec 31, 2013 at 11:43 PM, Aurelien Jarno <aurelien@aurel32.net>wrote:
+> 
+> > On Tue, Dec 31, 2013 at 05:17:51PM +0200, Aaro Koskinen wrote:
+> > > Hi,
 > > >
-> > > The most significant differrent between A1004/A1201 and A1101/A1205 is
-> > > the laptops have EC but others don't.
+> > > On Mon, Dec 30, 2013 at 10:33:54PM +0100, Aurelien Jarno wrote:
+> > > > >           switch (c->processor_id & PRID_REV_MASK) {
+> > > > >           case PRID_REV_LOONGSON2E:
+> > > > > +                 c->cputype = CPU_LOONGSON2;
+> > > > > +                 __cpu_name[cpu] = "ICT Loongson-2E";
+> > > > >                   set_elf_platform(cpu, "loongson2e");
+> > > > >                   break;
+> > > > >           case PRID_REV_LOONGSON2F:
+> > > > > +                 c->cputype = CPU_LOONGSON2;
+> > > > > +                 __cpu_name[cpu] = "ICT Loongson-2F";
+> > > > >                   set_elf_platform(cpu, "loongson2f");
+> > > >
+> > > > I have mixed feelings about the Loongson-2 name change. On one side
+> > it's
+> > > > clearly better to have 2E and 2F instead of 2 V0.2 and 2 V0.3, and it
+> > > > should have been like that since the beginning. That said changing that
+> > > > now is kind of breaking the userland. I know that it would break debian
+> > > > installer support for example, though that should not be a real problem
+> > > > as we ship the installer with a given kernel version. I don't know if
+> > > > there are other usages that can cause a problem. Any opinion from
+> > > > others?
 > > >
-> > > Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> > > Signed-off-by: Hongliang Tao <taohl@lemote.com>
-> > > Signed-off-by: Hua Yan <yanh@lemote.com>
-> > > ---
-> > >  arch/mips/include/asm/bootinfo.h              |   24
-> > +++++++++++++++---------
-> > >  arch/mips/include/asm/mach-loongson/machine.h |    6 ++++++
-> > >  arch/mips/loongson/common/machtype.c          |    4 ++++
-> > >  3 files changed, 25 insertions(+), 9 deletions(-)
-> > >
-> > > diff --git a/arch/mips/include/asm/bootinfo.h
-> > b/arch/mips/include/asm/bootinfo.h
-> > > index 4d2cdea..09956a0 100644
-> > > --- a/arch/mips/include/asm/bootinfo.h
-> > > +++ b/arch/mips/include/asm/bootinfo.h
-> > > @@ -61,15 +61,21 @@
-> > >  /*
-> > >   * Valid machtype for Loongson family
-> > >   */
-> > > -#define MACH_LOONGSON_UNKNOWN  0
-> > > -#define MACH_LEMOTE_FL2E       1
-> > > -#define MACH_LEMOTE_FL2F       2
-> > > -#define MACH_LEMOTE_ML2F7      3
-> > > -#define MACH_LEMOTE_YL2F89     4
-> > > -#define MACH_DEXXON_GDIUM2F10  5
-> > > -#define MACH_LEMOTE_NAS             6
-> > > -#define MACH_LEMOTE_LL2F       7
-> > > -#define MACH_LOONGSON_END      8
-> > > +enum loongson_machine_type {
-> > > +     MACH_LOONGSON_UNKNOWN,
-> > > +     MACH_LEMOTE_FL2E,
-> > > +     MACH_LEMOTE_FL2F,
-> > > +     MACH_LEMOTE_ML2F7,
-> > > +     MACH_LEMOTE_YL2F89,
-> > > +     MACH_DEXXON_GDIUM2F10,
-> > > +     MACH_LEMOTE_NAS,
-> > > +     MACH_LEMOTE_LL2F,
-> > > +     MACH_LEMOTE_A1004,
-> > > +     MACH_LEMOTE_A1101,
-> > > +     MACH_LEMOTE_A1201,
-> > > +     MACH_LEMOTE_A1205,
-> > > +     MACH_LOONGSON_END
-> > > +};
-> > >
-> > >  /*
-> > >   * Valid machtype for group INGENIC
-> > > diff --git a/arch/mips/include/asm/mach-loongson/machine.h
-> > b/arch/mips/include/asm/mach-loongson/machine.h
-> > > index 3810d5c..1b1f592 100644
-> > > --- a/arch/mips/include/asm/mach-loongson/machine.h
-> > > +++ b/arch/mips/include/asm/mach-loongson/machine.h
-> > > @@ -24,4 +24,10 @@
-> > >
-> > >  #endif
-> > >
-> > > +#ifdef CONFIG_LEMOTE_MACH3A
-> > > +
-> > > +#define LOONGSON_MACHTYPE MACH_LEMOTE_A1101
-> > > +
-> > > +#endif /* CONFIG_LEMOTE_MACH3A */
-> > > +
-> > >  #endif /* __ASM_MACH_LOONGSON_MACHINE_H */
+> > > Changing it would break also GCC's -march=native detection. So NACK.
 > >
-> > This patch defines 4 machines, but in practice only one is activable.
-> > Moreover it's only activable using a given Kconfig option, that is
-> > supposed to be for "Lemote Loongson 3A family machines".
-> >
-> > Does it mean we won't be able to have a generic Loongson 3A kernel and
-> > we will need one per machine? This doesn't seems a good idea for me.
-> >
-> > Couldn't it be detected using the UEFI-like interface? Or does it mean
-> > that one machine type for all Loongson 3A is enough?
-> >
-> > > diff --git a/arch/mips/loongson/common/machtype.c
-> > b/arch/mips/loongson/common/machtype.c
-> > > index 4becd4f..1a47979 100644
-> > > --- a/arch/mips/loongson/common/machtype.c
-> > > +++ b/arch/mips/loongson/common/machtype.c
-> > > @@ -27,6 +27,10 @@ static const char *system_types[] = {
-> > >       [MACH_DEXXON_GDIUM2F10]         "dexxon-gdium-2f",
-> > >       [MACH_LEMOTE_NAS]               "lemote-nas-2f",
-> > >       [MACH_LEMOTE_LL2F]              "lemote-lynloong-2f",
-> > > +     [MACH_LEMOTE_A1004]             "lemote-3a-notebook-a1004",
-> > > +     [MACH_LEMOTE_A1101]             "lemote-3a-itx-a1101",
-> > > +     [MACH_LEMOTE_A1201]             "lemote-2gq-notebook-a1201",
-> > > +     [MACH_LEMOTE_A1205]             "lemote-2gq-aio-a1205",
-> > >       [MACH_LOONGSON_END]             NULL,
-> > >  };
-> > >
-> > > --
-> > > 1.7.7.3
-> > >
-> > >
-> > >
+> > Indeed, good catch. That said it already looks for both Godson2 and
+> > Loongson-2, so I guess such a patch is acceptable if someone updates GCC
+> > and waits a few years before submitting it again.
 > >
 > > --
 > > Aurelien Jarno                          GPG: 1024D/F1BCDB73

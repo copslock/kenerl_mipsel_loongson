@@ -1,44 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jan 2014 19:21:01 +0100 (CET)
-Received: from mail-oa0-f50.google.com ([209.85.219.50]:63442 "EHLO
-        mail-oa0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6821116AbaABSU7YnqZN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jan 2014 19:20:59 +0100
-Received: by mail-oa0-f50.google.com with SMTP id n16so15064070oag.37
-        for <multiple recipients>; Thu, 02 Jan 2014 10:20:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=wspQ7029hm39pDu+8NjqfQkl2x5EbnBj+dn8xFEhpm0=;
-        b=sxheA60pVcBPU+AnL30gB6gdHK25amf6lyt2B/so752wMBxq8TAEKH6oVhPvhLTyzS
-         Onn24LyuH6yMTbJ8Ww7ZqCBj0EB9I6H2UpNXjb6pQ0sI+7JuhOJGFUAZmdclummESQMp
-         zZOBgmG3ZZAVtCp6YHzE/TV0ENSTC7f/218mk+ICXCbbBw1m8O52YBnT9YkpvMdx4u6J
-         /eKfohL3OXNfWpU9V0j4GP/O4BGMAanygHrDsyQUB2ZUQe8l8o8657ma5q/g5S40oE3P
-         /EY0/iSP28hZD5s6Di7hv06en/nCVfuIpiq2yMn+EgOz/A0qb8Q5XF4pLrov0dJI82k8
-         H/KA==
-MIME-Version: 1.0
-X-Received: by 10.182.81.197 with SMTP id c5mr56686910oby.40.1388686852770;
- Thu, 02 Jan 2014 10:20:52 -0800 (PST)
-Received: by 10.76.69.7 with HTTP; Thu, 2 Jan 2014 10:20:52 -0800 (PST)
-In-Reply-To: <1388685668-19616-1-git-send-email-hauke@hauke-m.de>
-References: <1388685668-19616-1-git-send-email-hauke@hauke-m.de>
-Date:   Thu, 2 Jan 2014 19:20:52 +0100
-Message-ID: <CACna6rzzoDw05SQXQ1WTOnFXjn0jTV1LBd_a1QsgkdE9u4AP1g@mail.gmail.com>
-Subject: Re: [PATCH] bcma: prevent irq handler from firing when registered
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, blogic@openwrt.org,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <zajec5@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jan 2014 19:25:52 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:47469 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6821116AbaABSZuLkj3d (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jan 2014 19:25:50 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id A1A20857F;
+        Thu,  2 Jan 2014 19:25:48 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id fOheykdcJ1sc; Thu,  2 Jan 2014 19:25:44 +0100 (CET)
+Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
+        by hauke-m.de (Postfix) with ESMTPSA id 2D79C8F61;
+        Thu,  2 Jan 2014 19:25:43 +0100 (CET)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org, blogic@openwrt.org
+Cc:     linux-mips@linux-mips.org, zajec5@gmail.com,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Cody P Schafer <devel@codyps.com>
+Subject: [PATCH 1/4] MIPS: BCM47XX: add Belkin F7Dxxxx board detection
+Date:   Thu,  2 Jan 2014 19:25:35 +0100
+Message-Id: <1388687138-8107-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38840
+X-archive-position: 38841
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,18 +43,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2014/1/2 Hauke Mehrtens <hauke@hauke-m.de>:
-> With this patch we prevent the irq from being fired when it is
-> registered. The Hardware fires an IRQ when input signal XOR polarity
-> AND gpio mask is 1. Now we are setting polarity to a vlaue so that is
-> is 0 when we register it.
->
-> In addition we also set the irq mask register to 0 when the irq handler
-> is initialized, so all gpio irqs are masked and there will be no
-> unexpected irq.
+From: Cody P Schafer <devel@codyps.com>
 
-Sorry for this problem. Since the generated event was button release
-one, I didn't notice this problem. Glad you were more careful when
-testing it.
+Add a few Belkin F7Dxxxx entries, with F7D4401 sourced from online
+documentation and the "F7D7302" being observed. F7D3301, F7D3302, and
+F7D4302 are reasonable guesses which are unlikely to cause
+mis-detection.
 
-Thanks for the patch!
+It also appears that at least the F7D3302, F7D3301, F7D7301, and F7D7302
+have a shared boardtype and boardrev, so use that as a fallback to a
+"generic" F7Dxxxx board.
+
+Signed-off-by: Cody P Schafer <devel@codyps.com>
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+ arch/mips/bcm47xx/board.c                          |   12 +++++++++---
+ arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h |    5 +++++
+ 2 files changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/arch/mips/bcm47xx/board.c b/arch/mips/bcm47xx/board.c
+index f3f6bfe..b790bb7 100644
+--- a/arch/mips/bcm47xx/board.c
++++ b/arch/mips/bcm47xx/board.c
+@@ -65,7 +65,12 @@ struct bcm47xx_board_type_list1 bcm47xx_board_list_hardware_version[] __initcons
+ 	{{BCM47XX_BOARD_ASUS_WL500W, "Asus WL500W"}, "WL500gW-"},
+ 	{{BCM47XX_BOARD_ASUS_WL520GC, "Asus WL520GC"}, "WL520GC-"},
+ 	{{BCM47XX_BOARD_ASUS_WL520GU, "Asus WL520GU"}, "WL520GU-"},
++	{{BCM47XX_BOARD_BELKIN_F7D3301, "Belkin F7D3301"}, "F7D3301"},
++	{{BCM47XX_BOARD_BELKIN_F7D3302, "Belkin F7D3302"}, "F7D3302"},
++	{{BCM47XX_BOARD_BELKIN_F7D3302, "Belkin F7D7302"}, "F7D7302 v1"},
+ 	{{BCM47XX_BOARD_BELKIN_F7D4301, "Belkin F7D4301"}, "F7D4301"},
++	{{BCM47XX_BOARD_BELKIN_F7D4302, "Belkin F7D4302"}, "F7D4302"},
++	{{BCM47XX_BOARD_BELKIN_F7D4401, "Belkin F7D4401"}, "F7D4401"},
+ 	{ {0}, 0},
+ };
+ 
+@@ -174,6 +179,7 @@ struct bcm47xx_board_type_list3 bcm47xx_board_list_board[] __initconst = {
+ 	{{BCM47XX_BOARD_HUAWEI_E970, "Huawei E970"}, "0x048e", "0x5347", "0x11"},
+ 	{{BCM47XX_BOARD_PHICOMM_M1, "Phicomm M1"}, "0x0590", "80", "0x1104"},
+ 	{{BCM47XX_BOARD_ZTE_H218N, "ZTE H218N"}, "0x053d", "1234", "0x1305"},
++	{{BCM47XX_BOARD_BELKIN_F7DXXXX, "Belkin F7Dxxxx"}, "0xa4cf", NULL, "0x1102"},
+ 	{ {0}, 0},
+ };
+ 
+@@ -264,9 +270,9 @@ static __init const struct bcm47xx_board_type *bcm47xx_board_get_nvram(void)
+ 	    bcm47xx_nvram_getenv("boardnum", buf2, sizeof(buf2)) >= 0 &&
+ 	    bcm47xx_nvram_getenv("boardrev", buf3, sizeof(buf3)) >= 0) {
+ 		for (e3 = bcm47xx_board_list_board; e3->value1; e3++) {
+-			if (!strcmp(buf1, e3->value1) &&
+-			    !strcmp(buf2, e3->value2) &&
+-			    !strcmp(buf3, e3->value3))
++			if ((!e3->value1 || !strcmp(buf1, e3->value1)) &&
++			    (!e3->value2 || !strcmp(buf2, e3->value2)) &&
++			    (!e3->value3 || !strcmp(buf3, e3->value3)))
+ 				return &e3->board;
+ 		}
+ 	}
+diff --git a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
+index 00867dd..aa500f8 100644
+--- a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
++++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
+@@ -27,7 +27,12 @@ enum bcm47xx_board {
+ 	BCM47XX_BOARD_ASUS_WL700GE,
+ 	BCM47XX_BOARD_ASUS_WLHDD,
+ 
++	BCM47XX_BOARD_BELKIN_F7DXXXX,
++	BCM47XX_BOARD_BELKIN_F7D3301,
++	BCM47XX_BOARD_BELKIN_F7D3302,
+ 	BCM47XX_BOARD_BELKIN_F7D4301,
++	BCM47XX_BOARD_BELKIN_F7D4302,
++	BCM47XX_BOARD_BELKIN_F7D4401,
+ 
+ 	BCM47XX_BOARD_BUFFALO_WBR2_G54,
+ 	BCM47XX_BOARD_BUFFALO_WHR2_A54G54,
+-- 
+1.7.10.4

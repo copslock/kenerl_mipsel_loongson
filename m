@@ -1,42 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jan 2014 21:54:08 +0100 (CET)
-Received: from mail-ob0-f178.google.com ([209.85.214.178]:38957 "EHLO
-        mail-ob0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823075AbaABUyFECd9f (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jan 2014 21:54:05 +0100
-Received: by mail-ob0-f178.google.com with SMTP id uz6so14774756obc.23
-        for <multiple recipients>; Thu, 02 Jan 2014 12:53:58 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jan 2014 22:35:57 +0100 (CET)
+Received: from mail-ob0-f175.google.com ([209.85.214.175]:53901 "EHLO
+        mail-ob0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6821116AbaABVfzK81iC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jan 2014 22:35:55 +0100
+Received: by mail-ob0-f175.google.com with SMTP id uz6so14897412obc.34
+        for <multiple recipients>; Thu, 02 Jan 2014 13:35:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type;
-        bh=JHvfYKGL01KhciW9VdJ9LlPCbwyk9SvSGzLSTFNfpFU=;
-        b=JiJE7ij9L19+nGaAm3GrSe4NwNIcdY4QiEMDk/fH7jPj0awVgeUEaG7CEmSDJJG7ZB
-         4hnjbRVhhoGdFTTIQGFOejUNwtwSGRiyAwZdmSXYBpvhQSBFr+O2qQ36PNwzm1xo0JSA
-         zabK7b9iyVv8QEkuaR5m8xh7x143OP/amugr5+C2mlTPIT/k83M06FJimN9Jq6MczdlW
-         f73n126JDIRga+j3KGGuGIAKXemIxwJ7A5M19SUcqvOPXOwGOizznNFqq3Z+EHzqhjeX
-         HCDVj/5cj29wCp7s4MCZg4gUNz1z4ft4HGEeX8dOpLoST7rG4wlRXWbsRWKrM66nPRMJ
-         clOw==
+        bh=CNaqSlQKQ8JJBTWZi+7yiNr2VVFodTUf2VIpEe//kb8=;
+        b=1Gm/F3mrvH7fyEx7oLyVFr1q3wP8RhpgDlfbrMX2RJmXQ6coQvjn8J+wNxiTNGNb7q
+         RK6GRYLVUwGnv5Zz9b8snCtatFP3SeW3x5VELKbJxd6qWF8DpVyGv0yrSmAJMVOeWkwz
+         T8lsKDt0B8wyn2QBHy1pkSKz9AofdSzu/3nTFb38726nvcJhNDn+gzVhkqZ/8CA/+VUp
+         nu7G19Yk1SlE3mBMNbWfeWSdwNgED46B/bIUfCdVpiTPYYc6eTO5V268a5na3uDuor7M
+         14eE3NCI6Eil3E1Z4R3idX/ACqoKETy370H/F041kbGCAVKL1AjEdTNcZleZYnzTPb7o
+         IDqA==
 MIME-Version: 1.0
-X-Received: by 10.60.174.167 with SMTP id bt7mr5650055oec.54.1388696038613;
- Thu, 02 Jan 2014 12:53:58 -0800 (PST)
-Received: by 10.76.69.7 with HTTP; Thu, 2 Jan 2014 12:53:58 -0800 (PST)
-In-Reply-To: <1388687138-8107-3-git-send-email-hauke@hauke-m.de>
+X-Received: by 10.182.246.39 with SMTP id xt7mr56735033obc.16.1388698548512;
+ Thu, 02 Jan 2014 13:35:48 -0800 (PST)
+Received: by 10.76.69.7 with HTTP; Thu, 2 Jan 2014 13:35:48 -0800 (PST)
+In-Reply-To: <1388687138-8107-1-git-send-email-hauke@hauke-m.de>
 References: <1388687138-8107-1-git-send-email-hauke@hauke-m.de>
-        <1388687138-8107-3-git-send-email-hauke@hauke-m.de>
-Date:   Thu, 2 Jan 2014 21:53:58 +0100
-Message-ID: <CACna6rxX871CsHYw+-=J6nRZRnTNLFWAhLT9dweV=Z0Ut7y0vA@mail.gmail.com>
-Subject: Re: [PATCH 3/4] MIPS: BCM47XX: add board detection for Linksys
- WRT54GS V1
+Date:   Thu, 2 Jan 2014 22:35:48 +0100
+Message-ID: <CACna6rw1_QXXk0g9tpWVsx5G1zbNQdun5edHkSzkabVfLuxL4A@mail.gmail.com>
+Subject: Re: [PATCH 1/4] MIPS: BCM47XX: add Belkin F7Dxxxx board detection
 From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
 To:     Hauke Mehrtens <hauke@hauke-m.de>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, blogic@openwrt.org,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Cody P Schafer <devel@codyps.com>
 Content-Type: text/plain; charset=UTF-8
 Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38847
+X-archive-position: 38848
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,7 +53,25 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 2014/1/2 Hauke Mehrtens <hauke@hauke-m.de>:
-> This adds board detection for Linksys WRT54GS V1.
+> From: Cody P Schafer <devel@codyps.com>
+>
+> Add a few Belkin F7Dxxxx entries, with F7D4401 sourced from online
+> documentation and the "F7D7302" being observed. F7D3301, F7D3302, and
+> F7D4302 are reasonable guesses which are unlikely to cause
+> mis-detection.
+>
+> It also appears that at least the F7D3302, F7D3301, F7D7301, and F7D7302
+> have a shared boardtype and boardrev, so use that as a fallback to a
+> "generic" F7Dxxxx board.
 
-Could you check NVRAM for something that could be more model specific?
-eou_device_id maybe?
+Cody, Hauke: I'm starring at this patch for 10 minutes now and it's
+still unclear for me.
+
+You say 3301, 3302, 7301 and 7302 have the same board_* entries
+stating they can be treated with a generic ID entry. At the same time
+you define BELKIN_F7D3301 and BELKIN_F7D3302... so they are not
+identical after all? Finally what about 4302? I can see it's untested,
+but for some reason you assign it to the separated enum entry. Is this
+not going to share config with the generic ones?
+
+Sorry, but it looks really messy to me.

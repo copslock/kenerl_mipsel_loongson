@@ -1,60 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jan 2014 15:57:18 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:53412 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6821116AbaABO5QxY3SR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 2 Jan 2014 15:57:16 +0100
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s02EubT1013408
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 2 Jan 2014 09:56:37 -0500
-Received: from warthog.procyon.org.uk (ovpn-113-65.phx2.redhat.com [10.3.113.65])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s02EuUaL019056;
-        Thu, 2 Jan 2014 09:56:30 -0500
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20131231225921.GA1624@sylph>
-References: <20131231225921.GA1624@sylph>
-To:     Robert Graffham <psquid@psquid.net>
-Cc:     dhowells@redhat.com, linux-kernel@vger.kernel.org,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Hirokazu Takata <takata@linux-m32r.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-m32r@ml.linux-m32r.org, linux-m32r-ja@ml.linux-m32r.org,
-        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
-        linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org
-Subject: Re: [PATCH] Slightly outdated CONFIG_SMP documentation fix
-Date:   Thu, 02 Jan 2014 14:56:29 +0000
-Message-ID: <23596.1388674589@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
-Return-Path: <dhowells@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jan 2014 19:01:19 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:47260 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6821116AbaABSBRWsq0r (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jan 2014 19:01:17 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 63C848F61;
+        Thu,  2 Jan 2014 19:01:16 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id ak09ejjYT2nQ; Thu,  2 Jan 2014 19:01:13 +0100 (CET)
+Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
+        by hauke-m.de (Postfix) with ESMTPSA id 4416D857F;
+        Thu,  2 Jan 2014 19:01:13 +0100 (CET)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org, blogic@openwrt.org
+Cc:     linux-mips@linux-mips.org, zajec5@gmail.com,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH] bcma: prevent irq handler from firing when registered
+Date:   Thu,  2 Jan 2014 19:01:08 +0100
+Message-Id: <1388685668-19616-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.10.4
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38837
+X-archive-position: 38838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhowells@redhat.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,10 +45,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Robert Graffham <psquid@psquid.net> wrote:
+With this patch we prevent the irq from being fired when it is
+registered. The Hardware fires an IRQ when input signal XOR polarity
+AND gpio mask is 1. Now we are setting polarity to a vlaue so that is
+is 0 when we register it.
 
-> +	  singleprocessor machines. On a singleprocessor machine, the kernel
+In addition we also set the irq mask register to 0 when the irq handler
+is initialized, so all gpio irqs are masked and there will be no
+unexpected irq.
 
-"singleprocessor" looks wrong without a hyphen.  How about "uniprocessor"?
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Tested-by: Rafał Miłecki <zajec5@gmail.com>
+---
+ drivers/bcma/driver_gpio.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-David
+diff --git a/drivers/bcma/driver_gpio.c b/drivers/bcma/driver_gpio.c
+index ec422a9..c2728a0 100644
+--- a/drivers/bcma/driver_gpio.c
++++ b/drivers/bcma/driver_gpio.c
+@@ -91,7 +91,9 @@ static void bcma_gpio_irq_unmask(struct irq_data *d)
+ {
+ 	struct bcma_drv_cc *cc = irq_data_get_irq_chip_data(d);
+ 	int gpio = irqd_to_hwirq(d);
++	u32 val = bcma_chipco_gpio_in(cc, BIT(gpio));
+ 
++	bcma_chipco_gpio_polarity(cc, BIT(gpio), val);
+ 	bcma_chipco_gpio_intmask(cc, BIT(gpio), BIT(gpio));
+ }
+ 
+@@ -156,6 +158,7 @@ static int bcma_gpio_irq_domain_init(struct bcma_drv_cc *cc)
+ 	if (err)
+ 		goto err_req_irq;
+ 
++	bcma_chipco_gpio_intmask(cc, ~0, 0);
+ 	bcma_cc_set32(cc, BCMA_CC_IRQMASK, BCMA_CC_IRQ_GPIO);
+ 
+ 	return 0;
+-- 
+1.7.10.4

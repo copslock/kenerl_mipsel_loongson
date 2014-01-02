@@ -1,36 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jan 2014 12:33:12 +0100 (CET)
-Received: from mail-ee0-f49.google.com ([74.125.83.49]:37725 "EHLO
-        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823075AbaABLdII3TWT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jan 2014 12:33:08 +0100
-Received: by mail-ee0-f49.google.com with SMTP id c41so6180105eek.22
-        for <multiple recipients>; Thu, 02 Jan 2014 03:33:02 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jan 2014 13:27:38 +0100 (CET)
+Received: from mail-ea0-f181.google.com ([209.85.215.181]:51518 "EHLO
+        mail-ea0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6824805AbaABM1eBbIKt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jan 2014 13:27:34 +0100
+Received: by mail-ea0-f181.google.com with SMTP id m10so6192145eaj.26
+        for <multiple recipients>; Thu, 02 Jan 2014 04:27:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version:content-type
-         :content-transfer-encoding;
-        bh=kMAoHIidDE54OWvQcO2aDHJXJAcRktTqLyO8Hi6FIjs=;
-        b=L6YYT2EDhpjAIndYUNorWWeywvqXyOxEnekzSkVLreOs469tNMucrUvVuL5RI2QhAw
-         WKBZEKEALNA/OWepxY3Ipzg0yQKRAho3BMymfXHCv1GfRXz7UegHrLHcyV+jTV/0KhnQ
-         JrIOggA+ugRDJC4NluL1xj9ZzaGlKrnIVfHtW+l/UgRMp6YQAEVBD9bNI5HZdEk0ed0J
-         3RM1MbrIZC7OG5vrrEUkzeQvKMxhhQ6Bh6+lBPUn3GYERVuul6zhjH49Yew90rYMINJH
-         xW8xcQhCHTzcktgmEDkBd+YBFedWtvGfFFrUqH7tRPPl4bO7n05c7+RNDrSWSWE4yD3p
-         Pa4g==
-X-Received: by 10.14.87.195 with SMTP id y43mr14908759eee.32.1388662382772;
-        Thu, 02 Jan 2014 03:33:02 -0800 (PST)
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=4X90g1XbESGqR5TlPVmSeX5I2nEw8eBK2tljdiOJdsc=;
+        b=G0ua4nL7vCtiQ936g463ffxWVVhGn2tUwH0Uw2fUxKDlN2wVVxzUNOiCpGPj2sSBy1
+         mnrUhC3SpsThV0qlIpRC16QjVKJ5FyDL46yYlORPLT9Pg8cL7pp3gQHPGQcxWOSSQg6E
+         2DSvs3kI+pHSVQ5t6qLD+HTxWyzn0pGrSWosb2w07h/4g7WGALM9jBmz/irwXEcvNbt6
+         Lv5cyF1Qh/DWwIuIN/1EFD7SON6OC17TRci4Dk61NEP9f9XqCIl2VpJ9FHOJMaukl9eP
+         FukQnmI8XeCo2kpmEGnljN8sFdByf6lCOhCqpXRpMI/1cWmxO3r6UyFcR5qdIGUo6NB/
+         06og==
+X-Received: by 10.14.210.200 with SMTP id u48mr15139785eeo.63.1388665648677;
+        Thu, 02 Jan 2014 04:27:28 -0800 (PST)
 Received: from linux-samsung700g7a.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by mx.google.com with ESMTPSA id g47sm135219461eeo.19.2014.01.02.03.33.01
+        by mx.google.com with ESMTPSA id o1sm135634210eea.10.2014.01.02.04.27.26
         for <multiple recipients>
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 02 Jan 2014 03:33:02 -0800 (PST)
+        Thu, 02 Jan 2014 04:27:27 -0800 (PST)
 From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
 To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-Subject: [PATCH] MIPS: BCM47XX: Import LEDs database from OpenWrt
-Date:   Thu,  2 Jan 2014 12:32:57 +0100
-Message-Id: <1388662377-14450-1-git-send-email-zajec5@gmail.com>
+Subject: [PATCH V4 REBASED] MIPS: BCM47XX: Prepare support for LEDs
+Date:   Thu,  2 Jan 2014 13:27:15 +0100
+Message-Id: <1388665635-12771-1-git-send-email-zajec5@gmail.com>
 X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1383805790-16196-1-git-send-email-zajec5@gmail.com>
+References: <1383805790-16196-1-git-send-email-zajec5@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +40,7 @@ Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38831
+X-archive-position: 38832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,533 +57,177 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+So far this is mostly just a proof of concept, database consists of a
+single device. Creating a nice iterateable array wasn't an option
+because devices have different amount of LEDs. And we don't want to
+waste memory just because of support for a device with dozens on LEDs.
 
 Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/bcm47xx/leds.c |  494 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 494 insertions(+)
+V2: use bcm47xx_private.h instead of ugly define in setup.c
+V3: don't add #include <bcm47xx_data.h> in setup.c. No need to.
+V4: rebase on top of upstream-sfr. I pray this to be the correct one
+REBASED on top of linux-john.git mips-next-3.14
+---
+ arch/mips/bcm47xx/Kconfig           |    2 +
+ arch/mips/bcm47xx/Makefile          |    2 +-
+ arch/mips/bcm47xx/bcm47xx_private.h |    9 +++++
+ arch/mips/bcm47xx/leds.c            |   73 +++++++++++++++++++++++++++++++++++
+ arch/mips/bcm47xx/setup.c           |    6 +++
+ 5 files changed, 91 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/bcm47xx/bcm47xx_private.h
+ create mode 100644 arch/mips/bcm47xx/leds.c
 
-diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
-index 6a49d4c..cc141c1 100644
---- a/arch/mips/bcm47xx/leds.c
-+++ b/arch/mips/bcm47xx/leds.c
-@@ -3,6 +3,334 @@
- #include <linux/leds.h>
- #include <bcm47xx_board.h>
+diff --git a/arch/mips/bcm47xx/Kconfig b/arch/mips/bcm47xx/Kconfig
+index df549af..09cb6f7 100644
+--- a/arch/mips/bcm47xx/Kconfig
++++ b/arch/mips/bcm47xx/Kconfig
+@@ -12,6 +12,7 @@ config BCM47XX_SSB
+ 	select SSB_PCICORE_HOSTMODE if PCI
+ 	select SSB_DRIVER_GPIO
+ 	select GPIOLIB
++	select LEDS_GPIO_REGISTER
+ 	default y
+ 	help
+ 	 Add support for old Broadcom BCM47xx boards with Sonics Silicon Backplane support.
+@@ -29,6 +30,7 @@ config BCM47XX_BCMA
+ 	select BCMA_DRIVER_PCI_HOSTMODE if PCI
+ 	select BCMA_DRIVER_GPIO
+ 	select GPIOLIB
++	select LEDS_GPIO_REGISTER
+ 	default y
+ 	help
+ 	 Add support for new Broadcom BCM47xx boards with Broadcom specific Advanced Microcontroller Bus.
+diff --git a/arch/mips/bcm47xx/Makefile b/arch/mips/bcm47xx/Makefile
+index c52daf9..84e9aed 100644
+--- a/arch/mips/bcm47xx/Makefile
++++ b/arch/mips/bcm47xx/Makefile
+@@ -4,5 +4,5 @@
+ #
  
-+/**************************************************
-+ * Database
-+ **************************************************/
+ obj-y				+= irq.o nvram.o prom.o serial.o setup.o time.o sprom.o
+-obj-y				+= board.o
++obj-y				+= board.o leds.o
+ obj-$(CONFIG_BCM47XX_SSB)	+= wgt634u.o
+diff --git a/arch/mips/bcm47xx/bcm47xx_private.h b/arch/mips/bcm47xx/bcm47xx_private.h
+new file mode 100644
+index 0000000..1a1e600
+--- /dev/null
++++ b/arch/mips/bcm47xx/bcm47xx_private.h
+@@ -0,0 +1,9 @@
++#ifndef LINUX_BCM47XX_PRIVATE_H_
++#define LINUX_BCM47XX_PRIVATE_H_
 +
-+#define BCM47XX_GPIO_LED(_gpio, _color, _function, _active_low,		\
-+			 _default_state)				\
-+	{								\
-+		.name		= "bcm47xx:" _color ":" _function,	\
-+		.gpio		= _gpio,				\
-+		.active_low	= _active_low,				\
-+		.default_state	= _default_state,			\
++#include <linux/kernel.h>
++
++/* leds.c */
++void __init bcm47xx_leds_register(void);
++
++#endif
+diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
+new file mode 100644
+index 0000000..6a49d4c
+--- /dev/null
++++ b/arch/mips/bcm47xx/leds.c
+@@ -0,0 +1,73 @@
++#include "bcm47xx_private.h"
++
++#include <linux/leds.h>
++#include <bcm47xx_board.h>
++
++static const struct gpio_led
++bcm47xx_leds_netgear_wndr4500_v1_leds[] __initconst = {
++	{
++		.name		= "bcm47xx:green:wps",
++		.gpio		= 1,
++		.active_low	= 1,
++		.default_state	= LEDS_GPIO_DEFSTATE_KEEP,
++	},
++	{
++		.name		= "bcm47xx:green:power",
++		.gpio		= 2,
++		.active_low	= 1,
++		.default_state	= LEDS_GPIO_DEFSTATE_KEEP,
++	},
++	{
++		.name		= "bcm47xx:orange:power",
++		.gpio		= 3,
++		.active_low	= 1,
++		.default_state	= LEDS_GPIO_DEFSTATE_KEEP,
++	},
++	{
++		.name		= "bcm47xx:green:usb1",
++		.gpio		= 8,
++		.active_low	= 1,
++		.default_state	= LEDS_GPIO_DEFSTATE_KEEP,
++	},
++	{
++		.name		= "bcm47xx:green:2ghz",
++		.gpio		= 9,
++		.active_low	= 1,
++		.default_state	= LEDS_GPIO_DEFSTATE_KEEP,
++	},
++	{
++		.name		= "bcm47xx:blue:5ghz",
++		.gpio		= 11,
++		.active_low	= 1,
++		.default_state	= LEDS_GPIO_DEFSTATE_KEEP,
++	},
++	{
++		.name		= "bcm47xx:green:usb2",
++		.gpio		= 14,
++		.active_low	= 1,
++		.default_state	= LEDS_GPIO_DEFSTATE_KEEP,
++	},
++};
++
++static struct gpio_led_platform_data bcm47xx_leds_pdata;
++
++#define bcm47xx_set_pdata(dev_leds) do {				\
++	bcm47xx_leds_pdata.leds = dev_leds;				\
++	bcm47xx_leds_pdata.num_leds = ARRAY_SIZE(dev_leds);		\
++} while (0)
++
++void __init bcm47xx_leds_register(void)
++{
++	enum bcm47xx_board board = bcm47xx_board_get();
++
++	switch (board) {
++	case BCM47XX_BOARD_NETGEAR_WNDR4500V1:
++		bcm47xx_set_pdata(bcm47xx_leds_netgear_wndr4500_v1_leds);
++		break;
++	default:
++		pr_debug("No LEDs configuration found for this device\n");
++		return;
 +	}
 +
-+/* Asus */
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_rtn12[] __initconst = {
-+	BCM47XX_GPIO_LED(2, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(7, "unk", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_rtn16[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "blue", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(7, "blue", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_rtn66u[] __initconst = {
-+	BCM47XX_GPIO_LED(12, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(15, "unk", "usb", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_wl300g[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_wl320ge[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(2, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(11, "unk", "link", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_wl330ge[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_wl500gd[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_wl500gpv1[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_wl500gpv2[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(1, "unk", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_wl500w[] __initconst = {
-+	BCM47XX_GPIO_LED(5, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_wl520gc[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(1, "unk", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_wl520gu[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(1, "unk", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_wl700ge[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON), /* Labeled "READY" (there is no "power" LED). Originally ON, flashing on USB activity. */
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_asus_wlhdd[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(2, "unk", "usb", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+/* Belkin */
-+
-+static const struct gpio_led
-+bcm47xx_leds_belkin_f7d4301[] __initconst = {
-+	BCM47XX_GPIO_LED(10, "green", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(11, "amber", "power", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(12, "unk", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(13, "unk", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(14, "unk", "usb0", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(15, "unk", "usb1", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+/* Buffalo */
-+
-+static const struct gpio_led
-+bcm47xx_leds_buffalo_whr2_a54g54[] __initconst = {
-+	BCM47XX_GPIO_LED(7, "unk", "diag", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_buffalo_whr_g125[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "unk", "bridge", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(2, "unk", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(3, "unk", "internal", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(6, "unk", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(7, "unk", "diag", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_buffalo_whr_g54s[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "unk", "bridge", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(2, "unk", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(3, "unk", "internal", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(6, "unk", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(7, "unk", "diag", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_buffalo_whr_hp_g54[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "unk", "bridge", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(2, "unk", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(3, "unk", "internal", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(6, "unk", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(7, "unk", "diag", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_buffalo_wzr_g300n[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "unk", "bridge", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(6, "unk", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(7, "unk", "diag", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_buffalo_wzr_rs_g54[] __initconst = {
-+	BCM47XX_GPIO_LED(6, "unk", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(1, "unk", "vpn", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(7, "unk", "diag", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_buffalo_wzr_rs_g54hp[] __initconst = {
-+	BCM47XX_GPIO_LED(6, "unk", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(1, "unk", "vpn", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(7, "unk", "diag", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+/* Dell */
-+
-+static const struct gpio_led
-+bcm47xx_leds_dell_tm2300[] __initconst = {
-+	BCM47XX_GPIO_LED(6, "unk", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(7, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+};
-+
-+/* D-Link */
-+
-+static const struct gpio_led
-+bcm47xx_leds_dlink_dir130[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "green", "status", 1, LEDS_GPIO_DEFSTATE_OFF), /* Originally blinking when device is ready, separated from "power" LED */
-+	BCM47XX_GPIO_LED(6, "blue", "unk", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_dlink_dir330[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "green", "status", 1, LEDS_GPIO_DEFSTATE_OFF), /* Originally blinking when device is ready, separated from "power" LED */
-+	BCM47XX_GPIO_LED(4, "unk", "usb", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(6, "blue", "unk", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+/* Huawei */
-+
-+static const struct gpio_led
-+bcm47xx_leds_huawei_e970[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+/* Linksys */
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_e1000v1[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "blue", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(1, "blue", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(2, "amber", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(4, "blue", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_e1000v21[] __initconst = {
-+	BCM47XX_GPIO_LED(5, "unk", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(6, "unk", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(7, "amber", "wps", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(8, "blue", "wps", 0, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_e2000v1[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "blue", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(2, "blue", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(3, "blue", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(4, "amber", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_e3000v1[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "amber", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(1, "unk", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(3, "blue", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(5, "unk", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(7, "unk", "usb", 0, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_e3200v1[] __initconst = {
-+	BCM47XX_GPIO_LED(3, "green", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_e4200v1[] __initconst = {
-+	BCM47XX_GPIO_LED(5, "white", "power", 1, LEDS_GPIO_DEFSTATE_ON),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_wrt150nv1[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "unk", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(3, "amber", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(5, "green", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_wrt150nv11[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "unk", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(3, "amber", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(5, "green", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_wrt160nv1[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "unk", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(3, "amber", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(5, "blue", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_wrt160nv3[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "unk", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(2, "amber", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(4, "blue", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_wrt300nv11[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "unk", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(3, "amber", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(5, "green", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_wrt310nv1[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "blue", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(3, "amber", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(9, "blue", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_wrt610nv1[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "usb",  1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(1, "unk", "power",  0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(3, "amber", "wps",  1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(9, "blue", "wps",  1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_linksys_wrt610nv2[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "amber", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(1, "unk", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(3, "blue", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(5, "unk", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(7, "unk", "usb", 0, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+/* Motorola */
-+
-+static const struct gpio_led
-+bcm47xx_leds_motorola_we800g[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "amber", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(2, "unk", "unk", 1, LEDS_GPIO_DEFSTATE_OFF), /* There are only 3 LEDs: Power, Wireless and Device (ethernet) */
-+	BCM47XX_GPIO_LED(4, "green", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_motorola_wr850gp[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(1, "unk", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(6, "unk", "dmz", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(7, "unk", "diag", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+static const struct gpio_led
-+bcm47xx_leds_motorola_wr850gv2v3[] __initconst = {
-+	BCM47XX_GPIO_LED(0, "unk", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(1, "unk", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(7, "unk", "diag", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
-+/* Netgear */
-+
-+static const struct gpio_led
-+bcm47xx_leds_netgear_wndr3400v1[] __initconst = {
-+	BCM47XX_GPIO_LED(2, "green", "usb", 1, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(3, "green", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(7, "amber", "power", 0, LEDS_GPIO_DEFSTATE_OFF),
-+};
-+
- static const struct gpio_led
- bcm47xx_leds_netgear_wndr4500_v1_leds[] __initconst = {
- 	{
-@@ -49,6 +377,24 @@ bcm47xx_leds_netgear_wndr4500_v1_leds[] __initconst = {
- 	},
- };
++	gpio_led_register_device(-1, &bcm47xx_leds_pdata);
++}
+diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
+index d0bfc86..bd84473 100644
+--- a/arch/mips/bcm47xx/setup.c
++++ b/arch/mips/bcm47xx/setup.c
+@@ -26,6 +26,8 @@
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
  
-+static const struct gpio_led
-+bcm47xx_leds_netgear_wnr834bv2[] __initconst = {
-+	BCM47XX_GPIO_LED(2, "green", "power", 0, LEDS_GPIO_DEFSTATE_ON),
-+	BCM47XX_GPIO_LED(3, "amber", "power", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(7, "unk", "connected", 0, LEDS_GPIO_DEFSTATE_OFF),
-+};
++#include "bcm47xx_private.h"
 +
-+/* SimpleTech */
-+
-+static const struct gpio_led
-+bcm47xx_leds_simpletech_simpleshare[] __initconst = {
-+	BCM47XX_GPIO_LED(1, "unk", "status", 1, LEDS_GPIO_DEFSTATE_OFF), /* "Ready" LED */
-+};
-+
-+/**************************************************
-+ * Init
-+ **************************************************/
-+
- static struct gpio_led_platform_data bcm47xx_leds_pdata;
- 
- #define bcm47xx_set_pdata(dev_leds) do {				\
-@@ -61,9 +407,157 @@ void __init bcm47xx_leds_register(void)
- 	enum bcm47xx_board board = bcm47xx_board_get();
- 
- 	switch (board) {
-+	case BCM47XX_BOARD_ASUS_RTN12:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_rtn12);
-+		break;
-+	case BCM47XX_BOARD_ASUS_RTN16:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_rtn16);
-+		break;
-+	case BCM47XX_BOARD_ASUS_RTN66U:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_rtn66u);
-+		break;
-+	case BCM47XX_BOARD_ASUS_WL300G:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_wl300g);
-+		break;
-+	case BCM47XX_BOARD_ASUS_WL320GE:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_wl320ge);
-+		break;
-+	case BCM47XX_BOARD_ASUS_WL330GE:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_wl330ge);
-+		break;
-+	case BCM47XX_BOARD_ASUS_WL500GD:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_wl500gd);
-+		break;
-+	case BCM47XX_BOARD_ASUS_WL500GPV1:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_wl500gpv1);
-+		break;
-+	case BCM47XX_BOARD_ASUS_WL500GPV2:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_wl500gpv2);
-+		break;
-+	case BCM47XX_BOARD_ASUS_WL500W:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_wl500w);
-+		break;
-+	case BCM47XX_BOARD_ASUS_WL520GC:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_wl520gc);
-+		break;
-+	case BCM47XX_BOARD_ASUS_WL520GU:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_wl520gu);
-+		break;
-+	case BCM47XX_BOARD_ASUS_WL700GE:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_wl700ge);
-+		break;
-+	case BCM47XX_BOARD_ASUS_WLHDD:
-+		bcm47xx_set_pdata(bcm47xx_leds_asus_wlhdd);
-+		break;
-+
-+	case BCM47XX_BOARD_BELKIN_F7D4301:
-+		bcm47xx_set_pdata(bcm47xx_leds_belkin_f7d4301);
-+		break;
-+
-+	case BCM47XX_BOARD_BUFFALO_WHR2_A54G54:
-+		bcm47xx_set_pdata(bcm47xx_leds_buffalo_whr2_a54g54);
-+		break;
-+	case BCM47XX_BOARD_BUFFALO_WHR_G125:
-+		bcm47xx_set_pdata(bcm47xx_leds_buffalo_whr_g125);
-+		break;
-+	case BCM47XX_BOARD_BUFFALO_WHR_G54S:
-+		bcm47xx_set_pdata(bcm47xx_leds_buffalo_whr_g54s);
-+		break;
-+	case BCM47XX_BOARD_BUFFALO_WHR_HP_G54:
-+		bcm47xx_set_pdata(bcm47xx_leds_buffalo_whr_hp_g54);
-+		break;
-+	case BCM47XX_BOARD_BUFFALO_WZR_G300N:
-+		bcm47xx_set_pdata(bcm47xx_leds_buffalo_wzr_g300n);
-+		break;
-+	case BCM47XX_BOARD_BUFFALO_WZR_RS_G54:
-+		bcm47xx_set_pdata(bcm47xx_leds_buffalo_wzr_rs_g54);
-+		break;
-+	case BCM47XX_BOARD_BUFFALO_WZR_RS_G54HP:
-+		bcm47xx_set_pdata(bcm47xx_leds_buffalo_wzr_rs_g54hp);
-+		break;
-+
-+	case BCM47XX_BOARD_DELL_TM2300:
-+		bcm47xx_set_pdata(bcm47xx_leds_dell_tm2300);
-+		break;
-+
-+	case BCM47XX_BOARD_DLINK_DIR130:
-+		bcm47xx_set_pdata(bcm47xx_leds_dlink_dir130);
-+		break;
-+	case BCM47XX_BOARD_DLINK_DIR330:
-+		bcm47xx_set_pdata(bcm47xx_leds_dlink_dir330);
-+		break;
-+
-+	case BCM47XX_BOARD_HUAWEI_E970:
-+		bcm47xx_set_pdata(bcm47xx_leds_huawei_e970);
-+		break;
-+
-+	case BCM47XX_BOARD_LINKSYS_E1000V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_e1000v1);
-+		break;
-+	case BCM47XX_BOARD_LINKSYS_E1000V21:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_e1000v21);
-+		break;
-+	case BCM47XX_BOARD_LINKSYS_E2000V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_e2000v1);
-+		break;
-+	case BCM47XX_BOARD_LINKSYS_E3000V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_e3000v1);
-+		break;
-+	case BCM47XX_BOARD_LINKSYS_E3200V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_e3200v1);
-+		break;
-+	case BCM47XX_BOARD_LINKSYS_E4200V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_e4200v1);
-+		break;
-+	case BCM47XX_BOARD_LINKSYS_WRT150NV1:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt150nv1);
-+		break;
-+	case BCM47XX_BOARD_LINKSYS_WRT150NV11:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt150nv11);
-+		break;
-+	case BCM47XX_BOARD_LINKSYS_WRT160NV1:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt160nv1);
-+		break;
-+	case BCM47XX_BOARD_LINKSYS_WRT160NV3:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt160nv3);
-+		break;
-+	case BCM47XX_BOARD_LINKSYS_WRT300NV11:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt300nv11);
-+		break;
-+	case BCM47XX_BOARD_LINKSYS_WRT310NV1:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt310nv1);
-+		break;
-+	case BCM47XX_BOARD_LINKSYS_WRT610NV1:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt610nv1);
-+		break;
-+	case BCM47XX_BOARD_LINKSYS_WRT610NV2:
-+		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrt610nv2);
-+		break;
-+
-+	case BCM47XX_BOARD_MOTOROLA_WE800G:
-+		bcm47xx_set_pdata(bcm47xx_leds_motorola_we800g);
-+		break;
-+	case BCM47XX_BOARD_MOTOROLA_WR850GP:
-+		bcm47xx_set_pdata(bcm47xx_leds_motorola_wr850gp);
-+		break;
-+	case BCM47XX_BOARD_MOTOROLA_WR850GV2V3:
-+		bcm47xx_set_pdata(bcm47xx_leds_motorola_wr850gv2v3);
-+		break;
-+
-+	case BCM47XX_BOARD_NETGEAR_WNDR3400V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_netgear_wndr3400v1);
-+		break;
- 	case BCM47XX_BOARD_NETGEAR_WNDR4500V1:
- 		bcm47xx_set_pdata(bcm47xx_leds_netgear_wndr4500_v1_leds);
+ #include <linux/export.h>
+ #include <linux/types.h>
+ #include <linux/ethtool.h>
+@@ -262,7 +264,11 @@ static int __init bcm47xx_register_bus_complete(void)
  		break;
-+	case BCM47XX_BOARD_NETGEAR_WNR834BV2:
-+		bcm47xx_set_pdata(bcm47xx_leds_netgear_wnr834bv2);
-+		break;
+ #endif
+ 	}
 +
-+	case BCM47XX_BOARD_SIMPLETECH_SIMPLESHARE:
-+		bcm47xx_set_pdata(bcm47xx_leds_simpletech_simpleshare);
-+		break;
++	bcm47xx_leds_register();
 +
- 	default:
- 		pr_debug("No LEDs configuration found for this device\n");
- 		return;
+ 	fixed_phy_add(PHY_POLL, 0, &bcm47xx_fixed_phy_status);
++
+ 	return 0;
+ }
+ device_initcall(bcm47xx_register_bus_complete);
 -- 
 1.7.10.4

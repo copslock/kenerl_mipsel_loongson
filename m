@@ -1,33 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Jan 2014 00:32:04 +0100 (CET)
-Received: from mail-wi0-f180.google.com ([209.85.212.180]:45814 "EHLO
-        mail-wi0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825752AbaACXcAL6SXA convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Jan 2014 00:33:46 +0100 (CET)
+Received: from mail-wg0-f44.google.com ([74.125.82.44]:44844 "EHLO
+        mail-wg0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825727AbaACXdng0jw3 convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 4 Jan 2014 00:32:00 +0100
-Received: by mail-wi0-f180.google.com with SMTP id hm19so997176wib.7
-        for <multiple recipients>; Fri, 03 Jan 2014 15:31:54 -0800 (PST)
+        Sat, 4 Jan 2014 00:33:43 +0100
+Received: by mail-wg0-f44.google.com with SMTP id a1so13791241wgh.11
+        for <multiple recipients>; Fri, 03 Jan 2014 15:33:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        bh=zou0raCQopsBHrwHoLGUhusDAEASsgZLQsvPN7AriQg=;
-        b=XY9KdhBjnh0YUJehXUC4OXFLmYs/H/w/P3kicezpRHrw2wRqHBSjpDRsNmDgSqx8Jm
-         0ldM374RhLIcD3TI89ag6dNDqn9qM8xNm9Z/sRVWJUjk+Twwo7AKaWygrHS+H7ucVGZ1
-         imAYuOnrdi9HE30lyCSu0KT9Nc+McO8aE/l/Hmp01IBFot9+SusURlaVBk5k7qE8Z6uS
-         yK2f4PxKqvurTGqy5LfcMTWs/+7VRE0QRcMvx2YBChNLmzYfKadZ1UXE3R+Dp1u6VhYt
-         Pa2I4xnryQjA8UydJwEX2MU2p0WsFGAGpPVTRfENJ1fJmHYwuuwen+mgrkI8dNc+Lx9w
-         ovGQ==
+        bh=skB2zcQt/Lm1yFOGtrgSxUEXPi9iHmxs7YcjOUKozL0=;
+        b=l4UzYpKBb90fyyxXEABrPjVRt2ikKG9XWqiM30ANAUncF/0Migs2rNuFvauiLP39nH
+         Qk/0OwGTaAN9UvQQJqjbhgMOH0rze73w/JdfSawD4mMj0GFNKxymCyN2xg7U+erMKkEk
+         MfZxP5P0Ql5StoTr2kKWHT7XuekZwhthxcYfjPHxC6eamZnPHd84Cf1SY6UvYmO2tsQy
+         TlyGJZB5iCR3HIXkT9cXAFYHkKNJ1DjFSIYJPq3CjLAc3ivUX5CDC6lPB/refTE3P9oJ
+         3G6DaNGI7BCa9Kcp0ksiEcQ7hN83Uu9uQjZ1JRLUPXDsVW1ww/qLuOuN+51XLsECQf0l
+         vGbg==
 MIME-Version: 1.0
-X-Received: by 10.194.61.211 with SMTP id s19mr1682076wjr.73.1388791914598;
- Fri, 03 Jan 2014 15:31:54 -0800 (PST)
-Received: by 10.216.161.137 with HTTP; Fri, 3 Jan 2014 15:31:54 -0800 (PST)
-In-Reply-To: <1388778120-24880-2-git-send-email-hauke@hauke-m.de>
+X-Received: by 10.180.105.202 with SMTP id go10mr1791291wib.42.1388792018280;
+ Fri, 03 Jan 2014 15:33:38 -0800 (PST)
+Received: by 10.216.161.137 with HTTP; Fri, 3 Jan 2014 15:33:38 -0800 (PST)
+In-Reply-To: <1388778120-24880-3-git-send-email-hauke@hauke-m.de>
 References: <1388778120-24880-1-git-send-email-hauke@hauke-m.de>
-        <1388778120-24880-2-git-send-email-hauke@hauke-m.de>
-Date:   Sat, 4 Jan 2014 00:31:54 +0100
-Message-ID: <CACna6ryT_aT=Exg20K3e7GFhUug27GCT5137UKfMvU9gOYq_dg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] MIPS: BCM47XX: add board detection for Linksys
- WRT54GS V1
+        <1388778120-24880-3-git-send-email-hauke@hauke-m.de>
+Date:   Sat, 4 Jan 2014 00:33:38 +0100
+Message-ID: <CACna6ryK=yTWFPQvGGWOs-YzEa3Vy0an9sigLnyiavtCui-73w@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] MIPS: BCM47XX: fix sparse warnings in board.c
 From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
 To:     Hauke Mehrtens <hauke@hauke-m.de>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, blogic@openwrt.org,
@@ -38,7 +37,7 @@ Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38866
+X-archive-position: 38867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,7 +55,17 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 2014/1/3 Hauke Mehrtens <hauke@hauke-m.de>:
-> This adds board detection for Linksys WRT54GS V1.
+> This fixes the following sparse warnings:
+> arch/mips/bcm47xx/board.c:39:16: warning: Using plain integer as NULL pointer
+> arch/mips/bcm47xx/board.c:46:16: warning: Using plain integer as NULL pointer
+> arch/mips/bcm47xx/board.c:53:16: warning: Using plain integer as NULL pointer
+> arch/mips/bcm47xx/board.c:78:16: warning: Using plain integer as NULL pointer
+> arch/mips/bcm47xx/board.c:99:16: warning: Using plain integer as NULL pointer
+> arch/mips/bcm47xx/board.c:109:16: warning: Using plain integer as NULL pointer
+> arch/mips/bcm47xx/board.c:124:16: warning: Using plain integer as NULL pointer
+> arch/mips/bcm47xx/board.c:155:16: warning: Using plain integer as NULL pointer
+> arch/mips/bcm47xx/board.c:177:16: warning: Using plain integer as NULL pointer
+> arch/mips/bcm47xx/board.c:189:16: warning: Using plain integer as NULL pointer
 >
 > Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 

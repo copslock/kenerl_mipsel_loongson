@@ -1,47 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Jan 2014 00:33:46 +0100 (CET)
-Received: from mail-wg0-f44.google.com ([74.125.82.44]:44844 "EHLO
-        mail-wg0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825727AbaACXdng0jw3 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 4 Jan 2014 00:33:43 +0100
-Received: by mail-wg0-f44.google.com with SMTP id a1so13791241wgh.11
-        for <multiple recipients>; Fri, 03 Jan 2014 15:33:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=skB2zcQt/Lm1yFOGtrgSxUEXPi9iHmxs7YcjOUKozL0=;
-        b=l4UzYpKBb90fyyxXEABrPjVRt2ikKG9XWqiM30ANAUncF/0Migs2rNuFvauiLP39nH
-         Qk/0OwGTaAN9UvQQJqjbhgMOH0rze73w/JdfSawD4mMj0GFNKxymCyN2xg7U+erMKkEk
-         MfZxP5P0Ql5StoTr2kKWHT7XuekZwhthxcYfjPHxC6eamZnPHd84Cf1SY6UvYmO2tsQy
-         TlyGJZB5iCR3HIXkT9cXAFYHkKNJ1DjFSIYJPq3CjLAc3ivUX5CDC6lPB/refTE3P9oJ
-         3G6DaNGI7BCa9Kcp0ksiEcQ7hN83Uu9uQjZ1JRLUPXDsVW1ww/qLuOuN+51XLsECQf0l
-         vGbg==
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Jan 2014 23:23:41 +0100 (CET)
+Received: from [195.154.112.97] ([195.154.112.97]:39793 "EHLO hall.aurel32.net"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6825758AbaADWXi4MdwC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 4 Jan 2014 23:23:38 +0100
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1VzZd0-0007ZP-Sv; Sat, 04 Jan 2014 23:23:34 +0100
+Date:   Sat, 4 Jan 2014 23:23:34 +0100
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Subject: Re: [PATCH V15 03/12] MIPS: Loongson 3: Add Lemote-3A machtypes
+ definition
+Message-ID: <20140104222334.GA15957@hall.aurel32.net>
+References: <1387109676-540-1-git-send-email-chenhc@lemote.com>
+ <1387109676-540-4-git-send-email-chenhc@lemote.com>
+ <20131230214333.GA20651@hall.aurel32.net>
+ <CAAhV-H66qshv-44q0XR6bfX7=KPa6NzDLO8AtY0Ed0AZScJ8=A@mail.gmail.com>
+ <20140101160945.GA26719@hall.aurel32.net>
+ <CAAhV-H49=Mxt+LJgpQQKJyhj87Hw6_kU4F05sEXNHueYuDOjaA@mail.gmail.com>
 MIME-Version: 1.0
-X-Received: by 10.180.105.202 with SMTP id go10mr1791291wib.42.1388792018280;
- Fri, 03 Jan 2014 15:33:38 -0800 (PST)
-Received: by 10.216.161.137 with HTTP; Fri, 3 Jan 2014 15:33:38 -0800 (PST)
-In-Reply-To: <1388778120-24880-3-git-send-email-hauke@hauke-m.de>
-References: <1388778120-24880-1-git-send-email-hauke@hauke-m.de>
-        <1388778120-24880-3-git-send-email-hauke@hauke-m.de>
-Date:   Sat, 4 Jan 2014 00:33:38 +0100
-Message-ID: <CACna6ryK=yTWFPQvGGWOs-YzEa3Vy0an9sigLnyiavtCui-73w@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] MIPS: BCM47XX: fix sparse warnings in board.c
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, blogic@openwrt.org,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <CAAhV-H49=Mxt+LJgpQQKJyhj87Hw6_kU4F05sEXNHueYuDOjaA@mail.gmail.com>
+X-Mailer: Mutt 1.5.21 (2010-09-15)
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38867
+X-archive-position: 38868
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,19 +51,160 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2014/1/3 Hauke Mehrtens <hauke@hauke-m.de>:
-> This fixes the following sparse warnings:
-> arch/mips/bcm47xx/board.c:39:16: warning: Using plain integer as NULL pointer
-> arch/mips/bcm47xx/board.c:46:16: warning: Using plain integer as NULL pointer
-> arch/mips/bcm47xx/board.c:53:16: warning: Using plain integer as NULL pointer
-> arch/mips/bcm47xx/board.c:78:16: warning: Using plain integer as NULL pointer
-> arch/mips/bcm47xx/board.c:99:16: warning: Using plain integer as NULL pointer
-> arch/mips/bcm47xx/board.c:109:16: warning: Using plain integer as NULL pointer
-> arch/mips/bcm47xx/board.c:124:16: warning: Using plain integer as NULL pointer
-> arch/mips/bcm47xx/board.c:155:16: warning: Using plain integer as NULL pointer
-> arch/mips/bcm47xx/board.c:177:16: warning: Using plain integer as NULL pointer
-> arch/mips/bcm47xx/board.c:189:16: warning: Using plain integer as NULL pointer
->
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+On Thu, Jan 02, 2014 at 09:55:26AM +0800, Huacai Chen wrote:
+> LS3A/3B-RS780E-R1.03 is Loongson's reference board, not from Lemote. All
 
-Acked-by: Rafał Miłecki <zajec5@gmail.com>
+Oh ok, sorry for the mistake.
+
+> machines from Lemote will export "machtype=". We haven't force machtype to
+> MACH_LEMOTE_A1101, we just set a default type which doesn't export
+> "machtype=", such as LS3A/3B-RS780E-R1.03 reference board.
+
+Ok I understand now. It might be better to name it LOONGSON_DEFAULT_MACHTYPE,
+but I have seen that the current name is already in use for Loongson 2.
+ 
+> On Thu, Jan 2, 2014 at 12:09 AM, Aurelien Jarno <aurelien@aurel32.net>wrote:
+> 
+> > Hi,
+> >
+> > On Wed, Jan 01, 2014 at 05:58:25PM +0800, Huacai Chen wrote:
+> > > The 4 machtypes have different features, such as serial port clock in
+> > > patch-7, and the next patchset will bring more differences.
+> >
+> > I understand that part, it's actually a good idea to have a machine type
+> > that is used to differentiate between the supported machine, and thus
+> > having a common kernel.
+> >
+> > > All Loongson-3 machines can use a same kernel, by export a different
+> > > "machtype=" parameter via PMON.
+> >
+> > This doesn't seems to be the case, at least on a LS3A/3B-RS780E-R1.03
+> > Lemote machine. Also if the machine type can be detected at runtime, why
+> > this patch forces it to MACH_LEMOTE_A1101?
+> >
+> > > UEFI-like interface cannot be detected, but all Loongson-3 machines will
+> > > enable it.
+> >
+> > > On Tue, Dec 31, 2013 at 5:43 AM, Aurelien Jarno <aurelien@aurel32.net
+> > >wrote:
+> > >
+> > > > On Sun, Dec 15, 2013 at 08:14:27PM +0800, Huacai Chen wrote:
+> > > > > Add four Loongson-3 based machine types:
+> > > > > MACH_LEMOTE_A1004/MACH_LEMOTE_A1201 are laptops;
+> > > > > MACH_LEMOTE_A1101 is mini-itx;
+> > > > > MACH_LEMOTE_A1205 is all-in-one machine.
+> > > > >
+> > > > > The most significant differrent between A1004/A1201 and A1101/A1205
+> > is
+> > > > > the laptops have EC but others don't.
+> > > > >
+> > > > > Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> > > > > Signed-off-by: Hongliang Tao <taohl@lemote.com>
+> > > > > Signed-off-by: Hua Yan <yanh@lemote.com>
+> > > > > ---
+> > > > >  arch/mips/include/asm/bootinfo.h              |   24
+> > > > +++++++++++++++---------
+> > > > >  arch/mips/include/asm/mach-loongson/machine.h |    6 ++++++
+> > > > >  arch/mips/loongson/common/machtype.c          |    4 ++++
+> > > > >  3 files changed, 25 insertions(+), 9 deletions(-)
+> > > > >
+> > > > > diff --git a/arch/mips/include/asm/bootinfo.h
+> > > > b/arch/mips/include/asm/bootinfo.h
+> > > > > index 4d2cdea..09956a0 100644
+> > > > > --- a/arch/mips/include/asm/bootinfo.h
+> > > > > +++ b/arch/mips/include/asm/bootinfo.h
+> > > > > @@ -61,15 +61,21 @@
+> > > > >  /*
+> > > > >   * Valid machtype for Loongson family
+> > > > >   */
+> > > > > -#define MACH_LOONGSON_UNKNOWN  0
+> > > > > -#define MACH_LEMOTE_FL2E       1
+> > > > > -#define MACH_LEMOTE_FL2F       2
+> > > > > -#define MACH_LEMOTE_ML2F7      3
+> > > > > -#define MACH_LEMOTE_YL2F89     4
+> > > > > -#define MACH_DEXXON_GDIUM2F10  5
+> > > > > -#define MACH_LEMOTE_NAS             6
+> > > > > -#define MACH_LEMOTE_LL2F       7
+> > > > > -#define MACH_LOONGSON_END      8
+> > > > > +enum loongson_machine_type {
+> > > > > +     MACH_LOONGSON_UNKNOWN,
+> > > > > +     MACH_LEMOTE_FL2E,
+> > > > > +     MACH_LEMOTE_FL2F,
+> > > > > +     MACH_LEMOTE_ML2F7,
+> > > > > +     MACH_LEMOTE_YL2F89,
+> > > > > +     MACH_DEXXON_GDIUM2F10,
+> > > > > +     MACH_LEMOTE_NAS,
+> > > > > +     MACH_LEMOTE_LL2F,
+> > > > > +     MACH_LEMOTE_A1004,
+> > > > > +     MACH_LEMOTE_A1101,
+> > > > > +     MACH_LEMOTE_A1201,
+> > > > > +     MACH_LEMOTE_A1205,
+> > > > > +     MACH_LOONGSON_END
+> > > > > +};
+> > > > >
+> > > > >  /*
+> > > > >   * Valid machtype for group INGENIC
+> > > > > diff --git a/arch/mips/include/asm/mach-loongson/machine.h
+> > > > b/arch/mips/include/asm/mach-loongson/machine.h
+> > > > > index 3810d5c..1b1f592 100644
+> > > > > --- a/arch/mips/include/asm/mach-loongson/machine.h
+> > > > > +++ b/arch/mips/include/asm/mach-loongson/machine.h
+> > > > > @@ -24,4 +24,10 @@
+> > > > >
+> > > > >  #endif
+> > > > >
+> > > > > +#ifdef CONFIG_LEMOTE_MACH3A
+> > > > > +
+> > > > > +#define LOONGSON_MACHTYPE MACH_LEMOTE_A1101
+> > > > > +
+> > > > > +#endif /* CONFIG_LEMOTE_MACH3A */
+> > > > > +
+> > > > >  #endif /* __ASM_MACH_LOONGSON_MACHINE_H */
+> > > >
+> > > > This patch defines 4 machines, but in practice only one is activable.
+> > > > Moreover it's only activable using a given Kconfig option, that is
+> > > > supposed to be for "Lemote Loongson 3A family machines".
+> > > >
+> > > > Does it mean we won't be able to have a generic Loongson 3A kernel and
+> > > > we will need one per machine? This doesn't seems a good idea for me.
+> > > >
+> > > > Couldn't it be detected using the UEFI-like interface? Or does it mean
+> > > > that one machine type for all Loongson 3A is enough?
+> > > >
+> > > > > diff --git a/arch/mips/loongson/common/machtype.c
+> > > > b/arch/mips/loongson/common/machtype.c
+> > > > > index 4becd4f..1a47979 100644
+> > > > > --- a/arch/mips/loongson/common/machtype.c
+> > > > > +++ b/arch/mips/loongson/common/machtype.c
+> > > > > @@ -27,6 +27,10 @@ static const char *system_types[] = {
+> > > > >       [MACH_DEXXON_GDIUM2F10]         "dexxon-gdium-2f",
+> > > > >       [MACH_LEMOTE_NAS]               "lemote-nas-2f",
+> > > > >       [MACH_LEMOTE_LL2F]              "lemote-lynloong-2f",
+> > > > > +     [MACH_LEMOTE_A1004]             "lemote-3a-notebook-a1004",
+> > > > > +     [MACH_LEMOTE_A1101]             "lemote-3a-itx-a1101",
+> > > > > +     [MACH_LEMOTE_A1201]             "lemote-2gq-notebook-a1201",
+> > > > > +     [MACH_LEMOTE_A1205]             "lemote-2gq-aio-a1205",
+> > > > >       [MACH_LOONGSON_END]             NULL,
+> > > > >  };
+> > > > >
+> > > > > --
+> > > > > 1.7.7.3
+> > > > >
+> > > > >
+> > > > >
+> > > >
+> > > > --
+> > > > Aurelien Jarno                          GPG: 1024D/F1BCDB73
+> > > > aurelien@aurel32.net                 http://www.aurel32.net
+> > > >
+> > > >
+> >
+> > --
+> > Aurelien Jarno                          GPG: 1024D/F1BCDB73
+> > aurelien@aurel32.net                 http://www.aurel32.net
+> >
+> >
+
+-- 
+Aurelien Jarno	                        GPG: 1024D/F1BCDB73
+aurelien@aurel32.net                 http://www.aurel32.net

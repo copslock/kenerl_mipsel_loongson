@@ -1,39 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Jan 2014 20:53:58 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:41397 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817974AbaAGTxzRtG9J (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Jan 2014 20:53:55 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id C46C78F61;
-        Tue,  7 Jan 2014 20:53:49 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id WehhfpP3PCTf; Tue,  7 Jan 2014 20:53:10 +0100 (CET)
-Received: from [IPv6:2001:470:1f0b:447:f92d:7ca2:7eaf:38b4] (unknown [IPv6:2001:470:1f0b:447:f92d:7ca2:7eaf:38b4])
-        by hauke-m.de (Postfix) with ESMTPSA id E290C857F;
-        Tue,  7 Jan 2014 20:53:02 +0100 (CET)
-Message-ID: <52CC5B12.8090305@hauke-m.de>
-Date:   Tue, 07 Jan 2014 20:52:50 +0100
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Jan 2014 22:25:10 +0100 (CET)
+Received: from mail-wi0-f177.google.com ([209.85.212.177]:59409 "EHLO
+        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6870551AbaAGVZJDm4Of (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Jan 2014 22:25:09 +0100
+Received: by mail-wi0-f177.google.com with SMTP id cc10so1286975wib.16
+        for <linux-mips@linux-mips.org>; Tue, 07 Jan 2014 13:25:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=/mWy0F0qcJCUBab5WLzOeuo+3Mh1rdqlbeaPtY+lXvk=;
+        b=kvzNtZle1BTJjaHujXvUI1KjjpIiWMDsiFgyjFTymEhFeYlH1hIH3QHBPkbiQB6PLE
+         jnt7xvz4F+OJcPLQ2fbKFlSuX/cXKmiiCz8lo1G+Rx0xLxR936UV/29BioQEsvsBWisG
+         wQGesS+ycBo0DcqvNGBLTnVy+YKYu7JpGSlAuPXh8ak9MH5qJqFB8IThdkOs52Qf+Jb2
+         55uwvTBi7AiUjAoWf9pwOI9jIamLSAlVeXppbNvg1lThqfw1ObWpi5iiHK0yxKPwJ9oG
+         fYHbq+PTrguuOo4QS9/A14SFxOtEQK5Pve32xy7qv7xBMHA5tTIYr3SOsrM7PDMEYSOr
+         R/dw==
 MIME-Version: 1.0
-To:     Jean-Yves Avenard <jyavenard@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: Patch for the "ug" bug
+X-Received: by 10.180.76.42 with SMTP id h10mr18656496wiw.46.1389129903625;
+ Tue, 07 Jan 2014 13:25:03 -0800 (PST)
+Received: by 10.227.207.68 with HTTP; Tue, 7 Jan 2014 13:25:03 -0800 (PST)
+In-Reply-To: <52CC5B12.8090305@hauke-m.de>
 References: <CANpj82+h1a0qBfaaYpqmuL69JpbB+T_z0pg0iL=5JPBvDE9A2w@mail.gmail.com>
-In-Reply-To: <CANpj82+h1a0qBfaaYpqmuL69JpbB+T_z0pg0iL=5JPBvDE9A2w@mail.gmail.com>
-X-Enigmail-Version: 1.5.2
+        <52CC5B12.8090305@hauke-m.de>
+Date:   Tue, 7 Jan 2014 22:25:03 +0100
+Message-ID: <CANpj82Ln1SkOR-DQwK9Dy5E71QVE0PG3fWxOpkzX=B+T7dHU2Q@mail.gmail.com>
+Subject: Re: Patch for the "ug" bug
+From:   Jean-Yves Avenard <jyavenard@gmail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     linux-mips@linux-mips.org
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <hauke@hauke-m.de>
+Return-Path: <jyavenard@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38887
+X-archive-position: 38888
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: jyavenard@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,70 +51,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/07/2012 12:41 PM, Jean-Yves Avenard wrote:
-> Hello
-> 
-> This is my first post here, so hopefully I'm doing it the right way.
-> 
-> I recently an Asus RT-N66U router, powered by a Broadcom BCM5300. MIPS
-> based obviously.
-> 
-> I am an infrequent committer of the Tomato firmware team.
-> One issue was reported that caused quite surprising problems. We call
-> it the "ug" bug.
-> 
-> In a shell:
-> cd /tmp
-> echo "#!/bin/sh" >bug
-> echo 'echo -n $1.' >>bug
-> chmod +x bug
-> for i in 0 1 2 3 4 5 6 7 8 9; do bug $i; done
-> 
-> would result in random data being output.
-> Typically it would look something like:
-> ug.1.ug.3.ug.5.ug.ug.ug.ug.root@RT-N66U:/tmp#
-> 
-> This issue affects a few other firmware (ddwrt) in particular. This
-> doesn't affect Asus stock firmware
-> 
-> After a short investigation, I ruled out that the problem was either
-> in uclibc or busybox and is something related to an issue in the
-> kernel
-> 
-> Looking at the kernel shipped with the Asus, they have made some
-> modifications in how pages are initialised...
-> 
-> The following patch, is a port of the required changes that fix the
-> memory corruption exposed by the "ug" bug...
-> 
-> Let me know if you would like this patch to be submitted differently.
-> Not knowing the submit policy, I put it inline, but due to the
-> presence of tabs (ugh!) it may not come out properly.
-> 
-> The patch is for the linux that ships with Tomato obviously, but
-> checking the linux git repository, it will apply with minor mod. Let
-> me know if you want me to do those mods for you..
-> 
-> Best regards
-> Jean-Yves Avenard
+On 7 January 2014 20:52, Hauke Mehrtens <hauke@hauke-m.de> wrote:
 
-Hi,
+>
+> Hi,
+>
+> this is a little late but I haven't seen this earlier. I just tried your
+> script and had no problems on my Asus RT-N66U running OpenWrt with
+> kernel 3.10.24. This problem was either cause by some other non upstream
+> Broadcom modification or was already fixed in mainline kernel.
+>
 
-this is a little late but I haven't seen this earlier. I just tried your
-script and had no problems on my Asus RT-N66U running OpenWrt with
-kernel 3.10.24. This problem was either cause by some other non upstream
-Broadcom modification or was already fixed in mainline kernel.
+As you wrote, you're a little late.... about 18 months late...
 
+The issue was in the mips memory management in 2.6.x kernel....
+FWIW; all tomato and dd-wrt firmware include this fix.
 
-root@OpenWrt:~# cd /tmp
-root@OpenWrt:/tmp# echo "#!/bin/sh" >bug
-root@OpenWrt:/tmp# echo 'echo -n $1.' >>bug
-root@OpenWrt:/tmp# cat bug
-#!/bin/sh
-echo -n $1.
-root@OpenWrt:/tmp# chmod +x bug
-root@OpenWrt:/tmp# for i in 0 1 2 3 4 5 6 7 8 9; do ./bug $i; done
-0.1.2.3.4.5.6.7.8.9.root@OpenWrt:/tmp#
-root@OpenWrt:/tmp#
-
-Hauke
+Now the question is more about weither the fix is in your kernel or not...

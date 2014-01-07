@@ -1,34 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jan 2014 20:59:51 +0100 (CET)
-Received: from mail.windriver.com ([147.11.1.11]:53140 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6832657AbaAFT7qRfamp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jan 2014 20:59:46 +0100
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
-        by mail.windriver.com (8.14.5/8.14.5) with ESMTP id s06Jxbo7022284
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Mon, 6 Jan 2014 11:59:38 -0800 (PST)
-Received: from yow-lpgnfs-02.corp.ad.wrs.com (128.224.149.8) by
- ALA-HCA.corp.ad.wrs.com (147.11.189.40) with Microsoft SMTP Server id
- 14.2.347.0; Mon, 6 Jan 2014 11:59:37 -0800
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>
-Subject: [PATCH] mips: delete non-required instances of include <linux/init.h>
-Date:   Mon, 6 Jan 2014 14:59:30 -0500
-Message-ID: <1389038370-17998-1-git-send-email-paul.gortmaker@windriver.com>
-X-Mailer: git-send-email 1.8.4.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Jan 2014 20:53:58 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:41397 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S6817974AbaAGTxzRtG9J (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Jan 2014 20:53:55 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id C46C78F61;
+        Tue,  7 Jan 2014 20:53:49 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id WehhfpP3PCTf; Tue,  7 Jan 2014 20:53:10 +0100 (CET)
+Received: from [IPv6:2001:470:1f0b:447:f92d:7ca2:7eaf:38b4] (unknown [IPv6:2001:470:1f0b:447:f92d:7ca2:7eaf:38b4])
+        by hauke-m.de (Postfix) with ESMTPSA id E290C857F;
+        Tue,  7 Jan 2014 20:53:02 +0100 (CET)
+Message-ID: <52CC5B12.8090305@hauke-m.de>
+Date:   Tue, 07 Jan 2014 20:52:50 +0100
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <Paul.Gortmaker@windriver.com>
+To:     Jean-Yves Avenard <jyavenard@gmail.com>, linux-mips@linux-mips.org
+Subject: Re: Patch for the "ug" bug
+References: <CANpj82+h1a0qBfaaYpqmuL69JpbB+T_z0pg0iL=5JPBvDE9A2w@mail.gmail.com>
+In-Reply-To: <CANpj82+h1a0qBfaaYpqmuL69JpbB+T_z0pg0iL=5JPBvDE9A2w@mail.gmail.com>
+X-Enigmail-Version: 1.5.2
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38886
+X-archive-position: 38887
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,757 +46,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-None of these files are actually using any __init type directives
-and hence don't need to include <linux/init.h>.  Most are just a
-left over from __devinit and __cpuinit removal, or simply due to
-code getting copied from one driver to the next.
+On 06/07/2012 12:41 PM, Jean-Yves Avenard wrote:
+> Hello
+> 
+> This is my first post here, so hopefully I'm doing it the right way.
+> 
+> I recently an Asus RT-N66U router, powered by a Broadcom BCM5300. MIPS
+> based obviously.
+> 
+> I am an infrequent committer of the Tomato firmware team.
+> One issue was reported that caused quite surprising problems. We call
+> it the "ug" bug.
+> 
+> In a shell:
+> cd /tmp
+> echo "#!/bin/sh" >bug
+> echo 'echo -n $1.' >>bug
+> chmod +x bug
+> for i in 0 1 2 3 4 5 6 7 8 9; do bug $i; done
+> 
+> would result in random data being output.
+> Typically it would look something like:
+> ug.1.ug.3.ug.5.ug.ug.ug.ug.root@RT-N66U:/tmp#
+> 
+> This issue affects a few other firmware (ddwrt) in particular. This
+> doesn't affect Asus stock firmware
+> 
+> After a short investigation, I ruled out that the problem was either
+> in uclibc or busybox and is something related to an issue in the
+> kernel
+> 
+> Looking at the kernel shipped with the Asus, they have made some
+> modifications in how pages are initialised...
+> 
+> The following patch, is a port of the required changes that fix the
+> memory corruption exposed by the "ug" bug...
+> 
+> Let me know if you would like this patch to be submitted differently.
+> Not knowing the submit policy, I put it inline, but due to the
+> presence of tabs (ugh!) it may not come out properly.
+> 
+> The patch is for the linux that ships with Tomato obviously, but
+> checking the linux git repository, it will apply with minor mod. Let
+> me know if you want me to do those mods for you..
+> 
+> Best regards
+> Jean-Yves Avenard
 
-Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
----
+Hi,
 
-[build tested all mips defconfigs on v3.13-rc7, except for
- sgi-ip22 which needs -mr10k-cache-barrier=store gcc option]
- 
- arch/mips/alchemy/common/power.c               | 1 -
- arch/mips/ath79/common.h                       | 1 -
- arch/mips/bcm47xx/nvram.c                      | 1 -
- arch/mips/bcm63xx/early_printk.c               | 1 -
- arch/mips/boot/compressed/dbg.c                | 1 -
- arch/mips/boot/compressed/uart-16550.c         | 1 -
- arch/mips/cavium-octeon/smp.c                  | 1 -
- arch/mips/fw/arc/file.c                        | 1 -
- arch/mips/include/asm/highmem.h                | 1 -
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h | 1 -
- arch/mips/include/asm/mach-generic/floppy.h    | 1 -
- arch/mips/include/asm/mach-jazz/floppy.h       | 1 -
- arch/mips/jz4740/platform.c                    | 1 -
- arch/mips/kernel/bmips_vec.S                   | 1 -
- arch/mips/kernel/crash.c                       | 1 -
- arch/mips/kernel/spram.c                       | 1 -
- arch/mips/kernel/sync-r4k.c                    | 1 -
- arch/mips/kvm/kvm_tlb.c                        | 1 -
- arch/mips/lantiq/xway/clk.c                    | 1 -
- arch/mips/lasat/at93c.c                        | 1 -
- arch/mips/lasat/picvue.c                       | 1 -
- arch/mips/lib/uncached.c                       | 1 -
- arch/mips/loongson/lemote-2f/clock.c           | 1 -
- arch/mips/mm/c-octeon.c                        | 1 -
- arch/mips/mm/c-r3k.c                           | 1 -
- arch/mips/mm/cache.c                           | 1 -
- arch/mips/mm/cex-sb1.S                         | 1 -
- arch/mips/mm/hugetlbpage.c                     | 1 -
- arch/mips/mm/page.c                            | 1 -
- arch/mips/mm/sc-rm7k.c                         | 1 -
- arch/mips/mm/tlb-r3k.c                         | 1 -
- arch/mips/mm/tlb-r8k.c                         | 1 -
- arch/mips/mm/tlbex.c                           | 1 -
- arch/mips/mm/uasm-micromips.c                  | 1 -
- arch/mips/mm/uasm-mips.c                       | 1 -
- arch/mips/mti-malta/malta-amon.c               | 1 -
- arch/mips/mti-malta/malta-console.c            | 1 -
- arch/mips/mti-sead3/sead3-pic32-bus.c          | 1 -
- arch/mips/netlogic/common/reset.S              | 1 -
- arch/mips/netlogic/common/smpboot.S            | 1 -
- arch/mips/netlogic/xlp/wakeup.c                | 1 -
- arch/mips/netlogic/xlr/wakeup.c                | 1 -
- arch/mips/pci/fixup-rc32434.c                  | 1 -
- arch/mips/pci/fixup-sb1250.c                   | 1 -
- arch/mips/pci/ops-bcm63xx.c                    | 1 -
- arch/mips/pci/ops-bonito64.c                   | 1 -
- arch/mips/pci/ops-lantiq.c                     | 1 -
- arch/mips/pci/ops-loongson2.c                  | 1 -
- arch/mips/pci/ops-mace.c                       | 1 -
- arch/mips/pci/ops-msc.c                        | 1 -
- arch/mips/pci/ops-nile4.c                      | 1 -
- arch/mips/pci/ops-rc32434.c                    | 1 -
- arch/mips/pci/pci-ip27.c                       | 1 -
- arch/mips/sgi-ip27/ip27-console.c              | 1 -
- arch/mips/sgi-ip27/ip27-irq-pci.c              | 1 -
- arch/mips/sgi-ip27/ip27-klconfig.c             | 1 -
- arch/mips/sgi-ip27/ip27-xtalk.c                | 1 -
- 57 files changed, 57 deletions(-)
+this is a little late but I haven't seen this earlier. I just tried your
+script and had no problems on my Asus RT-N66U running OpenWrt with
+kernel 3.10.24. This problem was either cause by some other non upstream
+Broadcom modification or was already fixed in mainline kernel.
 
-diff --git a/arch/mips/alchemy/common/power.c b/arch/mips/alchemy/common/power.c
-index 0c7fce2..bdb28dee 100644
---- a/arch/mips/alchemy/common/power.c
-+++ b/arch/mips/alchemy/common/power.c
-@@ -29,7 +29,6 @@
-  *  675 Mass Ave, Cambridge, MA 02139, USA.
-  */
- 
--#include <linux/init.h>
- #include <linux/pm.h>
- #include <linux/sysctl.h>
- #include <linux/jiffies.h>
-diff --git a/arch/mips/ath79/common.h b/arch/mips/ath79/common.h
-index 648d2da..a312071 100644
---- a/arch/mips/ath79/common.h
-+++ b/arch/mips/ath79/common.h
-@@ -15,7 +15,6 @@
- #define __ATH79_COMMON_H
- 
- #include <linux/types.h>
--#include <linux/init.h>
- 
- #define ATH79_MEM_SIZE_MIN	(2 * 1024 * 1024)
- #define ATH79_MEM_SIZE_MAX	(128 * 1024 * 1024)
-diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
-index b4c585b..feb9bc0 100644
---- a/arch/mips/bcm47xx/nvram.c
-+++ b/arch/mips/bcm47xx/nvram.c
-@@ -11,7 +11,6 @@
-  * option) any later version.
-  */
- 
--#include <linux/init.h>
- #include <linux/types.h>
- #include <linux/module.h>
- #include <linux/ssb/ssb.h>
-diff --git a/arch/mips/bcm63xx/early_printk.c b/arch/mips/bcm63xx/early_printk.c
-index aa8f7f9..4127d8f 100644
---- a/arch/mips/bcm63xx/early_printk.c
-+++ b/arch/mips/bcm63xx/early_printk.c
-@@ -6,7 +6,6 @@
-  * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
-  */
- 
--#include <linux/init.h>
- #include <bcm63xx_io.h>
- #include <bcm63xx_regs.h>
- 
-diff --git a/arch/mips/boot/compressed/dbg.c b/arch/mips/boot/compressed/dbg.c
-index 134a616..06c6a5b 100644
---- a/arch/mips/boot/compressed/dbg.c
-+++ b/arch/mips/boot/compressed/dbg.c
-@@ -6,7 +6,6 @@
-  * need to implement your own putc().
-  */
- #include <linux/compiler.h>
--#include <linux/init.h>
- #include <linux/types.h>
- 
- void __weak putc(char c)
-diff --git a/arch/mips/boot/compressed/uart-16550.c b/arch/mips/boot/compressed/uart-16550.c
-index c01d343..93fd11e 100644
---- a/arch/mips/boot/compressed/uart-16550.c
-+++ b/arch/mips/boot/compressed/uart-16550.c
-@@ -4,7 +4,6 @@
- 
- #include <linux/types.h>
- #include <linux/serial_reg.h>
--#include <linux/init.h>
- 
- #include <asm/addrspace.h>
- 
-diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-index 24a2167..67a078f 100644
---- a/arch/mips/cavium-octeon/smp.c
-+++ b/arch/mips/cavium-octeon/smp.c
-@@ -6,7 +6,6 @@
-  * Copyright (C) 2004-2008, 2009, 2010 Cavium Networks
-  */
- #include <linux/cpu.h>
--#include <linux/init.h>
- #include <linux/delay.h>
- #include <linux/smp.h>
- #include <linux/interrupt.h>
-diff --git a/arch/mips/fw/arc/file.c b/arch/mips/fw/arc/file.c
-index a8b0803..49fd3ff 100644
---- a/arch/mips/fw/arc/file.c
-+++ b/arch/mips/fw/arc/file.c
-@@ -8,7 +8,6 @@
-  * Copyright (C) 1994, 1995, 1996, 1999 Ralf Baechle
-  * Copyright (C) 1999 Silicon Graphics, Inc.
-  */
--#include <linux/init.h>
- 
- #include <asm/fw/arc/types.h>
- #include <asm/sgialib.h>
-diff --git a/arch/mips/include/asm/highmem.h b/arch/mips/include/asm/highmem.h
-index b0dd0c8..572e63e 100644
---- a/arch/mips/include/asm/highmem.h
-+++ b/arch/mips/include/asm/highmem.h
-@@ -19,7 +19,6 @@
- 
- #ifdef __KERNEL__
- 
--#include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/uaccess.h>
- #include <asm/kmap_types.h>
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index b86a125..cd41e93 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -16,7 +16,6 @@
- #define __ASM_MACH_AR71XX_REGS_H
- 
- #include <linux/types.h>
--#include <linux/init.h>
- #include <linux/io.h>
- #include <linux/bitops.h>
- 
-diff --git a/arch/mips/include/asm/mach-generic/floppy.h b/arch/mips/include/asm/mach-generic/floppy.h
-index 5b5cd68..e2561d9 100644
---- a/arch/mips/include/asm/mach-generic/floppy.h
-+++ b/arch/mips/include/asm/mach-generic/floppy.h
-@@ -9,7 +9,6 @@
- #define __ASM_MACH_GENERIC_FLOPPY_H
- 
- #include <linux/delay.h>
--#include <linux/init.h>
- #include <linux/ioport.h>
- #include <linux/sched.h>
- #include <linux/linkage.h>
-diff --git a/arch/mips/include/asm/mach-jazz/floppy.h b/arch/mips/include/asm/mach-jazz/floppy.h
-index 62aa1e2..4b86c88 100644
---- a/arch/mips/include/asm/mach-jazz/floppy.h
-+++ b/arch/mips/include/asm/mach-jazz/floppy.h
-@@ -9,7 +9,6 @@
- #define __ASM_MACH_JAZZ_FLOPPY_H
- 
- #include <linux/delay.h>
--#include <linux/init.h>
- #include <linux/linkage.h>
- #include <linux/types.h>
- #include <linux/mm.h>
-diff --git a/arch/mips/jz4740/platform.c b/arch/mips/jz4740/platform.c
-index df65677..e53c325 100644
---- a/arch/mips/jz4740/platform.c
-+++ b/arch/mips/jz4740/platform.c
-@@ -14,7 +14,6 @@
-  */
- 
- #include <linux/device.h>
--#include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/platform_device.h>
- #include <linux/resource.h>
-diff --git a/arch/mips/kernel/bmips_vec.S b/arch/mips/kernel/bmips_vec.S
-index bd79c4f..ec067c1 100644
---- a/arch/mips/kernel/bmips_vec.S
-+++ b/arch/mips/kernel/bmips_vec.S
-@@ -8,7 +8,6 @@
-  * Reset/NMI/re-entry vectors for BMIPS processors
-  */
- 
--#include <linux/init.h>
- 
- #include <asm/asm.h>
- #include <asm/asmmacro.h>
-diff --git a/arch/mips/kernel/crash.c b/arch/mips/kernel/crash.c
-index 93aa302..d212646 100644
---- a/arch/mips/kernel/crash.c
-+++ b/arch/mips/kernel/crash.c
-@@ -5,7 +5,6 @@
- #include <linux/bootmem.h>
- #include <linux/crash_dump.h>
- #include <linux/delay.h>
--#include <linux/init.h>
- #include <linux/irq.h>
- #include <linux/types.h>
- #include <linux/sched.h>
-diff --git a/arch/mips/kernel/spram.c b/arch/mips/kernel/spram.c
-index 93f8681..0bd4340 100644
---- a/arch/mips/kernel/spram.c
-+++ b/arch/mips/kernel/spram.c
-@@ -8,7 +8,6 @@
-  *
-  * Copyright (C) 2007, 2008 MIPS Technologies, Inc.
-  */
--#include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/ptrace.h>
- #include <linux/stddef.h>
-diff --git a/arch/mips/kernel/sync-r4k.c b/arch/mips/kernel/sync-r4k.c
-index 84536bf..c24ad5f 100644
---- a/arch/mips/kernel/sync-r4k.c
-+++ b/arch/mips/kernel/sync-r4k.c
-@@ -11,7 +11,6 @@
-  */
- 
- #include <linux/kernel.h>
--#include <linux/init.h>
- #include <linux/irqflags.h>
- #include <linux/cpumask.h>
- 
-diff --git a/arch/mips/kvm/kvm_tlb.c b/arch/mips/kvm/kvm_tlb.c
-index c777dd3..26db6ba 100644
---- a/arch/mips/kvm/kvm_tlb.c
-+++ b/arch/mips/kvm/kvm_tlb.c
-@@ -10,7 +10,6 @@
- * Authors: Sanjay Lal <sanjayl@kymasys.com>
- */
- 
--#include <linux/init.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
- #include <linux/mm.h>
-diff --git a/arch/mips/lantiq/xway/clk.c b/arch/mips/lantiq/xway/clk.c
-index 1ab576d..8750dc0 100644
---- a/arch/mips/lantiq/xway/clk.c
-+++ b/arch/mips/lantiq/xway/clk.c
-@@ -8,7 +8,6 @@
- 
- #include <linux/io.h>
- #include <linux/export.h>
--#include <linux/init.h>
- #include <linux/clk.h>
- 
- #include <asm/time.h>
-diff --git a/arch/mips/lasat/at93c.c b/arch/mips/lasat/at93c.c
-index 793e234..942f32b 100644
---- a/arch/mips/lasat/at93c.c
-+++ b/arch/mips/lasat/at93c.c
-@@ -8,7 +8,6 @@
- #include <linux/delay.h>
- #include <asm/lasat/lasat.h>
- #include <linux/module.h>
--#include <linux/init.h>
- 
- #include "at93c.h"
- 
-diff --git a/arch/mips/lasat/picvue.c b/arch/mips/lasat/picvue.c
-index 7eb3348..d613b97 100644
---- a/arch/mips/lasat/picvue.c
-+++ b/arch/mips/lasat/picvue.c
-@@ -9,7 +9,6 @@
- #include <asm/bootinfo.h>
- #include <asm/lasat/lasat.h>
- #include <linux/module.h>
--#include <linux/init.h>
- #include <linux/errno.h>
- #include <linux/string.h>
- 
-diff --git a/arch/mips/lib/uncached.c b/arch/mips/lib/uncached.c
-index d8522f8..09d5dee 100644
---- a/arch/mips/lib/uncached.c
-+++ b/arch/mips/lib/uncached.c
-@@ -8,7 +8,6 @@
-  *	Author: Maciej W. Rozycki <macro@mips.com>
-  */
- 
--#include <linux/init.h>
- 
- #include <asm/addrspace.h>
- #include <asm/bug.h>
-diff --git a/arch/mips/loongson/lemote-2f/clock.c b/arch/mips/loongson/lemote-2f/clock.c
-index 4dc2f5f..aed32b8 100644
---- a/arch/mips/loongson/lemote-2f/clock.c
-+++ b/arch/mips/loongson/lemote-2f/clock.c
-@@ -10,7 +10,6 @@
- #include <linux/cpufreq.h>
- #include <linux/errno.h>
- #include <linux/export.h>
--#include <linux/init.h>
- #include <linux/list.h>
- #include <linux/mutex.h>
- #include <linux/spinlock.h>
-diff --git a/arch/mips/mm/c-octeon.c b/arch/mips/mm/c-octeon.c
-index c8efdb5..f41a5c5 100644
---- a/arch/mips/mm/c-octeon.c
-+++ b/arch/mips/mm/c-octeon.c
-@@ -6,7 +6,6 @@
-  * Copyright (C) 2005-2007 Cavium Networks
-  */
- #include <linux/export.h>
--#include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
-diff --git a/arch/mips/mm/c-r3k.c b/arch/mips/mm/c-r3k.c
-index 2fcde0c..135ec31 100644
---- a/arch/mips/mm/c-r3k.c
-+++ b/arch/mips/mm/c-r3k.c
-@@ -9,7 +9,6 @@
-  * Copyright (C) 1998 Gleb Raiko & Vladimir Roganov
-  * Copyright (C) 2001, 2004, 2007  Maciej W. Rozycki
-  */
--#include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
-diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
-index 15f813c..fde7e56 100644
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -8,7 +8,6 @@
-  */
- #include <linux/fs.h>
- #include <linux/fcntl.h>
--#include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/linkage.h>
- #include <linux/module.h>
-diff --git a/arch/mips/mm/cex-sb1.S b/arch/mips/mm/cex-sb1.S
-index 191cf6e..5d5f296 100644
---- a/arch/mips/mm/cex-sb1.S
-+++ b/arch/mips/mm/cex-sb1.S
-@@ -15,7 +15,6 @@
-  * along with this program; if not, write to the Free Software
-  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-  */
--#include <linux/init.h>
- 
- #include <asm/asm.h>
- #include <asm/regdef.h>
-diff --git a/arch/mips/mm/hugetlbpage.c b/arch/mips/mm/hugetlbpage.c
-index 01fda44..77e0ae0 100644
---- a/arch/mips/mm/hugetlbpage.c
-+++ b/arch/mips/mm/hugetlbpage.c
-@@ -11,7 +11,6 @@
-  * Copyright (C) 2008, 2009 Cavium Networks, Inc.
-  */
- 
--#include <linux/init.h>
- #include <linux/fs.h>
- #include <linux/mm.h>
- #include <linux/hugetlb.h>
-diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
-index cbd81d1..58033c4 100644
---- a/arch/mips/mm/page.c
-+++ b/arch/mips/mm/page.c
-@@ -8,7 +8,6 @@
-  * Copyright (C) 2008  Thiemo Seufer
-  * Copyright (C) 2012  MIPS Technologies, Inc.
-  */
--#include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
-diff --git a/arch/mips/mm/sc-rm7k.c b/arch/mips/mm/sc-rm7k.c
-index aaffbba..9ac1efc 100644
---- a/arch/mips/mm/sc-rm7k.c
-+++ b/arch/mips/mm/sc-rm7k.c
-@@ -6,7 +6,6 @@
- 
- #undef DEBUG
- 
--#include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/mm.h>
- #include <linux/bitops.h>
-diff --git a/arch/mips/mm/tlb-r3k.c b/arch/mips/mm/tlb-r3k.c
-index 9aca109..d657493 100644
---- a/arch/mips/mm/tlb-r3k.c
-+++ b/arch/mips/mm/tlb-r3k.c
-@@ -10,7 +10,6 @@
-  * Copyright (C) 2002  Ralf Baechle
-  * Copyright (C) 2002  Maciej W. Rozycki
-  */
--#include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
-diff --git a/arch/mips/mm/tlb-r8k.c b/arch/mips/mm/tlb-r8k.c
-index 6a99733..138a2ec 100644
---- a/arch/mips/mm/tlb-r8k.c
-+++ b/arch/mips/mm/tlb-r8k.c
-@@ -8,7 +8,6 @@
-  * Carsten Langgaard, carstenl@mips.com
-  * Copyright (C) 2002 MIPS Technologies, Inc.  All rights reserved.
-  */
--#include <linux/init.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
- #include <linux/mm.h>
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 183f2b5..3d4894e 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -26,7 +26,6 @@
- #include <linux/types.h>
- #include <linux/smp.h>
- #include <linux/string.h>
--#include <linux/init.h>
- #include <linux/cache.h>
- 
- #include <asm/cacheflush.h>
-diff --git a/arch/mips/mm/uasm-micromips.c b/arch/mips/mm/uasm-micromips.c
-index 060000f..b8d580c 100644
---- a/arch/mips/mm/uasm-micromips.c
-+++ b/arch/mips/mm/uasm-micromips.c
-@@ -15,7 +15,6 @@
- 
- #include <linux/kernel.h>
- #include <linux/types.h>
--#include <linux/init.h>
- 
- #include <asm/inst.h>
- #include <asm/elf.h>
-diff --git a/arch/mips/mm/uasm-mips.c b/arch/mips/mm/uasm-mips.c
-index 0c72458..3abd609 100644
---- a/arch/mips/mm/uasm-mips.c
-+++ b/arch/mips/mm/uasm-mips.c
-@@ -15,7 +15,6 @@
- 
- #include <linux/kernel.h>
- #include <linux/types.h>
--#include <linux/init.h>
- 
- #include <asm/inst.h>
- #include <asm/elf.h>
-diff --git a/arch/mips/mti-malta/malta-amon.c b/arch/mips/mti-malta/malta-amon.c
-index 1e47844..6994d0ca 100644
---- a/arch/mips/mti-malta/malta-amon.c
-+++ b/arch/mips/mti-malta/malta-amon.c
-@@ -19,7 +19,6 @@
-  */
- 
- #include <linux/kernel.h>
--#include <linux/init.h>
- #include <linux/smp.h>
- 
- #include <asm/addrspace.h>
-diff --git a/arch/mips/mti-malta/malta-console.c b/arch/mips/mti-malta/malta-console.c
-index 43bcfb4..8a3d5d4 100644
---- a/arch/mips/mti-malta/malta-console.c
-+++ b/arch/mips/mti-malta/malta-console.c
-@@ -18,7 +18,6 @@
-  * Putting things on the screen/serial line using YAMONs facilities.
-  */
- #include <linux/console.h>
--#include <linux/init.h>
- #include <linux/serial_reg.h>
- #include <asm/io.h>
- 
-diff --git a/arch/mips/mti-sead3/sead3-pic32-bus.c b/arch/mips/mti-sead3/sead3-pic32-bus.c
-index eb2bf93..3b12aa5 100644
---- a/arch/mips/mti-sead3/sead3-pic32-bus.c
-+++ b/arch/mips/mti-sead3/sead3-pic32-bus.c
-@@ -8,7 +8,6 @@
- #include <linux/delay.h>
- #include <linux/kernel.h>
- #include <linux/spinlock.h>
--#include <linux/init.h>
- #include <linux/io.h>
- #include <linux/errno.h>
- 
-diff --git a/arch/mips/netlogic/common/reset.S b/arch/mips/netlogic/common/reset.S
-index adb1828..d3bcd3b 100644
---- a/arch/mips/netlogic/common/reset.S
-+++ b/arch/mips/netlogic/common/reset.S
-@@ -32,7 +32,6 @@
-  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  */
- 
--#include <linux/init.h>
- 
- #include <asm/asm.h>
- #include <asm/asm-offsets.h>
-diff --git a/arch/mips/netlogic/common/smpboot.S b/arch/mips/netlogic/common/smpboot.S
-index aa6cff0..177e541 100644
---- a/arch/mips/netlogic/common/smpboot.S
-+++ b/arch/mips/netlogic/common/smpboot.S
-@@ -32,7 +32,6 @@
-  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  */
- 
--#include <linux/init.h>
- 
- #include <asm/asm.h>
- #include <asm/asm-offsets.h>
-diff --git a/arch/mips/netlogic/xlp/wakeup.c b/arch/mips/netlogic/xlp/wakeup.c
-index 682d563..7d93e19 100644
---- a/arch/mips/netlogic/xlp/wakeup.c
-+++ b/arch/mips/netlogic/xlp/wakeup.c
-@@ -32,7 +32,6 @@
-  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  */
- 
--#include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/threads.h>
- 
-diff --git a/arch/mips/netlogic/xlr/wakeup.c b/arch/mips/netlogic/xlr/wakeup.c
-index 9fb81fa..6de1a68 100644
---- a/arch/mips/netlogic/xlr/wakeup.c
-+++ b/arch/mips/netlogic/xlr/wakeup.c
-@@ -32,7 +32,6 @@
-  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  */
- 
--#include <linux/init.h>
- #include <linux/delay.h>
- #include <linux/threads.h>
- 
-diff --git a/arch/mips/pci/fixup-rc32434.c b/arch/mips/pci/fixup-rc32434.c
-index d0f6ecb..7fcafd5 100644
---- a/arch/mips/pci/fixup-rc32434.c
-+++ b/arch/mips/pci/fixup-rc32434.c
-@@ -27,7 +27,6 @@
- #include <linux/types.h>
- #include <linux/pci.h>
- #include <linux/kernel.h>
--#include <linux/init.h>
- 
- #include <asm/mach-rc32434/rc32434.h>
- #include <asm/mach-rc32434/irq.h>
-diff --git a/arch/mips/pci/fixup-sb1250.c b/arch/mips/pci/fixup-sb1250.c
-index 1441bec..8feae91 100644
---- a/arch/mips/pci/fixup-sb1250.c
-+++ b/arch/mips/pci/fixup-sb1250.c
-@@ -8,7 +8,6 @@
-  *	2 of the License, or (at your option) any later version.
-  */
- 
--#include <linux/init.h>
- #include <linux/pci.h>
- 
- /*
-diff --git a/arch/mips/pci/ops-bcm63xx.c b/arch/mips/pci/ops-bcm63xx.c
-index 6144bb3..13eea69 100644
---- a/arch/mips/pci/ops-bcm63xx.c
-+++ b/arch/mips/pci/ops-bcm63xx.c
-@@ -9,7 +9,6 @@
- #include <linux/types.h>
- #include <linux/pci.h>
- #include <linux/kernel.h>
--#include <linux/init.h>
- #include <linux/delay.h>
- #include <linux/io.h>
- 
-diff --git a/arch/mips/pci/ops-bonito64.c b/arch/mips/pci/ops-bonito64.c
-index 830352e..c06205a 100644
---- a/arch/mips/pci/ops-bonito64.c
-+++ b/arch/mips/pci/ops-bonito64.c
-@@ -22,7 +22,6 @@
- #include <linux/types.h>
- #include <linux/pci.h>
- #include <linux/kernel.h>
--#include <linux/init.h>
- 
- #include <asm/mips-boards/bonito64.h>
- 
-diff --git a/arch/mips/pci/ops-lantiq.c b/arch/mips/pci/ops-lantiq.c
-index 16e7c25..e5738ee 100644
---- a/arch/mips/pci/ops-lantiq.c
-+++ b/arch/mips/pci/ops-lantiq.c
-@@ -9,7 +9,6 @@
- #include <linux/types.h>
- #include <linux/pci.h>
- #include <linux/kernel.h>
--#include <linux/init.h>
- #include <linux/delay.h>
- #include <linux/mm.h>
- #include <asm/addrspace.h>
-diff --git a/arch/mips/pci/ops-loongson2.c b/arch/mips/pci/ops-loongson2.c
-index 98254af..24138bb 100644
---- a/arch/mips/pci/ops-loongson2.c
-+++ b/arch/mips/pci/ops-loongson2.c
-@@ -14,7 +14,6 @@
- #include <linux/types.h>
- #include <linux/pci.h>
- #include <linux/kernel.h>
--#include <linux/init.h>
- #include <linux/export.h>
- 
- #include <loongson.h>
-diff --git a/arch/mips/pci/ops-mace.c b/arch/mips/pci/ops-mace.c
-index 1cfb558..6b5821f 100644
---- a/arch/mips/pci/ops-mace.c
-+++ b/arch/mips/pci/ops-mace.c
-@@ -6,7 +6,6 @@
-  * Copyright (C) 2000, 2001 Keith M Wesolowski
-  */
- #include <linux/kernel.h>
--#include <linux/init.h>
- #include <linux/pci.h>
- #include <linux/types.h>
- #include <asm/pci.h>
-diff --git a/arch/mips/pci/ops-msc.c b/arch/mips/pci/ops-msc.c
-index 92a8543..dbbf365 100644
---- a/arch/mips/pci/ops-msc.c
-+++ b/arch/mips/pci/ops-msc.c
-@@ -24,7 +24,6 @@
- #include <linux/types.h>
- #include <linux/pci.h>
- #include <linux/kernel.h>
--#include <linux/init.h>
- 
- #include <asm/mips-boards/msc01_pci.h>
- 
-diff --git a/arch/mips/pci/ops-nile4.c b/arch/mips/pci/ops-nile4.c
-index 499e35c..a1a7c9f 100644
---- a/arch/mips/pci/ops-nile4.c
-+++ b/arch/mips/pci/ops-nile4.c
-@@ -1,5 +1,4 @@
- #include <linux/kernel.h>
--#include <linux/init.h>
- #include <linux/pci.h>
- #include <asm/bootinfo.h>
- 
-diff --git a/arch/mips/pci/ops-rc32434.c b/arch/mips/pci/ops-rc32434.c
-index 7c7182e..874ed6d 100644
---- a/arch/mips/pci/ops-rc32434.c
-+++ b/arch/mips/pci/ops-rc32434.c
-@@ -26,7 +26,6 @@
-  *  675 Mass Ave, Cambridge, MA 02139, USA.
-  */
- #include <linux/delay.h>
--#include <linux/init.h>
- #include <linux/io.h>
- #include <linux/pci.h>
- #include <linux/types.h>
-diff --git a/arch/mips/pci/pci-ip27.c b/arch/mips/pci/pci-ip27.c
-index 162b4cb..0f09eaf 100644
---- a/arch/mips/pci/pci-ip27.c
-+++ b/arch/mips/pci/pci-ip27.c
-@@ -7,7 +7,6 @@
-  * Copyright (C) 1999, 2000, 04 Ralf Baechle (ralf@linux-mips.org)
-  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-  */
--#include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/export.h>
- #include <linux/pci.h>
-diff --git a/arch/mips/sgi-ip27/ip27-console.c b/arch/mips/sgi-ip27/ip27-console.c
-index b952d5b..45fdfbc 100644
---- a/arch/mips/sgi-ip27/ip27-console.c
-+++ b/arch/mips/sgi-ip27/ip27-console.c
-@@ -5,7 +5,6 @@
-  *
-  * Copyright (C) 2001, 2002 Ralf Baechle
-  */
--#include <linux/init.h>
- 
- #include <asm/page.h>
- #include <asm/sn/addrs.h>
-diff --git a/arch/mips/sgi-ip27/ip27-irq-pci.c b/arch/mips/sgi-ip27/ip27-irq-pci.c
-index ec22ec5..2a1c407 100644
---- a/arch/mips/sgi-ip27/ip27-irq-pci.c
-+++ b/arch/mips/sgi-ip27/ip27-irq-pci.c
-@@ -8,7 +8,6 @@
- 
- #undef DEBUG
- 
--#include <linux/init.h>
- #include <linux/irq.h>
- #include <linux/errno.h>
- #include <linux/signal.h>
-diff --git a/arch/mips/sgi-ip27/ip27-klconfig.c b/arch/mips/sgi-ip27/ip27-klconfig.c
-index 7afe146..c873d62 100644
---- a/arch/mips/sgi-ip27/ip27-klconfig.c
-+++ b/arch/mips/sgi-ip27/ip27-klconfig.c
-@@ -2,7 +2,6 @@
-  * Copyright (C) 1999, 2000 Ralf Baechle (ralf@gnu.org)
-  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-  */
--#include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/interrupt.h>
-diff --git a/arch/mips/sgi-ip27/ip27-xtalk.c b/arch/mips/sgi-ip27/ip27-xtalk.c
-index d59b820..20f582a 100644
---- a/arch/mips/sgi-ip27/ip27-xtalk.c
-+++ b/arch/mips/sgi-ip27/ip27-xtalk.c
-@@ -7,7 +7,6 @@
-  * Generic XTALK initialization code
-  */
- 
--#include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/smp.h>
- #include <asm/sn/types.h>
--- 
-1.8.4.1
+
+root@OpenWrt:~# cd /tmp
+root@OpenWrt:/tmp# echo "#!/bin/sh" >bug
+root@OpenWrt:/tmp# echo 'echo -n $1.' >>bug
+root@OpenWrt:/tmp# cat bug
+#!/bin/sh
+echo -n $1.
+root@OpenWrt:/tmp# chmod +x bug
+root@OpenWrt:/tmp# for i in 0 1 2 3 4 5 6 7 8 9; do ./bug $i; done
+0.1.2.3.4.5.6.7.8.9.root@OpenWrt:/tmp#
+root@OpenWrt:/tmp#
+
+Hauke

@@ -1,41 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jan 2014 23:12:44 +0100 (CET)
-Received: from filtteri2.pp.htv.fi ([213.243.153.185]:59305 "EHLO
-        filtteri2.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6817237AbaAHWMDfzRKs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jan 2014 23:12:03 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by filtteri2.pp.htv.fi (Postfix) with ESMTP id E05B519C130;
-        Thu,  9 Jan 2014 00:12:02 +0200 (EET)
-X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
-Received: from smtp6.welho.com ([213.243.153.40])
-        by localhost (filtteri2.pp.htv.fi [213.243.153.185]) (amavisd-new, port 10024)
-        with ESMTP id QwdWXQkZ3ecI; Thu,  9 Jan 2014 00:11:58 +0200 (EET)
-Received: from blackmetal.bb.dnainternet.fi (91-145-91-118.bb.dnainternet.fi [91.145.91.118])
-        by smtp6.welho.com (Postfix) with ESMTP id D72D35BC010;
-        Thu,  9 Jan 2014 00:11:57 +0200 (EET)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <blogic@openwrt.org>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 2/2] MIPS: fix blast_icache32 on loongson2
-Date:   Thu,  9 Jan 2014 00:11:19 +0200
-Message-Id: <1389219079-6133-3-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 1.8.5.2
-In-Reply-To: <1389219079-6133-1-git-send-email-aaro.koskinen@iki.fi>
-References: <1389219079-6133-1-git-send-email-aaro.koskinen@iki.fi>
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jan 2014 23:58:30 +0100 (CET)
+Received: from hall.aurel32.net ([195.154.112.97]:34432 "EHLO hall.aurel32.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6817237AbaAHW61DopnM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 8 Jan 2014 23:58:27 +0100
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1W124s-0006Vo-Q8; Wed, 08 Jan 2014 23:58:22 +0100
+Date:   Wed, 8 Jan 2014 23:58:22 +0100
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Subject: Re: [PATCH V16 04/12] MIPS: Loongson: Add UEFI-like firmware
+ interface (LEFI) support
+Message-ID: <20140108225822.GA10573@hall.aurel32.net>
+References: <1389149068-24376-1-git-send-email-chenhc@lemote.com>
+ <1389149068-24376-5-git-send-email-chenhc@lemote.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <1389149068-24376-5-git-send-email-chenhc@lemote.com>
+X-Mailer: Mutt 1.5.21 (2010-09-15)
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38910
+X-archive-position: 38911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,139 +47,507 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 14bd8c082016cd1f67fdfd702e4cf6367869a712 (MIPS: Loongson: Get
-rid of Loongson 2 #ifdefery all over arch/mips.) failed to add Loongson2
-specific blast_icache32 functions. Fix that.
+On Wed, Jan 08, 2014 at 10:44:20AM +0800, Huacai Chen wrote:
+> The new UEFI-like firmware interface (LEFI, i.e. Loongson Unified
+> Firmware Interface) has 3 advantages:
+> 
+> 1, Firmware export a physical memory map which is similar to X86's
+>    E820 map, so prom_init_memory() will be more elegant that #ifdef
+>    clauses can be removed.
+> 2, Firmware export a pci irq routing table, we no longer need pci
+>    irq routing fixup in kernel's code.
+> 3, Firmware has a built-in vga bios, and its address is exported,
+>    the linux kernel no longer need an embedded blob.
+> 
+> With the LEFI interface, Loongson-3A/2G and all their successors can use
+> a unified kernel. All Loongson-based machines support this new interface
+> except 2E/2F series.
+> 
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> Signed-off-by: Hongliang Tao <taohl@lemote.com>
+> Signed-off-by: Hua Yan <yanh@lemote.com>
+> ---
+>  arch/mips/include/asm/mach-loongson/boot_param.h |  159 ++++++++++++++++++++++
+>  arch/mips/include/asm/mach-loongson/loongson.h   |    4 +-
+>  arch/mips/loongson/common/env.c                  |   64 +++++++--
+>  arch/mips/loongson/common/init.c                 |    9 +-
+>  arch/mips/loongson/common/mem.c                  |   42 ++++++
+>  arch/mips/loongson/common/pci.c                  |    6 +-
+>  arch/mips/loongson/common/reset.c                |   21 +++
+>  7 files changed, 285 insertions(+), 20 deletions(-)
+>  create mode 100644 arch/mips/include/asm/mach-loongson/boot_param.h
+> 
+> diff --git a/arch/mips/include/asm/mach-loongson/boot_param.h b/arch/mips/include/asm/mach-loongson/boot_param.h
+> new file mode 100644
+> index 0000000..234c0eb
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mach-loongson/boot_param.h
+> @@ -0,0 +1,159 @@
+> +#ifndef __ASM_MACH_LOONGSON_BOOT_PARAM_H_
+> +#define __ASM_MACH_LOONGSON_BOOT_PARAM_H_
+> +
+> +#define SYSTEM_RAM_LOW		1
+> +#define SYSTEM_RAM_HIGH		2
+> +#define MEM_RESERVED		3
+> +#define PCI_IO			4
+> +#define PCI_MEM			5
+> +#define LOONGSON_CFG_REG	6
+> +#define VIDEO_ROM		7
+> +#define ADAPTER_ROM		8
+> +#define ACPI_TABLE		9
+> +#define MAX_MEMORY_TYPE		10
+> +
+> +#define LOONGSON3_BOOT_MEM_MAP_MAX 128
+> +struct efi_memory_map_loongson {
+> +	u16 vers;	/* version of efi_memory_map */
+> +	u32 nr_map;	/* number of memory_maps */
+> +	u32 mem_freq;	/* memory frequence */
+> +	struct mem_map {
+> +		u32 node_id;	/* node_id which memory attached to */
+> +		u32 mem_type;	/* system memory, pci memory, pci io, etc. */
+> +		u64 mem_start;	/* memory map start address */
+> +		u32 mem_size;	/* each memory_map size, not the total size */
+> +	} map[LOONGSON3_BOOT_MEM_MAP_MAX];
+> +} __packed;
+> +
+> +enum loongson_cpu_type {
+> +	Loongson_2E = 0,
+> +	Loongson_2F = 1,
+> +	Loongson_3A = 2,
+> +	Loongson_3B = 3,
+> +	Loongson_1A = 4,
+> +	Loongson_1B = 5
+> +};
+> +
+> +/*
+> + * Capability and feature descriptor structure for MIPS CPU
+> + */
+> +struct efi_cpuinfo_loongson {
+> +	u16 vers;     /* version of efi_cpuinfo_loongson */
+> +	u32 processor_id; /* PRID, e.g. 6305, 6306 */
+> +	u32 cputype;  /* Loongson_3A/3B, etc. */
+> +	u32 total_node;   /* num of total numa nodes */
+> +	u32 cpu_startup_core_id; /* Core id */
+> +	u32 cpu_clock_freq; /* cpu_clock */
+> +	u32 nr_cpus;
+> +} __packed;
+> +
+> +struct system_loongson {
+> +	u16 vers;     /* version of system_loongson */
+> +	u32 ccnuma_smp; /* 0: no numa; 1: has numa */
+> +	u32 sing_double_channel; /* 1:single; 2:double */
+> +} __packed;
+> +
+> +struct irq_source_routing_table {
+> +	u16 vers;
+> +	u16 size;
+> +	u16 rtr_bus;
+> +	u16 rtr_devfn;
+> +	u32 vendor;
+> +	u32 device;
+> +	u32 PIC_type;   /* conform use HT or PCI to route to CPU-PIC */
+> +	u64 ht_int_bit; /* 3A: 1<<24; 3B: 1<<16 */
+> +	u64 ht_enable;  /* irqs used in this PIC */
+> +	u32 node_id;    /* node id: 0x0-0; 0x1-1; 0x10-2; 0x11-3 */
+> +	u64 pci_mem_start_addr;
+> +	u64 pci_mem_end_addr;
+> +	u64 pci_io_start_addr;
+> +	u64 pci_io_end_addr;
+> +	u64 pci_config_addr;
+> +} __packed;
+> +
+> +struct interface_info {
+> +	u16 vers; /* version of the specificition */
+> +	u16 size;
+> +	u8  flag;
+> +	char description[64];
+> +} __packed;
+> +
+> +#define MAX_RESOURCE_NUMBER 128
+> +struct resource_loongson {
+> +	u64 start; /* resource start address */
+> +	u64 end;   /* resource end address */
+> +	char name[64];
+> +	u32 flags;
+> +};
+> +
+> +struct archdev_data {};  /* arch specific additions */
+> +
+> +struct board_devices {
+> +	char name[64];    /* hold the device name */
+> +	u32 num_resources; /* number of device_resource */
+> +	/* for each device's resource */
+> +	struct resource_loongson resource[MAX_RESOURCE_NUMBER];
+> +	/* arch specific additions */
+> +	struct archdev_data archdata;
+> +};
+> +
+> +struct loongson_special_attribute {
+> +	u16 vers;     /* version of this special */
+> +	char special_name[64]; /* special_atribute_name */
+> +	u32 loongson_special_type; /* type of special device */
+> +	/* for each device's resource */
+> +	struct resource_loongson resource[MAX_RESOURCE_NUMBER];
+> +};
+> +
+> +struct loongson_params {
+> +	u64 memory_offset;	/* efi_memory_map_loongson struct offset */
+> +	u64 cpu_offset;		/* efi_cpuinfo_loongson struct offset */
+> +	u64 system_offset;	/* system_loongson struct offset */
+> +	u64 irq_offset;		/* irq_source_routing_table struct offset */
+> +	u64 interface_offset;	/* interface_info struct offset */
+> +	u64 special_offset;	/* loongson_special_attribute struct offset */
+> +	u64 boarddev_table_offset;  /* board_devices offset */
+> +};
+> +
+> +struct smbios_tables {
+> +	u16 vers;     /* version of smbios */
+> +	u64 vga_bios; /* vga_bios address */
+> +	struct loongson_params lp;
+> +};
+> +
+> +struct efi_reset_system_t {
+> +	u64 ResetCold;
+> +	u64 ResetWarm;
+> +	u64 ResetType;
+> +	u64 Shutdown;
+> +};
+> +
+> +struct efi_loongson {
+> +	u64 mps;	/* MPS table */
+> +	u64 acpi;	/* ACPI table (IA64 ext 0.71) */
+> +	u64 acpi20;	/* ACPI table (ACPI 2.0) */
+> +	struct smbios_tables smbios;	/* SM BIOS table */
+> +	u64 sal_systab;	/* SAL system table */
+> +	u64 boot_info;	/* boot info table */
+> +};
+> +
+> +struct boot_params {
+> +	struct efi_loongson efi;
+> +	struct efi_reset_system_t reset_system;
+> +};
+> +
+> +struct loongson_system_configuration {
+> +	u32 nr_cpus;
+> +	enum loongson_cpu_type cputype;
+> +	u64 ht_control_base;
+> +	u64 pci_mem_start_addr;
+> +	u64 pci_mem_end_addr;
+> +	u64 pci_io_base;
+> +	u64 restart_addr;
+> +	u64 poweroff_addr;
+> +	u64 vgabios_addr;
+> +};
+> +
+> +extern struct efi_memory_map_loongson *emap;
+> +extern struct loongson_system_configuration loongson_sysconf;
 
-The patch fixes the following crash seen with 3.13-rc1:
+Thanks a lot for the loongson_sysconf struct, it looks a lot more clean
+now. What about emap? Isn't there any risk that the kernel reuse the
+corresponding memory and that its content is lost? It should be possible
+to hold a copy of this struct in loongson_sysconf.
 
-[    3.652000] Reserved instruction in kernel code[#1]:
-[...]
-[    3.652000] Call Trace:
-[    3.652000] [<ffffffff802223c8>] blast_icache32_page+0x8/0xb0
-[    3.652000] [<ffffffff80222c34>] r4k_flush_cache_page+0x19c/0x200
-[    3.652000] [<ffffffff802d17e4>] do_wp_page.isra.97+0x47c/0xe08
-[    3.652000] [<ffffffff802d51b0>] handle_mm_fault+0x938/0x1118
-[    3.652000] [<ffffffff8021bd40>] __do_page_fault+0x140/0x540
-[    3.652000] [<ffffffff80206be4>] resume_userspace_check+0x0/0x10
-[    3.652000]
-[    3.652000] Code: 00200825  64834000  00200825 <bc900000> bc900020  bc900040  bc900060  bc900080  bc9000a0
-[    3.656000] ---[ end trace cd8a48f722f5c5f7 ]---
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
-Acked-by: John Crispin <blogic@openwrt.org>
----
- arch/mips/include/asm/r4kcache.h | 43 ++++++++++++++++++++--------------------
- arch/mips/mm/c-r4k.c             |  7 +++++++
- 2 files changed, 29 insertions(+), 21 deletions(-)
+> +#endif
+> diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
+> index b286534..5913ea0 100644
+> --- a/arch/mips/include/asm/mach-loongson/loongson.h
+> +++ b/arch/mips/include/asm/mach-loongson/loongson.h
+> @@ -24,8 +24,8 @@ extern void mach_prepare_reboot(void);
+>  extern void mach_prepare_shutdown(void);
+>  
+>  /* environment arguments from bootloader */
+> -extern unsigned long cpu_clock_freq;
+> -extern unsigned long memsize, highmemsize;
+> +extern u32 cpu_clock_freq;
+> +extern u32 memsize, highmemsize;
+>  
+>  /* loongson-specific command line, env and memory initialization */
+>  extern void __init prom_init_memory(void);
+> diff --git a/arch/mips/loongson/common/env.c b/arch/mips/loongson/common/env.c
+> index 0a18fcf..ba2b6df 100644
+> --- a/arch/mips/loongson/common/env.c
+> +++ b/arch/mips/loongson/common/env.c
+> @@ -18,29 +18,37 @@
+>   * option) any later version.
+>   */
+>  #include <linux/module.h>
+> -
+>  #include <asm/bootinfo.h>
+> -
+>  #include <loongson.h>
+> +#include <boot_param.h>
+> +
+> +struct boot_params *boot_p;
+> +struct loongson_params *loongson_p;
+> +
+> +struct efi_cpuinfo_loongson *ecpu;
+> +struct efi_memory_map_loongson *emap;
+> +struct system_loongson *esys;
+> +struct irq_source_routing_table *eirq_source;
+> +struct loongson_system_configuration loongson_sysconf;
+>  
+> -unsigned long cpu_clock_freq;
+> +u32 cpu_clock_freq;
+>  EXPORT_SYMBOL(cpu_clock_freq);
+> -unsigned long memsize, highmemsize;
+>  
+>  #define parse_even_earlier(res, option, p)				\
+>  do {									\
+>  	unsigned int tmp __maybe_unused;				\
+>  									\
+>  	if (strncmp(option, (char *)p, strlen(option)) == 0)		\
+> -		tmp = strict_strtol((char *)p + strlen(option"="), 10, &res); \
+> +		tmp = kstrtou32((char *)p + strlen(option"="), 10, &res); \
+>  } while (0)
+>  
+>  void __init prom_init_env(void)
+>  {
+>  	/* pmon passes arguments in 32bit pointers */
+> -	int *_prom_envp;
+> -	unsigned long bus_clock;
+>  	unsigned int processor_id;
+> +
+> +#ifndef CONFIG_LEFI_FIRMWARE_INTERFACE
+> +	int *_prom_envp;
+>  	long l;
+>  
+>  	/* firmware arguments are initialized in head.S */
+> @@ -48,7 +56,6 @@ void __init prom_init_env(void)
+>  
+>  	l = (long)*_prom_envp;
+>  	while (l != 0) {
+> -		parse_even_earlier(bus_clock, "busclock", l);
+>  		parse_even_earlier(cpu_clock_freq, "cpuclock", l);
+>  		parse_even_earlier(memsize, "memsize", l);
+>  		parse_even_earlier(highmemsize, "highmemsize", l);
+> @@ -57,8 +64,38 @@ void __init prom_init_env(void)
+>  	}
+>  	if (memsize == 0)
+>  		memsize = 256;
+> -	if (bus_clock == 0)
+> -		bus_clock = 66000000;
+> +	pr_info("memsize=%ld, highmemsize=%ld\n", memsize, highmemsize);
+> +#else
+> +	/* firmware arguments are initialized in head.S */
+> +	boot_p = (struct boot_params *)fw_arg2;
+> +	loongson_p = &(boot_p->efi.smbios.lp);
+> +
+> +	ecpu = (struct efi_cpuinfo_loongson *)
+> +		((u64)loongson_p + loongson_p->cpu_offset);
+> +	emap = (struct efi_memory_map_loongson *)
+> +		((u64)loongson_p + loongson_p->memory_offset);
+> +	eirq_source = (struct irq_source_routing_table *)
+> +		((u64)loongson_p + loongson_p->irq_offset);
+> +
+> +	cpu_clock_freq = ecpu->cpu_clock_freq;
+> +	loongson_sysconf.cputype = ecpu->cputype;
+> +	loongson_sysconf.nr_cpus = ecpu->nr_cpus;
+> +	if (ecpu->nr_cpus > NR_CPUS || ecpu->nr_cpus == 0)
+> +		loongson_sysconf.nr_cpus = NR_CPUS;
+> +
+> +	loongson_sysconf.pci_mem_start_addr = eirq_source->pci_mem_start_addr;
+> +	loongson_sysconf.pci_mem_end_addr = eirq_source->pci_mem_end_addr;
+> +	loongson_sysconf.pci_io_base = eirq_source->pci_io_start_addr;
+> +
+> +	loongson_sysconf.restart_addr = boot_p->reset_system.ResetWarm;
+> +	loongson_sysconf.poweroff_addr = boot_p->reset_system.Shutdown;
+> +
+> +	loongson_sysconf.ht_control_base = 0x90000EFDFB000000;
+> +	loongson_sysconf.vgabios_addr = boot_p->efi.smbios.vga_bios;
+> +	pr_debug("Shutdown Addr: %llx, Restart Addr: %llx, VBIOS Addr: %llx\n",
+> +		loongson_sysconf.poweroff_addr, loongson_sysconf.restart_addr,
+> +		loongson_sysconf.vgabios_addr);
+> +#endif
+>  	if (cpu_clock_freq == 0) {
+>  		processor_id = (&current_cpu_data)->processor_id;
+>  		switch (processor_id & PRID_REV_MASK) {
+> @@ -68,12 +105,13 @@ void __init prom_init_env(void)
+>  		case PRID_REV_LOONGSON2F:
+>  			cpu_clock_freq = 797000000;
+>  			break;
+> +		case PRID_REV_LOONGSON3A:
+> +			cpu_clock_freq = 900000000;
+> +			break;
+>  		default:
+>  			cpu_clock_freq = 100000000;
+>  			break;
+>  		}
+>  	}
+> -
+> -	pr_info("busclock=%ld, cpuclock=%ld, memsize=%ld, highmemsize=%ld\n",
+> -		bus_clock, cpu_clock_freq, memsize, highmemsize);
+> +	pr_info("CpuClock = %u\n", cpu_clock_freq);
+>  }
+> diff --git a/arch/mips/loongson/common/init.c b/arch/mips/loongson/common/init.c
+> index ae7af1f..81ba3b4 100644
+> --- a/arch/mips/loongson/common/init.c
+> +++ b/arch/mips/loongson/common/init.c
+> @@ -17,10 +17,6 @@ unsigned long __maybe_unused _loongson_addrwincfg_base;
+>  
+>  void __init prom_init(void)
+>  {
+> -	/* init base address of io space */
+> -	set_io_port_base((unsigned long)
+> -		ioremap(LOONGSON_PCIIO_BASE, LOONGSON_PCIIO_SIZE));
+> -
+>  #ifdef CONFIG_CPU_SUPPORTS_ADDRWINCFG
+>  	_loongson_addrwincfg_base = (unsigned long)
+>  		ioremap(LOONGSON_ADDRWINCFG_BASE, LOONGSON_ADDRWINCFG_SIZE);
+> @@ -28,6 +24,11 @@ void __init prom_init(void)
+>  
+>  	prom_init_cmdline();
+>  	prom_init_env();
+> +
+> +	/* init base address of io space */
+> +	set_io_port_base((unsigned long)
+> +		ioremap(LOONGSON_PCIIO_BASE, LOONGSON_PCIIO_SIZE));
+> +
+>  	prom_init_memory();
+>  
+>  	/*init the uart base address */
+> diff --git a/arch/mips/loongson/common/mem.c b/arch/mips/loongson/common/mem.c
+> index 8626a42..42b2431 100644
+> --- a/arch/mips/loongson/common/mem.c
+> +++ b/arch/mips/loongson/common/mem.c
+> @@ -11,9 +11,14 @@
+>  #include <asm/bootinfo.h>
+>  
+>  #include <loongson.h>
+> +#include <boot_param.h>
+>  #include <mem.h>
+>  #include <pci.h>
+>  
+> +#ifndef CONFIG_LEFI_FIRMWARE_INTERFACE
+> +
+> +u32 memsize, highmemsize;
+> +
+>  void __init prom_init_memory(void)
+>  {
+>  	add_memory_region(0x0, (memsize << 20), BOOT_MEM_RAM);
+> @@ -49,6 +54,43 @@ void __init prom_init_memory(void)
+>  #endif /* !CONFIG_64BIT */
+>  }
+>  
+> +#else /* CONFIG_LEFI_FIRMWARE_INTERFACE */
+> +
+> +void __init prom_init_memory(void)
+> +{
+> +	int i;
+> +	u32 node_id;
+> +	u32 mem_type;
+> +
+> +	/* parse memory information */
+> +	for (i = 0; i < emap->nr_map; i++) {
+> +		node_id = emap->map[i].node_id;
+> +		mem_type = emap->map[i].mem_type;
+> +
+> +		if (node_id == 0) {
+> +			switch (mem_type) {
+> +			case SYSTEM_RAM_LOW:
+> +				add_memory_region(emap->map[i].mem_start,
+> +					(u64)emap->map[i].mem_size << 20,
+> +					BOOT_MEM_RAM);
+> +				break;
+> +			case SYSTEM_RAM_HIGH:
+> +				add_memory_region(emap->map[i].mem_start,
+> +					(u64)emap->map[i].mem_size << 20,
+> +					BOOT_MEM_RAM);
+> +				break;
+> +			case MEM_RESERVED:
+> +				add_memory_region(emap->map[i].mem_start,
+> +					(u64)emap->map[i].mem_size << 20,
+> +					BOOT_MEM_RESERVED);
+> +				break;
+> +			}
+> +		}
+> +	}
+> +}
+> +
+> +#endif /* CONFIG_LEFI_FIRMWARE_INTERFACE */
+> +
+>  /* override of arch/mips/mm/cache.c: __uncached_access */
+>  int __uncached_access(struct file *file, unsigned long addr)
+>  {
+> diff --git a/arch/mips/loongson/common/pci.c b/arch/mips/loongson/common/pci.c
+> index fa77844..003ab4e 100644
+> --- a/arch/mips/loongson/common/pci.c
+> +++ b/arch/mips/loongson/common/pci.c
+> @@ -11,6 +11,7 @@
+>  
+>  #include <pci.h>
+>  #include <loongson.h>
+> +#include <boot_param.h>
+>  
+>  static struct resource loongson_pci_mem_resource = {
+>  	.name	= "pci memory space",
+> @@ -82,7 +83,10 @@ static int __init pcibios_init(void)
+>  	setup_pcimap();
+>  
+>  	loongson_pci_controller.io_map_base = mips_io_port_base;
+> -
+> +#ifdef CONFIG_LEFI_FIRMWARE_INTERFACE
+> +	loongson_pci_mem_resource.start = loongson_sysconf.pci_mem_start_addr;
+> +	loongson_pci_mem_resource.end = loongson_sysconf.pci_mem_end_addr;
+> +#endif
+>  	register_pci_controller(&loongson_pci_controller);
+>  
+>  	return 0;
+> diff --git a/arch/mips/loongson/common/reset.c b/arch/mips/loongson/common/reset.c
+> index 65bfbb5..a60715e 100644
+> --- a/arch/mips/loongson/common/reset.c
+> +++ b/arch/mips/loongson/common/reset.c
+> @@ -16,6 +16,7 @@
+>  #include <asm/reboot.h>
+>  
+>  #include <loongson.h>
+> +#include <boot_param.h>
+>  
+>  static inline void loongson_reboot(void)
+>  {
+> @@ -37,17 +38,37 @@ static inline void loongson_reboot(void)
+>  
+>  static void loongson_restart(char *command)
+>  {
+> +#ifndef CONFIG_LEFI_FIRMWARE_INTERFACE
+>  	/* do preparation for reboot */
+>  	mach_prepare_reboot();
+>  
+>  	/* reboot via jumping to boot base address */
+>  	loongson_reboot();
+> +#else
+> +	void (*fw_restart)(void) = (void *)loongson_sysconf.restart_addr;
+> +
+> +	fw_restart();
+> +	while (1) {
+> +		if (cpu_wait)
+> +			cpu_wait();
+> +	}
+> +#endif
+>  }
+>  
+>  static void loongson_poweroff(void)
+>  {
+> +#ifndef CONFIG_LEFI_FIRMWARE_INTERFACE
+>  	mach_prepare_shutdown();
+>  	unreachable();
+> +#else
+> +	void (*fw_poweroff)(void) = (void *)loongson_sysconf.poweroff_addr;
+> +
+> +	fw_poweroff();
+> +	while (1) {
+> +		if (cpu_wait)
+> +			cpu_wait();
+> +	}
+> +#endif
+>  }
+>  
+>  static void loongson_halt(void)
+> -- 
+> 1.7.7.3
+> 
+> 
 
-diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
-index 91d20b08246f..c84caddb8bde 100644
---- a/arch/mips/include/asm/r4kcache.h
-+++ b/arch/mips/include/asm/r4kcache.h
-@@ -357,8 +357,8 @@ static inline void invalidate_tcache_page(unsigned long addr)
- 		  "i" (op));
- 
- /* build blast_xxx, blast_xxx_page, blast_xxx_page_indexed */
--#define __BUILD_BLAST_CACHE(pfx, desc, indexop, hitop, lsize) \
--static inline void blast_##pfx##cache##lsize(void)			\
-+#define __BUILD_BLAST_CACHE(pfx, desc, indexop, hitop, lsize, extra)	\
-+static inline void extra##blast_##pfx##cache##lsize(void)		\
- {									\
- 	unsigned long start = INDEX_BASE;				\
- 	unsigned long end = start + current_cpu_data.desc.waysize;	\
-@@ -376,7 +376,7 @@ static inline void blast_##pfx##cache##lsize(void)			\
- 	__##pfx##flush_epilogue						\
- }									\
- 									\
--static inline void blast_##pfx##cache##lsize##_page(unsigned long page) \
-+static inline void extra##blast_##pfx##cache##lsize##_page(unsigned long page) \
- {									\
- 	unsigned long start = page;					\
- 	unsigned long end = page + PAGE_SIZE;				\
-@@ -391,7 +391,7 @@ static inline void blast_##pfx##cache##lsize##_page(unsigned long page) \
- 	__##pfx##flush_epilogue						\
- }									\
- 									\
--static inline void blast_##pfx##cache##lsize##_page_indexed(unsigned long page) \
-+static inline void extra##blast_##pfx##cache##lsize##_page_indexed(unsigned long page) \
- {									\
- 	unsigned long indexmask = current_cpu_data.desc.waysize - 1;	\
- 	unsigned long start = INDEX_BASE + (page & indexmask);		\
-@@ -410,23 +410,24 @@ static inline void blast_##pfx##cache##lsize##_page_indexed(unsigned long page)
- 	__##pfx##flush_epilogue						\
- }
- 
--__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 16)
--__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 16)
--__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
--__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 32)
--__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 32)
--__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32)
--__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 64)
--__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 64)
--__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64)
--__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128)
--
--__BUILD_BLAST_CACHE(inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 16)
--__BUILD_BLAST_CACHE(inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 32)
--__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 16)
--__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 32)
--__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 64)
--__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 128)
-+__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 16, )
-+__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 16, )
-+__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16, )
-+__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 32, )
-+__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 32, )
-+__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I_Loongson2, 32, loongson2_)
-+__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32, )
-+__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 64, )
-+__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 64, )
-+__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64, )
-+__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128, )
-+
-+__BUILD_BLAST_CACHE(inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 16, )
-+__BUILD_BLAST_CACHE(inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 32, )
-+__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 16, )
-+__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 32, )
-+__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 64, )
-+__BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 128, )
- 
- /* build blast_xxx_range, protected_blast_xxx_range */
- #define __BUILD_BLAST_CACHE_RANGE(pfx, desc, hitop, prot, extra)	\
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 73f02da61baf..49e572d879e1 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -237,6 +237,8 @@ static void r4k_blast_icache_page_setup(void)
- 		r4k_blast_icache_page = (void *)cache_noop;
- 	else if (ic_lsize == 16)
- 		r4k_blast_icache_page = blast_icache16_page;
-+	else if (ic_lsize == 32 && current_cpu_type() == CPU_LOONGSON2)
-+		r4k_blast_icache_page = loongson2_blast_icache32_page;
- 	else if (ic_lsize == 32)
- 		r4k_blast_icache_page = blast_icache32_page;
- 	else if (ic_lsize == 64)
-@@ -261,6 +263,9 @@ static void r4k_blast_icache_page_indexed_setup(void)
- 		else if (TX49XX_ICACHE_INDEX_INV_WAR)
- 			r4k_blast_icache_page_indexed =
- 				tx49_blast_icache32_page_indexed;
-+		else if (current_cpu_type() == CPU_LOONGSON2)
-+			r4k_blast_icache_page_indexed =
-+				loongson2_blast_icache32_page_indexed;
- 		else
- 			r4k_blast_icache_page_indexed =
- 				blast_icache32_page_indexed;
-@@ -284,6 +289,8 @@ static void r4k_blast_icache_setup(void)
- 			r4k_blast_icache = blast_r4600_v1_icache32;
- 		else if (TX49XX_ICACHE_INDEX_INV_WAR)
- 			r4k_blast_icache = tx49_blast_icache32;
-+		else if (current_cpu_type() == CPU_LOONGSON2)
-+			r4k_blast_icache = loongson2_blast_icache32;
- 		else
- 			r4k_blast_icache = blast_icache32;
- 	} else if (ic_lsize == 64)
 -- 
-1.8.5.2
+Aurelien Jarno	                        GPG: 1024D/F1BCDB73
+aurelien@aurel32.net                 http://www.aurel32.net

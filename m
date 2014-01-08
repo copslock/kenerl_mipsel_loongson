@@ -1,43 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jan 2014 17:22:13 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:52296 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jan 2014 20:58:44 +0100 (CET)
+Received: from hall.aurel32.net ([195.154.112.97]:33651 "EHLO hall.aurel32.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825360AbaAHQWJnVJRj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 8 Jan 2014 17:22:09 +0100
-From:   Qais Yousef <Qais.Yousef@imgtec.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Michael Holzheu" <holzheu@linux.vnet.ibm.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "Vivek Goyal (vgoyal@redhat.com)" <vgoyal@redhat.com>
-Subject: RE: [PATCH] crash_dump: fix compilation error (on MIPS at least)
-Thread-Topic: [PATCH] crash_dump: fix compilation error (on MIPS at least)
-Thread-Index: AQHO8QnExmvHISq+vkaNQVlz0RPH3ppFohqAgAlF3UCAAcaXgIAqiqDA
-Date:   Wed, 8 Jan 2014 16:22:02 +0000
-Message-ID: <392C4BDEFF12D14FA57A3F30B283D7D13F8E75@LEMAIL01.le.imgtec.org>
-References: <1386172702-31266-1-git-send-email-qais.yousef@imgtec.com>
- <20131205135835.GA1600@redhat.com>
- <392C4BDEFF12D14FA57A3F30B283D7D13C7764@LEMAIL01.le.imgtec.org>
- <20131212144201.GA31540@redhat.com>
-In-Reply-To: <20131212144201.GA31540@redhat.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.154.95]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S6870559AbaAHT6h3meSh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 8 Jan 2014 20:58:37 +0100
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.80)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1W0zGq-0007ek-L1; Wed, 08 Jan 2014 20:58:32 +0100
+Date:   Wed, 8 Jan 2014 20:58:32 +0100
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     Huacai Chen <chenhc@lemote.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
+Subject: Re: [PATCH V16 01/12] MIPS: Loongson: Add basic Loongson-3 definition
+Message-ID: <20140108195832.GA10409@hall.aurel32.net>
+References: <1389149068-24376-1-git-send-email-chenhc@lemote.com>
+ <1389149068-24376-2-git-send-email-chenhc@lemote.com>
 MIME-Version: 1.0
-X-SEF-Processed: 7_3_0_01192__2014_01_08_16_22_03
-Return-Path: <Qais.Yousef@imgtec.com>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <1389149068-24376-2-git-send-email-chenhc@lemote.com>
+X-Mailer: Mutt 1.5.21 (2010-09-15)
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38904
+X-archive-position: 38905
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Qais.Yousef@imgtec.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,54 +46,132 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-UGluZy4NCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBWaXZlayBHb3lh
-bCBbbWFpbHRvOnZnb3lhbEByZWRoYXQuY29tXQ0KPiBTZW50OiAxMiBEZWNlbWJlciAyMDEzIDE0
-OjQyDQo+IFRvOiBRYWlzIFlvdXNlZjsgQW5kcmV3IE1vcnRvbg0KPiBDYzogbGludXgta2VybmVs
-QHZnZXIua2VybmVsLm9yZzsgTWljaGFlbCBIb2x6aGV1OyBsaW51eC1taXBzQGxpbnV4LW1pcHMu
-b3JnOw0KPiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0hdIGNy
-YXNoX2R1bXA6IGZpeCBjb21waWxhdGlvbiBlcnJvciAob24gTUlQUyBhdCBsZWFzdCkNCj4gDQo+
-IEdlbmVyYWxseSBha3BtIHBpY2tzIHRoZSBrZXhlYy9rZHVtcCBhcmNoIGluZGVwZW5kZW50IGNo
-YW5nZXMuDQo+IA0KPiBBbmRyZXcsIGNhbiB5b3UgcGxlYXNlIGNvbnNpZGVyIHRoaXMgcGF0Y2gg
-Zm9yIGluY2x1c2lvbi4NCj4gDQo+IFRoYW5rcw0KPiBWaXZlaw0KPiANCj4gT24gV2VkLCBEZWMg
-MTEsIDIwMTMgYXQgMTE6NDM6MzJBTSArMDAwMCwgUWFpcyBZb3VzZWYgd3JvdGU6DQo+ID4gPiAt
-LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gRnJvbTogVml2ZWsgR295YWwgW21haWx0
-bzp2Z295YWxAcmVkaGF0LmNvbV0NCj4gPiA+IFNlbnQ6IDA1IERlY2VtYmVyIDIwMTMgMTM6NTkN
-Cj4gPiA+IFRvOiBRYWlzIFlvdXNlZg0KPiA+ID4gQ2M6IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5l
-bC5vcmc7IEFuZHJldyBNb3J0b247IE1pY2hhZWwgSG9semhldTsNCj4gPiA+IGxpbnV4LSBtaXBz
-QGxpbnV4LW1pcHMub3JnOyBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+ID4gPiBTdWJqZWN0OiBS
-ZTogW1BBVENIXSBjcmFzaF9kdW1wOiBmaXggY29tcGlsYXRpb24gZXJyb3IgKG9uIE1JUFMgYXQN
-Cj4gPiA+IGxlYXN0KQ0KPiA+ID4NCj4gPiA+IE9uIFdlZCwgRGVjIDA0LCAyMDEzIGF0IDAzOjU4
-OjIyUE0gKzAwMDAsIFFhaXMgWW91c2VmIHdyb3RlOg0KPiA+ID4gPiAgIEluIGZpbGUgaW5jbHVk
-ZWQgZnJvbSBrZXJuZWwvY3Jhc2hfZHVtcC5jOjI6MDoNCj4gPiA+ID4gICBpbmNsdWRlL2xpbnV4
-L2NyYXNoX2R1bXAuaDoyMjoyNzogZXJyb3I6IHVua25vd24gdHlwZSBuYW1lIOKAmHBncHJvdF90
-4oCZDQo+ID4gPiA+DQo+ID4gPiA+IHdoZW4gQ09ORklHX0NSQVNIX0RVTVA9eQ0KPiA+ID4gPg0K
-PiA+ID4gPiBUaGUgZXJyb3Igd2FzIHRyYWNlZCBiYWNrIHRvIHRoaXMgY29tbWl0Og0KPiA+ID4g
-Pg0KPiA+ID4gPiAgIDljYjIxODEzMWRlMSB2bWNvcmU6IGludHJvZHVjZSByZW1hcF9vbGRtZW1f
-cGZuX3JhbmdlKCkNCj4gPiA+ID4NCj4gPiA+ID4gaW5jbHVkZSA8YXNtL3BndGFibGUuaD4gdG8g
-Z2V0IHRoZSBtaXNzaW5nIGRlZmluaXRpb24NCj4gPiA+ID4NCj4gPiA+ID4gQ2M6IEFuZHJldyBN
-b3J0b24gPGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc+DQo+ID4gPiA+IENjOiBNaWNoYWVsIEhv
-bHpoZXUgPGhvbHpoZXVAbGludXgudm5ldC5pYm0uY29tPg0KPiA+ID4gPiBDYzogVml2ZWsgR295
-YWwgPHZnb3lhbEByZWRoYXQuY29tPg0KPiA+ID4gPiBDYzogPGxpbnV4LW1pcHNAbGludXgtbWlw
-cy5vcmc+DQo+ID4gPiA+IENjOiA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4gIyAzLjEyDQo+ID4g
-PiA+IFJldmlld2VkLWJ5OiBKYW1lcyBIb2dhbiA8amFtZXMuaG9nYW5AaW1ndGVjLmNvbT4NCj4g
-PiA+ID4gU2lnbmVkLW9mZi1ieTogUWFpcyBZb3VzZWYgPHFhaXMueW91c2VmQGltZ3RlYy5jb20+
-DQo+ID4gPiA+IC0tLQ0KPiA+ID4NCj4gPiA+IExvb2tzIGdvb2QgdG8gbWUuDQo+ID4gPg0KPiA+
-ID4gQWNrZWQtYnk6IFZpdmVrIEdveWFsIDx2Z295YWxAcmVkaGF0LmNvbT4NCj4gPiA+DQo+ID4g
-PiBWaXZlaw0KPiA+DQo+ID4gSGksDQo+ID4NCj4gPiBJIGZhaWxlZCB0byBzZWUgdGhpcyBwaWNr
-ZWQgdXAgYnkgYW55b25lLiBJJ20gbm90IHN1cmUgd2hpY2ggdHJlZSBpdA0KPiA+IHNob3VsZCBn
-byB0byB0byBiZSBob25lc3QuIERvIEkgbmVlZCB0byBhZGQgbW9yZSBwZW9wbGUgdG8gdGhlIENj
-PyBPcg0KPiA+IGFtIEkganVzdCBiZWluZyBpbXBhdGllbnQ/IDopDQo+ID4NCj4gPiBUaGFua3Ms
-DQo+ID4gUWFpcw0KPiA+DQo+ID4gPg0KPiA+ID4gPiBJIGhhdmVuJ3QgdHJpZWQgYW55IG90aGVy
-IGFyY2hpdGVjdHVyZSBleGNlcHQgbWlwcy4NCj4gPiA+ID4gSWYgT0sgdGhpcyBzaG91bGQgYmUg
-Y29uc2lkZXJlZCBmb3Igc3RhYmxlIDMuMTIgKENDZWQpLg0KPiA+ID4gPg0KPiA+ID4gPiAgaW5j
-bHVkZS9saW51eC9jcmFzaF9kdW1wLmggfCAgICAyICsrDQo+ID4gPiA+ICAxIGZpbGVzIGNoYW5n
-ZWQsIDIgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkNCj4gPiA+ID4NCj4gPiA+ID4gZGlm
-ZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvY3Jhc2hfZHVtcC5oDQo+ID4gPiA+IGIvaW5jbHVkZS9s
-aW51eC9jcmFzaF9kdW1wLmggaW5kZXggZmU2OGE1YS4uNzAzMjUxOCAxMDA2NDQNCj4gPiA+ID4g
-LS0tIGEvaW5jbHVkZS9saW51eC9jcmFzaF9kdW1wLmgNCj4gPiA+ID4gKysrIGIvaW5jbHVkZS9s
-aW51eC9jcmFzaF9kdW1wLmgNCj4gPiA+ID4gQEAgLTYsNiArNiw4IEBADQo+ID4gPiA+ICAjaW5j
-bHVkZSA8bGludXgvcHJvY19mcy5oPg0KPiA+ID4gPiAgI2luY2x1ZGUgPGxpbnV4L2VsZi5oPg0K
-PiA+ID4gPg0KPiA+ID4gPiArI2luY2x1ZGUgPGFzbS9wZ3RhYmxlLmg+IC8qIGZvciBwZ3Byb3Rf
-dCAqLw0KPiA+ID4gPiArDQo+ID4gPiA+ICAjZGVmaW5lIEVMRkNPUkVfQUREUl9NQVgJKC0xVUxM
-KQ0KPiA+ID4gPiAgI2RlZmluZSBFTEZDT1JFX0FERFJfRVJSCSgtMlVMTCkNCj4gPiA+ID4NCj4g
-PiA+ID4gLS0NCj4gPiA+ID4gMS43LjENCj4gPiA+ID4NCg==
+On Wed, Jan 08, 2014 at 10:44:17AM +0800, Huacai Chen wrote:
+> Loongson-3 is a multi-core MIPS family CPU, it support MIPS64R2 fully.
+> Loongson-3 has the same IMP field (0x6300) as Loongson-2.
+> 
+> Loongson-3 has a hardware-maintained cache, system software doesn't
+> need to maintain coherency.
+> 
+> Loongson-3A is the first revision of Loongson-3, and it is the quad-
+> core version of Loongson-2G. Loongson-3A has a simplified version named
+> Loongson-2Gq, the main difference between Loongson-3A/2Gq is 3A has two
+> HyperTransport controller but 2Gq has only one. HT0 is used for cross-
+> chip interconnection and HT1 is used to link PCI bus. Therefore, 2Gq
+> cannot support NUMA but 3A can. For software, Loongson-2Gq is simply
+> identified as Loongson-3A.
+> 
+> Exsisting Loongson family CPUs:
+> Loongson-1: Loongson-1A, Loongson-1B, they are 32-bit MIPS CPUs.
+> Loongson-2: Loongson-2E, Loongson-2F, Loongson-2G, they are 64-bit
+>             single-core MIPS CPUs.
+> Loongson-3: Loongson-3A(including so-called Loongson-2Gq), they are
+>             64-bit multi-core MIPS CPUs.
+> 
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> Signed-off-by: Hongliang Tao <taohl@lemote.com>
+> Signed-off-by: Hua Yan <yanh@lemote.com>
+> ---
+>  arch/mips/include/asm/addrspace.h            |    2 ++
+>  arch/mips/include/asm/cpu.h                  |    5 +++--
+>  arch/mips/include/asm/mach-loongson/spaces.h |   13 +++++++++++++
+>  arch/mips/include/asm/module.h               |    2 ++
+>  arch/mips/include/asm/pgtable-bits.h         |    9 +++++++++
+>  5 files changed, 29 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/mips/include/asm/mach-loongson/spaces.h
+> 
+> diff --git a/arch/mips/include/asm/addrspace.h b/arch/mips/include/asm/addrspace.h
+> index 3f74545..41c030e 100644
+> --- a/arch/mips/include/asm/addrspace.h
+> +++ b/arch/mips/include/asm/addrspace.h
+> @@ -116,7 +116,9 @@
+>  #define K_CALG_UNCACHED		2
+>  #define K_CALG_NONCOHERENT	3
+>  #define K_CALG_COH_EXCL		4
+> +#ifndef K_CALG_COH_SHAREABLE
+>  #define K_CALG_COH_SHAREABLE	5
+> +#endif
+>  #define K_CALG_NOTUSED		6
+>  #define K_CALG_UNCACHED_ACCEL	7
+>  
+> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+> index d2035e1..7fffaf1 100644
+> --- a/arch/mips/include/asm/cpu.h
+> +++ b/arch/mips/include/asm/cpu.h
+> @@ -224,6 +224,7 @@
+>  #define PRID_REV_LOONGSON1B	0x0020
+>  #define PRID_REV_LOONGSON2E	0x0002
+>  #define PRID_REV_LOONGSON2F	0x0003
+> +#define PRID_REV_LOONGSON3A	0x0005
+>  
+>  /*
+>   * Older processors used to encode processor version and revision in two
+> @@ -295,8 +296,8 @@ enum cpu_type_enum {
+>  	 * MIPS64 class processors
+>  	 */
+>  	CPU_5KC, CPU_5KE, CPU_20KC, CPU_25KF, CPU_SB1, CPU_SB1A, CPU_LOONGSON2,
+> -	CPU_CAVIUM_OCTEON, CPU_CAVIUM_OCTEON_PLUS, CPU_CAVIUM_OCTEON2,
+> -	CPU_CAVIUM_OCTEON3, CPU_XLR, CPU_XLP,
+> +	CPU_LOONGSON3, CPU_CAVIUM_OCTEON, CPU_CAVIUM_OCTEON_PLUS,
+> +	CPU_CAVIUM_OCTEON2, CPU_CAVIUM_OCTEON3, CPU_XLR, CPU_XLP,
+>  
+>  	CPU_LAST
+>  };
+> diff --git a/arch/mips/include/asm/mach-loongson/spaces.h b/arch/mips/include/asm/mach-loongson/spaces.h
+> new file mode 100644
+> index 0000000..d368d95
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mach-loongson/spaces.h
+> @@ -0,0 +1,13 @@
+> +#ifndef __ASM_MACH_LOONGSON_SPACES_H_
+> +#define __ASM_MACH_LOONGSON_SPACES_H_
+> +
+> +#ifndef CAC_BASE
+> +#if defined(CONFIG_64BIT)
+> +#define CAC_BASE        _AC(0x9800000000000000, UL)
+> +#endif /* CONFIG_64BIT */
+> +#endif /* CONFIG_CAC_BASE */
+> +
+> +#define K_CALG_COH_SHAREABLE	3
+> +
+> +#include <asm/mach-generic/spaces.h>
+> +#endif
+> diff --git a/arch/mips/include/asm/module.h b/arch/mips/include/asm/module.h
+> index 44b705d..c2edae3 100644
+> --- a/arch/mips/include/asm/module.h
+> +++ b/arch/mips/include/asm/module.h
+> @@ -126,6 +126,8 @@ search_module_dbetables(unsigned long addr)
+>  #define MODULE_PROC_FAMILY "LOONGSON1 "
+>  #elif defined CONFIG_CPU_LOONGSON2
+>  #define MODULE_PROC_FAMILY "LOONGSON2 "
+> +#elif defined CONFIG_CPU_LOONGSON3
+> +#define MODULE_PROC_FAMILY "LOONGSON3 "
+>  #elif defined CONFIG_CPU_CAVIUM_OCTEON
+>  #define MODULE_PROC_FAMILY "OCTEON "
+>  #elif defined CONFIG_CPU_XLR
+> diff --git a/arch/mips/include/asm/pgtable-bits.h b/arch/mips/include/asm/pgtable-bits.h
+> index 32aea48..e592f36 100644
+> --- a/arch/mips/include/asm/pgtable-bits.h
+> +++ b/arch/mips/include/asm/pgtable-bits.h
+> @@ -235,6 +235,15 @@ static inline uint64_t pte_to_entrylo(unsigned long pte_val)
+>  #define _CACHE_CACHABLE_NONCOHERENT (5<<_CACHE_SHIFT)
+>  #define _CACHE_UNCACHED_ACCELERATED (7<<_CACHE_SHIFT)
+>  
+> +#elif defined(CONFIG_CPU_LOONGSON3)
+> +
+> +/* Using COHERENT flag for NONCOHERENT doesn't hurt. */
+> +
+> +#define _CACHE_UNCACHED             (2<<_CACHE_SHIFT)  /* LOONGSON       */
+> +#define _CACHE_CACHABLE_NONCOHERENT (3<<_CACHE_SHIFT)  /* LOONGSON       */
+> +#define _CACHE_CACHABLE_COHERENT    (3<<_CACHE_SHIFT)  /* LOONGSON-3     */
+> +#define _CACHE_UNCACHED_ACCELERATED (7<<_CACHE_SHIFT)  /* LOONGSON       */
+> +
+>  #else
+>  
+>  #define _CACHE_CACHABLE_NO_WA	    (0<<_CACHE_SHIFT)  /* R4600 only	  */
+
+Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
+
+-- 
+Aurelien Jarno	                        GPG: 1024D/F1BCDB73
+aurelien@aurel32.net                 http://www.aurel32.net

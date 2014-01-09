@@ -1,10 +1,10 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jan 2014 13:53:27 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:56012 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jan 2014 13:57:39 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:56041 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6870571AbaAIMxWRhl83 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 9 Jan 2014 13:53:22 +0100
-Message-ID: <52CE9B70.5050006@imgtec.com>
-Date:   Thu, 9 Jan 2014 12:52:00 +0000
+        id S6816856AbaAIM5eC8uiC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 9 Jan 2014 13:57:34 +0100
+Message-ID: <52CE9C92.9080400@imgtec.com>
+Date:   Thu, 9 Jan 2014 12:56:50 +0000
 From:   Alex Smith <alex.smith@imgtec.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
 MIME-Version: 1.0
@@ -16,19 +16,19 @@ CC:     Ralf Baechle <ralf@linux-mips.org>,
         <linux-mips@linux-mips.org>, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH V16 06/12] MIPS: Loongson 3: Add IRQ init and dispatch
- support
-References: <1389149068-24376-1-git-send-email-chenhc@lemote.com> <1389149068-24376-7-git-send-email-chenhc@lemote.com>
-In-Reply-To: <1389149068-24376-7-git-send-email-chenhc@lemote.com>
+Subject: Re: [PATCH V16 08/12] MIPS: Loongson: Add swiotlb to support big
+ memory (>4GB)
+References: <1389149068-24376-1-git-send-email-chenhc@lemote.com> <1389149068-24376-9-git-send-email-chenhc@lemote.com>
+In-Reply-To: <1389149068-24376-9-git-send-email-chenhc@lemote.com>
 Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [192.168.154.62]
-X-SEF-Processed: 7_3_0_01192__2014_01_09_12_53_16
+X-SEF-Processed: 7_3_0_01192__2014_01_09_12_57_28
 Return-Path: <Alex.Smith@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38919
+X-archive-position: 38920
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,247 +46,295 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 08/01/14 02:44, Huacai Chen wrote:
-> IRQ routing path of Loongson-3:
-> Devices(most) --> I8259 --> HT Controller --> IRQ Routing Table --> CPU
->                                                    ^
->                                                    |
-> Device(legacy devices such as UART) --> Bonito ---|
+> This is probably a workaround because Loongson doesn't support DMA
+> address above 4GB. If memory is more than 4GB, CONFIG_SWIOTLB and
+> ZONE_DMA32 should be selected. In this way, DMA pages are allocated
+> below 4GB preferably.
 >
-> IRQ Routing Table route 32 INTs to CPU's INT0~INT3(IP2~IP5 of CP0), 32
-> INTs include 16 HT INTs(mostly), 4 PCI INTs, 1 LPC INT, etc. IP6 is used
-> for IPI and IP7 is used for internal MIPS timer. LOONGSON_INT_ROUTER_*
-> are IRQ Routing Table registers.
->
-> I8259 IRQs are 1:1 mapped to HT1 INTs. LOONGSON_HT1_* are configuration
-> registers of HT1 controller.
+> However, CONFIG_SWIOTLB+ZONE_DMA32 is not enough, so, we provide a
+> platform-specific dma_map_ops::set_dma_mask() to make sure each
+> driver's dma_mask and coherent_dma_mask is below 32-bit.
 >
 > Signed-off-by: Huacai Chen <chenhc@lemote.com>
 > Signed-off-by: Hongliang Tao <taohl@lemote.com>
 > Signed-off-by: Hua Yan <yanh@lemote.com>
 > ---
->   arch/mips/include/asm/mach-loongson/irq.h      |   26 ++++++
->   arch/mips/include/asm/mach-loongson/loongson.h |   10 ++
->   arch/mips/loongson/Makefile                    |    6 ++
->   arch/mips/loongson/loongson-3/Makefile         |    4 +
->   arch/mips/loongson/loongson-3/irq.c            |  110 ++++++++++++++++++++++++
->   5 files changed, 156 insertions(+), 0 deletions(-)
->   create mode 100644 arch/mips/include/asm/mach-loongson/irq.h
->   create mode 100644 arch/mips/loongson/loongson-3/Makefile
->   create mode 100644 arch/mips/loongson/loongson-3/irq.c
+>   arch/mips/include/asm/dma-mapping.h                |    5 +
+>   .../mips/include/asm/mach-loongson/dma-coherence.h |   22 +++-
+>   arch/mips/loongson/common/Makefile                 |    5 +
+>   arch/mips/loongson/common/dma-swiotlb.c            |  165 ++++++++++++++++++++
+>   4 files changed, 196 insertions(+), 1 deletions(-)
+>   create mode 100644 arch/mips/loongson/common/dma-swiotlb.c
 >
-> diff --git a/arch/mips/include/asm/mach-loongson/irq.h b/arch/mips/include/asm/mach-loongson/irq.h
-> new file mode 100644
-> index 0000000..5711e3b
-> --- /dev/null
-> +++ b/arch/mips/include/asm/mach-loongson/irq.h
-> @@ -0,0 +1,26 @@
-> +#ifndef __ASM_MACH_LOONGSON_IRQ_H_
-> +#define __ASM_MACH_LOONGSON_IRQ_H_
+> diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
+> index 84238c5..06412aa 100644
+> --- a/arch/mips/include/asm/dma-mapping.h
+> +++ b/arch/mips/include/asm/dma-mapping.h
+> @@ -49,9 +49,14 @@ static inline int dma_mapping_error(struct device *dev, u64 mask)
+>   static inline int
+>   dma_set_mask(struct device *dev, u64 mask)
+>   {
+> +	struct dma_map_ops *ops = get_dma_ops(dev);
 > +
-> +#include <boot_param.h>
+>   	if(!dev->dma_mask || !dma_supported(dev, mask))
+>   		return -EIO;
+>
+> +	if (ops->set_dma_mask)
+> +		return ops->set_dma_mask(dev, mask);
 > +
-> +/* cpu core interrupt numbers */
-> +#define MIPS_CPU_IRQ_BASE 56
-> +
-> +#ifdef CONFIG_CPU_LOONGSON3
-> +
-> +#define LOONGSON_UART_IRQ   (MIPS_CPU_IRQ_BASE + 2) /* UART */
-> +#define LOONGSON_HT1_IRQ    (MIPS_CPU_IRQ_BASE + 3) /* HT1 */
-> +#define LOONGSON_TIMER_IRQ  (MIPS_CPU_IRQ_BASE + 7) /* CPU Timer */
-> +
-> +#define LOONGSON_HT1_CFG_BASE		loongson_sysconf.ht_control_base
-> +#define LOONGSON_HT1_INT_VECTOR_BASE	(LOONGSON_HT1_CFG_BASE + 0x80)
-> +#define LOONGSON_HT1_INT_EN_BASE	(LOONGSON_HT1_CFG_BASE + 0xa0)
-> +#define LOONGSON_HT1_INT_VECTOR(n)	\
-> +		LOONGSON3_REG32(LOONGSON_HT1_INT_VECTOR_BASE, 4 * n)
-> +#define LOONGSON_HT1_INTN_EN(n)		\
-> +		LOONGSON3_REG32(LOONGSON_HT1_INT_EN_BASE, 4 * n)
-> +
+>   	*dev->dma_mask = mask;
+>
+>   	return 0;
+> diff --git a/arch/mips/include/asm/mach-loongson/dma-coherence.h b/arch/mips/include/asm/mach-loongson/dma-coherence.h
+> index aeb2c05..6a90275 100644
+> --- a/arch/mips/include/asm/mach-loongson/dma-coherence.h
+> +++ b/arch/mips/include/asm/mach-loongson/dma-coherence.h
+> @@ -11,24 +11,40 @@
+>   #ifndef __ASM_MACH_LOONGSON_DMA_COHERENCE_H
+>   #define __ASM_MACH_LOONGSON_DMA_COHERENCE_H
+>
+> +#ifdef CONFIG_SWIOTLB
+> +#include <linux/swiotlb.h>
 > +#endif
 > +
-> +#include_next <irq.h>
-> +#endif /* __ASM_MACH_LOONGSON_IRQ_H_ */
-> diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
-> index f0367ff..69e9d9e 100644
-> --- a/arch/mips/include/asm/mach-loongson/loongson.h
-> +++ b/arch/mips/include/asm/mach-loongson/loongson.h
-> @@ -62,6 +62,12 @@ extern int mach_i8259_irq(void);
->   #define LOONGSON_REG(x) \
->   	(*(volatile u32 *)((char *)CKSEG1ADDR(LOONGSON_REG_BASE) + (x)))
+>   struct device;
 >
-> +#define LOONGSON3_REG8(base, x) \
-> +	(*(volatile u8 *)((char *)TO_UNCAC(base) + (x)))
-> +
-> +#define LOONGSON3_REG32(base, x) \
-> +	(*(volatile u32 *)((char *)TO_UNCAC(base) + (x)))
-> +
->   #define LOONGSON_IRQ_BASE	32
->   #define LOONGSON2_PERFCNT_IRQ	(MIPS_CPU_IRQ_BASE + 6) /* cpu perf counter */
+> +extern dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr);
+> +extern phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr);
+>   static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
+>   					  size_t size)
+>   {
+> +#ifdef CONFIG_CPU_LOONGSON3
+> +	return virt_to_phys(addr);
+> +#else
+>   	return virt_to_phys(addr) | 0x80000000;
+> +#endif
+>   }
 >
-> @@ -87,6 +93,10 @@ static inline void do_perfcnt_IRQ(void)
->   #define LOONGSON_REG_BASE	0x1fe00000
->   #define LOONGSON_REG_SIZE	0x00100000	/* 256Bytes + 256Bytes + ??? */
->   #define LOONGSON_REG_TOP	(LOONGSON_REG_BASE+LOONGSON_REG_SIZE-1)
-> +/* Loongson-3 specific registers */
-> +#define LOONGSON3_REG_BASE	0x3ff00000
-> +#define LOONGSON3_REG_SIZE	0x00100000	/* 256Bytes + 256Bytes + ??? */
-> +#define LOONGSON3_REG_TOP	(LOONGSON3_REG_BASE+LOONGSON3_REG_SIZE-1)
+>   static inline dma_addr_t plat_map_dma_mem_page(struct device *dev,
+>   					       struct page *page)
+>   {
+> +#ifdef CONFIG_CPU_LOONGSON3
+> +	return page_to_phys(page);
+> +#else
+>   	return page_to_phys(page) | 0x80000000;
+> +#endif
+>   }
 >
->   #define LOONGSON_LIO1_BASE	0x1ff00000
->   #define LOONGSON_LIO1_SIZE	0x00100000	/* 1M */
-> diff --git a/arch/mips/loongson/Makefile b/arch/mips/loongson/Makefile
-> index 0dc0055..7429994 100644
-> --- a/arch/mips/loongson/Makefile
-> +++ b/arch/mips/loongson/Makefile
-> @@ -15,3 +15,9 @@ obj-$(CONFIG_LEMOTE_FULOONG2E)	+= fuloong-2e/
+>   static inline unsigned long plat_dma_addr_to_phys(struct device *dev,
+>   	dma_addr_t dma_addr)
+>   {
+> -#if defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
+> +#if defined(CONFIG_CPU_LOONGSON3) && defined(CONFIG_64BIT)
+> +	return dma_addr;
+> +#elif defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
+>   	return (dma_addr > 0x8fffffff) ? dma_addr : (dma_addr & 0x0fffffff);
+>   #else
+>   	return dma_addr & 0x7fffffff;
+> @@ -55,7 +71,11 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
+>
+>   static inline int plat_device_is_coherent(struct device *dev)
+>   {
+> +#ifdef CONFIG_DMA_NONCOHERENT
+>   	return 0;
+> +#else
+> +	return 1;
+> +#endif /* CONFIG_DMA_NONCOHERENT */
+>   }
+>
+>   #endif /* __ASM_MACH_LOONGSON_DMA_COHERENCE_H */
+> diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
+> index 9e4484c..0bb9cc9 100644
+> --- a/arch/mips/loongson/common/Makefile
+> +++ b/arch/mips/loongson/common/Makefile
+> @@ -26,3 +26,8 @@ obj-$(CONFIG_CS5536) += cs5536/
 >   #
 >
->   obj-$(CONFIG_LEMOTE_MACH2F)  += lemote-2f/
+>   obj-$(CONFIG_LOONGSON_SUSPEND) += pm.o
 > +
 > +#
-> +# All Loongson-3 family machines
+> +# Big Memory (SWIOTLB) Support
 > +#
-> +
-> +obj-$(CONFIG_CPU_LOONGSON3)  += loongson-3/
-> diff --git a/arch/mips/loongson/loongson-3/Makefile b/arch/mips/loongson/loongson-3/Makefile
+> +obj-$(CONFIG_SWIOTLB) += dma-swiotlb.o
+> diff --git a/arch/mips/loongson/common/dma-swiotlb.c b/arch/mips/loongson/common/dma-swiotlb.c
 > new file mode 100644
-> index 0000000..b9968cd
+> index 0000000..9d5451b
 > --- /dev/null
-> +++ b/arch/mips/loongson/loongson-3/Makefile
-> @@ -0,0 +1,4 @@
-> +#
-> +# Makefile for Loongson-3 family machines
-> +#
-> +obj-y			+= irq.o
-> diff --git a/arch/mips/loongson/loongson-3/irq.c b/arch/mips/loongson/loongson-3/irq.c
-> new file mode 100644
-> index 0000000..3b52d56
-> --- /dev/null
-> +++ b/arch/mips/loongson/loongson-3/irq.c
-> @@ -0,0 +1,110 @@
-> +#include <loongson.h>
-> +#include <irq.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/module.h>
+> +++ b/arch/mips/loongson/common/dma-swiotlb.c
+> @@ -0,0 +1,165 @@
+> +#include <linux/mm.h>
+> +#include <linux/init.h>
+> +#include <linux/dma-mapping.h>
+> +#include <linux/scatterlist.h>
+> +#include <linux/swiotlb.h>
+> +#include <linux/bootmem.h>
 > +
-> +#include <asm/irq_cpu.h>
-> +#include <asm/i8259.h>
-> +#include <asm/mipsregs.h>
+> +#include <asm/bootinfo.h>
+> +#include <dma-coherence.h>
 > +
-> +#define LOONGSON_INT_ROUTER_OFFSET	0x1400
-> +#define LOONGSON_INT_ROUTER_INTEN	\
-> +	  LOONGSON3_REG32(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET + 0x24)
-> +#define LOONGSON_INT_ROUTER_INTENSET	\
-> +	  LOONGSON3_REG32(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET + 0x28)
-> +#define LOONGSON_INT_ROUTER_INTENCLR	\
-> +	  LOONGSON3_REG32(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET + 0x2c)
-> +#define LOONGSON_INT_ROUTER_ENTRY(n)	\
-> +	  LOONGSON3_REG8(LOONGSON3_REG_BASE, LOONGSON_INT_ROUTER_OFFSET + n)
-> +#define LOONGSON_INT_ROUTER_LPC		LOONGSON_INT_ROUTER_ENTRY(0x0a)
-> +#define LOONGSON_INT_ROUTER_HT1(n)	LOONGSON_INT_ROUTER_ENTRY(n + 0x18)
-> +
-> +#define LOONGSON_INT_CORE0_INT0		0x11 /* route to int 0 of core 0 */
-> +#define LOONGSON_INT_CORE0_INT1		0x21 /* route to int 1 of core 0 */
-
-Move all of these definitions to irq.h? Half of the needed register 
-definitions are added there above, and then half here, so it would make 
-sense to have them all in one place.
-
-> +
-> +static void ht_irqdispatch(void)
+> +static void *loongson_dma_alloc_coherent(struct device *dev, size_t size,
+> +		dma_addr_t *dma_handle, gfp_t gfp, struct dma_attrs *attrs)
 > +{
-> +	unsigned int i, irq;
-> +	unsigned int ht_irq[] = {1, 3, 4, 5, 6, 7, 8, 12, 14, 15};
+> +	void *ret;
 > +
-> +	irq = LOONGSON_HT1_INT_VECTOR(0);
-> +	LOONGSON_HT1_INT_VECTOR(0) = irq; /* Acknowledge the IRQs */
+> +	if (dma_alloc_from_coherent(dev, size, dma_handle, &ret))
+> +		return ret;
 > +
-> +	for (i = 0; i < (sizeof(ht_irq) / sizeof(*ht_irq)); i++) {
-
-Can use ARRAY_SIZE here.
-
-> +		if (irq & (0x1 << ht_irq[i]))
-> +			do_IRQ(ht_irq[i]);
-> +	}
+> +	/* ignore region specifiers */
+> +	gfp &= ~(__GFP_DMA | __GFP_DMA32 | __GFP_HIGHMEM);
+> +
+> +#ifdef CONFIG_ISA
+> +	if (dev == NULL)
+> +		gfp |= __GFP_DMA;
+> +	else
+> +#endif
+> +#ifdef CONFIG_ZONE_DMA
+> +	if (dev->coherent_dma_mask < DMA_BIT_MASK(32))
+> +		gfp |= __GFP_DMA;
+> +	else
+> +#endif
+> +#ifdef CONFIG_ZONE_DMA32
+> +	 /* Loongson-3 only support DMA in the memory below 4GB now */
+> +	if (dev->coherent_dma_mask < DMA_BIT_MASK(40))
+> +		gfp |= __GFP_DMA32;
+> +	else
+> +#endif
+> +	;
+> +	gfp |= __GFP_NORETRY;
+> +
+> +	ret = swiotlb_alloc_coherent(dev, size, dma_handle, gfp);
+> +	mb();
+> +	return ret;
 > +}
 > +
-> +void mach_irq_dispatch(unsigned int pending)
+> +static void loongson_dma_free_coherent(struct device *dev, size_t size,
+> +		void *vaddr, dma_addr_t dma_handle, struct dma_attrs *attrs)
 > +{
-> +	if (pending & CAUSEF_IP7)
-> +		do_IRQ(LOONGSON_TIMER_IRQ);
-> +	else if (pending & CAUSEF_IP3)
-> +		ht_irqdispatch();
-> +	else if (pending & CAUSEF_IP2)
-> +		do_IRQ(LOONGSON_UART_IRQ);
-> +	else {
-> +		pr_err("%s : spurious interrupt\n", __func__);
-> +		spurious_interrupt();
-> +	}
+> +	int order = get_order(size);
+> +
+> +	if (dma_release_from_coherent(dev, order, vaddr))
+> +		return;
+> +
+> +	swiotlb_free_coherent(dev, size, vaddr, dma_handle);
 > +}
 > +
-> +static struct irqaction cascade_irqaction = {
-> +	.handler = no_action,
-> +	.name = "cascade",
+> +static dma_addr_t loongson_dma_map_page(struct device *dev, struct page *page,
+> +				unsigned long offset, size_t size,
+> +				enum dma_data_direction dir,
+> +				struct dma_attrs *attrs)
+> +{
+> +	dma_addr_t daddr = swiotlb_map_page(dev, page, offset, size,
+> +					dir, attrs);
+> +	mb();
+> +	return daddr;
+> +}
+> +
+> +static int loongson_dma_map_sg(struct device *dev, struct scatterlist *sg,
+> +				int nents, enum dma_data_direction dir,
+> +				struct dma_attrs *attrs)
+> +{
+> +	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, NULL);
+> +	mb();
+> +
+> +	return r;
+> +}
+> +
+> +static void loongson_dma_sync_single_for_device(struct device *dev,
+> +				dma_addr_t dma_handle, size_t size,
+> +				enum dma_data_direction dir)
+> +{
+> +	swiotlb_sync_single_for_device(dev, dma_handle, size, dir);
+> +	mb();
+> +}
+> +
+> +static void loongson_dma_sync_sg_for_device(struct device *dev,
+> +				struct scatterlist *sg, int nents,
+> +				enum dma_data_direction dir)
+> +{
+> +	swiotlb_sync_sg_for_device(dev, sg, nents, dir);
+> +	mb();
+> +}
+> +
+> +static dma_addr_t
+> +loongson_unity_phys_to_dma(struct device *dev, phys_addr_t paddr)
+> +{
+> +	return paddr;
+> +}
+> +
+> +static phys_addr_t
+> +loongson_unity_dma_to_phys(struct device *dev, dma_addr_t daddr)
+> +{
+> +	return daddr;
+> +}
+> +
+> +struct loongson_dma_map_ops {
+> +	struct dma_map_ops dma_map_ops;
+> +	dma_addr_t (*phys_to_dma)(struct device *dev, phys_addr_t paddr);
+> +	phys_addr_t (*dma_to_phys)(struct device *dev, dma_addr_t daddr);
 > +};
 > +
-> +static inline void mask_loongson_irq(struct irq_data *d)
+> +dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr)
 > +{
-> +	clear_c0_status(0x100 << (d->irq - MIPS_CPU_IRQ_BASE));
-> +	irq_disable_hazard();
+> +	struct loongson_dma_map_ops *ops = container_of(get_dma_ops(dev),
+> +				struct loongson_dma_map_ops, dma_map_ops);
+> +
+> +	return ops->phys_to_dma(dev, paddr);
 > +}
 > +
-> +static inline void unmask_loongson_irq(struct irq_data *d)
+> +phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
 > +{
-> +	set_c0_status(0x100 << (d->irq - MIPS_CPU_IRQ_BASE));
-> +	irq_enable_hazard();
-> +}
+> +	struct loongson_dma_map_ops *ops = container_of(get_dma_ops(dev),
+> +				struct loongson_dma_map_ops, dma_map_ops);
 > +
-> + /* For MIPS IRQs which shared by all cores */
-> +static struct irq_chip loongson_irq_chip = {
-> +	.name		= "Loongson",
-> +	.irq_ack	= mask_loongson_irq,
-> +	.irq_mask	= mask_loongson_irq,
-> +	.irq_mask_ack	= mask_loongson_irq,
-> +	.irq_unmask	= unmask_loongson_irq,
-> +	.irq_eoi	= unmask_loongson_irq,
-> +};
-> +
-> +void irq_router_init(void)
-> +{
-> +	int i;
-> +
-> +	/* route LPC int to cpu core0 int 0 */
-> +	LOONGSON_INT_ROUTER_LPC = LOONGSON_INT_CORE0_INT0;
-> +	/* route HT1 int0 ~ int7 to cpu core0 INT1*/
-> +	for (i = 0; i < 8; i++)
-> +		LOONGSON_INT_ROUTER_HT1(i) = LOONGSON_INT_CORE0_INT1;
-> +	/* enable HT1 interrupt */
-> +	LOONGSON_HT1_INTN_EN(0) = 0xffffffff;
-> +	/* enable router interrupt intenset */
-> +	LOONGSON_INT_ROUTER_INTENSET =
-> +		LOONGSON_INT_ROUTER_INTEN | (0xffff << 16) | 0x1 << 10;
+> +	return ops->dma_to_phys(dev, daddr);
 > +}
 
-Add static to this function, it is not used anywhere else. Or even just 
-fold it into mach_init_irq below, as it's not a particularly long function.
+This seems a little bit convoluted. Since phys_to_dma and dma_to_phys 
+will always end up calling the loongson_unity_ functions, I don't see 
+any point in having the loongson_dma_map_ops structure to point to them. 
+You can just implement phys_to_dma and dma_to_phys as inlines in 
+mach-loongson/dma-coherence.h.
 
 Thanks,
 Alex
 
 > +
-> +void __init mach_init_irq(void)
+> +static int loongson_dma_set_mask(struct device *dev, u64 mask)
 > +{
-> +	clear_c0_status(ST0_IM | ST0_BEV);
+> +	/* Loongson doesn't support DMA above 32-bit */
+> +	if (mask > DMA_BIT_MASK(32)) {
+> +		*dev->dma_mask = DMA_BIT_MASK(32);
+> +		return -EIO;
+> +	}
 > +
-> +	irq_router_init();
-> +	mips_cpu_irq_init();
-> +	init_i8259_irqs();
-> +	irq_set_chip_and_handler(LOONGSON_UART_IRQ,
-> +			&loongson_irq_chip, handle_level_irq);
+> +	*dev->dma_mask = mask;
 > +
-> +	/* setup HT1 irq */
-> +	setup_irq(LOONGSON_HT1_IRQ, &cascade_irqaction);
+> +	return 0;
+> +}
 > +
-> +	set_c0_status(STATUSF_IP2 | STATUSF_IP6);
+> +static struct loongson_dma_map_ops loongson_linear_dma_map_ops = {
+> +	.dma_map_ops = {
+> +		.alloc = loongson_dma_alloc_coherent,
+> +		.free = loongson_dma_free_coherent,
+> +		.map_page = loongson_dma_map_page,
+> +		.unmap_page = swiotlb_unmap_page,
+> +		.map_sg = loongson_dma_map_sg,
+> +		.unmap_sg = swiotlb_unmap_sg_attrs,
+> +		.sync_single_for_cpu = swiotlb_sync_single_for_cpu,
+> +		.sync_single_for_device = loongson_dma_sync_single_for_device,
+> +		.sync_sg_for_cpu = swiotlb_sync_sg_for_cpu,
+> +		.sync_sg_for_device = loongson_dma_sync_sg_for_device,
+> +		.mapping_error = swiotlb_dma_mapping_error,
+> +		.dma_supported = swiotlb_dma_supported,
+> +		.set_dma_mask = loongson_dma_set_mask
+> +	},
+> +	.phys_to_dma = loongson_unity_phys_to_dma,
+> +	.dma_to_phys = loongson_unity_dma_to_phys
+> +};
+> +
+> +void __init plat_swiotlb_setup(void)
+> +{
+> +	swiotlb_init(1);
+> +	mips_dma_map_ops = &loongson_linear_dma_map_ops.dma_map_ops;
 > +}
 >

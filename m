@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jan 2014 22:30:33 +0100 (CET)
-Received: from mail-oa0-f51.google.com ([209.85.219.51]:48727 "EHLO
-        mail-oa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6831300AbaALV3vKhI4E (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Jan 2014 22:29:51 +0100
-Received: by mail-oa0-f51.google.com with SMTP id m1so7195182oag.38
-        for <multiple recipients>; Sun, 12 Jan 2014 13:29:45 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jan 2014 22:30:52 +0100 (CET)
+Received: from mail-ob0-f173.google.com ([209.85.214.173]:37257 "EHLO
+        mail-ob0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6870553AbaALV3w5qkaq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Jan 2014 22:29:52 +0100
+Received: by mail-ob0-f173.google.com with SMTP id gq1so6974329obb.18
+        for <multiple recipients>; Sun, 12 Jan 2014 13:29:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=T+HxWzOgBmrvlQ4UnULUZ42Wl1eZroyLdsJNRh2nheA=;
-        b=hRKI99Ns23eaI1HtdfMd/Kh6BxVfNBrs5yt92r0UAlE06affykS+lsGPL24ZqzMs6z
-         03/2ukKKaKGhxwq8dntUnyUDUEzBT/4y3r7XVGg4Xwuq66qdFy9iBPbYyFPy7g6hPP2L
-         Y81LEEdX/oVtl+YRnvj1d33Hf1TAQFA5/5/XULJ+g36TP/DjwylTae/OG2EvvJxBMiXl
-         rhoDpBafFmrWk5VqydBoF3fdR+hzwzvaJh2kP6yj1HF2bOW28JSeAWqk/u94jQCU1LuG
-         vYRETxtcXJtZuljbIRMp1Q6EnIfi0ZkJkG56KsFZk/iuITwf9TAt1xGfBzubrZHsM2e9
-         oXYw==
-X-Received: by 10.182.88.202 with SMTP id bi10mr87415obb.52.1389562185073;
-        Sun, 12 Jan 2014 13:29:45 -0800 (PST)
+        bh=mV0/RMf9i1csG2CS39VxOLlxm/dVp9GoP1362c3wAdA=;
+        b=PHG+j5Rhshn8++HRCh2E9jBSzxTN+RdVCw7zeJpZGk+GAxvEXIAOwse0opNga/xYlu
+         u3y38QRttIg9arMQgPV6grnf0Ed9lLV2k/+thBrUPcJL3XIJ5e9t7orIFWLsR1osh2LK
+         Tc8i3tnArE7g5B1Uhk2JT/vUbUehVCUJFN7kqRVZWn3ILrGdIJgoB3DFkBCwRgXUJjeN
+         DvA7Vozsf+4ACfjNCCazLGcxEPHU87ui9kSXvNQVBcfu6i15efgdn8cRlR+cNPLvwy+J
+         g0yVgW3Ag/mT/WneZJxcX6m2PM0KsVy/+HE03tCkR5icusj8jXCjuY93b0P1j9Udiy+6
+         NPhw==
+X-Received: by 10.182.213.166 with SMTP id nt6mr84372obc.53.1389562186907;
+        Sun, 12 Jan 2014 13:29:46 -0800 (PST)
 Received: from localhost.localdomain (ip68-5-18-231.oc.oc.cox.net. [68.5.18.231])
-        by mx.google.com with ESMTPSA id m4sm21274968oen.7.2014.01.12.13.29.43
+        by mx.google.com with ESMTPSA id m4sm21274968oen.7.2014.01.12.13.29.45
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sun, 12 Jan 2014 13:29:44 -0800 (PST)
+        Sun, 12 Jan 2014 13:29:46 -0800 (PST)
 From:   Florian Fainelli <florian@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org, blogic@openwrt.org, jogo@openwrt.org,
         mbizon@freebox.fr, cernekee@gmail.com, dgcbueu@gmail.com,
         Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH v2 2/3] MIPS: update MIPS_L1_CACHE_SHIFT based on MIPS_L1_CACHE_SHIFT_<N>
-Date:   Sun, 12 Jan 2014 13:29:31 -0800
-Message-Id: <1389562172-13242-3-git-send-email-florian@openwrt.org>
+Subject: [PATCH v2 3/3] MIPS: BCM63XX: select correct MIPS_L1_CACHE_SHIFT value
+Date:   Sun, 12 Jan 2014 13:29:32 -0800
+Message-Id: <1389562172-13242-4-git-send-email-florian@openwrt.org>
 X-Mailer: git-send-email 1.8.3.2
 In-Reply-To: <1389562172-13242-1-git-send-email-florian@openwrt.org>
 References: <1389562172-13242-1-git-send-email-florian@openwrt.org>
@@ -37,7 +37,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38947
+X-archive-position: 38948
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,37 +54,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-All platforms that require a special MIPS_L1_CACHE_SHIFT value have been
-updated, such that we can now make MIPS_L1_CACHE_SHIFT default to the
-appropriate integer value based on the select MIPS_L1_CACHE_SHIFT_<N>
-variable.
+Broadcom BCM63xx DSL SoCs have a L1-cache line size of 16 bytes (shift
+value of 4) instead of the currently configured 32 bytes L1-cache line
+size.
 
+Reported-by: Daniel Gonzalez <dgcbueu@gmail.com>
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
 Changes since v1:
-- keep order with MIPS_L1_CACHE_SHIFT_N
-- add a default "5" to provide a safe default
+- rebased
 
- arch/mips/Kconfig | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/mips/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 3b7a2be..68969d9 100644
+index 68969d9..beb3766 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -1106,9 +1106,10 @@ config MIPS_L1_CACHE_SHIFT_7
+@@ -139,6 +139,7 @@ config BCM63XX
+ 	select SWAP_IO_SPACE
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select HAVE_CLK
++	select MIPS_L1_CACHE_SHIFT_4
+ 	help
+ 	 Support for BCM63XX based boards
  
- config MIPS_L1_CACHE_SHIFT
- 	int
--	default "4" if MACH_DECSTATION || MIKROTIK_RB532 || PMC_MSP4200_EVAL || SOC_RT288X
--	default "6" if MIPS_CPU_SCACHE
--	default "7" if SGI_IP22 || SGI_IP27 || SGI_IP28 || SNI_RM || CPU_CAVIUM_OCTEON
-+	default "4" if MIPS_L1_CACHE_SHIFT_4
-+	default "5" if MIPS_L1_CACHE_SHIFT_5
-+	default "6" if MIPS_L1_CACHE_SHIFT_6
-+	default "7" if MIPS_L1_CACHE_SHIFT_7
- 	default "5"
- 
- config HAVE_STD_PC_SERIAL_PORT
 -- 
 1.8.3.2

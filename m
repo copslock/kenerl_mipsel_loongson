@@ -1,41 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jan 2014 22:29:52 +0100 (CET)
-Received: from mail-oa0-f49.google.com ([209.85.219.49]:38321 "EHLO
-        mail-oa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816852AbaALV3sFoNqz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Jan 2014 22:29:48 +0100
-Received: by mail-oa0-f49.google.com with SMTP id n16so7046081oag.8
-        for <multiple recipients>; Sun, 12 Jan 2014 13:29:41 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jan 2014 22:30:13 +0100 (CET)
+Received: from mail-ob0-f179.google.com ([209.85.214.179]:41136 "EHLO
+        mail-ob0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6828766AbaALV3t3ph6R (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Jan 2014 22:29:49 +0100
+Received: by mail-ob0-f179.google.com with SMTP id wp4so1438544obc.38
+        for <multiple recipients>; Sun, 12 Jan 2014 13:29:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=GXW0AUwRF6t++2H01Rs3xR5ExHh0PsESc1sZaNKL5iE=;
-        b=U+8zkffmxbo7UazEYjv1HQ9XH48bOCOt7D9yjOpgf/f4tuUVUeTgUp4u0+PXKpNm40
-         W3x1ByWBaXAQ9pqxDxFlHj6RDdzvu601iN4pBTfT43hjmxapGonGDhDNw8euYj/LghBg
-         7fWQ1rIRMhIMVO2bGs+mIDrT5+zkVYRfdrye4V2FhKwp/Xlr1yjUoiB19f09dT1Bz9SO
-         FkztklC1GyBcsCTItHPhe16Z64RATn9yKNvnspnzBuWP31rkL2oYlEkUPLIAztt/eL+o
-         jCwmqxdyNz7qctkOaGxblQuIWOSg13O4nvs1YyN0pEkVKNgsZK90nob0Q8Z+D3jg998R
-         4GhQ==
-X-Received: by 10.182.16.33 with SMTP id c1mr18100450obd.4.1389562181166;
-        Sun, 12 Jan 2014 13:29:41 -0800 (PST)
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=x8ueEWIhy6SYo391VxQW5E8LUnbOpvCVl680JZU47Lc=;
+        b=fXV1pNaMLuCD3aA+VbzZemDswx7qwNb6cL0gUq8gCgx2OEJrq/QK2BSK1JTgqhpAx6
+         dLIZnqnbT8dvsgw2V3hk/jtC2qoeaWePIfIKFfXFSBO942JBJmCDCtn1iLFP0Lqk+c9L
+         bUSfRhqXk+1tsAenITKGtOGuCHBP5TzRFJpM1Ihkci0fvNxrOvhxJ444Dl9xZKbB1Z7d
+         bTdriLfRDm3Eih2KZhwNQuOFB4aqNPnUKFh4/obtukyYdgt7h9doJnCZy91btj0dexOu
+         SumQD0EVQNWo9BxzFJfO4OV+V8OvSW3zXDkflxbDFHQWywWfzRV4e+KMa/1kgjYqiui1
+         511A==
+X-Received: by 10.182.42.105 with SMTP id n9mr17911900obl.33.1389562183177;
+        Sun, 12 Jan 2014 13:29:43 -0800 (PST)
 Received: from localhost.localdomain (ip68-5-18-231.oc.oc.cox.net. [68.5.18.231])
-        by mx.google.com with ESMTPSA id m4sm21274968oen.7.2014.01.12.13.29.39
+        by mx.google.com with ESMTPSA id m4sm21274968oen.7.2014.01.12.13.29.41
         for <multiple recipients>
         (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Sun, 12 Jan 2014 13:29:40 -0800 (PST)
+        Sun, 12 Jan 2014 13:29:42 -0800 (PST)
 From:   Florian Fainelli <florian@openwrt.org>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org, blogic@openwrt.org, jogo@openwrt.org,
         mbizon@freebox.fr, cernekee@gmail.com, dgcbueu@gmail.com,
         Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH v2 0/3] MIPS: L1_CACHE_SHIFT updates
-Date:   Sun, 12 Jan 2014 13:29:29 -0800
-Message-Id: <1389562172-13242-1-git-send-email-florian@openwrt.org>
+Subject: [PATCH v2 1/3] MIPS: introduce MIPS_L1_CACHE_SHIFT_<N>
+Date:   Sun, 12 Jan 2014 13:29:30 -0800
+Message-Id: <1389562172-13242-2-git-send-email-florian@openwrt.org>
 X-Mailer: git-send-email 1.8.3.2
+In-Reply-To: <1389562172-13242-1-git-send-email-florian@openwrt.org>
+References: <1389562172-13242-1-git-send-email-florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38945
+X-archive-position: 38946
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,20 +54,115 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patchset cleanups the MIPS_L1_CACHE_SHIFT values and also fixes it
-for Broadcom BCM63xx DSL SOCs.
+In order to avoid keeping an ever growing list of chips which need to
+select a specific MIPS_L1_CACHE_SHIFT value introduce multiple internal
+and non-exposed Kconfig symbols for the various MIPS_L1_CACHE_SHIFT
+values out there and update the relevant Kconfig symbols to select them.
 
-Thanks!
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+Changes since v1:
+- do not make MIPS_L1_CACHE_SHIFT_5 the def_bool y
 
-Florian Fainelli (3):
-  MIPS: introduce MIPS_L1_CACHE_SHIFT_<N>
-  MIPS: update MIPS_L1_CACHE_SHIFT based on MIPS_L1_CACHE_SHIFT_<N>
-  MIPS: BCM63XX: select correct MIPS_L1_CACHE_SHIFT value
-
- arch/mips/Kconfig              | 26 +++++++++++++++++++++++---
+ arch/mips/Kconfig              | 18 ++++++++++++++++++
  arch/mips/pmcs-msp71xx/Kconfig |  1 +
  arch/mips/ralink/Kconfig       |  1 +
- 3 files changed, 25 insertions(+), 3 deletions(-)
+ 3 files changed, 20 insertions(+)
 
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 17cc7ff..3b7a2be 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -183,6 +183,7 @@ config MACH_DECSTATION
+ 	select SYS_SUPPORTS_128HZ
+ 	select SYS_SUPPORTS_256HZ
+ 	select SYS_SUPPORTS_1024HZ
++	select MIPS_L1_CACHE_SHIFT_4
+ 	help
+ 	  This enables support for DEC's MIPS based workstations.  For details
+ 	  see the Linux/MIPS FAQ on <http://www.linux-mips.org/> and the
+@@ -468,6 +469,7 @@ config SGI_IP22
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_64BIT_KERNEL
+ 	select SYS_SUPPORTS_BIG_ENDIAN
++	select MIPS_L1_CACHE_SHIFT_7
+ 	help
+ 	  This are the SGI Indy, Challenge S and Indigo2, as well as certain
+ 	  OEM variants like the Tandem CMN B006S. To compile a Linux kernel
+@@ -488,6 +490,7 @@ config SGI_IP27
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_SUPPORTS_NUMA
+ 	select SYS_SUPPORTS_SMP
++	select MIPS_L1_CACHE_SHIFT_7
+ 	help
+ 	  This are the SGI Origin 200, Origin 2000 and Onyx 2 Graphics
+ 	  workstations.  To compile a Linux kernel that runs on these, say Y
+@@ -694,6 +697,7 @@ config MIKROTIK_RB532
+ 	select SWAP_IO_SPACE
+ 	select BOOT_RAW
+ 	select ARCH_REQUIRE_GPIOLIB
++	select MIPS_L1_CACHE_SHIFT_4
+ 	help
+ 	  Support the Mikrotik(tm) RouterBoard 532 series,
+ 	  based on the IDT RC32434 SoC.
+@@ -1088,6 +1092,18 @@ config FW_SNIPROM
+ config BOOT_ELF32
+ 	bool
+ 
++config MIPS_L1_CACHE_SHIFT_4
++	bool
++
++config MIPS_L1_CACHE_SHIFT_5
++	bool
++
++config MIPS_L1_CACHE_SHIFT_6
++	bool
++
++config MIPS_L1_CACHE_SHIFT_7
++	bool
++
+ config MIPS_L1_CACHE_SHIFT
+ 	int
+ 	default "4" if MACH_DECSTATION || MIKROTIK_RB532 || PMC_MSP4200_EVAL || SOC_RT288X
+@@ -1372,6 +1388,7 @@ config CPU_CAVIUM_OCTEON
+ 	select LIBFDT
+ 	select USE_OF
+ 	select USB_EHCI_BIG_ENDIAN_MMIO
++	select MIPS_L1_CACHE_SHIFT_7
+ 	help
+ 	  The Cavium Octeon processor is a highly integrated chip containing
+ 	  many ethernet hardware widgets for networking tasks. The processor
+@@ -1794,6 +1811,7 @@ config IP22_CPU_SCACHE
+ config MIPS_CPU_SCACHE
+ 	bool
+ 	select BOARD_SCACHE
++	select MIPS_L1_CACHE_SHIFT_6
+ 
+ config R5000_CPU_SCACHE
+ 	bool
+diff --git a/arch/mips/pmcs-msp71xx/Kconfig b/arch/mips/pmcs-msp71xx/Kconfig
+index 3482b8c..6073ca4 100644
+--- a/arch/mips/pmcs-msp71xx/Kconfig
++++ b/arch/mips/pmcs-msp71xx/Kconfig
+@@ -6,6 +6,7 @@ config PMC_MSP4200_EVAL
+ 	bool "PMC-Sierra MSP4200 Eval Board"
+ 	select IRQ_MSP_SLP
+ 	select HW_HAS_PCI
++	select MIPS_L1_CACHE_SHIFT_4
+ 
+ config PMC_MSP4200_GW
+ 	bool "PMC-Sierra MSP4200 VoIP Gateway"
+diff --git a/arch/mips/ralink/Kconfig b/arch/mips/ralink/Kconfig
+index 424f034..1bfd1c1 100644
+--- a/arch/mips/ralink/Kconfig
++++ b/arch/mips/ralink/Kconfig
+@@ -15,6 +15,7 @@ choice
+ 
+ 	config SOC_RT288X
+ 		bool "RT288x"
++		select MIPS_L1_CACHE_SHIFT_4
+ 
+ 	config SOC_RT305X
+ 		bool "RT305x"
 -- 
 1.8.3.2

@@ -1,30 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jan 2014 13:03:47 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:42596 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jan 2014 13:11:36 +0100 (CET)
+Received: from sauhun.de ([89.238.76.85]:45555 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6826363AbaANMDpG6NFW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Jan 2014 13:03:45 +0100
-Message-ID: <52D52796.3030509@phrozen.org>
-Date:   Tue, 14 Jan 2014 13:03:34 +0100
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
-MIME-Version: 1.0
-To:     Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+        id S6826363AbaANMLdCNPgy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Jan 2014 13:11:33 +0100
+Received: from p4fe254f4.dip0.t-ipconnect.de ([79.226.84.244]:42211 helo=localhost)
+        by pokefinder.org with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.69)
+        (envelope-from <wsa@the-dreams.de>)
+        id 1W32qA-0003J7-Rq; Tue, 14 Jan 2014 13:11:31 +0100
+Date:   Tue, 14 Jan 2014 13:11:29 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     John Crispin <john@phrozen.org>
+Cc:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org
 Subject: Re: [PATCH 1/7] arch/mips/lantiq/xway: don't check resource with
  devm_ioremap_resource
+Message-ID: <20140114121129.GA2685@katana>
 References: <1389700739-3696-1-git-send-email-wsa@the-dreams.de>
-In-Reply-To: <1389700739-3696-1-git-send-email-wsa@the-dreams.de>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <john@phrozen.org>
+ <52D52796.3030509@phrozen.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="mYCpIKhGyMATD0i+"
+Content-Disposition: inline
+In-Reply-To: <52D52796.3030509@phrozen.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <wsa@the-dreams.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38975
+X-archive-position: 38976
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: wsa@the-dreams.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,38 +45,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Wolfgang,
 
-should we take 1/7 and 6/7 via the mips tree ?
+--mYCpIKhGyMATD0i+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-    John
+Hi,
+
+On Tue, Jan 14, 2014 at 01:03:34PM +0100, John Crispin wrote:
+> Hi Wolfgang,
+
+Wolfram, please...
+
+> should we take 1/7 and 6/7 via the mips tree ?
+
+> > Should go via subsystem tree
+
+Yes :)
+
+Thanks,
+
+   Wolfram
 
 
-On 14/01/2014 12:58, Wolfram Sang wrote:
-> devm_ioremap_resource does sanity checks on the given resource. No need to
-> duplicate this in the driver.
->
-> Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
-> Acked-by: John Crispin <blogic@openwrt.org>
-> ---
->
-> Should go via subsystem tree
->
->  arch/mips/lantiq/xway/dma.c | 4 ----
->  1 file changed, 4 deletions(-)
->
-> diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
-> index 08f7ebd..78a91fa 100644
-> --- a/arch/mips/lantiq/xway/dma.c
-> +++ b/arch/mips/lantiq/xway/dma.c
-> @@ -220,10 +220,6 @@ ltq_dma_init(struct platform_device *pdev)
->  	int i;
->  
->  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	if (!res)
-> -		panic("Failed to get dma resource");
-> -
-> -	/* remap dma register range */
->  	ltq_dma_membase = devm_ioremap_resource(&pdev->dev, res);
->  	if (IS_ERR(ltq_dma_membase))
->  		panic("Failed to remap dma resource");
+--mYCpIKhGyMATD0i+
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.15 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS1SlxAAoJEBQN5MwUoCm2oeQQAJpP+89ZvelIwolkiWBNKYF9
+wX31+u1o7i7Mv2xpSOnUXGdcVtbfhxilztRS09lOamCxxHGaiV9FbNl16WTEykln
+fSYBgYaFiewe64X27hVMe8i3wM28FtN9A+wGcxb+TVd8HH0unEERWUEWRYRtYoXG
+VPwXMsV7M1z2tZ0upOcvy90HGpAE1nsXmgHW5w7rezmPdMS9dA4CY34NcUZfvTPt
+I00Y/DlBtE2ZtTqLqX6rBt5cj1qiQYQRX2q/OHK5pKKcwpb0VxcsbXW/iR2Rf7C5
+AhtHok4yUlarlq2NFFU45yOvuC5OwMyRE2VDYmpWlF/ouhtxDFrm5RdqO6Osvm94
+XTPEGcMdZB3dnobZgjBrQeYQhGUfy3j7HmaOo1E8UAisoITfaEhwhVAYvMYWDk/V
+CdM5I2ylpoU0KL/OB2Fi0ixbheORr31aFTw3UgMUCrXCIrwgntIXQG/w8LvGF0GV
+T/CDR0vy9jwijSRWt+bgYo5qzxDCaPmaCVWsxsFX1efSzcZmlweDqqabUDC35Of/
+h37QGT9Q9Hnf+1ppULaawkiBpQvYaxE/yHQYRA5koZG3g2bvJQ0k205X2k9Z4Yw/
+HYwsAt/57J7Omn27zqNt+3JZHk9InBxouI8F6uxBHo6gb6yzVU2YTc678vGc8BOX
+ExMtyLMJtxPDJFfcG8Ok
+=LYET
+-----END PGP SIGNATURE-----
+
+--mYCpIKhGyMATD0i+--

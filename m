@@ -1,38 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jan 2014 13:11:36 +0100 (CET)
-Received: from sauhun.de ([89.238.76.85]:45555 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6826363AbaANMLdCNPgy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Jan 2014 13:11:33 +0100
-Received: from p4fe254f4.dip0.t-ipconnect.de ([79.226.84.244]:42211 helo=localhost)
-        by pokefinder.org with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.69)
-        (envelope-from <wsa@the-dreams.de>)
-        id 1W32qA-0003J7-Rq; Tue, 14 Jan 2014 13:11:31 +0100
-Date:   Tue, 14 Jan 2014 13:11:29 +0100
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     John Crispin <john@phrozen.org>
-Cc:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/7] arch/mips/lantiq/xway: don't check resource with
- devm_ioremap_resource
-Message-ID: <20140114121129.GA2685@katana>
-References: <1389700739-3696-1-git-send-email-wsa@the-dreams.de>
- <52D52796.3030509@phrozen.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jan 2014 15:23:46 +0100 (CET)
+Received: from mail-ea0-f175.google.com ([209.85.215.175]:38063 "EHLO
+        mail-ea0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6826363AbaANOXkFRjx4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jan 2014 15:23:40 +0100
+Received: by mail-ea0-f175.google.com with SMTP id z10so3989524ead.34
+        for <multiple recipients>; Tue, 14 Jan 2014 06:23:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:mime-version:content-type
+         :content-transfer-encoding;
+        bh=bE7WPN/C9nNa8r+2f6+Nf+pXVVQ9c2usCPq66kxg9xs=;
+        b=dWcyaP+aSL0k1WTYuN9XbB1O3DAj+mVxEoc/8hogU08oUyoy240s1AObB9iro7719Z
+         BdtX8WPixeQ+jJE7uVp+ASnw1Kd8hb2/+vbBkHtOwFbzyM2O+4y9YnA5ux9yGWPiJeo1
+         bLlg+ntR+k9gpWufLs0Y+XO3mU8ORme09/F+VjbmKVcCYiLmFM1F/fVAJl2Lm1uLePtv
+         ez8kOHvOM9qZekZzkkSqCo0IygxQO7l6eZ8DwtAr1fnA4cWOWZnEsARuwaOZrTUpDbma
+         UOaK/edbVnzgmZHf7g6vvuRg8Vkkegei3Kuwd0qWGhqJJzzzADi4YScVLGzfXns9gRDD
+         itUw==
+X-Received: by 10.15.42.204 with SMTP id u52mr1646376eev.47.1389709414699;
+        Tue, 14 Jan 2014 06:23:34 -0800 (PST)
+Received: from linux-samsung700g7a.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by mx.google.com with ESMTPSA id j46sm2020445eew.18.2014.01.14.06.23.32
+        for <multiple recipients>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 14 Jan 2014 06:23:33 -0800 (PST)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>, Michael Buesch <m@bues.ch>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Subject: [PATCH] ssb: gpio: use #if instead of "if" for IS_ENABLED
+Date:   Tue, 14 Jan 2014 15:23:29 +0100
+Message-Id: <1389709409-31807-1-git-send-email-zajec5@gmail.com>
+X-Mailer: git-send-email 1.7.10.4
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="mYCpIKhGyMATD0i+"
-Content-Disposition: inline
-In-Reply-To: <52D52796.3030509@phrozen.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <wsa@the-dreams.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <zajec5@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38976
+X-archive-position: 38977
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wsa@the-dreams.de
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,49 +55,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Standard "if" was evaluating to if (0) which still required conditional
+code to be correct. It is not, as ssb_gpio_to_irq is not defined.
 
---mYCpIKhGyMATD0i+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Rafał Miłecki <zajec5@gmail.com>
+---
+John: if you manage to, you should merge (bundle?) this one with
+ssb: gpio: add own IRQ domain
+(to avoid build breakage during bisection)
+---
+ drivers/ssb/driver_gpio.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-Hi,
-
-On Tue, Jan 14, 2014 at 01:03:34PM +0100, John Crispin wrote:
-> Hi Wolfgang,
-
-Wolfram, please...
-
-> should we take 1/7 and 6/7 via the mips tree ?
-
-> > Should go via subsystem tree
-
-Yes :)
-
-Thanks,
-
-   Wolfram
-
-
---mYCpIKhGyMATD0i+
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.15 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS1SlxAAoJEBQN5MwUoCm2oeQQAJpP+89ZvelIwolkiWBNKYF9
-wX31+u1o7i7Mv2xpSOnUXGdcVtbfhxilztRS09lOamCxxHGaiV9FbNl16WTEykln
-fSYBgYaFiewe64X27hVMe8i3wM28FtN9A+wGcxb+TVd8HH0unEERWUEWRYRtYoXG
-VPwXMsV7M1z2tZ0upOcvy90HGpAE1nsXmgHW5w7rezmPdMS9dA4CY34NcUZfvTPt
-I00Y/DlBtE2ZtTqLqX6rBt5cj1qiQYQRX2q/OHK5pKKcwpb0VxcsbXW/iR2Rf7C5
-AhtHok4yUlarlq2NFFU45yOvuC5OwMyRE2VDYmpWlF/ouhtxDFrm5RdqO6Osvm94
-XTPEGcMdZB3dnobZgjBrQeYQhGUfy3j7HmaOo1E8UAisoITfaEhwhVAYvMYWDk/V
-CdM5I2ylpoU0KL/OB2Fi0ixbheORr31aFTw3UgMUCrXCIrwgntIXQG/w8LvGF0GV
-T/CDR0vy9jwijSRWt+bgYo5qzxDCaPmaCVWsxsFX1efSzcZmlweDqqabUDC35Of/
-h37QGT9Q9Hnf+1ppULaawkiBpQvYaxE/yHQYRA5koZG3g2bvJQ0k205X2k9Z4Yw/
-HYwsAt/57J7Omn27zqNt+3JZHk9InBxouI8F6uxBHo6gb6yzVU2YTc678vGc8BOX
-ExMtyLMJtxPDJFfcG8Ok
-=LYET
------END PGP SIGNATURE-----
-
---mYCpIKhGyMATD0i+--
+diff --git a/drivers/ssb/driver_gpio.c b/drivers/ssb/driver_gpio.c
+index 6c5a97d..ba350d2 100644
+--- a/drivers/ssb/driver_gpio.c
++++ b/drivers/ssb/driver_gpio.c
+@@ -230,8 +230,9 @@ static int ssb_gpio_chipco_init(struct ssb_bus *bus)
+ 	chip->set		= ssb_gpio_chipco_set_value;
+ 	chip->direction_input	= ssb_gpio_chipco_direction_input;
+ 	chip->direction_output	= ssb_gpio_chipco_direction_output;
+-	if (IS_ENABLED(CONFIG_SSB_EMBEDDED))
+-		chip->to_irq	= ssb_gpio_to_irq;
++#if IS_ENABLED(CONFIG_SSB_EMBEDDED)
++	chip->to_irq		= ssb_gpio_to_irq;
++#endif
+ 	chip->ngpio		= 16;
+ 	/* There is just one SoC in one device and its GPIO addresses should be
+ 	 * deterministic to address them more easily. The other buses could get
+@@ -422,8 +423,9 @@ static int ssb_gpio_extif_init(struct ssb_bus *bus)
+ 	chip->set		= ssb_gpio_extif_set_value;
+ 	chip->direction_input	= ssb_gpio_extif_direction_input;
+ 	chip->direction_output	= ssb_gpio_extif_direction_output;
+-	if (IS_ENABLED(CONFIG_SSB_EMBEDDED))
+-		chip->to_irq	= ssb_gpio_to_irq;
++#if IS_ENABLED(CONFIG_SSB_EMBEDDED)
++	chip->to_irq		= ssb_gpio_to_irq;
++#endif
+ 	chip->ngpio		= 5;
+ 	/* There is just one SoC in one device and its GPIO addresses should be
+ 	 * deterministic to address them more easily. The other buses could get
+-- 
+1.7.10.4

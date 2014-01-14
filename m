@@ -1,44 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Mar 2014 09:37:31 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.89.28.114]:38302 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6822314AbaCFIh2VVNzq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Mar 2014 09:37:28 +0100
-Received: from KLMAIL01.kl.imgtec.org (unknown [192.168.5.35])
-        by Websense Email Security Gateway with ESMTPS id 76AA0BC333753;
-        Thu,  6 Mar 2014 08:37:20 +0000 (GMT)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- KLMAIL01.kl.imgtec.org (192.168.5.35) with Microsoft SMTP Server (TLS) id
- 14.3.174.1; Thu, 6 Mar 2014 08:37:21 +0000
-Received: from [192.168.154.47] (192.168.154.47) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.174.1; Thu, 6 Mar
- 2014 08:37:21 +0000
-Message-ID: <531833F0.8080300@imgtec.com>
-Date:   Thu, 6 Mar 2014 08:38:08 +0000
-From:   Markos Chandras <Markos.Chandras@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Mar 2014 10:35:22 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:44516 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6827306AbaANMWFmaoi4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Jan 2014 13:22:05 +0100
+Message-ID: <52D52BEB.1030200@phrozen.org>
+Date:   Tue, 14 Jan 2014 13:22:03 +0100
+From:   John Crispin <john@phrozen.org>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
 MIME-Version: 1.0
-To:     Richard Guy Briggs <rgb@redhat.com>, <linux-audit@redhat.com>,
-        <linux-kernel@vger.kernel.org>
-CC:     <eparis@redhat.com>, <sgrubb@redhat.com>, <oleg@redhat.com>,
-        <linux-mips@linux-mips.org>,
-        <user-mode-linux-devel@lists.sourceforge.net>,
-        <linux-arch@vger.kernel.org>
-Subject: Re: [PATCH 1/6][RFC] syscall: define syscall_get_arch() for each
- audit-supported arch
-References: <cover.1393974970.git.rgb@redhat.com> <cb88576237b1bc4fc7981200c2c23ae05790db0d.1393974970.git.rgb@redhat.com>
-In-Reply-To: <cb88576237b1bc4fc7981200c2c23ae05790db0d.1393974970.git.rgb@redhat.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.47]
-Return-Path: <Markos.Chandras@imgtec.com>
+To:     Wolfram Sang <wsa@the-dreams.de>
+CC:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/7] arch/mips/lantiq/xway: don't check resource with
+ devm_ioremap_resource
+References: <1389700739-3696-1-git-send-email-wsa@the-dreams.de> <52D52796.3030509@phrozen.org> <20140114121129.GA2685@katana>
+In-Reply-To: <20140114121129.GA2685@katana>
+Content-Type: multipart/alternative;
+ boundary="------------090103090105020007030400"
+Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39427
+X-archive-position: 39428
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Markos.Chandras@imgtec.com
+X-original-sender: john@phrozen.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,47 +39,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Richard,
+This is a multi-part message in MIME format.
+--------------090103090105020007030400
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 
-On 03/05/2014 09:27 PM, Richard Guy Briggs wrote:
-> Each arch that supports audit requires syscall_get_arch() to able to log and
-> identify architecture-dependent syscall numbers.  The information is used in at
-> least two different subsystems, so standardize it in the same call across all
-> arches.
+Hi Wolfram,
+
+>> > Hi Wolfgang,
+> Wolfram, please...
+
+-EFAIL .... i was on the phone with a Wolfgang for several hours today :)
+i know you are called Wolfram ... sorry
+
+>> > should we take 1/7 and 6/7 via the mips tree ?
+>>> > > Should go via subsystem tree
+> Yes :)
 >
-> Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
->
-> ---
-> diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-> index 81c8913..41ecde4 100644
-> --- a/arch/mips/include/asm/syscall.h
-> +++ b/arch/mips/include/asm/syscall.h
-> @@ -103,7 +103,7 @@ extern const unsigned long sysn32_call_table[];
->
->   static inline int __syscall_get_arch(void)
->   {
-> -	int arch = EM_MIPS;
-> +	int arch = AUDIT_ARCH_MIPS;
->   #ifdef CONFIG_64BIT
->   	arch |=  __AUDIT_ARCH_64BIT;
->   #endif
-> @@ -113,4 +113,10 @@ static inline int __syscall_get_arch(void)
->   	return arch;
->   }
->
-> +static inline int syscall_get_arch(struct task_struct *task,
-> +				   struct pt_regs *regs)
-> +{
-> +	return __syscall_get_arch();
-> +}
-> +
->   #endif	/* __ASM_MIPS_SYSCALL_H */
 
-This is already fixed for MIPS
+OK, I'll pull them into my mips-next tree now
 
-http://patchwork.linux-mips.org/patch/6398/
+    John
 
-The code is in linux-next targeting 3.15 as far as I can tell.
+--------------090103090105020007030400
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 
--- 
-markos
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    Hi Wolfram,<br>
+    <br>
+    <blockquote cite="mid:20140114121129.GA2685@katana" type="cite">
+      <div class="moz-text-plain" wrap="true" graphical-quote="true"
+        style="font-family: -moz-fixed; font-size: 12px;"
+        lang="x-western">
+        <blockquote type="cite" style="color: #000000;">
+          <pre wrap=""><span class="moz-txt-citetags">&gt; </span>Hi Wolfgang,
+</pre>
+        </blockquote>
+        <pre wrap="">Wolfram, please...</pre>
+      </div>
+    </blockquote>
+    <br>
+    -EFAIL .... i was on the phone with a Wolfgang for several hours
+    today :)<br>
+    i know you are called Wolfram ... sorry<br>
+    <br>
+    <blockquote cite="mid:20140114121129.GA2685@katana" type="cite">
+      <div class="moz-text-plain" wrap="true" graphical-quote="true"
+        style="font-family: -moz-fixed; font-size: 12px;"
+        lang="x-western">
+        <blockquote type="cite" style="color: #000000;">
+          <pre wrap=""><span class="moz-txt-citetags">&gt; </span>should we take 1/7 and 6/7 via the mips tree ?
+</pre>
+        </blockquote>
+        <blockquote type="cite" style="color: #000000;">
+          <blockquote type="cite" style="color: #000000;">
+            <pre wrap=""><span class="moz-txt-citetags">&gt; &gt; </span>Should go via subsystem tree
+</pre>
+          </blockquote>
+        </blockquote>
+        <pre wrap="">Yes <span class="moz-smiley-s1" title=":)"><span>:)</span></span>
+
+</pre>
+      </div>
+    </blockquote>
+    <br>
+    OK, I'll pull them into my mips-next tree now<br>
+    <br>
+    &nbsp;&nbsp;&nbsp; John<br>
+  </body>
+</html>
+
+--------------090103090105020007030400--

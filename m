@@ -1,47 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jan 2014 07:09:40 +0100 (CET)
-Received: from mail-ob0-f182.google.com ([209.85.214.182]:64384 "EHLO
-        mail-ob0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6826582AbaANGIkMqlD- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jan 2014 07:08:40 +0100
-Received: by mail-ob0-f182.google.com with SMTP id wn1so6849664obc.13
-        for <multiple recipients>; Mon, 13 Jan 2014 22:08:34 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jan 2014 07:58:08 +0100 (CET)
+Received: from mail-la0-f43.google.com ([209.85.215.43]:48617 "EHLO
+        mail-la0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6826363AbaANG51SWG-1 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Jan 2014 07:57:27 +0100
+Received: by mail-la0-f43.google.com with SMTP id er20so1666495lab.30
+        for <multiple recipients>; Mon, 13 Jan 2014 22:57:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=LHvBy3vUqjsBgoE664HtiD3m+spCtLK7gJBZFcyA5Qc=;
-        b=GYBkqBwSdMbu6TYK3YoxgEhloI+mFdwP7dRQaBAQlvx3AZqUBdcCA2TsNe3jDoAVp6
-         2rn0ObaukFnwjfgUfGcHisByRW0msQJjIitUZvm7sYm+/ioSPQZoC/3u0NHHWRaJbs0T
-         /QPf2ZS+LvbKzkzzUblm/gRHNgdiwzhRBJggVq0r9t6Jm1Q4VfeXvyB8JZ1543RtB3NN
-         OlmcsAkSv0YGRvwSaElVDihc1KqPzk+kQyXJcAmS9AI3vD5Klgl6qV/cxvi1F/etqBlY
-         iocstqxaclS8DwbmJkJSsMSAL3xB9AdYgCFsOMH8XpUsZZvqy5MKB3Hp7bZKJA4mtP14
-         40BQ==
-X-Received: by 10.182.221.230 with SMTP id qh6mr23561174obc.7.1389679714132;
-        Mon, 13 Jan 2014 22:08:34 -0800 (PST)
-Received: from localhost.localdomain (ip68-5-18-231.oc.oc.cox.net. [68.5.18.231])
-        by mx.google.com with ESMTPSA id nw5sm24074812obc.9.2014.01.13.22.08.32
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        bh=+LYz0Q47XuF3YkUyFRofMC+gZzg1b/tRe1I8VTfZZXA=;
+        b=H/qP4hPt2USg3RETHDW46gTg1VIILo/uHPN6aGtUlH7YUWEVfSfdJOPmFrMRme+pSZ
+         2o+4FSXVZGruh6LbenYTNTEJfE+DnCmcxD3sA7HMl2WCNFbFHv5xqHG/mv6pU7255Ufi
+         KY6qQm/AJifDEA7q6tBXp6nAePGGr58JaXLL/krUxmH1XD1DMBl+uFhr5RbUK8Y3egfF
+         Kc5zHifjYJksgqSGkqMQCAFPrtNsPR98Yzg2iINoJ208l4ej9+BV2uNVxYJsZxkaLA/u
+         hHuLnabE3LAflOKzKV0n5Qcx/DbZz8q2g9iFtBi5r5/v2TNbSIk4XPN97F7Zx6sBB+Al
+         F6LA==
+X-Received: by 10.112.143.163 with SMTP id sf3mr11874697lbb.20.1389682638939;
+        Mon, 13 Jan 2014 22:57:18 -0800 (PST)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by mx.google.com with ESMTPSA id wp3sm2022993lbb.8.2014.01.13.22.57.16
         for <multiple recipients>
-        (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Mon, 13 Jan 2014 22:08:33 -0800 (PST)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, blogic@openwrt.org, jogo@openwrt.org,
-        mbizon@freebox.fr, cernekee@gmail.com, dgcbueu@gmail.com,
-        Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH v3 3/3] MIPS: BCM63XX: select correct MIPS_L1_CACHE_SHIFT value
-Date:   Mon, 13 Jan 2014 22:07:32 -0800
-Message-Id: <1389679652-14269-4-git-send-email-f.fainelli@gmail.com>
-X-Mailer: git-send-email 1.8.3.2
-In-Reply-To: <1389679652-14269-1-git-send-email-f.fainelli@gmail.com>
-References: <1389679652-14269-1-git-send-email-f.fainelli@gmail.com>
-Return-Path: <f.fainelli@gmail.com>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 13 Jan 2014 22:57:17 -0800 (PST)
+Date:   Tue, 14 Jan 2014 11:05:25 +0400
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     Antony Pavlov <antonynpavlov@gmail.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <blogic@openwrt.org>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH v3] MIPS: ZBOOT: gather string functions into string.c
+Message-Id: <20140114110525.cd37b131de060259404bd4c8@gmail.com>
+In-Reply-To: <1389648656-25709-1-git-send-email-antonynpavlov@gmail.com>
+References: <1389648656-25709-1-git-send-email-antonynpavlov@gmail.com>
+X-Mailer: Sylpheed 3.4.0beta7 (GTK+ 2.24.22; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38969
+X-archive-position: 38970
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,35 +59,124 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Florian Fainelli <florian@openwrt.org>
+On Tue, 14 Jan 2014 01:30:56 +0400
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-Broadcom BCM63xx DSL SoCs have a L1-cache line size of 16 bytes (shift
-value of 4) instead of the currently configured 32 bytes L1-cache line
-size.
+> In the worst case this adds less then 128 bytes of code
 
-Reported-by: Daniel Gonzalez <dgcbueu@gmail.com>
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-Changes in v2:
-- rebased on top of john's mips-next-3.14
+Sorry! I see a typo here.
+Please change "then" to "than" before applying.
 
-Changes since v1:
-- rebased
+> but on the other hand this makes code organization more clear.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+> Cc: linux-mips@linux-mips.org
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: John Crispin <blogic@openwrt.org>
+> Cc: Florian Fainelli <f.fainelli@gmail.com>
+> ---
+>  arch/mips/boot/compressed/Makefile     |  4 ++--
+>  arch/mips/boot/compressed/decompress.c | 22 ----------------------
+>  arch/mips/boot/compressed/string.c     | 28 ++++++++++++++++++++++++++++
+>  3 files changed, 30 insertions(+), 24 deletions(-)
+>  create mode 100644 arch/mips/boot/compressed/string.c
+> 
+> diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+> index ca0c343..61af6b6 100644
+> --- a/arch/mips/boot/compressed/Makefile
+> +++ b/arch/mips/boot/compressed/Makefile
+> @@ -27,10 +27,10 @@ KBUILD_AFLAGS := $(LINUXINCLUDE) $(KBUILD_AFLAGS) -D__ASSEMBLY__ \
+>  	-DBOOT_HEAP_SIZE=$(BOOT_HEAP_SIZE) \
+>  	-DKERNEL_ENTRY=$(VMLINUX_ENTRY_ADDRESS)
+>  
+> -targets := head.o decompress.o dbg.o uart-16550.o uart-alchemy.o
+> +targets := head.o decompress.o string.o dbg.o uart-16550.o uart-alchemy.o
+>  
+>  # decompressor objects (linked with vmlinuz)
+> -vmlinuzobjs-y := $(obj)/head.o $(obj)/decompress.o $(obj)/dbg.o
+> +vmlinuzobjs-y := $(obj)/head.o $(obj)/decompress.o $(obj)/string.o $(obj)/dbg.o
+>  
+>  ifdef CONFIG_DEBUG_ZBOOT
+>  vmlinuzobjs-$(CONFIG_SYS_SUPPORTS_ZBOOT_UART16550) += $(obj)/uart-16550.o
+> diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
+> index a8c6fd6..c00c4dd 100644
+> --- a/arch/mips/boot/compressed/decompress.c
+> +++ b/arch/mips/boot/compressed/decompress.c
+> @@ -43,33 +43,11 @@ void error(char *x)
+>  /* activate the code for pre-boot environment */
+>  #define STATIC static
+>  
+> -#if defined(CONFIG_KERNEL_GZIP) || defined(CONFIG_KERNEL_XZ) || \
+> -	defined(CONFIG_KERNEL_LZ4)
+> -void *memcpy(void *dest, const void *src, size_t n)
+> -{
+> -	int i;
+> -	const char *s = src;
+> -	char *d = dest;
+> -
+> -	for (i = 0; i < n; i++)
+> -		d[i] = s[i];
+> -	return dest;
+> -}
+> -#endif
+>  #ifdef CONFIG_KERNEL_GZIP
+>  #include "../../../../lib/decompress_inflate.c"
+>  #endif
+>  
+>  #ifdef CONFIG_KERNEL_BZIP2
+> -void *memset(void *s, int c, size_t n)
+> -{
+> -	int i;
+> -	char *ss = s;
+> -
+> -	for (i = 0; i < n; i++)
+> -		ss[i] = c;
+> -	return s;
+> -}
+>  #include "../../../../lib/decompress_bunzip2.c"
+>  #endif
+>  
+> diff --git a/arch/mips/boot/compressed/string.c b/arch/mips/boot/compressed/string.c
+> new file mode 100644
+> index 0000000..9de9885
+> --- /dev/null
+> +++ b/arch/mips/boot/compressed/string.c
+> @@ -0,0 +1,28 @@
+> +/*
+> + * arch/mips/boot/compressed/string.c
+> + *
+> + * Very small subset of simple string routines
+> + */
+> +
+> +#include <linux/types.h>
+> +
+> +void *memcpy(void *dest, const void *src, size_t n)
+> +{
+> +	int i;
+> +	const char *s = src;
+> +	char *d = dest;
+> +
+> +	for (i = 0; i < n; i++)
+> +		d[i] = s[i];
+> +	return dest;
+> +}
+> +
+> +void *memset(void *s, int c, size_t n)
+> +{
+> +	int i;
+> +	char *ss = s;
+> +
+> +	for (i = 0; i < n; i++)
+> +		ss[i] = c;
+> +	return s;
+> +}
+> -- 
+> 1.8.5.2
+> 
 
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 68969d9..beb3766 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -139,6 +139,7 @@ config BCM63XX
- 	select SWAP_IO_SPACE
- 	select ARCH_REQUIRE_GPIOLIB
- 	select HAVE_CLK
-+	select MIPS_L1_CACHE_SHIFT_4
- 	help
- 	 Support for BCM63XX based boards
- 
 -- 
-1.8.3.2
+-- 
+Best regards,
+  Antony Pavlov

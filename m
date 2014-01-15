@@ -1,42 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jan 2014 12:44:15 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:16177 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jan 2014 14:56:50 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:38351 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827313AbaAOLoN17Kpz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 15 Jan 2014 12:44:13 +0100
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id s0FBhrEa012052
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 15 Jan 2014 06:43:55 -0500
-Received: from yakj.usersys.redhat.com (ovpn-112-37.ams2.redhat.com [10.36.112.37])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id s0FB9KsK030749;
-        Wed, 15 Jan 2014 06:09:24 -0500
-Message-ID: <52D66C5F.5030509@redhat.com>
-Date:   Wed, 15 Jan 2014 12:09:19 +0100
-From:   Paolo Bonzini <pbonzini@redhat.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130923 Thunderbird/17.0.9
+        id S6827335AbaAON4s1hTFH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 15 Jan 2014 14:56:48 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH 00/10] MIPS CPS cpuidle
+Date:   Wed, 15 Jan 2014 13:55:27 +0000
+Message-ID: <1389794137-11361-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 1.7.12.4
 MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>
-CC:     John Crispin <john@phrozen.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Gleb Natapov <gleb@redhat.com>, kvm@vger.kernel.org,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Sanjay Lal <sanjayl@kymasys.com>
-Subject: Re: [PATCH 0/2] MIPS: KVM: fixes for KVM on ProAptiv cores
-References: <1389780682-32638-1-git-send-email-james.hogan@imgtec.com>
-In-Reply-To: <1389780682-32638-1-git-send-email-james.hogan@imgtec.com>
-X-Enigmail-Version: 1.6
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
-Return-Path: <pbonzini@redhat.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.152.22]
+X-SEF-Processed: 7_3_0_01192__2014_01_15_13_56_42
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39000
+X-archive-position: 39001
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,30 +35,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Il 15/01/2014 11:11, James Hogan ha scritto:
-> ProAptiv support includes support for EHINV (TLB invalidation) and FTLB
-> (large fixed page size TLBs), both of which cause problems when combined
-> with KVM. These two patches fix those problems.
-> 
-> These are based on John Crispin's mips-next-3.14 branch where ProAptiv
-> support is applied. Please consider applying these for v3.14 too.
-> 
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> Cc: Gleb Natapov <gleb@redhat.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: kvm@vger.kernel.org
-> Cc: Markos Chandras <markos.chandras@imgtec.com>
-> Cc: Sanjay Lal <sanjayl@kymasys.com>
-> 
-> James Hogan (2):
->   MIPS: KVM: use common EHINV aware UNIQUE_ENTRYHI
->   MIPS: KVM: remove shadow_tlb code
-> 
->  arch/mips/include/asm/kvm_host.h |   7 --
->  arch/mips/kvm/kvm_mips.c         |   1 -
->  arch/mips/kvm/kvm_tlb.c          | 134 +--------------------------------------
->  3 files changed, 1 insertion(+), 141 deletions(-)
-> 
+This series introduces a cpuidle driver for systems based around the
+MIPS Coherent Processing System, ie. those with a Coherence Manager and
+optionally a Cluster Power Controller. The resulting driver is very
+much foundational work to which deeper power states will later be added.
 
-Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+Tested on Malta using interAptiv bitstreams with both 1 & 2 VPEs in each
+of 2 cores, and a multi-core proAptiv bitstream.
+
+This series depends upon the CM changes of my "MIPS CPS SMP" series.
+
+Paul Burton (10):
+  MIPS: inst.h: define COP0 wait op
+  MIPS: inst.h: define missing microMIPS POOL32AXf ops
+  MIPS: uasm: add sync instruction
+  MIPS: uasm: add wait instruction
+  MIPS: uasm: add jr.hb instruction
+  MIPS: uasm: add mftc0 & mttc0 instructions
+  MIPS: uasm: add a label variant of beq
+  MIPS: support use of cpuidle
+  cpuidle: declare cpuidle_dev in cpuidle.h
+  cpuidle: cpuidle driver for MIPS CPS
+
+ arch/mips/Kconfig                  |   2 +
+ arch/mips/include/asm/idle.h       |  14 +
+ arch/mips/include/asm/uasm.h       |   7 +
+ arch/mips/include/uapi/asm/inst.h  |  15 +-
+ arch/mips/kernel/idle.c            |  20 +-
+ arch/mips/mm/uasm-micromips.c      |   3 +
+ arch/mips/mm/uasm-mips.c           |   5 +
+ arch/mips/mm/uasm.c                |  25 +-
+ drivers/cpuidle/Kconfig            |   5 +
+ drivers/cpuidle/Kconfig.mips       |  14 +
+ drivers/cpuidle/Makefile           |   3 +
+ drivers/cpuidle/cpuidle-mips-cps.c | 545 +++++++++++++++++++++++++++++++++++++
+ include/linux/cpuidle.h            |   1 +
+ 13 files changed, 650 insertions(+), 9 deletions(-)
+ create mode 100644 drivers/cpuidle/Kconfig.mips
+ create mode 100644 drivers/cpuidle/cpuidle-mips-cps.c
+
+-- 
+1.8.4.2

@@ -1,38 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jan 2014 19:37:07 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:53770 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6825884AbaANShEyQ3dd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jan 2014 19:37:04 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id C79CF8F7A;
-        Tue, 14 Jan 2014 19:37:03 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id vfawdKBLeTBE; Tue, 14 Jan 2014 19:37:00 +0100 (CET)
-Received: from hauke-desktop.lan (spit-414.wohnheim.uni-bremen.de [134.102.133.158])
-        by hauke-m.de (Postfix) with ESMTPSA id E23AD8F78;
-        Tue, 14 Jan 2014 19:36:59 +0100 (CET)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     ralf@linux-mips.org, blogic@openwrt.org
-Cc:     linux-mips@linux-mips.org, zajec5@gmail.com,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v3] MIPS: BCM47XX: fix position of cpu_wait disabling
-Date:   Tue, 14 Jan 2014 19:36:55 +0100
-Message-Id: <1389724615-576-1-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.7.10.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jan 2014 11:12:15 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:9543 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6827313AbaAOKMFBkyyd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 15 Jan 2014 11:12:05 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     John Crispin <john@phrozen.org>,
+        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Gleb Natapov <gleb@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Sanjay Lal <sanjayl@kymasys.com>
+Subject: [PATCH 0/2] MIPS: KVM: fixes for KVM on ProAptiv cores
+Date:   Wed, 15 Jan 2014 10:11:20 +0000
+Message-ID: <1389780682-32638-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 1.8.1.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.65]
+X-SEF-Processed: 7_3_0_01192__2014_01_15_10_11_59
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38979
+X-archive-position: 38980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,69 +40,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The disabling of cpu_wait was done too early, before the detection was
-done. This moves the code to a position where it actually works.
+ProAptiv support includes support for EHINV (TLB invalidation) and FTLB
+(large fixed page size TLBs), both of which cause problems when combined
+with KVM. These two patches fix those problems.
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Acked-by: Rafał Miłecki <zajec5@gmail.com>
----
-V3: rebased on current mips linux-john.git tree
-V2: Remove empty spaces at ends of lines
----
- arch/mips/bcm47xx/setup.c |   34 +++++++++++++++++++++++++---------
- 1 file changed, 25 insertions(+), 9 deletions(-)
+These are based on John Crispin's mips-next-3.14 branch where ProAptiv
+support is applied. Please consider applying these for v3.14 too.
 
-diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index 138d5bb..12d77e9 100644
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -202,15 +202,6 @@ static void __init bcm47xx_register_bcma(void)
- 		panic("Failed to initialize BCMA bus (err %d)", err);
- 
- 	bcm47xx_fill_bcma_boardinfo(&bcm47xx_bus.bcma.bus.boardinfo, NULL);
--
--	/* The BCM4706 has a problem with the CPU wait instruction.
--	 * When r4k_wait or r4k_wait_irqoff is used will just hang and 
--	 * not return from a msleep(). Removing the cpu_wait 
--	 * functionality is a workaround for this problem. The BCM4716 
--	 * does not have this problem.
--	 */
--	if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
--		cpu_wait = NULL;
- }
- #endif
- 
-@@ -241,6 +232,31 @@ void __init plat_mem_setup(void)
- 	mips_set_machine_name(bcm47xx_board_get_name());
- }
- 
-+static int __init bcm47xx_cpu_fixes(void)
-+{
-+	switch (bcm47xx_bus_type) {
-+#ifdef CONFIG_BCM47XX_SSB
-+	case BCM47XX_BUS_TYPE_SSB:
-+		/* Nothing to do */
-+		break;
-+#endif
-+#ifdef CONFIG_BCM47XX_BCMA
-+	case BCM47XX_BUS_TYPE_BCMA:
-+		/* The BCM4706 has a problem with the CPU wait instruction.
-+		 * When r4k_wait or r4k_wait_irqoff is used will just hang and
-+		 * not return from a msleep(). Removing the cpu_wait
-+		 * functionality is a workaround for this problem. The BCM4716
-+		 * does not have this problem.
-+		 */
-+		if (bcm47xx_bus.bcma.bus.chipinfo.id == BCMA_CHIP_ID_BCM4706)
-+			cpu_wait = NULL;
-+		break;
-+#endif
-+	}
-+	return 0;
-+}
-+arch_initcall(bcm47xx_cpu_fixes);
-+
- static int __init bcm47xx_register_bus_complete(void)
- {
- 	switch (bcm47xx_bus_type) {
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: Gleb Natapov <gleb@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Sanjay Lal <sanjayl@kymasys.com>
+
+James Hogan (2):
+  MIPS: KVM: use common EHINV aware UNIQUE_ENTRYHI
+  MIPS: KVM: remove shadow_tlb code
+
+ arch/mips/include/asm/kvm_host.h |   7 --
+ arch/mips/kvm/kvm_mips.c         |   1 -
+ arch/mips/kvm/kvm_tlb.c          | 134 +--------------------------------------
+ 3 files changed, 1 insertion(+), 141 deletions(-)
+
 -- 
-1.7.10.4
+1.8.1.2

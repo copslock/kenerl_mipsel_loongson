@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jan 2014 11:33:42 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:10809 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jan 2014 11:34:04 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:10819 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827345AbaAOKcXfJKBm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 15 Jan 2014 11:32:23 +0100
+        id S6827348AbaAOKdAoDDc8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 15 Jan 2014 11:33:00 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 03/15] MIPS: add missing includes to gic.h
-Date:   Wed, 15 Jan 2014 10:31:48 +0000
-Message-ID: <1389781920-31151-4-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 04/15] MIPS: introduce _EXT assembler macro
+Date:   Wed, 15 Jan 2014 10:31:49 +0000
+Message-ID: <1389781920-31151-5-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 1.7.12.4
 In-Reply-To: <1389781920-31151-1-git-send-email-paul.burton@imgtec.com>
 References: <1389781920-31151-1-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.152.22]
-X-SEF-Processed: 7_3_0_01192__2014_01_15_10_32_22
+X-SEF-Processed: 7_3_0_01192__2014_01_15_10_32_53
 Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 38987
+X-archive-position: 38988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,29 +37,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The gic.h header uses bitmaps and NR_CPUS, and should therefore include
-linux/bitmap.h and linux/threads.h. This is in preparation for use of
-this header in a subsequent commit from a C file which doesn't already
-include those headers.
+This patch adds a simple macro to wrap the ext instruction which was
+introduced with MIPSR2, and fall back to a shift & and pair for
+pre-MIPSR2 CPUs. This will be used in a subsequent patch.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/include/asm/gic.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/mips/include/asm/asmmacro.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/mips/include/asm/gic.h b/arch/mips/include/asm/gic.h
-index b2e3e93..0827166 100644
---- a/arch/mips/include/asm/gic.h
-+++ b/arch/mips/include/asm/gic.h
-@@ -11,6 +11,9 @@
- #ifndef _ASM_GICREGS_H
- #define _ASM_GICREGS_H
+diff --git a/arch/mips/include/asm/asmmacro.h b/arch/mips/include/asm/asmmacro.h
+index 6c8342a..1d2c9c2 100644
+--- a/arch/mips/include/asm/asmmacro.h
++++ b/arch/mips/include/asm/asmmacro.h
+@@ -62,6 +62,17 @@
+ 	.endm
+ #endif /* CONFIG_MIPS_MT_SMTC */
  
-+#include <linux/bitmap.h>
-+#include <linux/threads.h>
++#ifdef CONFIG_CPU_MIPSR2
++	.macro	_EXT	rd, rs, p, s
++	ext	\rd, \rs, \p, \s
++	.endm
++#else /* !CONFIG_CPU_MIPSR2 */
++	.macro	_EXT	rd, rs, p, s
++	srl	\rd, \rs, \p
++	andi	\rd, \rd, (1 << \s) - 1
++	.endm
++#endif /* !CONFIG_CPU_MIPSR2 */
 +
- #undef	GICISBYTELITTLEENDIAN
- 
- /* Constants */
+ /*
+  * Temporary until all gas have MT ASE support
+  */
 -- 
 1.8.4.2

@@ -1,15 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jan 2014 14:56:50 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:38351 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jan 2014 14:57:08 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:38348 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827335AbaAON4s1hTFH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6827313AbaAON4s3mwG1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 15 Jan 2014 14:56:48 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 00/10] MIPS CPS cpuidle
-Date:   Wed, 15 Jan 2014 13:55:27 +0000
-Message-ID: <1389794137-11361-1-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 01/10] MIPS: inst.h: define COP0 wait op
+Date:   Wed, 15 Jan 2014 13:55:28 +0000
+Message-ID: <1389794137-11361-2-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 1.7.12.4
+In-Reply-To: <1389794137-11361-1-git-send-email-paul.burton@imgtec.com>
+References: <1389794137-11361-1-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.152.22]
@@ -18,7 +20,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39001
+X-archive-position: 39002
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,44 +37,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This series introduces a cpuidle driver for systems based around the
-MIPS Coherent Processing System, ie. those with a Coherence Manager and
-optionally a Cluster Power Controller. The resulting driver is very
-much foundational work to which deeper power states will later be added.
+The func field for the wait instruction was missing from inst.h - this
+patch adds it.
 
-Tested on Malta using interAptiv bitstreams with both 1 & 2 VPEs in each
-of 2 cores, and a multi-core proAptiv bitstream.
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+---
+ arch/mips/include/uapi/asm/inst.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-This series depends upon the CM changes of my "MIPS CPS SMP" series.
-
-Paul Burton (10):
-  MIPS: inst.h: define COP0 wait op
-  MIPS: inst.h: define missing microMIPS POOL32AXf ops
-  MIPS: uasm: add sync instruction
-  MIPS: uasm: add wait instruction
-  MIPS: uasm: add jr.hb instruction
-  MIPS: uasm: add mftc0 & mttc0 instructions
-  MIPS: uasm: add a label variant of beq
-  MIPS: support use of cpuidle
-  cpuidle: declare cpuidle_dev in cpuidle.h
-  cpuidle: cpuidle driver for MIPS CPS
-
- arch/mips/Kconfig                  |   2 +
- arch/mips/include/asm/idle.h       |  14 +
- arch/mips/include/asm/uasm.h       |   7 +
- arch/mips/include/uapi/asm/inst.h  |  15 +-
- arch/mips/kernel/idle.c            |  20 +-
- arch/mips/mm/uasm-micromips.c      |   3 +
- arch/mips/mm/uasm-mips.c           |   5 +
- arch/mips/mm/uasm.c                |  25 +-
- drivers/cpuidle/Kconfig            |   5 +
- drivers/cpuidle/Kconfig.mips       |  14 +
- drivers/cpuidle/Makefile           |   3 +
- drivers/cpuidle/cpuidle-mips-cps.c | 545 +++++++++++++++++++++++++++++++++++++
- include/linux/cpuidle.h            |   1 +
- 13 files changed, 650 insertions(+), 9 deletions(-)
- create mode 100644 drivers/cpuidle/Kconfig.mips
- create mode 100644 drivers/cpuidle/cpuidle-mips-cps.c
-
+diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
+index b39ba25..b4a24bd 100644
+--- a/arch/mips/include/uapi/asm/inst.h
++++ b/arch/mips/include/uapi/asm/inst.h
+@@ -118,7 +118,8 @@ enum bcop_op {
+ enum cop0_coi_func {
+ 	tlbr_op	      = 0x01, tlbwi_op	    = 0x02,
+ 	tlbwr_op      = 0x06, tlbp_op	    = 0x08,
+-	rfe_op	      = 0x10, eret_op	    = 0x18
++	rfe_op	      = 0x10, eret_op	    = 0x18,
++	wait_op       = 0x20,
+ };
+ 
+ /*
 -- 
 1.8.4.2

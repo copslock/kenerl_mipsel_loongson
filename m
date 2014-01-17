@@ -1,53 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jan 2014 19:00:07 +0100 (CET)
-Received: from mail-lb0-f179.google.com ([209.85.217.179]:46698 "EHLO
-        mail-lb0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6815749AbaAQSACGivvA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Jan 2014 19:00:02 +0100
-Received: by mail-lb0-f179.google.com with SMTP id l4so1633916lbv.10
-        for <linux-mips@linux-mips.org>; Fri, 17 Jan 2014 09:59:55 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:organization:user-agent
-         :mime-version:to:cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        bh=uotvxPrGyNJpOiNwv4Hchh79i1cDMVnSWefNFXlidlw=;
-        b=VQhik8gbfybbAunJctQbV9vMxnuzxruEz6A506Qb+Y2yHZH4u/b8cW0759AHhe3RQl
-         cidPSRUXjKfkNK0XR5xdDd1nPw5WDyXafCwBo1gtpsgVCWrOm3QcvkSJj2QG7E3M1Zje
-         4Ge1Xm09HSlFyDvUxSMCuPsOut+eGTeYKV4COn5+zSgOX5B4dtRNo6s3UMu1Q+PbJOPH
-         kH7UQ2nolrDSRPGW9ln0qmv5N59A29D2qQ4pEPx+DscqsQ3TudCa4+nKDoUvrUqr2Xnk
-         yEJggzcLR45fyaaw5TNRCfu2NKNA9GkysWsX5QW2ZC+Xyfrm0Go6ui7P0xPZSf444PJy
-         ijww==
-X-Gm-Message-State: ALoCoQmwYj0ujOP/BfJl0sCMeFZ6NKwOfLilbpi2ox5DYtXfybDjNe+rdSkkSX/GUzI1Ve0e2Z5y
-X-Received: by 10.152.19.65 with SMTP id c1mr1722430lae.49.1389981595707;
-        Fri, 17 Jan 2014 09:59:55 -0800 (PST)
-Received: from wasted.dev.rtsoft.ru (ppp91-76-88-249.pppoe.mtu-net.ru. [91.76.88.249])
-        by mx.google.com with ESMTPSA id qx1sm7224041lbb.15.2014.01.17.09.59.54
-        for <multiple recipients>
-        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
-        Fri, 17 Jan 2014 09:59:55 -0800 (PST)
-Message-ID: <52D97DB1.9080306@cogentembedded.com>
-Date:   Fri, 17 Jan 2014 22:00:01 +0300
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
-MIME-Version: 1.0
-To:     "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org
-CC:     blogic@openwrt.org
-Subject: Re: [PATCH] MIPS: APRP: Fix breakage due to new wait_event interface.
-References: <1389977227-16694-1-git-send-email-Steven.Hill@imgtec.com>
-In-Reply-To: <1389977227-16694-1-git-send-email-Steven.Hill@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jan 2014 22:04:06 +0100 (CET)
+Received: from home.bethel-hill.org ([63.228.164.32]:55165 "EHLO localhost"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6825493AbaAQVEDyKLmp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Jan 2014 22:04:03 +0100
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <Steven.Hill@imgtec.com>)
+        id 1W4Ga4-0005KL-ET; Fri, 17 Jan 2014 15:03:56 -0600
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org
+Subject: [PATCH] MIPS: Add 1074K CPU support explicitly.
+Date:   Fri, 17 Jan 2014 15:03:50 -0600
+Message-Id: <1389992630-64139-1-git-send-email-Steven.Hill@imgtec.com>
+X-Mailer: git-send-email 1.7.10.4
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39028
+X-archive-position: 39029
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,19 +35,191 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+From: "Steven J. Hill" <Steven.Hill@imgtec.com>
 
-On 01/17/2014 07:47 PM, Steven J. Hill wrote:
+The 1074K is a multiprocessing coherent processing system (CPS) based
+on modified 74K cores. This patch makes the 1074K an actual unique
+CPU type, instead of a 74K derivative, which it is not.
 
-> From: "Steven J. Hill" <Steven.Hill@imgtec.com>
+Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
+Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+---
+ arch/mips/bcm47xx/setup.c            |    2 +-
+ arch/mips/include/asm/cpu.h          |    2 +-
+ arch/mips/kernel/cpu-probe.c         |    2 +-
+ arch/mips/kernel/idle.c              |    1 +
+ arch/mips/kernel/perf_event_mipsxx.c |    6 ++++++
+ arch/mips/kernel/spram.c             |    1 +
+ arch/mips/kernel/traps.c             |    1 +
+ arch/mips/mm/c-r4k.c                 |    3 ++-
+ arch/mips/mm/sc-mips.c               |    1 +
+ arch/mips/mm/tlbex.c                 |    1 +
+ arch/mips/oprofile/common.c          |    1 +
+ arch/mips/oprofile/op_model_mipsxx.c |    1 +
+ 12 files changed, 18 insertions(+), 4 deletions(-)
 
-> Commit 35a2af94c7ce7130ca292c68b1d27fcfdb648f6b changed the
-> __wait_event*() interfaces. Fix the RTLX open() function to
-> use the new interface.
-
-> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
-
-    Deng-Cheng Zhu from the same firm posted such patch already. You should 
-coordinate better. :-)
-
-WBR, Sergei
+diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
+index 12d77e9..1f286ca 100644
+--- a/arch/mips/bcm47xx/setup.c
++++ b/arch/mips/bcm47xx/setup.c
+@@ -209,7 +209,7 @@ void __init plat_mem_setup(void)
+ {
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+ 
+-	if (c->cputype == CPU_74K) {
++	if ((c->cputype == CPU_74K) || (c->cputype == CPU_1074K)) {
+ 		printk(KERN_INFO "bcm47xx: using bcma bus\n");
+ #ifdef CONFIG_BCM47XX_BCMA
+ 		bcm47xx_bus_type = BCM47XX_BUS_TYPE_BCMA;
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 76411df..559c668 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -296,7 +296,7 @@ enum cpu_type_enum {
+ 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
+ 	CPU_ALCHEMY, CPU_PR4450, CPU_BMIPS32, CPU_BMIPS3300, CPU_BMIPS4350,
+ 	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_LOONGSON1, CPU_M14KC,
+-	CPU_M14KEC, CPU_INTERAPTIV, CPU_PROAPTIV,
++	CPU_M14KEC, CPU_INTERAPTIV, CPU_PROAPTIV, CPU_1074K,
+ 
+ 	/*
+ 	 * MIPS64 class processors
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 530f832..ac09248 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -806,7 +806,7 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
+ 		__cpu_name[cpu] = "MIPS 1004Kc";
+ 		break;
+ 	case PRID_IMP_1074K:
+-		c->cputype = CPU_74K;
++		c->cputype = CPU_1074K;
+ 		__cpu_name[cpu] = "MIPS 1074Kc";
+ 		break;
+ 	case PRID_IMP_INTERAPTIV_UP:
+diff --git a/arch/mips/kernel/idle.c b/arch/mips/kernel/idle.c
+index 3553243..c1fd0bc 100644
+--- a/arch/mips/kernel/idle.c
++++ b/arch/mips/kernel/idle.c
+@@ -184,6 +184,7 @@ void __init check_wait(void)
+ 	case CPU_24K:
+ 	case CPU_34K:
+ 	case CPU_1004K:
++	case CPU_1074K:
+ 	case CPU_INTERAPTIV:
+ 	case CPU_PROAPTIV:
+ 		cpu_wait = r4k_wait;
+diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
+index 24cdf64..17594b8 100644
+--- a/arch/mips/kernel/perf_event_mipsxx.c
++++ b/arch/mips/kernel/perf_event_mipsxx.c
+@@ -1442,6 +1442,7 @@ static const struct mips_perf_event *mipsxx_pmu_map_raw_event(u64 config)
+ #endif
+ 		break;
+ 	case CPU_74K:
++	case CPU_1074K:
+ 		if (IS_BOTH_COUNTERS_74K_EVENT(base_id))
+ 			raw_event.cntr_mask = CNTR_EVEN | CNTR_ODD;
+ 		else
+@@ -1584,6 +1585,11 @@ init_hw_perf_events(void)
+ 		mipspmu.general_event_map = &mipsxxcore_event_map;
+ 		mipspmu.cache_event_map = &mipsxxcore_cache_map;
+ 		break;
++	case CPU_1074K:
++		mipspmu.name = "mips/1074K";
++		mipspmu.general_event_map = &mipsxxcore_event_map;
++		mipspmu.cache_event_map = &mipsxxcore_cache_map;
++		break;
+ 	case CPU_LOONGSON1:
+ 		mipspmu.name = "mips/loongson1";
+ 		mipspmu.general_event_map = &mipsxxcore_event_map;
+diff --git a/arch/mips/kernel/spram.c b/arch/mips/kernel/spram.c
+index dfed8a4..ac512b6 100644
+--- a/arch/mips/kernel/spram.c
++++ b/arch/mips/kernel/spram.c
+@@ -206,6 +206,7 @@ void spram_config(void)
+ 	case CPU_34K:
+ 	case CPU_74K:
+ 	case CPU_1004K:
++	case CPU_1074K:
+ 	case CPU_INTERAPTIV:
+ 	case CPU_PROAPTIV:
+ 		config0 = read_c0_config();
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index e0b4996..b0c7f80 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1337,6 +1337,7 @@ static inline void parity_protection_init(void)
+ 	case CPU_34K:
+ 	case CPU_74K:
+ 	case CPU_1004K:
++	case CPU_1074K:
+ 	case CPU_INTERAPTIV:
+ 	case CPU_PROAPTIV:
+ 		{
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 13b549a..7184363 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1106,9 +1106,10 @@ static void probe_pcache(void)
+ 	case CPU_34K:
+ 	case CPU_74K:
+ 	case CPU_1004K:
++	case CPU_1074K:
+ 	case CPU_INTERAPTIV:
+ 	case CPU_PROAPTIV:
+-		if (current_cpu_type() == CPU_74K)
++		if ((c->cputype == CPU_74K) || (c->cputype == CPU_1074K))
+ 			alias_74k_erratum(c);
+ 		if ((read_c0_config7() & (1 << 16))) {
+ 			/* effectively physically indexed dcache,
+diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
+index 7a56aee..7b39770 100644
+--- a/arch/mips/mm/sc-mips.c
++++ b/arch/mips/mm/sc-mips.c
+@@ -76,6 +76,7 @@ static inline int mips_sc_is_activated(struct cpuinfo_mips *c)
+ 	case CPU_34K:
+ 	case CPU_74K:
+ 	case CPU_1004K:
++	case CPU_1074K:
+ 	case CPU_INTERAPTIV:
+ 	case CPU_PROAPTIV:
+ 	case CPU_BMIPS5000:
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 6fdfe1f..8646d2a 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -510,6 +510,7 @@ static void build_tlb_write_entry(u32 **p, struct uasm_label **l,
+ 		switch (current_cpu_type()) {
+ 		case CPU_M14KC:
+ 		case CPU_74K:
++		case CPU_1074K:
+ 		case CPU_PROAPTIV:
+ 			break;
+ 
+diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
+index 2a86e38..710e7f0 100644
+--- a/arch/mips/oprofile/common.c
++++ b/arch/mips/oprofile/common.c
+@@ -86,6 +86,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
+ 	case CPU_34K:
+ 	case CPU_1004K:
+ 	case CPU_74K:
++	case CPU_1074K:
+ 	case CPU_INTERAPTIV:
+ 	case CPU_PROAPTIV:
+ 	case CPU_LOONGSON1:
+diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
+index 4d94d75..3a040eb 100644
+--- a/arch/mips/oprofile/op_model_mipsxx.c
++++ b/arch/mips/oprofile/op_model_mipsxx.c
+@@ -372,6 +372,7 @@ static int __init mipsxx_init(void)
+ 		op_model_mipsxx_ops.cpu_type = "mips/34K";
+ 		break;
+ 
++	case CPU_1074K:
+ 	case CPU_74K:
+ 		op_model_mipsxx_ops.cpu_type = "mips/74K";
+ 		break;
+-- 
+1.7.10.4

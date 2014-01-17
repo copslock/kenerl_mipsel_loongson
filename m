@@ -1,30 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jan 2014 08:15:41 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:58204 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jan 2014 13:02:05 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:49249 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825360AbaAQHOAXLokH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 17 Jan 2014 08:14:00 +0100
-Message-ID: <52D8D83F.1020906@phrozen.org>
-Date:   Fri, 17 Jan 2014 08:14:07 +0100
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
+        id S6816879AbaAQMCCMNfBc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Jan 2014 13:02:02 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     John Crispin <blogic@openwrt.org>,
+        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Gleb Natapov <gleb@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Sanjay Lal <sanjayl@kymasys.com>
+Subject: [PATCH v2 0/2] MIPS: KVM: fixes for KVM on ProAptiv cores
+Date:   Fri, 17 Jan 2014 12:01:29 +0000
+Message-ID: <1389960091-8098-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 1.8.1.2
 MIME-Version: 1.0
-To:     Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH upstream-sfr] MIPS: APRP: Use the new __wait_event*()
- interface in RTLX
-References: <1389908212-19898-1-git-send-email-dengcheng.zhu@imgtec.com>
-In-Reply-To: <1389908212-19898-1-git-send-email-dengcheng.zhu@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <john@phrozen.org>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.65]
+X-SEF-Processed: 7_3_0_01192__2014_01_17_12_01_56
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39018
+X-archive-position: 39019
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,46 +40,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+ProAptiv support includes support for EHINV (TLB invalidation) and FTLB
+(large fixed page size TLBs), both of which cause problems when combined
+with KVM. These two patches fix those problems.
 
-should we fold this fix into 9d4147a783
+These are based on John Crispin's mips-next-3.14 branch where ProAptiv
+support is applied. Please consider applying these for v3.14 too.
 
+v2:
+- Rewrite patch 2 commit message to be a bit clearer and more explicit
+  (on John Crispin's suggestion).
 
-    John
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: John Crispin <blogic@openwrt.org>
+Cc: linux-mips@linux-mips.org
+Cc: Gleb Natapov <gleb@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Sanjay Lal <sanjayl@kymasys.com>
 
- 
-On 16/01/2014 22:36, Deng-Cheng Zhu wrote:
-> From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
->
-> The commit 35a2af94c7 (sched/wait: Make the __wait_event*() interface more
-> friendly) changed __wait_event_interruptible() to use 2 parameters instead
-> of 3. It also made corresponding changes to rtlx.c. However, these changes
-> were partially reverted by 9d4147a783 (MIPS: APRP: Code formatting
-> clean-ups.). This patch fixes it.
->
-> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
-> ---
-> Ralf, this needs to go upstream-sfr/mips-for-linux-next to fix the APRP
-> build error: macro "__wait_event_interruptible" passed 3 arguments, but
-> takes just 2
->
->  arch/mips/kernel/rtlx.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/mips/kernel/rtlx.c b/arch/mips/kernel/rtlx.c
-> index 4658350..31b1b76 100644
-> --- a/arch/mips/kernel/rtlx.c
-> +++ b/arch/mips/kernel/rtlx.c
-> @@ -108,10 +108,9 @@ int rtlx_open(int index, int can_sleep)
->  		p = vpe_get_shared(aprp_cpu_index());
->  		if (p == NULL) {
->  			if (can_sleep) {
-> -				__wait_event_interruptible(
-> +				ret = __wait_event_interruptible(
->  					channel_wqs[index].lx_queue,
-> -					(p = vpe_get_shared(aprp_cpu_index())),
-> -					ret);
-> +					(p = vpe_get_shared(aprp_cpu_index())));
->  				if (ret)
->  					goto out_fail;
->  			} else {
+James Hogan (2):
+  MIPS: KVM: use common EHINV aware UNIQUE_ENTRYHI
+  MIPS: KVM: remove shadow_tlb code
+
+ arch/mips/include/asm/kvm_host.h |   7 --
+ arch/mips/kvm/kvm_mips.c         |   1 -
+ arch/mips/kvm/kvm_tlb.c          | 134 +--------------------------------------
+ 3 files changed, 1 insertion(+), 141 deletions(-)
+
+-- 
+1.8.1.2

@@ -1,32 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Jan 2014 02:54:22 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:54597 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Jan 2014 10:38:23 +0100 (CET)
+Received: from alius.ayous.org ([89.238.89.44]:60454 "EHLO alius.ayous.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827281AbaARByUlvT0- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 18 Jan 2014 02:54:20 +0100
-Message-ID: <52D9DEBF.3090008@phrozen.org>
-Date:   Sat, 18 Jan 2014 02:54:07 +0100
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
-MIME-Version: 1.0
+        id S6817664AbaARJiVWqp5Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 18 Jan 2014 10:38:21 +0100
+Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
+        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <aba@ayous.org>)
+        id 1W4SM0-0007te-Ts; Sat, 18 Jan 2014 09:38:13 +0000
+Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
+        (envelope-from <aba@ayous.org>)
+        id 1W4SLv-0003rS-Gv; Sat, 18 Jan 2014 10:38:07 +0100
+Date:   Sat, 18 Jan 2014 10:38:07 +0100
+From:   Andreas Barth <aba@ayous.org>
 To:     Huacai Chen <chenhc@lemote.com>
-CC:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
         Aurelien Jarno <aurelien@aurel32.net>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
         Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH V16 02/12] MIPS: Loongson: Add basic Loongson-3 CPU support
-References: <1389149068-24376-1-git-send-email-chenhc@lemote.com> <1389149068-24376-3-git-send-email-chenhc@lemote.com> <20140108195838.GA10463@hall.aurel32.net> <CAAhV-H4tx=sCk=iUwuCfnCS+rbmtu5Y_UcpAn6JXDoobA+OGrQ@mail.gmail.com> <20140109213624.GG11944@hall.aurel32.net> <CAAhV-H7+XDYi3i7bp7q0t0oszi8tmAVGtTeAkP+t9VZ6sD3b1w@mail.gmail.com> <20140112095752.GA14181@ohm.rr44.fr> <20140112121048.GA1797@blackmetal.musicnaut.iki.fi>
-In-Reply-To: <20140112121048.GA1797@blackmetal.musicnaut.iki.fi>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <john@phrozen.org>
+Subject: Re: [PATCH V16 00/12] MIPS: Add Loongson-3 based machines support
+Message-ID: <20140118093807.GN16461@mails.so.argh.org>
+References: <1389149068-24376-1-git-send-email-chenhc@lemote.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1389149068-24376-1-git-send-email-chenhc@lemote.com>
+X-Editor: Vim http://www.vim.org/
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <aba@ayous.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39031
+X-archive-position: 39032
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: aba@ayous.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,37 +53,23 @@ X-list: linux-mips
 
 Hi,
 
-On 12/01/2014 13:10, Aaro Koskinen wrote:
->>>>>> As remarked by Aaro Koskinen, changing the names of the Loongson 2 CPUs
->>>>>> > > >> > (which is displayedd in /proc/cpuinfo) will break at least
->>>>>> > > >> > GCC -march=native option. The name should be left unchanged.
->>>>>> > > >> >
->>>>> > > >> Can I keep it as is and then submit a patch to GCC? I think it is important
->>>>> > > >> to distinguish 2E/2F/3A in cpuinfo.
->>>> > > >
->>>> > > > I think first the patch has to be integrated to GCC, and then you have
->>>> > > > to wait at least a few months so that people start using the new
->>>> > > > version. Then it should be possible to modify this.
->>>> > > >
->>>> > > > That said, other programs than GCC might use this information from
->>>> > > > /proc/cpuinfo and might also break with this change.
->>> > > The GCC patch has been accepted yesterday, and the coming V17 patchset
->>> > > won't be accept at least in kernel-3.14,
->>> > > So, I'll keep the name in V17.
->> > 
->> > Kernel 3.15 is expected in roughly 6 months, it might still be a bit
->> > tight for the change to propagate, even if I have seen it has been added
->> > to the 4.8 branch. What the others things? Aaro?
-> It doesn't really matter if some future version of GCC supports the
-> new name. Most people will continue to use older toolchains for years,
-> and we shouldn't change the behaviour of those.
->
-> A.
->
 
-NAK
+* Huacai Chen (chenhc@lemote.com) [140108 03:45]:
+> This patchset is prepared for the next 3.14 release for Linux/MIPS.
+> Loongson-3 is a multi-core MIPS family CPU, it is MIPS64R2 compatible
+> and has the same IMP field (0x6300) as Loongson-2. These patches make
+> Linux kernel support Loongson-3 CPU and Loongson-3 based computers
+> (including Laptop, Mini-ITX, All-In-One PC, etc.)
 
-Breaking the ABI is a really bad idea. I cannot think of any valid
-reason that would allow me to merge this change.
+Your patch series already made some good progress, and so I hope that
+we manage to get this patch merged during the next cycle (i.e. during
+3.15).
 
-    John
+To achive this it would be good if you could incorporate the remaining
+review comments into a new version and send it out soon. (We should
+try to get it ready as soon as possible even if it won't be in 3.14,
+so that we are sure to really reach 3.15 and not be delayed again.)
+
+
+Thanks,
+Andi

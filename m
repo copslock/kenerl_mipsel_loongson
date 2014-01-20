@@ -1,44 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Jan 2014 10:38:23 +0100 (CET)
-Received: from alius.ayous.org ([89.238.89.44]:60454 "EHLO alius.ayous.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2014 00:10:10 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:37129 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6817664AbaARJiVWqp5Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 18 Jan 2014 10:38:21 +0100
-Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
-        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <aba@ayous.org>)
-        id 1W4SM0-0007te-Ts; Sat, 18 Jan 2014 09:38:13 +0000
-Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
-        (envelope-from <aba@ayous.org>)
-        id 1W4SLv-0003rS-Gv; Sat, 18 Jan 2014 10:38:07 +0100
-Date:   Sat, 18 Jan 2014 10:38:07 +0100
-From:   Andreas Barth <aba@ayous.org>
-To:     Huacai Chen <chenhc@lemote.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        John Crispin <john@phrozen.org>,
-        "Steven J. Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>
-Subject: Re: [PATCH V16 00/12] MIPS: Add Loongson-3 based machines support
-Message-ID: <20140118093807.GN16461@mails.so.argh.org>
-References: <1389149068-24376-1-git-send-email-chenhc@lemote.com>
+        id S6827345AbaATXKIhpEPb convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jan 2014 00:10:08 +0100
+From:   DengCheng Zhu <DengCheng.Zhu@imgtec.com>
+To:     John Crispin <john@phrozen.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH upstream-sfr] MIPS: APRP: Use the new __wait_event*()
+ interface in RTLX
+Thread-Topic: [PATCH upstream-sfr] MIPS: APRP: Use the new __wait_event*()
+ interface in RTLX
+Thread-Index: AQHPEwMWbV3qOJ4cUE20+Qy8RV5o4ZqJB4GAgAAmO4CABRWZSA==
+Date:   Mon, 20 Jan 2014 23:09:53 +0000
+Message-ID: <1F7D814BDD93B94493CEE724A97FB4DC4C8D2AC0@BADAG02.ba.imgtec.org>
+References: <1389908212-19898-1-git-send-email-dengcheng.zhu@imgtec.com>
+ <52D8D83F.1020906@phrozen.org>,<52D968D1.2040309@imgtec.com>
+In-Reply-To: <52D968D1.2040309@imgtec.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.64.117]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1389149068-24376-1-git-send-email-chenhc@lemote.com>
-X-Editor: Vim http://www.vim.org/
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <aba@ayous.org>
+X-SEF-Processed: 7_3_0_01192__2014_01_20_23_10_00
+Return-Path: <DengCheng.Zhu@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39032
+X-archive-position: 39034
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aba@ayous.org
+X-original-sender: DengCheng.Zhu@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,25 +46,109 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi John,
+
+
+I'm re-sending my last message below to make sure you receive it, because neither the LMO mailing list archive nor the patchwork shows my following reply. Curious how come the ad spams frequently make themselves show up successfully :-(
+
+My last message:
+
+> That's OK to me.
+
+
+Deng-Cheng
+
+
+
+
+From: Deng-Cheng Zhu [dengcheng.zhu@imgtec.com]
+
+Sent: Friday, January 17, 2014 9:30 AM
+
+To: John Crispin; linux-mips@linux-mips.org
+
+Subject: Re: [PATCH upstream-sfr] MIPS: APRP: Use the new __wait_event*() interface in RTLX
+
+
+
+
+
+
+
+
+
+That's OK to me.
+
+
+
+
+
+Deng-Cheng
+
+ 
+
+
+
+
+
+
+
+From: 
+John Crispin
+
+Sent: Thursday, January 16, 2014 11:14PM
+
+To: 
+Deng-Cheng Zhu, 
+linux-mips
+
+Subject: Re: [PATCH upstream-sfr] MIPS: APRP: Use the new __wait_event*() interface in RTLX
+
+
+
+
 Hi,
 
-
-* Huacai Chen (chenhc@lemote.com) [140108 03:45]:
-> This patchset is prepared for the next 3.14 release for Linux/MIPS.
-> Loongson-3 is a multi-core MIPS family CPU, it is MIPS64R2 compatible
-> and has the same IMP field (0x6300) as Loongson-2. These patches make
-> Linux kernel support Loongson-3 CPU and Loongson-3 based computers
-> (including Laptop, Mini-ITX, All-In-One PC, etc.)
-
-Your patch series already made some good progress, and so I hope that
-we manage to get this patch merged during the next cycle (i.e. during
-3.15).
-
-To achive this it would be good if you could incorporate the remaining
-review comments into a new version and send it out soon. (We should
-try to get it ready as soon as possible even if it won't be in 3.14,
-so that we are sure to really reach 3.15 and not be delayed again.)
+should we fold this fix into 9d4147a783
 
 
-Thanks,
-Andi
+    John
+
+ 
+On 16/01/2014 22:36, Deng-Cheng Zhu wrote:
+
+
+From: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+
+The commit 35a2af94c7 (sched/wait: Make the __wait_event*() interface more
+friendly) changed __wait_event_interruptible() to use 2 parameters instead
+of 3. It also made corresponding changes to rtlx.c. However, these changes
+were partially reverted by 9d4147a783 (MIPS: APRP: Code formatting
+clean-ups.). This patch fixes it.
+
+Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@imgtec.com>
+---
+Ralf, this needs to go upstream-sfr/mips-for-linux-next to fix the APRP
+build error: macro "__wait_event_interruptible" passed 3 arguments, but
+takes just 2
+
+ arch/mips/kernel/rtlx.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/arch/mips/kernel/rtlx.c b/arch/mips/kernel/rtlx.c
+index 4658350..31b1b76 100644
+--- a/arch/mips/kernel/rtlx.c
++++ b/arch/mips/kernel/rtlx.c
+@@ -108,10 +108,9 @@ int rtlx_open(int index, int can_sleep)
+ 		p = vpe_get_shared(aprp_cpu_index());
+ 		if (p == NULL) {
+ 			if (can_sleep) {
+-				__wait_event_interruptible(
++				ret = __wait_event_interruptible(
+ 					channel_wqs[index].lx_queue,
+-					(p = vpe_get_shared(aprp_cpu_index())),
+-					ret);
++					(p = vpe_get_shared(aprp_cpu_index())));
+ 				if (ret)
+ 					goto out_fail;
+ 			} else {

@@ -1,49 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2014 19:25:54 +0100 (CET)
-Received: from mail-ig0-f179.google.com ([209.85.213.179]:52137 "EHLO
-        mail-ig0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6816288AbaAUSZvlpTSY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jan 2014 19:25:51 +0100
-Received: by mail-ig0-f179.google.com with SMTP id c10so11610693igq.0
-        for <multiple recipients>; Tue, 21 Jan 2014 10:25:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=qTzdaY7r10iP8M3+Fwp8OPqdHpbPLVFfkGtr9HqFaHM=;
-        b=fzAOqfNp7IJx+D3q1A1/CmgijC/wfJIuHhZ7D1A3VDHU3gOGBWHHSt+8RNyZNwW5fg
-         5DbVavDC0eQ5o991ebZNGEtkXMwm+N/vUifKGAqF82aU7yn8WOk6o9hpFQgHxmCgOxRT
-         tUZnl/Wv8/rKEYIBrSa2HUsh2wbKvBUVXOmbRu15aItQ3b9+rtRKXktSNxio7rgUx7HC
-         svP8aYC4F1/Uw08D4UCS+pAhzHlFV5fy4d24gYxiqDduCQAZqJsbHiqi3EtbHEO0O060
-         r/89j6dJPcwLhsO0cf1RmYJ4RqbYILY2cboZAgEdkNxBZ6XONqeN3iQH8q3C7OdbeaMz
-         ydfw==
-X-Received: by 10.50.30.166 with SMTP id t6mr19559565igh.7.1390328745076;
-        Tue, 21 Jan 2014 10:25:45 -0800 (PST)
-Received: from dl.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPSA id s4sm38090920ige.0.2014.01.21.10.25.43
-        for <multiple recipients>
-        (version=TLSv1 cipher=RC4-SHA bits=128/128);
-        Tue, 21 Jan 2014 10:25:44 -0800 (PST)
-Message-ID: <52DEBBA6.9070701@gmail.com>
-Date:   Tue, 21 Jan 2014 10:25:42 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2014 19:43:04 +0100 (CET)
+Received: from out01.mta.xmission.com ([166.70.13.231]:51726 "EHLO
+        out01.mta.xmission.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6870549AbaAUSnBHNnAe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jan 2014 19:43:01 +0100
+Received: from in01.mta.xmission.com ([166.70.13.51])
+        by out01.mta.xmission.com with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1W5gHh-0004Ck-HM; Tue, 21 Jan 2014 11:42:49 -0700
+Received: from c-98-207-154-105.hsd1.ca.comcast.net ([98.207.154.105] helo=eric-ThinkPad-X220.xmission.com)
+        by in01.mta.xmission.com with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1W5gHe-0004J7-2I; Tue, 21 Jan 2014 11:42:49 -0700
+From:   ebiederm@xmission.com (Eric W. Biederman)
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     <linux-arch@vger.kernel.org>, linux-mips@linux-mips.org
+Date:   Tue, 21 Jan 2014 10:42:37 -0800
+Message-ID: <8738kh6usi.fsf@xmission.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.1 (gnu/linux)
 MIME-Version: 1.0
-To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] MIPS: lib: Optimize partial checksum ops using prefetching.
-References: <1390321122-25634-1-git-send-email-Steven.Hill@imgtec.com>
-In-Reply-To: <1390321122-25634-1-git-send-email-Steven.Hill@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain
+X-XM-AID: U2FsdGVkX1/Mk7+BjMfzAvohII6CWSpkNCni3ifinrk=
+X-SA-Exim-Connect-IP: 98.207.154.105
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+Subject: [RFC][PATCH] MIPS: VPE: Remove vpe_getuid and vpe_getgid
+X-SA-Exim-Version: 4.2.1 (built Wed, 14 Nov 2012 14:26:46 -0700)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
+Return-Path: <ebiederm@xmission.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39044
+X-archive-position: 39045
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: ebiederm@xmission.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,74 +48,115 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/21/2014 08:18 AM, Steven J. Hill wrote:
-> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
->
-> Use the PREF instruction to optimize partial checksum operations.
->
-> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
 
-NACK.  The proper latench and cacheline stride vary by CPU, you cannot 
-just hard code them for 32-byte cacheline size with some random latency.
+The linux build-bot recently reported a build error in arch/mips/kernel/vpe.c
 
-This will make some CPUs slower.
+     tree:   git://git.kernel.org/pub/scm/linux/kernel/git/ebiederm/user-namespace.git for-linus
+     head:   261000a56b6382f597bcb12000f55c9ff26a1efb
+     commit: 261000a56b6382f597bcb12000f55c9ff26a1efb [4/4] userns:  userns: Remove UIDGID_STRICT_TYPE_CHECKS
+     config: make ARCH=mips maltaaprp_defconfig
 
-> ---
->   arch/mips/lib/csum_partial.S | 12 ++++++++++++
->   1 file changed, 12 insertions(+)
->
-> diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
-> index a6adffb..272820e 100644
-> --- a/arch/mips/lib/csum_partial.S
-> +++ b/arch/mips/lib/csum_partial.S
-> @@ -417,13 +417,19 @@ FEXPORT(csum_partial_copy_nocheck)
->   	 *
->   	 * If len < NBYTES use byte operations.
->   	 */
-> +	PREF(	0, 0(src))
-> +	PREF(	1, 0(dst))
->   	sltu	t2, len, NBYTES
->   	and	t1, dst, ADDRMASK
->   	bnez	t2, .Lcopy_bytes_checklen
-> +	PREF(	0, 32(src))
-> +	PREF(	1, 32(dst))
->   	 and	t0, src, ADDRMASK
->   	andi	odd, dst, 0x1			/* odd buffer? */
->   	bnez	t1, .Ldst_unaligned
->   	 nop
-> +	PREF(	0, 2*32(src))
-> +	PREF(	1, 2*32(dst))
->   	bnez	t0, .Lsrc_unaligned_dst_aligned
->   	/*
->   	 * use delay slot for fall-through
-> @@ -434,6 +440,8 @@ FEXPORT(csum_partial_copy_nocheck)
->   	beqz	t0, .Lcleanup_both_aligned # len < 8*NBYTES
->   	 nop
->   	SUB	len, 8*NBYTES		# subtract here for bgez loop
-> +	PREF(	0, 3*32(src))
-> +	PREF(	1, 3*32(dst))
->   	.align	4
->   1:
->   EXC(	LOAD	t0, UNIT(0)(src),	.Ll_exc)
-> @@ -464,6 +472,8 @@ EXC(	STORE	t7, UNIT(7)(dst),	.Ls_exc)
->   	ADDC(sum, t7)
->   	.set	reorder				/* DADDI_WAR */
->   	ADD	dst, dst, 8*NBYTES
-> +	PREF(	0, 8*32(src))
-> +	PREF(	1, 8*32(dst))
->   	bgez	len, 1b
->   	.set	noreorder
->   	ADD	len, 8*NBYTES		# revert len (see above)
-> @@ -569,8 +579,10 @@ EXC(	STFIRST t3, FIRST(0)(dst),	.Ls_exc)
->
->   .Lsrc_unaligned_dst_aligned:
->   	SRL	t0, len, LOG_NBYTES+2	 # +2 for 4 units/iter
-> +	PREF(	0, 3*32(src))
->   	beqz	t0, .Lcleanup_src_unaligned
->   	 and	rem, len, (4*NBYTES-1)	 # rem = len % 4*NBYTES
-> +	PREF(	1, 3*32(dst))
->   1:
->   /*
->    * Avoid consecutive LD*'s to the same register since some mips
->
+     All error/warnings:
+
+        arch/mips/kernel/vpe.c: In function 'vpe_open':
+     >> arch/mips/kernel/vpe.c:1086:9: error: incompatible types when assigning to type 'unsigned int' from type 'kuid_t'
+     >> arch/mips/kernel/vpe.c:1087:9: error: incompatible types when assigning to type 'unsigned int' from type 'kgid_t'
+
+     vim +1086 arch/mips/kernel/vpe.c
+
+     863abad4 Jesper Juhl   2010-10-30  1080			return -ENOMEM;
+     863abad4 Jesper Juhl   2010-10-30  1081  		}
+     e01402b1 Ralf Baechle  2005-07-14  1082  		v->plen = P_SIZE;
+     e01402b1 Ralf Baechle  2005-07-14  1083  		v->load_addr = NULL;
+     e01402b1 Ralf Baechle  2005-07-14  1084  		v->len = 0;
+     e01402b1 Ralf Baechle  2005-07-14  1085
+     d76b0d9b David Howells 2008-11-14 @1086		v->uid = filp->f_cred->fsuid;
+     d76b0d9b David Howells 2008-11-14 @1087  		v->gid = filp->f_cred->fsgid;
+     2600990e Ralf Baechle  2006-04-05  1088
+     2600990e Ralf Baechle  2006-04-05  1089		v->cwd[0] = 0;
+     2600990e Ralf Baechle  2006-04-05  1090 	 	ret = getcwd(v->cwd, VPE_PATH_MAX);
+
+When examining the code to see what v->uid and v->gid were used for I
+discovered that the only users in the kernel are vpe_getuid and
+vpe_getgid, and that vpe_getuid and vpe_getgid are never called.
+
+So instead of proposing a conversion to use kuid_t and kgid_t instead
+of unsigned int/int as I normally would let's just kill this dead code
+so no one has to worry about it further.
+
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
+---
+ arch/mips/include/asm/vpe.h |    2 --
+ arch/mips/kernel/vpe.c      |   28 ----------------------------
+ 2 files changed, 0 insertions(+), 30 deletions(-)
+
+diff --git a/arch/mips/include/asm/vpe.h b/arch/mips/include/asm/vpe.h
+index c6e1b961537d..0880fe8809b1 100644
+--- a/arch/mips/include/asm/vpe.h
++++ b/arch/mips/include/asm/vpe.h
+@@ -30,8 +30,6 @@ struct vpe_notifications {
+ extern int vpe_notify(int index, struct vpe_notifications *notify);
+ 
+ extern void *vpe_get_shared(int index);
+-extern int vpe_getuid(int index);
+-extern int vpe_getgid(int index);
+ extern char *vpe_getcwd(int index);
+ 
+ #endif /* _ASM_VPE_H */
+diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
+index 59b2b3cd7885..2d5c142bad67 100644
+--- a/arch/mips/kernel/vpe.c
++++ b/arch/mips/kernel/vpe.c
+@@ -105,7 +105,6 @@ struct vpe {
+ 	unsigned long len;
+ 	char *pbuffer;
+ 	unsigned long plen;
+-	unsigned int uid, gid;
+ 	char cwd[VPE_PATH_MAX];
+ 
+ 	unsigned long __start;
+@@ -1083,9 +1082,6 @@ static int vpe_open(struct inode *inode, struct file *filp)
+ 	v->load_addr = NULL;
+ 	v->len = 0;
+ 
+-	v->uid = filp->f_cred->fsuid;
+-	v->gid = filp->f_cred->fsgid;
+-
+ 	v->cwd[0] = 0;
+ 	ret = getcwd(v->cwd, VPE_PATH_MAX);
+ 	if (ret < 0)
+@@ -1269,30 +1265,6 @@ void *vpe_get_shared(int index)
+ 
+ EXPORT_SYMBOL(vpe_get_shared);
+ 
+-int vpe_getuid(int index)
+-{
+-	struct vpe *v;
+-
+-	if ((v = get_vpe(index)) == NULL)
+-		return -1;
+-
+-	return v->uid;
+-}
+-
+-EXPORT_SYMBOL(vpe_getuid);
+-
+-int vpe_getgid(int index)
+-{
+-	struct vpe *v;
+-
+-	if ((v = get_vpe(index)) == NULL)
+-		return -1;
+-
+-	return v->gid;
+-}
+-
+-EXPORT_SYMBOL(vpe_getgid);
+-
+ int vpe_notify(int index, struct vpe_notifications *notify)
+ {
+ 	struct vpe *v;
+-- 
+1.7.5.4

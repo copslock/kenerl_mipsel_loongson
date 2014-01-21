@@ -1,32 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2014 21:29:35 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:63079 "EHLO multi.imgtec.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6824283AbaAUU3dzdq2i (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 21 Jan 2014 21:29:33 +0100
-Message-ID: <52DED891.60301@imgtec.com>
-Date:   Tue, 21 Jan 2014 14:29:05 -0600
-From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2014 21:49:43 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:42655 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S6824283AbaAUUtloxHZg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 21 Jan 2014 21:49:41 +0100
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s0LKndRD031628;
+        Tue, 21 Jan 2014 21:49:39 +0100
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s0LKnctI031627;
+        Tue, 21 Jan 2014 21:49:38 +0100
+Date:   Tue, 21 Jan 2014 21:49:38 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: lib: Optimize partial checksum ops using
+ prefetching.
+Message-ID: <20140121204938.GW14169@linux-mips.org>
+References: <1390321122-25634-1-git-send-email-Steven.Hill@imgtec.com>
 MIME-Version: 1.0
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-CC:     <linux-arch@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        Deng-Cheng Zhu <Dengcheng.Zhu@imgtec.com>
-Subject: Re: [RFC][PATCH] MIPS: VPE: Remove vpe_getuid and vpe_getgid
-References: <8738kh6usi.fsf@xmission.com>
-In-Reply-To: <8738kh6usi.fsf@xmission.com>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.159.69]
-X-SEF-Processed: 7_3_0_01192__2014_01_21_20_29_28
-Return-Path: <Steven.Hill@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1390321122-25634-1-git-send-email-Steven.Hill@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39048
+X-archive-position: 39049
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,48 +43,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/21/2014 12:42 PM, Eric W. Biederman wrote:
->
-> The linux build-bot recently reported a build error in arch/mips/kernel/vpe.c
->
->       tree:   git://git.kernel.org/pub/scm/linux/kernel/git/ebiederm/user-namespace.git for-linus
->       head:   261000a56b6382f597bcb12000f55c9ff26a1efb
->       commit: 261000a56b6382f597bcb12000f55c9ff26a1efb [4/4] userns:  userns: Remove UIDGID_STRICT_TYPE_CHECKS
->       config: make ARCH=mips maltaaprp_defconfig
->
->       All error/warnings:
->
->          arch/mips/kernel/vpe.c: In function 'vpe_open':
->       >> arch/mips/kernel/vpe.c:1086:9: error: incompatible types when assigning to type 'unsigned int' from type 'kuid_t'
->       >> arch/mips/kernel/vpe.c:1087:9: error: incompatible types when assigning to type 'unsigned int' from type 'kgid_t'
->
->       vim +1086 arch/mips/kernel/vpe.c
->
->       863abad4 Jesper Juhl   2010-10-30  1080			return -ENOMEM;
->       863abad4 Jesper Juhl   2010-10-30  1081  		}
->       e01402b1 Ralf Baechle  2005-07-14  1082  		v->plen = P_SIZE;
->       e01402b1 Ralf Baechle  2005-07-14  1083  		v->load_addr = NULL;
->       e01402b1 Ralf Baechle  2005-07-14  1084  		v->len = 0;
->       e01402b1 Ralf Baechle  2005-07-14  1085
->       d76b0d9b David Howells 2008-11-14 @1086		v->uid = filp->f_cred->fsuid;
->       d76b0d9b David Howells 2008-11-14 @1087  		v->gid = filp->f_cred->fsgid;
->       2600990e Ralf Baechle  2006-04-05  1088
->       2600990e Ralf Baechle  2006-04-05  1089		v->cwd[0] = 0;
->       2600990e Ralf Baechle  2006-04-05  1090 	 	ret = getcwd(v->cwd, VPE_PATH_MAX);
->
-> When examining the code to see what v->uid and v->gid were used for I
-> discovered that the only users in the kernel are vpe_getuid and
-> vpe_getgid, and that vpe_getuid and vpe_getgid are never called.
->
-> So instead of proposing a conversion to use kuid_t and kgid_t instead
-> of unsigned int/int as I normally would let's just kill this dead code
-> so no one has to worry about it further.
->
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
->
-This patch looks good to me, however, Deng-Cheng should also confirm if 
-this patch is okay. He is currently maintaining that code. Thanks.
+On Tue, Jan 21, 2014 at 10:18:42AM -0600, Steven J. Hill wrote:
 
-Steve
+> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+> 
+> Use the PREF instruction to optimize partial checksum operations.
+
+Prefetch operations may cause obscure bus error exceptions on some systems
+such as Malta, for example, when prefetching beyond the end of memory.
+It may also mean memory regions that are just undergoing a DMA transfer
+are being brought back into cache.
+
+This pretty much means that pref is only safe to use on cache-coherent
+systems.
+
+Those are the very same reasons that are making pref headache for memcpy.
+
+Performance tuning is another can of worms.  On those platforms that I've
+benchmarked code with and without pref on, it was very hard to predict
+if pref was actually an advantage.  If data that is not going to be
+used is prefetch, pref wastes an issue slot, wastes instruction bandwith
+and in the end makes things slower.  If data is not prefetched early
+enough, same kind of issue.  And in the end PREF and MT were invented
+to solve the same kind of fundamental problem: memory is slow and slower
+on embedded.  For both solutions the results are extremly dependent on
+workload.
+
+Cheers,
+
+  Ralf

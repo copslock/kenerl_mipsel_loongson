@@ -1,36 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2014 21:49:43 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:42655 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S6824283AbaAUUtloxHZg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 21 Jan 2014 21:49:41 +0100
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.14.7/8.14.4) with ESMTP id s0LKndRD031628;
-        Tue, 21 Jan 2014 21:49:39 +0100
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.14.7/8.14.7/Submit) id s0LKnctI031627;
-        Tue, 21 Jan 2014 21:49:38 +0100
-Date:   Tue, 21 Jan 2014 21:49:38 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: lib: Optimize partial checksum ops using
- prefetching.
-Message-ID: <20140121204938.GW14169@linux-mips.org>
-References: <1390321122-25634-1-git-send-email-Steven.Hill@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2014 21:58:59 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:2580 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6823127AbaAUU65Yr0uj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 21 Jan 2014 21:58:57 +0100
+Message-ID: <52DEDF84.1000006@imgtec.com>
+Date:   Tue, 21 Jan 2014 14:58:44 -0600
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1390321122-25634-1-git-send-email-Steven.Hill@imgtec.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: lib: Optimize partial checksum ops using prefetching.
+References: <1390321122-25634-1-git-send-email-Steven.Hill@imgtec.com> <20140121204938.GW14169@linux-mips.org>
+In-Reply-To: <20140121204938.GW14169@linux-mips.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.159.69]
+X-SEF-Processed: 7_3_0_01192__2014_01_21_20_58_51
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39049
+X-archive-position: 39050
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,32 +38,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jan 21, 2014 at 10:18:42AM -0600, Steven J. Hill wrote:
+On 01/21/2014 02:49 PM, Ralf Baechle wrote:
+> On Tue, Jan 21, 2014 at 10:18:42AM -0600, Steven J. Hill wrote:
+>
+>> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+>>
+>> Use the PREF instruction to optimize partial checksum operations.
+>
+> Prefetch operations may cause obscure bus error exceptions on some systems
+> such as Malta, for example, when prefetching beyond the end of memory.
+> It may also mean memory regions that are just undergoing a DMA transfer
+> are being brought back into cache.
+>
+> This pretty much means that pref is only safe to use on cache-coherent
+> systems.
+>
+So, could we have:
 
-> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-> 
-> Use the PREF instruction to optimize partial checksum operations.
+    #ifdef CONFIG_DMA_NONCOHERENT
+    #undef CONFIG_CPU_HAS_PREFETCH
+    #endif
+    #define PREFSIZE   (1 << MIPS_L1_CACHE_SHIFT)
 
-Prefetch operations may cause obscure bus error exceptions on some systems
-such as Malta, for example, when prefetching beyond the end of memory.
-It may also mean memory regions that are just undergoing a DMA transfer
-are being brought back into cache.
+and then use the PREFSIZE value instead of the hardcoded value of 32?
 
-This pretty much means that pref is only safe to use on cache-coherent
-systems.
-
-Those are the very same reasons that are making pref headache for memcpy.
-
-Performance tuning is another can of worms.  On those platforms that I've
-benchmarked code with and without pref on, it was very hard to predict
-if pref was actually an advantage.  If data that is not going to be
-used is prefetch, pref wastes an issue slot, wastes instruction bandwith
-and in the end makes things slower.  If data is not prefetched early
-enough, same kind of issue.  And in the end PREF and MT were invented
-to solve the same kind of fundamental problem: memory is slow and slower
-on embedded.  For both solutions the results are extremly dependent on
-workload.
-
-Cheers,
-
-  Ralf
+Steve

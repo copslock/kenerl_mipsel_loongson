@@ -1,45 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2014 21:26:29 +0100 (CET)
-Received: from mail-pa0-f46.google.com ([209.85.220.46]:50521 "EHLO
-        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6823127AbaAUU00b1uio (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jan 2014 21:26:26 +0100
-Received: by mail-pa0-f46.google.com with SMTP id rd3so8866928pab.19
-        for <linux-mips@linux-mips.org>; Tue, 21 Jan 2014 12:26:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=zF2ImEAmyDYhAN9uZvtsewyRUCVwC0rzPODUZIR6RTw=;
-        b=ioPS0Seg9dHibe7KDcmiR8XmWWklqjWgRe16O/q+ZtTRRz+305iV1UsFLi8FGKvzv9
-         9SnNwtPvCE6TvxV53Iz0GXdw+p95uT0t6ogTWrUzmSQ3r92FkeysOJQrK3UBc/9xOsn1
-         CpH8K5JKTNcg0J1ASulJR3z5v7qjRxm98i8iJ+Q5IO1wKLDHmgbJNowNNolJgNLG/gpe
-         9HGRSlMQaKVj9GZkCiePk92IvbBZHHkDaoxtmFdJ9uMi7uO6Etv5nfGXFUG/Wz2tnkDp
-         o2p4YN76Uy1MlbzuTULDRmLcUV3dRjSlM2n1oyMQ0dE1ifOTrKAtbdLqatQgzUv0dgPG
-         cJYg==
-X-Received: by 10.66.14.41 with SMTP id m9mr27146329pac.123.1390335979805;
- Tue, 21 Jan 2014 12:26:19 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jan 2014 21:29:35 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:63079 "EHLO multi.imgtec.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S6824283AbaAUU3dzdq2i (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 21 Jan 2014 21:29:33 +0100
+Message-ID: <52DED891.60301@imgtec.com>
+Date:   Tue, 21 Jan 2014 14:29:05 -0600
+From:   "Steven J. Hill" <Steven.Hill@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
 MIME-Version: 1.0
-Received: by 10.68.186.101 with HTTP; Tue, 21 Jan 2014 12:25:39 -0800 (PST)
-In-Reply-To: <52DED597.1040607@imgtec.com>
-References: <1390321122-25634-1-git-send-email-Steven.Hill@imgtec.com>
- <52DEBBA6.9070701@gmail.com> <52DED597.1040607@imgtec.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Date:   Tue, 21 Jan 2014 12:25:39 -0800
-Message-ID: <CAGVrzcZ2SucNRyBBqyhbM7RQkGNERPZY=YsfSp0R8GiS0BLpbA@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: lib: Optimize partial checksum ops using prefetching.
-To:     "Steven J. Hill" <Steven.Hill@imgtec.com>
-Cc:     David Daney <ddaney.cavm@gmail.com>,
-        LMOL <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <f.fainelli@gmail.com>
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+CC:     <linux-arch@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        Deng-Cheng Zhu <Dengcheng.Zhu@imgtec.com>
+Subject: Re: [RFC][PATCH] MIPS: VPE: Remove vpe_getuid and vpe_getgid
+References: <8738kh6usi.fsf@xmission.com>
+In-Reply-To: <8738kh6usi.fsf@xmission.com>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.159.69]
+X-SEF-Processed: 7_3_0_01192__2014_01_21_20_29_28
+Return-Path: <Steven.Hill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39047
+X-archive-position: 39048
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: Steven.Hill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,30 +39,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-2014/1/21 Steven J. Hill <Steven.Hill@imgtec.com>:
-> On 01/21/2014 12:25 PM, David Daney wrote:
->>
->> On 01/21/2014 08:18 AM, Steven J. Hill wrote:
->>>
->>> From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
->>>
->>> Use the PREF instruction to optimize partial checksum operations.
->>>
->>> Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
->>> Signed-off-by: Steven J. Hill <Steven.Hill@imgtec.com>
->>
->>
->> NACK.  The proper latench and cacheline stride vary by CPU, you cannot
->> just hard code them for 32-byte cacheline size with some random latency.
->>
->> This will make some CPUs slower.
->>
-> Note that memcpy.S already uses fixed cache lines (32 bytes) so this is
-> merely doing the same thing. I assume you have some empirical evidence
-> concerning other CPUs being slower?
+On 01/21/2014 12:42 PM, Eric W. Biederman wrote:
+>
+> The linux build-bot recently reported a build error in arch/mips/kernel/vpe.c
+>
+>       tree:   git://git.kernel.org/pub/scm/linux/kernel/git/ebiederm/user-namespace.git for-linus
+>       head:   261000a56b6382f597bcb12000f55c9ff26a1efb
+>       commit: 261000a56b6382f597bcb12000f55c9ff26a1efb [4/4] userns:  userns: Remove UIDGID_STRICT_TYPE_CHECKS
+>       config: make ARCH=mips maltaaprp_defconfig
+>
+>       All error/warnings:
+>
+>          arch/mips/kernel/vpe.c: In function 'vpe_open':
+>       >> arch/mips/kernel/vpe.c:1086:9: error: incompatible types when assigning to type 'unsigned int' from type 'kuid_t'
+>       >> arch/mips/kernel/vpe.c:1087:9: error: incompatible types when assigning to type 'unsigned int' from type 'kgid_t'
+>
+>       vim +1086 arch/mips/kernel/vpe.c
+>
+>       863abad4 Jesper Juhl   2010-10-30  1080			return -ENOMEM;
+>       863abad4 Jesper Juhl   2010-10-30  1081  		}
+>       e01402b1 Ralf Baechle  2005-07-14  1082  		v->plen = P_SIZE;
+>       e01402b1 Ralf Baechle  2005-07-14  1083  		v->load_addr = NULL;
+>       e01402b1 Ralf Baechle  2005-07-14  1084  		v->len = 0;
+>       e01402b1 Ralf Baechle  2005-07-14  1085
+>       d76b0d9b David Howells 2008-11-14 @1086		v->uid = filp->f_cred->fsuid;
+>       d76b0d9b David Howells 2008-11-14 @1087  		v->gid = filp->f_cred->fsgid;
+>       2600990e Ralf Baechle  2006-04-05  1088
+>       2600990e Ralf Baechle  2006-04-05  1089		v->cwd[0] = 0;
+>       2600990e Ralf Baechle  2006-04-05  1090 	 	ret = getcwd(v->cwd, VPE_PATH_MAX);
+>
+> When examining the code to see what v->uid and v->gid were used for I
+> discovered that the only users in the kernel are vpe_getuid and
+> vpe_getgid, and that vpe_getuid and vpe_getgid are never called.
+>
+> So instead of proposing a conversion to use kuid_t and kgid_t instead
+> of unsigned int/int as I normally would let's just kill this dead code
+> so no one has to worry about it further.
+>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
+>
+This patch looks good to me, however, Deng-Cheng should also confirm if 
+this patch is okay. He is currently maintaining that code. Thanks.
 
-How about using cpu_dcache_line_size()/MIPS_L1_CACHE_SHIFT? These
-should provide a good hint. Octeon has a 128bytes D$ line size, so
-prefetching via slices of 32 bytes is most likely suboptimal.
--- 
-Florian
+Steve

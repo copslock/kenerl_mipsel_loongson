@@ -1,30 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2014 16:25:50 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:60130 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2014 17:20:26 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:21299 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825759AbaAVPZrPoEs1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 22 Jan 2014 16:25:47 +0100
-Message-ID: <52DFE2EE.8040108@phrozen.org>
-Date:   Wed, 22 Jan 2014 16:25:34 +0100
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
+        id S6825729AbaAVQUYBC5uJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 Jan 2014 17:20:24 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Robert Richter <rric@kernel.org>, <oprofile-list@lists.sf.net>
+Subject: [PATCH v2 0/5] Add basic MIPS P5600 core support
+Date:   Wed, 22 Jan 2014 16:19:36 +0000
+Message-ID: <1390407581-24238-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 1.8.1.2
 MIME-Version: 1.0
-To:     Paul Gortmaker <paul.gortmaker@windriver.com>
-CC:     fengguang.wu@intel.com, linux-serial@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] mips: make loongsoon serial driver explicitly modular
-References: <52df9ab1.ahF1zl0PTutzrviC%fengguang.wu@intel.com> <1390403871-16809-1-git-send-email-paul.gortmaker@windriver.com>
-In-Reply-To: <1390403871-16809-1-git-send-email-paul.gortmaker@windriver.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <john@phrozen.org>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.65]
+X-SEF-Processed: 7_3_0_01192__2014_01_22_16_20_16
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39065
+X-archive-position: 39066
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,70 +36,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Add basic support for the MIPS P5600 cores [1]. The P5600 processor ID
+now results in the new cputype CPU_P5600 being used. The FTLB is enabled
+in the same way as for CPU_PROAPTIV, and an OProfile cputype string is
+added.
 
-On 22/01/2014 16:17, Paul Gortmaker wrote:
-> The file looks as if it is non-modular, but it piggy-backs
-> off CONFIG_SERIAL_8250 which is tristate.  If set to "=m"
-> we will get this after the init/module header cleanup:
->
-> arch/mips/loongson/common/serial.c:76:1: error: data definition has no type or storage class [-Werror]
-> arch/mips/loongson/common/serial.c:76:1: error: type defaults to 'int' in declaration of 'device_initcall' [-Werror=implicit-int]
-> arch/mips/loongson/common/serial.c:76:1: error: parameter names (without types) in function declaration [-Werror]
-> arch/mips/loongson/common/serial.c:58:19: error: 'serial_init' defined but not used [-Werror=unused-function]
-> cc1: all warnings being treated as errors
-> make[3]: *** [arch/mips/loongson/common/serial.o] Error 1
->
-> Make it clearly modular, and add a module_exit function,
-> so that we avoid the above breakage.
->
-> Reported-by: kbuild test robot <fengguang.wu@intel.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+v2:
+- Add whole new CPU type for it (John Crispin).
+- Split up the patch into identifiers, cases, probing, ftlb enable, and
+  OProfile.
 
-Acked-by: John Crispin <blogic@openwrt.org>
+[1]: http://www.imgtec.com/mips/mips-series5-p5600.asp
 
-as this patch is already in Paul's tree, i will set it to "other
-maintainer" in the linux-mips patchwork.
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: Robert Richter <rric@kernel.org>
+Cc: oprofile-list@lists.sf.net
 
-Thanks,
-    John
+James Hogan (5):
+  MIPS: Add MIPS P5600 PRid and cputype identifiers
+  MIPS: Add cases for CPU_P5600
+  MIPS: Add MIPS P5600 probe support
+  MIPS: Allow FTLB to be turned on for CPU_P5600
+  MIPS: OProfile: Add CPU_P5600 cases
 
+ arch/mips/include/asm/cpu-type.h     |  1 +
+ arch/mips/include/asm/cpu.h          |  3 ++-
+ arch/mips/kernel/cpu-probe.c         | 16 +++++++++++-----
+ arch/mips/kernel/idle.c              |  1 +
+ arch/mips/kernel/spram.c             |  1 +
+ arch/mips/kernel/traps.c             |  1 +
+ arch/mips/mm/c-r4k.c                 |  1 +
+ arch/mips/mm/sc-mips.c               |  1 +
+ arch/mips/mm/tlbex.c                 |  1 +
+ arch/mips/oprofile/common.c          |  1 +
+ arch/mips/oprofile/op_model_mipsxx.c |  4 ++++
+ 11 files changed, 25 insertions(+), 6 deletions(-)
 
-
-
-
-> ---
->
-> [patch added to init cleanup series:
->    http://git.kernel.org/cgit/linux/kernel/git/paulg/init.git/  ]
->
->  arch/mips/loongson/common/serial.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/mips/loongson/common/serial.c b/arch/mips/loongson/common/serial.c
-> index 5f2b78a..4d0922f 100644
-> --- a/arch/mips/loongson/common/serial.c
-> +++ b/arch/mips/loongson/common/serial.c
-> @@ -11,7 +11,7 @@
->   */
->  
->  #include <linux/io.h>
-> -#include <linux/init.h>
-> +#include <linux/module.h>
->  #include <linux/serial_8250.h>
->  
->  #include <asm/bootinfo.h>
-> @@ -72,5 +72,10 @@ static int __init serial_init(void)
->  
->  	return platform_device_register(&uart8250_device);
->  }
-> +module_init(serial_init);
->  
-> -device_initcall(serial_init);
-> +static void __init serial_exit(void)
-> +{
-> +	platform_device_unregister(&uart8250_device);
-> +}
-> +module_exit(serial_exit);
+-- 
+1.8.1.2

@@ -1,44 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2014 08:00:55 +0100 (CET)
-Received: from ozlabs.org ([203.10.76.45]:48639 "EHLO ozlabs.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2014 15:42:37 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:24627 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825759AbaAVHAoliiXm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 22 Jan 2014 08:00:44 +0100
-Received: from canb.auug.org.au (ibmaus65.lnk.telstra.net [165.228.126.9])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 455602C008F;
-        Wed, 22 Jan 2014 18:00:28 +1100 (EST)
-Date:   Wed, 22 Jan 2014 18:00:23 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Paul Gortmaker <paul.gortmaker@windriver.com>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-        <linux-alpha@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-ia64@vger.kernel.org>, <linux-m68k@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-s390@vger.kernel.org>, <sparclinux@vger.kernel.org>,
-        <x86@kernel.org>, <netdev@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <rusty@rustcorp.com.au>, <gregkh@linuxfoundation.org>,
-        <akpm@linux-foundation.org>, <torvalds@linux-foundation.org>
-Subject: Re: [PATCH RFC 00/73] tree-wide: clean up some no longer required
- #include <linux/init.h>
-Message-Id: <20140122180023.dd90d34cba38d9f9ac516349@canb.auug.org.au>
-In-Reply-To: <1390339396-3479-1-git-send-email-paul.gortmaker@windriver.com>
-References: <1390339396-3479-1-git-send-email-paul.gortmaker@windriver.com>
-X-Mailer: Sylpheed 3.4.0beta7 (GTK+ 2.24.22; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature";
- micalg="PGP-SHA256";
- boundary="Signature=_Wed__22_Jan_2014_18_00_23_+1100_zcOtMRV1NI/h=88n"
-Return-Path: <sfr@canb.auug.org.au>
+        id S6825866AbaAVOkS1mtgZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 Jan 2014 15:40:18 +0100
+From:   Markos Chandras <markos.chandras@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH 0/8] Improved seccomp-bpf support for MIPS
+Date:   Wed, 22 Jan 2014 14:39:56 +0000
+Message-ID: <1390401604-11830-1-git-send-email-markos.chandras@imgtec.com>
+X-Mailer: git-send-email 1.8.5.3
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.47]
+X-SEF-Processed: 7_3_0_01192__2014_01_22_14_40_12
+Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39054
+X-archive-position: 39055
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sfr@canb.auug.org.au
+X-original-sender: markos.chandras@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,84 +35,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Signature=_Wed__22_Jan_2014_18_00_23_+1100_zcOtMRV1NI/h=88n
-Content-Type: text/plain; charset=US-ASCII
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-Hi Paul,
+This patch improves the existing seccomp-bpf support for MIPS.
+It fixes a bug when copying system call arguments for the filter
+checks and it also moves away from strict filtering to actually
+use the filter supplied by the userspace process.
 
-On Tue, 21 Jan 2014 16:22:03 -0500 Paul Gortmaker <paul.gortmaker@windriver=
-.com> wrote:
->
-> Where: This work exists as a queue of patches that I apply to
-> linux-next; since the changes are fixing some things that currently
-> can only be found there.  The patch series can be found at:
->=20
->    http://git.kernel.org/cgit/linux/kernel/git/paulg/init.git
->    git://git.kernel.org/pub/scm/linux/kernel/git/paulg/init.git
->=20
-> I've avoided annoying Stephen with another queue of patches for
-> linux-next while the development content was in flux, but now that
-> the merge window has opened, and new additions are fewer, perhaps he
-> wouldn't mind tacking it on the end...  Stephen?
+This patchset has been tested with libseccomp
+(MIPS support not upstream yet) on mips, mipsel and mips64
+and with Chromium test suite (MIPS support not upstream yet)
+on mipsel.
 
-OK, I have added this to the end of linux-next today - we will see how we
-go.  It is called "init".
+This patchset is based on the upstream-sfr/mips-for-linux-next tree.
 
-Thanks for adding your subsystem tree as a participant of linux-next.  As
-you may know, this is not a judgment of your code.  The purpose of
-linux-next is for integration testing and to lower the impact of
-conflicts between subsystems in the next merge window.=20
+Markos Chandras (8):
+  MIPS: asm: syscall: Fix copying system call arguments
+  MIPS: asm: syscall: Add the syscall_rollback function
+  MIPS: asm: syscall: Define syscall_get_arch
+  MIPS: asm: thread_info: Add _TIF_SECCOMP flag
+  MIPS: ptrace: Move away from secure_computing_strict
+  MIPS: kernel: scalls: Skip the syscall if denied by the seccomp filter
+  MIPS: seccomp: Handle indirect system calls (o32)
+  MIPS: Select HAVE_ARCH_SECCOMP_FILTER
 
-You will need to ensure that the patches/commits in your tree/series have
-been:
-     * submitted under GPL v2 (or later) and include the Contributor's
-	Signed-off-by,
-     * posted to the relevant mailing list,
-     * reviewed by you (or another maintainer of your subsystem tree),
-     * successfully unit tested, and=20
-     * destined for the current or next Linux merge window.
+ arch/mips/Kconfig                   |  1 +
+ arch/mips/include/asm/ptrace.h      |  2 +-
+ arch/mips/include/asm/syscall.h     | 35 ++++++++++++++++++++++++++++++-----
+ arch/mips/include/asm/thread_info.h |  3 ++-
+ arch/mips/kernel/ptrace.c           | 11 ++++++-----
+ arch/mips/kernel/scall32-o32.S      | 15 +++++++++++++--
+ arch/mips/kernel/scall64-64.S       |  5 ++++-
+ arch/mips/kernel/scall64-n32.S      |  5 ++++-
+ arch/mips/kernel/scall64-o32.S      | 17 +++++++++++++++--
+ 9 files changed, 76 insertions(+), 18 deletions(-)
 
-Basically, this should be just what you would send to Linus (or ask him
-to fetch).  It is allowed to be rebased if you deem it necessary.
-
---=20
-Cheers,
-Stephen Rothwell=20
-sfr@canb.auug.org.au
-
-Legal Stuff:
-By participating in linux-next, your subsystem tree contributions are
-public and will be included in the linux-next trees.  You may be sent
-e-mail messages indicating errors or other issues when the
-patches/commits from your subsystem tree are merged and tested in
-linux-next.  These messages may also be cross-posted to the linux-next
-mailing list, the linux-kernel mailing list, etc.  The linux-next tree
-project and IBM (my employer) make no warranties regarding the linux-next
-project, the testing procedures, the results, the e-mails, etc.  If you
-don't agree to these ground rules, let me know and I'll remove your tree
-from participation in linux-next.
-
---Signature=_Wed__22_Jan_2014_18_00_23_+1100_zcOtMRV1NI/h=88n
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBCAAGBQJS32yLAAoJEMDTa8Ir7ZwVm18P/i9+tdEJe4LadVgjePUgRka0
-guzWVBgQs96hVeg/7h+LJWNRsMgu90m1S6n0BhoA/maJqSb1zHJ5VhWbPuDkCdRo
-EEB1J/lW35ziCkBg+ejAQm1c+5QIsoyi0MbuFEGyX7a8FgFJrzC3bJCQCysNHsxR
-mKYtXKdpPzpluxSzjCdecZyfWA6SU3Lbvgh6Th3yyQaAlm/QOk/k3wGGvQND/ODS
-37ktKXITCAnhCZ6HvVanJvim6pK78dDJPL1h7yVZ/heYJbEqEONfFuHeg+j1RVZg
-ilcnhvmkg6jEJoQkHB+ZopLVwv+QEnkPxzDPwmNNcAIexxvHXXpOkc3geeWtNsHp
-NNvJFXIWMbzemktgVNM3r5uxgnPmAcHCU6vaZTv/kodSZDuGrkvbOscwEpNyr1Bw
-rVm5gSiLyfA8eecFymGhPXvPvrAbmcA11lxZCh0V4gmgC5eKrUwiTIFGhm6n9WCy
-FartKLucuqCzLOgLujCC+c+7BOwTjc1vyMBbQtBwSCfPc/tyZZLvI9QTyv3tJKro
-G4Jimb7wth9sm93N7n9uplshLbNrNvTbE3Q9OU+mOKMzj0uD9ck/htxfh1vEZKWd
-vfuOCJrgnQdOA/TeZQmlKfIy/t2hkJXAV/oipKVrGg45oJZB72Tt7BA4FhUi/PeE
-2qfphmmDreRrUP/I4bqp
-=j4pk
------END PGP SIGNATURE-----
-
---Signature=_Wed__22_Jan_2014_18_00_23_+1100_zcOtMRV1NI/h=88n--
+-- 
+1.8.5.3

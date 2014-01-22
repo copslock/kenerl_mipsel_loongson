@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2014 15:43:26 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:24638 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2014 15:43:54 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:24642 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6870556AbaAVOl4waju8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6870557AbaAVOl4wW-cf (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 22 Jan 2014 15:41:56 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 6/8] MIPS: kernel: scalls: Skip the syscall if denied by the seccomp filter
-Date:   Wed, 22 Jan 2014 14:40:02 +0000
-Message-ID: <1390401604-11830-7-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH 5/8] MIPS: ptrace: Move away from secure_computing_strict
+Date:   Wed, 22 Jan 2014 14:40:01 +0000
+Message-ID: <1390401604-11830-6-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
 In-Reply-To: <1390401604-11830-1-git-send-email-markos.chandras@imgtec.com>
 References: <1390401604-11830-1-git-send-email-markos.chandras@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.47]
-X-SEF-Processed: 7_3_0_01192__2014_01_22_14_40_39
+X-SEF-Processed: 7_3_0_01192__2014_01_22_14_40_38
 Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39057
+X-archive-position: 39058
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,103 +37,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+MIPS now has the infrastructure for dynamic seccomp-bpf
+filtering
+
 Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Paul Burton <paul.burton@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/kernel/scall32-o32.S | 4 +++-
- arch/mips/kernel/scall64-64.S  | 4 +++-
- arch/mips/kernel/scall64-n32.S | 4 +++-
- arch/mips/kernel/scall64-o32.S | 4 +++-
- 4 files changed, 12 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/ptrace.h |  2 +-
+ arch/mips/kernel/ptrace.c      | 10 ++++++----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
-index e8e541b..ce6a1cc 100644
---- a/arch/mips/kernel/scall32-o32.S
-+++ b/arch/mips/kernel/scall32-o32.S
-@@ -120,6 +120,8 @@ syscall_trace_entry:
- 	move	a0, sp
- 	jal	syscall_trace_enter
+diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
+index 7bba9da..84257df 100644
+--- a/arch/mips/include/asm/ptrace.h
++++ b/arch/mips/include/asm/ptrace.h
+@@ -82,7 +82,7 @@ static inline long regs_return_value(struct pt_regs *regs)
+ #define instruction_pointer(regs) ((regs)->cp0_epc)
+ #define profile_pc(regs) instruction_pointer(regs)
  
-+	bltz	v0, 2f			# seccomp failed? Skip syscall
-+
- 	move	t0, s0
- 	RESTORE_STATIC
- 	lw	a0, PT_R4(sp)		# Restore argument registers
-@@ -138,7 +140,7 @@ syscall_trace_entry:
- 	sw	t1, PT_R0(sp)		# save it for syscall restarting
- 1:	sw	v0, PT_R2(sp)		# result
+-extern asmlinkage void syscall_trace_enter(struct pt_regs *regs);
++extern asmlinkage long syscall_trace_enter(struct pt_regs *regs);
+ extern asmlinkage void syscall_trace_leave(struct pt_regs *regs);
  
--	j	syscall_exit
-+2:	j	syscall_exit
+ extern void die(const char *, struct pt_regs *) __noreturn;
+diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+index fe5af54..7f9bcaa 100644
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -662,13 +662,14 @@ long arch_ptrace(struct task_struct *child, long request,
+  * Notification of system call entry/exit
+  * - triggered by current->work.syscall_trace
+  */
+-asmlinkage void syscall_trace_enter(struct pt_regs *regs)
++asmlinkage long syscall_trace_enter(struct pt_regs *regs)
+ {
++	long syscall = regs->regs[2];
+ 	long ret = 0;
+ 	user_exit();
  
- /* ------------------------------------------------------------------------ */
+-	/* do the secure computing check first */
+-	secure_computing_strict(regs->regs[2]);
++	if (secure_computing(syscall) == -1)
++		return -1;
  
-diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
-index 57e3742..88372a1 100644
---- a/arch/mips/kernel/scall64-64.S
-+++ b/arch/mips/kernel/scall64-64.S
-@@ -82,6 +82,8 @@ syscall_trace_entry:
- 	move	a0, sp
- 	jal	syscall_trace_enter
+ 	if (test_thread_flag(TIF_SYSCALL_TRACE) &&
+ 	    tracehook_report_syscall_entry(regs))
+@@ -678,9 +679,10 @@ asmlinkage void syscall_trace_enter(struct pt_regs *regs)
+ 		trace_sys_enter(regs, regs->regs[2]);
  
-+	bltz	v0, 2f			# seccomp failed? Skip syscall
-+
- 	move	t0, s0
- 	RESTORE_STATIC
- 	ld	a0, PT_R4(sp)		# Restore argument registers
-@@ -102,7 +104,7 @@ syscall_trace_entry:
- 	sd	t1, PT_R0(sp)		# save it for syscall restarting
- 1:	sd	v0, PT_R2(sp)		# result
+ 	audit_syscall_entry(syscall_get_arch(current, regs),
+-			    regs->regs[2],
++			    syscall,
+ 			    regs->regs[4], regs->regs[5],
+ 			    regs->regs[6], regs->regs[7]);
++	return syscall;
+ }
  
--	j	syscall_exit
-+2:	j	syscall_exit
- 
- illegal_syscall:
- 	/* This also isn't a 64-bit syscall, throw an error.  */
-diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
-index 2f48f59..d79d880 100644
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -74,6 +74,8 @@ n32_syscall_trace_entry:
- 	move	a0, sp
- 	jal	syscall_trace_enter
- 
-+	bltz	v0, 2f			# seccomp failed? Skip syscall
-+
- 	move	t0, s0
- 	RESTORE_STATIC
- 	ld	a0, PT_R4(sp)		# Restore argument registers
-@@ -94,7 +96,7 @@ n32_syscall_trace_entry:
- 	sd	t1, PT_R0(sp)		# save it for syscall restarting
- 1:	sd	v0, PT_R2(sp)		# result
- 
--	j	syscall_exit
-+2:	j	syscall_exit
- 
- not_n32_scall:
- 	/* This is not an n32 compatibility syscall, pass it on to
-diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
-index f1acdb4..375a72b 100644
---- a/arch/mips/kernel/scall64-o32.S
-+++ b/arch/mips/kernel/scall64-o32.S
-@@ -114,6 +114,8 @@ trace_a_syscall:
- 	move	a0, sp
- 	jal	syscall_trace_enter
- 
-+	bltz	v0, 2f			# seccomp failed? Skip syscall
-+
- 	move	t0, s0
- 	RESTORE_STATIC
- 	ld	a0, PT_R4(sp)		# Restore argument registers
-@@ -136,7 +138,7 @@ trace_a_syscall:
- 	sd	t1, PT_R0(sp)		# save it for syscall restarting
- 1:	sd	v0, PT_R2(sp)		# result
- 
--	j	syscall_exit
-+2:	j	syscall_exit
- 
- /* ------------------------------------------------------------------------ */
- 
+ /*
 -- 
 1.8.5.3

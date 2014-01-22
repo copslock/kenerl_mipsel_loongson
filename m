@@ -1,25 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2014 17:20:26 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:21299 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2014 17:20:45 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:21303 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6825729AbaAVQUYBC5uJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6825759AbaAVQUYBKeE4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 22 Jan 2014 17:20:24 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Robert Richter <rric@kernel.org>, <oprofile-list@lists.sf.net>
-Subject: [PATCH v2 0/5] Add basic MIPS P5600 core support
-Date:   Wed, 22 Jan 2014 16:19:36 +0000
-Message-ID: <1390407581-24238-1-git-send-email-james.hogan@imgtec.com>
+CC:     James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH v2 1/5] MIPS: Add MIPS P5600 PRid and cputype identifiers
+Date:   Wed, 22 Jan 2014 16:19:37 +0000
+Message-ID: <1390407581-24238-2-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 1.8.1.2
+In-Reply-To: <1390407581-24238-1-git-send-email-james.hogan@imgtec.com>
+References: <1390407581-24238-1-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.65]
-X-SEF-Processed: 7_3_0_01192__2014_01_22_16_20_16
+X-SEF-Processed: 7_3_0_01192__2014_01_22_16_20_17
 Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39066
+X-archive-position: 39067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,42 +37,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add basic support for the MIPS P5600 cores [1]. The P5600 processor ID
-now results in the new cputype CPU_P5600 being used. The FTLB is enabled
-in the same way as for CPU_PROAPTIV, and an OProfile cputype string is
-added.
+Add a Processor ID and CPU type for the MIPS P5600 core.
 
-v2:
-- Add whole new CPU type for it (John Crispin).
-- Split up the patch into identifiers, cases, probing, ftlb enable, and
-  OProfile.
-
-[1]: http://www.imgtec.com/mips/mips-series5-p5600.asp
-
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: Robert Richter <rric@kernel.org>
-Cc: oprofile-list@lists.sf.net
+---
+ arch/mips/include/asm/cpu.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-James Hogan (5):
-  MIPS: Add MIPS P5600 PRid and cputype identifiers
-  MIPS: Add cases for CPU_P5600
-  MIPS: Add MIPS P5600 probe support
-  MIPS: Allow FTLB to be turned on for CPU_P5600
-  MIPS: OProfile: Add CPU_P5600 cases
-
- arch/mips/include/asm/cpu-type.h     |  1 +
- arch/mips/include/asm/cpu.h          |  3 ++-
- arch/mips/kernel/cpu-probe.c         | 16 +++++++++++-----
- arch/mips/kernel/idle.c              |  1 +
- arch/mips/kernel/spram.c             |  1 +
- arch/mips/kernel/traps.c             |  1 +
- arch/mips/mm/c-r4k.c                 |  1 +
- arch/mips/mm/sc-mips.c               |  1 +
- arch/mips/mm/tlbex.c                 |  1 +
- arch/mips/oprofile/common.c          |  1 +
- arch/mips/oprofile/op_model_mipsxx.c |  4 ++++
- 11 files changed, 25 insertions(+), 6 deletions(-)
-
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 76411df3d971..c5c2531fd0a9 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -115,6 +115,7 @@
+ #define PRID_IMP_INTERAPTIV_MP	0xa100
+ #define PRID_IMP_PROAPTIV_UP	0xa200
+ #define PRID_IMP_PROAPTIV_MP	0xa300
++#define PRID_IMP_P5600		0xa800
+ 
+ /*
+  * These are the PRID's for when 23:16 == PRID_COMP_SIBYTE
+@@ -296,7 +297,7 @@ enum cpu_type_enum {
+ 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
+ 	CPU_ALCHEMY, CPU_PR4450, CPU_BMIPS32, CPU_BMIPS3300, CPU_BMIPS4350,
+ 	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_LOONGSON1, CPU_M14KC,
+-	CPU_M14KEC, CPU_INTERAPTIV, CPU_PROAPTIV,
++	CPU_M14KEC, CPU_INTERAPTIV, CPU_PROAPTIV, CPU_P5600,
+ 
+ 	/*
+ 	 * MIPS64 class processors
 -- 
 1.8.1.2

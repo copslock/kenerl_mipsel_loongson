@@ -1,27 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2014 17:21:43 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:21303 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Jan 2014 17:22:07 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:21299 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6827305AbaAVQUYe5nhs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6827391AbaAVQUYfflLI (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 22 Jan 2014 17:20:24 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Robert Richter <rric@kernel.org>, <oprofile-list@lists.sf.net>
-Subject: [PATCH v2 5/5] MIPS: OProfile: Add CPU_P5600 cases
-Date:   Wed, 22 Jan 2014 16:19:41 +0000
-Message-ID: <1390407581-24238-6-git-send-email-james.hogan@imgtec.com>
+CC:     James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH v2 4/5] MIPS: Allow FTLB to be turned on for CPU_P5600
+Date:   Wed, 22 Jan 2014 16:19:40 +0000
+Message-ID: <1390407581-24238-5-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 1.8.1.2
 In-Reply-To: <1390407581-24238-1-git-send-email-james.hogan@imgtec.com>
 References: <1390407581-24238-1-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.65]
-X-SEF-Processed: 7_3_0_01192__2014_01_22_16_20_20
+X-SEF-Processed: 7_3_0_01192__2014_01_22_16_20_19
 Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39070
+X-archive-position: 39071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,46 +37,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a CPU_P5600 cpu type case in oprofile_arch_init() to use the MIPS
-model, and in mipsxx_init() to set the cpu_type string to "mips/P5600".
+Allow FTLB to be turned on or off for CPU_P5600 as well as CPU_PROAPTIV.
+The existing if statement is converted into a switch to allow for future
+expansion.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: Robert Richter <rric@kernel.org>
-Cc: oprofile-list@lists.sf.net
 ---
- arch/mips/oprofile/common.c          | 1 +
- arch/mips/oprofile/op_model_mipsxx.c | 4 ++++
- 2 files changed, 5 insertions(+)
+ arch/mips/kernel/cpu-probe.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
-index 2a86e38872a7..f177d86f267b 100644
---- a/arch/mips/oprofile/common.c
-+++ b/arch/mips/oprofile/common.c
-@@ -88,6 +88,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
- 	case CPU_74K:
- 	case CPU_INTERAPTIV:
- 	case CPU_PROAPTIV:
-+	case CPU_P5600:
- 	case CPU_LOONGSON1:
- 	case CPU_SB1:
- 	case CPU_SB1A:
-diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-index 4d94d75ec6f9..89d34f763297 100644
---- a/arch/mips/oprofile/op_model_mipsxx.c
-+++ b/arch/mips/oprofile/op_model_mipsxx.c
-@@ -384,6 +384,10 @@ static int __init mipsxx_init(void)
- 		op_model_mipsxx_ops.cpu_type = "mips/proAptiv";
- 		break;
- 
-+	case CPU_P5600:
-+		op_model_mipsxx_ops.cpu_type = "mips/P5600";
-+		break;
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index ef9b415086c8..075ce0caa72c 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -166,11 +166,12 @@ static char unknown_isa[] = KERN_ERR \
+ static void set_ftlb_enable(struct cpuinfo_mips *c, int enable)
+ {
+ 	unsigned int config6;
+-	/*
+-	 * Config6 is implementation dependent and it's currently only
+-	 * used by proAptiv
+-	 */
+-	if (c->cputype == CPU_PROAPTIV) {
 +
- 	case CPU_5KC:
- 		op_model_mipsxx_ops.cpu_type = "mips/5K";
- 		break;
++	/* It's implementation dependent how the FTLB can be enabled */
++	switch (c->cputype) {
++	case CPU_PROAPTIV:
++	case CPU_P5600:
++		/* proAptiv & related cores use Config6 to enable the FTLB */
+ 		config6 = read_c0_config6();
+ 		if (enable)
+ 			/* Enable FTLB */
+@@ -179,6 +180,7 @@ static void set_ftlb_enable(struct cpuinfo_mips *c, int enable)
+ 			/* Disable FTLB */
+ 			write_c0_config6(config6 &  ~MIPS_CONF6_FTLBEN);
+ 		back_to_back_c0_hazard();
++		break;
+ 	}
+ }
+ 
 -- 
 1.8.1.2

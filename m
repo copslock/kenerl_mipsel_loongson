@@ -1,49 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jan 2014 01:38:36 +0100 (CET)
-Received: from mail1.windriver.com ([147.11.146.13]:61833 "EHLO
-        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S6825732AbaAWAieDptij convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jan 2014 01:38:34 +0100
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
-        by mail1.windriver.com (8.14.5/8.14.5) with ESMTP id s0N0cIO1021125
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Wed, 22 Jan 2014 16:38:18 -0800 (PST)
-Received: from yow-pgortmak-d1 (128.224.146.65) by ALA-HCA.corp.ad.wrs.com
- (147.11.189.40) with Microsoft SMTP Server id 14.2.347.0; Wed, 22 Jan 2014
- 16:38:17 -0800
-Received: by yow-pgortmak-d1 (Postfix, from userid 1000)        id 230B8E1D170; Wed,
- 22 Jan 2014 19:38:39 -0500 (EST)
-Date:   Wed, 22 Jan 2014 19:38:39 -0500
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-CC:     <linux-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-        <linux-alpha@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jan 2014 08:17:17 +0100 (CET)
+Received: from szxga02-in.huawei.com ([119.145.14.65]:26765 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825722AbaAWHRNvy3MV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jan 2014 08:17:13 +0100
+Received: from 172.24.2.119 (EHLO szxeml211-edg.china.huawei.com) ([172.24.2.119])
+        by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
+        with ESMTP id BOZ57184;
+        Thu, 23 Jan 2014 15:14:02 +0800 (CST)
+Received: from SZXEML413-HUB.china.huawei.com (10.82.67.152) by
+ szxeml211-edg.china.huawei.com (172.24.2.182) with Microsoft SMTP Server
+ (TLS) id 14.3.158.1; Thu, 23 Jan 2014 15:12:54 +0800
+Received: from localhost (10.177.27.212) by szxeml413-hub.china.huawei.com
+ (10.82.67.152) with Microsoft SMTP Server id 14.3.158.1; Thu, 23 Jan 2014
+ 15:12:46 +0800
+From:   Yijing Wang <wangyijing@huawei.com>
+To:     John Stultz <john.stultz@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+CC:     Sekhar Nori <nsekhar@ti.com>,
+        Kevin Hilman <khilman@deeprootsystems.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        David Brown <davidb@codeaurora.org>,
+        Daniel Walker <dwalker@fifo99.com>,
+        Bryan Huntsman <bryanh@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Mike Frysinger <vapier@gentoo.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        "Ingo Molnar" <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+        <x86@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Kukjin Kim <kgene.kim@samsung.com>,
+        Jim Cromie <jim.cromie@gmail.com>,
+        Nicolas Ferre <nicolas.ferre@atmel.com>,
+        Barry Song <baohua@kernel.org>,
+        Tony Prisk <linux@prisktech.co.nz>,
+        <davinci-linux-open-source@linux.davincidsp.com>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-ia64@vger.kernel.org>, <linux-m68k@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-s390@vger.kernel.org>, <sparclinux@vger.kernel.org>,
-        <x86@kernel.org>, <netdev@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <rusty@rustcorp.com.au>, <gregkh@linuxfoundation.org>,
-        <akpm@linux-foundation.org>, <torvalds@linux-foundation.org>
-Subject: Re: [PATCH RFC 00/73] tree-wide: clean up some no longer required
- #include <linux/init.h>
-Message-ID: <20140123003838.GA10182@windriver.com>
-References: <1390339396-3479-1-git-send-email-paul.gortmaker@windriver.com>
- <20140122180023.dd90d34cba38d9f9ac516349@canb.auug.org.au>
+        <linux-arm-msm@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <uclinux-dist-devel@blackfin.uclinux.org>,
+        <microblaze-uclinux@itee.uq.edu.au>, <linux-mips@linux-mips.org>,
+        <linux@lists.openrisc.net>, <linuxppc-dev@lists.ozlabs.org>,
+        <user-mode-linux-devel@lists.sourceforge.net>,
+        <user-mode-linux-user@lists.sourceforge.net>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Yijing Wang" <wangyijing@huawei.com>,
+        Hanjun Guo <guohanjun@huawei.com>
+Subject: [PATCH 1/2] clocksource: Remove outdated comments
+Date:   Thu, 23 Jan 2014 15:12:27 +0800
+Message-ID: <1390461147-36256-1-git-send-email-wangyijing@huawei.com>
+X-Mailer: git-send-email 1.7.11.msysgit.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <20140122180023.dd90d34cba38d9f9ac516349@canb.auug.org.au>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <Paul.Gortmaker@windriver.com>
+Content-Type: text/plain
+X-Originating-IP: [10.177.27.212]
+X-CFilter-Loop: Reflected
+Return-Path: <wangyijing@huawei.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39077
+X-archive-position: 39078
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: wangyijing@huawei.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,52 +81,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-[Re: [PATCH RFC 00/73] tree-wide: clean up some no longer required #include <linux/init.h>] On 22/01/2014 (Wed 18:00) Stephen Rothwell wrote:
+clocksource_register() and __clocksource_register_scale()
+always return 0, so the comment is just pointless, it's
+outdated, remove it.
 
-> Hi Paul,
-> 
-> On Tue, 21 Jan 2014 16:22:03 -0500 Paul Gortmaker <paul.gortmaker@windriver.com> wrote:
-> >
-> > Where: This work exists as a queue of patches that I apply to
-> > linux-next; since the changes are fixing some things that currently
-> > can only be found there.  The patch series can be found at:
-> > 
-> >    http://git.kernel.org/cgit/linux/kernel/git/paulg/init.git
-> >    git://git.kernel.org/pub/scm/linux/kernel/git/paulg/init.git
-> > 
-> > I've avoided annoying Stephen with another queue of patches for
-> > linux-next while the development content was in flux, but now that
-> > the merge window has opened, and new additions are fewer, perhaps he
-> > wouldn't mind tacking it on the end...  Stephen?
-> 
-> OK, I have added this to the end of linux-next today - we will see how we
-> go.  It is called "init".
+Signed-off-by: Yijing Wang <wangyijing@huawei.com>
+---
+ kernel/time/clocksource.c |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
 
-Thanks, it was a great help as it uncovered a few issues in fringe arch
-that I didn't have toolchains for, and I've fixed all of those up.
-
-I've noticed that powerpc has been un-buildable for a while now; I have
-used this hack patch locally so I could run the ppc defconfigs to check
-that I didn't break anything.  Maybe useful for linux-next in the
-interim?  It is a hack patch -- Not-Signed-off-by: Paul Gortmaker.  :)
-
-Paul.
---
-
-diff --git a/arch/powerpc/include/asm/pgtable-ppc64.h b/arch/powerpc/include/asm/pgtable-ppc64.h
-index d27960c89a71..d0f070a2b395 100644
---- a/arch/powerpc/include/asm/pgtable-ppc64.h
-+++ b/arch/powerpc/include/asm/pgtable-ppc64.h
-@@ -560,9 +560,9 @@ extern void pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
- 			    pmd_t *pmdp);
- 
- #define pmd_move_must_withdraw pmd_move_must_withdraw
--typedef struct spinlock spinlock_t;
--static inline int pmd_move_must_withdraw(spinlock_t *new_pmd_ptl,
--					 spinlock_t *old_pmd_ptl)
-+struct spinlock;
-+static inline int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
-+					 struct spinlock *old_pmd_ptl)
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index ba3e502..9951575 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -779,8 +779,6 @@ EXPORT_SYMBOL_GPL(__clocksource_updatefreq_scale);
+  * @scale:	Scale factor multiplied against freq to get clocksource hz
+  * @freq:	clocksource frequency (cycles per second) divided by scale
+  *
+- * Returns -EBUSY if registration fails, zero otherwise.
+- *
+  * This *SHOULD NOT* be called directly! Please use the
+  * clocksource_register_hz() or clocksource_register_khz helper functions.
+  */
+@@ -805,7 +803,6 @@ EXPORT_SYMBOL_GPL(__clocksource_register_scale);
+  * clocksource_register - Used to install new clocksources
+  * @cs:		clocksource to be registered
+  *
+- * Returns -EBUSY if registration fails, zero otherwise.
+  */
+ int clocksource_register(struct clocksource *cs)
  {
- 	/*
- 	 * Archs like ppc64 use pgtable to store per pmd
+-- 
+1.7.1

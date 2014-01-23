@@ -1,35 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jan 2014 08:58:19 +0100 (CET)
-Received: from mail-pd0-f171.google.com ([209.85.192.171]:52161 "EHLO
-        mail-pd0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S6825733AbaAWH6RkG2Gh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jan 2014 08:58:17 +0100
-Received: by mail-pd0-f171.google.com with SMTP id g10so1463690pdj.2
-        for <multiple recipients>; Wed, 22 Jan 2014 23:58:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=pF8tJaK+dglj+2Z9saU7GkI5ErogHLHcVD6WURRvlus=;
-        b=u+hSfql9oQ12MX4lASRYiGlxxr2FhZRfEcks6m78JTrEOlGDIK4lIR+Nro+T5pu7+H
-         B+7ukKt+aArCMZJMQVY03Qh3tKN48kbNaIs6aGRzYyqNpcId6ugJJ76p+kZuFUyPf+/h
-         aqlWHm/tQaI/bLVRzhIMBuFvm6N24MtB/51LCaF1K8iaMd/AsOMvXedZ7Z6GorvvsWz6
-         htkVTUGsgo4HdAQBleKuufxlpeTPDQ4VeWDt15lr35BB6DOCNVhrQHIV+nV1AlX5S7Ph
-         6zVu7XjbUqJN7vgR0742ddIqU2nKCOf2o5xkzX0td8n8EueC0P0z94b0AWykYXWhRCIq
-         draw==
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jan 2014 09:04:23 +0100 (CET)
+Received: from server.prisktech.co.nz ([115.188.14.127]:60252 "EHLO
+        server.prisktech.co.nz" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S6825733AbaAWIEUl0tV6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jan 2014 09:04:20 +0100
+Received: from [192.168.0.102] (unknown [192.168.0.102])
+        by server.prisktech.co.nz (Postfix) with ESMTP id 61BD0FC11D4;
+        Thu, 23 Jan 2014 21:04:23 +1300 (NZDT)
+Message-ID: <52E0CD18.5080104@prisktech.co.nz>
+Date:   Thu, 23 Jan 2014 21:04:40 +1300
+From:   Tony Prisk <linux@prisktech.co.nz>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
 MIME-Version: 1.0
-X-Received: by 10.68.162.66 with SMTP id xy2mr6744772pbb.46.1390463889335;
- Wed, 22 Jan 2014 23:58:09 -0800 (PST)
-Received: by 10.70.53.138 with HTTP; Wed, 22 Jan 2014 23:58:09 -0800 (PST)
-In-Reply-To: <52E0C889.6000106@prisktech.co.nz>
-References: <1390461166-36440-1-git-send-email-wangyijing@huawei.com>
-        <52E0C889.6000106@prisktech.co.nz>
-Date:   Thu, 23 Jan 2014 08:58:09 +0100
-X-Google-Sender-Auth: m6rMyPgPYt8x7RSt7YClCYGdjdQ
-Message-ID: <CAMuHMdUcKb8m71Z7dUo86MQ_KZgPujxsduUUt3Mz8Oke+DLSVw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] clocksource: Make clocksource register functions void
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Tony Prisk <linux@prisktech.co.nz>
-Cc:     Yijing Wang <wangyijing@huawei.com>,
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+CC:     Yijing Wang <wangyijing@huawei.com>,
         John Stultz <john.stultz@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>,
@@ -45,7 +28,7 @@ Cc:     Yijing Wang <wangyijing@huawei.com>,
         Kukjin Kim <kgene.kim@samsung.com>,
         Russell King <linux@arm.linux.org.uk>,
         Richard Weinberger <richard@nod.at>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
         Tony Lindgren <tony@atomide.com>,
         Ingo Molnar <mingo@redhat.com>, linux-arm-msm@vger.kernel.org,
         David Brown <davidb@codeaurora.org>,
@@ -70,16 +53,21 @@ Cc:     Yijing Wang <wangyijing@huawei.com>,
         "uclinux-dist-devel@blackfin.uclinux.org" 
         <uclinux-dist-devel@blackfin.uclinux.org>,
         "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Subject: Re: [PATCH 2/2] clocksource: Make clocksource register functions
+ void
+References: <1390461166-36440-1-git-send-email-wangyijing@huawei.com>   <52E0C889.6000106@prisktech.co.nz> <CAMuHMdUcKb8m71Z7dUo86MQ_KZgPujxsduUUt3Mz8Oke+DLSVw@mail.gmail.com>
+In-Reply-To: <CAMuHMdUcKb8m71Z7dUo86MQ_KZgPujxsduUUt3Mz8Oke+DLSVw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <linux@prisktech.co.nz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39082
+X-archive-position: 39083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: linux@prisktech.co.nz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -92,31 +80,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 23, 2014 at 8:45 AM, Tony Prisk <linux@prisktech.co.nz> wrote:
->>   -static inline int clocksource_register_hz(struct clocksource *cs, u32
->> hz)
->> +static inline void clocksource_register_hz(struct clocksource *cs, u32
->> hz)
->>   {
->>         return __clocksource_register_scale(cs, 1, hz);
->>   }
+On 23/01/14 20:58, Geert Uytterhoeven wrote:
+> On Thu, Jan 23, 2014 at 8:45 AM, Tony Prisk <linux@prisktech.co.nz> wrote:
+>>>    -static inline int clocksource_register_hz(struct clocksource *cs, u32
+>>> hz)
+>>> +static inline void clocksource_register_hz(struct clocksource *cs, u32
+>>> hz)
+>>>    {
+>>>          return __clocksource_register_scale(cs, 1, hz);
+>>>    }
+>>
+>> This doesn't make sense - you are still returning a value on a function
+>> declared void, and the return is now from a function that doesn't return
+>> anything either ?!?!
+>> Doesn't this throw a compile-time warning??
+> No, passing on void in functions returning void doesn't cause compiler
+> warnings.
 >
+> Gr{oetje,eeting}s,
 >
-> This doesn't make sense - you are still returning a value on a function
-> declared void, and the return is now from a function that doesn't return
-> anything either ?!?!
-> Doesn't this throw a compile-time warning??
+>                          Geert
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                  -- Linus Torvalds
+Doesn't seem right to me (even if there is no warning) but that's 
+probably because I used to program in Pascal where functions with no 
+return were 'procedures' :)
+Whether it needs to be changed or not:
 
-No, passing on void in functions returning void doesn't cause compiler
-warnings.
+For the vt8500 part -
+Acked-by: Tony Prisk <linux@prisktech.co.nz>
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Regards
+Tony Prisk

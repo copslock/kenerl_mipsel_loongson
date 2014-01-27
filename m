@@ -1,14 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:38:38 +0100 (CET)
-Received: from multi.imgtec.com ([194.200.65.239]:44847 "EHLO multi.imgtec.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:38:56 +0100 (CET)
+Received: from multi.imgtec.com ([194.200.65.239]:44846 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6870567AbaA0U2DStN-0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6870568AbaA0U2DZNNca (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 27 Jan 2014 21:28:03 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
-CC:     Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 54/58] MIPS: malta: malta-memory: Use the PHYS_OFFSET to build the memory map
-Date:   Mon, 27 Jan 2014 20:19:41 +0000
-Message-ID: <1390853985-14246-55-git-send-email-markos.chandras@imgtec.com>
+CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH 56/58] MIPS: malta: malta-init: Fix System Controller memory mapping for EVA
+Date:   Mon, 27 Jan 2014 20:19:43 +0000
+Message-ID: <1390853985-14246-57-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
 In-Reply-To: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
 References: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
@@ -20,7 +21,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39174
+X-archive-position: 39175
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,56 +38,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-PHYS_OFFSET is used to denote the physical start address of the
-first bank of RAM. When the Malta board is in EVA mode, the physical
-start address of RAM is shifted to 0x80000000 so it's necessary to use
-this macro in order to make the code EVA agnostic.
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
+Shift System Controller memory mapping to 0x80000000
+
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/mti-malta/malta-memory.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/mips/mti-malta/malta-init.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/mips/mti-malta/malta-memory.c b/arch/mips/mti-malta/malta-memory.c
-index cd04008..9235aee8 100644
---- a/arch/mips/mti-malta/malta-memory.c
-+++ b/arch/mips/mti-malta/malta-memory.c
-@@ -81,11 +81,11 @@ fw_memblock_t * __init fw_getmdesc(int eva)
- 	memset(mdesc, 0, sizeof(mdesc));
+diff --git a/arch/mips/mti-malta/malta-init.c b/arch/mips/mti-malta/malta-init.c
+index fcebfce..deb1d7b 100644
+--- a/arch/mips/mti-malta/malta-init.c
++++ b/arch/mips/mti-malta/malta-init.c
+@@ -238,10 +238,23 @@ mips_pci_controller:
+ 			  MSC01_PCI_SWAP_BYTESWAP << MSC01_PCI_SWAP_MEM_SHF |
+ 			  MSC01_PCI_SWAP_BYTESWAP << MSC01_PCI_SWAP_BAR0_SHF);
+ #endif
++#ifndef CONFIG_EVA
+ 		/* Fix up target memory mapping.  */
+ 		MSC_READ(MSC01_PCI_BAR0, mask);
+ 		MSC_WRITE(MSC01_PCI_P2SCMSKL, mask & MSC01_PCI_BAR0_SIZE_MSK);
++#else
++		/*
++		 * Setup the Malta max (2GB) memory for PCI DMA in host bridge
++		 * in transparent addressing mode, starting from 0x80000000.
++		 */
++		mask = PHYS_OFFSET | (1<<3);
++		MSC_WRITE(MSC01_PCI_BAR0, mask);
  
- 	mdesc[0].type = fw_dontuse;
--	mdesc[0].base = 0x00000000;
-+	mdesc[0].base = PHYS_OFFSET;
- 	mdesc[0].size = 0x00001000;
- 
- 	mdesc[1].type = fw_code;
--	mdesc[1].base = 0x00001000;
-+	mdesc[1].base = mdesc[0].base + 0x00001000UL;
- 	mdesc[1].size = 0x000ef000;
- 
- 	/*
-@@ -96,17 +96,17 @@ fw_memblock_t * __init fw_getmdesc(int eva)
- 	 * devices.
- 	 */
- 	mdesc[2].type = fw_dontuse;
--	mdesc[2].base = 0x000f0000;
-+	mdesc[2].base = mdesc[0].base + 0x000f0000UL;
- 	mdesc[2].size = 0x00010000;
- 
- 	mdesc[3].type = fw_dontuse;
--	mdesc[3].base = 0x00100000;
-+	mdesc[3].base = mdesc[0].base + 0x00100000UL;
- 	mdesc[3].size = CPHYSADDR(PFN_ALIGN((unsigned long)&_end)) -
--		mdesc[3].base;
-+		0x00100000UL;
- 
- 	mdesc[4].type = fw_free;
--	mdesc[4].base = CPHYSADDR(PFN_ALIGN(&_end));
--	mdesc[4].size = memsize - mdesc[4].base;
-+	mdesc[4].base = mdesc[0].base + CPHYSADDR(PFN_ALIGN(&_end));
-+	mdesc[4].size = memsize - CPHYSADDR(mdesc[4].base);
- 
- 	return &mdesc[0];
- }
++		mask = PHYS_OFFSET;
++		MSC_WRITE(MSC01_PCI_HEAD4, mask);
++		MSC_WRITE(MSC01_PCI_P2SCMSKL, mask);
++		MSC_WRITE(MSC01_PCI_P2SCMAPL, mask);
++#endif
+ 		/* Don't handle target retries indefinitely.  */
+ 		if ((data & MSC01_PCI_CFG_MAXRTRY_MSK) ==
+ 		    MSC01_PCI_CFG_MAXRTRY_MSK)
 -- 
 1.8.5.3

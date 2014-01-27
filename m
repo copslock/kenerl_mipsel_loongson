@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:20:52 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jan 2014 21:21:10 +0100 (CET)
 Received: from multi.imgtec.com ([194.200.65.239]:43558 "EHLO multi.imgtec.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S6823911AbaA0UU223AYU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S6825759AbaA0UU2lYvee (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 27 Jan 2014 21:20:28 +0100
 From:   Markos Chandras <markos.chandras@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
         Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 01/58] MIPS: Kconfig: Add Kconfig symbols for EVA support
-Date:   Mon, 27 Jan 2014 20:18:48 +0000
-Message-ID: <1390853985-14246-2-git-send-email-markos.chandras@imgtec.com>
+Subject: [PATCH 02/58] MIPS: asm: Add prefetch instruction for EVA
+Date:   Mon, 27 Jan 2014 20:18:49 +0000
+Message-ID: <1390853985-14246-3-git-send-email-markos.chandras@imgtec.com>
 X-Mailer: git-send-email 1.8.5.3
 In-Reply-To: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
 References: <1390853985-14246-1-git-send-email-markos.chandras@imgtec.com>
@@ -21,7 +21,7 @@ Return-Path: <Markos.Chandras@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 39119
+X-archive-position: 39120
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,74 +40,41 @@ X-list: linux-mips
 
 From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-Add basic Kconfig support for EVA. Not selectable by any platform
-at this point.
+EVA can use the PREFE instruction to perform the virtual address
+translation using the user mapping of the address rather than the
+kernel mapping.
 
 Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
 ---
- arch/mips/Kconfig | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/asm.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index f4c78c9..4230c7a 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1446,6 +1446,26 @@ config CPU_XLP
- 	  Netlogic Microsystems XLP processors.
- endchoice
+diff --git a/arch/mips/include/asm/asm.h b/arch/mips/include/asm/asm.h
+index 879691d..b79be18a 100644
+--- a/arch/mips/include/asm/asm.h
++++ b/arch/mips/include/asm/asm.h
+@@ -149,6 +149,13 @@ symbol		=	value
+ 		pref	hint, addr;			\
+ 		.set	pop
  
-+config CPU_MIPS32_3_5_FEATURES
-+	bool "MIPS32 Release 3.5 Features"
-+	depends on SYS_HAS_CPU_MIPS32_R3_5
-+	depends on CPU_MIPS32_R2
-+	help
-+	  Choose this option to build a kernel for release 2 or later of the
-+	  MIPS32 architecture including features from the 3.5 release such as
-+	  support for Enhanced Virtual Addressing (EVA).
++#define PREFE(hint, addr)				\
++		.set	push;				\
++		.set	mips0;				\
++		.set	eva;				\
++		prefe	hint, addr;			\
++		.set	pop
 +
-+config CPU_MIPS32_3_5_EVA
-+	bool "Enhanced Virtual Addressing (EVA)"
-+	depends on CPU_MIPS32_3_5_FEATURES
-+	select EVA
-+	default y
-+	help
-+	  Choose this option if you want to enable the Enhanced Virtual
-+	  Addressing (EVA) on your MIPS32 core (such as proAptiv).
-+	  One of its primary benefits is an increase in the maximum size
-+	  of lowmem (up to 3GB). If unsure, say 'N' here.
-+
- if CPU_LOONGSON2F
- config CPU_NOP_WORKAROUNDS
- 	bool
-@@ -1539,6 +1559,9 @@ config SYS_HAS_CPU_MIPS32_R1
- config SYS_HAS_CPU_MIPS32_R2
- 	bool
+ #define PREFX(hint,addr)				\
+ 		.set	push;				\
+ 		.set	mips4;				\
+@@ -158,6 +165,7 @@ symbol		=	value
+ #else /* !CONFIG_CPU_HAS_PREFETCH */
  
-+config SYS_HAS_CPU_MIPS32_R3_5
-+	bool
-+
- config SYS_HAS_CPU_MIPS64_R1
- 	bool
+ #define PREF(hint, addr)
++#define PREFE(hint, addr)
+ #define PREFX(hint, addr)
  
-@@ -1658,6 +1681,9 @@ config CPU_MIPSR2
- 	bool
- 	default y if CPU_MIPS32_R2 || CPU_MIPS64_R2 || CPU_CAVIUM_OCTEON
- 
-+config EVA
-+	bool
-+
- config SYS_SUPPORTS_32BIT_KERNEL
- 	bool
- config SYS_SUPPORTS_64BIT_KERNEL
-@@ -2095,7 +2121,7 @@ config CPU_R4400_WORKAROUNDS
- #
- config HIGHMEM
- 	bool "High Memory Support"
--	depends on 32BIT && CPU_SUPPORTS_HIGHMEM && SYS_SUPPORTS_HIGHMEM
-+	depends on 32BIT && CPU_SUPPORTS_HIGHMEM && SYS_SUPPORTS_HIGHMEM && !CPU_MIPS32_3_5_EVA
- 
- config CPU_SUPPORTS_HIGHMEM
- 	bool
+ #endif /* !CONFIG_CPU_HAS_PREFETCH */
 -- 
 1.8.5.3
